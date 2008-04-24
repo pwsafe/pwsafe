@@ -774,7 +774,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 #endif
       app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
       UnMinimize(false);
-      RestoreDisplayStatus();
       m_ctlItemTree.SetRestoreMode(true);
       m_bIsRestoring = true;
       RefreshViews();
@@ -1655,6 +1654,8 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent )
     * so we force a save if database is modified, and fail
     * to lock if the save fails (unless db is r-o).
     */
+    // Need to save display status for when we return from minimize
+    SaveDisplayStatus();
     if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
         !(m_core.IsChanged() || m_bTSUpdated ||
         m_core.WasDisplayStatusChanged()) ||

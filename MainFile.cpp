@@ -2507,7 +2507,7 @@ vector<bool> DboxMain::GetGroupDisplayStatus()
   while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
     if (m_ctlItemTree.ItemHasChildren(hItem)) {
       bool state = (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED)
-        & TVIS_EXPANDED) != 0;
+                    & TVIS_EXPANDED) != 0;
       v.push_back(state);
     }
   }
@@ -2516,13 +2516,14 @@ vector<bool> DboxMain::GetGroupDisplayStatus()
 
 void DboxMain::SetGroupDisplayStatus(const vector<bool> &displaystatus)
 {
+  vector<bool> dstatus(displaystatus); // values seem to be changing!
   HTREEITEM hItem = NULL;
-  unsigned i = 0;
-  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+  size_t i(0);
+  const size_t num = dstatus.size();
+  while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
     if (m_ctlItemTree.ItemHasChildren(hItem)) {
-      if (i < displaystatus.size())
-        m_ctlItemTree.Expand(hItem,
-        displaystatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
+      if (i < num)
+        m_ctlItemTree.Expand(hItem, dstatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
       i++;
     }
   }
