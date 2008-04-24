@@ -5,6 +5,13 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
+/**
+ * This class handles the password expiration date/time dialog box
+ * User can specify a given expiration date, or an interval.
+ * The interval can be one-time or recurring.
+ */
+
 #pragma once
 
 #include "afxwin.h"
@@ -12,32 +19,31 @@
 #include "corelib\MyString.h"
 #include "PWDialog.h"
 
-void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how, 
-                             int &numDays, const int &maxDays);
-
 class CExpDTDlg : public CPWDialog
 {
 
 public:
-  CExpDTDlg(CWnd* pParent = NULL);  // standard constructor
+  CExpDTDlg(time_t baseTime, // entry creation or last modification time
+            time_t expTime, // entry's current exp. time (or 0)
+            int expInterval, // entry's current exp. interval (or 0)
+            CWnd* pParent = NULL);  // standard constructor
 
   CDateTimeCtrl m_pTimeCtl;         // time picker control
   CDateTimeCtrl m_pDateCtl;         // date picker control
-  CMyString m_locXTime;             // format as per user's Short Date/Time
-  time_t m_tttXTime;
-  time_t m_tttCPMTime;  // Password creation or last changed datetime
-  int m_XTimeInt;
+  CMyString m_locXTime;             // formatted time per user's Short Date/Time
+  const time_t m_tttCPMTime;  // entry creation or password last changed datetime
+  time_t m_tttXTime;                // Expiry date/time
+  int m_XTimeInt; // interval (in days) to expiration
 
   // Dialog Data
   //{{AFX_DATA(CImportDlg)
   enum { IDD = IDD_PICKEXPDATETIME };
-  int m_how;
-  int m_numDays;
-  int m_maxDays;
-  BOOL m_ReuseOnPswdChange;
+  int m_how; // is expiration absolute or relative? (int for DDX)
+  int m_numDays; // interval (in days) to expiration when m_how == RELATIVE
+  int m_maxDays; // limited s.t. time_t can't overflow
+  BOOL m_ReuseOnPswdChange; // e.g., is interval recurring or 1-shot.
   //}}AFX_DATA
-
-  enum {DATETIME = 0, DAYS = 1};
+  enum {ABSOLUTE_EXP = 0, RELATIVE_EXP = 1}; // m_how's values
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -49,5 +55,8 @@ public:
   afx_msg void OnDays();
   afx_msg void OnOK();
   afx_msg void OnReuseOnPswdChange();
-
 };
+//-----------------------------------------------------------------------------
+// Local variables:
+// mode: c++
+// End:

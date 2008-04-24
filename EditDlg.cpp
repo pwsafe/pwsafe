@@ -20,6 +20,7 @@
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/ItemData.h"
+#include "corelib/os/typedefs.h"
 #include "ExpDTDlg.h"
 #include "PWHistDlg.h"
 #include "ControlExtns.h"
@@ -44,11 +45,9 @@ static char THIS_FILE[] = __FILE__;
 
 // hide w_char/char differences where possible:
 #ifdef UNICODE
-typedef std::wstring stringT;
 typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
 #else
-typedef std::string stringT;
 typedef std::ifstream ifstreamT;
 typedef std::ofstream ofstreamT;
 #endif
@@ -423,16 +422,14 @@ BOOL CEditDlg::OnInitDialog()
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
-  } else
-  if (m_original_entrytype == CItemData::Alias) {
+  } else if (m_original_entrytype == CItemData::Alias) {
     // Update password to alias form
     // Show text stating that it is an alias
     m_realpassword = m_oldRealPassword = m_base;
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_SHOW);
-  } else
-  if (m_original_entrytype == CItemData::Normal) {
+  } else if (m_original_entrytype == CItemData::Normal) {
     // Normal - do none of the above
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
@@ -465,7 +462,7 @@ BOOL CEditDlg::OnInitDialog()
   }
 
   GetDlgItem(IDC_PWHSTATUS)->
-       SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
+    SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
   CString buffer;
   if (m_SavePWHistory == TRUE)
     buffer.Format(_T("%d"), m_MaxPWHistory);
@@ -473,6 +470,13 @@ BOOL CEditDlg::OnInitDialog()
     buffer = _T("n/a");
 
   GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
+
+  if (m_XTimeInt != 0) // recurring expiration
+    cs_text.Format(IDS_IN_N_DAYS, m_XTimeInt);
+  else
+    cs_text = _T("");
+  GetDlgItem(IDC_XTIME_RECUR2)->SetWindowText(cs_text);
+
 
   UpdateData(FALSE);
   // create tooltip unconditionally, JIC
@@ -490,10 +494,11 @@ BOOL CEditDlg::OnInitDialog()
   m_ToolTipCtrl->Activate(m_OverridePolicy);
 
   m_isExpanded = PWSprefs::GetInstance()->
-                   GetPref(PWSprefs::DisplayExpandedAddEditDlg);
+    GetPref(PWSprefs::DisplayExpandedAddEditDlg);
   ResizeDialog();
 
   m_ex_group.ChangeColour();
+
   return TRUE;
 }
 
@@ -559,7 +564,7 @@ void CEditDlg::OnRandom()
   }
   // This will be reset to the time the user eventually presses OK
   time(&m_tttCPMTime);
-  if (m_XTimeInt > 0 && m_XTimeInt <= 3650) {
+  if (m_XTimeInt != 0) {
     CTime ct = CTime(m_tttCPMTime) + CTimeSpan(m_XTimeInt, 0, 0, 0);
     m_locXTime = PWSUtil::ConvertToDateTimeString((time_t)ct.GetTime(), TMC_LOCALE);
     GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
@@ -633,6 +638,7 @@ void CEditDlg::ResizeDialog()
     IDC_ATIME,
     IDC_STATIC_ATIME,
     IDC_XTIME,
+    IDC_XTIME_RECUR2,
     IDC_STATIC_XTIME,
     IDC_RMTIME,
     IDC_STATIC_RMTIME,
@@ -686,27 +692,31 @@ void CEditDlg::OnBnClickedClearXTime()
 {
   m_locXTime.LoadString(IDS_NEVER);
   GetDlgItem(IDC_XTIME)->SetWindowText((CString)m_locXTime);
+  GetDlgItem(IDC_XTIME_RECUR2)->SetWindowText(_T(""));
   m_tttXTime = (time_t)0;
   m_XTimeInt = 0;
 }
 
 void CEditDlg::OnBnClickedSetXTime()
 {
-  CExpDTDlg dlg_expDT(this);
-
-  dlg_expDT.m_tttXTime = m_tttXTime;
-  dlg_expDT.m_tttCPMTime = m_tttCPMTime;
-  dlg_expDT.m_XTimeInt = m_XTimeInt;
+  CExpDTDlg dlg_expDT(m_tttCPMTime,
+                      m_tttXTime,
+                      m_XTimeInt,
+                      this);
 
   app.DisableAccelerator();
   INT_PTR rc = dlg_expDT.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
+    CString cs_text;
     m_tttXTime = dlg_expDT.m_tttXTime;
     m_locXTime = dlg_expDT.m_locXTime;
     m_XTimeInt = dlg_expDT.m_XTimeInt;
+    if (m_XTimeInt != 0) // recurring expiration
+      cs_text.Format(IDS_IN_N_DAYS, m_XTimeInt);
     GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
+    GetDlgItem(IDC_XTIME_RECUR2)->SetWindowText(cs_text);
   }
 }
 
