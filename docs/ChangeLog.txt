@@ -1,7 +1,434 @@
-
 This file lists the changes made to older versions of
-PasswordSafe. The changes for the current version and the one before
-it are noted in ReleaseNotes.txt.
+PasswordSafe. The changes for the current version and those
+immediately preceding it are noted in ReleaseNotes.txt.
+
+Bugs fixed in 3.11.1
+====================
+[1837534] Autotype handles tab correctly when typing to Internet
+Explorer.
+[] No longer crashes when pulling down Edit menu in List view with no
+entry selected.
+[] Copy Username and Copy Password new toolbar icons swapped back.
+
+Changes to Existing Features in 3.11.1
+======================================
+[] You can now check for newer version via Help->About.
+[] List view displays an icon in each row showing the type of entry.
+
+New Features for 3.11
+=====================
+[1765240] Add "Clear clipboard" item to tray icon context menu.
+[1727768] Copy URL to clipboard added to menus (Ctrl+Alt+L).
+[1526169] Add more shortcut keys to add/edit dialog.
+[] Give user access to Reports from View menu (only in the same directory
+as current open database), since more information is being written there.
+[] Give user access to the Compare report from the Compare results dialog.
+[] New email action allowed in URL field. To be treated as email, the
+data must be prefixed by the characters "mailto:". The data following
+this corresponds to the '[mailto:]' standard RFC2368.
+For example: "info@example.com?subject=PasswordSafe".
+[] Main toolbar can be customized via MS's standard dialog via right
+click on this toolbar.
+[] Several entries may be "aliased" to a single entry, sharing its
+password. See online help for details.
+
+Changes to Existing Features in 3.11
+====================================
+[1815192] The Find function has been re-implemented as a toolbar at
+bottom of application.
+Button shortcuts: Ctrl+Alt+A = Advanced find,
+Ctrl+Alt+S = toggle case Sensitivity, Ctrl+Alt+C = Clear find text
+[1790342] Replaced additional key shortcuts for ExpandAll and CollapseAll
+[introduced in rev. 1678] by toolbar buttons.  Now there is only one set
+(the original) of key shortcuts + toolbar buttons.
+[1756385] The color of the application's system tray icon (when the
+application is started and when there's no open database) is now user
+configurable, fixing a visibility problem under Vista.
+[] Saved string preferences within the database header will not be delimited by
+a double quote if this character is part of the string variable.  An arbitrary
+symbol type character will be used in this case.  If one cannot be found, the
+string preference will not be saved in the database.
+
+Bugs fixed in 3.11
+==================
+[1806201] Non-unique UUIDs in database now handled correctly.
+[1799523] Fix PWS taking a long time saving after XML Import into new DB by
+using an extremely large number of hash iterations.  Users who have imported
+XML into a new database should export again and re-import after deleting the
+<NumberHashIterations>...</NumberHashIterations> entry from the XML file.
+[1798588] Users can now change an entry's password with passwords hidden.
+[1793224] Copy for expired passwords no longer causes PWS crashes.
+[1791482] All preferences stored within the database are now exported/imported
+via XML.
+[1790286] All String preferences stored within the database are now
+correctly read during database open.
+[1789983] List View now correct after Group removed.
+[1726181] Save of a new database is no longer required to export entries.
+[1664219] Autotype now works correctly with '@' in German keyboards,
+and non-English keyboards in general.
+[1313440] Can new add/edit entries with long group names.
+[] Prevent mixed Unicode/ASCII report files and ensure Unicode reports
+have BOM as some text editors insist!
+[] Disable Rename menu item in List View (only appropriate in Tree View).
+[] Disable Tray Minimize/Restore menu items if already Minimized/Visible.
+[] Ignore mouse right click not in Tree/List view area.
+[] Use the Confirm Delete message even when there is only one child.
+
+New Features for 3.10
+=====================
+[1752896] Add ability to edit an entry's notes field using user's default
+text editor via right click on Notes field.
+[1751484] Errors detected while merging or importing a text file are
+now described in detail in a log file.
+[1750010] Drag&Drop between databases now supported.
+[1517048] PasswordSafe can now be installed as an msi package (Windows
+installer). This allows site administrators to 'push' PasswordSafe to
+client machines with group policy. Thanks to xenophonf.
+
+Changes to Existing Features in 3.10
+====================================
+None
+
+Bugs fixed in 3.10
+==================
+[1783905] Read-only status maintained after unlocking a database.
+[1782407] Export to text file now includes "title", if selected.
+[1774428, 1757298, 1609474] Merge no longer loses data.
+[1771357] Timeout timer now reset in all dialog boxes - PasswordSafe
+will no longer minimize in the middle of work with an open dialog box.
+[1768822] Manage->Options->Password History 'apply' works again.
+[1759364, 1758025] '-s' option now works correctly.
+[1757110] Toolbar now correctly disables images according to type of entry
+selected and if URL is populated.
+[1754611, 1754054, 1740704] Items are now fully sorted when "put groups first
+in display tree" selected.
+[1754566] State of tree view is now persistent across minimize, lock &
+save.
+[1751465] Fields containing only whitespace or whitespace between double quotes
+are now treated as empty during plain text import.
+[1734220] XML Export line of Notes fields containing CRLF now works correctly.
+The default delimiter has been made the same as for Export to a Text file.
+[1632634] Compare no longer changes database settings when the databases are
+identical.
+[] Window's position and size now updated correctly.
+[] Lock timeout after manual lock no longer saves empty database.
+[] Ensure group/title/user combination is unique during text import.
+[] During Add/Edit, fields containing only whitespace characters (space,
+horizontal tab, vertical tab, carriage return, new line and form feed) are
+considered empty fields.
+
+New Features for 3.09
+=====================
+[1751451] Add extra warning when deleting entire group, including the
+number of entries that will be deleted.
+[1739979] Add URL column to flattened list.
+[1732198] It's now possible to override the username and hostname used
+to load and store preferences, as well as specify an alternate
+preferences file, via new command line options.
+[] Implement "Advanced" option for Find.
+
+Changes to Existing Features in 3.09
+====================================
+[1732163] Date/time displayed throughout in the users "Short Date" format.
+
+Bugs fixed in 3.09
+==================
+[1754189, 1620423] Focus on search text in Find Dialog - thank to zcecil for
+the fix for this one.
+[1752318] Fixed duplicate/mislabelled columns problem in list view.
+[1748665] Number of passwords to remember (password history) can now
+be set to more than 99 by typing rather than only by spin box.
+[1743706] Fix random showing of user and passwords if started in
+silent mode.
+[1741787, 1728945] Version 2.x databases now read correctly.
+[1739364] Window location issue fixed.
+[1738477, 1630400] A version for Windows98 is now installed by the
+installer on machines running Windows98. This version is NOT part of
+the binaries in the zip file.
+[1733911] File mode encryption/decryption (-d/-e) works again.
+[1733740] '-s' option no longer causes sporadic display of passwords
+in tree view.
+[1735290] Configuration file works with non-ASCII user and host names.
+[1728945] Importing a subset of text data now fixed.
+[1728612] Column sort arrows, in Flattened List mode, correctly removed.
+[1727871] Found items remain highlighted if another entry selected -
+note that found items now displayed in bold font rather than
+highlighted.
+[] A note on possible problems with the autotype functionality and
+some 3rd party popup-blockers. Thanks to mrttoo for the heads-up.
+[] Protect user from losing entries in case of non-unique UUIDs in
+read database.
+[] Compare fixed so that 'X' indicating differences are in the correct
+columns and data copied to clipboard ends in CRLF not just LF.
+[] The installer will detect and notify the user if attempts to
+install on an unsupported version of Windows (95 & ME).
+[] Fix Edit and View in main menu not being reset after open after close.
+
+New Features for 3.08
+=====================
+[1711524] "Show username in display tree" display option.
+[1695968] "Advanced" option now available to improve Merge operation.
+[1695446] It's possible to specify command line parameters for
+Alternate Browser; e.g. "-new-tab" for Firefox. This allows fine
+control of whether or not to open a new browser or not.
+[] Implement "Advanced" option for Exporting in XML format (as per
+Export in Text format) and for when comparing databases.
+[] Maintain unknown fields in the database header and records when
+saving database, for compatibility with future versions as well as clones.
+
+Changes to Existing Features in 3.08
+====================================
+None
+
+Bugs fixed in 3.08
+==================
+[1723936] Expiry date format is now in the user's Short Date format.
+[1721031] Notes field with lots of text now stays in position when focus lost.
+[1721009] Can now Import into a new database after closing previous database.
+[1709992, 1692662, 1678711, 1651392, 1626671, 1604806] Non-English
+text in databases fully supported.
+[1709418] Cancel after Lock Safe from system tray now does Right Thing.
+[1708099] Default saved username, now shows in new entry.
+[1702623] Compare now shows correct filenames.
+[1701508] Entry times no longer written out if not set.
+[1695991] File type Compare now has .bak & .ibak suffixes.
+[1693395] Now Minimize takes precedence over "Always on Top" during Autotype.
+[1691048] Import text file with blank lines or missing fields will no
+longer crash application.
+[1688994] Although rename is not possible in read-only mode, this change
+prevents F2 giving the user the feel that they can.
+[1678527] Line delimiter now works during import of plain text.
+[Open Discussion] Allow Notes field to be Imported from text file even if
+it is not enclosed in double quotes.
+[Open Discussion] Fix issue if PWS is maximized/minimized/then restored.
+[] Fix problem with remembering Tree state on restore after minimize.
+[] More stringent checking during tree "edit in-place" to prevent DB corruption.
+
+New Features for 3.07
+=====================
+[1686819] - PWS may be configured not to minimize during Autotype
+(Manage->Options->Misc). 'Always on Top' takes precedence.
+[1623802] Default Autotype string can be specified per database.
+[] - Password expiration notice can now be given a few days prior to
+actual expiration.
+[] - Exported/imported text format is now documented in online help.
+[] If the PWS_PREFSDIR environment variable is defined, that's where
+the pwsafe.cfg file will be read from, instead of the same directory
+as the executable.
+
+Changes to Existing Features in 3.07
+====================================
+[] List view columns now selectable, entries sortable by any column,
+settings are persistent.
+[] List view may be configured to show Grid lines.
+[] Tree view may be configured to show all groups first, instead of
+strict alphabetic order.
+
+Bugs fixed in 3.07
+==================
+[1684827, 1668493] No longer crashes after you specify to remember 0 databases.
+[1683060] Autotype now works again for all entries.
+[1682516] Menu display no longer trashed if accelerator pressed with
+an open menu.
+[1681366] Now stays on top during autotype.
+[1678707] Caps Lock temporarily turned off in Autotype.
+[1672770] Right-click->unlock on system tray icon now same as
+double-clicking on locked system tray icon.
+[1679461, 1612567] Text in Password field no longer truncated with large
+texts.
+[1675716] <ESC> to close application now works.
+[1673028] Merge operation now fixed.
+[1673028] Similar problem in Compare operation fixed.
+[1660721] Autotype menu & shortcut no longer disabled if field is empty.
+
+New Features for 3.06
+=====================
+Support for U3 (disk-on-key).
+
+Changes to Existing Features in 3.06
+====================================
+[1634251] Password expiration date can now be specified relatively,
+e.g., "45 days from now".
+[] Opening dialog now shows recently opened databases in dropdown list.
+[] File opened in initial dialog now added to recent files list.
+[] All dates and times are now displayed in the local format.
+
+Bugs fixed in 3.06
+==================
+[1633516] No longer crashes upon Find with an empty group.
+[1625557] No longer crashes when invoking help after using HotKey.
+[] Configuration handled correctly with non-English user or host
+names.
+[] No longer crashes when password history policy changes records.
+[] Non-English data issues resolved.
+
+New Features for 3.05.02
+========================
+None.
+
+Changes to Existing Features in 3.05.02
+=======================================
+File opened in initial dialog now added to recent files list.
+
+Bugs fixed in 3.05.02
+=====================
+[1612881, 1577505] Notes now appear consistently.
+[1609759] "Show Password in display list & tree" setting now
+persistent across application exit.
+[1609291, 1606265] No longer terminates after edit when username
+and/or hostname starts with a digit.
+[1608191] Tree view's state is now preserved across timed lock and
+when starting with '-s' flag.
+
+New Features for 3.05
+=====================
+[1600626] Ability to specify alternate browser for URLs - useful if
+Firefox is your default browser, but you need to access a site that
+only works with IE, for example.
+[1600626, 1504327] Portable (e.g., USB stick) installation supported
+(configuration information stored in .cfg file instead of registry).
+[1452303, 1303548, 912724] Option to start Password Safe minimized at login.
+[1452303] Support multiple automatic backups.
+
+Changes to Existing Features in 3.05
+====================================
+[838450] The undocumented backup to .psafe3~ has been replaced by the
+multiple automatic backup mechanism.
+
+Bugs fixed in 3.05
+==================
+[1606237*, 1606232*] View preferences now work correctly.
+[1606026*] Missing manifest files added, application no longer requires
+vcredist_x86.exe
+[1605389*] Read-only flag now updated correctly.
+[1578171] Hotkey works again if window just obscured.
+[1521684,1504527] Old (V1) databases now read correctly - thanks to
+Karel Van der Gucht.
+
+New Features for 3.04
+=====================
+None
+
+Changes to Existing Features in 3.04
+====================================
+None
+
+Bugs fixed in 3.04
+==================
+[1575432] Hidden notes no longer lost after edit.
+[1575415] Weak master password allowed on password change as well as
+new safe.
+[1575279] Database now marked as "changed" after performing PWHistory operations.
+
+New Features for 3.03
+=====================
+[1536006, 1527058] password history - Ability to set the default
+number to be saved. Can be overridden on an entry by entry
+basis. Changing the default number has no effect if history is already
+saved for a particular entry.
+[1511833] Better formatting of plain text export files. Only the order of
+entries during export has been implemented. Both export to "Plain Text"
+and export in "XML Format" will export the database entries in the order
+as displayed in the "Nested Tree Mode".
+[1302047] Enable Maximize/Window button.
+[1249433, 1114473] Startup state for Nested Tree mode - User can now
+select startup as a) All groups collapsed (previous behaviour); b) All
+groups expanded; or c) Same state as when the database was last saved
+(could be either all collapsed, all expanded or a mixture of some
+groups expanded and others collapsed).
+[] Change Find processing in Tree view so that entries are shown in Tree
+order rather than List order.
+[] Change Find to stop on the last found item and ask whether to continue
+from the beginning of the database or the user may select this previous
+behaviour via a Misc. option.
+[] New File->Properties shows some information about the database.
+
+Changes to Existing Features in 3.03
+====================================
+[1532368] Maximum number of passwords stored in history is now 255.
+[] Weak master passphrases are accepted, if the user insists.
+[] Field with focus has a different color.
+[] More info in status bar: read-only and modified status.
+
+Bugs fixed in 3.03
+==================
+[1557838, 1557559, 1525344, 1523689] Problem with suspend/lock when
+edit dialog open resolved.
+[1554253] Show/Unhide password no longer loses changes to password.
+[1551034] Entries can no longer be changed in read-only mode.
+[1540106] Fixed incorrect link to Twofish web page.
+[1529305] Crash in Password History resolved.
+[1528400] Cancel on "Restore from Backup" no longer corrupts database.
+[1527144] No more multiple combination dialogs when restoring window
+from system tray.
+[1527138] Select after deletion no longer surprises.
+[1527029] Password count now displays correctly in status bar.
+[1561335, 1373138, 1182406] HotKey now works with SystemTray icon.
+[] View Menu item "Collapse All" now works correctly.
+[] Double-Click works on entries with expired passwords.
+
+New Features for 3.02
+=====================
+[1516674] Ability to hide password during Add & Edit entry. If hidden,
+password needs to be entered twice to verify.
+[1506320] Count of passwords stored in DB on status bar. Also indication
+of read/only status.
+[1487001, 1120236, 705515] Password history can now be saved for selected
+entries.
+[] Export/import to/from XML supported.
+[] Selective text export.
+[] Compare of two databases supported.
+
+Changes to Existing Features in 3.02
+====================================
+[] Minimum master passphrase length is now 8 characters, and user is
+not offered the option of accepting weak passphrases.
+[] "Save on minimize" option removed.
+
+Bugs fixed in 3.02
+==================
+[1526174] Tab order more friendly in Edit dialog box.
+[1520562] Single entry is now displayed in Nested Tree Mode.
+[1520110, 1503075] No longer crashes when number of last databases is
+set to zero.
+[1519850] Double-click on group entry in tree did not expand/collapse
+group.
+[1519227] Password expires date was set wrong.
+[1515994] User is now prompted to save database on system shutdown.
+[1513482] Preferences now saved in the .psafe3 file.
+[1507847] Merge databases now merges all the record's fields, thanks
+to n0tig.
+[1504107] No longer saves cleared database.
+[1503123] Exits cleanly from lock with open dialog box.
+[] Tree is now refreshed if user decides not to open another DB.
+
+New Features for 3.01
+=====================.
+[1465395] View Passwords in Nested Tree Mode
+[1162051] Toolbar additions (Autotype, Browse URL, Copy Notes to clipboard)
+[726518] User can configure an expiration date for entries and be
+notified accordingly.
+[726508] Modification and access times now recorded.
+[737878] Copy Notes to Clipboard.
+[] Ability to clear "Recent Database List".
+[] Browse to URL now starts a new instance of the user's default browser
+rather than taking over an existing instance.
+
+Changes to Existing Features in 3.01
+====================================
+None
+
+Bugs fixed in 3.01
+==================
+[1495670] Find now searches new URL and Autotype fields.
+[1495556] Restore after minimize now works when system-tray not used.
+[1490985, 1423020, 1398936] Microsoft redistributable DLLs now
+included in installation and zip file. Should fix all "MS*.dll not
+installed" problems.
+[1482002] Generated password no longer trashed if > 127 bytes.
+[1472332] Read-only command line argument bug.
+[1440951] Can now close application after minimize w/o system tray.
+[] Help file now reflects 3.0 new features.
 
 New Features for 3.0Beta2:
 ==========================
