@@ -54,7 +54,7 @@ is not read-only.
 [1664535] Interpret "Remember 0 last databases" on the System Options as 
 "do not store any opened database".
 [1399569, 912188] Separate the clear clipboard options on minimize and exit.
-[1207606] Notes may optionally be shown as tooltips in nested tree view.
+[1207606] Notes may optionally be shown as tooltips.
 [988806] The Status Bar now provides Feedback on double click actions.
 [] Alt+F4, in addition to Ctrl+Q, now closes the application.
 [] Allow user to Hide/Show main toolbar.
