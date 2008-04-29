@@ -9,10 +9,14 @@
 #   basis for all new translations
 # - pwsafe*.po are translations to a given language/locale.
 # - The above are generates/updated from the $(BASE_DLL).
+#
+# The list of LCIDs is at
+# http://www.microsoft.com/globaldev/reference/lcid-all.mspx 
+#
 
 #Update the following for each language we support
 POS = pwsafe.pot pos/pwsafesv.po
-DLLS = dlls/pwsafeSV_SE.dll
+DLLS = dlls/pwsafeSV_SE.dll dlls/pwsafeES_ES.dll
 
 # Currently we need a rule per language, due to the LCID.
 # I'm sure that we can improve on this...
@@ -21,6 +25,13 @@ dlls/pwsafeSV_SE.dll : pos/pwsafesv.po
 	(cd dlls; \
 		../$(RESTEXT) apply ../$(BASE_DLL) foo.dll ../$^; \
 		../$(RESPWSL) apply foo.dll 0x041d; \
+		$(RM) foo.dll)
+	$(CHMOD) 755 $@
+
+dlls/pwsafeES_ES.dll : pos/pwsafe_es.po
+	(cd dlls; \
+		../$(RESTEXT) apply ../$(BASE_DLL) foo.dll ../$^; \
+		../$(RESPWSL) apply foo.dll 0x0c0a; \
 		$(RM) foo.dll)
 	$(CHMOD) 755 $@
 
