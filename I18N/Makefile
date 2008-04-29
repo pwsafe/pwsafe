@@ -21,7 +21,7 @@ DLLS = dlls/pwsafeSV_SE.dll dlls/pwsafeES_ES.dll
 # Currently we need a rule per language, due to the LCID.
 # I'm sure that we can improve on this...
 
-dlls/pwsafeSV_SE.dll : pos/pwsafesv.po
+dlls/pwsafeSV_SE.dll : pos/pwsafe_sv.po
 	(cd dlls; \
 		../$(RESTEXT) apply ../$(BASE_DLL) foo.dll ../$^; \
 		../$(RESPWSL) apply foo.dll 0x041d; \
