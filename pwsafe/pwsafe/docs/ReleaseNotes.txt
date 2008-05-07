@@ -1,5 +1,5 @@
-Password Safe 3.13 Release Notes - May 2008
-===========================================
+Password Safe 3.13.1 Release Notes - May 2008
+=============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,20 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.13.1
+====================
+[1959193] PWS now honours the read-only command line parameter (-r)
+for first open.  Then governed by R/O open preference or user selecting
+read-only at open time.
+
+Changes to Existing Features in 3.13.1
+======================================
+
+
+New Features for 3.13.1
+=======================
+
 
 Bugs fixed in 3.13
 ==================

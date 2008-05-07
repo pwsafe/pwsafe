@@ -56,10 +56,14 @@ BOOL DboxMain::OpenOnInit(void)
   un-minimizing the application
   */
   CMyString passkey;
+  bool bReadOnly = m_core.IsReadOnly();  // Can only be from -r command line parameter
+  if (!bReadOnly) {
+    // Command line not set - use config for first open
+    bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO) == TRUE;
+  }
   int rc = GetAndCheckPassword(m_core.GetCurFile(),
                                passkey, GCP_FIRST,
-                               PWSprefs::GetInstance()->
-                                   GetPref(PWSprefs::DefaultOpenRO) == TRUE,
+                               bReadOnly,
                                m_core.IsReadOnly());  // First
   int rc2 = PWScore::NOT_SUCCESS;
 
