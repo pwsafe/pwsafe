@@ -16,7 +16,8 @@ read-only at open time.
 
 Changes to Existing Features in 3.13.1
 ======================================
-
+[1958303] TreeView buttons (+/-) now larger without significantly
+increasing the visible bitmap image.  Also, now transparent.
 
 New Features for 3.13.1
 =======================
