@@ -453,56 +453,65 @@ void DboxMain::InitPasswordSafe()
 
   SetIcon(m_hIcon, TRUE);  // Set big icon
   SetIcon(m_hIconSm, FALSE); // Set small icon
+
   // Init stuff for tree view
+  CBitmap bitmap;
+  BITMAP bm;
+
+  // Change all pixels in this 'grey' to transparent
+  const COLORREF crTransparent = RGB(192, 192, 192);
+
+  bitmap.LoadBitmap(IDB_NODE);
+  bitmap.GetBitmap(&bm);
+  
   m_pImageList = new CImageList();
   // Number (12) corresponds to number in CPWTreeCtrl public enum
-  BOOL status = m_pImageList->Create(9, 9, ILC_COLOR, 12, 0);
+  BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight, 
+                                     ILC_MASK | ILC_COLOR, 12, 0);
   ASSERT(status != 0);
 
   // Dummy Imagelist needed if user adds then removes Icon column
   m_pImageList0 = new CImageList();
-  status = m_pImageList0->Create(1, 1, ILC_COLOR, 0, 1);
+  status = m_pImageList0->Create(1, 1, ILC_MASK | ILC_COLOR, 0, 1);
   ASSERT(status != 0);
-
-  CBitmap bitmap;
 
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
   // Also now used by CListCtrl!
-  bitmap.LoadBitmap(IDB_NODE);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  //bitmap.LoadBitmap(IDB_NODE); - already loaded above to get width
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_NORMAL);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_NORMAL_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_NORMAL_EXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_ABASE);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_ABASE_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_ABASE_EXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_ALIAS);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_SBASE);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_SBASE_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_SBASE_EXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_SHORTCUT);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
 
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);

@@ -100,27 +100,35 @@ BOOL CExpPWListDlg::OnInitDialog()
 
   m_pImageList = new CImageList();
   // Number (6) same as total of warn/expired images below
-  BOOL status = m_pImageList->Create(9, 9, ILC_COLOR, 6, 0);
-  ASSERT(status != 0);
   CBitmap bitmap;
+  BITMAP bm;
 
   bitmap.LoadBitmap(IDB_NORMAL_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.GetBitmap(&bm);
+
+  BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight, 
+                                     ILC_MASK | ILC_COLOR, 6, 0);
+  ASSERT(status != 0);
+
+  // Change all pixels in this 'grey' to transparent
+  const COLORREF crTransparent = RGB(192, 192, 192);
+  //bitmap.LoadBitmap(IDB_NORMAL_WARNEXPIRED); - already loaded above to get width
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_NORMAL_EXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_ABASE_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_ABASE_EXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_SBASE_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_SBASE_EXPIRED);
-  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
 
   m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_SMALL);
