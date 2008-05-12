@@ -909,7 +909,8 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       free(pTemp);
     } // loop over tokens
 
-    if (tokens[i_Offset[PASSWORD]].empty()) {
+    if ((size_t)i_Offset[PASSWORD] >= tokens.size() ||
+        tokens[i_Offset[PASSWORD]].empty()) {
       csError.Format(IDSC_IMPORTNOPASSWORD, numlines);
       rpt.WriteLine(csError);
       numSkipped++;
@@ -919,7 +920,7 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // Start initializing the new record.
     temp.Clear();
     temp.CreateUUID();
-    if (i_Offset[USER] >= 0)
+    if (i_Offset[USER] >= 0 && tokens.size() > (size_t)i_Offset[USER])
       temp.SetUser(CMyString(tokens[i_Offset[USER]].c_str()));
     CMyString csPassword = CMyString(tokens[i_Offset[PASSWORD]].c_str());
     if (i_Offset[PASSWORD] >= 0)
@@ -965,53 +966,53 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       rpt.WriteLine(csError);
     }
 
-    if (i_Offset[URL] >= 0)
+    if (i_Offset[URL] >= 0 && tokens.size() > (size_t)i_Offset[URL])
       temp.SetURL(tokens[i_Offset[URL]].c_str());
-    if (i_Offset[AUTOTYPE] >= 0)
+    if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > (size_t)i_Offset[AUTOTYPE])
       temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
-    if (i_Offset[CTIME] >= 0)
+    if (i_Offset[CTIME] >= 0 && tokens.size() > (size_t)i_Offset[CTIME])
       if (!temp.SetCTime(tokens[i_Offset[CTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(CTIME);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
-    if (i_Offset[PMTIME] >= 0)
+    if (i_Offset[PMTIME] >= 0 && tokens.size() > (size_t)i_Offset[PMTIME])
       if (!temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(PMTIME);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
-    if (i_Offset[ATIME] >= 0)
+    if (i_Offset[ATIME] >= 0 && tokens.size() > (size_t)i_Offset[ATIME])
       if (!temp.SetATime(tokens[i_Offset[ATIME]].c_str())) {
         const stringT &time_value = vs_Header.at(ATIME);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
-    if (i_Offset[XTIME] >= 0)
+    if (i_Offset[XTIME] >= 0 && tokens.size() > (size_t)i_Offset[XTIME])
       if (!temp.SetXTime(tokens[i_Offset[XTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(XTIME);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
-    if (i_Offset[XTIME_INT] >= 0)
+    if (i_Offset[XTIME_INT] >= 0 && tokens.size() > (size_t)i_Offset[XTIME_INT])
       if (!temp.SetXTimeInt(tokens[i_Offset[XTIME_INT]].c_str())) {
         const stringT &int_value = vs_Header.at(XTIME_INT);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, int_value.c_str());
         rpt.WriteLine(csError);
       }
-    if (i_Offset[RMTIME] >= 0)
+    if (i_Offset[RMTIME] >= 0 && tokens.size() > (size_t)i_Offset[RMTIME])
       if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(RMTIME);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
-    if (i_Offset[POLICY] >= 0)
+    if (i_Offset[POLICY] >= 0 && tokens.size() > (size_t)i_Offset[POLICY])
       if (!temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str())) {
         const stringT &dword_value = vs_Header.at(POLICY);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, dword_value.c_str());
         rpt.WriteLine(csError);
       }
-    if (i_Offset[HISTORY] >= 0) {
+    if (i_Offset[HISTORY] >= 0 && tokens.size() > (size_t)i_Offset[HISTORY]) {
       CMyString newPWHistory;
       CString strPWHErrors;
       csError.Format(IDSC_IMPINVALIDPWH, numlines);
@@ -1041,7 +1042,7 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
-    if (i_Offset[NOTES] >= 0) {
+    if (i_Offset[NOTES] >= 0 && tokens.size() > (size_t)i_Offset[NOTES]) {
       stringT quotedNotes = tokens[i_Offset[NOTES]];
       if (!quotedNotes.empty()) {
         if (*quotedNotes.begin() == TCHAR('\"') &&
