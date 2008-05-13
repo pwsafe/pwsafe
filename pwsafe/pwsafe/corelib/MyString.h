@@ -15,7 +15,9 @@
 
 #ifndef _MYSTRING_H_
 #define _MYSTRING_H_
+#ifdef _WIN32
 #include <afx.h>
+#endif
 //-----------------------------------------------------------------------------
 class CMyString
 {

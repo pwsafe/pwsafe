@@ -127,6 +127,14 @@
 #define PWS_LITTLE_ENDIAN
 #endif
 // **********************************************
+// * Linux on Intel                             *
+// **********************************************
+#elif defined(__linux)
+#define PWS_PLATFORM "Linux"
+#if defined(__i386__) || defined(__i486__)
+#define PWS_LITTLE_ENDIAN
+#endif
+// **********************************************
 // * Add other platforms here...                *
 // **********************************************
 #endif
