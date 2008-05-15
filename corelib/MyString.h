@@ -18,8 +18,9 @@
 #define _MYSTRING_H_
 #ifdef _WIN32
 #include <afx.h>
-#endif
+#else
 #include "StringX.h"
+#endif
 #include "os/typedefs.h"
 //-----------------------------------------------------------------------------
 class CMyString
@@ -35,15 +36,79 @@ public:
 
   TCHAR operator[](int nIndex) const {return m_mystring[nIndex];}
 
+  // Following are dependent on M'soft's CString
+  // We'll keep them inline for performance/code size, at the cost of ifdefs
+  // in the header...
+#ifdef _WIN32
   TCHAR GetAt(int nIndex) {return m_mystring.GetAt(nIndex);}
-
   void SetAt(int nIndex, TCHAR ch) {m_mystring.SetAt(nIndex,ch);}
+  operator LPCTSTR() const {return (LPCTSTR)m_mystring;}
+  BOOL IsEmpty() const {return m_mystring.IsEmpty();}
+  LPTSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
+  LPTSTR GetBuffer() {return m_mystring.GetBuffer();}
+
+  void ReleaseBuffer(int nNewLength = -1) {m_mystring.ReleaseBuffer(nNewLength);}
+
+  int GetLength() const {return m_mystring.GetLength();}
+  int Find(TCHAR ch) const {return m_mystring.Find(ch);}
+  int Find(LPCTSTR lpszSub) const {return m_mystring.Find(lpszSub);}
+  int Find(TCHAR ch, int nstart) const {return m_mystring.Find(ch, nstart);}
+  int Find(LPCTSTR lpszSub, int nstart) const {return m_mystring.Find(lpszSub, nstart);}
+  int FindOneOf(LPCTSTR lpszSub) const {return m_mystring.FindOneOf(lpszSub);}
+  int Replace(const TCHAR chOld, const TCHAR chNew) {return m_mystring.Replace(chOld,chNew);}
+  int Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew)
+  {return m_mystring.Replace(lpszOld,lpszNew);}
+  int Remove(TCHAR ch) {return m_mystring.Remove(ch);}
+  void TrimRight() {m_mystring.TrimRight();}
+  void TrimLeft() {m_mystring.TrimLeft();}
+#if _MSC_VER >= 1400
+  CMyString &Trim() {m_mystring.Trim(); return *this;}
+#else
+  CMyString &Trim()
+  {m_mystring.TrimLeft(); m_mystring.TrimRight(); return *this}
+#endif
+  void MakeLower() {m_mystring.MakeLower();}
+  int Compare(const LPCTSTR lpszOther) const {return m_mystring.Compare(lpszOther);}
+  int CompareNoCase(const LPCTSTR lpszOther) const {return m_mystring.CompareNoCase(lpszOther);}
+  BOOL IsOnlyWhiteSpace() const
+  {CMyString t(*this); return t.Trim().IsEmpty();}
+  void EmptyIfOnlyWhiteSpace()
+  {if (IsOnlyWhiteSpace() == TRUE) Empty();}
+  CMyString SpanIncluding(LPCTSTR lpszCharSet)
+  {return CMyString(m_mystring.SpanIncluding(lpszCharSet));}
+  CMyString SpanExcluding(LPCTSTR lpszCharSet)
+  {return CMyString(m_mystring.SpanExcluding(lpszCharSet));}
+#else
+  TCHAR GetAt(int nIndex);
+  void SetAt(int nIndex, TCHAR ch);
+  operator LPCTSTR() const;
+  BOOL IsEmpty() const;
+  LPTSTR GetBuffer(int nMinBufLength);
+  LPTSTR GetBuffer();
+  void ReleaseBuffer(int nNewLength = -1);
+  int GetLength() const;
+  int Find(TCHAR ch) const;
+  int Find(LPCTSTR lpszSub) const;
+  int Find(TCHAR ch, int nstart) const;
+  int Find(LPCTSTR lpszSub, int nstart) const;
+  int FindOneOf(LPCTSTR lpszSub) const;
+  int Replace(const TCHAR chOld, const TCHAR chNew);
+  int Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew);
+  int Remove(TCHAR ch);
+  void TrimRight();
+  void TrimLeft();
+  CMyString &Trim();
+  void MakeLower();
+  int Compare(const LPCTSTR lpszOther) const;
+  int CompareNoCase(const LPCTSTR lpszOther) const;
+  BOOL IsOnlyWhiteSpace() const;
+  void EmptyIfOnlyWhiteSpace();
+  CMyString SpanIncluding(LPCTSTR lpszCharSet);
+  CMyString SpanExcluding(LPCTSTR lpszCharSet);
+#endif
 
   operator CString() const {return m_mystring;}
   operator CString&() {return m_mystring;}
-  operator LPCTSTR() const {return (LPCTSTR)m_mystring;}
-
-  BOOL IsEmpty() const {return m_mystring.IsEmpty();}
 
   const CMyString& operator=(const CMyString& stringSrc);
   const CMyString& operator=(TCHAR ch);
@@ -68,50 +133,16 @@ public:
   friend CMyString operator+(LPCTSTR lpsz,
     const CMyString& string);
 
-  LPTSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
-  LPTSTR GetBuffer() {return m_mystring.GetBuffer();}
 
-  void ReleaseBuffer(int nNewLength = -1) {m_mystring.ReleaseBuffer(nNewLength);}
-
-  int GetLength() const {return m_mystring.GetLength();}
-
-  int Find(TCHAR ch) const {return m_mystring.Find(ch);}
-  int Find(LPCTSTR lpszSub) const {return m_mystring.Find(lpszSub);}
-  int Find(TCHAR ch, int nstart) const {return m_mystring.Find(ch, nstart);}
-  int Find(LPCTSTR lpszSub, int nstart) const {return m_mystring.Find(lpszSub, nstart);}
-  int FindOneOf(LPCTSTR lpszSub) const {return m_mystring.FindOneOf(lpszSub);}
-  int Replace(const TCHAR chOld, const TCHAR chNew) {return m_mystring.Replace(chOld,chNew);}
-  int Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew)
-  {return m_mystring.Replace(lpszOld,lpszNew);}
-  int Remove(TCHAR ch) {return m_mystring.Remove(ch);}
   CMyString Left(int nCount) const;
   CMyString Right(int nCount) const;
   CMyString Mid(int nFirst) const;
   CMyString Mid(int nFirst, int nCount) const;
-  void TrimRight() {m_mystring.TrimRight();}
-  void TrimLeft() {m_mystring.TrimLeft();}
-#if _MSC_VER >= 1400
-  CMyString &Trim() {m_mystring.Trim(); return *this;}
-#else
-  CMyString &Trim()
-  {m_mystring.TrimLeft(); m_mystring.TrimRight(); return *this}
-#endif
-  void MakeLower() {m_mystring.MakeLower();}
-  int Compare(const LPCTSTR lpszOther) const {return m_mystring.Compare(lpszOther);}
-  int CompareNoCase(const LPCTSTR lpszOther) const {return m_mystring.CompareNoCase(lpszOther);}
   void Empty();
   BOOL LoadString(const UINT &nID);
   void Format(LPCTSTR lpszFormat, ... );
   void Format(UINT nID, ... );
-  BOOL IsOnlyWhiteSpace() const
-  {CMyString t(*this); return t.Trim().IsEmpty();}
-  void EmptyIfOnlyWhiteSpace()
-  {if (IsOnlyWhiteSpace() == TRUE) Empty();}
   void Trash() {trashstring();}
-  CMyString SpanIncluding(LPCTSTR lpszCharSet)
-  {return CMyString(m_mystring.SpanIncluding(lpszCharSet));}
-  CMyString SpanExcluding(LPCTSTR lpszCharSet)
-  {return CMyString(m_mystring.SpanExcluding(lpszCharSet));}
 
 private:
   CString m_mystring;

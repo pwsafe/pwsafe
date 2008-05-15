@@ -13,6 +13,8 @@
 #include "corelib.h"
 #include "PWSrand.h"
 #include "trigram.h" // for pronounceable passwords
+#include "os/typedefs.h"
+#include "os/pws_tchar.h"
 #include <string>
 #include <vector>
 #include <algorithm>

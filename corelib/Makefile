@@ -1,7 +1,9 @@
 # Baby Makefile for Linux
 #
 
-LIBSRC          = sha1.cpp sha256.cpp
+LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
+		              TwoFish.cpp PWCharPool.cpp PWSdirs.cpp \
+	                PWSrand.cpp
 TESTSRC         = 
 SRC             = $(LIBSRC) $(TESTSRC)
 
@@ -16,7 +18,7 @@ LIB	     = $(LIBPATH)/libcore.a
 TEST	    = $(BINPATH)/test
 OBJ	     = $(TESTOBJ) $(LIBOBJ)
 
-CXXFLAGS += -DUNICODE
+CXXFLAGS += -DUNICODE -Wall
 
 # rules
 .PHONY: all clean test setup
