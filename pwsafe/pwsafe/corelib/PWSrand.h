@@ -38,6 +38,6 @@ private:
   unsigned char R[SHA256::HASHLEN];
 
   char rgbRandomData[SHA256::HASHLEN];
-  int ibRandomData;
+  unsigned int ibRandomData;
 };
 #endif // PWSrand_h

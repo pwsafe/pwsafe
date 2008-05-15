@@ -8,7 +8,8 @@
 #ifndef _TYPEDEFS_H
 /**
 * Silly wrapper to abstract away the difference between a Unicode
-* (wchar_t) and non-Unicode (char) std::string
+* (wchar_t) and non-Unicode (char) std::string, as well as
+* Linux/Windows portability.
 *
 */
 
@@ -63,7 +64,18 @@ typedef wchar_t TCHAR;
 #define _T(x) x
 typedef char TCHAR;
 #endif /* UNICODE */
-typdef const TCHAR *LPCTSTR;
+// mimic Microsoft conventional typdefs:
+typedef TCHAR *LPTSTR;
+typedef const TCHAR *LPCTSTR;
+typedef bool BOOL;
+typedef unsigned char BYTE;
+typedef unsigned int UINT;
+typedef stringT CString; // XXX at least for now...
+
+// assorted conveniences:
+#define ASSERT(p) assert(p)
+#define TRUE true
+#define FALSE false
 #endif /* _WIN32 */
           
 #endif /* _TYPEDEFS_H */

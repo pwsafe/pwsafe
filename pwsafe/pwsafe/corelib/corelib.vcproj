@@ -426,6 +426,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\os\windows\mem.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MyString.cpp"
 				>
 				<FileConfiguration

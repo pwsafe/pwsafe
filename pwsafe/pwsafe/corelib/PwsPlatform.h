@@ -50,6 +50,14 @@
 
 #if defined(_WIN32)
 #include "../stdafx.h" // ONLY place in corelib which refers to parent. Ugh.
+#else
+// some globally useful includes for non-Windows
+#include <cassert>
+#endif
+
+// Following seems needed on Linux
+#ifdef __linux__
+#define LTC_NO_ROLC
 #endif
 
 // stop MS VC++ 6 and earlier being quite so pedantic
