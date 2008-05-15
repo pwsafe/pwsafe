@@ -85,35 +85,35 @@ const CMyString&CMyString::operator=(const unsigned char* psz)
 }
 #endif
 
-CMyString AFXAPI operator+(const CMyString& string1,const CMyString& string2)
+CMyString operator+(const CMyString& string1,const CMyString& string2)
 {
   CMyString s;
   s = (CMyString)(string1.m_mystring+string2.m_mystring);
   return s;
 }
 
-CMyString AFXAPI operator+(const CMyString& string, TCHAR ch)
+CMyString operator+(const CMyString& string, TCHAR ch)
 {
   CMyString s;
   s = (CMyString)(string.m_mystring + ch);
   return s;
 }
 
-CMyString AFXAPI operator+(TCHAR ch, const CMyString& string)
+CMyString operator+(TCHAR ch, const CMyString& string)
 {
   CMyString s;
   s = (CMyString)(ch + string.m_mystring);
   return s;
 }
 
-CMyString AFXAPI operator+(const CMyString& string, LPCTSTR lpsz)
+CMyString operator+(const CMyString& string, LPCTSTR lpsz)
 {
   CMyString s;
   s = (CMyString)(string.m_mystring + lpsz);
   return s;
 }
 
-CMyString AFXAPI operator+(LPCTSTR lpsz, const CMyString& string)
+CMyString operator+(LPCTSTR lpsz, const CMyString& string)
 {
   CMyString s;
   s = (CMyString)(lpsz + string.m_mystring);

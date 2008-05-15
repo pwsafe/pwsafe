@@ -16,44 +16,44 @@
  * being returned to system.
  */
 
-#ifndef _XSTRINGSTREAM_H_
-#define _XSTRINGSTREAM_H_
-#include "XString.h"
+#ifndef _STRINGXSTREAM_H_
+#define _STRINGXSTREAM_H_
+#include "StringX.h"
 #include <sstream>
 
 
 #ifdef UNICODE
 typedef std::basic_stringbuf<wchar_t,
                              std::char_traits<wchar_t>,
-                             S_Alloc::SecureAlloc<wchar_t> > XStringBuf;
+                             S_Alloc::SecureAlloc<wchar_t> > StringXBuf;
 
 typedef std::basic_istringstream<wchar_t,
                                  std::char_traits<wchar_t>,
-                                 S_Alloc::SecureAlloc<wchar_t> > iXStringStream;
+                                 S_Alloc::SecureAlloc<wchar_t> > iStringXStream;
 
 typedef std::basic_ostringstream<wchar_t,
                                  std::char_traits<wchar_t>,
-                                 S_Alloc::SecureAlloc<wchar_t> > oXStringStream;
+                                 S_Alloc::SecureAlloc<wchar_t> > oStringXStream;
 
 typedef std::basic_stringstream<wchar_t,
                                 std::char_traits<wchar_t>,
-                                S_Alloc::SecureAlloc<wchar_t> > XStringStream;
+                                S_Alloc::SecureAlloc<wchar_t> > StringXStream;
 #else
 typedef std::basic_stringbuf<char,
                              std::char_traits<char>,
-                             S_Alloc::SecureAlloc<char> > XStringBuf;
+                             S_Alloc::SecureAlloc<char> > StringXBuf;
 
 typedef std::basic_istringstream<char,
                                  std::char_traits<char>,
-                                 S_Alloc::SecureAlloc<char> > iXStringStream;
+                                 S_Alloc::SecureAlloc<char> > iStringXStream;
 
 typedef std::basic_ostringstream<char,
                                  std::char_traits<char>,
-                                 S_Alloc::SecureAlloc<char> > oXStringStream;
+                                 S_Alloc::SecureAlloc<char> > oStringXStream;
 
 typedef std::basic_stringstream<char,
                                 std::char_traits<char>,
-                                S_Alloc::SecureAlloc<char> > XStringStream;
+                                S_Alloc::SecureAlloc<char> > StringXStream;
 #endif
 
 #endif

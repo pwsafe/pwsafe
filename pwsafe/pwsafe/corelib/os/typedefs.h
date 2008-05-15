@@ -58,9 +58,12 @@ typedef u_int64_t uint64;
 
 #ifdef UNICODE
 #define _T(x) L ## x
+typedef wchar_t TCHAR;
 #else
 #define _T(x) x
-#endif
+typedef char TCHAR;
+#endif /* UNICODE */
+typdef const TCHAR *LPCTSTR;
 #endif /* _WIN32 */
           
 #endif /* _TYPEDEFS_H */

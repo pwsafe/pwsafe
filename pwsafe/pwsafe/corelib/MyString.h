@@ -1,16 +1,17 @@
 /*
-* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
-* All rights reserved. Use of the code is allowed under the
-* Artistic License 2.0 terms, as specified in the LICENSE file
-* distributed with this code, or available from
-* http://www.opensource.org/licenses/artistic-license-2.0.php
-*/
+ * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License 2.0 terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license-2.0.php
+ */
+
 // MyString.h
 // A drop-in replacement for CString, the main difference being that the
 // data is scrubbed by trashstring() in the destructor, thus leaving an attacker
 // with a little less info to grovel for in the swap file / core dump / whatever
 //
-// First priority for porting is to implement this without CString
+
 //-----------------------------------------------------------------------------
 
 #ifndef _MYSTRING_H_
@@ -18,11 +19,13 @@
 #ifdef _WIN32
 #include <afx.h>
 #endif
+#include "StringX.h"
+#include "os/typedefs.h"
 //-----------------------------------------------------------------------------
 class CMyString
 {
 public:
-  CMyString() : m_mystring(_T("")) {}
+  CMyString() : m_mystring(_S("")) {}
   CMyString(LPCTSTR lpsz) : m_mystring(lpsz) {}
   CMyString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength) {}
   CMyString(const CMyString& stringSrc) : m_mystring(stringSrc.m_mystring) {}
@@ -54,15 +57,15 @@ public:
 
   // CMyString operator+(LPCTSTR lpsz);
 
-  friend CMyString AFXAPI operator+(const CMyString& string1,
+  friend CMyString operator+(const CMyString& string1,
     const CMyString& string2);
-  friend CMyString AFXAPI operator+(const CMyString& string,
+  friend CMyString operator+(const CMyString& string,
     TCHAR ch);
-  friend CMyString AFXAPI operator+(TCHAR ch,
+  friend CMyString operator+(TCHAR ch,
     const CMyString& string);
-  friend CMyString AFXAPI operator+(const CMyString& string,
+  friend CMyString operator+(const CMyString& string,
     LPCTSTR lpsz);
-  friend CMyString AFXAPI operator+(LPCTSTR lpsz,
+  friend CMyString operator+(LPCTSTR lpsz,
     const CMyString& string);
 
   LPTSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
@@ -112,6 +115,7 @@ public:
 
 private:
   CString m_mystring;
+  //  StringX m_stringX;
   void trashstring();
 };
 //-----------------------------------------------------------------------------
