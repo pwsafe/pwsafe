@@ -24,7 +24,7 @@
 #include "HMAC_SHA256Test.h"
 #endif
 #ifdef TEST_XSTRING
-#include "XStringTest.h"
+#include "StringXTest.h"
 #endif
 #include <iostream>
 using namespace std;
@@ -56,7 +56,7 @@ int main()
   t4.report();
 #endif
 #ifdef TEST_XSTRING
-  XStringTest t5;
+  StringXTest t5;
   t5.setStream(&cout);
   t5.run();
   t5.report();
