@@ -507,15 +507,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\StringXTest.h"
+				>
+			</File>
+			<File
 				RelativePath=".\test.h"
 				>
 			</File>
 			<File
 				RelativePath=".\TwoFishTest.h"
-				>
-			</File>
-			<File
-				RelativePath=".\XStringTest.h"
 				>
 			</File>
 		</Filter>
