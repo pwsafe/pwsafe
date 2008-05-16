@@ -566,9 +566,15 @@ void CEditDlg::OnRandom()
   time(&m_tttCPMTime);
   if (m_XTimeInt != 0) {
     CTime ct = CTime(m_tttCPMTime) + CTimeSpan(m_XTimeInt, 0, 0, 0);
-    m_locXTime = PWSUtil::ConvertToDateTimeString((time_t)ct.GetTime(), TMC_LOCALE);
-    GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
+    m_tttXTime = (time_t)ct.GetTime();
+    m_locXTime = PWSUtil::ConvertToDateTimeString(m_tttXTime, TMC_LOCALE);
+  } else {
+    if (m_tttXTime <= m_tttCPMTime) {
+      m_locXTime.LoadString(IDS_NEVER);
+      m_tttXTime = 0;
+    }
   }
+  GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
   CMyString cs_locPMTime = PWSUtil::ConvertToDateTimeString(m_tttCPMTime, TMC_LOCALE);
   GetDlgItem(IDC_PMTIME)->SetWindowText(cs_locPMTime);
   UpdateData(TRUE);
