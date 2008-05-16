@@ -13,6 +13,7 @@ Bugs fixed in 3.13.1
 [1959193] PWS now honours the read-only command line parameter (-r)
 for first open.  Then governed by R/O open preference or user selecting
 read-only at open time.
+[] Expired icon now correct after password change.
 
 Changes to Existing Features in 3.13.1
 ======================================
