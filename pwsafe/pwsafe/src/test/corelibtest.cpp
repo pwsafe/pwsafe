@@ -5,11 +5,11 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-//#define TEST_MYSTRING
+#define TEST_MYSTRING
 #define TEST_TWOFISH
 #define TEST_SHA256
 #define TEST_HMAC_SHA256
-#define TEST_XSTRING
+#define TEST_STRINGX
 
 #ifdef TEST_MYSTRING
 #include "MyStringTest.h"
@@ -23,7 +23,7 @@
 #ifdef TEST_HMAC_SHA256
 #include "HMAC_SHA256Test.h"
 #endif
-#ifdef TEST_XSTRING
+#ifdef TEST_STRINGX
 #include "StringXTest.h"
 #endif
 #include <iostream>
@@ -55,7 +55,7 @@ int main()
   t4.run();
   t4.report();
 #endif
-#ifdef TEST_XSTRING
+#ifdef TEST_STRINGX
   StringXTest t5;
   t5.setStream(&cout);
   t5.run();
