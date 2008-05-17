@@ -8,7 +8,7 @@
 // MyStringTest.h: Use the test class
 #include "test.h"
 #include "MyString.h"
-#include <tchar.h>
+#include "os/pws_tchar.h"
 
 class CMyStringTest : public Test
 {
