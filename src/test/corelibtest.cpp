@@ -5,7 +5,7 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#define TEST_MYSTRING
+//#define TEST_MYSTRING
 #define TEST_TWOFISH
 #define TEST_SHA256
 #define TEST_HMAC_SHA256

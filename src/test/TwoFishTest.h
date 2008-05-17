@@ -226,7 +226,7 @@ public:
       0x8F, 0x25, 0x77, 0x34, 0xD2, 0xCB, 0xD6, 0xD9}},
     };
     unsigned char res[16];
-    for (int i = 0; i < sizeof(vectors)/sizeof(vectors[0]); i++) {
+    for (size_t i = 0; i < sizeof(vectors)/sizeof(vectors[0]); i++) {
       TwoFish *tf = new TwoFish(vectors[i].key, 32);
       tf->Encrypt(PT, res);
       delete tf;
