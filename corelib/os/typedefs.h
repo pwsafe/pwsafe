@@ -74,6 +74,7 @@ typedef stringT CString; // XXX at least for now...
 
 // assorted conveniences:
 #define ASSERT(p) assert(p)
+#define TRACE(s) // nothing, for now...
 #define TRUE true
 #define FALSE false
 #endif /* _WIN32 */

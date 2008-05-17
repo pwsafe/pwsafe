@@ -13,12 +13,12 @@
 #include "PWSrand.h"
 #include "PwsPlatform.h"
 #include "corelib.h"
+#include "os/pws_tchar.h"
 #include "os/dir.h"
 
 #include <stdio.h>
 #include <sys/timeb.h>
 #include <time.h>
-
 #include "Util.h"
 
 // used by CBC routines...
@@ -35,7 +35,9 @@ static void xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 // see http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html 
 // and http://www.cypherpunks.to/~peter/usenix01.pdf 
 
+#ifdef _WIN32
 #pragma optimize("",off)
+#endif
 void trashMemory(void* buffer, size_t length)
 {
   ASSERT(buffer != NULL);
@@ -46,8 +48,9 @@ void trashMemory(void* buffer, size_t length)
     memset(buffer, 0x00, length);
   }
 }
+#ifdef _WIN32
 #pragma optimize("",on)
-
+#endif
 void trashMemory(LPTSTR buffer, size_t length)
 {
   trashMemory((unsigned char *) buffer, length * sizeof(buffer[0]));
@@ -55,9 +58,13 @@ void trashMemory(LPTSTR buffer, size_t length)
 
 void trashMemory(CString &cs_buffer)
 {
+#ifdef _WIN32
   TCHAR *lpszString = cs_buffer.GetBuffer(cs_buffer.GetLength());
   trashMemory( (void *) lpszString, cs_buffer.GetLength() * sizeof(lpszString[0]));
   cs_buffer.ReleaseBuffer();
+#else
+  ASSERT(0); // XXX notyet
+#endif
 }
 
 /**
@@ -82,10 +89,18 @@ void ConvertString(const CMyString &text,
 #ifndef UNICODE
   txt = (unsigned char *)txtstr; // don't delete[] (ugh)!!!
 #else
+#ifdef _WIN32
   txt = new unsigned char[2*txtlen]; // safe upper limit
   int len = WideCharToMultiByte(CP_ACP, 0, txtstr, txtlen,
     LPSTR(txt), 2*txtlen, NULL, NULL);
   ASSERT(len != 0);
+#else
+  mbstate_t mbs;
+  size_t len = wcsrtombs(NULL, &txtstr, 0, &mbs);
+  txt = new unsigned char[len+1];
+  len = wcsrtombs((char *)txt, &txtstr, len, &mbs);
+  ASSERT(len != (size_t)-1);
+#endif
   txtlen = len;
   txt[len] = '\0';
 #endif /* UNICODE */
@@ -320,7 +335,7 @@ void PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t
 #if (_MSC_VER >= 1400)
   (void) _tcsncpy_s(target, tcount, source, scount);
 #else
-  tcount; // shut up warning;
+  tcount = 0; // shut up warning;
   (void)_tcsncpy(target, source, scount);
 #endif
 }

@@ -21,6 +21,9 @@
 #define _istlower(x) iswlower(x)
 #define _istupper(x) iswupper(x)
 #define _istdigit(x) iswdigit(x)
+#include <wchar.h>
+#define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
+#define _tcslen(s) wcslen(s)
 #else
 #include <ctype.h>
 #define _istalpha(x) isalpha(x)
@@ -28,6 +31,9 @@
 #define _istlower(x) islower(x)
 #define _istupper(x) isupper(x)
 #define _istdigit(x) isdigit(x)
+#include <string.h>
+#define _tcsncpy(t, s, sc) strncpy(t, s, sc)
+#define _tcslen(s) strlen(s)
 #endif /* UNICODE */
 #endif /* _WIN32 */
 #endif /* _PWS_TCHAR_H */
