@@ -3,7 +3,7 @@
 
 LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 		              TwoFish.cpp PWCharPool.cpp PWSdirs.cpp \
-	                PWSrand.cpp
+	                PWSrand.cpp Util.cpp
 TESTSRC         = 
 SRC             = $(LIBSRC) $(TESTSRC)
 
