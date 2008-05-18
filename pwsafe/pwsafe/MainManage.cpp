@@ -575,25 +575,26 @@ void DboxMain::OnOptions()
     /* Update status bar */
     switch (misc.m_doubleclickaction) {
       case PWSprefs::DoubleClickAutoType:
-        statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
       case PWSprefs::DoubleClickBrowse:
-        statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSE; break;
       case PWSprefs::DoubleClickCopyNotes:
-        statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
       case PWSprefs::DoubleClickCopyPassword:
-        statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
       case PWSprefs::DoubleClickCopyUsername:
-        statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
       case PWSprefs::DoubleClickViewEdit:
-        statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
       default:
-        statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOMPANY;
     }
-    m_statusBar.SetIndicators(statustext, SB_TOTAL);
+    m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
     UpdateStatusBar();
     // Make a sunken or recessed border around the first pane
-    m_statusBar.SetPaneInfo(SB_DBLCLICK,
-                            m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
+                            m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
+                            SBPS_STRETCH, NULL);
 #endif
 
     /*

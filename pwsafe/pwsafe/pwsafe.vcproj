@@ -760,6 +760,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWStatusBar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWToolBar.cpp"
 				>
 			</File>
@@ -1034,6 +1038,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSRecentFileList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWStatusBar.h"
 				>
 			</File>
 			<File
