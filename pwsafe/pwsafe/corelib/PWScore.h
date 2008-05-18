@@ -221,9 +221,9 @@ public:
   void AddShortcutBaseEntry(const uuid_array_t &shortcut_uuid, const uuid_array_t &base_uuid)
   {m_shortcut2base_map[shortcut_uuid] = base_uuid;}
   bool GetAliasBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
-  {return GetDependentEntryBaseUUID(alias_uuid, base_uuid, CItemData::Alias);}
+  {return GetDependentEntryBaseUUID(alias_uuid, base_uuid, CItemData::ET_ALIAS);}
   bool GetShortcutBaseUUID(const uuid_array_t &shortcut_uuid, uuid_array_t &base_uuid)
-  {return GetDependentEntryBaseUUID(shortcut_uuid, base_uuid, CItemData::Shortcut);}
+  {return GetDependentEntryBaseUUID(shortcut_uuid, base_uuid, CItemData::ET_SHORTCUT);}
   void SetAliasBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
   {m_alias2base_map[alias_uuid] = base_uuid;}
   void SetShortcutBaseUUID(const uuid_array_t &shortcut_uuid, uuid_array_t &base_uuid)

@@ -118,15 +118,38 @@ inline void putInt32(unsigned char buf[4], const int val )
 
 // Time conversion result formats - powers of 2 as they can be combined!
 enum {TMC_ASC_UNKNOWN = 1, TMC_ASC_NULL = 2, TMC_EXPORT_IMPORT = 4, TMC_XML = 8,
-TMC_LOCALE = 16};
+      TMC_LOCALE = 16};
 
 // Verify PWHistory String return codes
 enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,
-PWH_INVALID_NUM, PWH_INVALID_DATETIME,
-PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
+      PWH_INVALID_NUM, PWH_INVALID_DATETIME,
+      PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
 
 namespace PWSUtil {
   // namespace of common utility functions
+
+  // For  any comparing functions
+  // SubGroup Function - if value used is negative, string compare IS case sensitive
+  enum MatchRule {
+    MR_INVALID = 0,  // Not valid value
+    // For string, integer & date comparisons/filtering
+    MR_EQUALS = 1, MR_NOTEQUAL,
+    MR_ACTIVE, MR_INACTIVE,
+    MR_PRESENT, MR_NOTPRESENT,
+    MR_SET, MR_NOTSET,
+    // For string comparisons/filters
+    MR_BEGINS, MR_NOTBEGIN, 
+    MR_ENDS, MR_NOTEND, 
+    MR_CONTAINS, MR_NOTCONTAIN, 
+    // For integer and date comparisons/filtering
+    MR_BETWEEN,
+    // For integer comparisons/filtering
+    MR_LT, MR_LE, MR_GT, MR_GE,
+    // For date comparisons/filtering
+    MR_BEFORE, MR_AFTER,
+    MR_LAST // MUST be last entry
+  };
+
   // For Windows implementation, hide Unicode abstraction,
   // and use secure versions (_s) when available
   void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
@@ -146,6 +169,15 @@ namespace PWSUtil {
   void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
   void IssueError(const CString &csFunction);
   CMyString NormalizeTTT(const CMyString &in);
+  // Generalised checking
+  bool MatchesString(CMyString string1, CMyString &csObject,
+                     const int &iFunction);
+  bool MatchesInteger(const int &num1, const int &num2, const int &iValue,
+                      const int &iFunction);
+  bool MatchesDateTime(const time_t &time1, const time_t &time2, const time_t &tValue,
+                       const int &iFunction);
+  bool MatchesBool(const bool bValue,
+                   const int &iFunction);  // bool - if field present or not
 };
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------

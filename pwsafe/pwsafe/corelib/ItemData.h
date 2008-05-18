@@ -14,7 +14,6 @@
 #include "Util.h"
 #include "ItemField.h"
 #include "UUIDGen.h"
-
 #include <time.h> // for time_t
 #include <bitset>
 #include <vector>
@@ -108,8 +107,8 @@ class BlowFish;
 class CItemData
 {
 public:
-  enum {
-    START = 0x00,
+  enum FieldType {
+    START = 0x00, GROUPTITLE = 0x00 /* reusing depreciated NAME for Group.Title combination */,
     NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
     PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, XTIME = 0x0a,
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
@@ -117,23 +116,16 @@ public:
     LAST,        // Start of unknown fields!
     END = 0xff}; // field types, per formatV{2,3}.txt
 
-    // For subgroup processing in GetPlainText from ExportTextXDlg
-    // SubGroup Function - if value used is negative, compare IS case sensitive
-    enum SubGrpFunc {SGF_EQUALS = 1, SGF_NOTEQUAL, 
-      SGF_BEGINS, SGF_NOTBEGIN, 
-      SGF_ENDS, SGF_NOTEND, 
-      SGF_CONTAINS, SGF_NOTCONTAIN};
-    // SubGroup Object
-    enum SubGrpObj {SGO_GROUP, SGO_TITLE, SGO_USER,
-      SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
+    // SubGroup Object - same as FieldType
 
     // status returns from "ProcessInputRecordField"
     enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
     // entry type
-    enum EntryType {Normal = 0, 
-      AliasBase = 1, Alias = 2, 
-      ShortcutBase = 4, Shortcut = 8};
+    enum EntryType {ET_INVALID = -1,
+      ET_NORMAL = 0, 
+      ET_ALIASBASE = 1, ET_ALIAS = 2, 
+      ET_SHORTCUTBASE = 4, ET_SHORTCUT = 8};
 
     // a bitset for indicating a subset of an item's fields: 
     typedef std::bitset<LAST> FieldBits;
@@ -200,16 +192,16 @@ public:
     CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
       const TCHAR &delimiter, const CItemData *cibase) const;
     std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
-      const CItemData *cibase) const;
+                       const CItemData *cibase) const;
     void GetUnknownField(unsigned char &type, unsigned int &length,
-      unsigned char * &pdata,
-      const unsigned int &num) const;
+                         unsigned char * &pdata,
+                         const unsigned int &num) const;
     void GetUnknownField(unsigned char &type, unsigned int &length,
-      unsigned char * &pdata,
-      const UnknownFieldsConstIter &iter) const;
+                         unsigned char * &pdata,
+                         const UnknownFieldsConstIter &iter) const;
     void SetUnknownField(const unsigned char type,
-      const unsigned int length,
-      const unsigned char * ufield);
+                         const unsigned int length,
+                         const unsigned char * ufield);
     unsigned int NumberUnknownFields() const
     {return (unsigned int)m_URFL.size();}
     void ClearUnknownFields()
@@ -247,8 +239,8 @@ public:
     bool SetXTimeInt(const CString &xint_str); // V30
     void SetPWHistory(const CMyString &PWHistory);  // V30
     int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
-      PWHistList* pPWHistList,
-      const int time_format) const;  // V30
+                            PWHistList* pPWHistList,
+                            const int time_format) const;  // V30
     void SetPWPolicy(const PWPolicy &pwp);
     bool SetPWPolicy(const CString &cs_pwp);
     CItemData& operator=(const CItemData& second);
@@ -262,8 +254,15 @@ public:
     int ValidatePWHistory();
 
     // Predicate to determine if item matches given criteria
-    bool Matches(const CString &subgroup_name, int iObject, 
-      int iFunction) const;
+    bool Matches(const CString &string1, const int &iObject, 
+                 const int &iFunction) const;  // string values
+    bool Matches(const int &num1, const int &num2, const int &iObject,
+                 const int &iFunction) const;  // intger values
+    bool Matches(const time_t &time1, const time_t &time2, const int &iObject,
+                 const int &iFunction) const;  // time values
+    bool Matches(const EntryType &etype1, 
+                 const int &iFunction) const;  // Entrytype values
+
     BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
     void SerializePlainText(std::vector<char> &v, CItemData *cibase = NULL) const;
     bool DeserializePlainText(const std::vector<char> &v);
@@ -273,26 +272,26 @@ public:
     {return m_entrytype;}
 
     bool IsNormal() const
-    {return (m_entrytype == Normal);}
+    {return (m_entrytype == ET_NORMAL);}
     bool IsAliasBase() const
-    {return (m_entrytype == AliasBase);}
+    {return (m_entrytype == ET_ALIASBASE);}
     bool IsShortcutBase() const
-    {return (m_entrytype == ShortcutBase);}
+    {return (m_entrytype == ET_SHORTCUTBASE);}
     bool IsAlias() const
-    {return (m_entrytype == Alias);}
+    {return (m_entrytype == ET_ALIAS);}
     bool IsShortcut() const
-    {return (m_entrytype == Shortcut);}
+    {return (m_entrytype == ET_SHORTCUT);}
 
     void SetNormal()
-    {m_entrytype = Normal;}
+    {m_entrytype = ET_NORMAL;}
     void SetAliasBase()
-    {m_entrytype = AliasBase;}
+    {m_entrytype = ET_ALIASBASE;}
     void SetShortcutBase()
-    {m_entrytype = ShortcutBase;}
+    {m_entrytype = ET_SHORTCUTBASE;}
     void SetAlias()
-    {m_entrytype = Alias;}
+    {m_entrytype = ET_ALIAS;}
     void SetShortcut()
-    {m_entrytype = Shortcut;}
+    {m_entrytype = ET_SHORTCUT;}
 
     bool IsURLEmail()
     {return GetURL().Find(_T("mailto:")) != -1;}
@@ -358,11 +357,9 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == ATIME || t == XTIME || t == RMTIME || t == XTIME_INT ||
     t >= LAST);
 }
-
 #endif
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++
 // End:
-
 

@@ -1965,22 +1965,22 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
       UINT uistring;
 
       switch(m_subgroup_object) {
-        case CItemData::SGO_GROUP:
+        case CItemData::GROUP:
           uistring = IDS_GROUP;
           break;
-        case CItemData::SGO_TITLE:
+        case CItemData::TITLE:
           uistring = IDS_TITLE;
           break;
-        case CItemData::SGO_USER:
+        case CItemData::USER:
           uistring = IDS_USERNAME;
           break;
-        case CItemData::SGO_GROUPTITLE:
+        case CItemData::GROUPTITLE:
           uistring = IDS_GROUPTITLE;
           break;
-        case CItemData::SGO_URL:
+        case CItemData::URL:
           uistring = IDS_URL;
           break;
-        case CItemData::SGO_NOTES:
+        case CItemData::NOTES:
           uistring = IDS_NOTES;
           break;
         default:
@@ -1991,36 +1991,36 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
       cs_case.LoadString(m_subgroup_function > 0 ? IDS_ADVCASE_INSENSITIVE : IDS_ADVCASE_SENSITIVE);
 
       switch (m_subgroup_function) {
-        case -CItemData::SGF_EQUALS:
-        case  CItemData::SGF_EQUALS:
+        case -PWSUtil::MR_EQUALS:
+        case  PWSUtil::MR_EQUALS:
           uistring = IDS_EQUALS;
           break;
-        case -CItemData::SGF_NOTEQUAL:
-        case  CItemData::SGF_NOTEQUAL:
+        case -PWSUtil::MR_NOTEQUAL:
+        case  PWSUtil::MR_NOTEQUAL:
           uistring = IDS_DOESNOTEQUAL;
           break;
-        case -CItemData::SGF_BEGINS:
-        case  CItemData::SGF_BEGINS:
+        case -PWSUtil::MR_BEGINS:
+        case  PWSUtil::MR_BEGINS:
           uistring = IDS_BEGINSWITH;
           break;
-        case -CItemData::SGF_NOTBEGIN:
-        case  CItemData::SGF_NOTBEGIN:
+        case -PWSUtil::MR_NOTBEGIN:
+        case  PWSUtil::MR_NOTBEGIN:
           uistring = IDS_DOESNOTBEGINSWITH;
           break;
-        case -CItemData::SGF_ENDS:
-        case  CItemData::SGF_ENDS:
+        case -PWSUtil::MR_ENDS:
+        case  PWSUtil::MR_ENDS:
           uistring = IDS_ENDSWITH;
           break;
-        case -CItemData::SGF_NOTEND:
-        case  CItemData::SGF_NOTEND:
+        case -PWSUtil::MR_NOTEND:
+        case  PWSUtil::MR_NOTEND:
           uistring = IDS_DOESNOTENDWITH;
           break;
-        case -CItemData::SGF_CONTAINS:
-        case  CItemData::SGF_CONTAINS:
+        case -PWSUtil::MR_CONTAINS:
+        case  PWSUtil::MR_CONTAINS:
           uistring = IDS_CONTAINS;
           break;
-        case -CItemData::SGF_NOTCONTAIN:
-        case  CItemData::SGF_NOTCONTAIN:
+        case -PWSUtil::MR_NOTCONTAIN:
+        case  PWSUtil::MR_NOTCONTAIN:
           uistring = IDS_DOESNOTCONTAIN;
           break;
         default:

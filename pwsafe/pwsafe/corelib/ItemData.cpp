@@ -57,7 +57,7 @@ CItemData::CItemData()
   m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
   m_tttXTime(XTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
   m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT),
-  m_display_info(NULL), m_entrytype(Normal)
+  m_display_info(NULL), m_entrytype(ET_NORMAL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -396,13 +396,13 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
   }
 
   CMyString csPassword;
-  if (m_entrytype == Alias) {
+  if (m_entrytype == ET_ALIAS) {
     ASSERT(cibase != NULL);
     csPassword = _T("[[") + 
                  cibase->GetGroup() + _T(":") + 
                  cibase->GetTitle() + _T(":") + 
                  cibase->GetUser() + _T("]]") ;
-  } else if (m_entrytype == Shortcut) {
+  } else if (m_entrytype == ET_SHORTCUT) {
     ASSERT(cibase != NULL);
     csPassword = _T("[~") + 
                  cibase->GetGroup() + _T(":") + 
@@ -570,14 +570,14 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     WriteXMLField(oss, "username", tmp, utf8conv);
 
   // Password mandatory (see pwsafe.xsd)
-  if (m_entrytype == Alias) {
+  if (m_entrytype == ET_ALIAS) {
     ASSERT(cibase != NULL);
     tmp = _T("[[") + 
           cibase->GetGroup() + _T(":") + 
           cibase->GetTitle() + _T(":") + 
           cibase->GetUser() + _T("]]") ;
   } else
-  if (m_entrytype == Shortcut) {
+  if (m_entrytype == ET_SHORTCUT) {
     ASSERT(cibase != NULL);
     tmp = _T("[~") + 
           cibase->GetGroup() + _T(":") + 
@@ -1173,7 +1173,7 @@ void CItemData::Clear()
   m_PWPolicy.Empty();
   m_XTimeInterval.Empty();
   m_URFL.clear();
-  m_entrytype = Normal;
+  m_entrytype = ET_NORMAL;
 }
 
 int CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
@@ -1270,108 +1270,108 @@ int CItemData::ValidatePWHistory()
   return 1;
 }
 
-bool CItemData::Matches(const CString &subgroup_name, int iObject,
-                        int iFunction) const
+bool CItemData::Matches(const CString &string1, const int &iObject,
+                        const int &iFunction) const
 {
   ASSERT(iFunction != 0); // must be positive or negative!
 
   CMyString csObject;
   switch(iObject) {
-    case SGO_GROUP:
+    case GROUP:
       csObject = GetGroup();
       break;
-    case SGO_TITLE:
+    case TITLE:
       csObject = GetTitle();
       break;
-    case SGO_USER:
+    case USER:
       csObject = GetUser();
       break;
-    case SGO_GROUPTITLE:
+    case GROUPTITLE:
       csObject = GetGroup() + TCHAR('.') + GetTitle();
       break;
-    case SGO_URL:
+    case URL:
       csObject = GetURL();
       break;
-    case SGO_NOTES:
+    case NOTES:
       csObject = GetNotes();
+      break;
+    case PASSWORD:
+      csObject = GetPassword();
+      break;
+    case AUTOTYPE:
+      csObject = GetAutoType();
       break;
     default:
       ASSERT(0);
   }
 
-  const int sb_len = subgroup_name.GetLength();
-  const int ob_len = csObject.GetLength();
+  if (iFunction == PWSUtil::MR_PRESENT || iFunction == PWSUtil::MR_NOTPRESENT) {
+    const bool bValue = !csObject.IsEmpty();
+    return PWSUtil::MatchesBool(bValue, iFunction);
+  } else
+    return PWSUtil::MatchesString(string1, csObject, iFunction);
+}
 
-  // Negative = Case   Sensitive
-  // Positive = Case INsensitive
+bool CItemData::Matches(const int &num1, const int &num2, const int &iObject,
+                        const int &iFunction) const
+{
+  //   Check integer values are selected
+  int iValue;
+
+  switch (iObject) {
+    case XTIME_INT:
+      GetXTimeInt(iValue);
+      break;
+    default:
+      ASSERT(0);
+      return false;
+  }
+
+  if (iFunction == PWSUtil::MR_PRESENT || iFunction == PWSUtil::MR_NOTPRESENT) {
+    const bool bValue = (iValue == 0);
+    return PWSUtil::MatchesBool(bValue, iFunction);
+  } else
+    return PWSUtil::MatchesInteger(num1, num2, iValue, iFunction);
+}
+
+bool CItemData::Matches(const time_t &time1, const time_t &time2, const int &iObject,
+                        const int &iFunction) const
+{
+  //   Check time values are selected
+  time_t tValue;
+
+  switch (iObject) {
+    case CTIME:
+    case PMTIME:
+    case ATIME:
+    case XTIME:
+    case RMTIME:
+      GetTime(iObject, tValue);
+      break;
+    default:
+      ASSERT(0);
+      return false;
+  }
+
+  if (iFunction == PWSUtil::MR_PRESENT || iFunction == PWSUtil::MR_NOTPRESENT) {
+    const bool bValue = (tValue != (time_t)0);
+    return PWSUtil::MatchesBool(bValue, iFunction);
+  } else
+    return PWSUtil::MatchesDateTime(time1, time2, tValue, iFunction);
+}
+  
+bool CItemData::Matches(const EntryType &etype1,
+                        const int &iFunction) const
+{
   switch (iFunction) {
-    case -SGF_EQUALS:
-    case  SGF_EQUALS:
-      return ((ob_len == sb_len) &&
-             (((iFunction < 0) && (csObject.Compare((LPCTSTR)subgroup_name) == 0)) ||
-              ((iFunction > 0) && (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0))));
-    case -SGF_NOTEQUAL:
-    case  SGF_NOTEQUAL:
-      return (((iFunction < 0) && (csObject.Compare((LPCTSTR)subgroup_name) != 0)) ||
-              ((iFunction > 0) && (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0)));
-    case -SGF_BEGINS:
-    case  SGF_BEGINS:
-      if (ob_len >= sb_len) {
-        csObject = csObject.Left(sb_len);
-        return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) == 0)) ||
-                ((iFunction > 0) && (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
-      } else {
-        return false;
-      }
-    case -SGF_NOTBEGIN:
-    case  SGF_NOTBEGIN:
-      if (ob_len >= sb_len) {
-        csObject = csObject.Left(sb_len);
-        return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) != 0)) ||
-                ((iFunction > 0) && (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
-      } else {
-        return false;
-      }
-    case -SGF_ENDS:
-    case  SGF_ENDS:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) == 0)) ||
-                ((iFunction > 0) && (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
-      } else {
-        return false;
-      }
-    case -SGF_NOTEND:
-    case  SGF_NOTEND:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) != 0)) ||
-                ((iFunction > 0) && (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
-      } else
-        return true;
-    case -SGF_CONTAINS:
-      return (csObject.Find((LPCTSTR)subgroup_name) != -1);
-    case  SGF_CONTAINS:
-    {
-      csObject.MakeLower();
-      CString subgroupLC(subgroup_name);
-      subgroupLC.MakeLower();
-      return (csObject.Find((LPCTSTR)subgroupLC) != -1);
-    }
-    case -SGF_NOTCONTAIN:
-      return (csObject.Find((LPCTSTR)subgroup_name)== -1);
-    case  SGF_NOTCONTAIN:
-    {
-      csObject.MakeLower();
-      CString subgroupLC(subgroup_name);
-      subgroupLC.MakeLower();
-      return (csObject.Find((LPCTSTR)subgroupLC) == -1);
-    }
+    case PWSUtil::MR_EQUALS:
+      return GetEntryType() == etype1;
+    case PWSUtil::MR_NOTEQUAL:
+      return GetEntryType() != etype1;
     default:
       ASSERT(0);
   }
-
-  return true; // should never get here!
+  return false;
 }
 
 static bool pull_string(CMyString &str, unsigned char *data, int len)
@@ -1588,12 +1588,12 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   push_string(v, TITLE, GetTitle());
   push_string(v, USER, GetUser());
 
-  if (m_entrytype == Alias) {
+  if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
     ASSERT(cibase != NULL);
     tmp = _T("[[") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("]]");
   } else
-  if (m_entrytype == Shortcut) {
+  if (m_entrytype == ET_SHORTCUT) {
     // I am a shortcut entry
     ASSERT(cibase != NULL);
     tmp = _T("[~") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("~]");

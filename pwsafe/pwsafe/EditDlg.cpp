@@ -64,7 +64,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
   m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
   m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
-  m_original_entrytype(CItemData::Normal), m_ToolTipCtrl(NULL)
+  m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL)
 {
   ASSERT(ci != NULL);
 
@@ -287,7 +287,7 @@ void CEditDlg::OnOK()
 
   bool brc, b_msg_issued;
   brc = pDbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-                              true, CItemData::Alias,
+                              true, CItemData::ET_ALIAS,
                               m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {
@@ -413,23 +413,23 @@ BOOL CEditDlg::OnInitDialog()
   }
 
   // Note shortcuts have their own dialog for edit.
-  if (m_original_entrytype == CItemData::AliasBase ||
-      m_original_entrytype == CItemData::ShortcutBase) {
+  if (m_original_entrytype == CItemData::ET_ALIASBASE ||
+      m_original_entrytype == CItemData::ET_SHORTCUTBASE) {
     // Show button to allow users to view dependents
     CString csButtonText;
-    csButtonText.LoadString(m_original_entrytype == CItemData::AliasBase ? IDS_VIEWALIASESBTN : IDS_VIEWSHORTCUTSBTN);
+    csButtonText.LoadString(m_original_entrytype == CItemData::ET_ALIASBASE ? IDS_VIEWALIASESBTN : IDS_VIEWSHORTCUTSBTN);
     GetDlgItem(IDC_VIEWDEPENDENTS)->SetWindowText(csButtonText);
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
-  } else if (m_original_entrytype == CItemData::Alias) {
+  } else if (m_original_entrytype == CItemData::ET_ALIAS) {
     // Update password to alias form
     // Show text stating that it is an alias
     m_realpassword = m_oldRealPassword = m_base;
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_SHOW);
-  } else if (m_original_entrytype == CItemData::Normal) {
+  } else if (m_original_entrytype == CItemData::ET_NORMAL) {
     // Normal - do none of the above
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
@@ -904,7 +904,7 @@ void CEditDlg::OnBnClickViewDependents()
 {
   CString cs_msg, cs_type;
 
-  if (m_original_entrytype == CItemData::AliasBase)
+  if (m_original_entrytype == CItemData::ET_ALIASBASE)
     cs_type.LoadString(m_num_dependents == 1 ? IDS_ALIAS : IDS_ALIASES);
   else
     cs_type.LoadString(m_num_dependents == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);

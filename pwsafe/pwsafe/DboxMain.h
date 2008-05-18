@@ -617,4 +617,17 @@ inline bool DboxMain::FieldsNotEqual(CMyString a, CMyString b)
 struct DisplayInfo {
   int list_index;
   HTREEITEM tree_item;
+
+  DisplayInfo()
+  {}
+ 
+  DisplayInfo(const DisplayInfo &that)
+  : list_index(that.list_index), tree_item(that.tree_item)
+  {}
+
+  DisplayInfo &operator=(const DisplayInfo &that)
+  {
+    list_index = that.list_index;
+    tree_item = that.tree_item;
+  }
 };

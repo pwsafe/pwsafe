@@ -100,11 +100,11 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
     return;
 
   const CItemData::EntryType entrytype = ci.GetEntryType();
-  if (entrytype == CItemData::Alias || entrytype == CItemData::Shortcut) {
+  if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
     // This is an alias/shortcut
     uuid_array_t entry_uuid, base_uuid;
     ci.GetUUID(entry_uuid);
-    if (entrytype == CItemData::Alias)
+    if (entrytype == CItemData::ET_ALIAS)
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
     else
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
