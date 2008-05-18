@@ -1329,17 +1329,17 @@ void CPWTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
   if (m_nHoverNDTimerID) {
     if (HitTest(m_HoverNDPoint) == HitTest(point))
       return;
-		KillTimer(m_nHoverNDTimerID);
-		m_nHoverNDTimerID = 0;
-	}
+    KillTimer(m_nHoverNDTimerID);
+    m_nHoverNDTimerID = 0;
+  }
 
   if (m_nShowNDTimerID) {
     if (HitTest(m_HoverNDPoint) == HitTest(point))
       return;
-		KillTimer(m_nShowNDTimerID);
-		m_nShowNDTimerID = 0;
+    KillTimer(m_nShowNDTimerID);
+    m_nShowNDTimerID = 0;
     m_pDbx->SetNotesWindow(CPoint(0, 0), false);
-	}
+  }
 
   if (!m_bMouseInWindow) {
     m_bMouseInWindow = true;

@@ -988,6 +988,7 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0L;
   NMITEMACTIVATE *plv = (NMITEMACTIVATE *)pNotifyStruct;
+
   int item = plv->iItem;
   if (item != -1) { // -1 if nothing selected, e.g., empty list
     CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(item);

@@ -39,7 +39,7 @@ public:
   virtual ~CGeneralMsgBox();
 
   // Execute
-  int DoModal();
+  INT_PTR DoModal();
 
   // Buttons operations
   void AddButton(UINT uIDC, LPCTSTR pszText,
