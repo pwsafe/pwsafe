@@ -96,28 +96,28 @@ BOOL CAdvancedDlg::OnInitDialog()
   if (cboSubgroupFunction->GetCount () == 0) {
     cs_text.LoadString(IDS_EQUALS);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, CItemData::SGF_EQUALS);
+    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_EQUALS);
     cs_text.LoadString(IDS_DOESNOTEQUAL);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, CItemData::SGF_NOTEQUAL);
+    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_NOTEQUAL);
     cs_text.LoadString(IDS_BEGINSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, CItemData::SGF_BEGINS);
+    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_BEGINS);
     cs_text.LoadString(IDS_DOESNOTBEGINSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, CItemData::SGF_NOTBEGIN);
+    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_NOTBEGIN);
     cs_text.LoadString(IDS_ENDSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, CItemData::SGF_ENDS);
+    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_ENDS);
     cs_text.LoadString(IDS_DOESNOTENDWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, CItemData::SGF_NOTEND);
+    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_NOTEND);
     cs_text.LoadString(IDS_CONTAINS);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, CItemData::SGF_CONTAINS);
+    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_CONTAINS);
     cs_text.LoadString(IDS_DOESNOTCONTAIN);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, CItemData::SGF_NOTCONTAIN);
+    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_NOTCONTAIN);
   }
 
   for (i = 0; i < cboSubgroupFunction->GetCount(); i++) {
@@ -131,22 +131,22 @@ BOOL CAdvancedDlg::OnInitDialog()
   if (cboSubgroupObject->GetCount () == 0) {
     cs_text.LoadString(IDS_GROUP);
     iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::SGO_GROUP);
+    cboSubgroupObject->SetItemData(iItem, CItemData::GROUP);
     cs_text.LoadString(IDS_TITLE);
     iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::SGO_TITLE);
+    cboSubgroupObject->SetItemData(iItem, CItemData::TITLE);
     cs_text.LoadString(IDS_USERNAME);
     iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::SGO_USER);
+    cboSubgroupObject->SetItemData(iItem, CItemData::USER);
     cs_text.LoadString(IDS_GROUPTITLE);
     iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::SGO_GROUPTITLE);
+    cboSubgroupObject->SetItemData(iItem, CItemData::GROUPTITLE);
     cs_text.LoadString(IDS_URL);
     iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::SGO_URL);
+    cboSubgroupObject->SetItemData(iItem, CItemData::URL);
     cs_text.LoadString(IDS_NOTES);
     iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::SGO_NOTES);
+    cboSubgroupObject->SetItemData(iItem, CItemData::NOTES);
   }
 
   for (i = 0; i < cboSubgroupObject->GetCount(); i++) {

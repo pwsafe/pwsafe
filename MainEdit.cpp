@@ -109,7 +109,7 @@ void DboxMain::OnAdd()
       // call to PWScore::GetBaseEntry
       uuid_array_t alias_uuid;
       temp.GetUUID(alias_uuid);
-      m_core.AddDependentEntry(dlg_add.m_base_uuid, alias_uuid, CItemData::Alias);
+      m_core.AddDependentEntry(dlg_add.m_base_uuid, alias_uuid, CItemData::ET_ALIAS);
       temp.SetPassword(CMyString(_T("[Alias]")));
       temp.SetAlias();
       ItemListIter iter = m_core.Find(dlg_add.m_base_uuid);
@@ -241,7 +241,7 @@ void DboxMain::CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
   temp.SetTitle(cs_title);
   temp.SetUser(cs_user);
 
-  m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::Shortcut);
+  m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
   temp.SetPassword(CMyString(_T("[Shortcut]")));
   temp.SetShortcut();
   ItemListIter iter = m_core.Find(base_uuid);
@@ -363,11 +363,11 @@ void DboxMain::Delete(bool inRecursion)
     int num_dependents(0);
     CItemData::EntryType entrytype = ci->GetEntryType();
 
-    if (entrytype == CItemData::AliasBase)
-      m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Alias);
+    if (entrytype == CItemData::ET_ALIASBASE)
+      m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::ET_ALIAS);
     else 
-    if (entrytype == CItemData::ShortcutBase)
-      m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Shortcut);
+    if (entrytype == CItemData::ET_SHORTCUTBASE)
+      m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::ET_SHORTCUT);
 
     num_dependents = dependentslist.size();
     if (num_dependents > 0) {
@@ -376,7 +376,7 @@ void DboxMain::Delete(bool inRecursion)
 
       CString cs_msg, cs_type;
       const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
-      if (entrytype == CItemData::AliasBase) {
+      if (entrytype == CItemData::ET_ALIASBASE) {
         cs_type.LoadString(num_dependents == 1 ? IDS_ALIAS : IDS_ALIASES);
         cs_msg.Format(IDS_DELETEABASE, dependentslist.size(), cs_type, csDependents);
       } else {
@@ -410,12 +410,12 @@ void DboxMain::Delete(bool inRecursion)
       m_core.DecrementNumRecordsWithUnknownFields();
 
     uuid_array_t base_uuid;
-    if (entrytype == CItemData::Alias) {
+    if (entrytype == CItemData::ET_ALIAS) {
       // I'm an alias entry
       // Get corresponding base uuid
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
       // Delete from both map and multimap
-      m_core.RemoveDependentEntry(base_uuid, entry_uuid, CItemData::Alias);
+      m_core.RemoveDependentEntry(base_uuid, entry_uuid, CItemData::ET_ALIAS);
 
       // Does my base now become a normal entry?
       if (m_core.NumAliases(base_uuid) == 0) {
@@ -428,12 +428,12 @@ void DboxMain::Delete(bool inRecursion)
         SetEntryImage(di->tree_item, nImage, true);
       }
     }
-    if (entrytype == CItemData::Shortcut) {
+    if (entrytype == CItemData::ET_SHORTCUT) {
       // I'm a shortcut entry
       // Get corresponding base uuid
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
       // Delete from both map and multimap
-      m_core.RemoveDependentEntry(base_uuid, entry_uuid, CItemData::Shortcut);
+      m_core.RemoveDependentEntry(base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
 
       // Does my base now become a normal entry?
       if (m_core.NumShortcuts(base_uuid) == 0) {
@@ -449,9 +449,9 @@ void DboxMain::Delete(bool inRecursion)
 
     if (num_dependents > 0) {
       // I'm a base entry
-      if (entrytype == CItemData::AliasBase) {
+      if (entrytype == CItemData::ET_ALIASBASE) {
         m_core.ResetAllAliasPasswords(entry_uuid);
-        m_core.RemoveAllDependentEntries(entry_uuid, CItemData::Alias);
+        m_core.RemoveAllDependentEntries(entry_uuid, CItemData::ET_ALIAS);
 
         // Now make all my aliases Normal
         ItemListIter iter;
@@ -467,7 +467,7 @@ void DboxMain::Delete(bool inRecursion)
           SetEntryImage(di->tree_item, nImage, true);
         }
       } else {
-        m_core.RemoveAllDependentEntries(entry_uuid, CItemData::Shortcut);
+        m_core.RemoveAllDependentEntries(entry_uuid, CItemData::ET_SHORTCUT);
         // Now delete all my shortcuts
         ItemListIter iter;
         UUIDListIter UUIDiter;
@@ -592,13 +592,13 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
   CItemData::EntryType entrytype = ci->GetEntryType();
 
   ci->GetUUID(original_uuid);  // Edit doesn't change this!
-  if (entrytype == CItemData::AliasBase || entrytype == CItemData::ShortcutBase) {
+  if (entrytype == CItemData::ET_ALIASBASE || entrytype == CItemData::ET_SHORTCUTBASE) {
     // Base entry
     UUIDList dependentslist;
     CMyString csDependents(_T(""));
 
     m_core.GetAllDependentEntries(original_uuid, dependentslist, 
-      entrytype == CItemData::AliasBase ? CItemData::Alias : CItemData::Shortcut);
+      entrytype == CItemData::ET_ALIASBASE ? CItemData::ET_ALIAS : CItemData::ET_SHORTCUT);
     int num_dependents = dependentslist.size();
     if (num_dependents > 0) {
       SortDependents(dependentslist, csDependents);
@@ -610,7 +610,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     dependentslist.clear();
   }
 
-  if (entrytype == CItemData::Alias) {
+  if (entrytype == CItemData::ET_ALIAS) {
     // Alias entry
     // Get corresponding base uuid
     m_core.GetAliasBaseUUID(original_uuid, original_base_uuid);
@@ -622,7 +622,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
                         cibase.GetGroup() + _T(":") +
                         cibase.GetTitle() + _T(":") +
                         cibase.GetUser()  + _T("]");
-      dlg_edit.m_original_entrytype = CItemData::Alias;
+      dlg_edit.m_original_entrytype = CItemData::ET_ALIAS;
     }
   } else {
     editedItem.GetPWPolicy(dlg_edit.m_pwp);
@@ -649,12 +649,12 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     memcpy(new_base_uuid, dlg_edit.m_base_uuid, sizeof(uuid_array_t));
 
     ItemListIter iter;
-    if (dlg_edit.m_original_entrytype == CItemData::Normal &&
+    if (dlg_edit.m_original_entrytype == CItemData::ET_NORMAL &&
         editedItem.GetPassword() != newPassword) {
       // Original was a 'normal' entry and the password has changed
       if (dlg_edit.m_ibasedata > 0) {
         // Now an alias
-        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
+        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
         editedItem.SetPassword(CMyString(_T("[Alias]")));
         editedItem.SetAlias();
       } else {
@@ -664,19 +664,19 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       }
     }
 
-    if (dlg_edit.m_original_entrytype == CItemData::Alias) {
+    if (dlg_edit.m_original_entrytype == CItemData::ET_ALIAS) {
       // Original was an alias - delete it from multimap
       // RemoveDependentEntry also resets base to normal if the last alias is delete
-      pcore->RemoveDependentEntry(original_base_uuid, original_uuid, CItemData::Alias);
+      pcore->RemoveDependentEntry(original_base_uuid, original_uuid, CItemData::ET_ALIAS);
       if (newPassword == dlg_edit.m_base) {
         // Password (i.e. base) unchanged - put it back
-        pcore->AddDependentEntry(original_base_uuid, original_uuid, CItemData::Alias);
+        pcore->AddDependentEntry(original_base_uuid, original_uuid, CItemData::ET_ALIAS);
       } else {
         // Password changed so might be an alias of another entry!
         // Could also be the same entry i.e. [:t:] == [t] !
         if (dlg_edit.m_ibasedata > 0) {
           // Still an alias
-          pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
+          pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
           editedItem.SetPassword(CMyString(_T("[Alias]")));
           editedItem.SetAlias();
         } else {
@@ -687,17 +687,17 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       }
     }
 
-    if (dlg_edit.m_original_entrytype == CItemData::AliasBase &&
+    if (dlg_edit.m_original_entrytype == CItemData::ET_ALIASBASE &&
         editedItem.GetPassword() != newPassword) {
       // Original was a base but might now be an alias of another entry!
       if (dlg_edit.m_ibasedata > 0) {
         // Now an alias
         // Make this one an alias
-        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
+        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
         editedItem.SetPassword(CMyString(_T("[Alias]")));
         editedItem.SetAlias();
         // Move old aliases across
-        pcore->MoveDependentEntries(original_uuid, new_base_uuid, CItemData::Alias);
+        pcore->MoveDependentEntries(original_uuid, new_base_uuid, CItemData::ET_ALIAS);
       } else {
         // Still a base entry but with a new password
         editedItem.SetPassword(newPassword);
@@ -903,17 +903,17 @@ void DboxMain::OnDuplicateEntry()
 
     uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
     CItemData::EntryType entrytype = ci->GetEntryType();
-    if (entrytype == CItemData::Alias || entrytype == CItemData::Shortcut) {
+    if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
       ci->GetUUID(original_entry_uuid);
       ci2.GetUUID(new_entry_uuid);
-      if (entrytype == CItemData::Alias) {
+      if (entrytype == CItemData::ET_ALIAS) {
         m_core.GetAliasBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetAlias();
-        m_core.AddDependentEntry(base_uuid, new_entry_uuid, CItemData::Alias);
+        m_core.AddDependentEntry(base_uuid, new_entry_uuid, CItemData::ET_ALIAS);
       } else {
         m_core.GetShortcutBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetShortcut();
-        m_core.AddDependentEntry(base_uuid, new_entry_uuid, CItemData::Shortcut);
+        m_core.AddDependentEntry(base_uuid, new_entry_uuid, CItemData::ET_SHORTCUT);
       }
 
       ItemListIter iter;
@@ -966,10 +966,10 @@ void DboxMain::OnCopyPassword()
 
   uuid_array_t base_uuid, entry_uuid;
   const CItemData::EntryType entrytype = ci->GetEntryType();
-  if (entrytype == CItemData::Alias || entrytype == CItemData::Shortcut) {
+  if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
     // This is an alias/shortcut
     ci->GetUUID(entry_uuid);
-    if (entrytype == CItemData::Alias)
+    if (entrytype == CItemData::ET_ALIAS)
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
     else
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
@@ -1169,10 +1169,10 @@ void DboxMain::AutoType(const CItemData &ci)
 
   uuid_array_t base_uuid, entry_uuid;
   CItemData::EntryType entrytype = ci.GetEntryType();
-  if (entrytype == CItemData::Alias || entrytype == CItemData::Shortcut) {
+  if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
     // This is an alias
     ci.GetUUID(entry_uuid);
-    if (entrytype == CItemData::Alias)
+    if (entrytype == CItemData::ET_ALIAS)
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
     else
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
@@ -1180,7 +1180,7 @@ void DboxMain::AutoType(const CItemData &ci)
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
       pwd = iter->second.GetPassword();
-      if (entrytype == CItemData::Shortcut) {
+      if (entrytype == CItemData::ET_SHORTCUT) {
         user = iter->second.GetUser();
         AutoCmd = iter->second.GetAutoType();
       }
@@ -1363,57 +1363,57 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
     CMyString cs_tmp = tempitem.GetPassword();
 
     GetBaseEntryPL pl;
-    pl.InputType = CItemData::Normal;
+    pl.InputType = CItemData::ET_NORMAL;
 
     // Potentially remove outer single square brackets as GetBaseEntry expects only
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.Left(2) == _T("[[") && cs_tmp.Right(2) == _T("]]")) {
       cs_tmp = cs_tmp.Mid(1, cs_tmp.GetLength() - 2);
-      pl.InputType = CItemData::Alias;
+      pl.InputType = CItemData::ET_ALIAS;
     }
 
     // Potentially remove tilde as GetBaseEntry expects only
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.Left(2) == _T("[~") && cs_tmp.Right(2) == _T("~]")) {
       cs_tmp = _T("[") + cs_tmp.Mid(2, cs_tmp.GetLength() - 4) + _T("]");
-      pl.InputType = CItemData::Shortcut;
+      pl.InputType = CItemData::ET_SHORTCUT;
     }
 
     m_core.GetBaseEntry(cs_tmp, pl);
     if (pl.ibasedata > 0) {
       // Password in alias/shortcut format AND base entry exists
-      if (pl.InputType == CItemData::Alias) {
+      if (pl.InputType == CItemData::ET_ALIAS) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
         ASSERT(iter != End());
-        if (pl.TargetType == CItemData::Alias) {
+        if (pl.TargetType == CItemData::ET_ALIAS) {
           // This base is in fact an alias. GetBaseEntry already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
           CString cs_msg;
           cs_msg.Format(IDS_DDBASEISALIAS, Group, Title, User);
           AfxMessageBox(cs_msg, MB_OK);
         } else
-        if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
+        if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
           CString cs_msg;
           cs_msg.Format(IDS_ABASEINVALID, Group, Title, User);
           AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
-        m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::Alias);
+        m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_ALIAS);
         tempitem.SetPassword(CMyString(_T("[Alias]")));
         tempitem.SetAlias();
       } else
-      if (pl.InputType == CItemData::Shortcut) {
+      if (pl.InputType == CItemData::ET_SHORTCUT) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
         ASSERT(iter != End());
-        if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::ShortcutBase) {
+        if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
           // Only normal or shortcut base allowed as target
           CString cs_msg;
           cs_msg.Format(IDS_SBASEINVALID, Group, Title, User);
           AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
-        m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::Shortcut);
+        m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
         tempitem.SetPassword(CMyString(_T("[Shortcut]")));
         tempitem.SetShortcut();
       }
@@ -1428,10 +1428,10 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
       // Note: As more entries are added, what was "not exist" may become "OK",
       // "no unique exists" or "multiple exist".
       // Let the code that processes the possible aliases after all have been added sort this out.
-      if (pl.InputType == CItemData::Alias) {
+      if (pl.InputType == CItemData::ET_ALIAS) {
         possible_aliases.push_back(entry_uuid);
       } else
-      if (pl.InputType == CItemData::Shortcut) {
+      if (pl.InputType == CItemData::ET_SHORTCUT) {
         possible_shortcuts.push_back(entry_uuid);
         bAddToViews = false;
       }
@@ -1448,9 +1448,9 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
-  m_core.AddDependentEntries(possible_aliases, NULL, CItemData::Alias, 
+  m_core.AddDependentEntries(possible_aliases, NULL, CItemData::ET_ALIAS, 
                              CItemData::PASSWORD);
-  m_core.AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, 
+  m_core.AddDependentEntries(possible_shortcuts, NULL, CItemData::ET_SHORTCUT, 
                              CItemData::PASSWORD);
   possible_aliases.clear();
 
@@ -1589,7 +1589,7 @@ bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
   // "bMultipleEntriesFound" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
 
   if (pl.ibasedata < 0) {
-    if (InputType == CItemData::Shortcut) {
+    if (InputType == CItemData::ET_SHORTCUT) {
       // Target must exist (unlike for aliases where it could be an unusual password)
       if (pl.bMultipleEntriesFound)
         AfxMessageBox(IDS_MULTIPLETARGETSFOUND, MB_OK);
@@ -1649,7 +1649,7 @@ bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
   }
 
   if (pl.ibasedata > 0) {
-    if (pl.TargetType == CItemData::Alias) {
+    if (pl.TargetType == CItemData::ET_ALIAS) {
       // If user tried to point to an alias -> change to point to the 'real' base
       CString cs_msg;
       cs_msg.Format(IDS_BASEISALIAS, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
@@ -1657,7 +1657,7 @@ bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
         return false;
       }
     } else {
-      if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
+      if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
         // An alias can only point to a normal entry or an alias base entry
         CString cs_msg;
         cs_msg.Format(IDS_ABASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);

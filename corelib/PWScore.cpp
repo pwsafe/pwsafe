@@ -654,8 +654,8 @@ int PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLF
   }
   uhfl.clear();
 
-  AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::PASSWORD);
-  AddDependentEntries(possible_shortcuts, &rpt, CItemData::Shortcut, CItemData::PASSWORD);
+  AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::PASSWORD);
+  AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_SHORTCUT, CItemData::PASSWORD);
   possible_aliases.clear();
   possible_shortcuts.clear();
 
@@ -1079,8 +1079,8 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   } // file processing for (;;) loop
   ifs.close();
 
-  AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::PASSWORD);
-  AddDependentEntries(possible_shortcuts, &rpt, CItemData::Shortcut, CItemData::PASSWORD);
+  AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::PASSWORD);
+  AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_SHORTCUT, CItemData::PASSWORD);
   possible_aliases.clear();
   possible_shortcuts.clear();
   m_changed = true;
@@ -1281,8 +1281,8 @@ int PWScore::ReadFile(const CMyString &a_filename,
 #endif
   delete in;
 
-  AddDependentEntries(possible_aliases, NULL, CItemData::Alias, CItemData::UUID);
-  AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, CItemData::UUID);
+  AddDependentEntries(possible_aliases, NULL, CItemData::ET_ALIAS, CItemData::UUID);
+  AddDependentEntries(possible_shortcuts, NULL, CItemData::ET_SHORTCUT, CItemData::UUID);
   possible_aliases.clear();
   possible_shortcuts.clear();
   NotifyListModified();
@@ -1841,8 +1841,8 @@ PWScore::Validate(CString &status)
     }
   } // iteration over m_pwlist
 
-  num_alias_warnings = AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::UUID);
-  num_shortcuts_warnings = AddDependentEntries(possible_shortcuts, &rpt, CItemData::Alias, CItemData::UUID);
+  num_alias_warnings = AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::UUID);
+  num_shortcuts_warnings = AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_ALIAS, CItemData::UUID);
   possible_aliases.clear();
   possible_shortcuts.clear();
 
@@ -1951,10 +1951,10 @@ void PWScore::AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_
 {
   ItemMMap *pmmap;
   ItemMap *pmap;
-  if (type == CItemData::Alias) {
+  if (type == CItemData::ET_ALIAS) {
     pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
-  } else if (type == CItemData::Shortcut) {
+  } else if (type == CItemData::ET_SHORTCUT) {
     pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
   } else
@@ -1963,11 +1963,11 @@ void PWScore::AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_
   ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
 
-  if (type == CItemData::Alias) {
+  if (type == CItemData::ET_ALIAS) {
     // Mark base entry as a base entry - must be a normal entry or already an alias base
     ASSERT(iter->second.IsNormal() || iter->second.IsAliasBase());
     iter->second.SetAliasBase();
-  } else if (type == CItemData::Shortcut) {
+  } else if (type == CItemData::ET_SHORTCUT) {
     // Mark base entry as a base entry - must be a normal entry or already a shortcut base
     ASSERT(iter->second.IsNormal() || iter->second.IsShortcutBase());
     iter->second.SetShortcutBase();
@@ -1983,10 +1983,10 @@ void PWScore::RemoveDependentEntry(const uuid_array_t &base_uuid, const uuid_arr
 {
   ItemMMap *pmmap;
   ItemMap *pmap;
-  if (type == CItemData::Alias) {
+  if (type == CItemData::ET_ALIAS) {
     pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
-  } else if (type == CItemData::Shortcut) {
+  } else if (type == CItemData::ET_SHORTCUT) {
     pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
   } else
@@ -2027,10 +2027,10 @@ void PWScore::RemoveAllDependentEntries(const uuid_array_t &base_uuid,
 {
   ItemMMap *pmmap;
   ItemMap *pmap;
-  if (type == CItemData::Alias) {
+  if (type == CItemData::ET_ALIAS) {
     pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
-  } else if (type == CItemData::Shortcut) {
+  } else if (type == CItemData::ET_SHORTCUT) {
     pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
   } else
@@ -2068,10 +2068,10 @@ void PWScore::MoveDependentEntries(const uuid_array_t &from_baseuuid,
 {
   ItemMMap *pmmap;
   ItemMap *pmap;
-  if (type == CItemData::Alias) {
+  if (type == CItemData::ET_ALIAS) {
     pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
-  } else if (type == CItemData::Shortcut) {
+  } else if (type == CItemData::ET_SHORTCUT) {
     pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
   } else
@@ -2106,7 +2106,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
   // When called during the opening of a database or during drag & drop
   //   - *rpt is NULL and no report generated
 
-  // type is either CItemData::Alias or CItemData::Shortcut
+  // type is either CItemData::ET_ALIAS or CItemData::ET_SHORTCUT
 
   // If iVia == CItemData::UUID, the password was "[[uuidstr]]" or "[~uuidstr~]" of the
   //   associated base entry
@@ -2115,10 +2115,10 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
 
   ItemMap *pmap;
   ItemMMap *pmmap;
-  if (type == CItemData::Alias) {
+  if (type == CItemData::ET_ALIAS) {
     pmap = &m_alias2base_map;
     pmmap = &m_base2aliases_mmap;
-  } else if (type == CItemData::Shortcut) {
+  } else if (type == CItemData::ET_SHORTCUT) {
     pmap = &m_shortcut2base_map;
     pmmap = &m_base2shortcuts_mmap;
   } else
@@ -2164,9 +2164,9 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
 
       if (iter != m_pwlist.end()) {
         const CItemData::EntryType type2 = iter->second.GetEntryType();
-        if (type == CItemData::Shortcut) {
+        if (type == CItemData::ET_SHORTCUT) {
           // Adding shortcuts -> Base must be normal or already a shortcut base
-          if (type2 != CItemData::Normal && type2 != CItemData::ShortcutBase) {
+          if (type2 != CItemData::ET_NORMAL && type2 != CItemData::ET_SHORTCUTBASE) {
             // Bad news!
             if (rpt != NULL) {
               if (!bwarnings) {
@@ -2186,9 +2186,9 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             continue;
           } 
         }
-        if (type == CItemData::Alias) {
+        if (type == CItemData::ET_ALIAS) {
           // Adding Aliases -> Base must be normal or already a alias base
-          if (type2 != CItemData::Normal && type2 != CItemData::AliasBase) {
+          if (type2 != CItemData::ET_NORMAL && type2 != CItemData::ET_ALIASBASE) {
             // Bad news!
             if (rpt != NULL) {
               if (!bwarnings) {
@@ -2207,7 +2207,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             RemoveEntryAt(m_pwlist.find(entry_uuid));
             continue;
           }
-          if (type2 == CItemData::Alias) {
+          if (type2 == CItemData::ET_ALIAS) {
             // This is an alias too!  Not allowed!  Make new one point to original base
             // Note: this may be random as who knows the order of reading records?
             uuid_array_t temp_uuid;
@@ -2229,20 +2229,20 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
           }
         }
         iter->second.GetUUID(base_uuid);
-        if (type == CItemData::Alias) {
+        if (type == CItemData::ET_ALIAS) {
           iter->second.SetAliasBase();
         } else
-        if (type == CItemData::Shortcut) {
+        if (type == CItemData::ET_SHORTCUT) {
           iter->second.SetShortcutBase();
         }
 
         pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
         pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
-        if (type == CItemData::Alias) {
+        if (type == CItemData::ET_ALIAS) {
           curitem->SetPassword(CMyString(_T("[Alias]")));
           curitem->SetAlias();
         } else
-        if (type == CItemData::Shortcut) {
+        if (type == CItemData::ET_SHORTCUT) {
           curitem->SetPassword(CMyString(_T("[Shortcut]")));
           curitem->SetShortcut();
         }
@@ -2259,7 +2259,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
           strError.LoadString(IDSC_IMPORTWARNING2A);
           rpt->WriteLine(strError);
         }
-        if (type == CItemData::Shortcut)
+        if (type == CItemData::ET_SHORTCUT)
           RemoveEntryAt(m_pwlist.find(entry_uuid)); // Can't keep invalid shortcut
         else
           curitem->SetNormal(); // but can make invalid alias a normal entry
@@ -2312,9 +2312,9 @@ void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &tl
   uuid_array_t uuid;
 
   ItemMMap *pmmap;
-  if (type == CItemData::Alias)
+  if (type == CItemData::ET_ALIAS)
     pmmap = &m_base2aliases_mmap;
-  else if (type == CItemData::Shortcut)
+  else if (type == CItemData::ET_SHORTCUT)
     pmmap = &m_base2shortcuts_mmap;
   else
     return;
@@ -2388,7 +2388,7 @@ bool PWScore::GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl)
     }
     if (iter != m_pwlist.end()) {
       pl.TargetType = iter->second.GetEntryType();
-      if (pl.InputType == CItemData::Alias && pl.TargetType == CItemData::Alias) {
+      if (pl.InputType == CItemData::ET_ALIAS && pl.TargetType == CItemData::ET_ALIAS) {
         // Check if base is already an alias, if so, set this entry -> real base entry
         uuid_array_t temp_uuid;
         iter->second.GetUUID(temp_uuid);
@@ -2417,9 +2417,9 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
   memset(base_uuid, 0x00, sizeof(uuid_array_t));
 
   ItemMap *pmap;
-  if (type == CItemData::Alias)
+  if (type == CItemData::ET_ALIAS)
     pmap = &m_alias2base_map;
-  else if (type == CItemData::Shortcut)
+  else if (type == CItemData::ET_SHORTCUT)
     pmap = &m_shortcut2base_map;
   else
     return false;

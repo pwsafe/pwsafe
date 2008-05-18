@@ -251,7 +251,7 @@ void CAddDlg::OnOK()
 
   bool brc, b_msg_issued;
   brc = pDbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-                              false, CItemData::Alias,
+                              false, CItemData::ET_ALIAS,
                               m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {

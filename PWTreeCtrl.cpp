@@ -995,23 +995,23 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     CItemData::EntryType temp_et = temp.GetEntryType();
 
     switch (temp_et) {
-      case CItemData::Normal:
+      case CItemData::ET_NORMAL:
         break;
-      case CItemData::AliasBase:
-      case CItemData::ShortcutBase:
+      case CItemData::ET_ALIASBASE:
+      case CItemData::ET_SHORTCUTBASE:
         // An alias or shortcut can only have one base
         temp.SetNormal();
         break;
-      case CItemData::Alias:
+      case CItemData::ET_ALIAS:
         // Get base of original alias and make this copy point to it
         m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
-        m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::Alias);
+        m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_ALIAS);
         temp.SetPassword(CMyString(_T("[Alias]")));
         break;
-      case CItemData::Shortcut:
+      case CItemData::ET_SHORTCUT:
         // Get base of original shortcut and make this copy point to it
         m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
-        m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::Shortcut);
+        m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_SHORTCUT);
         temp.SetPassword(CMyString(_T("[Shortcut]")));
         break;
       default:

@@ -1115,3 +1115,146 @@ CMyString PWSUtil::NormalizeTTT(const CMyString &in)
   return ttt;
 }
 
+bool PWSUtil::MatchesString(CMyString string1, CMyString &csObject,
+                            const int &iFunction)
+{
+  const int sb_len = string1.GetLength();
+  const int ob_len = csObject.GetLength();
+
+  // Negative = Case   Sensitive
+  // Positive = Case INsensitive
+  switch (iFunction) {
+    case -MR_EQUALS:
+    case  MR_EQUALS:
+      return ((ob_len == sb_len) &&
+             (((iFunction < 0) && (csObject.Compare((LPCTSTR)string1) == 0)) ||
+              ((iFunction > 0) && (csObject.CompareNoCase((LPCTSTR)string1) == 0))));
+    case -MR_NOTEQUAL:
+    case  MR_NOTEQUAL:
+      return (((iFunction < 0) && (csObject.Compare((LPCTSTR)string1) != 0)) ||
+              ((iFunction > 0) && (csObject.CompareNoCase((LPCTSTR)string1) != 0)));
+    case -MR_BEGINS:
+    case  MR_BEGINS:
+      if (ob_len >= sb_len) {
+        csObject = csObject.Left(sb_len);
+        return (((iFunction < 0) && (string1.Compare((LPCTSTR)csObject) == 0)) ||
+                ((iFunction > 0) && (string1.CompareNoCase((LPCTSTR)csObject) == 0)));
+      } else {
+        return false;
+      }
+    case -MR_NOTBEGIN:
+    case  MR_NOTBEGIN:
+      if (ob_len >= sb_len) {
+        csObject = csObject.Left(sb_len);
+        return (((iFunction < 0) && (string1.Compare((LPCTSTR)csObject) != 0)) ||
+                ((iFunction > 0) && (string1.CompareNoCase((LPCTSTR)csObject) != 0)));
+      } else {
+        return false;
+      }
+    case -MR_ENDS:
+    case  MR_ENDS:
+      if (ob_len > sb_len) {
+        csObject = csObject.Right(sb_len);
+        return (((iFunction < 0) && (string1.Compare((LPCTSTR)csObject) == 0)) ||
+                ((iFunction > 0) && (string1.CompareNoCase((LPCTSTR)csObject) == 0)));
+      } else {
+        return false;
+      }
+    case -MR_NOTEND:
+    case  MR_NOTEND:
+      if (ob_len > sb_len) {
+        csObject = csObject.Right(sb_len);
+        return (((iFunction < 0) && (string1.Compare((LPCTSTR)csObject) != 0)) ||
+                ((iFunction > 0) && (string1.CompareNoCase((LPCTSTR)csObject) != 0)));
+      } else
+        return true;
+    case -MR_CONTAINS:
+      return (csObject.Find((LPCTSTR)string1) != -1);
+    case  MR_CONTAINS:
+    {
+      csObject.MakeLower();
+      CString subgroupLC(string1);
+      subgroupLC.MakeLower();
+      return (csObject.Find((LPCTSTR)subgroupLC) != -1);
+    }
+    case -MR_NOTCONTAIN:
+      return (csObject.Find((LPCTSTR)string1)== -1);
+    case  MR_NOTCONTAIN:
+    {
+      csObject.MakeLower();
+      CString subgroupLC(string1);
+      subgroupLC.MakeLower();
+      return (csObject.Find((LPCTSTR)subgroupLC) == -1);
+    }
+    default:
+      ASSERT(0);
+  }
+
+  return true; // should never get here!
+}
+
+bool PWSUtil::MatchesInteger(const int &num1, const int &num2, const int &iValue,
+                             const int &iFunction)
+{
+  switch (iFunction) {
+    case MR_EQUALS:
+      return iValue == num1;
+    case MR_NOTEQUAL:
+      return iValue != num1;
+    case MR_BETWEEN:
+      return iValue >= num1 && iValue <= num2;
+    case MR_LT:
+      return iValue < num1;
+    case MR_LE:
+      return iValue <= num1;
+    case MR_GT:
+      return iValue > num1;
+    case MR_GE:
+      return iValue >= num1;
+    default:
+      ASSERT(0);
+  }
+  return false;
+}
+
+bool PWSUtil::MatchesDateTime(const time_t &time1, const time_t &time2, const time_t &tValue,
+                              const int &iFunction)
+{
+  switch (iFunction) {
+    case MR_EQUALS:
+      return tValue == time1;
+    case MR_NOTEQUAL:
+      return tValue != time1;
+    case MR_BETWEEN:
+      return tValue >= time1 && tValue <= time2;
+    case MR_BEFORE:
+      return tValue < time1;
+    case MR_AFTER:
+      return tValue > time1;
+    default:
+      ASSERT(0);
+  }
+  return false;
+}
+
+bool PWSUtil::MatchesBool(const bool bValue, const int &iFunction)
+{
+  bool rc;
+
+  if (bValue) {
+    if (iFunction == MR_EQUALS ||
+        iFunction == MR_ACTIVE ||
+        iFunction == MR_PRESENT)
+      rc = true;
+    else
+      rc = false;
+  } else {
+    if (iFunction == MR_NOTEQUAL ||
+        iFunction == MR_INACTIVE ||
+        iFunction == MR_NOTPRESENT)
+      rc = true;
+    else
+      rc = false;
+  }
+  return rc;
+}
