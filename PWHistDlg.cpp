@@ -140,7 +140,7 @@ void CPWHistDlg::OnBnClickedClearPWHist()
 
 void CPWHistDlg::OnOK() 
 {
-  if (UpdateData(TRUE) != TRUE)
+  if (UpdateData(TRUE) == FALSE)
     return;
 
   /* Handle history header.

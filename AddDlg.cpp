@@ -190,7 +190,7 @@ void CAddDlg::HidePassword()
 
 void CAddDlg::OnOK() 
 {
-  if (UpdateData(TRUE) != TRUE)
+  if (UpdateData(TRUE) == FALSE)
     return;
 
   m_group.EmptyIfOnlyWhiteSpace();

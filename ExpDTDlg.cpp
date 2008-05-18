@@ -209,7 +209,7 @@ void CExpDTDlg::OnReuseOnPswdChange()
 
 void CExpDTDlg::OnOK()
 {
-  if (UpdateData(TRUE) != TRUE) {
+  if (UpdateData(TRUE) == FALSE) {
     // Only reason is numDays!  Set to max.
     m_numDays = m_maxDays;
     UpdateData(FALSE);

@@ -108,7 +108,7 @@ void CExportTextDlg::OnHelp()
 
 void CExportTextDlg::OnOK() 
 {
-  if (UpdateData(TRUE) != TRUE)
+  if (UpdateData(TRUE) == FALSE)
     return;
 
   GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);

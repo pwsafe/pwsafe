@@ -598,8 +598,8 @@ void DboxMain::InitPasswordSafe()
     case CItemData::RMTIME:
     case CItemData::URL:
     case CItemData::AUTOTYPE:
-      break;
-    case CItemData::POLICY:  // Not implemented
+    case CItemData::POLICY:
+    break;
     case CItemData::PWHIST:  // Not displayed in ListView
     default:
       // Title is a mandatory column - so can't go wrong!
@@ -1186,8 +1186,8 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
       gmb.AddButton(2, IDS_READWRITE);
       gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
 #endif
-      int user_choice = gmb.DoModal();
-      switch(user_choice) {
+      INT_PTR user_choice = gmb.DoModal();
+      switch (user_choice) {
         case 1:
           pcore->SetReadOnly(true);
           UpdateToolBar(true);

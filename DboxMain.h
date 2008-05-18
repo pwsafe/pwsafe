@@ -123,7 +123,7 @@ public:
 
   // Find entry by title and user name, exact match
   ItemListIter Find(const CMyString &a_group,
-    const CMyString &a_title, const CMyString &a_user)
+                    const CMyString &a_title, const CMyString &a_user)
   {return m_core.Find(a_group, a_title, a_user);}
 
   // Find entry with same title and user name as the
@@ -142,12 +142,12 @@ public:
 
   // FindAll is used by CPWFindToolBar, returns # of finds.
   size_t FindAll(const CString &str, BOOL CaseSensitive,
-    std::vector<int> &indices);
+                 std::vector<int> &indices);
   size_t FindAll(const CString &str, BOOL CaseSensitive,
-    std::vector<int> &indices,
-    const CItemData::FieldBits &bsFields, const int subgroup_set, 
-    const CString &subgroup_name, const int subgroup_object,
-    const int subgroup_function);
+                 std::vector<int> &indices,
+                 const CItemData::FieldBits &bsFields, const int subgroup_set, 
+                 const CString &subgroup_name, const int subgroup_object,
+                 const int subgroup_function);
 
   // Used by ListCtrl KeyDown
   bool IsImageVisible() {return m_bImageInLV;}
@@ -217,28 +217,28 @@ public:
   void AddEntries(CDDObList &in_oblist, const CMyString &DropGroup);
   int AddEntry(const CItemData &cinew);
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-    const CMyString &user, const int IDS_MESSAGE)
+                           const CMyString &user, const int IDS_MESSAGE)
   {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
   void Delete(bool inRecursion = false);
   void SaveDisplayStatus(); // call when tree expansion state changes
   bool CheckNewPassword(const CMyString &group, const CMyString &title,
-    const CMyString &user, const CMyString &password,
-    const bool bIsEdit, const CItemData::EntryType &InputType, 
-    uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued);
+                        const CMyString &user, const CMyString &password,
+                        const bool bIsEdit, const CItemData::EntryType &InputType, 
+                        uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued);
   void GetAliasBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
   {m_core.GetAliasBaseUUID(entry_uuid, base_uuid);}
   void GetShortcutBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
   {m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);}
   void AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid,
-    const CItemData::EntryType type)
+                         const CItemData::EntryType type)
   {m_core.AddDependentEntry(base_uuid, entry_uuid, type);}
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
   void RefreshImages();
   bool FieldsNotEqual(CMyString a, CMyString b);
   void CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
-    const CMyString cs_title, const CMyString cs_user);
+                           const CMyString cs_title, const CMyString cs_user);
   bool SetNotesWindow(const CPoint point, const bool bVisible = true);
 
   //{{AFX_DATA(DboxMain)
@@ -323,7 +323,7 @@ protected:
   CMenuTipManager m_menuTipManager;
 
   int insertItem(CItemData &itemData, int iIndex = -1, 
-    const bool bSort = true, const int iView = iBothViews);
+                 const bool bSort = true, const int iView = iBothViews);
   CItemData *getSelectedItem();
 
   BOOL SelItemOk();
@@ -353,7 +353,7 @@ protected:
   LRESULT ViewCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT EditCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-    uuid_array_t &fromuuid, uuid_array_t &touuid);
+                            uuid_array_t &fromuuid, uuid_array_t &touuid);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -395,7 +395,7 @@ protected:
   void SortDependents(UUIDList &dlist, CMyString &csDependents);
   void ViewReport(const CString cs_ReportFileName);
   bool GetDriveAndDirectory(const CMyString cs_infile, CString &cs_directory,
-    CString &cs_drive);
+                            CString &cs_drive);
   void SetFindToolBar(bool bShow);
 
   void PlaceWindow(CRect *prect, UINT showCmd);
@@ -535,8 +535,8 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-    int index, bool bReadOnly = false, bool bForceReadOnly = false,
-    PWScore *pcore = 0, int adv_type = -1);
+                          int index, bool bReadOnly = false, bool bForceReadOnly = false,
+                          PWScore *pcore = 0, int adv_type = -1);
 
 private:
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()

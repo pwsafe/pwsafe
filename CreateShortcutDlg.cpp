@@ -84,7 +84,7 @@ void CCreateShortcutDlg::OnCancel()
 
 void CCreateShortcutDlg::OnOK() 
 {
-  if (UpdateData(TRUE) != TRUE)
+  if (UpdateData(TRUE) == FALSE)
     return;
 
   m_group.EmptyIfOnlyWhiteSpace();

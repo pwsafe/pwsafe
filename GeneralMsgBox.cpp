@@ -18,7 +18,6 @@
 * See www.codeproject.com for the orgininal code
 */
 
-
 #include "stdafx.h"
 #include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
@@ -123,7 +122,7 @@ CGeneralMsgBox::~CGeneralMsgBox()
 }
 
 // Replaces CDialog::DoModal
-int CGeneralMsgBox::DoModal()
+INT_PTR CGeneralMsgBox::DoModal()
 {
   InitModalIndirect((LPCDLGTEMPLATE)_dlgData, m_pParentWnd);
   return CDialog::DoModal();
