@@ -2081,48 +2081,48 @@ void DboxMain::UpdateStatusBar()
 
     if (m_bOpen) {
       dc.DrawText(m_lastclipboardaction, &rectPane, DT_CALCRECT);
-      m_statusBar.GetPaneInfo(SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(SB_CLIPBOARDACTION, m_lastclipboardaction);
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
+      m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
       s = m_core.IsChanged() ? _T("*") : _T(" ");
       dc.DrawText(s, &rectPane, DT_CALCRECT);
-      m_statusBar.GetPaneInfo(SB_MODIFIED, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(SB_MODIFIED, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(SB_MODIFIED, s);
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
+      m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, s);
 
       s = m_core.IsReadOnly() ? _T("R-O") : _T("R/W");
       dc.DrawText(s, &rectPane, DT_CALCRECT);
-      m_statusBar.GetPaneInfo(SB_READONLY, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(SB_READONLY, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(SB_READONLY, s);
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
+      m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, s);
 
       s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
       dc.DrawText(s, &rectPane, DT_CALCRECT);
-      m_statusBar.GetPaneInfo(SB_NUM_ENT, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(SB_NUM_ENT, s);
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
+      m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, s);
     } else {
       s.LoadString(IDS_STATCOMPANY);
-      m_statusBar.SetPaneText(SB_DBLCLICK, s);
+      m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
 
       dc.DrawText(_T(" "), &rectPane, DT_CALCRECT);
 
-      m_statusBar.GetPaneInfo(SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(SB_CLIPBOARDACTION, _T(" "));
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_CLIPBOARDACTION, uiID, uiStyle, rectPane.Width());
+      m_statusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, _T(" "));
 
-      m_statusBar.GetPaneInfo(SB_MODIFIED, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(SB_MODIFIED, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(SB_MODIFIED, _T(" "));
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
+      m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, _T(" "));
 
-      m_statusBar.GetPaneInfo(SB_READONLY, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(SB_READONLY, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(SB_READONLY, _T(" "));
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
+      m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, _T(" "));
 
-      m_statusBar.GetPaneInfo(SB_NUM_ENT, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
-      m_statusBar.SetPaneText(SB_NUM_ENT, _T(" "));
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
+      m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, _T(" "));
     }
   }
 
@@ -2151,7 +2151,7 @@ void DboxMain::SetDCAText()
   }
   CString s;
   s.LoadString(i_dca_text);
-  m_statusBar.SetPaneText(SB_DBLCLICK, s);
+  m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
 }
 
 // Returns a list of entries as they appear in tree in DFS order

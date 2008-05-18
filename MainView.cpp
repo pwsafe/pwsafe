@@ -243,32 +243,46 @@ void DboxMain::setupBars()
     const int dca = int(PWSprefs::GetInstance()->
       GetPref(PWSprefs::DoubleClickAction));
     switch (dca) {
-      case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
-      case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
-      case PWSprefs::DoubleClickCopyNotes: statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
-      case PWSprefs::DoubleClickCopyPassword: statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
-      case PWSprefs::DoubleClickCopyUsername: statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
-      case PWSprefs::DoubleClickViewEdit: statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
-      default: statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
+      case PWSprefs::DoubleClickAutoType:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATAUTOTYPE;
+        break;
+      case PWSprefs::DoubleClickBrowse:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSE;
+        break;
+      case PWSprefs::DoubleClickCopyNotes:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYNOTES;
+        break;
+      case PWSprefs::DoubleClickCopyPassword:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORD;
+        break;
+      case PWSprefs::DoubleClickCopyUsername:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYUSERNAME;
+        break;
+      case PWSprefs::DoubleClickViewEdit:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATVIEWEDIT;
+        break;
+      default:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOMPANY;
     }
+
+    statustext[CPWStatusBar::SB_CLIPBOARDACTION] = IDS_BLANK;
     // Set up Configuration source indicator (debug only)
 #ifdef DEBUG
-    statustext[SB_CONFIG] = PWSprefs::GetInstance()->GetConfigIndicator();
-#else
-    statustext[SB_CONFIG] = IDS_BLANK;
+    statustext[CPWStatusBar::SB_CONFIG] = PWSprefs::GetInstance()->GetConfigIndicator();
 #endif /* DEBUG */
     // Set up the rest - all but one empty as pane now re-sized according to contents
-    statustext[SB_CLIPBOARDACTION] = IDS_BLANK;
-    statustext[SB_MODIFIED] = IDS_BLANK;
-    statustext[SB_NUM_ENT] = IDS_BLANK;
-    statustext[SB_READONLY] = IDS_READ_ONLY;
+    statustext[CPWStatusBar::SB_MODIFIED] = IDS_BLANK;
+    statustext[CPWStatusBar::SB_NUM_ENT] = IDS_BLANK;
+    statustext[CPWStatusBar::SB_READONLY] = IDS_READ_ONLY;
 
     // And show
-    m_statusBar.SetIndicators(statustext, SB_TOTAL);
+    m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
 
     // Make a sunken or recessed border around the first pane
-    m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
-  }             
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK, 
+                            m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK), 
+                            SBPS_STRETCH, NULL);
+  }
 
   CDC* pDC = this->GetDC();
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
@@ -1373,7 +1387,7 @@ void DboxMain::ClearData(bool clearMRE)
 {
   // Iterate over item list, delete DisplayInfo
   deleteDisplayInfo ddi;
-  for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
+  for_each(m_core.GetEntryIter(), m_core.GetEntryEndIter(),
     ddi);
 
   m_core.ClearData();
@@ -1472,7 +1486,7 @@ void DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
     ASSERT(pPopup != NULL);
     if (m_pCC != NULL)
       pPopup->CheckMenuItem(ID_MENUITEM_COLUMNPICKER,
-      m_pCC->IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
+                            m_pCC->IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
     else
       pPopup->CheckMenuItem(ID_MENUITEM_COLUMNPICKER, MF_UNCHECKED);
 
@@ -1704,7 +1718,7 @@ void DboxMain::OnChangeTreeFont()
 
   fontdlg.m_sampletext = cs_TreeListSampleText;
 
-  if(fontdlg.DoModal() == IDOK) {
+  if (fontdlg.DoModal() == IDOK) {
     CString treefont_str;
     treefont_str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
                         lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
@@ -1747,7 +1761,7 @@ void DboxMain::OnChangePswdFont()
 
   fontdlg.m_sampletext = cs_PswdSampleText;
 
-  if(fontdlg.DoModal() == IDOK) {
+  if (fontdlg.DoModal() == IDOK) {
     CString pswdfont_str;
     pswdfont_str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
                         lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,

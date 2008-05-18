@@ -29,6 +29,7 @@
 #include "MenuTipper.h"
 #include "LVHdrCtrl.h"
 #include "ColumnChooserDlg.h"
+#include "PWStatusBar.h"
 #include "PWToolBar.h"
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
@@ -284,13 +285,10 @@ protected:
 #else
   CPWToolBar m_MainToolBar;   // main toolbar
   CPWFindToolBar m_FindToolBar;  // Find toolbar
-  CStatusBar m_statusBar;
+  CPWStatusBar m_statusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
-  enum {SB_DBLCLICK = 0, SB_CLIPBOARDACTION, SB_CONFIG, 
-        SB_MODIFIED, SB_READONLY, SB_NUM_ENT,
-        SB_TOTAL /* this must be the last entry */};
-  UINT statustext[SB_TOTAL];
+  UINT statustext[CPWStatusBar::SB_TOTAL];
   CString m_lastclipboardaction;
 #endif
 
