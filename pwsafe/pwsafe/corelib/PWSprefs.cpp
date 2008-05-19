@@ -17,6 +17,7 @@
 #include "XMLprefs.h"
 #include "util.h"
 #include "PWSdirs.h"
+#include "VerifyFormat.h"
 
 using namespace std;
 
@@ -809,7 +810,7 @@ bool PWSprefs::LoadProfileFromFile()
   // Are we (host/user) already in the config file?
   ts = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
   time_t tt;
-  if (!PWSUtil::VerifyXMLDateTimeString(ts, tt)) {
+  if (!VerifyXMLDateTimeString(ts, tt)) {
     // No, nothing to load, return false
     retval = false;
     goto exit;

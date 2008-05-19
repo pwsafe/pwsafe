@@ -554,6 +554,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\VerifyFormat.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XMLprefs.cpp"
 				>
 			</File>
