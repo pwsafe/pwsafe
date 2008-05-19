@@ -21,6 +21,7 @@
 #include "SysInfo.h"
 #include "UTF8Conv.h"
 #include "Report.h"
+#include "VerifyFormat.h"
 
 #include <shellapi.h>
 #include <shlwapi.h>
@@ -1016,8 +1017,8 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       CMyString newPWHistory;
       CString strPWHErrors;
       csError.Format(IDSC_IMPINVALIDPWH, numlines);
-      switch (PWSUtil::VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
-                                                   newPWHistory, strPWHErrors)) {
+      switch (VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
+                                          newPWHistory, strPWHErrors)) {
         case PWH_OK:
           temp.SetPWHistory(newPWHistory);
           break;

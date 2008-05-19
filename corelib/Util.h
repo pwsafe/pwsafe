@@ -120,11 +120,6 @@ inline void putInt32(unsigned char buf[4], const int val )
 enum {TMC_ASC_UNKNOWN = 1, TMC_ASC_NULL = 2, TMC_EXPORT_IMPORT = 4, TMC_XML = 8,
       TMC_LOCALE = 16};
 
-// Verify PWHistory String return codes
-enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,
-      PWH_INVALID_NUM, PWH_INVALID_DATETIME,
-      PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
-
 namespace PWSUtil {
   // namespace of common utility functions
 
@@ -155,11 +150,7 @@ namespace PWSUtil {
   void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   size_t strLength(const LPCTSTR str);
   long fileLength(FILE *fp);
-  bool VerifyASCDateTimeString(const CString &time_str, time_t &t);
-  bool VerifyXMLDateTimeString(const CString &time_str, time_t &t);
-  bool VerifyImportDateTimeString(const CString &time_str, time_t &t);
   CMyString ConvertToDateTimeString(const time_t &t, const int result_format);
-  int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory, CString &strErrors);
   CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   CString GetTimeStamp();

@@ -19,6 +19,7 @@
 #include "corelib.h"
 #include "PWSfileV3.h"
 #include "PWSprefs.h"
+#include "VerifyFormat.h"
 
 // Stop warnings about unused formal parameters!
 #pragma warning(disable : 4100)
@@ -537,7 +538,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     CString strPWHErrors, buffer;
     buffer.Format(IDSC_SAXERRORPWH,
       cur_entry->group, cur_entry->title, cur_entry->username);
-    switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
+    switch (VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
       case PWH_OK:
         tempitem.SetPWHistory(newPWHistory);
         buffer.Empty();
