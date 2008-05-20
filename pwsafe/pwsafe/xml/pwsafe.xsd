@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.13">
 
 <xs:annotation>
   <xs:documentation xml:lang="en">
@@ -21,7 +21,7 @@
 
 <xs:simpleType name="uuidType">
   <xs:restriction base="xs:hexBinary">
-    <xs:length value="16" fixed="true"/>
+    <xs:length value="16" fixed="true" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -33,15 +33,14 @@
 
 <xs:complexType name="datetimestampType">
   <xs:sequence>
-    <xs:element name="date" type="xs:date" />
-    <xs:element name="time" type="xs:time" />
+    <xs:element name="date" type="xs:date" minOccurs="1" maxOccurs="1"/>
+    <xs:element name="time" type="xs:time" minOccurs="1" maxOccurs="1"/>
   </xs:sequence>
 </xs:complexType>
 
 <xs:simpleType name="expirydaysType">
   <xs:restriction base="xs:integer">
     <xs:minInclusive value="1" />
-    <xs:maxInclusive value="3650" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -110,48 +109,52 @@
 
 <!-- Start of proper Password Safe validation XSD -->
   <xs:element name="passwordsafe">
+  <!-- Start Database -->
     <xs:complexType>
       <xs:sequence>
+        <!-- Start Database Preferences -->
         <xs:element name="NumberHashIterations" type="numhashType" minOccurs="0" maxOccurs="1" />
         <xs:element name="Preferences" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:all>
-              <!-- Boolean Database Preferences -->
-              <xs:element name="DisplayExpandedAddEditDlg" type="boolType" minOccurs="0" />
-              <xs:element name="MaintainDateTimeStamps" type="boolType" minOccurs="0" />
-              <xs:element name="PWUseDigits" type="boolType" minOccurs="0" />
-              <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" />
-              <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" />
-              <xs:element name="PWUseLowercase" type="boolType" minOccurs="0" />
-              <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" />
-              <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" />
-              <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" />
-              <xs:element name="SaveImmediately" type="boolType" minOccurs="0" />
-              <xs:element name="SavePasswordHistory" type="boolType" minOccurs="0" />
-              <xs:element name="ShowNotesDefault" type="boolType" minOccurs="0" />
-              <xs:element name="ShowPWDefault" type="boolType" minOccurs="0" />
-              <xs:element name="ShowPasswordInTree" type="boolType" minOccurs="0" />
-              <xs:element name="ShowUsernameInTree" type="boolType" minOccurs="0" />
-              <xs:element name="SortAscending" type="boolType" minOccurs="0" />
-              <xs:element name="UseDefaultUser" type="boolType" minOccurs="0" />
+              <!-- Boolean Preferences -->
+              <xs:element name="DisplayExpandedAddEditDlg" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MaintainDateTimeStamps" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWUseDigits" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWUseLowercase" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SaveImmediately" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SavePasswordHistory" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ShowNotesDefault" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ShowPWDefault" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ShowPasswordInTree" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ShowUsernameInTree" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SortAscending" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UseDefaultUser" type="boolType" minOccurs="0" maxOccurs="1" />
   
-              <!-- Integer Database Preferences -->
-              <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="0" />
-              <xs:element name="IdleTimeout" type="timeoutType" minOccurs="0" />
-              <xs:element name="TreeDisplayStatusAtOpen" type="displaystatusType" minOccurs="0" />
-              <xs:element name="NumPWHistoryDefault" type="pwhistoryType" minOccurs="0" />
-              <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" />
-              <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" />
-              <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" />
-              <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" />
+              <!-- Integer Preferences -->
+              <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="IdleTimeout" type="timeoutType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="TreeDisplayStatusAtOpen" type="displaystatusType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="NumPWHistoryDefault" type="pwhistoryType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
   
-              <!-- String Database Preferences -->
-              <xs:element name="DefaultUsername" type="stringType" minOccurs="0" />
-              <xs:element name="DefaultAutotypeString" type="stringType" minOccurs="0" />
+              <!-- String Preferences -->
+              <xs:element name="DefaultUsername" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="DefaultAutotypeString" type="stringType" minOccurs="0" maxOccurs="1" />
             </xs:all>
           </xs:complexType>
+        <!-- End Database Preferences -->
         </xs:element>
         <xs:element name="unknownheaderfields" minOccurs="0" maxOccurs="1">
+        <!-- Start Database Unknown Fields -->
           <xs:complexType>
             <xs:sequence>
               <xs:element name="field" minOccurs="0" maxOccurs="unbounded">
@@ -165,30 +168,33 @@
               </xs:element>
             </xs:sequence>
           </xs:complexType>
+        <!-- End Database Unknown Fields -->
         </xs:element>
-        <xs:element name="entry" maxOccurs="unbounded">
+        <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+        <!-- Start Database Entries -->
           <xs:complexType>
-            <xs:sequence>
+            <xs:all>
               <xs:element name="group" type="stringType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="title" type="stringType" />
+              <xs:element name="title" type="stringType" minOccurs="1" />
               <xs:element name="username" type="stringType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="password" type="stringType" />
+              <xs:element name="password" type="stringType" minOccurs="1" />
               <xs:element name="url" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="autotype" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="notes" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="uuid" type="uuidType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ctime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="atime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
-              <xs:choice minOccurs="0" maxOccurs="1">
-                <xs:element name="ltime" type="datetimestampType" />
-                <xs:element name="xtime" type="datetimestampType" />
-              </xs:choice>
+              <!-- ltime is depreciated and replaced by xtime 
+                   If both present, xtime values take precedence -->
+              <xs:element name="ltime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="xtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="xtime_interval" type="expirydaysType" minOccurs="0" maxOccurs="1" />
               <xs:element name="pmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="rmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="pwhistory" minOccurs="0" maxOccurs="1">
+              <!-- Start Password History Fields -->
                 <xs:complexType>
-                  <xs:sequence>
+                  <xs:all>
                     <xs:element name="status" type="boolType" minOccurs="1" maxOccurs="1" />
                     <xs:element name="max" type="pwhistoryType" minOccurs="1" maxOccurs="1" />
                     <xs:element name="num" type="pwhistoryType" minOccurs="1" maxOccurs="1" />
@@ -197,38 +203,42 @@
                         <xs:sequence>
                           <xs:element name="history_entry" minOccurs="0" maxOccurs="255">
                             <xs:complexType>
-                              <xs:sequence>
+                              <xs:all>
                                 <xs:element name="changed" type="datetimestampType" minOccurs="1" maxOccurs="1" />
                                 <xs:element name="oldpassword" type="stringType" minOccurs="1" maxOccurs="1" />
-                              </xs:sequence>
+                              </xs:all>
                               <xs:attribute name="num" type="xs:integer" use="optional" />
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-              <xs:element name="PasswordPolicy" minOccurs="0" maxOccurs="1">
-                <xs:complexType>
-                  <xs:all>
-                    <xs:element name="PWLength" type="passwordlengthType" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="PWUseDigits" type="boolType" minOccurs="0" />
-                    <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" />
-                    <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" />
-                    <xs:element name="PWUseLowercase" type="boolType" minOccurs="0" />
-                    <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" />
-                    <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" />
-                    <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" />
-                    <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" />
-                    <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" />
-                    <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" />
-                    <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" />
                   </xs:all>
                 </xs:complexType>
+              <!-- End Password History Fields -->
               </xs:element>
-              <xs:element name="unknownrecordfields" minOccurs="0" maxOccurs="1" >
+              <xs:element name="PasswordPolicy" minOccurs="0" maxOccurs="1">
+              <!-- Start Password Policy Fields -->
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="PWLength" type="passwordlengthType" minOccurs="1" />
+                    <xs:element name="PWUseDigits" type="boolType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWUseLowercase" type="boolType"  minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+                  </xs:all>
+                </xs:complexType>
+              <!-- End Password Policy Fields -->
+              </xs:element>
+              <xs:element name="unknownrecordfields" minOccurs="0" maxOccurs="1">
+              <!-- Start Unknown Record Fields -->
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="field" minOccurs="0" maxOccurs="unbounded">
@@ -242,12 +252,15 @@
                     </xs:element>
                   </xs:sequence>
                 </xs:complexType>
+              <!-- End Unknown Record Fields -->
               </xs:element>
-            </xs:sequence>
+            </xs:all>
             <xs:attribute name="id" type="xs:integer" use="optional" />
           </xs:complexType>
+        <!-- End Database Entries -->
         </xs:element>
       </xs:sequence>
+      <!-- Start Database Attributes -->
       <xs:attribute name="delimiter" type="characterType" use="required" />
       <xs:attribute name="Database" type="stringType" use="optional" />
       <xs:attribute name="ExportTimeStamp" type="xs:dateTime" use="optional" />
@@ -256,7 +269,9 @@
       <xs:attribute name="WhoSaved" type="stringType" use="optional" />
       <xs:attribute name="WhenLastSaved" type="xs:dateTime" use="optional" />
       <xs:attribute name="Database_uuid" type="fileuuidType" use="optional" />
+      <!-- End Database Attributes -->
     </xs:complexType>
+  <!-- End Database -->
   </xs:element>
 </xs:schema>
 <!-- End of proper Password Safe validation XSD -->
