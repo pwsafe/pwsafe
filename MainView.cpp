@@ -33,6 +33,7 @@
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
 #include "corelib/corelib.h"
+#include "corelib/Debug.h"
 #include "corelib/os/dir.h"
 
 #include "commctrl.h"
@@ -2522,7 +2523,7 @@ bool DboxMain::GetDriveAndDirectory(const CMyString cs_infile, CString &cs_drive
 
   pws_os::splitpath(applicationpath, appdrive, appdir, file, ext);
   if (!pws_os::splitpath(inpath, drive, dir, file, ext)) {
-    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+    PWSDebug::IssueError(_T("View Report: Error finding path to database"));
     return false;
   }
 

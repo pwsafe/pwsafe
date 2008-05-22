@@ -8,6 +8,7 @@
 
 #include "Report.h"
 #include "Util.h"
+#include "Debug.h"
 #include "corelib.h"
 #include "os/dir.h"
 
@@ -41,14 +42,14 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
   stringT path(csDataBase);
   stringT drive, dir, file, ext;
   if (!pws_os::splitpath(path, drive, dir, file, ext)) {
-    PWSUtil::IssueError(_T("StartReport: Finding path to database"));
+    PWSDebug::IssueError(_T("StartReport: Finding path to database"));
     return false;
   }
 
   m_cs_filename.Format(IDSC_REPORTFILENAME, drive.c_str(), dir.c_str(), tcAction);
 
   if ((m_fd = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
-    PWSUtil::IssueError(_T("StartReport: Opening log file"));
+    PWSDebug::IssueError(_T("StartReport: Opening log file"));
     return false;
   }
 
@@ -137,7 +138,7 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
 
       // Re-open file
       if ((m_fd = _wfsopen((LPCTSTR)m_cs_filename, L"ab", _SH_DENYWR)) == NULL) {
-        PWSUtil::IssueError(_T("StartReport: Opening log file"));
+        PWSDebug::IssueError(_T("StartReport: Opening log file"));
         return false;
       }
     }
@@ -189,7 +190,7 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
 
     // Re-open file
     if ((m_fd = _fsopen((LPCSTR) m_cs_filename, "ab", _SH_DENYWR)) == NULL) {
-      PWSUtil::IssueError(_T("StartReport: Opening log file"));
+      PWSDebug::IssueError(_T("StartReport: Opening log file"));
       return false;
     }
   }
