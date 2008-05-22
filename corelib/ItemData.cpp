@@ -10,6 +10,7 @@
 
 #include "ItemData.h"
 #include "os/typedefs.h"
+#include "os/mem.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
 #include "PWSrand.h"
@@ -44,6 +45,7 @@ void CItemData::SetSessionKey()
 {
   // must be called once per session, no more, no less
   ASSERT(!IsSessionKeySet);
+  pws_os::mlock(SessionKey, sizeof(SessionKey));
   PWSrand::GetInstance()->GetRandomData( SessionKey, sizeof( SessionKey ) );
   IsSessionKeySet = true;
 }

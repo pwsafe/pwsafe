@@ -10,6 +10,7 @@
 
 #include "os/typedefs.h"
 #include "os/dir.h"
+#include "os/mem.h"
 #include "PWScore.h"
 #include "corelib.h"
 #include "BlowFish.h"
@@ -61,8 +62,10 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
   if (!PWScore::m_session_initialized) {
     PWScore::m_session_initialized = true;
     CItemData::SetSessionKey(); // per-session initialization
-    PWSrand::GetInstance()->GetRandomData(m_session_key, sizeof(m_session_key) );
-    PWSrand::GetInstance()->GetRandomData(m_session_salt, sizeof(m_session_salt) );
+    pws_os::mlock(m_session_key, sizeof(m_session_key));
+    PWSrand::GetInstance()->GetRandomData(m_session_key, sizeof(m_session_key));
+    PWSrand::GetInstance()->GetRandomData(m_session_salt,
+                                          sizeof(m_session_salt));
   }
   m_lockFileHandle = INVALID_HANDLE_VALUE;
   m_lockFileHandle2 = INVALID_HANDLE_VALUE;
