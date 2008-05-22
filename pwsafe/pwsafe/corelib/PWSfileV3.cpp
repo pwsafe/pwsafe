@@ -702,7 +702,7 @@ int PWSfileV3::ReadHeader()
         cs_timestamp = PWSUtil::GetTimeStamp();
         TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
         cs_timestamp, fieldType, utf8Len, utf8Len);
-        PWSUtil::HexDump(utf8, utf8Len, cs_timestamp);
+        PWSDebug::HexDump(utf8, utf8Len, cs_timestamp);
 #endif /* DEBUG */
         break;
     }

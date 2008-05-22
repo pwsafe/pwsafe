@@ -426,34 +426,6 @@ CMyString PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &n
   return CMyString(outpath.c_str());
 }
 
-void PWSUtil::IssueError(const CString &csFunction)
-{
-#ifdef _DEBUG
-  LPVOID lpMsgBuf;
-  LPVOID lpDisplayBuf;
-
-  const DWORD dw = GetLastError();
-
-  FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                NULL,
-                dw,
-                MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                (LPTSTR) &lpMsgBuf,
-                0, NULL);
-
-  lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT, 
-                                    (lstrlen((LPCTSTR)lpMsgBuf) + csFunction.GetLength() + 40) * sizeof(TCHAR)); 
-  wsprintf((LPTSTR)lpDisplayBuf, TEXT("%s failed with error %d: %s"), 
-                                      csFunction, dw, lpMsgBuf); 
-  MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK); 
-
-  LocalFree(lpMsgBuf);
-  LocalFree(lpDisplayBuf);
-#else
-  csFunction;
-#endif
-}
-
 CString PWSUtil::GetTimeStamp()
 {
   struct _timeb timebuffer;
@@ -468,84 +440,6 @@ CString PWSUtil::GetTimeStamp()
   cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.millitm);
 
   return cs_now;
-}
-
-/*
-  Produce a printable version of memory dump (hex + ascii)
-
-  paramaters:
-    memory  - pointer to memory to format
-    length  - length to format
-    maxnum  - maximum characters dumped per line
-
-  return:
-    CString containing output buffer
-*/
-void PWSUtil::HexDump(unsigned char *pmemory, const int length, 
-                      const CString cs_prefix, const int maxnum)
-{
-#ifdef _DEBUG
-  unsigned char *pmem;
-  CString cs_outbuff, cs_hexbuff, cs_charbuff;
-  int i, j, len(length);
-  unsigned char c;
-
-  pmem = pmemory;
-  while (len > 0) {
-    // Show offset for this line.
-    cs_charbuff.Empty();
-    cs_hexbuff.Empty();
-    cs_outbuff.Format(_T("%s: %08x *"), cs_prefix, pmem);
-
-    // Format hex portion of line and save chars for ascii portion
-    if (len > maxnum)
-      j = maxnum;
-    else
-      j = len;
-
-    for (i = 0; i < j; i++) {
-      c = *pmem++;
-
-      if ((i % 4) == 0 && i != 0)
-        cs_outbuff += _T(' ');
-
-      cs_hexbuff.Format(_T("%02x"), c);
-      cs_outbuff += cs_hexbuff;
-
-      if (c >= 32 && c < 127)
-        cs_charbuff += (TCHAR)c;
-      else
-        cs_charbuff += _T('.');
-    }
-
-    j = maxnum - j;
-
-    // Fill out hex portion of short lines.
-    for (i = j; i > 0; i--) {
-      if ((i % 4) != 0)
-        cs_outbuff += _T("  ");
-      else
-        cs_outbuff += _T("   ");
-    }
-
-    // Add ASCII character portion to line.
-    cs_outbuff += _T("* |");
-    cs_outbuff += cs_charbuff;
-
-    // Fill out end of short lines.
-    for (i = j; i > 0; i--)
-      cs_outbuff += _T(' ');
-
-    cs_outbuff += _T('|');
-
-    // Next line
-    len -= maxnum;
-
-    TRACE(_T("%s\n"), cs_outbuff);
-  };
-#else
-  pmemory; length; cs_prefix; maxnum;
-#endif
 }
 
 CString PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
