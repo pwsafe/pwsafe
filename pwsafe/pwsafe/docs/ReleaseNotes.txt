@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.13.1
 ====================
+[1966718] Text in 'Notes" now has horizontal scroll bar during Add.
 [1959193] PWS now honours the read-only command line parameter (-r)
 for first open.  Then governed by R/O open preference or user selecting
 read-only at open time.
