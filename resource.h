@@ -502,7 +502,6 @@
 #define IDC_REUSE_ON_CHANGE             1297
 #define IDC_STATIC_LTINTERVAL_NOW       1298
 #define IDC_STATIC_LTINTERVAL_ALWAYS    1299
-#define IDC_CHECK1                      1300
 #define IDC_DEFAULTOPENRO               1300
 
 // Next default values for new objects
