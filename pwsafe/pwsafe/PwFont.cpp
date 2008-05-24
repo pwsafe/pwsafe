@@ -67,7 +67,9 @@ void ApplyPasswordFont(CWnd* pDlgItem)
 
 void DeletePasswordFont()
 {
-  pPasswordFont->DeleteObject();
-  delete pPasswordFont;
-  pPasswordFont = NULL;
+  if (pPasswordFont != NULL) {
+    pPasswordFont->DeleteObject();
+    delete pPasswordFont;
+    pPasswordFont = NULL;
+  }
 }
