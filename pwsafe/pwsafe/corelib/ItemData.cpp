@@ -1576,11 +1576,22 @@ static void push_time(vector<char> &v, char type, time_t t)
   }
 }
 
+static void push_int(vector<char> &v, char type, int i)
+{
+  if (i != 0) {
+    v.push_back(type);
+    push_length(v, sizeof(int));
+    v.insert(v.end(),
+      (char *)&i, (char *)&i + sizeof(int));
+  }
+}
+
 void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
 {
   CMyString tmp;
   uuid_array_t uuid_array;
   time_t t = 0;
+  int xi = 0;
 
   v.clear();
   GetUUID(uuid_array);
@@ -1613,6 +1624,8 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   GetATime(t);   push_time(v, ATIME, t);
   GetXTime(t);   push_time(v, XTIME, t);
   GetRMTime(t);  push_time(v, RMTIME, t);
+
+  GetXTimeInt(xi); push_int(v, XTIME_INT, xi);
 
   push_string(v, POLICY, GetPWPolicy());
   push_string(v, PWHIST, GetPWHistory());
