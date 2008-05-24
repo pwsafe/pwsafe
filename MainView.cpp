@@ -2928,36 +2928,36 @@ void DboxMain::OnToolBarFindReport()
                          IDS_ADVCASE_INSENSITIVE : IDS_ADVCASE_SENSITIVE);
 
       switch (Fsubgroup_function) {
-        case -PWSUtil::MR_EQUALS:
-        case  PWSUtil::MR_EQUALS:
+        case -PWSMatch::MR_EQUALS:
+        case  PWSMatch::MR_EQUALS:
           uistring = IDS_EQUALS;
           break;
-        case -PWSUtil::MR_NOTEQUAL:
-        case  PWSUtil::MR_NOTEQUAL:
+        case -PWSMatch::MR_NOTEQUAL:
+        case  PWSMatch::MR_NOTEQUAL:
           uistring = IDS_DOESNOTEQUAL;
           break;
-        case -PWSUtil::MR_BEGINS:
-        case  PWSUtil::MR_BEGINS:
+        case -PWSMatch::MR_BEGINS:
+        case  PWSMatch::MR_BEGINS:
           uistring = IDS_BEGINSWITH;
           break;
-        case -PWSUtil::MR_NOTBEGIN:
-        case  PWSUtil::MR_NOTBEGIN:
+        case -PWSMatch::MR_NOTBEGIN:
+        case  PWSMatch::MR_NOTBEGIN:
           uistring = IDS_DOESNOTBEGINSWITH;
           break;
-        case -PWSUtil::MR_ENDS:
-        case  PWSUtil::MR_ENDS:
+        case -PWSMatch::MR_ENDS:
+        case  PWSMatch::MR_ENDS:
           uistring = IDS_ENDSWITH;
           break;
-        case -PWSUtil::MR_NOTEND:
-        case  PWSUtil::MR_NOTEND:
+        case -PWSMatch::MR_NOTEND:
+        case  PWSMatch::MR_NOTEND:
           uistring = IDS_DOESNOTENDWITH;
           break;
-        case -PWSUtil::MR_CONTAINS:
-        case  PWSUtil::MR_CONTAINS:
+        case -PWSMatch::MR_CONTAINS:
+        case  PWSMatch::MR_CONTAINS:
           uistring = IDS_CONTAINS;
           break;
-        case -PWSUtil::MR_NOTCONTAIN:
-        case  PWSUtil::MR_NOTCONTAIN:
+        case -PWSMatch::MR_NOTCONTAIN:
+        case  PWSMatch::MR_NOTCONTAIN:
           uistring = IDS_DOESNOTCONTAIN;
           break;
         default:

@@ -96,28 +96,28 @@ BOOL CAdvancedDlg::OnInitDialog()
   if (cboSubgroupFunction->GetCount () == 0) {
     cs_text.LoadString(IDS_EQUALS);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_EQUALS);
+    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_EQUALS);
     cs_text.LoadString(IDS_DOESNOTEQUAL);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_NOTEQUAL);
+    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTEQUAL);
     cs_text.LoadString(IDS_BEGINSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_BEGINS);
+    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_BEGINS);
     cs_text.LoadString(IDS_DOESNOTBEGINSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_NOTBEGIN);
+    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTBEGIN);
     cs_text.LoadString(IDS_ENDSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_ENDS);
+    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_ENDS);
     cs_text.LoadString(IDS_DOESNOTENDWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_NOTEND);
+    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTEND);
     cs_text.LoadString(IDS_CONTAINS);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_CONTAINS);
+    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_CONTAINS);
     cs_text.LoadString(IDS_DOESNOTCONTAIN);
     iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSUtil::MR_NOTCONTAIN);
+    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTCONTAIN);
   }
 
   for (i = 0; i < cboSubgroupFunction->GetCount(); i++) {

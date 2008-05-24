@@ -296,14 +296,14 @@ static bool GetLocker(const stringT &lock_filename, stringT &locker)
                             // (Lockheed Martin) Secure Coding  11-14-2007
                             SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION),
                            NULL);
- 	// Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
- 	if (h2 != INVALID_HANDLE_VALUE) {
- 		if (::GetFileType( h2 ) != FILE_TYPE_DISK) {
- 			::CloseHandle( h2 );
- 			h2 = INVALID_HANDLE_VALUE;
- 		}
- 	}
- 	// End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+  // Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
+  if (h2 != INVALID_HANDLE_VALUE) {
+    if (::GetFileType( h2 ) != FILE_TYPE_DISK) {
+      ::CloseHandle( h2 );
+      h2 = INVALID_HANDLE_VALUE;
+    }
+  }
+  // End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
  
   if (h2 == INVALID_HANDLE_VALUE) {
     const CString error(MAKEINTRESOURCE(IDSC_CANTGETLOCKER));
@@ -429,14 +429,14 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
                                 SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION,
                                 NULL);
 
-	// Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
-	if (lockFileHandle != INVALID_HANDLE_VALUE) {
-		if (::GetFileType( lockFileHandle ) != FILE_TYPE_DISK) {
-			::CloseHandle( lockFileHandle );
-			lockFileHandle = INVALID_HANDLE_VALUE;
-		}
-	}
-	// End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+  // Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
+  if (lockFileHandle != INVALID_HANDLE_VALUE) {
+    if (::GetFileType( lockFileHandle ) != FILE_TYPE_DISK) {
+      ::CloseHandle( lockFileHandle );
+      lockFileHandle = INVALID_HANDLE_VALUE;
+    }
+  }
+  // End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
 
   if (lockFileHandle == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
@@ -540,14 +540,14 @@ bool PWSfile::IsLockedFile(const CMyString &filename)
                         SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION,
                         NULL);
  
- 	// Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
- 	if (h != INVALID_HANDLE_VALUE) {
- 		if (::GetFileType( h ) != FILE_TYPE_DISK) {
- 			::CloseHandle( h );
- 			h = INVALID_HANDLE_VALUE;
- 		}
- 	}
- 	// End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+  // Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
+  if (h != INVALID_HANDLE_VALUE) {
+    if (::GetFileType( h ) != FILE_TYPE_DISK) {
+      ::CloseHandle( h );
+      h = INVALID_HANDLE_VALUE;
+    }
+  }
+  // End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
  
   if (h == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();

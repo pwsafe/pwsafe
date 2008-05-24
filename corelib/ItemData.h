@@ -12,6 +12,7 @@
 #define ItemData_h
 
 #include "Util.h"
+#include "Match.h"
 #include "ItemField.h"
 #include "UUIDGen.h"
 #include <time.h> // for time_t
