@@ -1308,11 +1308,11 @@ bool CItemData::Matches(const CString &string1, const int &iObject,
       ASSERT(0);
   }
 
-  if (iFunction == PWSUtil::MR_PRESENT || iFunction == PWSUtil::MR_NOTPRESENT) {
+  if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
     const bool bValue = !csObject.IsEmpty();
-    return PWSUtil::MatchesBool(bValue, iFunction);
+    return PWSMatch::Matches(bValue, iFunction);
   } else
-    return PWSUtil::MatchesString(string1, csObject, iFunction);
+    return PWSMatch::Matches(string1, csObject, iFunction);
 }
 
 bool CItemData::Matches(const int &num1, const int &num2, const int &iObject,
@@ -1330,11 +1330,11 @@ bool CItemData::Matches(const int &num1, const int &num2, const int &iObject,
       return false;
   }
 
-  if (iFunction == PWSUtil::MR_PRESENT || iFunction == PWSUtil::MR_NOTPRESENT) {
+  if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
     const bool bValue = (iValue == 0);
-    return PWSUtil::MatchesBool(bValue, iFunction);
+    return PWSMatch::Matches(bValue, iFunction);
   } else
-    return PWSUtil::MatchesInteger(num1, num2, iValue, iFunction);
+    return PWSMatch::Matches(num1, num2, iValue, iFunction);
 }
 
 bool CItemData::Matches(const time_t &time1, const time_t &time2, const int &iObject,
@@ -1356,20 +1356,20 @@ bool CItemData::Matches(const time_t &time1, const time_t &time2, const int &iOb
       return false;
   }
 
-  if (iFunction == PWSUtil::MR_PRESENT || iFunction == PWSUtil::MR_NOTPRESENT) {
+  if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
     const bool bValue = (tValue != (time_t)0);
-    return PWSUtil::MatchesBool(bValue, iFunction);
+    return PWSMatch::Matches(bValue, iFunction);
   } else
-    return PWSUtil::MatchesDateTime(time1, time2, tValue, iFunction);
+    return PWSMatch::Matches(time1, time2, tValue, iFunction);
 }
   
 bool CItemData::Matches(const EntryType &etype1,
                         const int &iFunction) const
 {
   switch (iFunction) {
-    case PWSUtil::MR_EQUALS:
+    case PWSMatch::MR_EQUALS:
       return GetEntryType() == etype1;
-    case PWSUtil::MR_NOTEQUAL:
+    case PWSMatch::MR_NOTEQUAL:
       return GetEntryType() != etype1;
     default:
       ASSERT(0);

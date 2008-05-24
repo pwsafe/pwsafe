@@ -430,6 +430,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Match.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\os\windows\mem.cpp"
 				>
 			</File>
@@ -592,6 +596,10 @@
 			</File>
 			<File
 				RelativePath=".\ItemField.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Match.h"
 				>
 			</File>
 			<File
