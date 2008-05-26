@@ -1025,6 +1025,13 @@ int CItemData::CreatePWHistoryList(BOOL &status,
   isn >> hex >> n;
   if (!isn) return 1;
 
+  // Sanity check: Each entry has at least 12 bytes representing time + pw length
+  // so if pwh_s isn't long enough, we bail out pronto.
+  if (pwh_s.length() - 5 < unsigned(12 * n)) {
+    status = FALSE;
+    return n;
+  }
+
   int offset = 1 + 2 + 2; // where to extract the next token from pwh_s
   int i_error = 0;
 
