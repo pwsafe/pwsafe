@@ -731,13 +731,6 @@ BOOL DboxMain::OnInitDialog()
   ConfigureSystemMenu();
   InitPasswordSafe();
 
-  // Validation does integrity check & repair on database
-  // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
-  if (m_bValidate) {
-    PostMessage(WM_COMMAND, ID_MENUITEM_VALIDATE);
-    m_bValidate = false;
-  }
-
   if (m_IsStartSilent) {
     m_bStartHiddenAndMinimized = true;
   }
