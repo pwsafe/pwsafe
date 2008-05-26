@@ -183,7 +183,12 @@ BOOL DboxMain::OpenOnInit(void)
   app.SetTooltipText(m_core.GetCurFile());
 #endif
   SelectFirstEntry();
-
+  // Validation does integrity check & repair on database
+  // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
+  if (m_bValidate) {
+    PostMessage(WM_COMMAND, ID_MENUITEM_VALIDATE);
+    m_bValidate = false;
+  }
   return TRUE;
 }
 
