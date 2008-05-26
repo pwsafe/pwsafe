@@ -11,8 +11,8 @@
 //-----------------------------------------------------------------
 
 #include "PWDialog.h"
-
-class CItemData;
+#include "corelib/MyString.h"
+#include "corelib/PWHistory.h"
 
 class CPWHistDlg : public CPWDialog
 {

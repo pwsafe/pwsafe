@@ -85,9 +85,8 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_ci->GetPWPolicy(m_pwp);
 
   BOOL HasHistory = FALSE;
-  m_ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
-                            m_NumPWHistory, 
-                            &m_PWHistList, TMC_EXPORT_IMPORT);
+  CreatePWHistoryList(ci->GetPWHistory(), HasHistory, m_MaxPWHistory,
+                      m_NumPWHistory, m_PWHistList, TMC_EXPORT_IMPORT);
   m_SavePWHistory = HasHistory;
 
   m_group = m_ci->GetGroup();

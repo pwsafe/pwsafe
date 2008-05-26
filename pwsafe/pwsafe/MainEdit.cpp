@@ -148,13 +148,7 @@ void DboxMain::OnAdd()
       temp.SetXTimeInt(dlg_add.m_XTimeInt);
 
     if (dlg_add.m_SavePWHistory == TRUE) {
-      TCHAR buffer[6];
-#if _MSC_VER >= 1400
-      _stprintf_s(buffer, 6, _T("1%02x00"), dlg_add.m_MaxPWHistory);
-#else
-      _stprintf(buffer, _T("1%02x00"), dlg_add.m_MaxPWHistory);
-#endif
-      temp.SetPWHistory(buffer);
+      temp.SetPWHistory(MakePWHistoryHeader(TRUE, dlg_add.m_MaxPWHistory, 0));
     }
 
     AddEntry(temp);

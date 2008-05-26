@@ -17,6 +17,7 @@
 #include "UTF8Conv.h"
 #include "PWSprefs.h"
 #include "VerifyFormat.h"
+#include "PWHistory.h"
 
 #include <time.h>
 #include <sstream>
@@ -310,30 +311,6 @@ void CItemData::SetUnknownField(const unsigned char type,
   m_URFL.push_back(unkrfe);
 }
 
-/*
-* Password History (PWH):
-* Password history is represented in the entry record as a textual field
-* with the following semantics:
-*
-* Password History Header: 
-* %01x - status for saving PWH for this entry (0 = no; 1 = yes) 
-* %02x - maximum number of entries in this entry 
-* %02x - number of entries currently saved 
-*
-* Each Password History Entry: 
-* %08x - time of this old password was set (time_t) 
-* %04x - length of old password (in TCHAR)
-* %s   - old password 
-*
-* No history being kept for a record can be represented either by the lack
-* of the PWH field (preferred), or by a header of _T("00000"):
-* status = 0, max = 00, num = 00 
-*
-* Note that 0aabb where bb <= aa is possible if password history was enabled in the past
-* but has been disabled and the history hasn't been cleared.
-*
-*/
-
 CMyString CItemData::GetPWHistory() const
 {
   CMyString ret = GetField(m_PWHistory);
@@ -376,18 +353,14 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     size_t pwh_max, pwh_num;
     PWHistList PWHistList;
 
-    CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
-                        &PWHistList, TMC_EXPORT_IMPORT);
+    CreatePWHistoryList(GetPWHistory(), pwh_status, pwh_max, pwh_num,
+                        PWHistList, TMC_EXPORT_IMPORT);
 
     //  Build export string
-    ostringstreamT os;
-    os.fill(charT('0'));
-    os << hex << setw(1) << pwh_status
-       << setw(2) << pwh_max << setw(2) << pwh_num << ends;
-    history = CMyString(os.str().c_str());
+    history = MakePWHistoryHeader(pwh_status, pwh_max, pwh_num);
     PWHistList::iterator iter;
     for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
-      const PWHistEntry pwshe = *iter;
+      const PWHistEntry &pwshe = *iter;
       history += _T(' ');
       history += pwshe.changedate;
       ostringstreamT os1;
@@ -677,8 +650,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     BOOL pwh_status;
     size_t pwh_max, pwh_num;
     PWHistList PWHistList;
-    CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
-      &PWHistList, TMC_XML);
+    CreatePWHistoryList(GetPWHistory(), pwh_status, pwh_max, pwh_num,
+                        PWHistList, TMC_XML);
     if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
       oss << "\t\t<pwhistory>" << endl;
       oss << "\t\t\t<status>" << pwh_status << "</status>" << endl;
@@ -694,7 +667,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
           int utf8Len = 0;
 
           oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
-          const PWHistEntry pwshe = *hiter;
+          const PWHistEntry &pwshe = *hiter;
           oss << "\t\t\t\t\t<changed>" << endl;
           oss << "\t\t\t\t\t\t<date>";
           if (utf8conv.ToUTF8(pwshe.changedate.Left(10), utf8, utf8Len))
@@ -1001,72 +974,6 @@ void CItemData::SetPWHistory(const CMyString &PWHistory)
   SetField(m_PWHistory, pwh);
 }
 
-int CItemData::CreatePWHistoryList(BOOL &status,
-                                   size_t &pwh_max, size_t &pwh_num,
-                                   PWHistList* pPWHistList,
-                                   const int time_format) const
-{
-  status = FALSE;
-  pwh_max = pwh_num = 0;
-
-  stringT pwh_s = GetPWHistory();
-  int len = pwh_s.length();
-
-  if (len < 5)
-    return (len != 0 ? 1 : 0);
-
-  BOOL s = pwh_s[0] == charT('0') ? FALSE : TRUE;
-
-  int m, n;
-  istringstreamT ism(stringT(pwh_s, 1, 2)); // max history 1 byte hex
-  istringstreamT isn(stringT(pwh_s, 3, 2)); // cur # entries 1 byte hex
-  ism >> hex >> m;
-  if (!ism) return 1;
-  isn >> hex >> n;
-  if (!isn) return 1;
-
-  // Sanity check: Each entry has at least 12 bytes representing time + pw length
-  // so if pwh_s isn't long enough, we bail out pronto.
-  if (pwh_s.length() - 5 < unsigned(12 * n)) {
-    status = FALSE;
-    return n;
-  }
-
-  int offset = 1 + 2 + 2; // where to extract the next token from pwh_s
-  int i_error = 0;
-
-  for (int i = 0; i < n; i++) {
-    PWHistEntry pwh_ent;
-    long t;
-    istringstreamT ist(stringT(pwh_s, offset, 8)); // time in 4 byte hex
-    ist >> hex >> t;
-    if (!ist) {i_error++; continue;} // continue or break?
-    offset += 8;
-
-    pwh_ent.changetttdate = (time_t) t;
-    pwh_ent.changedate =
-      PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
-    if (pwh_ent.changedate.IsEmpty()) {
-      //                       1234567890123456789
-      pwh_ent.changedate = _T("1970-01-01 00:00:00");
-    }
-    istringstreamT ispwlen(stringT(pwh_s, offset, 4)); // pw length 2 byte hex
-    int ipwlen;
-    ispwlen >> hex >> ipwlen;
-    if (!ispwlen) {i_error++; continue;} // continue or break?
-    offset += 4;
-    const stringT pw(pwh_s, offset, ipwlen);
-    pwh_ent.password = pw.c_str();
-    offset += ipwlen;
-    pPWHistList->push_back(pwh_ent);
-  }
-
-  status = s;
-  pwh_max = m;
-  pwh_num = n;
-  return i_error;
-}
-
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
   // Must be some flags; however hex incompatible with other flags
@@ -1233,8 +1140,8 @@ int CItemData::ValidatePWHistory()
   BOOL pwh_status;
   size_t pwh_max, pwh_num;
   PWHistList PWHistList;
-  int iResult = CreatePWHistoryList(pwh_status, pwh_max,
-                                    pwh_num, &PWHistList, TMC_EXPORT_IMPORT);
+  int iResult = CreatePWHistoryList(pwh, pwh_status, pwh_max,
+                                    pwh_num, PWHistList, TMC_EXPORT_IMPORT);
   if (iResult == 0) {
     return 0;
   }
@@ -1258,15 +1165,11 @@ int CItemData::ValidatePWHistory()
 
   // Rebuild PWHistory from the data we have
   CMyString history;
-  ostringstreamT os;
-  os.fill(charT('0'));
-  os << hex << setw(1) << pwh_status
-     << setw(2) << pwh_max << setw(2) << pwh_num << ends;
-  history = CMyString(os.str().c_str());
+  history = MakePWHistoryHeader(pwh_status, pwh_max, pwh_num);
 
   PWHistList::iterator iter;
   for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
-    PWHistEntry pwshe = *iter;
+    const PWHistEntry &pwshe = *iter;
     history += _T(' ');
     history += pwshe.changedate;
     ostringstreamT os1;

@@ -20,28 +20,6 @@
 #include <vector>
 #include <string>
 
-// Password History Entry structure
-struct PWHistEntry {
-  time_t changetttdate;
-  // "yyyy/mm/mm hh:mm:ss" - format used in ListCtrl & copied to clipboard (best for sorting)
-  // "yyyy-mm-ddThh:mm:ss" - format used in XML
-  CMyString changedate;
-  CMyString password;
-
-  PWHistEntry() : changetttdate(0), changedate(), password() {}
-  // copy c'tor and assignment operator, standard idioms
-  PWHistEntry(const PWHistEntry &that)
-    : changetttdate(that.changetttdate),
-    changedate(that.changedate), password(that.password) {}
-  PWHistEntry &operator=(const PWHistEntry &that)
-  { if (this != &that) {
-    changetttdate = that.changetttdate;
-    changedate = that.changedate;
-    password = that.password;
-  }
-  return *this;
-  }
-};
 
 struct PWPolicy {
   WORD flags;
@@ -81,7 +59,6 @@ struct PWPolicy {
   }
 };
 
-typedef std::vector<PWHistEntry> PWHistList;
 typedef std::vector<CItemField> UnknownFields;
 typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
@@ -239,9 +216,6 @@ public:
     void SetXTimeInt(int &xint); // V30
     bool SetXTimeInt(const CString &xint_str); // V30
     void SetPWHistory(const CMyString &PWHistory);  // V30
-    int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
-                            PWHistList* pPWHistList,
-                            const int time_format) const;  // V30
     void SetPWPolicy(const PWPolicy &pwp);
     bool SetPWPolicy(const CString &cs_pwp);
     CItemData& operator=(const CItemData& second);
