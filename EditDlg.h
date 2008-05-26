@@ -14,12 +14,10 @@
 #include "ControlExtns.h"
 #include "ExtThread.h"
 #include "corelib/ItemData.h"
-
-class CItemData;
+#include "corelib/PWHistory.h"
 
 class CEditDlg : public CPWDialog
 {
-
 public:
   // default constructor
   CEditDlg(CItemData *ci, CWnd* pParent = NULL);

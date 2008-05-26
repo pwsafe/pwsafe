@@ -33,6 +33,7 @@
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
 #include "corelib/corelib.h"
+#include "corelib/PWHistory.h"
 #include "corelib/Debug.h"
 #include "corelib/os/dir.h"
 
@@ -487,8 +488,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         BOOL pwh_status;
         size_t pwh_max, pwh_num;
         PWHistList pwhistlist;
-        curitem.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
-                                    &pwhistlist, TMC_XML);
+        CreatePWHistoryList(curitem.GetPWHistory(), pwh_status,
+                            pwh_max, pwh_num, pwhistlist, TMC_XML);
         PWHistList::iterator iter;
         for (iter = pwhistlist.begin(); iter != pwhistlist.end();
              iter++) {

@@ -35,7 +35,7 @@ public:
   time_t m_tttCPMTime;  // Password creation or last changed datetime
   int m_XTimeInt;
   BOOL m_SavePWHistory;
-  int m_MaxPWHistory;
+  size_t m_MaxPWHistory;
   int m_ibasedata;
   uuid_array_t m_base_uuid;
   PWPolicy m_pwp;

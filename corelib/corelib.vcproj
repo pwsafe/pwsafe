@@ -462,6 +462,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWHistory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWSclipboard.cpp"
 				>
 			</File>
