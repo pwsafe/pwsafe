@@ -24,6 +24,7 @@
 #include <wchar.h>
 #define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
 #define _tcslen(s) wcslen(s)
+#define _tcsftime wcsftime
 #else
 #include <ctype.h>
 #define _istalpha(x) isalpha(x)
@@ -34,6 +35,9 @@
 #include <string.h>
 #define _tcsncpy(t, s, sc) strncpy(t, s, sc)
 #define _tcslen(s) strlen(s)
+#include <time.h>
+#define _tcsftime strftime
+#define _tasctime_s(s, N, st) asctime(st, s)
 #endif /* UNICODE */
 #endif /* _WIN32 */
 #endif /* _PWS_TCHAR_H */
