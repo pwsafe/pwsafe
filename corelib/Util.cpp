@@ -391,8 +391,8 @@ CMyString PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_for
       _tcsftime(datetime_str, sizeof(datetime_str)/sizeof(datetime_str[0]),
                 _T("%c"), st);
     } else {
-      err = _tasctime_s(datetime_str, 32, st);  // secure version
-      ASSERT(err == 0);
+      int terr = _tasctime_s(datetime_str, 32, st);  // secure version
+      ASSERT(terr == 0);
     }
     ret = datetime_str;
   } else {
