@@ -69,7 +69,7 @@ public abstract class PwsFile
 	 * Block length - the minimum size of a data block.  All data written to the database is
 	 * in blocks that are an integer multiple of <code>BLOCK_LENGTH</code> in size. 
 	 */
-	public static final int BLOCK_LENGTH	= 8;
+	public static final int BLOCK_LENGTH	= 4; // used to be 8, but time field has only 4
 
 	/**
 	 * This provides a wrapper around the <code>Iterator</code> that is returned by the

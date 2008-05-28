@@ -297,7 +297,6 @@ public class PwsRecordV3 extends PwsRecord
 			
 			Length	= Util.getIntFromByteArray( RawData, 0 );
 			Type = RawData[4] & 0x000000ff; // rest of header is now random data
-			//System.err.println("Data size is " + Length + " and type is " + Type);
 			Data    = new byte[Length];
 			byte[] remainingDataInRecord = Util.getBytes(RawData, 5, 11);
 			if (Length <= 11) {
