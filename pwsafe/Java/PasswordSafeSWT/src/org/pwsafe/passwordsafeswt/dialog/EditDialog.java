@@ -323,8 +323,9 @@ public class EditDialog extends Dialog {
 				DateDialog dialog = new DateDialog(shell);
 				dialog.setDate(entryToEdit.getExpires());
 				Date result = dialog.open();
-				if (result != null) {
+				if (result != null && ! result.equals(entryToEdit.getExpires())) {
 					txtPasswordExpire.setText(format(result));
+					setDirty(true);
 				}
 			}
 		});
@@ -367,7 +368,14 @@ public class EditDialog extends Dialog {
 		
 						entryToEdit.setExpires(expireDate);
 					} catch (ParseException e1) {
-						//if it's no date - ignore
+			            MessageBox mb = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO);
+			            mb.setText("Expiry date not valid");
+			            mb.setMessage("The password expiry date is not valid and will be ignored - continue anyway?");
+			            int result = mb.open();
+			            if (result == SWT.NO) {
+			                return;
+			            }
+
 					}
 					entryToEdit.setUrl(txtUrl.getText());
                     entryToEdit.setAutotype(txtAutotype.getText());

@@ -1,7 +1,16 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.passwordsafeswt.dialog;
 
+import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -21,7 +30,9 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class DateDialog extends Dialog {
 
-	private Date date;
+	private static final Log log = LogFactory.getLog(DateDialog.class);
+
+	private Calendar cal = Calendar.getInstance();
 
 	public DateDialog(Shell shell) {
 		super(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
@@ -32,7 +43,7 @@ public class DateDialog extends Dialog {
 	}
 	
 	public Date getDate() {
-		return date;
+		return cal == null ? null : cal.getTime();
 	}
 
 	public Date open() {				
@@ -47,7 +58,7 @@ public class DateDialog extends Dialog {
 				display.sleep();
 			}
 		}		
-		return date;
+		return cal == null ? null : cal.getTime();
 	}
 
 	private void createContents(final Shell shell) {
@@ -57,15 +68,19 @@ public class DateDialog extends Dialog {
 		GridData data = new GridData();
 		data.horizontalSpan = 2;
 		calendar.setLayoutData(data);
-		//TODO: set DateTime value from java.util.Date...
+		calendar.setDay(cal.get(Calendar.DAY_OF_MONTH));
+		calendar.setMonth(cal.get(Calendar.MONTH));
+		calendar.setYear(cal.get(Calendar.YEAR));
 		
 		Button ok = new Button (shell, SWT.PUSH);
 		ok.setText ("OK");
 		ok.setLayoutData(new GridData (SWT.FILL, SWT.CENTER, false, false));
 		ok.addSelectionListener (new SelectionAdapter () {
 			public void widgetSelected (SelectionEvent e) {
-				System.out.println ("Calendar date selected (MM/DD/YYYY) = " + (calendar.getMonth () + 1) + "/" + calendar.getDay () + "/" + calendar.getYear ());
-//				date =  // TODO: convert DateTime result to java.util.Date...
+				log.debug ("Calendar date selected (MM/DD/YYYY) = " + (calendar.getMonth () + 1) + "/" + calendar.getDay () + "/" + calendar.getYear ());
+				cal.set(Calendar.DAY_OF_MONTH, calendar.getDay());
+				cal.set(Calendar.MONTH, calendar.getMonth());
+				cal.set(Calendar.YEAR, calendar.getYear());
 				shell.close ();
 			}
 		});
@@ -76,8 +91,8 @@ public class DateDialog extends Dialog {
 		cancel.setLayoutData(new GridData (SWT.FILL, SWT.CENTER, false, false));
 		cancel.addSelectionListener (new SelectionAdapter () {
 			public void widgetSelected (SelectionEvent e) {
-				System.out.println ("Calendar date selected (MM/DD/YYYY) = null");
-				date = null;
+				log.debug ("Calendar date selected (MM/DD/YYYY) = null");
+				cal = null;
 				shell.close ();
 			}
 		});
@@ -85,6 +100,9 @@ public class DateDialog extends Dialog {
 	}
 
 	public void setDate(Date aDate) {
-		date = aDate;
+		if (cal == null)
+			cal = Calendar.getInstance();
+		if (aDate != null) 
+			cal.setTimeInMillis(aDate.getTime());
 	}
 }

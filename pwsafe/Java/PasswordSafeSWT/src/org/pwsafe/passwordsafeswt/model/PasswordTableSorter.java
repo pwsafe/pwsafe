@@ -33,6 +33,7 @@ public class PasswordTableSorter extends ViewerSorter {
 	public int compare(Viewer arg0, Object a, Object b) {
 		int rc = 0;
 		
+		//FIXME avoid recreating new EntryDTOs all the time, for example by an adapter
 		PwsEntryDTO entry1 = PwsEntryDTO.fromPwsRecord((PwsRecord) a);
 		PwsEntryDTO entry2 = PwsEntryDTO.fromPwsRecord((PwsRecord) b);
 		
