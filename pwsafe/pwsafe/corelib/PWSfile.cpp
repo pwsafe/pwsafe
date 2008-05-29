@@ -180,6 +180,7 @@ void PWSfile::FOpen()
 #else
   m_fd = _tfopen((LPCTSTR) m_filename, m);
 #endif
+  m_fileLength = PWSUtil::fileLength(m_fd);
 }
 
 int PWSfile::Close()
@@ -209,7 +210,7 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
 
   ASSERT(m_fish != NULL && m_IV != NULL);
   retval = _readcbc(m_fd, buffer, buffer_len, type,
-    m_fish, m_IV, m_terminal);
+	  m_fish, m_IV, m_terminal, m_fileLength);
 
   if (buffer_len > 0) {
     if (buffer_len < length || data == NULL)
@@ -727,13 +728,14 @@ bool PWSfile::Decrypt(const CString &fn, const CMyString &passwd)
     unsigned char dummyType;
     unsigned char *pwd = NULL;
     int passlen = 0;
+	long file_len = PWSUtil::fileLength(in);
     ConvertString(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, salt, SaltLength);
     trashMemory(pwd, passlen);
 #ifdef UNICODE
     delete[] pwd; // gross - ConvertString allocates only if UNICODE.
 #endif
-    if (_readcbc(in, buf, len,dummyType, fish, ipthing) == 0) {
+    if (_readcbc(in, buf, len,dummyType, fish, ipthing, 0, file_len) == 0) {
       delete fish;
       delete[] buf; // if not yet allocated, delete[] NULL, which is OK
       return false;

@@ -233,7 +233,7 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
 size_t _readcbc(FILE *fp,
          unsigned char* &buffer, unsigned int &buffer_len, unsigned char &type,
          Fish *Algorithm, unsigned char* cbcbuffer,
-         const unsigned char *TERMINAL_BLOCK)
+         const unsigned char *TERMINAL_BLOCK, long file_len)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
   size_t numRead = 0;
@@ -277,6 +277,15 @@ size_t _readcbc(FILE *fp,
 
   if (length < 0) { // sanity check
     TRACE("_readcbc: Read negative length - aborting\n");
+    buffer = NULL;
+    buffer_len = 0;
+    trashMemory(lengthblock, BS);
+    return 0;
+  }
+
+  if ((file_len != 0 && length >= file_len) 
+	  || (file_len == 0 && length >= PWSUtil::fileLength(fp))) {
+    TRACE("_readcbc: Read size larger than file length - aborting\n");
     buffer = NULL;
     buffer_len = 0;
     trashMemory(lengthblock, BS);
