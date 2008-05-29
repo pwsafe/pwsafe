@@ -50,7 +50,8 @@ extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
                        unsigned int &buffer_len,
                        unsigned char &type, Fish *Algorithm,
                        unsigned char* cbcbuffer,
-                       const unsigned char *TERMINAL_BLOCK = NULL);
+                       const unsigned char *TERMINAL_BLOCK = NULL, 
+					   long file_len = 0);
 extern size_t _writecbc(FILE *fp, const unsigned char* buffer, int length,
                         unsigned char type, Fish *Algorithm,
                         unsigned char* cbcbuffer);
