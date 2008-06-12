@@ -2068,6 +2068,10 @@ msgstr "Öppna som läsbar"
 msgid "Open database"
 msgstr "Öppna databas"
 
+#: Control-ID:1300,
+msgid "Open database read-only by default"
+msgstr ""
+
 #: ID:327,
 msgid "Options"
 msgstr "Alternativ"
@@ -2640,10 +2644,6 @@ msgstr "Ange lösenordets utgångsdatum/tid"
 
 #: Control-ID:1038,
 msgid "Set Sample &Text"
-msgstr ""
-
-#: Control-ID:1300,
-msgid "Set databases to be read-only, by default, during open"
 msgstr ""
 
 #: Control-ID:1186,
