@@ -291,9 +291,13 @@ SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT )
   return DRAGDROP_S_USEDEFAULTCURSORS;
 }
 
-DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
+DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
                                     DWORD dwKeyState, CPoint )
 {
+  // Is it ours?
+  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) 
+    return DROPEFFECT_NONE;
+
   m_TickCount = GetTickCount();
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
@@ -307,9 +311,13 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
          DROPEFFECT_COPY : DROPEFFECT_MOVE;
 }
 
-DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
+DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* pDataObject,
                                    DWORD dwKeyState, CPoint point)
 {
+  // Is it ours?
+  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) 
+    return DROPEFFECT_NONE;
+
   CPWTreeCtrl *pDestTreeCtrl = (CPWTreeCtrl *)pWnd;
   HTREEITEM hHitItem(NULL);
 
@@ -1029,6 +1037,10 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
 BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
+  // Is it ours?
+  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL)) 
+    return FALSE;
+
   m_TickCount = 0;
   while (ShowCursor(TRUE) < 0)
     ;

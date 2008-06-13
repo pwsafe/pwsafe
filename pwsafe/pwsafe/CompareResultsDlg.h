@@ -199,4 +199,5 @@ private:
   int m_DialogMaxWidth, m_DialogMaxHeight;
   int m_row, m_column;
   int m_nCols;
+  bool m_bInitDone;
 };
