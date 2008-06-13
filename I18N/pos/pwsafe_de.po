@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2008-06-04 11:38+0100\n"
+"PO-Revision-Date: 2008-06-12 11:37+0100\n"
 "Last-Translator: Andreas Tamasco <atamasco@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -995,9 +995,8 @@ msgstr "Basis:"
 
 #: Control-ID:1213,#:
 #: Control-ID:1213,
-#, fuzzy
 msgid "Browse"
-msgstr "Durchsuchen"
+msgstr "Suchen"
 
 #: ID:326,
 msgid "Browse to URL"
@@ -1378,7 +1377,7 @@ msgstr ""
 
 #: Control-ID:65535,
 msgid "Database Unique ID:"
-msgstr "Datenbank Unique ID:"
+msgstr "Datenb. Unique ID:"
 
 #: Control-ID:65535,
 msgid "Database format:"
@@ -1403,7 +1402,7 @@ msgstr "Datum/Zeit Information"
 
 #: Control-ID:65535,
 msgid "Default Autotype string:"
-msgstr "Standard für automatische Eingabe:"
+msgstr "Standard autom. Eingabe:"
 
 #: Control-ID:65535,
 msgid "Default Username"
@@ -1670,7 +1669,7 @@ msgstr "Fehler: Datei ist schreibgeschützt"
 
 #: Control-ID:1078,
 msgid "Escape key closes application"
-msgstr "Escape-Taste schließt die Anwendung."
+msgstr "Escape-Taste schließt Anwendung."
 
 #: Control-ID:65535,
 msgid "Example:"
@@ -2711,7 +2710,7 @@ msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Untitled Restored Backup>"
 
 #: ID:326,
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Password Safe has been compiled as %s but CPU is really %s.\n"
 "You may not be able to open files or saved files may be incompatible with other platforms."
@@ -2984,7 +2983,7 @@ msgstr ""
 
 #: Control-ID:1072,
 msgid "Put icon in System Tray"
-msgstr "Plaziere Symbol im Infobereich"
+msgstr "Symbol im Infobereich"
 
 #: Control-ID:1030,
 msgid "Query user to set default username"
@@ -4093,7 +4092,7 @@ msgid ""
 "Collapse All"
 msgstr ""
 "\n"
-"Allr erweitern"
+"Alle reduzieren"
 
 #: ID:2002,
 msgid ""
@@ -4640,11 +4639,11 @@ msgid "the following text:"
 msgstr "der folgende Text:"
 
 msgid "used entries in System Tray menu"
-msgstr "Verwendete Einträge des Infobereichs"
+msgstr "letzte Einträge des Infobereichs"
 
 #: Control-ID:1098,
 msgid "used entries in System Tray menu."
-msgstr "Verwendete Einträge des Infobereichs."
+msgstr "letzte Einträge des Infobereichs."
 
 msgid "v&1.x format..."
 msgstr "v&1.x Format..."
