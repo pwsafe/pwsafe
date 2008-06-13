@@ -222,5 +222,5 @@ BOOL CColumnChooserLC::OnEraseBkgnd(CDC* pDC)
     CListCtrl::OnEraseBkgnd(pDC);
   }
 
-  return true;
+  return TRUE;
 }

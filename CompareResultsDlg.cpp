@@ -44,11 +44,7 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
   m_prpt(prpt), m_bSortAscending(true), m_iSortedColumn(0),
   m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
-  m_ShowIdenticalEntries(BST_UNCHECKED),
-  m_DialogMinWidth(455), m_DialogMinHeight(415),
-  m_DialogMaxWidth(999), m_DialogMaxHeight(1024)
-  // Need to set default values for MinWidth & MinHeight as OnGetMinMaxInfo is 
-  // called during Create before set in InitDialog
+  m_ShowIdenticalEntries(BST_UNCHECKED), m_bInitDone(false)
 {
 }
 
@@ -68,6 +64,7 @@ bool GTUCompare2(st_CompareData elem1, st_CompareData elem2)
 BOOL CCompareResultsDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+  m_bInitDone = true;
 
   m_LCResults.GetHeaderCtrl()->SetDlgCtrlID(IDC_RESULTLISTHDR);
 
@@ -976,10 +973,9 @@ void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
 
 void CCompareResultsDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
-  CPWDialog::OnGetMinMaxInfo(lpMMI);
-
-  if (this->GetSafeHwnd() != NULL) {
+  if (m_bInitDone) {
     lpMMI->ptMinTrackSize = CPoint(m_DialogMinWidth, m_DialogMinHeight);
     lpMMI->ptMaxTrackSize = CPoint(m_DialogMaxWidth, m_DialogMaxHeight);
-  }
+  } else
+    CPWDialog::OnGetMinMaxInfo(lpMMI);
 }
