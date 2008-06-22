@@ -10,12 +10,17 @@
 
 #include "stdafx.h"
 #include "ControlExtns.h"
-
+#include "corelib/ItemField.h" // for CSecEditExtn
+#include "corelib/BlowFish.h"  // ditto
+#include "corelib/PWSrand.h"   // ditto
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+// Pick a number at the end of the WM_USER range
+#define EM_SELECTALL (WM_APP - 1)
 
 // Right-click Edit Context Menu
 #define MENUSTRING_UNDO        _T("&Undo")
@@ -70,19 +75,21 @@ HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 /////////////////////////////////////////////////////////////////////////////
 // CEditExtn
 
-CEditExtn::CEditExtn()
+CEditExtn::CEditExtn(COLORREF focusColor)
   : m_bIsFocused(FALSE), m_lastposition(-1),
-  m_message_number(-1), m_menustring("")
+    m_message_number(-1), m_menustring(""), m_crefInFocus(focusColor)
 {
-  m_brInFocus.CreateSolidBrush(crefInFocus);
+  m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
 }
 
-CEditExtn::CEditExtn(int message_number, LPCTSTR menustring)
+CEditExtn::CEditExtn(int message_number, LPCTSTR menustring,
+                     COLORREF focusColor)
   : m_bIsFocused(FALSE), m_lastposition(-1),
-  m_message_number(message_number), m_menustring(menustring)
+    m_message_number(message_number), m_menustring(menustring),
+    m_crefInFocus(focusColor)
 {
-  m_brInFocus.CreateSolidBrush(crefInFocus);
+  m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
   // Don't allow if menu string is empty.
   if (m_menustring.IsEmpty())
@@ -133,7 +140,7 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 
   pDC->SetTextColor(crefBlack);
   if (m_bIsFocused == TRUE) {
-    pDC->SetBkColor(crefInFocus);
+    pDC->SetBkColor(m_crefInFocus);
     return m_brInFocus;
   } else {
     pDC->SetBkColor(crefNoFocus);
@@ -317,4 +324,103 @@ void CComboBoxExtn::ChangeColour()
 {
   m_edit.ChangeColour();
   m_listbox.ChangeColour();
+}
+
+//-----------------------------------------------------------------
+// CStaticExtn is meant for sensitive information that you really don't
+// want to be in memory more than necessary, such as master passwords
+//-----------------------------------------------------------------
+struct CSecEditExtn::Impl
+{
+  Impl() : m_field(0) {
+    unsigned char key[20];
+    PWSrand::GetInstance()->GetRandomData(key, sizeof(key));
+    m_bf = new BlowFish(key, sizeof(key));
+    memset(key, 0, sizeof(key));
+  }
+
+  ~Impl() {delete m_bf;}
+  CItemField m_field;
+  BlowFish *m_bf;
+};
+
+CSecEditExtn::CSecEditExtn()
+  : CEditExtn((RGB(255, 222, 222))), // light red
+    m_impl(new Impl)
+{
+}
+
+CSecEditExtn::CSecEditExtn(int message_number, LPCTSTR szmenustring)
+  : CEditExtn(message_number, szmenustring, (RGB(255, 222, 222))),
+    m_impl(new Impl)
+{
+}
+
+BEGIN_MESSAGE_MAP(CSecEditExtn, CEditExtn)
+  //{{AFX_MSG_MAP(CSecEditExtn)
+  ON_CONTROL_REFLECT(EN_UPDATE, OnUpdate)
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+CSecEditExtn::~CSecEditExtn()
+{
+  delete m_impl;
+}
+
+CMyString CSecEditExtn::GetSecureText() const
+{
+  CMyString retval;
+  m_impl->m_field.Get(retval, m_impl->m_bf);
+  return retval;
+}
+
+void CSecEditExtn::SetSecureText(const CMyString &str)
+{
+  m_impl->m_field.Set(str, m_impl->m_bf);
+}
+
+void CSecEditExtn::DoDDX(CDataExchange *pDX, CMyString &str)
+{
+  if (pDX->m_bSaveAndValidate) {
+    str = GetSecureText();
+  } else {
+    SetSecureText(str);
+  }
+}
+
+afx_msg void CSecEditExtn::OnUpdate()
+{
+  // after text's changed
+  // update local store, replace with same number of blanks
+  // This is fairly awkward, as text may have been added or deleted anywhere,
+  // and we need to keep track. Ugh.
+  CMyString new_str, old_str, str;
+  int new_len, old_len;
+  old_str = GetSecureText();
+  GetWindowText(new_str);
+  new_len = new_str.GetLength(); old_len = old_str.GetLength();
+  int delta = new_len - old_len;
+  int startSel, endSel;
+  GetSel(startSel, endSel);
+  if (delta == 0 && startSel == endSel)
+    return;   // needed to avoid infinite loop from SetWindowText
+  if (delta >= 0) { // text added...
+    if (startSel == new_str.GetLength()) { // ...at the end
+      str = old_str;
+      str += new_str.Mid(new_str.GetLength() - delta, delta);
+    } else { // ...in the middle
+      str = old_str.Left(startSel - 1);
+      str += new_str.Mid(startSel - 1, delta);
+      str += old_str.Right(old_len - (endSel - 1));
+    }
+  } else { // text was deleted
+    str = old_str.Left(startSel);
+    str += old_str.Right(new_len - endSel);
+  }
+
+  SetSecureText(str);
+  for (int i = 0; i < new_str.GetLength(); i++)
+    new_str.SetAt(i, TCHAR(' '));
+  SetWindowText(new_str);
+  SetSel(startSel, endSel); // need to restore after Set.
 }

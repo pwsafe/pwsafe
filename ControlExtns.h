@@ -7,12 +7,10 @@
 */
 
 #pragma once
+#include "corelib/MyString.h" // for CSecEditExtn
 
 // ControlExtns.h : header file
 // Extensions to standard Static, Edit, ListBox and Combobox Controls
-
-// Pick a number at the end of the WM_USER range
-#define EM_SELECTALL (WM_APP - 1)
 
 class CStaticExtn : public CStatic
 {
@@ -53,8 +51,9 @@ class CEditExtn : public CEdit
 {
   // Construction
 public:
-  CEditExtn();
-  CEditExtn(int message_number, LPCTSTR szmenustring);
+  CEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
+  CEditExtn(int message_number, LPCTSTR szmenustring,
+            COLORREF focusColor = (RGB(222, 255, 222))); //light green
   void ChangeColour() {m_bIsFocused = TRUE;}
 
   // Attributes
@@ -63,6 +62,7 @@ private:
 
   CBrush m_brInFocus;
   CBrush m_brNoFocus;
+  const COLORREF m_crefInFocus;
 
   int m_lastposition, m_nStartChar, m_nEndChar;
   int m_message_number;
@@ -89,6 +89,32 @@ protected:
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+};
+
+// Following is meant for sensitive information that you really don't
+// want to be in memory more than necessary, such as master passwords
+// We use a CSecEditExtn::Impl class member not for security, but to
+// avoid #including stuff here that really shouldn't be of interest to
+// users of these classes
+
+class CSecEditExtn : public CEditExtn
+{
+ public:
+  CSecEditExtn();
+  CSecEditExtn(int message_number, LPCTSTR szmenustring);
+  virtual ~CSecEditExtn();
+  // Overriding virtuals doesn't work, due to defective
+  // implementation of DDX_Text. Grr.
+  void DoDDX(CDataExchange *pDX, CMyString &str);
+  CMyString GetSecureText() const;
+  void SetSecureText(const CMyString &str);
+
+ protected:
+  DECLARE_MESSAGE_MAP();
+  afx_msg void OnUpdate();
+ private:
+  struct Impl;
+  Impl *m_impl;
 };
 
 class CListBoxExtn : public CListBox

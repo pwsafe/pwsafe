@@ -61,7 +61,7 @@ private:
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
 #endif
-  CEdit m_ctlPasskey;
+  CSecEditExtn m_ctlPasskey;
   CMyString m_passkey;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;

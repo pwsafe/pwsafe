@@ -88,7 +88,8 @@ CPasskeyEntry::~CPasskeyEntry()
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
-  DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
+  // Can't use DDX_Text for CSecEditExtn
+  m_ctlPasskey.DoDDX(pDX, m_passkey);
 
 #if !defined(POCKET_PC)
   if (m_index == GCP_FIRST)
