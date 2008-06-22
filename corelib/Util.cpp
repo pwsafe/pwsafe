@@ -454,14 +454,13 @@ CString PWSUtil::GetTimeStamp()
 CString PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 {
   CString cs_Out;
-  static const CHAR base64ABC[] = 
+  static const char base64ABC[] = 
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-  cs_Out.Empty();
-  for (DWORD i = 0; i < (DWORD)len; i += 3) {
-    LONG l = ( ((LONG)strIn[i]) << 16 ) | 
-               (((i + 1) < len) ? (((LONG)strIn[i + 1]) << 8) : 0) | 
-               (((i + 2) < len) ? ((LONG)strIn[i + 2]) : 0);
+  for (size_t i = 0; i < len; i += 3) {
+    long l = ( ((long)strIn[i]) << 16 ) | 
+               (((i + 1) < len) ? (((long)strIn[i + 1]) << 8) : 0) | 
+               (((i + 2) < len) ? ((long)strIn[i + 2]) : 0);
 
     cs_Out += base64ABC[(l >> 18) & 0x3F];
     cs_Out += base64ABC[(l >> 12) & 0x3F];
