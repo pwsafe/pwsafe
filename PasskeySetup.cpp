@@ -57,8 +57,11 @@ BOOL CPasskeySetup::OnInitDialog()
 void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
-  DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
-  DDX_Text(pDX, IDC_VERIFY, (CString &)m_verify);
+  // Can't use DDX_Text for CSecEditExtn
+  m_ctlPasskey.DoDDX(pDX, m_passkey);
+  m_ctlVerify.DoDDX(pDX, m_verify);
+  DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
+  DDX_Control(pDX, IDC_VERIFY, m_ctlVerify);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)

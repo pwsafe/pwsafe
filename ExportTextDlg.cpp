@@ -67,7 +67,9 @@ void CExportTextDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CExportTextDlg)
-  DDX_Text(pDX, IDC_EXPORT_TEXT_PASSWORD, m_exportTextPassword);
+  // Can't use DDX_Text for CSecEditExtn
+  m_ctlExportTextPassword.DoDDX(pDX, m_exportTextPassword);
+  DDX_Control(pDX, IDC_EXPORT_TEXT_PASSWORD, m_ctlExportTextPassword);
   DDX_Text(pDX, IDC_DEFEXPDELIM, m_defexpdelim);
   DDV_MaxChars(pDX, m_defexpdelim, 1);
   //}}AFX_DATA_MAP

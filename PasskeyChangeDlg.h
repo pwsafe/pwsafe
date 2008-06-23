@@ -12,6 +12,7 @@
 
 #include "corelib/PwsPlatform.h"
 #include "PWDialog.h"
+#include "ControlExtns.h"
 
 class CPasskeyChangeDlg : public CPWDialog
 {
@@ -48,6 +49,10 @@ protected:
 #endif
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+  private:
+  CSecEditExtn m_ctlOldPasskey;
+  CSecEditExtn m_ctlNewPasskey;
+  CSecEditExtn m_ctlConfirmNew;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

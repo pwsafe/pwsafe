@@ -45,9 +45,13 @@ CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
 void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
-  DDX_Text(pDX, IDC_CONFIRMNEW, (CString &)m_confirmnew);
-  DDX_Text(pDX, IDC_NEWPASSKEY, (CString &)m_newpasskey);
-  DDX_Text(pDX, IDC_OLDPASSKEY, (CString &)m_oldpasskey);
+  // Can't use DDX_Text for CSecEditExtn
+  m_ctlNewPasskey.DoDDX(pDX, m_newpasskey);
+  m_ctlOldPasskey.DoDDX(pDX, m_oldpasskey);
+  m_ctlConfirmNew.DoDDX(pDX, m_confirmnew);
+  DDX_Control(pDX, IDC_CONFIRMNEW, m_ctlConfirmNew);
+  DDX_Control(pDX, IDC_NEWPASSKEY, m_ctlNewPasskey);
+  DDX_Control(pDX, IDC_OLDPASSKEY, m_ctlOldPasskey);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPWDialog)
