@@ -13,8 +13,10 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExportXML dialog
 
-#include "PWDialog.h"
+#include "corelib/MyString.h"
 #include "corelib/ItemData.h"
+#include "ControlExtns.h"
+#include "PWDialog.h"
 
 class CExportXMLDlg : public CPWDialog
 {
@@ -25,7 +27,7 @@ public:
   // Dialog Data
   //{{AFX_DATA(CExportXMLDlg)
   enum { IDD = IDD_EXPORT_XML };
-  CString m_ExportXMLPassword;
+  CMyString m_ExportXMLPassword;
   CString m_defexpdelim;
   //}}AFX_DATA
 
@@ -54,4 +56,5 @@ protected:
 private:
   void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX,
     const CString &delimiter);
+  CSecEditExtn m_ctlExportXMLPassword;
 };
