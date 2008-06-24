@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2008-06-18 21:31+0100\n"
+"PO-Revision-Date: 2008-06-22 16:19+0100\n"
 "Last-Translator: Rainer Martin <Rainer Martin <rainer.martin@googlemail.com>>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Bookmarks: 511,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
+"X-Poedit-Bookmarks: 511,0,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -1071,7 +1071,7 @@ msgstr "Schrift ändern"
 
 #: Dlg-ID:127,
 msgid "Change Safe Combination"
-msgstr "Safe-Kombination ändern"
+msgstr "Safekombination ändern"
 
 #: ID:319,
 msgid ""
@@ -2763,13 +2763,15 @@ msgstr "Passwort läuft ab am:"
 
 #: ID:343,
 msgid "Password implies this is an alias entry, but "
-msgstr ""
+msgstr "Laut Passwort ist dies ein Alias-Eintrag, aber"
 
 #: ID:344,
 msgid ""
 "Password implies this is an alias entry, but specifies a base entry with no title.\r\n"
 "A title is mandatory for every entry."
 msgstr ""
+"Laut Passwort ist dies ein Alias-Eintrag. Der zugehörige Basis-Eintrag hat aber keinen Titel.\r\n"
+"Ein Titel ist aber für jeden Eintrag erforderlich."
 
 #: ID:188,
 msgid "Password is too short"
@@ -2781,7 +2783,7 @@ msgstr "Passwort geändert am:"
 
 #: ID:347,
 msgid "Password length is less than sum of 'at least' constraints"
-msgstr ""
+msgstr "Passwort kürzer als Mindestlängenbedingung"
 
 #: ID:333,
 msgid "Password length must be between 4 and 1024."
@@ -2950,7 +2952,7 @@ msgstr "Bitte geben Sie die Safekombination für diese Passwortdatenbank ein."
 
 #: ID:339,
 msgid "Please enter your backup database prefix!"
-msgstr ""
+msgstr "Bitte geben Sie das Präfix Ihrer Datenbanksicherung an!"
 
 #: ID:335,
 msgid "Please name the XML file"
@@ -2979,7 +2981,7 @@ msgstr "Bitte wählen Sie den Speicherort für alle Datensicherungen."
 #: ID:347,
 #, c-format
 msgid "Please specify the name & group for the shortcut to '%s':"
-msgstr ""
+msgstr "Bitte geben Sie Name & Gruppe für das Tastenkürzel '%s' an:"
 
 #: ID:339,
 msgid "Please specify the sub-directory to contain all backups."
@@ -3003,7 +3005,7 @@ msgstr "Kaufen Sie eine unbeschränkte &U3-Version..."
 
 #: Control-ID:1235,
 msgid "Put groups first in display tree"
-msgstr ""
+msgstr "Gruppen im Baum zuerst anzeigen"
 
 #: Control-ID:1072,
 msgid "Put icon in System Tray"
@@ -3011,7 +3013,7 @@ msgstr "Symbol im Infobereich"
 
 #: Control-ID:1030,
 msgid "Query user to set default username"
-msgstr ""
+msgstr "Benutzer nach Standardbenutzernamen fragen"
 
 #: ID:315,
 msgid "R/O"
@@ -3070,10 +3072,10 @@ msgstr "Periodisch (%d Tage)"
 #: Control-ID:65535,#:
 #: Control-ID:1295,
 msgid "Remember last"
-msgstr ""
+msgstr "Merke letztes"
 
 msgid "Remember this for when password created or later changed."
-msgstr ""
+msgstr "Denke daran, wenn das Passwort erzeugt oder später geändert wird."
 
 #: Control-ID:1188,
 msgid "Remove PasswordSafe data from Registry"
@@ -3111,19 +3113,19 @@ msgstr "Spalten zurücksetzen"
 #: Control-ID:1158,#:
 #: Control-ID:1158,
 msgid "Restrict to a subset of entries:"
-msgstr ""
+msgstr "Beschränke auf eine Teilmenge aller Einträge:"
 
 #: ID:329,
 msgid "S"
 msgstr "S"
 
 msgid "S&et"
-msgstr ""
+msgstr "S&etze"
 
 #: Control-ID:1119,#:
 #: Control-ID:1119,
 msgid "S&et..."
-msgstr ""
+msgstr "S&etze"
 
 #: ID:191,
 #, c-format
@@ -3144,12 +3146,14 @@ msgid "Safe Combination:"
 msgstr "Safekombination:"
 
 #: Control-ID:1205,
+#, fuzzy
 msgid "Same as database's"
-msgstr ""
+msgstr "Gleiche wie in der Datenbank"
 
 #: Control-ID:1178,
+#, fuzzy
 msgid "Same as when last saved"
-msgstr ""
+msgstr "Gleiche wie zuletzt gespeichert"
 
 #: Control-ID:1073,
 msgid "Sample"
@@ -3204,9 +3208,9 @@ msgid "See LICENSE for open source details."
 msgstr "See LICENSE for open source details."
 
 #: ID:3867,
-#, c-format
+#, fuzzy, c-format
 msgid "Seek failed on %1"
-msgstr ""
+msgstr "Suche bei %1 gescheitert"
 
 #: ID:339,
 msgid "Select Browser:"
@@ -3238,7 +3242,7 @@ msgstr "Send &Email\tStrg+E"
 
 #: ID:3866,
 msgid "Send Mail failed to send message."
-msgstr ""
+msgstr "Senden der Email fehlgeschlagen."
 
 #: ID:333,
 msgid "Set Date/Time"
@@ -3270,7 +3274,7 @@ msgstr "Setze die maximale Anzahl an gespeicherten Passwörtern auf obigen Wert"
 
 #: ID:195,
 msgid "Sharing violation: file probably open in another application."
-msgstr ""
+msgstr "Fehler bei gemeinsamer Nutzung: Datei wahrscheinlich in anderer Anwendung geöffnet."
 
 #: ID:350,
 msgid "Shift+click to view current policy"
@@ -3353,7 +3357,7 @@ msgstr "Beginne mit der Speicherung vorheriger Passwörter"
 
 #: Control-ID:1264,
 msgid "Static"
-msgstr ""
+msgstr "statisch"
 
 #: Control-ID:1037,
 msgid "Static_Static"
@@ -3537,6 +3541,9 @@ msgid ""
 "\r\n"
 "Do you wish this entry to point to the 'real' base entry?"
 msgstr ""
+"Das Passwort ist im Alias-Format, aber der referenzierte Eintrag '%s:%s:%s' selbst ist ebenfalls im Alias-Format.\r\n"
+"\r\n"
+"Wollen Sie, dass dieser Eintrag auf den 'echten' Basis-Eintrag zeigt?"
 
 #: Control-ID:65535,
 msgid "The password of the selected item has been copied to the clipboard. The clipboard will be securely cleared when Password Safe is closed."
@@ -3552,7 +3559,7 @@ msgstr ""
 
 #: Control-ID:65535,
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
-msgstr "Die Safe Kombination wurde drei mal ohne Erfolg eingegeben. Wenn Sie sie nicht wissen, können Sie entweder eine andere Passwortdatenbank probieren zu öffnen oder eine neue, leere Passwortdatenbank anlegen."
+msgstr "Die Safekombination wurde drei mal ohne Erfolg eingegeben. Wenn Sie sie nicht wissen, können Sie entweder eine andere Passwortdatenbank probieren zu öffnen oder eine neue, leere Passwortdatenbank anlegen."
 
 #: ID:329,
 msgid "The two entries do not match."
@@ -3585,7 +3592,7 @@ msgstr "Es gab einen Fehler beim Setzen des Dateizeigers."
 #: ID:346,
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
-msgstr ""
+msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag oder schon eine Alias-Basis."
 
 #: ID:320,
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
@@ -3657,9 +3664,9 @@ msgid "This program requires the file %s, which was not found on this system."
 msgstr "Dieses Programm erfordert die Datei %s, welche auf diesem System nicht gefunden wurde."
 
 #: ID:346,
-#, c-format
+#, fuzzy, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
-msgstr ""
+msgstr "Das Tastenkürzel-Ziel [%s:%s:%s] ist kein normaler Eintrag oder schon ein Tastenkürzelbasis."
 
 #: ID:340,
 #, c-format
@@ -3697,7 +3704,7 @@ msgstr "Dies wird einen Eintrag löschen, der sich innerhalb dieser Gruppe oder 
 
 #: ID:332,
 msgid "Time out period must be between 1 and 120 minutes."
-msgstr ""
+msgstr "Die Dauer der Zeitüberschreitung muss zwischen 1 und 120 Minuten liegen."
 
 #: ID:327,
 msgid "Title"
@@ -3733,7 +3740,7 @@ msgstr "Baum1"
 
 #: ID:339,
 msgid "Trial Version Limitation"
-msgstr ""
+msgstr "Einschränkung der Test-Version"
 
 #: ID:203,
 #, c-format
@@ -3776,8 +3783,9 @@ msgstr ""
 "Einstellungen, die die Datenbank betreffen, werden beim Schließen in der Datenbank gespeichert, vorausgesetzt, dass diese nicht nur-lesbar oder durch andere Benutzer gesperrt ist."
 
 #: ID:339,
+#, fuzzy
 msgid "Unable to create intermediate backup."
-msgstr ""
+msgstr "Kann die Zwischen-Datensicherung nicht anlegen."
 
 #: ID:189,
 msgid "Unable to determine locker?"
@@ -3820,7 +3828,7 @@ msgstr ""
 
 #: ID:3865,
 msgid "Unable to read write-only property."
-msgstr ""
+msgstr "Kann die Nur-Schreib-Eigenschaft nicht lesen."
 
 #: ID:191,
 msgid "Unable to save configuration file"
@@ -3853,7 +3861,7 @@ msgstr "Kann auf Ihrem Rechner die XML-Datei nicht mittels XML-Schema-Datei (XSD
 
 #: ID:3865,
 msgid "Unable to write read-only property."
-msgstr ""
+msgstr "Kann die Nur-Lese Eigenschaft nicht schreiben."
 
 #: ID:3859,
 #, c-format
@@ -3885,7 +3893,7 @@ msgstr "Safe entsperren"
 
 #: ID:3841,
 msgid "Untitled"
-msgstr ""
+msgstr "Unbenannt"
 
 #: ID:313,
 msgid ""
@@ -3928,8 +3936,9 @@ msgstr ""
 " -g Konfigurationsdatei (statt pwsafe.cfg)"
 
 #: Control-ID:1029,
+#, fuzzy
 msgid "Use"
-msgstr ""
+msgstr "Benutze"
 
 #: Control-ID:1048,
 msgid "Use UPPERCASE letters"
@@ -3957,7 +3966,7 @@ msgstr "Verwende Symbole (z.B. &, %, $, usw.)"
 
 #: ID:320,
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
-msgstr ""
+msgstr "Benutze die hier eingestellte Anwendung um die URL eines Eintrags aufzurufen wenn diese mit [alt] beginnt. z.B. '[alt]http://foo.com'"
 
 #: ID:348,
 msgid "User"
@@ -4005,7 +4014,7 @@ msgstr "Überprüfe:"
 
 #: ID:346,
 msgid "View Aliases"
-msgstr ""
+msgstr "Aliase ansehen"
 
 #: ID:330,
 msgid "View Entry"
@@ -4068,6 +4077,9 @@ msgid ""
 "\n"
 " %s"
 msgstr ""
+"Schwache Safekombination:\n"
+"\n"
+"%s"
 
 #: Control-ID:1115,#:
 #: Control-ID:1109,#:
@@ -4143,6 +4155,8 @@ msgid ""
 "\n"
 "Browse to URL/Send Email"
 msgstr ""
+"\n"
+"URL aufrufen / Email senden"
 
 #: ID:2020,
 msgid ""
@@ -4371,10 +4385,13 @@ msgstr ""
 "Automatische Eingabe starten"
 
 #: ID:332,
+#, fuzzy
 msgid ""
 "\n"
 "Please try another"
 msgstr ""
+"\n"
+"Bitte probieren Sie andere"
 
 #: ID:327,
 msgid ""
@@ -4543,27 +4560,29 @@ msgstr ""
 #: ID:348,
 #, c-format
 msgid "\tNo entries were found containing search string : '%s'"
-msgstr ""
+msgstr "\tEs wurden keine Einträge gefunden, die '%s' enthalten."
 
 #: ID:347,
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "\tThe following advanced options were selected:\r\n"
 "\t\t %s"
 msgstr ""
+"\tDie folgenden erweiterten Optionen wurden ausgewählt:\r\n"
+"\t\t %s"
 
 #: ID:348,
-#, c-format
+#, fuzzy, c-format
 msgid "\tThe following entries were found containing search string : '%s'"
-msgstr ""
+msgstr "\tDie folgenden Einträge enthalten '%s'"
 
 #: ID:205,
 msgid "\tThis entry has been made an alias of associated base entry."
-msgstr ""
+msgstr "\tDieser Eintrag wurde zum Alias des zugehörigen Basiseintrags gemacht."
 
 #: ID:205,
 msgid "\tThis entry remains a normal entry and the password has not be changed."
-msgstr ""
+msgstr "\tDieser Eintrag bleibt ein normaler Eintrag und das Passwort wurde nicht geändert."
 
 #: ID:345,
 msgid "alias"
@@ -4595,11 +4614,11 @@ msgstr "Big Endian"
 
 #: ID:346,
 msgid "conflict"
-msgstr ""
+msgstr "Konflikt"
 
 #: ID:346,
 msgid "conflicts"
-msgstr ""
+msgstr "Konflikte"
 
 #: ID:331,
 msgid "contains"
@@ -4618,16 +4637,16 @@ msgstr "Tage"
 
 #: Control-ID:65535,
 msgid "days before passwords expire"
-msgstr ""
+msgstr "Anzahl Tage bis Passwörter ablaufen"
 
 msgid "days from now"
-msgstr ""
+msgstr "Anzahl Tag von heute"
 
 msgid "days from now."
-msgstr ""
+msgstr "Anzahl Tag von heute."
 
 msgid "days since created or changed."
-msgstr ""
+msgstr "Anzahl Tage seit Erzeugung oder Änderung."
 
 #: ID:331,
 msgid "does not begin with"
@@ -4667,7 +4686,7 @@ msgstr "Dateiname"
 
 #: Control-ID:65535,
 msgid "has the following entries with expired passwords:"
-msgstr ""
+msgstr "hat folgende Einträge mit abgelaufenem Passwort:"
 
 #: ID:314,
 msgid "http://passwordsafe.sourceforge.net/"
@@ -4692,44 +4711,44 @@ msgid "minutes idle"
 msgstr "Minuten untätig"
 
 #: ID:343,
-#, c-format
+#, fuzzy, c-format
 msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr ""
+msgstr "Mehrere Einträge mit Titel %s und Benutzername %s oder Gruppe %s und Titel %s existieren."
 
 #: ID:343,
 #, c-format
 msgid "multiple entries exist with title=%s."
-msgstr ""
+msgstr "Mehrere Einträge mit Titel %s existieren."
 
 #: ID:344,
-#, c-format
+#, fuzzy, c-format
 msgid "no entry exists in the root with title=%s and username=%s."
-msgstr ""
+msgstr "In der Wurzel existiert kein Eintrag mit Titel %s und Benutzername %s."
 
 #: ID:343,
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr ""
+msgstr "Kein Eintrag mit Gruppe %s, Titel %s und leerem Benutzernamen exisitert."
 
 #: ID:343,
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr ""
+msgstr "Kein Eintrag mit Gruppe %s, Titel %s und Benutzername %s exisiert."
 
 #: ID:343,
 #, c-format
 msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr ""
+msgstr "Kein Eintrag mit Titel %s und Benutzername %s oder mit Gruppe %s und Titel %s existiert."
 
 #: ID:343,
 #, c-format
 msgid "no entry exists with title=%s."
-msgstr ""
+msgstr "Kein Eintrag mit Titel %s existiert."
 
 #: ID:204,
-#, c-format
+#, fuzzy, c-format
 msgid "on database %s"
-msgstr ""
+msgstr "auf Datenbank %s"
 
 #: ID:3869,
 msgid "pixels"
@@ -4737,7 +4756,7 @@ msgstr "Pixel"
 
 #: Control-ID:65535,
 msgid "previous passwords per entry"
-msgstr ""
+msgstr "bisherige Passwörter pro Eintrag"
 
 #: ID:339,
 msgid "pwsafe"
