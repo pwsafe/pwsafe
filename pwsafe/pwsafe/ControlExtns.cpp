@@ -352,7 +352,7 @@ CSecEditExtn::CSecEditExtn()
 
 CSecEditExtn::CSecEditExtn(int message_number, LPCTSTR szmenustring)
   : CEditExtn(message_number, szmenustring, (RGB(255, 222, 222))),
-    m_impl(new Impl)
+    m_impl(new Impl), m_secure(true)
 {
 }
 
@@ -367,6 +367,11 @@ CSecEditExtn::~CSecEditExtn()
   delete m_impl;
 }
 
+void CSecEditExtn::SetSecure(bool on_off)
+{
+  m_secure = on_off;
+}
+
 CMyString CSecEditExtn::GetSecureText() const
 {
   CMyString retval;
@@ -377,6 +382,14 @@ CMyString CSecEditExtn::GetSecureText() const
 void CSecEditExtn::SetSecureText(const CMyString &str)
 {
   m_impl->m_field.Set(str, m_impl->m_bf);
+  if (!m_secure)
+    SetWindowText(str);
+  else if (::IsWindow(m_hWnd)) {
+    CString blanks;
+    for (int i = 0; i < str.GetLength(); i++)
+      blanks += TCHAR(' ');
+    SetWindowText(blanks);
+  }
 }
 
 void CSecEditExtn::DoDDX(CDataExchange *pDX, CMyString &str)
@@ -389,6 +402,20 @@ void CSecEditExtn::DoDDX(CDataExchange *pDX, CMyString &str)
 }
 
 afx_msg void CSecEditExtn::OnUpdate()
+{
+  if (m_secure)
+    OnSecureUpdate();
+  else {
+    CMyString str;
+    int startSel, endSel;
+    GetSel(startSel, endSel);
+    GetWindowText(str);
+    SetSecureText(str);
+    SetSel(startSel, endSel); // need to restore after Set.
+  }
+}
+
+void CSecEditExtn::OnSecureUpdate()
 {
   // after text's changed
   // update local store, replace with same number of blanks
@@ -419,8 +446,5 @@ afx_msg void CSecEditExtn::OnUpdate()
   }
 
   SetSecureText(str);
-  for (int i = 0; i < new_str.GetLength(); i++)
-    new_str.SetAt(i, TCHAR(' '));
-  SetWindowText(new_str);
   SetSel(startSel, endSel); // need to restore after Set.
 }
