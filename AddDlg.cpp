@@ -18,7 +18,6 @@
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
 #include "ExpDTDlg.h"
-#include "ControlExtns.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -102,8 +101,8 @@ BOOL CAddDlg::OnInitDialog()
 void CAddDlg::DoDataExchange(CDataExchange* pDX)
 {
    CPWDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
-   DDX_Text(pDX, IDC_PASSWORD2, (CString&)m_password2);
+   m_ex_password.DoDDX(pDX, m_password);
+   m_ex_password2.DoDDX(pDX, m_password2);
    DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
    DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
    DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
@@ -165,13 +164,14 @@ void CAddDlg::ShowPassword()
   m_isPwHidden = false;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
 
+  m_ex_password.SetSecure(false);
   // Remove password character so that the password is displayed
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+  m_ex_password.SetPasswordChar(0);
+  m_ex_password.Invalidate();
 
   // Don't need verification as the user can see the password entered
-  GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
-  ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
+  m_ex_password2.EnableWindow(FALSE);
+  m_ex_password2.Invalidate();
   m_password2.Empty();
 }
 
@@ -179,13 +179,15 @@ void CAddDlg::HidePassword()
 {
   m_isPwHidden = true;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
+  m_ex_password.SetSecure(true);
   // Set password character so that the password is not displayed
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(PSSWDCHAR);
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+  m_ex_password.SetPasswordChar(PSSWDCHAR);
+  m_ex_password.Invalidate();
   // Need verification as the user can not see the password entered
-  GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
-  ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
+  m_ex_password2.EnableWindow(TRUE);
   m_password2 = m_password;
+  m_ex_password2.SetSecureText(m_password2);
+  m_ex_password2.Invalidate();
 }
 
 void CAddDlg::OnOK() 

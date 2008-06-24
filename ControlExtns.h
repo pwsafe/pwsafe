@@ -106,6 +106,8 @@ class CSecEditExtn : public CEditExtn
   // Overriding virtuals doesn't work, due to defective
   // implementation of DDX_Text. Grr.
   void DoDDX(CDataExchange *pDX, CMyString &str);
+  void SetSecure(bool on_off); // on by default
+  bool GetSecure() const {return m_secure;}
   CMyString GetSecureText() const;
   void SetSecureText(const CMyString &str);
 
@@ -113,8 +115,10 @@ class CSecEditExtn : public CEditExtn
   DECLARE_MESSAGE_MAP();
   afx_msg void OnUpdate();
  private:
+  void OnSecureUpdate();
   struct Impl;
   Impl *m_impl;
+  bool m_secure;
 };
 
 class CListBoxExtn : public CListBox
