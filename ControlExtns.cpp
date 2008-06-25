@@ -407,11 +407,8 @@ afx_msg void CSecEditExtn::OnUpdate()
     OnSecureUpdate();
   else {
     CMyString str;
-    int startSel, endSel;
-    GetSel(startSel, endSel);
     GetWindowText(str);
-    SetSecureText(str);
-    SetSel(startSel, endSel); // need to restore after Set.
+    m_impl->m_field.Set(str, m_impl->m_bf);
   }
 }
 
