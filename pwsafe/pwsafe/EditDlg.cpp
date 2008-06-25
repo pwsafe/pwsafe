@@ -136,8 +136,8 @@ CEditDlg::~CEditDlg()
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
 {
    CPWDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
-   DDX_Text(pDX, IDC_PASSWORD2, (CString&)m_password2);
+   m_ex_password.DoDDX(pDX, m_password);
+   m_ex_password2.DoDDX(pDX, m_password2);
    DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
    DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
    DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
@@ -507,13 +507,14 @@ void CEditDlg::ShowPassword()
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
 
   m_password = m_realpassword;
+  m_ex_password.SetSecure(false);
   // Remove password character so that the password is displayed
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+  m_ex_password.SetPasswordChar(0);
+  m_ex_password.Invalidate();
 
   // Don't need verification as the user can see the password entered
   m_password2.Empty();
-  GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
+  m_ex_password2.EnableWindow(FALSE);
 }
 
 void CEditDlg::HidePassword()
@@ -523,12 +524,14 @@ void CEditDlg::HidePassword()
 
   m_password = m_password2 = HIDDEN_PASSWORD;
 
+  m_ex_password.SetSecure(true);
   // Set password character so that the password is not displayed
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(PSSWDCHAR);
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+  m_ex_password.SetPasswordChar(PSSWDCHAR);
+  m_ex_password2.SetSecureText(m_password2);
+  m_ex_password.Invalidate();
 
   // Need verification as the user can not see the password entered
-  GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
+  m_ex_password2.EnableWindow(TRUE);
 }
 
 void CEditDlg::ShowNotes()
@@ -604,7 +607,7 @@ void CEditDlg::OnPasskeyKillfocus()
 
 void CEditDlg::OnPasskeySetfocus()
 {
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetSel(0, -1);
+  m_ex_password.SetSel(0, -1);
 #if defined(POCKET_PC)
   /************************************************************************/
   /* When the password field is activated, pull up the SIP and disable    */

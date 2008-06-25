@@ -69,8 +69,8 @@ private:
   void UpdateHistory();
 
   CComboBoxExtn m_ex_group;
-  CEditExtn m_ex_password;
-  CEditExtn m_ex_password2;
+  CSecEditExtn m_ex_password;
+  CSecEditExtn m_ex_password2;
   CEditExtn m_ex_username;
   CEditExtn m_ex_title;
   CEditExtn m_ex_URL;
