@@ -119,6 +119,7 @@ class CSecEditExtn : public CEditExtn
   struct Impl;
   Impl *m_impl;
   bool m_secure;
+  bool m_in_recursion;
 };
 
 class CListBoxExtn : public CListBox

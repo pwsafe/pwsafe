@@ -330,6 +330,9 @@ void CComboBoxExtn::ChangeColour()
 // CStaticExtn is meant for sensitive information that you really don't
 // want to be in memory more than necessary, such as master passwords
 //-----------------------------------------------------------------
+
+const TCHAR FILLER = TCHAR(0x08); // ASCII backspace doesn't occur in Edit
+
 struct CSecEditExtn::Impl
 {
   Impl() : m_field(0) {
@@ -352,7 +355,7 @@ CSecEditExtn::CSecEditExtn()
 
 CSecEditExtn::CSecEditExtn(int message_number, LPCTSTR szmenustring)
   : CEditExtn(message_number, szmenustring, (RGB(255, 222, 222))),
-    m_impl(new Impl), m_secure(true)
+    m_impl(new Impl), m_secure(true), m_in_recursion(false)
 {
 }
 
@@ -387,7 +390,7 @@ void CSecEditExtn::SetSecureText(const CMyString &str)
   else if (::IsWindow(m_hWnd)) {
     CString blanks;
     for (int i = 0; i < str.GetLength(); i++)
-      blanks += TCHAR(' ');
+      blanks += FILLER;
     SetWindowText(blanks);
   }
 }
@@ -403,45 +406,74 @@ void CSecEditExtn::DoDDX(CDataExchange *pDX, CMyString &str)
 
 afx_msg void CSecEditExtn::OnUpdate()
 {
-  if (m_secure)
-    OnSecureUpdate();
-  else {
+#ifdef DEBUG
+  CString dstr;
+  GetWindowText(dstr);
+  TRACE(_T("CSecEditExtn::OnUpdate(%s)\n"),dstr);
+#endif
+  if (m_secure) {
+    if (!m_in_recursion)
+      OnSecureUpdate();
+  } else {
     CMyString str;
     GetWindowText(str);
     m_impl->m_field.Set(str, m_impl->m_bf);
   }
+  m_in_recursion = false;
 }
 
 void CSecEditExtn::OnSecureUpdate()
 {
   // after text's changed
-  // update local store, replace with same number of blanks
-  // This is fairly awkward, as text may have been added or deleted anywhere,
-  // and we need to keep track. Ugh.
+  // update local store, replace with same number of FILLERS
+  // Note that text may have been added or deleted anywhere, so we
+  // rely on the fact that the user cannot enter FILLER chars,
+  // and treat any non-FILLER character as added or deleted text.
+
+  int startSel, endSel;
+  GetSel(startSel, endSel);
+
   CMyString new_str, old_str, str;
   int new_len, old_len;
   old_str = GetSecureText();
   GetWindowText(new_str);
   new_len = new_str.GetLength(); old_len = old_str.GetLength();
   int delta = new_len - old_len;
-  int startSel, endSel;
-  GetSel(startSel, endSel);
-  if (delta == 0 && startSel == endSel)
-    return;   // needed to avoid infinite loop from SetWindowText
-  if (delta >= 0) { // text added...
-    if (startSel == new_str.GetLength()) { // ...at the end
+  if (delta == 0) { // no-op or text replaced via Paste with same length
+    if (new_len == 0)
+      return;
+    else // note that new_len == old_len
+      for (int i = 0; i < new_len; i++)
+        str += new_str[i] == FILLER ? old_str[i] : new_str[i];
+  } else if (delta >= 0) { // text added, but where?
+    // Added text most likely by typing at end, but can also be
+    // via typing or pasting in another position.
+    if (startSel == new_str.GetLength()) { // - at the end
       str = old_str;
       str += new_str.Mid(new_str.GetLength() - delta, delta);
-    } else { // ...in the middle
-      str = old_str.Left(startSel - 1);
-      str += new_str.Mid(startSel - 1, delta);
-      str += old_str.Right(old_len - (endSel - 1));
+    } else { // - in the beginning or middle
+      // startSel and endSel are one past new text
+      // need to find start of new text;
+      int newEnd = endSel;
+      int newStart = newEnd - 1;
+      while (newStart > 0 && new_str.GetAt(newStart) != FILLER)
+        newStart--;
+      if (newStart == 0) { // beginning
+        str = new_str.Left(newEnd);
+        str += old_str;
+      } else { // middle
+        str = old_str.Left(newStart);
+        str += new_str.Mid(newStart, newEnd - newStart);
+        str += old_str.Right(old_len - newEnd);
+      }
     }
   } else { // text was deleted
     str = old_str.Left(startSel);
     str += old_str.Right(new_len - endSel);
   }
-
+  m_in_recursion = true; // the following change will trigger another update
+  TRACE(_T("CSecEditExtn::OnSecureUpdate: GetSel(%d, %d), str = %s\n"),
+        startSel, endSel, str);
   SetSecureText(str);
   SetSel(startSel, endSel); // need to restore after Set.
 }
