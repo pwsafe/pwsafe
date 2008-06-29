@@ -22,6 +22,8 @@ Changes to Existing Features in 3.13.1
 ======================================
 [1958303] TreeView buttons (+/-) now larger without significantly
 increasing the visible bitmap image.  Also, now transparent.
+[] Drop down list of databases at start-up now retains order of usage
+rather than sorted alphabetically.
 
 New Features for 3.13.1
 =======================
