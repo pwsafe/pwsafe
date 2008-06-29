@@ -450,21 +450,22 @@ void CSecEditExtn::OnSecureUpdate()
     // via typing or pasting in another position.
     if (startSel == new_str.GetLength()) { // - at the end
       str = old_str;
-      str += new_str.Mid(new_str.GetLength() - delta, delta);
+      str += new_str.Mid(new_len - delta, delta);
     } else { // - in the beginning or middle
-      // startSel and endSel are one past new text
-      // need to find start of new text;
-      int newEnd = endSel;
-      int newStart = newEnd - 1;
-      while (newStart > 0 && new_str.GetAt(newStart) != FILLER)
-        newStart--;
+      // need to find start/end of new text;
+      int newEnd, newStart;
+      for (newStart = 0; new_str.GetAt(newStart) == FILLER; newStart++)
+        ;
+      for (newEnd = new_str.GetLength() - 1;
+            new_str.GetAt(newEnd) == FILLER; newEnd--)
+        ;
       if (newStart == 0) { // beginning
-        str = new_str.Left(newEnd);
+        str = new_str.Left(newEnd + 1);
         str += old_str;
       } else { // middle
         str = old_str.Left(newStart);
-        str += new_str.Mid(newStart, newEnd - newStart);
-        str += old_str.Right(old_len - newEnd);
+        str += new_str.Mid(newStart, newEnd - newStart + 1);
+        str += old_str.Right(new_len - newEnd - 1);
       }
     }
   } else { // text was deleted
