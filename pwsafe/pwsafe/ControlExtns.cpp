@@ -438,39 +438,44 @@ void CSecEditExtn::OnSecureUpdate()
   old_str = GetSecureText();
   GetWindowText(new_str);
   new_len = new_str.GetLength(); old_len = old_str.GetLength();
-  int delta = new_len - old_len;
-  if (delta == 0) { // no-op or text replaced via Paste with same length
-    if (new_len == 0)
-      return;
-    else // note that new_len == old_len
-      for (int i = 0; i < new_len; i++)
-        str += new_str[i] == FILLER ? old_str[i] : new_str[i];
-  } else if (delta >= 0) { // text added, but where?
-    // Added text most likely by typing at end, but can also be
-    // via typing or pasting in another position.
-    if (startSel == new_str.GetLength()) { // - at the end
-      str = old_str;
-      str += new_str.Mid(new_len - delta, delta);
-    } else { // - in the beginning or middle
-      // need to find start/end of new text;
-      int newEnd, newStart;
-      for (newStart = 0; new_str.GetAt(newStart) == FILLER; newStart++)
-        ;
-      for (newEnd = new_str.GetLength() - 1;
-            new_str.GetAt(newEnd) == FILLER; newEnd--)
-        ;
-      if (newStart == 0) { // beginning
-        str = new_str.Left(newEnd + 1);
-        str += old_str;
-      } else { // middle
-        str = old_str.Left(newStart);
-        str += new_str.Mid(newStart, newEnd - newStart + 1);
-        str += old_str.Right(new_len - newEnd - 1);
+  // Find start/end of new text:
+  int newEnd, newStart;
+  for (newStart = 0; new_str.GetAt(newStart) == FILLER; newStart++)
+    ;
+  for (newEnd = new_len - 1; newEnd >= 0 && new_str.GetAt(newEnd) == FILLER;
+       newEnd--)
+    ;
+  // Simple case: new text fully replaces old
+  if (newEnd - newStart == new_len - 1) {
+    str = new_str;
+  } else {
+    int delta = new_len - old_len;
+    if (delta == 0) { // no-op or text replaced via Paste with same length
+      if (new_len == 0)
+        return;
+      else // note that new_len == old_len
+        for (int i = 0; i < new_len; i++)
+          str += new_str[i] == FILLER ? old_str[i] : new_str[i];
+    } else if (delta >= 0) { // text added, but where?
+      // Added text most likely by typing at end, but can also be
+      // via typing or pasting in another position.
+      if (newEnd == new_str.GetLength() - 1) { // - at the end
+        str = old_str;
+        str += new_str.Mid(new_len - delta, delta);
+      } else { // - in the beginning or middle
+        if (newStart == 0) { // beginning
+          str = new_str.Left(newEnd + 1);
+          str += old_str;
+        } else { // middle
+          str = old_str.Left(newStart);
+          str += new_str.Mid(newStart, newEnd - newStart + 1);
+          str += old_str.Right(new_len - newEnd - 1);
+        }
       }
+    } else { // text was deleted
+      str = old_str.Left(startSel);
+      str += old_str.Right(new_len - endSel);
     }
-  } else { // text was deleted
-    str = old_str.Left(startSel);
-    str += old_str.Right(new_len - endSel);
   }
   m_in_recursion = true; // the following change will trigger another update
   TRACE(_T("CSecEditExtn::OnSecureUpdate: GetSel(%d, %d), str = %s\n"),
