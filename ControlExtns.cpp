@@ -349,7 +349,7 @@ struct CSecEditExtn::Impl
 
 CSecEditExtn::CSecEditExtn()
   : CEditExtn((RGB(255, 222, 222))), // light red
-    m_impl(new Impl)
+    m_impl(new Impl), m_secure(true), m_in_recursion(false)
 {
 }
 
