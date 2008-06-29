@@ -503,7 +503,6 @@
 #define IDC_STATIC_LTINTERVAL_NOW       1298
 #define IDC_STATIC_LTINTERVAL_ALWAYS    1299
 #define IDC_DEFAULTOPENRO               1300
-#define IDC_BUTTON1                     1301
 
 // Next default values for new objects
 // 
@@ -511,7 +510,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        417
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1302
+#define _APS_NEXT_CONTROL_VALUE         1301
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif
