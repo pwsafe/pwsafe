@@ -110,7 +110,7 @@ public:
   afx_msg void OnOpenFileBrowser();
 
 private:
-  void SetHeightAndWidth(const int num);
+  void SetHeight(const int num);
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -124,12 +124,13 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
   ON_BN_CLICKED(IDC_BTN_BROWSE, &CPasskeyEntry::OnOpenFileBrowser)
 END_MESSAGE_MAP()
 
-static CString NarrowPathText(const CString &text, const int Width)
+static CString NarrowPathText(const CString &text)
 {
+  const int Width = 48;
   CString retval;
   if (text.GetLength() > Width) {
-    retval =  text.Left(Width / 2-5) +
-      _T(" ... ") + text.Right(Width / 2);
+    retval =  text.Left(Width/2-5) +
+      _T(" ... ") + text.Right(Width/2);
   } else {
     retval = text;
   }
@@ -202,38 +203,23 @@ CPasskeyEntry::OnInitDialog(void)
     ASSERT(mru != NULL);
 
     const int N = mru->GetSize();
-    // First find maximum length of files
-    int maxlen(-1);
-    if (!m_filespec.IsEmpty())
-      maxlen = m_filespec.GetLength();
-
-    for (int i = 0; i < N; i++) {
-      const CString &str = (*mru)[i];
-      if (!str.IsEmpty())
-        maxlen = max(maxlen, str.GetLength());
-    }
-
-    if (maxlen < 0)
-      maxlen = 50;
-    if (maxlen > 100)
-      maxlen = 100;
 
     if (!m_filespec.IsEmpty()) {
-      m_MRU_combo.AddString(NarrowPathText(m_filespec, maxlen));
-      m_MRU_combo.SelectString(-1, NarrowPathText(m_filespec, maxlen));
+      m_MRU_combo.AddString(NarrowPathText(m_filespec));
+      m_MRU_combo.SelectString(-1, NarrowPathText(m_filespec));
       m_MRU_combo.SetItemData(0, DWORD_PTR(-1));
     }
 
     for (int i = 0; i < N; i++) {
       const CString &str = (*mru)[i];
       if (str != m_filespec && !str.IsEmpty()) {
-        int li = m_MRU_combo.AddString(NarrowPathText(str, maxlen));
+        int li = m_MRU_combo.AddString(NarrowPathText(str));
         if (li != CB_ERR && li != CB_ERRSPACE)
           m_MRU_combo.SetItemData(li, i);
       }
     }
     if (N > 0) {
-      SetHeightAndWidth(N);
+      SetHeight(N);
     }
   }
 
@@ -520,44 +506,17 @@ void CPasskeyEntry::OnOpenFileBrowser()
   }
 }
 
-void CPasskeyEntry::SetHeightAndWidth(const int num)
+void CPasskeyEntry::SetHeight(const int num)
 {
   // Find the longest string in the list box.
   CString str;
+  CRect rect;
   CSize sz;
-  int dx(0);
-  TEXTMETRIC tm;
-  CDC* pDC = m_MRU_combo.GetDC();
-  CFont* pFont = m_MRU_combo.GetFont();
-
-  // Select the ComboBox font, save the old font
-  CFont* pOldFont = pDC->SelectObject(pFont);
-  // Get the text metrics for avg char width
-  pDC->GetTextMetrics(&tm);
-
-  for (int i = 0; i < num; i++) {
-    m_MRU_combo.GetLBText(i, str);
-    sz = pDC->GetTextExtent(str);
-
-    // Add the average width to prevent clipping
-    sz.cx += tm.tmAveCharWidth;
-
-    if (sz.cx > dx)
-      dx = sz.cx;
-  }
-  dx += 2 * ::GetSystemMetrics(SM_CXEDGE) + 5;
-
-  // Select the old font back into the DC
-  pDC->SelectObject(pOldFont);
-  m_MRU_combo.ReleaseDC(pDC);
-
-  // Now set column widths
-  m_MRU_combo.SetDroppedWidth(dx);
 
   // Try to ensure that dropdown list is big enough for all entries and
   // therefore no scrolling
   int ht = m_MRU_combo.GetItemHeight(0);
-  CRect rect;
+
   m_MRU_combo.GetWindowRect(&rect);
 
   sz.cx = rect.Width();
