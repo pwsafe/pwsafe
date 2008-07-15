@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1" >
+
+<xs:annotation>
+  <xs:documentation xml:lang="en">
+    NOTE: The version on the 'xs:schema' statement above must be greater or equal to that
+    specified on the XML 'filters' element and both must be greater of equal to the version
+    supported by PasswordSafe.  If either of these are not true, the filters cannot be
+    loaded into PasswordSafe.
+
+    This XML Schema corresponds to V3.14 of Password Safe for filters.
+    Rules:
+      EQ - equals
+      NE - not equals
+      AC - active
+      IA - inactive
+      PR - present
+      NP - not preset
+      SE - set
+      NS - not set
+      IS - is
+      NI - is not
+      BE - begins with
+      NB - does not begin with
+      EN - ends with
+      ND - does not end with
+      CO - contains
+      NC - does not contain
+      BT - between
+      LT - less than
+      LE - less than or equal
+      GT - greater than
+      GE - greater than or equal
+      BF - before
+      AF - after
+      EX - expired
+      WX - will expire
+  </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="stringType">
+  <xs:restriction base="xs:string">
+    <xs:whiteSpace value="preserve" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="nonblankstringType">
+  <xs:restriction base="xs:string">
+    <xs:minLength value="1" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="boolType">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="0" />
+    <xs:maxInclusive value="1" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="fileuuidType">
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA­Z]{12}" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="password_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="EQ" />
+    <xs:enumeration value="NE" />
+    <xs:enumeration value="BE" />
+    <xs:enumeration value="NB" />
+    <xs:enumeration value="EN" />
+    <xs:enumeration value="ND" />
+    <xs:enumeration value="CO" />
+    <xs:enumeration value="NC" />
+    <xs:enumeration value="EX" />
+    <xs:enumeration value="WX" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="string_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="EQ" />
+    <xs:enumeration value="NE" />
+    <xs:enumeration value="BE" />
+    <xs:enumeration value="NB" />
+    <xs:enumeration value="EN" />
+    <xs:enumeration value="ND" />
+    <xs:enumeration value="CO" />
+    <xs:enumeration value="NC" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="stringpresent_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="EQ" />
+    <xs:enumeration value="NE" />
+    <xs:enumeration value="PR" />
+    <xs:enumeration value="NP" />
+    <xs:enumeration value="BE" />
+    <xs:enumeration value="NB" />
+    <xs:enumeration value="EN" />
+    <xs:enumeration value="ND" />
+    <xs:enumeration value="CO" />
+    <xs:enumeration value="NC" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="integer_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="EQ" />
+    <xs:enumeration value="NE" />
+    <xs:enumeration value="PR" />
+    <xs:enumeration value="NP" />
+    <xs:enumeration value="BT" />
+    <xs:enumeration value="LT" />
+    <xs:enumeration value="LE" />
+    <xs:enumeration value="GT" />
+    <xs:enumeration value="GE" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="date_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="EQ" />
+    <xs:enumeration value="NE" />
+    <xs:enumeration value="PR" />
+    <xs:enumeration value="NP" />
+    <xs:enumeration value="BT" />
+    <xs:enumeration value="BF" />
+    <xs:enumeration value="AF" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="booleanset_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="SE" />
+    <xs:enumeration value="NS" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="booleanpresent_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="PR" />
+    <xs:enumeration value="NP" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="booleanactive_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="AC" />
+    <xs:enumeration value="IA" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="entry_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="IS" />
+    <xs:enumeration value="NI" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="logicType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="and" />
+    <xs:enumeration value="or" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="entryType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="normal" />
+    <xs:enumeration value="alias" />
+    <xs:enumeration value="shortcut" />
+    <xs:enumeration value="aliasbase" />
+    <xs:enumeration value="shortcutbase" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="matchPassword">
+  <xs:sequence>
+    <xs:element name="string" type="stringType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="case" type="boolType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="warn" type="xs:integer" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="matchString">
+  <xs:sequence>
+    <xs:element name="string" type="stringType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="case" type="boolType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="matchInteger">
+  <xs:sequence>
+    <xs:element name="num1" type="xs:integer" minOccurs="1" maxOccurs="1" />
+    <xs:element name="num2" type="xs:integer" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="matchDate">
+  <xs:sequence>
+    <xs:element name="date1" type="xs:date" minOccurs="1" maxOccurs="1" />
+    <xs:element name="date2" type="xs:date" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="matchEntry">
+  <xs:sequence>
+    <xs:element name="type" type="entryType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="passwordfilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="password_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="test" type="matchPassword" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="stringfilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="string_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="test" type="matchString" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="stringpresentfilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="stringpresent_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="test" type="matchString" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="integerfilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="integer_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="test" type="matchInteger" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="datefilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="date_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="test" type="matchDate" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="entryfilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="entry_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="test" type="matchEntry" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="passwordhistoryentry" >
+  <xs:sequence>
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="passwordpolicyentry" >
+  <xs:sequence>
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="booleansetfilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="booleanset_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="booleanpresentfilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="booleanpresent_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="booleanactivefilterentry" >
+  <xs:sequence>
+      <xs:element name="rule" type="booleanactive_ruleType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:group name="filter_group" >
+  <xs:choice>
+    <xs:element name="group" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="grouptitle" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="title" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="user" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="notes" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="password" type="passwordfilterentry" minOccurs="1" maxOccurs="1" />
+
+    <xs:element name="create_time" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="password_modified_time" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="last_access_time" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="expiry_time" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="record_modified_time" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+
+    <xs:element name="url" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="autotype" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="password_expiry_interval" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+
+    <xs:element name="password_history" type="passwordhistoryentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="history_present" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="history_active" type="booleanactivefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="history_number" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="history_maximum" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="history_changedate" type="datefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="history_passwords" type="passwordfilterentry" minOccurs="1" maxOccurs="1" />
+
+    <xs:element name="password_policy" type="passwordpolicyentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_present" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_length" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_number_lowercase" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_number_uppercase" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_number_digits" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_number_symbols" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_easyvision" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_pronounceable" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_hexadecimal" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
+
+    <xs:element name="entrytype" type="entryfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="unknownfields" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />
+  </xs:choice>
+</xs:group>
+
+<!-- Start of proper Password Safe Filter validation XSD -->
+<xs:element name="filters">
+  <xs:complexType>
+    <xs:sequence>
+      <!-- Start Filters Fields -->
+      <xs:element name="filter" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="filter_entry" minOccurs="1" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:group ref="filter_group" minOccurs="1" maxOccurs="unbounded" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="filtername" type="nonblankstringType" use="required" />
+        </xs:complexType>
+        <!-- End Filters Fields -->
+      </xs:element>
+    </xs:sequence>
+    <!-- Start Filters XSD Attributes -->
+    <xs:attribute name="version" type="xs:positiveInteger" use="required" />
+    <!-- End Filters XSD Attributes -->
+    <!-- Start Database Optional Attributes -->
+    <xs:attribute name="Database" type="stringType" use="optional" />
+    <xs:attribute name="ExportTimeStamp" type="xs:dateTime" use="optional" />
+    <xs:attribute name="FromDatabaseFormat" type="stringType" use="optional" />
+    <xs:attribute name="WhatSaved" type="stringType" use="optional" />
+    <xs:attribute name="WhoSaved" type="stringType" use="optional" />
+    <xs:attribute name="WhenLastSaved" type="xs:dateTime" use="optional" />
+    <xs:attribute name="Database_uuid" type="fileuuidType" use="optional" />
+    <!-- End Database Optional Attributes -->
+  </xs:complexType>
+  <xs:unique name="UniqueFilterName">
+    <xs:selector xpath="filter" />
+    <xs:field xpath="@filtername" />
+  </xs:unique>
+</xs:element>
+</xs:schema>
+<!-- End of proper Password Safe filter validation XSD -->

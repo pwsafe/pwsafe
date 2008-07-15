@@ -64,8 +64,8 @@ END_MESSAGE_MAP()
 
 HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
-  if (!this->IsWindowEnabled() || !m_bUserColour)
-    return NULL;
+  if (!this->IsWindowEnabled() || m_bUserColour == FALSE)
+    return (HBRUSH)NULL;
 
   pDC->SetTextColor(m_cfUser);
   pDC->SetBkColor(GetSysColor(COLOR_BTNFACE));

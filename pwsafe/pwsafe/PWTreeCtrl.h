@@ -65,6 +65,8 @@ public:
   void OnDragLeave();
   bool IsDropOnMe() {return m_bWithinThisInstance;}
   int GetDDType() {return m_DDType;}
+  void SetFilterState(bool bState);
+  bool WasLabelEdited() {return m_bEditLabelCompleted;};
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
@@ -77,6 +79,7 @@ protected:
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg void OnTimer(UINT nIDEvent);
+  afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   //
   //afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
   //}}AFX_MSG
@@ -125,4 +128,8 @@ private:
   UINT m_nHoverNDTimerID, m_nShowNDTimerID;
   CPoint m_HoverNDPoint;
   bool m_bShowNotes, m_bMouseInWindow;
+
+  // Filter
+  bool m_bFilterActive;
+  bool m_bEditLabelCompleted;
 };

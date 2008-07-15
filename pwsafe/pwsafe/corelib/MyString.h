@@ -68,6 +68,7 @@ public:
   {m_mystring.TrimLeft(); m_mystring.TrimRight(); return *this}
 #endif
   void MakeLower() {m_mystring.MakeLower();}
+  void MakeUpper() {m_mystring.MakeUpper();}
   int Compare(const LPCTSTR lpszOther) const {return m_mystring.Compare(lpszOther);}
   int CompareNoCase(const LPCTSTR lpszOther) const {return m_mystring.CompareNoCase(lpszOther);}
   BOOL IsOnlyWhiteSpace() const

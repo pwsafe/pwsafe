@@ -210,7 +210,7 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
 
   ASSERT(m_fish != NULL && m_IV != NULL);
   retval = _readcbc(m_fd, buffer, buffer_len, type,
-	  m_fish, m_IV, m_terminal, m_fileLength);
+    m_fish, m_IV, m_terminal, m_fileLength);
 
   if (buffer_len > 0) {
     if (buffer_len < length || data == NULL)
@@ -728,7 +728,7 @@ bool PWSfile::Decrypt(const CString &fn, const CMyString &passwd)
     unsigned char dummyType;
     unsigned char *pwd = NULL;
     int passlen = 0;
-	long file_len = PWSUtil::fileLength(in);
+    long file_len = PWSUtil::fileLength(in);
     ConvertString(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, salt, SaltLength);
     trashMemory(pwd, passlen);

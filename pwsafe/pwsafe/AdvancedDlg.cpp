@@ -12,6 +12,7 @@
 #include "passwordsafe.h"
 #include "AdvancedDlg.h"
 #include "corelib/ItemData.h"
+#include "corelib/corelib.h"
 #include "ThisMfcApp.h"
 #include "resource.h"
 #include "resource3.h"
@@ -93,29 +94,29 @@ BOOL CAdvancedDlg::OnInitDialog()
   SetWindowText(cs_text);
 
   CComboBox *cboSubgroupFunction = (CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION);
-  if (cboSubgroupFunction->GetCount () == 0) {
-    cs_text.LoadString(IDS_EQUALS);
+  if (cboSubgroupFunction->GetCount() == 0) {
+    cs_text.LoadString(IDSC_EQUALS);
     iItem = cboSubgroupFunction->AddString(cs_text);
     cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_EQUALS);
-    cs_text.LoadString(IDS_DOESNOTEQUAL);
+    cs_text.LoadString(IDSC_DOESNOTEQUAL);
     iItem = cboSubgroupFunction->AddString(cs_text);
     cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTEQUAL);
-    cs_text.LoadString(IDS_BEGINSWITH);
+    cs_text.LoadString(IDSC_BEGINSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
     cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_BEGINS);
-    cs_text.LoadString(IDS_DOESNOTBEGINSWITH);
+    cs_text.LoadString(IDSC_DOESNOTBEGINSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
     cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTBEGIN);
-    cs_text.LoadString(IDS_ENDSWITH);
+    cs_text.LoadString(IDSC_ENDSWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
     cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_ENDS);
-    cs_text.LoadString(IDS_DOESNOTENDWITH);
+    cs_text.LoadString(IDSC_DOESNOTENDWITH);
     iItem = cboSubgroupFunction->AddString(cs_text);
     cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTEND);
-    cs_text.LoadString(IDS_CONTAINS);
+    cs_text.LoadString(IDSC_CONTAINS);
     iItem = cboSubgroupFunction->AddString(cs_text);
     cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_CONTAINS);
-    cs_text.LoadString(IDS_DOESNOTCONTAIN);
+    cs_text.LoadString(IDSC_DOESNOTCONTAIN);
     iItem = cboSubgroupFunction->AddString(cs_text);
     cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTCONTAIN);
   }

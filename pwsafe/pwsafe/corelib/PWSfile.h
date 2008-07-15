@@ -18,6 +18,7 @@
 #include "MyString.h"
 #include "UUIDGen.h"
 #include "UnknownField.h"
+#include "filters.h"
 
 #define MIN_HASH_ITERATIONS 2048
 
@@ -96,12 +97,18 @@ public:
   const HeaderRecord &GetHeader() const {return m_hdr;}
   void SetHeader(const HeaderRecord &h) {m_hdr = h;}
 
+  void SetFilters(MapFilters &DatabaseFilters)
+  {m_MapDatabaseFilters = DatabaseFilters;}
+
   void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
   void SetCurVersion(VERSION v) {m_curversion = v;}
   void GetUnknownHeaderFields(UnknownFieldList &UHFL);
   void SetUnknownHeaderFields(UnknownFieldList &UHFL);
   int GetNumRecordsWithUnknownFields()
   {return m_nRecordsWithUnknownFields;}
+
+  // Filters
+  MapFilters m_MapDatabaseFilters;
 
 protected:
   PWSfile(const CMyString &filename, RWmode mode);

@@ -21,6 +21,8 @@ public:
   {m_bUserColour = TRUE; m_cfUser = cfUser;}
   void ResetColour()
   {m_bUserColour = FALSE;}
+  BOOL GetColourState()
+  {return m_bUserColour;}
 
   // Attributes
 private:

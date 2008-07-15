@@ -10,10 +10,12 @@
 //-----------------------------------------------------------------------------
 
 #include "Match.h"
+#include "ItemData.h"
+#include "corelib.h"
 #include <time.h>
 
-bool PWSMatch::Matches(CMyString string1, CMyString &csValue,
-                      const int &iFunction)
+bool PWSMatch::Match(CMyString string1, CMyString &csValue,
+                     const int &iFunction)
 {
   const int str_len = string1.GetLength();
   const int val_len = csValue.GetLength();
@@ -90,8 +92,8 @@ bool PWSMatch::Matches(CMyString string1, CMyString &csValue,
   return true; // should never get here!
 }
 
-bool PWSMatch::Matches(const int &num1, const int &num2, const int &iValue,
-                      const int &iFunction)
+bool PWSMatch::Match(const int &num1, const int &num2, const int &iValue,
+                     const int &iFunction)
 {
   switch (iFunction) {
     case MR_EQUALS:
@@ -114,8 +116,8 @@ bool PWSMatch::Matches(const int &num1, const int &num2, const int &iValue,
   return false;
 }
 
-bool PWSMatch::Matches(const time_t &time1, const time_t &time2, const time_t &tValue,
-                      const int &iFunction)
+bool PWSMatch::Match(const time_t &time1, const time_t &time2, const time_t &tValue,
+                     const int &iFunction)
 {
   switch (iFunction) {
     case MR_EQUALS:
@@ -134,7 +136,7 @@ bool PWSMatch::Matches(const time_t &time1, const time_t &time2, const time_t &t
   return false;
 }
 
-bool PWSMatch::Matches(const bool bValue, const int &iFunction)
+bool PWSMatch::Match(const bool bValue, const int &iFunction)
 {
   bool rc;
 
@@ -154,4 +156,145 @@ bool PWSMatch::Matches(const bool bValue, const int &iFunction)
       rc = false;
   }
   return rc;
+}
+
+char * PWSMatch::GetRuleString(MatchRule rule)
+{
+  char * pszrule = "  ";
+  switch (rule) {
+    case MR_INVALID: pszrule = "  "; break;
+    case MR_EQUALS: pszrule = "EQ"; break;
+    case MR_NOTEQUAL: pszrule = "NE"; break;
+    case MR_ACTIVE: pszrule = "AC"; break;
+    case MR_INACTIVE: pszrule = "IA"; break;
+    case MR_PRESENT: pszrule = "PR"; break;
+    case MR_NOTPRESENT: pszrule = "NP"; break;
+    case MR_SET: pszrule = "SE"; break;
+    case MR_NOTSET: pszrule = "NS"; break;
+    case MR_IS: pszrule = "IS"; break;
+    case MR_ISNOT: pszrule = "NI"; break;
+    case MR_BEGINS: pszrule = "BE"; break;
+    case MR_NOTBEGIN: pszrule = "NB"; break;
+    case MR_ENDS: pszrule = "EN"; break;
+    case MR_NOTEND: pszrule = "ND"; break;
+    case MR_CONTAINS: pszrule = "CO"; break;
+    case MR_NOTCONTAIN: pszrule = "NC"; break;
+    case MR_BETWEEN: pszrule = "BT"; break;
+    case MR_LT: pszrule = "LT"; break;
+    case MR_LE: pszrule = "LE"; break;
+    case MR_GT: pszrule = "GT"; break;
+    case MR_GE: pszrule = "GE"; break;
+    case MR_BEFORE: pszrule = "BF"; break;
+    case MR_AFTER: pszrule = "AF"; break;
+    case MR_EXPIRED: pszrule = "EX"; break;  // Special Password rule
+    case MR_WILLEXPIRE: pszrule = "WX"; break;  // Special Password rule
+    default:
+      ASSERT(0);
+  }
+  return pszrule;
+}
+
+UINT PWSMatch::GetRule(MatchRule rule)
+{
+  UINT id(0);
+  switch (rule) {
+    case MR_INVALID: id = IDSC_INVALID; break;
+    case MR_EQUALS: id = IDSC_EQUALS; break;
+    case MR_NOTEQUAL: id = IDSC_DOESNOTEQUAL; break;
+    case MR_ACTIVE: id = IDSC_ISACTIVE; break;
+    case MR_INACTIVE: id = IDSC_ISINACTIVE; break;
+    case MR_PRESENT: id = IDSC_ISPRESENT; break;
+    case MR_NOTPRESENT: id = IDSC_ISNOTPRESENT; break;
+    case MR_SET: id = IDSC_SET; break;
+    case MR_NOTSET: id = IDSC_NOTSET; break;
+    case MR_IS: id = IDSC_IS; break;
+    case MR_ISNOT: id = IDSC_ISNOT; break;
+    case MR_BEGINS: id = IDSC_BEGINSWITH; break;
+    case MR_NOTBEGIN: id = IDSC_DOESNOTBEGINSWITH; break;
+    case MR_ENDS: id = IDSC_ENDSWITH; break;
+    case MR_NOTEND: id = IDSC_DOESNOTENDWITH; break;
+    case MR_CONTAINS: id = IDSC_CONTAINS; break;
+    case MR_NOTCONTAIN: id = IDSC_DOESNOTCONTAIN; break;
+    case MR_BETWEEN: id = IDSC_BETWEEN; break;
+    case MR_LT: id = IDSC_LESSTHAN; break;
+    case MR_LE: id = IDSC_LESSTHANEQUAL; break;
+    case MR_GT: id = IDSC_GREATERTHAN; break;
+    case MR_GE: id = IDSC_GREATERTHANEQUAL; break;
+    case MR_BEFORE: id = IDSC_BEFORE; break;
+    case MR_AFTER: id = IDSC_AFTER; break;
+    case MR_EXPIRED: id = IDSC_EXPIRED; break;  // Special Password rule
+    case MR_WILLEXPIRE: id = IDSC_WILLEXPIRE; break;  // Special Password rule
+    default:
+      ASSERT(0);
+  }
+  return id;
+}
+
+void PWSMatch::GetMatchType(const MatchType &mtype,
+                            const int &fnum1, const int &fnum2,
+                            const time_t &fdate1, const time_t &fdate2,
+                            const CString &fstring, const int &fcase,
+                            const int &etype, const bool &bBetween,
+                            CString &cs1, CString &cs2)
+{
+  cs1 = cs2 = _T("");
+  UINT id(0);
+
+  switch (mtype) {
+    case MT_INVALID:
+      cs1.LoadString(IDSC_INVALID);
+      break;
+    case MT_PASSWORD:
+      if (fnum1 > 0) {
+        cs1.Format(IDSC_EXPIRE_IN_DAYS, fnum1);
+        break;
+      }
+      // Note: purpose drop through to standard 'string' processing
+    case MT_STRING:
+      cs1 = fstring;
+      cs2.LoadString(fcase == 0 ? IDSC_CASE_INSENSITIVE : IDSC_CASE_SENSITIVE);
+      break;
+    case MT_INTEGER:
+      cs1.Format(_T("%d"), fnum1);
+      if (bBetween)
+        cs2.Format(_T("%d"), fnum2);
+      break;
+    case MT_DATE:
+      {
+        struct tm st_s;
+        errno_t err;
+        err = _localtime32_s(&st_s, &fdate1);
+        ASSERT(err == 0);
+        TCHAR tc_buf1[80];
+        _tcsftime(tc_buf1, sizeof(tc_buf1) / sizeof(tc_buf1[0]), _T("%x"), &st_s);
+        cs1 = tc_buf1;
+        if (bBetween) {
+          err = _localtime32_s(&st_s, &fdate2);
+          ASSERT(err == 0);
+          TCHAR tc_buf2[80];
+          _tcsftime(tc_buf2, sizeof(tc_buf2) / sizeof(tc_buf2[0]), _T("%x"), &st_s);
+          cs2 = tc_buf2;
+        }
+      }
+      break;
+    case MT_BOOL:
+    case MT_PWHIST:
+    case MT_POLICY:
+      break;
+    case MT_ENTRYTYPE:
+      switch (etype) {
+        case CItemData::ET_NORMAL: id = IDSC_FNORMAL; break;
+        case CItemData::ET_ALIASBASE: id = IDSC_FALIASBASE; break;
+        case CItemData::ET_ALIAS: id = IDSC_FALIAS; break;
+        case CItemData::ET_SHORTCUTBASE: id = IDSC_FSHORTCUTBASE; break;
+        case CItemData::ET_SHORTCUT: id = IDSC_FSHORTCUT; break;
+        default:
+          ASSERT(0);
+          id = IDSC_INVALID;
+      }
+      cs1.LoadString(id);
+      break;
+    default:
+      ASSERT(0);
+  }
 }

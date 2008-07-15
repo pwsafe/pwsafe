@@ -174,9 +174,6 @@ BOOL CCompareResultsDlg::OnInitDialog()
   }
 
   // Put on StatusBar
-  CRect rcClientStart;
-  CRect rcClientNow;
-  GetClientRect(rcClientStart);
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
 
   // Arrange all the controls - needed for resizeable dialog

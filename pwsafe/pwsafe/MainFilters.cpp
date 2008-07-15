@@ -1,0 +1,961 @@
+/*
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
+/// file MainView.cpp
+//
+// View-related methods of DboxMain
+//-----------------------------------------------------------------------------
+
+#include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+
+#if defined(POCKET_PC)
+#include "pocketpc/resource.h"
+#else
+#include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
+#endif
+
+#include "DboxMain.h"
+#include "SetFiltersDlg.h"
+#include "FilterActionsDlg.h"
+#include "SaveFilterDlg.h"
+#include "ViewFilterDlg.h"
+#include "ExportFiltersDlg.h"
+#include "GeneralMsgBox.h"
+
+#include "corelib/PWSFilters.h"
+#include "corelib/PWHistory.h"
+#include "corelib/pwsprefs.h"
+#include "corelib/filters.h"
+#include "corelib/match.h"
+#include "corelib/PWSfile.h"
+#include "corelib/PWSdirs.h"
+
+using namespace std;
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+void DboxMain::OnApplyFilter()
+{
+  if (!m_bFilterActive && 
+      (m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive) == 0)
+    return;
+
+  m_bFilterActive = !m_bFilterActive;
+
+  ApplyFilters();
+}
+
+void DboxMain::OnSetFilter()
+{
+  st_filters filters(m_filters);
+  CSetFiltersDlg sf(this, &filters, WM_EXECUTE_FILTERS);
+
+  INT_PTR rc = sf.DoModal();
+  if (rc == IDOK) {
+    // If filters currently active - update and re-apply
+    // If not, just update
+    m_filters.Empty();
+    m_filters = filters;
+
+    bool bFilters = (m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive) > 0;
+
+    if (m_bFilterActive) {
+      if (bFilters)
+        m_bFilterActive = true;
+      else
+        m_bFilterActive = false;
+
+      ApplyFilters();
+    }
+    else if (bFilters) {
+      CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
+      mainTBCtrl.EnableButton(ID_MENUITEM_APPLYFILTER, bFilters ? TRUE : FALSE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_CLEARFILTER, bFilters ? TRUE : FALSE);
+    }
+  }
+}
+
+void DboxMain::OnClearFilter()
+{
+  m_filters.Empty();
+
+  m_bFilterActive = false;
+
+  ApplyFilters();
+}
+
+
+void DboxMain::ApplyFilters()
+{
+  m_statusBar.SetFilterStatus(m_bFilterActive);
+ 
+  m_statusBar.Invalidate();
+  m_statusBar.UpdateWindow();
+
+  m_ctlItemTree.SetFilterState(m_bFilterActive);
+  m_ctlItemList.SetFilterState(m_bFilterActive);
+  m_ctlItemTree.Invalidate();
+  m_ctlItemList.Invalidate();
+
+  CreateGroups();
+
+  RefreshViews();
+
+  bool bFilters = (m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive) > 0;
+  CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
+  mainTBCtrl.EnableButton(ID_MENUITEM_APPLYFILTER, bFilters ? TRUE : FALSE);
+  mainTBCtrl.EnableButton(ID_MENUITEM_CLEARFILTER, bFilters ? TRUE : FALSE);
+
+  // Clear Find as old entries might not now be in the List View (which is how
+  // Find works).  Also, hide it if visible.
+  m_FindToolBar.ClearFind();
+  if (m_FindToolBar.IsVisible())
+    OnHideFindToolBar();
+
+  if (m_bFilterActive)
+    m_ctlItemTree.OnExpandAll();
+
+  // Update Status Bar
+  UpdateStatusBar();
+}
+
+LRESULT DboxMain::OnExecuteFilters(WPARAM wParam, LPARAM /* lParam */)
+{
+  // Called when user presses "Apply" on main SetFilters dialog
+  st_filters *pfilters = reinterpret_cast<st_filters *>(wParam);
+  m_filters.Empty();
+
+  m_filters = (*pfilters);
+
+  m_bFilterActive = (m_filters.num_Mactive + m_filters.num_Hactive + 
+                     m_filters.num_Pactive) > 0;
+
+  ApplyFilters();
+
+  return 0L;
+}
+
+bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
+{
+  bool thistest_rc, thisgroup_rc;
+  bool bValue(false);
+  CItemData *pci;
+
+  if ((filters.num_Mactive + filters.num_Hactive + filters.num_Pactive) == 0)
+    return true;
+
+  const CItemData::EntryType entrytype = ci.GetEntryType();
+
+  std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
+  for (Fltgroup_citer = m_vMflgroups.begin(); 
+       Fltgroup_citer != m_vMflgroups.end(); Fltgroup_citer++) {
+    const std::vector<int> &group = *Fltgroup_citer;
+
+    int tests(0);
+    thisgroup_rc = false;
+    std::vector<int>::const_iterator Fltnum_citer;
+    for (Fltnum_citer = group.begin(); 
+         Fltnum_citer != group.end(); Fltnum_citer++) {
+      const int &num = *Fltnum_citer;
+      if (num == -1) // Padding to ensure group size is correct for FT_PWHIST & FT_POLICY
+        continue;
+
+      const st_FilterData &st_fldata = filters.vMfldata.at(num);
+      thistest_rc = false;
+
+      PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+      const FieldType ft = filters.vMfldata[num].ftype;
+
+      switch (ft) {
+        case FT_GROUPTITLE:
+        case FT_GROUP:
+        case FT_TITLE:
+        case FT_USER:
+        case FT_NOTES:
+        case FT_URL:
+        case FT_AUTOTYPE:
+          mt = PWSMatch::MT_STRING;
+          break;
+        case FT_PASSWORD:
+          mt = PWSMatch::MT_PASSWORD;
+          break;
+        case FT_CTIME:
+        case FT_PMTIME:
+        case FT_ATIME:
+        case FT_XTIME:
+        case FT_RMTIME:
+          mt = PWSMatch::MT_DATE;
+          break;
+        case FT_PWHIST:
+          mt = PWSMatch::MT_PWHIST;
+          break;
+        case FT_POLICY:
+          mt = PWSMatch::MT_POLICY;
+          break;
+        case FT_XTIME_INT:
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case FT_UNKNOWNFIELDS:
+          bValue = ci.NumberUnknownFields() > 0;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case FT_ENTRYTYPE:
+          mt = PWSMatch::MT_ENTRYTYPE;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      pci = &ci;
+
+      if (ft == FT_PASSWORD && entrytype == CItemData::ET_ALIAS) {
+        // This is an alias
+        uuid_array_t entry_uuid, base_uuid;
+        ci.GetUUID(entry_uuid);
+        m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+
+        ItemListIter iter = m_core.Find(base_uuid);
+        if (iter != End()) {
+          pci = &(iter->second);
+        }
+      }
+
+      if (entrytype == CItemData::ET_SHORTCUT) {
+        // Only include shortcuts if the filter is on the group, title or user fields
+        // Note: "GROUPTITLE = 0x00", "GROUP = 0x02", "TITLE = 0x03", "USER = 0x04"
+        //   "UUID = 0x01" but no filter is implemented against this field
+        // The following is a simple single test rather than testing against every value
+        if (ft > FT_USER) {
+          // This is an shortcut
+          uuid_array_t entry_uuid, base_uuid;
+          ci.GetUUID(entry_uuid);
+          m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+          ItemListIter iter = m_core.Find(base_uuid);
+          if (iter != End()) {
+            pci = &(iter->second);
+          }
+        }
+      }
+
+      const int ifunction = (int)st_fldata.rule;
+      switch (mt) {
+        case PWSMatch::MT_PASSWORD:
+          if (ifunction == PWSMatch::MR_EXPIRED) {
+            // Special Password "string" case
+            thistest_rc = pci->IsExpired();
+            tests++;
+            break;
+          } else if (ifunction == PWSMatch::MR_WILLEXPIRE) {
+            // Special Password "string" case
+            thistest_rc = pci->WillExpire(st_fldata.fnum1);
+            tests++;
+            break;
+          }
+          // Note: purpose drop through to standard 'string' processing
+        case PWSMatch::MT_STRING:
+          thistest_rc = pci->Matches(st_fldata.fstring, (int)ft,
+                                 st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_INTEGER:
+          thistest_rc = pci->Matches(st_fldata.fnum1, st_fldata.fnum2,
+                                     (int)ft, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_DATE:
+          thistest_rc = pci->Matches(st_fldata.fdate1, st_fldata.fdate2,
+                                     (int)ft, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_PWHIST:
+          if (filters.num_Hactive != 0) {
+            thistest_rc = PassesPWHFiltering(pci, filters);
+            tests++;
+          }
+          break;
+        case PWSMatch::MT_POLICY:
+          if (filters.num_Pactive != 0) {
+            thistest_rc = PassesPWPFiltering(pci, filters);
+            tests++;
+          }
+          break;
+        case PWSMatch::MT_BOOL:
+          thistest_rc = PWSMatch::Match(bValue, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_ENTRYTYPE:
+          thistest_rc = pci->Matches(st_fldata.etype, ifunction);
+          tests++;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+    // This group of tests completed - 
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
+}
+
+bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
+{
+  bool thisgroup_rc, thistest_rc, bPresent;
+  bool bValue(false);
+  int iValue(0);
+
+  BOOL status;
+  size_t pwh_max, pwh_num;
+  PWHistList PWHistList;
+  PWHistList::iterator pwshe_iter;
+ 
+  CreatePWHistoryList(pci->GetPWHistory(), 
+                      status, pwh_max, pwh_num,
+                      PWHistList, TMC_EXPORT_IMPORT);
+
+  bPresent = pwh_max > 0 || pwh_num > 0 || PWHistList.size() > 0;
+
+  vfilterdata::const_iterator Flt_citer;
+  std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
+  for (Fltgroup_citer = m_vHflgroups.begin(); 
+       Fltgroup_citer != m_vHflgroups.end(); Fltgroup_citer++) {
+    const std::vector<int> &group = *Fltgroup_citer;
+
+    int tests(0);
+    thisgroup_rc = false;
+    std::vector<int>::const_iterator Fltnum_citer;
+    for (Fltnum_citer = group.begin(); 
+         Fltnum_citer != group.end(); Fltnum_citer++) {
+      const int &num = *Fltnum_citer;
+      if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
+        continue;
+
+      const st_FilterData &st_fldata = filters.vHfldata.at(num);
+      thistest_rc = false;
+
+      PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+      const FieldType ft = st_fldata.ftype;
+
+      switch (ft) {
+        case HT_PRESENT:
+          bValue = bPresent;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case HT_ACTIVE:
+          bValue = status == TRUE;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case HT_NUM:
+          iValue = pwh_num;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case HT_MAX:
+          iValue = pwh_max;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case HT_CHANGEDATE:
+          mt = PWSMatch::MT_DATE;
+          break;
+        case HT_PASSWORDS:
+          mt = PWSMatch::MT_STRING;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      const int ifunction = (int)st_fldata.rule;
+      switch (mt) {
+        case PWSMatch::MT_STRING:
+          for (pwshe_iter = PWHistList.begin(); pwshe_iter != PWHistList.end(); pwshe_iter++) {
+            PWHistEntry pwshe = *pwshe_iter;
+            thistest_rc = PWSMatch::Match(st_fldata.fstring, pwshe.password,
+                                  st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
+            tests++;
+            if (thistest_rc)
+              break;
+          }
+          break;
+        case PWSMatch::MT_INTEGER:
+          thistest_rc = PWSMatch::Match(st_fldata.fnum1, st_fldata.fnum2,
+                                        iValue, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_DATE:
+          for (pwshe_iter = PWHistList.begin(); pwshe_iter != PWHistList.end(); pwshe_iter++) {
+            const PWHistEntry pwshe = *pwshe_iter;
+            CTime ct(pwshe.changetttdate);
+            CTime ct2;
+            ct2 = CTime(ct.GetYear(), ct.GetMonth(), ct.GetDay(), 0, 0, 0);
+            time_t changetime;
+            changetime = (time_t)ct2.GetTime();
+            thistest_rc = PWSMatch::Match(st_fldata.fdate1, st_fldata.fdate2,
+                                          changetime, ifunction);
+            tests++;
+            if (thistest_rc)
+              break;
+          }
+          break;
+        case PWSMatch::MT_BOOL:
+          thistest_rc = PWSMatch::Match(bValue, ifunction);
+          tests++;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+    // This group of tests completed - 
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
+}
+
+bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
+{
+  bool thisgroup_rc, thistest_rc, bPresent;
+  bool bValue(false);
+  int iValue(0);
+
+  PWPolicy pwp;
+
+  pci->GetPWPolicy(pwp);
+  bPresent = pwp.flags != 0;
+
+  vfilterdata::const_iterator Flt_citer;
+  std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
+  for (Fltgroup_citer = m_vPflgroups.begin(); 
+       Fltgroup_citer != m_vPflgroups.end(); Fltgroup_citer++) {
+    const std::vector<int> &group = *Fltgroup_citer;
+
+    int tests(0);
+    thisgroup_rc = false;
+    std::vector<int>::const_iterator Fltnum_citer;
+    for (Fltnum_citer = group.begin(); 
+         Fltnum_citer != group.end(); Fltnum_citer++) {
+      const int &num = *Fltnum_citer;
+      if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
+        continue;
+
+      const st_FilterData &st_fldata = filters.vPfldata.at(num);
+      thistest_rc = false;
+
+      PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+      const FieldType ft = st_fldata.ftype;
+
+      switch (ft) {
+        case PT_PRESENT:
+          bValue = bPresent;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case PT_LENGTH:
+          iValue = pwp.length;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_LOWERCASE:
+          iValue = pwp.lowerminlength;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_UPPERCASE:
+          iValue = pwp.upperminlength;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_DIGITS:
+          iValue = pwp.digitminlength;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_SYMBOLS:
+          iValue = pwp.symbolminlength;
+          mt = PWSMatch::MT_INTEGER;
+          break;
+        case PT_HEXADECIMAL:
+          bValue = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) == 
+                       PWSprefs::PWPolicyUseHexDigits;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case PT_EASYVISION:
+          bValue = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) == 
+                       PWSprefs::PWPolicyUseEasyVision;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        case PT_PRONOUNCEABLE:
+          bValue = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) == 
+                       PWSprefs::PWPolicyMakePronounceable;
+          mt = PWSMatch::MT_BOOL;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      const int ifunction = (int)st_fldata.rule;
+      switch (mt) {
+        case PWSMatch::MT_INTEGER:
+          thistest_rc = PWSMatch::Match(st_fldata.fnum1, st_fldata.fnum2,
+                                        iValue, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_BOOL:
+          thistest_rc = PWSMatch::Match(bValue, ifunction);
+          tests++;
+          break;
+        default:
+          ASSERT(0);
+      }
+
+      if (tests <= 1)
+        thisgroup_rc = thistest_rc;
+      else {
+        //Within groups, tests are always "AND" connected
+        thisgroup_rc = thistest_rc && thisgroup_rc;
+      }
+    }
+    // This group of tests completed - 
+    //   if 'thisgroup_rc == true', leave now; else go on to next group
+    if (thisgroup_rc)
+      return true;
+  }
+
+  // We finished all the groups and haven't found one that is true - exclude entry.
+  return false;
+}
+
+void DboxMain::OnSelectFilter()
+{
+  if (m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
+    return;
+
+  // Get DB filter via name and replace m_filters
+ MapFilters_Iter mf_iter;
+
+  std::vector<CString> vcs_db;
+  for (mf_iter = m_core.m_MapDatabaseFilters.begin();
+       mf_iter != m_core.m_MapDatabaseFilters.end();
+       mf_iter++) {
+    vcs_db.push_back(mf_iter->first);
+  }
+
+  // Get Global filter via name and replace m_filters
+  std::vector<CString> vcs_gbl;
+  for (mf_iter = m_MapGlobalFilters.begin();
+       mf_iter != m_MapGlobalFilters.end();
+       mf_iter++) {
+    vcs_gbl.push_back(mf_iter->first);
+  }
+
+  CFilterActionsDlg fa;
+  fa.SetFunction(FA_SELECT);
+  fa.SetLists(vcs_db, vcs_gbl);
+  INT_PTR rc = fa.DoModal();
+
+  if (rc == IDOK) {
+    int istore(-1);
+    CString cs_selected = fa.GetSelected(istore);
+    if (!cs_selected.IsEmpty() && istore >= 0) {
+      MapFilters_cIter mf_citer;
+      MapFilters_cIter mf_cend;
+      if (istore == 0) {
+        mf_citer = m_core.m_MapDatabaseFilters.find(cs_selected);
+        mf_cend = m_core.m_MapDatabaseFilters.end();
+      } else {
+        mf_citer = m_MapGlobalFilters.find(cs_selected);
+        mf_cend = m_MapGlobalFilters.end();
+      }
+
+      if (mf_citer != mf_cend) {
+        m_filters = mf_citer->second;
+        m_bFilterActive = true;
+        ApplyFilters();
+      }
+    }
+  }
+}
+
+void DboxMain::OnSaveFilter()
+{
+  CSaveFilterDlg sf;
+  INT_PTR rc = sf.DoModal();
+
+  if (rc == IDOK) {
+    MapFilters_cIter mf_citer;
+    MapFilters_cIter mf_cend;
+    int istore = sf.GetSelectStore();
+    if (istore == 0) {
+      mf_citer = m_core.m_MapDatabaseFilters.find(m_filters.fname);
+      mf_cend =  m_core.m_MapDatabaseFilters.end();
+    } else {
+      mf_citer = m_MapGlobalFilters.find(m_filters.fname);
+      mf_cend =  m_MapGlobalFilters.end();
+    }
+
+    int rc(IDYES);
+    if (mf_citer != mf_cend) {
+      CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
+      CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
+      rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+      if (rc == IDYES)
+        if (istore == 0) {
+          m_core.m_MapDatabaseFilters.erase(m_filters.fname);
+        } else {
+          m_MapGlobalFilters.erase(m_filters.fname);
+        }
+      }
+      if (rc == IDYES) {
+        if (istore == 0) {
+          m_core.m_MapDatabaseFilters.insert(MapFilters_Pair(m_filters.fname, m_filters));
+          SetChanged(Data);
+          ChangeOkUpdate();
+        } else
+          m_MapGlobalFilters.insert(MapFilters_Pair(m_filters.fname, m_filters));
+      }
+  }
+}
+
+void DboxMain::OnViewFilter()
+{
+  int numactive = m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive;
+  if (numactive == 0 && m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
+    return;
+
+  st_filters *pfilters;
+  if (numactive == 0)
+    pfilters = NULL;
+  else
+    pfilters = &m_filters;
+ 
+  CViewFilterDlg vf(this, pfilters, &(m_core.m_MapDatabaseFilters), &m_MapGlobalFilters);
+  vf.DoModal();
+ }
+
+void DboxMain::OnDeleteFilter()
+{
+  if (m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
+    return;
+
+  // Delete filter by name from DB filters
+  MapFilters_Iter mf_iter;
+
+  std::vector<CString> vcs_db;
+  for (mf_iter = m_core.m_MapDatabaseFilters.begin();
+       mf_iter != m_core.m_MapDatabaseFilters.end();
+       mf_iter++) {
+    vcs_db.push_back(mf_iter->first);
+  }
+
+  // Delete filter by name from DB filters
+  std::vector<CString> vcs_gbl;
+  for (mf_iter = m_MapGlobalFilters.begin();
+       mf_iter != m_MapGlobalFilters.end();
+       mf_iter++) {
+    vcs_gbl.push_back(mf_iter->first);
+  }
+
+  CFilterActionsDlg fa;
+  fa.SetFunction(FA_DELETE);
+  fa.SetLists(vcs_db, vcs_gbl);
+  INT_PTR rc = fa.DoModal();
+
+  if (rc == IDOK) {
+    int istore(-1);
+    bool bDone(false);
+    CString cs_selected = fa.GetSelected(istore);
+    if (!cs_selected.IsEmpty() && istore >= 0) {
+      if (istore == 0) {
+        m_core.m_MapDatabaseFilters.erase(cs_selected);
+        bDone = true;
+        SetChanged(Data);
+        ChangeOkUpdate();
+      } else {
+          m_MapGlobalFilters.erase(cs_selected);
+          bDone = true;
+      }
+      if (bDone)
+        AfxMessageBox(IDS_OK);
+    }
+  }
+}
+
+void DboxMain::OnExportFilters()
+{
+  CExportFiltersDlg ef;
+  ef.SetAvailableStores(!m_core.m_MapDatabaseFilters.empty(), !m_MapGlobalFilters.empty());
+  INT_PTR rc = ef.DoModal();
+
+  if (rc == IDOK) {
+    int istore = ef.GetSelected();
+    if (istore == 0)
+      ExportFilters(m_core.m_MapDatabaseFilters);
+    else if (istore == 1)
+      ExportFilters(m_MapGlobalFilters);
+  }
+}
+
+void DboxMain::ExportFilters(MapFilters &MapFilters)
+{
+  CString cs_text, cs_temp, cs_title, cs_newfile;
+  INT_PTR rc;
+
+  // do the export
+  //SaveAs-type dialog box
+  CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("filters.xml"));
+  cs_text.LoadString(IDS_NAMEXMLFILE);
+  while (1) {
+    CFileDialog fd(FALSE,
+                   _T("xml"),
+                   XMLFileName,
+                   OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                   OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                   _T("XML files (*.xml)|*.xml|")
+                   _T("All files (*.*)|*.*|")
+                   _T("|"),
+                   this);
+    fd.m_ofn.lpstrTitle = cs_text;
+    rc = fd.DoModal();
+    if (m_inExit) {
+      // If U3ExitNow called while in CFileDialog,
+      // PostQuitMessage makes us return here instead
+      // of exiting the app. Try resignalling 
+      PostQuitMessage(0);
+      return;
+    }
+    if (rc == IDOK) {
+      cs_newfile = fd.GetPathName();
+      break;
+    } else
+      return;
+  } // while (1)
+
+  PWSfile::HeaderRecord hdr = m_core.GetHeader();
+  CMyString currentfile = m_core.GetCurFile();
+  rc = PWSFilters::WriteFilterXMLFile(cs_newfile, hdr, currentfile, MapFilters);
+
+  if (rc == PWScore::CANT_OPEN_FILE) {
+    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
+    cs_title.LoadString(IDS_FILEWRITEERROR);
+    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+  } else {
+    AfxMessageBox(IDS_FILTERSEXPORTEDOK, MB_OK);
+  }
+}
+
+void DboxMain::OnImportFilters()
+{
+  CString cs_title, cs_temp, cs_text;
+  stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+
+  if (!PWSfile::FileExists(XSDFilename.c_str())) {
+   cs_temp.LoadString(IDS_MISSINGXSD);
+   cs_title.LoadString(IDS_CANTVALIDATEXML);
+   MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
+   return;
+  }
+
+  CFileDialog fd(TRUE,
+                _T("xml"),
+                NULL,
+                OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                _T("XML files (*.xml)|*.xml||"),
+                this);
+  cs_text.LoadString(IDS_PICKXMLFILE);
+  fd.m_ofn.lpstrTitle = cs_text;
+
+  INT_PTR rc = fd.DoModal();
+  if (m_inExit) {
+   // If U3ExitNow called while in CFileDialog,
+   // PostQuitMessage makes us return here instead
+   // of exiting the app. Try resignalling 
+   PostQuitMessage(0);
+   return;
+  }
+  if (rc == IDCANCEL)
+   return;
+
+  if (rc == IDOK) {
+   CString strErrors, csErrors(_T(""));
+   CString XMLFilename = (CMyString)fd.GetPathName();
+   CWaitCursor waitCursor;  // This may take a while!
+
+   rc = PWSFilters::ImportFilterXMLFile(m_MapGlobalFilters, _T(""), XMLFilename,
+                                        XSDFilename.c_str(), strErrors);
+   waitCursor.Restore();  // Restore normal cursor
+
+   switch (rc) {
+     case PWScore::XML_FAILED_VALIDATION:
+     {
+       cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName());
+       csErrors = strErrors;
+       break;
+     }
+     case PWScore::XML_FAILED_IMPORT:
+     {
+       cs_temp.Format(IDS_XMLERRORS, fd.GetFileName());
+       csErrors = strErrors;
+       break;
+     }
+     case PWScore::SUCCESS:
+     {
+       if (!strErrors.IsEmpty()) {
+         csErrors = strErrors + _T("\n");
+         cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName());
+       } else {
+         cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
+         cs_title.LoadString(IDS_STATUS);
+       }
+       break;
+     }
+     default:
+       ASSERT(0);
+   } // switch
+
+   MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
+  }
+}
+
+
+bool group_pred (const std::vector<int>& v1, const std::vector<int>& v2)
+{
+  return v1.size() < v2.size();
+}
+
+void DboxMain::CreateGroups()
+{
+  int i(0);
+  vfilterdata::iterator Flt_iter;
+  vfiltergroup group;
+  vfiltergroups groups;
+
+  // Do the main filters
+  for (Flt_iter = m_filters.vMfldata.begin();
+       Flt_iter != m_filters.vMfldata.end(); Flt_iter++) {
+    st_FilterData &st_fldata = *Flt_iter;
+
+    if (st_fldata.bFilterActive) {
+      if (st_fldata.ltype == LC_OR && !group.empty()) {
+        // This active filter is in a new group!
+        groups.push_back(group);
+        group.clear();
+      }
+
+      group.push_back(i);
+
+      if (st_fldata.ftype == FT_PWHIST) {
+        // Add a number of 'dummy' entries to increase the length of this group
+        // Reduce by one as we have already included main FT_PWHIST entry
+        for (int j = 0; j < m_filters.num_Hactive - 1; j++) {
+          group.push_back(-1);
+         }
+      }
+
+      if (st_fldata.ftype == FT_POLICY) {
+        // Add a number of 'dummy' entries to increase the length of this group
+        // Reduce by one as we have already included main FT_POLICY entry
+        for (int j = 0; j < m_filters.num_Pactive - 1; j++) {
+          group.push_back(-1);
+        }
+      }
+    }
+    i++;
+  }
+  if (group.size() > 0)
+    groups.push_back(group);
+
+  if (groups.size() > 0) {
+    // Sort them so the smallest group is first
+    std::sort(groups.begin(), groups.end(), group_pred);
+
+    // And save
+    m_vMflgroups = groups;
+  } else
+    m_vMflgroups.clear();
+
+  // Now do the History filters
+  i = 0;
+  group.clear();
+  groups.clear();
+  for (Flt_iter = m_filters.vHfldata.begin();
+       Flt_iter != m_filters.vHfldata.end(); Flt_iter++) {
+    st_FilterData &st_fldata = *Flt_iter;
+
+    if (st_fldata.bFilterActive) {
+      if (st_fldata.ltype == LC_OR && !group.empty()) {
+        // Next active is in a new group!
+        groups.push_back(group);
+        group.clear();
+      }
+      group.push_back(i);
+    }
+    i++;
+  }
+  if (group.size() > 0)
+    groups.push_back(group);
+
+  if (groups.size() > 0) {
+    // Sort them so the smallest group is first
+    std::sort(groups.begin(), groups.end(), group_pred);
+
+    // And save
+    m_vHflgroups = groups;
+  } else
+    m_vHflgroups.clear();
+
+  // Now do the Policy filters
+  i = 0;
+  group.clear();
+  groups.clear();
+  for (Flt_iter = m_filters.vPfldata.begin();
+       Flt_iter != m_filters.vPfldata.end(); Flt_iter++) {
+    st_FilterData &st_fldata = *Flt_iter;
+
+    if (st_fldata.bFilterActive) {
+      if (st_fldata.ltype == LC_OR && !group.empty()) {
+        // Next active is in a new group!
+        groups.push_back(group);
+        group.clear();
+      }
+      group.push_back(i);
+    }
+    i++;
+  }
+  if (group.size() > 0)
+    groups.push_back(group);
+
+  if (groups.size() > 0) {
+    // Sort them so the smallest group is first
+    std::sort(groups.begin(), groups.end(), group_pred);
+
+    // And save
+    m_vPflgroups = groups;
+  } else
+    m_vPflgroups.clear();
+}

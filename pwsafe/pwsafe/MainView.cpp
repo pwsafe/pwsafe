@@ -29,7 +29,6 @@
 #include "PWFontDialog.h"
 #include "PWFont.h"
 #include "InfoDisplay.h"
-
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
 #include "corelib/corelib.h"
@@ -275,10 +274,19 @@ void DboxMain::setupBars()
     // Set up the rest - all but one empty as pane now re-sized according to contents
     statustext[CPWStatusBar::SB_MODIFIED] = IDS_BLANK;
     statustext[CPWStatusBar::SB_NUM_ENT] = IDS_BLANK;
+    statustext[CPWStatusBar::SB_FILTER] = IDS_BLANK;
     statustext[CPWStatusBar::SB_READONLY] = IDS_READ_ONLY;
 
     // And show
     m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
+
+    UINT uiID, uiStyle;
+    int cxWidth;
+    m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
+                            uiStyle, cxWidth);
+    int iBMWidth = m_statusBar.GetBitmapWidth();
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID,
+                            uiStyle | SBT_OWNERDRAW, iBMWidth);
 
     // Make a sunken or recessed border around the first pane
     m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK, 
@@ -651,6 +659,8 @@ void DboxMain::RefreshViews(const int iView)
   HCURSOR waitCursor = app.LoadStandardCursor(IDC_WAIT);
 #endif
 
+  m_bNumPassedFiltering = 0;
+
   // Get current selected items and save ptr to the entries (unchanged over 
   // refresh of Tree/List
   POSITION pSelected = m_ctlItemList.GetFirstSelectedItemPosition();
@@ -711,7 +721,7 @@ void DboxMain::RefreshViews(const int iView)
     m_ctlItemTree.Invalidate();
   }
 
-  FixListIndexes();
+  // FixListIndexes(); // No need as just added them all in again!
 
   // Restore expand/collapse status of groups
   SetGroupDisplayStatus(displaystatus);
@@ -731,6 +741,8 @@ void DboxMain::RefreshViews(const int iView)
     m_ctlItemTree.SelectItem(di->tree_item);
     m_ctlItemTree.EnsureVisible(di->tree_item);
   }
+  if (m_bFilterActive)
+    UpdateStatusBar();
 }
 
 void DboxMain::OnSize(UINT nType, int cx, int cy) 
@@ -1107,6 +1119,20 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
     iResult = m_ctlItemList.GetItemCount();
   }
 
+  DisplayInfo *di = (DisplayInfo *)itemData.GetDisplayInfo();
+  if (di == NULL) {
+    di = new DisplayInfo;
+    itemData.SetDisplayInfo((void *)di);
+  }
+  di->list_index = -1;
+  di->tree_item = NULL;
+
+  if (m_bFilterActive) {
+    if (!PassesFiltering(itemData, m_filters))
+      return -1;
+    m_bNumPassedFiltering++;
+  }
+
   int nImage = GetEntryImage(itemData);
   CMyString group = itemData.GetGroup();
   CMyString title = itemData.GetTitle();
@@ -1122,10 +1148,6 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
 
   int xint;
   itemData.GetXTimeInt(xint);
-
-  DisplayInfo *di = (DisplayInfo *)itemData.GetDisplayInfo();
-  if (di == NULL)
-    di = new DisplayInfo;
 
   if (iView & iListOnly) {
     // Insert the first column data
@@ -1250,7 +1272,6 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
     SetEntryImage(ti, nImage);
 
     ASSERT(ti != NULL);
-    itemData.SetDisplayInfo((void *)di);
     di->tree_item = ti;
   }
 
@@ -2775,6 +2796,13 @@ int DboxMain::OnUpdateViewReports(const int nID)
   return (status != 0) ? FALSE : TRUE;
 }
 
+void DboxMain::OnRefreshWindow()
+{
+  // Useful for users if the are using a filter and have edited an entry
+  // so it no longer passes
+  RefreshViews();
+}
+
 void DboxMain::OnCustomizeToolbar()
 {
   CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
@@ -2931,35 +2959,35 @@ void DboxMain::OnToolBarFindReport()
       switch (Fsubgroup_function) {
         case -PWSMatch::MR_EQUALS:
         case  PWSMatch::MR_EQUALS:
-          uistring = IDS_EQUALS;
+          uistring = IDSC_EQUALS;
           break;
         case -PWSMatch::MR_NOTEQUAL:
         case  PWSMatch::MR_NOTEQUAL:
-          uistring = IDS_DOESNOTEQUAL;
+          uistring = IDSC_DOESNOTEQUAL;
           break;
         case -PWSMatch::MR_BEGINS:
         case  PWSMatch::MR_BEGINS:
-          uistring = IDS_BEGINSWITH;
+          uistring = IDSC_BEGINSWITH;
           break;
         case -PWSMatch::MR_NOTBEGIN:
         case  PWSMatch::MR_NOTBEGIN:
-          uistring = IDS_DOESNOTBEGINSWITH;
+          uistring = IDSC_DOESNOTBEGINSWITH;
           break;
         case -PWSMatch::MR_ENDS:
         case  PWSMatch::MR_ENDS:
-          uistring = IDS_ENDSWITH;
+          uistring = IDSC_ENDSWITH;
           break;
         case -PWSMatch::MR_NOTEND:
         case  PWSMatch::MR_NOTEND:
-          uistring = IDS_DOESNOTENDWITH;
+          uistring = IDSC_DOESNOTENDWITH;
           break;
         case -PWSMatch::MR_CONTAINS:
         case  PWSMatch::MR_CONTAINS:
-          uistring = IDS_CONTAINS;
+          uistring = IDSC_CONTAINS;
           break;
         case -PWSMatch::MR_NOTCONTAIN:
         case  PWSMatch::MR_NOTCONTAIN:
-          uistring = IDS_DOESNOTCONTAIN;
+          uistring = IDSC_DOESNOTCONTAIN;
           break;
         default:
           ASSERT(0);

@@ -149,15 +149,17 @@ Last saved by user          0x07        Text          Y              [8]
 Last saved on host          0x08        Text          Y              [9]
 Database Name               0x09        Text          Y              [10]
 Database Description        0x0a        Text          Y              [11]
-End of Entry                0xff        [empty]       Y              [12]
+Database Filters            0x0b        Text          Y              [12]
+End of Entry                0xff        [empty]       Y              [13]
 
 [1] The version number of the database format. For this version, the value
-is 0x0303 (stored in little-endian format, that is, 0x03, 0x03).
+is 0x0304 (stored in little-endian format, that is, 0x04, 0x03).
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
 PasswordSafe V3.12 introduced Format 0x0303
 PasswordSafe V3.13 introduced Format 0x0304
+PasswordSafe V3.14 introduced Format 0x0305
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -225,7 +227,13 @@ line. This field was introduced in format version 0x0302.
 the purpose or other practical use of the database. This field was
 introduced in format version 0x0302.
 
-[12] An explicit end of entry field is useful for supporting new fields
+[12] Specfic filters for this database.  This is the text equivalent to
+the XML export of the filters as defined by the filter schema. The text 
+'image' has no 'print formatting' e.g. tabs and carraige return/line feeds,
+since XML processing does not require this. This field was introduced in 
+format version 0x0305.
+
+[13] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 3.3 Field types for database Records:

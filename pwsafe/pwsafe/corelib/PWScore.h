@@ -17,6 +17,7 @@
 #include "PWSfile.h"
 #include "UUIDGen.h"
 #include "Report.h"
+#include "filters.h"
 
 #define MAXDEMO 10
 
@@ -258,6 +259,9 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
+
+  // Filters
+  MapFilters m_MapDatabaseFilters;
 
 private:
   CMyString m_currfile; // current pw db filespec

@@ -18,176 +18,228 @@
 
 STRINGTABLE
 BEGIN
-    IDSC_PASSWORDTOOSHORT   "Password is too short"
-    IDSC_PASSWORDPOOR       "Password should be mixed case, with at least one digit or punctuation character"
+  IDSC_PASSWORDTOOSHORT   "Password is too short"
+  IDSC_PASSWORDPOOR       "Password should be mixed case, with at least one digit or punctuation character"
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
-    IDSC_EXPHDRGROUPTITLE   "Group/Title\t"
-    IDSC_EXPHDRUSERNAME     "Username\t"
-    IDSC_EXPHDRPASSWORD     "Password\t"
-    IDSC_EXPHDRURL          "URL\t"
-    IDSC_EXPHDRAUTOTYPE     "AutoType\t"
-    IDSC_EXPHDRCTIME        "Created Time\t"
-    IDSC_EXPHDRPMTIME       "Password Modified Time\t"
-    IDSC_EXPHDRATIME        "Last Access Time\t"
-    IDSC_EXPHDRXTIME        "Password Expiry Date\t"
-    IDSC_EXPHDRRMTIME       "Record Modified Time\t"
-    IDSC_EXPHDRPWHISTORY    "History\t"
-    IDCS_EXPHDRNOTES        "Notes"
-    IDSC_EXPHDRGROUP        "Group\t"
-    IDSC_EXPHDRTITLE        "Title\t"
-    IDSC_EXPHDRPWPOLICY     "Password Policy\t"
-    IDSC_EXPHDRXTIMEINT     "Password Expiry Interval\t"
+  IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
+  IDSC_EXPHDRGROUPTITLE   "Group/Title\t"
+  IDSC_EXPHDRUSERNAME     "Username\t"
+  IDSC_EXPHDRPASSWORD     "Password\t"
+  IDSC_EXPHDRURL          "URL\t"
+  IDSC_EXPHDRAUTOTYPE     "AutoType\t"
+  IDSC_EXPHDRCTIME        "Created Time\t"
+  IDSC_EXPHDRPMTIME       "Password Modified Time\t"
+  IDSC_EXPHDRATIME        "Last Access Time\t"
+  IDSC_EXPHDRXTIME        "Password Expiry Date\t"
+  IDSC_EXPHDRRMTIME       "Record Modified Time\t"
+  IDSC_EXPHDRPWHISTORY    "History\t"
+  IDSC_EXPHDRNOTES        "Notes"
+  IDSC_EXPHDRGROUP        "Group\t"
+  IDSC_EXPHDRTITLE        "Title\t"
+  IDSC_EXPHDRPWPOLICY     "Password Policy\t"
+  IDSC_EXPHDRXTIMEINT     "Password Expiry Interval\t"
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_IMPMISSINGQUOTE    "File ends on line %d before ending double quote of last entry's note field."
-    IDSC_IMPINVALIDINPUT    "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
-    IDSC_IMPINVALIDPWH      "Line %d: "
-    IDSC_IMPORTFAILURE      "Internal error. Import failed. No records imported."
-    IDSC_IMPORTHDR          "Found %d known column headers:"
-    IDSC_IMPORTKNOWNHDRS    "The following columns will be processed: "
-    IDSC_IMPORTMISSINGCOLS  "Either or both of the Group/Title and Password columns are missing. No records imported."
-    IDSC_IMPORTNOCOLS       "Column header row not recognised as first record. No records imported."
-    IDSC_IMPORTNOHEADER     "No records in import file!"
-    IDSC_IMPORTLINESKIPPED  "Line %d skipped"
-    IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
-    IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"", Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
-    IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group, Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
-    IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
-    IDSC_IMPORTNOPASSWORD   "Line %d skipped. It has an empty mandatory Password field."
-    IDSC_IMPORTNOTITLE      "Line %d skipped. It has an empty mandatory Title field."
+  IDSC_IMPMISSINGQUOTE    "File ends on line %d before ending double quote of last entry's note field."
+  IDSC_IMPINVALIDINPUT    "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
+  IDSC_IMPINVALIDPWH      "Line %d: "
+  IDSC_IMPORTFAILURE      "Internal error. Import failed. No records imported."
+  IDSC_IMPORTHDR          "Found %d known column headers:"
+  IDSC_IMPORTKNOWNHDRS    "The following columns will be processed: "
+  IDSC_IMPORTMISSINGCOLS  "Either or both of the Group/Title and Password columns are missing. No records imported."
+  IDSC_IMPORTNOCOLS       "Column header row not recognised as first record. No records imported."
+  IDSC_IMPORTNOHEADER     "No records in import file!"
+  IDSC_IMPORTLINESKIPPED  "Line %d skipped"
+  IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
+  IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"", Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
+  IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group, Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
+  IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
+  IDSC_IMPORTNOPASSWORD   "Line %d skipped. It has an empty mandatory Password field."
+  IDSC_IMPORTNOTITLE      "Line %d skipped. It has an empty mandatory Title field."
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_NOLOCKACCESS       "Cannot create lock file - no permission in directory?"
-    IDSC_CANTGETLOCKER      "Unable to determine locker?"
-    IDSC_CANTREADLOCKER     "Unable to read locker?"
-    IDSC_INTERNALLOCKERROR  "Internal error: Invalid oflag or pmode argument"
-    IDSC_SYSTEMLOCKERROR    "System error: No more file handles available"
-    IDSC_LOCKFILEPATHNF     "File or path not found"
-    IDSC_LOCKUNKNOWNERROR   "Internal error: Unexpected error number"
+  IDSC_NOLOCKACCESS       "Cannot create lock file - no permission in directory?"
+  IDSC_CANTGETLOCKER      "Unable to determine locker?"
+  IDSC_CANTREADLOCKER     "Unable to read locker?"
+  IDSC_INTERNALLOCKERROR  "Internal error: Invalid oflag or pmode argument"
+  IDSC_SYSTEMLOCKERROR    "System error: No more file handles available"
+  IDSC_LOCKFILEPATHNF     "File or path not found"
+  IDSC_LOCKUNKNOWNERROR   "Internal error: Unexpected error number"
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued %d\n\nNumber of Shortcut warnings issued %d"
-    IDSC_AUTOTYPE           "autotype:"
-    IDSC_NOCONFIGLOCK       "Unable to get configuration file lock.\n\nWill use registry."
-    IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-    IDSC_CANTUPDATEXMLCFG   "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-    IDSC_CANTDETERMINECFG   "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-    IDSC_CANTUSECONFIGFILE  "%s\n\nThe configuration file will not be used."
+  IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued %d\n\nNumber of Shortcut warnings issued %d"
+  IDSC_AUTOTYPE           "autotype:"
+  IDSC_NOCONFIGLOCK       "Unable to get configuration file lock.\n\nWill use registry."
+  IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+  IDSC_CANTUPDATEXMLCFG   "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+  IDSC_CANTDETERMINECFG   "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+  IDSC_CANTUSECONFIGFILE  "%s\n\nThe configuration file will not be used."
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_PWHERROR           "Error in a Password History sub-field starting at position %d (within the History field): "
-    IDSC_INVALIDHEADER      "  Invalid header: ""%s""."
-    IDSC_INVALIDPWHSTATUS   "  Invalid status value: %d"
-    IDSC_INVALIDNUMOLDPW    "  Invalid number of saved old passwords %d."
-    IDSC_INVALIDDATETIME    "  Invalid date/time value."
-    IDSC_INVALIDPWLENGTH    "  Invalid password length found."
-    IDSC_FIELDTOOSHORT      "  Field is too short."
-    IDSC_FIELDTOOLONG       "  Field is too long."
-    IDSC_INVALIDSEPARATER   "  Invalid field separator character found - only a single blank is allowed between fields."
-    IDSC_PWHISTORYSKIPPED   "  All Password History ignored."
+  IDSC_PWHERROR           "Error in a Password History sub-field starting at position %d (within the History field): "
+  IDSC_INVALIDHEADER      "  Invalid header: ""%s""."
+  IDSC_INVALIDPWHSTATUS   "  Invalid status value: %d"
+  IDSC_INVALIDNUMOLDPW    "  Invalid number of saved old passwords %d."
+  IDSC_INVALIDDATETIME    "  Invalid date/time value."
+  IDSC_INVALIDPWLENGTH    "  Invalid password length found."
+  IDSC_FIELDTOOSHORT      "  Field is too short."
+  IDSC_FIELDTOOLONG       "  Field is too long."
+  IDSC_INVALIDSEPARATER   "  Invalid field separator character found - only a single blank is allowed between fields."
+  IDSC_PWHISTORYSKIPPED   "  All Password History ignored."
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
-    IDSC_XMLPARSEERROR      "SAX Parse%2d Error 0x%08X during %s."
-    IDSC_XMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
-    IDSC_XMLVALIDATION      "validation"
-    IDSC_XMLIMPORT          "import"
-    IDSC_NOXMLREADER        "Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
-    IDSC_XMLHEADER          "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-    IDSC_XMLFILEERROR       "%s\n%s\nline %d column %d"
-    IDSC_XMLLOADFAILURE     "Unable to load configuration file"
-    IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
-    IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
-    IDSC_SAXGENERROR        "Error (%08X): line %d character %d %s"
+  IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
+  IDSC_XMLPARSEERROR      "SAX Parse%2d Error 0x%08X during %s."
+  IDSC_XMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
+  IDSC_XMLVALIDATION      "validation"
+  IDSC_XMLIMPORT          "import"
+  IDSC_NOXMLREADER        "Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
+  IDSC_XMLHEADER          "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>\n<Pwsafe_Settings></Pwsafe_Settings>"
+  IDSC_XMLFILEERROR       "%s\n%s\nline %d column %d"
+  IDSC_XMLLOADFAILURE     "Unable to load configuration file"
+  IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
+  IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
+  IDSC_SAXGENERROR        "Error (%08X): line %d character %d %s"
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_FILEEXCEPTION00    "No error occurred."
-    IDSC_FILEEXCEPTION01    "An unspecified error occurred."
-    IDSC_FILEEXCEPTION02    "The file was not found."
-    IDSC_FILEEXCEPTION03    "All or part of the path is invalid."
-    IDSC_FILEEXCEPTION04    "Too many open files."
-    IDSC_FILEEXCEPTION05    "Access to the file was denied: probably not sufficient security rights."
-    IDSC_FILEEXCEPTION06    "There was an attempt to use an invalid file handle."
-    IDSC_FILEEXCEPTION07    "The current working directory cannot be removed."
-    IDSC_FILEEXCEPTION08    "There are no more directory entries."
-    IDSC_FILEEXCEPTION09    "There was an error trying to set the file pointer."
-    IDSC_FILEEXCEPTION10    "There was a hardware error."
-    IDSC_FILEEXCEPTION11    "Sharing violation: file probably open in another application."
-    IDSC_FILEEXCEPTION12    "There was an attempt to lock a region that was already locked."
-    IDSC_FILEEXCEPTION13    "The disk is full."
-    IDSC_FILEEXCEPTION14    "The end of file was reached."
-    IDSC_FILEREADONLY       "Error: File is read-only"
-    IDSC_FILEEXISTS         "Error: A file with this name already exists"
-    IDSC_INVALIDFLAG        "Internal error: An invalid flag was specified"
-    IDSC_NOMOREHANDLES      "Internal error: Out of file handles"
-    IDSC_BADPASSWORD        "Incorrect password"
-
+  IDSC_FILEEXCEPTION00    "No error occurred."
+  IDSC_FILEEXCEPTION01    "An unspecified error occurred."
+  IDSC_FILEEXCEPTION02    "The file was not found."
+  IDSC_FILEEXCEPTION03    "All or part of the path is invalid."
+  IDSC_FILEEXCEPTION04    "Too many open files."
+  IDSC_FILEEXCEPTION05    "Access to the file was denied: probably not sufficient security rights."
+  IDSC_FILEEXCEPTION06    "There was an attempt to use an invalid file handle."
+  IDSC_FILEEXCEPTION07    "The current working directory cannot be removed."
+  IDSC_FILEEXCEPTION08    "There are no more directory entries."
+  IDSC_FILEEXCEPTION09    "There was an error trying to set the file pointer."
+  IDSC_FILEEXCEPTION10    "There was a hardware error."
+  IDSC_FILEEXCEPTION11    "Sharing violation: file probably open in another application."
+  IDSC_FILEEXCEPTION12    "There was an attempt to lock a region that was already locked."
+  IDSC_FILEEXCEPTION13    "The disk is full."
+  IDSC_FILEEXCEPTION14    "The end of file was reached."
+  IDSC_FILEREADONLY       "Error: File is read-only"
+  IDSC_FILEEXISTS         "Error: A file with this name already exists"
+  IDSC_INVALIDFLAG        "Internal error: An invalid flag was specified"
+  IDSC_NOMOREHANDLES      "Internal error: Out of file handles"
+  IDSC_BADPASSWORD        "Incorrect password"
 END
 
 // Status Bar
 
 STRINGTABLE
 BEGIN
-    IDSC_CONFIG_NONE         "C:None  "
-    IDSC_CONFIG_REGISTRY     "C:Reg   "
-    IDSC_CONFIG_FILE_RO      "C:F[R-O]"
-    IDSC_CONFIG_FILE_RW      "C:F[R/W]"
+  IDSC_CONFIG_NONE         "C:None  "
+  IDSC_CONFIG_REGISTRY     "C:Reg   "
+  IDSC_CONFIG_FILE_RO      "C:F[R-O]"
+  IDSC_CONFIG_FILE_RW      "C:F[R/W]"
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_IMPORTNUMBER        " Import # %d"
-    IDSC_READNUMBER          " Open # %d"
+  IDSC_IMPORTNUMBER        " Import # %d"
+  IDSC_READNUMBER          " Open # %d"
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_READ_ERROR          "Read Error"
-    IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
-    IDSC_VALIDATEUUID        "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid UUID field.  This has been corrected."
-    IDSC_VALIDATEPWH         "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
+  IDSC_READ_ERROR          "Read Error"
+  IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
+  IDSC_VALIDATEUUID        "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid UUID field.  This has been corrected."
+  IDSC_VALIDATEPWH         "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
 
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_REPORTFILENAME      "%s%s%s_Report.txt"
-    IDSC_REPORT_TITLE1       "Report of %s function started at %s"
-    IDSC_REPORT_TITLE2       "on database %s"
-    IDSC_START_REPORT        "Start Report"
-    IDSC_END_REPORT1         "End Report"
-    IDSC_END_REPORT2         "--------------------------------------------------------------------------------"
-    IDSC_RPTVALIDATE         "Validate"
+  IDSC_REPORTFILENAME      "%s%s%s_Report.txt"
+  IDSC_REPORT_TITLE1       "Report of %s function started at %s"
+  IDSC_REPORT_TITLE2       "on database %s"
+  IDSC_START_REPORT        "Start Report"
+  IDSC_END_REPORT1         "End Report"
+  IDSC_END_REPORT2         "--------------------------------------------------------------------------------"
+  IDSC_RPTVALIDATE         "Validate"
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_IMPORTWARNINGHDR    "Entry import warnings"
-    IDSC_IMPORTWARNING1      "Entry ""%s, %s, %s"" has a password in the correct form for an alias but the base entry is already an alias."
-    IDSC_IMPORTWARNING1A     "\tThis entry has been made an alias of associated base entry."
-    IDSC_IMPORTWARNING2      "Entry ""%s, %s, %s"" has a password in the correct form for an alias but the base entry does not exist."
-    IDSC_IMPORTWARNING2A     "\tThis entry remains a normal entry and the password has not be changed."
-    IDSC_IMPORTWARNING3      "The %s entry ""%s, %s, %s"" is not attempting to point to a normal or existing %s base entry. It cannot be imported."
+  IDSC_IMPORTWARNINGHDR    "Entry import warnings"
+  IDSC_IMPORTWARNING1      "Entry ""%s, %s, %s"" has a password in the correct form for an alias but the base entry is already an alias."
+  IDSC_IMPORTWARNING1A     "\tThis entry has been made an alias of associated base entry."
+  IDSC_IMPORTWARNING2      "Entry ""%s, %s, %s"" has a password in the correct form for an alias but the base entry does not exist."
+  IDSC_IMPORTWARNING2A     "\tThis entry remains a normal entry and the password has not be changed."
+  IDSC_IMPORTWARNING3      "The %s entry ""%s, %s, %s"" is not attempting to point to a normal or existing %s base entry. It cannot be imported."
 END
 
 STRINGTABLE
 BEGIN
-    IDSC_ALIAS               "Alias"
-    IDSC_SHORTCUT            "Shortcut"
+  IDSC_ALIAS               "Alias"
+  IDSC_SHORTCUT            "Shortcut"
+  IDSC_FNORMAL             "a normal entry"
+  IDSC_FALIAS              "an alias entry"
+  IDSC_FSHORTCUT           "a shortcut entry"
+  IDSC_FALIASBASE          "a base entry of an alias"
+  IDSC_FSHORTCUTBASE       "a base entry of a shortcut"
+END
+
+STRINGTABLE
+BEGIN
+  IDSC_INVALID             "invalid!"
+  IDSC_IS                  "is"
+  IDSC_ISNOT               "is not"
+  IDSC_ISPRESENT           "is present"
+  IDSC_ISNOTPRESENT        "is not present"
+  IDSC_ISACTIVE            "is active"
+  IDSC_ISINACTIVE          "is inactive"
+  IDSC_SET                 "is set"
+  IDSC_NOTSET              "is not set"
+  IDSC_EQUALS              "equals"
+  IDSC_DOESNOTEQUAL        "does not equal"
+  IDSC_BEGINSWITH          "begins with"
+  IDSC_DOESNOTBEGINSWITH   "does not begin with"
+  IDSC_ENDSWITH            "ends with"
+  IDSC_DOESNOTENDWITH      "does not end with"
+  IDSC_CONTAINS            "contains"
+  IDSC_DOESNOTCONTAIN      "does not contain"
+  IDSC_BETWEEN             "between"
+  IDSC_LESSTHAN            "less than"
+  IDSC_LESSTHANEQUAL       "less than or equal to"
+  IDSC_GREATERTHAN         "greater than"
+  IDSC_GREATERTHANEQUAL    "greater than or equal to"
+  IDSC_BEFORE              "before"
+  IDSC_AFTER               "after"
+  IDSC_EXPIRED             "has expired"
+  IDSC_WILLEXPIRE          "will expire"
+  IDSC_AND                 "And"
+  IDSC_OR                  "Or"
+END
+ 
+STRINGTABLE
+BEGIN
+  IDSC_CASE_INSENSITIVE    "(case insensitive)"
+  IDSC_CASE_SENSITIVE      "(case sensitive)"
+  IDSC_EXPIRE_IN_DAYS      "within %d day(s)"
+  IDSC_SEEPWHISTORYFILTERS "See Password History filters"
+  IDSC_SEEPWPOLICYFILTERS  "See Password Policy filters"
+  IDSC_CANTPROCESSDBFILTERS "Unable to process Database Filter. They can be ignored and retained in the database or deleted.\r\nDo you wish to delete them?"
+  IDSC_INVALID_SCHEMA      "Filter schema is invalid."
+  IDSC_INVALID_SCHEMA_VER  "Schema does not have a version number."
+  IDSC_MISSING_SCHEMA_VER  "Can't obtain the schema version."
+  IDSC_MISSING_XML_VER     "The filter XML version is missing."
+  IDSC_INVALID_XML_VER1    "The filter XML version (%d) is greater than the current schema (%d)."
+  IDSC_INVALID_XML_VER2    "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
 END

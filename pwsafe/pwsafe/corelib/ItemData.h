@@ -29,6 +29,7 @@ struct PWPolicy {
   int symbolminlength;
   int upperminlength;
 
+  // For Password Policy flag definitions - see PWSprefs.h
   PWPolicy() : flags(0), length(0), 
     digitminlength(0), lowerminlength(0),
     symbolminlength(0), upperminlength(0) {}
@@ -103,7 +104,8 @@ public:
     enum EntryType {ET_INVALID = -1,
       ET_NORMAL = 0, 
       ET_ALIASBASE = 1, ET_ALIAS = 2, 
-      ET_SHORTCUTBASE = 4, ET_SHORTCUT = 8};
+      ET_SHORTCUTBASE = 4, ET_SHORTCUT = 8,
+      ET_LAST};
 
     // a bitset for indicating a subset of an item's fields: 
     typedef std::bitset<LAST> FieldBits;
@@ -227,6 +229,8 @@ public:
     int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
       uuid_array_t &uuid_array);
     int ValidatePWHistory();
+    bool IsExpired();
+    bool WillExpire(const int numdays);
 
     // Predicate to determine if item matches given criteria
     bool Matches(const CString &string1, const int &iObject, 

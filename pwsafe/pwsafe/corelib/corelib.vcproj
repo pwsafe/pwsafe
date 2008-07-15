@@ -490,6 +490,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWSFilters.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWSprefs.cpp"
 				>
 			</File>
@@ -502,11 +506,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWSXMLFilters.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\os\windows\rand.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Report.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SAXFilters.cpp"
 				>
 			</File>
 			<File
@@ -587,6 +599,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\filters.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Fish.h"
 				>
 			</File>
@@ -639,6 +655,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWSFilters.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PwsPlatform.h"
 				>
 			</File>
@@ -655,7 +675,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWSXMLFilters.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Report.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SAXFilters.h"
 				>
 			</File>
 			<File
@@ -672,6 +700,14 @@
 			</File>
 			<File
 				RelativePath=".\SMemFile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StringX.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StringXStream.h"
 				>
 			</File>
 			<File

@@ -277,8 +277,10 @@ int DboxMain::AddEntry(const CItemData &cinew)
   uuid_array_t uuid;
   cinew.GetUUID(uuid);
   int newpos = insertItem(m_core.GetEntry(m_core.Find(uuid)));
-  SelectEntry(newpos);
-  FixListIndexes();
+  if (m_bFilterActive && newpos >= 0) {
+    SelectEntry(newpos);
+    FixListIndexes();
+  }
   return newpos;
 }
 
@@ -342,6 +344,8 @@ void DboxMain::OnDelete()
 
   if (dodelete) {
     Delete();
+    if (m_bFilterActive)
+      RefreshViews();
   }
 }
 
@@ -532,8 +536,11 @@ void DboxMain::OnRename()
   // Renaming is only allowed while in Tree mode.
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
-    if (hItem != NULL)
+    if (hItem != NULL) {
       m_ctlItemTree.EditLabel(hItem);
+      if (m_bFilterActive && m_ctlItemTree.WasLabelEdited())
+        RefreshViews();
+    }
   }
 }
 
@@ -746,9 +753,11 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       GetPref(PWSprefs::SaveImmediately)) {
         Save();
     }
-    rc = SelectEntry(ndi->list_index);
-    if (rc == 0) {
-      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+    if (ndi->list_index >= 0) {
+      rc = SelectEntry(ndi->list_index);
+      if (rc == 0) {
+        SelectEntry(m_ctlItemList.GetItemCount() - 1);
+      }
     }
     ChangeOkUpdate();
     // Order may have changed as a result of edit
