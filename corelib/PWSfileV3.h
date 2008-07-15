@@ -30,6 +30,7 @@ public:
     HDR_LASTUPDATEHOST = 0x08,         // added in format 0x0302
     HDR_DBNAME = 0x09,                 // added in format 0x0302
     HDR_DBDESC = 0x0a,                 // added in format 0x0302
+    HDR_FILTERS = 0x0b,                // added in format 0x0305
     HDR_LAST,                          // Start of unknown fields!
     HDR_END = 0xff};                   // header field types, per formatV{2,3}.txt
 

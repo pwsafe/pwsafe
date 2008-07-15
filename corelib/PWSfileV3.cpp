@@ -11,6 +11,9 @@
 #include "util.h"
 #include "SysInfo.h"
 #include "PWScore.h"
+#include "PWSFilters.h"
+#include "PWSdirs.h"
+#include "corelib.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -337,7 +340,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0304;
+const short VersionNum = 0x0305;
 
 int PWSfileV3::WriteHeader()
 {
@@ -491,6 +494,13 @@ int PWSfileV3::WriteHeader()
   }
   if (!m_hdr.m_dbdesc.IsEmpty()) {
     numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
+    if (numWritten <= 0) { status = FAILURE; goto end; }
+  }
+  if (!m_MapDatabaseFilters.empty()) {
+    ostringstream oss;
+    PWSFilters::WriteFilterXMLFile(oss, m_hdr, _T(""),
+                                   m_MapDatabaseFilters);
+    numWritten = WriteCBC(HDR_FILTERS, oss.str().c_str());
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
@@ -688,6 +698,28 @@ int PWSfileV3::ReadHeader()
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         m_hdr.m_dbdesc = CString(text);
+        break;
+
+      case HDR_FILTERS:
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (utf8Len > 0) {
+          CString strErrors;
+          stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+          int rc = PWSFilters::ImportFilterXMLFile(m_MapDatabaseFilters, text, _T(""),
+                                                   XSDFilename.c_str(), strErrors);
+          if (rc != PWScore::SUCCESS) {
+            // Now ask them whether to keep as unknown field or delete!
+            int msg_rc = AfxMessageBox(IDSC_CANTPROCESSDBFILTERS, MB_YESNO | 
+                                         MB_ICONINFORMATION | MB_DEFBUTTON2);
+            if (msg_rc == IDYES) {
+              // Treat it as an Unknown field!
+              // Maybe user used a later version of PWS and we don't want to lose anything
+              UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+              m_UHFL.push_back(unkhfe);
+            }
+          }
+        }
         break;
 
       case HDR_END: /* process END so not to treat it as 'unknown' */

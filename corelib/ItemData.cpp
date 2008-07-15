@@ -18,6 +18,7 @@
 #include "PWSprefs.h"
 #include "VerifyFormat.h"
 #include "PWHistory.h"
+#include "Util.h"
 
 #include <time.h>
 #include <sstream>
@@ -448,83 +449,6 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
   return ret;
 }
 
-static string GetXMLTime(int indent, const char *name,
-                         time_t t, CUTF8Conv &utf8conv)
-{
-  int i;
-  const CMyString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-  ostringstream oss;
-  const unsigned char *utf8 = NULL;
-  int utf8Len = 0;
-
-
-  for (i = 0; i < indent; i++) oss << "\t";
-  oss << "<" << name << ">" << endl;
-  for (i = 0; i <= indent; i++) oss << "\t";
-  utf8conv.ToUTF8(tmp.Left(10), utf8, utf8Len);
-  oss << "<date>";
-  oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
-  oss << "</date>" << endl;
-  for (i = 0; i <= indent; i++) oss << "\t";
-  utf8conv.ToUTF8(tmp.Right(8), utf8, utf8Len);
-  oss << "<time>";
-  oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
-  oss << "</time>" << endl;
-  for (i = 0; i < indent; i++) oss << "\t";
-  oss << "</" << name << ">" << endl;
-  return oss.str();
-}
-
-static void WriteXMLField(ostream &os, const char *fname,
-                          const CMyString &value, CUTF8Conv &utf8conv,
-                          const char *tabs = "\t\t")
-{
-  const unsigned char * utf8 = NULL;
-  int utf8Len = 0;
-  int p = value.Find(_T("]]>")); // special handling required
-  if (p == -1) {
-    // common case
-    os << tabs << "<" << fname << "><![CDATA[";
-    if(utf8conv.ToUTF8(value, utf8, utf8Len))
-      os.write(reinterpret_cast<const char *>(utf8), utf8Len);
-    else
-      os << "Internal error - unable to convert field to utf-8";
-    os << "]]></" << fname << ">" << endl;
-  } else {
-    // value has "]]>" sequence(s) that need(s) to be escaped
-    // Each "]]>" splits the field into two CDATA sections, one ending with
-    // ']]', the other starting with '>'
-    os << tabs << "<" << fname << ">";
-    int from = 0, to = p + 2;
-    do {
-      CMyString slice = value.Mid(from, (to - from));
-      os << "<![CDATA[";
-      if(utf8conv.ToUTF8(slice, utf8, utf8Len))
-        os.write(reinterpret_cast<const char *>(utf8), utf8Len);
-      else
-        os << "Internal error - unable to convert field to utf-8";
-      os << "]]><![CDATA[";
-      from = to;
-      p = value.Find(_T("]]>"), from); // are there more?
-      if (p == -1) {
-        to = value.GetLength();
-        slice = value.Mid(from, (to - from));
-      } else {
-        to = p + 2;
-        slice = value.Mid(from, (to - from));
-        from = to;
-        to = value.GetLength();
-      }
-      if(utf8conv.ToUTF8(slice, utf8, utf8Len))
-        os.write(reinterpret_cast<const char *>(utf8), utf8Len);
-      else
-        os << "Internal error - unable to convert field to utf-8";
-      os << "]]>";
-    } while (p != -1);
-    os << "</" << fname << ">" << endl;
-  } // special handling of "]]>" in value.
-}
-
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
                          TCHAR delimiter, const CItemData *cibase) const
 {
@@ -536,14 +460,14 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   tmp = GetGroup();
   if (bsExport.test(CItemData::GROUP) && !tmp.IsEmpty())
-    WriteXMLField(oss, "group", tmp, utf8conv);
+    PWSUtil::WriteXMLField(oss, "group", tmp, utf8conv);
 
   // Title mandatory (see pwsafe.xsd)
-  WriteXMLField(oss, "title", GetTitle(), utf8conv);
+  PWSUtil::WriteXMLField(oss, "title", GetTitle(), utf8conv);
 
   tmp = GetUser();
   if (bsExport.test(CItemData::USER) && !tmp.IsEmpty())
-    WriteXMLField(oss, "username", tmp, utf8conv);
+    PWSUtil::WriteXMLField(oss, "username", tmp, utf8conv);
 
   // Password mandatory (see pwsafe.xsd)
   if (m_entrytype == ET_ALIAS) {
@@ -561,21 +485,21 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
           cibase->GetUser() + _T("~]") ;
   } else
     tmp = GetPassword();
-  WriteXMLField(oss, "password", tmp, utf8conv);
+  PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
 
   tmp = GetURL();
   if (bsExport.test(CItemData::URL) && !tmp.IsEmpty())
-    WriteXMLField(oss, "url", tmp, utf8conv);
+    PWSUtil::WriteXMLField(oss, "url", tmp, utf8conv);
 
   tmp = GetAutoType();
   if (bsExport.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
-    WriteXMLField(oss, "autotype", tmp, utf8conv);
+    PWSUtil::WriteXMLField(oss, "autotype", tmp, utf8conv);
 
   tmp = GetNotes();
   if (bsExport.test(CItemData::NOTES) && !tmp.IsEmpty()) {
     tmp.Remove(_T('\r'));
     tmp.Replace(_T('\n'), delimiter);
-    WriteXMLField(oss, "notes", tmp, utf8conv);
+    PWSUtil::WriteXMLField(oss, "notes", tmp, utf8conv);
   }
 
   uuid_array_t uuid_array;
@@ -589,15 +513,15 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   GetCTime(t);
   if (bsExport.test(CItemData::CTIME) && (long)t != 0L)
-    oss << GetXMLTime(2, "ctime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "ctime", t, utf8conv);
 
   GetATime(t);
   if (bsExport.test(CItemData::ATIME) && (long)t != 0L)
-    oss << GetXMLTime(2, "atime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "atime", t, utf8conv);
 
   GetXTime(t);
   if (bsExport.test(CItemData::XTIME) && (long)t != 0L)
-    oss << GetXMLTime(2, "xtime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "xtime", t, utf8conv);
 
   GetXTimeInt(xint);
   if (bsExport.test(CItemData::XTIME_INT) && xint > 0 && xint <= 3650)
@@ -605,11 +529,11 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   GetPMTime(t);
   if (bsExport.test(CItemData::PMTIME) && (long)t != 0L)
-    oss << GetXMLTime(2, "pmtime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "pmtime", t, utf8conv);
 
   GetRMTime(t);
   if (bsExport.test(CItemData::RMTIME) && (long)t != 0L)
-    oss << GetXMLTime(2, "rmtime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "rmtime", t, utf8conv);
 
   PWPolicy pwp;
   GetPWPolicy(pwp);
@@ -678,7 +602,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
             oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
           oss << "</time>" << endl;
           oss << "\t\t\t\t\t</changed>" << endl;
-          WriteXMLField(oss, "oldpassword", pwshe.password,
+          PWSUtil::WriteXMLField(oss, "oldpassword", pwshe.password,
                         utf8conv, "\t\t\t\t\t");
           oss << "\t\t\t\t</history_entry>" << endl;
 
@@ -1218,11 +1142,15 @@ bool CItemData::Matches(const CString &string1, const int &iObject,
       ASSERT(0);
   }
 
+  const bool bValue = !csObject.IsEmpty();
   if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
-    const bool bValue = !csObject.IsEmpty();
-    return PWSMatch::Matches(bValue, iFunction);
-  } else
-    return PWSMatch::Matches(string1, csObject, iFunction);
+    return PWSMatch::Match(bValue, iFunction);
+  }
+
+  if (!bValue) // String empty - always return false for other comparisons
+    return false;
+  else
+    return PWSMatch::Match(string1, csObject, iFunction);
 }
 
 bool CItemData::Matches(const int &num1, const int &num2, const int &iObject,
@@ -1240,11 +1168,14 @@ bool CItemData::Matches(const int &num1, const int &num2, const int &iObject,
       return false;
   }
 
-  if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
-    const bool bValue = (iValue == 0);
-    return PWSMatch::Matches(bValue, iFunction);
-  } else
-    return PWSMatch::Matches(num1, num2, iValue, iFunction);
+  const bool bValue = (iValue != 0);
+  if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT)
+    return PWSMatch::Match(bValue, iFunction);
+
+  if (!bValue) // integer empty - always return false for other comparisons
+    return false;
+  else
+    return PWSMatch::Match(num1, num2, iValue, iFunction);
 }
 
 bool CItemData::Matches(const time_t &time1, const time_t &time2, const int &iObject,
@@ -1266,25 +1197,84 @@ bool CItemData::Matches(const time_t &time1, const time_t &time2, const int &iOb
       return false;
   }
 
+  const bool bValue = (tValue != (time_t)0);
   if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
-    const bool bValue = (tValue != (time_t)0);
-    return PWSMatch::Matches(bValue, iFunction);
-  } else
-    return PWSMatch::Matches(time1, time2, tValue, iFunction);
+    return PWSMatch::Match(bValue, iFunction);
+  }
+
+  if (!bValue)  // date empty - always return false for other comparisons
+    return false;
+  else {
+    time_t testtime;
+    if (tValue != (time_t)0) {
+      CTime ct(tValue);
+      CTime ct2;
+      ct2 = CTime(ct.GetYear(), ct.GetMonth(), ct.GetDay(), 0, 0, 0);
+      testtime = (time_t)ct2.GetTime();
+    } else
+      testtime = (time_t)0;
+    return PWSMatch::Match(time1, time2, testtime, iFunction);
+  }
 }
   
 bool CItemData::Matches(const EntryType &etype1,
                         const int &iFunction) const
 {
   switch (iFunction) {
-    case PWSMatch::MR_EQUALS:
+    case PWSMatch::MR_IS:
       return GetEntryType() == etype1;
-    case PWSMatch::MR_NOTEQUAL:
+    case PWSMatch::MR_ISNOT:
       return GetEntryType() != etype1;
     default:
       ASSERT(0);
   }
   return false;
+}
+
+bool CItemData::IsExpired()
+{
+  time_t now, XTime;
+  time(&now);
+
+  GetXTime(XTime);
+  if ((XTime != (time_t)0) && (XTime < now))
+    return true;
+  else
+    return false;
+}
+
+bool CItemData::WillExpire(const int numdays)
+{
+  time_t now, exptime, XTime;
+  time(&now);
+
+  GetXTime(XTime);
+  // Check if there is an expiry date?
+  if (XTime == (time_t)0)
+    return false;
+
+  // Ignore if already expired
+  if (XTime <= now)
+    return false;
+
+  struct tm st;
+#if _MSC_VER >= 1400
+  errno_t err;
+  err = localtime_s(&st, &now);  // secure version
+  ASSERT(err == 0);
+#else
+  st = *localtime(&now);
+#endif
+  st.tm_mday += numdays;
+  exptime = mktime(&st);
+  if (exptime == (time_t)-1)
+    exptime = now;
+
+  // Will it expire in numdays?
+  if (XTime < exptime)
+    return true;
+  else
+    return false;
 }
 
 static bool pull_string(CMyString &str, unsigned char *data, int len)

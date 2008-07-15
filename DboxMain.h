@@ -33,6 +33,7 @@
 #include "PWToolBar.h"
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
+#include "corelib/filters.h"
 #include <vector>
 #include <map>
 
@@ -64,6 +65,9 @@ DECLARE_HANDLE(HDROP);
 
 // Simulate Ctrl+F from Find Toolbar "enter"
 #define WM_TOOLBAR_FIND (WM_APP + 50)
+
+// Update current filters whilst SetFilters dialog is open
+#define WM_EXECUTE_FILTERS (WM_APP + 60)
 
 /* timer event number used to by PupText.  Here for doc. only
 #define TIMER_PUPTEXT    0x03  */
@@ -115,6 +119,7 @@ private:
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
   static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
   static CString CS_HIDETOOBAR, CS_SHOWTOOLBAR;
+  static CString CS_APPLYFILTERS, CS_REMOVEFILTERS;
   static const CString DEFAULT_AUTOTYPE;
 
 public:
@@ -241,6 +246,8 @@ public:
   void CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
                            const CMyString cs_title, const CMyString cs_user);
   bool SetNotesWindow(const CPoint point, const bool bVisible = true);
+  bool IsFilterActive() {return m_bFilterActive;}
+  int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -353,6 +360,7 @@ protected:
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
                             uuid_array_t &fromuuid, uuid_array_t &touuid);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
+  LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -395,12 +403,16 @@ protected:
   bool GetDriveAndDirectory(const CMyString cs_infile, CString &cs_directory,
                             CString &cs_drive);
   void SetFindToolBar(bool bShow);
+  void ApplyFilters();
 
   void PlaceWindow(CRect *prect, UINT showCmd);
   HRGN GetWorkAreaRegion();
   void GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork);
   void ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork);
   static BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC hdc, LPRECT prc, LPARAM lParam);
+  bool PassesFiltering(CItemData &ci, const st_filters &filters);
+  bool PassesPWHFiltering(CItemData *pci, const st_filters &filters);
+  bool PassesPWPFiltering(CItemData *pci, const st_filters &filters);
 
 #if !defined(POCKET_PC)
   afx_msg void OnTrayLockUnLock();
@@ -486,6 +498,16 @@ protected:
   afx_msg void OnChangePswdFont();
   afx_msg void OnViewReports(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();          // From Toolbar button
+  afx_msg void OnApplyFilter();
+  afx_msg void OnSetFilter();
+  afx_msg void OnClearFilter();
+  afx_msg void OnSelectFilter();
+  afx_msg void OnSaveFilter();
+  afx_msg void OnDeleteFilter();
+  afx_msg void OnViewFilter();
+  afx_msg void OnExportFilters();
+  afx_msg void OnImportFilters(); 
+  afx_msg void OnRefreshWindow();
   afx_msg void OnMinimize();
   afx_msg void OnUnMinimize();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -598,6 +620,23 @@ private:
   // Images in List View
   bool m_bImageInLV;
   CInfoDisplay *m_pNotesDisplay;
+
+  // Filters
+  bool m_bFilterActive;
+  // Current filter
+  st_filters m_filters;
+
+  // Sorted Groups
+  vfiltergroups m_vMflgroups;
+  vfiltergroups m_vHflgroups;
+  vfiltergroups m_vPflgroups;
+
+  // Global Filters
+  MapFilters m_MapGlobalFilters;
+
+  void ExportFilters(MapFilters &MapFilters);
+  void CreateGroups();
+  int m_bNumPassedFiltering;
 };
 
 inline bool DboxMain::FieldsNotEqual(CMyString a, CMyString b)

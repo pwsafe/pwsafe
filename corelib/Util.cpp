@@ -20,6 +20,17 @@
 #include <sys/timeb.h>
 #include <time.h>
 #include "Util.h"
+#include <sstream>
+
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::wistringstream istringstreamT;
+typedef std::wostringstream ostringstreamT;
+#else
+typedef std::istringstream istringstreamT;
+typedef std::ostringstream ostringstreamT;
+#endif
+using namespace std;
 
 // used by CBC routines...
 static void xormem(unsigned char* mem1, const unsigned char* mem2, int length)
@@ -283,8 +294,8 @@ size_t _readcbc(FILE *fp,
     return 0;
   }
 
-  if ((file_len != 0 && length >= file_len) 
-	  || (file_len == 0 && length >= PWSUtil::fileLength(fp))) {
+  if ((file_len != 0 && length >= file_len) ||
+      (file_len == 0 && length >= PWSUtil::fileLength(fp))) {
     TRACE("_readcbc: Read size larger than file length - aborting\n");
     buffer = NULL;
     buffer_len = 0;
@@ -535,4 +546,81 @@ CMyString PWSUtil::NormalizeTTT(const CMyString &in)
     ttt = in;
   }
   return ttt;
+}
+
+void PWSUtil::WriteXMLField(ostream &os, const char *fname,
+                            const CMyString &value, CUTF8Conv &utf8conv,
+                            const char *tabs)
+{
+  const unsigned char * utf8 = NULL;
+  int utf8Len = 0;
+  int p = value.Find(_T("]]>")); // special handling required
+  if (p == -1) {
+    // common case
+    os << tabs << "<" << fname << "><![CDATA[";
+    if(utf8conv.ToUTF8(value, utf8, utf8Len))
+      os.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    else
+      os << "Internal error - unable to convert field to utf-8";
+    os << "]]></" << fname << ">" << endl;
+  } else {
+    // value has "]]>" sequence(s) that need(s) to be escaped
+    // Each "]]>" splits the field into two CDATA sections, one ending with
+    // ']]', the other starting with '>'
+    os << tabs << "<" << fname << ">";
+    int from = 0, to = p + 2;
+    do {
+      CMyString slice = value.Mid(from, (to - from));
+      os << "<![CDATA[";
+      if(utf8conv.ToUTF8(slice, utf8, utf8Len))
+        os.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      else
+        os << "Internal error - unable to convert field to utf-8";
+      os << "]]><![CDATA[";
+      from = to;
+      p = value.Find(_T("]]>"), from); // are there more?
+      if (p == -1) {
+        to = value.GetLength();
+        slice = value.Mid(from, (to - from));
+      } else {
+        to = p + 2;
+        slice = value.Mid(from, (to - from));
+        from = to;
+        to = value.GetLength();
+      }
+      if(utf8conv.ToUTF8(slice, utf8, utf8Len))
+        os.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      else
+        os << "Internal error - unable to convert field to utf-8";
+      os << "]]>";
+    } while (p != -1);
+    os << "</" << fname << ">" << endl;
+  } // special handling of "]]>" in value.
+}
+
+string PWSUtil::GetXMLTime(int indent, const char *name,
+                           time_t t, CUTF8Conv &utf8conv)
+{
+  int i;
+  const CMyString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
+  ostringstream oss;
+  const unsigned char *utf8 = NULL;
+  int utf8Len = 0;
+
+
+  for (i = 0; i < indent; i++) oss << "\t";
+  oss << "<" << name << ">" << endl;
+  for (i = 0; i <= indent; i++) oss << "\t";
+  utf8conv.ToUTF8(tmp.Left(10), utf8, utf8Len);
+  oss << "<date>";
+  oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  oss << "</date>" << endl;
+  for (i = 0; i <= indent; i++) oss << "\t";
+  utf8conv.ToUTF8(tmp.Right(8), utf8, utf8Len);
+  oss << "<time>";
+  oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  oss << "</time>" << endl;
+  for (i = 0; i < indent; i++) oss << "\t";
+  oss << "</" << name << ">" << endl;
+  return oss.str();
 }

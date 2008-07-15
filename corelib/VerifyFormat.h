@@ -20,6 +20,7 @@ enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,
       PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
 bool VerifyASCDateTimeString(const CString &time_str, time_t &t);
 bool VerifyXMLDateTimeString(const CString &time_str, time_t &t);
+bool VerifyXMLDateString(const CString &time_str, time_t &t);
 bool VerifyImportDateTimeString(const CString &time_str, time_t &t);
 int VerifyImportPWHistoryString(const TCHAR *PWHistory,
                                 CMyString &newPWHistory, CString &strErrors);

@@ -65,7 +65,8 @@ const CString CPWToolBar::m_csMainButtons[] = {
   _T("help"),
   // Optional (non-default) buttons next
   _T("exporttext"), _T("exportxml"), _T("importtext"), _T("importxml"), 
-  _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("find"), _T("viewreports")
+  _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("find"), _T("viewreports"), 
+  _T("applyfilters"), _T("setfilters"), _T("clearfilters")
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -104,7 +105,10 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_MENUITEM_MERGE,
   ID_TOOLBUTTON_LISTTREE,
   ID_MENUITEM_FIND,
-  ID_TOOLBUTTON_VIEWREPORTS
+  ID_TOOLBUTTON_VIEWREPORTS,
+  ID_MENUITEM_APPLYFILTER,
+  ID_MENUITEM_SETFILTER,
+  ID_MENUITEM_CLEARFILTER
 };
 
 // Additional Control IDs not on ToolBar
@@ -167,7 +171,10 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_MERGE_CLASSIC,
   IDB_LISTTREE_CLASSIC,
   IDB_FIND_CLASSIC,
-  IDB_VIEWREPORTS_CLASSIC
+  IDB_VIEWREPORTS_CLASSIC,
+  IDB_APPLYFILTERS_CLASSIC,
+  IDB_SETFILTERS_CLASSIC,
+  IDB_CLEARFILTERS_CLASSIC
 };
 
 // Additional bitmaps not on ToolBar
@@ -230,7 +237,10 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_MERGE_NEW,
   IDB_LISTTREE_NEW,
   IDB_FIND_NEW,
-  IDB_VIEWREPORTS_NEW
+  IDB_VIEWREPORTS_NEW,
+  IDB_APPLYFILTERS_NEW,
+  IDB_SETFILTERS_NEW,
+  IDB_CLEARFILTERS_NEW
 };
 
 const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
@@ -262,7 +272,10 @@ const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
   IDB_MERGE_NEW_D,
   IDB_LISTTREE_NEW_D,
   IDB_FIND_NEW_D,
-  IDB_VIEWREPORTS_NEW_D
+  IDB_VIEWREPORTS_NEW_D,
+  IDB_APPLYFILTERS_NEW_D,
+  IDB_SETFILTERS_NEW_D,
+  IDB_CLEARFILTERS_NEW_D
 };
 
 // Additional bitmaps not on ToolBar

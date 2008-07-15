@@ -23,6 +23,7 @@
 #include "UTF8Conv.h"
 #include "Report.h"
 #include "VerifyFormat.h"
+#include "filters.h"
 
 #include <shellapi.h>
 #include <shlwapi.h>
@@ -120,6 +121,9 @@ void PWScore::ClearData(void)
   // Clear out unknown fields
   m_UHFL.clear();
 
+  // Clear out database filters
+  m_MapDatabaseFilters.clear();
+
   NotifyListModified();
 }
 
@@ -208,6 +212,8 @@ int PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 
   // Give PWSfileV3 the unknown headers to write out
   out->SetUnknownHeaderFields(m_UHFL);
+  // Give it the filters to write out
+  out->SetFilters(m_MapDatabaseFilters);
 
   status = out->Open(GetPassKey());
 
@@ -382,7 +388,7 @@ int PWScore::WritePlaintextFile(const CMyString &filename,
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::NOTES)) {
-      cs_temp.LoadString(IDCS_EXPHDRNOTES);
+      cs_temp.LoadString(IDSC_EXPHDRNOTES);
       hdr += cs_temp;
     }
 
@@ -1190,6 +1196,9 @@ int PWScore::ReadFile(const CMyString &a_filename,
 #ifdef DEMO
   bool limited = false;
 #endif
+
+  if (!in->m_MapDatabaseFilters.empty())
+    m_MapDatabaseFilters = in->m_MapDatabaseFilters;
 
   UUIDList possible_aliases, possible_shortcuts;
   do {

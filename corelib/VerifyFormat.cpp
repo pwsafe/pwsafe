@@ -197,9 +197,10 @@ bool VerifyXMLDateTimeString(const CString &time_str, time_t &t)
       time_str.Mid(16,1) != ':')
     return false;
 
-  for (int i = 0;  i < ndigits; i++)
+  for (int i = 0; i < ndigits; i++) {
     if (!isdigit(time_str.GetAt(idigits[i])))
       return false;
+  }
 
   // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
   // and no blanks.  Replace '-' & 'T' by '#'.
@@ -248,6 +249,78 @@ bool VerifyXMLDateTimeString(const CString &time_str, time_t &t)
     return false;
 
   const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
+
+  t = (time_t)ct.GetTime();
+
+  return true;
+}
+
+bool VerifyXMLDateString(const CString &time_str, time_t &t)
+{
+  //  String format must be "yyyy-mm-dd"
+  //                        "0123456789"
+
+  CString xtime_str;
+  const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  const int idigits[14] = {0, 1, 2, 3, 5, 6, 8, 9};
+  const int ndigits = 8;
+  int yyyy, mon, dd, nscanned;
+
+  t = (time_t)-1;
+
+  if (time_str.GetLength() != 10)
+    return false;
+
+  // Validate time_str
+  if (time_str.Mid(4,1) != '-' ||
+      time_str.Mid(7,1) != '-')
+    return false;
+
+  for (int i = 0; i < ndigits; i++) {
+    if (!isdigit(time_str.GetAt(idigits[i])))
+      return false;
+  }
+
+  // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
+  // and no blanks.  Replace '-' by '#'.
+  if (time_str.Find(TCHAR('#')) != (-1))
+    return false;
+  if (time_str.Find(TCHAR(' ')) != (-1))
+    return false;
+
+  xtime_str = time_str;
+  if (xtime_str.Replace(TCHAR('-'), TCHAR('#')) != 2)
+    return false;
+
+#if _MSC_VER >= 1400
+  nscanned = _stscanf_s(xtime_str, _T("%4d#%2d#%2d"),
+                        &yyyy, &mon, &dd);
+#else
+  nscanned = _stscanf(xtime_str, _T("%4d#%2d#%2d"),
+                      &yyyy, &mon, &dd);
+#endif
+
+  if (nscanned != 3)
+    return false;
+
+  // Built-in obsolesence for pwsafe in 2038?
+  if (yyyy < 1970 || yyyy > 2038)
+    return false;
+
+  if ((mon < 1 || mon > 12) || (dd < 1))
+    return false;
+
+  if (mon == 2 && (yyyy % 4) == 0) {
+    // Feb and a leap year
+    if (dd > 29)
+      return false;
+  } else {
+    // Either (Not Feb) or (Is Feb but not a leap-year)
+    if (dd > month_lengths[mon - 1])
+      return false;
+  }
+
+  const CTime ct(yyyy, mon, dd, 0, 0, 0, -1);
 
   t = (time_t)ct.GetTime();
 

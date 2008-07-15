@@ -156,7 +156,6 @@ public:
     PWSUtil::HexDump(m_mfBuffer, m_mfBufLen, cs_timestamp);
 #endif /* DUMP_DATA */
 
-
     m_hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, m_mfBufLen);
     ASSERT(m_hgData != NULL);
 
@@ -192,7 +191,8 @@ private:
 
 CPWTreeCtrl::CPWTreeCtrl()
   : m_isRestoring(false), m_bWithinThisInstance(true),
-  m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0)
+  m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
+  m_bFilterActive(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -229,10 +229,11 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_DESTROY()
   ON_WM_TIMER()
-  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_MOUSEMOVE()
+  ON_WM_ERASEBKGND()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -453,6 +454,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
 
   *pLResult = TRUE; // TRUE cancels label editing
+  m_bEditLabelCompleted = false;
 
   /*
   Allowed formats:
@@ -615,9 +617,9 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   /* Allowed formats:
   1.   title
   If preference ShowUsernameInTree is set:
-    2.   title [username]
-    If preferences ShowUsernameInTree and ShowPasswordInTree are set:
-      3.   title [username] {password}
+  2.   title [username]
+  If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+  3.   title [username] {password}
 
   There can only be one of each:
       open square brace
@@ -735,6 +737,10 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
     // OK
     *pLResult = TRUE;
+    m_bEditLabelCompleted = true;
+    if (m_pDbx->IsFilterActive())
+      m_pDbx->RefreshViews();
+
     return;
   }
 
@@ -1230,6 +1236,8 @@ exit:
   if (retval == TRUE) {
     m_pDbx->SetChanged(DboxMain::Data);
     m_pDbx->ChangeOkUpdate();
+    if (m_pDbx->IsFilterActive())
+      m_pDbx->RefreshViews();
   }
   return retval;
 }
@@ -1662,4 +1670,52 @@ void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
   tvs.lParam = (LPARAM)this;
 
   SortChildrenCB(&tvs);
+}
+
+void CPWTreeCtrl::SetFilterState(bool bState)
+{
+  m_bFilterActive = bState;
+
+  // Red if filter active, black if not
+  SetTextColor(m_bFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
+}
+
+BOOL CPWTreeCtrl::OnEraseBkgnd(CDC* pDC)
+{
+  if (m_bFilterActive && m_pDbx->GetNumPassedFiltering() == 0) {
+    int nSavedDC = pDC->SaveDC(); //save the current DC state
+
+    // Set up variables
+    COLORREF clrText = RGB(168, 0, 0);
+    COLORREF clrBack = ::GetSysColor(COLOR_WINDOW);    //system background color
+    CBrush cbBack(clrBack);
+
+    CRect rc;
+    GetClientRect(&rc);  //get client area of the ListCtrl
+
+    // Here is the string we want to display (or you can use a StringTable entry)
+    const CString cs_emptytext(MAKEINTRESOURCE(IDS_NOITEMSPASSEDFILTERING));
+
+    // Now we actually display the text
+    // set the text color
+    pDC->SetTextColor(clrText);
+    // set the background color
+    pDC->SetBkColor(clrBack);
+    // fill the client area rect
+    pDC->FillRect(&rc, &cbBack);
+    // select a font
+    pDC->SelectStockObject(ANSI_VAR_FONT);
+    // and draw the text
+    pDC->DrawText(cs_emptytext, -1, rc,
+                  DT_CENTER | DT_VCENTER | DT_WORDBREAK | DT_NOPREFIX | DT_NOCLIP);
+
+    // Restore dc
+    pDC->RestoreDC(nSavedDC);
+    ReleaseDC(pDC);
+  } else {
+    //  If there are items in the TreeCtrl, we need to call the base class function
+    CTreeCtrl::OnEraseBkgnd(pDC);
+  }
+
+  return TRUE;
 }

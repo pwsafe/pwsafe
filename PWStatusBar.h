@@ -18,16 +18,28 @@ class CPWStatusBar : public CStatusBar
 #ifdef DEBUG
         SB_CONFIG,
 #endif
-        SB_MODIFIED, SB_READONLY, SB_NUM_ENT,
+        SB_MODIFIED, SB_READONLY, SB_NUM_ENT, SB_FILTER,
         SB_TOTAL /* this must be the last entry */};
 
 public:
   CPWStatusBar();
   virtual ~CPWStatusBar();
+  virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+
+  void SetFilterStatus(bool bStatus)
+  {m_bFilterStatus = bStatus;}
+
+  int GetBitmapWidth()
+  {return m_bmWidth;}
 
 protected:
   //{{AFX_MSG(CPWStatusBar)
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  bool m_bFilterStatus;
+  int m_bmHeight, m_bmWidth;
+  CBitmap m_FilterBitmap;
 };

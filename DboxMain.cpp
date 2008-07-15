@@ -21,6 +21,7 @@
 #include "PwFont.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
+#include "corelib/PWSdirs.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -38,6 +39,7 @@
 #include "ExpPWListDlg.h"
 #include "GeneralMsgBox.h"
 #include "InfoDisplay.h"
+#include "corelib/PWSFilters.h"
 
 // widget override?
 #include "SysColStatic.h"
@@ -75,6 +77,8 @@ CString DboxMain::CS_COPYEMAIL;
 CString DboxMain::CS_EXPCOLGROUP;
 CString DboxMain::CS_HIDETOOBAR;
 CString DboxMain::CS_SHOWTOOLBAR;
+CString DboxMain::CS_APPLYFILTERS;
+CString DboxMain::CS_REMOVEFILTERS;
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
@@ -92,7 +96,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
   m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL),
-  m_LastFoundTreeItem(NULL)
+  m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -107,6 +111,8 @@ DboxMain::DboxMain(CWnd* pParent)
   CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
   CS_HIDETOOBAR.LoadString(IDS_HIDETOOLBAR);
   CS_SHOWTOOLBAR.LoadString(IDS_SHOWTOOLBAR);
+  CS_APPLYFILTERS.LoadString(IDS_APPLYFILTERS);
+  CS_REMOVEFILTERS.LoadString(IDS_REMOVEFILTERS);
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
   //}}AFX_DATA_INIT
@@ -187,6 +193,16 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_CHANGETREEFONT, OnChangeTreeFont)
   ON_COMMAND(ID_MENUITEM_CHANGEPSWDFONT, OnChangePswdFont)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReports)
+  ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
+  ON_COMMAND(ID_MENUITEM_SETFILTER, OnSetFilter)
+  ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnClearFilter)
+  ON_COMMAND(ID_MENUITEM_SELECTFILTER, OnSelectFilter)
+  ON_COMMAND(ID_MENUITEM_SAVEFILTER, OnSaveFilter)
+  ON_COMMAND(ID_MENUITEM_DELETEFILTER, OnDeleteFilter)
+  ON_COMMAND(ID_MENUITEM_VIEWFILTER, OnViewFilter)
+  ON_COMMAND(ID_MENUITEM_EXPORTFILTERS, OnExportFilters)
+  ON_COMMAND(ID_MENUITEM_IMPORTFILTERS, OnImportFilters)
+  ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
 
   // Manage Menu
   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
@@ -279,6 +295,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(WM_HDR_DRAG_COMPLETE, OnHeaderDragComplete)
   ON_MESSAGE(WM_COMPARE_RESULT_FUNCTION, OnProcessCompareResultFunction)
   ON_MESSAGE(WM_TOOLBAR_FIND, OnToolBarFindMessage)
+  ON_MESSAGE(WM_EXECUTE_FILTERS, OnExecuteFilters)
 
   ON_COMMAND(ID_MENUITEM_CUSTOMIZETOOLBAR, OnCustomizeToolbar)
 
@@ -360,6 +377,16 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, true},
   {ID_MENUITEM_REPORT_MERGE, true, true, true, true},
   {ID_MENUITEM_REPORT_VALIDATE, true, true, true, true},
+  {ID_MENUITEM_APPLYFILTER, true, true, false, false},
+  {ID_MENUITEM_SETFILTER, true, true, false, false},
+  {ID_MENUITEM_CLEARFILTER, true, true, false, false},
+  {ID_MENUITEM_SELECTFILTER, true, true, false, false},
+  {ID_MENUITEM_SAVEFILTER, true, false, false, false},
+  {ID_MENUITEM_VIEWFILTER, true, true, false, false},
+  {ID_MENUITEM_DELETEFILTER, true, false, false, false},
+  {ID_MENUITEM_EXPORTFILTERS, true, true, false, false},
+  {ID_MENUITEM_IMPORTFILTERS, true, true, false, false},
+  {ID_MENUITEM_REFRESH, true, true, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
@@ -647,6 +674,21 @@ void DboxMain::InitPasswordSafe()
     delete m_pNotesDisplay;
     m_pNotesDisplay = NULL;
   }
+  CString tmp = CString(PWSdirs::GetExeDir().c_str()) + _T("autoload_filters.xml");
+  if (PWSfile::FileExists(tmp)) {
+    CString strErrors;
+    stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+    CWaitCursor waitCursor;  // This may take a while!
+
+    int rc = PWSFilters::ImportFilterXMLFile(m_MapGlobalFilters, _T(""), tmp,
+                                             XSDFilename.c_str(), strErrors);
+    waitCursor.Restore();  // Restore normal cursor
+    if (rc != PWScore::SUCCESS) {
+      CString cs_msg;
+      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors);
+      AfxMessageBox(cs_msg, MB_OK);
+    }
+  }
 }
 
 LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)
@@ -825,6 +867,8 @@ void DboxMain::FixListIndexes()
   for (int i = 0; i < N; i++) {
     CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(ci != NULL);
+    if (m_bFilterActive && !PassesFiltering(*ci, m_filters))
+      continue;
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     if (di->list_index != i)
@@ -1552,6 +1596,11 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
                     ID_MENUITEM_SHOWHIDE_TOOLBAR,
                     m_MainToolBar.IsWindowVisible() ? CS_HIDETOOBAR : CS_SHOWTOOLBAR);
 
+  pMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
+                    (m_bFilterActive ? MF_CHECKED : MF_UNCHECKED),
+                    ID_MENUITEM_APPLYFILTER,
+                    m_bFilterActive ? CS_REMOVEFILTERS : CS_APPLYFILTERS);
+
   // JHF m_toolbarMode is not for WinCE (as in .h)
 #if !defined(POCKET_PC)
   pMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR, ID_MENUITEM_OLD_TOOLBAR,
@@ -2090,7 +2139,10 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());
       m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, s);
 
-      s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
+      if (m_bFilterActive)
+        s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering, m_core.GetNumEntries());
+      else
+        s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
       dc.DrawText(s, &rectPane, DT_CALCRECT);
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
@@ -2471,6 +2523,28 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       return -1;
     case ID_MENUITEM_CLEAR_MRU:
       if (app.GetMRU()->IsMRUEmpty())
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_APPLYFILTER:
+      if (m_filters.vMfldata.size() == 0 || 
+          (m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive) == 0)
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_CLEARFILTER:
+      if (m_filters.vMfldata.size() == 0)
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_SETFILTER:
+      break;
+    case ID_MENUITEM_SAVEFILTER:
+      if (m_filters.vMfldata.size() == 0)
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_SELECTFILTER:
+    case ID_MENUITEM_DELETEFILTER:
+    case ID_MENUITEM_VIEWFILTER:
+    case ID_MENUITEM_EXPORTFILTERS:
+      if (m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
         iEnable = FALSE;
       break;
     default:

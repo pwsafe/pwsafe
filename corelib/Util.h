@@ -15,6 +15,9 @@
 #include "Fish.h"
 #include "PwsPlatform.h"
 #include "os/typedefs.h"
+#include "os/mem.h"
+#include "UTF8Conv.h"
+#include <sstream>
 
 #define SaltLength 20
 #define StuffSize 10
@@ -51,7 +54,7 @@ extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
                        unsigned char &type, Fish *Algorithm,
                        unsigned char* cbcbuffer,
                        const unsigned char *TERMINAL_BLOCK = NULL, 
-					   long file_len = 0);
+                       long file_len = 0);
 extern size_t _writecbc(FILE *fp, const unsigned char* buffer, int length,
                         unsigned char type, Fish *Algorithm,
                         unsigned char* cbcbuffer);
@@ -136,6 +139,11 @@ namespace PWSUtil {
   CString Base64Encode(const BYTE *inData, size_t len);
   void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
   CMyString NormalizeTTT(const CMyString &in);
+  void WriteXMLField(std::ostream &os, const char *fname,
+                     const CMyString &value, CUTF8Conv &utf8conv,
+                     const char *tabs = "\t\t");
+  std::string GetXMLTime(int indent, const char *name,
+                         time_t t, CUTF8Conv &utf8conv);
 };
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------

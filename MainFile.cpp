@@ -35,6 +35,7 @@
 #include "corelib/PWSdirs.h"
 #include "corelib/Report.h"
 #include "corelib/ItemData.h"
+#include "corelib/corelib.h"
 
 #include <sys/types.h>
 #include <bitset>
@@ -1998,35 +1999,35 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
       switch (m_subgroup_function) {
         case -PWSMatch::MR_EQUALS:
         case  PWSMatch::MR_EQUALS:
-          uistring = IDS_EQUALS;
+          uistring = IDSC_EQUALS;
           break;
         case -PWSMatch::MR_NOTEQUAL:
         case  PWSMatch::MR_NOTEQUAL:
-          uistring = IDS_DOESNOTEQUAL;
+          uistring = IDSC_DOESNOTEQUAL;
           break;
         case -PWSMatch::MR_BEGINS:
         case  PWSMatch::MR_BEGINS:
-          uistring = IDS_BEGINSWITH;
+          uistring = IDSC_BEGINSWITH;
           break;
         case -PWSMatch::MR_NOTBEGIN:
         case  PWSMatch::MR_NOTBEGIN:
-          uistring = IDS_DOESNOTBEGINSWITH;
+          uistring = IDSC_DOESNOTBEGINSWITH;
           break;
         case -PWSMatch::MR_ENDS:
         case  PWSMatch::MR_ENDS:
-          uistring = IDS_ENDSWITH;
+          uistring = IDSC_ENDSWITH;
           break;
         case -PWSMatch::MR_NOTEND:
         case  PWSMatch::MR_NOTEND:
-          uistring = IDS_DOESNOTENDWITH;
+          uistring = IDSC_DOESNOTENDWITH;
           break;
         case -PWSMatch::MR_CONTAINS:
         case  PWSMatch::MR_CONTAINS:
-          uistring = IDS_CONTAINS;
+          uistring = IDSC_CONTAINS;
           break;
         case -PWSMatch::MR_NOTCONTAIN:
         case  PWSMatch::MR_NOTCONTAIN:
-          uistring = IDS_DOESNOTCONTAIN;
+          uistring = IDSC_DOESNOTCONTAIN;
           break;
         default:
           ASSERT(0);
@@ -2481,6 +2482,10 @@ void DboxMain::OnOK()
   prefs->SaveApplicationPreferences();
   // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
   m_menuManager.Cleanup();
+
+  // Clear out Global filters
+  m_MapGlobalFilters.clear();
+
   CDialog::OnOK();
 }
 
