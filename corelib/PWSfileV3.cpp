@@ -712,7 +712,7 @@ int PWSfileV3::ReadHeader()
             // Now ask them whether to keep as unknown field or delete!
             int msg_rc = AfxMessageBox(IDSC_CANTPROCESSDBFILTERS, MB_YESNO | 
                                          MB_ICONINFORMATION | MB_DEFBUTTON2);
-            if (msg_rc == IDYES) {
+            if (msg_rc == IDNO) {
               // Treat it as an Unknown field!
               // Maybe user used a later version of PWS and we don't want to lose anything
               UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
