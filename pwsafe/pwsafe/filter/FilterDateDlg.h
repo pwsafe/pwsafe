@@ -8,27 +8,30 @@
 
 #pragma once
 
-#include "PWDialog.h"
-#include "corelib/ItemData.h"
-#include "resource.h"
+#include "../PWDialog.h"
+#include "../corelib/ItemData.h"
+#include "../resource.h"
+#include "afxdtctl.h" // only needed for date/time controls
 
-// CFilterEntryTypeDlg dialog
+// CFilterDateDlg dialog
 
-class CFilterEntryTypeDlg : public CPWDialog
+class CFilterDateDlg : public CPWDialog
 {
-  DECLARE_DYNAMIC(CFilterEntryTypeDlg)
+  DECLARE_DYNAMIC(CFilterDateDlg)
 
 public:
-  CFilterEntryTypeDlg(CWnd* pParent = NULL);   // standard constructor
-  virtual ~CFilterEntryTypeDlg();
+  CFilterDateDlg(CWnd* pParent = NULL);   // standard constructor
+  virtual ~CFilterDateDlg();
 
 // Dialog Data
-  enum { IDD = IDD_FILTER_ENTRYTYPE };
+  enum { IDD = IDD_FILTER_DATE };
   PWSMatch::MatchRule m_rule;
-  CItemData::EntryType m_etype;
+  CTime m_ctime1, m_ctime2;
+  time_t m_time_t1, m_time_t2;
   CString m_title;
   CString m_oldtitle;
   bool m_bFirst;
+  bool m_add_present;
 
 protected:
   virtual BOOL OnInitDialog();
@@ -37,12 +40,13 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
-  afx_msg void OnCbnSelchangeEntryTypeRule();
-  afx_msg void OnCbnSelchangeEntryType1();
+  afx_msg void OnCbnSelchangeDateRule();
   afx_msg void OnBnClickedOk();
-  CComboBox m_cbxRule, m_cbxEType;
+  afx_msg void OnDtnDatetime1Change(NMHDR *pNMHDR, LRESULT *pResult);
+  CComboBox m_cbxRule;
+  CDateTimeCtrl m_dtp1, m_dtp2;
+  CStatic m_stcAnd, m_stcStatus;
 
 private:
   int m_rule2selection[PWSMatch::MR_LAST];
-  int m_etype2selection[CItemData::ET_LAST];
 };

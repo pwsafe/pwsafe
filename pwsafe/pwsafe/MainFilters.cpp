@@ -5,9 +5,9 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-/// file MainView.cpp
+/// file MainFilters.cpp
 //
-// View-related methods of DboxMain
+// Filter-related methods of DboxMain
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
@@ -23,11 +23,11 @@
 #endif
 
 #include "DboxMain.h"
-#include "SetFiltersDlg.h"
-#include "FilterActionsDlg.h"
-#include "SaveFilterDlg.h"
-#include "ViewFilterDlg.h"
-#include "ExportFiltersDlg.h"
+#include "filter/SetFiltersDlg.h"
+#include "filter/FilterActionsDlg.h"
+#include "filter/SaveFilterDlg.h"
+#include "filter/ViewFilterDlg.h"
+#include "filter/ExportFiltersDlg.h"
 #include "GeneralMsgBox.h"
 
 #include "corelib/PWSFilters.h"

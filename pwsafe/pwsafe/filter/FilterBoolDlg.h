@@ -1,4 +1,4 @@
-/*
+      /*
 * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -8,30 +8,29 @@
 
 #pragma once
 
-#include "PWDialog.h"
-#include "corelib/ItemData.h"
-#include "resource.h"
+#include "../PWDialog.h"
+#include "../corelib/ItemData.h"
+#include "../resource.h"
 
-// CFilterPasswordDlg dialog
+// CFilterBoolDlg dialog
 
-class CFilterPasswordDlg : public CPWDialog
+class CFilterBoolDlg : public CPWDialog
 {
-  DECLARE_DYNAMIC(CFilterPasswordDlg)
+  DECLARE_DYNAMIC(CFilterBoolDlg)
 
 public:
-  CFilterPasswordDlg(CWnd* pParent = NULL);   // standard constructor
-  virtual ~CFilterPasswordDlg();
+  enum BoolType {BT_PRESENT, BT_ACTIVE, BT_SET};
+
+  CFilterBoolDlg(CWnd* pParent = NULL);
+  virtual ~CFilterBoolDlg();
 
 // Dialog Data
-  enum { IDD = IDD_FILTER_PASSWORD };
+  enum { IDD = IDD_FILTER_BOOL };
   PWSMatch::MatchRule m_rule;
-  int m_case;
-  CMyString m_string;
   CString m_title;
   CString m_oldtitle;
-  int m_num1;
-  int m_maxDays;
   bool m_bFirst;
+  BoolType m_bt;
 
 protected:
   virtual BOOL OnInitDialog();
@@ -40,16 +39,10 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
-  afx_msg void OnCbnSelchangePasswordRule();
+  afx_msg void OnCbnSelchangeBoolRule();
   afx_msg void OnBnClickedOk();
   CComboBox m_cbxRule;
-  CEdit m_edtString, m_edtInteger1;
-  CButton m_btnCase;
-  CStatic m_stcStatus, m_stcIn, m_stcDays;
 
 private:
-  void EnableDialogItems();
-  void AFXAPI DDV_CheckMinMax(CDataExchange* pDX,
-                              const int num, const int min, const int max);
   int m_rule2selection[PWSMatch::MR_LAST];
 };

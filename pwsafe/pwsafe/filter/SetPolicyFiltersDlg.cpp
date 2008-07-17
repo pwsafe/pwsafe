@@ -9,10 +9,10 @@
 // SetPolicyFiltersDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "PWFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
-#include "resource3.h"
+#include "../resource3.h"
 
 // CSetPolicyFiltersDlg dialog
 

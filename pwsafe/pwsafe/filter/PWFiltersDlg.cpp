@@ -10,14 +10,14 @@
 // PWFiltersDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
-#include "ThisMfcApp.h"
+#include "../stdafx.h"
+#include "../ThisMfcApp.h"
 #include "PWFiltersDlg.h"
 
-#include "resource2.h"
-#include "resource3.h"
-#include "corelib/corelib.h"
-#include "corelib/PWSFilters.h"
+#include "../resource2.h"
+#include "../resource3.h"
+#include "../corelib/corelib.h"
+#include "../corelib/PWSFilters.h"
 
 // CPWFiltersDlg dialog
 

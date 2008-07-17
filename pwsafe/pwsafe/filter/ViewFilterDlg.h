@@ -10,8 +10,8 @@
 
 // ViewFilterDlg dialog
 
-#include "PWDialog.h"
-#include "corelib/filters.h"
+#include "../PWDialog.h"
+#include "../corelib/filters.h"
 
 #include <vector>
 #include <algorithm>

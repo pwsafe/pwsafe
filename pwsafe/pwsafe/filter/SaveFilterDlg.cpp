@@ -9,9 +9,8 @@
 // SaveFilter.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "SaveFilterDlg.h"
-#include "PWDialog.h"
 
 // SaveFilter dialog
 

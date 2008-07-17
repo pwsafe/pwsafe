@@ -8,30 +8,30 @@
 
 #pragma once
 
-#include "PWDialog.h"
-#include "corelib/ItemData.h"
-#include "resource.h"
-#include "afxdtctl.h" // only needed for date/time controls
+#include "../PWDialog.h"
+#include "../corelib/ItemData.h"
+#include "../resource.h"
 
-// CFilterDateDlg dialog
+// CFilterPasswordDlg dialog
 
-class CFilterDateDlg : public CPWDialog
+class CFilterPasswordDlg : public CPWDialog
 {
-  DECLARE_DYNAMIC(CFilterDateDlg)
+  DECLARE_DYNAMIC(CFilterPasswordDlg)
 
 public:
-  CFilterDateDlg(CWnd* pParent = NULL);   // standard constructor
-  virtual ~CFilterDateDlg();
+  CFilterPasswordDlg(CWnd* pParent = NULL);   // standard constructor
+  virtual ~CFilterPasswordDlg();
 
 // Dialog Data
-  enum { IDD = IDD_FILTER_DATE };
+  enum { IDD = IDD_FILTER_PASSWORD };
   PWSMatch::MatchRule m_rule;
-  CTime m_ctime1, m_ctime2;
-  time_t m_time_t1, m_time_t2;
+  int m_case;
+  CMyString m_string;
   CString m_title;
   CString m_oldtitle;
+  int m_num1;
+  int m_maxDays;
   bool m_bFirst;
-  bool m_add_present;
 
 protected:
   virtual BOOL OnInitDialog();
@@ -40,13 +40,16 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
-  afx_msg void OnCbnSelchangeDateRule();
+  afx_msg void OnCbnSelchangePasswordRule();
   afx_msg void OnBnClickedOk();
-  afx_msg void OnDtnDatetime1Change(NMHDR *pNMHDR, LRESULT *pResult);
   CComboBox m_cbxRule;
-  CDateTimeCtrl m_dtp1, m_dtp2;
-  CStatic m_stcAnd, m_stcStatus;
+  CEdit m_edtString, m_edtInteger1;
+  CButton m_btnCase;
+  CStatic m_stcStatus, m_stcIn, m_stcDays;
 
 private:
+  void EnableDialogItems();
+  void AFXAPI DDV_CheckMinMax(CDataExchange* pDX,
+                              const int num, const int min, const int max);
   int m_rule2selection[PWSMatch::MR_LAST];
 };

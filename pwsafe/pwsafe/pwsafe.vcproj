@@ -616,7 +616,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportFiltersDlg.cpp"
+				RelativePath=".\filter\ExportFiltersDlg.cpp"
 				>
 			</File>
 			<File
@@ -636,31 +636,31 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FilterActionsDlg.cpp"
+				RelativePath=".\filter\FilterActionsDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterBoolDlg.cpp"
+				RelativePath=".\filter\FilterBoolDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterDateDlg.cpp"
+				RelativePath=".\filter\FilterDateDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterEntryTypeDlg.cpp"
+				RelativePath=".\filter\FilterEntryTypeDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterIntegerDlg.cpp"
+				RelativePath=".\filter\FilterIntegerDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterPasswordDlg.cpp"
+				RelativePath=".\filter\FilterPasswordDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterStringDlg.cpp"
+				RelativePath=".\filter\FilterStringDlg.cpp"
 				>
 			</File>
 			<File
@@ -772,11 +772,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PWFilterLC.cpp"
+				RelativePath=".\filter\PWFilterLC.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\PWFiltersDlg.cpp"
+				RelativePath=".\filter\PWFiltersDlg.cpp"
 				>
 			</File>
 			<File
@@ -832,19 +832,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SaveFilterDlg.cpp"
+				RelativePath=".\filter\SaveFilterDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SetFiltersDlg.cpp"
+				RelativePath=".\filter\SetFiltersDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SetHistoryFiltersDlg.cpp"
+				RelativePath=".\filter\SetHistoryFiltersDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SetPolicyFiltersDlg.cpp"
+				RelativePath=".\filter\SetPolicyFiltersDlg.cpp"
 				>
 			</File>
 			<File
@@ -872,7 +872,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ViewFilterDlg.cpp"
+				RelativePath=".\filter\ViewFilterDlg.cpp"
 				>
 			</File>
 			<File
@@ -965,7 +965,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportFiltersDlg.h"
+				RelativePath=".\filter\ExportFiltersDlg.h"
 				>
 			</File>
 			<File
@@ -985,31 +985,31 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FilterActionsDlg.h"
+				RelativePath=".\filter\FilterActionsDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterBoolDlg.h"
+				RelativePath=".\filter\FilterBoolDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterDateDlg.h"
+				RelativePath=".\filter\FilterDateDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterEntryTypeDlg.h"
+				RelativePath=".\filter\FilterEntryTypeDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterIntegerDlg.h"
+				RelativePath=".\filter\FilterIntegerDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterPasswordDlg.h"
+				RelativePath=".\filter\FilterPasswordDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FilterStringDlg.h"
+				RelativePath=".\filter\FilterStringDlg.h"
 				>
 			</File>
 			<File
@@ -1109,11 +1109,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PWFilterLC.h"
+				RelativePath=".\filter\PWFilterLC.h"
 				>
 			</File>
 			<File
-				RelativePath=".\PWFiltersDlg.h"
+				RelativePath=".\filter\PWFiltersDlg.h"
 				>
 			</File>
 			<File
@@ -1185,19 +1185,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SaveFilterDlg.h"
+				RelativePath=".\filter\SaveFilterDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\SetFiltersDlg.h"
+				RelativePath=".\filter\SetFiltersDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\SetHistoryFiltersDlg.h"
+				RelativePath=".\filter\SetHistoryFiltersDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\SetPolicyFiltersDlg.h"
+				RelativePath=".\filter\SetPolicyFiltersDlg.h"
 				>
 			</File>
 			<File
@@ -1233,7 +1233,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ViewFilterDlg.h"
+				RelativePath=".\filter\ViewFilterDlg.h"
 				>
 			</File>
 			<File

@@ -9,15 +9,15 @@
 // ViewFilterDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "ViewFilterDlg.h"
-#include "PWDialog.h"
-#include "corelib/PWSFilters.h"
-#include "corelib/filters.h"
-#include "corelib/match.h"
+#include "../PWDialog.h"
+#include "../corelib/PWSFilters.h"
+#include "../corelib/filters.h"
+#include "../corelib/match.h"
 
-#include "resource3.h"
-#include "corelib/corelib.h"
+#include "../resource3.h"
+#include "../corelib/corelib.h"
 
 #include <vector>
 #include <map>

@@ -9,9 +9,9 @@
 // ExportFilters.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "ExportFiltersDlg.h"
-#include "PWDialog.h"
+#include "../PWDialog.h"
 
 // ExportFilters dialog
 

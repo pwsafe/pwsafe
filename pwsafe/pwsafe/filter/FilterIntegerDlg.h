@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "PWDialog.h"
-#include "corelib/ItemData.h"
-#include "resource.h"
+#include "../PWDialog.h"
+#include "../corelib/ItemData.h"
+#include "../resource.h"
 
 // CFilterIntegerDlg dialog
 
