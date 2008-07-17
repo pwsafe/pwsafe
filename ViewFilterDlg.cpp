@@ -267,15 +267,16 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
 
   vfilterdata::iterator Flt_iter;
   bool bHistory(false), bPolicy(false);
-  int i(0), iItem(0);
+  int i(0), iItem(0), n(0);
 
   // Do the main filters
   for (Flt_iter = pfilters->vMfldata.begin();
        Flt_iter != pfilters->vMfldata.end(); Flt_iter++) {
     st_FilterData &st_fldata = *Flt_iter;
     i++;
+    n++;
 
-    cs_num.Format(_T("%d"), i);
+    cs_num.Format(_T("%d"), n);
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
     cs_ftype.TrimRight(_T('\t'));
@@ -301,21 +302,23 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
   if (bHistory) {
     i++;
     CString cs_history, cs_temp;
-    cs_temp.LoadString(IDS_PWHIST);
+    cs_history.LoadString(IDS_SETPWHISTFILTERS);
     iItem = m_FilterLC.InsertItem(i, _T("-"));
     m_FilterLC.SetItemText(iItem, 1, _T("---"));
     m_FilterLC.SetItemText(iItem, 2, _T("---"));
     m_FilterLC.SetItemText(iItem, 3, _T("---"));
-    cs_history = _T("- ") + cs_temp + _T(" -");
-    m_FilterLC.SetItemText(iItem, 4, cs_history);
+    cs_temp = _T("---  ") + cs_history + _T("  ---");
+    m_FilterLC.SetItemText(iItem, 4, cs_temp);
   }
 
+  n = 0;
   for (Flt_iter = pfilters->vHfldata.begin();
        Flt_iter != pfilters->vHfldata.end(); Flt_iter++) {
     st_FilterData &st_fldata = *Flt_iter;
     i++;
+    n++;
 
-    cs_num.Format(_T("%d"), i);
+    cs_num.Format(_T("%d"), n);
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
     cs_ftype.TrimRight(_T('\t'));
@@ -336,22 +339,23 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
   if (bPolicy) {
     i++;
     CString cs_policy, cs_temp;
-    cs_temp.LoadString(IDS_PWPOLICY);
+    cs_policy.LoadString(IDS_SETPWPOLICYFILTER);
     iItem = m_FilterLC.InsertItem(i, _T("-"));
     m_FilterLC.SetItemText(iItem, 1, _T("---"));
     m_FilterLC.SetItemText(iItem, 2, _T("---"));
     m_FilterLC.SetItemText(iItem, 3, _T("---"));
-    cs_policy = _T("-") + cs_temp + _T("-");
-    m_FilterLC.SetItemText(iItem, 4, cs_policy);
-    i++;
+    cs_temp = _T("---  ") + cs_policy + _T("  ---");
+    m_FilterLC.SetItemText(iItem, 4, cs_temp);
   }
 
+  n = 0;
   for (Flt_iter = pfilters->vPfldata.begin();
        Flt_iter != pfilters->vPfldata.end(); Flt_iter++) {
     st_FilterData &st_fldata = *Flt_iter;
     i++;
+    n++;
 
-    cs_num.Format(_T("%d"), i);
+    cs_num.Format(_T("%d"), n);
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
     cs_ftype.TrimRight(_T('\t'));

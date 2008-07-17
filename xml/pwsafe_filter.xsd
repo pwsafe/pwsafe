@@ -50,6 +50,13 @@
   </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="yesnostringType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="yes" />
+    <xs:enumeration value="no" />
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="boolType">
   <xs:restriction base="xs:integer">
     <xs:minInclusive value="0" />
@@ -347,6 +354,7 @@
             <xs:element name="filter_entry" minOccurs="1" maxOccurs="unbounded">
               <xs:complexType>
                 <xs:group ref="filter_group" minOccurs="1" maxOccurs="unbounded" />
+                <xs:attribute name="active" type="yesnostringType" use="optional" />
               </xs:complexType>
             </xs:element>
           </xs:sequence>

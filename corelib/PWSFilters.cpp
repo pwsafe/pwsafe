@@ -224,6 +224,29 @@ int PWSFilters::ImportFilterXMLFile(MapFilters &mapfilters,
     return PWScore::XML_FAILED_IMPORT;
   }
 
+  // By definition - all imported filters are complete!
+  // Now set this.
+  MapFilters_Iter mf_iter;
+  for (mf_iter = mapfilters.begin(); mf_iter != mapfilters.end(); mf_iter++) {
+    st_filters &filters = mf_iter->second;
+    std::vector<st_FilterData>::iterator Flt_iter;
+    for (Flt_iter = filters.vMfldata.begin(); 
+         Flt_iter != filters.vMfldata.end(); Flt_iter++) {
+
+      Flt_iter->bFilterComplete = true;
+    }
+    for (Flt_iter = filters.vHfldata.begin(); 
+         Flt_iter != filters.vHfldata.end(); Flt_iter++) {
+
+      Flt_iter->bFilterComplete = true;
+    }
+    for (Flt_iter = filters.vPfldata.begin(); 
+         Flt_iter != filters.vPfldata.end(); Flt_iter++) {
+
+      Flt_iter->bFilterComplete = true;
+    }
+  }
+
   return PWScore::SUCCESS;
 }
 
@@ -256,7 +279,13 @@ string PWSFilters::GetFilterXML(const st_filters &filters, bool bFile)
     if (!st_fldata.bFilterComplete)
       continue;
 
-    oss << sztab << "<filter_entry>" << szendl;
+    oss << sztab << "<filter_entry active=\"";
+    if (st_fldata.bFilterActive)
+      oss << "yes";
+    else
+      oss << "no";
+    oss << "\">" << szendl;
+
     const int ft = (int)st_fldata.ftype;
     char *pszfieldtype = {"\0"};
     switch (ft) {
@@ -347,10 +376,16 @@ string PWSFilters::GetFilterXML(const st_filters &filters, bool bFile)
        Flt_citer != filters.vHfldata.end(); Flt_citer++) {
     const st_FilterData &st_fldata = *Flt_citer;
 
-    if (!st_fldata.bFilterActive)
+    if (!st_fldata.bFilterComplete)
       continue;
 
-    oss << sztab << "<filter_entry>" << szendl;
+    oss << sztab << "<filter_entry active=\"";
+    if (st_fldata.bFilterActive)
+      oss << "yes";
+    else
+      oss << "no";
+    oss << "\">" << szendl;
+
     const int ft = (int)st_fldata.ftype;
     char *pszfieldtype = {"\0"};
     switch (ft) {
@@ -400,10 +435,16 @@ string PWSFilters::GetFilterXML(const st_filters &filters, bool bFile)
        Flt_citer != filters.vPfldata.end(); Flt_citer++) {
     const st_FilterData &st_fldata = *Flt_citer;
 
-    if (!st_fldata.bFilterActive)
+    if (!st_fldata.bFilterComplete)
       continue;
 
-    oss << sztab << "<filter_entry>" << szendl;
+    oss << sztab << "<filter_entry active=\"";
+    if (st_fldata.bFilterActive)
+      oss << "yes";
+    else
+      oss << "no";
+    oss << "\">" << szendl;
+
     const int ft = (int)st_fldata.ftype;
     char *pszfieldtype = {"\0"};
     switch (ft) {

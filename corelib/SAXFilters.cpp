@@ -270,8 +270,22 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
   if (m_bValidation || _tcscmp(szCurElement, _T("filters")) == 0)
     return S_OK;
 
-  if (_tcscmp(szCurElement, _T("filter")) == 0) {
+  bool  bfilter = (_tcscmp(szCurElement, _T("filter")) == 0);
+  bool  bfilter_entry = (_tcscmp(szCurElement, _T("filter_entry")) == 0);
+ 
+   if (bfilter) {
     cur_filter = new st_filters;
+  }
+
+  if (bfilter_entry) {
+    cur_filterentry = new st_FilterData;
+    cur_filterentry->Empty();
+    cur_filterentry->bFilterActive = true;
+    m_bentrybeingprocessed = true;
+  }
+
+  if (bfilter || bfilter_entry) {
+    // Process the attributes we need.
     int iAttribs = 0;
     pAttributes->getLength(&iAttribs);
     for (int i = 0; i < iAttribs; i++) {
@@ -299,16 +313,15 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
       wcstombs(szValue, Value, Value_length);
 #endif
 #endif  // UNICODE
-      if (QName_length == 10 && memcmp(szQName, _T("filtername"), 10 * sizeof(TCHAR)) == 0)
-        cur_filter->fname = szValue;
-    }
-  }
 
-  if (_tcscmp(szCurElement, _T("filter_entry")) == 0) {
-    cur_filterentry = new st_FilterData;
-    cur_filterentry->Empty();
-    cur_filterentry->bFilterActive = true;
-    m_bentrybeingprocessed = true;
+      if (bfilter && QName_length == 10 && memcmp(szQName, _T("filtername"), 10 * sizeof(TCHAR)) == 0)
+        cur_filter->fname = szValue;
+
+      if (bfilter_entry && QName_length == 6 && memcmp(szQName, _T("active"), 6 * sizeof(TCHAR)) == 0) {
+        if (Value_length == 2 && memcmp(szValue, _T("no"), 2 * sizeof(TCHAR)) == 0)
+          cur_filterentry->bFilterActive = false;
+      }
+    }
   }
 
   m_strElemContent = _T("");

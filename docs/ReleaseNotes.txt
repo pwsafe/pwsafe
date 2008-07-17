@@ -1,4 +1,4 @@
-Password Safe 3.13.1 Release Notes - May 2008
+Password Safe 3.14 Release Notes - ????? 2008
 =============================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,8 +8,11 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.13.1
-====================
+Bugs fixed in 3.14
+==================
+[1978486] The R/W status of a database is unchanged if it is already 
+open and the user cancels an open file action.
+[1978475] Clear clipboard options are no longer interchanged.
 [1970652] No longer crashes when user exits search for non-existant
 database.
 [1966718] Text in 'Notes" now has horizontal scroll bar during Add.
@@ -18,16 +21,17 @@ for first open.  Then governed by R/O open preference or user selecting
 read-only at open time.
 [] Expired icon now correct after password change.
 
-Changes to Existing Features in 3.13.1
-======================================
+Changes to Existing Features in 3.14
+====================================
 [1958303] TreeView buttons (+/-) now larger without significantly
 increasing the visible bitmap image.  Also, now transparent.
 [] Drop down list of databases at start-up now retains order of usage
 rather than sorted alphabetically.
 
-New Features for 3.13.1
-=======================
-
+New Features for 3.14
+=====================
+[] The entries displayed can now be filtered based on rules on every
+field in the database.
 
 Bugs fixed in 3.13
 ==================
