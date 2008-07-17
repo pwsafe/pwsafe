@@ -1,4 +1,4 @@
-      /*
+/*
 * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -8,29 +8,29 @@
 
 #pragma once
 
-#include "PWDialog.h"
-#include "corelib/ItemData.h"
-#include "resource.h"
+#include "../PWDialog.h"
+#include "../corelib/ItemData.h"
+#include "../resource.h"
 
-// CFilterBoolDlg dialog
+// CFilterStringDlg dialog
 
-class CFilterBoolDlg : public CPWDialog
+class CFilterStringDlg : public CPWDialog
 {
-  DECLARE_DYNAMIC(CFilterBoolDlg)
+  DECLARE_DYNAMIC(CFilterStringDlg)
 
 public:
-  enum BoolType {BT_PRESENT, BT_ACTIVE, BT_SET};
-
-  CFilterBoolDlg(CWnd* pParent = NULL);
-  virtual ~CFilterBoolDlg();
+  CFilterStringDlg(CWnd* pParent = NULL);   // standard constructor
+  virtual ~CFilterStringDlg();
 
 // Dialog Data
-  enum { IDD = IDD_FILTER_BOOL };
+  enum { IDD = IDD_FILTER_STRING };
   PWSMatch::MatchRule m_rule;
+  int m_case;
+  CMyString m_string;
   CString m_title;
   CString m_oldtitle;
   bool m_bFirst;
-  BoolType m_bt;
+  bool m_add_present;
 
 protected:
   virtual BOOL OnInitDialog();
@@ -39,10 +39,14 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
-  afx_msg void OnCbnSelchangeBoolRule();
+  afx_msg void OnCbnSelchangeStringRule();
   afx_msg void OnBnClickedOk();
   CComboBox m_cbxRule;
+  CEdit m_edtString;
+  CButton m_btnCase;
+  CStatic m_stcStatus;
 
 private:
+  void EnableDialogItems();
   int m_rule2selection[PWSMatch::MR_LAST];
 };

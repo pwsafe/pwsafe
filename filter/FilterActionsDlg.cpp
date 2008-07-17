@@ -9,11 +9,12 @@
 // FilterActionsDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "FilterActionsDlg.h"
-#include "PWDialog.h"
+#include "../PWDialog.h"
 
 #include <vector>
+#include <algorithm>
 
 // FilterActionsDlg dialog
 

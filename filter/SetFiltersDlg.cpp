@@ -9,13 +9,13 @@
 // SetFiltersDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "PWFiltersDlg.h"
 #include "SetFiltersDlg.h"
 #include "SetHistoryFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
-#include "resource3.h"
-#include "corelib/corelib.h"
+#include "../resource3.h"
+#include "../corelib/corelib.h"
 
 // CSetFiltersDlg dialog
 

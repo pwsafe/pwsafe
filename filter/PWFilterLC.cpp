@@ -6,16 +6,16 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "PWFilterLC.h"
 #include "PWFiltersDlg.h"
 
 #include "SetHistoryFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
-#include "corelib/PWSFilters.h"
+#include "../corelib/PWSFilters.h"
 
-#include "resource3.h"
-#include "corelib/corelib.h"
+#include "../resource3.h"
+#include "../corelib/corelib.h"
 
 #include <algorithm>
 

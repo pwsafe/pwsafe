@@ -9,10 +9,10 @@
 // SetHistoryFiltersDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "PWFiltersDlg.h"
 #include "SetHistoryFiltersDlg.h"
-#include "resource3.h"
+#include "../resource3.h"
 
 // CSetHistoryFiltersDlg dialog
 

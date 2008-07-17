@@ -9,10 +9,10 @@
 // FilterEntryTypeDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "FilterEntryTypeDlg.h"
-#include "corelib/itemdata.h"
-#include "corelib/corelib.h"
+#include "../corelib/itemdata.h"
+#include "../corelib/corelib.h"
 
 // CFilterEntryTypeDlg dialog
 

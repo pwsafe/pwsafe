@@ -10,10 +10,9 @@
 
 // FilterActionsDlg dialog
 
-#include "PWDialog.h"
+#include "../PWDialog.h"
 
 #include <vector>
-#include <algorithm>
 
 enum {FA_DELETE = 0, FA_SELECT};
 

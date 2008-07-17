@@ -10,9 +10,9 @@
 
 // CPWFiltersDlg dialog
 
-#include "PWDialog.h"
-#include "corelib/Itemdata.h"
-#include "corelib/filters.h"
+#include "../PWDialog.h"
+#include "../corelib/Itemdata.h"
+#include "../corelib/filters.h"
 #include "FilterStringDlg.h"
 #include "FilterPasswordDlg.h"
 #include "FilterIntegerDlg.h"
@@ -21,7 +21,7 @@
 #include "FilterEntryTypeDlg.h"
 #include "PWFilterLC.h"
 
-#include "resource.h"
+#include "../resource.h"
 
 class CSetFiltersDlg;
 class CSetHistoryFiltersDlg;

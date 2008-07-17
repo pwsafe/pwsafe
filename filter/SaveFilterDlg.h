@@ -8,34 +8,31 @@
 
 #pragma once
 
-// ExportFilters dialog
+// SaveFilter dialog
 
-#include "PWDialog.h"
+#include "../PWDialog.h"
 
-class CExportFiltersDlg : public CPWDialog
+class CSaveFilterDlg : public CPWDialog
 {
-  DECLARE_DYNAMIC(CExportFiltersDlg)
+  DECLARE_DYNAMIC(CSaveFilterDlg)
 
 public:
-  CExportFiltersDlg(CWnd* pParent = NULL);   // standard constructor
-  virtual ~CExportFiltersDlg();
+  CSaveFilterDlg(CWnd* pParent = NULL);   // standard constructor
+  virtual ~CSaveFilterDlg();
 
-  void SetAvailableStores(bool bDB, bool bGlobal)
-  {m_bDB = bDB; m_bGlobal = bGlobal;}
-  int GetSelected() {return m_selectedstore;}
+  int GetSelectStore() {return m_selectedstore;}
 
 // Dialog Data
-  enum { IDD = IDD_EXPORTFILTERS };
+  enum { IDD = IDD_SAVEFILTER };
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   BOOL OnInitDialog();
 
-  afx_msg void OnExport();
+  afx_msg void OnSave();
 
   DECLARE_MESSAGE_MAP()
 
 private:
-  bool m_bDB, m_bGlobal;
   int m_selectedstore;
 };

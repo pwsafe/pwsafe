@@ -8,29 +8,27 @@
 
 #pragma once
 
-#include "PWDialog.h"
-#include "corelib/ItemData.h"
-#include "resource.h"
+#include "../PWDialog.h"
+#include "../corelib/ItemData.h"
+#include "../resource.h"
 
-// CFilterStringDlg dialog
+// CFilterEntryTypeDlg dialog
 
-class CFilterStringDlg : public CPWDialog
+class CFilterEntryTypeDlg : public CPWDialog
 {
-  DECLARE_DYNAMIC(CFilterStringDlg)
+  DECLARE_DYNAMIC(CFilterEntryTypeDlg)
 
 public:
-  CFilterStringDlg(CWnd* pParent = NULL);   // standard constructor
-  virtual ~CFilterStringDlg();
+  CFilterEntryTypeDlg(CWnd* pParent = NULL);   // standard constructor
+  virtual ~CFilterEntryTypeDlg();
 
 // Dialog Data
-  enum { IDD = IDD_FILTER_STRING };
+  enum { IDD = IDD_FILTER_ENTRYTYPE };
   PWSMatch::MatchRule m_rule;
-  int m_case;
-  CMyString m_string;
+  CItemData::EntryType m_etype;
   CString m_title;
   CString m_oldtitle;
   bool m_bFirst;
-  bool m_add_present;
 
 protected:
   virtual BOOL OnInitDialog();
@@ -39,14 +37,12 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
-  afx_msg void OnCbnSelchangeStringRule();
+  afx_msg void OnCbnSelchangeEntryTypeRule();
+  afx_msg void OnCbnSelchangeEntryType1();
   afx_msg void OnBnClickedOk();
-  CComboBox m_cbxRule;
-  CEdit m_edtString;
-  CButton m_btnCase;
-  CStatic m_stcStatus;
+  CComboBox m_cbxRule, m_cbxEType;
 
 private:
-  void EnableDialogItems();
   int m_rule2selection[PWSMatch::MR_LAST];
+  int m_etype2selection[CItemData::ET_LAST];
 };
