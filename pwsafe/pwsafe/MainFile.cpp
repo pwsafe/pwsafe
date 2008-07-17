@@ -471,6 +471,9 @@ int DboxMain::Open()
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
         break;
+      } else
+      if (rc == PWScore::ALREADY_OPEN) {
+        m_core.SetReadOnly(last_ro);
       }
     } else {
       m_core.SetReadOnly(last_ro);
