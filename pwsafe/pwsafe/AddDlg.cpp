@@ -417,3 +417,20 @@ void CAddDlg::OnBnClickedOverridePolicy()
   } else
     m_pwp.Empty();
 }
+
+void CAddDlg::SelectAllNotes()
+{
+  // User pressed Ctrl+A
+  ((CEdit *)GetDlgItem(IDC_NOTES))->SetFocus();
+  ((CEdit *)GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
+}
+
+BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' && GetKeyState(VK_CONTROL) < 1) {
+    SelectAllNotes();
+    return TRUE;
+  }
+
+  return CPWDialog::PreTranslateMessage(pMsg);
+}

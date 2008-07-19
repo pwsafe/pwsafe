@@ -61,6 +61,8 @@ protected:
   //}}AFX_VIRTUAL
 
 private:
+  void SelectAllNotes();
+
   bool m_isPwHidden;
   // Are we showing more or less details?
   bool m_isExpanded;
@@ -81,6 +83,7 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+  BOOL PreTranslateMessage(MSG* pMsg);
 
 public:
   afx_msg void OnBnClickedOk();

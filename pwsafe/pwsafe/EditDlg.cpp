@@ -934,6 +934,14 @@ void CEditDlg::OnBnClickedOverridePolicy()
   m_ToolTipCtrl->Activate(m_OverridePolicy);
 }
 
+void CEditDlg::SelectAllNotes()
+{
+  // User pressed Ctrl+A
+  ShowNotes();
+  ((CEdit *)GetDlgItem(IDC_NOTES))->SetFocus();
+  ((CEdit *)GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
+}
+
 /*
  * Part of the chicken waving needed to get
  * tooltips to do their thing.
@@ -942,6 +950,11 @@ BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
 {
   if (m_ToolTipCtrl != NULL)
     m_ToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' && GetKeyState(VK_CONTROL) < 1) {
+    SelectAllNotes();
+    return TRUE;
+  }
 
   return CPWDialog::PreTranslateMessage(pMsg);
 }
