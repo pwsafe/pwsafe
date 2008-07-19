@@ -9,7 +9,7 @@
 /*
 *  This is nearly an exact copy of CInfoDisplay class in Asynch Explorer by
 *  Joseph M. Newcomer [MVP]; http://www.flounder.com
-*  Only minor formatting and naming chanegs have been made to fit in with this
+*  Only minor formatting and naming changes have been made to fit in with this
 *  project.
 */
 

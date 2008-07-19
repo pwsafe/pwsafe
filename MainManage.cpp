@@ -257,6 +257,8 @@ void DboxMain::OnOptions()
   system.m_startup = StartupShortcutExists;
   system.m_defaultopenro = prefs->
     GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
+  system.m_multipleinstances = prefs->
+    GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
 
   display.m_alwaysontop = prefs->
     GetPref(PWSprefs::AlwaysOnTop) ? TRUE : FALSE;
@@ -470,6 +472,8 @@ void DboxMain::OnOptions()
     }
     prefs->SetPref(PWSprefs::DefaultOpenRO,
       system.m_defaultopenro == TRUE);
+    prefs->SetPref(PWSprefs::MultipleInstances,
+      system.m_multipleinstances == TRUE);
 
     prefs->SetPref(PWSprefs::ClearClipoardOnMinimize,
       security.m_clearclipboardonminimize == TRUE);

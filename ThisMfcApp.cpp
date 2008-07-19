@@ -9,6 +9,12 @@
 /// \brief App object of MFC version of Password Safe
 //-----------------------------------------------------------------------------
 
+/*
+*  The code for checking on multiple instances comes from the article
+*  "Avoiding Multiple Instances of an Application" by
+*  Joseph M. Newcomer [MVP]; http://www.flounder.com/nomultiples.htm
+*/
+
 #include "PasswordSafe.h"
 
 #include "corelib/PWSrand.h"
@@ -30,6 +36,7 @@
 #include "corelib/Util.h"
 #include "corelib/BlowFish.h"
 #include "DboxMain.h"
+#include "SingleInstance.h"
 
 #include "CryptKeyEntry.h"
 #include "PWSRecentFileList.h"
@@ -48,6 +55,11 @@ using namespace std;
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+static const TCHAR *UNIQUE_PWS_GUID =
+          _T("PasswordSafe-{3FE0D665-1AE6-49b2-8359-326407D56470}");
+
+const UINT ThisMfcApp::m_uiRegMsg = RegisterWindowMessage(UNIQUE_PWS_GUID);
 
 BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
   //  ON_COMMAND(ID_HELP, CWinApp::OnHelp)
@@ -340,6 +352,27 @@ BOOL ThisMfcApp::InitInstance()
   /*
   * It's always best to start at the beginning.  [Glinda, Witch of the North]
   */
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::MultipleInstances)) {
+    if (IsInstancePresent(UNIQUE_PWS_GUID)) { /* kill this */
+      HWND hOther = NULL;
+      EnumWindows(searcher, (LPARAM)&hOther);
+
+      if (hOther != NULL) { /* pop up */
+        BOOL brc;
+        //brc = ::SetWindowPos(hOther, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        brc = ::SetForegroundWindow(hOther);
+
+        if (IsIconic(hOther)) { /* restore */
+          ::ShowWindow(hOther, SW_RESTORE);
+        } /* restore */
+      } /* pop up */
+
+      return FALSE; // terminates the creation
+    } /* kill this */
+  }
+
+  // Allow anyone else to take us to the foreground
+  AllowSetForegroundWindow(ASFW_ANY);
 
   // Needed for RichEditCtrls in Dialogs (i.e. not explicitly "created").
   AfxInitRichEdit2();
@@ -798,6 +831,7 @@ BOOL ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
     if (::TranslateAccelerator(m_maindlg->m_hWnd, m_ghAccelTable, lpMsg))
       return TRUE;
   }
+
   return CWinApp::ProcessMessageFilter(code, lpMsg);
 }
 #endif
@@ -946,4 +980,25 @@ void ThisMfcApp::GetApplicationVersionData()
     }
     delete[] pVersionInfo;
   }
+}
+
+BOOL CALLBACK ThisMfcApp::searcher(HWND hWnd, LPARAM lParam)
+{
+  DWORD result;
+  LRESULT ok = ::SendMessageTimeout(hWnd,
+                                    m_uiRegMsg,
+                                    0, 0, 
+                                    SMTO_BLOCK | SMTO_ABORTIFHUNG,
+                                    200,
+                                    &result);
+  if (ok == 0)
+    return TRUE; // ignore this and continue
+
+  if (result == m_uiRegMsg) { /* found it */
+    HWND *target = (HWND *)lParam;
+    *target = hWnd;
+    return FALSE; // stop search
+  } /* found it */
+
+  return TRUE; // continue search
 }

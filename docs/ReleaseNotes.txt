@@ -30,6 +30,9 @@ rather than sorted alphabetically.
 
 New Features for 3.14
 =====================
+[2018365] Option to allow restricting only a single instance per user.
+If set and another copy of PasswordSafe started, focus is given to the
+existing instance.
 [2004500] CTRL-A now selects all of the Notes field in Add & Edit.
 [] The entries displayed can now be filtered based on rules on every
 field in the database.
