@@ -67,6 +67,7 @@ private:
   int m_oldMaxPWHistory;
   void ResizeDialog();
   void UpdateHistory();
+  void SelectAllNotes();
 
   CComboBoxExtn m_ex_group;
   CSecEditExtn m_ex_password;
