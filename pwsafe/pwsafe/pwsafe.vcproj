@@ -852,6 +852,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SingleInstance.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Subclass.cpp"
 				>
 			</File>
@@ -1202,6 +1206,10 @@
 			</File>
 			<File
 				RelativePath=".\Shortcut.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SingleInstance.h"
 				>
 			</File>
 			<File

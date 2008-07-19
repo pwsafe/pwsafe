@@ -140,9 +140,15 @@ DboxMain::~DboxMain()
   DeletePasswordFont();
 }
 
+LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
+{
+  return (LRESULT)app.m_uiRegMsg;
+}
+
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   //{{AFX_MSG_MAP(DboxMain)
 
+  ON_REGISTERED_MESSAGE(app.m_uiRegMsg, OnAreYouMe)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUTOOLBAR_START, ID_MENUTOOLBAR_END, OnUpdateMenuToolbar)
 
   // File Menu

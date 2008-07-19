@@ -35,6 +35,7 @@ public:
   BOOL m_mruonfilemenu;
   BOOL m_deleteregistry;
   BOOL m_defaultopenro;
+  BOOL m_multipleinstances;
   //}}AFX_DATA
 
   // Overrides

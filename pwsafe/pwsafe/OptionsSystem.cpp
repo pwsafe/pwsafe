@@ -59,6 +59,7 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
   DDX_Check(pDX, IDC_REGDEL_CB, m_deleteregistry);
   DDX_Check(pDX, IDC_DEFAULTOPENRO, m_defaultopenro);
+  DDX_Check(pDX, IDC_MULTIPLEINSTANCES, m_multipleinstances);
   //}}AFX_DATA_MAP
 }
 
@@ -190,4 +191,3 @@ BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
 
   return CPropertyPage::PreTranslateMessage(pMsg);
 }
-

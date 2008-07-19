@@ -83,6 +83,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ShowToolbar"), true, ptApplication},                 // application
   {_T("ShowNotesAsToolTipsInViews"), false, ptApplication}, // application
   {_T("DefaultOpenRO"), false, ptApplication},              // application
+  {_T("MultipleInstances"), true, ptApplication},           // application
 };
 
 // Default value = -1 means set at runtime

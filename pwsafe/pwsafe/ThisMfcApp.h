@@ -42,6 +42,7 @@ public:
   CMenu* m_mainmenu;
   BOOL m_mruonfilemenu;
   HINSTANCE m_hInstResDLL;
+  static const UINT m_uiRegMsg;
 
   virtual BOOL InitInstance();
   virtual int ExitInstance();
@@ -81,6 +82,8 @@ protected:
 
 private:
   void LoadLocalizedStuff();
+  static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
+
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;
   HICON m_ClosedIcon;

@@ -436,6 +436,7 @@ protected:
 
   // Generated message map functions
   //{{AFX_MSG(DboxMain)
+  afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   virtual BOOL OnInitDialog();
   afx_msg void OnUpdateMenuToolbar(CCmdUI *pCmdUI);
   afx_msg void OnDestroy();

@@ -559,6 +559,7 @@
 #define IDC_CURRENTFILTERSBTN           1330
 #define IDC_DATABASEFILTERSBTN          1331
 #define IDC_GLOBALFILTERBTN             1332
+#define IDC_MULTIPLEINSTANCES           1333
 
 // Next default values for new objects
 // 
@@ -566,7 +567,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        432
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1333
+#define _APS_NEXT_CONTROL_VALUE         1334
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif
