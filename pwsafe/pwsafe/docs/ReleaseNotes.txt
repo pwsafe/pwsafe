@@ -19,6 +19,7 @@ database.
 [1959193] PWS now honours the read-only command line parameter (-r)
 for first open.  Then governed by R/O open preference or user selecting
 read-only at open time.
+[1954268] Aliases and shortcuts now processed correctly during merge.
 [] Expired icon now correct after password change.
 
 Changes to Existing Features in 3.14
