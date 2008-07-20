@@ -32,5 +32,4 @@ const int SI_SYSTEM_UNIQUE  = 0x0000;  // Allow only one instance at all (on the
 LPTSTR CreateUniqueName(LPCTSTR pszGUID, LPTSTR pszBuffer, int iBuffLen,
                         int nMode = SI_DESKTOP_UNIQUE );
 
-bool IsInstancePresent(LPCTSTR pszGUID, int nMode = SI_TRUSTEE_UNIQUE);
 

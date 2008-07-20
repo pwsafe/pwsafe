@@ -83,6 +83,7 @@ protected:
 private:
   void LoadLocalizedStuff();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
+  HANDLE m_hMutexOneInstance;
 
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;

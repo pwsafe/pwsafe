@@ -73,7 +73,7 @@ ThisMfcApp::ThisMfcApp() :
   m_bUseAccelerator( true ),
 #endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
-  m_HotKeyPressed(false)
+  m_HotKeyPressed(false), m_hMutexOneInstance(NULL)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -107,6 +107,9 @@ ThisMfcApp::~ThisMfcApp()
   delete m_TrayIcon;
   delete m_pMRU;
   delete m_mainmenu;
+
+  // Alhough the system will do this automatically - I like to be clean!
+  CloseHandle(m_hMutexOneInstance);
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
@@ -352,15 +355,31 @@ BOOL ThisMfcApp::InitInstance()
   /*
   * It's always best to start at the beginning.  [Glinda, Witch of the North]
   */
+
+  // Check if the user allows muliple instances.
+  // For this to apply, consistently, must use the same copy of PasswordSafe
+  // configuration file.
   if (!PWSprefs::GetInstance()->GetPref(PWSprefs::MultipleInstances)) {
-    if (IsInstancePresent(UNIQUE_PWS_GUID)) { /* kill this */
+    bool bAlreadyRunning;
+
+    TCHAR szName[MAX_PATH];
+    m_hMutexOneInstance = CreateMutex(NULL, FALSE, 
+                              CreateUniqueName(UNIQUE_PWS_GUID, szName, 
+                                               MAX_PATH, SI_DESKTOP_UNIQUE));
+
+    bAlreadyRunning = (::GetLastError() == ERROR_ALREADY_EXISTS || 
+                       ::GetLastError() == ERROR_ACCESS_DENIED);
+
+     // The call fails with ERROR_ACCESS_DENIED if the Mutex was 
+     // created in a different users session because of passing
+     // NULL for the SECURITY_ATTRIBUTES on Mutex creation);
+
+    if (bAlreadyRunning) { /* kill this */
       HWND hOther = NULL;
       EnumWindows(searcher, (LPARAM)&hOther);
 
       if (hOther != NULL) { /* pop up */
-        BOOL brc;
-        //brc = ::SetWindowPos(hOther, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-        brc = ::SetForegroundWindow(hOther);
+        ::SetForegroundWindow(hOther);
 
         if (IsIconic(hOther)) { /* restore */
           ::ShowWindow(hOther, SW_RESTORE);
