@@ -129,24 +129,3 @@ LPTSTR CreateUniqueName(LPCTSTR pszGUID, LPTSTR pszBuffer, int iBuffLen,
   }
   return pszBuffer;
 }
-
-////////////////////////////////////////////////////////////////////////////////
-// BOOL IsInstancePresent(pszGUID, nMode)
-//
-// Returns TRUE, if there exists, according to the meaning of "unique" passed
-// in nMode, another instance of this process.
-//
-
-bool IsInstancePresent(LPCTSTR pszGUID, int nMode  /* = SI_TRUSTEE_UNIQUE */)
-{
-  // Windows automatically closes a Mutex handle at program termination
-  static HANDLE hMutex = NULL;
-
-  if (hMutex == NULL) {
-    TCHAR szName[MAX_PATH];
-    hMutex = CreateMutex(NULL, FALSE, CreateUniqueName(pszGUID, szName, MAX_PATH, nMode));
-
-    return (GetLastError() == ERROR_ALREADY_EXISTS || GetLastError() == ERROR_ACCESS_DENIED);
-  }
-  return false;
-}
