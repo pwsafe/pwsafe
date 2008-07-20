@@ -389,6 +389,10 @@ protected:
   int Close(void);
   int Merge(void);
   int Merge( const CMyString &pszFilename );
+  int MergeDependents(PWScore *pothercore, 
+                      uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
+                      const bool bTitleRenamed, CString &timeStr, 
+                      const CItemData::EntryType et);
   int Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2);
 
   int BackupSafe(void);

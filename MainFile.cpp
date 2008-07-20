@@ -1446,13 +1446,21 @@ int DboxMain::Merge(const CMyString &pszFilename) {
   */
   int numAdded = 0;
   int numConflicts = 0;
-  uuid_array_t uuid;
+  int numAliasesAdded = 0;
+  int numShortcutsAdded = 0;
+  uuid_array_t base_uuid, new_base_uuid;
+  bool bTitleRenamed(false);
 
   ItemListConstIter otherPos;
   for (otherPos = othercore.GetEntryIter();
        otherPos != othercore.GetEntryEndIter();
        otherPos++) {
     CItemData otherItem = othercore.GetEntry(otherPos);
+    CItemData::EntryType et = otherItem.GetEntryType();
+
+    // Handle Aliases and Shortcuts when processing their base entries
+    if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
+      continue;
 
     if (m_subgroup_set == BST_CHECKED &&
         !otherItem.Matches(m_subgroup_name, m_subgroup_object, m_subgroup_function))
@@ -1462,7 +1470,12 @@ int DboxMain::Merge(const CMyString &pszFilename) {
     const CMyString otherTitle = otherItem.GetTitle();
     const CMyString otherUser = otherItem.GetUser();
 
+    CString timeStr(_T(""));
     ItemListConstIter foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
+
+    otherItem.GetUUID(base_uuid);
+    memcpy(new_base_uuid, base_uuid, sizeof(uuid_array_t));
+    bTitleRenamed = false;
     if (foundPos != m_core.GetEntryEndIter()) {
       /* found a match, see if other fields also match */
       CItemData curItem = m_core.GetEntry(foundPos);
@@ -1473,11 +1486,11 @@ int DboxMain::Merge(const CMyString &pszFilename) {
 
         /* have a match on title/user, but not on other fields
         add an entry suffixed with -merged-YYYYMMDD-HHMMSS */
+        CMyString newTitle = otherTitle;
         CTime curTime = CTime::GetCurrentTime();
-        CMyString newTitle = otherItem.GetTitle();
         newTitle += _T("-merged-");
-        CMyString timeStr = curTime.Format(_T("%Y%m%d-%H%M%S"));
-        newTitle = newTitle + timeStr;
+        timeStr = curTime.Format(_T("%Y%m%d-%H%M%S"));
+        newTitle += CMyString(timeStr);
 
         /* note it as an issue for the user */
         CString warnMsg;
@@ -1493,11 +1506,13 @@ int DboxMain::Merge(const CMyString &pszFilename) {
         rpt.WriteLine(warnMsg);
 
         /* Check no conflict of unique uuid */
-        otherItem.GetUUID(uuid);
-        if (m_core.Find(uuid) != m_core.GetEntryEndIter())
+        if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
           otherItem.CreateUUID();
+          otherItem.GetUUID(new_base_uuid);
+        }
 
         /* do it */
+        bTitleRenamed = true;
         otherItem.SetTitle(newTitle);
         m_core.AddEntry(otherItem);
         numConflicts++;
@@ -1505,13 +1520,22 @@ int DboxMain::Merge(const CMyString &pszFilename) {
     } else {
       /* didn't find any match...add it directly */
       /* Check no conflict of unique uuid */
-      otherItem.GetUUID(uuid);
-      if (m_core.Find(uuid) != m_core.GetEntryEndIter())
+      if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
         otherItem.CreateUUID();
+        otherItem.GetUUID(new_base_uuid);
+      }
 
       m_core.AddEntry(otherItem);
       numAdded++;
     }
+    if (et == CItemData::ET_ALIASBASE)
+      numAliasesAdded += MergeDependents(&othercore, 
+                      base_uuid, new_base_uuid,
+                      bTitleRenamed, timeStr, CItemData::ET_ALIAS);
+    if (et == CItemData::ET_SHORTCUTBASE)
+      numShortcutsAdded += MergeDependents(&othercore,
+                      base_uuid, new_base_uuid, 
+                      bTitleRenamed, timeStr, CItemData::ET_SHORTCUT); 
   } // iteration over other core's entries
 
   othercore.ClearData();
@@ -1519,11 +1543,14 @@ int DboxMain::Merge(const CMyString &pszFilename) {
   waitCursor.Restore(); /* restore normal cursor */
 
   /* tell the user we're done & provide short merge report */
-  int totalAdded = numAdded + numConflicts;
+  int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
   CString resultStr;
   const CString cs_entries(MAKEINTRESOURCE(totalAdded == 1 ? IDS_ENTRY : IDS_ENTRIES));
   const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ? IDS_CONFLICT : IDS_CONFLICTS));
-  resultStr.Format(IDS_MERGECOMPLETED, totalAdded, cs_entries, numConflicts, cs_conflicts);
+  const CString cs_aliases(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_ALIAS : IDS_ALIASES));
+  const CString cs_shortcuts(MAKEINTRESOURCE(numShortcutsAdded == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS));
+  resultStr.Format(IDS_MERGECOMPLETED, totalAdded, cs_entries, numConflicts, cs_conflicts,
+                                       numAliasesAdded, cs_aliases, numShortcutsAdded, cs_shortcuts);
   cs_title.LoadString(IDS_MERGECOMPLETED2);
   MessageBox(resultStr, cs_title, MB_OK);
   rpt.WriteLine(resultStr);
@@ -1536,6 +1563,70 @@ int DboxMain::Merge(const CMyString &pszFilename) {
     UpdateMenuAndToolBar(m_bOpen);
 
   return rc;
+}
+
+int DboxMain::MergeDependents(PWScore *pothercore,
+                              uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
+                              const bool bTitleRenamed, CString &timeStr, 
+                              const CItemData::EntryType et)
+{
+  UUIDList dependentslist;
+  UUIDListIter paiter;
+  ItemListIter iter;
+  uuid_array_t entry_uuid, new_entry_uuid;
+  ItemListConstIter foundPos;
+  CItemData tempitem;
+  int numadded(0);
+
+  // Get all the dependents
+  pothercore->GetAllDependentEntries(base_uuid, dependentslist, et);
+  for (paiter = dependentslist.begin();
+       paiter != dependentslist.end(); paiter++) {
+    paiter->GetUUID(entry_uuid);
+    iter = pothercore->Find(entry_uuid);
+
+    if (iter == pothercore->GetEntryEndIter())
+      continue;
+
+    CItemData *curitem = &iter->second;
+    tempitem = (*curitem);
+
+    memcpy(new_entry_uuid, entry_uuid, sizeof(uuid_array_t));
+    if (m_core.Find(entry_uuid) != m_core.GetEntryEndIter()) {
+      tempitem.CreateUUID();
+      tempitem.GetUUID(new_entry_uuid);
+    }
+
+    // If the base title was renamed - we should automatically rename any dependent.
+    // If we didn't, we still need to check uniqueness!
+    CMyString newTitle = tempitem.GetTitle();
+    if (bTitleRenamed) {
+      newTitle += _T("-merged-");
+      newTitle += CMyString(timeStr);
+      tempitem.SetTitle(newTitle);
+    }
+    // Check this is unique - if not - don't add this one! - its only an alias/shortcut!
+    // We can't keep trying for uniqueness after adding a timestanp!
+    foundPos = m_core.Find(tempitem.GetGroup(), newTitle, tempitem.GetUser());
+    if (foundPos != m_core.GetEntryEndIter()) 
+      continue;
+
+    m_core.AddEntry(tempitem);
+    m_core.AddDependentEntry(new_base_uuid, new_entry_uuid, et);
+
+    if (et == CItemData::ET_ALIAS) {
+      tempitem.SetPassword(CMyString(_T("[Alias]")));
+      tempitem.SetAlias();
+    } else
+    if (et == CItemData::ET_SHORTCUT) {
+      tempitem.SetPassword(CMyString(_T("[Shortcut]")));
+      tempitem.SetShortcut();
+    } else
+      ASSERT(0);
+
+    numadded++;
+  }
+  return numadded;
 }
 
 void DboxMain::OnProperties()
