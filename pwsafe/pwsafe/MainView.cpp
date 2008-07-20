@@ -181,6 +181,12 @@ void DboxMain::DoDataExchange(CDataExchange* pDX)
   //{{AFX_DATA_MAP(DboxMain)
   DDX_Control(pDX, IDC_ITEMLIST, m_ctlItemList);
   DDX_Control(pDX, IDC_ITEMTREE, m_ctlItemTree);
+  DDX_Control(pDX, IDC_STATIC_DRAGGROUP, m_DDGroup);
+  DDX_Control(pDX, IDC_STATIC_DRAGTITLE, m_DDTitle);
+  DDX_Control(pDX, IDC_STATIC_DRAGUSER, m_DDUser);
+  DDX_Control(pDX, IDC_STATIC_DRAGPASSWORD, m_DDPassword);
+  DDX_Control(pDX, IDC_STATIC_DRAGNOTES, m_DDNotes);
+  DDX_Control(pDX, IDC_STATIC_DRAGURL, m_DDURL);
   //}}AFX_DATA_MAP
 }
 
@@ -229,6 +235,25 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
       const bool bIsEmail = entry->IsURLEmail();
       UpdateBrowseURLSendEmailButton(bIsEmail);
+    }
+
+    if (m_bDragBar) {
+      // Note: Title & Password are mandatory
+      if (entry == NULL) {
+        m_DDGroup.SetStaticState(false);
+        m_DDTitle.SetStaticState(false);
+        m_DDPassword.SetStaticState(false);
+        m_DDUser.SetStaticState(false);
+        m_DDNotes.SetStaticState(false);
+        m_DDURL.SetStaticState(false);
+      } else {
+        m_DDGroup.SetStaticState(!entry->IsGroupEmpty());
+        m_DDTitle.SetStaticState(true);
+        m_DDPassword.SetStaticState(true);
+        m_DDUser.SetStaticState(!entry->IsUserEmpty());
+        m_DDNotes.SetStaticState(!entry->IsNotesEmpty());
+        m_DDURL.SetStaticState(!entry->IsURLEmpty());
+      }
     }
   }
 }
@@ -349,6 +374,25 @@ void DboxMain::setupBars()
 
   // Register for update notification
   m_core.RegisterOnListModified(StopFind, (LPARAM)this);
+
+  m_DDGroup.Init(IDB_DRAGGROUP, IDB_DRAGGROUPX);
+  m_DDGroup.EnableWindow(TRUE);
+  m_DDGroup.ShowWindow(SW_SHOW);
+  m_DDTitle.Init(IDB_DRAGTITLE, IDB_DRAGTITLEX);
+  m_DDTitle.EnableWindow(TRUE);
+  m_DDTitle.ShowWindow(SW_SHOW);
+  m_DDUser.Init(IDB_DRAGUSER, IDB_DRAGUSERX);
+  m_DDUser.EnableWindow(TRUE);
+  m_DDUser.ShowWindow(SW_SHOW);
+  m_DDPassword.Init(IDB_DRAGPASSWORD, IDB_DRAGPASSWORDX);
+  m_DDPassword.EnableWindow(TRUE);
+  m_DDPassword.ShowWindow(SW_SHOW);
+  m_DDNotes.Init(IDB_DRAGNOTES, IDB_DRAGNOTESX);
+  m_DDNotes.EnableWindow(TRUE);
+  m_DDNotes.ShowWindow(SW_SHOW);
+  m_DDURL.Init(IDB_DRAGURL, IDB_DRAGURLX);
+  m_DDURL.EnableWindow(TRUE);
+  m_DDURL.ShowWindow(SW_SHOW);
 #endif
 }
 
@@ -754,9 +798,32 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
   if (m_windowok) {
     // Position the control bars
-    CRect rect;
+    CRect rect, dragrect;
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+    if (m_bDragBar) {
+      const int i = GetSystemMetrics(SM_CYBORDER);
+      m_DDGroup.GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      const int j = rect.top + i;
+      m_DDGroup.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+      m_DDTitle.GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      m_DDTitle.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+      m_DDUser.GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      m_DDUser.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+      m_DDPassword.GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      m_DDPassword.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+      m_DDNotes.GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      m_DDNotes.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+      m_DDURL.GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      m_DDURL.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+      rect.top += dragrect.Height() + 2 * i;
+    }
     m_ctlItemList.MoveWindow(&rect, TRUE);
     m_ctlItemTree.MoveWindow(&rect, TRUE);
   }
@@ -1019,9 +1086,10 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   int item = plv->iItem;
   if (item != -1) { // -1 if nothing selected, e.g., empty list
-    CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(item);
-    UpdateToolBarForSelectedItem(ci);
+    CItemData *cilist = (CItemData *)m_ctlItemList.GetItemData(item);
+    UpdateToolBarForSelectedItem(cilist);
   }
+
   m_LastFoundTreeItem = NULL;
   m_LastFoundListItem = -1;
 }
@@ -1031,7 +1099,7 @@ void DboxMain::OnTreeItemSelected(NMHDR * /*pNotifyStruct */, LRESULT *pLResult)
   // Seems that under Vista with Windows Common Controls V6, it is ignoring
   // the single click on the button (+/-) of a node and only processing the 
   // double click, which generates a copy of whatever the user selected
-  // for a duble click (except that it invalid for a node!) and then does
+  // for a double click (except that it invalid for a node!) and then does
   // the expand/collapse as appropriate.
   // This codes attemts to fix this.  There may be better solutions but I 
   // don't know them and have very limited testing facilities on Vista.
@@ -1634,6 +1702,15 @@ void DboxMain::OnShowHideToolbar()
   m_MainToolBar.ShowWindow(bState ? SW_HIDE : SW_SHOW);
   SetToolBarPositions();
   UpdateToolBar(m_core.IsReadOnly());
+}
+
+void DboxMain::OnShowHideDragbar() 
+{
+  bool bState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
+
+  PWSprefs::GetInstance()->SetPref(PWSprefs::ShowToolbar, !bState);
+  m_bDragBar = !m_bDragBar;
+  SetToolBarPositions();
 }
 
 void DboxMain::OnOldToolbar() 
@@ -2848,9 +2925,62 @@ void DboxMain::SetToolBarPositions()
   if (m_FindToolBar.GetSafeHwnd() == NULL)
     return;
 
-  CRect rect;
+  CRect rect, dragrect;
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+  if (m_bDragBar) {
+    const int i = GetSystemMetrics(SM_CYBORDER);
+    m_DDGroup.ShowWindow(SW_SHOW);
+    m_DDGroup.EnableWindow(TRUE);
+    m_DDGroup.GetWindowRect(&dragrect);
+    ScreenToClient(&dragrect);
+    m_DDGroup.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+    m_DDTitle.ShowWindow(SW_SHOW);
+    m_DDTitle.EnableWindow(TRUE);
+    m_DDTitle.GetWindowRect(&dragrect);
+    ScreenToClient(&dragrect);
+    m_DDTitle.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+    m_DDUser.ShowWindow(SW_SHOW);
+    m_DDUser.EnableWindow(TRUE);
+    m_DDUser.GetWindowRect(&dragrect);
+    ScreenToClient(&dragrect);
+    m_DDUser.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+    m_DDPassword.ShowWindow(SW_SHOW);
+    m_DDPassword.EnableWindow(TRUE);
+    m_DDPassword.GetWindowRect(&dragrect);
+    ScreenToClient(&dragrect);
+    m_DDPassword.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+    m_DDNotes.ShowWindow(SW_SHOW);
+    m_DDNotes.EnableWindow(TRUE);
+    m_DDNotes.GetWindowRect(&dragrect);
+    ScreenToClient(&dragrect);
+    m_DDNotes.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+    m_DDURL.ShowWindow(SW_SHOW);
+    m_DDURL.EnableWindow(TRUE);
+    m_DDURL.GetWindowRect(&dragrect);
+    ScreenToClient(&dragrect);
+    m_DDURL.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+    rect.top += dragrect.Height() + 2 * i;
+  } else {
+    m_DDGroup.ShowWindow(SW_HIDE);
+    m_DDGroup.EnableWindow(FALSE);
+    m_DDTitle.ShowWindow(SW_HIDE);
+    m_DDTitle.EnableWindow(FALSE);
+    m_DDUser.ShowWindow(SW_HIDE);
+    m_DDUser.EnableWindow(FALSE);
+    m_DDPassword.ShowWindow(SW_HIDE);
+    m_DDPassword.EnableWindow(FALSE);
+    m_DDNotes.ShowWindow(SW_HIDE);
+    m_DDNotes.EnableWindow(FALSE);
+    m_DDURL.ShowWindow(SW_HIDE);
+    m_DDURL.EnableWindow(FALSE);
+  }
   m_ctlItemList.MoveWindow(&rect, TRUE);
   m_ctlItemTree.MoveWindow(&rect, TRUE);
 
@@ -3341,4 +3471,19 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
   m_pNotesDisplay->ShowWindow(cs_notes.GetLength() > 0 ? SW_SHOWNA : SW_HIDE);
 
   return (cs_notes.GetLength() > 0);
+}
+
+CItemData * DboxMain::GetLastSelected()
+{
+  CItemData *retval(NULL);
+  if (m_ctlItemTree.IsWindowVisible()) {
+    HTREEITEM hSelected = m_ctlItemTree.GetSelectedItem();
+    if (hSelected != NULL)
+      retval = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
+  } else {
+    POSITION pSelected = m_ctlItemList.GetFirstSelectedItemPosition();
+    if (pSelected != NULL)
+      retval = (CItemData *)m_ctlItemList.GetItemData((int)pSelected - 1);
+  }
+  return retval;
 }

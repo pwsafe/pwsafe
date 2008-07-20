@@ -366,6 +366,14 @@ int DboxMain::Close()
   // Reset core
   m_core.ReInit();
 
+  // Set Dragbar images correctly
+  m_DDGroup.SetStaticState(false);
+  m_DDTitle.SetStaticState(false);
+  m_DDPassword.SetStaticState(false);
+  m_DDUser.SetStaticState(false);
+  m_DDNotes.SetStaticState(false);
+  m_DDURL.SetStaticState(false);
+
   app.SetTooltipText(_T("PasswordSafe"));
   UpdateSystemTray(CLOSED);
   // Call UpdateMenuAndToolBar before UpdateStatusBar, as it sets m_bOpen

@@ -70,7 +70,7 @@ public:
     ShowUsernameInTree, PWMakePronounceable,
     ClearClipoardOnMinimize, ClearClipoardOnExit,
     ShowToolbar, ShowNotesAsTooltipsInViews, DefaultOpenRO,
-    MultipleInstances,
+    MultipleInstances, ShowDragbar,
     NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,

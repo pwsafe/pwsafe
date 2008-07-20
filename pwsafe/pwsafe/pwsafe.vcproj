@@ -592,6 +592,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DDStatic.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DDSupport.cpp"
 				>
 			</File>
@@ -942,6 +946,10 @@
 			</File>
 			<File
 				RelativePath=".\DboxMain.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DDStatic.h"
 				>
 			</File>
 			<File
@@ -1531,6 +1539,54 @@
 			</File>
 			<File
 				RelativePath=".\res\toolbar\cutsomizetoolbar_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDGroup.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDGroupX.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDNotes.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDNotesX.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDPassword.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDPasswordX.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDTitle.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDTitleX.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDURL.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDURLX.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDUser.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\DDUserX.bmp"
 				>
 			</File>
 			<File

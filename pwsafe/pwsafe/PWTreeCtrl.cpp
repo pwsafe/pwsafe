@@ -84,6 +84,18 @@ class CPWTDropSource : public COleDropSource
 public:
   CPWTDropSource(CPWTreeCtrl *parent) : m_tree(*parent) {}
 
+  virtual SCODE QueryContinueDrag(BOOL bEscapePressed, DWORD dwKeyState)
+  {
+    // To prevent processing in multiple calls to CStaticDataSource::OnRenderGlobalData
+    //  Only process the request if data has been dropped.
+    SCODE sCode = COleDropSource::QueryContinueDrag(bEscapePressed, dwKeyState);
+    if (sCode == DRAGDROP_S_DROP) {
+      TRACE(_T("CStaticDropSource::QueryContinueDrag - dropped\n"));
+      m_tree.EndDrop();
+    }
+    return sCode;
+  }
+
   virtual SCODE GiveFeedback(DROPEFFECT dropEffect )
   {return m_tree.GiveFeedback(dropEffect);}
 
@@ -95,94 +107,64 @@ class CPWTDataSource : public COleDataSource
 {
 public:
   CPWTDataSource(CPWTreeCtrl *parent, COleDropSource *ds)
-    : m_tree(*parent), m_DropSource(ds),
-    m_mfBuffer(NULL), m_mfBufLen(0), m_hgData(NULL) {}
+    : m_tree(*parent), m_DropSource(ds) {}
+
   DROPEFFECT StartDragging(CLIPFORMAT cpfmt, LPCRECT rClient)
   {
     DelayRenderData(cpfmt);
-    DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
-                                       rClient, m_DropSource);
+    DelayRenderData(CF_UNICODETEXT);
+    DelayRenderData(CF_TEXT);
+
+    m_tree.m_cfdropped = 0;
+    TRACE(_T("CPWTDataSource::StartDragging - calling DoDragDrop\n"));
+    DROPEFFECT de = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
+                               rClient, m_DropSource);
     // Cleanup:
-    // It is not clear if we can cleanup m_mfBuffer
-    // in OnRenderGlobalData, so better to err
-    // on the side of safety, and cleanup after
-    // DoDragDrop has completed.
-
-    if (m_mfBufLen != 0) {
-      trashMemory((void *)m_mfBuffer, m_mfBufLen);
-      free((void *)m_mfBuffer);
-      m_mfBuffer = NULL; m_mfBufLen = 0;
+    // Standard processing is for the recipient to do this!!!
+    if (de == DROPEFFECT_NONE) {
+      if (m_tree.m_hgDataALL != NULL) {
+        TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataALL\n"));
+        LPVOID lpData = GlobalLock(m_tree.m_hgDataALL);
+        SIZE_T memsize = GlobalSize(m_tree.m_hgDataALL);
+        if (lpData != NULL && memsize > 0) {
+          trashMemory(lpData, memsize);
+        }
+        GlobalUnlock(m_tree.m_hgDataALL);
+        GlobalFree(m_tree.m_hgDataALL);
+        m_tree.m_hgDataALL = NULL;
+      }
+      if (m_tree.m_hgDataTXT != NULL) {
+        TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataTXT\n"));
+        LPVOID lpData = GlobalLock(m_tree.m_hgDataTXT);
+        SIZE_T memsize = GlobalSize(m_tree.m_hgDataTXT);
+        if (lpData != NULL && memsize > 0) {
+          trashMemory(lpData, memsize);
+        }
+        GlobalUnlock(m_tree.m_hgDataTXT);
+        GlobalFree(m_tree.m_hgDataTXT);
+        m_tree.m_hgDataTXT = NULL;
+      }
+      if (m_tree.m_hgDataUTXT != NULL) {
+        TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n"));
+        LPVOID lpData = GlobalLock(m_tree.m_hgDataUTXT);
+        SIZE_T memsize = GlobalSize(m_tree.m_hgDataUTXT);
+        if (lpData != NULL && memsize > 0) {
+          trashMemory(lpData, memsize);
+        }
+        GlobalUnlock(m_tree.m_hgDataUTXT);
+        GlobalFree(m_tree.m_hgDataUTXT);
+        m_tree.m_hgDataUTXT = NULL;
+      }
     }
-    if (m_hgData != NULL) {
-      GlobalUnlock(m_hgData);
-      GlobalFree(m_hgData); m_hgData = NULL;
-    }
-    return dropEffect;
+    return de;
   }
-  virtual BOOL OnRenderGlobalData(LPFORMATETC , HGLOBAL* phGlobal)
-  {
-    long lBufLen;
-    BYTE *buffer = NULL;
 
-    ASSERT(m_mfBuffer == NULL && m_mfBufLen == 0);
-    ASSERT(m_hgData == NULL);
-    // CollectData allocates buffer - need to free later
-    if (!m_tree.CollectData(buffer, lBufLen))
-      return FALSE;
-
-    char header[OLE_HDR_LEN+1];
-    // Note: m_tree.GetDDType will return either FROMTREE or FROMTREE_R
-#if _MSC_VER >= 1400
-    sprintf_s(header, sizeof(header),
-              OLE_HDR_FMT, GetCurrentProcessId(), m_tree.GetDDType(), lBufLen);
-#else
-    sprintf(header, OLE_HDR_FMT, GetCurrentProcessId(), m_tree.GetDDType(), lBufLen);
-#endif
-    CMemFile mf;
-    mf.Write(header, OLE_HDR_LEN);
-    mf.Write(buffer, lBufLen);
-
-    // Finished with buffer - trash it and free it
-    trashMemory((void *)buffer, lBufLen);
-    free(buffer);
-
-    m_mfBufLen = (DWORD)mf.GetLength();
-    m_mfBuffer = (BYTE *)(mf.Detach());
-
-#ifdef DUMP_DATA
-    CString cs_timestamp = PWSUtil::GetTimeStamp();
-    TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp,
-          m_mfBufLen, m_mfBufLen);
-    PWSUtil::HexDump(m_mfBuffer, m_mfBufLen, cs_timestamp);
-#endif /* DUMP_DATA */
-
-    m_hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, m_mfBufLen);
-    ASSERT(m_hgData != NULL);
-
-    LPCSTR lpData = (LPCSTR)GlobalLock(m_hgData);
-    ASSERT(lpData != NULL);
-
-    memcpy((void *)lpData, m_mfBuffer, m_mfBufLen);
-
-    if (*phGlobal == NULL) {
-      *phGlobal = m_hgData;
-    } else {
-      SIZE_T inSize = GlobalSize(*phGlobal);
-      SIZE_T ourSize = GlobalSize(m_hgData);
-      if (inSize < ourSize)
-        return FALSE;
-
-      ASSERT(0); // not ready to handle this yet. Is it possible in our case?
-    }
-    return TRUE;
-  }
+  virtual BOOL OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
+  {return m_tree.OnRenderGlobalData(lpFormatEtc, phGlobal);}
 
 private:
   CPWTreeCtrl &m_tree;
   COleDropSource *m_DropSource;
-  BYTE *m_mfBuffer;
-  DWORD m_mfBufLen;
-  HGLOBAL m_hgData;
 };
 
 /**
@@ -192,6 +174,7 @@ private:
 CPWTreeCtrl::CPWTreeCtrl()
   : m_isRestoring(false), m_bWithinThisInstance(true),
   m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
+  m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
   m_bFilterActive(false)
 {
   // Register a clipboard format for column drag & drop.
@@ -617,9 +600,9 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   /* Allowed formats:
   1.   title
   If preference ShowUsernameInTree is set:
-  2.   title [username]
-  If preferences ShowUsernameInTree and ShowPasswordInTree are set:
-  3.   title [username] {password}
+    2.   title [username]
+    If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+      3.   title [username] {password}
 
   There can only be one of each:
       open square brace
@@ -1281,24 +1264,59 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   }
 
   // Start dragging
+  m_bDropped = false;
   DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
 
-  if (SUCCEEDED(de)) {
-    // If inter-process Move, we need to delete original
-    if ((de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
-        !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
-      m_pDbx->Delete();
+  // If inter-process Move, we need to delete original
+  if (m_cfdropped == m_tcddCPFID &&
+      (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
+      !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
+    m_pDbx->Delete();
+  }
+
+  // wrong place to clean up imagelist?
+  pil->DragLeave(GetDesktopWindow());
+  pil->EndDrag();
+  pil->DeleteImageList();
+  delete pil;
+
+  if (de == DROPEFFECT_NONE) {
+    TRACE(_T("m_DataSource->StartDragging() failed"));
+    // Do cleanup - otherwise this is the responsibility of the recipient!
+    if (m_hgDataALL != NULL) {
+      LPVOID lpData = GlobalLock(m_hgDataALL);
+      SIZE_T memsize = GlobalSize(m_hgDataALL);
+      if (lpData != NULL && memsize > 0) {
+        trashMemory(lpData, memsize);
+      }
+      GlobalUnlock(m_hgDataALL);
+      GlobalFree(m_hgDataALL);
+      m_hgDataALL = NULL;
     }
-    // wrong place to clean up imagelist?
-    pil->DragLeave(GetDesktopWindow());
-    pil->EndDrag();
-    pil->DeleteImageList();
-    delete pil;
+    if (m_hgDataTXT != NULL) {
+      LPVOID lpData = GlobalLock(m_hgDataTXT);
+      SIZE_T memsize = GlobalSize(m_hgDataTXT);
+      if (lpData != NULL && memsize > 0) {
+        trashMemory(lpData, memsize);
+      }
+      GlobalUnlock(m_hgDataTXT);
+      GlobalFree(m_hgDataTXT);
+      m_hgDataTXT = NULL;
+    }
+    if (m_hgDataUTXT != NULL) {
+      LPVOID lpData = GlobalLock(m_hgDataUTXT);
+      SIZE_T memsize = GlobalSize(m_hgDataUTXT);
+      if (lpData != NULL && memsize > 0) {
+        trashMemory(lpData, memsize);
+      }
+      GlobalUnlock(m_hgDataUTXT);
+      GlobalFree(m_hgDataUTXT);
+      m_hgDataUTXT = NULL;
+    }
+  } else {
     while (ShowCursor(TRUE) < 0)
       ;
-  } else {
-    TRACE(_T("m_DataSource->StartDragging() failed"));
-  }
+  } 
 }
 
 void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *)
@@ -1718,4 +1736,357 @@ BOOL CPWTreeCtrl::OnEraseBkgnd(CDC* pDC)
   }
 
   return TRUE;
+}
+
+BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
+{
+  if (m_hgDataALL != NULL) {
+    TRACE(_T("CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataALL\n"));
+    LPVOID lpData = GlobalLock(m_hgDataALL);
+    SIZE_T memsize = GlobalSize(m_hgDataALL);
+    if (lpData != NULL && memsize > 0) {
+      trashMemory(lpData, memsize);
+    }
+    GlobalUnlock(m_hgDataALL);
+    GlobalFree(m_hgDataALL);
+    m_hgDataALL = NULL;
+  }
+  if (m_hgDataTXT != NULL) {
+    TRACE(_T("CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n"));
+    LPVOID lpData = GlobalLock(m_hgDataTXT);
+    SIZE_T memsize = GlobalSize(m_hgDataTXT);
+    if (lpData != NULL && memsize > 0) {
+      trashMemory(lpData, memsize);
+    }
+    GlobalUnlock(m_hgDataTXT);
+    GlobalFree(m_hgDataTXT);
+    m_hgDataTXT = NULL;
+  }
+  if (m_hgDataUTXT != NULL) {
+    TRACE(_T("CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n"));
+    LPVOID lpData = GlobalLock(m_hgDataUTXT);
+    SIZE_T memsize = GlobalSize(m_hgDataUTXT);
+    if (lpData != NULL && memsize > 0) {
+      trashMemory(lpData, memsize);
+    }
+    GlobalUnlock(m_hgDataUTXT);
+    GlobalFree(m_hgDataUTXT);
+    m_hgDataUTXT = NULL;
+  }
+
+  BOOL retval;
+  if (lpFormatEtc->cfFormat == CF_UNICODETEXT ||
+      lpFormatEtc->cfFormat == CF_TEXT) {
+    retval = RenderTextData(lpFormatEtc->cfFormat, phGlobal);
+  } else if (lpFormatEtc->cfFormat == m_tcddCPFID) {
+    m_cfdropped = m_tcddCPFID;
+    retval = RenderAllData(phGlobal);
+  } else
+    return FALSE;
+
+  return retval;
+}
+    
+BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
+{
+  if (!IsLeaf(m_hitemDrag)) {
+    TRACE(_T("CPWTreeCtrl::RenderTextData - not a leaf!\n"));
+    return FALSE;
+  }
+
+  // Save format for use by D&D to ensure we don't 'move' when dropping text!
+  m_cfdropped = cfFormat;
+
+  DWORD_PTR itemData = GetItemData(m_hitemDrag);
+  CItemData *pci = (CItemData *)itemData;
+
+  const CItemData::EntryType entrytype = pci->GetEntryType();
+  if (entrytype == CItemData::ET_ALIAS) {
+    // This is an alias
+    uuid_array_t entry_uuid, base_uuid;
+    pci->GetUUID(entry_uuid);
+    m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_pDbx->Find(base_uuid);
+    if (iter != m_pDbx->End()) {
+      pci = &(iter->second);
+    }
+  }
+
+  if (entrytype == CItemData::ET_SHORTCUT) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    pci->GetUUID(entry_uuid);
+    m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_pDbx->Find(base_uuid);
+    if (iter != m_pDbx->End()) {
+      pci = &(iter->second);
+    }
+  }
+ 
+  CMyString cs_dragdata;
+  cs_dragdata = pci->GetPassword();
+
+  const int ilen = cs_dragdata.GetLength();
+  if (ilen == 0) {
+    // Password shouldn't ever be empty!
+    return FALSE;
+  }
+
+  DWORD dwBufLen;
+  LPSTR lpszA(NULL);
+  LPWSTR lpszW(NULL);
+
+#ifdef UNICODE
+  // We are Unicode!
+  if (cfFormat == CF_UNICODETEXT) {
+    // So is requested data!
+    dwBufLen = (ilen + 1) * sizeof(wchar_t);
+    lpszW = new WCHAR[ilen + 1];
+    TRACE(_T("lpszW allocated %p, size %d\n"), lpszW, dwBufLen);
+#if (_MSC_VER >= 1400)
+    (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata, ilen);
+#else
+    (void)wcsncpy(lpszW, cs_dragdata, ilen);
+    lpszW[ilen] = L'\0';
+#endif
+  } else {
+    // They want it in ASCII - use lpszW temporarily
+    lpszW = cs_dragdata.GetBuffer(ilen + 1);
+    dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
+    ASSERT(dwBufLen != 0);
+    lpszA = new char[dwBufLen];
+    TRACE(_T("lpszA allocated %p, size %d\n"), lpszA, dwBufLen);
+    WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
+    cs_dragdata.ReleaseBuffer();
+    lpszW = NULL;
+  }
+#else
+  // We are Ascii!
+  if (cfFormat == CF_TEXT) {
+    // So is requested data!
+    dwBufLen = ilen + 1;
+    lpszA = new char[ilen + 1];
+    TRACE(_T("lpszA allocated %p, size %d\n"), lpszA, dwBufLen);
+#if (_MSC_VER >= 1400)
+    (void) strncpy_s(lpszA, ilen + 1, cs_dragdata, ilen);
+#else
+    (void)strncpy(lpszA, cs_dragdata, ilen);
+    lpszA[ilen] = '\0';
+#endif
+  } else {
+    // They want it in UNICODE - use lpszA temporarily
+    lpszA = cs_dragdata.GetBuffer(ilen + 1);
+    dwBufLen = MultiByteToWideChar(CP_ACP, 0, lpszA, -1, NULL, NULL);
+    lpszW = new WCHAR[dwBufLen];
+    TRACE(_T("lpszW allocated %p, size %d\n"), lpszW, dwBufLen);
+    MultiByteToWideChar(CP_ACP, 0, lpszA, -1, lpszW, dwBufLen);
+    cs_dragdata.ReleaseBuffer();
+    lpszA = NULL;
+  }
+#endif
+
+  LPVOID lpData(NULL);
+  LPVOID lpDataBuffer;
+  HGLOBAL *phgData;
+  if (cfFormat == CF_UNICODETEXT) {
+    lpDataBuffer = (LPVOID)lpszW;
+    phgData = &m_hgDataUTXT;
+  } else {
+    lpDataBuffer = (LPVOID)lpszA;
+    phgData = &m_hgDataTXT;
+  }
+
+  BOOL retval(FALSE);
+  if (*phGlobal == NULL) {
+    TRACE(_T("CPWTreeCtrl::OnRenderTextData - Alloc global memory\n"));
+    *phgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
+    ASSERT(*phgData != NULL);
+    if (*phgData == NULL)
+      goto bad_return;
+
+    lpData = GlobalLock(*phgData);
+    ASSERT(lpData != NULL);
+    if (lpData == NULL)
+      goto bad_return;
+
+    // Copy data
+    memcpy(lpData, lpDataBuffer, dwBufLen);
+    *phGlobal = *phgData;
+    GlobalUnlock(*phgData);
+    retval = TRUE;
+  } else {
+    TRACE(_T("CPWTreeCtrl::OnRenderTextData - *phGlobal NOT NULL!\n"));
+    SIZE_T inSize = GlobalSize(*phGlobal);
+    SIZE_T ourSize = GlobalSize(*phgData);
+    if (inSize < ourSize) {
+      // Pre-allocated space too small.  Not allowed to increase it - FAIL
+      TRACE(_T("CPWTreeCtrl::OnRenderTextData - NOT enough room - FAIL\n"));
+    } else {
+      // Enough room - copy our data into supplied area
+      TRACE(_T("CPWTreeCtrl::OnRenderTextData - enough room - copy our data\n"));
+      LPVOID pInGlobalLock = GlobalLock(*phGlobal);
+      ASSERT(pInGlobalLock != NULL);
+      if (pInGlobalLock == NULL)
+        goto bad_return;
+
+      memcpy(pInGlobalLock, lpDataBuffer, ourSize);
+      GlobalUnlock(*phGlobal);
+      retval = TRUE;
+    }
+  }
+
+bad_return:
+  // Finished with buffer - trash it
+  trashMemory(lpDataBuffer, dwBufLen);
+  // Free the strings (only one is actually in use)
+  TRACE(_T("lpszA freed %p\n"), lpszA);
+  delete[] lpszA;
+  TRACE(_T("lpszW freed %p\n"), lpszW);
+  delete[] lpszW;
+  // Since lpDataBuffer pointed to one of the above - just zero the pointer
+  lpDataBuffer = NULL;
+
+  // If retval == TRUE, recipient is responsible for freeing the global memory
+  // if D&D succeeds (see after StartDragging in OnMouseMove)
+  if (retval == FALSE) {
+    TRACE(_T("CPWTreeCtrl::RenderTextData - returning FALSE!\n"));
+    if (*phgData != NULL) {
+      LPVOID lpData = GlobalLock(*phgData);
+      SIZE_T memsize = GlobalSize(*phgData);
+      if (lpData != NULL && memsize > 0) {
+        trashMemory(lpData, memsize);
+      }
+      GlobalUnlock(*phgData);
+      GlobalFree(*phgData);
+      *phgData = NULL;
+    }
+  } else {
+    TRACE(_T("CPWTreeCtrl::RenderTextData - D&D Data:"));
+    if (cfFormat == CF_UNICODETEXT) {
+#ifdef UNICODE
+      TRACE(_T("\"%s\"\n"), (LPWSTR)lpData);  // we are Unicode, data is Unicode
+#else
+      TRACE(_T("\"%S\"\n"), (LPSTR)lpData);   // we are NOT Unicode, data is Unicode
+#endif
+    } else {
+#ifdef UNICODE
+      TRACE(_T("\"%S\"\n"), (LPSTR)lpData);  // we are Unicode, data is NOT Unicode
+#else
+      TRACE(_T("\"%s\"\n"), (LPWSTR)lpData);  // we are NOT Unicode, data is NOT Unicode
+#endif
+    }
+  }
+
+  if (lpData != NULL)
+    GlobalUnlock(*phgData);
+
+    return retval;
+}
+
+BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
+{
+  long lBufLen;
+  BYTE *buffer = NULL;
+
+  ASSERT(m_hgDataALL == NULL);
+
+  // CollectData allocates buffer - need to free later
+  if (!CollectData(buffer, lBufLen))
+    return FALSE;
+
+  char header[OLE_HDR_LEN+1];
+  // Note: GetDDType will return either FROMTREE or FROMTREE_R
+#if _MSC_VER >= 1400
+  sprintf_s(header, sizeof(header),
+            OLE_HDR_FMT, GetCurrentProcessId(), GetDDType(), lBufLen);
+#else
+  sprintf(header, OLE_HDR_FMT, GetCurrentProcessId(), GetDDType(), lBufLen);
+#endif
+  CMemFile mf;
+  mf.Write(header, OLE_HDR_LEN);
+  mf.Write(buffer, lBufLen);
+
+  // Finished with buffer - trash it and free it
+  trashMemory((void *)buffer, lBufLen);
+  free(buffer);
+
+  LPVOID lpData(NULL);
+  LPVOID lpDataBuffer;
+  DWORD dwBufLen = (DWORD)mf.GetLength();
+  lpDataBuffer = (LPVOID)(mf.Detach());
+
+#ifdef DUMP_DATA
+  CString cs_timestamp = PWSUtil::GetTimeStamp();
+  TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp,
+        dwBufLen, dwBufLen);
+  PWSUtil::HexDump(lpDataBuffer, dwBufLen, cs_timestamp);
+#endif /* DUMP_DATA */
+
+  BOOL retval(FALSE);
+  if (*phGlobal == NULL) {
+    TRACE(_T("CPWTreeCtrl::OnRenderAllData - Alloc global memory\n"));
+    m_hgDataALL = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
+    ASSERT(m_hgDataALL != NULL);
+    if (m_hgDataALL == NULL)
+      goto bad_return;
+
+    lpData = GlobalLock(m_hgDataALL);
+    ASSERT(lpData != NULL);
+    if (lpData == NULL)
+      goto bad_return;
+
+    // Copy data
+    memcpy(lpData, lpDataBuffer, dwBufLen);
+    *phGlobal = m_hgDataALL;
+    retval = TRUE;
+  } else {
+    TRACE(_T("CPWTreeCtrl::OnRenderAllData - *phGlobal NOT NULL!\n"));
+    SIZE_T inSize = GlobalSize(*phGlobal);
+    SIZE_T ourSize = GlobalSize(m_hgDataALL);
+    if (inSize < ourSize) {
+      // Pre-allocated space too small.  Not allowed to increase it - FAIL
+      TRACE(_T("CPWTreeCtrl::OnRenderAllData - NOT enough room - FAIL\n"));
+    } else {
+      // Enough room - copy our data into supplied area
+      TRACE(_T("CPWTreeCtrl::OnRenderAllData - enough room - copy our data\n"));
+      LPVOID pInGlobalLock = GlobalLock(*phGlobal);
+      ASSERT(pInGlobalLock != NULL);
+      if (pInGlobalLock == NULL)
+        goto bad_return;
+
+      memcpy(pInGlobalLock, lpDataBuffer, ourSize);
+      GlobalUnlock(*phGlobal);
+      retval = TRUE;
+    }
+  }
+
+bad_return:
+  if (dwBufLen != 0 && lpDataBuffer != NULL) {
+    trashMemory(lpDataBuffer, dwBufLen);
+    free(lpDataBuffer);
+    lpDataBuffer = NULL;
+  }
+
+  // If retval == TRUE, recipient is responsible for freeing the global memory
+  // if D&D succeeds
+  if (retval == FALSE) {
+    TRACE(_T("CPWTreeCtrl::RenderAllData - returning FALSE!\n"));
+    if (m_hgDataALL != NULL) {
+      LPVOID lpData = GlobalLock(m_hgDataALL);
+      SIZE_T memsize = GlobalSize(m_hgDataALL);
+      if (lpData != NULL && memsize > 0) {
+        trashMemory(lpData, memsize);
+      }
+      GlobalUnlock(m_hgDataALL);
+      GlobalFree(m_hgDataALL);
+      m_hgDataALL = NULL;
+    }
+  }
+
+  if (lpData != NULL)
+    GlobalUnlock(m_hgDataALL);
+
+  return retval;
 }

@@ -266,6 +266,18 @@
 #define IDD_FILTERACTIONS               429
 #define IDD_SAVEFILTER                  430
 #define IDD_EXPORTFILTERS               431
+#define IDB_DRAGGROUP                   432
+#define IDB_DRAGTITLE                   433
+#define IDB_DRAGUSER                    434
+#define IDB_DRAGPASSWORD                435
+#define IDB_DRAGNOTES                   436
+#define IDB_DRAGURL                     437
+#define IDB_DRAGGROUPX                  438
+#define IDB_DRAGTITLEX                  439
+#define IDB_DRAGUSERX                   440
+#define IDB_DRAGPASSWORDX               441
+#define IDB_DRAGNOTESX                  442
+#define IDB_DRAGURLX                    443
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -560,14 +572,20 @@
 #define IDC_DATABASEFILTERSBTN          1331
 #define IDC_GLOBALFILTERBTN             1332
 #define IDC_MULTIPLEINSTANCES           1333
+#define IDC_STATIC_DRAGGROUP            1334
+#define IDC_STATIC_DRAGTITLE            1335
+#define IDC_STATIC_DRAGUSER             1336
+#define IDC_STATIC_DRAGPASSWORD         1337
+#define IDC_STATIC_DRAGNOTES            1338
+#define IDC_STATIC_DRAGURL              1339
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        432
+#define _APS_NEXT_RESOURCE_VALUE        444
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1334
+#define _APS_NEXT_CONTROL_VALUE         1340
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif

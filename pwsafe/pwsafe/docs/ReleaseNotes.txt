@@ -37,6 +37,8 @@ existing instance.
 [2004500] CTRL-A now selects all of the Notes field in Add & Edit.
 [] The entries displayed can now be filtered based on rules on every
 field in the database.
+[] Add Dragbar and also allow D&D from Tree onto a text field to drop the
+entry's password value.
 
 Bugs fixed in 3.13
 ==================

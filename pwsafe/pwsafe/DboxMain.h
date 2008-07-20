@@ -34,6 +34,7 @@
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
 #include "corelib/filters.h"
+#include "DDStatic.h"
 #include <vector>
 #include <map>
 
@@ -80,6 +81,8 @@ DECLARE_HANDLE(HDROP);
 // timer event number used to support display of notes in List & Tree controls
 #define TIMER_ND_HOVER   0x07
 #define TIMER_ND_SHOWING 0x08
+// timer event number used to support DragBar
+#define TIMER_DRAGBAR    0x09
 
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary
@@ -92,6 +95,9 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 */
 #define HOVER_TIME_ND      2000
 #define TIMEINT_ND_SHOWING 5000
+
+// DragBar time interval 
+#define TIMER_DRAGBAR_TIME 100
 
 // Hotkey value ID
 #define PWS_HOTKEY_ID 5767
@@ -118,7 +124,7 @@ private:
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
   static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
-  static CString CS_HIDETOOBAR, CS_SHOWTOOLBAR;
+  static CString CS_HIDETOOLBAR, CS_SHOWTOOLBAR, CS_HIDEDRAGBAR, CS_SHOWDRAGBAR;
   static CString CS_APPLYFILTERS, CS_REMOVEFILTERS;
   static const CString DEFAULT_AUTOTYPE;
 
@@ -248,6 +254,7 @@ public:
   bool SetNotesWindow(const CPoint point, const bool bVisible = true);
   bool IsFilterActive() {return m_bFilterActive;}
   int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
+  CItemData *GetLastSelected();
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -262,6 +269,7 @@ public:
   CLVHdrCtrl m_LVHdrCtrl;
   CColumnChooserDlg *m_pCC;
   CPoint m_RCMousePos;
+  CDDStatic m_DDGroup, m_DDTitle, m_DDUser, m_DDPassword, m_DDNotes, m_DDURL;
   //}}AFX_DATA
 
   CRUEList m_RUEList;   // recent entry lists
@@ -495,6 +503,7 @@ protected:
   afx_msg void OnCreateShortcut();
   afx_msg void OnOK();
   afx_msg void OnShowHideToolbar();
+  afx_msg void OnShowHideDragbar();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();
   afx_msg void OnExpandAll();
@@ -583,6 +592,7 @@ private:
   CFont *m_pFontTree;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   bool m_inExit; // help U3ExitNow
+  bool m_bDragBar;
 
   PWSclipboard m_clipboard;
 
