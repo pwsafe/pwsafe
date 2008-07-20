@@ -242,6 +242,9 @@ public:
     bool Matches(const EntryType &etype1, 
                  const int &iFunction) const;  // Entrytype values
 
+    BOOL IsGroupEmpty() const {return m_Group.IsEmpty();}
+    BOOL IsUserEmpty() const {return m_User.IsEmpty();}
+    BOOL IsNotesEmpty() const {return m_Notes.IsEmpty();}
     BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
     void SerializePlainText(std::vector<char> &v, CItemData *cibase = NULL) const;
     bool DeserializePlainText(const std::vector<char> &v);

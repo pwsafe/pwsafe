@@ -65,6 +65,7 @@ public:
   void OnDragLeave();
   bool IsDropOnMe() {return m_bWithinThisInstance;}
   int GetDDType() {return m_DDType;}
+  void EndDrop() {m_bDropped = true;}
   void SetFilterState(bool bState);
   bool WasLabelEdited() {return m_bEditLabelCompleted;};
 
@@ -85,6 +86,9 @@ protected:
   //}}AFX_MSG
 
   BOOL PreTranslateMessage(MSG* pMsg);
+  BOOL OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal);
+  BOOL RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal);
+  BOOL RenderAllData(HGLOBAL* phGlobal);
 
   DECLARE_MESSAGE_MAP()
 
@@ -111,6 +115,9 @@ private:
   friend class CPWTDataSource;
   // Clipboard format for our Drag & Drop
   CLIPFORMAT m_tcddCPFID;
+  HGLOBAL m_hgDataALL, m_hgDataUTXT, m_hgDataTXT;
+  CLIPFORMAT m_cfdropped;
+  bool m_bDropped;
 
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool MoveItem(HTREEITEM hitem, HTREEITEM hNewParent);

@@ -463,3 +463,5 @@
 #define IDS_CANTAUTOIMPORTFILTERS       5630
 #define IDS_REPLACEFILTER               5631
 #define IDS_FILTEREXISTS                5632
+#define IDS_SHOWDRAGBAR                 5633
+#define IDS_HIDEDRAGBAR                 5634
