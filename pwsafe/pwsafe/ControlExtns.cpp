@@ -329,6 +329,9 @@ void CComboBoxExtn::ChangeColour()
 //-----------------------------------------------------------------
 // CStaticExtn is meant for sensitive information that you really don't
 // want to be in memory more than necessary, such as master passwords
+//
+// Note that to debug it, you need to #define DEBUG_CSECEDITEXTN
+// so that sensitive information doesn't leak in a debug version...
 //-----------------------------------------------------------------
 
 const TCHAR FILLER = TCHAR(0x08); // ASCII backspace doesn't occur in Edit
@@ -406,7 +409,7 @@ void CSecEditExtn::DoDDX(CDataExchange *pDX, CMyString &str)
 
 afx_msg void CSecEditExtn::OnUpdate()
 {
-#ifdef DEBUG
+#ifdef DEBUG_CSECEDITEXTN
   CString dstr;
   GetWindowText(dstr);
   TRACE(_T("CSecEditExtn::OnUpdate(%s)\n"),dstr);
@@ -478,8 +481,10 @@ void CSecEditExtn::OnSecureUpdate()
     }
   }
   m_in_recursion = true; // the following change will trigger another update
+#ifdef DEBUG_CSECEDITEXTN
   TRACE(_T("CSecEditExtn::OnSecureUpdate: GetSel(%d, %d), str = %s\n"),
         startSel, endSel, str);
+#endif
   SetSecureText(str);
   SetSel(startSel, endSel); // need to restore after Set.
 }

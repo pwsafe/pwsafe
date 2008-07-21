@@ -2501,6 +2501,9 @@ void DboxMain::OnOK()
   prefs->SetPref(PWSprefs::ListColumns, cs_columns);
   prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
 
+  SaveDisplayStatus(); // since it's not always up to date
+  // (CPWTreeCtrl::OnExpandCollapse not always called!)
+
   //Store current filename for next time...
   if (prefs->GetPref(PWSprefs::MaxMRUItems) == 0) {
     // Ensure Application preferences have been changed for a rewrite
@@ -2632,7 +2635,9 @@ vector<bool> DboxMain::GetGroupDisplayStatus()
 
 void DboxMain::SetGroupDisplayStatus(const vector<bool> &displaystatus)
 {
-  vector<bool> dstatus(displaystatus); // values seem to be changing!
+  // We need to copy displaystatus since Expand may cause
+  // SaveDisplayStatus to be called, updating it
+  const vector<bool> dstatus(displaystatus);
   HTREEITEM hItem = NULL;
   size_t i(0);
   const size_t num = dstatus.size();
