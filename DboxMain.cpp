@@ -75,12 +75,8 @@ CString DboxMain::CS_SENDEMAIL;
 CString DboxMain::CS_COPYURL;
 CString DboxMain::CS_COPYEMAIL;
 CString DboxMain::CS_EXPCOLGROUP;
-CString DboxMain::CS_HIDETOOLBAR;
-CString DboxMain::CS_SHOWTOOLBAR;
 CString DboxMain::CS_APPLYFILTERS;
 CString DboxMain::CS_REMOVEFILTERS;
-CString DboxMain::CS_HIDEDRAGBAR;
-CString DboxMain::CS_SHOWDRAGBAR;
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
@@ -99,7 +95,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
   m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
-  m_bDragBar(true)
+  m_bDragBar(false)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -112,12 +108,8 @@ DboxMain::DboxMain(CWnd* pParent)
   CS_SENDEMAIL.LoadString(IDS_MENUSENDEMAIL);
   CS_COPYURL.LoadString(IDS_MENUCOPYURL);
   CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
-  CS_HIDETOOLBAR.LoadString(IDS_HIDETOOLBAR);
-  CS_SHOWTOOLBAR.LoadString(IDS_SHOWTOOLBAR);
   CS_APPLYFILTERS.LoadString(IDS_APPLYFILTERS);
   CS_REMOVEFILTERS.LoadString(IDS_REMOVEFILTERS);
-  CS_HIDEDRAGBAR.LoadString(IDS_HIDEDRAGBAR);
-  CS_SHOWDRAGBAR.LoadString(IDS_SHOWDRAGBAR);
 
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -1605,16 +1597,12 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
                             (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW),
                             MF_BYCOMMAND);
 
-  pMenu->ModifyMenu(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND |
-                    (m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED),
-                    ID_MENUITEM_SHOWHIDE_TOOLBAR,
-                    m_MainToolBar.IsWindowVisible() ? CS_HIDETOOLBAR : CS_SHOWTOOLBAR);
-
-  pMenu->ModifyMenu(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
-                    (m_bDragBar ? MF_CHECKED : MF_UNCHECKED),
-                    ID_MENUITEM_SHOWHIDE_DRAGBAR,
-                    m_bDragBar ? CS_HIDEDRAGBAR : CS_SHOWDRAGBAR);
-
+  pMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND |
+                       m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
+  
+  pMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
+                       m_bDragBar ? MF_CHECKED : MF_UNCHECKED);
+  
   pMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
                     (m_bFilterActive ? MF_CHECKED : MF_UNCHECKED),
                     ID_MENUITEM_APPLYFILTER,
