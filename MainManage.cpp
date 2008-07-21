@@ -663,7 +663,7 @@ void DboxMain::OnOptions()
     }
 
     // Changing ExplorerTypeTree changes order of items,
-    // which DisplayStatus implcitly depends upon
+    // which DisplayStatus implicitly depends upon
     if (bOldExplorerTypeTree !=
         prefs->GetPref(PWSprefs::ExplorerTypeTree))
       SaveDisplayStatus();
