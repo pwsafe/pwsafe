@@ -13,9 +13,6 @@
 #include "FilterActionsDlg.h"
 #include "../PWDialog.h"
 
-#include <vector>
-#include <algorithm>
-
 // FilterActionsDlg dialog
 
 IMPLEMENT_DYNAMIC(CFilterActionsDlg, CPWDialog)
@@ -78,7 +75,7 @@ BOOL CFilterActionsDlg::OnInitDialog()
   }
 
   if (m_combo.GetCount() == 0) {
-    std::vector<CString>::iterator vcs_iter;
+    std::vector<CString>::const_iterator vcs_iter;
     if (m_selectedstore == 0) {
       for (vcs_iter = m_vcs_db.begin(); vcs_iter != m_vcs_db.end(); vcs_iter++) {
         m_combo.AddString(*vcs_iter);
@@ -114,7 +111,7 @@ void CFilterActionsDlg::OnBnClickedDBStore()
   UpdateData(TRUE);
   m_combo.ResetContent();
 
-  std::vector<CString>::iterator vcs_iter;
+  std::vector<CString>::const_iterator vcs_iter;
   for (vcs_iter = m_vcs_db.begin(); vcs_iter != m_vcs_db.end(); vcs_iter++) {
     m_combo.AddString(*vcs_iter);
   }
@@ -126,7 +123,7 @@ void CFilterActionsDlg::OnBnClickedGlobalStore()
   UpdateData(TRUE);
   m_combo.ResetContent();
 
-  std::vector<CString>::iterator vcs_iter;
+  std::vector<CString>::const_iterator vcs_iter;
   for (vcs_iter = m_vcs_gbl.begin(); vcs_iter != m_vcs_gbl.end(); vcs_iter++) {
     m_combo.AddString(*vcs_iter);
   }

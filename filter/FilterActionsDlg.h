@@ -25,7 +25,8 @@ public:
   virtual ~CFilterActionsDlg();
 
   void SetFunction(int function) {m_function = function;}
-  void SetLists(std::vector<CString> &vcs_db, std::vector<CString> &vcs_gbl)
+  void SetLists(const std::vector<CString> &vcs_db,
+                const std::vector<CString> &vcs_gbl)
   {m_vcs_db = vcs_db; m_vcs_gbl = vcs_gbl;}
   CString GetSelected(int &istore)
   {istore = m_selectedstore; return m_selected;}
