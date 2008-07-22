@@ -648,13 +648,10 @@ void DboxMain::OnViewFilter()
   if (numactive == 0 && m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
     return;
 
-  st_filters *pfilters;
-  if (numactive == 0)
-    pfilters = NULL;
-  else
-    pfilters = &m_filters;
+  st_filters *pfilters = (numactive == 0) ? NULL : &m_filters;
  
-  CViewFilterDlg vf(this, pfilters, &(m_core.m_MapDatabaseFilters), &m_MapGlobalFilters);
+  CViewFilterDlg vf(this, pfilters,
+                    m_core.m_MapDatabaseFilters, m_MapGlobalFilters);
   vf.DoModal();
  }
 

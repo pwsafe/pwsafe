@@ -12,6 +12,7 @@
 #include "../stdafx.h"
 #include "FilterActionsDlg.h"
 #include "../PWDialog.h"
+#include "ComboAdder.h"
 
 // FilterActionsDlg dialog
 
@@ -75,22 +76,16 @@ BOOL CFilterActionsDlg::OnInitDialog()
   }
 
   if (m_combo.GetCount() == 0) {
-    std::vector<CString>::const_iterator vcs_iter;
+    ComboAdder ca(m_combo);
     if (m_selectedstore == 0) {
-      for (vcs_iter = m_vcs_db.begin(); vcs_iter != m_vcs_db.end(); vcs_iter++) {
-        m_combo.AddString(*vcs_iter);
-      }
+      ca.doit(m_vcs_db);
     } else {
-      for (vcs_iter = m_vcs_gbl.begin(); vcs_iter != m_vcs_gbl.end(); vcs_iter++) {
-        m_combo.AddString(*vcs_iter);
-      }
+      ca.doit(m_vcs_gbl);
     }
   }
 
   m_combo.SetCurSel(0);
-
   UpdateData(FALSE);
-
   return TRUE;
 }
 
@@ -111,10 +106,8 @@ void CFilterActionsDlg::OnBnClickedDBStore()
   UpdateData(TRUE);
   m_combo.ResetContent();
 
-  std::vector<CString>::const_iterator vcs_iter;
-  for (vcs_iter = m_vcs_db.begin(); vcs_iter != m_vcs_db.end(); vcs_iter++) {
-    m_combo.AddString(*vcs_iter);
-  }
+  ComboAdder ca(m_combo);
+  ca.doit(m_vcs_db);
   m_combo.SetCurSel(0);
 }
 
@@ -123,9 +116,7 @@ void CFilterActionsDlg::OnBnClickedGlobalStore()
   UpdateData(TRUE);
   m_combo.ResetContent();
 
-  std::vector<CString>::const_iterator vcs_iter;
-  for (vcs_iter = m_vcs_gbl.begin(); vcs_iter != m_vcs_gbl.end(); vcs_iter++) {
-    m_combo.AddString(*vcs_iter);
-  }
+  ComboAdder ca(m_combo);
+  ca.doit(m_vcs_gbl);
   m_combo.SetCurSel(0);
 }
