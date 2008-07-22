@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../PWDialog.h"
-#include "../corelib/ItemData.h"
+#include "../corelib/Match.h"
 #include "../resource.h"
 #include "afxdtctl.h" // only needed for date/time controls
 

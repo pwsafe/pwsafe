@@ -16,11 +16,11 @@
 
 // CFilterBoolDlg dialog
 
-IMPLEMENT_DYNAMIC(CFilterBoolDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CFilterBoolDlg, CFilterBaseDlg)
 
 CFilterBoolDlg::CFilterBoolDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CFilterBoolDlg::IDD, pParent),
-  m_bFirst(true), m_rule(PWSMatch::MR_INVALID), m_bt(CFilterBoolDlg::BT_PRESENT)
+  : CFilterBaseDlg(CFilterBoolDlg::IDD, pParent),
+  m_bt(CFilterBoolDlg::BT_PRESENT)
 {
   for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
     m_rule2selection[i] = -1;
@@ -33,14 +33,14 @@ CFilterBoolDlg::~CFilterBoolDlg()
 
 void CFilterBoolDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CFilterBaseDlg::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CFilterBoolDlg)
   DDX_Control(pDX, IDC_BOOLRULE, m_cbxRule);
   //{{AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CFilterBoolDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CFilterBoolDlg, CFilterBaseDlg)
   ON_CBN_SELCHANGE(IDC_BOOLRULE, OnCbnSelchangeBoolRule)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
@@ -49,7 +49,7 @@ END_MESSAGE_MAP()
 
 BOOL CFilterBoolDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
+  CFilterBaseDlg::OnInitDialog();
 
   CString cs_text;
   int iItem(-1);
@@ -95,13 +95,6 @@ BOOL CFilterBoolDlg::OnInitDialog()
     }
   }
 
-  if (m_bFirst) {
-    GetWindowText(m_oldtitle);
-    m_bFirst = false;
-  }
-
-  SetWindowText(m_oldtitle + m_title);
-
   int isel = m_rule2selection[(int)m_rule];
   if (isel == -1)
     m_rule = PWSMatch::MR_INVALID;
@@ -132,5 +125,5 @@ void CFilterBoolDlg::OnBnClickedOk()
     return;
   }
 
-  CPWDialog::OnOK();
+  CFilterBaseDlg::OnOK();
 }

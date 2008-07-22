@@ -644,6 +644,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\filter\FilterBaseDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\filter\FilterBoolDlg.cpp"
 				>
 			</File>

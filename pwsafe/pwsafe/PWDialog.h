@@ -10,7 +10,7 @@
 * PasswordSafe-specific base class for child dialog boxes
 *
 * All dialog box classes whose instances are children of the
-* main dialog box (DboxMain) should be derived from ths class
+* main dialog box (DboxMain) should be derived from this class
 * instead of directly from CDialog
 */
 
