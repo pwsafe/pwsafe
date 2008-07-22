@@ -23,18 +23,9 @@
 
 #include "../resource.h"
 
-class CSetFiltersDlg;
-class CSetHistoryFiltersDlg;
-class CSetPolicyFiltersDlg;
-
 class CPWFiltersDlg : public CPWDialog
 {
   DECLARE_DYNAMIC(CPWFiltersDlg)
-
-friend CSetFiltersDlg;
-friend CSetHistoryFiltersDlg;
-friend CSetPolicyFiltersDlg;
-
 public:
   CPWFiltersDlg(CWnd* pParent = NULL, const FilterType &ftype = DFTYPE_MAIN,
                 const CString &filtername = _T(""));
@@ -52,6 +43,10 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
   CString m_cstitle;
+  CWnd *m_pParent;
+  st_filters *m_pfilters;
+  CString m_filtername;
+  bool VerifyFilters();
 
   //{{AFX_MSG(CPWFiltersDlg)
   afx_msg void OnFNameKillFocus();
@@ -65,18 +60,14 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   BOOL PreTranslateMessage(MSG* pMsg);
-
-public:
+  
+ public:
   afx_msg void OnOk();
   afx_msg void OnHelp();
 
 private:
-  CWnd *m_pParent;
-  st_filters *m_pfilters;
-  bool VerifyFilters();
   void SetControls(int cx, int cy);
 
-  CString m_filtername;
   CPWFilterLC m_FilterLC;
   CEdit m_FNameEdit;
   CStatusBar m_statusBar;
