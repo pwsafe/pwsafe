@@ -13,12 +13,6 @@
 #include "../PWDialog.h"
 #include "../corelib/Itemdata.h"
 #include "../corelib/filters.h"
-#include "FilterStringDlg.h"
-#include "FilterPasswordDlg.h"
-#include "FilterIntegerDlg.h"
-#include "FilterDateDlg.h"
-#include "FilterBoolDlg.h"
-#include "FilterEntryTypeDlg.h"
 #include "PWFilterLC.h"
 
 #include "../resource.h"
