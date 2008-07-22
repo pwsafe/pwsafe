@@ -204,7 +204,10 @@ CPasskeyEntry::OnInitDialog(void)
 
     const int N = mru->GetSize();
 
+    std::vector<CMyString> cs_tooltips;
+
     if (!m_filespec.IsEmpty()) {
+      cs_tooltips.push_back(m_filespec);
       m_MRU_combo.AddString(NarrowPathText(m_filespec));
       m_MRU_combo.SelectString(-1, NarrowPathText(m_filespec));
       m_MRU_combo.SetItemData(0, DWORD_PTR(-1));
@@ -213,6 +216,7 @@ CPasskeyEntry::OnInitDialog(void)
     for (int i = 0; i < N; i++) {
       const CString &str = (*mru)[i];
       if (str != m_filespec && !str.IsEmpty()) {
+        cs_tooltips.push_back(str);
         int li = m_MRU_combo.AddString(NarrowPathText(str));
         if (li != CB_ERR && li != CB_ERRSPACE)
           m_MRU_combo.SetItemData(li, i);
@@ -221,6 +225,7 @@ CPasskeyEntry::OnInitDialog(void)
     if (N > 0) {
       SetHeight(N);
     }
+    m_MRU_combo.SetToolTipStrings(cs_tooltips);
   }
 
   // Change Exit button to say "Advanced" if necessary!

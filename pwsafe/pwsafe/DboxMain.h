@@ -83,6 +83,9 @@ DECLARE_HANDLE(HDROP);
 #define TIMER_ND_SHOWING 0x08
 // timer event number used to support DragBar
 #define TIMER_DRAGBAR    0x09
+/* timer event numbers used to by ControlExtns for ListBox tooltips.  Here for doc. only
+#define TIMER_LB_HOVER   0x0A
+#define TIMER_LB_SHOWING 0x0B */
 
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary
