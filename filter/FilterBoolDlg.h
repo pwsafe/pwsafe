@@ -1,4 +1,4 @@
-      /*
+/*
 * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -8,13 +8,11 @@
 
 #pragma once
 
-#include "../PWDialog.h"
-#include "../corelib/ItemData.h"
-#include "../resource.h"
+#include "FilterBaseDlg.h"
 
 // CFilterBoolDlg dialog
 
-class CFilterBoolDlg : public CPWDialog
+class CFilterBoolDlg : public CFilterBaseDlg
 {
   DECLARE_DYNAMIC(CFilterBoolDlg)
 
@@ -26,10 +24,6 @@ public:
 
 // Dialog Data
   enum { IDD = IDD_FILTER_BOOL };
-  PWSMatch::MatchRule m_rule;
-  CString m_title;
-  CString m_oldtitle;
-  bool m_bFirst;
   BoolType m_bt;
 
 protected:
