@@ -8,9 +8,28 @@
 
 #pragma once
 #include "corelib/MyString.h" // for CSecEditExtn
+#include "InfoDisplay.h"      // for Listbox Tooltips
+#include <vector>             // for Listbox Tooltips
 
 // ControlExtns.h : header file
 // Extensions to standard Static, Edit, ListBox and Combobox Controls
+
+
+// timer event numbers used to by ControlExtns for ListBox tooltips.
+#define TIMER_LB_HOVER     0x0A
+#define TIMER_LB_SHOWING   0x0B 
+
+/*
+HOVER_TIME_LB       The length of time the pointer must remain stationary
+                    within a tool's bounding rectangle before the tool tip
+                    window appears.
+
+TIMEINT_LB_SHOWING The length of time the tool tip window remains visible
+                   if the pointer is stationary within a tool's bounding
+                   rectangle.
+*/
+#define HOVER_TIME_LB      1000
+#define TIMEINT_LB_SHOWING 5000
 
 class CStaticExtn : public CStatic
 {
@@ -124,12 +143,16 @@ class CSecEditExtn : public CEditExtn
   bool m_in_recursion;
 };
 
+class CComboBoxExtn;
+
 class CListBoxExtn : public CListBox
 {
   // Construction
 public:
   CListBoxExtn();
   void ChangeColour() {m_bIsFocused = TRUE;}
+  void ActivateToolTips();
+  void SetCombo(CComboBoxExtn *pCombo) {m_pCombo = pCombo;}
 
   // Attributes
 private:
@@ -138,12 +161,21 @@ private:
   CBrush m_brInFocus;
   CBrush m_brNoFocus;
 
+  bool ShowToolTip(int nItem, const bool bVisible);
+
+  CComboBoxExtn *m_pCombo;
+  CInfoDisplay *m_pLBToolTips;
+  UINT m_nHoverLBTimerID, m_nShowLBTimerID;
+  CPoint m_HoverLBPoint;
+  int m_HoverLBnItem;
+  bool m_bUseToolTips, m_bMouseInWindow;
+
   // Operations
 public:
 
   // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CEditEx)
+  //{{AFX_VIRTUAL(CListBoxExtn)
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -156,12 +188,26 @@ protected:
   afx_msg void OnSetFocus(CWnd* pOldWnd);
   afx_msg void OnKillFocus(CWnd* pNewWnd);
   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+  afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 };
 
 class CComboBoxExtn : public CComboBox
 {
+  // Construction
+public:
+  CComboBoxExtn();
+  void SetToolTipStrings(std::vector<CMyString> vtooltips);
+  CMyString GetToolTip(int nItem)
+  {return m_vtooltips[nItem];}
+
+private:
+  bool m_bUseToolTips;
+  std::vector<CMyString> m_vtooltips;
+
 public:
   CEditExtn m_edit;
   CListBoxExtn m_listbox;
@@ -176,6 +222,9 @@ public:
   //}}AFX_VIRTUAL
 
   // Implementation
+public:
+  virtual ~CComboBoxExtn();
+
 protected:
   //{{AFX_MSG(CComboBoxExtn)
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);

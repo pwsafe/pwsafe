@@ -37,5 +37,5 @@ protected:
   afx_msg LRESULT OnGetFont(WPARAM, LPARAM);
 
 protected:
-    virtual void PostNcDestroy();
+  virtual void PostNcDestroy();
 };

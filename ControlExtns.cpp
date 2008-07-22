@@ -13,6 +13,7 @@
 #include "corelib/ItemField.h" // for CSecEditExtn
 #include "corelib/BlowFish.h"  // ditto
 #include "corelib/PWSrand.h"   // ditto
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -231,7 +232,10 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 // CListBoxExtn
 
-CListBoxExtn::CListBoxExtn() : m_bIsFocused(FALSE)
+CListBoxExtn::CListBoxExtn()
+  : m_bIsFocused(FALSE), m_pLBToolTips(NULL), m_bUseToolTips(false),
+  m_bMouseInWindow(false), m_nHoverLBTimerID(0), m_nShowLBTimerID(0),
+  m_HoverLBnItem(-1), m_pCombo(NULL)
 {
   m_brInFocus.CreateSolidBrush(crefInFocus);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
@@ -239,6 +243,7 @@ CListBoxExtn::CListBoxExtn() : m_bIsFocused(FALSE)
 
 CListBoxExtn::~CListBoxExtn()
 {
+  delete m_pLBToolTips;
 }
 
 BEGIN_MESSAGE_MAP(CListBoxExtn, CListBox)
@@ -246,6 +251,9 @@ BEGIN_MESSAGE_MAP(CListBoxExtn, CListBox)
   ON_WM_SETFOCUS()
   ON_WM_KILLFOCUS()
   ON_WM_CTLCOLOR_REFLECT()
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+  ON_WM_MOUSEMOVE()
+  ON_WM_TIMER()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -280,8 +288,144 @@ HBRUSH CListBoxExtn::CtlColor(CDC* pDC, UINT /* nCtlColor */)
   }
 }
 
+void CListBoxExtn::ActivateToolTips()
+{
+  m_bUseToolTips = true;
+  m_pLBToolTips = new CInfoDisplay;
+
+  if (!m_pLBToolTips->Create(0, 0, _T(""), this)) {
+    // failed
+    delete m_pLBToolTips;
+    m_pLBToolTips = NULL;
+  } else
+    m_pLBToolTips->ShowWindow(SW_HIDE);
+}
+
+bool CListBoxExtn::ShowToolTip(int nItem, const bool bVisible)
+{
+  if (!m_bUseToolTips)
+    return false;
+
+  if (nItem < 0) {
+    m_pLBToolTips->ShowWindow(SW_HIDE);
+    return false;
+  }
+
+  m_pLBToolTips->SetWindowText(m_pCombo->GetToolTip(nItem));
+  if (!bVisible) {
+    m_pLBToolTips->ShowWindow(SW_HIDE);
+    return false;
+  }
+
+  CPoint pt;
+  ::GetCursorPos(&pt);
+
+  pt.y += ::GetSystemMetrics(SM_CYCURSOR); // height of cursor
+
+  m_pLBToolTips->SetWindowPos(&wndTopMost, pt.x, pt.y, 0, 0,
+                              SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW );
+
+  return true;
+}
+
+void CListBoxExtn::OnTimer(UINT_PTR nIDEvent)
+{
+  switch (nIDEvent) {
+    case TIMER_LB_HOVER:
+      KillTimer(m_nHoverLBTimerID);
+      m_nHoverLBTimerID = 0;
+      if (ShowToolTip(m_HoverLBnItem, true)) {
+        if (m_nShowLBTimerID) {
+          KillTimer(m_nShowLBTimerID);
+          m_nShowLBTimerID = 0;
+        }
+        m_nShowLBTimerID = SetTimer(TIMER_LB_SHOWING, TIMEINT_LB_SHOWING, NULL);
+      }
+      break;
+    case TIMER_LB_SHOWING:
+      KillTimer(m_nShowLBTimerID);
+      m_nShowLBTimerID = 0;
+      m_HoverLBPoint = CPoint(0, 0);
+      m_HoverLBnItem = -1;
+      ShowToolTip(m_HoverLBnItem, false);
+      break;
+    default:
+      CListBox::OnTimer(nIDEvent);
+      break;
+  }
+}
+
+void CListBoxExtn::OnMouseMove(UINT nFlags, CPoint point)
+{
+  if (!m_bUseToolTips) {
+    goto exit;
+  } else {
+    CRect rectClient;
+    GetClientRect(&rectClient);
+    BOOL bOutside(FALSE);
+    int nItem = -2;
+
+    if (rectClient.PtInRect(point)) {
+      CPoint pointScreen;
+      ::GetCursorPos(&pointScreen);
+      nItem = ItemFromPoint(point, bOutside);  // calculate listbox item number (if any)
+    }
+
+    if (m_nHoverLBTimerID) {
+      if (!bOutside && m_HoverLBnItem == nItem)
+        return;
+      KillTimer(m_nHoverLBTimerID);
+      m_nHoverLBTimerID = 0;
+    }
+
+    if (m_nShowLBTimerID) {
+      if (!bOutside && m_HoverLBnItem == nItem)
+        return;
+      KillTimer(m_nShowLBTimerID);
+      m_nShowLBTimerID = 0;
+      ShowToolTip(m_HoverLBnItem, false);
+    }
+
+    if (!m_bMouseInWindow) {
+      m_bMouseInWindow = true;
+      TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT), TME_LEAVE, m_hWnd, 0};
+      VERIFY(TrackMouseEvent(&tme));
+    }
+
+    m_nHoverLBTimerID = SetTimer(TIMER_LB_HOVER, HOVER_TIME_LB, NULL);
+    m_HoverLBPoint = point;
+    m_HoverLBnItem = nItem;
+  }
+
+exit:
+  CListBox::OnMouseMove(nFlags, point);
+}
+
+LRESULT CListBoxExtn::OnMouseLeave(WPARAM, LPARAM)
+{
+  if (m_bUseToolTips) {
+    KillTimer(m_nHoverLBTimerID);
+    KillTimer(m_nShowLBTimerID);
+    m_nHoverLBTimerID = m_nShowLBTimerID = 0;
+    m_HoverLBPoint = CPoint(0, 0);
+    m_HoverLBnItem = -1;
+    ShowToolTip(m_HoverLBnItem, false);
+    m_bMouseInWindow = false;
+  }
+  return 0L;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CComboBoxExtn
+
+CComboBoxExtn::CComboBoxExtn()
+ : m_bUseToolTips(false)
+{
+}
+
+CComboBoxExtn::~CComboBoxExtn()
+{
+}
 
 BEGIN_MESSAGE_MAP(CComboBoxExtn, CComboBox)
   //{{AFX_MSG_MAP(CComboBoxExtn)
@@ -302,8 +446,13 @@ HBRUSH CComboBoxExtn::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
   }
   else if (nCtlColor == CTLCOLOR_LISTBOX) {
     // Extended ListBox control
-    if (m_listbox.GetSafeHwnd() == NULL)
+    if (m_listbox.GetSafeHwnd() == NULL) {
       m_listbox.SubclassWindow(pWnd->GetSafeHwnd());
+      m_listbox.SetCombo(this);
+      if (m_bUseToolTips) {
+        m_listbox.ActivateToolTips();
+      }
+    }
   }
 
   return CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
@@ -324,6 +473,12 @@ void CComboBoxExtn::ChangeColour()
 {
   m_edit.ChangeColour();
   m_listbox.ChangeColour();
+}
+
+void CComboBoxExtn::SetToolTipStrings(std::vector<CMyString> vtooltips)
+{
+  m_bUseToolTips = true;
+  m_vtooltips = vtooltips;
 }
 
 //-----------------------------------------------------------------

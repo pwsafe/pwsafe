@@ -41,6 +41,8 @@ existing instance.
 field in the database.
 [] Add Dragbar and also allow D&D from Tree onto a text field to drop the
 entry's password value.
+[] During initial open, tooltips in the drop down list box will display 
+the full database names and paths.
 
 Bugs fixed in 3.13
 ==================
