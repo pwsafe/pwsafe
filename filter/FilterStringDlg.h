@@ -8,13 +8,11 @@
 
 #pragma once
 
-#include "../PWDialog.h"
-#include "../corelib/ItemData.h"
-#include "../resource.h"
+#include "FilterBaseDlg.h"
 
 // CFilterStringDlg dialog
 
-class CFilterStringDlg : public CPWDialog
+class CFilterStringDlg : public CFilterBaseDlg
 {
   DECLARE_DYNAMIC(CFilterStringDlg)
 
@@ -24,12 +22,8 @@ public:
 
 // Dialog Data
   enum { IDD = IDD_FILTER_STRING };
-  PWSMatch::MatchRule m_rule;
   int m_case;
   CMyString m_string;
-  CString m_title;
-  CString m_oldtitle;
-  bool m_bFirst;
   bool m_add_present;
 
 protected:
@@ -48,5 +42,4 @@ public:
 
 private:
   void EnableDialogItems();
-  int m_rule2selection[PWSMatch::MR_LAST];
 };

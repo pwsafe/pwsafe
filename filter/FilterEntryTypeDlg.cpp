@@ -16,15 +16,12 @@
 
 // CFilterEntryTypeDlg dialog
 
-IMPLEMENT_DYNAMIC(CFilterEntryTypeDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CFilterEntryTypeDlg, CFilterBaseDlg)
 
 CFilterEntryTypeDlg::CFilterEntryTypeDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CFilterEntryTypeDlg::IDD, pParent),
-  m_bFirst(true), m_rule(PWSMatch::MR_INVALID), m_etype(CItemData::ET_INVALID)
+  : CFilterBaseDlg(CFilterEntryTypeDlg::IDD, pParent),
+  m_etype(CItemData::ET_INVALID)
 {
-  for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
-    m_rule2selection[i] = -1;
-  }
   for (int i = (int)CItemData::ET_NORMAL; i < (int)CItemData::ET_LAST; i++) {
     m_etype2selection[i] = -1;
   }
@@ -36,7 +33,7 @@ CFilterEntryTypeDlg::~CFilterEntryTypeDlg()
 
 void CFilterEntryTypeDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CFilterBaseDlg::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CFilterEntryTypeDlg)
   DDX_Control(pDX, IDC_ENTRYTYPERULE, m_cbxRule);
@@ -44,7 +41,7 @@ void CFilterEntryTypeDlg::DoDataExchange(CDataExchange* pDX)
   //{{AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CFilterEntryTypeDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CFilterEntryTypeDlg, CFilterBaseDlg)
   ON_CBN_SELCHANGE(IDC_ENTRYTYPERULE, OnCbnSelchangeEntryTypeRule)
   ON_CBN_SELCHANGE(IDC_ENTRYTYPE1, OnCbnSelchangeEntryType1)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
@@ -54,7 +51,7 @@ END_MESSAGE_MAP()
 
 BOOL CFilterEntryTypeDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
+  CFilterBaseDlg::OnInitDialog();
 
   CString cs_text;
   int iItem;
@@ -101,13 +98,6 @@ BOOL CFilterEntryTypeDlg::OnInitDialog()
     m_etype2selection[CItemData::ET_SHORTCUTBASE] = iItem;
   }
 
-  if (m_bFirst) {
-    GetWindowText(m_oldtitle);
-    m_bFirst = false;
-  }
-
-  SetWindowText(m_oldtitle + m_title);
-
   int irsel = m_rule2selection[(int)m_rule];
   if (irsel == -1)
     m_rule = PWSMatch::MR_INVALID;
@@ -150,5 +140,5 @@ void CFilterEntryTypeDlg::OnBnClickedOk()
     return;
   }
 
-  CPWDialog::OnOK();
+  CFilterBaseDlg::OnOK();
 }

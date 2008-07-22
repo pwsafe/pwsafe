@@ -12,15 +12,27 @@
 #error "TBD - define proper Filter Dialog base class for PPC"
 #endif
 
-IMPLEMENT_DYNAMIC(CFilterBaseDlg, CDialog)
+IMPLEMENT_DYNAMIC(CFilterBaseDlg, CPWDialog)
+
+CFilterBaseDlg::CFilterBaseDlg(UINT nIDTemplate, CWnd* pParentWnd)
+: CPWDialog(nIDTemplate, pParentWnd),
+  m_bFirst(true), m_rule(PWSMatch::MR_INVALID)
+{
+  for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
+    m_rule2selection[i] = -1;
+  }
+}
+
 
 BOOL CFilterBaseDlg::OnInitDialog()
 {
-  if (m_bFirst) {
-    GetWindowText(m_oldtitle);
-    m_bFirst = false;
+  BOOL retval = CPWDialog::OnInitDialog();
+  if (retval == TRUE) {
+    if (m_bFirst) {
+      GetWindowText(m_oldtitle);
+      m_bFirst = false;
+    }
+    SetWindowText(m_oldtitle + m_title);
   }
-
-  SetWindowText(m_oldtitle + m_title);
-  return TRUE;
+  return retval;
 }

@@ -11,21 +11,16 @@
 
 #include "../stdafx.h"
 #include "FilterIntegerDlg.h"
-#include "../corelib/itemdata.h"
 #include "../corelib/corelib.h"
 
 // CFilterIntegerDlg dialog
 
-IMPLEMENT_DYNAMIC(CFilterIntegerDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CFilterIntegerDlg, CFilterBaseDlg)
 
 CFilterIntegerDlg::CFilterIntegerDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CFilterIntegerDlg::IDD, pParent),
-  m_rule(PWSMatch::MR_INVALID), m_bFirst(true),
+  : CFilterBaseDlg(CFilterIntegerDlg::IDD, pParent),
   m_num1(0), m_num2(0), m_min(-1), m_max(-1)
 {
-  for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
-    m_rule2selection[i] = -1;
-  }
 }
 
 CFilterIntegerDlg::~CFilterIntegerDlg()
@@ -34,7 +29,7 @@ CFilterIntegerDlg::~CFilterIntegerDlg()
 
 void CFilterIntegerDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CFilterBaseDlg::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CFilterIntegerDlg)
   DDX_Text(pDX, IDC_INTEGER1, m_num1);
@@ -53,7 +48,7 @@ void CFilterIntegerDlg::DoDataExchange(CDataExchange* pDX)
   DDV_CheckNumbers(pDX, m_num1, m_num2);
 }
 
-BEGIN_MESSAGE_MAP(CFilterIntegerDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CFilterIntegerDlg, CFilterBaseDlg)
   ON_CBN_SELCHANGE(IDC_INTEGERRULE, OnCbnSelchangeIntegerRule)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
@@ -121,7 +116,7 @@ void AFXAPI CFilterIntegerDlg::DDV_CheckNumbers(CDataExchange* pDX,
 
 BOOL CFilterIntegerDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
+  CFilterBaseDlg::OnInitDialog();
 
   CString cs_text;
   int iItem(-1);
@@ -174,13 +169,6 @@ BOOL CFilterIntegerDlg::OnInitDialog()
     m_cbxRule.SetItemData(iItem, PWSMatch::MR_GE);
     m_rule2selection[PWSMatch::MR_GE] = iItem;
   }
-
-  if (m_bFirst) {
-    GetWindowText(m_oldtitle);
-    m_bFirst = false;
-  }
-
-  SetWindowText(m_oldtitle + m_title);
 
   int isel = m_rule2selection[(int)m_rule];
   if (isel == -1)
@@ -256,5 +244,5 @@ void CFilterIntegerDlg::OnBnClickedOk()
     return;
   }
 
-  CPWDialog::OnOK();
+  CFilterBaseDlg::OnOK();
 }

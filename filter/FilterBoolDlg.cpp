@@ -22,9 +22,6 @@ CFilterBoolDlg::CFilterBoolDlg(CWnd* pParent /*=NULL*/)
   : CFilterBaseDlg(CFilterBoolDlg::IDD, pParent),
   m_bt(CFilterBoolDlg::BT_PRESENT)
 {
-  for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
-    m_rule2selection[i] = -1;
-  }
 }
 
 CFilterBoolDlg::~CFilterBoolDlg()

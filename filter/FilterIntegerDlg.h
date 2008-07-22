@@ -8,13 +8,11 @@
 
 #pragma once
 
-#include "../PWDialog.h"
-#include "../corelib/ItemData.h"
-#include "../resource.h"
+#include "FilterBaseDlg.h"
 
 // CFilterIntegerDlg dialog
 
-class CFilterIntegerDlg : public CPWDialog
+class CFilterIntegerDlg : public CFilterBaseDlg
 {
   DECLARE_DYNAMIC(CFilterIntegerDlg)
 
@@ -24,13 +22,9 @@ public:
 
 // Dialog Data
   enum { IDD = IDD_FILTER_INTEGER };
-  PWSMatch::MatchRule m_rule;
   int m_num1;
   int m_num2;
   int m_min, m_max;
-  CString m_title;
-  CString m_oldtitle;
-  bool m_bFirst;
   bool m_add_present;
 
 protected:
@@ -51,5 +45,4 @@ private:
                                const int num1, const int num2);
   void AFXAPI DDV_CheckMinMax(CDataExchange* pDX,
                               const int num, const int min, const int max);
-  int m_rule2selection[PWSMatch::MR_LAST];
 };

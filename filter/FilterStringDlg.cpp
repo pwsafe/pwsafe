@@ -20,17 +20,13 @@
 // with the special case for Passwords - they have expired or they wil
 // expired in 'n' days.
 
-IMPLEMENT_DYNAMIC(CFilterStringDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CFilterStringDlg, CFilterBaseDlg)
 
 CFilterStringDlg::CFilterStringDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CFilterStringDlg::IDD, pParent),
-  m_rule(PWSMatch::MR_INVALID), m_bFirst(true),
+  : CFilterBaseDlg(CFilterStringDlg::IDD, pParent),
   m_case(BST_UNCHECKED), m_string(_T("")),
   m_add_present(false)
 {
-  for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
-    m_rule2selection[i] = -1;
-  }
 }
 
 CFilterStringDlg::~CFilterStringDlg()
@@ -39,7 +35,7 @@ CFilterStringDlg::~CFilterStringDlg()
 
 void CFilterStringDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CFilterBaseDlg::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CFilterStringDlg)
   DDX_Check(pDX, IDC_STRINGCASE, m_case);
@@ -51,7 +47,7 @@ void CFilterStringDlg::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CFilterStringDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CFilterStringDlg, CFilterBaseDlg)
   ON_CBN_SELCHANGE(IDC_STRINGRULE, OnCbnSelchangeStringRule)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
@@ -60,7 +56,7 @@ END_MESSAGE_MAP()
 
 BOOL CFilterStringDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
+  CFilterBaseDlg::OnInitDialog();
 
   CString cs_text;
   int iItem(-1);
@@ -118,13 +114,6 @@ BOOL CFilterStringDlg::OnInitDialog()
     m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTCONTAIN);
     m_rule2selection[PWSMatch::MR_NOTCONTAIN] = iItem;
   }
-
-  if (m_bFirst) {
-    GetWindowText(m_oldtitle);
-    m_bFirst = false;
-  }
-
-  SetWindowText(m_oldtitle + m_title);
 
   int isel = m_rule2selection[(int)m_rule];
   if (isel == -1)
@@ -188,5 +177,5 @@ void CFilterStringDlg::OnBnClickedOk()
     return;
   }
 
-  CPWDialog::OnOK();
+  CFilterBaseDlg::OnOK();
 }

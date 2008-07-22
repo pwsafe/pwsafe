@@ -20,17 +20,13 @@
 // with the special case for Passwords - they have expired or they wil
 // expired in 'n' days.
 
-IMPLEMENT_DYNAMIC(CFilterPasswordDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CFilterPasswordDlg, CFilterBaseDlg)
 
 CFilterPasswordDlg::CFilterPasswordDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CFilterPasswordDlg::IDD, pParent),
-  m_rule(PWSMatch::MR_INVALID), m_bFirst(true),
+  : CFilterBaseDlg(CFilterPasswordDlg::IDD, pParent),
   m_case(BST_UNCHECKED), m_string(_T("")), m_num1(0),
   m_maxDays(2)
 {
-  for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
-    m_rule2selection[i] = -1;
-  }
 }
 
 CFilterPasswordDlg::~CFilterPasswordDlg()
@@ -39,7 +35,7 @@ CFilterPasswordDlg::~CFilterPasswordDlg()
 
 void CFilterPasswordDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CFilterBaseDlg::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CFilterPasswordDlg)
   DDX_Check(pDX, IDC_STRINGCASE, m_case);
@@ -57,7 +53,7 @@ void CFilterPasswordDlg::DoDataExchange(CDataExchange* pDX)
   DDV_CheckMinMax(pDX, m_num1, 1, m_maxDays);
 }
 
-BEGIN_MESSAGE_MAP(CFilterPasswordDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CFilterPasswordDlg, CFilterBaseDlg)
   ON_CBN_SELCHANGE(IDC_STRINGRULE, OnCbnSelchangePasswordRule)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
@@ -92,7 +88,7 @@ void AFXAPI CFilterPasswordDlg::DDV_CheckMinMax(CDataExchange* pDX,
 
 BOOL CFilterPasswordDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
+  CFilterBaseDlg::OnInitDialog();
 
   CString cs_text;
   int iItem(-1);
@@ -149,13 +145,6 @@ BOOL CFilterPasswordDlg::OnInitDialog()
     m_cbxRule.SetItemData(iItem, PWSMatch::MR_WILLEXPIRE);
     m_rule2selection[PWSMatch::MR_WILLEXPIRE] = iItem;
   }
-
-  if (m_bFirst) {
-    GetWindowText(m_oldtitle);
-    m_bFirst = false;
-  }
-
-  SetWindowText(m_oldtitle + m_title);
 
   int isel = m_rule2selection[(int)m_rule];
   if (isel == -1)
@@ -259,5 +248,5 @@ void CFilterPasswordDlg::OnBnClickedOk()
     return;
   }
 
-  CPWDialog::OnOK();
+  CFilterBaseDlg::OnOK();
 }
