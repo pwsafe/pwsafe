@@ -18,6 +18,7 @@
 
 #include "../resource3.h"
 #include "../corelib/corelib.h"
+#include "ComboAdder.h"
 
 #include <vector>
 #include <map>
@@ -27,10 +28,10 @@
 
 IMPLEMENT_DYNAMIC(CViewFilterDlg, CPWDialog)
 
-CViewFilterDlg::CViewFilterDlg(CWnd* pParent /*=NULL*/,
-                               st_filters *pfilters /*=NULL*/,
-                               MapFilters *pmapdbfilters /*= NULL*/,
-                               MapFilters *pmapglobalfilters /*= NULL*/)
+CViewFilterDlg::CViewFilterDlg(CWnd* pParent,
+                               st_filters *pfilters,
+                               MapFilters &pmapdbfilters,
+                               MapFilters &pmapglobalfilters)
   : CPWDialog(CViewFilterDlg::IDD, pParent),
   m_pfilters(pfilters),
   m_pMapDBFilters(pmapdbfilters), m_pMapGlobalFilters(pmapglobalfilters),
@@ -39,17 +40,15 @@ CViewFilterDlg::CViewFilterDlg(CWnd* pParent /*=NULL*/,
   // Get DB filter via name and replace m_filters
   MapFilters_Iter mf_iter;
 
-  std::vector<CString> vcs_db;
-  for (mf_iter = m_pMapDBFilters->begin();
-       mf_iter != m_pMapDBFilters->end();
+  for (mf_iter = m_pMapDBFilters.begin();
+       mf_iter != m_pMapDBFilters.end();
        mf_iter++) {
     m_vcs_db.push_back(mf_iter->first);
   }
 
   // Get Global filter via name and replace m_filters
-  std::vector<CString> vcs_gbl;
-  for (mf_iter = m_pMapGlobalFilters->begin();
-       mf_iter != m_pMapGlobalFilters->end();
+  for (mf_iter = m_pMapGlobalFilters.begin();
+       mf_iter != m_pMapGlobalFilters.end();
        mf_iter++) {
     m_vcs_gbl.push_back(mf_iter->first);
   }
@@ -88,7 +87,7 @@ BOOL CViewFilterDlg::OnInitDialog()
 
   // Add the status bar
   if (m_statusBar.CreateEx(this, SBARS_SIZEGRIP)) {
-    statustext[0] = IDS_BLANK;
+    UINT statustext[1] = {IDS_BLANK};
     m_statusBar.SetIndicators(statustext, 1);
     m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
     m_statusBar.UpdateWindow();
@@ -146,15 +145,11 @@ BOOL CViewFilterDlg::OnInitDialog()
   }
 
   if (m_selectedstore != VF_CURRENT && m_combo.GetCount() == 0) {
-    std::vector<CString>::iterator vcs_iter;
+    ComboAdder ca(m_combo);
     if (m_selectedstore == VF_DATABASE) {
-      for (vcs_iter = m_vcs_db.begin(); vcs_iter != m_vcs_db.end(); vcs_iter++) {
-        m_combo.AddString(*vcs_iter);
-      }
+      ca.doit(m_vcs_db);
     } else {  // VF_GLOBAL
-      for (vcs_iter = m_vcs_gbl.begin(); vcs_iter != m_vcs_gbl.end(); vcs_iter++) {
-        m_combo.AddString(*vcs_iter);
-      }
+      ca.doit(m_vcs_gbl);
     }
   }
 
@@ -198,6 +193,7 @@ BOOL CViewFilterDlg::OnInitDialog()
 
 void CViewFilterDlg::OnBnClickedCurrent()
 {
+  ASSERT(m_pfilters != NULL);
   UpdateData(TRUE);
   m_combo.EnableWindow(FALSE);
   m_combo.ResetContent();
@@ -211,14 +207,11 @@ void CViewFilterDlg::OnBnClickedDBStore()
   m_combo.EnableWindow(TRUE);
   m_combo.ResetContent();
 
-  std::vector<CString>::iterator vcs_iter;
-  for (vcs_iter = m_vcs_db.begin(); vcs_iter != m_vcs_db.end(); vcs_iter++) {
-    m_combo.AddString(*vcs_iter);
-  }
+  ComboAdder ca(m_combo);
+  ca.doit(m_vcs_db);
+
   m_combo.SetCurSel(0);
-
   m_FilterLC.DeleteAllItems();
-
   OnFilterSelected();
 }
 
@@ -228,14 +221,11 @@ void CViewFilterDlg::OnBnClickedGlobalStore()
   m_combo.EnableWindow(TRUE);
   m_combo.ResetContent();
 
-  std::vector<CString>::iterator vcs_iter;
-  for (vcs_iter = m_vcs_gbl.begin(); vcs_iter != m_vcs_gbl.end(); vcs_iter++) {
-    m_combo.AddString(*vcs_iter);
-  }
+  ComboAdder ca(m_combo);
+  ca.doit(m_vcs_gbl);
+
   m_combo.SetCurSel(0);
-
   m_FilterLC.DeleteAllItems();
-
   OnFilterSelected();
 }
 
@@ -252,9 +242,9 @@ void CViewFilterDlg::OnFilterSelected()
 
   MapFilters_Iter mf_iter;
   if (m_selectedstore == VF_DATABASE) {
-    mf_iter = m_pMapDBFilters->find(cs_selected);
+    mf_iter = m_pMapDBFilters.find(cs_selected);
   } else {
-    mf_iter = m_pMapGlobalFilters->find(cs_selected);
+    mf_iter = m_pMapGlobalFilters.find(cs_selected);
   }
 
   st_filters *pfilters = &mf_iter->second;

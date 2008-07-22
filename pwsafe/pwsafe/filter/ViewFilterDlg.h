@@ -14,7 +14,6 @@
 #include "../corelib/filters.h"
 
 #include <vector>
-#include <algorithm>
 
 enum {VF_CURRENT = 0, VF_DATABASE, VF_GLOBAL};
 
@@ -23,10 +22,10 @@ class CViewFilterDlg : public CPWDialog
   DECLARE_DYNAMIC(CViewFilterDlg)
 
 public:
-  CViewFilterDlg(CWnd* pParent = NULL,
-                 st_filters *pfilters = NULL,
-                 MapFilters *pmapdbfilters = NULL,
-                 MapFilters *pmapglobalfilters = NULL);   // standard constructor
+  CViewFilterDlg(CWnd* pParent,
+                 st_filters *pfilters,
+                 MapFilters &pmapdbfilters,
+                 MapFilters &pmapglobalfilters);
   virtual ~CViewFilterDlg();
 
 // Dialog Data
@@ -54,8 +53,8 @@ private:
   void SetControls(int cx, int cy);
 
   st_filters *m_pfilters;
-  MapFilters *m_pMapDBFilters;
-  MapFilters *m_pMapGlobalFilters;
+  MapFilters &m_pMapDBFilters;
+  MapFilters &m_pMapGlobalFilters;
   std::vector<CString> m_vcs_db;
   std::vector<CString> m_vcs_gbl;
 
@@ -69,7 +68,6 @@ private:
   int m_selectedstore;
   int m_function;
 
-  UINT statustext[1];
   bool m_bInitDone, m_bStatusBarOK;
   int m_DialogMinWidth, m_DialogMinHeight, m_DialogMaxHeight;
   int m_cxBSpace, m_cyBSpace, m_cySBar;

@@ -921,6 +921,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\filter\ComboAdder.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CompareResultsDlg.h"
 				>
 			</File>
