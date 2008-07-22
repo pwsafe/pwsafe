@@ -8,13 +8,11 @@
 
 #pragma once
 
-#include "../PWDialog.h"
-#include "../corelib/ItemData.h"
-#include "../resource.h"
+#include "FilterBaseDlg.h"
 
 // CFilterPasswordDlg dialog
 
-class CFilterPasswordDlg : public CPWDialog
+class CFilterPasswordDlg : public CFilterBaseDlg
 {
   DECLARE_DYNAMIC(CFilterPasswordDlg)
 
@@ -24,14 +22,10 @@ public:
 
 // Dialog Data
   enum { IDD = IDD_FILTER_PASSWORD };
-  PWSMatch::MatchRule m_rule;
   int m_case;
   CMyString m_string;
-  CString m_title;
-  CString m_oldtitle;
   int m_num1;
   int m_maxDays;
-  bool m_bFirst;
 
 protected:
   virtual BOOL OnInitDialog();
@@ -51,5 +45,4 @@ private:
   void EnableDialogItems();
   void AFXAPI DDV_CheckMinMax(CDataExchange* pDX,
                               const int num, const int min, const int max);
-  int m_rule2selection[PWSMatch::MR_LAST];
 };

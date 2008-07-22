@@ -36,7 +36,4 @@ public:
   afx_msg void OnCbnSelchangeBoolRule();
   afx_msg void OnBnClickedOk();
   CComboBox m_cbxRule;
-
-private:
-  int m_rule2selection[PWSMatch::MR_LAST];
 };

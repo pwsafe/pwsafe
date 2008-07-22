@@ -17,16 +17,15 @@
 class CFilterBaseDlg : public CPWDialog
 {
 protected:
-  CFilterBaseDlg(UINT nIDTemplate, CWnd* pParentWnd = NULL)
-    : CPWDialog(nIDTemplate, pParentWnd),
-    m_bFirst(true), m_rule(PWSMatch::MR_INVALID) {}
-
+  CFilterBaseDlg(UINT nIDTemplate, CWnd* pParentWnd = NULL);
   virtual BOOL OnInitDialog();
 
- public:
+public:
   PWSMatch::MatchRule m_rule;
   CString m_title;
   CString m_oldtitle;
   bool m_bFirst;
   DECLARE_DYNAMIC(CFilterBaseDlg)
+protected:
+  int m_rule2selection[PWSMatch::MR_LAST];
 };

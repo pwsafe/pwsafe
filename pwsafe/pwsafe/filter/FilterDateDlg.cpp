@@ -16,11 +16,10 @@
 
 // CFilterDateDlg dialog
 
-IMPLEMENT_DYNAMIC(CFilterDateDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CFilterDateDlg, CFilterBaseDlg)
 
 CFilterDateDlg::CFilterDateDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CFilterDateDlg::IDD, pParent),
-  m_rule(PWSMatch::MR_INVALID), m_bFirst(true),
+  : CFilterBaseDlg(CFilterDateDlg::IDD, pParent),
   m_time_t1(0), m_time_t2(0),
   m_ctime1((time_t)0), m_ctime2((time_t)0),
   m_add_present(false)
@@ -28,10 +27,6 @@ CFilterDateDlg::CFilterDateDlg(CWnd* pParent /*=NULL*/)
   time_t now;
   time(&now);
   m_ctime1 = m_ctime2 = CTime(now);
-
-  for (int i = (int)PWSMatch::MR_INVALID; i < (int)PWSMatch::MR_LAST; i++) {
-    m_rule2selection[i] = -1;
-  }
 }
 
 CFilterDateDlg::~CFilterDateDlg()
@@ -40,7 +35,7 @@ CFilterDateDlg::~CFilterDateDlg()
 
 void CFilterDateDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CFilterBaseDlg::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CFilterDateDlg)
   DDX_DateTimeCtrl(pDX, IDC_DATETIMEPICKER1, m_ctime1);
@@ -53,7 +48,7 @@ void CFilterDateDlg::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CFilterDateDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CFilterDateDlg, CFilterBaseDlg)
   ON_CBN_SELCHANGE(IDC_DATERULE, OnCbnSelchangeDateRule)
   ON_BN_CLICKED(IDOK, &CFilterDateDlg::OnBnClickedOk)
   ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETIMEPICKER1, OnDtnDatetime1Change)
@@ -63,7 +58,7 @@ END_MESSAGE_MAP()
 
 BOOL CFilterDateDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();;
+  CFilterBaseDlg::OnInitDialog();
 
   CString cs_text;
   int iItem(-1);
@@ -117,13 +112,6 @@ BOOL CFilterDateDlg::OnInitDialog()
   const CTime dtMax(2038, 1, 1, 0, 0, 0, -1);  // time32_t limit
   m_dtp1.SetRange(&dtMin, &dtMax);
   m_dtp2.SetRange(&dtMin, &dtMax);
-
-  if (m_bFirst) {
-    GetWindowText(m_oldtitle);
-    m_bFirst = false;
-  }
-
-  SetWindowText(m_oldtitle + m_title);
 
   int isel = m_rule2selection[(int)m_rule];
   if (isel == -1)
@@ -220,7 +208,7 @@ void CFilterDateDlg::OnBnClickedOk()
     }
   }
 
-  CPWDialog::OnOK();
+  CFilterBaseDlg::OnOK();
 }
 
 void CFilterDateDlg::OnDtnDatetime1Change(NMHDR *pNMHDR, LRESULT *pResult)

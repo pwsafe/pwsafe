@@ -8,13 +8,12 @@
 
 #pragma once
 
-#include "../PWDialog.h"
-#include "../corelib/ItemData.h"
-#include "../resource.h"
+#include "FilterBaseDlg.h"
+#include "../corelib/Itemdata.h" // for CItemData::EntryType
 
 // CFilterEntryTypeDlg dialog
 
-class CFilterEntryTypeDlg : public CPWDialog
+class CFilterEntryTypeDlg : public CFilterBaseDlg
 {
   DECLARE_DYNAMIC(CFilterEntryTypeDlg)
 
@@ -24,11 +23,7 @@ public:
 
 // Dialog Data
   enum { IDD = IDD_FILTER_ENTRYTYPE };
-  PWSMatch::MatchRule m_rule;
   CItemData::EntryType m_etype;
-  CString m_title;
-  CString m_oldtitle;
-  bool m_bFirst;
 
 protected:
   virtual BOOL OnInitDialog();
@@ -43,6 +38,5 @@ public:
   CComboBox m_cbxRule, m_cbxEType;
 
 private:
-  int m_rule2selection[PWSMatch::MR_LAST];
   int m_etype2selection[CItemData::ET_LAST];
 };
