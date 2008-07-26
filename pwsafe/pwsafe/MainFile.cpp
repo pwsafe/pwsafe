@@ -1099,7 +1099,8 @@ void DboxMain::OnImportText()
         }
 
         cs_title.LoadString(IDS_STATUS);
-        MessageBox(temp1 + CString("\n") + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
+        cs_temp = temp1 + CString("\n") + temp2;
+
         ChangeOkUpdate();
         RefreshViews();
         break;
@@ -1108,17 +1109,16 @@ void DboxMain::OnImportText()
     // Finish Report
     rpt.EndReport();
 
-    if (rc != PWScore::SUCCESS) {
-      CGeneralMsgBox gmb;
-      gmb.SetTitle(cs_title);
-      gmb.SetMsg(cs_temp);
-      gmb.SetStandardIcon(MB_ICONEXCLAMATION);
-      gmb.AddButton(1, _T("OK"), TRUE, TRUE);
-      gmb.AddButton(2, IDS_VIEWREPORT);
-      INT_PTR rc = gmb.DoModal();
-      if (rc == 2)
-        ViewReport(rpt.GetReportFileName());
-    }
+    CGeneralMsgBox gmb;
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_temp);
+    gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
+    gmb.AddButton(1, _T("OK"), TRUE, TRUE);
+    gmb.AddButton(2, IDS_VIEWREPORT);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == 2)
+      ViewReport(rpt);
+
     // May need to update menu/toolbar if original database was empty
     if (bWasEmpty)
       UpdateMenuAndToolBar(m_bOpen);
@@ -1248,14 +1248,12 @@ void DboxMain::OnImportXML()
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
       {
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName());
-        csErrors = strErrors;
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
         break;
       }
       case PWScore::XML_FAILED_IMPORT:
       {
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName());
-        csErrors = strErrors;
+        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
         break;
       }
       case PWScore::SUCCESS:
@@ -1274,7 +1272,7 @@ void DboxMain::OnImportXML()
             }
 
             cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                           fd.GetFileName(), numValidated, numImported);
+                           fd.GetFileName(), numValidated, numImported, csErrors);
 
            ChangeOkUpdate();
         } else {
@@ -1297,18 +1295,20 @@ void DboxMain::OnImportXML()
     rpt.WriteLine(csErrors);
     rpt.EndReport();
 
-    if (rc != PWScore::SUCCESS || !strErrors.IsEmpty()) {
-      CGeneralMsgBox gmb;
-      gmb.SetTitle(cs_title);
-      gmb.SetMsg(cs_temp);
+    CGeneralMsgBox gmb;
+    if (rc != PWScore::SUCCESS || !strErrors.IsEmpty())
       gmb.SetStandardIcon(MB_ICONEXCLAMATION);
-      gmb.AddButton(1, _T("OK"), TRUE, TRUE);
-      gmb.AddButton(2, IDS_VIEWREPORT);
-      INT_PTR rc = gmb.DoModal();
-      if (rc == 2)
-        ViewReport(rpt.GetReportFileName());
-    } else
-      MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
+    else
+      gmb.SetStandardIcon(MB_ICONINFORMATION);
+
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_temp);
+    gmb.AddButton(1, _T("OK"), TRUE, TRUE);
+    gmb.AddButton(2, IDS_VIEWREPORT);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == 2)
+      ViewReport(rpt);
+
     // May need to update menu/toolbar if original database was empty
     if (bWasEmpty)
       UpdateMenuAndToolBar(m_bOpen);
@@ -1560,9 +1560,19 @@ int DboxMain::Merge(const CMyString &pszFilename) {
   resultStr.Format(IDS_MERGECOMPLETED, totalAdded, cs_entries, numConflicts, cs_conflicts,
                                        numAliasesAdded, cs_aliases, numShortcutsAdded, cs_shortcuts);
   cs_title.LoadString(IDS_MERGECOMPLETED2);
-  MessageBox(resultStr, cs_title, MB_OK);
+  //MessageBox(resultStr, cs_title, MB_OK);
   rpt.WriteLine(resultStr);
   rpt.EndReport();
+
+  CGeneralMsgBox gmb;
+  gmb.SetTitle(cs_title);
+  gmb.SetMsg(resultStr);
+  gmb.SetStandardIcon(MB_ICONINFORMATION);
+  gmb.AddButton(1, _T("OK"), TRUE, TRUE);
+  gmb.AddButton(2, IDS_VIEWREPORT);
+  INT_PTR msg_rc = gmb.DoModal();
+  if (msg_rc == 2)
+    ViewReport(rpt);
 
   ChangeOkUpdate();
   RefreshViews();
@@ -2205,7 +2215,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     rpt.EndReport();
 
     if (rc == 2)
-      ViewReport(rpt.GetReportFileName());
+      ViewReport(rpt);
   }
 
   if (othercore.IsLockedFile(othercore.GetCurFile()))

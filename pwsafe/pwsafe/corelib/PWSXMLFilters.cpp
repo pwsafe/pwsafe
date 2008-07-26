@@ -188,7 +188,11 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
     if (!strXMLFileName.IsEmpty()) {
       wchar_t wcURL[MAX_PATH]={0};
 #ifdef _UNICODE
+#if _MSC_VER >= 1400
+      _tcscpy_s(wcURL, MAX_PATH, strXMLFileName);
+#else
       _tcscpy(wcURL, strXMLFileName);
+#endif
 #else
       mbstowcs(wcURL, strXMLFileName, _tcslen(strXMLFileName));
 #endif

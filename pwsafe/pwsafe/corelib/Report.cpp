@@ -11,6 +11,7 @@
 #include "Debug.h"
 #include "corelib.h"
 #include "os/dir.h"
+#include "SMemFile.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,29 +27,68 @@ static char THIS_FILE[] = __FILE__;
 
 const TCHAR *CRLF = _T("\r\n");
 
-/*
-  StartReport creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
-  in the same directory as the current database.
-
-  It writes a header record and a "Start Report" record.
-*/
-bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
+CReport::~CReport()
 {
-  if (m_fd != NULL) {
-    fclose(m_fd);
-    m_fd = NULL;
+  if (m_psfile != NULL) {
+    m_psfile->Close();
+    delete m_psfile;
   }
 
-  stringT path(csDataBase);
+  if (m_pData != NULL && m_dwDatasize > 0) {
+    trashMemory((void*)m_pData, m_dwDatasize);
+    free(m_pData);
+    m_pData = NULL;
+    m_dwDatasize = 0;
+  }
+}
+/*
+  It writes a header record and a "Start Report" record.
+*/
+void CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
+{
+  if (m_psfile != NULL) {
+    m_psfile->Close();
+    delete m_psfile;
+    m_psfile = NULL;
+  }
+
+  m_tcAction = tcAction;
+  m_csDataBase = csDataBase;
+  m_psfile = new CSMemFile;
+
+  CString cs_title;
+  cs_title.Format(IDSC_REPORT_TITLE1, tcAction, PWSUtil::GetTimeStamp());
+  WriteLine();
+  WriteLine(cs_title);
+  cs_title.Format(IDSC_REPORT_TITLE2, csDataBase);
+  WriteLine(cs_title);
+  WriteLine();
+  cs_title.LoadString(IDSC_START_REPORT);
+  WriteLine(cs_title);
+  WriteLine();
+}
+
+/*
+  SaveToDisk creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
+  in the same directory as the current database or appends to this file if it already exists.
+*/
+bool CReport::SaveToDisk()
+{
+  if (m_pdfile != NULL) {
+    fclose(m_pdfile);
+    m_pdfile = NULL;
+  }
+
+  stringT path(m_csDataBase);
   stringT drive, dir, file, ext;
   if (!pws_os::splitpath(path, drive, dir, file, ext)) {
     PWSDebug::IssueError(_T("StartReport: Finding path to database"));
     return false;
   }
 
-  m_cs_filename.Format(IDSC_REPORTFILENAME, drive.c_str(), dir.c_str(), tcAction);
+  m_cs_filename.Format(IDSC_REPORTFILENAME, drive.c_str(), dir.c_str(), m_tcAction);
 
-  if ((m_fd = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
+  if ((m_pdfile = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
     PWSDebug::IssueError(_T("StartReport: Opening log file"));
     return false;
   }
@@ -74,31 +114,31 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
     fpos_t pos;
     BYTE buffer[] = {0x00, 0x00, 0x00};
 
-    fgetpos(m_fd, &pos);
-    rewind(m_fd);
+    fgetpos(m_pdfile, &pos);
+    rewind(m_pdfile);
 
-    int numread = fread(buffer, sizeof(BYTE), 2, m_fd);
+    int numread = fread(buffer, sizeof(BYTE), 2, m_pdfile);
     ASSERT(numread == 2);
 
     if (buffer[0] == 0xff && buffer[1] == 0xfe) {
       // BOM present - File is UNICODE
       bFileIsUnicode = true;
     }
-    fsetpos(m_fd, &pos);
+    fsetpos(m_pdfile, &pos);
   }
 
 #ifdef UNICODE
   const unsigned int iBOM = 0xFEFF;
   if (statbuf.st_size == 0) {
     // File is empty - write BOM
-    putwc(iBOM, m_fd);
+    putwc(iBOM, m_pdfile);
   } else
     if (!bFileIsUnicode) {
       // Convert ASCII contents to UNICODE
       FILE *f_in, *f_out;
 
       // Close original first
-      fclose(m_fd);
+      fclose(m_pdfile);
 
       // Open again to read
       f_in = _wfsopen((LPCWSTR)m_cs_filename, L"rb", _SH_DENYWR);
@@ -137,7 +177,7 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
       _trename(cs_out, m_cs_filename);
 
       // Re-open file
-      if ((m_fd = _wfsopen((LPCTSTR)m_cs_filename, L"ab", _SH_DENYWR)) == NULL) {
+      if ((m_pdfile = _wfsopen((LPCTSTR)m_cs_filename, L"ab", _SH_DENYWR)) == NULL) {
         PWSDebug::IssueError(_T("StartReport: Opening log file"));
         return false;
       }
@@ -148,7 +188,7 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
     FILE *f_in, *f_out;
 
     // Close original first
-    fclose(m_fd);
+    fclose(m_pdfile);
 
     // Open again to read
     f_in = _fsopen((LPCSTR)m_cs_filename, "rb", _SH_DENYWR);
@@ -189,23 +229,14 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
     _trename(cs_out, m_cs_filename);
 
     // Re-open file
-    if ((m_fd = _fsopen((LPCSTR) m_cs_filename, "ab", _SH_DENYWR)) == NULL) {
+    if ((m_pdfile = _fsopen((LPCSTR) m_cs_filename, "ab", _SH_DENYWR)) == NULL) {
       PWSDebug::IssueError(_T("StartReport: Opening log file"));
       return false;
     }
   }
 #endif
-
-  CString cs_title;
-  cs_title.Format(IDSC_REPORT_TITLE1, tcAction, PWSUtil::GetTimeStamp());
-  WriteLine();
-  WriteLine(cs_title);
-  cs_title.Format(IDSC_REPORT_TITLE2, csDataBase);
-  WriteLine(cs_title);
-  WriteLine();
-  cs_title.LoadString(IDSC_START_REPORT);
-  WriteLine(cs_title);
-  WriteLine();
+  fwrite((void *)m_pData, sizeof(BYTE), m_dwDatasize, m_pdfile);
+  fclose(m_pdfile);
 
   return true;
 }
@@ -213,48 +244,36 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
 // Write a record with(default) or without a CRLF
 void CReport::WriteLine(const CString &cs_line, bool bCRLF)
 {
-  if (m_fd == NULL)
+  if (m_psfile == NULL)
     return;
 
-#if _MSC_VER >= 1400
-  _ftprintf_s(m_fd, _T("%s"), (LPCTSTR)cs_line);
-  if (bCRLF)
-    _ftprintf_s(m_fd, _T("%s"), CRLF);
-#else
-  _ftprintf(m_fd, _T("%s"), (LPCTSTR)cs_line);
-  if (bCRLF)
-    _ftprintf(m_fd, _T("%s"), CRLF);
-#endif
+  int iLen = (int)cs_line.GetLength();
+  m_psfile->Write((void *)(LPCTSTR)cs_line, iLen * sizeof(TCHAR));
+  if (bCRLF) {
+    m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
+  }
 }
 
 // Write a record with(default) or without a CRLF
 void CReport::WriteLine(const LPTSTR &tc_line, bool bCRLF)
 {
-  if (m_fd == NULL)
+  if (m_psfile == NULL)
     return;
 
-#if _MSC_VER >= 1400
-  _ftprintf_s(m_fd, _T("%s"), tc_line);
-  if (bCRLF)
-    _ftprintf_s(m_fd, _T("%s"), CRLF);
-#else
-  _ftprintf(m_fd, _T("%s"), tc_line);
-  if (bCRLF)
-    _ftprintf(m_fd, _T("%s"), CRLF);
-#endif
+  int iLen = (int)_tcslen(tc_line);
+  m_psfile->Write((void *)tc_line, iLen * sizeof(TCHAR));
+  if (bCRLF) {
+    m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
+  }
 }
 
 // Write a new line
 void CReport::WriteLine()
 {
-  if (m_fd == NULL)
+  if (m_psfile == NULL)
     return;
 
-#if _MSC_VER >= 1400
-  _ftprintf_s(m_fd, _T("%s"), CRLF);
-#else
-  _ftprintf(m_fd, _T("%s"), CRLF);
-#endif
+  m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
 }
 
 /*
@@ -269,8 +288,17 @@ void CReport::EndReport()
   cs_title.LoadString(IDSC_END_REPORT2);
   WriteLine(cs_title);
 
-  if (m_fd != NULL) {
-    fclose(m_fd);
-    m_fd = NULL;
+  TCHAR *szEOF = _T("\0");
+  m_psfile->Write((void *)szEOF, sizeof(TCHAR));
+
+  if (m_pData != NULL) {
+    // Shouldn't happen!
+    free(m_pData);
+    m_pData = NULL;
   }
+
+  m_dwDatasize = (DWORD)m_psfile->GetLength();
+  m_pData = m_psfile->Detach();
+  delete m_psfile;
+  m_psfile = NULL;
 }

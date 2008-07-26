@@ -10,7 +10,7 @@
 /// CompareResultsDlg.h
 //-----------------------------------------------------------------------------
 
-#include "PWDialog.h"
+#include "PWResizeDialog.h"
 #include "corelib/ItemData.h"
 #include "corelib/MyString.h"
 #include "corelib/PWScore.h"
@@ -102,7 +102,7 @@ struct st_CompareInfo {
   int  clicked_column;
 };
 
-class CCompareResultsDlg : public CPWDialog
+class CCompareResultsDlg : public CPWResizeDialog
 {
   DECLARE_DYNAMIC(CCompareResultsDlg)
 
@@ -152,9 +152,6 @@ private:
 
   // Implementation
 protected:
-
-  UINT statustext[1];
-  CStatusBar m_statusBar;
   bool CopyLeftOrRight(const bool bCopyLeft);
   void UpdateStatusBar();
   bool ProcessFunction(const int ifunction, st_CompareData *st_data);
@@ -171,14 +168,13 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnViewCompareReport();
   afx_msg void OnShowIdenticalEntries();
-  afx_msg void OnSize(UINT nType, int cx, int cy);
-  afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnItemRightClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnCompareViewEdit();
   afx_msg void OnCompareCopyToOriginalDB();
   afx_msg void OnCompareCopyToComparisonDB();
+  afx_msg void OnSize(UINT nType, int cx, int cy);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -194,10 +190,6 @@ private:
   CReport *m_prpt;
 
   size_t m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
-  int m_cxBSpace, m_cyBSpace, m_cySBar;
-  int m_DialogMinWidth, m_DialogMinHeight;
-  int m_DialogMaxWidth, m_DialogMaxHeight;
   int m_row, m_column;
   int m_nCols;
-  bool m_bInitDone;
 };

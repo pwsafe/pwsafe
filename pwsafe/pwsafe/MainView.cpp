@@ -29,6 +29,7 @@
 #include "PWFontDialog.h"
 #include "PWFont.h"
 #include "InfoDisplay.h"
+#include "ViewReport.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
 #include "corelib/corelib.h"
@@ -2768,6 +2769,13 @@ void DboxMain::OnViewReports(UINT nID)
   return;
 }
 
+void DboxMain::ViewReport(CReport &rpt)
+{
+  CViewReport vr_dlg(this, &rpt);
+
+  vr_dlg.DoModal();
+}
+
 void DboxMain::ViewReport(const CString cs_ReportFileName)
 {
   CString cs_path, csAction;
@@ -3171,7 +3179,17 @@ void DboxMain::OnToolBarFindReport()
   }
   rpt.WriteLine();
   rpt.EndReport();
-  cs_temp.LoadString(IDS_REPORTCREATED);
+
+  CGeneralMsgBox gmb;
+  gmb.SetTitle(IDS_RPTFIND);
+  gmb.SetMsg(IDS_REPORTCREATED);
+  gmb.SetStandardIcon(MB_ICONINFORMATION);
+  gmb.AddButton(1, _T("OK"), TRUE, TRUE);
+  gmb.AddButton(2, IDS_VIEWREPORT);
+  INT_PTR msg_rc = gmb.DoModal();
+  if (msg_rc == 2)
+    ViewReport(rpt);
+
   m_FindToolBar.SetStatus(cs_temp);
 }
 

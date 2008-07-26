@@ -11,7 +11,7 @@
 
 #include "../stdafx.h"
 #include "ViewFilterDlg.h"
-#include "../PWDialog.h"
+#include "../PWResizeDialog.h"
 #include "../corelib/PWSFilters.h"
 #include "../corelib/filters.h"
 #include "../corelib/match.h"
@@ -26,16 +26,16 @@
 
 // ViewFilterDlg dialog
 
-IMPLEMENT_DYNAMIC(CViewFilterDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CViewFilterDlg, CPWResizeDialog)
 
 CViewFilterDlg::CViewFilterDlg(CWnd* pParent,
                                st_filters *pfilters,
                                MapFilters &pmapdbfilters,
                                MapFilters &pmapglobalfilters)
-  : CPWDialog(CViewFilterDlg::IDD, pParent),
+  : CPWResizeDialog(CViewFilterDlg::IDD, pParent),
   m_pfilters(pfilters),
   m_pMapDBFilters(pmapdbfilters), m_pMapGlobalFilters(pmapglobalfilters),
-  m_selectedstore(m_selectedstore), m_bInitDone(false), m_bStatusBarOK(false)
+  m_selectedstore(m_selectedstore)
 {
   // Get DB filter via name and replace m_filters
   MapFilters_Iter mf_iter;
@@ -66,9 +66,7 @@ void CViewFilterDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_FILTERLC, m_FilterLC);
 }
 
-BEGIN_MESSAGE_MAP(CViewFilterDlg, CPWDialog)
-  ON_WM_SIZE()
-  ON_WM_GETMINMAXINFO()
+BEGIN_MESSAGE_MAP(CViewFilterDlg, CPWResizeDialog)
   ON_BN_CLICKED(IDC_CURRENTFILTERSBTN, OnBnClickedCurrent)
   ON_BN_CLICKED(IDC_DATABASEFILTERSBTN, OnBnClickedDBStore)
   ON_BN_CLICKED(IDC_GLOBALFILTERBTN, OnBnClickedGlobalStore)
@@ -79,54 +77,20 @@ END_MESSAGE_MAP()
 
 BOOL CViewFilterDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
+  std::vector<UINT> vibottombtns;
+  vibottombtns.push_back(IDOK);
+
+  AddMainCtrlID(IDC_FILTERLC);
+  AddBtnsCtrlIDs(vibottombtns);
+
+  UINT statustext[1] = {IDS_BLANK};
+  SetStatusBar(&statustext[0], 1, false);
+
+  CPWResizeDialog::OnInitDialog();
 
   DWORD dwExStyle = m_FilterLC.GetExtendedStyle();
   dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES;
   m_FilterLC.SetExtendedStyle(dwExStyle);
-
-  // Add the status bar
-  if (m_statusBar.CreateEx(this, SBARS_SIZEGRIP)) {
-    UINT statustext[1] = {IDS_BLANK};
-    m_statusBar.SetIndicators(statustext, 1);
-    m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
-    m_statusBar.UpdateWindow();
-
-    RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-    m_bStatusBarOK = true;
-  }
-
-  // Arrange all the controls - needed for resizeable dialog
-  CRect sbRect, ctrlRect, dlgRect;
-  int xleft, ytop;
-
-  GetClientRect(&dlgRect);
-  m_DialogMinWidth = dlgRect.Width();
-  m_DialogMinHeight = dlgRect.Height();
-
-  m_statusBar.GetWindowRect(&sbRect);
-
-  m_FilterLC.GetWindowRect(&ctrlRect);
-  ScreenToClient(&ctrlRect);
-
-  m_cxBSpace = dlgRect.Size().cx - ctrlRect.Size().cx;
-  m_cyBSpace = dlgRect.Size().cy - ctrlRect.Size().cy;
-  m_cySBar = sbRect.Size().cy;
-
-  m_FilterLC.SetWindowPos(NULL, NULL, NULL,
-                          dlgRect.Size().cx - (2 * ctrlRect.TopLeft().x),
-                          dlgRect.Size().cy - m_cyBSpace,
-                          SWP_NOMOVE | SWP_NOZORDER);
-
-  GetWindowRect(&dlgRect);
-
-  CWnd *pwnd = GetDlgItem(IDOK);
-
-  pwnd->GetWindowRect(&ctrlRect);
-  xleft = (m_DialogMinWidth / 2) - (ctrlRect.Width() / 2);
-  ytop = dlgRect.Height() - m_cyBSpace / 2;  // - m_cySBar;
-
-  pwnd->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
 
   GetDlgItem(IDC_CURRENTFILTERSBTN)->EnableWindow(m_pfilters == NULL ? FALSE : TRUE);
   GetDlgItem(IDC_DATABASEFILTERSBTN)->EnableWindow(m_vcs_db.empty() ? FALSE : TRUE);
@@ -180,15 +144,19 @@ BOOL CViewFilterDlg::OnInitDialog()
   } else
     SelectFilter(m_pfilters);
 
+  int itotalwidth = 0;
   for (int i = 0; i < 5; i++) {
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+    itotalwidth += m_FilterLC.GetColumnWidth(i);
   }
 
-  m_bInitDone = true;
+  int iMaxWidth = itotalwidth + 16;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 
   UpdateData(FALSE);
 
-  return TRUE;
+  return FALSE;
 }
 
 void CViewFilterDlg::OnBnClickedCurrent()
@@ -363,14 +331,21 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
     m_FilterLC.SetItemText(iItem, 4, cs_criteria);
   }
 
+  int itotalwidth = 0;
   for (int i = 0; i < 4; i++) {
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE);
     int iw1 =  m_FilterLC.GetColumnWidth(i);
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int iw2 =  m_FilterLC.GetColumnWidth(i);
     m_FilterLC.SetColumnWidth(i, max(iw1, iw2));
+    itotalwidth += max(iw1, iw2);
   }
   m_FilterLC.SetColumnWidth(4, LVSCW_AUTOSIZE_USEHEADER);
+  itotalwidth += m_FilterLC.GetColumnWidth(4);
+
+  int iMaxWidth = itotalwidth + 24;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 }
 
 UINT CViewFilterDlg::GetFieldTypeName(const FieldType &ft)
@@ -480,67 +455,4 @@ UINT CViewFilterDlg::GetFieldTypeName(const FieldType &ft)
       ASSERT(0);
   }
   return nID;
-}
-
-void CViewFilterDlg::OnSize(UINT nType, int cx, int cy)
-{
-  CPWDialog::OnSize(nType, cx, cy);
-
-  if (!m_bInitDone || !m_bStatusBarOK)
-    return;
-
-  SetControls(cx, cy);
-}
-
-void CViewFilterDlg::SetControls(int cx, int cy)
-{
-  if (!m_bInitDone || !m_bStatusBarOK)
-    return;
-
-  if (!IsWindow(m_FilterLC.GetSafeHwnd()))
-    return;
-
-  CRect ctrlRect, dlgRect, ctrlrect2;
-  CPoint pt_top;
-
-  GetWindowRect(&dlgRect);
-
-  // Allow ListCtrl to grow/shrink but leave room for the buttons underneath!
-  m_FilterLC.GetWindowRect(&ctrlRect);
-
-  pt_top.x = ctrlRect.left;
-  pt_top.y = ctrlRect.top;
-  ScreenToClient(&pt_top);
-
-  m_FilterLC.MoveWindow(pt_top.x, pt_top.y,
-                        cx - (2 * pt_top.x), cy - m_cyBSpace, TRUE);
-
-  // Keep buttons in the bottom area
-  int xleft, ytop;
-
-  ytop = dlgRect.Height() - m_cyBSpace / 2; // - m_cySBar;
-
-  CWnd *pwnd = GetDlgItem(IDOK);
-
-  pwnd->GetWindowRect(&ctrlRect);
-  xleft = (cx / 2) - (ctrlRect.Width() / 2);
-  pwnd->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-
-  // Now move the status bar
-  m_statusBar.GetWindowRect(&ctrlRect);
-  pt_top.x = ctrlRect.left;
-  pt_top.y = ctrlRect.top;
-  ScreenToClient(&pt_top);
-
-  m_statusBar.MoveWindow(pt_top.x, cy - ctrlRect.Height(),
-                         cx - (2 * pt_top.x),
-                         ctrlRect.Height(), TRUE);
-}
-
-void CViewFilterDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
-{
-  if (m_bInitDone) {
-    lpMMI->ptMinTrackSize = CPoint(m_DialogMinWidth, m_DialogMinHeight);
-  } else
-    CPWDialog::OnGetMinMaxInfo(lpMMI);
 }

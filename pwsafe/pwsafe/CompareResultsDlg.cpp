@@ -30,7 +30,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWResizeDialog)
 
 //-----------------------------------------------------------------------------
 CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
@@ -38,13 +38,13 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
                                        CompareData &Conflicts, CompareData &Identical,
                                        CItemData::FieldBits &bsFields, PWScore *pcore0, PWScore *pcore1,
                                        CReport *prpt)
-  : CPWDialog(CCompareResultsDlg::IDD, pParent),
+  : CPWResizeDialog(CCompareResultsDlg::IDD, pParent),
   m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
   m_Conflicts(Conflicts), m_Identical(Identical),
   m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
   m_prpt(prpt), m_bSortAscending(true), m_iSortedColumn(0),
   m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
-  m_ShowIdenticalEntries(BST_UNCHECKED), m_bInitDone(false)
+  m_ShowIdenticalEntries(BST_UNCHECKED)
 {
 }
 
@@ -63,8 +63,17 @@ bool GTUCompare2(st_CompareData elem1, st_CompareData elem2)
 
 BOOL CCompareResultsDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
-  m_bInitDone = true;
+  std::vector<UINT> vibottombtns;
+  vibottombtns.push_back(IDC_VIEWCOMPAREREPORT);
+  vibottombtns.push_back(IDOK);
+
+  AddMainCtrlID(IDC_RESULTLIST);
+  AddBtnsCtrlIDs(vibottombtns);
+
+  UINT statustext[1] = {IDS_STATCOMPANY};
+  SetStatusBar(&statustext[0], 1);
+
+  CPWResizeDialog::OnInitDialog();
 
   m_LCResults.GetHeaderCtrl()->SetDlgCtrlID(IDC_RESULTLISTHDR);
 
@@ -164,69 +173,20 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_LCResults.SetRedraw(TRUE);
   m_LCResults.Invalidate();
 
-  // setup status bar for gripper only
-  if (m_statusBar.CreateEx(this, SBARS_SIZEGRIP)) {
-    statustext[0] = IDS_STATCOMPANY;
-    m_statusBar.SetIndicators(statustext, 1);
-    UpdateStatusBar();
-  } else {
-    TRACE(_T("Could not create status bar\n"));
-  }
-
-  // Put on StatusBar
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-
-  // Arrange all the controls - needed for resizeable dialog
-  CWnd *pwndListCtrl = GetDlgItem(IDC_RESULTLIST);
-  CWnd *pwndOKButton = GetDlgItem(IDOK);
-
-  CRect sbRect, ctrlRect, dlgRect;
-  int xleft, ytop;
-
   int itotalwidth = 0;
   for (i = 0; i < m_nCols; i++)
     itotalwidth += m_LCResults.GetColumnWidth(i);
 
-  GetClientRect(&dlgRect);
-  m_DialogMinWidth = dlgRect.Width();
-  m_DialogMinHeight = dlgRect.Height();
-  m_DialogMaxWidth = itotalwidth + 16;
-  m_DialogMaxHeight = 1024;
-  if (m_DialogMaxWidth < m_DialogMinWidth)
-    m_DialogMaxWidth = m_DialogMinWidth;
-  if (m_DialogMaxHeight < m_DialogMinHeight)
-    m_DialogMaxHeight = m_DialogMinHeight; 
-
-  m_statusBar.GetWindowRect(&sbRect);
-
-  pwndListCtrl->GetWindowRect(&ctrlRect);
-  ScreenToClient(&ctrlRect);
-
-  m_cxBSpace = dlgRect.Size().cx - ctrlRect.Size().cx;
-  m_cyBSpace = dlgRect.Size().cy - ctrlRect.Size().cy;
-  m_cySBar = sbRect.Size().cy;
-
-  pwndListCtrl->SetWindowPos(NULL, NULL, NULL,
-                             dlgRect.Size().cx - (2 * ctrlRect.TopLeft().x),
-                             dlgRect.Size().cy - m_cyBSpace,
-                             SWP_NOMOVE | SWP_NOZORDER);
-
-  GetWindowRect(&dlgRect);
-
-  pwndOKButton->GetWindowRect(&ctrlRect);
-  xleft = (m_DialogMinWidth / 2) - (ctrlRect.Width() / 2);
-  ytop = dlgRect.Height() - m_cyBSpace/2 - m_cySBar;
-
-  pwndOKButton->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
+  int iMaxWidth = itotalwidth + 16;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 
   GetDlgItem(IDC_COMPAREORIGINALDB)->SetWindowText(m_cs_Filename1);
   GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
 
-  this->SetWindowPos(NULL, NULL, NULL, m_DialogMinWidth, m_DialogMinHeight, 
-                     SWP_NOMOVE | SWP_NOZORDER);
-
   WriteReportData();
-  return TRUE;
+  UpdateStatusBar();
+  return FALSE;
 }
 
 void CCompareResultsDlg::DoDataExchange(CDataExchange* pDX)
@@ -235,9 +195,8 @@ void CCompareResultsDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_RESULTLIST, m_LCResults);
 }
 
-BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
   ON_WM_SIZE()
-  ON_WM_GETMINMAXINFO()
   ON_NOTIFY(NM_DBLCLK, IDC_RESULTLIST, OnItemDoubleClick)
   ON_NOTIFY(NM_RCLICK, IDC_RESULTLIST, OnItemRightClick)
   ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -411,12 +370,12 @@ void CCompareResultsDlg::OnShowIdenticalEntries()
 
 void CCompareResultsDlg::OnCancel()
 {
-  CPWDialog::OnCancel();
+  CPWResizeDialog::OnCancel();
 }
 
 void CCompareResultsDlg::OnOK()
 {
-  CPWDialog::OnOK();
+  CPWResizeDialog::OnOK();
 }
 
 void CCompareResultsDlg::OnHelp()
@@ -898,16 +857,16 @@ void CCompareResultsDlg::WriteReportData()
 
 void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
 {
-  CPWDialog::OnSize(nType, cx, cy);
+  CPWResizeDialog::OnSize(nType, cx, cy);
 
   CWnd *pwndListCtrl = GetDlgItem(IDC_RESULTLIST);
-  CWnd *pwndODBText = GetDlgItem(IDC_COMPAREORIGINALDB);
-  CWnd *pwndCDBText = GetDlgItem(IDC_COMPARECOMPARISONDB);
-  CWnd *pwndVWR = GetDlgItem(IDC_VIEWCOMPAREREPORT);
-  CWnd *pwndOK = GetDlgItem(IDOK);
-
   if (!IsWindow(pwndListCtrl->GetSafeHwnd()))
     return;
+
+  // CPWResizeDialog only handles main control, bottom buttons
+  // and status bar - we need to do the ones above the main control
+  CWnd *pwndODBText = GetDlgItem(IDC_COMPAREORIGINALDB);
+  CWnd *pwndCDBText = GetDlgItem(IDC_COMPARECOMPARISONDB);
 
   CRect ctrlRect, dlgRect;
   CPoint pt_top, pt;
@@ -934,45 +893,4 @@ void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
                           ctrlRect.Height(), TRUE);
 
   GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
-
-  // Allow ListCtrl to grow/shrink but leave room for the buttons underneath!
-  pwndListCtrl->GetWindowRect(&ctrlRect);
-  pt_top.x = ctrlRect.left;
-  pt_top.y = ctrlRect.top;
-  ScreenToClient(&pt_top);
-
-  pwndListCtrl->MoveWindow(pt_top.x, pt_top.y,
-                           cx - (2 * pt_top.x),
-                           cy - m_cyBSpace, TRUE);
-
-  // Keep buttons in the bottom area
-  int xleft, ytop;
-
-  ytop = dlgRect.Height() - m_cyBSpace / 2 - m_cySBar;   
-
-  pwndVWR->GetWindowRect(&ctrlRect);   
-  xleft = (cx / 4) - (ctrlRect.Width() / 2);   
-  pwndVWR->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER); 
-
-  pwndOK->GetWindowRect(&ctrlRect);
-  xleft = (3 * cx / 4) - (ctrlRect.Width() / 2);
-  pwndOK->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-
-  m_statusBar.GetWindowRect(&ctrlRect);
-  pt_top.x = ctrlRect.left;
-  pt_top.y = ctrlRect.top;
-  ScreenToClient(&pt_top);
-
-  m_statusBar.MoveWindow(pt_top.x, cy - ctrlRect.Height(),
-                         cx - (2 * pt_top.x),
-                         ctrlRect.Height(), TRUE);
-}
-
-void CCompareResultsDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
-{
-  if (m_bInitDone) {
-    lpMMI->ptMinTrackSize = CPoint(m_DialogMinWidth, m_DialogMinHeight);
-    lpMMI->ptMaxTrackSize = CPoint(m_DialogMaxWidth, m_DialogMaxHeight);
-  } else
-    CPWDialog::OnGetMinMaxInfo(lpMMI);
 }

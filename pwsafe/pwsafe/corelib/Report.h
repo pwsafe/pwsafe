@@ -11,6 +11,7 @@
 // Create an action report file
 
 #include "afx.h"
+#include "SMemFile.h"
 #include <stdio.h>
 
 class CReport
@@ -18,17 +19,25 @@ class CReport
   // Construction
 public:
   CReport()
-    : m_fd(NULL) {}
-  ~CReport() {}
+    : m_psfile(NULL), m_pdfile(NULL), m_pData(NULL), m_dwDatasize(0) {}
+  ~CReport();
 
-  bool StartReport(const LPCTSTR tcAction, const CString &csDataBase);
+  void StartReport(LPCTSTR tcAction, const CString &csDataBase);
   void EndReport();
   void WriteLine(const CString &cs_line, bool bCRLF = true);
   void WriteLine(const LPTSTR &tc_line, bool bCRLF = true);
   void WriteLine();
-  CString GetReportFileName() const {return m_cs_filename;}
+  bool SaveToDisk();
+  BYTE *GetData() {return m_pData;}
+  DWORD GetDataLength() {return m_dwDatasize;}
 
 private:
-  FILE *m_fd;
+  FILE *m_pdfile;
+  CSMemFile *m_psfile;
   CString m_cs_filename;
+  int m_imode;
+  BYTE *m_pData;
+  DWORD m_dwDatasize;
+  LPCTSTR m_tcAction;
+  CString m_csDataBase;
 };
