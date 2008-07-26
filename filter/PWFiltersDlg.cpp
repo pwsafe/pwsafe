@@ -21,15 +21,14 @@
 
 // CPWFiltersDlg dialog
 
-IMPLEMENT_DYNAMIC(CPWFiltersDlg, CPWDialog)
+IMPLEMENT_DYNAMIC(CPWFiltersDlg, CPWResizeDialog)
 
 CPWFiltersDlg::CPWFiltersDlg(CWnd* pParent /*=NULL*/,
                              const FilterType &filtertype /*=DFTYPE_MAIN*/,
                              const CString &filtername /*=_T("")*/)
-  : CPWDialog(CPWFiltersDlg::IDD, pParent),
+  : CPWResizeDialog(CPWFiltersDlg::IDD, pParent),
   m_numfilters(0), m_iType(filtertype), m_hAccel(NULL), 
-  m_bInitDone(false), m_bStatusBarOK(false), m_bStopChange(false),
-  m_filtername(filtername)
+  m_bStopChange(false), m_filtername(filtername)
 {
 }
 
@@ -39,8 +38,27 @@ CPWFiltersDlg::~CPWFiltersDlg()
 
 BOOL CPWFiltersDlg::OnInitDialog()
 {
-  // Do standard OnInitDialog & set appropriate window title
-  CPWDialog::OnInitDialog();
+  std::vector<UINT> vibottombtns;
+
+  if (m_iType == DFTYPE_MAIN) {
+    vibottombtns.push_back(IDC_APPLY);
+    vibottombtns.push_back(IDOK);
+    vibottombtns.push_back(IDCANCEL);
+    vibottombtns.push_back(ID_HELP);
+  } else {
+    vibottombtns.push_back(IDOK);
+    vibottombtns.push_back(IDCANCEL);
+    vibottombtns.push_back(ID_HELP);
+  }
+
+  AddMainCtrlID(IDC_FILTERLC);
+  AddBtnsCtrlIDs(vibottombtns);
+
+  UINT statustext[1] = {IDS_BLANK};
+  SetStatusBar(&statustext[0], 1);
+
+  CPWResizeDialog::OnInitDialog();
+
   SetWindowText(m_cstitle);
 
   m_hAccel = ::LoadAccelerators(AfxGetResourceHandle(),
@@ -53,42 +71,6 @@ BOOL CPWFiltersDlg::OnInitDialog()
   m_FilterLC.Init(this, m_pfilters, m_iType);
   m_filtername = m_pfilters->fname;
   m_bStopChange = true;
-
-  // Add the status bar
-  if (m_statusBar.CreateEx(this, SBARS_SIZEGRIP)) {
-    statustext[0] = IDS_BLANK;
-    m_statusBar.SetIndicators(statustext, 1);
-    m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
-    m_statusBar.UpdateWindow();
-
-    RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-    m_bStatusBarOK = true;
-  }
-
-  CRect rcClientStart;
-  CRect rcClientNow;
-  GetClientRect(rcClientStart);
-
-  // Arrange all the controls - needed for resizeable dialog
-  CRect sbRect, ctrlRect, dlgRect;
-
-  GetClientRect(&dlgRect);
-  m_DialogMinWidth = dlgRect.Width();
-  m_DialogMinHeight = dlgRect.Height();
-
-  m_statusBar.GetWindowRect(&sbRect);
-
-  m_FilterLC.GetWindowRect(&ctrlRect);
-  ScreenToClient(&ctrlRect);
-
-  m_cxBSpace = dlgRect.Size().cx - ctrlRect.Size().cx;
-  m_cyBSpace = dlgRect.Size().cy - ctrlRect.Size().cy;
-  m_cySBar = sbRect.Size().cy;
-
-  m_FilterLC.SetWindowPos(NULL, NULL, NULL,
-                          dlgRect.Size().cx - (2 * ctrlRect.TopLeft().x),
-                          dlgRect.Size().cy - m_cyBSpace,
-                          SWP_NOMOVE | SWP_NOZORDER);
 
   CRect rect;
   // Move over History & Policy dialogs so as not to obscure main filter dialog
@@ -110,6 +92,15 @@ BOOL CPWFiltersDlg::OnInitDialog()
     GetDlgItem(IDC_FILTERNAME)->EnableWindow(FALSE);
   }
 
+  int itotalwidth = 0;
+  for (int i = 0; i < FLC_NUM_COLUMNS; i++) {
+    itotalwidth += m_FilterLC.GetColumnWidth(i);
+  }
+
+  int iMaxWidth = itotalwidth + 16;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+
   // Update dialog window text
   UpdateStatusText();
   UpdateData(FALSE);
@@ -117,12 +108,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
   if (m_iType == DFTYPE_MAIN)
     GetDlgItem(IDC_APPLY)->EnableWindow(m_pfilters->num_Mactive == 0 ? FALSE : TRUE);
 
-  m_bInitDone = true;
-
-  // Set up controls nicely
-  SetControls(dlgRect.Width(), dlgRect.Height());
-
-  return TRUE;
+  return FALSE;
 }
 
 void CPWFiltersDlg::DoDataExchange(CDataExchange* pDX)
@@ -137,9 +123,7 @@ void CPWFiltersDlg::DoDataExchange(CDataExchange* pDX)
   //{{AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CPWFiltersDlg, CPWDialog)
-  ON_WM_SIZE()
-  ON_WM_GETMINMAXINFO()
+BEGIN_MESSAGE_MAP(CPWFiltersDlg, CPWResizeDialog)
   ON_BN_CLICKED(IDOK, OnOk)
   ON_EN_KILLFOCUS(IDC_FILTERNAME, OnFNameKillFocus)
   ON_NOTIFY(HDN_BEGINTRACK, IDC_FILTERLC_HEADER, OnBeginTrack)
@@ -163,7 +147,7 @@ void CPWFiltersDlg::OnOk()
   if (m_iType == DFTYPE_MAIN)
     m_pfilters->fname = m_filtername;
 
-  CPWDialog::OnOK();
+  CPWResizeDialog::OnOK();
 }
 
 bool CPWFiltersDlg::VerifyFilters()
@@ -244,7 +228,7 @@ void CPWFiltersDlg::OnFNameKillFocus()
 void CPWFiltersDlg::UpdateStatusText()
 {
   // Update the status bar with number of filters defined and number active
-  if (!m_bStatusBarOK)
+  if (!IsStatusBarOK())
     return;
 
   CString s;
@@ -302,104 +286,6 @@ void CPWFiltersDlg::OnItemchanging(NMHDR * pNotifyStruct, LRESULT* pResult)
     *pResult = m_bStopChange ? TRUE : FALSE;
 }
 
-void CPWFiltersDlg::OnSize(UINT nType, int cx, int cy)
-{
-  CPWDialog::OnSize(nType, cx, cy);
-
-  SetControls(cx, cy);
-}
-
-void CPWFiltersDlg::SetControls(int cx, int cy)
-{
-  if (!m_bInitDone || !m_bStatusBarOK)
-    return;
-
-  CWnd *pwnd1, *pwnd2, *pwnd3, *pwnd4;
-
-  if (!IsWindow(m_FilterLC.GetSafeHwnd()))
-    return;
-
-  CRect ctrlRect, dlgRect, ctrlrect2;
-  CPoint pt_top;
-
-  GetWindowRect(&dlgRect);
-
-  // Allow ListCtrl to grow/shrink but leave room for the buttons underneath!
-  m_FilterLC.GetWindowRect(&ctrlRect);
-  
-  pt_top.x = ctrlRect.left;
-  pt_top.y = ctrlRect.top;
-  ScreenToClient(&pt_top);
-
-  m_FilterLC.MoveWindow(pt_top.x, pt_top.y,
-                        cx - (2 * pt_top.x), cy - m_cyBSpace, TRUE);
-
-  m_FilterLC.SetColumnWidth(FLC_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
-
-  // Keep buttons in the bottom area
-  int xleft, ytop;
-
-  ytop = dlgRect.Height() - m_cyBSpace / 2 - m_cySBar;
-
-  if (m_iType == DFTYPE_MAIN) {
-    pwnd1 = GetDlgItem(IDC_APPLY);
-    pwnd2 = GetDlgItem(IDOK);
-    pwnd3 = GetDlgItem(IDCANCEL);
-    pwnd4 = GetDlgItem(ID_HELP);
-
-    pwnd1->GetWindowRect(&ctrlRect);
-    xleft = (cx / 5) - (ctrlRect.Width() / 2);
-    pwnd1->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-
-    pwnd2->GetWindowRect(&ctrlRect);
-    xleft = (2 * cx / 5) - (ctrlRect.Width() / 2);
-    pwnd2->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-
-    pwnd3->GetWindowRect(&ctrlRect);
-    xleft = (3 * cx / 5) - (ctrlRect.Width() / 2);
-    pwnd3->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-
-    pwnd4->GetWindowRect(&ctrlRect);
-    xleft = (4 * cx / 5) - (ctrlRect.Width() / 2);
-    pwnd4->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-  } else {
-    pwnd1 = GetDlgItem(IDOK);
-    pwnd2 = GetDlgItem(IDCANCEL);
-    pwnd3 = GetDlgItem(ID_HELP);
-    pwnd4 = NULL;
-
-    pwnd1->GetWindowRect(&ctrlRect);
-    xleft = (cx / 4) - (ctrlRect.Width() / 2);
-    pwnd1->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-
-    pwnd2->GetWindowRect(&ctrlRect);
-    xleft = (cx / 2) - (ctrlRect.Width() / 2);
-    pwnd2->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-
-    pwnd3->GetWindowRect(&ctrlRect);
-    xleft = (3 * cx / 4) - (ctrlRect.Width() / 2);
-    pwnd3->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
-  }
-
-  // Now move the status bar
-  m_statusBar.GetWindowRect(&ctrlRect);
-  pt_top.x = ctrlRect.left;
-  pt_top.y = ctrlRect.top;
-  ScreenToClient(&pt_top);
-
-  m_statusBar.MoveWindow(pt_top.x, cy - ctrlRect.Height(),
-                         cx - (2 * pt_top.x),
-                         ctrlRect.Height(), TRUE);
-}
-
-void CPWFiltersDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
-{
-  if (m_bInitDone) {
-    lpMMI->ptMinTrackSize = CPoint(m_DialogMinWidth, m_DialogMinHeight);
-  } else
-    CPWDialog::OnGetMinMaxInfo(lpMMI);
-}
-
 BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)
 {
   // CListCtrl accelerator processing
@@ -446,4 +332,23 @@ void CPWFiltersDlg::OnProcessKey(UINT nID)
     default:
       ASSERT(0);
   }
+}
+
+void CPWFiltersDlg::UpdateDialogMaxWidth()
+{
+  int itotalwidth = 0;
+  for (int i = 0; i < 4; i++) {
+    m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE);
+    int iw1 =  m_FilterLC.GetColumnWidth(i);
+    m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+    int iw2 =  m_FilterLC.GetColumnWidth(i);
+    m_FilterLC.SetColumnWidth(i, max(iw1, iw2));
+    itotalwidth += max(iw1, iw2);
+  }
+  m_FilterLC.SetColumnWidth(4, LVSCW_AUTOSIZE_USEHEADER);
+  itotalwidth += m_FilterLC.GetColumnWidth(4);
+
+  int iMaxWidth = itotalwidth + 24;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 }

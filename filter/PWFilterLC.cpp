@@ -1271,7 +1271,7 @@ bool CPWFilterLC::GetCriterion()
       ASSERT(0);
   }
 
-  // Update static text if user has seelcted a new criterion
+  // Update static text if user has selected a new criterion
   if (rc == IDOK) {
     st_fldata.ltype = ltype;
     CString cs_criteria;
@@ -1290,6 +1290,7 @@ bool CPWFilterLC::GetCriterion()
     SetItemData(m_iItem, dwData);
     SetItemText(m_iItem, FLC_CRITERIA_TEXT, cs_criteria);
     SetColumnWidth(FLC_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
+    m_pPWF->UpdateDialogMaxWidth();
   }
 
   return true;

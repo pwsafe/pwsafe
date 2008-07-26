@@ -808,6 +808,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWResizeDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWSRecentFileList.cpp"
 				>
 			</File>
@@ -885,6 +889,10 @@
 			</File>
 			<File
 				RelativePath=".\filter\ViewFilterDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ViewReport.cpp"
 				>
 			</File>
 			<File
@@ -1161,6 +1169,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWResizeDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PWSRecentFileList.h"
 				>
 			</File>
@@ -1258,6 +1270,10 @@
 			</File>
 			<File
 				RelativePath=".\filter\ViewFilterDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ViewReport.h"
 				>
 			</File>
 			<File

@@ -278,6 +278,7 @@
 #define IDB_DRAGPASSWORDX               441
 #define IDB_DRAGNOTESX                  442
 #define IDB_DRAGURLX                    443
+#define IDD_VIEWREPORT                  444
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -420,6 +421,7 @@
 #define IDC_XML_IMPORT_RESULTS          1147
 #define IDC_PASSWORD2                   1149
 #define IDC_CLEAR_HISTORY               1150
+#define IDC_REPORT2CLIPBOARD            1150
 #define IDC_ADVANCED_LIST               1152
 #define IDC_ADVANCED_SELECTED           1153
 #define IDC_ADVANCED_SELECTSOME         1154
@@ -578,14 +580,16 @@
 #define IDC_STATIC_DRAGPASSWORD         1337
 #define IDC_STATIC_DRAGNOTES            1338
 #define IDC_STATIC_DRAGURL              1339
+#define IDC_EDITREPORT                  1340
+#define IDC_BUTTON1                     1341
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        444
+#define _APS_NEXT_RESOURCE_VALUE        445
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1340
+#define _APS_NEXT_CONTROL_VALUE         1342
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif

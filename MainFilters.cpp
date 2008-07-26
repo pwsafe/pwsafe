@@ -810,24 +810,21 @@ void DboxMain::OnImportFilters()
    switch (rc) {
      case PWScore::XML_FAILED_VALIDATION:
      {
-       cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName());
-       csErrors = strErrors;
+       cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
        break;
      }
      case PWScore::XML_FAILED_IMPORT:
      {
-       cs_temp.Format(IDS_XMLERRORS, fd.GetFileName());
-       csErrors = strErrors;
+       cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
        break;
      }
      case PWScore::SUCCESS:
      {
        if (!strErrors.IsEmpty()) {
          csErrors = strErrors + _T("\n");
-         cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName());
+         cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(), csErrors);
        } else {
          cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
-         cs_title.LoadString(IDS_STATUS);
        }
        break;
      }
@@ -835,6 +832,7 @@ void DboxMain::OnImportFilters()
        ASSERT(0);
    } // switch
 
+   cs_title.LoadString(IDS_STATUS);
    MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
   }
 }

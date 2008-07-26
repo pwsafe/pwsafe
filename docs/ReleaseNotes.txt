@@ -20,6 +20,8 @@ database.
 for first open.  Then governed by R/O open preference or user selecting
 read-only at open time.
 [1954268] Aliases and shortcuts now processed correctly during merge.
+[1933174, 2015132] Reports from Import (Text or XML), Compare, Merge
+and Find are no longer written to disk by default.
 [] Expired icon now correct after password change.
 [] Current tree state is now updated correctly upon exit (Thanks to
 Norman)
