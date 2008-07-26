@@ -48,22 +48,19 @@ namespace PWSMatch {
     MT_STRING, MT_PASSWORD, MT_INTEGER, MT_DATE, MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE};
 
   // Generalised checking
-  bool Match(CMyString string1, CMyString &csValue,
-             const int &iFunction);
-  bool Match(const int &num1, const int &num2, const int &iValue,
-             const int &iFunction);
-  bool Match(const time_t &time1, const time_t &time2, const time_t &tValue,
-             const int &iFunction);
-  bool Match(const bool bValue,
-             const int &iFunction);  // bool - if field present or not
+  bool Match(const CMyString &string1, CMyString &csValue,
+             int iFunction);
+  bool Match(int num1, int num2, int iValue, int iFunction);
+  bool Match(time_t time1, time_t time2, time_t tValue, int iFunction);
+  bool Match(bool bValue, int iFunction);  // bool - if field present or not
 
   UINT GetRule(MatchRule rule);
   char * GetRuleString(MatchRule rule);
-  void GetMatchType(const MatchType &mtype,
-                    const int &fnum1, const int &fnum2,
-                    const time_t &fdate1, const time_t &fdate2,
-                    const CString &fstring, const int &fcase,
-                    const int &etype, const bool &bBetween,
+  void GetMatchType(MatchType mtype,
+                    int fnum1, int fnum2,
+                    time_t fdate1, time_t fdate2,
+                    const CString &fstring, int fcase,
+                    int etype, bool bBetween,
                     CString &cs1, CString &cs2);
 };
 #endif /* __MATCH_H */

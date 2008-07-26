@@ -14,8 +14,8 @@
 #include "corelib.h"
 #include <time.h>
 
-bool PWSMatch::Match(CMyString string1, CMyString &csValue,
-                     const int &iFunction)
+bool PWSMatch::Match(const CMyString &string1, CMyString &csValue,
+                     int iFunction)
 {
   const int str_len = string1.GetLength();
   const int val_len = csValue.GetLength();
@@ -92,8 +92,8 @@ bool PWSMatch::Match(CMyString string1, CMyString &csValue,
   return true; // should never get here!
 }
 
-bool PWSMatch::Match(const int &num1, const int &num2, const int &iValue,
-                     const int &iFunction)
+bool PWSMatch::Match(int num1, int num2, int iValue,
+                     int iFunction)
 {
   switch (iFunction) {
     case MR_EQUALS:
@@ -116,8 +116,7 @@ bool PWSMatch::Match(const int &num1, const int &num2, const int &iValue,
   return false;
 }
 
-bool PWSMatch::Match(const time_t &time1, const time_t &time2, const time_t &tValue,
-                     const int &iFunction)
+bool PWSMatch::Match(time_t time1, time_t time2, time_t tValue, int iFunction)
 {
   switch (iFunction) {
     case MR_EQUALS:
@@ -136,7 +135,7 @@ bool PWSMatch::Match(const time_t &time1, const time_t &time2, const time_t &tVa
   return false;
 }
 
-bool PWSMatch::Match(const bool bValue, const int &iFunction)
+bool PWSMatch::Match(const bool bValue, int iFunction)
 {
   bool rc;
 
@@ -230,11 +229,11 @@ UINT PWSMatch::GetRule(MatchRule rule)
   return id;
 }
 
-void PWSMatch::GetMatchType(const MatchType &mtype,
-                            const int &fnum1, const int &fnum2,
-                            const time_t &fdate1, const time_t &fdate2,
-                            const CString &fstring, const int &fcase,
-                            const int &etype, const bool &bBetween,
+void PWSMatch::GetMatchType(MatchType mtype,
+                            int fnum1, int fnum2,
+                            time_t fdate1, time_t fdate2,
+                            const CString &fstring, int fcase,
+                            int etype, bool bBetween,
                             CString &cs1, CString &cs2)
 {
   cs1 = cs2 = _T("");
