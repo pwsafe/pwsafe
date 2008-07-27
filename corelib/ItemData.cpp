@@ -1107,8 +1107,8 @@ int CItemData::ValidatePWHistory()
   return 1;
 }
 
-bool CItemData::Matches(const CString &string1, const int &iObject,
-                        const int &iFunction) const
+bool CItemData::Matches(const CString &string1, int iObject,
+                        int iFunction) const
 {
   ASSERT(iFunction != 0); // must be positive or negative!
 
@@ -1153,8 +1153,8 @@ bool CItemData::Matches(const CString &string1, const int &iObject,
     return PWSMatch::Match(string1, csObject, iFunction);
 }
 
-bool CItemData::Matches(const int &num1, const int &num2, const int &iObject,
-                        const int &iFunction) const
+bool CItemData::Matches(int num1, int num2, int iObject,
+                        int iFunction) const
 {
   //   Check integer values are selected
   int iValue;
@@ -1178,8 +1178,8 @@ bool CItemData::Matches(const int &num1, const int &num2, const int &iObject,
     return PWSMatch::Match(num1, num2, iValue, iFunction);
 }
 
-bool CItemData::Matches(const time_t &time1, const time_t &time2, const int &iObject,
-                        const int &iFunction) const
+bool CItemData::Matches(time_t time1, time_t time2, int iObject,
+                        int iFunction) const
 {
   //   Check time values are selected
   time_t tValue;
@@ -1217,8 +1217,7 @@ bool CItemData::Matches(const time_t &time1, const time_t &time2, const int &iOb
   }
 }
   
-bool CItemData::Matches(const EntryType &etype1,
-                        const int &iFunction) const
+bool CItemData::Matches(EntryType etype1, int iFunction) const
 {
   switch (iFunction) {
     case PWSMatch::MR_IS:

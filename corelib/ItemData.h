@@ -233,14 +233,13 @@ public:
     bool WillExpire(const int numdays);
 
     // Predicate to determine if item matches given criteria
-    bool Matches(const CString &string1, const int &iObject, 
-                 const int &iFunction) const;  // string values
-    bool Matches(const int &num1, const int &num2, const int &iObject,
-                 const int &iFunction) const;  // intger values
-    bool Matches(const time_t &time1, const time_t &time2, const int &iObject,
-                 const int &iFunction) const;  // time values
-    bool Matches(const EntryType &etype1, 
-                 const int &iFunction) const;  // Entrytype values
+    bool Matches(const CString &string1, int iObject, 
+                 int iFunction) const;  // string values
+    bool Matches(int num1, int num2, int iObject,
+                 int iFunction) const;  // intger values
+    bool Matches(time_t time1, time_t time2, int iObject,
+                 int iFunction) const;  // time values
+    bool Matches(EntryType etype1, int iFunction) const;  // Entrytype values
 
     BOOL IsGroupEmpty() const {return m_Group.IsEmpty();}
     BOOL IsUserEmpty() const {return m_User.IsEmpty();}

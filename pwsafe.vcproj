@@ -185,6 +185,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib"
+				ShowProgress="0"
 				OutputFile=".\Debug/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

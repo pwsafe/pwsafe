@@ -45,13 +45,26 @@ namespace PWSMatch {
   };
 
   enum MatchType {MT_INVALID = 0,
-    MT_STRING, MT_PASSWORD, MT_INTEGER, MT_DATE, MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE};
+                  MT_STRING, MT_PASSWORD, MT_INTEGER, MT_DATE,
+                  MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE};
 
   // Generalised checking
-  bool Match(const CMyString &string1, CMyString &csValue,
-             int iFunction);
-  bool Match(int num1, int num2, int iValue, int iFunction);
-  bool Match(time_t time1, time_t time2, time_t tValue, int iFunction);
+  bool Match(const CMyString &string1, CMyString &csValue, int iFunction);
+  template<typename T> bool Match(T v1, T v2, T value, int iFunction)
+  {
+    switch (iFunction) {
+    case MR_EQUALS: return value == v1;
+    case MR_NOTEQUAL: return value != v1;
+    case MR_BETWEEN: return value >= v1 && value <= v2;
+    case MR_LT: return value < v1;
+    case MR_LE: return value <= v1;
+    case MR_GT: return value > v1;
+    case MR_GE: return value >= v1;
+    default:ASSERT(0);
+    }
+    return false; // keep compiler happy
+  }
+
   bool Match(bool bValue, int iFunction);  // bool - if field present or not
 
   UINT GetRule(MatchRule rule);
