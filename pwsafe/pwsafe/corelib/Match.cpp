@@ -6,7 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-/// \file Comp.cpp
+/// \file Match.cpp
 //-----------------------------------------------------------------------------
 
 #include "Match.h"
@@ -90,49 +90,6 @@ bool PWSMatch::Match(const CMyString &string1, CMyString &csValue,
   }
 
   return true; // should never get here!
-}
-
-bool PWSMatch::Match(int num1, int num2, int iValue,
-                     int iFunction)
-{
-  switch (iFunction) {
-    case MR_EQUALS:
-      return iValue == num1;
-    case MR_NOTEQUAL:
-      return iValue != num1;
-    case MR_BETWEEN:
-      return iValue >= num1 && iValue <= num2;
-    case MR_LT:
-      return iValue < num1;
-    case MR_LE:
-      return iValue <= num1;
-    case MR_GT:
-      return iValue > num1;
-    case MR_GE:
-      return iValue >= num1;
-    default:
-      ASSERT(0);
-  }
-  return false;
-}
-
-bool PWSMatch::Match(time_t time1, time_t time2, time_t tValue, int iFunction)
-{
-  switch (iFunction) {
-    case MR_EQUALS:
-      return tValue == time1;
-    case MR_NOTEQUAL:
-      return tValue != time1;
-    case MR_BETWEEN:
-      return tValue >= time1 && tValue <= time2;
-    case MR_BEFORE:
-      return tValue < time1;
-    case MR_AFTER:
-      return tValue > time1;
-    default:
-      ASSERT(0);
-  }
-  return false;
 }
 
 bool PWSMatch::Match(const bool bValue, int iFunction)

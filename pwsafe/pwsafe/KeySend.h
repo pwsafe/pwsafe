@@ -13,8 +13,8 @@
 // sends keystrokes
 //-----------------------------------------------------------------------------
 
-#include "corelib/PWScore.h"
 #include "PasswordSafe.h"
+#include "corelib/MyString.h"
 
 class CKeySend
 {
