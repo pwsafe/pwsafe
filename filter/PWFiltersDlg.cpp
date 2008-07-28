@@ -69,7 +69,11 @@ BOOL CPWFiltersDlg::OnInitDialog()
   m_FilterLC.SetExtendedStyle(dwExStyle);
 
   m_FilterLC.Init(this, m_pfilters, m_iType);
-  m_filtername = m_pfilters->fname;
+  if (m_filtername.IsEmpty() || m_pfilters->fname.IsEmpty())
+    m_filtername = _T("Filter1");
+  else
+    m_filtername = m_pfilters->fname;
+
   m_bStopChange = true;
 
   CRect rect;
@@ -97,9 +101,9 @@ BOOL CPWFiltersDlg::OnInitDialog()
     itotalwidth += m_FilterLC.GetColumnWidth(i);
   }
 
-  int iMaxWidth = itotalwidth + 16;
-  int iMaxHeight = 1024;
-  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  //int iMaxWidth = itotalwidth + 16;
+  //int iMaxHeight = 1024;
+  //SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 
   // Update dialog window text
   UpdateStatusText();
@@ -345,10 +349,11 @@ void CPWFiltersDlg::UpdateDialogMaxWidth()
     m_FilterLC.SetColumnWidth(i, max(iw1, iw2));
     itotalwidth += max(iw1, iw2);
   }
+
   m_FilterLC.SetColumnWidth(4, LVSCW_AUTOSIZE_USEHEADER);
   itotalwidth += m_FilterLC.GetColumnWidth(4);
 
-  int iMaxWidth = itotalwidth + 24;
-  int iMaxHeight = 1024;
-  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  //int iMaxWidth = itotalwidth + 16;
+  //int iMaxHeight = 1024;
+  //SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 }

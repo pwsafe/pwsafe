@@ -581,7 +581,6 @@
 #define IDC_STATIC_DRAGNOTES            1338
 #define IDC_STATIC_DRAGURL              1339
 #define IDC_EDITREPORT                  1340
-#define IDC_BUTTON1                     1341
 
 // Next default values for new objects
 // 
@@ -589,7 +588,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        445
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1342
+#define _APS_NEXT_CONTROL_VALUE         1341
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif

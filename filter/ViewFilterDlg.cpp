@@ -150,9 +150,9 @@ BOOL CViewFilterDlg::OnInitDialog()
     itotalwidth += m_FilterLC.GetColumnWidth(i);
   }
 
-  int iMaxWidth = itotalwidth + 16;
-  int iMaxHeight = 1024;
-  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  //int iMaxWidth = itotalwidth + 16;
+  //int iMaxHeight = 1024;
+  //SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 
   UpdateData(FALSE);
 
@@ -340,12 +340,13 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
     m_FilterLC.SetColumnWidth(i, max(iw1, iw2));
     itotalwidth += max(iw1, iw2);
   }
+
   m_FilterLC.SetColumnWidth(4, LVSCW_AUTOSIZE_USEHEADER);
   itotalwidth += m_FilterLC.GetColumnWidth(4);
 
-  int iMaxWidth = itotalwidth + 24;
-  int iMaxHeight = 1024;
-  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  //int iMaxWidth = itotalwidth + 16;
+  //int iMaxHeight = 1024;
+  //SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 }
 
 UINT CViewFilterDlg::GetFieldTypeName(const FieldType &ft)
