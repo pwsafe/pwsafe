@@ -16,18 +16,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
-#include <map>
-
-#ifdef UNICODE
-typedef std::wifstream ifstreamT;
-typedef std::wofstream ofstreamT;
-#else
-typedef std::ifstream ifstreamT;
-typedef std::ofstream ofstreamT;
-#endif
-typedef std::vector<stringT>::const_iterator vciter;
-typedef std::vector<stringT>::iterator viter;
 
 namespace PWSFilters {
 
@@ -38,17 +26,15 @@ namespace PWSFilters {
                                  PWSfile::HeaderRecord &hdr);
 
   int WriteFilterXMLFile(const CMyString &filename, PWSfile::HeaderRecord hdr,
-                         const CMyString currentfile, MapFilters &mapfilters);
-  int WriteFilterXMLFile(std::ostringstream &oss, PWSfile::HeaderRecord hdr,
-                         const CMyString currentfile, MapFilters &mapfilters);
+                         const CMyString &currentfile, MapFilters &mapfilters);
+  int WriteFilterXMLFile(std::ostream &os, PWSfile::HeaderRecord hdr,
+                         const CMyString &currentfile, MapFilters &mapfilters);
   int ImportFilterXMLFile(MapFilters &mapfilters,
                           const CString &strXMLData,
                           const CString &strXMLFileName,
                           const CString &strXSDFileName, CString &strErrors);
 
   CString GetFilterDescription(const st_FilterData &st_fldata);
-
-  const char * szentry[];
 };
 
 #endif  // __PWSFILTERS_H
