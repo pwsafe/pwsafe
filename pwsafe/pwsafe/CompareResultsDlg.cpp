@@ -174,8 +174,9 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_LCResults.Invalidate();
 
   int itotalwidth = 0;
-  for (i = 0; i < m_nCols; i++)
+  for (i = 0; i < m_nCols; i++) {
     itotalwidth += m_LCResults.GetColumnWidth(i);
+  }
 
   int iMaxWidth = itotalwidth + 16;
   int iMaxHeight = 1024;
