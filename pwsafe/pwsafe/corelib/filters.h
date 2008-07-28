@@ -13,7 +13,6 @@
 #include "itemdata.h"
 #include "mystring.h"
 #include <time.h> // for time_t
-#include <bitset>
 #include <string>
 #include <vector>
 #include <map>
