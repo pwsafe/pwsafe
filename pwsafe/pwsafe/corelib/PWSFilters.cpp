@@ -40,9 +40,9 @@ typedef std::vector<stringT>::const_iterator vciter;
 typedef std::vector<stringT>::iterator viter;
 
 // These are in the same order as "enum MatchRule" in Match.h
-const char * PWSFilters::szentry[] = {"normal", 
-                                      "aliasbase", "alias", 
-                                      "shortcutbase", "shortcut"};
+static const char * szentry[] = {"normal", 
+                                 "aliasbase", "alias", 
+                                 "shortcutbase", "shortcut"};
 
 struct XMLFilterWriterToFile {
   XMLFilterWriterToFile(ofstream &ofs) :
@@ -61,57 +61,44 @@ private:
 };
 
 struct XMLFilterWriterToString {
-  XMLFilterWriterToString(ostringstream &oss) :
-  m_oss(oss)
+  XMLFilterWriterToString(ostream &os) :
+  m_os(os)
   {}
   // operator
   void operator()(pair<const CString, st_filters> p)
   {
     string xml = PWSFilters::GetFilterXML(p.second, false);
-    m_oss << xml.c_str();
+    m_os << xml.c_str();
   }
-
-
 private:
-  ostringstream &m_oss;
+  ostream &m_os;
 };
 
 int PWSFilters::WriteFilterXMLFile(const CMyString &filename,
                                    PWSfile::HeaderRecord hdr,
-                                   const CMyString currentfile,
+                                   const CMyString &currentfile,
                                    MapFilters &mapfilters)
 {
   ofstream of(filename);
   if (!of)
     return PWScore::CANT_OPEN_FILE;
-
-  string str_hdr = GetFilterXMLHeader(currentfile, hdr);
-
-  of << str_hdr;
-
-  XMLFilterWriterToFile put_filterxml(of);
-
-  for_each(mapfilters.begin(), mapfilters.end(), put_filterxml);
-
-  of << "</filters>" << endl;
-  of.close();
-
-  return PWScore::SUCCESS;
+  else
+    return PWSFilters::WriteFilterXMLFile(of,hdr, currentfile, mapfilters);
 }
 
-int PWSFilters::WriteFilterXMLFile(ostringstream &oss,
+int PWSFilters::WriteFilterXMLFile(ostream &os,
                                    PWSfile::HeaderRecord hdr,
-                                   const CMyString currentfile,
+                                   const CMyString &currentfile,
                                    MapFilters &mapfilters)
 {
   string str_hdr = GetFilterXMLHeader(currentfile, hdr);
-  oss << str_hdr;
+  os << str_hdr;
 
-  XMLFilterWriterToString put_filterxml(oss);
+  XMLFilterWriterToString put_filterxml(os);
 
   for_each(mapfilters.begin(), mapfilters.end(), put_filterxml);
 
-  oss << "</filters>";
+  os << "</filters>";
 
   return PWScore::SUCCESS;
 }
