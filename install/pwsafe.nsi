@@ -193,6 +193,7 @@ Section "Program Files" ProgramFiles
   File "..\docs\ChangeLog.txt"
   File "..\xml\pwsafe.xsd"
   File "..\xml\pwsafe.xsl"
+  File "..\xml\pwsafe_filter.xsd"
 
   ; If installing under Windows98, delete pwsafe.exe, rename
   ; p98.exe pwsafe.exe
@@ -323,6 +324,7 @@ Section "Uninstall"
   Delete "$INSTDIR\pwsafe.chm"
   Delete "$INSTDIR\pwsafe.xsd"
   Delete "$INSTDIR\pwsafe.xsl"
+  Delete "$INSTDIR\pwsafe_filter.xsd"
   Delete "$INSTDIR\LICENSE"
   Delete "$INSTDIR\README.TXT"
   Delete "$INSTDIR\ReleaseNotes.txt"

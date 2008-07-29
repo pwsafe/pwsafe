@@ -1164,14 +1164,18 @@ void PWSprefs::DeleteOldPrefs()
                            KEY_ALL_ACCESS,
                            &hSubkey);
   if (dw != ERROR_SUCCESS) {
+    TRACE(_T("PWSprefs::DeleteOldPrefs: RegOpenKeyEx failed\n"));
     return;
   }
 
   dw = m_app->DelRegTree(hSubkey, OldSubKey);
-  ASSERT(dw == ERROR_SUCCESS);
-
+  if (dw != ERROR_SUCCESS) {
+    TRACE(_T("PWSprefs::DeleteOldPrefs: DelRegTree failed\n"));
+  }
   dw = ::RegCloseKey(hSubkey);
-  ASSERT(dw == ERROR_SUCCESS);
+  if (dw != ERROR_SUCCESS) {
+    TRACE(_T("PWSprefs::DeleteOldPrefs: RegCloseKey failed\n"));
+  }
 }
 
 CString PWSprefs::GetXMLPreferences()

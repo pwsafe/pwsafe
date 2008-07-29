@@ -55,6 +55,8 @@
 	    Source='xml\pwsafe.xsd' Vital='yes' />
 	    <File Id='file7' Name='pwsafe.xsl' DiskId='1'
 	    Source='xml\pwsafe.xsl' Vital='yes' />
+	    <File Id='file8' Name='pwsafe_filter.xsd' DiskId='1'
+	    Source='xml\pwsafe_filter.xsd' Vital='yes' />
 	  </Component>
 	</Directory>
       </Directory>

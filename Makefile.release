@@ -37,7 +37,7 @@ CANDLE = $(WIXDIR)/candle.exe
 LIGHT = $(WIXDIR)/light.exe
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
-    xml/pwsafe.xsd xml/pwsafe.xsl \
+    xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
 	docs/ChangeLog.txt Release/pwsafe.exe help/default/pwsafe.chm
 
 .PHONY: all release bin-release src-release installables signatures \
