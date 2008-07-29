@@ -1187,10 +1187,11 @@ void DboxMain::OnImportXML()
     return;
 
   CString cs_title, cs_temp, cs_text;
-  stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe.xsd");
+  const stringT XSDfn(_T("pwsafe.xsd"));
+  stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
   if (!PWSfile::FileExists(XSDFilename.c_str())) {
-    cs_temp.LoadString(IDS_MISSINGXSD);
+    cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDS_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
@@ -1246,35 +1247,35 @@ void DboxMain::OnImportXML()
 
     cs_title.LoadString(IDS_XMLIMPORTFAILED);
     switch (rc) {
-      case PWScore::XML_FAILED_VALIDATION:
+    case PWScore::XML_FAILED_VALIDATION:
       {
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
         break;
       }
-      case PWScore::XML_FAILED_IMPORT:
+    case PWScore::XML_FAILED_IMPORT:
       {
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
         break;
       }
-      case PWScore::SUCCESS:
+    case PWScore::SUCCESS:
       {
         if (!strErrors.IsEmpty() ||
             bBadUnknownFileFields || bBadUnknownRecordFields) {
           if (!strErrors.IsEmpty())
             csErrors = strErrors + _T("\n");
-            if (bBadUnknownFileFields) {
-              cs_temp.Format(IDS_XMLUNKNFLDIGNORED, _T("header"));
-              csErrors += cs_temp + _T("\n");
-            }
-            if (bBadUnknownRecordFields) {
-              cs_temp.Format(IDS_XMLUNKNFLDIGNORED, _T("record"));
-              csErrors += cs_temp;
-            }
+          if (bBadUnknownFileFields) {
+            cs_temp.Format(IDS_XMLUNKNFLDIGNORED, _T("header"));
+            csErrors += cs_temp + _T("\n");
+          }
+          if (bBadUnknownRecordFields) {
+            cs_temp.Format(IDS_XMLUNKNFLDIGNORED, _T("record"));
+            csErrors += cs_temp;
+          }
 
-            cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                           fd.GetFileName(), numValidated, numImported, csErrors);
+          cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
+                         fd.GetFileName(), numValidated, numImported, csErrors);
 
-           ChangeOkUpdate();
+          ChangeOkUpdate();
         } else {
           const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
           const CString cs_imported(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
@@ -1285,8 +1286,8 @@ void DboxMain::OnImportXML()
         RefreshViews();
         break;
       }
-      default:
-        ASSERT(0);
+    default:
+      ASSERT(0);
     } // switch
 
     // Finish Report

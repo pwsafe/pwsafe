@@ -769,71 +769,72 @@ void DboxMain::ExportFilters(MapFilters &MapFilters)
 void DboxMain::OnImportFilters()
 {
   CString cs_title, cs_temp, cs_text;
-  stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+  const stringT XSDfn(_T("pwsafe_filter.xsd"));
+  stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
   if (!PWSfile::FileExists(XSDFilename.c_str())) {
-   cs_temp.LoadString(IDS_MISSINGXSD);
-   cs_title.LoadString(IDS_CANTVALIDATEXML);
-   MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
-   return;
+    cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
+    cs_title.LoadString(IDS_CANTVALIDATEXML);
+    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
+    return;
   }
 
   CFileDialog fd(TRUE,
-                _T("xml"),
-                NULL,
-                OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
-                _T("XML files (*.xml)|*.xml||"),
-                this);
+                 _T("xml"),
+                 NULL,
+                 OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                 _T("XML files (*.xml)|*.xml||"),
+                 this);
   cs_text.LoadString(IDS_PICKXMLFILE);
   fd.m_ofn.lpstrTitle = cs_text;
 
   INT_PTR rc = fd.DoModal();
   if (m_inExit) {
-   // If U3ExitNow called while in CFileDialog,
-   // PostQuitMessage makes us return here instead
-   // of exiting the app. Try resignalling 
-   PostQuitMessage(0);
-   return;
+    // If U3ExitNow called while in CFileDialog,
+    // PostQuitMessage makes us return here instead
+    // of exiting the app. Try resignalling 
+    PostQuitMessage(0);
+    return;
   }
   if (rc == IDCANCEL)
-   return;
+    return;
 
   if (rc == IDOK) {
-   CString strErrors, csErrors(_T(""));
-   CString XMLFilename = (CMyString)fd.GetPathName();
-   CWaitCursor waitCursor;  // This may take a while!
+    CString strErrors, csErrors(_T(""));
+    CString XMLFilename = (CMyString)fd.GetPathName();
+    CWaitCursor waitCursor;  // This may take a while!
 
-   rc = PWSFilters::ImportFilterXMLFile(m_MapGlobalFilters, _T(""), XMLFilename,
-                                        XSDFilename.c_str(), strErrors);
-   waitCursor.Restore();  // Restore normal cursor
+    rc = PWSFilters::ImportFilterXMLFile(m_MapGlobalFilters, _T(""), XMLFilename,
+                                         XSDFilename.c_str(), strErrors);
+    waitCursor.Restore();  // Restore normal cursor
 
-   switch (rc) {
-     case PWScore::XML_FAILED_VALIDATION:
-     {
-       cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
-       break;
-     }
-     case PWScore::XML_FAILED_IMPORT:
-     {
-       cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
-       break;
-     }
-     case PWScore::SUCCESS:
-     {
-       if (!strErrors.IsEmpty()) {
-         csErrors = strErrors + _T("\n");
-         cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(), csErrors);
-       } else {
-         cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
-       }
-       break;
-     }
-     default:
-       ASSERT(0);
-   } // switch
+    switch (rc) {
+    case PWScore::XML_FAILED_VALIDATION:
+      {
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
+        break;
+      }
+    case PWScore::XML_FAILED_IMPORT:
+      {
+        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
+        break;
+      }
+    case PWScore::SUCCESS:
+      {
+        if (!strErrors.IsEmpty()) {
+          csErrors = strErrors + _T("\n");
+          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(), csErrors);
+        } else {
+          cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
+        }
+        break;
+      }
+    default:
+      ASSERT(0);
+    } // switch
 
-   cs_title.LoadString(IDS_STATUS);
-   MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
+    cs_title.LoadString(IDS_STATUS);
+    MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
   }
 }
 
