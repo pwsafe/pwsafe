@@ -10,6 +10,8 @@
 // PWFiltersDlg.cpp : implementation file
 //
 
+#include <algorithm>
+
 #include "../stdafx.h"
 #include "../ThisMfcApp.h"
 #include "PWFiltersDlg.h"
@@ -39,17 +41,15 @@ CPWFiltersDlg::~CPWFiltersDlg()
 BOOL CPWFiltersDlg::OnInitDialog()
 {
   std::vector<UINT> vibottombtns;
+  UINT main_bns[] = {IDC_APPLY, IDOK, IDCANCEL, ID_HELP};
+  UINT other_bns[] = {IDOK, IDCANCEL, ID_HELP};
 
-  if (m_iType == DFTYPE_MAIN) {
-    vibottombtns.push_back(IDC_APPLY);
-    vibottombtns.push_back(IDOK);
-    vibottombtns.push_back(IDCANCEL);
-    vibottombtns.push_back(ID_HELP);
-  } else {
-    vibottombtns.push_back(IDOK);
-    vibottombtns.push_back(IDCANCEL);
-    vibottombtns.push_back(ID_HELP);
-  }
+  if (m_iType == DFTYPE_MAIN)
+    vibottombtns.assign(main_bns,
+                        main_bns + sizeof(main_bns)/sizeof(main_bns[0]));
+  else
+    vibottombtns.assign(other_bns,
+                        other_bns + sizeof(other_bns)/sizeof(other_bns[0]));
 
   AddMainCtrlID(IDC_FILTERLC);
   AddBtnsCtrlIDs(vibottombtns);
@@ -140,7 +140,7 @@ void CPWFiltersDlg::OnOk()
   if (UpdateData(TRUE) == FALSE)
     return;
 
-  if (m_filtername.IsEmpty()) {
+  if (m_iType == DFTYPE_MAIN && m_filtername.IsEmpty()) {
     AfxMessageBox(IDS_FILTERNAMEEMPTY);
     return;
   }
@@ -154,6 +154,37 @@ void CPWFiltersDlg::OnOk()
   CPWResizeDialog::OnOK();
 }
 
+// Small validation functor for finding
+// first row that fails validation
+struct FilterValidator
+{
+  FilterValidator(CString &text, int &iHistory, int &iPolicy)
+    : i(0), text(text), iHistory(iHistory), iPolicy(iPolicy) {}
+  bool operator()(const st_FilterData &st_fldata) {
+    // return true if FAILS validation, so that find_if will
+    // "find" it.
+    if (st_fldata.bFilterActive &&
+        (st_fldata.mtype != PWSMatch::MT_PWHIST &&
+         st_fldata.mtype != PWSMatch::MT_POLICY) &&
+        (st_fldata.mtype == PWSMatch::MT_INVALID ||
+         st_fldata.rule == PWSMatch::MR_INVALID)) {
+      text.Format(IDS_FILTERINCOMPLETE, i + 1);
+      return true;
+    }
+    if (st_fldata.mtype == PWSMatch::MT_PWHIST)
+      iHistory = i;
+    if (st_fldata.mtype == PWSMatch::MT_POLICY)
+      iPolicy = i;
+    i++;
+    return false;
+  }
+private:
+  int i;
+  int &iHistory;
+  int &iPolicy;
+  CString &text;
+};
+
 bool CPWFiltersDlg::VerifyFilters()
 {
   // Verify that the active filters have a criterion set
@@ -161,15 +192,13 @@ bool CPWFiltersDlg::VerifyFilters()
     return false;
 
   // First non-History/non-Policy filters on the main filter dialog
-  int i(0);
-  int iHistory(-1), iPolicy(-1);
   vfilterdata *pvfilterdata(NULL);
   switch (m_iType) {
-    case DFTYPE_MAIN:
-      pvfilterdata = &m_pfilters->vMfldata;
-      break;
-    case DFTYPE_PWHISTORY:
-      pvfilterdata = &m_pfilters->vHfldata;
+  case DFTYPE_MAIN:
+    pvfilterdata = &m_pfilters->vMfldata;
+    break;
+  case DFTYPE_PWHISTORY:
+    pvfilterdata = &m_pfilters->vHfldata;
       break;
     case DFTYPE_PWPOLICY:
       pvfilterdata = &m_pfilters->vPfldata;
@@ -179,28 +208,16 @@ bool CPWFiltersDlg::VerifyFilters()
   }
 
   CString cs_text;
-  vfilterdata::iterator Flt_iter;
-  for (Flt_iter = pvfilterdata->begin(); Flt_iter != pvfilterdata->end(); 
-       Flt_iter++) {
-    st_FilterData &st_fldata = *Flt_iter;
-    if (st_fldata.bFilterActive &&
-        (st_fldata.mtype != PWSMatch::MT_PWHIST &&
-         st_fldata.mtype != PWSMatch::MT_POLICY) &&
-        (st_fldata.mtype == PWSMatch::MT_INVALID ||
-         st_fldata.rule == PWSMatch::MR_INVALID)) {
-      cs_text.Format(IDS_FILTERINCOMPLETE, i + 1);
+  int iHistory(-1), iPolicy(-1);
+  FilterValidator fv(cs_text, iHistory, iPolicy);
+  if (find_if(pvfilterdata->begin(), pvfilterdata->end(), fv) !=
+      pvfilterdata->end()) {
       AfxMessageBox(cs_text);
       return false;
     }
-    if (st_fldata.mtype == PWSMatch::MT_PWHIST)
-      iHistory = i;
-    if (st_fldata.mtype == PWSMatch::MT_POLICY)
-      iPolicy = i;
-    i++;
-  }
-
   if (m_iType == DFTYPE_MAIN) {
-    // Now check that the filters were correct on the History/Polict sub-filter dialogs
+    // Now check that the filters were correct on
+    // History/Policy sub-filter dialogs
     if (m_FilterLC.IsPWHIST_Set() && !m_FilterLC.IsHistoryGood()) {
       cs_text.Format(IDS_FILTERINCOMPLETE, iHistory + 1);
       AfxMessageBox(cs_text);
