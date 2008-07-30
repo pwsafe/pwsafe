@@ -67,6 +67,7 @@ void CViewFilterDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CViewFilterDlg, CPWResizeDialog)
+  ON_WM_SIZE()
   ON_BN_CLICKED(IDC_CURRENTFILTERSBTN, OnBnClickedCurrent)
   ON_BN_CLICKED(IDC_DATABASEFILTERSBTN, OnBnClickedDBStore)
   ON_BN_CLICKED(IDC_GLOBALFILTERBTN, OnBnClickedGlobalStore)
@@ -119,24 +120,24 @@ BOOL CViewFilterDlg::OnInitDialog()
 
   CString cs_text;
   cs_text = _T(" # ");
-  m_FilterLC.InsertColumn(0, cs_text);
+  m_FilterLC.InsertColumn(VFLC_FILTER_NUMBER, cs_text);
   cs_text.LoadString(IDS_FILTERACTIVE);
   cs_text += _T("?");
-  m_FilterLC.InsertColumn(1, cs_text);
+  m_FilterLC.InsertColumn(VFLC_FILTER_ACTIVE, cs_text);
   cs_text.LoadString(IDS_AND_OR);
-  m_FilterLC.InsertColumn(2, cs_text);
+  m_FilterLC.InsertColumn(VFLC_AND_OR, cs_text);
   cs_text.LoadString(IDS_FILTERFIELD);
-  m_FilterLC.InsertColumn(3, cs_text);
+  m_FilterLC.InsertColumn(VFLC_FIELD, cs_text);
   cs_text.LoadString(IDS_CRITERIA_DESC);
-  m_FilterLC.InsertColumn(4, cs_text);
+  m_FilterLC.InsertColumn(VFLC_CRITERIA_TEXT, cs_text);
 
   // Make first 4 columns centered
   LVCOLUMN lvc;
   lvc.mask = LVCF_FMT;
   lvc.fmt = LVCFMT_CENTER;
-  m_FilterLC.SetColumn(0, &lvc);
-  m_FilterLC.SetColumn(1, &lvc);
-  m_FilterLC.SetColumn(2, &lvc);
+  m_FilterLC.SetColumn(VFLC_FILTER_NUMBER, &lvc);
+  m_FilterLC.SetColumn(VFLC_FILTER_ACTIVE, &lvc);
+  m_FilterLC.SetColumn(VFLC_AND_OR, &lvc);
 
   if (m_selectedstore != VF_CURRENT) {
     m_combo.SetCurSel(0);
@@ -145,14 +146,14 @@ BOOL CViewFilterDlg::OnInitDialog()
     SelectFilter(m_pfilters);
 
   int itotalwidth = 0;
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < VFLC_NUM_COLUMNS; i++) {
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     itotalwidth += m_FilterLC.GetColumnWidth(i);
   }
 
-  //int iMaxWidth = itotalwidth + 16;
-  //int iMaxHeight = 1024;
-  //SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  int iMaxWidth = itotalwidth + 16;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 
   UpdateData(FALSE);
 
@@ -261,12 +262,12 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
     i++;
     CString cs_history, cs_temp;
     cs_history.LoadString(IDS_SETPWHISTFILTERS);
-    iItem = m_FilterLC.InsertItem(i, _T("-"));
-    m_FilterLC.SetItemText(iItem, 1, _T("---"));
-    m_FilterLC.SetItemText(iItem, 2, _T("---"));
-    m_FilterLC.SetItemText(iItem, 3, _T("---"));
+    iItem = m_FilterLC.InsertItem(i /* VFLC_FILTER_NUMBER */, _T("-"));
+    m_FilterLC.SetItemText(iItem, VFLC_FILTER_ACTIVE, _T("---"));
+    m_FilterLC.SetItemText(iItem, VFLC_AND_OR, _T("---"));
+    m_FilterLC.SetItemText(iItem, VFLC_FIELD, _T("---"));
     cs_temp = _T("---  ") + cs_history + _T("  ---");
-    m_FilterLC.SetItemText(iItem, 4, cs_temp);
+    m_FilterLC.SetItemText(iItem, VFLC_CRITERIA_TEXT, cs_temp);
   }
 
   n = 0;
@@ -287,23 +288,23 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
     else
       cs_ltype = _T("");
 
-    iItem = m_FilterLC.InsertItem(i, cs_num);
-    m_FilterLC.SetItemText(iItem, 1, cs_act);
-    m_FilterLC.SetItemText(iItem, 2, cs_ltype);
-    m_FilterLC.SetItemText(iItem, 3, cs_ftype);
-    m_FilterLC.SetItemText(iItem, 4, cs_criteria);
+    iItem = m_FilterLC.InsertItem(i /* VFLC_FILTER_NUMBER */, cs_num);
+    m_FilterLC.SetItemText(iItem, VFLC_FILTER_ACTIVE, cs_act);
+    m_FilterLC.SetItemText(iItem, VFLC_AND_OR, cs_ltype);
+    m_FilterLC.SetItemText(iItem, VFLC_FIELD, cs_ftype);
+    m_FilterLC.SetItemText(iItem, VFLC_CRITERIA_TEXT, cs_criteria);
   }
 
   if (bPolicy) {
     i++;
     CString cs_policy, cs_temp;
     cs_policy.LoadString(IDS_SETPWPOLICYFILTER);
-    iItem = m_FilterLC.InsertItem(i, _T("-"));
-    m_FilterLC.SetItemText(iItem, 1, _T("---"));
-    m_FilterLC.SetItemText(iItem, 2, _T("---"));
-    m_FilterLC.SetItemText(iItem, 3, _T("---"));
+    iItem = m_FilterLC.InsertItem(i /* VFLC_FILTER_NUMBER */, _T("-"));
+    m_FilterLC.SetItemText(iItem, VFLC_FILTER_ACTIVE, _T("---"));
+    m_FilterLC.SetItemText(iItem, VFLC_AND_OR, _T("---"));
+    m_FilterLC.SetItemText(iItem, VFLC_FIELD, _T("---"));
     cs_temp = _T("---  ") + cs_policy + _T("  ---");
-    m_FilterLC.SetItemText(iItem, 4, cs_temp);
+    m_FilterLC.SetItemText(iItem, VFLC_CRITERIA_TEXT, cs_temp);
   }
 
   n = 0;
@@ -332,7 +333,7 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
   }
 
   int itotalwidth = 0;
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < VFLC_CRITERIA_TEXT; i++) {
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE);
     int iw1 =  m_FilterLC.GetColumnWidth(i);
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
@@ -341,12 +342,23 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
     itotalwidth += max(iw1, iw2);
   }
 
-  m_FilterLC.SetColumnWidth(4, LVSCW_AUTOSIZE_USEHEADER);
-  itotalwidth += m_FilterLC.GetColumnWidth(4);
+  m_FilterLC.SetColumnWidth(VFLC_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
+  itotalwidth += m_FilterLC.GetColumnWidth(VFLC_CRITERIA_TEXT);
 
-  //int iMaxWidth = itotalwidth + 16;
-  //int iMaxHeight = 1024;
-  //SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  int iMaxWidth = itotalwidth + 32;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+}
+
+void CViewFilterDlg::OnSize(UINT nType, int cx, int cy)
+{
+  CPWResizeDialog::OnSize(nType, cx, cy);
+
+  if (!IsWindow(m_FilterLC.GetSafeHwnd()))
+    return;
+
+  // As main control is a CListCtrl, need to do this on the last column
+  m_FilterLC.SetColumnWidth(VFLC_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
 }
 
 UINT CViewFilterDlg::GetFieldTypeName(const FieldType &ft)

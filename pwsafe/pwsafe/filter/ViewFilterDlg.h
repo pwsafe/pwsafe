@@ -15,6 +15,14 @@
 
 #include <vector>
 
+// Subitem indices
+#define VFLC_FILTER_NUMBER 0
+#define VFLC_FILTER_ACTIVE 1
+#define VFLC_AND_OR        2
+#define VFLC_FIELD         3
+#define VFLC_CRITERIA_TEXT 4
+#define VFLC_NUM_COLUMNS   5
+
 enum {VF_CURRENT = 0, VF_DATABASE, VF_GLOBAL};
 
 class CViewFilterDlg : public CPWResizeDialog
@@ -43,6 +51,7 @@ protected:
   afx_msg void OnFilterSelected();
   afx_msg void OnBeginTrack(NMHDR * pNotifyStruct, LRESULT* pResult);
   afx_msg void OnItemchanging(NMHDR * pNotifyStruct, LRESULT* pResult);
+  afx_msg void OnSize(UINT nType, int cx, int cy);
   //}}AFX_MSG
  
   DECLARE_MESSAGE_MAP()
