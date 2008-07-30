@@ -101,9 +101,9 @@ BOOL CPWFiltersDlg::OnInitDialog()
     itotalwidth += m_FilterLC.GetColumnWidth(i);
   }
 
-  //int iMaxWidth = itotalwidth + 16;
-  //int iMaxHeight = 1024;
-  //SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  int iMaxWidth = itotalwidth + 16;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 
   // Update dialog window text
   UpdateStatusText();
@@ -128,6 +128,7 @@ void CPWFiltersDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPWFiltersDlg, CPWResizeDialog)
+  ON_WM_SIZE()
   ON_BN_CLICKED(IDOK, OnOk)
   ON_EN_KILLFOCUS(IDC_FILTERNAME, OnFNameKillFocus)
   ON_NOTIFY(HDN_BEGINTRACK, IDC_FILTERLC_HEADER, OnBeginTrack)
@@ -358,7 +359,7 @@ void CPWFiltersDlg::OnProcessKey(UINT nID)
 void CPWFiltersDlg::UpdateDialogMaxWidth()
 {
   int itotalwidth = 0;
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < FLC_NUM_COLUMNS - 1; i++) {
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE);
     int iw1 =  m_FilterLC.GetColumnWidth(i);
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
@@ -367,10 +368,21 @@ void CPWFiltersDlg::UpdateDialogMaxWidth()
     itotalwidth += max(iw1, iw2);
   }
 
-  m_FilterLC.SetColumnWidth(4, LVSCW_AUTOSIZE_USEHEADER);
-  itotalwidth += m_FilterLC.GetColumnWidth(4);
+  m_FilterLC.SetColumnWidth(FLC_NUM_COLUMNS - 1, LVSCW_AUTOSIZE_USEHEADER);
+  itotalwidth += m_FilterLC.GetColumnWidth(FLC_NUM_COLUMNS - 1);
 
-  //int iMaxWidth = itotalwidth + 16;
-  //int iMaxHeight = 1024;
-  //SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  int iMaxWidth = itotalwidth + 32;
+  int iMaxHeight = 1024;
+  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+}
+
+void CPWFiltersDlg::OnSize(UINT nType, int cx, int cy)
+{
+  CPWResizeDialog::OnSize(nType, cx, cy);
+
+  if (!IsWindow(m_FilterLC.GetSafeHwnd()))
+    return;
+
+  // As main control is a CListCtrl, need to do this on the last column
+  m_FilterLC.SetColumnWidth(FLC_NUM_COLUMNS - 1, LVSCW_AUTOSIZE_USEHEADER);
 }

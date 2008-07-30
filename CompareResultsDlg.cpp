@@ -860,9 +860,11 @@ void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
 {
   CPWResizeDialog::OnSize(nType, cx, cy);
 
-  CWnd *pwndListCtrl = GetDlgItem(IDC_RESULTLIST);
-  if (!IsWindow(pwndListCtrl->GetSafeHwnd()))
+  if (!IsWindow(m_LCResults.GetSafeHwnd()))
     return;
+
+  // As main control is a CListCtrl, need to do this on the last column
+  m_LCResults.SetColumnWidth(m_nCols - 1, LVSCW_AUTOSIZE_USEHEADER);
 
   // CPWResizeDialog only handles main control, bottom buttons
   // and status bar - we need to do the ones above the main control

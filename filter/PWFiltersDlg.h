@@ -48,6 +48,7 @@ protected:
   afx_msg void OnBeginTrack(NMHDR * pNotifyStruct, LRESULT* pResult);
   afx_msg void OnItemchanging(NMHDR * pNotifyStruct, LRESULT* pResult);
   afx_msg void OnProcessKey(UINT nID);
+  afx_msg void OnSize(UINT nType, int cx, int cy);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
