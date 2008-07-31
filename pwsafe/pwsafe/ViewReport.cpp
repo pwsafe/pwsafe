@@ -22,7 +22,7 @@ IMPLEMENT_DYNAMIC(CViewReport, CPWResizeDialog)
 CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
                          CReport *pRpt /*=NULL*/)
 	: CPWResizeDialog(CViewReport::IDD, pParent),
-  m_pRpt(pRpt)
+  m_pRpt(pRpt), m_bMemoryAllocOK(false)
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
 
@@ -72,14 +72,82 @@ BOOL CViewReport::OnInitDialog()
   if (m_pDbx == NULL)
     GetDlgItem(IDC_REPORT2CLIPBOARD)->EnableWindow(FALSE);
 
-  // Free original handle
-  ::LocalFree(m_editreport.GetHandle());
-
+  // Get new edit string (as per MS doc.)
   HLOCAL h = ::LocalAlloc(LHND, m_dwDatasize + sizeof(TCHAR));
-  LPTSTR lpszText = (LPTSTR)::LocalLock(h);
+  if (h == NULL) {
+    TRACE(_T("ViewReport: Unable to allocate memory.  Can't do this properly!\n"));
+    m_editreport.SetWindowText((LPCTSTR)m_pData);
+    return FALSE;
+  }
+  m_bMemoryAllocOK = true;
+
+  LPCTSTR lpszText = (LPCTSTR)::LocalLock(h);
+  memcpy((void *)lpszText, m_pData, m_dwDatasize);
+
+  // Now work out maximum size of dialog
+  CClientDC dc(GetDlgItem(IDC_EDITREPORT));
+
+  //get the size of the text
+  CRect textRect(0, 0, 32767, 32767);
+  CFont *pOldFont = dc.SelectObject(m_editreport.GetFont());
+
+  // Get Height
+  dc.DrawText(lpszText, m_dwDatasize, &textRect, DT_CALCRECT | DT_NOCLIP);
+
+  // Get width of longest line - ignores tabs - but no issue as edit control has
+  // horizontal scroll bars
+  TCHAR pSeps[] = _T("\r\n");
+  int iMaxWidth(-1);
+#if _MSC_VER >= 1400
+  // Capture individual lines:
+  TCHAR *next_token;
+  TCHAR *token = _tcstok_s((LPTSTR)lpszText, pSeps, &next_token);
+  while(token) {
+    CSize sz = dc.GetTextExtent(token, (int)_tcslen(token));
+    if (sz.cx > iMaxWidth)
+      iMaxWidth = sz.cx;
+    token = _tcstok_s(NULL, pSeps, &next_token);
+  }
+#else
+  // Capture individual lines:
+  TCHAR *token = _tcstok(pTemp, pSeps);
+  while(token) {
+    CSize sz = dc.GetTextExtent(token, (int)_tcslen(token));
+    if (sz.cx > iMaxWidth)
+      iMaxWidth = sz.cx;
+    token = _tcstok(NULL, pSeps);
+  }
+#endif
+
+  dc.SelectObject(pOldFont);
+
+  //get the size of the edit control and the dialog
+  CRect editRect, dlgRect;
+  m_editreport.GetClientRect(&editRect);
+  GetClientRect(&dlgRect);
+
+  // Get height and width of characters
+  TEXTMETRIC tm;
+  dc.GetTextMetrics(&tm);
+
+  // Set size based on current size (add spare in case)
+  int iAdditionalHeight(0), iAdditionalWidth(0);
+  if (iMaxWidth > editRect.Width())
+    iAdditionalWidth = (iMaxWidth - editRect.Width()) + 2 * tm.tmMaxCharWidth;
+  if (textRect.Height() > editRect.Height())
+    iAdditionalHeight = (textRect.Height() - editRect.Height()) + 2 * tm.tmHeight;
+
+  // Set it
+  SetMaxHeightWidth(dlgRect.Height() + iAdditionalHeight, 
+                    dlgRect.Width()  + iAdditionalWidth);
+
+  // Refresh data as _tcstok trashes it!
   memcpy((void *)lpszText, m_pData, m_dwDatasize);
   ::LocalUnlock(h);
 
+  // Free original handle
+  ::LocalFree(m_editreport.GetHandle());
+  // Set ours
   m_editreport.SetHandle(h);
 
   return FALSE;
@@ -100,15 +168,18 @@ void CViewReport::SendToClipBoard()
 
 void CViewReport::Finish()
 {
-  HLOCAL h = m_editreport.GetHandle();
-  LPCTSTR lpszText = (LPCTSTR)::LocalLock(h);
+  if (m_bMemoryAllocOK) {
+    HLOCAL h = m_editreport.GetHandle();
+    LPCTSTR lpszText = (LPCTSTR)::LocalLock(h);
 
-  if (m_dwDatasize > 0) {
-    trashMemory((void *)lpszText, m_dwDatasize);
-    m_dwDatasize = 0;
+    if (m_dwDatasize > 0) {
+      trashMemory((void *)lpszText, m_dwDatasize);
+      m_dwDatasize = 0;
+    }
+
+    ::LocalUnlock(h);
   }
 
-  ::LocalUnlock(h);
   CPWResizeDialog::OnCancel();
 }
 
