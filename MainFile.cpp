@@ -2076,6 +2076,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
     rpt.WriteLine(buffer);
+    rpt.WriteLine();
   } else {
     if (m_subgroup_set == BST_UNCHECKED) {
       cs_temp.LoadString(IDS_NONE);

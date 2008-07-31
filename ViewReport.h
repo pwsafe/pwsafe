@@ -38,6 +38,7 @@ protected:
   CEdit m_editreport;
   CBrush m_backgroundbrush;
   COLORREF m_textcolor, m_backgroundcolour;
+  bool m_bMemoryAllocOK;
 
 
   afx_msg void Save();
