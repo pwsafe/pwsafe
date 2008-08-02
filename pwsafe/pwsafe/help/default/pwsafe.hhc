@@ -82,6 +82,10 @@
 			<param name="Local" value="html\export.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Filtering Entries">
+			<param name="Local" value="html\filters.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Command Line Arguments">
 			<param name="Local" value="html\cli.html">
 			</OBJECT>
