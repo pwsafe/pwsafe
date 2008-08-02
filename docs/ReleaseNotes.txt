@@ -1,5 +1,5 @@
-Password Safe 3.14 Release Notes - ????? 2008
-=============================================
+Password Safe 3.14 Release Notes - August 2008
+==============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
