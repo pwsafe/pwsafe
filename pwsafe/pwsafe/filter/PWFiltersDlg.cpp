@@ -117,7 +117,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
 
 void CPWFiltersDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CPWResizeDialog::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CPWFiltersDlg)
   DDX_Text(pDX, IDC_FILTERNAME, m_filtername);
@@ -237,7 +237,7 @@ bool CPWFiltersDlg::VerifyFilters()
 void CPWFiltersDlg::OnHelp()
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/Welcome.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/filters.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
@@ -334,7 +334,7 @@ BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)
     return CWnd::PreTranslateMessage(pMsg);
 
   // Otherwise - give to the Dialog!
-  return CPWDialog::PreTranslateMessage(pMsg);
+  return CPWResizeDialog::PreTranslateMessage(pMsg);
 }
 
 void CPWFiltersDlg::OnProcessKey(UINT nID)
