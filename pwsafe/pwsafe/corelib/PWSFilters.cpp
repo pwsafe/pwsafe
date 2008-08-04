@@ -512,11 +512,13 @@ void PWSFilters::GetFilterTestXML(const st_FilterData &st_fldata, ostringstream 
 
   switch (st_fldata.mtype) {
     case PWSMatch::MT_STRING:
-      utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
-      oss << sztab << sztab << sztab << sztab << "<string>" << utf8
-                                              << "</string>" << szendl;
-      oss << sztab << sztab << sztab << sztab << "<case>" << st_fldata.fcase 
-                                              << "</case>" << szendl;
+      if (!st_fldata.fstring.IsEmpty()) { // string empty if 'present' or 'not present'
+        utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
+        oss << sztab << sztab << sztab << sztab << "<string>" << utf8
+            << "</string>" << szendl;
+        oss << sztab << sztab << sztab << sztab << "<case>" << st_fldata.fcase 
+            << "</case>" << szendl;
+      }
       break;
     case PWSMatch::MT_PASSWORD:
       utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
