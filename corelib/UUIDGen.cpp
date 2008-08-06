@@ -65,7 +65,8 @@ static void hexify(unsigned char byte, char *&out)
   *out++ = v[byte & 0xf];
 }
 
-void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_NH_t &uuid_buffer)
+void CUUIDGen::GetUUIDStr(const uuid_array_t &uuid_array,
+                          uuid_str_NH_t &uuid_buffer)
 {
   // No hyphens
   char *p = uuid_buffer;
@@ -74,7 +75,8 @@ void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_NH_t &uuid_buffer)
   *p = '\0';
 }
 
-void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_WH_t &uuid_buffer)
+void CUUIDGen::GetUUIDStr(const uuid_array_t &uuid_array,
+                          uuid_str_WH_t &uuid_buffer)
 {
   // With hyphens!
   char *p = uuid_buffer;

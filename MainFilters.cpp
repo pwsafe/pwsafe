@@ -553,23 +553,23 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
 
 void DboxMain::OnSelectFilter()
 {
-  if (m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
+  if (m_core.m_Filters.empty() && m_GlobalFilters.empty())
     return;
 
   // Get DB filter via name and replace m_filters
- MapFilters_Iter mf_iter;
+  PWSFilters::iterator mf_iter;
 
   std::vector<CString> vcs_db;
-  for (mf_iter = m_core.m_MapDatabaseFilters.begin();
-       mf_iter != m_core.m_MapDatabaseFilters.end();
+  for (mf_iter = m_core.m_Filters.begin();
+       mf_iter != m_core.m_Filters.end();
        mf_iter++) {
     vcs_db.push_back(mf_iter->first);
   }
 
   // Get Global filter via name and replace m_filters
   std::vector<CString> vcs_gbl;
-  for (mf_iter = m_MapGlobalFilters.begin();
-       mf_iter != m_MapGlobalFilters.end();
+  for (mf_iter = m_GlobalFilters.begin();
+       mf_iter != m_GlobalFilters.end();
        mf_iter++) {
     vcs_gbl.push_back(mf_iter->first);
   }
@@ -583,14 +583,14 @@ void DboxMain::OnSelectFilter()
     int istore(-1);
     CString cs_selected = fa.GetSelected(istore);
     if (!cs_selected.IsEmpty() && istore >= 0) {
-      MapFilters_cIter mf_citer;
-      MapFilters_cIter mf_cend;
+      PWSFilters::const_iterator mf_citer;
+      PWSFilters::const_iterator mf_cend;
       if (istore == 0) {
-        mf_citer = m_core.m_MapDatabaseFilters.find(cs_selected);
-        mf_cend = m_core.m_MapDatabaseFilters.end();
+        mf_citer = m_core.m_Filters.find(cs_selected);
+        mf_cend = m_core.m_Filters.end();
       } else {
-        mf_citer = m_MapGlobalFilters.find(cs_selected);
-        mf_cend = m_MapGlobalFilters.end();
+        mf_citer = m_GlobalFilters.find(cs_selected);
+        mf_cend = m_GlobalFilters.end();
       }
 
       if (mf_citer != mf_cend) {
@@ -608,15 +608,15 @@ void DboxMain::OnSaveFilter()
   INT_PTR rc = sf.DoModal();
 
   if (rc == IDOK) {
-    MapFilters_cIter mf_citer;
-    MapFilters_cIter mf_cend;
+    PWSFilters::const_iterator mf_citer;
+    PWSFilters::const_iterator mf_cend;
     int istore = sf.GetSelectStore();
     if (istore == 0) {
-      mf_citer = m_core.m_MapDatabaseFilters.find(m_filters.fname);
-      mf_cend =  m_core.m_MapDatabaseFilters.end();
+      mf_citer = m_core.m_Filters.find(m_filters.fname);
+      mf_cend =  m_core.m_Filters.end();
     } else {
-      mf_citer = m_MapGlobalFilters.find(m_filters.fname);
-      mf_cend =  m_MapGlobalFilters.end();
+      mf_citer = m_GlobalFilters.find(m_filters.fname);
+      mf_cend =  m_GlobalFilters.end();
     }
 
     int rc(IDYES);
@@ -626,18 +626,19 @@ void DboxMain::OnSaveFilter()
       rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDYES)
         if (istore == 0) {
-          m_core.m_MapDatabaseFilters.erase(m_filters.fname);
+          m_core.m_Filters.erase(m_filters.fname);
         } else {
-          m_MapGlobalFilters.erase(m_filters.fname);
+          m_GlobalFilters.erase(m_filters.fname);
         }
       }
       if (rc == IDYES) {
         if (istore == 0) {
-          m_core.m_MapDatabaseFilters.insert(MapFilters_Pair(m_filters.fname, m_filters));
+          m_core.m_Filters.insert(PWSFilters::Pair(m_filters.fname,
+                                                           m_filters));
           SetChanged(Data);
           ChangeOkUpdate();
         } else
-          m_MapGlobalFilters.insert(MapFilters_Pair(m_filters.fname, m_filters));
+          m_GlobalFilters.insert(PWSFilters::Pair(m_filters.fname, m_filters));
       }
   }
 }
@@ -645,35 +646,35 @@ void DboxMain::OnSaveFilter()
 void DboxMain::OnViewFilter()
 {
   int numactive = m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive;
-  if (numactive == 0 && m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
+  if (numactive == 0 && m_core.m_Filters.empty() && m_GlobalFilters.empty())
     return;
 
   st_filters *pfilters = (numactive == 0) ? NULL : &m_filters;
  
   CViewFilterDlg vf(this, pfilters,
-                    m_core.m_MapDatabaseFilters, m_MapGlobalFilters);
+                    m_core.m_Filters, m_GlobalFilters);
   vf.DoModal();
  }
 
 void DboxMain::OnDeleteFilter()
 {
-  if (m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
+  if (m_core.m_Filters.empty() && m_GlobalFilters.empty())
     return;
 
   // Delete filter by name from DB filters
-  MapFilters_Iter mf_iter;
+  PWSFilters::iterator mf_iter;
 
   std::vector<CString> vcs_db;
-  for (mf_iter = m_core.m_MapDatabaseFilters.begin();
-       mf_iter != m_core.m_MapDatabaseFilters.end();
+  for (mf_iter = m_core.m_Filters.begin();
+       mf_iter != m_core.m_Filters.end();
        mf_iter++) {
     vcs_db.push_back(mf_iter->first);
   }
 
   // Delete filter by name from DB filters
   std::vector<CString> vcs_gbl;
-  for (mf_iter = m_MapGlobalFilters.begin();
-       mf_iter != m_MapGlobalFilters.end();
+  for (mf_iter = m_GlobalFilters.begin();
+       mf_iter != m_GlobalFilters.end();
        mf_iter++) {
     vcs_gbl.push_back(mf_iter->first);
   }
@@ -689,12 +690,12 @@ void DboxMain::OnDeleteFilter()
     CString cs_selected = fa.GetSelected(istore);
     if (!cs_selected.IsEmpty() && istore >= 0) {
       if (istore == 0) {
-        m_core.m_MapDatabaseFilters.erase(cs_selected);
+        m_core.m_Filters.erase(cs_selected);
         bDone = true;
         SetChanged(Data);
         ChangeOkUpdate();
       } else {
-          m_MapGlobalFilters.erase(cs_selected);
+          m_GlobalFilters.erase(cs_selected);
           bDone = true;
       }
       if (bDone)
@@ -706,26 +707,27 @@ void DboxMain::OnDeleteFilter()
 void DboxMain::OnExportFilters()
 {
   CExportFiltersDlg ef;
-  ef.SetAvailableStores(!m_core.m_MapDatabaseFilters.empty(), !m_MapGlobalFilters.empty());
+  ef.SetAvailableStores(!m_core.m_Filters.empty(), !m_GlobalFilters.empty());
   INT_PTR rc = ef.DoModal();
 
   if (rc == IDOK) {
     int istore = ef.GetSelected();
     if (istore == 0)
-      ExportFilters(m_core.m_MapDatabaseFilters);
+      ExportFilters(m_core.m_Filters);
     else if (istore == 1)
-      ExportFilters(m_MapGlobalFilters);
+      ExportFilters(m_GlobalFilters);
   }
 }
 
-void DboxMain::ExportFilters(MapFilters &MapFilters)
+void DboxMain::ExportFilters(PWSFilters &Filters)
 {
   CString cs_text, cs_temp, cs_title, cs_newfile;
   INT_PTR rc;
 
   // do the export
   //SaveAs-type dialog box
-  CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("filters.xml"));
+  CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(),
+                                                  _T("filters.xml"));
   cs_text.LoadString(IDS_NAMEXMLFILE);
   while (1) {
     CFileDialog fd(FALSE,
@@ -755,7 +757,7 @@ void DboxMain::ExportFilters(MapFilters &MapFilters)
 
   PWSfile::HeaderRecord hdr = m_core.GetHeader();
   CMyString currentfile = m_core.GetCurFile();
-  rc = PWSFilters::WriteFilterXMLFile(cs_newfile, hdr, currentfile, MapFilters);
+  rc = Filters.WriteFilterXMLFile(cs_newfile, hdr, currentfile);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
@@ -804,8 +806,8 @@ void DboxMain::OnImportFilters()
     CString XMLFilename = (CMyString)fd.GetPathName();
     CWaitCursor waitCursor;  // This may take a while!
 
-    rc = PWSFilters::ImportFilterXMLFile(m_MapGlobalFilters, _T(""), XMLFilename,
-                                         XSDFilename.c_str(), strErrors);
+    rc = m_GlobalFilters.ImportFilterXMLFile(_T(""), XMLFilename,
+                                             XSDFilename.c_str(), strErrors);
     waitCursor.Restore();  // Restore normal cursor
 
     switch (rc) {

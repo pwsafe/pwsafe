@@ -13,6 +13,7 @@
 #include "xml_import.h"
 #include "filters.h"
 
+class PWSFilters;
 using namespace MSXML2;
 
 // Local variables
@@ -64,15 +65,15 @@ class PWSSAXFilterContentHandler: public MSXML2::ISAXContentHandler
 public:
   // Local variables & function
   CString m_strImportErrors;
-  MapFilters *m_MapFilters;
+  PWSFilters *m_Filters;
   int m_type;
 
   // Standard functions
   PWSSAXFilterContentHandler();
   virtual ~PWSSAXFilterContentHandler();
 
-  void SetVariables(MapFilters *MapFilters, const bool &bValidation)
-  {m_MapFilters = MapFilters, m_bValidation = bValidation;}
+  void SetVariables(PWSFilters *Filters, const bool &bValidation)
+  {m_Filters = Filters, m_bValidation = bValidation;}
   void SetSchemaVersion(BSTR *schema_version)
   {m_pSchema_Version = schema_version;}
 

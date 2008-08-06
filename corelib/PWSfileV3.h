@@ -13,6 +13,7 @@
 //-----------------------------------------------------------------------------
 
 #include "PWSfile.h"
+#include "PWSFilters.h"
 #include "TwoFish.h"
 #include "sha256.h"
 #include "hmac.h"
@@ -48,6 +49,8 @@ public:
 
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
+  void SetFilters(const PWSFilters &Filters) {m_Filters = Filters;}
+  const PWSFilters &GetFilters() const {return m_Filters;}
 
 private:
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
@@ -62,6 +65,7 @@ private:
     unsigned int &length);
   int WriteHeader();
   int ReadHeader();
+  PWSFilters m_Filters;
 
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
     const CMyString &passkey,

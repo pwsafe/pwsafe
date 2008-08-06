@@ -13,11 +13,12 @@
 
 #include <vector>
 #include "filters.h"
+#include "PWSFilters.h"
 
 class PWSXMLFilters
 {
 public:
-  PWSXMLFilters(MapFilters &mapfilters);
+  PWSXMLFilters(PWSFilters &filters);
   ~PWSXMLFilters();
 
   bool XMLFilterProcess(const bool &bvalidation,
@@ -30,7 +31,7 @@ public:
 
 private:
   bool m_bValidation;
-  MapFilters &m_mapfilters;
+  PWSFilters &m_filters;
 };
 
 #endif /* __PWSXMLFILTERS_H */

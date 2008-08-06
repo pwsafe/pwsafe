@@ -30,25 +30,25 @@ IMPLEMENT_DYNAMIC(CViewFilterDlg, CPWResizeDialog)
 
 CViewFilterDlg::CViewFilterDlg(CWnd* pParent,
                                st_filters *pfilters,
-                               MapFilters &pmapdbfilters,
-                               MapFilters &pmapglobalfilters)
+                               PWSFilters &dbfilters,
+                               PWSFilters &globalfilters)
   : CPWResizeDialog(CViewFilterDlg::IDD, pParent),
   m_pfilters(pfilters),
-  m_pMapDBFilters(pmapdbfilters), m_pMapGlobalFilters(pmapglobalfilters),
+  m_DBFilters(dbfilters), m_GlobalFilters(globalfilters),
   m_selectedstore(m_selectedstore)
 {
   // Get DB filter via name and replace m_filters
-  MapFilters_Iter mf_iter;
+  PWSFilters::iterator mf_iter;
 
-  for (mf_iter = m_pMapDBFilters.begin();
-       mf_iter != m_pMapDBFilters.end();
+  for (mf_iter = m_DBFilters.begin();
+       mf_iter != m_DBFilters.end();
        mf_iter++) {
     m_vcs_db.push_back(mf_iter->first);
   }
 
   // Get Global filter via name and replace m_filters
-  for (mf_iter = m_pMapGlobalFilters.begin();
-       mf_iter != m_pMapGlobalFilters.end();
+  for (mf_iter = m_GlobalFilters.begin();
+       mf_iter != m_GlobalFilters.end();
        mf_iter++) {
     m_vcs_gbl.push_back(mf_iter->first);
   }
@@ -209,11 +209,11 @@ void CViewFilterDlg::OnFilterSelected()
   CString cs_selected;
   m_combo.GetLBText(isel, cs_selected);
 
-  MapFilters_Iter mf_iter;
+  PWSFilters::iterator mf_iter;
   if (m_selectedstore == VF_DATABASE) {
-    mf_iter = m_pMapDBFilters.find(cs_selected);
+    mf_iter = m_DBFilters.find(cs_selected);
   } else {
-    mf_iter = m_pMapGlobalFilters.find(cs_selected);
+    mf_iter = m_GlobalFilters.find(cs_selected);
   }
 
   st_filters *pfilters = &mf_iter->second;

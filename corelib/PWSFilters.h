@@ -10,31 +10,29 @@
 
 #include "MyString.h"
 #include "filters.h"
-#include "PWSfile.h"
 #include "match.h"
-
+#include "PWSfile.h"
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
-namespace PWSFilters {
-
-  std::string GetFilterXML(const st_filters &filters, bool bFile);
-  void GetFilterTestXML(const st_FilterData &st_fldata, std::ostringstream &oss,
-                        bool bFile);
+class PWSFilters : public std::map<CString, st_filters> {
+ public:
+  typedef std::pair<CString, st_filters> Pair;
+  
   std::string GetFilterXMLHeader(const CMyString &currentfile,
-                                 PWSfile::HeaderRecord &hdr);
+                                 const PWSfile::HeaderRecord &hdr);
 
-  int WriteFilterXMLFile(const CMyString &filename, PWSfile::HeaderRecord hdr,
-                         const CMyString &currentfile, MapFilters &mapfilters);
+  int WriteFilterXMLFile(const CMyString &filename, const PWSfile::HeaderRecord hdr,
+                         const CMyString &currentfile);
   int WriteFilterXMLFile(std::ostream &os, PWSfile::HeaderRecord hdr,
-                         const CMyString &currentfile, MapFilters &mapfilters);
-  int ImportFilterXMLFile(MapFilters &mapfilters,
-                          const CString &strXMLData,
+                         const CMyString &currentfile);
+  int ImportFilterXMLFile(const CString &strXMLData,
                           const CString &strXMLFileName,
                           const CString &strXSDFileName, CString &strErrors);
 
-  CString GetFilterDescription(const st_FilterData &st_fldata);
+  static CString GetFilterDescription(const st_FilterData &st_fldata);
 };
 
 #endif  // __PWSFILTERS_H

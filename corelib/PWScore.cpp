@@ -24,7 +24,7 @@
 #include "Report.h"
 #include "VerifyFormat.h"
 #include "filters.h"
-
+#include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include <shellapi.h>
 #include <shlwapi.h>
 
@@ -122,7 +122,7 @@ void PWScore::ClearData(void)
   m_UHFL.clear();
 
   // Clear out database filters
-  m_MapDatabaseFilters.clear();
+  m_Filters.clear();
 
   NotifyListModified();
 }
@@ -211,10 +211,12 @@ int PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   out->SetHeader(m_hdr);
 
   // Give PWSfileV3 the unknown headers to write out
-  out->SetUnknownHeaderFields(m_UHFL);
-  // Give it the filters to write out
-  out->SetFilters(m_MapDatabaseFilters);
-
+  // XXX cleanup gross dynamic_cast
+  PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
+  if (out3 != NULL) {
+    out3->SetUnknownHeaderFields(m_UHFL);
+    out3->SetFilters(m_Filters); // Give it the filters to write out
+  }
   status = out->Open(GetPassKey());
 
   if (status != PWSfile::SUCCESS) {
@@ -1197,8 +1199,9 @@ int PWScore::ReadFile(const CMyString &a_filename,
   bool limited = false;
 #endif
 
-  if (!in->m_MapDatabaseFilters.empty())
-    m_MapDatabaseFilters = in->m_MapDatabaseFilters;
+  PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
+  if (in3 != NULL  && !in3->GetFilters().empty())
+    m_Filters = in3->GetFilters();
 
   UUIDList possible_aliases, possible_shortcuts;
   do {
