@@ -496,10 +496,9 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
-  if (!m_MapDatabaseFilters.empty()) {
+  if (!m_Filters.empty()) {
     ostringstream oss;
-    PWSFilters::WriteFilterXMLFile(oss, m_hdr, _T(""),
-                                   m_MapDatabaseFilters);
+    m_Filters.WriteFilterXMLFile(oss, m_hdr, _T(""));
     numWritten = WriteCBC(HDR_FILTERS, oss.str().c_str());
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
@@ -706,8 +705,9 @@ int PWSfileV3::ReadHeader()
         if (utf8Len > 0) {
           CString strErrors;
           stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
-          int rc = PWSFilters::ImportFilterXMLFile(m_MapDatabaseFilters, text, _T(""),
-                                                   XSDFilename.c_str(), strErrors);
+          int rc = m_Filters.ImportFilterXMLFile(text, _T(""),
+                                                 XSDFilename.c_str(),
+                                                 strErrors);
           if (rc != PWScore::SUCCESS) {
             // Now ask them whether to keep as unknown field or delete!
             int msg_rc = AfxMessageBox(IDSC_CANTPROCESSDBFILTERS, MB_YESNO | 

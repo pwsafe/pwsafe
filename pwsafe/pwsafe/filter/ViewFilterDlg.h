@@ -11,7 +11,7 @@
 // ViewFilterDlg dialog
 
 #include "../PWResizeDialog.h"
-#include "../corelib/filters.h"
+#include "../corelib/PWSFilters.h"
 
 #include <vector>
 
@@ -32,8 +32,8 @@ class CViewFilterDlg : public CPWResizeDialog
 public:
   CViewFilterDlg(CWnd* pParent,
                  st_filters *pfilters,
-                 MapFilters &pmapdbfilters,
-                 MapFilters &pmapglobalfilters);
+                 PWSFilters &pmapdbfilters,
+                 PWSFilters &pmapglobalfilters);
   virtual ~CViewFilterDlg();
 
 // Dialog Data
@@ -58,8 +58,8 @@ protected:
 
 private:
   st_filters *m_pfilters;
-  MapFilters &m_pMapDBFilters;
-  MapFilters &m_pMapGlobalFilters;
+  PWSFilters &m_DBFilters;
+  PWSFilters &m_GlobalFilters;
   std::vector<CString> m_vcs_db;
   std::vector<CString> m_vcs_gbl;
 

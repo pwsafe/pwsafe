@@ -31,8 +31,8 @@ public:
   CUUIDGen(const uuid_array_t &uuid_array); // for storing an existing UUID
   ~CUUIDGen();
   void GetUUID(uuid_array_t &uuid_array) const;
-  static void GetUUIDStr(uuid_array_t &uuid_array, uuid_str_NH_t &str);
-  static void GetUUIDStr(uuid_array_t &uuid_array, uuid_str_WH_t &str);
+  static void GetUUIDStr(const uuid_array_t &uuid_array, uuid_str_NH_t &str);
+  static void GetUUIDStr(const uuid_array_t &uuid_array, uuid_str_WH_t &str);
   // Following is for map<> compare function
   struct ltuuid {
     bool operator()(const CUUIDGen &u1, const CUUIDGen &u2) const

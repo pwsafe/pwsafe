@@ -686,8 +686,9 @@ void DboxMain::InitPasswordSafe()
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
     CWaitCursor waitCursor;  // This may take a while!
 
-    int rc = PWSFilters::ImportFilterXMLFile(m_MapGlobalFilters, _T(""), tmp,
-                                             XSDFilename.c_str(), strErrors);
+    int rc = m_GlobalFilters.ImportFilterXMLFile(_T(""), tmp,
+                                                 XSDFilename.c_str(),
+                                                 strErrors);
     waitCursor.Restore();  // Restore normal cursor
     if (rc != PWScore::SUCCESS) {
       CString cs_msg;
@@ -2551,7 +2552,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_DELETEFILTER:
     case ID_MENUITEM_VIEWFILTER:
     case ID_MENUITEM_EXPORTFILTERS:
-      if (m_core.m_MapDatabaseFilters.empty() && m_MapGlobalFilters.empty())
+      if (m_core.m_Filters.empty() && m_GlobalFilters.empty())
         iEnable = FALSE;
       break;
     default:

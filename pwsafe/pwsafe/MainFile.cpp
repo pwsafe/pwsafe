@@ -2601,7 +2601,7 @@ void DboxMain::OnOK()
   m_menuManager.Cleanup();
 
   // Clear out Global filters
-  m_MapGlobalFilters.clear();
+  m_GlobalFilters.clear();
 
   CDialog::OnOK();
 }

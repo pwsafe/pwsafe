@@ -15,6 +15,7 @@
 #include "xml_import.h"
 #include "corelib.h"
 #include "PWSfileV3.h"
+#include "PWSFilters.h"
 #include "PWSprefs.h"
 #include "VerifyFormat.h"
 #include "filter.h"
@@ -413,18 +414,18 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
 
   if (_tcscmp(szCurElement, _T("filter")) == 0) {
     INT_PTR rc = IDYES;
-    if (m_MapFilters->find(cur_filter->fname) != m_MapFilters->end()) {
+    if (m_Filters->find(cur_filter->fname) != m_Filters->end()) {
       CString cs_text, cs_title;
       cs_title = _T("Filter Import into Database");
       cs_text.Format(_T("Filter %s already exists in the database, do you wish to replace it with this?"),
                      cur_filter->fname);
       rc = MessageBox(NULL,cs_text, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDYES) {
-        m_MapFilters->erase(cur_filter->fname);
+        m_Filters->erase(cur_filter->fname);
       }
     }
     if (rc == IDYES)
-      m_MapFilters->insert(MapFilters_Pair(cur_filter->fname, *cur_filter));
+      m_Filters->insert(PWSFilters::Pair(cur_filter->fname, *cur_filter));
     delete cur_filter;
     return S_OK;
   }

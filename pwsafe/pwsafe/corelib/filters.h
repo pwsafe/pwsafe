@@ -13,10 +13,7 @@
 #include "itemdata.h"
 #include "mystring.h"
 #include <time.h> // for time_t
-#include <string>
 #include <vector>
-#include <map>
-
 
 enum FieldType {
   // PWS Test fields
@@ -202,10 +199,5 @@ struct st_filters {
     vPfldata.clear();
   }
 };
-
-typedef std::map<CString, st_filters> MapFilters;
-typedef MapFilters::iterator MapFilters_Iter;
-typedef MapFilters::const_iterator MapFilters_cIter;
-typedef std::pair<CString, st_filters> MapFilters_Pair;
 
 #endif // FILTERS_H

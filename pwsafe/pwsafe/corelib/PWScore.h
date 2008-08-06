@@ -15,6 +15,7 @@
 #include "ItemData.h"
 #include "MyString.h"
 #include "PWSfile.h"
+#include "PWSFilters.h"
 #include "UUIDGen.h"
 #include "Report.h"
 #include "filters.h"
@@ -261,7 +262,7 @@ public:
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
 
   // Filters
-  MapFilters m_MapDatabaseFilters;
+  PWSFilters m_Filters;
 
 private:
   CMyString m_currfile; // current pw db filespec

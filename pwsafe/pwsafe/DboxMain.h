@@ -33,7 +33,7 @@
 #include "PWToolBar.h"
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
-#include "corelib/filters.h"
+#include "corelib/PWSFilters.h"
 #include "DDStatic.h"
 #include <vector>
 #include <map>
@@ -650,9 +650,9 @@ private:
   vfiltergroups m_vPflgroups;
 
   // Global Filters
-  MapFilters m_MapGlobalFilters;
+  PWSFilters m_GlobalFilters;
 
-  void ExportFilters(MapFilters &MapFilters);
+  void ExportFilters(PWSFilters &MapFilters);
   void CreateGroups();
   int m_bNumPassedFiltering;
 };
