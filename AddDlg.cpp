@@ -420,17 +420,19 @@ void CAddDlg::OnBnClickedOverridePolicy()
 
 void CAddDlg::SelectAllNotes()
 {
-  // User pressed Ctrl+A
-  ((CEdit *)GetDlgItem(IDC_NOTES))->SetFocus();
+  // Here from PreTranslateMessage iff User pressed Ctrl+A
+  // in Notes control
   ((CEdit *)GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
 }
 
 BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
 {
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' && GetKeyState(VK_CONTROL) < 1) {
+  // if user hit Ctrl+A in Notes control, then SelectAllNotes
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' &&
+      (GetKeyState(VK_CONTROL) & 0x8000) &&
+      GetDlgItem(IDC_NOTES)->m_hWnd == ::GetFocus()) {
     SelectAllNotes();
     return TRUE;
   }
-
   return CPWDialog::PreTranslateMessage(pMsg);
 }
