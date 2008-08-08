@@ -13,7 +13,6 @@
 #include "ViewFilterDlg.h"
 #include "../PWResizeDialog.h"
 #include "../corelib/PWSFilters.h"
-#include "../corelib/filters.h"
 #include "../corelib/match.h"
 
 #include "../resource3.h"
@@ -224,14 +223,14 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
 {
   CString cs_num, cs_ftype, cs_criteria, cs_ltype, cs_act;
 
-  vfilterdata::iterator Flt_iter;
+  vFilterRows::iterator Flt_iter;
   bool bHistory(false), bPolicy(false);
   int i(0), iItem(0), n(0);
 
   // Do the main filters
   for (Flt_iter = pfilters->vMfldata.begin();
        Flt_iter != pfilters->vMfldata.end(); Flt_iter++) {
-    st_FilterData &st_fldata = *Flt_iter;
+    st_FilterRow &st_fldata = *Flt_iter;
     i++;
     n++;
 
@@ -273,7 +272,7 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
   n = 0;
   for (Flt_iter = pfilters->vHfldata.begin();
        Flt_iter != pfilters->vHfldata.end(); Flt_iter++) {
-    st_FilterData &st_fldata = *Flt_iter;
+    st_FilterRow &st_fldata = *Flt_iter;
     i++;
     n++;
 
@@ -310,7 +309,7 @@ void CViewFilterDlg::SelectFilter(st_filters *pfilters)
   n = 0;
   for (Flt_iter = pfilters->vPfldata.begin();
        Flt_iter != pfilters->vPfldata.end(); Flt_iter++) {
-    st_FilterData &st_fldata = *Flt_iter;
+    st_FilterRow &st_fldata = *Flt_iter;
     i++;
     n++;
 

@@ -11,7 +11,7 @@
 //
 
 #include "xml_import.h"
-#include "filters.h"
+#include "PWSFilters.h"
 
 class PWSFilters;
 using namespace MSXML2;
@@ -138,7 +138,7 @@ public:
 private:
   // Local variables
   st_filters *cur_filter;
-  st_FilterData *cur_filterentry;
+  st_FilterRow *cur_filterentry;
 
   CMyString m_strElemContent;
   bool m_bValidation;

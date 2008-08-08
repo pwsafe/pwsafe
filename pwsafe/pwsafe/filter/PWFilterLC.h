@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../corelib/Itemdata.h"
-#include "../corelib/filters.h"
+#include "../corelib/PWSFilters.h"
 #include "FilterStringDlg.h"
 #include "FilterPasswordDlg.h"
 #include "FilterIntegerDlg.h"
@@ -161,7 +161,7 @@ private:
   CFilterBoolDlg m_fbool;
   CFilterEntryTypeDlg m_fentry;
 
-  vfilterdata *m_pvfdata;
+  vFilterRows *m_pvfdata;
   int *m_pnumactive;
 
   bool m_bInitDone, m_bStatusBarOK, m_bSetFieldActive, m_bSetLogicActive;

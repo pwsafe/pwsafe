@@ -170,7 +170,7 @@ void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filterty
   SetItemData(0, FLC_CRITERIA_REDTXT | FLC_FLD_CBX_ENABLED);
   m_iItem = 0;
 
-  st_FilterData newfilter;
+  st_FilterRow newfilter;
   m_pvfdata->push_back(newfilter);
 
   // Set up widths of columns with comboboxes - once for each combo
@@ -199,9 +199,9 @@ void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filterty
   int i(0);
   
   DWORD_PTR dwData;
-  vfilterdata::iterator Flt_iter;
+  vFilterRows::iterator Flt_iter;
   for (Flt_iter = m_pvfdata->begin(); Flt_iter != m_pvfdata->end(); Flt_iter++) {
-    st_FilterData &st_fldata = *Flt_iter;
+    st_FilterRow &st_fldata = *Flt_iter;
 
     AddFilter_Controls();
 
@@ -266,7 +266,7 @@ void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filterty
     SetItemText(i, FLC_LGC_COMBOBOX, _T(""));
 
     // Add a new filter to vector
-    st_FilterData newfilter;
+    st_FilterRow newfilter;
     m_pvfdata->push_back(newfilter);
     (*m_pnumactive)++;
   }
@@ -326,7 +326,7 @@ int CPWFilterLC::AddFilter()
     return (-1);
 
   // Add a new filter to vector
-  st_FilterData newfilter;
+  st_FilterRow newfilter;
   if (newID == 0)
     newfilter.ltype = LC_INVALID;
   else
@@ -357,7 +357,7 @@ void CPWFilterLC::RemoveFilter()
 
   // Main Filters dialog need to handle History/Policy before calling this
   if (m_iType == DFTYPE_MAIN) {
-    st_FilterData &st_fldata = m_pvfdata->at(m_iItem);
+    st_FilterRow &st_fldata = m_pvfdata->at(m_iItem);
     if (m_bPWHIST_Set && st_fldata.ftype == FT_PWHIST) {
       // We are deleting the History so put option back in other Comboboxes
       m_bPWHIST_Set = false;
@@ -610,7 +610,7 @@ FieldType CPWFilterLC::EnableCriteria()
   ASSERT(m_iItem >= 0);
 
   // Get offset into vector of controls
-  st_FilterData &st_fldata = m_pvfdata->at(m_iItem);
+  st_FilterRow &st_fldata = m_pvfdata->at(m_iItem);
 
   // Did they enable or disable the filter?
   bool bIsChecked = !st_fldata.bFilterActive;
@@ -706,7 +706,7 @@ bool CPWFilterLC::SetField(const int iItem)
   GetParent()->SetFocus();
 
   // Get offset into vector of controls
-  st_FilterData &st_fldata = m_pvfdata->at(iItem);
+  st_FilterRow &st_fldata = m_pvfdata->at(iItem);
 
   FieldType ft(FT_INVALID);
 
@@ -934,7 +934,7 @@ void CPWFilterLC::CancelField(const int iItem)
   GetParent()->SetFocus();
 
   // Get offset into vector of controls
-  st_FilterData &st_fldata = m_pvfdata->at(iItem);
+  st_FilterRow &st_fldata = m_pvfdata->at(iItem);
 
   FieldType ft(st_fldata.ftype);
 
@@ -967,7 +967,7 @@ void CPWFilterLC::SetLogic(const int iItem)
   }
 
   // Get offset into vector of controls
-  st_FilterData &st_fldata = m_pvfdata->at(iItem);
+  st_FilterRow &st_fldata = m_pvfdata->at(iItem);
 
   LogicConnect lt(st_fldata.ltype);
   // m_pComboBox is NULL during inital setup
@@ -1008,7 +1008,7 @@ void CPWFilterLC::CancelLogic(const int iItem)
     goto delete_combo;
   }
 
-  st_FilterData &st_fldata = m_pvfdata->at(iItem);
+  st_FilterRow &st_fldata = m_pvfdata->at(iItem);
 
   LogicConnect lt(st_fldata.ltype);
 
@@ -1078,7 +1078,7 @@ bool CPWFilterLC::GetCriterion()
   // Get offset into vector of controls
   INT_PTR rc(IDCANCEL);
 
-  st_FilterData &st_fldata = m_pvfdata->at(m_iItem);
+  st_FilterRow &st_fldata = m_pvfdata->at(m_iItem);
 
   // Get Text
   const CString cs_selected = GetItemText(m_iItem, FLC_LGC_COMBOBOX);
@@ -1609,7 +1609,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   if (m_iType == DFTYPE_MAIN && iSubItem == FLC_FLD_COMBOBOX) {
     // Is PW History or Policy already selected somewhere else?
     //  if so remove them as an option on this filter
-    st_FilterData &st_fldata = m_pvfdata->at(m_iItem);
+    st_FilterRow &st_fldata = m_pvfdata->at(m_iItem);
     if (m_bPWHIST_Set && st_fldata.ftype != FT_PWHIST)
       DeleteEntry(FT_PWHIST);
     if (m_bPOLICY_Set && st_fldata.ftype != FT_POLICY)

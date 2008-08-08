@@ -12,7 +12,7 @@
 
 #include "../PWResizeDialog.h"
 #include "../corelib/Itemdata.h"
-#include "../corelib/filters.h"
+#include "../corelib/PWSFilters.h"
 #include "PWFilterLC.h"
 
 #include "../resource.h"

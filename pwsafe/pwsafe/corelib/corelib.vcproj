@@ -599,10 +599,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\filters.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Fish.h"
 				>
 			</File>

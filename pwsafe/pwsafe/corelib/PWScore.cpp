@@ -23,7 +23,6 @@
 #include "UTF8Conv.h"
 #include "Report.h"
 #include "VerifyFormat.h"
-#include "filters.h"
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include <shellapi.h>
 #include <shlwapi.h>

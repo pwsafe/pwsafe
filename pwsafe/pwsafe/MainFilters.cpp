@@ -33,7 +33,6 @@
 #include "corelib/PWSFilters.h"
 #include "corelib/PWHistory.h"
 #include "corelib/pwsprefs.h"
-#include "corelib/filters.h"
 #include "corelib/match.h"
 #include "corelib/PWSfile.h"
 #include "corelib/PWSdirs.h"
@@ -172,7 +171,7 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
       if (num == -1) // Padding to ensure group size is correct for FT_PWHIST & FT_POLICY
         continue;
 
-      const st_FilterData &st_fldata = filters.vMfldata.at(num);
+      const st_FilterRow &st_fldata = filters.vMfldata.at(num);
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
@@ -338,7 +337,7 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
 
   bPresent = pwh_max > 0 || pwh_num > 0 || PWHistList.size() > 0;
 
-  vfilterdata::const_iterator Flt_citer;
+  vFilterRows::const_iterator Flt_citer;
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
   for (Fltgroup_citer = m_vHflgroups.begin(); 
        Fltgroup_citer != m_vHflgroups.end(); Fltgroup_citer++) {
@@ -353,7 +352,7 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
       if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
         continue;
 
-      const st_FilterData &st_fldata = filters.vHfldata.at(num);
+      const st_FilterRow &st_fldata = filters.vHfldata.at(num);
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
@@ -454,7 +453,7 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
   pci->GetPWPolicy(pwp);
   bPresent = pwp.flags != 0;
 
-  vfilterdata::const_iterator Flt_citer;
+  vFilterRows::const_iterator Flt_citer;
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
   for (Fltgroup_citer = m_vPflgroups.begin(); 
        Fltgroup_citer != m_vPflgroups.end(); Fltgroup_citer++) {
@@ -469,7 +468,7 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
       if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
         continue;
 
-      const st_FilterData &st_fldata = filters.vPfldata.at(num);
+      const st_FilterRow &st_fldata = filters.vPfldata.at(num);
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
@@ -849,14 +848,14 @@ bool group_pred (const std::vector<int>& v1, const std::vector<int>& v2)
 void DboxMain::CreateGroups()
 {
   int i(0);
-  vfilterdata::iterator Flt_iter;
+  vFilterRows::iterator Flt_iter;
   vfiltergroup group;
   vfiltergroups groups;
 
   // Do the main filters
   for (Flt_iter = m_filters.vMfldata.begin();
        Flt_iter != m_filters.vMfldata.end(); Flt_iter++) {
-    st_FilterData &st_fldata = *Flt_iter;
+    st_FilterRow &st_fldata = *Flt_iter;
 
     if (st_fldata.bFilterActive) {
       if (st_fldata.ltype == LC_OR && !group.empty()) {
@@ -903,7 +902,7 @@ void DboxMain::CreateGroups()
   groups.clear();
   for (Flt_iter = m_filters.vHfldata.begin();
        Flt_iter != m_filters.vHfldata.end(); Flt_iter++) {
-    st_FilterData &st_fldata = *Flt_iter;
+    st_FilterRow &st_fldata = *Flt_iter;
 
     if (st_fldata.bFilterActive) {
       if (st_fldata.ltype == LC_OR && !group.empty()) {
@@ -933,7 +932,7 @@ void DboxMain::CreateGroups()
   groups.clear();
   for (Flt_iter = m_filters.vPfldata.begin();
        Flt_iter != m_filters.vPfldata.end(); Flt_iter++) {
-    st_FilterData &st_fldata = *Flt_iter;
+    st_FilterRow &st_fldata = *Flt_iter;
 
     if (st_fldata.bFilterActive) {
       if (st_fldata.ltype == LC_OR && !group.empty()) {

@@ -18,7 +18,6 @@
 #include "PWSFilters.h"
 #include "UUIDGen.h"
 #include "Report.h"
-#include "filters.h"
 
 #define MAXDEMO 10
 

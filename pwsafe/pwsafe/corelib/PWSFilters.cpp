@@ -9,7 +9,6 @@
 #include "PWSFilters.h"
 #include "PWHistory.h"
 #include "pwsprefs.h"
-#include "filters.h"
 #include "match.h"
 #include "UUIDGen.h"
 #include "PWSXMLFilters.h"
@@ -42,7 +41,7 @@ static const char * szentry[] = {"normal",
                                  "aliasbase", "alias", 
                                  "shortcutbase", "shortcut"};
 
-static void GetFilterTestXML(const st_FilterData &st_fldata,
+static void GetFilterTestXML(const st_FilterRow &st_fldata,
                              ostringstream &oss, bool bFile)
 {
   CUTF8Conv utf8conv;
@@ -132,10 +131,10 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
   oss << "<filter filtername=\"" << reinterpret_cast<const char *>(utf8) 
       << "\">" << szendl;
 
-  std::vector<st_FilterData>::const_iterator Flt_citer;
+  std::vector<st_FilterRow>::const_iterator Flt_citer;
   for (Flt_citer = filters.vMfldata.begin(); 
        Flt_citer != filters.vMfldata.end(); Flt_citer++) {
-    const st_FilterData &st_fldata = *Flt_citer;
+    const st_FilterRow &st_fldata = *Flt_citer;
 
     if (!st_fldata.bFilterComplete)
       continue;
@@ -235,7 +234,7 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
 
   for (Flt_citer = filters.vHfldata.begin(); 
        Flt_citer != filters.vHfldata.end(); Flt_citer++) {
-    const st_FilterData &st_fldata = *Flt_citer;
+    const st_FilterRow &st_fldata = *Flt_citer;
 
     if (!st_fldata.bFilterComplete)
       continue;
@@ -294,7 +293,7 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
 
   for (Flt_citer = filters.vPfldata.begin(); 
        Flt_citer != filters.vPfldata.end(); Flt_citer++) {
-    const st_FilterData &st_fldata = *Flt_citer;
+    const st_FilterRow &st_fldata = *Flt_citer;
 
     if (!st_fldata.bFilterComplete)
       continue;
@@ -534,7 +533,7 @@ int PWSFilters::ImportFilterXMLFile(const CString &strXMLData,
   PWSFilters::iterator mf_iter;
   for (mf_iter = this->begin(); mf_iter != this->end(); mf_iter++) {
     st_filters &filters = mf_iter->second;
-    std::vector<st_FilterData>::iterator Flt_iter;
+    std::vector<st_FilterRow>::iterator Flt_iter;
     for (Flt_iter = filters.vMfldata.begin(); 
          Flt_iter != filters.vMfldata.end(); Flt_iter++) {
       Flt_iter->bFilterComplete = true;
@@ -551,7 +550,7 @@ int PWSFilters::ImportFilterXMLFile(const CString &strXMLData,
   return PWScore::SUCCESS;
 }
 
-CString PWSFilters::GetFilterDescription(const st_FilterData &st_fldata)
+CString PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
 {
   // Get the description of the current criterion to display on the static text
   CString cs_rule, cs1, cs2, cs_and, cs_criteria;
