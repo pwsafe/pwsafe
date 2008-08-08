@@ -162,7 +162,7 @@ struct FilterValidator
 {
   FilterValidator(CString &text, int &iHistory, int &iPolicy)
     : i(0), text(text), iHistory(iHistory), iPolicy(iPolicy) {}
-  bool operator()(const st_FilterData &st_fldata) {
+  bool operator()(const st_FilterRow &st_fldata) {
     // return true if FAILS validation, so that find_if will
     // "find" it.
     if (st_fldata.bFilterActive &&
@@ -194,16 +194,16 @@ bool CPWFiltersDlg::VerifyFilters()
     return false;
 
   // First non-History/non-Policy filters on the main filter dialog
-  vfilterdata *pvfilterdata(NULL);
+  vFilterRows *pvFilterRows(NULL);
   switch (m_iType) {
   case DFTYPE_MAIN:
-    pvfilterdata = &m_pfilters->vMfldata;
+    pvFilterRows = &m_pfilters->vMfldata;
     break;
   case DFTYPE_PWHISTORY:
-    pvfilterdata = &m_pfilters->vHfldata;
+    pvFilterRows = &m_pfilters->vHfldata;
       break;
     case DFTYPE_PWPOLICY:
-      pvfilterdata = &m_pfilters->vPfldata;
+      pvFilterRows = &m_pfilters->vPfldata;
       break;
     default:
       VERIFY(0);
@@ -212,8 +212,8 @@ bool CPWFiltersDlg::VerifyFilters()
   CString cs_text;
   int iHistory(-1), iPolicy(-1);
   FilterValidator fv(cs_text, iHistory, iPolicy);
-  if (find_if(pvfilterdata->begin(), pvfilterdata->end(), fv) !=
-      pvfilterdata->end()) {
+  if (find_if(pvFilterRows->begin(), pvFilterRows->end(), fv) !=
+      pvFilterRows->end()) {
       AfxMessageBox(cs_text);
       return false;
     }

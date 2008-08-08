@@ -279,7 +279,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
   }
 
   if (bfilter_entry) {
-    cur_filterentry = new st_FilterData;
+    cur_filterentry = new st_FilterRow;
     cur_filterentry->Empty();
     cur_filterentry->bFilterActive = true;
     m_bentrybeingprocessed = true;

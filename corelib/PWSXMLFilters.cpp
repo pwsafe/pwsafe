@@ -11,7 +11,6 @@
 #include "SAXFilters.h"
 #include "MyString.h"
 #include "corelib.h"
-#include "filters.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <atlcomcli.h>

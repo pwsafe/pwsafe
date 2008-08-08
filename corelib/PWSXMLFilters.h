@@ -12,7 +12,6 @@
 #define __PWSXMLFILTERS_H
 
 #include <vector>
-#include "filters.h"
 #include "PWSFilters.h"
 
 class PWSXMLFilters
