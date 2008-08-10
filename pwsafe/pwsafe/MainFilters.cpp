@@ -552,7 +552,7 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
 
 void DboxMain::OnSelectFilter()
 {
-  if (m_core.m_Filters.empty() && m_GlobalFilters.empty())
+  if (m_core.m_Filters.empty())
     return;
 
   // Get DB filter via name and replace m_filters
@@ -565,33 +565,18 @@ void DboxMain::OnSelectFilter()
     vcs_db.push_back(mf_iter->first);
   }
 
-  // Get Global filter via name and replace m_filters
-  std::vector<CString> vcs_gbl;
-  for (mf_iter = m_GlobalFilters.begin();
-       mf_iter != m_GlobalFilters.end();
-       mf_iter++) {
-    vcs_gbl.push_back(mf_iter->first);
-  }
-
   CFilterActionsDlg fa;
   fa.SetFunction(FA_SELECT);
-  fa.SetLists(vcs_db, vcs_gbl);
+  fa.SetList(vcs_db);
   INT_PTR rc = fa.DoModal();
 
   if (rc == IDOK) {
-    int istore(-1);
-    CString cs_selected = fa.GetSelected(istore);
-    if (!cs_selected.IsEmpty() && istore >= 0) {
+    CString cs_selected = fa.GetSelected();
+    if (!cs_selected.IsEmpty()) {
       PWSFilters::const_iterator mf_citer;
       PWSFilters::const_iterator mf_cend;
-      if (istore == 0) {
-        mf_citer = m_core.m_Filters.find(cs_selected);
-        mf_cend = m_core.m_Filters.end();
-      } else {
-        mf_citer = m_GlobalFilters.find(cs_selected);
-        mf_cend = m_GlobalFilters.end();
-      }
-
+      mf_citer = m_core.m_Filters.find(cs_selected);
+      mf_cend = m_core.m_Filters.end();
       if (mf_citer != mf_cend) {
         m_filters = mf_citer->second;
         m_bFilterActive = true;
@@ -609,14 +594,8 @@ void DboxMain::OnSaveFilter()
   if (rc == IDOK) {
     PWSFilters::const_iterator mf_citer;
     PWSFilters::const_iterator mf_cend;
-    int istore = sf.GetSelectStore();
-    if (istore == 0) {
-      mf_citer = m_core.m_Filters.find(m_filters.fname);
-      mf_cend =  m_core.m_Filters.end();
-    } else {
-      mf_citer = m_GlobalFilters.find(m_filters.fname);
-      mf_cend =  m_GlobalFilters.end();
-    }
+    mf_citer = m_core.m_Filters.find(m_filters.fname);
+    mf_cend =  m_core.m_Filters.end();
 
     int rc(IDYES);
     if (mf_citer != mf_cend) {
@@ -624,40 +603,32 @@ void DboxMain::OnSaveFilter()
       CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
       rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDYES)
-        if (istore == 0) {
-          m_core.m_Filters.erase(m_filters.fname);
-        } else {
-          m_GlobalFilters.erase(m_filters.fname);
-        }
-      }
-      if (rc == IDYES) {
-        if (istore == 0) {
-          m_core.m_Filters.insert(PWSFilters::Pair(m_filters.fname,
-                                                           m_filters));
-          SetChanged(Data);
-          ChangeOkUpdate();
-        } else
-          m_GlobalFilters.insert(PWSFilters::Pair(m_filters.fname, m_filters));
-      }
+        m_core.m_Filters.erase(m_filters.fname);
+    }
+    if (rc == IDYES) {
+      m_core.m_Filters.insert(PWSFilters::Pair(m_filters.fname,
+                                               m_filters));
+      SetChanged(Data);
+      ChangeOkUpdate();
+    }
   }
 }
 
 void DboxMain::OnViewFilter()
 {
   int numactive = m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive;
-  if (numactive == 0 && m_core.m_Filters.empty() && m_GlobalFilters.empty())
+  if (numactive == 0 && m_core.m_Filters.empty())
     return;
 
   st_filters *pfilters = (numactive == 0) ? NULL : &m_filters;
  
-  CViewFilterDlg vf(this, pfilters,
-                    m_core.m_Filters, m_GlobalFilters);
+  CViewFilterDlg vf(this, pfilters, m_core.m_Filters);
   vf.DoModal();
  }
 
 void DboxMain::OnDeleteFilter()
 {
-  if (m_core.m_Filters.empty() && m_GlobalFilters.empty())
+  if (m_core.m_Filters.empty())
     return;
 
   // Delete filter by name from DB filters
@@ -670,33 +641,19 @@ void DboxMain::OnDeleteFilter()
     vcs_db.push_back(mf_iter->first);
   }
 
-  // Delete filter by name from DB filters
-  std::vector<CString> vcs_gbl;
-  for (mf_iter = m_GlobalFilters.begin();
-       mf_iter != m_GlobalFilters.end();
-       mf_iter++) {
-    vcs_gbl.push_back(mf_iter->first);
-  }
-
   CFilterActionsDlg fa;
   fa.SetFunction(FA_DELETE);
-  fa.SetLists(vcs_db, vcs_gbl);
+  fa.SetList(vcs_db);
   INT_PTR rc = fa.DoModal();
 
   if (rc == IDOK) {
-    int istore(-1);
     bool bDone(false);
-    CString cs_selected = fa.GetSelected(istore);
-    if (!cs_selected.IsEmpty() && istore >= 0) {
-      if (istore == 0) {
-        m_core.m_Filters.erase(cs_selected);
-        bDone = true;
-        SetChanged(Data);
-        ChangeOkUpdate();
-      } else {
-          m_GlobalFilters.erase(cs_selected);
-          bDone = true;
-      }
+    CString cs_selected = fa.GetSelected();
+    if (!cs_selected.IsEmpty()) {
+      m_core.m_Filters.erase(cs_selected);
+      bDone = true;
+      SetChanged(Data);
+      ChangeOkUpdate();
       if (bDone)
         AfxMessageBox(IDS_OK);
     }
@@ -705,20 +662,12 @@ void DboxMain::OnDeleteFilter()
 
 void DboxMain::OnExportFilters()
 {
-  CExportFiltersDlg ef;
-  ef.SetAvailableStores(!m_core.m_Filters.empty(), !m_GlobalFilters.empty());
-  INT_PTR rc = ef.DoModal();
-
-  if (rc == IDOK) {
-    int istore = ef.GetSelected();
-    if (istore == 0)
-      ExportFilters(m_core.m_Filters);
-    else if (istore == 1)
-      ExportFilters(m_GlobalFilters);
+  if (!m_core.m_Filters.empty()) {
+    ExportFilters();
   }
 }
 
-void DboxMain::ExportFilters(PWSFilters &Filters)
+void DboxMain::ExportFilters()
 {
   CString cs_text, cs_temp, cs_title, cs_newfile;
   INT_PTR rc;
@@ -756,7 +705,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
   PWSfile::HeaderRecord hdr = m_core.GetHeader();
   CMyString currentfile = m_core.GetCurFile();
-  rc = Filters.WriteFilterXMLFile(cs_newfile, hdr, currentfile);
+  rc = m_core.m_Filters.WriteFilterXMLFile(cs_newfile, hdr, currentfile);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
@@ -805,8 +754,8 @@ void DboxMain::OnImportFilters()
     CString XMLFilename = (CMyString)fd.GetPathName();
     CWaitCursor waitCursor;  // This may take a while!
 
-    rc = m_GlobalFilters.ImportFilterXMLFile(_T(""), XMLFilename,
-                                             XSDFilename.c_str(), strErrors);
+    rc = m_core.m_Filters.ImportFilterXMLFile(_T(""), XMLFilename,
+                                              XSDFilename.c_str(), strErrors);
     waitCursor.Restore();  // Restore normal cursor
 
     switch (rc) {

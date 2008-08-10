@@ -25,11 +25,10 @@ public:
   virtual ~CFilterActionsDlg();
 
   void SetFunction(int function) {m_function = function;}
-  void SetLists(const std::vector<CString> &vcs_db,
-                const std::vector<CString> &vcs_gbl)
-  {m_vcs_db = vcs_db; m_vcs_gbl = vcs_gbl;}
-  CString GetSelected(int &istore)
-  {istore = m_selectedstore; return m_selected;}
+  void SetList(const std::vector<CString> &vcs_db)
+  {m_vcs_db = vcs_db;}
+  const CString &GetSelected() const
+  {return m_selected;}
 
 // Dialog Data
   enum { IDD = IDD_FILTERACTIONS };
@@ -39,16 +38,12 @@ protected:
 
   BOOL OnInitDialog();
   afx_msg void OnExecute();
-  afx_msg void OnBnClickedDBStore();
-  afx_msg void OnBnClickedGlobalStore();
 
   DECLARE_MESSAGE_MAP()
 
 private:
   std::vector<CString> m_vcs_db;
-  std::vector<CString> m_vcs_gbl;
   CComboBox m_combo;
   CString m_selected;
-  int m_selectedstore;
   int m_function;
 };

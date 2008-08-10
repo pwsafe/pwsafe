@@ -29,12 +29,10 @@ IMPLEMENT_DYNAMIC(CViewFilterDlg, CPWResizeDialog)
 
 CViewFilterDlg::CViewFilterDlg(CWnd* pParent,
                                st_filters *pfilters,
-                               PWSFilters &dbfilters,
-                               PWSFilters &globalfilters)
-  : CPWResizeDialog(CViewFilterDlg::IDD, pParent),
+                               PWSFilters &dbfilters)
+: CPWResizeDialog(CViewFilterDlg::IDD, pParent),
   m_pfilters(pfilters),
-  m_DBFilters(dbfilters), m_GlobalFilters(globalfilters),
-  m_selectedstore(m_selectedstore)
+  m_DBFilters(dbfilters), m_selectedstore(m_selectedstore)
 {
   // Get DB filter via name and replace m_filters
   PWSFilters::iterator mf_iter;
@@ -43,13 +41,6 @@ CViewFilterDlg::CViewFilterDlg(CWnd* pParent,
        mf_iter != m_DBFilters.end();
        mf_iter++) {
     m_vcs_db.push_back(mf_iter->first);
-  }
-
-  // Get Global filter via name and replace m_filters
-  for (mf_iter = m_GlobalFilters.begin();
-       mf_iter != m_GlobalFilters.end();
-       mf_iter++) {
-    m_vcs_gbl.push_back(mf_iter->first);
   }
 }
 
@@ -66,11 +57,11 @@ void CViewFilterDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CViewFilterDlg, CPWResizeDialog)
-  ON_WM_SIZE()
-  ON_BN_CLICKED(IDC_CURRENTFILTERSBTN, OnBnClickedCurrent)
-  ON_BN_CLICKED(IDC_DATABASEFILTERSBTN, OnBnClickedDBStore)
-  ON_BN_CLICKED(IDC_GLOBALFILTERBTN, OnBnClickedGlobalStore)
-  ON_CBN_SELCHANGE(IDC_FILTERNAMECOMBO, OnFilterSelected)
+ON_WM_SIZE()
+ON_BN_CLICKED(IDC_CURRENTFILTERSBTN, OnBnClickedCurrent)
+ON_BN_CLICKED(IDC_DATABASEFILTERSBTN, OnBnClickedDBStore)
+ON_BN_CLICKED(IDC_GLOBALFILTERBTN, OnBnClickedGlobalStore)
+ON_CBN_SELCHANGE(IDC_FILTERNAMECOMBO, OnFilterSelected)
 END_MESSAGE_MAP()
 
 // ViewFilter message handlers
@@ -94,28 +85,20 @@ BOOL CViewFilterDlg::OnInitDialog()
 
   GetDlgItem(IDC_CURRENTFILTERSBTN)->EnableWindow(m_pfilters == NULL ? FALSE : TRUE);
   GetDlgItem(IDC_DATABASEFILTERSBTN)->EnableWindow(m_vcs_db.empty() ? FALSE : TRUE);
-  GetDlgItem(IDC_GLOBALFILTERBTN)->EnableWindow(m_vcs_gbl.empty() ? FALSE : TRUE);
+  GetDlgItem(IDC_GLOBALFILTERBTN)->EnableWindow(FALSE);
 
   if (m_pfilters != NULL) {
     m_selectedstore = VF_CURRENT;
     m_combo.SetWindowText(m_pfilters->fname);
     m_combo.EnableWindow(FALSE);
   } else
-  if (!m_vcs_db.empty()) {
-    m_selectedstore = VF_DATABASE;
-  } else
-  if (!m_vcs_gbl.empty()) {
-    m_selectedstore = VF_GLOBAL;
-  }
-
-  if (m_selectedstore != VF_CURRENT && m_combo.GetCount() == 0) {
-    ComboAdder ca(m_combo);
-    if (m_selectedstore == VF_DATABASE) {
-      ca.doit(m_vcs_db);
-    } else {  // VF_GLOBAL
-      ca.doit(m_vcs_gbl);
-    }
-  }
+    if (!m_vcs_db.empty()) {
+      m_selectedstore = VF_DATABASE;
+    } else
+      if (m_selectedstore != VF_CURRENT && m_combo.GetCount() == 0) {
+        ComboAdder ca(m_combo);
+        ca.doit(m_vcs_db);
+      }
 
   CString cs_text;
   cs_text = _T(" # ");
@@ -185,16 +168,6 @@ void CViewFilterDlg::OnBnClickedDBStore()
 
 void CViewFilterDlg::OnBnClickedGlobalStore()
 {
-  UpdateData(TRUE);
-  m_combo.EnableWindow(TRUE);
-  m_combo.ResetContent();
-
-  ComboAdder ca(m_combo);
-  ca.doit(m_vcs_gbl);
-
-  m_combo.SetCurSel(0);
-  m_FilterLC.DeleteAllItems();
-  OnFilterSelected();
 }
 
 void CViewFilterDlg::OnFilterSelected()
@@ -209,12 +182,7 @@ void CViewFilterDlg::OnFilterSelected()
   m_combo.GetLBText(isel, cs_selected);
 
   PWSFilters::iterator mf_iter;
-  if (m_selectedstore == VF_DATABASE) {
-    mf_iter = m_DBFilters.find(cs_selected);
-  } else {
-    mf_iter = m_GlobalFilters.find(cs_selected);
-  }
-
+  mf_iter = m_DBFilters.find(cs_selected);
   st_filters *pfilters = &mf_iter->second;
   SelectFilter(pfilters);
 }
@@ -364,107 +332,107 @@ UINT CViewFilterDlg::GetFieldTypeName(const FieldType &ft)
 {
   UINT nID(0);
   switch (ft) {
-    case FT_GROUP:
-      nID = IDSC_EXPHDRGROUP;
-      break;
-    case FT_TITLE:
-      nID = IDSC_EXPHDRTITLE;
-      break;
-    case FT_GROUPTITLE:
-      nID = IDSC_EXPHDRGROUPTITLE;
-      break;
-    case FT_USER:
-      nID = IDSC_EXPHDRUSERNAME;
-      break;
-    case FT_PASSWORD:
-      nID = IDSC_EXPHDRPASSWORD;
-      break;
-    case FT_NOTES:
-      nID = IDSC_EXPHDRNOTES;
-      break;
-    case FT_URL:
-      nID = IDSC_EXPHDRURL;
-      break;
-    case FT_AUTOTYPE:
-      nID = IDSC_EXPHDRAUTOTYPE;
-      break;
-    case FT_CTIME:
-      nID = IDSC_EXPHDRCTIME;
-      break;
-    case FT_ATIME:
-      nID = IDSC_EXPHDRATIME;
-      break;
-    case FT_PMTIME:
-      nID = IDSC_EXPHDRPMTIME;
-      break;
-    case FT_XTIME:
-      nID = IDSC_EXPHDRXTIME;
-      break;
-    case FT_XTIME_INT:
-      nID = IDSC_EXPHDRXTIMEINT;
-      break;
-    case FT_RMTIME:
-      nID = IDSC_EXPHDRRMTIME;
-      break;
-    case FT_PWHIST:
-      nID = IDS_PASSWORDHISTORY;
-      break;
-    case FT_POLICY:
-      nID = IDSC_EXPHDRPWPOLICY;
-      break;
-    case FT_ENTRYTYPE:
-      nID = IDS_ENTRYTYPE;
-      break;
-    case FT_UNKNOWNFIELDS:
-      nID = IDS_UNKNOWNFIELDSFILTER;
-      break;
-    case HT_PRESENT:
-      nID = IDS_PRESENT;
-      break;
-    case HT_ACTIVE:
-      nID = IDS_HACTIVE;
-      break;
-    case HT_NUM:
-      nID = IDS_HNUM;
-      break;
-    case HT_MAX:
-      nID = IDS_HMAX;
-      break;
-    case HT_CHANGEDATE:
-      nID = IDS_HDATE;
-      break;
-    case HT_PASSWORDS:
-      nID = HT_PASSWORDS;
-      break;
-    case PT_PRESENT:
-      nID = IDS_PRESENT;
-      break;
-    case PT_LENGTH:
-      nID = IDS_PLENGTH;
-      break;
-    case PT_LOWERCASE:
-      nID = IDS_PLOWER;
-      break;
-    case PT_UPPERCASE:
-      nID = IDS_PUPPER;
-      break;
-    case PT_DIGITS:
-      nID = IDS_PDIGITS;
-      break;
-    case PT_SYMBOLS:
-      nID = IDS_PSYMBOL;
-      break;
-    case PT_HEXADECIMAL:
-      nID = IDS_PHEXADECIMAL;
-      break;
-    case PT_EASYVISION:
-      nID = IDS_PEASYVISION;
-      break;
-    case PT_PRONOUNCEABLE:
-      nID = IDS_PPRONOUNCEABLE;
-      break;
-    default:
-      ASSERT(0);
+  case FT_GROUP:
+    nID = IDSC_EXPHDRGROUP;
+    break;
+  case FT_TITLE:
+    nID = IDSC_EXPHDRTITLE;
+    break;
+  case FT_GROUPTITLE:
+    nID = IDSC_EXPHDRGROUPTITLE;
+    break;
+  case FT_USER:
+    nID = IDSC_EXPHDRUSERNAME;
+    break;
+  case FT_PASSWORD:
+    nID = IDSC_EXPHDRPASSWORD;
+    break;
+  case FT_NOTES:
+    nID = IDSC_EXPHDRNOTES;
+    break;
+  case FT_URL:
+    nID = IDSC_EXPHDRURL;
+    break;
+  case FT_AUTOTYPE:
+    nID = IDSC_EXPHDRAUTOTYPE;
+    break;
+  case FT_CTIME:
+    nID = IDSC_EXPHDRCTIME;
+    break;
+  case FT_ATIME:
+    nID = IDSC_EXPHDRATIME;
+    break;
+  case FT_PMTIME:
+    nID = IDSC_EXPHDRPMTIME;
+    break;
+  case FT_XTIME:
+    nID = IDSC_EXPHDRXTIME;
+    break;
+  case FT_XTIME_INT:
+    nID = IDSC_EXPHDRXTIMEINT;
+    break;
+  case FT_RMTIME:
+    nID = IDSC_EXPHDRRMTIME;
+    break;
+  case FT_PWHIST:
+    nID = IDS_PASSWORDHISTORY;
+    break;
+  case FT_POLICY:
+    nID = IDSC_EXPHDRPWPOLICY;
+    break;
+  case FT_ENTRYTYPE:
+    nID = IDS_ENTRYTYPE;
+    break;
+  case FT_UNKNOWNFIELDS:
+    nID = IDS_UNKNOWNFIELDSFILTER;
+    break;
+  case HT_PRESENT:
+    nID = IDS_PRESENT;
+    break;
+  case HT_ACTIVE:
+    nID = IDS_HACTIVE;
+    break;
+  case HT_NUM:
+    nID = IDS_HNUM;
+    break;
+  case HT_MAX:
+    nID = IDS_HMAX;
+    break;
+  case HT_CHANGEDATE:
+    nID = IDS_HDATE;
+    break;
+  case HT_PASSWORDS:
+    nID = HT_PASSWORDS;
+    break;
+  case PT_PRESENT:
+    nID = IDS_PRESENT;
+    break;
+  case PT_LENGTH:
+    nID = IDS_PLENGTH;
+    break;
+  case PT_LOWERCASE:
+    nID = IDS_PLOWER;
+    break;
+  case PT_UPPERCASE:
+    nID = IDS_PUPPER;
+    break;
+  case PT_DIGITS:
+    nID = IDS_PDIGITS;
+    break;
+  case PT_SYMBOLS:
+    nID = IDS_PSYMBOL;
+    break;
+  case PT_HEXADECIMAL:
+    nID = IDS_PHEXADECIMAL;
+    break;
+  case PT_EASYVISION:
+    nID = IDS_PEASYVISION;
+    break;
+  case PT_PRONOUNCEABLE:
+    nID = IDS_PPRONOUNCEABLE;
+    break;
+  default:
+    ASSERT(0);
   }
   return nID;
 }

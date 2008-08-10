@@ -648,11 +648,8 @@ private:
   vfiltergroups m_vMflgroups;
   vfiltergroups m_vHflgroups;
   vfiltergroups m_vPflgroups;
-
-  // Global Filters
-  PWSFilters m_GlobalFilters;
-
-  void ExportFilters(PWSFilters &MapFilters);
+  
+  void ExportFilters();
   void CreateGroups();
   int m_bNumPassedFiltering;
 };
