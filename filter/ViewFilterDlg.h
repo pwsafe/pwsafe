@@ -32,8 +32,7 @@ class CViewFilterDlg : public CPWResizeDialog
 public:
   CViewFilterDlg(CWnd* pParent,
                  st_filters *pfilters,
-                 PWSFilters &pmapdbfilters,
-                 PWSFilters &pmapglobalfilters);
+                 PWSFilters &pmapdbfilters);
   virtual ~CViewFilterDlg();
 
 // Dialog Data
@@ -59,9 +58,7 @@ protected:
 private:
   st_filters *m_pfilters;
   PWSFilters &m_DBFilters;
-  PWSFilters &m_GlobalFilters;
   std::vector<CString> m_vcs_db;
-  std::vector<CString> m_vcs_gbl;
 
   UINT GetFieldTypeName(const FieldType &ft);
   void SelectFilter(st_filters *pfilter);

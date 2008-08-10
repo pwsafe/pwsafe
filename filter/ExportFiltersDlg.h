@@ -20,9 +20,8 @@ public:
   CExportFiltersDlg(CWnd* pParent = NULL);   // standard constructor
   virtual ~CExportFiltersDlg();
 
-  void SetAvailableStores(bool bDB, bool bGlobal)
-  {m_bDB = bDB; m_bGlobal = bGlobal;}
-  int GetSelected() {return m_selectedstore;}
+  void SetAvailableStores(bool bDB)
+  {m_bDB = bDB;}
 
 // Dialog Data
   enum { IDD = IDD_EXPORTFILTERS };
@@ -36,6 +35,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  bool m_bDB, m_bGlobal;
+  bool m_bDB;
   int m_selectedstore;
 };

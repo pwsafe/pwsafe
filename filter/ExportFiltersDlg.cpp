@@ -18,8 +18,7 @@
 IMPLEMENT_DYNAMIC(CExportFiltersDlg, CPWDialog)
 
 CExportFiltersDlg::CExportFiltersDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CExportFiltersDlg::IDD, pParent),
-  m_bDB(false), m_bGlobal(false), m_selectedstore(1)
+  : CPWDialog(CExportFiltersDlg::IDD, pParent), m_bDB(false)
 {
 }
 
@@ -46,11 +45,6 @@ BOOL CExportFiltersDlg::OnInitDialog()
   if (!m_bDB) {
     m_selectedstore = 1;
     GetDlgItem(IDC_DATABASEFILTERSBTN)->EnableWindow(FALSE);
-  }
-
-  if (!m_bGlobal) {
-    m_selectedstore = 0;
-    GetDlgItem(IDC_GLOBALFILTERBTN)->EnableWindow(FALSE);
   }
 
   UpdateData(FALSE);

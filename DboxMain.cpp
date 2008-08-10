@@ -680,15 +680,18 @@ void DboxMain::InitPasswordSafe()
     delete m_pNotesDisplay;
     m_pNotesDisplay = NULL;
   }
-  CString tmp = CString(PWSdirs::GetExeDir().c_str()) + _T("autoload_filters.xml");
+  // if there's a filter file named "autoload_filters.xml", 
+  // do what its name implies...
+  CString tmp = CString(PWSdirs::GetSafeDir().c_str()) +
+    _T("autoload_filters.xml");
   if (PWSfile::FileExists(tmp)) {
     CString strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
     CWaitCursor waitCursor;  // This may take a while!
 
-    int rc = m_GlobalFilters.ImportFilterXMLFile(_T(""), tmp,
-                                                 XSDFilename.c_str(),
-                                                 strErrors);
+    int rc = m_core.m_Filters.ImportFilterXMLFile(_T(""), tmp,
+                                                  XSDFilename.c_str(),
+                                                  strErrors);
     waitCursor.Restore();  // Restore normal cursor
     if (rc != PWScore::SUCCESS) {
       CString cs_msg;
@@ -2552,7 +2555,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_DELETEFILTER:
     case ID_MENUITEM_VIEWFILTER:
     case ID_MENUITEM_EXPORTFILTERS:
-      if (m_core.m_Filters.empty() && m_GlobalFilters.empty())
+      if (m_core.m_Filters.empty())
         iEnable = FALSE;
       break;
     default:

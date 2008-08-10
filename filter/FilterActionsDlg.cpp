@@ -20,7 +20,7 @@ IMPLEMENT_DYNAMIC(CFilterActionsDlg, CPWDialog)
 
 CFilterActionsDlg::CFilterActionsDlg(CWnd* pParent /*=NULL*/)
   : CPWDialog(CFilterActionsDlg::IDD, pParent),
-  m_selectedstore(1), m_function(FA_SELECT)
+  m_function(FA_SELECT)
 {
 }
 
@@ -31,14 +31,11 @@ CFilterActionsDlg::~CFilterActionsDlg()
 void CFilterActionsDlg::DoDataExchange(CDataExchange* pDX)
 {
   CDialog::DoDataExchange(pDX);
-  DDX_Radio(pDX, IDC_DATABASEFILTERSBTN, m_selectedstore); // only first!
   DDX_Control(pDX, IDC_FILTERNAMECOMBO, m_combo);
 }
 
 BEGIN_MESSAGE_MAP(CFilterActionsDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, OnExecute)
-  ON_BN_CLICKED(IDC_DATABASEFILTERSBTN, OnBnClickedDBStore)
-  ON_BN_CLICKED(IDC_GLOBALFILTERBTN, OnBnClickedGlobalStore)
 END_MESSAGE_MAP()
 
 // FilterActions message handlers
@@ -67,21 +64,12 @@ BOOL CFilterActionsDlg::OnInitDialog()
   GetDlgItem(IDOK)->SetWindowText(cs_button);
 
   if (m_vcs_db.empty()) {
-    m_selectedstore = 1;
     GetDlgItem(IDC_DATABASEFILTERSBTN)->EnableWindow(FALSE);
-  }
-  if (m_vcs_gbl.empty()) {
-    m_selectedstore = 0;
-    GetDlgItem(IDC_GLOBALFILTERBTN)->EnableWindow(FALSE);
   }
 
   if (m_combo.GetCount() == 0) {
     ComboAdder ca(m_combo);
-    if (m_selectedstore == 0) {
       ca.doit(m_vcs_db);
-    } else {
-      ca.doit(m_vcs_gbl);
-    }
   }
 
   m_combo.SetCurSel(0);
@@ -99,24 +87,4 @@ void CFilterActionsDlg::OnExecute()
   }
 
   CPWDialog::OnOK();
-}
-
-void CFilterActionsDlg::OnBnClickedDBStore()
-{
-  UpdateData(TRUE);
-  m_combo.ResetContent();
-
-  ComboAdder ca(m_combo);
-  ca.doit(m_vcs_db);
-  m_combo.SetCurSel(0);
-}
-
-void CFilterActionsDlg::OnBnClickedGlobalStore()
-{
-  UpdateData(TRUE);
-  m_combo.ResetContent();
-
-  ComboAdder ca(m_combo);
-  ca.doit(m_vcs_gbl);
-  m_combo.SetCurSel(0);
 }

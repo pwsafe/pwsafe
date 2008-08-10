@@ -2600,9 +2600,6 @@ void DboxMain::OnOK()
   // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
   m_menuManager.Cleanup();
 
-  // Clear out Global filters
-  m_GlobalFilters.clear();
-
   CDialog::OnOK();
 }
 
