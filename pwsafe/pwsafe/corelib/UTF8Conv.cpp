@@ -79,7 +79,7 @@ bool CUTF8Conv::ToUTF8(const CMyString &data,
     wcPtr,         // wide-character string
     -1,            // -1 means null-terminated
     NULL, 0,       // get needed buffer size
-    NULL,NULL);    // use system default for unmappables
+    NULL, NULL);   // use system default for unmappables
 
   if (mbLen == 0) { // uh-oh
     ASSERT(0);

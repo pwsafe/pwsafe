@@ -82,7 +82,7 @@
     <xs:enumeration value="NC" />
     <xs:enumeration value="EX" />
     <xs:enumeration value="WX" />
-    </xs:restriction>
+  </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="string_ruleType">
@@ -95,7 +95,7 @@
     <xs:enumeration value="ND" />
     <xs:enumeration value="CO" />
     <xs:enumeration value="NC" />
-    </xs:restriction>
+  </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="stringpresent_ruleType">
@@ -110,7 +110,7 @@
     <xs:enumeration value="ND" />
     <xs:enumeration value="CO" />
     <xs:enumeration value="NC" />
-    </xs:restriction>
+  </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="integer_ruleType">
@@ -124,7 +124,7 @@
     <xs:enumeration value="LE" />
     <xs:enumeration value="GT" />
     <xs:enumeration value="GE" />
-    </xs:restriction>
+  </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="date_ruleType">
@@ -136,21 +136,21 @@
     <xs:enumeration value="BT" />
     <xs:enumeration value="BF" />
     <xs:enumeration value="AF" />
-    </xs:restriction>
+  </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="booleanset_ruleType">
   <xs:restriction base="xs:string">
     <xs:enumeration value="SE" />
     <xs:enumeration value="NS" />
-    </xs:restriction>
+  </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="booleanpresent_ruleType">
   <xs:restriction base="xs:string">
     <xs:enumeration value="PR" />
     <xs:enumeration value="NP" />
-    </xs:restriction>
+  </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="booleanactive_ruleType">
@@ -221,88 +221,88 @@
 
 <xs:complexType name="passwordfilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="password_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="test" type="matchPassword" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="password_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchPassword" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="stringfilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="string_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="test" type="matchString" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="string_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchString" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="stringpresentfilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="stringpresent_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="test" type="matchString" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="stringpresent_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchString" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="integerfilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="integer_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="test" type="matchInteger" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="integer_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchInteger" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="datefilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="date_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="test" type="matchDate" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="date_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchDate" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="entryfilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="entry_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="test" type="matchEntry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="entry_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchEntry" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="passwordhistoryentry" >
   <xs:sequence>
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="passwordpolicyentry" >
   <xs:sequence>
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="booleansetfilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="booleanset_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="booleanset_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="booleanpresentfilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="booleanpresent_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="booleanpresent_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="booleanactivefilterentry" >
   <xs:sequence>
-      <xs:element name="rule" type="booleanactive_ruleType" minOccurs="1" maxOccurs="1" />
-      <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="booleanactive_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:group name="filter_group" >
   <xs:choice>
-    <xs:element name="group" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="group" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="grouptitle" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="title" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="user" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
