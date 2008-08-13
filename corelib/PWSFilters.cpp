@@ -62,13 +62,17 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
 
   switch (st_fldata.mtype) {
     case PWSMatch::MT_STRING:
+      // Even if rule == 'present'/'not present', need to put 'string' & 'case' XML
+      // elements to make schema work, since W3C Schema V1.0 does NOT support 
+      // conditional processing :-(
+      oss << sztab << sztab << sztab << sztab << "<string>";
       if (!st_fldata.fstring.IsEmpty()) { // string empty if 'present' or 'not present'
         utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
-        oss << sztab << sztab << sztab << sztab << "<string>" << utf8
-            << "</string>" << szendl;
-        oss << sztab << sztab << sztab << sztab << "<case>" << st_fldata.fcase 
-            << "</case>" << szendl;
+        oss << utf8;
       }
+      oss << "</string>" << szendl;
+      oss << sztab << sztab << sztab << sztab << "<case>" << st_fldata.fcase 
+          << "</case>" << szendl;
       break;
     case PWSMatch::MT_PASSWORD:
       utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
@@ -207,7 +211,7 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
         ASSERT(0);
     }
 
-    oss << sztab << sztab <<"<" << pszfieldtype << ">" << szendl;
+    oss << sztab << sztab << "<" << pszfieldtype << ">" << szendl;
  
     PWSMatch::MatchRule mr = st_fldata.rule;
     if (mr >= PWSMatch::MR_LAST)
