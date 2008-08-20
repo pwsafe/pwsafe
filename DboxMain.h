@@ -258,6 +258,14 @@ public:
   int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected();
 
+  void SetFilter(int selectedpool, CString selectedfiltername)
+  {m_currentfilterpool = selectedpool; m_selectedfiltername = selectedfiltername;}
+  void ImportFilters();
+  bool ApplyFilter();
+  bool EditFilter(st_filters *pfilters);
+  void ClearFilter();
+  void ExportFilters(PWSFilters &MapFilters);
+
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -514,16 +522,11 @@ protected:
   afx_msg void OnChangeTreeFont();
   afx_msg void OnChangePswdFont();
   afx_msg void OnViewReports(UINT nID);  // From View->Reports menu
-  afx_msg void OnViewReports();          // From Toolbar button
+  afx_msg void OnViewReports();
+  afx_msg void OnManageFilters(); // From Toolbar button
   afx_msg void OnApplyFilter();
   afx_msg void OnSetFilter();
   afx_msg void OnClearFilter();
-  afx_msg void OnSelectFilter();
-  afx_msg void OnSaveFilter();
-  afx_msg void OnDeleteFilter();
-  afx_msg void OnViewFilter();
-  afx_msg void OnExportFilters();
-  afx_msg void OnImportFilters(); 
   afx_msg void OnRefreshWindow();
   afx_msg void OnMinimize();
   afx_msg void OnUnMinimize();
@@ -642,14 +645,18 @@ private:
   // Filters
   bool m_bFilterActive;
   // Current filter
-  st_filters m_filters;
+  st_filters m_currentfilter;
 
   // Sorted Groups
   vfiltergroups m_vMflgroups;
   vfiltergroups m_vHflgroups;
   vfiltergroups m_vPflgroups;
-  
-  void ExportFilters();
+
+  // Global Filters
+  PWSFilters m_MapFilters;
+  int m_currentfilterpool;
+  CString m_selectedfiltername;
+
   void CreateGroups();
   int m_bNumPassedFiltering;
 };

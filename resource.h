@@ -262,9 +262,8 @@
 #define IDB_FILTER_ACTIVE               425
 #define IDB_CHECKED                     426
 #define IDB_UNCHECKED                   427
-#define IDD_VIEWFILTER                  428
-#define IDD_FILTERACTIONS               429
-#define IDD_SAVEFILTER                  430
+#define IDB_EMPTY                       428
+#define IDB_BLANK                       429
 #define IDD_EXPORTFILTERS               431
 #define IDB_DRAGGROUP                   432
 #define IDB_DRAGTITLE                   433
@@ -279,6 +278,7 @@
 #define IDB_DRAGNOTESX                  442
 #define IDB_DRAGURLX                    443
 #define IDD_VIEWREPORT                  444
+#define IDD_MANAGEFILTERS               445
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -569,10 +569,7 @@
 #define IDC_MFILTER_LGC_COMBOBOX        1326
 #define IDC_HFILTER_LGC_COMBOBOX        1327
 #define IDC_PFILTER_LGC_COMBOBOX        1328
-#define IDC_FILTERNAMECOMBO             1329
-#define IDC_CURRENTFILTERSBTN           1330
-#define IDC_DATABASEFILTERSBTN          1331
-#define IDC_GLOBALFILTERBTN             1332
+#define IDC_FILTERPROP_HEADER           1331
 #define IDC_MULTIPLEINSTANCES           1333
 #define IDC_STATIC_DRAGGROUP            1334
 #define IDC_STATIC_DRAGTITLE            1335
@@ -581,14 +578,23 @@
 #define IDC_STATIC_DRAGNOTES            1338
 #define IDC_STATIC_DRAGURL              1339
 #define IDC_EDITREPORT                  1340
+#define IDC_FILTERAPPLY                 1341
+#define IDC_FILTERNEW                   1342
+#define IDC_FILTEREDIT                  1343
+#define IDC_FILTERCOPY                  1344
+#define IDC_FILTERDELETE                1345
+#define IDC_FILTERIMPORT                1346
+#define IDC_FILTEREXPORT                1347
+#define IDC_FILTERPROPERTIES            1348
+#define IDC_STATIC_FILTERNAME           1349
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        445
+#define _APS_NEXT_RESOURCE_VALUE        446
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1341
+#define _APS_NEXT_CONTROL_VALUE         1350
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif

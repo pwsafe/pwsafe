@@ -25,7 +25,7 @@ CSetFiltersDlg::CSetFiltersDlg(CWnd* pParent,
                                st_filters *pfilters,
                                const int &iWMSGID)
   : CPWFiltersDlg(pParent, DFTYPE_MAIN),
-  m_iWMSGID(iWMSGID)
+  m_iWMSGID(iWMSGID), m_applied(false)
 {
   ASSERT(pParent != NULL);
   ASSERT(pfilters != NULL);
@@ -43,6 +43,7 @@ CSetFiltersDlg::~CSetFiltersDlg()
 
 BEGIN_MESSAGE_MAP(CSetFiltersDlg, CPWFiltersDlg)
   ON_BN_CLICKED(IDC_APPLY, OnApply)
+  ON_BN_CLICKED(IDCANCEL, OnCancel)
 END_MESSAGE_MAP()
 
 void CSetFiltersDlg::EnableDisableApply()
@@ -69,4 +70,11 @@ void CSetFiltersDlg::OnApply()
 
   // Tell parent (DboxMain) to execute the current filters
   m_pParent->SendMessage(m_iWMSGID, (WPARAM)m_pfilters);
+  m_applied = true;
+}
+
+void CSetFiltersDlg::OnCancel()
+{
+  // If the filter has been applied, then it has been saved!
+  EndDialog(m_applied ? IDOK : IDCANCEL);
 }

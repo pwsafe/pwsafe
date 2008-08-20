@@ -17,7 +17,7 @@
 class PWSXMLFilters
 {
 public:
-  PWSXMLFilters(PWSFilters &filters);
+  PWSXMLFilters(PWSFilters &mapfilters, const FilterPool fpool);
   ~PWSXMLFilters();
 
   bool XMLFilterProcess(const bool &bvalidation,
@@ -30,7 +30,8 @@ public:
 
 private:
   bool m_bValidation;
-  PWSFilters &m_filters;
+  PWSFilters &m_MapFilters;
+  FilterPool m_FPool;
 };
 
 #endif /* __PWSXMLFILTERS_H */

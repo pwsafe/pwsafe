@@ -621,10 +621,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\filter\ExportFiltersDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ExportTextDlg.cpp"
 				>
 			</File>
@@ -638,10 +634,6 @@
 			</File>
 			<File
 				RelativePath=".\ExtThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\filter\FilterActionsDlg.cpp"
 				>
 			</File>
 			<File
@@ -718,6 +710,10 @@
 			</File>
 			<File
 				RelativePath=".\MainView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\filter\ManageFiltersDlg.cpp"
 				>
 			</File>
 			<File
@@ -845,10 +841,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\filter\SaveFilterDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\filter\SetFiltersDlg.cpp"
 				>
 			</File>
@@ -889,10 +881,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\filter\ViewFilterDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ViewReport.cpp"
 				>
 			</File>
@@ -927,10 +915,6 @@
 			</File>
 			<File
 				RelativePath=".\ColumnChooserLC.h"
-				>
-			</File>
-			<File
-				RelativePath=".\filter\ComboAdder.h"
 				>
 			</File>
 			<File
@@ -994,10 +978,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\filter\ExportFiltersDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ExportTextDlg.h"
 				>
 			</File>
@@ -1011,10 +991,6 @@
 			</File>
 			<File
 				RelativePath=".\ExtThread.h"
-				>
-			</File>
-			<File
-				RelativePath=".\filter\FilterActionsDlg.h"
 				>
 			</File>
 			<File
@@ -1067,6 +1043,10 @@
 			</File>
 			<File
 				RelativePath=".\LVHdrCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\filter\ManageFiltersDlg.h"
 				>
 			</File>
 			<File
@@ -1218,10 +1198,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\filter\SaveFilterDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\filter\SetFiltersDlg.h"
 				>
 			</File>
@@ -1267,10 +1243,6 @@
 			</File>
 			<File
 				RelativePath=".\view.h"
-				>
-			</File>
-			<File
-				RelativePath=".\filter\ViewFilterDlg.h"
 				>
 			</File>
 			<File
@@ -1376,6 +1348,10 @@
 			</File>
 			<File
 				RelativePath=".\res\toolbar\backup_new_disabled.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\blank.bmp"
 				>
 			</File>
 			<File
@@ -1639,6 +1615,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\empty.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\exit_classic.bmp"
 				>
 			</File>
@@ -1860,6 +1840,18 @@
 			</File>
 			<File
 				RelativePath=".\res\locked_tray.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\managefilters_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\managefilters_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\managefilters_new_disabled.bmp"
 				>
 			</File>
 			<File

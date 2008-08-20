@@ -8,8 +8,8 @@
 // ItemData.h
 //-----------------------------------------------------------------------------
 
-#if !defined ItemData_h
-#define ItemData_h
+#ifndef __ITEMDATA_H
+#define __ITEMDATA_H
 
 #include "Util.h"
 #include "Match.h"
@@ -19,7 +19,6 @@
 #include <bitset>
 #include <vector>
 #include <string>
-
 
 struct PWPolicy {
   WORD flags;

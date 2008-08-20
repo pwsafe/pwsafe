@@ -12,7 +12,7 @@
  * \file PWSFilters.h
  * types used for defining and working with filters of pwsafe
  * entries. Note that the structures are st_*, and they currently
- * have a wrapper class, PWSFilters, mainly for persistency.
+ * have a wrapper class PWSFilters.
  */
 
 #include <iostream>
@@ -25,7 +25,6 @@
 #include "Match.h"
 #include "itemdata.h"
 #include "mystring.h"
-
 
 // All the fields that we can use for filtering entries:
 
@@ -182,12 +181,9 @@ struct st_filters {
   vFilterRows vHfldata;
   // PW Policy filters
   vFilterRows vPfldata;
-  // save along with database?
-  bool isPersistent;
 
   st_filters()
-  : fname(_T("")), num_Mactive(0), num_Hactive(0), num_Pactive(0),
-    isPersistent(false)
+  : fname(_T("")), num_Mactive(0), num_Hactive(0), num_Pactive(0)
   {}
 
   st_filters(const st_filters &that)
@@ -195,7 +191,7 @@ struct st_filters {
     num_Mactive(that.num_Mactive), 
     num_Hactive(that.num_Hactive), num_Pactive(that.num_Pactive),
     vMfldata(that.vMfldata), vHfldata(that.vHfldata),
-    vPfldata(that.vPfldata), isPersistent(that.isPersistent)
+    vPfldata(that.vPfldata)
   {}
 
   st_filters &operator=(const st_filters &that)
@@ -208,7 +204,6 @@ struct st_filters {
       vMfldata = that.vMfldata;
       vHfldata = that.vHfldata;
       vPfldata = that.vPfldata;
-      isPersistent = that.isPersistent;
     }
     return *this;
   }
@@ -220,14 +215,31 @@ struct st_filters {
     vMfldata.clear();
     vHfldata.clear();
     vPfldata.clear();
-    isPersistent = false;
   }
 };
 
+enum FilterPool {FPOOL_DATABASE = 1, FPOOL_AUTOLOAD, FPOOL_IMPORTED, FPOOL_SESSION,
+                 FPOOL_LAST};
 
-class PWSFilters : public std::map<CString, st_filters> {
+struct st_Filterkey {
+  FilterPool fpool;
+  CString cs_filtername;
+};
+
+// Following is for map<> compare function
+struct ltfk {
+  bool operator()(const st_Filterkey &fk1, const st_Filterkey &fk2) const
+  {
+    if (fk1.fpool != fk2.fpool)
+      return (int)fk1.fpool < (int)fk2.fpool;
+
+    return fk1.cs_filtername.Compare(fk2.cs_filtername) < 0;
+  }
+};
+
+class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
  public:
-  typedef std::pair<CString, st_filters> Pair;
+  typedef std::pair<st_Filterkey, st_filters> Pair;
   
   std::string GetFilterXMLHeader(const CMyString &currentfile,
                                  const PWSfile::HeaderRecord &hdr);
@@ -235,8 +247,9 @@ class PWSFilters : public std::map<CString, st_filters> {
   int WriteFilterXMLFile(const CMyString &filename, const PWSfile::HeaderRecord hdr,
                          const CMyString &currentfile);
   int WriteFilterXMLFile(std::ostream &os, PWSfile::HeaderRecord hdr,
-                         const CMyString &currentfile);
-  int ImportFilterXMLFile(const CString &strXMLData,
+                         const CMyString &currentfile, const bool bWithFormatting = false);
+  int ImportFilterXMLFile(const FilterPool fpool,
+                          const CString &strXMLData,
                           const CString &strXMLFileName,
                           const CString &strXSDFileName, CString &strErrors);
 

@@ -465,3 +465,4 @@
 #define IDS_FILTEREXISTS                5632
 #define IDS_SHOWDRAGBAR                 5633
 #define IDS_HIDEDRAGBAR                 5634
+#define IDS_CONFIRMFILTERDELETE         5635

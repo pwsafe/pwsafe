@@ -414,18 +414,22 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
 
   if (_tcscmp(szCurElement, _T("filter")) == 0) {
     INT_PTR rc = IDYES;
-    if (m_Filters->find(cur_filter->fname) != m_Filters->end()) {
+    st_Filterkey fk;
+    fk.fpool = m_FPool;
+    fk.cs_filtername = cur_filter->fname;
+    if (m_MapFilters->find(fk) != m_MapFilters->end()) {
       CString cs_text, cs_title;
       cs_title = _T("Filter Import into Database");
       cs_text.Format(_T("Filter %s already exists in the database, do you wish to replace it with this?"),
                      cur_filter->fname);
-      rc = MessageBox(NULL,cs_text, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+      rc = MessageBox(NULL, cs_text, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDYES) {
-        m_Filters->erase(cur_filter->fname);
+        m_MapFilters->erase(fk);
       }
     }
-    if (rc == IDYES)
-      m_Filters->insert(PWSFilters::Pair(cur_filter->fname, *cur_filter));
+    if (rc == IDYES) {
+      m_MapFilters->insert(PWSFilters::Pair(fk, *cur_filter));
+    }
     delete cur_filter;
     return S_OK;
   }

@@ -25,8 +25,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-PWSXMLFilters::PWSXMLFilters(PWSFilters &filters)
-  : m_filters(filters), m_MSXML_Version(60)
+PWSXMLFilters::PWSXMLFilters(PWSFilters &mapfilters, const FilterPool fpool)
+  : m_MapFilters(mapfilters), m_FPool(fpool), m_MSXML_Version(60)
 {
 }
 
@@ -96,7 +96,7 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
   //  Create ErrorHandlerImpl object
   PWSSAXFilterErrorHandler* pEH = new PWSSAXFilterErrorHandler();
 
-  pCH->SetVariables(&m_filters, m_bValidation);
+  pCH->SetVariables(&m_MapFilters, m_FPool, m_bValidation);
  
   //  Set Content Handler
   hr = pSAXReader->putContentHandler(pCH);
