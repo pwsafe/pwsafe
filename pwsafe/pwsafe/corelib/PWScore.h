@@ -261,7 +261,7 @@ public:
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
 
   // Filters
-  PWSFilters m_Filters;
+  PWSFilters m_MapFilters;
 
 private:
   CMyString m_currfile; // current pw db filespec

@@ -366,6 +366,10 @@ int DboxMain::Close()
   // Reset core
   m_core.ReInit();
 
+  // Tidy up filters
+  m_currentfilter.Empty();
+  m_bFilterActive = false;
+
   // Set Dragbar images correctly
   m_DDGroup.SetStaticState(false);
   m_DDTitle.SetStaticState(false);
@@ -596,6 +600,11 @@ int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
 #endif
   CheckExpiredPasswords();
   ChangeOkUpdate();
+
+  // Tidy up filters
+  m_currentfilter.Empty();
+  m_bFilterActive = false;
+
   RefreshViews();
   SetInitialDatabaseDisplay();
   m_core.SetDefUsername(PWSprefs::GetInstance()->
@@ -2599,6 +2608,9 @@ void DboxMain::OnOK()
   prefs->SaveApplicationPreferences();
   // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
   m_menuManager.Cleanup();
+
+  // Clear out filters
+  m_MapFilters.clear();
 
   CDialog::OnOK();
 }

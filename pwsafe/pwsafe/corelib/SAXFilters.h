@@ -65,15 +65,16 @@ class PWSSAXFilterContentHandler: public MSXML2::ISAXContentHandler
 public:
   // Local variables & function
   CString m_strImportErrors;
-  PWSFilters *m_Filters;
+  PWSFilters *m_MapFilters;
+  FilterPool m_FPool;
   int m_type;
 
   // Standard functions
   PWSSAXFilterContentHandler();
   virtual ~PWSSAXFilterContentHandler();
 
-  void SetVariables(PWSFilters *Filters, const bool &bValidation)
-  {m_Filters = Filters, m_bValidation = bValidation;}
+  void SetVariables(PWSFilters *mapfilters, const FilterPool fpool, const bool &bValidation)
+  {m_MapFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
   void SetSchemaVersion(BSTR *schema_version)
   {m_pSchema_Version = schema_version;}
 

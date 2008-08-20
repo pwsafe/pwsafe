@@ -95,7 +95,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
   m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
-  m_bDragBar(false)
+  m_currentfilterpool(FPOOL_LAST), m_bDragBar(false)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -201,12 +201,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_SETFILTER, OnSetFilter)
   ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnClearFilter)
-  ON_COMMAND(ID_MENUITEM_SELECTFILTER, OnSelectFilter)
-  ON_COMMAND(ID_MENUITEM_SAVEFILTER, OnSaveFilter)
-  ON_COMMAND(ID_MENUITEM_DELETEFILTER, OnDeleteFilter)
-  ON_COMMAND(ID_MENUITEM_VIEWFILTER, OnViewFilter)
-  ON_COMMAND(ID_MENUITEM_EXPORTFILTERS, OnExportFilters)
-  ON_COMMAND(ID_MENUITEM_IMPORTFILTERS, OnImportFilters)
+  ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
 
   // Manage Menu
@@ -386,12 +381,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
   {ID_MENUITEM_SETFILTER, true, true, false, false},
   {ID_MENUITEM_CLEARFILTER, true, true, false, false},
-  {ID_MENUITEM_SELECTFILTER, true, true, false, false},
-  {ID_MENUITEM_SAVEFILTER, true, false, false, false},
-  {ID_MENUITEM_VIEWFILTER, true, true, false, false},
-  {ID_MENUITEM_DELETEFILTER, true, false, false, false},
-  {ID_MENUITEM_EXPORTFILTERS, true, true, false, false},
-  {ID_MENUITEM_IMPORTFILTERS, true, true, false, false},
+  {ID_MENUITEM_MANAGEFILTERS, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
@@ -682,16 +672,15 @@ void DboxMain::InitPasswordSafe()
   }
   // if there's a filter file named "autoload_filters.xml", 
   // do what its name implies...
-  CString tmp = CString(PWSdirs::GetSafeDir().c_str()) +
+  CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
     _T("autoload_filters.xml");
   if (PWSfile::FileExists(tmp)) {
     CString strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
     CWaitCursor waitCursor;  // This may take a while!
 
-    int rc = m_core.m_Filters.ImportFilterXMLFile(_T(""), tmp,
-                                                  XSDFilename.c_str(),
-                                                  strErrors);
+    int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""), tmp,
+                                              XSDFilename.c_str(), strErrors);
     waitCursor.Restore();  // Restore normal cursor
     if (rc != PWScore::SUCCESS) {
       CString cs_msg;
@@ -877,7 +866,7 @@ void DboxMain::FixListIndexes()
   for (int i = 0; i < N; i++) {
     CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(ci != NULL);
-    if (m_bFilterActive && !PassesFiltering(*ci, m_filters))
+    if (m_bFilterActive && !PassesFiltering(*ci, m_currentfilter))
       continue;
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
@@ -2537,26 +2526,17 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_APPLYFILTER:
-      if (m_filters.vMfldata.size() == 0 || 
-          (m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive) == 0)
+      if (m_currentfilter.vMfldata.size() == 0 || 
+          (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
+                                         m_currentfilter.num_Pactive) == 0)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CLEARFILTER:
-      if (m_filters.vMfldata.size() == 0)
+      if (m_currentfilter.vMfldata.size() == 0)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_SETFILTER:
-      break;
-    case ID_MENUITEM_SAVEFILTER:
-      if (m_filters.vMfldata.size() == 0)
-        iEnable = FALSE;
-      break;
-    case ID_MENUITEM_SELECTFILTER:
-    case ID_MENUITEM_DELETEFILTER:
-    case ID_MENUITEM_VIEWFILTER:
-    case ID_MENUITEM_EXPORTFILTERS:
-      if (m_core.m_Filters.empty())
-        iEnable = FALSE;
+    case ID_MENUITEM_MANAGEFILTERS:
       break;
     default:
       break;

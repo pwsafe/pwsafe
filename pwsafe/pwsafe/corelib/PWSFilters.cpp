@@ -48,61 +48,64 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
 
-  char *sztab, *szendl;
+  char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
   if (bFile) {
-    sztab = "\t";
+    sztab1 = "\t";
+    sztab2 = "\t\t";
+    sztab3 = "\t\t\t";
+    sztab4 = "\t\t\t\t";
     szendl = "\n";
   } else {
-    sztab = "\0";
+    sztab1 = sztab2 = sztab3 = sztab4 = "\0";
     szendl = "\0";
   }
 
   if (st_fldata.mtype != PWSMatch::MT_BOOL)
-    oss << sztab << sztab << sztab << "<test>" << szendl;
+    oss << sztab3 << "<test>" << szendl;
 
   switch (st_fldata.mtype) {
     case PWSMatch::MT_STRING:
       // Even if rule == 'present'/'not present', need to put 'string' & 'case' XML
       // elements to make schema work, since W3C Schema V1.0 does NOT support 
       // conditional processing :-(
-      oss << sztab << sztab << sztab << sztab << "<string>";
+      oss << sztab4 << "<string>";
       if (!st_fldata.fstring.IsEmpty()) { // string empty if 'present' or 'not present'
         utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
         oss << utf8;
       }
       oss << "</string>" << szendl;
-      oss << sztab << sztab << sztab << sztab << "<case>" << st_fldata.fcase 
+      oss << sztab4 << "<case>" << st_fldata.fcase 
           << "</case>" << szendl;
       break;
     case PWSMatch::MT_PASSWORD:
       utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
-      oss << sztab << sztab << sztab << sztab << "<string>" << utf8
+      oss << sztab4 << "<string>" << utf8
                                               << "</string>" << szendl;
-      oss << sztab << sztab << sztab << sztab << "<case>" << st_fldata.fcase 
+      oss << sztab4 << "<case>" << st_fldata.fcase 
                                               << "</case>" << szendl;
-      oss << sztab << sztab << sztab << sztab << "<warn>" << st_fldata.fcase 
+      oss << sztab4 << "<warn>" << st_fldata.fcase 
                                               << "</warn>" << szendl;
       break;
     case PWSMatch::MT_INTEGER:
-      oss << sztab << sztab << sztab << sztab << "<num1>" << st_fldata.fcase 
+      oss << sztab4 << "<num1>" << st_fldata.fcase 
                                               << "</num1>" << endl;
-      oss << sztab << sztab << sztab << sztab << "<num2>" << st_fldata.fcase 
+      oss << sztab4 << "<num2>" << st_fldata.fcase 
                                               << "</num2>" << endl;
       break;
     case PWSMatch::MT_DATE:
       {
       const CMyString tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
       utf8conv.ToUTF8(tmp1.Left(10), utf8, utf8Len);
-      oss << sztab << sztab << sztab << sztab << "<date1>" << utf8
+      oss << sztab4 << "<date1>" << utf8
                                               << "</date1>" << szendl;
       const CMyString tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
       utf8conv.ToUTF8(tmp2.Left(10), utf8, utf8Len);
-      oss << sztab << sztab << sztab << sztab << "<date2>" << utf8
+      oss << sztab4 << "<date2>" << utf8
                                               << "</date2>" << szendl;
       }
       break;
     case PWSMatch::MT_ENTRYTYPE:
-      oss << sztab << sztab << sztab << sztab <<  "<type>" << szentry[st_fldata.etype]
+      oss << sztab4 <<  "<type>" << szentry[st_fldata.etype]
                                               << "</type>" << szendl;
       break;
     case PWSMatch::MT_BOOL:
@@ -111,10 +114,10 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       ASSERT(0);
   }
   if (st_fldata.mtype != PWSMatch::MT_BOOL)
-    oss << sztab << sztab << sztab << "</test>" << szendl;
+    oss << sztab3 << "</test>" << szendl;
 }
 
-static string GetFilterXML(const st_filters &filters, bool bFile)
+static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
 
@@ -122,17 +125,20 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
-  char *sztab, *szendl;
-  if (bFile) {
-    sztab = "\t";
+  char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
+  if (bWithFormatting) {
+    sztab1 = "\t";
+    sztab2 = "\t\t";
+    sztab3 = "\t\t\t";
+    sztab4 = "\t\t\t\t";
     szendl = "\n";
   } else {
-    sztab = "\0";
+    sztab1 = sztab2 = sztab3 = sztab4 = "\0";
     szendl = "\0";
   }
 
   utf8conv.ToUTF8(filters.fname, utf8, utf8Len);
-  oss << "<filter filtername=\"" << reinterpret_cast<const char *>(utf8) 
+  oss << sztab1 << "<filter filtername=\"" << reinterpret_cast<const char *>(utf8) 
       << "\">" << szendl;
 
   std::vector<st_FilterRow>::const_iterator Flt_citer;
@@ -143,7 +149,7 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
     if (!st_fldata.bFilterComplete)
       continue;
 
-    oss << sztab << "<filter_entry active=\"";
+    oss << sztab2 << "<filter_entry active=\"";
     if (st_fldata.bFilterActive)
       oss << "yes";
     else
@@ -211,7 +217,7 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
         ASSERT(0);
     }
 
-    oss << sztab << sztab << "<" << pszfieldtype << ">" << szendl;
+    oss << sztab3 << "<" << pszfieldtype << ">" << szendl;
  
     PWSMatch::MatchRule mr = st_fldata.rule;
     if (mr >= PWSMatch::MR_LAST)
@@ -220,20 +226,19 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
     const LogicConnect lgc = st_fldata.ltype;
 
     if (ft != FT_PWHIST && ft != FT_POLICY) {
-      oss << sztab << sztab << sztab << "<rule>" << PWSMatch::GetRuleString(mr)
+      oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
                                      << "</rule>" << szendl;
 
-      oss << sztab << sztab << sztab << "<logic>" << (lgc != LC_AND ? "or" : "and")
+      oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
                                      << "</logic>" << szendl;
 
-      GetFilterTestXML(st_fldata, oss, bFile);
+      GetFilterTestXML(st_fldata, oss, bWithFormatting);
     } else
-      oss << sztab << sztab << sztab << "<logic>" << (lgc != LC_AND ? "or" : "and")
+      oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
                                      << "</logic>" << szendl;
 
-    oss << sztab << sztab << "</" << pszfieldtype << ">" << szendl;
-    oss << sztab << "</filter_entry>" << szendl;
-    oss << szendl;
+    oss << sztab3 << "</" << pszfieldtype << ">" << szendl;
+    oss << sztab2 << "</filter_entry>" << szendl;
   }
 
   for (Flt_citer = filters.vHfldata.begin(); 
@@ -243,7 +248,7 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
     if (!st_fldata.bFilterComplete)
       continue;
 
-    oss << sztab << "<filter_entry active=\"";
+    oss << sztab2 << "<filter_entry active=\"";
     if (st_fldata.bFilterActive)
       oss << "yes";
     else
@@ -275,24 +280,23 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
         ASSERT(0);
     }
 
-    oss << sztab << sztab << "<" << pszfieldtype << ">" << szendl;
+    oss << sztab3 << "<" << pszfieldtype << ">" << szendl;
  
     PWSMatch::MatchRule mr = st_fldata.rule;
     if (mr >= PWSMatch::MR_LAST)
       mr = PWSMatch::MR_INVALID;
 
-    oss << sztab << sztab << sztab << "<rule>" << PWSMatch::GetRuleString(mr)
+    oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
                                    << "</rule>" << szendl;
 
     const LogicConnect lgc = st_fldata.ltype;
-    oss << sztab << sztab << sztab << "<logic>" << (lgc != LC_AND ? "or" : "and")
+    oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
                                    << "</logic>" << szendl;
 
-    GetFilterTestXML(st_fldata, oss, bFile);
+    GetFilterTestXML(st_fldata, oss, bWithFormatting);
 
-    oss << sztab << sztab << "</" << pszfieldtype << ">" << szendl;
-    oss << sztab << "</filter_entry>" << szendl;
-    oss << szendl;
+    oss << sztab3 << "</" << pszfieldtype << ">" << szendl;
+    oss << sztab2 << "</filter_entry>" << szendl;
   }
 
   for (Flt_citer = filters.vPfldata.begin(); 
@@ -302,7 +306,7 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
     if (!st_fldata.bFilterComplete)
       continue;
 
-    oss << sztab << "<filter_entry active=\"";
+    oss << sztab2 << "<filter_entry active=\"";
     if (st_fldata.bFilterActive)
       oss << "yes";
     else
@@ -343,59 +347,44 @@ static string GetFilterXML(const st_filters &filters, bool bFile)
         ASSERT(0);
     }
 
-    oss << sztab << sztab << "<" << pszfieldtype << ">" << szendl;
+    oss << sztab3 << "<" << pszfieldtype << ">" << szendl;
  
     PWSMatch::MatchRule mr = st_fldata.rule;
     if (mr >= PWSMatch::MR_LAST)
       mr = PWSMatch::MR_INVALID;
 
-    oss << sztab << sztab << sztab << "<rule>" << PWSMatch::GetRuleString(mr)
+    oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
                                    << "</rule>" << szendl;
 
     const LogicConnect lgc = st_fldata.ltype;
-    oss << sztab << sztab << sztab << "<logic>" << (lgc != LC_AND ? "or" : "and")
+    oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
                                    << "</logic>" << szendl;
 
-    GetFilterTestXML(st_fldata, oss, bFile);
+    GetFilterTestXML(st_fldata, oss, bWithFormatting);
 
-    oss << sztab << sztab << "</" << pszfieldtype << ">" << szendl;
-    oss << sztab << "</filter_entry>" << szendl;
+    oss << sztab3 << "</" << pszfieldtype << ">" << szendl;
+    oss << sztab2 << "</filter_entry>" << szendl;
   }
 
-  oss << "</filter>" << szendl;
+  oss << sztab1 << "</filter>" << szendl;
   oss << szendl;
 
   return oss.str();
 }
 
-struct XMLFilterWriterToFile {
-  XMLFilterWriterToFile(ofstream &ofs) :
-  m_of(ofs)
-  {}
-  // operator
-  void operator()(pair<const CString, st_filters> p)
-  {
-    string xml = GetFilterXML(p.second, true);
-    m_of.write(xml.c_str(),
-               static_cast<streamsize>(xml.length()));
-  }
-
-private:
-  ostream &m_of;
-};
-
 struct XMLFilterWriterToString {
-  XMLFilterWriterToString(ostream &os) :
-  m_os(os)
+  XMLFilterWriterToString(ostream &os, bool bWithFormatting) :
+  m_os(os), m_bWithFormatting(bWithFormatting)
   {}
   // operator
-  void operator()(pair<const CString, st_filters> p)
+  void operator()(pair<const st_Filterkey, st_filters> p)
   {
-    string xml = GetFilterXML(p.second, false);
+    string xml = GetFilterXML(p.second, m_bWithFormatting);
     m_os << xml.c_str();
   }
 private:
   ostream &m_os;
+  bool m_bWithFormatting;
 };
 
 int PWSFilters::WriteFilterXMLFile(const CMyString &filename,
@@ -406,18 +395,18 @@ int PWSFilters::WriteFilterXMLFile(const CMyString &filename,
   if (!of)
     return PWScore::CANT_OPEN_FILE;
   else
-    return WriteFilterXMLFile(of, hdr, currentfile);
+    return WriteFilterXMLFile(of, hdr, currentfile, true);
 }
 
 int PWSFilters::WriteFilterXMLFile(ostream &os,
                                    const PWSfile::HeaderRecord hdr,
-                                   const CMyString &currentfile)
+                                   const CMyString &currentfile,
+                                   const bool bWithFormatting)
 {
   string str_hdr = GetFilterXMLHeader(currentfile, hdr);
   os << str_hdr;
 
-  XMLFilterWriterToString put_filterxml(os);
-
+  XMLFilterWriterToString put_filterxml(os, bWithFormatting);
   for_each(this->begin(), this->end(), put_filterxml);
 
   os << "</filters>";
@@ -501,11 +490,12 @@ std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
   return oss.str().c_str();
 }
 
-int PWSFilters::ImportFilterXMLFile(const CString &strXMLData,
+int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
+                                    const CString &strXMLData,
                                     const CString &strXMLFileName,
                                     const CString &strXSDFileName, CString &strErrors)
 {
-  PWSXMLFilters fXML(*this);
+  PWSXMLFilters fXML(*this, fpool);
   bool status, validation;
 
   strErrors = _T("");

@@ -24,10 +24,7 @@
 
 #include "DboxMain.h"
 #include "filter/SetFiltersDlg.h"
-#include "filter/FilterActionsDlg.h"
-#include "filter/SaveFilterDlg.h"
-#include "filter/ViewFilterDlg.h"
-#include "filter/ExportFiltersDlg.h"
+#include "filter/ManageFiltersDlg.h"
 #include "GeneralMsgBox.h"
 
 #include "corelib/PWSFilters.h"
@@ -47,28 +44,53 @@ static char THIS_FILE[] = __FILE__;
 
 void DboxMain::OnApplyFilter()
 {
-  if (!m_bFilterActive && 
-      (m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive) == 0)
-    return;
+  ApplyFilter();
+}
+
+bool DboxMain::ApplyFilter()
+{
+  PWSFilters::iterator mf_iter;
+  st_Filterkey fk;
+  fk.fpool = (FilterPool)m_currentfilterpool;
+  fk.cs_filtername = m_selectedfiltername;
+
+  mf_iter = m_MapFilters.find(fk);
+  if (mf_iter == m_MapFilters.end())
+    return false;
+
+  m_currentfilter = mf_iter->second;
+
+  if (!m_bFilterActive &&
+      (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
+                                     m_currentfilter.num_Pactive) == 0)
+    return false;
 
   m_bFilterActive = !m_bFilterActive;
 
   ApplyFilters();
+  return true;
 }
 
 void DboxMain::OnSetFilter()
 {
-  st_filters filters(m_filters);
+  st_filters filters(m_currentfilter);
   CSetFiltersDlg sf(this, &filters, WM_EXECUTE_FILTERS);
 
   INT_PTR rc = sf.DoModal();
   if (rc == IDOK) {
     // If filters currently active - update and re-apply
     // If not, just update
-    m_filters.Empty();
-    m_filters = filters;
+    m_currentfilter.Empty();
+    m_currentfilter = filters;
 
-    bool bFilters = (m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive) > 0;
+    st_Filterkey fk;
+    fk.fpool = FPOOL_SESSION;
+    fk.cs_filtername = m_currentfilter.fname;
+    m_MapFilters.erase(fk);
+    m_MapFilters.insert(PWSFilters::Pair(fk, m_currentfilter));
+
+    bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
+                                                   m_currentfilter.num_Pactive) > 0;
 
     if (m_bFilterActive) {
       if (bFilters)
@@ -86,20 +108,32 @@ void DboxMain::OnSetFilter()
   }
 }
 
+bool DboxMain::EditFilter(st_filters *pfilters)
+{
+  CSetFiltersDlg sf(this, pfilters, WM_EXECUTE_FILTERS);
+
+  INT_PTR rc = sf.DoModal();
+  return (rc == IDOK);
+}
+
 void DboxMain::OnClearFilter()
 {
-  m_filters.Empty();
+  ClearFilter();
+}
+
+void DboxMain::ClearFilter()
+{
+  m_currentfilter.Empty();
 
   m_bFilterActive = false;
 
   ApplyFilters();
 }
 
-
 void DboxMain::ApplyFilters()
 {
   m_statusBar.SetFilterStatus(m_bFilterActive);
- 
+
   m_statusBar.Invalidate();
   m_statusBar.UpdateWindow();
 
@@ -112,7 +146,8 @@ void DboxMain::ApplyFilters()
 
   RefreshViews();
 
-  bool bFilters = (m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive) > 0;
+  bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
+                                                 m_currentfilter.num_Pactive) > 0;
   CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
   mainTBCtrl.EnableButton(ID_MENUITEM_APPLYFILTER, bFilters ? TRUE : FALSE);
   mainTBCtrl.EnableButton(ID_MENUITEM_CLEARFILTER, bFilters ? TRUE : FALSE);
@@ -134,12 +169,12 @@ LRESULT DboxMain::OnExecuteFilters(WPARAM wParam, LPARAM /* lParam */)
 {
   // Called when user presses "Apply" on main SetFilters dialog
   st_filters *pfilters = reinterpret_cast<st_filters *>(wParam);
-  m_filters.Empty();
+  m_currentfilter.Empty();
 
-  m_filters = (*pfilters);
+  m_currentfilter = (*pfilters);
 
-  m_bFilterActive = (m_filters.num_Mactive + m_filters.num_Hactive + 
-                     m_filters.num_Pactive) > 0;
+  m_bFilterActive = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive +
+                                                   m_currentfilter.num_Pactive) > 0;
 
   ApplyFilters();
 
@@ -158,14 +193,14 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
   const CItemData::EntryType entrytype = ci.GetEntryType();
 
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
-  for (Fltgroup_citer = m_vMflgroups.begin(); 
+  for (Fltgroup_citer = m_vMflgroups.begin();
        Fltgroup_citer != m_vMflgroups.end(); Fltgroup_citer++) {
     const std::vector<int> &group = *Fltgroup_citer;
 
     int tests(0);
     thisgroup_rc = false;
     std::vector<int>::const_iterator Fltnum_citer;
-    for (Fltnum_citer = group.begin(); 
+    for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {
       const int &num = *Fltnum_citer;
       if (num == -1) // Padding to ensure group size is correct for FT_PWHIST & FT_POLICY
@@ -310,7 +345,7 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
         thisgroup_rc = thistest_rc && thisgroup_rc;
       }
     }
-    // This group of tests completed - 
+    // This group of tests completed -
     //   if 'thisgroup_rc == true', leave now; else go on to next group
     if (thisgroup_rc)
       return true;
@@ -330,8 +365,8 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
   size_t pwh_max, pwh_num;
   PWHistList PWHistList;
   PWHistList::iterator pwshe_iter;
- 
-  CreatePWHistoryList(pci->GetPWHistory(), 
+
+  CreatePWHistoryList(pci->GetPWHistory(),
                       status, pwh_max, pwh_num,
                       PWHistList, TMC_EXPORT_IMPORT);
 
@@ -339,14 +374,14 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
 
   vFilterRows::const_iterator Flt_citer;
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
-  for (Fltgroup_citer = m_vHflgroups.begin(); 
+  for (Fltgroup_citer = m_vHflgroups.begin();
        Fltgroup_citer != m_vHflgroups.end(); Fltgroup_citer++) {
     const std::vector<int> &group = *Fltgroup_citer;
 
     int tests(0);
     thisgroup_rc = false;
     std::vector<int>::const_iterator Fltnum_citer;
-    for (Fltnum_citer = group.begin(); 
+    for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {
       const int &num = *Fltnum_citer;
       if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
@@ -432,7 +467,7 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
         thisgroup_rc = thistest_rc && thisgroup_rc;
       }
     }
-    // This group of tests completed - 
+    // This group of tests completed -
     //   if 'thisgroup_rc == true', leave now; else go on to next group
     if (thisgroup_rc)
       return true;
@@ -455,14 +490,14 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
 
   vFilterRows::const_iterator Flt_citer;
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
-  for (Fltgroup_citer = m_vPflgroups.begin(); 
+  for (Fltgroup_citer = m_vPflgroups.begin();
        Fltgroup_citer != m_vPflgroups.end(); Fltgroup_citer++) {
     const std::vector<int> &group = *Fltgroup_citer;
 
     int tests(0);
     thisgroup_rc = false;
     std::vector<int>::const_iterator Fltnum_citer;
-    for (Fltnum_citer = group.begin(); 
+    for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {
       const int &num = *Fltnum_citer;
       if (num == -1) // Padding for FT_PWHIST & FT_POLICY - shouldn't happen here
@@ -500,17 +535,17 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
           mt = PWSMatch::MT_INTEGER;
           break;
         case PT_HEXADECIMAL:
-          bValue = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) == 
+          bValue = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) ==
                        PWSprefs::PWPolicyUseHexDigits;
           mt = PWSMatch::MT_BOOL;
           break;
         case PT_EASYVISION:
-          bValue = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) == 
+          bValue = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) ==
                        PWSprefs::PWPolicyUseEasyVision;
           mt = PWSMatch::MT_BOOL;
           break;
         case PT_PRONOUNCEABLE:
-          bValue = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) == 
+          bValue = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) ==
                        PWSprefs::PWPolicyMakePronounceable;
           mt = PWSMatch::MT_BOOL;
           break;
@@ -540,7 +575,7 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
         thisgroup_rc = thistest_rc && thisgroup_rc;
       }
     }
-    // This group of tests completed - 
+    // This group of tests completed -
     //   if 'thisgroup_rc == true', leave now; else go on to next group
     if (thisgroup_rc)
       return true;
@@ -550,124 +585,38 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
   return false;
 }
 
-void DboxMain::OnSelectFilter()
+void DboxMain::OnManageFilters()
 {
-  if (m_core.m_Filters.empty())
-    return;
+  PWSFilters::iterator mf_iter, mf_lower_iter, mf_upper_iter;
 
-  // Get DB filter via name and replace m_filters
-  PWSFilters::iterator mf_iter;
+  st_Filterkey fkl, fku;
+  fkl.fpool = FPOOL_DATABASE;
+  fkl.cs_filtername = _T("");
 
-  std::vector<CString> vcs_db;
-  for (mf_iter = m_core.m_Filters.begin();
-       mf_iter != m_core.m_Filters.end();
-       mf_iter++) {
-    vcs_db.push_back(mf_iter->first);
+  mf_lower_iter = m_MapFilters.lower_bound(fkl);
+  // Check that there are some first!
+  if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
+    // Now find upper bound of database filters
+    fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
+    fku.cs_filtername = _T("");
+    mf_upper_iter = m_MapFilters.upper_bound(fku);
+
+    // Delete existing database filters (if any)
+    m_MapFilters.erase(mf_lower_iter, mf_upper_iter);
   }
 
-  CFilterActionsDlg fa;
-  fa.SetFunction(FA_SELECT);
-  fa.SetList(vcs_db);
-  INT_PTR rc = fa.DoModal();
-
-  if (rc == IDOK) {
-    CString cs_selected = fa.GetSelected();
-    if (!cs_selected.IsEmpty()) {
-      PWSFilters::const_iterator mf_citer;
-      PWSFilters::const_iterator mf_cend;
-      mf_citer = m_core.m_Filters.find(cs_selected);
-      mf_cend = m_core.m_Filters.end();
-      if (mf_citer != mf_cend) {
-        m_filters = mf_citer->second;
-        m_bFilterActive = true;
-        ApplyFilters();
-      }
-    }
+  // Now add any existing database filters
+  for (mf_iter = m_core.m_MapFilters.begin();
+       mf_iter != m_core.m_MapFilters.end(); mf_iter++) {
+    m_MapFilters.insert(PWSFilters::Pair(mf_iter->first, mf_iter->second));
   }
+
+  CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters);
+  mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname);
+  mf.DoModal();
 }
 
-void DboxMain::OnSaveFilter()
-{
-  CSaveFilterDlg sf;
-  INT_PTR rc = sf.DoModal();
-
-  if (rc == IDOK) {
-    PWSFilters::const_iterator mf_citer;
-    PWSFilters::const_iterator mf_cend;
-    mf_citer = m_core.m_Filters.find(m_filters.fname);
-    mf_cend =  m_core.m_Filters.end();
-
-    int rc(IDYES);
-    if (mf_citer != mf_cend) {
-      CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
-      CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
-      rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
-      if (rc == IDYES)
-        m_core.m_Filters.erase(m_filters.fname);
-    }
-    if (rc == IDYES) {
-      m_core.m_Filters.insert(PWSFilters::Pair(m_filters.fname,
-                                               m_filters));
-      SetChanged(Data);
-      ChangeOkUpdate();
-    }
-  }
-}
-
-void DboxMain::OnViewFilter()
-{
-  int numactive = m_filters.num_Mactive + m_filters.num_Hactive + m_filters.num_Pactive;
-  if (numactive == 0 && m_core.m_Filters.empty())
-    return;
-
-  st_filters *pfilters = (numactive == 0) ? NULL : &m_filters;
- 
-  CViewFilterDlg vf(this, pfilters, m_core.m_Filters);
-  vf.DoModal();
- }
-
-void DboxMain::OnDeleteFilter()
-{
-  if (m_core.m_Filters.empty())
-    return;
-
-  // Delete filter by name from DB filters
-  PWSFilters::iterator mf_iter;
-
-  std::vector<CString> vcs_db;
-  for (mf_iter = m_core.m_Filters.begin();
-       mf_iter != m_core.m_Filters.end();
-       mf_iter++) {
-    vcs_db.push_back(mf_iter->first);
-  }
-
-  CFilterActionsDlg fa;
-  fa.SetFunction(FA_DELETE);
-  fa.SetList(vcs_db);
-  INT_PTR rc = fa.DoModal();
-
-  if (rc == IDOK) {
-    bool bDone(false);
-    CString cs_selected = fa.GetSelected();
-    if (!cs_selected.IsEmpty()) {
-      m_core.m_Filters.erase(cs_selected);
-      bDone = true;
-      SetChanged(Data);
-      ChangeOkUpdate();
-      if (bDone)
-        AfxMessageBox(IDS_OK);
-    }
-  }
-}
-
-void DboxMain::OnExportFilters()
-{
-  if (!m_core.m_Filters.empty()) {
-    ExportFilters();
-  }
-}
-
-void DboxMain::ExportFilters()
+void DboxMain::ExportFilters(PWSFilters &Filters)
 {
   CString cs_text, cs_temp, cs_title, cs_newfile;
   INT_PTR rc;
@@ -692,7 +641,7 @@ void DboxMain::ExportFilters()
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,
       // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling 
+      // of exiting the app. Try resignalling
       PostQuitMessage(0);
       return;
     }
@@ -705,7 +654,7 @@ void DboxMain::ExportFilters()
 
   PWSfile::HeaderRecord hdr = m_core.GetHeader();
   CMyString currentfile = m_core.GetCurFile();
-  rc = m_core.m_Filters.WriteFilterXMLFile(cs_newfile, hdr, currentfile);
+  rc = Filters.WriteFilterXMLFile(cs_newfile, hdr, currentfile);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
@@ -716,7 +665,7 @@ void DboxMain::ExportFilters()
   }
 }
 
-void DboxMain::OnImportFilters()
+void DboxMain::ImportFilters()
 {
   CString cs_title, cs_temp, cs_text;
   const stringT XSDfn(_T("pwsafe_filter.xsd"));
@@ -742,7 +691,7 @@ void DboxMain::OnImportFilters()
   if (m_inExit) {
     // If U3ExitNow called while in CFileDialog,
     // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
+    // of exiting the app. Try resignalling
     PostQuitMessage(0);
     return;
   }
@@ -754,23 +703,18 @@ void DboxMain::OnImportFilters()
     CString XMLFilename = (CMyString)fd.GetPathName();
     CWaitCursor waitCursor;  // This may take a while!
 
-    rc = m_core.m_Filters.ImportFilterXMLFile(_T(""), XMLFilename,
-                                              XSDFilename.c_str(), strErrors);
+    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""), XMLFilename,
+                                          XSDFilename.c_str(), strErrors);
     waitCursor.Restore();  // Restore normal cursor
 
     switch (rc) {
-    case PWScore::XML_FAILED_VALIDATION:
-      {
+      case PWScore::XML_FAILED_VALIDATION:
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
         break;
-      }
-    case PWScore::XML_FAILED_IMPORT:
-      {
+      case PWScore::XML_FAILED_IMPORT:
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
         break;
-      }
-    case PWScore::SUCCESS:
-      {
+      case PWScore::SUCCESS:
         if (!strErrors.IsEmpty()) {
           csErrors = strErrors + _T("\n");
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(), csErrors);
@@ -778,16 +722,14 @@ void DboxMain::OnImportFilters()
           cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
         }
         break;
-      }
-    default:
-      ASSERT(0);
+      default:
+        ASSERT(0);
     } // switch
 
     cs_title.LoadString(IDS_STATUS);
     MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
   }
 }
-
 
 bool group_pred (const std::vector<int>& v1, const std::vector<int>& v2)
 {
@@ -802,8 +744,8 @@ void DboxMain::CreateGroups()
   vfiltergroups groups;
 
   // Do the main filters
-  for (Flt_iter = m_filters.vMfldata.begin();
-       Flt_iter != m_filters.vMfldata.end(); Flt_iter++) {
+  for (Flt_iter = m_currentfilter.vMfldata.begin();
+       Flt_iter != m_currentfilter.vMfldata.end(); Flt_iter++) {
     st_FilterRow &st_fldata = *Flt_iter;
 
     if (st_fldata.bFilterActive) {
@@ -818,7 +760,7 @@ void DboxMain::CreateGroups()
       if (st_fldata.ftype == FT_PWHIST) {
         // Add a number of 'dummy' entries to increase the length of this group
         // Reduce by one as we have already included main FT_PWHIST entry
-        for (int j = 0; j < m_filters.num_Hactive - 1; j++) {
+        for (int j = 0; j < m_currentfilter.num_Hactive - 1; j++) {
           group.push_back(-1);
          }
       }
@@ -826,7 +768,7 @@ void DboxMain::CreateGroups()
       if (st_fldata.ftype == FT_POLICY) {
         // Add a number of 'dummy' entries to increase the length of this group
         // Reduce by one as we have already included main FT_POLICY entry
-        for (int j = 0; j < m_filters.num_Pactive - 1; j++) {
+        for (int j = 0; j < m_currentfilter.num_Pactive - 1; j++) {
           group.push_back(-1);
         }
       }
@@ -849,8 +791,8 @@ void DboxMain::CreateGroups()
   i = 0;
   group.clear();
   groups.clear();
-  for (Flt_iter = m_filters.vHfldata.begin();
-       Flt_iter != m_filters.vHfldata.end(); Flt_iter++) {
+  for (Flt_iter = m_currentfilter.vHfldata.begin();
+       Flt_iter != m_currentfilter.vHfldata.end(); Flt_iter++) {
     st_FilterRow &st_fldata = *Flt_iter;
 
     if (st_fldata.bFilterActive) {
@@ -879,8 +821,8 @@ void DboxMain::CreateGroups()
   i = 0;
   group.clear();
   groups.clear();
-  for (Flt_iter = m_filters.vPfldata.begin();
-       Flt_iter != m_filters.vPfldata.end(); Flt_iter++) {
+  for (Flt_iter = m_currentfilter.vPfldata.begin();
+       Flt_iter != m_currentfilter.vPfldata.end(); Flt_iter++) {
     st_FilterRow &st_fldata = *Flt_iter;
 
     if (st_fldata.bFilterActive) {

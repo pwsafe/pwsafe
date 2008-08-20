@@ -29,9 +29,11 @@ protected:
 
 public:
   afx_msg void OnApply();
+  afx_msg void OnCancel();
 
 private:
   // Following needed to be able to send a message to DboxMain (parent)
   // to apply the current filters without ending this dialog.
   int m_iWMSGID;
+  bool m_applied;
 };

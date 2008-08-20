@@ -1197,7 +1197,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
   di->tree_item = NULL;
 
   if (m_bFilterActive) {
-    if (!PassesFiltering(itemData, m_filters))
+    if (!PassesFiltering(itemData, m_currentfilter))
       return -1;
     m_bNumPassedFiltering++;
   }

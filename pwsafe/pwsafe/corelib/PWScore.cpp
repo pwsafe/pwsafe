@@ -121,7 +121,7 @@ void PWScore::ClearData(void)
   m_UHFL.clear();
 
   // Clear out database filters
-  m_Filters.clear();
+  m_MapFilters.clear();
 
   NotifyListModified();
 }
@@ -214,7 +214,7 @@ int PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   PWSfileV3 *out3 = dynamic_cast<PWSfileV3 *>(out);
   if (out3 != NULL) {
     out3->SetUnknownHeaderFields(m_UHFL);
-    out3->SetFilters(m_Filters); // Give it the filters to write out
+    out3->SetFilters(m_MapFilters); // Give it the filters to write out
   }
   status = out->Open(GetPassKey());
 
@@ -1200,7 +1200,7 @@ int PWScore::ReadFile(const CMyString &a_filename,
 
   PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
   if (in3 != NULL  && !in3->GetFilters().empty())
-    m_Filters = in3->GetFilters();
+    m_MapFilters = in3->GetFilters();
 
   UUIDList possible_aliases, possible_shortcuts;
   do {
