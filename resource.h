@@ -579,14 +579,15 @@
 #define IDC_STATIC_DRAGURL              1339
 #define IDC_EDITREPORT                  1340
 #define IDC_FILTERAPPLY                 1341
-#define IDC_FILTERNEW                   1342
-#define IDC_FILTEREDIT                  1343
-#define IDC_FILTERCOPY                  1344
-#define IDC_FILTERDELETE                1345
-#define IDC_FILTERIMPORT                1346
-#define IDC_FILTEREXPORT                1347
-#define IDC_FILTERPROPERTIES            1348
-#define IDC_STATIC_FILTERNAME           1349
+#define IDC_FILTERUNAPPLY               1342
+#define IDC_FILTERNEW                   1343
+#define IDC_FILTEREDIT                  1344
+#define IDC_FILTERCOPY                  1345
+#define IDC_FILTERDELETE                1346
+#define IDC_FILTERIMPORT                1347
+#define IDC_FILTEREXPORT                1348
+#define IDC_FILTERPROPERTIES            1349
+#define IDC_STATIC_FILTERNAME           1350
 
 // Next default values for new objects
 // 
@@ -594,7 +595,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        446
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1350
+#define _APS_NEXT_CONTROL_VALUE         1351
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif

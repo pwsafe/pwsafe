@@ -47,8 +47,11 @@ void DboxMain::OnApplyFilter()
   ApplyFilter();
 }
 
-bool DboxMain::ApplyFilter()
+bool DboxMain::ApplyFilter(bool bJustDoIt)
 {
+  // bJustDoIt implies apply filters even if one already applied - ie. without
+  // the intervening Clear.
+  // If there are no active filters - this becomes just a Clear.
   PWSFilters::iterator mf_iter;
   st_Filterkey fk;
   fk.fpool = (FilterPool)m_currentfilterpool;
@@ -59,13 +62,19 @@ bool DboxMain::ApplyFilter()
     return false;
 
   m_currentfilter = mf_iter->second;
+  if (bJustDoIt) {
+    m_bFilterActive = false;
+  }
 
   if (!m_bFilterActive &&
       (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-                                     m_currentfilter.num_Pactive) == 0)
+                                     m_currentfilter.num_Pactive) == 0) {
+    if (bJustDoIt)
+      ApplyFilters();
     return false;
+  }
 
-  m_bFilterActive = !m_bFilterActive;
+  m_bFilterActive = true;
 
   ApplyFilters();
   return true;
@@ -124,7 +133,6 @@ void DboxMain::OnClearFilter()
 void DboxMain::ClearFilter()
 {
   m_currentfilter.Empty();
-
   m_bFilterActive = false;
 
   ApplyFilters();
@@ -585,6 +593,20 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
   return false;
 }
 
+// functor for Copy subset of map entries back to the database
+struct CopyDBFilters {
+  CopyDBFilters(PWSFilters &core_mapFilters) :
+  m_CoreMapFilters(core_mapFilters)
+  {}
+  // operator
+  void operator()(pair<const st_Filterkey, st_filters> p)
+  {
+    m_CoreMapFilters.insert(PWSFilters::Pair(p.first, p.second));
+  }
+private:
+  PWSFilters &m_CoreMapFilters;
+};
+
 void DboxMain::OnManageFilters()
 {
   PWSFilters::iterator mf_iter, mf_lower_iter, mf_upper_iter;
@@ -614,6 +636,25 @@ void DboxMain::OnManageFilters()
   CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters);
   mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname);
   mf.DoModal();
+
+  // If user has changed the database filters, we need to update the core copy.
+  if (!mf.HasDBFiltersChanged())
+    return;
+
+  m_core.m_MapFilters.clear();
+
+  mf_lower_iter = m_MapFilters.lower_bound(fkl);
+  // Check that there are some first!
+  if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
+    // Now find upper bound of database filters
+    fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
+    fku.cs_filtername = _T("");
+    mf_upper_iter = m_MapFilters.upper_bound(fku);
+
+    // Copy database filters (if any) to the core
+    CopyDBFilters copy_db_filters(m_core.m_MapFilters);
+    for_each(mf_lower_iter, mf_upper_iter, copy_db_filters);
+  }
 }
 
 void DboxMain::ExportFilters(PWSFilters &Filters)

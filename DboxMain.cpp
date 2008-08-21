@@ -76,7 +76,7 @@ CString DboxMain::CS_COPYURL;
 CString DboxMain::CS_COPYEMAIL;
 CString DboxMain::CS_EXPCOLGROUP;
 CString DboxMain::CS_APPLYFILTERS;
-CString DboxMain::CS_REMOVEFILTERS;
+CString DboxMain::CS_UNAPPLYFILTERS;
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
@@ -109,7 +109,7 @@ DboxMain::DboxMain(CWnd* pParent)
   CS_COPYURL.LoadString(IDS_MENUCOPYURL);
   CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
   CS_APPLYFILTERS.LoadString(IDS_APPLYFILTERS);
-  CS_REMOVEFILTERS.LoadString(IDS_REMOVEFILTERS);
+  CS_UNAPPLYFILTERS.LoadString(IDS_UNAPPLYFILTERS);
 
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -1599,7 +1599,7 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
   pMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
                     (m_bFilterActive ? MF_CHECKED : MF_UNCHECKED),
                     ID_MENUITEM_APPLYFILTER,
-                    m_bFilterActive ? CS_REMOVEFILTERS : CS_APPLYFILTERS);
+                    m_bFilterActive ? CS_UNAPPLYFILTERS : CS_APPLYFILTERS);
 
   // JHF m_toolbarMode is not for WinCE (as in .h)
 #if !defined(POCKET_PC)

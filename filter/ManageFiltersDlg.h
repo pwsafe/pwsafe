@@ -31,9 +31,18 @@
 #define MFPRP_CRITERIA_TEXT 4
 #define MFPRP_NUM_COLUMNS   5
 
-// Pools (LOWORD) and flags (HIWORD) (in CListCtrl ItemData)
-enum {MFLT_REQUEST_EXPORT = 0x10000, 
-      MFLT_REQUEST_COPY_TO_DATABASE = 0x20000};
+// Filter Flags
+enum {MFLT_SELECTED           = 0x8000,
+      MFLT_REQUEST_COPY_TO_DB = 0x4000,
+      MFLT_REQUEST_EXPORT     = 0x2000,
+      MFLT_INUSE              = 0x1000,
+      MFLT_UNUSED             = 0x0fff};
+
+// Structure pointed to be CListCtrl item data field
+struct st_FilterItemData {
+  st_Filterkey flt_key;
+  UINT flt_flags;
+};
 
 class DboxMain;
 
@@ -46,9 +55,10 @@ public:
                  bool bFilterActive,
                  PWSFilters &pmapFilters);
   virtual ~CManageFiltersDlg();
-  void SetCurrentData(int currentfilterpool, CString currentfiltername)
-  {m_currentfilterpool = currentfilterpool;
-   m_currentfiltername = currentfiltername;}
+  void SetCurrentData(FilterPool activefilterpool, CString activefiltername)
+  {m_activefilterpool = activefilterpool;
+   m_activefiltername = activefiltername;}
+  bool HasDBFiltersChanged() {return m_bDBFiltersChanged;}
 
 // Dialog Data
   enum { IDD = IDD_MANAGEFILTERS };
@@ -60,15 +70,18 @@ protected:
 
   //{{AFX_MSG(CManageFiltersDlg)
   afx_msg void OnFilterApply();
+  afx_msg void OnFilterUnApply();
   afx_msg void OnFilterNew();
   afx_msg void OnFilterEdit();
   afx_msg void OnFilterCopy();
   afx_msg void OnFilterDelete();
   afx_msg void OnFilterImport();
   afx_msg void OnFilterExport();
+  afx_msg void OnDestroy();
   afx_msg void OnClick(NMHDR *pNotifyStruct, LRESULT *pResult);
   afx_msg void OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult);
   afx_msg void OnItemChanging(NMHDR* pNotifyStruct, LRESULT* pResult);
+  afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnHDRBeginTrack(NMHDR * pNotifyStruct, LRESULT* pResult);
   afx_msg void OnHDRItemChanging(NMHDR * pNotifyStruct, LRESULT* pResult);
   afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -85,17 +98,19 @@ private:
   UINT GetFieldTypeName(const FieldType &ft);
   void DisplayFilterProperties(st_filters *pfilter);
   void UpdateFilterList();
+  void ResetColumns();
   void DrawImage(CDC *pDC, CRect &rect, int nImage);
+  void SortFilterView();
+  static int CALLBACK FLTCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM pSelf);
 
   CListCtrl m_FilterLC, m_FilterProperties;
   CStatusBar m_statusBar;
   CImageList *m_pImageList, *m_pCheckImageList;
 
-  int m_currentfilterpool;
-  CString m_currentfiltername;
-  int m_function;
-  int m_selectedfilter;
+  FilterPool m_selectedfilterpool, m_activefilterpool;
+  CString m_selectedfiltername, m_activefiltername;
+  int m_selectedfilter, m_inusefilter;
   int m_num_to_export, m_num_to_copy;
-  bool m_bFilterActive;
-  bool m_bStopChange;
+  bool m_bFilterActive, m_bStopChange, m_bDBFiltersChanged;
+  int m_iSortColumn, m_bSortAscending;
 };
