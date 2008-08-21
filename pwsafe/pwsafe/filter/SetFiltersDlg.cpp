@@ -24,7 +24,7 @@ IMPLEMENT_DYNAMIC(CSetFiltersDlg, CPWFiltersDlg)
 CSetFiltersDlg::CSetFiltersDlg(CWnd* pParent,
                                st_filters *pfilters,
                                const int &iWMSGID)
-  : CPWFiltersDlg(pParent, DFTYPE_MAIN),
+  : CPWFiltersDlg(pParent, DFTYPE_MAIN, pfilters->fname),
   m_iWMSGID(iWMSGID), m_applied(false)
 {
   ASSERT(pParent != NULL);

@@ -127,7 +127,7 @@ private:
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
   static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
-  static CString CS_APPLYFILTERS, CS_REMOVEFILTERS;
+  static CString CS_APPLYFILTERS, CS_UNAPPLYFILTERS;
   static const CString DEFAULT_AUTOTYPE;
 
 public:
@@ -258,10 +258,10 @@ public:
   int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected();
 
-  void SetFilter(int selectedpool, CString selectedfiltername)
+  void SetFilter(FilterPool selectedpool, CString selectedfiltername)
   {m_currentfilterpool = selectedpool; m_selectedfiltername = selectedfiltername;}
   void ImportFilters();
-  bool ApplyFilter();
+  bool ApplyFilter(bool bJustDoIt = false);
   bool EditFilter(st_filters *pfilters);
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
@@ -654,7 +654,7 @@ private:
 
   // Global Filters
   PWSFilters m_MapFilters;
-  int m_currentfilterpool;
+  FilterPool m_currentfilterpool;
   CString m_selectedfiltername;
 
   void CreateGroups();

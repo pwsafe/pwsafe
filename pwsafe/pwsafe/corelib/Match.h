@@ -53,14 +53,16 @@ namespace PWSMatch {
   template<typename T> bool Match(T v1, T v2, T value, int iFunction)
   {
     switch (iFunction) {
-    case MR_EQUALS: return value == v1;
-    case MR_NOTEQUAL: return value != v1;
-    case MR_BETWEEN: return value >= v1 && value <= v2;
-    case MR_LT: return value < v1;
-    case MR_LE: return value <= v1;
-    case MR_GT: return value > v1;
-    case MR_GE: return value >= v1;
-    default:ASSERT(0);
+      case MR_EQUALS: return value == v1;
+      case MR_NOTEQUAL: return value != v1;
+      case MR_BETWEEN: return value >= v1 && value <= v2;
+      case MR_LT: return value < v1;
+      case MR_LE: return value <= v1;
+      case MR_GT: return value > v1;
+      case MR_GE: return value >= v1;
+      case MR_BEFORE: return value < v1;
+      case MR_AFTER: return value > v1;
+      default: ASSERT(0);
     }
     return false; // keep compiler happy
   }
