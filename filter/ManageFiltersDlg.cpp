@@ -248,29 +248,40 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
     return;
   }
 
+  CRect rect, image_rect;
+  m_FilterLC.GetSubItemRect(pNMLV->iItem, pNMLV->iSubItem, LVIR_BOUNDS, rect);
+  CPoint cpt = rect.CenterPoint();
+  image_rect.SetRect(cpt.x - 7, cpt.y - 7, cpt.x + 7, cpt.y + 7);
+  image_rect.NormalizeRect();
+  BOOL bOnImage = image_rect.PtInRect(pNMLV->ptAction);
+
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(pNMLV->iItem);
   switch (pNMLV->iSubItem) {
     case MFLC_COPYTODATABASE:
-      if ((pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) {
-        pflt_idata->flt_flags &= ~MFLT_REQUEST_COPY_TO_DB;
-        m_num_to_copy--;
-      } else {
-        pflt_idata->flt_flags |= MFLT_REQUEST_COPY_TO_DB;
-        m_num_to_copy++;
+      if (bOnImage == TRUE && pflt_idata->flt_key.fpool != FPOOL_DATABASE) {
+        if ((pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) {
+          pflt_idata->flt_flags &= ~MFLT_REQUEST_COPY_TO_DB;
+          m_num_to_copy--;
+        } else {
+          pflt_idata->flt_flags |= MFLT_REQUEST_COPY_TO_DB;
+          m_num_to_copy++;
+        }
+        m_FilterLC.SetItemData(pNMLV->iItem, (DWORD)pflt_idata);
+        GetDlgItem(IDC_FILTERCOPY)->EnableWindow(m_num_to_copy > 0);
       }
-      m_FilterLC.SetItemData(pNMLV->iItem, (DWORD)pflt_idata);
-      GetDlgItem(IDC_FILTERCOPY)->EnableWindow(m_num_to_copy > 0);
       break;
     case MFLC_EXPORT:
-      if ((pflt_idata->flt_flags & MFLT_REQUEST_EXPORT) == MFLT_REQUEST_EXPORT) {
-        pflt_idata->flt_flags &= ~MFLT_REQUEST_EXPORT;
-        m_num_to_export--;
-      } else {
-        pflt_idata->flt_flags |= MFLT_REQUEST_EXPORT;
-        m_num_to_export++;
+      if (bOnImage == TRUE) {
+        if ((pflt_idata->flt_flags & MFLT_REQUEST_EXPORT) == MFLT_REQUEST_EXPORT) {
+          pflt_idata->flt_flags &= ~MFLT_REQUEST_EXPORT;
+          m_num_to_export--;
+        } else {
+          pflt_idata->flt_flags |= MFLT_REQUEST_EXPORT;
+          m_num_to_export++;
+        }
+        m_FilterLC.SetItemData(pNMLV->iItem, (DWORD)pflt_idata);
+        GetDlgItem(IDC_FILTEREXPORT)->EnableWindow(m_num_to_export > 0);
       }
-      m_FilterLC.SetItemData(pNMLV->iItem, (DWORD)pflt_idata);
-      GetDlgItem(IDC_FILTEREXPORT)->EnableWindow(m_num_to_export > 0);
       break;
     default:
       break;
@@ -330,13 +341,19 @@ void CManageFiltersDlg::OnFilterEdit()
   if (mf_iter == m_MapFilters.end())
     return;
 
-  st_filters *pfilters = &mf_iter->second;
-  if (m_pDbx->EditFilter(pfilters)) {
+  st_filters filters = mf_iter->second;
+  if (m_pDbx->EditFilter(&filters)) {
     if (flt_key.fpool == FPOOL_DATABASE)
       m_bDBFiltersChanged = true;
 
+    // User may have changed name (and so key) - delete and add
+    m_MapFilters.erase(flt_key);
+    flt_key.cs_filtername = filters.fname;
+    m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
+    m_selectedfiltername = flt_key.cs_filtername;
+
     UpdateFilterList();
-    DisplayFilterProperties(pfilters);
+    DisplayFilterProperties(&filters);
   }
 }
 
@@ -803,7 +820,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(iItem);
 
-      bDatabase = (pflt_idata->flt_flags & FPOOL_DATABASE) == FPOOL_DATABASE;
+      bDatabase = (pflt_idata->flt_key.fpool & FPOOL_DATABASE) == FPOOL_DATABASE;
       bCopy = (pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB;
       bExport = (pflt_idata->flt_flags & MFLT_REQUEST_EXPORT) == MFLT_REQUEST_EXPORT;
       break;
