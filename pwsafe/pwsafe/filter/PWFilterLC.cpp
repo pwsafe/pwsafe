@@ -47,7 +47,7 @@ CPWFilterLC::CPWFilterLC()
 CPWFilterLC::~CPWFilterLC()
 {
   // Delete filters
-  DeleteFilters();
+  //DeleteFilters();
 
   m_pCheckImageList->DeleteImageList();
   delete m_pCheckImageList;

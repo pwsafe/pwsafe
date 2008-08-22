@@ -341,6 +341,9 @@ void CManageFiltersDlg::OnFilterEdit()
   if (mf_iter == m_MapFilters.end())
     return;
 
+  // Pass a copy of (not reference to) of the current filter in case 
+  // the user cancels the change and the current state is invalid and 
+  // corrupts the copy in the map
   st_filters filters = mf_iter->second;
   if (m_pDbx->EditFilter(&filters)) {
     if (flt_key.fpool == FPOOL_DATABASE)
@@ -547,6 +550,8 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
   vFilterRows::iterator Flt_iter;
   bool bHistory(false), bPolicy(false);
   int i(0), iItem(0), n(0);
+
+  m_FilterProperties.DeleteAllItems();
 
   // Do the main filters
   for (Flt_iter = pfilters->vMfldata.begin();
