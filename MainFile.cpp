@@ -2644,6 +2644,9 @@ vector<bool> DboxMain::GetGroupDisplayStatus()
   HTREEITEM hItem = NULL;
   vector<bool> v;
 
+  if (m_ctlItemTree.GetSafeHwnd() == NULL)
+    return v;
+
   while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
     if (m_ctlItemTree.ItemHasChildren(hItem)) {
       bool state = (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED)
@@ -2658,15 +2661,25 @@ void DboxMain::SetGroupDisplayStatus(const vector<bool> &displaystatus)
 {
   // We need to copy displaystatus since Expand may cause
   // SaveDisplayStatus to be called, updating it
+
+  // Could be called from OnSize before anything set up!
+  // Check Tree is valid first
+  if (m_ctlItemTree.GetSafeHwnd() == NULL || displaystatus.empty())
+    return;
+
   const vector<bool> dstatus(displaystatus);
+  const size_t num = dstatus.size();
+  if (num == 0)
+    return;
+
   HTREEITEM hItem = NULL;
   size_t i(0);
-  const size_t num = dstatus.size();
   while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
     if (m_ctlItemTree.ItemHasChildren(hItem)) {
-      if (i < num)
-        m_ctlItemTree.Expand(hItem, dstatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
+      m_ctlItemTree.Expand(hItem, dstatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
       i++;
+      if (i == num)
+        break;
     }
   }
 }

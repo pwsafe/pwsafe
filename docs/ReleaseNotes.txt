@@ -25,6 +25,7 @@ and Find are no longer written to disk by default.
 [] Expired icon now correct after password change.
 [] Current tree state is now updated correctly upon exit (Thanks to
 Norman)
+[] Correct display of tree items on restore from minimuze.
 
 Changes to Existing Features in 3.14
 ====================================

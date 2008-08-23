@@ -46,8 +46,7 @@ CPWFilterLC::CPWFilterLC()
 
 CPWFilterLC::~CPWFilterLC()
 {
-  // Delete filters
-  //DeleteFilters();
+  // Do not delete filters, as they need to passed back to the caller
 
   m_pCheckImageList->DeleteImageList();
   delete m_pCheckImageList;

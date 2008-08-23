@@ -1471,7 +1471,12 @@ void DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
       return;
   }
 
-  CDialog::OnSysCommand( nID, lParam );
+  if ((nID & 0xFFF0) == SC_MINIMIZE) {
+    // Save expand/collapse status of groups
+    m_displaystatus = GetGroupDisplayStatus();
+  }
+
+  CDialog::OnSysCommand(nID, lParam);
 
 #endif
 }
@@ -1754,6 +1759,9 @@ void DboxMain::OnMinimize()
   if (m_bStartHiddenAndMinimized)
     m_bStartHiddenAndMinimized = false;
 
+  // Save expand/collapse status of groups
+  m_displaystatus = GetGroupDisplayStatus();
+
   ShowWindow(SW_MINIMIZE);
 }
 
@@ -1865,7 +1873,7 @@ void DboxMain::UnMinimize(bool update_windows)
       m_needsreading = false;
       if (update_windows) {
         ShowWindow(SW_RESTORE);
-        RestoreDisplayStatus();
+        SetGroupDisplayStatus(m_displaystatus);
         BringWindowToTop();
       }
     } else {
@@ -1875,7 +1883,7 @@ void DboxMain::UnMinimize(bool update_windows)
   }
   if (update_windows) {
     ShowWindow(SW_RESTORE);
-    RestoreDisplayStatus();
+    SetGroupDisplayStatus(m_displaystatus);
     BringWindowToTop();
   }
 }
