@@ -101,7 +101,9 @@ private:
   void ResetColumns();
   void DrawImage(CDC *pDC, CRect &rect, int nImage);
   void SortFilterView();
-  static int CALLBACK FLTCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM pSelf);
+  static int CALLBACK FLTCompareFunc(LPARAM lParam1, LPARAM lParam2, 
+                                     LPARAM pSelf);
+  static CString GetFilterPoolName(FilterPool fp);
 
   CListCtrl m_FilterLC, m_FilterProperties;
   CStatusBar m_statusBar;
@@ -109,7 +111,7 @@ private:
 
   FilterPool m_selectedfilterpool, m_activefilterpool;
   CString m_selectedfiltername, m_activefiltername;
-  int m_selectedfilter, m_inusefilter;
+  int m_selectedfilter, m_activefilter;
   int m_num_to_export, m_num_to_copy;
   bool m_bFilterActive, m_bStopChange, m_bDBFiltersChanged;
   int m_iSortColumn, m_bSortAscending;

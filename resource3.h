@@ -466,3 +466,7 @@
 #define IDS_SHOWDRAGBAR                 5633
 #define IDS_HIDEDRAGBAR                 5634
 #define IDS_CONFIRMFILTERDELETE         5635
+#define IDS_DBPOOLNAME                  5636
+#define IDS_AUTOLOADPOOLNAME            5637
+#define IDS_IMPORTEDPOOLNAME            5638
+#define IDS_SESSIONPOOLNAME             5639
