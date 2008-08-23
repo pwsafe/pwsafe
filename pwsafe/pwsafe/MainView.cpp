@@ -827,7 +827,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     }
     m_ctlItemList.MoveWindow(&rect, TRUE);
     m_ctlItemTree.MoveWindow(&rect, TRUE);
-  }
+  } else
+    return;
 
   // {kjp} Only SIZE_RESTORED is supported on Pocket PC.
 #if !defined(POCKET_PC)
