@@ -34,7 +34,7 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
   m_bFilterActive(bFilterActive), m_MapFilters(mapfilters),
   m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(_T("")),
   m_activefilterpool(FPOOL_LAST), m_activefiltername(_T("")),
-  m_selectedfilter(-1), m_inusefilter(-1),
+  m_selectedfilter(-1), m_activefilter(-1),
   m_bStopChange(false), m_bDBFiltersChanged(false),
   m_num_to_export(0), m_num_to_copy(0),
   m_pCheckImageList(NULL), m_pImageList(NULL),
@@ -218,7 +218,7 @@ BOOL CManageFiltersDlg::OnInitDialog()
   }
 
   BOOL bEnable = (m_selectedfilter != -1 && 
-                  m_selectedfilter == m_inusefilter &&
+                  m_selectedfilter == m_activefilter &&
                   m_bFilterActive) ? TRUE : FALSE;
   GetDlgItem(IDC_FILTERUNAPPLY)->EnableWindow(bEnable);
 
@@ -308,7 +308,7 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
   DisplayFilterProperties(pfilters);
 
   BOOL bEnable = (m_selectedfilter != -1 && 
-                  m_selectedfilter == m_inusefilter &&
+                  m_selectedfilter == m_activefilter &&
                   m_bFilterActive) ? TRUE : FALSE;
   GetDlgItem(IDC_FILTERUNAPPLY)->EnableWindow(bEnable);
 
@@ -324,6 +324,18 @@ void CManageFiltersDlg::OnFilterNew()
     flt_key.cs_filtername = filters.fname;
 
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
+
+    // Update DboxMain
+    m_pDbx->SetFilter(FPOOL_SESSION, filters.fname);
+    // The user may have applied this filter
+    m_bFilterActive = m_pDbx->IsFilterActive();
+    if (m_bFilterActive) {
+      m_activefilterpool = flt_key.fpool;
+      m_activefiltername = filters.fname;
+    } else {
+      m_activefilterpool = FPOOL_LAST;
+      m_activefiltername = _T("");
+    }
 
     UpdateFilterList();
     DisplayFilterProperties(&filters);
@@ -354,6 +366,18 @@ void CManageFiltersDlg::OnFilterEdit()
     flt_key.cs_filtername = filters.fname;
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
     m_selectedfiltername = flt_key.cs_filtername;
+
+    // Update DboxMain
+    m_pDbx->SetFilter(flt_key.fpool, filters.fname);
+    // The user may have applied this filter
+    m_bFilterActive = m_pDbx->IsFilterActive();
+    if (m_bFilterActive) {
+      m_activefilterpool = flt_key.fpool;
+      m_activefiltername = filters.fname;
+    } else {
+      m_activefilterpool = FPOOL_LAST;
+      m_activefiltername = _T("");
+    }
 
     UpdateFilterList();
     DisplayFilterProperties(&filters);
@@ -429,22 +453,8 @@ void CManageFiltersDlg::OnFilterDelete()
   if (mf_iter == m_MapFilters.end())
     return;
 
-  switch (flt_key.fpool) {
-    case FPOOL_DATABASE:
-      cs_pool = _T("Database");
-      break;
-    case FPOOL_AUTOLOAD:
-      cs_pool = _T("Autoload");
-      break;
-    case FPOOL_IMPORTED:
-      cs_pool = _T("Imported");
-      break;
-    case FPOOL_SESSION:
-      cs_pool = _T("Session");
-      break;
-    default:
-      ASSERT(0);
-  }
+  cs_pool = GetFilterPoolName(flt_key.fpool);
+
   // Now to confirm with user:
   CString cs_msg;
   cs_msg.Format(IDS_CONFIRMFILTERDELETE, cs_pool, cs_selected);
@@ -462,8 +472,12 @@ void CManageFiltersDlg::OnFilterDelete()
   delete pflt_idata;
   m_FilterLC.DeleteItem(m_selectedfilter);
   m_FilterProperties.DeleteAllItems();
-  if (m_selectedfilter == m_inusefilter)
-    m_inusefilter = -1;
+  if (m_selectedfilter == m_activefilter) {
+    m_activefilter = -1;
+    m_activefilterpool = FPOOL_LAST;
+    m_activefiltername = _T("");
+    m_pDbx->ClearFilter();
+  }
 
   m_selectedfilter = -1;
   m_selectedfilterpool = FPOOL_LAST;
@@ -511,13 +525,13 @@ void CManageFiltersDlg::OnFilterApply()
   m_activefiltername = m_selectedfiltername;
 
   st_FilterItemData *pflt_idata;
-  if (m_selectedfilter != m_inusefilter && m_inusefilter != -1) {
-    m_FilterLC.SetItemText(m_inusefilter, MFLC_INUSE, _T(" "));
-    pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_inusefilter);
+  if (m_selectedfilter != m_activefilter && m_activefilter != -1) {
+    m_FilterLC.SetItemText(m_activefilter, MFLC_INUSE, _T(" "));
+    pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
     pflt_idata->flt_flags &= ~MFLT_INUSE;
-    m_FilterLC.SetItemData(m_inusefilter, (DWORD)pflt_idata);
+    m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
   }
-  m_inusefilter = m_selectedfilter;
+  m_activefilter = m_selectedfilter;
   pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_selectedfilter);
   pflt_idata->flt_flags |= MFLT_INUSE;
   m_FilterLC.SetItemData(m_selectedfilter, (DWORD)pflt_idata);
@@ -531,12 +545,12 @@ void CManageFiltersDlg::OnFilterUnApply()
 {
   m_pDbx->ClearFilter();
 
-  m_FilterLC.SetItemText(m_inusefilter, MFLC_INUSE, _T(" "));
+  m_FilterLC.SetItemText(m_activefilter, MFLC_INUSE, _T(" "));
   m_activefilterpool = FPOOL_LAST;
   m_activefiltername = _T("");
-  st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_inusefilter);
+  st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
   pflt_idata->flt_flags &= ~MFLT_INUSE;
-  m_FilterLC.SetItemData(m_inusefilter, (DWORD)pflt_idata);
+  m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
   m_bFilterActive = false;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
@@ -657,6 +671,8 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     m_FilterProperties.SetItemText(iItem, MFPRP_CRITERIA_TEXT, cs_criteria);
   }
 
+  bool bSave = m_bStopChange;
+  m_bStopChange = false;
   int itotalwidth = 0;
   for (int i = 0; i < MFPRP_CRITERIA_TEXT; i++) {
     m_FilterProperties.SetColumnWidth(i, LVSCW_AUTOSIZE);
@@ -669,6 +685,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
 
   m_FilterProperties.SetColumnWidth(MFPRP_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
   itotalwidth += m_FilterProperties.GetColumnWidth(MFPRP_CRITERIA_TEXT);
+  m_bStopChange = bSave;
 
   int iMaxWidth = itotalwidth + 32;
   int iMaxHeight = 1024;
@@ -695,29 +712,14 @@ void CManageFiltersDlg::UpdateFilterList()
     m_vcs_filters.push_back(mf_iter->first);
 
     iItem = m_FilterLC.InsertItem(i /* MFLC_FILTER_NAME */, mf_iter->first.cs_filtername);
-    CString cs_source(_T(""));
-    switch (mf_iter->first.fpool) {
-      case FPOOL_DATABASE:
-        cs_source = _T("Database");
-        break;
-      case FPOOL_AUTOLOAD:
-        cs_source = _T("Autoload");
-        break;
-      case FPOOL_IMPORTED:
-        cs_source = _T("Imported");
-        break;
-      case FPOOL_SESSION:
-        cs_source = _T("Session");
-        break;
-      default:
-        ASSERT(0);
-    }
+    CString cs_source = GetFilterPoolName(mf_iter->first.fpool);
+
     m_FilterLC.SetItemText(iItem, MFLC_FILTER_SOURCE, cs_source);
     if (m_bFilterActive &&
         mf_iter->first.fpool == m_activefilterpool &&
         mf_iter->first.cs_filtername == m_activefiltername) {
       m_FilterLC.SetItemText(iItem, MFLC_INUSE, _T("Yes"));
-      m_inusefilter = iItem;
+      m_activefilter = iItem;
     } else {
       m_FilterLC.SetItemText(iItem, MFLC_INUSE, _T(" "));
     }
@@ -730,7 +732,7 @@ void CManageFiltersDlg::UpdateFilterList()
     }
     st_FilterItemData *pflt_idata = new st_FilterItemData;
     pflt_idata->flt_key = mf_iter->first;
-    pflt_idata->flt_flags = (m_inusefilter == iItem) ? MFLT_INUSE : 0;
+    pflt_idata->flt_flags = (m_activefilter == iItem) ? MFLT_INUSE : 0;
     if (m_selectedfilter == iItem)
       pflt_idata->flt_flags |= MFLT_SELECTED;
     m_FilterLC.SetItemData(iItem, (DWORD)pflt_idata);
@@ -1063,11 +1065,39 @@ UINT CManageFiltersDlg::GetFieldTypeName(const FieldType &ft)
   }
   return nID;
 }
+
+CString CManageFiltersDlg::GetFilterPoolName(FilterPool fp)
+{
+  UINT uiname(0);
+  switch (fp) {
+    case FPOOL_DATABASE:
+      uiname = IDS_DBPOOLNAME;
+      break;
+    case FPOOL_AUTOLOAD:
+      uiname = IDS_AUTOLOADPOOLNAME;
+      break;
+    case FPOOL_IMPORTED:
+      uiname = IDS_IMPORTEDPOOLNAME;
+      break;
+    case FPOOL_SESSION:
+      uiname = IDS_SESSIONPOOLNAME;
+      break;
+    default:
+      ASSERT(0);
+  }
+  CString cs_pool(_T(""));
+  if (uiname > 0)
+    cs_pool.LoadString(uiname);
+
+  return cs_pool;
+}
+
 /*
 * Compare function used by m_FilterLC.SortItems()
 */
-int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1, LPARAM lParam2,
-                                            LPARAM pSelf)
+int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,  
+                                               LPARAM lParam2,
+                                               LPARAM pSelf)
 {
   // pSelf is "this" of the calling CManageFiltersDlg, from which we use:
   // m_iSortColumn to determine which column is getting sorted
@@ -1085,22 +1115,31 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = pLHS->flt_key.cs_filtername.Compare(pRHS->flt_key.cs_filtername);
       break;
     case MFLC_FILTER_SOURCE:
-      iResult = ((int)pLHS->flt_key.fpool < (int)pRHS->flt_key.fpool) ? -1 : 1;
+      iResult = GetFilterPoolName(pLHS->flt_key.fpool).Compare(GetFilterPoolName(pRHS->flt_key.fpool));
       break;
     case MFLC_COPYTODATABASE:
       i1 = (int)(pLHS->flt_flags & MFLT_REQUEST_COPY_TO_DB);
       i2 = (int)(pRHS->flt_flags & MFLT_REQUEST_COPY_TO_DB);
-      iResult = (i1 < i2) ? -1 : 1;
+      if (i1 == i2)
+        iResult = 0;
+      else
+        iResult = (i1 < i2) ? -1 : 1;
       break;
     case MFLC_EXPORT:
       i1 = (int)(pLHS->flt_flags & MFLT_REQUEST_EXPORT);
       i2 = (int)(pRHS->flt_flags & MFLT_REQUEST_EXPORT);
-      iResult = (i1 < i2) ? -1 : 1;
+      if (i1 == i2)
+        iResult = 0;
+      else
+        iResult = (i1 < i2) ? -1 : 1;
       break;
     case MFLC_INUSE:
       i1 = (int)(pLHS->flt_flags & MFLT_INUSE);
       i2 = (int)(pRHS->flt_flags & MFLT_INUSE);
-      iResult = (i1 < i2) ? -1 : 1;
+      if (i1 == i2)
+        iResult = 0;
+      else
+        iResult = (i1 < i2) ? -1 : 1;
       break;
     default:
       iResult = 0; // should never happen - just keep compiler happy

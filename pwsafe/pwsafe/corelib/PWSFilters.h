@@ -218,8 +218,12 @@ struct st_filters {
   }
 };
 
-enum FilterPool {FPOOL_DATABASE = 1, FPOOL_AUTOLOAD, FPOOL_IMPORTED, FPOOL_SESSION,
-                 FPOOL_LAST};
+// These need to be powers of 2 as bit testing is performed
+enum FilterPool {FPOOL_DATABASE = 0x01, 
+                 FPOOL_AUTOLOAD = 0x02, 
+                 FPOOL_IMPORTED = 0x04,
+                 FPOOL_SESSION  = 0x08,
+                 FPOOL_LAST     = 0xff};
 
 struct st_Filterkey {
   FilterPool fpool;
