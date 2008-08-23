@@ -318,25 +318,29 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
 void CManageFiltersDlg::OnFilterNew()
 {
   st_filters filters;
-  if (m_pDbx->EditFilter(&filters)) {
-    st_Filterkey flt_key;
-    flt_key.fpool = FPOOL_SESSION;
-    flt_key.cs_filtername = filters.fname;
-
+  bool bApplied(false);
+  bool bChanged = m_pDbx->EditFilter(&filters, bApplied);
+  st_Filterkey flt_key;
+  flt_key.fpool = FPOOL_SESSION;
+  flt_key.cs_filtername = filters.fname;
+  if (bChanged || bApplied) {
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
 
     // Update DboxMain
     m_pDbx->SetFilter(FPOOL_SESSION, filters.fname);
-    // The user may have applied this filter
-    m_bFilterActive = m_pDbx->IsFilterActive();
-    if (m_bFilterActive) {
-      m_activefilterpool = flt_key.fpool;
-      m_activefiltername = filters.fname;
-    } else {
-      m_activefilterpool = FPOOL_LAST;
-      m_activefiltername = _T("");
-    }
+  }
 
+  // The user may have applied this filter
+  m_bFilterActive = m_pDbx->IsFilterActive();
+
+  if (bApplied) {
+    m_activefilterpool = flt_key.fpool;
+    m_activefiltername = filters.fname;
+  } else {
+    m_activefilterpool = FPOOL_LAST;
+    m_activefiltername = _T("");
+  }
+  if (bChanged || bApplied) {
     UpdateFilterList();
     DisplayFilterProperties(&filters);
   }
@@ -357,7 +361,9 @@ void CManageFiltersDlg::OnFilterEdit()
   // the user cancels the change and the current state is invalid and 
   // corrupts the copy in the map
   st_filters filters = mf_iter->second;
-  if (m_pDbx->EditFilter(&filters)) {
+  bool bApplied(false);
+  bool bChanged = m_pDbx->EditFilter(&filters, bApplied);
+  if (bChanged) {
     if (flt_key.fpool == FPOOL_DATABASE)
       m_bDBFiltersChanged = true;
 
@@ -367,18 +373,22 @@ void CManageFiltersDlg::OnFilterEdit()
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
     m_selectedfiltername = flt_key.cs_filtername;
 
-    // Update DboxMain
+    // Update DboxMain's current filter
     m_pDbx->SetFilter(flt_key.fpool, filters.fname);
-    // The user may have applied this filter
-    m_bFilterActive = m_pDbx->IsFilterActive();
-    if (m_bFilterActive) {
-      m_activefilterpool = flt_key.fpool;
-      m_activefiltername = filters.fname;
-    } else {
-      m_activefilterpool = FPOOL_LAST;
-      m_activefiltername = _T("");
-    }
+  }
 
+  // The user may have applied this filter
+  m_bFilterActive = m_pDbx->IsFilterActive();
+
+  if (bApplied) {
+    m_activefilterpool = flt_key.fpool;
+    m_activefiltername = filters.fname;
+  } else {
+    m_activefilterpool = FPOOL_LAST;
+    m_activefiltername = _T("");
+  }
+
+  if (bChanged || bApplied) {
     UpdateFilterList();
     DisplayFilterProperties(&filters);
   }
@@ -819,7 +829,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
   const int iItem = pLVCD->nmcd.dwItemSpec;
   const int iSubItem = pLVCD->iSubItem;
 
-  bool bDatabase(false), bCopy(false), bExport(false);
+  bool bCopy(false), bExport(false);
   st_FilterItemData *pflt_idata(NULL);
 
   switch(pLVCD->nmcd.dwDrawStage) {
@@ -827,7 +837,6 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(iItem);
 
-      bDatabase = (pflt_idata->flt_key.fpool & FPOOL_DATABASE) == FPOOL_DATABASE;
       bCopy = (pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB;
       bExport = (pflt_idata->flt_flags & MFLT_REQUEST_EXPORT) == MFLT_REQUEST_EXPORT;
       break;
@@ -877,7 +886,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
               pDC->FillSolidRect(&first_rect, crLightGreen);
             }
             *pResult = CDRF_SKIPDEFAULT;
-            if (bDatabase)
+            if (pflt_idata->flt_key.fpool == FPOOL_DATABASE)
               break;
             // Draw checked/unchecked image
             ix = inner_rect.CenterPoint().x;

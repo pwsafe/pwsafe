@@ -43,7 +43,6 @@ CSetFiltersDlg::~CSetFiltersDlg()
 
 BEGIN_MESSAGE_MAP(CSetFiltersDlg, CPWFiltersDlg)
   ON_BN_CLICKED(IDC_APPLY, OnApply)
-  ON_BN_CLICKED(IDCANCEL, OnCancel)
 END_MESSAGE_MAP()
 
 void CSetFiltersDlg::EnableDisableApply()
@@ -73,8 +72,3 @@ void CSetFiltersDlg::OnApply()
   m_applied = true;
 }
 
-void CSetFiltersDlg::OnCancel()
-{
-  // If the filter has been applied, then it has been saved!
-  EndDialog(m_applied ? IDOK : IDCANCEL);
-}

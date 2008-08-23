@@ -62,19 +62,19 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
     return false;
 
   m_currentfilter = mf_iter->second;
-  if (bJustDoIt) {
-    m_bFilterActive = false;
-  }
+  bool bActiveFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
+                                     m_currentfilter.num_Pactive) > 0;
 
-  if (!m_bFilterActive &&
-      (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
-                                     m_currentfilter.num_Pactive) == 0) {
-    if (bJustDoIt)
-      ApplyFilters();
+  if (!bJustDoIt && !m_bFilterActive && !bActiveFilters) {
+    // Nothing to do!
     return false;
   }
 
-  m_bFilterActive = true;
+  // If we are told to "Just do it" - we do, otherwise we toggle!
+  if (bJustDoIt)
+    m_bFilterActive = bActiveFilters;
+  else
+    m_bFilterActive = !m_bFilterActive;
 
   ApplyFilters();
   return true;
@@ -117,11 +117,12 @@ void DboxMain::OnSetFilter()
   }
 }
 
-bool DboxMain::EditFilter(st_filters *pfilters)
+bool DboxMain::EditFilter(st_filters *pfilters, bool &bApplied)
 {
   CSetFiltersDlg sf(this, pfilters, WM_EXECUTE_FILTERS);
 
   INT_PTR rc = sf.DoModal();
+  bApplied = sf.WasApplied();
   return (rc == IDOK);
 }
 
