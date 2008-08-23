@@ -262,7 +262,7 @@ public:
   {m_currentfilterpool = selectedpool; m_selectedfiltername = selectedfiltername;}
   void ImportFilters();
   bool ApplyFilter(bool bJustDoIt = false);
-  bool EditFilter(st_filters *pfilters);
+  bool EditFilter(st_filters *pfilters, bool &bApplied);
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 

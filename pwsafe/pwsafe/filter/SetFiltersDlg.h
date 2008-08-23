@@ -22,6 +22,7 @@ public:
   CSetFiltersDlg(CWnd* pParent, st_filters *pfilters, const int &iWMSGID);
   virtual ~CSetFiltersDlg();
   void EnableDisableApply();
+  bool WasApplied() {return m_applied;}
 
 protected:
 
@@ -29,7 +30,6 @@ protected:
 
 public:
   afx_msg void OnApply();
-  afx_msg void OnCancel();
 
 private:
   // Following needed to be able to send a message to DboxMain (parent)
