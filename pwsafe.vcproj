@@ -797,6 +797,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\filter\PWHdrCtrlNoChng.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWHistDlg.cpp"
 				>
 			</File>
@@ -1138,6 +1142,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\filter\PWHdrCtrlNoChng.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PWHistDlg.h"
 				>
 			</File>
@@ -1416,18 +1424,6 @@
 			</File>
 			<File
 				RelativePath=".\res\toolbar\clearclipboard_new_disabled.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\clearfilter_classic.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\clearfilter_new.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\clearfilter_new_disabled.bmp"
 				>
 			</File>
 			<File

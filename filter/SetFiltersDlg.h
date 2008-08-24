@@ -19,10 +19,10 @@ class CSetFiltersDlg : public CPWFiltersDlg
   DECLARE_DYNAMIC(CSetFiltersDlg)
 
 public:
-  CSetFiltersDlg(CWnd* pParent, st_filters *pfilters, const int &iWMSGID);
+  CSetFiltersDlg(CWnd* pParent, st_filters *pfilters, 
+                 const int &iWMSGID, const bool bAllowSet = true);
   virtual ~CSetFiltersDlg();
   void EnableDisableApply();
-  bool WasApplied() {return m_applied;}
 
 protected:
 
@@ -35,5 +35,4 @@ private:
   // Following needed to be able to send a message to DboxMain (parent)
   // to apply the current filters without ending this dialog.
   int m_iWMSGID;
-  bool m_applied;
 };

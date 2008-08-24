@@ -11,6 +11,7 @@
 // CPWFiltersDlg dialog
 
 #include "../PWResizeDialog.h"
+#include "PWHdrCtrlNoChng.h"
 #include "../corelib/Itemdata.h"
 #include "../corelib/PWSFilters.h"
 #include "PWFilterLC.h"
@@ -42,11 +43,10 @@ protected:
   st_filters *m_pfilters;
   CString m_filtername;
   bool VerifyFilters();
+  bool m_bAllowSet;
 
   //{{AFX_MSG(CPWFiltersDlg)
   afx_msg void OnFNameKillFocus();
-  afx_msg void OnBeginTrack(NMHDR * pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnItemchanging(NMHDR * pNotifyStruct, LRESULT* pResult);
   afx_msg void OnProcessKey(UINT nID);
   afx_msg void OnSize(UINT nType, int cx, int cy);
   //}}AFX_MSG
@@ -62,10 +62,10 @@ protected:
 private:
   CPWFilterLC m_FilterLC;
   CEdit m_FNameEdit;
+  CPWHdrCtrlNoChng m_FLCHeader;
 
   HACCEL m_hAccel;
 
   int m_numfilters;
   int m_iType;
-  bool m_bStopChange;
 };

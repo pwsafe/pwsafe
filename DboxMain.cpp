@@ -75,8 +75,8 @@ CString DboxMain::CS_SENDEMAIL;
 CString DboxMain::CS_COPYURL;
 CString DboxMain::CS_COPYEMAIL;
 CString DboxMain::CS_EXPCOLGROUP;
-CString DboxMain::CS_APPLYFILTERS;
-CString DboxMain::CS_UNAPPLYFILTERS;
+CString DboxMain::CS_SETFILTERS;
+CString DboxMain::CS_CLEARFILTERS;
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
@@ -108,8 +108,8 @@ DboxMain::DboxMain(CWnd* pParent)
   CS_SENDEMAIL.LoadString(IDS_MENUSENDEMAIL);
   CS_COPYURL.LoadString(IDS_MENUCOPYURL);
   CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
-  CS_APPLYFILTERS.LoadString(IDS_APPLYFILTERS);
-  CS_UNAPPLYFILTERS.LoadString(IDS_UNAPPLYFILTERS);
+  CS_SETFILTERS.LoadString(IDS_SETFILTERS);
+  CS_CLEARFILTERS.LoadString(IDS_CLEARFILTERS);
 
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -199,8 +199,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_CHANGEPSWDFONT, OnChangePswdFont)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReports)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
-  ON_COMMAND(ID_MENUITEM_SETFILTER, OnSetFilter)
-  ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnClearFilter)
+  ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
   ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
 
@@ -378,9 +377,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, true},
   {ID_MENUITEM_REPORT_MERGE, true, true, true, true},
   {ID_MENUITEM_REPORT_VALIDATE, true, true, true, true},
+  {ID_MENUITEM_EDITFILTER, true, true, false, false},
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
-  {ID_MENUITEM_SETFILTER, true, true, false, false},
-  {ID_MENUITEM_CLEARFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   // Manage menu
@@ -1604,7 +1602,7 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
   pMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
                     (m_bFilterActive ? MF_CHECKED : MF_UNCHECKED),
                     ID_MENUITEM_APPLYFILTER,
-                    m_bFilterActive ? CS_UNAPPLYFILTERS : CS_APPLYFILTERS);
+                    m_bFilterActive ? CS_CLEARFILTERS : CS_SETFILTERS);
 
   // JHF m_toolbarMode is not for WinCE (as in .h)
 #if !defined(POCKET_PC)
@@ -2539,11 +2537,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
                                          m_currentfilter.num_Pactive) == 0)
         iEnable = FALSE;
       break;
-    case ID_MENUITEM_CLEARFILTER:
-      if (m_currentfilter.vMfldata.size() == 0)
-        iEnable = FALSE;
-      break;
-    case ID_MENUITEM_SETFILTER:
+    case ID_MENUITEM_EDITFILTER:
     case ID_MENUITEM_MANAGEFILTERS:
       break;
     default:

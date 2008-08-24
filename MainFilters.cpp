@@ -98,6 +98,9 @@ void DboxMain::OnSetFilter()
     m_MapFilters.erase(fk);
     m_MapFilters.insert(PWSFilters::Pair(fk, m_currentfilter));
 
+    m_currentfilterpool = fk.fpool;
+    m_selectedfiltername = fk.cs_filtername;
+
     bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
                                                    m_currentfilter.num_Pactive) > 0;
 
@@ -110,25 +113,18 @@ void DboxMain::OnSetFilter()
       ApplyFilters();
     }
     else if (bFilters) {
-      CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
-      mainTBCtrl.EnableButton(ID_MENUITEM_APPLYFILTER, bFilters ? TRUE : FALSE);
-      mainTBCtrl.EnableButton(ID_MENUITEM_CLEARFILTER, bFilters ? TRUE : FALSE);
+      m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER, 
+                                                  bFilters ? TRUE : FALSE);
     }
   }
 }
 
-bool DboxMain::EditFilter(st_filters *pfilters, bool &bApplied)
+bool DboxMain::EditFilter(st_filters *pfilters, const bool &bAllowSet)
 {
-  CSetFiltersDlg sf(this, pfilters, WM_EXECUTE_FILTERS);
+  CSetFiltersDlg sf(this, pfilters, WM_EXECUTE_FILTERS, bAllowSet);
 
   INT_PTR rc = sf.DoModal();
-  bApplied = sf.WasApplied();
   return (rc == IDOK);
-}
-
-void DboxMain::OnClearFilter()
-{
-  ClearFilter();
 }
 
 void DboxMain::ClearFilter()
@@ -157,9 +153,8 @@ void DboxMain::ApplyFilters()
 
   bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
                                                  m_currentfilter.num_Pactive) > 0;
-  CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
-  mainTBCtrl.EnableButton(ID_MENUITEM_APPLYFILTER, bFilters ? TRUE : FALSE);
-  mainTBCtrl.EnableButton(ID_MENUITEM_CLEARFILTER, bFilters ? TRUE : FALSE);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER, 
+                                              bFilters ? TRUE : FALSE);
 
   // Clear Find as old entries might not now be in the List View (which is how
   // Find works).  Also, hide it if visible.

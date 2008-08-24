@@ -25,6 +25,7 @@ CSetHistoryFiltersDlg::CSetHistoryFiltersDlg(CWnd* pParent, st_filters *pfilters
   ASSERT(pParent != NULL);
   ASSERT(pfilters != NULL);
 
+  m_bAllowSet = false;
   m_pParent = pParent;
   m_pfilters = pfilters;
 

@@ -435,8 +435,8 @@
 #define IDS_SETDISPLAYFILTERS           5602
 #define IDS_SETPWHISTFILTERS            5603
 #define IDS_SETPWPOLICYFILTER           5604
-#define IDS_APPLYFILTERS                5605
-#define IDS_UNAPPLYFILTERS              5606
+#define IDS_SETFILTERS                  5605
+#define IDS_CLEARFILTERS                5606
 #define IDS_HELP                        5607
 #define IDS_OK                          5608
 #define IDS_NUMITEMSFILTER              5609
@@ -470,3 +470,8 @@
 #define IDS_AUTOLOADPOOLNAME            5637
 #define IDS_IMPORTEDPOOLNAME            5638
 #define IDS_SESSIONPOOLNAME             5639
+#define IDS_FILTERNAME                  5640
+#define IDS_FILTERSOURCE                5641
+#define IDS_FILTERCOPY2DB               5642
+#define IDS_FILTEREXPORT                5643
+#define IDS_FILTERINUSESTATUS           5644
