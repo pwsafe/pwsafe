@@ -299,12 +299,17 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
 void CManageFiltersDlg::OnFilterNew()
 {
   st_filters filters;
-  bool bJustDoIt(false);
-  bool bChanged = m_pDbx->EditFilter(&filters, false);
   st_Filterkey flt_key;
+  bool bJustDoIt(false), bCreated;
+
   flt_key.fpool = FPOOL_SESSION;
+
+do_edit:
+  bCreated = m_pDbx->EditFilter(&filters, false);
+
   flt_key.cs_filtername = filters.fname;
-  if (bChanged) {
+
+  if (bCreated) {
     PWSFilters::const_iterator mf_citer;
     mf_citer = m_MapFilters.find(flt_key);
 
@@ -313,10 +318,10 @@ void CManageFiltersDlg::OnFilterNew()
       CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
       CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
       int rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
-      // If NO, should really ask for a new name and go into a loop until a unique
-      // name given or cancel pressed - instead first implementation just returns!
+      // If NO, go to edit again!  Not best practice to jump out of loop
+      // to prior call!
       if (rc == IDNO)
-        return;
+        goto do_edit;
 
       m_MapFilters.erase(flt_key);
 
@@ -681,6 +686,8 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
   }
   m_FilterProperties.SetColumnWidth(MFPRP_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
   m_FPROPHeader.SetStopChangeFlag(bSave);
+
+  GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(pfilters->fname);
 }
 
 void CManageFiltersDlg::UpdateFilterList()
