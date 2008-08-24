@@ -346,9 +346,9 @@ do_edit:
 
 void CManageFiltersDlg::OnFilterEdit()
 {
-  bool bJustDoIt(false);
+  bool bJustDoIt(false), bChanged, bReplacedOther(false);
   PWSFilters::iterator mf_iter;
-  st_Filterkey flt_key;
+  st_Filterkey flt_key, flt_otherkey;
   flt_key.fpool = m_selectedfilterpool;
   flt_key.cs_filtername = m_selectedfiltername;
 
@@ -360,8 +360,34 @@ void CManageFiltersDlg::OnFilterEdit()
   // the user cancels the change and the current state is invalid and 
   // corrupts the copy in the map
   st_filters filters = mf_iter->second;
-  bool bChanged = m_pDbx->EditFilter(&filters, false);
+
+do_edit:
+  bChanged = m_pDbx->EditFilter(&filters, false);
   if (bChanged) {
+    // Has user changed the filter's name?
+    // If so, check for conflict.
+    if (m_selectedfiltername != filters.fname) {
+      PWSFilters::const_iterator mf_citer;
+
+      flt_otherkey.fpool = m_selectedfilterpool;
+      flt_otherkey.cs_filtername = filters.fname;
+
+      mf_citer = m_MapFilters.find(flt_otherkey);
+
+      // Check if already there (i.e. ask user if to replace)
+      if (mf_citer != m_MapFilters.end()) {
+        CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
+        CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
+        int rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+        // If NO, go to edit again!  Not best practice to jump out of loop
+        // to prior call!
+        if (rc == IDNO)
+          goto do_edit;
+
+        bReplacedOther = true;
+      }
+    }
+
     if (flt_key.fpool == FPOOL_DATABASE)
       m_bDBFiltersChanged = true;
 
@@ -373,7 +399,8 @@ void CManageFiltersDlg::OnFilterEdit()
     }
 
     // User may have changed name (and so key) - delete and add again
-    m_MapFilters.erase(flt_key);
+    // Have to anyway, even if name not changed.
+    m_MapFilters.erase(bReplacedOther ? flt_otherkey : flt_key);
     flt_key.cs_filtername = filters.fname;
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
     m_selectedfiltername = flt_key.cs_filtername;
