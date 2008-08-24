@@ -23,7 +23,7 @@ using namespace std;
 
 // Following macro get length of std_*_chars less the trailing \0
 // compile time equivalent of strlen()
-#define LENGTH(s) (sizeof(s)/sizeof(s[0]) - sizeof(s[0]))
+#define LENGTH(s) (sizeof(s)/sizeof(s[0]) - 1)
 
 const charT CPasswordCharPool::std_lowercase_chars[] = _T("abcdefghijklmnopqrstuvwxyz");
 const size_t CPasswordCharPool::std_lowercase_len = LENGTH(std_lowercase_chars);
