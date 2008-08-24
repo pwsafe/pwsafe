@@ -15,6 +15,7 @@
 #include "../stdafx.h"
 #include "../ThisMfcApp.h"
 #include "PWFiltersDlg.h"
+#include "PWHdrCtrlNoChng.h"
 
 #include "../resource2.h"
 #include "../resource3.h"
@@ -30,7 +31,7 @@ CPWFiltersDlg::CPWFiltersDlg(CWnd* pParent /*=NULL*/,
                              const CString &filtername /*=_T("")*/)
   : CPWResizeDialog(CPWFiltersDlg::IDD, pParent),
   m_numfilters(0), m_iType(filtertype), m_hAccel(NULL), 
-  m_bStopChange(false), m_filtername(filtername)
+  m_filtername(filtername), m_bAllowSet(true)
 {
 }
 
@@ -44,7 +45,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
   UINT main_bns[] = {IDC_APPLY, IDOK, IDCANCEL, ID_HELP};
   UINT other_bns[] = {IDOK, IDCANCEL, ID_HELP};
 
-  if (m_iType == DFTYPE_MAIN)
+  if (m_iType == DFTYPE_MAIN && m_bAllowSet)
     vibottombtns.assign(main_bns,
                         main_bns + sizeof(main_bns)/sizeof(main_bns[0]));
   else
@@ -74,7 +75,12 @@ BOOL CPWFiltersDlg::OnInitDialog()
   else
     m_filtername = m_pfilters->fname;
 
-  m_bStopChange = true;
+  CHeaderCtrl* pHCtrl;
+  pHCtrl = m_FilterLC.GetHeaderCtrl();
+  ASSERT(pHCtrl != NULL);
+  pHCtrl->SetDlgCtrlID(IDC_FILTERLC_HEADER);
+  m_FLCHeader.SubclassWindow(pHCtrl->GetSafeHwnd());
+  m_FLCHeader.SetStopChangeFlag(true);
 
   CRect rect;
   // Move over History & Policy dialogs so as not to obscure main filter dialog
@@ -84,16 +90,19 @@ BOOL CPWFiltersDlg::OnInitDialog()
                  0, 0, SWP_NOSIZE | SWP_NOZORDER);
   }
 
-  // Main window has Apply, OK, Cancel buttons
+  // Main window has Apply (if not called via Manage), OK, Cancel buttons
   // History/Policy have OK, Cancel, Help buttons
   // but only one dialog definition in resource file for both in
   // order to ensure that the dialogs look exactly the same and also
   // easier to maintain
   if (m_iType != DFTYPE_MAIN) {
-    // Change buttons if History/Policy dialog
+    GetDlgItem(IDC_FILTERNAME)->EnableWindow(FALSE);
+  }
+  if (!m_bAllowSet) {
+    // Change buttons if called via ManageFilters or 
+    // is a History/Policy dialog
     GetDlgItem(IDC_APPLY)->EnableWindow(FALSE);
     GetDlgItem(IDC_APPLY)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_FILTERNAME)->EnableWindow(FALSE);
   }
 
   int itotalwidth = 0;
@@ -132,8 +141,6 @@ BEGIN_MESSAGE_MAP(CPWFiltersDlg, CPWResizeDialog)
   ON_BN_CLICKED(IDOK, OnOk)
   ON_COMMAND(ID_HELP, OnHelp)
   ON_EN_KILLFOCUS(IDC_FILTERNAME, OnFNameKillFocus)
-  ON_NOTIFY(HDN_BEGINTRACK, IDC_FILTERLC_HEADER, OnBeginTrack)
-  ON_NOTIFY(HDN_ITEMCHANGING, IDC_FILTERLC_HEADER, OnItemchanging)
   ON_COMMAND_RANGE(ID_FLC_CRITERIA, ID_FLC_NEXT, OnProcessKey)
 END_MESSAGE_MAP()
 
@@ -292,23 +299,6 @@ void CPWFiltersDlg::UpdateStatusText()
   m_statusBar.UpdateWindow();
 }
 
-void CPWFiltersDlg::OnBeginTrack(NMHDR * /*pNotifyStruct*/, LRESULT* pResult)
-{
-  // Don't allow user to change the size of any columns!
-  *pResult = TRUE;
-}
-
-void CPWFiltersDlg::OnItemchanging(NMHDR * pNotifyStruct, LRESULT* pResult)
-{
-  NMHEADER *pHdr = reinterpret_cast<NMHEADER *>(pNotifyStruct);
-
-  // Only allow last column to resize - it has variable data (filter description)
-  if (pHdr->iItem == FLC_CRITERIA_TEXT)
-    *pResult = FALSE;
-  else
-    *pResult = m_bStopChange ? TRUE : FALSE;
-}
-
 BOOL CPWFiltersDlg::PreTranslateMessage(MSG* pMsg)
 {
   // CListCtrl accelerator processing
@@ -359,6 +349,8 @@ void CPWFiltersDlg::OnProcessKey(UINT nID)
 
 void CPWFiltersDlg::UpdateDialogMaxWidth()
 {
+  bool bSave = m_FLCHeader.GetStopChangeFlag();
+  m_FLCHeader.SetStopChangeFlag(true);
   int itotalwidth = 0;
   for (int i = 0; i < FLC_NUM_COLUMNS - 1; i++) {
     m_FilterLC.SetColumnWidth(i, LVSCW_AUTOSIZE);
@@ -368,9 +360,9 @@ void CPWFiltersDlg::UpdateDialogMaxWidth()
     m_FilterLC.SetColumnWidth(i, max(iw1, iw2));
     itotalwidth += max(iw1, iw2);
   }
-
   m_FilterLC.SetColumnWidth(FLC_NUM_COLUMNS - 1, LVSCW_AUTOSIZE_USEHEADER);
   itotalwidth += m_FilterLC.GetColumnWidth(FLC_NUM_COLUMNS - 1);
+  m_FLCHeader.SetStopChangeFlag(bSave);
 
   int iMaxWidth = itotalwidth + 32;
   int iMaxHeight = 1024;

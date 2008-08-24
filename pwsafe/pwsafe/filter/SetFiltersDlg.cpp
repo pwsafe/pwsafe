@@ -23,14 +23,16 @@ IMPLEMENT_DYNAMIC(CSetFiltersDlg, CPWFiltersDlg)
 
 CSetFiltersDlg::CSetFiltersDlg(CWnd* pParent,
                                st_filters *pfilters,
-                               const int &iWMSGID)
+                               const int &iWMSGID,
+                               const bool bAllowSet)
   : CPWFiltersDlg(pParent, DFTYPE_MAIN, pfilters->fname),
-  m_iWMSGID(iWMSGID), m_applied(false)
+  m_iWMSGID(iWMSGID)
 {
   ASSERT(pParent != NULL);
   ASSERT(pfilters != NULL);
   ASSERT(iWMSGID != 0);
-  
+
+  m_bAllowSet = bAllowSet;
   m_pParent = pParent;
   m_pfilters = pfilters;
 
@@ -69,6 +71,4 @@ void CSetFiltersDlg::OnApply()
 
   // Tell parent (DboxMain) to execute the current filters
   m_pParent->SendMessage(m_iWMSGID, (WPARAM)m_pfilters);
-  m_applied = true;
 }
-

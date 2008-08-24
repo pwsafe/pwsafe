@@ -25,17 +25,17 @@
 
 // ManageFiltersDlg dialog
 
-IMPLEMENT_DYNAMIC(CManageFiltersDlg, CPWResizeDialog)
+IMPLEMENT_DYNAMIC(CManageFiltersDlg, CPWDialog)
 
 CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
                                bool bFilterActive,
                                PWSFilters &mapfilters)
-  : CPWResizeDialog(CManageFiltersDlg::IDD, pParent),
+  : CPWDialog(CManageFiltersDlg::IDD, pParent),
   m_bFilterActive(bFilterActive), m_MapFilters(mapfilters),
   m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(_T("")),
   m_activefilterpool(FPOOL_LAST), m_activefiltername(_T("")),
   m_selectedfilter(-1), m_activefilter(-1),
-  m_bStopChange(false), m_bDBFiltersChanged(false),
+  m_bDBFiltersChanged(false),
   m_num_to_export(0), m_num_to_copy(0),
   m_pCheckImageList(NULL), m_pImageList(NULL),
   m_iSortColumn(-1), m_bSortAscending(-1)
@@ -95,7 +95,7 @@ void CManageFiltersDlg::OnDestroy()
   m_pCheckImageList->DeleteImageList();
   delete m_pCheckImageList;
 
-  CPWResizeDialog::OnDestroy();
+  CPWDialog::OnDestroy();
 }
 
 void CManageFiltersDlg::DoDataExchange(CDataExchange* pDX)
@@ -105,11 +105,10 @@ void CManageFiltersDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_FILTERPROPERTIES, m_FilterProperties);
 }
 
-BEGIN_MESSAGE_MAP(CManageFiltersDlg, CPWResizeDialog)
+BEGIN_MESSAGE_MAP(CManageFiltersDlg, CPWDialog)
   ON_WM_DESTROY()
-  ON_WM_SIZE()
-  ON_BN_CLICKED(IDC_FILTERAPPLY, OnFilterApply)
-  ON_BN_CLICKED(IDC_FILTERUNAPPLY, OnFilterUnApply)
+  ON_BN_CLICKED(IDC_FILTERSET, OnFilterSet)
+  ON_BN_CLICKED(IDC_FILTERCLEAR, OnFilterClear)
   ON_BN_CLICKED(IDC_FILTERNEW, OnFilterNew)
   ON_BN_CLICKED(IDC_FILTEREDIT, OnFilterEdit)
   ON_BN_CLICKED(IDC_FILTERCOPY, OnFilterCopy)
@@ -120,34 +119,13 @@ BEGIN_MESSAGE_MAP(CManageFiltersDlg, CPWResizeDialog)
   ON_NOTIFY(NM_CUSTOMDRAW, IDC_FILTERLC, OnCustomDraw)
   ON_NOTIFY(LVN_ITEMCHANGING, IDC_FILTERLC, OnItemChanging)
   ON_NOTIFY(LVN_COLUMNCLICK, IDC_FILTERLC, OnColumnClick)
-  ON_NOTIFY(HDN_BEGINTRACK, IDC_FILTERLC_HEADER, OnHDRBeginTrack)
-  ON_NOTIFY(HDN_ITEMCHANGING, IDC_FILTERLC_HEADER, OnHDRItemChanging)
-  ON_NOTIFY(HDN_BEGINTRACK, IDC_FILTERPROP_HEADER, OnHDRBeginTrack)
-  ON_NOTIFY(HDN_ITEMCHANGING, IDC_FILTERPROP_HEADER, OnHDRItemChanging)
 END_MESSAGE_MAP()
 
 // ManageFilters message handlers
 
 BOOL CManageFiltersDlg::OnInitDialog()
 {
-  std::vector<UINT> vibottombtns;
-  vibottombtns.push_back(IDC_FILTERAPPLY);
-  vibottombtns.push_back(IDC_FILTERUNAPPLY);
-  vibottombtns.push_back(IDC_FILTERNEW);
-  vibottombtns.push_back(IDC_FILTEREDIT);
-  vibottombtns.push_back(IDC_FILTERCOPY);
-  vibottombtns.push_back(IDC_FILTERDELETE);
-  vibottombtns.push_back(IDC_FILTERIMPORT);
-  vibottombtns.push_back(IDC_FILTEREXPORT);
-  vibottombtns.push_back(IDOK);
-
-  AddMainCtrlID(IDC_FILTERPROPERTIES);
-  AddBtnsCtrlIDs(vibottombtns);
-
-  UINT statustext[1] = {IDS_BLANK};
-  SetStatusBar(&statustext[0], 1, false);
-
-  CPWResizeDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   // Make some columns centered
   LVCOLUMN lvc;
@@ -159,15 +137,15 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_FilterLC.SetExtendedStyle(dwExStyle);
 
   CString cs_text;
-  cs_text = _T("Name");
+  cs_text.LoadString(IDS_FILTERNAME);
   m_FilterLC.InsertColumn(MFLC_FILTER_NAME, cs_text);
-  cs_text = _T("Source");
+  cs_text.LoadString(IDS_FILTERSOURCE);
   m_FilterLC.InsertColumn(MFLC_FILTER_SOURCE, cs_text);
-  cs_text = _T("Copy to DB");
+  cs_text.LoadString(IDS_FILTERCOPY2DB);
   m_FilterLC.InsertColumn(MFLC_COPYTODATABASE, cs_text);
-  cs_text = _T("Export");
+  cs_text.LoadString(IDS_FILTEREXPORT);
   m_FilterLC.InsertColumn(MFLC_EXPORT, cs_text);
-  cs_text = _T("Currently Active");
+  cs_text.LoadString(IDS_FILTERINUSESTATUS);
   m_FilterLC.InsertColumn(MFLC_INUSE, cs_text);
 
   // Make some columns centered
@@ -211,25 +189,28 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_FilterProperties.SetColumn(MFPRP_FILTER_ACTIVE, &lvc);
   m_FilterProperties.SetColumn(MFPRP_AND_OR, &lvc);
 
-  int itotalwidth = 0;
-  for (int i = 0; i < MFPRP_NUM_COLUMNS; i++) {
-    m_FilterProperties.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-    itotalwidth += m_FilterProperties.GetColumnWidth(i);
-  }
-
   BOOL bEnable = (m_selectedfilter != -1 && 
                   m_selectedfilter == m_activefilter &&
                   m_bFilterActive) ? TRUE : FALSE;
-  GetDlgItem(IDC_FILTERUNAPPLY)->EnableWindow(bEnable);
+  GetDlgItem(IDC_FILTERCLEAR)->EnableWindow(bEnable);
 
-  int iMaxWidth = itotalwidth + 16;
-  int iMaxHeight = 1024;
-  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  CHeaderCtrl* pHCtrl;
+  pHCtrl = m_FilterLC.GetHeaderCtrl();
+  ASSERT(pHCtrl != NULL);
+  pHCtrl->SetDlgCtrlID(IDC_FILTERLC_HEADER);
+  m_FLCHeader.SubclassWindow(pHCtrl->GetSafeHwnd());
 
-  m_FilterLC.GetHeaderCtrl()->SetDlgCtrlID(IDC_FILTERLC_HEADER);
-  m_FilterProperties.GetHeaderCtrl()->SetDlgCtrlID(IDC_FILTERPROP_HEADER);
+  pHCtrl = m_FilterProperties.GetHeaderCtrl();
+  ASSERT(pHCtrl != NULL);
+  pHCtrl->SetDlgCtrlID(IDC_FILTERPROP_HEADER);
+  m_FPROPHeader.SubclassWindow(pHCtrl->GetSafeHwnd());
 
-  m_bStopChange = true;
+  for (int i = 0; i < MFPRP_NUM_COLUMNS; i++) {
+    m_FilterProperties.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+  }
+
+  m_FLCHeader.SetStopChangeFlag(true);
+  m_FPROPHeader.SetStopChangeFlag(true);
 
   UpdateData(FALSE);
 
@@ -310,7 +291,7 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
   BOOL bEnable = (m_selectedfilter != -1 && 
                   m_selectedfilter == m_activefilter &&
                   m_bFilterActive) ? TRUE : FALSE;
-  GetDlgItem(IDC_FILTERUNAPPLY)->EnableWindow(bEnable);
+  GetDlgItem(IDC_FILTERCLEAR)->EnableWindow(bEnable);
 
   m_FilterLC.Invalidate();
 }
@@ -318,29 +299,41 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
 void CManageFiltersDlg::OnFilterNew()
 {
   st_filters filters;
-  bool bApplied(false);
-  bool bChanged = m_pDbx->EditFilter(&filters, bApplied);
+  bool bJustDoIt(false);
+  bool bChanged = m_pDbx->EditFilter(&filters, false);
   st_Filterkey flt_key;
   flt_key.fpool = FPOOL_SESSION;
   flt_key.cs_filtername = filters.fname;
-  if (bChanged || bApplied) {
+  if (bChanged) {
+    PWSFilters::const_iterator mf_citer;
+    mf_citer = m_MapFilters.find(flt_key);
+
+    // Check if already there (i.e. ask user if to replace)
+    if (mf_citer != m_MapFilters.end()) {
+      CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
+      CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
+      int rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+      // If NO, should really ask for a new name and go into a loop until a unique
+      // name given or cancel pressed - instead first implementation just returns!
+      if (rc == IDNO)
+        return;
+
+      m_MapFilters.erase(flt_key);
+
+      // If this was active, we need to clear it and re-apply
+      if (m_bFilterActive && 
+          m_activefilterpool == FPOOL_SESSION && 
+          m_activefiltername == filters.fname) {
+        bJustDoIt = true;
+      }
+    }
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
 
     // Update DboxMain
     m_pDbx->SetFilter(FPOOL_SESSION, filters.fname);
-  }
+    if (bJustDoIt)
+      m_pDbx->ApplyFilter(true);
 
-  // The user may have applied this filter
-  m_bFilterActive = m_pDbx->IsFilterActive();
-
-  if (bApplied) {
-    m_activefilterpool = flt_key.fpool;
-    m_activefiltername = filters.fname;
-  } else {
-    m_activefilterpool = FPOOL_LAST;
-    m_activefiltername = _T("");
-  }
-  if (bChanged || bApplied) {
     UpdateFilterList();
     DisplayFilterProperties(&filters);
   }
@@ -348,6 +341,7 @@ void CManageFiltersDlg::OnFilterNew()
 
 void CManageFiltersDlg::OnFilterEdit()
 {
+  bool bJustDoIt(false);
   PWSFilters::iterator mf_iter;
   st_Filterkey flt_key;
   flt_key.fpool = m_selectedfilterpool;
@@ -361,13 +355,19 @@ void CManageFiltersDlg::OnFilterEdit()
   // the user cancels the change and the current state is invalid and 
   // corrupts the copy in the map
   st_filters filters = mf_iter->second;
-  bool bApplied(false);
-  bool bChanged = m_pDbx->EditFilter(&filters, bApplied);
+  bool bChanged = m_pDbx->EditFilter(&filters, false);
   if (bChanged) {
     if (flt_key.fpool == FPOOL_DATABASE)
       m_bDBFiltersChanged = true;
 
-    // User may have changed name (and so key) - delete and add
+    // If the original was active, we need to clear it and re-apply
+    if (m_bFilterActive && 
+        m_activefilterpool == flt_key.fpool && 
+        m_activefiltername == m_selectedfiltername) {
+      bJustDoIt = true;
+    }
+
+    // User may have changed name (and so key) - delete and add again
     m_MapFilters.erase(flt_key);
     flt_key.cs_filtername = filters.fname;
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
@@ -375,20 +375,9 @@ void CManageFiltersDlg::OnFilterEdit()
 
     // Update DboxMain's current filter
     m_pDbx->SetFilter(flt_key.fpool, filters.fname);
-  }
+    if (bJustDoIt)
+      m_pDbx->ApplyFilter(true);
 
-  // The user may have applied this filter
-  m_bFilterActive = m_pDbx->IsFilterActive();
-
-  if (bApplied) {
-    m_activefilterpool = flt_key.fpool;
-    m_activefiltername = filters.fname;
-  } else {
-    m_activefilterpool = FPOOL_LAST;
-    m_activefiltername = _T("");
-  }
-
-  if (bChanged || bApplied) {
     UpdateFilterList();
     DisplayFilterProperties(&filters);
   }
@@ -524,7 +513,7 @@ void CManageFiltersDlg::OnFilterExport()
   }
 }
 
-void CManageFiltersDlg::OnFilterApply()
+void CManageFiltersDlg::OnFilterSet()
 {
   m_pDbx->SetFilter(m_selectedfilterpool, m_selectedfiltername);
   if (!m_pDbx->ApplyFilter(true))
@@ -548,10 +537,10 @@ void CManageFiltersDlg::OnFilterApply()
   m_bFilterActive = true;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
-  GetDlgItem(IDC_FILTERUNAPPLY)->EnableWindow(TRUE);
+  GetDlgItem(IDC_FILTERCLEAR)->EnableWindow(TRUE);
 }
 
-void CManageFiltersDlg::OnFilterUnApply()
+void CManageFiltersDlg::OnFilterClear()
 {
   m_pDbx->ClearFilter();
 
@@ -564,7 +553,7 @@ void CManageFiltersDlg::OnFilterUnApply()
   m_bFilterActive = false;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
-  GetDlgItem(IDC_FILTERUNAPPLY)->EnableWindow(FALSE);
+  GetDlgItem(IDC_FILTERCLEAR)->EnableWindow(FALSE);
 }
 
 void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
@@ -681,25 +670,17 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     m_FilterProperties.SetItemText(iItem, MFPRP_CRITERIA_TEXT, cs_criteria);
   }
 
-  bool bSave = m_bStopChange;
-  m_bStopChange = false;
-  int itotalwidth = 0;
+  bool bSave = m_FPROPHeader.GetStopChangeFlag();
+  m_FPROPHeader.SetStopChangeFlag(false);
   for (int i = 0; i < MFPRP_CRITERIA_TEXT; i++) {
     m_FilterProperties.SetColumnWidth(i, LVSCW_AUTOSIZE);
     int iw1 =  m_FilterProperties.GetColumnWidth(i);
     m_FilterProperties.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int iw2 =  m_FilterProperties.GetColumnWidth(i);
     m_FilterProperties.SetColumnWidth(i, max(iw1, iw2));
-    itotalwidth += max(iw1, iw2);
   }
-
   m_FilterProperties.SetColumnWidth(MFPRP_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
-  itotalwidth += m_FilterProperties.GetColumnWidth(MFPRP_CRITERIA_TEXT);
-  m_bStopChange = bSave;
-
-  int iMaxWidth = itotalwidth + 32;
-  int iMaxHeight = 1024;
-  SetMaxHeightWidth(iMaxHeight, iMaxWidth);
+  m_FPROPHeader.SetStopChangeFlag(bSave);
 }
 
 void CManageFiltersDlg::UpdateFilterList()
@@ -765,8 +746,9 @@ void CManageFiltersDlg::UpdateFilterList()
 
 void CManageFiltersDlg::ResetColumns()
 {
-  bool bSave = m_bStopChange;
-  m_bStopChange = false;
+  bool bSave = m_FLCHeader.GetStopChangeFlag();
+  m_FLCHeader.SetStopChangeFlag(false);
+
   int iw1, iw2;
   m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, LVSCW_AUTOSIZE);
   iw1 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME);
@@ -783,18 +765,8 @@ void CManageFiltersDlg::ResetColumns()
   m_FilterLC.SetColumnWidth(MFLC_COPYTODATABASE, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_EXPORT, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_INUSE, LVSCW_AUTOSIZE_USEHEADER);
-  m_bStopChange = bSave;
-}
 
-void CManageFiltersDlg::OnSize(UINT nType, int cx, int cy)
-{
-  CPWResizeDialog::OnSize(nType, cx, cy);
-
-  if (!IsWindow(m_FilterLC.GetSafeHwnd()))
-    return;
-
-  // As main control is a CListCtrl, need to do this on the last column
-  m_FilterProperties.SetColumnWidth(MFPRP_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
+  m_FLCHeader.SetStopChangeFlag(bSave);
 }
 
 void CManageFiltersDlg::OnItemChanging(NMHDR* pNotifyStruct, LRESULT* pResult)
@@ -947,23 +919,6 @@ void CManageFiltersDlg::DrawImage(CDC *pDC, CRect &rect, int nImage)
       }
     }
   }
-}
-
-void CManageFiltersDlg::OnHDRBeginTrack(NMHDR * /*pNotifyStruct*/, LRESULT* pResult)
-{
-  // Don't allow user to change the size of any columns!
-  *pResult = TRUE;
-}
-
-void CManageFiltersDlg::OnHDRItemChanging(NMHDR * pNotifyStruct, LRESULT* pResult)
-{
-  NMHEADER *pNMHDR = reinterpret_cast<NMHEADER *>(pNotifyStruct);
-
-  // Only allow last column to resize - it has variable data (filter description)
-  if (pNMHDR->hdr.idFrom == IDC_FILTERPROP_HEADER &&pNMHDR->iItem == MFPRP_CRITERIA_TEXT)
-    *pResult = FALSE;
-  else
-    *pResult = m_bStopChange ? TRUE : FALSE;
 }
 
 UINT CManageFiltersDlg::GetFieldTypeName(const FieldType &ft)
@@ -1127,8 +1082,15 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
       iResult = GetFilterPoolName(pLHS->flt_key.fpool).Compare(GetFilterPoolName(pRHS->flt_key.fpool));
       break;
     case MFLC_COPYTODATABASE:
-      i1 = (int)(pLHS->flt_flags & MFLT_REQUEST_COPY_TO_DB);
-      i2 = (int)(pRHS->flt_flags & MFLT_REQUEST_COPY_TO_DB);
+      // Treat:
+      // Database filters (always unticked) as value 0;
+      // Non-Database filters unticked as value 1;
+      // Non-Database filters ticked as value 2;
+      i1 = i2 = 0;
+      if (pLHS->flt_key.fpool != FPOOL_DATABASE)
+        i1 = ((pLHS->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) ? 2 : 1;
+      if (pRHS->flt_key.fpool != FPOOL_DATABASE)
+        i2 = ((pRHS->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) ? 2 : 1;
       if (i1 == i2)
         iResult = 0;
       else

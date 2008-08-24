@@ -127,7 +127,7 @@ private:
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
   static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
-  static CString CS_APPLYFILTERS, CS_UNAPPLYFILTERS;
+  static CString CS_SETFILTERS, CS_CLEARFILTERS;
   static const CString DEFAULT_AUTOTYPE;
 
 public:
@@ -262,7 +262,7 @@ public:
   {m_currentfilterpool = selectedpool; m_selectedfiltername = selectedfiltername;}
   void ImportFilters();
   bool ApplyFilter(bool bJustDoIt = false);
-  bool EditFilter(st_filters *pfilters, bool &bApplied);
+  bool EditFilter(st_filters *pfilters, const bool &bAllowSet = true);
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
@@ -526,7 +526,6 @@ protected:
   afx_msg void OnManageFilters(); // From Toolbar button
   afx_msg void OnApplyFilter();
   afx_msg void OnSetFilter();
-  afx_msg void OnClearFilter();
   afx_msg void OnRefreshWindow();
   afx_msg void OnMinimize();
   afx_msg void OnUnMinimize();

@@ -11,6 +11,7 @@
 // ManageFiltersDlg dialog
 
 #include "../PWResizeDialog.h"
+#include "PWHdrCtrlNoChng.h"
 #include "../corelib/PWSFilters.h"
 
 #include <vector>
@@ -46,7 +47,7 @@ struct st_FilterItemData {
 
 class DboxMain;
 
-class CManageFiltersDlg : public CPWResizeDialog
+class CManageFiltersDlg : public CPWDialog
 {
   DECLARE_DYNAMIC(CManageFiltersDlg)
 
@@ -69,8 +70,8 @@ protected:
   BOOL OnInitDialog();
 
   //{{AFX_MSG(CManageFiltersDlg)
-  afx_msg void OnFilterApply();
-  afx_msg void OnFilterUnApply();
+  afx_msg void OnFilterSet();
+  afx_msg void OnFilterClear();
   afx_msg void OnFilterNew();
   afx_msg void OnFilterEdit();
   afx_msg void OnFilterCopy();
@@ -82,9 +83,6 @@ protected:
   afx_msg void OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult);
   afx_msg void OnItemChanging(NMHDR* pNotifyStruct, LRESULT* pResult);
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnHDRBeginTrack(NMHDR * pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnHDRItemChanging(NMHDR * pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnSize(UINT nType, int cx, int cy);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -108,11 +106,13 @@ private:
   CListCtrl m_FilterLC, m_FilterProperties;
   CStatusBar m_statusBar;
   CImageList *m_pImageList, *m_pCheckImageList;
+  CPWHdrCtrlNoChng m_FLCHeader;
+  CPWHdrCtrlNoChng m_FPROPHeader;
 
   FilterPool m_selectedfilterpool, m_activefilterpool;
   CString m_selectedfiltername, m_activefiltername;
   int m_selectedfilter, m_activefilter;
   int m_num_to_export, m_num_to_copy;
-  bool m_bFilterActive, m_bStopChange, m_bDBFiltersChanged;
+  bool m_bFilterActive, m_bDBFiltersChanged;
   int m_iSortColumn, m_bSortAscending;
 };
