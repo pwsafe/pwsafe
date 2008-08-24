@@ -611,16 +611,19 @@ void DboxMain::OnManageFilters()
   fkl.fpool = FPOOL_DATABASE;
   fkl.cs_filtername = _T("");
 
-  mf_lower_iter = m_MapFilters.lower_bound(fkl);
-  // Check that there are some first!
-  if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
-    // Now find upper bound of database filters
-    fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
-    fku.cs_filtername = _T("");
-    mf_upper_iter = m_MapFilters.upper_bound(fku);
+  if (m_MapFilters.size() != 0) {
+    mf_lower_iter = m_MapFilters.lower_bound(fkl);
 
-    // Delete existing database filters (if any)
-    m_MapFilters.erase(mf_lower_iter, mf_upper_iter);
+    // Check that there are some first!
+    if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
+      // Now find upper bound of database filters
+      fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
+      fku.cs_filtername = _T("");
+      mf_upper_iter = m_MapFilters.upper_bound(fku);
+
+      // Delete existing database filters (if any)
+      m_MapFilters.erase(mf_lower_iter, mf_upper_iter);
+    }
   }
 
   // Now add any existing database filters
