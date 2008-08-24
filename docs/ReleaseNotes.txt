@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.14
 ==================
+[2071489] off-by-one bug in range for generated passwords fixed.
 [1978486] The R/W status of a database is unchanged if it is already 
 open and the user cancels an open file action.
 [1978475] Clear clipboard options are no longer interchanged.
