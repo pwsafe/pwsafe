@@ -108,6 +108,7 @@ private:
   CImageList *m_pImageList, *m_pCheckImageList;
   CPWHdrCtrlNoChng m_FLCHeader;
   CPWHdrCtrlNoChng m_FPROPHeader;
+  CFont m_actionsfont;
 
   FilterPool m_selectedfilterpool, m_activefilterpool;
   CString m_selectedfiltername, m_activefiltername;

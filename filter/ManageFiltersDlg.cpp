@@ -114,8 +114,10 @@ BEGIN_MESSAGE_MAP(CManageFiltersDlg, CPWDialog)
   ON_BN_CLICKED(IDC_FILTERIMPORT, OnFilterImport)
   ON_BN_CLICKED(IDC_FILTEREXPORT, OnFilterExport)
   ON_NOTIFY(NM_CLICK, IDC_FILTERLC, OnClick)
+  ON_NOTIFY(NM_CLICK, IDC_FILTERPROPERTIES, OnClick)
   ON_NOTIFY(NM_CUSTOMDRAW, IDC_FILTERLC, OnCustomDraw)
   ON_NOTIFY(LVN_ITEMCHANGING, IDC_FILTERLC, OnItemChanging)
+  ON_NOTIFY(LVN_ITEMCHANGING, IDC_FILTERPROPERTIES, OnItemChanging)
   ON_NOTIFY(LVN_COLUMNCLICK, IDC_FILTERLC, OnColumnClick)
 END_MESSAGE_MAP()
 
@@ -205,6 +207,18 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_FLCHeader.SetStopChangeFlag(true);
   m_FPROPHeader.SetStopChangeFlag(true);
 
+  CFont *pfont = GetDlgItem(IDC_STATIC_ACTIONS)->GetFont();
+  LOGFONT lf;
+  pfont->GetLogFont(&lf);
+  lf.lfWeight = FW_BOLD;
+  lf.lfUnderline = TRUE;
+  m_actionsfont.CreateFontIndirect(&lf);
+  GetDlgItem(IDC_STATIC_ACTIONS)->SetFont(&m_actionsfont);
+
+  // Nothing is selected yet
+  GetDlgItem(IDC_FILTEREDIT)->EnableWindow(FALSE);
+  GetDlgItem(IDC_FILTERDELETE)->EnableWindow(FALSE);
+
   UpdateData(FALSE);
 
   return FALSE;
@@ -213,14 +227,21 @@ BOOL CManageFiltersDlg::OnInitDialog()
 void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
 {
   LPNMITEMACTIVATE pNMLV = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
+
+  // Ignore clicks on Properties ListCtrl (doesn't seem to do much though!)
+  if (pNMLV->hdr.idFrom == IDC_FILTERPROPERTIES) {
+    *pResult = TRUE;
+    return;
+  }
+
   *pResult = FALSE;
 
   if (pNMLV->iItem < 0) {
-    m_selectedfilter = -1;
-    m_selectedfiltername = _T("");
-    m_selectedfilterpool = FPOOL_LAST;
     return;
   }
+
+  GetDlgItem(IDC_FILTEREDIT)->EnableWindow(TRUE);
+  GetDlgItem(IDC_FILTERDELETE)->EnableWindow(TRUE);
 
   st_FilterItemData *pflt_idata;
   m_selectedfilter = pNMLV->iItem;
@@ -513,6 +534,9 @@ void CManageFiltersDlg::OnFilterDelete()
   m_selectedfilter = -1;
   m_selectedfilterpool = FPOOL_LAST;
   GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(_T(""));
+  // Nothing selected
+  GetDlgItem(IDC_FILTEREDIT)->EnableWindow(FALSE);
+  GetDlgItem(IDC_FILTERDELETE)->EnableWindow(FALSE);
 }
 
 void CManageFiltersDlg::OnFilterImport()
@@ -555,15 +579,18 @@ void CManageFiltersDlg::SetFilter()
   m_activefiltername = m_selectedfiltername;
 
   st_FilterItemData *pflt_idata;
+  // If the selected filter is not the current active one, remove flag
+  // from old active filter
   if (m_selectedfilter != m_activefilter && m_activefilter != -1) {
     pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
     pflt_idata->flt_flags &= ~MFLT_INUSE;
     m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
   }
   m_activefilter = m_selectedfilter;
-  pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_selectedfilter);
+  // Now add flag to new selected and active filter
+  pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
   pflt_idata->flt_flags |= MFLT_INUSE;
-  m_FilterLC.SetItemData(m_selectedfilter, (DWORD)pflt_idata);
+  m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
   m_bFilterActive = true;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
@@ -578,6 +605,7 @@ void CManageFiltersDlg::ClearFilter()
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
   pflt_idata->flt_flags &= ~MFLT_INUSE;
   m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
+  m_activefilter = -1;
   m_bFilterActive = false;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
@@ -714,9 +742,10 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
 
 void CManageFiltersDlg::UpdateFilterList()
 {
-  int iItem;
-  int nCount = m_FilterLC.GetItemCount();
-  for (int i = 0; i < nCount; i++) {
+  int nCount, iItem, i;
+
+  nCount = m_FilterLC.GetItemCount();
+  for (i = 0; i < nCount; i++) {
     st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(0);
     delete pflt_idata;
     m_FilterLC.DeleteItem(0);
@@ -724,8 +753,9 @@ void CManageFiltersDlg::UpdateFilterList()
   m_vcs_filters.clear();
 
   PWSFilters::iterator mf_iter;
-  int i(0);
+  i = 0;
   m_selectedfilter = -1;
+
   for (mf_iter = m_MapFilters.begin();
        mf_iter != m_MapFilters.end();
        mf_iter++) {
@@ -789,12 +819,20 @@ void CManageFiltersDlg::ResetColumns()
   m_FilterLC.SetColumnWidth(MFLC_COPYTODATABASE, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_EXPORT, LVSCW_AUTOSIZE_USEHEADER);
 
+  m_FilterLC.Invalidate();
   m_FLCHeader.SetStopChangeFlag(bSave);
 }
 
 void CManageFiltersDlg::OnItemChanging(NMHDR* pNotifyStruct, LRESULT* pResult)
 {
   NMLISTVIEW* pNMLV = reinterpret_cast<NMLISTVIEW *>(pNotifyStruct);
+
+  // Ignore clicks on Properties ListCtrl (doesn't seem to do much though!)
+  if (pNMLV->hdr.idFrom == IDC_FILTERPROPERTIES) {
+    *pResult = TRUE;
+    return;
+  }
+
   *pResult = FALSE;
 
   // Has the state changed?
