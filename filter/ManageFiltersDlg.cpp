@@ -107,8 +107,6 @@ void CManageFiltersDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CManageFiltersDlg, CPWDialog)
   ON_WM_DESTROY()
-  ON_BN_CLICKED(IDC_FILTERSET, OnFilterSet)
-  ON_BN_CLICKED(IDC_FILTERCLEAR, OnFilterClear)
   ON_BN_CLICKED(IDC_FILTERNEW, OnFilterNew)
   ON_BN_CLICKED(IDC_FILTEREDIT, OnFilterEdit)
   ON_BN_CLICKED(IDC_FILTERCOPY, OnFilterCopy)
@@ -141,18 +139,18 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_FilterLC.InsertColumn(MFLC_FILTER_NAME, cs_text);
   cs_text.LoadString(IDS_FILTERSOURCE);
   m_FilterLC.InsertColumn(MFLC_FILTER_SOURCE, cs_text);
+  cs_text.LoadString(IDS_FILTERAPPLY);
+  m_FilterLC.InsertColumn(MFLC_INUSE, cs_text);
   cs_text.LoadString(IDS_FILTERCOPY2DB);
   m_FilterLC.InsertColumn(MFLC_COPYTODATABASE, cs_text);
   cs_text.LoadString(IDS_FILTEREXPORT);
   m_FilterLC.InsertColumn(MFLC_EXPORT, cs_text);
-  cs_text.LoadString(IDS_FILTERINUSESTATUS);
-  m_FilterLC.InsertColumn(MFLC_INUSE, cs_text);
 
   // Make some columns centered
   m_FilterLC.SetColumn(MFLC_FILTER_SOURCE, &lvc);
+  m_FilterLC.SetColumn(MFLC_INUSE, &lvc);
   m_FilterLC.SetColumn(MFLC_COPYTODATABASE, &lvc);
   m_FilterLC.SetColumn(MFLC_EXPORT, &lvc);
-  m_FilterLC.SetColumn(MFLC_INUSE, &lvc);
 
   // Populate CListCtrl
   UpdateFilterList();
@@ -189,11 +187,6 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_FilterProperties.SetColumn(MFPRP_FILTER_ACTIVE, &lvc);
   m_FilterProperties.SetColumn(MFPRP_AND_OR, &lvc);
 
-  BOOL bEnable = (m_selectedfilter != -1 && 
-                  m_selectedfilter == m_activefilter &&
-                  m_bFilterActive) ? TRUE : FALSE;
-  GetDlgItem(IDC_FILTERCLEAR)->EnableWindow(bEnable);
-
   CHeaderCtrl* pHCtrl;
   pHCtrl = m_FilterLC.GetHeaderCtrl();
   ASSERT(pHCtrl != NULL);
@@ -229,6 +222,12 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
     return;
   }
 
+  st_FilterItemData *pflt_idata;
+  m_selectedfilter = pNMLV->iItem;
+  m_selectedfiltername = m_FilterLC.GetItemText(m_selectedfilter, 0);
+  pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_selectedfilter);
+  m_selectedfilterpool = pflt_idata->flt_key.fpool;
+
   CRect rect, image_rect;
   m_FilterLC.GetSubItemRect(pNMLV->iItem, pNMLV->iSubItem, LVIR_BOUNDS, rect);
   CPoint cpt = rect.CenterPoint();
@@ -236,8 +235,19 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
   image_rect.NormalizeRect();
   BOOL bOnImage = image_rect.PtInRect(pNMLV->ptAction);
 
-  st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(pNMLV->iItem);
   switch (pNMLV->iSubItem) {
+    case MFLC_INUSE:
+      if (bOnImage == TRUE) {
+        if ((pflt_idata->flt_flags & MFLT_INUSE) == MFLT_INUSE) {
+          pflt_idata->flt_flags &= ~MFLT_INUSE;
+          ClearFilter();
+        } else {
+          pflt_idata->flt_flags |= MFLT_INUSE;
+          SetFilter();
+        }
+        m_FilterLC.SetItemData(pNMLV->iItem, (DWORD)pflt_idata);
+      }
+      break;
     case MFLC_COPYTODATABASE:
       if (bOnImage == TRUE && pflt_idata->flt_key.fpool != FPOOL_DATABASE) {
         if ((pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) {
@@ -268,12 +278,7 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
       break;
   }
 
-  m_selectedfilter = pNMLV->iItem;
   m_FilterProperties.DeleteAllItems();
-
-  m_selectedfiltername = m_FilterLC.GetItemText(m_selectedfilter, 0);
-  pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_selectedfilter);
-  m_selectedfilterpool = pflt_idata->flt_key.fpool;
   GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(m_selectedfiltername);
 
   PWSFilters::iterator mf_iter;
@@ -287,11 +292,6 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
 
   st_filters *pfilters = &mf_iter->second;
   DisplayFilterProperties(pfilters);
-
-  BOOL bEnable = (m_selectedfilter != -1 && 
-                  m_selectedfilter == m_activefilter &&
-                  m_bFilterActive) ? TRUE : FALSE;
-  GetDlgItem(IDC_FILTERCLEAR)->EnableWindow(bEnable);
 
   m_FilterLC.Invalidate();
 }
@@ -545,19 +545,17 @@ void CManageFiltersDlg::OnFilterExport()
   }
 }
 
-void CManageFiltersDlg::OnFilterSet()
+void CManageFiltersDlg::SetFilter()
 {
   m_pDbx->SetFilter(m_selectedfilterpool, m_selectedfiltername);
   if (!m_pDbx->ApplyFilter(true))
     return;
 
-  m_FilterLC.SetItemText(m_selectedfilter, MFLC_INUSE, _T("Yes"));
   m_activefilterpool = m_selectedfilterpool;
   m_activefiltername = m_selectedfiltername;
 
   st_FilterItemData *pflt_idata;
   if (m_selectedfilter != m_activefilter && m_activefilter != -1) {
-    m_FilterLC.SetItemText(m_activefilter, MFLC_INUSE, _T(" "));
     pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
     pflt_idata->flt_flags &= ~MFLT_INUSE;
     m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
@@ -569,14 +567,12 @@ void CManageFiltersDlg::OnFilterSet()
   m_bFilterActive = true;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
-  GetDlgItem(IDC_FILTERCLEAR)->EnableWindow(TRUE);
 }
 
-void CManageFiltersDlg::OnFilterClear()
+void CManageFiltersDlg::ClearFilter()
 {
   m_pDbx->ClearFilter();
 
-  m_FilterLC.SetItemText(m_activefilter, MFLC_INUSE, _T(" "));
   m_activefilterpool = FPOOL_LAST;
   m_activefiltername = _T("");
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
@@ -585,7 +581,6 @@ void CManageFiltersDlg::OnFilterClear()
   m_bFilterActive = false;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
-  GetDlgItem(IDC_FILTERCLEAR)->EnableWindow(FALSE);
 }
 
 void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
@@ -743,17 +738,11 @@ void CManageFiltersDlg::UpdateFilterList()
     if (m_bFilterActive &&
         mf_iter->first.fpool == m_activefilterpool &&
         mf_iter->first.cs_filtername == m_activefiltername) {
-      m_FilterLC.SetItemText(iItem, MFLC_INUSE, _T("Yes"));
       m_activefilter = iItem;
-    } else {
-      m_FilterLC.SetItemText(iItem, MFLC_INUSE, _T(" "));
     }
     if (mf_iter->first.fpool == m_selectedfilterpool &&
         mf_iter->first.cs_filtername == m_selectedfiltername) {
-      m_FilterLC.SetItemText(iItem, MFLT_SELECTED, _T("Yes"));
       m_selectedfilter = iItem;
-    } else {
-      m_FilterLC.SetItemText(iItem, MFLT_SELECTED, _T(" "));
     }
     st_FilterItemData *pflt_idata = new st_FilterItemData;
     pflt_idata->flt_key = mf_iter->first;
@@ -796,9 +785,9 @@ void CManageFiltersDlg::ResetColumns()
   iw2 = m_FilterLC.GetColumnWidth(MFLC_FILTER_SOURCE);
   m_FilterLC.SetColumnWidth(MFLC_FILTER_SOURCE, max(iw1, iw2));
 
+  m_FilterLC.SetColumnWidth(MFLC_INUSE, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_COPYTODATABASE, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_EXPORT, LVSCW_AUTOSIZE_USEHEADER);
-  m_FilterLC.SetColumnWidth(MFLC_INUSE, LVSCW_AUTOSIZE_USEHEADER);
 
   m_FLCHeader.SetStopChangeFlag(bSave);
 }
@@ -835,7 +824,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
   const int iItem = pLVCD->nmcd.dwItemSpec;
   const int iSubItem = pLVCD->iSubItem;
 
-  bool bCopy(false), bExport(false);
+  bool bCopy(false), bExport(false), bActive(false);
   st_FilterItemData *pflt_idata(NULL);
 
   switch(pLVCD->nmcd.dwDrawStage) {
@@ -843,6 +832,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(iItem);
 
+      bActive = (pflt_idata->flt_flags & MFLT_INUSE) == MFLT_INUSE;
       bCopy = (pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB;
       bExport = (pflt_idata->flt_flags & MFLT_REQUEST_EXPORT) == MFLT_REQUEST_EXPORT;
       break;
@@ -885,7 +875,18 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
         switch (iSubItem) {
           case MFLC_FILTER_NAME:
           case MFLC_FILTER_SOURCE:
+            break;
           case MFLC_INUSE:
+            if (iItem == m_selectedfilter) {
+              pDC->FillSolidRect(&first_rect, crLightGreen);
+            }
+            // Draw checked/unchecked image
+            ix = inner_rect.CenterPoint().x;
+            iy = inner_rect.CenterPoint().y;
+            // The '7' below is ~ half the bitmap size of 13.
+            inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
+            DrawImage(pDC, inner_rect, bActive ? 0 : 2);
+            *pResult = CDRF_SKIPDEFAULT;
             break;
           case MFLC_COPYTODATABASE:
             if (iItem == m_selectedfilter) {
@@ -1115,6 +1116,14 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
     case MFLC_FILTER_SOURCE:
       iResult = GetFilterPoolName(pLHS->flt_key.fpool).Compare(GetFilterPoolName(pRHS->flt_key.fpool));
       break;
+    case MFLC_INUSE:
+      i1 = (int)(pLHS->flt_flags & MFLT_INUSE);
+      i2 = (int)(pRHS->flt_flags & MFLT_INUSE);
+      if (i1 == i2)
+        iResult = 0;
+      else
+        iResult = (i1 < i2) ? -1 : 1;
+      break;
     case MFLC_COPYTODATABASE:
       // Treat:
       // Database filters (always unticked) as value 0;
@@ -1133,14 +1142,6 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
     case MFLC_EXPORT:
       i1 = (int)(pLHS->flt_flags & MFLT_REQUEST_EXPORT);
       i2 = (int)(pRHS->flt_flags & MFLT_REQUEST_EXPORT);
-      if (i1 == i2)
-        iResult = 0;
-      else
-        iResult = (i1 < i2) ? -1 : 1;
-      break;
-    case MFLC_INUSE:
-      i1 = (int)(pLHS->flt_flags & MFLT_INUSE);
-      i2 = (int)(pRHS->flt_flags & MFLT_INUSE);
       if (i1 == i2)
         iResult = 0;
       else

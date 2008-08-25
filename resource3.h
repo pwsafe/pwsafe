@@ -474,4 +474,4 @@
 #define IDS_FILTERSOURCE                5641
 #define IDS_FILTERCOPY2DB               5642
 #define IDS_FILTEREXPORT                5643
-#define IDS_FILTERINUSESTATUS           5644
+#define IDS_FILTERAPPLY                 5644

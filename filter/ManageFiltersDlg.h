@@ -19,9 +19,9 @@
 // Subitem indices for list of filters
 #define MFLC_FILTER_NAME    0
 #define MFLC_FILTER_SOURCE  1
-#define MFLC_COPYTODATABASE 2
-#define MFLC_EXPORT         3
-#define MFLC_INUSE          4
+#define MFLC_INUSE          2
+#define MFLC_COPYTODATABASE 3
+#define MFLC_EXPORT         4
 #define MFLC_NUM_COLUMNS    5
 
 // Subitem indices for filter properties
@@ -70,8 +70,6 @@ protected:
   BOOL OnInitDialog();
 
   //{{AFX_MSG(CManageFiltersDlg)
-  afx_msg void OnFilterSet();
-  afx_msg void OnFilterClear();
   afx_msg void OnFilterNew();
   afx_msg void OnFilterEdit();
   afx_msg void OnFilterCopy();
@@ -94,6 +92,8 @@ private:
   std::vector<st_Filterkey> m_vcs_filters;
 
   UINT GetFieldTypeName(const FieldType &ft);
+  void SetFilter();
+  void ClearFilter();
   void DisplayFilterProperties(st_filters *pfilter);
   void UpdateFilterList();
   void ResetColumns();
