@@ -575,16 +575,14 @@
 #define IDC_STATIC_DRAGNOTES            1338
 #define IDC_STATIC_DRAGURL              1339
 #define IDC_EDITREPORT                  1340
-#define IDC_FILTERSET                   1341
-#define IDC_FILTERCLEAR                 1342
-#define IDC_FILTERNEW                   1343
-#define IDC_FILTEREDIT                  1344
-#define IDC_FILTERCOPY                  1345
-#define IDC_FILTERDELETE                1346
-#define IDC_FILTERIMPORT                1347
-#define IDC_FILTEREXPORT                1348
-#define IDC_FILTERPROPERTIES            1349
-#define IDC_STATIC_FILTERNAME           1350
+#define IDC_FILTERNEW                   1341
+#define IDC_FILTEREDIT                  1342
+#define IDC_FILTERCOPY                  1343
+#define IDC_FILTERDELETE                1344
+#define IDC_FILTERIMPORT                1345
+#define IDC_FILTEREXPORT                1346
+#define IDC_FILTERPROPERTIES            1347
+#define IDC_STATIC_FILTERNAME           1348
 
 // Next default values for new objects
 // 
