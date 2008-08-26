@@ -10,7 +10,7 @@
 
 // ManageFiltersDlg dialog
 
-#include "../PWResizeDialog.h"
+#include "../PWDialog.h"
 #include "PWHdrCtrlNoChng.h"
 #include "../corelib/PWSFilters.h"
 
