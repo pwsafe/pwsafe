@@ -266,7 +266,6 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
           pflt_idata->flt_flags |= MFLT_INUSE;
           SetFilter();
         }
-        m_FilterLC.SetItemData(pNMLV->iItem, (DWORD)pflt_idata);
       }
       break;
     case MFLC_COPYTODATABASE:
@@ -278,7 +277,6 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
           pflt_idata->flt_flags |= MFLT_REQUEST_COPY_TO_DB;
           m_num_to_copy++;
         }
-        m_FilterLC.SetItemData(pNMLV->iItem, (DWORD)pflt_idata);
         GetDlgItem(IDC_FILTERCOPY)->EnableWindow(m_num_to_copy > 0);
       }
       break;
@@ -291,7 +289,6 @@ void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
           pflt_idata->flt_flags |= MFLT_REQUEST_EXPORT;
           m_num_to_export++;
         }
-        m_FilterLC.SetItemData(pNMLV->iItem, (DWORD)pflt_idata);
         GetDlgItem(IDC_FILTEREXPORT)->EnableWindow(m_num_to_export > 0);
       }
       break;
@@ -475,7 +472,6 @@ void CManageFiltersDlg::OnFilterCopy()
 
     // Turn off copy flag
     pflt_idata->flt_flags &= ~MFLT_REQUEST_COPY_TO_DB;
-    m_FilterLC.SetItemData(i, (DWORD)pflt_idata);
     m_num_to_copy--;
     bCopied = true;
   }
@@ -584,13 +580,11 @@ void CManageFiltersDlg::SetFilter()
   if (m_selectedfilter != m_activefilter && m_activefilter != -1) {
     pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
     pflt_idata->flt_flags &= ~MFLT_INUSE;
-    m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
   }
   m_activefilter = m_selectedfilter;
   // Now add flag to new selected and active filter
   pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
   pflt_idata->flt_flags |= MFLT_INUSE;
-  m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
   m_bFilterActive = true;
 
   m_FilterLC.Invalidate();  // Ensure selected statement updated
@@ -604,7 +598,6 @@ void CManageFiltersDlg::ClearFilter()
   m_activefiltername = _T("");
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
   pflt_idata->flt_flags &= ~MFLT_INUSE;
-  m_FilterLC.SetItemData(m_activefilter, (DWORD)pflt_idata);
   m_activefilter = -1;
   m_bFilterActive = false;
 
@@ -620,6 +613,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
   int i(0), iItem(0), n(0);
 
   m_FilterProperties.DeleteAllItems();
+  m_FilterProperties.SetRedraw(FALSE);
 
   // Do the main filters
   for (Flt_iter = pfilters->vMfldata.begin();
@@ -735,6 +729,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     m_FilterProperties.SetColumnWidth(i, max(iw1, iw2));
   }
   m_FilterProperties.SetColumnWidth(MFPRP_CRITERIA_TEXT, LVSCW_AUTOSIZE_USEHEADER);
+  m_FilterProperties.SetRedraw(TRUE);
   m_FPROPHeader.SetStopChangeFlag(bSave);
 
   GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(pfilters->fname);
@@ -744,6 +739,7 @@ void CManageFiltersDlg::UpdateFilterList()
 {
   int nCount, iItem, i;
 
+  m_FilterLC.SetRedraw(FALSE);
   nCount = m_FilterLC.GetItemCount();
   for (i = 0; i < nCount; i++) {
     st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(0);
@@ -765,6 +761,12 @@ void CManageFiltersDlg::UpdateFilterList()
     CString cs_source = GetFilterPoolName(mf_iter->first.fpool);
 
     m_FilterLC.SetItemText(iItem, MFLC_FILTER_SOURCE, cs_source);
+    // Add dummy fields where checkbox images will be. OnCustomDraw will make the colour
+    // of this text the same as the background i.e. invisible.
+    m_FilterLC.SetItemText(iItem, MFLC_INUSE, _T("."));
+    m_FilterLC.SetItemText(iItem, MFLC_COPYTODATABASE, _T("."));
+    m_FilterLC.SetItemText(iItem, MFLC_EXPORT, _T("."));
+
     if (m_bFilterActive &&
         mf_iter->first.fpool == m_activefilterpool &&
         mf_iter->first.cs_filtername == m_activefiltername) {
@@ -783,6 +785,7 @@ void CManageFiltersDlg::UpdateFilterList()
     i++;
   }
 
+  // ResetColumns will set m_FilterLC.SetRedraw(TRUE)
   ResetColumns();
 
   if (m_selectedfilter != -1)
@@ -803,6 +806,7 @@ void CManageFiltersDlg::ResetColumns()
   m_FLCHeader.SetStopChangeFlag(false);
 
   int iw1, iw2;
+  m_FilterLC.SetRedraw(FALSE);
   m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, LVSCW_AUTOSIZE);
   iw1 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME);
   m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, LVSCW_AUTOSIZE_USEHEADER);
@@ -818,6 +822,7 @@ void CManageFiltersDlg::ResetColumns()
   m_FilterLC.SetColumnWidth(MFLC_INUSE, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_COPYTODATABASE, LVSCW_AUTOSIZE_USEHEADER);
   m_FilterLC.SetColumnWidth(MFLC_EXPORT, LVSCW_AUTOSIZE_USEHEADER);
+  m_FilterLC.SetRedraw(TRUE);
 
   m_FilterLC.Invalidate();
   m_FLCHeader.SetStopChangeFlag(bSave);
@@ -887,6 +892,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
       break;
     case CDDS_ITEMPREPAINT:
       pLVCD->clrText = ::GetSysColor(COLOR_WINDOWTEXT);
+      // Show selected item on light green background
       if (iItem == m_selectedfilter) {
         pLVCD->clrTextBk = crLightGreen;
       } else {
@@ -915,6 +921,9 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
           case MFLC_FILTER_SOURCE:
             break;
           case MFLC_INUSE:
+            // Make text 'invisible'
+            pLVCD->clrText = pLVCD->clrTextBk;
+            // Show selected item on light green background
             if (iItem == m_selectedfilter) {
               pDC->FillSolidRect(&first_rect, crLightGreen);
             }
@@ -927,10 +936,14 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
             *pResult = CDRF_SKIPDEFAULT;
             break;
           case MFLC_COPYTODATABASE:
+            // Make text 'invisible'
+            pLVCD->clrText = pLVCD->clrTextBk;
+            // Show selected item on light green background
             if (iItem == m_selectedfilter) {
               pDC->FillSolidRect(&first_rect, crLightGreen);
             }
             *pResult = CDRF_SKIPDEFAULT;
+            // If already a database filter - don't need any image
             if (pflt_idata->flt_key.fpool == FPOOL_DATABASE)
               break;
             // Draw checked/unchecked image
@@ -941,6 +954,9 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
             DrawImage(pDC, inner_rect, bCopy ? 0 : 2);
             break;
           case MFLC_EXPORT:
+            // Make text 'invisible'
+            pLVCD->clrText = pLVCD->clrTextBk;
+            // Show selected item on light green background
             if (iItem == m_selectedfilter) {
               pDC->FillSolidRect(&first_rect, crLightGreen);
             }
