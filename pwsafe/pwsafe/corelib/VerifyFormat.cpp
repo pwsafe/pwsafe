@@ -71,6 +71,13 @@ bool VerifyImportDateTimeString(const CString &time_str, time_t &t)
       (ss < 0 || ss > 59))
     return false;
 
+  // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
+  // issues with CTime constructor after apply daylight savings offset.
+  if (yyyy == 1970 && mon == 1 && dd == 1) {
+    t = (time_t)0;
+    return true;
+  }
+
   const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
 
   t = (time_t)ct.GetTime();
@@ -157,6 +164,13 @@ bool VerifyASCDateTimeString(const CString &time_str, time_t &t)
       (min < 0 || min > 59) ||
       (ss < 0 || ss > 59))
     return false;
+
+  // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
+  // issues with CTime constructor after apply daylight savings offset.
+  if (yyyy == 1970 && mon == 1 && dd == 1) {
+    t = (time_t)0;
+    return true;
+  }
 
   const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
 
@@ -248,6 +262,13 @@ bool VerifyXMLDateTimeString(const CString &time_str, time_t &t)
       (ss < 0 || ss > 59))
     return false;
 
+  // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
+  // issues with CTime constructor after apply daylight savings offset.
+  if (yyyy == 1970 && mon == 1 && dd == 1) {
+    t = (time_t)0;
+    return true;
+  }
+
   const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
 
   t = (time_t)ct.GetTime();
@@ -318,6 +339,13 @@ bool VerifyXMLDateString(const CString &time_str, time_t &t)
     // Either (Not Feb) or (Is Feb but not a leap-year)
     if (dd > month_lengths[mon - 1])
       return false;
+  }
+
+  // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
+  // issues with CTime constructor after apply daylight savings offset.
+  if (yyyy == 1970 && mon == 1 && dd == 1) {
+    t = (time_t)0;
+    return true;
   }
 
   const CTime ct(yyyy, mon, dd, 0, 0, 0, -1);
