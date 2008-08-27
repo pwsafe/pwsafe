@@ -157,6 +157,25 @@ BOOL CManageFiltersDlg::OnInitDialog()
   // Populate CListCtrl
   UpdateFilterList();
 
+  // if no filters - add a dummy before adjusting item height
+  bool bAddDummy(false);
+  if (m_FilterLC.GetItemCount() == 0) {
+    bAddDummy = true;
+    int iItem = m_FilterLC.InsertItem(0 /* MFLC_FILTER_NAME */,_T(""));
+    CString cs_source = GetFilterPoolName(FPOOL_SESSION);
+
+    m_FilterLC.SetItemText(iItem, MFLC_FILTER_SOURCE, cs_source);
+    m_FilterLC.SetItemText(iItem, MFLC_INUSE, _T("."));
+    m_FilterLC.SetItemText(iItem, MFLC_COPYTODATABASE, _T("."));
+    m_FilterLC.SetItemText(iItem, MFLC_EXPORT, _T("."));
+
+    st_FilterItemData *pflt_idata = new st_FilterItemData;
+    pflt_idata->flt_key.cs_filtername = _T(".");
+    pflt_idata->flt_key.fpool = FPOOL_SESSION;
+    pflt_idata->flt_flags = MFLT_REQUEST_COPY_TO_DB | MFLT_REQUEST_EXPORT | MFLT_INUSE;
+    m_FilterLC.SetItemData(iItem, (DWORD)pflt_idata);
+  }
+
   // Set row height to take image by adding a dummy ImageList
   CRect rect;
   m_FilterLC.GetItemRect(0, &rect, LVIR_BOUNDS);
@@ -167,6 +186,13 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_pImageList = new CImageList;
   m_pImageList->Create(1, irowheight, ILC_COLOR4, 1, 1);
   m_FilterLC.SetImageList(m_pImageList, LVSIL_SMALL);
+
+  // If we added a dummy row - delete it
+  if (bAddDummy) {
+    st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(0);
+    delete pflt_idata;
+    m_FilterLC.DeleteItem(0);
+  }
 
   dwExStyle = m_FilterProperties.GetExtendedStyle();
   dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES;
