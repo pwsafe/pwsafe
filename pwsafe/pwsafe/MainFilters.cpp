@@ -642,17 +642,20 @@ void DboxMain::OnManageFilters()
 
   m_core.m_MapFilters.clear();
 
-  mf_lower_iter = m_MapFilters.lower_bound(fkl);
-  // Check that there are some first!
-  if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
-    // Now find upper bound of database filters
-    fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
-    fku.cs_filtername = _T("");
-    mf_upper_iter = m_MapFilters.upper_bound(fku);
+  if (m_MapFilters.size() != 0) {
+    mf_lower_iter = m_MapFilters.lower_bound(fkl);
 
-    // Copy database filters (if any) to the core
-    CopyDBFilters copy_db_filters(m_core.m_MapFilters);
-    for_each(mf_lower_iter, mf_upper_iter, copy_db_filters);
+    // Check that there are some first!
+    if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
+      // Now find upper bound of database filters
+      fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
+      fku.cs_filtername = _T("");
+      mf_upper_iter = m_MapFilters.upper_bound(fku);
+
+      // Copy database filters (if any) to the core
+      CopyDBFilters copy_db_filters(m_core.m_MapFilters);
+      for_each(mf_lower_iter, mf_upper_iter, copy_db_filters);
+    }
   }
 }
 
