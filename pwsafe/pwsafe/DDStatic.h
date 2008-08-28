@@ -51,7 +51,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  void SendToClipBoard();
+  void SendToClipboard();
   void SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour);
 
   CStaticDropTarget *m_pDropTarget;

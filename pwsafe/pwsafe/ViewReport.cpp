@@ -49,7 +49,7 @@ BEGIN_MESSAGE_MAP(CViewReport, CPWResizeDialog)
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(IDOK, Save)
   ON_BN_CLICKED(IDCANCEL, Finish)
-  ON_BN_CLICKED(IDC_REPORT2CLIPBOARD, SendToClipBoard)
+  ON_BN_CLICKED(IDC_REPORT2CLIPBOARD, SendToClipboard)
 END_MESSAGE_MAP()
 
 // CViewReport message handlers
@@ -159,7 +159,7 @@ void CViewReport::Save()
   GetDlgItem(IDOK)->EnableWindow(FALSE);
 }
 
-void CViewReport::SendToClipBoard()
+void CViewReport::SendToClipboard()
 {
   CMyString cs_clipdata((LPTSTR)m_pData);
 

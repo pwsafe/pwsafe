@@ -68,7 +68,7 @@ public:
     BackupBeforeEverySave, PreExpiryWarn,
     ExplorerTypeTree, ListViewGridLines, MinimizeOnAutotype,
     ShowUsernameInTree, PWMakePronounceable,
-    ClearClipoardOnMinimize, ClearClipoardOnExit,
+    ClearClipboardOnMinimize, ClearClipboardOnExit,
     ShowToolbar, ShowNotesAsTooltipsInViews, DefaultOpenRO,
     MultipleInstances, ShowDragbar,
     NumBoolPrefs};

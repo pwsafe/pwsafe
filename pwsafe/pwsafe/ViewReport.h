@@ -43,7 +43,7 @@ protected:
 
   afx_msg void Save();
   afx_msg void Finish();
-  afx_msg void SendToClipBoard();
+  afx_msg void SendToClipboard();
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
   DECLARE_MESSAGE_MAP()
