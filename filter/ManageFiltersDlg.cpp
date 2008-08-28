@@ -383,6 +383,9 @@ do_edit:
     if (bJustDoIt)
       m_pDbx->ApplyFilter(true);
 
+    m_selectedfiltername = flt_key.cs_filtername;
+    m_selectedfilterpool = flt_key.fpool;
+
     UpdateFilterList();
     DisplayFilterProperties(&filters);
   }
@@ -834,7 +837,8 @@ void CManageFiltersDlg::ResetColumns()
   int iw1, iw2;
   m_FilterLC.SetRedraw(FALSE);
   m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, LVSCW_AUTOSIZE);
-  iw1 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME);
+  // Add image width - problem under Vista not showing all the text (comdlg32.dll)
+  iw1 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME) + 6;
   m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, LVSCW_AUTOSIZE_USEHEADER);
   iw2 = m_FilterLC.GetColumnWidth(MFLC_FILTER_NAME);
   m_FilterLC.SetColumnWidth(MFLC_FILTER_NAME, max(iw1, iw2));
