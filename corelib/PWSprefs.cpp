@@ -78,8 +78,8 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("MinimizeOnAutotype"), true, ptApplication},          // application
   {_T("ShowUsernameInTree"), true, ptDatabase},             // database
   {_T("PWMakePronounceable"), false, ptDatabase},           // database - 3.12 password policy
-  {_T("ClearClipoardOnMinimize"), true, ptApplication},     // application
-  {_T("ClearClipoardOneExit"), true, ptApplication},        // application
+  {_T("ClearClipboardOnMinimize"), true, ptApplication},    // application
+  {_T("ClearClipboardOneExit"), true, ptApplication},       // application
   {_T("ShowToolbar"), true, ptApplication},                 // application
   {_T("ShowNotesAsToolTipsInViews"), false, ptApplication}, // application
   {_T("DefaultOpenRO"), false, ptApplication},              // application
@@ -1085,8 +1085,8 @@ void PWSprefs::ImportOldPrefs()
           SetPref(BoolPrefs(i), (vData != 0));
         else { // Obsolete entries - but currently only need to deal with one!
           if (i == DontAskMinimizeClearYesNo) {
-            SetPref(BoolPrefs(ClearClipoardOnMinimize), (vData != 0));
-            SetPref(BoolPrefs(ClearClipoardOnExit), (vData != 0));
+            SetPref(BoolPrefs(ClearClipboardOnMinimize), (vData != 0));
+            SetPref(BoolPrefs(ClearClipboardOnExit), (vData != 0));
           }
         }
       }

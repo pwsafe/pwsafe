@@ -271,7 +271,7 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
     GetClientRect(&rClient);
 
     // Copy data to Clipboard anyway
-    SendToClipBoard();
+    SendToClipboard();
 
     // Start dragging
     m_bDropped = false;
@@ -348,7 +348,7 @@ void CDDStatic::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
   }
 }
 
-void CDDStatic::SendToClipBoard()
+void CDDStatic::SendToClipboard()
 {
   if (m_pDbx == NULL || m_pci == NULL)
     return;

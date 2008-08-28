@@ -34,6 +34,9 @@ Changes to Existing Features in 3.14
 increasing the visible bitmap image.  Also, now transparent.
 [] Drop down list of databases at start-up now retains order of usage
 rather than sorted alphabetically.
+[] Due to the correction of a spelling error in the config file, "Clear
+Clipboard On Minimize" and "Clear Clipboard On Exit" options may not be
+correctly set the first time V3.14 is used. Please verify your settings.
 
 New Features for 3.14
 =====================

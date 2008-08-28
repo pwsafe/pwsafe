@@ -2595,10 +2595,10 @@ void DboxMain::OnOK()
 
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
-  // b. the user has set the "ClearClipoardOnExit" pref
+  // b. the user has set the "ClearClipboardOnExit" pref
   // c. the system is shutting down, restarting or the user is logging off
   if ((!IsWindowVisible() && prefs->GetPref(PWSprefs::UseSystemTray)) ||
-      prefs->GetPref(PWSprefs::ClearClipoardOnExit) ||
+      prefs->GetPref(PWSprefs::ClearClipboardOnExit) ||
       (m_iSessionEndingStatus == IDYES)) {
     ClearClipboardData();
   }
