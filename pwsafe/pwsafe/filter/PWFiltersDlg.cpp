@@ -172,8 +172,7 @@ struct FilterValidator
   bool operator()(const st_FilterRow &st_fldata) {
     // return true if FAILS validation, so that find_if will
     // "find" it.
-    if (st_fldata.bFilterActive &&
-        (st_fldata.mtype != PWSMatch::MT_PWHIST &&
+    if ((st_fldata.mtype != PWSMatch::MT_PWHIST &&
          st_fldata.mtype != PWSMatch::MT_POLICY) &&
         (st_fldata.mtype == PWSMatch::MT_INVALID ||
          st_fldata.rule == PWSMatch::MR_INVALID)) {
