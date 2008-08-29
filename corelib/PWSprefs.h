@@ -89,7 +89,8 @@ public:
   enum {minDCA = 0, DoubleClickCopyPassword = 0, DoubleClickViewEdit = 1,
     DoubleClickAutoType = 2, DoubleClickBrowse = 3, 
     DoubleClickCopyNotes = 4, DoubleClickCopyUsername = 5,
-    maxDCA = 5};
+	DoubleClickCopyPasswordMinimize = 6,
+    maxDCA = 6};
 
   // for TreeDisplayStatusAtOpen
   enum {minTDS = 0, AllCollapsed = 0, AllExpanded = 1, AsPerLastSave = 2,

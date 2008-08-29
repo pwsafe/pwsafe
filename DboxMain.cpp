@@ -916,6 +916,9 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
     case PWSprefs::DoubleClickCopyUsername:
       OnCopyUsername();
       break;
+	case PWSprefs::DoubleClickCopyPasswordMinimize:
+	  OnCopyPasswordMinimize();
+	  break;
     case PWSprefs::DoubleClickViewEdit:
       PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
       break;
@@ -2198,6 +2201,7 @@ void DboxMain::SetDCAText()
     case PWSprefs::DoubleClickCopyPassword: i_dca_text = IDS_STATCOPYPASSWORD; break;
     case PWSprefs::DoubleClickCopyUsername: i_dca_text = IDS_STATCOPYUSERNAME; break;
     case PWSprefs::DoubleClickViewEdit: i_dca_text = IDS_STATVIEWEDIT; break;
+	case PWSprefs::DoubleClickCopyPasswordMinimize: i_dca_text = IDS_STATCOPYPASSWORDMIN; break;
     default: i_dca_text = IDS_STATCOMPANY;
   }
   CString s;
