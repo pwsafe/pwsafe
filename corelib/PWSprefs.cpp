@@ -79,7 +79,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ShowUsernameInTree"), true, ptDatabase},             // database
   {_T("PWMakePronounceable"), false, ptDatabase},           // database - 3.12 password policy
   {_T("ClearClipboardOnMinimize"), true, ptApplication},    // application
-  {_T("ClearClipboardOneExit"), true, ptApplication},       // application
+  {_T("ClearClipboardOnExit"), true, ptApplication},        // application
   {_T("ShowToolbar"), true, ptApplication},                 // application
   {_T("ShowNotesAsToolTipsInViews"), false, ptApplication}, // application
   {_T("DefaultOpenRO"), false, ptApplication},              // application
@@ -824,6 +824,23 @@ bool PWSprefs::LoadProfileFromFile()
     m_boolValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
                                         m_bool_prefs[i].name,
                                         m_bool_prefs[i].defVal) != 0;
+
+  // silently convert pre-3.14 ClearClipoardOn{Minimize,Exit} typos
+  // to correct spelling while maintain preference's value.
+  bool ccom = GetPref(ClearClipboardOnMinimize);
+  bool ccoe = GetPref(ClearClipboardOnExit);
+
+  bool ccom2 = m_XML_Config->Get(m_csHKCU_PREF,
+                                 _T("ClearClipoardOnMinimize"), // deliberate!
+                                     ccom) != 0;
+  bool ccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
+                                 _T("ClearClipoardOnExit"), // deliberate!
+                                 ccoe) != 0;
+  // If old (mis-spelt) name was there, use its value. Since the
+  // default above was the new (correct) spelling, it has priority
+  m_boolValues[ClearClipboardOnMinimize] = ccom2;
+  m_boolValues[ClearClipboardOnExit] = ccoe2;
+  // end of silent conversion
 
   // Defensive programming, if outside the permitted range, then set to default
   for (i = 0; i < NumIntPrefs; i++) {
