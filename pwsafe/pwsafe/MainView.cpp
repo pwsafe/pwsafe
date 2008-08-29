@@ -288,6 +288,9 @@ void DboxMain::setupBars()
       case PWSprefs::DoubleClickViewEdit:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATVIEWEDIT;
         break;
+	  case PWSprefs::DoubleClickCopyPasswordMinimize:
+		statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORDMIN;
+		break;
       default:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOMPANY;
     }

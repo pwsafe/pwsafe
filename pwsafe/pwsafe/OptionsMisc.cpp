@@ -70,12 +70,12 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(COptionsMisc, CPropertyPage)
-  //{{AFX_MSG_MAP(COptionsMisc)
-  ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
-  ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
-  ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
-  ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged) 
-  //}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(COptionsMisc)
+ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
+ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
+ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
+ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged) 
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 BOOL COptionsMisc::OnInitDialog() 
@@ -117,6 +117,11 @@ BOOL COptionsMisc::OnInitDialog()
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
     m_DCA_to_Index[PWSprefs::DoubleClickViewEdit] = nIndex;
+
+    cs_text.LoadString(IDS_DCACOPYPASSWORDMIN);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPasswordMinimize);
+    m_DCA_to_Index[PWSprefs::DoubleClickCopyPasswordMinimize] = nIndex;
   }
 
   if (m_doubleclickaction < PWSprefs::minDCA ||
@@ -204,6 +209,16 @@ void COptionsMisc::OnOK()
   m_hotkey_value = v;
 #endif
   m_csBrowser = m_otherbrowserlocation;
+  // feature conflict resolution:
+  // If user selected the CopyPasswordAndMinimize dbl-click
+  // action, AND ClearClipboardOnMinimize is true,
+  // then alert user to the conflict, and get her
+  // preferred solution
+  if (m_doubleclickaction == 
+      m_DCA_to_Index[PWSprefs::DoubleClickCopyPasswordMinimize] &&
+      PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
+    MessageBox(_T("Crap"));
+  }
   CPropertyPage::OnOK();
 }
 

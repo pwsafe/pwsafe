@@ -989,6 +989,16 @@ void DboxMain::OnCopyPassword()
   UpdateAccessTime(ci_original);
 }
 
+void DboxMain::OnCopyPasswordMinimize()
+{
+  // Do OnCopyPassword, and minimize afterwards.
+  if (SelItemOk()) {
+    OnCopyPassword();
+    ShowWindow(SW_MINIMIZE);
+  }
+}
+
+
 void DboxMain::OnCopyUsername()
 {
   if (SelItemOk() != TRUE)
