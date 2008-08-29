@@ -834,7 +834,7 @@ bool PWSprefs::LoadProfileFromFile()
                                  _T("ClearClipoardOnMinimize"), // deliberate!
                                      ccom) != 0;
   bool ccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
-                                 _T("ClearClipoardOnExit"), // deliberate!
+                                 _T("ClearClipoardOneExit"), // deliberate!
                                  ccoe) != 0;
   // If old (mis-spelt) name was there, use its value. Since the
   // default above was the new (correct) spelling, it has priority
