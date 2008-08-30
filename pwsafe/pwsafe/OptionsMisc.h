@@ -44,7 +44,7 @@ public:
   //}}AFX_DATA
   DWORD m_hotkey_value;
   DWORD_PTR m_doubleclickaction;
-  int m_DCA_to_Index[PWSprefs::maxDCA + 1];
+  DWORD_PTR m_DCA_to_Index[PWSprefs::maxDCA + 1];
   CString m_csBrowser;
   CString m_csBrowserCmdLineParms;
   CString m_csAutotype;

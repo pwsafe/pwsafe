@@ -1,105 +1,178 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+
   <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
-
-
-
-
-		
-		
-		
-
-		
-		
-  
-
-  
-  
-
-  
-  
-
-  
   <title>Filters</title>
+
+
 <!-- pwsafe version: 2.14--><!-- Modified: 18/11/2005 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
-		</script>
-  
-  
-  
+  </script>
   <link rel="stylesheet" type="text/css" href="style.css">
+
 </head>
 
 
 <body>
+
 <h1><object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>Filters</h1>
 
-
-
-
-		
 <div class="instr"><br>
-A "filter" is a criteria (or set of criteria) that an entry either matches or doesn't match. <span style="font-weight: bold;">PasswordSafe </span>allows
-you to define filters, and display only those entries that matches a
+
+A "filter" is a criteria (or set of criteria) that an entry either
+matches or doesn't match. <span style="font-weight: bold;">PasswordSafe
+</span>allows
+you to define filters, and display only those entries that match a
 given filter. You can define a filter for a one-time query, or you can
-define several filters, name them and store them persistently, fo
+define several filters, naming them and store them persistently, for
 repeated use. Filters may be either stored along with the database, or
 externally, for sharing the same filter across several databases.<br>
+
 <h2>Defining a Filter</h2>
-To define a new filter, select the View-&gt;Filter-&gt;New/Edit Filter menu entry. The following dialog box will be displayed:<br>
+
+To define a new filter, select the View-&gt;Filter-&gt;New/Edit
+Filter menu entry. The following dialog box will be displayed:<br>
+
 <img style="width: 485px; height: 340px;" alt="Display Filter dialog box" src="images/filter.jpg"><br>
+
 <br>
-As you can see, each Filter consists of one or more <span style="font-weight: bold;">rows, </span>where each row defines a <span style="font-weight: bold;">criteria </span>on a given <span style="font-weight: bold;">field</span>.
+
+As you can see, each Filter consists of one or more <span style="font-weight: bold;">rows, </span>where each
+row defines a <span style="font-weight: bold;">criteria </span>on
+a given <span style="font-weight: bold;">field</span>.
 The conditions defined in each row can be either "and" or "or" the
 condition defined in the previous row. This allows you to define the
 following kinds of filters:<br>
-1.&nbsp;All entries with a username containing "joe" or "Joe" or "JOE":<br>
+
+1.&nbsp;All entries with a username containing "joe" or "Joe" or
+"JOE":<br>
+
 <img style="width: 471px; height: 67px;" alt="example1" src="images/filter-ex1.jpg"><br>
-2. All entries with a username "Joe" (exactly) created after May 1st 2008<br>
+
+2. All entries with a username "Joe" (exactly) created after May 1st
+2008<br>
+
 <img style="width: 471px; height: 69px;" alt="example2" src="images/filter-ex2.jpg"><br>
+
 3. All entries with a username containing "joe" or "mary"<br>
+
 <img style="width: 474px; height: 70px;" alt="example3" src="images/filter-ex3.jpg"><br>
+
 <br>
+
 As you can see, the filters can be arbitrarily complex.<br>
+
 <br>
+
 The columns in the Filter table are are follows:<br>
+
 <ul>
-  <li>'#' - This is the row number. It's displayed for convenience, and cannot be modified.</li>
-  <li>'?' - The checkbox in this column determines if the row is <span style="font-weight: bold;">active </span>or not. Only active rows are used when applying the filter. Clicking on the checkbox enables/disables the row.</li>
+
+  <li>'#' - This is the row number. It's displayed for
+convenience, and cannot be modified.</li>
+
+  <li>'?' - The checkbox in this column determines if the row is <span style="font-weight: bold;">active </span>or not. Only
+active rows are used when applying the filter. Clicking on the checkbox
+enables/disables the row.</li>
+
   <li>'+' - Click on this to insert a new row below a given row.</li>
-  <li>'-' - Click on this to delete the current row. <span style="font-weight: bold;">Note: </span>Since deleting a row is permanent, you might wish to <span style="font-weight: bold;">disable </span>&nbsp;it instead.</li>
-  <li>'And/Or' - This allows you to determine the relation of the rule you're adding to the previous rule.</li>
-  <li>'Field' - Select the entry field you're interested in, e.g., username, title, group, notes, etc.</li>
+
+  <li>'-' - Click on this to delete the current row. <span style="font-weight: bold;">Note: </span>Since
+deleting a row is permanent, you might wish to <span style="font-weight: bold;">disable </span>&nbsp;it
+instead.</li>
+
+  <li>'And/Or' - This allows you to determine the relation of the
+rule you're adding to the previous rule.</li>
+
+  <li>'Field' - Select the entry field you're interested in,
+e.g., username, title, group, notes, etc.</li>
+
   <li>'Criteria' - Define the value you're interested in for the
 selected field. Once you've selected a field, clicking on this will
 bring up a dialog box allowing you to specify the criteria, which is
 the displayed in the table.</li>
+
 </ul>
+
 </div>
+
 <h2>Applying a Filter</h2>
+
 Once you've defined a filter, clicking on 'Apply' will apply the filter
 on the entries in the database, while leaving the Set Filter dialog box
 open. This is useful for fixing and refining the filter based on the
 results. Clicking on 'OK' will also apply the filter, but will close
 the Set Filter dialog box.
-
+<br>
 
 <br>
 
+<h2><a name="ManagingFilters"></a>ManagingFilters</h2>
 
+Set/Edit Filter is a good way to work with filters for a one-time task.
+If, however, you find that you have several filters that you wish to
+use repeatedly, then you can store them and manage them effectively via
+the View-&gt;Filter-&gt; Manage... dialog box<br>
+
+<img style="width: 554px; height: 379px;" alt="Manage Filters" src="images/filter_mng.jpg"><br>
 
 <br>
 
+The Manage Filters dialog box has two tables. The upper table lists the
+filters, and the lower table displays the contents of the currently
+selected filter.<br>
 
+<ul>
 
+  <li>To add a new filter, click on New. This is equivalent to
+selecting the View-&gt;Filter-&gt;New/Edit Filter menu entry.</li>
 
+  <li>To edit an existing filter, select is and then click on
+Edit.</li>
 
-		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-			<param name="Keyword" value="View Menu">
-			<param name="Keyword" value="Nested Tree">
-			<param name="Keyword" value="Flattened List">
-		</object>
-	
+  <li>To apply an existing filter, click on the Apply checkbox in
+the desired filter's row. Note that only one filter can be applied at a
+given time.</li>
+
+</ul>
+
+<br>
+
+<span style="font-weight: bold;"></span>
+<h4>Storing Filters</h4>
+
+Filters can be stored either as part of the current database, or
+externally, as XML files. Storing filters externally is a good way to
+share filters across databases, whereas storing them as part of the
+database ensures that potentially sensitive information in the filters'
+definitions is protected.<br>
+
+<ul>
+
+  <li>To store&nbsp;filters in an external file: Set the
+Export checkbox of the filters you wish to store externally, then click
+on the Export button.</li>
+
+  <li>To store filters in the current database: Set the Copy to
+DB checkbox, and then click on the Copy button.</li>
+
+  <li>To load an externally stored filter: Click on the Import
+button.</li>
+
+</ul>
+
+<span style="font-weight: bold;">Note:<br>
+
+<span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></span>Upon
+Startup, PasswordSafe searches for a file named autoload_filters.xml in
+the same directory as the pwsafe.cfg file (by default the directory
+where PasswordSafe is installed). If such a file exists, then it is
+automatically imported and the filters it contains are ready for use.
+This is useful if you've a set of filters that you wish to share across
+several databases, without having to explicitly import them each time.<br>
+
+<span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></span>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="View Menu"> <param name="Keyword" value="Nested Tree"> <param name="Keyword" value="Flattened List"> </object>
 </body>
 </html>

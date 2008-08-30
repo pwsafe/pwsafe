@@ -17,9 +17,9 @@ open and the user cancels an open file action.
 [1970652] No longer crashes when user exits search for non-existant
 database.
 [1966718] Text in 'Notes" now has horizontal scroll bar during Add.
-[1959193] PWS now honours the read-only command line parameter (-r)
-for first open.  Then governed by R/O open preference or user selecting
-read-only at open time.
+[1959193] PWS now honors the read-only command line parameter (-r)
+for first file open. Afterwards, the behavior is determined by the R/O
+open preference or user selecting read-only at open time.
 [1954268] Aliases and shortcuts now processed correctly during merge.
 [1933174, 2015132] Reports from Import (Text or XML), Compare, Merge
 and Find are no longer written to disk by default.
@@ -34,6 +34,8 @@ Changes to Existing Features in 3.14
 increasing the visible bitmap image.  Also, now transparent.
 [] Drop down list of databases at start-up now retains order of usage
 rather than sorted alphabetically.
+[] A new Double-click action has been added: Copy password to
+clipboard and then minimize. Thanks to Garrett for his work on this.
 
 New Features for 3.14
 =====================
