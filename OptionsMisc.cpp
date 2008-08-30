@@ -214,11 +214,37 @@ void COptionsMisc::OnOK()
   // action, AND ClearClipboardOnMinimize is true,
   // then alert user to the conflict, and get her
   // preferred solution
+  // The following code isn't bulletproof: If the user sets the
+  // ClearClipboardOnMinimize checkbox and then selects
+  // DoubleClickCopyPasswordMinimize without clicking OK on the
+  // propsheet's OK in between, the preference won't have been update.
+  // Also, Setting the preference doesn't work here, as the
+  // parent will override this based on the checkbox's value.
+  // The only right way to do this is to subclass the CPropertySheet
+  // dialog, add a cross-sheet validation member function and
+  // call it from here.
+  // For now, I'm chickening out and documenting the issue in the online help
+#ifdef CHICKENED_OUT
   if (m_doubleclickaction == 
       m_DCA_to_Index[PWSprefs::DoubleClickCopyPasswordMinimize] &&
+      // Following is THE WRONG QUESTION - see long comment
+      // above for an explanation why
       PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-    MessageBox(_T("Crap"));
+    switch (MessageBox(_T("Yo man, I got troubles"),NULL,
+                       MB_YESNOCANCEL|MB_ICONQUESTION)) {
+    case IDYES:
+      // Following DOESN'T WORK - see long comment above for an explanation why
+      PWSprefs::GetInstance()->SetPref(PWSprefs::ClearClipboardOnMinimize, false);
+      break;
+    case IDNO:
+      break;
+    case IDCANCEL:
+      return;
+    default:
+      ASSERT(0); // keep compiler happy
+    }
   }
+#endif 
   CPropertyPage::OnOK();
 }
 

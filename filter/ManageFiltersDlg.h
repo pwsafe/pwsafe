@@ -81,6 +81,7 @@ protected:
   afx_msg void OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult);
   afx_msg void OnItemChanging(NMHDR* pNotifyStruct, LRESULT* pResult);
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnHelp();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

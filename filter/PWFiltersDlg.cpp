@@ -13,7 +13,7 @@
 #include <algorithm>
 
 #include "../stdafx.h"
-#include "../ThisMfcApp.h"
+#include "../ThisMfcApp.h" // for online help
 #include "PWFiltersDlg.h"
 #include "PWHdrCtrlNoChng.h"
 

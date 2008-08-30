@@ -10,6 +10,7 @@
 //
 
 #include "../stdafx.h"
+#include "../ThisMfcApp.h" // for online help
 #include "ManageFiltersDlg.h"
 #include "../DboxMain.h"
 #include "../PWResizeDialog.h"
@@ -113,6 +114,7 @@ BEGIN_MESSAGE_MAP(CManageFiltersDlg, CPWDialog)
   ON_BN_CLICKED(IDC_FILTERDELETE, OnFilterDelete)
   ON_BN_CLICKED(IDC_FILTERIMPORT, OnFilterImport)
   ON_BN_CLICKED(IDC_FILTEREXPORT, OnFilterExport)
+  ON_COMMAND(IDHELP, OnHelp)
   ON_NOTIFY(NM_CLICK, IDC_FILTERLC, OnClick)
   ON_NOTIFY(NM_CLICK, IDC_FILTERPROPERTIES, OnClick)
   ON_NOTIFY(NM_CUSTOMDRAW, IDC_FILTERLC, OnCustomDraw)
@@ -232,14 +234,6 @@ BOOL CManageFiltersDlg::OnInitDialog()
 
   m_FLCHeader.SetStopChangeFlag(true);
   m_FPROPHeader.SetStopChangeFlag(true);
-
-  CFont *pfont = GetDlgItem(IDC_STATIC_ACTIONS)->GetFont();
-  LOGFONT lf;
-  pfont->GetLogFont(&lf);
-  lf.lfWeight = FW_BOLD;
-  lf.lfUnderline = TRUE;
-  m_actionsfont.CreateFontIndirect(&lf);
-  GetDlgItem(IDC_STATIC_ACTIONS)->SetFont(&m_actionsfont);
 
   // Nothing is selected yet
   GetDlgItem(IDC_FILTEREDIT)->EnableWindow(FALSE);
@@ -1289,3 +1283,11 @@ void CManageFiltersDlg::SortFilterView()
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   phctrl->SetItem(m_iSortColumn, &hdi);
 }
+
+void CManageFiltersDlg::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/filters.html#ManagingFilters");
+  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
+
