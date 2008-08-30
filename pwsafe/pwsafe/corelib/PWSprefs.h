@@ -68,9 +68,10 @@ public:
     BackupBeforeEverySave, PreExpiryWarn,
     ExplorerTypeTree, ListViewGridLines, MinimizeOnAutotype,
     ShowUsernameInTree, PWMakePronounceable,
-    ClearClipboardOnMinimize, ClearClipboardOnExit,
+    ClearClipoardOnMinimize, ClearClipoardOneExit, // Both obsoleted in 3.14 - typos
     ShowToolbar, ShowNotesAsTooltipsInViews, DefaultOpenRO,
     MultipleInstances, ShowDragbar,
+    ClearClipboardOnMinimize, ClearClipboardOnExit,
     NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
@@ -89,7 +90,7 @@ public:
   enum {minDCA = 0, DoubleClickCopyPassword = 0, DoubleClickViewEdit = 1,
     DoubleClickAutoType = 2, DoubleClickBrowse = 3, 
     DoubleClickCopyNotes = 4, DoubleClickCopyUsername = 5,
-	DoubleClickCopyPasswordMinimize = 6,
+    DoubleClickCopyPasswordMinimize = 6,
     maxDCA = 6};
 
   // for TreeDisplayStatusAtOpen

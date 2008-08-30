@@ -19,9 +19,9 @@
 #define IDS_STATCOPYPASSWORD            5024
 #define IDS_STATCOPYUSERNAME            5025
 #define IDS_STATVIEWEDIT                5026
-#define IDS_STATCOPYPASSWORDMIN			    10001
-#define IDS_READ_ONLY                   5027
-#define IDS_BLANK                       5028
+#define IDS_STATCOPYPASSWORDMIN         5027
+#define IDS_READ_ONLY                   5028
+#define IDS_BLANK                       5029
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100
@@ -33,14 +33,16 @@
 #define IDS_MAINTAINDATETIMESTAMPS      5107
 #define IDS_OTHERBROWSERLOCATION        5108
 
+// Keep DCA together
+#define IDS_DCABROWSE                   5191
+#define IDS_DCAAUTOTYPE                 5192
+#define IDS_DCACOPYNOTES                5193
+#define IDS_DCACOPYPASSWORD             5194
+#define IDS_DCACOPYUSERNAME             5195
+#define IDS_DCAVIEWEDIT                 5196
+#define IDS_DCACOPYPASSWORDMIN          5197
+
 // Program strings
-#define IDS_DCABROWSE                   5201
-#define IDS_DCAAUTOTYPE                 5202
-#define IDS_DCACOPYNOTES                5203
-#define IDS_DCACOPYPASSWORD             5204
-#define IDS_DCACOPYUSERNAME             5205
-#define IDS_DCAVIEWEDIT                 5206
-#define IDS_DCACOPYPASSWORDMIN			    10000
 #define IDS_LITTLEENDIAN                5207
 #define IDS_BIGENDIAN                   5208
 #define IDS_ENDIANERROR                 5209

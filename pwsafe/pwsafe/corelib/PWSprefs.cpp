@@ -78,13 +78,15 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("MinimizeOnAutotype"), true, ptApplication},          // application
   {_T("ShowUsernameInTree"), true, ptDatabase},             // database
   {_T("PWMakePronounceable"), false, ptDatabase},           // database - 3.12 password policy
-  {_T("ClearClipboardOnMinimize"), true, ptApplication},    // application
-  {_T("ClearClipboardOnExit"), true, ptApplication},        // application
+  {_T("ClearClipoardOnMinimize"), true, ptObsolete},        // obsolete in 3.14 - typos
+  {_T("ClearClipoardOneExit"), true, ptObsolete},           // obsolete in 3.14 - typos
   {_T("ShowToolbar"), true, ptApplication},                 // application
   {_T("ShowNotesAsToolTipsInViews"), false, ptApplication}, // application
   {_T("DefaultOpenRO"), false, ptApplication},              // application
   {_T("MultipleInstances"), true, ptApplication},           // application
   {_T("ShowDragbar"), true, ptApplication},                 // application
+  {_T("ClearClipboardOnMinimize"), true, ptApplication},    // application
+  {_T("ClearClipboardOnExit"), true, ptApplication},        // application
 };
 
 // Default value = -1 means set at runtime
@@ -381,10 +383,13 @@ bool PWSprefs::DeletePref(const CMyString &name)
   bool bRetVal = true;
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      m_app->WriteProfileInt(PWS_REG_OPTIONS, name, NULL);
+    case CF_FILE_RW_NEW:
+      // The following is not correct.  Not important just now.
+      //if (m_bRegistryKeyExists) {
+      //  bRetVal = m_app->WriteProfileInt(PWS_REG_OPTIONS, name, NULL) == TRUE;
+      //}
       break;
     case CF_FILE_RW:
-    case CF_FILE_RW_NEW:
       bRetVal = (m_XML_Config->DeleteSetting(m_csHKCU_PREF, name) == TRUE);
       break;
     case CF_FILE_RO:
@@ -647,7 +652,7 @@ void PWSprefs::InitializePreferences()
         // awkward situation, config file exists, we're not in it,
         // can't write to it either.
         // Would a warning to user be appropriate?
-        if (CheckRegistryExists())
+        if (m_bRegistryKeyExists)
           LoadProfileFromRegistry();
         else
           ImportOldPrefs();
@@ -685,6 +690,13 @@ void PWSprefs::InitializePreferences()
   }
   if (!cs_msg.IsEmpty())
     TRACE(cs_msg);
+
+  // Check someone has introduced a conflict & silently resolve.
+  if ((m_intValues[DoubleClickAction] == DoubleClickCopyPasswordMinimize) &&
+    m_boolValues[ClearClipboardOnMinimize]) {
+      m_intValues[DoubleClickAction] = DoubleClickCopyPassword;
+      m_intChanged[DoubleClickAction] = true;
+  }
 }
 
 void PWSprefs::SetDatabasePrefsToDefaults()
@@ -710,32 +722,58 @@ void PWSprefs::LoadProfileFromDefaults()
   // set prefs to hardcoded values
   int i;
   // Default values only
-  for (i = 0; i < NumBoolPrefs; i++)
+  for (i = 0; i < NumBoolPrefs; i++) {
     m_boolValues[i] = m_bool_prefs[i].defVal != 0;
+  }
 
-  for (i = 0; i < NumIntPrefs; i++)
+  for (i = 0; i < NumIntPrefs; i++) {
     m_intValues[i] = m_int_prefs[i].defVal;
+  }
 
-  for (i = 0; i < NumStringPrefs; i++)
+  for (i = 0; i < NumStringPrefs; i++) {
     m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+  }
 }
 
 void PWSprefs::LoadProfileFromRegistry()
 {
   // Read in values from registry
-  if (!CheckRegistryExists())
+  if (!m_bRegistryKeyExists)
     return; // Avoid creating keys if none already, as
   //             GetProfile* creates keys if not found!
+
+  m_prefs_changed[APP_PREF] = true;
 
   // Note that default values are now current values,
   // as they've been set in LoadProfileFromDefaults, and
   // may have been overridden by ImportOldPrefs()
   int i;
   // Defensive programming, if not "0", then "TRUE", all other values = FALSE
-  for (i = 0; i < NumBoolPrefs; i++)
+  for (i = 0; i < NumBoolPrefs; i++) {
     m_boolValues[i] = m_app->GetProfileInt(PWS_REG_OPTIONS,
                                            m_bool_prefs[i].name,
                                            m_boolValues[i]) != 0;
+    // Make sure we write them all out to the config file the first time
+    m_boolChanged[i] = true;
+  }
+
+  // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
+  // to correct spelling while maintain preference's value.
+  BOOL bccom = GetPref(ClearClipboardOnMinimize) ? TRUE : FALSE;
+  BOOL bccoe = GetPref(ClearClipboardOnExit) ? TRUE : FALSE;
+
+  bool bccom2 = m_app->GetProfileInt(PWS_REG_OPTIONS,
+                                  _T("ClearClipoardOnMinimize"), // deliberate!
+                                  bccom) != 0;
+  bool bccoe2 = m_app->GetProfileInt(PWS_REG_OPTIONS,
+                                  _T("ClearClipoardOneExit"), // deliberate!
+                                  bccoe) != 0;
+
+  // If old (mis-spelt) name was there, use its value. Since the
+  // default above was the new (correct) spelling, it has priority
+  m_boolValues[ClearClipboardOnMinimize] = bccom2;
+  m_boolValues[ClearClipboardOnExit] = bccoe2;
+  // end of silent conversion
 
   // Defensive programming, if outside the permitted range, then set to default
   for (i = 0; i < NumIntPrefs; i++) {
@@ -748,13 +786,20 @@ void PWSprefs::LoadProfileFromRegistry()
     else if (m_int_prefs[i].maxVal != -1 && iVal > m_int_prefs[i].maxVal)
       m_intValues[i] = m_int_prefs[i].defVal;
     else m_intValues[i] = iVal;
+
+    // Make sure we write them all out to the config file the first time
+    m_intChanged[i] = true;
   }
 
   // Defensive programming not applicable.
-  for (i = 0; i < NumStringPrefs; i++)
+  for (i = 0; i < NumStringPrefs; i++) {
     m_stringValues[i] = CMyString(m_app->GetProfileString(PWS_REG_OPTIONS,
                                   m_string_prefs[i].name,
                                   m_stringValues[i]));
+
+    // Make sure we write them all out to the config file the first time
+    m_stringChanged[i] = true;
+  }
 
   /*
   The following is "defensive" code because there was "a code ordering
@@ -820,26 +865,40 @@ bool PWSprefs::LoadProfileFromFile()
 
   int i;
   // Defensive programming, if not "0", then "TRUE", all other values = FALSE
-  for (i = 0; i < NumBoolPrefs; i++)
+  for (i = 0; i < NumBoolPrefs; i++) {
     m_boolValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
                                         m_bool_prefs[i].name,
                                         m_bool_prefs[i].defVal) != 0;
+  }
 
-  // silently convert pre-3.14 ClearClipoardOn{Minimize,Exit} typos
+  // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
   // to correct spelling while maintain preference's value.
-  bool ccom = GetPref(ClearClipboardOnMinimize);
-  bool ccoe = GetPref(ClearClipboardOnExit);
+  bool bccom = GetPref(ClearClipboardOnMinimize);
+  bool bccoe = GetPref(ClearClipboardOnExit);
 
-  bool ccom2 = m_XML_Config->Get(m_csHKCU_PREF,
-                                 _T("ClearClipoardOnMinimize"), // deliberate!
-                                     ccom) != 0;
-  bool ccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
-                                 _T("ClearClipoardOneExit"), // deliberate!
-                                 ccoe) != 0;
+  bool bccom2 = m_XML_Config->Get(m_csHKCU_PREF,
+                                  _T("ClearClipoardOnMinimize"), // deliberate!
+                                  bccom) != 0;
+  bool bccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
+                                  _T("ClearClipoardOneExit"), // deliberate!
+                                  bccoe) != 0;
+
   // If old (mis-spelt) name was there, use its value. Since the
   // default above was the new (correct) spelling, it has priority
-  m_boolValues[ClearClipboardOnMinimize] = ccom2;
-  m_boolValues[ClearClipboardOnExit] = ccoe2;
+  m_boolValues[ClearClipboardOnMinimize] = bccom2;
+  m_boolValues[ClearClipboardOnExit] = bccoe2;
+
+  // Now delete them so we don't have to do this again, as they would
+  // override the user's intention, if they changed them using the
+  // correctly spelt versions.
+  if (DeletePref(_T("ClearClipoardOnMinimize"))) {
+    m_boolChanged[ClearClipboardOnMinimize] = true;
+    m_prefs_changed[APP_PREF] = true;
+  }
+  if (DeletePref(_T("ClearClipoardOneExit"))) {
+    m_boolChanged[ClearClipboardOnExit] = true;
+    m_prefs_changed[APP_PREF] = true;
+  }
   // end of silent conversion
 
   // Defensive programming, if outside the permitted range, then set to default
@@ -856,10 +915,11 @@ bool PWSprefs::LoadProfileFromFile()
   }
 
   // Defensive programming not applicable.
-  for (i = 0; i < NumStringPrefs; i++)
+  for (i = 0; i < NumStringPrefs; i++) {
     m_stringValues[i] = CMyString(m_XML_Config->Get(m_csHKCU_PREF,
                                                     m_string_prefs[i].name,
                                                     m_string_prefs[i].defVal));
+  }
 
   // Load last main window size & pos:
   m_rect.top = m_XML_Config->Get(m_csHKCU_POS, _T("top"), -1);
@@ -892,7 +952,7 @@ void PWSprefs::SaveApplicationPreferences()
   PWSdirs dirs(PWSdirs::GetConfigDir());
 
   if (m_ConfigOptions == CF_FILE_RW ||
-    m_ConfigOptions == CF_FILE_RW_NEW) {
+      m_ConfigOptions == CF_FILE_RW_NEW) {
       // Load prefs file in case it was changed elsewhere
       // Here we need to explicitly lock from before
       // load to after store
@@ -920,6 +980,8 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_boolChanged[i] = false;
     }
+    if (m_bool_prefs[i].pt == ptObsolete)
+      DeletePref(m_bool_prefs[i].name);
   }
 
   for (i = 0; i < NumIntPrefs; i++) {
@@ -931,6 +993,8 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_intChanged[i] = false;
     }
+    if (m_int_prefs[i].pt == ptObsolete)
+      DeletePref(m_int_prefs[i].name);
   }
 
   for (i = 0; i < NumStringPrefs; i++) {
@@ -942,6 +1006,8 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_stringChanged[i] = false;
     }
+    if (m_string_prefs[i].pt == ptObsolete)
+      DeletePref(m_string_prefs[i].name);
   }
 
   if (m_rect.changed) {
