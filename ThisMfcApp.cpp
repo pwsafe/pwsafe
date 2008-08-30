@@ -356,6 +356,25 @@ BOOL ThisMfcApp::InitInstance()
   * It's always best to start at the beginning.  [Glinda, Witch of the North]
   */
 
+  /*
+  "SetRegistryKey" MUST be called before there is any reference to 'PWSprefs'
+  in this application.
+
+  This instructs the app to use the registry instead of .ini files.  The
+  path ends up being
+
+  HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
+  where companyname is what's set here, and appname is taken from
+  AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
+
+  Notes:
+  1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
+  member function!!!
+  2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
+  for discussion on how this is handled.
+  */
+  SetRegistryKey(_T("Password Safe"));
+
   // Check if the user allows muliple instances.
   // For this to apply, consistently, must use the same copy of PasswordSafe
   // configuration file.
@@ -407,22 +426,6 @@ BOOL ThisMfcApp::InitInstance()
 #if defined(POCKET_PC)
   SHInitExtraControls();
 #endif
-
-  /*
-  this instructs the app to use the registry instead of .ini files.  The
-  path ends up being
-
-  HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
-  where companyname is what's set here, and appname is taken from
-  AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
-
-  Notes:
-  1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
-  member function.
-  2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
-  for discussion on how this is handled.
-  */
-  SetRegistryKey(_T("Password Safe"));
 
   DboxMain dbox(NULL);
   m_core.SetReadOnly(false);
