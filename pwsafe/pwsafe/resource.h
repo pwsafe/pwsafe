@@ -254,28 +254,31 @@
 #define IDB_SETFILTERS_CLASSIC          417
 #define IDB_SETFILTERS_NEW              418
 #define IDB_SETFILTERS_NEW_D            419
-#define IDB_CUSTOMIZETBAR_CLASSIC       420
-#define IDB_CUSTOMIZETBAR_NEW           421
-#define IDB_FILTER_ACTIVE               422
-#define IDB_CHECKED                     423
-#define IDB_UNCHECKED                   424
-#define IDB_EMPTY                       425
-#define IDB_BLANK                       426
-#define IDD_EXPORTFILTERS               427
-#define IDB_DRAGGROUP                   428
-#define IDB_DRAGTITLE                   429
-#define IDB_DRAGUSER                    430
-#define IDB_DRAGPASSWORD                431
-#define IDB_DRAGNOTES                   432
-#define IDB_DRAGURL                     433
-#define IDB_DRAGGROUPX                  434
-#define IDB_DRAGTITLEX                  435
-#define IDB_DRAGUSERX                   436
-#define IDB_DRAGPASSWORDX               437
-#define IDB_DRAGNOTESX                  438
-#define IDB_DRAGURLX                    439
-#define IDD_VIEWREPORT                  440
-#define IDD_MANAGEFILTERS               441
+#define IDB_MANAGEFILTERS_CLASSIC       420
+#define IDB_MANAGEFILTERS_NEW           421
+#define IDB_MANAGEFILTERS_NEW_D         422
+#define IDB_CUSTOMIZETBAR_CLASSIC       423
+#define IDB_CUSTOMIZETBAR_NEW           424
+#define IDB_FILTER_ACTIVE               425
+#define IDB_CHECKED                     426
+#define IDB_UNCHECKED                   427
+#define IDB_EMPTY                       428
+#define IDB_BLANK                       429
+#define IDD_EXPORTFILTERS               430
+#define IDB_DRAGGROUP                   431
+#define IDB_DRAGTITLE                   432
+#define IDB_DRAGUSER                    433
+#define IDB_DRAGPASSWORD                434
+#define IDB_DRAGNOTES                   435
+#define IDB_DRAGURL                     436
+#define IDB_DRAGGROUPX                  437
+#define IDB_DRAGTITLEX                  438
+#define IDB_DRAGUSERX                   439
+#define IDB_DRAGPASSWORDX               440
+#define IDB_DRAGNOTESX                  441
+#define IDB_DRAGURLX                    442
+#define IDD_VIEWREPORT                  443
+#define IDD_MANAGEFILTERS               444
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -584,15 +587,14 @@
 #define IDC_FILTERPROPERTIES            1347
 #define IDC_STATIC_FILTERNAME           1348
 #define IDC_STATIC_ACTIONS              1349
-#define IDC_BUTTON1                     1350
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        442
+#define _APS_NEXT_RESOURCE_VALUE        445
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1351
+#define _APS_NEXT_CONTROL_VALUE         1350
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif
