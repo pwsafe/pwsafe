@@ -108,6 +108,11 @@ BOOL COptionsMisc::OnInitDialog()
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
     m_DCA_to_Index[PWSprefs::DoubleClickCopyPassword] = nIndex;
 
+    cs_text.LoadString(IDS_DCACOPYPASSWORDMIN);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPasswordMinimize);
+    m_DCA_to_Index[PWSprefs::DoubleClickCopyPasswordMinimize] = nIndex;
+
     cs_text.LoadString(IDS_DCACOPYUSERNAME);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
@@ -117,11 +122,6 @@ BOOL COptionsMisc::OnInitDialog()
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
     m_DCA_to_Index[PWSprefs::DoubleClickViewEdit] = nIndex;
-
-    cs_text.LoadString(IDS_DCACOPYPASSWORDMIN);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPasswordMinimize);
-    m_DCA_to_Index[PWSprefs::DoubleClickCopyPasswordMinimize] = nIndex;
   }
 
   if (m_doubleclickaction < PWSprefs::minDCA ||

@@ -420,7 +420,15 @@ void DboxMain::OnOptions()
 
   if (rc == IDOK) {
     /*
-    **  First save all the options.
+    **  First check user hasn't introduced a conflict
+    */
+    if ((misc.m_doubleclickaction == PWSprefs::DoubleClickCopyPasswordMinimize) &&
+         security.m_clearclipboardonminimize == TRUE) {
+      misc.m_doubleclickaction = PWSprefs::DoubleClickCopyPassword;
+      AfxMessageBox(IDS_MINIMIZECONFLICT);
+    }
+    /*
+    **  Now save all the options.
     */
     prefs->SetPref(PWSprefs::AlwaysOnTop,
       display.m_alwaysontop == TRUE);

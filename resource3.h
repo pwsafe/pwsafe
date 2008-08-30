@@ -479,3 +479,4 @@
 #define IDS_FILTERCOPY2DB               5642
 #define IDS_FILTEREXPORT                5643
 #define IDS_FILTERAPPLY                 5644
+#define IDS_MINIMIZECONFLICT            5645

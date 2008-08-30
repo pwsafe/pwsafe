@@ -66,7 +66,7 @@ const CString CPWToolBar::m_csMainButtons[] = {
   // Optional (non-default) buttons next
   _T("exporttext"), _T("exportxml"), _T("importtext"), _T("importxml"), 
   _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("find"), _T("viewreports"), 
-  _T("applyfilters"), _T("setfilters")
+  _T("applyfilters"), _T("setfilters"), _T("managefilters")
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -107,7 +107,8 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_MENUITEM_FIND,
   ID_TOOLBUTTON_VIEWREPORTS,
   ID_MENUITEM_APPLYFILTER,
-  ID_MENUITEM_EDITFILTER
+  ID_MENUITEM_EDITFILTER,
+  ID_MENUITEM_MANAGEFILTERS
 };
 
 // Additional Control IDs not on ToolBar
@@ -172,7 +173,8 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_FIND_CLASSIC,
   IDB_VIEWREPORTS_CLASSIC,
   IDB_APPLYFILTERS_CLASSIC,
-  IDB_SETFILTERS_CLASSIC
+  IDB_SETFILTERS_CLASSIC,
+  IDB_MANAGEFILTERS_CLASSIC
 };
 
 // Additional bitmaps not on ToolBar
@@ -237,7 +239,8 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_FIND_NEW,
   IDB_VIEWREPORTS_NEW,
   IDB_APPLYFILTERS_NEW,
-  IDB_SETFILTERS_NEW
+  IDB_SETFILTERS_NEW,
+  IDB_MANAGEFILTERS_NEW
 };
 
 const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
@@ -271,7 +274,8 @@ const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
   IDB_FIND_NEW_D,
   IDB_VIEWREPORTS_NEW_D,
   IDB_APPLYFILTERS_NEW_D,
-  IDB_SETFILTERS_NEW_D
+  IDB_SETFILTERS_NEW_D,
+  IDB_MANAGEFILTERS_NEW_D
 };
 
 // Additional bitmaps not on ToolBar
