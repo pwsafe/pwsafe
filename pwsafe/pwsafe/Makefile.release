@@ -28,7 +28,8 @@ GPG_KEY = ronys@users.sourceforge.net
 GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
 MD5SUM = /usr/bin/md5sum
 SHA1SUM = /usr/bin/sha1sum
-FTP_PUT = /usr/local/bin/ncftpput -v upload.sourceforge.net incoming
+UPLOAD_CMD = /usr/local/bin/rsync -avP -e ssh
+UPLOAD_DST =  ronys@frs.sourceforge.net:uploads/
 PYTHON = /usr/bin/python
 SVN2LOG = ../../python/svn2log.py
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
@@ -47,12 +48,12 @@ all: release installables signatures sha1sums
 
 upload: upload-latest
 	(cd $(RELEASEDIR); \
-	 $(FTP_PUT) pwsafe-$(RELEASENAME).exe \
+	 $(UPLOAD_CMD) pwsafe-$(RELEASENAME).exe \
 	 $(BINRELNAME).zip $(SRCRELNAME).zip \
 	 pwsafe-$(RELEASENAME).msi \
 	 pwsafe-$(RELEASENAME).msi.sig \
 	 pwsafe-$(RELEASENAME).exe.sig \
-	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig)
+	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig $(UPLOAD_DST))
 
 upload-latest: latest.xml
 	scp $< ronys@passwordsafe.sourceforge.net:~/mygroupdir/htdocs/
