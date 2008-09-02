@@ -598,7 +598,6 @@ private:
   CFont *m_pFontTree;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   bool m_inExit; // help U3ExitNow
-  bool m_bDragBar;
   std::vector<bool> m_displaystatus;  // used to save/restore display state over minimize/restore
 
   PWSclipboard m_clipboard;

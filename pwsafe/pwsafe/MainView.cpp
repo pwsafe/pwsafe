@@ -238,7 +238,8 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
 
-    if (m_bDragBar) {
+    bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
+    if (bDragBarState) {
       // Note: Title & Password are mandatory
       if (entry == NULL) {
         m_DDGroup.SetStaticState(false);
@@ -805,7 +806,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     CRect rect, dragrect;
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
-    if (m_bDragBar) {
+    bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
+    if (bDragBarState) {
       const int i = GetSystemMetrics(SM_CYBORDER);
       m_DDGroup.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
@@ -1711,10 +1713,9 @@ void DboxMain::OnShowHideToolbar()
 
 void DboxMain::OnShowHideDragbar() 
 {
-  bool bState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
+  bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
 
-  PWSprefs::GetInstance()->SetPref(PWSprefs::ShowToolbar, !bState);
-  m_bDragBar = !m_bDragBar;
+  PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, !bDragBarState);
   SetToolBarPositions();
 }
 
@@ -2940,7 +2941,8 @@ void DboxMain::SetToolBarPositions()
   CRect rect, dragrect;
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
-  if (m_bDragBar) {
+  bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
+  if (bDragBarState) {
     const int i = GetSystemMetrics(SM_CYBORDER);
     m_DDGroup.ShowWindow(SW_SHOW);
     m_DDGroup.EnableWindow(TRUE);
