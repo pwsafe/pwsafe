@@ -95,7 +95,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
   m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
-  m_currentfilterpool(FPOOL_LAST), m_bDragBar(false)
+  m_currentfilterpool(FPOOL_LAST)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -1598,9 +1598,10 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
 
   pMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND |
                        m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
-  
+
+  bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
   pMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
-                       m_bDragBar ? MF_CHECKED : MF_UNCHECKED);
+                       bDragBarState ? MF_CHECKED : MF_UNCHECKED);
   
   pMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
                     (m_bFilterActive ? MF_CHECKED : MF_UNCHECKED),
