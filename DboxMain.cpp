@@ -1253,8 +1253,11 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
           cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile());
           MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
           retval = PWScore::USER_CANCEL;
-        } else
+        } else {
+          // By definition - new files can't be read-only!
+          pcore->SetReadOnly(false); 
           retval = PWScore::SUCCESS;
+        }
       } else // no need to create file
         retval = PWScore::SUCCESS;
     }
