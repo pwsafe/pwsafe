@@ -12,6 +12,8 @@ Bugs fixed in 3.14.01
 =====================
 [2088540] Showing Dragbar is now again independent of displaying the
 Toolbar
+[2085089] Database field in "Safe combination Entry" dialog no longer
+looses focus to passphrase field after each character change.
 
 Changes to Existing Features in 3.14.01
 =======================================
