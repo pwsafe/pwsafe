@@ -442,7 +442,6 @@ void CPasskeyEntry::OnComboEditChange()
 {
   m_MRU_combo.m_edit.GetWindowText(m_filespec);
   m_ctlPasskey.EnableWindow(TRUE);
-  m_ctlPasskey.SetFocus();
   m_ctlOK.EnableWindow(TRUE);
 }
 
