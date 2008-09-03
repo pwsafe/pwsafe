@@ -11,7 +11,8 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.14.01
 =====================
 [2088540] Showing Dragbar is now again independent of displaying the
-Toolbar
+Toolbar.
+[2085103] New database no longer created as R/O.
 [2085089] Database field in "Safe combination Entry" dialog no longer
 looses focus to passphrase field after each character change.
 
