@@ -22,7 +22,7 @@ CP = /usr/bin/cp
 MV = /usr/bin/mv
 SED = /usr/bin/sed
 ZIP = /usr/bin/zip
-SVN = /usr/local/bin/svn
+SVN = /cygdrive/c/local/Subversion/bin/svn
 GPG = /usr/local/bin/gpg
 GPG_KEY = ronys@users.sourceforge.net
 GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
@@ -105,7 +105,8 @@ bin-release:
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
 src-release: ChangeLog I18N/pwsafe.pot
-	$(SVN) export --non-interactive . $(RELEASEDIR)/$(SRCRELNAME)
+	$(SVN) export --non-interactive . C:\\TMP\\$(SRCRELNAME)
+	$(MV) C:\\TMP\\$(SRCRELNAME) $(RELEASEDIR)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
 	$(CP) version.h $(RELEASEDIR)/$(SRCRELNAME)
 	$(CP) I18N/pwsafe.pot $(RELEASEDIR)/$(SRCRELNAME)
