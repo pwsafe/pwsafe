@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.14.01
 =====================
+[2096504] All user set fields are now checked during merge.
 [2088540] Showing Dragbar is now again independent of displaying the
 Toolbar.
 [2085103] New database no longer created as R/O.
