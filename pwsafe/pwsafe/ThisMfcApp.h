@@ -81,6 +81,7 @@ protected:
   bool m_bUseAccelerator;
 
 private:
+  bool ParseCommandLine(DboxMain &dbox, bool &allDone);
   void LoadLocalizedStuff();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
   HANDLE m_hMutexOneInstance;
