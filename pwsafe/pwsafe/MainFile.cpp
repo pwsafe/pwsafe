@@ -1378,6 +1378,17 @@ void DboxMain::OnMerge()
   Merge();
 }
 
+// Merge flags indicating differing fields if group, title and user are identical
+#define MRG_PASSWORD   0x8000
+#define MRG_NOTES      0x4000
+#define MRG_URL        0x2000
+#define MRG_AUTOTYPE   0x1000
+#define MRG_HISTORY    0x0800
+#define MRG_POLICY     0x0400
+#define MRG_XTIME      0x0200
+#define MRG_XTIME_INT  0x0100
+#define MRG_UNUSED     0x00ff
+
 int DboxMain::Merge(const CMyString &pszFilename) {
   /* open file they want to merge */
   CMyString passkey, temp;
@@ -1497,11 +1508,56 @@ int DboxMain::Merge(const CMyString &pszFilename) {
     if (foundPos != m_core.GetEntryEndIter()) {
       /* found a match, see if other fields also match */
       CItemData curItem = m_core.GetEntry(foundPos);
-      if (otherItem.GetPassword() != curItem.GetPassword() ||
-          otherItem.GetNotes() != curItem.GetNotes() ||
-          otherItem.GetURL() != curItem.GetURL() ||
-          otherItem.GetAutoType() != curItem.GetAutoType()) {
 
+      CString csDiffs(_T("")), cs_temp;
+      int diff_flags = 0;
+      int cxtint, oxtint;
+      time_t cxt, oxt;
+      if (otherItem.GetPassword() != curItem.GetPassword()) {
+        diff_flags |= MRG_PASSWORD;
+        cs_temp.LoadString(IDS_PASSWORD);
+        csDiffs += cs_temp + _T(", ");
+      }
+      if (otherItem.GetNotes() != curItem.GetNotes()) {
+        diff_flags |= MRG_NOTES;
+        cs_temp.LoadString(IDS_NOTES);
+        csDiffs += cs_temp + _T(", ");
+      }
+      if (otherItem.GetURL() != curItem.GetURL()) {
+        diff_flags |= MRG_URL;
+        cs_temp.LoadString(IDS_URL);
+        csDiffs += cs_temp + _T(", ");
+      }
+      if (otherItem.GetAutoType() != curItem.GetAutoType()) {
+        diff_flags |= MRG_AUTOTYPE;
+        cs_temp.LoadString(IDS_AUTOTYPE);
+        csDiffs += cs_temp + _T(", ");
+      }
+      if (otherItem.GetPWHistory() != curItem.GetPWHistory()) {
+        diff_flags |= MRG_HISTORY;
+        cs_temp.LoadString(IDS_PWHISTORY);
+        csDiffs += cs_temp + _T(", ");
+      }
+      if (otherItem.GetPWPolicy() != curItem.GetPWPolicy()) {
+        diff_flags |= MRG_POLICY;
+        cs_temp.LoadString(IDS_PWPOLICY);
+        csDiffs += cs_temp + _T(", ");
+      }
+      otherItem.GetXTime(oxt);
+      curItem.GetXTime(cxt);
+      if (oxt != cxt) {
+        diff_flags |= MRG_XTIME;
+        cs_temp.LoadString(IDS_PASSWORDEXPIRYDATE);
+        csDiffs += cs_temp + _T(", ");
+      }
+      otherItem.GetXTimeInt(oxtint);
+      curItem.GetXTimeInt(cxtint);
+      if (oxtint != cxtint) {
+        diff_flags |= MRG_XTIME_INT;
+        cs_temp.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+        csDiffs += cs_temp + _T(", ");
+      }
+      if (diff_flags |= 0) {
         /* have a match on title/user, but not on other fields
         add an entry suffixed with -merged-YYYYMMDD-HHMMSS */
         CMyString newTitle = otherTitle;
@@ -1518,7 +1574,8 @@ int DboxMain::Merge(const CMyString &pszFilename) {
                        otherItem.GetUser(),
                        otherItem.GetGroup(), 
                        newTitle, 
-                       otherItem.GetUser());
+                       otherItem.GetUser(),
+                       csDiffs);
 
         /* log it */
         rpt.WriteLine(warnMsg);

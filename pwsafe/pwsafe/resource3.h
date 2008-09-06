@@ -261,7 +261,7 @@
 #define IDS_ADVANCED_GROUPTEXT          5422
 #define IDS_ADVANCED_USERTEXT           5423
 #define IDS_AUTOTYPE                    5424
-#define IDS_PWHIST                      5425
+#define IDS_PWHISTORY                   5425
 #define IDS_ORIGINALDB                  5426
 #define IDS_COMPARISONDB                5427
 #define IDS_COMPARERESULTS              5428

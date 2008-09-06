@@ -219,7 +219,7 @@ BOOL CAdvancedDlg::OnInitDialog()
   cs_text.LoadString(IDS_AUTOTYPE);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::AUTOTYPE);
-  cs_text.LoadString(IDS_PWHIST);
+  cs_text.LoadString(IDS_PWHISTORY);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::PWHIST);
   cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);

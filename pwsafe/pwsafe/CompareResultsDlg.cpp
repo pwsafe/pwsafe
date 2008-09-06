@@ -111,7 +111,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
     m_LCResults.InsertColumn(AUTOTYPE, cs_header, LVCFMT_CENTER);
   }
   if (m_bsFields.test(CItemData::PWHIST)) {
-    cs_header.LoadString(IDS_PWHIST);
+    cs_header.LoadString(IDS_PWHISTORY);
     m_LCResults.InsertColumn(PWHIST, cs_header, LVCFMT_CENTER);
   }
   if (m_bsFields.test(CItemData::CTIME)) {
