@@ -2943,6 +2943,25 @@ void DboxMain::SetToolBarPositions()
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
   bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
   if (bDragBarState) {
+    // Get the image states just incase another entry selected
+    // since last shown
+    CItemData *entry = GetLastSelected();
+    if (entry == NULL) {
+      m_DDGroup.SetStaticState(false);
+      m_DDTitle.SetStaticState(false);
+      m_DDPassword.SetStaticState(false);
+      m_DDUser.SetStaticState(false);
+      m_DDNotes.SetStaticState(false);
+      m_DDURL.SetStaticState(false);
+    } else {
+      m_DDGroup.SetStaticState(!entry->IsGroupEmpty());
+      m_DDTitle.SetStaticState(true);
+      m_DDPassword.SetStaticState(true);
+      m_DDUser.SetStaticState(!entry->IsUserEmpty());
+      m_DDNotes.SetStaticState(!entry->IsNotesEmpty());
+      m_DDURL.SetStaticState(!entry->IsURLEmpty());
+    }
+
     const int i = GetSystemMetrics(SM_CYBORDER);
     m_DDGroup.ShowWindow(SW_SHOW);
     m_DDGroup.EnableWindow(TRUE);
