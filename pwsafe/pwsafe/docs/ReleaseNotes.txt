@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.14.02
 =====================
+[2102624] Can now change a normal entry into an alias or an alias'
+base entry into an alias of another entry taking its aliases with it.
 [2100916] Correct colouring of the Dragbar icons when reshowing after
 changing entry selected.
 
