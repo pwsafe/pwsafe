@@ -651,7 +651,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
     ItemListIter iter;
     if (dlg_edit.m_original_entrytype == CItemData::ET_NORMAL &&
-        editedItem.GetPassword() != newPassword) {
+        ci->GetPassword() != newPassword) {
       // Original was a 'normal' entry and the password has changed
       if (dlg_edit.m_ibasedata > 0) {
         // Now an alias
@@ -689,7 +689,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     }
 
     if (dlg_edit.m_original_entrytype == CItemData::ET_ALIASBASE &&
-        editedItem.GetPassword() != newPassword) {
+        ci->GetPassword() != newPassword) {
       // Original was a base but might now be an alias of another entry!
       if (dlg_edit.m_ibasedata > 0) {
         // Now an alias
