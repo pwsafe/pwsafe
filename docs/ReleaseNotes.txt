@@ -14,6 +14,8 @@ Bugs fixed in 3.14.02
 base entry into an alias of another entry taking its aliases with it.
 [2100916] Correct colouring of the Dragbar icons after changing
 selected entry.
+[2100429] Handle invalid time field in database gracefully. Thanks to
+DBM for his help in tracking this down.
 
 Changes to Existing Features in 3.14.02
 =======================================
