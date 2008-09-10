@@ -12,26 +12,26 @@ Bugs fixed in 3.14.02
 =====================
 [2102624] Can now change a normal entry into an alias or an alias'
 base entry into an alias of another entry taking its aliases with it.
-[2100916] Correct colouring of the Dragbar icons when reshowing after
-changing entry selected.
+[2100916] Correct colouring of the Dragbar icons after changing
+selected entry.
 
-Changes to Existing Features in 3.14.01
+Changes to Existing Features in 3.14.02
 =======================================
 
 
-New Features for 3.14.01
+New Features for 3.14.02
 ========================
 
 
 Bugs fixed in 3.14.01
 =====================
-[2096504] All user set fields are now checked during merge.
+[2096504] All user set fields are now checked when merging databases.
 [2096164] -h, -u and -g command line functionality restored.
-[2088540] Showing Dragbar is now again independent of displaying the
+[2088540] Showing Dragbar is now independent of displaying the
 Toolbar.
-[2085103] New database no longer created as R/O.
+[2085103] New database can no longer be created as R/O.
 [2085089] Database field in "Safe combination Entry" dialog no longer
-looses focus to passphrase field after each character change.
+loses focus to passphrase field after each character change.
 
 Bugs fixed in 3.14
 ==================
