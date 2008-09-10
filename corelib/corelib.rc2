@@ -20,6 +20,8 @@ STRINGTABLE
 BEGIN
   IDSC_PASSWORDTOOSHORT   "Password is too short"
   IDSC_PASSWORDPOOR       "Password should be mixed case, with at least one digit or punctuation character"
+  IDSC_MASTERPASSWORDTOOSHORT   "Master Password should be at least %d characters long."
+  IDSC_MASTERPASSWORDPOOR       "Master Password should have at least three of the following four: Upper case, lower case, digits and symbols."
 END
 
 STRINGTABLE

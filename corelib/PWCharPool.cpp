@@ -398,8 +398,45 @@ CMyString CPasswordCharPool::MakePronounceable() const
     return retval;
 }
 
-bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
+bool CPasswordCharPool::CheckMasterPassword(const CMyString &pwd,
+                                            CMyString &error)
 {
+#define CUSTOM_MP_REQ
+#ifdef CUSTOM_MP_REQ
+  /**
+   * Following are custom requirements for Master Password:
+   * 1. Minimum length of 15 characters
+   * 2. Minimum 3 out of 4 lowercase/uppercase/digit/symbol
+   * 3. Expiration period of one year (not enforced here)
+   *
+   * We should find a way to parametrize this when merging
+   * to main trunk.
+   */
+  const int MinLength = 15;
+  int length = pwd.GetLength();
+  // check for minimum length
+  if (length < MinLength) {
+    error.Format(IDSC_MASTERPASSWORDTOOSHORT, MinLength);
+    return false;
+  }
+
+  int has_uc(0), has_lc(0), has_digit(0), has_other(0);
+
+  for (int i = 0; i < length; i++) {
+    charT c = pwd[i];
+    if (_istlower(c)) has_lc = 1;
+    else if (_istupper(c)) has_uc = 1;
+    else if (_istdigit(c)) has_digit = 1;
+    else has_other = 1;
+  }
+
+  if (has_uc + has_lc + has_digit + has_other >= 3) {
+    return true;
+  } else {
+    error.LoadString(IDSC_MASTERPASSWORDPOOR);
+    return false;
+  }
+#else // !defined(CUSTOM_MP_REQ)
   const int MinLength = 8;
   int length = pwd.GetLength();
   // check for minimun length
@@ -425,4 +462,5 @@ bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
     error.LoadString(IDSC_PASSWORDPOOR);
     return false;
   }
+#endif
 }

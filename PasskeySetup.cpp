@@ -10,7 +10,7 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "corelib/PWCharPool.h" // for CheckPassword()
+#include "corelib/PWCharPool.h" // for CheckMasterPassword()
 #include "ThisMfcApp.h"
 #include "corelib/PwsPlatform.h"
 
@@ -99,9 +99,9 @@ void CPasskeySetup::OnOK()
   // passphrases, then just define the preprocessor macro
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
   // (also used in CPasskeyChangeDlg)
-#ifndef _DEBUG // for debug, we want no checks at all, to save time
+
   CMyString errmess;
-  if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
+  if (!CPasswordCharPool::CheckMasterPassword(m_passkey, errmess)) {
     CString cs_msg, cs_text;
     cs_msg.Format(IDS_WEAKPASSPHRASE, errmess);
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
@@ -117,7 +117,7 @@ void CPasskeySetup::OnOK()
     return;
 #endif // PWS_FORCE_STRONG_PASSPHRASE
   }
-#endif // _DEBUG
+
 
   CPWDialog::OnOK();
 }

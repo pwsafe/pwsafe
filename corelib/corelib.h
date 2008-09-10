@@ -59,6 +59,8 @@
 #define IDSC_EXPHDRTITLE                3055
 #define IDSC_EXPHDRPWPOLICY             3056
 #define IDSC_EXPHDRXTIMEINT             3057
+#define IDSC_MASTERPASSWORDTOOSHORT     3058
+#define IDSC_MASTERPASSWORDPOOR         3059
 
 #define IDSC_FILEEXCEPTION00            3100
 #define IDSC_FILEEXCEPTION01            3101

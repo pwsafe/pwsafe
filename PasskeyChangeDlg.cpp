@@ -11,8 +11,8 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
-#include "corelib/PWScore.h" // for error statuses from CheckPassword()
-#include "corelib/PWCharPool.h" // for CheckPassword()
+#include "corelib/PWScore.h" // for error statuses from CheckMasterPassword()
+#include "corelib/PWCharPool.h" // for CheckMasterPassword()
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -101,7 +101,7 @@ void CPasskeyChangeDlg::OnOK()
   // passphrases, then just define the preprocessor macro
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
   // (also used in CPasskeySetup)
-  else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
+  else if (!CPasswordCharPool::CheckMasterPassword(m_newpasskey, errmess)) {
     cs_msg.Format(IDS_WEAKPASSPHRASE, errmess);
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);

@@ -44,7 +44,7 @@ public:
     bool easyvision, bool pronounceable);
   CMyString MakePassword() const;
 
-  static bool CheckPassword(const CMyString &pwd, CMyString &error);
+  static bool CheckMasterPassword(const CMyString &pwd, CMyString &error);
 
 private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,

@@ -8,15 +8,19 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.14.02
-=====================
+Bugs fixed in 3.14.02F
+======================
 [2102624] Can now change a normal entry into an alias or an alias'
 base entry into an alias of another entry taking its aliases with it.
 [2100916] Correct colouring of the Dragbar icons after changing
 selected entry.
 
-Changes to Existing Features in 3.14.02
-=======================================
+Changes to Existing Features in 3.14.02F
+========================================
+[] Master password policy defined and enforced:
+ 1. Minimum length of 15 characters
+ 2. Minimum 3 out of 4 lowercase/uppercase/digit/symbol
+ 3. Expiration period of one year.
 
 
 New Features for 3.14.02
