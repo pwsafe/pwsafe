@@ -394,11 +394,13 @@ CMyString PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_for
     struct tm st_s;
     errno_t err;
     err = localtime_s(&st_s, &t);  // secure version
-    ASSERT(err == 0);
+    if (err != 0) // invalid time
+      return ConvertToDateTimeString(0, result_format);
     st = &st_s; // hide difference between versions
 #else
     st = localtime(&t);
-    ASSERT(st != NULL); // null means invalid time
+    if (st == NULL) // null means invalid time
+      return ConvertToDateTimeString(0, result_format);
 #endif
     if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
       _tcsftime(datetime_str, sizeof(datetime_str)/sizeof(datetime_str[0]),
@@ -412,7 +414,8 @@ CMyString PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_for
                 _T("%c"), st);
     } else {
       int terr = _tasctime_s(datetime_str, 32, st);  // secure version
-      ASSERT(terr == 0);
+      if (terr != 0)
+        return ConvertToDateTimeString(0, result_format);
     }
     ret = datetime_str;
   } else {
