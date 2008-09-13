@@ -281,6 +281,8 @@ private:
   BOOL GetIncBackupFileName(const CString &cs_filenamebase,
                             int i_maxnumincbackups, CString &cs_newname);
 
+  void SetMPWTimestamp(); // mark Master Password set/change time
+
   bool m_usedefuser;
   CMyString m_defusername;
   CString m_AppNameAndVersion;

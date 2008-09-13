@@ -480,3 +480,4 @@
 #define IDS_FILTEREXPORT                5643
 #define IDS_FILTERAPPLY                 5644
 #define IDS_MINIMIZECONFLICT            5645
+#define IDS_NEWSAMEASOLD                5646

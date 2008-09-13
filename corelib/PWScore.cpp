@@ -151,6 +151,7 @@ void PWScore::NewFile(const CMyString &passkey)
 {
   ClearData();
   SetPassKey(passkey);
+  SetMPWTimestamp();
   m_changed = false;
   // default username is a per-database preference - wipe clean
   // for new database:
@@ -1408,6 +1409,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
   SetPassKey(newPassword);
+  SetMPWTimestamp();
   m_changed = true;
 }
 
@@ -2472,4 +2474,11 @@ void PWScore::NotifyListModified()
     return;
 
   m_pfcnNotifyListModified(m_NotifyInstance);
+}
+
+void PWScore::SetMPWTimestamp()
+{
+  const short MPW_INTERVAL = 365; // current hardcoded value (days)
+  m_hdr.m_whenmpwset = time(NULL);
+  m_hdr.m_mpwinterval = MPW_INTERVAL;
 }

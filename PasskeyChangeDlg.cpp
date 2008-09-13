@@ -95,7 +95,9 @@ void CPasskeyChangeDlg::OnOK()
     AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   else if (m_newpasskey.IsEmpty())
     AfxMessageBox(IDS_CANNOTBEBLANK);
-  // Vox populi vox dei - folks want the ability to use a weak
+  else if (m_newpasskey == m_oldpasskey)
+    AfxMessageBox(IDS_NEWSAMEASOLD);
+// Vox populi vox dei - folks want the ability to use a weak
   // passphrase, best we can do is warn them...
   // If someone want to build a version that insists on proper
   // passphrases, then just define the preprocessor macro
