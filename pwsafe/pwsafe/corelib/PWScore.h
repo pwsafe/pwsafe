@@ -86,10 +86,10 @@ public:
 
   void ClearFileUUID();
   void SetFileUUID(uuid_array_t &file_uuid_array);
-  void GetFileUUID(uuid_array_t &file_uuid_array);
-  bool HasHeaderUnknownFields()
+  void GetFileUUID(uuid_array_t &file_uuid_array) const;
+  bool HasHeaderUnknownFields() const
   {return !m_UHFL.empty();}
-  int GetNumRecordsWithUnknownFields()
+  int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
   void SetNumRecordsWithUnknownFields(const int num)
   {m_nRecordsWithUnknownFields = num;}
@@ -164,7 +164,7 @@ public:
   bool IsReadOnly() const {return m_IsReadOnly;};
 
   // Return list of unique groups
-  void GetUniqueGroups(CStringArray &ary);
+  void GetUniqueGroups(CStringArray &ary) const;
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
                            const CMyString &user, const int IDS_MESSAGE);
 

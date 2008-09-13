@@ -1748,7 +1748,7 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
 }
 
 // GetUniqueGroups - Creates an array of all group names, with no duplicates.
-void PWScore::GetUniqueGroups(CStringArray &aryGroups)
+void PWScore::GetUniqueGroups(CStringArray &aryGroups) const
 {
   aryGroups.RemoveAll();
 
@@ -1937,7 +1937,7 @@ void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
     sizeof(m_hdr.m_file_uuid_array));
 }
 
-void PWScore::GetFileUUID(uuid_array_t &file_uuid_array)
+void PWScore::GetFileUUID(uuid_array_t &file_uuid_array) const
 {
   memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(file_uuid_array));
 }

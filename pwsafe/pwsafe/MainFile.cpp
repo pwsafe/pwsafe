@@ -1716,78 +1716,7 @@ int DboxMain::MergeDependents(PWScore *pothercore,
 
 void DboxMain::OnProperties()
 {
-  CProperties dlg;
-
-  dlg.m_database = CString(m_core.GetCurFile());
-
-  dlg.m_databaseformat.Format(_T("%d.%02d"),
-                              m_core.GetHeader().m_nCurrentMajorVersion,
-                              m_core.GetHeader().m_nCurrentMinorVersion);
-
-  CStringArray aryGroups;
-  app.m_core.GetUniqueGroups(aryGroups);
-  dlg.m_numgroups.Format(_T("%d"), aryGroups.GetSize());
-
-  dlg.m_numentries.Format(_T("%d"), m_core.GetNumEntries());
-
-  time_t twls = m_core.GetHeader().m_whenlastsaved;
-  if (twls == 0) {
-    dlg.m_whenlastsaved.LoadString(IDS_UNKNOWN);
-    dlg.m_whenlastsaved.Trim();
-  } else {
-    dlg.m_whenlastsaved =
-      CString(PWSUtil::ConvertToDateTimeString(twls, TMC_EXPORT_IMPORT));
-  }
-
-  if (m_core.GetHeader().m_lastsavedby.IsEmpty() &&
-      m_core.GetHeader().m_lastsavedon.IsEmpty()) {
-    dlg.m_wholastsaved.LoadString(IDS_UNKNOWN);
-    dlg.m_whenlastsaved.Trim();
-  } else {
-    CString user = m_core.GetHeader().m_lastsavedby.IsEmpty() ?
-                   _T("?") : m_core.GetHeader().m_lastsavedby;
-    CString host = m_core.GetHeader().m_lastsavedon.IsEmpty() ?
-                   _T("?") : m_core.GetHeader().m_lastsavedon;
-    dlg.m_wholastsaved.Format(_T("%s on %s"), user, host);
-  }
-
-  CString wls = m_core.GetHeader().m_whatlastsaved;
-  if (wls.IsEmpty()) {
-    dlg.m_whatlastsaved.LoadString(IDS_UNKNOWN);
-    dlg.m_whenlastsaved.Trim();
-  } else
-    dlg.m_whatlastsaved = wls;
-
-  uuid_array_t file_uuid_array, ref_uuid_array;
-  memset(ref_uuid_array, 0x00, sizeof(ref_uuid_array));
-  m_core.GetFileUUID(file_uuid_array);
-
-  if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
-    wls = _T("N/A");
-  else
-    wls.Format(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
-        file_uuid_array[0],  file_uuid_array[1],  file_uuid_array[2],  file_uuid_array[3],
-        file_uuid_array[4],  file_uuid_array[5],  file_uuid_array[6],  file_uuid_array[7],
-        file_uuid_array[8],  file_uuid_array[9],  file_uuid_array[10], file_uuid_array[11],
-        file_uuid_array[12], file_uuid_array[13], file_uuid_array[14], file_uuid_array[15]);
-  dlg.m_file_uuid = wls;
-
-  int num = m_core.GetNumRecordsWithUnknownFields();
-  if (num != 0 || m_core.HasHeaderUnknownFields()) {
-    const CString cs_Yes(MAKEINTRESOURCE(IDS_YES));
-    const CString cs_No(MAKEINTRESOURCE(IDS_NO));
-    const CString cs_HdrYesNo = m_core.HasHeaderUnknownFields() ? cs_Yes : cs_No;
-
-    dlg.m_unknownfields.Format(IDS_UNKNOWNFIELDS, cs_HdrYesNo);
-    if (num == 0)
-      dlg.m_unknownfields += cs_No + _T(")");
-    else {
-      wls.Format(_T("%d"), num);
-      dlg.m_unknownfields += wls + _T(")");
-    }
-  } else {
-    dlg.m_unknownfields.LoadString(IDS_NONE);
-  }
+  CProperties dlg(m_core);
 
   dlg.DoModal();
 }
