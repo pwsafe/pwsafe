@@ -10,17 +10,20 @@
 // CProperties dialog
 
 #include "PWDialog.h"
+#include "corelib/PWScore.h"
 
 class CProperties : public CPWDialog
 {
   DECLARE_DYNAMIC(CProperties)
 
 public:
-  CProperties(CWnd* pParent = NULL);   // standard constructor
+  CProperties(const PWScore &core,
+              CWnd* pParent = NULL);
   virtual ~CProperties();
 
   // Dialog Data
   enum { IDD = IDD_PROPERTIES };
+ private:
   CString m_database;
   CString m_databaseformat;
   CString m_numgroups;
@@ -30,7 +33,8 @@ public:
   CString m_whatlastsaved;
   CString m_file_uuid;
   CString m_unknownfields;
-
+  CString m_whenmpwset;
+  CString m_mpwexp;
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 

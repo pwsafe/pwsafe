@@ -126,6 +126,6 @@ protected:
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
-  long m_fileLength;
+  size_t m_fileLength;
 };
 #endif /* __PWSFILE_H */

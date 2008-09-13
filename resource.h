@@ -587,6 +587,9 @@
 #define IDC_FILTERPROPERTIES            1347
 #define IDC_STATIC_FILTERNAME           1348
 #define IDC_STATIC_ACTIONS              1349
+#define IDC_MPWSET                      1350
+#define IDC_MPWSET2                     1351
+#define IDC_MPWEXP                      1351
 
 // Next default values for new objects
 // 
@@ -594,7 +597,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        445
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1350
+#define _APS_NEXT_CONTROL_VALUE         1351
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif
