@@ -433,13 +433,13 @@ int PWSfileV3::WriteHeader()
   memset(file_uuid_array, 0x00, sizeof(file_uuid_array));
   // If not there or zeroed, create new
   if (memcmp(m_hdr.m_file_uuid_array,
-    file_uuid_array, sizeof(file_uuid_array)) == 0) {
-      CUUIDGen uuid;
-      uuid.GetUUID(m_hdr.m_file_uuid_array);
+             file_uuid_array, sizeof(file_uuid_array)) == 0) {
+    CUUIDGen uuid;
+    uuid.GetUUID(m_hdr.m_file_uuid_array);
   }
 
   numWritten = WriteCBC(HDR_UUID, m_hdr.m_file_uuid_array,
-    sizeof(m_hdr.m_file_uuid_array));
+                        sizeof(m_hdr.m_file_uuid_array));
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
   // Write (non default) user preferences
@@ -451,7 +451,7 @@ int PWSfileV3::WriteHeader()
     CString ds(_T(""));
     vector<bool>::const_iterator iter;
     for (iter = m_hdr.m_displaystatus.begin();
-      iter != m_hdr.m_displaystatus.end(); iter++)
+         iter != m_hdr.m_displaystatus.end(); iter++)
       ds += (*iter) ? _T("1") : _T("0");
     numWritten = WriteCBC(HDR_DISPSTAT, ds);
     if (numWritten <= 0) { status = FAILURE; goto end; }
@@ -466,7 +466,7 @@ int PWSfileV3::WriteHeader()
   numWritten = WriteCBC(HDR_LASTUPDATETIME, cs_update_time);
 #endif
   numWritten = WriteCBC(HDR_LASTUPDATETIME,
-    (unsigned char *)&time_now, sizeof(time_now));
+                        (unsigned char *)&time_now, sizeof(time_now));
   if (numWritten <= 0) { status = FAILURE; goto end; }
   m_hdr.m_whenlastsaved = time_now;
 
@@ -485,7 +485,7 @@ int PWSfileV3::WriteHeader()
 
   // Write out what saved it!
   numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION,
-    m_hdr.m_whatlastsaved);
+                        m_hdr.m_whatlastsaved);
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
   if (!m_hdr.m_dbname.IsEmpty()) {
@@ -503,21 +503,31 @@ int PWSfileV3::WriteHeader()
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
+  numWritten = WriteCBC(HDR_LAST_MPWTIME,
+                        (unsigned char *)&m_hdr.m_whenmpwset,
+                        sizeof(m_hdr.m_whenmpwset));
+  if (numWritten <= 0) { status = FAILURE; goto end; }
+
+  numWritten = WriteCBC(HDR_MPW_INTERVAL,
+                        (unsigned char *)&m_hdr.m_mpwinterval,
+                        sizeof(m_hdr.m_mpwinterval));
+  if (numWritten <= 0) { status = FAILURE; goto end; }
+
   if (!m_UHFL.empty()) {
     UnknownFieldList::iterator vi_IterUHFE;
     for (vi_IterUHFE = m_UHFL.begin();
-      vi_IterUHFE != m_UHFL.end();
-      vi_IterUHFE++) {
-        UnknownFieldEntry &unkhfe = *vi_IterUHFE;
-        numWritten = WriteCBC(unkhfe.uc_Type,
-          unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
-        if (numWritten <= 0) { status = FAILURE; goto end; }
+         vi_IterUHFE != m_UHFL.end();
+         vi_IterUHFE++) {
+      UnknownFieldEntry &unkhfe = *vi_IterUHFE;
+      numWritten = WriteCBC(unkhfe.uc_Type,
+                            unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
+      if (numWritten <= 0) { status = FAILURE; goto end; }
     }
   }
 
   // Write zero-length end-of-record type item
   WriteCBC(HDR_END, NULL, 0);
-end:
+ end:
   if (status != SUCCESS)
     Close();
   return status;
@@ -527,7 +537,7 @@ int PWSfileV3::ReadHeader()
 {
   unsigned char Ptag[SHA256::HASHLEN];
   int status = CheckPassword(m_filename, m_passkey, m_fd,
-    Ptag, &m_hdr.m_nITER);
+                             Ptag, &m_hdr.m_nITER);
 
   if (status != SUCCESS) {
     Close();
@@ -571,172 +581,187 @@ int PWSfileV3::ReadHeader()
     }
 
     switch (fieldType) {
-      case HDR_VERSION: /* version */
-        // in Beta, VersionNum was an int (4 bytes) instead of short (2)
-        // This hack keeps bwd compatability.
-        if (utf8Len != sizeof(VersionNum) &&
-            utf8Len != sizeof(int)) {
-          delete[] utf8;
-          Close();
-          return FAILURE;
-        }
-        if (utf8[1] !=
-           (unsigned char)((VersionNum & 0xff00) >> 8)) {
-          //major version mismatch
-          delete[] utf8;
-          Close();
-          return UNSUPPORTED_VERSION;
-        }
-        // for now we assume that minor version changes will
-        // be backward-compatible
-        m_hdr.m_nCurrentMajorVersion = (unsigned short)utf8[1];
-        m_hdr.m_nCurrentMinorVersion = (unsigned short)utf8[0];
-        break;
+    case HDR_VERSION: /* version */
+      // in Beta, VersionNum was an int (4 bytes) instead of short (2)
+      // This hack keeps bwd compatability.
+      if (utf8Len != sizeof(VersionNum) &&
+          utf8Len != sizeof(int)) {
+        delete[] utf8;
+        Close();
+        return FAILURE;
+      }
+      if (utf8[1] !=
+          (unsigned char)((VersionNum & 0xff00) >> 8)) {
+        //major version mismatch
+        delete[] utf8;
+        Close();
+        return UNSUPPORTED_VERSION;
+      }
+      // for now we assume that minor version changes will
+      // be backward-compatible
+      m_hdr.m_nCurrentMajorVersion = (unsigned short)utf8[1];
+      m_hdr.m_nCurrentMinorVersion = (unsigned short)utf8[0];
+      break;
 
-      case HDR_UUID: /* UUID */
-        if (utf8Len != sizeof(uuid_array_t)) {
-          delete[] utf8;
-          Close();
-          return FAILURE;
-        }
-        memcpy(m_hdr.m_file_uuid_array, utf8,
-               sizeof(m_hdr.m_file_uuid_array));
-        break;
+    case HDR_UUID: /* UUID */
+      if (utf8Len != sizeof(uuid_array_t)) {
+        delete[] utf8;
+        Close();
+        return FAILURE;
+      }
+      memcpy(m_hdr.m_file_uuid_array, utf8,
+             sizeof(m_hdr.m_file_uuid_array));
+      break;
 
-      case HDR_NDPREFS: /* Non-default user preferences */
-        if (utf8Len != 0) {
-          if (utf8 != NULL) utf8[utf8Len] = '\0';
-          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len,
-                                           m_hdr.m_prefString);
-          if (!utf8status)
-            TRACE(_T("FromUTF8(m_prefString) failed\n"));
+    case HDR_NDPREFS: /* Non-default user preferences */
+      if (utf8Len != 0) {
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len,
+                                         m_hdr.m_prefString);
+        if (!utf8status)
+          TRACE(_T("FromUTF8(m_prefString) failed\n"));
+      } else
+        m_hdr.m_prefString = _T("");
+      break;
+
+    case HDR_DISPSTAT: /* Tree Display Status */
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      for (int i = 0; i != text.GetLength(); i++) {
+        const TCHAR v = text.GetAt(i);
+        m_hdr.m_displaystatus.push_back(v == TCHAR('1'));
+      }
+      if (!utf8status)
+        TRACE(_T("FromUTF8(m_displaystatus) failed\n"));
+      break;
+
+    case HDR_LASTUPDATETIME: /* When last saved */
+      if (utf8Len == 8) {
+        // Handle pre-3.09 implementations that mistakenly
+        // stored this as a hex value
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (!utf8status)
+          TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
+#if _MSC_VER >= 1400
+        _stscanf_s(text, _T("%8x"), &m_hdr.m_whenlastsaved);
+#else
+        _stscanf(text, _T("%8x"), &m_hdr.m_whenlastsaved);
+#endif
+      } else if (utf8Len == 4) {
+        // retrieve time_t
+        m_hdr.m_whenlastsaved = *reinterpret_cast<time_t*>(utf8);
+      } else {
+        m_hdr.m_whenlastsaved = 0;
+      }
+      break;
+
+    case HDR_LASTUPDATEUSERHOST: /* and by whom */
+      // DEPRECATED, but we still know how to read this
+      if (!found0302UserHost) { // if new fields also found, don't overwrite
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (utf8status) {
+          int ulen = 0;
+#if _MSC_VER >= 1400
+          _stscanf_s(text, _T("%4x"), &ulen);
+#else
+          _stscanf(text, _T("%4x"), &ulen);
+#endif
+          m_hdr.m_lastsavedby = CString(text.Mid(4, ulen));
+          m_hdr.m_lastsavedon = CString(text.Mid(ulen + 4));
         } else
-          m_hdr.m_prefString = _T("");
-        break;
+          TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
+      }
+      break;
 
-      case HDR_DISPSTAT: /* Tree Display Status */
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        for (int i = 0; i != text.GetLength(); i++) {
-          const TCHAR v = text.GetAt(i);
-          m_hdr.m_displaystatus.push_back(v == TCHAR('1'));
-        }
-        if (!utf8status)
-          TRACE(_T("FromUTF8(m_displaystatus) failed\n"));
-        break;
+    case HDR_LASTUPDATEAPPLICATION: /* and by what */
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      m_hdr.m_whatlastsaved = CString(text);
+      if (!utf8status)
+        TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
+      break;
 
-      case HDR_LASTUPDATETIME: /* When last saved */
-        if (utf8Len == 8) {
-          // Handle pre-3.09 implementations that mistakenly
-          // stored this as a hex value
-          if (utf8 != NULL) utf8[utf8Len] = '\0';
-            utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-            if (!utf8status)
-              TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
-#if _MSC_VER >= 1400
-            _stscanf_s(text, _T("%8x"), &m_hdr.m_whenlastsaved);
-#else
-            _stscanf(text, _T("%8x"), &m_hdr.m_whenlastsaved);
-#endif
-        } else if (utf8Len == 4) {
-          // retrieve time_t
-          m_hdr.m_whenlastsaved = *reinterpret_cast<time_t*>(utf8);
-        } else {
-          m_hdr.m_whenlastsaved = 0;
-        }
-        break;
+    case HDR_LASTUPDATEUSER:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
+      m_hdr.m_lastsavedby = CString(text);
+      break;
 
-      case HDR_LASTUPDATEUSERHOST: /* and by whom */
-        // DEPRECATED, but we still know how to read this
-        if (!found0302UserHost) { // if new fields also found, don't overwrite
-          if (utf8 != NULL) utf8[utf8Len] = '\0';
-          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-          if (utf8status) {
-            int ulen = 0;
-#if _MSC_VER >= 1400
-            _stscanf_s(text, _T("%4x"), &ulen);
-#else
-            _stscanf(text, _T("%4x"), &ulen);
-#endif
-            m_hdr.m_lastsavedby = CString(text.Mid(4, ulen));
-            m_hdr.m_lastsavedon = CString(text.Mid(ulen + 4));
-          } else
-            TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
-        }
-        break;
+    case HDR_LASTUPDATEHOST:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
+      m_hdr.m_lastsavedon = CString(text);
+      break;
 
-      case HDR_LASTUPDATEAPPLICATION: /* and by what */
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_whatlastsaved = CString(text);
-        if (!utf8status)
-          TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
-        break;
+    case HDR_DBNAME:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      m_hdr.m_dbname = CString(text);
+      break;
 
-      case HDR_LASTUPDATEUSER:
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
-        m_hdr.m_lastsavedby = CString(text);
-        break;
+    case HDR_DBDESC:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      m_hdr.m_dbdesc = CString(text);
+      break;
 
-      case HDR_LASTUPDATEHOST:
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
-        m_hdr.m_lastsavedon = CString(text);
-        break;
-
-      case HDR_DBNAME:
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_dbname = CString(text);
-        break;
-
-      case HDR_DBDESC:
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_dbdesc = CString(text);
-        break;
-
-      case HDR_FILTERS:
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (utf8Len > 0) {
-          CString strErrors;
-          stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
-          int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text, _T(""),
-                                                    XSDFilename.c_str(),
-                                                    strErrors);
-          if (rc != PWScore::SUCCESS) {
-            // Now ask them whether to keep as unknown field or delete!
-            int msg_rc = AfxMessageBox(IDSC_CANTPROCESSDBFILTERS, MB_YESNO | 
-                                         MB_ICONINFORMATION | MB_DEFBUTTON2);
-            if (msg_rc == IDNO) {
-              // Treat it as an Unknown field!
-              // Maybe user used a later version of PWS and we don't want to lose anything
-              UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-              m_UHFL.push_back(unkhfe);
-            }
+    case HDR_FILTERS:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      if (utf8Len > 0) {
+        CString strErrors;
+        stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+        int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text, _T(""),
+                                                  XSDFilename.c_str(),
+                                                  strErrors);
+        if (rc != PWScore::SUCCESS) {
+          // Now ask them whether to keep as unknown field or delete!
+          int msg_rc = AfxMessageBox(IDSC_CANTPROCESSDBFILTERS, MB_YESNO | 
+                                     MB_ICONINFORMATION | MB_DEFBUTTON2);
+          if (msg_rc == IDNO) {
+            // Treat it as an Unknown field!
+            // Maybe user used a later version of PWS and we don't want to lose anything
+            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+            m_UHFL.push_back(unkhfe);
           }
         }
-        break;
+      }
+      break;
+    case HDR_LAST_MPWTIME: // Master Password last modified time
+      if (utf8Len != sizeof(time_t)) {
+        ASSERT(0);
+        m_hdr.m_whenmpwset = 0;
+      } else {
+        m_hdr.m_whenmpwset = *reinterpret_cast<time_t*>(utf8);
+      }
+      break;
+    case HDR_MPW_INTERVAL: // Master Password change interval
+      if (utf8Len != sizeof(short)) {
+        ASSERT(0);
+        m_hdr.m_mpwinterval = 0;
+      } else {
+        m_hdr.m_mpwinterval = *reinterpret_cast<short*>(utf8);
+      }
+      break;
+    case HDR_END: /* process END so not to treat it as 'unknown' */
+      break;
 
-      case HDR_END: /* process END so not to treat it as 'unknown' */
-        break;
-
-      default:
-        // Save unknown fields that may be addded by future versions
-        UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-        m_UHFL.push_back(unkhfe);
-/* #ifdef _DEBUG
-        CString cs_timestamp;
-        cs_timestamp = PWSUtil::GetTimeStamp();
-        TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
-        cs_timestamp, fieldType, utf8Len, utf8Len);
-        PWSDebug::HexDump(utf8, utf8Len, cs_timestamp);
-#endif /* DEBUG */
-        break;
+    default:
+      // Save unknown fields that may be addded by future versions
+      UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+      m_UHFL.push_back(unkhfe);
+      /* #ifdef _DEBUG
+         CString cs_timestamp;
+         cs_timestamp = PWSUtil::GetTimeStamp();
+         TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
+         cs_timestamp, fieldType, utf8Len, utf8Len);
+         PWSDebug::HexDump(utf8, utf8Len, cs_timestamp);
+         #endif /* DEBUG */
+      break;
     }
     delete[] utf8; utf8 = NULL; utf8Len = 0;
   } while (fieldType != HDR_END);

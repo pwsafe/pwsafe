@@ -62,6 +62,8 @@ public:
     CString m_lastsavedon; // and by which machine
     CString m_whatlastsaved; // and by what application
     CString m_dbname, m_dbdesc; // descriptive name, description
+    time_t m_whenmpwset; // When the Master Password was last set
+    short m_mpwinterval; // how many days before Master Password must be changed
   };
 
   static PWSfile *MakePWSfile(const CMyString &a_filename, VERSION &version,

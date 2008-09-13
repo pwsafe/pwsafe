@@ -1,4 +1,4 @@
-PasswordSafe database format description version 3.03
+PasswordSafe database format description version 3.06
 -----------------------------------------------------
 
 Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
@@ -150,10 +150,12 @@ Last saved on host          0x08        Text          Y              [9]
 Database Name               0x09        Text          Y              [10]
 Database Description        0x0a        Text          Y              [11]
 Database Filters            0x0b        Text          Y              [12]
-End of Entry                0xff        [empty]       Y              [13]
+Master Password last set    0x0c        time_t        Y              [13]
+Master Password exp. int.   0x0d        2 bytes       Y              [14]
+End of Entry                0xff        [empty]       Y              [15]
 
 [1] The version number of the database format. For this version, the value
-is 0x0304 (stored in little-endian format, that is, 0x04, 0x03).
+is 0x0305 (stored in little-endian format, that is, 0x05, 0x03).
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
@@ -233,7 +235,16 @@ the XML export of the filters as defined by the filter schema. The text
 since XML processing does not require this. This field was introduced in 
 format version 0x0305.
 
-[13] An explicit end of entry field is useful for supporting new fields
+[13] The time at which the Master Password was last changed. For a new
+database, this is the database creation time. Added in format version
+0x0306.
+
+[14] Master Password Expiry Interval, in days, before the master
+password expires.  Valid values are 1-3650 corresponding to up to
+approximately 10 years.  A value of zero is equivalent to this field
+not being set. Added in format version 0x0306.
+
+[15] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 3.3 Field types for database Records:
