@@ -23,47 +23,48 @@ typedef std::ostringstream ostringstreamT;
 
 using namespace std;
 
-int CreatePWHistoryList(const CMyString &pwh_str,
-                        BOOL &status, size_t &pwh_max, size_t &pwh_num,
-                        PWHistList &pwhl, int time_format)
+bool CreatePWHistoryList(const CMyString &pwh_str,
+                         size_t &pwh_max, size_t &num_err,
+                         PWHistList &pwhl, int time_format)
 {
-  status = FALSE;
-  pwh_max = pwh_num = 0;
+  pwh_max = num_err = 0;
 
   stringT pwh_s = pwh_str;
   int len = pwh_s.length();
 
-  if (len < 5)
-    return (len != 0 ? 1 : 0);
+  if (len < 5) {
+    num_err = len != 0 ? 1 : 0;
+    return false;
+  }
+  bool retval = pwh_s[0] != charT('0');
 
-  BOOL s = pwh_s[0] == charT('0') ? FALSE : TRUE;
-
-  int m, n;
+  int n;
   istringstreamT ism(stringT(pwh_s, 1, 2)); // max history 1 byte hex
+  ism >> hex >> pwh_max;
+  if (!ism) return false;
   istringstreamT isn(stringT(pwh_s, 3, 2)); // cur # entries 1 byte hex
-  ism >> hex >> m;
-  if (!ism) return 1;
   isn >> hex >> n;
-  if (!isn) return 1;
+  if (!isn) return false;
 
-  // Sanity check: Each entry has at least 12 bytes representing time + pw length
+  // Sanity check: Each entry has at least 12 bytes representing
+  // time + pw length
   // so if pwh_s isn't long enough, we bail out pronto.
   if (pwh_s.length() - 5 < unsigned(12 * n)) {
-    status = FALSE;
-    return n;
+    num_err = n;
+    return false;
   }
 
-  int offset = 1 + 2 + 2; // where to extract the next token from pwh_s
-  int i_error = 0;
+  size_t offset = 1 + 2 + 2; // where to extract the next token from pwh_s
 
   for (int i = 0; i < n; i++) {
     PWHistEntry pwh_ent;
     long t;
     istringstreamT ist(stringT(pwh_s, offset, 8)); // time in 4 byte hex
     ist >> hex >> t;
-    if (!ist) {i_error++; continue;} // continue or break?
+    if (!ist) {num_err++; continue;}
     offset += 8;
-
+    if (offset >= pwh_s.length())
+      break;
     pwh_ent.changetttdate = (time_t) t;
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
@@ -74,7 +75,9 @@ int CreatePWHistoryList(const CMyString &pwh_str,
     istringstreamT ispwlen(stringT(pwh_s, offset, 4)); // pw length 2 byte hex
     int ipwlen;
     ispwlen >> hex >> ipwlen;
-    if (!ispwlen) {i_error++; continue;} // continue or break?
+    if (offset + 4 + ipwlen > pwh_s.length())
+      break;
+    if (!ispwlen) {num_err++; continue;}
     offset += 4;
     const stringT pw(pwh_s, offset, ipwlen);
     pwh_ent.password = pw.c_str();
@@ -82,10 +85,8 @@ int CreatePWHistoryList(const CMyString &pwh_str,
     pwhl.push_back(pwh_ent);
   }
 
-  status = s;
-  pwh_max = m;
-  pwh_num = n;
-  return i_error;
+  num_err += n - pwhl.size();
+  return retval;
 }
 
 

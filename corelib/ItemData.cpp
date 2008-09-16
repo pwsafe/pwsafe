@@ -351,14 +351,14 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
   if (bsFields.test(CItemData::PWHIST)) {
     // History exported as "00000" if empty, to make parsing easier
     BOOL pwh_status;
-    size_t pwh_max, pwh_num;
+    size_t pwh_max, num_err;
     PWHistList PWHistList;
 
-    CreatePWHistoryList(GetPWHistory(), pwh_status, pwh_max, pwh_num,
-                        PWHistList, TMC_EXPORT_IMPORT);
+    pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
+                                     PWHistList, TMC_EXPORT_IMPORT);
 
     //  Build export string
-    history = MakePWHistoryHeader(pwh_status, pwh_max, pwh_num);
+    history = MakePWHistoryHeader(pwh_status, pwh_max, PWHistList.size());
     PWHistList::iterator iter;
     for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
       const PWHistEntry &pwshe = *iter;
@@ -571,16 +571,15 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   }
 
   if (bsExport.test(CItemData::PWHIST)) {
-    BOOL pwh_status;
-    size_t pwh_max, pwh_num;
+    size_t pwh_max, num_err;
     PWHistList PWHistList;
-    CreatePWHistoryList(GetPWHistory(), pwh_status, pwh_max, pwh_num,
-                        PWHistList, TMC_XML);
-    if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
+    bool pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
+                                          PWHistList, TMC_XML);
+    if (pwh_status || pwh_max > 0 || !PWHistList.empty()) {
       oss << "\t\t<pwhistory>" << endl;
       oss << "\t\t\t<status>" << pwh_status << "</status>" << endl;
       oss << "\t\t\t<max>" << pwh_max << "</max>" << endl;
-      oss << "\t\t\t<num>" << pwh_num << "</num>" << endl;
+      oss << "\t\t\t<num>" << PWHistList.size() << "</num>" << endl;
       if (!PWHistList.empty()) {
         oss << "\t\t\t<history_entries>" << endl;
         int num = 1;
@@ -1050,61 +1049,54 @@ int CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &
   return iResult;
 }
 
-int CItemData::ValidatePWHistory()
+bool CItemData::ValidatePWHistory()
 {
   if (m_PWHistory.IsEmpty())
-    return 0;
+    return true;
 
   CMyString pwh = GetPWHistory();
-  if (pwh.GetLength() < 5) {
+  if (pwh.GetLength() < 5) { // not empty, but too short.
     SetPWHistory(_T(""));
-    return 1;
+    return false;
   }
 
-  BOOL pwh_status;
-  size_t pwh_max, pwh_num;
+  size_t pwh_max, num_err;
   PWHistList PWHistList;
-  int iResult = CreatePWHistoryList(pwh, pwh_status, pwh_max,
-                                    pwh_num, PWHistList, TMC_EXPORT_IMPORT);
-  if (iResult == 0) {
-    return 0;
-  }
+  bool pwh_status = CreatePWHistoryList(pwh,  pwh_max, num_err,
+                                        PWHistList, TMC_EXPORT_IMPORT);
+  if (num_err == 0)
+    return true;
 
   size_t listnum = PWHistList.size();
-  if (listnum > pwh_num)
-    pwh_num = listnum;
 
-  if (pwh_max == 0 && pwh_num == 0) {
+  if (pwh_max == 0 && listnum == 0) {
     SetPWHistory(_T(""));
-    return 1;
+    return false;
   }
 
   if (listnum > pwh_max)
     pwh_max = listnum;
 
-  pwh_num = listnum;
-
-  if (pwh_max < pwh_num)
-    pwh_max = pwh_num;
+  if (pwh_max < listnum)
+    pwh_max = listnum;
 
   // Rebuild PWHistory from the data we have
   CMyString history;
-  history = MakePWHistoryHeader(pwh_status, pwh_max, pwh_num);
+  history = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
 
   PWHistList::iterator iter;
   for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
     const PWHistEntry &pwshe = *iter;
-    history += _T(' ');
     history += pwshe.changedate;
     ostringstreamT os1;
-    os1 << hex << charT(' ') << setfill(charT('0')) << setw(4)
-        << pwshe.password.GetLength() << charT(' ') << ends;
+    os1 << hex << setfill(charT('0')) << setw(4)
+        << pwshe.password.GetLength();
     history += CMyString(os1.str().c_str());
     history += pwshe.password;
   }
   SetPWHistory(history);
 
-  return 1;
+  return false;
 }
 
 bool CItemData::Matches(const CString &string1, int iObject,
