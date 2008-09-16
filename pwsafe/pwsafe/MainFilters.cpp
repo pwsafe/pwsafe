@@ -365,16 +365,15 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
   bool bValue(false);
   int iValue(0);
 
-  BOOL status;
-  size_t pwh_max, pwh_num;
+  size_t pwh_max, err_num;
   PWHistList PWHistList;
   PWHistList::iterator pwshe_iter;
 
-  CreatePWHistoryList(pci->GetPWHistory(),
-                      status, pwh_max, pwh_num,
-                      PWHistList, TMC_EXPORT_IMPORT);
+  bool status = CreatePWHistoryList(pci->GetPWHistory(),
+                                    pwh_max, err_num,
+                                    PWHistList, TMC_EXPORT_IMPORT);
 
-  bPresent = pwh_max > 0 || pwh_num > 0 || PWHistList.size() > 0;
+  bPresent = pwh_max > 0 || !PWHistList.empty();
 
   vFilterRows::const_iterator Flt_citer;
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
@@ -407,7 +406,7 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
           mt = PWSMatch::MT_BOOL;
           break;
         case HT_NUM:
-          iValue = pwh_num;
+          iValue = PWHistList.size();
           mt = PWSMatch::MT_INTEGER;
           break;
         case HT_MAX:
