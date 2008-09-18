@@ -1475,7 +1475,7 @@ void DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
       return;
   }
 
-  if ((nID & 0xFFF0) == SC_MINIMIZE) {
+  if ((nID & 0xFFF0) == SC_MINIMIZE || (nID & 0xFFF0) == SC_CLOSE) {
     // Save expand/collapse status of groups
     m_displaystatus = GetGroupDisplayStatus();
   }
