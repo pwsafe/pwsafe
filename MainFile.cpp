@@ -76,6 +76,11 @@ BOOL DboxMain::OpenOnInit(void)
                                          m_core.GetCurFile());
       UpdateSystemTray(UNLOCKED);
 #endif
+      if (rc2 == PWScore::SUCCESS && m_core.IsMPWExpired()) {
+        // if file's read-only, just warn user, otherwise force
+        // a password change
+        MessageBox(_T("Time to Change..."));
+      }
       CheckExpiredPasswords();
       break;
     case PWScore::CANT_OPEN_FILE:

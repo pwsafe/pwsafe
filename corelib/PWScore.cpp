@@ -2482,3 +2482,10 @@ void PWScore::SetMPWTimestamp()
   m_hdr.m_whenmpwset = time(NULL);
   m_hdr.m_mpwinterval = MPW_INTERVAL;
 }
+
+bool PWScore::IsMPWExpired() const
+{
+  time_t expInterval = m_hdr.m_mpwinterval*24*60*60; // days to seconds
+  time_t expires_on = m_hdr.m_whenmpwset + expInterval;
+  return (expires_on < time(NULL));
+}

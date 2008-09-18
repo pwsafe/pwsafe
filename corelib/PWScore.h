@@ -259,6 +259,7 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
+  bool IsMPWExpired() const; // is timestamp + interval before current time?
 
   // Filters
   PWSFilters m_MapFilters;
@@ -282,7 +283,7 @@ private:
                             int i_maxnumincbackups, CString &cs_newname);
 
   void SetMPWTimestamp(); // mark Master Password set/change time
-
+  
   bool m_usedefuser;
   CMyString m_defusername;
   CString m_AppNameAndVersion;
