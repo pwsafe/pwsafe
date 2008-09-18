@@ -10,12 +10,15 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.14.02
 =====================
+[2113261] No longer crashes when opening write-protected database.
 [2102624] Can now change a normal entry into an alias or an alias'
 base entry into an alias of another entry taking its aliases with it.
 [2100916] Correct colouring of the Dragbar icons after changing
 selected entry.
 [2100429] Handle invalid time field in database gracefully. Thanks to
 David B. Martin for his help in tracking this down.
+[] Correct display of tree items on restore from minimize when 'X'
+button used to minimize.
 
 Changes to Existing Features in 3.14.02
 =======================================

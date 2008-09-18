@@ -369,6 +369,9 @@ size_t PWSUtil::strLength(const LPCTSTR str)
 */
 long PWSUtil::fileLength(FILE *fp)
 {
+  if (fp == NULL)
+    return -1L;
+
   long pos;
   long len;
 
