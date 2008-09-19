@@ -34,12 +34,11 @@ static char THIS_FILE[] = __FILE__;
 static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
-CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
-  : CPWDialog(CPasskeyChangeDlg::IDD, pParent)
+CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent, int msgid)
+  : CPWDialog(CPasskeyChangeDlg::IDD, pParent),
+    m_confirmnew(_T("")), m_newpasskey(_T("")),
+    m_oldpasskey(_T("")), m_msgid(msgid)
 {
-  m_confirmnew = _T("");
-  m_newpasskey = _T("");
-  m_oldpasskey = _T("");
 }
 
 void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
@@ -69,7 +68,9 @@ END_MESSAGE_MAP()
 BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
-
+  CString msg;
+  msg.LoadString(m_msgid);
+  ((CEdit*)GetDlgItem(IDC_MPW_CHANGE_MSG))->SetWindowText(msg);
   ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
   ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
   ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));

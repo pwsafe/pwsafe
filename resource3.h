@@ -481,3 +481,6 @@
 #define IDS_FILTERAPPLY                 5644
 #define IDS_MINIMIZECONFLICT            5645
 #define IDS_NEWSAMEASOLD                5646
+#define IDS_MPW_CHANGE_REGULAR          5647
+#define IDS_MPW_CHANGE_EXP              5648
+#define IDS_MPW_CANT_CHANGE_EXP         5649

@@ -659,6 +659,8 @@ private:
 
   void CreateGroups();
   int m_bNumPassedFiltering;
+
+  void ChangeMPW(); // Change Master Password (or close database)
 };
 
 inline bool DboxMain::FieldsNotEqual(CMyString a, CMyString b)

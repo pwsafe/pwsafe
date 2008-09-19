@@ -18,7 +18,8 @@ class CPasskeyChangeDlg : public CPWDialog
 {
   // Construction
 public:
-  CPasskeyChangeDlg(CWnd* pParent = NULL);   // standard constructor
+  CPasskeyChangeDlg(CWnd* pParent = NULL,
+                    int msgid = IDC_MPW_CHANGE_REGULAR);
 
   // Dialog Data
   //{{AFX_DATA(CPasskeyChangeDlg)
@@ -53,6 +54,7 @@ protected:
   CSecEditExtn m_ctlOldPasskey;
   CSecEditExtn m_ctlNewPasskey;
   CSecEditExtn m_ctlConfirmNew;
+  int m_msgid;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -2485,7 +2485,11 @@ void PWScore::SetMPWTimestamp()
 
 bool PWScore::IsMPWExpired() const
 {
+  // Note that this will return false for databases
+  // without master password expiration fields
+  // as the default values for these are 0.
   time_t expInterval = m_hdr.m_mpwinterval*24*60*60; // days to seconds
   time_t expires_on = m_hdr.m_whenmpwset + expInterval;
-  return (expires_on < time(NULL));
+  bool retval = (expires_on < time(NULL));
+  return retval;
 }

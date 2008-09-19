@@ -36,6 +36,7 @@
 #include "corelib/Report.h"
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
+#include "PasskeyChangeDlg.h"
 
 #include <sys/types.h>
 #include <bitset>
@@ -77,10 +78,8 @@ BOOL DboxMain::OpenOnInit(void)
       UpdateSystemTray(UNLOCKED);
 #endif
       if (rc2 == PWScore::SUCCESS && m_core.IsMPWExpired()) {
-        // if file's read-only, just warn user, otherwise force
-        // a password change
-        MessageBox(_T("Time to Change..."));
-      }
+        ChangeMPW();
+      } // master password expired
       CheckExpiredPasswords();
       break;
     case PWScore::CANT_OPEN_FILE:
@@ -603,6 +602,8 @@ int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
                                      m_core.GetCurFile());
   SetWindowText(LPCTSTR(m_titlebar));
 #endif
+  if (m_core.IsMPWExpired())
+    ChangeMPW();
   CheckExpiredPasswords();
   ChangeOkUpdate();
 
@@ -2751,5 +2752,26 @@ void DboxMain::RegistryAnonymity()
     dw = RegCloseKey(hSubkey);
     ASSERT(dw == ERROR_SUCCESS);
   }
-  return;
+}
+
+void DboxMain::ChangeMPW()
+{
+  // if file's read-only, just warn user, otherwise force
+  // a password change
+  if (m_core.IsReadOnly()) {
+    // WARN USER
+    AfxMessageBox(IDS_MPW_CANT_CHANGE_EXP, MB_ICONEXCLAMATION);
+  } else {
+    CPasskeyChangeDlg pkcd(this,
+                           IDS_MPW_CHANGE_EXP);
+    app.DisableAccelerator();
+    INT_PTR rc = pkcd.DoModal();
+    app.EnableAccelerator();
+    if (rc == IDOK) {
+      m_core.ChangePassword(pkcd.m_newpasskey);
+    } else { // if user doesn't change master password, close database
+      // (User can work around this by opening database read-only)
+      Close();
+    } // user cancelled
+  } // !IsReadOnly
 }
