@@ -326,10 +326,10 @@ static bool GetLocker(const stringT &lock_filename, stringT &locker)
   return bResult;
 }
 
-bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, 
+bool PWSfile::LockFile(const StringX &filename, StringX &locker, 
                        HANDLE &lockFileHandle, int &LockCount)
 {
-  const stringT lock_filename = GetLockFileName(LPCTSTR(filename));
+  const stringT lock_filename = GetLockFileName(filename.c_str());
   stringT s_locker;
 #ifdef POSIX_FILE_LOCK
   int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
@@ -413,7 +413,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
       LockCount++;
       TRACE(_T("%s Lock1  ; Count now %d; File: %s%s\n"), 
         PWSUtil::GetTimeStamp(), LockCount, fname, ext);
-      locker.Empty();
+      locker.clear();
       return true;
     } else {
       // XXX UnlockFile(bDB ? GetCurFile() : filename, bDB);
@@ -482,7 +482,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
 #endif // POSIX_FILE_LOCK
 }
 
-void PWSfile::UnlockFile(const CMyString &filename,
+void PWSfile::UnlockFile(const StringX &filename,
                          HANDLE &lockFileHandle, int &LockCount)
 {
 #ifdef POSIX_FILE_LOCK
@@ -498,7 +498,7 @@ void PWSfile::UnlockFile(const CMyString &filename,
   // detecting dead locking processes
   if (lockFileHandle != INVALID_HANDLE_VALUE) {
     stringT locker;
-    const stringT lock_filename = GetLockFileName(LPCTSTR(filename));
+    const stringT lock_filename = GetLockFileName(filename.c_str());
     const stringT cs_me = user + _T("@") + host + _T(":") + pid;
     GetLocker(lock_filename, locker);
 
@@ -523,9 +523,9 @@ void PWSfile::UnlockFile(const CMyString &filename,
 #endif // POSIX_FILE_LOCK
 }
 
-bool PWSfile::IsLockedFile(const CMyString &filename)
+bool PWSfile::IsLockedFile(const StringX &filename)
 {
-  const stringT lock_filename = GetLockFileName(LPCTSTR(filename));
+  const stringT lock_filename = GetLockFileName(filename.c_str());
 #ifdef POSIX_FILE_LOCK
   return PWSfile::FileExists(lock_filename);
 #else

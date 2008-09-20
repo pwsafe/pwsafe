@@ -147,7 +147,7 @@ void PWScore::ReInit(bool bNewFile)
   NotifyListModified();
 }
 
-void PWScore::NewFile(const CMyString &passkey)
+void PWScore::NewFile(const StringX &passkey)
 {
   ClearData();
   SetPassKey(passkey);
@@ -193,7 +193,7 @@ private:
   PWScore *m_core;
 };
 
-int PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
+int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 {
   int status;
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
@@ -299,7 +299,7 @@ private:
   PWScore *m_core;
 };
 
-int PWScore::WritePlaintextFile(const CMyString &filename,
+int PWScore::WritePlaintextFile(const StringX &filename,
                                 const CItemData::FieldBits &bsFields,
                                 const CString &subgroup_name,
                                 const int &subgroup_object,
@@ -310,7 +310,7 @@ int PWScore::WritePlaintextFile(const CMyString &filename,
   if (bsFields.count() == 0)
     return SUCCESS;
 
-  ofstream ofs(filename);
+  ofstream ofs(filename.c_str());
   if (!ofs)
     return CANT_OPEN_FILE;
 
@@ -471,13 +471,13 @@ private:
   PWScore *m_core;
 };
 
-int PWScore::WriteXMLFile(const CMyString &filename,
+int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
                           const CString &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
                           const TCHAR delimiter, const OrderedItemList *il)
 {
-  ofstream of(filename);
+  ofstream of(filename.c_str());
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
@@ -674,14 +674,14 @@ int PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLF
   return SUCCESS;
 }
 
-int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
-                                 const CMyString &filename, CString &strError,
+int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
+                                 const StringX &filename, CString &strError,
                                  TCHAR fieldSeparator, TCHAR delimiter,
                                  int &numImported, int &numSkipped,
                                  CReport &rpt)
 {
   CString csError;
-  ifstreamT ifs(filename);
+  ifstreamT ifs(filename.c_str());
 
   if (!ifs)
     return CANT_OPEN_FILE;
@@ -943,7 +943,7 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     stringT entrytitle;
     size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
     if (lastdot != string::npos) {
-      CMyString newgroup(ImportedPrefix.IsEmpty() ?
+      CMyString newgroup(ImportedPrefix.empty() ?
                          _T("") : ImportedPrefix + _T("."));
       newgroup += grouptitle.substr(0, lastdot).c_str();
       temp.SetGroup(newgroup);
@@ -1098,19 +1098,19 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   return SUCCESS;
 }
 
-int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
+int PWScore::CheckPassword(const StringX &filename, const StringX &passkey)
 {
   int status;
 
-  if (!filename.IsEmpty())
+  if (!filename.empty())
     status = PWSfile::CheckPassword(filename, passkey, m_ReadFileVersion);
   else { // can happen if tries to export b4 save
-    unsigned int t_passkey_len = passkey.GetLength();
+    unsigned int t_passkey_len = passkey.length();
     if (t_passkey_len != m_passkey_len) // trivial test
       return WRONG_PASSWORD;
     int BlockLength = ((m_passkey_len + 7)/8)*8;
     unsigned char *t_passkey = new unsigned char[BlockLength];
-    LPCTSTR plaintext = LPCTSTR(passkey);
+    LPCTSTR plaintext = LPCTSTR(passkey.c_str());
     EncryptPassword((const unsigned char *)plaintext, t_passkey_len, t_passkey);
     if (memcmp(t_passkey, m_passkey, BlockLength) == 0)
       status = PWSfile::SUCCESS;
@@ -1133,12 +1133,12 @@ int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
 }
 #define MRE_FS _T("\xbb")
 
-int PWScore::ReadFile(const CMyString &a_filename,
-                      const CMyString &a_passkey)
+int PWScore::ReadFile(const StringX &a_filename,
+                      const StringX &a_passkey)
 {
   int status;
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
-    PWSfile::Read, status);
+                                     PWSfile::Read, status);
 
   if (status != PWSfile::SUCCESS) {
     delete in;
@@ -1305,19 +1305,20 @@ int PWScore::ReadFile(const CMyString &a_filename,
   return closeStatus;
 }
 
-int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
+int PWScore::RenameFile(const StringX &oldname, const StringX &newname)
 {
   return PWSfile::RenameFile(oldname, newname);
 }
 
 bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
-                            const CString &userBackupPrefix, const CString &userBackupDir)
+                            const CString &userBackupPrefix,
+                            const CString &userBackupDir)
 {
   CString cs_temp, cs_newfile;
   // Get location for intermediate backup
   if (userBackupDir.IsEmpty()) { // directory same as database's
     // Get directory containing database
-    cs_temp = CString(m_currfile);
+    cs_temp = CString(m_currfile.c_str());
     TCHAR *lpszTemp = cs_temp.GetBuffer(_MAX_PATH);
     PathRemoveFileSpec(lpszTemp);
     cs_temp.ReleaseBuffer();
@@ -1328,7 +1329,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 
   // generate prefix of intermediate backup file name
   if (userBackupPrefix.IsEmpty()) {
-    const stringT path(m_currfile);
+    const stringT path(m_currfile.c_str());
     stringT drv, dir, name, ext;
 
     pws_os::splitpath(path, drv, dir, name, ext);
@@ -1371,7 +1372,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   TCHAR szSource[_MAX_PATH];
   TCHAR szDestination[_MAX_PATH];
 
-  TCHAR *lpsz_current = m_currfile.GetBuffer(_MAX_PATH);
+  const TCHAR *lpsz_current = m_currfile.c_str();
   TCHAR *lpsz_new = cs_newfile.GetBuffer(_MAX_PATH);
 #if _MSC_VER >= 1400
   _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
@@ -1380,11 +1381,10 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   _tcscpy(szSource, lpsz_current);
   _tcscpy(szDestination, lpsz_new);
 #endif
-  m_currfile.ReleaseBuffer();
   cs_newfile.ReleaseBuffer();
 
   // Must end with double NULL
-  szSource[m_currfile.GetLength() + 1] = TCHAR('\0');
+  szSource[m_currfile.length() + 1] = TCHAR('\0');
   szDestination[cs_newfile.GetLength() + 1] = TCHAR('\0');
 
   SHFILEOPSTRUCT sfop;
@@ -1405,7 +1405,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   // return PWSfile::RenameFile(GetCurFile(), newname);
 }
 
-void PWScore::ChangePassword(const CMyString &newPassword)
+void PWScore::ChangePassword(const StringX &newPassword)
 {
   SetPassKey(newPassword);
   m_changed = true;
@@ -1555,7 +1555,7 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
   delete Algorithm;
 }
 
-void PWScore::SetPassKey(const CMyString &new_passkey)
+void PWScore::SetPassKey(const StringX &new_passkey)
 {
   // if changing, clear old
   if (m_passkey_len > 0) {
@@ -1563,17 +1563,17 @@ void PWScore::SetPassKey(const CMyString &new_passkey)
     delete[] m_passkey;
   }
 
-  m_passkey_len = new_passkey.GetLength() * sizeof(TCHAR);
+  m_passkey_len = new_passkey.length() * sizeof(TCHAR);
 
   int BlockLength = ((m_passkey_len + 7)/8)*8;
   m_passkey = new unsigned char[BlockLength];
-  LPCTSTR plaintext = LPCTSTR(new_passkey);
+  LPCTSTR plaintext = LPCTSTR(new_passkey.c_str());
   EncryptPassword((const unsigned char *)plaintext, m_passkey_len, m_passkey);
 }
 
-CMyString PWScore::GetPassKey() const
+StringX PWScore::GetPassKey() const
 {
-  CMyString retval(_T(""));
+  StringX retval(_T(""));
   if (m_passkey_len > 0) {
     const unsigned int BS = BlowFish::BLOCKSIZE;
     unsigned int BlockLength = ((m_passkey_len + (BS-1))/BS)*BS;
@@ -1636,10 +1636,10 @@ that is imports.  Both are pretty easy things to live with.
 */
 
 int
-PWScore::ImportKeePassTextFile(const CMyString &filename)
+PWScore::ImportKeePassTextFile(const StringX &filename)
 {
   static const TCHAR *ImportedPrefix = { _T("ImportedKeePass") };
-  ifstreamT ifs(filename);
+  ifstreamT ifs(filename.c_str());
 
   if (!ifs) {
     return CANT_OPEN_FILE;
@@ -1796,7 +1796,7 @@ PWScore::Validate(CString &status)
   CReport rpt;
   CString cs_Error, cs_temp;
   cs_temp.LoadString(IDSC_RPTVALIDATE);
-  rpt.StartReport(cs_temp, GetCurFile());
+  rpt.StartReport(cs_temp, GetCurFile().c_str());
 
   TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 

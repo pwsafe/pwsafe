@@ -180,7 +180,7 @@ int DboxMain::Restore()
   }
 
   // unlock the file we're leaving
-  if( !m_core.GetCurFile().IsEmpty() ) {
+  if( !m_core.GetCurFile().empty() ) {
     m_core.UnlockFile(m_core.GetCurFile());
   }
 
@@ -376,7 +376,7 @@ void DboxMain::OnOptions()
   misc.m_minauto = prefs->
     GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;                               
 
-  backup.SetCurFile(m_core.GetCurFile());
+  backup.SetCurFile(m_core.GetCurFile().c_str());
   backup.m_saveimmediately = prefs->
     GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   backup.m_backupbeforesave = prefs->
@@ -614,7 +614,7 @@ void DboxMain::OnOptions()
     /*
     ** Update string in database, if necessary & possible (i.e. ignore if R-O)
     */
-    if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
+    if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().empty() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (!m_core.IsReadOnly()) {
         // save changed preferences to file
@@ -726,7 +726,7 @@ void DboxMain::OnOptions()
       * and in converting pre-2.0 databases.
       */
 
-      m_core.SetDefUsername(misc.m_defusername);
+      m_core.SetDefUsername(misc.m_defusername.GetString());
       m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
       // Finally, keep prefs file updated:
       prefs->SaveApplicationPreferences();

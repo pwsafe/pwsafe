@@ -1165,9 +1165,9 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
 
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
-    const CString &curFile = dbox_pkentry->GetFileName();
+    const StringX curFile = dbox_pkentry->GetFileName().GetString();
     pcore->SetCurFile(curFile);
-    CMyString locker(_T("")); // null init is important here
+    StringX locker(_T("")); // null init is important here
     passkey = dbox_pkentry->GetPasskey();
     // This dialog's setting of read-only overrides file dialog
     bool bIsReadOnly = dbox_pkentry->IsReadOnly();
@@ -1194,9 +1194,9 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
     UpdateToolBar(bIsReadOnly);
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
-    if (!locker.IsEmpty()) {
+    if (!locker.empty()) {
       CString cs_user_and_host, cs_PID;
-      cs_user_and_host = (CString)locker;
+      cs_user_and_host = (CString)locker.c_str();
       int i_pid = cs_user_and_host.ReverseFind(_T(':'));
       if (i_pid > -1) {
         // If PID present then it is ":%08d" = 9 chars in length
@@ -2010,7 +2010,7 @@ void DboxMain::CheckExpiredPasswords()
   }
 
   if (!expPWList.empty()) {
-    CExpPWListDlg dlg(this, expPWList, m_core.GetCurFile());
+    CExpPWListDlg dlg(this, expPWList, m_core.GetCurFile().c_str());
     dlg.DoModal();
   }
 }
@@ -2049,7 +2049,7 @@ BOOL DboxMain::OnQueryEndSession()
   m_iSessionEndingStatus = IDOK;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
-  if (!m_core.GetCurFile().IsEmpty())
+  if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
   // Save Application related preferences
   prefs->SaveApplicationPreferences();

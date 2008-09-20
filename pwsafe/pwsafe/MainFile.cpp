@@ -79,7 +79,7 @@ BOOL DboxMain::OpenOnInit(void)
       CheckExpiredPasswords();
       break;
     case PWScore::CANT_OPEN_FILE:
-      if (m_core.GetCurFile().IsEmpty()) {
+      if (m_core.GetCurFile().empty()) {
         // Empty filename. Assume they are starting Password Safe
         // for the first time and don't confuse them.
         // fallthrough to New()
@@ -169,7 +169,7 @@ BOOL DboxMain::OpenOnInit(void)
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
   }
-  app.AddToMRU(m_core.GetCurFile());
+  app.AddToMRU(m_core.GetCurFile().c_str());
   UpdateMenuAndToolBar(true); // sets m_bOpen too...
   UpdateStatusBar();
 
@@ -181,7 +181,7 @@ BOOL DboxMain::OpenOnInit(void)
   m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
                                      m_core.GetCurFile());
   SetWindowText(LPCTSTR(m_titlebar));
-  app.SetTooltipText(m_core.GetCurFile());
+  app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
   SelectFirstEntry();
   // Validation does integrity check & repair on database
@@ -317,16 +317,18 @@ int DboxMain::NewFile(CMyString &newfilename)
 
   ClearData();
   PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
-  CString oldfilename = m_core.GetCurFile();
+  const StringX &oldfilename = m_core.GetCurFile();
   // The only way we're the locker is if it's locked & we're !readonly
-  if (!oldfilename.IsEmpty() && !m_core.IsReadOnly() && m_core.IsLockedFile(oldfilename))
+  if (!oldfilename.empty() &&
+      !m_core.IsReadOnly() &&
+      m_core.IsLockedFile(oldfilename))
     m_core.UnlockFile(oldfilename);
 
   m_core.SetCurFile(newfilename);
 
   // Now lock the new file
-  CMyString locker(_T("")); // null init is important here
-  m_core.LockFile(newfilename, locker);
+  StringX locker(_T("")); // null init is important here
+  m_core.LockFile(LPCTSTR(newfilename), locker);
 
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
@@ -355,7 +357,7 @@ int DboxMain::Close()
   }
 
   // Unlock the current file
-  if( !m_core.GetCurFile().IsEmpty() ) {
+  if( !m_core.GetCurFile().empty() ) {
     m_core.UnlockFile(m_core.GetCurFile());
     m_core.SetCurFile(_T(""));
   }
@@ -517,7 +519,7 @@ int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
   // if we were using a different file, unlock it
   // do this before GetAndCheckPassword() as that
   // routine gets a lock on the new file
-  if( !m_core.GetCurFile().IsEmpty() ) {
+  if( !m_core.GetCurFile().empty() ) {
     m_core.UnlockFile(m_core.GetCurFile());
   }
 
@@ -636,7 +638,7 @@ int DboxMain::Save()
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
 
-  if (m_core.GetCurFile().IsEmpty())
+  if (m_core.GetCurFile().empty())
     return SaveAs();
 
   int iver = (int)m_core.GetReadFileVersion();
@@ -672,7 +674,7 @@ int DboxMain::Save()
     m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
                                        m_core.GetCurFile());
     SetWindowText(LPCTSTR(m_titlebar));
-    app.SetTooltipText(m_core.GetCurFile());
+    app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
   }
   rc = m_core.WriteCurFile();
@@ -761,7 +763,7 @@ int DboxMain::SaveAs()
                    _T("All files (*.*)|*.*|")
                    _T("|"),
                    this);
-    if (m_core.GetCurFile().IsEmpty())
+    if (m_core.GetCurFile().empty())
       cs_text.LoadString(IDS_NEWNAME1);
     else
       cs_text.LoadString(IDS_NEWNAME2);
@@ -783,10 +785,10 @@ int DboxMain::SaveAs()
     } else
       return PWScore::USER_CANCEL;
   }
-  CMyString locker(_T("")); // null init is important here
+  StringX locker(_T("")); // null init is important here
   // Note: We have to lock the new file before releasing the old (on success)
   if (!m_core.LockFile2(newfile, locker)) {
-    cs_temp.Format(IDS_FILEISLOCKED, newfile, locker);
+    cs_temp.Format(IDS_FILEISLOCKED, newfile, locker.c_str());
     cs_title.LoadString(IDS_FILELOCKERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -806,7 +808,7 @@ int DboxMain::SaveAs()
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
-  if (!m_core.GetCurFile().IsEmpty())
+  if (!m_core.GetCurFile().empty())
     m_core.UnlockFile(m_core.GetCurFile());
 
   // Move the newfile lock to the right place
@@ -817,7 +819,7 @@ int DboxMain::SaveAs()
   m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
                                      m_core.GetCurFile());
   SetWindowText(LPCTSTR(m_titlebar));
-  app.SetTooltipText(m_core.GetCurFile());
+  app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
   SetChanged(Clear);
   ChangeOkUpdate();
@@ -1073,7 +1075,7 @@ void DboxMain::OnImportText()
     CReport rpt;
     CString cs_text;
     cs_text.LoadString(IDS_RPTIMPORTTEXT);
-    rpt.StartReport(cs_text, m_core.GetCurFile());
+    rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
     cs_text.LoadString(IDS_TEXT);
     cs_temp.Format(IDS_IMPORTFILE, cs_text, TxtFileName);
     rpt.WriteLine(cs_temp);
@@ -1242,7 +1244,7 @@ void DboxMain::OnImportXML()
     CReport rpt;
     CString cs_text;
     cs_text.LoadString(IDS_RPTIMPORTXML);
-    rpt.StartReport(cs_text, m_core.GetCurFile());
+    rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
     cs_text.LoadString(IDS_XML);
     cs_temp.Format(IDS_IMPORTFILE, cs_text, XMLFilename);
     rpt.WriteLine(cs_temp);
@@ -1454,7 +1456,7 @@ int DboxMain::Merge(const CMyString &pszFilename) {
   CReport rpt;
   CString cs_text;
   cs_text.LoadString(IDS_RPTMERGE);
-  rpt.StartReport(cs_text, m_core.GetCurFile());
+  rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_MERGINGDATABASE, pszFilename);
   rpt.WriteLine(cs_temp);
 
@@ -1724,7 +1726,7 @@ void DboxMain::OnProperties()
 void DboxMain::OnCompare()
 {
   INT_PTR rc = PWScore::SUCCESS;
-  if (m_core.GetCurFile().IsEmpty()) {
+  if (m_core.GetCurFile().empty()) {
     AfxMessageBox(IDS_NOCOMPAREFILE, MB_OK|MB_ICONWARNING);
     return;
   }
@@ -1866,7 +1868,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
   /* Create report as we go */
   CReport rpt;
   cs_text.LoadString(IDS_RPTCOMPARE);
-  rpt.StartReport(cs_text, m_core.GetCurFile());
+  rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
   rpt.WriteLine(cs_temp);
   rpt.WriteLine();
@@ -2521,7 +2523,7 @@ void DboxMain::OnOK()
     // Naughty Windows saves information in the registry for every Open and Save!
     RegistryAnonymity();
   } else
-  if (!m_core.GetCurFile().IsEmpty())
+  if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
 
   bool autoSave = true; // false if user saved or decided not to 

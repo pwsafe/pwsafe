@@ -37,10 +37,10 @@ static FILE *f;
 
 bool CXMLprefs::Lock()
 {
-  CMyString locker(_T(""));
+  StringX locker(_T(""));
   int tries = 10;
   do {
-    m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile, locker);
+    m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile.GetString(), locker);
     if (!m_bIsLocked)
       Sleep(200);
   } while (!m_bIsLocked && --tries > 0);
@@ -49,7 +49,7 @@ bool CXMLprefs::Lock()
 
 void CXMLprefs::Unlock()
 {
-  PWSprefs::UnlockCFGFile(m_csConfigFile);
+  PWSprefs::UnlockCFGFile(m_csConfigFile.GetString());
   m_bIsLocked = false;
 }
 

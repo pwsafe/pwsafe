@@ -18,7 +18,7 @@ IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
 CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
 : CPWDialog(CProperties::IDD, pParent)
 {
-  m_database = CString(core.GetCurFile());
+  m_database = CString(core.GetCurFile().c_str());
 
   m_databaseformat.Format(_T("%d.%02d"),
                           core.GetHeader().m_nCurrentMajorVersion,

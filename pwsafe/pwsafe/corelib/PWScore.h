@@ -14,6 +14,7 @@
 #include <map> // for CList
 #include "ItemData.h"
 #include "MyString.h"
+#include "StringX.h"
 #include "PWSfile.h"
 #include "PWSFilters.h"
 #include "UUIDGen.h"
@@ -77,12 +78,12 @@ public:
   ~PWScore();
 
   // Following used to read/write databases
-  CMyString GetCurFile() const {return m_currfile;}
-  void SetCurFile(const CMyString &file) {m_currfile = file;}
+  StringX GetCurFile() const {return m_currfile;}
+  void SetCurFile(const StringX &file) {m_currfile = file;}
   bool GetUseDefUser() const {return m_usedefuser;}
   void SetUseDefUser(bool v) {m_usedefuser = v;}
-  CMyString GetDefUsername() const {return m_defusername;}
-  void SetDefUsername(const CMyString &du) {m_defusername = du;}
+  StringX GetDefUsername() const {return m_defusername;}
+  void SetDefUsername(const StringX &du) {m_defusername = du;}
 
   void ClearFileUUID();
   void SetFileUUID(uuid_array_t &file_uuid_array);
@@ -100,61 +101,62 @@ public:
 
   void ClearData();
   void ReInit(bool bNewfile = false);
-  void NewFile(const CMyString &passkey);
+  void NewFile(const StringX &passkey);
   int WriteCurFile() {return WriteFile(m_currfile);}
-  int WriteFile(const CMyString &filename, PWSfile::VERSION version = PWSfile::VCURRENT);
-  int WriteV17File(const CMyString &filename)
+  int WriteFile(const StringX &filename, PWSfile::VERSION version = PWSfile::VCURRENT);
+  int WriteV17File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V17);}
-  int WriteV2File(const CMyString &filename)
+  int WriteV2File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V20);}
-  int WritePlaintextFile(const CMyString &filename,
+  int WritePlaintextFile(const StringX &filename,
                          const CItemData::FieldBits &bsExport,
                          const CString &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
                          const OrderedItemList *il = NULL);
-  int WriteXMLFile(const CMyString &filename,
+  int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
                    const CString &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR delimiter,
                    const OrderedItemList *il = NULL);
-  int ImportPlaintextFile(const CMyString &ImportedPrefix,
-                          const CMyString &filename, CString &strErrors,
+  int ImportPlaintextFile(const StringX &ImportedPrefix,
+                          const StringX &filename, CString &strErrors,
                           TCHAR fieldSeparator, TCHAR delimiter,
                           int &numImported, int &numSkipped,
                           CReport &rpt);
-  int ImportKeePassTextFile(const CMyString &filename);
+  int ImportKeePassTextFile(const StringX &filename);
   int ImportXMLFile(const CString &ImportedPrefix,
                     const CString &strXMLFileName,
                     const CString &strXSDFileName,
                     CString &strErrors, int &numValidated, int &numImported,
                     bool &bBadUnknownFileFields,
                     bool &bBadUnknownRecordFields, CReport &rpt);
-  bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
-  bool FileExists(const CMyString &filename, bool &bReadOnly) const 
+  bool FileExists(const StringX &filename) const {return PWSfile::FileExists(filename);}
+  bool FileExists(const StringX &filename, bool &bReadOnly) const 
   {return PWSfile::FileExists(filename, bReadOnly);}
-  int ReadCurFile(const CMyString &passkey)
+  int ReadCurFile(const StringX &passkey)
   {return ReadFile(m_currfile, passkey);}
-  int ReadFile(const CMyString &filename, const CMyString &passkey);
+  int ReadFile(const StringX &filename, const StringX &passkey);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
-  int RenameFile(const CMyString &oldname, const CMyString &newname);
+  int RenameFile(const StringX &oldname, const StringX &newname);
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
-                     const CString &userBackupPrefix, const CString &userBackupDir);
-  int CheckPassword(const CMyString &filename, CMyString &passkey);
-  void ChangePassword(const CMyString & newPassword);
-  bool LockFile(const CMyString &filename, CMyString &locker)
+                     const CString &userBackupPrefix,
+                     const CString &userBackupDir);
+  int CheckPassword(const StringX &filename, const StringX &passkey);
+  void ChangePassword(const StringX &newPassword);
+  bool LockFile(const StringX &filename, StringX &locker)
   {return PWSfile::LockFile(filename, locker,
                             m_lockFileHandle, m_LockCount);}
-  bool IsLockedFile(const CMyString &filename) const
+  bool IsLockedFile(const StringX &filename) const
   {return PWSfile::IsLockedFile(filename);}
-  void UnlockFile(const CMyString &filename)
+  void UnlockFile(const StringX &filename)
   {return PWSfile::UnlockFile(filename, 
                               m_lockFileHandle, m_LockCount);}
   // Following 3 routines only for SaveAs to use a temporary lock handle
   // LockFile2, UnLockFile2 & MoveLock
-  bool LockFile2(const CMyString &filename, CMyString &locker)
+  bool LockFile2(const StringX &filename, StringX &locker)
   {return PWSfile::LockFile(filename, locker,
                             m_lockFileHandle2, m_LockCount);}
-  void UnlockFile2(const CMyString &filename)
+  void UnlockFile2(const StringX &filename)
   {return PWSfile::UnlockFile(filename, 
                               m_lockFileHandle2, m_LockCount);}
   void MoveLock()
@@ -250,7 +252,7 @@ public:
   void ResumeOnListNotification()
   {m_bNotify = true;}
 
-  void SetPassKey(const CMyString &new_passkey);
+  void SetPassKey(const StringX &new_passkey);
 
   void SetDisplayStatus(const std::vector<bool> &s);
   const std::vector<bool> &GetDisplayStatus() const;
@@ -264,7 +266,7 @@ public:
   PWSFilters m_MapFilters;
 
 private:
-  CMyString m_currfile; // current pw db filespec
+  StringX m_currfile; // current pw db filespec
   unsigned char *m_passkey; // encrypted by session key
   unsigned int m_passkey_len; // Length of cleartext passkey
   static unsigned char m_session_key[20];
@@ -274,7 +276,7 @@ private:
   HANDLE m_lockFileHandle2;
   int m_LockCount;
 
-  CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
+  StringX GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, int len,
                        unsigned char *ciphertext) const;
@@ -282,7 +284,7 @@ private:
                             int i_maxnumincbackups, CString &cs_newname);
 
   bool m_usedefuser;
-  CMyString m_defusername;
+  StringX m_defusername;
   CString m_AppNameAndVersion;
 
   PWSfile::VERSION m_ReadFileVersion;

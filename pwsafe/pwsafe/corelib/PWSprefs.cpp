@@ -664,9 +664,9 @@ void PWSprefs::InitializePreferences()
     // can we create one? If not, fallback to registry
     // We assume that if we can create a lock file, we can create
     // a config file in the same directory
-    CMyString locker;
-    if (LockCFGFile(m_configfilename, locker)) {
-      UnlockCFGFile(m_configfilename);
+    StringX locker;
+    if (LockCFGFile(m_configfilename.GetString(), locker)) {
+      UnlockCFGFile(m_configfilename.GetString());
     } else {
       m_ConfigOptions = CF_REGISTRY; // CF_FILE_RW_NEW -> CF_REGISTRY
     }
