@@ -77,10 +77,10 @@ BOOL CAboutDlg::OnInitDialog()
     csRevision.Trim();
   }
   if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(_T("%s V%d.%02d (%s)"), AfxGetAppName(), 
+    m_appversion.Format(_T("%s V%d.%02dF (%s)"), AfxGetAppName(), 
                         m_nMajor, m_nMinor, csRevision);
   } else {
-    m_appversion.Format(_T("%s V%d.%02d.%02d (%s)"), AfxGetAppName(), 
+    m_appversion.Format(_T("%s V%d.%02d.%02dF (%s)"), AfxGetAppName(), 
                         m_nMajor, m_nMinor, m_nBuild, csRevision);
   }
 #ifdef _DEBUG

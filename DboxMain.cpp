@@ -1136,10 +1136,10 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
       nBuild = HIWORD(dwBuildRevision);
     }
     if (nBuild == 0)
-      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d"),
+      dbox_pkentry->m_appversion.Format(_T("Version %d.%02dF"),
       nMajor, nMinor);
     else
-      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d"),
+      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02dF"),
       nMajor, nMinor, nBuild);
 
     app.DisableAccelerator();
