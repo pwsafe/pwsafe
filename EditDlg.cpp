@@ -83,10 +83,11 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 
   m_OverridePolicy = m_ci->GetPWPolicy().IsEmpty() ? FALSE : TRUE;
   m_ci->GetPWPolicy(m_pwp);
-
-  BOOL HasHistory = FALSE;
-  CreatePWHistoryList(ci->GetPWHistory(), HasHistory, m_MaxPWHistory,
-                      m_NumPWHistory, m_PWHistList, TMC_EXPORT_IMPORT);
+  size_t num_err;
+  BOOL HasHistory = CreatePWHistoryList(ci->GetPWHistory(), m_MaxPWHistory,
+                                        num_err, m_PWHistList,
+                                        TMC_EXPORT_IMPORT) ? TRUE : FALSE;
+  m_NumPWHistory = m_PWHistList.size();
   m_SavePWHistory = HasHistory;
 
   m_group = m_ci->GetGroup();

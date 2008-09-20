@@ -542,11 +542,10 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         break;
       }
       if (bsFields.test(CItemData::PWHIST)) {
-        BOOL pwh_status;
-        size_t pwh_max, pwh_num;
+        size_t pwh_max, err_num;
         PWHistList pwhistlist;
-        CreatePWHistoryList(curitem.GetPWHistory(), pwh_status,
-                            pwh_max, pwh_num, pwhistlist, TMC_XML);
+        CreatePWHistoryList(curitem.GetPWHistory(), pwh_max, err_num,
+                            pwhistlist, TMC_XML);
         PWHistList::iterator iter;
         for (iter = pwhistlist.begin(); iter != pwhistlist.end();
              iter++) {

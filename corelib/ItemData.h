@@ -227,7 +227,7 @@ public:
     // check record for mandatory fields, silently fix if missing
     int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
       uuid_array_t &uuid_array);
-    int ValidatePWHistory();
+    bool ValidatePWHistory(); // return true if OK, false if there's a problem
     bool IsExpired();
     bool WillExpire(const int numdays);
 

@@ -68,8 +68,14 @@ PWHistEntry(const PWHistEntry &that) :
 
 typedef std::vector<PWHistEntry> PWHistList;
 
-int CreatePWHistoryList(const CMyString &pwh_str,
-                        BOOL &status, size_t &pwh_max, size_t &pwh_num,
+// Parses a password history string as defined
+// in format spec to a vector of PWHistEntry
+// returns true iff password storing flag in string is set.
+// pwh_max is the max number passwords the string may have.
+// num_err will have the number of ill-formed entries.
+
+bool CreatePWHistoryList(const CMyString &pwh_str,
+                        size_t &pwh_max, size_t &num_err,
                         PWHistList &pwhl, int time_format);
 
 CMyString MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
