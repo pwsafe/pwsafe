@@ -1925,13 +1925,17 @@ void DboxMain::UpdateSystemTray(const STATE s)
   switch (s) {
     case LOCKED:
       app.SetSystemTrayState(ThisMfcApp::LOCKED);
-      if (!m_core.GetCurFile().IsEmpty())
-        app.SetTooltipText(_T("[") + m_core.GetCurFile() + _T("]"));
+      if (!m_core.GetCurFile().empty()) {
+        CString ttt(_T("["));
+        ttt += m_core.GetCurFile().c_str();
+        ttt += _T("]");
+        app.SetTooltipText(ttt);
+      }
       break;
     case UNLOCKED:
       app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-      if (!m_core.GetCurFile().IsEmpty())
-        app.SetTooltipText(m_core.GetCurFile());
+      if (!m_core.GetCurFile().empty())
+        app.SetTooltipText(m_core.GetCurFile().c_str());
       break;
     case CLOSED:
       app.SetSystemTrayState(ThisMfcApp::CLOSED);
@@ -3068,7 +3072,7 @@ void DboxMain::OnToolBarFindReport()
   CString buffer, cs_temp;
   CReport rpt;
   cs_temp.LoadString(IDS_RPTFIND);
-  rpt.StartReport(cs_temp, m_core.GetCurFile());
+  rpt.StartReport(cs_temp, m_core.GetCurFile().c_str());
 
   CItemData::FieldBits bsFFields;
   bool bFAdvanced;

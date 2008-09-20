@@ -18,6 +18,7 @@
 #include "MyString.h"
 #include "UUIDGen.h"
 #include "UnknownField.h"
+#include "StringX.h"
 
 #define MIN_HASH_ITERATIONS 2048
 
@@ -75,10 +76,10 @@ public:
   static int CheckPassword(const CMyString &filename,
                            const CMyString &passkey, VERSION &version);
 
-  static bool LockFile(const CMyString &filename, CMyString &locker,
+  static bool LockFile(const StringX &filename, StringX &locker,
                        HANDLE &lockFileHandle, int &LockCount);
-  static bool IsLockedFile(const CMyString &filename);
-  static void UnlockFile(const CMyString &filename,
+  static bool IsLockedFile(const StringX &filename);
+  static void UnlockFile(const StringX &filename,
                          HANDLE &lockFileHandle, int &LockCount);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
@@ -96,7 +97,7 @@ public:
   const HeaderRecord &GetHeader() const {return m_hdr;}
   void SetHeader(const HeaderRecord &h) {m_hdr = h;}
 
-  void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
+  void SetDefUsername(const StringX &du) {m_defusername = du;} // for V17 conversion (read) only
   void SetCurVersion(VERSION v) {m_curversion = v;}
   void GetUnknownHeaderFields(UnknownFieldList &UHFL);
   void SetUnknownHeaderFields(UnknownFieldList &UHFL);
@@ -116,7 +117,7 @@ protected:
   FILE *m_fd;
   VERSION m_curversion;
   const RWmode m_rw;
-  CMyString m_defusername; // for V17 conversion (read) only
+  StringX m_defusername; // for V17 conversion (read) only
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;

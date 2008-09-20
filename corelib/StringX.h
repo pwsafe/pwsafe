@@ -7,7 +7,7 @@
 */
 
 /**
- * \file XString.h
+ * \file StringX.h
  *
  * STL-based implementation of secure strings.
  * Like std::string in all respects, except that
@@ -143,7 +143,6 @@ typedef std::basic_string<char,
                           std::char_traits<char>,
                           S_Alloc::SecureAlloc<char> > StringX;
 #endif
-
 #endif
 //-----------------------------------------------------------------------------
 // Local variables:

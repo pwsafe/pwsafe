@@ -18,9 +18,8 @@
 #define _MYSTRING_H_
 #ifdef _WIN32
 #include <afx.h>
-#else
-#include "StringX.h"
 #endif
+#include "StringX.h"
 #include "os/typedefs.h"
 //-----------------------------------------------------------------------------
 class CMyString
@@ -31,6 +30,7 @@ public:
   CMyString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength) {}
   CMyString(const CMyString& stringSrc) : m_mystring(stringSrc.m_mystring) {}
   CMyString(const CString& stringSrc) : m_mystring(stringSrc) {}
+  CMyString(const StringX& sx) : m_mystring(sx.c_str()) {}
 
   ~CMyString() {trashstring();}
 
@@ -43,6 +43,7 @@ public:
   TCHAR GetAt(int nIndex) {return m_mystring.GetAt(nIndex);}
   void SetAt(int nIndex, TCHAR ch) {m_mystring.SetAt(nIndex,ch);}
   operator LPCTSTR() const {return (LPCTSTR)m_mystring;}
+  operator StringX() const {return StringX((LPCTSTR)m_mystring);}
   BOOL IsEmpty() const {return m_mystring.IsEmpty();}
   LPTSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
   LPTSTR GetBuffer() {return m_mystring.GetBuffer();}

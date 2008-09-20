@@ -491,7 +491,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
       } else { // arg isn't a flag, treat it as a filename
         if (CheckFile(*arg)) {
           fileGiven = true;
-          m_core.SetCurFile(*arg);
+          m_core.SetCurFile(arg->GetString());
         } else {
           return false;
         }
@@ -600,7 +600,7 @@ BOOL ThisMfcApp::InitInstance()
 #endif
 
 
-  if (m_core.GetCurFile().IsEmpty())
+  if (m_core.GetCurFile().empty())
     m_core.SetCurFile(prefs->GetPref(PWSprefs::CurrentFile));
 
   int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);

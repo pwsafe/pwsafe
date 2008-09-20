@@ -44,6 +44,9 @@
 // Windows
 //
 //    Win32 X86
+//
+// Linux - work in progress
+// Cygwin - work in progress
 
 #ifndef PwsPlatform_h
 #define PwsPlatform_h
@@ -55,8 +58,8 @@
 #include <cassert>
 #endif
 
-// Following seems needed on Linux
-#ifdef __linux__
+// Following seems needed on Linux/cygwin
+#if defined(__linux__) || defined(__CYGWIN__)
 #define LTC_NO_ROLC
 #endif
 
@@ -142,6 +145,14 @@
 #if defined(__i386__) || defined(__i486__)
 #define PWS_LITTLE_ENDIAN
 #endif
+// **********************************************
+// * cygwin on Intel                             *
+// **********************************************
+#elif defined(__CYGWIN__)
+#define PWS_PLATFORM "Cygwin"
+#if defined(__i386__) || defined(__i486__)
+#define PWS_LITTLE_ENDIAN
+ #endif
 // **********************************************
 // * Add other platforms here...                *
 // **********************************************
