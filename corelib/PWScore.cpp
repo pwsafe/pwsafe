@@ -533,9 +533,9 @@ int PWScore::WriteXMLFile(const StringX &filename,
     of << "\"" << endl;
   }
   if (m_hdr.m_whenlastsaved != 0) {
-    CString wls = CString(PWSUtil::ConvertToDateTimeString(m_hdr.m_whenlastsaved,
-                          TMC_XML));
-    utf8conv.ToUTF8(wls, utf8, utf8Len);
+    StringX wls = PWSUtil::ConvertToDateTimeString(m_hdr.m_whenlastsaved,
+                                                   TMC_XML);
+    utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
     of << "WhenLastSaved=\"";
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
     of << "\"" << endl;
@@ -1024,13 +1024,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         rpt.WriteLine(csError);
       }
     if (i_Offset[HISTORY] >= 0 && tokens.size() > (size_t)i_Offset[HISTORY]) {
-      CMyString newPWHistory;
+      StringX newPWHistory;
       CString strPWHErrors;
       csError.Format(IDSC_IMPINVALIDPWH, numlines);
       switch (VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
                                           newPWHistory, strPWHErrors)) {
         case PWH_OK:
-          temp.SetPWHistory(newPWHistory);
+          temp.SetPWHistory(newPWHistory.c_str());
           break;
         case PWH_IGNORE:
           break;
@@ -1344,16 +1344,17 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
     {
       time_t now;
       time(&now);
-      CString cs_datetime = (CString)PWSUtil::ConvertToDateTimeString(now,
-                            TMC_EXPORT_IMPORT);
+      StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now,
+                                                             TMC_EXPORT_IMPORT);
       cs_temp += _T("_");
-      cs_newfile = cs_temp + cs_datetime.Left(4) +  // YYYY
-                   cs_datetime.Mid(5,2) +  // MM
-                   cs_datetime.Mid(8,2) +  // DD
-                   _T("_") +
-                   cs_datetime.Mid(11,2) +  // HH
-                   cs_datetime.Mid(14,2) +  // MM
-                   cs_datetime.Mid(17,2);   // SS
+      StringX nf = StringX(cs_temp) + cs_datetime.substr(0, 4) +  // YYYY
+        cs_datetime.substr(5,2) +  // MM
+        cs_datetime.substr(8,2) +  // DD
+        StringX(_T("_")) +
+        cs_datetime.substr(11,2) +  // HH
+        cs_datetime.substr(14,2) +  // MM
+        cs_datetime.substr(17,2);   // SS
+      cs_newfile = nf.c_str();
       break;
     }
     case 2: // _nnn suffix

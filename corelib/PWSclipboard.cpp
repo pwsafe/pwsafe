@@ -26,13 +26,13 @@ PWSclipboard::~PWSclipboard()
   // data after application exit. 
 }
 
-bool PWSclipboard::SetData(const CMyString &data, bool isSensitive, CLIPFORMAT cfFormat)
+bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
-  unsigned int uGlobalMemSize = (data.GetLength() + 1) * sizeof(TCHAR);
+  unsigned int uGlobalMemSize = (data.length() + 1) * sizeof(TCHAR);
   HGLOBAL hGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, uGlobalMemSize);
   LPTSTR pGlobalLock = (LPTSTR)::GlobalLock(hGlobalMemory);
 
-  PWSUtil::strCopy(pGlobalLock, data.GetLength() + 1, data ,data.GetLength());
+  PWSUtil::strCopy(pGlobalLock, data.length() + 1, data.c_str() ,data.length());
   ::GlobalUnlock(hGlobalMemory);
 
   COleDataSource *pods = new COleDataSource; // deleted automagically
@@ -44,8 +44,8 @@ bool PWSclipboard::SetData(const CMyString &data, bool isSensitive, CLIPFORMAT c
     // of course, we don't want an extra copy of a password floating around
     // in memory, so we'll use the hash
     SHA256 ctx;
-    const TCHAR *str = (const TCHAR *)data;
-    ctx.Update((const unsigned char *)str, data.GetLength()*sizeof(TCHAR));
+    const TCHAR *str = data.c_str();
+    ctx.Update((const unsigned char *)str, data.length()*sizeof(TCHAR));
     ctx.Final(m_digest);
   }
   return m_set;

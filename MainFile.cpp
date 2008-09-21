@@ -270,14 +270,14 @@ int DboxMain::NewFile(CMyString &newfilename)
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
-  CString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX);
+  stringT v3FileName = PWSUtil::GetNewFileName(LPCTSTR(cf), DEFAULT_SUFFIX);
   stringT dir = PWSdirs::GetSafeDir();
   INT_PTR rc;
 
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   v3FileName,
+                   v3FileName.c_str(),
                    OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                    OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                    SUFFIX3_FILTERS
@@ -655,9 +655,10 @@ int DboxMain::Save()
   } 
   else if (iver != PWSfile::NEWFILE) {
     // file version mis-match
-    CMyString NewName = PWSUtil::GetNewFileName(m_core.GetCurFile(), DEFAULT_SUFFIX );
+    stringT NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                              DEFAULT_SUFFIX);
 
-    cs_msg.Format(IDS_NEWFORMAT, m_core.GetCurFile(), NewName);
+    cs_msg.Format(IDS_NEWFORMAT, m_core.GetCurFile(), NewName.c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
 
     CGeneralMsgBox gmb;
@@ -669,7 +670,7 @@ int DboxMain::Save()
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
       return PWScore::USER_CANCEL;
-    m_core.SetCurFile(NewName);
+    m_core.SetCurFile(NewName.c_str());
 #if !defined(POCKET_PC)
     m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
                                        m_core.GetCurFile());
@@ -752,11 +753,11 @@ int DboxMain::SaveAs()
   CMyString cf(m_core.GetCurFile());
   if (cf.IsEmpty())
     cf.LoadString(IDS_DEFDBNAME); // reasonable default for first time user
-  CMyString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX );
+  stringT v3FileName = PWSUtil::GetNewFileName(LPCTSTR(cf), DEFAULT_SUFFIX );
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   v3FileName,
+                   v3FileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    SUFFIX_FILTERS
@@ -842,12 +843,13 @@ void DboxMain::OnExportVx(UINT nID)
   CString cs_text, cs_title, cs_temp;
 
   //SaveAs-type dialog box
-  CMyString OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("dat") );
+  stringT OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                      _T("dat") );
   cs_text.LoadString(IDS_NAMEEXPORTFILE);
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   OldFormatFileName,
+                   OldFormatFileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    SUFFIX_FILTERS
@@ -909,12 +911,13 @@ void DboxMain::OnExportText()
     if (m_core.CheckPassword(cs_temp, pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
-      CMyString TxtFileName = PWSUtil::GetNewFileName(cs_temp, _T("txt") );
+      stringT TxtFileName = PWSUtil::GetNewFileName(LPCTSTR(cs_temp),
+                                                    _T("txt"));
       cs_text.LoadString(IDS_NAMETEXTFILE);
       while (1) {
         CFileDialog fd(FALSE,
                        _T("txt"),
-                       TxtFileName,
+                       TxtFileName.c_str(),
                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                        |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                        _T("Text files (*.txt)|*.txt|")
@@ -976,12 +979,13 @@ void DboxMain::OnExportXML()
     if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
-      CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("xml"));
+      stringT XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                    _T("xml"));
       cs_text.LoadString(IDS_NAMEXMLFILE);
       while (1) {
         CFileDialog fd(FALSE,
                        _T("xml"),
-                       XMLFileName,
+                       XMLFileName.c_str(),
                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                        |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                        _T("XML files (*.xml)|*.xml|")
@@ -2246,7 +2250,8 @@ int DboxMain::SaveCore(PWScore *pcore)
         AfxMessageBox(IDS_NOIBACKUP, MB_OK);
     }
   } else { // file version mis-match
-    CMyString NewName = PWSUtil::GetNewFileName(pcore->GetCurFile(), DEFAULT_SUFFIX );
+    stringT NewName = PWSUtil::GetNewFileName(pcore->GetCurFile().c_str(),
+                                              DEFAULT_SUFFIX );
     cs_msg.Format(IDS_NEWFORMAT, pcore->GetCurFile(), NewName);
     cs_title.LoadString(IDS_VERSIONWARNING);
 
@@ -2259,7 +2264,7 @@ int DboxMain::SaveCore(PWScore *pcore)
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
       return PWScore::USER_CANCEL;
-    pcore->SetCurFile(NewName);
+    pcore->SetCurFile(NewName.c_str());
   }
   rc = pcore->WriteCurFile();
 

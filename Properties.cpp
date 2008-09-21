@@ -36,7 +36,8 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
     m_whenlastsaved.Trim();
   } else {
     m_whenlastsaved =
-      CString(PWSUtil::ConvertToDateTimeString(twls, TMC_EXPORT_IMPORT));
+      CString(PWSUtil::ConvertToDateTimeString(twls,
+                                               TMC_EXPORT_IMPORT).c_str());
   }
 
   if (core.GetHeader().m_lastsavedby.IsEmpty() &&

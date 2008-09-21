@@ -250,39 +250,40 @@ void COptionsBackup::SetExample()
   CString cs_example;
   UpdateData(TRUE);
   switch (m_backupprefix) {
-    case 0:
-      cs_example = m_currentFileBasename;
-      break;
-    case 1:
-      cs_example = m_userbackupprefix;
-      break;
-    default:
-      ASSERT(0);
-      break;
+  case 0:
+    cs_example = m_currentFileBasename;
+    break;
+  case 1:
+    cs_example = m_userbackupprefix;
+    break;
+  default:
+    ASSERT(0);
+    break;
   }
 
   switch (m_backupsuffix) {
-    case 1:
+  case 1:
     {
-        time_t now;
-        time(&now);
-        CString cs_datetime = (CString)PWSUtil::ConvertToDateTimeString(now, TMC_EXPORT_IMPORT);
-        cs_example += _T("_");
-        cs_example = cs_example + cs_datetime.Left(4) +  // YYYY
-                                  cs_datetime.Mid(5,2) +  // MM
-                                  cs_datetime.Mid(8,2) +  // DD
-                                  _T("_") +
-                                  cs_datetime.Mid(11,2) +  // HH
-                                  cs_datetime.Mid(14,2) +  // MM
-                                  cs_datetime.Mid(17,2);   // SS
+      time_t now;
+      time(&now);
+      CString cs_datetime = PWSUtil::ConvertToDateTimeString(now,
+                                                             TMC_EXPORT_IMPORT).c_str();
+      cs_example += _T("_");
+      cs_example = cs_example + cs_datetime.Left(4) +  // YYYY
+        cs_datetime.Mid(5,2) +  // MM
+        cs_datetime.Mid(8,2) +  // DD
+        _T("_") +
+        cs_datetime.Mid(11,2) +  // HH
+        cs_datetime.Mid(14,2) +  // MM
+        cs_datetime.Mid(17,2);   // SS
       break;
     }
-    case 2:
-      cs_example += _T("_001");
-      break;
-    case 0:
-    default:
-      break;
+  case 2:
+    cs_example += _T("_001");
+    break;
+  case 0:
+  default:
+    break;
   }
 
   cs_example += _T(".ibak");

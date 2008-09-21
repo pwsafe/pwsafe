@@ -665,13 +665,13 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
   // do the export
   //SaveAs-type dialog box
-  CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(),
+  stringT XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
                                                   _T("filters.xml"));
   cs_text.LoadString(IDS_NAMEXMLFILE);
   while (1) {
     CFileDialog fd(FALSE,
                    _T("xml"),
-                   XMLFileName,
+                   XMLFileName.c_str(),
                    OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                    OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                    _T("XML files (*.xml)|*.xml|")
