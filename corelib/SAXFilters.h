@@ -141,7 +141,7 @@ private:
   st_filters *cur_filter;
   st_FilterRow *cur_filterentry;
 
-  CMyString m_strElemContent;
+  StringX m_strElemContent;
   bool m_bValidation;
   BSTR * m_pSchema_Version;
 
