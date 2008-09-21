@@ -672,7 +672,7 @@ void DboxMain::InitPasswordSafe()
   // do what its name implies...
   CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
     _T("autoload_filters.xml");
-  if (PWSfile::FileExists(tmp)) {
+  if (PWSfile::FileExists(tmp.GetString())) {
     CString strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
     CWaitCursor waitCursor;  // This may take a while!

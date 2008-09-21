@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-PWSfileV1V2::PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version)
+PWSfileV1V2::PWSfileV1V2(const StringX &filename, RWmode mode, VERSION version)
   : PWSfile(filename, mode)
 {
   m_curversion = version;
@@ -26,12 +26,10 @@ PWSfileV1V2::~PWSfileV1V2()
 }
 
 // Used to warn pre-2.0 users, and to identify the database as 2.x:
-static const CMyString V2ItemName(" !!!Version 2 File Format!!! "
-                                  "Please upgrade to PasswordSafe 2.0"
-                                  " or later");
+static const StringX V2ItemName(_T(" !!!Version 2 File Format!!! Please upgrade to PasswordSafe 2.0 or later"));
 // Used to specify the exact version
-static const CMyString VersionString("2.0");
-static const CMyString AltVersionString("pre-2.0"); 
+static const StringX VersionString(_T("2.0"));
+static const StringX AltVersionString(_T("pre-2.0")); 
 
 int PWSfileV1V2::WriteV2Header()
 {
@@ -96,11 +94,11 @@ int PWSfileV1V2::ReadV2Header()
       status = WRONG_VERSION;
   }
   if (status == SUCCESS)
-    m_hdr.m_prefString = header.GetNotes();
+    m_hdr.m_prefString = LPCTSTR(header.GetNotes());
   return status;
 }
 
-int PWSfileV1V2::Open(const CMyString &passkey)
+int PWSfileV1V2::Open(const StringX &passkey)
 {
   int status = SUCCESS;
 
@@ -111,8 +109,8 @@ int PWSfileV1V2::Open(const CMyString &passkey)
   if (m_fd == NULL)
     return CANT_OPEN_FILE;
 
-  LPCTSTR passstr = LPCTSTR(m_passkey);
-  unsigned long passLen = passkey.GetLength();
+  LPCTSTR passstr = m_passkey.c_str();
+  unsigned long passLen = passkey.length();
   unsigned char *pstr;
 
 #ifdef UNICODE
@@ -179,14 +177,14 @@ int PWSfileV1V2::Close()
   return PWSfile::Close();
 }
 
-int PWSfileV1V2::CheckPassword(const CMyString &filename,
-                               const CMyString &passkey, FILE *a_fd)
+int PWSfileV1V2::CheckPassword(const StringX &filename,
+                               const StringX &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
   errno_t err = 0;
   if (fd == NULL) {
     // XXX argument changes mean we can't use _s version transparently
-    err = _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
+    err = _tfopen_s(&fd, filename.c_str(), _T("rb"));
   }
   if (fd == NULL || err != 0)
     return CANT_OPEN_FILE;
@@ -328,15 +326,15 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
   return status;
 }
 
-static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
+static void ExtractAutoTypeCmd(StringX &notesStr, CMyString &autotypeStr)
 {
-  CString instr(notesStr);
+  CString instr(notesStr.c_str());
   CMyString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
   int left = instr.Find(cs_autotype);
   if (left == -1) {
     autotypeStr = _T(""); 
   } else {
-    CString tmp(notesStr);
+    CString tmp(notesStr.c_str());
     tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
     instr = instr.Left(left);
     int right = tmp.FindOneOf(_T("\r\n"));
@@ -345,13 +343,13 @@ static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
       tmp = tmp.Left(right);
     }
     autotypeStr = CMyString(tmp);
-    notesStr = CMyString(instr);
+    notesStr = instr.GetString();
   }
 }
 
-static void ExtractURL(CMyString &notesStr, CMyString &outurl)
+static void ExtractURL(StringX &notesStr, CMyString &outurl)
 {
-  CMyString instr(notesStr);
+  CMyString instr(notesStr.c_str());
   // Extract first instance of (http|https|ftp)://[^ \t\r\n]+
   int left = instr.Find(_T("http://"));
   if (left == -1)
@@ -362,7 +360,7 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
     outurl = _T("");
   } else {
     CMyString url(instr);
-    instr = notesStr.Left(left);
+    instr = notesStr.substr(0, left);
     url = url.Mid(left); // throw out everything left of URL
     int right = url.FindOneOf(_T(" \t\r\n"));
     if (right != -1) {
@@ -370,11 +368,11 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
       url = url.Left(right);    
     }
     outurl = url;
-    notesStr = instr;
+    notesStr = LPCTSTR(instr);
   }
 }
 
-size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
+size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 {
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
@@ -435,7 +433,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
-  CMyString tempdata;  
+  StringX tempdata;  
   signed long numread = 0;
   unsigned char type;
   // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
@@ -489,7 +487,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
               endFound = true; break;
             case CItemData::UUID:
             {
-              LPCTSTR ptr = LPCTSTR(tempdata);
+              LPCTSTR ptr = tempdata.c_str();
               uuid_array_t uuid_array;
               for (unsigned i = 0; i < sizeof(uuid_array); i++)
                 uuid_array[i] = (unsigned char)ptr[i];

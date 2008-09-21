@@ -35,16 +35,16 @@ public:
     HDR_LAST,                          // Start of unknown fields!
     HDR_END = 0xff};                   // header field types, per formatV{2,3}.txt
 
-  static int CheckPassword(const CMyString &filename,
-    const CMyString &passkey,
-    FILE *a_fd = NULL,
-    unsigned char *aPtag = NULL, int *nIter = NULL);
-  static bool IsV3x(const CMyString &filename, VERSION &v);
+  static int CheckPassword(const StringX &filename,
+                           const StringX &passkey,
+                           FILE *a_fd = NULL,
+                           unsigned char *aPtag = NULL, int *nIter = NULL);
+  static bool IsV3x(const StringX &filename, VERSION &v);
 
-  PWSfileV3(const CMyString &filename, RWmode mode, VERSION version);
+  PWSfileV3(const StringX &filename, RWmode mode, VERSION version);
   ~PWSfileV3();
 
-  virtual int Open(const CMyString &passkey);
+  virtual int Open(const StringX &passkey);
   virtual int Close();
 
   virtual int WriteRecord(const CItemData &item);
@@ -68,7 +68,7 @@ private:
   PWSFilters m_MapFilters;
 
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
-    const CMyString &passkey,
+    const StringX &passkey,
     unsigned int N, unsigned char *Ptag);
 };
 #endif /* __PWSFILEV3_H */

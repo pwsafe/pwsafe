@@ -26,7 +26,7 @@ static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
 
-PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
+PWSfileV3::PWSfileV3(const StringX &filename, RWmode mode, VERSION version)
   : PWSfile(filename, mode)
 {
   m_curversion = version;
@@ -38,12 +38,12 @@ PWSfileV3::~PWSfileV3()
 {
 }
 
-int PWSfileV3::Open(const CMyString &passkey)
+int PWSfileV3::Open(const StringX &passkey)
 {
   int status = SUCCESS;
 
   ASSERT(m_curversion == V30);
-  ASSERT(!passkey.IsEmpty());
+  ASSERT(!passkey.empty());
 
   m_passkey = passkey;
 
@@ -92,8 +92,8 @@ int PWSfileV3::Close()
 
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 
-int PWSfileV3::CheckPassword(const CMyString &filename,
-                             const CMyString &passkey, FILE *a_fd,
+int PWSfileV3::CheckPassword(const StringX &filename,
+                             const StringX &passkey, FILE *a_fd,
                              unsigned char *aPtag, int *nITER)
 {
   FILE *fd = a_fd;
@@ -102,9 +102,9 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
 
   if (fd == NULL) {
 #if _MSC_VER >= 1400
-    _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
+    _tfopen_s(&fd, filename.c_str(), _T("rb"));
 #else
-    fd = _tfopen((LPCTSTR) filename, _T("rb"));
+    fd = _tfopen(filename.c_str(), _T("rb"));
 #endif
   }
   if (fd == NULL)
@@ -304,7 +304,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
-                           const CMyString &passkey,
+                           const StringX &passkey,
                            unsigned int N, unsigned char *Ptag)
 {
   /*
@@ -443,7 +443,7 @@ int PWSfileV3::WriteHeader()
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
   // Write (non default) user preferences
-  numWritten = WriteCBC(HDR_NDPREFS, m_hdr.m_prefString);
+  numWritten = WriteCBC(HDR_NDPREFS, m_hdr.m_prefString.c_str());
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
   // Write out display status
@@ -606,8 +606,9 @@ int PWSfileV3::ReadHeader()
       case HDR_NDPREFS: /* Non-default user preferences */
         if (utf8Len != 0) {
           if (utf8 != NULL) utf8[utf8Len] = '\0';
-          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len,
-                                           m_hdr.m_prefString);
+          CMyString pref;
+          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, pref);
+          m_hdr.m_prefString = LPCTSTR(pref);
           if (!utf8status)
             TRACE(_T("FromUTF8(m_prefString) failed\n"));
         } else
@@ -744,16 +745,16 @@ int PWSfileV3::ReadHeader()
   return SUCCESS;
 }
 
-bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
+bool PWSfileV3::IsV3x(const StringX &filename, VERSION &v)
 {
   // This is written so as to support V30, V31, V3x...
 
   ASSERT(FileExists(filename));
   FILE *fd;
 #if _MSC_VER >= 1400
-  _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
+  _tfopen_s(&fd, filename.c_str(), _T("rb"));
 #else
-  fd = _tfopen((LPCTSTR) filename, _T("rb") );
+  fd = _tfopen(filename.c_str(), _T("rb") );
 #endif
 
   ASSERT(fd != NULL);

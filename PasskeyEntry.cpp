@@ -395,7 +395,7 @@ void CPasskeyEntry::OnOK()
     return;
   }
 
-  if (!PWSfile::FileExists(m_filespec)) {
+  if (!PWSfile::FileExists(m_filespec.GetString())) {
     AfxMessageBox(IDS_FILEPATHNOTFOUND);
     if (m_MRU_combo.IsWindowVisible())
       m_MRU_combo.SetFocus();

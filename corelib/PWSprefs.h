@@ -184,7 +184,7 @@ private:
   void DeleteOldPrefs();
 
   static PWSprefs *self; // singleton
-  static CString m_configfilename; // may be set before singleton created
+  static StringX m_configfilename; // may be set before singleton created
   CXMLprefs *m_XML_Config;
 
   bool m_bRegistryKeyExists;
