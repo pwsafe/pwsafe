@@ -143,7 +143,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterErrorHandler::ignorableWarning(struct ISAX
 PWSSAXFilterContentHandler::PWSSAXFilterContentHandler()
 {
   m_refCnt = 0;
-  m_strElemContent.Empty();
+  m_strElemContent.clear();
   m_pSchema_Version = NULL;
   m_iXMLVersion = -1;
   m_iSchemaVersion = -1;
@@ -646,7 +646,8 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("rule")) == 0) {
-    m_strElemContent.MakeUpper();
+    CString sec(m_strElemContent.c_str());
+    m_strElemContent = LPCTSTR(sec.MakeUpper());
     if (m_strElemContent == _T("EQ"))
       cur_filterentry->rule = PWSMatch::MR_EQUALS;
     else if (m_strElemContent == _T("NE"))
@@ -711,24 +712,24 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("case")) == 0) {
-    cur_filterentry->fcase = _ttoi(m_strElemContent);
+    cur_filterentry->fcase = _ttoi(m_strElemContent.c_str());
   }
 
   else if (_tcscmp(szCurElement, _T("warn")) == 0) {
-    cur_filterentry->fnum1 = _ttoi(m_strElemContent);
+    cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
   }
 
   else if (_tcscmp(szCurElement, _T("num1")) == 0) {
-    cur_filterentry->fnum1 = _ttoi(m_strElemContent);
+    cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
   }
 
   else if (_tcscmp(szCurElement, _T("num2")) == 0) {
-    cur_filterentry->fnum1 = _ttoi(m_strElemContent);
+    cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
   }
 
   else if (_tcscmp(szCurElement, _T("date1")) == 0) {
     time_t t(0);
-    if (VerifyXMLDateString(m_strElemContent, t) &&
+    if (VerifyXMLDateString(m_strElemContent.c_str(), t) &&
         (t != (time_t)-1))
       cur_filterentry->fdate1 = t;
     else
@@ -737,7 +738,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
 
   else if (_tcscmp(szCurElement, _T("date2")) == 0) {
     time_t t(0);
-    if (VerifyXMLDateString(m_strElemContent, t) &&
+    if (VerifyXMLDateString(m_strElemContent.c_str(), t) &&
         (t != (time_t)-1))
       cur_filterentry->fdate2 = t;
     else
@@ -745,15 +746,15 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("type")) == 0) {
-    if (_tcscmp(m_strElemContent, _T("normal")) == 0)
+    if (m_strElemContent == _T("normal"))
       cur_filterentry->etype = CItemData::ET_NORMAL;
-    else if (_tcscmp(m_strElemContent, _T("alias")) == 0)
+    else if (m_strElemContent == _T("alias"))
       cur_filterentry->etype = CItemData::ET_ALIAS;
-    else if (_tcscmp(m_strElemContent, _T("shortcut")) == 0)
+    else if (m_strElemContent == _T("shortcut"))
       cur_filterentry->etype = CItemData::ET_SHORTCUT;
-    else if (_tcscmp(m_strElemContent, _T("aliasbase")) == 0)
+    else if (m_strElemContent == _T("aliasbase"))
       cur_filterentry->etype = CItemData::ET_ALIASBASE;
-    else if (_tcscmp(m_strElemContent, _T("shortcutbase")) == 0)
+    else if (m_strElemContent == _T("shortcutbase"))
       cur_filterentry->etype = CItemData::ET_SHORTCUTBASE;
   } else if (!(_tcscmp(szCurElement, _T("test")) == 0 ||
                _tcscmp(szCurElement, _T("filters")) == 0))
