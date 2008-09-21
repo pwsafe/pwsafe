@@ -470,9 +470,9 @@ std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
       oss << "\"" << endl;
     }
     if (hdr.m_whenlastsaved != 0) {
-      CString wls = CString(PWSUtil::ConvertToDateTimeString(hdr.m_whenlastsaved,
-                            TMC_XML));
-      utf8conv.ToUTF8(wls, utf8, utf8Len);
+      StringX wls = PWSUtil::ConvertToDateTimeString(hdr.m_whenlastsaved,
+                                                     TMC_XML);
+      utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
       oss << "WhenLastSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);
       oss << "\"" << endl;

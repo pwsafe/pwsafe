@@ -303,12 +303,12 @@ void CPasskeyEntry::OnCreateDb()
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
-  CString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX );
+  stringT v3FileName = PWSUtil::GetNewFileName(LPCTSTR(cf), DEFAULT_SUFFIX );
 
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   v3FileName,
+                   v3FileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    SUFFIX3_FILTERS

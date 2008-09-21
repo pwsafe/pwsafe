@@ -10,7 +10,7 @@
 // VerifyFormat.h
 //-----------------------------------------------------------------------------
 
-#include "MyString.h"
+#include "StringX.h"
 #include "PwsPlatform.h"
 #include "os/typedefs.h"
 
@@ -23,7 +23,7 @@ bool VerifyXMLDateTimeString(const CString &time_str, time_t &t);
 bool VerifyXMLDateString(const CString &time_str, time_t &t);
 bool VerifyImportDateTimeString(const CString &time_str, time_t &t);
 int VerifyImportPWHistoryString(const TCHAR *PWHistory,
-                                CMyString &newPWHistory, CString &strErrors);
+                                StringX &newPWHistory, CString &strErrors);
 #endif /* __VERIFYFORMAT_H */
 //-----------------------------------------------------------------------------
 // Local variables:

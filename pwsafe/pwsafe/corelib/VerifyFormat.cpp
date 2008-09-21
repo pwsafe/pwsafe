@@ -355,7 +355,7 @@ bool VerifyXMLDateString(const CString &time_str, time_t &t)
   return true;
 }
 
-int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory, 
+int VerifyImportPWHistoryString(const TCHAR *PWHistory, StringX &newPWHistory, 
                                 CString &strErrors)
 {
   // Format is (! == mandatory blank, unless at the end of the record):
@@ -365,7 +365,7 @@ int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory,
   // Note:
   //    !yyyy/mm/dd!hh:mm:ss! may be !1970-01-01 00:00:00! meaning unknown
 
-  CMyString tmp, pwh;
+  StringX tmp, pwh;
   CString buffer;
   int ipwlen, s = -1, m = -1, n = -1;
   int rc = PWH_OK;
@@ -374,8 +374,8 @@ int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory,
   newPWHistory = _T("");
   strErrors = _T("");
 
-  pwh = CMyString(PWHistory);
-  int len = pwh.GetLength();
+  pwh = PWHistory;
+  int len = pwh.length();
   int pwleft = len;
 
   if (pwleft == 0)
@@ -386,7 +386,7 @@ int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory,
     goto exit;
   }
 
-  TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
+  const TCHAR *lpszPWHistory = pwh.c_str();
 
 #if _MSC_VER >= 1400
   int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
@@ -417,7 +417,7 @@ int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory,
   }
 
   buffer.Format(_T("%01d%02x%02x"), s, m, n);
-  newPWHistory = CMyString(buffer);
+  newPWHistory = LPCTSTR(buffer);
 
   for (int i = 0; i < n; i++) {
     if (pwleft < 26) {  //  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
@@ -433,12 +433,12 @@ int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory,
     lpszPWHistory += 1;
     pwleft -= 1;
 
-    tmp = CMyString(lpszPWHistory, 19);
+    tmp = StringX(lpszPWHistory, 19);
 
-    if (tmp.Left(10) == _T("1970-01-01"))
+    if (tmp.substr(0, 10) == _T("1970-01-01"))
       t = 0;
     else {
-      if (!VerifyImportDateTimeString(tmp, t)) {
+      if (!VerifyImportDateTimeString(tmp.c_str(), t)) {
         rc = PWH_INVALID_DATETIME;
         goto relbuf;
       }
@@ -481,9 +481,9 @@ int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory,
       goto relbuf;
     }
 
-    tmp = CMyString(lpszPWHistory, ipwlen);
+    tmp = StringX(lpszPWHistory, ipwlen);
     buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
-    newPWHistory += CMyString(buffer);
+    newPWHistory += LPCTSTR(buffer);
     buffer.Empty();
     lpszPWHistory += ipwlen;
     pwleft -= ipwlen;
@@ -492,42 +492,42 @@ int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory,
   if (pwleft > 0)
     rc = PWH_TOO_LONG;
 
-relbuf: pwh.ReleaseBuffer();
+ relbuf: // pwh.ReleaseBuffer(); - obsoleted by move to StringX
 
-exit: buffer.Format(IDSC_PWHERROR, len - pwleft + 1);
+ exit: buffer.Format(IDSC_PWHERROR, len - pwleft + 1);
   CString temp;
   switch (rc) {
-    case PWH_OK:
-    case PWH_IGNORE:
-      temp.Empty();
-      buffer.Empty();
-      break;
-    case PWH_INVALID_HDR:
-      temp.Format(IDSC_INVALIDHEADER, PWHistory);
-      break;
-    case PWH_INVALID_STATUS:
-      temp.Format(IDSC_INVALIDPWHSTATUS, s);
-      break;
-    case PWH_INVALID_NUM:
-      temp.Format(IDSC_INVALIDNUMOLDPW, n, m);
-      break;
-    case PWH_INVALID_DATETIME:
-      temp.LoadString(IDSC_INVALIDDATETIME);
-      break;
-    case PWH_INVALID_PSWD_LENGTH:
-      temp.LoadString(IDSC_INVALIDPWLENGTH);
-      break;
-    case PWH_TOO_SHORT:
-      temp.LoadString(IDSC_FIELDTOOSHORT);
-      break;
-    case PWH_TOO_LONG:
-      temp.LoadString(IDSC_FIELDTOOLONG);
-      break;
-    case PWH_INVALID_CHARACTER:
-      temp.LoadString(IDSC_INVALIDSEPARATER);
-      break;
-    default:
-      ASSERT(0);
+  case PWH_OK:
+  case PWH_IGNORE:
+    temp.Empty();
+    buffer.Empty();
+    break;
+  case PWH_INVALID_HDR:
+    temp.Format(IDSC_INVALIDHEADER, PWHistory);
+    break;
+  case PWH_INVALID_STATUS:
+    temp.Format(IDSC_INVALIDPWHSTATUS, s);
+    break;
+  case PWH_INVALID_NUM:
+    temp.Format(IDSC_INVALIDNUMOLDPW, n, m);
+    break;
+  case PWH_INVALID_DATETIME:
+    temp.LoadString(IDSC_INVALIDDATETIME);
+    break;
+  case PWH_INVALID_PSWD_LENGTH:
+    temp.LoadString(IDSC_INVALIDPWLENGTH);
+    break;
+  case PWH_TOO_SHORT:
+    temp.LoadString(IDSC_FIELDTOOSHORT);
+    break;
+  case PWH_TOO_LONG:
+    temp.LoadString(IDSC_FIELDTOOLONG);
+    break;
+  case PWH_INVALID_CHARACTER:
+    temp.LoadString(IDSC_INVALIDSEPARATER);
+    break;
+  default:
+    ASSERT(0);
   }
   strErrors = buffer + temp;
   if (rc != PWH_OK)

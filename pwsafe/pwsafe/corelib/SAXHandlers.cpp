@@ -534,13 +534,13 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       tempitem.SetPWPolicy(cur_entry->pwp);
     }
 
-    CMyString newPWHistory;
+    StringX newPWHistory;
     CString strPWHErrors, buffer;
     buffer.Format(IDSC_SAXERRORPWH,
       cur_entry->group, cur_entry->title, cur_entry->username);
     switch (VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
       case PWH_OK:
-        tempitem.SetPWHistory(newPWHistory);
+        tempitem.SetPWHistory(newPWHistory.c_str());
         buffer.Empty();
         break;
       case PWH_IGNORE:
