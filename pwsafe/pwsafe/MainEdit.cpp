@@ -1633,9 +1633,9 @@ bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
         break;
       case -3: // [g:t:u], [g:t:], [:t:u], [:t:] (title cannot be empty)
       {
-        const bool bGE = pl.csPwdGroup.IsEmpty() == TRUE;
-        const bool bTE = pl.csPwdTitle.IsEmpty() == TRUE;
-        const bool bUE = pl.csPwdUser.IsEmpty() == TRUE;
+        const bool bGE = pl.csPwdGroup.empty();
+        const bool bTE = pl.csPwdTitle.empty();
+        const bool bUE = pl.csPwdUser.empty();
         if (bTE) {
           // Title is mandatory for all entries!
           AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);

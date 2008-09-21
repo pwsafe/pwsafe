@@ -204,7 +204,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
     return status;
   }
 
-  m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
+  m_hdr.m_prefString = LPCTSTR(PWSprefs::GetInstance()->Store());
   m_hdr.m_whatlastsaved = m_AppNameAndVersion;
 
   out->SetHeader(m_hdr);
@@ -1420,19 +1420,19 @@ struct FieldsMatch {
             m_title == item.GetTitle() &&
             m_user == item.GetUser());
   }
-  FieldsMatch(const CMyString &a_group,const CMyString &a_title,
-              const CMyString &a_user) :
+  FieldsMatch(const StringX &a_group, const StringX &a_title,
+              const StringX &a_user) :
   m_group(a_group), m_title(a_title), m_user(a_user) {}
 
 private:
-  const CMyString &m_group;
-  const CMyString &m_title;
-  const CMyString &m_user;
+  const StringX &m_group;
+  const StringX &m_title;
+  const StringX &m_user;
 };
 
 // Finds stuff based on title, group & user fields only
-ItemListIter PWScore::Find(const CMyString &a_group,const CMyString &a_title,
-                           const CMyString &a_user)
+ItemListIter PWScore::Find(const StringX &a_group,const StringX &a_title,
+                           const StringX &a_user)
 {
   FieldsMatch fields_match(a_group, a_title, a_user);
 
@@ -1446,14 +1446,14 @@ struct TitleMatch {
     const CItemData &item = p.second;
     return (m_title == item.GetTitle());
   }
-  TitleMatch(const CMyString &a_title) :
+  TitleMatch(const StringX &a_title) :
     m_title(a_title) {}
 
 private:
-  const CMyString &m_title;
+  const StringX &m_title;
 };
 
-ItemListIter PWScore::GetUniqueBase(const CMyString &a_title, bool &bMultiple)
+ItemListIter PWScore::GetUniqueBase(const StringX &a_title, bool &bMultiple)
 {
   ItemListIter retval(m_pwlist.end());
   int num(0);
@@ -1488,16 +1488,17 @@ struct GroupTitle_TitleUserMatch {
     return ((m_gt == item.GetGroup() && m_tu == item.GetTitle()) ||
             (m_gt == item.GetTitle() && m_tu == item.GetUser()));
   }
-  GroupTitle_TitleUserMatch(const CMyString &a_grouptitle, const CMyString &a_titleuser) :
+  GroupTitle_TitleUserMatch(const StringX &a_grouptitle,
+                            const StringX &a_titleuser) :
                             m_gt(a_grouptitle),  m_tu(a_titleuser) {}
 
 private:
-  const CMyString &m_gt;
-  const CMyString &m_tu;
+  const StringX &m_gt;
+  const StringX &m_tu;
 };
 
-ItemListIter PWScore::GetUniqueBase(const CMyString &grouptitle, 
-                                    const CMyString &titleuser, bool &bMultiple)
+ItemListIter PWScore::GetUniqueBase(const StringX &grouptitle, 
+                                    const StringX &titleuser, bool &bMultiple)
 {
   ItemListIter retval(m_pwlist.end());
   int num(0);
@@ -1942,10 +1943,10 @@ void PWScore::GetFileUUID(uuid_array_t &file_uuid_array) const
   memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(file_uuid_array));
 }
 
-CMyString PWScore::GetUniqueTitle(const CMyString &path, const CMyString &title,
-                                  const CMyString &user, const int IDS_MESSAGE)
+StringX PWScore::GetUniqueTitle(const StringX &path, const StringX &title,
+                                const StringX &user, const int IDS_MESSAGE)
 {
-  CMyString new_title(title);
+  CMyString new_title(title.c_str());
   if (Find(path, title, user) != m_pwlist.end()) {
     // Find a unique "Title"
     ItemListConstIter listpos;
@@ -1958,7 +1959,7 @@ CMyString PWScore::GetUniqueTitle(const CMyString &path, const CMyString &title,
       listpos = Find(path, new_title, user);
     } while (listpos != m_pwlist.end());
   }
-  return new_title;
+  return LPCTSTR(new_title);
 }
 
 void PWScore::AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid, 
@@ -2346,7 +2347,7 @@ void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &tl
   }
 }
 
-bool PWScore::GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl)
+bool PWScore::GetBaseEntry(const StringX &passwd, GetBaseEntryPL &pl)
 {
   // pl.ibasedata is:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
@@ -2358,6 +2359,8 @@ bool PWScore::GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl)
   pl.bMultipleEntriesFound = false;
   memset(pl.base_uuid, 0x00, sizeof(uuid_array_t));
 
+  CMyString Password(passwd.c_str()); // chicken out CMyString removal 4now
+
   int num_colonsP1 = CMyString(Password).Replace(_T(':'), _T(';')) + 1;
   if (Password.Left(1) == CMyString(_T("[")) &&
       Password.Right(1) == CMyString(_T("]")) &&
@@ -2367,35 +2370,35 @@ bool PWScore::GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl)
     switch (num_colonsP1) {
       case 1:
         // [X] - OK if unique entry [g:X:u], [g:X:], [:X:u] or [:X:] exists for any value of g or u
-        pl.csPwdTitle = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
+        pl.csPwdTitle = LPCTSTR(Password.Mid(1, Password.GetLength() - 2));  // Skip over '[' & ']'
         iter = GetUniqueBase(pl.csPwdTitle, pl.bMultipleEntriesFound);
         if (iter != m_pwlist.end()) {
           // Fill in the fields found during search
-          pl.csPwdGroup = iter->second.GetGroup();
-          pl.csPwdUser = iter->second.GetUser();
+          pl.csPwdGroup = LPCTSTR(iter->second.GetGroup());
+          pl.csPwdUser = LPCTSTR(iter->second.GetUser());
         }
         break;
       case 2:
         // [X:Y] - OK if unique entry [X:Y:u] or [g:X:Y] exists for any value of g or u
         pl.csPwdUser = _T("");
         tmp = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
-        pl.csPwdGroup = tmp.SpanExcluding(_T(":"));
-        pl.csPwdTitle = tmp.Mid(pl.csPwdGroup.GetLength() + 1);  // Skip over 'group:'
+        pl.csPwdGroup = LPCTSTR(tmp.SpanExcluding(_T(":")));
+        pl.csPwdTitle = LPCTSTR(tmp.Mid(pl.csPwdGroup.length() + 1));  // Skip over 'group:'
         iter = GetUniqueBase(pl.csPwdGroup, pl.csPwdTitle, pl.bMultipleEntriesFound);
         if (iter != m_pwlist.end()) {
           // Fill in the fields found during search
-          pl.csPwdGroup = iter->second.GetGroup();
-          pl.csPwdTitle = iter->second.GetTitle();
-          pl.csPwdUser = iter->second.GetUser();
+          pl.csPwdGroup = LPCTSTR(iter->second.GetGroup());
+          pl.csPwdTitle = LPCTSTR(iter->second.GetTitle());
+          pl.csPwdUser = LPCTSTR(iter->second.GetUser());
         }
         break;
       case 3:
         // [X:Y:Z], [X:Y:], [:Y:Z], [:Y:] (title cannot be empty)
         tmp = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
-        pl.csPwdGroup = tmp.SpanExcluding(_T(":"));
-        tmp = tmp.Mid(pl.csPwdGroup.GetLength() + 1);  // Skip over 'group:'
-        pl.csPwdTitle = tmp.SpanExcluding(_T(":"));    // Skip over 'title:'
-        pl.csPwdUser = tmp.Mid(pl.csPwdTitle.GetLength() + 1);
+        pl.csPwdGroup = LPCTSTR(tmp.SpanExcluding(_T(":")));
+        tmp = tmp.Mid(pl.csPwdGroup.length() + 1);  // Skip over 'group:'
+        pl.csPwdTitle = LPCTSTR(tmp.SpanExcluding(_T(":")));    // Skip over 'title:'
+        pl.csPwdUser = LPCTSTR(tmp.Mid(pl.csPwdTitle.length() + 1));
         iter = Find(pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
         break;
       default:

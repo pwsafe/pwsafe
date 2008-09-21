@@ -25,7 +25,7 @@
 
 using namespace std;
 
-PWSfile *PWSfile::MakePWSfile(const CMyString &a_filename, VERSION &version,
+PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
                               RWmode mode, int &status)
 {
   if (mode == Read && !FileExists(a_filename)) {
@@ -58,25 +58,25 @@ PWSfile *PWSfile::MakePWSfile(const CMyString &a_filename, VERSION &version,
   }
 }
 
-bool PWSfile::FileExists(const CMyString &filename)
+bool PWSfile::FileExists(const StringX &filename)
 {
   struct _stat statbuf;
   int status;
 
-  status = ::_tstat(filename, &statbuf);
+  status = ::_tstat(filename.c_str(), &statbuf);
   return (status == 0);
 }
 
-bool PWSfile::FileExists(const CMyString &filename, bool &bReadOnly)
+bool PWSfile::FileExists(const StringX &filename, bool &bReadOnly)
 {
   struct _stat statbuf;
   int status;
 
-  status = ::_tstat(filename, &statbuf);
+  status = ::_tstat(filename.c_str(), &statbuf);
 
   // As "stat" gives "user permissions" not "file attributes"....
   if (status == 0) {
-    DWORD dwAttr = GetFileAttributes(filename);
+    DWORD dwAttr = GetFileAttributes(filename.c_str());
     bReadOnly = (FILE_ATTRIBUTE_READONLY & dwAttr) == FILE_ATTRIBUTE_READONLY;
     return true;
   } else {
@@ -95,9 +95,9 @@ void PWSfile::FileError(int formatRes, int cause)
   AfxMessageBox(cs_msg, MB_OK);
 }
 
-PWSfile::VERSION PWSfile::ReadVersion(const CMyString &filename)
+PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename)
 {
-  if (FileExists(filename)) {
+  if (FileExists(filename.c_str())) {
     VERSION v;
     if (PWSfileV3::IsV3x(filename, v))
       return v;
@@ -107,15 +107,15 @@ PWSfile::VERSION PWSfile::ReadVersion(const CMyString &filename)
     return UNKNOWN_VERSION;
 }
 
-int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
+int PWSfile::RenameFile(const StringX &oldname, const StringX &newname)
 {
-  _tremove(newname); // otherwise rename will fail if newname exists
-  int status = _trename(oldname, newname);
+  _tremove(newname.c_str()); // otherwise rename will fail if newname exists
+  int status = _trename(oldname.c_str(), newname.c_str());
 
   return (status == 0) ? SUCCESS : FAILURE;
 }
 
-PWSfile::PWSfile(const CMyString &filename, RWmode mode)
+PWSfile::PWSfile(const StringX &filename, RWmode mode)
   : m_filename(filename), m_passkey(_T("")),  m_defusername(_T("")),
   m_curversion(UNKNOWN_VERSION), m_rw(mode),
   m_fd(NULL), m_fish(NULL), m_terminal(NULL),
@@ -176,9 +176,9 @@ void PWSfile::FOpen()
   TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
   // calls right variant of m_fd = fopen(m_filename);
 #if _MSC_VER >= 1400
-  _tfopen_s(&m_fd, (LPCTSTR) m_filename, m);
+  _tfopen_s(&m_fd, m_filename.c_str(), m);
 #else
-  m_fd = _tfopen((LPCTSTR) m_filename, m);
+  m_fd = _tfopen(m_filename.c_str(), m);
 #endif
   m_fileLength = PWSUtil::fileLength(m_fd);
 }
@@ -231,8 +231,8 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
   return retval;
 }
 
-int PWSfile::CheckPassword(const CMyString &filename,
-                           const CMyString &passkey, VERSION &version)
+int PWSfile::CheckPassword(const StringX &filename,
+                           const StringX &passkey, VERSION &version)
 {
   int status;
 
@@ -614,7 +614,7 @@ ErrorMessages(const CString &fn, FILE *fp)
   }
 }
 
-bool PWSfile::Encrypt(const CString &fn, const CMyString &passwd)
+bool PWSfile::Encrypt(const CString &fn, const StringX &passwd)
 {
   unsigned int len;
   unsigned char* buf;
@@ -688,7 +688,7 @@ bool PWSfile::Encrypt(const CString &fn, const CMyString &passwd)
   return true;
 }
 
-bool PWSfile::Decrypt(const CString &fn, const CMyString &passwd)
+bool PWSfile::Decrypt(const CString &fn, const StringX &passwd)
 {
   unsigned int len;
   unsigned char* buf;

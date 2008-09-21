@@ -13,7 +13,6 @@
 
 #include <map> // for CList
 #include "ItemData.h"
-#include "MyString.h"
 #include "StringX.h"
 #include "PWSfile.h"
 #include "PWSFilters.h"
@@ -44,9 +43,9 @@ typedef std::pair <CUUIDGen, CUUIDGen> ItemMap_Pair;
 // Parameter list for GetBaseEntry
 struct GetBaseEntryPL {
   // All fields except "InputType" are 'output'.
-  CMyString csPwdGroup;
-  CMyString csPwdTitle;
-  CMyString csPwdUser;
+  StringX csPwdGroup;
+  StringX csPwdTitle;
+  StringX csPwdUser;
   uuid_array_t base_uuid;
   CItemData::EntryType InputType;
   CItemData::EntryType TargetType;
@@ -167,8 +166,8 @@ public:
 
   // Return list of unique groups
   void GetUniqueGroups(CStringArray &ary) const;
-  CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-                           const CMyString &user, const int IDS_MESSAGE);
+  StringX GetUniqueTitle(const StringX &path, const StringX &title,
+                         const StringX &user, const int IDS_MESSAGE);
 
   ItemListIter GetEntryIter()
   {return m_pwlist.begin();}
@@ -189,8 +188,8 @@ public:
   void RemoveEntryAt(ItemListIter pos)
   {m_changed = true; NotifyListModified(); m_pwlist.erase(pos);}
   // Find in m_pwlist by title and user name, exact match
-  ItemListIter Find(const CMyString &a_group,
-                    const CMyString &a_title, const CMyString &a_user);
+  ItemListIter Find(const StringX &a_group,
+                    const StringX &a_title, const StringX &a_user);
   ItemListIter Find(const uuid_array_t &entry_uuid)
   {return m_pwlist.find(entry_uuid);}
   ItemListConstIter Find(const uuid_array_t &entry_uuid) const
@@ -213,7 +212,7 @@ public:
                            const int &iVia);
   bool GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid, 
                                  const CItemData::EntryType type);
-  bool GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl);
+  bool GetBaseEntry(const StringX &passwd, GetBaseEntryPL &pl);
 
   // Actions for Aliases only
   void ResetAllAliasPasswords(const uuid_array_t &base_uuid);
@@ -236,9 +235,9 @@ public:
   int NumShortcuts(const uuid_array_t &base_uuid)
   {return m_base2shortcuts_mmap.count(base_uuid);}
 
-  ItemListIter GetUniqueBase(const CMyString &title, bool &bMultiple);
-  ItemListIter GetUniqueBase(const CMyString &grouptitle, 
-                             const CMyString &titleuser, bool &bMultiple);
+  ItemListIter GetUniqueBase(const StringX &title, bool &bMultiple);
+  ItemListIter GetUniqueBase(const StringX &grouptitle, 
+                             const StringX &titleuser, bool &bMultiple);
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...

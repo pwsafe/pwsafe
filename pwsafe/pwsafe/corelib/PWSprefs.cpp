@@ -33,7 +33,7 @@ HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
 int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
-CString PWSprefs::m_configfilename; // may be set before singleton created
+StringX PWSprefs::m_configfilename; // may be set before singleton created
 
 // 1st parameter = name of preference
 // 2nd parameter = default value
@@ -601,7 +601,7 @@ void PWSprefs::InitializePreferences()
   PWSdirs dirs(PWSdirs::GetConfigDir());
 
   // Set path & name of config file
-  if (m_configfilename.IsEmpty()) {
+  if (m_configfilename.empty()) {
     m_configfilename = PWSdirs::GetConfigDir().c_str();
     m_configfilename += _T("pwsafe.cfg");
   }
@@ -665,8 +665,8 @@ void PWSprefs::InitializePreferences()
     // We assume that if we can create a lock file, we can create
     // a config file in the same directory
     StringX locker;
-    if (LockCFGFile(m_configfilename.GetString(), locker)) {
-      UnlockCFGFile(m_configfilename.GetString());
+    if (LockCFGFile(m_configfilename, locker)) {
+      UnlockCFGFile(m_configfilename);
     } else {
       m_ConfigOptions = CF_REGISTRY; // CF_FILE_RW_NEW -> CF_REGISTRY
     }
@@ -848,7 +848,7 @@ bool PWSprefs::LoadProfileFromFile()
   bool retval;
   CString ts, csSubkey;
 
-  m_XML_Config = new CXMLprefs(m_configfilename);
+  m_XML_Config = new CXMLprefs(m_configfilename.c_str());
   if (!m_XML_Config->Load()) {
     retval = false;
     goto exit;
@@ -956,7 +956,7 @@ void PWSprefs::SaveApplicationPreferences()
       // Load prefs file in case it was changed elsewhere
       // Here we need to explicitly lock from before
       // load to after store
-      m_XML_Config = new CXMLprefs(m_configfilename);
+    m_XML_Config = new CXMLprefs(m_configfilename.c_str());
       if (!m_XML_Config->Lock()) {
         // punt to registry!
         m_ConfigOptions = CF_REGISTRY;

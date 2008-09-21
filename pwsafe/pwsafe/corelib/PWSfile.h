@@ -57,7 +57,7 @@ public:
     uuid_array_t m_file_uuid_array;
     int m_nITER; // Formally not part of the header.
     std::vector<bool> m_displaystatus; // tree expansion  state vector
-    CMyString m_prefString; // prefererences stored in the file
+    StringX m_prefString; // prefererences stored in the file
     time_t m_whenlastsaved; // When last saved
     CString m_lastsavedby; // and by whom
     CString m_lastsavedon; // and by which machine
@@ -65,16 +65,16 @@ public:
     CString m_dbname, m_dbdesc; // descriptive name, description
   };
 
-  static PWSfile *MakePWSfile(const CMyString &a_filename, VERSION &version,
+  static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
                               RWmode mode, int &status);
 
-  static bool FileExists(const CMyString &filename);
-  static bool FileExists(const CMyString &filename, bool &bReadOnly);
+  static bool FileExists(const StringX &filename);
+  static bool FileExists(const StringX &filename, bool &bReadOnly);
   static void FileError(int formatRes, int cause);
-  static VERSION ReadVersion(const CMyString &filename);
-  static int RenameFile(const CMyString &oldname, const CMyString &newname);
-  static int CheckPassword(const CMyString &filename,
-                           const CMyString &passkey, VERSION &version);
+  static VERSION ReadVersion(const StringX &filename);
+  static int RenameFile(const StringX &oldname, const StringX &newname);
+  static int CheckPassword(const StringX &filename,
+                           const StringX &passkey, VERSION &version);
 
   static bool LockFile(const StringX &filename, StringX &locker,
                        HANDLE &lockFileHandle, int &LockCount);
@@ -83,12 +83,12 @@ public:
                          HANDLE &lockFileHandle, int &LockCount);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
-  static bool Encrypt(const CString &fn, const CMyString &passwd);
-  static bool Decrypt(const CString &fn, const CMyString &passwd);
+  static bool Encrypt(const CString &fn, const StringX &passwd);
+  static bool Decrypt(const CString &fn, const StringX &passwd);
 
   virtual ~PWSfile();
 
-  virtual int Open(const CMyString &passkey) = 0;
+  virtual int Open(const StringX &passkey) = 0;
   virtual int Close();
 
   virtual int WriteRecord(const CItemData &item) = 0;
@@ -105,15 +105,15 @@ public:
   {return m_nRecordsWithUnknownFields;}
   
 protected:
-  PWSfile(const CMyString &filename, RWmode mode);
+  PWSfile(const StringX &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
   virtual size_t WriteCBC(unsigned char type, const CString &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           unsigned int length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          unsigned int &length);
-  const CMyString m_filename;
-  CMyString m_passkey;
+  const StringX m_filename;
+  StringX m_passkey;
   FILE *m_fd;
   VERSION m_curversion;
   const RWmode m_rw;

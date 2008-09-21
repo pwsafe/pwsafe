@@ -18,13 +18,13 @@
 class PWSfileV1V2 : public PWSfile
 {
 public:
-  static int CheckPassword(const CMyString &filename,
-    const CMyString &passkey, FILE *a_fd = NULL);
+  static int CheckPassword(const StringX &filename,
+                           const StringX &passkey, FILE *a_fd = NULL);
 
-  PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version);
+  PWSfileV1V2(const StringX &filename, RWmode mode, VERSION version);
   ~PWSfileV1V2();
 
-  virtual int Open(const CMyString &passkey);
+  virtual int Open(const StringX &passkey);
   virtual int Close();
 
   virtual int WriteRecord(const CItemData &item);
@@ -34,7 +34,7 @@ protected:
   virtual size_t WriteCBC(unsigned char type, const CString &data);
 
 private:
-  size_t ReadCBC(unsigned char &type, CMyString &data);
+  size_t ReadCBC(unsigned char &type, StringX &data);
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];
   unsigned char m_ipthing[BlowFish::BLOCKSIZE]; // for CBC
