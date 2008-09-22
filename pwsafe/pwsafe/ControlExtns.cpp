@@ -543,13 +543,15 @@ CMyString CSecEditExtn::GetSecureText() const
 void CSecEditExtn::SetSecureText(const CMyString &str)
 {
   m_impl->m_field.Set(str, m_impl->m_bf);
-  if (!m_secure)
-    SetWindowText(str);
-  else if (::IsWindow(m_hWnd)) {
-    CString blanks;
-    for (int i = 0; i < str.GetLength(); i++)
-      blanks += FILLER;
-    SetWindowText(blanks);
+  if (::IsWindow(m_hWnd)) {
+    if (!m_secure)
+      SetWindowText(str);
+    else {
+      CString blanks;
+      for (int i = 0; i < str.GetLength(); i++)
+        blanks += FILLER;
+      SetWindowText(blanks);
+    }
   }
 }
 
