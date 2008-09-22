@@ -562,7 +562,7 @@ void DboxMain::InitPasswordSafe()
 
   // Set up fonts before playing with Tree/List views
   m_pFontTree = new CFont;
-  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont);
+  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
 
   if (szTreeFont != _T("")) {
     LOGFONT *ptreefont = new LOGFONT;
@@ -577,7 +577,7 @@ void DboxMain::InitPasswordSafe()
   }
 
   // Set up fonts before playing with Tree/List views
-  CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont);
+  CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
   if (szPasswordFont != _T("")) {
     LOGFONT *pPasswordfont = new LOGFONT;
@@ -587,7 +587,7 @@ void DboxMain::InitPasswordSafe()
     delete pPasswordfont;
   }
 
-  const CString lastView = prefs->GetPref(PWSprefs::LastView);
+  const CString lastView = prefs->GetPref(PWSprefs::LastView).c_str();
   if (lastView != _T("list"))
     OnTreeView();
   else
@@ -595,8 +595,8 @@ void DboxMain::InitPasswordSafe()
 
   CalcHeaderWidths();
 
-  CString cs_ListColumns = prefs->GetPref(PWSprefs::ListColumns);
-  CString cs_ListColumnsWidths = prefs->GetPref(PWSprefs::ColumnWidths);
+  CString cs_ListColumns = prefs->GetPref(PWSprefs::ListColumns).c_str();
+  CString cs_ListColumnsWidths = prefs->GetPref(PWSprefs::ColumnWidths).c_str();
 
   if (cs_ListColumns.IsEmpty())
     SetColumns();
