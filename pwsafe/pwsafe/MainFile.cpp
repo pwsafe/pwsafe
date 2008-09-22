@@ -646,8 +646,8 @@ int DboxMain::Save()
     if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
       int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
       int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-      CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
-      CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
+      CString userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+      CString userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
       if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
         userBackupPrefix, userBackupDir))
         AfxMessageBox(IDS_NOIBACKUP, MB_OK);
@@ -2244,8 +2244,8 @@ int DboxMain::SaveCore(PWScore *pcore)
     if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
       int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
       int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-      CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
-      CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
+      CString userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+      CString userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
       if (!pcore->BackupCurFile(maxNumIncBackups, backupSuffix, userBackupPrefix, userBackupDir))
         AfxMessageBox(IDS_NOIBACKUP, MB_OK);
     }
@@ -2512,8 +2512,8 @@ void DboxMain::OnOK()
 
   prefs->SetPref(PWSprefs::SortedColumn, m_iTypeSortColumn);
   prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
-  prefs->SetPref(PWSprefs::ListColumns, cs_columns);
-  prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
+  prefs->SetPref(PWSprefs::ListColumns, LPCTSTR(cs_columns));
+  prefs->SetPref(PWSprefs::ColumnWidths, LPCTSTR(cs_columnswidths));
 
   SaveDisplayStatus(); // since it's not always up to date
   // (CPWTreeCtrl::OnExpandCollapse not always called!)

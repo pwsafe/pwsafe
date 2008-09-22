@@ -29,7 +29,6 @@
 * identified in storage by their type and index.
 */
 
-#include "MyString.h"
 #include "StringX.h"
 #include "PWSfile.h"
 
@@ -45,8 +44,8 @@ public:
   static void DeleteInstance();
   static void SetConfigFile(const CString &fn) {m_configfilename = fn;}
   // prefString is stored on file, format described in PWSprefs.cpp
-  void Load(const CMyString &prefString);
-  CMyString Store(); // returns string for saving in file
+  void Load(const StringX &prefString);
+  StringX Store(); // returns string for saving in file
 
   void SaveApplicationPreferences();
 
@@ -126,7 +125,7 @@ public:
   unsigned int GetPref(IntPrefs pref_enum) const;
   // Following for case where default value is determined @ runtime
   unsigned int GetPref(IntPrefs pref_enum, unsigned int defVal) const;
-  CMyString GetPref(StringPrefs pref_enum) const;
+  StringX GetPref(StringPrefs pref_enum) const;
 
   // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
@@ -136,7 +135,7 @@ public:
 
   void SetPref(BoolPrefs pref_enum, bool value);
   void SetPref(IntPrefs pref_enum, unsigned int value);
-  void SetPref(StringPrefs pref_enum, const CMyString &value);
+  void SetPref(StringPrefs pref_enum, const StringX &value);
 
   // CPSWRecentFileList needs to know if it can use registry or not:
   bool IsUsingRegistry() const {return m_ConfigOptions == CF_REGISTRY;}
@@ -167,11 +166,11 @@ private:
   // Preferences changed (Database or Application)
   enum {DB_PREF = 0, APP_PREF = 1};
 
-  bool WritePref(const CMyString &name, bool val);
-  bool WritePref(const CMyString &name, unsigned int val);
-  bool WritePref(const CMyString &name, const CMyString &val);
+  bool WritePref(const StringX &name, bool val);
+  bool WritePref(const StringX &name, unsigned int val);
+  bool WritePref(const StringX &name, const StringX &val);
   void UpdateTimeStamp();
-  bool DeletePref(const CMyString &name);
+  bool DeletePref(const StringX &name);
   void InitializePreferences();
   void LoadProfileFromDefaults();
   bool LoadProfileFromFile();
@@ -207,7 +206,7 @@ private:
   // current values
   bool m_boolValues[NumBoolPrefs];
   unsigned int m_intValues[NumIntPrefs];
-  CMyString m_stringValues[NumStringPrefs];
+  StringX m_stringValues[NumStringPrefs];
   struct {long top, bottom, left, right; bool changed;} m_rect;
   bool m_boolChanged[NumBoolPrefs];
   bool m_intChanged[NumIntPrefs];

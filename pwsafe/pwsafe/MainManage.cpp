@@ -360,16 +360,16 @@ void DboxMain::OnOptions()
 
   misc.m_usedefuser = prefs->
     GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
-  misc.m_defusername = CString(prefs->
-    GetPref(PWSprefs::DefaultUsername));
+  misc.m_defusername = prefs->
+    GetPref(PWSprefs::DefaultUsername).c_str();
   misc.m_querysetdef = prefs->
     GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
-  misc.m_csBrowser = CString(prefs->
-    GetPref(PWSprefs::AltBrowser));
-  misc.m_csBrowserCmdLineParms = CString(prefs->
-    GetPref(PWSprefs::AltBrowserCmdLineParms));
-  CString dats = CString(prefs->
-    GetPref(PWSprefs::DefaultAutotypeString));
+  misc.m_csBrowser = prefs->
+    GetPref(PWSprefs::AltBrowser).c_str();
+  misc.m_csBrowserCmdLineParms = prefs->
+    GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
+  CString dats = prefs->
+    GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (dats.IsEmpty())
     dats = DEFAULT_AUTOTYPE;
   misc.m_csAutotype = CString(dats);
@@ -382,14 +382,14 @@ void DboxMain::OnOptions()
   backup.m_backupbeforesave = prefs->
     GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
   CString backupPrefix(prefs->
-    GetPref(PWSprefs::BackupPrefixValue));
+                       GetPref(PWSprefs::BackupPrefixValue).c_str());
   backup.m_backupprefix = backupPrefix.IsEmpty() ? 0 : 1;
   backup.m_userbackupprefix = backupPrefix;
   backup.m_backupsuffix = prefs->
     GetPref(PWSprefs::BackupSuffix);
   backup.m_maxnumincbackups = prefs->
     GetPref(PWSprefs::BackupMaxIncremented);
-  CString backupDir(prefs->GetPref(PWSprefs::BackupDir));
+  CString backupDir(prefs->GetPref(PWSprefs::BackupDir).c_str());
   backup.m_backuplocation = backupDir.IsEmpty() ? 0 : 1;
   backup.m_userbackupotherlocation = backupDir;
 
@@ -554,18 +554,18 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::UseDefaultUser,
       misc.m_usedefuser == TRUE);
     prefs->SetPref(PWSprefs::DefaultUsername,
-      misc.m_defusername);
+                   LPCTSTR(misc.m_defusername));
     prefs->SetPref(PWSprefs::QuerySetDef,
       misc.m_querysetdef == TRUE);
     prefs->SetPref(PWSprefs::AltBrowser,
-      misc.m_csBrowser);
+                   LPCTSTR(misc.m_csBrowser));
     prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
-      misc.m_csBrowserCmdLineParms);
+                   LPCTSTR(misc.m_csBrowserCmdLineParms));
     if (misc.m_csAutotype.IsEmpty() || misc.m_csAutotype == DEFAULT_AUTOTYPE)
       prefs->SetPref(PWSprefs::DefaultAutotypeString, _T(""));
     else if (misc.m_csAutotype != DEFAULT_AUTOTYPE)
       prefs->SetPref(PWSprefs::DefaultAutotypeString,
-      misc.m_csAutotype);
+                     LPCTSTR(misc.m_csAutotype));
     prefs->SetPref(PWSprefs::MinimizeOnAutotype,
       misc.m_minauto == TRUE);
 
@@ -574,13 +574,13 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::BackupBeforeEverySave,
       backup.m_backupbeforesave == TRUE);
     prefs->SetPref(PWSprefs::BackupPrefixValue,
-      backup.m_userbackupprefix);
+                   LPCTSTR(backup.m_userbackupprefix));
     prefs->SetPref(PWSprefs::BackupSuffix,
       (unsigned int)backup.m_backupsuffix);
     prefs->SetPref(PWSprefs::BackupMaxIncremented,
       backup.m_maxnumincbackups);
     prefs->SetPref(PWSprefs::BackupDir,
-      backup.m_userbackupotherlocation);
+                   LPCTSTR(backup.m_userbackupotherlocation));
 
     // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
@@ -622,8 +622,8 @@ void DboxMain::OnOptions()
         // the user made to the database are also saved here
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-        CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
-        CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
+        CString userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+        CString userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
         m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
                              userBackupPrefix, userBackupDir); // try to save previous version
         if (app.m_core.WriteCurFile() != PWScore::SUCCESS)

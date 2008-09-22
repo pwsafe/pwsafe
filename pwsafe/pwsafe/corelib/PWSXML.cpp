@@ -253,9 +253,11 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
             if (pCH->m_iPWUppercaseMinLength != -1)
               prefs->SetPref(PWSprefs::PWUppercaseMinLength, pCH->m_iPWUppercaseMinLength);
             if (!pCH->m_sDefaultAutotypeString.IsEmpty())
-              prefs->SetPref(PWSprefs::DefaultAutotypeString, pCH->m_sDefaultAutotypeString);
+              prefs->SetPref(PWSprefs::DefaultAutotypeString,
+                             LPCTSTR(pCH->m_sDefaultAutotypeString));
             if (!pCH->m_sDefaultUsername.IsEmpty())
-              prefs->SetPref(PWSprefs::DefaultUsername, pCH->m_sDefaultUsername);
+              prefs->SetPref(PWSprefs::DefaultUsername,
+                             LPCTSTR(pCH->m_sDefaultUsername));
           } else
             m_bDatabaseHeaderErrors = false;
         }

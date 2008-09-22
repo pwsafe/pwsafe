@@ -211,7 +211,7 @@ unsigned int PWSprefs::GetPref(IntPrefs pref_enum) const
   return m_intValues[pref_enum];
 }
 
-CMyString PWSprefs::GetPref(StringPrefs pref_enum) const
+StringX PWSprefs::GetPref(StringPrefs pref_enum) const
 {
   return m_stringValues[pref_enum];
 }
@@ -306,7 +306,7 @@ void PWSprefs::SetPref(IntPrefs pref_enum, unsigned int value)
   }
 }
 
-void PWSprefs::SetPref(StringPrefs pref_enum, const CMyString &value)
+void PWSprefs::SetPref(StringPrefs pref_enum, const StringX &value)
 {
   // ONLY save in memory - written out at database save (to database and config destination)
   m_prefs_changed[m_string_prefs[pref_enum].pt == ptDatabase ? DB_PREF : APP_PREF] |=
@@ -318,17 +318,40 @@ void PWSprefs::SetPref(StringPrefs pref_enum, const CMyString &value)
   }
 }
 
-bool PWSprefs::WritePref(const CMyString &name, bool val)
+bool PWSprefs::WritePref(const StringX &name, bool val)
+{
+  // Used to save to config destination at database save and application termination
+  bool bRetVal(false);
+  switch (m_ConfigOptions) {
+  case CF_REGISTRY:
+    bRetVal = (m_app->WriteProfileInt(PWS_REG_OPTIONS, name.c_str(),
+                                      val ? 1 : 0) == TRUE);
+    break;
+  case CF_FILE_RW:
+  case CF_FILE_RW_NEW:
+    bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name.c_str(),
+                                 val ? 1 : 0) == 0);
+    break;
+  case CF_FILE_RO:
+  case CF_NONE:
+  default:
+    break;
+  }
+  return bRetVal;
+}
+
+bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 {
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      bRetVal = (m_app->WriteProfileInt(PWS_REG_OPTIONS, name, val ? 1 : 0) == TRUE);
+      bRetVal = (m_app->WriteProfileInt(PWS_REG_OPTIONS, name.c_str(),
+                                        val) == TRUE);
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
-      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val ? 1 : 0) == 0);
+      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name.c_str(), val) == 0);
       break;
     case CF_FILE_RO:
     case CF_NONE:
@@ -338,17 +361,19 @@ bool PWSprefs::WritePref(const CMyString &name, bool val)
   return bRetVal;
 }
 
-bool PWSprefs::WritePref(const CMyString &name, unsigned int val)
+bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 {
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      bRetVal = (m_app->WriteProfileInt(PWS_REG_OPTIONS, name, val) == TRUE);
+      bRetVal = (m_app->WriteProfileString(PWS_REG_OPTIONS, name.c_str(),
+                                           val.c_str()) == TRUE);
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
-      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val) == 0);
+      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF,
+                                   name.c_str(), val.c_str()) == 0);
       break;
     case CF_FILE_RO:
     case CF_NONE:
@@ -358,27 +383,7 @@ bool PWSprefs::WritePref(const CMyString &name, unsigned int val)
   return bRetVal;
 }
 
-bool PWSprefs::WritePref(const CMyString &name, const CMyString &val)
-{
-  // Used to save to config destination at database save and application termination
-  bool bRetVal(false);
-  switch (m_ConfigOptions) {
-    case CF_REGISTRY:
-      bRetVal = (m_app->WriteProfileString(PWS_REG_OPTIONS, name, val) == TRUE);
-      break;
-    case CF_FILE_RW:
-    case CF_FILE_RW_NEW:
-      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val) == 0);
-      break;
-    case CF_FILE_RO:
-    case CF_NONE:
-    default:
-      break;
-  }
-  return bRetVal;
-}
-
-bool PWSprefs::DeletePref(const CMyString &name)
+bool PWSprefs::DeletePref(const StringX &name)
 {
   bool bRetVal = true;
   switch (m_ConfigOptions) {
@@ -390,7 +395,8 @@ bool PWSprefs::DeletePref(const CMyString &name)
       //}
       break;
     case CF_FILE_RW:
-      bRetVal = (m_XML_Config->DeleteSetting(m_csHKCU_PREF, name) == TRUE);
+      bRetVal = (m_XML_Config->DeleteSetting(m_csHKCU_PREF,
+                                             name.c_str()) == TRUE);
       break;
     case CF_FILE_RO:
     case CF_NONE:
@@ -419,7 +425,7 @@ void PWSprefs::SetPrefRect(long top, long bottom,
     m_prefs_changed[APP_PREF] = true;
 }
 
-CMyString PWSprefs::Store()
+StringX PWSprefs::Store()
 {
   /*
   * Create a string of values that are (1) different from the defaults, &&
@@ -455,10 +461,10 @@ CMyString PWSprefs::Store()
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
         m_string_prefs[i].pt == ptDatabase) {
-      const CMyString svalue = m_stringValues[i];
+      const StringX svalue = m_stringValues[i];
       delim = _T(' ');
       for (int j = 0; j < NumDelimiters; j++) {
-        if (svalue.Find(Delimiters[j]) < 0) {
+        if (svalue.find(Delimiters[j]) ==StringX::npos) {
           delim = Delimiters[j];
           break;
         }
@@ -466,16 +472,17 @@ CMyString PWSprefs::Store()
       if (delim == _T(' '))
         continue;  // We tried, but just can't save it!
 
-      os << _T("S ") << i << _T(' ') << delim << LPCTSTR(m_stringValues[i]) << delim << _T(' ');
+      os << _T("S ") << i << _T(' ') << delim << m_stringValues[i] <<
+        delim << _T(' ');
     }
   }
 
   os << ends;
   retval = os.str().c_str();
-  return CMyString(retval);
+  return LPCTSTR(retval);
 }
 
-void PWSprefs::Load(const CMyString &prefString)
+void PWSprefs::Load(const StringX &prefString)
 {
   // Set default values for preferences stored in Database
   int i;
@@ -491,26 +498,25 @@ void PWSprefs::Load(const CMyString &prefString)
 
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_string_prefs[i].pt == ptDatabase)
-        m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+        m_stringValues[i] = m_string_prefs[i].defVal;
   }
 
-  if (prefString.GetLength() == 0)
+  if (prefString.empty())
     return;
 
   // parse prefString, updating current values
 #ifdef _UNICODE
-  wstring sps(prefString);
+  wstring sps(prefString.c_str());
   wistringstream is(sps);
 #else
-  string sps(prefString);
+  string sps(prefString.c_str());
   istringstream is(sps);
 #endif
   TCHAR type, delim[1];
   int index, ival;
   unsigned int iuval;
-  CMyString msval;
 
-  const int N = prefString.GetLength(); // safe upper limit on string size
+  const int N = prefString.length(); // safe upper limit on string size
   TCHAR *buf = new TCHAR[N];
 
   while (is) {
@@ -542,8 +548,7 @@ void PWSprefs::Load(const CMyString &prefString)
         is.ignore(1, TCHAR(' ')); // skip over trailing delimiter
         // forward compatibility and check whether still in DB
         if (index < NumStringPrefs && m_string_prefs[index].pt == ptDatabase) {
-          msval= buf;
-          m_stringValues[index] = msval;
+          m_stringValues[index] = buf;
         }
         break;
       default:
@@ -560,9 +565,9 @@ void PWSprefs::UpdateTimeStamp()
   if (m_ConfigOptions == CF_FILE_RW || m_ConfigOptions == CF_FILE_RW_NEW) {
     time_t time_now;
     time(&time_now);
-    const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
+    const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
-    m_XML_Config->Set(m_csHKCU, _T("LastUpdated"), now);
+    m_XML_Config->Set(m_csHKCU, _T("LastUpdated"), now.c_str());
   }
 }
 
@@ -714,7 +719,7 @@ void PWSprefs::SetDatabasePrefsToDefaults()
 
   for (i = 0; i < NumStringPrefs; i++)
     if (m_string_prefs[i].pt == ptDatabase)
-        m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+        m_stringValues[i] = m_string_prefs[i].defVal;
 }
 
 void PWSprefs::LoadProfileFromDefaults()
@@ -731,7 +736,7 @@ void PWSprefs::LoadProfileFromDefaults()
   }
 
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+    m_stringValues[i] = m_string_prefs[i].defVal;
   }
 }
 
@@ -793,9 +798,9 @@ void PWSprefs::LoadProfileFromRegistry()
 
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = CMyString(m_app->GetProfileString(PWS_REG_OPTIONS,
-                                  m_string_prefs[i].name,
-                                  m_stringValues[i]));
+    m_stringValues[i] = m_app->GetProfileString(PWS_REG_OPTIONS,
+                                                m_string_prefs[i].name,
+                                                m_stringValues[i].c_str());
 
     // Make sure we write them all out to the config file the first time
     m_stringChanged[i] = true;
@@ -916,9 +921,9 @@ bool PWSprefs::LoadProfileFromFile()
 
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = CMyString(m_XML_Config->Get(m_csHKCU_PREF,
-                                                    m_string_prefs[i].name,
-                                                    m_string_prefs[i].defVal));
+    m_stringValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
+                                          m_string_prefs[i].name,
+                                          m_string_prefs[i].defVal);
   }
 
   // Load last main window size & pos:
@@ -1211,7 +1216,7 @@ void PWSprefs::ImportOldPrefs()
                                &DataLen);
 
         if (rv == ERROR_SUCCESS)
-          SetPref(StringPrefs(i), CMyString(pData));
+          SetPref(StringPrefs(i), pData);
 
         delete[] pData;
       } // Get the value
@@ -1306,35 +1311,35 @@ CString PWSprefs::GetXMLPreferences()
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
         m_string_prefs[i].pt == ptDatabase) {
-      int p = m_stringValues[i].Find(_T("]]>")); // special handling required
-      if (p == -1) {
+      StringX::size_type p = m_stringValues[i].find(_T("]]>")); // special handling required
+      if (p == StringX::npos) {
         // common case
         os << "\t\t<" << m_string_prefs[i].name << "><![CDATA[" <<
-          LPCTSTR(m_stringValues[i]) << "]]></" << 
+          m_stringValues[i] << "]]></" << 
           m_string_prefs[i].name << ">" << endl;
       } else {
         // value has "]]>" sequence(s) that need(s) to be escaped
         // Each "]]>" splits the field into two CDATA sections, one ending with
         // ']]', the other starting with '>'
-        const CMyString value = m_stringValues[i];
+        const StringX value = m_stringValues[i];
         os << "\t\t<" << m_string_prefs[i].name << ">";
         int from = 0, to = p + 2;
         do {
-          CMyString slice = value.Mid(from, (to - from));
-          os << "<![CDATA[" << LPCTSTR(slice) << "]]><![CDATA[";
+          StringX slice = value.substr(from, (to - from));
+          os << "<![CDATA[" << slice << "]]><![CDATA[";
           from = to;
-          p = value.Find(_T("]]>"), from); // are there more?
-          if (p == -1) {
-            to = value.GetLength();
-            slice = value.Mid(from, (to - from));
+          p = value.find(_T("]]>"), from); // are there more?
+          if (p == StringX::npos) {
+            to = value.length();
+            slice = value.substr(from, (to - from));
           } else {
             to = p + 2;
-            slice = value.Mid(from, (to - from));
+            slice = value.substr(from, (to - from));
             from = to;
-            to = value.GetLength();
+            to = value.length();
           }
-          os <<  LPCTSTR(slice) << "]]>";
-        } while (p != -1);
+          os <<  slice << "]]>";
+        } while (p != StringX::npos);
         os << "</" << m_string_prefs[i].name << ">" << endl;      
       }
     }

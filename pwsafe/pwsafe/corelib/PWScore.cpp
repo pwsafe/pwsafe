@@ -204,7 +204,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
     return status;
   }
 
-  m_hdr.m_prefString = LPCTSTR(PWSprefs::GetInstance()->Store());
+  m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   m_hdr.m_whatlastsaved = m_AppNameAndVersion;
 
   out->SetHeader(m_hdr);

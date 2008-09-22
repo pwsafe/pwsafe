@@ -1741,7 +1741,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
     m_MainToolBar.LoadDefaultToolBar(m_toolbarMode);
     m_FindToolBar.LoadDefaultToolBar(m_toolbarMode);
     CString csButtonNames = PWSprefs::GetInstance()->
-      GetPref(PWSprefs::MainToolBarButtons);
+      GetPref(PWSprefs::MainToolBarButtons).c_str();
     m_MainToolBar.CustomizeButtons(csButtonNames);
   } else {
     m_MainToolBar.ChangeImages(m_toolbarMode);
@@ -1817,11 +1817,11 @@ void DboxMain::OnChangeTreeFont()
 
   // present Tree/List view font and possibly change it
   // Allow user to apply changes to font
-  CString cs_TreeListSampleText = prefs->GetPref(PWSprefs::TreeListSampleText);
+  StringX cs_TreeListSampleText = prefs->GetPref(PWSprefs::TreeListSampleText);
 
   CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL);
 
-  fontdlg.m_sampletext = cs_TreeListSampleText;
+  fontdlg.m_sampletext = cs_TreeListSampleText.c_str();
 
   if (fontdlg.DoModal() == IDOK) {
     CString treefont_str;
@@ -1845,9 +1845,10 @@ void DboxMain::OnChangeTreeFont()
     AutoResizeColumns();
 
     // save user's choice of Tree/List font
-    prefs->SetPref(PWSprefs::TreeFont, treefont_str);
+    prefs->SetPref(PWSprefs::TreeFont, LPCTSTR(treefont_str));
     // save user's sample text
-    prefs->SetPref(PWSprefs::TreeListSampleText, fontdlg.m_sampletext);
+    prefs->SetPref(PWSprefs::TreeListSampleText,
+                   LPCTSTR(fontdlg.m_sampletext));
   }
 }
 
@@ -1860,11 +1861,11 @@ void DboxMain::OnChangePswdFont()
 
   // present Password font and possibly change it
   // Allow user to apply changes to font
-  CString cs_PswdSampleText = prefs->GetPref(PWSprefs::PswdSampleText);
+  StringX cs_PswdSampleText = prefs->GetPref(PWSprefs::PswdSampleText);
 
   CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
 
-  fontdlg.m_sampletext = cs_PswdSampleText;
+  fontdlg.m_sampletext = cs_PswdSampleText.c_str();
 
   if (fontdlg.DoModal() == IDOK) {
     CString pswdfont_str;
@@ -1877,9 +1878,9 @@ void DboxMain::OnChangePswdFont()
     // transfer the new font to the passwords
     SetPasswordFont(&lf);
     // save user's choice of password font
-    prefs->SetPref(PWSprefs::PasswordFont, pswdfont_str);
+    prefs->SetPref(PWSprefs::PasswordFont, LPCTSTR(pswdfont_str));
     // save user's sample text
-    prefs->SetPref(PWSprefs::PswdSampleText, fontdlg.m_sampletext);
+    prefs->SetPref(PWSprefs::PswdSampleText, LPCTSTR(fontdlg.m_sampletext));
   }
 }
 
@@ -1987,7 +1988,7 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL)
     theURL = _T("http://") + theURL;
 
   CString csAltBrowser(PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::AltBrowser));
+                       GetPref(PWSprefs::AltBrowser).c_str());
   bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) &&
                         !csAltBrowser.IsEmpty());
 
@@ -2002,7 +2003,7 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL)
     si.lpFile = theURL;
   } else { // alternate browser specified, invoke w/optional args
     CString csCmdLineParms(PWSprefs::GetInstance()->
-                           GetPref(PWSprefs::AltBrowserCmdLineParms));
+                           GetPref(PWSprefs::AltBrowserCmdLineParms).c_str());
 
     if (!csCmdLineParms.IsEmpty())
       theURL = csCmdLineParms + _T(" ") + theURL;
@@ -2901,7 +2902,7 @@ void DboxMain::OnCustomizeToolbar()
   CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
   mainTBCtrl.Customize();
 
-  CString cs_temp = m_MainToolBar.GetButtonString();
+  StringX cs_temp = LPCTSTR(m_MainToolBar.GetButtonString());
   PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
 }
 
