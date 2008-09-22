@@ -101,13 +101,12 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
   }
 }
 
-void CItemField::Set(const CMyString &value, BlowFish *bf)
+void CItemField::Set(const StringX &value, BlowFish *bf)
 {
-  const LPCTSTR plainstr = (const LPCTSTR)value; // use of CString::operator LPCSTR
+  const LPCTSTR plainstr = value.c_str();
 
   Set((const unsigned char *)plainstr,
-      value.GetLength() * sizeof(*plainstr),
-      bf);
+      value.length() * sizeof(*plainstr), bf);
 }
 
 void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) const
@@ -141,7 +140,7 @@ void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) c
   }
 }
 
-void CItemField::Get(CMyString &value, BlowFish *bf) const
+void CItemField::Get(StringX &value, BlowFish *bf) const
 {
   // Sanity check: length is 0 iff data ptr is NULL
   ASSERT((m_Length == 0 && m_Data == NULL) ||
@@ -150,20 +149,22 @@ void CItemField::Get(CMyString &value, BlowFish *bf) const
   if (m_Length == 0) {
     value = _T("");
   } else { // we have data to decrypt
-    int BlockLength = GetBlockSize(m_Length);
+    size_t BlockLength = GetBlockSize(m_Length);
+    value.resize(BlockLength/sizeof(TCHAR) + 1);
     unsigned char *tempmem = new unsigned char[BlockLength];
-    unsigned char *plaintxt = (unsigned char*)value.GetBuffer(BlockLength+2);
-
-    int x;
+    TCHAR *pt = reinterpret_cast<TCHAR *>(tempmem);
+    size_t x;
+    // decrypt block by block
     for (x = 0; x < BlockLength; x += 8)
       bf->Decrypt(m_Data + x, tempmem + x);
 
-    for (x = 0; x < BlockLength; x++)
-      plaintxt[x] = (x < int(m_Length)) ? tempmem[x] : 0;
+    // copy to value TCHAR by TCHAR
+    for (x = 0; x < BlockLength/sizeof(TCHAR); x++)
+      value[x] = (x < m_Length/sizeof(TCHAR)) ? pt[x] : 0;
 
-    plaintxt[BlockLength] = plaintxt[BlockLength+1] = 0;
+    value += TCHAR('\0');
 
+    trashMemory(tempmem, BlockLength);
     delete [] tempmem;
-    value.ReleaseBuffer();
   }
 }

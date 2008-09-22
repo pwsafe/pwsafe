@@ -536,7 +536,9 @@ void CSecEditExtn::SetSecure(bool on_off)
 CMyString CSecEditExtn::GetSecureText() const
 {
   CMyString retval;
-  m_impl->m_field.Get(retval, m_impl->m_bf);
+  StringX sval;
+  m_impl->m_field.Get(sval, m_impl->m_bf);
+  retval = sval.c_str();
   return retval;
 }
 

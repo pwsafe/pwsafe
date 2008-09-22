@@ -78,6 +78,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_message = a_filespec;
   m_bsFields.set();
+  // m_ctlPasskey.SetSecure(false); // test hack for B. XXX
 }
 
 CPasskeyEntry::~CPasskeyEntry()
