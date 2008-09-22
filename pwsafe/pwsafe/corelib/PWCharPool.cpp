@@ -145,7 +145,7 @@ charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned i
   return retval;
 }
 
-CMyString CPasswordCharPool::MakePassword() const
+StringX CPasswordCharPool::MakePassword() const
 {
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
@@ -154,14 +154,14 @@ CMyString CPasswordCharPool::MakePassword() const
   int lowercaseneeded, uppercaseneeded, digitsneeded, symbolsneeded;
   int hexdigitsneeded;
 
-  CMyString password = _T("");
+  StringX password = _T("");
 
   // pronounceable passwords are handled separately:
   if (m_pronounceable)
     return MakePronounceable();
 
   bool pwRulesMet;
-  CMyString temp;
+  StringX temp;
 
   do {
     charT ch;
@@ -232,7 +232,7 @@ CMyString CPasswordCharPool::MakePassword() const
     }
     // Otherwise, do not exit, do not collect $200, try again...
   } while (!pwRulesMet);
-  ASSERT(password.GetLength() == int(m_pwlen));
+  ASSERT(password.length() == size_t(m_pwlen));
   return password;
 }
 
@@ -293,13 +293,13 @@ static void leet_replace(stringT &password, unsigned int i,
   ASSERT(password[i] != 0);
 }
 
-CMyString CPasswordCharPool::MakePronounceable() const
+StringX CPasswordCharPool::MakePronounceable() const
 {
   /**
-  * Following based on gpw.C from
-  * http://www.multicians.org/thvv/tvvtools.html
-  * Thanks to Tom Van Vleck, Morrie Gasser, and Dan Edwards.
-  */
+   * Following based on gpw.C from
+   * http://www.multicians.org/thvv/tvvtools.html
+   * Thanks to Tom Van Vleck, Morrie Gasser, and Dan Edwards.
+   */
   charT c1, c2, c3;  /* array indices */
   long sumfreq;      /* total frequencies[c1][c2][*] */
   long ranno;        /* random number in [0,sumfreq] */
@@ -310,10 +310,10 @@ CMyString CPasswordCharPool::MakePronounceable() const
 
   /* Pick a random starting point. */
   /* (This cheats a little; the statistics for three-letter
-  combinations beginning a word are different from the stats
-  for the general population.  For example, this code happily
-  generates "mmitify" even though no word in my dictionary
-  begins with mmi. So what.) */
+     combinations beginning a word are different from the stats
+     for the general population.  For example, this code happily
+     generates "mmitify" even though no word in my dictionary
+     begins with mmi. So what.) */
   sumfreq = sigma;  // sigma calculated by loadtris
   ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
   sum = 0;
@@ -340,8 +340,8 @@ CMyString CPasswordCharPool::MakePronounceable() const
     for (c3 = 0; c3 < 26; c3++)
       sumfreq += tris[c1][c2][c3];
     /* Note that sum < duos[c1][c2] because
-    duos counts all digraphs, not just those
-    in a trigraph. We want sum. */
+       duos counts all digraphs, not just those
+       in a trigraph. We want sum. */
     if (sumfreq == 0) { // If there is no possible extension..
       break;  // Break while nchar loop & print what we have.
     }
@@ -357,12 +357,12 @@ CMyString CPasswordCharPool::MakePronounceable() const
     } // for c3
   } // while nchar
   /*
-  * password now has an all-lowercase pronounceable password
-  * We now want to modify it per policy:
-  * If m_usedigits and/or m_usesymbols, replace some chars with
-  * corresponding 'leet' values
-  * Also enforce m_useuppercase & m_uselowercase policies
-  */
+   * password now has an all-lowercase pronounceable password
+   * We now want to modify it per policy:
+   * If m_usedigits and/or m_usesymbols, replace some chars with
+   * corresponding 'leet' values
+   * Also enforce m_useuppercase & m_uselowercase policies
+   */
 
   if (m_usesymbols || m_usedigits) {
     // fill a vector with indices of substitution candidates
@@ -394,17 +394,18 @@ CMyString CPasswordCharPool::MakePronounceable() const
         password[i] = (charT)_totupper(password[i]);
     }
 
-    CMyString retval = password.c_str();
-    return retval;
+  return password.c_str();
 }
 
-bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
+bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
 {
   const int MinLength = 8;
-  int length = pwd.GetLength();
+  int length = pwd.length();
+  CString cserr;
   // check for minimun length
   if (length < MinLength) {
-    error.LoadString(IDSC_PASSWORDTOOSHORT);
+    cserr.LoadString(IDSC_PASSWORDTOOSHORT);
+    error = LPCTSTR(cserr);
     return false;
   }
 
@@ -422,7 +423,8 @@ bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
   if (has_uc && has_lc && (has_digit || has_other)) {
     return true;
   } else {
-    error.LoadString(IDSC_PASSWORDPOOR);
+    cserr.LoadString(IDSC_PASSWORDPOOR);
+    error = LPCTSTR(cserr);
     return false;
   }
 }
