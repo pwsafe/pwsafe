@@ -96,9 +96,11 @@ CItemData::~CItemData()
 CMyString CItemData::GetField(const CItemField &field) const
 {
   CMyString retval;
+  StringX sval;
   BlowFish *bf = MakeBlowFish();
-  field.Get(retval, bf);
+  field.Get(sval, bf);
   delete bf;
+  retval = sval.c_str();
   return retval;
 }
 
