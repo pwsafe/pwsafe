@@ -69,7 +69,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       // elements to make schema work, since W3C Schema V1.0 does NOT support 
       // conditional processing :-(
       oss << sztab4 << "<string>";
-      if (!st_fldata.fstring.IsEmpty()) { // string empty if 'present' or 'not present'
+      if (!st_fldata.fstring.empty()) { // string empty if 'present' or 'not present'
         utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
         oss << utf8;
       }
@@ -387,11 +387,11 @@ private:
   bool m_bWithFormatting;
 };
 
-int PWSFilters::WriteFilterXMLFile(const CMyString &filename,
+int PWSFilters::WriteFilterXMLFile(const StringX &filename,
                                    const PWSfile::HeaderRecord hdr,
-                                   const CMyString &currentfile)
+                                   const StringX &currentfile)
 {
-  ofstream of(filename);
+  ofstream of(filename.c_str());
   if (!of)
     return PWScore::CANT_OPEN_FILE;
   else
@@ -400,7 +400,7 @@ int PWSFilters::WriteFilterXMLFile(const CMyString &filename,
 
 int PWSFilters::WriteFilterXMLFile(ostream &os,
                                    const PWSfile::HeaderRecord hdr,
-                                   const CMyString &currentfile,
+                                   const StringX &currentfile,
                                    const bool bWithFormatting)
 {
   string str_hdr = GetFilterXMLHeader(currentfile, hdr);
@@ -414,7 +414,7 @@ int PWSFilters::WriteFilterXMLFile(ostream &os,
   return PWScore::SUCCESS;
 }
 
-std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
+std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
                                            const PWSfile::HeaderRecord &hdr)
 {
   CUTF8Conv utf8conv;
@@ -438,8 +438,8 @@ std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
   oss << reinterpret_cast<const char *>(utf8);
   oss << "\"" << endl;
   
-  if (!currentfile.IsEmpty()) {
-    tmp = currentfile;
+  if (!currentfile.empty()) {
+    tmp = currentfile.c_str();
     tmp.Replace(_T("&"), _T("&amp;"));
 
     utf8conv.ToUTF8(tmp, utf8, utf8Len);
@@ -553,7 +553,7 @@ CString PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
   PWSMatch::GetMatchType(st_fldata.mtype,
                          st_fldata.fnum1, st_fldata.fnum2,
                          st_fldata.fdate1, st_fldata.fdate2,
-                         st_fldata.fstring, st_fldata.fcase,
+                         st_fldata.fstring.c_str(), st_fldata.fcase,
                          st_fldata.etype,
                          st_fldata.rule == PWSMatch::MR_BETWEEN,
                          cs1, cs2);

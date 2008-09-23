@@ -304,7 +304,7 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
           }
           // Note: purpose drop through to standard 'string' processing
         case PWSMatch::MT_STRING:
-          thistest_rc = pci->Matches(st_fldata.fstring, (int)ft,
+          thistest_rc = pci->Matches(st_fldata.fstring.c_str(), (int)ft,
                                  st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
           tests++;
           break;
@@ -695,8 +695,8 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
   } // while (1)
 
   PWSfile::HeaderRecord hdr = m_core.GetHeader();
-  CMyString currentfile = m_core.GetCurFile();
-  rc = Filters.WriteFilterXMLFile(cs_newfile, hdr, currentfile);
+  StringX currentfile = m_core.GetCurFile();
+  rc = Filters.WriteFilterXMLFile(LPCTSTR(cs_newfile), hdr, currentfile);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);

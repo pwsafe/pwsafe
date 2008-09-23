@@ -20,7 +20,7 @@
 #include <vector>
 #include <map>
 #include <time.h> // for time_t
-#include "MyString.h"
+#include "StringX.h"
 #include "PWSfile.h"
 #include "Match.h"
 #include "itemdata.h"
@@ -98,7 +98,7 @@ struct st_FilterRow {
   // if filter type is a date
   time_t fdate1, fdate2;
   // if filter type is a string
-  CMyString fstring;
+  StringX fstring;
   int fcase; // case sensitive?
   // if filter type is a entrytype
   CItemData::EntryType etype;
@@ -241,13 +241,13 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
  public:
   typedef std::pair<st_Filterkey, st_filters> Pair;
   
-  std::string GetFilterXMLHeader(const CMyString &currentfile,
+  std::string GetFilterXMLHeader(const StringX &currentfile,
                                  const PWSfile::HeaderRecord &hdr);
 
-  int WriteFilterXMLFile(const CMyString &filename, const PWSfile::HeaderRecord hdr,
-                         const CMyString &currentfile);
+  int WriteFilterXMLFile(const StringX &filename, const PWSfile::HeaderRecord hdr,
+                         const StringX &currentfile);
   int WriteFilterXMLFile(std::ostream &os, PWSfile::HeaderRecord hdr,
-                         const CMyString &currentfile, const bool bWithFormatting = false);
+                         const StringX &currentfile, const bool bWithFormatting = false);
   int ImportFilterXMLFile(const FilterPool fpool,
                           const CString &strXMLData,
                           const CString &strXMLFileName,
