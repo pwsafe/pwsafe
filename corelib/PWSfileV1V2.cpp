@@ -231,7 +231,7 @@ static CMyString ReMergeNotes(const CItemData &item)
 size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
 {
 #ifndef UNICODE
-  const unsigned char *datastr = data.c_str();
+  const unsigned char *datastr = (const unsigned char *)data.c_str();
 
   return PWSfile::WriteCBC(type, datastr, data.length());
 #else
@@ -411,7 +411,7 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
     trashMemory(wc, wcLen);
     delete[] wc;
 #else
-    CMyString str(LPCTSTR(buffer), buffer_len);
+    StringX str((const char *)buffer, buffer_len);
     data = str;
 #endif
     trashMemory(buffer, buffer_len);
