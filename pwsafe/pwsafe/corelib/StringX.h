@@ -152,10 +152,11 @@ typedef std::basic_string<char,
 
 int CompareNoCase(const StringX &s1, const StringX &s2);
 void ToLower(StringX &s);
-void TrimRight(StringX &s, const TCHAR *set = NULL);
-void TrimLeft(StringX &s, const TCHAR *set = NULL);
-void Trim(StringX &s, const TCHAR *set = NULL);
-
+StringX &TrimRight(StringX &s, const TCHAR *set = NULL);
+StringX & TrimLeft(StringX &s, const TCHAR *set = NULL);
+StringX &Trim(StringX &s, const TCHAR *set = NULL);
+void EmptyIfOnlyWhiteSpace(StringX &s);
+void Replace(StringX &s, TCHAR from, TCHAR to);
 #endif
 //-----------------------------------------------------------------------------
 // Local variables:

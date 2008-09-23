@@ -11,7 +11,7 @@
 //
 
 
-#include "MyString.h"
+#include "StringX.h"
 #include "ItemData.h"
 #include "UUIDGen.h"
 #include "xml_import.h"
@@ -29,22 +29,22 @@ enum {PASSWORDSAFE = 0, PW_ENTRY, PW_GROUP, PW_TITLE, PW_USERNAME, PW_PASSWORD, 
 enum {NORMAL = 0, ALIAS, SHORTCUT};
 
 struct pw_entry {
-  CMyString group;
-  CMyString title;
-  CMyString username;
-  CMyString password;
-  CMyString url;
-  CMyString autotype;
-  CMyString ctime;
-  CMyString atime;
-  CMyString xtime;
-  CMyString xtime_interval;
-  CMyString pmtime;
-  CMyString rmtime;
-  CMyString changed;
-  CMyString pwhistory;
-  CMyString notes;
-  CMyString uuid;
+  StringX group;
+  StringX title;
+  StringX username;
+  StringX password;
+  StringX url;
+  StringX autotype;
+  StringX ctime;
+  StringX atime;
+  StringX xtime;
+  StringX xtime_interval;
+  StringX pmtime;
+  StringX rmtime;
+  StringX changed;
+  StringX pwhistory;
+  StringX notes;
+  StringX uuid;
   PWPolicy pwp;
   UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
   int entrytype;
@@ -201,7 +201,7 @@ private:
   // Local variables
   pw_entry *cur_entry;
 
-  CMyString m_strElemContent;
+  StringX m_strElemContent;
   CString m_ImportedPrefix;
   PWScore *m_xmlcore;
   UUIDList *m_possible_aliases;

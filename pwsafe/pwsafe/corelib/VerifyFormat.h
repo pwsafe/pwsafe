@@ -22,8 +22,8 @@ bool VerifyASCDateTimeString(const CString &time_str, time_t &t);
 bool VerifyXMLDateTimeString(const CString &time_str, time_t &t);
 bool VerifyXMLDateString(const CString &time_str, time_t &t);
 bool VerifyImportDateTimeString(const CString &time_str, time_t &t);
-int VerifyImportPWHistoryString(const TCHAR *PWHistory,
-                                StringX &newPWHistory, CString &strErrors);
+int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory,
+                                CString &strErrors);
 #endif /* __VERIFYFORMAT_H */
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -137,7 +137,7 @@ namespace PWSUtil {
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   CString GetTimeStamp();
   CString Base64Encode(const BYTE *inData, size_t len);
-  void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
+  void Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len);
   StringX NormalizeTTT(const StringX &in);
   void WriteXMLField(std::ostream &os, const char *fname,
                      const StringX &value, CUTF8Conv &utf8conv,
