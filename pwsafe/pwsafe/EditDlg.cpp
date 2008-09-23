@@ -81,7 +81,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 #endif
   }
 
-  m_OverridePolicy = m_ci->GetPWPolicy().IsEmpty() ? FALSE : TRUE;
+  m_OverridePolicy = m_ci->GetPWPolicy().empty() ? FALSE : TRUE;
   m_ci->GetPWPolicy(m_pwp);
   size_t num_err;
   BOOL HasHistory = CreatePWHistoryList(ci->GetPWHistory(), m_MaxPWHistory,
@@ -336,7 +336,7 @@ void CEditDlg::UpdateHistory()
 {
   size_t num = m_PWHistList.size();
   PWHistEntry pwh_ent;
-  pwh_ent.password = m_oldRealPassword;
+  pwh_ent.password = LPCTSTR(m_oldRealPassword);
   time_t t;
   m_ci->GetPMTime(t);
   if ((long)t == 0L) // if never set - try creation date
@@ -344,8 +344,10 @@ void CEditDlg::UpdateHistory()
   pwh_ent.changetttdate = t;
   pwh_ent.changedate =
     PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
-  if (pwh_ent.changedate.IsEmpty()) {
-    pwh_ent.changedate.LoadString(IDS_UNKNOWN);
+  if (pwh_ent.changedate.empty()) {
+    CString unk;
+    unk.LoadString(IDS_UNKNOWN);
+    pwh_ent.changedate = LPCTSTR(unk);
   }
 
   // Now add the latest
@@ -375,7 +377,7 @@ void CEditDlg::UpdateHistory()
     const PWHistEntry pwshe = *iter;
 
     buffer.Format(_T("%08x%04x%s"),
-                  (long) pwshe.changetttdate, pwshe.password.GetLength(),
+                  (long) pwshe.changetttdate, pwshe.password.length(),
                   pwshe.password);
     new_PWHistory += CMyString(buffer);
     buffer.Empty();

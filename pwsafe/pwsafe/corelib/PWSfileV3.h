@@ -57,7 +57,7 @@ private:
   unsigned char m_key[32];
   HMAC_SHA256 m_hmac;
   CUTF8Conv m_utf8conv;
-  virtual size_t WriteCBC(unsigned char type, const CString &data);
+  virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
     unsigned int length);
 

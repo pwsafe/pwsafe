@@ -434,7 +434,7 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
     }
   }
   // remove the trailing EOL char.
-  //  ret.TrimRight();
+  TrimRight(ret);
   return ret;
 }
 

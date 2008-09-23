@@ -478,14 +478,12 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   *pLResult = FALSE;
 }
 
-static bool splitLeafText(const TCHAR *lt, CString &newTitle, 
-                          CString &newUser, CString &newPassword)
+static bool splitLeafText(const TCHAR *lt, StringX &newTitle, 
+                          StringX &newUser, StringX &newPassword)
 {
   bool bPasswordSet(false);
 
-  newTitle = _T("");
-  newUser = _T("");
-  newPassword = _T("");
+  newTitle = newUser = newPassword = _T("");
 
   CString cs_leafText(lt);
   cs_leafText.Trim();
@@ -543,20 +541,20 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
   if (OpenSquareBraceIndex >= 0 && OpenCurlyBraceIndex == -1) {
     // title [user]
     newTitle = cs_leafText.Left(OpenSquareBraceIndex);
-    newTitle.Trim();
+    Trim(newTitle);
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
                               CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
-    newUser.Trim();
+    Trim(newUser);
     goto final_check;
   }
 
   if (OpenSquareBraceIndex == -1 && OpenCurlyBraceIndex >= 0) {
     // title {password}
     newTitle = cs_leafText.Left(OpenCurlyBraceIndex);
-    newTitle.Trim();
+    Trim(newTitle);
     newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
                                   CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
-    newPassword.Trim();
+    Trim(newPassword);
     bPasswordSet = true;
     goto final_check;
   }
@@ -564,13 +562,13 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
   if (OpenSquareBraceIndex >= 0 && OpenCurlyBraceIndex >= 0) {
     // title [user] {password}
     newTitle = cs_leafText.Left(OpenSquareBraceIndex);
-    newTitle.Trim();
+    Trim(newTitle);
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
                               CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
-    newUser.Trim();
+    Trim(newUser);
     newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
                                   CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
-    newPassword.Trim();
+    Trim(newPassword);
     bPasswordSet = true;
     goto final_check;
   }
@@ -579,10 +577,10 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
 
 final_check:
   bool bRC(true);
-  if (newTitle.IsEmpty())
+  if (newTitle.empty())
     bRC = false;
 
-  if (bPasswordSet && newPassword.IsEmpty())
+  if (bPasswordSet && newPassword.empty())
     bRC = false;
 
   return bRC;
@@ -628,17 +626,17 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       DWORD_PTR itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
       CItemData *ci = (CItemData *)itemData;
-      CString group, newTitle, newUser, newPassword;
+      StringX group, newTitle, newUser, newPassword;
 
       if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
         // errors in user's input - restore text and refresh display
         goto bad_exit;
       }
 
-      group = CString(ci->GetGroup());
+      group = ci->GetGroup();
       if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
         CMyString temp;
-        if (group.IsEmpty())
+        if (group.empty())
           temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
         else
           temp.Format(IDS_ENTRYEXISTS, group, newTitle, newUser);
@@ -646,13 +644,13 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
         goto bad_exit;
       }
 
-      if (newUser.IsEmpty())
-        newUser = CString(ci->GetUser());
-      if (newPassword.IsEmpty())
-        newPassword = CString(ci->GetPassword());
+      if (newUser.empty())
+        newUser = ci->GetUser();
+      if (newPassword.empty())
+        newPassword = ci->GetPassword();
 
       PWSprefs *prefs = PWSprefs::GetInstance();
-      CString treeDispString;
+      StringX treeDispString;
       bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
       bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
 
@@ -675,7 +673,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       // automatically overwrite and update the item text with the contents from 
       // the "ptvinfo->item.pszText" buffer.
       PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
-                       treeDispString, ptvinfo->item.cchTextMax);
+                       treeDispString.c_str(), ptvinfo->item.cchTextMax);
       ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = TCHAR('\0');
 
       // update corresponding List mode text
@@ -685,13 +683,13 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
       // update the password database record - but only those items visible!!!
       ci->SetTitle(newTitle);
-      m_pDbx->UpdateListItemTitle(lindex, newTitle);
+      m_pDbx->UpdateListItemTitle(lindex, newTitle.c_str());
       if (bShowUsernameInTree) {
         ci->SetUser(newUser);
-        m_pDbx->UpdateListItemUser(lindex, newUser);
+        m_pDbx->UpdateListItemUser(lindex, newUser.c_str());
         if (bShowPasswordInTree) {
           ci->SetPassword(newPassword);
-          m_pDbx->UpdateListItemPassword(lindex, newPassword);
+          m_pDbx->UpdateListItemPassword(lindex, newPassword.c_str());
         }
       }
     } else {
@@ -1641,11 +1639,11 @@ static int CALLBACK ExplorerCompareProc(LPARAM lParam1, LPARAM lParam2,
     iResult = 1;
   } else {
 
-    iResult = (pLHS->GetGroup()).CompareNoCase(pRHS->GetGroup());
+    iResult = CompareNoCase(pLHS->GetGroup(), pRHS->GetGroup());
     if (iResult == 0) {
-      iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+      iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
       if (iResult == 0) {
-        iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+        iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
       }
     }
   }

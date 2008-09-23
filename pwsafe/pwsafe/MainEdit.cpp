@@ -1354,7 +1354,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
     pDDObject->ToItem(tempitem);
 
     if (in_oblist.m_bDragNode) {
-      dot = (!DropGroup.IsEmpty() && !tempitem.GetGroup().IsEmpty()) ? _T(".") : _T("");
+      dot = (!DropGroup.IsEmpty() && !tempitem.GetGroup().empty()) ? _T(".") : _T("");
       Group = DropGroup + dot + tempitem.GetGroup();
     } else {
       Group = DropGroup;

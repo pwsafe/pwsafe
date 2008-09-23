@@ -518,7 +518,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   of << "FromDatabaseFormat=\"";
   of.write(reinterpret_cast<const char *>(utf8), utf8Len);
   of << "\"" << endl;
-  if (!m_hdr.m_lastsavedby.IsEmpty() || !m_hdr.m_lastsavedon.IsEmpty()) {
+  if (!m_hdr.m_lastsavedby.empty() || !m_hdr.m_lastsavedon.empty()) {
     CString wls(_T(""));
     wls.Format(_T("%s on %s"), m_hdr.m_lastsavedby, m_hdr.m_lastsavedon);
     utf8conv.ToUTF8(wls, utf8, utf8Len);
@@ -526,7 +526,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
     of << "\"" << endl;
   }
-  if (!m_hdr.m_whatlastsaved.IsEmpty()) {
+  if (!m_hdr.m_whatlastsaved.empty()) {
     utf8conv.ToUTF8(m_hdr.m_whatlastsaved, utf8, utf8Len);
     of << "WhatSaved=\"";
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
@@ -1215,7 +1215,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 
         CString cs_msg;
         CString cs_caption(MAKEINTRESOURCE(IDSC_READ_ERROR));
-        cs_msg.Format(IDSC_ENCODING_PROBLEM, CString(temp.GetTitle()));
+        cs_msg.Format(IDSC_ENCODING_PROBLEM, temp.GetTitle().c_str());
         MessageBox(NULL, cs_msg, cs_caption, MB_OK);
       }
       // deliberate fall-through
@@ -1758,7 +1758,7 @@ void PWScore::GetUniqueGroups(CStringArray &aryGroups) const
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++ ) {
     const CItemData &ci = iter->second;
-    const CString strThisGroup = ci.GetGroup();
+    const CString strThisGroup = ci.GetGroup().c_str();
     // Is this group already in the list?
     bool bAlreadyInList=false;
     for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
@@ -2375,8 +2375,8 @@ bool PWScore::GetBaseEntry(const StringX &passwd, GetBaseEntryPL &pl)
         iter = GetUniqueBase(pl.csPwdTitle, pl.bMultipleEntriesFound);
         if (iter != m_pwlist.end()) {
           // Fill in the fields found during search
-          pl.csPwdGroup = LPCTSTR(iter->second.GetGroup());
-          pl.csPwdUser = LPCTSTR(iter->second.GetUser());
+          pl.csPwdGroup = iter->second.GetGroup();
+          pl.csPwdUser = iter->second.GetUser();
         }
         break;
       case 2:
@@ -2388,9 +2388,9 @@ bool PWScore::GetBaseEntry(const StringX &passwd, GetBaseEntryPL &pl)
         iter = GetUniqueBase(pl.csPwdGroup, pl.csPwdTitle, pl.bMultipleEntriesFound);
         if (iter != m_pwlist.end()) {
           // Fill in the fields found during search
-          pl.csPwdGroup = LPCTSTR(iter->second.GetGroup());
-          pl.csPwdTitle = LPCTSTR(iter->second.GetTitle());
-          pl.csPwdUser = LPCTSTR(iter->second.GetUser());
+          pl.csPwdGroup = iter->second.GetGroup();
+          pl.csPwdTitle = iter->second.GetTitle();
+          pl.csPwdUser = iter->second.GetUser();
         }
         break;
       case 3:

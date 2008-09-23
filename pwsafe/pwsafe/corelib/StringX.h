@@ -23,6 +23,8 @@
 #include <memory>
 #include <limits>
 
+#include "os/typedefs.h"
+
 namespace S_Alloc
 {
 
@@ -143,6 +145,17 @@ typedef std::basic_string<char,
                           std::char_traits<char>,
                           S_Alloc::SecureAlloc<char> > StringX;
 #endif
+
+// Following should really be StringX member functions, but there's no 
+// elegant way of extending a template class without public inheritance, 
+// including duplicating large parts of the interface
+
+int CompareNoCase(const StringX &s1, const StringX &s2);
+void ToLower(StringX &s);
+void TrimRight(StringX &s, const TCHAR *set = NULL);
+void TrimLeft(StringX &s, const TCHAR *set = NULL);
+void Trim(StringX &s, const TCHAR *set = NULL);
+
 #endif
 //-----------------------------------------------------------------------------
 // Local variables:

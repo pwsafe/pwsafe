@@ -59,10 +59,10 @@ public:
     std::vector<bool> m_displaystatus; // tree expansion  state vector
     StringX m_prefString; // prefererences stored in the file
     time_t m_whenlastsaved; // When last saved
-    CString m_lastsavedby; // and by whom
-    CString m_lastsavedon; // and by which machine
-    CString m_whatlastsaved; // and by what application
-    CString m_dbname, m_dbdesc; // descriptive name, description
+    StringX m_lastsavedby; // and by whom
+    StringX m_lastsavedon; // and by which machine
+    StringX m_whatlastsaved; // and by what application
+    StringX m_dbname, m_dbdesc; // descriptive name, description
   };
 
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
@@ -107,7 +107,7 @@ public:
 protected:
   PWSfile(const StringX &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
-  virtual size_t WriteCBC(unsigned char type, const CString &data) = 0;
+  virtual size_t WriteCBC(unsigned char type, const StringX &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           unsigned int length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,

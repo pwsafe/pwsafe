@@ -31,7 +31,7 @@ public:
   virtual int ReadRecord(CItemData &item);
 
 protected:
-  virtual size_t WriteCBC(unsigned char type, const CString &data);
+  virtual size_t WriteCBC(unsigned char type, const StringX &data);
 
 private:
   size_t ReadCBC(unsigned char &type, StringX &data);

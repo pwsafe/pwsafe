@@ -538,6 +538,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\StringX.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SysInfo.cpp"
 				>
 			</File>
