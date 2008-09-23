@@ -2194,8 +2194,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
               CString cs_type;
               cs_type.LoadString(IDSC_SHORTCUT);
               strError.Format(IDSC_IMPORTWARNING3, cs_type,
-                              curitem->GetGroup(), curitem->GetTitle(), 
-                              curitem->GetUser(), cs_type);
+                              curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
+                              curitem->GetUser().c_str(), cs_type);
               rpt->WriteLine(strError);
             }
             // Invalid - delete!
@@ -2216,8 +2216,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
               CString cs_type;
               cs_type.LoadString(IDSC_ALIAS);
               strError.Format(IDSC_IMPORTWARNING3, cs_type,
-                              curitem->GetGroup(), curitem->GetTitle(), 
-                              curitem->GetUser(), cs_type);
+                              curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
+                              curitem->GetUser().c_str(), cs_type);
               rpt->WriteLine(strError);
             }
             // Invalid - delete!
@@ -2236,7 +2236,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
                 strError.LoadString(IDSC_IMPORTWARNINGHDR);
                 rpt->WriteLine(strError);
               }
-              strError.Format(IDSC_IMPORTWARNING1, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
+              strError.Format(IDSC_IMPORTWARNING1, curitem->GetGroup().c_str(),
+                              curitem->GetTitle().c_str(), curitem->GetUser().c_str());
               rpt->WriteLine(strError);
               strError.LoadString(IDSC_IMPORTWARNING1A);
               rpt->WriteLine(strError);
@@ -2271,7 +2272,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             strError.LoadString(IDSC_IMPORTWARNINGHDR);
             rpt->WriteLine(strError);
           }
-          strError.Format(IDSC_IMPORTWARNING2, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
+          strError.Format(IDSC_IMPORTWARNING2, curitem->GetGroup().c_str(),
+                          curitem->GetTitle().c_str(), curitem->GetUser().c_str());
           rpt->WriteLine(strError);
           strError.LoadString(IDSC_IMPORTWARNING2A);
           rpt->WriteLine(strError);

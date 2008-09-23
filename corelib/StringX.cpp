@@ -25,7 +25,7 @@ void ToLower(StringX &s)
     *iter = _totlower(*iter);
 }
 
-void Trim(StringX &s, const TCHAR *set)
+StringX &Trim(StringX &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
@@ -38,9 +38,10 @@ void Trim(StringX &s, const TCHAR *set)
     StringX t(s.begin() + b, s.end() - (s.length() - e) + 1);
     s = t;
   }
+  return s;
 }
 
-void TrimRight(StringX &s, const TCHAR *set)
+StringX &TrimRight(StringX &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
@@ -52,9 +53,10 @@ void TrimRight(StringX &s, const TCHAR *set)
     StringX t(s.begin(), s.end() - (s.length() - e) + 1);
     s = t;
   }
+  return s;
 }
 
-void TrimLeft(StringX &s, const TCHAR *set)
+StringX &TrimLeft(StringX &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
@@ -66,7 +68,26 @@ void TrimLeft(StringX &s, const TCHAR *set)
     StringX t(s.begin() + b, s.end());
     s = t;
   }
+  return s;
 }
+
+void EmptyIfOnlyWhiteSpace(StringX &s)
+{
+  const TCHAR *ws = _T(" \t\r\n");
+  StringX::size_type b = s.find_first_not_of(ws);
+  if (b == StringX::npos)
+    s.clear();
+}
+
+void Replace(StringX &s, TCHAR from, TCHAR to)
+{
+  StringX r;
+  r.reserve(s.length());
+  for (StringX::iterator iter = s.begin(); iter != s.end(); iter++)
+    r.append(1, *iter == from ? to : *iter);
+  s = r;
+}
+
 
 #ifdef TEST_TRIM
 int main(int argc, char *argv[])

@@ -496,17 +496,15 @@ CString PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
   return cs_Out;
 }
 
-void PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len)
+void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len)
 {
   static const char szCS[]=
     "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
   int iDigits[4] = {0,0,0,0};
 
-  CString cs_inString(sz_inString);
-
   size_t st_length = 0;
-  const int in_length = cs_inString.GetLength();
+  const int in_length = inString.length();
 
   int i1, i2, i3;
   for (i2 = 0; i2 < (int)in_length; i2 += 4) {
@@ -514,7 +512,7 @@ void PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &ou
 
     for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
       for (i3 = i2; i3 < i2 + 4; i3++) {
-        if (i3 < (int)in_length &&  cs_inString[i3] == szCS[i1])
+        if (i3 < (int)in_length &&  inString[i3] == szCS[i1])
           iDigits[i3 - i2] = i1 - 1;
       }
     }

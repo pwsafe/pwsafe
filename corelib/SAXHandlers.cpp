@@ -130,7 +130,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::ignorableWarning(struct ISAXLocat
 PWSSAXContentHandler::PWSSAXContentHandler()
 {
   m_refCnt = 0;
-  m_strElemContent.Empty();
+  m_strElemContent.clear();
   m_numEntries = 0;
   m_ImportedPrefix = _T("");
   m_delimiter = _T('^');
@@ -455,7 +455,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     uuid_array_t uuid_array;
     CItemData tempitem;
     tempitem.Clear();
-    if (cur_entry->uuid.IsEmpty())
+    if (cur_entry->uuid.empty())
       tempitem.CreateUUID();
     else {
       // _stscanf_s always outputs to an "int" using %x even though
@@ -463,7 +463,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       // overwritten and then copy to where we want it!
       unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
       int nscanned = 0;
-      TCHAR *lpszuuid = cur_entry->uuid.GetBuffer(sizeof(uuid_array_t) * 2);
+      const TCHAR *lpszuuid = cur_entry->uuid.c_str();
       for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
         nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
@@ -472,7 +472,6 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 #endif
         lpszuuid += 2;
       }
-      cur_entry->uuid.ReleaseBuffer(sizeof(uuid_array_t) * 2);
       memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
       if (nscanned != sizeof(uuid_array_t) ||
         m_xmlcore->Find(uuid_array) != m_xmlcore->GetEntryEndIter())
@@ -481,54 +480,54 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
         tempitem.SetUUID(uuid_array);
       }
     }
-    CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
-    cur_entry->group.EmptyIfOnlyWhiteSpace();
+    StringX newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
+    EmptyIfOnlyWhiteSpace(cur_entry->group);
     newgroup += cur_entry->group;
     if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != 
       m_xmlcore->GetEntryEndIter()) {
         // Find a unique "Title"
-        CMyString Unique_Title;
+        StringX Unique_Title;
         ItemListConstIter iter;
         int i = 0;
         CString s_import;
         do {
           i++;
           s_import.Format(IDSC_IMPORTNUMBER, i);
-          Unique_Title = cur_entry->title + CMyString(s_import);
+          Unique_Title = cur_entry->title + LPCTSTR(s_import);
           iter = m_xmlcore->Find(newgroup, Unique_Title, cur_entry->username);
         } while (iter != m_xmlcore->GetEntryEndIter());
         cur_entry->title = Unique_Title;
     }
     tempitem.SetGroup(newgroup);
-    cur_entry->title.EmptyIfOnlyWhiteSpace();
-    if (cur_entry->title.GetLength() != 0)
+    EmptyIfOnlyWhiteSpace(cur_entry->title);
+    if (!cur_entry->title.empty())
       tempitem.SetTitle(cur_entry->title, m_delimiter);
-    cur_entry->username.EmptyIfOnlyWhiteSpace();
-    if (cur_entry->username.GetLength() != 0)
+    EmptyIfOnlyWhiteSpace(cur_entry->username);
+    if (!cur_entry->username.empty())
       tempitem.SetUser(cur_entry->username);
-    if (cur_entry->password.GetLength() != 0)
+    if (!cur_entry->password.empty())
       tempitem.SetPassword(cur_entry->password);
-    cur_entry->url.EmptyIfOnlyWhiteSpace();
-    if (cur_entry->url.GetLength() != 0)
+    EmptyIfOnlyWhiteSpace(cur_entry->url);
+    if (!cur_entry->url.empty())
       tempitem.SetURL(cur_entry->url);
-    cur_entry->autotype.EmptyIfOnlyWhiteSpace();
-    if (cur_entry->autotype.GetLength() != 0)
+    EmptyIfOnlyWhiteSpace(cur_entry->autotype);
+    if (!cur_entry->autotype.empty())
       tempitem.SetAutoType(cur_entry->autotype);
-    if (cur_entry->ctime.GetLength() != 0)
-      tempitem.SetCTime(cur_entry->ctime);
-    if (cur_entry->pmtime.GetLength() != 0)
-      tempitem.SetPMTime(cur_entry->pmtime);
-    if (cur_entry->atime.GetLength() != 0)
-      tempitem.SetATime(cur_entry->atime);
-    if (cur_entry->xtime.GetLength() != 0)
-      tempitem.SetXTime(cur_entry->xtime);
-    if (cur_entry->xtime_interval.GetLength() != 0) {
-        int numdays = _ttoi((LPCTSTR)cur_entry->xtime_interval);
-        if (numdays > 0 && numdays <= 3650)
-          tempitem.SetXTimeInt(numdays);
+    if (!cur_entry->ctime.empty())
+      tempitem.SetCTime(cur_entry->ctime.c_str());
+    if (!cur_entry->pmtime.empty())
+      tempitem.SetPMTime(cur_entry->pmtime.c_str());
+    if (!cur_entry->atime.empty())
+      tempitem.SetATime(cur_entry->atime.c_str());
+    if (!cur_entry->xtime.empty())
+      tempitem.SetXTime(cur_entry->xtime.c_str());
+    if (!cur_entry->xtime_interval.empty()) {
+      int numdays = _ttoi(cur_entry->xtime_interval.c_str());
+      if (numdays > 0 && numdays <= 3650)
+        tempitem.SetXTimeInt(numdays);
     }
-    if (cur_entry->rmtime.GetLength() != 0)
-      tempitem.SetRMTime(cur_entry->rmtime);
+    if (!cur_entry->rmtime.empty())
+      tempitem.SetRMTime(cur_entry->rmtime.c_str());
 
     if (cur_entry->pwp.flags != 0) {
       tempitem.SetPWPolicy(cur_entry->pwp);
@@ -536,8 +535,8 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
     StringX newPWHistory;
     CString strPWHErrors, buffer;
-    buffer.Format(IDSC_SAXERRORPWH,
-      cur_entry->group, cur_entry->title, cur_entry->username);
+    buffer.Format(IDSC_SAXERRORPWH, cur_entry->group.c_str(),
+                  cur_entry->title.c_str(), cur_entry->username.c_str());
     switch (VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
       case PWH_OK:
         tempitem.SetPWHistory(newPWHistory.c_str());
@@ -560,8 +559,8 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
         ASSERT(0);
     }
     m_strImportErrors += buffer;
-    cur_entry->notes.EmptyIfOnlyWhiteSpace();
-    if (cur_entry->notes.GetLength() != 0)
+    EmptyIfOnlyWhiteSpace(cur_entry->notes);
+    if (!cur_entry->notes.empty())
       tempitem.SetNotes(cur_entry->notes, m_delimiter);
 
     if (!cur_entry->uhrxl.empty()) {
@@ -613,12 +612,12 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
   if (_tcscmp(szCurElement, _T("password")) == 0) {
     cur_entry->password = m_strElemContent;
     if (CMyString(m_strElemContent).Replace(_T(':'), _T(';')) <= 2) {
-      if (m_strElemContent.Left(2) == _T("[[") &&
-        m_strElemContent.Right(2) == _T("]]")) {
+      if (m_strElemContent.substr(0, 2) == _T("[[") &&
+          m_strElemContent.substr(m_strElemContent.length() - 2) == _T("]]")) {
           cur_entry->entrytype = ALIAS;
       }
-      if (m_strElemContent.Left(2) == _T("[~") &&
-        m_strElemContent.Right(2) == _T("~]")) {
+      if (m_strElemContent.substr(0, 2) == _T("[~") &&
+          m_strElemContent.substr(m_strElemContent.length() - 2) == _T("~]")) {
           cur_entry->entrytype = SHORTCUT;
       }
     }
@@ -642,70 +641,70 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
   if (_tcscmp(szCurElement, _T("status")) == 0) {
     CString buffer;
-    int i = _ttoi(m_strElemContent);
+    int i = _ttoi(m_strElemContent.c_str());
     buffer.Format(_T("%01x"), i);
-    cur_entry->pwhistory = CMyString(buffer);
+    cur_entry->pwhistory = LPCTSTR(buffer);
   }
 
   if (_tcscmp(szCurElement, _T("max")) == 0) {
     CString buffer;
-    int i = _ttoi(m_strElemContent);
+    int i = _ttoi(m_strElemContent.c_str());
     buffer.Format(_T("%02x"), i);
-    cur_entry->pwhistory += CMyString(buffer);
+    cur_entry->pwhistory += LPCTSTR(buffer);
   }
 
   if (_tcscmp(szCurElement, _T("num")) == 0) {
     CString buffer;
-    int i = _ttoi(m_strElemContent);
+    int i = _ttoi(m_strElemContent.c_str());
     buffer.Format(_T("%02x"), i);
-    cur_entry->pwhistory += CMyString(buffer);
+    cur_entry->pwhistory += LPCTSTR(buffer);
   }
 
   if (_tcscmp(szCurElement, _T("ctime")) == 0) {
-    cur_entry->ctime.Replace(_T('-'), _T('/'));
+    Replace(cur_entry->ctime, _T('-'), _T('/'));
     m_whichtime = -1;
   }
 
   if (_tcscmp(szCurElement, _T("pmtime")) == 0) {
-    cur_entry->pmtime.Replace(_T('-'), _T('/'));
+    Replace(cur_entry->pmtime, _T('-'), _T('/'));
     m_whichtime = -1;
   }
 
   if (_tcscmp(szCurElement, _T("atime")) == 0) {
-    cur_entry->atime.Replace(_T('-'), _T('/'));
+    Replace(cur_entry->atime, _T('-'), _T('/'));
     m_whichtime = -1;
   }
 
   if (_tcscmp(szCurElement, _T("xtime")) == 0) {
-    cur_entry->xtime.Replace(_T('-'), _T('/'));
+    Replace(cur_entry->xtime, _T('-'), _T('/'));
     m_whichtime = -1;
   }
 
   if (_tcscmp(szCurElement, _T("rmtime")) == 0) {
-    cur_entry->rmtime.Replace(_T('-'), _T('/'));
+    Replace(cur_entry->rmtime, _T('-'), _T('/'));
     m_whichtime = -1;
   }
 
   if (_tcscmp(szCurElement, _T("changed")) == 0) {
-    cur_entry->changed.Replace(_T('-'), _T('/'));
+    Replace(cur_entry->changed, _T('-'), _T('/'));
     m_whichtime = -1;
   }
 
   if (_tcscmp(szCurElement, _T("oldpassword")) == 0) {
-    cur_entry->changed.Trim();
-    if (cur_entry->changed.IsEmpty()) {
+    Trim(cur_entry->changed);
+    if (cur_entry->changed.empty()) {
       //                       1234567890123456789
       cur_entry->changed = _T("1970-01-01 00:00:00");
     }
     cur_entry->pwhistory += _T(" ") + cur_entry->changed;
     //cur_entry->changed.Empty();
     CString buffer;
-    buffer.Format(_T(" %04x %s"), m_strElemContent.GetLength(), m_strElemContent);
-    cur_entry->pwhistory += CMyString(buffer);
+    buffer.Format(_T(" %04x %s"), m_strElemContent.length(), m_strElemContent);
+    cur_entry->pwhistory += LPCTSTR(buffer);
     buffer.Empty();
   }
 
-  if (_tcscmp(szCurElement, _T("date")) == 0 && !m_strElemContent.IsEmpty()) {
+  if (_tcscmp(szCurElement, _T("date")) == 0 && !m_strElemContent.empty()) {
     switch (m_whichtime) {
       case PW_CTIME:
         cur_entry->ctime = m_strElemContent;
@@ -730,7 +729,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     }
   }
 
-  if (_tcscmp(szCurElement, _T("time")) == 0 && !m_strElemContent.IsEmpty()) {
+  if (_tcscmp(szCurElement, _T("time")) == 0 && !m_strElemContent.empty()) {
     switch (m_whichtime) {
       case PW_CTIME:
         cur_entry->ctime += _T(" ") + m_strElemContent;
@@ -755,8 +754,8 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     }
   }
 
-  if (_tcscmp(szCurElement, _T("xtime_interval")) == 0 && !m_strElemContent.IsEmpty()) {
-    cur_entry->xtime_interval = m_strElemContent.Trim();
+  if (_tcscmp(szCurElement, _T("xtime_interval")) == 0 && !m_strElemContent.empty()) {
+    cur_entry->xtime_interval = Trim(m_strElemContent);
   }
 
   if (_tcscmp(szCurElement, _T("unknownheaderfields")) == 0)
@@ -771,7 +770,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     // _stscanf_s always outputs to an "int" using %x even though
     // target is only 1.  Read into larger buffer to prevent data being
     // overwritten and then copy to where we want it!
-    const int length = m_strElemContent.GetLength();
+    const int length = m_strElemContent.length();
     // UNK_HEX_REP will represent unknown values
     // as hexadecimal, rather than base64 encoding.
     // Easier to debug.
@@ -824,89 +823,89 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
   }
 
   if (_tcscmp(szCurElement, _T("NumberHashIterations")) == 0) { 
-    int i = _ttoi(m_strElemContent);
+    int i = _ttoi(m_strElemContent.c_str());
     if (i > MIN_HASH_ITERATIONS) {
       m_nITER = i;
     }
   }
 
   if (_tcscmp(szCurElement, _T("DisplayExpandedAddEditDlg")) == 0)
-    m_bDisplayExpandedAddEditDlg = _ttoi(m_strElemContent);
+    m_bDisplayExpandedAddEditDlg = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("MaintainDateTimeStamps")) == 0)
-    m_bMaintainDateTimeStamps = _ttoi(m_strElemContent);
+    m_bMaintainDateTimeStamps = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWUseDigits")) == 0)
     if (m_bentrybeingprocessed)
       cur_entry->pwp.flags |= PWSprefs::PWPolicyUseDigits;
     else
-      m_bPWUseDigits = _ttoi(m_strElemContent);
+      m_bPWUseDigits = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWUseEasyVision")) == 0)
     if (m_bentrybeingprocessed)
       cur_entry->pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
     else
-      m_bPWUseEasyVision = _ttoi(m_strElemContent);
+      m_bPWUseEasyVision = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWUseHexDigits")) == 0)
     if (m_bentrybeingprocessed)
       cur_entry->pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
     else
-      m_bPWUseHexDigits = _ttoi(m_strElemContent);
+      m_bPWUseHexDigits = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWUseLowercase")) == 0)
     if (m_bentrybeingprocessed)
       cur_entry->pwp.flags |= PWSprefs::PWPolicyUseLowercase;
     else
-      m_bPWUseLowercase = _ttoi(m_strElemContent);
+      m_bPWUseLowercase = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWUseSymbols")) == 0)
     if (m_bentrybeingprocessed)
       cur_entry->pwp.flags |= PWSprefs::PWPolicyUseSymbols;
     else
-      m_bPWUseSymbols = _ttoi(m_strElemContent);
+      m_bPWUseSymbols = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWUseUppercase")) == 0)
     if (m_bentrybeingprocessed)
       cur_entry->pwp.flags |= PWSprefs::PWPolicyUseUppercase;
     else
-      m_bPWUseUppercase = _ttoi(m_strElemContent);
+      m_bPWUseUppercase = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWMakePronounceable")) == 0)
     if (m_bentrybeingprocessed)
       cur_entry->pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
     else
-      m_bPWMakePronounceable = _ttoi(m_strElemContent);
+      m_bPWMakePronounceable = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("SaveImmediately")) == 0)
-    m_bSaveImmediately = _ttoi(m_strElemContent);
+    m_bSaveImmediately = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("SavePasswordHistory")) == 0)
-    m_bSavePasswordHistory = _ttoi(m_strElemContent);
+    m_bSavePasswordHistory = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("ShowNotesDefault")) == 0)
-    m_bShowNotesDefault = _ttoi(m_strElemContent);
+    m_bShowNotesDefault = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("ShowPWDefault")) == 0)
-    m_bShowPWDefault = _ttoi(m_strElemContent);
+    m_bShowPWDefault = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("ShowPasswordInTree")) == 0)
-    m_bShowPasswordInTree = _ttoi(m_strElemContent);
+    m_bShowPasswordInTree = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("ShowUsernameInTree")) == 0)
-    m_bShowUsernameInTree = _ttoi(m_strElemContent);
+    m_bShowUsernameInTree = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("SortAscending")) == 0)
-    m_bSortAscending = _ttoi(m_strElemContent);
+    m_bSortAscending = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("UseDefaultUser")) == 0)
-    m_bUseDefaultUser = _ttoi(m_strElemContent);
+    m_bUseDefaultUser = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWDefaultLength")) == 0)
-    m_iPWDefaultLength = _ttoi(m_strElemContent);
+    m_iPWDefaultLength = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("IdleTimeout")) == 0)
-    m_iIdleTimeout = _ttoi(m_strElemContent);
+    m_iIdleTimeout = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("TreeDisplayStatusAtOpen")) == 0) {
     if (m_strElemContent == _T("AllCollapsed"))
@@ -918,40 +917,40 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
   }
 
   if (_tcscmp(szCurElement, _T("NumPWHistoryDefault")) == 0)
-    m_iNumPWHistoryDefault = _ttoi(m_strElemContent);
+    m_iNumPWHistoryDefault = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("DefaultUsername")) == 0)
-    m_sDefaultUsername = CString(m_strElemContent);
+    m_sDefaultUsername = m_strElemContent.c_str();
 
   if (_tcscmp(szCurElement, _T("DefaultAutotypeString")) == 0)
-    m_sDefaultAutotypeString = CString(m_strElemContent);
+    m_sDefaultAutotypeString = m_strElemContent.c_str();
 
   if (_tcscmp(szCurElement, _T("PWLength")) == 0)
-    cur_entry->pwp.length = _ttoi(m_strElemContent);
+    cur_entry->pwp.length = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWDigitMinLength")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->pwp.digitminlength = _ttoi(m_strElemContent);
+      cur_entry->pwp.digitminlength = _ttoi(m_strElemContent.c_str());
     else
-      m_iPWDigitMinLength = _ttoi(m_strElemContent);
+      m_iPWDigitMinLength = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWLowercaseMinLength")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->pwp.lowerminlength = _ttoi(m_strElemContent);
+      cur_entry->pwp.lowerminlength = _ttoi(m_strElemContent.c_str());
     else
-      m_iPWLowercaseMinLength = _ttoi(m_strElemContent);
+      m_iPWLowercaseMinLength = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWSymbolMinLength")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->pwp.symbolminlength = _ttoi(m_strElemContent);
+      cur_entry->pwp.symbolminlength = _ttoi(m_strElemContent.c_str());
     else
-      m_iPWSymbolMinLength = _ttoi(m_strElemContent);
+      m_iPWSymbolMinLength = _ttoi(m_strElemContent.c_str());
 
   if (_tcscmp(szCurElement, _T("PWUppercaseMinLength")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->pwp.upperminlength = _ttoi(m_strElemContent);
+      cur_entry->pwp.upperminlength = _ttoi(m_strElemContent.c_str());
     else
-      m_iPWUppercaseMinLength = _ttoi(m_strElemContent);
+      m_iPWUppercaseMinLength = _ttoi(m_strElemContent.c_str());
 
   return S_OK;
 }

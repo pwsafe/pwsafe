@@ -355,7 +355,7 @@ bool VerifyXMLDateString(const CString &time_str, time_t &t)
   return true;
 }
 
-int VerifyImportPWHistoryString(const TCHAR *PWHistory, StringX &newPWHistory, 
+int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory, 
                                 CString &strErrors)
 {
   // Format is (! == mandatory blank, unless at the end of the record):
