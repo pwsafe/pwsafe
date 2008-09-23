@@ -90,13 +90,13 @@ BOOL CPWHistDlg::OnInitDialog()
     int nPos = 0;
     const PWHistEntry pwhentry = *iter;
     if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
-      nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
+      nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate.c_str());
     else {
       cs_text.LoadString(IDS_UNKNOWN);
       cs_text.Trim();
       nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
     }
-    m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
+    m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password.c_str());
     m_PWHistListCtrl.SetItemData(nPos, nIdx);
   }
 

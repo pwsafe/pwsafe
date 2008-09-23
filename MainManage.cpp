@@ -784,7 +784,7 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
   {
     CMyString cs_tmp = ci.GetPWHistory();
     if (cs_tmp.GetLength() < 5) {
-      ci.SetPWHistory(m_text);
+      ci.SetPWHistory(LPCTSTR(m_text));
       m_num_altered++;
     } else {
       if (cs_tmp.GetAt(0) == _T('0')) {

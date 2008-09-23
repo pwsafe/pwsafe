@@ -196,7 +196,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
   }
 
   if (!ci.IsURLEmpty()) {
-    LaunchBrowser(ci.GetURL());
+    LaunchBrowser(ci.GetURL().c_str());
   }
   UpdateAccessTime(&ci);
 }

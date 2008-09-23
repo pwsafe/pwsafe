@@ -11,6 +11,7 @@
 #include "Util.h"
 #include <sstream>
 #include <iomanip>
+#include "StringXStream.h"
 
 // hide w_char/char differences where possible:
 #ifdef UNICODE
@@ -23,13 +24,13 @@ typedef std::ostringstream ostringstreamT;
 
 using namespace std;
 
-bool CreatePWHistoryList(const CMyString &pwh_str,
+bool CreatePWHistoryList(const StringX &pwh_str,
                          size_t &pwh_max, size_t &num_err,
                          PWHistList &pwhl, int time_format)
 {
   pwh_max = num_err = 0;
 
-  stringT pwh_s = pwh_str;
+  StringX pwh_s = pwh_str;
   int len = pwh_s.length();
 
   if (len < 5) {
@@ -39,10 +40,10 @@ bool CreatePWHistoryList(const CMyString &pwh_str,
   bool retval = pwh_s[0] != charT('0');
 
   int n;
-  istringstreamT ism(stringT(pwh_s, 1, 2)); // max history 1 byte hex
+  iStringXStream ism(StringX(pwh_s, 1, 2)); // max history 1 byte hex
   ism >> hex >> pwh_max;
   if (!ism) return false;
-  istringstreamT isn(stringT(pwh_s, 3, 2)); // cur # entries 1 byte hex
+  iStringXStream isn(StringX(pwh_s, 3, 2)); // cur # entries 1 byte hex
   isn >> hex >> n;
   if (!isn) return false;
 
@@ -59,7 +60,7 @@ bool CreatePWHistoryList(const CMyString &pwh_str,
   for (int i = 0; i < n; i++) {
     PWHistEntry pwh_ent;
     long t;
-    istringstreamT ist(stringT(pwh_s, offset, 8)); // time in 4 byte hex
+    iStringXStream ist(StringX(pwh_s, offset, 8)); // time in 4 byte hex
     ist >> hex >> t;
     if (!ist) {num_err++; continue;}
     offset += 8;
@@ -68,18 +69,18 @@ bool CreatePWHistoryList(const CMyString &pwh_str,
     pwh_ent.changetttdate = (time_t) t;
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
-    if (pwh_ent.changedate.IsEmpty()) {
+    if (pwh_ent.changedate.empty()) {
       //                       1234567890123456789
       pwh_ent.changedate = _T("1970-01-01 00:00:00");
     }
-    istringstreamT ispwlen(stringT(pwh_s, offset, 4)); // pw length 2 byte hex
+    iStringXStream ispwlen(StringX(pwh_s, offset, 4)); // pw length 2 byte hex
     int ipwlen;
     ispwlen >> hex >> ipwlen;
     if (offset + 4 + ipwlen > pwh_s.length())
       break;
     if (!ispwlen) {num_err++; continue;}
     offset += 4;
-    const stringT pw(pwh_s, offset, ipwlen);
+    const StringX pw(pwh_s, offset, ipwlen);
     pwh_ent.password = pw.c_str();
     offset += ipwlen;
     pwhl.push_back(pwh_ent);
@@ -90,7 +91,7 @@ bool CreatePWHistoryList(const CMyString &pwh_str,
 }
 
 
-CMyString MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)
+StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)
 {
   const size_t MAX_PWHISTORY = 255;
   if (pwh_max > MAX_PWHISTORY)
@@ -101,5 +102,5 @@ CMyString MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)
   os.fill(charT('0'));
   os << hex << setw(1) << status
      << setw(2) << pwh_max << setw(2) << pwh_num << ends;
-  return CMyString(os.str().c_str());
+  return os.str().c_str();
 }

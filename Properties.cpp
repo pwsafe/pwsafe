@@ -40,19 +40,19 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
                                                TMC_EXPORT_IMPORT).c_str());
   }
 
-  if (core.GetHeader().m_lastsavedby.IsEmpty() &&
-      core.GetHeader().m_lastsavedon.IsEmpty()) {
+  if (core.GetHeader().m_lastsavedby.empty() &&
+      core.GetHeader().m_lastsavedon.empty()) {
     m_wholastsaved.LoadString(IDS_UNKNOWN);
     m_whenlastsaved.Trim();
   } else {
-    CString user = core.GetHeader().m_lastsavedby.IsEmpty() ?
-      _T("?") : core.GetHeader().m_lastsavedby;
-    CString host = core.GetHeader().m_lastsavedon.IsEmpty() ?
-      _T("?") : core.GetHeader().m_lastsavedon;
+    CString user = core.GetHeader().m_lastsavedby.empty() ?
+      _T("?") : core.GetHeader().m_lastsavedby.c_str();
+    CString host = core.GetHeader().m_lastsavedon.empty() ?
+      _T("?") : core.GetHeader().m_lastsavedon.c_str();
     m_wholastsaved.Format(_T("%s on %s"), user, host);
   }
 
-  CString wls = core.GetHeader().m_whatlastsaved;
+  CString wls = core.GetHeader().m_whatlastsaved.c_str();
   if (wls.IsEmpty()) {
     m_whatlastsaved.LoadString(IDS_UNKNOWN);
     m_whenlastsaved.Trim();

@@ -154,7 +154,7 @@ err:
   return retval;
 }
 
-size_t PWSfileV3::WriteCBC(unsigned char type, const CString &data)
+size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
 {
   bool status;
   const unsigned char *utf8;
@@ -448,7 +448,7 @@ int PWSfileV3::WriteHeader()
 
   // Write out display status
   if (!m_hdr.m_displaystatus.empty()) {
-    CString ds(_T(""));
+    StringX ds(_T(""));
     vector<bool>::const_iterator iter;
     for (iter = m_hdr.m_displaystatus.begin();
       iter != m_hdr.m_displaystatus.end(); iter++)
@@ -485,21 +485,23 @@ int PWSfileV3::WriteHeader()
 
   // Write out what saved it!
   numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION,
-    m_hdr.m_whatlastsaved);
+                        m_hdr.m_whatlastsaved);
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
-  if (!m_hdr.m_dbname.IsEmpty()) {
+  if (!m_hdr.m_dbname.empty()) {
     numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_dbname);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
-  if (!m_hdr.m_dbdesc.IsEmpty()) {
+  if (!m_hdr.m_dbdesc.empty()) {
     numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
   if (!m_MapFilters.empty()) {
     ostringstream oss;
     m_MapFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
-    numWritten = WriteCBC(HDR_FILTERS, oss.str().c_str());
+    numWritten = WriteCBC(HDR_FILTERS,
+                          reinterpret_cast<const unsigned char *>(oss.str().c_str()),
+                          oss.str().length());
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 

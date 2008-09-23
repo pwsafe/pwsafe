@@ -692,8 +692,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
   }
 
   if (_tcscmp(szCurElement, _T("oldpassword")) == 0) {
-    cur_entry->changed.TrimLeft();
-    cur_entry->changed.TrimRight();
+    cur_entry->changed.Trim();
     if (cur_entry->changed.IsEmpty()) {
       //                       1234567890123456789
       cur_entry->changed = _T("1970-01-01 00:00:00");

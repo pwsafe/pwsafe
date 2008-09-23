@@ -455,7 +455,7 @@ std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
     oss << "FromDatabaseFormat=\"";
     oss << reinterpret_cast<const char *>(utf8);
     oss << "\"" << endl;
-    if (!hdr.m_lastsavedby.IsEmpty() || !hdr.m_lastsavedon.IsEmpty()) {
+    if (!hdr.m_lastsavedby.empty() || !hdr.m_lastsavedon.empty()) {
       CString wls(_T(""));
       wls.Format(_T("%s on %s"), hdr.m_lastsavedby, hdr.m_lastsavedon);
       utf8conv.ToUTF8(wls, utf8, utf8Len);
@@ -463,7 +463,7 @@ std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
       oss << reinterpret_cast<const char *>(utf8);
       oss << "\"" << endl;
     }
-    if (!hdr.m_whatlastsaved.IsEmpty()) {
+    if (!hdr.m_whatlastsaved.empty()) {
       utf8conv.ToUTF8(hdr.m_whatlastsaved, utf8, utf8Len);
       oss << "WhatSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);

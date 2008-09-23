@@ -40,16 +40,19 @@
 #if !defined PWHistory_h
 #define PWHistory_h
 
+#ifdef _WIN32
+#include <afx.h>
+#endif
 #include <time.h> // for time_t
 #include <vector>
-#include "MyString.h"
+#include "StringX.h"
 
 struct PWHistEntry {
   time_t changetttdate;
   // "yyyy/mm/dd hh:mm:ss" - format used in ListCtrl & copied to clipboard (best for sorting)
   // "yyyy-mm-ddThh:mm:ss" - format used in XML
-  CMyString changedate;
-  CMyString password;
+  StringX changedate;
+  StringX password;
 
 PWHistEntry() : changetttdate(0), changedate(), password() {}
   // copy c'tor and assignment operator, standard idioms
@@ -74,11 +77,11 @@ typedef std::vector<PWHistEntry> PWHistList;
 // pwh_max is the max number passwords the string may have.
 // num_err will have the number of ill-formed entries.
 
-bool CreatePWHistoryList(const CMyString &pwh_str,
+bool CreatePWHistoryList(const StringX &pwh_str,
                         size_t &pwh_max, size_t &num_err,
                         PWHistList &pwhl, int time_format);
 
-CMyString MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
+StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
 
 #endif
 //-----------------------------------------------------------------------------

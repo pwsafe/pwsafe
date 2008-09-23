@@ -12,7 +12,7 @@
 // Match.h
 //-----------------------------------------------------------------------------
 
-#include "MyString.h"
+#include "StringX.h"
 #include "ItemData.h"
 
 namespace PWSMatch {
@@ -49,7 +49,7 @@ namespace PWSMatch {
                   MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE};
 
   // Generalised checking
-  bool Match(const CMyString &string1, CMyString &csValue, int iFunction);
+  bool Match(const StringX &string1, StringX &csValue, int iFunction);
   template<typename T> bool Match(T v1, T v2, T value, int iFunction)
   {
     switch (iFunction) {

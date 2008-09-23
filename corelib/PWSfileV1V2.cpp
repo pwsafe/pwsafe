@@ -94,7 +94,7 @@ int PWSfileV1V2::ReadV2Header()
       status = WRONG_VERSION;
   }
   if (status == SUCCESS)
-    m_hdr.m_prefString = LPCTSTR(header.GetNotes());
+    m_hdr.m_prefString = header.GetNotes();
   return status;
 }
 
@@ -228,20 +228,16 @@ static CMyString ReMergeNotes(const CItemData &item)
   return notes;
 }
 
-size_t PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
+size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
 {
 #ifndef UNICODE
-  // We do a double cast because the LPCTSTR cast operator is overridden
-  // by the CString class to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCTSTR datastr = LPCTSTR(data);
+  const unsigned char *datastr = data.c_str();
 
-  return PWSfile::WriteCBC(type, (const unsigned char *)datastr,
-                           data.GetLength());
+  return PWSfile::WriteCBC(type, datastr, data.length());
 #else
   // xlate wchar_t to ACP
-  wchar_t *wcPtr = const_cast<CString &>(data).GetBuffer();
-  int wcLen = data.GetLength()+1;
+  wchar_t *wcPtr = const_cast<wchar_t *>(data.c_str());
+  int wcLen = data.length()+1;
   int mbLen = 2*wcLen;
   unsigned char *acp = new unsigned char[mbLen];
   int acpLen = WideCharToMultiByte(CP_ACP,      // code page

@@ -948,7 +948,7 @@ void DboxMain::OnBrowse()
     }
 
     if (!ci->IsURLEmpty()) {
-      LaunchBrowser(ci->GetURL());
+      LaunchBrowser(ci->GetURL().c_str());
       UpdateAccessTime(ci_original);
     }
   }
@@ -2036,7 +2036,7 @@ void DboxMain::UpdateAccessTime(CItemData *ci)
       // Get index of entry
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
       // Get value in correct format
-      CString cs_atime = ci->GetATimeL();
+      CString cs_atime = ci->GetATimeL().c_str();
       // Update it
       m_ctlItemList.SetItemText(di->list_index,
         m_nColumnIndexByType[CItemData::ATIME], cs_atime);

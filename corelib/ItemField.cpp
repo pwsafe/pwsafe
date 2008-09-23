@@ -12,7 +12,7 @@
 
 #include "ItemField.h"
 #include "Util.h"
-#include "Blowfish.h"
+#include "BlowFish.h"
 #include "PWSrand.h"
 
 #ifdef _DEBUG

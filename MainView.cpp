@@ -85,7 +85,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   const int nTypeSortColumn = self->m_iTypeSortColumn;
   CItemData* pLHS = (CItemData *)lParam1;
   CItemData* pRHS = (CItemData *)lParam2;
-  CMyString group1, group2;
+  StringX group1, group2;
   time_t t1, t2;
   int xint1, xint2;
 
@@ -97,41 +97,41 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     case CItemData::GROUP:
       group1 = pLHS->GetGroup();
       group2 = pRHS->GetGroup();
-      if (group1.IsEmpty())  // root?
+      if (group1.empty())  // root?
         group1 = _T("\xff");
-      if (group2.IsEmpty())  // root?
+      if (group2.empty())  // root?
         group2 = _T("\xff");
-      iResult = group1.CompareNoCase(group2);
+      iResult = CompareNoCase(group1, group2);
       if (iResult == 0) {
-        iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+        iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
         if (iResult == 0) {
-          iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+          iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
         }
       }
       break;
     case CItemData::TITLE:
-      iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+      iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
       if (iResult == 0) {
-        iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+        iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
       }
       break;
     case CItemData::USER:
-      iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+      iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
       if (iResult == 0) {
-        iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+        iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
       }
       break;
     case CItemData::NOTES:
-      iResult = (pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
+      iResult = CompareNoCase(pLHS->GetNotes(), pRHS->GetNotes());
       break;
     case CItemData::PASSWORD:
-      iResult = (pLHS->GetPassword()).CompareNoCase(pRHS->GetPassword());
+      iResult = CompareNoCase(pLHS->GetPassword(), pRHS->GetPassword());
       break;
     case CItemData::URL:
-      iResult = (pLHS->GetURL()).CompareNoCase(pRHS->GetURL());
+      iResult = CompareNoCase(pLHS->GetURL(), pRHS->GetURL());
       break;
     case CItemData::AUTOTYPE:
-      iResult = (pLHS->GetAutoType()).CompareNoCase(pRHS->GetAutoType());
+      iResult = CompareNoCase(pLHS->GetAutoType(), pRHS->GetAutoType());
       break;
     case CItemData::CTIME:
       pLHS->GetCTime(t1);
@@ -164,7 +164,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
     case CItemData::POLICY:
-      iResult = (pLHS->GetPWPolicy()).CompareNoCase(pRHS->GetPWPolicy());
+      iResult = CompareNoCase(pLHS->GetPWPolicy(), pRHS->GetPWPolicy());
       break;
     default:
       iResult = 0; // should never happen - just keep compiler happy
@@ -551,8 +551,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
              iter++) {
           PWHistEntry pwshe = *iter;
           if (!CaseSensitive)
-            pwshe.password.MakeLower();
-          if (::_tcsstr(pwshe.password, searchstr)) {
+            ToLower(pwshe.password);
+          if (::_tcsstr(pwshe.password.c_str(), searchstr)) {
             bFoundit = true;
             break;  // break out of for loop
           }
@@ -1332,7 +1332,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
     HTREEITEM ti;
     CMyString treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
     // get path, create if necessary, add title as last node
-    ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
+    ti = m_ctlItemTree.AddGroup(itemData.GetGroup().c_str());
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
       ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
       m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
