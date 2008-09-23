@@ -1108,7 +1108,7 @@ bool CPWFilterLC::GetCriterion()
         st_fldata.mtype = PWSMatch::MT_STRING;
         st_fldata.ftype = ft;
         st_fldata.rule = m_fstring.m_rule;
-        st_fldata.fstring = m_fstring.m_string;
+        st_fldata.fstring = LPCTSTR(m_fstring.m_string);
         if (st_fldata.rule == PWSMatch::MR_PRESENT ||
             st_fldata.rule == PWSMatch::MR_NOTPRESENT)
           st_fldata.fcase = 0;
@@ -1135,7 +1135,7 @@ bool CPWFilterLC::GetCriterion()
         st_fldata.mtype = PWSMatch::MT_PASSWORD;
         st_fldata.ftype = ft;
         st_fldata.rule = m_fpswd.m_rule;
-        st_fldata.fstring = m_fpswd.m_string;
+        st_fldata.fstring = LPCTSTR(m_fpswd.m_string);
         st_fldata.fcase = m_fpswd.m_case;
         if (st_fldata.rule != PWSMatch::MR_WILLEXPIRE)
           st_fldata.fnum1 = 0;
