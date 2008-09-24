@@ -457,7 +457,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
     oss << "\"" << endl;
     if (!hdr.m_lastsavedby.empty() || !hdr.m_lastsavedon.empty()) {
       CString wls(_T(""));
-      wls.Format(_T("%s on %s"), hdr.m_lastsavedby, hdr.m_lastsavedon);
+      wls.Format(_T("%s on %s"), hdr.m_lastsavedby.c_str(), hdr.m_lastsavedon.c_str());
       utf8conv.ToUTF8(wls, utf8, utf8Len);
       oss << "WhoSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);
