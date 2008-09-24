@@ -699,7 +699,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     cur_entry->pwhistory += _T(" ") + cur_entry->changed;
     //cur_entry->changed.Empty();
     CString buffer;
-    buffer.Format(_T(" %04x %s"), m_strElemContent.length(), m_strElemContent);
+    buffer.Format(_T(" %04x %s"), m_strElemContent.length(), m_strElemContent.c_str());
     cur_entry->pwhistory += LPCTSTR(buffer);
     buffer.Empty();
   }

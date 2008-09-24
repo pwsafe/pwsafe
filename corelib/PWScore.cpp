@@ -520,7 +520,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   of << "\"" << endl;
   if (!m_hdr.m_lastsavedby.empty() || !m_hdr.m_lastsavedon.empty()) {
     CString wls(_T(""));
-    wls.Format(_T("%s on %s"), m_hdr.m_lastsavedby, m_hdr.m_lastsavedon);
+    wls.Format(_T("%s on %s"), m_hdr.m_lastsavedby.c_str(), m_hdr.m_lastsavedon.c_str());
     utf8conv.ToUTF8(wls, utf8, utf8Len);
     of << "WhoSaved=\"";
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
@@ -1813,14 +1813,16 @@ PWScore::Validate(CString &status)
       num_uuid_fixed += fixedItem.ValidateUUID(m_hdr.m_nCurrentMajorVersion,
         m_hdr.m_nCurrentMinorVersion,
         uuid_array);
-      cs_Error.Format(IDSC_VALIDATEUUID, ci.GetGroup(), ci.GetTitle(), ci.GetUser());
+      cs_Error.Format(IDSC_VALIDATEUUID,
+                      ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
       rpt.WriteLine(cs_Error);
 
       m_pwlist.erase(iter); // erasing item in mid-iteration!
       AddEntry(fixedItem);
     }
     if (ci.ValidatePWHistory() != 0) {
-      cs_Error.Format(IDSC_VALIDATEPWH, ci.GetGroup(), ci.GetTitle(), ci.GetUser());
+      cs_Error.Format(IDSC_VALIDATEPWH,
+                      ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
       rpt.WriteLine(cs_Error);
       num_PWH_fixed++;
     }
