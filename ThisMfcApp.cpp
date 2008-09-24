@@ -893,8 +893,7 @@ void ThisMfcApp::OnHelp()
   }
   const CString cs_option_text(MAKEINTRESOURCE(IDS_OPTIONS));
   if (cs_title != cs_option_text) {
-    ::HtmlHelp(wnd != NULL ? wnd->m_hWnd : NULL,
-               (LPCTSTR)m_csHelpFile, HH_DISPLAY_TOPIC, 0);
+    ::HtmlHelp(NULL, (LPCTSTR)m_csHelpFile, HH_DISPLAY_TOPIC, 0);
   } else { // Options propertysheet - find out active page
     CString helptab;
     CPropertySheet *ps = dynamic_cast<CPropertySheet *>(wnd);
