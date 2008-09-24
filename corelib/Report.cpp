@@ -57,7 +57,8 @@ void CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
   m_psfile = new CSMemFile;
 
   CString cs_title;
-  cs_title.Format(IDSC_REPORT_TITLE1, tcAction, PWSUtil::GetTimeStamp());
+  cs_title.Format(IDSC_REPORT_TITLE1, tcAction,
+                  LPCTSTR(PWSUtil::GetTimeStamp()));
   WriteLine();
   WriteLine(cs_title);
   cs_title.Format(IDSC_REPORT_TITLE2, csDataBase);
@@ -86,7 +87,8 @@ bool CReport::SaveToDisk()
     return false;
   }
 
-  m_cs_filename.Format(IDSC_REPORTFILENAME, drive.c_str(), dir.c_str(), m_tcAction);
+  m_cs_filename.Format(IDSC_REPORTFILENAME,
+                       drive.c_str(), dir.c_str(), m_tcAction);
 
   if ((m_pdfile = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
     PWSDebug::IssueError(_T("StartReport: Opening log file"));

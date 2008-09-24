@@ -79,14 +79,40 @@ void EmptyIfOnlyWhiteSpace(StringX &s)
     s.clear();
 }
 
-void Replace(StringX &s, TCHAR from, TCHAR to)
+int Replace(StringX &s, TCHAR from, TCHAR to)
 {
+  int retval = 0;
   StringX r;
   r.reserve(s.length());
   for (StringX::iterator iter = s.begin(); iter != s.end(); iter++)
-    r.append(1, *iter == from ? to : *iter);
+    if (*iter == from) {
+      r.append(1, to);
+      retval++;
+    } else
+      r.append(1, *iter);
   s = r;
+  return retval;
 }
+
+int Replace(StringX &s, const StringX &from, const StringX &to)
+{
+  int retval = 0;
+  StringX r;
+  StringX::size_type i = 0;
+  do {
+    StringX::size_type j = s.find(from, i);
+    r.append(s, i, j - i);
+    if (j != StringX::npos) {
+      r.append(to);
+      retval++;
+      i = j + from.length();
+    } else
+      i = j;
+  } while (i != StringX::npos);
+  s = r;
+  return retval;
+}
+
 
 
 #ifdef TEST_TRIM

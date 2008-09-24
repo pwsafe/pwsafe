@@ -18,6 +18,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -94,12 +95,12 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       break;
     case PWSMatch::MT_DATE:
       {
-      const CMyString tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
-      utf8conv.ToUTF8(tmp1.Left(10), utf8, utf8Len);
+      const StringX tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
+      utf8conv.ToUTF8(tmp1.substr(0, 10), utf8, utf8Len);
       oss << sztab4 << "<date1>" << utf8
                                               << "</date1>" << szendl;
-      const CMyString tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
-      utf8conv.ToUTF8(tmp2.Left(10), utf8, utf8Len);
+      const StringX tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
+      utf8conv.ToUTF8(tmp2.substr(0, 10), utf8, utf8Len);
       oss << sztab4 << "<date2>" << utf8
                                               << "</date2>" << szendl;
       }
@@ -121,7 +122,6 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
 
-  CMyString tmp;
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
@@ -422,27 +422,25 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
   int utf8Len = 0;
 
   ostringstream oss;
-  CMyString tmp;
+  StringX tmp;
   CString cs_tmp;
   time_t time_now;
 
   time(&time_now);
-  const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
+  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
   oss << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
   oss << endl;
-  tmp.Format(_T("%d"), PWS_XML_FILTER_VERSION);
-  utf8conv.ToUTF8(tmp, utf8, utf8Len);
 
   oss << "<filters version=\"";
-  oss << reinterpret_cast<const char *>(utf8);
+  oss << PWS_XML_FILTER_VERSION;
   oss << "\"" << endl;
   
   if (!currentfile.empty()) {
-    tmp = currentfile.c_str();
-    tmp.Replace(_T("&"), _T("&amp;"));
+    cs_tmp = currentfile.c_str();
+    cs_tmp.Replace(_T("&"), _T("&amp;"));
 
-    utf8conv.ToUTF8(tmp, utf8, utf8Len);
+    utf8conv.ToUTF8(LPCTSTR(cs_tmp), utf8, utf8Len);
     oss << "Database=\"";
     oss << reinterpret_cast<const char *>(utf8);
     oss << "\"" << endl;
@@ -450,10 +448,10 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
     oss << "ExportTimeStamp=\"";
     oss << reinterpret_cast<const char *>(utf8);
     oss << "\"" << endl;
-    cs_tmp.Format(_T("%d.%02d"), hdr.m_nCurrentMajorVersion, hdr.m_nCurrentMinorVersion);
-    utf8conv.ToUTF8(LPCTSTR(cs_tmp), utf8, utf8Len);
     oss << "FromDatabaseFormat=\"";
-    oss << reinterpret_cast<const char *>(utf8);
+    oss << hdr.m_nCurrentMajorVersion
+        << "." << setw(2) << setfill('0')
+        << hdr.m_nCurrentMinorVersion;
     oss << "\"" << endl;
     if (!hdr.m_lastsavedby.empty() || !hdr.m_lastsavedon.empty()) {
       CString wls(_T(""));

@@ -11,7 +11,6 @@
 #include "corelib.h"
 #include "PWScore.h"
 #include "ItemData.h"
-#include "MyString.h"
 #include "util.h"
 #include "SAXHandlers.h"
 #include "UUIDGen.h"
@@ -611,7 +610,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
   if (_tcscmp(szCurElement, _T("password")) == 0) {
     cur_entry->password = m_strElemContent;
-    if (CMyString(m_strElemContent).Replace(_T(':'), _T(';')) <= 2) {
+    if (Replace(m_strElemContent, _T(':'), _T(';')) <= 2) {
       if (m_strElemContent.substr(0, 2) == _T("[[") &&
           m_strElemContent.substr(m_strElemContent.length() - 2) == _T("]]")) {
           cur_entry->entrytype = ALIAS;

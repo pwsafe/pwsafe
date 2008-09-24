@@ -378,7 +378,7 @@ void CEditDlg::UpdateHistory()
 
     buffer.Format(_T("%08x%04x%s"),
                   (long) pwshe.changetttdate, pwshe.password.length(),
-                  pwshe.password);
+                  pwshe.password.c_str());
     new_PWHistory += CMyString(buffer);
     buffer.Empty();
   }
