@@ -729,6 +729,8 @@ bool PWSfile::Decrypt(const CString &fn, const StringX &passwd)
     unsigned char *pwd = NULL;
     int passlen = 0;
     long file_len = PWSUtil::fileLength(in);
+	if (file_len == -1L)
+		file_len = 0;
     ConvertString(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, salt, SaltLength);
     trashMemory(pwd, passlen);
