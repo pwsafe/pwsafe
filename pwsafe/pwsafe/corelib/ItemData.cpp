@@ -19,6 +19,7 @@
 #include "VerifyFormat.h"
 #include "PWHistory.h"
 #include "Util.h"
+#include "StringXStream.h"
 
 #include <time.h>
 #include <sstream>
@@ -275,11 +276,11 @@ StringX CItemData::GetXTimeInt() const
   int xint;
   GetXTimeInt(xint);
   if (xint == 0)
-    return CMyString(_T(""));
+    return _T("");
 
-  ostringstreamT os;
+  oStringXStream os;
   os << xint << ends;
-  return os.str().c_str();
+  return os.str();
 }
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
@@ -1071,8 +1072,8 @@ bool CItemData::ValidatePWHistory()
   if (m_PWHistory.IsEmpty())
     return true;
 
-  CMyString pwh = GetPWHistory();
-  if (pwh.GetLength() < 5) { // not empty, but too short.
+  const StringX pwh = GetPWHistory();
+  if (pwh.length() < 5) { // not empty, but too short.
     SetPWHistory(_T(""));
     return false;
   }
@@ -1098,17 +1099,16 @@ bool CItemData::ValidatePWHistory()
     pwh_max = listnum;
 
   // Rebuild PWHistory from the data we have
-  CMyString history;
-  history = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
+  StringX history = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
 
   PWHistList::iterator iter;
   for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
     const PWHistEntry &pwshe = *iter;
     history += pwshe.changedate;
-    ostringstreamT os1;
+    oStringXStream os1;
     os1 << hex << setfill(charT('0')) << setw(4)
         << pwshe.password.length();
-    history += CMyString(os1.str().c_str());
+    history += os1.str();
     history += pwshe.password;
   }
   SetPWHistory(history);
@@ -1456,9 +1456,9 @@ static void push_length(vector<char> &v, unsigned int s)
 }
 
 static void push_string(vector<char> &v, char type,
-                        const CMyString &str)
+                        const StringX &str)
 {
-  if (!str.IsEmpty()) {
+  if (!str.empty()) {
     CUTF8Conv utf8conv;
     bool status;
     const unsigned char *utf8;
@@ -1469,7 +1469,8 @@ static void push_string(vector<char> &v, char type,
       push_length(v, utf8Len);
       v.insert(v.end(), (char *)utf8, (char *)utf8 + utf8Len);
     } else
-      TRACE(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"), str);
+      TRACE(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"),
+            str.c_str());
   }
 }
 
@@ -1496,7 +1497,7 @@ static void push_int(vector<char> &v, char type, int i)
 
 void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
 {
-  CMyString tmp;
+  StringX tmp;
   uuid_array_t uuid_array;
   time_t t = 0;
   int xi = 0;
