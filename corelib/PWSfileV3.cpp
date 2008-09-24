@@ -557,7 +557,7 @@ int PWSfileV3::ReadHeader()
   m_fish = new TwoFish(m_key, sizeof(m_key));
 
   unsigned char fieldType;
-  CMyString text;
+  StringX text;
   size_t numRead;
   bool utf8status;
   unsigned char *utf8 = NULL;
@@ -608,9 +608,9 @@ int PWSfileV3::ReadHeader()
       case HDR_NDPREFS: /* Non-default user preferences */
         if (utf8Len != 0) {
           if (utf8 != NULL) utf8[utf8Len] = '\0';
-          CMyString pref;
+          StringX pref;
           utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, pref);
-          m_hdr.m_prefString = LPCTSTR(pref);
+          m_hdr.m_prefString = pref;
           if (!utf8status)
             TRACE(_T("FromUTF8(m_prefString) failed\n"));
         } else
@@ -620,8 +620,8 @@ int PWSfileV3::ReadHeader()
       case HDR_DISPSTAT: /* Tree Display Status */
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        for (int i = 0; i != text.GetLength(); i++) {
-          const TCHAR v = text.GetAt(i);
+        for (StringX::iterator iter = text.begin(); iter != text.end(); iter++) {
+          const TCHAR v = *iter;
           m_hdr.m_displaystatus.push_back(v == TCHAR('1'));
         }
         if (!utf8status)
@@ -637,9 +637,9 @@ int PWSfileV3::ReadHeader()
             if (!utf8status)
               TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
 #if _MSC_VER >= 1400
-            _stscanf_s(text, _T("%8x"), &m_hdr.m_whenlastsaved);
+            _stscanf_s(text.c_str(), _T("%8x"), &m_hdr.m_whenlastsaved);
 #else
-            _stscanf(text, _T("%8x"), &m_hdr.m_whenlastsaved);
+            _stscanf(text.c_str(), _T("%8x"), &m_hdr.m_whenlastsaved);
 #endif
         } else if (utf8Len == 4) {
           // retrieve time_t
@@ -657,12 +657,12 @@ int PWSfileV3::ReadHeader()
           if (utf8status) {
             int ulen = 0;
 #if _MSC_VER >= 1400
-            _stscanf_s(text, _T("%4x"), &ulen);
+            _stscanf_s(text.c_str(), _T("%4x"), &ulen);
 #else
-            _stscanf(text, _T("%4x"), &ulen);
+            _stscanf(text.c_str(), _T("%4x"), &ulen);
 #endif
-            m_hdr.m_lastsavedby = CString(text.Mid(4, ulen));
-            m_hdr.m_lastsavedon = CString(text.Mid(ulen + 4));
+            m_hdr.m_lastsavedby = text.substr(4, ulen);
+            m_hdr.m_lastsavedon = text.substr(ulen + 4);
           } else
             TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
         }
@@ -671,7 +671,7 @@ int PWSfileV3::ReadHeader()
       case HDR_LASTUPDATEAPPLICATION: /* and by what */
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_whatlastsaved = CString(text);
+        m_hdr.m_whatlastsaved = text;
         if (!utf8status)
           TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
         break;
@@ -680,26 +680,26 @@ int PWSfileV3::ReadHeader()
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
-        m_hdr.m_lastsavedby = CString(text);
+        m_hdr.m_lastsavedby = text;
         break;
 
       case HDR_LASTUPDATEHOST:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
-        m_hdr.m_lastsavedon = CString(text);
+        m_hdr.m_lastsavedon = text;
         break;
 
       case HDR_DBNAME:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_dbname = CString(text);
+        m_hdr.m_dbname = text;
         break;
 
       case HDR_DBDESC:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        m_hdr.m_dbdesc = CString(text);
+        m_hdr.m_dbdesc = text;
         break;
 
       case HDR_FILTERS:
@@ -708,7 +708,7 @@ int PWSfileV3::ReadHeader()
         if (utf8Len > 0) {
           CString strErrors;
           stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
-          int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text, _T(""),
+          int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                     XSDFilename.c_str(),
                                                     strErrors);
           if (rc != PWScore::SUCCESS) {

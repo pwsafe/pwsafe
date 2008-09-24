@@ -150,19 +150,17 @@ void CItemField::Get(StringX &value, BlowFish *bf) const
     value = _T("");
   } else { // we have data to decrypt
     size_t BlockLength = GetBlockSize(m_Length);
-    value.resize(BlockLength/sizeof(TCHAR) + 1);
     unsigned char *tempmem = new unsigned char[BlockLength];
     TCHAR *pt = reinterpret_cast<TCHAR *>(tempmem);
     size_t x;
+
     // decrypt block by block
     for (x = 0; x < BlockLength; x += 8)
       bf->Decrypt(m_Data + x, tempmem + x);
 
     // copy to value TCHAR by TCHAR
-    for (x = 0; x < BlockLength/sizeof(TCHAR); x++)
-      value[x] = (x < m_Length/sizeof(TCHAR)) ? pt[x] : 0;
-
-    value += TCHAR('\0');
+    for (x = 0; x < m_Length/sizeof(TCHAR); x++)
+      value += pt[x];
 
     trashMemory(tempmem, BlockLength);
     delete [] tempmem;

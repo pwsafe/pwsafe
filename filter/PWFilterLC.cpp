@@ -1096,7 +1096,7 @@ bool CPWFilterLC::GetCriterion()
       if (!vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fstring.m_rule = st_fldata.rule;
-        m_fstring.m_string = st_fldata.fstring;
+        m_fstring.m_string = st_fldata.fstring.c_str();
         m_fstring.m_case = st_fldata.fcase;
       } else {
         m_fstring.m_rule = PWSMatch::MR_INVALID;
@@ -1108,7 +1108,7 @@ bool CPWFilterLC::GetCriterion()
         st_fldata.mtype = PWSMatch::MT_STRING;
         st_fldata.ftype = ft;
         st_fldata.rule = m_fstring.m_rule;
-        st_fldata.fstring = LPCTSTR(m_fstring.m_string);
+        st_fldata.fstring = m_fstring.m_string;
         if (st_fldata.rule == PWSMatch::MR_PRESENT ||
             st_fldata.rule == PWSMatch::MR_NOTPRESENT)
           st_fldata.fcase = 0;
@@ -1122,7 +1122,7 @@ bool CPWFilterLC::GetCriterion()
       if (!vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fpswd.m_rule = st_fldata.rule;
-        m_fpswd.m_string = st_fldata.fstring;
+        m_fpswd.m_string = st_fldata.fstring.c_str();
         m_fpswd.m_case = st_fldata.fcase;
         m_fpswd.m_num1 = st_fldata.fnum1;
       } else {

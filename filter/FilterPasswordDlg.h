@@ -23,7 +23,7 @@ public:
 // Dialog Data
   enum { IDD = IDD_FILTER_PASSWORD };
   int m_case;
-  CMyString m_string;
+  CString m_string;
   int m_num1;
   int m_maxDays;
 

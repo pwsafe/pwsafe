@@ -28,14 +28,14 @@ CUTF8Conv::~CUTF8Conv()
   }
 }
 
-bool CUTF8Conv::ToUTF8(const CMyString &data,
+bool CUTF8Conv::ToUTF8(const StringX &data,
                        const unsigned char *&utf8, int &utf8Len)
 {
   // If we're not in Unicode, call MultiByteToWideChar to get from
   // current codepage to Unicode, and then WideCharToMultiByte to
   // get to UTF-8 encoding.
 
-  if (data.IsEmpty()) {
+  if (data.empty()) {
     utf8Len = 0;
     return true;
   }
@@ -45,7 +45,7 @@ bool CUTF8Conv::ToUTF8(const CMyString &data,
   // first get needed wide char buffer size
   wcLen = MultiByteToWideChar(CP_ACP,             // code page
     MB_PRECOMPOSED,     // character-type options
-    LPCSTR(data),       // string to map
+    data.c_str(),       // string to map
     -1,                 // -1 means null-terminated
     NULL, 0);           // get needed buffer size
   if (wcLen == 0) { // uh-oh
@@ -64,14 +64,14 @@ bool CUTF8Conv::ToUTF8(const CMyString &data,
   // next translate to buffer
   wcLen = MultiByteToWideChar(CP_ACP,             // code page
     MB_PRECOMPOSED,     // character-type options
-    LPCSTR(data),       // string to map
+    data.c_str(),       // string to map
     -1,                 // -1 means null-terminated
     m_wc, wcLen);       // output buffer
   ASSERT(wcLen != 0);
   wcPtr = m_wc;
 #else
-  wcPtr = const_cast<CMyString &>(data).GetBuffer();
-  wcLen = data.GetLength()+1;
+  wcPtr = const_cast<wchar_t *>(data.c_str());
+  wcLen = data.length()+1;
 #endif
   // first get needed utf8 buffer size
   int mbLen = WideCharToMultiByte(CP_UTF8,       // code page
@@ -109,7 +109,7 @@ bool CUTF8Conv::ToUTF8(const CMyString &data,
 
 // In following, char * is managed by caller.
 bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
-                         CMyString &data)
+                         StringX &data)
 {
   // Call MultiByteToWideChar to get from UTF-8 to Unicode.
   // If we're not in Unicode, call WideCharToMultiByte to
@@ -215,8 +215,8 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
                                    NULL, NULL);         // use system default for unmappables
   ASSERT(tmpLen == mbLen);
   m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
-  data = m_tmp;
-  ASSERT(data.GetLength() != 0);
+  data = (char *)m_tmp;
+  ASSERT(!data.empty());
   return true;
 #endif /* !UNICODE */
 }

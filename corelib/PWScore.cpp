@@ -24,11 +24,13 @@
 #include "Report.h"
 #include "VerifyFormat.h"
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
+#include "StringXStream.h"
+
 #include <shellapi.h>
 #include <shlwapi.h>
-
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -513,15 +515,18 @@ int PWScore::WriteXMLFile(const StringX &filename,
   of << "ExportTimeStamp=\"";
   of.write(reinterpret_cast<const char *>(utf8), utf8Len);
   of << "\"" << endl;
-  cs_tmp.Format(_T("%d.%02d"), m_hdr.m_nCurrentMajorVersion, m_hdr.m_nCurrentMinorVersion);
-  utf8conv.ToUTF8(cs_tmp, utf8, utf8Len);
+  oStringXStream osv;
+  osv << m_hdr.m_nCurrentMajorVersion
+      << "." << setw(2) << setfill(_T('0'))
+      << m_hdr.m_nCurrentMinorVersion;
+  utf8conv.ToUTF8(osv.str(), utf8, utf8Len);
   of << "FromDatabaseFormat=\"";
   of.write(reinterpret_cast<const char *>(utf8), utf8Len);
   of << "\"" << endl;
   if (!m_hdr.m_lastsavedby.empty() || !m_hdr.m_lastsavedon.empty()) {
-    CString wls(_T(""));
-    wls.Format(_T("%s on %s"), m_hdr.m_lastsavedby.c_str(), m_hdr.m_lastsavedon.c_str());
-    utf8conv.ToUTF8(wls, utf8, utf8Len);
+    oStringXStream oss;
+    oss << m_hdr.m_lastsavedby << _T(" on ") << m_hdr.m_lastsavedon;
+    utf8conv.ToUTF8(oss.str(), utf8, utf8Len);
     of << "WhoSaved=\"";
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
     of << "\"" << endl;
@@ -556,7 +561,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
   // write out preferences stored in database
   CString prefs = PWSprefs::GetInstance()->GetXMLPreferences();
-  utf8conv.ToUTF8(prefs, utf8, utf8Len);
+  utf8conv.ToUTF8(LPCTSTR(prefs), utf8, utf8Len);
   of.write(reinterpret_cast<const char *>(utf8), utf8Len);
 
   if (m_UHFL.size() > 0) {

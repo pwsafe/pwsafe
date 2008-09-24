@@ -55,7 +55,7 @@ bool PWSclipboard::ClearData()
 {
   if (m_set) {
     COleDataObject odo;
-    CMyString data;
+    StringX data;
     odo.AttachClipboard();
     HANDLE hData = odo.GetGlobalData(CLIPBOARD_TEXT_FORMAT);
     if (hData != NULL) {
@@ -71,7 +71,7 @@ bool PWSclipboard::ClearData()
       ctx.Final(digest);
       if (memcmp(digest, m_digest, SHA256::HASHLEN) == 0) {
         trashMemory((void *)pData, dwlength);
-        CMyString blank(_T(""));
+        StringX blank(_T(""));
         SetData(blank, false);
         memset(m_digest, '\0', SHA256::HASHLEN);
       }

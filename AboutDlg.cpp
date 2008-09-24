@@ -217,7 +217,7 @@ CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
     latest_xml += line;
 #else
   unsigned char buff[BUFSIZ+1];
-  CMyString chunk;
+  StringX chunk;
   UINT nRead;
   CUTF8Conv conv;
   while ((nRead = fh->Read(buff, BUFSIZ)) != 0) {
@@ -229,7 +229,7 @@ CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
       session.Close();
       return CANT_READ;
     } else
-      latest_xml += chunk;
+      latest_xml += chunk.c_str();
   }
 #endif /* UNICODE */
   fh->Close();
