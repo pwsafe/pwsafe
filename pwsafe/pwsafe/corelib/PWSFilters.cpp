@@ -137,7 +137,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     szendl = "\0";
   }
 
-  utf8conv.ToUTF8(filters.fname, utf8, utf8Len);
+  utf8conv.ToUTF8(LPCTSTR(filters.fname), utf8, utf8Len);
   oss << sztab1 << "<filter filtername=\"" << reinterpret_cast<const char *>(utf8) 
       << "\">" << szendl;
 
@@ -451,14 +451,14 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
     oss << reinterpret_cast<const char *>(utf8);
     oss << "\"" << endl;
     cs_tmp.Format(_T("%d.%02d"), hdr.m_nCurrentMajorVersion, hdr.m_nCurrentMinorVersion);
-    utf8conv.ToUTF8(cs_tmp, utf8, utf8Len);
+    utf8conv.ToUTF8(LPCTSTR(cs_tmp), utf8, utf8Len);
     oss << "FromDatabaseFormat=\"";
     oss << reinterpret_cast<const char *>(utf8);
     oss << "\"" << endl;
     if (!hdr.m_lastsavedby.empty() || !hdr.m_lastsavedon.empty()) {
       CString wls(_T(""));
       wls.Format(_T("%s on %s"), hdr.m_lastsavedby.c_str(), hdr.m_lastsavedon.c_str());
-      utf8conv.ToUTF8(wls, utf8, utf8Len);
+      utf8conv.ToUTF8(LPCTSTR(wls), utf8, utf8Len);
       oss << "WhoSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);
       oss << "\"" << endl;

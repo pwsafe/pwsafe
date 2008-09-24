@@ -1285,7 +1285,7 @@ bool CItemData::WillExpire(const int numdays)
     return false;
 }
 
-static bool pull_string(CMyString &str, unsigned char *data, int len)
+static bool pull_string(StringX &str, unsigned char *data, int len)
 {
   CUTF8Conv utf8conv;
   vector<unsigned char> v(data, (data + len));
@@ -1363,7 +1363,7 @@ bool CItemData::DeserializePlainText(const std::vector<char> &v)
 
 bool CItemData::SetField(int type, unsigned char *data, int len)
 {
-  CMyString str;
+  StringX str;
   time_t t;
   int xint;
   switch (type) {
@@ -1421,7 +1421,7 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
       break;
     case POLICY:
       if (!pull_string(str, data, len)) return false;
-      SetPWPolicy(str);
+      SetPWPolicy(str.c_str());
       break;
     case RMTIME:
       if (!pull_time(t, data, len)) return false;
