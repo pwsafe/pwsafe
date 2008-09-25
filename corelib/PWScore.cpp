@@ -1202,7 +1202,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 
   CItemData temp;
   uuid_array_t base_uuid, temp_uuid;
-  CMyString csMyPassword, cs_possibleUUID;
+  StringX csMyPassword, cs_possibleUUID;
   bool go = true;
 #ifdef DEMO
   bool limited = false;
@@ -1243,25 +1243,28 @@ int PWScore::ReadFile(const StringX &a_filename,
            TRACE(_T("Non-Unique uuid detected:\n"));
            CItemData::FieldBits bf;
            bf.flip();
-           CMyString dump = temp.GetPlaintext(TCHAR(':'), bf, TCHAR('-'), NULL);
+           StringX dump = temp.GetPlaintext(TCHAR(':'), bf, TCHAR('-'), NULL);
            TRACE(_T("%s\n"), dump);
 #endif
            temp.CreateUUID(); // replace duplicated uuid
            temp.GetUUID(uuid); // refresh uuid_array
          }
+         // following is duplicated in Validate() - need to refactor
          csMyPassword = temp.GetPassword();
-         cs_possibleUUID = csMyPassword.Mid(2, 32);  // Extract possible uuid
-         cs_possibleUUID.MakeLower();
-         if (((csMyPassword.Left(2) == _T("[[") && csMyPassword.Right(2) == _T("]]")) ||
-              (csMyPassword.Left(2) == _T("[~") && csMyPassword.Right(2) == _T("~]"))) &&
-               csMyPassword.GetLength() == 36 &&
-               cs_possibleUUID.SpanIncluding(_T("0123456789abcdef")) == cs_possibleUUID) {
+         cs_possibleUUID = csMyPassword.substr(2, 32);  // Extract possible uuid
+         ToLower(cs_possibleUUID);
+         if (((csMyPassword.substr(0,2) == _T("[[") &&
+               csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
+              (csMyPassword.substr(2) == _T("[~") &&
+               csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
+               csMyPassword.length() == 36 &&
+             cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
            // _stscanf_s always outputs to an "int" using %x even though
            // target is only 1.  Read into larger buffer to prevent data being
            // overwritten and then copy to where we want it!
            unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
            int nscanned = 0;
-           TCHAR *lpszuuid = csMyPassword.GetBuffer(sizeof(uuid_array_t) * 2 + 4) + 2;
+           const TCHAR *lpszuuid = csMyPassword.c_str();
            for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
              nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
@@ -1270,10 +1273,9 @@ int PWScore::ReadFile(const StringX &a_filename,
 #endif
              lpszuuid += 2;
            }
-           csMyPassword.ReleaseBuffer(sizeof(uuid_array_t) * 2 + 4);
            memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
            temp.GetUUID(temp_uuid);
-           if (csMyPassword.Mid(1, 1) == _T("[")) {
+           if (csMyPassword.substr(1, 1) == _T("[")) {
              m_alias2base_map[temp_uuid] = base_uuid;
              possible_aliases.push_back(temp_uuid);
            } else {
@@ -1836,19 +1838,21 @@ PWScore::Validate(CString &status)
       rpt.WriteLine(cs_Error);
       num_PWH_fixed++;
     }
-    CMyString csMyPassword = ci.GetPassword();
-    CMyString cs_possibleUUID = csMyPassword.Mid(2, 32);  // Extract possible uuid
-    cs_possibleUUID.MakeLower();
-    if (((csMyPassword.Left(2) == _T("[[") && csMyPassword.Right(2) == _T("]]")) ||
-         (csMyPassword.Left(2) == _T("[~") && csMyPassword.Right(2) == _T("~]"))) &&
-        csMyPassword.GetLength() == 36 &&
-        cs_possibleUUID.SpanIncluding(_T("0123456789abcdef")) == cs_possibleUUID) {
+    StringX csMyPassword = ci.GetPassword();
+    StringX cs_possibleUUID = csMyPassword.substr(2, 32);  // Extract possible uuid
+         ToLower(cs_possibleUUID);
+         if (((csMyPassword.substr(0,2) == _T("[[") &&
+               csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
+              (csMyPassword.substr(2) == _T("[~") &&
+               csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
+               csMyPassword.length() == 36 &&
+             cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
       // _stscanf_s always outputs to an "int" using %x even though
       // target is only 1.  Read into larger buffer to prevent data being
       // overwritten and then copy to where we want it!
       unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
       int nscanned = 0;
-      TCHAR *lpszuuid = csMyPassword.GetBuffer(sizeof(uuid_array_t) * 2 + 4) + 2;
+      const TCHAR *lpszuuid = csMyPassword.c_str();
       for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
         nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
@@ -1857,10 +1861,9 @@ PWScore::Validate(CString &status)
 #endif
         lpszuuid += 2;
       }
-      csMyPassword.ReleaseBuffer(sizeof(uuid_array_t) * 2 + 4);
       memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
       ci.GetUUID(temp_uuid);
-      if (csMyPassword.Left(2) == _T("[[")) {
+      if (csMyPassword.substr(0, 2) == _T("[[")) {
         m_alias2base_map[temp_uuid] = base_uuid;
         possible_aliases.push_back(temp_uuid);
       } else {
@@ -1959,7 +1962,7 @@ void PWScore::GetFileUUID(uuid_array_t &file_uuid_array) const
 StringX PWScore::GetUniqueTitle(const StringX &path, const StringX &title,
                                 const StringX &user, const int IDS_MESSAGE)
 {
-  CMyString new_title(title.c_str());
+  StringX new_title(title);
   if (Find(path, title, user) != m_pwlist.end()) {
     // Find a unique "Title"
     ItemListConstIter listpos;
@@ -1968,11 +1971,11 @@ StringX PWScore::GetUniqueTitle(const StringX &path, const StringX &title,
     do {
       i++;
       s_copy.Format(IDS_MESSAGE, i);
-      new_title = title + CMyString(s_copy);
+      new_title = title + LPCTSTR(s_copy);
       listpos = Find(path, new_title, user);
     } while (listpos != m_pwlist.end());
   }
-  return LPCTSTR(new_title);
+  return new_title;
 }
 
 void PWScore::AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid, 

@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "ItemData.h"
-#include "MyString.h"
 #include "UUIDGen.h"
 #include "UnknownField.h"
 #include "StringX.h"

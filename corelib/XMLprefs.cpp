@@ -9,7 +9,6 @@
 //
 #include "XMLprefs.h"
 #include "tinyxml/tinyxml.h"
-#include "MyString.h"
 #include "PWSprefs.h"
 #include "corelib.h"
 
