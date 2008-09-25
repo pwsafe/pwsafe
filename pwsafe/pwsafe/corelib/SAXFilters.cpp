@@ -8,7 +8,6 @@
 // SAXFilters.cpp : implementation file
 //
 
-#include "MyString.h"
 #include "util.h"
 #include "SAXFilters.h"
 #include "UUIDGen.h"

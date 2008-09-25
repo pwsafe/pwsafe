@@ -177,25 +177,25 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
   int status = SUCCESS;
-  CMyString tmp;
+  StringX tmp;
   uuid_array_t item_uuid;
 
   item.GetUUID(item_uuid);
   WriteCBC(CItemData::UUID, item_uuid, sizeof(uuid_array_t));
   tmp = item.GetGroup();
-  if (!tmp.IsEmpty())
+  if (!tmp.empty())
     WriteCBC(CItemData::GROUP, tmp);
   WriteCBC(CItemData::TITLE, item.GetTitle());
   WriteCBC(CItemData::USER, item.GetUser());
   WriteCBC(CItemData::PASSWORD, item.GetPassword());
   tmp = item.GetNotes();
-  if (!tmp.IsEmpty())
+  if (!tmp.empty())
     WriteCBC(CItemData::NOTES, tmp);
   tmp = item.GetURL();
-  if (!tmp.IsEmpty())
+  if (!tmp.empty())
     WriteCBC(CItemData::URL, tmp);
   tmp = item.GetAutoType();
-  if (!tmp.IsEmpty())
+  if (!tmp.empty())
     WriteCBC(CItemData::AUTOTYPE, tmp);
   time_t t = 0;
   int t32;
@@ -229,10 +229,10 @@ int PWSfileV3::WriteRecord(const CItemData &item)
     WriteCBC(CItemData::RMTIME, (unsigned char *)&t32, sizeof(t32));
   }
   tmp = item.GetPWPolicy();
-  if (!tmp.IsEmpty())
+  if (!tmp.empty())
     WriteCBC(CItemData::POLICY, tmp);
   tmp = item.GetPWHistory();
-  if (!tmp.IsEmpty())
+  if (!tmp.empty())
     WriteCBC(CItemData::PWHIST, tmp);
 
   UnknownFieldsConstIter vi_IterURFE;

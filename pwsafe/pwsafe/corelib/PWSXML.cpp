@@ -10,7 +10,6 @@
 #include "PWSXML.h"
 #include "SAXHandlers.h"
 #include "ItemData.h"
-#include "MyString.h"
 #include "corelib.h"
 #include "PWScore.h"
 #include <sys/types.h>

@@ -50,7 +50,7 @@ int PWSfileV1V2::WriteV2Header()
   char *rbuf = new char[rlen];
   PWSrand::GetInstance()->GetRandomData(rbuf, rlen-1);
   rbuf[rlen-1] = TCHAR('\0'); // although zero may be there before - who cares?
-  CMyString rname(V2ItemName);
+  CString rname(V2ItemName);
   rname += rbuf;
   delete[] rbuf;
   header.SetName(rname, _T(""));
@@ -84,7 +84,7 @@ int PWSfileV1V2::ReadV2Header()
   // restore after reading V17-format header
   m_curversion = sv;
   if (status == SUCCESS) {
-    const CMyString version = header.GetPassword();
+    const StringX version = header.GetPassword();
     // Compare to AltVersionString due to silly mistake
     // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
     if (version == VersionString || version == AltVersionString) {
@@ -211,16 +211,16 @@ int PWSfileV1V2::CheckPassword(const StringX &filename,
   }
 }
 
-static CMyString ReMergeNotes(const CItemData &item)
+static StringX ReMergeNotes(const CItemData &item)
 {
-  CMyString notes = item.GetNotes();
-  CMyString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
-  const CMyString url(item.GetURL());
-  if (!url.IsEmpty()) {
+  StringX notes = item.GetNotes();
+  const StringX url(item.GetURL());
+  if (!url.empty()) {
     notes += _T("\r\n"); notes += url;
   }
-  const CMyString at(item.GetAutoType());
-  if (!at.IsEmpty()) {
+  const StringX at(item.GetAutoType());
+  if (!at.empty()) {
+    const CString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
     notes += _T("\r\n");
     notes += cs_autotype;
     notes += at;
@@ -273,18 +273,18 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
       // we can help minimize this here by writing a random byte in the "type"
       // byte of the first block.
 
-      CMyString name = item.GetName();
+      StringX name = item.GetName();
       // If name field already exists - use it. This is for the 2.0 header, as well as for files
       // that were imported and re-exported.
-      if (name.IsEmpty()) {
+      if (name.empty()) {
         // The name in 1.7 consists of title + SPLTCHR + username
         // DEFUSERNAME was used in previous versions, but 2.0 converts this upon import
         // so it is not an issue here.
         // Prepend 2.0 group field to name, if not empty
         // i.e. group "finances" name "broker" -> "finances.broker"
-        CMyString group = item.GetGroup();
-        CMyString title = item.GetTitle();
-        if (!group.IsEmpty()) {
+        StringX group = item.GetGroup();
+        StringX title = item.GetTitle();
+        if (!group.empty()) {
           group += _T(".");
           group += title;
           title = group;
@@ -322,49 +322,49 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
   return status;
 }
 
-static void ExtractAutoTypeCmd(StringX &notesStr, CMyString &autotypeStr)
+static void ExtractAutoTypeCmd(StringX &notesStr, StringX &autotypeStr)
 {
-  CString instr(notesStr.c_str());
-  CMyString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
-  int left = instr.Find(cs_autotype);
-  if (left == -1) {
+  StringX instr(notesStr);
+  CString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
+  StringX::size_type left = instr.find(cs_autotype, 0);
+  if (left == StringX::npos) {
     autotypeStr = _T(""); 
   } else {
-    CString tmp(notesStr.c_str());
-    tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
-    instr = instr.Left(left);
-    int right = tmp.FindOneOf(_T("\r\n"));
-    if (right != -1) {
-      instr += tmp.Mid(right);
-      tmp = tmp.Left(right);
+    StringX tmp(notesStr);
+    tmp = tmp.substr(left+9); // throw out everything left of "autotype:"
+    instr = instr.substr(0, left);
+    StringX::size_type right = tmp.find_first_of(_T("\r\n"));
+    if (right != StringX::npos) {
+      instr += tmp.substr(right);
+      tmp = tmp.substr(0, right);
     }
-    autotypeStr = CMyString(tmp);
-    notesStr = instr.GetString();
+    autotypeStr = tmp;
+    notesStr = instr;
   }
 }
 
-static void ExtractURL(StringX &notesStr, CMyString &outurl)
+static void ExtractURL(StringX &notesStr, StringX &outurl)
 {
-  CMyString instr(notesStr.c_str());
+  StringX instr(notesStr);
   // Extract first instance of (http|https|ftp)://[^ \t\r\n]+
-  int left = instr.Find(_T("http://"));
-  if (left == -1)
-    left = instr.Find(_T("https://"));
-  if (left == -1)
-    left = instr.Find(_T("ftp://"));
-  if (left == -1) {
+  StringX::size_type left = instr.find(_T("http://"));
+  if (left == StringX::npos)
+    left = instr.find(_T("https://"));
+  if (left == StringX::npos)
+    left = instr.find(_T("ftp://"));
+  if (left == StringX::npos) {
     outurl = _T("");
   } else {
-    CMyString url(instr);
+    StringX url(instr);
     instr = notesStr.substr(0, left);
-    url = url.Mid(left); // throw out everything left of URL
-    int right = url.FindOneOf(_T(" \t\r\n"));
-    if (right != -1) {
-      instr += url.Mid(right);
-      url = url.Left(right);    
+    url = url.substr(left); // throw out everything left of URL
+    StringX::size_type right = url.find_first_of(_T(" \t\r\n"));
+    if (right != StringX::npos) {
+      instr += url.substr(right);
+      url = url.substr(0, right);    
     }
     outurl = url;
-    notesStr = LPCTSTR(instr);
+    notesStr = instr;
   }
 }
 
@@ -469,13 +469,13 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
               item.SetPassword(tempdata); break;
             case CItemData::NOTES:
             {
-              CMyString autotypeStr, URLStr;
+              StringX autotypeStr, URLStr;
               ExtractAutoTypeCmd(tempdata, autotypeStr);
               ExtractURL(tempdata, URLStr);
               item.SetNotes(tempdata);
-              if (!autotypeStr.IsEmpty())
+              if (!autotypeStr.empty())
                 item.SetAutoType(autotypeStr);
-              if (!URLStr.IsEmpty())
+              if (!URLStr.empty())
                 item.SetURL(URLStr);
               break;
             }

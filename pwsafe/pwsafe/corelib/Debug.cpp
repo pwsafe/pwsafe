@@ -11,15 +11,15 @@
 #include "Debug.h"
 
 #ifndef DEBUG
-void PWSDebug::IssueError(const CString &)
+void PWSDebug::IssueError(const stringT &)
 {
 }
 void PWSDebug::HexDump(unsigned char *, const int, 
-                       const CString &, const int)
+                       const stringT &, const int)
 {
 }
 #else
-void PWSDebug::IssueError(const CString &csFunction)
+void PWSDebug::IssueError(const stringT &csFunction)
 {
   LPVOID lpMsgBuf;
   LPVOID lpDisplayBuf;
@@ -34,9 +34,9 @@ void PWSDebug::IssueError(const CString &csFunction)
                 0, NULL);
 
   lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT, 
-                                    (lstrlen((LPCTSTR)lpMsgBuf) + csFunction.GetLength() + 40) * sizeof(TCHAR)); 
+                                    (lstrlen((LPCTSTR)lpMsgBuf) + csFunction.length() + 40) * sizeof(TCHAR)); 
   wsprintf((LPTSTR)lpDisplayBuf, TEXT("%s failed with error %d: %s"), 
-           csFunction, dw, lpMsgBuf); 
+           csFunction.c_str(), dw, lpMsgBuf); 
   MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK); 
 
   LocalFree(lpMsgBuf);
@@ -44,7 +44,7 @@ void PWSDebug::IssueError(const CString &csFunction)
 }
 
 void PWSDebug::HexDump(unsigned char *pmemory, const int length, 
-                       const CString &cs_prefix, const int maxnum)
+                       const stringT &cs_prefix, const int maxnum)
 {
   unsigned char *pmem;
   CString cs_outbuff, cs_hexbuff, cs_charbuff;
@@ -56,7 +56,7 @@ void PWSDebug::HexDump(unsigned char *pmemory, const int length,
     // Show offset for this line.
     cs_charbuff.Empty();
     cs_hexbuff.Empty();
-    cs_outbuff.Format(_T("%s: %08x *"), cs_prefix, pmem);
+    cs_outbuff.Format(_T("%s: %08x *"), cs_prefix.c_str(), pmem);
 
     // Format hex portion of line and save chars for ascii portion
     if (len > maxnum)

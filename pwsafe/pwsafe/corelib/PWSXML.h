@@ -12,7 +12,6 @@
 #define __PWSXML_H
 
 #include <vector>
-#include "MyString.h"
 #include "UnknownField.h"
 #include "UUIDGen.h"
 
