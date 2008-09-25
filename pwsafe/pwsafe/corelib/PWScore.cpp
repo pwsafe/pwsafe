@@ -519,13 +519,12 @@ int PWScore::WriteXMLFile(const StringX &filename,
   of << "ExportTimeStamp=\"";
   of.write(reinterpret_cast<const char *>(utf8), utf8Len);
   of << "\"" << endl;
-  oStringXStream osv;
-  osv << m_hdr.m_nCurrentMajorVersion
-      << "." << setw(2) << setfill(_T('0'))
-      << m_hdr.m_nCurrentMinorVersion;
-  utf8conv.ToUTF8(osv.str(), utf8, utf8Len);
   of << "FromDatabaseFormat=\"";
-  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  ostringstream osv; // take advantage of UTF-8 == ascii for version string
+  osv << m_hdr.m_nCurrentMajorVersion
+      << "." << setw(2) << setfill('0')
+      << m_hdr.m_nCurrentMinorVersion;
+  of.write(osv.str().c_str(), osv.str().length());
   of << "\"" << endl;
   if (!m_hdr.m_lastsavedby.empty() || !m_hdr.m_lastsavedon.empty()) {
     oStringXStream oss;
