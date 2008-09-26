@@ -34,7 +34,6 @@
 
 #include "RUEList.h"
 #include "CoolMenu.h"
-#include "corelib/MyString.h"
 #include <afxdisp.h>
 #include <vector>
 

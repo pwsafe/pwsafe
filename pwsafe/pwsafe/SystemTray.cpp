@@ -65,6 +65,7 @@
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
+#include "corelib/StringX.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -123,7 +124,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
   // Make sure we avoid conflict with other messages
   ASSERT(uCallbackMessage >= WM_USER);
 
-  CMyString ttt = PWSUtil::NormalizeTTT(szToolTip);
+  StringX ttt = PWSUtil::NormalizeTTT(szToolTip);
 
   // Create an invisible window
   CWnd::CreateEx(0, AfxRegisterWndClass(0), _T(""), WS_POPUP, 0,0,10,10, NULL, 0);
@@ -135,7 +136,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
   m_tnd.hIcon  = icon;
   m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
   m_tnd.uCallbackMessage = uCallbackMessage;
-  _tcsncpy(m_tnd.szTip, (LPCTSTR)ttt, ttt.GetLength());
+  _tcsncpy(m_tnd.szTip, ttt.c_str(), ttt.length());
 
   // Set the tray icon
   m_bEnabled = Shell_NotifyIcon(NIM_ADD, &m_tnd);
@@ -333,9 +334,9 @@ BOOL CSystemTray::StopAnimation()
 BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip)
 {
   if (!m_bEnabled) return FALSE;
-  CMyString ttt = PWSUtil::NormalizeTTT(pszTip);
+  StringX ttt = PWSUtil::NormalizeTTT(pszTip);
   m_tnd.uFlags = NIF_TIP;
-  _tcsncpy(m_tnd.szTip, (LPCTSTR)ttt, ttt.GetLength());
+  _tcsncpy(m_tnd.szTip, ttt.c_str(), ttt.length());
 
   return Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
 }
@@ -506,7 +507,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       m_RUEList.GetAllMenuItemStrings(m_menulist);
 
       for (size_t i = 0; i < num_recent_entries; i++) {
-        const CMyString cEntry = m_menulist[i].string;
+        const StringX cEntry = m_menulist[i].string;
 
         pNewRecentEntryMenu[i] = new CMenu;
         pNewRecentEntryMenu[i]->CreatePopupMenu();
@@ -550,7 +551,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         // pos 4+ = entries.....
         irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
                                                  UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
-                                                 cEntry);
+                                                 cEntry.c_str());
         ASSERT(irc != 0);
         pmd = new CRUEItemData;
         pmd->nImage = m_menulist[i].image; // Needed by OnInitMenuPopup
