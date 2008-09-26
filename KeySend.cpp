@@ -35,13 +35,11 @@ CKeySend::~CKeySend(void)
 {
 }
 
-void CKeySend::SendString(const CMyString &data)
+void CKeySend::SendString(const StringX &data)
 {
-  const int N = data.GetLength();
-
-  for (int n = 0; n < N; n++){
-    SendChar(data[n]);
-  }
+  for (StringX::const_iterator iter = data.begin();
+       iter != data.end(); iter++)
+    SendChar(*iter);
 }
 
 void CKeySend::SendChar(TCHAR c)

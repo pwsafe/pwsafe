@@ -14,14 +14,14 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-#include "corelib/MyString.h"
+#include "corelib/StringX.h"
 
 class CKeySend
 {
 public:
   CKeySend(void);
   ~CKeySend(void);
-  void SendString(const CMyString &data);
+  void SendString(const StringX &data);
   void ResetKeyboardState();
   void SendChar(TCHAR c);
   void SetDelay(int d);
