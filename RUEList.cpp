@@ -68,17 +68,17 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuSt
       itemstringimage.image = -1;
     } else {
       const CItemData &ci = m_core.GetEntry(pw_listpos);
-      CMyString group = ci.GetGroup();
-      CMyString title = ci.GetTitle();
-      CMyString user = ci.GetUser();
+      StringX group = ci.GetGroup();
+      StringX title = ci.GetTitle();
+      StringX user = ci.GetUser();
 
-      if (group.IsEmpty())
+      if (group.empty())
         group = _T("*");
 
-      if (title.IsEmpty())
+      if (title.empty())
         title = _T("*");
 
-      if (user.IsEmpty())
+      if (user.empty())
         user = _T("*");
 
       itemstringimage.string = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
@@ -88,71 +88,6 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuSt
     retval = true;
   }
   return retval;
-}
-
-bool CRUEList::GetMenuItemString(size_t index, CMyString &itemstring) const
-{
-  if (m_RUEList.empty()  || index > m_RUEList.size()) {
-    itemstring = _T("");
-    return false;
-  }
-
-  RUEntry m_ruentry = m_RUEList[index];
-
-  ItemListConstIter pw_listpos = m_core.Find(m_ruentry.RUEuuid);
-  if (pw_listpos == m_core.GetEntryEndIter()) {
-    itemstring = _T("");
-    return false;
-  }
-
-  const CItemData ci = m_core.GetEntry(pw_listpos);
-  CMyString group = ci.GetGroup();
-  CMyString title = ci.GetTitle();
-  CMyString user = ci.GetUser();
-
-  if (group.IsEmpty())
-    group = _T("*");
-
-  if (title.IsEmpty())
-    title = _T("*");
-
-  if (user.IsEmpty())
-    user = _T("*");
-
-  itemstring = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
-  return true;
-}
-
-bool CRUEList::GetMenuItemString(const uuid_array_t &RUEuuid,
-                            CMyString &itemstring) const
-{
-  if (m_RUEList.empty()) {
-    itemstring = _T("");
-    return false;
-  }
-
-  ItemListConstIter pw_listpos = m_core.Find(RUEuuid);
-  if (pw_listpos == m_core.GetEntryEndIter()) {
-    itemstring = _T("");
-    return false;
-  }
-
-  const CItemData ci = m_core.GetEntry(pw_listpos);
-  CMyString group = ci.GetGroup();
-  CMyString title = ci.GetTitle();
-  CMyString user = ci.GetUser();
-
-  if (group.IsEmpty())
-    group = _T("*");
-
-  if (title.IsEmpty())
-    title = _T("*");
-
-  if (user.IsEmpty())
-    user = _T("*");
-
-  itemstring = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
-  return true;
 }
 
 bool CRUEList::AddRUEntry(const uuid_array_t &RUEuuid)
