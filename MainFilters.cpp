@@ -742,7 +742,7 @@ void DboxMain::ImportFilters()
 
   if (rc == IDOK) {
     CString strErrors, csErrors(_T(""));
-    CString XMLFilename = (CMyString)fd.GetPathName();
+    CString XMLFilename = fd.GetPathName();
     CWaitCursor waitCursor;  // This may take a while!
 
     rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""), XMLFilename,

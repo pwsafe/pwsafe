@@ -36,6 +36,7 @@
 #include "corelib/PWHistory.h"
 #include "corelib/Debug.h"
 #include "corelib/os/dir.h"
+#include "corelib/StringXStream.h"
 
 #include "commctrl.h"
 #include <shlwapi.h>
@@ -422,9 +423,9 @@ ItemListIter DboxMain::Find(int i)
 {
   CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
   ASSERT(ci != NULL);
-  const CMyString curGroup = ci->GetGroup();
-  const CMyString curTitle = ci->GetTitle();
-  const CMyString curUser = ci->GetUser();
+  const StringX curGroup = ci->GetGroup();
+  const StringX curTitle = ci->GetTitle();
+  const StringX curUser = ci->GetUser();
   return Find(curGroup, curTitle, curUser);
 }
 
@@ -454,8 +455,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
 
-  CMyString curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
-  CMyString listTitle, saveTitle;
+  StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
+  StringX listTitle, saveTitle;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -501,43 +502,43 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curXInt = curitem.GetXTimeInt();
 
     if (!CaseSensitive) {
-      curGroup.MakeLower();
-      curTitle.MakeLower();
-      curUser.MakeLower();
-      curPassword.MakeLower();
-      curNotes.MakeLower();
-      curURL.MakeLower();
-      curAT.MakeLower();
+      ToLower(curGroup);
+      ToLower(curTitle);
+      ToLower(curUser);
+      ToLower(curPassword);
+      ToLower(curNotes);
+      ToLower(curURL);
+      ToLower(curAT);
     }
 
     // do loop to easily break out as soon as a match is found
     // saves more checking if entry already selected
     do {
-      if (bsFields.test(CItemData::GROUP) && ::_tcsstr(curGroup, searchstr)) {
+      if (bsFields.test(CItemData::GROUP) && ::_tcsstr(curGroup.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::TITLE) && ::_tcsstr(curTitle, searchstr)) {
+      if (bsFields.test(CItemData::TITLE) && ::_tcsstr(curTitle.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::USER) && ::_tcsstr(curUser, searchstr)) {
+      if (bsFields.test(CItemData::USER) && ::_tcsstr(curUser.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::PASSWORD) && ::_tcsstr(curPassword, searchstr)) {
+      if (bsFields.test(CItemData::PASSWORD) && ::_tcsstr(curPassword.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::NOTES) && ::_tcsstr(curNotes, searchstr)) {
+      if (bsFields.test(CItemData::NOTES) && ::_tcsstr(curNotes.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::URL) && ::_tcsstr(curURL, searchstr)) {
+      if (bsFields.test(CItemData::URL) && ::_tcsstr(curURL.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::AUTOTYPE) && ::_tcsstr(curAT, searchstr)) {
+      if (bsFields.test(CItemData::AUTOTYPE) && ::_tcsstr(curAT.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -561,7 +562,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         if (bFoundit)
           break;  // break out of do loop
       }
-      if (bsFields.test(CItemData::XTIME_INT) && ::_tcsstr(curXInt, searchstr)) {
+      if (bsFields.test(CItemData::XTIME_INT) && ::_tcsstr(curXInt.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -572,7 +573,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
       ASSERT(di != NULL);
       int li = di->list_index;
-      ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == saveTitle);
+      ASSERT(m_ctlItemList.GetItemText(li, ititle) == saveTitle.c_str());
       // add to indices, bump retval
       indices.push_back(li);
     } // match found in m_pwlist
@@ -1016,7 +1017,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
         if (menu.LoadMenu(IDR_POPGROUP)) {
           CMenu* pPopup = menu.GetSubMenu(0);
           ASSERT(pPopup != NULL);
-          m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
+          m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
           // use this DboxMain for commands
           pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
         }
@@ -1208,17 +1209,17 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
   }
 
   int nImage = GetEntryImage(itemData);
-  CMyString group = itemData.GetGroup();
-  CMyString title = itemData.GetTitle();
-  CMyString username = itemData.GetUser();
+  StringX group = itemData.GetGroup();
+  StringX title = itemData.GetTitle();
+  StringX username = itemData.GetUser();
   // get only the first line for display
-  CMyString strNotes = itemData.GetNotes();
-  int iEOL = strNotes.Find(TCHAR('\r'));
-  if (iEOL >= 0 && iEOL < strNotes.GetLength()) {
-    CMyString strTemp = strNotes.Left(iEOL);
+  StringX strNotes = itemData.GetNotes();
+  StringX::size_type iEOL = strNotes.find(TCHAR('\r'));
+  if (iEOL != StringX::npos) {
+    StringX strTemp = strNotes.substr(0, iEOL);
     strNotes = strTemp;
   }
-  CMyString cs_fielddata;
+  StringX cs_fielddata;
 
   int xint;
   itemData.GetXTimeInt(xint);
@@ -1308,7 +1309,9 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
           if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
             cs_pwp += _T("P");
 
-          cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
+          oStringXStream osx;
+          osx << cs_pwp << _T(":") << pwp.length;
+          cs_fielddata = osx.str();
         } else
           cs_fielddata = _T("");
         break;
@@ -1316,7 +1319,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
       default:
         ASSERT(0);
     }
-    iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata);
+    iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata.c_str());
 
     if (iResult < 0) {
       // TODO: issue error here...
@@ -1330,14 +1333,14 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
 
   if (iView & iTreeOnly) {
     HTREEITEM ti;
-    CMyString treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
+    StringX treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup().c_str());
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
-      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
+      ti = m_ctlItemTree.InsertItem(treeDispString.c_str(), ti, TVI_SORT);
       m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
     } else {
-      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
+      ti = m_ctlItemTree.InsertItem(treeDispString.c_str(), ti, TVI_LAST);
       m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
       if (bSort)
         m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
@@ -1431,7 +1434,9 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
               cs_pwp += _T("E");
             if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
               cs_pwp += _T("P");
-             cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
+            oStringXStream osx;
+            osx << cs_pwp << _T(":") << pwp.length;
+            cs_fielddata = osx.str();
           } else
             cs_fielddata = _T("");
           break;
@@ -1439,7 +1444,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
         default:
           ASSERT(0);
       }
-      m_ctlItemList.SetItemText(iResult, i, cs_fielddata);
+      m_ctlItemList.SetItemText(iResult, i, cs_fielddata.c_str());
     }
 
     m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&itemData);
@@ -2622,11 +2627,11 @@ void DboxMain::UnFindItem()
   }
 }
 
-bool DboxMain::GetDriveAndDirectory(const CMyString cs_infile, CString &cs_drive,
+bool DboxMain::GetDriveAndDirectory(const StringX &cs_infile, CString &cs_drive,
                                     CString &cs_directory)
 {
   stringT applicationpath = pws_os::getexecdir();
-  stringT inpath = cs_infile;
+  stringT inpath = cs_infile.c_str();
   stringT appdrive, appdir;
   stringT drive, dir, file, ext;
 
@@ -2785,12 +2790,12 @@ void DboxMain::ViewReport(CReport &rpt)
   vr_dlg.DoModal();
 }
 
-void DboxMain::ViewReport(const CString cs_ReportFileName)
+void DboxMain::ViewReport(const CString &cs_ReportFileName)
 {
   CString cs_path, csAction;
   CString cs_drive, cs_directory;
 
-  if (!GetDriveAndDirectory(cs_ReportFileName, cs_drive, cs_directory))
+  if (!GetDriveAndDirectory(LPCTSTR(cs_ReportFileName), cs_drive, cs_directory))
     return;
 
   cs_path.Format(_T("%s%s"), cs_drive, cs_directory);
@@ -2843,9 +2848,9 @@ void DboxMain::ViewReport(const CString cs_ReportFileName)
 
 int DboxMain::OnUpdateViewReports(const int nID)
 {
-  CMyString cs_Database(m_core.GetCurFile());
+  StringX cs_Database(m_core.GetCurFile());
 
-  if (cs_Database.IsEmpty()) {
+  if (cs_Database.empty()) {
     return FALSE;
   }
 
@@ -3454,7 +3459,7 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
 {
   CItemData *ci(NULL);
   CPoint target(point);
-  CMyString cs_notes(_T(""));
+  StringX cs_notes(_T(""));
   UINT nFlags;
   HTREEITEM hItem(NULL);
   int nItem(-1);
@@ -3463,7 +3468,7 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
     return false;
 
   if (!bVisible) {
-    m_pNotesDisplay->SetWindowText(cs_notes);
+    m_pNotesDisplay->SetWindowText(cs_notes.c_str());
     m_pNotesDisplay->ShowWindow(SW_HIDE);
     return false;
   }
@@ -3499,28 +3504,28 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
     cs_notes = ci->GetNotes();
   }
 
-  if (cs_notes.GetLength() != 0) {
-    cs_notes.Replace(_T("\r\n"), _T("\n"));
-    cs_notes.Remove(_T('\r'));
+  if (!cs_notes.empty()) {
+    Replace(cs_notes, _T("\r\n"), _T("\n"));
+    Remove(cs_notes, _T('\r'));
 
-    if (cs_notes.GetLength() > 180)
-      cs_notes = cs_notes.Left(180) + _T("[...]");
+    if (cs_notes.length() > 180)
+      cs_notes = cs_notes.substr(0, 180) + _T("[...]");
   }
 
   // move window
-  CMyString cs_oldnotes;
+  CString cs_oldnotes;
   m_pNotesDisplay->GetWindowText(cs_oldnotes);
-  if (cs_oldnotes != cs_notes)
-    m_pNotesDisplay->SetWindowText(cs_notes);
+  if (LPCTSTR(cs_oldnotes) != cs_notes)
+    m_pNotesDisplay->SetWindowText(cs_notes.c_str());
 
   m_pNotesDisplay->SetWindowPos(NULL, target.x, target.y, 0, 0,
                                 SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-  m_pNotesDisplay->ShowWindow(cs_notes.GetLength() > 0 ? SW_SHOWNA : SW_HIDE);
+  m_pNotesDisplay->ShowWindow(!cs_notes.empty() ? SW_SHOWNA : SW_HIDE);
 
-  return (cs_notes.GetLength() > 0);
+  return !cs_notes.empty();
 }
 
-CItemData * DboxMain::GetLastSelected()
+CItemData *DboxMain::GetLastSelected()
 {
   CItemData *retval(NULL);
   if (m_ctlItemTree.IsWindowVisible()) {

@@ -284,7 +284,9 @@ void CAddDlg::OnRandom()
   DboxMain* pParent = static_cast<DboxMain*>(GetParent());
 
   UpdateData(TRUE);
-  pParent->MakeRandomPassword(m_password, m_pwp);
+  StringX passwd;
+  pParent->MakeRandomPassword(passwd, m_pwp);
+  m_password = passwd.c_str();
   if (m_isPwHidden) {
     m_password2 = m_password;
   }

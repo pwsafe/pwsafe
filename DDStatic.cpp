@@ -470,7 +470,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     }
   }
 
-  CMyString cs_dragdata;
+  StringX cs_dragdata;
   switch (m_nID) {
     case IDC_STATIC_DRAGGROUP:
       cs_dragdata = pci->GetGroup();
@@ -494,7 +494,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       return FALSE;
   }
 
-  const int ilen = cs_dragdata.GetLength();
+  const int ilen = cs_dragdata.length();
   if (ilen == 0) {
     // Nothing to do - why were we even called???
     return FALSE;
@@ -512,20 +512,19 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     lpszW = new WCHAR[ilen + 1];
     TRACE(_T("lpszW allocated %p, size %d\n"), lpszW, dwBufLen);
 #if (_MSC_VER >= 1400)
-    (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata, ilen);
+    (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata.c_str(), ilen);
 #else
     (void)wcsncpy(lpszW, cs_dragdata, ilen);
     lpszW[ilen] = L'\0';
 #endif
   } else {
     // They want it in ASCII - use lpszW temporarily
-    lpszW = cs_dragdata.GetBuffer(ilen + 1);
+    lpszW = const_cast<LPWSTR>(cs_dragdata.c_str());
     dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
     ASSERT(dwBufLen != 0);
     lpszA = new char[dwBufLen];
     TRACE(_T("lpszA allocated %p, size %d\n"), lpszA, dwBufLen);
     WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
-    cs_dragdata.ReleaseBuffer();
     lpszW = NULL;
   }
 #else

@@ -113,6 +113,19 @@ int Replace(StringX &s, const StringX &from, const StringX &to)
   return retval;
 }
 
+int Remove(StringX &s, TCHAR c)
+{
+  int retval = 0;
+  StringX t;
+  for (StringX::iterator iter = s.begin(); iter != s.end(); iter++)
+    if (*iter != c)
+      t += *iter;
+    else
+      retval++;
+  if (retval != 0)
+    s = t;
+  return retval;
+}
 
 
 #ifdef TEST_TRIM

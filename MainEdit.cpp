@@ -49,7 +49,7 @@ void DboxMain::OnAdd()
     dlg_add.m_username = m_core.GetDefUsername();
   }
   // m_TreeViewGroup may be set by OnContextMenu, if not, try to grok it
-  if (m_TreeViewGroup.IsEmpty()) {
+  if (m_TreeViewGroup.empty()) {
     CItemData *itemData = NULL;
     if (m_ctlItemTree.IsWindowVisible()) { // tree view
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
@@ -58,7 +58,7 @@ void DboxMain::OnAdd()
         if (itemData != NULL) { // leaf selected
           m_TreeViewGroup = itemData->GetGroup();
         } else { // node selected
-          m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
+          m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
         }
       }
     } else { // list view
@@ -91,13 +91,13 @@ void DboxMain::OnAdd()
 
     //Finish Check (Does that make any geographical sense?)
     CItemData temp;
-    CMyString user;
+    StringX user;
     time_t t;
 
     if (dlg_add.m_username.IsEmpty() && m_core.GetUseDefUser())
       user = m_core.GetDefUsername();
     else
-      user = dlg_add.m_username;
+      user = LPCTSTR(dlg_add.m_username);
     temp.CreateUUID();
     temp.SetGroup(dlg_add.m_group);
     temp.SetTitle(dlg_add.m_title);
@@ -110,7 +110,7 @@ void DboxMain::OnAdd()
       uuid_array_t alias_uuid;
       temp.GetUUID(alias_uuid);
       m_core.AddDependentEntry(dlg_add.m_base_uuid, alias_uuid, CItemData::ET_ALIAS);
-      temp.SetPassword(CMyString(_T("[Alias]")));
+      temp.SetPassword(_T("[Alias]"));
       temp.SetAlias();
       ItemListIter iter = m_core.Find(dlg_add.m_base_uuid);
       if (iter != End()) {
@@ -217,8 +217,8 @@ void DboxMain::OnCreateShortcut()
                         dlg_createshortcut.m_username);
   }
 }
-void DboxMain::CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
-                                   const CMyString cs_title, const CMyString cs_user)
+void DboxMain::CreateShortcutEntry(CItemData *ci, const StringX &cs_group,
+                                   const StringX &cs_title, const StringX &cs_user)
 {
   uuid_array_t base_uuid, shortcut_uuid;
 
@@ -236,7 +236,7 @@ void DboxMain::CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
   temp.SetUser(cs_user);
 
   m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
-  temp.SetPassword(CMyString(_T("[Shortcut]")));
+  temp.SetPassword(_T("[Shortcut]"));
   temp.SetShortcut();
   ItemListIter iter = m_core.Find(base_uuid);
   if (iter != End()) {
@@ -295,12 +295,12 @@ void DboxMain::OnAddGroup()
     // or by clicking over "whitespace".
     // If the former, add a child node to the current one
     // If the latter, add to root.
-    CMyString cmys_text(MAKEINTRESOURCE(IDS_NEWGROUP));
-    if (m_TreeViewGroup.IsEmpty())
+    CString cmys_text(MAKEINTRESOURCE(IDS_NEWGROUP));
+    if (m_TreeViewGroup.empty())
       m_TreeViewGroup = cmys_text;
     else
       m_TreeViewGroup += _T(".") + cmys_text;
-    HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup);
+    HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup.c_str());
     m_ctlItemTree.SelectItem(newGroup);
     m_TreeViewGroup = _T(""); // for next time
     m_ctlItemTree.EditLabel(newGroup);
@@ -369,7 +369,7 @@ void DboxMain::Delete(bool inRecursion)
 
     num_dependents = dependentslist.size();
     if (num_dependents > 0) {
-      CMyString csDependents;
+      StringX csDependents;
       SortDependents(dependentslist, csDependents);
 
       CString cs_msg, cs_type;
@@ -596,7 +596,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
   if (entrytype == CItemData::ET_ALIASBASE || entrytype == CItemData::ET_SHORTCUTBASE) {
     // Base entry
     UUIDList dependentslist;
-    CMyString csDependents(_T(""));
+    StringX csDependents(_T(""));
 
     m_core.GetAllDependentEntries(original_uuid, dependentslist, 
       entrytype == CItemData::ET_ALIASBASE ? CItemData::ET_ALIAS : CItemData::ET_SHORTCUT);
@@ -646,7 +646,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     ndi->list_index = -1; // so that insertItem will set new values
     ndi->tree_item = 0;
     editedItem.SetDisplayInfo(ndi);
-    CMyString newPassword = editedItem.GetPassword();
+    StringX newPassword = editedItem.GetPassword();
     memcpy(new_base_uuid, dlg_edit.m_base_uuid, sizeof(uuid_array_t));
 
     ItemListIter iter;
@@ -656,7 +656,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       if (dlg_edit.m_ibasedata > 0) {
         // Now an alias
         pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-        editedItem.SetPassword(CMyString(_T("[Alias]")));
+        editedItem.SetPassword(_T("[Alias]"));
         editedItem.SetAlias();
       } else {
         // Still 'normal'
@@ -678,7 +678,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         if (dlg_edit.m_ibasedata > 0) {
           // Still an alias
           pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-          editedItem.SetPassword(CMyString(_T("[Alias]")));
+          editedItem.SetPassword(_T("[Alias]"));
           editedItem.SetAlias();
         } else {
           // No longer an alias
@@ -695,7 +695,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         // Now an alias
         // Make this one an alias
         pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-        editedItem.SetPassword(CMyString(_T("[Alias]")));
+        editedItem.SetPassword(_T("[Alias]"));
         editedItem.SetAlias();
         // Move old aliases across
         pcore->MoveDependentEntries(original_uuid, new_base_uuid, CItemData::ET_ALIAS);
@@ -854,10 +854,10 @@ void DboxMain::OnDuplicateEntry()
     ASSERT(di != NULL);
 
     // Get information from current selected entry
-    CMyString ci2_group = ci->GetGroup();
-    CMyString ci2_user = ci->GetUser();
-    CMyString ci2_title0 = ci->GetTitle();
-    CMyString ci2_title;
+    StringX ci2_group = ci->GetGroup();
+    StringX ci2_user = ci->GetUser();
+    StringX ci2_title0 = ci->GetTitle();
+    StringX ci2_title;
 
     // Find a unique "Title"
     ItemListConstIter listpos;
@@ -866,7 +866,7 @@ void DboxMain::OnDuplicateEntry()
     do {
       i++;
       s_copy.Format(IDS_COPYNUMBER, i);
-      ci2_title = ci2_title0 + CMyString(s_copy);
+      ci2_title = ci2_title0 + LPCTSTR(s_copy);
       listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
     } while (listpos != m_core.GetEntryEndIter());
 
@@ -900,8 +900,8 @@ void DboxMain::OnDuplicateEntry()
     ci->GetRMTime(t);
     if ((long) t != 0L)
       ci2.SetRMTime(t);
-    CMyString tmp = ci->GetPWHistory();
-    if (tmp.GetLength() >= 5)
+    StringX tmp = ci->GetPWHistory();
+    if (tmp.length() >= 5)
       ci2.SetPWHistory(tmp);
 
     uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
@@ -922,7 +922,7 @@ void DboxMain::OnDuplicateEntry()
       ItemListIter iter;
       iter = m_core.Find(base_uuid);
       if (iter != m_core.GetEntryEndIter()) {
-        CMyString cs_tmp;
+        StringX cs_tmp;
         cs_tmp = _T("[") +
                  iter->second.GetGroup() + _T(":") +
                  iter->second.GetTitle() + _T(":") +
@@ -1048,25 +1048,25 @@ void DboxMain::OnCopyNotes()
     }
   }
 
-  const CMyString notes = ci->GetNotes();
-  const CMyString url = ci->GetURL();
-  const CMyString autotype = ci->GetAutoType();
-  CMyString clipboard_data;
+  const StringX notes = ci->GetNotes();
+  const StringX url = ci->GetURL();
+  const StringX autotype = ci->GetAutoType();
+  StringX clipboard_data;
   CString cs_text;
 
   clipboard_data = notes;
-  if (!url.IsEmpty()) {
+  if (!url.empty()) {
     if (ci->IsURLEmail())
       cs_text.LoadString(IDS_COPYURL);
     else
       cs_text.LoadString(IDS_COPYEMAIL);
-    clipboard_data += CMyString(cs_text);
+    clipboard_data += LPCTSTR(cs_text);
     clipboard_data += url;
   }
 
-  if (!autotype.IsEmpty()) {
+  if (!autotype.empty()) {
     cs_text.LoadString(IDS_COPYAUTOTYPE);
-    clipboard_data += CMyString(cs_text);
+    clipboard_data += LPCTSTR(cs_text);
     clipboard_data += autotype;
   }
 
@@ -1176,9 +1176,9 @@ const CString DboxMain::DEFAULT_AUTOTYPE = _T("\\u\\t\\p\\n");
 
 void DboxMain::AutoType(const CItemData &ci)
 {
-  CMyString AutoCmd = ci.GetAutoType();
-  CMyString user(ci.GetUser());
-  CMyString pwd;
+  StringX AutoCmd = ci.GetAutoType();
+  StringX user(ci.GetUser());
+  StringX pwd;
 
   uuid_array_t base_uuid, entry_uuid;
   CItemData::EntryType entrytype = ci.GetEntryType();
@@ -1203,16 +1203,16 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 
   // If empty, try the database default
-  if (AutoCmd.IsEmpty()) {
+  if (AutoCmd.empty()) {
     AutoCmd = PWSprefs::GetInstance()->
               GetPref(PWSprefs::DefaultAutotypeString);
 
     // If still empty, take this default
-    if (AutoCmd.IsEmpty()) {
+    if (AutoCmd.empty()) {
       // checking for user and password for default settings
-      if (!pwd.IsEmpty()){
-        if (!user.IsEmpty())
-          AutoCmd = CMyString(DEFAULT_AUTOTYPE);
+      if (!pwd.empty()){
+        if (!user.empty())
+          AutoCmd = DEFAULT_AUTOTYPE;
         else
           AutoCmd = _T("\\p\\n");
       }
@@ -1227,9 +1227,9 @@ void DboxMain::AutoType(const CItemData &ci)
     ks.SetCapsLock(false);
   }
 
-  CMyString tmp(_T(""));
+  StringX tmp(_T(""));
   TCHAR curChar;
-  const int N = AutoCmd.GetLength();
+  const int N = AutoCmd.length();
   ks.ResetKeyboardState();
 
   ::BlockInput(true);
@@ -1331,12 +1331,12 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 }
 
-void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
+void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 {
   // Add Drop entries
   CItemData tempitem;
   UUIDList possible_aliases, possible_shortcuts;
-  CMyString Group, Title, User;
+  StringX Group, Title, User;
   POSITION pos;
   TCHAR *dot;
   uuid_array_t entry_uuid;
@@ -1354,7 +1354,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
     pDDObject->ToItem(tempitem);
 
     if (in_oblist.m_bDragNode) {
-      dot = (!DropGroup.IsEmpty() && !tempitem.GetGroup().empty()) ? _T(".") : _T("");
+      dot = (!DropGroup.empty() && !tempitem.GetGroup().empty()) ? _T(".") : _T("");
       Group = DropGroup + dot + tempitem.GetGroup();
     } else {
       Group = DropGroup;
@@ -1373,22 +1373,24 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
     tempitem.SetGroup(Group);
     tempitem.SetTitle(Title);
 
-    CMyString cs_tmp = tempitem.GetPassword();
+    StringX cs_tmp = tempitem.GetPassword();
 
     GetBaseEntryPL pl;
     pl.InputType = CItemData::ET_NORMAL;
 
     // Potentially remove outer single square brackets as GetBaseEntry expects only
     // one set of square brackets (processing import and user edit of entries)
-    if (cs_tmp.Left(2) == _T("[[") && cs_tmp.Right(2) == _T("]]")) {
-      cs_tmp = cs_tmp.Mid(1, cs_tmp.GetLength() - 2);
+    if (cs_tmp.substr(0, 2) == _T("[[") &&
+        cs_tmp.substr(cs_tmp.length() - 2) == _T("]]")) {
+      cs_tmp = cs_tmp.substr(1, cs_tmp.length() - 2);
       pl.InputType = CItemData::ET_ALIAS;
     }
 
     // Potentially remove tilde as GetBaseEntry expects only
     // one set of square brackets (processing import and user edit of entries)
-    if (cs_tmp.Left(2) == _T("[~") && cs_tmp.Right(2) == _T("~]")) {
-      cs_tmp = _T("[") + cs_tmp.Mid(2, cs_tmp.GetLength() - 4) + _T("]");
+    if (cs_tmp.substr(0, 2) == _T("[~") &&
+        cs_tmp.substr(cs_tmp.length() - 2) == _T("~]")) {
+      cs_tmp = _T("[") + cs_tmp.substr(2, cs_tmp.length() - 4) + _T("]");
       pl.InputType = CItemData::ET_SHORTCUT;
     }
 
@@ -1413,7 +1415,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
           continue;
         }
         m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_ALIAS);
-        tempitem.SetPassword(CMyString(_T("[Alias]")));
+        tempitem.SetPassword(_T("[Alias]"));
         tempitem.SetAlias();
       } else
       if (pl.InputType == CItemData::ET_SHORTCUT) {
@@ -1427,7 +1429,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
           continue;
         }
         m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
-        tempitem.SetPassword(CMyString(_T("[Shortcut]")));
+        tempitem.SetPassword(_T("[Shortcut]"));
         tempitem.SetShortcut();
       }
     } else
@@ -1493,37 +1495,43 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 
 // Return whether first [g:t:u] is greater than the second [g:t:u]
 // used in std::sort in SortDependents below.
-bool GTUCompare(CMyString elem1, CMyString elem2)
+bool GTUCompare(const StringX &elem1, const StringX &elem2)
 {
-  CMyString g1, t1, u1, g2, t2, u2, tmp1, tmp2;
+  StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
 
-  g1 = elem1.SpanExcluding(_T(":"));
-  g2 = elem2.SpanExcluding(_T(":"));
+  StringX::size_type i1 = g1.find_first_of(_T(":"));
+  g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
+  StringX::size_type i2 = g2.find_first_of(_T(":"));
+  g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
   if (g1 != g2)
-    return g1.Compare(g2) < 0;
+    return g1.compare(g2) < 0;
 
-  tmp1 = elem1.Mid(g1.GetLength() + 1);
-  tmp2 = elem2.Mid(g2.GetLength() + 1);
-  t1 = tmp1.SpanExcluding(_T(":"));
-  t2 = tmp2.SpanExcluding(_T(":"));
+  tmp1 = elem1.substr(g1.length() + 1);
+  tmp2 = elem2.substr(g2.length() + 1);
+  i1 = tmp1.find_first_of(_T(":"));
+  t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
+  i2 = tmp2.find_first_of(_T(":"));
+  t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
   if (t1 != t2)
-    return t1.Compare(t2) < 0;
+    return t1.compare(t2) < 0;
 
-  tmp1 = tmp1.Mid(t1.GetLength() + 1);
-  tmp2 = tmp2.Mid(t2.GetLength() + 1);
-  u1 = tmp1.SpanExcluding(_T(":"));
-  u2 = tmp2.SpanExcluding(_T(":"));
-  return u1.Compare(u2) < 0;
+  tmp1 = tmp1.substr(t1.length() + 1);
+  tmp2 = tmp2.substr(t2.length() + 1);
+  i1 = tmp1.find_first_of(_T(":"));
+  u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
+  i2 = tmp2.find_first_of(_T(":"));
+  u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
+  return u1.compare(u2) < 0;
 }
 
-void DboxMain::SortDependents(UUIDList &dlist, CMyString &csDependents)
+void DboxMain::SortDependents(UUIDList &dlist, StringX &csDependents)
 {
-  std::vector<CMyString> sorted_dependents;
-  std::vector<CMyString>::iterator sd_iter;
+  std::vector<StringX> sorted_dependents;
+  std::vector<StringX>::iterator sd_iter;
 
   ItemListIter iter;
   UUIDListIter diter;
-  CMyString cs_dependent;
+  StringX cs_dependent;
 
   for (diter = dlist.begin(); diter != dlist.end(); diter++) {
     uuid_array_t dependent_uuid;
@@ -1538,7 +1546,7 @@ void DboxMain::SortDependents(UUIDList &dlist, CMyString &csDependents)
   }
 
   std::sort(sorted_dependents.begin(), sorted_dependents.end(), GTUCompare);
-  csDependents.Empty();
+  csDependents.clear();
 
   for (sd_iter = sorted_dependents.begin(); sd_iter != sorted_dependents.end(); sd_iter++) {
     csDependents += _T("\t[") +  *sd_iter + _T("]\r\n");
@@ -1561,8 +1569,8 @@ void DboxMain::OnToolBarFind()
   m_FindToolBar.Find();
 }
 
-bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
-                                const CMyString &user, const CMyString &password,
+bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
+                                const StringX &user, const StringX &password,
                                 const bool bIsEdit, const CItemData::EntryType &InputType, 
                                 uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued)
 {

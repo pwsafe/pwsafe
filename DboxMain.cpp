@@ -814,9 +814,9 @@ void DboxMain::SetInitialDatabaseDisplay()
 
 void DboxMain::OnDestroy()
 {
-  const CMyString filename(m_core.GetCurFile());
+  const StringX filename(m_core.GetCurFile());
   // The only way we're the locker is if it's locked & we're !readonly
-  if (!filename.IsEmpty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
+  if (!filename.empty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
 
   // Get rid of hotkey
@@ -1070,8 +1070,8 @@ void DboxMain::OnU3ShopWebsite()
 #endif
 }
 
-int DboxMain::GetAndCheckPassword(const CMyString &filename,
-                                  CMyString& passkey,
+int DboxMain::GetAndCheckPassword(const StringX &filename,
+                                  StringX &passkey,
                                   int index,
                                   bool bReadOnly,
                                   bool bForceReadOnly,
@@ -1095,7 +1095,7 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
 
   if (pcore == 0) pcore = &m_core;
 
-  if (!filename.IsEmpty()) {
+  if (!filename.empty()) {
     bool exists = pcore->FileExists(filename, bFileIsReadOnly);
 
     if (!exists) {
@@ -1121,7 +1121,7 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
   static CPasskeyEntry *dbox_pkentry = NULL;
   INT_PTR rc = 0;
   if (dbox_pkentry == NULL) {
-    dbox_pkentry = new CPasskeyEntry(this, filename,
+    dbox_pkentry = new CPasskeyEntry(this, filename.c_str(),
                                      index, bReadOnly || bFileIsReadOnly,
                                      bFileIsReadOnly || bForceReadOnly,
                                      adv_type);
@@ -1168,7 +1168,7 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
     const StringX curFile = dbox_pkentry->GetFileName().GetString();
     pcore->SetCurFile(curFile);
     StringX locker(_T("")); // null init is important here
-    passkey = dbox_pkentry->GetPasskey();
+    passkey = LPCTSTR(dbox_pkentry->GetPasskey());
     // This dialog's setting of read-only overrides file dialog
     bool bIsReadOnly = dbox_pkentry->IsReadOnly();
     pcore->SetReadOnly(bIsReadOnly);
@@ -1729,10 +1729,10 @@ void DboxMain::OnShowPassword()
 {
   if (SelItemOk() == TRUE) {
     CItemData item;
-    CMyString password;
-    CMyString name;
-    CMyString title;
-    CMyString username;
+    StringX password;
+    StringX name;
+    StringX title;
+    StringX username;
     CShowPasswordDlg pwDlg( this );
 
     item = m_pwlist.GetAt(Find(getSelectedItem()));
@@ -1810,7 +1810,7 @@ void DboxMain::UnMinimize(bool update_windows)
       (app.GetSystemTrayState() == ThisMfcApp::LOCKED) &&
       (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
-    CMyString passkey;
+    StringX passkey;
     int rc;
     rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
     if (rc != PWScore::SUCCESS)
@@ -1827,7 +1827,7 @@ void DboxMain::UnMinimize(bool update_windows)
 
   // Case 2 - data unavailable
   if (m_needsreading && m_windowok) {
-    CMyString passkey, temp;
+    StringX passkey;
     int rc, rc2;
     const bool useSysTray = PWSprefs::GetInstance()->
                             GetPref(PWSprefs::UseSystemTray);
@@ -1842,8 +1842,8 @@ void DboxMain::UnMinimize(bool update_windows)
       case PWScore::SUCCESS:
         rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-        m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
-                                           m_core.GetCurFile());
+        m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
+                                           m_core.GetCurFile()).c_str();
 #endif
         break;
       case PWScore::CANT_OPEN_FILE:

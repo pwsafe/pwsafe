@@ -406,7 +406,7 @@ void CPasskeyEntry::OnOK()
   DboxMain* pDbx = (DboxMain*) GetParent();
   ASSERT(pDbx != NULL);
 
-  if (pDbx->CheckPassword(m_filespec, m_passkey) != PWScore::SUCCESS) {
+  if (pDbx->CheckPassword(LPCTSTR(m_filespec), LPCTSTR(m_passkey)) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
 

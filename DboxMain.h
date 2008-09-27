@@ -11,6 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "corelib/PWScore.h"
+#include "corelib/StringX.h"
 #include "corelib/sha256.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSClipboard.h"
@@ -136,8 +137,8 @@ public:
   ~DboxMain();
 
   // Find entry by title and user name, exact match
-  ItemListIter Find(const CMyString &a_group,
-                    const CMyString &a_title, const CMyString &a_user)
+  ItemListIter Find(const StringX &a_group,
+                    const StringX &a_title, const StringX &a_user)
   {return m_core.Find(a_group, a_title, a_user);}
 
   // Find entry with same title and user name as the
@@ -183,7 +184,7 @@ public:
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
   void RefreshViews(const int iView = iBothViews);
 
-  int CheckPassword(const CMyString &filename, CMyString &passkey)
+  int CheckPassword(const StringX &filename, const StringX &passkey)
   {return m_core.CheckPassword(filename, passkey);}
   enum ChangeType {Clear, Data, TimeStamp};
   void SetChanged(ChangeType changed);
@@ -215,7 +216,7 @@ public:
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) {m_bValidate = state;}
-  void MakeRandomPassword(CMyString& password, PWPolicy &pwp);
+  void MakeRandomPassword(StringX& password, PWPolicy &pwp);
   bool SetPasswordPolicy(PWPolicy &pwp);
   BOOL LaunchBrowser(const CString &csURL);
   void UpdatePasswordHistory(int iAction, int num_default);
@@ -228,16 +229,16 @@ public:
   bool ClearClipboardData() {return m_clipboard.ClearData();}
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
-  void AddEntries(CDDObList &in_oblist, const CMyString &DropGroup);
+  void AddEntries(CDDObList &in_oblist, const StringX &DropGroup);
   int AddEntry(const CItemData &cinew);
-  CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-                           const CMyString &user, const int IDS_MESSAGE)
+  StringX GetUniqueTitle(const StringX &path, const StringX &title,
+                           const StringX &user, const int IDS_MESSAGE)
   {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
   void Delete(bool inRecursion = false);
   void SaveDisplayStatus(); // call when tree expansion state changes
-  bool CheckNewPassword(const CMyString &group, const CMyString &title,
-                        const CMyString &user, const CMyString &password,
+  bool CheckNewPassword(const StringX &group, const StringX &title,
+                        const StringX &user, const StringX &password,
                         const bool bIsEdit, const CItemData::EntryType &InputType, 
                         uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued);
   void GetAliasBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
@@ -250,9 +251,9 @@ public:
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
   void RefreshImages();
-  bool FieldsNotEqual(CMyString a, CMyString b);
-  void CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
-                           const CMyString cs_title, const CMyString cs_user);
+  bool FieldsNotEqual(StringX a, StringX b);
+  void CreateShortcutEntry(CItemData *ci, const StringX &cs_group,
+                           const StringX &cs_title, const StringX &cs_user);
   bool SetNotesWindow(const CPoint point, const bool bVisible = true);
   bool IsFilterActive() {return m_bFilterActive;}
   int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
@@ -301,7 +302,7 @@ protected:
   bool m_bValidate; // do validation after reading db
 
 #if !defined(POCKET_PC)
-  CMyString m_titlebar; // what's displayed in the title bar
+  CString m_titlebar; // what's displayed in the title bar
 #endif
 
 #if defined(POCKET_PC)
@@ -341,7 +342,7 @@ protected:
   WCHAR *m_pwchTip;
   char *m_pchTip;
 
-  CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
+  StringX m_TreeViewGroup; // used by OnAdd & OnAddGroup
   CCoolMenuManager m_menuManager;
   CMenuTipManager m_menuTipManager;
 
@@ -384,7 +385,7 @@ protected:
 
   void UpdateAlwaysOnTop();
   void ClearData(bool clearMRE = true);
-  int NewFile(CMyString &filename);
+  int NewFile(StringX &filename);
 
   void SetListView();
   void SetTreeView();
@@ -403,15 +404,15 @@ protected:
   int SaveAs(void);
   int SaveCore(PWScore *pcore);
   int Open(void);
-  int Open(const CMyString &pszFilename, const bool bReadOnly);
+  int Open(const StringX &pszFilename, const bool bReadOnly);
   int Close(void);
   int Merge(void);
-  int Merge( const CMyString &pszFilename );
+  int Merge( const StringX &pszFilename );
   int MergeDependents(PWScore *pothercore, 
                       uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
                       const bool bTitleRenamed, CString &timeStr, 
                       const CItemData::EntryType et);
-  int Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2);
+  int Compare(const StringX &cs_Filename1, const StringX &cs_Filename2);
 
   int BackupSafe(void);
   int New(void);
@@ -420,10 +421,10 @@ protected:
   void AutoType(const CItemData &ci);
   bool EditItem(CItemData *ci, PWScore *pcore = NULL);
   bool EditShortcut(CItemData *ci, PWScore *pcore = NULL);
-  void SortDependents(UUIDList &dlist, CMyString &csDependents);
-  void ViewReport(const CString cs_ReportFileName);
+  void SortDependents(UUIDList &dlist, StringX &csDependents);
+  void ViewReport(const CString &cs_ReportFileName);
   void ViewReport(CReport &rpt);
-  bool GetDriveAndDirectory(const CMyString cs_infile, CString &cs_directory,
+  bool GetDriveAndDirectory(const StringX &cs_infile, CString &cs_directory,
                             CString &cs_drive);
   void SetFindToolBar(bool bShow);
   void ApplyFilters();
@@ -574,12 +575,12 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-  int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
+  int GetAndCheckPassword(const StringX &filename, StringX& passkey,
                           int index, bool bReadOnly = false, bool bForceReadOnly = false,
                           PWScore *pcore = 0, int adv_type = -1);
 
 private:
-  CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
+  StringX m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   PWScore &m_core;
   bool m_IsStartSilent;
   bool m_IsStartClosed;
@@ -661,11 +662,11 @@ private:
   int m_bNumPassedFiltering;
 };
 
-inline bool DboxMain::FieldsNotEqual(CMyString a, CMyString b)
+inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)
 {
   if (m_treatwhitespaceasempty == TRUE) {
-    a.EmptyIfOnlyWhiteSpace();
-    b.EmptyIfOnlyWhiteSpace();
+    EmptyIfOnlyWhiteSpace(a);
+    EmptyIfOnlyWhiteSpace(b);
   }
   return a != b;
 }

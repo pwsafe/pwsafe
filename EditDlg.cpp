@@ -561,8 +561,9 @@ void CEditDlg::OnRandom()
   DboxMain* pParent = static_cast<DboxMain*>(GetParent());
 
   UpdateData(TRUE);
-
-  pParent->MakeRandomPassword(m_realpassword, m_pwp);
+  StringX passwd;
+  pParent->MakeRandomPassword(passwd, m_pwp);
+  m_realpassword = passwd.c_str();
   if (!m_isPwHidden) {
       m_password = m_realpassword;
       UpdateData(FALSE);
