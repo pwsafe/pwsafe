@@ -410,12 +410,12 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             return false;
           }
           // get password from user
-          CMyString passkey;
+          StringX passkey;
           CCryptKeyEntry dlg(NULL);
           INT_PTR nResponse = dlg.DoModal();
 
           if (nResponse == IDOK) {
-            passkey = dlg.m_cryptkey1;
+            passkey = LPCTSTR(dlg.m_cryptkey1);
           } else {
             return false;
           }

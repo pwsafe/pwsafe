@@ -13,7 +13,6 @@
 
 #include "PasswordSafe.h"
 #include "stdafx.h"
-#include "corelib/MyString.h"
 #include "corelib/Util.h"
 #include "corelib/PWScore.h"
 #include "SystemTray.h"

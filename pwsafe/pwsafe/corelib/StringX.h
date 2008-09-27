@@ -158,6 +158,7 @@ StringX &Trim(StringX &s, const TCHAR *set = NULL);
 void EmptyIfOnlyWhiteSpace(StringX &s);
 int Replace(StringX &s, TCHAR from, TCHAR to);
 int Replace(StringX &s, const StringX &from, const StringX &to);
+int Remove(StringX &s, TCHAR c);
 #endif
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -1253,9 +1253,9 @@ int PWScore::ReadFile(const StringX &a_filename,
          csMyPassword = temp.GetPassword();
          cs_possibleUUID = csMyPassword.substr(2, 32);  // Extract possible uuid
          ToLower(cs_possibleUUID);
-         if (((csMyPassword.substr(0,2) == _T("[[") &&
+         if (((csMyPassword.substr(0, 2) == _T("[[") &&
                csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
-              (csMyPassword.substr(2) == _T("[~") &&
+              (csMyPassword.substr(0, 2) == _T("[~") &&
                csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
                csMyPassword.length() == 36 &&
              cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
@@ -1843,7 +1843,7 @@ PWScore::Validate(CString &status)
          ToLower(cs_possibleUUID);
          if (((csMyPassword.substr(0,2) == _T("[[") &&
                csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
-              (csMyPassword.substr(2) == _T("[~") &&
+              (csMyPassword.substr(0, 2) == _T("[~") &&
                csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
                csMyPassword.length() == 36 &&
              cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {

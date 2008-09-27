@@ -60,9 +60,8 @@ int DboxMain::BackupSafe()
 {
   INT_PTR rc;
   PWSprefs *prefs = PWSprefs::GetInstance();
-  CMyString tempname;
-  CMyString currbackup =
-    prefs->GetPref(PWSprefs::CurrentBackup);
+  StringX tempname;
+  StringX currbackup = prefs->GetPref(PWSprefs::CurrentBackup);
 
   CString cs_text(MAKEINTRESOURCE(IDS_PICKBACKUP));
   CString cs_temp, cs_title;
@@ -70,7 +69,7 @@ int DboxMain::BackupSafe()
   while (1) {
     CFileDialog fd(FALSE,
                    _T("bak"),
-                   currbackup,
+                   currbackup.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    _T("Password Safe Backups (*.bak)|*.bak||"),
@@ -89,7 +88,7 @@ int DboxMain::BackupSafe()
       return PWScore::USER_CANCEL;
     }
     if (rc == IDOK) {
-      tempname = (CMyString)fd.GetPathName();
+      tempname = fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
@@ -116,8 +115,8 @@ void DboxMain::OnRestore()
 int DboxMain::Restore()
 {
   int rc;
-  CMyString backup, passkey, temp;
-  CMyString currbackup =
+  StringX backup, passkey, temp;
+  StringX currbackup =
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
   rc = SaveIfChanged();
@@ -130,7 +129,7 @@ int DboxMain::Restore()
   while (1) {
     CFileDialog fd(TRUE,
                    _T("bak"),
-                   currbackup,
+                   currbackup.c_str(),
                    OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
                    _T("Password Safe Backups (*.bak)|*.bak|")
                    _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
@@ -150,7 +149,7 @@ int DboxMain::Restore()
       return PWScore::USER_CANCEL;
     }
     if (rc2 == IDOK) {
-      backup = (CMyString)fd.GetPathName();
+      backup = fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
@@ -767,9 +766,9 @@ struct HistoryUpdateResetOff : public HistoryUpdater {
   HistoryUpdateResetOff(int &num_altered) : HistoryUpdater(num_altered) {}
   void operator()(CItemData &ci)
   {
-    CMyString cs_tmp = ci.GetPWHistory();
-    if (cs_tmp.GetLength() >= 5 && cs_tmp.GetAt(0) == _T('1')) {
-      cs_tmp.SetAt(0, _T('0'));
+    StringX cs_tmp = ci.GetPWHistory();
+    if (cs_tmp.length() >= 5 && cs_tmp[0] == _T('1')) {
+      cs_tmp[0] = _T('0');
       ci.SetPWHistory(cs_tmp);
       m_num_altered++;
     }
@@ -782,13 +781,13 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
   {m_text.Format(_T("1%02x00"), new_default_max);}
   void operator()(CItemData &ci)
   {
-    CMyString cs_tmp = ci.GetPWHistory();
-    if (cs_tmp.GetLength() < 5) {
+    StringX cs_tmp = ci.GetPWHistory();
+    if (cs_tmp.length() < 5) {
       ci.SetPWHistory(LPCTSTR(m_text));
       m_num_altered++;
     } else {
-      if (cs_tmp.GetAt(0) == _T('0')) {
-        cs_tmp.SetAt(0, _T('1'));
+      if (cs_tmp[0] == _T('0')) {
+        cs_tmp[0] = _T('1');
         ci.SetPWHistory(cs_tmp);
         m_num_altered++;
       }
@@ -805,12 +804,12 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
   {m_text.Format(_T("1%02x"), new_default_max);}
   void operator()(CItemData &ci)
   {
-    CMyString cs_tmp = ci.GetPWHistory();
+    StringX cs_tmp = ci.GetPWHistory();
 
-    int len = cs_tmp.GetLength();
+    int len = cs_tmp.length();
     if (len >= 5) {
       int status, old_max, num_saved;
-      TCHAR *lpszPWHistory = cs_tmp.GetBuffer(len + sizeof(TCHAR));
+      const TCHAR *lpszPWHistory = cs_tmp.c_str();
 #if _MSC_VER >= 1400
       int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), 
                              &status, &old_max, &num_saved);
@@ -818,9 +817,8 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
       int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"),
                            &status, &old_max, &num_saved);
 #endif
-      cs_tmp.ReleaseBuffer();
       if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
-        cs_tmp = CMyString(m_text) + cs_tmp.Mid(3);
+        cs_tmp = LPCTSTR(m_text) + cs_tmp.substr(3);
         ci.SetPWHistory(cs_tmp);
         m_num_altered++;
       }
