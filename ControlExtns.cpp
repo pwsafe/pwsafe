@@ -107,6 +107,7 @@ BEGIN_MESSAGE_MAP(CEditExtn, CEdit)
   ON_WM_KILLFOCUS()
   ON_WM_CTLCOLOR_REFLECT()
   ON_WM_CONTEXTMENU()
+  ON_WM_LBUTTONDOWN()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -132,6 +133,29 @@ void CEditExtn::OnKillFocus(CWnd* pNewWnd)
   GetSel(m_nStartChar, m_nEndChar);
   CEdit::OnKillFocus(pNewWnd);
   Invalidate(TRUE);
+}
+
+void CEditExtn::OnLButtonDown(UINT nFlags, CPoint point)
+{
+  // Get the scroll bar position.
+  int nScrollHPos = GetScrollPos(SB_HORZ);
+  int nScrollVPos = GetScrollPos(SB_VERT);
+
+  int n = CharFromPos(point);
+  m_lastposition = HIWORD(n);
+  m_nStartChar = m_nEndChar = LOWORD(n);
+
+  CEdit::OnLButtonDown(nFlags, point);
+
+  // Reset the scroll bar position.
+  SetScrollPos(SB_HORZ, nScrollHPos);
+  SetScrollPos(SB_VERT, nScrollVPos);
+
+  // Reset the display scroll position.
+  SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollHPos), 0);
+  SendMessage(WM_VSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollVPos), 0);
+
+  SetSel(m_nStartChar, m_nEndChar);
 }
 
 HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)

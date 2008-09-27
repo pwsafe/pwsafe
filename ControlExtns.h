@@ -108,6 +108,7 @@ protected:
   afx_msg void OnKillFocus(CWnd* pNewWnd);
   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 };
