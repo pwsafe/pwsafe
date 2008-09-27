@@ -226,8 +226,8 @@ public:
   void AutoResizeColumns();
   void ResetIdleLockCounter();
   bool ClearClipboardData() {return m_clipboard.ClearData();}
-  bool SetClipboardData(const CMyString &data)
-  {return m_clipboard.SetData(data);}
+  bool SetClipboardData(const StringX &data)
+  {return m_clipboard.SetData(data.c_str());}
   void AddEntries(CDDObList &in_oblist, const CMyString &DropGroup);
   int AddEntry(const CItemData &cinew);
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,

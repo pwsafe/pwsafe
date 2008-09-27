@@ -142,10 +142,10 @@ BOOL CExpPWListDlg::OnInitDialog()
        itempos++) {
     const ExpPWEntry exppwentry = *itempos;
     nPos = m_expPWListCtrl.InsertItem(nPos, NULL, exppwentry.type);
-    m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.group);
-    m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.title);
-    m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.user);
-    m_expPWListCtrl.SetItemText(nPos, 4, exppwentry.expirylocdate);
+    m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.group.c_str());
+    m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.title.c_str());
+    m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.user.c_str());
+    m_expPWListCtrl.SetItemText(nPos, 4, exppwentry.expirylocdate.c_str());
     // original nPos == index in vector: save for Sort
     m_expPWListCtrl.SetItemData(nPos, static_cast<DWORD>(nPos));
   }
@@ -170,9 +170,11 @@ void CExpPWListDlg::OnOK()
 
 void CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 {
-  CString data(MAKEINTRESOURCE(IDS_COPYTITLE));
-  const CString CRLF = _T("\r\n");
-  const CString TAB = _T('\t');
+  CString title(MAKEINTRESOURCE(IDS_COPYTITLE));
+  const StringX CRLF = _T("\r\n");
+  const StringX TAB = _T("\t");
+
+  StringX data = LPCTSTR(title);
 
   ExpiredList::const_iterator itempos;
 
@@ -180,11 +182,11 @@ void CExpPWListDlg::OnBnClickedCopyExpToClipboard()
        itempos != m_expPWList.end();
        itempos++) {
     const ExpPWEntry exppwentry = *itempos;
-    data = data +
-        (CString)exppwentry.group + TAB + 
-        (CString)exppwentry.title + TAB + 
-        (CString)exppwentry.user + TAB + 
-        (CString)exppwentry.expiryexpdate + CRLF;
+    data +=
+        exppwentry.group + TAB + 
+        exppwentry.title + TAB + 
+        exppwentry.user + TAB + 
+        exppwentry.expiryexpdate + CRLF;
   }
 
   DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
