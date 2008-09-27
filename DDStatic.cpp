@@ -384,7 +384,7 @@ void CDDStatic::SendToClipboard()
     }
   }
 
-  CMyString cs_dragdata;
+  StringX cs_dragdata;
   switch (m_nID) {
     case IDC_STATIC_DRAGGROUP:
       cs_dragdata = pci->GetGroup();

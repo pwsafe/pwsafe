@@ -161,9 +161,9 @@ void CViewReport::Save()
 
 void CViewReport::SendToClipboard()
 {
-  CMyString cs_clipdata((LPTSTR)m_pData);
+  StringX clipdata((LPTSTR)m_pData);
 
-  m_pDbx->SetClipboardData(cs_clipdata);
+  m_pDbx->SetClipboardData(clipdata);
 }
 
 void CViewReport::Finish()
