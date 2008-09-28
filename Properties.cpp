@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include "Properties.h"
+#include "corelib/StringXStream.h" // for ostringstreamT
 
 // CProperties dialog
 
@@ -64,14 +65,13 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
   core.GetFileUUID(file_uuid_array);
 
   if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
-    wls = _T("N/A");
-  else
-    wls.Format(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
-               file_uuid_array[0],  file_uuid_array[1],  file_uuid_array[2],  file_uuid_array[3],
-               file_uuid_array[4],  file_uuid_array[5],  file_uuid_array[6],  file_uuid_array[7],
-               file_uuid_array[8],  file_uuid_array[9],  file_uuid_array[10], file_uuid_array[11],
-               file_uuid_array[12], file_uuid_array[13], file_uuid_array[14], file_uuid_array[15]);
-  m_file_uuid = wls;
+    m_file_uuid = _T("N/A");
+  else {
+    ostringstreamT os;
+    CUUIDGen huuid(file_uuid_array, true); // true for canonical format
+    os << huuid;
+    m_file_uuid = os.str().c_str();
+  }
 
   int num = core.GetNumRecordsWithUnknownFields();
   if (num != 0 || core.HasHeaderUnknownFields()) {

@@ -173,26 +173,24 @@ struct RecordWriter {
       p.second.GetUUID(item_uuid);
       m_core->GetAliasBaseUUID(item_uuid, base_uuid);
 
-      uuid_str_NH_t base_uuid_buffer;
-      CUUIDGen::GetUUIDStr(base_uuid, base_uuid_buffer);
+      const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[["));
-      uuid_str += (TCHAR *)base_uuid_buffer;
+      uuid_str += buuid.GetHexStr();
       uuid_str += _T("]]");
       p.second.SetPassword(uuid_str);
     } else if (p.second.IsShortcut()) {
-        uuid_array_t item_uuid, base_uuid;
-        p.second.GetUUID(item_uuid);
-        m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
+      uuid_array_t item_uuid, base_uuid;
+      p.second.GetUUID(item_uuid);
+      m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
 
-        uuid_str_NH_t base_uuid_buffer;
-        CUUIDGen::GetUUIDStr(base_uuid, base_uuid_buffer);
-        StringX uuid_str(_T("[~"));
-        uuid_str += (TCHAR *)base_uuid_buffer;
-        uuid_str += _T("~]");
-    p.second.SetPassword(uuid_str);
-      }
-      m_out->WriteRecord(p.second);
-      p.second.SetPassword(savePassword);
+      const CUUIDGen buuid(base_uuid);
+      StringX uuid_str(_T("[~"));
+      uuid_str += buuid.GetHexStr();
+      uuid_str += _T("~]");
+      p.second.SetPassword(uuid_str);
+    }
+    m_out->WriteRecord(p.second);
+    p.second.SetPassword(savePassword);
   }
 
 private:
@@ -549,10 +547,9 @@ int PWScore::WriteXMLFile(const StringX &filename,
     of << "\"" << endl;
   }
 
-  uuid_str_WH_t hdr_uuid_buffer;
-  CUUIDGen::GetUUIDStr(m_hdr.m_file_uuid_array, hdr_uuid_buffer);
+  CUUIDGen huuid(m_hdr.m_file_uuid_array, true); // true to print canoncally
 
-  of << "Database_uuid=\"" << hdr_uuid_buffer << "\"" << endl;
+  of << "Database_uuid=\"" << huuid << "\"" << endl;
   of << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
   of << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
   of << endl;
@@ -1264,7 +1261,7 @@ int PWScore::ReadFile(const StringX &a_filename,
            // overwritten and then copy to where we want it!
            unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
            int nscanned = 0;
-           const TCHAR *lpszuuid = csMyPassword.c_str();
+           const TCHAR *lpszuuid = cs_possibleUUID.c_str();
            for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
              nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
@@ -1852,7 +1849,7 @@ PWScore::Validate(CString &status)
       // overwritten and then copy to where we want it!
       unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
       int nscanned = 0;
-      const TCHAR *lpszuuid = csMyPassword.c_str();
+      const TCHAR *lpszuuid = cs_possibleUUID.c_str();
       for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
         nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);

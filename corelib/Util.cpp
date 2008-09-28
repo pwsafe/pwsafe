@@ -21,15 +21,8 @@
 #include <time.h>
 #include "Util.h"
 #include <sstream>
+#include "StringXStream.h"
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wistringstream istringstreamT;
-typedef std::wostringstream ostringstreamT;
-#else
-typedef std::istringstream istringstreamT;
-typedef std::ostringstream ostringstreamT;
-#endif
 using namespace std;
 
 // used by CBC routines...

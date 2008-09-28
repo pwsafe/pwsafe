@@ -535,19 +535,18 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     lpszA = new char[ilen + 1];
     TRACE(_T("lpszA allocated %p, size %d\n"), lpszA, dwBufLen);
 #if (_MSC_VER >= 1400)
-    (void) strncpy_s(lpszA, ilen + 1, cs_dragdata, ilen);
+    (void) strncpy_s(lpszA, ilen + 1, cs_dragdata.c_str(), ilen);
 #else
-    (void)strncpy(lpszA, cs_dragdata, ilen);
+    (void)strncpy(lpszA, cs_dragdata.c_str(), ilen);
     lpszA[ilen] = '\0';
 #endif
   } else {
     // They want it in UNICODE - use lpszA temporarily
-    lpszA = cs_dragdata.GetBuffer(ilen + 1);
+    lpszA = const_cast<LPSTR>(cs_dragdata.c_str());
     dwBufLen = MultiByteToWideChar(CP_ACP, 0, lpszA, -1, NULL, NULL);
     lpszW = new WCHAR[dwBufLen];
     TRACE(_T("lpszW allocated %p, size %d\n"), lpszW, dwBufLen);
     MultiByteToWideChar(CP_ACP, 0, lpszA, -1, lpszW, dwBufLen);
-    cs_dragdata.ReleaseBuffer();
     lpszA = NULL;
   }
 #endif

@@ -13,15 +13,6 @@
 #include <iomanip>
 #include "StringXStream.h"
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wistringstream istringstreamT;
-typedef std::wostringstream ostringstreamT;
-#else
-typedef std::istringstream istringstreamT;
-typedef std::ostringstream ostringstreamT;
-#endif
-
 using namespace std;
 
 bool CreatePWHistoryList(const StringX &pwh_str,
