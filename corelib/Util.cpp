@@ -497,15 +497,15 @@ void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_
   int iDigits[4] = {0,0,0,0};
 
   size_t st_length = 0;
-  const int in_length = inString.length();
+  const size_t in_length = inString.length();
 
-  int i1, i2, i3;
-  for (i2 = 0; i2 < (int)in_length; i2 += 4) {
+  size_t i1, i2, i3;
+  for (i2 = 0; i2 < in_length; i2 += 4) {
     iDigits[0] = iDigits[1] = iDigits[2] = iDigits[3] = -1;
 
     for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
       for (i3 = i2; i3 < i2 + 4; i3++) {
-        if (i3 < (int)in_length &&  inString[i3] == szCS[i1])
+        if (i3 < in_length &&  inString[i3] == szCS[i1])
           iDigits[i3 - i2] = i1 - 1;
       }
     }
@@ -533,7 +533,7 @@ void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_
 }
 
 
-static const int MAX_TTT_LEN = 64; // Max tooltip text length
+static const size_t MAX_TTT_LEN = 64; // Max tooltip text length
 StringX PWSUtil::NormalizeTTT(const StringX &in)
 {
   StringX ttt;
@@ -591,7 +591,7 @@ void PWSUtil::WriteXMLField(ostream &os, const char *fname,
       else
         os << "Internal error - unable to convert field to utf-8";
       os << "]]>";
-    } while (p != -1);
+    } while (p != StringX::npos);
     os << "</" << fname << ">" << endl;
   } // special handling of "]]>" in value.
 }
