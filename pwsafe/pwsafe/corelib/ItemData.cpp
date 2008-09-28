@@ -25,14 +25,6 @@
 #include <sstream>
 #include <iomanip>
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wistringstream istringstreamT;
-typedef std::wostringstream ostringstreamT;
-#else
-typedef std::istringstream istringstreamT;
-typedef std::ostringstream ostringstreamT;
-#endif
 using namespace std;
 
 #ifdef _DEBUG
@@ -519,9 +511,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   uuid_array_t uuid_array;
   GetUUID(uuid_array);
-  uuid_str_NH_t uuid_buffer;
-  CUUIDGen::GetUUIDStr(uuid_array, uuid_buffer);
-  oss << "\t\t<uuid><![CDATA[" << uuid_buffer << "]]></uuid>" << endl;
+  const CUUIDGen uuid(uuid_array);
+  oss << "\t\t<uuid><![CDATA[" << uuid << "]]></uuid>" << endl;
 
   time_t t;
   int xint;

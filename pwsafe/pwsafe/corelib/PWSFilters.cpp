@@ -476,10 +476,9 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
       oss << "\"" << endl;
     }
 
-    uuid_str_WH_t hdr_uuid_buffer;
-    CUUIDGen::GetUUIDStr(hdr.m_file_uuid_array, hdr_uuid_buffer);
+    CUUIDGen huuid(hdr.m_file_uuid_array, true); // true to print canonically
 
-    oss << "Database_uuid=\"" << hdr_uuid_buffer << "\"" << endl;
+    oss << "Database_uuid=\"" << huuid << "\"" << endl;
   }
   oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
   oss << "xsi:noNamespaceSchemaLocation=\"pwsafe_filter.xsd\">" << endl;

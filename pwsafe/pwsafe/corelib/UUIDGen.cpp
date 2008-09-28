@@ -14,6 +14,8 @@
 
 #include "UUIDGen.h"
 #include "util.h" /* for trashMemory() */
+#include "StringXStream.h"
+#include <iomanip>
 #include <assert.h>
 
 #ifdef _WIN32
@@ -23,12 +25,14 @@
 #include <asm/byteorder.h> /* for htonl, htons */
 #endif
 
-CUUIDGen::CUUIDGen()
+using namespace std;
+
+CUUIDGen::CUUIDGen() : m_canonic(false)
 {
   UuidCreate(&uuid);
 }
 
-CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array)
+CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(canonic)
 {
   unsigned long *p0 = (unsigned long *)uuid_array;
   uuid.Data1 = htonl(*p0);
@@ -57,36 +61,41 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
     uuid_array[i + 8] = uuid.Data4[i];
 }
 
-static void hexify(unsigned char byte, char *&out)
-{
-  static const char v[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                           '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-  *out++ = v[(byte >> 4) & 0xf];
-  *out++ = v[byte & 0xf];
-}
 
-void CUUIDGen::GetUUIDStr(const uuid_array_t &uuid_array,
-                          uuid_str_NH_t &uuid_buffer)
+ostream &operator<<(ostream &os, const CUUIDGen &uuid)
 {
-  // No hyphens
-  char *p = uuid_buffer;
-  for (int i = 0; i < sizeof(uuid_array); i++)
-    hexify(uuid_array[i], p);
-  *p = '\0';
-}
-
-void CUUIDGen::GetUUIDStr(const uuid_array_t &uuid_array,
-                          uuid_str_WH_t &uuid_buffer)
-{
-  // With hyphens!
-  char *p = uuid_buffer;
-  for (int i = 0; i < sizeof(uuid_array); i++) {
-    hexify(uuid_array[i], p);
-    if (i == 3 || i == 5 || i == 7 || i == 9)
-      *p++ = '-';
+ uuid_array_t uuid_a;
+  uuid.GetUUID(uuid_a);
+  for (int i = 0; i < sizeof(uuid_a); i++) {
+    os << setw(2) << setfill('0') << hex << int(uuid_a[i]);
+    if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
+      os << "-";
   }
-  *p = '\0';
+  return os;
 }
+
+wostream &operator<<(wostream &os, const CUUIDGen &uuid)
+{
+ uuid_array_t uuid_a;
+  uuid.GetUUID(uuid_a);
+  for (int i = 0; i < sizeof(uuid_a); i++) {
+    os << setw(2) << setfill(wchar_t('0')) << hex << int(uuid_a[i]);
+    if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
+      os << L"-";
+  }
+  return os;
+}
+
+StringX CUUIDGen::GetHexStr() const
+{
+  oStringXStream os;
+  bool sc = m_canonic;
+  m_canonic = false;
+  os << *this;
+  m_canonic = sc;
+  return os.str();
+}
+
 
 #ifdef TEST
 #include <stdio.h>

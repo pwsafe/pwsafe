@@ -22,7 +22,7 @@ int CompareNoCase(const StringX &s1, const StringX &s2)
 void ToLower(StringX &s)
 {
   for (StringX::iterator iter = s.begin(); iter != s.end(); iter++)
-    *iter = _totlower(*iter);
+    *iter = TCHAR(_totlower(*iter));
 }
 
 StringX &Trim(StringX &s, const TCHAR *set)

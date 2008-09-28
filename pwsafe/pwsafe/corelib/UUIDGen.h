@@ -15,24 +15,21 @@
 #ifndef __UUIDGEN_H
 #define __UUIDGEN_H
 
-#include "TCHAR.h"
-
 typedef unsigned char uuid_array_t[16];
-typedef char uuid_str_NH_t[33]; //"204012e6-600f-4e01-a5eb-515267cb0d50" no hyphens!
-typedef char uuid_str_WH_t[37]; //"204012e6-600f-4e01-a5eb-515267cb0d50" with hyphens
 
-#include "PwsPlatform.h"
 #include <memory> // for memcmp
+#include <iostream>
+#include "PwsPlatform.h"
+#include "StringX.h"
 
 class CUUIDGen
 {
 public:
   CUUIDGen(); // UUID generated at creation time
-  CUUIDGen(const uuid_array_t &uuid_array); // for storing an existing UUID
+  CUUIDGen(const uuid_array_t &uuid_array, bool canonic = false); // for storing an existing UUID
   ~CUUIDGen();
   void GetUUID(uuid_array_t &uuid_array) const;
-  static void GetUUIDStr(const uuid_array_t &uuid_array, uuid_str_NH_t &str);
-  static void GetUUIDStr(const uuid_array_t &uuid_array, uuid_str_WH_t &str);
+  StringX GetHexStr() const ; // e.g., "204012e6600f4e01a5eb515267cb0d50"
   // Following is for map<> compare function
   struct ltuuid {
     bool operator()(const CUUIDGen &u1, const CUUIDGen &u2) const
@@ -42,8 +39,14 @@ public:
     }
   };
 
+  friend std::ostream &operator<<(std::ostream &os, const CUUIDGen &uuid);
+  friend std::wostream &operator<<(std::wostream &os, const CUUIDGen &uuid);
 private:
   UUID uuid;
+  mutable bool m_canonic;
 };
+
+std::ostream &operator<<(std::ostream &os, const CUUIDGen &uuid);
+std::wostream &operator<<(std::wostream &os, const CUUIDGen &uuid);
 
 #endif /* __UUIDGEN_H */
