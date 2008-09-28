@@ -15,7 +15,13 @@
 #ifndef __UUIDGEN_H
 #define __UUIDGEN_H
 
+#ifdef _WIN32
 typedef unsigned char uuid_array_t[16];
+#else
+#include <uuid/uuid.h> // aptitude install uuid-dev
+typedef uuid_t uuid_array_t;
+typedef uuid_t UUID;
+#endif
 
 #include <memory> // for memcmp
 #include <iostream>

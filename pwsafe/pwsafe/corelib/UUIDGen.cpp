@@ -13,7 +13,7 @@
 //
 
 #include "UUIDGen.h"
-#include "util.h" /* for trashMemory() */
+#include "Util.h" /* for trashMemory() */
 #include "StringXStream.h"
 #include <iomanip>
 #include <assert.h>
@@ -29,11 +29,16 @@ using namespace std;
 
 CUUIDGen::CUUIDGen() : m_canonic(false)
 {
+#ifdef _WIN32
   UuidCreate(&uuid);
+#else
+  uuid_generate(uuid);
+#endif
 }
 
 CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(canonic)
 {
+#ifdef _WIN32
   unsigned long *p0 = (unsigned long *)uuid_array;
   uuid.Data1 = htonl(*p0);
   unsigned short *p1 = (unsigned short *)&uuid_array[4];
@@ -42,6 +47,9 @@ CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(can
   uuid.Data3 = htons(*p2);
   for (int i = 0; i < 8; i++)
     uuid.Data4[i] = uuid_array[i + 8];
+#else
+  uuid_copy(uuid, uuid_array);
+#endif
 }
 
 CUUIDGen::~CUUIDGen()
@@ -51,6 +59,7 @@ CUUIDGen::~CUUIDGen()
 
 void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 {
+#ifdef _WIN32
   unsigned long *p0 = (unsigned long *)uuid_array;
   *p0 = htonl(uuid.Data1);
   unsigned short *p1 = (unsigned short *)&uuid_array[4];
@@ -59,6 +68,9 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
   *p2 = htons(uuid.Data3);
   for (int i = 0; i < 8; i++)
     uuid_array[i + 8] = uuid.Data4[i];
+#else
+  uuid_copy(uuid_array, uuid);
+#endif
 }
 
 
@@ -66,7 +78,7 @@ ostream &operator<<(ostream &os, const CUUIDGen &uuid)
 {
  uuid_array_t uuid_a;
   uuid.GetUUID(uuid_a);
-  for (int i = 0; i < sizeof(uuid_a); i++) {
+  for (size_t i = 0; i < sizeof(uuid_a); i++) {
     os << setw(2) << setfill('0') << hex << int(uuid_a[i]);
     if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
       os << "-";
@@ -78,7 +90,7 @@ wostream &operator<<(wostream &os, const CUUIDGen &uuid)
 {
  uuid_array_t uuid_a;
   uuid.GetUUID(uuid_a);
-  for (int i = 0; i < sizeof(uuid_a); i++) {
+  for (size_t i = 0; i < sizeof(uuid_a); i++) {
     os << setw(2) << setfill(wchar_t('0')) << hex << int(uuid_a[i]);
     if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
       os << L"-";

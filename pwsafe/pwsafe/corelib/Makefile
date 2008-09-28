@@ -4,7 +4,7 @@
 LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 		              TwoFish.cpp PWCharPool.cpp PWSdirs.cpp \
 	                PWSrand.cpp SysInfo.cpp Util.cpp StringX.cpp \
-									ItemField.cpp
+									ItemField.cpp UUIDGen.cpp
 TESTSRC         = 
 SRC             = $(LIBSRC) $(TESTSRC)
 
