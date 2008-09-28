@@ -27,6 +27,7 @@
 #define _tcslen(s) wcslen(s)
 #define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
 #define _tcsftime wcsftime
+#define _tasctime_s(s, N, st) asctime_r(st, s)
 #else /* !UNICODE */
 #include <ctype.h>
 #define _istalpha(x) isalpha(x)
@@ -41,7 +42,7 @@
 #define _tcsicmp(s1, s2) strcasecmp(s1, s2)
 #include <time.h>
 #define _tcsftime strftime
-#define _tasctime_s(s, N, st) asctime(st, s)
+#define _tasctime_s(s, N, st) asctime_r(st, s)
 #endif /* UNICODE */
 #endif /* _WIN32 */
 #endif /* _PWS_TCHAR_H */

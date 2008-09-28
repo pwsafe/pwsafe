@@ -21,6 +21,7 @@
 #include <time.h>
 #include "Util.h"
 #include <sstream>
+#include <iomanip>
 #include "StringXStream.h"
 
 using namespace std;
@@ -448,18 +449,22 @@ stringT PWSUtil::GetNewFileName(const stringT &oldfilename,
 
 CString PWSUtil::GetTimeStamp()
 {
+#ifdef _WIN32
   struct _timeb timebuffer;
 #if (_MSC_VER >= 1400)
   _ftime_s(&timebuffer);
 #else
   _ftime(&timebuffer);
 #endif
+#else
+  struct timeb timebuffer;
+  ftime(&timebuffer);
+#endif
   StringX cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
 
-  CString cs_now;
-  cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.millitm);
-
-  return cs_now;
+  ostringstreamT os;
+  os << cmys_now.c_str() << setw(3) << timebuffer.millitm;
+  return os.str().c_str();
 }
 
 CString PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
