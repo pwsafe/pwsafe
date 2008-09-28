@@ -68,7 +68,6 @@ void CItemField::Empty()
 
 void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *bf)
 {
-  const LPCSTR plainstr = (const LPCSTR)value;
   int BlockLength;
 
   m_Length = length;
@@ -88,7 +87,7 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
 
     unsigned char *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
-    ::memcpy((char*)tempmem, (char*)plainstr, m_Length);
+    ::memcpy((char*)tempmem, (const char*)value, m_Length);
 
     //Fill the unused characters in with random stuff
     PWSrand::GetInstance()->GetRandomData(tempmem+m_Length, BlockLength-m_Length );
