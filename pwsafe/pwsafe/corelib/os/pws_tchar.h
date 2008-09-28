@@ -18,23 +18,27 @@
 #include <wctype.h>
 #define _istalpha(x) iswalpha(x)
 #define _totupper(x) towupper(x)
+#define _totlower(x) towlower(x)
 #define _istlower(x) iswlower(x)
 #define _istupper(x) iswupper(x)
 #define _istdigit(x) iswdigit(x)
 #include <wchar.h>
 #define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
 #define _tcslen(s) wcslen(s)
+#define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
 #define _tcsftime wcsftime
-#else
+#else /* !UNICODE */
 #include <ctype.h>
 #define _istalpha(x) isalpha(x)
 #define _totupper(x) toupper(x)
+#define _totlower(x) tolower(x)
 #define _istlower(x) islower(x)
 #define _istupper(x) isupper(x)
 #define _istdigit(x) isdigit(x)
 #include <string.h>
 #define _tcsncpy(t, s, sc) strncpy(t, s, sc)
 #define _tcslen(s) strlen(s)
+#define _tcsicmp(s1, s2) strcasecmp(s1, s2)
 #include <time.h>
 #define _tcsftime strftime
 #define _tasctime_s(s, N, st) asctime(st, s)

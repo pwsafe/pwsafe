@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "StringX.h"
+#include "os/pws_tchar.h"
 
 // A few convenience functions for StringX
 // Perhaps change these to member functions in the future?
