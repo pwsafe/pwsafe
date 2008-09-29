@@ -45,7 +45,7 @@ typedef std::ofstream ofstreamT;
 #endif
 
 CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent,
-  const CMyString &cs_tg, const CMyString &cs_tt, const CMyString &cs_tu)
+  const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
   m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg),
   m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
@@ -130,7 +130,7 @@ void CEditShortcutDlg::OnOK()
     m_ci->GetUUID(elem_uuid);
     bool notSame = (::memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
     if (notSame) {
-      CMyString temp;
+      CSecString temp;
       temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
@@ -183,7 +183,7 @@ BOOL CEditShortcutDlg::OnInitDialog()
     }
   }
 
-  CMyString cs_explanation, cs_target(_T(""));
+  CSecString cs_explanation, cs_target(_T(""));
   if (!m_tg.IsEmpty())
     cs_target = m_tg + _T(".");
   cs_target += m_tt;

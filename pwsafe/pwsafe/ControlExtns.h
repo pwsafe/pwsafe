@@ -7,7 +7,7 @@
 */
 
 #pragma once
-#include "MyString.h" // for CSecEditExtn
+#include "SecString.h" // for CSecEditExtn
 #include "InfoDisplay.h"      // for Listbox Tooltips
 #include <vector>             // for Listbox Tooltips
 
@@ -127,11 +127,11 @@ class CSecEditExtn : public CEditExtn
   virtual ~CSecEditExtn();
   // Overriding virtuals doesn't work, due to defective
   // implementation of DDX_Text. Grr.
-  void DoDDX(CDataExchange *pDX, CMyString &str);
+  void DoDDX(CDataExchange *pDX, CSecString &str);
   void SetSecure(bool on_off); // on by default
   bool GetSecure() const {return m_secure;}
-  CMyString GetSecureText() const;
-  void SetSecureText(const CMyString &str);
+  CSecString GetSecureText() const;
+  void SetSecureText(const CSecString &str);
 
  protected:
   DECLARE_MESSAGE_MAP();
@@ -201,13 +201,13 @@ class CComboBoxExtn : public CComboBox
   // Construction
 public:
   CComboBoxExtn();
-  void SetToolTipStrings(std::vector<CMyString> vtooltips);
-  CMyString GetToolTip(int nItem)
+  void SetToolTipStrings(std::vector<CSecString> vtooltips);
+  CSecString GetToolTip(int nItem)
   {return m_vtooltips[nItem];}
 
 private:
   bool m_bUseToolTips;
-  std::vector<CMyString> m_vtooltips;
+  std::vector<CSecString> m_vtooltips;
 
 public:
   CEditExtn m_edit;

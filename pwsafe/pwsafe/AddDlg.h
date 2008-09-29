@@ -23,14 +23,14 @@ public:
   // Dialog Data
   //{{AFX_DATA(CAddDlg)
   enum { IDD = IDD_ADD };
-  CMyString m_password, m_password2;
-  CMyString m_notes;
-  CMyString m_username;
-  CMyString m_title;
-  CMyString m_group;
-  CMyString m_URL;
-  CMyString m_autotype;
-  CMyString m_locXTime;
+  CSecString m_password, m_password2;
+  CSecString m_notes;
+  CSecString m_username;
+  CSecString m_title;
+  CSecString m_group;
+  CSecString m_URL;
+  CSecString m_autotype;
+  CSecString m_locXTime;
   time_t m_tttXTime;
   time_t m_tttCPMTime;  // Password creation or last changed datetime
   int m_XTimeInt;

@@ -24,7 +24,7 @@ public:
   virtual ~CEditDlg();
 
   enum { IDD = IDD_EDIT };
-  CMyString m_defusername, m_username, m_dependents, m_base;
+  CSecString m_defusername, m_username, m_dependents, m_base;
   bool m_Edit_IsReadOnly;
   int m_num_dependents;
   enum CItemData::EntryType m_original_entrytype;
@@ -39,15 +39,15 @@ public:
 
 private:
   CItemData *m_ci; // The entry being edited
-  CMyString m_title;
-  CMyString m_group;
-  CMyString m_realpassword, m_oldRealPassword;
-  CMyString m_password, m_password2;
-  CMyString m_notes, m_realnotes;
-  CMyString m_URL;
-  CMyString m_autotype;
-  CMyString m_locCTime;
-  CMyString m_locPMTime, m_locATime, m_locXTime, m_locRMTime;
+  CSecString m_title;
+  CSecString m_group;
+  CSecString m_realpassword, m_oldRealPassword;
+  CSecString m_password, m_password2;
+  CSecString m_notes, m_realnotes;
+  CSecString m_URL;
+  CSecString m_autotype;
+  CSecString m_locCTime;
+  CSecString m_locPMTime, m_locATime, m_locXTime, m_locRMTime;
   time_t m_tttXTime;
   time_t m_tttCPMTime;  // Password creation or last changed datetime
   int m_XTimeInt, m_oldXTimeInt;
@@ -57,13 +57,13 @@ private:
   size_t m_MaxPWHistory;
   BOOL m_SavePWHistory;
   PWHistList m_PWHistList;
-  CMyString m_PWHistory;
+  CSecString m_PWHistory;
 
   bool m_isPwHidden, m_isNotesHidden;
   // Are we showing more or less details?
   bool m_isExpanded;
   // following two are not directly derived from CItemData
-  CMyString m_oldlocXTime;
+  CSecString m_oldlocXTime;
   int m_oldMaxPWHistory;
   void ResizeDialog();
   void UpdateHistory();
@@ -78,7 +78,7 @@ private:
   CEditExtn m_ex_autotype;
   CEditExtn *m_pex_notes;
 
-  static CMyString HIDDEN_NOTES;
+  static CSecString HIDDEN_NOTES;
   static CString CS_SHOW, CS_HIDE, CS_ON, CS_OFF;
 
   CExtThread *m_thread; // worker thread

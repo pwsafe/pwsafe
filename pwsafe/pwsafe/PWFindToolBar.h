@@ -78,7 +78,7 @@ private:
   std::vector<int> m_indices; // array of found items
 
   bool m_cs_search, m_last_cs_search;
-  CMyString m_search_text, m_last_search_text;
+  CSecString m_search_text, m_last_search_text;
   CItemData::FieldBits m_bsFields, m_last_bsFields;
   CString m_subgroup_name, m_last_subgroup_name;
   int m_subgroup_set, m_last_subgroup_set;

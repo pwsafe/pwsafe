@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "MyString.h"
+#include "SecString.h"
 
 class DboxMain;
 class CInfoDisplay;
@@ -32,7 +32,7 @@ public:
 
   LRESULT OnCharItemlist(WPARAM wParam, LPARAM lParam);
   bool FindNext(const CString &cs_find, const int iSubItem);
-  void SetInfoWindow(CPoint point, const CMyString &cs_ToolTip, bool bVisible);
+  void SetInfoWindow(CPoint point, const CSecString &cs_ToolTip, bool bVisible);
 
   void SetFilterState(bool bState);
 

@@ -29,7 +29,7 @@ down the streetsky.  [Groucho Marx]
 #include "resource3.h"  // String resources
 #endif
 
-#include "MyString.h"
+#include "SecString.h"
 
 #include "SysColStatic.h"
 
@@ -205,7 +205,7 @@ CPasskeyEntry::OnInitDialog(void)
 
     const int N = mru->GetSize();
 
-    std::vector<CMyString> cs_tooltips;
+    std::vector<CSecString> cs_tooltips;
 
     if (!m_filespec.IsEmpty()) {
       cs_tooltips.push_back(m_filespec);

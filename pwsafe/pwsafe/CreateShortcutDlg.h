@@ -18,17 +18,17 @@ class CCreateShortcutDlg : public CPWDialog
   // Construction
 public:
   CCreateShortcutDlg(CWnd* pParent = NULL,
-    const CMyString &cs_tg = _T(""), const CMyString &cs_tt = _T(""), 
-    const CMyString &cs_tu = _T(""));
+    const CSecString &cs_tg = _T(""), const CSecString &cs_tt = _T(""), 
+    const CSecString &cs_tu = _T(""));
 
   // Dialog Data
   //{{AFX_DATA(CCreateShortcutDlg)
   enum { IDD = IDD_CREATE_SHORTCUT };
-  CMyString m_username;
-  CMyString m_title;
-  CMyString m_group;
+  CSecString m_username;
+  CSecString m_title;
+  CSecString m_group;
   // target's group, title, user
-  CMyString m_tg, m_tt, m_tu;
+  CSecString m_tg, m_tt, m_tu;
   int m_ibasedata;
 
   CComboBoxExtn m_ex_group;

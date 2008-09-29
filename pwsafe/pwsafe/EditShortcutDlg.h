@@ -22,21 +22,21 @@ class CEditShortcutDlg : public CPWDialog
 public:
   // default constructor
   CEditShortcutDlg(CItemData *ci, CWnd* pParent = NULL,
-    const CMyString &cs_tg = _T(""), const CMyString &cs_tt = _T(""), 
-    const CMyString &cs_tu = _T(""));
+    const CSecString &cs_tg = _T(""), const CSecString &cs_tt = _T(""), 
+    const CSecString &cs_tu = _T(""));
   virtual ~CEditShortcutDlg();
 
   enum { IDD = IDD_EDIT_SHORTCUT };
-  CMyString m_defusername, m_username;
+  CSecString m_defusername, m_username;
   bool m_Edit_IsReadOnly;
 
 private:
   CItemData *m_ci; // The shortcut being edited
-  CMyString m_group;
-  CMyString m_title;
+  CSecString m_group;
+  CSecString m_title;
   // target's group, title, user
-  CMyString m_tg, m_tt, m_tu;
-  CMyString m_locCTime, m_locPMTime, m_locATime, m_locRMTime;
+  CSecString m_tg, m_tt, m_tu;
+  CSecString m_locCTime, m_locPMTime, m_locATime, m_locRMTime;
   bool m_bIsModified;
 
   CComboBoxExtn m_ex_group;

@@ -5,10 +5,10 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-/// \file MyString.cpp
+/// \file SecString.cpp
 //-----------------------------------------------------------------------------
 
-#include "MyString.h"
+#include "SecString.h"
 #include "corelib/Util.h"
 
 #include <cstdarg>
@@ -19,24 +19,24 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void CMyString::trashstring()
+void CSecString::trashstring()
 {
   trashMemory((unsigned char*)m_mystring.GetBuffer(m_mystring.GetLength()),
     m_mystring.GetLength());
 }
 
-void CMyString::Empty()
+void CSecString::Empty()
 {
   trashstring();
   m_mystring.Empty();
 }
 
-BOOL CMyString::LoadString(const UINT &nID)
+BOOL CSecString::LoadString(const UINT &nID)
 {
   return m_mystring.LoadString(nID);
 }
 
-void CMyString::Format(LPCTSTR lpszFormat, ... )
+void CSecString::Format(LPCTSTR lpszFormat, ... )
 {
   va_list args;
   va_start(args, lpszFormat);
@@ -44,7 +44,7 @@ void CMyString::Format(LPCTSTR lpszFormat, ... )
   va_end(args);
 }
 
-void CMyString::Format(UINT nID, ... )
+void CSecString::Format(UINT nID, ... )
 {
   va_list args;
   va_start(args, nID);
@@ -53,7 +53,7 @@ void CMyString::Format(UINT nID, ... )
   va_end(args);
 }
 
-const CMyString& CMyString::operator=(const CMyString& stringSrc)
+const CSecString& CSecString::operator=(const CSecString& stringSrc)
 {
   if (this != &stringSrc) {
     trashstring();
@@ -62,14 +62,14 @@ const CMyString& CMyString::operator=(const CMyString& stringSrc)
   return *this;
 }
 
-const CMyString& CMyString::operator=(TCHAR ch)
+const CSecString& CSecString::operator=(TCHAR ch)
 {
   trashstring();
   m_mystring = ch;
   return *this;
 }
 
-const CMyString& CMyString::operator=(LPCTSTR lpsz)
+const CSecString& CSecString::operator=(LPCTSTR lpsz)
 {
   trashstring();
   m_mystring = lpsz;
@@ -77,7 +77,7 @@ const CMyString& CMyString::operator=(LPCTSTR lpsz)
 }
 
 #ifndef UNICODE // do we need this at all?
-const CMyString&CMyString::operator=(const unsigned char* psz)
+const CSecString&CSecString::operator=(const unsigned char* psz)
 {
   trashstring();
   m_mystring = psz;
@@ -85,66 +85,66 @@ const CMyString&CMyString::operator=(const unsigned char* psz)
 }
 #endif
 
-CMyString operator+(const CMyString& string1,const CMyString& string2)
+CSecString operator+(const CSecString& string1,const CSecString& string2)
 {
-  CMyString s;
-  s = (CMyString)(string1.m_mystring+string2.m_mystring);
+  CSecString s;
+  s = (CSecString)(string1.m_mystring+string2.m_mystring);
   return s;
 }
 
-CMyString operator+(const CMyString& string, TCHAR ch)
+CSecString operator+(const CSecString& string, TCHAR ch)
 {
-  CMyString s;
-  s = (CMyString)(string.m_mystring + ch);
+  CSecString s;
+  s = (CSecString)(string.m_mystring + ch);
   return s;
 }
 
-CMyString operator+(TCHAR ch, const CMyString& string)
+CSecString operator+(TCHAR ch, const CSecString& string)
 {
-  CMyString s;
-  s = (CMyString)(ch + string.m_mystring);
+  CSecString s;
+  s = (CSecString)(ch + string.m_mystring);
   return s;
 }
 
-CMyString operator+(const CMyString& string, LPCTSTR lpsz)
+CSecString operator+(const CSecString& string, LPCTSTR lpsz)
 {
-  CMyString s;
-  s = (CMyString)(string.m_mystring + lpsz);
+  CSecString s;
+  s = (CSecString)(string.m_mystring + lpsz);
   return s;
 }
 
-CMyString operator+(LPCTSTR lpsz, const CMyString& string)
+CSecString operator+(LPCTSTR lpsz, const CSecString& string)
 {
-  CMyString s;
-  s = (CMyString)(lpsz + string.m_mystring);
+  CSecString s;
+  s = (CSecString)(lpsz + string.m_mystring);
   return s;
 }
 
 //Can't properly trash the memory here, so it is better to just return a CString
-CMyString CMyString::Left(int nCount) const
+CSecString CSecString::Left(int nCount) const
 {
-  CMyString s;
+  CSecString s;
   s.m_mystring = m_mystring.Left(nCount);
   return s;
 }
 
-CMyString CMyString::Right(int nCount) const
+CSecString CSecString::Right(int nCount) const
 {
-  CMyString s;
+  CSecString s;
   s.m_mystring = m_mystring.Right(nCount);
   return s;
 }
 
-CMyString CMyString::Mid(int nFirst) const
+CSecString CSecString::Mid(int nFirst) const
 {
-  CMyString s;
+  CSecString s;
   s.m_mystring = m_mystring.Mid(nFirst);
   return s;
 }
 
-CMyString CMyString::Mid(int nFirst, int nCount) const
+CSecString CSecString::Mid(int nFirst, int nCount) const
 {
-  CMyString s;
+  CSecString s;
   s.m_mystring = m_mystring.Mid(nFirst, nCount);
   return s;
 }

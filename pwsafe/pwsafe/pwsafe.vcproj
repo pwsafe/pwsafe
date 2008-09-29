@@ -725,10 +725,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MyString.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OptionsBackup.cpp"
 				>
 			</File>
@@ -846,6 +842,10 @@
 			</File>
 			<File
 				RelativePath=".\SampleTextDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SecString.cpp"
 				>
 			</File>
 			<File
@@ -1066,10 +1066,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MyString.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OptionsBackup.h"
 				>
 			</File>
@@ -1211,6 +1207,10 @@
 			</File>
 			<File
 				RelativePath=".\SampleTextDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SecString.h"
 				>
 			</File>
 			<File

@@ -418,7 +418,7 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
     LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
       WM_COMPARE_RESULT_FUNCTION, (WPARAM)st_info, (LPARAM)ifunction);
     if (lres == TRUE) {
-      CMyString group, title, user, buffer;
+      CSecString group, title, user, buffer;
       ItemListIter pos;
 
       switch (ifunction) {

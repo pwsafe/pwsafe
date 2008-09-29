@@ -240,7 +240,7 @@ void CAddDlg::OnOK()
 
   // If there is a matching entry in our list, tell the user to try again.
   if (pDbx->Find(m_group, m_title, m_username) != pDbx->End()) {
-    CMyString temp;
+    CSecString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
     else
