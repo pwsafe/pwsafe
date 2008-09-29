@@ -13,7 +13,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExportXML dialog
 
-#include "corelib/MyString.h"
+#include "MyString.h"
 #include "corelib/ItemData.h"
 #include "ControlExtns.h"
 #include "PWDialog.h"

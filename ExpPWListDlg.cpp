@@ -11,7 +11,7 @@
 #include "stdafx.h"
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
-#include "corelib/MyString.h"
+#include "MyString.h"
 #include "corelib/Util.h"
 #include "corelib/ItemData.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources

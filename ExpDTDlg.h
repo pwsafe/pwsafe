@@ -16,7 +16,7 @@
 
 #include "afxwin.h"
 #include "afxdtctl.h" // only needed for date/time controls
-#include "corelib\MyString.h"
+#include "MyString.h"
 #include "PWDialog.h"
 
 class CExpDTDlg : public CPWDialog

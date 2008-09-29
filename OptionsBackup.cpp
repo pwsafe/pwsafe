@@ -13,7 +13,6 @@
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h" // for DoubleClickAction enums
 #include "corelib/util.h" // for datetime string
-#include "corelib/mystring.h"
 #include "corelib/os/dir.h"
 
 #if defined(POCKET_PC)

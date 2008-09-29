@@ -7,7 +7,7 @@
 */
 
 #pragma once
-#include "corelib/MyString.h" // for CSecEditExtn
+#include "MyString.h" // for CSecEditExtn
 #include "InfoDisplay.h"      // for Listbox Tooltips
 #include <vector>             // for Listbox Tooltips
 

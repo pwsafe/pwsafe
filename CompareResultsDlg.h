@@ -12,7 +12,7 @@
 
 #include "PWResizeDialog.h"
 #include "corelib/ItemData.h"
-#include "corelib/MyString.h"
+#include "MyString.h"
 #include "corelib/PWScore.h"
 #include "corelib/Report.h"
 #include "corelib/uuidgen.h"

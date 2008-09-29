@@ -7,7 +7,7 @@
 */
 
 #include "DDSupport.h"
-#include "corelib/MyString.h"
+#include "MyString.h"
 #include "corelib/util.h"
 #include "corelib/UUIDGen.h"
 
