@@ -499,7 +499,7 @@ void CComboBoxExtn::ChangeColour()
   m_listbox.ChangeColour();
 }
 
-void CComboBoxExtn::SetToolTipStrings(std::vector<CMyString> vtooltips)
+void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
 {
   m_bUseToolTips = true;
   m_vtooltips = vtooltips;
@@ -557,16 +557,16 @@ void CSecEditExtn::SetSecure(bool on_off)
   m_secure = on_off;
 }
 
-CMyString CSecEditExtn::GetSecureText() const
+CSecString CSecEditExtn::GetSecureText() const
 {
-  CMyString retval;
+  CSecString retval;
   StringX sval;
   m_impl->m_field.Get(sval, m_impl->m_bf);
   retval = sval.c_str();
   return retval;
 }
 
-void CSecEditExtn::SetSecureText(const CMyString &str)
+void CSecEditExtn::SetSecureText(const CSecString &str)
 {
   m_impl->m_field.Set(str, m_impl->m_bf);
   if (::IsWindow(m_hWnd)) {
@@ -581,7 +581,7 @@ void CSecEditExtn::SetSecureText(const CMyString &str)
   }
 }
 
-void CSecEditExtn::DoDDX(CDataExchange *pDX, CMyString &str)
+void CSecEditExtn::DoDDX(CDataExchange *pDX, CSecString &str)
 {
   if (pDX->m_bSaveAndValidate) {
     str = GetSecureText();
@@ -601,7 +601,7 @@ afx_msg void CSecEditExtn::OnUpdate()
     if (!m_in_recursion)
       OnSecureUpdate();
   } else {
-    CMyString str;
+    CSecString str;
     GetWindowText(str);
     m_impl->m_field.Set(str, m_impl->m_bf);
   }
@@ -619,7 +619,7 @@ void CSecEditExtn::OnSecureUpdate()
   int startSel, endSel;
   GetSel(startSel, endSel);
 
-  CMyString new_str, old_str, str;
+  CSecString new_str, old_str, str;
   int new_len, old_len;
   old_str = GetSecureText();
   GetWindowText(new_str);

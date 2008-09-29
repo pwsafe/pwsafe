@@ -53,7 +53,7 @@ typedef std::ofstream ofstreamT;
 #endif
 
 static TCHAR PSSWDCHAR = TCHAR('*');
-CMyString CEditDlg::HIDDEN_NOTES;
+CSecString CEditDlg::HIDDEN_NOTES;
 CString CEditDlg::CS_ON;
 CString CEditDlg::CS_OFF;
 CString CEditDlg::CS_SHOW;
@@ -276,7 +276,7 @@ void CEditDlg::OnOK()
     m_ci->GetUUID(elem_uuid);
     bool notSame = (::memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
     if (notSame) {
-      CMyString temp;
+      CSecString temp;
       temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
@@ -366,11 +366,11 @@ void CEditDlg::UpdateHistory()
   }
 
   // Now create string version!
-  CMyString new_PWHistory;
+  CSecString new_PWHistory;
   CString buffer;
 
   buffer.Format(_T("1%02x%02x"), m_MaxPWHistory, num);
-  new_PWHistory = CMyString(buffer);
+  new_PWHistory = CSecString(buffer);
 
   PWHistList::iterator iter;
   for (iter = m_PWHistList.begin(); iter != m_PWHistList.end(); iter++) {
@@ -379,7 +379,7 @@ void CEditDlg::UpdateHistory()
     buffer.Format(_T("%08x%04x%s"),
                   (long) pwshe.changetttdate, pwshe.password.length(),
                   pwshe.password.c_str());
-    new_PWHistory += CMyString(buffer);
+    new_PWHistory += CSecString(buffer);
     buffer.Empty();
   }
   m_ci->SetPWHistory(new_PWHistory);
@@ -581,7 +581,7 @@ void CEditDlg::OnRandom()
     }
   }
   GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
-  CMyString cs_locPMTime = PWSUtil::ConvertToDateTimeString(m_tttCPMTime, TMC_LOCALE);
+  CSecString cs_locPMTime = PWSUtil::ConvertToDateTimeString(m_tttCPMTime, TMC_LOCALE);
   GetDlgItem(IDC_PMTIME)->SetWindowText(cs_locPMTime);
   UpdateData(TRUE);
 }

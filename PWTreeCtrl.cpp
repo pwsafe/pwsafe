@@ -20,7 +20,7 @@
 #include "DDSupport.h"
 #include "InfoDisplay.h"
 #include "corelib/ItemData.h"
-#include "MyString.h"
+#include "SecString.h"
 #include "corelib/Util.h"
 #include "corelib/Pwsprefs.h"
 #include "corelib/SMemFile.h"
@@ -420,7 +420,7 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
     DWORD_PTR itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
-    ci->SetGroup(CMyString(prefix));
+    ci->SetGroup(CSecString(prefix));
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
       prefix += GROUP_SEP;
@@ -457,7 +457,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     DWORD_PTR itemData = GetItemData(ti);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
-    CMyString currentTitle, currentUser, currentPassword;
+    CSecString currentTitle, currentUser, currentPassword;
 
     // We cannot allow in-place edit if these fields contain braces!
     currentTitle = ci->GetTitle();
@@ -635,7 +635,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
       group = ci->GetGroup();
       if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
-        CMyString temp;
+        CSecString temp;
         if (group.empty())
           temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
         else
@@ -783,34 +783,34 @@ CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
   return retval;
 }
 
-static CMyString GetPathElem(CMyString &path)
+static CSecString GetPathElem(CSecString &path)
 {
   // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
   // (assuming GROUP_SEP is '.')
 
-  CMyString retval;
+  CSecString retval;
   int N = path.Find(GROUP_SEP);
   if (N == -1) {
     retval = path;
     path = _T("");
   } else {
     const int Len = path.GetLength();
-    retval = CMyString(path.Left(N));
-    path = CMyString(path.Right(Len - N - 1));
+    retval = CSecString(path.Left(N));
+    path = CSecString(path.Right(Len - N - 1));
   }
   return retval;
 }
 
 static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
-                         const CMyString &s, HTREEITEM &si)
+                         const CSecString &s, HTREEITEM &si)
 {
   // returns true iff s is a direct descendant of node
   HTREEITEM ti = Tree.GetChildItem(node);
 
   while (ti != NULL) {
-    const CMyString itemText = Tree.GetItemText(ti);
+    const CSecString itemText = Tree.GetItemText(ti);
     if (itemText == s) {
       si = ti;
       return true;
@@ -826,8 +826,8 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group)
   HTREEITEM ti = TVI_ROOT;
   HTREEITEM si;
   if (!group.IsEmpty()) {
-    CMyString path = group;
-    CMyString s;
+    CSecString path = group;
+    CSecString s;
     do {
       s = GetPathElem(path);
       if (!ExistsInTree(*this, ti, s, si)) {
@@ -870,12 +870,12 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     ASSERT(di->list_index >= 0);
 
     // Update Group
-    CMyString path, elem;
+    CSecString path, elem;
     HTREEITEM p, q = hNewItem;
     do {
       p = GetParentItem(q);
       if (p != NULL) {
-        elem = CMyString(GetItemText(p));
+        elem = CSecString(GetItemText(p));
         if (!path.IsEmpty())
           elem += GROUP_SEP;
         path = elem + path;
@@ -885,9 +885,9 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     } while (1);
 
     // Get information from current selected entry
-    CMyString ci_user = ci->GetUser();
-    CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CSecString ci_user = ci->GetUser();
+    CSecString ci_title0 = ci->GetTitle();
+    CSecString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Update list field with new group
     ci->SetGroup(path);
@@ -921,7 +921,7 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 }
 
 bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
-                           const CMyString &prefix)
+                           const CSecString &prefix)
 {
   DWORD_PTR itemData = GetItemData(hitemDrag);
 
@@ -937,18 +937,18 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     CItemData temp(*ci); // copy construct a duplicate
 
     // Update Group: chop away prefix, replace
-    CMyString oldPath(temp.GetGroup());
+    CSecString oldPath(temp.GetGroup());
     if (!prefix.IsEmpty()) {
       oldPath = oldPath.Right(oldPath.GetLength() - prefix.GetLength() - 1);
     }
     // with new path
-    CMyString path, elem;
-    path = CMyString(GetItemText(hitemDrop));
+    CSecString path, elem;
+    path = CSecString(GetItemText(hitemDrop));
     HTREEITEM p, q = hitemDrop;
     do {
       p = GetParentItem(q);
       if (p != NULL) {
-        elem = CMyString(GetItemText(p));
+        elem = CSecString(GetItemText(p));
         if (!path.IsEmpty())
           elem += GROUP_SEP;
         path = elem + path;
@@ -957,7 +957,7 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         break;
     } while (1);
 
-    CMyString newPath;
+    CSecString newPath;
     if (path.IsEmpty())
       newPath = oldPath;
     else {
@@ -966,9 +966,9 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         newPath += GROUP_SEP + oldPath;
     }
     // Get information from current selected entry
-    CMyString ci_user = ci->GetUser();
-    CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title = m_pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CSecString ci_user = ci->GetUser();
+    CSecString ci_title0 = ci->GetTitle();
+    CSecString ci_title = m_pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Needs new UUID as they must be unique and this is a copy operation
     // but before we do, save the original
@@ -1001,13 +1001,13 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         // Get base of original alias and make this copy point to it
         m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
         m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_ALIAS);
-        temp.SetPassword(CMyString(_T("[Alias]")));
+        temp.SetPassword(CSecString(_T("[Alias]")));
         break;
       case CItemData::ET_SHORTCUT:
         // Get base of original shortcut and make this copy point to it
         m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
         m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_SHORTCUT);
-        temp.SetPassword(CMyString(_T("[Shortcut]")));
+        temp.SetPassword(CSecString(_T("[Shortcut]")));
         break;
       default:
         ASSERT(0);
@@ -1135,7 +1135,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
         case ID_MENUITEM_RCREATESHORTCUT:
         {
           // Shortcut group from drop point, title & user from drag entry
-          CMyString cs_group, cs_title, cs_user;
+          CSecString cs_group, cs_title, cs_user;
           CItemData *ci;
           DWORD_PTR itemData;
 
@@ -1169,7 +1169,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
 
   if (hitemDrop == NULL && GetCount() == 0) {
     // Dropping on to an empty database
-    CMyString DropGroup (_T(""));
+    CSecString DropGroup (_T(""));
     ProcessData(pData, lBufLen, DropGroup);
     SelectItem(GetRootItem());
     retval = TRUE;
@@ -1202,7 +1202,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
     }
   } else { // from someone else!
     // Now add it
-    CMyString DropGroup = CMyString(GetGroup(hitemDrop));
+    CSecString DropGroup = CSecString(GetGroup(hitemDrop));
     ProcessData((BYTE *)pData, lBufLen, DropGroup);
     SelectItem(hitemDrop);
     retval = TRUE;
@@ -1507,7 +1507,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   return (outLen > 0);
 }
 
-bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup)
+bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CSecString &DropGroup)
 {
 #ifdef DUMP_DATA
   CString cs_timestamp;
@@ -1562,7 +1562,7 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
 
   if (out_oblist.m_bDragNode && m_nDragPathLen > 0) {
     CItemData ci2(*ci); // we need a copy since to modify the group
-    const CMyString cs_Group = ci->GetGroup();
+    const CSecString cs_Group = ci->GetGroup();
     ci2.SetGroup(cs_Group.Right(cs_Group.GetLength() - m_nDragPathLen - 1));
     pDDObject->FromItem(ci2);
   } else {
@@ -1589,28 +1589,28 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
     out_oblist.AddTail(pDDObject);
 }
 
-CMyString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
+CSecString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
 {
   // return all path components beween hItem and root.
   // e.g., if hItem is X in a.b.c.X.y.z, then return a.b.c
-  CMyString retval;
+  CSecString retval;
   HTREEITEM p = GetParentItem(hItem);
   while (p != NULL) {
-    retval = CMyString(GetItemText(p)) + retval;
+    retval = CSecString(GetItemText(p)) + retval;
     p = GetParentItem(p);
     if (p != NULL)
-      retval = CMyString(GROUP_SEP) + retval;
+      retval = CSecString(GROUP_SEP) + retval;
   }
   return retval;
 }
 
-CMyString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
+CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
   bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
 
-  CMyString treeDispString = ci.GetTitle();
+  CSecString treeDispString = ci.GetTitle();
   if (bShowUsernameInTree) {
     treeDispString += _T(" [");
     treeDispString += ci.GetUser();
@@ -1823,7 +1823,7 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     }
   }
  
-  CMyString cs_dragdata;
+  CSecString cs_dragdata;
   cs_dragdata = pci->GetPassword();
 
   const int ilen = cs_dragdata.GetLength();

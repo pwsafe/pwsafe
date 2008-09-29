@@ -12,7 +12,7 @@
 */
 
 #include <Afxcmn.h>
-#include "MyString.h"
+#include "SecString.h"
 
 class DboxMain;
 class CItemData;
@@ -47,7 +47,7 @@ public:
   HTREEITEM AddGroup(const CString &path);
   void SortTree(const HTREEITEM htreeitem);
   bool IsLeaf(HTREEITEM hItem);
-  CMyString MakeTreeDisplayString(const CItemData &ci) const;
+  CSecString MakeTreeDisplayString(const CItemData &ci) const;
   void SetRestoreMode(bool flag) {m_isRestoring = flag;}
   void OnCollapseAll();
   void OnExpandAll();
@@ -121,13 +121,13 @@ private:
 
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool MoveItem(HTREEITEM hitem, HTREEITEM hNewParent);
-  bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CMyString &prefix);
+  bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CSecString &prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
   void CollapseBranch(HTREEITEM hItem);
-  CMyString GetPrefix(HTREEITEM hItem) const;
+  CSecString GetPrefix(HTREEITEM hItem) const;
   bool CollectData(BYTE * &out_buffer, long &outLen);
-  bool ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup);
+  bool ProcessData(BYTE *in_buffer, const long &inLen, const CSecString &DropGroup);
   void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
   void GetEntryData(CDDObList &out_oblist, CItemData *ci);
 

@@ -6,37 +6,37 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-// MyString.h
+// SecString.h
 // A drop-in replacement for CString, the main difference being that the
 // data is scrubbed by trashstring() in the destructor, thus leaving an attacker
 // with a little less info to grovel for in the swap file / core dump / whatever
 //
-// Note that CMyString should ONLY be used for dialog box class member variables
+// Note that CSecString should ONLY be used for dialog box class member variables
 // that are mapped to Edit/Text controls. All other secure strings should
 // be of class StringX, defined and implemented in corelib (for portability).
 //
 
 //-----------------------------------------------------------------------------
 
-#ifndef _MYSTRING_H_
-#define _MYSTRING_H_
+#ifndef _SECSTRING_H_
+#define _SECSTRING_H_
 #ifdef _WIN32
 #include <afx.h>
 #endif
 #include "corelib/StringX.h"
 #include "corelib/os/typedefs.h"
 //-----------------------------------------------------------------------------
-class CMyString
+class CSecString
 {
 public:
-  CMyString() : m_mystring(_S("")) {}
-  CMyString(LPCTSTR lpsz) : m_mystring(lpsz) {}
-  CMyString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength) {}
-  CMyString(const CMyString& stringSrc) : m_mystring(stringSrc.m_mystring) {}
-  CMyString(const CString& stringSrc) : m_mystring(stringSrc) {}
-  CMyString(const StringX& sx) : m_mystring(sx.c_str()) {}
+  CSecString() : m_mystring(_S("")) {}
+  CSecString(LPCTSTR lpsz) : m_mystring(lpsz) {}
+  CSecString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength) {}
+  CSecString(const CSecString& stringSrc) : m_mystring(stringSrc.m_mystring) {}
+  CSecString(const CString& stringSrc) : m_mystring(stringSrc) {}
+  CSecString(const StringX& sx) : m_mystring(sx.c_str()) {}
 
-  ~CMyString() {trashstring();}
+  ~CSecString() {trashstring();}
 
   TCHAR operator[](int nIndex) const {return m_mystring[nIndex];}
 
@@ -67,9 +67,9 @@ public:
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
 #if _MSC_VER >= 1400
-  CMyString &Trim() {m_mystring.Trim(); return *this;}
+  CSecString &Trim() {m_mystring.Trim(); return *this;}
 #else
-  CMyString &Trim()
+  CSecString &Trim()
   {m_mystring.TrimLeft(); m_mystring.TrimRight(); return *this}
 #endif
   void MakeLower() {m_mystring.MakeLower();}
@@ -77,13 +77,13 @@ public:
   int Compare(const LPCTSTR lpszOther) const {return m_mystring.Compare(lpszOther);}
   int CompareNoCase(const LPCTSTR lpszOther) const {return m_mystring.CompareNoCase(lpszOther);}
   BOOL IsOnlyWhiteSpace() const
-  {CMyString t(*this); return t.Trim().IsEmpty();}
+  {CSecString t(*this); return t.Trim().IsEmpty();}
   void EmptyIfOnlyWhiteSpace()
   {if (IsOnlyWhiteSpace() == TRUE) Empty();}
-  CMyString SpanIncluding(LPCTSTR lpszCharSet)
-  {return CMyString(m_mystring.SpanIncluding(lpszCharSet));}
-  CMyString SpanExcluding(LPCTSTR lpszCharSet)
-  {return CMyString(m_mystring.SpanExcluding(lpszCharSet));}
+  CSecString SpanIncluding(LPCTSTR lpszCharSet)
+  {return CSecString(m_mystring.SpanIncluding(lpszCharSet));}
+  CSecString SpanExcluding(LPCTSTR lpszCharSet)
+  {return CSecString(m_mystring.SpanExcluding(lpszCharSet));}
 #else
   TCHAR GetAt(int nIndex);
   void SetAt(int nIndex, TCHAR ch);
@@ -103,47 +103,47 @@ public:
   int Remove(TCHAR ch);
   void TrimRight();
   void TrimLeft();
-  CMyString &Trim();
+  CSecString &Trim();
   void MakeLower();
   int Compare(const LPCTSTR lpszOther) const;
   int CompareNoCase(const LPCTSTR lpszOther) const;
   BOOL IsOnlyWhiteSpace() const;
   void EmptyIfOnlyWhiteSpace();
-  CMyString SpanIncluding(LPCTSTR lpszCharSet);
-  CMyString SpanExcluding(LPCTSTR lpszCharSet);
+  CSecString SpanIncluding(LPCTSTR lpszCharSet);
+  CSecString SpanExcluding(LPCTSTR lpszCharSet);
 #endif
 
   operator CString() const {return m_mystring;}
   operator CString&() {return m_mystring;}
 
-  const CMyString& operator=(const CMyString& stringSrc);
-  const CMyString& operator=(TCHAR ch);
-  const CMyString& operator=(LPCTSTR lpsz);
+  const CSecString& operator=(const CSecString& stringSrc);
+  const CSecString& operator=(TCHAR ch);
+  const CSecString& operator=(LPCTSTR lpsz);
 #ifndef UNICODE // do we need this at all?
-  const CMyString& operator=(const unsigned char* psz);
+  const CSecString& operator=(const unsigned char* psz);
 #endif
-  const CMyString& operator+=(const CMyString& s) {m_mystring += s.m_mystring; return *this;}
-  const CMyString& operator+=(TCHAR ch) {m_mystring += ch; return *this;}
-  const CMyString& operator+=(LPCTSTR lpsz) {m_mystring += lpsz; return *this;}
+  const CSecString& operator+=(const CSecString& s) {m_mystring += s.m_mystring; return *this;}
+  const CSecString& operator+=(TCHAR ch) {m_mystring += ch; return *this;}
+  const CSecString& operator+=(LPCTSTR lpsz) {m_mystring += lpsz; return *this;}
 
-  // CMyString operator+(LPCTSTR lpsz);
+  // CSecString operator+(LPCTSTR lpsz);
 
-  friend CMyString operator+(const CMyString& string1,
-    const CMyString& string2);
-  friend CMyString operator+(const CMyString& string,
+  friend CSecString operator+(const CSecString& string1,
+    const CSecString& string2);
+  friend CSecString operator+(const CSecString& string,
     TCHAR ch);
-  friend CMyString operator+(TCHAR ch,
-    const CMyString& string);
-  friend CMyString operator+(const CMyString& string,
+  friend CSecString operator+(TCHAR ch,
+    const CSecString& string);
+  friend CSecString operator+(const CSecString& string,
     LPCTSTR lpsz);
-  friend CMyString operator+(LPCTSTR lpsz,
-    const CMyString& string);
+  friend CSecString operator+(LPCTSTR lpsz,
+    const CSecString& string);
 
 
-  CMyString Left(int nCount) const;
-  CMyString Right(int nCount) const;
-  CMyString Mid(int nFirst) const;
-  CMyString Mid(int nFirst, int nCount) const;
+  CSecString Left(int nCount) const;
+  CSecString Right(int nCount) const;
+  CSecString Mid(int nFirst) const;
+  CSecString Mid(int nFirst, int nCount) const;
   void Empty();
   BOOL LoadString(const UINT &nID);
   void Format(LPCTSTR lpszFormat, ... );
@@ -157,17 +157,17 @@ private:
 };
 //-----------------------------------------------------------------------------
 
-inline bool operator==(const CMyString& s1, const CMyString& s2)
+inline bool operator==(const CSecString& s1, const CSecString& s2)
 {return (const CString)s1 == (const CString)s2;}
-inline bool operator==(const CMyString& s1, LPCTSTR s2)
+inline bool operator==(const CSecString& s1, LPCTSTR s2)
 {return (const CString)s1==s2;}
-inline bool operator==(LPCTSTR s1, const CMyString& s2)
+inline bool operator==(LPCTSTR s1, const CSecString& s2)
 {return s1==(const CString)s2;}
-inline bool operator!=(const CMyString& s1, const CMyString& s2)
+inline bool operator!=(const CSecString& s1, const CSecString& s2)
 {return (const CString)s1 != (const CString)s2;}
-inline bool operator!=(const CMyString& s1, LPCTSTR s2)
+inline bool operator!=(const CSecString& s1, LPCTSTR s2)
 {return (const CString)s1 != s2;}
-inline bool operator!=(LPCTSTR s1, const CMyString& s2)
+inline bool operator!=(LPCTSTR s1, const CSecString& s2)
 {return s1 != (const CString)s2;}
 
 //-----------------------------------------------------------------------------

@@ -23,9 +23,9 @@ public:
   // Dialog Data
   //{{AFX_DATA(CPasskeyChangeDlg)
   enum { IDD = IDD_KEYCHANGE_DIALOG };
-  CMyString m_confirmnew;
-  CMyString m_newpasskey;
-  CMyString m_oldpasskey;
+  CSecString m_confirmnew;
+  CSecString m_newpasskey;
+  CSecString m_oldpasskey;
   //}}AFX_DATA
 
   // Overrides

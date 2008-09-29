@@ -11,7 +11,7 @@
 #include "stdafx.h"
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
-#include "MyString.h"
+#include "SecString.h"
 #include "corelib/Util.h"
 #include "corelib/ItemData.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
@@ -238,8 +238,8 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
   int nSortColumn = self->m_iSortedColumn;
   const ExpPWEntry pLHS = self->m_expPWList[lParam1];
   const ExpPWEntry pRHS = self->m_expPWList[lParam2];
-  CMyString group1, title1, username1;
-  CMyString group2, title2, username2;
+  CSecString group1, title1, username1;
+  CSecString group2, title2, username2;
   int type1, type2;
   time_t t1, t2;
 

@@ -23,7 +23,7 @@
 
 IMPLEMENT_DYNAMIC(CPWHistDlg, CDialog)
 CPWHistDlg::CPWHistDlg(CWnd* pParent, bool IsReadOnly,
-                       CMyString &HistStr, PWHistList &PWHistList,
+                       CSecString &HistStr, PWHistList &PWHistList,
                        size_t NumPWHistory, size_t &MaxPWHistory,
                        BOOL &SavePWHistory)
   : CPWDialog(CPWHistDlg::IDD, pParent),
@@ -249,8 +249,8 @@ int CALLBACK CPWHistDlg::PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
   size_t Rpos = (size_t)lParam2;
   const PWHistEntry pLHS = self->m_PWHistList[Lpos];
   const PWHistEntry pRHS = self->m_PWHistList[Rpos];
-  CMyString password1, changedate1;
-  CMyString password2, changedate2;
+  CSecString password1, changedate1;
+  CSecString password2, changedate2;
   time_t t1, t2;
 
   int iResult;
@@ -278,7 +278,7 @@ int CALLBACK CPWHistDlg::PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
 
 void CPWHistDlg::OnBnClickedPwhCopyAll()
 {
-  CMyString HistStr;
+  CSecString HistStr;
   PWHistList::iterator iter;
 
   for (iter = m_PWHistList.begin(); iter != m_PWHistList.end(); iter++) {

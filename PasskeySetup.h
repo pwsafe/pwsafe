@@ -23,8 +23,8 @@ public:
   // Dialog Data
   //{{AFX_DATA(CPasskeySetup)
   enum { IDD = IDD_PASSKEYSETUP };
-  CMyString m_passkey;
-  CMyString m_verify;
+  CSecString m_passkey;
+  CSecString m_verify;
   //}}AFX_DATA
 
 protected:
