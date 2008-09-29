@@ -29,7 +29,7 @@ down the streetsky.  [Groucho Marx]
 #include "resource3.h"  // String resources
 #endif
 
-#include "corelib/MyString.h"
+#include "MyString.h"
 
 #include "SysColStatic.h"
 

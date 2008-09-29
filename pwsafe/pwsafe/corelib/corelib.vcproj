@@ -438,26 +438,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MyString.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						GeneratePreprocessedFile="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						GeneratePreprocessedFile="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\PWCharPool.cpp"
 				>
 			</File>
@@ -620,10 +600,6 @@
 			</File>
 			<File
 				RelativePath=".\Match.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MyString.h"
 				>
 			</File>
 			<File

@@ -725,6 +725,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MyString.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OptionsBackup.cpp"
 				>
 			</File>
@@ -1059,6 +1063,10 @@
 			</File>
 			<File
 				RelativePath=".\model.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MyString.h"
 				>
 			</File>
 			<File

@@ -12,7 +12,7 @@
 
 #include "SysColStatic.h"
 #include "ControlExtns.h"
-#include "corelib/MyString.h"
+#include "MyString.h"
 #include "corelib/PwsPlatform.h"
 #include "PWDialog.h"
 

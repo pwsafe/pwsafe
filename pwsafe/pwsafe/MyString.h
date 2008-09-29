@@ -11,6 +11,10 @@
 // data is scrubbed by trashstring() in the destructor, thus leaving an attacker
 // with a little less info to grovel for in the swap file / core dump / whatever
 //
+// Note that CMyString should ONLY be used for dialog box class member variables
+// that are mapped to Edit/Text controls. All other secure strings should
+// be of class StringX, defined and implemented in corelib (for portability).
+//
 
 //-----------------------------------------------------------------------------
 
@@ -19,8 +23,8 @@
 #ifdef _WIN32
 #include <afx.h>
 #endif
-#include "StringX.h"
-#include "os/typedefs.h"
+#include "corelib/StringX.h"
+#include "corelib/os/typedefs.h"
 //-----------------------------------------------------------------------------
 class CMyString
 {

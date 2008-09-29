@@ -24,7 +24,6 @@
 #include "PWSfile.h"
 #include "Match.h"
 #include "itemdata.h"
-#include "mystring.h"
 
 // All the fields that we can use for filtering entries:
 

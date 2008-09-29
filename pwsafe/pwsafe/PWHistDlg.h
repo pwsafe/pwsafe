@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------
 
 #include "PWDialog.h"
-#include "corelib/MyString.h"
+#include "MyString.h"
 #include "corelib/PWHistory.h"
 
 class CPWHistDlg : public CPWDialog

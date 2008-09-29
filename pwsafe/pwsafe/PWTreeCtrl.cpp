@@ -20,7 +20,7 @@
 #include "DDSupport.h"
 #include "InfoDisplay.h"
 #include "corelib/ItemData.h"
-#include "corelib/MyString.h"
+#include "MyString.h"
 #include "corelib/Util.h"
 #include "corelib/Pwsprefs.h"
 #include "corelib/SMemFile.h"

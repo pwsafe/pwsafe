@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "corelib/MyString.h"
+#include "MyString.h"
 
 class DboxMain;
 class CInfoDisplay;

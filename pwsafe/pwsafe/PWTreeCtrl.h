@@ -12,7 +12,7 @@
 */
 
 #include <Afxcmn.h>
-#include "corelib/MyString.h"
+#include "MyString.h"
 
 class DboxMain;
 class CItemData;
