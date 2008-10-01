@@ -134,7 +134,7 @@ namespace PWSUtil {
   StringX ConvertToDateTimeString(const time_t &t, const int result_format);
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
-  stringT GetTimeStamp();
+  const TCHAR *GetTimeStamp();
   stringT Base64Encode(const BYTE *inData, size_t len);
   void Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len);
   StringX NormalizeTTT(const StringX &in);

@@ -414,7 +414,7 @@ bool PWSfile::LockFile(const StringX &filename, StringX &locker,
     if (cs_me == s_locker) {
       LockCount++;
       TRACE(_T("%s Lock1  ; Count now %d; File: %s%s\n"), 
-            PWSUtil::GetTimeStamp().c_str(), LockCount, fname, ext);
+            PWSUtil::GetTimeStamp(), LockCount, fname, ext);
       locker.clear();
       return true;
     } else {
@@ -478,7 +478,7 @@ bool PWSfile::LockFile(const StringX &filename, StringX &locker,
     ASSERT(sumWrit > 0);
     LockCount++;
     TRACE(_T("%s Lock1  ; Count now %d; File Created; File: %s%s\n"), 
-          PWSUtil::GetTimeStamp().c_str(), LockCount,
+          PWSUtil::GetTimeStamp(), LockCount,
           fname.c_str(), ext.c_str());
     return (write_status == TRUE);
   }
@@ -513,12 +513,12 @@ void PWSfile::UnlockFile(const StringX &filename,
     if (cs_me == locker && LockCount > 1) {
       LockCount--;
       TRACE(_T("%s Unlock2; Count now %d; File: %s%s\n"), 
-            PWSUtil::GetTimeStamp().c_str(),
+            PWSUtil::GetTimeStamp(),
             LockCount, fname.c_str(), ext.c_str());
     } else {
       LockCount = 0;
       TRACE(_T("%s Unlock1; Count now %d; File Deleted; File: %s%s\n"), 
-            PWSUtil::GetTimeStamp().c_str(),
+            PWSUtil::GetTimeStamp(),
             LockCount, fname.c_str(), ext.c_str());
       CloseHandle(lockFileHandle);
       lockFileHandle = INVALID_HANDLE_VALUE;
