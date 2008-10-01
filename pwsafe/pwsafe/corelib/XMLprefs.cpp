@@ -351,10 +351,10 @@ stringT* CXMLprefs::ParseKeys(const stringT &csFullKeyPath, int &iNumKeys)
         pcsKeys[iCount] = csFKP.substr(iLastFind, iFind - iLastFind);
         iLastFind = iFind + 1;
       } else {
-        // make sure we don't just discard the last key in the chain
+        // get the last key in the chain
         if (iLastFind < csFKP.length())  {
           iCount++;
-          pcsKeys[iCount] = csFKP.substr(csFKP.length() - iLastFind);
+          pcsKeys[iCount] = csFKP.substr(csFKP.find_last_of(_T("\\"))+1);
         }
       }
     }
