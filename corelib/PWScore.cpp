@@ -1330,9 +1330,10 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   // Get location for intermediate backup
   if (userBackupDir.empty()) { // directory same as database's
     // Get directory containing database
-    cs_temp = stringT(m_currfile.c_str());
-    const TCHAR *lpszTemp = cs_temp.c_str();
-    PathRemoveFileSpec(LPWSTR(lpszTemp));
+    TCHAR lpszTemp[MAX_PATH];
+    PWSUtil::strCopy(lpszTemp, MAX_PATH, m_currfile.c_str(), m_currfile.length());
+    PathRemoveFileSpec(lpszTemp);
+    cs_temp = lpszTemp;
     cs_temp += _T("\\");
   } else {
     cs_temp = userBackupDir;
