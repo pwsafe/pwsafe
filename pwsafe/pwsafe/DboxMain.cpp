@@ -673,16 +673,17 @@ void DboxMain::InitPasswordSafe()
   CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
     _T("autoload_filters.xml");
   if (PWSfile::FileExists(tmp.GetString())) {
-    CString strErrors;
+    stringT strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
     CWaitCursor waitCursor;  // This may take a while!
 
-    int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""), tmp,
+    int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""),
+                                              stringT(tmp),
                                               XSDFilename.c_str(), strErrors);
     waitCursor.Restore();  // Restore normal cursor
     if (rc != PWScore::SUCCESS) {
       CString cs_msg;
-      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors);
+      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors.c_str());
       AfxMessageBox(cs_msg, MB_OK);
     }
   }

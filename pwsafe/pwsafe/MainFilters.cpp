@@ -99,7 +99,7 @@ void DboxMain::OnSetFilter()
     m_MapFilters.insert(PWSFilters::Pair(fk, m_currentfilter));
 
     m_currentfilterpool = fk.fpool;
-    m_selectedfiltername = fk.cs_filtername;
+    m_selectedfiltername = fk.cs_filtername.c_str();
 
     bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
                                                    m_currentfilter.num_Pactive) > 0;
@@ -632,7 +632,7 @@ void DboxMain::OnManageFilters()
   }
 
   CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters);
-  mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname);
+  mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname.c_str());
   mf.DoModal();
 
   // If user has changed the database filters, we need to update the core copy.
@@ -741,25 +741,28 @@ void DboxMain::ImportFilters()
     return;
 
   if (rc == IDOK) {
-    CString strErrors, csErrors(_T(""));
+    stringT strErrors;
     CString XMLFilename = fd.GetPathName();
     CWaitCursor waitCursor;  // This may take a while!
 
-    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""), XMLFilename,
+    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""),
+                                          stringT(XMLFilename),
                                           XSDFilename.c_str(), strErrors);
     waitCursor.Restore();  // Restore normal cursor
 
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
+                       strErrors.c_str());
         break;
       case PWScore::XML_FAILED_IMPORT:
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
+        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
       case PWScore::SUCCESS:
-        if (!strErrors.IsEmpty()) {
-          csErrors = strErrors + _T("\n");
-          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(), csErrors);
+        if (!strErrors.empty()) {
+          stringT csErrors = strErrors + _T("\n");
+          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(),
+                         csErrors.c_str());
         } else {
           cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
         }

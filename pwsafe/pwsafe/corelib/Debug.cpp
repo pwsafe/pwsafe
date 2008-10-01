@@ -47,16 +47,16 @@ void PWSDebug::HexDump(unsigned char *pmemory, const int length,
                        const stringT &cs_prefix, const int maxnum)
 {
   unsigned char *pmem;
-  CString cs_outbuff, cs_hexbuff, cs_charbuff;
+  stringT cs_outbuff, cs_hexbuff, cs_charbuff;
   int i, j, len(length);
   unsigned char c;
 
   pmem = pmemory;
   while (len > 0) {
     // Show offset for this line.
-    cs_charbuff.Empty();
-    cs_hexbuff.Empty();
-    cs_outbuff.Format(_T("%s: %08x *"), cs_prefix.c_str(), pmem);
+    cs_charbuff.clear();
+    cs_hexbuff.clear();
+    Format(cs_outbuff, _T("%s: %08x *"), cs_prefix.c_str(), pmem);
 
     // Format hex portion of line and save chars for ascii portion
     if (len > maxnum)
@@ -102,7 +102,7 @@ void PWSDebug::HexDump(unsigned char *pmemory, const int length,
     // Next line
     len -= maxnum;
 
-    TRACE(_T("%s\n"), cs_outbuff);
+    TRACE(_T("%s\n"), cs_outbuff.c_str());
   };
 }
 #endif

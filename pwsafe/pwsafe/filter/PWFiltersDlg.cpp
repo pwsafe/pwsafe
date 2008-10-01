@@ -70,10 +70,10 @@ BOOL CPWFiltersDlg::OnInitDialog()
   m_FilterLC.SetExtendedStyle(dwExStyle);
 
   m_FilterLC.Init(this, m_pfilters, m_iType);
-  if (m_filtername.IsEmpty() || m_pfilters->fname.IsEmpty())
+  if (m_filtername.IsEmpty() || m_pfilters->fname.empty())
     m_filtername = _T("Filter1");
   else
-    m_filtername = m_pfilters->fname;
+    m_filtername = m_pfilters->fname.c_str();
 
   CHeaderCtrl* pHCtrl;
   pHCtrl = m_FilterLC.GetHeaderCtrl();

@@ -27,7 +27,7 @@
 //  PWSSAXErrorHandler Methods
 //  -----------------------------------------------------------------------
 PWSSAXErrorHandler::PWSSAXErrorHandler()
-  : bErrorsFound(FALSE), m_strValidationResult("")
+  : bErrorsFound(FALSE), m_strValidationResult(_T(""))
 {
   m_refCnt = 0;
 }
@@ -92,10 +92,10 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error(struct ISAXLocator * pLocato
   pLocator->getLineNumber(&iLineNumber);
   pLocator->getColumnNumber(&iCharacter);
 
-  const CString cs_format(MAKEINTRESOURCE(IDSC_SAXGENERROR));
+  const stringT cs_format(MAKEINTRESOURCE(IDSC_SAXGENERROR));
 
 #if (_MSC_VER >= 1400)
-  _stprintf_s(szFormatString, MAX_PATH*2, cs_format,
+  _stprintf_s(szFormatString, MAX_PATH*2, cs_format.c_str(),
     hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #else
   _stprintf(szFormatString, cs_format,
@@ -176,7 +176,7 @@ PWSSAXContentHandler::~PWSSAXContentHandler()
 }
 
 void PWSSAXContentHandler::SetVariables(PWScore *core, const bool &bValidation,
-                                        const CString &ImportedPrefix, const TCHAR &delimiter,
+                                        const stringT &ImportedPrefix, const TCHAR &delimiter,
                                         UUIDList *possible_aliases, UUIDList *possible_shortcuts)
 {
   m_bValidation = bValidation;
@@ -479,7 +479,10 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
         tempitem.SetUUID(uuid_array);
       }
     }
-    StringX newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
+    StringX newgroup;
+    if (!m_ImportedPrefix.empty()) {
+      newgroup = m_ImportedPrefix.c_str(); newgroup += _T(".");
+    }
     EmptyIfOnlyWhiteSpace(cur_entry->group);
     newgroup += cur_entry->group;
     if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != 
@@ -488,11 +491,11 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
         StringX Unique_Title;
         ItemListConstIter iter;
         int i = 0;
-        CString s_import;
+        stringT s_import;
         do {
           i++;
-          s_import.Format(IDSC_IMPORTNUMBER, i);
-          Unique_Title = cur_entry->title + LPCTSTR(s_import);
+          Format(s_import, IDSC_IMPORTNUMBER, i);
+          Unique_Title = cur_entry->title + s_import.c_str();
           iter = m_xmlcore->Find(newgroup, Unique_Title, cur_entry->username);
         } while (iter != m_xmlcore->GetEntryEndIter());
         cur_entry->title = Unique_Title;
@@ -533,16 +536,16 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     }
 
     StringX newPWHistory;
-    CString strPWHErrors, buffer;
-    buffer.Format(IDSC_SAXERRORPWH, cur_entry->group.c_str(),
-                  cur_entry->title.c_str(), cur_entry->username.c_str());
+    stringT strPWHErrors, buffer;
+    Format(buffer, IDSC_SAXERRORPWH, cur_entry->group.c_str(),
+           cur_entry->title.c_str(), cur_entry->username.c_str());
     switch (VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
       case PWH_OK:
         tempitem.SetPWHistory(newPWHistory.c_str());
-        buffer.Empty();
+        buffer.clear();
         break;
       case PWH_IGNORE:
-        buffer.Empty();
+        buffer.clear();
         break;
       case PWH_INVALID_HDR:
       case PWH_INVALID_STATUS:
@@ -569,7 +572,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
         vi_IterUXRFE++) {
           UnknownFieldEntry unkrfe = *vi_IterUXRFE;
           /* #ifdef _DEBUG
-          CString cs_timestamp;
+          stringT cs_timestamp;
           cs_timestamp = PWSUtil::GetTimeStamp();
           TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
           cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username, 
@@ -639,24 +642,24 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
   }
 
   if (_tcscmp(szCurElement, _T("status")) == 0) {
-    CString buffer;
+    stringT buffer;
     int i = _ttoi(m_strElemContent.c_str());
-    buffer.Format(_T("%01x"), i);
-    cur_entry->pwhistory = LPCTSTR(buffer);
+    Format(buffer, _T("%01x"), i);
+    cur_entry->pwhistory = buffer.c_str();
   }
 
   if (_tcscmp(szCurElement, _T("max")) == 0) {
-    CString buffer;
+    stringT buffer;
     int i = _ttoi(m_strElemContent.c_str());
-    buffer.Format(_T("%02x"), i);
-    cur_entry->pwhistory += LPCTSTR(buffer);
+    Format(buffer, _T("%02x"), i);
+    cur_entry->pwhistory += buffer.c_str();
   }
 
   if (_tcscmp(szCurElement, _T("num")) == 0) {
-    CString buffer;
+    stringT buffer;
     int i = _ttoi(m_strElemContent.c_str());
-    buffer.Format(_T("%02x"), i);
-    cur_entry->pwhistory += LPCTSTR(buffer);
+    Format(buffer, _T("%02x"), i);
+    cur_entry->pwhistory += buffer.c_str();
   }
 
   if (_tcscmp(szCurElement, _T("ctime")) == 0) {
@@ -697,10 +700,11 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     }
     cur_entry->pwhistory += _T(" ") + cur_entry->changed;
     //cur_entry->changed.Empty();
-    CString buffer;
-    buffer.Format(_T(" %04x %s"), m_strElemContent.length(), m_strElemContent.c_str());
-    cur_entry->pwhistory += LPCTSTR(buffer);
-    buffer.Empty();
+    stringT buffer;
+    Format(buffer, _T(" %04x %s"),
+           m_strElemContent.length(), m_strElemContent.c_str());
+    cur_entry->pwhistory += buffer.c_str();
+    buffer.clear();
   }
 
   if (_tcscmp(szCurElement, _T("date")) == 0 && !m_strElemContent.empty()) {
@@ -800,7 +804,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       if (m_ctype >= PWSfileV3::HDR_LAST) {
         m_ukhxl.push_back(ukxfe);
 /* #ifdef _DEBUG
-        CString cs_timestamp;
+        stringT cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
         TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"),
         cs_timestamp, m_ctype, m_fieldlen, m_fieldlen);

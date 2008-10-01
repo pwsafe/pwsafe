@@ -248,11 +248,13 @@ void ThisMfcApp::LoadLocalizedStuff()
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, szLang, 4);
     ASSERT(inum == 3);
     _tcsupr(szLang);
-    TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"), PWSUtil::GetTimeStamp(), szLang);
+    TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"),
+          PWSUtil::GetTimeStamp().c_str(), szLang);
 
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, szCtry, 4);
     ASSERT(inum == 3);
-    TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"), PWSUtil::GetTimeStamp(), szCtry);
+    TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"),
+          PWSUtil::GetTimeStamp().c_str(), szCtry);
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
@@ -265,7 +267,7 @@ void ThisMfcApp::LoadLocalizedStuff()
 
   if(m_hInstResDLL == NULL) {
     TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
-          PWSUtil::GetTimeStamp());
+          PWSUtil::GetTimeStamp().c_str());
   } else { // successfully loaded a resource dll, check version
     DWORD MajorMinor, BuildRevision;
     GetVersionInfoFromFile(cs_ResPath, MajorMinor, BuildRevision);
@@ -278,7 +280,8 @@ void ThisMfcApp::LoadLocalizedStuff()
       FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
-      TRACE(_T("%s Using language DLL '%s'.\n"), PWSUtil::GetTimeStamp(), cs_ResPath);
+      TRACE(_T("%s Using language DLL '%s'.\n"),
+            PWSUtil::GetTimeStamp().c_str(), cs_ResPath);
     }
   } // end of resource dll hunt
 
@@ -303,7 +306,7 @@ void ThisMfcApp::LoadLocalizedStuff()
       if (m_pszHelpFilePath != NULL) free((void*)m_pszHelpFilePath);
       m_pszHelpFilePath = _tcsdup(cs_HelpPath);
       TRACE(_T("%s Help file overriden by user. Using %s.\n"),
-            PWSUtil::GetTimeStamp(), cs_HelpPath);
+            PWSUtil::GetTimeStamp().c_str(), cs_HelpPath);
     }
   }
 
@@ -339,13 +342,15 @@ void ThisMfcApp::LoadLocalizedStuff()
     _tcslwr(fname);
 #endif
     cs_HelpPath.Format(_T("%s%s"), fname, ext);
-    TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
+    TRACE(_T("%s Using help file: %s\n"),
+          PWSUtil::GetTimeStamp().c_str(), cs_HelpPath);
   }
 
   if (m_pszHelpFilePath != NULL)
     free((void*)m_pszHelpFilePath);
   m_pszHelpFilePath = _tcsdup(cs_HelpPath);
-  TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
+  TRACE(_T("%s Using help file: %s\n"),
+        PWSUtil::GetTimeStamp().c_str(), cs_HelpPath);
 
   m_csHelpFile = cs_HelpPath;
 }
@@ -422,13 +427,13 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 
           BOOL status;
           if (isEncrypt) {
-            status = PWSfile::Encrypt(*(arg + 1), passkey);
+            status = PWSfile::Encrypt(stringT(*(arg + 1)), passkey);
             if (!status) {
               AfxMessageBox(IDS_ENCRYPTIONFAILED);
             }
             return true;
           } else {
-            status = PWSfile::Decrypt(*(arg+1), passkey);
+            status = PWSfile::Decrypt(stringT(*(arg+1)), passkey);
             if (!status) {
               // nothing to do - Decrypt displays its own error messages
             }
@@ -481,7 +486,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             return FALSE;
           } else {
             arg++;
-            PWSprefs::SetConfigFile(*arg);
+            PWSprefs::SetConfigFile(stringT(*arg));
           }
         break;
         default:

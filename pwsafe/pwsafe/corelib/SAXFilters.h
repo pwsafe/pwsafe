@@ -26,7 +26,7 @@ class PWSSAXFilterErrorHandler: public ISAXErrorHandler
 {
 public:
   // Local variables and functions
-  CString m_strValidationResult;
+  stringT m_strValidationResult;
   BOOL bErrorsFound;
 
   // Standard functions
@@ -64,7 +64,7 @@ class PWSSAXFilterContentHandler: public MSXML2::ISAXContentHandler
 {
 public:
   // Local variables & function
-  CString m_strImportErrors;
+  stringT m_strImportErrors;
   PWSFilters *m_MapFilters;
   FilterPool m_FPool;
   int m_type;

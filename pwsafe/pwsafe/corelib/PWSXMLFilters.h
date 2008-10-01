@@ -21,11 +21,11 @@ public:
   ~PWSXMLFilters();
 
   bool XMLFilterProcess(const bool &bvalidation,
-                        const CString &strXMLData,
-                        const CString &strXMLFileName, 
-                        const CString &strXSDFileName);
+                        const stringT &strXMLData,
+                        const stringT &strXMLFileName, 
+                        const stringT &strXSDFileName);
 
-  CString m_strResultText;
+  stringT m_strResultText;
   int m_MSXML_Version;
 
 private:

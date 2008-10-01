@@ -55,7 +55,7 @@ class PWSSAXErrorHandler: public ISAXErrorHandler
 {
 public:
   // Local variables and functions
-  CString m_strValidationResult;
+  stringT m_strValidationResult;
   BOOL bErrorsFound;
 
   // Standard functions
@@ -93,7 +93,7 @@ class PWSSAXContentHandler: public MSXML2::ISAXContentHandler
 {
 public:
   // Local variables & function
-  CString m_strImportErrors;
+  stringT m_strImportErrors;
   int m_numEntries;
   TCHAR m_delimiter;
   bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;
@@ -102,7 +102,7 @@ public:
   int m_nRecordsWithUnknownFields;
 
   void SetVariables(PWScore *core, const bool &bValidation,
-    const CString &ImportedPrefix, const TCHAR &delimiter,
+    const stringT &ImportedPrefix, const TCHAR &delimiter,
     UUIDList *possible_aliases, UUIDList *possible_shortcuts);
 
   // Preferences posibly stored in database
@@ -132,8 +132,8 @@ public:
   int m_iPWLowercaseMinLength;
   int m_iPWSymbolMinLength;
   int m_iPWUppercaseMinLength;
-  CString m_sDefaultAutotypeString;
-  CString m_sDefaultUsername;
+  stringT m_sDefaultAutotypeString;
+  stringT m_sDefaultUsername;
 
   // Standard functions
   PWSSAXContentHandler();
@@ -202,7 +202,7 @@ private:
   pw_entry *cur_entry;
 
   StringX m_strElemContent;
-  CString m_ImportedPrefix;
+  stringT m_ImportedPrefix;
   PWScore *m_xmlcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;

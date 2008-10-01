@@ -44,7 +44,7 @@ CReport::~CReport()
 /*
   It writes a header record and a "Start Report" record.
 */
-void CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
+void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase)
 {
   if (m_psfile != NULL) {
     m_psfile->Close();
@@ -56,15 +56,15 @@ void CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
   m_csDataBase = csDataBase;
   m_psfile = new CSMemFile;
 
-  CString cs_title;
-  cs_title.Format(IDSC_REPORT_TITLE1, tcAction,
-                  LPCTSTR(PWSUtil::GetTimeStamp()));
+  stringT cs_title;
+  Format(cs_title, IDSC_REPORT_TITLE1, tcAction,
+         PWSUtil::GetTimeStamp());
   WriteLine();
   WriteLine(cs_title);
-  cs_title.Format(IDSC_REPORT_TITLE2, csDataBase);
+  Format(cs_title, IDSC_REPORT_TITLE2, csDataBase);
   WriteLine(cs_title);
   WriteLine();
-  cs_title.LoadString(IDSC_START_REPORT);
+  LoadAString(cs_title, IDSC_START_REPORT);
   WriteLine(cs_title);
   WriteLine();
 }
@@ -87,10 +87,11 @@ bool CReport::SaveToDisk()
     return false;
   }
 
-  m_cs_filename.Format(IDSC_REPORTFILENAME,
+  Format(m_cs_filename, IDSC_REPORTFILENAME,
                        drive.c_str(), dir.c_str(), m_tcAction);
 
-  if ((m_pdfile = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
+  if ((m_pdfile = _tfsopen(m_cs_filename.c_str(),
+                           _T("a+b"), _SH_DENYWR)) == NULL) {
     PWSDebug::IssueError(_T("StartReport: Opening log file"));
     return false;
   }
@@ -107,7 +108,7 @@ bool CReport::SaveToDisk()
 
   struct _stat statbuf;
 
-  ::_tstat(m_cs_filename, &statbuf);
+  ::_tstat(m_cs_filename.c_str(), &statbuf);
 
   // No need to check result of _tstat, since the _tfsopen above would have failed if 
   // the file/directory did not exist
@@ -143,11 +144,11 @@ bool CReport::SaveToDisk()
       fclose(m_pdfile);
 
       // Open again to read
-      f_in = _wfsopen((LPCWSTR)m_cs_filename, L"rb", _SH_DENYWR);
+      f_in = _wfsopen(m_cs_filename.c_str(), L"rb", _SH_DENYWR);
 
       // Open new file
-      CString cs_out = m_cs_filename + _T(".tmp");
-      f_out = _wfsopen((LPCWSTR)cs_out, L"wb", _SH_DENYWR);
+      stringT cs_out = m_cs_filename + _T(".tmp");
+      f_out = _wfsopen(cs_out.c_str(), L"wb", _SH_DENYWR);
 
       // Write BOM
       putwc(iBOM, f_out);
@@ -175,11 +176,12 @@ bool CReport::SaveToDisk()
       fclose(f_out);
 
       // Swap them
-      _tremove(m_cs_filename);
-      _trename(cs_out, m_cs_filename);
+      _tremove(m_cs_filename.c_str());
+      _trename(cs_out.c_str(), m_cs_filename.c_str());
 
       // Re-open file
-      if ((m_pdfile = _wfsopen((LPCTSTR)m_cs_filename, L"ab", _SH_DENYWR)) == NULL) {
+      if ((m_pdfile = _wfsopen(m_cs_filename.c_str(),
+                               L"ab", _SH_DENYWR)) == NULL) {
         PWSDebug::IssueError(_T("StartReport: Opening log file"));
         return false;
       }
@@ -193,11 +195,11 @@ bool CReport::SaveToDisk()
     fclose(m_pdfile);
 
     // Open again to read
-    f_in = _fsopen((LPCSTR)m_cs_filename, "rb", _SH_DENYWR);
+    f_in = _fsopen(m_cs_filename.c_str(), "rb", _SH_DENYWR);
 
     // Open new file
-    CString cs_out = m_cs_filename + _T(".tmp");
-    f_out = _fsopen((LPCSTR)cs_out, "wb", _SH_DENYWR);
+    stringT cs_out = m_cs_filename + _T(".tmp");
+    f_out = _fsopen(cs_out.c_str(), "wb", _SH_DENYWR);
 
     UINT nBytesRead;
     WCHAR inwbuffer[4096];
@@ -231,7 +233,7 @@ bool CReport::SaveToDisk()
     _trename(cs_out, m_cs_filename);
 
     // Re-open file
-    if ((m_pdfile = _fsopen((LPCSTR) m_cs_filename, "ab", _SH_DENYWR)) == NULL) {
+    if ((m_pdfile = _fsopen(m_cs_filename.c_str(), "ab", _SH_DENYWR)) == NULL) {
       PWSDebug::IssueError(_T("StartReport: Opening log file"));
       return false;
     }
@@ -244,13 +246,13 @@ bool CReport::SaveToDisk()
 }
 
 // Write a record with(default) or without a CRLF
-void CReport::WriteLine(const CString &cs_line, bool bCRLF)
+void CReport::WriteLine(const stringT &cs_line, bool bCRLF)
 {
   if (m_psfile == NULL)
     return;
 
-  int iLen = (int)cs_line.GetLength();
-  m_psfile->Write((void *)(LPCTSTR)cs_line, iLen * sizeof(TCHAR));
+  stringT::size_type iLen = cs_line.length();
+  m_psfile->Write((void *)cs_line.c_str(), iLen * sizeof(TCHAR));
   if (bCRLF) {
     m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
   }
@@ -284,10 +286,10 @@ void CReport::WriteLine()
 void CReport::EndReport()
 {
   WriteLine();
-  CString cs_title;
-  cs_title.LoadString(IDSC_END_REPORT1);
+  stringT cs_title;
+  LoadAString(cs_title, IDSC_END_REPORT1);
   WriteLine(cs_title);
-  cs_title.LoadString(IDSC_END_REPORT2);
+  LoadAString(cs_title, IDSC_END_REPORT2);
   WriteLine(cs_title);
 
   TCHAR *szEOF = _T("\0");

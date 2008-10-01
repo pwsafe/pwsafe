@@ -208,11 +208,11 @@ int DboxMain::Restore()
 
 void DboxMain::OnValidate() 
 {
-  CString cs_msg;
+  stringT cs_msg;
   if (!m_core.Validate(cs_msg))
-    cs_msg.LoadString(IDS_VALIDATEOK);
+    LoadAString(cs_msg, IDS_VALIDATEOK);
 
-  AfxMessageBox(cs_msg, MB_OK);
+  AfxMessageBox(cs_msg.c_str(), MB_OK);
 }
 
 void DboxMain::OnOptions() 
@@ -621,8 +621,8 @@ void DboxMain::OnOptions()
         // the user made to the database are also saved here
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-        CString userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
-        CString userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
+        stringT userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+        stringT userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
         m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
                              userBackupPrefix, userBackupDir); // try to save previous version
         if (app.m_core.WriteCurFile() != PWScore::SUCCESS)

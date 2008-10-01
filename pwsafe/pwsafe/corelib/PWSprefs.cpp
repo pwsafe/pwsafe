@@ -33,7 +33,7 @@ HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
 int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
-StringX PWSprefs::m_configfilename; // may be set before singleton created
+stringT PWSprefs::m_configfilename; // may be set before singleton created
 
 // 1st parameter = name of preference
 // 2nd parameter = default value
@@ -175,7 +175,7 @@ PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_XML_Config(NULL)
   m_rect.top = m_rect.bottom = m_rect.left = m_rect.right = -1;
   m_rect.changed = false;
 
-  m_MRUitems = new CString[m_int_prefs[MaxMRUItems].maxVal];
+  m_MRUitems = new stringT[m_int_prefs[MaxMRUItems].maxVal];
   InitializePreferences();
 }
 
@@ -189,9 +189,9 @@ bool PWSprefs::CheckRegistryExists() const
 {
   bool bExists;
   HKEY hSubkey;
-  const CString csSubkey = _T("Software\\") + CString(m_app->m_pszRegistryKey);
+  const stringT csSubkey = _T("Software\\") + stringT(m_app->m_pszRegistryKey);
   bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
-                            csSubkey,
+                            csSubkey.c_str(),
                             0L,
                             KEY_READ,
                             &hSubkey) == ERROR_SUCCESS);
@@ -231,7 +231,7 @@ void PWSprefs::GetPrefRect(long &top, long &bottom,
   right = m_rect.right;
 }
 
-int PWSprefs::GetMRUList(CString *MRUFiles)
+int PWSprefs::GetMRUList(stringT *MRUFiles)
 {
   ASSERT(MRUFiles != NULL);
 
@@ -245,7 +245,7 @@ int PWSprefs::GetMRUList(CString *MRUFiles)
   return n;
 }
 
-int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
+int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
 {
   ASSERT(MRUFiles != NULL);
 
@@ -257,12 +257,12 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
   bool changed = false;
   // remember the ones in use
   for (i = 0, cnt = 1; i < n; i++) {
-    if (MRUFiles[i].IsEmpty() ||
+    if (MRUFiles[i].empty() ||
       // Don't remember backup files
-      MRUFiles[i].Right(4) == _T(".bak") ||
-      MRUFiles[i].Right(5) == _T(".bak~") ||
-      MRUFiles[i].Right(5) == _T(".ibak") ||
-      MRUFiles[i].Right(6) == _T(".ibak~"))
+        MRUFiles[i].substr(MRUFiles[i].length() - 4) == _T(".bak") ||
+      MRUFiles[i].substr(MRUFiles[i].length() - 5) == _T(".bak~") ||
+      MRUFiles[i].substr(MRUFiles[i].length() - 5) == _T(".ibak") ||
+      MRUFiles[i].substr(MRUFiles[i].length() - 6) == _T(".ibak~"))
       continue;
     if (m_MRUitems[cnt-1] != MRUFiles[i]) {
       m_MRUitems[cnt-1] = MRUFiles[i];
@@ -272,7 +272,7 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
   }
   // Remove any not in use    
   for (i = cnt - 1; i < max_MRU; i++) {
-    if (!m_MRUitems[i].IsEmpty()) {
+    if (!m_MRUitems[i].empty()) {
       m_MRUitems[i] = _T("");
       changed = true;
     }
@@ -436,7 +436,7 @@ StringX PWSprefs::Store()
   * {1,0} for bool, unsigned integer for int, and delimited string for String.
   */
 
-  CString retval(_T(""));
+  StringX retval(_T(""));
 #ifdef _UNICODE
   wostringstream os;
 #else
@@ -479,7 +479,7 @@ StringX PWSprefs::Store()
 
   os << ends;
   retval = os.str().c_str();
-  return LPCTSTR(retval);
+  return retval;
 }
 
 void PWSprefs::Load(const StringX &prefString)
@@ -620,7 +620,7 @@ void PWSprefs::InitializePreferences()
 
   // 1. Does config file exist (and if, so, can we write to it?)?
   bool isRO = false;
-  bool configFileExists = PWSfile::FileExists(m_configfilename, isRO);
+  bool configFileExists = PWSfile::FileExists(m_configfilename.c_str(), isRO);
   if (configFileExists)
     m_ConfigOptions = (isRO) ? CF_FILE_RO : CF_FILE_RW;
   else 
@@ -677,24 +677,24 @@ void PWSprefs::InitializePreferences()
     }
   }
 
-  CString cs_msg;
+  stringT cs_msg;
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      cs_msg.LoadString(IDSC_CANTCREATEXMLCFG);
+      LoadAString(cs_msg, IDSC_CANTCREATEXMLCFG);
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
       break;
     case CF_FILE_RO:
-      cs_msg.LoadString(IDSC_CANTUPDATEXMLCFG);
+      LoadAString(cs_msg, IDSC_CANTUPDATEXMLCFG);
       break;
     case CF_NONE:
     default:
-      cs_msg.LoadString(IDSC_CANTDETERMINECFG);
+      LoadAString(cs_msg, IDSC_CANTDETERMINECFG);
       break;
   }
-  if (!cs_msg.IsEmpty())
-    TRACE(cs_msg);
+  if (!cs_msg.empty())
+    TRACE(cs_msg.c_str());
 
   // Check someone has introduced a conflict & silently resolve.
   if ((m_intValues[DoubleClickAction] == DoubleClickCopyPasswordMinimize) &&
@@ -851,7 +851,7 @@ bool PWSprefs::LoadProfileFromFile()
   * found.
   */
   bool retval;
-  CString ts, csSubkey;
+  stringT ts, csSubkey;
 
   m_XML_Config = new CXMLprefs(m_configfilename.c_str());
   if (!m_XML_Config->Load()) {
@@ -921,9 +921,9 @@ bool PWSprefs::LoadProfileFromFile()
 
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
+    m_stringValues[i] = m_XML_Config->Get(m_csHKCU_PREF.c_str(),
                                           m_string_prefs[i].name,
-                                          m_string_prefs[i].defVal);
+                                          m_string_prefs[i].defVal).c_str();
   }
 
   // Load last main window size & pos:
@@ -935,7 +935,7 @@ bool PWSprefs::LoadProfileFromFile()
   // Load most recently used file list
   const int nMRUItems = m_intValues[MaxMRUItems];
   for (i = nMRUItems; i > 0; i--) {
-    csSubkey.Format(_T("Safe%02d"), i);
+    Format(csSubkey, _T("Safe%02d"), i);
     m_MRUitems[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
   }
   retval = true;
@@ -969,7 +969,7 @@ void PWSprefs::SaveApplicationPreferences()
         m_XML_Config = NULL;
       } else { // acquired lock
         // if file exists, load to get other values
-        if (PWSfile::FileExists(m_configfilename))
+        if (PWSfile::FileExists(m_configfilename.c_str()))
           m_XML_Config->Load();
       }
   }
@@ -1030,14 +1030,14 @@ void PWSprefs::SaveApplicationPreferences()
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
       {
-        CString obuff;
-        obuff.Format(_T("%d"), m_rect.top);
+        stringT obuff;
+        Format(obuff, _T("%d"), m_rect.top);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
-        obuff.Format(_T("%d"), m_rect.bottom);
+        Format(obuff, _T("%d"), m_rect.bottom);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
-        obuff.Format(_T("%d"), m_rect.left);
+        Format(obuff, _T("%d"), m_rect.left);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
-        obuff.Format(_T("%d"), m_rect.right);
+        Format(obuff, _T("%d"), m_rect.right);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
         break;
       }
@@ -1056,10 +1056,10 @@ void PWSprefs::SaveApplicationPreferences()
     // Delete ALL entries
     m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
     // Now put back the ones we want
-    CString csSubkey;
+    stringT csSubkey;
     for (i = 0; i < n; i++)
-      if (!m_MRUitems[i].IsEmpty()) {
-        csSubkey.Format(_T("Safe%02d"), i+1);
+      if (!m_MRUitems[i].empty()) {
+        Format(csSubkey, _T("Safe%02d"), i+1);
         m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
       }
   }
@@ -1086,10 +1086,10 @@ void PWSprefs::DeleteRegistryEntries()
 {
   DeleteOldPrefs();
   HKEY hSubkey;
-  const CString csSubkey = _T("Software\\") + CString(m_app->m_pszRegistryKey);
+  const stringT csSubkey = _T("Software\\") + stringT(m_app->m_pszRegistryKey);
 
   LONG dw = RegOpenKeyEx(HKEY_CURRENT_USER,
-                         csSubkey,
+                         csSubkey.c_str(),
                          NULL,
                          KEY_ALL_ACCESS,
                          &hSubkey);
@@ -1124,15 +1124,16 @@ int PWSprefs::GetConfigIndicator() const
 }
 
 // Old registry handling code:
-const CString OldSubKey(_T("Counterpane Systems"));
-const CString Software(_T("Software"));
+const stringT OldSubKey(_T("Counterpane Systems"));
+const stringT Software(_T("Software"));
 
 bool PWSprefs::OldPrefsExist() const
 {
   bool bExists;
   HKEY hSubkey;
+  stringT key = Software + _T("\\") + OldSubKey;
   bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
-                            Software + _T("\\") + OldSubKey,
+                            key.c_str(),
                             0L,
                             KEY_READ,
                             &hSubkey) == ERROR_SUCCESS);
@@ -1145,9 +1146,9 @@ bool PWSprefs::OldPrefsExist() const
 void PWSprefs::ImportOldPrefs()
 {
   HKEY hSubkey;
-  CString OldAppKey = Software + _T("\\") + OldSubKey + _T("\\Password Safe");
+  stringT OldAppKey = Software + _T("\\") + OldSubKey + _T("\\Password Safe");
   LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
-                           OldAppKey,
+                           OldAppKey.c_str(),
                            NULL,
                            KEY_ALL_ACCESS,
                            &hSubkey);
@@ -1247,7 +1248,7 @@ void PWSprefs::DeleteOldPrefs()
 {
   HKEY hSubkey;
   LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
-                           Software,
+                           Software.c_str(),
                            NULL,
                            KEY_ALL_ACCESS,
                            &hSubkey);
@@ -1256,7 +1257,7 @@ void PWSprefs::DeleteOldPrefs()
     return;
   }
 
-  dw = m_app->DelRegTree(hSubkey, OldSubKey);
+  dw = m_app->DelRegTree(hSubkey, OldSubKey.c_str());
   if (dw != ERROR_SUCCESS) {
     TRACE(_T("PWSprefs::DeleteOldPrefs: DelRegTree failed\n"));
   }
@@ -1266,9 +1267,9 @@ void PWSprefs::DeleteOldPrefs()
   }
 }
 
-CString PWSprefs::GetXMLPreferences()
+stringT PWSprefs::GetXMLPreferences()
 {
-  CString retval(_T(""));
+  stringT retval(_T(""));
 #ifdef _UNICODE
   wostringstream os;
 #else

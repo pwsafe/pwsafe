@@ -25,7 +25,7 @@
 #define SaltLengthV3 32
 
 // this is for the undocumented 'command line file encryption'
-#define CIPHERTEXT_SUFFIX ".PSF"
+#define CIPHERTEXT_SUFFIX _S(".PSF")
 
 //Use non-standard dash (ANSI decimal 173) for separation
 #define SPLTCHR _T('\xAD')
@@ -38,7 +38,6 @@
 
 extern void trashMemory(void* buffer, size_t length );
 extern void trashMemory( LPTSTR buffer, size_t length );
-extern void trashMemory( CString &cs_buffer );
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
 extern void ConvertString(const StringX &text,
@@ -135,8 +134,8 @@ namespace PWSUtil {
   StringX ConvertToDateTimeString(const time_t &t, const int result_format);
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
-  CString GetTimeStamp();
-  CString Base64Encode(const BYTE *inData, size_t len);
+  stringT GetTimeStamp();
+  stringT Base64Encode(const BYTE *inData, size_t len);
   void Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len);
   StringX NormalizeTTT(const StringX &in);
   void WriteXMLField(std::ostream &os, const char *fname,

@@ -633,14 +633,14 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       // as hexadecimal, rather than base64 encoding.
       // Easier to debug.
 #ifndef UNK_HEX_REP
-      tmp = PWSUtil::Base64Encode(pdata, length);
+      tmp = PWSUtil::Base64Encode(pdata, length).c_str();
 #else
-      tmp.Empty();
+      tmp.clear();
       unsigned char * pdata2(pdata);
       unsigned char c;
       for (int j = 0; j < (int)length; j++) {
         c = *pdata2++;
-        cs_tmp.Format(_T("%02x"), c);
+        Format(cs_tmp, _T("%02x"), c);
         tmp += cs_tmp;
       }
 #endif
@@ -737,22 +737,22 @@ void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
     SetField(m_Title, title);
   else {
     StringX new_title(_T(""));
-    StringX newCString, tmpCString;
+    StringX newstringT, tmpstringT;
     StringX::size_type pos = 0;
 
-    newCString = title;
+    newstringT = title;
     do {
-      pos = newCString.find(delimiter);
+      pos = newstringT.find(delimiter);
       if ( pos != StringX::npos ) {
-        new_title += newCString.substr(0, pos) + _T(".");
+        new_title += newstringT.substr(0, pos) + _T(".");
 
-        tmpCString = newCString.substr(pos + 1);
-        newCString = tmpCString;
+        tmpstringT = newstringT.substr(pos + 1);
+        newstringT = tmpstringT;
       }
     } while ( pos != StringX::npos );
 
-    if (!newCString.empty())
-      new_title += newCString;
+    if (!newstringT.empty())
+      new_title += newstringT;
 
     SetField(m_Title, new_title);
   }
@@ -776,24 +776,24 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
     const StringX CRLF = _T("\r\n");
     StringX multiline_notes(_T(""));
 
-    StringX newCString;
-    StringX tmpCString;
+    StringX newstringT;
+    StringX tmpstringT;
 
     StringX::size_type pos = 0;
 
-    newCString = notes;
+    newstringT = notes;
     do {
-      pos = newCString.find(delimiter);
+      pos = newstringT.find(delimiter);
       if ( pos != StringX::npos ) {
-        multiline_notes += newCString.substr(0, pos) + CRLF;
+        multiline_notes += newstringT.substr(0, pos) + CRLF;
 
-        tmpCString = newCString.substr(pos + 1);
-        newCString = tmpCString;
+        tmpstringT = newstringT.substr(pos + 1);
+        newstringT = tmpstringT;
       }
     } while ( pos != StringX::npos );
 
-    if (!newCString.empty())
-      multiline_notes += newCString;
+    if (!newstringT.empty())
+      multiline_notes += newstringT;
 
     SetField(m_Notes, multiline_notes);
   }
@@ -850,11 +850,11 @@ void CItemData::SetTime(int whichtime, time_t t)
   }
 }
 
-bool CItemData::SetTime(int whichtime, const CString &time_str)
+bool CItemData::SetTime(int whichtime, const stringT &time_str)
 {
   time_t t(0);
 
-  if (time_str.IsEmpty()) {
+  if (time_str.empty()) {
     SetTime(whichtime, t);
     return true;
   } else
@@ -879,17 +879,17 @@ void CItemData::SetXTimeInt(int &xint)
    SetField(m_XTimeInterval, (const unsigned char *)&xint, sizeof(int));
 }
 
-bool CItemData::SetXTimeInt(const CString &xint_str)
+bool CItemData::SetXTimeInt(const stringT &xint_str)
 {
   int xint(0);
 
-  if (xint_str.IsEmpty()) {
+  if (xint_str.empty()) {
     SetXTimeInt(xint);
     return true;
   }
 
-  if (xint_str.SpanIncluding(CString(_T("0123456789"))) == xint_str) {
-    xint = _ttoi(xint_str);
+  if (xint_str.find_first_not_of(_T("0123456789")) == stringT::npos) {
+    xint = _ttoi(xint_str.c_str());
     if (xint >= 0 && xint <= 3650) {
       SetXTimeInt(xint);
       return true;
@@ -931,21 +931,21 @@ void CItemData::SetPWPolicy(const PWPolicy &pwp)
   SetField(m_PWPolicy, cs_pwp);
 }
 
-bool CItemData::SetPWPolicy(const CString &cs_pwp)
+bool CItemData::SetPWPolicy(const stringT &cs_pwp)
 {
   // Basic sanity checks
-  if (cs_pwp.IsEmpty()) {
-    SetField(m_PWPolicy, LPCTSTR(cs_pwp));
+  if (cs_pwp.empty()) {
+    SetField(m_PWPolicy, cs_pwp.c_str());
     return true;
   }
-  if (cs_pwp.GetLength() < 19)
+  if (cs_pwp.length() < 19)
     return false;
 
   // Parse policy string, more sanity checks
   // See String2PWPolicy for valid format
   PWPolicy pwp;
   String2PWPolicy(stringT(cs_pwp), pwp);
-  StringX cs_pwpolicy(cs_pwp);
+  StringX cs_pwpolicy(cs_pwp.c_str());
 
   // Must be some flags; however hex incompatible with other flags
   bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
@@ -1107,7 +1107,7 @@ bool CItemData::ValidatePWHistory()
   return false;
 }
 
-bool CItemData::Matches(const CString &string1, int iObject,
+bool CItemData::Matches(const stringT &string1, int iObject,
                         int iFunction) const
 {
   ASSERT(iFunction != 0); // must be positive or negative!
@@ -1150,7 +1150,7 @@ bool CItemData::Matches(const CString &string1, int iObject,
   if (!bValue) // String empty - always return false for other comparisons
     return false;
   else
-    return PWSMatch::Match(LPCTSTR(string1), csObject, iFunction);
+    return PWSMatch::Match(string1.c_str(), csObject, iFunction);
 }
 
 bool CItemData::Matches(int num1, int num2, int iObject,

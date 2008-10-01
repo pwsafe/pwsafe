@@ -87,12 +87,12 @@ PWScore::~PWScore()
   }
 }
 
-void PWScore::SetApplicationNameAndVersion(const CString &appName,
+void PWScore::SetApplicationNameAndVersion(const stringT &appName,
                                            DWORD dwMajorMinor)
 {
   int nMajor = HIWORD(dwMajorMinor);
   int nMinor = LOWORD(dwMajorMinor);
-  m_AppNameAndVersion.Format(_T("%s V%d.%02d"), appName, nMajor, nMinor);
+  Format(m_AppNameAndVersion, _T("%s V%d.%02d"), appName, nMajor, nMinor);
 }
 
 void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
@@ -210,7 +210,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   }
 
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
-  m_hdr.m_whatlastsaved = m_AppNameAndVersion;
+  m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
 
   out->SetHeader(m_hdr);
 
@@ -243,7 +243,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 }
 
 struct PutText {
-  PutText(const CString &subgroup_name,
+  PutText(const stringT &subgroup_name,
           const int subgroup_object, const int subgroup_function,
           const CItemData::FieldBits &bsFields,
           TCHAR delimiter, ofstream &ofs, PWScore *core) :
@@ -257,7 +257,7 @@ struct PutText {
   // operator for OrderedItemList
   void operator()(const CItemData &item)
   {
-    if (m_subgroup_name.IsEmpty() || 
+    if (m_subgroup_name.empty() || 
         item.Matches(m_subgroup_name, m_subgroup_object,
         m_subgroup_function)) {
       CItemData *cibase(NULL);
@@ -296,7 +296,7 @@ struct PutText {
   }
 
 private:
-  const CString &m_subgroup_name;
+  const stringT &m_subgroup_name;
   const int m_subgroup_object;
   const int m_subgroup_function;
   const CItemData::FieldBits &m_bsFields;
@@ -306,7 +306,7 @@ private:
 
 int PWScore::WritePlaintextFile(const StringX &filename,
                                 const CItemData::FieldBits &bsFields,
-                                const CString &subgroup_name,
+                                const stringT &subgroup_name,
                                 const int &subgroup_object,
                                 const int &subgroup_function,
                                 TCHAR &delimiter, const OrderedItemList *il)
@@ -326,74 +326,74 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 
   if ( bsFields.count() == bsFields.size()) {
     // all fields to be exported, use pre-built header
-    CString exphdr;
-    exphdr.LoadString(IDSC_EXPORTHEADER);
-    conv.ToUTF8(LPCTSTR(exphdr), utf8, utf8Len);
+    StringX exphdr;
+    LoadAString(exphdr, IDSC_EXPORTHEADER);
+    conv.ToUTF8(exphdr.c_str(), utf8, utf8Len);
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
     ofs << endl;
   } else {
     // user chose fields, build custom header
-    CString cs_temp;
+    StringX cs_temp;
     if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE)) {
-      cs_temp.LoadString(IDSC_EXPHDRGROUPTITLE);
+      LoadAString(cs_temp, IDSC_EXPHDRGROUPTITLE);
       hdr += cs_temp;
     } else if (bsFields.test(CItemData::GROUP)) {
-      cs_temp.LoadString(IDSC_EXPHDRGROUP);
+      LoadAString(cs_temp, IDSC_EXPHDRGROUP);
       hdr += cs_temp;
     } else if (bsFields.test(CItemData::TITLE)) {
-      cs_temp.LoadString(IDSC_EXPHDRTITLE);
+      LoadAString(cs_temp, IDSC_EXPHDRTITLE);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::USER)) {
-      cs_temp.LoadString(IDSC_EXPHDRUSERNAME);
+      LoadAString(cs_temp, IDSC_EXPHDRUSERNAME);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::PASSWORD)) {
-      cs_temp.LoadString(IDSC_EXPHDRPASSWORD);
+      LoadAString(cs_temp, IDSC_EXPHDRPASSWORD);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::URL)) {
-      cs_temp.LoadString(IDSC_EXPHDRURL);
+      LoadAString(cs_temp, IDSC_EXPHDRURL);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::AUTOTYPE)) {
-      cs_temp.LoadString(IDSC_EXPHDRAUTOTYPE);
+      LoadAString(cs_temp, IDSC_EXPHDRAUTOTYPE);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::CTIME)) {
-      cs_temp.LoadString(IDSC_EXPHDRCTIME);
+      LoadAString(cs_temp, IDSC_EXPHDRCTIME);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::PMTIME)) {
-      cs_temp.LoadString(IDSC_EXPHDRPMTIME);
+      LoadAString(cs_temp, IDSC_EXPHDRPMTIME);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::ATIME)) {
-      cs_temp.LoadString(IDSC_EXPHDRATIME);
+      LoadAString(cs_temp, IDSC_EXPHDRATIME);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::XTIME)) {
-      cs_temp.LoadString(IDSC_EXPHDRXTIME);
+      LoadAString(cs_temp, IDSC_EXPHDRXTIME);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::XTIME_INT)) {
-      cs_temp.LoadString(IDSC_EXPHDRXTIMEINT);
+      LoadAString(cs_temp, IDSC_EXPHDRXTIMEINT);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::RMTIME)) {
-      cs_temp.LoadString(IDSC_EXPHDRRMTIME);
+      LoadAString(cs_temp, IDSC_EXPHDRRMTIME);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::PWHIST)) {
-      cs_temp.LoadString(IDSC_EXPHDRPWHISTORY);
+      LoadAString(cs_temp, IDSC_EXPHDRPWHISTORY);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::POLICY)) {
-      cs_temp.LoadString(IDSC_EXPHDRPWPOLICY);
+      LoadAString(cs_temp, IDSC_EXPHDRPWPOLICY);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::NOTES)) {
-      cs_temp.LoadString(IDSC_EXPHDRNOTES);
+      LoadAString(cs_temp, IDSC_EXPHDRNOTES);
       hdr += cs_temp;
     }
 
@@ -421,7 +421,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 }
 
 struct XMLRecordWriter {
-  XMLRecordWriter(const CString &subgroup_name,
+  XMLRecordWriter(const stringT &subgroup_name,
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,
                   TCHAR delimiter, ofstream &ofs, PWScore *core) :
@@ -436,7 +436,7 @@ struct XMLRecordWriter {
   void operator()(const CItemData &item)
   {
     m_id++;
-    if (m_subgroup_name.IsEmpty() ||
+    if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
         m_subgroup_object, m_subgroup_function)) {
       CItemData *cibase(NULL);
@@ -465,7 +465,7 @@ struct XMLRecordWriter {
   }
 
 private:
-  const CString &m_subgroup_name;
+  const stringT &m_subgroup_name;
   const int m_subgroup_object;
   const int m_subgroup_function;
   const CItemData::FieldBits &m_bsFields;
@@ -477,7 +477,7 @@ private:
 
 int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
-                          const CString &subgroup_name,
+                          const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
                           const TCHAR delimiter, const OrderedItemList *il)
 {
@@ -490,7 +490,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
     return CANT_OPEN_FILE;
 
   StringX pwh, tmp;
-  CString cs_tmp;
+  stringT cs_tmp;
   time_t time_now;
 
   time(&time_now);
@@ -501,7 +501,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   of << endl;
   of << "<passwordsafe" << endl;
   tmp = m_currfile;
-  Replace(tmp, _T("&"), _T("&amp;"));
+  Replace(tmp, StringX(_T("&")), StringX(_T("&amp;")));
 
   StringX delStr;
   delStr += delimiter;
@@ -560,8 +560,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
   }
 
   // write out preferences stored in database
-  CString prefs = PWSprefs::GetInstance()->GetXMLPreferences();
-  utf8conv.ToUTF8(LPCTSTR(prefs), utf8, utf8Len);
+  stringT prefs = PWSprefs::GetInstance()->GetXMLPreferences();
+  utf8conv.ToUTF8(prefs.c_str(), utf8, utf8Len);
   of.write(reinterpret_cast<const char *>(utf8), utf8Len);
 
   if (m_UHFL.size() > 0) {
@@ -580,13 +580,13 @@ int PWScore::WriteXMLFile(const StringX &filename,
       // as hexadecimal, rather than base64 encoding.
       // Easier to debug.
 #ifndef UNK_HEX_REP
-      tmp = PWSUtil::Base64Encode(pmem, unkhfe.st_length);
+      tmp = PWSUtil::Base64Encode(pmem, unkhfe.st_length).c_str();
 #else
       tmp.clear();
       unsigned char c;
       for (unsigned int i = 0; i < unkhfe.st_length; i++) {
         c = *pmem++;
-        cs_tmp.Format(_T("%02x"), c);
+        Format(cs_tmp, _T("%02x"), c);
         tmp += cs_tmp;
       }
 #endif
@@ -620,8 +620,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
   return SUCCESS;
 }
 
-int PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName,
-                           const CString &strXSDFileName, CString &strErrors,
+int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
+                           const stringT &strXSDFileName, stringT &strErrors,
                            int &numValidated, int &numImported,
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
                            CReport &rpt)
@@ -680,12 +680,12 @@ int PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLF
 }
 
 int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
-                                 const StringX &filename, CString &strError,
+                                 const StringX &filename, stringT &strError,
                                  TCHAR fieldSeparator, TCHAR delimiter,
                                  int &numImported, int &numSkipped,
                                  CReport &rpt)
 {
-  CString csError;
+  stringT csError;
   ifstreamT ifs(filename.c_str());
 
   if (!ifs)
@@ -697,8 +697,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   CItemData temp;
   vector<stringT> vs_Header;
-  CString cs_hdr;
-  cs_hdr.LoadString(IDSC_EXPORTHEADER);
+  stringT cs_hdr;
+  LoadAString(cs_hdr, IDSC_EXPORTHEADER);
   const stringT s_hdr(cs_hdr);
   const TCHAR pTab[] = _T("\t");
   TCHAR pSeps[] = _T(" ");
@@ -716,7 +716,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Duplicate as c_str is R-O and strtok modifies the string
   pTemp = _tcsdup(s_hdr.c_str());
   if (pTemp == NULL) {
-    strError.LoadString(IDSC_IMPORTFAILURE);
+    LoadAString(strError, IDSC_IMPORTFAILURE);
     rpt.WriteLine(strError);
     return FAILURE;
   }
@@ -748,7 +748,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   // Get title record
   if (!getline(ifs, s_title, TCHAR('\n'))) {
-    strError.LoadString(IDSC_IMPORTNOHEADER);
+    LoadAString(strError, IDSC_IMPORTNOHEADER);
     rpt.WriteLine(strError);
     return SUCCESS;  // not even a title record! - succeeded but none imported!
   }
@@ -756,7 +756,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Duplicate as c_str is R-O and strtok modifies the string
   pTemp = _tcsdup(s_title.c_str());
   if (pTemp == NULL) {
-    strError.LoadString(IDSC_IMPORTFAILURE);
+    LoadAString(strError, IDSC_IMPORTFAILURE);
     rpt.WriteLine(strError);
     return FAILURE;
   }
@@ -793,27 +793,27 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   free(pTemp);
   if (num_found == 0) {
-    strError.LoadString(IDSC_IMPORTNOCOLS);
+    LoadAString(strError, IDSC_IMPORTNOCOLS);
     rpt.WriteLine(strError);
     return FAILURE;
   }
 
   // These are "must haves"!
   if (i_Offset[PASSWORD] == -1 || i_Offset[GROUPTITLE] == -1) {
-    strError.LoadString(IDSC_IMPORTMISSINGCOLS);
+    LoadAString(strError, IDSC_IMPORTMISSINGCOLS);
     rpt.WriteLine(strError);
     return FAILURE;
   }
 
   if (num_found < vs_Header.size()) {
-    csError.Format(IDSC_IMPORTHDR, num_found);
+    Format(csError, IDSC_IMPORTHDR, num_found);
     rpt.WriteLine(csError);
-    csError.LoadString(IDSC_IMPORTKNOWNHDRS);
+    LoadAString(csError, IDSC_IMPORTKNOWNHDRS);
     rpt.WriteLine(csError, false);
     for (int i = 0; i < NUMFIELDS; i++) {
       if (i_Offset[i] >= 0) {
         const stringT &sHdr = vs_Header.at(i);
-        csError.Format(_T(" %s,"), sHdr.c_str());
+        Format(csError, _T(" %s,"), sHdr.c_str());
         rpt.WriteLine(csError, false);
       }
     }
@@ -835,7 +835,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // skip blank lines
     if (linebuf.empty()) {
-      csError.Format(IDSC_IMPORTEMPTYLINESKIPPED, numlines);
+      Format(csError, IDSC_IMPORTEMPTYLINESKIPPED, numlines);
       rpt.WriteLine(csError);
       numSkipped++;
       continue;
@@ -864,7 +864,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
             bool noteClosed = false;
             do {
               if (!getline(ifs, linebuf, TCHAR('\n'))) {
-                csError.Format(IDSC_IMPMISSINGQUOTE, numlines);
+                Format(csError, IDSC_IMPMISSINGQUOTE, numlines);
                 rpt.WriteLine(csError);
                 ifs.close(); // file ends before note closes
                 return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
@@ -890,7 +890,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // Sanity check
     if (tokens.size() < num_found) {
-      csError.Format(IDSC_IMPORTLINESKIPPED, numlines);
+      Format(csError, IDSC_IMPORTLINESKIPPED, numlines);
       rpt.WriteLine(csError);
       numSkipped++;
       continue;
@@ -927,7 +927,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     if ((size_t)i_Offset[PASSWORD] >= tokens.size() ||
         tokens[i_Offset[PASSWORD]].empty()) {
-      csError.Format(IDSC_IMPORTNOPASSWORD, numlines);
+      Format(csError, IDSC_IMPORTNOPASSWORD, numlines);
       rpt.WriteLine(csError);
       numSkipped++;
       continue;
@@ -960,7 +960,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     std::replace(entrytitle.begin(), entrytitle.end(), delimiter, TCHAR('.'));
     if (entrytitle.empty()) {
-      csError.Format(IDSC_IMPORTNOTITLE, numlines);
+      Format(csError, IDSC_IMPORTNOTITLE, numlines);
       rpt.WriteLine(csError);
       numSkipped++;
       continue;
@@ -976,11 +976,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     temp.SetTitle(newtitle);
     if (newtitle != title) {
       if (group.empty())
-        csError.Format(IDSC_IMPORTCONFLICTS2, numlines,
-                       title.c_str(), user.c_str(), newtitle.c_str());
+        Format(csError, IDSC_IMPORTCONFLICTS2, numlines,
+               title.c_str(), user.c_str(), newtitle.c_str());
       else
-        csError.Format(IDSC_IMPORTCONFLICTS1, numlines,
-                       group.c_str(), title.c_str(), user.c_str(), newtitle.c_str());
+        Format(csError, IDSC_IMPORTCONFLICTS1, numlines,
+               group.c_str(), title.c_str(), user.c_str(), newtitle.c_str());
       rpt.WriteLine(csError);
     }
 
@@ -991,49 +991,49 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (i_Offset[CTIME] >= 0 && tokens.size() > (size_t)i_Offset[CTIME])
       if (!temp.SetCTime(tokens[i_Offset[CTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(CTIME);
-        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
+        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[PMTIME] >= 0 && tokens.size() > (size_t)i_Offset[PMTIME])
       if (!temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(PMTIME);
-        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
+        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[ATIME] >= 0 && tokens.size() > (size_t)i_Offset[ATIME])
       if (!temp.SetATime(tokens[i_Offset[ATIME]].c_str())) {
         const stringT &time_value = vs_Header.at(ATIME);
-        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
+        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[XTIME] >= 0 && tokens.size() > (size_t)i_Offset[XTIME])
       if (!temp.SetXTime(tokens[i_Offset[XTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(XTIME);
-        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
+        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[XTIME_INT] >= 0 && tokens.size() > (size_t)i_Offset[XTIME_INT])
       if (!temp.SetXTimeInt(tokens[i_Offset[XTIME_INT]].c_str())) {
         const stringT &int_value = vs_Header.at(XTIME_INT);
-        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, int_value.c_str());
+        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, int_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[RMTIME] >= 0 && tokens.size() > (size_t)i_Offset[RMTIME])
       if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(RMTIME);
-        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
+        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[POLICY] >= 0 && tokens.size() > (size_t)i_Offset[POLICY])
       if (!temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str())) {
         const stringT &dword_value = vs_Header.at(POLICY);
-        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, dword_value.c_str());
+        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, dword_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[HISTORY] >= 0 && tokens.size() > (size_t)i_Offset[HISTORY]) {
       StringX newPWHistory;
-      CString strPWHErrors;
-      csError.Format(IDSC_IMPINVALIDPWH, numlines);
+      stringT strPWHErrors;
+      Format(csError, IDSC_IMPINVALIDPWH, numlines);
       switch (VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
                                           newPWHistory, strPWHErrors)) {
         case PWH_OK:
@@ -1052,7 +1052,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         default:
           rpt.WriteLine(csError, false);
           rpt.WriteLine(strPWHErrors, false);
-          csError.LoadString(IDSC_PWHISTORYSKIPPED);
+          LoadAString(csError, IDSC_PWHISTORYSKIPPED);
           rpt.WriteLine(csError);
           break;
       }
@@ -1220,10 +1220,10 @@ int PWScore::ReadFile(const StringX &a_filename,
         // silently losing data (but not by much)
         // Best if title intact. What to do if not?
 
-        CString cs_msg;
-        CString cs_caption(MAKEINTRESOURCE(IDSC_READ_ERROR));
-        cs_msg.Format(IDSC_ENCODING_PROBLEM, temp.GetTitle().c_str());
-        MessageBox(NULL, cs_msg, cs_caption, MB_OK);
+        stringT cs_msg;
+        stringT cs_caption(MAKEINTRESOURCE(IDSC_READ_ERROR));
+        Format(cs_msg, IDSC_ENCODING_PROBLEM, temp.GetTitle().c_str());
+        MessageBox(NULL, cs_msg.c_str(), cs_caption.c_str(), MB_OK);
       }
       // deliberate fall-through
       case PWSfile::SUCCESS:
@@ -1248,38 +1248,41 @@ int PWScore::ReadFile(const StringX &a_filename,
          }
          // following is duplicated in Validate() - need to refactor
          csMyPassword = temp.GetPassword();
-         cs_possibleUUID = csMyPassword.substr(2, 32);  // Extract possible uuid
-         ToLower(cs_possibleUUID);
-         if (((csMyPassword.substr(0, 2) == _T("[[") &&
-               csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
-              (csMyPassword.substr(0, 2) == _T("[~") &&
-               csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
+         if (csMyPassword.length() > 4) { // look for "[[...]]" or "[~...~]"
+           cs_possibleUUID = csMyPassword.substr(2, 32);  // try to extract uuid
+           ToLower(cs_possibleUUID);
+           if (((csMyPassword.substr(0, 2) == _T("[[") &&
+                 csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
+                (csMyPassword.substr(0, 2) == _T("[~") &&
+                 csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
                csMyPassword.length() == 36 &&
-             cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
-           // _stscanf_s always outputs to an "int" using %x even though
-           // target is only 1.  Read into larger buffer to prevent data being
-           // overwritten and then copy to where we want it!
-           unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
-           int nscanned = 0;
-           const TCHAR *lpszuuid = cs_possibleUUID.c_str();
-           for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
+               cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == 
+               StringX::npos) {
+             // _stscanf_s always outputs to an "int" using %x even though
+             // target is only 1.  Read into larger buffer to prevent data being
+             // overwritten and then copy to where we want it!
+             unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
+             int nscanned = 0;
+             const TCHAR *lpszuuid = cs_possibleUUID.c_str();
+             for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
-             nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
+               nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #else
-             nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
+               nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #endif
-             lpszuuid += 2;
+               lpszuuid += 2;
+             }
+             memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
+             temp.GetUUID(temp_uuid);
+             if (csMyPassword.substr(1, 1) == _T("[")) {
+               m_alias2base_map[temp_uuid] = base_uuid;
+               possible_aliases.push_back(temp_uuid);
+             } else {
+               m_shortcut2base_map[temp_uuid] = base_uuid;
+               possible_shortcuts.push_back(temp_uuid);
+             }
            }
-           memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
-           temp.GetUUID(temp_uuid);
-           if (csMyPassword.substr(1, 1) == _T("[")) {
-             m_alias2base_map[temp_uuid] = base_uuid;
-             possible_aliases.push_back(temp_uuid);
-           } else {
-             m_shortcut2base_map[temp_uuid] = base_uuid;
-             possible_shortcuts.push_back(temp_uuid);
-           }
-         }
+         } // uuid matching
 #ifdef DEMO
          if (m_pwlist.size() < MAXDEMO) {
            m_pwlist[uuid] = temp;
@@ -1320,24 +1323,23 @@ int PWScore::RenameFile(const StringX &oldname, const StringX &newname)
 }
 
 bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
-                            const CString &userBackupPrefix,
-                            const CString &userBackupDir)
+                            const stringT &userBackupPrefix,
+                            const stringT &userBackupDir)
 {
-  CString cs_temp, cs_newfile;
+  stringT cs_temp, cs_newfile;
   // Get location for intermediate backup
-  if (userBackupDir.IsEmpty()) { // directory same as database's
+  if (userBackupDir.empty()) { // directory same as database's
     // Get directory containing database
-    cs_temp = CString(m_currfile.c_str());
-    TCHAR *lpszTemp = cs_temp.GetBuffer(_MAX_PATH);
-    PathRemoveFileSpec(lpszTemp);
-    cs_temp.ReleaseBuffer();
+    cs_temp = stringT(m_currfile.c_str());
+    const TCHAR *lpszTemp = cs_temp.c_str();
+    PathRemoveFileSpec(LPWSTR(lpszTemp));
     cs_temp += _T("\\");
   } else {
     cs_temp = userBackupDir;
   }
 
   // generate prefix of intermediate backup file name
-  if (userBackupPrefix.IsEmpty()) {
+  if (userBackupPrefix.empty()) {
     const stringT path(m_currfile.c_str());
     stringT drv, dir, name, ext;
 
@@ -1356,7 +1358,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
       StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now,
                                                              TMC_EXPORT_IMPORT);
       cs_temp += _T("_");
-      StringX nf = StringX(cs_temp) + cs_datetime.substr(0, 4) +  // YYYY
+      StringX nf = cs_temp.c_str() + cs_datetime.substr(0, 4) +  // YYYY
         cs_datetime.substr(5,2) +  // MM
         cs_datetime.substr(8,2) +  // DD
         StringX(_T("_")) +
@@ -1383,7 +1385,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   TCHAR szDestination[_MAX_PATH];
 
   const TCHAR *lpsz_current = m_currfile.c_str();
-  TCHAR *lpsz_new = cs_newfile.GetBuffer(_MAX_PATH);
+  const TCHAR *lpsz_new = cs_newfile.c_str();
 #if _MSC_VER >= 1400
   _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
   _tcscpy_s(szDestination, _MAX_PATH, lpsz_new);
@@ -1391,11 +1393,10 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   _tcscpy(szSource, lpsz_current);
   _tcscpy(szDestination, lpsz_new);
 #endif
-  cs_newfile.ReleaseBuffer();
 
   // Must end with double NULL
   szSource[m_currfile.length() + 1] = TCHAR('\0');
-  szDestination[cs_newfile.GetLength() + 1] = TCHAR('\0');
+  szDestination[cs_newfile.length() + 1] = TCHAR('\0');
 
   SHFILEOPSTRUCT sfop;
   memset(&sfop, 0, sizeof(sfop));
@@ -1410,7 +1411,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   }
   return true;
   // renames CurFile to CurFile~
-  // CString newname(GetCurFile());
+  // stringT newname(GetCurFile());
   // newname += TCHAR('~');
   // return PWSfile::RenameFile(GetCurFile(), newname);
 }
@@ -1759,24 +1760,24 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
 }
 
 // GetUniqueGroups - Creates an array of all group names, with no duplicates.
-void PWScore::GetUniqueGroups(CStringArray &aryGroups) const
+void PWScore::GetUniqueGroups(vector<stringT> &aryGroups) const
 {
-  aryGroups.RemoveAll();
+  aryGroups.clear();
 
   ItemListConstIter iter;
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++ ) {
     const CItemData &ci = iter->second;
-    const CString strThisGroup = ci.GetGroup().c_str();
+    const stringT strThisGroup = ci.GetGroup().c_str();
     // Is this group already in the list?
     bool bAlreadyInList=false;
-    for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
+    for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
       if (aryGroups[igrp] == strThisGroup) {
         bAlreadyInList = true;
         break;
       }
     }
-    if (!bAlreadyInList) aryGroups.Add(strThisGroup);
+    if (!bAlreadyInList) aryGroups.push_back(strThisGroup);
   }
 }
 
@@ -1787,7 +1788,7 @@ void PWScore::CopyPWList(const ItemList &in)
 }
 
 bool
-PWScore::Validate(CString &status)
+PWScore::Validate(stringT &status)
 {
   // Check uuid is valid
   // Check PWH is valid
@@ -1805,9 +1806,9 @@ PWScore::Validate(CString &status)
   unsigned num_alias_warnings, num_shortcuts_warnings;
 
   CReport rpt;
-  CString cs_Error, cs_temp;
-  cs_temp.LoadString(IDSC_RPTVALIDATE);
-  rpt.StartReport(cs_temp, GetCurFile().c_str());
+  stringT cs_Error, cs_temp;
+  LoadAString(cs_temp, IDSC_RPTVALIDATE);
+  rpt.StartReport(cs_temp.c_str(), GetCurFile().c_str());
 
   TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 
@@ -1820,54 +1821,56 @@ PWScore::Validate(CString &status)
     if (uuid_array[0] == 0x00) {
       CItemData fixedItem(ci);
       num_uuid_fixed += fixedItem.ValidateUUID(m_hdr.m_nCurrentMajorVersion,
-        m_hdr.m_nCurrentMinorVersion,
-        uuid_array);
-      cs_Error.Format(IDSC_VALIDATEUUID,
-                      ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
+                                               m_hdr.m_nCurrentMinorVersion,
+                                               uuid_array);
+      Format(cs_Error, IDSC_VALIDATEUUID,
+             ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
       rpt.WriteLine(cs_Error);
 
       m_pwlist.erase(iter); // erasing item in mid-iteration!
       AddEntry(fixedItem);
     }
     if (ci.ValidatePWHistory() != 0) {
-      cs_Error.Format(IDSC_VALIDATEPWH,
-                      ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
+      Format(cs_Error, IDSC_VALIDATEPWH,
+             ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
       rpt.WriteLine(cs_Error);
       num_PWH_fixed++;
     }
     StringX csMyPassword = ci.GetPassword();
-    StringX cs_possibleUUID = csMyPassword.substr(2, 32);  // Extract possible uuid
-         ToLower(cs_possibleUUID);
-         if (((csMyPassword.substr(0,2) == _T("[[") &&
-               csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
-              (csMyPassword.substr(0, 2) == _T("[~") &&
-               csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
-               csMyPassword.length() == 36 &&
-             cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
-      // _stscanf_s always outputs to an "int" using %x even though
-      // target is only 1.  Read into larger buffer to prevent data being
-      // overwritten and then copy to where we want it!
-      unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
-      int nscanned = 0;
-      const TCHAR *lpszuuid = cs_possibleUUID.c_str();
-      for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
+    if (csMyPassword.length() > 4) { // look for "[[...]]" or "[~...~]"
+      StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
+      ToLower(cs_possibleUUID);
+      if (((csMyPassword.substr(0,2) == _T("[[") &&
+            csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
+           (csMyPassword.substr(0, 2) == _T("[~") &&
+            csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
+          csMyPassword.length() == 36 &&
+          cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
+        // _stscanf_s always outputs to an "int" using %x even though
+        // target is only 1.  Read into larger buffer to prevent data being
+        // overwritten and then copy to where we want it!
+        unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
+        int nscanned = 0;
+        const TCHAR *lpszuuid = cs_possibleUUID.c_str();
+        for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
-        nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
+          nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #else
-        nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
+          nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #endif
-        lpszuuid += 2;
+          lpszuuid += 2;
+        }
+        memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
+        ci.GetUUID(temp_uuid);
+        if (csMyPassword.substr(0, 2) == _T("[[")) {
+          m_alias2base_map[temp_uuid] = base_uuid;
+          possible_aliases.push_back(temp_uuid);
+        } else {
+          m_shortcut2base_map[temp_uuid] = base_uuid;
+          possible_shortcuts.push_back(temp_uuid);
+        }
       }
-      memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
-      ci.GetUUID(temp_uuid);
-      if (csMyPassword.substr(0, 2) == _T("[[")) {
-        m_alias2base_map[temp_uuid] = base_uuid;
-        possible_aliases.push_back(temp_uuid);
-      } else {
-        m_shortcut2base_map[temp_uuid] = base_uuid;
-        possible_shortcuts.push_back(temp_uuid);
-      }
-    }
+    } // uuid matching
   } // iteration over m_pwlist
 
   num_alias_warnings = AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::UUID);
@@ -1876,12 +1879,13 @@ PWScore::Validate(CString &status)
   possible_shortcuts.clear();
 
   TRACE(_T("%s : End validation. %d entries processed\n"), 
-    PWSUtil::GetTimeStamp(), n + 1);
+        PWSUtil::GetTimeStamp(), n + 1);
   rpt.EndReport();
 
   if ((num_uuid_fixed + num_PWH_fixed + num_alias_warnings + num_shortcuts_warnings) > 0) {
-    status.Format(IDSC_NUMPROCESSED,
-                  n + 1, num_uuid_fixed, num_PWH_fixed, num_alias_warnings, num_shortcuts_warnings);
+    Format(status, IDSC_NUMPROCESSED,
+           n + 1, num_uuid_fixed, num_PWH_fixed,
+           num_alias_warnings, num_shortcuts_warnings);
     SetChanged(true);
     return true;
   } else {
@@ -1889,10 +1893,10 @@ PWScore::Validate(CString &status)
   }
 }
 
-BOOL PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
-                                   int i_maxnumincbackups, CString &cs_newname)
+BOOL PWScore::GetIncBackupFileName(const stringT &cs_filenamebase,
+                                   int i_maxnumincbackups, stringT &cs_newname)
 {
-  CString cs_filenamemask(cs_filenamebase), cs_filename, cs_ibak_number;
+  stringT cs_filenamemask(cs_filenamebase), cs_filename, cs_ibak_number;
   CFileFind finder;
   BOOL bWorking, brc(TRUE);
   int num_found(0), n;
@@ -1900,15 +1904,15 @@ BOOL PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
 
   cs_filenamemask += _T("_???.ibak");
 
-  bWorking = finder.FindFile(cs_filenamemask);
+  bWorking = finder.FindFile(cs_filenamemask.c_str());
   while (bWorking) {
     bWorking = finder.FindNextFile();
     num_found++;
     cs_filename = finder.GetFileName();
-    cs_ibak_number = cs_filename.Mid(cs_filename.GetLength() - 8, 3);
-    if (cs_ibak_number.SpanIncluding(CString(_T("0123456789"))) != cs_ibak_number)
+    cs_ibak_number = cs_filename.substr(cs_filename.length() - 8, 3);
+    if (cs_ibak_number.find_first_not_of(_T("0123456789")) != stringT::npos)
       continue;
-    n = _ttoi(cs_ibak_number);
+    n = _ttoi(cs_ibak_number.c_str());
     file_nums.push_back(n);
   }
 
@@ -1923,15 +1927,15 @@ BOOL PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
   nnn++;
   if (nnn > 999) nnn = 1;
 
-  cs_newname.Format(_T("%s_%03d"), cs_filenamebase, nnn);
+  Format(cs_newname, _T("%s_%03d"), cs_filenamebase, nnn);
 
   int i = 0;
   while (num_found >= i_maxnumincbackups) {
     nnn = file_nums.at(i);
-    cs_filename.Format(_T("%s_%03d.ibak"), cs_filenamebase, nnn);
+    Format(cs_filename, _T("%s_%03d.ibak"), cs_filenamebase, nnn);
     i++;
     num_found--;
-    if (DeleteFile(cs_filename) == FALSE) {
+    if (DeleteFile(cs_filename.c_str()) == FALSE) {
       TRACE(_T("DeleteFile(%s)"), cs_filename);
       continue;
     }
@@ -1964,11 +1968,11 @@ StringX PWScore::GetUniqueTitle(const StringX &path, const StringX &title,
     // Find a unique "Title"
     ItemListConstIter listpos;
     int i = 0;
-    CString s_copy;
+    StringX s_copy;
     do {
       i++;
-      s_copy.Format(IDS_MESSAGE, i);
-      new_title = title + LPCTSTR(s_copy);
+      Format(s_copy, IDS_MESSAGE, i);
+      new_title = title + s_copy;
       listpos = Find(path, new_title, user);
     } while (listpos != m_pwlist.end());
   }
@@ -2161,7 +2165,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
     StringX csPwdGroup, csPwdTitle, csPwdUser, tmp;
     uuid_array_t base_uuid, entry_uuid;
     bool bwarnings(false);
-    CString strError;
+    stringT strError;
 
     for (paiter = dependentlist.begin();
          paiter != dependentlist.end(); paiter++) {
@@ -2200,14 +2204,14 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             if (rpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
-                strError.LoadString(IDSC_IMPORTWARNINGHDR);
+                LoadAString(strError, IDSC_IMPORTWARNINGHDR);
                 rpt->WriteLine(strError);
               }
-              CString cs_type;
-              cs_type.LoadString(IDSC_SHORTCUT);
-              strError.Format(IDSC_IMPORTWARNING3, cs_type,
-                              curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
-                              curitem->GetUser().c_str(), cs_type);
+              stringT cs_type;
+              LoadAString(cs_type, IDSC_SHORTCUT);
+              Format(strError, IDSC_IMPORTWARNING3, cs_type,
+                     curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
+                     curitem->GetUser().c_str(), cs_type);
               rpt->WriteLine(strError);
             }
             // Invalid - delete!
@@ -2222,14 +2226,14 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             if (rpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
-                strError.LoadString(IDSC_IMPORTWARNINGHDR);
+                LoadAString(strError, IDSC_IMPORTWARNINGHDR);
                 rpt->WriteLine(strError);
               }
-              CString cs_type;
-              cs_type.LoadString(IDSC_ALIAS);
-              strError.Format(IDSC_IMPORTWARNING3, cs_type,
-                              curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
-                              curitem->GetUser().c_str(), cs_type);
+              stringT cs_type;
+              LoadAString(cs_type, IDSC_ALIAS);
+              Format(strError, IDSC_IMPORTWARNING3, cs_type,
+                     curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
+                     curitem->GetUser().c_str(), cs_type);
               rpt->WriteLine(strError);
             }
             // Invalid - delete!
@@ -2245,13 +2249,13 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             if (rpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
-                strError.LoadString(IDSC_IMPORTWARNINGHDR);
+                LoadAString(strError, IDSC_IMPORTWARNINGHDR);
                 rpt->WriteLine(strError);
               }
-              strError.Format(IDSC_IMPORTWARNING1, curitem->GetGroup().c_str(),
-                              curitem->GetTitle().c_str(), curitem->GetUser().c_str());
+              Format(strError, IDSC_IMPORTWARNING1, curitem->GetGroup().c_str(),
+                     curitem->GetTitle().c_str(), curitem->GetUser().c_str());
               rpt->WriteLine(strError);
-              strError.LoadString(IDSC_IMPORTWARNING1A);
+              LoadAString(strError, IDSC_IMPORTWARNING1A);
               rpt->WriteLine(strError);
             }
             curitem->SetAlias();
@@ -2281,13 +2285,13 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         if (rpt != NULL) {
           if (!bwarnings) {
             bwarnings = true;
-            strError.LoadString(IDSC_IMPORTWARNINGHDR);
+            LoadAString(strError, IDSC_IMPORTWARNINGHDR);
             rpt->WriteLine(strError);
           }
-          strError.Format(IDSC_IMPORTWARNING2, curitem->GetGroup().c_str(),
-                          curitem->GetTitle().c_str(), curitem->GetUser().c_str());
+          Format(strError, IDSC_IMPORTWARNING2, curitem->GetGroup().c_str(),
+                 curitem->GetTitle().c_str(), curitem->GetUser().c_str());
           rpt->WriteLine(strError);
-          strError.LoadString(IDSC_IMPORTWARNING2A);
+          LoadAString(strError, IDSC_IMPORTWARNING2A);
           rpt->WriteLine(strError);
         }
         if (type == CItemData::ET_SHORTCUT)

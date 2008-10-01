@@ -189,31 +189,32 @@ UINT PWSMatch::GetRule(MatchRule rule)
 void PWSMatch::GetMatchType(MatchType mtype,
                             int fnum1, int fnum2,
                             time_t fdate1, time_t fdate2,
-                            const CString &fstring, int fcase,
+                            const stringT &fstring, int fcase,
                             int etype, bool bBetween,
-                            CString &cs1, CString &cs2)
+                            stringT &cs1, stringT &cs2)
 {
   cs1 = cs2 = _T("");
   UINT id(0);
 
   switch (mtype) {
     case MT_INVALID:
-      cs1.LoadString(IDSC_INVALID);
+      LoadAString(cs1, IDSC_INVALID);
       break;
     case MT_PASSWORD:
       if (fnum1 > 0) {
-        cs1.Format(IDSC_EXPIRE_IN_DAYS, fnum1);
+        Format(cs1, IDSC_EXPIRE_IN_DAYS, fnum1);
         break;
       }
       // Note: purpose drop through to standard 'string' processing
     case MT_STRING:
       cs1 = fstring;
-      cs2.LoadString(fcase == 0 ? IDSC_CASE_INSENSITIVE : IDSC_CASE_SENSITIVE);
+      LoadAString(cs2,
+                  fcase == 0 ? IDSC_CASE_INSENSITIVE : IDSC_CASE_SENSITIVE);
       break;
     case MT_INTEGER:
-      cs1.Format(_T("%d"), fnum1);
+      Format(cs1, _T("%d"), fnum1);
       if (bBetween)
-        cs2.Format(_T("%d"), fnum2);
+        Format(cs2, _T("%d"), fnum2);
       break;
     case MT_DATE:
       {
@@ -248,7 +249,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
           ASSERT(0);
           id = IDSC_INVALID;
       }
-      cs1.LoadString(id);
+      LoadAString(cs1, id);
       break;
     default:
       ASSERT(0);

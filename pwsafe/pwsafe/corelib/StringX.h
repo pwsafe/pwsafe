@@ -149,16 +149,23 @@ typedef std::basic_string<char,
 // Following should really be StringX member functions, but there's no 
 // elegant way of extending a template class without public inheritance, 
 // including duplicating large parts of the interface
+//
+// Since we need the for stringT as well, we might as well templatize them
+// (In for a dime, in for a $).
 
-int CompareNoCase(const StringX &s1, const StringX &s2);
-void ToLower(StringX &s);
-StringX &TrimRight(StringX &s, const TCHAR *set = NULL);
-StringX & TrimLeft(StringX &s, const TCHAR *set = NULL);
-StringX &Trim(StringX &s, const TCHAR *set = NULL);
-void EmptyIfOnlyWhiteSpace(StringX &s);
-int Replace(StringX &s, TCHAR from, TCHAR to);
-int Replace(StringX &s, const StringX &from, const StringX &to);
-int Remove(StringX &s, TCHAR c);
+template<class T> int CompareNoCase(const T &s1, const T &s2);
+template<class T> void ToLower(T &s);
+template<class T> void ToUpper(T &s);
+template<class T> T &TrimRight(T &s, const TCHAR *set = NULL);
+template<class T> T & TrimLeft(T &s, const TCHAR *set = NULL);
+template<class T> T &Trim(T &s, const TCHAR *set = NULL);
+template<class T> void EmptyIfOnlyWhiteSpace(T &s);
+template<class T> int Replace(T &s, TCHAR from, TCHAR to);
+template<class T> int Replace(T &s, const T &from, const T &to);
+template<class T> int Remove(T &s, TCHAR c);
+template<class T> void Format(T &s, const TCHAR *fmt, ...);
+template<class T> void Format(T &s, int fmt, ...);
+template<class T> void LoadAString(T &s, int id);
 #endif
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -461,7 +461,7 @@ int PWSfileV3::WriteHeader()
   time_t time_now;
   time(&time_now);
 #if 0  // BUGBUGBUG
-  CString cs_update_time;
+  stringT cs_update_time;
   cs_update_time.Format(_T("%08x"), time_now);
   numWritten = WriteCBC(HDR_LASTUPDATETIME, cs_update_time);
 #endif
@@ -706,7 +706,7 @@ int PWSfileV3::ReadHeader()
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         if (utf8Len > 0) {
-          CString strErrors;
+          stringT strErrors;
           stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
           int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                     XSDFilename.c_str(),
@@ -733,10 +733,10 @@ int PWSfileV3::ReadHeader()
         UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
         m_UHFL.push_back(unkhfe);
 /* #ifdef _DEBUG
-        CString cs_timestamp;
+        stringT cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
         TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
-        cs_timestamp, fieldType, utf8Len, utf8Len);
+        cs_timestamp.c_str(), fieldType, utf8Len, utf8Len);
         PWSDebug::HexDump(utf8, utf8Len, cs_timestamp);
 #endif /* DEBUG */
         break;

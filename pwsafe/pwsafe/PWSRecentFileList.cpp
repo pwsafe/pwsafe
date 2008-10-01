@@ -33,7 +33,11 @@ void CPWSRecentFileList::ReadList()
   } else {
     const int nMRUItems = pref->GetPref(PWSprefs::MaxMRUItems);
     ASSERT(nMRUItems == m_nSize);
-    pref->GetMRUList(m_arrNames);
+    stringT *arrNames = new stringT[nMRUItems];
+    pref->GetMRUList(arrNames);
+    for (int i = 0; i < nMRUItems; i++)
+      m_arrNames[i] = arrNames[i].c_str();
+    delete[] arrNames;
   }
 }
 
@@ -46,11 +50,11 @@ void CPWSRecentFileList::WriteList()
   } else {
     const int num_MRU = GetSize();
     const int max_MRU = ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1;
-    CString *csMRUFiles = new CString[num_MRU];
+    stringT *csMRUFiles = new stringT[num_MRU];
 
     for (int i = 0; i < num_MRU; i++) {
       csMRUFiles[i] = (*this)[i];
-      csMRUFiles[i].Trim();
+      Trim(csMRUFiles[i]);
     }
 
     pref->SetMRUList(csMRUFiles, num_MRU, max_MRU);

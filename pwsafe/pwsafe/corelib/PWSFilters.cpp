@@ -137,7 +137,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     szendl = "\0";
   }
 
-  utf8conv.ToUTF8(LPCTSTR(filters.fname), utf8, utf8Len);
+  utf8conv.ToUTF8(filters.fname.c_str(), utf8, utf8Len);
   oss << sztab1 << "<filter filtername=\"" << reinterpret_cast<const char *>(utf8) 
       << "\">" << szendl;
 
@@ -423,7 +423,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
 
   ostringstream oss;
   StringX tmp;
-  CString cs_tmp;
+  stringT cs_tmp;
   time_t time_now;
 
   time(&time_now);
@@ -438,9 +438,9 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
   
   if (!currentfile.empty()) {
     cs_tmp = currentfile.c_str();
-    cs_tmp.Replace(_T("&"), _T("&amp;"));
+    Replace(cs_tmp, stringT(_T("&")), stringT(_T("&amp;")));
 
-    utf8conv.ToUTF8(LPCTSTR(cs_tmp), utf8, utf8Len);
+    utf8conv.ToUTF8(cs_tmp.c_str(), utf8, utf8Len);
     oss << "Database=\"";
     oss << reinterpret_cast<const char *>(utf8);
     oss << "\"" << endl;
@@ -454,9 +454,11 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
         << hdr.m_nCurrentMinorVersion;
     oss << "\"" << endl;
     if (!hdr.m_lastsavedby.empty() || !hdr.m_lastsavedon.empty()) {
-      CString wls(_T(""));
-      wls.Format(_T("%s on %s"), hdr.m_lastsavedby.c_str(), hdr.m_lastsavedon.c_str());
-      utf8conv.ToUTF8(LPCTSTR(wls), utf8, utf8Len);
+      stringT wls(_T(""));
+      Format(wls,
+             _T("%s on %s"),
+             hdr.m_lastsavedby.c_str(), hdr.m_lastsavedon.c_str());
+      utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
       oss << "WhoSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);
       oss << "\"" << endl;
@@ -488,9 +490,9 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
 }
 
 int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
-                                    const CString &strXMLData,
-                                    const CString &strXMLFileName,
-                                    const CString &strXSDFileName, CString &strErrors)
+                                    const stringT &strXMLData,
+                                    const stringT &strXMLFileName,
+                                    const stringT &strXSDFileName, stringT &strErrors)
 {
   PWSXMLFilters fXML(*this, fpool);
   bool status, validation;
@@ -498,7 +500,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
   strErrors = _T("");
 
   validation = true;
-  if (strXMLFileName.IsEmpty())
+  if (strXMLFileName.empty())
     status = fXML.XMLFilterProcess(validation, strXMLData, _T(""), strXSDFileName);
   else
     status = fXML.XMLFilterProcess(validation, _T(""), strXMLFileName, strXSDFileName);
@@ -509,7 +511,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
   }
 
   validation = false;
-  if (strXMLFileName.IsEmpty())
+  if (strXMLFileName.empty())
     status = fXML.XMLFilterProcess(validation, strXMLData, _T(""), strXSDFileName);
   else
     status = fXML.XMLFilterProcess(validation, _T(""), strXMLFileName, strXSDFileName);
@@ -541,12 +543,12 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
   return PWScore::SUCCESS;
 }
 
-CString PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
+stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
 {
   // Get the description of the current criterion to display on the static text
-  CString cs_rule, cs1, cs2, cs_and, cs_criteria;
-  cs_rule.LoadString(PWSMatch::GetRule(st_fldata.rule));
-  cs_rule.TrimRight(_T('\t'));
+  stringT cs_rule, cs1, cs2, cs_and, cs_criteria;
+  LoadAString(cs_rule, PWSMatch::GetRule(st_fldata.rule));
+  TrimRight(cs_rule, _T("\t"));
   PWSMatch::GetMatchType(st_fldata.mtype,
                          st_fldata.fnum1, st_fldata.fnum2,
                          st_fldata.fdate1, st_fldata.fdate2,
@@ -557,48 +559,48 @@ CString PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
   switch (st_fldata.mtype) {
     case PWSMatch::MT_PASSWORD:
       if (st_fldata.rule == PWSMatch::MR_EXPIRED) {
-        cs_criteria.Format(_T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule);
         break;
       } else if (st_fldata.rule == PWSMatch::MR_WILLEXPIRE) {
-        cs_criteria.Format(_T("%s %s"), cs_rule, cs1);
+        Format(cs_criteria, _T("%s %s"), cs_rule, cs1);
         break;
       }
       // Note: purpose drop through to standard 'string' processing
     case PWSMatch::MT_STRING:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
-        cs_criteria.Format(_T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule);
       else {
-        CString cs_delim(_T(""));
-        if (cs1.Find(_T(' ')) != -1)
+        stringT cs_delim(_T(""));
+        if (cs1.find(_T(" ")) != stringT::npos)
           cs_delim = _T("'");
-        cs_criteria.Format(_T("%s %s%s%s %s"), 
-                          cs_rule, cs_delim, cs1, cs_delim, cs2);
+        Format(cs_criteria, _T("%s %s%s%s %s"), 
+               cs_rule, cs_delim, cs1, cs_delim, cs2);
       }
       break;
     case PWSMatch::MT_INTEGER:
     case PWSMatch::MT_DATE:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
-        cs_criteria.Format(_T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule);
       else
       if (st_fldata.rule == PWSMatch::MR_BETWEEN) {  // Date or Integer only
-        cs_and.LoadString(IDSC_AND);
-        cs_criteria.Format(_T("%s %s %s %s"), cs_rule, cs1, cs_and, cs2);
+        LoadAString(cs_and, IDSC_AND);
+        Format(cs_criteria, _T("%s %s %s %s"), cs_rule, cs1, cs_and, cs2);
       } else
-        cs_criteria.Format(_T("%s %s"), cs_rule, cs1);
+        Format(cs_criteria, _T("%s %s"), cs_rule, cs1);
       break;
     case PWSMatch::MT_PWHIST:
-      cs_criteria.LoadString(IDSC_SEEPWHISTORYFILTERS);
+      LoadAString(cs_criteria, IDSC_SEEPWHISTORYFILTERS);
       break;
     case PWSMatch::MT_POLICY:
-      cs_criteria.LoadString(IDSC_SEEPWPOLICYFILTERS);
+      LoadAString(cs_criteria, IDSC_SEEPWPOLICYFILTERS);
       break;
     case PWSMatch::MT_BOOL:
-      cs_criteria.Format(_T("%s"), cs_rule);
+      cs_criteria = cs_rule;
       break;
     case PWSMatch::MT_ENTRYTYPE:
-      cs_criteria.Format(_T("%s %s"), cs_rule, cs1);
+      Format(cs_criteria, _T("%s %s"), cs_rule, cs1);
       break;
     default:
       ASSERT(0);
