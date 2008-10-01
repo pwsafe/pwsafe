@@ -50,7 +50,7 @@ int PWSfileV1V2::WriteV2Header()
   char *rbuf = new char[rlen];
   PWSrand::GetInstance()->GetRandomData(rbuf, rlen-1);
   rbuf[rlen-1] = TCHAR('\0'); // although zero may be there before - who cares?
-  CString rname(V2ItemName);
+  stringT rname(V2ItemName);
   rname += rbuf;
   delete[] rbuf;
   header.SetName(rname, _T(""));
@@ -220,9 +220,10 @@ static StringX ReMergeNotes(const CItemData &item)
   }
   const StringX at(item.GetAutoType());
   if (!at.empty()) {
-    const CString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
+    stringT cs_autotype;
+    LoadAString(cs_autotype, IDSC_AUTOTYPE);
     notes += _T("\r\n");
-    notes += cs_autotype;
+    notes += cs_autotype.c_str();
     notes += at;
   }
   return notes;
@@ -325,8 +326,9 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
 static void ExtractAutoTypeCmd(StringX &notesStr, StringX &autotypeStr)
 {
   StringX instr(notesStr);
-  CString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
-  StringX::size_type left = instr.find(cs_autotype, 0);
+  stringT cs_autotype;
+  LoadAString(cs_autotype, IDSC_AUTOTYPE);
+  StringX::size_type left = instr.find(cs_autotype.c_str(), 0);
   if (left == StringX::npos) {
     autotypeStr = _T(""); 
   } else {
@@ -432,9 +434,6 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   StringX tempdata;  
   signed long numread = 0;
   unsigned char type;
-  // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
 
   switch (m_curversion) {
     case V17:

@@ -87,12 +87,12 @@ bool PWSfile::FileExists(const StringX &filename, bool &bReadOnly)
 void PWSfile::FileError(int formatRes, int cause)
 {
   // present error from FileException to user
-  CString cs_error, cs_msg;
+  stringT cs_error, cs_msg;
 
   ASSERT(cause >= 0 && cause <= 14);
-  cs_error.LoadString(IDSC_FILEEXCEPTION00 + cause);
-  cs_msg.Format(formatRes, cs_error);
-  AfxMessageBox(cs_msg, MB_OK);
+  LoadAString(cs_error, IDSC_FILEEXCEPTION00 + cause);
+  Format(cs_msg, formatRes, cs_error);
+  AfxMessageBox(cs_msg.c_str(), MB_OK);
 }
 
 PWSfile::VERSION PWSfile::ReadVersion(const StringX &filename)
@@ -307,7 +307,8 @@ static bool GetLocker(const stringT &lock_filename, stringT &locker)
   // End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
  
   if (h2 == INVALID_HANDLE_VALUE) {
-    const CString error(MAKEINTRESOURCE(IDSC_CANTGETLOCKER));
+    stringT error;
+    LoadAString(error, IDSC_CANTGETLOCKER);
     locker = error;
   } else {
     DWORD bytesRead;
@@ -319,7 +320,8 @@ static bool GetLocker(const stringT &lock_filename, stringT &locker)
       locker = lockerStr;
       bResult = true;
     } else { // read failed for some reason
-      const CString error(MAKEINTRESOURCE(IDSC_CANTGETLOCKER));
+      stringT error;
+      LoadAString(error, IDSC_CANTGETLOCKER);
       locker = error;
     } // read info from lock file
   }
@@ -412,7 +414,7 @@ bool PWSfile::LockFile(const StringX &filename, StringX &locker,
     if (cs_me == s_locker) {
       LockCount++;
       TRACE(_T("%s Lock1  ; Count now %d; File: %s%s\n"), 
-        PWSUtil::GetTimeStamp(), LockCount, fname, ext);
+            PWSUtil::GetTimeStamp().c_str(), LockCount, fname, ext);
       locker.clear();
       return true;
     } else {
@@ -455,14 +457,14 @@ bool PWSfile::LockFile(const StringX &filename, StringX &locker,
     DWORD numWrit, sumWrit;
     BOOL write_status;
     write_status = ::WriteFile(lockFileHandle,
-                               CString(user.c_str()), user.length() * sizeof(TCHAR),
+                               user.c_str(), user.length() * sizeof(TCHAR),
                                &sumWrit, NULL);
     write_status &= ::WriteFile(lockFileHandle,
                                 _T("@"), sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
-                                CString(host.c_str()), host.length() * sizeof(TCHAR),
+                                host.c_str(), host.length() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
@@ -470,13 +472,14 @@ bool PWSfile::LockFile(const StringX &filename, StringX &locker,
                                 &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
-                                CString(pid.c_str()), pid.length() * sizeof(TCHAR),
+                                pid.c_str(), pid.length() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
     LockCount++;
     TRACE(_T("%s Lock1  ; Count now %d; File Created; File: %s%s\n"), 
-          PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
+          PWSUtil::GetTimeStamp().c_str(), LockCount,
+          fname.c_str(), ext.c_str());
     return (write_status == TRUE);
   }
 #endif // POSIX_FILE_LOCK
@@ -510,11 +513,13 @@ void PWSfile::UnlockFile(const StringX &filename,
     if (cs_me == locker && LockCount > 1) {
       LockCount--;
       TRACE(_T("%s Unlock2; Count now %d; File: %s%s\n"), 
-            PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
+            PWSUtil::GetTimeStamp().c_str(),
+            LockCount, fname.c_str(), ext.c_str());
     } else {
       LockCount = 0;
       TRACE(_T("%s Unlock1; Count now %d; File Deleted; File: %s%s\n"), 
-            PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
+            PWSUtil::GetTimeStamp().c_str(),
+            LockCount, fname.c_str(), ext.c_str());
       CloseHandle(lockFileHandle);
       lockFileHandle = INVALID_HANDLE_VALUE;
       DeleteFile(lock_filename.c_str());
@@ -584,46 +589,47 @@ void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
 //Complain if the file has not opened correctly
 
 static void
-ErrorMessages(const CString &fn, FILE *fp)
+ErrorMessages(const stringT &fn, FILE *fp)
 {
   if (fp == NULL) {
-    CString cs_text;
+    stringT cs_text;
 
     switch (errno) {
       case EACCES:
-        cs_text.LoadString(IDSC_FILEREADONLY);
+        LoadAString(cs_text, IDSC_FILEREADONLY);
         break;
       case EEXIST:
-        cs_text.LoadString(IDSC_FILEEXISTS);
+        LoadAString(cs_text, IDSC_FILEEXISTS);
         break;
       case EINVAL:
-        cs_text.LoadString(IDSC_INVALIDFLAG);
+        LoadAString(cs_text, IDSC_INVALIDFLAG);
         break;
       case EMFILE:
-        cs_text.LoadString(IDSC_NOMOREHANDLES);
+        LoadAString(cs_text, IDSC_NOMOREHANDLES);
         break;
       case ENOENT:
-        cs_text.LoadString(IDSC_FILEPATHNOTFOUND);
+        LoadAString(cs_text, IDSC_FILEPATHNOTFOUND);
         break;
       default:
         break;
     }
 
-    CString cs_title = _T("Password Safe - ") + fn;
-    AfxGetMainWnd()->MessageBox(cs_text, cs_title, MB_ICONEXCLAMATION|MB_OK);
+    stringT cs_title = _T("Password Safe - ") + fn;
+    AfxGetMainWnd()->MessageBox(cs_text.c_str(), cs_title.c_str(),
+                                MB_ICONEXCLAMATION|MB_OK);
   }
 }
 
-bool PWSfile::Encrypt(const CString &fn, const StringX &passwd)
+bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd)
 {
   unsigned int len;
   unsigned char* buf;
 
   FILE *in;
 #if _MSC_VER >= 1400
-  _tfopen_s(&in, fn, _T("rb"));
+  _tfopen_s(&in, fn.c_str(), _T("rb"));
 #else
-  in = _tfopen(fn, _T("rb"));
+  in = _tfopen(fn.c_str(), _T("rb"));
 #endif
   if (in != NULL) {
     len = PWSUtil::fileLength(in);
@@ -636,14 +642,14 @@ bool PWSfile::Encrypt(const CString &fn, const StringX &passwd)
     return false;
   }
 
-  CString out_fn = fn;
+  stringT out_fn = fn;
   out_fn += CIPHERTEXT_SUFFIX;
 
   FILE *out;
 #if _MSC_VER >= 1400
-  _tfopen_s(&out, out_fn, _T("wb"));
+  _tfopen_s(&out, out_fn.c_str(), _T("wb"));
 #else
-  out = _tfopen(out_fn, _T("wb"));
+  out = _tfopen(out_fn.c_str(), _T("wb"));
 #endif
   if (out != NULL) {
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
@@ -688,16 +694,16 @@ bool PWSfile::Encrypt(const CString &fn, const StringX &passwd)
   return true;
 }
 
-bool PWSfile::Decrypt(const CString &fn, const StringX &passwd)
+bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd)
 {
   unsigned int len;
   unsigned char* buf;
 
   FILE *in;
 #if _MSC_VER >= 1400
-  _tfopen_s(&in, fn, _T("rb"));
+  _tfopen_s(&in, fn.c_str(), _T("rb"));
 #else
-  in = _tfopen(fn, _T("rb"));
+  in = _tfopen(fn.c_str(), _T("rb"));
 #endif
   if (in != NULL) {
     unsigned char salt[SaltLength];
@@ -749,17 +755,17 @@ bool PWSfile::Decrypt(const CString &fn, const StringX &passwd)
     return false;
   }
 
-  size_t suffix_len = strlen(CIPHERTEXT_SUFFIX);
-  size_t filepath_len = fn.GetLength();
+  size_t suffix_len = _tcslen(CIPHERTEXT_SUFFIX);
+  size_t filepath_len = fn.length();
 
-  CString out_fn = fn;
-  out_fn = out_fn.Left(static_cast<int>(filepath_len - suffix_len));
+  stringT out_fn = fn;
+  out_fn = out_fn.substr(0,filepath_len - suffix_len);
 
 #if _MSC_VER >= 1400
   FILE *out;
-  _tfopen_s(&out, out_fn, _T("wb"));
+  _tfopen_s(&out, out_fn.c_str(), _T("wb"));
 #else
-  FILE *out = _tfopen(out_fn, _T("wb"));
+  FILE *out = _tfopen(out_fn.c_str(), _T("wb"));
 #endif
   if (out != NULL) {
     fwrite(buf, 1, len, out);

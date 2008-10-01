@@ -14,6 +14,7 @@
 #include <vector>
 #include "UnknownField.h"
 #include "UUIDGen.h"
+#include "os/typedefs.h"
 
 typedef std::vector<CUUIDGen> UUIDList;
 
@@ -25,11 +26,11 @@ public:
   PWSXML(PWScore *core, UUIDList *possible_aliases, UUIDList *possible_shortcuts);
   ~PWSXML();
 
-  bool XMLProcess(const bool &bvalidation, const CString &ImportedPrefix, 
-    const CString &strXMLFileName, const CString &strXSDFileName,
+  bool XMLProcess(const bool &bvalidation, const stringT &ImportedPrefix, 
+    const stringT &strXMLFileName, const stringT &strXSDFileName,
     int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl);
 
-  CString m_strResultText;
+  stringT m_strResultText;
   int m_numEntriesValidated, m_numEntriesImported, m_MSXML_Version;
   bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;
 

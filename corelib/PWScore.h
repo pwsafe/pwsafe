@@ -109,24 +109,24 @@ public:
   {return WriteFile(filename, PWSfile::V20);}
   int WritePlaintextFile(const StringX &filename,
                          const CItemData::FieldBits &bsExport,
-                         const CString &subgroup, const int &iObject,
+                         const stringT &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
                          const OrderedItemList *il = NULL);
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
-                   const CString &subgroup, const int &iObject,
+                   const stringT &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR delimiter,
                    const OrderedItemList *il = NULL);
   int ImportPlaintextFile(const StringX &ImportedPrefix,
-                          const StringX &filename, CString &strErrors,
+                          const StringX &filename, stringT &strErrors,
                           TCHAR fieldSeparator, TCHAR delimiter,
                           int &numImported, int &numSkipped,
                           CReport &rpt);
   int ImportKeePassTextFile(const StringX &filename);
-  int ImportXMLFile(const CString &ImportedPrefix,
-                    const CString &strXMLFileName,
-                    const CString &strXSDFileName,
-                    CString &strErrors, int &numValidated, int &numImported,
+  int ImportXMLFile(const stringT &ImportedPrefix,
+                    const stringT &strXMLFileName,
+                    const stringT &strXSDFileName,
+                    stringT &strErrors, int &numValidated, int &numImported,
                     bool &bBadUnknownFileFields,
                     bool &bBadUnknownRecordFields, CReport &rpt);
   bool FileExists(const StringX &filename) const {return PWSfile::FileExists(filename);}
@@ -138,8 +138,8 @@ public:
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   int RenameFile(const StringX &oldname, const StringX &newname);
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
-                     const CString &userBackupPrefix,
-                     const CString &userBackupDir);
+                     const stringT &userBackupPrefix,
+                     const stringT &userBackupDir);
   int CheckPassword(const StringX &filename, const StringX &passkey);
   void ChangePassword(const StringX &newPassword);
   bool LockFile(const StringX &filename, StringX &locker)
@@ -160,12 +160,12 @@ public:
                               m_lockFileHandle2, m_LockCount);}
   void MoveLock()
   {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;}
-  void SetApplicationNameAndVersion(const CString &appName, DWORD dwMajorMinor);
+  void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor);
   void SetReadOnly(bool state) { m_IsReadOnly = state;}
   bool IsReadOnly() const {return m_IsReadOnly;};
 
   // Return list of unique groups
-  void GetUniqueGroups(CStringArray &ary) const;
+  void GetUniqueGroups(std::vector<stringT> &ary) const;
   StringX GetUniqueTitle(const StringX &path, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE);
 
@@ -258,7 +258,7 @@ public:
   bool WasDisplayStatusChanged() const;
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK
-  bool Validate(CString &status);
+  bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
 
   // Filters
@@ -279,12 +279,12 @@ private:
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, int len,
                        unsigned char *ciphertext) const;
-  BOOL GetIncBackupFileName(const CString &cs_filenamebase,
-                            int i_maxnumincbackups, CString &cs_newname);
+  BOOL GetIncBackupFileName(const stringT &cs_filenamebase,
+                            int i_maxnumincbackups, stringT &cs_newname);
 
   bool m_usedefuser;
   StringX m_defusername;
-  CString m_AppNameAndVersion;
+  stringT m_AppNameAndVersion;
 
   PWSfile::VERSION m_ReadFileVersion;
   PWSfile::HeaderRecord m_hdr;

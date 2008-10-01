@@ -87,7 +87,7 @@ BOOL DboxMain::OpenOnInit(void)
         // Here if there was a filename saved from last invocation, but it couldn't
         // be opened. It was either removed or renamed, so ask the user what to do
         CString cs_msg;
-        cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile());
+        cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
         CGeneralMsgBox gmb;
         gmb.SetMsg(cs_msg);
         gmb.SetStandardIcon(MB_ICONQUESTION);
@@ -646,8 +646,8 @@ int DboxMain::Save()
     if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
       int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
       int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-      CString userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
-      CString userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
+      stringT userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+      stringT userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
       if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
         userBackupPrefix, userBackupDir))
         AfxMessageBox(IDS_NOIBACKUP, MB_OK);
@@ -944,7 +944,7 @@ void DboxMain::OnExportText()
       } // while (1)
 
       const CItemData::FieldBits bsExport = et.m_bsExport;
-      const CString subgroup_name = et.m_subgroup_name;
+      const stringT subgroup_name = et.m_subgroup_name;
       const int subgroup_object = et.m_subgroup_object;
       const int subgroup_function = et.m_subgroup_function;
       TCHAR delimiter = et.m_defexpdelim[0];
@@ -1012,7 +1012,7 @@ void DboxMain::OnExportXML()
       } // while (1)
 
       const CItemData::FieldBits bsExport = eXML.m_bsExport;
-      const CString subgroup_name = eXML.m_subgroup_name;
+      const stringT subgroup_name = eXML.m_subgroup_name;
       const int subgroup_object = eXML.m_subgroup_object;
       const int subgroup_function = eXML.m_subgroup_function;
       TCHAR delimiter;
@@ -1073,19 +1073,19 @@ void DboxMain::OnImportText()
   }
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    CString strError;
+    stringT strError;
     StringX TxtFileName = fd.GetPathName();
     int numImported = 0, numSkipped = 0;
     TCHAR delimiter = dlg.m_defimpdelim[0];
 
     /* Create report as we go */
     CReport rpt;
-    CString cs_text;
-    cs_text.LoadString(IDS_RPTIMPORTTEXT);
-    rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
-    cs_text.LoadString(IDS_TEXT);
-    cs_temp.Format(IDS_IMPORTFILE, cs_text, TxtFileName);
-    rpt.WriteLine(cs_temp);
+    stringT cs_text;
+    LoadAString(cs_text, IDS_RPTIMPORTTEXT);
+    rpt.StartReport(cs_text.c_str(), m_core.GetCurFile().c_str());
+    LoadAString(cs_text, IDS_TEXT);
+    cs_temp.Format(IDS_IMPORTFILE, cs_text.c_str(), TxtFileName);
+    rpt.WriteLine(stringT(cs_temp));
     rpt.WriteLine();
 
     rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, strError, fieldSeparator,
@@ -1109,11 +1109,11 @@ void DboxMain::OnImportText()
         CString cs_type, temp1, temp2 = _T("");
         cs_type.LoadString(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES);
         temp1.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
-        rpt.WriteLine(temp1);
+        rpt.WriteLine(stringT(temp1));
         if (numSkipped != 0) {
           cs_type.LoadString(numSkipped == 1 ? IDS_ENTRY : IDS_ENTRIES);
           temp2.Format(IDS_RECORDSNOTREAD, numSkipped, cs_type);
-          rpt.WriteLine(temp2);
+          rpt.WriteLine(stringT(temp2));
         }
 
         cs_title.LoadString(IDS_STATUS);
@@ -1205,6 +1205,7 @@ void DboxMain::OnImportXML()
     return;
 
   CString cs_title, cs_temp, cs_text;
+  stringT csErrors(_T(""));
   const stringT XSDfn(_T("pwsafe.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
@@ -1221,7 +1222,7 @@ void DboxMain::OnImportXML()
   if (status == IDCANCEL)
     return;
 
-  CString ImportedPrefix(dlg.m_groupName);
+  stringT ImportedPrefix(dlg.m_groupName);
 
   CFileDialog fd(TRUE,
                  _T("xml"),
@@ -1242,7 +1243,7 @@ void DboxMain::OnImportXML()
   }
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    CString strErrors, csErrors(_T(""));
+    stringT strErrors;
     CString XMLFilename = fd.GetPathName();
     int numValidated, numImported;
     bool bBadUnknownFileFields, bBadUnknownRecordFields;
@@ -1254,9 +1255,9 @@ void DboxMain::OnImportXML()
     rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
     cs_text.LoadString(IDS_XML);
     cs_temp.Format(IDS_IMPORTFILE, cs_text, XMLFilename);
-    rpt.WriteLine(cs_temp);
+    rpt.WriteLine(stringT(cs_temp));
     rpt.WriteLine();
-    rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename,
+    rc = m_core.ImportXMLFile(ImportedPrefix, stringT(XMLFilename),
                               XSDFilename.c_str(), strErrors,
                               numValidated, numImported,
                               bBadUnknownFileFields, bBadUnknownRecordFields,
@@ -1267,19 +1268,20 @@ void DboxMain::OnImportXML()
     switch (rc) {
     case PWScore::XML_FAILED_VALIDATION:
       {
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
+                       strErrors.c_str());
         break;
       }
     case PWScore::XML_FAILED_IMPORT:
       {
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
+        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
       }
     case PWScore::SUCCESS:
       {
-        if (!strErrors.IsEmpty() ||
+        if (!strErrors.empty() ||
             bBadUnknownFileFields || bBadUnknownRecordFields) {
-          if (!strErrors.IsEmpty())
+          if (!strErrors.empty())
             csErrors = strErrors + _T("\n");
           if (bBadUnknownFileFields) {
             cs_temp.Format(IDS_XMLUNKNFLDIGNORED, _T("header"));
@@ -1291,7 +1293,8 @@ void DboxMain::OnImportXML()
           }
 
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                         fd.GetFileName(), numValidated, numImported, csErrors);
+                         fd.GetFileName(), numValidated,
+                         numImported, csErrors.c_str());
 
           ChangeOkUpdate();
         } else {
@@ -1309,13 +1312,13 @@ void DboxMain::OnImportXML()
     } // switch
 
     // Finish Report
-    rpt.WriteLine(cs_temp);
+    rpt.WriteLine(stringT(cs_temp));
     rpt.WriteLine();
-    rpt.WriteLine(csErrors);
+    rpt.WriteLine(csErrors.c_str());
     rpt.EndReport();
 
     CGeneralMsgBox gmb;
-    if (rc != PWScore::SUCCESS || !strErrors.IsEmpty())
+    if (rc != PWScore::SUCCESS || !strErrors.empty())
       gmb.SetStandardIcon(MB_ICONEXCLAMATION);
     else
       gmb.SetStandardIcon(MB_ICONINFORMATION);
@@ -1465,7 +1468,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
   cs_text.LoadString(IDS_RPTMERGE);
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_MERGINGDATABASE, pszFilename);
-  rpt.WriteLine(cs_temp);
+  rpt.WriteLine(stringT(cs_temp));
 
   /*
   Purpose:
@@ -1501,7 +1504,8 @@ int DboxMain::Merge(const StringX &pszFilename) {
       continue;
 
     if (m_subgroup_set == BST_CHECKED &&
-        !otherItem.Matches(m_subgroup_name, m_subgroup_object, m_subgroup_function))
+        !otherItem.Matches(stringT(m_subgroup_name),
+                           m_subgroup_object, m_subgroup_function))
       continue;
 
     const StringX otherGroup = otherItem.GetGroup();
@@ -1587,7 +1591,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
                        csDiffs);
 
         /* log it */
-        rpt.WriteLine(warnMsg);
+        rpt.WriteLine(stringT(warnMsg));
 
         /* Check no conflict of unique uuid */
         if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
@@ -1637,7 +1641,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
                                        numAliasesAdded, cs_aliases, numShortcutsAdded, cs_shortcuts);
   cs_title.LoadString(IDS_MERGECOMPLETED2);
   //MessageBox(resultStr, cs_title, MB_OK);
-  rpt.WriteLine(resultStr);
+  rpt.WriteLine(stringT(resultStr));
   rpt.EndReport();
 
   CGeneralMsgBox gmb;
@@ -1877,7 +1881,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
   cs_text.LoadString(IDS_RPTCOMPARE);
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
-  rpt.WriteLine(cs_temp);
+  rpt.WriteLine(stringT(cs_temp));
   rpt.WriteLine();
 
   // Put up hourglass...this might take a while
@@ -1933,7 +1937,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
     CItemData currentItem = m_core.GetEntry(currentPos);
 
     if (m_subgroup_set == BST_UNCHECKED ||
-        currentItem.Matches(m_subgroup_name, m_subgroup_object,
+        currentItem.Matches(stringT(m_subgroup_name), m_subgroup_object,
                             m_subgroup_function)) {
       st_data.group = currentItem.GetGroup();
       st_data.title = currentItem.GetTitle();
@@ -2049,7 +2053,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
     CItemData compItem = othercore.GetEntry(compPos);
 
     if (m_subgroup_set == BST_UNCHECKED ||
-        compItem.Matches(m_subgroup_name, m_subgroup_object,
+        compItem.Matches(stringT(m_subgroup_name), m_subgroup_object,
                          m_subgroup_function)) {
       st_data.group = compItem.GetGroup();
       st_data.title = compItem.GetTitle();
@@ -2079,7 +2083,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
   if (!m_bAdvanced) {
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
     rpt.WriteLine();
   } else {
     if (m_subgroup_set == BST_UNCHECKED) {
@@ -2155,12 +2159,12 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
                      cs_case);
     }
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
     rpt.WriteLine();
 
     cs_temp.LoadString(IDS_RPTCOMPARE);
     buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
 
     buffer = _T("\t");
     if (m_bsFields.test(CItemData::PASSWORD))
@@ -2185,7 +2189,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     if (m_bsFields.test(CItemData::POLICY))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
     rpt.WriteLine();
   }
 
@@ -2196,7 +2200,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
     cs_text.LoadString(IDS_IDENTICALDATABASES);
     buffer += cs_text;
     MessageBox(buffer, cs_title, MB_OK);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
     rpt.EndReport();
   } else {
     CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 
@@ -2247,9 +2251,11 @@ int DboxMain::SaveCore(PWScore *pcore)
     if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
       int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
       int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-      CString userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
-      CString userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
-      if (!pcore->BackupCurFile(maxNumIncBackups, backupSuffix, userBackupPrefix, userBackupDir))
+      StringX userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue);
+      StringX userBackupDir = prefs->GetPref(PWSprefs::BackupDir);
+      if (!pcore->BackupCurFile(maxNumIncBackups, backupSuffix,
+                                userBackupPrefix.c_str(),
+                                userBackupDir.c_str()))
         AfxMessageBox(IDS_NOIBACKUP, MB_OK);
     }
   } else { // file version mis-match

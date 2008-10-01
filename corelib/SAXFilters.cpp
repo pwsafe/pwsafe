@@ -40,7 +40,7 @@ typedef std::vector<stringT>::iterator viter;
 //  PWSSAXFilterErrorHandler Methods
 //  -----------------------------------------------------------------------
 PWSSAXFilterErrorHandler::PWSSAXFilterErrorHandler()
-  : bErrorsFound(FALSE), m_strValidationResult("")
+  : bErrorsFound(FALSE), m_strValidationResult(_T(""))
 {
   m_refCnt = 0;
 }
@@ -105,13 +105,14 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterErrorHandler::error(struct ISAXLocator * p
   pLocator->getLineNumber(&iLineNumber);
   pLocator->getColumnNumber(&iCharacter);
 
-  const CString cs_format(MAKEINTRESOURCE(IDSC_SAXGENERROR));
+  stringT cs_format;
+  LoadAString(cs_format,IDSC_SAXGENERROR);
 
 #if (_MSC_VER >= 1400)
-  _stprintf_s(szFormatString, MAX_PATH*2, cs_format,
+  _stprintf_s(szFormatString, MAX_PATH*2, cs_format.c_str(),
               hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #else
-  _stprintf(szFormatString, cs_format,
+  _stprintf(szFormatString, cs_format.c_str(),
               hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #endif
 
@@ -225,13 +226,13 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
   if (m_bValidation && _tcscmp(szCurElement, _T("filters")) == 0) {
     int iAttribs = 0;
     if (m_pSchema_Version == NULL) {
-      m_strImportErrors.LoadString(IDSC_MISSING_SCHEMA_VER);
+      LoadAString(m_strImportErrors, IDSC_MISSING_SCHEMA_VER);
       return E_FAIL;
     }
 
     m_iSchemaVersion = _wtoi(*m_pSchema_Version);
     if (m_iSchemaVersion <= 0) {
-      m_strImportErrors.LoadString(IDSC_INVALID_SCHEMA_VER);
+      LoadAString(m_strImportErrors, IDSC_INVALID_SCHEMA_VER);
       return E_FAIL;
     }
  
@@ -394,15 +395,17 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
     // a. it is less than or equal to the Filter schema version
     // b. it is less than or equal to the version supported by this PWS
     if (m_iXMLVersion < 0) {
-      m_strImportErrors.LoadString(IDSC_MISSING_XML_VER);
+      LoadAString(m_strImportErrors, IDSC_MISSING_XML_VER);
       return E_FAIL;
     }
     if (m_iXMLVersion > m_iSchemaVersion) {
-      m_strImportErrors.Format(IDSC_INVALID_XML_VER1, m_iXMLVersion, m_iSchemaVersion);
+      Format(m_strImportErrors,
+             IDSC_INVALID_XML_VER1, m_iXMLVersion, m_iSchemaVersion);
       return E_FAIL;
     }
     if (m_iXMLVersion > PWS_XML_FILTER_VERSION) {
-      m_strImportErrors.Format(IDSC_INVALID_XML_VER2, m_iXMLVersion, PWS_XML_FILTER_VERSION);
+      Format(m_strImportErrors, 
+             IDSC_INVALID_XML_VER2, m_iXMLVersion, PWS_XML_FILTER_VERSION);
       return E_FAIL;
     }
   }
@@ -417,11 +420,13 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
     fk.fpool = m_FPool;
     fk.cs_filtername = cur_filter->fname;
     if (m_MapFilters->find(fk) != m_MapFilters->end()) {
-      CString cs_text, cs_title;
+      stringT cs_text, cs_title;
       cs_title = _T("Filter Import into Database");
-      cs_text.Format(_T("Filter %s already exists in the database, do you wish to replace it with this?"),
-                     cur_filter->fname);
-      rc = MessageBox(NULL, cs_text, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+      Format(cs_text,
+             _T("Filter %s already exists in the database, do you wish to replace it with this?"),
+             cur_filter->fname);
+      rc = MessageBox(NULL, cs_text.c_str(), cs_title.c_str(),
+                      MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDYES) {
         m_MapFilters->erase(fk);
       }
@@ -645,8 +650,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("rule")) == 0) {
-    CString sec(m_strElemContent.c_str());
-    m_strElemContent = LPCTSTR(sec.MakeUpper());
+    ToUpper(m_strElemContent);
     if (m_strElemContent == _T("EQ"))
       cur_filterentry->rule = PWSMatch::MR_EQUALS;
     else if (m_strElemContent == _T("NE"))

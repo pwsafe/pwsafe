@@ -488,7 +488,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
     const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
     if (subgroup_set == BST_CHECKED &&
-      !curitem.Matches(subgroup_name, subgroup_object, subgroup_function))
+        !curitem.Matches(stringT(subgroup_name),
+                         subgroup_object, subgroup_function))
       goto nextentry;
 
     bFoundit = false;
@@ -3092,7 +3093,7 @@ void DboxMain::OnToolBarFindReport()
   if (!bFAdvanced) {
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
     rpt.WriteLine();
   } else {
     if (Fsubgroup_set == BST_UNCHECKED) {
@@ -3169,12 +3170,12 @@ void DboxMain::OnToolBarFindReport()
                      cs_case);
     }
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
     rpt.WriteLine();
 
     cs_temp.LoadString(IDS_RPTFIND);
     buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
 
     buffer = _T("\t");
     if (bsFFields.test(CItemData::GROUP))
@@ -3193,22 +3194,22 @@ void DboxMain::OnToolBarFindReport()
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
     if (bsFFields.test(CItemData::PWHIST))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
     rpt.WriteLine();
   }
 
   if (pindices->size() == 0) {
     buffer.Format(IDS_SEARCHRESULTS1, csFindString);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
   } else {
     buffer.Format(IDS_SEARCHRESULTS2, csFindString);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine(stringT(buffer));
     int i, index;
     for (i = 0; i < (int)pindices->size(); i++) {
       index = pindices->at(i);
       CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(index);
       buffer.Format(IDS_COMPARESTATS, ci->GetGroup(), ci->GetTitle(), ci->GetUser());
-      rpt.WriteLine(buffer, false);
+      rpt.WriteLine(stringT(buffer), false);
     }
   }
   rpt.WriteLine();
@@ -3505,7 +3506,7 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
   }
 
   if (!cs_notes.empty()) {
-    Replace(cs_notes, _T("\r\n"), _T("\n"));
+    Replace(cs_notes, StringX(_T("\r\n")), StringX(_T("\n")));
     Remove(cs_notes, _T('\r'));
 
     if (cs_notes.length() > 180)

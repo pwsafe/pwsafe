@@ -74,9 +74,9 @@ namespace PWSMatch {
   void GetMatchType(MatchType mtype,
                     int fnum1, int fnum2,
                     time_t fdate1, time_t fdate2,
-                    const CString &fstring, int fcase,
+                    const stringT &fstring, int fcase,
                     int etype, bool bBetween,
-                    CString &cs1, CString &cs2);
+                    stringT &cs1, stringT &cs2);
 };
 #endif /* __MATCH_H */
 //-----------------------------------------------------------------------------

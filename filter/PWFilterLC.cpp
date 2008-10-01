@@ -239,7 +239,7 @@ void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filterty
         vCriteriaSet[i] = false;
         st_fldata.bFilterComplete = false;
       } else {
-        cs_criteria = PWSFilters::GetFilterDescription(st_fldata);
+        cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
         dwData &= ~FLC_CRITERIA_REDTXT;
         vCriteriaSet[i] = true;
         st_fldata.bFilterComplete = true;
@@ -1277,7 +1277,7 @@ bool CPWFilterLC::GetCriterion()
     DWORD_PTR dwData;
     dwData = GetItemData(m_iItem);
     if (b_good) {
-      cs_criteria = PWSFilters::GetFilterDescription(st_fldata);
+      cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
       dwData &= ~FLC_CRITERIA_REDTXT;
       vcbxChanged[m_iItem] = false;
       vCriteriaSet[m_iItem] = true;

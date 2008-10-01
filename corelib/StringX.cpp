@@ -8,84 +8,92 @@
 
 #include <ctype.h>
 #include <string.h>
+#include <cstdarg>
 #include "StringX.h"
 #include "os/pws_tchar.h"
+#ifdef _WIN32
+#include <afx.h>
+#endif
+// A few convenience functions for StringX & stringT
 
-// A few convenience functions for StringX
-// Perhaps change these to member functions in the future?
-
-int CompareNoCase(const StringX &s1, const StringX &s2)
+template<class T> int CompareNoCase(const T &s1, const T &s2)
 {
   // case insensitive string comparison
   return _tcsicmp(s1.c_str(), s2.c_str());
 }
 
-void ToLower(StringX &s)
+template<class T> void ToLower(T &s)
 {
-  for (StringX::iterator iter = s.begin(); iter != s.end(); iter++)
+  for (T::iterator iter = s.begin(); iter != s.end(); iter++)
     *iter = TCHAR(_totlower(*iter));
 }
 
-StringX &Trim(StringX &s, const TCHAR *set)
+template<class T> void ToUpper(T &s)
+{
+  for (T::iterator iter = s.begin(); iter != s.end(); iter++)
+    *iter = TCHAR(_totupper(*iter));
+}
+
+template<class T> T &Trim(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
 
-  StringX::size_type b = s.find_first_not_of(tset);
-  if (b == StringX::npos) {
+  T::size_type b = s.find_first_not_of(tset);
+  if (b == T::npos) {
     s.clear();
   } else {
-    StringX::size_type e = s.find_last_not_of(tset);
-    StringX t(s.begin() + b, s.end() - (s.length() - e) + 1);
+    T::size_type e = s.find_last_not_of(tset);
+    T t(s.begin() + b, s.end() - (s.length() - e) + 1);
     s = t;
   }
   return s;
 }
 
-StringX &TrimRight(StringX &s, const TCHAR *set)
+template<class T> T &TrimRight(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
 
-  StringX::size_type e = s.find_last_not_of(tset);
-  if (e == StringX::npos) {
+  T::size_type e = s.find_last_not_of(tset);
+  if (e == T::npos) {
     s.clear();
   } else {
-    StringX t(s.begin(), s.end() - (s.length() - e) + 1);
+    T t(s.begin(), s.end() - (s.length() - e) + 1);
     s = t;
   }
   return s;
 }
 
-StringX &TrimLeft(StringX &s, const TCHAR *set)
+template<class T> T &TrimLeft(T &s, const TCHAR *set)
 {
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
 
-  StringX::size_type b = s.find_first_not_of(tset);
-  if (b == StringX::npos) {
+  T::size_type b = s.find_first_not_of(tset);
+  if (b == T::npos) {
     s.clear();
   } else {
-    StringX t(s.begin() + b, s.end());
+    T t(s.begin() + b, s.end());
     s = t;
   }
   return s;
 }
 
-void EmptyIfOnlyWhiteSpace(StringX &s)
+template<class T> void EmptyIfOnlyWhiteSpace(T &s)
 {
   const TCHAR *ws = _T(" \t\r\n");
-  StringX::size_type b = s.find_first_not_of(ws);
-  if (b == StringX::npos)
+  T::size_type b = s.find_first_not_of(ws);
+  if (b == T::npos)
     s.clear();
 }
 
-int Replace(StringX &s, TCHAR from, TCHAR to)
+template<class T> int Replace(T &s, TCHAR from, TCHAR to)
 {
   int retval = 0;
-  StringX r;
+  T r;
   r.reserve(s.length());
-  for (StringX::iterator iter = s.begin(); iter != s.end(); iter++)
+  for (T::iterator iter = s.begin(); iter != s.end(); iter++)
     if (*iter == from) {
       r.append(1, to);
       retval++;
@@ -95,13 +103,13 @@ int Replace(StringX &s, TCHAR from, TCHAR to)
   return retval;
 }
 
-int Replace(StringX &s, const StringX &from, const StringX &to)
+template<class T> int Replace(T &s, const T &from, const T &to)
 {
   int retval = 0;
-  StringX r;
-  StringX::size_type i = 0;
+  T r;
+  T::size_type i = 0;
   do {
-    StringX::size_type j = s.find(from, i);
+   T::size_type j = s.find(from, i);
     r.append(s, i, j - i);
     if (j != StringX::npos) {
       r.append(to);
@@ -114,11 +122,11 @@ int Replace(StringX &s, const StringX &from, const StringX &to)
   return retval;
 }
 
-int Remove(StringX &s, TCHAR c)
+template<class T> int Remove(T &s, TCHAR c)
 {
   int retval = 0;
-  StringX t;
-  for (StringX::iterator iter = s.begin(); iter != s.end(); iter++)
+  T t;
+  for (T::iterator iter = s.begin(); iter != s.end(); iter++)
     if (*iter != c)
       t += *iter;
     else
@@ -127,6 +135,72 @@ int Remove(StringX &s, TCHAR c)
     s = t;
   return retval;
 }
+
+template<class T> void LoadAString(T &s, int id)
+{
+#ifdef _WIN32
+  CString cs;
+  cs.LoadString(id);
+  s = cs;
+#endif
+}
+
+template<class T> void Format(T &s, const TCHAR *fmt, ...)
+{
+  va_list args;
+
+  va_start(args, fmt);
+  int len = _vsctprintf(fmt, args) + 1;
+  TCHAR *buffer = new TCHAR[len];
+  _vstprintf_s(buffer, len, fmt, args);
+  s = buffer;
+  delete[] buffer;
+  va_end(args);
+}
+
+template<class T> void Format(T &s, int fmt, ...)
+{
+  va_list args;
+
+  va_start(args, fmt);
+  T fmt_str;
+  LoadAString(fmt_str, fmt);
+  int len = _vsctprintf(fmt_str.c_str(), args) + 1;
+  TCHAR *buffer = new TCHAR[len];
+  _vstprintf_s(buffer, len, fmt_str.c_str(), args);
+  s = buffer;
+  delete[] buffer;
+  va_end(args);
+}
+
+
+// instantiations for StringX & stringT
+template int CompareNoCase(const StringX &s1, const StringX &s2);
+template int CompareNoCase(const stringT &s1, const stringT &s2);
+template void ToLower(StringX &s);
+template void ToLower(stringT &s);
+template void ToUpper(StringX &s);
+template void ToUpper(stringT &s);
+template StringX &Trim(StringX &s, const TCHAR *set);
+template stringT &Trim(stringT &s, const TCHAR *set);
+template StringX &TrimRight(StringX &s, const TCHAR *set);
+template stringT &TrimRight(stringT &s, const TCHAR *set);
+template StringX &TrimLeft(StringX &s, const TCHAR *set);
+template stringT &TrimLeft(stringT &s, const TCHAR *set);
+template void EmptyIfOnlyWhiteSpace(StringX &s);
+template void EmptyIfOnlyWhiteSpace(stringT &s);
+template int Replace(StringX &s, TCHAR from, TCHAR to);
+template int Replace(stringT &s, TCHAR from, TCHAR to);
+template int Replace(StringX &s, const StringX &from, const StringX &to);
+template int Replace(stringT &s, const stringT &from, const stringT &to);
+template int Remove(StringX &s, TCHAR c);
+template int Remove(stringT &s, TCHAR c);
+template void LoadAString(stringT &s, int id);
+template void LoadAString(StringX &s, int id);
+template void Format(stringT &s, int fmt, ...);
+template void Format(StringX &s, int fmt, ...);
+template void Format(stringT &s, const TCHAR *fmt, ...);
+template void Format(StringX &s, const TCHAR *fmt, ...);
 
 
 #ifdef TEST_TRIM

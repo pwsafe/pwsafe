@@ -27,7 +27,7 @@ namespace PWSDebug {
     maxnum  - maximum characters dumped per line
 
   return:
-    CString containing output buffer
+    stringT containing output buffer
 */
   void HexDump(unsigned char *pmemory, const int length,
                const stringT &cs_prefix = _S(""), const int maxnum = 16);

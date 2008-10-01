@@ -1,12 +1,12 @@
 #include "VerifyFormat.h"
 #include "corelib.h"
 
-bool VerifyImportDateTimeString(const CString &time_str, time_t &t)
+bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
 {
   //  String format must be "yyyy/mm/dd hh:mm:ss"
   //                        "0123456789012345678"
 
-  CString xtime_str;
+  stringT xtime_str;
   const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
   const int idigits[14] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18};
   const int ndigits = 14;
@@ -14,35 +14,35 @@ bool VerifyImportDateTimeString(const CString &time_str, time_t &t)
 
   t = (time_t)-1;
 
-  if (time_str.GetLength() != 19)
+  if (time_str.length() != 19)
     return false;
 
   // Validate time_str
-  if (time_str.Mid(4,1) != '/' ||
-    time_str.Mid(7,1) != '/' ||
-    time_str.Mid(10,1) != ' ' ||
-    time_str.Mid(13,1) != ':' ||
-    time_str.Mid(16,1) != ':')
+  if (time_str.substr(4,1) != _S("/") ||
+      time_str.substr(7,1) != _S("/") ||
+      time_str.substr(10,1) != _S(" ") ||
+      time_str.substr(13,1) != _S(":") ||
+      time_str.substr(16,1) != _S(":"))
     return false;
 
   for (int i = 0;  i < ndigits; i++)
-    if (!isdigit(time_str.GetAt(idigits[i])))
+    if (!isdigit(time_str[idigits[i]]))
       return false;
 
   // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
   // Then take copy of the string and replace all blanks by '#' (should only be 1)
-  if (time_str.Find(TCHAR('#')) != (-1))
+  if (time_str.find(TCHAR('#')) != stringT::npos)
     return false;
 
   xtime_str = time_str;
-  if (xtime_str.Replace(TCHAR(' '), TCHAR('#')) != 1)
+  if (Replace(xtime_str, TCHAR(' '), TCHAR('#')) != 1)
     return false;
 
 #if _MSC_VER >= 1400
-  nscanned = _stscanf_s(xtime_str, _T("%4d/%2d/%2d#%2d:%2d:%2d"),
+  nscanned = _stscanf_s(xtime_str.c_str(), _T("%4d/%2d/%2d#%2d:%2d:%2d"),
                         &yyyy, &mon, &dd, &hh, &min, &ss);
 #else
-  nscanned = _stscanf(xtime_str, _T("%4d/%2d/%2d#%2d:%2d:%2d"),
+  nscanned = _stscanf(xtime_str.c_str(), _T("%4d/%2d/%2d#%2d:%2d:%2d"),
                       &yyyy, &mon, &dd, &hh, &min, &ss);
 #endif
 
@@ -85,60 +85,60 @@ bool VerifyImportDateTimeString(const CString &time_str, time_t &t)
   return true;
 }
 
-bool VerifyASCDateTimeString(const CString &time_str, time_t &t)
+bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
 {
   //  String format must be "ddd MMM dd hh:mm:ss yyyy"
   //                        "012345678901234567890123"
 
   const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-  const CString str_months = _T("JanFebMarAprMayJunJulAugSepOctNovDec");
-  const CString str_days = _T("SunMonTueWedThuFriSat");
-  CString xtime_str;
+  const stringT str_months = _T("JanFebMarAprMayJunJulAugSepOctNovDec");
+  const stringT str_days = _T("SunMonTueWedThuFriSat");
+  stringT xtime_str;
   TCHAR cmonth[4], cdayofweek[4];
   const int idigits[12] = {8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 22, 23};
   const int ndigits = 12;
-  int iMON, iDOW, nscanned;
+  stringT::size_type iMON, iDOW, nscanned;
   int yyyy, mon, dd, hh, min, ss;
 
   cmonth[3] = cdayofweek[3] = TCHAR('\0');
 
   t = (time_t)-1;
 
-  if (time_str.GetLength() != 24)
+  if (time_str.length() != 24)
     return false;
 
   // Validate time_str
-  if (time_str.Mid(13,1) != ':' ||
-      time_str.Mid(16,1) != ':')
+  if (time_str.substr(13,1) != _S(":") ||
+      time_str.substr(16,1) != _S(":"))
     return false;
 
   for (int i = 0; i < ndigits; i++)
-    if (!isdigit(time_str.GetAt(idigits[i])))
+    if (!isdigit(time_str[idigits[i]]))
       return false;
 
   // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
   // Then take copy of the string and replace all blanks by '#' (should be 4)
-  if (time_str.Find(TCHAR('#')) != (-1))
+  if (time_str.find(TCHAR('#')) != stringT::npos)
     return false;
 
   xtime_str = time_str;
-  if (xtime_str.Replace(TCHAR(' '), TCHAR('#')) != 4)
+  if (Replace(xtime_str, TCHAR(' '), TCHAR('#')) != 4)
     return false;
 
 #if _MSC_VER >= 1400
-  nscanned = _stscanf_s(xtime_str, _T("%3c#%3c#%2d#%2d:%2d:%2d#%4d"),
+  nscanned = _stscanf_s(xtime_str.c_str(), _T("%3c#%3c#%2d#%2d:%2d:%2d#%4d"),
                         cdayofweek, sizeof(cdayofweek), cmonth, sizeof(cmonth),
                         &dd, &hh, &min, &ss, &yyyy);
 #else
-  nscanned = _stscanf(xtime_str, _T("%3c#%3c#%2d#%2d:%2d:%2d#%4d"),
+  nscanned = _stscanf(xtime_str.c_str(), _T("%3c#%3c#%2d#%2d:%2d:%2d#%4d"),
                       cdayofweek, cmonth, &dd, &hh, &min, &ss, &yyyy);
 #endif
 
   if (nscanned != 7)
     return false;
 
-  iMON = str_months.Find(cmonth);
-  if (iMON < 0)
+  iMON = str_months.find(cmonth);
+  if (iMON == stringT::npos)
     return false;
 
   mon = (iMON / 3) + 1;
@@ -174,12 +174,12 @@ bool VerifyASCDateTimeString(const CString &time_str, time_t &t)
 
   const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
 
-  iDOW = str_days.Find(cdayofweek);
-  if (iDOW < 0)
+  iDOW = str_days.find(cdayofweek);
+  if (iDOW == stringT::npos)
     return false;
 
   iDOW = (iDOW / 3) + 1;
-  if (iDOW != ct.GetDayOfWeek())
+  if (iDOW != stringT::size_type(ct.GetDayOfWeek()))
     return false;
 
   t = (time_t)ct.GetTime();
@@ -187,12 +187,12 @@ bool VerifyASCDateTimeString(const CString &time_str, time_t &t)
   return true;
 }
 
-bool VerifyXMLDateTimeString(const CString &time_str, time_t &t)
+bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
 {
   //  String format must be "yyyy-mm-ddThh:mm:ss"
   //                        "0123456789012345678"
 
-  CString xtime_str;
+  stringT xtime_str;
   const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
   const int idigits[14] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18};
   const int ndigits = 14;
@@ -200,40 +200,40 @@ bool VerifyXMLDateTimeString(const CString &time_str, time_t &t)
 
   t = (time_t)-1;
 
-  if (time_str.GetLength() != 19)
+  if (time_str.length() != 19)
     return false;
 
   // Validate time_str
-  if (time_str.Mid(4,1) != '-' ||
-      time_str.Mid(7,1) != '-' ||
-      time_str.Mid(10,1) != 'T' ||
-      time_str.Mid(13,1) != ':' ||
-      time_str.Mid(16,1) != ':')
+  if (time_str.substr(4,1) != _S("-") ||
+      time_str.substr(7,1) != _S("-") ||
+      time_str.substr(10,1) != _S("T") ||
+      time_str.substr(13,1) != _S(":") ||
+      time_str.substr(16,1) != _S(":"))
     return false;
 
   for (int i = 0; i < ndigits; i++) {
-    if (!isdigit(time_str.GetAt(idigits[i])))
+    if (!isdigit(time_str[idigits[i]]))
       return false;
   }
 
   // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
   // and no blanks.  Replace '-' & 'T' by '#'.
-  if (time_str.Find(TCHAR('#')) != (-1))
+  if (time_str.find(TCHAR('#')) != stringT::npos)
     return false;
-  if (time_str.Find(TCHAR(' ')) != (-1))
+  if (time_str.find(TCHAR(' ')) != stringT::npos)
     return false;
 
   xtime_str = time_str;
-  if (xtime_str.Replace(TCHAR('-'), TCHAR('#')) != 2)
+  if (Replace(xtime_str, TCHAR('-'), TCHAR('#')) != 2)
     return false;
-  if (xtime_str.Replace(TCHAR('T'), TCHAR('#')) != 1)
+  if (Replace(xtime_str, TCHAR('T'), TCHAR('#')) != 1)
     return false;
 
 #if _MSC_VER >= 1400
-  nscanned = _stscanf_s(xtime_str, _T("%4d#%2d#%2d#%2d:%2d:%2d"),
+  nscanned = _stscanf_s(xtime_str.c_str(), _T("%4d#%2d#%2d#%2d:%2d:%2d"),
                         &yyyy, &mon, &dd, &hh, &min, &ss);
 #else
-  nscanned = _stscanf(xtime_str, _T("%4d#%2d#%2d#%2d:%2d:%2d"),
+  nscanned = _stscanf(xtime_str.c_str(), _T("%4d#%2d#%2d#%2d:%2d:%2d"),
                       &yyyy, &mon, &dd, &hh, &min, &ss);
 #endif
 
@@ -276,12 +276,12 @@ bool VerifyXMLDateTimeString(const CString &time_str, time_t &t)
   return true;
 }
 
-bool VerifyXMLDateString(const CString &time_str, time_t &t)
+bool VerifyXMLDateString(const stringT &time_str, time_t &t)
 {
   //  String format must be "yyyy-mm-dd"
   //                        "0123456789"
 
-  CString xtime_str;
+  stringT xtime_str;
   const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
   const int idigits[14] = {0, 1, 2, 3, 5, 6, 8, 9};
   const int ndigits = 8;
@@ -289,35 +289,35 @@ bool VerifyXMLDateString(const CString &time_str, time_t &t)
 
   t = (time_t)-1;
 
-  if (time_str.GetLength() != 10)
+  if (time_str.length() != 10)
     return false;
 
   // Validate time_str
-  if (time_str.Mid(4,1) != '-' ||
-      time_str.Mid(7,1) != '-')
+  if (time_str.substr(4,1) != _S("-") ||
+      time_str.substr(7,1) != _S("-"))
     return false;
 
   for (int i = 0; i < ndigits; i++) {
-    if (!isdigit(time_str.GetAt(idigits[i])))
+    if (!isdigit(time_str[idigits[i]]))
       return false;
   }
 
   // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
   // and no blanks.  Replace '-' by '#'.
-  if (time_str.Find(TCHAR('#')) != (-1))
+  if (time_str.find(TCHAR('#')) != stringT::npos)
     return false;
-  if (time_str.Find(TCHAR(' ')) != (-1))
+  if (time_str.find(TCHAR(' ')) != stringT::npos)
     return false;
 
   xtime_str = time_str;
-  if (xtime_str.Replace(TCHAR('-'), TCHAR('#')) != 2)
+  if (Replace(xtime_str, TCHAR('-'), TCHAR('#')) != 2)
     return false;
 
 #if _MSC_VER >= 1400
-  nscanned = _stscanf_s(xtime_str, _T("%4d#%2d#%2d"),
+  nscanned = _stscanf_s(xtime_str.c_str(), _T("%4d#%2d#%2d"),
                         &yyyy, &mon, &dd);
 #else
-  nscanned = _stscanf(xtime_str, _T("%4d#%2d#%2d"),
+  nscanned = _stscanf(xtime_str.c_str(), _T("%4d#%2d#%2d"),
                       &yyyy, &mon, &dd);
 #endif
 
@@ -355,8 +355,8 @@ bool VerifyXMLDateString(const CString &time_str, time_t &t)
   return true;
 }
 
-int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory, 
-                                CString &strErrors)
+int VerifyImportPWHistoryString(const StringX &PWHistory,
+                                StringX &newPWHistory, stringT &strErrors)
 {
   // Format is (! == mandatory blank, unless at the end of the record):
   //    sxx00
@@ -366,7 +366,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory,
   //    !yyyy/mm/dd!hh:mm:ss! may be !1970-01-01 00:00:00! meaning unknown
 
   StringX tmp, pwh;
-  CString buffer;
+  stringT buffer;
   int ipwlen, s = -1, m = -1, n = -1;
   int rc = PWH_OK;
   time_t t;
@@ -416,8 +416,8 @@ int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory,
     goto relbuf;
   }
 
-  buffer.Format(_T("%01d%02x%02x"), s, m, n);
-  newPWHistory = LPCTSTR(buffer);
+  Format(buffer, _T("%01d%02x%02x"), s, m, n);
+  newPWHistory = buffer.c_str();
 
   for (int i = 0; i < n; i++) {
     if (pwleft < 26) {  //  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
@@ -482,9 +482,9 @@ int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory,
     }
 
     tmp = StringX(lpszPWHistory, ipwlen);
-    buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
-    newPWHistory += LPCTSTR(buffer);
-    buffer.Empty();
+    Format(buffer, _T("%08x%04x%s"), (long) t, ipwlen, tmp);
+    newPWHistory += buffer.c_str();
+    buffer.clear();
     lpszPWHistory += ipwlen;
     pwleft -= ipwlen;
   }
@@ -494,37 +494,37 @@ int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory,
 
  relbuf: // pwh.ReleaseBuffer(); - obsoleted by move to StringX
 
- exit: buffer.Format(IDSC_PWHERROR, len - pwleft + 1);
-  CString temp;
+ exit: Format(buffer, IDSC_PWHERROR, len - pwleft + 1);
+  stringT temp;
   switch (rc) {
   case PWH_OK:
   case PWH_IGNORE:
-    temp.Empty();
-    buffer.Empty();
+    temp.clear();
+    buffer.clear();
     break;
   case PWH_INVALID_HDR:
-    temp.Format(IDSC_INVALIDHEADER, PWHistory);
+    Format(temp, IDSC_INVALIDHEADER, PWHistory);
     break;
   case PWH_INVALID_STATUS:
-    temp.Format(IDSC_INVALIDPWHSTATUS, s);
+    Format(temp, IDSC_INVALIDPWHSTATUS, s);
     break;
   case PWH_INVALID_NUM:
-    temp.Format(IDSC_INVALIDNUMOLDPW, n, m);
+    Format(temp, IDSC_INVALIDNUMOLDPW, n, m);
     break;
   case PWH_INVALID_DATETIME:
-    temp.LoadString(IDSC_INVALIDDATETIME);
+    LoadAString(temp, IDSC_INVALIDDATETIME);
     break;
   case PWH_INVALID_PSWD_LENGTH:
-    temp.LoadString(IDSC_INVALIDPWLENGTH);
+    LoadAString(temp, IDSC_INVALIDPWLENGTH);
     break;
   case PWH_TOO_SHORT:
-    temp.LoadString(IDSC_FIELDTOOSHORT);
+    LoadAString(temp, IDSC_FIELDTOOSHORT);
     break;
   case PWH_TOO_LONG:
-    temp.LoadString(IDSC_FIELDTOOLONG);
+    LoadAString(temp, IDSC_FIELDTOOLONG);
     break;
   case PWH_INVALID_CHARACTER:
-    temp.LoadString(IDSC_INVALIDSEPARATER);
+    LoadAString(temp, IDSC_INVALIDSEPARATER);
     break;
   default:
     ASSERT(0);

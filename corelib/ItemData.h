@@ -202,24 +202,24 @@ public:
     void SetAutoType(const StringX &autotype); // V30
     void SetATime() {SetTime(ATIME);}  // V30
     void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
-    bool SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
+    bool SetATime(const stringT &time_str) {return SetTime(ATIME, time_str);}  // V30
     void SetCTime() {SetTime(CTIME);}  // V30
     void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
-    bool SetCTime(const CString &time_str) {return SetTime(CTIME, time_str);}  // V30
+    bool SetCTime(const stringT &time_str) {return SetTime(CTIME, time_str);}  // V30
     void SetXTime() {SetTime(XTIME);}  // V30
     void SetXTime(time_t t) {SetTime(XTIME, t);}  // V30
-    bool SetXTime(const CString &time_str) {return SetTime(XTIME, time_str);}  // V30
+    bool SetXTime(const stringT &time_str) {return SetTime(XTIME, time_str);}  // V30
     void SetPMTime() {SetTime(PMTIME);}  // V30
     void SetPMTime(time_t t) {SetTime(PMTIME, t);}  // V30
-    bool SetPMTime(const CString &time_str) {return SetTime(PMTIME, time_str);}  // V30
+    bool SetPMTime(const stringT &time_str) {return SetTime(PMTIME, time_str);}  // V30
     void SetRMTime() {SetTime(RMTIME);}  // V30
     void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
-    bool SetRMTime(const CString &time_str) {return SetTime(RMTIME, time_str);}  // V30
+    bool SetRMTime(const stringT &time_str) {return SetTime(RMTIME, time_str);}  // V30
     void SetXTimeInt(int &xint); // V30
-    bool SetXTimeInt(const CString &xint_str); // V30
+    bool SetXTimeInt(const stringT &xint_str); // V30
     void SetPWHistory(const StringX &PWHistory);  // V30
     void SetPWPolicy(const PWPolicy &pwp);
-    bool SetPWPolicy(const CString &cs_pwp);
+    bool SetPWPolicy(const stringT &cs_pwp);
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy
     void *GetDisplayInfo() const {return m_display_info;}
@@ -233,7 +233,7 @@ public:
     bool WillExpire(const int numdays);
 
     // Predicate to determine if item matches given criteria
-    bool Matches(const CString &string1, int iObject, 
+    bool Matches(const stringT &string1, int iObject, 
                  int iFunction) const;  // string values
     bool Matches(int num1, int num2, int iObject,
                  int iFunction) const;  // intger values
@@ -317,7 +317,7 @@ private:
   void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30
-  bool SetTime(const int whichtime, const CString &time_str); // V30
+  bool SetTime(const int whichtime, const stringT &time_str); // V30
 
   // Create local Encryption/Decryption object
   BlowFish *MakeBlowFish() const;

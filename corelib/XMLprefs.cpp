@@ -39,7 +39,7 @@ bool CXMLprefs::Lock()
   StringX locker(_T(""));
   int tries = 10;
   do {
-    m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile.GetString(), locker);
+    m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile, locker);
     if (!m_bIsLocked)
       Sleep(200);
   } while (!m_bIsLocked && --tries > 0);
@@ -48,7 +48,7 @@ bool CXMLprefs::Lock()
 
 void CXMLprefs::Unlock()
 {
-  PWSprefs::UnlockCFGFile(m_csConfigFile.GetString());
+  PWSprefs::UnlockCFGFile(m_csConfigFile);
   m_bIsLocked = false;
 }
 
@@ -57,7 +57,7 @@ bool CXMLprefs::CreateXML(bool forLoad)
   // Call with forLoad set when about to Load, else
   // this also adds a toplevel root element
   ASSERT(m_pXMLDoc == NULL);
-  m_pXMLDoc = new TiXmlDocument(m_csConfigFile);
+  m_pXMLDoc = new TiXmlDocument(m_csConfigFile.c_str());
   if (!forLoad && m_pXMLDoc != NULL) {
     TiXmlDeclaration decl(_T("1.0"), _T("UTF-8"), _T("yes"));
     TiXmlElement rootElem(_T("Pwsafe_Settings"));
@@ -88,12 +88,13 @@ bool CXMLprefs::Load()
 
   if (!retval) {
     // an XML load error occurred so display the reason
-    CString csMessage;
-    csMessage.Format(IDSC_XMLFILEERROR,
-      m_pXMLDoc->ErrorDesc(), m_csConfigFile,
-      m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
-    const CString cs_title(MAKEINTRESOURCE(IDSC_XMLLOADFAILURE));
-    MessageBox(NULL, csMessage, cs_title, MB_OK);
+    stringT csMessage;
+    Format(csMessage, IDSC_XMLFILEERROR,
+           m_pXMLDoc->ErrorDesc(), m_csConfigFile.c_str(),
+           m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
+    stringT cs_title;
+    LoadAString(cs_title, IDSC_XMLLOADFAILURE);
+    MessageBox(NULL, csMessage.c_str(), cs_title.c_str(), MB_OK);
 
     delete m_pXMLDoc;
     m_pXMLDoc = NULL;
@@ -134,12 +135,13 @@ bool CXMLprefs::Store()
   retval = m_pXMLDoc->SaveFile();
   if (!retval) {
     // Get and show error
-    CString csMessage;
-    csMessage.Format(IDSC_XMLFILEERROR,
-      m_pXMLDoc->ErrorDesc(), m_csConfigFile,
-      m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
-    const CString cs_title(MAKEINTRESOURCE(IDSC_XMLSAVEFAILURE));
-    MessageBox(NULL, csMessage, cs_title, MB_OK);
+    stringT csMessage;
+    Format(csMessage, IDSC_XMLFILEERROR,
+           m_pXMLDoc->ErrorDesc(), m_csConfigFile,
+           m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
+    stringT cs_title;
+    LoadAString(cs_title, IDSC_XMLSAVEFAILURE);
+    MessageBox(NULL, csMessage.c_str(), cs_title.c_str(), MB_OK);
   }
 
 exit:
@@ -153,7 +155,7 @@ exit:
 }
 
 // get a int value
-int CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
+int CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName, 
                    const int &iDefaultValue)
 {
   /*
@@ -161,33 +163,33 @@ int CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName,
   call the GetSettingString method.
   */
   int iRetVal = iDefaultValue;
-  CString csDefaultValue;
+  stringT csDefaultValue;
 
-  csDefaultValue.Format(_T("%d"), iRetVal);
+  Format(csDefaultValue, _T("%d"), iRetVal);
 
-  iRetVal = _ttoi(Get(csBaseKeyName, csValueName, csDefaultValue));
+  iRetVal = _ttoi(Get(csBaseKeyName, csValueName, csDefaultValue).c_str());
 
   return iRetVal;
 }
 
 // get a string value
-CString CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
-                       const CString &csDefaultValue)
+stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName, 
+                       const stringT &csDefaultValue)
 {
   ASSERT(m_pXMLDoc != NULL); // shouldn't be called if not loaded
   if (m_pXMLDoc == NULL) // just in case
     return csDefaultValue;
 
   int iNumKeys = 0;
-  CString csValue = csDefaultValue;
+  stringT csValue = csDefaultValue;
 
   // Add the value to the base key separated by a '\'
-  CString csKeyName(csBaseKeyName);
+  stringT csKeyName(csBaseKeyName);
   csKeyName += _T("\\");
   csKeyName += csValueName;
 
   // Parse all keys from the base key name (keys separated by a '\')
-  CString *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
 
   // Traverse the xml using the keys parsed from the base key name to find the correct node
   if (pcsKeys != NULL) {
@@ -199,7 +201,7 @@ CString CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName,
 
       if (foundNode != NULL) {
         // get the text of the node (will be the value we requested)
-        csValue = CString(foundNode->GetText());
+        csValue = stringT(foundNode->GetText());
       }
     }
     delete[] pcsKeys;
@@ -209,7 +211,7 @@ CString CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName,
 }
 
 // set a int value
-int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
+int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
                    const int &iValue)
 {
   /*
@@ -217,9 +219,9 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
   call the SetSettingString method.
   */
   int iRetVal = 0;
-  CString csValue = _T("");
+  stringT csValue = _T("");
 
-  csValue.Format(_T("%d"), iValue);
+  Format(csValue, _T("%d"), iValue);
 
   iRetVal = Set(csBaseKeyName, csValueName, csValue);
 
@@ -227,8 +229,8 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
 }
 
 // set a string value
-int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName, 
-                   const CString &csValue)
+int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName, 
+                   const stringT &csValue)
 {
   // m_pXMLDoc may be NULL if Load() not called b4 Set,
   // or if called & failed
@@ -240,12 +242,12 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
   int iNumKeys = 0;
 
   // Add the value to the base key separated by a '\'
-  CString csKeyName(csBaseKeyName);
+  stringT csKeyName(csBaseKeyName);
   csKeyName += _T("\\");
   csKeyName += csValueName;
 
   // Parse all keys from the base key name (keys separated by a '\')
-  CString *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
 
   // Traverse the xml using the keys parsed from the base key name to find the correct node
   if (pcsKeys != NULL) {
@@ -258,9 +260,9 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
       if (foundNode != NULL) {
         TiXmlNode *valueNode = foundNode->FirstChild();
         if (valueNode != NULL) // replace existing value
-          valueNode->SetValue(csValue);
+          valueNode->SetValue(csValue.c_str());
         else {// first time set
-          TiXmlText value(csValue);
+          TiXmlText value(csValue.c_str());
           foundNode->InsertEndChild(value);
         }
       } else
@@ -275,7 +277,7 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
 }
 
 // delete a key or chain of keys
-BOOL CXMLprefs::DeleteSetting(const CString &csBaseKeyName, const CString &csValueName)
+bool CXMLprefs::DeleteSetting(const stringT &csBaseKeyName, const stringT &csValueName)
 {
   // m_pXMLDoc may be NULL if Load() not called b4 DeleteSetting,
   // or if called & failed
@@ -283,17 +285,17 @@ BOOL CXMLprefs::DeleteSetting(const CString &csBaseKeyName, const CString &csVal
   if (m_pXMLDoc == NULL && !CreateXML(false))
     return false;
 
-  BOOL bRetVal = FALSE;
+  bool bRetVal = false;
   int iNumKeys = 0;
-  CString csKeyName(csBaseKeyName);
+  stringT csKeyName(csBaseKeyName);
 
-  if (!csValueName.IsEmpty()) {
+  if (!csValueName.empty()) {
     csKeyName += _T("\\");
     csKeyName += csValueName;
   }
 
   // Parse all keys from the base key name (keys separated by a '\')
-  CString *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
 
   // Traverse the xml using the keys parsed from the base key name to find the correct node.
   if (pcsKeys != NULL) {
@@ -320,38 +322,39 @@ BOOL CXMLprefs::DeleteSetting(const CString &csBaseKeyName, const CString &csVal
 }
 
 // Parse all keys from the base key name.
-CString* CXMLprefs::ParseKeys(const CString &csFullKeyPath, int &iNumKeys)
+stringT* CXMLprefs::ParseKeys(const stringT &csFullKeyPath, int &iNumKeys)
 {
-  CString* pcsKeys = NULL;
+  stringT* pcsKeys = NULL;
 
   // replace spaces with _ since xml doesn't like them
-  CString csFKP(csFullKeyPath);
-  csFKP.Replace(_T(' '), _T('_'));
+  stringT csFKP(csFullKeyPath);
+  Replace(csFKP, _T(' '), _T('_'));
 
-  if (csFKP.GetAt(csFKP.GetLength() - 1) == _T('\\'))
-    csFKP.TrimRight(_T('\\'));  // remove slashes on the end
+  if (csFKP[csFKP.length() - 1] == TCHAR('\\'))
+    TrimRight(csFKP, _T("\\"));  // remove slashes on the end
 
-  CString csTemp(csFKP);
+  stringT csTemp(csFKP);
 
-  iNumKeys = csTemp.Remove(_T('\\')) + 1;  // get a count of slashes
+  iNumKeys = Remove(csTemp, _T('\\')) + 1;  // get a count of slashes
 
-  pcsKeys = new CString[iNumKeys];  // create storage for the keys
+  pcsKeys = new stringT[iNumKeys];  // create storage for the keys
 
   if (pcsKeys) {
-    int iFind = 0, iLastFind = 0, iCount = -1;
+    stringT::size_type iFind = 0, iLastFind = 0;
+    int iCount = -1;
 
     // get all of the keys in the chain
-    while (iFind != -1) {
-      iFind = csFKP.Find(_T("\\"), iLastFind);
-      if (iFind > -1) {
+    while (iFind != stringT::npos) {
+      iFind = csFKP.find(_T("\\"), iLastFind);
+      if (iFind != stringT::npos) {
         iCount++;
-        pcsKeys[iCount] = csFKP.Mid(iLastFind, iFind - iLastFind);
+        pcsKeys[iCount] = csFKP.substr(iLastFind, iFind - iLastFind);
         iLastFind = iFind + 1;
       } else {
         // make sure we don't just discard the last key in the chain
-        if (iLastFind < csFKP.GetLength())  {
+        if (iLastFind < csFKP.length())  {
           iCount++;
-          pcsKeys[iCount] = csFKP.Right(csFKP.GetLength() - iLastFind);
+          pcsKeys[iCount] = csFKP.substr(csFKP.length() - iLastFind);
         }
       }
     }
@@ -369,7 +372,7 @@ void CXMLprefs::UnloadXML()
 
 // find a node given a chain of key names
 TiXmlElement *CXMLprefs::FindNode(TiXmlElement *parentNode,
-                                  CString* pcsKeys, int iNumKeys,
+                                  stringT* pcsKeys, int iNumKeys,
                                   bool bAddNodes /*= false*/)
 {
   ASSERT(m_pXMLDoc != NULL); // shouldn't be called if load failed
@@ -378,12 +381,13 @@ TiXmlElement *CXMLprefs::FindNode(TiXmlElement *parentNode,
 
   for (int i=0; i<iNumKeys; i++) {
     // find the node named X directly under the parent
-    TiXmlNode *foundNode = parentNode->IterateChildren(pcsKeys[i], NULL);
+    TiXmlNode *foundNode = parentNode->IterateChildren(pcsKeys[i].c_str(),
+                                                       NULL);
 
     if (foundNode == NULL) {
       // if its not found...
       if (bAddNodes)  {  // create the node and append to parent (Set only)
-        TiXmlElement elem(pcsKeys[i]);
+        TiXmlElement elem(pcsKeys[i].c_str());
         // Add child, set parent to it for next iteration
         parentNode = parentNode->InsertEndChild(elem)->ToElement();
       } else {

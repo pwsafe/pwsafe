@@ -25,9 +25,9 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
                           core.GetHeader().m_nCurrentMajorVersion,
                           core.GetHeader().m_nCurrentMinorVersion);
 
-  CStringArray aryGroups;
+  std::vector<stringT> aryGroups;
   core.GetUniqueGroups(aryGroups);
-  m_numgroups.Format(_T("%d"), aryGroups.GetSize());
+  m_numgroups.Format(_T("%d"), aryGroups.size());
 
   m_numentries.Format(_T("%d"), core.GetNumEntries());
 

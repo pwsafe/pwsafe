@@ -61,16 +61,6 @@ void trashMemory(LPTSTR buffer, size_t length)
   trashMemory((unsigned char *) buffer, length * sizeof(buffer[0]));
 }
 
-void trashMemory(CString &cs_buffer)
-{
-#ifdef _WIN32
-  TCHAR *lpszString = cs_buffer.GetBuffer(cs_buffer.GetLength());
-  trashMemory( (void *) lpszString, cs_buffer.GetLength() * sizeof(lpszString[0]));
-  cs_buffer.ReleaseBuffer();
-#else
-  ASSERT(0); // XXX notyet
-#endif
-}
 
 /**
 Burn some stack memory
@@ -447,7 +437,7 @@ stringT PWSUtil::GetNewFileName(const stringT &oldfilename,
   return outpath;
 }
 
-CString PWSUtil::GetTimeStamp()
+stringT PWSUtil::GetTimeStamp()
 {
 #ifdef _WIN32
   struct _timeb timebuffer;
@@ -463,15 +453,15 @@ CString PWSUtil::GetTimeStamp()
   StringX cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
 
   ostringstreamT os;
-  os << cmys_now.c_str() << setw(3) << timebuffer.millitm;
+  os << cmys_now; // << setw(3) << timebuffer.millitm;
   return os.str().c_str();
 }
 
-CString PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
+stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 {
-  CString cs_Out;
-  static const char base64ABC[] = 
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  stringT cs_Out;
+  static const TCHAR base64ABC[] = 
+    _S("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 
   for (size_t i = 0; i < len; i += 3) {
     long l = ( ((long)strIn[i]) << 16 ) | 
@@ -486,11 +476,10 @@ CString PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 
   switch (len % 3) {
     case 1:
-      cs_Out += '=';
+      cs_Out += TCHAR('=');
     case 2:
-      cs_Out += '=';
-  } 
-
+      cs_Out += TCHAR('=');
+  }
   return cs_Out;
 }
 

@@ -169,7 +169,7 @@ typedef std::vector<vfiltergroup> vfiltergroups;
 
 struct st_filters {
   // Filter name
-  CString fname;
+  stringT fname;
   // Counters
   int num_Mactive;
   int num_Hactive;
@@ -222,7 +222,7 @@ enum FilterPool {FPOOL_DATABASE = 1, FPOOL_AUTOLOAD, FPOOL_IMPORTED, FPOOL_SESSI
 
 struct st_Filterkey {
   FilterPool fpool;
-  CString cs_filtername;
+  stringT cs_filtername;
 };
 
 // Following is for map<> compare function
@@ -232,7 +232,7 @@ struct ltfk {
     if (fk1.fpool != fk2.fpool)
       return (int)fk1.fpool < (int)fk2.fpool;
 
-    return fk1.cs_filtername.Compare(fk2.cs_filtername) < 0;
+    return fk1.cs_filtername.compare(fk2.cs_filtername) < 0;
   }
 };
 
@@ -248,11 +248,11 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
   int WriteFilterXMLFile(std::ostream &os, PWSfile::HeaderRecord hdr,
                          const StringX &currentfile, const bool bWithFormatting = false);
   int ImportFilterXMLFile(const FilterPool fpool,
-                          const CString &strXMLData,
-                          const CString &strXMLFileName,
-                          const CString &strXSDFileName, CString &strErrors);
+                          const stringT &strXMLData,
+                          const stringT &strXMLFileName,
+                          const stringT &strXSDFileName, stringT &strErrors);
 
-  static CString GetFilterDescription(const st_FilterRow &st_fldata);
+  static stringT GetFilterDescription(const st_FilterRow &st_fldata);
 };
 
 #endif  // __PWSFILTERS_H

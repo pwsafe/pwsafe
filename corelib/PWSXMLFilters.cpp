@@ -35,14 +35,16 @@ PWSXMLFilters::~PWSXMLFilters()
 
 // ---------------------------------------------------------------------------
 bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
-                                     const CString &strXMLData,
-                                     const CString &strXMLFileName, 
-                                     const CString &strXSDFileName)
+                                     const stringT &strXMLData,
+                                     const stringT &strXMLFileName, 
+                                     const stringT &strXSDFileName)
 {
   HRESULT hr, hr0, hr60, hr40, hr30;
   bool b_ok = false;
-  const CString cs_validation(MAKEINTRESOURCE(IDSC_XMLVALIDATION));
-  const CString cs_import(MAKEINTRESOURCE(IDSC_XMLIMPORT));
+  stringT cs_validation;
+  LoadAString(cs_validation, IDSC_XMLVALIDATION);
+  stringT cs_import;
+  LoadAString(cs_import, IDSC_XMLIMPORT);
 
   m_strResultText = _T("");
   m_bValidation = bvalidation;  // Validate or Import
@@ -62,7 +64,7 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
         // Try 30
         hr30 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL);
         if (FAILED(hr30)) {
-          m_strResultText.LoadString(IDSC_NOXMLREADER);
+          LoadAString(m_strResultText, IDSC_NOXMLREADER);
           goto exit;
         } else {
           m_MSXML_Version = 30;
@@ -114,7 +116,7 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
       hr = pSchemaCache.CreateInstance(__uuidof(XMLSchemaCache30));
       break;
     default:
-      m_strResultText.LoadString(IDSC_CANTXMLVALIDATE);
+      LoadAString(m_strResultText, IDSC_CANTXMLVALIDATE);
       goto exit;
   }
 
@@ -122,15 +124,16 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
     //  Initialize the SchemaCache object with the XSD filename
     CComVariant cvXSDFileName;
     cvXSDFileName.vt = VT_BSTR;
-    cvXSDFileName.bstrVal = strXSDFileName.AllocSysString();
+    CString cs_XSDfname(strXSDFileName.c_str());
+    cvXSDFileName.bstrVal = cs_XSDfname.AllocSysString();
     hr = pSchemaCache->add(L"", cvXSDFileName);
     if (hr != S_OK) {
-      m_strResultText.LoadString(IDSC_INVALID_SCHEMA);
+      LoadAString(m_strResultText, IDSC_INVALID_SCHEMA);
       return false;
     }
     hr = pSchemaCache->validate();
     if (hr != S_OK) {
-      m_strResultText.LoadString(IDSC_INVALID_SCHEMA);
+      LoadAString(m_strResultText, IDSC_INVALID_SCHEMA);
       return false;
     }
 
@@ -140,12 +143,12 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
     ISchema *pischema;
     hr = pSchemaCache->getSchema(bst_schema, &pischema);
     if (hr != S_OK) {
-      m_strResultText.LoadString(IDSC_MISSING_SCHEMA_VER);
+      LoadAString(m_strResultText, IDSC_MISSING_SCHEMA_VER);
       return false;
     }
     hr = pischema->get_version(&bst_schema_version);
     if (hr != S_OK) {
-      m_strResultText.LoadString(IDSC_INVALID_SCHEMA_VER);
+      LoadAString(m_strResultText, IDSC_INVALID_SCHEMA_VER);
       return false;
     }
 
@@ -183,13 +186,13 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
     }
 
     //  Let's begin the parsing now
-    if (!strXMLFileName.IsEmpty()) {
+    if (!strXMLFileName.empty()) {
       wchar_t wcURL[MAX_PATH]={0};
 #ifdef _UNICODE
 #if _MSC_VER >= 1400
-      _tcscpy_s(wcURL, MAX_PATH, strXMLFileName);
+      _tcscpy_s(wcURL, MAX_PATH, strXMLFileName.c_str());
 #else
-      _tcscpy(wcURL, strXMLFileName);
+      _tcscpy(wcURL, strXMLFileName.c_str());
 #endif
 #else
       mbstowcs(wcURL, strXMLFileName, _tcslen(strXMLFileName));
@@ -198,7 +201,8 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
     } else {
       CComVariant cvXMLData;
       cvXMLData.vt = VT_BSTR;
-      cvXMLData.bstrVal = strXMLData.AllocSysString();
+      CString cs_XMLData(strXMLData.c_str());
+      cvXMLData.bstrVal = cs_XMLData.AllocSysString();
       hr = pSAXReader->parse(cvXMLData);
     }
 
@@ -212,14 +216,14 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
       if(pEH->bErrorsFound == TRUE) {
         m_strResultText = pEH->m_strValidationResult;
       } else {
-        m_strResultText.Format(IDSC_XMLPARSEERROR, m_MSXML_Version, hr,
-                               m_bValidation ? cs_validation : cs_import);
+        Format(m_strResultText, IDSC_XMLPARSEERROR, m_MSXML_Version, hr,
+               m_bValidation ? cs_validation : cs_import);
       }
     }  // End Check for parsing errors
 
   } else {
-    m_strResultText.Format(IDSC_XMLBADCREATESCHEMA, m_MSXML_Version, hr,
-                           m_bValidation ? cs_validation : cs_import);
+    Format(m_strResultText, IDSC_XMLBADCREATESCHEMA, m_MSXML_Version, hr,
+           m_bValidation ? cs_validation : cs_import);
   }  // End Create Schema Cache
 
 exit:

@@ -455,10 +455,10 @@ BOOL CEditDlg::OnInitDialog()
   if (!m_Edit_IsReadOnly) {
     // Populate the groups combo box
     if (m_ex_group.GetCount() == 0) {
-      CStringArray aryGroups;
+      std::vector<stringT> aryGroups;
       app.m_core.GetUniqueGroups(aryGroups);
-      for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
-        m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
+      for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
+        m_ex_group.AddString(aryGroups[igrp].c_str());
       }
     }
   }

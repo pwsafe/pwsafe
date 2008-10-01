@@ -12,6 +12,7 @@
 
 #include "afx.h"
 #include "SMemFile.h"
+#include "os/typedefs.h"
 #include <stdio.h>
 
 class CReport
@@ -22,9 +23,9 @@ public:
     : m_psfile(NULL), m_pdfile(NULL), m_pData(NULL), m_dwDatasize(0) {}
   ~CReport();
 
-  void StartReport(LPCTSTR tcAction, const CString &csDataBase);
+  void StartReport(LPCTSTR tcAction, const stringT &csDataBase);
   void EndReport();
-  void WriteLine(const CString &cs_line, bool bCRLF = true);
+  void WriteLine(const stringT &cs_line, bool bCRLF = true);
   void WriteLine(const LPTSTR &tc_line, bool bCRLF = true);
   void WriteLine();
   bool SaveToDisk();
@@ -34,10 +35,10 @@ public:
 private:
   FILE *m_pdfile;
   CSMemFile *m_psfile;
-  CString m_cs_filename;
+  stringT m_cs_filename;
   int m_imode;
   BYTE *m_pData;
   DWORD m_dwDatasize;
   LPCTSTR m_tcAction;
-  CString m_csDataBase;
+  stringT m_csDataBase;
 };

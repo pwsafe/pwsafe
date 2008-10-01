@@ -18,12 +18,12 @@
 enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,
       PWH_INVALID_NUM, PWH_INVALID_DATETIME,
       PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
-bool VerifyASCDateTimeString(const CString &time_str, time_t &t);
-bool VerifyXMLDateTimeString(const CString &time_str, time_t &t);
-bool VerifyXMLDateString(const CString &time_str, time_t &t);
-bool VerifyImportDateTimeString(const CString &time_str, time_t &t);
+bool VerifyASCDateTimeString(const stringT &time_str, time_t &t);
+bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t);
+bool VerifyXMLDateString(const stringT &time_str, time_t &t);
+bool VerifyImportDateTimeString(const stringT &time_str, time_t &t);
 int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory,
-                                CString &strErrors);
+                                stringT &strErrors);
 #endif /* __VERIFYFORMAT_H */
 //-----------------------------------------------------------------------------
 // Local variables:

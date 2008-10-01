@@ -42,7 +42,7 @@ class PWSprefs
 public:
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
-  static void SetConfigFile(const CString &fn) {m_configfilename = fn;}
+  static void SetConfigFile(const stringT &fn) {m_configfilename = fn;}
   // prefString is stored on file, format described in PWSprefs.cpp
   void Load(const StringX &prefString);
   StringX Store(); // returns string for saving in file
@@ -130,8 +130,8 @@ public:
   // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefRect(long top, long bottom, long left, long right);
-  int GetMRUList(CString *MRUFiles);
-  int SetMRUList(const CString *MRUFiles, int n, int max_MRU);
+  int GetMRUList(stringT *MRUFiles);
+  int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
 
   void SetPref(BoolPrefs pref_enum, bool value);
   void SetPref(IntPrefs pref_enum, unsigned int value);
@@ -141,7 +141,7 @@ public:
   bool IsUsingRegistry() const {return m_ConfigOptions == CF_REGISTRY;}
 
   // Get database preferences in XML format for export
-  CString GetXMLPreferences();
+  stringT GetXMLPreferences();
 
   // for display in status bar (debug)
   int GetConfigIndicator() const;
@@ -150,12 +150,12 @@ public:
   bool OfferDeleteRegistry() const;
   void DeleteRegistryEntries();  
 
-  static bool LockCFGFile(const StringX &filename, StringX &locker)
-  {return PWSfile::LockFile(filename, locker, 
-  s_cfglockFileHandle, s_cfgLockCount);}
-  static void UnlockCFGFile(const StringX &filename)
-  {return PWSfile::UnlockFile(filename,
-  s_cfglockFileHandle, s_cfgLockCount);}
+  static bool LockCFGFile(const stringT &filename, StringX &locker)
+  {return PWSfile::LockFile(filename.c_str(), locker, 
+                            s_cfglockFileHandle, s_cfgLockCount);}
+  static void UnlockCFGFile(const stringT &filename)
+  {return PWSfile::UnlockFile(filename.c_str(),
+                              s_cfglockFileHandle, s_cfgLockCount);}
   static bool IsLockedCFGFile(const StringX &filename)
   {return PWSfile::IsLockedFile(filename);}
 
@@ -183,13 +183,13 @@ private:
   void DeleteOldPrefs();
 
   static PWSprefs *self; // singleton
-  static StringX m_configfilename; // may be set before singleton created
+  static stringT m_configfilename; // may be set before singleton created
   CXMLprefs *m_XML_Config;
 
   bool m_bRegistryKeyExists;
   enum {CF_NONE, CF_REGISTRY, CF_FILE_RO,
     CF_FILE_RW, CF_FILE_RW_NEW} m_ConfigOptions;
-  CString m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF;
+  stringT m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF;
 
   CWinApp *m_app;
 
@@ -212,6 +212,6 @@ private:
   bool m_intChanged[NumIntPrefs];
   bool m_stringChanged[NumStringPrefs];
 
-  CString *m_MRUitems;
+  stringT *m_MRUitems;
 };
 #endif /*  __PWSPREFS_H */

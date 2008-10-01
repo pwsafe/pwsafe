@@ -366,18 +366,18 @@ do_edit:
       // If this was active, we need to clear it and re-apply
       if (m_bFilterActive && 
           m_activefilterpool == FPOOL_SESSION && 
-          m_activefiltername == filters.fname) {
+          m_activefiltername == filters.fname.c_str()) {
         bJustDoIt = true;
       }
     }
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
 
     // Update DboxMain
-    m_pDbx->SetFilter(FPOOL_SESSION, filters.fname);
+    m_pDbx->SetFilter(FPOOL_SESSION, filters.fname.c_str());
     if (bJustDoIt)
       m_pDbx->ApplyFilter(true);
 
-    m_selectedfiltername = flt_key.cs_filtername;
+    m_selectedfiltername = flt_key.cs_filtername.c_str();
     m_selectedfilterpool = flt_key.fpool;
 
     UpdateFilterList();
@@ -407,7 +407,7 @@ do_edit:
   if (bChanged) {
     // Has user changed the filter's name?
     // If so, check for conflict.
-    if (m_selectedfiltername != filters.fname) {
+    if (m_selectedfiltername != filters.fname.c_str()) {
       PWSFilters::const_iterator mf_citer;
 
       flt_otherkey.fpool = m_selectedfilterpool;
@@ -444,10 +444,10 @@ do_edit:
     m_MapFilters.erase(bReplacedOther ? flt_otherkey : flt_key);
     flt_key.cs_filtername = filters.fname;
     m_MapFilters.insert(PWSFilters::Pair(flt_key, filters));
-    m_selectedfiltername = flt_key.cs_filtername;
+    m_selectedfiltername = flt_key.cs_filtername.c_str();
 
     // Update DboxMain's current filter
-    m_pDbx->SetFilter(flt_key.fpool, filters.fname);
+    m_pDbx->SetFilter(flt_key.fpool, filters.fname.c_str());
     if (bJustDoIt)
       m_pDbx->ApplyFilter(true);
 
@@ -649,7 +649,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
     cs_ftype.TrimRight(_T('\t'));
-    cs_criteria = PWSFilters::GetFilterDescription(st_fldata);
+    cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
     if (Flt_iter != pfilters->vMfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
@@ -691,7 +691,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
     cs_ftype.TrimRight(_T('\t'));
-    cs_criteria = PWSFilters::GetFilterDescription(st_fldata);
+    cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
     if (Flt_iter != pfilters->vHfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
@@ -728,7 +728,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
     cs_ftype.TrimRight(_T('\t'));
-    cs_criteria = PWSFilters::GetFilterDescription(st_fldata);
+    cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
     if (Flt_iter != pfilters->vPfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
@@ -755,7 +755,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
   m_FilterProperties.SetRedraw(TRUE);
   m_FPROPHeader.SetStopChangeFlag(bSave);
 
-  GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(pfilters->fname);
+  GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(pfilters->fname.c_str());
 }
 
 void CManageFiltersDlg::UpdateFilterList()
@@ -780,7 +780,8 @@ void CManageFiltersDlg::UpdateFilterList()
        mf_iter++) {
     m_vcs_filters.push_back(mf_iter->first);
 
-    iItem = m_FilterLC.InsertItem(i /* MFLC_FILTER_NAME */, mf_iter->first.cs_filtername);
+    iItem = m_FilterLC.InsertItem(i /* MFLC_FILTER_NAME */,
+                                  mf_iter->first.cs_filtername.c_str());
     CString cs_source = GetFilterPoolName(mf_iter->first.fpool);
 
     m_FilterLC.SetItemText(iItem, MFLC_FILTER_SOURCE, cs_source);
@@ -792,11 +793,11 @@ void CManageFiltersDlg::UpdateFilterList()
 
     if (m_bFilterActive &&
         mf_iter->first.fpool == m_activefilterpool &&
-        mf_iter->first.cs_filtername == m_activefiltername) {
+        mf_iter->first.cs_filtername.c_str() == m_activefiltername) {
       m_activefilter = iItem;
     }
     if (mf_iter->first.fpool == m_selectedfilterpool &&
-        mf_iter->first.cs_filtername == m_selectedfiltername) {
+        mf_iter->first.cs_filtername.c_str() == m_selectedfiltername) {
       m_selectedfilter = iItem;
     }
     st_FilterItemData *pflt_idata = new st_FilterItemData;
@@ -1189,7 +1190,7 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
   int iResult;
   switch(nSortColumn) {
     case MFLC_FILTER_NAME:
-      iResult = pLHS->flt_key.cs_filtername.Compare(pRHS->flt_key.cs_filtername);
+      iResult = pLHS->flt_key.cs_filtername.compare(pRHS->flt_key.cs_filtername);
       break;
     case MFLC_FILTER_SOURCE:
       iResult = GetFilterPoolName(pLHS->flt_key.fpool).Compare(GetFilterPoolName(pRHS->flt_key.fpool));

@@ -82,8 +82,8 @@ public:
                          HANDLE &lockFileHandle, int &LockCount);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
-  static bool Encrypt(const CString &fn, const StringX &passwd);
-  static bool Decrypt(const CString &fn, const StringX &passwd);
+  static bool Encrypt(const stringT &fn, const StringX &passwd);
+  static bool Decrypt(const stringT &fn, const StringX &passwd);
 
   virtual ~PWSfile();
 

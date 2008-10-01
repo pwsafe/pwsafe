@@ -401,11 +401,9 @@ bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
 {
   const int MinLength = 8;
   int length = pwd.length();
-  CString cserr;
   // check for minimun length
   if (length < MinLength) {
-    cserr.LoadString(IDSC_PASSWORDTOOSHORT);
-    error = LPCTSTR(cserr);
+    LoadAString(error, IDSC_PASSWORDTOOSHORT);
     return false;
   }
 
@@ -423,8 +421,7 @@ bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
   if (has_uc && has_lc && (has_digit || has_other)) {
     return true;
   } else {
-    cserr.LoadString(IDSC_PASSWORDPOOR);
-    error = LPCTSTR(cserr);
+    LoadAString(error, IDSC_PASSWORDPOOR);
     return false;
   }
 }
