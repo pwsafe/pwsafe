@@ -249,12 +249,12 @@ void ThisMfcApp::LoadLocalizedStuff()
     ASSERT(inum == 3);
     _tcsupr(szLang);
     TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"),
-          PWSUtil::GetTimeStamp().c_str(), szLang);
+          PWSUtil::GetTimeStamp(), szLang);
 
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, szCtry, 4);
     ASSERT(inum == 3);
     TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"),
-          PWSUtil::GetTimeStamp().c_str(), szCtry);
+          PWSUtil::GetTimeStamp(), szCtry);
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
@@ -267,7 +267,7 @@ void ThisMfcApp::LoadLocalizedStuff()
 
   if(m_hInstResDLL == NULL) {
     TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
-          PWSUtil::GetTimeStamp().c_str());
+          PWSUtil::GetTimeStamp());
   } else { // successfully loaded a resource dll, check version
     DWORD MajorMinor, BuildRevision;
     GetVersionInfoFromFile(cs_ResPath, MajorMinor, BuildRevision);
@@ -281,7 +281,7 @@ void ThisMfcApp::LoadLocalizedStuff()
       m_hInstResDLL = NULL;
     } else { // Passed version check
       TRACE(_T("%s Using language DLL '%s'.\n"),
-            PWSUtil::GetTimeStamp().c_str(), cs_ResPath);
+            PWSUtil::GetTimeStamp(), cs_ResPath);
     }
   } // end of resource dll hunt
 
@@ -306,7 +306,7 @@ void ThisMfcApp::LoadLocalizedStuff()
       if (m_pszHelpFilePath != NULL) free((void*)m_pszHelpFilePath);
       m_pszHelpFilePath = _tcsdup(cs_HelpPath);
       TRACE(_T("%s Help file overriden by user. Using %s.\n"),
-            PWSUtil::GetTimeStamp().c_str(), cs_HelpPath);
+            PWSUtil::GetTimeStamp(), cs_HelpPath);
     }
   }
 
@@ -343,14 +343,14 @@ void ThisMfcApp::LoadLocalizedStuff()
 #endif
     cs_HelpPath.Format(_T("%s%s"), fname, ext);
     TRACE(_T("%s Using help file: %s\n"),
-          PWSUtil::GetTimeStamp().c_str(), cs_HelpPath);
+          PWSUtil::GetTimeStamp(), cs_HelpPath);
   }
 
   if (m_pszHelpFilePath != NULL)
     free((void*)m_pszHelpFilePath);
   m_pszHelpFilePath = _tcsdup(cs_HelpPath);
   TRACE(_T("%s Using help file: %s\n"),
-        PWSUtil::GetTimeStamp().c_str(), cs_HelpPath);
+        PWSUtil::GetTimeStamp(), cs_HelpPath);
 
   m_csHelpFile = cs_HelpPath;
 }

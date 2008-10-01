@@ -437,8 +437,9 @@ stringT PWSUtil::GetNewFileName(const stringT &oldfilename,
   return outpath;
 }
 
-stringT PWSUtil::GetTimeStamp()
+const TCHAR *PWSUtil::GetTimeStamp()
 {
+  // not re-entrant - is this a problem?
 #ifdef _WIN32
   struct _timeb timebuffer;
 #if (_MSC_VER >= 1400)
@@ -453,8 +454,10 @@ stringT PWSUtil::GetTimeStamp()
   StringX cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
 
   ostringstreamT os;
-  os << cmys_now; // << setw(3) << timebuffer.millitm;
-  return os.str().c_str();
+  os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
+     << (unsigned int)timebuffer.millitm;
+  static stringT retval = os.str();
+  return retval.c_str();
 }
 
 stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
