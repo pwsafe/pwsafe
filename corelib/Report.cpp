@@ -229,8 +229,8 @@ bool CReport::SaveToDisk()
     fclose(f_out);
 
     // Swap them
-    _tremove(m_cs_filename);
-    _trename(cs_out, m_cs_filename);
+    _tremove(m_cs_filename.c_str());
+    _trename(cs_out.c_str(), m_cs_filename.c_str());
 
     // Re-open file
     if ((m_pdfile = _fsopen(m_cs_filename.c_str(), "ab", _SH_DENYWR)) == NULL) {
