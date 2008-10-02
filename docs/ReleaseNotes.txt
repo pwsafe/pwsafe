@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.14.02
 =====================
+[2142691] Better support for Japanese text.
 [2113261] No longer crashes when opening write-protected database.
 [2102624] Can now change a normal entry into an alias or an alias'
 base entry into an alias of another entry taking its aliases with it.

@@ -114,9 +114,9 @@ int PWSfileV1V2::Open(const StringX &passkey)
   unsigned char *pstr;
 
 #ifdef UNICODE
-  pstr = new unsigned char[2*passLen];
+  pstr = new unsigned char[3*passLen];
   int len = WideCharToMultiByte(CP_ACP, 0, passstr, passLen,
-    LPSTR(pstr), 2*passLen, NULL, NULL);
+    LPSTR(pstr), 3*passLen, NULL, NULL);
   ASSERT(len != 0);
   passLen = len;
 #else
@@ -239,7 +239,7 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
   // xlate wchar_t to ACP
   wchar_t *wcPtr = const_cast<wchar_t *>(data.c_str());
   int wcLen = data.length()+1;
-  int mbLen = 2*wcLen;
+  int mbLen = 3*wcLen;
   unsigned char *acp = new unsigned char[mbLen];
   int acpLen = WideCharToMultiByte(CP_ACP,      // code page
                                    0, // performance and mapping flags

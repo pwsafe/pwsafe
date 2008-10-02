@@ -85,9 +85,9 @@ void ConvertString(const StringX &text,
   txt = (unsigned char *)txtstr; // don't delete[] (ugh)!!!
 #else
 #ifdef _WIN32
-  txt = new unsigned char[2*txtlen]; // safe upper limit
+  txt = new unsigned char[3*txtlen]; // safe upper limit
   int len = WideCharToMultiByte(CP_ACP, 0, txtstr, txtlen,
-    LPSTR(txt), 2*txtlen, NULL, NULL);
+    LPSTR(txt), 3*txtlen, NULL, NULL);
   ASSERT(len != 0);
 #else
   mbstate_t mbs;
