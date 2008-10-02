@@ -195,7 +195,7 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
       _tcscpy(wcURL, strXMLFileName.c_str());
 #endif
 #else
-      mbstowcs(wcURL, strXMLFileName, _tcslen(strXMLFileName));
+      mbstowcs(wcURL, strXMLFileName.c_str(), strXMLFileName.length());
 #endif
       hr = pSAXReader->parseURL(wcURL);
     } else {
