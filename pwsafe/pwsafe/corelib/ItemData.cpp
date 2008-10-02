@@ -52,10 +52,10 @@ CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
   m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
   m_URL(URL), m_AutoType(AUTOTYPE),
-  m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
-  m_tttXTime(XTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
+  m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
+  m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
   m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT),
-  m_display_info(NULL), m_entrytype(ET_NORMAL)
+  m_entrytype(ET_NORMAL), m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -64,10 +64,11 @@ CItemData::CItemData(const CItemData &that) :
   m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
   m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
   m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
-  m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
-  m_tttXTime(that.m_tttXTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
+  m_tttATime(that.m_tttATime), m_tttCTime(that.m_tttCTime),
+  m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
+  m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
-  m_display_info(that.m_display_info), m_entrytype(that.m_entrytype)
+  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())

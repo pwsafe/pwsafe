@@ -70,12 +70,13 @@ typedef TCHAR *LPTSTR;
 typedef const TCHAR *LPCTSTR;
 typedef bool BOOL;
 typedef unsigned char BYTE;
+typedef unsigned short WORD;
 typedef unsigned int UINT;
-typedef stringT CString; // XXX at least for now...
+typedef void *HANDLE;
 
 // assorted conveniences:
 #define ASSERT(p) assert(p)
-#define TRACE(s) // nothing, for now...
+#define TRACE(...) // nothing, for now...
 #define TRUE true
 #define FALSE false
 #endif /* _WIN32 */
