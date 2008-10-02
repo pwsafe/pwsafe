@@ -23,11 +23,14 @@
 #define _istupper(x) iswupper(x)
 #define _istdigit(x) iswdigit(x)
 #include <wchar.h>
+#include "linux/pws_time.h"
 #define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
 #define _tcslen(s) wcslen(s)
 #define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
 #define _tcsftime wcsftime
-#define _tasctime_s(s, N, st) asctime_r(st, s)
+#define _tasctime_s(s, N, st) pws_os::asctime(s, N, st)
+#define _vsctprintf(fmt, args) vswprintf(NULL, 0, fmt, args)
+#define _vstprintf_s(str, size, fmt, args) vswprintf(str, size, fmt, args)
 #else /* !UNICODE */
 #include <ctype.h>
 #define _istalpha(x) isalpha(x)
@@ -43,6 +46,8 @@
 #include <time.h>
 #define _tcsftime strftime
 #define _tasctime_s(s, N, st) asctime_r(st, s)
+#define _vsctprintf(fmt, args) vsnprintf(NULL, 0, fmt, args)
+#define _vstprintf_s(str, size, fmt, args) vsnprintf(str, size, fmt, args)
 #endif /* UNICODE */
 #endif /* _WIN32 */
 #endif /* _PWS_TCHAR_H */

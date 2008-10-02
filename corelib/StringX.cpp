@@ -24,13 +24,13 @@ template<class T> int CompareNoCase(const T &s1, const T &s2)
 
 template<class T> void ToLower(T &s)
 {
-  for (T::iterator iter = s.begin(); iter != s.end(); iter++)
+  for (typename T::iterator iter = s.begin(); iter != s.end(); iter++)
     *iter = TCHAR(_totlower(*iter));
 }
 
 template<class T> void ToUpper(T &s)
 {
-  for (T::iterator iter = s.begin(); iter != s.end(); iter++)
+  for (typename T::iterator iter = s.begin(); iter != s.end(); iter++)
     *iter = TCHAR(_totupper(*iter));
 }
 
@@ -39,11 +39,11 @@ template<class T> T &Trim(T &s, const TCHAR *set)
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
 
-  T::size_type b = s.find_first_not_of(tset);
+  typename T::size_type b = s.find_first_not_of(tset);
   if (b == T::npos) {
     s.clear();
   } else {
-    T::size_type e = s.find_last_not_of(tset);
+    typename T::size_type e = s.find_last_not_of(tset);
     T t(s.begin() + b, s.end() - (s.length() - e) + 1);
     s = t;
   }
@@ -55,7 +55,7 @@ template<class T> T &TrimRight(T &s, const TCHAR *set)
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
 
-  T::size_type e = s.find_last_not_of(tset);
+  typename T::size_type e = s.find_last_not_of(tset);
   if (e == T::npos) {
     s.clear();
   } else {
@@ -70,7 +70,7 @@ template<class T> T &TrimLeft(T &s, const TCHAR *set)
   const TCHAR *ws = _T(" \t\r\n");
   const TCHAR *tset = (set == NULL) ? ws : set;
 
-  T::size_type b = s.find_first_not_of(tset);
+  typename T::size_type b = s.find_first_not_of(tset);
   if (b == T::npos) {
     s.clear();
   } else {
@@ -83,7 +83,7 @@ template<class T> T &TrimLeft(T &s, const TCHAR *set)
 template<class T> void EmptyIfOnlyWhiteSpace(T &s)
 {
   const TCHAR *ws = _T(" \t\r\n");
-  T::size_type b = s.find_first_not_of(ws);
+  typename T::size_type b = s.find_first_not_of(ws);
   if (b == T::npos)
     s.clear();
 }
@@ -93,7 +93,7 @@ template<class T> int Replace(T &s, TCHAR from, TCHAR to)
   int retval = 0;
   T r;
   r.reserve(s.length());
-  for (T::iterator iter = s.begin(); iter != s.end(); iter++)
+  for (typename T::iterator iter = s.begin(); iter != s.end(); iter++)
     if (*iter == from) {
       r.append(1, to);
       retval++;
@@ -107,9 +107,9 @@ template<class T> int Replace(T &s, const T &from, const T &to)
 {
   int retval = 0;
   T r;
-  T::size_type i = 0;
+  typename T::size_type i = 0;
   do {
-   T::size_type j = s.find(from, i);
+   typename T::size_type j = s.find(from, i);
     r.append(s, i, j - i);
     if (j != StringX::npos) {
       r.append(to);
@@ -126,7 +126,7 @@ template<class T> int Remove(T &s, TCHAR c)
 {
   int retval = 0;
   T t;
-  for (T::iterator iter = s.begin(); iter != s.end(); iter++)
+  for (typename T::iterator iter = s.begin(); iter != s.end(); iter++)
     if (*iter != c)
       t += *iter;
     else
