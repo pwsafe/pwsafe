@@ -790,7 +790,7 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 #ifndef UNICODE
 	_ftprintf( cfile, _T("<%s"), value.c_str() );
 #else
-  size_t utf8bufsize = 2 * value.length(); // upper limit
+  size_t utf8bufsize = 3 * value.length(); // upper limit
   char *utf8buf = new char[utf8bufsize+1];
   utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
                                     value.c_str(),
