@@ -1251,7 +1251,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
         if (rc == PWScore::CANT_OPEN_FILE) {
           CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-          cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile());
+          cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
           MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
           retval = PWScore::USER_CANCEL;
         } else {
@@ -1848,7 +1848,7 @@ void DboxMain::UnMinimize(bool update_windows)
 #endif
         break;
       case PWScore::CANT_OPEN_FILE:
-        cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+        cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile().c_str());
         cs_title.LoadString(IDS_FILEOPEN);
         MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       case TAR_NEW:
@@ -2063,7 +2063,7 @@ BOOL DboxMain::OnQueryEndSession()
 
   if (m_core.IsChanged()) {
     CString cs_msg;
-    cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile());
+    cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile().c_str());
     m_iSessionEndingStatus = AfxMessageBox(cs_msg,
                              (MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3));
     switch (m_iSessionEndingStatus) {
@@ -2154,7 +2154,8 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, s);
 
       if (m_bFilterActive)
-        s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering, m_core.GetNumEntries());
+        s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering,
+                 m_core.GetNumEntries());
       else
         s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
       dc.DrawText(s, &rectPane, DT_CALCRECT);
