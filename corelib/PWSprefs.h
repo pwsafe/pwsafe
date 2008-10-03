@@ -191,8 +191,6 @@ private:
     CF_FILE_RW, CF_FILE_RW_NEW} m_ConfigOptions;
   stringT m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF;
 
-  CWinApp *m_app;
-
   bool m_prefs_changed[2];  // 0 - DB stored pref; 1 - App related pref
 
   enum PrefType {ptObsolete = 0, ptDatabase, ptApplication};
