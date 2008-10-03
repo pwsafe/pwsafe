@@ -23,7 +23,7 @@
 #include "SecString.h"
 #include "corelib/Util.h"
 #include "corelib/Pwsprefs.h"
-#include "corelib/SMemFile.h"
+#include "SMemFile.h"
 
 using namespace std;
 

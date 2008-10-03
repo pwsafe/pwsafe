@@ -869,6 +869,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SMemFile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Subclass.cpp"
 				>
 			</File>
@@ -1231,6 +1235,10 @@
 			</File>
 			<File
 				RelativePath=".\SingleInstance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SMemFile.h"
 				>
 			</File>
 			<File

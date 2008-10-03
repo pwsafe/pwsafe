@@ -11,13 +11,15 @@
 #include "Debug.h"
 #include "corelib.h"
 #include "os/dir.h"
-#include "SMemFile.h"
+#include "stringX.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <share.h>
 #include <sys/stat.h>
 #include <errno.h>
+
+#include <sstream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,39 +31,24 @@ const TCHAR *CRLF = _T("\r\n");
 
 CReport::~CReport()
 {
-  if (m_psfile != NULL) {
-    m_psfile->Close();
-    delete m_psfile;
-  }
-
-  if (m_pData != NULL && m_dwDatasize > 0) {
-    trashMemory((void*)m_pData, m_dwDatasize);
-    free(m_pData);
-    m_pData = NULL;
-    m_dwDatasize = 0;
-  }
+  free(m_tcAction);
 }
 /*
   It writes a header record and a "Start Report" record.
 */
 void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase)
 {
-  if (m_psfile != NULL) {
-    m_psfile->Close();
-    delete m_psfile;
-    m_psfile = NULL;
-  }
+  m_osxs.str(_T(""));
 
-  m_tcAction = tcAction;
+  m_tcAction = _tcsdup(tcAction);
   m_csDataBase = csDataBase;
-  m_psfile = new CSMemFile;
 
   stringT cs_title;
   Format(cs_title, IDSC_REPORT_TITLE1, tcAction,
-         PWSUtil::GetTimeStamp());
+                  PWSUtil::GetTimeStamp());
   WriteLine();
   WriteLine(cs_title);
-  Format(cs_title, IDSC_REPORT_TITLE2, csDataBase);
+  Format(cs_title, IDSC_REPORT_TITLE2, csDataBase.c_str());
   WriteLine(cs_title);
   WriteLine();
   LoadAString(cs_title, IDSC_START_REPORT);
@@ -88,7 +75,7 @@ bool CReport::SaveToDisk()
   }
 
   Format(m_cs_filename, IDSC_REPORTFILENAME,
-                       drive.c_str(), dir.c_str(), m_tcAction);
+         drive.c_str(), dir.c_str(), m_tcAction);
 
   if ((m_pdfile = _tfsopen(m_cs_filename.c_str(),
                            _T("a+b"), _SH_DENYWR)) == NULL) {
@@ -215,8 +202,8 @@ bool CReport::SaveToDisk()
 
       if (nBytesRead > 0) {
         int len = WideCharToMultiByte(CP_ACP, 0, (LPWSTR)inwbuffer, 
-          nBytesRead,
-          (LPSTR)outbuffer, 4096, NULL, NULL);
+                                      nBytesRead,
+                                      (LPSTR)outbuffer, 4096, NULL, NULL);
         if (len > 0)
           fwrite(outbuffer, len, 1, f_out);
       } else
@@ -239,7 +226,8 @@ bool CReport::SaveToDisk()
     }
   }
 #endif
-  fwrite((void *)m_pData, sizeof(BYTE), m_dwDatasize, m_pdfile);
+  StringX sx = m_osxs.rdbuf()->str();
+  fwrite((void *)sx.c_str(), sizeof(BYTE), sx.length() * sizeof(TCHAR), m_pdfile);
   fclose(m_pdfile);
 
   return true;
@@ -248,36 +236,25 @@ bool CReport::SaveToDisk()
 // Write a record with(default) or without a CRLF
 void CReport::WriteLine(const stringT &cs_line, bool bCRLF)
 {
-  if (m_psfile == NULL)
-    return;
-
-  stringT::size_type iLen = cs_line.length();
-  m_psfile->Write((void *)cs_line.c_str(), iLen * sizeof(TCHAR));
+  m_osxs << cs_line.c_str();
   if (bCRLF) {
-    m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
+    m_osxs << CRLF;
   }
 }
 
 // Write a record with(default) or without a CRLF
 void CReport::WriteLine(const LPTSTR &tc_line, bool bCRLF)
 {
-  if (m_psfile == NULL)
-    return;
-
-  int iLen = (int)_tcslen(tc_line);
-  m_psfile->Write((void *)tc_line, iLen * sizeof(TCHAR));
+  m_osxs << tc_line;
   if (bCRLF) {
-    m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
+    m_osxs << CRLF;
   }
 }
 
 // Write a new line
 void CReport::WriteLine()
 {
-  if (m_psfile == NULL)
-    return;
-
-  m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
+  m_osxs << CRLF;
 }
 
 /*
@@ -292,17 +269,5 @@ void CReport::EndReport()
   LoadAString(cs_title, IDSC_END_REPORT2);
   WriteLine(cs_title);
 
-  TCHAR *szEOF = _T("\0");
-  m_psfile->Write((void *)szEOF, sizeof(TCHAR));
-
-  if (m_pData != NULL) {
-    // Shouldn't happen!
-    free(m_pData);
-    m_pData = NULL;
-  }
-
-  m_dwDatasize = (DWORD)m_psfile->GetLength();
-  m_pData = m_psfile->Detach();
-  delete m_psfile;
-  m_psfile = NULL;
+  m_osxs.flush();
 }

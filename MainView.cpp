@@ -3093,7 +3093,7 @@ void DboxMain::OnToolBarFindReport()
   if (!bFAdvanced) {
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   } else {
     if (Fsubgroup_set == BST_UNCHECKED) {
@@ -3170,12 +3170,12 @@ void DboxMain::OnToolBarFindReport()
                      cs_case);
     }
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
 
     cs_temp.LoadString(IDS_RPTFIND);
     buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
 
     buffer = _T("\t");
     if (bsFFields.test(CItemData::GROUP))
@@ -3194,22 +3194,22 @@ void DboxMain::OnToolBarFindReport()
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
     if (bsFFields.test(CItemData::PWHIST))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   }
 
   if (pindices->size() == 0) {
     buffer.Format(IDS_SEARCHRESULTS1, csFindString);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
   } else {
     buffer.Format(IDS_SEARCHRESULTS2, csFindString);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
     int i, index;
     for (i = 0; i < (int)pindices->size(); i++) {
       index = pindices->at(i);
       CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(index);
       buffer.Format(IDS_COMPARESTATS, ci->GetGroup(), ci->GetTitle(), ci->GetUser());
-      rpt.WriteLine(stringT(buffer), false);
+      rpt.WriteLine((LPCTSTR)buffer, false);
     }
   }
   rpt.WriteLine();
