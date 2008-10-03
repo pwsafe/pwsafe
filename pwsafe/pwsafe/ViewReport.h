@@ -33,7 +33,7 @@ protected:
 
   DboxMain *m_pDbx;
   CReport *m_pRpt;
-  BYTE *m_pData;
+  StringX m_pString;
   DWORD m_dwDatasize;
   CEdit m_editreport;
   CBrush m_backgroundbrush;

@@ -7,7 +7,7 @@
 */
 
 /**
- * \file XStringStream.h
+ * \file StringXStream.h
  *
  * STL-based implementation of secure string streams.
  * typedefs of secure versions of istringstream, ostringstream

@@ -11,8 +11,8 @@
 // Create an action report file
 
 #include "afx.h"
-#include "SMemFile.h"
 #include "os/typedefs.h"
+#include "StringXStream.h"
 #include <stdio.h>
 
 class CReport
@@ -20,7 +20,7 @@ class CReport
   // Construction
 public:
   CReport()
-    : m_psfile(NULL), m_pdfile(NULL), m_pData(NULL), m_dwDatasize(0) {}
+    : m_tcAction(NULL), m_pdfile(NULL) {}
   ~CReport();
 
   void StartReport(LPCTSTR tcAction, const stringT &csDataBase);
@@ -29,16 +29,13 @@ public:
   void WriteLine(const LPTSTR &tc_line, bool bCRLF = true);
   void WriteLine();
   bool SaveToDisk();
-  BYTE *GetData() {return m_pData;}
-  DWORD GetDataLength() {return m_dwDatasize;}
+  StringX GetString() {return m_osxs.rdbuf()->str();}
 
 private:
   FILE *m_pdfile;
-  CSMemFile *m_psfile;
+  oStringXStream m_osxs;
   stringT m_cs_filename;
   int m_imode;
-  BYTE *m_pData;
-  DWORD m_dwDatasize;
-  LPCTSTR m_tcAction;
+  TCHAR *m_tcAction;
   stringT m_csDataBase;
 };

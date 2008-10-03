@@ -1085,7 +1085,7 @@ void DboxMain::OnImportText()
     rpt.StartReport(cs_text.c_str(), m_core.GetCurFile().c_str());
     LoadAString(cs_text, IDS_TEXT);
     cs_temp.Format(IDS_IMPORTFILE, cs_text.c_str(), TxtFileName);
-    rpt.WriteLine(stringT(cs_temp));
+    rpt.WriteLine((LPCTSTR)cs_temp);
     rpt.WriteLine();
 
     rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, strError, fieldSeparator,
@@ -1109,11 +1109,11 @@ void DboxMain::OnImportText()
         CString cs_type, temp1, temp2 = _T("");
         cs_type.LoadString(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES);
         temp1.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
-        rpt.WriteLine(stringT(temp1));
+        rpt.WriteLine((LPCTSTR)temp1);
         if (numSkipped != 0) {
           cs_type.LoadString(numSkipped == 1 ? IDS_ENTRY : IDS_ENTRIES);
           temp2.Format(IDS_RECORDSNOTREAD, numSkipped, cs_type);
-          rpt.WriteLine(stringT(temp2));
+          rpt.WriteLine((LPCTSTR)temp2);
         }
 
         cs_title.LoadString(IDS_STATUS);
@@ -1255,7 +1255,7 @@ void DboxMain::OnImportXML()
     rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
     cs_text.LoadString(IDS_XML);
     cs_temp.Format(IDS_IMPORTFILE, cs_text, XMLFilename);
-    rpt.WriteLine(stringT(cs_temp));
+    rpt.WriteLine((LPCTSTR)cs_temp);
     rpt.WriteLine();
     rc = m_core.ImportXMLFile(ImportedPrefix, stringT(XMLFilename),
                               XSDFilename.c_str(), strErrors,
@@ -1312,7 +1312,7 @@ void DboxMain::OnImportXML()
     } // switch
 
     // Finish Report
-    rpt.WriteLine(stringT(cs_temp));
+    rpt.WriteLine((LPCTSTR)cs_temp);
     rpt.WriteLine();
     rpt.WriteLine(csErrors.c_str());
     rpt.EndReport();
@@ -1468,7 +1468,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
   cs_text.LoadString(IDS_RPTMERGE);
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_MERGINGDATABASE, pszFilename);
-  rpt.WriteLine(stringT(cs_temp));
+  rpt.WriteLine((LPCTSTR)cs_temp);
 
   /*
   Purpose:
@@ -1591,7 +1591,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
                        csDiffs);
 
         /* log it */
-        rpt.WriteLine(stringT(warnMsg));
+        rpt.WriteLine((LPCTSTR)warnMsg);
 
         /* Check no conflict of unique uuid */
         if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
@@ -1641,7 +1641,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
                                        numAliasesAdded, cs_aliases, numShortcutsAdded, cs_shortcuts);
   cs_title.LoadString(IDS_MERGECOMPLETED2);
   //MessageBox(resultStr, cs_title, MB_OK);
-  rpt.WriteLine(stringT(resultStr));
+  rpt.WriteLine((LPCTSTR)resultStr);
   rpt.EndReport();
 
   CGeneralMsgBox gmb;
@@ -1881,7 +1881,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
   cs_text.LoadString(IDS_RPTCOMPARE);
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
-  rpt.WriteLine(stringT(cs_temp));
+  rpt.WriteLine((LPCTSTR)cs_temp);
   rpt.WriteLine();
 
   // Put up hourglass...this might take a while
@@ -2083,7 +2083,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
   if (!m_bAdvanced) {
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   } else {
     if (m_subgroup_set == BST_UNCHECKED) {
@@ -2159,12 +2159,12 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
                      cs_case);
     }
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
 
     cs_temp.LoadString(IDS_RPTCOMPARE);
     buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
 
     buffer = _T("\t");
     if (m_bsFields.test(CItemData::PASSWORD))
@@ -2189,18 +2189,18 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     if (m_bsFields.test(CItemData::POLICY))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   }
 
   cs_title.LoadString(IDS_COMPARECOMPLETE);
-  buffer.Format(IDS_COMPARESTATISTICS, cs_Filename1, cs_Filename2);
+  buffer.Format(IDS_COMPARESTATISTICS, cs_Filename1.c_str(), cs_Filename2.c_str());
 
   if (numOnlyInCurrent == 0 && numOnlyInComp == 0 && numConflicts == 0) {
     cs_text.LoadString(IDS_IDENTICALDATABASES);
     buffer += cs_text;
     MessageBox(buffer, cs_title, MB_OK);
-    rpt.WriteLine(stringT(buffer));
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.EndReport();
   } else {
     CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 

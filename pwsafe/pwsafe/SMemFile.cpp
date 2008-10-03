@@ -7,8 +7,8 @@
 */
 
 #include "SMemFile.h"
-#include "util.h"
-#include "UTF8Conv.h"
+#include "corelib/util.h"
+#include "corelib/UTF8Conv.h"
 
 /*
 * Override normal CMemFile to allow the contents to be trashed
