@@ -8,16 +8,19 @@
 #include "PWSprefs.h"
 #include "os/typedefs.h"
 #include "corelib.h"
-#include <AfxWin.h> // for AfxGetApp()
 #include <sstream>
 #include <strstream>
-#include <LMCons.h> // for UNLEN
 #include "PWSfile.h"
 #include "SysInfo.h"
 #include "XMLprefs.h"
 #include "util.h"
 #include "PWSdirs.h"
 #include "VerifyFormat.h"
+#include "StringXStream.h"
+#ifdef _WIN32
+#include <AfxWin.h> // for AfxGetApp()
+#include <LMCons.h> // for UNLEN
+#endif
 
 using namespace std;
 
@@ -155,9 +158,8 @@ void PWSprefs::DeleteInstance()
   SysInfo::DeleteInstance();
 }
 
-PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_XML_Config(NULL)
+PWSprefs::PWSprefs() : m_XML_Config(NULL)
 {
-  ASSERT(m_app != NULL);
   int i;
 
   m_prefs_changed[DB_PREF] = false;
@@ -187,9 +189,10 @@ PWSprefs::~PWSprefs()
 
 bool PWSprefs::CheckRegistryExists() const
 {
-  bool bExists;
+  bool bExists = false;
+#ifdef _WIN32
   HKEY hSubkey;
-  const stringT csSubkey = _T("Software\\") + stringT(m_app->m_pszRegistryKey);
+  const stringT csSubkey = _T("Software\\") + stringT(::AfxGetApp()->m_pszRegistryKey);
   bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
                             csSubkey.c_str(),
                             0L,
@@ -197,7 +200,7 @@ bool PWSprefs::CheckRegistryExists() const
                             &hSubkey) == ERROR_SUCCESS);
   if (bExists)
     ::RegCloseKey(hSubkey);
-
+#endif /* _WIN32 */
   return bExists;
 }
 
@@ -324,8 +327,10 @@ bool PWSprefs::WritePref(const StringX &name, bool val)
   bool bRetVal(false);
   switch (m_ConfigOptions) {
   case CF_REGISTRY:
-    bRetVal = (m_app->WriteProfileInt(PWS_REG_OPTIONS, name.c_str(),
+#ifdef _WIN32
+    bRetVal = (::AfxGetApp()->WriteProfileInt(PWS_REG_OPTIONS, name.c_str(),
                                       val ? 1 : 0) == TRUE);
+#endif /* _WIN32 */
     break;
   case CF_FILE_RW:
   case CF_FILE_RW_NEW:
@@ -346,8 +351,10 @@ bool PWSprefs::WritePref(const StringX &name, unsigned int val)
   bool bRetVal(false);
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      bRetVal = (m_app->WriteProfileInt(PWS_REG_OPTIONS, name.c_str(),
+#ifdef _WIN32
+      bRetVal = (::AfxGetApp()->WriteProfileInt(PWS_REG_OPTIONS, name.c_str(),
                                         val) == TRUE);
+#endif /* _WIN32 */
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
@@ -367,8 +374,10 @@ bool PWSprefs::WritePref(const StringX &name, const StringX &val)
   bool bRetVal(false);
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      bRetVal = (m_app->WriteProfileString(PWS_REG_OPTIONS, name.c_str(),
+#ifdef _WIN32
+      bRetVal = (::AfxGetApp()->WriteProfileString(PWS_REG_OPTIONS, name.c_str(),
                                            val.c_str()) == TRUE);
+#endif /* _WIN32 */
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
@@ -391,7 +400,7 @@ bool PWSprefs::DeletePref(const StringX &name)
     case CF_FILE_RW_NEW:
       // The following is not correct.  Not important just now.
       //if (m_bRegistryKeyExists) {
-      //  bRetVal = m_app->WriteProfileInt(PWS_REG_OPTIONS, name, NULL) == TRUE;
+      //  bRetVal = ::AfxGetApp()->WriteProfileInt(PWS_REG_OPTIONS, name, NULL) == TRUE;
       //}
       break;
     case CF_FILE_RW:
@@ -436,16 +445,9 @@ StringX PWSprefs::Store()
   * {1,0} for bool, unsigned integer for int, and delimited string for String.
   */
 
-  StringX retval(_T(""));
-#ifdef _UNICODE
-  wostringstream os;
-#else
-  ostringstream os;
-#endif
+  oStringXStream os;
   int i;
-  TCHAR delim;
-  TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xbb");
-  const int NumDelimiters = _countof(Delimiters);
+
   for (i = 0; i < NumBoolPrefs; i++) {
     if (m_boolValues[i] != m_bool_prefs[i].defVal &&
         m_bool_prefs[i].pt == ptDatabase)
@@ -457,6 +459,10 @@ StringX PWSprefs::Store()
         m_int_prefs[i].pt == ptDatabase)
       os << _T("I ") << i << TCHAR(' ') << m_intValues[i] << TCHAR(' ');
   }
+
+  TCHAR delim;
+  const TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xbb");
+  const int NumDelimiters = sizeof(Delimiters)/ sizeof(Delimiters[0]) - 1;
 
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
@@ -478,8 +484,7 @@ StringX PWSprefs::Store()
   }
 
   os << ends;
-  retval = os.str().c_str();
-  return retval;
+  return os.str();
 }
 
 void PWSprefs::Load(const StringX &prefString)
@@ -505,13 +510,8 @@ void PWSprefs::Load(const StringX &prefString)
     return;
 
   // parse prefString, updating current values
-#ifdef _UNICODE
-  wstring sps(prefString.c_str());
-  wistringstream is(sps);
-#else
-  string sps(prefString.c_str());
-  istringstream is(sps);
-#endif
+  iStringXStream is(prefString);
+
   TCHAR type, delim[1];
   int index, ival;
   unsigned int iuval;
@@ -742,6 +742,7 @@ void PWSprefs::LoadProfileFromDefaults()
 
 void PWSprefs::LoadProfileFromRegistry()
 {
+#ifdef _WIN32
   // Read in values from registry
   if (!m_bRegistryKeyExists)
     return; // Avoid creating keys if none already, as
@@ -755,7 +756,7 @@ void PWSprefs::LoadProfileFromRegistry()
   int i;
   // Defensive programming, if not "0", then "TRUE", all other values = FALSE
   for (i = 0; i < NumBoolPrefs; i++) {
-    m_boolValues[i] = m_app->GetProfileInt(PWS_REG_OPTIONS,
+    m_boolValues[i] = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
                                            m_bool_prefs[i].name,
                                            m_boolValues[i]) != 0;
     // Make sure we write them all out to the config file the first time
@@ -767,10 +768,10 @@ void PWSprefs::LoadProfileFromRegistry()
   BOOL bccom = GetPref(ClearClipboardOnMinimize) ? TRUE : FALSE;
   BOOL bccoe = GetPref(ClearClipboardOnExit) ? TRUE : FALSE;
 
-  bool bccom2 = m_app->GetProfileInt(PWS_REG_OPTIONS,
+  bool bccom2 = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
                                   _T("ClearClipoardOnMinimize"), // deliberate!
                                   bccom) != 0;
-  bool bccoe2 = m_app->GetProfileInt(PWS_REG_OPTIONS,
+  bool bccoe2 = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
                                   _T("ClearClipoardOneExit"), // deliberate!
                                   bccoe) != 0;
 
@@ -782,7 +783,7 @@ void PWSprefs::LoadProfileFromRegistry()
 
   // Defensive programming, if outside the permitted range, then set to default
   for (i = 0; i < NumIntPrefs; i++) {
-    const int iVal = m_app->GetProfileInt(PWS_REG_OPTIONS,
+    const int iVal = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
                                           m_int_prefs[i].name,
                                           m_intValues[i]);
 
@@ -798,7 +799,7 @@ void PWSprefs::LoadProfileFromRegistry()
 
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = m_app->GetProfileString(PWS_REG_OPTIONS,
+    m_stringValues[i] = ::AfxGetApp()->GetProfileString(PWS_REG_OPTIONS,
                                                 m_string_prefs[i].name,
                                                 m_stringValues[i].c_str());
 
@@ -830,14 +831,15 @@ void PWSprefs::LoadProfileFromRegistry()
   // End of "defensive" code
 
   // Load last main window size & pos:
-  m_rect.top = m_app->GetProfileInt(PWS_REG_POSITION,
+  m_rect.top = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                     _T("top"), -1);
-  m_rect.bottom = m_app->GetProfileInt(PWS_REG_POSITION,
+  m_rect.bottom = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                        _T("bottom"), -1);
-  m_rect.left = m_app->GetProfileInt(PWS_REG_POSITION,
+  m_rect.left = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                      _T("left"), -1);
-  m_rect.right = m_app->GetProfileInt(PWS_REG_POSITION,
+  m_rect.right = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                       _T("right"), -1);
+#endif /* _WIN32 */
 }
 
 bool PWSprefs::LoadProfileFromFile()
@@ -1018,14 +1020,16 @@ void PWSprefs::SaveApplicationPreferences()
   if (m_rect.changed) {
     switch (m_ConfigOptions) {
       case CF_REGISTRY:
-        m_app->WriteProfileInt(PWS_REG_POSITION,
+#ifdef _WIN32
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
                                _T("top"), m_rect.top);
-        m_app->WriteProfileInt(PWS_REG_POSITION,
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
                                _T("bottom"), m_rect.bottom);
-        m_app->WriteProfileInt(PWS_REG_POSITION,
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
                                _T("left"), m_rect.left);
-        m_app->WriteProfileInt(PWS_REG_POSITION,
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
                                _T("right"), m_rect.right);
+#endif /* _WIN32 */
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
@@ -1078,15 +1082,18 @@ void PWSprefs::SaveApplicationPreferences()
 
 bool PWSprefs::OfferDeleteRegistry() const
 {
+#ifdef _WIN32
   return (m_ConfigOptions == CF_FILE_RW &&
     (m_bRegistryKeyExists || OldPrefsExist()));
+#endif /* _WIN32 */
 }
 
 void PWSprefs::DeleteRegistryEntries()
 {
+#ifdef _WIN32
   DeleteOldPrefs();
   HKEY hSubkey;
-  const stringT csSubkey = _T("Software\\") + stringT(m_app->m_pszRegistryKey);
+  const stringT csSubkey = _T("Software\\") + stringT(::AfxGetApp()->m_pszRegistryKey);
 
   LONG dw = RegOpenKeyEx(HKEY_CURRENT_USER,
                          csSubkey.c_str(),
@@ -1097,12 +1104,13 @@ void PWSprefs::DeleteRegistryEntries()
     return; // may have been called due to OldPrefs
   }
 
-  dw = m_app->DelRegTree(hSubkey, m_app->m_pszAppName);
+  dw = ::AfxGetApp()->DelRegTree(hSubkey, ::AfxGetApp()->m_pszAppName);
   ASSERT(dw == ERROR_SUCCESS);
 
   dw = RegCloseKey(hSubkey);
   ASSERT(dw == ERROR_SUCCESS);
   m_bRegistryKeyExists = false;
+#endif /* _WIN32 */
 }
 
 int PWSprefs::GetConfigIndicator() const
@@ -1246,6 +1254,7 @@ void PWSprefs::ImportOldPrefs()
 
 void PWSprefs::DeleteOldPrefs()
 {
+#ifdef _WIN32
   HKEY hSubkey;
   LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
                            Software.c_str(),
@@ -1257,7 +1266,7 @@ void PWSprefs::DeleteOldPrefs()
     return;
   }
 
-  dw = m_app->DelRegTree(hSubkey, OldSubKey.c_str());
+  dw = ::AfxGetApp()->DelRegTree(hSubkey, OldSubKey.c_str());
   if (dw != ERROR_SUCCESS) {
     TRACE(_T("PWSprefs::DeleteOldPrefs: DelRegTree failed\n"));
   }
@@ -1265,6 +1274,7 @@ void PWSprefs::DeleteOldPrefs()
   if (dw != ERROR_SUCCESS) {
     TRACE(_T("PWSprefs::DeleteOldPrefs: RegCloseKey failed\n"));
   }
+#endif /* _WIN32 */
 }
 
 stringT PWSprefs::GetXMLPreferences()
