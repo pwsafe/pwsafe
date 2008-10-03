@@ -132,7 +132,7 @@ BOOL DboxMain::OpenOnInit(void)
   * A bit too subtle for switch/case on rc2...
   */
   if (rc2 == PWScore::BAD_DIGEST) {
-    CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile());
+    CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
     const int yn = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR);
     if (yn == IDNO) {
@@ -204,7 +204,7 @@ int DboxMain::New()
 
   if (m_core.IsChanged()) {
     CString cs_temp;
-    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile());
+    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
     rc = MessageBox(cs_temp, AfxGetAppName(),
       MB_ICONQUESTION|MB_YESNOCANCEL);
     switch (rc) {
@@ -242,7 +242,7 @@ int DboxMain::New()
   rc = m_core.WriteCurFile();
   if (rc == PWScore::CANT_OPEN_FILE) {
     CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
+    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile.c_str());
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::USER_CANCEL;
   }
@@ -530,7 +530,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
       m_bAlreadyToldUserNoSave = false;
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      temp.Format(IDS_SAFENOTEXIST, pszFilename);
+      temp.Format(IDS_SAFENOTEXIST, pszFilename.c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
     case TAR_OPEN:
@@ -558,7 +558,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-      temp.Format(IDS_CANTOPENREADING, pszFilename);
+      temp.Format(IDS_CANTOPENREADING, pszFilename.c_str());
       MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
       /*
       Everything stays as is... Worst case,
@@ -567,7 +567,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
       return PWScore::CANT_OPEN_FILE;
     case PWScore::BAD_DIGEST:
     {
-      temp.Format(IDS_FILECORRUPT, pszFilename);
+      temp.Format(IDS_FILECORRUPT, pszFilename.c_str());
       const int yn = MessageBox(temp, cs_title, MB_YESNO|MB_ICONERROR);
       if (yn == IDYES) {
         rc = PWScore::SUCCESS;
@@ -590,7 +590,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
     }
 #endif
     default:
-      temp.Format(IDS_UNKNOWNERROR, pszFilename);
+      temp.Format(IDS_UNKNOWNERROR, pszFilename.c_str());
       MessageBox(temp, cs_title, MB_OK|MB_ICONERROR);
       return rc;
   }
@@ -658,7 +658,8 @@ int DboxMain::Save()
     stringT NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
                                               DEFAULT_SUFFIX);
 
-    cs_msg.Format(IDS_NEWFORMAT, m_core.GetCurFile(), NewName.c_str());
+    cs_msg.Format(IDS_NEWFORMAT,
+                  m_core.GetCurFile().c_str(), NewName.c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
 
     CGeneralMsgBox gmb;
@@ -681,7 +682,7 @@ int DboxMain::Save()
   rc = m_core.WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile());
+    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -701,7 +702,7 @@ int DboxMain::SaveIfChanged()
   if (m_core.IsChanged()) {
     int rc, rc2;
     CString cs_temp;
-    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile());
+    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
     rc = MessageBox(cs_temp, AfxGetAppName(),
       MB_ICONQUESTION|MB_YESNOCANCEL);
     switch (rc) {
@@ -736,7 +737,7 @@ int DboxMain::SaveAs()
 
   if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
-    cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile());
+    cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
     CGeneralMsgBox gmb;
     gmb.SetTitle(cs_title);
@@ -792,7 +793,7 @@ int DboxMain::SaveAs()
   StringX locker(_T("")); // null init is important here
   // Note: We have to lock the new file before releasing the old (on success)
   if (!m_core.LockFile2(newfile, locker)) {
-    cs_temp.Format(IDS_FILEISLOCKED, newfile, locker.c_str());
+    cs_temp.Format(IDS_FILEISLOCKED, newfile.c_str(), locker.c_str());
     cs_title.LoadString(IDS_FILELOCKERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -807,7 +808,7 @@ int DboxMain::SaveAs()
   if (rc == PWScore::CANT_OPEN_FILE) {
     m_core.SetFileUUID(file_uuid_array);
     m_core.UnlockFile2(newfile);
-    cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+    cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -888,7 +889,7 @@ void DboxMain::OnExportVx(UINT nID)
       break;
   }
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+    cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
   }
@@ -1027,7 +1028,7 @@ void DboxMain::OnExportXML()
       orderedItemList.clear(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+        cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
         cs_title.LoadString(IDS_FILEWRITEERROR);
         MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       }
@@ -1084,7 +1085,7 @@ void DboxMain::OnImportText()
     LoadAString(cs_text, IDS_RPTIMPORTTEXT);
     rpt.StartReport(cs_text.c_str(), m_core.GetCurFile().c_str());
     LoadAString(cs_text, IDS_TEXT);
-    cs_temp.Format(IDS_IMPORTFILE, cs_text.c_str(), TxtFileName);
+    cs_temp.Format(IDS_IMPORTFILE, cs_text.c_str(), TxtFileName.c_str());
     rpt.WriteLine((LPCTSTR)cs_temp);
     rpt.WriteLine();
 
@@ -1094,10 +1095,10 @@ void DboxMain::OnImportText()
     cs_title.LoadString(IDS_FILEREADERROR);
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
-        cs_temp.Format(IDS_CANTOPENREADING, TxtFileName);
+        cs_temp.Format(IDS_CANTOPENREADING, TxtFileName.c_str());
         break;
       case PWScore::INVALID_FORMAT:
-        cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName);
+        cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName.c_str());
         break;
       case PWScore::FAILURE:
         cs_title.LoadString(IDS_TEXTIMPORTFAILED);
@@ -1175,14 +1176,14 @@ void DboxMain::OnImportKeePass()
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
       {
-        cs_temp.Format(IDS_CANTOPENREADING, KPsFileName);
+        cs_temp.Format(IDS_CANTOPENREADING, KPsFileName.c_str());
         cs_title.LoadString(IDS_FILEOPENERROR);
         MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
         break;
       }
       case PWScore::INVALID_FORMAT:
       {
-        cs_temp.Format(IDS_INVALIDFORMAT, KPsFileName);
+        cs_temp.Format(IDS_INVALIDFORMAT, KPsFileName.c_str());
         cs_title.LoadString(IDS_FILEREADERROR);
         MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
         break;
@@ -1300,7 +1301,8 @@ void DboxMain::OnImportXML()
         } else {
           const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
           const CString cs_imported(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
-          cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
+          cs_temp.Format(IDS_XMLIMPORTOK,
+                         numValidated, cs_validate, numImported, cs_imported);
           cs_title.LoadString(IDS_STATUS);
           ChangeOkUpdate();
         }
@@ -1426,7 +1428,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, othercore.GetCurFile());
+      cs_temp.Format(IDS_CANTOPEN, othercore.GetCurFile().c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     case TAR_OPEN:
@@ -1444,7 +1446,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
   othercore.ReadFile(pszFilename, passkey);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENREADING, pszFilename);
+    cs_temp.Format(IDS_CANTOPENREADING, pszFilename.c_str());
     cs_title.LoadString(IDS_FILEREADERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     /*
@@ -1467,7 +1469,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
   CString cs_text;
   cs_text.LoadString(IDS_RPTMERGE);
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
-  cs_temp.Format(IDS_MERGINGDATABASE, pszFilename);
+  cs_temp.Format(IDS_MERGINGDATABASE, pszFilename.c_str());
   rpt.WriteLine((LPCTSTR)cs_temp);
 
   /*
@@ -1582,12 +1584,12 @@ int DboxMain::Merge(const StringX &pszFilename) {
         /* note it as an issue for the user */
         CString warnMsg;
         warnMsg.Format(IDS_MERGECONFLICTS, 
-                       otherItem.GetGroup(), 
-                       otherItem.GetTitle(),
-                       otherItem.GetUser(),
-                       otherItem.GetGroup(), 
-                       newTitle, 
-                       otherItem.GetUser(),
+                       otherItem.GetGroup().c_str(), 
+                       otherItem.GetTitle().c_str(),
+                       otherItem.GetUser().c_str(),
+                       otherItem.GetGroup().c_str(), 
+                       newTitle.c_str(), 
+                       otherItem.GetUser().c_str(),
                        csDiffs);
 
         /* log it */
@@ -1637,8 +1639,10 @@ int DboxMain::Merge(const StringX &pszFilename) {
   const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ? IDS_CONFLICT : IDS_CONFLICTS));
   const CString cs_aliases(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_ALIAS : IDS_ALIASES));
   const CString cs_shortcuts(MAKEINTRESOURCE(numShortcutsAdded == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS));
-  resultStr.Format(IDS_MERGECOMPLETED, totalAdded, cs_entries, numConflicts, cs_conflicts,
-                                       numAliasesAdded, cs_aliases, numShortcutsAdded, cs_shortcuts);
+  resultStr.Format(IDS_MERGECOMPLETED,
+                   totalAdded, cs_entries, numConflicts, cs_conflicts,
+                   numAliasesAdded, cs_aliases,
+                   numShortcutsAdded, cs_shortcuts);
   cs_title.LoadString(IDS_MERGECOMPLETED2);
   //MessageBox(resultStr, cs_title, MB_OK);
   rpt.WriteLine((LPCTSTR)resultStr);
@@ -1812,7 +1816,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, cs_Filename2);
+      cs_temp.Format(IDS_CANTOPEN, cs_Filename2.c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     case TAR_OPEN:
@@ -1837,12 +1841,12 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPENREADING, cs_Filename2);
+      cs_temp.Format(IDS_CANTOPENREADING, cs_Filename2.c_str());
       MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       break;
     case PWScore::BAD_DIGEST:
     {
-      cs_temp.Format(IDS_FILECORRUPT, cs_Filename2);
+      cs_temp.Format(IDS_FILECORRUPT, cs_Filename2.c_str());
       const int yn = MessageBox(cs_temp, cs_title, MB_YESNO|MB_ICONERROR);
       if (yn == IDYES)
         rc = PWScore::SUCCESS;
@@ -1858,7 +1862,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
     }
 #endif
     default:
-      cs_temp.Format(IDS_UNKNOWNERROR, cs_Filename2);
+      cs_temp.Format(IDS_UNKNOWNERROR, cs_Filename2.c_str());
       MessageBox(cs_temp, cs_title, MB_OK|MB_ICONERROR);
       break;
   }
@@ -1880,7 +1884,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
   CReport rpt;
   cs_text.LoadString(IDS_RPTCOMPARE);
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
-  cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
+  cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2.c_str());
   rpt.WriteLine((LPCTSTR)cs_temp);
   rpt.WriteLine();
 
@@ -2194,7 +2198,8 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
   }
 
   cs_title.LoadString(IDS_COMPARECOMPLETE);
-  buffer.Format(IDS_COMPARESTATISTICS, cs_Filename1.c_str(), cs_Filename2.c_str());
+  buffer.Format(IDS_COMPARESTATISTICS,
+                cs_Filename1.c_str(), cs_Filename2.c_str());
 
   if (numOnlyInCurrent == 0 && numOnlyInComp == 0 && numConflicts == 0) {
     cs_text.LoadString(IDS_IDENTICALDATABASES);
@@ -2261,7 +2266,8 @@ int DboxMain::SaveCore(PWScore *pcore)
   } else { // file version mis-match
     stringT NewName = PWSUtil::GetNewFileName(pcore->GetCurFile().c_str(),
                                               DEFAULT_SUFFIX );
-    cs_msg.Format(IDS_NEWFORMAT, pcore->GetCurFile(), NewName);
+    cs_msg.Format(IDS_NEWFORMAT,
+                  pcore->GetCurFile().c_str(), NewName.c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
 
     CGeneralMsgBox gmb;
@@ -2278,7 +2284,7 @@ int DboxMain::SaveCore(PWScore *pcore)
   rc = pcore->WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile());
+    cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
