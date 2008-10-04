@@ -7,13 +7,12 @@
 */
 #include "PWSprefs.h"
 #include "os/typedefs.h"
+#include "os/pws_tchar.h"
 #include "corelib.h"
-#include <sstream>
-#include <strstream>
 #include "PWSfile.h"
 #include "SysInfo.h"
 #include "XMLprefs.h"
-#include "util.h"
+#include "Util.h"
 #include "PWSdirs.h"
 #include "VerifyFormat.h"
 #include "StringXStream.h"
@@ -763,24 +762,26 @@ void PWSprefs::LoadProfileFromRegistry()
     m_boolChanged[i] = true;
   }
 
-  // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
-  // to correct spelling while maintain preference's value.
-  BOOL bccom = GetPref(ClearClipboardOnMinimize) ? TRUE : FALSE;
-  BOOL bccoe = GetPref(ClearClipboardOnExit) ? TRUE : FALSE;
-
-  bool bccom2 = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
-                                  _T("ClearClipoardOnMinimize"), // deliberate!
-                                  bccom) != 0;
-  bool bccoe2 = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
-                                  _T("ClearClipoardOneExit"), // deliberate!
-                                  bccoe) != 0;
-
-  // If old (mis-spelt) name was there, use its value. Since the
-  // default above was the new (correct) spelling, it has priority
-  m_boolValues[ClearClipboardOnMinimize] = bccom2;
-  m_boolValues[ClearClipboardOnExit] = bccoe2;
-  // end of silent conversion
-
+  { // encapsulate in braces to avoid compiler issues w.r.t.
+    // initializations and goto
+    // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
+    // to correct spelling while maintain preference's value.
+    BOOL bccom = GetPref(ClearClipboardOnMinimize) ? TRUE : FALSE;
+    BOOL bccoe = GetPref(ClearClipboardOnExit) ? TRUE : FALSE;
+    
+    bool bccom2 = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
+                                               _T("ClearClipoardOnMinimize"), // deliberate!
+                                               bccom) != 0;
+    bool bccoe2 = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
+                                               _T("ClearClipoardOneExit"), // deliberate!
+                                               bccoe) != 0;
+    
+    // If old (mis-spelt) name was there, use its value. Since the
+    // default above was the new (correct) spelling, it has priority
+    m_boolValues[ClearClipboardOnMinimize] = bccom2;
+    m_boolValues[ClearClipboardOnExit] = bccoe2;
+    // end of silent conversion
+  }
   // Defensive programming, if outside the permitted range, then set to default
   for (i = 0; i < NumIntPrefs; i++) {
     const int iVal = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
@@ -878,23 +879,25 @@ bool PWSprefs::LoadProfileFromFile()
                                         m_bool_prefs[i].defVal) != 0;
   }
 
-  // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
-  // to correct spelling while maintain preference's value.
-  bool bccom = GetPref(ClearClipboardOnMinimize);
-  bool bccoe = GetPref(ClearClipboardOnExit);
+  { // encapsulate in braces to avoid compiler issues w.r.t.
+    // initializations and goto
+    // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
+    // to correct spelling while maintain preference's value.
+    bool bccom = GetPref(ClearClipboardOnMinimize);
+    bool bccoe = GetPref(ClearClipboardOnExit);
 
-  bool bccom2 = m_XML_Config->Get(m_csHKCU_PREF,
-                                  _T("ClearClipoardOnMinimize"), // deliberate!
-                                  bccom) != 0;
-  bool bccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
-                                  _T("ClearClipoardOneExit"), // deliberate!
-                                  bccoe) != 0;
+    bool bccom2 = m_XML_Config->Get(m_csHKCU_PREF,
+                                    _T("ClearClipoardOnMinimize"), // deliberate!
+                                    bccom) != 0;
+    bool bccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
+                                    _T("ClearClipoardOneExit"), // deliberate!
+                                    bccoe) != 0;
 
-  // If old (mis-spelt) name was there, use its value. Since the
-  // default above was the new (correct) spelling, it has priority
-  m_boolValues[ClearClipboardOnMinimize] = bccom2;
-  m_boolValues[ClearClipboardOnExit] = bccoe2;
-
+    // If old (mis-spelt) name was there, use its value. Since the
+    // default above was the new (correct) spelling, it has priority
+    m_boolValues[ClearClipboardOnMinimize] = bccom2;
+    m_boolValues[ClearClipboardOnExit] = bccoe2;
+  }
   // Now delete them so we don't have to do this again, as they would
   // override the user's intention, if they changed them using the
   // correctly spelt versions.
@@ -935,8 +938,7 @@ bool PWSprefs::LoadProfileFromFile()
   m_rect.right = m_XML_Config->Get(m_csHKCU_POS, _T("right"), -1);
 
   // Load most recently used file list
-  const int nMRUItems = m_intValues[MaxMRUItems];
-  for (i = nMRUItems; i > 0; i--) {
+  for (i = m_intValues[MaxMRUItems]; i > 0; i--) {
     Format(csSubkey, _T("Safe%02d"), i);
     m_MRUitems[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
   }
@@ -1036,7 +1038,7 @@ void PWSprefs::SaveApplicationPreferences()
       {
         stringT obuff;
         Format(obuff, _T("%d"), m_rect.top);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
         Format(obuff, _T("%d"), m_rect.bottom);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
         Format(obuff, _T("%d"), m_rect.left);
@@ -1085,6 +1087,8 @@ bool PWSprefs::OfferDeleteRegistry() const
 #ifdef _WIN32
   return (m_ConfigOptions == CF_FILE_RW &&
     (m_bRegistryKeyExists || OldPrefsExist()));
+#else
+  return false;
 #endif /* _WIN32 */
 }
 
@@ -1137,7 +1141,8 @@ const stringT Software(_T("Software"));
 
 bool PWSprefs::OldPrefsExist() const
 {
-  bool bExists;
+  bool bExists = false;
+#ifdef _WIN32
   HKEY hSubkey;
   stringT key = Software + _T("\\") + OldSubKey;
   bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
@@ -1147,12 +1152,13 @@ bool PWSprefs::OldPrefsExist() const
                             &hSubkey) == ERROR_SUCCESS);
   if (bExists)
     ::RegCloseKey(hSubkey);
-
+#endif /* _WIN32 */
   return bExists;
 }
 
 void PWSprefs::ImportOldPrefs()
 {
+#ifdef _WIN32
   HKEY hSubkey;
   stringT OldAppKey = Software + _T("\\") + OldSubKey + _T("\\Password Safe");
   LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
@@ -1250,6 +1256,7 @@ void PWSprefs::ImportOldPrefs()
 
   dw = ::RegCloseKey(hSubkey);
   ASSERT(dw == ERROR_SUCCESS);
+#endif /* _WIN32 */
 }
 
 void PWSprefs::DeleteOldPrefs()
@@ -1280,13 +1287,9 @@ void PWSprefs::DeleteOldPrefs()
 stringT PWSprefs::GetXMLPreferences()
 {
   stringT retval(_T(""));
-#ifdef _UNICODE
-  wostringstream os;
-#else
-  ostringstream os;
-#endif
+  ostringstreamT os;
 
-  os << "\t<Preferences>" << endl;
+  os << _S("\t<Preferences>") << endl;
   int i;
   for (i = 0; i < NumBoolPrefs; i++) {
     if (m_boolValues[i] != m_bool_prefs[i].defVal &&

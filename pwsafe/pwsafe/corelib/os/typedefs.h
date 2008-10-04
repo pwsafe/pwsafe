@@ -73,9 +73,11 @@ typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned int UINT;
 typedef void *HANDLE;
+#define INVALID_HANDLE_VALUE HANDLE(-1)
 
 // assorted conveniences:
 #define ASSERT(p) assert(p)
+#define VERIFY(p) if (!(p)) TRACE("VERIFY Failed")
 #define TRACE(...) // nothing, for now...
 #define TRUE true
 #define FALSE false

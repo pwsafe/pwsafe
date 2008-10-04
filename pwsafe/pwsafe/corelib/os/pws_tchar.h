@@ -17,6 +17,7 @@
 #ifdef UNICODE
 #include <wctype.h>
 #define _istalpha(x) iswalpha(x)
+#define _istalnum(x) iswalnum(x)
 #define _totupper(x) towupper(x)
 #define _totlower(x) towlower(x)
 #define _istlower(x) iswlower(x)
@@ -34,6 +35,7 @@
 #else /* !UNICODE */
 #include <ctype.h>
 #define _istalpha(x) isalpha(x)
+#define _istalnum(x) isalnum(x)
 #define _totupper(x) toupper(x)
 #define _totlower(x) tolower(x)
 #define _istlower(x) islower(x)
