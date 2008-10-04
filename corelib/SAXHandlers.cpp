@@ -92,7 +92,8 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error(struct ISAXLocator * pLocato
   pLocator->getLineNumber(&iLineNumber);
   pLocator->getColumnNumber(&iCharacter);
 
-  const stringT cs_format(MAKEINTRESOURCE(IDSC_SAXGENERROR));
+  stringT cs_format;
+  LoadAString(cs_format, IDSC_SAXGENERROR);
 
 #if (_MSC_VER >= 1400)
   _stprintf_s(szFormatString, MAX_PATH*2, cs_format.c_str(),
