@@ -4,12 +4,20 @@
 
 
 
+
+
 		
 		
 		
 
 		
 		
+  
+
+  
+  
+
+  
   
 
   
@@ -22,11 +30,15 @@
 		</script>
   
   
+  
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
+
+
 
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
@@ -42,6 +54,8 @@
 
 
 
+
+
 		
 <p>One of the most important keys to maintaining your security is selecting a strong master password   for your <b>Password Safe</b>
 database. The database&nbsp;("Safe") contains all your user names,
@@ -52,21 +66,42 @@ leaves your data vulnerable.&nbsp;<i style="font-weight: bold;">It is important 
 
 
 
-		
-<p><b>Password Safe</b> has a built in check for what it considers to
-be weak master passwords. In general, a master password (like any
-password) should consist of mixed case characters with at least one
-number or <a href="JavaScript:popup.TextPopup(strSpecialChars,popFont,9,9,-1,-1)">special character</a> (such
-as those found above the number keys on a keyboard). If a master
-password is entered that the program considers weak, it will prompt for
-confirmation. You may the option to accept the originally
-entered (weak) password, or to enter a new one.</p>
-
-
 
 
 		
-<center><img src="images%5Cweakpassword.gif"></center>
+<p>This <span style="font-weight: bold;"></span>customized version of <b>Password Safe</b> enforces the following policy for master passwords:</p>
+
+<ol>
+
+  <li>A master password must have at least three out of the following types of characters:</li>
+
+  
+  <ol>
+
+    <li>Lower case</li>
+
+    <li>Uppercase</li>
+
+    <li>Digits</li>
+
+    <li>Symbols</li>
+
+  
+  </ol>
+
+  <li>A master password must be at least 15 characters long.</li>
+
+  <li>The master password must be changed at least once a year.</li>
+
+</ol>
+
+
+
+
+
+
+		
+
 
 
 
@@ -77,8 +112,12 @@ entered (weak) password, or to enter a new one.</p>
 		</p>
 
 
+
+
 <hr>
 		<small><b>Note:&nbsp;<span style="color: rgb(255, 0, 0);">There is no mechanism within Password Safe to retrieve lost or forgotten safe passwords</span></b><span style="color: rgb(255, 0, 0);">.</span> <br>
+
+
 
 
 This is a deliberate design decision, since any mechanism for
@@ -90,10 +129,11 @@ retrieving lost passwords poses a security hole that can be exploited.</small>
 		<br>
 
 
-<br>
 
 
 <br>
+
+
 
 
 
