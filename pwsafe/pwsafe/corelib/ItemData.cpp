@@ -546,6 +546,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   GetPWPolicy(pwp);
   if (bsExport.test(CItemData::POLICY) && pwp.flags != 0) {
     oss << "\t\t<PasswordPolicy>" << endl;
+    oss << dec;
     oss << "\t\t\t<PWLength>" << pwp.length << "</PWLength>" << endl;
     if (pwp.flags & PWSprefs::PWPolicyUseLowercase)
       oss << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
@@ -582,6 +583,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     PWHistList PWHistList;
     bool pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
                                           PWHistList, TMC_XML);
+    oss << dec;
     if (pwh_status || pwh_max > 0 || !PWHistList.empty()) {
       oss << "\t\t<pwhistory>" << endl;
       oss << "\t\t\t<status>" << pwh_status << "</status>" << endl;
@@ -890,7 +892,8 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   }
 
   if (xint_str.find_first_not_of(_T("0123456789")) == stringT::npos) {
-    xint = _ttoi(xint_str.c_str());
+    istringstreamT is(xint_str);
+    is >> xint;
     if (xint >= 0 && xint <= 3650) {
       SetXTimeInt(xint);
       return true;
