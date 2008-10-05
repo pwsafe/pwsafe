@@ -14,6 +14,8 @@
 #ifdef _WIN32
 #include <tchar.h>
 #else
+#define _gmtime64_s(ts64, tm64) gmtime64_r(tm64, ts64)
+#define _mkgmtime32(ts) mktime(ts)
 #ifdef UNICODE
 #include <wctype.h>
 #define _istalpha(x) iswalpha(x)

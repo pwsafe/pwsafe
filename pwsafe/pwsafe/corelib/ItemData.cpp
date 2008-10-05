@@ -10,6 +10,7 @@
 
 #include "ItemData.h"
 #include "os/typedefs.h"
+#include "os/pws_tchar.h"
 #include "os/mem.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
@@ -1333,7 +1334,7 @@ bool CItemData::DeserializePlainText(const std::vector<char> &v)
 
   while (iter != v.end()) {
     int type = (*iter++ & 0xff); // required since enum is an int
-    if ((v.end() - iter) < sizeof(size_t)) {
+    if (size_t(v.end() - iter) < sizeof(size_t)) {
       ASSERT(0); // type must ALWAYS be followed by length
       return false;
     }
