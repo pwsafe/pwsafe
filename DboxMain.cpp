@@ -672,7 +672,7 @@ void DboxMain::InitPasswordSafe()
   // do what its name implies...
   CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
     _T("autoload_filters.xml");
-  if (PWSfile::FileExists(tmp.GetString())) {
+  if (m_core.FileExists(tmp.GetString())) {
     stringT strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
     CWaitCursor waitCursor;  // This may take a while!
@@ -815,7 +815,7 @@ void DboxMain::SetInitialDatabaseDisplay()
 
 void DboxMain::OnDestroy()
 {
-  const StringX filename(m_core.GetCurFile());
+  const stringT filename(m_core.GetCurFile().c_str());
   // The only way we're the locker is if it's locked & we're !readonly
   if (!filename.empty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
@@ -1097,7 +1097,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   if (pcore == 0) pcore = &m_core;
 
   if (!filename.empty()) {
-    bool exists = pcore->FileExists(filename, bFileIsReadOnly);
+    bool exists = pcore->FileExists(filename.c_str(), bFileIsReadOnly);
 
     if (!exists) {
       // Used to display an error message, but this is really the caller's business
@@ -1168,7 +1168,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     DBGMSG("PasskeyEntry returns IDOK\n");
     const StringX curFile = dbox_pkentry->GetFileName().GetString();
     pcore->SetCurFile(curFile);
-    StringX locker(_T("")); // null init is important here
+    stringT locker(_T("")); // null init is important here
     passkey = LPCTSTR(dbox_pkentry->GetPasskey());
     // This dialog's setting of read-only overrides file dialog
     bool bIsReadOnly = dbox_pkentry->IsReadOnly();
@@ -1177,12 +1177,12 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     // we could not create a lock file.
     switch (index) {
       case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-        pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile, locker));
+        pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
         break;
       case GCP_NORMAL:
       case GCP_ADVANCED:
         if (!bIsReadOnly) // !first, lock if !bIsReadOnly
-          pcore->SetReadOnly(!pcore->LockFile(curFile, locker));
+          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
         else
           pcore->SetReadOnly(bIsReadOnly);
         break;
@@ -1864,7 +1864,7 @@ void DboxMain::UnMinimize(bool update_windows)
         rc2 = PWScore::NOT_SUCCESS;
         break;
       case PWScore::USER_EXIT:
-        m_core.UnlockFile(m_core.GetCurFile());
+        m_core.UnlockFile(m_core.GetCurFile().c_str());
         PostQuitMessage(0);
         return;
       default:

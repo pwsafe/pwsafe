@@ -10,6 +10,7 @@
 
 #include "os/typedefs.h"
 #include "os/dir.h"
+#include "os/file.h"
 #include "os/mem.h"
 #include "PWScore.h"
 #include "corelib.h"
@@ -1319,7 +1320,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 
 int PWScore::RenameFile(const StringX &oldname, const StringX &newname)
 {
-  return PWSfile::RenameFile(oldname, newname);
+  return pws_os::RenameFile(oldname.c_str(), newname.c_str());
 }
 
 bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
@@ -2495,4 +2496,43 @@ void PWScore::NotifyListModified()
     return;
 
   m_pfcnNotifyListModified(m_NotifyInstance);
+}
+
+bool PWScore::FileExists(const stringT &filename) const
+{
+  return pws_os::FileExists(filename);
+}
+
+bool PWScore::FileExists(const stringT &filename, bool &bReadOnly) const 
+{
+  return pws_os::FileExists(filename, bReadOnly);
+}
+
+bool PWScore::LockFile(const stringT &filename, stringT &locker)
+{
+  return pws_os::LockFile(filename, locker,
+                          m_lockFileHandle, m_LockCount);
+}
+
+bool PWScore::IsLockedFile(const stringT &filename) const
+{
+  return pws_os::IsLockedFile(filename);
+}
+
+void PWScore::UnlockFile(const stringT &filename)
+{
+  return pws_os::UnlockFile(filename, 
+                            m_lockFileHandle, m_LockCount);
+}
+
+bool PWScore::LockFile2(const stringT &filename, stringT &locker)
+{
+  return pws_os::LockFile(filename, locker,
+                          m_lockFileHandle2, m_LockCount);
+}
+
+void PWScore::UnlockFile2(const stringT &filename)
+{
+  return pws_os::UnlockFile(filename, 
+                            m_lockFileHandle2, m_LockCount);
 }

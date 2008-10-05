@@ -46,6 +46,9 @@ typedef unsigned __int64   ulong64;
 typedef unsigned long      ulong32;
 
 typedef unsigned int uint;
+
+typedef void *HANDLE;
+
 #else /* !defined(_WIN32) */
 #include <sys/types.h>
 #include "linux/pws_time.h"
@@ -58,6 +61,8 @@ typedef u_int8_t  uint8;
 typedef u_int16_t uint16;
 typedef u_int32_t uint32;
 typedef u_int64_t uint64;
+
+typedef int HANDLE;
 
 #ifdef UNICODE
 #define _T(x) L ## x

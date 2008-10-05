@@ -30,7 +30,7 @@
 */
 
 #include "StringX.h"
-#include "PWSfile.h"
+#include "os/typedefs.h"
 
 extern HANDLE s_cfglockFileHandle;
 extern int s_cfgLockCount;
@@ -150,14 +150,9 @@ public:
   bool OfferDeleteRegistry() const;
   void DeleteRegistryEntries();  
 
-  static bool LockCFGFile(const stringT &filename, StringX &locker)
-  {return PWSfile::LockFile(filename.c_str(), locker, 
-                            s_cfglockFileHandle, s_cfgLockCount);}
-  static void UnlockCFGFile(const stringT &filename)
-  {return PWSfile::UnlockFile(filename.c_str(),
-                              s_cfglockFileHandle, s_cfgLockCount);}
-  static bool IsLockedCFGFile(const StringX &filename)
-  {return PWSfile::IsLockedFile(filename);}
+  static bool LockCFGFile(const stringT &filename, stringT &locker);
+  static void UnlockCFGFile(const stringT &filename);
+  static bool IsLockedCFGFile(const stringT &filename);
 
 private:
   PWSprefs();

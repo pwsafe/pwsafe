@@ -8,6 +8,7 @@
 #include "PWSprefs.h"
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
+#include "os/file.h"
 #include "corelib.h"
 #include "PWSfile.h"
 #include "SysInfo.h"
@@ -619,7 +620,7 @@ void PWSprefs::InitializePreferences()
 
   // 1. Does config file exist (and if, so, can we write to it?)?
   bool isRO = false;
-  bool configFileExists = PWSfile::FileExists(m_configfilename.c_str(), isRO);
+  bool configFileExists = pws_os::FileExists(m_configfilename.c_str(), isRO);
   if (configFileExists)
     m_ConfigOptions = (isRO) ? CF_FILE_RO : CF_FILE_RW;
   else 
@@ -668,7 +669,7 @@ void PWSprefs::InitializePreferences()
     // can we create one? If not, fallback to registry
     // We assume that if we can create a lock file, we can create
     // a config file in the same directory
-    StringX locker;
+    stringT locker;
     if (LockCFGFile(m_configfilename, locker)) {
       UnlockCFGFile(m_configfilename);
     } else {
@@ -973,7 +974,7 @@ void PWSprefs::SaveApplicationPreferences()
         m_XML_Config = NULL;
       } else { // acquired lock
         // if file exists, load to get other values
-        if (PWSfile::FileExists(m_configfilename.c_str()))
+        if (pws_os::FileExists(m_configfilename.c_str()))
           m_XML_Config->Load();
       }
   }
@@ -1362,4 +1363,21 @@ stringT PWSprefs::GetXMLPreferences()
   os << ends;
   retval = os.str().c_str();
   return retval;
+}
+
+bool PWSprefs::LockCFGFile(const stringT &filename, stringT &locker)
+{
+  return pws_os::LockFile(filename, locker, 
+                          s_cfglockFileHandle, s_cfgLockCount);
+}
+
+void PWSprefs::UnlockCFGFile(const stringT &filename)
+{
+  return pws_os::UnlockFile(filename,
+                            s_cfglockFileHandle, s_cfgLockCount);
+}
+
+bool PWSprefs::IsLockedCFGFile(const stringT &filename)
+{
+  return pws_os::IsLockedFile(filename);
 }

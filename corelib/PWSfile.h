@@ -67,23 +67,13 @@ public:
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
                               RWmode mode, int &status);
 
-  static bool FileExists(const StringX &filename);
-  static bool FileExists(const StringX &filename, bool &bReadOnly);
-  static void FileError(int formatRes, int cause);
   static VERSION ReadVersion(const StringX &filename);
-  static int RenameFile(const StringX &oldname, const StringX &newname);
   static int CheckPassword(const StringX &filename,
                            const StringX &passkey, VERSION &version);
 
-  static bool LockFile(const StringX &filename, StringX &locker,
-                       HANDLE &lockFileHandle, int &LockCount);
-  static bool IsLockedFile(const StringX &filename);
-  static void UnlockFile(const StringX &filename,
-                         HANDLE &lockFileHandle, int &LockCount);
-
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
-  static bool Encrypt(const stringT &fn, const StringX &passwd);
-  static bool Decrypt(const stringT &fn, const StringX &passwd);
+  static bool Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
+  static bool Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
 
   virtual ~PWSfile();
 

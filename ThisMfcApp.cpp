@@ -427,15 +427,17 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 
           BOOL status;
           if (isEncrypt) {
-            status = PWSfile::Encrypt(stringT(*(arg + 1)), passkey);
+            stringT errstr;
+            status = PWSfile::Encrypt(stringT(*(arg + 1)), passkey, errstr);
             if (!status) {
-              AfxMessageBox(IDS_ENCRYPTIONFAILED);
+              AfxMessageBox(errstr.c_str(), MB_ICONEXCLAMATION|MB_OK);
             }
             return true;
           } else {
-            status = PWSfile::Decrypt(stringT(*(arg+1)), passkey);
+            stringT errstr;
+            status = PWSfile::Decrypt(stringT(*(arg+1)), passkey, errstr);
             if (!status) {
-              // nothing to do - Decrypt displays its own error messages
+              AfxMessageBox(errstr.c_str(), MB_ICONEXCLAMATION|MB_OK);
             }
             return true;
           }

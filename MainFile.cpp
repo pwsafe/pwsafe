@@ -321,14 +321,14 @@ int DboxMain::NewFile(StringX &newfilename)
   // The only way we're the locker is if it's locked & we're !readonly
   if (!oldfilename.empty() &&
       !m_core.IsReadOnly() &&
-      m_core.IsLockedFile(oldfilename))
-    m_core.UnlockFile(oldfilename);
+      m_core.IsLockedFile(oldfilename.c_str()))
+    m_core.UnlockFile(oldfilename.c_str());
 
   m_core.SetCurFile(newfilename);
 
   // Now lock the new file
-  StringX locker(_T("")); // null init is important here
-  m_core.LockFile(newfilename, locker);
+  stringT locker(_T("")); // null init is important here
+  m_core.LockFile(newfilename.c_str(), locker);
 
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
@@ -358,7 +358,7 @@ int DboxMain::Close()
 
   // Unlock the current file
   if( !m_core.GetCurFile().empty() ) {
-    m_core.UnlockFile(m_core.GetCurFile());
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
     m_core.SetCurFile(_T(""));
   }
 
@@ -520,7 +520,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   // do this before GetAndCheckPassword() as that
   // routine gets a lock on the new file
   if( !m_core.GetCurFile().empty() ) {
-    m_core.UnlockFile(m_core.GetCurFile());
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
   rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
@@ -790,9 +790,9 @@ int DboxMain::SaveAs()
     } else
       return PWScore::USER_CANCEL;
   }
-  StringX locker(_T("")); // null init is important here
+  stringT locker(_T("")); // null init is important here
   // Note: We have to lock the new file before releasing the old (on success)
-  if (!m_core.LockFile2(newfile, locker)) {
+  if (!m_core.LockFile2(newfile.c_str(), locker)) {
     cs_temp.Format(IDS_FILEISLOCKED, newfile.c_str(), locker.c_str());
     cs_title.LoadString(IDS_FILELOCKERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
@@ -807,14 +807,14 @@ int DboxMain::SaveAs()
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     m_core.SetFileUUID(file_uuid_array);
-    m_core.UnlockFile2(newfile);
+    m_core.UnlockFile2(newfile.c_str());
     cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
   if (!m_core.GetCurFile().empty())
-    m_core.UnlockFile(m_core.GetCurFile());
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
 
   // Move the newfile lock to the right place
   m_core.MoveLock();
@@ -1210,7 +1210,7 @@ void DboxMain::OnImportXML()
   const stringT XSDfn(_T("pwsafe.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-  if (!PWSfile::FileExists(XSDFilename.c_str())) {
+  if (!m_core.FileExists(XSDFilename)) {
     cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDS_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
@@ -2233,8 +2233,8 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
       ViewReport(rpt);
   }
 
-  if (othercore.IsLockedFile(othercore.GetCurFile()))
-    othercore.UnlockFile(othercore.GetCurFile());
+  if (othercore.IsLockedFile(othercore.GetCurFile().c_str()))
+    othercore.UnlockFile(othercore.GetCurFile().c_str());
 
   othercore.ClearData();
   othercore.SetCurFile(_T(""));
