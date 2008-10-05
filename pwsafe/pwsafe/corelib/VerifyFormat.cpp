@@ -482,7 +482,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     }
 
     tmp = StringX(lpszPWHistory, ipwlen);
-    Format(buffer, _T("%08x%04x%s"), (long) t, ipwlen, tmp);
+    Format(buffer, _T("%08x%04x%s"), (long) t, ipwlen, tmp.c_str());
     newPWHistory += buffer.c_str();
     buffer.clear();
     lpszPWHistory += ipwlen;
