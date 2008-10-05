@@ -15,8 +15,10 @@
 #include "sha1.h" // for simple encrypt/decrypt
 #include "PWSrand.h" // ditto
 
+#ifdef _WIN32
 #include <LMCONS.H> // for UNLEN definition
 #include <io.h>
+#endif /* _WIN32 */
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -91,7 +93,7 @@ void PWSfile::FileError(int formatRes, int cause)
 
   ASSERT(cause >= 0 && cause <= 14);
   LoadAString(cs_error, IDSC_FILEEXCEPTION00 + cause);
-  Format(cs_msg, formatRes, cs_error);
+  Format(cs_msg, formatRes, cs_error.c_str());
   AfxMessageBox(cs_msg.c_str(), MB_OK);
 }
 
@@ -116,9 +118,9 @@ int PWSfile::RenameFile(const StringX &oldname, const StringX &newname)
 }
 
 PWSfile::PWSfile(const StringX &filename, RWmode mode)
-  : m_filename(filename), m_passkey(_T("")),  m_defusername(_T("")),
-  m_curversion(UNKNOWN_VERSION), m_rw(mode),
-  m_fd(NULL), m_fish(NULL), m_terminal(NULL),
+  : m_filename(filename), m_passkey(_T("")), m_fd(NULL),
+  m_curversion(UNKNOWN_VERSION), m_rw(mode), m_defusername(_T("")),
+  m_fish(NULL), m_terminal(NULL),
   m_nRecordsWithUnknownFields(0)
 {
 }
@@ -173,7 +175,7 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
 
 void PWSfile::FOpen()
 {
-  TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
+  const TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
   // calls right variant of m_fd = fopen(m_filename);
 #if _MSC_VER >= 1400
   _tfopen_s(&m_fd, m_filename.c_str(), m);

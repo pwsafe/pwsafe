@@ -107,7 +107,7 @@ struct st_FilterRow {
 
   st_FilterRow()
     : bFilterActive(true), bFilterComplete(false),
-    mtype(PWSMatch::MT_INVALID), ftype(FT_INVALID), rule(PWSMatch::MR_INVALID),
+    ftype(FT_INVALID), mtype(PWSMatch::MT_INVALID), rule(PWSMatch::MR_INVALID),
     fnum1(0), fnum2(0),
     fdate1(0), fdate2(0),
     fstring(_T("")), fcase(false), etype(CItemData::ET_INVALID),
