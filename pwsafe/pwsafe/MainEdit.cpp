@@ -1626,18 +1626,29 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
     switch (pl.ibasedata) {
       case -1: // [t] - must be title as this is the only mandatory field
         if (pl.bMultipleEntriesFound)
-          cs_msg.Format(IDS_ALIASNOTFOUND0A, pl.csPwdTitle);  // multiple entries exist with title=x
+          cs_msg.Format(IDS_ALIASNOTFOUND0A,
+                        pl.csPwdTitle.c_str());  // multiple entries exist with title=x
         else
-          cs_msg.Format(IDS_ALIASNOTFOUND0B, pl.csPwdTitle);  // no entry exists with title=x
+          cs_msg.Format(IDS_ALIASNOTFOUND0B,
+                        pl.csPwdTitle.c_str());  // no entry exists with title=x
         rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
         break;
       case -2: // [g,t], [t:u]
         // In this case the 2 fields from the password are in Group & Title
         if (pl.bMultipleEntriesFound)
-          cs_msg.Format(IDS_ALIASNOTFOUND1A, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdGroup, pl.csPwdTitle);
+          cs_msg.Format(IDS_ALIASNOTFOUND1A, 
+                        pl.csPwdGroup.c_str(),
+                        pl.csPwdTitle.c_str(),
+                        pl.csPwdGroup.c_str(),
+                        pl.csPwdTitle.c_str());
         else
-          cs_msg.Format(IDS_ALIASNOTFOUND1B, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdGroup, pl.csPwdTitle);
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+          cs_msg.Format(IDS_ALIASNOTFOUND1B, 
+                        pl.csPwdGroup.c_str(),
+                        pl.csPwdTitle.c_str(),
+                        pl.csPwdGroup.c_str(),
+                        pl.csPwdTitle.c_str());
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
+                           MB_YESNO | MB_DEFBUTTON2);
         break;
       case -3: // [g:t:u], [g:t:], [:t:u], [:t:] (title cannot be empty)
       {
@@ -1650,15 +1661,24 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
           rc = IDNO;
           break;
         } else if (!bGE && !bUE)  // [x:y:z]
-          cs_msg.Format(IDS_ALIASNOTFOUND2A, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+          cs_msg.Format(IDS_ALIASNOTFOUND2A, 
+                        pl.csPwdGroup.c_str(), 
+                        pl.csPwdTitle.c_str(), 
+                        pl.csPwdUser.c_str());
         else if (!bGE && bUE)     // [x:y:]
-          cs_msg.Format(IDS_ALIASNOTFOUND2B, pl.csPwdGroup, pl.csPwdTitle);
+          cs_msg.Format(IDS_ALIASNOTFOUND2B, 
+                        pl.csPwdGroup.c_str(), 
+                        pl.csPwdTitle.c_str());
         else if (bGE && !bUE)     // [:y:z]
-          cs_msg.Format(IDS_ALIASNOTFOUND2C, pl.csPwdTitle, pl.csPwdUser);
+          cs_msg.Format(IDS_ALIASNOTFOUND2C, 
+                        pl.csPwdTitle.c_str(), 
+                        pl.csPwdUser.c_str());
         else if (bGE && bUE)      // [:y:]
-          cs_msg.Format(IDS_ALIASNOTFOUND0B, pl.csPwdTitle);
+          cs_msg.Format(IDS_ALIASNOTFOUND0B, 
+                        pl.csPwdTitle.c_str());
 
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
+                           MB_YESNO | MB_DEFBUTTON2);
         break;
       }
       default:
@@ -1673,7 +1693,10 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
     if (pl.TargetType == CItemData::ET_ALIAS) {
       // If user tried to point to an alias -> change to point to the 'real' base
       CString cs_msg;
-      cs_msg.Format(IDS_BASEISALIAS, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+      cs_msg.Format(IDS_BASEISALIAS, 
+                    pl.csPwdGroup.c_str(),
+                    pl.csPwdTitle.c_str(),
+                    pl.csPwdUser.c_str());
       if (AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
         return false;
       }
@@ -1681,7 +1704,10 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
       if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
         // An alias can only point to a normal entry or an alias base entry
         CString cs_msg;
-        cs_msg.Format(IDS_ABASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+        cs_msg.Format(IDS_ABASEINVALID, 
+                      pl.csPwdGroup.c_str(),
+                      pl.csPwdTitle.c_str(), 
+                      pl.csPwdUser.c_str());
         AfxMessageBox(cs_msg, MB_OK);
         return false;
       } else {

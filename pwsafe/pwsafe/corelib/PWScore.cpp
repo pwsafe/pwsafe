@@ -2368,7 +2368,7 @@ void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &tl
   }
 }
 
-bool PWScore::GetBaseEntry(const StringX &passwd, GetBaseEntryPL &pl)
+bool PWScore::GetBaseEntry(const StringX &Password, GetBaseEntryPL &pl)
 {
   // pl.ibasedata is:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
@@ -2380,9 +2380,10 @@ bool PWScore::GetBaseEntry(const StringX &passwd, GetBaseEntryPL &pl)
   pl.bMultipleEntriesFound = false;
   memset(pl.base_uuid, 0x00, sizeof(uuid_array_t));
 
-  StringX Password(passwd);
+  // Take a copy of the Password field to do the counting!
+  StringX passwd(Password);
 
-  int num_colonsP1 = Replace(Password, _T(':'), _T(';')) + 1;
+  int num_colonsP1 = Replace(passwd, _T(':'), _T(';')) + 1;
   if ((Password[0] == _T('[')) &&
       (Password[Password.length() - 1] == _T(']')) &&
       num_colonsP1 <= 3) {
