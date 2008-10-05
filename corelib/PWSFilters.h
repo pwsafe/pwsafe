@@ -23,7 +23,7 @@
 #include "StringX.h"
 #include "PWSfile.h"
 #include "Match.h"
-#include "itemdata.h"
+#include "ItemData.h"
 
 // All the fields that we can use for filtering entries:
 
@@ -98,7 +98,7 @@ struct st_FilterRow {
   time_t fdate1, fdate2;
   // if filter type is a string
   StringX fstring;
-  int fcase; // case sensitive?
+  bool fcase; // case sensitive?
   // if filter type is a entrytype
   CItemData::EntryType etype;
   
@@ -110,7 +110,7 @@ struct st_FilterRow {
     mtype(PWSMatch::MT_INVALID), ftype(FT_INVALID), rule(PWSMatch::MR_INVALID),
     fnum1(0), fnum2(0),
     fdate1(0), fdate2(0),
-    fstring(_T("")), fcase(BST_UNCHECKED), etype(CItemData::ET_INVALID),
+    fstring(_T("")), fcase(false), etype(CItemData::ET_INVALID),
     ltype(LC_INVALID)
   {}
 
@@ -153,7 +153,7 @@ struct st_FilterRow {
     fnum1 = fnum2 = 0;
     fdate1 = fdate2 = (time_t)0;
     fstring = _T("");
-    fcase = BST_UNCHECKED;
+    fcase = false;
     etype = CItemData::ET_INVALID;
     ltype = LC_INVALID;
   }

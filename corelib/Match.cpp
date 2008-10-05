@@ -189,7 +189,7 @@ UINT PWSMatch::GetRule(MatchRule rule)
 void PWSMatch::GetMatchType(MatchType mtype,
                             int fnum1, int fnum2,
                             time_t fdate1, time_t fdate2,
-                            const stringT &fstring, int fcase,
+                            const stringT &fstring, bool fcase,
                             int etype, bool bBetween,
                             stringT &cs1, stringT &cs2)
 {
@@ -209,7 +209,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
     case MT_STRING:
       cs1 = fstring;
       LoadAString(cs2,
-                  fcase == 0 ? IDSC_CASE_INSENSITIVE : IDSC_CASE_SENSITIVE);
+                  !fcase ? IDSC_CASE_INSENSITIVE : IDSC_CASE_SENSITIVE);
       break;
     case MT_INTEGER:
       Format(cs1, _T("%d"), fnum1);

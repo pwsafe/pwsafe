@@ -715,7 +715,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("case")) == 0) {
-    cur_filterentry->fcase = _ttoi(m_strElemContent.c_str());
+    cur_filterentry->fcase = _ttoi(m_strElemContent.c_str()) != 0;
   }
 
   else if (_tcscmp(szCurElement, _T("warn")) == 0) {
