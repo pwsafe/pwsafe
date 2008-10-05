@@ -9,6 +9,11 @@
 #define __PWS_TIME_H
 #include "../typedefs.h"
 
+typedef time_t __time32_t;
+typedef unsigned long long __time64_t;
+
+extern struct tm *gmtime64_r(const __time64_t *timep, struct tm *result);
+
 namespace pws_os {
   /**
    * Workaround the lack of a wchar_t version of asctime()
