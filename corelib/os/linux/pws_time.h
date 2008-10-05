@@ -15,6 +15,25 @@ namespace pws_os {
    */
   extern int asctime(TCHAR *buf, size_t N, const struct tm *tm);
 };
+
+// Provide a functional clone of MFC's CTime class
+class CTime {
+public:
+  CTime();
+  CTime(time_t t);
+  CTime(int Y, int M, int D, int h, int m, int s);
+  ~CTime() {}
+  int GetYear() const {return m_tm.tm_year;}
+  int GetMonth() const {return m_tm.tm_mon;}
+  int GetDay() const {return m_tm.tm_mday;}
+  int GetHour() const {return m_tm.tm_hour;}
+  int GetMinute() const {return m_tm.tm_min;}
+  int GetSecond() const {return m_tm.tm_sec;}
+  time_t GetTime() const {return m_t;}
+private:
+  time_t m_t;
+  struct tm m_tm;
+};
 #endif /* __PWS_TIME_H */
 //-----------------------------------------------------------------------------
 // Local variables:
