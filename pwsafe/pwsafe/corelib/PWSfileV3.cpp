@@ -14,7 +14,7 @@
 #include "PWSFilters.h"
 #include "PWSdirs.h"
 #include "corelib.h"
-
+#include "os/file.h"
 #include <io.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -751,7 +751,7 @@ bool PWSfileV3::IsV3x(const StringX &filename, VERSION &v)
 {
   // This is written so as to support V30, V31, V3x...
 
-  ASSERT(FileExists(filename));
+  ASSERT(pws_os::FileExists(filename.c_str()));
   FILE *fd;
 #if _MSC_VER >= 1400
   _tfopen_s(&fd, filename.c_str(), _T("rb"));

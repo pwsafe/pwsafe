@@ -66,7 +66,6 @@ END
 STRINGTABLE
 BEGIN
   IDSC_NOLOCKACCESS       "Cannot create lock file - no permission in directory?"
-  IDSC_CANTGETLOCKER      "Unable to determine locker?"
   IDSC_CANTREADLOCKER     "Unable to read locker?"
   IDSC_INTERNALLOCKERROR  "Internal error: Invalid oflag or pmode argument"
   IDSC_SYSTEMLOCKERROR    "System error: No more file handles available"
@@ -117,21 +116,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_FILEEXCEPTION00    "No error occurred."
-  IDSC_FILEEXCEPTION01    "An unspecified error occurred."
-  IDSC_FILEEXCEPTION02    "The file was not found."
-  IDSC_FILEEXCEPTION03    "All or part of the path is invalid."
-  IDSC_FILEEXCEPTION04    "Too many open files."
-  IDSC_FILEEXCEPTION05    "Access to the file was denied: probably not sufficient security rights."
-  IDSC_FILEEXCEPTION06    "There was an attempt to use an invalid file handle."
-  IDSC_FILEEXCEPTION07    "The current working directory cannot be removed."
-  IDSC_FILEEXCEPTION08    "There are no more directory entries."
-  IDSC_FILEEXCEPTION09    "There was an error trying to set the file pointer."
-  IDSC_FILEEXCEPTION10    "There was a hardware error."
-  IDSC_FILEEXCEPTION11    "Sharing violation: file probably open in another application."
-  IDSC_FILEEXCEPTION12    "There was an attempt to lock a region that was already locked."
-  IDSC_FILEEXCEPTION13    "The disk is full."
-  IDSC_FILEEXCEPTION14    "The end of file was reached."
+  IDSC_FILEPATHNOTFOUND    "The file was not found."
   IDSC_FILEREADONLY       "Error: File is read-only"
   IDSC_FILEEXISTS         "Error: A file with this name already exists"
   IDSC_INVALIDFLAG        "Internal error: An invalid flag was specified"

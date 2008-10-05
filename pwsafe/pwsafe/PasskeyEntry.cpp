@@ -16,7 +16,7 @@ down the streetsky.  [Groucho Marx]
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/Pwsdirs.h"
-#include "corelib/PWSfile.h"
+#include "corelib/os/file.h"
 #include "corelib/pwsprefs.h"
 #include "ThisMfcApp.h"
 #include "AdvancedDlg.h"
@@ -396,7 +396,7 @@ void CPasskeyEntry::OnOK()
     return;
   }
 
-  if (!PWSfile::FileExists(m_filespec.GetString())) {
+  if (!pws_os::FileExists(m_filespec.GetString())) {
     AfxMessageBox(IDS_FILEPATHNOTFOUND);
     if (m_MRU_combo.IsWindowVisible())
       m_MRU_combo.SetFocus();

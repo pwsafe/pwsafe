@@ -21,7 +21,6 @@
 #define IDSC_IMPINVALIDINPUT            3017
 #define IDSC_IMPINVALIDPWH              3018
 #define IDSC_NOLOCKACCESS               3019
-#define IDSC_CANTGETLOCKER              3020
 #define IDSC_CANTREADLOCKER             3021
 #define IDSC_INTERNALLOCKERROR          3022
 #define IDSC_SYSTEMLOCKERROR            3023
@@ -60,22 +59,6 @@
 #define IDSC_EXPHDRPWPOLICY             3056
 #define IDSC_EXPHDRXTIMEINT             3057
 
-#define IDSC_FILEEXCEPTION00            3100
-#define IDSC_FILEEXCEPTION01            3101
-#define IDSC_FILEEXCEPTION02            3102
-#define IDSC_FILEEXCEPTION03            3103
-#define IDSC_FILEEXCEPTION04            3104
-#define IDSC_FILEEXCEPTION05            3105
-#define IDSC_FILEEXCEPTION06            3106
-#define IDSC_FILEEXCEPTION07            3107
-#define IDSC_FILEEXCEPTION08            3108
-#define IDSC_FILEEXCEPTION09            3109
-#define IDSC_FILEEXCEPTION10            3110
-#define IDSC_FILEEXCEPTION11            3111
-#define IDSC_FILEEXCEPTION12            3112
-#define IDSC_FILEEXCEPTION13            3113
-#define IDSC_FILEEXCEPTION14            3114
-
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
 #define IDSC_CONFIG_FILE_RO             3232
@@ -93,7 +76,7 @@
 #define IDSC_FILEEXISTS                 3248
 #define IDSC_INVALIDFLAG                3249
 #define IDSC_NOMOREHANDLES              3250
-#define IDSC_FILEPATHNOTFOUND IDSC_FILEEXCEPTION02
+#define IDSC_FILEPATHNOTFOUND           3102
 #define IDSC_BADPASSWORD                3251
 
 #define IDSC_REPORTFILENAME             3252

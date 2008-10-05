@@ -418,6 +418,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\os\windows\file.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hmac.cpp"
 				>
 			</File>
@@ -576,6 +580,10 @@
 			</File>
 			<File
 				RelativePath=".\corelib.h"
+				>
+			</File>
+			<File
+				RelativePath=".\os\file.h"
 				>
 			</File>
 			<File

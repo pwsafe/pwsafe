@@ -7,6 +7,8 @@
 */
 // XMLprefs.cpp : implementation file
 //
+#include <afx.h> // XXX temporary
+#include "os/typedefs.h"
 #include "XMLprefs.h"
 #include "tinyxml/tinyxml.h"
 #include "PWSprefs.h"
@@ -36,7 +38,7 @@ static FILE *f;
 
 bool CXMLprefs::Lock()
 {
-  StringX locker(_T(""));
+  stringT locker(_T(""));
   int tries = 10;
   do {
     m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile, locker);

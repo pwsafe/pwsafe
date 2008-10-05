@@ -129,9 +129,8 @@ public:
                     stringT &strErrors, int &numValidated, int &numImported,
                     bool &bBadUnknownFileFields,
                     bool &bBadUnknownRecordFields, CReport &rpt);
-  bool FileExists(const StringX &filename) const {return PWSfile::FileExists(filename);}
-  bool FileExists(const StringX &filename, bool &bReadOnly) const 
-  {return PWSfile::FileExists(filename, bReadOnly);}
+  bool FileExists(const stringT &filename) const;
+  bool FileExists(const stringT &filename, bool &bReadOnly) const; 
   int ReadCurFile(const StringX &passkey)
   {return ReadFile(m_currfile, passkey);}
   int ReadFile(const StringX &filename, const StringX &passkey);
@@ -142,24 +141,17 @@ public:
                      const stringT &userBackupDir);
   int CheckPassword(const StringX &filename, const StringX &passkey);
   void ChangePassword(const StringX &newPassword);
-  bool LockFile(const StringX &filename, StringX &locker)
-  {return PWSfile::LockFile(filename, locker,
-                            m_lockFileHandle, m_LockCount);}
-  bool IsLockedFile(const StringX &filename) const
-  {return PWSfile::IsLockedFile(filename);}
-  void UnlockFile(const StringX &filename)
-  {return PWSfile::UnlockFile(filename, 
-                              m_lockFileHandle, m_LockCount);}
+  
+  bool LockFile(const stringT &filename, stringT &locker);
+  bool IsLockedFile(const stringT &filename) const;
+  void UnlockFile(const stringT &filename);
   // Following 3 routines only for SaveAs to use a temporary lock handle
   // LockFile2, UnLockFile2 & MoveLock
-  bool LockFile2(const StringX &filename, StringX &locker)
-  {return PWSfile::LockFile(filename, locker,
-                            m_lockFileHandle2, m_LockCount);}
-  void UnlockFile2(const StringX &filename)
-  {return PWSfile::UnlockFile(filename, 
-                              m_lockFileHandle2, m_LockCount);}
+  bool LockFile2(const stringT &filename, stringT &locker);
+  void UnlockFile2(const stringT &filename);
   void MoveLock()
   {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;}
+  
   void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor);
   void SetReadOnly(bool state) { m_IsReadOnly = state;}
   bool IsReadOnly() const {return m_IsReadOnly;};
