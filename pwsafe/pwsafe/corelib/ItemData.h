@@ -43,20 +43,22 @@ struct PWPolicy {
     upperminlength(that.upperminlength) {}
 
   PWPolicy &operator=(const PWPolicy &that)
-  { if (this != &that) {
-    flags = that.flags;
-    length = that.length;
-    digitminlength = that.digitminlength;
-    lowerminlength = that.lowerminlength;
-    symbolminlength = that.symbolminlength;
-    upperminlength = that.upperminlength;
-  }
-  return *this;
+  {
+    if (this != &that) {
+      flags = that.flags;
+      length = that.length;
+      digitminlength = that.digitminlength;
+      lowerminlength = that.lowerminlength;
+      symbolminlength = that.symbolminlength;
+      upperminlength = that.upperminlength;
+    }
+    return *this;
   }
   void Empty()
-  { flags = 0; length = 0;
-  digitminlength = 0; lowerminlength = 0;
-  symbolminlength = 0; upperminlength = 0;
+  { 
+    flags = 0; length = 0;
+    digitminlength = 0; lowerminlength = 0;
+    symbolminlength = 0; upperminlength = 0;
   }
 };
 
@@ -172,7 +174,7 @@ public:
     StringX GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
       const TCHAR &delimiter, const CItemData *cibase) const;
     std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
-                       const CItemData *cibase) const;
+                       const CItemData *cibase, bool bforce_normal_entry) const;
     void GetUnknownField(unsigned char &type, unsigned int &length,
                          unsigned char * &pdata,
                          const unsigned int &num) const;

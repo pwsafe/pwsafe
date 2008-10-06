@@ -60,7 +60,7 @@ bool PWSclipboard::ClearData()
     HANDLE hData = odo.GetGlobalData(CLIPBOARD_TEXT_FORMAT);
     if (hData != NULL) {
       LPCTSTR pData = (LPCTSTR)::GlobalLock(hData);
-      SIZE_T dwlength =  ::GlobalSize(hData) - sizeof(TCHAR); // less trailing null
+      SIZE_T dwlength = ::GlobalSize(hData) - sizeof(TCHAR); // less trailing null
       if (dwlength < 1)
         return !m_set;
 

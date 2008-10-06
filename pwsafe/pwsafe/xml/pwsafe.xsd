@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.13">
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.15">
 
 <xs:annotation>
   <xs:documentation xml:lang="en">
-    This XML Schema corresponds to V3.13 of Password Safe.
+    This XML Schema corresponds to V3.15 of Password Safe.
     As each new version is a 'superset' of previous versions, the current version of Password Safe
     will be able to import XML files created by all prior versions.
     However, in V3.13 element 'ltime' has been replaced by 'xtime' for the Password Expiry Time.
@@ -47,7 +47,7 @@
 
 <xs:simpleType name="fieldType">
   <xs:restriction base="xs:integer">
-    <xs:minInclusive value="16" />
+    <xs:minInclusive value="18" />
     <xs:maxExclusive value="255" />
   </xs:restriction>
 </xs:simpleType>
@@ -257,6 +257,7 @@
               </xs:element>
             </xs:all>
             <xs:attribute name="id" type="xs:integer" use="optional" />
+            <xs:attribute name="normal" type="xs:boolean" use="optional" />
           </xs:complexType>
         <!-- End Database Entries -->
         </xs:element>

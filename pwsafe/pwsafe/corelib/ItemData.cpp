@@ -460,10 +460,15 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
 }
 
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
-                         TCHAR delimiter, const CItemData *cibase) const
+                         TCHAR delimiter, const CItemData *cibase,
+                         bool bforce_normal_entry) const
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
-  oss << "\t<entry id=\"" << id << "\">" << endl;
+  oss << "\t<entry id=\"" << id << "\"";
+  if (bforce_normal_entry)
+    oss << " normal=\"" << "true" << "\"";
+
+  oss << ">" << endl;
 
   StringX tmp;
   CUTF8Conv utf8conv;
