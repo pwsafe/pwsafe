@@ -8,14 +8,16 @@
 #include "PWSfileV3.h"
 #include "UUIDGen.h"
 #include "PWSrand.h"
-#include "util.h"
+#include "Util.h"
 #include "SysInfo.h"
 #include "PWScore.h"
 #include "PWSFilters.h"
 #include "PWSdirs.h"
 #include "corelib.h"
 #include "os/file.h"
+#ifdef _WIN32
 #include <io.h>
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -118,23 +120,23 @@ int PWSfileV3::CheckPassword(const StringX &filename,
 
   unsigned char Nb[sizeof(unsigned int)];;
   fread(Nb, 1, sizeof(Nb), fd);
-  const unsigned int N = getInt32(Nb);
+  { // block to shut up compiler warning w.r.t. goto
+    const unsigned int N = getInt32(Nb);
 
-  ASSERT(N >= MIN_HASH_ITERATIONS);
-  if (N < MIN_HASH_ITERATIONS) {
-    retval = FAILURE;
-    goto err;
+    ASSERT(N >= MIN_HASH_ITERATIONS);
+    if (N < MIN_HASH_ITERATIONS) {
+      retval = FAILURE;
+      goto err;
+    }
+
+    if (nITER != NULL)
+      *nITER = N;
+    unsigned char Ptag[SHA256::HASHLEN];
+    if (aPtag == NULL)
+      aPtag = Ptag;
+    
+    StretchKey(salt, sizeof(salt), passkey, N, aPtag);
   }
-
-  if (nITER != NULL)
-    *nITER = N;
-
-  unsigned char Ptag[SHA256::HASHLEN];
-  if (aPtag == NULL)
-    aPtag = Ptag;
-
-  StretchKey(salt, sizeof(salt), passkey, N, aPtag);
-
   unsigned char HPtag[SHA256::HASHLEN];
   H.Update(aPtag, SHA256::HASHLEN);
   H.Final(HPtag);
@@ -727,14 +729,17 @@ int PWSfileV3::ReadHeader()
       default:
         // Save unknown fields that may be addded by future versions
         UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+
         m_UHFL.push_back(unkhfe);
-/* #ifdef _DEBUG
+#if 0
+#ifdef _DEBUG
         stringT cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
         TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
         cs_timestamp.c_str(), fieldType, utf8Len, utf8Len);
         PWSDebug::HexDump(utf8, utf8Len, cs_timestamp);
-#endif /* DEBUG */
+#endif
+#endif
         break;
     }
     delete[] utf8; utf8 = NULL; utf8Len = 0;

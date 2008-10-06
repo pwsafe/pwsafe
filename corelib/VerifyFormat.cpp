@@ -387,17 +387,17 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   }
 
   const TCHAR *lpszPWHistory = pwh.c_str();
-
+  {
 #if _MSC_VER >= 1400
-  int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
+    int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #else
-  int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
+    int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #endif
-  if (iread != 3) {
-    rc = PWH_INVALID_HDR;
-    goto relbuf;
+    if (iread != 3) {
+      rc = PWH_INVALID_HDR;
+      goto relbuf;
+    }
   }
-
   if (s != 0 && s != 1) {
     rc = PWH_INVALID_STATUS;
     goto relbuf;
@@ -454,17 +454,17 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
 
     lpszPWHistory += 1;
     pwleft -= 1;
-
+    {
 #if _MSC_VER >= 1400
-    iread = _stscanf_s(lpszPWHistory, _T("%04x"), &ipwlen);
+      int iread = _stscanf_s(lpszPWHistory, _T("%04x"), &ipwlen);
 #else
-    iread = _stscanf(lpszPWHistory, _T("%04x"), &ipwlen);
+      int iread = _stscanf(lpszPWHistory, _T("%04x"), &ipwlen);
 #endif
-    if (iread != 1) {
-      rc = PWH_INVALID_PSWD_LENGTH;
-      goto relbuf;
+      if (iread != 1) {
+        rc = PWH_INVALID_PSWD_LENGTH;
+        goto relbuf;
+      }
     }
-
     lpszPWHistory += 4;
     pwleft -= 4;
 
@@ -503,7 +503,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     buffer.clear();
     break;
   case PWH_INVALID_HDR:
-    Format(temp, IDSC_INVALIDHEADER, PWHistory);
+    Format(temp, IDSC_INVALIDHEADER, PWHistory.c_str());
     break;
   case PWH_INVALID_STATUS:
     Format(temp, IDSC_INVALIDPWHSTATUS, s);

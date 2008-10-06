@@ -7,7 +7,9 @@
 */
 // XMLprefs.cpp : implementation file
 //
+#ifdef _WIN32
 #include <afx.h> // XXX temporary
+#endif
 #include "os/typedefs.h"
 #include "XMLprefs.h"
 #include "tinyxml/tinyxml.h"

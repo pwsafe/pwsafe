@@ -26,7 +26,7 @@ class CTime {
 public:
   CTime();
   CTime(time_t t);
-  CTime(int Y, int M, int D, int h, int m, int s);
+  CTime(int Y, int M, int D, int h, int m, int s, int dst=-1);
   ~CTime() {}
   int GetYear() const {return m_tm.tm_year;}
   int GetMonth() const {return m_tm.tm_mon;}

@@ -46,7 +46,7 @@ distribution.
 
 #include <assert.h>
 #include <string.h>
-#include <TCHAR.H>
+#include "../os/typedefs.h"
 
 /*	The support for explicit isn't that universal, and it isn't really
 	required - it is used to check that the TiXmlString class isn't incorrectly
