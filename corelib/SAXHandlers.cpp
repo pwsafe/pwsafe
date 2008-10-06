@@ -39,13 +39,11 @@ PWSSAXErrorHandler::~PWSSAXErrorHandler()
 long __stdcall PWSSAXErrorHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
   *ppvObject = NULL;
-  if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler))
-  {
+  if (riid == IID_IUnknown || riid == __uuidof(ISAXContentHandler)) {
     *ppvObject = static_cast<ISAXErrorHandler *>(this);
   }
 
-  if (*ppvObject)
-  {
+  if (*ppvObject) {
     AddRef();
     return S_OK;
   }
@@ -71,8 +69,8 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error(struct ISAXLocator * pLocato
                                                      unsigned short * pwchErrorMessage,
                                                      HRESULT hrErrorCode )
 {
-  TCHAR szErrorMessage[MAX_PATH*2] = {0};
-  TCHAR szFormatString[MAX_PATH*2] = {0};
+  TCHAR szErrorMessage[MAX_PATH * 2] = {0};
+  TCHAR szFormatString[MAX_PATH * 2] = {0};
   int iLineNumber, iCharacter;
 
 #ifdef _UNICODE
@@ -84,7 +82,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error(struct ISAXLocator * pLocato
 #else
 #if (_MSC_VER >= 1400)
   size_t num_converted;
-  wcstombs_s(&num_converted, szErrorMessage, MAX_PATH*2, pwchErrorMessage, MAX_PATH);
+  wcstombs_s(&num_converted, szErrorMessage, MAX_PATH * 2, pwchErrorMessage, MAX_PATH);
 #else
   wcstombs(szErrorMessage, pwchErrorMessage, MAX_PATH);
 #endif
@@ -96,7 +94,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error(struct ISAXLocator * pLocato
   LoadAString(cs_format, IDSC_SAXGENERROR);
 
 #if (_MSC_VER >= 1400)
-  _stprintf_s(szFormatString, MAX_PATH*2, cs_format.c_str(),
+  _stprintf_s(szFormatString, MAX_PATH * 2, cs_format.c_str(),
     hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #else
   _stprintf(szFormatString, cs_format,
@@ -191,7 +189,7 @@ void PWSSAXContentHandler::SetVariables(PWScore *core, const bool &bValidation,
 long __stdcall PWSSAXContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
   *ppvObject = NULL;
-  if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler)) {
+  if (riid == IID_IUnknown || riid == __uuidof(ISAXContentHandler)) {
     *ppvObject = static_cast<ISAXContentHandler *>(this);
   }
 
@@ -225,9 +223,51 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::startDocument ( )
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::putDocumentLocator (struct ISAXLocator * pLocator )
+HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::putDocumentLocator(
+                                 struct ISAXLocator * pLocator)
 {
   return S_OK;
+}
+
+TCHAR * ProcessAttributes(
+  /* [in] */  ISAXAttributes __RPC_FAR *pAttributes,
+  /* [in] */  TCHAR *lpName)
+{
+  // Note 1: Caller needs to free the value returned, which is created via '_tcsdup'.
+  // Note 2:  This ONLY processes the attributes to find ONE value.
+  // Needs to be enhanced if we ever need more (which we do not currently)
+  int iAttribs = 0;
+  pAttributes->getLength(&iAttribs);
+  for (int i = 0; i < iAttribs; i++) {
+    TCHAR szQName[MAX_PATH + 1] = {0};
+    TCHAR szValue[MAX_PATH + 1] = {0};
+    wchar_t *QName, *Value;
+    int QName_length, Value_length;
+
+    pAttributes->getQName(i, &QName, &QName_length);
+    pAttributes->getValue(i, &Value, &Value_length);
+#ifdef _UNICODE
+#if (_MSC_VER >= 1400)
+    _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
+    _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
+#else
+    _tcsncpy(szQName, QName, QName_length);
+    _tcsncpy(szValue, Value, Value_length);
+#endif
+#else
+#if (_MSC_VER >= 1400)
+    wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
+    wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
+#else
+    wcstombs(szQName, QName, QName_length);
+    wcstombs(szValue, Value, Value_length);
+#endif
+#endif
+    if (_tcscmp(szQName, lpName) == 0) {
+      return _tcsdup(szValue);
+    }
+  }
+  return NULL;
 }
 
 //  ---------------------------------------------------------------------------
@@ -240,11 +280,11 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
   /* [in] */ int cchRawName,
   /* [in] */ ISAXAttributes __RPC_FAR *pAttributes)
 {
-  TCHAR szCurElement[MAX_PATH+1] = {0};
+  TCHAR szCurElement[MAX_PATH + 1] = {0};
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-  _tcsncpy_s(szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
+  _tcsncpy_s(szCurElement, MAX_PATH + 1, pwchRawName, cchRawName);
 #else
   _tcsncpy(szCurElement, pwchRawName, cchRawName);
 #endif
@@ -259,38 +299,11 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 
   if (_tcscmp(szCurElement, _T("passwordsafe")) == 0) {
     if (m_bValidation) {
-      int iAttribs = 0;
-      pAttributes->getLength(&iAttribs);
-      for (int i = 0; i < iAttribs; i++) {
-        TCHAR szQName[MAX_PATH + 1] = {0};
-        TCHAR szValue[MAX_PATH + 1] = {0};
-        wchar_t *QName, *Value;
-        int QName_length, Value_length;
-
-        pAttributes->getQName(i, &QName, &QName_length);
-        pAttributes->getValue(i, &Value, &Value_length);
-#ifdef _UNICODE
-#if (_MSC_VER >= 1400)
-        _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
-        _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
-#else
-        _tcsncpy(szQName, QName, QName_length);
-        _tcsncpy(szValue, Value, Value_length);
-#endif
-#else
-#if (_MSC_VER >= 1400)
-        wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
-        wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
-#else
-        wcstombs(szQName, QName, QName_length);
-        wcstombs(szValue, Value, Value_length);
-#endif
-#endif
-        if (_tcscmp(szQName, _T("delimiter")) == 0)
-          m_delimiter = szValue[0];
-
-        // We do not save or copy the imported file_uuid_array
-        //   szQName == _T("Database_uuid")
+      // Only interested in the delimiter
+      TCHAR *lpValue = ProcessAttributes(pAttributes, _T("delimiter"));
+      if (lpValue != NULL) {
+        m_delimiter = lpValue[0];
+        free(lpValue);
       }
     }
   }
@@ -304,35 +317,11 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
   }
 
   if (_tcscmp(szCurElement, _T("field")) == 0) {
-    int iAttribs = 0;
-    pAttributes->getLength(&iAttribs);
-    for (int i = 0; i < iAttribs; i++) {
-      TCHAR szQName[MAX_PATH + 1] = {0};
-      TCHAR szValue[MAX_PATH + 1] = {0};
-      wchar_t *QName, *Value;
-      int QName_length, Value_length;
-
-      pAttributes->getQName(i, &QName, &QName_length);
-      pAttributes->getValue(i, &Value, &Value_length);
-#ifdef _UNICODE
-#if (_MSC_VER >= 1400)
-      _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
-      _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
-#else
-      _tcsncpy(szQName, QName, QName_length);
-      _tcsncpy(szValue, Value, Value_length);
-#endif
-#else
-#if (_MSC_VER >= 1400)
-      wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
-      wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
-#else
-      wcstombs(szQName, QName, QName_length);
-      wcstombs(szValue, Value, Value_length);
-#endif
-#endif
-      if (_tcscmp(szQName, _T("ftype")) == 0)
-        m_ctype = (unsigned char)_ttoi(szValue);
+    // Only interested in the ftype
+    TCHAR *lpValue = ProcessAttributes(pAttributes, _T("ftype"));
+    if (lpValue != NULL) {
+      m_ctype = (unsigned char)_ttoi(lpValue);
+      free(lpValue);
     }
   }
 
@@ -356,7 +345,15 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
     cur_entry->uuid = _T("");
     cur_entry->pwp.Empty();
     cur_entry->entrytype = NORMAL;
+    cur_entry->bforce_normal_entry = false;
     m_bentrybeingprocessed = true;
+    // Only interested in the normal
+    TCHAR *lpValue = ProcessAttributes(pAttributes, _T("normal"));
+    if (lpValue != NULL) {
+      cur_entry->bforce_normal_entry = 
+           _ttoi(lpValue) == 1 || _tcscmp(lpValue, _T("true")) == 0;
+      free(lpValue);
+    }
   }
 
   if (_tcscmp(szCurElement, _T("ctime")) == 0)
@@ -392,24 +389,24 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
   if (m_bValidation)
     return S_OK;
 
-  TCHAR* szData = new TCHAR[cchChars+2];
+  TCHAR* szData = new TCHAR[cchChars + 2];
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-  _tcsncpy_s(szData, cchChars+2, pwchChars, cchChars);
+  _tcsncpy_s(szData, cchChars + 2, pwchChars, cchChars);
 #else
   _tcsncpy(szData, pwchChars, cchChars);
 #endif
 #else
 #if _MSC_VER >= 1400
   size_t num_converted;
-  wcstombs_s(&num_converted, szData, cchChars+2, pwchChars, cchChars);
+  wcstombs_s(&num_converted, szData, cchChars + 2, pwchChars, cchChars);
 #else
   wcstombs(szData, pwchChars, cchChars);
 #endif
 #endif
 
-  szData[cchChars]=0;
+  szData[cchChars] = 0;
   m_strElemContent += szData;
 
   delete [] szData;
@@ -585,11 +582,11 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     }
 
     // If a potential alias, add to the vector for later verification and processing
-    if (cur_entry->entrytype == ALIAS) {
+    if (cur_entry->entrytype == ALIAS && !cur_entry->bforce_normal_entry) {
       tempitem.GetUUID(uuid_array);
       m_possible_aliases->push_back(uuid_array);
     }
-    if (cur_entry->entrytype == SHORTCUT) {
+    if (cur_entry->entrytype == SHORTCUT && !cur_entry->bforce_normal_entry) {
       tempitem.GetUUID(uuid_array);
       m_possible_shortcuts->push_back(uuid_array);
     }

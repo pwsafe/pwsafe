@@ -439,8 +439,20 @@ struct XMLRecordWriter {
     m_id++;
     if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
-        m_subgroup_object, m_subgroup_function)) {
+                     m_subgroup_object, m_subgroup_function)) {
       CItemData *cibase(NULL);
+      bool bforce_normal_entry(false);
+      if (item.IsNormal()) {
+        //  Check password doesn't incorrectly imply alias or shortcut entry
+        StringX pswd;
+        pswd = item.GetPassword();
+        int num_colons = Replace(pswd, _T(':'), _T(';')) + 1;
+        if ((pswd[0] == _T('[')) &&
+            (pswd[pswd.length() - 1] == _T(']')) &&
+            num_colons <= 3) {
+          bforce_normal_entry = true;
+        }
+      }
       if (item.IsAlias()) {
         uuid_array_t base_uuid, item_uuid;
         item.GetUUID(item_uuid);
@@ -459,7 +471,7 @@ struct XMLRecordWriter {
         if (iter != m_core->GetEntryEndIter())
           cibase = &iter->second;
       }
-      string xml = item.GetXML(m_id, m_bsFields, m_delimiter, cibase);
+      string xml = item.GetXML(m_id, m_bsFields, m_delimiter, cibase, bforce_normal_entry);
       m_of.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));
     }

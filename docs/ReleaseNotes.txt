@@ -22,6 +22,8 @@ selected entry.
 David B. Martin for his help in tracking this down.
 [] Correct display of tree items on restore from minimize when 'X'
 button used to minimize.
+[] Ensure XML Import correctly processes normal entries with a 
+password field that is in alias or shortcut form.
 
 Changes to Existing Features in 3.14.02
 =======================================

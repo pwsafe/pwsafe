@@ -5,11 +5,11 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
 #ifndef __SAXHANDLERS_H
 #define __SAXHANDLERS_H
 // SAXHandlers.h : header file
 //
-
 
 #include "StringX.h"
 #include "ItemData.h"
@@ -48,6 +48,7 @@ struct pw_entry {
   PWPolicy pwp;
   UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
   int entrytype;
+  bool bforce_normal_entry;
 };
 
 //  -----------------------------------------------------------------------
