@@ -74,3 +74,92 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 #endif /* UNICODE */
   return (status == 0);
 }
+
+static stringT GetLockFileName(const stringT &filename)
+{
+  ASSERT(!filename.empty());
+  // derive lock filename from filename
+  stringT retval(filename, 0, filename.find_last_of(TCHAR('.')));
+  retval += _T(".plk");
+  return retval;
+}
+
+static void GetLocker(const stringT &lock_filename, stringT &locker)
+{
+  locker = _T("Unable to determine locker");
+  // read locker data ("user@machine:nnnnnnnn") from file
+}
+
+bool pws_os::LockFile(const stringT &filename, stringT &locker, 
+                      HANDLE &lockFileHandle, int &LockCount)
+{
+  const stringT lock_filename = GetLockFileName(filename);
+  stringT s_locker;
+  int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
+                 (_S_IREAD | _S_IWRITE));
+
+  if (fh == -1) { // failed to open exclusively. Already locked, or ???
+    switch (errno) {
+    case EACCES:
+      // Tried to open read-only file for writing, or file's
+      // sharing mode does not allow specified operations, or given path is directory
+      locker.LoadString(IDSC_NOLOCKACCESS);
+      break;
+    case EEXIST: // filename already exists
+      {
+        // read locker data ("user@machine:nnnnnnnn") from file
+        TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
+        int fh2 = _open(lock_filename, _O_RDONLY);
+        if (fh2 == -1) {
+          locker.LoadString(IDSC_CANTGETLOCKER);
+        } else {
+          int bytesRead = _read(fh2, lockerStr, sizeof(lockerStr)-1);
+          _close(fh2);
+          if (bytesRead > 0) {
+            lockerStr[bytesRead] = TCHAR('\0');
+            locker = lockerStr;
+          } else { // read failed for some reason
+            locker = _T("Unable to read locker?");
+          } // read info from lock file
+        } // open lock file for read
+        break;
+      } // EEXIST block
+    case EINVAL: // Invalid oflag or pmode argument
+      locker.LoadString(IDSC_INTERNALLOCKERROR);
+      break;
+    case EMFILE: // No more file handles available (too many open files)
+      locker.LoadString(IDSC_SYSTEMLOCKERROR);
+      break;
+    case ENOENT: //File or path not found
+      locker.LoadString(IDSC_LOCKFILEPATHNF);
+      break;
+    default:
+      locker.LoadString(IDSC_LOCKUNKNOWNERROR);
+      break;
+    } // switch (errno)
+    return false;
+  } else { // valid filehandle, write our info
+    int numWrit;
+    numWrit = _write(fh, m_user, m_user.GetLength() * sizeof(TCHAR));
+    numWrit += _write(fh, _T("@"), sizeof(TCHAR));
+    numWrit += _write(fh, m_sysname, m_sysname.GetLength() * sizeof(TCHAR));
+    numWrit += _write(fh, _T(":"), sizeof(TCHAR));
+    numWrit += _write(fh, m_ProcessID, m_ProcessID.GetLength() * sizeof(TCHAR));
+    ASSERT(numWrit > 0);
+    _close(fh);
+    return true;
+  }
+}
+
+void pws_os::UnlockFile(const stringT &filename,
+                        HANDLE &lockFileHandle, int &LockCount)
+{
+  stringT lock_filename = GetLockFileName(filename);
+  _unlink(lock_filename);
+}
+
+bool pws_os::IsLockedFile(const stringT &filename)
+{
+  const stringT lock_filename = GetLockFileName(filename);
+  return pws_os::FileExists(lock_filename);
+}
