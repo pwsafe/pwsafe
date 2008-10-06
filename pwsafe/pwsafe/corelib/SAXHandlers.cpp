@@ -256,6 +256,7 @@ TCHAR * ProcessAttributes(
 #endif
 #else
 #if (_MSC_VER >= 1400)
+    size_t num_converted;
     wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
     wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
 #else
