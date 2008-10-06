@@ -348,25 +348,6 @@ size_t PWSUtil::strLength(const LPCTSTR str)
   return _tcslen(str);
 }
 
-/**
-* Returns the current length of a file.
-*/
-long PWSUtil::fileLength(FILE *fp)
-{
-  if (fp == NULL)
-    return -1L;
-
-  long pos;
-  long len;
-
-  pos = ftell( fp );
-  fseek( fp, 0, SEEK_END );
-  len = ftell( fp );
-  fseek( fp, pos, SEEK_SET );
-
-  return len;
-}
-
 const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01 00:00:00");
 const TCHAR *PWSUtil::UNKNOWN_ASC_TIME_STR = _T("Unknown");
 

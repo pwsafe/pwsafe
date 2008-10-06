@@ -273,3 +273,25 @@ bool pws_os::IsLockedFile(const stringT &filename)
     return false;
   }
 }
+
+std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
+{
+  std::FILE *fd = NULL;
+#if _MSC_VER >= 1400
+  _tfopen_s(&fd, filename.c_str(), mode);
+#else
+  fd = _tfopen(m_filename.c_str(), mode);
+#endif
+  return fd;
+}
+
+long pws_os::fileLength(std::FILE *fp) {
+  if (fp != NULL) {
+    long pos = std::ftell(fp);
+    std::fseek(fp, 0, SEEK_END);
+    long len = ftell(fp);
+    std::fseek(fp, pos, SEEK_SET);
+    return len;
+  } else
+    return 0;
+}

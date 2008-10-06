@@ -127,7 +127,6 @@ namespace PWSUtil {
   // and use secure versions (_s) when available
   void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   size_t strLength(const LPCTSTR str);
-  long fileLength(FILE *fp);
   StringX ConvertToDateTimeString(const time_t &t, const int result_format);
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;

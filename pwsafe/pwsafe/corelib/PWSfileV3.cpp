@@ -101,11 +101,7 @@ int PWSfileV3::CheckPassword(const StringX &filename,
   SHA256 H;
 
   if (fd == NULL) {
-#if _MSC_VER >= 1400
-    _tfopen_s(&fd, filename.c_str(), _T("rb"));
-#else
-    fd = _tfopen(filename.c_str(), _T("rb"));
-#endif
+    fd = pws_os::FOpen(filename.c_str(), _T("rb"));
   }
   if (fd == NULL)
     return CANT_OPEN_FILE;
@@ -752,12 +748,7 @@ bool PWSfileV3::IsV3x(const StringX &filename, VERSION &v)
   // This is written so as to support V30, V31, V3x...
 
   ASSERT(pws_os::FileExists(filename.c_str()));
-  FILE *fd;
-#if _MSC_VER >= 1400
-  _tfopen_s(&fd, filename.c_str(), _T("rb"));
-#else
-  fd = _tfopen(filename.c_str(), _T("rb") );
-#endif
+  FILE *fd = pws_os::FOpen(filename.c_str(), _T("rb"));
 
   ASSERT(fd != NULL);
   char tag[sizeof(V3TAG)];

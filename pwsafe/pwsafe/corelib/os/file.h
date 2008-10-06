@@ -8,6 +8,7 @@
 #ifndef __FILE_H
 #define __FILE_H
 #include "typedefs.h"
+#include <cstdio>
 
 namespace pws_os {
   extern bool FileExists(const stringT &filename);
@@ -20,7 +21,8 @@ namespace pws_os {
   extern void UnlockFile(const stringT &filename,
                          HANDLE &lockFileHandle, int &LockCount);
 
-
+  extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
+  extern long fileLength(std::FILE *fp);
 };
 #endif /* __FILE_H */
 //-----------------------------------------------------------------------------
