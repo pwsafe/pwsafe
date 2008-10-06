@@ -13,6 +13,9 @@
 #include <Windows.h>
 #include <LMCONS.H> // for UNLEN definition
 #include <io.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include "../typedefs.h"
 #include "../file.h"
 #include "../dir.h"
 #include "../env.h"
@@ -22,7 +25,7 @@ bool pws_os::FileExists(const stringT &filename)
   struct _stat statbuf;
   int status;
 
-  status = ::_tstat(filename.c_str(), &statbuf);
+  status = _tstat(filename.c_str(), &statbuf);
   return (status == 0);
 }
 
@@ -31,7 +34,7 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
   struct _stat statbuf;
   int status;
 
-  status = ::_tstat(filename.c_str(), &statbuf);
+  status = _tstat(filename.c_str(), &statbuf);
 
   // As "stat" gives "user permissions" not "file attributes"....
   if (status == 0) {
