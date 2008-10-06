@@ -62,8 +62,6 @@ typedef u_int16_t uint16;
 typedef u_int32_t uint32;
 typedef u_int64_t uint64;
 
-typedef int HANDLE;
-
 #ifdef UNICODE
 #define _T(x) L ## x
 typedef wchar_t TCHAR;
@@ -78,7 +76,7 @@ typedef bool BOOL;
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned int UINT;
-typedef void *HANDLE;
+typedef int HANDLE;
 #define INVALID_HANDLE_VALUE HANDLE(-1)
 
 // assorted conveniences:

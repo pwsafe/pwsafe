@@ -74,7 +74,7 @@ bool PWSMatch::Match(const StringX &string1, StringX &csValue,
       ToLower(csValue);
       StringX subgroupLC(string1);
       ToLower(subgroupLC);
-      return (csValue.find(subgroupLC) != -1);
+      return (csValue.find(subgroupLC) != StringX::npos);
     }
     case -MR_NOTCONTAIN:
       return (csValue.find(string1)== StringX::npos);

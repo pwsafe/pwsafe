@@ -2,13 +2,12 @@
 #
 
 ALLSRC          = PWScore.cpp PWSXMLFilters.cpp \
-									Report.cpp UnknownField.cpp \
+									Report.cpp \
 									SAXFilters.cpp UTF8Conv.cpp \
-									ItemData.cpp PWSfileV1V2.cpp SAXHandlers.cpp \
+									PWSfileV1V2.cpp SAXHandlers.cpp \
 									PWSfileV3.cpp \
-									Match.cpp PWSFilters.cpp VerifyFormat.cpp \
+									PWSFilters.cpp VerifyFormat.cpp \
 									XMLprefs.cpp \
-									PWHistory.cpp \
 	 								PWSclipboard.cpp PWSXML.cpp
 
 
@@ -16,7 +15,9 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 		              TwoFish.cpp PWCharPool.cpp PWSdirs.cpp \
 	                PWSrand.cpp SysInfo.cpp Util.cpp StringX.cpp \
 									ItemField.cpp UUIDGen.cpp Debug.cpp PWSprefs.cpp \
-									ItemData.cpp PWSfile.cpp
+									ItemData.cpp PWSfile.cpp PWHistory.cpp \
+									UnknownField.cpp Match.cpp
+
 TESTSRC         = 
 SRC             = $(LIBSRC) $(TESTSRC)
 

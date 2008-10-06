@@ -215,6 +215,9 @@ void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
 }
 
 // Following for 'legacy' use of pwsafe as file encryptor/decryptor
+// this is for the undocumented 'command line file encryption'
+static const stringT CIPHERTEXT_SUFFIX(_S(".PSF"));
+
 
 static stringT
 ErrorMessages()
@@ -378,7 +381,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     return false;
   }
 
-  size_t suffix_len = _tcslen(CIPHERTEXT_SUFFIX);
+  size_t suffix_len = CIPHERTEXT_SUFFIX.length();
   size_t filepath_len = fn.length();
 
   stringT out_fn = fn;

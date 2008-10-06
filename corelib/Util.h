@@ -24,9 +24,6 @@
 
 #define SaltLengthV3 32
 
-// this is for the undocumented 'command line file encryption'
-#define CIPHERTEXT_SUFFIX _S(".PSF")
-
 //Use non-standard dash (ANSI decimal 173) for separation
 #define SPLTCHR _T('\xAD')
 #define SPLTSTR _T("  \xAD  ")
