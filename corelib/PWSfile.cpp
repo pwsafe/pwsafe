@@ -124,13 +124,8 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
 void PWSfile::FOpen()
 {
   const TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
-  // calls right variant of m_fd = fopen(m_filename);
-#if _MSC_VER >= 1400
-  _tfopen_s(&m_fd, m_filename.c_str(), m);
-#else
-  m_fd = _tfopen(m_filename.c_str(), m);
-#endif
-  m_fileLength = PWSUtil::fileLength(m_fd);
+  m_fd = pws_os::FOpen(m_filename.c_str(), m);
+  m_fileLength = pws_os::fileLength(m_fd);
 }
 
 int PWSfile::Close()
@@ -251,14 +246,9 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   unsigned int len;
   unsigned char* buf;
 
-  FILE *in;
-#if _MSC_VER >= 1400
-  _tfopen_s(&in, fn.c_str(), _T("rb"));
-#else
-  in = _tfopen(fn.c_str(), _T("rb"));
-#endif
+  FILE *in = pws_os::FOpen(fn, _T("rb"));;
   if (in != NULL) {
-    len = PWSUtil::fileLength(in);
+    len = pws_os::fileLength(in);
     buf = new unsigned char[len];
 
     fread(buf, 1, len, in);
@@ -271,12 +261,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   stringT out_fn = fn;
   out_fn += CIPHERTEXT_SUFFIX;
 
-  FILE *out;
-#if _MSC_VER >= 1400
-  _tfopen_s(&out, out_fn.c_str(), _T("wb"));
-#else
-  out = _tfopen(out_fn.c_str(), _T("wb"));
-#endif
+  FILE *out = pws_os::FOpen(out_fn, _T("wb"));
   if (out != NULL) {
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
     fwrite( &len, 1, sizeof(len), out);
@@ -325,12 +310,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   unsigned int len;
   unsigned char* buf;
 
-  FILE *in;
-#if _MSC_VER >= 1400
-  _tfopen_s(&in, fn.c_str(), _T("rb"));
-#else
-  in = _tfopen(fn.c_str(), _T("rb"));
-#endif
+  FILE *in = pws_os::FOpen(fn, _T("rb"));
   if (in != NULL) {
     unsigned char salt[SaltLength];
     unsigned char ipthing[8];
@@ -360,9 +340,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     unsigned char dummyType;
     unsigned char *pwd = NULL;
     int passlen = 0;
-    long file_len = PWSUtil::fileLength(in);
-	if (file_len == -1L)
-		file_len = 0;
+    long file_len = pws_os::fileLength(in);
     ConvertString(passwd, pwd, passlen);
     Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, salt, SaltLength);
     trashMemory(pwd, passlen);
@@ -387,12 +365,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   stringT out_fn = fn;
   out_fn = out_fn.substr(0,filepath_len - suffix_len);
 
-#if _MSC_VER >= 1400
-  FILE *out;
-  _tfopen_s(&out, out_fn.c_str(), _T("wb"));
-#else
-  FILE *out = _tfopen(out_fn.c_str(), _T("wb"));
-#endif
+  FILE *out = pws_os::FOpen(out_fn, _T("wb"));
   if (out != NULL) {
     fwrite(buf, 1, len, out);
     delete[] buf; // allocated by _readcbc

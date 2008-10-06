@@ -8,11 +8,11 @@
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
 #include "corelib.h"
+#include "os/file.h"
 
 #include <io.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <errno.h>
 
 PWSfileV1V2::PWSfileV1V2(const StringX &filename, RWmode mode, VERSION version)
   : PWSfile(filename, mode)
@@ -181,12 +181,10 @@ int PWSfileV1V2::CheckPassword(const StringX &filename,
                                const StringX &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
-  errno_t err = 0;
   if (fd == NULL) {
-    // XXX argument changes mean we can't use _s version transparently
-    err = _tfopen_s(&fd, filename.c_str(), _T("rb"));
+    fd = pws_os::FOpen(filename.c_str(), _T("rb"));
   }
-  if (fd == NULL || err != 0)
+  if (fd == NULL)
     return CANT_OPEN_FILE;
 
   unsigned char randstuff[StuffSize];
