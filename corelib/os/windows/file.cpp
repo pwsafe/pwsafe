@@ -119,62 +119,6 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 {
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
-#ifdef POSIX_FILE_LOCK
-  int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
-                 (_S_IREAD | _S_IWRITE));
-
-  if (fh == -1) { // failed to open exclusively. Already locked, or ???
-    switch (errno) {
-    case EACCES:
-      // Tried to open read-only file for writing, or file's
-      // sharing mode does not allow specified operations, or given path is directory
-      locker.LoadString(IDSC_NOLOCKACCESS);
-      break;
-    case EEXIST: // filename already exists
-      {
-        // read locker data ("user@machine:nnnnnnnn") from file
-        TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
-        int fh2 = _open(lock_filename, _O_RDONLY);
-        if (fh2 == -1) {
-          locker.LoadString(IDSC_CANTGETLOCKER);
-        } else {
-          int bytesRead = _read(fh2, lockerStr, sizeof(lockerStr)-1);
-          _close(fh2);
-          if (bytesRead > 0) {
-            lockerStr[bytesRead] = TCHAR('\0');
-            locker = lockerStr;
-          } else { // read failed for some reason
-            locker = _T("Unable to read locker?");
-          } // read info from lock file
-        } // open lock file for read
-        break;
-      } // EEXIST block
-    case EINVAL: // Invalid oflag or pmode argument
-      locker.LoadString(IDSC_INTERNALLOCKERROR);
-      break;
-    case EMFILE: // No more file handles available (too many open files)
-      locker.LoadString(IDSC_SYSTEMLOCKERROR);
-      break;
-    case ENOENT: //File or path not found
-      locker.LoadString(IDSC_LOCKFILEPATHNF);
-      break;
-    default:
-      locker.LoadString(IDSC_LOCKUNKNOWNERROR);
-      break;
-    } // switch (errno)
-    return false;
-  } else { // valid filehandle, write our info
-    int numWrit;
-    numWrit = _write(fh, m_user, m_user.GetLength() * sizeof(TCHAR));
-    numWrit += _write(fh, _T("@"), sizeof(TCHAR));
-    numWrit += _write(fh, m_sysname, m_sysname.GetLength() * sizeof(TCHAR));
-    numWrit += _write(fh, _T(":"), sizeof(TCHAR));
-    numWrit += _write(fh, m_ProcessID, m_ProcessID.GetLength() * sizeof(TCHAR));
-    ASSERT(numWrit > 0);
-    _close(fh);
-    return true;
-  }
-#else
   const stringT user = pws_os::getusername();
   const stringT host = pws_os::gethostname();
   const stringT pid = pws_os::getprocessid();
@@ -261,16 +205,11 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
     LockCount++;
     return (write_status == TRUE);
   }
-#endif // POSIX_FILE_LOCK
 }
 
 void pws_os::UnlockFile(const stringT &filename,
                         HANDLE &lockFileHandle, int &LockCount)
 {
-#ifdef POSIX_FILE_LOCK
-  stringT lock_filename = GetLockFileName(filename);
-  _unlink(lock_filename);
-#else
   const stringT user = pws_os::getusername();
   const stringT host = pws_os::gethostname();
   const stringT pid = pws_os::getprocessid();
@@ -297,15 +236,11 @@ void pws_os::UnlockFile(const stringT &filename,
       DeleteFile(lock_filename.c_str());
     }
   }
-#endif // POSIX_FILE_LOCK
 }
 
 bool pws_os::IsLockedFile(const stringT &filename)
 {
   const stringT lock_filename = GetLockFileName(filename);
-#ifdef POSIX_FILE_LOCK
-  return pws_os::FileExists(lock_filename);
-#else
   // under this scheme, we need to actually try to open the file to determine
   // if it's locked.
   HANDLE h = CreateFile(lock_filename.c_str(),
@@ -337,5 +272,4 @@ bool pws_os::IsLockedFile(const stringT &filename)
     CloseHandle(h); // here if exists but lockable.
     return false;
   }
-#endif // POSIX_FILE_LOCK
 }
