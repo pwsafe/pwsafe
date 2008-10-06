@@ -11,7 +11,7 @@
 #include "Debug.h"
 #include "corelib.h"
 #include "os/dir.h"
-#include "stringX.h"
+#include "StringX.h"
 
 #include <stdio.h>
 #include <stdlib.h>

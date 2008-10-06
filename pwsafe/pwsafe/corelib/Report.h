@@ -6,11 +6,14 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#pragma once
+#ifndef __REPORT_H
+#define __REPORT_H
 
 // Create an action report file
 
+#ifdef _WIN32
 #include "afx.h"
+#endif
 #include "os/typedefs.h"
 #include "StringXStream.h"
 #include <stdio.h>
@@ -20,7 +23,7 @@ class CReport
   // Construction
 public:
   CReport()
-    : m_tcAction(NULL), m_pdfile(NULL) {}
+    : m_pdfile(NULL), m_tcAction(NULL) {}
   ~CReport();
 
   void StartReport(LPCTSTR tcAction, const stringT &csDataBase);
@@ -39,3 +42,5 @@ private:
   TCHAR *m_tcAction;
   stringT m_csDataBase;
 };
+
+#endif /* __REPORT_H */
