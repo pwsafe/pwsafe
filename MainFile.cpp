@@ -49,12 +49,21 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+class MFCAsker : public Asker
+{
+  bool operator()(const stringT &question) {
+    int msg_rc = AfxMessageBox(question.c_str(), MB_YESNO | 
+                               MB_ICONINFORMATION | MB_DEFBUTTON2);
+    return msg_rc == IDYES;
+  }
+};
+
 BOOL DboxMain::OpenOnInit(void)
 {
   /*
-  Routine to account for the differences between opening PSafe for
-  the first time, and just opening a different database or
-  un-minimizing the application
+    Routine to account for the differences between opening PSafe for
+    the first time, and just opening a different database or
+    un-minimizing the application
   */
   StringX passkey;
   bool bReadOnly = m_core.IsReadOnly();  // Can only be from -r command line parameter
@@ -69,68 +78,73 @@ BOOL DboxMain::OpenOnInit(void)
   int rc2 = PWScore::NOT_SUCCESS;
 
   switch (rc) {
-    case PWScore::SUCCESS:
+  case PWScore::SUCCESS:
+    {
+      MFCAsker q;
+      m_core.SetAsker(&q);
       rc2 = m_core.ReadCurFile(passkey);
+      m_core.SetAsker(NULL);
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
                                          m_core.GetCurFile()).c_str();
       UpdateSystemTray(UNLOCKED);
 #endif
       CheckExpiredPasswords();
-      break;
-    case PWScore::CANT_OPEN_FILE:
-      if (m_core.GetCurFile().empty()) {
-        // Empty filename. Assume they are starting Password Safe
-        // for the first time and don't confuse them.
-        // fallthrough to New()
-      } else {
-        // Here if there was a filename saved from last invocation, but it couldn't
-        // be opened. It was either removed or renamed, so ask the user what to do
-        CString cs_msg;
-        cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
-        CGeneralMsgBox gmb;
-        gmb.SetMsg(cs_msg);
-        gmb.SetStandardIcon(MB_ICONQUESTION);
-        gmb.AddButton(1, IDS_SEARCH);
-        gmb.AddButton(2, IDS_NEW);
-        gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
-        INT_PTR rc3 = gmb.DoModal();
-        switch (rc3) {
-          case 1:
-            rc2 = Open();
-            break;
-          case 2:
-            rc2 = New();
-            break;
-          case 3:
-            rc2 = PWScore::USER_CANCEL;
-            break;
-        }
+    }
+    break;
+  case PWScore::CANT_OPEN_FILE:
+    if (m_core.GetCurFile().empty()) {
+      // Empty filename. Assume they are starting Password Safe
+      // for the first time and don't confuse them.
+      // fallthrough to New()
+    } else {
+      // Here if there was a filename saved from last invocation, but it couldn't
+      // be opened. It was either removed or renamed, so ask the user what to do
+      CString cs_msg;
+      cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
+      CGeneralMsgBox gmb;
+      gmb.SetMsg(cs_msg);
+      gmb.SetStandardIcon(MB_ICONQUESTION);
+      gmb.AddButton(1, IDS_SEARCH);
+      gmb.AddButton(2, IDS_NEW);
+      gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
+      INT_PTR rc3 = gmb.DoModal();
+      switch (rc3) {
+      case 1:
+        rc2 = Open();
+        break;
+      case 2:
+        rc2 = New();
+        break;
+      case 3:
+        rc2 = PWScore::USER_CANCEL;
         break;
       }
-    case TAR_NEW:
-      rc2 = New();
-      if (PWScore::USER_CANCEL == rc2) {
-        // somehow, get DboxPasskeyEntryFirst redisplayed...
-      }
       break;
-    case TAR_OPEN:
-      rc2 = Open();
-      if (PWScore::USER_CANCEL == rc2) {
-        // somehow, get DboxPasskeyEntryFirst redisplayed...
-      }
-      break;
-    case PWScore::WRONG_PASSWORD:
-    default:
-      break;
+    }
+  case TAR_NEW:
+    rc2 = New();
+    if (PWScore::USER_CANCEL == rc2) {
+      // somehow, get DboxPasskeyEntryFirst redisplayed...
+    }
+    break;
+  case TAR_OPEN:
+    rc2 = Open();
+    if (PWScore::USER_CANCEL == rc2) {
+      // somehow, get DboxPasskeyEntryFirst redisplayed...
+    }
+    break;
+  case PWScore::WRONG_PASSWORD:
+  default:
+    break;
   }
 
   bool go_ahead = false;
   /*
-  * If BAD_DIGEST or LIMIT_REACHED,
-  * the we prompt the user, and continue or not per user's input.
-  * A bit too subtle for switch/case on rc2...
-  */
+   * If BAD_DIGEST or LIMIT_REACHED,
+   * the we prompt the user, and continue or not per user's input.
+   * A bit too subtle for switch/case on rc2...
+   */
   if (rc2 == PWScore::BAD_DIGEST) {
     CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
@@ -174,9 +188,9 @@ BOOL DboxMain::OpenOnInit(void)
   UpdateStatusBar();
 
   m_core.SetDefUsername(PWSprefs::GetInstance()->
-    GetPref(PWSprefs::DefaultUsername));
+                        GetPref(PWSprefs::DefaultUsername));
   m_core.SetUseDefUser(PWSprefs::GetInstance()->
-    GetPref(PWSprefs::UseDefaultUser) ? true : false);
+                       GetPref(PWSprefs::UseDefaultUser) ? true : false);
 #if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
                                      m_core.GetCurFile()).c_str();
@@ -553,7 +567,10 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   ClearData();
 
   cs_title.LoadString(IDS_FILEREADERROR);
+  MFCAsker q;
+  m_core.SetAsker(&q);
   rc = m_core.ReadFile(pszFilename, passkey);
+  m_core.SetAsker(NULL);
   switch (rc) {
     case PWScore::SUCCESS:
       break;

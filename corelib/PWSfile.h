@@ -22,6 +22,7 @@
 #define MIN_HASH_ITERATIONS 2048
 
 class Fish;
+class Asker;
 
 class PWSfile
 {
@@ -65,7 +66,7 @@ public:
   };
 
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
-                              RWmode mode, int &status);
+                              RWmode mode, int &status, Asker *asker = NULL);
 
   static VERSION ReadVersion(const StringX &filename);
   static int CheckPassword(const StringX &filename,
@@ -115,5 +116,6 @@ protected:
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
   size_t m_fileLength;
+  Asker *m_asker;
 };
 #endif /* __PWSFILE_H */
