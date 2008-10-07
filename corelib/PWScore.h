@@ -57,6 +57,7 @@ struct GetBaseEntryPL {
 class Asker {
  public:
   virtual bool operator()(const stringT &question) = 0;
+  virtual ~Asker() {}
 };
 
 class PWScore

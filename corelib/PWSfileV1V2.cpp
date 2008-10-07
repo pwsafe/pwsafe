@@ -240,7 +240,7 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
   int wcLen = data.length()+1;
   int mbLen = 3*wcLen;
   unsigned char *acp = new unsigned char[mbLen];
-  size_t acpLen = pws_os::wcstombs(LPSTR(acp), mbLen,
+  size_t acpLen = pws_os::wcstombs(reinterpret_cast<char *>(acp), mbLen,
                                    wcPtr, wcLen);
   ASSERT(acpLen != 0);
   acpLen--; // remove unneeded null termination
