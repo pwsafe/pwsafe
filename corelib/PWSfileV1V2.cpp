@@ -9,6 +9,7 @@
 #include "PWSrand.h"
 #include "corelib.h"
 #include "os/file.h"
+#include "os/utf8conv.h"
 
 #ifdef _WIN32
 #include <io.h>
@@ -117,8 +118,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
 
 #ifdef UNICODE
   pstr = new unsigned char[3*passLen];
-  int len = WideCharToMultiByte(CP_ACP, 0, passstr, passLen,
-    LPSTR(pstr), 3*passLen, NULL, NULL);
+  size_t len = pws_os::wcstombs((char *)pstr, 3 * passLen, passstr, passLen);
   ASSERT(len != 0);
   passLen = len;
 #else
@@ -153,7 +153,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
     status = CheckPassword(m_filename, m_passkey, m_fd);
     if (status != SUCCESS) {
 #ifdef UNICODE
-      trashMemory(pstr, 2*passLen);
+      trashMemory(pstr, 3*passLen);
       delete[] pstr;
 #endif
       Close();
@@ -168,7 +168,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
       status = ReadV2Header();
   } // read mode
 #ifdef UNICODE
-  trashMemory(pstr, 2*passLen);
+  trashMemory(pstr, 3*passLen);
   delete[] pstr;
 #endif
   return status;
@@ -236,16 +236,12 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
 
   return PWSfile::WriteCBC(type, datastr, data.length());
 #else
-  // xlate wchar_t to ACP
   wchar_t *wcPtr = const_cast<wchar_t *>(data.c_str());
   int wcLen = data.length()+1;
   int mbLen = 3*wcLen;
   unsigned char *acp = new unsigned char[mbLen];
-  int acpLen = WideCharToMultiByte(CP_ACP,      // code page
-                                   0, // performance and mapping flags
-                                   wcPtr, wcLen, // wide-character string
-                                   LPSTR(acp), mbLen, // buffer and length
-                                   NULL, NULL); // use sys defs for unmappables
+  size_t acpLen = pws_os::wcstombs(LPSTR(acp), mbLen,
+                                   wcPtr, wcLen);
   ASSERT(acpLen != 0);
   acpLen--; // remove unneeded null termination
   size_t retval = PWSfile::WriteCBC(type, acp, acpLen);
@@ -373,7 +369,7 @@ static void ExtractURL(StringX &notesStr, StringX &outurl)
 size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 {
   unsigned char *buffer = NULL;
-  unsigned int buffer_len = 0;
+  size_t buffer_len = 0;
   size_t retval;
 
   ASSERT(m_fish != NULL && m_IV != NULL);
@@ -384,28 +380,11 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 #ifdef UNICODE
     wchar_t *wc = new wchar_t[buffer_len+1];
 
-    int wcLen = MultiByteToWideChar(CP_ACP,      // code page
-      MB_ERR_INVALID_CHARS,
-      LPCSTR(buffer),       // string to map
-      buffer_len,
-      wc, buffer_len+1);
-    if (wcLen == 0) {
-      DWORD errCode = GetLastError();
-      switch (errCode) {
-        case ERROR_INSUFFICIENT_BUFFER:
-          TRACE("INSUFFICIENT BUFFER"); break;
-        case ERROR_INVALID_FLAGS:
-          TRACE("INVALID FLAGS"); break;
-        case ERROR_INVALID_PARAMETER:
-          TRACE("INVALID PARAMETER"); break;
-        case ERROR_NO_UNICODE_TRANSLATION:
-          TRACE("NO UNICODE TRANSLATION"); break;
-        default:
-          ASSERT(0);
-      }
-    }
+    size_t wcLen = pws_os::mbstowcs(wc, buffer_len + 1,
+                                    reinterpret_cast<const char *>(buffer),
+                                    buffer_len);
     ASSERT(wcLen != 0);
-    if (wcLen < int(buffer_len) + 1)
+    if (wcLen < buffer_len + 1)
       wc[wcLen] = TCHAR('\0');
     else
       wc[buffer_len] = TCHAR('\0');
