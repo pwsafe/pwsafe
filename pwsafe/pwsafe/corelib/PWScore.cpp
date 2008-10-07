@@ -59,7 +59,7 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
                      m_passkey(NULL), m_passkey_len(0),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
                      m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
-                     m_bNotify(false)
+                     m_bNotify(false), m_asker(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -93,7 +93,8 @@ void PWScore::SetApplicationNameAndVersion(const stringT &appName,
 {
   int nMajor = HIWORD(dwMajorMinor);
   int nMinor = LOWORD(dwMajorMinor);
-  Format(m_AppNameAndVersion, _T("%s V%d.%02d"), appName, nMajor, nMinor);
+  Format(m_AppNameAndVersion, _T("%s V%d.%02d"), appName.c_str(),
+         nMajor, nMinor);
 }
 
 void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
@@ -1158,7 +1159,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 {
   int status;
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
-                                     PWSfile::Read, status);
+                                     PWSfile::Read, status, m_asker);
 
   if (status != PWSfile::SUCCESS) {
     delete in;

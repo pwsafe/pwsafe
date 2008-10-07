@@ -53,6 +53,12 @@ struct GetBaseEntryPL {
   bool bMultipleEntriesFound;
 };
 
+// abstract base class for asking user a question
+class Asker {
+ public:
+  virtual bool operator()(const stringT &question) = 0;
+};
+
 class PWScore
 {
 public:
@@ -252,7 +258,8 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
-
+  void SetAsker(Asker *asker) {m_asker = asker;}
+  
   // Filters
   PWSFilters m_MapFilters;
 
@@ -312,5 +319,6 @@ private:
   void (*m_pfcnNotifyListModified) (LPARAM);
   LPARAM m_NotifyInstance;
   bool m_bNotify;
+  Asker *m_asker;
 };
 #endif /* __PWSCORE_H */

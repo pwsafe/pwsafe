@@ -21,6 +21,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -634,11 +635,8 @@ int PWSfileV3::ReadHeader()
             utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
             if (!utf8status)
               TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
-#if _MSC_VER >= 1400
-            _stscanf_s(text.c_str(), _T("%8x"), &m_hdr.m_whenlastsaved);
-#else
-            _stscanf(text.c_str(), _T("%8x"), &m_hdr.m_whenlastsaved);
-#endif
+            iStringXStream is(text);
+            is >> hex >> m_hdr.m_whenlastsaved;
         } else if (utf8Len == 4) {
           // retrieve time_t
           m_hdr.m_whenlastsaved = *reinterpret_cast<time_t*>(utf8);
@@ -653,14 +651,13 @@ int PWSfileV3::ReadHeader()
           if (utf8 != NULL) utf8[utf8Len] = '\0';
           utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
           if (utf8status) {
+            iStringXStream is(text);
             int ulen = 0;
-#if _MSC_VER >= 1400
-            _stscanf_s(text.c_str(), _T("%4x"), &ulen);
-#else
-            _stscanf(text.c_str(), _T("%4x"), &ulen);
-#endif
-            m_hdr.m_lastsavedby = text.substr(4, ulen);
-            m_hdr.m_lastsavedon = text.substr(ulen + 4);
+            is >> setw(4) >> hex >> ulen;
+            StringX uh;
+            is >> setw(text.length() - ulen + 1) >> uh;
+            m_hdr.m_lastsavedby = uh.substr(0,ulen);
+            m_hdr.m_lastsavedon = uh.substr(ulen);
           } else
             TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
         }
@@ -710,12 +707,14 @@ int PWSfileV3::ReadHeader()
                                                     XSDFilename.c_str(),
                                                     strErrors);
           if (rc != PWScore::SUCCESS) {
-            // Now ask them whether to keep as unknown field or delete!
-            int msg_rc = AfxMessageBox(IDSC_CANTPROCESSDBFILTERS, MB_YESNO | 
-                                         MB_ICONINFORMATION | MB_DEFBUTTON2);
-            if (msg_rc == IDNO) {
+            // Ask user whether to keep as unknown field or delete!
+            stringT question;
+            LoadAString(question, IDSC_CANTPROCESSDBFILTERS);
+            bool keep = (m_asker == NULL) || (!(*m_asker)(question));
+            if (keep) {
               // Treat it as an Unknown field!
-              // Maybe user used a later version of PWS and we don't want to lose anything
+              // Maybe user used a later version of PWS
+              // and we don't want to lose anything
               UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
               m_UHFL.push_back(unkhfe);
             }

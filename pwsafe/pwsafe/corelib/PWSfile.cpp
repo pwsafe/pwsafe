@@ -20,36 +20,41 @@
 #include <errno.h>
 
 PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
-                              RWmode mode, int &status)
+                              RWmode mode, int &status, Asker *asker)
 {
   if (mode == Read && !pws_os::FileExists(a_filename.c_str())) {
     status = CANT_OPEN_FILE;
     return NULL;
   }
 
+  PWSfile *retval;
   switch (version) {
     case V17:
     case V20:
       status = SUCCESS;
-      return new PWSfileV1V2(a_filename, mode, version);
+      retval = new PWSfileV1V2(a_filename, mode, version);
+      break;
     case V30:
       status = SUCCESS;
-      return new PWSfileV3(a_filename, mode, version);
+      retval = new PWSfileV3(a_filename, mode, version);
+      break;
     case UNKNOWN_VERSION:
       ASSERT(mode == Read);
       if (PWSfile::ReadVersion(a_filename) == V30) {
         version = V30;
         status = SUCCESS;
-        return new PWSfileV3(a_filename, mode, version);
+        retval = new PWSfileV3(a_filename, mode, version);
       } else {
         version = V20; // may be inaccurate (V17)
         status = SUCCESS;
-        return new PWSfileV1V2(a_filename, mode, version);
+        retval = new PWSfileV1V2(a_filename, mode, version);
       }
     default:
       ASSERT(0);
       status = FAILURE; return NULL;
   }
+  retval->m_asker = asker;
+  return retval;
 }
 
 

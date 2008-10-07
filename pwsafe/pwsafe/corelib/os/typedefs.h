@@ -75,6 +75,8 @@ typedef const TCHAR *LPCTSTR;
 typedef bool BOOL;
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
+typedef unsigned long DWORD;
+typedef long LPARAM;
 typedef unsigned int UINT;
 typedef int HANDLE;
 #define INVALID_HANDLE_VALUE HANDLE(-1)
