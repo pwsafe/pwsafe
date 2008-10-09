@@ -62,6 +62,8 @@ typedef u_int16_t uint16;
 typedef u_int32_t uint32;
 typedef u_int64_t uint64;
 
+typedef int errno_t;
+
 #ifdef UNICODE
 #define _T(x) L ## x
 typedef wchar_t TCHAR;
