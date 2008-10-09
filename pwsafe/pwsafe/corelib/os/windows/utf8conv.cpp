@@ -15,27 +15,35 @@
 #include "../utf8conv.h"
 
 size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
-                        const wchar_t *src, size_t srclen)
+                        const wchar_t *src, size_t srclen, bool isUTF8)
 {
-  if (dst != NULL && maxdstlen != 0) // resolve ambiguity
-    return WideCharToMultiByte(CP_ACP, 0,
-                               src, srclen, dst, maxdstlen,
-                               NULL, NULL);
-  else
-    return WideCharToMultiByte(CP_ACP, 0,
-                               src, srclen, NULL, 0,
-                               NULL, NULL);
+  UINT codePage = isUTF8 ? CP_UTF8 : CP_ACP;
+  
+  if (dst == NULL || maxdstlen == 0) {
+    dst = NULL; maxdstlen = 0; // resolve ambiguity
+  }
+
+  return WideCharToMultiByte(codePage, 0,
+                             src, srclen, dst, maxdstlen,
+                             NULL, NULL);
 }
 
 size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
-                        const char *src, size_t srclen)
+                        const char *src, size_t srclen, bool isUTF8)
 {
-  if (dst != NULL && maxdstlen != 0) // resolve ambiguity
-    return MultiByteToWideChar(CP_ACP, MB_ERR_INVALID_CHARS,
-                               src, srclen,
-                               dst, maxdstlen);
-  else
-    return MultiByteToWideChar(CP_ACP, MB_ERR_INVALID_CHARS,
-                               src, srclen,
-                               NULL, 0);
+  UINT codePage;
+  DWORD flags;
+
+  if (isUTF8) {
+    codePage = CP_UTF8; flags = 0;
+  } else {
+    codePage = CP_ACP; flags = MB_PRECOMPOSED;
+  }
+
+  if (dst == NULL || maxdstlen == 0) {
+    dst = NULL; maxdstlen = 0; // resolve ambiguity
+  }
+  return MultiByteToWideChar(codePage, flags,
+                             src, srclen,
+                             dst, maxdstlen);
 }

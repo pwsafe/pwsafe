@@ -22,10 +22,10 @@ namespace pws_os {
    * wcstombs(NULL, 0, src, srclen) + 1
    */
   extern size_t wcstombs(char *dst, size_t maxdstlen,
-                        const wchar_t *src, size_t srclen);
+                         const wchar_t *src, size_t srclen, bool isUTF8 = true);
 
   extern size_t mbstowcs(wchar_t *dst, size_t maxdstlen,
-                         const char *src, size_t srclen);
+                         const char *src, size_t srclen, bool isUTF8 = true);
 };
 #endif /* __OSUTF8CONV_H */
 //-----------------------------------------------------------------------------

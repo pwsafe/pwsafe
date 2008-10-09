@@ -34,12 +34,12 @@ private:
   // for efficiency w/o arbitrary restrictions
   // deallocated by d'tor
   unsigned char *m_utf8;
-  int m_utf8Len;
-  int m_utf8MaxLen;
+  size_t m_utf8Len;
+  size_t m_utf8MaxLen;
   wchar_t *m_wc;
-  int m_wcMaxLen;
+  size_t m_wcMaxLen;
   unsigned char *m_tmp;
-  int m_tmpMaxLen;
+  size_t m_tmpMaxLen;
 };
 
 #endif /* __UTF8CONV_H */
