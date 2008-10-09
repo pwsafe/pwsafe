@@ -254,55 +254,53 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   // Note:
   //    !yyyy/mm/dd!hh:mm:ss! may be !1970-01-01 00:00:00! meaning unknown
 
-  StringX tmp, pwh;
   stringT buffer;
-  int ipwlen, s = -1, m = -1, n = -1;
+  int ipwlen, pwleft = 0, s = -1, m = -1, n = -1;
   int rc = PWH_OK;
   time_t t;
 
   newPWHistory = _T("");
   strErrors = _T("");
 
-  pwh = PWHistory;
-  int len = pwh.length();
-  int pwleft = len;
-
-  if (pwleft == 0)
+  if (PWHistory.empty())
     return PWH_OK;
 
-  if (pwleft < 5) {
+  StringX pwh(PWHistory);
+  StringX tmp;
+
+  int len = pwh.length();
+
+  if (len < 5) {
     rc = PWH_INVALID_HDR;
     goto exit;
   }
 
-  const TCHAR *lpszPWHistory = pwh.c_str();
-  {
-#if _MSC_VER >= 1400
-    int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
-#else
-    int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
-#endif
-    if (iread != 3) {
-      rc = PWH_INVALID_HDR;
-      goto relbuf;
-    }
-  }
-  if (s != 0 && s != 1) {
+  if (pwh[0] == TCHAR('0')) s = 0;
+  else if (pwh[0] == TCHAR('1')) s = 1;
+  else {
     rc = PWH_INVALID_STATUS;
-    goto relbuf;
+    goto exit;
+  }
+
+  {
+    StringX s1 (pwh.substr(1, 2));
+    StringX s2 (pwh.substr(3, 4));
+    iStringXStream is1(s1), is2(s2);
+    is1 >> std::hex >> m;
+    is2 >> std::hex >> n;
   }
 
   if (n > m) {
     rc = PWH_INVALID_NUM;
-    goto relbuf;
+    goto exit;
   }
 
-  lpszPWHistory += 5;
-  pwleft -= 5;
+  const TCHAR *lpszPWHistory = pwh.c_str() + 5;
+  pwleft = len - 5;
 
   if (pwleft == 0 && s == 0 && m == 0 && n == 0) {
     rc = PWH_IGNORE;
-    goto relbuf;
+    goto exit;
   }
 
   Format(buffer, _T("%01d%02x%02x"), s, m, n);
@@ -311,16 +309,16 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   for (int i = 0; i < n; i++) {
     if (pwleft < 26) {  //  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
       rc = PWH_TOO_SHORT;
-      goto relbuf;
+      goto exit;
     }
 
     if (lpszPWHistory[0] != _T(' ')) {
       rc = PWH_INVALID_CHARACTER;
-      goto relbuf;
+      goto exit;
     }
 
-    lpszPWHistory += 1;
-    pwleft -= 1;
+    lpszPWHistory++;
+    pwleft--;
 
     tmp = StringX(lpszPWHistory, 19);
 
@@ -329,7 +327,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     else {
       if (!VerifyImportDateTimeString(tmp.c_str(), t)) {
         rc = PWH_INVALID_DATETIME;
-        goto relbuf;
+        goto exit;
       }
     }
 
@@ -338,28 +336,22 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
 
     if (lpszPWHistory[0] != _T(' ')) {
       rc = PWH_INVALID_CHARACTER;
-      goto relbuf;
+      goto exit;
     }
 
-    lpszPWHistory += 1;
-    pwleft -= 1;
+    lpszPWHistory++;
+    pwleft--;
     {
-#if _MSC_VER >= 1400
-      int iread = _stscanf_s(lpszPWHistory, _T("%04x"), &ipwlen);
-#else
-      int iread = _stscanf(lpszPWHistory, _T("%04x"), &ipwlen);
-#endif
-      if (iread != 1) {
-        rc = PWH_INVALID_PSWD_LENGTH;
-        goto relbuf;
-      }
+      StringX s3(lpszPWHistory, 4);
+      iStringXStream is3(s3);
+      is3 >> std::hex >> ipwlen;
     }
     lpszPWHistory += 4;
     pwleft -= 4;
 
     if (lpszPWHistory[0] != _T(' ')) {
       rc = PWH_INVALID_CHARACTER;
-      goto relbuf;
+      goto exit;
     }
 
     lpszPWHistory += 1;
@@ -367,7 +359,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
 
     if (pwleft < ipwlen) {
       rc = PWH_INVALID_PSWD_LENGTH;
-      goto relbuf;
+      goto exit;
     }
 
     tmp = StringX(lpszPWHistory, ipwlen);
@@ -381,9 +373,8 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   if (pwleft > 0)
     rc = PWH_TOO_LONG;
 
- relbuf: // pwh.ReleaseBuffer(); - obsoleted by move to StringX
-
- exit: Format(buffer, IDSC_PWHERROR, len - pwleft + 1);
+ exit:
+  Format(buffer, IDSC_PWHERROR, len - pwleft + 1);
   stringT temp;
   switch (rc) {
   case PWH_OK:
