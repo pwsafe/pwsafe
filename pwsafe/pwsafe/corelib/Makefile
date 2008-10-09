@@ -15,7 +15,7 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									ItemData.cpp PWSfile.cpp PWHistory.cpp \
 									PWSfileV1V2.cpp PWSfileV3.cpp \
 									UnknownField.cpp  VerifyFormat.cpp Match.cpp \
-									Report.cpp UTF8Conv.cpp \
+									UTF8Conv.cpp Report.cpp \
 									tinyxml/tinystr.cpp tinyxml/tinyxml.cpp \
 									tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp
 

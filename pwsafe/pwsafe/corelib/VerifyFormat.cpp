@@ -267,7 +267,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
 
   StringX pwh(PWHistory);
   StringX tmp;
-
+  const TCHAR *lpszPWHistory = NULL;
   int len = pwh.length();
 
   if (len < 5) {
@@ -295,7 +295,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     goto exit;
   }
 
-  const TCHAR *lpszPWHistory = pwh.c_str() + 5;
+  lpszPWHistory = pwh.c_str() + 5;
   pwleft = len - 5;
 
   if (pwleft == 0 && s == 0 && m == 0 && n == 0) {
