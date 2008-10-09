@@ -16,15 +16,12 @@
 #endif
 #include "os/typedefs.h"
 #include "StringXStream.h"
-#include <stdio.h>
 
 class CReport
 {
-  // Construction
 public:
-  CReport()
-    : m_pdfile(NULL), m_tcAction(NULL) {}
-  ~CReport();
+  CReport() {}
+  ~CReport() {}
 
   void StartReport(LPCTSTR tcAction, const stringT &csDataBase);
   void EndReport();
@@ -35,11 +32,10 @@ public:
   StringX GetString() {return m_osxs.rdbuf()->str();}
 
 private:
-  FILE *m_pdfile;
   oStringXStream m_osxs;
   stringT m_cs_filename;
   int m_imode;
-  TCHAR *m_tcAction;
+  stringT m_tcAction;
   stringT m_csDataBase;
 };
 

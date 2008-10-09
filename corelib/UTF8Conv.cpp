@@ -11,6 +11,7 @@
 */
 #include "UTF8Conv.h"
 #include "Util.h"
+#include "os/utf8conv.h"
 
 CUTF8Conv::~CUTF8Conv()
 {
@@ -40,14 +41,10 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
     return true;
   }
   wchar_t *wcPtr; // to hide UNICODE differences
-  int wcLen; // number of wide chars needed
+  size_t wcLen; // number of wide chars needed
 #ifndef UNICODE
   // first get needed wide char buffer size
-  wcLen = MultiByteToWideChar(CP_ACP,             // code page
-    MB_PRECOMPOSED,     // character-type options
-    data.c_str(),       // string to map
-    -1,                 // -1 means null-terminated
-    NULL, 0);           // get needed buffer size
+  wcLen = pws_os::mbstowcs(NULL, 0, data.c_str(), size_t(-1), false);
   if (wcLen == 0) { // uh-oh
     ASSERT(0);
     m_utf8Len = 0;
@@ -62,11 +59,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
     m_wcMaxLen = wcLen;
   }
   // next translate to buffer
-  wcLen = MultiByteToWideChar(CP_ACP,             // code page
-    MB_PRECOMPOSED,     // character-type options
-    data.c_str(),       // string to map
-    -1,                 // -1 means null-terminated
-    m_wc, wcLen);       // output buffer
+  wcLen = pws_os::mbstowcs(m_wc, wcLen, data.c_str(), size_t(-1), false);
   ASSERT(wcLen != 0);
   wcPtr = m_wc;
 #else
@@ -74,12 +67,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
   wcLen = data.length()+1;
 #endif
   // first get needed utf8 buffer size
-  int mbLen = WideCharToMultiByte(CP_UTF8,       // code page
-    0,             // performance and mapping flags
-    wcPtr,         // wide-character string
-    -1,            // -1 means null-terminated
-    NULL, 0,       // get needed buffer size
-    NULL, NULL);   // use system default for unmappables
+  size_t mbLen = pws_os::wcstombs(NULL, 0, wcPtr, size_t(-1));
 
   if (mbLen == 0) { // uh-oh
     ASSERT(0);
@@ -95,11 +83,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
     m_utf8MaxLen = mbLen;
   }
   // Finally get result
-  m_utf8Len = WideCharToMultiByte(CP_UTF8,      // code page
-    0,            // performance and mapping flags
-    wcPtr, wcLen, // wide-character string
-    LPSTR(m_utf8), mbLen, // buffer and length
-    NULL,NULL);   // use system default for unmappables
+  m_utf8Len = pws_os::wcstombs((char *)m_utf8, mbLen, wcPtr, wcLen);
   ASSERT(m_utf8Len != 0);
   m_utf8Len--; // remove unneeded null termination
   utf8 = m_utf8;
@@ -126,17 +110,13 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
   ASSERT(utf8 != NULL);
 
   // first get needed wide char buffer size
-  int wcLen = MultiByteToWideChar(CP_UTF8,      // code page
-    0,            // character-type options
-    LPSTR(utf8), // string to map
-    -1,           // -1 means null-terminated
-    NULL, 0);     // get needed buffer size
+  size_t wcLen = pws_os::mbstowcs(NULL, 0, (char *)utf8, size_t(-1));
   if (wcLen == 0) { // uh-oh
     // it seems that this always returns non-zero, even if encoding
     // broken. Therefore, we'll give a consrevative value here,
     // and try to recover later
     TRACE(_T("FromUTF8: Couldn't get buffer size - guessing!"));
-    wcLen = 2 * utf8Len;
+    wcLen = 3 * utf8Len;
   }
   // Allocate buffer (if previous allocation was smaller)
   if (wcLen > m_wcMaxLen) {
@@ -147,11 +127,8 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     m_wcMaxLen = wcLen;
   }
   // next translate to buffer
-  wcLen = MultiByteToWideChar(CP_UTF8,       // code page
-                              0,             // character-type options
-                              LPSTR(utf8),   // string to map
-                              -1,            // -1 means null-terminated
-                              m_wc, wcLen);  // output buffer
+  wcLen = pws_os::mbstowcs(m_wc, wcLen, (char *)utf8, size_t(-1));
+#ifdef _WIN32
   if (wcLen == 0) {
     DWORD errCode = GetLastError();
     switch (errCode) {
@@ -177,6 +154,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
       ASSERT(0);
     }
   }
+#endif /* _WIN32 */
   ASSERT(wcLen != 0);
 #ifdef UNICODE
   if (wcLen != 0) {
@@ -187,13 +165,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     return false;
 #else /* Go from Unicode to Locale encoding */
   // first get needed utf8 buffer size
-  int mbLen = WideCharToMultiByte(CP_ACP,       // code page
-                                  0,            // performance and mapping flags
-                                  m_wc,         // wide-character string
-                                  -1,           // -1 means null-terminated
-                                  NULL, 0,      // get needed buffer size
-                                  NULL, NULL);  // use system default for unmappables
-
+  size_t mbLen = pws_os::wcstombs(NULL, 0, m_wc, size_t(-1), false);
   if (mbLen == 0) { // uh-oh
     ASSERT(0);
     data = _T("");
@@ -208,11 +180,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     m_tmpMaxLen = mbLen;
   }
   // Finally get result
-  int tmpLen = WideCharToMultiByte(CP_ACP,              // code page
-                                   0,                   // performance and mapping flags
-                                   m_wc, -1,            // wide-character string
-                                   LPSTR(m_tmp), mbLen, // buffer and length
-                                   NULL, NULL);         // use system default for unmappables
+  size_t tmplen = pws_os::wcstombs((char *)m_tmp, mbLen, m_wc, size_t(-1), false);
   ASSERT(tmpLen == mbLen);
   m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
   data = (char *)m_tmp;

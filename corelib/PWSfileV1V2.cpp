@@ -118,7 +118,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
 
 #ifdef UNICODE
   pstr = new unsigned char[3*passLen];
-  size_t len = pws_os::wcstombs((char *)pstr, 3 * passLen, passstr, passLen);
+  size_t len = pws_os::wcstombs((char *)pstr, 3 * passLen, passstr, passLen, false);
   ASSERT(len != 0);
   passLen = len;
 #else
@@ -241,7 +241,7 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
   int mbLen = 3*wcLen;
   unsigned char *acp = new unsigned char[mbLen];
   size_t acpLen = pws_os::wcstombs(reinterpret_cast<char *>(acp), mbLen,
-                                   wcPtr, wcLen);
+                                   wcPtr, wcLen, false);
   ASSERT(acpLen != 0);
   acpLen--; // remove unneeded null termination
   size_t retval = PWSfile::WriteCBC(type, acp, acpLen);
@@ -382,7 +382,7 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 
     size_t wcLen = pws_os::mbstowcs(wc, buffer_len + 1,
                                     reinterpret_cast<const char *>(buffer),
-                                    buffer_len);
+                                    buffer_len, false);
     ASSERT(wcLen != 0);
     if (wcLen < buffer_len + 1)
       wc[wcLen] = TCHAR('\0');

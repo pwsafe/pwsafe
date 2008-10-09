@@ -49,6 +49,7 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
         status = SUCCESS;
         retval = new PWSfileV1V2(a_filename, mode, version);
       }
+      break;
     default:
       ASSERT(0);
       status = FAILURE; return NULL;
