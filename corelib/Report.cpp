@@ -12,6 +12,7 @@
 #include "corelib.h"
 #include "os/dir.h"
 #include "os/file.h"
+#include "os/utf8conv.h"
 #include "StringX.h"
 
 #include <stdio.h>
@@ -27,7 +28,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
 const TCHAR *CRLF = _T("\r\n");
 
 /*
@@ -104,17 +104,16 @@ bool CReport::SaveToDisk()
   } else
     if (!bFileIsUnicode) {
       // Convert ASCII contents to UNICODE
-      FILE *f_in, *f_out;
 
       // Close original first
       fclose(fd);
 
       // Open again to read
-      f_in = _wfsopen(m_cs_filename.c_str(), L"rb", _SH_DENYWR);
+      FILE *f_in = pws_os::FOpen(m_cs_filename, _S("rb"));
 
       // Open new file
-      stringT cs_out = m_cs_filename + _T(".tmp");
-      f_out = _wfsopen(cs_out.c_str(), L"wb", _SH_DENYWR);
+      stringT cs_out = m_cs_filename + _S(".tmp");
+      FILE *f_out = pws_os::FOpen(cs_out, _S("wb"));
 
       // Write BOM
       putwc(iBOM, f_out);
@@ -128,9 +127,8 @@ bool CReport::SaveToDisk()
         nBytesRead = fread(inbuffer, sizeof(inbuffer), 1, f_in);
 
         if (nBytesRead > 0) {
-          int len = MultiByteToWideChar(CP_ACP, 0, (LPSTR)inbuffer, 
-            nBytesRead, (LPWSTR)outwbuffer, 4096);
-          if (len > 0)
+          size_t len = pws_os::mbstowcs(outwbuffer, 4096, (const char *)inbuffer, nBytesRead);
+          if (len != 0)
             fwrite(outwbuffer, sizeof(outwbuffer[0])*len, 1, f_out);
         } else
           break;
@@ -142,12 +140,10 @@ bool CReport::SaveToDisk()
       fclose(f_out);
 
       // Swap them
-      _tremove(m_cs_filename.c_str());
-      _trename(cs_out.c_str(), m_cs_filename.c_str());
+      pws_os::RenameFile(cs_out, m_cs_filename);
 
       // Re-open file
-      if ((fd = _wfsopen(m_cs_filename.c_str(),
-                               L"ab", _SH_DENYWR)) == NULL) {
+      if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
         PWSDebug::IssueError(_T("StartReport: Opening log file"));
         return false;
       }
@@ -155,17 +151,15 @@ bool CReport::SaveToDisk()
 #else
   if (bFileIsUnicode) {
     // Convert UNICODE contents to ASCII
-    FILE *f_in, *f_out;
-
     // Close original first
     fclose(fd);
 
     // Open again to read
-    f_in = _fsopen(m_cs_filename.c_str(), "rb", _SH_DENYWR);
+    FILE *f_in = pws_os::FOpen(m_cs_filename, "rb");
 
     // Open new file
     stringT cs_out = m_cs_filename + _T(".tmp");
-    f_out = _fsopen(cs_out.c_str(), "wb", _SH_DENYWR);
+    FILE *f_out = pws_os::FOpen(cs_out, "wb");
 
     UINT nBytesRead;
     WCHAR inwbuffer[4096];
@@ -177,13 +171,12 @@ bool CReport::SaveToDisk()
     // Now copy
     do {
       nBytesRead = fread(inwbuffer, sizeof(inwbuffer[0])*sizeof(inwbuffer),
-        1, f_in);
+                         1, f_in);
 
       if (nBytesRead > 0) {
-        int len = WideCharToMultiByte(CP_ACP, 0, (LPWSTR)inwbuffer, 
-                                      nBytesRead,
-                                      (LPSTR)outbuffer, 4096, NULL, NULL);
-        if (len > 0)
+        size_t len = pws_os::wcstombs((char *)outbuffer, 4096,
+                                      inwbuffer, nBytesRead);
+        if (len != 0)
           fwrite(outbuffer, len, 1, f_out);
       } else
         break;
@@ -195,11 +188,10 @@ bool CReport::SaveToDisk()
     fclose(f_out);
 
     // Swap them
-    _tremove(m_cs_filename.c_str());
-    _trename(cs_out.c_str(), m_cs_filename.c_str());
+    pws_os::RenameFile(cs_out, m_cs_filename);
 
     // Re-open file
-    if ((fd = _fsopen(m_cs_filename.c_str(), "ab", _SH_DENYWR)) == NULL) {
+    if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
       PWSDebug::IssueError(_T("StartReport: Opening log file"));
       return false;
     }
