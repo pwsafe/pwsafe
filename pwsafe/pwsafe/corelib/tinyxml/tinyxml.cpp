@@ -35,10 +35,7 @@ distribution.
 #endif
 
 #include "tinyxml.h"
-
-#ifdef UNICODE
-#include <Windows.h>
-#endif
+#include "../os/utf8conv.h"
 
 const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
 const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
@@ -522,7 +519,7 @@ TiXmlElement::TiXmlElement (const TCHAR * _value)
 
 
 #ifdef TIXML_USE_STL
-TiXmlElement::TiXmlElement( const std::string& _value ) 
+TiXmlElement::TiXmlElement( const TIXML_STRING& _value ) 
 	: TiXmlNode( TiXmlNode::ELEMENT )
 {
 	firstChild = lastChild = 0;
@@ -574,7 +571,7 @@ const TCHAR* TiXmlElement::Attribute( const TCHAR* name ) const
 
 
 #ifdef TIXML_USE_STL
-const std::string* TiXmlElement::Attribute( const std::string& name ) const
+const TIXML_STRING* TiXmlElement::Attribute( const TIXML_STRING& name ) const
 {
 	const TiXmlAttribute* node = attributeSet.Find( name );
 	if ( node )
@@ -601,9 +598,9 @@ const TCHAR* TiXmlElement::Attribute( const TCHAR* name, int* i ) const
 
 
 #ifdef TIXML_USE_STL
-const std::string* TiXmlElement::Attribute( const std::string& name, int* i ) const
+const TIXML_STRING* TiXmlElement::Attribute( const TIXML_STRING& name, int* i ) const
 {
-	const std::string* s = Attribute( name );
+	const TIXML_STRING* s = Attribute( name );
 	if ( i )
 	{
 		if ( s ) {
@@ -635,9 +632,9 @@ const TCHAR* TiXmlElement::Attribute( const TCHAR* name, double* d ) const
 
 
 #ifdef TIXML_USE_STL
-const std::string* TiXmlElement::Attribute( const std::string& name, double* d ) const
+const TIXML_STRING* TiXmlElement::Attribute( const TIXML_STRING& name, double* d ) const
 {
-	const std::string* s = Attribute( name );
+	const TIXML_STRING* s = Attribute( name );
 	if ( d )
 	{
 		if ( s ) {
@@ -662,7 +659,7 @@ int TiXmlElement::QueryIntAttribute( const TCHAR* name, int* ival ) const
 
 
 #ifdef TIXML_USE_STL
-int TiXmlElement::QueryIntAttribute( const std::string& name, int* ival ) const
+int TiXmlElement::QueryIntAttribute( const TIXML_STRING& name, int* ival ) const
 {
 	const TiXmlAttribute* node = attributeSet.Find( name );
 	if ( !node )
@@ -682,7 +679,7 @@ int TiXmlElement::QueryDoubleAttribute( const TCHAR* name, double* dval ) const
 
 
 #ifdef TIXML_USE_STL
-int TiXmlElement::QueryDoubleAttribute( const std::string& name, double* dval ) const
+int TiXmlElement::QueryDoubleAttribute( const TIXML_STRING& name, double* dval ) const
 {
 	const TiXmlAttribute* node = attributeSet.Find( name );
 	if ( !node )
@@ -705,9 +702,13 @@ void TiXmlElement::SetAttribute( const TCHAR * name, int val )
 
 
 #ifdef TIXML_USE_STL
-void TiXmlElement::SetAttribute( const std::string& name, int val )
+void TiXmlElement::SetAttribute( const TIXML_STRING& name, int val )
 {	
+#ifdef UNICODE
+   std::wostringstream oss;
+#else
    std::ostringstream oss;
+#endif
    oss << val;
    SetAttribute( name, oss.str() );
 }
@@ -757,7 +758,7 @@ void TiXmlElement::SetAttribute( const TCHAR * cname, const TCHAR * cvalue )
 
 
 #ifdef TIXML_USE_STL
-void TiXmlElement::SetAttribute( const std::string& name, const std::string& _value )
+void TiXmlElement::SetAttribute( const TIXML_STRING& name, const TIXML_STRING& _value )
 {
 	TiXmlAttribute* node = attributeSet.Find( name );
 	if ( node )
@@ -792,12 +793,7 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 #else
   size_t utf8bufsize = 3 * value.length(); // upper limit
   char *utf8buf = new char[utf8bufsize+1];
-  utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
-                                    value.c_str(),
-                                    static_cast<int>(value.length()),
-                                    utf8buf,
-                                    static_cast<int>(utf8bufsize),
-                                    0, 0);
+  utf8bufsize = pws_os::wcstombs(utf8buf, utf8bufsize, value.c_str(), value.length());
   assert(utf8bufsize != 0);
   utf8buf[utf8bufsize] = '\0';
 	fprintf( cfile, "<%s", utf8buf );
@@ -933,7 +929,7 @@ TiXmlDocument::TiXmlDocument( const TCHAR * documentName ) : TiXmlNode( TiXmlNod
 
 
 #ifdef TIXML_USE_STL
-TiXmlDocument::TiXmlDocument( const std::string& documentName ) : TiXmlNode( TiXmlNode::DOCUMENT )
+TiXmlDocument::TiXmlDocument( const TIXML_STRING& documentName ) : TiXmlNode( TiXmlNode::DOCUMENT )
 {
 	tabsize = 4;
 	useMicrosoftBOM = false;
@@ -1096,11 +1092,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 			// since the last string, and include the newline.
 #ifdef UNICODE
             // translate from lastpos to (p-lastPos+1) to wchar_t
-            int nw;
-            nw = MultiByteToWideChar(CP_UTF8, 0,
-                                     lastPos, (p-lastPos+1),
-                                     wbuf,
-                                     static_cast<int>(length+1));
+            int nw = pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos + 1));
             assert(nw > 0 && nw <= p-lastPos+1);
             data.append(wbuf, (p-lastPos+1));
 #else
@@ -1116,25 +1108,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 			if ( (p-lastPos) > 0 ) {
 #ifdef UNICODE
                 // translate from lastpos to (p-lastPos) to wchar_t
-                int nw;
-                nw = MultiByteToWideChar(CP_UTF8, 0,
-                                         lastPos, (p-lastPos),
-                                         wbuf, (length+1));
-                if (nw == 0) {
-                    DWORD errCode = GetLastError();
-                    switch (errCode) {
-                        case ERROR_INSUFFICIENT_BUFFER:
-                            break;
-                        case ERROR_INVALID_FLAGS:
-                            break;
-                        case ERROR_INVALID_PARAMETER:
-                            break;
-                        case ERROR_NO_UNICODE_TRANSLATION:
-                            break;
-                        default:
-                            assert(0);
-                    }
-                }
+                int nw = pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos));
                 assert(nw > 0 && nw <= p-lastPos);
                 data.append(wbuf, nw);
 #else
@@ -1164,10 +1138,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	if ( p-lastPos ) {
 #ifdef UNICODE
         // translate from lastpos to (p-lastPos) to wchar_t
-        int nw;
-        nw = MultiByteToWideChar(CP_UTF8, 0,
-                                 lastPos, (p-lastPos),
-                                 wbuf, (length+1));
+    int nw = pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos));
         assert(nw > 0 && nw <= p-lastPos);
         data.append(wbuf, (p-lastPos));
 #else
@@ -1453,12 +1424,7 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
 #else
         size_t utf8bufsize = 3 * buffer.length(); // upper limit
         char *utf8buf = new char[utf8bufsize];
-        utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
-                                          buffer.c_str(),
-                                          static_cast<int>(buffer.length()),
-                                          utf8buf,
-                                          static_cast<int>(utf8bufsize),
-                                          0, 0);
+        utf8bufsize = pws_os::wcstombs(utf8buf, utf8bufsize, buffer.c_str(), buffer.length());
         assert(utf8bufsize != 0);
         fwrite(utf8buf, utf8bufsize, 1, cfile);
         delete[] utf8buf;
@@ -1505,9 +1471,9 @@ TiXmlDeclaration::TiXmlDeclaration( const TCHAR * _version,
 
 
 #ifdef TIXML_USE_STL
-TiXmlDeclaration::TiXmlDeclaration(	const std::string& _version,
-									const std::string& _encoding,
-									const std::string& _standalone )
+TiXmlDeclaration::TiXmlDeclaration(	const TIXML_STRING& _version,
+									const TIXML_STRING& _encoding,
+									const TIXML_STRING& _standalone )
 	: TiXmlNode( TiXmlNode::DECLARATION )
 {
 	version = _version;
@@ -1662,7 +1628,7 @@ void TiXmlAttributeSet::Remove( TiXmlAttribute* removeMe )
 
 
 #ifdef TIXML_USE_STL
-const TiXmlAttribute* TiXmlAttributeSet::Find( const std::string& name ) const
+const TiXmlAttribute* TiXmlAttributeSet::Find( const TIXML_STRING& name ) const
 {
 	for( const TiXmlAttribute* node = sentinel.next; node != &sentinel; node = node->next )
 	{
@@ -1722,7 +1688,7 @@ std::istream& operator>> (std::istream & in, TiXmlNode & base)
 
 
 #ifdef TIXML_USE_STL	
-std::ostream& operator<< (std::ostream & out, const TiXmlNode & base)
+TIXML_OSTREAM& operator<< (TIXML_OSTREAM & out, const TiXmlNode & base)
 {
 	TiXmlPrinter printer;
 	printer.SetStreamPrinting();
@@ -1733,7 +1699,7 @@ std::ostream& operator<< (std::ostream & out, const TiXmlNode & base)
 }
 
 
-std::string& operator<< (std::string& out, const TiXmlNode& base )
+TIXML_STRING& operator<< (TIXML_STRING& out, const TiXmlNode& base )
 {
 	TiXmlPrinter printer;
 	printer.SetStreamPrinting();

@@ -526,10 +526,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\tinyxml\tinystr.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\tinyxml\tinyxml.cpp"
 				>
 			</File>
