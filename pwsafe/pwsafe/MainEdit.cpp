@@ -32,7 +32,11 @@
 #include <vector>
 #include <algorithm>
 
-#include <Winable.h>
+#if _MSC_VER < 1500
+#include <winable.h>
+#else
+#include <winuser.h>
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
