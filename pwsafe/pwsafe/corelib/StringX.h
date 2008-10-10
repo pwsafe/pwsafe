@@ -22,9 +22,9 @@
 
 #include <memory>
 #include <limits>
-
+#include <cstdlib> // for malloc
+#include <cstring> // for memset
 #include "os/typedefs.h"
-
 namespace S_Alloc
 {
 
@@ -89,7 +89,7 @@ namespace S_Alloc
 
       // Allocate raw memory
       pointer allocate(size_type n, const void* = NULL) {
-        void* p = malloc(n * sizeof(T));
+        void* p = std::malloc(n * sizeof(T));
         // TRACE(_T("Securely Allocated %d bytes at %p\n"), n * sizeof(T), p);
         if(p == NULL)
           throw std::bad_alloc();
@@ -109,11 +109,11 @@ namespace S_Alloc
 
         if (n > 0) {
           const size_type N = n * sizeof(T);
-          memset(p, 0x55, N);
-          memset(p, 0xAA, N);
-          memset(p, 0x00, N);
+          std::memset(p, 0x55, N);
+          std::memset(p, 0xAA, N);
+          std::memset(p, 0x00, N);
         }
-        free(p);
+        std::free(p);
       }
 
     private:
