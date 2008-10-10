@@ -36,6 +36,7 @@ distribution.
 
 #include "tinyxml.h"
 #include "../os/utf8conv.h"
+#include "../os/file.h"
 
 const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
 const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
@@ -46,15 +47,7 @@ bool TiXmlBase::condenseWhiteSpace = true;
 // Microsoft compiler security
 static FILE* TiXmlFOpen( const TCHAR* filename, const TCHAR* mode )
 {
-	#if defined(_MSC_VER) && (_MSC_VER >= 1400 )
-		FILE* fp = 0;
-		errno_t err = _tfopen_s( &fp, filename, mode );
-		if ( !err && fp )
-			return fp;
-		return 0;
-	#else
-		return fopen( filename, mode );
-	#endif
+    return pws_os::FOpen(filename, mode);
 }
 
 void TiXmlBase::EncodeString( const TIXML_STRING& str, TIXML_STRING* outString )

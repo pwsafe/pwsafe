@@ -190,11 +190,11 @@ private:
 
   enum PrefType {ptObsolete = 0, ptDatabase, ptApplication};
   static const struct boolPref {
-    TCHAR *name; bool defVal; PrefType pt;} m_bool_prefs[NumBoolPrefs];
+    const TCHAR *name; bool defVal; PrefType pt;} m_bool_prefs[NumBoolPrefs];
   static const struct intPref {
-    TCHAR *name; unsigned int defVal; PrefType pt; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
+    const TCHAR *name; unsigned int defVal; PrefType pt; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
   static const struct stringPref {
-    TCHAR *name; TCHAR *defVal; PrefType pt;} m_string_prefs[NumStringPrefs];
+    const TCHAR *name; const TCHAR *defVal; PrefType pt;} m_string_prefs[NumStringPrefs];
 
   // current values
   bool m_boolValues[NumBoolPrefs];

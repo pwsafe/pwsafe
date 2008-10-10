@@ -49,6 +49,7 @@ distribution.
 
 #define TIXML_USE_STL /* ronys - for PasswordSafe */
 #include "../os/typedefs.h" /* ronys - for PasswordSafe */
+#include "../os/pws_tchar.h" /* ditto */
 
 #ifdef TIXML_USE_STL
 	#include <string>
@@ -87,8 +88,15 @@ distribution.
 	#elif defined(__GNUC__) && (__GNUC__ >= 3 )
 		// GCC version 3 and higher.s
 		//#warning( "Using sn* functions." )
-		#define TIXML_SNPRINTF snprintf
-		#define TIXML_SNSCANF  snscanf
+        #ifdef UNICODE
+		  #define TIXML_SNPRINTF swprintf
+		  #define TIXML_SNSCANF  snscanf
+          #define TIXML_SSCANF  pws_os::sswscanf
+        #else
+		  #define TIXML_SNPRINTF snprintf
+		  #define TIXML_SNSCANF  snscanf
+		  #define TIXML_SSCANF  sscanf
+        #endif /* UNICODE */
 	#endif
 #endif	
 

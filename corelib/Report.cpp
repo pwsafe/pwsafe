@@ -55,12 +55,22 @@ void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase)
 
 static bool isFileUnicode(const stringT &fname)
 {
+#ifdef UNICODE
+  char *fn = NULL;
+  size_t fnlen = 0;
+  fnlen = pws_os::wcstombs(fn, fnlen, fname.c_str(), fname.length()) + 1;
+  fn = new char[fnlen];
+  fnlen = pws_os::wcstombs(fn, fnlen, fname.c_str(), fname.length());
+  std::ifstream is(fn);
+  delete[] fn;
+#else
   std::ifstream is(fname.c_str());
-
-  char buffer[] = {0x00, 0x00};
-  if (!is.read(buffer, sizeof(buffer)))
+#endif /* UNICODE */
+  unsigned char buffer[] = {0x00, 0x00};
+  const unsigned char BOM[] = {0xff, 0xfe};
+  if (!is.read((char *)buffer, sizeof(buffer)))
     return false;
-  return (buffer[0] == 0xff && buffer[1] == 0xfe);
+  return (buffer[0] == BOM[0] && buffer[1] == BOM[1]);
 }
 
 /*
@@ -120,7 +130,7 @@ bool CReport::SaveToDisk()
 
       UINT nBytesRead;
       unsigned char inbuffer[4096];
-      WCHAR outwbuffer[4096];
+      wchar_t outwbuffer[4096];
 
       // Now copy
       do {
