@@ -7,7 +7,11 @@
 */
 #include "KeySend.h"
 
-#include  <Winable.h>
+#if _MSC_VER < 1500
+#include <winable.h>
+#else
+#include <winuser.h>
+#endif
 
 CKeySend::CKeySend(void) : m_delay(10)
 {
