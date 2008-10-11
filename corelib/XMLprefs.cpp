@@ -16,6 +16,7 @@
 #include "tinyxml/tinyxml.h"
 #include "PWSprefs.h"
 #include "corelib.h"
+#include "StringXStream.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -146,7 +147,7 @@ bool CXMLprefs::Store()
   if (!retval) {
     // Get and show error
     Format(m_Reason, IDSC_XMLFILEERROR,
-           m_pXMLDoc->ErrorDesc(), m_csConfigFile,
+           m_pXMLDoc->ErrorDesc(), m_csConfigFile.c_str(),
            m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
   }
 
@@ -164,18 +165,17 @@ exit:
 
 // get a int value
 int CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName, 
-                   const int &iDefaultValue)
+                   int iDefaultValue)
 {
   /*
   Since XML is text based and we have no schema, just convert to a string and
-  call the GetSettingString method.
+  call the Get(String) method.
   */
   int iRetVal = iDefaultValue;
-  stringT csDefaultValue;
-
-  Format(csDefaultValue, _T("%d"), iRetVal);
-
-  iRetVal = _ttoi(Get(csBaseKeyName, csValueName, csDefaultValue).c_str());
+  ostringstreamT os;
+  os << iDefaultValue;
+  istringstreamT is(Get(csBaseKeyName, csValueName, os.str()));
+  is >> iRetVal;
 
   return iRetVal;
 }
@@ -220,7 +220,7 @@ stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName,
 
 // set a int value
 int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
-                   const int &iValue)
+                   int iValue)
 {
   /*
   Since XML is text based and we have no schema, just convert to a string and
