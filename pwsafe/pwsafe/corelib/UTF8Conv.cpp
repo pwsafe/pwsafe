@@ -180,7 +180,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     m_tmpMaxLen = mbLen;
   }
   // Finally get result
-  size_t tmplen = pws_os::wcstombs((char *)m_tmp, mbLen, m_wc, size_t(-1), false);
+  size_t tmpLen = pws_os::wcstombs((char *)m_tmp, mbLen, m_wc, size_t(-1), false);
   ASSERT(tmpLen == mbLen);
   m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
   data = (char *)m_tmp;
