@@ -114,9 +114,9 @@ bool PWSMatch::Match(const bool bValue, int iFunction)
   return rc;
 }
 
-char * PWSMatch::GetRuleString(MatchRule rule)
+const char *PWSMatch::GetRuleString(MatchRule rule)
 {
-  char * pszrule = "  ";
+  const char *pszrule = "  ";
   switch (rule) {
     case MR_INVALID: pszrule = "  "; break;
     case MR_EQUALS: pszrule = "EQ"; break;
