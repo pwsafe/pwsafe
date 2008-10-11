@@ -1085,8 +1085,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 			// since the last string, and include the newline.
 #ifdef UNICODE
             // translate from lastpos to (p-lastPos+1) to wchar_t
-            int nw = pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos + 1));
-            assert(nw > 0 && nw <= p-lastPos+1);
+            pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos + 1));
             data.append(wbuf, (p-lastPos+1));
 #else
 			data.append( lastPos, (p-lastPos+1) );  // append, include the newline
