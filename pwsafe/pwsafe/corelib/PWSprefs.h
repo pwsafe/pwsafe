@@ -37,13 +37,22 @@ extern int s_cfgLockCount;
 
 class CXMLprefs;
 
+// abstract base class for asking user a question
+class Reporter {
+ public:
+  virtual void operator()(const stringT &message) = 0;
+  virtual ~Reporter() {}
+};
+
 class PWSprefs
 {
 public:
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
   static void SetConfigFile(const stringT &fn) {m_configfilename = fn;}
-  // prefString is stored on file, format described in PWSprefs.cpp
+  static void SetReporter(Reporter *reporter) {m_Reporter = reporter;}
+  
+  // prefString is stored in database file, format described in PWSprefs.cpp
   void Load(const StringX &prefString);
   StringX Store(); // returns string for saving in file
 
@@ -179,6 +188,7 @@ private:
 
   static PWSprefs *self; // singleton
   static stringT m_configfilename; // may be set before singleton created
+  static Reporter *m_Reporter; // set as soon as possible to show errors
   CXMLprefs *m_XML_Config;
 
   bool m_bRegistryKeyExists;

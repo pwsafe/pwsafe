@@ -37,6 +37,7 @@ int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
 stringT PWSprefs::m_configfilename; // may be set before singleton created
+Reporter *PWSprefs::m_Reporter = NULL;
 
 // 1st parameter = name of preference
 // 2nd parameter = default value
@@ -859,6 +860,9 @@ bool PWSprefs::LoadProfileFromFile()
 
   m_XML_Config = new CXMLprefs(m_configfilename.c_str());
   if (!m_XML_Config->Load()) {
+    if (!m_XML_Config->getReason().empty() &&
+        m_Reporter != NULL)
+      (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
     retval = false;
     goto exit;
   }
@@ -975,7 +979,7 @@ void PWSprefs::SaveApplicationPreferences()
       } else { // acquired lock
         // if file exists, load to get other values
         if (pws_os::FileExists(m_configfilename.c_str()))
-          m_XML_Config->Load();
+          m_XML_Config->Load(); // we ignore failures here. why bother?
       }
   }
   UpdateTimeStamp();
@@ -1075,6 +1079,9 @@ void PWSprefs::SaveApplicationPreferences()
     m_ConfigOptions == CF_FILE_RW_NEW) {
       if (m_XML_Config->Store()) // can't be new after succ. store
         m_ConfigOptions = CF_FILE_RW;
+      else if (!m_XML_Config->getReason().empty() &&
+               m_Reporter != NULL)
+        (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
       m_XML_Config->Unlock();
       delete m_XML_Config;
       m_XML_Config = NULL;

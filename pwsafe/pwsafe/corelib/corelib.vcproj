@@ -522,6 +522,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\os\windows\sys.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SysInfo.cpp"
 				>
 			</File>
@@ -729,6 +733,10 @@
 			</File>
 			<File
 				RelativePath=".\StringXStream.h"
+				>
+			</File>
+			<File
+				RelativePath=".\os\sys.h"
 				>
 			</File>
 			<File

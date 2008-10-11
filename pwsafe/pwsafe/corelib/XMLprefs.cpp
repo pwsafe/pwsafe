@@ -8,9 +8,10 @@
 // XMLprefs.cpp : implementation file
 //
 #ifdef _WIN32
-#include <afx.h> // XXX temporary
+#include <afx.h>
 #endif
 #include "os/typedefs.h"
+#include "os/sys.h"
 #include "XMLprefs.h"
 #include "tinyxml/tinyxml.h"
 #include "PWSprefs.h"
@@ -44,8 +45,9 @@ bool CXMLprefs::Lock()
   int tries = 10;
   do {
     m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile, locker);
-    if (!m_bIsLocked)
-      Sleep(200);
+    if (!m_bIsLocked) {
+      pws_os::sleep(200);
+    }
   } while (!m_bIsLocked && --tries > 0);
   return m_bIsLocked;
 }
@@ -81,25 +83,24 @@ bool CXMLprefs::Load()
 
   bool alreadyLocked = m_bIsLocked;
   if (!alreadyLocked) {
-    if (!Lock())
+    if (!Lock()) {
+      LoadAString(m_Reason, IDSC_XMLLOCK_CFG_FAILED);
       return false;
+    }
   }
 
-  if (!CreateXML(true))
+  if (!CreateXML(true)) {
+    LoadAString(m_Reason, IDSC_XMLCREATE_CFG_FAILED);
     return false;
+  }
 
   bool retval = m_pXMLDoc->LoadFile();
 
   if (!retval) {
     // an XML load error occurred so display the reason
-    stringT csMessage;
-    Format(csMessage, IDSC_XMLFILEERROR,
+    Format(m_Reason, IDSC_XMLFILEERROR,
            m_pXMLDoc->ErrorDesc(), m_csConfigFile.c_str(),
            m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
-    stringT cs_title;
-    LoadAString(cs_title, IDSC_XMLLOADFAILURE);
-    MessageBox(NULL, csMessage.c_str(), cs_title.c_str(), MB_OK);
-
     delete m_pXMLDoc;
     m_pXMLDoc = NULL;
   } // load failed
@@ -110,6 +111,8 @@ bool CXMLprefs::Load()
   DPRINT((f, "Leaving CXMLprefs::Load(), retval = %s\n",
     retval ? "true" : "false"));
   DCLOSE();
+  if (retval)
+    m_Reason.clear();
   return retval;
 }
 
@@ -119,8 +122,10 @@ bool CXMLprefs::Store()
   bool alreadyLocked = m_bIsLocked;
 
   if (!alreadyLocked) {
-    if (!Lock())
+    if (!Lock()) {
+      LoadAString(m_Reason, IDSC_XMLLOCK_CFG_FAILED);
       return false;
+    }
   }
 
   DOPEN();
@@ -132,6 +137,7 @@ bool CXMLprefs::Store()
   // be saving an empty document.
   ASSERT(m_pXMLDoc != NULL);
   if (m_pXMLDoc == NULL) {
+    LoadAString(m_Reason, IDSC_XMLCREATE_CFG_FAILED);
     retval = false;
     goto exit;
   }
@@ -139,13 +145,9 @@ bool CXMLprefs::Store()
   retval = m_pXMLDoc->SaveFile();
   if (!retval) {
     // Get and show error
-    stringT csMessage;
-    Format(csMessage, IDSC_XMLFILEERROR,
+    Format(m_Reason, IDSC_XMLFILEERROR,
            m_pXMLDoc->ErrorDesc(), m_csConfigFile,
            m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
-    stringT cs_title;
-    LoadAString(cs_title, IDSC_XMLSAVEFAILURE);
-    MessageBox(NULL, csMessage.c_str(), cs_title.c_str(), MB_OK);
   }
 
 exit:
@@ -155,6 +157,8 @@ exit:
   DPRINT((f, "Leaving CXMLprefs::Store(), retval = %s\n",
     retval ? "true" : "false"));
   DCLOSE();
+  if (retval)
+    m_Reason.clear();
   return retval;
 }
 

@@ -66,6 +66,15 @@ BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
   ON_COMMAND(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
+class MFCReporter : public Reporter
+{
+  void operator()(const stringT &message) {
+    AfxMessageBox(message.c_str(), MB_OK | MB_ICONEXCLAMATION);
+  }
+};
+
+static MFCReporter aReporter;
+
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
   m_bUseAccelerator( false ),
@@ -97,6 +106,7 @@ ThisMfcApp::ThisMfcApp() :
     AfxMessageBox(cs_msg);
   }
 #endif
+  PWSprefs::SetReporter(&aReporter);
   EnableHtmlHelp();
   CoInitialize(NULL); // Initializes the COM library (for XML processing)
   AfxOleInit();
