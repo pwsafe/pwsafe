@@ -70,7 +70,7 @@ namespace PWSMatch {
   bool Match(bool bValue, int iFunction);  // bool - if field present or not
 
   UINT GetRule(MatchRule rule);
-  char * GetRuleString(MatchRule rule);
+  const char *GetRuleString(MatchRule rule);
   void GetMatchType(MatchType mtype,
                     int fnum1, int fnum2,
                     time_t fdate1, time_t fdate2,
