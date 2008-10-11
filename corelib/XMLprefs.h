@@ -48,7 +48,8 @@ class CXMLprefs
           const stringT &csValue);
 
   bool DeleteSetting(const stringT &csBaseKeyName, const stringT &csValueName);
-
+  stringT getReason() const {return m_Reason;} // why something went wrong
+  
   enum {XML_SUCCESS = 0, XML_LOAD_FAILED, XML_NODE_NOT_FOUND, XML_PUT_TEXT_FAILED, XML_SAVE_FAILED};
 
  private:
@@ -61,5 +62,6 @@ class CXMLprefs
   void UnloadXML();
   TiXmlElement *FindNode(TiXmlElement *parentNode, stringT* pcsKeys,
                          int iNumKeys, bool bAddNodes = false);
+  stringT m_Reason; // why something bad happenned
 };
 #endif /* __XMLPREFS_H */

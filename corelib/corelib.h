@@ -154,3 +154,5 @@
 #define IDSC_INVALID_XML_VER2           3323
 #define IDSC_AND                        3324
 #define IDSC_OR                         3325
+#define IDSC_XMLLOCK_CFG_FAILED         3326
+#define IDSC_XMLCREATE_CFG_FAILED       3327

@@ -5,7 +5,6 @@ ALLSRC          = PWScore.cpp PWSXMLFilters.cpp \
 									SAXHandlers.cpp \
 									SAXFilters.cpp \
 									PWSFilters.cpp \
-									XMLprefs.cpp \
 	 								PWSclipboard.cpp PWSXML.cpp
 
 LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
@@ -16,7 +15,7 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									PWSfileV1V2.cpp PWSfileV3.cpp \
 									UnknownField.cpp  VerifyFormat.cpp Match.cpp \
 									UTF8Conv.cpp Report.cpp \
-									tinyxml/tinyxml.cpp \
+									XMLprefs.cpp tinyxml/tinyxml.cpp \
 									tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp
 
 
@@ -59,4 +58,5 @@ clean:
 	rm -f *~ $(OBJ) $(TEST) $(LIB) $(DEPENDFILE)
 
 setup:
-	@mkdir -p $(OBJPATH) $(LIBPATH) $(BINPATH)
+	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(OBJPATH)/os \
+            $(LIBPATH) $(BINPATH)
