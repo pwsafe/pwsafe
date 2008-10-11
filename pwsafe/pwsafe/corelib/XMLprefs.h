@@ -38,12 +38,12 @@ class CXMLprefs
   void Unlock();
 
   int Get(const stringT &csBaseKeyName, const stringT &csValueName,
-          const int &iDefaultValue);
+          int iDefaultValue);
   stringT Get(const stringT &csBaseKeyName, const stringT &csValueName,
               const stringT &csDefaultValue);
 
   int Set(const stringT &csBaseKeyName, const stringT &csValueName,
-          const int &iValue);
+          int iValue);
   int Set(const stringT &csBaseKeyName, const stringT &csValueName,
           const stringT &csValue);
 

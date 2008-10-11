@@ -1129,10 +1129,9 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	// Handle any left over characters.
 	if ( p-lastPos ) {
 #ifdef UNICODE
-        // translate from lastpos to (p-lastPos) to wchar_t
-    int nw = pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos));
-        assert(nw > 0 && nw <= p-lastPos);
-        data.append(wbuf, (p-lastPos));
+    // translate from lastpos to (p-lastPos) to wchar_t
+    pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos));
+    data.append(wbuf, (p-lastPos));
 #else
 data.append( lastPos, (p-lastPos) );
 #endif
