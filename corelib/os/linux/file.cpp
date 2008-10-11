@@ -11,10 +11,16 @@
  */
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <errno.h>
+#include <assert.h>
+#include "../file.h"
+#include "../env.h"
+#include "../../corelib.h"
+#include "../../StringXStream.h"
 bool pws_os::FileExists(const stringT &filename)
 {
   struct stat statbuf;
@@ -63,10 +69,10 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
   status = ::rename(oldname.c_str(), newname.c_str());
 #else
   size_t oldN = wcstombs(NULL, oldname.c_str(), 0) + 1;
-  char *oldfn = new char[N];
+  char *oldfn = new char[oldN];
   wcstombs(oldfn, oldname.c_str(), oldN);
   size_t newN = wcstombs(NULL, newname.c_str(), 0) + 1;
-  char *newfn = new char[N];
+  char *newfn = new char[newN];
   wcstombs(newfn, newname.c_str(), newN);
   status = ::rename(oldfn, newfn);
   delete[] oldfn;
@@ -77,17 +83,11 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 
 static stringT GetLockFileName(const stringT &filename)
 {
-  ASSERT(!filename.empty());
+  assert(!filename.empty());
   // derive lock filename from filename
   stringT retval(filename, 0, filename.find_last_of(TCHAR('.')));
   retval += _T(".plk");
   return retval;
-}
-
-static void GetLocker(const stringT &lock_filename, stringT &locker)
-{
-  locker = _T("Unable to determine locker");
-  // read locker data ("user@machine:nnnnnnnn") from file
 }
 
 bool pws_os::LockFile(const stringT &filename, stringT &locker, 
@@ -95,58 +95,63 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 {
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
-  int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
-                 (_S_IREAD | _S_IWRITE));
+#ifndef UNICODE
+  const char *lfn = lock_filename.c_str();
+#else
+  size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
+  char *lfn = new char[lfs];
+  wcstombs(lfn, lock_filename.c_str(), lock_filename.length());
+#endif
+  int fh = open(lfn, (O_CREAT | O_EXCL | O_WRONLY),
+                 (S_IREAD | S_IWRITE));
+#ifdef UNICODE
+  delete[] lfn;
+#endif
 
   if (fh == -1) { // failed to open exclusively. Already locked, or ???
     switch (errno) {
     case EACCES:
       // Tried to open read-only file for writing, or file's
       // sharing mode does not allow specified operations, or given path is directory
-      locker.LoadString(IDSC_NOLOCKACCESS);
+        LoadAString(locker, IDSC_NOLOCKACCESS);
       break;
     case EEXIST: // filename already exists
       {
         // read locker data ("user@machine:nnnnnnnn") from file
-        TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
-        int fh2 = _open(lock_filename, _O_RDONLY);
-        if (fh2 == -1) {
-          locker.LoadString(IDSC_CANTGETLOCKER);
-        } else {
-          int bytesRead = _read(fh2, lockerStr, sizeof(lockerStr)-1);
-          _close(fh2);
-          if (bytesRead > 0) {
-            lockerStr[bytesRead] = TCHAR('\0');
+          istringstreamT is(lock_filename);
+          stringT lockerStr;
+          if (is >> lockerStr) {
             locker = lockerStr;
-          } else { // read failed for some reason
-            locker = _T("Unable to read locker?");
-          } // read info from lock file
-        } // open lock file for read
-        break;
+          }
       } // EEXIST block
+        break;
     case EINVAL: // Invalid oflag or pmode argument
-      locker.LoadString(IDSC_INTERNALLOCKERROR);
+      LoadAString(locker, IDSC_INTERNALLOCKERROR);
       break;
     case EMFILE: // No more file handles available (too many open files)
-      locker.LoadString(IDSC_SYSTEMLOCKERROR);
+      LoadAString(locker, IDSC_SYSTEMLOCKERROR);
       break;
     case ENOENT: //File or path not found
-      locker.LoadString(IDSC_LOCKFILEPATHNF);
+      LoadAString(locker, IDSC_LOCKFILEPATHNF);
       break;
     default:
-      locker.LoadString(IDSC_LOCKUNKNOWNERROR);
+      LoadAString(locker, IDSC_LOCKUNKNOWNERROR);
       break;
     } // switch (errno)
     return false;
   } else { // valid filehandle, write our info
     int numWrit;
-    numWrit = _write(fh, m_user, m_user.GetLength() * sizeof(TCHAR));
-    numWrit += _write(fh, _T("@"), sizeof(TCHAR));
-    numWrit += _write(fh, m_sysname, m_sysname.GetLength() * sizeof(TCHAR));
-    numWrit += _write(fh, _T(":"), sizeof(TCHAR));
-    numWrit += _write(fh, m_ProcessID, m_ProcessID.GetLength() * sizeof(TCHAR));
+    const stringT user = pws_os::getusername();
+    const stringT host = pws_os::gethostname();
+    const stringT pid = pws_os::getprocessid();
+
+    numWrit = write(fh, user.c_str(), user.length() * sizeof(TCHAR));
+    numWrit += write(fh, _T("@"), sizeof(TCHAR));
+    numWrit += write(fh, host.c_str(), host.length() * sizeof(TCHAR));
+    numWrit += write(fh, _T(":"), sizeof(TCHAR));
+    numWrit += write(fh, pid.c_str(), pid.length() * sizeof(TCHAR));
     ASSERT(numWrit > 0);
-    _close(fh);
+    close(fh);
     return true;
   }
 }
@@ -155,7 +160,17 @@ void pws_os::UnlockFile(const stringT &filename,
                         HANDLE &lockFileHandle, int &LockCount)
 {
   stringT lock_filename = GetLockFileName(filename);
-  _unlink(lock_filename);
+#ifndef UNICODE
+  const char *lfn = lock_filename.c_str();
+#else
+  size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
+  char *lfn = new char[lfs];
+  wcstombs(lfn, lock_filename.c_str(), lock_filename.length());
+#endif
+  unlink(lfn);
+#ifdef UNICODE
+  delete[] lfn;
+#endif
 }
 
 bool pws_os::IsLockedFile(const stringT &filename)
