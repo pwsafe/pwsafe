@@ -16,7 +16,9 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									UnknownField.cpp  VerifyFormat.cpp Match.cpp \
 									UTF8Conv.cpp Report.cpp \
 									XMLprefs.cpp tinyxml/tinyxml.cpp \
-									tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp
+									tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp \
+									os/linux/file.cpp os/linux/mem.cpp \
+									os/linux/sys.cpp
 
 
 TESTSRC         = 
@@ -59,4 +61,4 @@ clean:
 
 setup:
 	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(OBJPATH)/os \
-            $(LIBPATH) $(BINPATH)
+            $(OBJPATH)/os/linux $(LIBPATH) $(BINPATH)

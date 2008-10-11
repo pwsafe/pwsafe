@@ -12,7 +12,7 @@
 
 #include <sys/mman.h>
 #include <cassert>
-#include "../env.h"
+#include "../mem.h"
 
 bool pws_os::mlock(void *p, size_t size)
 {
