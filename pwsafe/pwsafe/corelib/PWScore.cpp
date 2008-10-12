@@ -714,7 +714,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  CReport &rpt)
 {
   stringT csError;
-  ifstreamT ifs(filename.c_str());
+  CUTF8Conv utf8conv;
+  const unsigned char *utf8 = NULL;
+  int utf8Len = 0;
+  utf8conv.ToUTF8(filename.c_str(), utf8, utf8Len);
+  ifstreamT ifs((const char *)utf8);
 
   if (!ifs)
     return CANT_OPEN_FILE;
@@ -730,7 +734,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   const stringT s_hdr(cs_hdr);
   const TCHAR pTab[] = _T("\t");
   TCHAR pSeps[] = _T(" ");
-  TCHAR *pTemp;
 
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
@@ -851,7 +854,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar == string::npos)
         nextchar = linebuf.size();
-      if (nextchar > 0)
+      if (nextchar > 0) {
         if (itoken != i_Offset[NOTES]) {
           tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
         } else { // Notes field
@@ -885,6 +888,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
           tokens.push_back(note);
           break;
         } // Notes handling
+      } // nextchar > 0
       startpos = nextchar + 1; // too complex for for statement
       itoken++;
     } // tokenization for loop
@@ -907,12 +911,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       if (len == 0)
         continue;
 
-      pTemp = _tcsdup(tokenIter->c_str());
-
       // Dequote if: value big enough to have opening and closing quotes
       // (len >=2) and the first and last characters are doublequotes.
       // UNLESS there's at least one quote in the text itself
-      if (len > 1 && pTemp[0] == _T('\"') && pTemp[len - 1] == _T('\"')) {
+      if (len > 1 && (*tokenIter)[0] == _T('\"') && (*tokenIter)[len - 1] == _T('\"')) {
         const stringT dequoted = tokenIter->substr(1, len - 2);
         if (dequoted.find_first_of(_T('\"')) == stringT::npos)
           tokenIter->assign(dequoted);
@@ -922,8 +924,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       if (tokenIter->find_first_not_of(tc_whitespace) == stringT::npos) {
         tokenIter->clear();
       }
-
-      free(pTemp);
     } // loop over tokens
 
     if ((size_t)i_Offset[PASSWORD] >= tokens.size() ||
@@ -1252,31 +1252,17 @@ int PWScore::ReadFile(const StringX &a_filename,
          }
          // following is duplicated in Validate() - need to refactor
          csMyPassword = temp.GetPassword();
-         if (csMyPassword.length() > 4) { // look for "[[...]]" or "[~...~]"
+         if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
            cs_possibleUUID = csMyPassword.substr(2, 32);  // try to extract uuid
            ToLower(cs_possibleUUID);
            if (((csMyPassword.substr(0, 2) == _T("[[") &&
                  csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
                 (csMyPassword.substr(0, 2) == _T("[~") &&
                  csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
-               csMyPassword.length() == 36 &&
                cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == 
                StringX::npos) {
-             // _stscanf_s always outputs to an "int" using %x even though
-             // target is only 1.  Read into larger buffer to prevent data being
-             // overwritten and then copy to where we want it!
-             unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
-             int nscanned = 0;
-             const TCHAR *lpszuuid = cs_possibleUUID.c_str();
-             for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
-#if _MSC_VER >= 1400
-               nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
-#else
-               nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
-#endif
-               lpszuuid += 2;
-             }
-             memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
+             CUUIDGen uuid(cs_possibleUUID.c_str());
+             uuid.GetUUID(base_uuid);
              temp.GetUUID(temp_uuid);
              if (csMyPassword.substr(1, 1) == _T("[")) {
                m_alias2base_map[temp_uuid] = base_uuid;
@@ -1656,19 +1642,18 @@ int
 PWScore::ImportKeePassTextFile(const StringX &filename)
 {
   static const TCHAR *ImportedPrefix = { _T("ImportedKeePass") };
-  ifstreamT ifs(filename.c_str());
+  CUTF8Conv conv;
+  const unsigned char *utf8 = NULL;
+  int utf8Len = 0;
+  conv.ToUTF8(filename.c_str(), utf8, utf8Len);
+  ifstreamT ifs((const char *)utf8);
 
   if (!ifs) {
     return CANT_OPEN_FILE;
   }
 
   stringT linebuf;
-
-  stringT group;
-  stringT title;
-  stringT user;
-  stringT passwd;
-  stringT notes;
+  stringT group, title, user, passwd, notes;
 
   // read a single line.
   if (!getline(ifs, linebuf, TCHAR('\n')) || linebuf.empty()) {
@@ -1678,7 +1663,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
   // the first line of the keepass text file contains a few garbage characters
   linebuf = linebuf.erase(0, linebuf.find(_T("[")));
 
-  size_t pos = static_cast<size_t>(-1);
+  stringT::size_type pos = stringT::npos;
   for (;;) {
     if (!ifs)
       break;
@@ -1847,30 +1832,16 @@ PWScore::Validate(stringT &status)
       num_PWH_fixed++;
     }
     StringX csMyPassword = ci.GetPassword();
-    if (csMyPassword.length() > 4) { // look for "[[...]]" or "[~...~]"
+    if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
       StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
       ToLower(cs_possibleUUID);
       if (((csMyPassword.substr(0,2) == _T("[[") &&
             csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
            (csMyPassword.substr(0, 2) == _T("[~") &&
             csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
-          csMyPassword.length() == 36 &&
           cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
-        // _stscanf_s always outputs to an "int" using %x even though
-        // target is only 1.  Read into larger buffer to prevent data being
-        // overwritten and then copy to where we want it!
-        unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
-        int nscanned = 0;
-        const TCHAR *lpszuuid = cs_possibleUUID.c_str();
-        for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
-#if _MSC_VER >= 1400
-          nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
-#else
-          nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
-#endif
-          lpszuuid += 2;
-        }
-        memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
+        CUUIDGen uuid(cs_possibleUUID.c_str());
+        uuid.GetUUID(base_uuid);
         ci.GetUUID(temp_uuid);
         if (csMyPassword.substr(0, 2) == _T("[[")) {
           m_alias2base_map[temp_uuid] = base_uuid;

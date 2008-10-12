@@ -36,9 +36,9 @@ CUUIDGen::CUUIDGen() : m_canonic(false)
 #endif
 }
 
-CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(canonic)
-{
 #ifdef _WIN32
+static void array2UUUID(const uuid_array_t &uuid_array, UUID &uuid)
+{
   unsigned long *p0 = (unsigned long *)uuid_array;
   uuid.Data1 = htonl(*p0);
   unsigned short *p1 = (unsigned short *)&uuid_array[4];
@@ -47,8 +47,47 @@ CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(can
   uuid.Data3 = htons(*p2);
   for (int i = 0; i < 8; i++)
     uuid.Data4[i] = uuid_array[i + 8];
+}
+
+static void UUID2array(const UUID &uuid, uuid_array_t &uuid_array)
+{
+  unsigned long *p0 = (unsigned long *)uuid_array;
+  *p0 = htonl(uuid.Data1);
+  unsigned short *p1 = (unsigned short *)&uuid_array[4];
+  *p1 = htons(uuid.Data2);
+  unsigned short *p2 = (unsigned short *)&uuid_array[6];
+  *p2 = htons(uuid.Data3);
+  for (int i = 0; i < 8; i++)
+    uuid_array[i + 8] = uuid.Data4[i];
+}
+#endif
+
+CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(canonic)
+{
+#ifdef _WIN32
+  array2UUUID(uuid_array, uuid);
 #else
   uuid_copy(uuid, uuid_array);
+#endif
+}
+
+CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by GetHexStr()
+{
+  ASSERT(s.length() == 32);
+#ifdef _WIN32
+  uuid_array_t uu;
+#else
+  unsigned char *uu == uuid;
+#endif
+
+  int x;
+  for (int i = 0; i < 16; i++) {
+    iStringXStream is(s.substr(i*2, 2));
+    is >> hex >> x;
+    uu[i] = (unsigned char)x;
+  }
+#ifdef _WIN32
+  array2UUUID(uu, uuid);
 #endif
 }
 
@@ -60,14 +99,7 @@ CUUIDGen::~CUUIDGen()
 void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 {
 #ifdef _WIN32
-  unsigned long *p0 = (unsigned long *)uuid_array;
-  *p0 = htonl(uuid.Data1);
-  unsigned short *p1 = (unsigned short *)&uuid_array[4];
-  *p1 = htons(uuid.Data2);
-  unsigned short *p2 = (unsigned short *)&uuid_array[6];
-  *p2 = htons(uuid.Data3);
-  for (int i = 0; i < 8; i++)
-    uuid_array[i + 8] = uuid.Data4[i];
+  UUID2array(uuid, uuid_array);
 #else
   uuid_copy(uuid_array, uuid);
 #endif
