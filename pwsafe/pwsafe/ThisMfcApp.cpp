@@ -107,6 +107,7 @@ ThisMfcApp::ThisMfcApp() :
   }
 #endif
   PWSprefs::SetReporter(&aReporter);
+  PWScore::SetReporter(&aReporter);
   EnableHtmlHelp();
   CoInitialize(NULL); // Initializes the COM library (for XML processing)
   AfxOleInit();

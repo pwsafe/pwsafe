@@ -30,19 +30,13 @@
 */
 
 #include "StringX.h"
+#include "Proxy.h"
 #include "os/typedefs.h"
 
 extern HANDLE s_cfglockFileHandle;
 extern int s_cfgLockCount;
 
 class CXMLprefs;
-
-// abstract base class for asking user a question
-class Reporter {
- public:
-  virtual void operator()(const stringT &message) = 0;
-  virtual ~Reporter() {}
-};
 
 class PWSprefs
 {

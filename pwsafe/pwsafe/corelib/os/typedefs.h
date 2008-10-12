@@ -78,6 +78,8 @@ typedef bool BOOL;
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned long DWORD;
+#define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
+#define HIWORD(ul) (WORD(DWORD(ul) >> 16))
 typedef long LPARAM;
 typedef unsigned int UINT;
 typedef int HANDLE;

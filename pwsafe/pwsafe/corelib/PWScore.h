@@ -18,6 +18,7 @@
 #include "PWSFilters.h"
 #include "UUIDGen.h"
 #include "Report.h"
+#include "Proxy.h"
 
 #define MAXDEMO 10
 
@@ -31,14 +32,8 @@ typedef std::vector<CUUIDGen> UUIDList;
 typedef UUIDList::iterator UUIDListIter;
 
 typedef std::multimap<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMMap;
-typedef ItemMMap::iterator ItemMMapIter;
-typedef ItemMMap::const_iterator ItemMMapConstIter;
-typedef std::pair <CUUIDGen, CUUIDGen> ItemMMap_Pair;
 
 typedef std::map<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMap;
-typedef ItemMap::iterator ItemMapIter;
-typedef ItemMap::const_iterator ItemMapConstIter;
-typedef std::pair <CUUIDGen, CUUIDGen> ItemMap_Pair;
 
 // Parameter list for GetBaseEntry
 struct GetBaseEntryPL {
@@ -51,13 +46,6 @@ struct GetBaseEntryPL {
   CItemData::EntryType TargetType;
   int ibasedata;
   bool bMultipleEntriesFound;
-};
-
-// abstract base class for asking user a question
-class Asker {
- public:
-  virtual bool operator()(const stringT &question) = 0;
-  virtual ~Asker() {}
 };
 
 class PWScore
@@ -82,6 +70,10 @@ public:
 
   PWScore();
   ~PWScore();
+
+  // Set following to a Reporter-derived object
+  // so that we can inform user of events of interest
+  static void SetReporter(Reporter *reporter) {m_Reporter = reporter;}
 
   // Following used to read/write databases
   StringX GetCurFile() const {return m_currfile;}
@@ -265,6 +257,13 @@ public:
   PWSFilters m_MapFilters;
 
 private:
+  StringX GetPassKey() const; // returns cleartext - USE WITH CARE
+  // Following used by SetPassKey
+  void EncryptPassword(const unsigned char *plaintext, int len,
+                       unsigned char *ciphertext) const;
+  BOOL GetIncBackupFileName(const stringT &cs_filenamebase,
+                            int i_maxnumincbackups, stringT &cs_newname);
+
   StringX m_currfile; // current pw db filespec
   unsigned char *m_passkey; // encrypted by session key
   unsigned int m_passkey_len; // Length of cleartext passkey
@@ -274,21 +273,15 @@ private:
   HANDLE m_lockFileHandle;
   HANDLE m_lockFileHandle2;
   int m_LockCount;
-
-  StringX GetPassKey() const; // returns cleartext - USE WITH CARE
-  // Following used by SetPassKey
-  void EncryptPassword(const unsigned char *plaintext, int len,
-                       unsigned char *ciphertext) const;
-  BOOL GetIncBackupFileName(const stringT &cs_filenamebase,
-                            int i_maxnumincbackups, stringT &cs_newname);
-
   bool m_usedefuser;
   StringX m_defusername;
   stringT m_AppNameAndVersion;
-
   PWSfile::VERSION m_ReadFileVersion;
+  bool m_changed;
+  bool m_IsReadOnly;
   PWSfile::HeaderRecord m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
+  static Reporter *m_Reporter; // set as soon as possible to show errors
 
   // THE password database
   //  Key = entry's uuid; Value = entry's CItemData
@@ -304,19 +297,11 @@ private:
   //  Key = alias/shortcut uuid; Value = base uuid
   ItemMap m_alias2base_map;
   ItemMap m_shortcut2base_map;
-
-  // List of possible aliases/shortcuts created during reading a database, 
-  // importing text or XML, or OnDrop during D&D - needs to be confirmed 
-  // that base exists after operation complete - then cleared.
-  // UUIDList possible_aliases; - NOW a local variable
-
-  bool m_changed;
-  bool m_IsReadOnly;
-
+  
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
 
-  // Call back if password list has been modified
+  // Callback if password list has been modified
   void (*m_pfcnNotifyListModified) (LPARAM);
   LPARAM m_NotifyInstance;
   bool m_bNotify;
