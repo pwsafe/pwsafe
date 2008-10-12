@@ -48,16 +48,28 @@ typedef std::ofstream ofstreamT;
 #endif
 typedef std::vector<stringT>::const_iterator vciter;
 typedef std::vector<stringT>::iterator viter;
+typedef ItemMMap::iterator ItemMMapIter;
+typedef ItemMMap::const_iterator ItemMMapConstIter;
+typedef std::pair <CUUIDGen, CUUIDGen> ItemMMap_Pair;
+
+typedef ItemMap::iterator ItemMapIter;
+typedef ItemMap::const_iterator ItemMapConstIter;
+typedef std::pair <CUUIDGen, CUUIDGen> ItemMap_Pair;
 
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
 unsigned char PWScore::m_session_initialized = false;
+Reporter *PWScore::m_Reporter = NULL;
 
-PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
+PWScore::PWScore() : m_currfile(_T("")),
+                     m_passkey(NULL), m_passkey_len(0),
+                     m_lockFileHandle(INVALID_HANDLE_VALUE),
+                     m_lockFileHandle2(INVALID_HANDLE_VALUE),
+                     m_LockCount(0),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_passkey(NULL), m_passkey_len(0),
-                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
+                     m_changed(false), m_IsReadOnly(false),
+                     m_nRecordsWithUnknownFields(0),
                      m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
                      m_bNotify(false), m_asker(NULL)
 {
@@ -70,9 +82,6 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
     PWSrand::GetInstance()->GetRandomData(m_session_salt,
                                           sizeof(m_session_salt));
   }
-  m_lockFileHandle = INVALID_HANDLE_VALUE;
-  m_lockFileHandle2 = INVALID_HANDLE_VALUE;
-  m_LockCount = 0;
 }
 
 PWScore::~PWScore()
@@ -317,13 +326,17 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   if (bsFields.count() == 0)
     return SUCCESS;
 
-  ofstream ofs(filename.c_str());
+  CUTF8Conv conv;
+  const unsigned char *utf8 = NULL;
+  int utf8Len = 0;
+  conv.ToUTF8(filename.c_str(), utf8, utf8Len);
+  ofstream ofs((const char *)utf8);
+
   if (!ofs)
     return CANT_OPEN_FILE;
 
   StringX hdr(_T(""));
-  // Following for writing header to an ofstream. Ugh.
-  CUTF8Conv conv; const unsigned char *utf8; int utf8Len;
+
 
 
   if ( bsFields.count() == bsFields.size()) {
@@ -495,10 +508,11 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const int &subgroup_object, const int &subgroup_function,
                           const TCHAR delimiter, const OrderedItemList *il)
 {
-  ofstream of(filename.c_str());
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
+  utf8conv.ToUTF8(filename.c_str(), utf8, utf8Len);
+  ofstream of((const char *)utf8);
 
   if (!of)
     return CANT_OPEN_FILE;
@@ -727,36 +741,24 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   for (int i = 0; i < NUMFIELDS; i++)
     i_Offset[i] = -1;
 
-  // Duplicate as c_str is R-O and strtok modifies the string
-  pTemp = _tcsdup(s_hdr.c_str());
-  if (pTemp == NULL) {
-    LoadAString(strError, IDSC_IMPORTFAILURE);
-    rpt.WriteLine(strError);
-    return FAILURE;
-  }
-
   pSeps[0] = fieldSeparator;
-#if _MSC_VER >= 1400
+
   // Capture individual column titles:
-  TCHAR *next_token;
-  TCHAR *token = _tcstok_s(pTemp, pTab, &next_token);
-  while(token) {
-    vs_Header.push_back(token);
-    token = _tcstok_s(NULL, pTab, &next_token);
-  }
-#else
-  // Capture individual column titles:
-  TCHAR *token = _tcstok(pTemp, pTab);
-  while(token) {
-    vs_Header.push_back(token);
-    token = _tcstok(NULL, pTab);
-  }
-#endif
+  stringT::size_type to = 0, from;
+  do {
+    from = s_hdr.find_first_not_of(pTab, to);
+    if (from == stringT::npos)
+      break;
+    to = s_hdr.find_first_of(pTab, from);
+    vs_Header.push_back(s_hdr.substr(from,
+                                     ((to == stringT::npos) ?
+                                      stringT::npos : to - from)));
+  } while (to != string::npos);
+
+
   // Following fails if a field was added in enum but not in
   // IDSC_EXPORTHEADER, or vice versa.
   ASSERT(vs_Header.size() == NUMFIELDS);
-
-  free(pTemp);
 
   stringT s_title, linebuf;
 
@@ -767,45 +769,30 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     return SUCCESS;  // not even a title record! - succeeded but none imported!
   }
 
-  // Duplicate as c_str is R-O and strtok modifies the string
-  pTemp = _tcsdup(s_title.c_str());
-  if (pTemp == NULL) {
-    LoadAString(strError, IDSC_IMPORTFAILURE);
-    rpt.WriteLine(strError);
-    return FAILURE;
-  }
 
+  // Capture individual column titles from s_title:
+  // Set i_Offset[field] to column in which field is found in text file,
+  // or leave at -1 if absent from text.
   unsigned num_found = 0;
   int itoken = 0;
 
-  // Capture individual column titles:
-  // Set i_Offset[field] to column in which field is found in text file,
-  // or leave at -1 if absent from text.
-#if _MSC_VER >= 1400
-  token = _tcstok_s(pTemp, pSeps, &next_token);
-  while(token) {
+  to = 0;
+  do {
+    from = s_title.find_first_not_of(pSeps, to);
+    if (from == stringT::npos)
+      break;
+    to = s_title.find_first_of(pSeps, from);
+    stringT token = s_title.substr(from,
+                                   ((to == stringT::npos) ?
+                                    stringT::npos : to - from));
     vciter it(std::find(vs_Header.begin(), vs_Header.end(), token));
     if (it != vs_Header.end()) {
       i_Offset[it - vs_Header.begin()] = itoken;
       num_found++;
     }
-    token = _tcstok_s(NULL, pSeps, &next_token);
     itoken++;
-  }
-#else
-  token = _tcstok(pTemp, pSeps);
-  while(token) {
-    vciter it(std::find(vs_Header.begin(), vs_Header.end(), token));
-    if (it != vs_Header.end()) {
-      i_Offset[it - vs_Header.begin()] = itoken;
-      num_found++;
-    }
-    token = _tcstok(NULL, pSeps);
-    itoken++;
-  }
-#endif
+  } while (to != string::npos);
 
-  free(pTemp);
   if (num_found == 0) {
     LoadAString(strError, IDSC_IMPORTNOCOLS);
     rpt.WriteLine(strError);
@@ -1235,9 +1222,12 @@ int PWScore::ReadFile(const StringX &a_filename,
         // Best if title intact. What to do if not?
 
         stringT cs_msg;
-        stringT cs_caption(MAKEINTRESOURCE(IDSC_READ_ERROR));
+        stringT cs_caption;
+        LoadAString(cs_caption, IDSC_READ_ERROR);
         Format(cs_msg, IDSC_ENCODING_PROBLEM, temp.GetTitle().c_str());
-        MessageBox(NULL, cs_msg.c_str(), cs_caption.c_str(), MB_OK);
+        cs_msg = cs_caption + _S(": ") + cs_caption;
+        if (m_Reporter != NULL)
+          (*m_Reporter)(cs_msg);
       }
       // deliberate fall-through
       case PWSfile::SUCCESS:
@@ -1703,7 +1693,8 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     title = linebuf.substr(linebuf.find(_T("[")) + 1, linebuf.rfind(_T("]")) - 1).c_str();
 
     // set the group: line pattern: Group: <user>
-    if (!getline(ifs, linebuf, TCHAR('\n')) || (pos = linebuf.find(_T("Group: "))) == -1) {
+    if (!getline(ifs, linebuf, TCHAR('\n')) ||
+        (pos = linebuf.find(_T("Group: "))) == stringT::npos) {
       return INVALID_FORMAT;
     }
     group = ImportedPrefix;
@@ -1713,13 +1704,15 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     }
 
     // set the user: line pattern: UserName: <user>
-    if (!getline(ifs, linebuf, TCHAR('\n')) || (pos = linebuf.find(_T("UserName: "))) == -1) {
+    if (!getline(ifs, linebuf, TCHAR('\n')) ||
+        (pos = linebuf.find(_T("UserName: "))) == stringT::npos) {
       return INVALID_FORMAT;
     }
     user = linebuf.substr(pos + 10);
 
     // set the url: line pattern: URL: <url>
-    if (!getline(ifs, linebuf, TCHAR('\n')) || (pos = linebuf.find(_T("URL: "))) == -1) {
+    if (!getline(ifs, linebuf, TCHAR('\n')) ||
+        (pos = linebuf.find(_T("URL: "))) == stringT::npos) {
       return INVALID_FORMAT;
     }
     if (!linebuf.substr(pos + 5).empty()) {
@@ -1728,13 +1721,15 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     }
 
     // set the password: line pattern: Password: <passwd>
-    if (!getline(ifs, linebuf, TCHAR('\n')) || (pos = linebuf.find(_T("Password: "))) == -1) {
+    if (!getline(ifs, linebuf, TCHAR('\n')) ||
+        (pos = linebuf.find(_T("Password: "))) == stringT::npos) {
       return INVALID_FORMAT;
     }
     passwd = linebuf.substr(pos + 10);
 
     // set the first line of notes: line pattern: Notes: <notes>
-    if (!getline(ifs, linebuf, TCHAR('\n')) || (pos = linebuf.find(_T("Notes: "))) == -1) {
+    if (!getline(ifs, linebuf, TCHAR('\n')) ||
+        (pos = linebuf.find(_T("Notes: "))) == stringT::npos) {
       return INVALID_FORMAT;
     }
     notes.append(linebuf.substr(pos + 7));
@@ -1942,12 +1937,12 @@ BOOL PWScore::GetIncBackupFileName(const stringT &cs_filenamebase,
   nnn++;
   if (nnn > 999) nnn = 1;
 
-  Format(cs_newname, _T("%s_%03d"), cs_filenamebase, nnn);
+  Format(cs_newname, _T("%s_%03d"), cs_filenamebase.c_str(), nnn);
 
   int i = 0;
   while (num_found >= i_maxnumincbackups) {
     nnn = file_nums.at(i);
-    Format(cs_filename, _T("%s_%03d.ibak"), cs_filenamebase, nnn);
+    Format(cs_filename, _T("%s_%03d.ibak"), cs_filenamebase.c_str(), nnn);
     i++;
     num_found--;
     if (DeleteFile(cs_filename.c_str()) == FALSE) {
@@ -2224,9 +2219,9 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
               }
               stringT cs_type;
               LoadAString(cs_type, IDSC_SHORTCUT);
-              Format(strError, IDSC_IMPORTWARNING3, cs_type,
+              Format(strError, IDSC_IMPORTWARNING3, cs_type.c_str(),
                      curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
-                     curitem->GetUser().c_str(), cs_type);
+                     curitem->GetUser().c_str(), cs_type.c_str());
               rpt->WriteLine(strError);
             }
             // Invalid - delete!
@@ -2246,9 +2241,9 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
               }
               stringT cs_type;
               LoadAString(cs_type, IDSC_ALIAS);
-              Format(strError, IDSC_IMPORTWARNING3, cs_type,
+              Format(strError, IDSC_IMPORTWARNING3, cs_type.c_str(),
                      curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
-                     curitem->GetUser().c_str(), cs_type);
+                     curitem->GetUser().c_str(), cs_type.c_str());
               rpt->WriteLine(strError);
             }
             // Invalid - delete!
