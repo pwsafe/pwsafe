@@ -361,6 +361,14 @@ void DboxMain::setupBars()
   m_FindToolBar.SetBarStyle(dwStyle);
   m_FindToolBar.SetWindowText(_T("Find"));
 
+  // Set up DragBar bitmaps before calling SetToolBar
+  m_DDGroup.Init(IDB_DRAGGROUP, IDB_DRAGGROUPX);
+  m_DDTitle.Init(IDB_DRAGTITLE, IDB_DRAGTITLEX);
+  m_DDUser.Init(IDB_DRAGUSER, IDB_DRAGUSERX);
+  m_DDPassword.Init(IDB_DRAGPASSWORD, IDB_DRAGPASSWORDX);
+  m_DDNotes.Init(IDB_DRAGNOTES, IDB_DRAGNOTESX);
+  m_DDURL.Init(IDB_DRAGURL, IDB_DRAGURLX);
+
   // Set toolbar according to graphic capabilities, overridable by user choice.
   if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar))  {
     SetToolbar(ID_MENUITEM_OLD_TOOLBAR, true);
@@ -381,22 +389,16 @@ void DboxMain::setupBars()
   // Register for update notification
   m_core.RegisterOnListModified(StopFind, (LPARAM)this);
 
-  m_DDGroup.Init(IDB_DRAGGROUP, IDB_DRAGGROUPX);
   m_DDGroup.EnableWindow(TRUE);
   m_DDGroup.ShowWindow(SW_SHOW);
-  m_DDTitle.Init(IDB_DRAGTITLE, IDB_DRAGTITLEX);
   m_DDTitle.EnableWindow(TRUE);
   m_DDTitle.ShowWindow(SW_SHOW);
-  m_DDUser.Init(IDB_DRAGUSER, IDB_DRAGUSERX);
   m_DDUser.EnableWindow(TRUE);
   m_DDUser.ShowWindow(SW_SHOW);
-  m_DDPassword.Init(IDB_DRAGPASSWORD, IDB_DRAGPASSWORDX);
   m_DDPassword.EnableWindow(TRUE);
   m_DDPassword.ShowWindow(SW_SHOW);
-  m_DDNotes.Init(IDB_DRAGNOTES, IDB_DRAGNOTESX);
   m_DDNotes.EnableWindow(TRUE);
   m_DDNotes.ShowWindow(SW_SHOW);
-  m_DDURL.Init(IDB_DRAGURL, IDB_DRAGURLX);
   m_DDURL.EnableWindow(TRUE);
   m_DDURL.ShowWindow(SW_SHOW);
 #endif
@@ -650,16 +652,22 @@ void DboxMain::SelectFirstEntry()
 {
   if (m_core.GetNumEntries() > 0) {
     // Ensure an entry is selected after open
+    CItemData *pci(NULL);
     if (m_ctlItemList.IsWindowVisible()) {
       m_ctlItemList.SetItemState(0,
                                  LVIS_FOCUSED | LVIS_SELECTED,
                                  LVIS_FOCUSED | LVIS_SELECTED);
       m_ctlItemList.EnsureVisible(0, FALSE);
+      pci = (CItemData *)m_ctlItemList.GetItemData(0);
     } else {
       HTREEITEM hitem = m_ctlItemTree.GetFirstVisibleItem();
-      if (hitem != NULL)
+      if (hitem != NULL) {
         m_ctlItemTree.SelectItem(hitem);
+        pci = (CItemData *)m_ctlItemTree.GetItemData(hitem);
+      }
     }
+    if (pci != NULL)
+      UpdateToolBarForSelectedItem(pci);
   }
 }
 

@@ -168,7 +168,8 @@ void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
   SetBitmapBackground(m_NOTOKbitmap, crCOLOR_3DFACE);
 
   // Set bitmap in Static
-  SetBitmap((HBITMAP)m_OKbitmap);
+  m_bState = false;
+  SetBitmap((HBITMAP)m_NOTOKbitmap);
 }
 
 BEGIN_MESSAGE_MAP(CDDStatic, CStaticExtn)
