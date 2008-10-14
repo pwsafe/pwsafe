@@ -12,6 +12,8 @@
 #include <afx.h>
 #include <Windows.h>
 #include <LMCONS.H> // for UNLEN definition
+#include <shellapi.h>
+#include <shlwapi.h>
 #include <io.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -19,6 +21,8 @@
 #include "../file.h"
 #include "../dir.h"
 #include "../env.h"
+
+const TCHAR *pws_os::PathSeparator = _T("\\");
 
 bool pws_os::FileExists(const stringT &filename)
 {
@@ -53,6 +57,37 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
   int status = _trename(oldname.c_str(), newname.c_str());
 
   return (status == 0);
+}
+
+extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
+{
+  // Copy file and create any intervening directories as necessary & automatically
+  TCHAR szSource[_MAX_PATH];
+  TCHAR szDestination[_MAX_PATH];
+
+  const TCHAR *lpsz_current = from.c_str();
+  const TCHAR *lpsz_new = to.c_str();
+#if _MSC_VER >= 1400
+  _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
+  _tcscpy_s(szDestination, _MAX_PATH, lpsz_new);
+#else
+  _tcscpy(szSource, lpsz_current);
+  _tcscpy(szDestination, lpsz_new);
+#endif
+
+  // Must end with double NULL
+  szSource[from.length() + 1] = TCHAR('\0');
+  szDestination[to.length() + 1] = TCHAR('\0');
+
+  SHFILEOPSTRUCT sfop;
+  memset(&sfop, 0, sizeof(sfop));
+  sfop.hwnd = GetActiveWindow();
+  sfop.wFunc = FO_COPY;
+  sfop.pFrom = szSource;
+  sfop.pTo = szDestination;
+  sfop.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR | FOF_SILENT;
+
+  return (SHFileOperation(&sfop) == 0);
 }
 
 

@@ -77,7 +77,7 @@ CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by GetHexS
 #ifdef _WIN32
   uuid_array_t uu;
 #else
-  unsigned char *uu == uuid;
+  unsigned char *uu = uuid;
 #endif
 
   int x;
