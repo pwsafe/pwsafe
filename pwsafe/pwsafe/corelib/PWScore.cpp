@@ -27,8 +27,6 @@
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
 
-#include <shellapi.h>
-#include <shlwapi.h>
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
 #include <iomanip>
@@ -1317,32 +1315,29 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
                             const stringT &userBackupDir)
 {
   stringT cs_temp, cs_newfile;
+  const stringT path(m_currfile.c_str());
+  stringT drv, dir, name, ext;
+
+  pws_os::splitpath(path, drv, dir, name, ext);
   // Get location for intermediate backup
   if (userBackupDir.empty()) { // directory same as database's
     // Get directory containing database
-    TCHAR lpszTemp[MAX_PATH];
-    PWSUtil::strCopy(lpszTemp, MAX_PATH, m_currfile.c_str(), m_currfile.length());
-    PathRemoveFileSpec(lpszTemp);
-    cs_temp = lpszTemp;
-    cs_temp += _T("\\");
+    cs_temp = drv + dir;
+    cs_temp += pws_os::PathSeparator;
   } else {
     cs_temp = userBackupDir;
   }
 
   // generate prefix of intermediate backup file name
   if (userBackupPrefix.empty()) {
-    const stringT path(m_currfile.c_str());
-    stringT drv, dir, name, ext;
-
-    pws_os::splitpath(path, drv, dir, name, ext);
-    cs_temp += name.c_str();
+    cs_temp += name;
   } else {
     cs_temp += userBackupPrefix;
   }
 
   // Add on suffix
   switch (backupSuffix) { // case values from order in listbox.
-    case 1: // YYYYMMDD_HHMMSS suffix
+  case 1: // YYYYMMDD_HHMMSS suffix
     {
       time_t now;
       time(&now);
@@ -1359,52 +1354,20 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
       cs_newfile = nf.c_str();
       break;
     }
-    case 2: // _nnn suffix
-      if (GetIncBackupFileName(cs_temp, maxNumIncBackups, cs_newfile) == FALSE)
-        return false;
-      break;
-    case 0: // no suffix
-    default:
-      cs_newfile = cs_temp;
-      break;
+  case 2: // _nnn suffix
+    if (GetIncBackupFileName(cs_temp, maxNumIncBackups, cs_newfile) == FALSE)
+      return false;
+    break;
+  case 0: // no suffix
+  default:
+    cs_newfile = cs_temp;
+    break;
   }
 
   cs_newfile +=  _T(".ibak");
 
   // Now copy file and create any intervening directories as necessary & automatically
-  TCHAR szSource[_MAX_PATH];
-  TCHAR szDestination[_MAX_PATH];
-
-  const TCHAR *lpsz_current = m_currfile.c_str();
-  const TCHAR *lpsz_new = cs_newfile.c_str();
-#if _MSC_VER >= 1400
-  _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
-  _tcscpy_s(szDestination, _MAX_PATH, lpsz_new);
-#else
-  _tcscpy(szSource, lpsz_current);
-  _tcscpy(szDestination, lpsz_new);
-#endif
-
-  // Must end with double NULL
-  szSource[m_currfile.length() + 1] = TCHAR('\0');
-  szDestination[cs_newfile.length() + 1] = TCHAR('\0');
-
-  SHFILEOPSTRUCT sfop;
-  memset(&sfop, 0, sizeof(sfop));
-  sfop.hwnd = GetActiveWindow();
-  sfop.wFunc = FO_COPY;
-  sfop.pFrom = szSource;
-  sfop.pTo = szDestination;
-  sfop.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR | FOF_SILENT;
-
-  if (SHFileOperation(&sfop) != 0) {
-    return false;
-  }
-  return true;
-  // renames CurFile to CurFile~
-  // stringT newname(GetCurFile());
-  // newname += TCHAR('~');
-  // return PWSfile::RenameFile(GetCurFile(), newname);
+  return pws_os::CopyAFile(m_currfile.c_str(), cs_newfile);
 }
 
 void PWScore::ChangePassword(const StringX &newPassword)

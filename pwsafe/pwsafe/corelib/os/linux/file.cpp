@@ -21,6 +21,9 @@
 #include "../env.h"
 #include "../../corelib.h"
 #include "../../StringXStream.h"
+
+const TCHAR *pws_os::PathSeparator = _T("/");
+
 bool pws_os::FileExists(const stringT &filename)
 {
   struct stat statbuf;
