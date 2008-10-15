@@ -261,8 +261,6 @@ private:
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, int len,
                        unsigned char *ciphertext) const;
-  BOOL GetIncBackupFileName(const stringT &cs_filenamebase,
-                            int i_maxnumincbackups, stringT &cs_newname);
 
   StringX m_currfile; // current pw db filespec
   unsigned char *m_passkey; // encrypted by session key

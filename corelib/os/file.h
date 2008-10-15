@@ -9,12 +9,15 @@
 #define __FILE_H
 #include "typedefs.h"
 #include <cstdio>
+#include <vector>
 
 namespace pws_os {
   extern bool FileExists(const stringT &filename);
   extern bool FileExists(const stringT &filename, bool &bReadOnly);
   extern bool RenameFile(const stringT &oldname, const stringT &newname);
   extern bool CopyAFile(const stringT &from, const stringT &to); // creates dirs as needed!
+  extern bool DeleteAFile(const stringT &filename);
+  extern void FindFiles(const stringT &filter, std::vector<stringT> &res);
   extern bool LockFile(const stringT &filename, stringT &locker,
                        HANDLE &lockFileHandle, int &LockCount);
   extern bool IsLockedFile(const stringT &filename);
