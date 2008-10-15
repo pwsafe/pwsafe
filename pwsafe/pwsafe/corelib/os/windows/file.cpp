@@ -90,6 +90,22 @@ extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
   return (SHFileOperation(&sfop) == 0);
 }
 
+bool pws_os::DeleteAFile(const stringT &filename)
+{
+  return DeleteFile(filename.c_str()) == TRUE;
+}
+
+
+void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
+{
+  CFileFind finder;
+  BOOL bWorking = finder.FindFile(filter.c_str());
+  while (bWorking) {
+    bWorking = finder.FindNextFile();
+    res.push_back(LPCTSTR(finder.GetFileName()));
+  }
+}
+
 
 /*
 * The file lock/unlock functions were first implemented (in 2.08)

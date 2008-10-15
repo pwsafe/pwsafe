@@ -1310,6 +1310,61 @@ int PWScore::RenameFile(const StringX &oldname, const StringX &newname)
   return pws_os::RenameFile(oldname.c_str(), newname.c_str());
 }
 
+static void ManageIncBackupFiles(const stringT &cs_filenamebase,
+                                 size_t maxnumincbackups, stringT &cs_newname)
+{
+  // make sure we've no more than maxnumincbackups backup files,
+  // and return the base name of the next backup file
+  // (sans the suffix, which will be added by caller)
+
+  stringT cs_filenamemask(cs_filenamebase);
+  vector<stringT> files;
+  vector<int> file_nums;
+
+  cs_filenamemask += _T("_???.ibak");
+
+  pws_os::FindFiles(cs_filenamemask, files);
+
+  for (vector<stringT>::iterator iter = files.begin();
+       iter != files.end(); iter++) {
+    stringT ibak_number_str = iter->substr(iter->length() - 8, 3);
+    if (ibak_number_str.find_first_not_of(_T("0123456789")) != stringT::npos)
+      continue;
+    istringstreamT is(ibak_number_str);
+    int n;
+    is >> n;
+    file_nums.push_back(n);
+  }
+
+
+  if (file_nums.empty()) {
+    cs_newname = cs_filenamebase + _T("_001");
+    return;
+  }
+
+  sort(file_nums.begin(), file_nums.end());
+
+  int nnn = file_nums.back();
+  nnn++;
+  if (nnn > 999) nnn = 1;
+
+  Format(cs_newname, _T("%s_%03d"), cs_filenamebase.c_str(), nnn);
+
+  int i = 0;
+  size_t num_found = file_nums.size();
+  stringT excess_file;
+  while (num_found >= maxnumincbackups) {
+    nnn = file_nums[i];
+    Format(excess_file, _T("%s_%03d.ibak"), cs_filenamebase.c_str(), nnn);
+    i++;
+    num_found--;
+    if (!pws_os::DeleteAFile(excess_file)) {
+      TRACE(_T("DeleteFile(%s) failed"), excess_file);
+      continue;
+    }
+  }
+}
+
 bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
                             const stringT &userBackupPrefix,
                             const stringT &userBackupDir)
@@ -1355,8 +1410,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
       break;
     }
   case 2: // _nnn suffix
-    if (GetIncBackupFileName(cs_temp, maxNumIncBackups, cs_newfile) == FALSE)
-      return false;
+    ManageIncBackupFiles(cs_temp, maxNumIncBackups, cs_newfile);
     break;
   case 0: // no suffix
   default:
@@ -1565,7 +1619,7 @@ StringX PWScore::GetPassKey() const
   return retval;
 }
 
-void PWScore::SetDisplayStatus(const std::vector<bool> &s)
+void PWScore::SetDisplayStatus(const vector<bool> &s)
 { 
   // DON'T set m_changed!
   // Application should use WasDisplayStatusChanged()
@@ -1835,57 +1889,6 @@ PWScore::Validate(stringT &status)
   } else {
     return false;
   }
-}
-
-BOOL PWScore::GetIncBackupFileName(const stringT &cs_filenamebase,
-                                   int i_maxnumincbackups, stringT &cs_newname)
-{
-  stringT cs_filenamemask(cs_filenamebase), cs_filename, cs_ibak_number;
-  CFileFind finder;
-  BOOL bWorking, brc(TRUE);
-  int num_found(0), n;
-  std::vector<int> file_nums;
-
-  cs_filenamemask += _T("_???.ibak");
-
-  bWorking = finder.FindFile(cs_filenamemask.c_str());
-  while (bWorking) {
-    bWorking = finder.FindNextFile();
-    num_found++;
-    cs_filename = finder.GetFileName();
-    cs_ibak_number = cs_filename.substr(cs_filename.length() - 8, 3);
-    if (cs_ibak_number.find_first_not_of(_T("0123456789")) != stringT::npos)
-      continue;
-    n = _ttoi(cs_ibak_number.c_str());
-    file_nums.push_back(n);
-  }
-
-  if (num_found == 0) {
-    cs_newname = cs_filenamebase + _T("_001");
-    return brc;
-  }
-
-  sort(file_nums.begin(), file_nums.end());
-
-  int nnn = file_nums.back();
-  nnn++;
-  if (nnn > 999) nnn = 1;
-
-  Format(cs_newname, _T("%s_%03d"), cs_filenamebase.c_str(), nnn);
-
-  int i = 0;
-  while (num_found >= i_maxnumincbackups) {
-    nnn = file_nums.at(i);
-    Format(cs_filename, _T("%s_%03d.ibak"), cs_filenamebase.c_str(), nnn);
-    i++;
-    num_found--;
-    if (DeleteFile(cs_filename.c_str()) == FALSE) {
-      TRACE(_T("DeleteFile(%s)"), cs_filename);
-      continue;
-    }
-  }
-
-  return brc;
 }
 
 void PWScore::ClearFileUUID()
