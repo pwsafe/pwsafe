@@ -63,7 +63,7 @@
 #define _tcschr(s, c) strchr(s, c)
 #include <time.h>
 #define _tcsftime strftime
-#define _tasctime_s(s, N, st) asctime_r(st, s)
+#define _tasctime_s(s, N, st) (asctime_r(st, s) != NULL ? 0 : 1)
 #define _vsctprintf(fmt, args) vsnprintf(NULL, 0, fmt, args)
 #define _vstprintf_s(str, size, fmt, args) vsnprintf(str, size, fmt, args)
 #define _ftprintf fprintf
