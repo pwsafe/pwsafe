@@ -1,7 +1,7 @@
 # Baby Makefile for Linux
 #
 
-ALLSRC          = PWScore.cpp PWSXMLFilters.cpp \
+ALLSRC          = PWSXMLFilters.cpp \
 									SAXHandlers.cpp \
 									SAXFilters.cpp \
 									PWSFilters.cpp \
@@ -14,14 +14,14 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									ItemData.cpp PWSfile.cpp PWHistory.cpp \
 									PWSfileV1V2.cpp PWSfileV3.cpp \
 									UnknownField.cpp  VerifyFormat.cpp Match.cpp \
-									UTF8Conv.cpp Report.cpp \
+									UTF8Conv.cpp Report.cpp PWScore.cpp \
 									XMLprefs.cpp tinyxml/tinyxml.cpp \
 									tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp \
 									os/linux/file.cpp os/linux/mem.cpp \
-									os/linux/sys.cpp
+									os/linux/sys.cpp os/linux/env.cpp
 
 
-TESTSRC         = 
+TESTSRC         = os/linux/main.cpp
 SRC             = $(LIBSRC) $(TESTSRC)
 
 OBJPATH         = ./obj
@@ -54,7 +54,7 @@ $(LIB): $(LIBOBJ)
 	ar rvus $@ $(filter %.o,$^)
 
 $(TEST): $(LIB) $(TESTOBJ)
-	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^)  -o $@ $(LD_FLAGS)
+	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^)  -o $@ $(LD_FLAGS) -Llib -lcore -luuid
 
 clean:
 	rm -f *~ $(OBJ) $(TEST) $(LIB) $(DEPENDFILE)
