@@ -360,7 +360,7 @@ public class PwsEntryDTO {
 		if (nextRecord instanceof PwsRecordV3) {
 			
             PwsRecordV3 v3 = (PwsRecordV3) nextRecord;
-            v3.setField(new PwsStringUnicodeField(PwsRecordV3.GROUP , getGroup()));
+            v3.setField(new PwsStringUnicodeField(PwsRecordV3.GROUP , getGroup()));// + '\u0000'));
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.TITLE , getTitle()));
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.USERNAME , getUsername()));
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.PASSWORD , getPassword()));

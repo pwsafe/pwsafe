@@ -1,5 +1,7 @@
 package org.pwsafe.passwordsafeswt.dialog;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -70,7 +72,8 @@ public class PasswordDialog extends Dialog {
 		lblEnterPassword.setText("Please enter the safe combination for this password database");
 
 		lblFilename = new Label(composite, SWT.NONE);
-		lblFilename.setText(fileName);
+		lblFilename.setText(new File(fileName).getName());
+		lblFilename.setToolTipText(fileName);
 
 		final Composite composite_2 = new Composite(composite, SWT.NONE);
 		composite_2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

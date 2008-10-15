@@ -342,13 +342,15 @@ public class EditDialog extends Dialog {
 		btnOk.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
                 if (isDirty()) {
-                	entryToEdit.setLastChange(new Date());
+                	final Date now = new Date();
+                	entryToEdit.setLastChange(now);
+					entryToEdit.setLastAccess(now);
                     entryToEdit.setGroup(txtGroup.getText());
                     entryToEdit.setTitle(txtTitle.getText());
                     entryToEdit.setUsername(txtUsername.getText());
                     if (! txtPassword.getText().equals(entryToEdit.getPassword())) {
                     	entryToEdit.setPassword(txtPassword.getText());
-                    	entryToEdit.setLastPwChange(new Date ());
+                    	entryToEdit.setLastPwChange(now);
                     }
                     entryToEdit.setNotes(txtNotes.getText());
                     String fieldText = txtPasswordExpire.getText();

@@ -12,8 +12,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +25,8 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -34,6 +39,8 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellListener;
+
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -61,6 +68,8 @@ import org.pwsafe.lib.file.PwsFileFactory;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
+import org.pwsafe.lib.file.PwsRecordV3;
+import org.pwsafe.lib.file.PwsTimeField;
 import org.pwsafe.passwordsafeswt.action.AboutAction;
 import org.pwsafe.passwordsafeswt.action.AddRecordAction;
 import org.pwsafe.passwordsafeswt.action.ChangeSafeCombinationAction;
@@ -75,6 +84,7 @@ import org.pwsafe.passwordsafeswt.action.ExportToXMLAction;
 import org.pwsafe.passwordsafeswt.action.HelpAction;
 import org.pwsafe.passwordsafeswt.action.ImportFromTextAction;
 import org.pwsafe.passwordsafeswt.action.ImportFromXMLAction;
+import org.pwsafe.passwordsafeswt.action.LockDbAction;
 import org.pwsafe.passwordsafeswt.action.MRUFileAction;
 import org.pwsafe.passwordsafeswt.action.NewFileAction;
 import org.pwsafe.passwordsafeswt.action.OpenFileAction;
@@ -84,6 +94,7 @@ import org.pwsafe.passwordsafeswt.action.SaveFileAsAction;
 import org.pwsafe.passwordsafeswt.action.ViewAsListAction;
 import org.pwsafe.passwordsafeswt.action.ViewAsTreeAction;
 import org.pwsafe.passwordsafeswt.action.VisitPasswordSafeWebsiteAction;
+import org.pwsafe.passwordsafeswt.dialog.PasswordDialog;
 import org.pwsafe.passwordsafeswt.dialog.StartupDialog;
 import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
 import org.pwsafe.passwordsafeswt.listener.TableColumnSelectionAdaptor;
@@ -139,10 +150,15 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	private ViewAsTreeAction viewAsTreeAction;
 	private ExportToTextAction exportToTextAction;
 	private ImportFromTextAction importFromTextAction;
+	private LockDbAction lockDbAction;
 	private Table table;
 	private TrayItem trayItem;
 	private StackLayout stackLayout;
 	private Composite composite;
+	private boolean locked = false;
+	private Timer lockTimer = new Timer("SWTPassword lock timer", true);
+	private TimerTask lockTask;
+
 	private static final Log log = LogFactory.getLog(PasswordSafeJFace.class);
 
 	public static final String APP_NAME = "PasswordSafeSWT";
@@ -231,7 +247,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 				log.debug("Setting up System Tray");
 
 			trayItem = new TrayItem(tray, SWT.NONE);
-			trayItem.setVisible(false);
+//			trayItem.setVisible(false);
 			trayItem.setToolTipText(PasswordSafeJFace.APP_NAME);
 
 			trayItem.addListener(SWT.DefaultSelection, new Listener() {
@@ -267,19 +283,17 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			trayItem.setImage(image);
 			getShell().addShellListener(new ShellAdapter() {
 				public void shellIconified(ShellEvent e) {
+					UserPreferences thePrefs = UserPreferences.getInstance();
 					if (trayItem != null
-							&& UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_ICON_IN_SYSTEM_TRAY)) {
+							&& thePrefs.getBoolean(DisplayPreferences.SHOW_ICON_IN_SYSTEM_TRAY)) {
 						if (log.isDebugEnabled())
 							log.debug("Shrinking to tray");
 						trayItem.setVisible(true);
 						getShell().setVisible(false);
 					}
-					if (UserPreferences.getInstance().getBoolean(SecurityPreferences.CLEAR_CLIPBOARD_ON_MIN)) {
-						clearClipboardAction.run();
-					}
 				}
-			});
 
+			});
 		}
 	}
 
@@ -368,11 +382,15 @@ public class PasswordSafeJFace extends ApplicationWindow {
             WidgetPreferences.tuneTreeColumn(treeColumn_3, getClass(), "tree/password");
 //            treeColumn_3.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 4));
         }
+        IPreferenceStore ps = new PreferenceStore(UserPreferences.getInstance().getPreferencesFilename());
+        
         TreeColumn[] columns = tree.getColumns();
         for (int i = 0; i < columns.length; i++) {
+//        	ps.getDefaultInt("bla");
 //        	columns[i].setWidth(100);
             columns[i].setMoveable(true);
         }
+//        treeViewer.setExpandedState(arg0, arg1)
 
 
 		if (UserPreferences.getInstance().getBoolean(DISPLAY_AS_LIST_PREF)) {
@@ -418,6 +436,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		optionsAction = new OptionsAction();
 		exportToXMLAction = new ExportToXMLAction();
 		importFromXMLAction = new ImportFromXMLAction();
+		lockDbAction = new LockDbAction();
 
 	}
 
@@ -705,6 +724,10 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 			valueToCopy = recordToCopy.getField(fieldToCopy).getValue().toString();
 
+			//set access date
+			if (recordToCopy instanceof PwsRecordV3)
+				recordToCopy.setField(new PwsTimeField(PwsRecordV3.LAST_ACCESS_TIME, new Date()));
+			 			
 			if (valueToCopy != null) {
 				cb.setContents(new Object[]{valueToCopy}, new Transfer[]{TextTransfer.getInstance()});
 				log.debug("Copied to clipboard");
@@ -831,6 +854,24 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			return getPwsFile().isModified();
 		}
 		return false;
+	}
+
+	/**
+	 * Is the Application in locked mode.
+	 * 
+	 * @return true if the safe has been modified
+	 */
+	public boolean isLocked() {
+		return locked;
+	}
+
+	/**
+	 * Sets the Application in locked mode.
+	 * 
+	 * @return true if the safe has been modified
+	 */
+	public void setLocked(boolean isLocked) {
+		locked = isLocked;
 	}
 
 
@@ -1018,6 +1059,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		String[] nextLine;
 		PwsFile pwsFile = getPwsFile();
 		while ((nextLine = csvReader.readNext()) != null) {
+			if (nextLine.length < 2) continue; // ignore blank lines
 			PwsRecord newRecord = pwsFile.newRecord();
 			PwsEntryDTO entry = new PwsEntryDTO();
 			if (!nextLine[0].equals(V1_GROUP_PLACEHOLDER)) {
@@ -1157,17 +1199,153 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	}
 	
 	/**
+	 * Returns a shell listener. This shell listener gets registered with this
+	 * window's shell.
+	 * <p>
+	 * The default implementation of this framework method returns a new
+	 * listener that makes this window the active window for its window manager
+	 * (if it has one) when the shell is activated, and calls the framework
+	 * method <code>handleShellCloseEvent</code> when the shell is closed.
+	 * Subclasses may extend or reimplement.
+	 * </p>
 	 * 
-	 * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
+	 * @return a shell listener
 	 */
-	protected void handleShellCloseEvent() {
-		boolean cancelled = saveAppIfDirty();
-		if (cancelled) {
-			setReturnCode(OK);
-		} else {
-			tidyUpOnExit();
-			super.handleShellCloseEvent();
-		}
+	protected ShellListener getShellListener() {
+		return new ShellAdapter() {
+			public void shellClosed(ShellEvent event) {
+				event.doit = false; // don't close now
+				boolean cancelled = saveAppIfDirty();
+				if (cancelled) {
+					setReturnCode(OK);
+				} else {
+					tidyUpOnExit();
+					handleShellCloseEvent(); // forwards to Window class
+				}
+
+			}
+			/**
+			 * Sent when a shell becomes the active window.
+			 * The default behavior is to do nothing.
+			 *
+			 * @param e an event containing information about the activation
+			 */
+			public void shellActivated(ShellEvent e) {
+				final UserPreferences thePrefs = UserPreferences.getInstance();
+				if (lockTask != null) {
+					lockTask.cancel();
+					lockTask = null;
+				}
+				if (locked) {
+					log.info("trying to unlock");
+			        PasswordDialog pd = new PasswordDialog(app.getShell());
+			        String fileName = thePrefs.getMRUFile();
+			        pd.setFileName(fileName);
+			        String password = (String) pd.open();
+			        if (password != null) {
+			            try {
+			                app.openFile(fileName, password);
+			            } catch (Exception anEx) {
+			                app.displayErrorDialog("Error Opening Safe", "Invalid Passphrase", anEx);
+			            }
+					}
+			        app.setLocked(false);
+				}
+
+			}
+
+			/**
+			 * Sent when a shell stops being the active window.
+			 * The default behavior is to do nothing.
+			 *
+			 * @param e an event containing information about the deactivation
+			 */
+			public void shellDeactivated(ShellEvent e) {
+				startLockTimer();
+			}
+			
+
+			/**
+			 * Sent when a shell is un-minimized.
+			 * The default behavior is to do nothing.
+			 *
+			 * @param e an event containing information about the un-minimization
+			 */
+			public void shellDeiconified(ShellEvent e) {
+				if (lockTask != null) {
+					lockTask.cancel();
+					lockTask = null;
+				}
+				if (locked) {
+					log.info("trying to unlock");
+			        PasswordDialog pd = new PasswordDialog(app.getShell());
+			        String fileName = UserPreferences.getInstance().getMRUFile();
+			        pd.setFileName(fileName);
+			        String password = (String) pd.open();
+			        if (password != null) {
+			            try {
+			                app.openFile(fileName, password);
+			            } catch (Exception anEx) {
+			                app.displayErrorDialog("Error Opening Safe", "Invalid Passphrase", anEx);
+			            }
+					}
+			        app.setLocked(false);
+				}
+
+			}
+
+			/**
+			 * Sent when a shell is minimized.
+			 * The default behavior is to do nothing.
+			 *
+			 * @param e an event containing information about the minimization
+			 */
+			public void shellIconified(ShellEvent e) {
+				final UserPreferences thePrefs = UserPreferences.getInstance();
+				if (thePrefs.getBoolean(SecurityPreferences.CLEAR_CLIPBOARD_ON_MIN)) {
+					clearClipboardAction.run();
+				}
+				
+				//handle Save and DB lock
+				if (isDirty()) {
+					if (thePrefs.getBoolean(SecurityPreferences.CONFIRM_SAVE_ON_MIN)) {
+						//TODO
+						saveFileAction.run();
+					} else {
+						saveFileAction.run();
+					}
+				}
+				
+				startLockTimer();
+			}
+			
+			private void startLockTimer() {
+				final UserPreferences thePrefs = UserPreferences.getInstance();
+				if (pwsFile != null && thePrefs.getBoolean(SecurityPreferences.LOCK_ON_IDLE)){
+					if (lockTask != null) {//be on the safe side:
+						lockTask.cancel();
+					}
+					String idleMins = thePrefs.getString(SecurityPreferences.LOCK_ON_IDLE_MINS);
+					try {
+						int mins = Integer.parseInt(idleMins);
+						lockTask = lockDbAction.createTaskTimer();
+						lockTimer.schedule(lockTask, mins * 60 * 1000);
+						
+					} catch (NumberFormatException anEx) {
+						log.warn("Unable to set lock timer to an amount of" + idleMins + " minutes");
+					}
+				}
+			}
+
+
+		};
+	}
+
+
+	public void clearView() {
+		table.clearAll();
+		tree.clearAll(true);
+		
 	}
 
 }

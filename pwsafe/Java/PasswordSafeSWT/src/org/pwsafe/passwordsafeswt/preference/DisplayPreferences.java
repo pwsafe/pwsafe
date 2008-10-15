@@ -20,6 +20,8 @@ public class DisplayPreferences extends PreferencePage {
 	public static final String SHOW_PASSWORD_IN_LIST = "show.password.in.list";
 	public static final String SHOW_PASSWORD_IN_EDIT_MODE = "show.password.in.edit.mode";
 	public static final String SHOW_ICON_IN_SYSTEM_TRAY = "show.icon.in.system.tray";
+	public static final String TREE_COLUMN_SIZE = "tree.width.column";
+	public static final String TABLE_COLUMN_SIZE = "table.width.column";
 
 	Button btnAlwaysOnTop;
 	Button btnShowPasswordInList;

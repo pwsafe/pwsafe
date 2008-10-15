@@ -55,7 +55,7 @@ public class SecurityPreferences extends PreferencePage {
 	    btnLockDatabaseOnMin = new Button(composite, SWT.CHECK);
 	    btnLockDatabaseOnMin.setText("Lock password database on minimize");
 	    btnLockDatabaseOnMin.setSelection(preferenceStore.getBoolean(LOCK_DB_ON_MIN));
-	    btnLockDatabaseOnMin.setEnabled(false);
+//	    btnLockDatabaseOnMin.setEnabled(false);
 
 	    btnConfirmSaveOnMinimize = new Button(composite, SWT.CHECK);
 	    btnConfirmSaveOnMinimize.setEnabled(false);
@@ -83,15 +83,15 @@ public class SecurityPreferences extends PreferencePage {
 	    btnLockOnIdle = new Button(composite_1, SWT.CHECK);
 	    btnLockOnIdle.setText("Lock password database after");
 	    btnLockOnIdle.setSelection(preferenceStore.getBoolean(LOCK_ON_IDLE));
-	    btnLockOnIdle.setEnabled(false);
+//	    btnLockOnIdle.setEnabled(false);
 
 	    txtMinutesIdle = new Text(composite_1, SWT.BORDER);
 	    txtMinutesIdle.setText(preferenceStore.getString(LOCK_ON_IDLE_MINS));
-	    txtMinutesIdle.setEnabled(false);
+//	    txtMinutesIdle.setEnabled(false);
 
 	    final Label lblMinsIdle = new Label(composite_1, SWT.NONE);
 	    lblMinsIdle.setText("minutes idle");
-	    lblMinsIdle.setEnabled(false);
+//	    lblMinsIdle.setEnabled(false);
 
 	    return composite;
 	  }
