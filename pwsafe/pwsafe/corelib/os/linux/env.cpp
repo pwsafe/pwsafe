@@ -12,7 +12,11 @@
 
 #include <sstream>
 #include <cassert>
+#include <cstring>
+#include <cstdlib>
 #include <unistd.h>
+#include <limits.h>
+
 
 #include "../env.h"
 
@@ -21,11 +25,11 @@ static stringT towc(const char *val)
 {
   stringT retval;
   assert(val != NULL);
-  int len = strlen(val);
-  int wsize = mbtowc(NULL, val, len);
+  int len = std::strlen(val);
+  int wsize = std::mbtowc(NULL, val, len);
   ASSERT(wsize > 0);
   wchar_t *wvalue = new wchar_t[wsize+1];
-  wsize = mbtowc(wvalue, val, len);
+  wsize = std::mbtowc(wvalue, val, len);
   wvalue[wsize] = 0;
   retval = wvalue;
   delete[] wvalue;
@@ -56,7 +60,7 @@ stringT pws_os::getenv(const char *env, bool is_path)
 stringT pws_os::getusername()
 {
   stringT retval;
-  char *user = getlogin();
+  const char *user = getlogin();
   if (user == NULL)
     user = "?";
 #ifdef UNICODE

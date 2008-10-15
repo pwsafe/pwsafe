@@ -21,7 +21,7 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									os/linux/sys.cpp os/linux/env.cpp
 
 
-TESTSRC         = os/linux/main.cpp
+TESTSRC         = main.cpp
 SRC             = $(LIBSRC) $(TESTSRC)
 
 OBJPATH         = ./obj
