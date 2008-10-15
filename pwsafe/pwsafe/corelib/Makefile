@@ -18,7 +18,8 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									XMLprefs.cpp tinyxml/tinyxml.cpp \
 									tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp \
 									os/linux/file.cpp os/linux/mem.cpp \
-									os/linux/sys.cpp os/linux/env.cpp
+									os/linux/sys.cpp os/linux/env.cpp \
+									os/linux/dir.cpp
 
 
 TESTSRC         = main.cpp
