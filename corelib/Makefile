@@ -35,8 +35,8 @@ LIB	     = $(LIBPATH)/libcore.a
 TEST	    = $(BINPATH)/test
 OBJ	     = $(TESTOBJ) $(LIBOBJ)
 
-CXXFLAGS += -DUNICODE -Wall
-
+#CXXFLAGS += -DUNICODE -Wall
+CXXFLAGS +=  -Wall
 # rules
 .PHONY: all clean test setup
 

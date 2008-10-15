@@ -70,6 +70,7 @@ typedef wchar_t TCHAR;
 #else
 #define _T(x) x
 typedef char TCHAR;
+typedef wchar_t WCHAR;
 #endif /* UNICODE */
 // mimic Microsoft conventional typdefs:
 typedef TCHAR *LPTSTR;

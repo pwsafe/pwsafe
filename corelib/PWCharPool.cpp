@@ -320,7 +320,7 @@ StringX CPasswordCharPool::MakePronounceable() const
   for (c1 = 0; c1 < 26; c1++) {
     for (c2 = 0; c2 < 26; c2++) {
       for (c3 = 0; c3 < 26; c3++) {
-        sum += tris[c1][c2][c3];
+        sum += tris[int(c1)][int(c2)][int(c3)];
         if (sum > ranno) { // Pick first value
           password[0] = charT('a') + c1;
           password[1] = charT('a') + c2;
@@ -338,7 +338,7 @@ StringX CPasswordCharPool::MakePronounceable() const
     c2 = password[nchar-1] - charT('a'); // .. and find the next one.
     sumfreq = 0;
     for (c3 = 0; c3 < 26; c3++)
-      sumfreq += tris[c1][c2][c3];
+      sumfreq += tris[int(c1)][int(c2)][int(c3)];
     /* Note that sum < duos[c1][c2] because
        duos counts all digraphs, not just those
        in a trigraph. We want sum. */
@@ -349,7 +349,7 @@ StringX CPasswordCharPool::MakePronounceable() const
     ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
     sum = 0;
     for (c3 = 0; c3 < 26; c3++) {
-      sum += tris[c1][c2][c3];
+      sum += tris[int(c1)][int(c2)][int(c3)];
       if (sum > ranno) {
         password[nchar++] = charT('a') + c3;
         c3 = 26;  // Break the for c3 loop.
