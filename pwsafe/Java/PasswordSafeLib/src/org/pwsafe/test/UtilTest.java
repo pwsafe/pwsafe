@@ -225,4 +225,31 @@ public class UtilTest extends TestCase
 
 		assertEquals( Util.bytesToString(b), "{ 1, 127, -128, -1 }" );
 	}
+	
+	public void testMillisAndByteArray() {
+		byte[] longBuf = new byte[4];
+		
+		long input = 1000L;
+		long output = millisRoundtrip(input, longBuf);
+		assertEquals("Long time input / output not matching", input, output);
+		
+		input = 1001L;
+		output = millisRoundtrip(input, longBuf);
+		assertFalse("Long Rounding by 1000 failed", input == output);
+		
+		input = 1000L;
+		byte[] shortBuf = new byte[2];
+		try {
+			output = millisRoundtrip(input, shortBuf);
+			fail ("a time field needs a 4 bytes buffer");
+		} catch (ArrayIndexOutOfBoundsException anEx) {
+			// ok
+		}
+		
+	}
+	
+	private long millisRoundtrip (long input, byte[] buffer) {
+		Util.putMillisToByteArray(buffer, input, 0);
+		return Util.getMillisFromByteArray(buffer, 0);
+	}
 }
