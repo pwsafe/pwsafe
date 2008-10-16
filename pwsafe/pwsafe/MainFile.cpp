@@ -53,7 +53,7 @@ class MFCAsker : public Asker
 {
   bool operator()(const stringT &question) {
     int msg_rc = AfxMessageBox(question.c_str(), MB_YESNO | 
-                               MB_ICONINFORMATION | MB_DEFBUTTON2);
+                               MB_ICONQUESTION | MB_DEFBUTTON2);
     return msg_rc == IDYES;
   }
 };
