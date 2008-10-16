@@ -16,11 +16,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include <assert.h>
+#include <cassert>
+#include <fstream>
 #include "../file.h"
 #include "../env.h"
 #include "../../corelib.h"
 #include "../../StringXStream.h"
+
+using namespace std;
 
 const TCHAR *pws_os::PathSeparator = _T("/");
 
@@ -83,6 +86,40 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 #endif /* UNICODE */
   return (status == 0);
 }
+
+bool pws_os::CopyAFile(const stringT &from, const stringT &to)
+{
+  // can we read the source?
+  if (::access(from.c_str(), R_OK) != 0)
+    return false;
+  // creates dirs as needed
+  stringT::size_type start = (to[0] == '/') ? 1 : 0;
+  stringT::size_type stop;
+  do {
+    stop = to.find_first_of("/", start);
+    if (stop != stringT::npos)
+      ::mkdir(to.substr(start, stop).c_str(), 0700); // fail if already there - who cares?
+    start = stop + 1;
+  } while (stop != stringT::npos);
+  ifstream src(from.c_str(), ios_base::in|ios_base::binary);
+  ofstream dst(to.c_str(), ios_base::out|ios_base::binary);
+  const size_t BUFSIZE = 2048;
+  char buf[BUFSIZE];
+  size_t readBytes;
+
+  do {
+    src.read(buf, BUFSIZE);
+    readBytes = src.gcount();
+    dst.write(buf, readBytes);
+  } while(readBytes != 0);
+  return true;
+}
+
+bool pws_os::DeleteAFile(const stringT &filename)
+{
+  return ::unlink(filename.c_str());
+}
+
 
 static stringT GetLockFileName(const stringT &filename)
 {
@@ -181,3 +218,20 @@ bool pws_os::IsLockedFile(const stringT &filename)
   const stringT lock_filename = GetLockFileName(filename);
   return pws_os::FileExists(lock_filename);
 }
+
+std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
+{
+  return ::fopen(filename.c_str(), mode);
+}
+
+long pws_os::fileLength(std::FILE *fp)
+{
+  int fd = fileno(fp);
+  if (fd == -1)
+    return -1;
+  struct stat st;
+  if (fstat(fd, &st) == -1)
+    return -1;
+  return st.st_size;
+}
+
