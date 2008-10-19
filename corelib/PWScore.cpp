@@ -324,18 +324,15 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   if (bsFields.count() == 0)
     return SUCCESS;
 
-  CUTF8Conv conv;
-  const unsigned char *utf8 = NULL;
-  int utf8Len = 0;
-  conv.ToUTF8(filename.c_str(), utf8, utf8Len);
-  ofstream ofs((const char *)utf8);
+  ofstream ofs(filename.c_str());
 
   if (!ofs)
     return CANT_OPEN_FILE;
 
   StringX hdr(_T(""));
-
-
+  CUTF8Conv conv;
+  const unsigned char *utf8 = NULL;
+  int utf8Len = 0;
 
   if ( bsFields.count() == bsFields.size()) {
     // all fields to be exported, use pre-built header
@@ -506,11 +503,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const int &subgroup_object, const int &subgroup_function,
                           const TCHAR delimiter, const OrderedItemList *il)
 {
-  CUTF8Conv utf8conv;
-  const unsigned char *utf8 = NULL;
-  int utf8Len = 0;
-  utf8conv.ToUTF8(filename.c_str(), utf8, utf8Len);
-  ofstream of((const char *)utf8);
+  ofstream of(filename.c_str());
 
   if (!of)
     return CANT_OPEN_FILE;
@@ -529,6 +522,9 @@ int PWScore::WriteXMLFile(const StringX &filename,
   tmp = m_currfile;
   Replace(tmp, StringX(_T("&")), StringX(_T("&amp;")));
 
+  CUTF8Conv utf8conv;
+  const unsigned char *utf8 = NULL;
+  int utf8Len = 0;
   StringX delStr;
   delStr += delimiter;
   utf8conv.ToUTF8(delStr, utf8, utf8Len);
@@ -712,11 +708,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  CReport &rpt)
 {
   stringT csError;
-  CUTF8Conv utf8conv;
-  const unsigned char *utf8 = NULL;
-  int utf8Len = 0;
-  utf8conv.ToUTF8(filename.c_str(), utf8, utf8Len);
-  ifstreamT ifs((const char *)utf8);
+  ifstreamT ifs(filename.c_str());
 
   if (!ifs)
     return CANT_OPEN_FILE;
@@ -1659,11 +1651,7 @@ int
 PWScore::ImportKeePassTextFile(const StringX &filename)
 {
   static const TCHAR *ImportedPrefix = { _T("ImportedKeePass") };
-  CUTF8Conv conv;
-  const unsigned char *utf8 = NULL;
-  int utf8Len = 0;
-  conv.ToUTF8(filename.c_str(), utf8, utf8Len);
-  ifstreamT ifs((const char *)utf8);
+  ifstreamT ifs(filename.c_str());
 
   if (!ifs) {
     return CANT_OPEN_FILE;
