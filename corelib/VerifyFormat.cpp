@@ -377,37 +377,37 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   Format(buffer, IDSC_PWHERROR, len - pwleft + 1);
   stringT temp;
   switch (rc) {
-  case PWH_OK:
-  case PWH_IGNORE:
-    temp.clear();
-    buffer.clear();
-    break;
-  case PWH_INVALID_HDR:
-    Format(temp, IDSC_INVALIDHEADER, PWHistory.c_str());
-    break;
-  case PWH_INVALID_STATUS:
-    Format(temp, IDSC_INVALIDPWHSTATUS, s);
-    break;
-  case PWH_INVALID_NUM:
-    Format(temp, IDSC_INVALIDNUMOLDPW, n, m);
-    break;
-  case PWH_INVALID_DATETIME:
-    LoadAString(temp, IDSC_INVALIDDATETIME);
-    break;
-  case PWH_INVALID_PSWD_LENGTH:
-    LoadAString(temp, IDSC_INVALIDPWLENGTH);
-    break;
-  case PWH_TOO_SHORT:
-    LoadAString(temp, IDSC_FIELDTOOSHORT);
-    break;
-  case PWH_TOO_LONG:
-    LoadAString(temp, IDSC_FIELDTOOLONG);
-    break;
-  case PWH_INVALID_CHARACTER:
-    LoadAString(temp, IDSC_INVALIDSEPARATER);
-    break;
-  default:
-    ASSERT(0);
+    case PWH_OK:
+    case PWH_IGNORE:
+      temp.clear();
+      buffer.clear();
+      break;
+    case PWH_INVALID_HDR:
+      Format(temp, IDSC_INVALIDHEADER, PWHistory.c_str());
+      break;
+    case PWH_INVALID_STATUS:
+      Format(temp, IDSC_INVALIDPWHSTATUS, s);
+      break;
+    case PWH_INVALID_NUM:
+      Format(temp, IDSC_INVALIDNUMOLDPW, n, m);
+      break;
+    case PWH_INVALID_DATETIME:
+      LoadAString(temp, IDSC_INVALIDDATETIME);
+      break;
+    case PWH_INVALID_PSWD_LENGTH:
+      LoadAString(temp, IDSC_INVALIDPWLENGTH);
+      break;
+    case PWH_TOO_SHORT:
+      LoadAString(temp, IDSC_FIELDTOOSHORT);
+      break;
+    case PWH_TOO_LONG:
+      LoadAString(temp, IDSC_FIELDTOOLONG);
+      break;
+    case PWH_INVALID_CHARACTER:
+      LoadAString(temp, IDSC_INVALIDSEPARATER);
+      break;
+    default:
+      ASSERT(0);
   }
   strErrors = buffer + temp;
   if (rc != PWH_OK)

@@ -379,7 +379,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_VALIDATE, true, true, true, true},
   {ID_MENUITEM_EDITFILTER, true, true, false, false},
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
-  {ID_MENUITEM_MANAGEFILTERS, true, true, false, false},
+  {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},

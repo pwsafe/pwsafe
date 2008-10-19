@@ -78,7 +78,7 @@ BOOL DboxMain::OpenOnInit(void)
   int rc2 = PWScore::NOT_SUCCESS;
 
   switch (rc) {
-  case PWScore::SUCCESS:
+    case PWScore::SUCCESS:
     {
       MFCAsker q;
       m_core.SetAsker(&q);
@@ -91,52 +91,52 @@ BOOL DboxMain::OpenOnInit(void)
 #endif
       CheckExpiredPasswords();
     }
-    break;
-  case PWScore::CANT_OPEN_FILE:
-    if (m_core.GetCurFile().empty()) {
-      // Empty filename. Assume they are starting Password Safe
-      // for the first time and don't confuse them.
-      // fallthrough to New()
-    } else {
-      // Here if there was a filename saved from last invocation, but it couldn't
-      // be opened. It was either removed or renamed, so ask the user what to do
-      CString cs_msg;
-      cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
-      CGeneralMsgBox gmb;
-      gmb.SetMsg(cs_msg);
-      gmb.SetStandardIcon(MB_ICONQUESTION);
-      gmb.AddButton(1, IDS_SEARCH);
-      gmb.AddButton(2, IDS_NEW);
-      gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
-      INT_PTR rc3 = gmb.DoModal();
-      switch (rc3) {
-      case 1:
-        rc2 = Open();
-        break;
-      case 2:
-        rc2 = New();
-        break;
-      case 3:
-        rc2 = PWScore::USER_CANCEL;
+      break;
+    case PWScore::CANT_OPEN_FILE:
+      if (m_core.GetCurFile().empty()) {
+        // Empty filename. Assume they are starting Password Safe
+        // for the first time and don't confuse them.
+        // fallthrough to New()
+      } else {
+        // Here if there was a filename saved from last invocation, but it couldn't
+        // be opened. It was either removed or renamed, so ask the user what to do
+        CString cs_msg;
+        cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
+        CGeneralMsgBox gmb;
+        gmb.SetMsg(cs_msg);
+        gmb.SetStandardIcon(MB_ICONQUESTION);
+        gmb.AddButton(1, IDS_SEARCH);
+        gmb.AddButton(2, IDS_NEW);
+        gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
+        INT_PTR rc3 = gmb.DoModal();
+        switch (rc3) {
+          case 1:
+            rc2 = Open();
+            break;
+          case 2:
+            rc2 = New();
+            break;
+          case 3:
+            rc2 = PWScore::USER_CANCEL;
+            break;
+        }
         break;
       }
+    case TAR_NEW:
+      rc2 = New();
+      if (PWScore::USER_CANCEL == rc2) {
+        // somehow, get DboxPasskeyEntryFirst redisplayed...
+      }
       break;
-    }
-  case TAR_NEW:
-    rc2 = New();
-    if (PWScore::USER_CANCEL == rc2) {
-      // somehow, get DboxPasskeyEntryFirst redisplayed...
-    }
-    break;
-  case TAR_OPEN:
-    rc2 = Open();
-    if (PWScore::USER_CANCEL == rc2) {
-      // somehow, get DboxPasskeyEntryFirst redisplayed...
-    }
-    break;
-  case PWScore::WRONG_PASSWORD:
-  default:
-    break;
+    case TAR_OPEN:
+      rc2 = Open();
+      if (PWScore::USER_CANCEL == rc2) {
+        // somehow, get DboxPasskeyEntryFirst redisplayed...
+      }
+      break;
+    case PWScore::WRONG_PASSWORD:
+    default:
+      break;
   }
 
   bool go_ahead = false;
@@ -1284,18 +1284,18 @@ void DboxMain::OnImportXML()
 
     cs_title.LoadString(IDS_XMLIMPORTFAILED);
     switch (rc) {
-    case PWScore::XML_FAILED_VALIDATION:
+      case PWScore::XML_FAILED_VALIDATION:
       {
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
                        strErrors.c_str());
         break;
       }
-    case PWScore::XML_FAILED_IMPORT:
+      case PWScore::XML_FAILED_IMPORT:
       {
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
       }
-    case PWScore::SUCCESS:
+      case PWScore::SUCCESS:
       {
         if (!strErrors.empty() ||
             bBadUnknownFileFields || bBadUnknownRecordFields) {
@@ -1326,8 +1326,8 @@ void DboxMain::OnImportXML()
         RefreshViews();
         break;
       }
-    default:
-      ASSERT(0);
+      default:
+        ASSERT(0);
     } // switch
 
     // Finish Report
