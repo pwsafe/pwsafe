@@ -642,6 +642,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   return SUCCESS;
 }
 
+#ifdef _WIN32
 int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
                            const stringT &strXSDFileName, stringT &strErrors,
                            int &numValidated, int &numImported,
@@ -700,6 +701,13 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   m_changed = true;
   return SUCCESS;
 }
+#else // currently don't support importing XML from non-Windows
+int PWScore::ImportXMLFile(const stringT &, const stringT &, const stringT &, stringT &,
+                           int &, int &, bool &, bool &,CReport &)
+{
+  return UNIMPLEMENTED;
+}
+#endif
 
 int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  const StringX &filename, stringT &strError,

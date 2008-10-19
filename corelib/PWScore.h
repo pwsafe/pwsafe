@@ -65,7 +65,8 @@ public:
     USER_EXIT,                                // 12
     XML_FAILED_VALIDATION,                    // 13
     XML_FAILED_IMPORT,                        // 14
-    LIMIT_REACHED                             // 15
+    LIMIT_REACHED,                            // 15
+    UNIMPLEMENTED,                            // 16
   };
 
   PWScore();
