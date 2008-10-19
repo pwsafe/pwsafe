@@ -18,6 +18,11 @@
 #include <errno.h>
 #include <cassert>
 #include <fstream>
+
+#include <dirent.h>
+#include <fnmatch.h>
+#include <malloc.h> // for free
+
 #include "../file.h"
 #include "../env.h"
 #include "../../corelib.h"
@@ -120,6 +125,38 @@ bool pws_os::DeleteAFile(const stringT &filename)
   return ::unlink(filename.c_str());
 }
 
+static stringT filterString;
+
+static int filterFunc(const struct dirent *de)
+{
+  return fnmatch(filterString.c_str(), de->d_name, 0) == 0;
+}
+
+void pws_os::FindFiles(const stringT &filter, vector<stringT> &res)
+{
+  // filter is a full path with a filter file name.
+  // start by splitting it up
+  stringT dir;
+  stringT::size_type last_slash = filter.find_last_of("/");
+  if (last_slash != stringT::npos) {
+    dir = filter.substr(0, last_slash);
+    filterString = filter.substr(last_slash + 1);
+  } else {
+    dir = ".";
+    filterString = filter;
+  }
+  res.clear();
+  struct dirent **namelist;
+  int nMatches = scandir(dir.c_str(), &namelist,
+                         filterFunc, alphasort);
+  if (nMatches <= 0)
+    return;
+  while (nMatches-- != 0) {
+    res.push_back(namelist[nMatches]->d_name);
+    free(namelist[nMatches]);
+  }
+  free(namelist);
+}
 
 static stringT GetLockFileName(const stringT &filename)
 {

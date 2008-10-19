@@ -35,10 +35,10 @@ bool pws_os::GetRandomData(void *p, unsigned long len)
   ifstream is("/dev/urandom");
   if (!is)
     return false;
-  return is.read(p, len);
+  return is.read((char *)p, len);
 }
 
-static void void get_failsafe_rnd(void * &p, unsigned &slen)
+static void get_failsafe_rnd(char * &p, unsigned &slen)
 {
   // This function will be called
   // iff we couldn't get a minimal amount of entropy
