@@ -559,36 +559,38 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
   switch (st_fldata.mtype) {
     case PWSMatch::MT_PASSWORD:
       if (st_fldata.rule == PWSMatch::MR_EXPIRED) {
-        Format(cs_criteria, _T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule.c_str());
         break;
       } else if (st_fldata.rule == PWSMatch::MR_WILLEXPIRE) {
-        Format(cs_criteria, _T("%s %s"), cs_rule, cs1);
+        Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
         break;
       }
       // Note: purpose drop through to standard 'string' processing
     case PWSMatch::MT_STRING:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
-        Format(cs_criteria, _T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule.c_str());
       else {
         stringT cs_delim(_T(""));
         if (cs1.find(_T(" ")) != stringT::npos)
           cs_delim = _T("'");
         Format(cs_criteria, _T("%s %s%s%s %s"), 
-               cs_rule, cs_delim, cs1, cs_delim, cs2);
+               cs_rule.c_str(), cs_delim.c_str(), 
+               cs1.c_str(), cs_delim.c_str(), cs2.c_str());
       }
       break;
     case PWSMatch::MT_INTEGER:
     case PWSMatch::MT_DATE:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
-        Format(cs_criteria, _T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule.c_str());
       else
       if (st_fldata.rule == PWSMatch::MR_BETWEEN) {  // Date or Integer only
         LoadAString(cs_and, IDSC_AND);
-        Format(cs_criteria, _T("%s %s %s %s"), cs_rule, cs1, cs_and, cs2);
+        Format(cs_criteria, _T("%s %s %s %s"), 
+               cs_rule.c_str(), cs1.c_str(), cs_and.c_str(), cs2.c_str());
       } else
-        Format(cs_criteria, _T("%s %s"), cs_rule, cs1);
+        Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
       break;
     case PWSMatch::MT_PWHIST:
       LoadAString(cs_criteria, IDSC_SEEPWHISTORYFILTERS);
@@ -600,7 +602,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       cs_criteria = cs_rule;
       break;
     case PWSMatch::MT_ENTRYTYPE:
-      Format(cs_criteria, _T("%s %s"), cs_rule, cs1);
+      Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
       break;
     default:
       ASSERT(0);
