@@ -13,6 +13,7 @@
 #include "ItemData.h"
 #include "corelib.h"
 #include <time.h>
+#include "os/pws_tchar.h"
 
 bool PWSMatch::Match(const StringX &string1, StringX &csValue,
                      int iFunction)

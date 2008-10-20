@@ -13,9 +13,6 @@ typedef time_t __time32_t;
 typedef unsigned long long __time64_t;
 
 extern struct tm *gmtime64_r(const __time64_t *timep, struct tm *result);
-extern int _localtime32_s(struct tm *st, const time_t *t); // localtime_r(t, st)
-extern size_t _tcsftime(TCHAR *buf, size_t maxSize, const TCHAR *fmt,
-                        const struct tm *tm);
 
 namespace pws_os {
   /**
@@ -37,7 +34,7 @@ public:
   int GetHour() const {return m_tm.tm_hour;}
   int GetMinute() const {return m_tm.tm_min;}
   int GetSecond() const {return m_tm.tm_sec;}
-  int GetDayOfWeek() const;
+  int GetDayOfWeek() const {return m_tm.tm_wday + 1;}
   time_t GetTime() const {return m_t;}
 private:
   time_t m_t;
