@@ -20,7 +20,7 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									os/linux/file.cpp os/linux/mem.cpp \
 									os/linux/sys.cpp os/linux/env.cpp \
 									os/linux/dir.cpp os/linux/utf8conv.cpp \
-									os/linux/rand.cpp
+									os/linux/rand.cpp os/linux/pws_time.cpp
 
 TESTSRC         = main.cpp
 SRC             = $(LIBSRC) $(TESTSRC)
