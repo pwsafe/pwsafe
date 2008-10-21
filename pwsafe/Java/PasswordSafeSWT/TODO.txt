@@ -1,8 +1,15 @@
 
 
-This is a v0.4 release, so there is much to do in every way ;-)
+This is a v0.7 release, so there is still much to do in every way ;-)
 
+Changes in v0.7:
+* v3 Password Fields are mostly available, except password history
+* safe locking should work, can be activated via security preferences
+* column resizing in tree mode 
+
+Old entries from V0.4, to be checked:
 * Options are persisted to file, but aren't yet wired to any GUI functionality (except for generate password)
+	-> mostly done in 0.7
 * The MRU only refreshes on each restart
 * The right click menus aren't context sensitive
 * The lauching of URLs in comments fields (Ctrl-T) is not yet implemented
