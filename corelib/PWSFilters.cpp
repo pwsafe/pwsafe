@@ -8,11 +8,15 @@
 
 #include "PWSFilters.h"
 #include "PWHistory.h"
-#include "pwsprefs.h"
-#include "match.h"
+#include "PWSprefs.h"
+#include "Match.h"
 #include "UUIDGen.h"
 #include "PWSXMLFilters.h"
+#ifdef _WIN32
 #include "SAXFilters.h"
+#else /* borrow following from SAXFilters.h for non-Windows build */
+#define PWS_XML_FILTER_VERSION 1
+#endif
 #include "corelib.h"
 #include "PWScore.h"
 
@@ -49,7 +53,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
 
-  char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
+  const char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
   if (bFile) {
     sztab1 = "\t";
     sztab2 = "\t\t";
@@ -125,7 +129,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
-  char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
+  const char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
   if (bWithFormatting) {
     sztab1 = "\t";
     sztab2 = "\t\t";
@@ -157,7 +161,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     oss << "\">" << szendl;
 
     const int ft = (int)st_fldata.ftype;
-    char *pszfieldtype = {"\0"};
+    const char *pszfieldtype = {"\0"};
     switch (ft) {
       case FT_GROUPTITLE:
         pszfieldtype = "grouptitle";
@@ -256,7 +260,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     oss << "\">" << szendl;
 
     const int ft = (int)st_fldata.ftype;
-    char *pszfieldtype = {"\0"};
+    const char *pszfieldtype = {"\0"};
     switch (ft) {
       case HT_PRESENT:
         pszfieldtype = "history_present";
@@ -314,7 +318,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     oss << "\">" << szendl;
 
     const int ft = (int)st_fldata.ftype;
-    char *pszfieldtype = {"\0"};
+    const char *pszfieldtype = {"\0"};
     switch (ft) {
       case PT_PRESENT:
         pszfieldtype = "policy_present";
