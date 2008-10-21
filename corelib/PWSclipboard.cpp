@@ -14,10 +14,15 @@
 #include "PWSclipboard.h"
 #include "util.h"
 
+static CLIPFORMAT CF_CLIPBOARD_VIEWER_IGNORE;
+
 PWSclipboard::PWSclipboard()
   : m_set(false)
 {
   memset(m_digest, 0, sizeof(m_digest));
+
+  // Spelling counts - must be exact!
+  CF_CLIPBOARD_VIEWER_IGNORE = (CLIPFORMAT)RegisterClipboardFormat(_T("Clipboard Viewer Ignore"));
 }
 
 PWSclipboard::~PWSclipboard()
@@ -28,14 +33,23 @@ PWSclipboard::~PWSclipboard()
 
 bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
+  // Dummy data
+  HGLOBAL hDummyGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, 2 * sizeof(TCHAR));
+  LPTSTR pDummyGlobalLock = (LPTSTR)::GlobalLock(hDummyGlobalMemory);
+
+  PWSUtil::strCopy(pDummyGlobalLock, 2, _T("\0") , 1);
+  ::GlobalUnlock(hDummyGlobalMemory);
+
+  // Real data
   unsigned int uGlobalMemSize = (data.length() + 1) * sizeof(TCHAR);
   HGLOBAL hGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, uGlobalMemSize);
   LPTSTR pGlobalLock = (LPTSTR)::GlobalLock(hGlobalMemory);
 
-  PWSUtil::strCopy(pGlobalLock, data.length() + 1, data.c_str() ,data.length());
+  PWSUtil::strCopy(pGlobalLock, data.length() + 1, data.c_str(), data.length());
   ::GlobalUnlock(hGlobalMemory);
 
   COleDataSource *pods = new COleDataSource; // deleted automagically
+  pods->CacheGlobalData(CF_CLIPBOARD_VIEWER_IGNORE, hDummyGlobalMemory);
   pods->CacheGlobalData(cfFormat, hGlobalMemory);
   pods->SetClipboard();
   m_set = isSensitive; // don't set if !isSensitive, so won't be cleared
