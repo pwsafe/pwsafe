@@ -32,7 +32,10 @@ Changes to Existing Features in 3.14.02
 New Features for 3.14.02
 ========================
 [Open Discussion] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature
-supported by some Clipboard Viewers. 
+supported by some Clipboard Viewers.
+[2144489] Click on the text next to edit fields to copy the field to
+the clipboard. Ctrl+Click on the URL will launch the browser. Text will
+flash to show what it has done (green - copy, pink - launch).
 
 
 Bugs fixed in 3.14.01

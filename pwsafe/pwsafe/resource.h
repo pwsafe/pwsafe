@@ -313,7 +313,6 @@
 #define IDC_CRYPTKEY1                   1032
 #define IDC_CRYPTKEY2                   1033
 #define IDC_DEFUSERNAME                 1034
-#define IDC_STATIC_USERNAME             1035
 #define IDC_DEFPWLENGTH                 1036
 #define IDC_MESSAGE                     1037
 #define IDC_QUERYCHECK                  1038
@@ -379,8 +378,6 @@
 #define IDC_EXPIRYDATE                  1103
 #define IDC_EXPIRYTIME                  1104
 #define IDC_STATIC_CURRENT_XTIME        1105
-#define IDC_STATIC_URL                  1106
-#define IDC_STATIC_AUTO                 1107
 #define IDC_STATIC_CTIME                1108
 #define IDC_CTIME                       1109
 #define IDC_STATIC_PMTIME               1110
@@ -587,6 +584,14 @@
 #define IDC_FILTERPROPERTIES            1347
 #define IDC_STATIC_FILTERNAME           1348
 #define IDC_STATIC_ACTIONS              1349
+#define IDC_STATIC_GROUP                1350
+#define IDC_STATIC_TITLE                1351
+#define IDC_STATIC_USERNAME             1352
+#define IDC_STATIC_PASSWORD             1353
+#define IDC_STATIC_CONFPSWD             1354
+#define IDC_STATIC_NOTES                1355
+#define IDC_STATIC_URL                  1356
+#define IDC_STATIC_AUTO                 1357
 
 // Next default values for new objects
 // 
