@@ -1,4 +1,6 @@
 #include <iostream>
+#include <unistd.h>
+
 #include "PWScore.h"
 
 using namespace std;
@@ -47,8 +49,28 @@ int main(int argc, char *argv[])
   cout << "CheckPassword returned: " << status_text(status) << endl;
   if (status != PWScore::SUCCESS)
     goto done;
+  {
+    stringT locker(getlogin() != NULL ? getlogin() : "unknown");
+    if (!core.LockFile(argv[1], locker)) {
+      cout << "Couldn't lock file " << locker << endl;
+      status = -1;
+      goto done;
+    }
+  }
   status = core.ReadFile(argv[1], argv[2]);
   cout << "ReadFile returned: " << status_text(status) << endl;
-  done:
+  if (status != PWScore::SUCCESS)
+    goto done;
+  cout << argv[1] << " has " << core.GetNumEntries() << " entries" << endl;
+  {
+    CItemData::FieldBits bits(~0L);
+    for (ItemListConstIter iter = core.GetEntryIter();
+         iter != core.GetEntryEndIter(); iter++) {
+      StringX text = iter->second.GetPlaintext('|', bits, '-', NULL);
+      cout << text << endl;
+    }
+  }
+ done:
+  core.UnlockFile(argv[1]);
   return status;
 }

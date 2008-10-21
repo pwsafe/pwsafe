@@ -13,15 +13,27 @@
 #include "../typedefs.h"
 #include "../utf8conv.h"
 #include <stdlib.h>
+#include <locale.h>
+
+class Startup {
+public:
+  Startup() {
+    char *sl = setlocale(LC_ALL, "");
+    if (sl == NULL)
+      throw "Couldn't initialize locale - bailing out";
+  }
+};
+
+static Startup startup;
 
 size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
                         const wchar_t *src, size_t , bool )
 {
-  return ::wcstombs(dst, src, maxdstlen);
+  return ::wcstombs(dst, src, maxdstlen) + 1;
 }
 
 size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
                         const char *src, size_t , bool )
 {
-  return ::mbstowcs(dst, src, maxdstlen);
+  return ::mbstowcs(dst, src, maxdstlen) + 1;
 }
