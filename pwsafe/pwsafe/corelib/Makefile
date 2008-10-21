@@ -1,7 +1,8 @@
 # Baby Makefile for Linux
 #
 
-ALLSRC          = 					SAXHandlers.cpp \
+# Following not used in Linux build
+NOTSRC          = 					SAXHandlers.cpp \
 									SAXFilters.cpp \
 	 								PWSclipboard.cpp PWSXML.cpp
 
@@ -21,24 +22,19 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									os/linux/dir.cpp os/linux/utf8conv.cpp \
 									os/linux/rand.cpp os/linux/pws_time.cpp
 
-TESTSRC         = main.cpp
-SRC             = $(LIBSRC) $(TESTSRC)
+SRC             = $(LIBSRC)
 
 OBJPATH         = ./obj
 LIBPATH         = ./lib
-BINPATH         = ./bin
 
 #destination related macros
-TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
 LIBOBJ	  = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB	     = $(LIBPATH)/libcore.a
-TEST	    = $(BINPATH)/test
-OBJ	     = $(TESTOBJ) $(LIBOBJ)
+OBJ	     = $(LIBOBJ)
 
-#CXXFLAGS += -DUNICODE -Wall
 CXXFLAGS +=  -Wall
 # rules
-.PHONY: all clean test setup
+.PHONY: all clean setup
 
 $(OBJPATH)/%.o : %.c
 	$(CC) -g  $(CFLAGS)   -c $< -o $@
@@ -48,17 +44,12 @@ $(OBJPATH)/%.o : %.cpp
 
 all : setup $(LIB)
 
-test : $(TEST)
-
 $(LIB): $(LIBOBJ)
 	ar rvus $@ $(filter %.o,$^)
-
-$(TEST): $(LIB) $(TESTOBJ)
-	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^)  -o $@ $(LD_FLAGS) -Llib -lcore -luuid
 
 clean:
 	rm -f *~ $(OBJ) $(TEST) $(LIB) $(DEPENDFILE)
 
 setup:
 	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(OBJPATH)/os \
-            $(OBJPATH)/os/linux $(LIBPATH) $(BINPATH)
+            $(OBJPATH)/os/linux $(LIBPATH)
