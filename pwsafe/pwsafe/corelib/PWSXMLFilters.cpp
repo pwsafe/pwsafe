@@ -8,13 +8,14 @@
 // PWSXMLFilters.cpp : implementation file
 //
 #include "PWSXMLFilters.h"
-#include "SAXFilters.h"
 #include "corelib.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef _WIN32
+#include "SAXFilters.h"
 #include <atlcomcli.h>
 #include "xml_import.h"
-
+#endif
 #include <map>
 #include <algorithm>
 
@@ -25,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 PWSXMLFilters::PWSXMLFilters(PWSFilters &mapfilters, const FilterPool fpool)
-  : m_MapFilters(mapfilters), m_FPool(fpool), m_MSXML_Version(60)
+  : m_MSXML_Version(60), m_MapFilters(mapfilters), m_FPool(fpool)
 {
 }
 
@@ -34,6 +35,7 @@ PWSXMLFilters::~PWSXMLFilters()
 }
 
 // ---------------------------------------------------------------------------
+#ifdef _WIN32
 bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
                                      const stringT &strXMLData,
                                      const stringT &strXMLFileName, 
@@ -235,3 +237,12 @@ exit:
 
   return b_ok;
 }
+#else
+bool PWSXMLFilters::XMLFilterProcess(const bool &,
+                                     const stringT &,
+                                     const stringT &, 
+                                     const stringT &)
+{
+  return false;
+}
+#endif /* _WIN32 */
