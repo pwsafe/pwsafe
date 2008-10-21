@@ -16,6 +16,8 @@
 #include "corelib/ItemData.h"
 #include "corelib/PWHistory.h"
 
+class DboxMain;
+
 class CEditDlg : public CPWDialog
 {
 public:
@@ -38,6 +40,8 @@ public:
   void HideNotes();
 
 private:
+  DboxMain *m_pDbx;
+
   CItemData *m_ci; // The entry being edited
   CSecString m_title;
   CSecString m_group;
@@ -78,6 +82,15 @@ private:
   CEditExtn m_ex_autotype;
   CEditExtn *m_pex_notes;
 
+  CStaticExtn m_stc_group;
+  CStaticExtn m_stc_title;
+  CStaticExtn m_stc_username;
+  CStaticExtn m_stc_password;
+  CStaticExtn m_stc_confpswd;
+  CStaticExtn m_stc_notes;
+  CStaticExtn m_stc_URL;
+  CStaticExtn m_stc_autotype; 
+
   static CSecString HIDDEN_NOTES;
   static CString CS_SHOW, CS_HIDE, CS_ON, CS_OFF;
 
@@ -109,6 +122,8 @@ public:
   afx_msg void OnBnClickedClearXTime();
   afx_msg void OnBnClickedSetXTime();
   afx_msg void OnBnClickedPwhist();
+  
+  afx_msg void OnStcClicked(UINT nId);
 
   CButton m_MoreLessBtn;
   CButton m_ViewDependentsBtn;

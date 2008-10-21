@@ -49,7 +49,7 @@ const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
 // CStaticExtn
 
 CStaticExtn::CStaticExtn()
-  : m_bUserColour(FALSE)
+  : m_bUserColour(FALSE), m_iFlashing(0)
 {
 }
 
@@ -65,12 +65,40 @@ END_MESSAGE_MAP()
 
 HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
-  if (!this->IsWindowEnabled() || m_bUserColour == FALSE)
+  if (!this->IsWindowEnabled())
+    return (HBRUSH)NULL;
+
+  if (m_iFlashing != 0) {
+    pDC->SetBkMode(m_iFlashing == 1 ? OPAQUE : TRANSPARENT);
+    m_cfOldColour = pDC->SetBkColor(m_iFlashing == 1 ? m_cfFlashColour : m_cfOldColour);
+    return GetSysColorBrush(COLOR_BTNFACE);
+  }
+
+  if (m_bUserColour == FALSE)
     return (HBRUSH)NULL;
 
   pDC->SetTextColor(m_cfUser);
   pDC->SetBkColor(GetSysColor(COLOR_BTNFACE));
   return GetSysColorBrush(COLOR_BTNFACE);
+}
+
+void CStaticExtn::FlashBkgnd(COLORREF cfBkgrnd)
+{
+  // Set flash colour
+  m_cfFlashColour = cfBkgrnd;
+  m_iFlashing = 1;
+  // Cause repaint
+  Invalidate();
+  UpdateWindow();
+  // Sleep to give the impression of a flash
+  Sleep(100);
+  // Reset colour
+  m_iFlashing = -1;
+  // Cause repaint
+  Invalidate();
+  UpdateWindow();
+  // Turn off flashing
+  m_iFlashing = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////

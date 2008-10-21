@@ -67,6 +67,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL)
 {
   ASSERT(ci != NULL);
+  m_pDbx = static_cast<DboxMain *>(pParent);
 
   if (HIDDEN_NOTES.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
@@ -163,6 +164,15 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_URL, m_ex_URL);
    DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
    DDX_Check(pDX, IDC_OVERRIDE_POLICY, m_OverridePolicy);
+
+   DDX_Control(pDX, IDC_STATIC_GROUP, m_stc_group);
+   DDX_Control(pDX, IDC_STATIC_TITLE, m_stc_title);
+   DDX_Control(pDX, IDC_STATIC_USERNAME, m_stc_username);
+   DDX_Control(pDX, IDC_STATIC_PASSWORD, m_stc_password);
+   DDX_Control(pDX, IDC_STATIC_CONFPSWD, m_stc_confpswd);
+   DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
+   DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
+   DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);   
 }
 
 BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
@@ -185,6 +195,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
   ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
+  ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_AUTO, OnStcClicked)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -936,6 +947,58 @@ void CEditDlg::OnBnClickedOverridePolicy()
     m_pwp.Empty();
   EnableToolTips(m_OverridePolicy); // show tooltip iff m_OverridePolicy set
   m_ToolTipCtrl->Activate(m_OverridePolicy);
+}
+
+void CEditDlg::OnStcClicked(UINT nID)
+{
+  const COLORREF crefGreen = (RGB(222, 255, 222));
+  const COLORREF crefPink  = (RGB(255, 222, 222));
+
+  bool bCtrl = (nID == IDC_STATIC_URL) && (GetKeyState(VK_CONTROL) & 0x8000) != 0;
+
+  StringX cs_data;
+  // NOTE: These values must be contiguous in "resource.h"
+  switch (nID) {
+    case IDC_STATIC_GROUP:
+      m_stc_group.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_group);
+      break;
+    case IDC_STATIC_TITLE:
+      m_stc_title.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_title);
+      break;
+    case IDC_STATIC_USERNAME:
+      m_stc_username.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_username);
+      break;
+    case IDC_STATIC_PASSWORD:
+      m_stc_password.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_realpassword);
+      break;
+    case IDC_STATIC_CONFPSWD:
+      m_stc_confpswd.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_realpassword);
+      break;
+    case IDC_STATIC_NOTES:
+      m_stc_notes.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_notes);
+      break;
+    case IDC_STATIC_URL:
+      m_stc_URL.FlashBkgnd(bCtrl ? crefPink : crefGreen);
+      cs_data = StringX(m_URL);
+      break;
+    case IDC_STATIC_AUTO:
+      m_stc_autotype.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_autotype);
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  if (bCtrl)
+    m_pDbx->LaunchBrowser(CString(cs_data.c_str()));
+  else
+    m_pDbx->SetClipboardData(cs_data);
 }
 
 void CEditDlg::SelectAllNotes()

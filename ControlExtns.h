@@ -42,11 +42,14 @@ public:
   {m_bUserColour = FALSE;}
   BOOL GetColourState()
   {return m_bUserColour;}
+  void FlashBkgnd(COLORREF cfBkgrnd);
 
   // Attributes
 private:
   BOOL m_bUserColour;
   COLORREF m_cfUser;
+  int m_iFlashing;
+  COLORREF m_cfOldColour, m_cfFlashColour;
 
   // Operations
 public:
