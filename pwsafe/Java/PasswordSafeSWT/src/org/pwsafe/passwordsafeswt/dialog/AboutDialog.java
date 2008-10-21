@@ -65,7 +65,7 @@ public class AboutDialog extends Dialog {
 		final Label lblAuthor = new Label(group, SWT.NONE);
 		lblAuthor.setAlignment(SWT.CENTER);
 		lblAuthor.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-		lblAuthor.setText("(c) 2005 by Glen Smith and others");
+		lblAuthor.setText("(c) 2008 by Glen Smith & others");
 
 		final Label lblVersion = new Label(group, SWT.NONE);
 		lblVersion.setAlignment(SWT.CENTER);
