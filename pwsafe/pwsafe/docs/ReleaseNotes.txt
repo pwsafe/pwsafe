@@ -31,6 +31,8 @@ Changes to Existing Features in 3.14.02
 
 New Features for 3.14.02
 ========================
+[Open Discussion] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature
+supported by some Clipboard Viewers. 
 
 
 Bugs fixed in 3.14.01
