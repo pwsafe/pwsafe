@@ -980,7 +980,7 @@ void CEditDlg::OnStcClicked(UINT nID)
   bool bCtrl = (nID == IDC_STATIC_URL) && (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 
   StringX cs_data;
-  int iaction;
+  int iaction(0);
   // NOTE: These values must be contiguous in "resource.h"
   switch (nID) {
     case IDC_STATIC_GROUP:
