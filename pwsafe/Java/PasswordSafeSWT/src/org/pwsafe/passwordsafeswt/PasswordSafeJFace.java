@@ -1316,6 +1316,10 @@ public class PasswordSafeJFace extends ApplicationWindow {
 					}
 				}
 				
+				if (thePrefs.getBoolean(SecurityPreferences.LOCK_DB_ON_MIN)) {
+					clearView();
+					setLocked(true);
+				}
 				startLockTimer();
 			}
 			
