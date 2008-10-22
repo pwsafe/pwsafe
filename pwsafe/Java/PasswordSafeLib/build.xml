@@ -27,7 +27,10 @@
 
 	<path id="project.class.path">
 		<pathelement path="${java.class.path}" />
-		<pathelement location="../BlowfishJ/bin" />
+		<!--pathelement location="../PasswordSafeSWT/lib/blowfishj-2.14.jar" />
+		<pathelement location="../PasswordSafeSWT/lib/bcprov-jdk14-133.jar" />
+		<pathelement location="../PasswordSafeSWT/lib/commons-logging.jar" />
+		<pathelement location="/home/roxon/app/eclipse/plugins/org.junit_3.8.1/junit.jar" /-->
 		<pathelement location="bin" />
         <fileset dir="${libdir}">
             <include name="*.jar"/>
@@ -102,7 +105,17 @@ runtests   - Runs the JUnit tests.
 
 	<target name="jar" depends="compile">
 		<zip  destfile="${jar.doc}" basedir="${docdir}" />
-		<jar destfile="${jar.bin}" basedir="${bindir}" />
+		<jar destfile="${jar.bin}" basedir="${bindir}" index="true">
+			   <manifest>
+			      <!-- Who is building this jar? -->
+			      <attribute name="Built-By" value="${user.name}"/>
+			      <!-- Information about the program itself -->
+			      <!--attribute name="Implementation-Vendor" value="ACME inc."/-->
+			      <attribute name="Implementation-Title" value="PasswordSafeLib"/>
+			      <attribute name="Implementation-Version" value="3.14"/>
+			      <attribute name="sealed" value="true"/>
+			   	</manifest>
+		</jar>
 	</target>
 
 	<target name="runtests" depends="compile">
