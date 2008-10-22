@@ -267,6 +267,10 @@ public:
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
+  StringX GetAutoTypeString(const StringX AutoCmd, const StringX user, 
+                            const StringX pwd);
+  void UpdateLastClipboardAction(const int iaction);
+
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -392,7 +396,6 @@ protected:
   void SetToolbar(const int menuItem, bool bInit = false);
   void UpdateStatusBar();
   void UpdateMenuAndToolBar(const bool bOpen);
-  void UpdateLastClipboardAction(const int iaction);
   void SetDCAText();
   void SortListView();
   void UpdateBrowseURLSendEmailButton(const bool bIsEmail);

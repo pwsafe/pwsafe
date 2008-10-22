@@ -588,10 +588,9 @@
 #define IDC_STATIC_TITLE                1351
 #define IDC_STATIC_USERNAME             1352
 #define IDC_STATIC_PASSWORD             1353
-#define IDC_STATIC_CONFPSWD             1354
-#define IDC_STATIC_NOTES                1355
-#define IDC_STATIC_URL                  1356
-#define IDC_STATIC_AUTO                 1357
+#define IDC_STATIC_NOTES                1354
+#define IDC_STATIC_URL                  1355
+#define IDC_STATIC_AUTO                 1356
 
 // Next default values for new objects
 // 

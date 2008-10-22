@@ -480,3 +480,5 @@
 #define IDS_FILTEREXPORT                5643
 #define IDS_FILTERAPPLY                 5644
 #define IDS_MINIMIZECONFLICT            5645
+#define IDC_CLICKTOCOPY                 5646
+#define IDC_CLICKTOCOPYORLAUNCH         5647
