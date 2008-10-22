@@ -86,7 +86,6 @@ private:
   CStaticExtn m_stc_title;
   CStaticExtn m_stc_username;
   CStaticExtn m_stc_password;
-  CStaticExtn m_stc_confpswd;
   CStaticExtn m_stc_notes;
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_autotype; 

@@ -59,6 +59,10 @@ CString CEditDlg::CS_OFF;
 CString CEditDlg::CS_SHOW;
 CString CEditDlg::CS_HIDE;
 
+static const COLORREF crefGreen = (RGB(222, 255, 222));
+static const COLORREF crefPink  = (RGB(255, 222, 222));
+static const COLORREF crefWhite = (RGB(255, 255, 255));
+
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
   m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
@@ -169,7 +173,6 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_STATIC_TITLE, m_stc_title);
    DDX_Control(pDX, IDC_STATIC_USERNAME, m_stc_username);
    DDX_Control(pDX, IDC_STATIC_PASSWORD, m_stc_password);
-   DDX_Control(pDX, IDC_STATIC_CONFPSWD, m_stc_confpswd);
    DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
    DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
    DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);   
@@ -498,13 +501,31 @@ BOOL CEditDlg::OnInitDialog()
     TRACE("Unable To create Edit Dialog ToolTip\n");
   }
   CString cs_ToolTip;
-  cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
-  if (!m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip)) {
-    TRACE("Unable To add tool to Edit Dialog ToolTip\n");
+  if (m_OverridePolicy == TRUE) {
+    cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
   }
-  // show tooltip iff m_OverridePolicy set
-  EnableToolTips(m_OverridePolicy);
-  m_ToolTipCtrl->Activate(m_OverridePolicy);
+  cs_ToolTip.LoadString(IDC_CLICKTOCOPY);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_GROUP), cs_ToolTip);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_TITLE), cs_ToolTip);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
+
+  cs_ToolTip.LoadString(IDC_CLICKTOCOPYORLAUNCH);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
+
+  EnableToolTips();
+  m_ToolTipCtrl->Activate(TRUE);
+
+  m_stc_group.SetHighlight(true, crefWhite);
+  m_stc_title.SetHighlight(true, crefWhite);
+  m_stc_username.SetHighlight(true, crefWhite);
+  m_stc_password.SetHighlight(true, crefWhite);
+  m_stc_notes.SetHighlight(true, crefWhite);
+  m_stc_URL.SetHighlight(true, crefWhite);
+  m_stc_autotype.SetHighlight(true, crefWhite);
 
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -945,51 +966,58 @@ void CEditDlg::OnBnClickedOverridePolicy()
     pParent->SetPasswordPolicy(m_pwp);
   } else
     m_pwp.Empty();
-  EnableToolTips(m_OverridePolicy); // show tooltip iff m_OverridePolicy set
-  m_ToolTipCtrl->Activate(m_OverridePolicy);
+
+  if (m_OverridePolicy == TRUE) {
+    CString cs_ToolTip;
+    cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
+  } else
+    m_ToolTipCtrl->DelTool(GetDlgItem(IDC_OVERRIDE_POLICY));
 }
 
 void CEditDlg::OnStcClicked(UINT nID)
 {
-  const COLORREF crefGreen = (RGB(222, 255, 222));
-  const COLORREF crefPink  = (RGB(255, 222, 222));
-
   bool bCtrl = (nID == IDC_STATIC_URL) && (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 
   StringX cs_data;
+  int iaction;
   // NOTE: These values must be contiguous in "resource.h"
   switch (nID) {
     case IDC_STATIC_GROUP:
       m_stc_group.FlashBkgnd(crefGreen);
       cs_data = StringX(m_group);
+      iaction = CItemData::GROUP;
       break;
     case IDC_STATIC_TITLE:
       m_stc_title.FlashBkgnd(crefGreen);
       cs_data = StringX(m_title);
+      iaction = CItemData::TITLE;
       break;
     case IDC_STATIC_USERNAME:
       m_stc_username.FlashBkgnd(crefGreen);
       cs_data = StringX(m_username);
+      iaction = CItemData::USER;
       break;
     case IDC_STATIC_PASSWORD:
       m_stc_password.FlashBkgnd(crefGreen);
       cs_data = StringX(m_realpassword);
-      break;
-    case IDC_STATIC_CONFPSWD:
-      m_stc_confpswd.FlashBkgnd(crefGreen);
-      cs_data = StringX(m_realpassword);
+      iaction = CItemData::PASSWORD;
       break;
     case IDC_STATIC_NOTES:
       m_stc_notes.FlashBkgnd(crefGreen);
       cs_data = StringX(m_notes);
+      iaction = CItemData::NOTES;
       break;
     case IDC_STATIC_URL:
       m_stc_URL.FlashBkgnd(bCtrl ? crefPink : crefGreen);
       cs_data = StringX(m_URL);
+      iaction = CItemData::URL;
       break;
     case IDC_STATIC_AUTO:
       m_stc_autotype.FlashBkgnd(crefGreen);
-      cs_data = StringX(m_autotype);
+      cs_data = m_pDbx->GetAutoTypeString(StringX(m_autotype), StringX(m_username), 
+                                          StringX(m_realpassword));
+      iaction = CItemData::AUTOTYPE;
       break;
     default:
       ASSERT(0);
@@ -999,6 +1027,7 @@ void CEditDlg::OnStcClicked(UINT nID)
     m_pDbx->LaunchBrowser(CString(cs_data.c_str()));
   else
     m_pDbx->SetClipboardData(cs_data);
+  m_pDbx->UpdateLastClipboardAction(iaction);
 }
 
 void CEditDlg::SelectAllNotes()

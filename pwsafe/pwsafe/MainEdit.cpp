@@ -1115,6 +1115,12 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
       // Clipboard cleared
       m_lastclipboardaction = _T("");
       break;
+    case CItemData::GROUP:
+      imsg = IDS_GROUP;
+      break;
+    case CItemData::TITLE:
+      imsg = IDS_TITLE;
+      break;
     case CItemData::USER:
       imsg = IDS_USER;
       break;
@@ -1126,6 +1132,9 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
       break;
     case CItemData::URL:
       imsg = IDS_URL;
+      break;
+    case CItemData::AUTOTYPE:
+      imsg = IDS_AUTOTYPE;
       break;
     default:
       ASSERT(0);
@@ -1333,6 +1342,68 @@ void DboxMain::AutoType(const CItemData &ci)
     SetWindowPos(&wndBottom, 0, 0, 0, 0,
                  SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
   }
+}
+
+StringX DboxMain::GetAutoTypeString(const StringX autocmd, const StringX user, 
+                                    const StringX pwd)
+{
+  // If empty, try the database default
+  StringX AutoCmd(autocmd);
+  if (AutoCmd.empty()) {
+    AutoCmd = PWSprefs::GetInstance()->
+              GetPref(PWSprefs::DefaultAutotypeString);
+
+    // If still empty, take this default
+    if (AutoCmd.empty()) {
+      // checking for user and password for default settings
+      if (!pwd.empty()){
+        if (!user.empty())
+          AutoCmd = DEFAULT_AUTOTYPE;
+        else
+          AutoCmd = _T("\\p\\n");
+      }
+    }
+  }
+
+  StringX tmp(_T(""));
+  TCHAR curChar;
+  const int N = AutoCmd.length();
+
+  for (int n = 0; n < N; n++){
+    curChar = AutoCmd[n];
+    if (curChar == TCHAR('\\')) {
+      n++;
+      if (n < N)
+        curChar = AutoCmd[n];
+
+      switch (curChar){
+        case TCHAR('\\'):
+          tmp += TCHAR('\\');
+          break;
+        case TCHAR('n'):
+        case TCHAR('r'):
+          tmp += TCHAR('\r');
+          break;
+        case TCHAR('t'):
+          tmp += TCHAR('\t');
+          break;
+        case TCHAR('u'):
+          tmp += user;
+          break;
+        case TCHAR('p'):
+          tmp += pwd;
+          break;
+        case TCHAR('d'):
+          // Ignore delay!
+          break; // case 'd'
+        default:
+          tmp += _T("\\") + curChar;
+          break;
+      }
+    } else
+      tmp += curChar;
+  }
+  return tmp;
 }
 
 void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)

@@ -49,7 +49,8 @@ const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
 // CStaticExtn
 
 CStaticExtn::CStaticExtn()
-  : m_bUserColour(FALSE), m_iFlashing(0)
+  : m_bUserColour(FALSE), m_bMouseInWindow(false), 
+  m_iFlashing(0), m_bHighlight(false)
 {
 }
 
@@ -60,6 +61,8 @@ CStaticExtn::~CStaticExtn()
 BEGIN_MESSAGE_MAP(CStaticExtn, CStatic)
   //{{AFX_MSG_MAP(CStaticExtn)
   ON_WM_CTLCOLOR_REFLECT()
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+  ON_WM_MOUSEMOVE()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -69,8 +72,15 @@ HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
     return (HBRUSH)NULL;
 
   if (m_iFlashing != 0) {
-    pDC->SetBkMode(m_iFlashing == 1 ? OPAQUE : TRANSPARENT);
+    pDC->SetBkMode(m_iFlashing == 1 || (m_iFlashing && m_bHighlight && m_bMouseInWindow) ?
+                   OPAQUE : TRANSPARENT);
     m_cfOldColour = pDC->SetBkColor(m_iFlashing == 1 ? m_cfFlashColour : m_cfOldColour);
+    return GetSysColorBrush(COLOR_BTNFACE);
+  }
+
+  if (m_bHighlight) {
+    pDC->SetBkMode(m_bMouseInWindow ? OPAQUE : TRANSPARENT);
+    m_cfOldColour = pDC->SetBkColor(m_bMouseInWindow ? m_cfHighlightColour : m_cfOldColour);
     return GetSysColorBrush(COLOR_BTNFACE);
   }
 
@@ -82,16 +92,16 @@ HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
   return GetSysColorBrush(COLOR_BTNFACE);
 }
 
-void CStaticExtn::FlashBkgnd(COLORREF cfBkgrnd)
+void CStaticExtn::FlashBkgnd(COLORREF cfFlashColour)
 {
   // Set flash colour
-  m_cfFlashColour = cfBkgrnd;
+  m_cfFlashColour = cfFlashColour;
   m_iFlashing = 1;
   // Cause repaint
   Invalidate();
   UpdateWindow();
   // Sleep to give the impression of a flash
-  Sleep(100);
+  Sleep(200);
   // Reset colour
   m_iFlashing = -1;
   // Cause repaint
@@ -99,6 +109,33 @@ void CStaticExtn::FlashBkgnd(COLORREF cfBkgrnd)
   UpdateWindow();
   // Turn off flashing
   m_iFlashing = 0;
+}
+
+void CStaticExtn::OnMouseMove(UINT nFlags, CPoint point)
+{
+  if (!m_bMouseInWindow) {
+    m_bMouseInWindow = true;
+    if (m_bHighlight) {
+      // Set background
+      Invalidate();
+      UpdateWindow();
+    }
+    TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT), TME_LEAVE, m_hWnd, 0};
+    VERIFY(TrackMouseEvent(&tme));
+  }
+
+  CStatic::OnMouseMove(nFlags, point);
+}
+
+LRESULT CStaticExtn::OnMouseLeave(WPARAM, LPARAM)
+{
+  if (m_bHighlight) {
+    m_bMouseInWindow = false;
+    // Reset background
+    Invalidate();
+    UpdateWindow();
+  }
+  return 0L;
 }
 
 /////////////////////////////////////////////////////////////////////////////
