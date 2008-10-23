@@ -199,6 +199,8 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
   ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_AUTO, OnStcClicked)
+  ON_BN_CLICKED(IDC_LAUNCH, OnBnClickedLaunch)
+  ON_EN_CHANGE(IDC_URL, OnEnChangeUrl)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -274,17 +276,16 @@ void CEditDlg::OnOK()
     goto dont_close;
   }
 
-  DboxMain* pDbx = static_cast<DboxMain *>(GetParent());
-  ASSERT(pDbx != NULL);
+  ASSERT(m_pDbx != NULL);
 
-  listindex = pDbx->Find(m_group, m_title, m_username);
+  listindex = m_pDbx->Find(m_group, m_title, m_username);
   /*
   *  If there is a matching entry in our list, and that
   *  entry is not the same one we started editing, tell the
   *  user to try again.
   */
-  if (listindex != pDbx->End()) {
-    const CItemData &listItem = pDbx->GetEntryAt(listindex);
+  if (listindex != m_pDbx->End()) {
+    const CItemData &listItem = m_pDbx->GetEntryAt(listindex);
     uuid_array_t list_uuid, elem_uuid;
     listItem.GetUUID(list_uuid);
     m_ci->GetUUID(elem_uuid);
@@ -300,9 +301,9 @@ void CEditDlg::OnOK()
   }
 
   bool brc, b_msg_issued;
-  brc = pDbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-                              true, CItemData::ET_ALIAS,
-                              m_base_uuid, m_ibasedata, b_msg_issued);
+  brc = m_pDbx->CheckNewPassword(m_group, m_title, m_username, m_password,
+                                 true, CItemData::ET_ALIAS,
+                                 m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {
     if (!b_msg_issued)
@@ -511,10 +512,8 @@ BOOL CEditDlg::OnInitDialog()
   m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
   m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
   m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
-
-  cs_ToolTip.LoadString(IDC_CLICKTOCOPYORLAUNCH);
   m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
 
   EnableToolTips();
   m_ToolTipCtrl->Activate(TRUE);
@@ -526,6 +525,8 @@ BOOL CEditDlg::OnInitDialog()
   m_stc_notes.SetHighlight(true, crefWhite);
   m_stc_URL.SetHighlight(true, crefWhite);
   m_stc_autotype.SetHighlight(true, crefWhite);
+
+  GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
 
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -590,11 +591,9 @@ void CEditDlg::HideNotes()
 
 void CEditDlg::OnRandom() 
 {
-  DboxMain* pParent = static_cast<DboxMain*>(GetParent());
-
   UpdateData(TRUE);
   StringX passwd;
-  pParent->MakeRandomPassword(passwd, m_pwp);
+  m_pDbx->MakeRandomPassword(passwd, m_pwp);
   m_realpassword = passwd.c_str();
   if (!m_isPwHidden) {
       m_password = m_realpassword;
@@ -953,17 +952,16 @@ void CEditDlg::OnBnClickViewDependents()
 
 void CEditDlg::OnBnClickedOverridePolicy()
 {
-  DboxMain* pParent = static_cast<DboxMain*>(GetParent());
   // If state was true AND shift key pressed,
   // show existing policy rather than transit to clear
   if (m_OverridePolicy && GetAsyncKeyState(VK_SHIFT) < 0) {
-    pParent->SetPasswordPolicy(m_pwp);
+    m_pDbx->SetPasswordPolicy(m_pwp);
     UpdateData(FALSE); // don't change state
     return;
   }
   UpdateData(TRUE);
   if (m_OverridePolicy == TRUE) {
-    pParent->SetPasswordPolicy(m_pwp);
+    m_pDbx->SetPasswordPolicy(m_pwp);
   } else
     m_pwp.Empty();
 
@@ -977,8 +975,7 @@ void CEditDlg::OnBnClickedOverridePolicy()
 
 void CEditDlg::OnStcClicked(UINT nID)
 {
-  bool bCtrl = (nID == IDC_STATIC_URL) && (GetKeyState(VK_CONTROL) & 0x8000) != 0;
-
+  UpdateData(TRUE);
   StringX cs_data;
   int iaction(0);
   // NOTE: These values must be contiguous in "resource.h"
@@ -1009,7 +1006,7 @@ void CEditDlg::OnStcClicked(UINT nID)
       iaction = CItemData::NOTES;
       break;
     case IDC_STATIC_URL:
-      m_stc_URL.FlashBkgnd(bCtrl ? crefPink : crefGreen);
+      m_stc_URL.FlashBkgnd(crefGreen);
       cs_data = StringX(m_URL);
       iaction = CItemData::URL;
       break;
@@ -1022,11 +1019,7 @@ void CEditDlg::OnStcClicked(UINT nID)
     default:
       ASSERT(0);
   }
-
-  if (bCtrl)
-    m_pDbx->LaunchBrowser(CString(cs_data.c_str()));
-  else
-    m_pDbx->SetClipboardData(cs_data);
+  m_pDbx->SetClipboardData(cs_data);
   m_pDbx->UpdateLastClipboardAction(iaction);
 }
 
@@ -1055,4 +1048,19 @@ BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
   }
 
   return CPWDialog::PreTranslateMessage(pMsg);
+}
+
+void CEditDlg::OnBnClickedLaunch()
+{
+  UpdateData(TRUE);
+  StringX cs_data = StringX(m_URL);
+  int iaction = CItemData::URL;
+  m_pDbx->LaunchBrowser(CString(cs_data.c_str()));
+  m_pDbx->UpdateLastClipboardAction(iaction);
+}
+
+void CEditDlg::OnEnChangeUrl()
+{
+  UpdateData(TRUE);
+  GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
 }

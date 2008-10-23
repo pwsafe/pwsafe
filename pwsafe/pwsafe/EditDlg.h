@@ -121,16 +121,18 @@ public:
   afx_msg void OnBnClickedClearXTime();
   afx_msg void OnBnClickedSetXTime();
   afx_msg void OnBnClickedPwhist();
-  
+  afx_msg void OnBnClickedOverridePolicy();
+  afx_msg void OnBnClickedLaunch();
+
   afx_msg void OnStcClicked(UINT nId);
 
   CButton m_MoreLessBtn;
   CButton m_ViewDependentsBtn;
 
+  afx_msg void OnEnChangeUrl();
   afx_msg void OnEnSetfocusNotes();
   afx_msg void OnEnKillfocusNotes();
   BOOL m_OverridePolicy;
-  afx_msg void OnBnClickedOverridePolicy();
 };
 //-----------------------------------------------------------------------------
 // Local variables:
