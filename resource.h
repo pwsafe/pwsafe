@@ -591,6 +591,7 @@
 #define IDC_STATIC_NOTES                1354
 #define IDC_STATIC_URL                  1355
 #define IDC_STATIC_AUTO                 1356
+#define IDC_LAUNCH                      1357
 
 // Next default values for new objects
 // 
@@ -598,7 +599,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        445
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1350
+#define _APS_NEXT_CONTROL_VALUE         1358
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif
