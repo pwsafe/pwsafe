@@ -33,10 +33,11 @@ New Features for 3.14.02
 ========================
 [Open Discussion] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature
 supported by some Clipboard Viewers.
+[2203438] Remove "[alt]", "[ssh]" and "{alt}" special keywords from URL
+when copying to the clipboard.
 [2144489] Click on the text next to edit fields to copy the field to
 the clipboard. Ctrl+Click on the URL will launch the browser. Text will
 flash to show what it has done (green - copy, pink - launch).
-
 
 Bugs fixed in 3.14.01
 =====================
