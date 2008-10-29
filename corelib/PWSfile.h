@@ -63,6 +63,7 @@ public:
     StringX m_lastsavedon; // and by which machine
     StringX m_whatlastsaved; // and by what application
     StringX m_dbname, m_dbdesc; // descriptive name, description
+    StringX m_YubiKeyPubID; // public ID of YubiKey associated with this database
   };
 
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,

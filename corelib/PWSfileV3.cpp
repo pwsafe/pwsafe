@@ -495,6 +495,10 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
+  if (!m_hdr.m_YubiKeyPubID.empty()) {
+    numWritten = WriteCBC(HDR_YBKPUBID, m_hdr.m_YubiKeyPubID);
+    if (numWritten <= 0) { status = FAILURE; goto end; }
+  }
   if (!m_MapFilters.empty()) {
     ostringstream oss;
     m_MapFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
@@ -689,6 +693,12 @@ int PWSfileV3::ReadHeader()
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         m_hdr.m_dbname = text;
+        break;
+
+    case HDR_YBKPUBID:
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        m_hdr.m_YubiKeyPubID = text;
         break;
 
       case HDR_DBDESC:

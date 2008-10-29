@@ -1101,7 +1101,18 @@ void DboxMain::OnCopyURL()
     }
   }
 
-  SetClipboardData(ci->GetURL());
+  StringX cs_URL = ci->GetURL();
+  StringX::size_type ipos;
+  ipos = cs_URL.find(_T("[alt]"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
+  ipos = cs_URL.find(_T("[ssh]"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
+  ipos = cs_URL.find(_T("{alt}"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
+  SetClipboardData(cs_URL);
   UpdateLastClipboardAction(CItemData::URL);
   UpdateAccessTime(ci_original);
 }

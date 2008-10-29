@@ -386,6 +386,7 @@ void CDDStatic::SendToClipboard()
   }
 
   StringX cs_dragdata;
+  StringX::size_type ipos;
   switch (m_nID) {
     case IDC_STATIC_DRAGGROUP:
       cs_dragdata = pci->GetGroup();
@@ -404,6 +405,15 @@ void CDDStatic::SendToClipboard()
       break;
     case IDC_STATIC_DRAGURL:
       cs_dragdata = pci->GetURL();
+      ipos = cs_dragdata.find(_T("[alt]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("[ssh]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("{alt}"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
       break;
     default:
       return;
@@ -472,6 +482,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   }
 
   StringX cs_dragdata;
+  StringX::size_type ipos;
   switch (m_nID) {
     case IDC_STATIC_DRAGGROUP:
       cs_dragdata = pci->GetGroup();
@@ -490,6 +501,15 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       break;
     case IDC_STATIC_DRAGURL:
       cs_dragdata = pci->GetURL();
+      ipos = cs_dragdata.find(_T("[alt]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("[ssh]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("{alt}"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
       break;
     default:
       return FALSE;
