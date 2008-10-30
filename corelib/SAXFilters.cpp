@@ -17,8 +17,7 @@
 #include "PWSFilters.h"
 #include "PWSprefs.h"
 #include "VerifyFormat.h"
-#include "filter.h"
-#include "match.h"
+#include "Match.h"
 
 #include <map>
 #include <algorithm>
