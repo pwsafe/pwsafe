@@ -219,13 +219,13 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
         m_strResultText = pEH->m_strValidationResult;
       } else {
         Format(m_strResultText, IDSC_XMLPARSEERROR, m_MSXML_Version, hr,
-               m_bValidation ? cs_validation : cs_import);
+               m_bValidation ? cs_validation.c_str() : cs_import.c_str());
       }
     }  // End Check for parsing errors
 
   } else {
     Format(m_strResultText, IDSC_XMLBADCREATESCHEMA, m_MSXML_Version, hr,
-           m_bValidation ? cs_validation : cs_import);
+           m_bValidation ? cs_validation.c_str() : cs_import.c_str());
   }  // End Create Schema Cache
 
 exit:
