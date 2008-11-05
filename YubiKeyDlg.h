@@ -17,21 +17,22 @@ class CYubiKeyDlg : public CPWDialog
 {
 	DECLARE_DYNAMIC(CYubiKeyDlg)
 
-public:
+    public:
 	CYubiKeyDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CYubiKeyDlg();
 
-// Dialog Data
+  bool VerifyOTP(CString &error); // verify m_otp. If fails, error explains why
+  // Dialog Data
 	enum { IDD = IDD_YUBIKEY };
-
-protected:
+  CString m_YKpubID;
+  CString m_otp;
+  
+ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-public:
-   CString m_YKpubID;
-private:
-   CString m_YKstatus;
-public:
-   afx_msg void OnOk();
+    private:
+  CString m_YKstatus;
+ public:
+  afx_msg void OnOk();
 };
