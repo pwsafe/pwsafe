@@ -208,6 +208,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
   ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
+  ON_COMMAND(ID_MENUITEM_YUBIKEY, OnYubiKey)
 
   // Help Menu
   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
@@ -387,6 +388,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_RESTORE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_VALIDATE, true, false, false, true},
+  {ID_MENUITEM_YUBIKEY, true, false, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
   {ID_MENUITEM_ABOUT, true, true, true, true},

@@ -513,6 +513,7 @@ protected:
   afx_msg void OnDuplicateEntry();
   afx_msg void OnOptions();
   afx_msg void OnValidate();
+  afx_msg void OnYubiKey();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();

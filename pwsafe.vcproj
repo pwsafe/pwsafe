@@ -900,6 +900,10 @@
 				RelativePath=".\winview.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\YubiKeyDlg.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1275,6 +1279,10 @@
 			</File>
 			<File
 				RelativePath=".\winview.h"
+				>
+			</File>
+			<File
+				RelativePath=".\YubiKeyDlg.h"
 				>
 			</File>
 		</Filter>

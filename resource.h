@@ -279,6 +279,7 @@
 #define IDB_DRAGURLX                    442
 #define IDD_VIEWREPORT                  443
 #define IDD_MANAGEFILTERS               444
+#define IDD_YUBIKEY                     446
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -592,14 +593,17 @@
 #define IDC_STATIC_URL                  1355
 #define IDC_STATIC_AUTO                 1356
 #define IDC_LAUNCH                      1357
+#define IDC_EDIT1                       1359
+#define IDC_YK_PUBID                    1359
+#define IDC_YK_STATUS                   1360
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        445
+#define _APS_NEXT_RESOURCE_VALUE        447
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1358
+#define _APS_NEXT_CONTROL_VALUE         1361
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif

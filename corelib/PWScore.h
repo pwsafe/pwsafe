@@ -252,6 +252,7 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
+  PWSfile::HeaderRecord &GetHeader() {return m_hdr;}
   void SetAsker(Asker *asker) {m_asker = asker;}
   
   // Filters
