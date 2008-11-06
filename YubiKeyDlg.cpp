@@ -14,6 +14,8 @@
 #include <string> // for msg verification
 #include "YubiKeyDlg.h"
 #include "corelib/Util.h"
+#include "corelib/sha1.h"
+#include "corelib/hmac.h"
 
 using namespace std;
 
@@ -77,9 +79,16 @@ static bool VerifySig(const string &msg, const string &h)
   size_t hlen = 0;
   CString H(h.c_str()); // kludge to workaround char/wchar_t pain
   PWSUtil::Base64Decode(LPCTSTR(H), hv, hlen);
-  ASSERT(hlen <= 2*h.length());
+  if (hlen != HMAC<SHA1>::HASHLEN)
+    return false;
+  HMAC<SHA1> hmac(apiKey, sizeof(apiKey));
+  hmac.Update(reinterpret_cast<const unsigned char *>(msg.c_str()),
+              msg.length());
+  unsigned char hcal[HMAC<SHA1>::HASHLEN];
+  hmac.Final(hcal);
+  bool retval = (std::memcmp(hcal, hv, HMAC<SHA1>::HASHLEN) == 0);
   delete[] hv;
-  return true;
+  return retval;
 }
 
 bool CYubiKeyDlg::VerifyOTP(CString &error)

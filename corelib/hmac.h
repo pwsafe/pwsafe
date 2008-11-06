@@ -11,28 +11,76 @@
 #ifndef _HMAC_H_
 #define _HMAC_H_
 
-// Currently implemented only for sha256, as required by version 3
-// of the database format.
 // HMAC algorithm as per RFC2104
-// Generalizing this to other hashes is left as an exercise to the reader...
 
-#include "sha256.h" 
+// Implemented as a template class to save overhead of virtual function calls
+// to an abstract Hash base class.
+// Works with SHA256 (for pwsafe file format v3) and SHA1 (for Yubikey)
 
-class HMAC_SHA256
-{
+#include "Util.h" // for ASSERT
+#include <cstring>
+
+template<class Hash>
+class HMAC {
 public:
-  enum {HASHLEN = 32};
-  HMAC_SHA256(const unsigned char *key, unsigned long keylen); // Calls Init
-  HMAC_SHA256(); // Init needs to be called separately
-  ~HMAC_SHA256();
-  void Init(const unsigned char *key, unsigned long keylen);
-  void Update(const unsigned char *in, unsigned long inlen);
-  void Final(unsigned char digest[HASHLEN]);
+  enum {HASHLEN = Hash::HASHLEN};
+  HMAC(const unsigned char *key, unsigned long keylen)
+  {
+    ASSERT(key != NULL);
+
+    std::memset(K, 0, sizeof(K));
+    Init(key, keylen);
+  }
+  HMAC()
+  {
+    std::memset(K, 0, sizeof(K));
+  }
+  ~HMAC() {} // cleanup in Final()
+
+  void Init(const unsigned char *key, unsigned long keylen)
+  {
+    ASSERT(key != NULL);
+
+    if (keylen > B) {
+      Hash H0;
+      H0.Update(key, keylen);
+      H0.Final(K);
+    } else {
+      ASSERT(keylen <= sizeof(K));
+      std::memcpy(K, key, keylen);
+    }
+
+    unsigned char k_ipad[B];
+    for (int i = 0; i < B; i++)
+      k_ipad[i] = K[i] ^ 0x36;
+    H.Update(k_ipad, B);
+    std::memset(k_ipad, 0, B);
+  }
+  void Update(const unsigned char *in, unsigned long inlen)
+  {H.Update(in, inlen);}
+
+  void Final(unsigned char digest[HASHLEN])
+  {
+    unsigned char d[HASHLEN];
+
+    H.Final(d);
+    unsigned char k_opad[B];
+    for (int i = 0; i < B; i++)
+      k_opad[i] = K[i] ^ 0x5c;
+
+    std::memset(K, 0, B);
+
+    Hash H1;
+    H1.Update(k_opad, B);
+    std::memset(k_opad, 0, B);
+    H1.Update(d, HASHLEN);
+    std::memset(d, 0, HASHLEN);
+    H1.Final(digest);
+  }
 
 private:
-  SHA256 H;
-  /* for SHA256 hashsize(L) = 32, blocksize(B) = 64 */
-  enum {L = 32, B = 64};
+  Hash H;
+  enum {L = HASHLEN, B = Hash::BLOCKSIZE};
   unsigned char K[B];
 };
 

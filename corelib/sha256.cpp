@@ -206,25 +206,24 @@ SHA256::~SHA256()
 */
 void SHA256::Update(const unsigned char *in, size_t inlen)
 {
-  const size_t block_size = 64;
   size_t n;
   ASSERT(in != NULL || inlen == 0);
   ASSERT(curlen <= sizeof(buf));
   while (inlen > 0) {
-    if (curlen == 0 && inlen >= block_size) {
+    if (curlen == 0 && inlen >= BLOCKSIZE) {
       sha256_compress(state, (unsigned char *)in);
-      length += block_size * 8;
-      in             += block_size;
-      inlen          -= block_size;
+      length += BLOCKSIZE * 8;
+      in             += BLOCKSIZE;
+      inlen          -= BLOCKSIZE;
     } else {
-      n = MIN(inlen, (block_size - curlen));
+      n = MIN(inlen, (BLOCKSIZE - curlen));
       memcpy(buf + curlen, in, (size_t)n);
       curlen += n;
       in             += n;
       inlen          -= n;
-      if (curlen == block_size) {
+      if (curlen == BLOCKSIZE) {
         sha256_compress(state, buf);
-        length += 8*block_size;
+        length += 8*BLOCKSIZE;
         curlen = 0;
       }
     }

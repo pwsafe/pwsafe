@@ -422,10 +422,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hmac.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ItemData.cpp"
 				>
 			</File>

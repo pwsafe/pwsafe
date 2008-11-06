@@ -71,7 +71,7 @@ int PWSfileV3::Close()
   if (m_fd == NULL)
     return SUCCESS; // idempotent
 
-  unsigned char digest[HMAC_SHA256::HASHLEN];
+  unsigned char digest[HMAC<SHA256>::HASHLEN];
   m_hmac.Final(digest);
 
   // Write or verify HMAC, depending on RWmode.
@@ -82,9 +82,9 @@ int PWSfileV3::Close()
   } else { // Read
     // We're here *after* TERMINAL_BLOCK has been read
     // and detected (by _readcbc) - just read hmac & verify
-    unsigned char d[HMAC_SHA256::HASHLEN];
+    unsigned char d[HMAC<SHA256>::HASHLEN];
     fread(d, sizeof(d), 1, m_fd);
-    if (memcmp(d, digest, HMAC_SHA256::HASHLEN) == 0)
+    if (memcmp(d, digest, HMAC<SHA256>::HASHLEN) == 0)
       return PWSfile::Close();
     else {
       PWSfile::Close();
