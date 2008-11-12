@@ -211,7 +211,8 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
   if (m_core.GetNumEntries() != 0) {
     BOOL State = (entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
-                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT};
+                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT,
+                 ID_MENUITEM_PASSWORDSUBSET};
 
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     for (int i = 0; i < sizeof(IDs)/sizeof(IDs[0]); i++) {

@@ -106,8 +106,10 @@
 #define ID_MENUITEM_UNMINIMIZE          32254
 
 // Main Toolbar - only those items not also menu items
+// or only on mouse right-click popup menu
 #define ID_TOOLBUTTON_LISTTREE          32260
 #define ID_TOOLBUTTON_VIEWREPORTS       32261
+#define ID_MENUITEM_PASSWORDSUBSET      32262
 
 // Right Mouse Drag
 #define ID_MENUITEM_COPYHERE            32270
