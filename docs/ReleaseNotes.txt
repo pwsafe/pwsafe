@@ -33,6 +33,9 @@ New Features for 3.14.02
 ========================
 [Open Discussion] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature
 supported by some Clipboard Viewers.
+[Open Discussion] Add feature to display a subset of the password. Useful
+for websites that need different particular characters from a password at
+each login.
 [2203438] Remove "[alt]", "[ssh]" and "{alt}" special keywords from URL
 when copying to the clipboard.
 [2144489] Click on the text next to edit fields to copy the field to

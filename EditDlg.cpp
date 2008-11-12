@@ -506,7 +506,7 @@ BOOL CEditDlg::OnInitDialog()
     cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
   }
-  cs_ToolTip.LoadString(IDC_CLICKTOCOPY);
+  cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
   m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_GROUP), cs_ToolTip);
   m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_TITLE), cs_ToolTip);
   m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);

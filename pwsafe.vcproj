@@ -765,6 +765,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PasswordSubsetDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Properties.cpp"
 				>
 			</File>
@@ -1115,6 +1119,10 @@
 			</File>
 			<File
 				RelativePath=".\PasswordSafe.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PasswordSubsetDlg.h"
 				>
 			</File>
 			<File
@@ -1964,6 +1972,18 @@
 			</File>
 			<File
 				RelativePath=".\res\toolbar\options_new_disabled.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\passwordchars_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\passwordchars_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\passwordchars_new_disabled.bmp"
 				>
 			</File>
 			<File

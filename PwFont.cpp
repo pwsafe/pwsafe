@@ -24,12 +24,16 @@ static CFont *pPasswordFont(NULL);
 void GetPasswordFont(LOGFONT *plogfont)
 {
   ASSERT(plogfont != NULL);
-  pPasswordFont->GetLogFont(plogfont);
+  if (plogfont != NULL)
+    pPasswordFont->GetLogFont(plogfont);
 }
 
 void SetPasswordFont(LOGFONT *plogfont)
 {
   ASSERT(plogfont != NULL);
+  if (plogfont == NULL)
+    return;
+
   if (pPasswordFont == NULL) {
     pPasswordFont = new CFont;
   } else {
@@ -42,6 +46,9 @@ void ApplyPasswordFont(CWnd* pDlgItem)
 {
 #if !defined(POCKET_PC)
   ASSERT(pDlgItem != NULL);
+  if (pDlgItem == NULL)
+    return;
+
   if (pPasswordFont == NULL) {
     pPasswordFont = new CFont;
     TCHAR* tch_fontname;
