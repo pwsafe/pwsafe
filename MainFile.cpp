@@ -36,6 +36,7 @@
 #include "corelib/Report.h"
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
+#include "corelib/os/file.h"
 
 #include <sys/types.h>
 #include <bitset>
@@ -1227,7 +1228,7 @@ void DboxMain::OnImportXML()
   const stringT XSDfn(_T("pwsafe.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-  if (!m_core.FileExists(XSDFilename)) {
+  if (pws_os::FileExists(XSDFilename)) {
     cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDS_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);

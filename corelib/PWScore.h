@@ -129,13 +129,10 @@ public:
                     stringT &strErrors, int &numValidated, int &numImported,
                     bool &bBadUnknownFileFields,
                     bool &bBadUnknownRecordFields, CReport &rpt);
-  bool FileExists(const stringT &filename) const;
-  bool FileExists(const stringT &filename, bool &bReadOnly) const; 
   int ReadCurFile(const StringX &passkey)
   {return ReadFile(m_currfile, passkey);}
   int ReadFile(const StringX &filename, const StringX &passkey);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
-  int RenameFile(const StringX &oldname, const StringX &newname);
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
                      const stringT &userBackupDir);

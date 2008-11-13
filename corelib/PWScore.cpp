@@ -1305,11 +1305,6 @@ int PWScore::ReadFile(const StringX &a_filename,
   return closeStatus;
 }
 
-int PWScore::RenameFile(const StringX &oldname, const StringX &newname)
-{
-  return pws_os::RenameFile(oldname.c_str(), newname.c_str());
-}
-
 static void ManageIncBackupFiles(const stringT &cs_filenamebase,
                                  size_t maxnumincbackups, stringT &cs_newname)
 {
@@ -2438,16 +2433,6 @@ void PWScore::NotifyListModified()
     return;
 
   m_pfcnNotifyListModified(m_NotifyInstance);
-}
-
-bool PWScore::FileExists(const stringT &filename) const
-{
-  return pws_os::FileExists(filename);
-}
-
-bool PWScore::FileExists(const stringT &filename, bool &bReadOnly) const 
-{
-  return pws_os::FileExists(filename, bReadOnly);
 }
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)

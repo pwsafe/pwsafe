@@ -34,6 +34,8 @@
 #include "corelib/PWSfile.h"
 #include "corelib/PWSdirs.h"
 
+#include "corelib/os/file.h"
+
 using namespace std;
 
 #ifdef _DEBUG
@@ -713,7 +715,7 @@ void DboxMain::ImportFilters()
   const stringT XSDfn(_T("pwsafe_filter.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-  if (!m_core.FileExists(XSDFilename)) {
+  if (!pws_os::FileExists(XSDFilename)) {
     cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDS_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
