@@ -481,4 +481,5 @@
 #define IDS_FILTERAPPLY                 5644
 #define IDS_MINIMIZECONFLICT            5645
 #define IDS_CLICKTOCOPY                 5646
-#define IDS_TOOBIGSUBSETINDEX           5647
+#define IDS_SUBSETINDEXZERO             5647
+#define IDS_SUBSETINDEXTOOBIG           5648
