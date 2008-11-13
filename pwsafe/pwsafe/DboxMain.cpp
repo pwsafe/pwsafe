@@ -22,6 +22,7 @@
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
+#include "corelib/os/file.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -674,7 +675,7 @@ void DboxMain::InitPasswordSafe()
   // do what its name implies...
   CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
     _T("autoload_filters.xml");
-  if (m_core.FileExists(tmp.GetString())) {
+  if (pws_os::FileExists(tmp.GetString())) {
     stringT strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
     CWaitCursor waitCursor;  // This may take a while!
@@ -1102,18 +1103,13 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   if (pcore == 0) pcore = &m_core;
 
   if (!filename.empty()) {
-    bool exists = pcore->FileExists(filename.c_str(), bFileIsReadOnly);
+    bool exists = pws_os::FileExists(filename.c_str(), bFileIsReadOnly);
 
     if (!exists) {
-      // Used to display an error message, but this is really the caller's business
       return PWScore::CANT_OPEN_FILE;
     } // !exists
   } // !filename.IsEmpty()
 
-  /*
-  * with my unsightly hacks of PasskeyEntry, it should now accept
-  * a blank filename, which will disable passkey entry and the OK button
-  */
 
   if (bFileIsReadOnly || bForceReadOnly) {
     // As file is read-only, we must honour it and not permit user to change it
