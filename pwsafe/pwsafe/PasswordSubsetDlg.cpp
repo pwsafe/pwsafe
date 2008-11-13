@@ -103,11 +103,13 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
 
     int ipos = _ttoi(resToken);
     if (ipos > ipwlengh || ipos == 0) {
-      m_warningmsg.Format(IDS_TOOBIGSUBSETINDEX, ipwlengh);
+      if (ipos != 0)
+        m_warningmsg.Format(IDS_SUBSETINDEXTOOBIG,ipwlengh);
+      else
+        m_warningmsg.LoadString(IDS_SUBSETINDEXZERO);
       m_stcwarningmsg.SetWindowText(m_warningmsg);
       m_stcwarningmsg.SetColour(RGB(255, 0, 0));
       m_stcwarningmsg.Invalidate();
-      ::Beep(750, 100);
       vpos.clear();
       m_ne_subset.SetSel(lastpos, icurpos);
       m_ne_subset.SetFocus();
