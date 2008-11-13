@@ -549,8 +549,15 @@ void CEditDlg::ShowPassword()
   m_ex_password.Invalidate();
 
   // Don't need verification as the user can see the password entered
-  m_password2.Empty();
+  // use m_password2 to show something useful...
+  ostringstreamT os;
+  for (int i = 1; i <= m_realpassword.GetLength(); i++)
+    os << (i % 10);
+  m_password2 = os.str().c_str();
+  m_ex_password2.SetSecure(false);
+  m_ex_password2.SetPasswordChar(0);
   m_ex_password2.EnableWindow(FALSE);
+  m_ex_password2.Invalidate();
 }
 
 void CEditDlg::HidePassword()
@@ -563,6 +570,8 @@ void CEditDlg::HidePassword()
   m_ex_password.SetSecure(true);
   // Set password character so that the password is not displayed
   m_ex_password.SetPasswordChar(PSSWDCHAR);
+  m_ex_password2.SetSecure(true);
+  m_ex_password2.SetPasswordChar(PSSWDCHAR);
   m_ex_password2.SetSecureText(m_password2);
   m_ex_password.Invalidate();
 
