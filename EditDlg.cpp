@@ -182,25 +182,25 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
-#if defined(POCKET_PC)
-  ON_WM_SHOWWINDOW()
-#endif
-  ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
-  ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
   ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnBnClickViewDependents)
   ON_BN_CLICKED(IDC_XTIME_CLEAR, OnBnClickedClearXTime)
   ON_BN_CLICKED(IDC_XTIME_SET, OnBnClickedSetXTime)
   ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
+  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
+  ON_BN_CLICKED(IDC_LAUNCH, OnBnClickedLaunch)
+  ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
+  ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
   ON_EN_SETFOCUS(IDC_NOTES, OnEnSetfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
+  ON_EN_CHANGE(IDC_URL, OnEnChangeUrl)
+  ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_AUTO, OnStcClicked)
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
-  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
-  ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_AUTO, OnStcClicked)
-  ON_BN_CLICKED(IDC_LAUNCH, OnBnClickedLaunch)
-  ON_EN_CHANGE(IDC_URL, OnEnChangeUrl)
+#if defined(POCKET_PC)
+  ON_WM_SHOWWINDOW()
+#endif
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -500,23 +500,24 @@ BOOL CEditDlg::OnInitDialog()
   m_ToolTipCtrl = new CToolTipCtrl;
   if (!m_ToolTipCtrl->Create(this, 0)) {
     TRACE("Unable To create Edit Dialog ToolTip\n");
-  }
-  CString cs_ToolTip;
-  if (m_OverridePolicy == TRUE) {
-    cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
-  }
-  cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_GROUP), cs_ToolTip);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_TITLE), cs_ToolTip);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
+  } else {
+    CString cs_ToolTip;
+    if (m_OverridePolicy == TRUE) {
+     cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
+      m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
+    }
+    cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_GROUP), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_TITLE), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
 
-  EnableToolTips();
-  m_ToolTipCtrl->Activate(TRUE);
+    EnableToolTips();
+    m_ToolTipCtrl->Activate(TRUE);
+  }
 
   m_stc_group.SetHighlight(true, crefWhite);
   m_stc_title.SetHighlight(true, crefWhite);
@@ -1073,3 +1074,4 @@ void CEditDlg::OnEnChangeUrl()
   UpdateData(TRUE);
   GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
 }
+
