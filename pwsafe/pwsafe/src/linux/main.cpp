@@ -2,6 +2,7 @@
 #include <unistd.h>
 
 #include "PWScore.h"
+#include "os/file.h"
 
 using namespace std;
 
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
   }
 
   PWScore core;
-  if (!core.FileExists(argv[1])) {
+  if (!pws_os::FileExists(argv[1])) {
     cerr << argv[1] << " - file not found" << endl;
     return 2;
   }
