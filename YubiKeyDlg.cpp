@@ -12,15 +12,24 @@
 #include "stdafx.h"
 #include <atlhttp.h>
 #include <string> // for msg verification
+#include <sstream>
 #include "YubiKeyDlg.h"
 #include "corelib/Util.h"
+#include "corelib/UTF8Conv.h"
 #include "corelib/sha1.h"
 #include "corelib/hmac.h"
 
 using namespace std;
 
-static const CString AuthServer(_T("http://api.yubico.com/wsapi/verify?"));
-static const CString OurID(_T("708"));
+//static const char *AuthServer = "http://api.yubico.com/wsapi/verify?";
+static const char *AuthServer = "http://63.146.69.105/wsapi/verify?";
+static const char *OurID ="708";
+
+// API Key:	San67hskXHG7Ya3pi0JSw9AEqX0=
+static unsigned char apiKey[20] = {0x49, 0xa9, 0xfa, 0xee, 0x1b,
+                                   0x24, 0x5c, 0x71, 0xbb, 0x61,
+                                   0xad, 0xe9, 0x8b, 0x42, 0x52,
+                                   0xc3, 0xd0, 0x04, 0xa9, 0x7d};
 
 // YubiKeyDlg dialog
 
@@ -70,11 +79,6 @@ void CYubiKeyDlg::OnOk()
 
 static bool VerifySig(const string &msg, const string &h)
 {
-  // API Key:	San67hskXHG7Ya3pi0JSw9AEqX0=
-  static unsigned char apiKey[20] = {0x49, 0xa9, 0xfa, 0xee, 0x1b,
-                                     0x24, 0x5c, 0x71, 0xbb, 0x61,
-                                     0xad, 0xe9, 0x8b, 0x42, 0x52,
-                                     0xc3, 0xd0, 0x04, 0xa9, 0x7d};
   BYTE *hv = new BYTE[2*h.length()]; // a bit too much, who cares?
   size_t hlen = 0;
   CString H(h.c_str()); // kludge to workaround char/wchar_t pain
@@ -91,6 +95,16 @@ static bool VerifySig(const string &msg, const string &h)
   return retval;
 }
 
+static stringT SignReq(const string &msg)
+{
+  HMAC<SHA1> hmac(apiKey, sizeof(apiKey));
+  hmac.Update(reinterpret_cast<const unsigned char *>(msg.c_str()),
+              msg.length());
+  unsigned char hcal[HMAC<SHA1>::HASHLEN];
+  hmac.Final(hcal);
+  return PWSUtil::Base64Encode(hcal, HMAC<SHA1>::HASHLEN);
+}
+
 bool CYubiKeyDlg::VerifyOTP(CString &error)
 {
   error = _T("");
@@ -101,11 +115,23 @@ bool CYubiKeyDlg::VerifyOTP(CString &error)
   // m_client->SetProxy( m_proxy, m_proxy_port );
   error = _T("Sending authentication request");
 
+  CUTF8Conv conv;
+  const unsigned char *otp_str;
+  int otp_strlen;
+  conv.ToUTF8(LPCTSTR(m_otp), otp_str, otp_strlen);
   bool retval = false;
+  string req("id="); req += OurID;
+  req += "&otp=";
+  req += reinterpret_cast<const char *>(otp_str);
+  stringT req_sig = SignReq(req);
+  req += "&h=";
+
+  StringX Req;
+  conv.FromUTF8(reinterpret_cast<const unsigned char *>(req.c_str()),
+                req.size(), Req);
+  Req += req_sig.c_str();
   CString urlStr(AuthServer);
-  urlStr += _T("id="); urlStr += OurID;
-  urlStr += _T("&otp=");
-  urlStr += m_otp;
+  urlStr += Req.c_str();
 
   if (client.Navigate(urlStr, &navData)) {
     if (client.GetStatus() == 200) { // 200 = successful HTTP transaction
@@ -121,46 +147,38 @@ bool CYubiKeyDlg::VerifyOTP(CString &error)
        *  0         1         2         
        *  012345678901234567890123456789
        * "h=fiuyV7/F7ql48I0Qt2wt5mZbrPA=
-       *  t=2008-10-29T14:57:42Z0127
+       *  t=2008-10-29T14:57:42
        *  status=OK
-       *  Each line ends with \r\n and all but the last are fixed length
+       *  Each line ends with \n and all but the last are fixed length
        */
-      string hash_str = text.substr(0, 30);
-      if (hash_str[0] != 'h' ||
-          hash_str[1] != '=' ||
-          hash_str[29] != '=') {
-        TRACE(_T("Bad or missing hash substring in response\n"));
-        error = _T("Malformed response");
-        goto done;
-      }
-      hash_str = hash_str.substr(2, 28); // throw away "h="
-
-      string time_str = text.substr(32, 26);
-      if (time_str[0] != 't' ||
-          time_str[1] != '=') { // can add more checks here...
-        TRACE(_T("Bad or missing time substring in response\n"));
-        error = _T("Malformed response");
-        goto done;
-      }
-
-      size_t status_ind = text.find("status=");
-      if (status_ind == string::npos) {
-        TRACE(_T("Bad or missing status substring in response\n"));
-        error = _T("Malformed response");
-        goto done;
-      }
-      string status_str = text.substr(status_ind, text.length() - status_ind);
+      istringstream is(text);
+      string line, rsp_hash, rsp_timestamp, rsp_status;
+      while (getline(is, line)) {
+        if (line.find("h=") == 0)
+          rsp_hash = line.substr(2);
+        else if (line.find("t=") == 0)
+          rsp_timestamp = line; //.substr(2);
+        else if (line.find("status=") == 0)
+          rsp_status = line; //.substr(7);
+        else if (line.empty())
+          continue;
+        else {
+          TRACE(_T("Unexpected value in response\n"));
+          error = _T("Malformed response");
+          goto done;
+        }
+      } // parse response
 
       string msg;
-      msg = status_str; msg += "&"; msg += time_str;
+      msg = rsp_status; msg += "&"; msg += rsp_timestamp;
 
-      if (!VerifySig(msg, hash_str)) {
+      if (!VerifySig(msg, rsp_hash)) {
         error = _T("Signature verification failed!");
         goto done;
       }
 
-      error = status_str.c_str();
-      retval = (status_str.find("OK") != string::npos);
+      error = rsp_status.c_str();
+      retval = (rsp_status.find("OK") != string::npos);
     } else {// successful transaction
       error.Format(_T("Request failed: %d"), client.GetStatus());
     }
