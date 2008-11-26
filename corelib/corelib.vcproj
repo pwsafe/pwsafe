@@ -422,6 +422,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\os\windows\http.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ItemData.cpp"
 				>
 			</File>
@@ -546,10 +550,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\UTF8Conv.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\os\windows\utf8conv.cpp"
 				>
 				<FileConfiguration
@@ -599,6 +599,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\UTF8Conv.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Util.cpp"
 				>
 			</File>
@@ -612,6 +616,10 @@
 			</File>
 			<File
 				RelativePath=".\XMLprefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\YubiKey.cpp"
 				>
 			</File>
 		</Filter>
@@ -637,6 +645,10 @@
 			</File>
 			<File
 				RelativePath=".\hmac.h"
+				>
+			</File>
+			<File
+				RelativePath=".\os\http.h"
 				>
 			</File>
 			<File
@@ -764,11 +776,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\UTF8Conv.h"
+				RelativePath=".\os\utf8conv.h"
 				>
 			</File>
 			<File
-				RelativePath=".\os\utf8conv.h"
+				RelativePath=".\UTF8Conv.h"
 				>
 			</File>
 			<File
@@ -785,6 +797,10 @@
 			</File>
 			<File
 				RelativePath=".\XMLprefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\YubiKey.h"
 				>
 			</File>
 		</Filter>

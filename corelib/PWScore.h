@@ -139,7 +139,7 @@ public:
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
                      const stringT &userBackupDir);
-  int CheckPassword(const StringX &filename, const StringX &passkey);
+  int CheckPassword(const StringX &filename, StringX &passkey);
   void ChangePassword(const StringX &newPassword);
   
   bool LockFile(const stringT &filename, stringT &locker);

@@ -26,6 +26,7 @@
 #include "VerifyFormat.h"
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
+#include "YubiKey.h"
 
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
@@ -114,7 +115,8 @@ void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
 
 void PWScore::ClearData(void)
 {
-  if (m_passkey_len > 0) {
+  if (m_passkey_len > 0 &&
+      GetHeader().m_YubiKeyPubID.empty()) {
     trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
     delete[] m_passkey;
     m_passkey_len = 0;
@@ -1104,13 +1106,28 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   return SUCCESS;
 }
 
-int PWScore::CheckPassword(const StringX &filename, const StringX &passkey)
+
+int PWScore::CheckPassword(const StringX &filename, StringX &passkey)
 {
   int status;
 
-  if (!filename.empty())
+  if (!filename.empty()) {
     status = PWSfile::CheckPassword(filename, passkey, m_ReadFileVersion);
-  else { // can happen if tries to export b4 save
+    // If the check fails AND YubiKey set, treat passkey as authentication
+    // request, and recover actual passkey IFF reply is affirmative.
+    if (status == PWSfile::WRONG_PASSWORD &&
+        !GetHeader().m_YubiKeyPubID.empty() &&
+        // check that length matches YubiKey OTP
+        passkey.length() == 44 &&
+        // and that the public key id matches that of the db!
+        GetHeader().m_YubiKeyPubID == passkey.substr(0,12)) {
+      YubiKeyAuthenticator yka;
+      if (yka.VerifyOTP(passkey.c_str())) {
+        status = PWSfile::SUCCESS;
+        passkey = GetPassKey();
+      } // YubiKey verification passed
+    } // Can try YubiKey verification
+  } else { // empty filename - can happen if tries to export b4 save
     unsigned int t_passkey_len = passkey.length();
     if (t_passkey_len != m_passkey_len) // trivial test
       return WRONG_PASSWORD;
