@@ -24,6 +24,9 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t);
 bool VerifyImportDateTimeString(const stringT &time_str, time_t &t);
 int VerifyImportPWHistoryString(const StringX &PWHistory, StringX &newPWHistory,
                                 stringT &strErrors);
+bool verifyDTvalues(int yyyy, int mon, int dd,
+                    int hh, int min, int ss);
+
 #endif /* __VERIFYFORMAT_H */
 //-----------------------------------------------------------------------------
 // Local variables:

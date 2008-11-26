@@ -6,19 +6,20 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#ifndef __SAXHANDLERS_H
-#define __SAXHANDLERS_H
-// SAXHandlers.h : header file
+#ifndef __MFILESAX2HANDLERS_H
+#define __MFILESAX2HANDLERS_H
+
+// MFileSAX2Handlers.h : header file
 //
 
-#include "StringX.h"
-#include "ItemData.h"
-#include "UUIDGen.h"
-#include "xml_import.h"
+#include "../StringX.h"
+#include "../ItemData.h"
+#include "../UUIDGen.h"
+#include "../UnknownField.h"
+#include "../PWScore.h"
 
-#include "UnknownField.h"
-
-using namespace MSXML2;
+// MSXML includes
+#include <msxml6.h>
 
 // Local variables
 enum {PASSWORDSAFE = 0, PW_ENTRY, PW_GROUP, PW_TITLE, PW_USERNAME, PW_PASSWORD, PW_URL,
@@ -52,7 +53,7 @@ struct pw_entry {
 };
 
 //  -----------------------------------------------------------------------
-class PWSSAXErrorHandler: public ISAXErrorHandler
+class MFileSAX2ErrorHandler: public ISAXErrorHandler
 {
 public:
   // Local variables and functions
@@ -60,13 +61,13 @@ public:
   BOOL bErrorsFound;
 
   // Standard functions
-  PWSSAXErrorHandler();
-  virtual ~PWSSAXErrorHandler();
+  MFileSAX2ErrorHandler();
+  virtual ~MFileSAX2ErrorHandler();
 
-  virtual HRESULT STDMETHODCALLTYPE error (
-  struct ISAXLocator * pLocator,
-    unsigned short * pwchErrorMessage,
-    HRESULT hrErrorCode );
+  virtual HRESULT STDMETHODCALLTYPE error(
+                  /* [in] */ struct ISAXLocator * pLocator,
+                  /* [in] */ const wchar_t * pwchErrorMessage,
+                  /* [in] */ HRESULT hrErrorCode);
 
   //  This must be correctly implemented, if your handler must be a COM Object
   //  the current implementation is NOT thread-safe
@@ -74,15 +75,15 @@ public:
   unsigned long __stdcall AddRef(void);
   unsigned long __stdcall Release(void);
 
-  virtual HRESULT STDMETHODCALLTYPE fatalError (
-  struct ISAXLocator * pLocator,
-    unsigned short * pwchErrorMessage,
-    HRESULT hrErrorCode );
+  virtual HRESULT STDMETHODCALLTYPE fatalError(
+                  /* [in] */ struct ISAXLocator * pLocator,
+                  /* [in] */ const wchar_t * pwchErrorMessage,
+                  /* [in] */ HRESULT hrErrorCode);
 
-  virtual HRESULT STDMETHODCALLTYPE ignorableWarning (
-  struct ISAXLocator * pLocator,
-    unsigned short * pwchErrorMessage,
-    HRESULT hrErrorCode );
+  virtual HRESULT STDMETHODCALLTYPE ignorableWarning(
+                  /* [in] */ struct ISAXLocator * pLocator,
+                  /* [in] */ const wchar_t * pwchErrorMessage,
+                  /* [in] */ HRESULT hrErrorCode);
 
 private:
   // REQUIRED variable
@@ -90,24 +91,27 @@ private:
 };
 
 //  -----------------------------------------------------------------------
-class PWSSAXContentHandler: public MSXML2::ISAXContentHandler
+class MFileSAX2ContentHandler: public ISAXContentHandler
 {
 public:
-  // Local variables & function
+  // Local variables & functions
+  void SetVariables(PWScore *core, const bool &bValidation,
+                    const stringT &ImportedPrefix, const TCHAR &delimiter,
+                    UUIDList *possible_aliases, UUIDList *possible_shortcuts);
+
+  UnknownFieldList m_ukhxl;  // For header unknown fields
+
   stringT m_strImportErrors;
+  int m_nRecordsWithUnknownFields;
+  int m_nITER;
   int m_numEntries;
   TCHAR m_delimiter;
   bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;
-  int m_nITER;
-  UnknownFieldList m_ukhxl;  // For header unknown fields
-  int m_nRecordsWithUnknownFields;
-
-  void SetVariables(PWScore *core, const bool &bValidation,
-    const stringT &ImportedPrefix, const TCHAR &delimiter,
-    UUIDList *possible_aliases, UUIDList *possible_shortcuts);
 
   // Preferences posibly stored in database
   // Note: boolean is integer to allow an 'not set' value of '-1'
+  stringT m_sDefaultAutotypeString;
+  stringT m_sDefaultUsername;
   int m_bDisplayExpandedAddEditDlg;
   int m_bMaintainDateTimeStamps;
   int m_bPWUseDigits;
@@ -133,12 +137,10 @@ public:
   int m_iPWLowercaseMinLength;
   int m_iPWSymbolMinLength;
   int m_iPWUppercaseMinLength;
-  stringT m_sDefaultAutotypeString;
-  stringT m_sDefaultUsername;
 
   // Standard functions
-  PWSSAXContentHandler();
-  virtual ~PWSSAXContentHandler();
+  MFileSAX2ContentHandler();
+  virtual ~MFileSAX2ContentHandler();
 
   //  This must be correctly implemented, if your handler must be a COM Object
   //  the current implementation is NOT thread-safe
@@ -147,76 +149,76 @@ public:
   unsigned long __stdcall Release(void);
 
   virtual HRESULT STDMETHODCALLTYPE putDocumentLocator(
-    /* [in] */ ISAXLocator __RPC_FAR *pLocator);
+                  /* [in] */ ISAXLocator __RPC_FAR *pLocator);
 
-  virtual HRESULT STDMETHODCALLTYPE startDocument( void);
+  virtual HRESULT STDMETHODCALLTYPE startDocument(void);
 
-  virtual HRESULT STDMETHODCALLTYPE endDocument( void);
+  virtual HRESULT STDMETHODCALLTYPE endDocument(void);
 
   virtual HRESULT STDMETHODCALLTYPE startPrefixMapping(
-    /* [in] */ wchar_t __RPC_FAR *pwchPrefix,
-    /* [in] */ int cchPrefix,
-    /* [in] */ wchar_t __RPC_FAR *pwchUri,
-    /* [in] */ int cchUri);
+                  /* [in] */ const wchar_t __RPC_FAR *pwchPrefix,
+                  /* [in] */ int cchPrefix,
+                  /* [in] */ const wchar_t __RPC_FAR *pwchUri,
+                  /* [in] */ int cchUri);
 
   virtual HRESULT STDMETHODCALLTYPE endPrefixMapping(
-    /* [in] */ wchar_t __RPC_FAR *pwchPrefix,
-    /* [in] */ int cchPrefix);
+                  /* [in] */ const wchar_t __RPC_FAR *pwchPrefix,
+                  /* [in] */ int cchPrefix);
 
   virtual HRESULT STDMETHODCALLTYPE startElement(
-    /* [in] */ wchar_t __RPC_FAR *pwchNamespaceUri,
-    /* [in] */ int cchNamespaceUri,
-    /* [in] */ wchar_t __RPC_FAR *pwchLocalName,
-    /* [in] */ int cchLocalName,
-    /* [in] */ wchar_t __RPC_FAR *pwchRawName,
-    /* [in] */ int cchRawName,
-    /* [in] */ ISAXAttributes __RPC_FAR *pAttributes);
+                  /* [in] */ const wchar_t __RPC_FAR *pwchNamespaceUri,
+                  /* [in] */ int cchNamespaceUri,
+                  /* [in] */ const wchar_t __RPC_FAR *pwchLocalName,
+                  /* [in] */ int cchLocalName,
+                  /* [in] */ const wchar_t __RPC_FAR *pwchRawName,
+                  /* [in] */ int cchRawName,
+                  /* [in] */ ISAXAttributes __RPC_FAR *pAttributes);
 
   virtual HRESULT STDMETHODCALLTYPE endElement(
-    /* [in] */ wchar_t __RPC_FAR *pwchNamespaceUri,
-    /* [in] */ int cchNamespaceUri,
-    /* [in] */ wchar_t __RPC_FAR *pwchLocalName,
-    /* [in] */ int cchLocalName,
-    /* [in] */ wchar_t __RPC_FAR *pwchRawName,
-    /* [in] */ int cchRawName);
+                  /* [in] */ const wchar_t __RPC_FAR *pwchNamespaceUri,
+                  /* [in] */ int cchNamespaceUri,
+                  /* [in] */ const wchar_t __RPC_FAR *pwchLocalName,
+                  /* [in] */ int cchLocalName,
+                  /* [in] */ const wchar_t __RPC_FAR *pwchRawName,
+                  /* [in] */ int cchRawName);
 
   virtual HRESULT STDMETHODCALLTYPE characters(
-    /* [in] */ wchar_t __RPC_FAR *pwchChars,
-    /* [in] */ int cchChars);
+                  /* [in] */ const wchar_t __RPC_FAR *pwchChars,
+                  /* [in] */ int cchChars);
 
   virtual HRESULT STDMETHODCALLTYPE ignorableWhitespace(
-    /* [in] */ wchar_t __RPC_FAR *pwchChars,
-    /* [in] */ int cchChars);
+                  /* [in] */ const wchar_t __RPC_FAR *pwchChars,
+                  /* [in] */ int cchChars);
 
   virtual HRESULT STDMETHODCALLTYPE processingInstruction(
-    /* [in] */ wchar_t __RPC_FAR *pwchTarget,
-    /* [in] */ int cchTarget,
-    /* [in] */ wchar_t __RPC_FAR *pwchData,
-    /* [in] */ int cchData);
+                  /* [in] */ const wchar_t __RPC_FAR *pwchTarget,
+                  /* [in] */ int cchTarget,
+                  /* [in] */ const wchar_t __RPC_FAR *pwchData,
+                  /* [in] */ int cchData);
 
   virtual HRESULT STDMETHODCALLTYPE skippedEntity(
-    /* [in] */ wchar_t __RPC_FAR *pwchName,
-    /* [in] */ int cchName);
+                  /* [in] */ const wchar_t __RPC_FAR *pwchName,
+                  /* [in] */ int cchName);
 
 private:
   // Local variables
   pw_entry *cur_entry;
-
-  StringX m_strElemContent;
-  stringT m_ImportedPrefix;
   PWScore *m_xmlcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
-  int m_whichtime, m_ipwh;
-  bool m_bValidation;
 
+  StringX m_strElemContent;
+  stringT m_ImportedPrefix;
+  int m_whichtime, m_ipwh;
+  int m_fieldlen;
+  bool m_bentrybeingprocessed;
+  bool m_bValidation;
   bool m_bheader;
   unsigned char m_ctype;
   unsigned char * m_pfield;
-  int m_fieldlen;
-  bool m_bentrybeingprocessed;
 
   // REQUIRED variable
   ULONG m_refCnt;
 };
-#endif /*  __SAXHANDLERS_H */
+
+#endif /*  __MFILESAX2HANDLERS_H */

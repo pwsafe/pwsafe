@@ -5,17 +5,24 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-// PWSXMLFilters.cpp : implementation file
+
+// MFilterXMLProcessor.cpp : implementation file
 //
-#include "PWSXMLFilters.h"
-#include "corelib.h"
+
+#include "../XMLDefs.h"
+
+#if USE_XML_LIBRARY == MSXML
+
+#include "MFilterXMLProcessor.h"
+#include "MFilterSAX2Handlers.h"
+#include <msxml6.h>
+
+#include "../corelib.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifdef _WIN32
-#include "SAXFilters.h"
-#include <atlcomcli.h>
-#include "xml_import.h"
-#endif
+#include <comutil.h>
+
 #include <map>
 #include <algorithm>
 
@@ -25,21 +32,22 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-PWSXMLFilters::PWSXMLFilters(PWSFilters &mapfilters, const FilterPool fpool)
-  : m_MSXML_Version(60), m_MapFilters(mapfilters), m_FPool(fpool)
+MFilterXMLProcessor::MFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
+                                         Asker *pAsker)
+  : m_MSXML_Version(60), m_MapFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
 {
 }
 
-PWSXMLFilters::~PWSXMLFilters()
+MFilterXMLProcessor::~MFilterXMLProcessor()
 {
 }
 
 // ---------------------------------------------------------------------------
 #ifdef _WIN32
-bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
-                                     const stringT &strXMLData,
-                                     const stringT &strXMLFileName, 
-                                     const stringT &strXSDFileName)
+bool MFilterXMLProcessor::Process(const bool &bvalidation,
+                                  const StringX &strXMLData,
+                                  const stringT &strXMLFileName, 
+                                  const stringT &strXSDFileName)
 {
   HRESULT hr, hr0, hr60, hr40, hr30;
   bool b_ok = false;
@@ -52,19 +60,22 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
   m_bValidation = bvalidation;  // Validate or Import
 
   //  Create SAXReader object
-  ISAXXMLReaderPtr pSAXReader = NULL;
+  ISAXXMLReader* pSAX2Reader = NULL;
   //  Get ready for XSD schema validation
-  IXMLDOMSchemaCollection2Ptr pSchemaCache = NULL;
+  IXMLDOMSchemaCollection2* pSchemaCache = NULL;
 
   if (m_bValidation) { //XMLValidate
     // Try 60
-    hr60 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL);
+    hr60 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
+                            __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
     if (FAILED(hr60)) {
       // Try 40
-      hr40 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader40), NULL, CLSCTX_ALL);
+      hr40 = CoCreateInstance(__uuidof(SAXXMLReader40), NULL, CLSCTX_ALL,
+                              __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
       if (FAILED(hr40)) {
         // Try 30
-        hr30 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL);
+        hr30 = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
+                                __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
         if (FAILED(hr30)) {
           LoadAString(m_strResultText, IDSC_NOXMLREADER);
           goto exit;
@@ -80,13 +91,16 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
   } else {  // XMLImport
     switch (m_MSXML_Version) {
       case 60:
-        hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL);
+        hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
+                               __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
         break;
       case 40:
-        hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader40), NULL, CLSCTX_ALL);
+        hr0 = CoCreateInstance(__uuidof(SAXXMLReader40), NULL, CLSCTX_ALL,
+                               __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
         break;
       case 30:
-        hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL);
+        hr0 = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
+                               __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
         break;
       default:
         // Should never get here as validate would have sorted it and this doesn't get called if it fails
@@ -95,27 +109,30 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
   }
 
   //  Create ContentHandlerImpl object
-  PWSSAXFilterContentHandler* pCH = new PWSSAXFilterContentHandler();
+  MFilterSAX2ContentHandler* pCH = new MFilterSAX2ContentHandler;
   //  Create ErrorHandlerImpl object
-  PWSSAXFilterErrorHandler* pEH = new PWSSAXFilterErrorHandler();
+  MFilterSAX2ErrorHandler* pEH = new MFilterSAX2ErrorHandler;
 
   pCH->SetVariables(&m_MapFilters, m_FPool, m_bValidation);
  
   //  Set Content Handler
-  hr = pSAXReader->putContentHandler(pCH);
+  hr = pSAX2Reader->putContentHandler(pCH);
 
   //  Set Error Handler
-  hr = pSAXReader->putErrorHandler(pEH);
+  hr = pSAX2Reader->putErrorHandler(pEH);
 
   switch (m_MSXML_Version) {
     case 60:
-      hr = pSchemaCache.CreateInstance(__uuidof(XMLSchemaCache60));
+      hr = CoCreateInstance(__uuidof(XMLSchemaCache60), NULL, CLSCTX_ALL,
+                            __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
       break;
     case 40:
-      hr = pSchemaCache.CreateInstance(__uuidof(XMLSchemaCache40));
+      hr = CoCreateInstance(__uuidof(XMLSchemaCache40), NULL, CLSCTX_ALL,
+                            __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
       break;
     case 30:
-      hr = pSchemaCache.CreateInstance(__uuidof(XMLSchemaCache30));
+      hr = CoCreateInstance(__uuidof(XMLSchemaCache30), NULL, CLSCTX_ALL,
+                            __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
       break;
     default:
       LoadAString(m_strResultText, IDSC_CANTXMLVALIDATE);
@@ -171,20 +188,20 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
       */
 
       // Want all validation errors
-      hr = pSAXReader->putFeature(L"exhaustive-errors", VARIANT_TRUE);
+      hr = pSAX2Reader->putFeature(L"exhaustive-errors", VARIANT_TRUE);
       // Don't allow user to override validation by using DTDs
-      hr = pSAXReader->putFeature(L"prohibit-dtd", VARIANT_TRUE);
+      hr = pSAX2Reader->putFeature(L"prohibit-dtd", VARIANT_TRUE);
       // Don't allow user to override validation by using DTDs (2 features)
-      hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-general-entities", VARIANT_FALSE);
-      hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-parameter-entities", VARIANT_FALSE);
+      hr = pSAX2Reader->putFeature(L"http://xml.org/sax/features/external-general-entities", VARIANT_FALSE);
+      hr = pSAX2Reader->putFeature(L"http://xml.org/sax/features/external-parameter-entities", VARIANT_FALSE);
       // Want to validate XML file
-      hr = pSAXReader->putFeature(L"schema-validation", VARIANT_TRUE);
+      hr = pSAX2Reader->putFeature(L"schema-validation", VARIANT_TRUE);
       // Ignore any schema specified in the XML file
-      hr = pSAXReader->putFeature(L"use-schema-location", VARIANT_FALSE);
+      hr = pSAX2Reader->putFeature(L"use-schema-location", VARIANT_FALSE);
       // Ignore any schema in the XML file
-      hr = pSAXReader->putFeature(L"use-inline-schema", VARIANT_FALSE);
+      hr = pSAX2Reader->putFeature(L"use-inline-schema", VARIANT_FALSE);
       // Only use the XSD in PWSafe's installation directory!
-      hr = pSAXReader->putProperty(L"schemas", _variant_t(pSchemaCache.GetInterfacePtr()));
+      hr = pSAX2Reader->putProperty(L"schemas", _variant_t(pSchemaCache));
     }
 
     //  Let's begin the parsing now
@@ -199,13 +216,13 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
 #else
       mbstowcs(wcURL, strXMLFileName.c_str(), strXMLFileName.length());
 #endif
-      hr = pSAXReader->parseURL(wcURL);
+      hr = pSAX2Reader->parseURL(wcURL);
     } else {
       CComVariant cvXMLData;
       cvXMLData.vt = VT_BSTR;
       CString cs_XMLData(strXMLData.c_str());
       cvXMLData.bstrVal = cs_XMLData.AllocSysString();
-      hr = pSAXReader->parse(cvXMLData);
+      hr = pSAX2Reader->parse(cvXMLData);
     }
 
     if(!FAILED(hr)) {  // Check for parsing errors
@@ -230,19 +247,21 @@ bool PWSXMLFilters::XMLFilterProcess(const bool &bvalidation,
 
 exit:
   if (pSchemaCache != NULL)
-    pSchemaCache.Release();
+    pSchemaCache->Release();
 
-  if (pSAXReader != NULL)
-    pSAXReader.Release();
+  if (pSAX2Reader != NULL)
+    pSAX2Reader->Release();
 
   return b_ok;
 }
 #else
-bool PWSXMLFilters::XMLFilterProcess(const bool &,
+bool MFilterXMLProcessor::XMLFilterProcess(const bool &,
                                      const stringT &,
                                      const stringT &, 
                                      const stringT &)
 {
   return false;
 }
-#endif /* _WIN32 */
+#endif /* WIN32 */
+
+#endif /* USE_XML_LIBRARY == MSXML */

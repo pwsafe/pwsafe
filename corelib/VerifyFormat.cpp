@@ -2,8 +2,8 @@
 #include "corelib.h"
 #include "StringXStream.h"
 
-static bool verifyDTvalues(int yyyy, int mon, int dd,
-                           int hh, int min, int ss)
+bool verifyDTvalues(int yyyy, int mon, int dd,
+                    int hh, int min, int ss)
 {
   const int month_lengths[12] = {31, 28, 31, 30, 31, 30,
                                  31, 31, 30, 31, 30, 31};

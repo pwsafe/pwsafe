@@ -5,19 +5,25 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-// SAXFilters.cpp : implementation file
+
+// MFilterSAX2Filters.cpp : implementation file
 //
 
-#include "util.h"
-#include "SAXFilters.h"
-#include "UUIDGen.h"
-#include "xml_import.h"
-#include "corelib.h"
-#include "PWSfileV3.h"
-#include "PWSFilters.h"
-#include "PWSprefs.h"
-#include "VerifyFormat.h"
-#include "Match.h"
+#include "../XMLDefs.h"
+
+#if USE_XML_LIBRARY == MSXML
+
+#include "MFilterSAX2Handlers.h"
+#include <msxml6.h>
+
+#include "../util.h"
+#include "../UUIDGen.h"
+#include "../corelib.h"
+#include "../PWSfileV3.h"
+#include "../PWSFilters.h"
+#include "../PWSprefs.h"
+#include "../VerifyFormat.h"
+#include "../Match.h"
 
 #include <map>
 #include <algorithm>
@@ -36,19 +42,19 @@ typedef std::vector<stringT>::iterator viter;
 #pragma warning(disable : 4100)
 
 //  -----------------------------------------------------------------------
-//  PWSSAXFilterErrorHandler Methods
+//  MFilterSAX2ErrorHandler Methods
 //  -----------------------------------------------------------------------
-PWSSAXFilterErrorHandler::PWSSAXFilterErrorHandler()
+MFilterSAX2ErrorHandler::MFilterSAX2ErrorHandler()
   : bErrorsFound(FALSE), m_strValidationResult(_T(""))
 {
   m_refCnt = 0;
 }
 
-PWSSAXFilterErrorHandler::~PWSSAXFilterErrorHandler()
+MFilterSAX2ErrorHandler::~MFilterSAX2ErrorHandler()
 {
 }
 
-long __stdcall PWSSAXFilterErrorHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
+long __stdcall MFilterSAX2ErrorHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
   *ppvObject = NULL;
   if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler))
@@ -64,12 +70,12 @@ long __stdcall PWSSAXFilterErrorHandler::QueryInterface(const struct _GUID &riid
   else return E_NOINTERFACE;
 }
 
-unsigned long __stdcall PWSSAXFilterErrorHandler::AddRef()
+unsigned long __stdcall MFilterSAX2ErrorHandler::AddRef()
 {
   return ++m_refCnt; // NOT thread-safe
 }
 
-unsigned long __stdcall PWSSAXFilterErrorHandler::Release()
+unsigned long __stdcall MFilterSAX2ErrorHandler::Release()
 {
   --m_refCnt; // NOT thread-safe
   if (m_refCnt == 0) {
@@ -79,9 +85,9 @@ unsigned long __stdcall PWSSAXFilterErrorHandler::Release()
   else return m_refCnt;
 }
 
-HRESULT STDMETHODCALLTYPE PWSSAXFilterErrorHandler::error(struct ISAXLocator * pLocator,
-                                                     unsigned short * pwchErrorMessage,
-                                                     HRESULT hrErrorCode )
+HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::error(struct ISAXLocator * pLocator,
+                                                         const wchar_t * pwchErrorMessage,
+                                                         HRESULT hrErrorCode )
 {
   TCHAR szErrorMessage[MAX_PATH*2] = {0};
   TCHAR szFormatString[MAX_PATH*2] = {0};
@@ -96,7 +102,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterErrorHandler::error(struct ISAXLocator * p
 #else
 #if (_MSC_VER >= 1400)
   size_t num_converted;
-  wcstombs_s(&num_converted, szErrorMessage, MAX_PATH*2, pwchErrorMessage, MAX_PATH);
+  wcstombs_s(&num_converted, szErrorMessage, MAX_PATH * 2, pwchErrorMessage, MAX_PATH);
 #else
   wcstombs(szErrorMessage, pwchErrorMessage, MAX_PATH);
 #endif
@@ -108,7 +114,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterErrorHandler::error(struct ISAXLocator * p
   LoadAString(cs_format,IDSC_SAXGENERROR);
 
 #if (_MSC_VER >= 1400)
-  _stprintf_s(szFormatString, MAX_PATH*2, cs_format.c_str(),
+  _stprintf_s(szFormatString, MAX_PATH * 2, cs_format.c_str(),
               hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #else
   _stprintf(szFormatString, cs_format.c_str(),
@@ -122,24 +128,24 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterErrorHandler::error(struct ISAXLocator * p
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE PWSSAXFilterErrorHandler::fatalError(struct ISAXLocator * pLocator,
-                                                          unsigned short * pwchErrorMessage,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::fatalError(struct ISAXLocator * pLocator,
+                                                          const wchar_t * pwchErrorMessage,
                                                           HRESULT hrErrorCode )
 {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE PWSSAXFilterErrorHandler::ignorableWarning(struct ISAXLocator * pLocator,
-                                                                unsigned short * pwchErrorMessage,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::ignorableWarning(struct ISAXLocator * pLocator,
+                                                                const wchar_t * pwchErrorMessage,
                                                                 HRESULT hrErrorCode )
 {
   return S_OK;
 }
 
 //  -----------------------------------------------------------------------
-//  PWSSAXFilterContentHandler Methods
+//  MFilterSAX2ContentHandler Methods
 //  -----------------------------------------------------------------------
-PWSSAXFilterContentHandler::PWSSAXFilterContentHandler()
+MFilterSAX2ContentHandler::MFilterSAX2ContentHandler()
 {
   m_refCnt = 0;
   m_strElemContent.clear();
@@ -149,11 +155,11 @@ PWSSAXFilterContentHandler::PWSSAXFilterContentHandler()
 }
 
 //  -----------------------------------------------------------------------
-PWSSAXFilterContentHandler::~PWSSAXFilterContentHandler()
+MFilterSAX2ContentHandler::~MFilterSAX2ContentHandler()
 {
 }
 
-long __stdcall PWSSAXFilterContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
+long __stdcall MFilterSAX2ContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
   *ppvObject = NULL;
   if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler)) {
@@ -167,12 +173,12 @@ long __stdcall PWSSAXFilterContentHandler::QueryInterface(const struct _GUID &ri
   else return E_NOINTERFACE;
 }
 
-unsigned long __stdcall PWSSAXFilterContentHandler::AddRef()
+unsigned long __stdcall MFilterSAX2ContentHandler::AddRef()
 {
   return ++m_refCnt; // NOT thread-safe
 }
 
-unsigned long __stdcall PWSSAXFilterContentHandler::Release()
+unsigned long __stdcall MFilterSAX2ContentHandler::Release()
 {
   --m_refCnt; // NOT thread-safe
   if (m_refCnt == 0) {
@@ -183,40 +189,40 @@ unsigned long __stdcall PWSSAXFilterContentHandler::Release()
 }
 
 //  -----------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::startDocument ( )
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startDocument ( )
 {
   m_strImportErrors = _T("");
   m_bentrybeingprocessed = false;
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::putDocumentLocator (struct ISAXLocator * pLocator )
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::putDocumentLocator (struct ISAXLocator * pLocator )
 {
   return S_OK;
 }
 
 //  ---------------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
-  /* [in] */ wchar_t __RPC_FAR *pwchNamespaceUri,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
+  /* [in] */ const wchar_t __RPC_FAR *pwchNamespaceUri,
   /* [in] */ int cchNamespaceUri,
-  /* [in] */ wchar_t __RPC_FAR *pwchLocalName,
+  /* [in] */ const wchar_t __RPC_FAR *pwchLocalName,
   /* [in] */ int cchLocalName,
-  /* [in] */ wchar_t __RPC_FAR *pwchRawName,
+  /* [in] */ const wchar_t __RPC_FAR *pwchRawName,
   /* [in] */ int cchRawName,
   /* [in] */ ISAXAttributes __RPC_FAR *pAttributes)
 {
-  TCHAR szCurElement[MAX_PATH+1] = {0};
+  TCHAR szCurElement[MAX_PATH + 1] = {0};
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-  _tcsncpy_s(szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
+  _tcsncpy_s(szCurElement, MAX_PATH + 1, pwchRawName, cchRawName);
 #else
   _tcsncpy(szCurElement, pwchRawName, cchRawName);
 #endif
 #else
 #if (_MSC_VER >= 1400)
   size_t num_converted;
-  wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
+  wcstombs_s(&num_converted, szCurElement, MAX_PATH + 1, pwchRawName, cchRawName);
 #else
   wcstombs(szCurElement, pwchRawName, cchRawName);
 #endif
@@ -239,7 +245,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
     for (int i = 0; i < iAttribs; i++) {
       TCHAR szQName[MAX_PATH + 1] = {0};
       TCHAR szValue[MAX_PATH + 1] = {0};
-      wchar_t *QName, *Value;
+      const wchar_t *QName, *Value;
       int QName_length, Value_length;
 
       pAttributes->getQName(i, &QName, &QName_length);
@@ -254,8 +260,8 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
 #endif
 #else  // UNICODE
 #if (_MSC_VER >= 1400)
-      wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
-      wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
+      wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
+      wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
 #else
       wcstombs(szQName, QName, QName_length);
       wcstombs(szValue, Value, Value_length);
@@ -291,7 +297,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
     for (int i = 0; i < iAttribs; i++) {
       TCHAR szQName[MAX_PATH + 1] = {0};
       TCHAR szValue[MAX_PATH + 1] = {0};
-      wchar_t *QName, *Value;
+      const wchar_t *QName, *Value;
       int QName_length, Value_length;
 
       pAttributes->getQName(i, &QName, &QName_length);
@@ -306,8 +312,8 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
 #endif
 #else  // UNICODE
 #if (_MSC_VER >= 1400)
-      wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
-      wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
+      wcstombs_s(&num_converted, szQName, MAX_PATH + 1, QName, QName_length);
+      wcstombs_s(&num_converted, szValue, MAX_PATH + 1, Value, Value_length);
 #else
       wcstombs(szQName, QName, QName_length);
       wcstombs(szValue, Value, Value_length);
@@ -330,25 +336,25 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::startElement(
 }
 
 //  ---------------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::characters(
-  /* [in] */ wchar_t __RPC_FAR *pwchChars,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::characters(
+  /* [in] */ const wchar_t __RPC_FAR *pwchChars,
   /* [in] */ int cchChars)
 {
   if (m_bValidation)
     return S_OK;
 
-  TCHAR* szData = new TCHAR[cchChars+2];
+  TCHAR* szData = new TCHAR[cchChars + 2];
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-  _tcsncpy_s(szData, cchChars+2, pwchChars, cchChars);
+  _tcsncpy_s(szData, cchChars + 2, pwchChars, cchChars);
 #else
   _tcsncpy(szData, pwchChars, cchChars);
 #endif
 #else
 #if _MSC_VER >= 1400
   size_t num_converted;
-  wcstombs_s(&num_converted, szData, cchChars+2, pwchChars, cchChars);
+  wcstombs_s(&num_converted, szData, cchChars + 2, pwchChars, cchChars);
 #else
   wcstombs(szData, pwchChars, cchChars);
 #endif
@@ -364,26 +370,26 @@ HRESULT STDMETHODCALLTYPE PWSSAXFilterContentHandler::characters(
 }
 
 //  -----------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
-  unsigned short * pwchNamespaceUri,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
+  const wchar_t * pwchNamespaceUri,
   int cchNamespaceUri,
-  unsigned short * pwchLocalName,
+  const wchar_t * pwchLocalName,
   int cchLocalName,
-  unsigned short * pwchQName,
+  const wchar_t * pwchQName,
   int cchQName)
 {
-  TCHAR szCurElement[MAX_PATH+1] = {0};
+  TCHAR szCurElement[MAX_PATH + 1] = {0};
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-  _tcsncpy_s(szCurElement, MAX_PATH+1, pwchQName, cchQName);
+  _tcsncpy_s(szCurElement, MAX_PATH + 1, pwchQName, cchQName);
 #else
   _tcsncpy(szCurElement, pwchQName, cchQName);
 #endif
 #else
 #if (_MSC_VER >= 1400)
   size_t num_converted;
-  wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchQName, cchQName);
+  wcstombs_s(&num_converted, szCurElement, MAX_PATH + 1, pwchQName, cchQName);
 #else
   wcstombs(szCurElement, pwchQName, cchQName);
 #endif
@@ -766,46 +772,48 @@ HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endElement (
 }
 
 //  ---------------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endDocument ( )
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endDocument ( )
 {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::startPrefixMapping (
-  unsigned short * pwchPrefix,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startPrefixMapping (
+  const wchar_t * pwchPrefix,
   int cchPrefix,
-  unsigned short * pwchUri,
+  const wchar_t * pwchUri,
   int cchUri )
 {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::endPrefixMapping (
-  unsigned short * pwchPrefix,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endPrefixMapping (
+  const wchar_t * pwchPrefix,
   int cchPrefix )
 {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::ignorableWhitespace (
-  unsigned short * pwchChars,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::ignorableWhitespace (
+  const wchar_t * pwchChars,
   int cchChars )
 {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::processingInstruction (
-  unsigned short * pwchTarget,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::processingInstruction (
+  const wchar_t * pwchTarget,
   int cchTarget,
-  unsigned short * pwchData,
+  const wchar_t * pwchData,
   int cchData )
 {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXFilterContentHandler::skippedEntity (
-  unsigned short * pwchName,
+HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::skippedEntity (
+  const wchar_t * pwchName,
   int cchName )
 {
   return S_OK;
 }
+
+#endif /* USE_XML_LIBRARY == MSXML */

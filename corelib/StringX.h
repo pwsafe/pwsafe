@@ -136,14 +136,20 @@ namespace S_Alloc
 
 } // end namespace S_Alloc
 
-#ifdef UNICODE
+// Sometimes we need specific ones irrespective of in Unicode mode or not.
+// In particular, the underlying format of most XML is Unicode.
 typedef std::basic_string<wchar_t,
                           std::char_traits<wchar_t>,
-                          S_Alloc::SecureAlloc<wchar_t> > StringX;
-#else
+                          S_Alloc::SecureAlloc<wchar_t> > wStringX;
+
 typedef std::basic_string<char,
                           std::char_traits<char>,
-                          S_Alloc::SecureAlloc<char> > StringX;
+                          S_Alloc::SecureAlloc<char> > cStringX;
+
+#ifdef UNICODE
+typedef wStringX StringX;
+#else
+typedef cStringX StringX;
 #endif
 
 // Following should really be StringX member functions, but there's no 
