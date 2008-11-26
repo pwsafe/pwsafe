@@ -593,9 +593,9 @@
 #define IDC_STATIC_URL                  1355
 #define IDC_STATIC_AUTO                 1356
 #define IDC_LAUNCH                      1357
-#define IDC_EDIT1                       1359
-#define IDC_YK_PUBID                    1359
+#define IDC_YK_OTP                    1359
 #define IDC_YK_STATUS                   1360
+#define IDC_YK_INFO                     1361
 
 // Next default values for new objects
 // 
@@ -603,7 +603,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        447
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1361
+#define _APS_NEXT_CONTROL_VALUE         1362
 #define _APS_NEXT_SYMED_VALUE           157
 #endif
 #endif

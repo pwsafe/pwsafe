@@ -37,7 +37,7 @@ IMPLEMENT_DYNAMIC(CYubiKeyDlg, CPWDialog)
 
 CYubiKeyDlg::CYubiKeyDlg(CWnd* pParent /*=NULL*/)
 : CPWDialog(CYubiKeyDlg::IDD, pParent), m_YKpubID(_T("")),
-  m_otp(_T("")), m_YKstatus(_T(""))
+  m_YKinfo(_T("")), m_otp(_T("")), m_YKstatus(_T(""))
 {
 }
 
@@ -45,12 +45,27 @@ CYubiKeyDlg::~CYubiKeyDlg()
 {
 }
 
+BOOL CYubiKeyDlg::OnInitDialog() 
+{
+  if (m_YKpubID.IsEmpty()) {
+    m_YKinfo = _T("To enable YubiKey support, activate your YubiKey below");
+  } else {
+    m_YKinfo = _T("This database is associated with YubiKey \"");
+    m_YKinfo += m_YKpubID;
+    m_YKinfo += _T("\"\r\nTo disable YubiKey support, click OK.\r\n");
+    m_YKinfo += _T("To change the YubiKey, activate your new YubiKey below");
+  }
+  CPWDialog::OnInitDialog();
+  return TRUE;
+}
+
 void CYubiKeyDlg::DoDataExchange(CDataExchange* pDX)
 {
    CPWDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_YK_PUBID, m_YKpubID);
-   DDV_MaxChars(pDX, m_YKpubID, 44);
+   DDX_Text(pDX, IDC_YK_OTP, m_otp);
+   DDV_MaxChars(pDX, m_otp, 44);
    DDX_Text(pDX, IDC_YK_STATUS, m_YKstatus);
+   DDX_Text(pDX, IDC_YK_INFO, m_YKinfo);
 }
 
 
@@ -65,14 +80,16 @@ void CYubiKeyDlg::OnOk()
 {
   // validate OTP, blablabla
   UpdateData(TRUE); // get data from control
-  if (m_YKpubID.IsEmpty()) { // an empty string is fine,
-    //                          means that we don't want to use YubiKey.
+  if (m_otp.IsEmpty()) { // an empty string is fine,
+    //                      means that we don't want to use YubiKey.
+    m_YKpubID = m_otp;
     CPWDialog::OnOK();
     return;
   }
-  m_otp = m_YKpubID;
-  if (VerifyOTP(m_YKstatus))
+  if (VerifyOTP(m_YKstatus)) {
+    m_YKpubID = m_otp.Left(12);
     CPWDialog::OnOK();
+  }
   else // verify failed, show why
     UpdateData(FALSE);
 }

@@ -25,14 +25,16 @@ class CYubiKeyDlg : public CPWDialog
   // Dialog Data
 	enum { IDD = IDD_YUBIKEY };
   CString m_YKpubID;
-  CString m_otp;
   
  protected:
+  virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-    private:
-  CString m_YKstatus;
- public:
+public:
   afx_msg void OnOk();
+ private:
+  CString m_YKinfo;
+  CString m_otp;
+  CString m_YKstatus;
 };
