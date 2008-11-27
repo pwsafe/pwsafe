@@ -33,10 +33,16 @@
 #include <vector>
 #include <algorithm>
 
-#if _MSC_VER < 1500
-#include <winable.h>
-#else
+/*
+* Make sure we get the right declaration of BlockInput
+* VS2005 - it is in "winable.h"
+* VS2008 - it is in "winuser.h"
+*/
+
+#if _MSC_VER >= 1500
 #include <winuser.h>
+#else
+#include <winable.h>
 #endif
 
 #ifdef _DEBUG
@@ -1291,7 +1297,7 @@ void DboxMain::AutoType(const CItemData &ci)
   const int N = AutoCmd.length();
   ks.ResetKeyboardState();
 
-  ::BlockInput(true);
+  BlockInput(true);
 
   // Note that minimizing the window before calling ci.Get*()
   // will cause garbage to be read if "lock on minimize" selected,
@@ -1375,7 +1381,7 @@ void DboxMain::AutoType(const CItemData &ci)
 
   Sleep(100);
 
-  ::BlockInput(false);
+  BlockInput(false);
 
   // If we hid it, now show it
   if (bMinOnAuto)

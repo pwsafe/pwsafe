@@ -156,3 +156,6 @@
 #define IDSC_OR                         3325
 #define IDSC_XMLLOCK_CFG_FAILED         3326
 #define IDSC_XMLCREATE_CFG_FAILED       3327
+#define IDSC_SAX2FATALERROR             3328
+#define IDSC_SAX2ERROR                  3329
+#define IDSC_SAX2WARNING                3330

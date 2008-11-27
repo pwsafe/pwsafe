@@ -26,6 +26,7 @@
 #include "filter/SetFiltersDlg.h"
 #include "filter/ManageFiltersDlg.h"
 #include "GeneralMsgBox.h"
+#include "MFCMessages.h"
 
 #include "corelib/PWSFilters.h"
 #include "corelib/PWHistory.h"
@@ -715,12 +716,15 @@ void DboxMain::ImportFilters()
   const stringT XSDfn(_T("pwsafe_filter.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
+#if defined(USE_XML_LIBRARY) && USE_XML_LIBRARY != EXPAT
+  // Expat is a non-validating parser - no use for Schema!
   if (!pws_os::FileExists(XSDFilename)) {
     cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDS_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
+#endif
 
   CFileDialog fd(TRUE,
                  _T("xml"),
@@ -747,9 +751,10 @@ void DboxMain::ImportFilters()
     CString XMLFilename = fd.GetPathName();
     CWaitCursor waitCursor;  // This may take a while!
 
+    MFCAsker q;
     rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""),
                                           stringT(XMLFilename),
-                                          XSDFilename.c_str(), strErrors);
+                                          XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
 
     switch (rc) {

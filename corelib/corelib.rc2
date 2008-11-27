@@ -101,7 +101,7 @@ END
 STRINGTABLE
 BEGIN
   IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
-  IDSC_XMLPARSEERROR      "SAX Parse%2d Error 0x%08X during %s."
+  IDSC_XMLPARSEERROR      "SAX Parse Error during %s."
   IDSC_XMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
   IDSC_XMLVALIDATION      "validation"
   IDSC_XMLIMPORT          "import"
@@ -112,9 +112,15 @@ BEGIN
   IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
   IDSC_XMLLOCK_CFG_FAILED "Failed to lock configuration file - opened by another instance of PasswordSafe?"
   IDSC_XMLCREATE_CFG_FAILED "Internal error: Couldn't initialize config file XML structure"
-
   IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
-  IDSC_SAXGENERROR        "Error (%08X): line %d character %d %s"
+END
+
+STRINGTABLE
+BEGIN
+  IDSC_SAXGENERROR        "XML %s: line %d character %d: %s"
+  IDSC_SAX2FATALERROR     "Fatal Error"
+  IDSC_SAX2ERROR          "Error"
+  IDSC_SAX2WARNING        "Warning"
 END
 
 STRINGTABLE
@@ -149,7 +155,6 @@ BEGIN
   IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
   IDSC_VALIDATEUUID        "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid UUID field.  This has been corrected."
   IDSC_VALIDATEPWH         "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-
 END
 
 STRINGTABLE

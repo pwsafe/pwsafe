@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="UserVariables"
+	>
+	<UserMacro
+		Name="ProjectDir"
+		Value="&quot;$(ProjectDir)&quot;"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="HTMLWSDir"
+		Value="C:\Program Files\HTML Help Workshop"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="TortoiseSVNDir"
+		Value="C:\Program Files\TortoiseSVN"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="ExpatDir"
+		Value="C:\Program Files\Expat 2.0.1"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="MSXML60SDKDir"
+		Value="C:\Program Files\Microsoft SDKs\Windows\v6.0A"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="XercesDir"
+		Value="C:\Program Files\xerces-c-3.0.0-x86-windows-vc-8.0"
+		PerformEnvironmentSet="true"
+	/>
+</VisualStudioPropertySheet>

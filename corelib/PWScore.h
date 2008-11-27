@@ -12,6 +12,7 @@
 //-----------------------------------------------------------------------------
 
 #include <map> // for CList
+
 #include "ItemData.h"
 #include "StringX.h"
 #include "PWSfile.h"
