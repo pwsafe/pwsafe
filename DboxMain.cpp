@@ -1214,12 +1214,13 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       gmb.SetTitle(cs_title);
       gmb.SetStandardIcon(MB_ICONQUESTION);
 #ifdef PWS_STRICT_LOCKING // define if you don't want to allow user override
-      cs_msg.Format(IDS_STRICT_LOCKED, curFile, cs_user_and_host, cs_PID);
+      cs_msg.Format(IDS_STRICT_LOCKED, curFile.c_str(),
+                    cs_user_and_host, cs_PID);
       gmb.SetMsg(cs_msg);
       gmb.AddButton(1, IDS_READONLY);
       gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
 #else
-      cs_msg.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
+      cs_msg.Format(IDS_LOCKED, curFile.c_str(), cs_user_and_host, cs_PID);
       gmb.SetMsg(cs_msg);
       gmb.AddButton(1, IDS_READONLY);
       gmb.AddButton(2, IDS_READWRITE);
