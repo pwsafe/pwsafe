@@ -33,6 +33,7 @@ class CYubiKeyDlg : public CPWDialog
 	DECLARE_MESSAGE_MAP()
 public:
   afx_msg void OnOk();
+  afx_msg void OnHelp();
  private:
   CString m_YKinfo;
   CString m_otp;

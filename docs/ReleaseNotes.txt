@@ -1,4 +1,4 @@
-Password Safe 3.14.02 Release Notes - September 2008
+Password Safe 3.14.03Y Release Notes - November 2008
 ====================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -7,6 +7,13 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+New Features for 3.14.03Y
+=========================
+[] This release of Password Safe supports Yubico's YubiKey
+authentication device (http://yubico.com/products/yubikey/) as an
+additional means of unlocking a locked database. For more details,
+please refer to the online help. 
 
 Bugs fixed in 3.14.02
 =====================

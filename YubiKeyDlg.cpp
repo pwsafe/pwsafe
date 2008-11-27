@@ -11,6 +11,8 @@
 
 #include "stdafx.h"
 #include "YubiKeyDlg.h"
+#include "PasswordSafe.h" // for extern app.
+#include "ThisMfcApp.h" // ditto
 #include "corelib/YubiKey.h"
 
 // YubiKeyDlg dialog
@@ -53,6 +55,7 @@ void CYubiKeyDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CYubiKeyDlg, CPWDialog)
    ON_BN_CLICKED(IDOK, &CYubiKeyDlg::OnOk)
+  ON_BN_CLICKED(IDHELP, &CYubiKeyDlg::OnHelp)
 END_MESSAGE_MAP()
 
 
@@ -85,4 +88,11 @@ bool CYubiKeyDlg::VerifyOTP(CString &error)
     return false;
   } else
     return true;
+}
+
+void CYubiKeyDlg::OnHelp() 
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/yubikey.html");
+  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
