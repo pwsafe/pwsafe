@@ -26,7 +26,7 @@
 * document from UTF-16 to ASCII.
 */
 
-#include "../XMLDefs.h"
+#include "XMLDefs.h"
 
 #if USE_XML_LIBRARY == XERCES
 

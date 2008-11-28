@@ -195,7 +195,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\include&quot;;"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -498,7 +498,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -728,7 +728,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -957,7 +957,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -1187,7 +1187,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -1333,27 +1333,27 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFileHandlers.cpp"
+				RelativePath=".\XML\EFileHandlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFileValidator.cpp"
+				RelativePath=".\XML\EFileValidator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFileXMLProcessor.cpp"
+				RelativePath=".\XML\EFileXMLProcessor.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFilterHandlers.cpp"
+				RelativePath=".\XML\EFilterHandlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFilterValidator.cpp"
+				RelativePath=".\XML\EFilterValidator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFilterXMLProcessor.cpp"
+				RelativePath=".\XML\EFilterXMLProcessor.cpp"
 				>
 			</File>
 			<File
@@ -1361,7 +1361,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\ESecMemMgr.cpp"
+				RelativePath=".\XML\ESecMemMgr.cpp"
 				>
 			</File>
 			<File
@@ -1389,19 +1389,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MSXML\MFileSAX2Handlers.cpp"
+				RelativePath=".\XML\MFileSAX2Handlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MSXML\MFileXMLProcessor.cpp"
+				RelativePath=".\XML\MFileXMLProcessor.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MSXML\MFilterSAX2Handlers.cpp"
+				RelativePath=".\XML\MFilterSAX2Handlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MSXML\MFilterXMLProcessor.cpp"
+				RelativePath=".\XML\MFilterXMLProcessor.cpp"
 				>
 			</File>
 			<File
@@ -1670,19 +1670,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XFileSAX2Handlers.cpp"
+				RelativePath=".\XML\XFileSAX2Handlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XFileXMLProcessor.cpp"
+				RelativePath=".\XML\XFileXMLProcessor.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XFilterSAX2Handlers.cpp"
+				RelativePath=".\XML\XFilterSAX2Handlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XFilterXMLProcessor.cpp"
+				RelativePath=".\XML\XFilterXMLProcessor.cpp"
 				>
 			</File>
 			<File
@@ -1690,7 +1690,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XSecMemMgr.cpp"
+				RelativePath=".\XML\XSecMemMgr.cpp"
 				>
 			</File>
 		</Filter>
@@ -1707,39 +1707,39 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFileHandlers.h"
+				RelativePath=".\XML\EFileHandlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFileValidator.h"
+				RelativePath=".\XML\EFileValidator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFileValidatorDefs.h"
+				RelativePath=".\XML\EFileValidatorDefs.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFileXMLProcessor.h"
+				RelativePath=".\XML\EFileXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFilterHandlers.h"
+				RelativePath=".\XML\EFilterHandlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFilterValidator.h"
+				RelativePath=".\XML\EFilterValidator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFilterValidatorDefs.h"
+				RelativePath=".\XML\EFilterValidatorDefs.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\EFilterXMLProcessor.h"
+				RelativePath=".\XML\EFilterXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Expat\ESecMemMgr.h"
+				RelativePath=".\XML\ESecMemMgr.h"
 				>
 			</File>
 			<File
@@ -1767,19 +1767,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MSXML\MFileSAX2Handlers.h"
+				RelativePath=".\XML\MFileSAX2Handlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MSXML\MFileXMLProcessor.h"
+				RelativePath=".\XML\MFileXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MSXML\MFilterSAX2Handlers.h"
+				RelativePath=".\XML\MFilterSAX2Handlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MSXML\MFilterXMLProcessor.h"
+				RelativePath=".\XML\MFilterXMLProcessor.h"
 				>
 			</File>
 			<File
@@ -1891,19 +1891,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XFileSAX2Handlers.h"
+				RelativePath=".\XML\XFileSAX2Handlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XFileXMLProcessor.h"
+				RelativePath=".\XML\XFileXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XFilterSAX2Handlers.h"
+				RelativePath=".\XML\XFilterSAX2Handlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XFilterXMLProcessor.h"
+				RelativePath=".\XML\XFilterXMLProcessor.h"
 				>
 			</File>
 			<File
@@ -1915,7 +1915,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Xerces\XSecMemMgr.h"
+				RelativePath=".\XML\XSecMemMgr.h"
 				>
 			</File>
 		</Filter>

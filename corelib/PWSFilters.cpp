@@ -15,14 +15,14 @@
 #include "PWScore.h"
 #include "StringX.h"
 
-#include "XMLDefs.h"
+#include "XML/XMLDefs.h"
 
 #if USE_XML_LIBRARY == XERCES
-#include "Xerces/XFilterXMLProcessor.h"
+#include "XML/XFilterXMLProcessor.h"
 #elif USE_XML_LIBRARY == MSXML
-#include "MSXML/MFilterXMLProcessor.h"
+#include "XML/MFilterXMLProcessor.h"
 #elif USE_XML_LIBRARY == EXPAT
-#include "Expat/EFilterXMLProcessor.h"
+#include "XML/EFilterXMLProcessor.h"
 #endif
 
 #define PWS_XML_FILTER_VERSION 1

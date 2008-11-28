@@ -26,14 +26,14 @@
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
 
-#include "XMLDefs.h"
+#include "XML/XMLDefs.h"
 
 #if USE_XML_LIBRARY == XERCES
-#include "Xerces/XFileXMLProcessor.h"
+#include "XML/XFileXMLProcessor.h"
 #elif USE_XML_LIBRARY == MSXML
-#include "MSXML/MFileXMLProcessor.h"
+#include "XML/MFileXMLProcessor.h"
 #elif USE_XML_LIBRARY == EXPAT
-#include "Expat/EFileXMLProcessor.h"
+#include "XML/EFileXMLProcessor.h"
 #endif
 
 #include <fstream> // for WritePlaintextFile

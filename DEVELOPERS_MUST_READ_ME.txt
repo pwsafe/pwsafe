@@ -2,14 +2,12 @@ For Developers using Microsoft's Visual Studio, changes have been made to
 allow the product to pick up the required include and library files from
 the installation directories that can be overriden by the user.
 
-In order for the solution to open under these products, you MUST make a copy
-of the supplied "UserVariables_template.vsprops" file as "UserVariables.vsprops"
-and place it in the project directory.  THE SOLUTION WILL NOT OPEN CORRECTLY
-WITHOUT THIS FILE BEING PRESENT.
+In order for the solution to open under these products, you MUST run the
+"configure.vbs" script file to create the "UserVariables.vsprops" [Visual
+Studio Properties file] prior to opening this solution with Visual Studio.
+THE SOLUTION WILL NOT OPEN CORRECTLY WITHOUT THIS FILE BEING PRESENT.
 
-You should then use a normal text editor to update the directories within
-it to correspond to your installation directoies.  The product default
-directories are already defined.  They are for:
+The product default directories are already defined.  They are for:
 
 For GUI HTML help support:
 	Microsoft's HTML Help Workshop
@@ -61,7 +59,7 @@ http://expat.sourceforge.net/
 http://www.microsoft.com/downloads/details.aspx?FamilyID=993C0BCF-3BCF-4009-BE21-27E85E1857B1&displaylang=en
 http://xerces.apache.org/xerces-c/
 
-NOTE: as of 2 November 2008, the additional validation code has not been added
-for Expat and non-Unicode versions of all three implementations have not yet
-been tested.  Work is also needed to ensure that error processing is correct
-and that associated messages are produced correctly.
+NOTE: as of 2 November 2008, the additional validation code for Expat and
+non-Unicode versions of all three implementations are in progress.  Work
+is also needed to ensure that error processing is correct and that associated
+messages are produced correctly.

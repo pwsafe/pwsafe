@@ -9,7 +9,7 @@
 // MFileSAX2Handlers.cpp : implementation file
 //
 
-#include "../XMLDefs.h"
+#include "XMLDefs.h"
 
 #if USE_XML_LIBRARY == MSXML
 

@@ -19,7 +19,7 @@
 *
 */
 
-#include "../XMLDefs.h"
+#include "XMLDefs.h"
 
 #if USE_XML_LIBRARY == XERCES
 
