@@ -1,4 +1,4 @@
-Password Safe 3.14.02 Release Notes - September 2008
+Password Safe 3.15Beta Release Notes - November 2008
 ====================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.14.02
-=====================
+Bugs fixed in 3.15
+==================
 [2269930] Track write permission of file in opening dialog: If the
 user chooses a file with different permission than the original, then
 the r-o status is updated accordingly.
@@ -28,17 +28,18 @@ button used to minimize.
 [] Ensure XML Import correctly processes normal entries with a 
 password field that is in alias or shortcut form.
 
-Changes to Existing Features in 3.14.02
-=======================================
+Changes to Existing Features in 3.15
+====================================
+None.
 
-
-New Features for 3.14.02
-========================
-[Open Discussion] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature
-supported by some Clipboard Viewers.
-[Open Discussion] Add feature to display a subset of the password. Useful
+New Features for 3.15
+=====================
+[] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
+Clipboard Viewers.
+[] Add feature to display a subset of the password. Thi is useful
 for websites that need different particular characters from a password at
-each login.
+each login. To access this, select an item, right-click and choose
+Display Subset of Password.
 [2203438] Remove "[alt]", "[ssh]" and "{alt}" special keywords from URL
 when copying to the clipboard.
 [2144489] Click on the text next to edit fields to copy the field to

@@ -19,6 +19,8 @@
 #include "ThisMfcApp.h"
 #include "AboutDlg.h"
 #include "PwFont.h"
+#include "version.h"
+
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
@@ -1138,11 +1140,11 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       nBuild = HIWORD(dwBuildRevision);
     }
     if (nBuild == 0)
-      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d"),
-      nMajor, nMinor);
+      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d%s"),
+                                        nMajor, nMinor, SPECIAL_BUILD);
     else
-      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d"),
-      nMajor, nMinor, nBuild);
+      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d%s"),
+                                        nMajor, nMinor, nBuild, SPECIAL_BUILD);
 
     app.DisableAccelerator();
     rc = dbox_pkentry->DoModal();
