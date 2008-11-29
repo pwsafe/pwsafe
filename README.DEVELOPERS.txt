@@ -23,14 +23,14 @@ file with the correct values.
 
 3. XML Processing: Originally, PasswordSafe used Microsoft's XML
 library for XML parsing and validation. For portability, we're now
-working on support for the  Expat and Xerces XML libraries, which are
+working on support for the Expat and Xerces XML libraries, which are
 available for non-Windows platforms.  See their web sites for more
 information.  Note: Xerces V3.0.0 at revision 707374 or greater is needed
 to correct a memory leak processing password history entries.
 
 To determine which XML library to use while building PasswordSafe,
 we've defined a new preprocessor variable (USE_XML_LIBRARY). If NOT
-defined, the compiled Password Safewill not process XML files
+defined, the compiled Password Safe will not process XML files
 (databases or filter definitions in XML format). Filters within a
 database will be treated as 'Unknown Fields' and will remain unchanged
 so that other versions of Password Safe that do support XML parsing

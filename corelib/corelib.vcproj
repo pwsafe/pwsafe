@@ -1333,27 +1333,27 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFileHandlers.cpp"
+				RelativePath=".\XML\EXPAT\EFileHandlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFileValidator.cpp"
+				RelativePath=".\XML\EXPAT\EFileValidator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFileXMLProcessor.cpp"
+				RelativePath=".\XML\EXPAT\EFileXMLProcessor.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFilterHandlers.cpp"
+				RelativePath=".\XML\EXPAT\EFilterHandlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFilterValidator.cpp"
+				RelativePath=".\XML\EXPAT\EFilterValidator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFilterXMLProcessor.cpp"
+				RelativePath=".\XML\EXPAT\EFilterXMLProcessor.cpp"
 				>
 			</File>
 			<File
@@ -1361,7 +1361,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\ESecMemMgr.cpp"
+				RelativePath=".\XML\EXPAT\ESecMemMgr.cpp"
 				>
 			</File>
 			<File
@@ -1389,19 +1389,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MFileSAX2Handlers.cpp"
+				RelativePath=".\XML\MSXML\MFileSAX2Handlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MFileXMLProcessor.cpp"
+				RelativePath=".\XML\MSXML\MFileXMLProcessor.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MFilterSAX2Handlers.cpp"
+				RelativePath=".\XML\MSXML\MFilterSAX2Handlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MFilterXMLProcessor.cpp"
+				RelativePath=".\XML\MSXML\MFilterXMLProcessor.cpp"
 				>
 			</File>
 			<File
@@ -1670,19 +1670,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XFileSAX2Handlers.cpp"
+				RelativePath=".\XML\XERCES\XFileSAX2Handlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XFileXMLProcessor.cpp"
+				RelativePath=".\XML\XERCES\XFileXMLProcessor.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XFilterSAX2Handlers.cpp"
+				RelativePath=".\XML\XERCES\XFilterSAX2Handlers.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XFilterXMLProcessor.cpp"
+				RelativePath=".\XML\XERCES\XFilterXMLProcessor.cpp"
 				>
 			</File>
 			<File
@@ -1690,7 +1690,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XSecMemMgr.cpp"
+				RelativePath=".\XML\XERCES\XSecMemMgr.cpp"
 				>
 			</File>
 		</Filter>
@@ -1707,39 +1707,39 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFileHandlers.h"
+				RelativePath=".\XML\EXPAT\EFileHandlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFileValidator.h"
+				RelativePath=".\XML\EXPAT\EFileValidator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFileValidatorDefs.h"
+				RelativePath=".\XML\EXPAT\EFileValidatorDefs.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFileXMLProcessor.h"
+				RelativePath=".\XML\EXPAT\EFileXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFilterHandlers.h"
+				RelativePath=".\XML\EXPAT\EFilterHandlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFilterValidator.h"
+				RelativePath=".\XML\EXPAT\EFilterValidator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFilterValidatorDefs.h"
+				RelativePath=".\XML\EXPAT\EFilterValidatorDefs.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\EFilterXMLProcessor.h"
+				RelativePath=".\XML\EXPAT\EFilterXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\ESecMemMgr.h"
+				RelativePath=".\XML\EXPAT\ESecMemMgr.h"
 				>
 			</File>
 			<File
@@ -1767,19 +1767,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MFileSAX2Handlers.h"
+				RelativePath=".\XML\MSXML\MFileSAX2Handlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MFileXMLProcessor.h"
+				RelativePath=".\XML\MSXML\MFileXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MFilterSAX2Handlers.h"
+				RelativePath=".\XML\MSXML\MFilterSAX2Handlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MFilterXMLProcessor.h"
+				RelativePath=".\XML\MSXML\MFilterXMLProcessor.h"
 				>
 			</File>
 			<File
@@ -1891,23 +1891,23 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XFileSAX2Handlers.h"
+				RelativePath=".\XML\XERCES\XFileSAX2Handlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XFileXMLProcessor.h"
+				RelativePath=".\XML\XERCES\XFileXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XFilterSAX2Handlers.h"
+				RelativePath=".\XML\XERCES\XFilterSAX2Handlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XFilterXMLProcessor.h"
+				RelativePath=".\XML\XERCES\XFilterXMLProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\XMLDefs.h"
+				RelativePath=".\XML\XMLDefs.h"
 				>
 			</File>
 			<File
@@ -1915,7 +1915,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XSecMemMgr.h"
+				RelativePath=".\XML\XERCES\XSecMemMgr.h"
 				>
 			</File>
 		</Filter>

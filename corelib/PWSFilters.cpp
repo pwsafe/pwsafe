@@ -18,11 +18,11 @@
 #include "XML/XMLDefs.h"
 
 #if USE_XML_LIBRARY == XERCES
-#include "XML/XFilterXMLProcessor.h"
+#include "XML/Xerces/XFilterXMLProcessor.h"
 #elif USE_XML_LIBRARY == MSXML
-#include "XML/MFilterXMLProcessor.h"
+#include "XML/MSXML/MFilterXMLProcessor.h"
 #elif USE_XML_LIBRARY == EXPAT
-#include "XML/EFilterXMLProcessor.h"
+#include "XML/Expat/EFilterXMLProcessor.h"
 #endif
 
 #define PWS_XML_FILTER_VERSION 1
