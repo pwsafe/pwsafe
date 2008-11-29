@@ -2,7 +2,7 @@
 
 Dim objFileSystem, objOutputFile
 Dim strOutputFile, strFileLocation
-Dim str1, str2, CRLF
+Dim str1, str2, str3,CRLF
 Dim rc
 
 CRLF = Chr(13) & Chr(10)
@@ -13,7 +13,8 @@ const strMSXML60SDKDir = "C:\Program Files\MSXML 6.0"
 const strXercesDir = "C:\Program Files\xerces-c-3.0.0-x86-windows-vc-8.0"
 
 str1 = "Please supply fully qualified location, without quotes, where "
-str2 = " was installed:" & CRLF & "NULL input or pressing Cancel defaults to:" & CRLF & CRLF
+str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF
+str3 = CRLF & CRLF & "See README.DEVELOPERS.txt for more information."
 
 strOutputFile = "UserVariables.vsprops"
 
@@ -44,35 +45,35 @@ objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""HTMLWSDir""")
-strFileLocation = InputBox(str1 & "HTML Help Workshop" & str2 & strHTMLWSDir, "HTML Help Workshop Location", strHTMLWSDir)
+strFileLocation = InputBox(str1 & "HTML Help Workshop" & str2 & strHTMLWSDir &str3, "HTML Help Workshop Location", strHTMLWSDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strHTMLWSDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""TortoiseSVNDir""")
-strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir, "Tortoise SVN Location", strTortoiseSVNDir)
+strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir & str3, "Tortoise SVN Location", strTortoiseSVNDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strTortoiseSVNDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""ExpatDir""")
-strFileLocation = InputBox(str1 & "Expat" & str2 & strExpatDir, "Expat Location", strExpatDir)
+strFileLocation = InputBox(str1 & "Expat" & str2 & strExpatDir &str3 , "Expat Location", strExpatDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strExpatDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""MSXML60SDKDir""")
-strFileLocation = InputBox(str1 & "MS XML6 SDK" & str2 & strMSXML60SDKDir, "MS XML6 SDK Location", strMSXML60SDKDir)
+strFileLocation = InputBox(str1 & "MS XML6 SDK" & str2 & strMSXML60SDKDir &str3, "MS XML6 SDK Location", strMSXML60SDKDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strMSXML60SDKDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""XercesDir""")
-strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir, "Xerces Location", strXercesDir)
+strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
