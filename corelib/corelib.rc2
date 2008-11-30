@@ -101,7 +101,7 @@ END
 STRINGTABLE
 BEGIN
   IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
-  IDSC_XMLPARSEERROR      "SAX Parse Error during %s."
+  IDSC_XMLPARSEERROR      "SAX Parse%2d Error 0x%08X during %s."
   IDSC_XMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
   IDSC_XMLVALIDATION      "validation"
   IDSC_XMLIMPORT          "import"
