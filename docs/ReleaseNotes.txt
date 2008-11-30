@@ -36,7 +36,7 @@ New Features for 3.15
 =====================
 [] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
 Clipboard Viewers.
-[] Add feature to display a subset of the password. Thi is useful
+[] Add feature to display a subset of the password. This is useful
 for websites that need different particular characters from a password at
 each login. To access this, select an item, right-click and choose
 Display Subset of Password.
