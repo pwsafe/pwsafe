@@ -97,7 +97,7 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
        *  Each line ends with \n and all but the last are fixed length
        */
       istringstream is(text);
-      string line, rsp_hash, rsp_timestamp, rsp_status;
+      string line, rsp_hash, rsp_timestamp, rsp_status, rsp_info;
       while (getline(is, line)) {
         if (line.find("h=") == 0)
           rsp_hash = line.substr(2);
@@ -105,6 +105,8 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
           rsp_timestamp = line; //.substr(2);
         else if (line.find("status=") == 0)
           rsp_status = line; //.substr(7);
+        else if (line.find("info=") == 0)
+          rsp_info = line; //.substr(7);
         else if (line.empty())
           continue;
         else {
@@ -115,7 +117,10 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
       } // parse response
 
       string msg;
-      msg = rsp_status; msg += "&"; msg += rsp_timestamp;
+      if (!rsp_info.empty()) {
+        msg = rsp_info; msg += "&";
+      }
+      msg += rsp_status; msg += "&"; msg += rsp_timestamp;
 
       if (!VerifySig(msg, rsp_hash)) {
         m_error = _T("Signature verification failed!");
@@ -124,7 +129,14 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
 
       m_error = _T(""); // rsp_status
       retval = (rsp_status.find("OK") != string::npos);
-    } else {// successful transaction
+      if (!retval) {
+        m_error = _T("Authentication failure: ");
+        StringX statX; // pesky conversions...
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(rsp_status.c_str()),
+                rsp_status.size(), statX);
+        m_error += statX.c_str();
+      }
+    } else { // successful transaction
       ostringstreamT os(m_error);
       os << _T("Request failed: ") << client.GetStatus();
     }
