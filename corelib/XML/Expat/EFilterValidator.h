@@ -35,7 +35,7 @@
 // Expat includes
 #include <expat.h>
 
-const struct st_element_data {
+const struct st_filter_element_data {
   unsigned short int element_code /* XTE_FILTERS */;
   unsigned short int element_entrytype /* XTN_ENTRYTYPES */;
   short int element_maxoccurs;
@@ -44,7 +44,7 @@ const struct st_element_data {
   unsigned short int ft /* FieldType */;
 };
 
-const struct st_testtypes {
+const struct st_filter_testtypes {
   PWSMatch::MatchRule mr;
   unsigned short int element_entrytype /* XTN_ENTRYTYPES */;
 };
@@ -58,23 +58,23 @@ public:
   bool startElement(stringT &strStartElement);
   bool endElement(stringT &strEndElement, StringX &strElemContent, int &datatype);
 
-  bool VerifyStartElement(const st_element_data &element_data);
   bool VerifyXMLDataType(const StringX &strElemContent, const int &datatype);
-  bool VerifyXMLRule(const StringX &strElemContent, const int &datatype);
+  bool GetElementInfo(const XML_Char *name, st_filter_element_data &edata);
   PWSMatch::MatchRule GetMatchRule(const TCHAR *cs_rule);
-  bool GetElementInfo(const XML_Char *cs_element, st_element_data &edata);
-  
+
   int getErrorCode() {return m_iErrorCode;}
   stringT getErrorMsg() {return m_sErrorMsg;}
 
 private:
+  bool VerifyStartElement(const st_filter_element_data &filter_element_data);
+  bool VerifyXMLRule(const StringX &strElemContent, const int &datatype);
   bool VerifyXMLDate(const StringX &strElemContent);
   StringX Trim(const StringX &s, const TCHAR *set = NULL);
 
-  std::map<stringT, st_element_data> m_element_map;
-  std::map<stringT, st_testtypes> m_testtypes_map;
-  typedef std::pair<stringT, st_element_data> element_pair;
-  typedef std::pair<stringT, st_testtypes> rules_pair;
+  std::map<stringT, st_filter_element_data> m_element_map;
+  std::map<stringT, st_filter_testtypes> m_testtypes_map;
+  typedef std::pair<stringT, st_filter_element_data> filter_element_pair;
+  typedef std::pair<stringT, st_filter_testtypes> filter_rules_pair;
 
   std::vector<int> m_elementstack;
   std::vector<int> m_elementtype;
@@ -88,10 +88,10 @@ private:
   bool m_bfiltergroup;
 
   static const struct st_filter_elements {
-    TCHAR *name; st_element_data element_data;
+    TCHAR *name; st_filter_element_data filter_element_data;
   } m_filter_elements[XTE_LAST_ELEMENT];
   static const struct st_filter_rules {
-    TCHAR *name; st_testtypes testtypes;
+    TCHAR *name; st_filter_testtypes filter_testtypes;
   } m_filter_rules[PWSMatch::MR_LAST];
 };
 

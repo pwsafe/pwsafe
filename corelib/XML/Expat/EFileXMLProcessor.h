@@ -19,7 +19,6 @@
 * scheam must be performed in the handlers.  Also, the concept of pre-validation
 * before importing is not available.
 * As per XML parsing rules, any error stops the parsing immediately.
-*
 */
 
 #ifndef __EFILEXMLPROCESSOR_H

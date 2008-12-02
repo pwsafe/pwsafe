@@ -16,7 +16,6 @@
 * Static library or used as a dynamic library e.g. DLL in Windows.
 *
 * As per XML parsing rules, any error stops the parsing immediately.
-
 */
 
 #ifndef __EFILTERXMLPROCESSOR_H

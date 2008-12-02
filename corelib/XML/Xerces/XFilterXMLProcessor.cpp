@@ -82,7 +82,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
   LoadAString(cs_import, IDSC_XMLIMPORT);
-  m_strResultText = _T("");
+  stringT strResultText(_T(""));
   m_bValidation = bvalidation;  // Validate or Import
 
   XSecMemMgr sec_mm;
@@ -98,7 +98,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
     m_strResultText = stringT(toCatch.getMessage());
 #else
     char *szData = XMLString::transcode(toCatch.getMessage());
-    m_strResultText = stringT(szData);
+    strResultText = stringT(szData);
     XMLString::release(&szData);
 #endif
     return false;
@@ -159,16 +159,16 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   }
   catch (const OutOfMemoryException&)
   {
-    m_strResultText = _T("OutOfMemoryException");
+    LoadAString(strResultText, IDCS_XERCESOUTOFMEMORY);
     bEerrorOccurred = true;
   }
   catch (const XMLException& e)
   {
 #ifdef UNICODE
-    m_strResultText = stringT(e.getMessage());
+    strResultText = stringT(e.getMessage());
 #else
     char *szData = XMLString::transcode(e.getMessage());
-    m_strResultText = stringT(szData);
+    strResultText = stringT(szData);
     XMLString::release(&szData);
 #endif
     bEerrorOccurred = true;
@@ -176,12 +176,19 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
 
   catch (...)
   {
-    m_strResultText = _T("\nUnexpected exception during parsing'");
+    LoadAString(strResultText, IDCS_XERCESEXCEPTION);
     bEerrorOccurred = true;
   }
 
-  if (pSAX2Handler->getIfErrors())
+  if (pSAX2Handler->getIfErrors() || bEerrorOccurred) {
     bEerrorOccurred = true;
+    strResultText = pSAX2Handler->getValidationResult();
+    Format(m_strResultText, IDSC_XERCESPARSEERROR, 
+           m_bValidation ? cs_validation.c_str() : cs_import.c_str()), 
+           strResultText.c_str();
+  } else {
+    m_strResultText = strResultText;
+  }
 
   //  Delete the pSAX2Parser itself.  Must be done prior to calling Terminate, below.
   delete pSAX2Parser;

@@ -19,7 +19,6 @@
 * scheam must be performed in the handlers.  Also, the concept of pre-validation
 * before importing is not available.
 * As per XML parsing rules, any error stops the parsing immediately.
-*
 */
 
 #ifndef __EFILEHANDLERS_H
@@ -39,12 +38,6 @@
 // Expat includes
 #include <expat.h>
 
-// Local variables
-enum {PASSWORDSAFE = 0, PW_ENTRY, PW_GROUP, PW_TITLE, PW_USERNAME, PW_PASSWORD, PW_URL,
-      PW_AUTOTYPE, PW_NOTES, PW_CTIME, PW_ATIME, PW_XTIME, PW_PMTIME, PW_RMTIME,
-      PW_HISTORY, PW_STATUS, PW_MAX, PW_NUM, PW_HISTORY_ENTRY,
-      PW_CHANGED, PW_OLDPASSWORD, PW_DATE, PW_TIME, PW_UUID};
-
 // Entry types
 enum {NORMAL = 0, ALIAS, SHORTCUT};
 
@@ -62,6 +55,7 @@ struct pw_entry {
   StringX xtime_interval;
   StringX pmtime;
   StringX rmtime;
+  StringX changed;
   StringX pwhistory;
   StringX notes;
   StringX uuid;
@@ -77,36 +71,6 @@ struct pwhistory_entry {
 };
 
 typedef std::vector<pw_entry *> vdb_entries;
-
-// Integer/Boolean preferences that can be set via XML import
-// Xml fiLe Preferences = 'XLP' prefix
-enum {
-  XLP_BDISPLAYEXPANDEDADDEDITDLG,
-  XLP_BMAINTAINDATETIMESTAMPS,
-  XLP_BPWUSEDIGITS,
-  XLP_BPWUSEEASYVISION,
-  XLP_BPWUSEHEXDIGITS,
-  XLP_BPWUSELOWERCASE,
-  XLP_BPWUSESYMBOLS,
-  XLP_BPWUSEUPPERCASE,
-  XLP_BPWMAKEPRONOUNCEABLE,
-  XLP_BSAVEIMMEDIATELY,
-  XLP_BSAVEPASSWORDHISTORY,
-  XLP_BSHOWNOTESDEFAULT,
-  XLP_BSHOWPASSWORDINTREE,
-  XLP_BSHOWPWDEFAULT,
-  XLP_BSHOWUSERNAMEINTREE,
-  XLP_BSORTASCENDING,
-  XLP_BUSEDEFAULTUSER,
-  XLP_IIDLETIMEOUT,
-  XLP_INUMPWHISTORYDEFAULT,
-  XLP_IPWDEFAULTLENGTH,
-  XLP_ITREEDISPLAYSTATUSATOPEN,
-  XLP_IPWDIGITMINLENGTH,
-  XLP_IPWLOWERCASEMINLENGTH,
-  XLP_IPWSYMBOLMINLENGTH,
-  XLP_IPWUPPERCASEMINLENGTH,
-  NUMPREFSINXML};
 
 class EFileHandlers
 {
@@ -138,7 +102,7 @@ public:
   vdb_entries & getVDB_Entries() {return ventries;}
   stringT getDefaultAutotypeString() {return m_sDefaultAutotypeString;}
   stringT getDefaultUsername() {return m_sDefaultUsername;}
-  wchar_t getDelimiter() {return m_delimiter;}
+  TCHAR getDelimiter() {return m_delimiter;}
   int getNumEntries() {return m_numEntries;}
   int getNumIterations() {return m_nITER;}
   int getNumRecordsWithUnknownFields() {return m_nRecordsWithUnknownFields;}
@@ -173,7 +137,7 @@ private:
   int m_numEntries;
 
   stringT m_strErrorMessage;
-  wchar_t m_delimiter;
+  TCHAR m_delimiter;
   int m_nRecordsWithUnknownFields;
   int m_iErrorCode;
   bool m_bValidation;

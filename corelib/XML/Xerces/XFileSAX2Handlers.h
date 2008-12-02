@@ -29,6 +29,11 @@
 #ifndef __XFILESAX2HANDLERS_H
 #define __XFILESAX2HANDLERS_H
 
+// XML File Import constants - used by Expat and Xerces and will be by MSXML
+#include "../XMLFileDefs.h"
+
+#include "XFileValidator.h"
+
 // PWS includes
 #include "../../StringX.h"
 #include "../../ItemData.h"
@@ -39,12 +44,6 @@
 // Xerces includes
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
-
-// Local variables
-enum {PASSWORDSAFE = 0, PW_ENTRY, PW_GROUP, PW_TITLE, PW_USERNAME, PW_PASSWORD, PW_URL,
-      PW_AUTOTYPE, PW_NOTES, PW_CTIME, PW_ATIME, PW_XTIME, PW_PMTIME, PW_RMTIME,
-      PW_HISTORY, PW_STATUS, PW_MAX, PW_NUM, PW_HISTORY_ENTRY,
-      PW_CHANGED, PW_OLDPASSWORD, PW_DATE, PW_TIME, PW_UUID};
 
 // Entry types
 enum {NORMAL = 0, ALIAS, SHORTCUT};
@@ -63,6 +62,7 @@ struct pw_entry {
   StringX xtime_interval;
   StringX pmtime;
   StringX rmtime;
+  StringX changed;
   StringX pwhistory;
   StringX notes;
   StringX uuid;
@@ -76,35 +76,6 @@ struct pwhistory_entry {
   StringX changed;
   StringX oldpassword;
 };
-
-// Integer/Boolean preferences that can be set via XML import
-enum {
-  bDisplayExpandedAddEditDlg,
-  bMaintainDateTimeStamps,
-  bPWUseDigits,
-  bPWUseEasyVision,
-  bPWUseHexDigits,
-  bPWUseLowercase,
-  bPWUseSymbols,
-  bPWUseUppercase,
-  bPWMakePronounceable,
-  bSaveImmediately,
-  bSavePasswordHistory,
-  bShowNotesDefault,
-  bShowPasswordInTree,
-  bShowPWDefault,
-  bShowUsernameInTree,
-  bSortAscending,
-  bUseDefaultUser,
-  iIdleTimeout,
-  iNumPWHistoryDefault,
-  iPWDefaultLength,
-  iTreeDisplayStatusAtOpen,
-  iPWDigitMinLength,
-  iPWLowercaseMinLength,
-  iPWSymbolMinLength,
-  iPWUppercaseMinLength,
-  NumPrefsInXML};
 
 XERCES_CPP_NAMESPACE_USE
 
@@ -141,7 +112,7 @@ public:
   
   inline int getXMLPref(int num)
   {
-    assert(num >= 0 && num < NumPrefsInXML);
+    assert(num >= 0 && num < NUMPREFSINXML);
     return prefsinXML[num];
   }
   stringT getDefaultAutotypeString() {return m_sDefaultAutotypeString;}
@@ -161,6 +132,7 @@ private:
   void FormatError(const SAXParseException& e, const int type);
 
   // Local variables
+  XFileValidator *m_pValidator;
   PWScore *m_xmlcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
@@ -186,11 +158,15 @@ private:
 
   // Preferences possibly stored in database
   // Note: boolean is integer to allow an 'not present' value of '-1'
-  int prefsinXML[NumPrefsInXML];
+  int prefsinXML[NUMPREFSINXML];
   stringT m_sDefaultAutotypeString;
   stringT m_sDefaultUsername;
   int m_nITER;
   int m_numEntries;
+
+  static const struct st_file_elements {
+    TCHAR *name; st_file_element_data file_element_data;
+  } m_file_elements[XLE_ELEMENTS];
 };
 
 #endif /* __XFILESAX2HANDLERS_H */

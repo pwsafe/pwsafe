@@ -16,7 +16,6 @@
 * schema must be performed here in lieu of schema schecking.
 *
 * As per XML parsing rules, any error stops the parsing immediately.
-*
 */
 
 #ifndef _EFILTERVALIDATORDEFS_H_

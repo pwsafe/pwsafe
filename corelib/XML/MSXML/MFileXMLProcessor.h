@@ -27,7 +27,7 @@ public:
   MFileXMLProcessor(PWScore *core, UUIDList *possible_aliases, UUIDList *possible_shortcuts);
   ~MFileXMLProcessor();
 
-  bool Process(const bool &bvalidation, const stringT &ImportedPrefix, 
+  bool Process(const bool &bvalidation, const stringT &ImportedPrefix,
     const stringT &strXMLFileName, const stringT &strXSDFileName,
     int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl);
 

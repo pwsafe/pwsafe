@@ -24,7 +24,7 @@ public:
 
   bool Process(const bool &bvalidation,
                const StringX &strXMLData,
-               const stringT &strXMLFileName, 
+               const stringT &strXMLFileName,
                const stringT &strXSDFileName);
 
   stringT getResultText() {return m_strResultText;}

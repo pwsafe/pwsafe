@@ -16,7 +16,6 @@
 * schema must be performed here in lieu of schema schecking.
 *
 * As per XML parsing rules, any error stops the parsing immediately.
-*
 */
 
 #include "../XMLDefs.h"
@@ -32,6 +31,7 @@
 #include "../../StringXStream.h"
 #include "../../VerifyFormat.h"
 #include "../../PWSFilters.h"
+#include "../../corelib.h"
 
 #include <algorithm>
 #include <vector>
@@ -59,41 +59,41 @@ using namespace std;
 */
 
 const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[XTE_LAST_ELEMENT] = {
-  {_T("filters"), 
+  {_T("filters"),
     {XTE_FILTERS, XTR_NA, 1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
-  {_T("filter"), 
+  {_T("filter"),
     {XTE_FILTER, XTR_NA, -1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
-  {_T("filter_entry"), 
+  {_T("filter_entry"),
     {XTE_FILTER_ENTRY, XTR_NA, -1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
-  {_T("filter_group"), 
+  {_T("filter_group"),
     {XTE_FILTER_GROUP, XTR_NA, 1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
-  {_T("group"), 
+  {_T("group"),
     {XTE_GROUP, XTR_STRINGPRESENTRULE, 1, FI_NORMAL, PWSMatch::MT_STRING, FT_GROUP}},
-  {_T("grouptitle"), 
+  {_T("grouptitle"),
     {XTE_GROUPTITLE, XTR_STRINGRULE, 1, FI_NORMAL, PWSMatch::MT_STRING, FT_GROUPTITLE}},
-  {_T("title"), 
+  {_T("title"),
     {XTE_TITLE, XTR_STRINGRULE, 1, FI_NORMAL, PWSMatch::MT_STRING, FT_TITLE}},
-  {_T("username"), 
+  {_T("username"),
     {XTE_USERNAME, XTR_STRINGPRESENTRULE, 1, FI_NORMAL, PWSMatch::MT_STRING, FT_USER}},
   {_T("notes"),
     {XTE_NOTES, XTR_STRINGPRESENTRULE, 1, FI_NORMAL, PWSMatch::MT_STRING, FT_NOTES}},
-  {_T("password"), 
+  {_T("password"),
     {XTE_PASSWORD, XTR_PASSWORDRULE, 1, FI_NORMAL, PWSMatch::MT_PASSWORD, FT_PASSWORD}},
-  {_T("create_time"), 
+  {_T("create_time"),
     {XTE_CREATE_TIME, XTR_DATERULE, 1, FI_NORMAL, PWSMatch::MT_DATE, FT_CTIME}},
   {_T("password_modified_time"),
     {XTE_PASSWORD_MODIFIED_TIME, XTR_DATERULE, 1, FI_NORMAL, PWSMatch::MT_DATE, FT_PMTIME}},
   {_T("last_access_time"),
     {XTE_LAST_ACCESS_TIME, XTR_DATERULE, 1, FI_NORMAL, PWSMatch::MT_DATE, FT_ATIME}},
-  {_T("expiry_time"), 
+  {_T("expiry_time"),
     {XTE_EXPIRY_TIME, XTR_DATERULE, 1, FI_NORMAL, PWSMatch::MT_DATE, FT_XTIME}},
-  {_T("record_modified_time"), 
+  {_T("record_modified_time"),
     {XTE_RECORD_MODIFIED_TIME, XTR_DATERULE, 1, FI_NORMAL, PWSMatch::MT_DATE, FT_RMTIME}},
   {_T("url"),
     {XTE_URL, XTR_STRINGPRESENTRULE, 1, FI_NORMAL, PWSMatch::MT_STRING, FT_URL}},
-  {_T("autotype"), 
+  {_T("autotype"),
     {XTE_AUTOTYPE, XTR_STRINGPRESENTRULE, 1, FI_NORMAL, PWSMatch::MT_STRING, FT_AUTOTYPE}},
-  {_T("password_expiry_interval"), 
+  {_T("password_expiry_interval"),
     {XTE_PASSWORD_EXPIRY_INTERVAL, XTR_INTEGERRULE, 1, FI_NORMAL, PWSMatch::MT_INTEGER, FT_XTIME_INT}},
   {_T("password_history"),
     {XTE_PASSWORD_HISTORY, XTR_PASSWORDHISTORYRULE, 1, FI_NORMAL, PWSMatch::MT_PWHIST, FT_PWHIST}},
@@ -101,19 +101,19 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_HISTORY_PRESENT, XTR_BOOLEANPRESENTRULE, 1, FI_HISTORY, PWSMatch::MT_BOOL, HT_PRESENT}},
   {_T("history_active"),
     {XTE_HISTORY_ACTIVE, XTR_BOOLEANACTIVERULE, 1, FI_HISTORY, PWSMatch::MT_BOOL, HT_ACTIVE}},
-  {_T("history_number"), 
+  {_T("history_number"),
     {XTE_HISTORY_NUMBER, XTR_INTEGERRULE, 1, FI_HISTORY, PWSMatch::MT_INTEGER, HT_NUM}},
   {_T("history_maximum"),
     {XTE_HISTORY_MAXIMUM, XTR_INTEGERRULE, 1, FI_HISTORY, PWSMatch::MT_INTEGER, HT_MAX}},
-  {_T("history_changedate"), 
+  {_T("history_changedate"),
     {XTE_HISTORY_CHANGEDATE, XTR_DATERULE, 1, FI_HISTORY, PWSMatch::MT_DATE, HT_CHANGEDATE}},
   {_T("history_passwords"),
     {XTE_HISTORY_PASSWORDS, XTR_NA, 1, FI_HISTORY, PWSMatch::MT_PASSWORD, HT_PASSWORDS}},
   {_T("password_policy"),
     {XTE_PASSWORD_POLICY, XTR_NA, 1, FI_NORMAL, PWSMatch::MT_POLICY, FT_POLICY}},
-  {_T("policy_present"), 
+  {_T("policy_present"),
     {XTE_POLICY_PRESENT, XTR_NA, 1, FI_POLICY, PWSMatch::MT_BOOL, PT_PRESENT}},
-  {_T("policy_length"), 
+  {_T("policy_length"),
     {XTE_POLICY_LENGTH, XTR_INTEGERRULE, 1, FI_POLICY, PWSMatch::MT_INTEGER, PT_LENGTH}},
   {_T("policy_number_lowercase"),
     {XTE_POLICY_NUMBER_LOWERCASE, XTR_INTEGERRULE, 1, FI_POLICY, PWSMatch::MT_INTEGER, PT_LOWERCASE}},
@@ -123,7 +123,7 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_POLICY_NUMBER_DIGITS, XTR_INTEGERRULE, 1, FI_POLICY, PWSMatch::MT_INTEGER, PT_DIGITS}},
   {_T("policy_number_symbols"),
     {XTE_POLICY_NUMBER_SYMBOLS, XTR_INTEGERRULE, 1, FI_POLICY, PWSMatch::MT_INTEGER, PT_SYMBOLS}},
-  {_T("policy_easyvision"), 
+  {_T("policy_easyvision"),
     {XTE_POLICY_EASYVISION, XTR_BOOLEANSETRULE, 1, FI_POLICY, PWSMatch::MT_BOOL, PT_EASYVISION}},
   {_T("policy_pronounceable"),
     {XTE_POLICY_PRONOUNCEABLE, XTR_BOOLEANSETRULE, 1, FI_POLICY, PWSMatch::MT_BOOL, PT_PRONOUNCEABLE}},
@@ -135,13 +135,13 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_UNKNOWNFIELDS, XTR_BOOLEANPRESENTRULE, 1, FI_NORMAL, PWSMatch::MT_INVALID, FT_UNKNOWNFIELDS}},
   {_T("test"),
     {XTE_TEST, XTR_NA, 1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
-  {_T("rule"), 
+  {_T("rule"),
     {XTE_RULE, XTR_NA, 1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("logic"),
     {XTE_LOGIC, XTR_NA, 1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("string"),
     {XTE_STRING, XTR_NA, 1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
-  {_T("case"), 
+  {_T("case"),
     {XTE_CASE, XTR_NA, 1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("warn"),
     {XTE_WARN, XTR_NA, 1, FI_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
@@ -198,13 +198,13 @@ EFilterValidator::EFilterValidator()
   m_bfiltergroup = false;
 
   for (int i = 0; i < XTE_LAST_ELEMENT; i++) {
-    m_element_map.insert(element_pair(stringT(m_filter_elements[i].name),
-                                      m_filter_elements[i].element_data));
+    m_element_map.insert(filter_element_pair(stringT(m_filter_elements[i].name),
+                                      m_filter_elements[i].filter_element_data));
   }
 
   for (int i = 0; i < PWSMatch::MR_LAST; i++) {
-    m_testtypes_map.insert(rules_pair(stringT(m_filter_rules[i].name), 
-                                      m_filter_rules[i].testtypes));
+    m_testtypes_map.insert(filter_rules_pair(stringT(m_filter_rules[i].name),
+                                      m_filter_rules[i].filter_testtypes));
   }
 
   // Element count variable to ensure that user doesn't specify too many (MaxOccurs)
@@ -236,16 +236,24 @@ bool EFilterValidator::startElement(stringT & strStartElement)
   if (m_elementstack.empty())
     return false;
 
-  std::map<stringT, st_element_data> :: const_iterator e_iter;
+  std::map<stringT, st_filter_element_data> :: const_iterator e_iter;
   e_iter = m_element_map.find(strStartElement);
   if (e_iter == m_element_map.end()) {
     m_iErrorCode = XTPEC_UNKNOWN_FIELD;
-    m_sErrorMsg = stringT(_T("Unknown element: ")) + strStartElement;
+    Format(m_sErrorMsg, IDSC_EXPATUNKNELEMENT, strStartElement.c_str());
     return false;
   }
 
   //m_iprevious_element = m_elementstack.back();
   if (!VerifyStartElement(e_iter->second)) {
+    TCHAR buffer[10];
+#if _MSC_VER >= 1400
+    _itot_s(e_iter->second.element_maxoccurs, buffer, 10, 10);
+#else
+    _itot(e_iter->second.element_maxoccurs, buffer, 10);
+#endif
+    m_iErrorCode = XTPEC_EXCEEDED_MAXOCCURS;
+    Format(m_sErrorMsg, IDSC_EXPATEXCEEDMAXOCCURS, strStartElement.c_str(), buffer);
     return false;
   }
 
@@ -271,7 +279,7 @@ bool EFilterValidator::startElement(stringT & strStartElement)
       break;
   }
 
-  if (icurrent_element >= XTE_GROUP && 
+  if (icurrent_element >= XTE_GROUP &&
       icurrent_element <= XTE_UNKNOWNFIELDS) {
     if (m_bfiltergroup) {
       m_igroup_element = icurrent_element;
@@ -282,7 +290,7 @@ bool EFilterValidator::startElement(stringT & strStartElement)
   if (m_iErrorCode != 0) {
     switch (m_iErrorCode) {
       case XTPEC_UNEXPECTED_ELEMENT:
-        m_sErrorMsg = stringT(_T("Unexpected element: ")) + strStartElement;
+        Format(m_sErrorMsg, IDSC_EXPATUNEXPECTED, strStartElement);
         break;
       default:
       /*
@@ -325,7 +333,7 @@ bool EFilterValidator::endElement(stringT &strEndElement,
     case XTE_HISTORY_CHANGEDATE:
       if (m_ielement_occurs[XTE_DATE1] != 1) {
         m_iErrorCode = XTPEC_MISSING_ELEMENT;
-        m_sErrorMsg = _T("Missing date element");
+        LoadAString(m_sErrorMsg, IDSC_EXPATDATETMISSING);
         return false;
       }
       break;
@@ -341,31 +349,23 @@ bool EFilterValidator::endElement(stringT &strEndElement,
   return true;
 }
 
-bool EFilterValidator::VerifyStartElement(const st_element_data &element_data)
+bool EFilterValidator::VerifyStartElement(const st_filter_element_data &filter_element_data)
 {
   // Check we haven't reached maximum (iMaxOccurs == -1 means unbounded)
-  if (element_data.element_maxoccurs != -1 && 
-      m_ielement_occurs[element_data.element_code] >= element_data.element_maxoccurs) {
-    TCHAR buffer[10];
-#if _MSC_VER >= 1400
-    _itot_s(element_data.element_maxoccurs, buffer, 10, 10);
-#else
-    _itot(element_data.element_maxoccurs, buffer, 10);
-#endif
-    m_iErrorCode = XTPEC_EXCEEDED_MAXOCCURS;
-    m_sErrorMsg = stringT(_T("Exceeded MaxOccurs: ")) + stringT(buffer);
+  if (filter_element_data.element_maxoccurs != -1 &&
+      m_ielement_occurs[filter_element_data.element_code] >= filter_element_data.element_maxoccurs) {
     return false;
   }
 
-  if (element_data.element_code < XTE_FILTER_ENTRY)
+  if (filter_element_data.element_code < XTE_FILTER_ENTRY)
     return true;
 
   int icurrent_element_type(-1);
   int icurrent_element(-1);
-  int ientrytype = element_data.element_entrytype;
+  int ientrytype = filter_element_data.element_entrytype;
   int iprevious_element_type = m_elementtype.back();
 
-  switch (element_data.element_code) {
+  switch (filter_element_data.element_code) {
     case XTE_GROUP:
     case XTE_GROUPTITLE:
     case XTE_TITLE:
@@ -402,7 +402,7 @@ bool EFilterValidator::VerifyStartElement(const st_element_data &element_data)
       if (m_bfiltergroup) {
         // Can't have more than one field in each filter_entry.
         m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
-        m_sErrorMsg = stringT(_T("Unexpected element: Only one field allowed in filter entry."));
+        LoadAString(m_sErrorMsg, IDSC_EXPATUNEXPFILTERFLD);
         return false;
       } else {
         m_bfiltergroup = true;
@@ -575,7 +575,7 @@ bool EFilterValidator::VerifyXMLRule(const StringX &strElemContent, const int &d
   if (strValue.length() == 0)
     return false;
 
-  std::map<stringT, st_testtypes> :: const_iterator r_iter;
+  std::map<stringT, st_filter_testtypes> :: const_iterator r_iter;
   r_iter = m_testtypes_map.find(strValue.c_str());
   if (r_iter == m_testtypes_map.end()) {
     return false;
@@ -591,7 +591,7 @@ PWSMatch::MatchRule EFilterValidator::GetMatchRule(const TCHAR *cs_rule)
   if (strValue.length() == 0)
     return PWSMatch::MR_INVALID;
 
-  std::map<stringT, st_testtypes> :: const_iterator r_iter;
+  std::map<stringT, st_filter_testtypes> :: const_iterator r_iter;
   r_iter = m_testtypes_map.find(strValue.c_str());
   if (r_iter == m_testtypes_map.end()) {
     return PWSMatch::MR_INVALID;
@@ -600,14 +600,14 @@ PWSMatch::MatchRule EFilterValidator::GetMatchRule(const TCHAR *cs_rule)
   }
 }
 
-bool EFilterValidator::GetElementInfo(const XML_Char *cs_element, st_element_data &edata)
+bool EFilterValidator::GetElementInfo(const XML_Char *name, st_filter_element_data &edata)
 {
-  const stringT strValue(cs_element);
+  const stringT strValue(name);
 
   if (strValue.length() == 0)
     return false;
 
-  std::map<stringT, st_element_data> :: const_iterator e_iter;
+  std::map<stringT, st_filter_element_data> :: const_iterator e_iter;
   e_iter = m_element_map.find(strValue);
   if (e_iter != m_element_map.end()) {
     edata = e_iter->second;

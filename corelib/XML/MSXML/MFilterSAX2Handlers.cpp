@@ -111,7 +111,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ErrorHandler::error(struct ISAXLocator * pL
   pLocator->getColumnNumber(&iCharacter);
 
   stringT cs_format;
-  LoadAString(cs_format,IDSC_SAXGENERROR);
+  LoadAString(cs_format, IDSC_MSXMLSAXGENERROR);
 
 #if (_MSC_VER >= 1400)
   _stprintf_s(szFormatString, MAX_PATH * 2, cs_format.c_str(),
@@ -240,7 +240,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
       LoadAString(m_strImportErrors, IDSC_INVALID_SCHEMA_VER);
       return E_FAIL;
     }
- 
+
     pAttributes->getLength(&iAttribs);
     for (int i = 0; i < iAttribs; i++) {
       TCHAR szQName[MAX_PATH + 1] = {0};
@@ -278,7 +278,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
 
   bool  bfilter = (_tcscmp(szCurElement, _T("filter")) == 0);
   bool  bfilter_entry = (_tcscmp(szCurElement, _T("filter_entry")) == 0);
- 
+
    if (bfilter) {
     cur_filter = new st_filters;
   }
@@ -409,7 +409,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
       return E_FAIL;
     }
     if (m_iXMLVersion > PWS_XML_FILTER_VERSION) {
-      Format(m_strImportErrors, 
+      Format(m_strImportErrors,
              IDSC_INVALID_XML_VER2, m_iXMLVersion, PWS_XML_FILTER_VERSION);
       return E_FAIL;
     }

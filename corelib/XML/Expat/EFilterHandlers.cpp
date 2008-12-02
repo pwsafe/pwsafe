@@ -14,7 +14,6 @@
 *
 * Note: This is a cross-platform library and can be linked in as a
 * Static library or used as a dynamic library e.g. DLL in Windows.
-*
 */
 
 #include "../XMLDefs.h"
@@ -168,7 +167,7 @@ void XMLCALL EFilterHandlers::characterData(void * /* userdata */, const XML_Cha
 #else
   _tcsncpy(xmlchData, s, length);
 #endif
-  xmlchData[length] = L'\0';
+  xmlchData[length] = TCHAR('\0');
   m_strElemContent += StringX(xmlchData);
   delete [] xmlchData;
 }
@@ -205,7 +204,7 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
     return;
   }
 
-  st_element_data edata;
+  st_filter_element_data edata;
 
   if (_tcscmp(name, _T("filter")) == 0) {
     INT_PTR rc = IDYES;
@@ -214,9 +213,7 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
     fk.cs_filtername = cur_filter->fname;
     if (m_MapFilters->find(fk) != m_MapFilters->end()) {
       stringT question;
-      Format(question,
-             _T("Filter %s already exists in the database, do you wish to replace it with this?"),
-             cur_filter->fname.c_str());
+      Format(question, IDSC_EXPATFILTERNAMERPT, cur_filter->fname.c_str());
       if (m_pAsker == NULL || !(*m_pAsker)(question)) {
         m_MapFilters->erase(fk);
       }

@@ -79,6 +79,8 @@ public:
   void error(const SAXParseException& exc);
   void fatalError(const SAXParseException& exc);
   void resetErrors() {m_bErrors = false;}
+  stringT getValidationResult() {return m_strValidationResult;}
+  stringT getImportErrors() {return m_strImportErrors;}
 
 private:
   void FormatError(const SAXParseException& e, const int type);

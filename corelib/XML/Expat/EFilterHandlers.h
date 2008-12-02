@@ -14,7 +14,6 @@
 *
 * Note: This is a cross-platform library and can be linked in as a
 * Static library or used as a dynamic library e.g. DLL in Windows.
-*
 */
 
 #ifndef __EFILTERHANDLERS_H

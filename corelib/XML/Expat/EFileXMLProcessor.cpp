@@ -120,12 +120,12 @@ EFileXMLProcessor::~EFileXMLProcessor()
 }
 
 // ---------------------------------------------------------------------------
-bool EFileXMLProcessor::Process(const bool &bvalidation, 
+bool EFileXMLProcessor::Process(const bool &bvalidation,
                                 const stringT &ImportedPrefix,
-                                const stringT &strXMLFileName, 
+                                const stringT &strXMLFileName,
                                 const stringT & /* XML Schema File Name */,
-                                int &nITER, 
-                                int &nRecordsWithUnknownFields, 
+                                int &nITER,
+                                int &nRecordsWithUnknownFields,
                                 UnknownFieldList &uhfl)
 {
   // Open the file
@@ -175,6 +175,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
 
     status = XML_Parse(pParser, (char *)buffer, numread, done);
     if (status == XML_STATUS_ERROR || status == XML_STATUS_SUSPENDED) {
+      bEerrorOccurred = true;
       break;
     }
   };
@@ -186,19 +187,19 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
   else
     m_numEntriesImported = pFileHandler->getNumEntries();
 
-  if (pFileHandler->getIfErrors()) {
+  if (pFileHandler->getIfErrors() || bEerrorOccurred) {
     bEerrorOccurred = true;
-    Format(m_strResultText, _T("Parse error at line %d, column %d:\nError code %d, %s\n%s\n"),
+    Format(m_strResultText, IDSC_EXPATPARSEERROR,
            XML_GetCurrentLineNumber(pParser),
            XML_GetCurrentColumnNumber(pParser),
-           pFileHandler->getErrorCode(),
+        /* pFileHandler->getErrorCode(), */
            pFileHandler->getErrorMessage().c_str(),
            XML_ErrorString(XML_GetErrorCode(pParser)));
   } else {
     if (!bvalidation) {
-      wchar_t delimiter = pFileHandler->getDelimiter();
+      TCHAR delimiter = pFileHandler->getDelimiter();
       if (delimiter != _T('\0'))
-        m_delimiter = (TCHAR)delimiter;
+        m_delimiter = delimiter;
 
       // Now add entries
       AddEntries();
@@ -225,56 +226,59 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
 
         PWSprefs *prefs = PWSprefs::GetInstance();
         int ivalue;
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BDISPLAYEXPANDEDADDEDITDLG)) != -1)
+        // Integer/Boolean preferences
+        if ((ivalue = pFileHandler->getXMLPref(XLE_DISPLAYEXPANDEDADDEDITDLG - XLE_PREF_START)) != -1)
           prefs->SetPref(PWSprefs::DisplayExpandedAddEditDlg, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BMAINTAINDATETIMESTAMPS)) != -1)
-          prefs->SetPref(PWSprefs::MaintainDateTimeStamps, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BPWUSEDIGITS)) != -1)
-          prefs->SetPref(PWSprefs::PWUseDigits, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BPWUSEEASYVISION)) != -1)
-          prefs->SetPref(PWSprefs::PWUseEasyVision, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BPWUSEHEXDIGITS)) != -1)
-          prefs->SetPref(PWSprefs::PWUseHexDigits, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BPWUSELOWERCASE)) != -1)
-          prefs->SetPref(PWSprefs::PWUseLowercase, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BPWUSESYMBOLS)) != -1)
-          prefs->SetPref(PWSprefs::PWUseSymbols, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BPWUSEUPPERCASE)) != -1)
-          prefs->SetPref(PWSprefs::PWUseUppercase, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BPWMAKEPRONOUNCEABLE)) != -1)
-          prefs->SetPref(PWSprefs::PWMakePronounceable, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BSAVEIMMEDIATELY)) != -1)
-          prefs->SetPref(PWSprefs::SaveImmediately, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BSAVEPASSWORDHISTORY)) != -1)
-          prefs->SetPref(PWSprefs::SavePasswordHistory, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BSHOWNOTESDEFAULT)) != -1)
-          prefs->SetPref(PWSprefs::ShowNotesDefault, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BSHOWPASSWORDINTREE)) != -1)
-          prefs->SetPref(PWSprefs::ShowPasswordInTree, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BSHOWPWDEFAULT)) != -1)
-          prefs->SetPref(PWSprefs::ShowPWDefault, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BSHOWUSERNAMEINTREE)) != -1)
-          prefs->SetPref(PWSprefs::ShowUsernameInTree, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BSORTASCENDING)) != -1)
-          prefs->SetPref(PWSprefs::SortAscending, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_BUSEDEFAULTUSER)) != -1)
-          prefs->SetPref(PWSprefs::UseDefaultUser, ivalue == 1);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_IIDLETIMEOUT)) != -1)
+        if ((ivalue = pFileHandler->getXMLPref(XLE_IDLETIMEOUT - XLE_PREF_START)) != -1)
           prefs->SetPref(PWSprefs::IdleTimeout, ivalue);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_INUMPWHISTORYDEFAULT)) != -1)
+        if ((ivalue = pFileHandler->getXMLPref(XLE_MAINTAINDATETIMESTAMPS - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::MaintainDateTimeStamps, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_NUMPWHISTORYDEFAULT - XLE_PREF_START)) != -1)
           prefs->SetPref(PWSprefs::NumPWHistoryDefault, ivalue);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_IPWDEFAULTLENGTH)) != -1)
-          prefs->SetPref(PWSprefs::PWDefaultLength, ivalue);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_ITREEDISPLAYSTATUSATOPEN)) != -1)
-          prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, ivalue);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_IPWDIGITMINLENGTH)) != -1)
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWDIGITMINLENGTH - XLE_PREF_START)) != -1)
           prefs->SetPref(PWSprefs::PWDigitMinLength, ivalue);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_IPWLOWERCASEMINLENGTH)) != -1)
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWLOWERCASEMINLENGTH - XLE_PREF_START)) != -1)
           prefs->SetPref(PWSprefs::PWLowercaseMinLength, ivalue);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_IPWSYMBOLMINLENGTH)) != -1)
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWMAKEPRONOUNCEABLE - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::PWMakePronounceable, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWSYMBOLMINLENGTH - XLE_PREF_START)) != -1)
           prefs->SetPref(PWSprefs::PWSymbolMinLength, ivalue);
-        if ((ivalue = pFileHandler->getXMLPref(XLP_IPWUPPERCASEMINLENGTH)) != -1)
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWUPPERCASEMINLENGTH - XLE_PREF_START)) != -1)
           prefs->SetPref(PWSprefs::PWUppercaseMinLength, ivalue);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWDEFAULTLENGTH - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::PWDefaultLength, ivalue);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWUSEDIGITS - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::PWUseDigits, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWUSEEASYVISION - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::PWUseEasyVision, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWUSEHEXDIGITS - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::PWUseHexDigits, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWUSELOWERCASE - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::PWUseLowercase, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWUSESYMBOLS - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::PWUseSymbols, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_PWUSEUPPERCASE - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::PWUseUppercase, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_SAVEIMMEDIATELY - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::SaveImmediately, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_SAVEPASSWORDHISTORY - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::SavePasswordHistory, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_SHOWNOTESDEFAULT - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::ShowNotesDefault, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_SHOWPASSWORDINTREE - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::ShowPasswordInTree, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_SHOWPWDEFAULT - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::ShowPWDefault, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_SHOWUSERNAMEINTREE - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::ShowUsernameInTree, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_SORTASCENDING - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::SortAscending, ivalue == 1);
+        if ((ivalue = pFileHandler->getXMLPref(XLE_TREEDISPLAYSTATUSATOPEN - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, ivalue);
+          if ((ivalue = pFileHandler->getXMLPref(XLE_USEDEFAULTUSER - XLE_PREF_START)) != -1)
+          prefs->SetPref(PWSprefs::UseDefaultUser, ivalue == 1);
+
+        // String preferences
         if (!pFileHandler->getDefaultAutotypeString().empty())
           prefs->SetPref(PWSprefs::DefaultAutotypeString,
                          pFileHandler->getDefaultAutotypeString().c_str());
@@ -334,8 +338,8 @@ void EFileXMLProcessor::AddEntries()
     }
     EmptyIfOnlyWhiteSpace(cur_entry->group);
     newgroup += cur_entry->group;
-    if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) !=
-      m_xmlcore->GetEntryEndIter()) {
+    if (m_xmlcore->Find(newgroup, cur_entry->title,
+                        cur_entry->username) != m_xmlcore->GetEntryEndIter()) {
         // Find a unique "Title"
         StringX Unique_Title;
         ItemListConstIter iter;
@@ -345,7 +349,8 @@ void EFileXMLProcessor::AddEntries()
           i++;
           Format(s_import, IDSC_IMPORTNUMBER, i);
           Unique_Title = cur_entry->title + s_import.c_str();
-          iter = m_xmlcore->Find(newgroup, Unique_Title, cur_entry->username);
+          iter = m_xmlcore->Find(newgroup, Unique_Title,
+                                 cur_entry->username);
         } while (iter != m_xmlcore->GetEntryEndIter());
         cur_entry->title = Unique_Title;
     }
@@ -386,7 +391,8 @@ void EFileXMLProcessor::AddEntries()
 
     StringX newPWHistory;
     stringT strPWHErrors;
-    switch (VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
+    switch (VerifyImportPWHistoryString(cur_entry->pwhistory,
+                                        newPWHistory, strPWHErrors)) {
       case PWH_OK:
         tempitem.SetPWHistory(newPWHistory.c_str());
         break;
@@ -403,7 +409,8 @@ void EFileXMLProcessor::AddEntries()
       {
         stringT buffer;
         Format(buffer, IDSC_SAXERRORPWH, cur_entry->group.c_str(),
-               cur_entry->title.c_str(), cur_entry->username.c_str());
+               cur_entry->title.c_str(),
+               cur_entry->username.c_str());
         m_strImportErrors += buffer;
         m_strImportErrors += strPWHErrors;
         break;

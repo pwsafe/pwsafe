@@ -611,7 +611,7 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
   iCharacter = (int)e.getColumnNumber();
 
   stringT cs_format, cs_errortype;
-  LoadAString(cs_format, IDSC_SAXGENERROR);
+  LoadAString(cs_format, IDSC_XERCESSAXGENERROR);
   switch (type) {
     case SAX2_WARNING:
       LoadAString(cs_errortype, IDSC_SAX2WARNING);

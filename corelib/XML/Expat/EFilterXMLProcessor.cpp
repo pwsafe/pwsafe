@@ -16,7 +16,6 @@
 * Static library or used as a dynamic library e.g. DLL in Windows.
 *
 * As per XML parsing rules, any error stops the parsing immediately.
-*
 */
 
 #include "../XMLDefs.h"
@@ -159,6 +158,7 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
 
       status = XML_Parse(pParser, (char *)buffer, numread, done);
       if (status == XML_STATUS_ERROR || status == XML_STATUS_SUSPENDED) {
+        bEerrorOccurred = true;
         break;
       }
     };
@@ -178,12 +178,12 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
                        _tcslen(sbuffer.c_str()) * sizeof(TCHAR), 1);
   }
 
-  if (pFilterHandler->getIfErrors()) {
+  if (pFilterHandler->getIfErrors() || bEerrorOccurred) {
     bEerrorOccurred = true;
-    Format(m_strResultText, _T("Parse error at line %d, column %d:\nError code %d, %s\n%s\n"),
+    Format(m_strResultText, IDSC_EXPATPARSEERROR,
            XML_GetCurrentLineNumber(pParser),
            XML_GetCurrentColumnNumber(pParser),
-           pFilterHandler->getErrorCode(),
+        /* pFileHandler->getErrorCode(), */
            pFilterHandler->getErrorMessage().c_str(),
            XML_ErrorString(XML_GetErrorCode(pParser)));
   } else {

@@ -14,6 +14,7 @@
 #if USE_XML_LIBRARY == MSXML
 
 #include "MFileSAX2Handlers.h"
+
 #include <msxml6.h>
 
 #include "../../corelib.h"
@@ -96,14 +97,14 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::error(struct ISAXLocator * pLoc
   pLocator->getColumnNumber(&iCharacter);
 
   stringT cs_format;
-  LoadAString(cs_format, IDSC_SAXGENERROR);
+  LoadAString(cs_format, IDSC_MSXMLSAXGENERROR);
 
 #if (_MSC_VER >= 1400)
   _stprintf_s(szFormatString, MAX_PATH * 2, cs_format.c_str(),
-    hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
+              hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #else
-  _stprintf(szFormatString, cs_format,
-    hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
+  _stprintf(szFormatString, cs_format.c_str(),
+            hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #endif
 
   m_strValidationResult += szFormatString;

@@ -44,6 +44,7 @@
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
+
 #if defined(XERCES_NEW_IOSTREAMS)
 #include <iostream>
 #else

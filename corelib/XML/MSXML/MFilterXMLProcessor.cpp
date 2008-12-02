@@ -42,11 +42,9 @@ MFilterXMLProcessor::~MFilterXMLProcessor()
 {
 }
 
-// ---------------------------------------------------------------------------
-#ifdef _WIN32
 bool MFilterXMLProcessor::Process(const bool &bvalidation,
                                   const StringX &strXMLData,
-                                  const stringT &strXMLFileName, 
+                                  const stringT &strXMLFileName,
                                   const stringT &strXSDFileName)
 {
   HRESULT hr, hr0, hr60, hr40, hr30;
@@ -77,7 +75,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
         hr30 = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
                                 __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
         if (FAILED(hr30)) {
-          LoadAString(m_strResultText, IDSC_NOXMLREADER);
+          LoadAString(m_strResultText, IDSC_NOMSXMLREADER);
           goto exit;
         } else {
           m_MSXML_Version = 30;
@@ -114,7 +112,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   MFilterSAX2ErrorHandler* pEH = new MFilterSAX2ErrorHandler;
 
   pCH->SetVariables(&m_MapFilters, m_FPool, m_bValidation);
- 
+
   //  Set Content Handler
   hr = pSAX2Reader->putContentHandler(pCH);
 
@@ -235,13 +233,13 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
       if(pEH->bErrorsFound == TRUE) {
         m_strResultText = pEH->m_strValidationResult;
       } else {
-        Format(m_strResultText, IDSC_XMLPARSEERROR, m_MSXML_Version, hr,
+        Format(m_strResultText, IDSC_MSXMLPARSEERROR, m_MSXML_Version, hr,
                m_bValidation ? cs_validation.c_str() : cs_import.c_str());
       }
     }  // End Check for parsing errors
 
   } else {
-    Format(m_strResultText, IDSC_XMLBADCREATESCHEMA, m_MSXML_Version, hr,
+    Format(m_strResultText, IDSC_MSXMLBADCREATESCHEMA, m_MSXML_Version, hr,
            m_bValidation ? cs_validation.c_str() : cs_import.c_str());
   }  // End Create Schema Cache
 
@@ -254,14 +252,5 @@ exit:
 
   return b_ok;
 }
-#else
-bool MFilterXMLProcessor::XMLFilterProcess(const bool &,
-                                     const stringT &,
-                                     const stringT &, 
-                                     const stringT &)
-{
-  return false;
-}
-#endif /* WIN32 */
 
 #endif /* USE_XML_LIBRARY == MSXML */

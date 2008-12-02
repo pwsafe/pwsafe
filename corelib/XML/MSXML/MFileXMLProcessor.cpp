@@ -33,8 +33,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-MFileXMLProcessor::MFileXMLProcessor(PWScore *core, 
-                                     UUIDList *possible_aliases, 
+MFileXMLProcessor::MFileXMLProcessor(PWScore *core,
+                                     UUIDList *possible_aliases,
                                      UUIDList *possible_shortcuts)
   : m_xmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
   m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
@@ -79,7 +79,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
         hr30 = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
                                 __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
         if (FAILED(hr30)) {
-          LoadAString(m_strResultText, IDSC_NOXMLREADER);
+          LoadAString(m_strResultText, IDSC_NOMSXMLREADER);
           goto exit;
         } else {
           m_MSXML_Version = 30;
@@ -117,7 +117,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
     pCH->SetVariables(NULL, m_bValidation, ImportedPrefix, m_delimiter,
     m_possible_aliases, m_possible_shortcuts);
   else
-    pCH->SetVariables(m_xmlcore, m_bValidation, ImportedPrefix, m_delimiter, 
+    pCH->SetVariables(m_xmlcore, m_bValidation, ImportedPrefix, m_delimiter,
     m_possible_aliases, m_possible_shortcuts);
 
   //  Create ErrorHandlerImpl object
@@ -289,13 +289,13 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       if(pEH->bErrorsFound == TRUE) {
         m_strResultText = pEH->m_strValidationResult;
       } else {
-        Format(m_strResultText, IDSC_XMLPARSEERROR, m_MSXML_Version, hr,
+        Format(m_strResultText, IDSC_MSXMLPARSEERROR, m_MSXML_Version, hr,
                m_bValidation ? cs_validation.c_str() : cs_import.c_str());
       }
     }  // End Check for parsing errors
 
   } else {
-    Format(m_strResultText, IDSC_XMLBADCREATESCHEMA, m_MSXML_Version, hr,
+    Format(m_strResultText, IDSC_MSXMLBADCREATESCHEMA, m_MSXML_Version, hr,
            m_bValidation ? cs_validation.c_str() : cs_import.c_str());
   }  // End Create Schema Cache
 
