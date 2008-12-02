@@ -106,6 +106,8 @@ ThisMfcApp::ThisMfcApp() :
     AfxMessageBox(cs_msg);
   }
 #endif
+	// Set this process to be one of the first to be shut down:
+	SetProcessShutdownParameters(0x3ff, 0);
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
   EnableHtmlHelp();
