@@ -1393,6 +1393,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XML\MSXML\MFileValidator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XML\MSXML\MFileXMLProcessor.cpp"
 				>
 			</File>
@@ -1494,10 +1498,6 @@
 			</File>
 			<File
 				RelativePath=".\UnknownField.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\UTF8Conv.cpp"
 				>
 			</File>
 			<File
@@ -1658,6 +1658,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\UTF8Conv.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Util.cpp"
 				>
 			</File>
@@ -1687,6 +1691,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\XERCES\XFilterXMLProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLFileValidation.cpp"
 				>
 			</File>
 			<File
@@ -1772,6 +1780,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\MSXML\MFileSAX2Handlers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFileValidator.h"
 				>
 			</File>
 			<File
@@ -1920,6 +1932,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\XMLFileDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLFileValidation.h"
 				>
 			</File>
 			<File

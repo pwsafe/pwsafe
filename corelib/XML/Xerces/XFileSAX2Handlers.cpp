@@ -169,7 +169,6 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
         cur_entry->xtime_interval = _T("");
         cur_entry->pmtime = _T("");
         cur_entry->rmtime = _T("");
-        cur_entry->changed = _T("");
         cur_entry->pwhistory = _T("");
         cur_entry->notes = _T("");
         cur_entry->uuid = _T("");
@@ -551,9 +550,6 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
     case XLE_UUID:
       cur_entry->uuid = m_strElemContent;
       break;
-    case XLE_PWHISTORY:
-      cur_entry->pwhistory = m_strElemContent;
-      break;
     case XLE_PASSWORD:
       cur_entry->password = m_strElemContent;
       if (Replace(m_strElemContent, _T(':'), _T(';')) <= 2) {
@@ -685,10 +681,10 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
     case XLE_ENTRY_PWLOWERCASEMINLENGTH:
       cur_entry->pwp.lowerminlength = _ttoi(m_strElemContent.c_str());
       break;
-    case XLE_ENTRY_PWUPPERCASEMINLENGTH:
+    case XLE_ENTRY_PWSYMBOLMINLENGTH:
       cur_entry->pwp.symbolminlength = _ttoi(m_strElemContent.c_str());
       break;
-    case XLE_ENTRY_PWSYMBOLMINLENGTH:
+    case XLE_ENTRY_PWUPPERCASEMINLENGTH:
       cur_entry->pwp.upperminlength = _ttoi(m_strElemContent.c_str());
       break;
     case XLE_DATE:
@@ -745,6 +741,7 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
       break;
     case XLE_PASSWORDSAFE:
     case XLE_PREFERENCES:
+    case XLE_PWHISTORY:
     case XLE_HISTORY_ENTRIES:
     case XLE_ENTRY_PASSWORDPOLICY:
     default:

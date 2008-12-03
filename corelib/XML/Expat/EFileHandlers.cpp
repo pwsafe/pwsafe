@@ -158,6 +158,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       break;
     case XLE_ENTRY:
       m_element_datatypes.push(XLD_NA);
+      m_bentrybeingprocessed = true;
       if (m_bValidation)
         return;
 
@@ -175,14 +176,12 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       cur_entry->xtime_interval = _T("");
       cur_entry->pmtime = _T("");
       cur_entry->rmtime = _T("");
-      cur_entry->changed = _T("");
       cur_entry->pwhistory = _T("");
       cur_entry->notes = _T("");
       cur_entry->uuid = _T("");
       cur_entry->pwp.Empty();
       cur_entry->entrytype = NORMAL;
       cur_entry->bforce_normal_entry = false;
-      m_bentrybeingprocessed = true;
       m_whichtime = -1;
 
       // Only interested in the normal attribute
@@ -264,6 +263,13 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_SHOWUSERNAMEINTREE:
     case XLE_SORTASCENDING:
     case XLE_USEDEFAULTUSER:
+    case XLE_ENTRY_PWUSEDIGITS:
+    case XLE_ENTRY_PWUSEEASYVISION:
+    case XLE_ENTRY_PWUSEHEXDIGITS:
+    case XLE_ENTRY_PWUSELOWERCASE:
+    case XLE_ENTRY_PWUSESYMBOLS:
+    case XLE_ENTRY_PWUSEUPPERCASE:
+    case XLE_ENTRY_PWMAKEPRONOUNCEABLE:
     case XLE_STATUS:
       m_element_datatypes.push(XLD_BOOLTYPE);
       break;
@@ -284,6 +290,10 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_PWLOWERCASEMINLENGTH:
     case XLE_PWSYMBOLMINLENGTH:
     case XLE_PWUPPERCASEMINLENGTH:
+    case XLE_ENTRY_PWLOWERCASEMINLENGTH:
+    case XLE_ENTRY_PWUPPERCASEMINLENGTH:
+    case XLE_ENTRY_PWDIGITMINLENGTH:
+    case XLE_ENTRY_PWSYMBOLMINLENGTH:
       m_element_datatypes.push(XLD_PASSWORDLENGTHTYPE2);
       break;
     case XLE_MAX:
@@ -491,9 +501,6 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
     case XLE_UUID:
       cur_entry->uuid = m_strElemContent;
       break;
-    case XLE_PWHISTORY:
-      cur_entry->pwhistory = m_strElemContent;
-      break;
     case XLE_PASSWORD:
       cur_entry->password = m_strElemContent;
       if (Replace(m_strElemContent, _T(':'), _T(';')) <= 2) {
@@ -625,10 +632,10 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
     case XLE_ENTRY_PWLOWERCASEMINLENGTH:
       cur_entry->pwp.lowerminlength = _ttoi(m_strElemContent.c_str());
       break;
-    case XLE_ENTRY_PWUPPERCASEMINLENGTH:
+    case XLE_ENTRY_PWSYMBOLMINLENGTH:
       cur_entry->pwp.symbolminlength = _ttoi(m_strElemContent.c_str());
       break;
-    case XLE_ENTRY_PWSYMBOLMINLENGTH:
+    case XLE_ENTRY_PWUPPERCASEMINLENGTH:
       cur_entry->pwp.upperminlength = _ttoi(m_strElemContent.c_str());
       break;
     case XLE_DATE:
@@ -685,6 +692,7 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
       break;
     case XLE_PASSWORDSAFE:
     case XLE_PREFERENCES:
+    case XLE_PWHISTORY:
     case XLE_HISTORY_ENTRIES:
     case XLE_ENTRY_PASSWORDPOLICY:
     default:

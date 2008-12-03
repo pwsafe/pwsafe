@@ -251,10 +251,10 @@ END
 
 STRINGTABLE
 BEGIN
+  IDSC_FILTEREXISTS        "Filter %s already exists in the database, do you wish to replace it with this?"
   IDSC_EXPATDATETMISSING   "Missing date element"
   IDSC_EXPATNODELIMITER    "Mandatory delimiter attribute missing."
   IDSC_EXPATBADDELIMITER   "Mandatory delimiter attribute invalid."
   IDSC_EXPATFTYPEMISSING   "Mandatory ftype attribute missing."
-  IDSC_EXPATFILTERNAMERPT  "Filter %s already exists in the database, do you wish to replace it with this?"
   IDSC_EXPATUNEXPFILTERFLD "Unexpected element: Only one field allowed in filter entry."
 END

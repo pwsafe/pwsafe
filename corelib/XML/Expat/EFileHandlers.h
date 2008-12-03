@@ -55,7 +55,6 @@ struct pw_entry {
   StringX xtime_interval;
   StringX pmtime;
   StringX rmtime;
-  StringX changed;
   StringX pwhistory;
   StringX notes;
   StringX uuid;

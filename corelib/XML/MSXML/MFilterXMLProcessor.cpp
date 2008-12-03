@@ -111,7 +111,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   //  Create ErrorHandlerImpl object
   MFilterSAX2ErrorHandler* pEH = new MFilterSAX2ErrorHandler;
 
-  pCH->SetVariables(&m_MapFilters, m_FPool, m_bValidation);
+  pCH->SetVariables(m_pAsker, &m_MapFilters, m_FPool, m_bValidation);
 
   //  Set Content Handler
   hr = pSAX2Reader->putContentHandler(pCH);

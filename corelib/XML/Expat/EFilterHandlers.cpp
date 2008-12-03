@@ -213,7 +213,7 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
     fk.cs_filtername = cur_filter->fname;
     if (m_MapFilters->find(fk) != m_MapFilters->end()) {
       stringT question;
-      Format(question, IDSC_EXPATFILTERNAMERPT, cur_filter->fname.c_str());
+      Format(question, IDSC_FILTEREXISTS, cur_filter->fname.c_str());
       if (m_pAsker == NULL || !(*m_pAsker)(question)) {
         m_MapFilters->erase(fk);
       }

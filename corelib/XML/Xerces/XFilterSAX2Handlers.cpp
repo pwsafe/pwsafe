@@ -254,9 +254,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     fk.cs_filtername = cur_filter->fname;
     if (m_MapFilters->find(fk) != m_MapFilters->end()) {
       stringT question;
-      Format(question,
-             _T("Filter %s already exists in the database, do you wish to replace it with this?"),
-             cur_filter->fname);
+      Format(question, IDSC_FILTEREXISTS, cur_filter->fname);
       if (m_pAsker == NULL || !(*m_pAsker)(question)) {
         m_MapFilters->erase(fk);
       }

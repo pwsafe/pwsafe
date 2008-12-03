@@ -21,34 +21,12 @@
 #define __MFILEVALIDATOR_H
 
 // XML File Import constants - used by Expat and Xerces and will be by MSXML
-#include "../XMLFileDefs.h"
-
-// PWS includes
-#include "../../StringX.h"
-
-#include <vector>
-#include <map>
-
-const struct st_file_element_data {
-  unsigned short int element_code /* XLE_PASSWORDSAFE */;
-  unsigned short int element_entry_code /* XLE_PASSWORDSAFE  - entry values*/;
-};
+#include "../XMLFileValidation.h"
 
 class MFileValidator
 {
 public:
   MFileValidator();
-  ~MFileValidator();
-
-  bool GetElementInfo(const wchar_t *name, int numchars, st_file_element_data &edata);
-
-private:
-  std::map<stringT, st_file_element_data> m_element_map;
-  typedef std::pair<stringT, st_file_element_data> file_element_pair;
-
-  static const struct st_file_elements {
-    TCHAR *name; st_file_element_data file_element_data;
-  } m_file_elements[XLE_ELEMENTS];
 };
 
 #endif /* __MFILEVALIDATOR_H */

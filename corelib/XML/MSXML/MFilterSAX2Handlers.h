@@ -70,8 +70,9 @@ public:
   MFilterSAX2ContentHandler();
   virtual ~MFilterSAX2ContentHandler();
 
-  void SetVariables(PWSFilters *mapfilters, const FilterPool fpool, const bool &bValidation)
-  {m_MapFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
+  void SetVariables(Asker *pAsker, PWSFilters *mapfilters, const FilterPool fpool, 
+                    const bool &bValidation)
+  {m_pAsker = pAsker; m_MapFilters = mapfilters, m_FPool = fpool; m_bValidation = bValidation;}
   void SetSchemaVersion(BSTR *schema_version)
   {m_pSchema_Version = schema_version;}
 
@@ -137,6 +138,7 @@ private:
   // Local variables
   st_filters *cur_filter;
   st_FilterRow *cur_filterentry;
+  Asker *m_pAsker;
 
   StringX m_strElemContent;
   BSTR * m_pSchema_Version;

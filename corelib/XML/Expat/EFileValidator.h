@@ -22,7 +22,7 @@
 #define __EFILEVALIDATOR_H
 
 // XML File Import constants - used by Expat and Xerces and will be by MSXML
-#include "../XMLFileDefs.h"
+#include "../XMLFileValidation.h"
 
 // Expat validation includes
 #include "EFileValidatorDefs.h"
@@ -36,13 +36,7 @@
 // Expat includes
 #include <expat.h>
 
-const struct st_file_element_data {
-  unsigned short int element_code /* XLE_PASSWORDSAFE */;
-  unsigned short int element_entry_code /* XLE_PASSWORDSAFE  - entry values*/;
-  short int element_maxoccurs;
-};
-
-class EFileValidator
+class EFileValidator : public XMLFileValidation
 {
 public:
   EFileValidator();
@@ -51,7 +45,6 @@ public:
   bool startElement(stringT &startElement);
   bool endElement(stringT &endElement, StringX &strElemContent, int &datatype);
   bool VerifyXMLDataType(const StringX &strElemContent, const int &datatype);
-  bool GetElementInfo(const XML_Char *name, st_file_element_data &edata);
 
   int getErrorCode() {return m_iErrorCode;}
   stringT getErrorMsg() {return m_sErrorMsg;}
@@ -61,9 +54,6 @@ private:
   bool VerifyXMLTime(const StringX &strElemContent);
   StringX Trim(const StringX &s, const TCHAR *set = NULL);
 
-  std::map<stringT, st_file_element_data> m_element_map;
-  typedef std::pair<stringT, st_file_element_data> file_element_pair;
-
   std::vector<int> m_elementstack;
 
   stringT m_sErrorMsg;
@@ -72,10 +62,6 @@ private:
   int m_idatetime_element;
   int m_iErrorCode;
   bool m_b_inheader, m_b_inentry;
-
-  static const struct st_file_elements {
-    TCHAR *name; st_file_element_data file_element_data;
-  } m_file_elements[XLE_ELEMENTS];
 };
 
 #endif /* __EFILEVALIDATOR_H */

@@ -152,6 +152,7 @@ MFilterSAX2ContentHandler::MFilterSAX2ContentHandler()
   m_pSchema_Version = NULL;
   m_iXMLVersion = -1;
   m_iSchemaVersion = -1;
+  m_pAsker = NULL;
 }
 
 //  -----------------------------------------------------------------------
@@ -425,14 +426,9 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     fk.fpool = m_FPool;
     fk.cs_filtername = cur_filter->fname;
     if (m_MapFilters->find(fk) != m_MapFilters->end()) {
-      stringT cs_text, cs_title;
-      cs_title = _T("Filter Import into Database");
-      Format(cs_text,
-             _T("Filter %s already exists in the database, do you wish to replace it with this?"),
-             cur_filter->fname.c_str());
-      rc = MessageBox(NULL, cs_text.c_str(), cs_title.c_str(),
-                      MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
-      if (rc == IDYES) {
+      stringT question;
+      Format(question, IDSC_FILTEREXISTS, cur_filter->fname.c_str());
+      if (m_pAsker == NULL || !(*m_pAsker)(question)) {
         m_MapFilters->erase(fk);
       }
     }

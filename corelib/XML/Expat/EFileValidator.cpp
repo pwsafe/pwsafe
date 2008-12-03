@@ -23,7 +23,7 @@
 #if USE_XML_LIBRARY == EXPAT
 
 // XML File Import constants - used by Expat and Xerces and will be by MSXML
-#include "../XMLFileDefs.h"
+#include "../XMLFileValidation.h"
 
 // Expat validation includes
 #include "EFileValidator.h"
@@ -48,79 +48,6 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace std;
 
-/*
-*
-* 1. Element Name
-* 2. Element Code - non-zero if global
-* 3. Element Entry Code - non-zero if within an entry
-* 4. MaxOccurs
-*
-*/
-
-const EFileValidator::st_file_elements EFileValidator::m_file_elements[XLE_ELEMENTS] = {
-  {_T("passwordsafe"), {XLE_PASSWORDSAFE, 0, 1}},
-  {_T("NumberHashIterations"), {XLE_NUMBERHASHITERATIONS, 0, 1}},
-  {_T("Preferences"), {XLE_PREFERENCES, 0, 1}},
-  {_T("unknownheaderfields"), {XLE_UNKNOWNHEADERFIELDS, 0, 1}},
-  {_T("entry"), {XLE_ENTRY, XLE_ENTRY, -1}},
-  {_T("DisplayExpandedAddEditDlg"), {XLE_DISPLAYEXPANDEDADDEDITDLG, 0, 1}},
-  {_T("MaintainDateTimeStamps"), {XLE_MAINTAINDATETIMESTAMPS, 0, 1}},
-  {_T("PWUseDigits"), {XLE_PWUSEDIGITS, XLE_ENTRY_PWUSEDIGITS, 1}},
-  {_T("PWUseEasyVision"), {XLE_PWUSEEASYVISION, XLE_ENTRY_PWUSEEASYVISION, 1}},
-  {_T("PWUseHexDigits"), {XLE_PWUSEHEXDIGITS, XLE_ENTRY_PWUSEHEXDIGITS, 1}},
-  {_T("PWUseLowercase"), {XLE_PWUSELOWERCASE, XLE_ENTRY_PWUSELOWERCASE, 1}},
-  {_T("PWUseSymbols"), {XLE_PWUSESYMBOLS, XLE_ENTRY_PWUSESYMBOLS, 1}},
-  {_T("PWUseUppercase"), {XLE_PWUSEUPPERCASE, XLE_ENTRY_PWUSEUPPERCASE, 1}},
-  {_T("PWMakePronounceable"), {XLE_PWMAKEPRONOUNCEABLE, XLE_ENTRY_PWMAKEPRONOUNCEABLE, 1}},
-  {_T("SaveImmediately"), {XLE_SAVEIMMEDIATELY, 0, 1}},
-  {_T("SavePasswordHistory"), {XLE_SAVEPASSWORDHISTORY, 0, 1}},
-  {_T("ShowNotesDefault"), {XLE_SHOWNOTESDEFAULT, 0, 1}},
-  {_T("ShowPWDefault"), {XLE_SHOWPWDEFAULT, 0, 1}},
-  {_T("ShowPasswordInTree"), {XLE_SHOWPASSWORDINTREE, 0, 1}},
-  {_T("ShowUsernameInTree"), {XLE_SHOWUSERNAMEINTREE, 0, 1}},
-  {_T("SortAscending"), {XLE_SORTASCENDING, 0, 1}},
-  {_T("UseDefaultUser"), {XLE_USEDEFAULTUSER, 0, 1}},
-  {_T("PWDefaultLength"), {XLE_PWDEFAULTLENGTH, 0, 1}},
-  {_T("IdleTimeout"), {XLE_IDLETIMEOUT, 0, 1}},
-  {_T("TreeDisplayStatusAtOpen"), {XLE_TREEDISPLAYSTATUSATOPEN, 0, 1}},
-  {_T("NumPWHistoryDefault"), {XLE_NUMPWHISTORYDEFAULT, 0, 1}},
-  {_T("PWLowercaseMinLength"), {XLE_PWLOWERCASEMINLENGTH, XLE_ENTRY_PWLOWERCASEMINLENGTH, 1}},
-  {_T("PWUppercaseMinLength"), {XLE_PWUPPERCASEMINLENGTH, XLE_ENTRY_PWUPPERCASEMINLENGTH, 1}},
-  {_T("PWDigitMinLength"), {XLE_PWDIGITMINLENGTH, XLE_ENTRY_PWDIGITMINLENGTH, 1}},
-  {_T("PWSymbolMinLength"), {XLE_PWSYMBOLMINLENGTH, XLE_ENTRY_PWSYMBOLMINLENGTH, 1}},
-  {_T("DefaultUsername"), {XLE_DEFAULTUSERNAME, 0, 1}},
-  {_T("DefaultAutotypeString"), {XLE_DEFAULTAUTOTYPESTRING, 0, 1}},
-  {_T("field"), {XLE_HFIELD, XLE_RFIELD, -1}},
-  {_T("group"), {0, XLE_GROUP, 1}},
-  {_T("title"), {0, XLE_TITLE, 1}},
-  {_T("username"), {0, XLE_USERNAME, 1}},
-  {_T("password"), {0, XLE_PASSWORD, 1}},
-  {_T("url"), {0, XLE_URL, 1}},
-  {_T("autotype"), {0, XLE_AUTOTYPE, 1}},
-  {_T("notes"), {0, XLE_NOTES, 1}},
-  {_T("uuid"), {0, XLE_UUID, 1}},
-  {_T("ctime"), {0, XLE_CTIME, 1}},
-  {_T("atime"), {0, XLE_ATIME, 1}},
-  {_T("ltime"), {0, XLE_LTIME, 1}},
-  {_T("xtime"), {0, XLE_XTIME, 1}},
-  {_T("xtime_interval"), {0, XLE_XTIME_INTERVAL, 1}},
-  {_T("pmtime"), {0, XLE_PMTIME, 1}},
-  {_T("rmtime"), {0, XLE_RMTIME, 1}},
-  {_T("pwhistory"), {0, XLE_PWHISTORY, 1}},
-  {_T("PasswordPolicy"), {0, XLE_ENTRY_PASSWORDPOLICY, 1}},
-  {_T("unknownrecordfields"), {0, XLE_UNKNOWNRECORDFIELDS, 1}},
-  {_T("status"), {0, XLE_STATUS, 1}},
-  {_T("max"), {0, XLE_MAX, 1}},
-  {_T("num"), {0, XLE_NUM, 1}},
-  {_T("history_entries"), {0, XLE_HISTORY_ENTRIES, 1}},
-  {_T("history_entry"), {0, XLE_HISTORY_ENTRY, 255}},
-  {_T("changed"), {0, XLE_CHANGED, 1}},
-  {_T("oldpassword"), {0, XLE_OLDPASSWORD, 1}},
-  {_T("PWLength"), {0, XLE_ENTRY_PWLENGTH, 1}},
-  {_T("date"), {0, XLE_DATE, 1}},
-  {_T("time"), {0, XLE_TIME, 1}}
-};
-
 EFileValidator::EFileValidator()
 {
   m_elementstack.clear();
@@ -130,21 +57,14 @@ EFileValidator::EFileValidator()
   m_b_inentry = false;
   m_iErrorCode = 0;
 
-  for (int i = 0; i < XLE_ELEMENTS; i++) {
-    m_element_map.insert(file_element_pair(stringT(m_file_elements[i].name),
-                                           m_file_elements[i].file_element_data));
-  }
-
   // Element count variable to ensure that user doesn't specify too many (MaxOccurs)
   for (int i = 0; i < XLE_LAST_ELEMENT; i++) {
     m_ielement_occurs[i] = 0;
   }
-
 }
 
 EFileValidator::~EFileValidator()
 {
-  m_element_map.clear();
   m_elementstack.clear();
 }
 
@@ -164,17 +84,16 @@ bool EFileValidator::startElement(stringT & strStartElement)
   if (m_elementstack.empty())
     return false;
 
-  std::map<stringT, st_file_element_data> :: const_iterator e_iter;
-  e_iter = m_element_map.find(strStartElement);
-  if (e_iter == m_element_map.end()) {
+  st_file_element_data edata;
+  if (!GetElementInfo(strStartElement.c_str(), edata)) {
     m_iErrorCode = XLPEC_UNKNOWN_FIELD;
     Format(m_sErrorMsg, IDSC_EXPATUNKNELEMENT, strStartElement.c_str());
     return false;
   }
 
   m_iprevious_element = m_elementstack.back();
-  int icurrent_element = m_b_inentry ? e_iter->second.element_entry_code :
-                                       e_iter->second.element_code;
+  int icurrent_element = m_b_inentry ? edata.element_entry_code :
+                                       edata.element_code;
   if (icurrent_element == XLE_ENTRY) {
     for (int i = XLE_GROUP; i <= XLE_RFIELD; i++) {
       m_ielement_occurs[i] = 0;
@@ -182,14 +101,24 @@ bool EFileValidator::startElement(stringT & strStartElement)
   }
 
   // Check MaxOccurs
-  if (e_iter->second.element_maxoccurs != -1 &&
-      m_ielement_occurs[icurrent_element] >= e_iter->second.element_maxoccurs) {
+  int maxoccurs;
+  if (icurrent_element == XLE_ENTRY ||
+      icurrent_element == XLE_HFIELD ||
+      icurrent_element == XLE_RFIELD)
+    maxoccurs = -1;
+  else 
+  if (icurrent_element == XLE_HISTORY_ENTRY)
+    maxoccurs = 255;
+  else
+    maxoccurs = 1;
+  
+  if (maxoccurs != -1 && m_ielement_occurs[icurrent_element] >= maxoccurs) {
     m_iErrorCode = XLPEC_EXCEEDED_MAXOCCURS;
     TCHAR buffer[10];
 #if _MSC_VER >= 1400
-    _itot_s(e_iter->second.element_maxoccurs, buffer, 10, 10);
+    _itot_s(maxoccurs, buffer, 10, 10);
 #else
-    _itot(e_iter->second.element_maxoccurs, buffer, 10);
+    _itot(maxoccurs, buffer, 10);
 #endif
     Format(m_sErrorMsg, IDSC_EXPATEXCEEDMAXOCCURS, strStartElement.c_str(), buffer);
     return false;
@@ -525,26 +454,6 @@ bool EFileValidator::endElement(stringT & endElement, StringX &strValue, int &da
 
   m_elementstack.pop_back();
   return true;
-}
-
-bool EFileValidator::GetElementInfo(const XML_Char *name, st_file_element_data &edata)
-{
-  const stringT strValue(name);
-
-  if (strValue.length() == 0)
-    return false;
-
-  std::map<stringT, st_file_element_data> :: const_iterator e_iter;
-  e_iter = m_element_map.find(strValue);
-  if (e_iter != m_element_map.end()) {
-    edata = e_iter->second;
-    return true;
-  } else {
-    edata.element_code = XLE_LAST_ELEMENT;
-    edata.element_entry_code = XLE_LAST_ELEMENT;
-    edata.element_maxoccurs = 0;
-    return false;
-  }
 }
 
 bool EFileValidator::VerifyXMLDataType(const StringX &strElemContent, const int &datatype)

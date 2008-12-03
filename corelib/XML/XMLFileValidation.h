@@ -6,10 +6,26 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#ifndef _XMLFILEDEFS_H_
-#define _XMLFILEDEFS_H_
+#ifndef __XMLFILEVALIDATION_H
+#define __XMLFILEVALIDATION_H
 
 #ifdef USE_XML_LIBRARY
+
+// PWS includes
+#include "../StringX.h"
+
+#include <map>
+
+#if   USE_XML_LIBRARY == EXPAT
+// Expat includes
+#include <expat.h>
+#elif USE_XML_LIBRARY == MSXMAL
+// MSXML includes
+// None
+#elif USE_XML_LIBRARY == XERCES
+// Xerces includes
+#include <xercesc/util/XercesDefs.hpp>
+#endif
 
 // Elements stack value
 // Xml fiLe Elements = 'XLE' prefix
@@ -121,6 +137,35 @@ enum XLE_PASSWORDSAFE {
 // Number of Integer/Boolean Preferences
 #define NUMPREFSINXML (XLE_PREF_END - XLE_PREF_START + 1)
 
+const struct st_file_element_data {
+  unsigned short int element_code /* XLE_PASSWORDSAFE */;
+  unsigned short int element_entry_code /* XLE_PASSWORDSAFE  - entry values*/;
+};
+
+
+class XMLFileValidation
+{
+public:
+  XMLFileValidation();
+  ~XMLFileValidation();
+
+#if   USE_XML_LIBRARY == EXPAT
+  bool GetElementInfo(const XML_Char *name, st_file_element_data &edata);
+#elif USE_XML_LIBRARY == MSXML
+  bool GetElementInfo(const wchar_t *name, int numchars, st_file_element_data &edata);
+#elif USE_XML_LIBRARY == XERCES
+  bool GetElementInfo(const XMLCh *name, st_file_element_data &edata);
+#endif
+
+private:
+  std::map<stringT, st_file_element_data> m_element_map;
+  typedef std::pair<stringT, st_file_element_data> file_element_pair;
+
+  static const struct st_file_elements {
+    TCHAR *name; st_file_element_data file_element_data;
+  } m_file_elements[XLE_ELEMENTS];
+};
+
 #endif /* USE_XML_LIBRARY */
 
-#endif /* _XMLFILEDEFS_H_ */
+#endif /* __XMLFILEVALIDATION_H */
