@@ -25,6 +25,10 @@
 #elif USE_XML_LIBRARY == XERCES
 // Xerces includes
 #include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/util/XMLString.hpp>
+
+XERCES_CPP_NAMESPACE_USE
+
 #endif
 
 // Elements stack value
