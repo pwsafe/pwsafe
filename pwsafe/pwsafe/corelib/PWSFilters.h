@@ -24,6 +24,7 @@
 #include "PWSfile.h"
 #include "Match.h"
 #include "ItemData.h"
+#include "proxy.h"
 
 // All the fields that we can use for filtering entries:
 
@@ -248,9 +249,10 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
   int WriteFilterXMLFile(std::ostream &os, PWSfile::HeaderRecord hdr,
                          const StringX &currentfile, const bool bWithFormatting = false);
   int ImportFilterXMLFile(const FilterPool fpool,
-                          const stringT &strXMLData,
+                          const StringX &strXMLData,
                           const stringT &strXMLFileName,
-                          const stringT &strXSDFileName, stringT &strErrors);
+                          const stringT &strXSDFileName, stringT &strErrors,
+                          Asker *pAsker);
 
   static stringT GetFilterDescription(const st_FilterRow &st_fldata);
 };

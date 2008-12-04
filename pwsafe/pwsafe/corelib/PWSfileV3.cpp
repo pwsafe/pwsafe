@@ -697,6 +697,11 @@ int PWSfileV3::ReadHeader()
         m_hdr.m_dbdesc = text;
         break;
 
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+      // Don't support importing XML from non-Windows platforms 
+      // using Microsoft XML libraries
+      // Will be treated as an 'unknown header field' by the 'default' clause below
+#else
       case HDR_FILTERS:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
@@ -705,7 +710,7 @@ int PWSfileV3::ReadHeader()
           stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
           int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                     XSDFilename.c_str(),
-                                                    strErrors);
+                                                    strErrors, m_asker);
           if (rc != PWScore::SUCCESS) {
             // Ask user whether to keep as unknown field or delete!
             stringT question;
@@ -721,6 +726,7 @@ int PWSfileV3::ReadHeader()
           }
         }
         break;
+#endif
 
       case HDR_END: /* process END so not to treat it as 'unknown' */
         break;

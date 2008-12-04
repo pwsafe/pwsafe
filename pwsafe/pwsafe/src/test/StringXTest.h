@@ -9,9 +9,9 @@
 #include <sstream>
 
 #include "test.h"
-#include "StringX.h"
-#include "StringXStream.h"
-#include "os/typedefs.h"
+#include "../../corelib/StringX.h"
+#include "../../corelib/StringXStream.h"
+#include "../../corelib/os/typedefs.h"
 
 class StringXTest : public Test
 {

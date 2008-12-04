@@ -30,6 +30,7 @@
 #include "CompareResultsDlg.h"
 #include "Properties.h"
 #include "GeneralMsgBox.h"
+#include "MFCMessages.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
 #include "corelib/PWSdirs.h"
@@ -49,15 +50,6 @@ using namespace std;
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-class MFCAsker : public Asker
-{
-  bool operator()(const stringT &question) {
-    int msg_rc = AfxMessageBox(question.c_str(), MB_YESNO | 
-                               MB_ICONQUESTION | MB_DEFBUTTON2);
-    return msg_rc == IDYES;
-  }
-};
 
 BOOL DboxMain::OpenOnInit(void)
 {
@@ -1228,12 +1220,15 @@ void DboxMain::OnImportXML()
   const stringT XSDfn(_T("pwsafe.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
+#if defined(USE_XML_LIBRARY) && USE_XML_LIBRARY != EXPAT
+// Expat is a non-validating parser - no use for Schema!
   if (!pws_os::FileExists(XSDFilename)) {
     cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDS_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
+#endif
 
   CImportXMLDlg dlg;
   INT_PTR status = dlg.DoModal();
