@@ -7,10 +7,16 @@
 */
 #include "KeySend.h"
 
-#if _MSC_VER < 1500
-#include <winable.h>
-#else
+/*
+* Make sure we get the right declaration of BlockInput
+* VS2005 - it is in "winable.h"
+* VS2008 - it is in "winuser.h"
+*/
+
+#if _MSC_VER >= 1500
 #include <winuser.h>
+#else
+#include <winable.h>
 #endif
 
 CKeySend::CKeySend(void) : m_delay(10)

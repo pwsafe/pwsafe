@@ -18,7 +18,6 @@
 #include "PWSprefs.h"
 #include "PWSrand.h"
 #include "Util.h"
-#include "PWSXML.h"
 #include "UUIDGen.h"
 #include "SysInfo.h"
 #include "UTF8Conv.h"
@@ -26,6 +25,16 @@
 #include "VerifyFormat.h"
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
+
+#include "XML/XMLDefs.h"
+
+#if USE_XML_LIBRARY == XERCES
+#include "XML/Xerces/XFileXMLProcessor.h"
+#elif USE_XML_LIBRARY == MSXML
+#include "XML/MSXML/MFileXMLProcessor.h"
+#elif USE_XML_LIBRARY == EXPAT
+#include "XML/Expat/EFileXMLProcessor.h"
+#endif
 
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
@@ -642,7 +651,14 @@ int PWScore::WriteXMLFile(const StringX &filename,
   return SUCCESS;
 }
 
-#ifdef _WIN32
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+// Don't support importing XML on non-Windows platforms using Microsoft XML libraries
+int PWScore::ImportXMLFile(const stringT &, const stringT &, const stringT &, stringT &,
+                           int &, int &, bool &, bool &,CReport &)
+{
+  return UNIMPLEMENTED;
+}
+#else
 int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
                            const stringT &strXSDFileName, stringT &strErrors,
                            int &numValidated, int &numImported,
@@ -650,7 +666,15 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            CReport &rpt)
 {
   UUIDList possible_aliases, possible_shortcuts;
-  PWSXML iXML(this, &possible_aliases, &possible_shortcuts);
+
+#if   USE_XML_LIBRARY == XERCES
+  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+#elif USE_XML_LIBRARY == MSXML
+  MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+#elif USE_XML_LIBRARY == EXPAT
+  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+#endif
+
   bool status, validation;
   int nITER(0);
   int nRecordsWithUnknownFields;
@@ -659,27 +683,27 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 
   strErrors = _T("");
 
+  // Expat is not a validating parser - but we now do it ourselves!
   validation = true;
-  status = iXML.XMLProcess(validation, ImportedPrefix, strXMLFileName,
-                           strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
-  strErrors = iXML.m_strResultText;
+  status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
+                        strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
+  strErrors = iXML.getResultText();
   if (!status) {
     return XML_FAILED_VALIDATION;
   }
-
-  numValidated = iXML.m_numEntriesValidated;
+  numValidated = iXML.getNumEntriesValidated();
 
   validation = false;
-  status = iXML.XMLProcess(validation, ImportedPrefix, strXMLFileName,
-                           strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
-  strErrors = iXML.m_strResultText;
+  status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
+                        strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
+  strErrors = iXML.getResultText();
   if (!status) {
     return XML_FAILED_IMPORT;
   }
 
-  numImported = iXML.m_numEntriesImported;
-  bBadUnknownFileFields = iXML.m_bDatabaseHeaderErrors;
-  bBadUnknownRecordFields = iXML.m_bRecordHeaderErrors;
+  numImported = iXML.getNnumEntriesImported();
+  bBadUnknownFileFields = iXML.getIfDatabaseHeaderErrors();
+  bBadUnknownRecordFields = iXML.getIfRecordHeaderErrors();
   m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
   // Only add header unknown fields or change number of iterations
   // if the database was empty to start with
@@ -700,12 +724,6 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 
   m_changed = true;
   return SUCCESS;
-}
-#else // currently don't support importing XML from non-Windows
-int PWScore::ImportXMLFile(const stringT &, const stringT &, const stringT &, stringT &,
-                           int &, int &, bool &, bool &,CReport &)
-{
-  return UNIMPLEMENTED;
 }
 #endif
 

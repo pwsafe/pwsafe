@@ -19,6 +19,7 @@
 #include "ThisMfcApp.h"
 #include "AboutDlg.h"
 #include "PwFont.h"
+#include "MFCMessages.h"
 #include "version.h"
 
 #include "corelib/PWSprefs.h"
@@ -673,6 +674,10 @@ void DboxMain::InitPasswordSafe()
     delete m_pNotesDisplay;
     m_pNotesDisplay = NULL;
   }
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+  // Don't support filter processing on non-Windows platforms 
+  // using Microsoft XML libraries
+#else
   // if there's a filter file named "autoload_filters.xml", 
   // do what its name implies...
   CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
@@ -682,9 +687,10 @@ void DboxMain::InitPasswordSafe()
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
     CWaitCursor waitCursor;  // This may take a while!
 
+    MFCAsker q;
     int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""),
                                               stringT(tmp),
-                                              XSDFilename.c_str(), strErrors);
+                                              XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
     if (rc != PWScore::SUCCESS) {
       CString cs_msg;
@@ -692,6 +698,7 @@ void DboxMain::InitPasswordSafe()
       AfxMessageBox(cs_msg, MB_OK);
     }
   }
+#endif
 }
 
 LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)
@@ -2377,6 +2384,21 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // = -1       : don't set pCmdUI->Enable
   // = FALSE(0) : set pCmdUI-Enable(FALSE)
   // = TRUE(1)  : set pCmdUI-Enable(TRUE)
+
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+// Don't support importing XML or filter processing on non-Windows platforms 
+// using Microsoft XML libraries
+  switch (nID) {
+    case ID_MENUITEM_IMPORT_XML:
+    case ID_FILTERMENU:
+    case ID_MENUITEM_APPLYFILTER:
+    case ID_MENUITEM_EDITFILTER:
+    case ID_MENUITEM_MANAGEFILTERS:
+      return FALSE;
+    default:
+      break;
+  }
+#endif
 
   MapUICommandTableConstIter it;
   it = m_MapUICommandTable.find(nID);

@@ -48,6 +48,8 @@
 // for finding current propertysheet:
 #include "PWPropertyPage.h"
 
+#include "MFCMessages.h"
+
 using namespace std;
 
 #ifdef _DEBUG
@@ -66,14 +68,11 @@ BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
   ON_COMMAND(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
-class MFCReporter : public Reporter
-{
-  void operator()(const stringT &message) {
-    AfxMessageBox(message.c_str(), MB_OK | MB_ICONEXCLAMATION);
-  }
-};
-
 static MFCReporter aReporter;
+
+//#ifdef _DEBUG
+//static CMemoryState oldMemState, newMemState, diffMemState;
+//#endif
 
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
@@ -133,6 +132,14 @@ ThisMfcApp::~ThisMfcApp()
   // here, and (2) is irrelevant for HH_CLOSE_ALL, so we call ::HtmlHelp
   ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 #endif
+//#ifdef _DEBUG
+//  newMemState.Checkpoint();
+//  if (diffMemState.Difference(oldMemState, newMemState)) {
+//    TRACE( "Memory leaked!\n" );
+//    diffMemState.DumpAllObjectsSince();
+//    return;
+//  }
+//#endif
 }
 
 #if !defined(POCKET_PC)
