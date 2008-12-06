@@ -23,7 +23,7 @@
 #define STRPRODUCTVER  "3, 15, 0, $WCREV$$WCMODS?+:$\0"
 
 // Following should usually be blank
-// #define SPECIAL_BUILD _T("")
-#define SPECIAL_BUILD _T("Beta")
+#define SPECIAL_BUILD _T("")
+// #define SPECIAL_BUILD _T("Beta")
 
 #endif // _VERSION_H_
