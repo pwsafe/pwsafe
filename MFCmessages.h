@@ -6,8 +6,8 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#ifndef __MFCMESSAGES_
-#define __MFCMESSAGES_
+#ifndef __MFCMESSAGES_H
+#define __MFCMESSAGES_H
 
 class MFCAsker : public Asker
 {
@@ -25,4 +25,4 @@ class MFCReporter : public Reporter
   }
 };
 
-#endif / * __MFCMESSAGES_ */
+#endif /* __MFCMESSAGES_H */

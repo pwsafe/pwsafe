@@ -752,9 +752,10 @@ void DboxMain::ImportFilters()
     CWaitCursor waitCursor;  // This may take a while!
 
     MFCAsker q;
+    MFCReporter r;
     rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""),
                                           stringT(XMLFilename),
-                                          XSDFilename.c_str(), strErrors, &q);
+                                          XSDFilename.c_str(), strErrors, &q, &r);
     waitCursor.Restore();  // Restore normal cursor
 
     switch (rc) {

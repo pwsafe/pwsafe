@@ -29,9 +29,6 @@ typedef ItemList::const_iterator ItemListConstIter;
 
 typedef std::vector<CItemData> OrderedItemList;
 
-typedef std::vector<CUUIDGen> UUIDList;
-typedef UUIDList::iterator UUIDListIter;
-
 typedef std::multimap<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMMap;
 
 typedef std::map<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMap;
@@ -250,7 +247,7 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
-  void SetAsker(Asker *asker) {m_asker = asker;}
+  void SetAsker(Asker *pAsker) {m_pAsker = pAsker;}
   
   // Filters
   PWSFilters m_MapFilters;
@@ -302,6 +299,7 @@ private:
   void (*m_pfcnNotifyListModified) (LPARAM);
   LPARAM m_NotifyInstance;
   bool m_bNotify;
-  Asker *m_asker;
+  Asker *m_pAsker;
+  Reporter *m_pReporter;
 };
 #endif /* __PWSCORE_H */

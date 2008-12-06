@@ -688,9 +688,10 @@ void DboxMain::InitPasswordSafe()
     CWaitCursor waitCursor;  // This may take a while!
 
     MFCAsker q;
+    MFCReporter r;
     int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""),
                                               stringT(tmp),
-                                              XSDFilename.c_str(), strErrors, &q);
+                                              XSDFilename.c_str(), strErrors, &q, &r);
     waitCursor.Restore();  // Restore normal cursor
     if (rc != PWScore::SUCCESS) {
       CString cs_msg;

@@ -78,7 +78,7 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_changed(false), m_IsReadOnly(false),
                      m_nRecordsWithUnknownFields(0),
                      m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
-                     m_bNotify(false), m_asker(NULL)
+                     m_bNotify(false), m_pAsker(NULL), m_pReporter(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -667,12 +667,26 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 {
   UUIDList possible_aliases, possible_shortcuts;
 
-#if   USE_XML_LIBRARY == XERCES
-  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+#if USE_XML_LIBRARY == XERCES || USE_XML_LIBRARY == MSXML
+  if (!pws_os::FileExists(strXSDFileName.c_str())) {
+    // Error - Schema file does not exist
+    stringT cs_msg, drive, dir, file, ext;
+    pws_os::splitpath(strXSDFileName, drive, dir, file, ext);
+    ToUpper(drive);
+    Format(cs_msg, IDSC_SCHEMAFILENOTFOUND, 
+           file.c_str(), ext.c_str(), drive.c_str(), dir.c_str());
+    if (m_Reporter != NULL)
+      (*m_Reporter)(cs_msg);
+    return FAILURE;
+  }
+#endif
+
+#if   USE_XML_LIBRARY == EXPAT
+  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
 #elif USE_XML_LIBRARY == MSXML
   MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
-#elif USE_XML_LIBRARY == EXPAT
-  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+#elif USE_XML_LIBRARY == XERCES
+  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
 #endif
 
   bool status, validation;
@@ -1162,7 +1176,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 {
   int status;
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
-                                     PWSfile::Read, status, m_asker);
+                                     PWSfile::Read, status, m_pAsker);
 
   if (status != PWSfile::SUCCESS) {
     delete in;

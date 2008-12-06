@@ -1221,7 +1221,7 @@ void DboxMain::OnImportXML()
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
 #if defined(USE_XML_LIBRARY) && USE_XML_LIBRARY != EXPAT
-// Expat is a non-validating parser - no use for Schema!
+  // Expat is a non-validating parser - no use for Schema!
   if (!pws_os::FileExists(XSDFilename)) {
     cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDS_CANTVALIDATEXML);
