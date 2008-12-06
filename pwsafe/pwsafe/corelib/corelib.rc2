@@ -257,4 +257,5 @@ BEGIN
   IDSC_EXPATBADDELIMITER   "Mandatory delimiter attribute invalid."
   IDSC_EXPATFTYPEMISSING   "Mandatory ftype attribute missing."
   IDSC_EXPATUNEXPFILTERFLD "Unexpected element: Only one field allowed in filter entry."
+  IDSC_SCHEMAFILENOTFOUND  "XML Schema file ""%s%s"" not found in PasswordSafe application directory:\n\n %s%s."
 END

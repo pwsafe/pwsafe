@@ -28,6 +28,8 @@ typedef uuid_t UUID;
 #include "PwsPlatform.h"
 #include "StringX.h"
 
+#include <vector>
+
 class CUUIDGen
 {
 public:
@@ -55,5 +57,8 @@ private:
 
 std::ostream &operator<<(std::ostream &os, const CUUIDGen &uuid);
 std::wostream &operator<<(std::wostream &os, const CUUIDGen &uuid);
+
+typedef std::vector<CUUIDGen> UUIDList;
+typedef UUIDList::iterator UUIDListIter;
 
 #endif /* __UUIDGEN_H */

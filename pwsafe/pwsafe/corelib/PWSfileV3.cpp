@@ -710,12 +710,12 @@ int PWSfileV3::ReadHeader()
           stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
           int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                     XSDFilename.c_str(),
-                                                    strErrors, m_asker);
+                                                    strErrors, m_pAsker, m_pReporter);
           if (rc != PWScore::SUCCESS) {
             // Ask user whether to keep as unknown field or delete!
             stringT question;
             LoadAString(question, IDSC_CANTPROCESSDBFILTERS);
-            bool keep = (m_asker == NULL) || (!(*m_asker)(question));
+            bool keep = (m_pAsker == NULL) || (!(*m_pAsker)(question));
             if (keep) {
               // Treat it as an Unknown field!
               // Maybe user used a later version of PWS

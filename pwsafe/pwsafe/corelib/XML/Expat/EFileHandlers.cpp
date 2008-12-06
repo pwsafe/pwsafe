@@ -719,4 +719,4 @@ end_errors:
   XML_StopParser((XML_Parser)userdata, XML_FALSE);
 }
 
-#endif /* USE_XML_LIBRARY == EXPATS */
+#endif /* USE_XML_LIBRARY == EXPAT */

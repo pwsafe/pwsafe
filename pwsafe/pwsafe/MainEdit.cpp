@@ -1297,7 +1297,11 @@ void DboxMain::AutoType(const CItemData &ci)
   const int N = AutoCmd.length();
   ks.ResetKeyboardState();
 
+#if _MSC_VER < 1500
   ::BlockInput(true);
+#else
+  BlockInput(true);
+#endif
 
   // Note that minimizing the window before calling ci.Get*()
   // will cause garbage to be read if "lock on minimize" selected,
@@ -1381,7 +1385,11 @@ void DboxMain::AutoType(const CItemData &ci)
 
   Sleep(100);
 
+#if _MSC_VER < 1500
   ::BlockInput(false);
+#else
+  BlockInput(false);
+#endif
 
   // If we hid it, now show it
   if (bMinOnAuto)
