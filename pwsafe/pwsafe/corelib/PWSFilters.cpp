@@ -509,7 +509,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool,
                                     const stringT &, 
                                     const stringT &,
                                     stringT &,
-                                    Asker *,  Reporter *)
+                                    Asker *)
 {
   return PWScore::UNIMPLEMENTED;
 }
@@ -522,7 +522,6 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
                                     Asker *pAsker)
 {
 #if   USE_XML_LIBRARY == EXPAT
-  pReporter; // Compiler warning C4100: unreferenced formal parameter
   EFilterXMLProcessor fXML(*this, fpool, pAsker);
 #elif USE_XML_LIBRARY == MSXML
   MFilterXMLProcessor fXML(*this, fpool, pAsker);
