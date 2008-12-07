@@ -158,6 +158,8 @@ struct st_FilterRow {
     etype = CItemData::ET_INVALID;
     ltype = LC_INVALID;
   }
+  void SetFilterComplete() {bFilterComplete = true;}
+  void ClearFilterComplete() {bFilterComplete = false;}
 };
 
 // The following structure is needed for entry filtering

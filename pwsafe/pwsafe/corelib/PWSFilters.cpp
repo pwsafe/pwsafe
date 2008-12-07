@@ -559,19 +559,12 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
   PWSFilters::iterator mf_iter;
   for (mf_iter = this->begin(); mf_iter != this->end(); mf_iter++) {
     st_filters &filters = mf_iter->second;
-    std::vector<st_FilterRow>::iterator Flt_iter;
-    for (Flt_iter = filters.vMfldata.begin(); 
-         Flt_iter != filters.vMfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
-    for (Flt_iter = filters.vHfldata.begin(); 
-         Flt_iter != filters.vHfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
-    for (Flt_iter = filters.vPfldata.begin(); 
-         Flt_iter != filters.vPfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
+    for_each(filters.vMfldata.begin(), filters.vMfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vHfldata.begin(), filters.vHfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vPfldata.begin(), filters.vPfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
   }
   return PWScore::SUCCESS;
 }
