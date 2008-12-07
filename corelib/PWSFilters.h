@@ -252,7 +252,7 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
                           const StringX &strXMLData,
                           const stringT &strXMLFileName,
                           const stringT &strXSDFileName, stringT &strErrors,
-                          Asker *pAsker, Reporter *pReporter);
+                          Asker *pAsker);
 
   static stringT GetFilterDescription(const st_FilterRow &st_fldata);
 };

@@ -519,21 +519,8 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
                                     const stringT &strXMLFileName,
                                     const stringT &strXSDFileName,
                                     stringT &strErrors,
-                                    Asker *pAsker, Reporter *pReporter)
+                                    Asker *pAsker)
 {
-#if USE_XML_LIBRARY == XERCES || USE_XML_LIBRARY == MSXML
-  if (!pws_os::FileExists(strXSDFileName.c_str())) {
-    // Error - Schema file does not exist - only validating parsers
-    stringT cs_msg, drive, dir, file, ext;
-    pws_os::splitpath(strXSDFileName, drive, dir, file, ext);
-    Format(cs_msg, IDSC_SCHEMAFILENOTFOUND, 
-           file.c_str(), ext.c_str(), drive.c_str(), dir.c_str());
-    if (pReporter != NULL)
-      (*pReporter)(cs_msg);
-    return PWScore::FAILURE;
-  }
-#endif
-
 #if   USE_XML_LIBRARY == EXPAT
   pReporter; // Compiler warning C4100: unreferenced formal parameter
   EFilterXMLProcessor fXML(*this, fpool, pAsker);

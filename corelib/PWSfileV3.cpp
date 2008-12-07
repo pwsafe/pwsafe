@@ -708,9 +708,28 @@ int PWSfileV3::ReadHeader()
         if (utf8Len > 0) {
           stringT strErrors;
           stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
+          // Expat is a non-validating parser - no use for Schema!
+          if (!pws_os::FileExists(XSDFilename)) {
+            // Ask user whether to keep as unknown field or delete!
+              stringT message, message2;
+              Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
+              LoadAString(message2, IDSC_FILTERSKEPT);
+              message += stringT(_T("\n\n")) + message2;
+              if (m_pReporter != NULL)
+                (*m_pReporter)(message);
+
+              // Treat it as an Unknown field!
+              // Maybe user used a later version of PWS
+              // and we don't want to lose anything
+             UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+             m_UHFL.push_back(unkhfe);
+            break;
+          }
+#endif
           int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                     XSDFilename.c_str(),
-                                                    strErrors, m_pAsker, m_pReporter);
+                                                    strErrors, m_pAsker);
           if (rc != PWScore::SUCCESS) {
             // Ask user whether to keep as unknown field or delete!
             stringT question;

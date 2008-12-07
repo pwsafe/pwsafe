@@ -72,7 +72,8 @@ public:
 
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
-  static void SetReporter(Reporter *reporter) {m_Reporter = reporter;}
+  static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
+  static void SetAsker(Asker *pAsker) {m_pAsker = pAsker;}
 
   // Following used to read/write databases
   StringX GetCurFile() const {return m_currfile;}
@@ -247,7 +248,6 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
-  void SetAsker(Asker *pAsker) {m_pAsker = pAsker;}
   
   // Filters
   PWSFilters m_MapFilters;
@@ -275,7 +275,6 @@ private:
   bool m_IsReadOnly;
   PWSfile::HeaderRecord m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
-  static Reporter *m_Reporter; // set as soon as possible to show errors
 
   // THE password database
   //  Key = entry's uuid; Value = entry's CItemData
@@ -299,7 +298,7 @@ private:
   void (*m_pfcnNotifyListModified) (LPARAM);
   LPARAM m_NotifyInstance;
   bool m_bNotify;
-  Asker *m_pAsker;
-  Reporter *m_pReporter;
+  static Reporter *m_pReporter; // set as soon as possible to show errors
+  static Asker *m_pAsker;
 };
 #endif /* __PWSCORE_H */
