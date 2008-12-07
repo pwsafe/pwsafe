@@ -66,7 +66,8 @@ typedef std::pair <CUUIDGen, CUUIDGen> ItemMap_Pair;
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
 unsigned char PWScore::m_session_initialized = false;
-Reporter *PWScore::m_Reporter = NULL;
+Asker *PWScore::m_pAsker = NULL;
+Reporter *PWScore::m_pReporter = NULL;
 
 PWScore::PWScore() : m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
@@ -78,7 +79,7 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_changed(false), m_IsReadOnly(false),
                      m_nRecordsWithUnknownFields(0),
                      m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
-                     m_bNotify(false), m_pAsker(NULL), m_pReporter(NULL)
+                     m_bNotify(false)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -667,20 +668,6 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 {
   UUIDList possible_aliases, possible_shortcuts;
 
-#if USE_XML_LIBRARY == XERCES || USE_XML_LIBRARY == MSXML
-  if (!pws_os::FileExists(strXSDFileName.c_str())) {
-    // Error - Schema file does not exist
-    stringT cs_msg, drive, dir, file, ext;
-    pws_os::splitpath(strXSDFileName, drive, dir, file, ext);
-    ToUpper(drive);
-    Format(cs_msg, IDSC_SCHEMAFILENOTFOUND, 
-           file.c_str(), ext.c_str(), drive.c_str(), dir.c_str());
-    if (m_Reporter != NULL)
-      (*m_Reporter)(cs_msg);
-    return FAILURE;
-  }
-#endif
-
 #if   USE_XML_LIBRARY == EXPAT
   EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
 #elif USE_XML_LIBRARY == MSXML
@@ -1176,7 +1163,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 {
   int status;
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
-                                     PWSfile::Read, status, m_pAsker);
+                                     PWSfile::Read, status, m_pAsker, m_pReporter);
 
   if (status != PWSfile::SUCCESS) {
     delete in;
@@ -1256,8 +1243,8 @@ int PWScore::ReadFile(const StringX &a_filename,
         LoadAString(cs_caption, IDSC_READ_ERROR);
         Format(cs_msg, IDSC_ENCODING_PROBLEM, temp.GetTitle().c_str());
         cs_msg = cs_caption + _S(": ") + cs_caption;
-        if (m_Reporter != NULL)
-          (*m_Reporter)(cs_msg);
+        if (m_pReporter != NULL)
+          (*m_pReporter)(cs_msg);
       }
       // deliberate fall-through
       case PWSfile::SUCCESS:

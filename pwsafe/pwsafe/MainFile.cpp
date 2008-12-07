@@ -74,9 +74,12 @@ BOOL DboxMain::OpenOnInit(void)
     case PWScore::SUCCESS:
     {
       MFCAsker q;
+      MFCReporter r;
       m_core.SetAsker(&q);
+      m_core.SetReporter(&r);
       rc2 = m_core.ReadCurFile(passkey);
       m_core.SetAsker(NULL);
+      m_core.SetReporter(NULL);
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
                                          m_core.GetCurFile()).c_str();
@@ -561,9 +564,12 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
 
   cs_title.LoadString(IDS_FILEREADERROR);
   MFCAsker q;
+  MFCReporter r;
   m_core.SetAsker(&q);
+  m_core.SetReporter(&r);
   rc = m_core.ReadFile(pszFilename, passkey);
   m_core.SetAsker(NULL);
+  m_core.SetReporter(NULL);
   switch (rc) {
     case PWScore::SUCCESS:
       break;
@@ -1220,11 +1226,11 @@ void DboxMain::OnImportXML()
   const stringT XSDfn(_T("pwsafe.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-#if defined(USE_XML_LIBRARY) && USE_XML_LIBRARY != EXPAT
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   // Expat is a non-validating parser - no use for Schema!
   if (!pws_os::FileExists(XSDFilename)) {
-    cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
-    cs_title.LoadString(IDS_CANTVALIDATEXML);
+    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
+    cs_title.LoadString(IDSC_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
@@ -1281,18 +1287,13 @@ void DboxMain::OnImportXML()
     cs_title.LoadString(IDS_XMLIMPORTFAILED);
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
-      {
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
                        strErrors.c_str());
         break;
-      }
       case PWScore::XML_FAILED_IMPORT:
-      {
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
-      }
       case PWScore::SUCCESS:
-      {
         if (!strErrors.empty() ||
             bBadUnknownFileFields || bBadUnknownRecordFields) {
           if (!strErrors.empty())
@@ -1321,7 +1322,6 @@ void DboxMain::OnImportXML()
         }
         RefreshViews();
         break;
-      }
       default:
         ASSERT(0);
     } // switch

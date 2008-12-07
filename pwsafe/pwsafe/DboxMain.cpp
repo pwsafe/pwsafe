@@ -22,6 +22,7 @@
 #include "MFCMessages.h"
 #include "version.h"
 
+#include "corelib/corelib.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
@@ -430,7 +431,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 };
 
 void DboxMain::InitPasswordSafe()
-{  
+{
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
@@ -680,20 +681,32 @@ void DboxMain::InitPasswordSafe()
 #else
   // if there's a filter file named "autoload_filters.xml", 
   // do what its name implies...
-  CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
+  CString cs_temp = CString(PWSdirs::GetConfigDir().c_str()) +
     _T("autoload_filters.xml");
-  if (pws_os::FileExists(tmp.GetString())) {
+  if (pws_os::FileExists(cs_temp.GetString())) {
     stringT strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
+  // Expat is a non-validating parser - no use for Schema!
+  if (!pws_os::FileExists(XSDFilename)) {
+    CString cs_title, cs_msg;
+    cs_temp.Format(IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
+    cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, cs_temp);
+    cs_title.LoadString(IDSC_CANTVALIDATEXML);
+    MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
+    return;
+  }
+#endif
+
     CWaitCursor waitCursor;  // This may take a while!
 
     MFCAsker q;
-    MFCReporter r;
     int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""),
-                                              stringT(tmp),
-                                              XSDFilename.c_str(), strErrors, &q, &r);
+                                              stringT(cs_temp),
+                                              XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
-    if (rc != PWScore::SUCCESS) {
+    if (rc != PWScore::SUCCESS){
       CString cs_msg;
       cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors.c_str());
       AfxMessageBox(cs_msg, MB_OK);
