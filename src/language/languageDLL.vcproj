@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\language"
-			IntermediateDirectory="..\..\obj\language"
+			OutputDirectory="..\..\bin\language\$(ConfigurationName)"
+			IntermediateDirectory="..\..\obj\language\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -59,7 +59,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\pwsafe_base.dll"
+				OutputFile="..\..\bin\language\$(ConfigurationName)\pwsafe_base.dll"
 				LinkIncremental="1"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="false"
