@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.15
 ==================
+[2407346] "Open Another" and "Create New" actions in "Incorrect
+Passkey" dialog box working again.
 [2407072] Can now tab to read-only checkbox in password entry form via
 File->Open or recently used list.
 [2269930] Track write permission of file in opening dialog: If the

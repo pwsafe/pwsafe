@@ -414,6 +414,13 @@ void CPasskeyEntry::OnOK()
       if (nResponse == IDOK) {
       } else if (nResponse == IDCANCEL) {
         m_status = errorDlg.GetCancelReturnValue();
+        if (m_status == TAR_OPEN) { // open another
+          PostMessage(WM_COMMAND, IDC_BTN_BROWSE);
+          return;
+        } else if (m_status == TAR_NEW) { // create new
+          PostMessage(WM_COMMAND, IDC_CREATE_DB);
+          return;
+        }
         CPWDialog::OnCancel();
       }
     } else {
