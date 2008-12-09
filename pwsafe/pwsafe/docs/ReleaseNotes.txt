@@ -1,5 +1,5 @@
-Password Safe 3.15Beta Release Notes - November 2008
-====================================================
+Password Safe 3.15 Release Notes - November 2008
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.15
 ==================
+[2407072] Can now tab to read-only checkbox in password entry form via
+File->Open or recently used list.
 [2269930] Track write permission of file in opening dialog: If the
 user chooses a file with different permission than the original, then
 the r-o status is updated accordingly.
