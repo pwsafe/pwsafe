@@ -18,7 +18,7 @@
 #include "UUIDGen.h"
 #include "UnknownField.h"
 #include "StringX.h"
-#include "proxy.h"
+#include "Proxy.h"
 
 #define MIN_HASH_ITERATIONS 2048
 

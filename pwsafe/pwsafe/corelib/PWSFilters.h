@@ -24,7 +24,7 @@
 #include "PWSfile.h"
 #include "Match.h"
 #include "ItemData.h"
-#include "proxy.h"
+#include "Proxy.h"
 
 // All the fields that we can use for filtering entries:
 
