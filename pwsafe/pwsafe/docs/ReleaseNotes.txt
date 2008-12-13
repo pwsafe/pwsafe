@@ -1,4 +1,4 @@
-Password Safe 3.15 Release Notes - November 2008
+Password Safe 3.15 Release Notes - December 2008
 ================================================
 
 This note describe the new features, fixed bugs and known problems

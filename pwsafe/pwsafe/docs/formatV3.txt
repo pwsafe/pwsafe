@@ -152,6 +152,7 @@ Database Description        0x0a        Text          Y              [11]
 Database Filters            0x0b        Text          Y              [12]
 Reserved                    0x0c        -                            [13]
 Reserved                    0x0d        -                            [13]
+Reserved                    0x0e        -                            [13]
 End of Entry                0xff        [empty]       Y              [14]
 
 [1] The version number of the database format. For this version, the value
