@@ -30,12 +30,14 @@
 #include "CompareResultsDlg.h"
 #include "Properties.h"
 #include "GeneralMsgBox.h"
+#include "MFCMessages.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
 #include "corelib/PWSdirs.h"
 #include "corelib/Report.h"
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
+#include "corelib/os/file.h"
 
 #include <sys/types.h>
 #include <bitset>
@@ -48,15 +50,6 @@ using namespace std;
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-class MFCAsker : public Asker
-{
-  bool operator()(const stringT &question) {
-    int msg_rc = AfxMessageBox(question.c_str(), MB_YESNO | 
-                               MB_ICONQUESTION | MB_DEFBUTTON2);
-    return msg_rc == IDYES;
-  }
-};
 
 BOOL DboxMain::OpenOnInit(void)
 {
@@ -81,9 +74,12 @@ BOOL DboxMain::OpenOnInit(void)
     case PWScore::SUCCESS:
     {
       MFCAsker q;
+      MFCReporter r;
       m_core.SetAsker(&q);
+      m_core.SetReporter(&r);
       rc2 = m_core.ReadCurFile(passkey);
       m_core.SetAsker(NULL);
+      m_core.SetReporter(NULL);
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
                                          m_core.GetCurFile()).c_str();
@@ -568,9 +564,12 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
 
   cs_title.LoadString(IDS_FILEREADERROR);
   MFCAsker q;
+  MFCReporter r;
   m_core.SetAsker(&q);
+  m_core.SetReporter(&r);
   rc = m_core.ReadFile(pszFilename, passkey);
   m_core.SetAsker(NULL);
+  m_core.SetReporter(NULL);
   switch (rc) {
     case PWScore::SUCCESS:
       break;
@@ -1227,12 +1226,15 @@ void DboxMain::OnImportXML()
   const stringT XSDfn(_T("pwsafe.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-  if (!m_core.FileExists(XSDFilename)) {
-    cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
-    cs_title.LoadString(IDS_CANTVALIDATEXML);
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
+  // Expat is a non-validating parser - no use for Schema!
+  if (!pws_os::FileExists(XSDFilename)) {
+    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
+    cs_title.LoadString(IDSC_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
+#endif
 
   CImportXMLDlg dlg;
   INT_PTR status = dlg.DoModal();
@@ -1285,18 +1287,13 @@ void DboxMain::OnImportXML()
     cs_title.LoadString(IDS_XMLIMPORTFAILED);
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
-      {
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
                        strErrors.c_str());
         break;
-      }
       case PWScore::XML_FAILED_IMPORT:
-      {
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
-      }
       case PWScore::SUCCESS:
-      {
         if (!strErrors.empty() ||
             bBadUnknownFileFields || bBadUnknownRecordFields) {
           if (!strErrors.empty())
@@ -1325,7 +1322,6 @@ void DboxMain::OnImportXML()
         }
         RefreshViews();
         break;
-      }
       default:
         ASSERT(0);
     } // switch

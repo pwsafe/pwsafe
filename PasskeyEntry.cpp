@@ -414,6 +414,13 @@ void CPasskeyEntry::OnOK()
       if (nResponse == IDOK) {
       } else if (nResponse == IDCANCEL) {
         m_status = errorDlg.GetCancelReturnValue();
+        if (m_status == TAR_OPEN) { // open another
+          PostMessage(WM_COMMAND, IDC_BTN_BROWSE);
+          return;
+        } else if (m_status == TAR_NEW) { // create new
+          PostMessage(WM_COMMAND, IDC_CREATE_DB);
+          return;
+        }
         CPWDialog::OnCancel();
       }
     } else {
@@ -440,11 +447,28 @@ void CPasskeyEntry::OnHelp()
 }
 
 //-----------------------------------------------------------------------------
+
+void CPasskeyEntry::UpdateRO()
+{
+  if (!m_bForceReadOnly) { // if allowed, changed r-o state to reflect file's permission
+    bool fro;
+    if (pws_os::FileExists(LPCTSTR(m_filespec), fro) && fro) {
+      m_PKE_ReadOnly = TRUE;
+      GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+    } else { // no file or write-enabled
+      m_PKE_ReadOnly = FALSE;
+      GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+    }
+    UpdateData(FALSE);
+  } // !m_bForceReadOnly
+}
+
 void CPasskeyEntry::OnComboEditChange()
 {
   m_MRU_combo.m_edit.GetWindowText(m_filespec);
   m_ctlPasskey.EnableWindow(TRUE);
   m_ctlOK.EnableWindow(TRUE);
+  UpdateRO();
 }
 
 void CPasskeyEntry::OnComboSelChange()
@@ -464,6 +488,7 @@ void CPasskeyEntry::OnComboSelChange()
   m_ctlPasskey.EnableWindow(TRUE);
   m_ctlPasskey.SetFocus();
   m_ctlOK.EnableWindow(TRUE);
+  UpdateRO();
 }
 
 void CPasskeyEntry::OnOpenFileBrowser()
@@ -509,7 +534,8 @@ void CPasskeyEntry::OnOpenFileBrowser()
     if (m_ctlPasskey.IsWindowEnabled() == TRUE) {
       m_ctlPasskey.SetFocus();
     }
-  }
+    UpdateRO();
+  } // rc == IDOK
 }
 
 void CPasskeyEntry::SetHeight(const int num)

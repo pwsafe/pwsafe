@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -43,15 +43,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				TreatWChar_tAsBuiltInType="false"
-				PrecompiledHeaderFile=".\Debug/corelib.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -71,7 +70,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Debug\corelib.lib"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,11 +92,11 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -119,16 +119,15 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				TreatWChar_tAsBuiltInType="false"
-				PrecompiledHeaderFile=".\Release/corelib.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -147,7 +146,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Release\corelib.lib"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -168,11 +168,11 @@
 		</Configuration>
 		<Configuration
 			Name="Demo|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -195,13 +195,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				TreatWChar_tAsBuiltInType="false"
-				PrecompiledHeaderFile="$(IntDir)/corelib.pch"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -220,6 +223,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(MSXML60SDKDir)\lib&quot;"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -240,11 +245,11 @@
 		</Configuration>
 		<Configuration
 			Name="NU-Debug|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -266,15 +271,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="0"
-				TreatWChar_tAsBuiltInType="false"
-				PrecompiledHeaderFile=".\NU-Debug/corelib.pch"
-				AssemblerListingLocation=".\NU-Debug/"
-				ObjectFile=".\NU-Debug/"
-				ProgramDataBaseFileName=".\NU-Debug/"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -294,9 +298,9 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\NU-Debug\corelib.lib"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
-				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -316,11 +320,11 @@
 		</Configuration>
 		<Configuration
 			Name="NU-Release|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -341,19 +345,17 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				TreatWChar_tAsBuiltInType="false"
-				PrecompiledHeaderFile=".\Release/corelib.pch"
-				AssemblerListingLocation=".\NU-Release/"
-				ObjectFile=".\NU-Release/"
-				ProgramDataBaseFileName=".\NU-Release/"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -372,10 +374,927 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				UseUnicodeResponseFiles="false"
-				OutputFile=".\NU-Release\corelib.lib"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
-				IgnoreAllDefaultLibraries="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DebugE|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ExpatDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(ExpatDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DebugM|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(MSXML60SDKDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DebugX|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(XercesDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(XercesDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseE|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(ExpatDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(ExpatDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseM|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(MSXML60SDKDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseX|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(XercesDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(XercesDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-DebugE|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ExpatDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(ExpatDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-DebugM|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(MSXML60SDKDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-DebugX|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(XercesDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(XercesDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-ReleaseE|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(ExpatDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(ExpatDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-ReleaseM|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(MSXML60SDKDir)\lib&quot;"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-ReleaseX|Win32"
+			OutputDirectory=".\obj\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(XercesDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
+				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
+				ObjectFile=".\obj\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\lib\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories="&quot;$(XercesDir)\lib&quot;"
+				SuppressStartupBanner="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -414,7 +1333,35 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XML\EXPAT\EFileHandlers.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFileValidator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFileXMLProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFilterHandlers.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFilterValidator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFilterXMLProcessor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\os\windows\env.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\ESecMemMgr.cpp"
 				>
 			</File>
 			<File
@@ -439,6 +1386,26 @@
 			</File>
 			<File
 				RelativePath=".\os\windows\mem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFileSAX2Handlers.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFileValidator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFileXMLProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFilterSAX2Handlers.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFilterXMLProcessor.cpp"
 				>
 			</File>
 			<File
@@ -486,27 +1453,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PWSXML.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PWSXMLFilters.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\os\windows\rand.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Report.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SAXFilters.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SAXHandlers.cpp"
 				>
 			</File>
 			<File
@@ -597,6 +1548,114 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugE|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugM|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugX|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseE|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseM|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseX|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="NU-DebugE|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="NU-DebugM|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="NU-DebugX|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="NU-ReleaseE|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="NU-ReleaseM|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="NU-ReleaseX|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\UTF8Conv.cpp"
@@ -615,11 +1674,39 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XML\XERCES\XFileSAX2Handlers.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\Xerces\XFileValidator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XERCES\XFileXMLProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XERCES\XFilterSAX2Handlers.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XERCES\XFilterXMLProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLFileValidation.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XMLprefs.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\YubiKey.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XERCES\XSecMemMgr.cpp"
 				>
 			</File>
 		</Filter>
@@ -633,6 +1720,42 @@
 			</File>
 			<File
 				RelativePath=".\corelib.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFileHandlers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFileValidator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFileValidatorDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFileXMLProcessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFilterHandlers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFilterValidator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFilterValidatorDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\EFilterXMLProcessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\EXPAT\ESecMemMgr.h"
 				>
 			</File>
 			<File
@@ -661,6 +1784,26 @@
 			</File>
 			<File
 				RelativePath=".\Match.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFileSAX2Handlers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFileValidator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFileXMLProcessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFilterSAX2Handlers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\MSXML\MFilterXMLProcessor.h"
 				>
 			</File>
 			<File
@@ -708,23 +1851,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PWSXML.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PWSXMLFilters.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Report.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SAXFilters.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SAXHandlers.h"
 				>
 			</File>
 			<File
@@ -768,11 +1895,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\typedefs.h"
+				RelativePath=".\UnknownField.h"
 				>
 			</File>
 			<File
-				RelativePath=".\UnknownField.h"
+				RelativePath=".\os\utf8conv.h"
 				>
 			</File>
 			<File
@@ -792,7 +1919,35 @@
 				>
 			</File>
 			<File
-				RelativePath=".\xml_import.h"
+				RelativePath=".\XML\XERCES\XFileSAX2Handlers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\Xerces\XFileValidator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XERCES\XFileXMLProcessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XERCES\XFilterSAX2Handlers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XERCES\XFilterXMLProcessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLFileDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLFileValidation.h"
 				>
 			</File>
 			<File
@@ -801,6 +1956,10 @@
 			</File>
 			<File
 				RelativePath=".\YubiKey.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XERCES\XSecMemMgr.h"
 				>
 			</File>
 		</Filter>

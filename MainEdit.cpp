@@ -25,6 +25,7 @@
 #include "KeySend.h"
 #include "ClearQuestionDlg.h"
 #include "CreateShortcutDlg.h"
+#include "PasswordSubsetDlg.h"
 
 #include <stdio.h>
 #include <sys/timeb.h>
@@ -32,6 +33,12 @@
 #include <vector>
 #include <algorithm>
 
+/*
+ * Make sure we get the right declaration of BlockInput
+ * VS2005 - it is in "winable.h"
+ * VS2008 - it is in "winuser.h"
+ */
+ 
 #if _MSC_VER < 1500
 #include <winable.h>
 #else
@@ -1002,6 +1009,40 @@ void DboxMain::OnCopyPasswordMinimize()
   }
 }
 
+void DboxMain::OnDisplayPswdSubset()
+{
+  if (!SelItemOk())
+    return;
+
+  CItemData *ci = getSelectedItem();
+  ASSERT(ci != NULL);
+
+  CItemData *ci_original(ci);
+
+  uuid_array_t base_uuid, entry_uuid;
+  const CItemData::EntryType entrytype = ci->GetEntryType();
+  if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
+    // This is an alias/shortcut
+    ci->GetUUID(entry_uuid);
+    if (entrytype == CItemData::ET_ALIAS)
+      m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+    else
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = &iter->second;
+    }
+  }
+
+  CPasswordSubsetDlg DisplaySubsetDlg(this, ci);
+
+  app.DisableAccelerator();
+  if (DisplaySubsetDlg.DoModal() != IDCANCEL)
+    UpdateAccessTime(ci_original);
+
+  app.EnableAccelerator();
+}
 
 void DboxMain::OnCopyUsername()
 {
@@ -1256,7 +1297,11 @@ void DboxMain::AutoType(const CItemData &ci)
   const int N = AutoCmd.length();
   ks.ResetKeyboardState();
 
+#if _MSC_VER < 1500
   ::BlockInput(true);
+#else
+  BlockInput(true);
+#endif
 
   // Note that minimizing the window before calling ci.Get*()
   // will cause garbage to be read if "lock on minimize" selected,
@@ -1340,7 +1385,11 @@ void DboxMain::AutoType(const CItemData &ci)
 
   Sleep(100);
 
+#if _MSC_VER < 1500
   ::BlockInput(false);
+#else
+  BlockInput(false);
+#endif
 
   // If we hid it, now show it
   if (bMinOnAuto)

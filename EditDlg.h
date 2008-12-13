@@ -39,6 +39,34 @@ public:
   void ShowNotes();
   void HideNotes();
 
+
+protected:
+  BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL OnInitDialog();
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void OnOK();
+  afx_msg void OnShowPassword();
+  afx_msg void OnRandom();
+  afx_msg void OnHelp();
+  afx_msg void OnPasskeySetfocus();
+  afx_msg void OnPasskeyKillfocus();
+  afx_msg void OnBnClickedOk();
+  afx_msg void OnBnClickedMore();
+  afx_msg void OnBnClickViewDependents();
+  afx_msg void OnBnClickedClearXTime();
+  afx_msg void OnBnClickedSetXTime();
+  afx_msg void OnBnClickedPwhist();
+  afx_msg void OnBnClickedOverridePolicy();
+  afx_msg void OnBnClickedLaunch();
+  afx_msg void OnStcClicked(UINT nId);
+  afx_msg void OnEnChangeUrl();
+  afx_msg void OnEnSetfocusNotes();
+  afx_msg void OnEnKillfocusNotes();
+  afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
+  afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
+
+  DECLARE_MESSAGE_MAP()
+
 private:
   DboxMain *m_pDbx;
 
@@ -90,6 +118,9 @@ private:
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_autotype; 
 
+  CButton m_MoreLessBtn;
+  CButton m_ViewDependentsBtn;
+
   static CSecString HIDDEN_NOTES;
   static CString CS_SHOW, CS_HIDE, CS_ON, CS_OFF;
 
@@ -98,40 +129,6 @@ private:
   TCHAR m_szTempName[MAX_PATH + 1];
   CToolTipCtrl* m_ToolTipCtrl;
 
-protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-  afx_msg void OnShowPassword();
-  virtual void OnOK();
-  virtual BOOL OnInitDialog();
-  afx_msg void OnRandom();
-  afx_msg void OnHelp();
-  afx_msg void OnPasskeySetfocus();
-  afx_msg void OnPasskeyKillfocus();
-  afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
-  afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
-
-  DECLARE_MESSAGE_MAP()
-  BOOL PreTranslateMessage(MSG* pMsg);
-
-public:
-  afx_msg void OnBnClickedOk();
-  afx_msg void OnBnClickedMore();
-  afx_msg void OnBnClickViewDependents();
-  afx_msg void OnBnClickedClearXTime();
-  afx_msg void OnBnClickedSetXTime();
-  afx_msg void OnBnClickedPwhist();
-  afx_msg void OnBnClickedOverridePolicy();
-  afx_msg void OnBnClickedLaunch();
-
-  afx_msg void OnStcClicked(UINT nId);
-
-  CButton m_MoreLessBtn;
-  CButton m_ViewDependentsBtn;
-
-  afx_msg void OnEnChangeUrl();
-  afx_msg void OnEnSetfocusNotes();
-  afx_msg void OnEnKillfocusNotes();
   BOOL m_OverridePolicy;
 };
 //-----------------------------------------------------------------------------

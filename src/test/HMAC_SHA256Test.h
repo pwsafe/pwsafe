@@ -9,7 +9,7 @@
 // Test vectors from RFC4231
 
 #include "test.h"
-#include "hmac.h"
+#include "../../corelib/hmac.h"
 #include "sha256.h"
 
 class CHMAC_SHA256Test : public Test

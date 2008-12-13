@@ -101,25 +101,43 @@ END
 STRINGTABLE
 BEGIN
   IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
-  IDSC_XMLPARSEERROR      "SAX Parse%2d Error 0x%08X during %s."
-  IDSC_XMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
+  IDSC_MSXMLPARSEERROR    "SAX Parse%2d Error 0x%08X during %s."
+  IDSC_MSXMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
+  IDSC_NOMSXMLREADER      "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
+  IDSC_XERCESPARSEERROR   "SAX Parse Error during %s\n%s."
+  IDCS_XERCESEXCEPTION    "\nUnexpected exception during parsing."
+  IDCS_XERCESOUTOFMEMORY  "OutOfMemoryException."
+  IDSC_EXPATPARSEERROR    "Parse error at line %d, column %d:\nError: %s\n%s\n\n"
+  IDSC_EXPATUNKNELEMENT   "Unknown element: %s"
+  IDSC_EXPATUNEXPECTED    "Unexpected element: %s"
+  IDSC_EXPATMISSINGTG     "Mandatory element (title and/or password) missing."
+  IDSC_EXPATINVALIDDATA   "Invalid data in element: "
+  IDSC_EXPATMISSINGDT     "Missing date/time element."
+  IDSC_EXPATMISSINGPWH    "Missing STATUS, MAX or NUM element in PWHISTORY."
+  IDSC_EXPATEXCEEDMAXOCCURS "Element ""%s"" exceeded its MaxOccurs of %s."
   IDSC_XMLVALIDATION      "validation"
   IDSC_XMLIMPORT          "import"
-  IDSC_NOXMLREADER        "Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
   IDSC_XMLHEADER          "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>\n<Pwsafe_Settings></Pwsafe_Settings>"
   IDSC_XMLFILEERROR       "Configuration file error:\n%s\n%s\nline %d column %d"
   IDSC_XMLLOADFAILURE     "Unable to load configuration file"
   IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
   IDSC_XMLLOCK_CFG_FAILED "Failed to lock configuration file - opened by another instance of PasswordSafe?"
   IDSC_XMLCREATE_CFG_FAILED "Internal error: Couldn't initialize config file XML structure"
-
   IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
-  IDSC_SAXGENERROR        "Error (%08X): line %d character %d %s"
 END
 
 STRINGTABLE
 BEGIN
-  IDSC_FILEPATHNOTFOUND    "The file was not found."
+  IDSC_MSXMLSAXGENERROR   "Error (%08X): line %d character %d %s"
+  IDSC_XERCESSAXGENERROR  "XML %s: line %d character %d: %s"
+  IDSC_SAX2FATALERROR     "Fatal Error"
+  IDSC_SAX2ERROR          "Error"
+  IDSC_SAX2WARNING        "Warning"
+END
+
+STRINGTABLE
+BEGIN
+  IDSC_FILEPATHNOTFOUND   "The file was not found."
   IDSC_FILEREADONLY       "Error: File is read-only"
   IDSC_FILEEXISTS         "Error: A file with this name already exists"
   IDSC_INVALIDFLAG        "Internal error: An invalid flag was specified"
@@ -149,7 +167,6 @@ BEGIN
   IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
   IDSC_VALIDATEUUID        "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid UUID field.  This has been corrected."
   IDSC_VALIDATEPWH         "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-
 END
 
 STRINGTABLE
@@ -224,10 +241,23 @@ BEGIN
   IDSC_SEEPWHISTORYFILTERS "See Password History filters"
   IDSC_SEEPWPOLICYFILTERS  "See Password Policy filters"
   IDSC_CANTPROCESSDBFILTERS "Trouble reading Filter. Click 'Yes' to remove from database, 'No' to retain it."
+  IDSC_FILTERSKEPT         "Filters within the database will be kept as ""unknown fields""."
   IDSC_INVALID_SCHEMA      "Invalid Filter schema."
   IDSC_INVALID_SCHEMA_VER  "Schema does not have a version number."
   IDSC_MISSING_SCHEMA_VER  "Can't obtain the schema version."
   IDSC_MISSING_XML_VER     "The filter XML version is missing."
   IDSC_INVALID_XML_VER1    "The filter XML version (%d) is greater than the current schema (%d)."
   IDSC_INVALID_XML_VER2    "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
+END
+
+STRINGTABLE
+BEGIN
+  IDSC_FILTEREXISTS        "Filter %s already exists in the database, do you wish to replace it with this?"
+  IDSC_EXPATDATETMISSING   "Missing date element"
+  IDSC_EXPATNODELIMITER    "Mandatory delimiter attribute missing."
+  IDSC_EXPATBADDELIMITER   "Mandatory delimiter attribute invalid."
+  IDSC_EXPATFTYPEMISSING   "Mandatory ftype attribute missing."
+  IDSC_EXPATUNEXPFILTERFLD "Unexpected element: Only one field allowed in filter entry."
+  IDSC_CANTVALIDATEXML     "Missing XSD File"
+  IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
 END

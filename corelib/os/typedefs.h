@@ -20,6 +20,11 @@
  * lousy include order dependencies.
  */
 
+// Sometimes we need specific ones irrespective of in Unicode mode or not.
+// In particular, the underlying format of most XML is Unicode.
+typedef std::wstring wstringT;
+typedef std::string  cstringT;
+
 #ifdef UNICODE
 typedef std::wstring stringT;
 typedef wchar_t charT;

@@ -53,15 +53,18 @@
 #define IDD_FILTER_DATE                 154
 #define IDD_FILTER_BOOL                 155
 #define IDD_FILTER_ENTRYTYPE            156
-#define IDR_POPCOLUMNS                  160
-#define IDR_POPCOPYTOCOMPARISON         161
-#define IDR_POPCOPYTOORIGINAL           162
-#define IDR_POPCUSTOMIZETOOLBAR         163
-#define IDR_POPGROUP                    164
-#define IDR_POPMENU                     165
-#define IDR_POPTRAY                     166
-#define IDR_POPTREE                     167
-#define IDR_POPRIGHTDRAG                168
+#define IDD_VIEWREPORT                  157
+#define IDD_MANAGEFILTERS               158
+#define IDD_PASSWORDSUBSET              159
+#define IDR_POPCOLUMNS                  170
+#define IDR_POPCOPYTOCOMPARISON         171
+#define IDR_POPCOPYTOORIGINAL           172
+#define IDR_POPCUSTOMIZETOOLBAR         173
+#define IDR_POPGROUP                    174
+#define IDR_POPMENU                     175
+#define IDR_POPTRAY                     176
+#define IDR_POPTREE                     177
+#define IDR_POPRIGHTDRAG                178
 #define IDI_CORNERICON                  180
 #define IDI_LOCKEDICON                  181
 #define IDI_MBASKICON                   182
@@ -277,8 +280,9 @@
 #define IDB_DRAGPASSWORDX               440
 #define IDB_DRAGNOTESX                  441
 #define IDB_DRAGURLX                    442
-#define IDD_VIEWREPORT                  443
-#define IDD_MANAGEFILTERS               444
+#define IDB_PASSWORDCHARS_CLASSIC       443
+#define IDB_PASSWORDCHARS_NEW           444
+#define IDB_PASSWORDCHARS_NEW_D         445
 #define IDD_YUBIKEY                     446
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
@@ -593,9 +597,13 @@
 #define IDC_STATIC_URL                  1355
 #define IDC_STATIC_AUTO                 1356
 #define IDC_LAUNCH                      1357
-#define IDC_YK_OTP                    1359
-#define IDC_YK_STATUS                   1360
-#define IDC_YK_INFO                     1361
+#define IDC_SUBSET                      1358
+#define IDC_GETSUBSET                   1359
+#define IDC_SUBSETRESULTS               1360
+#define IDC_STATICSUBSETWARNING         1361
+#define IDC_YK_OTP                      1362
+#define IDC_YK_STATUS                   1363
+#define IDC_YK_INFO                     1364
 
 // Next default values for new objects
 // 
@@ -603,7 +611,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        447
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1362
-#define _APS_NEXT_SYMED_VALUE           157
+#define _APS_NEXT_CONTROL_VALUE         1365
+#define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

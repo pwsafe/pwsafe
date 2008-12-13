@@ -378,7 +378,7 @@ without breaking backwards compatability.
 4. Extensibility
 
 4.1 Forward compatability: Implementations of this format SHOULD NOT
-discard or report an error when encountering a filed of an unknown
+discard or report an error when encountering a field of an unknown
 type. Rather, the field(s) type and data should be read, and perserved
 when the database is saved.
 

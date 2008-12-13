@@ -20,7 +20,8 @@
 #include <errno.h>
 
 PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
-                              RWmode mode, int &status, Asker *asker)
+                              RWmode mode, int &status,
+                              Asker *pAsker, Reporter *pReporter)
 {
   if (mode == Read && !pws_os::FileExists(a_filename.c_str())) {
     status = CANT_OPEN_FILE;
@@ -54,7 +55,8 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
       ASSERT(0);
       status = FAILURE; return NULL;
   }
-  retval->m_asker = asker;
+  retval->m_pAsker = pAsker;
+  retval->m_pReporter = pReporter;
   return retval;
 }
 

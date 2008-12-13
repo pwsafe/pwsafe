@@ -31,10 +31,8 @@ class CPasskeyEntry
   // Construction
 public:
   CPasskeyEntry(CWnd* pParent,
-    const CString& a_filespec, int index = 1 /* GCP_NORMAL */,
-    bool bReadOnly = false,
-    bool bForceReadOnly = false,
-    int adv_type = -1); 
+                const CString& a_filespec, int index, /* GCP_NORMAL */
+    bool bReadOnly, bool bForceReadOnly, int adv_type);
 
   ~CPasskeyEntry();
 
@@ -111,6 +109,7 @@ public:
 
 private:
   void SetHeight(const int num);
+  void UpdateRO();
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -58,7 +58,7 @@ public:
 
   // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CEditEx)
+  //{{AFX_VIRTUAL(CStaticExtn)
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -67,7 +67,7 @@ public:
 
   // Generated message map functions
 protected:
-  //{{AFX_MSG(CEditExtn)
+  //{{AFX_MSG(CStaticExtn)
   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
@@ -101,7 +101,7 @@ public:
 
   // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CEditEx)
+  //{{AFX_VIRTUAL(CEditExtn)
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -132,6 +132,7 @@ class CSecEditExtn : public CEditExtn
   CSecEditExtn();
   CSecEditExtn(int message_number, LPCTSTR szmenustring);
   virtual ~CSecEditExtn();
+
   // Overriding virtuals doesn't work, due to defective
   // implementation of DDX_Text. Grr.
   void DoDDX(CDataExchange *pDX, CSecString &str);
@@ -141,8 +142,11 @@ class CSecEditExtn : public CEditExtn
   void SetSecureText(const CSecString &str);
 
  protected:
-  DECLARE_MESSAGE_MAP();
+  //{{AFX_MSG(CSecEditExtn)
   afx_msg void OnUpdate();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP();
+
  private:
   void OnSecureUpdate();
   struct Impl;

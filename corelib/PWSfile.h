@@ -18,6 +18,7 @@
 #include "UUIDGen.h"
 #include "UnknownField.h"
 #include "StringX.h"
+#include "Proxy.h"
 
 #define MIN_HASH_ITERATIONS 2048
 
@@ -67,7 +68,8 @@ public:
   };
 
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
-                              RWmode mode, int &status, Asker *asker = NULL);
+                              RWmode mode, int &status, 
+                              Asker *pAsker = NULL, Reporter *pReporter = NULL);
 
   static VERSION ReadVersion(const StringX &filename);
   static int CheckPassword(const StringX &filename,
@@ -117,6 +119,7 @@ protected:
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
   size_t m_fileLength;
-  Asker *m_asker;
+  Asker *m_pAsker;
+  Reporter *m_pReporter;
 };
 #endif /* __PWSFILE_H */

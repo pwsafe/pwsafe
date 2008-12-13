@@ -14,6 +14,19 @@
 #include "../typedefs.h"
 #include "../utf8conv.h"
 
+#include <locale.h>
+
+class Startup {
+public:
+  Startup() {
+    char *sl = setlocale(LC_ALL, "");
+    if (sl == NULL)
+      throw "Couldn't initialize locale - bailing out";
+  }
+};
+
+static Startup startup;
+
 size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
                         const wchar_t *src, size_t srclen, bool isUTF8)
 {

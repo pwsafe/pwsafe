@@ -39,21 +39,21 @@
 </xs:complexType>
 
 <xs:simpleType name="expirydaysType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="1" />
     <xs:maxInclusive value="3650" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="fieldType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="18" />
     <xs:maxExclusive value="255" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="numhashType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="2048" />
   </xs:restriction>
 </xs:simpleType>
@@ -65,28 +65,28 @@
 </xs:simpleType>
 
 <xs:simpleType name="boolType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
     <xs:maxInclusive value="1" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="passwordlengthType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="4" />
     <xs:maxInclusive value="1024" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="passwordlengthType2">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
     <xs:maxInclusive value="1024" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="timeoutType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="1" />
     <xs:maxInclusive value="120" />
   </xs:restriction>
@@ -101,7 +101,7 @@
 </xs:simpleType>
 
 <xs:simpleType name="pwhistoryType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
     <xs:maxInclusive value="255" />
   </xs:restriction>
@@ -208,7 +208,7 @@
                                 <xs:element name="changed" type="datetimestampType" minOccurs="1" maxOccurs="1" />
                                 <xs:element name="oldpassword" type="stringType" minOccurs="1" maxOccurs="1" />
                               </xs:all>
-                              <xs:attribute name="num" type="xs:integer" use="optional" />
+                              <xs:attribute name="num" type="xs:int" use="optional" />
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
@@ -256,7 +256,7 @@
               <!-- End Unknown Record Fields -->
               </xs:element>
             </xs:all>
-            <xs:attribute name="id" type="xs:integer" use="optional" />
+            <xs:attribute name="id" type="xs:int" use="optional" />
             <xs:attribute name="normal" type="xs:boolean" use="optional" />
           </xs:complexType>
         <!-- End Database Entries -->

@@ -11,14 +11,23 @@
 #include "PWSprefs.h"
 #include "Match.h"
 #include "UUIDGen.h"
-#include "PWSXMLFilters.h"
-#ifdef _WIN32
-#include "SAXFilters.h"
-#else /* borrow following from SAXFilters.h for non-Windows build */
-#define PWS_XML_FILTER_VERSION 1
-#endif
 #include "corelib.h"
 #include "PWScore.h"
+#include "StringX.h"
+#include "os/file.h"
+#include "os/dir.h"
+
+#include "XML/XMLDefs.h"
+
+#if   USE_XML_LIBRARY == EXPAT
+#include "XML/Expat/EFilterXMLProcessor.h"
+#elif USE_XML_LIBRARY == MSXML
+#include "XML/MSXML/MFilterXMLProcessor.h"
+#elif USE_XML_LIBRARY == XERCES
+#include "XML/Xerces/XFilterXMLProcessor.h"
+#endif
+
+#define PWS_XML_FILTER_VERSION 1
 
 #include <fstream>
 #include <iostream>
@@ -493,34 +502,54 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
   return oss.str().c_str();
 }
 
-int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
-                                    const stringT &strXMLData,
-                                    const stringT &strXMLFileName,
-                                    const stringT &strXSDFileName, stringT &strErrors)
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+// Don't support importing XML from non-Windows using Microsoft XML libraries
+int PWSFilters::ImportFilterXMLFile(const FilterPool, 
+                                    const StringX &, 
+                                    const stringT &, 
+                                    const stringT &,
+                                    stringT &,
+                                    Asker *)
 {
-  PWSXMLFilters fXML(*this, fpool);
+  return PWScore::UNIMPLEMENTED;
+}
+#else
+int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
+                                    const StringX &strXMLData,
+                                    const stringT &strXMLFileName,
+                                    const stringT &strXSDFileName,
+                                    stringT &strErrors,
+                                    Asker *pAsker)
+{
+#if   USE_XML_LIBRARY == EXPAT
+  EFilterXMLProcessor fXML(*this, fpool, pAsker);
+#elif USE_XML_LIBRARY == MSXML
+  MFilterXMLProcessor fXML(*this, fpool, pAsker);
+#elif USE_XML_LIBRARY == XERCES
+  XFilterXMLProcessor fXML(*this, fpool, pAsker);
+#endif
   bool status, validation;
 
   strErrors = _T("");
 
   validation = true;
   if (strXMLFileName.empty())
-    status = fXML.XMLFilterProcess(validation, strXMLData, _T(""), strXSDFileName);
+    status = fXML.Process(validation, strXMLData, _T(""), strXSDFileName);
   else
-    status = fXML.XMLFilterProcess(validation, _T(""), strXMLFileName, strXSDFileName);
+    status = fXML.Process(validation, _T(""), strXMLFileName, strXSDFileName);
 
-    strErrors = fXML.m_strResultText;
+  strErrors = fXML.getResultText();
   if (!status) {
     return PWScore::XML_FAILED_VALIDATION;
   }
 
   validation = false;
   if (strXMLFileName.empty())
-    status = fXML.XMLFilterProcess(validation, strXMLData, _T(""), strXSDFileName);
+    status = fXML.Process(validation, strXMLData, _T(""), strXSDFileName);
   else
-    status = fXML.XMLFilterProcess(validation, _T(""), strXMLFileName, strXSDFileName);
+    status = fXML.Process(validation, _T(""), strXMLFileName, strXSDFileName);
 
-    strErrors = fXML.m_strResultText;
+    strErrors = fXML.getResultText();
   if (!status) {
     return PWScore::XML_FAILED_IMPORT;
   }
@@ -530,22 +559,16 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
   PWSFilters::iterator mf_iter;
   for (mf_iter = this->begin(); mf_iter != this->end(); mf_iter++) {
     st_filters &filters = mf_iter->second;
-    std::vector<st_FilterRow>::iterator Flt_iter;
-    for (Flt_iter = filters.vMfldata.begin(); 
-         Flt_iter != filters.vMfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
-    for (Flt_iter = filters.vHfldata.begin(); 
-         Flt_iter != filters.vHfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
-    for (Flt_iter = filters.vPfldata.begin(); 
-         Flt_iter != filters.vPfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
+    for_each(filters.vMfldata.begin(), filters.vMfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vHfldata.begin(), filters.vHfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vPfldata.begin(), filters.vPfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
   }
   return PWScore::SUCCESS;
 }
+#endif
 
 stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
 {

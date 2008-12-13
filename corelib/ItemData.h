@@ -22,7 +22,7 @@
 #include <string>
 
 struct PWPolicy {
-  WORD flags;
+  unsigned short flags;
   int length;
   int digitminlength;
   int lowerminlength;

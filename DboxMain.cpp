@@ -19,9 +19,14 @@
 #include "ThisMfcApp.h"
 #include "AboutDlg.h"
 #include "PwFont.h"
+#include "MFCMessages.h"
+#include "version.h"
+
+#include "corelib/corelib.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
+#include "corelib/os/file.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -201,6 +206,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
   ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
+  ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
 
   // Manage Menu
@@ -381,6 +387,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EDITFILTER, true, true, false, false},
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
+  {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
@@ -426,7 +433,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 };
 
 void DboxMain::InitPasswordSafe()
-{  
+{
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
@@ -670,25 +677,44 @@ void DboxMain::InitPasswordSafe()
     delete m_pNotesDisplay;
     m_pNotesDisplay = NULL;
   }
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+  // Don't support filter processing on non-Windows platforms 
+  // using Microsoft XML libraries
+#else
   // if there's a filter file named "autoload_filters.xml", 
   // do what its name implies...
-  CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
+  CString cs_temp = CString(PWSdirs::GetConfigDir().c_str()) +
     _T("autoload_filters.xml");
-  if (m_core.FileExists(tmp.GetString())) {
+  if (pws_os::FileExists(cs_temp.GetString())) {
     stringT strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
+  // Expat is a non-validating parser - no use for Schema!
+  if (!pws_os::FileExists(XSDFilename)) {
+    CString cs_title, cs_msg;
+    cs_temp.Format(IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
+    cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, cs_temp);
+    cs_title.LoadString(IDSC_CANTVALIDATEXML);
+    MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
+    return;
+  }
+#endif
+
     CWaitCursor waitCursor;  // This may take a while!
 
+    MFCAsker q;
     int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""),
-                                              stringT(tmp),
-                                              XSDFilename.c_str(), strErrors);
+                                              stringT(cs_temp),
+                                              XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
-    if (rc != PWScore::SUCCESS) {
+    if (rc != PWScore::SUCCESS){
       CString cs_msg;
       cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors.c_str());
       AfxMessageBox(cs_msg, MB_OK);
     }
   }
+#endif
 }
 
 LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)
@@ -1102,18 +1128,13 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   if (pcore == 0) pcore = &m_core;
 
   if (!filename.empty()) {
-    bool exists = pcore->FileExists(filename.c_str(), bFileIsReadOnly);
+    bool exists = pws_os::FileExists(filename.c_str(), bFileIsReadOnly);
 
     if (!exists) {
-      // Used to display an error message, but this is really the caller's business
       return PWScore::CANT_OPEN_FILE;
     } // !exists
   } // !filename.IsEmpty()
 
-  /*
-  * with my unsightly hacks of PasskeyEntry, it should now accept
-  * a blank filename, which will disable passkey entry and the OK button
-  */
 
   if (bFileIsReadOnly || bForceReadOnly) {
     // As file is read-only, we must honour it and not permit user to change it
@@ -1142,11 +1163,11 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       nBuild = HIWORD(dwBuildRevision);
     }
     if (nBuild == 0)
-      dbox_pkentry->m_appversion.Format(_T("Version %d.%02dY"),
-      nMajor, nMinor);
+      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d%s"),
+                                        nMajor, nMinor, SPECIAL_BUILD);
     else
-      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02dY"),
-      nMajor, nMinor, nBuild);
+      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d%s"),
+                                        nMajor, nMinor, nBuild, SPECIAL_BUILD);
 
     app.DisableAccelerator();
     rc = dbox_pkentry->DoModal();
@@ -2380,6 +2401,21 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // = FALSE(0) : set pCmdUI-Enable(FALSE)
   // = TRUE(1)  : set pCmdUI-Enable(TRUE)
 
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+// Don't support importing XML or filter processing on non-Windows platforms 
+// using Microsoft XML libraries
+  switch (nID) {
+    case ID_MENUITEM_IMPORT_XML:
+    case ID_FILTERMENU:
+    case ID_MENUITEM_APPLYFILTER:
+    case ID_MENUITEM_EDITFILTER:
+    case ID_MENUITEM_MANAGEFILTERS:
+      return FALSE;
+    default:
+      break;
+  }
+#endif
+
   MapUICommandTableConstIter it;
   it = m_MapUICommandTable.find(nID);
 
@@ -2421,6 +2457,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_COPYNOTESFLD:
     case ID_MENUITEM_AUTOTYPE:
     case ID_MENUITEM_EDIT:
+    case ID_MENUITEM_PASSWORDSUBSET:
 #if defined(POCKET_PC)
     case ID_MENUITEM_SHOWPASSWORD:
 #endif
