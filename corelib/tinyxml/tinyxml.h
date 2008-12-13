@@ -307,8 +307,10 @@ protected:
 
 	static const TCHAR* SkipWhiteSpace( const TCHAR*, TiXmlEncoding encoding );
 	inline static bool IsWhiteSpace( TCHAR c )		
-	{ 
-		return ( _istspace( c ) || c == TCHAR('\n') || c == TCHAR('\r') ); 
+	{
+    if ((unsigned)(c + 1) <= 256)
+      return ( _istspace( c ) || c == TCHAR('\n') || c == TCHAR('\r') );
+    return false;
 	}
 	inline static bool IsWhiteSpace( int c )
 	{
