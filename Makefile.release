@@ -56,7 +56,10 @@ upload: upload-latest
 	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig $(UPLOAD_DST))
 
 upload-latest: latest.xml
-	scp $< ronys@passwordsafe.sourceforge.net:~/mygroupdir/htdocs/
+	echo "cd htdocs" > putlatest.tmp
+	echo "put $<" >> putlatest.tmp
+	sftp -b putlatest.tmp ronys,passwordsafe@web.sourceforge.net
+	$(RM) putlatest.tmp
 
 latest.xml: version.h
 	Misc/make-latest-xml.pl > $@
