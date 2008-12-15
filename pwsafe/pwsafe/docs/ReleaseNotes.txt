@@ -1,5 +1,5 @@
-Password Safe 3.15 Release Notes - December 2008
-================================================
+Password Safe 3.15.1 Release Notes - December 2008
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,10 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.15.1
+====================
+[2429189, 2429675] No longer requires MFC dll.
 
 Bugs fixed in 3.15
 ==================
@@ -29,6 +33,8 @@ corrected.
 selected entry.
 [2100429] Handle invalid time field in database gracefully. Thanks to
 David B. Martin for his help in tracking this down.
+[1958728] More graceful handling of corrupt databases - avoid "out of
+memory" failures. Thanks to spoax for his help on this.
 [] Correct display of tree items on restore from minimize when 'X'
 button used to minimize.
 [] Ensure XML Import correctly processes normal entries with a 
