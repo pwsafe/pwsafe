@@ -128,7 +128,9 @@ private:
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
   static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
-  static CString CS_SETFILTERS, CS_CLEARFILTERS;
+  static CString CS_SETFILTERS, CS_CLEARFILTERS, CS_CREATESHORTCUT, CS_GOTOBASEENTRY;
+  static CString CS_DUPLICATEENTRY, CS_COPYPASSWORD, CS_COPYUSERNAME, CS_COPYNOTESFLD;
+  static CString CS_AUTOTYPE;
   static const CString DEFAULT_AUTOTYPE;
 
 public:
@@ -186,7 +188,7 @@ public:
 
   int CheckPassword(const StringX &filename, const StringX &passkey)
   {return m_core.CheckPassword(filename, passkey);}
-  enum ChangeType {Clear, Data, TimeStamp};
+  enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
   void SetChanged(ChangeType changed);
   void ChangeOkUpdate();
 
@@ -258,6 +260,7 @@ public:
   bool IsFilterActive() {return m_bFilterActive;}
   int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected();
+  StringX GetGroupName();
 
   void SetFilter(FilterPool selectedpool, CString selectedfiltername)
   {m_currentfilterpool = selectedpool; m_selectedfiltername = selectedfiltername;}
@@ -537,6 +540,7 @@ protected:
   afx_msg void OnUnMinimize();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnAutoType();
+  afx_msg void OnGotoBaseEntry();
   afx_msg void OnColumnPicker();
   afx_msg void OnResetColumns();
 #if defined(POCKET_PC)
@@ -547,7 +551,6 @@ protected:
 #endif
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
-  afx_msg void OnInitMenu(CMenu* pMenu);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
   afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
   //}}AFX_MSG
@@ -629,6 +632,8 @@ private:
   void AddColumn(const int iType, const int iIndex);
   void DeleteColumn(const int iType);
   void RegistryAnonymity();
+  void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID);
+  void SetUpMenuStrings(CMenu *pPopupMenu);
 
   static const struct UICommandTableEntry {
     UINT ID;

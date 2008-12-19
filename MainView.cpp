@@ -244,7 +244,7 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
     if (bDragBarState) {
       // Note: Title & Password are mandatory
       if (entry == NULL) {
-        m_DDGroup.SetStaticState(false);
+        m_DDGroup.SetStaticState(true);
         m_DDTitle.SetStaticState(false);
         m_DDPassword.SetStaticState(false);
         m_DDUser.SetStaticState(false);
@@ -416,6 +416,7 @@ void DboxMain::UpdateListItem(const int lindex, const int type, const CString &n
   BOOL brc = m_ctlItemList.SetItemText(lindex, iSubItem, newText);
   ASSERT(brc == TRUE);
   if (m_iTypeSortColumn == type) { // resort if necessary
+    m_bSortAscending = PWSprefs::GetInstance()->GetPref(PWSprefs::SortAscending);
     m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
     FixListIndexes();
   }
@@ -927,9 +928,14 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
 
   CPoint client;
   int item = -1;
-  CItemData *itemData = NULL;
+  CItemData *pci = NULL;
   CMenu menu;
 
+  MENUINFO minfo;
+  memset(&minfo, 0x00, sizeof(minfo));
+  minfo.cbSize = sizeof(MENUINFO);
+  minfo.fMask = MIM_MENUDATA;
+  
   // Note if point = (-1, -1) then invoked via keyboard.
   // Need coordinates of current selected itme instead on mouse position when message sent
   bool bKeyboard = (screen.x == -1 && screen.y == -1);
@@ -970,6 +976,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   if (mp.x > appl_rect.left && mp.x < appl_rect.right &&
       mp.y > rect.top && mp.y < rect.bottom) {
     if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
+      minfo.dwMenuData = IDR_POPCUSTOMIZETOOLBAR;
+      menu.SetMenuInfo(&minfo);
       CMenu* pPopup = menu.GetSubMenu(0);
       ASSERT(pPopup != NULL);
       pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this); // use this window for commands
@@ -993,7 +1001,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     if (item < 0)
       return; // right click on empty list
 
-    itemData = (CItemData *)m_ctlItemList.GetItemData(item);
+    pci = (CItemData *)m_ctlItemList.GetItemData(item);
     if (SelectEntry(item) == 0) {
       return;
     }
@@ -1013,10 +1021,10 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     m_ctlItemTree.ScreenToClient(&client);
     HTREEITEM ti = m_ctlItemTree.HitTest(client);
     if (ti != NULL) {
-      itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-      if (itemData != NULL) {
+      pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+      if (pci != NULL) {
         // right-click was on an item (LEAF of some kind: normal, alias, shortcut)
-        DisplayInfo *di = (DisplayInfo *)itemData->GetDisplayInfo();
+        DisplayInfo *di = (DisplayInfo *)pci->GetDisplayInfo();
         ASSERT(di != NULL);
         ASSERT(di->tree_item == ti);
         item = di->list_index;
@@ -1024,7 +1032,10 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       } else {
         // right-click was on a group (NODE)
         m_ctlItemTree.SelectItem(ti); 
-        if (menu.LoadMenu(IDR_POPGROUP)) {
+        if (menu.LoadMenu(IDR_POPEDITGROUP)) {
+          minfo.dwMenuData = IDR_POPEDITGROUP;
+          menu.SetMenuInfo(&minfo);
+
           CMenu* pPopup = menu.GetSubMenu(0);
           ASSERT(pPopup != NULL);
           m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
@@ -1035,6 +1046,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     } else {
       // not over anything
       if (menu.LoadMenu(IDR_POPTREE)) {  // "Add Group"
+        minfo.dwMenuData = IDR_POPTREE;
+        menu.SetMenuInfo(&minfo);
         CMenu* pPopup = menu.GetSubMenu(0);
         ASSERT(pPopup != NULL);
         // use this DboxMain for commands
@@ -1046,25 +1059,47 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
 
   // RClick over an entry
   if (item >= 0) {
-    menu.LoadMenu(IDR_POPMENU);
+    menu.LoadMenu(IDR_POPEDITMENU);
+    minfo.dwMenuData = IDR_POPEDITMENU;
+    menu.SetMenuInfo(&minfo);
+
     CMenu* pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);
+    ASSERT(pci != NULL);
 
-    ASSERT(itemData != NULL);
+    CItemData::EntryType etype = pci->GetEntryType();
+    switch (etype) {
+      case CItemData::ET_NORMAL:
+      case CItemData::ET_SHORTCUTBASE:
+        pPopup->ModifyMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND,
+                           ID_MENUITEM_CREATESHORTCUT, CS_CREATESHORTCUT);
+        break;
+      case CItemData::ET_ALIASBASE:
+        pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+        break;
+      case CItemData::ET_ALIAS:
+      case CItemData::ET_SHORTCUT:
+        pPopup->ModifyMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND,
+                           ID_MENUITEM_GOTOBASEENTRY, CS_GOTOBASEENTRY);
+        break;
+      default:
+        ASSERT(0);
+    }
 
     uuid_array_t entry_uuid, base_uuid;
-    if (itemData->IsShortcut()) {
+    if (pci->IsShortcut()) {
       // This is an shortcut
-      itemData->GetUUID(entry_uuid);
+      pci->GetUUID(entry_uuid);
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
       ItemListIter iter = m_core.Find(base_uuid);
       if (iter != End()) {
-        itemData = &iter->second;
+        pci = &iter->second;
       }
     }
 
-    if (itemData->IsURLEmpty()) {
+    if (pci->IsURLEmpty()) {
       pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
                          ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
       pPopup->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
@@ -1075,7 +1110,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     } else {
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_ENABLED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
-      const bool bIsEmail = itemData->IsURLEmail();
+      const bool bIsEmail = pci->IsURLEmail();
       if (bIsEmail) {
         pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
                            ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
@@ -1092,7 +1127,6 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
 
     // use this DboxMain for commands
     pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
-
   } // if (item >= 0)
 }
 
@@ -1542,6 +1576,16 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 
   if (m_iTypeSortColumn == iTypeSortColumn) {
     m_bSortAscending = !m_bSortAscending;
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
+    if (!m_core.GetCurFile().empty() &&
+        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+      if (!m_core.IsReadOnly()) {
+        const StringX prefString(prefs->Store());
+        SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? DBPrefs : ClearDBPrefs);
+      }
+      ChangeOkUpdate();
+    }
   } else {
     // Turn off all previous sort arrrows
     // Note: not sure where, as user may have played with the columns!
@@ -1567,6 +1611,7 @@ void DboxMain::SortListView()
   HDITEM hdi;
   hdi.mask = HDI_FORMAT;
 
+  m_bSortAscending = PWSprefs::GetInstance()->GetPref(PWSprefs::SortAscending);
   m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
   FixListIndexes();
 
@@ -1594,6 +1639,12 @@ void DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
   GetCursorPos(&ptMousePos);
 
   if (menu.LoadMenu(IDR_POPCOLUMNS)) {
+    MENUINFO minfo;
+    memset(&minfo, 0x00, sizeof(minfo));
+    minfo.cbSize = sizeof(MENUINFO);
+    minfo.fMask = MIM_MENUDATA;
+    minfo.dwMenuData = IDR_POPCOLUMNS;
+    menu.SetMenuInfo(&minfo);
     CMenu* pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);
     if (m_pCC != NULL)
@@ -2966,7 +3017,7 @@ void DboxMain::SetToolBarPositions()
     // since last shown
     CItemData *entry = GetLastSelected();
     if (entry == NULL) {
-      m_DDGroup.SetStaticState(false);
+      m_DDGroup.SetStaticState(true);
       m_DDTitle.SetStaticState(false);
       m_DDPassword.SetStaticState(false);
       m_DDUser.SetStaticState(false);
@@ -3538,6 +3589,9 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
 CItemData *DboxMain::GetLastSelected()
 {
   CItemData *retval(NULL);
+  if (m_core.GetNumEntries() == 0)
+    return retval;
+
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hSelected = m_ctlItemTree.GetSelectedItem();
     if (hSelected != NULL)
@@ -3548,4 +3602,19 @@ CItemData *DboxMain::GetLastSelected()
       retval = (CItemData *)m_ctlItemList.GetItemData((int)pSelected - 1);
   }
   return retval;
+}
+
+StringX DboxMain::GetGroupName()
+{
+  HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+  StringX s(_T(""));
+  if (hi != NULL)
+    s = m_ctlItemTree.GetItemText(hi);
+
+  if ((GetKeyState(VK_CONTROL) & 0x8000) == 0) {
+    while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
+      s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(_T(".")) + s;
+    }
+  }
+  return s;
 }

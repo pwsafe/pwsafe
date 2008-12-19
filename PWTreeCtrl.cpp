@@ -426,7 +426,7 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
       prefix += GROUP_SEP;
     prefix += GetItemText(hItem);
     HTREEITEM child;
-    for(child = GetChildItem(hItem); child != NULL; child = GetNextSiblingItem(child)) {
+    for (child = GetChildItem(hItem); child != NULL; child = GetNextSiblingItem(child)) {
       UpdateLeafsGroup(child, prefix);
     }
   }

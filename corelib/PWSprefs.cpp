@@ -91,6 +91,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ShowDragbar"), true, ptApplication},                 // application
   {_T("ClearClipboardOnMinimize"), true, ptApplication},    // application
   {_T("ClearClipboardOnExit"), true, ptApplication},        // application
+  {_T("ShowFindToolBarOnOpen"), false, ptApplication},      // application
 };
 
 // Default value = -1 means set at runtime

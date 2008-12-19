@@ -269,6 +269,7 @@ int DboxMain::New()
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
   }
+
   UpdateMenuAndToolBar(true);
 
   return PWScore::SUCCESS;
@@ -504,7 +505,7 @@ int DboxMain::Open()
       return PWScore::USER_CANCEL;
     }
   }
-  return rc;
+    return rc;
 }
 
 int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
@@ -2623,6 +2624,9 @@ void DboxMain::OnOK()
       (m_iSessionEndingStatus == IDYES)) {
     ClearClipboardData();
   }
+
+  // Now save the Find Toolbar display status
+  prefs->SetPref(PWSprefs::ShowFindToolBarOnOpen, m_FindToolBar.IsVisible() == TRUE);
 
   // wipe data, save prefs, go home.
   ClearData();

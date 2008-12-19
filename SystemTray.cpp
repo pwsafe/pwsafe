@@ -115,7 +115,8 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
 {
   // this is only for Windows 95 (or higher)
   m_bEnabled = (GetVersion() & 0xff) >= 4;
-  if (!m_bEnabled) return FALSE;
+  if (!m_bEnabled)
+    return FALSE;
 
   // Make sure Notification window is valid (not needed - CJM)
   // VERIFY(m_bEnabled = (pParent && ::IsWindow(pParent->GetSafeHwnd())));
@@ -392,12 +393,15 @@ BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos)
 
   CMenu menu, *pSubMenu;
 
-  if (!menu.LoadMenu(m_menuID)) return FALSE;
+  if (!menu.LoadMenu(m_menuID))
+    return FALSE;
+
   pSubMenu = menu.GetSubMenu(0);
-  if (!pSubMenu) return FALSE;
+  if (!pSubMenu)
+    return FALSE;
 
   ::SetMenuDefaultItem(pSubMenu->m_hMenu, m_DefaultMenuItemID,
-    m_DefaultMenuItemByPos);
+                       m_DefaultMenuItemByPos);
 
   return TRUE;
 }
@@ -445,14 +449,21 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
   CMenu menu, *pContextMenu;
   CWnd* pTarget = m_pTarget; // AfxGetMainWnd();
 
+  MENUINFO minfo;
+  memset(&minfo, 0x00, sizeof(minfo));
+  minfo.cbSize = sizeof(MENUINFO);
+  minfo.fMask = MIM_MENUDATA;
+
   // Clicking with right button brings up a context menu
   if (LOWORD(lParam) == WM_RBUTTONUP) {    
     ASSERT(pTarget != NULL);
-    if (!menu.LoadMenu(m_menuID)) return 0;
+    if (!menu.LoadMenu(m_menuID))
+      return 0L;
 
     // Get pointer to the real menu (must be POPUP for TrackPopupMenu)
     pContextMenu = menu.GetSubMenu(0);
-    if (!pContextMenu) return 0;
+    if (!pContextMenu)
+      return 0L;
 
     const int i_state = app.GetSystemTrayState();
     switch (i_state) {
@@ -483,11 +494,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     typedef CMenu* CMenuPtr;
     CMenu **pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
 
-    MENUINFO minfo;
-    memset(&minfo, 0x00, sizeof(minfo));
-    minfo.cbSize = sizeof(MENUINFO);
-    minfo.fMask = MIM_MENUDATA;
-    minfo.dwMenuData = 1;
+    minfo.dwMenuData = IDR_POPTRAY;
     pMainRecentEntriesMenu->SetMenuInfo(&minfo);
 
     MENUITEMINFO miinfo;
@@ -593,9 +600,11 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     UINT uItem;
     if (m_DefaultMenuItemByPos) {
-      if (!menu.LoadMenu(m_menuID)) return 0;
+      if (!menu.LoadMenu(m_menuID))
+        return 0L;
       pContextMenu = menu.GetSubMenu(0);
-      if (!pContextMenu) return 0;
+      if (!pContextMenu)
+        return 0L;
       uItem = pContextMenu->GetMenuItemID(m_DefaultMenuItemID);
     } else
       uItem = m_DefaultMenuItemID;
@@ -605,12 +614,12 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     menu.DestroyMenu();
   }
 
-  return 1;
+  return 1L;
 }
 
 LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
 {
-  if(message==m_tnd.uCallbackMessage)
+  if (message == m_tnd.uCallbackMessage)
     return OnTrayNotification(wParam, lParam);
 
   return CWnd::WindowProc(message, wParam, lParam);
@@ -621,9 +630,9 @@ LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 // to TOP LEVEL windows (like WM_QUERYNEWPALETTE)
 LRESULT CSystemTray::OnTaskbarCreated(WPARAM /*wParam*/, LPARAM /*lParam*/) 
 {
-  if(m_bHidden ==  FALSE) {
+  if (m_bHidden ==  FALSE) {
     m_bHidden = TRUE;
     ShowIcon();
   }
-  return 0;
+  return 0L;
 }

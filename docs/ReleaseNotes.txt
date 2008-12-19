@@ -1,5 +1,5 @@
-Password Safe 3.15.1 Release Notes - December 2008
-==================================================
+Password Safe 3.15.02 Release Notes - December 2008
+===================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,39 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.15.1
-====================
+Bugs fixed in 3.15.02
+=====================
+[2423397] Sorting direction database preference was not being saved in
+the database.  See "Changes to Existing Features" below.
+
+Changes to Existing Features in 3.15.02
+=======================================
+[2423397] Changes to preferences stored in the database are no longer
+silently saved in the database (including any changes to any entries).
+A new flag is shown in the Status Bar to indicate the preferences have
+been changed and the user can decide to save these, or not, when closing
+the database, directly or when ending the application.
+
+New Features for 3.15.02
+========================
+[2450841] The user can use the DragBar to drag and drop the group name
+when a group is selected. Pressing the Ctrl key while dragging the group,
+when a group or entry is selected, will only copy the immediate parent group.
+Standard behaviour is to copy all groups up to the root of the database with
+dots between successive group names.
+[2450827] Add a new menu item (on Edit Menu or right-click context
+menu) to go to the corresponding base entry of an Alias or Shortcut. As
+part of this change, only relevant items are shown on the Edit menu depending
+on the current selected item (group or normal, shortcut base, alias base,
+alias or shortcut entry).
+[2425045] During Edit, if the entry has been changed and the user presses
+the Cancel button, they are asked to confirm losing their changes.
+[2415952] The currrent display status of the Find Toolbar is remembered at
+application close and, if visible, it is will be shown the next time the
+application is started.
+
+Bugs fixed in 3.15.01
+=====================
 [2429189, 2429675] No longer requires MFC dll.
 
 Bugs fixed in 3.15

@@ -60,8 +60,8 @@
 #define IDR_POPCOPYTOCOMPARISON         171
 #define IDR_POPCOPYTOORIGINAL           172
 #define IDR_POPCUSTOMIZETOOLBAR         173
-#define IDR_POPGROUP                    174
-#define IDR_POPMENU                     175
+#define IDR_POPEDITGROUP                174
+#define IDR_POPEDITMENU                 175
 #define IDR_POPTRAY                     176
 #define IDR_POPTREE                     177
 #define IDR_POPRIGHTDRAG                178

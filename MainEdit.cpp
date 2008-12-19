@@ -1466,6 +1466,34 @@ StringX DboxMain::GetAutoTypeString(const StringX autocmd, const StringX user,
   return tmp;
 }
 
+void DboxMain::OnGotoBaseEntry()
+{
+  if (SelItemOk() == TRUE) {
+    CItemData *ci = getSelectedItem();
+    ASSERT(ci != NULL);
+
+    uuid_array_t base_uuid, entry_uuid;
+    CItemData::EntryType entrytype = ci->GetEntryType();
+    if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
+      // This is an alias or shortcut
+      ci->GetUUID(entry_uuid);
+      if (entrytype == CItemData::ET_ALIAS)
+        m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+      else
+        m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+         DisplayInfo *di = (DisplayInfo *)iter->second.GetDisplayInfo();
+         SelectEntry(di->list_index);
+      } else
+        return;
+
+      UpdateAccessTime(ci);
+    }
+  }
+}
+
 void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 {
   // Add Drop entries

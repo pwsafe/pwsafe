@@ -35,10 +35,6 @@ public:
   BOOL OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal);
   void EndDrop() {m_bDropped = true;}
 
-// Implementation
-public:
-  CItemData *m_pci;
-
 protected:
   //{{AFX_MSG(CDDStatic)
   afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
@@ -53,6 +49,7 @@ protected:
 private:
   void SendToClipboard();
   void SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour);
+  StringX GetData(const CItemData *pci);
 
   CStaticDropTarget *m_pDropTarget;
   CStaticDropSource *m_pDropSource;
@@ -60,7 +57,9 @@ private:
   friend class CStaticDataSource;
 
   DboxMain *m_pDbx;
+  CItemData *m_pci;
   HGLOBAL m_hgDataUTXT, m_hgDataTXT;
+  StringX m_groupname;
 
   bool m_bState;  // Control active/inactive
   UINT m_nID;

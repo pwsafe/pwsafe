@@ -45,6 +45,7 @@ protected:
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual void OnOK();
+  virtual void OnCancel();
   afx_msg void OnShowPassword();
   afx_msg void OnRandom();
   afx_msg void OnHelp();
@@ -83,7 +84,6 @@ private:
   time_t m_tttXTime;
   time_t m_tttCPMTime;  // Password creation or last changed datetime
   int m_XTimeInt, m_oldXTimeInt;
-  bool m_bIsModified;
   // Password History related stuff
   size_t m_NumPWHistory;
   size_t m_MaxPWHistory;

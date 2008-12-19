@@ -49,6 +49,7 @@
 #define ID_MENUITEM_COPYEMAIL           32066
 #define ID_MENUITEM_GROUPENTER          32067
 #define ID_MENUITEM_CREATESHORTCUT      32068
+#define ID_MENUITEM_GOTOBASEENTRY       32069
 
 // View menu
 #define ID_VIEWMENU                     32101
@@ -143,6 +144,10 @@
 #define ID_FLC_INSERT                   32506
 #define ID_FLC_PREVIOUS                 32507
 #define ID_FLC_NEXT                     32508
+
+#define ID_EDITMENU_SEPARATOR1          32900
+#define ID_EDITMENU_SEPARATOR2          32901
+#define ID_EDITMENU_SEPARATOR3          32902
 
 // System menu
 #define ID_SYSMENU_ALWAYSONTOP          33000
