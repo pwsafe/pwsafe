@@ -75,6 +75,7 @@ public:
     ShowToolbar, ShowNotesAsTooltipsInViews, DefaultOpenRO,
     MultipleInstances, ShowDragbar,
     ClearClipboardOnMinimize, ClearClipboardOnExit,
+    ShowFindToolBarOnOpen,
     NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,

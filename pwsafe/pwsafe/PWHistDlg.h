@@ -46,7 +46,7 @@ private:
 
   CListCtrl m_PWHistListCtrl;
   int m_iSortedColumn;
-  BOOL m_bSortAscending;
+  bool m_bSortAscending;
   size_t m_oldMaxPWHistory;
   bool m_ClearPWHistory;
 

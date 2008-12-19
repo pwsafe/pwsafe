@@ -32,7 +32,7 @@ CPWHistDlg::CPWHistDlg(CWnd* pParent, bool IsReadOnly,
   m_NumPWHistory(NumPWHistory), m_MaxPWHistory(MaxPWHistory),
   m_SavePWHistory(SavePWHistory),
   m_ClearPWHistory(false),
-  m_iSortedColumn(-1), m_bSortAscending(TRUE)
+  m_iSortedColumn(-1), m_bSortAscending(true)
 {
   m_oldMaxPWHistory = m_MaxPWHistory;
 }
@@ -211,7 +211,7 @@ void CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
     if(phdn->iItem == m_iSortedColumn)
       m_bSortAscending = !m_bSortAscending;
     else
-      m_bSortAscending = TRUE;
+      m_bSortAscending = true;
 
     m_iSortedColumn = phdn->iItem;
     m_PWHistListCtrl.SortItems(PWHistCompareFunc, (LPARAM)this);
@@ -233,7 +233,7 @@ void CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
     // Turn off all arrows
     HeaderItem.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
     // Turn on the correct arrow
-    HeaderItem.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
+    HeaderItem.fmt |= (m_bSortAscending ? HDF_SORTUP : HDF_SORTDOWN);
     m_PWHistListCtrl.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
   }
 

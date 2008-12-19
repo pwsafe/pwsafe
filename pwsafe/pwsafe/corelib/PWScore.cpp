@@ -79,7 +79,7 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_changed(false), m_IsReadOnly(false),
                      m_nRecordsWithUnknownFields(0),
                      m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
-                     m_bNotify(false)
+                     m_bNotify(false), m_DBPrefsChanged(false)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -151,6 +151,7 @@ void PWScore::ReInit(bool bNewFile)
 {
   // Now reset all values as if created from new
   m_changed = false;
+  m_DBPrefsChanged = false;
   m_usedefuser = false;
   m_defusername = _T("");
   if (bNewFile)
@@ -173,6 +174,7 @@ void PWScore::NewFile(const StringX &passkey)
   ClearData();
   SetPassKey(passkey);
   m_changed = false;
+  m_DBPrefsChanged = false;
   // default username is a per-database preference - wipe clean
   // for new database:
   m_usedefuser = false;
@@ -256,6 +258,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   delete out;
 
   m_changed = false;
+  m_DBPrefsChanged = false;
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
 
   return SUCCESS;

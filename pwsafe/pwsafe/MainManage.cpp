@@ -444,7 +444,7 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::ListViewGridLines,
       display.m_enablegrid == TRUE);
     prefs->SetPref(PWSprefs::ShowNotesDefault,
-      display.m_notesshowinedit == TRUE);                   
+      display.m_notesshowinedit == TRUE);
     prefs->SetPref(PWSprefs::PreExpiryWarn,
       display.m_preexpirywarn == TRUE);
     prefs->SetPref(PWSprefs::PreExpiryWarnDays,
@@ -613,27 +613,12 @@ void DboxMain::OnOptions()
     /*
     ** Update string in database, if necessary & possible (i.e. ignore if R-O)
     */
-    if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().empty() &&
+    if (prefs->IsDBprefsChanged() && !m_core.GetCurFile().empty() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (!m_core.IsReadOnly()) {
-        // save changed preferences to file
-        // Note that we currently can only write the entire file, so any changes
-        // the user made to the database are also saved here
-        int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
-        int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-        stringT userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
-        stringT userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
-        m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
-                             userBackupPrefix, userBackupDir); // try to save previous version
-        if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
-          AfxMessageBox(IDS_FAILEDSAVEPREF);
-        else
-          prefs->ClearDBprefsChanged();
-      } else {
-        if (!m_bAlreadyToldUserNoSave) {
-          AfxMessageBox(IDS_FAILEDSAVEPREFRO);  // Read-only!
-          m_bAlreadyToldUserNoSave = true;
-        }
+        const StringX prefString(prefs->Store());
+        SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? DBPrefs : ClearDBPrefs);
+        ChangeOkUpdate();
       }
     }
     /*

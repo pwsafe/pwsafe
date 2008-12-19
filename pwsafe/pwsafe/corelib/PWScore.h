@@ -229,6 +229,10 @@ public:
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
+  bool HaveDBPrefsChanged() const {return m_DBPrefsChanged;}
+  void SetDBPrefsChanged(bool changed) {m_DBPrefsChanged = changed;}
+  bool HaveHeaderPreferencesChanged(const StringX prefString)
+  {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
   // (Un)Register to be notified if the password list changes
   bool RegisterOnListModified(void (*pfcn) (LPARAM), LPARAM);
@@ -272,6 +276,7 @@ private:
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
   bool m_changed;
+  bool m_DBPrefsChanged;
   bool m_IsReadOnly;
   PWSfile::HeaderRecord m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
