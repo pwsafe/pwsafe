@@ -301,11 +301,6 @@ msgstr "%s är en mapp"
 msgid "%s%s%s_Report.txt"
 msgstr "%s%s%s_Rapport.txt"
 
-#: ID:191,
-#, c-format
-msgid "%s\n%s\nline %d column %d"
-msgstr "%s\n%s\nrad %d kolumn %d"
-
 #: ID:333,
 #, c-format
 msgid "%s\n\nCould not open file for reading!"
@@ -345,7 +340,7 @@ msgstr "%s\n\nOkänt fel"
 msgid "&Apply"
 msgstr ""
 
-#: Control-ID:1107,#: Control-ID:1107,
+#: Control-ID:1356,#: Control-ID:1356,
 msgid "&Autotype:"
 msgstr "Auto&skrift:"
 
@@ -447,7 +442,7 @@ msgstr "&Ny"
 msgid "&No"
 msgstr "&Nej"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#: Control-ID:1354,
 msgid "&Notes:"
 msgstr "&Notat:"
 
@@ -459,7 +454,7 @@ msgstr "&Öppna en annan databas..."
 msgid "&Override Policy"
 msgstr "&Åsidosätt policy"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#: Control-ID:1353,
 msgid "&Password:"
 msgstr "&Lösenord:"
 
@@ -487,7 +482,7 @@ msgstr "&Visa"
 msgid "&Size:"
 msgstr ""
 
-#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:1351,#: Control-ID:65535,
 msgid "&Title:"
 msgstr "&Titel:"
 
@@ -496,7 +491,7 @@ msgid "&Try Again"
 msgstr "&Försök igen"
 
 # The translation needs 1 more position
-#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:1352,#: Control-ID:65535,
 #, fuzzy
 msgid "&Username:"
 msgstr "&Användare:"
@@ -645,10 +640,6 @@ msgstr "Om Password Safe"
 msgid "Access to %1 was denied."
 msgstr "Tillgång till %1 nekades."
 
-#: ID:195,
-msgid "Access to the file was denied: probably not sufficient security rights."
-msgstr "Åtkomst till filen nekades: antagligen inte tillräckliga säkerhetsrättigheter."
-
 #: ID:350,
 msgid "Active"
 msgstr ""
@@ -700,10 +691,6 @@ msgstr "Alla filer (*.*)"
 #: ID:339,
 msgid "All available columns are being displayed."
 msgstr "Alla tillgängliga kolumner visas."
-
-#: ID:194,
-msgid "All or part of the path is invalid."
-msgstr "Hela eller del av sökvägen är fel."
 
 #: Control-ID:1333,
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -781,10 +768,6 @@ msgstr "Ett oväntat fel har uppstått."
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "Ett oväntat fel uppstod vid åtkomst till %1."
-
-#: ID:194,
-msgid "An unspecified error occurred."
-msgstr "Ett ospecificerat fel har uppstått."
 
 #: ID:3843,
 msgid "An unsupported operation was attempted."
@@ -903,6 +886,11 @@ msgstr "C:Reg   "
 msgid "Can only warn between 1 and 30 days before passwords expire"
 msgstr "Kan bara larma mellan 1 och 30 dagar innan ett lösenord utgår"
 
+#: ID:210,
+#, c-format
+msgid "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
+msgstr ""
+
 #: ID:208,
 msgid "Can't obtain the schema version."
 msgstr ""
@@ -980,6 +968,10 @@ msgstr ""
 
 #: ID:351,
 msgid "Click here to pick field"
+msgstr ""
+
+#: ID:353,
+msgid "Click to copy to clipboard"
 msgstr ""
 
 #: ID:351,
@@ -1063,6 +1055,11 @@ msgstr "&Bekräfta lösenord:"
 #: Control-ID:1221,
 msgid "Configuration Information"
 msgstr "Information om konfigureringen"
+
+#: ID:191,
+#, c-format
+msgid "Configuration file error:\n%s\n%s\nline %d column %d"
+msgstr ""
 
 #: ID:342,
 msgid "Confirm Close Dialog"
@@ -1383,6 +1380,11 @@ msgstr ""
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
 msgstr "Endera eller både grupp/titel- och lösenords-kolumner saknas. Inga poster importerades."
 
+#: ID:209,
+#, c-format
+msgid "Element \"%s\" exceeded its MaxOccurs of %s."
+msgstr ""
+
 #: ID:204,
 #, c-format
 msgid "Empty line %d skipped"
@@ -1407,6 +1409,10 @@ msgstr "För in nyckel:"
 #: Dlg-ID:130,#: Dlg-ID:132,
 msgid "Enter Safe Combination"
 msgstr "Safe-nyckel"
+
+#: Control-ID:65535,
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
+msgstr ""
 
 #: Dlg-ID:149,
 msgid "Enter your Sample Text below"
@@ -1467,6 +1473,10 @@ msgstr "Posten på rad %d utan grupp, Titel=\"%s\", Användare=\"%s\" finns reda
 
 #: ID:349,
 msgid "Entry type"
+msgstr ""
+
+#: ID:209,
+msgid "Error"
 msgstr ""
 
 #: ID:191,
@@ -1535,6 +1545,10 @@ msgstr "Kunde inte skapa tomt dokument."
 msgid "Failed to launch help."
 msgstr "Kunde inte starta hjälpen."
 
+#: ID:208,
+msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
+msgstr ""
+
 #: ID:3857,
 msgid "Failed to open document."
 msgstr "Kunde inte öppna dokument"
@@ -1546,6 +1560,10 @@ msgstr "Kunde inte spara ändrade preferenser."
 #: ID:3857,
 msgid "Failed to save document."
 msgstr "Kunde inte spara dokumentet."
+
+#: ID:209,
+msgid "Fatal Error"
+msgstr ""
 
 #: ID:350,#: ID:351,
 msgid "Field"
@@ -1619,6 +1637,11 @@ msgstr ""
 msgid "File: %s was imported (entries validated %d / imported %d) but had the following errors:\r\n\r\n%s"
 msgstr ""
 
+#: ID:209,
+#, c-format
+msgid "Filter %s already exists in the database, do you wish to replace it with this?"
+msgstr ""
+
 #: Control-ID:65535,
 msgid "Filter name:"
 msgstr ""
@@ -1629,6 +1652,10 @@ msgstr ""
 
 #: ID:352,
 msgid "Filters successfully imported"
+msgstr ""
+
+#: ID:210,
+msgid "Filters within the database will be kept as \"unknown fields\"."
 msgstr ""
 
 #: ID:346,
@@ -1672,6 +1699,10 @@ msgstr ""
 msgid "Given path is a directory or file is read-only"
 msgstr "Sökvägen är en mapp eller så är filen bara läsbar"
 
+#: Control-ID:1357,
+msgid "Go"
+msgstr ""
+
 #: ID:327,
 msgid "Group"
 msgstr "Grupp"
@@ -1692,7 +1723,7 @@ msgstr "Grupp/Titel\t"
 msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
 msgstr ""
 
-#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:1350,#: Control-ID:65535,
 msgid "Group:"
 msgstr "Grupp:"
 
@@ -1941,6 +1972,15 @@ msgstr "Fel lösenord"
 msgid "Incremented Number [001-999]"
 msgstr "Ökande tal [001-999]"
 
+#: ID:354,
+#, c-format
+msgid "Index is bigger than password length (%d)."
+msgstr ""
+
+#: ID:353,
+msgid "Index must be greater than or equal to 1."
+msgstr ""
+
 #: Control-ID:65535,
 msgid "Initial system tray icon"
 msgstr "Startikon i meddelandefältet"
@@ -1969,6 +2009,10 @@ msgstr "Internt fel. Importen misslyckades. Inga poster importerades."
 msgid "Internal error: An invalid flag was specified"
 msgstr "Internt fel: En ogiltig flagga angavs."
 
+#: ID:208,
+msgid "Internal error: Couldn't initialize config file XML structure"
+msgstr ""
+
 #: ID:189,
 msgid "Internal error: Invalid oflag or pmode argument"
 msgstr "Internt fel: Ogiltig o-flagga eller p-mode argument"
@@ -1983,6 +2027,10 @@ msgstr "Internt fel: oväntat felnummer"
 
 #: ID:208,
 msgid "Invalid Filter schema."
+msgstr ""
+
+#: ID:209,
+msgid "Invalid data in element: "
 msgstr ""
 
 #: ID:3857,
@@ -2091,13 +2139,29 @@ msgstr "Lås lösenordsdatabasen då datorn stängs"
 msgid "Mail system DLL is invalid."
 msgstr "e-postsystemets DLL är ogiltig."
 
-#: Dlg-ID:444,
+#: Dlg-ID:158,
 msgid "Manage Filters"
 msgstr ""
 
 #: Control-ID:65535,
 msgid "Manage password history of current entries"
 msgstr "Administrera lösenordshistoriken till aktuella poster"
+
+#: ID:209,
+msgid "Mandatory delimiter attribute invalid."
+msgstr ""
+
+#: ID:209,
+msgid "Mandatory delimiter attribute missing."
+msgstr ""
+
+#: ID:209,
+msgid "Mandatory element (title and/or password) missing."
+msgstr ""
+
+#: ID:209,
+msgid "Mandatory ftype attribute missing."
+msgstr ""
 
 #: Control-ID:1212,
 msgid "Max."
@@ -2166,8 +2230,20 @@ msgstr ""
 msgid "Misc."
 msgstr "Övrigt"
 
-#: ID:334,
+#: ID:209,
+msgid "Missing STATUS, MAX or NUM element in PWHISTORY."
+msgstr ""
+
+#: ID:210,
 msgid "Missing XSD File"
+msgstr ""
+
+#: ID:209,
+msgid "Missing date element"
+msgstr ""
+
+#: ID:209,
+msgid "Missing date/time element."
 msgstr ""
 
 #: ID:3887,
@@ -2243,7 +2319,7 @@ msgstr ""
 msgid "No error message is available."
 msgstr "Inget femeddelande finns tillgängligt."
 
-#: ID:194,#: ID:3867,#: ID:3868,
+#: ID:3867,#: ID:3868,
 msgid "No error occurred."
 msgstr "Inget fel uppkom."
 
@@ -2416,6 +2492,10 @@ msgstr "Övrigt:"
 msgid "Out of memory."
 msgstr "Slut på minne."
 
+#: ID:192,
+msgid "OutOfMemoryException."
+msgstr ""
+
 #: ID:339,
 msgid "PWS_CPF_CDD"
 msgstr "PWS_CPF_CDD"
@@ -2423,6 +2503,11 @@ msgstr "PWS_CPF_CDD"
 #: ID:341,
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
+
+#: ID:192,
+#, c-format
+msgid "Parse error at line %d, column %d:\nError: %s\n%s\n\n"
+msgstr ""
 
 #: ID:334,
 msgid "Passkey incorrect"
@@ -2856,6 +2941,10 @@ msgstr ""
 msgid "Report of %s function started at %s"
 msgstr "Rapport på %s åtgärd som startade %s "
 
+#: Control-ID:65535,
+msgid "Requested Values:"
+msgstr ""
+
 #: Control-ID:1158,#: Control-ID:1158,
 msgid "Restrict to a subset of entries:"
 msgstr "Begränsa till en undergrupp poster:"
@@ -2883,6 +2972,11 @@ msgstr "S"
 
 #: Control-ID:1119,#: Control-ID:1119,
 msgid "S&et..."
+msgstr ""
+
+#: ID:192,
+#, c-format
+msgid "SAX Parse Error during %s\n%s."
 msgstr ""
 
 #: ID:191,
@@ -3079,10 +3173,6 @@ msgstr ""
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Välj ovanstående tal för max antal sparade lösenord"
 
-#: ID:195,
-msgid "Sharing violation: file probably open in another application."
-msgstr "Delningsfel: filen är sannolikt öppen i ett annat program."
-
 #: ID:348,
 msgid "Shift+click to view current policy"
 msgstr ""
@@ -3097,6 +3187,10 @@ msgstr ""
 
 #: ID:346,
 msgid "Show Toolbar"
+msgstr ""
+
+#: Dlg-ID:159,
+msgid "Show a subset of the Password"
 msgstr ""
 
 #: Control-ID:1262,
@@ -3246,10 +3340,6 @@ msgstr ""
 msgid "The combination cannot be blank."
 msgstr "Nyckeln kan inte vara tom."
 
-#: ID:195,
-msgid "The current working directory cannot be removed."
-msgstr "Aktuell arbetsmapp kan inte tas bort."
-
 #: ID:332,
 #, c-format
 msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
@@ -3264,14 +3354,6 @@ msgstr "Databasen %s används uppenbarligen av:\n\n%s%s.\n\nÖppna databasen skr
 #, c-format
 msgid "The database %s is apparently being used by:\n\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\nincluding another copy of Password Safe running on your machine."
 msgstr "Databasen %s används uppenbarligen av:\n\n%s%s.\n\nÖppna databasen skrivskyddad, skrivbar, eller avbryt?\r\n\r\nNotera: Välj \"Skrivbar\" endast om du är säker på att filen verkligen inte används av någon annan,\nliksom en kopia av Password Safe som körs på din maskin."
-
-#: ID:195,
-msgid "The disk is full."
-msgstr "Disken är full."
-
-#: ID:195,
-msgid "The end of file was reached."
-msgstr "Slutet på filen har nåtts."
 
 #: ID:329,
 msgid "The entered passwords do not match.  Please re-enter them."
@@ -3342,26 +3424,6 @@ msgstr "De två posterna matchar inte."
 #: ID:345,
 msgid "There are more than one entry that fits your selection. Please be more specific."
 msgstr ""
-
-#: ID:195,
-msgid "There are no more directory entries."
-msgstr "Det finns inga fler mapppar."
-
-#: ID:195,
-msgid "There was a hardware error."
-msgstr "Det uppstod ett hårdvarufel."
-
-#: ID:195,
-msgid "There was an attempt to lock a region that was already locked."
-msgstr "Det har gjorts ett försök att låsa ett område som redan har låsts."
-
-#: ID:195,
-msgid "There was an attempt to use an invalid file handle."
-msgstr "Försök har gjorts att använda en ogiltig fil-hanterare."
-
-#: ID:195,
-msgid "There was an error trying to set the file pointer."
-msgstr "Det uppstod ett fel i försöket att sätta filpekaren."
 
 #: ID:344,
 #, c-format
@@ -3465,7 +3527,7 @@ msgstr "Titel"
 msgid "Title [Mandatory Field]"
 msgstr "Titel [Obligatorisk]"
 
-#: ID:191,
+#: ID:192,
 msgid "Title\t"
 msgstr "Titel\t"
 
@@ -3476,10 +3538,6 @@ msgstr "För att lägga till en ny post, fyll i fälten nedan. Åtminstone en ti
 #: Control-ID:1198,
 msgid "To edit this entry from the current password file, simply make the desired changes in the fields below.  Note that at least a title and a password are required."
 msgstr "För att ändra posten i den aktuella lösenordsfilen så gör de önskade ändringarna i fälten nedan. Notera att åminstone en titel och ett lösenord krävs."
-
-#: ID:195,
-msgid "Too many open files."
-msgstr "För många öppna filer."
 
 #: Control-ID:1284,
 msgid "Treat fields that only contain 'whitespace' as empty"
@@ -3506,7 +3564,7 @@ msgstr ""
 msgid "Trying to contact server..."
 msgstr "Försöker kontakta servern..."
 
-#: Control-ID:1106,#: Control-ID:1106,
+#: Control-ID:1355,#: Control-ID:1355,
 msgid "U&RL:"
 msgstr "U&RL:"
 
@@ -3526,21 +3584,9 @@ msgstr "Kan inte skapa en ny XML konfigureringsfil eller lägga till dina val ti
 msgid "Unable to create intermediate backup."
 msgstr "Kunde inte göra mellanlagrande backup."
 
-# "[ronys] Locker" is the machine/user that is currently opening the PasswordSafe databse.
-# If I open the database on my machine, and you try to open the same on yours,
-# you may get such a message.
-#: ID:189,
-msgid "Unable to determine locker?"
-msgstr "Kan du inte avgöra vem som låser filen?"
-
 #: ID:332,
 msgid "Unable to display URL"
 msgstr "Kan inte visa URL"
-
-#: ID:334,
-#, c-format
-msgid "Unable to find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
-msgstr ""
 
 #: ID:190,
 msgid "Unable to get configuration file lock.\n\nWill use registry."
@@ -3548,7 +3594,7 @@ msgstr "Kan inte stänga konfigurationsfilen.\n\nAnvänder registret."
 
 #: ID:352,
 #, c-format
-msgid "Unable to import filters\r\nReason:\r\n\r\n%s"
+msgid "Unable to import \"autoload_filters.xml\" filters.\n\n%s"
 msgstr ""
 
 #: ID:191,
@@ -3586,8 +3632,8 @@ msgid "Unable to update your entries in the existing XML configuration file.\n\n
 msgstr "Kan inte uppdatera dina poster i den befintliga XML-konfigurationsfilen.\n\nProgrammets alla konfigurationsinställningar laddas fån denna fil, men inga ändringar  sparas.\n\nDatabasrelaterade inställningar sparas i den öppna databasen när den stängs, om den inte bara är läsbar eller låst av annan användare."
 
 #: ID:191,
-msgid "Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
-msgstr "Kan inte använda en XML-läsare i ditt system. Varken MS XML V3, V4 eller V6 tycks finnas."
+msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
+msgstr ""
 
 #: ID:191,
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
@@ -3606,6 +3652,15 @@ msgstr "Kan inte skriva till %1, den är skrivskyddad eller öppnad av någon an
 msgid "Uncheck"
 msgstr "Bocka av"
 
+#: ID:209,
+#, c-format
+msgid "Unexpected element: %s"
+msgstr ""
+
+#: ID:209,
+msgid "Unexpected element: Only one field allowed in filter entry."
+msgstr ""
+
 #: ID:3859,
 msgid "Unexpected file format."
 msgstr "Oväntat filformat."
@@ -3613,6 +3668,11 @@ msgstr "Oväntat filformat."
 #: ID:329,
 msgid "Unknown            "
 msgstr "Okänd"
+
+#: ID:209,
+#, c-format
+msgid "Unknown element: %s"
+msgstr ""
 
 #: ID:350,
 msgid "Unknown fields"
@@ -3723,7 +3783,7 @@ msgstr "Visa posten"
 msgid "View Entry\tCtrl+Enter"
 msgstr "Visa posten\tCtrl+Enter"
 
-#: ID:347,#: Dlg-ID:443,
+#: ID:347,#: Dlg-ID:157,
 msgid "View Report"
 msgstr ""
 
@@ -3755,6 +3815,10 @@ msgstr "VARNING: Användning av en extern editor kan lämna kvar känsliga data 
 msgid "Warn"
 msgstr "Varna"
 
+#: ID:209,
+msgid "Warning"
+msgstr ""
+
 #: Control-ID:65535,
 msgid "Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is *NOT* sufficient. This bypasses the security of the program."
 msgstr "Varning! Denna åtgärd kommer att skapa en oskyddad kopia av ALLA lösenord i databasen. Att radera denna kopia efter användning är INTE tillräckligt. Åtgärden kringgår programmets säkerhet."
@@ -3785,6 +3849,11 @@ msgstr ""
 
 #: ID:347,
 msgid "XML"
+msgstr ""
+
+#: ID:191,
+#, c-format
+msgid "XML %s: line %d character %d: %s"
 msgstr ""
 
 #: ID:340,
@@ -3875,6 +3944,10 @@ msgstr ""
 msgid "\nDelete an Entry"
 msgstr "\nRadera en post"
 
+#: ID:2017,
+msgid "\nDisplay subset of Password"
+msgstr ""
+
 #: ID:2007,
 msgid "\nEdit Filters"
 msgstr ""
@@ -3962,6 +4035,10 @@ msgstr "\nSpara databasen som..."
 
 #: ID:2008,
 msgid "\nSet/Clear Filters"
+msgstr ""
+
+#: ID:192,
+msgid "\nUnexpected exception during parsing."
 msgstr ""
 
 #: ID:331,
@@ -4082,7 +4159,7 @@ msgstr "ej namngiven fil"
 msgid "and"
 msgstr ""
 
-#: Control-ID:1035,
+#: Control-ID:1352,
 msgid "as default username"
 msgstr "till förvald användare"
 

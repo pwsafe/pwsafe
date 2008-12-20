@@ -47,7 +47,7 @@ RESPWSL = ./tools/ResPWSL.exe
 CHMOD = /usr/bin/chmod
 RM = /usr/bin/rm
 
-BASE_DLL = ../bin/language/pwsafe_base.dll
+BASE_DLL = ../bin/language/release/pwsafe_base.dll
 
 POS = pwsafe.pot pos/pwsafesv.po
 
