@@ -21,7 +21,7 @@
 using namespace std;
 
 //static const char *AuthServer = "http://api.yubico.com/wsapi/verify?";
-static const char *AuthServer = "http://63.146.69.105/wsapi/verify?";
+static const char *AuthServer = "https://63.146.69.105/wsapi/verify?";
 static const char *OurID ="708";
 
 // API Key:	San67hskXHG7Ya3pi0JSw9AEqX0=
@@ -137,12 +137,14 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
         m_error += statX.c_str();
       }
     } else { // successful transaction
-      ostringstreamT os(m_error);
+      ostringstreamT os;
       os << _T("Request failed: ") << client.GetStatus();
+      m_error = os.str();
     }
   } else { // !m_client.Navigate()
-    ostringstreamT os(m_error);
+    ostringstreamT os;
     os << _T("request failed - status code: ") << client.GetStatus();
+    m_error = os.str();
   }
  done:
   return retval;
