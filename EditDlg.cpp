@@ -264,15 +264,15 @@ void CEditDlg::OnOK()
     m_realnotes = m_notes;
 
   bool bIsModified, bIsPswdModified;
-  bIsModified |= (m_group != m_ci->GetGroup() ||
-                  m_title != m_ci->GetTitle() ||
-                  m_username != m_ci->GetUser() ||
-                  m_realnotes != m_ci->GetNotes() ||
-                  m_URL != m_ci->GetURL() ||
-                  m_autotype != m_ci->GetAutoType() ||
-                  m_PWHistory != m_ci->GetPWHistory() ||
-                  m_locXTime != m_oldlocXTime ||
-                  m_XTimeInt != m_oldXTimeInt);
+  bIsModified = (m_group != m_ci->GetGroup() ||
+                 m_title != m_ci->GetTitle() ||
+                 m_username != m_ci->GetUser() ||
+                 m_realnotes != m_ci->GetNotes() ||
+                 m_URL != m_ci->GetURL() ||
+                 m_autotype != m_ci->GetAutoType() ||
+                 m_PWHistory != m_ci->GetPWHistory() ||
+                 m_locXTime != m_oldlocXTime ||
+                 m_XTimeInt != m_oldXTimeInt);
 
   bIsPswdModified = m_realpassword != m_oldRealPassword;
 

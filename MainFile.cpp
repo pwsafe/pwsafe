@@ -505,7 +505,7 @@ int DboxMain::Open()
       return PWScore::USER_CANCEL;
     }
   }
-    return rc;
+  return rc;
 }
 
 int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
