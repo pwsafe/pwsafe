@@ -15,6 +15,8 @@ the database.  See "Changes to Existing Features" below.
 
 Changes to Existing Features in 3.15.02
 =======================================
+[] Support interoperability with tools that access edit control text
+by setting PWS_PW_MODE environment variable to "NORMAL".
 [2423397] Changes to preferences stored in the database are no longer
 silently saved in the database (including any changes to any entries).
 A new flag is shown in the Status Bar to indicate the preferences have
