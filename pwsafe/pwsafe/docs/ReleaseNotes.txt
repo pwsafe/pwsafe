@@ -65,7 +65,7 @@ selected entry.
 [2100429] Handle invalid time field in database gracefully. Thanks to
 David B. Martin for his help in tracking this down.
 [1958728] More graceful handling of corrupt databases - avoid "out of
-memory" failures. Thanks to spoax for his help on this.
+memory" failures. Thanks to Serkan Kenar for his help on this.
 [] Correct display of tree items on restore from minimize when 'X'
 button used to minimize.
 [] Ensure XML Import correctly processes normal entries with a 
