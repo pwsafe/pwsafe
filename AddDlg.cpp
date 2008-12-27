@@ -86,11 +86,11 @@ BOOL CAddDlg::OnInitDialog()
 
   // Populate the combo box
   if (m_ex_group.GetCount() == 0) {
-    CStringArray aryGroups;
-    app.m_core.GetUniqueGroups(aryGroups);
-    for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
-      m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
-    }
+      std::vector<stringT> aryGroups;
+      app.m_core.GetUniqueGroups(aryGroups);
+      for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
+        m_ex_group.AddString(aryGroups[igrp].c_str());
+      }
   }
   time(&m_tttCPMTime);
 
@@ -240,7 +240,7 @@ void CAddDlg::OnOK()
 
   // If there is a matching entry in our list, tell the user to try again.
   if (pDbx->Find(m_group, m_title, m_username) != pDbx->End()) {
-    CMyString temp;
+    CSecString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
     else
@@ -284,7 +284,9 @@ void CAddDlg::OnRandom()
   DboxMain* pParent = static_cast<DboxMain*>(GetParent());
 
   UpdateData(TRUE);
-  pParent->MakeRandomPassword(m_password, m_pwp);
+  StringX passwd;
+  pParent->MakeRandomPassword(passwd, m_pwp);
+  m_password = passwd.c_str();
   if (m_isPwHidden) {
     m_password2 = m_password;
   }

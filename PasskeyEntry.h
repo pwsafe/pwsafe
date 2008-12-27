@@ -12,7 +12,7 @@
 
 #include "SysColStatic.h"
 #include "ControlExtns.h"
-#include "corelib/MyString.h"
+#include "SecString.h"
 #include "corelib/PwsPlatform.h"
 #include "PWDialog.h"
 
@@ -31,16 +31,14 @@ class CPasskeyEntry
   // Construction
 public:
   CPasskeyEntry(CWnd* pParent,
-    const CString& a_filespec, int index = 1 /* GCP_NORMAL */,
-    bool bReadOnly = false,
-    bool bForceReadOnly = false,
-    int adv_type = -1); 
+                const CString& a_filespec, int index, /* GCP_NORMAL */
+    bool bReadOnly, bool bForceReadOnly, int adv_type);
 
   ~CPasskeyEntry();
 
   int GetStatus() const {return m_status;}
   bool IsReadOnly() const {return m_PKE_ReadOnly == TRUE;}
-  const CMyString &GetPasskey() const {return m_passkey;}
+  const CSecString &GetPasskey() const {return m_passkey;}
   const CString &GetFileName() const {return m_filespec;}
   CString m_appversion;
 
@@ -62,7 +60,7 @@ private:
   CButton m_ctlOK;
 #endif
   CSecEditExtn m_ctlPasskey;
-  CMyString m_passkey;
+  CSecString m_passkey;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;
   //}}AFX_DATA
@@ -111,6 +109,7 @@ public:
 
 private:
   void SetHeight(const int num);
+  void UpdateRO();
 };
 //-----------------------------------------------------------------------------
 // Local variables:

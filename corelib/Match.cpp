@@ -13,12 +13,13 @@
 #include "ItemData.h"
 #include "corelib.h"
 #include <time.h>
+#include "os/pws_tchar.h"
 
-bool PWSMatch::Match(const CMyString &string1, CMyString &csValue,
+bool PWSMatch::Match(const StringX &string1, StringX &csValue,
                      int iFunction)
 {
-  const int str_len = string1.GetLength();
-  const int val_len = csValue.GetLength();
+  const StringX::size_type str_len = string1.length();
+  const StringX::size_type val_len = csValue.length();
 
   // Negative = Case   Sensitive
   // Positive = Case INsensitive
@@ -26,64 +27,64 @@ bool PWSMatch::Match(const CMyString &string1, CMyString &csValue,
     case -MR_EQUALS:
     case  MR_EQUALS:
       return ((val_len == str_len) &&
-             (((iFunction < 0) && (csValue.Compare((LPCTSTR)string1) == 0)) ||
-              ((iFunction > 0) && (csValue.CompareNoCase((LPCTSTR)string1) == 0))));
+             (((iFunction < 0) && (csValue == string1)) ||
+              ((iFunction > 0) && CompareNoCase(csValue, string1) == 0)));
     case -MR_NOTEQUAL:
     case  MR_NOTEQUAL:
-      return (((iFunction < 0) && (csValue.Compare((LPCTSTR)string1) != 0)) ||
-              ((iFunction > 0) && (csValue.CompareNoCase((LPCTSTR)string1) != 0)));
+      return (((iFunction < 0) && (csValue != string1)) ||
+              ((iFunction > 0) && CompareNoCase(csValue, string1) != 0));
     case -MR_BEGINS:
     case  MR_BEGINS:
       if (val_len >= str_len) {
-        csValue = csValue.Left(str_len);
-        return (((iFunction < 0) && (string1.Compare((LPCTSTR)csValue) == 0)) ||
-                ((iFunction > 0) && (string1.CompareNoCase((LPCTSTR)csValue) == 0)));
+        csValue = csValue.substr(0, str_len);
+        return (((iFunction < 0) && (string1 == csValue)) ||
+                ((iFunction > 0) && CompareNoCase(string1, csValue) == 0));
       } else {
         return false;
       }
     case -MR_NOTBEGIN:
     case  MR_NOTBEGIN:
       if (val_len >= str_len) {
-        csValue = csValue.Left(str_len);
-        return (((iFunction < 0) && (string1.Compare((LPCTSTR)csValue) != 0)) ||
-                ((iFunction > 0) && (string1.CompareNoCase((LPCTSTR)csValue) != 0)));
+        csValue = csValue.substr(0, str_len);
+        return (((iFunction < 0) && (string1 != csValue)) ||
+                ((iFunction > 0) && CompareNoCase(string1, csValue) != 0));
       } else {
         return false;
       }
     case -MR_ENDS:
     case  MR_ENDS:
       if (val_len > str_len) {
-        csValue = csValue.Right(str_len);
-        return (((iFunction < 0) && (string1.Compare((LPCTSTR)csValue) == 0)) ||
-                ((iFunction > 0) && (string1.CompareNoCase((LPCTSTR)csValue) == 0)));
+        csValue = csValue.substr(val_len - str_len);
+        return (((iFunction < 0) && (string1 == csValue)) ||
+                ((iFunction > 0) && CompareNoCase(string1, csValue) == 0));
       } else {
         return false;
       }
     case -MR_NOTEND:
     case  MR_NOTEND:
       if (val_len > str_len) {
-        csValue = csValue.Right(str_len);
-        return (((iFunction < 0) && (string1.Compare((LPCTSTR)csValue) != 0)) ||
-                ((iFunction > 0) && (string1.CompareNoCase((LPCTSTR)csValue) != 0)));
+        csValue = csValue.substr(val_len - str_len);
+        return (((iFunction < 0) && (string1 != csValue)) ||
+                ((iFunction > 0) && CompareNoCase(string1, csValue)!= 0));
       } else
         return true;
     case -MR_CONTAINS:
-      return (csValue.Find((LPCTSTR)string1) != -1);
+      return (csValue.find(string1) != StringX::npos);
     case  MR_CONTAINS:
     {
-      csValue.MakeLower();
-      CString subgroupLC(string1);
-      subgroupLC.MakeLower();
-      return (csValue.Find((LPCTSTR)subgroupLC) != -1);
+      ToLower(csValue);
+      StringX subgroupLC(string1);
+      ToLower(subgroupLC);
+      return (csValue.find(subgroupLC) != StringX::npos);
     }
     case -MR_NOTCONTAIN:
-      return (csValue.Find((LPCTSTR)string1)== -1);
+      return (csValue.find(string1)== StringX::npos);
     case  MR_NOTCONTAIN:
     {
-      csValue.MakeLower();
-      CString subgroupLC(string1);
-      subgroupLC.MakeLower();
-      return (csValue.Find((LPCTSTR)subgroupLC) == -1);
+      ToLower(csValue);
+      StringX subgroupLC(string1);
+      ToLower(subgroupLC);
+      return (csValue.find(subgroupLC) == StringX::npos);
     }
     default:
       ASSERT(0);
@@ -114,9 +115,9 @@ bool PWSMatch::Match(const bool bValue, int iFunction)
   return rc;
 }
 
-char * PWSMatch::GetRuleString(MatchRule rule)
+const char *PWSMatch::GetRuleString(MatchRule rule)
 {
-  char * pszrule = "  ";
+  const char *pszrule = "  ";
   switch (rule) {
     case MR_INVALID: pszrule = "  "; break;
     case MR_EQUALS: pszrule = "EQ"; break;
@@ -189,31 +190,32 @@ UINT PWSMatch::GetRule(MatchRule rule)
 void PWSMatch::GetMatchType(MatchType mtype,
                             int fnum1, int fnum2,
                             time_t fdate1, time_t fdate2,
-                            const CString &fstring, int fcase,
+                            const stringT &fstring, bool fcase,
                             int etype, bool bBetween,
-                            CString &cs1, CString &cs2)
+                            stringT &cs1, stringT &cs2)
 {
   cs1 = cs2 = _T("");
   UINT id(0);
 
   switch (mtype) {
     case MT_INVALID:
-      cs1.LoadString(IDSC_INVALID);
+      LoadAString(cs1, IDSC_INVALID);
       break;
     case MT_PASSWORD:
       if (fnum1 > 0) {
-        cs1.Format(IDSC_EXPIRE_IN_DAYS, fnum1);
+        Format(cs1, IDSC_EXPIRE_IN_DAYS, fnum1);
         break;
       }
       // Note: purpose drop through to standard 'string' processing
     case MT_STRING:
       cs1 = fstring;
-      cs2.LoadString(fcase == 0 ? IDSC_CASE_INSENSITIVE : IDSC_CASE_SENSITIVE);
+      LoadAString(cs2,
+                  !fcase ? IDSC_CASE_INSENSITIVE : IDSC_CASE_SENSITIVE);
       break;
     case MT_INTEGER:
-      cs1.Format(_T("%d"), fnum1);
+      Format(cs1, _T("%d"), fnum1);
       if (bBetween)
-        cs2.Format(_T("%d"), fnum2);
+        Format(cs2, _T("%d"), fnum2);
       break;
     case MT_DATE:
       {
@@ -248,7 +250,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
           ASSERT(0);
           id = IDSC_INVALID;
       }
-      cs1.LoadString(id);
+      LoadAString(cs1, id);
       break;
     default:
       ASSERT(0);

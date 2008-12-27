@@ -10,6 +10,7 @@
 
 #include "ItemData.h"
 #include "os/typedefs.h"
+#include "os/pws_tchar.h"
 #include "os/mem.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
@@ -19,19 +20,12 @@
 #include "VerifyFormat.h"
 #include "PWHistory.h"
 #include "Util.h"
+#include "StringXStream.h"
 
 #include <time.h>
 #include <sstream>
 #include <iomanip>
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wistringstream istringstreamT;
-typedef std::wostringstream ostringstreamT;
-#else
-typedef std::istringstream istringstreamT;
-typedef std::ostringstream ostringstreamT;
-#endif
 using namespace std;
 
 #ifdef _DEBUG
@@ -59,10 +53,10 @@ CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
   m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
   m_URL(URL), m_AutoType(AUTOTYPE),
-  m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
-  m_tttXTime(XTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
+  m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
+  m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
   m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT),
-  m_display_info(NULL), m_entrytype(ET_NORMAL)
+  m_entrytype(ET_NORMAL), m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -71,10 +65,11 @@ CItemData::CItemData(const CItemData &that) :
   m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
   m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
   m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
-  m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
-  m_tttXTime(that.m_tttXTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
+  m_tttATime(that.m_tttATime), m_tttCTime(that.m_tttCTime),
+  m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
+  m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
-  m_display_info(that.m_display_info), m_entrytype(that.m_entrytype)
+  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
@@ -93,9 +88,9 @@ CItemData::~CItemData()
 //-----------------------------------------------------------------------------
 // Accessors
 
-CMyString CItemData::GetField(const CItemField &field) const
+StringX CItemData::GetField(const CItemField &field) const
 {
-  CMyString retval;
+  StringX retval;
   BlowFish *bf = MakeBlowFish();
   field.Get(retval, bf);
   delete bf;
@@ -109,52 +104,63 @@ void CItemData::GetField(const CItemField &field, unsigned char *value, unsigned
   delete bf;
 }
 
-CMyString CItemData::GetName() const
+StringX CItemData::GetName() const
 {
   return GetField(m_Name);
 }
 
-CMyString CItemData::GetTitle() const
+StringX CItemData::GetTitle() const
 {
   return GetField(m_Title);
 }
 
-CMyString CItemData::GetUser() const
+StringX CItemData::GetUser() const
 {
   return GetField(m_User);
 }
 
-CMyString CItemData::GetPassword() const
+StringX CItemData::GetPassword() const
 {
   return GetField(m_Password);
 }
 
-CMyString CItemData::GetNotes(TCHAR delimiter) const
+static void CleanNotes(StringX &s, TCHAR delimiter)
 {
-  CMyString ret = GetField(m_Notes);
   if (delimiter != 0) {
-    ret.Remove(TCHAR('\r'));
-    ret.Replace(TCHAR('\n'), delimiter);
+    StringX r2;
+    for (StringX::iterator iter = s.begin(); iter != s.end(); iter++)
+      switch (*iter) {
+      case TCHAR('\r'): continue;
+      case TCHAR('\n'): r2 += delimiter; continue;
+      default: r2 += *iter;
+      }
+    s = r2;
   }
+}
+
+StringX CItemData::GetNotes(TCHAR delimiter) const
+{
+  StringX ret = GetField(m_Notes);
+  CleanNotes(ret, delimiter);
   return ret;
 }
 
-CMyString CItemData::GetGroup() const
+StringX CItemData::GetGroup() const
 {
   return GetField(m_Group);
 }
 
-CMyString CItemData::GetURL() const
+StringX CItemData::GetURL() const
 {
   return GetField(m_URL);
 }
 
-CMyString CItemData::GetAutoType() const
+StringX CItemData::GetAutoType() const
 {
   return GetField(m_AutoType);
 }
 
-CMyString CItemData::GetTime(int whichtime, int result_format) const
+StringX CItemData::GetTime(int whichtime, int result_format) const
 {
   time_t t;
 
@@ -231,15 +237,15 @@ static void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
 
 void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
-  stringT cs_pwp(GetField(m_PWPolicy));
+  StringX cs_pwp(GetField(m_PWPolicy));
 
   int len = cs_pwp.length();
   pwp.flags = 0;
   if (len == 19)
-    String2PWPolicy(cs_pwp, pwp);
+    String2PWPolicy(cs_pwp.c_str(), pwp);
 }
 
-CMyString CItemData::GetPWPolicy() const
+StringX CItemData::GetPWPolicy() const
 {
   return GetField(m_PWPolicy);
 }
@@ -259,16 +265,16 @@ void CItemData::GetXTimeInt(int &xint) const
   }
 }
 
-CMyString CItemData::GetXTimeInt() const
+StringX CItemData::GetXTimeInt() const
 {
   int xint;
   GetXTimeInt(xint);
   if (xint == 0)
-    return CMyString(_T(""));
+    return _T("");
 
-  ostringstreamT os;
+  oStringXStream os;
   os << xint << ends;
-  return CMyString(os.str().c_str());
+  return os.str();
 }
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
@@ -312,42 +318,46 @@ void CItemData::SetUnknownField(const unsigned char type,
   m_URFL.push_back(unkrfe);
 }
 
-CMyString CItemData::GetPWHistory() const
+StringX CItemData::GetPWHistory() const
 {
-  CMyString ret = GetField(m_PWHistory);
+  StringX ret = GetField(m_PWHistory);
   if (ret == _T("0") || ret == _T("00000"))
     ret = _T("");
   return ret;
 }
 
-CMyString CItemData::GetPlaintext(const TCHAR &separator,
+StringX CItemData::GetPlaintext(const TCHAR &separator,
                                   const FieldBits &bsFields,
                                   const TCHAR &delimiter,
                                   const CItemData *cibase) const
 {
-  CMyString ret(_T(""));
+  StringX ret(_T(""));
 
-  CMyString grouptitle;
-  const CMyString title(GetTitle());
-  const CMyString group(GetGroup());
-  const CMyString user(GetUser());
-  const CMyString url(GetURL());
-  const CMyString notes(GetNotes(delimiter));
+  StringX grouptitle;
+  const StringX title(GetTitle());
+  const StringX group(GetGroup());
+  const StringX user(GetUser());
+  const StringX url(GetURL());
+  const StringX notes(GetNotes(delimiter));
 
   // a '.' in title gets Import confused re: Groups
   grouptitle = title;
-  if (grouptitle.Find(TCHAR('.')) != -1) {
+  if (grouptitle.find(TCHAR('.')) != StringX::npos) {
     if (delimiter != 0) {
-      grouptitle.Replace(TCHAR('.'), delimiter);
+      StringX s;
+      for (StringX::iterator iter = grouptitle.begin();
+           iter != grouptitle.end(); iter++)
+        s += (*iter == TCHAR('.')) ? delimiter : *iter;
+      grouptitle = s;
     } else {
       grouptitle = TCHAR('\"') + title + TCHAR('\"');
     }
   }
 
-  if (!group.IsEmpty())
+  if (!group.empty())
     grouptitle = group + TCHAR('.') + grouptitle;
 
-  CMyString history(_T(""));
+  StringX history(_T(""));
   if (bsFields.test(CItemData::PWHIST)) {
     // History exported as "00000" if empty, to make parsing easier
     BOOL pwh_status;
@@ -366,13 +376,13 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
       history += pwshe.changedate;
       ostringstreamT os1;
       os1 << hex << charT(' ') << setfill(charT('0')) << setw(4)
-          << pwshe.password.GetLength() << charT(' ') << ends;
-      history += CMyString(os1.str().c_str());
+          << pwshe.password.length() << charT(' ') << ends;
+      history += os1.str().c_str();
       history += pwshe.password;
     }
   }
 
-  CMyString csPassword;
+  StringX csPassword;
   if (m_entrytype == ET_ALIAS) {
     ASSERT(cibase != NULL);
     csPassword = _T("[[") + 
@@ -440,9 +450,9 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
     // remove trailing separator
-    if ((CString)ret.Right(1) == separator) {
-      int rl = ret.GetLength();
-      ret.Left(rl - 1);
+    if (ret[ret.length()-1] == separator) {
+      int rl = ret.length();
+      ret = ret.substr(0, rl - 1);
     }
   }
 
@@ -450,23 +460,28 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 }
 
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
-                         TCHAR delimiter, const CItemData *cibase) const
+                         TCHAR delimiter, const CItemData *cibase,
+                         bool bforce_normal_entry) const
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
-  oss << "\t<entry id=\"" << id << "\">" << endl;
+  oss << "\t<entry id=\"" << id << "\"";
+  if (bforce_normal_entry)
+    oss << " normal=\"" << "true" << "\"";
 
-  CMyString tmp;
+  oss << ">" << endl;
+
+  StringX tmp;
   CUTF8Conv utf8conv;
 
   tmp = GetGroup();
-  if (bsExport.test(CItemData::GROUP) && !tmp.IsEmpty())
+  if (bsExport.test(CItemData::GROUP) && !tmp.empty())
     PWSUtil::WriteXMLField(oss, "group", tmp, utf8conv);
 
   // Title mandatory (see pwsafe.xsd)
   PWSUtil::WriteXMLField(oss, "title", GetTitle(), utf8conv);
 
   tmp = GetUser();
-  if (bsExport.test(CItemData::USER) && !tmp.IsEmpty())
+  if (bsExport.test(CItemData::USER) && !tmp.empty())
     PWSUtil::WriteXMLField(oss, "username", tmp, utf8conv);
 
   // Password mandatory (see pwsafe.xsd)
@@ -488,25 +503,23 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
 
   tmp = GetURL();
-  if (bsExport.test(CItemData::URL) && !tmp.IsEmpty())
+  if (bsExport.test(CItemData::URL) && !tmp.empty())
     PWSUtil::WriteXMLField(oss, "url", tmp, utf8conv);
 
   tmp = GetAutoType();
-  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
+  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.empty())
     PWSUtil::WriteXMLField(oss, "autotype", tmp, utf8conv);
 
   tmp = GetNotes();
-  if (bsExport.test(CItemData::NOTES) && !tmp.IsEmpty()) {
-    tmp.Remove(_T('\r'));
-    tmp.Replace(_T('\n'), delimiter);
+  if (bsExport.test(CItemData::NOTES) && !tmp.empty()) {
+    CleanNotes(tmp, delimiter);
     PWSUtil::WriteXMLField(oss, "notes", tmp, utf8conv);
   }
 
   uuid_array_t uuid_array;
   GetUUID(uuid_array);
-  uuid_str_NH_t uuid_buffer;
-  CUUIDGen::GetUUIDStr(uuid_array, uuid_buffer);
-  oss << "\t\t<uuid><![CDATA[" << uuid_buffer << "]]></uuid>" << endl;
+  const CUUIDGen uuid(uuid_array);
+  oss << "\t\t<uuid><![CDATA[" << uuid << "]]></uuid>" << endl;
 
   time_t t;
   int xint;
@@ -539,6 +552,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   GetPWPolicy(pwp);
   if (bsExport.test(CItemData::POLICY) && pwp.flags != 0) {
     oss << "\t\t<PasswordPolicy>" << endl;
+    oss << dec;
     oss << "\t\t\t<PWLength>" << pwp.length << "</PWLength>" << endl;
     if (pwp.flags & PWSprefs::PWPolicyUseLowercase)
       oss << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
@@ -575,6 +589,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     PWHistList PWHistList;
     bool pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
                                           PWHistList, TMC_XML);
+    oss << dec;
     if (pwh_status || pwh_max > 0 || !PWHistList.empty()) {
       oss << "\t\t<pwhistory>" << endl;
       oss << "\t\t\t<status>" << pwh_status << "</status>" << endl;
@@ -593,11 +608,12 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
           const PWHistEntry &pwshe = *hiter;
           oss << "\t\t\t\t\t<changed>" << endl;
           oss << "\t\t\t\t\t\t<date>";
-          if (utf8conv.ToUTF8(pwshe.changedate.Left(10), utf8, utf8Len))
+          if (utf8conv.ToUTF8(pwshe.changedate.substr(0, 10), utf8, utf8Len))
             oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
           oss << "</date>" << endl;
           oss << "\t\t\t\t\t\t<time>";
-          if (utf8conv.ToUTF8(pwshe.changedate.Right(8), utf8, utf8Len))
+          if (utf8conv.ToUTF8(pwshe.changedate.substr(pwshe.changedate.length()-8),
+                              utf8, utf8Len))
             oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
           oss << "</time>" << endl;
           oss << "\t\t\t\t\t</changed>" << endl;
@@ -626,18 +642,19 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       // as hexadecimal, rather than base64 encoding.
       // Easier to debug.
 #ifndef UNK_HEX_REP
-      tmp = (CMyString)PWSUtil::Base64Encode(pdata, length);
+      tmp = PWSUtil::Base64Encode(pdata, length).c_str();
 #else
-      tmp.Empty();
+      tmp.clear();
       unsigned char * pdata2(pdata);
       unsigned char c;
       for (int j = 0; j < (int)length; j++) {
         c = *pdata2++;
-        cs_tmp.Format(_T("%02x"), c);
-        tmp += CMyString(cs_tmp);
+        Format(cs_tmp, _T("%02x"), c);
+        tmp += cs_tmp;
       }
 #endif
-      oss << "\t\t\t<field ftype=\"" << int(type) << "\">" <<  LPCTSTR(tmp) << "</field>" << endl;
+      oss << "\t\t\t<field ftype=\"" << int(type) << "\">"
+          << tmp.c_str() << "</field>" << endl;
       trashMemory(pdata, length);
       delete[] pdata;
     } // iteration over unknown fields
@@ -648,28 +665,28 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   return oss.str();
 }
 
-void CItemData::SplitName(const CMyString &name,
-                          CMyString &title, CMyString &username)
+void CItemData::SplitName(const StringX &name,
+                          StringX &title, StringX &username)
 {
-  int pos = name.Find(SPLTCHR);
-  if (pos==-1) {//Not a split name
-    int pos2 = name.Find(DEFUSERCHR);
-    if (pos2 == -1)  {//Make certain that you remove the DEFUSERCHR
+  StringX::size_type pos = name.find(SPLTCHR);
+  if (pos == StringX::npos) {//Not a split name
+    StringX::size_type pos2 = name.find(DEFUSERCHR);
+    if (pos2 == StringX::npos)  {//Make certain that you remove the DEFUSERCHR
       title = name;
     } else {
-      title = CMyString(name.Left(pos2));
+      title = (name.substr(0, pos2));
     }
   } else {
     /*
     * There should never ever be both a SPLITCHR and a DEFUSERCHR in
     * the same string
     */
-    CMyString temp;
-    temp = CMyString(name.Left(pos));
-    temp.TrimRight();
+    StringX temp;
+    temp = name.substr(0, pos);
+    TrimRight(temp);
     title = temp;
-    temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
-    temp.TrimLeft();
+    temp = name.substr(pos+1); // Zero-index string
+    TrimLeft(temp);
     username = temp;
   }
 }
@@ -677,14 +694,15 @@ void CItemData::SplitName(const CMyString &name,
 //-----------------------------------------------------------------------------
 // Setters
 
-void CItemData::SetField(CItemField &field, const CMyString &value)
+void CItemData::SetField(CItemField &field, const StringX &value)
 {
   BlowFish *bf = MakeBlowFish();
   field.Set(value, bf);
   delete bf;
 }
 
-void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
+void CItemData::SetField(CItemField &field,
+                         const unsigned char *value, unsigned int length)
 {
   BlowFish *bf = MakeBlowFish();
   field.Set(value, length, bf);
@@ -699,17 +717,17 @@ void CItemData::CreateUUID()
   SetUUID(uuid_array);
 }
 
-void CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
+void CItemData::SetName(const StringX &name, const StringX &defaultUsername)
 {
   // the m_name is from pre-2.0 versions, and may contain the title and user
   // separated by SPLTCHR. Also, DEFUSERCHR signified that the default username is to be used.
   // Here we fill the title and user fields so that
   // the application can ignore this difference after an ItemData record
   // has been created
-  CMyString title, user;
-  int pos = name.Find(DEFUSERCHR);
-  if (pos != -1) {
-    title = CMyString(name.Left(pos));
+  StringX title, user;
+  StringX::size_type pos = name.find(DEFUSERCHR);
+  if (pos != StringX::npos) {
+    title = name.substr(0, pos);
     user = defaultUsername;
   } else
     SplitName(name, title, user);
@@ -722,75 +740,75 @@ void CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
   delete bf;
 }
 
-void CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
+void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
 {
   if (delimiter == 0)
     SetField(m_Title, title);
   else {
-    CMyString new_title(_T(""));
-    CMyString newCString, tmpCString;
-    int pos = 0;
+    StringX new_title(_T(""));
+    StringX newstringT, tmpstringT;
+    StringX::size_type pos = 0;
 
-    newCString = title;
+    newstringT = title;
     do {
-      pos = newCString.Find(delimiter);
-      if ( pos != -1 ) {
-        new_title += CMyString(newCString.Left(pos)) + _T(".");
+      pos = newstringT.find(delimiter);
+      if ( pos != StringX::npos ) {
+        new_title += newstringT.substr(0, pos) + _T(".");
 
-        tmpCString = CMyString(newCString.Mid(pos + 1));
-        newCString = tmpCString;
+        tmpstringT = newstringT.substr(pos + 1);
+        newstringT = tmpstringT;
       }
-    } while ( pos != -1 );
+    } while ( pos != StringX::npos );
 
-    if (!newCString.IsEmpty())
-      new_title += newCString;
+    if (!newstringT.empty())
+      new_title += newstringT;
 
     SetField(m_Title, new_title);
   }
 }
 
-void CItemData::SetUser(const CMyString &user)
+void CItemData::SetUser(const StringX &user)
 {
   SetField(m_User, user);
 }
 
-void CItemData::SetPassword(const CMyString &password)
+void CItemData::SetPassword(const StringX &password)
 {
   SetField(m_Password, password);
 }
 
-void CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
+void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
 {
   if (delimiter == 0)
     SetField(m_Notes, notes);
   else {
-    const CMyString CRLF = _T("\r\n");
-    CMyString multiline_notes(_T(""));
+    const StringX CRLF = _T("\r\n");
+    StringX multiline_notes(_T(""));
 
-    CMyString newCString;
-    CMyString tmpCString;
+    StringX newstringT;
+    StringX tmpstringT;
 
-    int pos = 0;
+    StringX::size_type pos = 0;
 
-    newCString = notes;
+    newstringT = notes;
     do {
-      pos = newCString.Find(delimiter);
-      if ( pos != -1 ) {
-        multiline_notes += CMyString(newCString.Left(pos)) + CRLF;
+      pos = newstringT.find(delimiter);
+      if ( pos != StringX::npos ) {
+        multiline_notes += newstringT.substr(0, pos) + CRLF;
 
-        tmpCString = CMyString(newCString.Mid(pos + 1));
-        newCString = tmpCString;
+        tmpstringT = newstringT.substr(pos + 1);
+        newstringT = tmpstringT;
       }
-    } while ( pos != -1 );
+    } while ( pos != StringX::npos );
 
-    if (!newCString.IsEmpty())
-      multiline_notes += newCString;
+    if (!newstringT.empty())
+      multiline_notes += newstringT;
 
     SetField(m_Notes, multiline_notes);
   }
 }
 
-void CItemData::SetGroup(const CMyString &title)
+void CItemData::SetGroup(const StringX &title)
 {
   SetField(m_Group, title);
 }
@@ -800,12 +818,12 @@ void CItemData::SetUUID(const uuid_array_t &UUID)
   SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
 }
 
-void CItemData::SetURL(const CMyString &URL)
+void CItemData::SetURL(const StringX &URL)
 {
   SetField(m_URL, URL);
 }
 
-void CItemData::SetAutoType(const CMyString &autotype)
+void CItemData::SetAutoType(const StringX &autotype)
 {
   SetField(m_AutoType, autotype);
 }
@@ -841,11 +859,11 @@ void CItemData::SetTime(int whichtime, time_t t)
   }
 }
 
-bool CItemData::SetTime(int whichtime, const CString &time_str)
+bool CItemData::SetTime(int whichtime, const stringT &time_str)
 {
   time_t t(0);
 
-  if (time_str.IsEmpty()) {
+  if (time_str.empty()) {
     SetTime(whichtime, t);
     return true;
   } else
@@ -870,17 +888,18 @@ void CItemData::SetXTimeInt(int &xint)
    SetField(m_XTimeInterval, (const unsigned char *)&xint, sizeof(int));
 }
 
-bool CItemData::SetXTimeInt(const CString &xint_str)
+bool CItemData::SetXTimeInt(const stringT &xint_str)
 {
   int xint(0);
 
-  if (xint_str.IsEmpty()) {
+  if (xint_str.empty()) {
     SetXTimeInt(xint);
     return true;
   }
 
-  if (xint_str.SpanIncluding(CString(_T("0123456789"))) == xint_str) {
-    xint = _ttoi(xint_str);
+  if (xint_str.find_first_not_of(_T("0123456789")) == stringT::npos) {
+    istringstreamT is(xint_str);
+    is >> xint;
     if (xint >= 0 && xint <= 3650) {
       SetXTimeInt(xint);
       return true;
@@ -889,9 +908,9 @@ bool CItemData::SetXTimeInt(const CString &xint_str)
   return false;
 }
 
-void CItemData::SetPWHistory(const CMyString &PWHistory)
+void CItemData::SetPWHistory(const StringX &PWHistory)
 {
-  CMyString pwh = PWHistory;
+  StringX pwh = PWHistory;
   if (pwh == _T("0") || pwh == _T("00000"))
     pwh = _T("");
   SetField(m_PWHistory, pwh);
@@ -903,7 +922,7 @@ void CItemData::SetPWPolicy(const PWPolicy &pwp)
   bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
   bool bother_flags = (pwp.flags & (~PWSprefs::PWPolicyUseHexDigits)) != 0;
 
-  CMyString cs_pwp;
+  StringX cs_pwp;
   if (pwp.flags == 0 || (bhex_flag && bother_flags)) {
     cs_pwp = _T("");
   } else {
@@ -922,21 +941,21 @@ void CItemData::SetPWPolicy(const PWPolicy &pwp)
   SetField(m_PWPolicy, cs_pwp);
 }
 
-bool CItemData::SetPWPolicy(const CString &cs_pwp)
+bool CItemData::SetPWPolicy(const stringT &cs_pwp)
 {
   // Basic sanity checks
-  if (cs_pwp.IsEmpty()) {
-    SetField(m_PWPolicy, cs_pwp);
+  if (cs_pwp.empty()) {
+    SetField(m_PWPolicy, cs_pwp.c_str());
     return true;
   }
-  if (cs_pwp.GetLength() < 19)
+  if (cs_pwp.length() < 19)
     return false;
 
   // Parse policy string, more sanity checks
   // See String2PWPolicy for valid format
   PWPolicy pwp;
   String2PWPolicy(stringT(cs_pwp), pwp);
-  CString cs_pwpolicy(cs_pwp);
+  StringX cs_pwpolicy(cs_pwp.c_str());
 
   // Must be some flags; however hex incompatible with other flags
   bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
@@ -948,7 +967,7 @@ bool CItemData::SetPWPolicy(const CString &cs_pwp)
       pwp.length > 1024 || total_sublength > pwp.length ||
       pwp.digitminlength > 1024 || pwp.lowerminlength > 1024 ||
       pwp.symbolminlength > 1024 || pwp.upperminlength > 1024) {
-    cs_pwpolicy.Empty();
+    cs_pwpolicy.clear();
   }
 
   SetField(m_PWPolicy, cs_pwpolicy);
@@ -1054,8 +1073,8 @@ bool CItemData::ValidatePWHistory()
   if (m_PWHistory.IsEmpty())
     return true;
 
-  CMyString pwh = GetPWHistory();
-  if (pwh.GetLength() < 5) { // not empty, but too short.
+  const StringX pwh = GetPWHistory();
+  if (pwh.length() < 5) { // not empty, but too short.
     SetPWHistory(_T(""));
     return false;
   }
@@ -1081,17 +1100,16 @@ bool CItemData::ValidatePWHistory()
     pwh_max = listnum;
 
   // Rebuild PWHistory from the data we have
-  CMyString history;
-  history = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
+  StringX history = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
 
   PWHistList::iterator iter;
   for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
     const PWHistEntry &pwshe = *iter;
     history += pwshe.changedate;
-    ostringstreamT os1;
+    oStringXStream os1;
     os1 << hex << setfill(charT('0')) << setw(4)
-        << pwshe.password.GetLength();
-    history += CMyString(os1.str().c_str());
+        << pwshe.password.length();
+    history += os1.str();
     history += pwshe.password;
   }
   SetPWHistory(history);
@@ -1099,12 +1117,12 @@ bool CItemData::ValidatePWHistory()
   return false;
 }
 
-bool CItemData::Matches(const CString &string1, int iObject,
+bool CItemData::Matches(const stringT &string1, int iObject,
                         int iFunction) const
 {
   ASSERT(iFunction != 0); // must be positive or negative!
 
-  CMyString csObject;
+  StringX csObject;
   switch(iObject) {
     case GROUP:
       csObject = GetGroup();
@@ -1134,7 +1152,7 @@ bool CItemData::Matches(const CString &string1, int iObject,
       ASSERT(0);
   }
 
-  const bool bValue = !csObject.IsEmpty();
+  const bool bValue = !csObject.empty();
   if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
     return PWSMatch::Match(bValue, iFunction);
   }
@@ -1142,7 +1160,7 @@ bool CItemData::Matches(const CString &string1, int iObject,
   if (!bValue) // String empty - always return false for other comparisons
     return false;
   else
-    return PWSMatch::Match(string1, csObject, iFunction);
+    return PWSMatch::Match(string1.c_str(), csObject, iFunction);
 }
 
 bool CItemData::Matches(int num1, int num2, int iObject,
@@ -1268,7 +1286,7 @@ bool CItemData::WillExpire(const int numdays)
     return false;
 }
 
-static bool pull_string(CMyString &str, unsigned char *data, int len)
+static bool pull_string(StringX &str, unsigned char *data, int len)
 {
   CUTF8Conv utf8conv;
   vector<unsigned char> v(data, (data + len));
@@ -1321,7 +1339,7 @@ bool CItemData::DeserializePlainText(const std::vector<char> &v)
 
   while (iter != v.end()) {
     int type = (*iter++ & 0xff); // required since enum is an int
-    if ((v.end() - iter) < sizeof(size_t)) {
+    if (size_t(v.end() - iter) < sizeof(size_t)) {
       ASSERT(0); // type must ALWAYS be followed by length
       return false;
     }
@@ -1346,7 +1364,7 @@ bool CItemData::DeserializePlainText(const std::vector<char> &v)
 
 bool CItemData::SetField(int type, unsigned char *data, int len)
 {
-  CMyString str;
+  StringX str;
   time_t t;
   int xint;
   switch (type) {
@@ -1404,7 +1422,7 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
       break;
     case POLICY:
       if (!pull_string(str, data, len)) return false;
-      SetPWPolicy(str);
+      SetPWPolicy(str.c_str());
       break;
     case RMTIME:
       if (!pull_time(t, data, len)) return false;
@@ -1439,9 +1457,9 @@ static void push_length(vector<char> &v, unsigned int s)
 }
 
 static void push_string(vector<char> &v, char type,
-                        const CMyString &str)
+                        const StringX &str)
 {
-  if (!str.IsEmpty()) {
+  if (!str.empty()) {
     CUTF8Conv utf8conv;
     bool status;
     const unsigned char *utf8;
@@ -1452,7 +1470,8 @@ static void push_string(vector<char> &v, char type,
       push_length(v, utf8Len);
       v.insert(v.end(), (char *)utf8, (char *)utf8 + utf8Len);
     } else
-      TRACE(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"), str);
+      TRACE(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"),
+            str.c_str());
   }
 }
 
@@ -1479,7 +1498,7 @@ static void push_int(vector<char> &v, char type, int i)
 
 void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
 {
-  CMyString tmp;
+  StringX tmp;
   uuid_array_t uuid_array;
   time_t t = 0;
   int xi = 0;

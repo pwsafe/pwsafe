@@ -7,7 +7,7 @@
 */
 
 /**
- * \file XString.h
+ * \file StringX.h
  *
  * STL-based implementation of secure strings.
  * Like std::string in all respects, except that
@@ -22,7 +22,9 @@
 
 #include <memory>
 #include <limits>
-
+#include <cstdlib> // for malloc
+#include <cstring> // for memset
+#include "os/typedefs.h"
 namespace S_Alloc
 {
 
@@ -87,7 +89,7 @@ namespace S_Alloc
 
       // Allocate raw memory
       pointer allocate(size_type n, const void* = NULL) {
-        void* p = malloc(n * sizeof(T));
+        void* p = std::malloc(n * sizeof(T));
         // TRACE(_T("Securely Allocated %d bytes at %p\n"), n * sizeof(T), p);
         if(p == NULL)
           throw std::bad_alloc();
@@ -107,11 +109,11 @@ namespace S_Alloc
 
         if (n > 0) {
           const size_type N = n * sizeof(T);
-          memset(p, 0x55, N);
-          memset(p, 0xAA, N);
-          memset(p, 0x00, N);
+          std::memset(p, 0x55, N);
+          std::memset(p, 0xAA, N);
+          std::memset(p, 0x00, N);
         }
-        free(p);
+        std::free(p);
       }
 
     private:
@@ -144,6 +146,26 @@ typedef std::basic_string<char,
                           S_Alloc::SecureAlloc<char> > StringX;
 #endif
 
+// Following should really be StringX member functions, but there's no 
+// elegant way of extending a template class without public inheritance, 
+// including duplicating large parts of the interface
+//
+// Since we need the for stringT as well, we might as well templatize them
+// (In for a dime, in for a $).
+
+template<class T> int CompareNoCase(const T &s1, const T &s2);
+template<class T> void ToLower(T &s);
+template<class T> void ToUpper(T &s);
+template<class T> T &TrimRight(T &s, const TCHAR *set = NULL);
+template<class T> T & TrimLeft(T &s, const TCHAR *set = NULL);
+template<class T> T &Trim(T &s, const TCHAR *set = NULL);
+template<class T> void EmptyIfOnlyWhiteSpace(T &s);
+template<class T> int Replace(T &s, TCHAR from, TCHAR to);
+template<class T> int Replace(T &s, const T &from, const T &to);
+template<class T> int Remove(T &s, TCHAR c);
+template<class T> void Format(T &s, const TCHAR *fmt, ...);
+template<class T> void Format(T &s, int fmt, ...);
+template<class T> void LoadAString(T &s, int id);
 #endif
 //-----------------------------------------------------------------------------
 // Local variables:

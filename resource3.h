@@ -177,8 +177,6 @@
 #define IDS_RECORDSIMPORTED             5338
 #define IDS_RECORDSNOTREAD              5339
 #define IDS_PICKKEEPASSFILE             5340
-#define IDS_MISSINGXSD                  5341
-#define IDS_CANTVALIDATEXML             5342
 #define IDS_PICKXMLFILE                 5343
 #define IDS_FAILEDXMLVALIDATE           5344
 #define IDS_XMLERRORS                   5345
@@ -480,7 +478,10 @@
 #define IDS_FILTEREXPORT                5643
 #define IDS_FILTERAPPLY                 5644
 #define IDS_MINIMIZECONFLICT            5645
-#define IDS_NEWSAMEASOLD                5646
-#define IDS_MPW_CHANGE_REGULAR          5647
-#define IDS_MPW_CHANGE_EXP              5648
-#define IDS_MPW_CANT_CHANGE_EXP         5649
+#define IDS_CLICKTOCOPY                 5646
+#define IDS_SUBSETINDEXZERO             5647
+#define IDS_SUBSETINDEXTOOBIG           5648
+#define IDS_NEWSAMEASOLD                5649
+#define IDS_MPW_CHANGE_REGULAR          5650
+#define IDS_MPW_CHANGE_EXP              5651
+#define IDS_MPW_CANT_CHANGE_EXP         5652

@@ -168,7 +168,8 @@ void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
   SetBitmapBackground(m_NOTOKbitmap, crCOLOR_3DFACE);
 
   // Set bitmap in Static
-  SetBitmap((HBITMAP)m_OKbitmap);
+  m_bState = false;
+  SetBitmap((HBITMAP)m_NOTOKbitmap);
 }
 
 BEGIN_MESSAGE_MAP(CDDStatic, CStaticExtn)
@@ -384,7 +385,8 @@ void CDDStatic::SendToClipboard()
     }
   }
 
-  CMyString cs_dragdata;
+  StringX cs_dragdata;
+  StringX::size_type ipos;
   switch (m_nID) {
     case IDC_STATIC_DRAGGROUP:
       cs_dragdata = pci->GetGroup();
@@ -403,6 +405,15 @@ void CDDStatic::SendToClipboard()
       break;
     case IDC_STATIC_DRAGURL:
       cs_dragdata = pci->GetURL();
+      ipos = cs_dragdata.find(_T("[alt]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("[ssh]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("{alt}"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
       break;
     default:
       return;
@@ -470,7 +481,8 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     }
   }
 
-  CMyString cs_dragdata;
+  StringX cs_dragdata;
+  StringX::size_type ipos;
   switch (m_nID) {
     case IDC_STATIC_DRAGGROUP:
       cs_dragdata = pci->GetGroup();
@@ -489,12 +501,21 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       break;
     case IDC_STATIC_DRAGURL:
       cs_dragdata = pci->GetURL();
+      ipos = cs_dragdata.find(_T("[alt]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("[ssh]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("{alt}"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
       break;
     default:
       return FALSE;
   }
 
-  const int ilen = cs_dragdata.GetLength();
+  const int ilen = cs_dragdata.length();
   if (ilen == 0) {
     // Nothing to do - why were we even called???
     return FALSE;
@@ -512,20 +533,19 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     lpszW = new WCHAR[ilen + 1];
     TRACE(_T("lpszW allocated %p, size %d\n"), lpszW, dwBufLen);
 #if (_MSC_VER >= 1400)
-    (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata, ilen);
+    (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata.c_str(), ilen);
 #else
     (void)wcsncpy(lpszW, cs_dragdata, ilen);
     lpszW[ilen] = L'\0';
 #endif
   } else {
     // They want it in ASCII - use lpszW temporarily
-    lpszW = cs_dragdata.GetBuffer(ilen + 1);
+    lpszW = const_cast<LPWSTR>(cs_dragdata.c_str());
     dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
     ASSERT(dwBufLen != 0);
     lpszA = new char[dwBufLen];
     TRACE(_T("lpszA allocated %p, size %d\n"), lpszA, dwBufLen);
     WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
-    cs_dragdata.ReleaseBuffer();
     lpszW = NULL;
   }
 #else
@@ -536,19 +556,18 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     lpszA = new char[ilen + 1];
     TRACE(_T("lpszA allocated %p, size %d\n"), lpszA, dwBufLen);
 #if (_MSC_VER >= 1400)
-    (void) strncpy_s(lpszA, ilen + 1, cs_dragdata, ilen);
+    (void) strncpy_s(lpszA, ilen + 1, cs_dragdata.c_str(), ilen);
 #else
-    (void)strncpy(lpszA, cs_dragdata, ilen);
+    (void)strncpy(lpszA, cs_dragdata.c_str(), ilen);
     lpszA[ilen] = '\0';
 #endif
   } else {
     // They want it in UNICODE - use lpszA temporarily
-    lpszA = cs_dragdata.GetBuffer(ilen + 1);
+    lpszA = const_cast<LPSTR>(cs_dragdata.c_str());
     dwBufLen = MultiByteToWideChar(CP_ACP, 0, lpszA, -1, NULL, NULL);
     lpszW = new WCHAR[dwBufLen];
     TRACE(_T("lpszW allocated %p, size %d\n"), lpszW, dwBufLen);
     MultiByteToWideChar(CP_ACP, 0, lpszA, -1, lpszW, dwBufLen);
-    cs_dragdata.ReleaseBuffer();
     lpszA = NULL;
   }
 #endif

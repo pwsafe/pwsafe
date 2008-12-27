@@ -48,6 +48,8 @@
 // for finding current propertysheet:
 #include "PWPropertyPage.h"
 
+#include "MFCMessages.h"
+
 using namespace std;
 
 #ifdef _DEBUG
@@ -65,6 +67,12 @@ BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
   //  ON_COMMAND(ID_HELP, CWinApp::OnHelp)
   ON_COMMAND(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
+
+static MFCReporter aReporter;
+
+//#ifdef _DEBUG
+//static CMemoryState oldMemState, newMemState, diffMemState;
+//#endif
 
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
@@ -97,6 +105,10 @@ ThisMfcApp::ThisMfcApp() :
     AfxMessageBox(cs_msg);
   }
 #endif
+  // Set this process to be one of the first to be shut down:
+  SetProcessShutdownParameters(0x3ff, 0);
+  PWSprefs::SetReporter(&aReporter);
+  PWScore::SetReporter(&aReporter);
   EnableHtmlHelp();
   CoInitialize(NULL); // Initializes the COM library (for XML processing)
   AfxOleInit();
@@ -120,6 +132,14 @@ ThisMfcApp::~ThisMfcApp()
   // here, and (2) is irrelevant for HH_CLOSE_ALL, so we call ::HtmlHelp
   ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 #endif
+//#ifdef _DEBUG
+//  newMemState.Checkpoint();
+//  if (diffMemState.Difference(oldMemState, newMemState)) {
+//    TRACE( "Memory leaked!\n" );
+//    diffMemState.DumpAllObjectsSince();
+//    return;
+//  }
+//#endif
 }
 
 #if !defined(POCKET_PC)
@@ -248,11 +268,13 @@ void ThisMfcApp::LoadLocalizedStuff()
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, szLang, 4);
     ASSERT(inum == 3);
     _tcsupr(szLang);
-    TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"), PWSUtil::GetTimeStamp(), szLang);
+    TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"),
+          PWSUtil::GetTimeStamp(), szLang);
 
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, szCtry, 4);
     ASSERT(inum == 3);
-    TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"), PWSUtil::GetTimeStamp(), szCtry);
+    TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"),
+          PWSUtil::GetTimeStamp(), szCtry);
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
@@ -278,7 +300,8 @@ void ThisMfcApp::LoadLocalizedStuff()
       FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
-      TRACE(_T("%s Using language DLL '%s'.\n"), PWSUtil::GetTimeStamp(), cs_ResPath);
+      TRACE(_T("%s Using language DLL '%s'.\n"),
+            PWSUtil::GetTimeStamp(), cs_ResPath);
     }
   } // end of resource dll hunt
 
@@ -339,13 +362,15 @@ void ThisMfcApp::LoadLocalizedStuff()
     _tcslwr(fname);
 #endif
     cs_HelpPath.Format(_T("%s%s"), fname, ext);
-    TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
+    TRACE(_T("%s Using help file: %s\n"),
+          PWSUtil::GetTimeStamp(), cs_HelpPath);
   }
 
   if (m_pszHelpFilePath != NULL)
     free((void*)m_pszHelpFilePath);
   m_pszHelpFilePath = _tcsdup(cs_HelpPath);
-  TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
+  TRACE(_T("%s Using help file: %s\n"),
+        PWSUtil::GetTimeStamp(), cs_HelpPath);
 
   m_csHelpFile = cs_HelpPath;
 }
@@ -410,27 +435,29 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             return false;
           }
           // get password from user
-          CMyString passkey;
+          StringX passkey;
           CCryptKeyEntry dlg(NULL);
           INT_PTR nResponse = dlg.DoModal();
 
           if (nResponse == IDOK) {
-            passkey = dlg.m_cryptkey1;
+            passkey = LPCTSTR(dlg.m_cryptkey1);
           } else {
             return false;
           }
 
           BOOL status;
           if (isEncrypt) {
-            status = PWSfile::Encrypt(*(arg + 1), passkey);
+            stringT errstr;
+            status = PWSfile::Encrypt(stringT(*(arg + 1)), passkey, errstr);
             if (!status) {
-              AfxMessageBox(IDS_ENCRYPTIONFAILED);
+              AfxMessageBox(errstr.c_str(), MB_ICONEXCLAMATION|MB_OK);
             }
             return true;
           } else {
-            status = PWSfile::Decrypt(*(arg+1), passkey);
+            stringT errstr;
+            status = PWSfile::Decrypt(stringT(*(arg+1)), passkey, errstr);
             if (!status) {
-              // nothing to do - Decrypt displays its own error messages
+              AfxMessageBox(errstr.c_str(), MB_ICONEXCLAMATION|MB_OK);
             }
             return true;
           }
@@ -481,7 +508,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             return FALSE;
           } else {
             arg++;
-            PWSprefs::SetConfigFile(*arg);
+            PWSprefs::SetConfigFile(stringT(*arg));
           }
         break;
         default:
@@ -491,7 +518,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
       } else { // arg isn't a flag, treat it as a filename
         if (CheckFile(*arg)) {
           fileGiven = true;
-          m_core.SetCurFile(*arg);
+          m_core.SetCurFile(arg->GetString());
         } else {
           return false;
         }
@@ -600,7 +627,7 @@ BOOL ThisMfcApp::InitInstance()
 #endif
 
 
-  if (m_core.GetCurFile().IsEmpty())
+  if (m_core.GetCurFile().empty())
     m_core.SetCurFile(prefs->GetPref(PWSprefs::CurrentFile));
 
   int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);

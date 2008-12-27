@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.13">
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.15">
 
 <xs:annotation>
   <xs:documentation xml:lang="en">
-    This XML Schema corresponds to V3.13 of Password Safe.
+    This XML Schema corresponds to V3.15 of Password Safe.
     As each new version is a 'superset' of previous versions, the current version of Password Safe
     will be able to import XML files created by all prior versions.
     However, in V3.13 element 'ltime' has been replaced by 'xtime' for the Password Expiry Time.
@@ -39,54 +39,54 @@
 </xs:complexType>
 
 <xs:simpleType name="expirydaysType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="1" />
     <xs:maxInclusive value="3650" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="fieldType">
-  <xs:restriction base="xs:integer">
-    <xs:minInclusive value="16" />
+  <xs:restriction base="xs:int">
+    <xs:minInclusive value="18" />
     <xs:maxExclusive value="255" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="numhashType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="2048" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="fileuuidType">
   <xs:restriction base="xs:string">
-    <xs:pattern value="[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA­Z]{12}" />
+    <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA­F]{12}" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="boolType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
     <xs:maxInclusive value="1" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="passwordlengthType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="4" />
     <xs:maxInclusive value="1024" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="passwordlengthType2">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
     <xs:maxInclusive value="1024" />
   </xs:restriction>
 </xs:simpleType>
 
 <xs:simpleType name="timeoutType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="1" />
     <xs:maxInclusive value="120" />
   </xs:restriction>
@@ -101,7 +101,7 @@
 </xs:simpleType>
 
 <xs:simpleType name="pwhistoryType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
     <xs:maxInclusive value="255" />
   </xs:restriction>
@@ -208,7 +208,7 @@
                                 <xs:element name="changed" type="datetimestampType" minOccurs="1" maxOccurs="1" />
                                 <xs:element name="oldpassword" type="stringType" minOccurs="1" maxOccurs="1" />
                               </xs:all>
-                              <xs:attribute name="num" type="xs:integer" use="optional" />
+                              <xs:attribute name="num" type="xs:int" use="optional" />
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
@@ -256,7 +256,8 @@
               <!-- End Unknown Record Fields -->
               </xs:element>
             </xs:all>
-            <xs:attribute name="id" type="xs:integer" use="optional" />
+            <xs:attribute name="id" type="xs:int" use="optional" />
+            <xs:attribute name="normal" type="xs:boolean" use="optional" />
           </xs:complexType>
         <!-- End Database Entries -->
         </xs:element>

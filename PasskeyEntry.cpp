@@ -16,7 +16,7 @@ down the streetsky.  [Groucho Marx]
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/Pwsdirs.h"
-#include "corelib/PWSfile.h"
+#include "corelib/os/file.h"
 #include "corelib/pwsprefs.h"
 #include "ThisMfcApp.h"
 #include "AdvancedDlg.h"
@@ -29,7 +29,7 @@ down the streetsky.  [Groucho Marx]
 #include "resource3.h"  // String resources
 #endif
 
-#include "corelib/MyString.h"
+#include "SecString.h"
 
 #include "SysColStatic.h"
 
@@ -78,6 +78,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_message = a_filespec;
   m_bsFields.set();
+  // m_ctlPasskey.SetSecure(false); // test hack for B. XXX
 }
 
 CPasskeyEntry::~CPasskeyEntry()
@@ -204,7 +205,7 @@ CPasskeyEntry::OnInitDialog(void)
 
     const int N = mru->GetSize();
 
-    std::vector<CMyString> cs_tooltips;
+    std::vector<CSecString> cs_tooltips;
 
     if (!m_filespec.IsEmpty()) {
       cs_tooltips.push_back(m_filespec);
@@ -303,12 +304,12 @@ void CPasskeyEntry::OnCreateDb()
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
-  CString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX );
+  stringT v3FileName = PWSUtil::GetNewFileName(LPCTSTR(cf), DEFAULT_SUFFIX );
 
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   v3FileName,
+                   v3FileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    SUFFIX3_FILTERS
@@ -395,7 +396,7 @@ void CPasskeyEntry::OnOK()
     return;
   }
 
-  if (!PWSfile::FileExists(m_filespec)) {
+  if (!pws_os::FileExists(m_filespec.GetString())) {
     AfxMessageBox(IDS_FILEPATHNOTFOUND);
     if (m_MRU_combo.IsWindowVisible())
       m_MRU_combo.SetFocus();
@@ -405,7 +406,7 @@ void CPasskeyEntry::OnOK()
   DboxMain* pDbx = (DboxMain*) GetParent();
   ASSERT(pDbx != NULL);
 
-  if (pDbx->CheckPassword(m_filespec, m_passkey) != PWScore::SUCCESS) {
+  if (pDbx->CheckPassword(LPCTSTR(m_filespec), LPCTSTR(m_passkey)) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
 
@@ -413,6 +414,13 @@ void CPasskeyEntry::OnOK()
       if (nResponse == IDOK) {
       } else if (nResponse == IDCANCEL) {
         m_status = errorDlg.GetCancelReturnValue();
+        if (m_status == TAR_OPEN) { // open another
+          PostMessage(WM_COMMAND, IDC_BTN_BROWSE);
+          return;
+        } else if (m_status == TAR_NEW) { // create new
+          PostMessage(WM_COMMAND, IDC_CREATE_DB);
+          return;
+        }
         CPWDialog::OnCancel();
       }
     } else {
@@ -438,11 +446,28 @@ void CPasskeyEntry::OnHelp()
 }
 
 //-----------------------------------------------------------------------------
+
+void CPasskeyEntry::UpdateRO()
+{
+  if (!m_bForceReadOnly) { // if allowed, changed r-o state to reflect file's permission
+    bool fro;
+    if (pws_os::FileExists(LPCTSTR(m_filespec), fro) && fro) {
+      m_PKE_ReadOnly = TRUE;
+      GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+    } else { // no file or write-enabled
+      m_PKE_ReadOnly = FALSE;
+      GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+    }
+    UpdateData(FALSE);
+  } // !m_bForceReadOnly
+}
+
 void CPasskeyEntry::OnComboEditChange()
 {
   m_MRU_combo.m_edit.GetWindowText(m_filespec);
   m_ctlPasskey.EnableWindow(TRUE);
   m_ctlOK.EnableWindow(TRUE);
+  UpdateRO();
 }
 
 void CPasskeyEntry::OnComboSelChange()
@@ -462,6 +487,7 @@ void CPasskeyEntry::OnComboSelChange()
   m_ctlPasskey.EnableWindow(TRUE);
   m_ctlPasskey.SetFocus();
   m_ctlOK.EnableWindow(TRUE);
+  UpdateRO();
 }
 
 void CPasskeyEntry::OnOpenFileBrowser()
@@ -507,7 +533,8 @@ void CPasskeyEntry::OnOpenFileBrowser()
     if (m_ctlPasskey.IsWindowEnabled() == TRUE) {
       m_ctlPasskey.SetFocus();
     }
-  }
+    UpdateRO();
+  } // rc == IDOK
 }
 
 void CPasskeyEntry::SetHeight(const int num)

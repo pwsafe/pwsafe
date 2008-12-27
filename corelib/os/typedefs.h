@@ -20,6 +20,11 @@
  * lousy include order dependencies.
  */
 
+// Sometimes we need specific ones irrespective of in Unicode mode or not.
+// In particular, the underlying format of most XML is Unicode.
+typedef std::wstring wstringT;
+typedef std::string  cstringT;
+
 #ifdef UNICODE
 typedef std::wstring stringT;
 typedef wchar_t charT;
@@ -31,6 +36,7 @@ typedef char charT;
 #endif
 
 #ifdef _WIN32
+#include "TCHAR.h"
 typedef char    int8;
 typedef short   int16;
 typedef int     int32;
@@ -45,8 +51,12 @@ typedef unsigned __int64   ulong64;
 typedef unsigned long      ulong32;
 
 typedef unsigned int uint;
+
+typedef void *HANDLE;
+
 #else /* !defined(_WIN32) */
 #include <sys/types.h>
+#include "linux/pws_time.h"
 typedef int8_t  int8;
 typedef int16_t int16;
 typedef int32_t int32;
@@ -57,24 +67,34 @@ typedef u_int16_t uint16;
 typedef u_int32_t uint32;
 typedef u_int64_t uint64;
 
+typedef int errno_t;
+
 #ifdef UNICODE
 #define _T(x) L ## x
 typedef wchar_t TCHAR;
 #else
 #define _T(x) x
 typedef char TCHAR;
+typedef wchar_t WCHAR;
 #endif /* UNICODE */
 // mimic Microsoft conventional typdefs:
 typedef TCHAR *LPTSTR;
 typedef const TCHAR *LPCTSTR;
 typedef bool BOOL;
 typedef unsigned char BYTE;
+typedef unsigned short WORD;
+typedef unsigned long DWORD;
+#define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
+#define HIWORD(ul) (WORD(DWORD(ul) >> 16))
+typedef long LPARAM;
 typedef unsigned int UINT;
-typedef stringT CString; // XXX at least for now...
+typedef int HANDLE;
+#define INVALID_HANDLE_VALUE HANDLE(-1)
 
 // assorted conveniences:
 #define ASSERT(p) assert(p)
-#define TRACE(s) // nothing, for now...
+#define VERIFY(p) if (!(p)) TRACE("VERIFY Failed")
+#define TRACE(...) // nothing, for now...
 #define TRUE true
 #define FALSE false
 #endif /* _WIN32 */

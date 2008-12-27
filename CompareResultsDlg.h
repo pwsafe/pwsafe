@@ -12,7 +12,7 @@
 
 #include "PWResizeDialog.h"
 #include "corelib/ItemData.h"
-#include "corelib/MyString.h"
+#include "SecString.h"
 #include "corelib/PWScore.h"
 #include "corelib/Report.h"
 #include "corelib/uuidgen.h"
@@ -30,9 +30,9 @@ struct st_CompareData {
   uuid_array_t uuid0;  // original DB
   uuid_array_t uuid1;  // comparison DB
   CItemData::FieldBits bsDiffs;  // list of items compared
-  CMyString group;
-  CMyString title;
-  CMyString user;
+  CSecString group;
+  CSecString title;
+  CSecString user;
   int id;  // # in the appropriate list: "Only in Original", "Only in Comparison" or in "Both with Differences"
   int indatabase;  // see enum below
   int listindex;  // list index in CompareResultsDlg list control
@@ -134,7 +134,7 @@ public:
   CListCtrl m_LCResults;
   int m_iSortedColumn;
   bool m_bSortAscending;
-  CMyString m_cs_Filename1, m_cs_Filename2;
+  CSecString m_cs_Filename1, m_cs_Filename2;
   int m_ShowIdenticalEntries;
   //}}AFX_DATA
 

@@ -36,6 +36,7 @@
 #include "corelib/PWHistory.h"
 #include "corelib/Debug.h"
 #include "corelib/os/dir.h"
+#include "corelib/StringXStream.h"
 
 #include "commctrl.h"
 #include <shlwapi.h>
@@ -85,7 +86,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   const int nTypeSortColumn = self->m_iTypeSortColumn;
   CItemData* pLHS = (CItemData *)lParam1;
   CItemData* pRHS = (CItemData *)lParam2;
-  CMyString group1, group2;
+  StringX group1, group2;
   time_t t1, t2;
   int xint1, xint2;
 
@@ -97,41 +98,41 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     case CItemData::GROUP:
       group1 = pLHS->GetGroup();
       group2 = pRHS->GetGroup();
-      if (group1.IsEmpty())  // root?
+      if (group1.empty())  // root?
         group1 = _T("\xff");
-      if (group2.IsEmpty())  // root?
+      if (group2.empty())  // root?
         group2 = _T("\xff");
-      iResult = group1.CompareNoCase(group2);
+      iResult = CompareNoCase(group1, group2);
       if (iResult == 0) {
-        iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+        iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
         if (iResult == 0) {
-          iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+          iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
         }
       }
       break;
     case CItemData::TITLE:
-      iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+      iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
       if (iResult == 0) {
-        iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+        iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
       }
       break;
     case CItemData::USER:
-      iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+      iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
       if (iResult == 0) {
-        iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+        iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
       }
       break;
     case CItemData::NOTES:
-      iResult = (pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
+      iResult = CompareNoCase(pLHS->GetNotes(), pRHS->GetNotes());
       break;
     case CItemData::PASSWORD:
-      iResult = (pLHS->GetPassword()).CompareNoCase(pRHS->GetPassword());
+      iResult = CompareNoCase(pLHS->GetPassword(), pRHS->GetPassword());
       break;
     case CItemData::URL:
-      iResult = (pLHS->GetURL()).CompareNoCase(pRHS->GetURL());
+      iResult = CompareNoCase(pLHS->GetURL(), pRHS->GetURL());
       break;
     case CItemData::AUTOTYPE:
-      iResult = (pLHS->GetAutoType()).CompareNoCase(pRHS->GetAutoType());
+      iResult = CompareNoCase(pLHS->GetAutoType(), pRHS->GetAutoType());
       break;
     case CItemData::CTIME:
       pLHS->GetCTime(t1);
@@ -164,7 +165,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
     case CItemData::POLICY:
-      iResult = (pLHS->GetPWPolicy()).CompareNoCase(pRHS->GetPWPolicy());
+      iResult = CompareNoCase(pLHS->GetPWPolicy(), pRHS->GetPWPolicy());
       break;
     default:
       iResult = 0; // should never happen - just keep compiler happy
@@ -210,7 +211,8 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
   if (m_core.GetNumEntries() != 0) {
     BOOL State = (entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
-                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT};
+                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT,
+                 ID_MENUITEM_PASSWORDSUBSET};
 
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     for (int i = 0; i < sizeof(IDs)/sizeof(IDs[0]); i++) {
@@ -360,6 +362,14 @@ void DboxMain::setupBars()
   m_FindToolBar.SetBarStyle(dwStyle);
   m_FindToolBar.SetWindowText(_T("Find"));
 
+  // Set up DragBar bitmaps before calling SetToolBar
+  m_DDGroup.Init(IDB_DRAGGROUP, IDB_DRAGGROUPX);
+  m_DDTitle.Init(IDB_DRAGTITLE, IDB_DRAGTITLEX);
+  m_DDUser.Init(IDB_DRAGUSER, IDB_DRAGUSERX);
+  m_DDPassword.Init(IDB_DRAGPASSWORD, IDB_DRAGPASSWORDX);
+  m_DDNotes.Init(IDB_DRAGNOTES, IDB_DRAGNOTESX);
+  m_DDURL.Init(IDB_DRAGURL, IDB_DRAGURLX);
+
   // Set toolbar according to graphic capabilities, overridable by user choice.
   if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar))  {
     SetToolbar(ID_MENUITEM_OLD_TOOLBAR, true);
@@ -380,22 +390,16 @@ void DboxMain::setupBars()
   // Register for update notification
   m_core.RegisterOnListModified(StopFind, (LPARAM)this);
 
-  m_DDGroup.Init(IDB_DRAGGROUP, IDB_DRAGGROUPX);
   m_DDGroup.EnableWindow(TRUE);
   m_DDGroup.ShowWindow(SW_SHOW);
-  m_DDTitle.Init(IDB_DRAGTITLE, IDB_DRAGTITLEX);
   m_DDTitle.EnableWindow(TRUE);
   m_DDTitle.ShowWindow(SW_SHOW);
-  m_DDUser.Init(IDB_DRAGUSER, IDB_DRAGUSERX);
   m_DDUser.EnableWindow(TRUE);
   m_DDUser.ShowWindow(SW_SHOW);
-  m_DDPassword.Init(IDB_DRAGPASSWORD, IDB_DRAGPASSWORDX);
   m_DDPassword.EnableWindow(TRUE);
   m_DDPassword.ShowWindow(SW_SHOW);
-  m_DDNotes.Init(IDB_DRAGNOTES, IDB_DRAGNOTESX);
   m_DDNotes.EnableWindow(TRUE);
   m_DDNotes.ShowWindow(SW_SHOW);
-  m_DDURL.Init(IDB_DRAGURL, IDB_DRAGURLX);
   m_DDURL.EnableWindow(TRUE);
   m_DDURL.ShowWindow(SW_SHOW);
 #endif
@@ -422,9 +426,9 @@ ItemListIter DboxMain::Find(int i)
 {
   CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
   ASSERT(ci != NULL);
-  const CMyString curGroup = ci->GetGroup();
-  const CMyString curTitle = ci->GetTitle();
-  const CMyString curUser = ci->GetUser();
+  const StringX curGroup = ci->GetGroup();
+  const StringX curTitle = ci->GetTitle();
+  const StringX curUser = ci->GetUser();
   return Find(curGroup, curTitle, curUser);
 }
 
@@ -454,8 +458,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
 
-  CMyString curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
-  CMyString listTitle, saveTitle;
+  StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
+  StringX listTitle, saveTitle;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -487,7 +491,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
     const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
     if (subgroup_set == BST_CHECKED &&
-      !curitem.Matches(subgroup_name, subgroup_object, subgroup_function))
+        !curitem.Matches(stringT(subgroup_name),
+                         subgroup_object, subgroup_function))
       goto nextentry;
 
     bFoundit = false;
@@ -501,43 +506,43 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curXInt = curitem.GetXTimeInt();
 
     if (!CaseSensitive) {
-      curGroup.MakeLower();
-      curTitle.MakeLower();
-      curUser.MakeLower();
-      curPassword.MakeLower();
-      curNotes.MakeLower();
-      curURL.MakeLower();
-      curAT.MakeLower();
+      ToLower(curGroup);
+      ToLower(curTitle);
+      ToLower(curUser);
+      ToLower(curPassword);
+      ToLower(curNotes);
+      ToLower(curURL);
+      ToLower(curAT);
     }
 
     // do loop to easily break out as soon as a match is found
     // saves more checking if entry already selected
     do {
-      if (bsFields.test(CItemData::GROUP) && ::_tcsstr(curGroup, searchstr)) {
+      if (bsFields.test(CItemData::GROUP) && ::_tcsstr(curGroup.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::TITLE) && ::_tcsstr(curTitle, searchstr)) {
+      if (bsFields.test(CItemData::TITLE) && ::_tcsstr(curTitle.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::USER) && ::_tcsstr(curUser, searchstr)) {
+      if (bsFields.test(CItemData::USER) && ::_tcsstr(curUser.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::PASSWORD) && ::_tcsstr(curPassword, searchstr)) {
+      if (bsFields.test(CItemData::PASSWORD) && ::_tcsstr(curPassword.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::NOTES) && ::_tcsstr(curNotes, searchstr)) {
+      if (bsFields.test(CItemData::NOTES) && ::_tcsstr(curNotes.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::URL) && ::_tcsstr(curURL, searchstr)) {
+      if (bsFields.test(CItemData::URL) && ::_tcsstr(curURL.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
-      if (bsFields.test(CItemData::AUTOTYPE) && ::_tcsstr(curAT, searchstr)) {
+      if (bsFields.test(CItemData::AUTOTYPE) && ::_tcsstr(curAT.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -551,8 +556,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
              iter++) {
           PWHistEntry pwshe = *iter;
           if (!CaseSensitive)
-            pwshe.password.MakeLower();
-          if (::_tcsstr(pwshe.password, searchstr)) {
+            ToLower(pwshe.password);
+          if (::_tcsstr(pwshe.password.c_str(), searchstr)) {
             bFoundit = true;
             break;  // break out of for loop
           }
@@ -561,7 +566,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         if (bFoundit)
           break;  // break out of do loop
       }
-      if (bsFields.test(CItemData::XTIME_INT) && ::_tcsstr(curXInt, searchstr)) {
+      if (bsFields.test(CItemData::XTIME_INT) && ::_tcsstr(curXInt.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -572,7 +577,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
       ASSERT(di != NULL);
       int li = di->list_index;
-      ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == saveTitle);
+      ASSERT(m_ctlItemList.GetItemText(li, ititle) == saveTitle.c_str());
       // add to indices, bump retval
       indices.push_back(li);
     } // match found in m_pwlist
@@ -648,16 +653,22 @@ void DboxMain::SelectFirstEntry()
 {
   if (m_core.GetNumEntries() > 0) {
     // Ensure an entry is selected after open
+    CItemData *pci(NULL);
     if (m_ctlItemList.IsWindowVisible()) {
       m_ctlItemList.SetItemState(0,
                                  LVIS_FOCUSED | LVIS_SELECTED,
                                  LVIS_FOCUSED | LVIS_SELECTED);
       m_ctlItemList.EnsureVisible(0, FALSE);
+      pci = (CItemData *)m_ctlItemList.GetItemData(0);
     } else {
       HTREEITEM hitem = m_ctlItemTree.GetFirstVisibleItem();
-      if (hitem != NULL)
+      if (hitem != NULL) {
         m_ctlItemTree.SelectItem(hitem);
+        pci = (CItemData *)m_ctlItemTree.GetItemData(hitem);
+      }
     }
+    if (pci != NULL)
+      UpdateToolBarForSelectedItem(pci);
   }
 }
 
@@ -1016,7 +1027,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
         if (menu.LoadMenu(IDR_POPGROUP)) {
           CMenu* pPopup = menu.GetSubMenu(0);
           ASSERT(pPopup != NULL);
-          m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
+          m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
           // use this DboxMain for commands
           pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
         }
@@ -1208,17 +1219,17 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
   }
 
   int nImage = GetEntryImage(itemData);
-  CMyString group = itemData.GetGroup();
-  CMyString title = itemData.GetTitle();
-  CMyString username = itemData.GetUser();
+  StringX group = itemData.GetGroup();
+  StringX title = itemData.GetTitle();
+  StringX username = itemData.GetUser();
   // get only the first line for display
-  CMyString strNotes = itemData.GetNotes();
-  int iEOL = strNotes.Find(TCHAR('\r'));
-  if (iEOL >= 0 && iEOL < strNotes.GetLength()) {
-    CMyString strTemp = strNotes.Left(iEOL);
+  StringX strNotes = itemData.GetNotes();
+  StringX::size_type iEOL = strNotes.find(TCHAR('\r'));
+  if (iEOL != StringX::npos) {
+    StringX strTemp = strNotes.substr(0, iEOL);
     strNotes = strTemp;
   }
-  CMyString cs_fielddata;
+  StringX cs_fielddata;
 
   int xint;
   itemData.GetXTimeInt(xint);
@@ -1308,7 +1319,9 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
           if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
             cs_pwp += _T("P");
 
-          cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
+          oStringXStream osx;
+          osx << cs_pwp << _T(":") << pwp.length;
+          cs_fielddata = osx.str();
         } else
           cs_fielddata = _T("");
         break;
@@ -1316,7 +1329,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
       default:
         ASSERT(0);
     }
-    iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata);
+    iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata.c_str());
 
     if (iResult < 0) {
       // TODO: issue error here...
@@ -1330,14 +1343,14 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
 
   if (iView & iTreeOnly) {
     HTREEITEM ti;
-    CMyString treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
+    StringX treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
     // get path, create if necessary, add title as last node
-    ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
+    ti = m_ctlItemTree.AddGroup(itemData.GetGroup().c_str());
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
-      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
+      ti = m_ctlItemTree.InsertItem(treeDispString.c_str(), ti, TVI_SORT);
       m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
     } else {
-      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
+      ti = m_ctlItemTree.InsertItem(treeDispString.c_str(), ti, TVI_LAST);
       m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
       if (bSort)
         m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
@@ -1431,7 +1444,9 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
               cs_pwp += _T("E");
             if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
               cs_pwp += _T("P");
-             cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
+            oStringXStream osx;
+            osx << cs_pwp << _T(":") << pwp.length;
+            cs_fielddata = osx.str();
           } else
             cs_fielddata = _T("");
           break;
@@ -1439,7 +1454,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
         default:
           ASSERT(0);
       }
-      m_ctlItemList.SetItemText(iResult, i, cs_fielddata);
+      m_ctlItemList.SetItemText(iResult, i, cs_fielddata.c_str());
     }
 
     m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&itemData);
@@ -1741,7 +1756,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
     m_MainToolBar.LoadDefaultToolBar(m_toolbarMode);
     m_FindToolBar.LoadDefaultToolBar(m_toolbarMode);
     CString csButtonNames = PWSprefs::GetInstance()->
-      GetPref(PWSprefs::MainToolBarButtons);
+      GetPref(PWSprefs::MainToolBarButtons).c_str();
     m_MainToolBar.CustomizeButtons(csButtonNames);
   } else {
     m_MainToolBar.ChangeImages(m_toolbarMode);
@@ -1817,11 +1832,11 @@ void DboxMain::OnChangeTreeFont()
 
   // present Tree/List view font and possibly change it
   // Allow user to apply changes to font
-  CString cs_TreeListSampleText = prefs->GetPref(PWSprefs::TreeListSampleText);
+  StringX cs_TreeListSampleText = prefs->GetPref(PWSprefs::TreeListSampleText);
 
   CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL);
 
-  fontdlg.m_sampletext = cs_TreeListSampleText;
+  fontdlg.m_sampletext = cs_TreeListSampleText.c_str();
 
   if (fontdlg.DoModal() == IDOK) {
     CString treefont_str;
@@ -1845,9 +1860,10 @@ void DboxMain::OnChangeTreeFont()
     AutoResizeColumns();
 
     // save user's choice of Tree/List font
-    prefs->SetPref(PWSprefs::TreeFont, treefont_str);
+    prefs->SetPref(PWSprefs::TreeFont, LPCTSTR(treefont_str));
     // save user's sample text
-    prefs->SetPref(PWSprefs::TreeListSampleText, fontdlg.m_sampletext);
+    prefs->SetPref(PWSprefs::TreeListSampleText,
+                   LPCTSTR(fontdlg.m_sampletext));
   }
 }
 
@@ -1860,11 +1876,11 @@ void DboxMain::OnChangePswdFont()
 
   // present Password font and possibly change it
   // Allow user to apply changes to font
-  CString cs_PswdSampleText = prefs->GetPref(PWSprefs::PswdSampleText);
+  StringX cs_PswdSampleText = prefs->GetPref(PWSprefs::PswdSampleText);
 
   CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
 
-  fontdlg.m_sampletext = cs_PswdSampleText;
+  fontdlg.m_sampletext = cs_PswdSampleText.c_str();
 
   if (fontdlg.DoModal() == IDOK) {
     CString pswdfont_str;
@@ -1877,9 +1893,9 @@ void DboxMain::OnChangePswdFont()
     // transfer the new font to the passwords
     SetPasswordFont(&lf);
     // save user's choice of password font
-    prefs->SetPref(PWSprefs::PasswordFont, pswdfont_str);
+    prefs->SetPref(PWSprefs::PasswordFont, LPCTSTR(pswdfont_str));
     // save user's sample text
-    prefs->SetPref(PWSprefs::PswdSampleText, fontdlg.m_sampletext);
+    prefs->SetPref(PWSprefs::PswdSampleText, LPCTSTR(fontdlg.m_sampletext));
   }
 }
 
@@ -1925,13 +1941,17 @@ void DboxMain::UpdateSystemTray(const STATE s)
   switch (s) {
     case LOCKED:
       app.SetSystemTrayState(ThisMfcApp::LOCKED);
-      if (!m_core.GetCurFile().IsEmpty())
-        app.SetTooltipText(_T("[") + m_core.GetCurFile() + _T("]"));
+      if (!m_core.GetCurFile().empty()) {
+        CString ttt(_T("["));
+        ttt += m_core.GetCurFile().c_str();
+        ttt += _T("]");
+        app.SetTooltipText(ttt);
+      }
       break;
     case UNLOCKED:
       app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-      if (!m_core.GetCurFile().IsEmpty())
-        app.SetTooltipText(m_core.GetCurFile());
+      if (!m_core.GetCurFile().empty())
+        app.SetTooltipText(m_core.GetCurFile().c_str());
       break;
     case CLOSED:
       app.SetSystemTrayState(ThisMfcApp::CLOSED);
@@ -1983,7 +2003,7 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL)
     theURL = _T("http://") + theURL;
 
   CString csAltBrowser(PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::AltBrowser));
+                       GetPref(PWSprefs::AltBrowser).c_str());
   bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) &&
                         !csAltBrowser.IsEmpty());
 
@@ -1998,7 +2018,7 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL)
     si.lpFile = theURL;
   } else { // alternate browser specified, invoke w/optional args
     CString csCmdLineParms(PWSprefs::GetInstance()->
-                           GetPref(PWSprefs::AltBrowserCmdLineParms));
+                           GetPref(PWSprefs::AltBrowserCmdLineParms).c_str());
 
     if (!csCmdLineParms.IsEmpty())
       theURL = csCmdLineParms + _T(" ") + theURL;
@@ -2617,11 +2637,11 @@ void DboxMain::UnFindItem()
   }
 }
 
-bool DboxMain::GetDriveAndDirectory(const CMyString cs_infile, CString &cs_drive,
+bool DboxMain::GetDriveAndDirectory(const StringX &cs_infile, CString &cs_drive,
                                     CString &cs_directory)
 {
   stringT applicationpath = pws_os::getexecdir();
-  stringT inpath = cs_infile;
+  stringT inpath = cs_infile.c_str();
   stringT appdrive, appdir;
   stringT drive, dir, file, ext;
 
@@ -2780,12 +2800,12 @@ void DboxMain::ViewReport(CReport &rpt)
   vr_dlg.DoModal();
 }
 
-void DboxMain::ViewReport(const CString cs_ReportFileName)
+void DboxMain::ViewReport(const CString &cs_ReportFileName)
 {
   CString cs_path, csAction;
   CString cs_drive, cs_directory;
 
-  if (!GetDriveAndDirectory(cs_ReportFileName, cs_drive, cs_directory))
+  if (!GetDriveAndDirectory(LPCTSTR(cs_ReportFileName), cs_drive, cs_directory))
     return;
 
   cs_path.Format(_T("%s%s"), cs_drive, cs_directory);
@@ -2838,9 +2858,9 @@ void DboxMain::ViewReport(const CString cs_ReportFileName)
 
 int DboxMain::OnUpdateViewReports(const int nID)
 {
-  CMyString cs_Database(m_core.GetCurFile());
+  StringX cs_Database(m_core.GetCurFile());
 
-  if (cs_Database.IsEmpty()) {
+  if (cs_Database.empty()) {
     return FALSE;
   }
 
@@ -2897,7 +2917,7 @@ void DboxMain::OnCustomizeToolbar()
   CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
   mainTBCtrl.Customize();
 
-  CString cs_temp = m_MainToolBar.GetButtonString();
+  StringX cs_temp = LPCTSTR(m_MainToolBar.GetButtonString());
   PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
 }
 
@@ -3068,7 +3088,7 @@ void DboxMain::OnToolBarFindReport()
   CString buffer, cs_temp;
   CReport rpt;
   cs_temp.LoadString(IDS_RPTFIND);
-  rpt.StartReport(cs_temp, m_core.GetCurFile());
+  rpt.StartReport(cs_temp, m_core.GetCurFile().c_str());
 
   CItemData::FieldBits bsFFields;
   bool bFAdvanced;
@@ -3082,7 +3102,7 @@ void DboxMain::OnToolBarFindReport()
   if (!bFAdvanced) {
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   } else {
     if (Fsubgroup_set == BST_UNCHECKED) {
@@ -3159,12 +3179,12 @@ void DboxMain::OnToolBarFindReport()
                      cs_case);
     }
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
 
     cs_temp.LoadString(IDS_RPTFIND);
     buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
 
     buffer = _T("\t");
     if (bsFFields.test(CItemData::GROUP))
@@ -3183,22 +3203,22 @@ void DboxMain::OnToolBarFindReport()
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
     if (bsFFields.test(CItemData::PWHIST))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   }
 
   if (pindices->size() == 0) {
     buffer.Format(IDS_SEARCHRESULTS1, csFindString);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
   } else {
     buffer.Format(IDS_SEARCHRESULTS2, csFindString);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
     int i, index;
     for (i = 0; i < (int)pindices->size(); i++) {
       index = pindices->at(i);
       CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(index);
       buffer.Format(IDS_COMPARESTATS, ci->GetGroup(), ci->GetTitle(), ci->GetUser());
-      rpt.WriteLine(buffer, false);
+      rpt.WriteLine((LPCTSTR)buffer, false);
     }
   }
   rpt.WriteLine();
@@ -3449,7 +3469,7 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
 {
   CItemData *ci(NULL);
   CPoint target(point);
-  CMyString cs_notes(_T(""));
+  StringX cs_notes(_T(""));
   UINT nFlags;
   HTREEITEM hItem(NULL);
   int nItem(-1);
@@ -3458,7 +3478,7 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
     return false;
 
   if (!bVisible) {
-    m_pNotesDisplay->SetWindowText(cs_notes);
+    m_pNotesDisplay->SetWindowText(cs_notes.c_str());
     m_pNotesDisplay->ShowWindow(SW_HIDE);
     return false;
   }
@@ -3494,28 +3514,28 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
     cs_notes = ci->GetNotes();
   }
 
-  if (cs_notes.GetLength() != 0) {
-    cs_notes.Replace(_T("\r\n"), _T("\n"));
-    cs_notes.Remove(_T('\r'));
+  if (!cs_notes.empty()) {
+    Replace(cs_notes, StringX(_T("\r\n")), StringX(_T("\n")));
+    Remove(cs_notes, _T('\r'));
 
-    if (cs_notes.GetLength() > 180)
-      cs_notes = cs_notes.Left(180) + _T("[...]");
+    if (cs_notes.length() > 180)
+      cs_notes = cs_notes.substr(0, 180) + _T("[...]");
   }
 
   // move window
-  CMyString cs_oldnotes;
+  CString cs_oldnotes;
   m_pNotesDisplay->GetWindowText(cs_oldnotes);
-  if (cs_oldnotes != cs_notes)
-    m_pNotesDisplay->SetWindowText(cs_notes);
+  if (LPCTSTR(cs_oldnotes) != cs_notes)
+    m_pNotesDisplay->SetWindowText(cs_notes.c_str());
 
   m_pNotesDisplay->SetWindowPos(NULL, target.x, target.y, 0, 0,
                                 SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-  m_pNotesDisplay->ShowWindow(cs_notes.GetLength() > 0 ? SW_SHOWNA : SW_HIDE);
+  m_pNotesDisplay->ShowWindow(!cs_notes.empty() ? SW_SHOWNA : SW_HIDE);
 
-  return (cs_notes.GetLength() > 0);
+  return !cs_notes.empty();
 }
 
-CItemData * DboxMain::GetLastSelected()
+CItemData *DboxMain::GetLastSelected()
 {
   CItemData *retval(NULL);
   if (m_ctlItemTree.IsWindowVisible()) {

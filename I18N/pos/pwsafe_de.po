@@ -198,7 +198,7 @@ msgstr "#uuid"
 msgid "#what"
 msgstr "#was"
 
-#: Control-ID:1196,
+#: Control-ID:1196,#: Control-ID:1350,#: Control-ID:1351,
 msgid "#when"
 msgstr "#wann"
 
@@ -1509,6 +1509,10 @@ msgstr "Beenden"
 msgid "Expand/Collapse Group\tCtrl+Enter"
 msgstr "Gruppe erweitern/reduzieren\tStrg+Enter"
 
+#: Control-ID:65535,
+msgid "Expires on: "
+msgstr ""
+
 #: ID:327,
 msgid "Expiry Date/Time"
 msgstr "Ablaufdatum/-zeit"
@@ -1636,6 +1640,10 @@ msgstr ""
 #: ID:346,
 msgid "Find"
 msgstr "Suchen"
+
+#: Dlg-ID:131,
+msgid "Fisher Investments - Restricted to internal use only"
+msgstr ""
 
 #: Dlg-ID:148,
 msgid "Font"
@@ -2013,6 +2021,10 @@ msgstr "Letzter Zugriff"
 msgid "Last Modified"
 msgstr "Zuletzt geändert"
 
+#: Control-ID:65535,
+msgid "Last Set on:"
+msgstr ""
+
 #: Control-ID:1112,#: Control-ID:1112,
 msgid "Last accessed on:"
 msgstr ""
@@ -2097,6 +2109,19 @@ msgstr ""
 #: Control-ID:65535,
 msgid "Manage password history of current entries"
 msgstr "Verwalte Passwortgeschichte der aktuellen Einträge"
+
+#: Control-ID:65535,
+msgid "Master Password"
+msgstr ""
+
+#: ID:192,
+#, c-format
+msgid "Master Password should be at least %d characters long."
+msgstr ""
+
+#: ID:192,
+msgid "Master Password should have at least three of the following four: Upper case, lower case, digits and symbols."
+msgstr ""
 
 #: Control-ID:1212,
 msgid "Max."
@@ -2210,6 +2235,10 @@ msgstr "Neue Safekombination:"
 #: ID:343,
 msgid "New Version Found!"
 msgstr "Neue Version verfübgar!"
+
+#: ID:353,
+msgid "New password must differ from old one"
+msgstr ""
 
 #: ID:331,
 msgid "New safe combination and confirmation do not match"
@@ -2686,7 +2715,7 @@ msgstr "Bitte eine Ganzzahl eingeben."
 msgid "Please enter no more than %1 characters."
 msgstr "Bitte nicht mehr als %1 Zeichen eingeben."
 
-#: Control-ID:65535,
+#: ID:353,#: Control-ID:1351,
 msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
 msgstr "Bitte geben die gegenwärtige Safekombination ein, gefolgt von der neuen Safekombination. Tippen Sie die neue Safekombination zur Bestätigung erneut ein."
 
@@ -2890,10 +2919,6 @@ msgstr "S&etze"
 #, c-format
 msgid "SAX Parse%2d Error 0x%08X during %s."
 msgstr ""
-
-#: Dlg-ID:131,
-msgid "Safe Combination Entry"
-msgstr "Eingabe der Safekombination"
 
 #: Dlg-ID:133,
 msgid "Safe Combination Setup"
@@ -3248,6 +3273,10 @@ msgstr ""
 msgid "The combination cannot be blank."
 msgstr "Die Safekombination darf nicht leer sein."
 
+#: ID:354,
+msgid "The current combination has expired, and must be changed. Please enter the current combination, followed by a new combination. Then type the new combination once again to confirm it."
+msgstr ""
+
 #: ID:195,
 msgid "The current working directory cannot be removed."
 msgstr "Das aktuelle Arbeitsverzeichnis kann nicht entfernt werden."
@@ -3310,9 +3339,13 @@ msgstr "Folgende Spalten werden verarbeitet: "
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
 msgstr "Folgender Eintrag wurde in die %s Datenbank kopiert: '%s:%s:%s'"
 
+#: ID:354,
+msgid "The master combination has expired, but cannot be changed, since the database is read-only. Please change it as soon as possible."
+msgstr ""
+
 #: ID:331,
-msgid "The old safe combination is not correct"
-msgstr "Die alte Safekombination ist nicht korrekt"
+msgid "The old safe combination is incorrect."
+msgstr ""
 
 #: ID:333,
 #, c-format
@@ -3654,6 +3687,10 @@ msgstr "Verwende Hexadezimalzahlen (0-9,a-f)"
 msgid "Use lowercase letters"
 msgstr "Verwende Kleinbuchstaben"
 
+#: Control-ID:65535,
+msgid "Use of this application constitutes acceptance of the Fisher Investments password safe usage policy."
+msgstr ""
+
 #: Control-ID:1051,
 msgid "Use only easy-to-read characters (i.e., no  'l', '1', etc.)"
 msgstr "Verwende leicht zu lesende Zeichen (z.B. kein  'l', '1', usw.)"
@@ -3943,9 +3980,8 @@ msgid "\nPerform Autotype"
 msgstr "\nAutomatische Eingabe starten"
 
 #: ID:331,
-#, fuzzy
-msgid "\nPlease try another"
-msgstr "\nBitte probieren Sie andere"
+msgid "\nPlease try another."
+msgstr ""
 
 #: ID:326,
 msgid "\nProgram will terminate."

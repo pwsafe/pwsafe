@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CCreateShortcutDlg::CCreateShortcutDlg(CWnd* pParent, 
-  const CMyString &cs_tg, const CMyString &cs_tt, const CMyString &cs_tu)
+  const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
   : CPWDialog(CCreateShortcutDlg::IDD, pParent),
   m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg), m_username(cs_tu)
 {
@@ -35,16 +35,16 @@ BOOL CCreateShortcutDlg::OnInitDialog()
 
   // Populate the combo box
   if(m_ex_group.GetCount() == 0) {
-    CStringArray aryGroups;
-    app.m_core.GetUniqueGroups(aryGroups);
-    for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
-      m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
-    }
+      std::vector<stringT> aryGroups;
+      app.m_core.GetUniqueGroups(aryGroups);
+      for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
+        m_ex_group.AddString(aryGroups[igrp].c_str());
+      }
   }
 
   m_title.Format(IDS_SCTARGET, m_tt);
 
-  CMyString cs_explanation, cs_target(_T(""));
+  CSecString cs_explanation, cs_target(_T(""));
   if (!m_tg.IsEmpty())
     cs_target = m_tg + _T(".");
   cs_target += m_tt;
@@ -111,7 +111,7 @@ void CCreateShortcutDlg::OnOK()
 
   // If there is a matching entry in our list, tell the user to try again.
   if (pDbx->Find(m_group, m_title, m_username) != pDbx->End()) {
-    CMyString temp;
+    CSecString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
     else

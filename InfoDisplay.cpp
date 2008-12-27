@@ -18,7 +18,6 @@
 
 #include "stdafx.h"
 #include "InfoDisplay.h"
-#include "corelib\mystring.h"
 
 // CInfoDisplay
 

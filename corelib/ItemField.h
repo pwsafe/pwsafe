@@ -11,7 +11,7 @@
 #if !defined ItemField_h
 #define ItemField_h
 
-#include "MyString.h"
+#include "StringX.h"
 
 //-----------------------------------------------------------------------------
 
@@ -33,10 +33,10 @@ public:
 
   CItemField &operator=(const CItemField &that);
 
-  void Set(const CMyString &value, BlowFish *bf);
+  void Set(const StringX &value, BlowFish *bf);
   void Set(const unsigned char* value, unsigned int length, BlowFish *bf);
 
-  void Get(CMyString &value, BlowFish *bf) const;
+  void Get(StringX &value, BlowFish *bf) const;
   void Get(unsigned char *value, unsigned int &length, BlowFish *bf) const;
   unsigned char GetType() const {return m_Type;}
   unsigned int GetLength() const {return m_Length;}

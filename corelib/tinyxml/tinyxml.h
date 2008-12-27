@@ -47,11 +47,21 @@ distribution.
 #define DEBUG
 #endif
 
+#define TIXML_USE_STL /* ronys - for PasswordSafe */
+#include "../os/typedefs.h" /* ronys - for PasswordSafe */
+#include "../os/pws_tchar.h" /* ditto */
+
 #ifdef TIXML_USE_STL
 	#include <string>
  	#include <iostream>
 	#include <sstream>
-	#define TIXML_STRING		std::string
+#ifdef UNICODE
+#define TIXML_STRING		std::wstring
+#define TIXML_OSTREAM   std::wostream
+#else
+#define TIXML_STRING		std::string
+#define TIXML_OSTREAM   std::ostream
+#endif /* UNICODE */
 #else
 	#include "tinystr.h"
 	#define TIXML_STRING		TiXmlString
@@ -78,8 +88,15 @@ distribution.
 	#elif defined(__GNUC__) && (__GNUC__ >= 3 )
 		// GCC version 3 and higher.s
 		//#warning( "Using sn* functions." )
-		#define TIXML_SNPRINTF snprintf
-		#define TIXML_SNSCANF  snscanf
+        #ifdef UNICODE
+		  #define TIXML_SNPRINTF swprintf
+		  #define TIXML_SNSCANF  snscanf
+          #define TIXML_SSCANF  pws_os::sswscanf
+        #else
+		  #define TIXML_SNPRINTF snprintf
+		  #define TIXML_SNSCANF  snscanf
+		  #define TIXML_SSCANF  sscanf
+        #endif /* UNICODE */
 	#endif
 #endif	
 
@@ -290,8 +307,10 @@ protected:
 
 	static const TCHAR* SkipWhiteSpace( const TCHAR*, TiXmlEncoding encoding );
 	inline static bool IsWhiteSpace( TCHAR c )		
-	{ 
-		return ( _istspace( c ) || c == TCHAR('\n') || c == TCHAR('\r') ); 
+	{
+    if ((unsigned)(c + 1) <= 256)
+      return ( _istspace( c ) || c == TCHAR('\n') || c == TCHAR('\r') );
+    return false;
 	}
 	inline static bool IsWhiteSpace( int c )
 	{
@@ -451,10 +470,10 @@ public:
 		    A TiXmlDocument will read nodes until it reads a root element, and
 			all the children of that root element.
 	    */	
-	    friend std::ostream& operator<< (std::ostream& out, const TiXmlNode& base);
+	    friend TIXML_OSTREAM& operator<< (TIXML_OSTREAM& out, const TiXmlNode& base);
 
 		/// Appends the XML node or attribute to a std::string.
-		friend std::string& operator<< (std::string& out, const TiXmlNode& base );
+		friend TIXML_STRING& operator<< (TIXML_STRING& out, const TiXmlNode& base );
 
 	#endif
 
@@ -488,12 +507,12 @@ public:
 	*/
 	const TCHAR *Value() const { return value.c_str (); }
 
-    #ifdef TIXML_USE_STL
+  #ifdef TIXML_USE_STL
 	/** Return Value() as a std::string. If you only use STL,
 	    this is more efficient than calling Value().
 		Only available in STL mode.
 	*/
-	const std::string& ValueStr() const { return value; }
+	const TIXML_STRING& ValueStr() const { return value; }
 	#endif
 
 	const TIXML_STRING& ValueTStr() const { return value; }
@@ -509,9 +528,9 @@ public:
 	*/
 	void SetValue(const TCHAR * _value) { value = _value;}
 
-    #ifdef TIXML_USE_STL
+  #ifdef TIXML_USE_STL
 	/// STL std::string form.
-	void SetValue( const std::string& _value )	{ value = _value; }
+	void SetValue( const TIXML_STRING& _value )	{ value = _value; }
 	#endif
 
 	/// Delete all the children of this node. Does not affect 'this'.
@@ -792,7 +811,7 @@ public:
 
 	#ifdef TIXML_USE_STL
 	/// std::string constructor.
-	TiXmlAttribute( const std::string& _name, const std::string& _value )
+	TiXmlAttribute( const TIXML_STRING& _name, const TIXML_STRING& _value )
 	{
 		name = _name;
 		value = _value;
@@ -813,7 +832,7 @@ public:
 	const TCHAR*		Name()  const		{ return name.c_str(); }		///< Return the name of this attribute.
 	const TCHAR*		Value() const		{ return value.c_str(); }		///< Return the value of this attribute.
 	#ifdef TIXML_USE_STL
-	const std::string& ValueStr() const	{ return value; }				///< Return the value of this attribute.
+	const TIXML_STRING& ValueStr() const	{ return value; }     ///< Return the value of this attribute.
 	#endif
 	int				IntValue() const;									///< Return the value of this attribute, converted to an integer.
 	double			DoubleValue() const;								///< Return the value of this attribute, converted to a double.
@@ -842,9 +861,9 @@ public:
 
     #ifdef TIXML_USE_STL
 	/// STL std::string form.
-	void SetName( const std::string& _name )	{ name = _name; }	
+	void SetName( const TIXML_STRING& _name )	{ name = _name; }	
 	/// STL std::string form.	
-	void SetValue( const std::string& _value )	{ value = _value; }
+	void SetValue( const TIXML_STRING& _value )	{ value = _value; }
 	#endif
 
 	/// Get the next sibling attribute in the DOM. Returns null at end.
@@ -921,8 +940,8 @@ public:
 		return const_cast< TiXmlAttribute* >( (const_cast< const TiXmlAttributeSet* >(this))->Find( _name ) );
 	}
 	#ifdef TIXML_USE_STL
-	const TiXmlAttribute*	Find( const std::string& _name ) const;
-	TiXmlAttribute*	Find( const std::string& _name ) {
+	const TiXmlAttribute*	Find( const TIXML_STRING& _name ) const;
+	TiXmlAttribute*	Find( const TIXML_STRING& _name ) {
 		return const_cast< TiXmlAttribute* >( (const_cast< const TiXmlAttributeSet* >(this))->Find( _name ) );
 	}
 
@@ -950,7 +969,7 @@ public:
 
 	#ifdef TIXML_USE_STL
 	/// std::string constructor.
-	TiXmlElement( const std::string& _value );
+	TiXmlElement( const TIXML_STRING& _value );
 	#endif
 
 	TiXmlElement( const TiXmlElement& );
@@ -1009,7 +1028,7 @@ public:
 
 		@return TIXML_SUCCESS, TIXML_WRONG_TYPE, or TIXML_NO_ATTRIBUTE
 	*/
-	template< typename T > int QueryValueAttribute( const std::string& name, T* outValue ) const
+	template< typename T > int QueryValueAttribute( const TIXML_STRING& name, T* outValue ) const
 	{
 		const TiXmlAttribute* node = attributeSet.Find( name );
 		if ( !node )
@@ -1044,16 +1063,16 @@ public:
 	void SetAttribute( const TCHAR* name, const TCHAR * _value );
 
     #ifdef TIXML_USE_STL
-	const std::string* Attribute( const std::string& name ) const;
-	const std::string* Attribute( const std::string& name, int* i ) const;
-	const std::string* Attribute( const std::string& name, double* d ) const;
-	int QueryIntAttribute( const std::string& name, int* _value ) const;
-	int QueryDoubleAttribute( const std::string& name, double* _value ) const;
+	const TIXML_STRING* Attribute( const TIXML_STRING& name ) const;
+	const TIXML_STRING* Attribute( const TIXML_STRING& name, int* i ) const;
+	const TIXML_STRING* Attribute( const TIXML_STRING& name, double* d ) const;
+	int QueryIntAttribute( const TIXML_STRING& name, int* _value ) const;
+	int QueryDoubleAttribute( const TIXML_STRING& name, double* _value ) const;
 
 	/// STL std::string form.
-	void SetAttribute( const std::string& name, const std::string& _value );
+	void SetAttribute( const TIXML_STRING& name, const TIXML_STRING& _value );
 	///< STL std::string form.
-	void SetAttribute( const std::string& name, int _value );
+	void SetAttribute( const TIXML_STRING& name, int _value );
 	#endif
 
 	/** Sets an attribute of name to a given value. The attribute
@@ -1219,7 +1238,7 @@ public:
 
 	#ifdef TIXML_USE_STL
 	/// Constructor.
-	TiXmlText( const std::string& initValue ) : TiXmlNode (TiXmlNode::TEXT)
+	TiXmlText( const TIXML_STRING& initValue ) : TiXmlNode (TiXmlNode::TEXT)
 	{
 		SetValue( initValue );
 		cdata = false;
@@ -1283,9 +1302,9 @@ public:
 
 #ifdef TIXML_USE_STL
 	/// Constructor.
-	TiXmlDeclaration(	const std::string& _version,
-						const std::string& _encoding,
-						const std::string& _standalone );
+	TiXmlDeclaration(	const TIXML_STRING& _version,
+						const TIXML_STRING& _encoding,
+						const TIXML_STRING& _standalone );
 #endif
 
 	/// Construct.
@@ -1393,7 +1412,7 @@ public:
 
 	#ifdef TIXML_USE_STL
 	/// Constructor.
-	TiXmlDocument( const std::string& documentName );
+	TiXmlDocument( const TIXML_STRING& documentName );
 	#endif
 
 	TiXmlDocument( const TiXmlDocument& copy );
@@ -1775,7 +1794,7 @@ public:
 
 	#ifdef TIXML_USE_STL
 	/// Return the result.
-	const std::string& Str()						{ return buffer; }
+	const TIXML_STRING& Str()						{ return buffer; }
 	#endif
 
 private:

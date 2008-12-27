@@ -100,10 +100,10 @@ void CPasskeySetup::OnOK()
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
   // (also used in CPasskeyChangeDlg)
 
-  CMyString errmess;
+  StringX errmess;
   if (!CPasswordCharPool::CheckMasterPassword(m_passkey, errmess)) {
     CString cs_msg, cs_text;
-    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess);
+    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;

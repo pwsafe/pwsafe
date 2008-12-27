@@ -7,17 +7,20 @@
 */
 #include "PWSprefs.h"
 #include "os/typedefs.h"
+#include "os/pws_tchar.h"
+#include "os/file.h"
 #include "corelib.h"
-#include <AfxWin.h> // for AfxGetApp()
-#include <sstream>
-#include <strstream>
-#include <LMCons.h> // for UNLEN
 #include "PWSfile.h"
 #include "SysInfo.h"
 #include "XMLprefs.h"
-#include "util.h"
+#include "Util.h"
 #include "PWSdirs.h"
 #include "VerifyFormat.h"
+#include "StringXStream.h"
+#ifdef _WIN32
+#include <AfxWin.h> // for AfxGetApp()
+#include <LMCons.h> // for UNLEN
+#endif
 
 using namespace std;
 
@@ -33,7 +36,8 @@ HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
 int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
-CString PWSprefs::m_configfilename; // may be set before singleton created
+stringT PWSprefs::m_configfilename; // may be set before singleton created
+Reporter *PWSprefs::m_Reporter = NULL;
 
 // 1st parameter = name of preference
 // 2nd parameter = default value
@@ -155,9 +159,8 @@ void PWSprefs::DeleteInstance()
   SysInfo::DeleteInstance();
 }
 
-PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_XML_Config(NULL)
+PWSprefs::PWSprefs() : m_XML_Config(NULL)
 {
-  ASSERT(m_app != NULL);
   int i;
 
   m_prefs_changed[DB_PREF] = false;
@@ -175,7 +178,7 @@ PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_XML_Config(NULL)
   m_rect.top = m_rect.bottom = m_rect.left = m_rect.right = -1;
   m_rect.changed = false;
 
-  m_MRUitems = new CString[m_int_prefs[MaxMRUItems].maxVal];
+  m_MRUitems = new stringT[m_int_prefs[MaxMRUItems].maxVal];
   InitializePreferences();
 }
 
@@ -187,17 +190,18 @@ PWSprefs::~PWSprefs()
 
 bool PWSprefs::CheckRegistryExists() const
 {
-  bool bExists;
+  bool bExists = false;
+#ifdef _WIN32
   HKEY hSubkey;
-  const CString csSubkey = _T("Software\\") + CString(m_app->m_pszRegistryKey);
+  const stringT csSubkey = _T("Software\\") + stringT(::AfxGetApp()->m_pszRegistryKey);
   bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
-                            csSubkey,
+                            csSubkey.c_str(),
                             0L,
                             KEY_READ,
                             &hSubkey) == ERROR_SUCCESS);
   if (bExists)
     ::RegCloseKey(hSubkey);
-
+#endif /* _WIN32 */
   return bExists;
 }
 
@@ -211,7 +215,7 @@ unsigned int PWSprefs::GetPref(IntPrefs pref_enum) const
   return m_intValues[pref_enum];
 }
 
-CMyString PWSprefs::GetPref(StringPrefs pref_enum) const
+StringX PWSprefs::GetPref(StringPrefs pref_enum) const
 {
   return m_stringValues[pref_enum];
 }
@@ -231,7 +235,7 @@ void PWSprefs::GetPrefRect(long &top, long &bottom,
   right = m_rect.right;
 }
 
-int PWSprefs::GetMRUList(CString *MRUFiles)
+int PWSprefs::GetMRUList(stringT *MRUFiles)
 {
   ASSERT(MRUFiles != NULL);
 
@@ -245,7 +249,7 @@ int PWSprefs::GetMRUList(CString *MRUFiles)
   return n;
 }
 
-int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
+int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
 {
   ASSERT(MRUFiles != NULL);
 
@@ -257,12 +261,12 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
   bool changed = false;
   // remember the ones in use
   for (i = 0, cnt = 1; i < n; i++) {
-    if (MRUFiles[i].IsEmpty() ||
+    if (MRUFiles[i].empty() ||
       // Don't remember backup files
-      MRUFiles[i].Right(4) == _T(".bak") ||
-      MRUFiles[i].Right(5) == _T(".bak~") ||
-      MRUFiles[i].Right(5) == _T(".ibak") ||
-      MRUFiles[i].Right(6) == _T(".ibak~"))
+        MRUFiles[i].substr(MRUFiles[i].length() - 4) == _T(".bak") ||
+      MRUFiles[i].substr(MRUFiles[i].length() - 5) == _T(".bak~") ||
+      MRUFiles[i].substr(MRUFiles[i].length() - 5) == _T(".ibak") ||
+      MRUFiles[i].substr(MRUFiles[i].length() - 6) == _T(".ibak~"))
       continue;
     if (m_MRUitems[cnt-1] != MRUFiles[i]) {
       m_MRUitems[cnt-1] = MRUFiles[i];
@@ -272,7 +276,7 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
   }
   // Remove any not in use    
   for (i = cnt - 1; i < max_MRU; i++) {
-    if (!m_MRUitems[i].IsEmpty()) {
+    if (!m_MRUitems[i].empty()) {
       m_MRUitems[i] = _T("");
       changed = true;
     }
@@ -306,7 +310,7 @@ void PWSprefs::SetPref(IntPrefs pref_enum, unsigned int value)
   }
 }
 
-void PWSprefs::SetPref(StringPrefs pref_enum, const CMyString &value)
+void PWSprefs::SetPref(StringPrefs pref_enum, const StringX &value)
 {
   // ONLY save in memory - written out at database save (to database and config destination)
   m_prefs_changed[m_string_prefs[pref_enum].pt == ptDatabase ? DB_PREF : APP_PREF] |=
@@ -318,17 +322,44 @@ void PWSprefs::SetPref(StringPrefs pref_enum, const CMyString &value)
   }
 }
 
-bool PWSprefs::WritePref(const CMyString &name, bool val)
+bool PWSprefs::WritePref(const StringX &name, bool val)
+{
+  // Used to save to config destination at database save and application termination
+  bool bRetVal(false);
+  switch (m_ConfigOptions) {
+  case CF_REGISTRY:
+#ifdef _WIN32
+    bRetVal = (::AfxGetApp()->WriteProfileInt(PWS_REG_OPTIONS, name.c_str(),
+                                      val ? 1 : 0) == TRUE);
+#endif /* _WIN32 */
+    break;
+  case CF_FILE_RW:
+  case CF_FILE_RW_NEW:
+    bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name.c_str(),
+                                 val ? 1 : 0) == 0);
+    break;
+  case CF_FILE_RO:
+  case CF_NONE:
+  default:
+    break;
+  }
+  return bRetVal;
+}
+
+bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 {
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      bRetVal = (m_app->WriteProfileInt(PWS_REG_OPTIONS, name, val ? 1 : 0) == TRUE);
+#ifdef _WIN32
+      bRetVal = (::AfxGetApp()->WriteProfileInt(PWS_REG_OPTIONS, name.c_str(),
+                                        val) == TRUE);
+#endif /* _WIN32 */
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
-      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val ? 1 : 0) == 0);
+      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name.c_str(), val) == 0);
       break;
     case CF_FILE_RO:
     case CF_NONE:
@@ -338,17 +369,21 @@ bool PWSprefs::WritePref(const CMyString &name, bool val)
   return bRetVal;
 }
 
-bool PWSprefs::WritePref(const CMyString &name, unsigned int val)
+bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 {
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      bRetVal = (m_app->WriteProfileInt(PWS_REG_OPTIONS, name, val) == TRUE);
+#ifdef _WIN32
+      bRetVal = (::AfxGetApp()->WriteProfileString(PWS_REG_OPTIONS, name.c_str(),
+                                           val.c_str()) == TRUE);
+#endif /* _WIN32 */
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
-      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val) == 0);
+      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF,
+                                   name.c_str(), val.c_str()) == 0);
       break;
     case CF_FILE_RO:
     case CF_NONE:
@@ -358,27 +393,7 @@ bool PWSprefs::WritePref(const CMyString &name, unsigned int val)
   return bRetVal;
 }
 
-bool PWSprefs::WritePref(const CMyString &name, const CMyString &val)
-{
-  // Used to save to config destination at database save and application termination
-  bool bRetVal(false);
-  switch (m_ConfigOptions) {
-    case CF_REGISTRY:
-      bRetVal = (m_app->WriteProfileString(PWS_REG_OPTIONS, name, val) == TRUE);
-      break;
-    case CF_FILE_RW:
-    case CF_FILE_RW_NEW:
-      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val) == 0);
-      break;
-    case CF_FILE_RO:
-    case CF_NONE:
-    default:
-      break;
-  }
-  return bRetVal;
-}
-
-bool PWSprefs::DeletePref(const CMyString &name)
+bool PWSprefs::DeletePref(const StringX &name)
 {
   bool bRetVal = true;
   switch (m_ConfigOptions) {
@@ -386,11 +401,12 @@ bool PWSprefs::DeletePref(const CMyString &name)
     case CF_FILE_RW_NEW:
       // The following is not correct.  Not important just now.
       //if (m_bRegistryKeyExists) {
-      //  bRetVal = m_app->WriteProfileInt(PWS_REG_OPTIONS, name, NULL) == TRUE;
+      //  bRetVal = ::AfxGetApp()->WriteProfileInt(PWS_REG_OPTIONS, name, NULL) == TRUE;
       //}
       break;
     case CF_FILE_RW:
-      bRetVal = (m_XML_Config->DeleteSetting(m_csHKCU_PREF, name) == TRUE);
+      bRetVal = (m_XML_Config->DeleteSetting(m_csHKCU_PREF,
+                                             name.c_str()) == TRUE);
       break;
     case CF_FILE_RO:
     case CF_NONE:
@@ -419,7 +435,7 @@ void PWSprefs::SetPrefRect(long top, long bottom,
     m_prefs_changed[APP_PREF] = true;
 }
 
-CMyString PWSprefs::Store()
+StringX PWSprefs::Store()
 {
   /*
   * Create a string of values that are (1) different from the defaults, &&
@@ -430,16 +446,9 @@ CMyString PWSprefs::Store()
   * {1,0} for bool, unsigned integer for int, and delimited string for String.
   */
 
-  CString retval(_T(""));
-#ifdef _UNICODE
-  wostringstream os;
-#else
-  ostringstream os;
-#endif
+  oStringXStream os;
   int i;
-  TCHAR delim;
-  TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xbb");
-  const int NumDelimiters = _countof(Delimiters);
+
   for (i = 0; i < NumBoolPrefs; i++) {
     if (m_boolValues[i] != m_bool_prefs[i].defVal &&
         m_bool_prefs[i].pt == ptDatabase)
@@ -452,13 +461,17 @@ CMyString PWSprefs::Store()
       os << _T("I ") << i << TCHAR(' ') << m_intValues[i] << TCHAR(' ');
   }
 
+  TCHAR delim;
+  const TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xbb");
+  const int NumDelimiters = sizeof(Delimiters)/ sizeof(Delimiters[0]) - 1;
+
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
         m_string_prefs[i].pt == ptDatabase) {
-      const CMyString svalue = m_stringValues[i];
+      const StringX svalue = m_stringValues[i];
       delim = _T(' ');
       for (int j = 0; j < NumDelimiters; j++) {
-        if (svalue.Find(Delimiters[j]) < 0) {
+        if (svalue.find(Delimiters[j]) ==StringX::npos) {
           delim = Delimiters[j];
           break;
         }
@@ -466,16 +479,16 @@ CMyString PWSprefs::Store()
       if (delim == _T(' '))
         continue;  // We tried, but just can't save it!
 
-      os << _T("S ") << i << _T(' ') << delim << LPCTSTR(m_stringValues[i]) << delim << _T(' ');
+      os << _T("S ") << i << _T(' ') << delim << m_stringValues[i] <<
+        delim << _T(' ');
     }
   }
 
   os << ends;
-  retval = os.str().c_str();
-  return CMyString(retval);
+  return os.str();
 }
 
-void PWSprefs::Load(const CMyString &prefString)
+void PWSprefs::Load(const StringX &prefString)
 {
   // Set default values for preferences stored in Database
   int i;
@@ -491,26 +504,20 @@ void PWSprefs::Load(const CMyString &prefString)
 
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_string_prefs[i].pt == ptDatabase)
-        m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+        m_stringValues[i] = m_string_prefs[i].defVal;
   }
 
-  if (prefString.GetLength() == 0)
+  if (prefString.empty())
     return;
 
   // parse prefString, updating current values
-#ifdef _UNICODE
-  wstring sps(prefString);
-  wistringstream is(sps);
-#else
-  string sps(prefString);
-  istringstream is(sps);
-#endif
+  iStringXStream is(prefString);
+
   TCHAR type, delim[1];
   int index, ival;
   unsigned int iuval;
-  CMyString msval;
 
-  const int N = prefString.GetLength(); // safe upper limit on string size
+  const int N = prefString.length(); // safe upper limit on string size
   TCHAR *buf = new TCHAR[N];
 
   while (is) {
@@ -542,8 +549,7 @@ void PWSprefs::Load(const CMyString &prefString)
         is.ignore(1, TCHAR(' ')); // skip over trailing delimiter
         // forward compatibility and check whether still in DB
         if (index < NumStringPrefs && m_string_prefs[index].pt == ptDatabase) {
-          msval= buf;
-          m_stringValues[index] = msval;
+          m_stringValues[index] = buf;
         }
         break;
       default:
@@ -560,9 +566,9 @@ void PWSprefs::UpdateTimeStamp()
   if (m_ConfigOptions == CF_FILE_RW || m_ConfigOptions == CF_FILE_RW_NEW) {
     time_t time_now;
     time(&time_now);
-    const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
+    const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
-    m_XML_Config->Set(m_csHKCU, _T("LastUpdated"), now);
+    m_XML_Config->Set(m_csHKCU, _T("LastUpdated"), now.c_str());
   }
 }
 
@@ -601,7 +607,7 @@ void PWSprefs::InitializePreferences()
   PWSdirs dirs(PWSdirs::GetConfigDir());
 
   // Set path & name of config file
-  if (m_configfilename.IsEmpty()) {
+  if (m_configfilename.empty()) {
     m_configfilename = PWSdirs::GetConfigDir().c_str();
     m_configfilename += _T("pwsafe.cfg");
   }
@@ -615,7 +621,7 @@ void PWSprefs::InitializePreferences()
 
   // 1. Does config file exist (and if, so, can we write to it?)?
   bool isRO = false;
-  bool configFileExists = PWSfile::FileExists(m_configfilename, isRO);
+  bool configFileExists = pws_os::FileExists(m_configfilename.c_str(), isRO);
   if (configFileExists)
     m_ConfigOptions = (isRO) ? CF_FILE_RO : CF_FILE_RW;
   else 
@@ -664,7 +670,7 @@ void PWSprefs::InitializePreferences()
     // can we create one? If not, fallback to registry
     // We assume that if we can create a lock file, we can create
     // a config file in the same directory
-    CMyString locker;
+    stringT locker;
     if (LockCFGFile(m_configfilename, locker)) {
       UnlockCFGFile(m_configfilename);
     } else {
@@ -672,24 +678,24 @@ void PWSprefs::InitializePreferences()
     }
   }
 
-  CString cs_msg;
+  stringT cs_msg;
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-      cs_msg.LoadString(IDSC_CANTCREATEXMLCFG);
+      LoadAString(cs_msg, IDSC_CANTCREATEXMLCFG);
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
       break;
     case CF_FILE_RO:
-      cs_msg.LoadString(IDSC_CANTUPDATEXMLCFG);
+      LoadAString(cs_msg, IDSC_CANTUPDATEXMLCFG);
       break;
     case CF_NONE:
     default:
-      cs_msg.LoadString(IDSC_CANTDETERMINECFG);
+      LoadAString(cs_msg, IDSC_CANTDETERMINECFG);
       break;
   }
-  if (!cs_msg.IsEmpty())
-    TRACE(cs_msg);
+  if (!cs_msg.empty())
+    TRACE(cs_msg.c_str());
 
   // Check someone has introduced a conflict & silently resolve.
   if ((m_intValues[DoubleClickAction] == DoubleClickCopyPasswordMinimize) &&
@@ -714,7 +720,7 @@ void PWSprefs::SetDatabasePrefsToDefaults()
 
   for (i = 0; i < NumStringPrefs; i++)
     if (m_string_prefs[i].pt == ptDatabase)
-        m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+        m_stringValues[i] = m_string_prefs[i].defVal;
 }
 
 void PWSprefs::LoadProfileFromDefaults()
@@ -731,12 +737,13 @@ void PWSprefs::LoadProfileFromDefaults()
   }
 
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+    m_stringValues[i] = m_string_prefs[i].defVal;
   }
 }
 
 void PWSprefs::LoadProfileFromRegistry()
 {
+#ifdef _WIN32
   // Read in values from registry
   if (!m_bRegistryKeyExists)
     return; // Avoid creating keys if none already, as
@@ -750,34 +757,36 @@ void PWSprefs::LoadProfileFromRegistry()
   int i;
   // Defensive programming, if not "0", then "TRUE", all other values = FALSE
   for (i = 0; i < NumBoolPrefs; i++) {
-    m_boolValues[i] = m_app->GetProfileInt(PWS_REG_OPTIONS,
+    m_boolValues[i] = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
                                            m_bool_prefs[i].name,
                                            m_boolValues[i]) != 0;
     // Make sure we write them all out to the config file the first time
     m_boolChanged[i] = true;
   }
 
-  // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
-  // to correct spelling while maintain preference's value.
-  BOOL bccom = GetPref(ClearClipboardOnMinimize) ? TRUE : FALSE;
-  BOOL bccoe = GetPref(ClearClipboardOnExit) ? TRUE : FALSE;
-
-  bool bccom2 = m_app->GetProfileInt(PWS_REG_OPTIONS,
-                                  _T("ClearClipoardOnMinimize"), // deliberate!
-                                  bccom) != 0;
-  bool bccoe2 = m_app->GetProfileInt(PWS_REG_OPTIONS,
-                                  _T("ClearClipoardOneExit"), // deliberate!
-                                  bccoe) != 0;
-
-  // If old (mis-spelt) name was there, use its value. Since the
-  // default above was the new (correct) spelling, it has priority
-  m_boolValues[ClearClipboardOnMinimize] = bccom2;
-  m_boolValues[ClearClipboardOnExit] = bccoe2;
-  // end of silent conversion
-
+  { // encapsulate in braces to avoid compiler issues w.r.t.
+    // initializations and goto
+    // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
+    // to correct spelling while maintain preference's value.
+    BOOL bccom = GetPref(ClearClipboardOnMinimize) ? TRUE : FALSE;
+    BOOL bccoe = GetPref(ClearClipboardOnExit) ? TRUE : FALSE;
+    
+    bool bccom2 = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
+                                               _T("ClearClipoardOnMinimize"), // deliberate!
+                                               bccom) != 0;
+    bool bccoe2 = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
+                                               _T("ClearClipoardOneExit"), // deliberate!
+                                               bccoe) != 0;
+    
+    // If old (mis-spelt) name was there, use its value. Since the
+    // default above was the new (correct) spelling, it has priority
+    m_boolValues[ClearClipboardOnMinimize] = bccom2;
+    m_boolValues[ClearClipboardOnExit] = bccoe2;
+    // end of silent conversion
+  }
   // Defensive programming, if outside the permitted range, then set to default
   for (i = 0; i < NumIntPrefs; i++) {
-    const int iVal = m_app->GetProfileInt(PWS_REG_OPTIONS,
+    const int iVal = ::AfxGetApp()->GetProfileInt(PWS_REG_OPTIONS,
                                           m_int_prefs[i].name,
                                           m_intValues[i]);
 
@@ -793,9 +802,9 @@ void PWSprefs::LoadProfileFromRegistry()
 
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = CMyString(m_app->GetProfileString(PWS_REG_OPTIONS,
-                                  m_string_prefs[i].name,
-                                  m_stringValues[i]));
+    m_stringValues[i] = ::AfxGetApp()->GetProfileString(PWS_REG_OPTIONS,
+                                                m_string_prefs[i].name,
+                                                m_stringValues[i].c_str());
 
     // Make sure we write them all out to the config file the first time
     m_stringChanged[i] = true;
@@ -825,14 +834,15 @@ void PWSprefs::LoadProfileFromRegistry()
   // End of "defensive" code
 
   // Load last main window size & pos:
-  m_rect.top = m_app->GetProfileInt(PWS_REG_POSITION,
+  m_rect.top = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                     _T("top"), -1);
-  m_rect.bottom = m_app->GetProfileInt(PWS_REG_POSITION,
+  m_rect.bottom = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                        _T("bottom"), -1);
-  m_rect.left = m_app->GetProfileInt(PWS_REG_POSITION,
+  m_rect.left = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                      _T("left"), -1);
-  m_rect.right = m_app->GetProfileInt(PWS_REG_POSITION,
+  m_rect.right = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                       _T("right"), -1);
+#endif /* _WIN32 */
 }
 
 bool PWSprefs::LoadProfileFromFile()
@@ -846,10 +856,13 @@ bool PWSprefs::LoadProfileFromFile()
   * found.
   */
   bool retval;
-  CString ts, csSubkey;
+  stringT ts, csSubkey;
 
-  m_XML_Config = new CXMLprefs(m_configfilename);
+  m_XML_Config = new CXMLprefs(m_configfilename.c_str());
   if (!m_XML_Config->Load()) {
+    if (!m_XML_Config->getReason().empty() &&
+        m_Reporter != NULL)
+      (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
     retval = false;
     goto exit;
   }
@@ -871,23 +884,25 @@ bool PWSprefs::LoadProfileFromFile()
                                         m_bool_prefs[i].defVal) != 0;
   }
 
-  // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
-  // to correct spelling while maintain preference's value.
-  bool bccom = GetPref(ClearClipboardOnMinimize);
-  bool bccoe = GetPref(ClearClipboardOnExit);
+  { // encapsulate in braces to avoid compiler issues w.r.t.
+    // initializations and goto
+    // silently convert pre-3.14 ClearClipoardOn{Minimize,eExit} typos
+    // to correct spelling while maintain preference's value.
+    bool bccom = GetPref(ClearClipboardOnMinimize);
+    bool bccoe = GetPref(ClearClipboardOnExit);
 
-  bool bccom2 = m_XML_Config->Get(m_csHKCU_PREF,
-                                  _T("ClearClipoardOnMinimize"), // deliberate!
-                                  bccom) != 0;
-  bool bccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
-                                  _T("ClearClipoardOneExit"), // deliberate!
-                                  bccoe) != 0;
+    bool bccom2 = m_XML_Config->Get(m_csHKCU_PREF,
+                                    _T("ClearClipoardOnMinimize"), // deliberate!
+                                    bccom) != 0;
+    bool bccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
+                                    _T("ClearClipoardOneExit"), // deliberate!
+                                    bccoe) != 0;
 
-  // If old (mis-spelt) name was there, use its value. Since the
-  // default above was the new (correct) spelling, it has priority
-  m_boolValues[ClearClipboardOnMinimize] = bccom2;
-  m_boolValues[ClearClipboardOnExit] = bccoe2;
-
+    // If old (mis-spelt) name was there, use its value. Since the
+    // default above was the new (correct) spelling, it has priority
+    m_boolValues[ClearClipboardOnMinimize] = bccom2;
+    m_boolValues[ClearClipboardOnExit] = bccoe2;
+  }
   // Now delete them so we don't have to do this again, as they would
   // override the user's intention, if they changed them using the
   // correctly spelt versions.
@@ -916,9 +931,9 @@ bool PWSprefs::LoadProfileFromFile()
 
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = CMyString(m_XML_Config->Get(m_csHKCU_PREF,
-                                                    m_string_prefs[i].name,
-                                                    m_string_prefs[i].defVal));
+    m_stringValues[i] = m_XML_Config->Get(m_csHKCU_PREF.c_str(),
+                                          m_string_prefs[i].name,
+                                          m_string_prefs[i].defVal).c_str();
   }
 
   // Load last main window size & pos:
@@ -928,9 +943,8 @@ bool PWSprefs::LoadProfileFromFile()
   m_rect.right = m_XML_Config->Get(m_csHKCU_POS, _T("right"), -1);
 
   // Load most recently used file list
-  const int nMRUItems = m_intValues[MaxMRUItems];
-  for (i = nMRUItems; i > 0; i--) {
-    csSubkey.Format(_T("Safe%02d"), i);
+  for (i = m_intValues[MaxMRUItems]; i > 0; i--) {
+    Format(csSubkey, _T("Safe%02d"), i);
     m_MRUitems[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
   }
   retval = true;
@@ -956,7 +970,7 @@ void PWSprefs::SaveApplicationPreferences()
       // Load prefs file in case it was changed elsewhere
       // Here we need to explicitly lock from before
       // load to after store
-      m_XML_Config = new CXMLprefs(m_configfilename);
+    m_XML_Config = new CXMLprefs(m_configfilename.c_str());
       if (!m_XML_Config->Lock()) {
         // punt to registry!
         m_ConfigOptions = CF_REGISTRY;
@@ -964,8 +978,8 @@ void PWSprefs::SaveApplicationPreferences()
         m_XML_Config = NULL;
       } else { // acquired lock
         // if file exists, load to get other values
-        if (PWSfile::FileExists(m_configfilename))
-          m_XML_Config->Load();
+        if (pws_os::FileExists(m_configfilename.c_str()))
+          m_XML_Config->Load(); // we ignore failures here. why bother?
       }
   }
   UpdateTimeStamp();
@@ -1013,26 +1027,28 @@ void PWSprefs::SaveApplicationPreferences()
   if (m_rect.changed) {
     switch (m_ConfigOptions) {
       case CF_REGISTRY:
-        m_app->WriteProfileInt(PWS_REG_POSITION,
+#ifdef _WIN32
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
                                _T("top"), m_rect.top);
-        m_app->WriteProfileInt(PWS_REG_POSITION,
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
                                _T("bottom"), m_rect.bottom);
-        m_app->WriteProfileInt(PWS_REG_POSITION,
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
                                _T("left"), m_rect.left);
-        m_app->WriteProfileInt(PWS_REG_POSITION,
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
                                _T("right"), m_rect.right);
+#endif /* _WIN32 */
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
       {
-        CString obuff;
-        obuff.Format(_T("%d"), m_rect.top);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
-        obuff.Format(_T("%d"), m_rect.bottom);
+        stringT obuff;
+        Format(obuff, _T("%d"), m_rect.top);
+         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+        Format(obuff, _T("%d"), m_rect.bottom);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
-        obuff.Format(_T("%d"), m_rect.left);
+        Format(obuff, _T("%d"), m_rect.left);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
-        obuff.Format(_T("%d"), m_rect.right);
+        Format(obuff, _T("%d"), m_rect.right);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
         break;
       }
@@ -1051,10 +1067,10 @@ void PWSprefs::SaveApplicationPreferences()
     // Delete ALL entries
     m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
     // Now put back the ones we want
-    CString csSubkey;
+    stringT csSubkey;
     for (i = 0; i < n; i++)
-      if (!m_MRUitems[i].IsEmpty()) {
-        csSubkey.Format(_T("Safe%02d"), i+1);
+      if (!m_MRUitems[i].empty()) {
+        Format(csSubkey, _T("Safe%02d"), i+1);
         m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
       }
   }
@@ -1063,6 +1079,9 @@ void PWSprefs::SaveApplicationPreferences()
     m_ConfigOptions == CF_FILE_RW_NEW) {
       if (m_XML_Config->Store()) // can't be new after succ. store
         m_ConfigOptions = CF_FILE_RW;
+      else if (!m_XML_Config->getReason().empty() &&
+               m_Reporter != NULL)
+        (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
       m_XML_Config->Unlock();
       delete m_XML_Config;
       m_XML_Config = NULL;
@@ -1073,18 +1092,23 @@ void PWSprefs::SaveApplicationPreferences()
 
 bool PWSprefs::OfferDeleteRegistry() const
 {
+#ifdef _WIN32
   return (m_ConfigOptions == CF_FILE_RW &&
     (m_bRegistryKeyExists || OldPrefsExist()));
+#else
+  return false;
+#endif /* _WIN32 */
 }
 
 void PWSprefs::DeleteRegistryEntries()
 {
+#ifdef _WIN32
   DeleteOldPrefs();
   HKEY hSubkey;
-  const CString csSubkey = _T("Software\\") + CString(m_app->m_pszRegistryKey);
+  const stringT csSubkey = _T("Software\\") + stringT(::AfxGetApp()->m_pszRegistryKey);
 
   LONG dw = RegOpenKeyEx(HKEY_CURRENT_USER,
-                         csSubkey,
+                         csSubkey.c_str(),
                          NULL,
                          KEY_ALL_ACCESS,
                          &hSubkey);
@@ -1092,12 +1116,13 @@ void PWSprefs::DeleteRegistryEntries()
     return; // may have been called due to OldPrefs
   }
 
-  dw = m_app->DelRegTree(hSubkey, m_app->m_pszAppName);
+  dw = ::AfxGetApp()->DelRegTree(hSubkey, ::AfxGetApp()->m_pszAppName);
   ASSERT(dw == ERROR_SUCCESS);
 
   dw = RegCloseKey(hSubkey);
   ASSERT(dw == ERROR_SUCCESS);
   m_bRegistryKeyExists = false;
+#endif /* _WIN32 */
 }
 
 int PWSprefs::GetConfigIndicator() const
@@ -1119,30 +1144,33 @@ int PWSprefs::GetConfigIndicator() const
 }
 
 // Old registry handling code:
-const CString OldSubKey(_T("Counterpane Systems"));
-const CString Software(_T("Software"));
+const stringT OldSubKey(_T("Counterpane Systems"));
+const stringT Software(_T("Software"));
 
 bool PWSprefs::OldPrefsExist() const
 {
-  bool bExists;
+  bool bExists = false;
+#ifdef _WIN32
   HKEY hSubkey;
+  stringT key = Software + _T("\\") + OldSubKey;
   bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
-                            Software + _T("\\") + OldSubKey,
+                            key.c_str(),
                             0L,
                             KEY_READ,
                             &hSubkey) == ERROR_SUCCESS);
   if (bExists)
     ::RegCloseKey(hSubkey);
-
+#endif /* _WIN32 */
   return bExists;
 }
 
 void PWSprefs::ImportOldPrefs()
 {
+#ifdef _WIN32
   HKEY hSubkey;
-  CString OldAppKey = Software + _T("\\") + OldSubKey + _T("\\Password Safe");
+  stringT OldAppKey = Software + _T("\\") + OldSubKey + _T("\\Password Safe");
   LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
-                           OldAppKey,
+                           OldAppKey.c_str(),
                            NULL,
                            KEY_ALL_ACCESS,
                            &hSubkey);
@@ -1211,7 +1239,7 @@ void PWSprefs::ImportOldPrefs()
                                &DataLen);
 
         if (rv == ERROR_SUCCESS)
-          SetPref(StringPrefs(i), CMyString(pData));
+          SetPref(StringPrefs(i), pData);
 
         delete[] pData;
       } // Get the value
@@ -1236,13 +1264,15 @@ void PWSprefs::ImportOldPrefs()
 
   dw = ::RegCloseKey(hSubkey);
   ASSERT(dw == ERROR_SUCCESS);
+#endif /* _WIN32 */
 }
 
 void PWSprefs::DeleteOldPrefs()
 {
+#ifdef _WIN32
   HKEY hSubkey;
   LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
-                           Software,
+                           Software.c_str(),
                            NULL,
                            KEY_ALL_ACCESS,
                            &hSubkey);
@@ -1251,7 +1281,7 @@ void PWSprefs::DeleteOldPrefs()
     return;
   }
 
-  dw = m_app->DelRegTree(hSubkey, OldSubKey);
+  dw = ::AfxGetApp()->DelRegTree(hSubkey, OldSubKey.c_str());
   if (dw != ERROR_SUCCESS) {
     TRACE(_T("PWSprefs::DeleteOldPrefs: DelRegTree failed\n"));
   }
@@ -1259,18 +1289,15 @@ void PWSprefs::DeleteOldPrefs()
   if (dw != ERROR_SUCCESS) {
     TRACE(_T("PWSprefs::DeleteOldPrefs: RegCloseKey failed\n"));
   }
+#endif /* _WIN32 */
 }
 
-CString PWSprefs::GetXMLPreferences()
+stringT PWSprefs::GetXMLPreferences()
 {
-  CString retval(_T(""));
-#ifdef _UNICODE
-  wostringstream os;
-#else
-  ostringstream os;
-#endif
+  stringT retval(_T(""));
+  ostringstreamT os;
 
-  os << "\t<Preferences>" << endl;
+  os << _S("\t<Preferences>") << endl;
   int i;
   for (i = 0; i < NumBoolPrefs; i++) {
     if (m_boolValues[i] != m_bool_prefs[i].defVal &&
@@ -1306,35 +1333,35 @@ CString PWSprefs::GetXMLPreferences()
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
         m_string_prefs[i].pt == ptDatabase) {
-      int p = m_stringValues[i].Find(_T("]]>")); // special handling required
-      if (p == -1) {
+      StringX::size_type p = m_stringValues[i].find(_T("]]>")); // special handling required
+      if (p == StringX::npos) {
         // common case
         os << "\t\t<" << m_string_prefs[i].name << "><![CDATA[" <<
-          LPCTSTR(m_stringValues[i]) << "]]></" << 
+          m_stringValues[i] << "]]></" << 
           m_string_prefs[i].name << ">" << endl;
       } else {
         // value has "]]>" sequence(s) that need(s) to be escaped
         // Each "]]>" splits the field into two CDATA sections, one ending with
         // ']]', the other starting with '>'
-        const CMyString value = m_stringValues[i];
+        const StringX value = m_stringValues[i];
         os << "\t\t<" << m_string_prefs[i].name << ">";
         int from = 0, to = p + 2;
         do {
-          CMyString slice = value.Mid(from, (to - from));
-          os << "<![CDATA[" << LPCTSTR(slice) << "]]><![CDATA[";
+          StringX slice = value.substr(from, (to - from));
+          os << "<![CDATA[" << slice << "]]><![CDATA[";
           from = to;
-          p = value.Find(_T("]]>"), from); // are there more?
-          if (p == -1) {
-            to = value.GetLength();
-            slice = value.Mid(from, (to - from));
+          p = value.find(_T("]]>"), from); // are there more?
+          if (p == StringX::npos) {
+            to = value.length();
+            slice = value.substr(from, (to - from));
           } else {
             to = p + 2;
-            slice = value.Mid(from, (to - from));
+            slice = value.substr(from, (to - from));
             from = to;
-            to = value.GetLength();
+            to = value.length();
           }
-          os <<  LPCTSTR(slice) << "]]>";
-        } while (p != -1);
+          os <<  slice << "]]>";
+        } while (p != StringX::npos);
         os << "</" << m_string_prefs[i].name << ">" << endl;      
       }
     }
@@ -1343,4 +1370,21 @@ CString PWSprefs::GetXMLPreferences()
   os << ends;
   retval = os.str().c_str();
   return retval;
+}
+
+bool PWSprefs::LockCFGFile(const stringT &filename, stringT &locker)
+{
+  return pws_os::LockFile(filename, locker, 
+                          s_cfglockFileHandle, s_cfgLockCount);
+}
+
+void PWSprefs::UnlockCFGFile(const stringT &filename)
+{
+  return pws_os::UnlockFile(filename,
+                            s_cfglockFileHandle, s_cfgLockCount);
+}
+
+bool PWSprefs::IsLockedCFGFile(const stringT &filename)
+{
+  return pws_os::IsLockedFile(filename);
 }

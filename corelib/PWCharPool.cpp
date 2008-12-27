@@ -145,7 +145,7 @@ charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned i
   return retval;
 }
 
-CMyString CPasswordCharPool::MakePassword() const
+StringX CPasswordCharPool::MakePassword() const
 {
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
@@ -154,14 +154,14 @@ CMyString CPasswordCharPool::MakePassword() const
   int lowercaseneeded, uppercaseneeded, digitsneeded, symbolsneeded;
   int hexdigitsneeded;
 
-  CMyString password = _T("");
+  StringX password = _T("");
 
   // pronounceable passwords are handled separately:
   if (m_pronounceable)
     return MakePronounceable();
 
   bool pwRulesMet;
-  CMyString temp;
+  StringX temp;
 
   do {
     charT ch;
@@ -232,7 +232,7 @@ CMyString CPasswordCharPool::MakePassword() const
     }
     // Otherwise, do not exit, do not collect $200, try again...
   } while (!pwRulesMet);
-  ASSERT(password.GetLength() == int(m_pwlen));
+  ASSERT(password.length() == size_t(m_pwlen));
   return password;
 }
 
@@ -293,7 +293,7 @@ static void leet_replace(stringT &password, unsigned int i,
   ASSERT(password[i] != 0);
 }
 
-CMyString CPasswordCharPool::MakePronounceable() const
+StringX CPasswordCharPool::MakePronounceable() const
 {
   /**
   * Following based on gpw.C from
@@ -320,7 +320,7 @@ CMyString CPasswordCharPool::MakePronounceable() const
   for (c1 = 0; c1 < 26; c1++) {
     for (c2 = 0; c2 < 26; c2++) {
       for (c3 = 0; c3 < 26; c3++) {
-        sum += tris[c1][c2][c3];
+        sum += tris[int(c1)][int(c2)][int(c3)];
         if (sum > ranno) { // Pick first value
           password[0] = charT('a') + c1;
           password[1] = charT('a') + c2;
@@ -338,7 +338,7 @@ CMyString CPasswordCharPool::MakePronounceable() const
     c2 = password[nchar-1] - charT('a'); // .. and find the next one.
     sumfreq = 0;
     for (c3 = 0; c3 < 26; c3++)
-      sumfreq += tris[c1][c2][c3];
+      sumfreq += tris[int(c1)][int(c2)][int(c3)];
     /* Note that sum < duos[c1][c2] because
     duos counts all digraphs, not just those
     in a trigraph. We want sum. */
@@ -349,7 +349,7 @@ CMyString CPasswordCharPool::MakePronounceable() const
     ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
     sum = 0;
     for (c3 = 0; c3 < 26; c3++) {
-      sum += tris[c1][c2][c3];
+      sum += tris[int(c1)][int(c2)][int(c3)];
       if (sum > ranno) {
         password[nchar++] = charT('a') + c3;
         c3 = 26;  // Break the for c3 loop.
@@ -394,12 +394,10 @@ CMyString CPasswordCharPool::MakePronounceable() const
         password[i] = (charT)_totupper(password[i]);
     }
 
-    CMyString retval = password.c_str();
-    return retval;
+  return password.c_str();
 }
 
-bool CPasswordCharPool::CheckMasterPassword(const CMyString &pwd,
-                                            CMyString &error)
+bool CPasswordCharPool::CheckMasterPassword(const StringX &pwd, StringX &error)
 {
 #define CUSTOM_MP_REQ
 #ifdef CUSTOM_MP_REQ
@@ -413,10 +411,10 @@ bool CPasswordCharPool::CheckMasterPassword(const CMyString &pwd,
    * to main trunk.
    */
   const int MinLength = 15;
-  int length = pwd.GetLength();
+  int length = pwd.length();
   // check for minimum length
   if (length < MinLength) {
-    error.Format(IDSC_MASTERPASSWORDTOOSHORT, MinLength);
+    Format(error, IDSC_MASTERPASSWORDTOOSHORT, MinLength);
     return false;
   }
 
@@ -433,15 +431,15 @@ bool CPasswordCharPool::CheckMasterPassword(const CMyString &pwd,
   if (has_uc + has_lc + has_digit + has_other >= 3) {
     return true;
   } else {
-    error.LoadString(IDSC_MASTERPASSWORDPOOR);
+    LoadAString(error, IDSC_MASTERPASSWORDPOOR);
     return false;
   }
 #else // !defined(CUSTOM_MP_REQ)
   const int MinLength = 8;
-  int length = pwd.GetLength();
+  int length = pwd.length();
   // check for minimun length
   if (length < MinLength) {
-    error.LoadString(IDSC_PASSWORDTOOSHORT);
+    LoadAString(error, IDSC_PASSWORDTOOSHORT);
     return false;
   }
 
@@ -459,7 +457,7 @@ bool CPasswordCharPool::CheckMasterPassword(const CMyString &pwd,
   if (has_uc && has_lc && (has_digit || has_other)) {
     return true;
   } else {
-    error.LoadString(IDSC_PASSWORDPOOR);
+    LoadAString(error, IDSC_PASSWORDPOOR);
     return false;
   }
 #endif

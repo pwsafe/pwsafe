@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------
 
 #include "PWDialog.h"
-#include "corelib/MyString.h"
+#include "SecString.h"
 #include "corelib/PWHistory.h"
 
 class CPWHistDlg : public CPWDialog
@@ -20,7 +20,7 @@ class CPWHistDlg : public CPWDialog
 
 public:
   CPWHistDlg(CWnd* pParent, bool IsReadOnly,
-    CMyString &HistStr, PWHistList &PWHistList,
+    CSecString &HistStr, PWHistList &PWHistList,
     size_t NumPWHistory, size_t &MaxPWHistory,
     BOOL &SavePWHistory);
 
@@ -38,7 +38,7 @@ protected:
 private:
   const bool m_PWH_IsReadOnly;
   // Following reference members from EditDlg
-  CMyString &m_HistStr;
+  CSecString &m_HistStr;
   PWHistList &m_PWHistList;
   const size_t m_NumPWHistory;
   size_t &m_MaxPWHistory;

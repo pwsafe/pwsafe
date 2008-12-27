@@ -21,15 +21,9 @@
 #include <time.h>
 #include "Util.h"
 #include <sstream>
+#include <iomanip>
+#include "StringXStream.h"
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wistringstream istringstreamT;
-typedef std::wostringstream ostringstreamT;
-#else
-typedef std::istringstream istringstreamT;
-typedef std::ostringstream ostringstreamT;
-#endif
 using namespace std;
 
 // used by CBC routines...
@@ -67,16 +61,6 @@ void trashMemory(LPTSTR buffer, size_t length)
   trashMemory((unsigned char *) buffer, length * sizeof(buffer[0]));
 }
 
-void trashMemory(CString &cs_buffer)
-{
-#ifdef _WIN32
-  TCHAR *lpszString = cs_buffer.GetBuffer(cs_buffer.GetLength());
-  trashMemory( (void *) lpszString, cs_buffer.GetLength() * sizeof(lpszString[0]));
-  cs_buffer.ReleaseBuffer();
-#else
-  ASSERT(0); // XXX notyet
-#endif
-}
 
 /**
 Burn some stack memory
@@ -90,20 +74,20 @@ void burnStack(unsigned long len)
     burnStack(len - sizeof(buf));
 }
 
-void ConvertString(const CMyString &text,
+void ConvertString(const StringX &text,
                    unsigned char *&txt,
                    int &txtlen)
 {
-  LPCTSTR txtstr = LPCTSTR(text); 
-  txtlen = text.GetLength();
+  LPCTSTR txtstr = text.c_str(); 
+  txtlen = text.length();
 
 #ifndef UNICODE
   txt = (unsigned char *)txtstr; // don't delete[] (ugh)!!!
 #else
 #ifdef _WIN32
-  txt = new unsigned char[2*txtlen]; // safe upper limit
+  txt = new unsigned char[3*txtlen]; // safe upper limit
   int len = WideCharToMultiByte(CP_ACP, 0, txtstr, txtlen,
-    LPSTR(txt), 2*txtlen, NULL, NULL);
+    LPSTR(txt), 3*txtlen, NULL, NULL);
   ASSERT(len != 0);
 #else
   mbstate_t mbs;
@@ -118,7 +102,7 @@ void ConvertString(const CMyString &text,
 }
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
-void GenRandhash(const CMyString &a_passkey,
+void GenRandhash(const StringX &a_passkey,
                  const unsigned char* a_randstuff,
                  unsigned char* a_randhash)
 {
@@ -364,31 +348,13 @@ size_t PWSUtil::strLength(const LPCTSTR str)
   return _tcslen(str);
 }
 
-/**
-* Returns the current length of a file.
-*/
-long PWSUtil::fileLength(FILE *fp)
-{
-  if (fp == NULL)
-    return -1L;
-
-  long pos;
-  long len;
-
-  pos = ftell( fp );
-  fseek( fp, 0, SEEK_END );
-  len = ftell( fp );
-  fseek( fp, pos, SEEK_SET );
-
-  return len;
-}
-
 const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01 00:00:00");
 const TCHAR *PWSUtil::UNKNOWN_ASC_TIME_STR = _T("Unknown");
 
-CMyString PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
+StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
+                                         const int result_format)
 {
-  CMyString ret;
+  StringX ret;
   if (t != 0) {
     TCHAR datetime_str[80];
     struct tm *st;
@@ -433,11 +399,12 @@ CMyString PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_for
     }
   }
   // remove the trailing EOL char.
-  ret.TrimRight();
+  TrimRight(ret);
   return ret;
 }
 
-CMyString PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &newExtn)
+stringT PWSUtil::GetNewFileName(const stringT &oldfilename,
+                                const stringT &newExtn)
 {
   stringT inpath(oldfilename);
   stringT drive, dir, fname, ext;
@@ -448,30 +415,37 @@ CMyString PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &n
     outpath = pws_os::makepath(drive, dir, fname, ext);
   } else
     ASSERT(0);
-  return CMyString(outpath.c_str());
+  return outpath;
 }
 
-CString PWSUtil::GetTimeStamp()
+const TCHAR *PWSUtil::GetTimeStamp()
 {
+  // not re-entrant - is this a problem?
+#ifdef _WIN32
   struct _timeb timebuffer;
 #if (_MSC_VER >= 1400)
   _ftime_s(&timebuffer);
 #else
   _ftime(&timebuffer);
 #endif
-  CMyString cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
+#else
+  struct timeb timebuffer;
+  ftime(&timebuffer);
+#endif
+  StringX cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
 
-  CString cs_now;
-  cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.millitm);
-
-  return cs_now;
+  ostringstreamT os;
+  os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
+     << (unsigned int)timebuffer.millitm;
+  static stringT retval = os.str();
+  return retval.c_str();
 }
 
-CString PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
+stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 {
-  CString cs_Out;
-  static const char base64ABC[] = 
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  stringT cs_Out;
+  static const TCHAR base64ABC[] = 
+    _S("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 
   for (size_t i = 0; i < len; i += 3) {
     long l = ( ((long)strIn[i]) << 16 ) | 
@@ -486,33 +460,30 @@ CString PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 
   switch (len % 3) {
     case 1:
-      cs_Out += '=';
+      cs_Out += TCHAR('=');
     case 2:
-      cs_Out += '=';
-  } 
-
+      cs_Out += TCHAR('=');
+  }
   return cs_Out;
 }
 
-void PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len)
+void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len)
 {
   static const char szCS[]=
     "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
   int iDigits[4] = {0,0,0,0};
 
-  CString cs_inString(sz_inString);
-
   size_t st_length = 0;
-  const int in_length = cs_inString.GetLength();
+  const size_t in_length = inString.length();
 
-  int i1, i2, i3;
-  for (i2 = 0; i2 < (int)in_length; i2 += 4) {
+  size_t i1, i2, i3;
+  for (i2 = 0; i2 < in_length; i2 += 4) {
     iDigits[0] = iDigits[1] = iDigits[2] = iDigits[3] = -1;
 
     for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
       for (i3 = i2; i3 < i2 + 4; i3++) {
-        if (i3 < (int)in_length &&  cs_inString[i3] == szCS[i1])
+        if (i3 < in_length &&  inString[i3] == szCS[i1])
           iDigits[i3 - i2] = i1 - 1;
       }
     }
@@ -540,13 +511,13 @@ void PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &ou
 }
 
 
-static const int MAX_TTT_LEN = 64; // Max tooltip text length
-CMyString PWSUtil::NormalizeTTT(const CMyString &in)
+static const size_t MAX_TTT_LEN = 64; // Max tooltip text length
+StringX PWSUtil::NormalizeTTT(const StringX &in)
 {
-  CMyString ttt;
-  if (in.GetLength() >= MAX_TTT_LEN) {
-    ttt = in.Left(MAX_TTT_LEN/2-6) + 
-      _T(" ... ") + in.Right(MAX_TTT_LEN/2);
+  StringX ttt;
+  if (in.length() >= MAX_TTT_LEN) {
+    ttt = in.substr(0, MAX_TTT_LEN/2-6) + 
+      _T(" ... ") + in.substr(in.length() - MAX_TTT_LEN/2);
   } else {
     ttt = in;
   }
@@ -554,13 +525,13 @@ CMyString PWSUtil::NormalizeTTT(const CMyString &in)
 }
 
 void PWSUtil::WriteXMLField(ostream &os, const char *fname,
-                            const CMyString &value, CUTF8Conv &utf8conv,
+                            const StringX &value, CUTF8Conv &utf8conv,
                             const char *tabs)
 {
   const unsigned char * utf8 = NULL;
   int utf8Len = 0;
-  int p = value.Find(_T("]]>")); // special handling required
-  if (p == -1) {
+  string::size_type p = value.find(_T("]]>")); // special handling required
+  if (p == string::npos) {
     // common case
     os << tabs << "<" << fname << "><![CDATA[";
     if(utf8conv.ToUTF8(value, utf8, utf8Len))
@@ -575,7 +546,7 @@ void PWSUtil::WriteXMLField(ostream &os, const char *fname,
     os << tabs << "<" << fname << ">";
     int from = 0, to = p + 2;
     do {
-      CMyString slice = value.Mid(from, (to - from));
+      StringX slice = value.substr(from, (to - from));
       os << "<![CDATA[";
       if(utf8conv.ToUTF8(slice, utf8, utf8Len))
         os.write(reinterpret_cast<const char *>(utf8), utf8Len);
@@ -583,22 +554,22 @@ void PWSUtil::WriteXMLField(ostream &os, const char *fname,
         os << "Internal error - unable to convert field to utf-8";
       os << "]]><![CDATA[";
       from = to;
-      p = value.Find(_T("]]>"), from); // are there more?
-      if (p == -1) {
-        to = value.GetLength();
-        slice = value.Mid(from, (to - from));
+      p = value.find(_T("]]>"), from); // are there more?
+      if (p == string::npos) {
+        to = value.length();
+        slice = value.substr(from, (to - from));
       } else {
         to = p + 2;
-        slice = value.Mid(from, (to - from));
+        slice = value.substr(from, (to - from));
         from = to;
-        to = value.GetLength();
+        to = value.length();
       }
       if(utf8conv.ToUTF8(slice, utf8, utf8Len))
         os.write(reinterpret_cast<const char *>(utf8), utf8Len);
       else
         os << "Internal error - unable to convert field to utf-8";
       os << "]]>";
-    } while (p != -1);
+    } while (p != StringX::npos);
     os << "</" << fname << ">" << endl;
   } // special handling of "]]>" in value.
 }
@@ -607,7 +578,7 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
                            time_t t, CUTF8Conv &utf8conv)
 {
   int i;
-  const CMyString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
+  const StringX tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
   ostringstream oss;
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
@@ -616,12 +587,12 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   for (i = 0; i < indent; i++) oss << "\t";
   oss << "<" << name << ">" << endl;
   for (i = 0; i <= indent; i++) oss << "\t";
-  utf8conv.ToUTF8(tmp.Left(10), utf8, utf8Len);
+  utf8conv.ToUTF8(tmp.substr(0, 10), utf8, utf8Len);
   oss << "<date>";
   oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
   oss << "</date>" << endl;
   for (i = 0; i <= indent; i++) oss << "\t";
-  utf8conv.ToUTF8(tmp.Right(8), utf8, utf8Len);
+  utf8conv.ToUTF8(tmp.substr(tmp.length() - 8), utf8, utf8Len);
   oss << "<time>";
   oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
   oss << "</time>" << endl;

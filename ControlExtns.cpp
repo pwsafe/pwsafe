@@ -49,7 +49,8 @@ const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
 // CStaticExtn
 
 CStaticExtn::CStaticExtn()
-  : m_bUserColour(FALSE)
+  : m_bUserColour(FALSE), m_bMouseInWindow(false), 
+  m_iFlashing(0), m_bHighlight(false)
 {
 }
 
@@ -60,17 +61,81 @@ CStaticExtn::~CStaticExtn()
 BEGIN_MESSAGE_MAP(CStaticExtn, CStatic)
   //{{AFX_MSG_MAP(CStaticExtn)
   ON_WM_CTLCOLOR_REFLECT()
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+  ON_WM_MOUSEMOVE()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
-  if (!this->IsWindowEnabled() || m_bUserColour == FALSE)
+  if (!this->IsWindowEnabled())
+    return (HBRUSH)NULL;
+
+  if (m_iFlashing != 0) {
+    pDC->SetBkMode(m_iFlashing == 1 || (m_iFlashing && m_bHighlight && m_bMouseInWindow) ?
+                   OPAQUE : TRANSPARENT);
+    m_cfOldColour = pDC->SetBkColor(m_iFlashing == 1 ? m_cfFlashColour : m_cfOldColour);
+    return GetSysColorBrush(COLOR_BTNFACE);
+  }
+
+  if (m_bHighlight) {
+    pDC->SetBkMode(m_bMouseInWindow ? OPAQUE : TRANSPARENT);
+    m_cfOldColour = pDC->SetBkColor(m_bMouseInWindow ? m_cfHighlightColour : m_cfOldColour);
+    return GetSysColorBrush(COLOR_BTNFACE);
+  }
+
+  if (m_bUserColour == FALSE)
     return (HBRUSH)NULL;
 
   pDC->SetTextColor(m_cfUser);
   pDC->SetBkColor(GetSysColor(COLOR_BTNFACE));
   return GetSysColorBrush(COLOR_BTNFACE);
+}
+
+void CStaticExtn::FlashBkgnd(COLORREF cfFlashColour)
+{
+  // Set flash colour
+  m_cfFlashColour = cfFlashColour;
+  m_iFlashing = 1;
+  // Cause repaint
+  Invalidate();
+  UpdateWindow();
+  // Sleep to give the impression of a flash
+  Sleep(200);
+  // Reset colour
+  m_iFlashing = -1;
+  // Cause repaint
+  Invalidate();
+  UpdateWindow();
+  // Turn off flashing
+  m_iFlashing = 0;
+}
+
+void CStaticExtn::OnMouseMove(UINT nFlags, CPoint point)
+{
+  if (!m_bMouseInWindow) {
+    m_bMouseInWindow = true;
+    if (m_bHighlight) {
+      // Set background
+      Invalidate();
+      UpdateWindow();
+    }
+    TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT), TME_LEAVE, m_hWnd, 0};
+    VERIFY(TrackMouseEvent(&tme));
+  }
+
+  CStatic::OnMouseMove(nFlags, point);
+}
+
+LRESULT CStaticExtn::OnMouseLeave(WPARAM, LPARAM)
+{
+  if (m_bHighlight) {
+    m_bMouseInWindow = false;
+    // Reset background
+    Invalidate();
+    UpdateWindow();
+  }
+  return 0L;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -107,6 +172,7 @@ BEGIN_MESSAGE_MAP(CEditExtn, CEdit)
   ON_WM_KILLFOCUS()
   ON_WM_CTLCOLOR_REFLECT()
   ON_WM_CONTEXTMENU()
+  ON_WM_LBUTTONDOWN()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -132,6 +198,29 @@ void CEditExtn::OnKillFocus(CWnd* pNewWnd)
   GetSel(m_nStartChar, m_nEndChar);
   CEdit::OnKillFocus(pNewWnd);
   Invalidate(TRUE);
+}
+
+void CEditExtn::OnLButtonDown(UINT nFlags, CPoint point)
+{
+  // Get the scroll bar position.
+  int nScrollHPos = GetScrollPos(SB_HORZ);
+  int nScrollVPos = GetScrollPos(SB_VERT);
+
+  int n = CharFromPos(point);
+  m_lastposition = HIWORD(n);
+  m_nStartChar = m_nEndChar = LOWORD(n);
+
+  CEdit::OnLButtonDown(nFlags, point);
+
+  // Reset the scroll bar position.
+  SetScrollPos(SB_HORZ, nScrollHPos);
+  SetScrollPos(SB_VERT, nScrollVPos);
+
+  // Reset the display scroll position.
+  SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollHPos), 0);
+  SendMessage(WM_VSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollVPos), 0);
+
+  SetSel(m_nStartChar, m_nEndChar);
 }
 
 HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
@@ -475,7 +564,7 @@ void CComboBoxExtn::ChangeColour()
   m_listbox.ChangeColour();
 }
 
-void CComboBoxExtn::SetToolTipStrings(std::vector<CMyString> vtooltips)
+void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
 {
   m_bUseToolTips = true;
   m_vtooltips = vtooltips;
@@ -533,27 +622,31 @@ void CSecEditExtn::SetSecure(bool on_off)
   m_secure = on_off;
 }
 
-CMyString CSecEditExtn::GetSecureText() const
+CSecString CSecEditExtn::GetSecureText() const
 {
-  CMyString retval;
-  m_impl->m_field.Get(retval, m_impl->m_bf);
+  CSecString retval;
+  StringX sval;
+  m_impl->m_field.Get(sval, m_impl->m_bf);
+  retval = sval.c_str();
   return retval;
 }
 
-void CSecEditExtn::SetSecureText(const CMyString &str)
+void CSecEditExtn::SetSecureText(const CSecString &str)
 {
   m_impl->m_field.Set(str, m_impl->m_bf);
-  if (!m_secure)
-    SetWindowText(str);
-  else if (::IsWindow(m_hWnd)) {
-    CString blanks;
-    for (int i = 0; i < str.GetLength(); i++)
-      blanks += FILLER;
-    SetWindowText(blanks);
+  if (::IsWindow(m_hWnd)) {
+    if (!m_secure)
+      SetWindowText(str);
+    else {
+      CString blanks;
+      for (int i = 0; i < str.GetLength(); i++)
+        blanks += FILLER;
+      SetWindowText(blanks);
+    }
   }
 }
 
-void CSecEditExtn::DoDDX(CDataExchange *pDX, CMyString &str)
+void CSecEditExtn::DoDDX(CDataExchange *pDX, CSecString &str)
 {
   if (pDX->m_bSaveAndValidate) {
     str = GetSecureText();
@@ -573,7 +666,7 @@ afx_msg void CSecEditExtn::OnUpdate()
     if (!m_in_recursion)
       OnSecureUpdate();
   } else {
-    CMyString str;
+    CSecString str;
     GetWindowText(str);
     m_impl->m_field.Set(str, m_impl->m_bf);
   }
@@ -591,7 +684,7 @@ void CSecEditExtn::OnSecureUpdate()
   int startSel, endSel;
   GetSel(startSel, endSel);
 
-  CMyString new_str, old_str, str;
+  CSecString new_str, old_str, str;
   int new_len, old_len;
   old_str = GetSecureText();
   GetWindowText(new_str);

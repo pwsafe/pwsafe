@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -28,8 +28,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Update Revision Number in Resources"
-				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo .&#x0D;&#x0A;"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -46,24 +46,24 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/pwsafe.tlb"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;PWS_FORCE_STRONG_PASSPHRASE"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\Release/pwsafe.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -82,12 +82,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
 				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib"
-				OutputFile=".\Release/pwsafe.exe"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories=".\corelib\Release,C:\local\msvc\HTMLHelpWorkshop\lib"
-				ProgramDatabaseFile=".\Release/pwsafe.pdb"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -118,18 +119,18 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="2"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Update Revision Number in Resources"
-				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo .&#x0D;&#x0A;"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -146,24 +147,24 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/pwsafe.tlb"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;PWS_FORCE_STRONG_PASSPHRASE"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				BufferSecurityCheck="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\Debug/pwsafe.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
 				BrowseInformation="1"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
@@ -184,14 +185,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
 				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib"
 				ShowProgress="0"
-				OutputFile=".\Debug/pwsafe.exe"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories=".\corelib\Debug,C:\local\msvc\HTMLHelpWorkshop\lib"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/pwsafe.pdb"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -222,10 +226,10 @@
 		</Configuration>
 		<Configuration
 			Name="Demo|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -233,8 +237,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Update Revision Number in Resources"
-				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo .&#x0D;&#x0A;"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -251,21 +255,24 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/pwsafe.tlb"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO"
+				AdditionalIncludeDirectories="$(HTMLWSDir)\include;$(XercesDir)\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML;DEMO;PWS_FORCE_STRONG_PASSPHRASE"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="$(IntDir)/pwsafe.pch"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -284,12 +291,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib"
-				OutputFile="$(ConfigurationName)/pwsafe.exe"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories=".\corelib\Demo;C:\local\msvc\HTMLHelpWorkshop\lib"
-				ProgramDatabaseFile=".\Demo/pwsafe.pdb"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -320,18 +328,18 @@
 		</Configuration>
 		<Configuration
 			Name="NU-Debug|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Update Revision Number in Resources"
-				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo .&#x0D;&#x0A;"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -348,24 +356,24 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/pwsafe.tlb"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;PWS_FORCE_STRONG_PASSPHRASE"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="0"
+				RuntimeLibrary="1"
 				BufferSecurityCheck="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\Debug/pwsafe.pch"
-				AssemblerListingLocation=".\NU-Debug/"
-				ObjectFile=".\NU-Debug/"
-				ProgramDataBaseFileName=".\NU-Debug/"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
 				BrowseInformation="1"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
@@ -386,14 +394,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
+				LinkLibraryDependencies="false"
 				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib"
-				OutputFile=".\NU-Debug/pwsafe.exe"
+				ShowProgress="0"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories=".\corelib\NU-Debug,C:\local\msvc\HTMLHelpWorkshop\lib"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\NU-Debug/pwsafe.pdb"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -424,10 +435,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-Release|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -435,8 +446,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Update Revision Number in Resources"
-				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo .&#x0D;&#x0A;"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -453,24 +464,24 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/pwsafe.tlb"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;PWS_FORCE_STRONG_PASSPHRASE"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\Release/pwsafe.pch"
-				AssemblerListingLocation=".\NU-Release/"
-				ObjectFile=".\NU-Release/"
-				ProgramDataBaseFileName=".\NU-Release/"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -489,13 +500,1267 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
+				LinkLibraryDependencies="false"
 				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib"
-				OutputFile=".\NU-Release/pwsafe.exe"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;.\corelib\NU-Release&quot;;C:\local\msvc\HTMLHelpWorkshop\lib"
-				ProgramDatabaseFile=".\NU-Release/pwsafe.pdb"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DebugE|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib libexpatw.lib"
+				ShowProgress="0"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(ExpatDir)\lib&quot;"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DebugM|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib msxml6.lib"
+				ShowProgress="0"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DebugX|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_3D.lib"
+				ShowProgress="0"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories=".\corelib\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(XercesDir)\lib"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseE|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib libexpatw.lib"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(ExpatDir)\lib&quot;"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseM|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseX|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_3.lib"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories=".\corelib\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(XercesDir)\lib"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-DebugE|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib libexpat.lib"
+				ShowProgress="0"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(ExpatDir)\lib&quot;"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-DebugM|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib msxml6.lib"
+				ShowProgress="0"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-DebugX|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_3D.lib"
+				ShowProgress="0"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories=".\corelib\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(XercesDir)\lib"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-ReleaseE|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib libexpat.lib"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(ExpatDir)\lib&quot;"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-ReleaseM|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;.\corelib\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="NU-ReleaseX|Win32"
+			OutputDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\obj\pwsafe\$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="pre_build.cmd"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\obj\pwsafe\$(ConfigurationName)/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(HTMLWSDir)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;PWS_FORCE_STRONG_PASSPHRASE"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\obj\pwsafe\$(ConfigurationName)/pwsafe.pch"
+				AssemblerListingLocation=".\obj\pwsafe\$(ConfigurationName)/"
+				ObjectFile=".\obj\pwsafe\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\obj\pwsafe\$(ConfigurationName)/"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_3.lib"
+				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories=".\corelib\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(XercesDir)\lib"
+				ProgramDatabaseFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -765,6 +2030,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PasswordSubsetDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Properties.cpp"
 				>
 			</File>
@@ -845,6 +2114,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SecString.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\filter\SetFiltersDlg.cpp"
 				>
 			</File>
@@ -862,6 +2135,10 @@
 			</File>
 			<File
 				RelativePath=".\SingleInstance.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SMemFile.cpp"
 				>
 			</File>
 			<File
@@ -1058,6 +2335,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MFCmessages.h"
+				>
+			</File>
+			<File
 				RelativePath=".\model.h"
 				>
 			</File>
@@ -1107,6 +2388,10 @@
 			</File>
 			<File
 				RelativePath=".\PasswordSafe.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PasswordSubsetDlg.h"
 				>
 			</File>
 			<File
@@ -1206,6 +2491,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SecString.h"
+				>
+			</File>
+			<File
 				RelativePath=".\filter\SetFiltersDlg.h"
 				>
 			</File>
@@ -1223,6 +2512,10 @@
 			</File>
 			<File
 				RelativePath=".\SingleInstance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SMemFile.h"
 				>
 			</File>
 			<File
@@ -1948,6 +3241,18 @@
 			</File>
 			<File
 				RelativePath=".\res\toolbar\options_new_disabled.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\passwordchars_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\passwordchars_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\passwordchars_new_disabled.bmp"
 				>
 			</File>
 			<File

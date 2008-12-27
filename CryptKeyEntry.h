@@ -10,7 +10,7 @@
 // CryptKeyEntry.h
 //-----------------------------------------------------------------------------
 
-#include "corelib/MyString.h"
+#include "SecString.h"
 #include "corelib/PwsPlatform.h"
 #include "PWDialog.h"
 
@@ -23,8 +23,8 @@ public:
   // Dialog Data
   //{{AFX_DATA(CCryptKeyEntry)
   enum { IDD = IDD_CRYPTKEYENTRY };
-  CMyString m_cryptkey1;
-  CMyString m_cryptkey2;
+  CSecString m_cryptkey1;
+  CSecString m_cryptkey2;
   //}}AFX_DATA
 
 

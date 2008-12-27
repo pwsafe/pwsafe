@@ -20,10 +20,10 @@
 #include "DDSupport.h"
 #include "InfoDisplay.h"
 #include "corelib/ItemData.h"
-#include "corelib/MyString.h"
+#include "SecString.h"
 #include "corelib/Util.h"
 #include "corelib/Pwsprefs.h"
-#include "corelib/SMemFile.h"
+#include "SMemFile.h"
 
 using namespace std;
 
@@ -420,7 +420,7 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
     DWORD_PTR itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
-    ci->SetGroup(CMyString(prefix));
+    ci->SetGroup(CSecString(prefix));
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
       prefix += GROUP_SEP;
@@ -457,7 +457,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     DWORD_PTR itemData = GetItemData(ti);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
-    CMyString currentTitle, currentUser, currentPassword;
+    CSecString currentTitle, currentUser, currentPassword;
 
     // We cannot allow in-place edit if these fields contain braces!
     currentTitle = ci->GetTitle();
@@ -474,18 +474,18 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       currentPassword.FindOneOf(_T("[]{}")) != -1)
       return;
   }
+  // In case we have to revert:
+  m_eLabel = CSecString(GetItemText(ti));
   // Allow in-place editing
   *pLResult = FALSE;
 }
 
-static bool splitLeafText(const TCHAR *lt, CString &newTitle, 
-                          CString &newUser, CString &newPassword)
+static bool splitLeafText(const TCHAR *lt, StringX &newTitle, 
+                          StringX &newUser, StringX &newPassword)
 {
   bool bPasswordSet(false);
 
-  newTitle = _T("");
-  newUser = _T("");
-  newPassword = _T("");
+  newTitle = newUser = newPassword = _T("");
 
   CString cs_leafText(lt);
   cs_leafText.Trim();
@@ -543,20 +543,20 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
   if (OpenSquareBraceIndex >= 0 && OpenCurlyBraceIndex == -1) {
     // title [user]
     newTitle = cs_leafText.Left(OpenSquareBraceIndex);
-    newTitle.Trim();
+    Trim(newTitle);
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
                               CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
-    newUser.Trim();
+    Trim(newUser);
     goto final_check;
   }
 
   if (OpenSquareBraceIndex == -1 && OpenCurlyBraceIndex >= 0) {
     // title {password}
     newTitle = cs_leafText.Left(OpenCurlyBraceIndex);
-    newTitle.Trim();
+    Trim(newTitle);
     newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
                                   CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
-    newPassword.Trim();
+    Trim(newPassword);
     bPasswordSet = true;
     goto final_check;
   }
@@ -564,13 +564,13 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
   if (OpenSquareBraceIndex >= 0 && OpenCurlyBraceIndex >= 0) {
     // title [user] {password}
     newTitle = cs_leafText.Left(OpenSquareBraceIndex);
-    newTitle.Trim();
+    Trim(newTitle);
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
                               CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
-    newUser.Trim();
+    Trim(newUser);
     newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
                                   CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
-    newPassword.Trim();
+    Trim(newPassword);
     bPasswordSet = true;
     goto final_check;
   }
@@ -579,10 +579,10 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
 
 final_check:
   bool bRC(true);
-  if (newTitle.IsEmpty())
+  if (newTitle.empty())
     bRC = false;
 
-  if (bPasswordSet && newPassword.IsEmpty())
+  if (bPasswordSet && newPassword.empty())
     bRC = false;
 
   return bRC;
@@ -628,17 +628,17 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       DWORD_PTR itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
       CItemData *ci = (CItemData *)itemData;
-      CString group, newTitle, newUser, newPassword;
+      StringX group, newTitle, newUser, newPassword;
 
       if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
         // errors in user's input - restore text and refresh display
         goto bad_exit;
       }
 
-      group = CString(ci->GetGroup());
+      group = ci->GetGroup();
       if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
-        CMyString temp;
-        if (group.IsEmpty())
+        CSecString temp;
+        if (group.empty())
           temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
         else
           temp.Format(IDS_ENTRYEXISTS, group, newTitle, newUser);
@@ -646,13 +646,13 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
         goto bad_exit;
       }
 
-      if (newUser.IsEmpty())
-        newUser = CString(ci->GetUser());
-      if (newPassword.IsEmpty())
-        newPassword = CString(ci->GetPassword());
+      if (newUser.empty())
+        newUser = ci->GetUser();
+      if (newPassword.empty())
+        newPassword = ci->GetPassword();
 
       PWSprefs *prefs = PWSprefs::GetInstance();
-      CString treeDispString;
+      StringX treeDispString;
       bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
       bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
 
@@ -675,7 +675,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       // automatically overwrite and update the item text with the contents from 
       // the "ptvinfo->item.pszText" buffer.
       PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
-                       treeDispString, ptvinfo->item.cchTextMax);
+                       treeDispString.c_str(), ptvinfo->item.cchTextMax);
       ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = TCHAR('\0');
 
       // update corresponding List mode text
@@ -685,32 +685,43 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
       // update the password database record - but only those items visible!!!
       ci->SetTitle(newTitle);
-      m_pDbx->UpdateListItemTitle(lindex, newTitle);
+      m_pDbx->UpdateListItemTitle(lindex, newTitle.c_str());
       if (bShowUsernameInTree) {
         ci->SetUser(newUser);
-        m_pDbx->UpdateListItemUser(lindex, newUser);
+        m_pDbx->UpdateListItemUser(lindex, newUser.c_str());
         if (bShowPasswordInTree) {
           ci->SetPassword(newPassword);
-          m_pDbx->UpdateListItemPassword(lindex, newPassword);
+          m_pDbx->UpdateListItemPassword(lindex, newPassword.c_str());
         }
       }
-    } else {
-      // Update all leaf children with new path element
-      // prefix is path up to and NOT including renamed node
-      CString prefix;
-      HTREEITEM parent, current = ti;
-      do {
-        parent = GetParentItem(current);
-        if (parent == NULL)
-          break;
+    } else { // !IsLeaf
+      // PR2407325: If the user edits a group name so that it has
+      // a GROUP_SEP, all hell breaks loose.
+      // Right Thing (tm) would be to parse and create subgroups as
+      // needed, but this is too hard (for now), so we'll just reject
+      // any group name that has one or more GROUP_SEP.
+      StringX hasSep(ptvinfo->item.pszText);
+      if (hasSep.find(GROUP_SEP) != StringX::npos) {
+        SetItemText(ti, m_eLabel);
+        goto bad_exit;
+      } else {
+        // Update all leaf children with new path element
+        // prefix is path up to and NOT including renamed node
+        CString prefix;
+        HTREEITEM parent, current = ti;
+        do {
+          parent = GetParentItem(current);
+          if (parent == NULL)
+            break;
 
-        current = parent;
-        if (!prefix.IsEmpty())
-          prefix = GROUP_SEP + prefix;
-        prefix = GetItemText(current) + prefix;
-      } while (1);
+          current = parent;
+          if (!prefix.IsEmpty())
+            prefix = GROUP_SEP + prefix;
+          prefix = GetItemText(current) + prefix;
+        } while (1);
       UpdateLeafsGroup(ti, prefix);
-    }
+      } // good group name (no GROUP_SEP)
+    } // !IsLeaf
     // Mark database as modified
     m_pDbx->SetChanged(DboxMain::Data);
     m_pDbx->ChangeOkUpdate();
@@ -785,34 +796,34 @@ CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
   return retval;
 }
 
-static CMyString GetPathElem(CMyString &path)
+static CSecString GetPathElem(CSecString &path)
 {
   // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
   // (assuming GROUP_SEP is '.')
 
-  CMyString retval;
+  CSecString retval;
   int N = path.Find(GROUP_SEP);
   if (N == -1) {
     retval = path;
     path = _T("");
   } else {
     const int Len = path.GetLength();
-    retval = CMyString(path.Left(N));
-    path = CMyString(path.Right(Len - N - 1));
+    retval = CSecString(path.Left(N));
+    path = CSecString(path.Right(Len - N - 1));
   }
   return retval;
 }
 
 static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
-                         const CMyString &s, HTREEITEM &si)
+                         const CSecString &s, HTREEITEM &si)
 {
   // returns true iff s is a direct descendant of node
   HTREEITEM ti = Tree.GetChildItem(node);
 
   while (ti != NULL) {
-    const CMyString itemText = Tree.GetItemText(ti);
+    const CSecString itemText = Tree.GetItemText(ti);
     if (itemText == s) {
       si = ti;
       return true;
@@ -828,8 +839,8 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group)
   HTREEITEM ti = TVI_ROOT;
   HTREEITEM si;
   if (!group.IsEmpty()) {
-    CMyString path = group;
-    CMyString s;
+    CSecString path = group;
+    CSecString s;
     do {
       s = GetPathElem(path);
       if (!ExistsInTree(*this, ti, s, si)) {
@@ -872,12 +883,12 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     ASSERT(di->list_index >= 0);
 
     // Update Group
-    CMyString path, elem;
+    CSecString path, elem;
     HTREEITEM p, q = hNewItem;
     do {
       p = GetParentItem(q);
       if (p != NULL) {
-        elem = CMyString(GetItemText(p));
+        elem = CSecString(GetItemText(p));
         if (!path.IsEmpty())
           elem += GROUP_SEP;
         path = elem + path;
@@ -887,9 +898,9 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     } while (1);
 
     // Get information from current selected entry
-    CMyString ci_user = ci->GetUser();
-    CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CSecString ci_user = ci->GetUser();
+    CSecString ci_title0 = ci->GetTitle();
+    CSecString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Update list field with new group
     ci->SetGroup(path);
@@ -923,7 +934,7 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 }
 
 bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
-                           const CMyString &prefix)
+                           const CSecString &prefix)
 {
   DWORD_PTR itemData = GetItemData(hitemDrag);
 
@@ -939,18 +950,18 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     CItemData temp(*ci); // copy construct a duplicate
 
     // Update Group: chop away prefix, replace
-    CMyString oldPath(temp.GetGroup());
+    CSecString oldPath(temp.GetGroup());
     if (!prefix.IsEmpty()) {
       oldPath = oldPath.Right(oldPath.GetLength() - prefix.GetLength() - 1);
     }
     // with new path
-    CMyString path, elem;
-    path = CMyString(GetItemText(hitemDrop));
+    CSecString path, elem;
+    path = CSecString(GetItemText(hitemDrop));
     HTREEITEM p, q = hitemDrop;
     do {
       p = GetParentItem(q);
       if (p != NULL) {
-        elem = CMyString(GetItemText(p));
+        elem = CSecString(GetItemText(p));
         if (!path.IsEmpty())
           elem += GROUP_SEP;
         path = elem + path;
@@ -959,7 +970,7 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         break;
     } while (1);
 
-    CMyString newPath;
+    CSecString newPath;
     if (path.IsEmpty())
       newPath = oldPath;
     else {
@@ -968,9 +979,9 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         newPath += GROUP_SEP + oldPath;
     }
     // Get information from current selected entry
-    CMyString ci_user = ci->GetUser();
-    CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title = m_pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CSecString ci_user = ci->GetUser();
+    CSecString ci_title0 = ci->GetTitle();
+    CSecString ci_title = m_pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Needs new UUID as they must be unique and this is a copy operation
     // but before we do, save the original
@@ -1003,13 +1014,13 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         // Get base of original alias and make this copy point to it
         m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
         m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_ALIAS);
-        temp.SetPassword(CMyString(_T("[Alias]")));
+        temp.SetPassword(CSecString(_T("[Alias]")));
         break;
       case CItemData::ET_SHORTCUT:
         // Get base of original shortcut and make this copy point to it
         m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
         m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_SHORTCUT);
-        temp.SetPassword(CMyString(_T("[Shortcut]")));
+        temp.SetPassword(CSecString(_T("[Shortcut]")));
         break;
       default:
         ASSERT(0);
@@ -1137,7 +1148,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
         case ID_MENUITEM_RCREATESHORTCUT:
         {
           // Shortcut group from drop point, title & user from drag entry
-          CMyString cs_group, cs_title, cs_user;
+          CSecString cs_group, cs_title, cs_user;
           CItemData *ci;
           DWORD_PTR itemData;
 
@@ -1171,7 +1182,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
 
   if (hitemDrop == NULL && GetCount() == 0) {
     // Dropping on to an empty database
-    CMyString DropGroup (_T(""));
+    CSecString DropGroup (_T(""));
     ProcessData(pData, lBufLen, DropGroup);
     SelectItem(GetRootItem());
     retval = TRUE;
@@ -1204,7 +1215,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
     }
   } else { // from someone else!
     // Now add it
-    CMyString DropGroup = CMyString(GetGroup(hitemDrop));
+    CSecString DropGroup = CSecString(GetGroup(hitemDrop));
     ProcessData((BYTE *)pData, lBufLen, DropGroup);
     SelectItem(hitemDrop);
     retval = TRUE;
@@ -1509,7 +1520,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   return (outLen > 0);
 }
 
-bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup)
+bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CSecString &DropGroup)
 {
 #ifdef DUMP_DATA
   CString cs_timestamp;
@@ -1564,7 +1575,7 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
 
   if (out_oblist.m_bDragNode && m_nDragPathLen > 0) {
     CItemData ci2(*ci); // we need a copy since to modify the group
-    const CMyString cs_Group = ci->GetGroup();
+    const CSecString cs_Group = ci->GetGroup();
     ci2.SetGroup(cs_Group.Right(cs_Group.GetLength() - m_nDragPathLen - 1));
     pDDObject->FromItem(ci2);
   } else {
@@ -1591,28 +1602,28 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
     out_oblist.AddTail(pDDObject);
 }
 
-CMyString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
+CSecString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
 {
   // return all path components beween hItem and root.
   // e.g., if hItem is X in a.b.c.X.y.z, then return a.b.c
-  CMyString retval;
+  CSecString retval;
   HTREEITEM p = GetParentItem(hItem);
   while (p != NULL) {
-    retval = CMyString(GetItemText(p)) + retval;
+    retval = CSecString(GetItemText(p)) + retval;
     p = GetParentItem(p);
     if (p != NULL)
-      retval = CMyString(GROUP_SEP) + retval;
+      retval = CSecString(GROUP_SEP) + retval;
   }
   return retval;
 }
 
-CMyString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
+CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
   bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
 
-  CMyString treeDispString = ci.GetTitle();
+  CSecString treeDispString = ci.GetTitle();
   if (bShowUsernameInTree) {
     treeDispString += _T(" [");
     treeDispString += ci.GetUser();
@@ -1641,11 +1652,11 @@ static int CALLBACK ExplorerCompareProc(LPARAM lParam1, LPARAM lParam2,
     iResult = 1;
   } else {
 
-    iResult = (pLHS->GetGroup()).CompareNoCase(pRHS->GetGroup());
+    iResult = CompareNoCase(pLHS->GetGroup(), pRHS->GetGroup());
     if (iResult == 0) {
-      iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+      iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
       if (iResult == 0) {
-        iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+        iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
       }
     }
   }
@@ -1825,7 +1836,7 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     }
   }
  
-  CMyString cs_dragdata;
+  CSecString cs_dragdata;
   cs_dragdata = pci->GetPassword();
 
   const int ilen = cs_dragdata.GetLength();

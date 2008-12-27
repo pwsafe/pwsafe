@@ -53,15 +53,18 @@
 #define IDD_FILTER_DATE                 154
 #define IDD_FILTER_BOOL                 155
 #define IDD_FILTER_ENTRYTYPE            156
-#define IDR_POPCOLUMNS                  160
-#define IDR_POPCOPYTOCOMPARISON         161
-#define IDR_POPCOPYTOORIGINAL           162
-#define IDR_POPCUSTOMIZETOOLBAR         163
-#define IDR_POPGROUP                    164
-#define IDR_POPMENU                     165
-#define IDR_POPTRAY                     166
-#define IDR_POPTREE                     167
-#define IDR_POPRIGHTDRAG                168
+#define IDD_VIEWREPORT                  157
+#define IDD_MANAGEFILTERS               158
+#define IDD_PASSWORDSUBSET              159
+#define IDR_POPCOLUMNS                  170
+#define IDR_POPCOPYTOCOMPARISON         171
+#define IDR_POPCOPYTOORIGINAL           172
+#define IDR_POPCUSTOMIZETOOLBAR         173
+#define IDR_POPGROUP                    174
+#define IDR_POPMENU                     175
+#define IDR_POPTRAY                     176
+#define IDR_POPTREE                     177
+#define IDR_POPRIGHTDRAG                178
 #define IDI_CORNERICON                  180
 #define IDI_LOCKEDICON                  181
 #define IDI_MBASKICON                   182
@@ -277,8 +280,9 @@
 #define IDB_DRAGPASSWORDX               440
 #define IDB_DRAGNOTESX                  441
 #define IDB_DRAGURLX                    442
-#define IDD_VIEWREPORT                  443
-#define IDD_MANAGEFILTERS               444
+#define IDB_PASSWORDCHARS_CLASSIC       443
+#define IDB_PASSWORDCHARS_NEW           444
+#define IDB_PASSWORDCHARS_NEW_D         445
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -313,7 +317,6 @@
 #define IDC_CRYPTKEY1                   1032
 #define IDC_CRYPTKEY2                   1033
 #define IDC_DEFUSERNAME                 1034
-#define IDC_STATIC_USERNAME             1035
 #define IDC_DEFPWLENGTH                 1036
 #define IDC_MESSAGE                     1037
 #define IDC_QUERYCHECK                  1038
@@ -379,8 +382,6 @@
 #define IDC_EXPIRYDATE                  1103
 #define IDC_EXPIRYTIME                  1104
 #define IDC_STATIC_CURRENT_XTIME        1105
-#define IDC_STATIC_URL                  1106
-#define IDC_STATIC_AUTO                 1107
 #define IDC_STATIC_CTIME                1108
 #define IDC_CTIME                       1109
 #define IDC_STATIC_PMTIME               1110
@@ -587,19 +588,31 @@
 #define IDC_FILTERPROPERTIES            1347
 #define IDC_STATIC_FILTERNAME           1348
 #define IDC_STATIC_ACTIONS              1349
-#define IDC_MPWSET                      1350
-#define IDC_MPWSET2                     1351
-#define IDC_MPWEXP                      1351
-#define IDC_MPW_CHANGE_REGULAR          1351
-#define IDC_MPW_CHANGE_MSG              1351
+#define IDC_STATIC_GROUP                1350
+#define IDC_STATIC_TITLE                1351
+#define IDC_STATIC_USERNAME             1352
+#define IDC_STATIC_PASSWORD             1353
+#define IDC_STATIC_NOTES                1354
+#define IDC_STATIC_URL                  1355
+#define IDC_STATIC_AUTO                 1356
+#define IDC_LAUNCH                      1357
+#define IDC_SUBSET                      1358
+#define IDC_GETSUBSET                   1359
+#define IDC_SUBSETRESULTS               1360
+#define IDC_STATICSUBSETWARNING         1361
+#define IDC_MPWSET                      1362
+#define IDC_MPWSET2                     1363
+#define IDC_MPWEXP                      1364
+#define IDC_MPW_CHANGE_REGULAR          1365
+#define IDC_MPW_CHANGE_MSG              1366
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        445
+#define _APS_NEXT_RESOURCE_VALUE        446
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1352
-#define _APS_NEXT_SYMED_VALUE           157
+#define _APS_NEXT_CONTROL_VALUE         1367
+#define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

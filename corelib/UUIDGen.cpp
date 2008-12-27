@@ -13,7 +13,9 @@
 //
 
 #include "UUIDGen.h"
-#include "util.h" /* for trashMemory() */
+#include "Util.h" /* for trashMemory() */
+#include "StringXStream.h"
+#include <iomanip>
 #include <assert.h>
 
 #ifdef _WIN32
@@ -23,12 +25,19 @@
 #include <asm/byteorder.h> /* for htonl, htons */
 #endif
 
-CUUIDGen::CUUIDGen()
+using namespace std;
+
+CUUIDGen::CUUIDGen() : m_canonic(false)
 {
+#ifdef _WIN32
   UuidCreate(&uuid);
+#else
+  uuid_generate(uuid);
+#endif
 }
 
-CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array)
+#ifdef _WIN32
+static void array2UUUID(const uuid_array_t &uuid_array, UUID &uuid)
 {
   unsigned long *p0 = (unsigned long *)uuid_array;
   uuid.Data1 = htonl(*p0);
@@ -40,12 +49,7 @@ CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array)
     uuid.Data4[i] = uuid_array[i + 8];
 }
 
-CUUIDGen::~CUUIDGen()
-{
-  trashMemory((unsigned char *)&uuid, sizeof(uuid));
-}
-
-void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
+static void UUID2array(const UUID &uuid, uuid_array_t &uuid_array)
 {
   unsigned long *p0 = (unsigned long *)uuid_array;
   *p0 = htonl(uuid.Data1);
@@ -56,37 +60,86 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
   for (int i = 0; i < 8; i++)
     uuid_array[i + 8] = uuid.Data4[i];
 }
+#endif
 
-static void hexify(unsigned char byte, char *&out)
+CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(canonic)
 {
-  static const char v[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                           '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-  *out++ = v[(byte >> 4) & 0xf];
-  *out++ = v[byte & 0xf];
+#ifdef _WIN32
+  array2UUUID(uuid_array, uuid);
+#else
+  uuid_copy(uuid, uuid_array);
+#endif
 }
 
-void CUUIDGen::GetUUIDStr(const uuid_array_t &uuid_array,
-                          uuid_str_NH_t &uuid_buffer)
+CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by GetHexStr()
 {
-  // No hyphens
-  char *p = uuid_buffer;
-  for (int i = 0; i < sizeof(uuid_array); i++)
-    hexify(uuid_array[i], p);
-  *p = '\0';
-}
+  ASSERT(s.length() == 32);
+#ifdef _WIN32
+  uuid_array_t uu;
+#else
+  unsigned char *uu = uuid;
+#endif
 
-void CUUIDGen::GetUUIDStr(const uuid_array_t &uuid_array,
-                          uuid_str_WH_t &uuid_buffer)
-{
-  // With hyphens!
-  char *p = uuid_buffer;
-  for (int i = 0; i < sizeof(uuid_array); i++) {
-    hexify(uuid_array[i], p);
-    if (i == 3 || i == 5 || i == 7 || i == 9)
-      *p++ = '-';
+  int x;
+  for (int i = 0; i < 16; i++) {
+    iStringXStream is(s.substr(i*2, 2));
+    is >> hex >> x;
+    uu[i] = (unsigned char)x;
   }
-  *p = '\0';
+#ifdef _WIN32
+  array2UUUID(uu, uuid);
+#endif
 }
+
+CUUIDGen::~CUUIDGen()
+{
+  trashMemory((unsigned char *)&uuid, sizeof(uuid));
+}
+
+void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
+{
+#ifdef _WIN32
+  UUID2array(uuid, uuid_array);
+#else
+  uuid_copy(uuid_array, uuid);
+#endif
+}
+
+
+ostream &operator<<(ostream &os, const CUUIDGen &uuid)
+{
+ uuid_array_t uuid_a;
+  uuid.GetUUID(uuid_a);
+  for (size_t i = 0; i < sizeof(uuid_a); i++) {
+    os << setw(2) << setfill('0') << hex << int(uuid_a[i]);
+    if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
+      os << "-";
+  }
+  return os;
+}
+
+wostream &operator<<(wostream &os, const CUUIDGen &uuid)
+{
+ uuid_array_t uuid_a;
+  uuid.GetUUID(uuid_a);
+  for (size_t i = 0; i < sizeof(uuid_a); i++) {
+    os << setw(2) << setfill(wchar_t('0')) << hex << int(uuid_a[i]);
+    if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
+      os << L"-";
+  }
+  return os;
+}
+
+StringX CUUIDGen::GetHexStr() const
+{
+  oStringXStream os;
+  bool sc = m_canonic;
+  m_canonic = false;
+  os << *this;
+  m_canonic = sc;
+  return os.str();
+}
+
 
 #ifdef TEST
 #include <stdio.h>

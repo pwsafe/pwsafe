@@ -60,9 +60,8 @@ int DboxMain::BackupSafe()
 {
   INT_PTR rc;
   PWSprefs *prefs = PWSprefs::GetInstance();
-  CMyString tempname;
-  CMyString currbackup =
-    prefs->GetPref(PWSprefs::CurrentBackup);
+  StringX tempname;
+  StringX currbackup = prefs->GetPref(PWSprefs::CurrentBackup);
 
   CString cs_text(MAKEINTRESOURCE(IDS_PICKBACKUP));
   CString cs_temp, cs_title;
@@ -70,7 +69,7 @@ int DboxMain::BackupSafe()
   while (1) {
     CFileDialog fd(FALSE,
                    _T("bak"),
-                   currbackup,
+                   currbackup.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    _T("Password Safe Backups (*.bak)|*.bak||"),
@@ -89,7 +88,7 @@ int DboxMain::BackupSafe()
       return PWScore::USER_CANCEL;
     }
     if (rc == IDOK) {
-      tempname = (CMyString)fd.GetPathName();
+      tempname = fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
@@ -116,8 +115,8 @@ void DboxMain::OnRestore()
 int DboxMain::Restore()
 {
   int rc;
-  CMyString backup, passkey, temp;
-  CMyString currbackup =
+  StringX backup, passkey, temp;
+  StringX currbackup =
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
   rc = SaveIfChanged();
@@ -130,7 +129,7 @@ int DboxMain::Restore()
   while (1) {
     CFileDialog fd(TRUE,
                    _T("bak"),
-                   currbackup,
+                   currbackup.c_str(),
                    OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
                    _T("Password Safe Backups (*.bak)|*.bak|")
                    _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
@@ -150,7 +149,7 @@ int DboxMain::Restore()
       return PWScore::USER_CANCEL;
     }
     if (rc2 == IDOK) {
-      backup = (CMyString)fd.GetPathName();
+      backup = fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
@@ -180,8 +179,8 @@ int DboxMain::Restore()
   }
 
   // unlock the file we're leaving
-  if( !m_core.GetCurFile().IsEmpty() ) {
-    m_core.UnlockFile(m_core.GetCurFile());
+  if( !m_core.GetCurFile().empty() ) {
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
   // clear the data before restoring
@@ -209,11 +208,11 @@ int DboxMain::Restore()
 
 void DboxMain::OnValidate() 
 {
-  CString cs_msg;
+  stringT cs_msg;
   if (!m_core.Validate(cs_msg))
-    cs_msg.LoadString(IDS_VALIDATEOK);
+    LoadAString(cs_msg, IDS_VALIDATEOK);
 
-  AfxMessageBox(cs_msg, MB_OK);
+  AfxMessageBox(cs_msg.c_str(), MB_OK);
 }
 
 void DboxMain::OnOptions() 
@@ -360,36 +359,36 @@ void DboxMain::OnOptions()
 
   misc.m_usedefuser = prefs->
     GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
-  misc.m_defusername = CString(prefs->
-    GetPref(PWSprefs::DefaultUsername));
+  misc.m_defusername = prefs->
+    GetPref(PWSprefs::DefaultUsername).c_str();
   misc.m_querysetdef = prefs->
     GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
-  misc.m_csBrowser = CString(prefs->
-    GetPref(PWSprefs::AltBrowser));
-  misc.m_csBrowserCmdLineParms = CString(prefs->
-    GetPref(PWSprefs::AltBrowserCmdLineParms));
-  CString dats = CString(prefs->
-    GetPref(PWSprefs::DefaultAutotypeString));
+  misc.m_csBrowser = prefs->
+    GetPref(PWSprefs::AltBrowser).c_str();
+  misc.m_csBrowserCmdLineParms = prefs->
+    GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
+  CString dats = prefs->
+    GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (dats.IsEmpty())
     dats = DEFAULT_AUTOTYPE;
   misc.m_csAutotype = CString(dats);
   misc.m_minauto = prefs->
     GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;                               
 
-  backup.SetCurFile(m_core.GetCurFile());
+  backup.SetCurFile(m_core.GetCurFile().c_str());
   backup.m_saveimmediately = prefs->
     GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   backup.m_backupbeforesave = prefs->
     GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
   CString backupPrefix(prefs->
-    GetPref(PWSprefs::BackupPrefixValue));
+                       GetPref(PWSprefs::BackupPrefixValue).c_str());
   backup.m_backupprefix = backupPrefix.IsEmpty() ? 0 : 1;
   backup.m_userbackupprefix = backupPrefix;
   backup.m_backupsuffix = prefs->
     GetPref(PWSprefs::BackupSuffix);
   backup.m_maxnumincbackups = prefs->
     GetPref(PWSprefs::BackupMaxIncremented);
-  CString backupDir(prefs->GetPref(PWSprefs::BackupDir));
+  CString backupDir(prefs->GetPref(PWSprefs::BackupDir).c_str());
   backup.m_backuplocation = backupDir.IsEmpty() ? 0 : 1;
   backup.m_userbackupotherlocation = backupDir;
 
@@ -554,18 +553,18 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::UseDefaultUser,
       misc.m_usedefuser == TRUE);
     prefs->SetPref(PWSprefs::DefaultUsername,
-      misc.m_defusername);
+                   LPCTSTR(misc.m_defusername));
     prefs->SetPref(PWSprefs::QuerySetDef,
       misc.m_querysetdef == TRUE);
     prefs->SetPref(PWSprefs::AltBrowser,
-      misc.m_csBrowser);
+                   LPCTSTR(misc.m_csBrowser));
     prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
-      misc.m_csBrowserCmdLineParms);
+                   LPCTSTR(misc.m_csBrowserCmdLineParms));
     if (misc.m_csAutotype.IsEmpty() || misc.m_csAutotype == DEFAULT_AUTOTYPE)
       prefs->SetPref(PWSprefs::DefaultAutotypeString, _T(""));
     else if (misc.m_csAutotype != DEFAULT_AUTOTYPE)
       prefs->SetPref(PWSprefs::DefaultAutotypeString,
-      misc.m_csAutotype);
+                     LPCTSTR(misc.m_csAutotype));
     prefs->SetPref(PWSprefs::MinimizeOnAutotype,
       misc.m_minauto == TRUE);
 
@@ -574,13 +573,13 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::BackupBeforeEverySave,
       backup.m_backupbeforesave == TRUE);
     prefs->SetPref(PWSprefs::BackupPrefixValue,
-      backup.m_userbackupprefix);
+                   LPCTSTR(backup.m_userbackupprefix));
     prefs->SetPref(PWSprefs::BackupSuffix,
       (unsigned int)backup.m_backupsuffix);
     prefs->SetPref(PWSprefs::BackupMaxIncremented,
       backup.m_maxnumincbackups);
     prefs->SetPref(PWSprefs::BackupDir,
-      backup.m_userbackupotherlocation);
+                   LPCTSTR(backup.m_userbackupotherlocation));
 
     // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
@@ -614,7 +613,7 @@ void DboxMain::OnOptions()
     /*
     ** Update string in database, if necessary & possible (i.e. ignore if R-O)
     */
-    if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
+    if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().empty() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (!m_core.IsReadOnly()) {
         // save changed preferences to file
@@ -622,8 +621,8 @@ void DboxMain::OnOptions()
         // the user made to the database are also saved here
         int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
         int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-        CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
-        CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
+        stringT userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+        stringT userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
         m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
                              userBackupPrefix, userBackupDir); // try to save previous version
         if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
@@ -726,7 +725,7 @@ void DboxMain::OnOptions()
       * and in converting pre-2.0 databases.
       */
 
-      m_core.SetDefUsername(misc.m_defusername);
+      m_core.SetDefUsername(misc.m_defusername.GetString());
       m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
       // Finally, keep prefs file updated:
       prefs->SaveApplicationPreferences();
@@ -767,9 +766,9 @@ struct HistoryUpdateResetOff : public HistoryUpdater {
   HistoryUpdateResetOff(int &num_altered) : HistoryUpdater(num_altered) {}
   void operator()(CItemData &ci)
   {
-    CMyString cs_tmp = ci.GetPWHistory();
-    if (cs_tmp.GetLength() >= 5 && cs_tmp.GetAt(0) == _T('1')) {
-      cs_tmp.SetAt(0, _T('0'));
+    StringX cs_tmp = ci.GetPWHistory();
+    if (cs_tmp.length() >= 5 && cs_tmp[0] == _T('1')) {
+      cs_tmp[0] = _T('0');
       ci.SetPWHistory(cs_tmp);
       m_num_altered++;
     }
@@ -782,13 +781,13 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
   {m_text.Format(_T("1%02x00"), new_default_max);}
   void operator()(CItemData &ci)
   {
-    CMyString cs_tmp = ci.GetPWHistory();
-    if (cs_tmp.GetLength() < 5) {
-      ci.SetPWHistory(m_text);
+    StringX cs_tmp = ci.GetPWHistory();
+    if (cs_tmp.length() < 5) {
+      ci.SetPWHistory(LPCTSTR(m_text));
       m_num_altered++;
     } else {
-      if (cs_tmp.GetAt(0) == _T('0')) {
-        cs_tmp.SetAt(0, _T('1'));
+      if (cs_tmp[0] == _T('0')) {
+        cs_tmp[0] = _T('1');
         ci.SetPWHistory(cs_tmp);
         m_num_altered++;
       }
@@ -805,12 +804,12 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
   {m_text.Format(_T("1%02x"), new_default_max);}
   void operator()(CItemData &ci)
   {
-    CMyString cs_tmp = ci.GetPWHistory();
+    StringX cs_tmp = ci.GetPWHistory();
 
-    int len = cs_tmp.GetLength();
+    int len = cs_tmp.length();
     if (len >= 5) {
       int status, old_max, num_saved;
-      TCHAR *lpszPWHistory = cs_tmp.GetBuffer(len + sizeof(TCHAR));
+      const TCHAR *lpszPWHistory = cs_tmp.c_str();
 #if _MSC_VER >= 1400
       int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), 
                              &status, &old_max, &num_saved);
@@ -818,9 +817,8 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
       int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"),
                            &status, &old_max, &num_saved);
 #endif
-      cs_tmp.ReleaseBuffer();
       if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
-        cs_tmp = CMyString(m_text) + cs_tmp.Mid(3);
+        cs_tmp = LPCTSTR(m_text) + cs_tmp.substr(3);
         ci.SetPWHistory(cs_tmp);
         m_num_altered++;
       }

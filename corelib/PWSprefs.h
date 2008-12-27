@@ -29,8 +29,9 @@
 * identified in storage by their type and index.
 */
 
-#include "MyString.h"
-#include "PWSfile.h"
+#include "StringX.h"
+#include "Proxy.h"
+#include "os/typedefs.h"
 
 extern HANDLE s_cfglockFileHandle;
 extern int s_cfgLockCount;
@@ -42,10 +43,12 @@ class PWSprefs
 public:
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
-  static void SetConfigFile(const CString &fn) {m_configfilename = fn;}
-  // prefString is stored on file, format described in PWSprefs.cpp
-  void Load(const CMyString &prefString);
-  CMyString Store(); // returns string for saving in file
+  static void SetConfigFile(const stringT &fn) {m_configfilename = fn;}
+  static void SetReporter(Reporter *reporter) {m_Reporter = reporter;}
+  
+  // prefString is stored in database file, format described in PWSprefs.cpp
+  void Load(const StringX &prefString);
+  StringX Store(); // returns string for saving in file
 
   void SaveApplicationPreferences();
 
@@ -125,23 +128,23 @@ public:
   unsigned int GetPref(IntPrefs pref_enum) const;
   // Following for case where default value is determined @ runtime
   unsigned int GetPref(IntPrefs pref_enum, unsigned int defVal) const;
-  CMyString GetPref(StringPrefs pref_enum) const;
+  StringX GetPref(StringPrefs pref_enum) const;
 
   // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefRect(long top, long bottom, long left, long right);
-  int GetMRUList(CString *MRUFiles);
-  int SetMRUList(const CString *MRUFiles, int n, int max_MRU);
+  int GetMRUList(stringT *MRUFiles);
+  int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
 
   void SetPref(BoolPrefs pref_enum, bool value);
   void SetPref(IntPrefs pref_enum, unsigned int value);
-  void SetPref(StringPrefs pref_enum, const CMyString &value);
+  void SetPref(StringPrefs pref_enum, const StringX &value);
 
   // CPSWRecentFileList needs to know if it can use registry or not:
   bool IsUsingRegistry() const {return m_ConfigOptions == CF_REGISTRY;}
 
   // Get database preferences in XML format for export
-  CString GetXMLPreferences();
+  stringT GetXMLPreferences();
 
   // for display in status bar (debug)
   int GetConfigIndicator() const;
@@ -150,14 +153,9 @@ public:
   bool OfferDeleteRegistry() const;
   void DeleteRegistryEntries();  
 
-  static bool LockCFGFile(const CMyString &filename, CMyString &locker)
-  {return PWSfile::LockFile(filename, locker, 
-  s_cfglockFileHandle, s_cfgLockCount);}
-  static void UnlockCFGFile(const CMyString &filename)
-  {return PWSfile::UnlockFile(filename,
-  s_cfglockFileHandle, s_cfgLockCount);}
-  static bool IsLockedCFGFile(const CMyString &filename)
-  {return PWSfile::IsLockedFile(filename);}
+  static bool LockCFGFile(const stringT &filename, stringT &locker);
+  static void UnlockCFGFile(const stringT &filename);
+  static bool IsLockedCFGFile(const stringT &filename);
 
 private:
   PWSprefs();
@@ -166,11 +164,11 @@ private:
   // Preferences changed (Database or Application)
   enum {DB_PREF = 0, APP_PREF = 1};
 
-  bool WritePref(const CMyString &name, bool val);
-  bool WritePref(const CMyString &name, unsigned int val);
-  bool WritePref(const CMyString &name, const CMyString &val);
+  bool WritePref(const StringX &name, bool val);
+  bool WritePref(const StringX &name, unsigned int val);
+  bool WritePref(const StringX &name, const StringX &val);
   void UpdateTimeStamp();
-  bool DeletePref(const CMyString &name);
+  bool DeletePref(const StringX &name);
   void InitializePreferences();
   void LoadProfileFromDefaults();
   bool LoadProfileFromFile();
@@ -183,35 +181,34 @@ private:
   void DeleteOldPrefs();
 
   static PWSprefs *self; // singleton
-  static CString m_configfilename; // may be set before singleton created
+  static stringT m_configfilename; // may be set before singleton created
+  static Reporter *m_Reporter; // set as soon as possible to show errors
   CXMLprefs *m_XML_Config;
 
   bool m_bRegistryKeyExists;
   enum {CF_NONE, CF_REGISTRY, CF_FILE_RO,
     CF_FILE_RW, CF_FILE_RW_NEW} m_ConfigOptions;
-  CString m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF;
-
-  CWinApp *m_app;
+  stringT m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF;
 
   bool m_prefs_changed[2];  // 0 - DB stored pref; 1 - App related pref
 
   enum PrefType {ptObsolete = 0, ptDatabase, ptApplication};
   static const struct boolPref {
-    TCHAR *name; bool defVal; PrefType pt;} m_bool_prefs[NumBoolPrefs];
+    const TCHAR *name; bool defVal; PrefType pt;} m_bool_prefs[NumBoolPrefs];
   static const struct intPref {
-    TCHAR *name; unsigned int defVal; PrefType pt; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
+    const TCHAR *name; unsigned int defVal; PrefType pt; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
   static const struct stringPref {
-    TCHAR *name; TCHAR *defVal; PrefType pt;} m_string_prefs[NumStringPrefs];
+    const TCHAR *name; const TCHAR *defVal; PrefType pt;} m_string_prefs[NumStringPrefs];
 
   // current values
   bool m_boolValues[NumBoolPrefs];
   unsigned int m_intValues[NumIntPrefs];
-  CMyString m_stringValues[NumStringPrefs];
+  StringX m_stringValues[NumStringPrefs];
   struct {long top, bottom, left, right; bool changed;} m_rect;
   bool m_boolChanged[NumBoolPrefs];
   bool m_intChanged[NumIntPrefs];
   bool m_stringChanged[NumStringPrefs];
 
-  CString *m_MRUitems;
+  stringT *m_MRUitems;
 };
 #endif /*  __PWSPREFS_H */

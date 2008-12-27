@@ -53,11 +53,15 @@ typedef std::ofstream ofstreamT;
 #endif
 
 static TCHAR PSSWDCHAR = TCHAR('*');
-CMyString CEditDlg::HIDDEN_NOTES;
+CSecString CEditDlg::HIDDEN_NOTES;
 CString CEditDlg::CS_ON;
 CString CEditDlg::CS_OFF;
 CString CEditDlg::CS_SHOW;
 CString CEditDlg::CS_HIDE;
+
+static const COLORREF crefGreen = (RGB(222, 255, 222));
+static const COLORREF crefPink  = (RGB(255, 222, 222));
+static const COLORREF crefWhite = (RGB(255, 255, 255));
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
@@ -67,6 +71,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL)
 {
   ASSERT(ci != NULL);
+  m_pDbx = static_cast<DboxMain *>(pParent);
 
   if (HIDDEN_NOTES.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
@@ -81,7 +86,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 #endif
   }
 
-  m_OverridePolicy = m_ci->GetPWPolicy().IsEmpty() ? FALSE : TRUE;
+  m_OverridePolicy = m_ci->GetPWPolicy().empty() ? FALSE : TRUE;
   m_ci->GetPWPolicy(m_pwp);
   size_t num_err;
   BOOL HasHistory = CreatePWHistoryList(ci->GetPWHistory(), m_MaxPWHistory,
@@ -163,28 +168,39 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_URL, m_ex_URL);
    DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
    DDX_Check(pDX, IDC_OVERRIDE_POLICY, m_OverridePolicy);
+
+   DDX_Control(pDX, IDC_STATIC_GROUP, m_stc_group);
+   DDX_Control(pDX, IDC_STATIC_TITLE, m_stc_title);
+   DDX_Control(pDX, IDC_STATIC_USERNAME, m_stc_username);
+   DDX_Control(pDX, IDC_STATIC_PASSWORD, m_stc_password);
+   DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
+   DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
+   DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);   
 }
 
 BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
-#if defined(POCKET_PC)
-  ON_WM_SHOWWINDOW()
-#endif
-  ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
-  ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
   ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnBnClickViewDependents)
   ON_BN_CLICKED(IDC_XTIME_CLEAR, OnBnClickedClearXTime)
   ON_BN_CLICKED(IDC_XTIME_SET, OnBnClickedSetXTime)
   ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
+  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
+  ON_BN_CLICKED(IDC_LAUNCH, OnBnClickedLaunch)
+  ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
+  ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
   ON_EN_SETFOCUS(IDC_NOTES, OnEnSetfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
+  ON_EN_CHANGE(IDC_URL, OnEnChangeUrl)
+  ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_AUTO, OnStcClicked)
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
-  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
+#if defined(POCKET_PC)
+  ON_WM_SHOWWINDOW()
+#endif
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -260,23 +276,22 @@ void CEditDlg::OnOK()
     goto dont_close;
   }
 
-  DboxMain* pDbx = static_cast<DboxMain *>(GetParent());
-  ASSERT(pDbx != NULL);
+  ASSERT(m_pDbx != NULL);
 
-  listindex = pDbx->Find(m_group, m_title, m_username);
+  listindex = m_pDbx->Find(m_group, m_title, m_username);
   /*
   *  If there is a matching entry in our list, and that
   *  entry is not the same one we started editing, tell the
   *  user to try again.
   */
-  if (listindex != pDbx->End()) {
-    const CItemData &listItem = pDbx->GetEntryAt(listindex);
+  if (listindex != m_pDbx->End()) {
+    const CItemData &listItem = m_pDbx->GetEntryAt(listindex);
     uuid_array_t list_uuid, elem_uuid;
     listItem.GetUUID(list_uuid);
     m_ci->GetUUID(elem_uuid);
     bool notSame = (::memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
     if (notSame) {
-      CMyString temp;
+      CSecString temp;
       temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
@@ -286,9 +301,9 @@ void CEditDlg::OnOK()
   }
 
   bool brc, b_msg_issued;
-  brc = pDbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-                              true, CItemData::ET_ALIAS,
-                              m_base_uuid, m_ibasedata, b_msg_issued);
+  brc = m_pDbx->CheckNewPassword(m_group, m_title, m_username, m_password,
+                                 true, CItemData::ET_ALIAS,
+                                 m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {
     if (!b_msg_issued)
@@ -336,7 +351,7 @@ void CEditDlg::UpdateHistory()
 {
   size_t num = m_PWHistList.size();
   PWHistEntry pwh_ent;
-  pwh_ent.password = m_oldRealPassword;
+  pwh_ent.password = LPCTSTR(m_oldRealPassword);
   time_t t;
   m_ci->GetPMTime(t);
   if ((long)t == 0L) // if never set - try creation date
@@ -344,8 +359,10 @@ void CEditDlg::UpdateHistory()
   pwh_ent.changetttdate = t;
   pwh_ent.changedate =
     PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
-  if (pwh_ent.changedate.IsEmpty()) {
-    pwh_ent.changedate.LoadString(IDS_UNKNOWN);
+  if (pwh_ent.changedate.empty()) {
+    CString unk;
+    unk.LoadString(IDS_UNKNOWN);
+    pwh_ent.changedate = LPCTSTR(unk);
   }
 
   // Now add the latest
@@ -364,20 +381,20 @@ void CEditDlg::UpdateHistory()
   }
 
   // Now create string version!
-  CMyString new_PWHistory;
+  CSecString new_PWHistory;
   CString buffer;
 
   buffer.Format(_T("1%02x%02x"), m_MaxPWHistory, num);
-  new_PWHistory = CMyString(buffer);
+  new_PWHistory = CSecString(buffer);
 
   PWHistList::iterator iter;
   for (iter = m_PWHistList.begin(); iter != m_PWHistList.end(); iter++) {
     const PWHistEntry pwshe = *iter;
 
     buffer.Format(_T("%08x%04x%s"),
-                  (long) pwshe.changetttdate, pwshe.password.GetLength(),
-                  pwshe.password);
-    new_PWHistory += CMyString(buffer);
+                  (long) pwshe.changetttdate, pwshe.password.length(),
+                  pwshe.password.c_str());
+    new_PWHistory += CSecString(buffer);
     buffer.Empty();
   }
   m_ci->SetPWHistory(new_PWHistory);
@@ -453,10 +470,10 @@ BOOL CEditDlg::OnInitDialog()
   if (!m_Edit_IsReadOnly) {
     // Populate the groups combo box
     if (m_ex_group.GetCount() == 0) {
-      CStringArray aryGroups;
+      std::vector<stringT> aryGroups;
       app.m_core.GetUniqueGroups(aryGroups);
-      for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
-        m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
+      for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
+        m_ex_group.AddString(aryGroups[igrp].c_str());
       }
     }
   }
@@ -483,15 +500,34 @@ BOOL CEditDlg::OnInitDialog()
   m_ToolTipCtrl = new CToolTipCtrl;
   if (!m_ToolTipCtrl->Create(this, 0)) {
     TRACE("Unable To create Edit Dialog ToolTip\n");
+  } else {
+    CString cs_ToolTip;
+    if (m_OverridePolicy == TRUE) {
+     cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
+      m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
+    }
+    cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_GROUP), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_TITLE), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
+
+    EnableToolTips();
+    m_ToolTipCtrl->Activate(TRUE);
   }
-  CString cs_ToolTip;
-  cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
-  if (!m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip)) {
-    TRACE("Unable To add tool to Edit Dialog ToolTip\n");
-  }
-  // show tooltip iff m_OverridePolicy set
-  EnableToolTips(m_OverridePolicy);
-  m_ToolTipCtrl->Activate(m_OverridePolicy);
+
+  m_stc_group.SetHighlight(true, crefWhite);
+  m_stc_title.SetHighlight(true, crefWhite);
+  m_stc_username.SetHighlight(true, crefWhite);
+  m_stc_password.SetHighlight(true, crefWhite);
+  m_stc_notes.SetHighlight(true, crefWhite);
+  m_stc_URL.SetHighlight(true, crefWhite);
+  m_stc_autotype.SetHighlight(true, crefWhite);
+
+  GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
 
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -514,8 +550,15 @@ void CEditDlg::ShowPassword()
   m_ex_password.Invalidate();
 
   // Don't need verification as the user can see the password entered
-  m_password2.Empty();
+  // use m_password2 to show something useful...
+  ostringstreamT os;
+  for (int i = 1; i <= m_realpassword.GetLength(); i++)
+    os << (i % 10);
+  m_password2 = os.str().c_str();
+  m_ex_password2.SetSecure(false);
+  m_ex_password2.SetPasswordChar(0);
   m_ex_password2.EnableWindow(FALSE);
+  m_ex_password2.Invalidate();
 }
 
 void CEditDlg::HidePassword()
@@ -528,6 +571,8 @@ void CEditDlg::HidePassword()
   m_ex_password.SetSecure(true);
   // Set password character so that the password is not displayed
   m_ex_password.SetPasswordChar(PSSWDCHAR);
+  m_ex_password2.SetSecure(true);
+  m_ex_password2.SetPasswordChar(PSSWDCHAR);
   m_ex_password2.SetSecureText(m_password2);
   m_ex_password.Invalidate();
 
@@ -556,11 +601,10 @@ void CEditDlg::HideNotes()
 
 void CEditDlg::OnRandom() 
 {
-  DboxMain* pParent = static_cast<DboxMain*>(GetParent());
-
   UpdateData(TRUE);
-
-  pParent->MakeRandomPassword(m_realpassword, m_pwp);
+  StringX passwd;
+  m_pDbx->MakeRandomPassword(passwd, m_pwp);
+  m_realpassword = passwd.c_str();
   if (!m_isPwHidden) {
       m_password = m_realpassword;
       UpdateData(FALSE);
@@ -578,7 +622,7 @@ void CEditDlg::OnRandom()
     }
   }
   GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
-  CMyString cs_locPMTime = PWSUtil::ConvertToDateTimeString(m_tttCPMTime, TMC_LOCALE);
+  CSecString cs_locPMTime = PWSUtil::ConvertToDateTimeString(m_tttCPMTime, TMC_LOCALE);
   GetDlgItem(IDC_PMTIME)->SetWindowText(cs_locPMTime);
   UpdateData(TRUE);
 }
@@ -918,21 +962,75 @@ void CEditDlg::OnBnClickViewDependents()
 
 void CEditDlg::OnBnClickedOverridePolicy()
 {
-  DboxMain* pParent = static_cast<DboxMain*>(GetParent());
   // If state was true AND shift key pressed,
   // show existing policy rather than transit to clear
   if (m_OverridePolicy && GetAsyncKeyState(VK_SHIFT) < 0) {
-    pParent->SetPasswordPolicy(m_pwp);
+    m_pDbx->SetPasswordPolicy(m_pwp);
     UpdateData(FALSE); // don't change state
     return;
   }
   UpdateData(TRUE);
   if (m_OverridePolicy == TRUE) {
-    pParent->SetPasswordPolicy(m_pwp);
+    m_pDbx->SetPasswordPolicy(m_pwp);
   } else
     m_pwp.Empty();
-  EnableToolTips(m_OverridePolicy); // show tooltip iff m_OverridePolicy set
-  m_ToolTipCtrl->Activate(m_OverridePolicy);
+
+  if (m_OverridePolicy == TRUE) {
+    CString cs_ToolTip;
+    cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
+  } else
+    m_ToolTipCtrl->DelTool(GetDlgItem(IDC_OVERRIDE_POLICY));
+}
+
+void CEditDlg::OnStcClicked(UINT nID)
+{
+  UpdateData(TRUE);
+  StringX cs_data;
+  int iaction(0);
+  // NOTE: These values must be contiguous in "resource.h"
+  switch (nID) {
+    case IDC_STATIC_GROUP:
+      m_stc_group.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_group);
+      iaction = CItemData::GROUP;
+      break;
+    case IDC_STATIC_TITLE:
+      m_stc_title.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_title);
+      iaction = CItemData::TITLE;
+      break;
+    case IDC_STATIC_USERNAME:
+      m_stc_username.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_username);
+      iaction = CItemData::USER;
+      break;
+    case IDC_STATIC_PASSWORD:
+      m_stc_password.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_realpassword);
+      iaction = CItemData::PASSWORD;
+      break;
+    case IDC_STATIC_NOTES:
+      m_stc_notes.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_notes);
+      iaction = CItemData::NOTES;
+      break;
+    case IDC_STATIC_URL:
+      m_stc_URL.FlashBkgnd(crefGreen);
+      cs_data = StringX(m_URL);
+      iaction = CItemData::URL;
+      break;
+    case IDC_STATIC_AUTO:
+      m_stc_autotype.FlashBkgnd(crefGreen);
+      cs_data = m_pDbx->GetAutoTypeString(StringX(m_autotype), StringX(m_username), 
+                                          StringX(m_realpassword));
+      iaction = CItemData::AUTOTYPE;
+      break;
+    default:
+      ASSERT(0);
+  }
+  m_pDbx->SetClipboardData(cs_data);
+  m_pDbx->UpdateLastClipboardAction(iaction);
 }
 
 void CEditDlg::SelectAllNotes()
@@ -961,3 +1059,19 @@ BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
 
   return CPWDialog::PreTranslateMessage(pMsg);
 }
+
+void CEditDlg::OnBnClickedLaunch()
+{
+  UpdateData(TRUE);
+  StringX cs_data = StringX(m_URL);
+  int iaction = CItemData::URL;
+  m_pDbx->LaunchBrowser(CString(cs_data.c_str()));
+  m_pDbx->UpdateLastClipboardAction(iaction);
+}
+
+void CEditDlg::OnEnChangeUrl()
+{
+  UpdateData(TRUE);
+  GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
+}
+

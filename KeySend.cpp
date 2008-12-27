@@ -7,7 +7,17 @@
 */
 #include "KeySend.h"
 
-#include  <Winable.h>
+/*
+* Make sure we get the right declaration of BlockInput
+* VS2005 - it is in "winable.h"
+* VS2008 - it is in "winuser.h"
+*/
+
+#if _MSC_VER >= 1500
+#include <winuser.h>
+#else
+#include <winable.h>
+#endif
 
 CKeySend::CKeySend(void) : m_delay(10)
 {
@@ -35,13 +45,11 @@ CKeySend::~CKeySend(void)
 {
 }
 
-void CKeySend::SendString(const CMyString &data)
+void CKeySend::SendString(const StringX &data)
 {
-  const int N = data.GetLength();
-
-  for (int n = 0; n < N; n++){
-    SendChar(data[n]);
-  }
+  for (StringX::const_iterator iter = data.begin();
+       iter != data.end(); iter++)
+    SendChar(*iter);
 }
 
 void CKeySend::SendChar(TCHAR c)

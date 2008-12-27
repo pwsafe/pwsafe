@@ -8,13 +8,16 @@
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
 #include "corelib.h"
+#include "os/file.h"
+#include "os/utf8conv.h"
 
+#ifdef _WIN32
 #include <io.h>
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <errno.h>
 
-PWSfileV1V2::PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version)
+PWSfileV1V2::PWSfileV1V2(const StringX &filename, RWmode mode, VERSION version)
   : PWSfile(filename, mode)
 {
   m_curversion = version;
@@ -26,12 +29,10 @@ PWSfileV1V2::~PWSfileV1V2()
 }
 
 // Used to warn pre-2.0 users, and to identify the database as 2.x:
-static const CMyString V2ItemName(" !!!Version 2 File Format!!! "
-                                  "Please upgrade to PasswordSafe 2.0"
-                                  " or later");
+static const StringX V2ItemName(_T(" !!!Version 2 File Format!!! Please upgrade to PasswordSafe 2.0 or later"));
 // Used to specify the exact version
-static const CMyString VersionString("2.0");
-static const CMyString AltVersionString("pre-2.0"); 
+static const StringX VersionString(_T("2.0"));
+static const StringX AltVersionString(_T("pre-2.0")); 
 
 int PWSfileV1V2::WriteV2Header()
 {
@@ -52,7 +53,7 @@ int PWSfileV1V2::WriteV2Header()
   char *rbuf = new char[rlen];
   PWSrand::GetInstance()->GetRandomData(rbuf, rlen-1);
   rbuf[rlen-1] = TCHAR('\0'); // although zero may be there before - who cares?
-  CMyString rname(V2ItemName);
+  stringT rname(V2ItemName);
   rname += rbuf;
   delete[] rbuf;
   header.SetName(rname, _T(""));
@@ -86,7 +87,7 @@ int PWSfileV1V2::ReadV2Header()
   // restore after reading V17-format header
   m_curversion = sv;
   if (status == SUCCESS) {
-    const CMyString version = header.GetPassword();
+    const StringX version = header.GetPassword();
     // Compare to AltVersionString due to silly mistake
     // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
     if (version == VersionString || version == AltVersionString) {
@@ -100,7 +101,7 @@ int PWSfileV1V2::ReadV2Header()
   return status;
 }
 
-int PWSfileV1V2::Open(const CMyString &passkey)
+int PWSfileV1V2::Open(const StringX &passkey)
 {
   int status = SUCCESS;
 
@@ -111,14 +112,13 @@ int PWSfileV1V2::Open(const CMyString &passkey)
   if (m_fd == NULL)
     return CANT_OPEN_FILE;
 
-  LPCTSTR passstr = LPCTSTR(m_passkey);
-  unsigned long passLen = passkey.GetLength();
+  LPCTSTR passstr = m_passkey.c_str();
+  unsigned long passLen = passkey.length();
   unsigned char *pstr;
 
 #ifdef UNICODE
-  pstr = new unsigned char[2*passLen];
-  int len = WideCharToMultiByte(CP_ACP, 0, passstr, passLen,
-    LPSTR(pstr), 2*passLen, NULL, NULL);
+  pstr = new unsigned char[3*passLen];
+  size_t len = pws_os::wcstombs((char *)pstr, 3 * passLen, passstr, passLen, false);
   ASSERT(len != 0);
   passLen = len;
 #else
@@ -153,7 +153,7 @@ int PWSfileV1V2::Open(const CMyString &passkey)
     status = CheckPassword(m_filename, m_passkey, m_fd);
     if (status != SUCCESS) {
 #ifdef UNICODE
-      trashMemory(pstr, 2*passLen);
+      trashMemory(pstr, 3*passLen);
       delete[] pstr;
 #endif
       Close();
@@ -168,7 +168,7 @@ int PWSfileV1V2::Open(const CMyString &passkey)
       status = ReadV2Header();
   } // read mode
 #ifdef UNICODE
-  trashMemory(pstr, 2*passLen);
+  trashMemory(pstr, 3*passLen);
   delete[] pstr;
 #endif
   return status;
@@ -179,16 +179,14 @@ int PWSfileV1V2::Close()
   return PWSfile::Close();
 }
 
-int PWSfileV1V2::CheckPassword(const CMyString &filename,
-                               const CMyString &passkey, FILE *a_fd)
+int PWSfileV1V2::CheckPassword(const StringX &filename,
+                               const StringX &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
-  errno_t err = 0;
   if (fd == NULL) {
-    // XXX argument changes mean we can't use _s version transparently
-    err = _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
+    fd = pws_os::FOpen(filename.c_str(), _T("rb"));
   }
-  if (fd == NULL || err != 0)
+  if (fd == NULL)
     return CANT_OPEN_FILE;
 
   unsigned char randstuff[StuffSize];
@@ -213,44 +211,37 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
   }
 }
 
-static CMyString ReMergeNotes(const CItemData &item)
+static StringX ReMergeNotes(const CItemData &item)
 {
-  CMyString notes = item.GetNotes();
-  CMyString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
-  const CMyString url(item.GetURL());
-  if (!url.IsEmpty()) {
+  StringX notes = item.GetNotes();
+  const StringX url(item.GetURL());
+  if (!url.empty()) {
     notes += _T("\r\n"); notes += url;
   }
-  const CMyString at(item.GetAutoType());
-  if (!at.IsEmpty()) {
+  const StringX at(item.GetAutoType());
+  if (!at.empty()) {
+    stringT cs_autotype;
+    LoadAString(cs_autotype, IDSC_AUTOTYPE);
     notes += _T("\r\n");
-    notes += cs_autotype;
+    notes += cs_autotype.c_str();
     notes += at;
   }
   return notes;
 }
 
-size_t PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
+size_t PWSfileV1V2::WriteCBC(unsigned char type, const StringX &data)
 {
 #ifndef UNICODE
-  // We do a double cast because the LPCTSTR cast operator is overridden
-  // by the CString class to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCTSTR datastr = LPCTSTR(data);
+  const unsigned char *datastr = (const unsigned char *)data.c_str();
 
-  return PWSfile::WriteCBC(type, (const unsigned char *)datastr,
-                           data.GetLength());
+  return PWSfile::WriteCBC(type, datastr, data.length());
 #else
-  // xlate wchar_t to ACP
-  wchar_t *wcPtr = const_cast<CString &>(data).GetBuffer();
-  int wcLen = data.GetLength()+1;
-  int mbLen = 2*wcLen;
+  wchar_t *wcPtr = const_cast<wchar_t *>(data.c_str());
+  int wcLen = data.length()+1;
+  int mbLen = 3*wcLen;
   unsigned char *acp = new unsigned char[mbLen];
-  int acpLen = WideCharToMultiByte(CP_ACP,      // code page
-                                   0, // performance and mapping flags
-                                   wcPtr, wcLen, // wide-character string
-                                   LPSTR(acp), mbLen, // buffer and length
-                                   NULL, NULL); // use sys defs for unmappables
+  size_t acpLen = pws_os::wcstombs(reinterpret_cast<char *>(acp), mbLen,
+                                   wcPtr, wcLen, false);
   ASSERT(acpLen != 0);
   acpLen--; // remove unneeded null termination
   size_t retval = PWSfile::WriteCBC(type, acp, acpLen);
@@ -279,18 +270,18 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
       // we can help minimize this here by writing a random byte in the "type"
       // byte of the first block.
 
-      CMyString name = item.GetName();
+      StringX name = item.GetName();
       // If name field already exists - use it. This is for the 2.0 header, as well as for files
       // that were imported and re-exported.
-      if (name.IsEmpty()) {
+      if (name.empty()) {
         // The name in 1.7 consists of title + SPLTCHR + username
         // DEFUSERNAME was used in previous versions, but 2.0 converts this upon import
         // so it is not an issue here.
         // Prepend 2.0 group field to name, if not empty
         // i.e. group "finances" name "broker" -> "finances.broker"
-        CMyString group = item.GetGroup();
-        CMyString title = item.GetTitle();
-        if (!group.IsEmpty()) {
+        StringX group = item.GetGroup();
+        StringX title = item.GetTitle();
+        if (!group.empty()) {
           group += _T(".");
           group += title;
           title = group;
@@ -328,56 +319,57 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
   return status;
 }
 
-static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
+static void ExtractAutoTypeCmd(StringX &notesStr, StringX &autotypeStr)
 {
-  CString instr(notesStr);
-  CMyString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
-  int left = instr.Find(cs_autotype);
-  if (left == -1) {
+  StringX instr(notesStr);
+  stringT cs_autotype;
+  LoadAString(cs_autotype, IDSC_AUTOTYPE);
+  StringX::size_type left = instr.find(cs_autotype.c_str(), 0);
+  if (left == StringX::npos) {
     autotypeStr = _T(""); 
   } else {
-    CString tmp(notesStr);
-    tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
-    instr = instr.Left(left);
-    int right = tmp.FindOneOf(_T("\r\n"));
-    if (right != -1) {
-      instr += tmp.Mid(right);
-      tmp = tmp.Left(right);
+    StringX tmp(notesStr);
+    tmp = tmp.substr(left+9); // throw out everything left of "autotype:"
+    instr = instr.substr(0, left);
+    StringX::size_type right = tmp.find_first_of(_T("\r\n"));
+    if (right != StringX::npos) {
+      instr += tmp.substr(right);
+      tmp = tmp.substr(0, right);
     }
-    autotypeStr = CMyString(tmp);
-    notesStr = CMyString(instr);
+    autotypeStr = tmp;
+    notesStr = instr;
   }
 }
 
-static void ExtractURL(CMyString &notesStr, CMyString &outurl)
+static void ExtractURL(StringX &notesStr, StringX &outurl)
 {
-  CMyString instr(notesStr);
+  StringX instr(notesStr);
   // Extract first instance of (http|https|ftp)://[^ \t\r\n]+
-  int left = instr.Find(_T("http://"));
-  if (left == -1)
-    left = instr.Find(_T("https://"));
-  if (left == -1)
-    left = instr.Find(_T("ftp://"));
-  if (left == -1) {
+  StringX::size_type left = instr.find(_T("http://"));
+  if (left == StringX::npos)
+    left = instr.find(_T("https://"));
+  if (left == StringX::npos)
+    left = instr.find(_T("ftp://"));
+  if (left == StringX::npos) {
     outurl = _T("");
   } else {
-    CMyString url(instr);
-    instr = notesStr.Left(left);
-    url = url.Mid(left); // throw out everything left of URL
-    int right = url.FindOneOf(_T(" \t\r\n"));
-    if (right != -1) {
-      instr += url.Mid(right);
-      url = url.Left(right);    
+    StringX url(instr);
+    instr = notesStr.substr(0, left);
+    url = url.substr(left); // throw out everything left of URL
+    StringX::size_type right = url.find_first_of(_T(" \t\r\n"));
+    if (right != StringX::npos) {
+      instr += url.substr(right);
+      url = url.substr(0, right);    
     }
     outurl = url;
     notesStr = instr;
   }
 }
 
-size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
+size_t PWSfileV1V2::ReadCBC(unsigned char &type, StringX &data)
 {
   unsigned char *buffer = NULL;
-  unsigned int buffer_len = 0;
+  size_t buffer_len = 0;
   size_t retval;
 
   ASSERT(m_fish != NULL && m_IV != NULL);
@@ -388,28 +380,11 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
 #ifdef UNICODE
     wchar_t *wc = new wchar_t[buffer_len+1];
 
-    int wcLen = MultiByteToWideChar(CP_ACP,      // code page
-      MB_ERR_INVALID_CHARS,
-      LPCSTR(buffer),       // string to map
-      buffer_len,
-      wc, buffer_len+1);
-    if (wcLen == 0) {
-      DWORD errCode = GetLastError();
-      switch (errCode) {
-        case ERROR_INSUFFICIENT_BUFFER:
-          TRACE("INSUFFICIENT BUFFER"); break;
-        case ERROR_INVALID_FLAGS:
-          TRACE("INVALID FLAGS"); break;
-        case ERROR_INVALID_PARAMETER:
-          TRACE("INVALID PARAMETER"); break;
-        case ERROR_NO_UNICODE_TRANSLATION:
-          TRACE("NO UNICODE TRANSLATION"); break;
-        default:
-          ASSERT(0);
-      }
-    }
+    size_t wcLen = pws_os::mbstowcs(wc, buffer_len + 1,
+                                    reinterpret_cast<const char *>(buffer),
+                                    buffer_len, false);
     ASSERT(wcLen != 0);
-    if (wcLen < int(buffer_len) + 1)
+    if (wcLen < buffer_len + 1)
       wc[wcLen] = TCHAR('\0');
     else
       wc[buffer_len] = TCHAR('\0');
@@ -417,7 +392,7 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
     trashMemory(wc, wcLen);
     delete[] wc;
 #else
-    CMyString str(LPCTSTR(buffer), buffer_len);
+    StringX str((const char *)buffer, buffer_len);
     data = str;
 #endif
     trashMemory(buffer, buffer_len);
@@ -435,12 +410,9 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
-  CMyString tempdata;  
+  StringX tempdata;  
   signed long numread = 0;
   unsigned char type;
-  // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
 
   switch (m_curversion) {
     case V17:
@@ -475,13 +447,13 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
               item.SetPassword(tempdata); break;
             case CItemData::NOTES:
             {
-              CMyString autotypeStr, URLStr;
+              StringX autotypeStr, URLStr;
               ExtractAutoTypeCmd(tempdata, autotypeStr);
               ExtractURL(tempdata, URLStr);
               item.SetNotes(tempdata);
-              if (!autotypeStr.IsEmpty())
+              if (!autotypeStr.empty())
                 item.SetAutoType(autotypeStr);
-              if (!URLStr.IsEmpty())
+              if (!URLStr.empty())
                 item.SetURL(URLStr);
               break;
             }
@@ -489,7 +461,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
               endFound = true; break;
             case CItemData::UUID:
             {
-              LPCTSTR ptr = LPCTSTR(tempdata);
+              LPCTSTR ptr = tempdata.c_str();
               uuid_array_t uuid_array;
               for (unsigned i = 0; i < sizeof(uuid_array); i++)
                 uuid_array[i] = (unsigned char)ptr[i];

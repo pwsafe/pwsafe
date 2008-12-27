@@ -20,11 +20,11 @@
 #include <vector>
 #include <map>
 #include <time.h> // for time_t
-#include "MyString.h"
+#include "StringX.h"
 #include "PWSfile.h"
 #include "Match.h"
-#include "itemdata.h"
-#include "mystring.h"
+#include "ItemData.h"
+#include "Proxy.h"
 
 // All the fields that we can use for filtering entries:
 
@@ -98,8 +98,8 @@ struct st_FilterRow {
   // if filter type is a date
   time_t fdate1, fdate2;
   // if filter type is a string
-  CMyString fstring;
-  int fcase; // case sensitive?
+  StringX fstring;
+  bool fcase; // case sensitive?
   // if filter type is a entrytype
   CItemData::EntryType etype;
   
@@ -108,10 +108,10 @@ struct st_FilterRow {
 
   st_FilterRow()
     : bFilterActive(true), bFilterComplete(false),
-    mtype(PWSMatch::MT_INVALID), ftype(FT_INVALID), rule(PWSMatch::MR_INVALID),
+    ftype(FT_INVALID), mtype(PWSMatch::MT_INVALID), rule(PWSMatch::MR_INVALID),
     fnum1(0), fnum2(0),
     fdate1(0), fdate2(0),
-    fstring(_T("")), fcase(BST_UNCHECKED), etype(CItemData::ET_INVALID),
+    fstring(_T("")), fcase(false), etype(CItemData::ET_INVALID),
     ltype(LC_INVALID)
   {}
 
@@ -154,10 +154,12 @@ struct st_FilterRow {
     fnum1 = fnum2 = 0;
     fdate1 = fdate2 = (time_t)0;
     fstring = _T("");
-    fcase = BST_UNCHECKED;
+    fcase = false;
     etype = CItemData::ET_INVALID;
     ltype = LC_INVALID;
   }
+  void SetFilterComplete() {bFilterComplete = true;}
+  void ClearFilterComplete() {bFilterComplete = false;}
 };
 
 // The following structure is needed for entry filtering
@@ -170,7 +172,7 @@ typedef std::vector<vfiltergroup> vfiltergroups;
 
 struct st_filters {
   // Filter name
-  CString fname;
+  stringT fname;
   // Counters
   int num_Mactive;
   int num_Hactive;
@@ -223,7 +225,7 @@ enum FilterPool {FPOOL_DATABASE = 1, FPOOL_AUTOLOAD, FPOOL_IMPORTED, FPOOL_SESSI
 
 struct st_Filterkey {
   FilterPool fpool;
-  CString cs_filtername;
+  stringT cs_filtername;
 };
 
 // Following is for map<> compare function
@@ -233,7 +235,7 @@ struct ltfk {
     if (fk1.fpool != fk2.fpool)
       return (int)fk1.fpool < (int)fk2.fpool;
 
-    return fk1.cs_filtername.Compare(fk2.cs_filtername) < 0;
+    return fk1.cs_filtername.compare(fk2.cs_filtername) < 0;
   }
 };
 
@@ -241,19 +243,20 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
  public:
   typedef std::pair<st_Filterkey, st_filters> Pair;
   
-  std::string GetFilterXMLHeader(const CMyString &currentfile,
+  std::string GetFilterXMLHeader(const StringX &currentfile,
                                  const PWSfile::HeaderRecord &hdr);
 
-  int WriteFilterXMLFile(const CMyString &filename, const PWSfile::HeaderRecord hdr,
-                         const CMyString &currentfile);
+  int WriteFilterXMLFile(const StringX &filename, const PWSfile::HeaderRecord hdr,
+                         const StringX &currentfile);
   int WriteFilterXMLFile(std::ostream &os, PWSfile::HeaderRecord hdr,
-                         const CMyString &currentfile, const bool bWithFormatting = false);
+                         const StringX &currentfile, const bool bWithFormatting = false);
   int ImportFilterXMLFile(const FilterPool fpool,
-                          const CString &strXMLData,
-                          const CString &strXMLFileName,
-                          const CString &strXSDFileName, CString &strErrors);
+                          const StringX &strXMLData,
+                          const stringT &strXMLFileName,
+                          const stringT &strXSDFileName, stringT &strErrors,
+                          Asker *pAsker);
 
-  static CString GetFilterDescription(const st_FilterRow &st_fldata);
+  static stringT GetFilterDescription(const st_FilterRow &st_fldata);
 };
 
 #endif  // __PWSFILTERS_H

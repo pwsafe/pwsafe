@@ -16,6 +16,7 @@
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "RichEditCtrlExtn.h"
+#include "version.h"
 
 // for fetching & reading version xml file:
 #include <afxinet.h>
@@ -77,11 +78,11 @@ BOOL CAboutDlg::OnInitDialog()
     csRevision.Trim();
   }
   if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(_T("%s V%d.%02dF (%s)"), AfxGetAppName(), 
-                        m_nMajor, m_nMinor, csRevision);
+    m_appversion.Format(_T("%s V%d.%02d (%s)%s"), AfxGetAppName(), 
+                        m_nMajor, m_nMinor, csRevision, SPECIAL_BUILD);
   } else {
-    m_appversion.Format(_T("%s V%d.%02d.%02dF (%s)"), AfxGetAppName(), 
-                        m_nMajor, m_nMinor, m_nBuild, csRevision);
+    m_appversion.Format(_T("%s V%d.%02d.%02d (%s)%s"), AfxGetAppName(), 
+                        m_nMajor, m_nMinor, m_nBuild, csRevision, SPECIAL_BUILD);
   }
 #ifdef _DEBUG
   m_appversion += _T(" [Debug]");
@@ -217,7 +218,7 @@ CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
     latest_xml += line;
 #else
   unsigned char buff[BUFSIZ+1];
-  CMyString chunk;
+  StringX chunk;
   UINT nRead;
   CUTF8Conv conv;
   while ((nRead = fh->Read(buff, BUFSIZ)) != 0) {
@@ -229,7 +230,7 @@ CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
       session.Close();
       return CANT_READ;
     } else
-      latest_xml += chunk;
+      latest_xml += chunk.c_str();
   }
 #endif /* UNICODE */
   fh->Close();

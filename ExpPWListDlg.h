@@ -7,7 +7,7 @@
 */
 #pragma once
 
-#include "corelib/MyString.h"
+#include "corelib/StringX.h"
 #include "PWDialog.h"
 
 #include <vector>
@@ -17,11 +17,11 @@ class CItemData;
 
 struct ExpPWEntry {
   ExpPWEntry(const CItemData &ci, time_t now, time_t XTime);
-  CMyString group;
-  CMyString title;
-  CMyString user;
-  CMyString expirylocdate;  // user's long dat/time   - format displayed in ListCtrl
-  CMyString expiryexpdate;  // "YYYY/MM/DD HH:MM:SS"  - format copied to clipboard - best for sorting
+  StringX group;
+  StringX title;
+  StringX user;
+  StringX expirylocdate;  // user's long dat/time   - format displayed in ListCtrl
+  StringX expiryexpdate;  // "YYYY/MM/DD HH:MM:SS"  - format copied to clipboard - best for sorting
   time_t expirytttdate;
   int type;
 };

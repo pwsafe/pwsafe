@@ -58,7 +58,7 @@
 </xs:simpleType>
 
 <xs:simpleType name="boolType">
-  <xs:restriction base="xs:integer">
+  <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
     <xs:maxInclusive value="1" />
   </xs:restriction>
@@ -66,7 +66,7 @@
 
 <xs:simpleType name="fileuuidType">
   <xs:restriction base="xs:string">
-    <xs:pattern value="[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA­Z]{12}" />
+    <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA­F]{12}" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -188,7 +188,7 @@
   <xs:sequence>
     <xs:element name="string" type="stringType" minOccurs="1" maxOccurs="1" />
     <xs:element name="case" type="boolType" minOccurs="1" maxOccurs="1" />
-    <xs:element name="warn" type="xs:integer" minOccurs="1" maxOccurs="1" />
+    <xs:element name="warn" type="xs:int" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
@@ -201,8 +201,8 @@
 
 <xs:complexType name="matchInteger">
   <xs:sequence>
-    <xs:element name="num1" type="xs:integer" minOccurs="1" maxOccurs="1" />
-    <xs:element name="num2" type="xs:integer" minOccurs="1" maxOccurs="1" />
+    <xs:element name="num1" type="xs:int" minOccurs="1" maxOccurs="1" />
+    <xs:element name="num2" type="xs:int" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 

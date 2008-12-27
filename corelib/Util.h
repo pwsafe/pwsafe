@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "sha256.h"
-#include "MyString.h"
+#include "StringX.h"
 #include "Fish.h"
 #include "PwsPlatform.h"
 #include "os/typedefs.h"
@@ -24,9 +24,6 @@
 
 #define SaltLengthV3 32
 
-// this is for the undocumented 'command line file encryption'
-#define CIPHERTEXT_SUFFIX ".PSF"
-
 //Use non-standard dash (ANSI decimal 173) for separation
 #define SPLTCHR _T('\xAD')
 #define SPLTSTR _T("  \xAD  ")
@@ -36,15 +33,14 @@
 #define V10 0
 #define V15 1
 
-extern void trashMemory(void* buffer, size_t length );
-extern void trashMemory( LPTSTR buffer, size_t length );
-extern void trashMemory( CString &cs_buffer );
+extern void trashMemory(void* buffer, size_t length);
+extern void trashMemory(LPTSTR buffer, size_t length);
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
-extern void ConvertString(const CMyString &text,
+extern void ConvertString(const StringX &text,
                           unsigned char *&txt, int &txtlen);
 
-extern void GenRandhash(const CMyString &passkey,
+extern void GenRandhash(const StringX &passkey,
                         const unsigned char* m_randstuff,
                         unsigned char* m_randhash);
 
@@ -131,16 +127,15 @@ namespace PWSUtil {
   // and use secure versions (_s) when available
   void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   size_t strLength(const LPCTSTR str);
-  long fileLength(FILE *fp);
-  CMyString ConvertToDateTimeString(const time_t &t, const int result_format);
-  CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
+  StringX ConvertToDateTimeString(const time_t &t, const int result_format);
+  stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
-  CString GetTimeStamp();
-  CString Base64Encode(const BYTE *inData, size_t len);
-  void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
-  CMyString NormalizeTTT(const CMyString &in);
+  const TCHAR *GetTimeStamp();
+  stringT Base64Encode(const BYTE *inData, size_t len);
+  void Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len);
+  StringX NormalizeTTT(const StringX &in);
   void WriteXMLField(std::ostream &os, const char *fname,
-                     const CMyString &value, CUTF8Conv &utf8conv,
+                     const StringX &value, CUTF8Conv &utf8conv,
                      const char *tabs = "\t\t");
   std::string GetXMLTime(int indent, const char *name,
                          time_t t, CUTF8Conv &utf8conv);

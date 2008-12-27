@@ -6,38 +6,37 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#pragma once
+#ifndef __REPORT_H
+#define __REPORT_H
 
 // Create an action report file
 
+#ifdef _WIN32
 #include "afx.h"
-#include "SMemFile.h"
-#include <stdio.h>
+#endif
+#include "os/typedefs.h"
+#include "StringXStream.h"
 
 class CReport
 {
-  // Construction
 public:
-  CReport()
-    : m_psfile(NULL), m_pdfile(NULL), m_pData(NULL), m_dwDatasize(0) {}
-  ~CReport();
+  CReport() {}
+  ~CReport() {}
 
-  void StartReport(LPCTSTR tcAction, const CString &csDataBase);
+  void StartReport(LPCTSTR tcAction, const stringT &csDataBase);
   void EndReport();
-  void WriteLine(const CString &cs_line, bool bCRLF = true);
+  void WriteLine(const stringT &cs_line, bool bCRLF = true);
   void WriteLine(const LPTSTR &tc_line, bool bCRLF = true);
   void WriteLine();
   bool SaveToDisk();
-  BYTE *GetData() {return m_pData;}
-  DWORD GetDataLength() {return m_dwDatasize;}
+  StringX GetString() {return m_osxs.rdbuf()->str();}
 
 private:
-  FILE *m_pdfile;
-  CSMemFile *m_psfile;
-  CString m_cs_filename;
+  oStringXStream m_osxs;
+  stringT m_cs_filename;
   int m_imode;
-  BYTE *m_pData;
-  DWORD m_dwDatasize;
-  LPCTSTR m_tcAction;
-  CString m_csDataBase;
+  stringT m_tcAction;
+  stringT m_csDataBase;
 };
+
+#endif /* __REPORT_H */

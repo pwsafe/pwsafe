@@ -16,7 +16,7 @@
 
 #include "afxwin.h"
 #include "afxdtctl.h" // only needed for date/time controls
-#include "corelib\MyString.h"
+#include "SecString.h"
 #include "PWDialog.h"
 
 class CExpDTDlg : public CPWDialog
@@ -30,7 +30,7 @@ public:
 
   CDateTimeCtrl m_pTimeCtl;         // time picker control
   CDateTimeCtrl m_pDateCtl;         // date picker control
-  CMyString m_locXTime;             // formatted time per user's Short Date/Time
+  CSecString m_locXTime;             // formatted time per user's Short Date/Time
   const time_t m_tttCPMTime;  // entry creation or password last changed datetime
   time_t m_tttXTime;                // Expiry date/time
   int m_XTimeInt; // interval (in days) to expiration

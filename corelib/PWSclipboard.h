@@ -22,7 +22,7 @@
 #define CLIPBOARD_TEXT_FORMAT CF_TEXT
 #endif
 
-#include "MyString.h"
+#include "StringX.h"
 
 class PWSclipboard
 {
@@ -30,7 +30,7 @@ public:
   PWSclipboard();
   ~PWSclipboard();
 
-  bool SetData(const CMyString &data,
+  bool SetData(const StringX &data,
     bool isSensitive = true,
     CLIPFORMAT cfFormat = CLIPBOARD_TEXT_FORMAT);
   // returns true if succeeded

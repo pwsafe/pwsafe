@@ -30,12 +30,15 @@
 #include "CompareResultsDlg.h"
 #include "Properties.h"
 #include "GeneralMsgBox.h"
+#include "MFCMessages.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
 #include "corelib/PWSdirs.h"
 #include "corelib/Report.h"
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
+#include "corelib/os/file.h"
+#include "PasskeyChangeDlg.h"
 #include "PasskeyChangeDlg.h"
 
 #include <sys/types.h>
@@ -57,7 +60,7 @@ BOOL DboxMain::OpenOnInit(void)
   the first time, and just opening a different database or
   un-minimizing the application
   */
-  CMyString passkey;
+  StringX passkey;
   bool bReadOnly = m_core.IsReadOnly();  // Can only be from -r command line parameter
   if (!bReadOnly) {
     // Command line not set - use config for first open
@@ -71,19 +74,27 @@ BOOL DboxMain::OpenOnInit(void)
 
   switch (rc) {
     case PWScore::SUCCESS:
+    {
+      MFCAsker q;
+      MFCReporter r;
+      m_core.SetAsker(&q);
+      m_core.SetReporter(&r);
       rc2 = m_core.ReadCurFile(passkey);
+      m_core.SetAsker(NULL);
+      m_core.SetReporter(NULL);
 #if !defined(POCKET_PC)
-      m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
-                                         m_core.GetCurFile());
+      m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
+                                         m_core.GetCurFile()).c_str();
       UpdateSystemTray(UNLOCKED);
 #endif
       if (rc2 == PWScore::SUCCESS && m_core.IsMPWExpired()) {
         ChangeMPW();
       } // master password expired
       CheckExpiredPasswords();
+    }
       break;
     case PWScore::CANT_OPEN_FILE:
-      if (m_core.GetCurFile().IsEmpty()) {
+      if (m_core.GetCurFile().empty()) {
         // Empty filename. Assume they are starting Password Safe
         // for the first time and don't confuse them.
         // fallthrough to New()
@@ -91,7 +102,7 @@ BOOL DboxMain::OpenOnInit(void)
         // Here if there was a filename saved from last invocation, but it couldn't
         // be opened. It was either removed or renamed, so ask the user what to do
         CString cs_msg;
-        cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile());
+        cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile().c_str());
         CGeneralMsgBox gmb;
         gmb.SetMsg(cs_msg);
         gmb.SetStandardIcon(MB_ICONQUESTION);
@@ -136,7 +147,7 @@ BOOL DboxMain::OpenOnInit(void)
   * A bit too subtle for switch/case on rc2...
   */
   if (rc2 == PWScore::BAD_DIGEST) {
-    CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile());
+    CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
     const int yn = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR);
     if (yn == IDNO) {
@@ -173,7 +184,7 @@ BOOL DboxMain::OpenOnInit(void)
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
   }
-  app.AddToMRU(m_core.GetCurFile());
+  app.AddToMRU(m_core.GetCurFile().c_str());
   UpdateMenuAndToolBar(true); // sets m_bOpen too...
   UpdateStatusBar();
 
@@ -182,10 +193,10 @@ BOOL DboxMain::OpenOnInit(void)
   m_core.SetUseDefUser(PWSprefs::GetInstance()->
     GetPref(PWSprefs::UseDefaultUser) ? true : false);
 #if !defined(POCKET_PC)
-  m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
-                                     m_core.GetCurFile());
+  m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
+                                     m_core.GetCurFile()).c_str();
   SetWindowText(LPCTSTR(m_titlebar));
-  app.SetTooltipText(m_core.GetCurFile());
+  app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
   SelectFirstEntry();
   // Validation does integrity check & repair on database
@@ -208,7 +219,7 @@ int DboxMain::New()
 
   if (m_core.IsChanged()) {
     CString cs_temp;
-    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile());
+    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
     rc = MessageBox(cs_temp, AfxGetAppName(),
       MB_ICONQUESTION|MB_YESNOCANCEL);
     switch (rc) {
@@ -230,7 +241,7 @@ int DboxMain::New()
     }
   }
 
-  CMyString cs_newfile;
+  StringX cs_newfile;
   rc = NewFile(cs_newfile);
   if (rc == PWScore::USER_CANCEL) {
     /*
@@ -246,13 +257,13 @@ int DboxMain::New()
   rc = m_core.WriteCurFile();
   if (rc == PWScore::CANT_OPEN_FILE) {
     CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
+    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile.c_str());
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::USER_CANCEL;
   }
 
 #if !defined(POCKET_PC)
-  m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) + cs_newfile);
+  m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") + cs_newfile).c_str();
   SetWindowText(LPCTSTR(m_titlebar));
 #endif
 
@@ -268,20 +279,20 @@ int DboxMain::New()
   return PWScore::SUCCESS;
 }
 
-int DboxMain::NewFile(CMyString &newfilename)
+int DboxMain::NewFile(StringX &newfilename)
 {
   CString cs_msg, cs_title, cs_temp;
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
-  CString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX);
+  stringT v3FileName = PWSUtil::GetNewFileName(LPCTSTR(cf), DEFAULT_SUFFIX);
   stringT dir = PWSdirs::GetSafeDir();
   INT_PTR rc;
 
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   v3FileName,
+                   v3FileName.c_str(),
                    OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                    OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                    SUFFIX3_FILTERS
@@ -303,7 +314,7 @@ int DboxMain::NewFile(CMyString &newfilename)
       return PWScore::USER_CANCEL;
     }
     if (rc == IDOK) {
-      newfilename = (CMyString)fd.GetPathName();
+      newfilename = LPCTSTR(fd.GetPathName());
       break;
     } else
       return PWScore::USER_CANCEL;
@@ -321,16 +332,18 @@ int DboxMain::NewFile(CMyString &newfilename)
 
   ClearData();
   PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
-  CString oldfilename = m_core.GetCurFile();
+  const StringX &oldfilename = m_core.GetCurFile();
   // The only way we're the locker is if it's locked & we're !readonly
-  if (!oldfilename.IsEmpty() && !m_core.IsReadOnly() && m_core.IsLockedFile(oldfilename))
-    m_core.UnlockFile(oldfilename);
+  if (!oldfilename.empty() &&
+      !m_core.IsReadOnly() &&
+      m_core.IsLockedFile(oldfilename.c_str()))
+    m_core.UnlockFile(oldfilename.c_str());
 
   m_core.SetCurFile(newfilename);
 
   // Now lock the new file
-  CMyString locker(_T("")); // null init is important here
-  m_core.LockFile(newfilename, locker);
+  stringT locker(_T("")); // null init is important here
+  m_core.LockFile(newfilename.c_str(), locker);
 
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
@@ -359,8 +372,8 @@ int DboxMain::Close()
   }
 
   // Unlock the current file
-  if( !m_core.GetCurFile().IsEmpty() ) {
-    m_core.UnlockFile(m_core.GetCurFile());
+  if( !m_core.GetCurFile().empty() ) {
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
     m_core.SetCurFile(_T(""));
   }
 
@@ -421,7 +434,7 @@ void DboxMain::OnOpenMRU(UINT nID)
   const bool last_ro = m_core.IsReadOnly();
   m_core.SetReadOnly(false);
   // Read-only status can be overriden by GetAndCheckPassword
-  int rc = Open(mruItem, 
+  int rc = Open(LPCTSTR(mruItem), 
                 PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO) == TRUE);
   if (rc == PWScore::SUCCESS) {
     UpdateSystemTray(UNLOCKED);
@@ -446,7 +459,7 @@ void DboxMain::OnOpenMRU(UINT nID)
 int DboxMain::Open()
 {
   int rc = PWScore::SUCCESS;
-  CMyString newfile;
+  StringX newfile;
   CString cs_text(MAKEINTRESOURCE(IDS_CHOOSEDATABASE));
   stringT dir = PWSdirs::GetSafeDir();
 
@@ -480,7 +493,7 @@ int DboxMain::Open()
     const bool last_ro = m_core.IsReadOnly(); // restore if user cancels
     m_core.SetReadOnly(fd.GetReadOnlyPref() == TRUE);
     if (rc2 == IDOK) {
-      newfile = (CMyString)fd.GetPathName();
+      newfile = LPCTSTR(fd.GetPathName());
 
       rc = Open(newfile, fd.GetReadOnlyPref() == TRUE);
       if (rc == PWScore::SUCCESS) {
@@ -499,11 +512,11 @@ int DboxMain::Open()
   return rc;
 }
 
-int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
+int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
 {
   int rc;
-  CMyString passkey, temp;
-  CString cs_title, cs_text;
+  StringX passkey;
+  CString temp, cs_title, cs_text;
 
   //Check that this file isn't already open
   if (pszFilename == m_core.GetCurFile() && !m_needsreading) {
@@ -521,18 +534,18 @@ int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
   // if we were using a different file, unlock it
   // do this before GetAndCheckPassword() as that
   // routine gets a lock on the new file
-  if( !m_core.GetCurFile().IsEmpty() ) {
-    m_core.UnlockFile(m_core.GetCurFile());
+  if( !m_core.GetCurFile().empty() ) {
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
   rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
   switch (rc) {
     case PWScore::SUCCESS:
-      app.AddToMRU(pszFilename);
+      app.AddToMRU(pszFilename.c_str());
       m_bAlreadyToldUserNoSave = false;
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      temp.Format(IDS_SAFENOTEXIST, pszFilename);
+      temp.Format(IDS_SAFENOTEXIST, pszFilename.c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
     case TAR_OPEN:
@@ -555,12 +568,18 @@ int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
   ClearData();
 
   cs_title.LoadString(IDS_FILEREADERROR);
+  MFCAsker q;
+  MFCReporter r;
+  m_core.SetAsker(&q);
+  m_core.SetReporter(&r);
   rc = m_core.ReadFile(pszFilename, passkey);
+  m_core.SetAsker(NULL);
+  m_core.SetReporter(NULL);
   switch (rc) {
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-      temp.Format(IDS_CANTOPENREADING, pszFilename);
+      temp.Format(IDS_CANTOPENREADING, pszFilename.c_str());
       MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
       /*
       Everything stays as is... Worst case,
@@ -569,7 +588,7 @@ int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
       return PWScore::CANT_OPEN_FILE;
     case PWScore::BAD_DIGEST:
     {
-      temp.Format(IDS_FILECORRUPT, pszFilename);
+      temp.Format(IDS_FILECORRUPT, pszFilename.c_str());
       const int yn = MessageBox(temp, cs_title, MB_YESNO|MB_ICONERROR);
       if (yn == IDYES) {
         rc = PWScore::SUCCESS;
@@ -592,14 +611,14 @@ int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
     }
 #endif
     default:
-      temp.Format(IDS_UNKNOWNERROR, pszFilename);
+      temp.Format(IDS_UNKNOWNERROR, pszFilename.c_str());
       MessageBox(temp, cs_title, MB_OK|MB_ICONERROR);
       return rc;
   }
   m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
-  m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
-                                     m_core.GetCurFile());
+  m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
+                                     m_core.GetCurFile()).c_str();
   SetWindowText(LPCTSTR(m_titlebar));
 #endif
   if (m_core.IsMPWExpired())
@@ -642,7 +661,7 @@ int DboxMain::Save()
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
 
-  if (m_core.GetCurFile().IsEmpty())
+  if (m_core.GetCurFile().empty())
     return SaveAs();
 
   int iver = (int)m_core.GetReadFileVersion();
@@ -650,8 +669,8 @@ int DboxMain::Save()
     if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
       int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
       int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-      CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
-      CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
+      stringT userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+      stringT userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
       if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
         userBackupPrefix, userBackupDir))
         AfxMessageBox(IDS_NOIBACKUP, MB_OK);
@@ -659,9 +678,11 @@ int DboxMain::Save()
   } 
   else if (iver != PWSfile::NEWFILE) {
     // file version mis-match
-    CMyString NewName = PWSUtil::GetNewFileName(m_core.GetCurFile(), DEFAULT_SUFFIX );
+    stringT NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                              DEFAULT_SUFFIX);
 
-    cs_msg.Format(IDS_NEWFORMAT, m_core.GetCurFile(), NewName);
+    cs_msg.Format(IDS_NEWFORMAT,
+                  m_core.GetCurFile().c_str(), NewName.c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
 
     CGeneralMsgBox gmb;
@@ -673,18 +694,18 @@ int DboxMain::Save()
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
       return PWScore::USER_CANCEL;
-    m_core.SetCurFile(NewName);
+    m_core.SetCurFile(NewName.c_str());
 #if !defined(POCKET_PC)
-    m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
-                                       m_core.GetCurFile());
+    m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
+                                       m_core.GetCurFile()).c_str();
     SetWindowText(LPCTSTR(m_titlebar));
-    app.SetTooltipText(m_core.GetCurFile());
+    app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
   }
   rc = m_core.WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile());
+    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -704,7 +725,7 @@ int DboxMain::SaveIfChanged()
   if (m_core.IsChanged()) {
     int rc, rc2;
     CString cs_temp;
-    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile());
+    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
     rc = MessageBox(cs_temp, AfxGetAppName(),
       MB_ICONQUESTION|MB_YESNOCANCEL);
     switch (rc) {
@@ -734,12 +755,12 @@ void DboxMain::OnSaveAs()
 int DboxMain::SaveAs()
 {
   INT_PTR rc;
-  CMyString newfile;
+  StringX newfile;
   CString cs_msg, cs_title, cs_text, cs_temp;
 
   if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
-    cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile());
+    cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile().c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
     CGeneralMsgBox gmb;
     gmb.SetTitle(cs_title);
@@ -753,21 +774,24 @@ int DboxMain::SaveAs()
   }
 
   //SaveAs-type dialog box
-  CMyString cf(m_core.GetCurFile());
-  if (cf.IsEmpty())
-    cf.LoadString(IDS_DEFDBNAME); // reasonable default for first time user
-  CMyString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX );
+  StringX cf(m_core.GetCurFile());
+  if (cf.empty()) {
+    CString defname;
+    defname.LoadString(IDS_DEFDBNAME); // reasonable default for first time user
+    cf = LPCTSTR(defname);
+  }
+  stringT v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX );
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   v3FileName,
+                   v3FileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    SUFFIX_FILTERS
                    _T("All files (*.*)|*.*|")
                    _T("|"),
                    this);
-    if (m_core.GetCurFile().IsEmpty())
+    if (m_core.GetCurFile().empty())
       cs_text.LoadString(IDS_NEWNAME1);
     else
       cs_text.LoadString(IDS_NEWNAME2);
@@ -784,15 +808,15 @@ int DboxMain::SaveAs()
       return PWScore::USER_CANCEL;
     }
     if (rc == IDOK) {
-      newfile = (CMyString)fd.GetPathName();
+      newfile = fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
   }
-  CMyString locker(_T("")); // null init is important here
+  stringT locker(_T("")); // null init is important here
   // Note: We have to lock the new file before releasing the old (on success)
-  if (!m_core.LockFile2(newfile, locker)) {
-    cs_temp.Format(IDS_FILEISLOCKED, newfile, locker);
+  if (!m_core.LockFile2(newfile.c_str(), locker)) {
+    cs_temp.Format(IDS_FILEISLOCKED, newfile.c_str(), locker.c_str());
     cs_title.LoadString(IDS_FILELOCKERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -806,29 +830,29 @@ int DboxMain::SaveAs()
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     m_core.SetFileUUID(file_uuid_array);
-    m_core.UnlockFile2(newfile);
-    cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+    m_core.UnlockFile2(newfile.c_str());
+    cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
-  if (!m_core.GetCurFile().IsEmpty())
-    m_core.UnlockFile(m_core.GetCurFile());
+  if (!m_core.GetCurFile().empty())
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
 
   // Move the newfile lock to the right place
   m_core.MoveLock();
 
   m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
-  m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
-                                     m_core.GetCurFile());
+  m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
+                                     m_core.GetCurFile()).c_str();
   SetWindowText(LPCTSTR(m_titlebar));
-  app.SetTooltipText(m_core.GetCurFile());
+  app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
   SetChanged(Clear);
   ChangeOkUpdate();
 
-  app.AddToMRU( newfile );
+  app.AddToMRU( newfile.c_str() );
 
   if (m_core.IsReadOnly()) {
     // reset read-only status (new file can't be read-only!)
@@ -842,16 +866,17 @@ int DboxMain::SaveAs()
 void DboxMain::OnExportVx(UINT nID)
 {
   INT_PTR rc;
-  CMyString newfile;
+  StringX newfile;
   CString cs_text, cs_title, cs_temp;
 
   //SaveAs-type dialog box
-  CMyString OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("dat") );
+  stringT OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                      _T("dat") );
   cs_text.LoadString(IDS_NAMEEXPORTFILE);
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   OldFormatFileName,
+                   OldFormatFileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    SUFFIX_FILTERS
@@ -868,7 +893,7 @@ void DboxMain::OnExportVx(UINT nID)
       return;
     }
     if (rc == IDOK) {
-      newfile = (CMyString)fd.GetPathName();
+      newfile = fd.GetPathName();
       break;
     } else
       return;
@@ -887,7 +912,7 @@ void DboxMain::OnExportVx(UINT nID)
       break;
   }
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+    cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
   }
@@ -897,10 +922,10 @@ void DboxMain::OnExportText()
 {
   CExportTextDlg et;
   CString cs_text, cs_title;
-  CMyString cs_temp;
+  StringX cs_temp;
 
   cs_temp = m_core.GetCurFile();
-  if (cs_temp.IsEmpty()) {
+  if (cs_temp.empty()) {
     //  Database has not been saved - prompt user to do so first!
     AfxMessageBox(IDS_SAVEBEFOREEXPORT);
     return;
@@ -908,17 +933,17 @@ void DboxMain::OnExportText()
 
   INT_PTR rc = et.DoModal();
   if (rc == IDOK) {
-    CMyString newfile;
-    CMyString pw(et.m_exportTextPassword);
+    StringX newfile;
+    StringX pw(et.m_exportTextPassword);
     if (m_core.CheckPassword(cs_temp, pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
-      CMyString TxtFileName = PWSUtil::GetNewFileName(cs_temp, _T("txt") );
+      stringT TxtFileName = PWSUtil::GetNewFileName(cs_temp.c_str(), _T("txt"));
       cs_text.LoadString(IDS_NAMETEXTFILE);
       while (1) {
         CFileDialog fd(FALSE,
                        _T("txt"),
-                       TxtFileName,
+                       TxtFileName.c_str(),
                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                        |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                        _T("Text files (*.txt)|*.txt|")
@@ -936,14 +961,14 @@ void DboxMain::OnExportText()
           return;
         }
         if (rc == IDOK) {
-          newfile = (CMyString)fd.GetPathName();
+          newfile = fd.GetPathName();
           break;
         } else
           return;
       } // while (1)
 
       const CItemData::FieldBits bsExport = et.m_bsExport;
-      const CString subgroup_name = et.m_subgroup_name;
+      const stringT subgroup_name = et.m_subgroup_name;
       const int subgroup_object = et.m_subgroup_object;
       const int subgroup_function = et.m_subgroup_function;
       TCHAR delimiter = et.m_defexpdelim[0];
@@ -957,9 +982,10 @@ void DboxMain::OnExportText()
       orderedItemList.clear(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE) {
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+        CString errmess;
+        errmess.Format(IDS_CANTOPENWRITING, newfile.c_str());
         cs_title.LoadString(IDS_FILEWRITEERROR);
-        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+        MessageBox(errmess, cs_title, MB_OK|MB_ICONWARNING);
       }
     } else {
       AfxMessageBox(IDS_BADPASSKEY);
@@ -975,17 +1001,18 @@ void DboxMain::OnExportXML()
 
   INT_PTR rc = eXML.DoModal();
   if (rc == IDOK) {
-    CMyString newfile;
-    CMyString pw(eXML.m_ExportXMLPassword);
+    StringX newfile;
+    StringX pw(eXML.m_ExportXMLPassword);
     if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
-      CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("xml"));
+      stringT XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                    _T("xml"));
       cs_text.LoadString(IDS_NAMEXMLFILE);
       while (1) {
         CFileDialog fd(FALSE,
                        _T("xml"),
-                       XMLFileName,
+                       XMLFileName.c_str(),
                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                        |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                        _T("XML files (*.xml)|*.xml|")
@@ -1002,14 +1029,14 @@ void DboxMain::OnExportXML()
           return;
         }
         if (rc == IDOK) {
-          newfile = (CMyString)fd.GetPathName();
+          newfile = fd.GetPathName();
           break;
         } else
           return;
       } // while (1)
 
       const CItemData::FieldBits bsExport = eXML.m_bsExport;
-      const CString subgroup_name = eXML.m_subgroup_name;
+      const stringT subgroup_name = eXML.m_subgroup_name;
       const int subgroup_object = eXML.m_subgroup_object;
       const int subgroup_function = eXML.m_subgroup_function;
       TCHAR delimiter;
@@ -1024,7 +1051,7 @@ void DboxMain::OnExportXML()
       orderedItemList.clear(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+        cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
         cs_title.LoadString(IDS_FILEWRITEERROR);
         MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       }
@@ -1046,7 +1073,7 @@ void DboxMain::OnImportText()
   if (status == IDCANCEL)
     return;
 
-  CMyString ImportedPrefix(dlg.m_groupName);
+  StringX ImportedPrefix(dlg.m_groupName);
   CString cs_text, cs_title, cs_temp;
   TCHAR fieldSeparator(dlg.m_Separator[0]);
   CFileDialog fd(TRUE,
@@ -1070,19 +1097,19 @@ void DboxMain::OnImportText()
   }
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    CString strError;
-    CMyString TxtFileName = (CMyString)fd.GetPathName();
+    stringT strError;
+    StringX TxtFileName = fd.GetPathName();
     int numImported = 0, numSkipped = 0;
     TCHAR delimiter = dlg.m_defimpdelim[0];
 
     /* Create report as we go */
     CReport rpt;
-    CString cs_text;
-    cs_text.LoadString(IDS_RPTIMPORTTEXT);
-    rpt.StartReport(cs_text, m_core.GetCurFile());
-    cs_text.LoadString(IDS_TEXT);
-    cs_temp.Format(IDS_IMPORTFILE, cs_text, TxtFileName);
-    rpt.WriteLine(cs_temp);
+    stringT cs_text;
+    LoadAString(cs_text, IDS_RPTIMPORTTEXT);
+    rpt.StartReport(cs_text.c_str(), m_core.GetCurFile().c_str());
+    LoadAString(cs_text, IDS_TEXT);
+    cs_temp.Format(IDS_IMPORTFILE, cs_text.c_str(), TxtFileName.c_str());
+    rpt.WriteLine((LPCTSTR)cs_temp);
     rpt.WriteLine();
 
     rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, strError, fieldSeparator,
@@ -1091,10 +1118,10 @@ void DboxMain::OnImportText()
     cs_title.LoadString(IDS_FILEREADERROR);
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
-        cs_temp.Format(IDS_CANTOPENREADING, TxtFileName);
+        cs_temp.Format(IDS_CANTOPENREADING, TxtFileName.c_str());
         break;
       case PWScore::INVALID_FORMAT:
-        cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName);
+        cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName.c_str());
         break;
       case PWScore::FAILURE:
         cs_title.LoadString(IDS_TEXTIMPORTFAILED);
@@ -1106,11 +1133,11 @@ void DboxMain::OnImportText()
         CString cs_type, temp1, temp2 = _T("");
         cs_type.LoadString(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES);
         temp1.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
-        rpt.WriteLine(temp1);
+        rpt.WriteLine((LPCTSTR)temp1);
         if (numSkipped != 0) {
           cs_type.LoadString(numSkipped == 1 ? IDS_ENTRY : IDS_ENTRIES);
           temp2.Format(IDS_RECORDSNOTREAD, numSkipped, cs_type);
-          rpt.WriteLine(temp2);
+          rpt.WriteLine((LPCTSTR)temp2);
         }
 
         cs_title.LoadString(IDS_STATUS);
@@ -1167,19 +1194,19 @@ void DboxMain::OnImportKeePass()
   }
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    CMyString KPsFileName = (CMyString)fd.GetPathName();
+    StringX KPsFileName = fd.GetPathName();
     rc = m_core.ImportKeePassTextFile(KPsFileName);
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
       {
-        cs_temp.Format(IDS_CANTOPENREADING, KPsFileName);
+        cs_temp.Format(IDS_CANTOPENREADING, KPsFileName.c_str());
         cs_title.LoadString(IDS_FILEOPENERROR);
         MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
         break;
       }
       case PWScore::INVALID_FORMAT:
       {
-        cs_temp.Format(IDS_INVALIDFORMAT, KPsFileName);
+        cs_temp.Format(IDS_INVALIDFORMAT, KPsFileName.c_str());
         cs_title.LoadString(IDS_FILEREADERROR);
         MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
         break;
@@ -1202,15 +1229,19 @@ void DboxMain::OnImportXML()
     return;
 
   CString cs_title, cs_temp, cs_text;
+  stringT csErrors(_T(""));
   const stringT XSDfn(_T("pwsafe.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-  if (!PWSfile::FileExists(XSDFilename.c_str())) {
-    cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
-    cs_title.LoadString(IDS_CANTVALIDATEXML);
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
+  // Expat is a non-validating parser - no use for Schema!
+  if (!pws_os::FileExists(XSDFilename)) {
+    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
+    cs_title.LoadString(IDSC_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
+#endif
 
   CImportXMLDlg dlg;
   INT_PTR status = dlg.DoModal();
@@ -1218,7 +1249,7 @@ void DboxMain::OnImportXML()
   if (status == IDCANCEL)
     return;
 
-  CString ImportedPrefix(dlg.m_groupName);
+  stringT ImportedPrefix(dlg.m_groupName);
 
   CFileDialog fd(TRUE,
                  _T("xml"),
@@ -1239,8 +1270,8 @@ void DboxMain::OnImportXML()
   }
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    CString strErrors, csErrors(_T(""));
-    CString XMLFilename = (CMyString)fd.GetPathName();
+    stringT strErrors;
+    CString XMLFilename = fd.GetPathName();
     int numValidated, numImported;
     bool bBadUnknownFileFields, bBadUnknownRecordFields;
     CWaitCursor waitCursor;  // This may take a while!
@@ -1248,12 +1279,12 @@ void DboxMain::OnImportXML()
     CReport rpt;
     CString cs_text;
     cs_text.LoadString(IDS_RPTIMPORTXML);
-    rpt.StartReport(cs_text, m_core.GetCurFile());
+    rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
     cs_text.LoadString(IDS_XML);
     cs_temp.Format(IDS_IMPORTFILE, cs_text, XMLFilename);
-    rpt.WriteLine(cs_temp);
+    rpt.WriteLine((LPCTSTR)cs_temp);
     rpt.WriteLine();
-    rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename,
+    rc = m_core.ImportXMLFile(ImportedPrefix, stringT(XMLFilename),
                               XSDFilename.c_str(), strErrors,
                               numValidated, numImported,
                               bBadUnknownFileFields, bBadUnknownRecordFields,
@@ -1263,20 +1294,16 @@ void DboxMain::OnImportXML()
     cs_title.LoadString(IDS_XMLIMPORTFAILED);
     switch (rc) {
     case PWScore::XML_FAILED_VALIDATION:
-      {
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
+                       strErrors.c_str());
         break;
-      }
     case PWScore::XML_FAILED_IMPORT:
-      {
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
+        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
-      }
     case PWScore::SUCCESS:
-      {
-        if (!strErrors.IsEmpty() ||
+        if (!strErrors.empty() ||
             bBadUnknownFileFields || bBadUnknownRecordFields) {
-          if (!strErrors.IsEmpty())
+          if (!strErrors.empty())
             csErrors = strErrors + _T("\n");
           if (bBadUnknownFileFields) {
             cs_temp.Format(IDS_XMLUNKNFLDIGNORED, _T("header"));
@@ -1288,31 +1315,32 @@ void DboxMain::OnImportXML()
           }
 
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                         fd.GetFileName(), numValidated, numImported, csErrors);
+                         fd.GetFileName(), numValidated,
+                         numImported, csErrors.c_str());
 
           ChangeOkUpdate();
         } else {
           const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
           const CString cs_imported(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
-          cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
+          cs_temp.Format(IDS_XMLIMPORTOK,
+                         numValidated, cs_validate, numImported, cs_imported);
           cs_title.LoadString(IDS_STATUS);
           ChangeOkUpdate();
         }
         RefreshViews();
         break;
-      }
     default:
       ASSERT(0);
     } // switch
 
     // Finish Report
-    rpt.WriteLine(cs_temp);
+    rpt.WriteLine((LPCTSTR)cs_temp);
     rpt.WriteLine();
-    rpt.WriteLine(csErrors);
+    rpt.WriteLine(csErrors.c_str());
     rpt.EndReport();
 
     CGeneralMsgBox gmb;
-    if (rc != PWScore::SUCCESS || !strErrors.IsEmpty())
+    if (rc != PWScore::SUCCESS || !strErrors.empty())
       gmb.SetStandardIcon(MB_ICONEXCLAMATION);
     else
       gmb.SetStandardIcon(MB_ICONINFORMATION);
@@ -1334,7 +1362,7 @@ void DboxMain::OnImportXML()
 int DboxMain::Merge()
 {
   int rc = PWScore::SUCCESS;
-  CMyString newfile;
+  StringX newfile;
   CString cs_temp;
 
   //Open-type dialog box
@@ -1363,7 +1391,7 @@ int DboxMain::Merge()
       return PWScore::USER_CANCEL;
     }
     if (rc2 == IDOK) {
-      newfile = (CMyString)fd.GetPathName();
+      newfile = fd.GetPathName();
 
       rc = Merge(newfile);
 
@@ -1395,9 +1423,9 @@ void DboxMain::OnMerge()
 #define MRG_XTIME_INT  0x0100
 #define MRG_UNUSED     0x00ff
 
-int DboxMain::Merge(const CMyString &pszFilename) {
+int DboxMain::Merge(const StringX &pszFilename) {
   /* open file they want to merge */
-  CMyString passkey, temp;
+  StringX passkey, temp;
 
   //Check that this file isn't already open
   if (pszFilename == m_core.GetCurFile()) {
@@ -1420,7 +1448,7 @@ int DboxMain::Merge(const CMyString &pszFilename) {
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, othercore.GetCurFile());
+      cs_temp.Format(IDS_CANTOPEN, othercore.GetCurFile().c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     case TAR_OPEN:
@@ -1438,7 +1466,7 @@ int DboxMain::Merge(const CMyString &pszFilename) {
   othercore.ReadFile(pszFilename, passkey);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENREADING, pszFilename);
+    cs_temp.Format(IDS_CANTOPENREADING, pszFilename.c_str());
     cs_title.LoadString(IDS_FILEREADERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     /*
@@ -1460,9 +1488,9 @@ int DboxMain::Merge(const CMyString &pszFilename) {
   CReport rpt;
   CString cs_text;
   cs_text.LoadString(IDS_RPTMERGE);
-  rpt.StartReport(cs_text, m_core.GetCurFile());
-  cs_temp.Format(IDS_MERGINGDATABASE, pszFilename);
-  rpt.WriteLine(cs_temp);
+  rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
+  cs_temp.Format(IDS_MERGINGDATABASE, pszFilename.c_str());
+  rpt.WriteLine((LPCTSTR)cs_temp);
 
   /*
   Purpose:
@@ -1498,12 +1526,13 @@ int DboxMain::Merge(const CMyString &pszFilename) {
       continue;
 
     if (m_subgroup_set == BST_CHECKED &&
-        !otherItem.Matches(m_subgroup_name, m_subgroup_object, m_subgroup_function))
+        !otherItem.Matches(stringT(m_subgroup_name),
+                           m_subgroup_object, m_subgroup_function))
       continue;
 
-    const CMyString otherGroup = otherItem.GetGroup();
-    const CMyString otherTitle = otherItem.GetTitle();
-    const CMyString otherUser = otherItem.GetUser();
+    const StringX otherGroup = otherItem.GetGroup();
+    const StringX otherTitle = otherItem.GetTitle();
+    const StringX otherUser = otherItem.GetUser();
 
     CString timeStr(_T(""));
     ItemListConstIter foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
@@ -1566,25 +1595,25 @@ int DboxMain::Merge(const CMyString &pszFilename) {
       if (diff_flags |= 0) {
         /* have a match on title/user, but not on other fields
         add an entry suffixed with -merged-YYYYMMDD-HHMMSS */
-        CMyString newTitle = otherTitle;
+        StringX newTitle = otherTitle;
         CTime curTime = CTime::GetCurrentTime();
         newTitle += _T("-merged-");
         timeStr = curTime.Format(_T("%Y%m%d-%H%M%S"));
-        newTitle += CMyString(timeStr);
+        newTitle += timeStr;
 
         /* note it as an issue for the user */
         CString warnMsg;
         warnMsg.Format(IDS_MERGECONFLICTS, 
-                       otherItem.GetGroup(), 
-                       otherItem.GetTitle(),
-                       otherItem.GetUser(),
-                       otherItem.GetGroup(), 
-                       newTitle, 
-                       otherItem.GetUser(),
+                       otherItem.GetGroup().c_str(), 
+                       otherItem.GetTitle().c_str(),
+                       otherItem.GetUser().c_str(),
+                       otherItem.GetGroup().c_str(), 
+                       newTitle.c_str(), 
+                       otherItem.GetUser().c_str(),
                        csDiffs);
 
         /* log it */
-        rpt.WriteLine(warnMsg);
+        rpt.WriteLine((LPCTSTR)warnMsg);
 
         /* Check no conflict of unique uuid */
         if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
@@ -1630,11 +1659,13 @@ int DboxMain::Merge(const CMyString &pszFilename) {
   const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ? IDS_CONFLICT : IDS_CONFLICTS));
   const CString cs_aliases(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_ALIAS : IDS_ALIASES));
   const CString cs_shortcuts(MAKEINTRESOURCE(numShortcutsAdded == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS));
-  resultStr.Format(IDS_MERGECOMPLETED, totalAdded, cs_entries, numConflicts, cs_conflicts,
-                                       numAliasesAdded, cs_aliases, numShortcutsAdded, cs_shortcuts);
+  resultStr.Format(IDS_MERGECOMPLETED,
+                   totalAdded, cs_entries, numConflicts, cs_conflicts,
+                   numAliasesAdded, cs_aliases,
+                   numShortcutsAdded, cs_shortcuts);
   cs_title.LoadString(IDS_MERGECOMPLETED2);
   //MessageBox(resultStr, cs_title, MB_OK);
-  rpt.WriteLine(resultStr);
+  rpt.WriteLine((LPCTSTR)resultStr);
   rpt.EndReport();
 
   CGeneralMsgBox gmb;
@@ -1690,10 +1721,10 @@ int DboxMain::MergeDependents(PWScore *pothercore,
 
     // If the base title was renamed - we should automatically rename any dependent.
     // If we didn't, we still need to check uniqueness!
-    CMyString newTitle = tempitem.GetTitle();
+    StringX newTitle = tempitem.GetTitle();
     if (bTitleRenamed) {
       newTitle += _T("-merged-");
-      newTitle += CMyString(timeStr);
+      newTitle += timeStr;
       tempitem.SetTitle(newTitle);
     }
     // Check this is unique - if not - don't add this one! - its only an alias/shortcut!
@@ -1706,11 +1737,11 @@ int DboxMain::MergeDependents(PWScore *pothercore,
     m_core.AddDependentEntry(new_base_uuid, new_entry_uuid, et);
 
     if (et == CItemData::ET_ALIAS) {
-      tempitem.SetPassword(CMyString(_T("[Alias]")));
+      tempitem.SetPassword(_T("[Alias]"));
       tempitem.SetAlias();
     } else
     if (et == CItemData::ET_SHORTCUT) {
-      tempitem.SetPassword(CMyString(_T("[Shortcut]")));
+      tempitem.SetPassword(_T("[Shortcut]"));
       tempitem.SetShortcut();
     } else
       ASSERT(0);
@@ -1730,12 +1761,12 @@ void DboxMain::OnProperties()
 void DboxMain::OnCompare()
 {
   INT_PTR rc = PWScore::SUCCESS;
-  if (m_core.GetCurFile().IsEmpty()) {
+  if (m_core.GetCurFile().empty()) {
     AfxMessageBox(IDS_NOCOMPAREFILE, MB_OK|MB_ICONWARNING);
     return;
   }
 
-  CMyString cs_file2;
+  StringX cs_file2;
   CString cs_text(MAKEINTRESOURCE(IDS_PICKCOMPAREFILE));
 
   //Open-type dialog box
@@ -1763,13 +1794,13 @@ void DboxMain::OnCompare()
       return;
     }
     if (rc == IDOK) {
-      cs_file2 = (CMyString)fd.GetPathName();
+      cs_file2 = fd.GetPathName();
       //Check that this file isn't the current one!
       if (cs_file2 == m_core.GetCurFile()) {
         //It is the same damn file!
         AfxMessageBox(IDS_COMPARESAME, MB_OK|MB_ICONWARNING);
       } else {
-        const CMyString cs_file1(m_core.GetCurFile());
+        const StringX cs_file1(m_core.GetCurFile());
         rc = Compare(cs_file1, cs_file2);
         break;
       }
@@ -1782,17 +1813,17 @@ void DboxMain::OnCompare()
   return;
 }
 
-int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
+int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
 {
   // open file they want to Compare
   int rc = PWScore::SUCCESS;
 
-  CMyString passkey, cs_temp;
-  CString cs_title, cs_text;
+  StringX passkey;
+  CString cs_temp, cs_title, cs_text;
   PWScore othercore;
 
   // Reading a new file changes the preferences!
-  const CMyString cs_SavePrefString(PWSprefs::GetInstance()->Store());
+  const StringX cs_SavePrefString(PWSprefs::GetInstance()->Store());
 
   // OK, CANCEL, HELP, ADVANCED + (nolonger force R/O) + use othercore
   rc = GetAndCheckPassword(cs_Filename2, passkey,
@@ -1805,7 +1836,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, cs_Filename2);
+      cs_temp.Format(IDS_CANTOPEN, cs_Filename2.c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     case TAR_OPEN:
@@ -1830,12 +1861,12 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPENREADING, cs_Filename2);
+      cs_temp.Format(IDS_CANTOPENREADING, cs_Filename2.c_str());
       MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       break;
     case PWScore::BAD_DIGEST:
     {
-      cs_temp.Format(IDS_FILECORRUPT, cs_Filename2);
+      cs_temp.Format(IDS_FILECORRUPT, cs_Filename2.c_str());
       const int yn = MessageBox(cs_temp, cs_title, MB_YESNO|MB_ICONERROR);
       if (yn == IDYES)
         rc = PWScore::SUCCESS;
@@ -1851,7 +1882,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     }
 #endif
     default:
-      cs_temp.Format(IDS_UNKNOWNERROR, cs_Filename2);
+      cs_temp.Format(IDS_UNKNOWNERROR, cs_Filename2.c_str());
       MessageBox(cs_temp, cs_title, MB_OK|MB_ICONERROR);
       break;
   }
@@ -1872,9 +1903,9 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
   /* Create report as we go */
   CReport rpt;
   cs_text.LoadString(IDS_RPTCOMPARE);
-  rpt.StartReport(cs_text, m_core.GetCurFile());
-  cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
-  rpt.WriteLine(cs_temp);
+  rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
+  cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2.c_str());
+  rpt.WriteLine((LPCTSTR)cs_temp);
   rpt.WriteLine();
 
   // Put up hourglass...this might take a while
@@ -1930,7 +1961,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     CItemData currentItem = m_core.GetEntry(currentPos);
 
     if (m_subgroup_set == BST_UNCHECKED ||
-        currentItem.Matches(m_subgroup_name, m_subgroup_object,
+        currentItem.Matches(stringT(m_subgroup_name), m_subgroup_object,
                             m_subgroup_function)) {
       st_data.group = currentItem.GetGroup();
       st_data.title = currentItem.GetTitle();
@@ -2046,7 +2077,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     CItemData compItem = othercore.GetEntry(compPos);
 
     if (m_subgroup_set == BST_UNCHECKED ||
-        compItem.Matches(m_subgroup_name, m_subgroup_object,
+        compItem.Matches(stringT(m_subgroup_name), m_subgroup_object,
                          m_subgroup_function)) {
       st_data.group = compItem.GetGroup();
       st_data.title = compItem.GetTitle();
@@ -2076,7 +2107,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
   if (!m_bAdvanced) {
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   } else {
     if (m_subgroup_set == BST_UNCHECKED) {
@@ -2152,12 +2183,12 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
                      cs_case);
     }
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
 
     cs_temp.LoadString(IDS_RPTCOMPARE);
     buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
 
     buffer = _T("\t");
     if (m_bsFields.test(CItemData::PASSWORD))
@@ -2182,18 +2213,19 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     if (m_bsFields.test(CItemData::POLICY))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   }
 
   cs_title.LoadString(IDS_COMPARECOMPLETE);
-  buffer.Format(IDS_COMPARESTATISTICS, cs_Filename1, cs_Filename2);
+  buffer.Format(IDS_COMPARESTATISTICS,
+                cs_Filename1.c_str(), cs_Filename2.c_str());
 
   if (numOnlyInCurrent == 0 && numOnlyInComp == 0 && numConflicts == 0) {
     cs_text.LoadString(IDS_IDENTICALDATABASES);
     buffer += cs_text;
     MessageBox(buffer, cs_title, MB_OK);
-    rpt.WriteLine(buffer);
+    rpt.WriteLine((LPCTSTR)buffer);
     rpt.EndReport();
   } else {
     CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 
@@ -2221,8 +2253,8 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
       ViewReport(rpt);
   }
 
-  if (othercore.IsLockedFile(othercore.GetCurFile()))
-    othercore.UnlockFile(othercore.GetCurFile());
+  if (othercore.IsLockedFile(othercore.GetCurFile().c_str()))
+    othercore.UnlockFile(othercore.GetCurFile().c_str());
 
   othercore.ClearData();
   othercore.SetCurFile(_T(""));
@@ -2244,14 +2276,18 @@ int DboxMain::SaveCore(PWScore *pcore)
     if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
       int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
       int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-      CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
-      CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
-      if (!pcore->BackupCurFile(maxNumIncBackups, backupSuffix, userBackupPrefix, userBackupDir))
+      StringX userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue);
+      StringX userBackupDir = prefs->GetPref(PWSprefs::BackupDir);
+      if (!pcore->BackupCurFile(maxNumIncBackups, backupSuffix,
+                                userBackupPrefix.c_str(),
+                                userBackupDir.c_str()))
         AfxMessageBox(IDS_NOIBACKUP, MB_OK);
     }
   } else { // file version mis-match
-    CMyString NewName = PWSUtil::GetNewFileName(pcore->GetCurFile(), DEFAULT_SUFFIX );
-    cs_msg.Format(IDS_NEWFORMAT, pcore->GetCurFile(), NewName);
+    stringT NewName = PWSUtil::GetNewFileName(pcore->GetCurFile().c_str(),
+                                              DEFAULT_SUFFIX );
+    cs_msg.Format(IDS_NEWFORMAT,
+                  pcore->GetCurFile().c_str(), NewName.c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
 
     CGeneralMsgBox gmb;
@@ -2263,12 +2299,12 @@ int DboxMain::SaveCore(PWScore *pcore)
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
       return PWScore::USER_CANCEL;
-    pcore->SetCurFile(NewName);
+    pcore->SetCurFile(NewName.c_str());
   }
   rc = pcore->WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile());
+    cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
@@ -2348,7 +2384,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   // Copy *pfromcore -> *ptocore entry at fromPos
 
   ItemListIter toPos;
-  CMyString group, title, user, notes, password, url, autotype, pwhistory;
+  StringX group, title, user, notes, password, url, autotype, pwhistory;
   time_t ct, at, xt, pmt, rmt;
   PWPolicy pwp;
   int nfromUnknownRecordFields;
@@ -2511,8 +2547,8 @@ void DboxMain::OnOK()
 
   prefs->SetPref(PWSprefs::SortedColumn, m_iTypeSortColumn);
   prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
-  prefs->SetPref(PWSprefs::ListColumns, cs_columns);
-  prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
+  prefs->SetPref(PWSprefs::ListColumns, LPCTSTR(cs_columns));
+  prefs->SetPref(PWSprefs::ColumnWidths, LPCTSTR(cs_columnswidths));
 
   SaveDisplayStatus(); // since it's not always up to date
   // (CPWTreeCtrl::OnExpandCollapse not always called!)
@@ -2527,7 +2563,7 @@ void DboxMain::OnOK()
     // Naughty Windows saves information in the registry for every Open and Save!
     RegistryAnonymity();
   } else
-  if (!m_core.GetCurFile().IsEmpty())
+  if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
 
   bool autoSave = true; // false if user saved or decided not to 

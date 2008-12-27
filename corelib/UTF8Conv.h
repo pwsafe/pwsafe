@@ -9,10 +9,10 @@
 //-----------------------------------------------------------------------------
 #ifndef __UTF8CONV_H
 #define __UTF8CONV_H
-#include "MyString.h"
+#include "StringX.h"
 
 /** \file
-* A utility class to convert between UTF-8 and CMyString
+* A utility class to convert between UTF-8 and StringX
 */
 
 class CUTF8Conv
@@ -23,9 +23,9 @@ public:
   ~CUTF8Conv();
   // In following, char * is managed internally. Caller must NOT
   // allocate or deallocate it!
-  bool ToUTF8(const CMyString &data, const unsigned char *&utf8, int &utf8Len);
+  bool ToUTF8(const StringX &data, const unsigned char *&utf8, int &utf8Len);
   // In following, char * is managed by caller.
-  bool FromUTF8(const unsigned char *utf8, int utf8Len, CMyString &data);
+  bool FromUTF8(const unsigned char *utf8, int utf8Len, StringX &data);
 
 private:
   CUTF8Conv(const CUTF8Conv &); // not supported
@@ -34,12 +34,12 @@ private:
   // for efficiency w/o arbitrary restrictions
   // deallocated by d'tor
   unsigned char *m_utf8;
-  int m_utf8Len;
-  int m_utf8MaxLen;
+  size_t m_utf8Len;
+  size_t m_utf8MaxLen;
   wchar_t *m_wc;
-  int m_wcMaxLen;
+  size_t m_wcMaxLen;
   unsigned char *m_tmp;
-  int m_tmpMaxLen;
+  size_t m_tmpMaxLen;
 };
 
 #endif /* __UTF8CONV_H */

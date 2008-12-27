@@ -15,7 +15,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExportText dialog
 
-#include "corelib/MyString.h"
+#include "SecString.h"
 #include "corelib/ItemData.h"
 #include "ControlExtns.h"
 #include "PWDialog.h"
@@ -29,7 +29,7 @@ public:
   // Dialog Data
   //{{AFX_DATA(CExportTextDlg)
   enum { IDD = IDD_EXPORT_TEXT };
-  CMyString m_exportTextPassword;
+  CSecString m_exportTextPassword;
   CString m_defexpdelim;
   //}}AFX_DATA
 

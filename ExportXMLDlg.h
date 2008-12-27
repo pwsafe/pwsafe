@@ -13,7 +13,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExportXML dialog
 
-#include "corelib/MyString.h"
+#include "SecString.h"
 #include "corelib/ItemData.h"
 #include "ControlExtns.h"
 #include "PWDialog.h"
@@ -27,7 +27,7 @@ public:
   // Dialog Data
   //{{AFX_DATA(CExportXMLDlg)
   enum { IDD = IDD_EXPORT_XML };
-  CMyString m_ExportXMLPassword;
+  CSecString m_ExportXMLPassword;
   CString m_defexpdelim;
   //}}AFX_DATA
 

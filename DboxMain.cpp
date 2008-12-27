@@ -19,9 +19,14 @@
 #include "ThisMfcApp.h"
 #include "AboutDlg.h"
 #include "PwFont.h"
+#include "MFCMessages.h"
+#include "version.h"
+
+#include "corelib/corelib.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
+#include "corelib/os/file.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -201,6 +206,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
   ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
+  ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
 
   // Manage Menu
@@ -379,7 +385,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_VALIDATE, true, true, true, true},
   {ID_MENUITEM_EDITFILTER, true, true, false, false},
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
-  {ID_MENUITEM_MANAGEFILTERS, true, true, false, false},
+  {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
+  {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
@@ -424,7 +431,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 };
 
 void DboxMain::InitPasswordSafe()
-{  
+{
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
@@ -562,7 +569,7 @@ void DboxMain::InitPasswordSafe()
 
   // Set up fonts before playing with Tree/List views
   m_pFontTree = new CFont;
-  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont);
+  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
 
   if (szTreeFont != _T("")) {
     LOGFONT *ptreefont = new LOGFONT;
@@ -577,7 +584,7 @@ void DboxMain::InitPasswordSafe()
   }
 
   // Set up fonts before playing with Tree/List views
-  CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont);
+  CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
   if (szPasswordFont != _T("")) {
     LOGFONT *pPasswordfont = new LOGFONT;
@@ -587,7 +594,7 @@ void DboxMain::InitPasswordSafe()
     delete pPasswordfont;
   }
 
-  const CString lastView = prefs->GetPref(PWSprefs::LastView);
+  const CString lastView = prefs->GetPref(PWSprefs::LastView).c_str();
   if (lastView != _T("list"))
     OnTreeView();
   else
@@ -595,8 +602,8 @@ void DboxMain::InitPasswordSafe()
 
   CalcHeaderWidths();
 
-  CString cs_ListColumns = prefs->GetPref(PWSprefs::ListColumns);
-  CString cs_ListColumnsWidths = prefs->GetPref(PWSprefs::ColumnWidths);
+  CString cs_ListColumns = prefs->GetPref(PWSprefs::ListColumns).c_str();
+  CString cs_ListColumnsWidths = prefs->GetPref(PWSprefs::ColumnWidths).c_str();
 
   if (cs_ListColumns.IsEmpty())
     SetColumns();
@@ -668,24 +675,44 @@ void DboxMain::InitPasswordSafe()
     delete m_pNotesDisplay;
     m_pNotesDisplay = NULL;
   }
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+  // Don't support filter processing on non-Windows platforms 
+  // using Microsoft XML libraries
+#else
   // if there's a filter file named "autoload_filters.xml", 
   // do what its name implies...
-  CString tmp = CString(PWSdirs::GetConfigDir().c_str()) +
+  CString cs_temp = CString(PWSdirs::GetConfigDir().c_str()) +
     _T("autoload_filters.xml");
-  if (PWSfile::FileExists(tmp)) {
-    CString strErrors;
+  if (pws_os::FileExists(cs_temp.GetString())) {
+    stringT strErrors;
     stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
+  // Expat is a non-validating parser - no use for Schema!
+  if (!pws_os::FileExists(XSDFilename)) {
+    CString cs_title, cs_msg;
+    cs_temp.Format(IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
+    cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, cs_temp);
+    cs_title.LoadString(IDSC_CANTVALIDATEXML);
+    MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
+    return;
+  }
+#endif
+
     CWaitCursor waitCursor;  // This may take a while!
 
-    int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""), tmp,
-                                              XSDFilename.c_str(), strErrors);
+    MFCAsker q;
+    int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, _T(""),
+                                              stringT(cs_temp),
+                                              XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
-    if (rc != PWScore::SUCCESS) {
+    if (rc != PWScore::SUCCESS){
       CString cs_msg;
-      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors);
+      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors.c_str());
       AfxMessageBox(cs_msg, MB_OK);
     }
   }
+#endif
 }
 
 LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)
@@ -785,11 +812,14 @@ BOOL DboxMain::OnInitDialog()
     m_ctlItemTree.SetRestoreMode(true);
     RefreshViews();
     m_ctlItemTree.SetRestoreMode(false);
-    SelectFirstEntry();
   }
 
   SetInitialDatabaseDisplay();
   OnHideFindToolBar();
+
+  if (m_bOpen) {
+    SelectFirstEntry();
+  }
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -814,9 +844,9 @@ void DboxMain::SetInitialDatabaseDisplay()
 
 void DboxMain::OnDestroy()
 {
-  const CMyString filename(m_core.GetCurFile());
+  const stringT filename(m_core.GetCurFile().c_str());
   // The only way we're the locker is if it's locked & we're !readonly
-  if (!filename.IsEmpty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
+  if (!filename.empty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
 
   // Get rid of hotkey
@@ -948,7 +978,7 @@ void DboxMain::OnBrowse()
     }
 
     if (!ci->IsURLEmpty()) {
-      LaunchBrowser(ci->GetURL());
+      LaunchBrowser(ci->GetURL().c_str());
       UpdateAccessTime(ci_original);
     }
   }
@@ -1070,8 +1100,8 @@ void DboxMain::OnU3ShopWebsite()
 #endif
 }
 
-int DboxMain::GetAndCheckPassword(const CMyString &filename,
-                                  CMyString& passkey,
+int DboxMain::GetAndCheckPassword(const StringX &filename,
+                                  StringX &passkey,
                                   int index,
                                   bool bReadOnly,
                                   bool bForceReadOnly,
@@ -1095,19 +1125,14 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
 
   if (pcore == 0) pcore = &m_core;
 
-  if (!filename.IsEmpty()) {
-    bool exists = pcore->FileExists(filename, bFileIsReadOnly);
+  if (!filename.empty()) {
+    bool exists = pws_os::FileExists(filename.c_str(), bFileIsReadOnly);
 
     if (!exists) {
-      // Used to display an error message, but this is really the caller's business
       return PWScore::CANT_OPEN_FILE;
     } // !exists
   } // !filename.IsEmpty()
 
-  /*
-  * with my unsightly hacks of PasskeyEntry, it should now accept
-  * a blank filename, which will disable passkey entry and the OK button
-  */
 
   if (bFileIsReadOnly || bForceReadOnly) {
     // As file is read-only, we must honour it and not permit user to change it
@@ -1121,7 +1146,7 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
   static CPasskeyEntry *dbox_pkentry = NULL;
   INT_PTR rc = 0;
   if (dbox_pkentry == NULL) {
-    dbox_pkentry = new CPasskeyEntry(this, filename,
+    dbox_pkentry = new CPasskeyEntry(this, filename.c_str(),
                                      index, bReadOnly || bFileIsReadOnly,
                                      bFileIsReadOnly || bForceReadOnly,
                                      adv_type);
@@ -1136,11 +1161,11 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
       nBuild = HIWORD(dwBuildRevision);
     }
     if (nBuild == 0)
-      dbox_pkentry->m_appversion.Format(_T("Version %d.%02dF"),
-      nMajor, nMinor);
+      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d%s"),
+                                        nMajor, nMinor, SPECIAL_BUILD);
     else
-      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02dF"),
-      nMajor, nMinor, nBuild);
+      dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d%s"),
+                                        nMajor, nMinor, nBuild, SPECIAL_BUILD);
 
     app.DisableAccelerator();
     rc = dbox_pkentry->DoModal();
@@ -1165,10 +1190,10 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
 
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
-    const CString &curFile = dbox_pkentry->GetFileName();
+    const StringX curFile = dbox_pkentry->GetFileName().GetString();
     pcore->SetCurFile(curFile);
-    CMyString locker(_T("")); // null init is important here
-    passkey = dbox_pkentry->GetPasskey();
+    stringT locker(_T("")); // null init is important here
+    passkey = LPCTSTR(dbox_pkentry->GetPasskey());
     // This dialog's setting of read-only overrides file dialog
     bool bIsReadOnly = dbox_pkentry->IsReadOnly();
     pcore->SetReadOnly(bIsReadOnly);
@@ -1176,12 +1201,12 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
     // we could not create a lock file.
     switch (index) {
       case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-        pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile, locker));
+        pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
         break;
       case GCP_NORMAL:
       case GCP_ADVANCED:
         if (!bIsReadOnly) // !first, lock if !bIsReadOnly
-          pcore->SetReadOnly(!pcore->LockFile(curFile, locker));
+          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
         else
           pcore->SetReadOnly(bIsReadOnly);
         break;
@@ -1194,9 +1219,9 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
     UpdateToolBar(bIsReadOnly);
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
-    if (!locker.IsEmpty()) {
+    if (!locker.empty()) {
       CString cs_user_and_host, cs_PID;
-      cs_user_and_host = (CString)locker;
+      cs_user_and_host = (CString)locker.c_str();
       int i_pid = cs_user_and_host.ReverseFind(_T(':'));
       if (i_pid > -1) {
         // If PID present then it is ":%08d" = 9 chars in length
@@ -1212,12 +1237,13 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
       gmb.SetTitle(cs_title);
       gmb.SetStandardIcon(MB_ICONQUESTION);
 #ifdef PWS_STRICT_LOCKING // define if you don't want to allow user override
-      cs_msg.Format(IDS_STRICT_LOCKED, curFile, cs_user_and_host, cs_PID);
+      cs_msg.Format(IDS_STRICT_LOCKED, curFile.c_str(),
+                    cs_user_and_host, cs_PID);
       gmb.SetMsg(cs_msg);
       gmb.AddButton(1, IDS_READONLY);
       gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
 #else
-      cs_msg.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
+      cs_msg.Format(IDS_LOCKED, curFile.c_str(), cs_user_and_host, cs_PID);
       gmb.SetMsg(cs_msg);
       gmb.AddButton(1, IDS_READONLY);
       gmb.AddButton(2, IDS_READWRITE);
@@ -1250,7 +1276,7 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
 
         if (rc == PWScore::CANT_OPEN_FILE) {
           CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-          cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile());
+          cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
           MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
           retval = PWScore::USER_CANCEL;
         } else {
@@ -1729,10 +1755,10 @@ void DboxMain::OnShowPassword()
 {
   if (SelItemOk() == TRUE) {
     CItemData item;
-    CMyString password;
-    CMyString name;
-    CMyString title;
-    CMyString username;
+    StringX password;
+    StringX name;
+    StringX title;
+    StringX username;
     CShowPasswordDlg pwDlg( this );
 
     item = m_pwlist.GetAt(Find(getSelectedItem()));
@@ -1810,7 +1836,7 @@ void DboxMain::UnMinimize(bool update_windows)
       (app.GetSystemTrayState() == ThisMfcApp::LOCKED) &&
       (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
-    CMyString passkey;
+    StringX passkey;
     int rc;
     rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
     if (rc != PWScore::SUCCESS)
@@ -1827,7 +1853,7 @@ void DboxMain::UnMinimize(bool update_windows)
 
   // Case 2 - data unavailable
   if (m_needsreading && m_windowok) {
-    CMyString passkey, temp;
+    StringX passkey;
     int rc, rc2;
     const bool useSysTray = PWSprefs::GetInstance()->
                             GetPref(PWSprefs::UseSystemTray);
@@ -1842,12 +1868,12 @@ void DboxMain::UnMinimize(bool update_windows)
       case PWScore::SUCCESS:
         rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-        m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
-                                           m_core.GetCurFile());
+        m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
+                                           m_core.GetCurFile()).c_str();
 #endif
         break;
       case PWScore::CANT_OPEN_FILE:
-        cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+        cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile().c_str());
         cs_title.LoadString(IDS_FILEOPEN);
         MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       case TAR_NEW:
@@ -1863,7 +1889,7 @@ void DboxMain::UnMinimize(bool update_windows)
         rc2 = PWScore::NOT_SUCCESS;
         break;
       case PWScore::USER_EXIT:
-        m_core.UnlockFile(m_core.GetCurFile());
+        m_core.UnlockFile(m_core.GetCurFile().c_str());
         PostQuitMessage(0);
         return;
       default:
@@ -2010,7 +2036,7 @@ void DboxMain::CheckExpiredPasswords()
   }
 
   if (!expPWList.empty()) {
-    CExpPWListDlg dlg(this, expPWList, m_core.GetCurFile());
+    CExpPWListDlg dlg(this, expPWList, m_core.GetCurFile().c_str());
     dlg.DoModal();
   }
 }
@@ -2036,7 +2062,7 @@ void DboxMain::UpdateAccessTime(CItemData *ci)
       // Get index of entry
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
       // Get value in correct format
-      CString cs_atime = ci->GetATimeL();
+      CString cs_atime = ci->GetATimeL().c_str();
       // Update it
       m_ctlItemList.SetItemText(di->list_index,
         m_nColumnIndexByType[CItemData::ATIME], cs_atime);
@@ -2049,7 +2075,7 @@ BOOL DboxMain::OnQueryEndSession()
   m_iSessionEndingStatus = IDOK;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
-  if (!m_core.GetCurFile().IsEmpty())
+  if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
@@ -2062,7 +2088,7 @@ BOOL DboxMain::OnQueryEndSession()
 
   if (m_core.IsChanged()) {
     CString cs_msg;
-    cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile());
+    cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile().c_str());
     m_iSessionEndingStatus = AfxMessageBox(cs_msg,
                              (MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3));
     switch (m_iSessionEndingStatus) {
@@ -2153,7 +2179,8 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneText(CPWStatusBar::SB_READONLY, s);
 
       if (m_bFilterActive)
-        s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering, m_core.GetNumEntries());
+        s.Format(IDS_NUMITEMSFILTER, m_bNumPassedFiltering,
+                 m_core.GetNumEntries());
       else
         s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
       dc.DrawText(s, &rectPane, DT_CALCRECT);
@@ -2372,6 +2399,21 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // = FALSE(0) : set pCmdUI-Enable(FALSE)
   // = TRUE(1)  : set pCmdUI-Enable(TRUE)
 
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+// Don't support importing XML or filter processing on non-Windows platforms 
+// using Microsoft XML libraries
+  switch (nID) {
+    case ID_MENUITEM_IMPORT_XML:
+    case ID_FILTERMENU:
+    case ID_MENUITEM_APPLYFILTER:
+    case ID_MENUITEM_EDITFILTER:
+    case ID_MENUITEM_MANAGEFILTERS:
+      return FALSE;
+    default:
+      break;
+  }
+#endif
+
   MapUICommandTableConstIter it;
   it = m_MapUICommandTable.find(nID);
 
@@ -2413,6 +2455,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_COPYNOTESFLD:
     case ID_MENUITEM_AUTOTYPE:
     case ID_MENUITEM_EDIT:
+    case ID_MENUITEM_PASSWORDSUBSET:
 #if defined(POCKET_PC)
     case ID_MENUITEM_SHOWPASSWORD:
 #endif

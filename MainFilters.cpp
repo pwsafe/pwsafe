@@ -26,13 +26,17 @@
 #include "filter/SetFiltersDlg.h"
 #include "filter/ManageFiltersDlg.h"
 #include "GeneralMsgBox.h"
+#include "MFCMessages.h"
 
+#include "corelib/corelib.h"
 #include "corelib/PWSFilters.h"
 #include "corelib/PWHistory.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/match.h"
 #include "corelib/PWSfile.h"
 #include "corelib/PWSdirs.h"
+
+#include "corelib/os/file.h"
 
 using namespace std;
 
@@ -99,7 +103,7 @@ void DboxMain::OnSetFilter()
     m_MapFilters.insert(PWSFilters::Pair(fk, m_currentfilter));
 
     m_currentfilterpool = fk.fpool;
-    m_selectedfiltername = fk.cs_filtername;
+    m_selectedfiltername = fk.cs_filtername.c_str();
 
     bool bFilters = (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
                                                    m_currentfilter.num_Pactive) > 0;
@@ -304,7 +308,7 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
           }
           // Note: purpose drop through to standard 'string' processing
         case PWSMatch::MT_STRING:
-          thistest_rc = pci->Matches(st_fldata.fstring, (int)ft,
+          thistest_rc = pci->Matches(st_fldata.fstring.c_str(), (int)ft,
                                  st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
           tests++;
           break;
@@ -632,7 +636,7 @@ void DboxMain::OnManageFilters()
   }
 
   CManageFiltersDlg mf(this, m_bFilterActive, m_MapFilters);
-  mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname);
+  mf.SetCurrentData(m_currentfilterpool, m_currentfilter.fname.c_str());
   mf.DoModal();
 
   // If user has changed the database filters, we need to update the core copy.
@@ -665,13 +669,13 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
   // do the export
   //SaveAs-type dialog box
-  CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(),
+  stringT XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
                                                   _T("filters.xml"));
   cs_text.LoadString(IDS_NAMEXMLFILE);
   while (1) {
     CFileDialog fd(FALSE,
                    _T("xml"),
-                   XMLFileName,
+                   XMLFileName.c_str(),
                    OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                    OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                    _T("XML files (*.xml)|*.xml|")
@@ -695,8 +699,8 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
   } // while (1)
 
   PWSfile::HeaderRecord hdr = m_core.GetHeader();
-  CMyString currentfile = m_core.GetCurFile();
-  rc = Filters.WriteFilterXMLFile(cs_newfile, hdr, currentfile);
+  StringX currentfile = m_core.GetCurFile();
+  rc = Filters.WriteFilterXMLFile(LPCTSTR(cs_newfile), hdr, currentfile);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
@@ -713,12 +717,15 @@ void DboxMain::ImportFilters()
   const stringT XSDfn(_T("pwsafe_filter.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-  if (!PWSfile::FileExists(XSDFilename.c_str())) {
-    cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
-    cs_title.LoadString(IDS_CANTVALIDATEXML);
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
+  // Expat is a non-validating parser - no use for Schema!
+  if (!pws_os::FileExists(XSDFilename)) {
+    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
+    cs_title.LoadString(IDSC_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
+#endif
 
   CFileDialog fd(TRUE,
                  _T("xml"),
@@ -741,25 +748,29 @@ void DboxMain::ImportFilters()
     return;
 
   if (rc == IDOK) {
-    CString strErrors, csErrors(_T(""));
-    CString XMLFilename = (CMyString)fd.GetPathName();
+    stringT strErrors;
+    CString XMLFilename = fd.GetPathName();
     CWaitCursor waitCursor;  // This may take a while!
 
-    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""), XMLFilename,
-                                          XSDFilename.c_str(), strErrors);
+    MFCAsker q;
+    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""),
+                                          stringT(XMLFilename),
+                                          XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
 
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), strErrors);
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
+                       strErrors.c_str());
         break;
       case PWScore::XML_FAILED_IMPORT:
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors);
+        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
       case PWScore::SUCCESS:
-        if (!strErrors.IsEmpty()) {
-          csErrors = strErrors + _T("\n");
-          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(), csErrors);
+        if (!strErrors.empty()) {
+          stringT csErrors = strErrors + _T("\n");
+          cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(),
+                         csErrors.c_str());
         } else {
           cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
         }

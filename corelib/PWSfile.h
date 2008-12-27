@@ -15,13 +15,15 @@
 #include <vector>
 
 #include "ItemData.h"
-#include "MyString.h"
 #include "UUIDGen.h"
 #include "UnknownField.h"
+#include "StringX.h"
+#include "Proxy.h"
 
 #define MIN_HASH_ITERATIONS 2048
 
 class Fish;
+class Asker;
 
 class PWSfile
 {
@@ -56,40 +58,31 @@ public:
     uuid_array_t m_file_uuid_array;
     int m_nITER; // Formally not part of the header.
     std::vector<bool> m_displaystatus; // tree expansion  state vector
-    CMyString m_prefString; // prefererences stored in the file
+    StringX m_prefString; // prefererences stored in the file
     time_t m_whenlastsaved; // When last saved
-    CString m_lastsavedby; // and by whom
-    CString m_lastsavedon; // and by which machine
-    CString m_whatlastsaved; // and by what application
-    CString m_dbname, m_dbdesc; // descriptive name, description
+    StringX m_lastsavedby; // and by whom
+    StringX m_lastsavedon; // and by which machine
+    StringX m_whatlastsaved; // and by what application
+    StringX m_dbname, m_dbdesc; // descriptive name, description
     time_t m_whenmpwset; // When the Master Password was last set
     short m_mpwinterval; // how many days before Master Password must be changed
   };
 
-  static PWSfile *MakePWSfile(const CMyString &a_filename, VERSION &version,
-                              RWmode mode, int &status);
+  static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,
+                              RWmode mode, int &status, 
+                              Asker *pAsker = NULL, Reporter *pReporter = NULL);
 
-  static bool FileExists(const CMyString &filename);
-  static bool FileExists(const CMyString &filename, bool &bReadOnly);
-  static void FileError(int formatRes, int cause);
-  static VERSION ReadVersion(const CMyString &filename);
-  static int RenameFile(const CMyString &oldname, const CMyString &newname);
-  static int CheckPassword(const CMyString &filename,
-                           const CMyString &passkey, VERSION &version);
-
-  static bool LockFile(const CMyString &filename, CMyString &locker,
-                       HANDLE &lockFileHandle, int &LockCount);
-  static bool IsLockedFile(const CMyString &filename);
-  static void UnlockFile(const CMyString &filename,
-                         HANDLE &lockFileHandle, int &LockCount);
+  static VERSION ReadVersion(const StringX &filename);
+  static int CheckPassword(const StringX &filename,
+                           const StringX &passkey, VERSION &version);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
-  static bool Encrypt(const CString &fn, const CMyString &passwd);
-  static bool Decrypt(const CString &fn, const CMyString &passwd);
+  static bool Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
+  static bool Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess);
 
   virtual ~PWSfile();
 
-  virtual int Open(const CMyString &passkey) = 0;
+  virtual int Open(const StringX &passkey) = 0;
   virtual int Close();
 
   virtual int WriteRecord(const CItemData &item) = 0;
@@ -98,7 +91,7 @@ public:
   const HeaderRecord &GetHeader() const {return m_hdr;}
   void SetHeader(const HeaderRecord &h) {m_hdr = h;}
 
-  void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
+  void SetDefUsername(const StringX &du) {m_defusername = du;} // for V17 conversion (read) only
   void SetCurVersion(VERSION v) {m_curversion = v;}
   void GetUnknownHeaderFields(UnknownFieldList &UHFL);
   void SetUnknownHeaderFields(UnknownFieldList &UHFL);
@@ -106,19 +99,19 @@ public:
   {return m_nRecordsWithUnknownFields;}
   
 protected:
-  PWSfile(const CMyString &filename, RWmode mode);
+  PWSfile(const StringX &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
-  virtual size_t WriteCBC(unsigned char type, const CString &data) = 0;
+  virtual size_t WriteCBC(unsigned char type, const StringX &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           unsigned int length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          unsigned int &length);
-  const CMyString m_filename;
-  CMyString m_passkey;
+  const StringX m_filename;
+  StringX m_passkey;
   FILE *m_fd;
   VERSION m_curversion;
   const RWmode m_rw;
-  CMyString m_defusername; // for V17 conversion (read) only
+  StringX m_defusername; // for V17 conversion (read) only
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;
@@ -127,5 +120,7 @@ protected:
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
   size_t m_fileLength;
+  Asker *m_pAsker;
+  Reporter *m_pReporter;
 };
 #endif /* __PWSFILE_H */

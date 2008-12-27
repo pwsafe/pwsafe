@@ -12,7 +12,7 @@
 // Match.h
 //-----------------------------------------------------------------------------
 
-#include "MyString.h"
+#include "StringX.h"
 #include "ItemData.h"
 
 namespace PWSMatch {
@@ -49,7 +49,7 @@ namespace PWSMatch {
                   MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE};
 
   // Generalised checking
-  bool Match(const CMyString &string1, CMyString &csValue, int iFunction);
+  bool Match(const StringX &string1, StringX &csValue, int iFunction);
   template<typename T> bool Match(T v1, T v2, T value, int iFunction)
   {
     switch (iFunction) {
@@ -70,13 +70,13 @@ namespace PWSMatch {
   bool Match(bool bValue, int iFunction);  // bool - if field present or not
 
   UINT GetRule(MatchRule rule);
-  char * GetRuleString(MatchRule rule);
+  const char *GetRuleString(MatchRule rule);
   void GetMatchType(MatchType mtype,
                     int fnum1, int fnum2,
                     time_t fdate1, time_t fdate2,
-                    const CString &fstring, int fcase,
+                    const stringT &fstring, bool fcase,
                     int etype, bool bBetween,
-                    CString &cs1, CString &cs2);
+                    stringT &cs1, stringT &cs2);
 };
 #endif /* __MATCH_H */
 //-----------------------------------------------------------------------------

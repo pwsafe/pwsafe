@@ -13,7 +13,7 @@
 #include <deque>
 #include <vector>
 #include "corelib/ItemData.h"
-#include "corelib/MyString.h"
+#include "corelib/StringX.h"
 #include "corelib/PWScore.h"
 #include "corelib/UUIDGen.h"
 //-----------------------------------------------------------------------------
@@ -34,7 +34,7 @@ struct RUEntry {
 };
 
 struct RUEntryStringImage {
-  CMyString string;
+  StringX string;
   int image;
 };
 
@@ -68,8 +68,6 @@ public:
   size_t GetCount() const {return m_RUEList.size();}
   size_t GetMax() const {return m_maxentries;}
   bool GetAllMenuItemStrings(std::vector<RUEntryStringImage> &) const;
-  bool GetMenuItemString(size_t, CMyString &) const;
-  bool GetMenuItemString(const uuid_array_t &, CMyString &) const;
   bool GetPWEntry(size_t, CItemData &); // NOT const!
 
   // Data setting

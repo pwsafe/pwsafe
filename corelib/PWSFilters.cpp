@@ -8,16 +8,30 @@
 
 #include "PWSFilters.h"
 #include "PWHistory.h"
-#include "pwsprefs.h"
-#include "match.h"
+#include "PWSprefs.h"
+#include "Match.h"
 #include "UUIDGen.h"
-#include "PWSXMLFilters.h"
-#include "SAXFilters.h"
 #include "corelib.h"
 #include "PWScore.h"
+#include "StringX.h"
+#include "os/file.h"
+#include "os/dir.h"
+
+#include "XML/XMLDefs.h"
+
+#if   USE_XML_LIBRARY == EXPAT
+#include "XML/Expat/EFilterXMLProcessor.h"
+#elif USE_XML_LIBRARY == MSXML
+#include "XML/MSXML/MFilterXMLProcessor.h"
+#elif USE_XML_LIBRARY == XERCES
+#include "XML/Xerces/XFilterXMLProcessor.h"
+#endif
+
+#define PWS_XML_FILTER_VERSION 1
 
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -48,7 +62,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
 
-  char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
+  const char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
   if (bFile) {
     sztab1 = "\t";
     sztab2 = "\t\t";
@@ -69,7 +83,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       // elements to make schema work, since W3C Schema V1.0 does NOT support 
       // conditional processing :-(
       oss << sztab4 << "<string>";
-      if (!st_fldata.fstring.IsEmpty()) { // string empty if 'present' or 'not present'
+      if (!st_fldata.fstring.empty()) { // string empty if 'present' or 'not present'
         utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
         oss << utf8;
       }
@@ -94,12 +108,12 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       break;
     case PWSMatch::MT_DATE:
       {
-      const CMyString tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
-      utf8conv.ToUTF8(tmp1.Left(10), utf8, utf8Len);
+      const StringX tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
+      utf8conv.ToUTF8(tmp1.substr(0, 10), utf8, utf8Len);
       oss << sztab4 << "<date1>" << utf8
                                               << "</date1>" << szendl;
-      const CMyString tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
-      utf8conv.ToUTF8(tmp2.Left(10), utf8, utf8Len);
+      const StringX tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
+      utf8conv.ToUTF8(tmp2.substr(0, 10), utf8, utf8Len);
       oss << sztab4 << "<date2>" << utf8
                                               << "</date2>" << szendl;
       }
@@ -121,11 +135,10 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
 
-  CMyString tmp;
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
-  char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
+  const char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
   if (bWithFormatting) {
     sztab1 = "\t";
     sztab2 = "\t\t";
@@ -137,7 +150,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     szendl = "\0";
   }
 
-  utf8conv.ToUTF8(filters.fname, utf8, utf8Len);
+  utf8conv.ToUTF8(filters.fname.c_str(), utf8, utf8Len);
   oss << sztab1 << "<filter filtername=\"" << reinterpret_cast<const char *>(utf8) 
       << "\">" << szendl;
 
@@ -157,7 +170,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     oss << "\">" << szendl;
 
     const int ft = (int)st_fldata.ftype;
-    char *pszfieldtype = {"\0"};
+    const char *pszfieldtype = {"\0"};
     switch (ft) {
       case FT_GROUPTITLE:
         pszfieldtype = "grouptitle";
@@ -256,7 +269,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     oss << "\">" << szendl;
 
     const int ft = (int)st_fldata.ftype;
-    char *pszfieldtype = {"\0"};
+    const char *pszfieldtype = {"\0"};
     switch (ft) {
       case HT_PRESENT:
         pszfieldtype = "history_present";
@@ -314,7 +327,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     oss << "\">" << szendl;
 
     const int ft = (int)st_fldata.ftype;
-    char *pszfieldtype = {"\0"};
+    const char *pszfieldtype = {"\0"};
     switch (ft) {
       case PT_PRESENT:
         pszfieldtype = "policy_present";
@@ -387,11 +400,11 @@ private:
   bool m_bWithFormatting;
 };
 
-int PWSFilters::WriteFilterXMLFile(const CMyString &filename,
+int PWSFilters::WriteFilterXMLFile(const StringX &filename,
                                    const PWSfile::HeaderRecord hdr,
-                                   const CMyString &currentfile)
+                                   const StringX &currentfile)
 {
-  ofstream of(filename);
+  ofstream of(filename.c_str());
   if (!of)
     return PWScore::CANT_OPEN_FILE;
   else
@@ -400,7 +413,7 @@ int PWSFilters::WriteFilterXMLFile(const CMyString &filename,
 
 int PWSFilters::WriteFilterXMLFile(ostream &os,
                                    const PWSfile::HeaderRecord hdr,
-                                   const CMyString &currentfile,
+                                   const StringX &currentfile,
                                    const bool bWithFormatting)
 {
   string str_hdr = GetFilterXMLHeader(currentfile, hdr);
@@ -414,7 +427,7 @@ int PWSFilters::WriteFilterXMLFile(ostream &os,
   return PWScore::SUCCESS;
 }
 
-std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
+std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
                                            const PWSfile::HeaderRecord &hdr)
 {
   CUTF8Conv utf8conv;
@@ -422,27 +435,25 @@ std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
   int utf8Len = 0;
 
   ostringstream oss;
-  CMyString tmp;
-  CString cs_tmp;
+  StringX tmp;
+  stringT cs_tmp;
   time_t time_now;
 
   time(&time_now);
-  const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
+  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
   oss << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
   oss << endl;
-  tmp.Format(_T("%d"), PWS_XML_FILTER_VERSION);
-  utf8conv.ToUTF8(tmp, utf8, utf8Len);
 
   oss << "<filters version=\"";
-  oss << reinterpret_cast<const char *>(utf8);
+  oss << PWS_XML_FILTER_VERSION;
   oss << "\"" << endl;
   
-  if (!currentfile.IsEmpty()) {
-    tmp = currentfile;
-    tmp.Replace(_T("&"), _T("&amp;"));
+  if (!currentfile.empty()) {
+    cs_tmp = currentfile.c_str();
+    Replace(cs_tmp, stringT(_T("&")), stringT(_T("&amp;")));
 
-    utf8conv.ToUTF8(tmp, utf8, utf8Len);
+    utf8conv.ToUTF8(cs_tmp.c_str(), utf8, utf8Len);
     oss << "Database=\"";
     oss << reinterpret_cast<const char *>(utf8);
     oss << "\"" << endl;
@@ -450,38 +461,39 @@ std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
     oss << "ExportTimeStamp=\"";
     oss << reinterpret_cast<const char *>(utf8);
     oss << "\"" << endl;
-    cs_tmp.Format(_T("%d.%02d"), hdr.m_nCurrentMajorVersion, hdr.m_nCurrentMinorVersion);
-    utf8conv.ToUTF8(cs_tmp, utf8, utf8Len);
     oss << "FromDatabaseFormat=\"";
-    oss << reinterpret_cast<const char *>(utf8);
+    oss << hdr.m_nCurrentMajorVersion
+        << "." << setw(2) << setfill('0')
+        << hdr.m_nCurrentMinorVersion;
     oss << "\"" << endl;
-    if (!hdr.m_lastsavedby.IsEmpty() || !hdr.m_lastsavedon.IsEmpty()) {
-      CString wls(_T(""));
-      wls.Format(_T("%s on %s"), hdr.m_lastsavedby, hdr.m_lastsavedon);
-      utf8conv.ToUTF8(wls, utf8, utf8Len);
+    if (!hdr.m_lastsavedby.empty() || !hdr.m_lastsavedon.empty()) {
+      stringT wls(_T(""));
+      Format(wls,
+             _T("%s on %s"),
+             hdr.m_lastsavedby.c_str(), hdr.m_lastsavedon.c_str());
+      utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
       oss << "WhoSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);
       oss << "\"" << endl;
     }
-    if (!hdr.m_whatlastsaved.IsEmpty()) {
+    if (!hdr.m_whatlastsaved.empty()) {
       utf8conv.ToUTF8(hdr.m_whatlastsaved, utf8, utf8Len);
       oss << "WhatSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);
       oss << "\"" << endl;
     }
     if (hdr.m_whenlastsaved != 0) {
-      CString wls = CString(PWSUtil::ConvertToDateTimeString(hdr.m_whenlastsaved,
-                            TMC_XML));
-      utf8conv.ToUTF8(wls, utf8, utf8Len);
+      StringX wls = PWSUtil::ConvertToDateTimeString(hdr.m_whenlastsaved,
+                                                     TMC_XML);
+      utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
       oss << "WhenLastSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);
       oss << "\"" << endl;
     }
 
-    uuid_str_WH_t hdr_uuid_buffer;
-    CUUIDGen::GetUUIDStr(hdr.m_file_uuid_array, hdr_uuid_buffer);
+    CUUIDGen huuid(hdr.m_file_uuid_array, true); // true to print canonically
 
-    oss << "Database_uuid=\"" << hdr_uuid_buffer << "\"" << endl;
+    oss << "Database_uuid=\"" << huuid << "\"" << endl;
   }
   oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
   oss << "xsi:noNamespaceSchemaLocation=\"pwsafe_filter.xsd\">" << endl;
@@ -490,34 +502,54 @@ std::string PWSFilters::GetFilterXMLHeader(const CMyString &currentfile,
   return oss.str().c_str();
 }
 
-int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
-                                    const CString &strXMLData,
-                                    const CString &strXMLFileName,
-                                    const CString &strXSDFileName, CString &strErrors)
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+// Don't support importing XML from non-Windows using Microsoft XML libraries
+int PWSFilters::ImportFilterXMLFile(const FilterPool, 
+                                    const StringX &, 
+                                    const stringT &, 
+                                    const stringT &,
+                                    stringT &,
+                                    Asker *)
 {
-  PWSXMLFilters fXML(*this, fpool);
+  return PWScore::UNIMPLEMENTED;
+}
+#else
+int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
+                                    const StringX &strXMLData,
+                                    const stringT &strXMLFileName,
+                                    const stringT &strXSDFileName,
+                                    stringT &strErrors,
+                                    Asker *pAsker)
+{
+#if   USE_XML_LIBRARY == EXPAT
+  EFilterXMLProcessor fXML(*this, fpool, pAsker);
+#elif USE_XML_LIBRARY == MSXML
+  MFilterXMLProcessor fXML(*this, fpool, pAsker);
+#elif USE_XML_LIBRARY == XERCES
+  XFilterXMLProcessor fXML(*this, fpool, pAsker);
+#endif
   bool status, validation;
 
   strErrors = _T("");
 
   validation = true;
-  if (strXMLFileName.IsEmpty())
-    status = fXML.XMLFilterProcess(validation, strXMLData, _T(""), strXSDFileName);
+  if (strXMLFileName.empty())
+    status = fXML.Process(validation, strXMLData, _T(""), strXSDFileName);
   else
-    status = fXML.XMLFilterProcess(validation, _T(""), strXMLFileName, strXSDFileName);
+    status = fXML.Process(validation, _T(""), strXMLFileName, strXSDFileName);
 
-    strErrors = fXML.m_strResultText;
+  strErrors = fXML.getResultText();
   if (!status) {
     return PWScore::XML_FAILED_VALIDATION;
   }
 
   validation = false;
-  if (strXMLFileName.IsEmpty())
-    status = fXML.XMLFilterProcess(validation, strXMLData, _T(""), strXSDFileName);
+  if (strXMLFileName.empty())
+    status = fXML.Process(validation, strXMLData, _T(""), strXSDFileName);
   else
-    status = fXML.XMLFilterProcess(validation, _T(""), strXMLFileName, strXSDFileName);
+    status = fXML.Process(validation, _T(""), strXMLFileName, strXSDFileName);
 
-    strErrors = fXML.m_strResultText;
+    strErrors = fXML.getResultText();
   if (!status) {
     return PWScore::XML_FAILED_IMPORT;
   }
@@ -527,81 +559,77 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
   PWSFilters::iterator mf_iter;
   for (mf_iter = this->begin(); mf_iter != this->end(); mf_iter++) {
     st_filters &filters = mf_iter->second;
-    std::vector<st_FilterRow>::iterator Flt_iter;
-    for (Flt_iter = filters.vMfldata.begin(); 
-         Flt_iter != filters.vMfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
-    for (Flt_iter = filters.vHfldata.begin(); 
-         Flt_iter != filters.vHfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
-    for (Flt_iter = filters.vPfldata.begin(); 
-         Flt_iter != filters.vPfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
+    for_each(filters.vMfldata.begin(), filters.vMfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vHfldata.begin(), filters.vHfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vPfldata.begin(), filters.vPfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
   }
   return PWScore::SUCCESS;
 }
+#endif
 
-CString PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
+stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
 {
   // Get the description of the current criterion to display on the static text
-  CString cs_rule, cs1, cs2, cs_and, cs_criteria;
-  cs_rule.LoadString(PWSMatch::GetRule(st_fldata.rule));
-  cs_rule.TrimRight(_T('\t'));
+  stringT cs_rule, cs1, cs2, cs_and, cs_criteria;
+  LoadAString(cs_rule, PWSMatch::GetRule(st_fldata.rule));
+  TrimRight(cs_rule, _T("\t"));
   PWSMatch::GetMatchType(st_fldata.mtype,
                          st_fldata.fnum1, st_fldata.fnum2,
                          st_fldata.fdate1, st_fldata.fdate2,
-                         st_fldata.fstring, st_fldata.fcase,
+                         st_fldata.fstring.c_str(), st_fldata.fcase,
                          st_fldata.etype,
                          st_fldata.rule == PWSMatch::MR_BETWEEN,
                          cs1, cs2);
   switch (st_fldata.mtype) {
     case PWSMatch::MT_PASSWORD:
       if (st_fldata.rule == PWSMatch::MR_EXPIRED) {
-        cs_criteria.Format(_T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule.c_str());
         break;
       } else if (st_fldata.rule == PWSMatch::MR_WILLEXPIRE) {
-        cs_criteria.Format(_T("%s %s"), cs_rule, cs1);
+        Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
         break;
       }
       // Note: purpose drop through to standard 'string' processing
     case PWSMatch::MT_STRING:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
-        cs_criteria.Format(_T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule.c_str());
       else {
-        CString cs_delim(_T(""));
-        if (cs1.Find(_T(' ')) != -1)
+        stringT cs_delim(_T(""));
+        if (cs1.find(_T(" ")) != stringT::npos)
           cs_delim = _T("'");
-        cs_criteria.Format(_T("%s %s%s%s %s"), 
-                          cs_rule, cs_delim, cs1, cs_delim, cs2);
+        Format(cs_criteria, _T("%s %s%s%s %s"), 
+               cs_rule.c_str(), cs_delim.c_str(), 
+               cs1.c_str(), cs_delim.c_str(), cs2.c_str());
       }
       break;
     case PWSMatch::MT_INTEGER:
     case PWSMatch::MT_DATE:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
-        cs_criteria.Format(_T("%s"), cs_rule);
+        Format(cs_criteria, _T("%s"), cs_rule.c_str());
       else
       if (st_fldata.rule == PWSMatch::MR_BETWEEN) {  // Date or Integer only
-        cs_and.LoadString(IDSC_AND);
-        cs_criteria.Format(_T("%s %s %s %s"), cs_rule, cs1, cs_and, cs2);
+        LoadAString(cs_and, IDSC_AND);
+        Format(cs_criteria, _T("%s %s %s %s"), 
+               cs_rule.c_str(), cs1.c_str(), cs_and.c_str(), cs2.c_str());
       } else
-        cs_criteria.Format(_T("%s %s"), cs_rule, cs1);
+        Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
       break;
     case PWSMatch::MT_PWHIST:
-      cs_criteria.LoadString(IDSC_SEEPWHISTORYFILTERS);
+      LoadAString(cs_criteria, IDSC_SEEPWHISTORYFILTERS);
       break;
     case PWSMatch::MT_POLICY:
-      cs_criteria.LoadString(IDSC_SEEPWPOLICYFILTERS);
+      LoadAString(cs_criteria, IDSC_SEEPWPOLICYFILTERS);
       break;
     case PWSMatch::MT_BOOL:
-      cs_criteria.Format(_T("%s"), cs_rule);
+      cs_criteria = cs_rule;
       break;
     case PWSMatch::MT_ENTRYTYPE:
-      cs_criteria.Format(_T("%s %s"), cs_rule, cs1);
+      Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
       break;
     default:
       ASSERT(0);

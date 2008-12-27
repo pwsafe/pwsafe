@@ -81,7 +81,7 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
     }
   }
 
-  const CMyString cs_username = ci.GetUser();
+  const StringX cs_username = ci.GetUser();
   SetClipboardData(cs_username);
   UpdateLastClipboardAction(CItemData::USER);
   UpdateAccessTime(&ci);
@@ -115,7 +115,7 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
     }
   }
 
-  const CMyString cs_password = ci.GetPassword();
+  const StringX cs_password = ci.GetPassword();
   SetClipboardData(cs_password);
   UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(&ci);
@@ -146,23 +146,23 @@ void DboxMain::OnTrayCopyNotes(UINT nID)
   }
 
   CString cs_text;
-  const CMyString notes = ci.GetNotes();
-  const CMyString url = ci.GetURL();
-  const CMyString autotype = ci.GetAutoType();
-  CMyString clipboard_data;
+  const StringX notes = ci.GetNotes();
+  const StringX url = ci.GetURL();
+  const StringX autotype = ci.GetAutoType();
+  StringX clipboard_data;
 
   clipboard_data = notes;
-  if (!url.IsEmpty()) {
+  if (!url.empty()) {
     if (ci.IsURLEmail())
       cs_text.LoadString(IDS_COPYURL);
     else
       cs_text.LoadString(IDS_COPYEMAIL);
-    clipboard_data += CMyString(cs_text);
+    clipboard_data += LPCTSTR(cs_text);
     clipboard_data += url;
   }
-  if (!autotype.IsEmpty()) {
+  if (!autotype.empty()) {
     cs_text.LoadString(IDS_COPYAUTOTYPE);
-    clipboard_data += CMyString(cs_text);
+    clipboard_data += LPCTSTR(cs_text);
     clipboard_data += autotype;
   }
 
@@ -196,7 +196,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
   }
 
   if (!ci.IsURLEmpty()) {
-    LaunchBrowser(ci.GetURL());
+    LaunchBrowser(ci.GetURL().c_str());
   }
   UpdateAccessTime(&ci);
 }
@@ -283,7 +283,17 @@ void DboxMain::OnTrayCopyURL(UINT nID)
     }
   }
 
-  const CMyString cs_URL = ci.GetURL();
+  StringX cs_URL = ci.GetURL();
+  StringX::size_type ipos;
+  ipos = cs_URL.find(_T("[alt]"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
+  ipos = cs_URL.find(_T("[ssh]"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
+  ipos = cs_URL.find(_T("{alt}"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
   SetClipboardData(cs_URL);
 
   UpdateLastClipboardAction(CItemData::URL);

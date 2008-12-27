@@ -18,7 +18,7 @@ class CStaticDropTarget;
 class CStaticDropSource;
 class CStaticDataSource;
 
-#define MINIMUM_MOVE_SQUARE  25  // 5 x 5 pixels
+#define MINIMUM_MOVE_SQUARE  4  // 2 x 2 pixels
 
 class CDDStatic : public CStaticExtn
 {

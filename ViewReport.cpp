@@ -26,8 +26,8 @@ CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
 
-  m_pData = m_pRpt->GetData(); 
-  m_dwDatasize = m_pRpt->GetDataLength();
+  m_pString = m_pRpt->GetString(); 
+  m_dwDatasize = m_pString.length() * sizeof(TCHAR);
 
   m_backgroundcolour = RGB(255, 255, 255);
   m_backgroundbrush.CreateSolidBrush(m_backgroundcolour);
@@ -76,13 +76,13 @@ BOOL CViewReport::OnInitDialog()
   HLOCAL h = ::LocalAlloc(LHND, m_dwDatasize + sizeof(TCHAR));
   if (h == NULL) {
     TRACE(_T("ViewReport: Unable to allocate memory.  Can't do this properly!\n"));
-    m_editreport.SetWindowText((LPCTSTR)m_pData);
+    m_editreport.SetWindowText(m_pString.c_str());
     return FALSE;
   }
   m_bMemoryAllocOK = true;
 
   LPCTSTR lpszText = (LPCTSTR)::LocalLock(h);
-  memcpy((void *)lpszText, m_pData, m_dwDatasize);
+  memcpy((void *)lpszText, m_pString.c_str(), m_dwDatasize);
 
   // Now work out maximum size of dialog
   CClientDC dc(GetDlgItem(IDC_EDITREPORT));
@@ -142,7 +142,7 @@ BOOL CViewReport::OnInitDialog()
                     dlgRect.Width()  + iAdditionalWidth);
 
   // Refresh data as _tcstok trashes it!
-  memcpy((void *)lpszText, m_pData, m_dwDatasize);
+  memcpy((void *)lpszText, m_pString.c_str(), m_dwDatasize);
   ::LocalUnlock(h);
 
   // Free original handle
@@ -161,9 +161,7 @@ void CViewReport::Save()
 
 void CViewReport::SendToClipboard()
 {
-  CMyString cs_clipdata((LPTSTR)m_pData);
-
-  m_pDbx->SetClipboardData(cs_clipdata);
+  m_pDbx->SetClipboardData(m_pString);
 }
 
 void CViewReport::Finish()

@@ -23,7 +23,7 @@ public:
 // Dialog Data
   enum { IDD = IDD_FILTER_STRING };
   int m_case;
-  CMyString m_string;
+  CString m_string;
   bool m_add_present;
 
 protected:

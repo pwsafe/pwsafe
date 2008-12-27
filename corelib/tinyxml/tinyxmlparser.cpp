@@ -359,7 +359,7 @@ const TCHAR* TiXmlBase::SkipWhiteSpace( const TCHAR* p, TiXmlEncoding encoding )
 	}
 	else
 	{
-		while ( *p && IsWhiteSpace( *p ) || *p == '\n' || *p =='\r' )
+		while ( ( *p && IsWhiteSpace( *p ) ) || *p == '\n' || *p =='\r' )
 			++p;
 	}
 
@@ -957,7 +957,7 @@ void TiXmlElement::StreamIn (std::istream * in, TIXML_STRING * tag)
 			if ( in->good() && in->peek() != TCHAR('<') ) 
 			{
 				// Yep, text.
-				TiXmlText text( "" );
+				TiXmlText text( _S("") );
 				text.StreamIn( in, tag );
 
 				// What follows text is a closing tag or another node.
@@ -998,8 +998,13 @@ void TiXmlElement::StreamIn (std::istream * in, TIXML_STRING * tag)
 				if ( c == TCHAR('[') && tag->size() >= 9 )
 				{
 					size_t len = tag->size();
-					const char* start = tag->c_str() + len - 9;
-					if ( strcmp( start, "<![CDATA[" ) == 0 ) {
+					const TCHAR* start = tag->c_str() + len - 9;
+#ifdef UNICODE
+          int cmp = wcscmp( start, _S("<![CDATA[") );
+#else
+          int cmp = strcmp( start, "<![CDATA[" );
+#endif
+					if ( cmp == 0 ) {
 						assert( !closingTag );
 						break;
 					}
@@ -1036,7 +1041,7 @@ void TiXmlElement::StreamIn (std::istream * in, TIXML_STRING * tag)
 			else
 			{
 				// If not a closing tag, id it, and stream.
-				const char* tagloc = tag->c_str() + tagIndex;
+				const TCHAR* tagloc = tag->c_str() + tagIndex;
 				TiXmlNode* node = Identify( tagloc, TIXML_DEFAULT_ENCODING );
 				if ( !node )
 					return;

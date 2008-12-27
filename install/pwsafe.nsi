@@ -184,8 +184,8 @@ Section "Program Files" ProgramFiles
   
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
-  File "..\Release\pwsafe.exe"
-  File /oname=p98.exe "..\NU-Release\pwsafe.exe" 
+  File "..\bin\pwsafe\releasem\pwsafe.exe"
+  File /oname=p98.exe "..\bin\pwsafe\nu-releasem\pwsafe.exe" 
   File "..\help\default\pwsafe.chm"
   File "..\LICENSE"
   File "..\README.TXT"

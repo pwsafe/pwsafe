@@ -8,10 +8,10 @@
 /// \file SecString.cpp
 //-----------------------------------------------------------------------------
 
-#include "stdafx.h"
-#include "PasswordSafe.h"
-
 #include "SecString.h"
+#include "corelib/Util.h"
+
+#include <cstdarg>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -19,205 +19,134 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-SecString::~SecString()
-{
-  trashstring();
-}
-
-void SecString::trashstring()
+void CSecString::trashstring()
 {
   trashMemory((unsigned char*)m_mystring.GetBuffer(m_mystring.GetLength()),
     m_mystring.GetLength());
 }
 
-LPTSTR SecString::GetBuffer(int nMinBufLength)
-{
-  return m_mystring.GetBuffer(nMinBufLength);
-}
-
-void SecString::ReleaseBuffer(int nNewLength)
-{
-  m_mystring.ReleaseBuffer(nNewLength);
-}
-
-int SecString::GetLength() const
-{
-  return m_mystring.GetLength();
-}
-
-const SecString& SecString::operator=(const SecString& stringSrc)
+void CSecString::Empty()
 {
   trashstring();
-  m_mystring = stringSrc.m_mystring;
+  m_mystring.Empty();
+}
+
+BOOL CSecString::LoadString(const UINT &nID)
+{
+  return m_mystring.LoadString(nID);
+}
+
+void CSecString::Format(LPCTSTR lpszFormat, ... )
+{
+  va_list args;
+  va_start(args, lpszFormat);
+  m_mystring.FormatV(lpszFormat, args);
+  va_end(args);
+}
+
+void CSecString::Format(UINT nID, ... )
+{
+  va_list args;
+  va_start(args, nID);
+  CString csFormat(MAKEINTRESOURCE(nID));
+  m_mystring.FormatV(csFormat, args);
+  va_end(args);
+}
+
+const CSecString& CSecString::operator=(const CSecString& stringSrc)
+{
+  if (this != &stringSrc) {
+    trashstring();
+    m_mystring = stringSrc.m_mystring;
+  }
   return *this;
 }
 
-const SecString& SecString::operator=(TCHAR ch)
+const CSecString& CSecString::operator=(TCHAR ch)
 {
   trashstring();
   m_mystring = ch;
   return *this;
 }
 
-const SecString& SecString::operator=(LPCSTR lpsz)
+const CSecString& CSecString::operator=(LPCTSTR lpsz)
 {
   trashstring();
   m_mystring = lpsz;
   return *this;
 }
 
-const SecString& SecString::operator=(LPCWSTR lpsz)
-{
-  trashstring();
-  m_mystring = lpsz;
-  return *this;
-}
-
-const SecString& SecString::operator=(const unsigned char* psz)
+#ifndef UNICODE // do we need this at all?
+const CSecString&CSecString::operator=(const unsigned char* psz)
 {
   trashstring();
   m_mystring = psz;
   return *this;
 }
+#endif
 
-const SecString& SecString::operator+=(const SecString& string)
+CSecString operator+(const CSecString& string1,const CSecString& string2)
 {
-  m_mystring += string.m_mystring;
-  return *this;
-}
-
-const SecString& SecString::operator+=(TCHAR ch)
-{
-  m_mystring += ch;
-  return *this;
-}
-
-const SecString& SecString::operator+=(LPCTSTR lpsz)
-{
-  m_mystring += lpsz;
-  return *this;
-}
-
-SecString AFXAPI operator+(const SecString& string1,const SecString& string2)
-{
-  SecString s;
-  s = (SecString)(string1.m_mystring+string2.m_mystring);
+  CSecString s;
+  s = (CSecString)(string1.m_mystring+string2.m_mystring);
   return s;
 }
 
-SecString AFXAPI operator+(const SecString& string, TCHAR ch)
+CSecString operator+(const CSecString& string, TCHAR ch)
 {
-  SecString s;
-  s = (SecString)(string.m_mystring + ch);
+  CSecString s;
+  s = (CSecString)(string.m_mystring + ch);
   return s;
 }
 
-SecString AFXAPI operator+(TCHAR ch, const SecString& string)
+CSecString operator+(TCHAR ch, const CSecString& string)
 {
-  SecString s;
-  s = (SecString)(ch + string.m_mystring);
+  CSecString s;
+  s = (CSecString)(ch + string.m_mystring);
   return s;
 }
 
-SecString AFXAPI operator+(const SecString& string, LPCTSTR lpsz)
+CSecString operator+(const CSecString& string, LPCTSTR lpsz)
 {
-  SecString s;
-  s = (SecString)(string.m_mystring + lpsz);
+  CSecString s;
+  s = (CSecString)(string.m_mystring + lpsz);
   return s;
 }
 
-SecString AFXAPI operator+(LPCTSTR lpsz, const SecString& string)
+CSecString operator+(LPCTSTR lpsz, const CSecString& string)
 {
-  SecString s;
-  s = (SecString)(lpsz + string.m_mystring);
+  CSecString s;
+  s = (CSecString)(lpsz + string.m_mystring);
   return s;
-}
-
-SecString SecString::Mid(int nFirst, int nCount) const
-{
-  return m_mystring.Mid(nFirst,nCount);
-}
-
-TCHAR SecString::operator[](int nIndex) const
-{
-  return m_mystring[nIndex];
-}
-
-void SecString::SetAt(int nIndex, TCHAR ch)
-{
-  m_mystring.SetAt(nIndex,ch);
-}
-
-SecString::operator CString() const
-{
-  return m_mystring;
-}
-
-SecString::operator LPCTSTR() const
-{
-  return (LPCTSTR)m_mystring;
-}
-
-BOOL SecString::IsEmpty() const
-{
-  return m_mystring.IsEmpty();
-}
-
-BOOL SecString::LoadString(UINT nID)
-{
-  return m_mystring.LoadString(nID);
-}
-
-int SecString::Find( TCHAR ch ) const
-{
-  return m_mystring.Find(ch);
-}
-
-int SecString::Find( LPCTSTR lpszSub ) const
-{
-  return m_mystring.Find(lpszSub);
 }
 
 //Can't properly trash the memory here, so it is better to just return a CString
-CString SecString::Left( int nCount ) const
+CSecString CSecString::Left(int nCount) const
 {
-  return m_mystring.Left(nCount);
+  CSecString s;
+  s.m_mystring = m_mystring.Left(nCount);
+  return s;
 }
 
-//Can't properly trash the memory here, so it is better to just return a CString
-CString SecString::Right( int nCount ) const
+CSecString CSecString::Right(int nCount) const
 {
-  return m_mystring.Right(nCount);
+  CSecString s;
+  s.m_mystring = m_mystring.Right(nCount);
+  return s;
 }
 
-bool operator==(const SecString& s1, const SecString& s2)
+CSecString CSecString::Mid(int nFirst) const
 {
-  return s1.m_mystring==s2.m_mystring;
+  CSecString s;
+  s.m_mystring = m_mystring.Mid(nFirst);
+  return s;
 }
 
-bool operator==(const SecString& s1, LPCTSTR s2)
+CSecString CSecString::Mid(int nFirst, int nCount) const
 {
-  return s1.m_mystring==s2;
-}
-
-bool operator==(LPCTSTR s1, const SecString& s2)
-{
-  return s1==s2.m_mystring;
-}
-
-bool operator!=(const SecString& s1, const SecString& s2)
-{
-  return s1.m_mystring!=s2.m_mystring;
-}
-
-bool operator!=(const SecString& s1, LPCTSTR s2)
-{
-  return s1.m_mystring!=s2;
-}
-
-bool operator!=(LPCTSTR s1, const SecString& s2)
-{
-  return s1!=s2.m_mystring;
+  CSecString s;
+  s.m_mystring = m_mystring.Mid(nFirst, nCount);
+  return s;
 }
 
 //-----------------------------------------------------------------------------

@@ -7,7 +7,7 @@
 */
 
 #pragma once
-#include "corelib/MyString.h" // for CSecEditExtn
+#include "SecString.h" // for CSecEditExtn
 #include "InfoDisplay.h"      // for Listbox Tooltips
 #include <vector>             // for Listbox Tooltips
 
@@ -42,18 +42,23 @@ public:
   {m_bUserColour = FALSE;}
   BOOL GetColourState()
   {return m_bUserColour;}
+  void FlashBkgnd(COLORREF cfFlashColour);
+  void SetHighlight(bool bHighlight, COLORREF cfHighlightColour)
+  {m_bHighlight = bHighlight; m_cfHighlightColour = cfHighlightColour;}
 
   // Attributes
 private:
-  BOOL m_bUserColour;
+  BOOL m_bUserColour, m_bMouseInWindow, m_bHighlight;
   COLORREF m_cfUser;
+  int m_iFlashing;
+  COLORREF m_cfOldColour, m_cfFlashColour, m_cfHighlightColour;
 
   // Operations
 public:
 
   // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CEditEx)
+  //{{AFX_VIRTUAL(CStaticExtn)
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -62,8 +67,10 @@ public:
 
   // Generated message map functions
 protected:
-  //{{AFX_MSG(CEditExtn)
+  //{{AFX_MSG(CStaticExtn)
   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+  afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 };
@@ -94,7 +101,7 @@ public:
 
   // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CEditEx)
+  //{{AFX_VIRTUAL(CEditExtn)
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -108,6 +115,7 @@ protected:
   afx_msg void OnKillFocus(CWnd* pNewWnd);
   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 };
@@ -124,17 +132,21 @@ class CSecEditExtn : public CEditExtn
   CSecEditExtn();
   CSecEditExtn(int message_number, LPCTSTR szmenustring);
   virtual ~CSecEditExtn();
+
   // Overriding virtuals doesn't work, due to defective
   // implementation of DDX_Text. Grr.
-  void DoDDX(CDataExchange *pDX, CMyString &str);
+  void DoDDX(CDataExchange *pDX, CSecString &str);
   void SetSecure(bool on_off); // on by default
   bool GetSecure() const {return m_secure;}
-  CMyString GetSecureText() const;
-  void SetSecureText(const CMyString &str);
+  CSecString GetSecureText() const;
+  void SetSecureText(const CSecString &str);
 
  protected:
-  DECLARE_MESSAGE_MAP();
+  //{{AFX_MSG(CSecEditExtn)
   afx_msg void OnUpdate();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP();
+
  private:
   void OnSecureUpdate();
   struct Impl;
@@ -200,13 +212,13 @@ class CComboBoxExtn : public CComboBox
   // Construction
 public:
   CComboBoxExtn();
-  void SetToolTipStrings(std::vector<CMyString> vtooltips);
-  CMyString GetToolTip(int nItem)
+  void SetToolTipStrings(std::vector<CSecString> vtooltips);
+  CSecString GetToolTip(int nItem)
   {return m_vtooltips[nItem];}
 
 private:
   bool m_bUseToolTips;
-  std::vector<CMyString> m_vtooltips;
+  std::vector<CSecString> m_vtooltips;
 
 public:
   CEditExtn m_edit;

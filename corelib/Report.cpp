@@ -11,61 +11,66 @@
 #include "Debug.h"
 #include "corelib.h"
 #include "os/dir.h"
-#include "SMemFile.h"
+#include "os/file.h"
+#include "os/utf8conv.h"
+#include "StringX.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <share.h>
 #include <sys/stat.h>
 #include <errno.h>
+
+#include <sstream>
+#include <fstream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
 const TCHAR *CRLF = _T("\r\n");
 
-CReport::~CReport()
-{
-  if (m_psfile != NULL) {
-    m_psfile->Close();
-    delete m_psfile;
-  }
-
-  if (m_pData != NULL && m_dwDatasize > 0) {
-    trashMemory((void*)m_pData, m_dwDatasize);
-    free(m_pData);
-    m_pData = NULL;
-    m_dwDatasize = 0;
-  }
-}
 /*
   It writes a header record and a "Start Report" record.
 */
-void CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
+void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase)
 {
-  if (m_psfile != NULL) {
-    m_psfile->Close();
-    delete m_psfile;
-    m_psfile = NULL;
-  }
+  m_osxs.str(_T(""));
 
   m_tcAction = tcAction;
   m_csDataBase = csDataBase;
-  m_psfile = new CSMemFile;
 
-  CString cs_title;
-  cs_title.Format(IDSC_REPORT_TITLE1, tcAction, PWSUtil::GetTimeStamp());
+  stringT cs_title;
+  Format(cs_title, IDSC_REPORT_TITLE1, tcAction,
+                  PWSUtil::GetTimeStamp());
   WriteLine();
   WriteLine(cs_title);
-  cs_title.Format(IDSC_REPORT_TITLE2, csDataBase);
+  Format(cs_title, IDSC_REPORT_TITLE2, csDataBase.c_str());
   WriteLine(cs_title);
   WriteLine();
-  cs_title.LoadString(IDSC_START_REPORT);
+  LoadAString(cs_title, IDSC_START_REPORT);
   WriteLine(cs_title);
   WriteLine();
+}
+
+static bool isFileUnicode(const stringT &fname)
+{
+#ifdef UNICODE
+  char *fn = NULL;
+  size_t fnlen = 0;
+  fnlen = pws_os::wcstombs(fn, fnlen, fname.c_str(), fname.length()) + 1;
+  fn = new char[fnlen];
+  fnlen = pws_os::wcstombs(fn, fnlen, fname.c_str(), fname.length());
+  std::ifstream is(fn);
+  delete[] fn;
+#else
+  std::ifstream is(fname.c_str());
+#endif /* UNICODE */
+  unsigned char buffer[] = {0x00, 0x00};
+  const unsigned char BOM[] = {0xff, 0xfe};
+  if (!is.read((char *)buffer, sizeof(buffer)))
+    return false;
+  return (buffer[0] == BOM[0] && buffer[1] == BOM[1]);
 }
 
 /*
@@ -74,10 +79,7 @@ void CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
 */
 bool CReport::SaveToDisk()
 {
-  if (m_pdfile != NULL) {
-    fclose(m_pdfile);
-    m_pdfile = NULL;
-  }
+  FILE *fd;
 
   stringT path(m_csDataBase);
   stringT drive, dir, file, ext;
@@ -86,9 +88,10 @@ bool CReport::SaveToDisk()
     return false;
   }
 
-  m_cs_filename.Format(IDSC_REPORTFILENAME, drive.c_str(), dir.c_str(), m_tcAction);
+  Format(m_cs_filename, IDSC_REPORTFILENAME,
+         drive.c_str(), dir.c_str(), m_tcAction.c_str());
 
-  if ((m_pdfile = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
+  if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == NULL) {
     PWSDebug::IssueError(_T("StartReport: Opening log file"));
     return false;
   }
@@ -97,71 +100,45 @@ bool CReport::SaveToDisk()
   // If file is new/emtpy AND we are UNICODE, write BOM, as some text editors insist!
 
   // **** LEAST LIKELY ACTIONS as it requires the user to use both U & NU versions ****
-  // Test editors really don't like files with both UNICODE and ASCII characters, so -
+  // Text editors really don't like files with both UNICODE and ASCII characters, so -
   // If we are UNICODE and file is not, convert file to UNICODE before appending
   // If we are not UNICODE but file is, convert file to ASCII before appending
 
-  bool bFileIsUnicode(false);
-
-  struct _stat statbuf;
-
-  ::_tstat(m_cs_filename, &statbuf);
-
-  // No need to check result of _tstat, since the _tfsopen above would have failed if 
-  // the file/directory did not exist
-  if (statbuf.st_size >= 2) {
-    // Has data - but is it UNICODE or not?
-    fpos_t pos;
-    BYTE buffer[] = {0x00, 0x00, 0x00};
-
-    fgetpos(m_pdfile, &pos);
-    rewind(m_pdfile);
-
-    int numread = fread(buffer, sizeof(BYTE), 2, m_pdfile);
-    ASSERT(numread == 2);
-
-    if (buffer[0] == 0xff && buffer[1] == 0xfe) {
-      // BOM present - File is UNICODE
-      bFileIsUnicode = true;
-    }
-    fsetpos(m_pdfile, &pos);
-  }
+  bool bFileIsUnicode = isFileUnicode(m_cs_filename);
 
 #ifdef UNICODE
   const unsigned int iBOM = 0xFEFF;
-  if (statbuf.st_size == 0) {
+  if (pws_os::fileLength(fd) == 0) {
     // File is empty - write BOM
-    putwc(iBOM, m_pdfile);
+    putwc(iBOM, fd);
   } else
     if (!bFileIsUnicode) {
       // Convert ASCII contents to UNICODE
-      FILE *f_in, *f_out;
 
       // Close original first
-      fclose(m_pdfile);
+      fclose(fd);
 
       // Open again to read
-      f_in = _wfsopen((LPCWSTR)m_cs_filename, L"rb", _SH_DENYWR);
+      FILE *f_in = pws_os::FOpen(m_cs_filename, _S("rb"));
 
       // Open new file
-      CString cs_out = m_cs_filename + _T(".tmp");
-      f_out = _wfsopen((LPCWSTR)cs_out, L"wb", _SH_DENYWR);
+      stringT cs_out = m_cs_filename + _S(".tmp");
+      FILE *f_out = pws_os::FOpen(cs_out, _S("wb"));
 
       // Write BOM
       putwc(iBOM, f_out);
 
       UINT nBytesRead;
       unsigned char inbuffer[4096];
-      WCHAR outwbuffer[4096];
+      wchar_t outwbuffer[4096];
 
       // Now copy
       do {
         nBytesRead = fread(inbuffer, sizeof(inbuffer), 1, f_in);
 
         if (nBytesRead > 0) {
-          int len = MultiByteToWideChar(CP_ACP, 0, (LPSTR)inbuffer, 
-            nBytesRead, (LPWSTR)outwbuffer, 4096);
-          if (len > 0)
+          size_t len = pws_os::mbstowcs(outwbuffer, 4096, (const char *)inbuffer, nBytesRead);
+          if (len != 0)
             fwrite(outwbuffer, sizeof(outwbuffer[0])*len, 1, f_out);
         } else
           break;
@@ -173,11 +150,10 @@ bool CReport::SaveToDisk()
       fclose(f_out);
 
       // Swap them
-      _tremove(m_cs_filename);
-      _trename(cs_out, m_cs_filename);
+      pws_os::RenameFile(cs_out, m_cs_filename);
 
       // Re-open file
-      if ((m_pdfile = _wfsopen((LPCTSTR)m_cs_filename, L"ab", _SH_DENYWR)) == NULL) {
+      if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
         PWSDebug::IssueError(_T("StartReport: Opening log file"));
         return false;
       }
@@ -185,17 +161,15 @@ bool CReport::SaveToDisk()
 #else
   if (bFileIsUnicode) {
     // Convert UNICODE contents to ASCII
-    FILE *f_in, *f_out;
-
     // Close original first
-    fclose(m_pdfile);
+    fclose(fd);
 
     // Open again to read
-    f_in = _fsopen((LPCSTR)m_cs_filename, "rb", _SH_DENYWR);
+    FILE *f_in = pws_os::FOpen(m_cs_filename, "rb");
 
     // Open new file
-    CString cs_out = m_cs_filename + _T(".tmp");
-    f_out = _fsopen((LPCSTR)cs_out, "wb", _SH_DENYWR);
+    stringT cs_out = m_cs_filename + _T(".tmp");
+    FILE *f_out = pws_os::FOpen(cs_out, "wb");
 
     UINT nBytesRead;
     WCHAR inwbuffer[4096];
@@ -207,13 +181,12 @@ bool CReport::SaveToDisk()
     // Now copy
     do {
       nBytesRead = fread(inwbuffer, sizeof(inwbuffer[0])*sizeof(inwbuffer),
-        1, f_in);
+                         1, f_in);
 
       if (nBytesRead > 0) {
-        int len = WideCharToMultiByte(CP_ACP, 0, (LPWSTR)inwbuffer, 
-          nBytesRead,
-          (LPSTR)outbuffer, 4096, NULL, NULL);
-        if (len > 0)
+        size_t len = pws_os::wcstombs((char *)outbuffer, 4096,
+                                      inwbuffer, nBytesRead);
+        if (len != 0)
           fwrite(outbuffer, len, 1, f_out);
       } else
         break;
@@ -225,55 +198,44 @@ bool CReport::SaveToDisk()
     fclose(f_out);
 
     // Swap them
-    _tremove(m_cs_filename);
-    _trename(cs_out, m_cs_filename);
+    pws_os::RenameFile(cs_out, m_cs_filename);
 
     // Re-open file
-    if ((m_pdfile = _fsopen((LPCSTR) m_cs_filename, "ab", _SH_DENYWR)) == NULL) {
+    if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
       PWSDebug::IssueError(_T("StartReport: Opening log file"));
       return false;
     }
   }
 #endif
-  fwrite((void *)m_pData, sizeof(BYTE), m_dwDatasize, m_pdfile);
-  fclose(m_pdfile);
+  StringX sx = m_osxs.rdbuf()->str();
+  fwrite((void *)sx.c_str(), sizeof(BYTE), sx.length() * sizeof(TCHAR), fd);
+  fclose(fd);
 
   return true;
 }
 
 // Write a record with(default) or without a CRLF
-void CReport::WriteLine(const CString &cs_line, bool bCRLF)
+void CReport::WriteLine(const stringT &cs_line, bool bCRLF)
 {
-  if (m_psfile == NULL)
-    return;
-
-  int iLen = (int)cs_line.GetLength();
-  m_psfile->Write((void *)(LPCTSTR)cs_line, iLen * sizeof(TCHAR));
+  m_osxs << cs_line.c_str();
   if (bCRLF) {
-    m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
+    m_osxs << CRLF;
   }
 }
 
 // Write a record with(default) or without a CRLF
 void CReport::WriteLine(const LPTSTR &tc_line, bool bCRLF)
 {
-  if (m_psfile == NULL)
-    return;
-
-  int iLen = (int)_tcslen(tc_line);
-  m_psfile->Write((void *)tc_line, iLen * sizeof(TCHAR));
+  m_osxs << tc_line;
   if (bCRLF) {
-    m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
+    m_osxs << CRLF;
   }
 }
 
 // Write a new line
 void CReport::WriteLine()
 {
-  if (m_psfile == NULL)
-    return;
-
-  m_psfile->Write((void *)CRLF, 2 * sizeof(TCHAR));
+  m_osxs << CRLF;
 }
 
 /*
@@ -282,23 +244,11 @@ void CReport::WriteLine()
 void CReport::EndReport()
 {
   WriteLine();
-  CString cs_title;
-  cs_title.LoadString(IDSC_END_REPORT1);
+  stringT cs_title;
+  LoadAString(cs_title, IDSC_END_REPORT1);
   WriteLine(cs_title);
-  cs_title.LoadString(IDSC_END_REPORT2);
+  LoadAString(cs_title, IDSC_END_REPORT2);
   WriteLine(cs_title);
 
-  TCHAR *szEOF = _T("\0");
-  m_psfile->Write((void *)szEOF, sizeof(TCHAR));
-
-  if (m_pData != NULL) {
-    // Shouldn't happen!
-    free(m_pData);
-    m_pData = NULL;
-  }
-
-  m_dwDatasize = (DWORD)m_psfile->GetLength();
-  m_pData = m_psfile->Detach();
-  delete m_psfile;
-  m_psfile = NULL;
+  m_osxs.flush();
 }

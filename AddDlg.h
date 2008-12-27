@@ -23,14 +23,14 @@ public:
   // Dialog Data
   //{{AFX_DATA(CAddDlg)
   enum { IDD = IDD_ADD };
-  CMyString m_password, m_password2;
-  CMyString m_notes;
-  CMyString m_username;
-  CMyString m_title;
-  CMyString m_group;
-  CMyString m_URL;
-  CMyString m_autotype;
-  CMyString m_locXTime;
+  CSecString m_password, m_password2;
+  CSecString m_notes;
+  CSecString m_username;
+  CSecString m_title;
+  CSecString m_group;
+  CSecString m_URL;
+  CSecString m_autotype;
+  CSecString m_locXTime;
   time_t m_tttXTime;
   time_t m_tttCPMTime;  // Password creation or last changed datetime
   int m_XTimeInt;
@@ -50,50 +50,41 @@ public:
   CEditExtn m_ex_title;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_autotype;
-
   //}}AFX_DATA
+  BOOL m_OverridePolicy;
 
   // Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CAddDlg)
-protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  //}}AFX_VIRTUAL
-
-private:
-  void SelectAllNotes();
-
-  bool m_isPwHidden;
-  // Are we showing more or less details?
-  bool m_isExpanded;
-  void ResizeDialog();
-  static CString CS_SHOW, CS_HIDE;
-
   // Implementation
 protected:
-
+  BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnInitDialog();
-  // Generated message map functions
-  //{{AFX_MSG(CAddDlg)
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual void OnCancel();
   virtual void OnOK();
+  // Generated message map functions
+  //{{AFX_MSG(CAddDlg)
   afx_msg void OnHelp();
   afx_msg void OnRandom();
   afx_msg void OnShowpassword();
-  //}}AFX_MSG
-
-  DECLARE_MESSAGE_MAP()
-  BOOL PreTranslateMessage(MSG* pMsg);
-
-public:
   afx_msg void OnBnClickedOk();
   afx_msg void OnBnClickedMore();
   afx_msg void OnBnClickedClearXTime();
   afx_msg void OnBnClickedSetXTime();
   afx_msg void OnCheckedSavePasswordHistory();
-  CButton m_moreLessBtn;
-  BOOL m_OverridePolicy;
   afx_msg void OnBnClickedOverridePolicy();
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+
+private:
+  void SelectAllNotes();
+
+  CButton m_moreLessBtn;
+  bool m_isPwHidden;
+  // Are we showing more or less details?
+  bool m_isExpanded;
+  void ResizeDialog();
+  static CString CS_SHOW, CS_HIDE;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

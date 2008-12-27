@@ -12,7 +12,7 @@
 #define PWCharPool_h
 
 #include "os/typedefs.h"
-#include "MyString.h"
+#include "StringX.h"
 
 /*
  * This class is used to create a random password based on the policy
@@ -29,7 +29,7 @@
  *
  * The usage scenario is something like:
  * CPasswordCharPool pwgen(-policy-);
- * CMyString pwd = pwgen.MakePassword();
+ * StringX pwd = pwgen.MakePassword();
  *
  * CheckPassword() is used to verify the strength of existing passwords,
  * i.e., the password used to protect the database.
@@ -42,16 +42,16 @@ public:
     uint numlowercase, uint numuppercase,
     uint numdigits, uint numsymbols, bool usehexdigits,
     bool easyvision, bool pronounceable);
-  CMyString MakePassword() const;
+  StringX MakePassword() const;
 
-  static bool CheckMasterPassword(const CMyString &pwd, CMyString &error);
+  static bool CheckMasterPassword(const StringX &pwd, StringX &error);
 
 private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,
     DIGIT = 2, SYMBOL = 3, HEXDIGIT = 4, NUMTYPES = 5};
   CharType GetRandomCharType(unsigned int rand) const; // select a chartype with weighted probability
   charT GetRandomChar(CharType t, unsigned int rand) const;
-  CMyString MakePronounceable() const;
+  StringX MakePronounceable() const;
 
   // here are all the character types, in both full and "easyvision" versions
   static const charT std_lowercase_chars[];
@@ -97,6 +97,8 @@ private:
   const bool m_usesymbols;
   const bool m_usehexdigits;
   const bool m_pronounceable;
+
+  CPasswordCharPool &operator=(const CPasswordCharPool &);
 };
 
 #endif

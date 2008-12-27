@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include "Properties.h"
+#include "corelib/StringXStream.h" // for ostringstreamT
 
 // CProperties dialog
 
@@ -18,15 +19,15 @@ IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
 CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
 : CPWDialog(CProperties::IDD, pParent)
 {
-  m_database = CString(core.GetCurFile());
+  m_database = CString(core.GetCurFile().c_str());
 
   m_databaseformat.Format(_T("%d.%02d"),
                           core.GetHeader().m_nCurrentMajorVersion,
                           core.GetHeader().m_nCurrentMinorVersion);
 
-  CStringArray aryGroups;
+  std::vector<stringT> aryGroups;
   core.GetUniqueGroups(aryGroups);
-  m_numgroups.Format(_T("%d"), aryGroups.GetSize());
+  m_numgroups.Format(_T("%d"), aryGroups.size());
 
   m_numentries.Format(_T("%d"), core.GetNumEntries());
 
@@ -36,22 +37,23 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
     m_whenlastsaved.Trim();
   } else {
     m_whenlastsaved =
-      CString(PWSUtil::ConvertToDateTimeString(twls, TMC_EXPORT_IMPORT));
+      CString(PWSUtil::ConvertToDateTimeString(twls,
+                                               TMC_EXPORT_IMPORT).c_str());
   }
 
-  if (core.GetHeader().m_lastsavedby.IsEmpty() &&
-      core.GetHeader().m_lastsavedon.IsEmpty()) {
+  if (core.GetHeader().m_lastsavedby.empty() &&
+      core.GetHeader().m_lastsavedon.empty()) {
     m_wholastsaved.LoadString(IDS_UNKNOWN);
     m_whenlastsaved.Trim();
   } else {
-    CString user = core.GetHeader().m_lastsavedby.IsEmpty() ?
-      _T("?") : core.GetHeader().m_lastsavedby;
-    CString host = core.GetHeader().m_lastsavedon.IsEmpty() ?
-      _T("?") : core.GetHeader().m_lastsavedon;
+    CString user = core.GetHeader().m_lastsavedby.empty() ?
+      _T("?") : core.GetHeader().m_lastsavedby.c_str();
+    CString host = core.GetHeader().m_lastsavedon.empty() ?
+      _T("?") : core.GetHeader().m_lastsavedon.c_str();
     m_wholastsaved.Format(_T("%s on %s"), user, host);
   }
 
-  CString wls = core.GetHeader().m_whatlastsaved;
+  CString wls = core.GetHeader().m_whatlastsaved.c_str();
   if (wls.IsEmpty()) {
     m_whatlastsaved.LoadString(IDS_UNKNOWN);
     m_whenlastsaved.Trim();
@@ -63,14 +65,13 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
   core.GetFileUUID(file_uuid_array);
 
   if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
-    wls = _T("N/A");
-  else
-    wls.Format(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
-               file_uuid_array[0],  file_uuid_array[1],  file_uuid_array[2],  file_uuid_array[3],
-               file_uuid_array[4],  file_uuid_array[5],  file_uuid_array[6],  file_uuid_array[7],
-               file_uuid_array[8],  file_uuid_array[9],  file_uuid_array[10], file_uuid_array[11],
-               file_uuid_array[12], file_uuid_array[13], file_uuid_array[14], file_uuid_array[15]);
-  m_file_uuid = wls;
+    m_file_uuid = _T("N/A");
+  else {
+    ostringstreamT os;
+    CUUIDGen huuid(file_uuid_array, true); // true for canonical format
+    os << huuid;
+    m_file_uuid = os.str().c_str();
+  }
 
   int num = core.GetNumRecordsWithUnknownFields();
   if (num != 0 || core.HasHeaderUnknownFields()) {
@@ -95,8 +96,8 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
     m_mpwexp.Format(_T("%d days"), mpwexpint);
   } else {
     time_t mpwexp = mpwset + (mpwexpint * 24 * 60 * 60);
-    m_whenmpwset = CString(PWSUtil::ConvertToDateTimeString(mpwset, TMC_EXPORT_IMPORT));
-    m_mpwexp = CString(PWSUtil::ConvertToDateTimeString(mpwexp, TMC_EXPORT_IMPORT));
+    m_whenmpwset = PWSUtil::ConvertToDateTimeString(mpwset, TMC_EXPORT_IMPORT).c_str();
+    m_mpwexp = PWSUtil::ConvertToDateTimeString(mpwexp, TMC_EXPORT_IMPORT).c_str();
   }
 }
 
