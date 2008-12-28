@@ -32,13 +32,17 @@ stringT pws_os::getenv(const char *env, bool is_path)
     if (value != NULL) {
       getenv_s(&requiredSize, value, requiredSize, env);
 #ifdef UNICODE
-      int wsize = mbtowc(NULL, value, requiredSize);
-      ASSERT(wsize > 0);
-      wchar_t *wvalue = new wchar_t[wsize+1];
-      wsize = mbtowc(wvalue, value, requiredSize);
-      wvalue[wsize] = 0;
-      retval = wvalue;
-      delete[] wvalue;
+      int wsize;
+      wchar_t wvalue;
+      char *p = value;
+      do {
+        wsize = mbtowc(&wvalue, p, MB_CUR_MAX);
+        if (wsize <= 0)
+          break;
+        retval += wvalue;
+        p += wsize;
+        requiredSize -= wsize;
+      } while (requiredSize != 1);
 #else
       retval = value;
 #endif

@@ -21,7 +21,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -45,7 +45,7 @@
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
 				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
@@ -96,7 +96,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -121,7 +121,7 @@
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -172,7 +172,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -198,7 +198,7 @@
 				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -249,7 +249,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -273,7 +273,7 @@
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
 				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
@@ -324,7 +324,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -349,7 +349,7 @@
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -400,7 +400,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -425,7 +425,7 @@
 				AdditionalIncludeDirectories="&quot;$(ExpatDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
 				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
@@ -476,7 +476,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -501,7 +501,7 @@
 				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
 				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
@@ -552,7 +552,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -577,7 +577,7 @@
 				AdditionalIncludeDirectories="&quot;$(XercesDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
 				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
@@ -628,7 +628,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -654,7 +654,7 @@
 				AdditionalIncludeDirectories="&quot;$(ExpatDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -705,7 +705,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -731,7 +731,7 @@
 				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -782,7 +782,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -808,7 +808,7 @@
 				AdditionalIncludeDirectories="&quot;$(XercesDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -859,7 +859,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -884,7 +884,7 @@
 				AdditionalIncludeDirectories="&quot;$(ExpatDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
 				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
@@ -935,7 +935,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -960,7 +960,7 @@
 				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
 				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
@@ -1011,7 +1011,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -1036,7 +1036,7 @@
 				AdditionalIncludeDirectories="&quot;$(XercesDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
 				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
@@ -1087,7 +1087,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -1113,7 +1113,7 @@
 				AdditionalIncludeDirectories="&quot;$(ExpatDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -1164,7 +1164,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -1190,7 +1190,7 @@
 				AdditionalIncludeDirectories="&quot;$(MSXML60SDKDir)\inc&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -1241,7 +1241,7 @@
 			IntermediateDirectory=".\obj\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\UserVariables.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -1267,7 +1267,7 @@
 				AdditionalIncludeDirectories="&quot;$(XercesDir)\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
@@ -1501,6 +1501,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\UTF8Conv.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\os\windows\utf8conv.cpp"
 				>
 				<FileConfiguration
@@ -1658,10 +1662,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\UTF8Conv.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Util.cpp"
 				>
 			</File>
@@ -1691,6 +1691,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\XERCES\XFilterXMLProcessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLFileHandlers.cpp"
 				>
 			</File>
 			<File
@@ -1799,6 +1803,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Proxy.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PWCharPool.h"
 				>
 			</File>
@@ -1891,11 +1899,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\os\utf8conv.h"
+				RelativePath=".\UTF8Conv.h"
 				>
 			</File>
 			<File
-				RelativePath=".\UTF8Conv.h"
+				RelativePath=".\os\utf8conv.h"
 				>
 			</File>
 			<File
@@ -1932,6 +1940,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\XMLFileDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLFileHandlers.h"
 				>
 			</File>
 			<File

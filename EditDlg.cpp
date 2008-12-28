@@ -65,7 +65,7 @@ static const COLORREF crefWhite = (RGB(255, 255, 255));
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
-  m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
+  m_ci(ci), m_Edit_IsReadOnly(false),
   m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
   m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
   m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL)
@@ -216,6 +216,30 @@ void CEditDlg::OnShowPassword()
   UpdateData(FALSE);
 }
 
+void CEditDlg::OnCancel() 
+{
+  if (m_group        != m_ci->GetGroup() ||
+      m_title        != m_ci->GetTitle() ||
+      m_username     != m_ci->GetUser() ||
+      m_realnotes    != m_ci->GetNotes() ||
+      m_URL          != m_ci->GetURL() ||
+      m_autotype     != m_ci->GetAutoType() ||
+      m_PWHistory    != m_ci->GetPWHistory() ||
+      m_locXTime     != m_oldlocXTime ||
+      m_XTimeInt     != m_oldXTimeInt ||
+      m_realpassword != m_oldRealPassword) {
+    int rc = AfxMessageBox(IDS_AREYOUSURE, 
+                           MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
+    if (rc != IDYES)
+      goto dont_cancel;
+  }
+  CPWDialog::OnCancel();
+  return;
+
+dont_cancel:
+  return;
+}
+
 void CEditDlg::OnOK() 
 {
   ItemListIter listindex;
@@ -239,17 +263,18 @@ void CEditDlg::OnOK()
   if (!m_isNotesHidden)
     m_realnotes = m_notes;
 
-  m_bIsModified |= (m_group != m_ci->GetGroup() ||
-                    m_title != m_ci->GetTitle() ||
-                    m_username != m_ci->GetUser() ||
-                    m_realnotes != m_ci->GetNotes() ||
-                    m_URL != m_ci->GetURL() ||
-                    m_autotype != m_ci->GetAutoType() ||
-                    m_PWHistory != m_ci->GetPWHistory() ||
-                    m_locXTime != m_oldlocXTime ||
-                    m_XTimeInt != m_oldXTimeInt);
+  bool bIsModified, bIsPswdModified;
+  bIsModified = (m_group != m_ci->GetGroup() ||
+                 m_title != m_ci->GetTitle() ||
+                 m_username != m_ci->GetUser() ||
+                 m_realnotes != m_ci->GetNotes() ||
+                 m_URL != m_ci->GetURL() ||
+                 m_autotype != m_ci->GetAutoType() ||
+                 m_PWHistory != m_ci->GetPWHistory() ||
+                 m_locXTime != m_oldlocXTime ||
+                 m_XTimeInt != m_oldXTimeInt);
 
-  bool IsPswdModified = m_realpassword != m_oldRealPassword;
+  bIsPswdModified = m_realpassword != m_oldRealPassword;
 
   //Check that data is valid
   if (m_title.IsEmpty()) {
@@ -327,12 +352,12 @@ void CEditDlg::OnOK()
 
   time_t t;
   time(&t);
-  if (IsPswdModified) {
+  if (bIsPswdModified) {
     if (m_SavePWHistory)
       UpdateHistory();
     m_ci->SetPMTime(t);
   }
-  if (m_bIsModified || IsPswdModified)
+  if (bIsModified || bIsPswdModified)
     m_ci->SetRMTime(t);
   if (m_oldlocXTime != m_locXTime)
     m_ci->SetXTime(m_tttXTime);
@@ -341,6 +366,7 @@ void CEditDlg::OnOK()
 
   CPWDialog::OnOK();
   return;
+
   // If we don't close, then update controls, as some of the fields
   // may have been modified (e.g., spaces removed).
 dont_close:

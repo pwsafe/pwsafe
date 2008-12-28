@@ -1,4 +1,4 @@
-rem  Called via: pre_build.cmd
+rem  Called via the Project Build Events: Pre-Build Event
 
 rem This section does "Update Revision Number in Resources"
 rem Requires environment variables ProjectDir & TortoiseSVNDir

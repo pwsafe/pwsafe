@@ -17,6 +17,7 @@ down the streetsky.  [Groucho Marx]
 #include "corelib/PwsPlatform.h"
 #include "corelib/Pwsdirs.h"
 #include "corelib/os/file.h"
+#include "corelib/os/env.h"
 #include "corelib/pwsprefs.h"
 #include "ThisMfcApp.h"
 #include "AdvancedDlg.h"
@@ -78,7 +79,9 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_message = a_filespec;
   m_bsFields.set();
-  // m_ctlPasskey.SetSecure(false); // test hack for B. XXX
+
+  if (pws_os::getenv("PWS_PW_MODE", false) == _T("NORMAL"))
+    m_ctlPasskey.SetSecure(false);
 }
 
 CPasskeyEntry::~CPasskeyEntry()
@@ -414,6 +417,13 @@ void CPasskeyEntry::OnOK()
       if (nResponse == IDOK) {
       } else if (nResponse == IDCANCEL) {
         m_status = errorDlg.GetCancelReturnValue();
+        if (m_status == TAR_OPEN) { // open another
+          PostMessage(WM_COMMAND, IDC_BTN_BROWSE);
+          return;
+        } else if (m_status == TAR_NEW) { // create new
+          PostMessage(WM_COMMAND, IDC_CREATE_DB);
+          return;
+        }
         CPWDialog::OnCancel();
       }
     } else {

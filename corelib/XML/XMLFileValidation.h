@@ -156,7 +156,7 @@ public:
 #if   USE_XML_LIBRARY == EXPAT
   bool GetElementInfo(const XML_Char *name, st_file_element_data &edata);
 #elif USE_XML_LIBRARY == MSXML
-  bool GetElementInfo(const wchar_t *name, int numchars, st_file_element_data &edata);
+  bool GetElementInfo(const wchar_t *name, st_file_element_data &edata);
 #elif USE_XML_LIBRARY == XERCES
   bool GetElementInfo(const XMLCh *name, st_file_element_data &edata);
 #endif

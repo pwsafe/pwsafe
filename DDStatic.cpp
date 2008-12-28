@@ -258,7 +258,7 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
     TrackMouseEvent(&tme);
   }
 
-  if (m_TimerID == 0 || m_pci == NULL)
+  if (m_TimerID == 0)
     goto StandardProcessing;
 
   // Check if we really moved enough
@@ -266,6 +266,11 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
   int iY = m_StartPoint.y - point.y;
   if ((iX * iX + iY * iY) > MINIMUM_MOVE_SQUARE) {
     m_pci = m_pDbx->GetLastSelected();
+    if (m_pci == NULL) {
+      m_groupname = m_pDbx->GetGroupName();
+    } else {
+      m_groupname = _T("");
+    }
 
     // Get client rectangle
     RECT rClient;
@@ -351,9 +356,17 @@ void CDDStatic::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
 
 void CDDStatic::SendToClipboard()
 {
-  if (m_pDbx == NULL || m_pci == NULL)
+  if (m_pDbx == NULL)
     return;
 
+  if (m_pci == NULL) {
+    if (!m_groupname.empty()) {
+      m_pDbx->SetClipboardData(m_groupname);
+    }
+    return;
+  }
+
+  StringX cs_dragdata;
   CItemData *pci(m_pci);
 
   const CItemData::EntryType entrytype = pci->GetEntryType();
@@ -385,39 +398,7 @@ void CDDStatic::SendToClipboard()
     }
   }
 
-  StringX cs_dragdata;
-  StringX::size_type ipos;
-  switch (m_nID) {
-    case IDC_STATIC_DRAGGROUP:
-      cs_dragdata = pci->GetGroup();
-      break;
-    case IDC_STATIC_DRAGTITLE:
-      cs_dragdata = pci->GetTitle();
-      break;
-    case IDC_STATIC_DRAGPASSWORD:
-      cs_dragdata = pci->GetPassword();
-      break;
-    case IDC_STATIC_DRAGUSER:
-      cs_dragdata = pci->GetUser();
-      break;
-    case IDC_STATIC_DRAGNOTES:
-      cs_dragdata = pci->GetNotes();
-      break;
-    case IDC_STATIC_DRAGURL:
-      cs_dragdata = pci->GetURL();
-      ipos = cs_dragdata.find(_T("[alt]"));
-      if (ipos != StringX::npos)
-        cs_dragdata.replace(ipos, 5, _T(""));
-      ipos = cs_dragdata.find(_T("[ssh]"));
-      if (ipos != StringX::npos)
-        cs_dragdata.replace(ipos, 5, _T(""));
-      ipos = cs_dragdata.find(_T("{alt}"));
-      if (ipos != StringX::npos)
-        cs_dragdata.replace(ipos, 5, _T(""));
-      break;
-    default:
-      return;
-  }
+  cs_dragdata = GetData(pci);
 
   m_pDbx->SetClipboardData(cs_dragdata);
 }
@@ -445,73 +426,48 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     m_hgDataUTXT = NULL;
   }
 
+  StringX cs_dragdata;
   if (m_pci == NULL) {
-    TRACE(_T("CDDStatic::OnRenderGlobalData - mpci == NULL\n"));
-    return FALSE;
-  }
-
-  CItemData *pci(m_pci);
-
-  const CItemData::EntryType entrytype = pci->GetEntryType();
-  if (m_nID == IDC_STATIC_DRAGPASSWORD && entrytype == CItemData::ET_ALIAS) {
-    // This is an alias
-    uuid_array_t entry_uuid, base_uuid;
-    pci->GetUUID(entry_uuid);
-    m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_pDbx->Find(base_uuid);
-    if (iter != m_pDbx->End()) {
-      pci = &(iter->second);
+    if (m_groupname.empty()) {
+      TRACE(_T("CDDStatic::OnRenderGlobalData - mpci == NULL\n"));
+      return FALSE;
+    } else {
+      cs_dragdata = m_groupname;
     }
-  }
+  } else {
+    CItemData *pci(m_pci);
 
-  if (entrytype == CItemData::ET_SHORTCUT) {
-    // This is an shortcut
-    if (m_nID != IDC_STATIC_DRAGGROUP &&
-        m_nID != IDC_STATIC_DRAGTITLE &&
-        m_nID != IDC_STATIC_DRAGUSER) {
+    const CItemData::EntryType entrytype = pci->GetEntryType();
+    if (m_nID == IDC_STATIC_DRAGPASSWORD && entrytype == CItemData::ET_ALIAS) {
+      // This is an alias
       uuid_array_t entry_uuid, base_uuid;
       pci->GetUUID(entry_uuid);
-      m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
+      m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
 
       ItemListIter iter = m_pDbx->Find(base_uuid);
       if (iter != m_pDbx->End()) {
         pci = &(iter->second);
       }
     }
-  }
 
-  StringX cs_dragdata;
-  StringX::size_type ipos;
-  switch (m_nID) {
-    case IDC_STATIC_DRAGGROUP:
-      cs_dragdata = pci->GetGroup();
-      break;
-    case IDC_STATIC_DRAGTITLE:
-      cs_dragdata = pci->GetTitle();
-      break;
-    case IDC_STATIC_DRAGPASSWORD:
-      cs_dragdata = pci->GetPassword();
-      break;
-    case IDC_STATIC_DRAGUSER:
-      cs_dragdata = pci->GetUser();
-      break;
-    case IDC_STATIC_DRAGNOTES:
-      cs_dragdata = pci->GetNotes();
-      break;
-    case IDC_STATIC_DRAGURL:
-      cs_dragdata = pci->GetURL();
-      ipos = cs_dragdata.find(_T("[alt]"));
-      if (ipos != StringX::npos)
-        cs_dragdata.replace(ipos, 5, _T(""));
-      ipos = cs_dragdata.find(_T("[ssh]"));
-      if (ipos != StringX::npos)
-        cs_dragdata.replace(ipos, 5, _T(""));
-      ipos = cs_dragdata.find(_T("{alt}"));
-      if (ipos != StringX::npos)
-        cs_dragdata.replace(ipos, 5, _T(""));
-      break;
-    default:
+    if (entrytype == CItemData::ET_SHORTCUT) {
+      // This is an shortcut
+      if (m_nID != IDC_STATIC_DRAGGROUP &&
+          m_nID != IDC_STATIC_DRAGTITLE &&
+          m_nID != IDC_STATIC_DRAGUSER) {
+        uuid_array_t entry_uuid, base_uuid;
+        pci->GetUUID(entry_uuid);
+        m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+        ItemListIter iter = m_pDbx->Find(base_uuid);
+        if (iter != m_pDbx->End()) {
+          pci = &(iter->second);
+        }
+      }
+    }
+
+    cs_dragdata = GetData(pci);
+    if (cs_dragdata.empty())
       return FALSE;
   }
 
@@ -661,4 +617,50 @@ bad_return:
     GlobalUnlock(*phgData);
 
   return retval;
+}
+
+StringX CDDStatic::GetData(const CItemData *pci)
+{
+  StringX cs_dragdata(_T(""));
+  StringX::size_type ipos;
+
+  switch (m_nID) {
+    case IDC_STATIC_DRAGGROUP:
+      cs_dragdata = pci->GetGroup();
+      if ((GetKeyState(VK_CONTROL) & 0x8000) != 0) {
+        StringX::size_type index;
+        index = cs_dragdata.rfind(_T("."));
+        if (index != StringX::npos) {
+          cs_dragdata = cs_dragdata.substr(index + 1);
+        }
+      }
+      break;
+    case IDC_STATIC_DRAGTITLE:
+      cs_dragdata = pci->GetTitle();
+      break;
+    case IDC_STATIC_DRAGPASSWORD:
+      cs_dragdata = pci->GetPassword();
+      break;
+    case IDC_STATIC_DRAGUSER:
+      cs_dragdata = pci->GetUser();
+      break;
+    case IDC_STATIC_DRAGNOTES:
+      cs_dragdata = pci->GetNotes();
+      break;
+    case IDC_STATIC_DRAGURL:
+      cs_dragdata = pci->GetURL();
+      ipos = cs_dragdata.find(_T("[alt]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("[ssh]"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      ipos = cs_dragdata.find(_T("{alt}"));
+      if (ipos != StringX::npos)
+        cs_dragdata.replace(ipos, 5, _T(""));
+      break;
+    default:
+      break;
+  }
+  return cs_dragdata;
 }

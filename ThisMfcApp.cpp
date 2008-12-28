@@ -105,9 +105,8 @@ ThisMfcApp::ThisMfcApp() :
     AfxMessageBox(cs_msg);
   }
 #endif
-//#ifdef _DEBUG
-//  oldMemState.Checkpoint();
-//#endif
+  // Set this process to be one of the first to be shut down:
+  SetProcessShutdownParameters(0x3ff, 0);
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
   EnableHtmlHelp();
@@ -627,7 +626,6 @@ BOOL ThisMfcApp::InitInstance()
   SHInitExtraControls();
 #endif
 
-
   if (m_core.GetCurFile().empty())
     m_core.SetCurFile(prefs->GetPref(PWSprefs::CurrentFile));
 
@@ -639,7 +637,7 @@ BOOL ThisMfcApp::InitInstance()
   CMenu new_popupmenu;
 
   // Menu position indices (File & Close).
-  int fpos, cpos;
+  int fpos, cpos, epos, vpos;
 
   // Look for "File" menu.
   fpos = FindMenuItem(m_mainmenu, ID_FILEMENU);
@@ -707,6 +705,33 @@ BOOL ThisMfcApp::InitInstance()
   }
 #endif /* DEMO */
 
+  // Look for "Edit" menu.
+  epos = FindMenuItem(m_mainmenu, ID_EDITMENU);
+  ASSERT(epos != -1);
+
+  CMenu* edit_submenu = m_mainmenu->GetSubMenu(epos);
+  if (edit_submenu != NULL) {
+    MENUINFO minfo;
+    memset(&minfo, 0x00, sizeof(minfo));
+    minfo.cbSize = sizeof(MENUINFO);
+    minfo.fMask = MIM_MENUDATA;
+    minfo.dwMenuData = ID_EDITMENU;
+    edit_submenu->SetMenuInfo(&minfo);
+  }
+
+  // Look for "View" menu.
+  vpos = FindMenuItem(m_mainmenu, ID_VIEWMENU);
+  ASSERT(epos != -1);
+
+  CMenu* view_submenu = m_mainmenu->GetSubMenu(vpos);
+  if (view_submenu != NULL) {
+    MENUINFO minfo;
+    memset(&minfo, 0x00, sizeof(minfo));
+    minfo.cbSize = sizeof(MENUINFO);
+    minfo.fMask = MIM_MENUDATA;
+    minfo.dwMenuData = ID_VIEWMENU;
+    view_submenu->SetMenuInfo(&minfo);
+  }
   /*
   * normal startup
   */
@@ -946,7 +971,7 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
   ASSERT(Menu);
   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
 
-  int count = Menu->GetMenuItemCount();
+  const int count = Menu->GetMenuItemCount();
   for (int i = 0; i < count; i++) {
     CString str;
     if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
@@ -965,7 +990,7 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, UINT MenuID)
   ASSERT(Menu);
   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
 
-  int count = Menu->GetMenuItemCount();
+  const int count = Menu->GetMenuItemCount();
 
   // Can't use GetMenuItemID as it does not understand that with the MENUEX
   // format, Popup menus can have IDs

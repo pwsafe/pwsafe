@@ -34,15 +34,15 @@
 #include <algorithm>
 
 /*
-* Make sure we get the right declaration of BlockInput
-* VS2005 - it is in "winable.h"
-* VS2008 - it is in "winuser.h"
-*/
-
-#if _MSC_VER >= 1500
-#include <winuser.h>
-#else
+ * Make sure we get the right declaration of BlockInput
+ * VS2005 - it is in "winable.h"
+ * VS2008 - it is in "winuser.h"
+ */
+ 
+#if _MSC_VER < 1500
 #include <winable.h>
+#else
+#include <winuser.h>
 #endif
 
 #ifdef _DEBUG
@@ -1297,7 +1297,11 @@ void DboxMain::AutoType(const CItemData &ci)
   const int N = AutoCmd.length();
   ks.ResetKeyboardState();
 
+#if _MSC_VER < 1500
+  ::BlockInput(true);
+#else
   BlockInput(true);
+#endif
 
   // Note that minimizing the window before calling ci.Get*()
   // will cause garbage to be read if "lock on minimize" selected,
@@ -1381,7 +1385,11 @@ void DboxMain::AutoType(const CItemData &ci)
 
   Sleep(100);
 
+#if _MSC_VER < 1500
+  ::BlockInput(false);
+#else
   BlockInput(false);
+#endif
 
   // If we hid it, now show it
   if (bMinOnAuto)
@@ -1456,6 +1464,34 @@ StringX DboxMain::GetAutoTypeString(const StringX autocmd, const StringX user,
       tmp += curChar;
   }
   return tmp;
+}
+
+void DboxMain::OnGotoBaseEntry()
+{
+  if (SelItemOk() == TRUE) {
+    CItemData *ci = getSelectedItem();
+    ASSERT(ci != NULL);
+
+    uuid_array_t base_uuid, entry_uuid;
+    CItemData::EntryType entrytype = ci->GetEntryType();
+    if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
+      // This is an alias or shortcut
+      ci->GetUUID(entry_uuid);
+      if (entrytype == CItemData::ET_ALIAS)
+        m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+      else
+        m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+         DisplayInfo *di = (DisplayInfo *)iter->second.GetDisplayInfo();
+         SelectEntry(di->list_index);
+      } else
+        return;
+
+      UpdateAccessTime(ci);
+    }
+  }
 }
 
 void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)

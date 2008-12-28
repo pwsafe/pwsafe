@@ -177,3 +177,6 @@
 #define IDSC_EXPATEXCEEDMAXOCCURS       3341
 #define IDSC_EXPATDATETMISSING          3342
 #define IDSC_EXPATUNEXPFILTERFLD        3343
+#define IDSC_MISSINGXSD                 3344
+#define IDSC_CANTVALIDATEXML            3345
+#define IDSC_FILTERSKEPT                3346

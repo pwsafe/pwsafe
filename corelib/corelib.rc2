@@ -241,6 +241,7 @@ BEGIN
   IDSC_SEEPWHISTORYFILTERS "See Password History filters"
   IDSC_SEEPWPOLICYFILTERS  "See Password Policy filters"
   IDSC_CANTPROCESSDBFILTERS "Trouble reading Filter. Click 'Yes' to remove from database, 'No' to retain it."
+  IDSC_FILTERSKEPT         "Filters within the database will be kept as ""unknown fields""."
   IDSC_INVALID_SCHEMA      "Invalid Filter schema."
   IDSC_INVALID_SCHEMA_VER  "Schema does not have a version number."
   IDSC_MISSING_SCHEMA_VER  "Can't obtain the schema version."
@@ -257,4 +258,6 @@ BEGIN
   IDSC_EXPATBADDELIMITER   "Mandatory delimiter attribute invalid."
   IDSC_EXPATFTYPEMISSING   "Mandatory ftype attribute missing."
   IDSC_EXPATUNEXPFILTERFLD "Unexpected element: Only one field allowed in filter entry."
+  IDSC_CANTVALIDATEXML     "Missing XSD File"
+  IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
 END

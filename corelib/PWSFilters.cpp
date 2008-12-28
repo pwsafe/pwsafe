@@ -14,15 +14,17 @@
 #include "corelib.h"
 #include "PWScore.h"
 #include "StringX.h"
+#include "os/file.h"
+#include "os/dir.h"
 
 #include "XML/XMLDefs.h"
 
-#if USE_XML_LIBRARY == XERCES
-#include "XML/Xerces/XFilterXMLProcessor.h"
+#if   USE_XML_LIBRARY == EXPAT
+#include "XML/Expat/EFilterXMLProcessor.h"
 #elif USE_XML_LIBRARY == MSXML
 #include "XML/MSXML/MFilterXMLProcessor.h"
-#elif USE_XML_LIBRARY == EXPAT
-#include "XML/Expat/EFilterXMLProcessor.h"
+#elif USE_XML_LIBRARY == XERCES
+#include "XML/Xerces/XFilterXMLProcessor.h"
 #endif
 
 #define PWS_XML_FILTER_VERSION 1
@@ -519,12 +521,12 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
                                     stringT &strErrors,
                                     Asker *pAsker)
 {
-#if USE_XML_LIBRARY == XERCES
-  XFilterXMLProcessor fXML(*this, fpool, pAsker);
+#if   USE_XML_LIBRARY == EXPAT
+  EFilterXMLProcessor fXML(*this, fpool, pAsker);
 #elif USE_XML_LIBRARY == MSXML
   MFilterXMLProcessor fXML(*this, fpool, pAsker);
-#elif USE_XML_LIBRARY == EXPAT
-  EFilterXMLProcessor fXML(*this, fpool, pAsker);
+#elif USE_XML_LIBRARY == XERCES
+  XFilterXMLProcessor fXML(*this, fpool, pAsker);
 #endif
   bool status, validation;
 
@@ -557,19 +559,12 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
   PWSFilters::iterator mf_iter;
   for (mf_iter = this->begin(); mf_iter != this->end(); mf_iter++) {
     st_filters &filters = mf_iter->second;
-    std::vector<st_FilterRow>::iterator Flt_iter;
-    for (Flt_iter = filters.vMfldata.begin(); 
-         Flt_iter != filters.vMfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
-    for (Flt_iter = filters.vHfldata.begin(); 
-         Flt_iter != filters.vHfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
-    for (Flt_iter = filters.vPfldata.begin(); 
-         Flt_iter != filters.vPfldata.end(); Flt_iter++) {
-      Flt_iter->bFilterComplete = true;
-    }
+    for_each(filters.vMfldata.begin(), filters.vMfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vHfldata.begin(), filters.vHfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+    for_each(filters.vPfldata.begin(), filters.vPfldata.end(),
+             mem_fun_ref(&st_FilterRow::SetFilterComplete));
   }
   return PWScore::SUCCESS;
 }

@@ -426,7 +426,7 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
       prefix += GROUP_SEP;
     prefix += GetItemText(hItem);
     HTREEITEM child;
-    for(child = GetChildItem(hItem); child != NULL; child = GetNextSiblingItem(child)) {
+    for (child = GetChildItem(hItem); child != NULL; child = GetNextSiblingItem(child)) {
       UpdateLeafsGroup(child, prefix);
     }
   }
@@ -474,6 +474,8 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       currentPassword.FindOneOf(_T("[]{}")) != -1)
       return;
   }
+  // In case we have to revert:
+  m_eLabel = CSecString(GetItemText(ti));
   // Allow in-place editing
   *pLResult = FALSE;
 }
@@ -692,23 +694,34 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
           m_pDbx->UpdateListItemPassword(lindex, newPassword.c_str());
         }
       }
-    } else {
-      // Update all leaf children with new path element
-      // prefix is path up to and NOT including renamed node
-      CString prefix;
-      HTREEITEM parent, current = ti;
-      do {
-        parent = GetParentItem(current);
-        if (parent == NULL)
-          break;
+    } else { // !IsLeaf
+      // PR2407325: If the user edits a group name so that it has
+      // a GROUP_SEP, all hell breaks loose.
+      // Right Thing (tm) would be to parse and create subgroups as
+      // needed, but this is too hard (for now), so we'll just reject
+      // any group name that has one or more GROUP_SEP.
+      StringX hasSep(ptvinfo->item.pszText);
+      if (hasSep.find(GROUP_SEP) != StringX::npos) {
+        SetItemText(ti, m_eLabel);
+        goto bad_exit;
+      } else {
+        // Update all leaf children with new path element
+        // prefix is path up to and NOT including renamed node
+        CString prefix;
+        HTREEITEM parent, current = ti;
+        do {
+          parent = GetParentItem(current);
+          if (parent == NULL)
+            break;
 
-        current = parent;
-        if (!prefix.IsEmpty())
-          prefix = GROUP_SEP + prefix;
-        prefix = GetItemText(current) + prefix;
-      } while (1);
+          current = parent;
+          if (!prefix.IsEmpty())
+            prefix = GROUP_SEP + prefix;
+          prefix = GetItemText(current) + prefix;
+        } while (1);
       UpdateLeafsGroup(ti, prefix);
-    }
+      } // good group name (no GROUP_SEP)
+    } // !IsLeaf
     // Mark database as modified
     m_pDbx->SetChanged(DboxMain::Data);
     m_pDbx->ChangeOkUpdate();

@@ -29,9 +29,6 @@ typedef ItemList::const_iterator ItemListConstIter;
 
 typedef std::vector<CItemData> OrderedItemList;
 
-typedef std::vector<CUUIDGen> UUIDList;
-typedef UUIDList::iterator UUIDListIter;
-
 typedef std::multimap<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMMap;
 
 typedef std::map<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMap;
@@ -75,7 +72,8 @@ public:
 
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
-  static void SetReporter(Reporter *reporter) {m_Reporter = reporter;}
+  static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
+  static void SetAsker(Asker *pAsker) {m_pAsker = pAsker;}
 
   // Following used to read/write databases
   StringX GetCurFile() const {return m_currfile;}
@@ -231,6 +229,10 @@ public:
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
+  bool HaveDBPrefsChanged() const {return m_DBPrefsChanged;}
+  void SetDBPrefsChanged(bool changed) {m_DBPrefsChanged = changed;}
+  bool HaveHeaderPreferencesChanged(const StringX prefString)
+  {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
   // (Un)Register to be notified if the password list changes
   bool RegisterOnListModified(void (*pfcn) (LPARAM), LPARAM);
@@ -250,7 +252,6 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
-  void SetAsker(Asker *asker) {m_asker = asker;}
   
   // Filters
   PWSFilters m_MapFilters;
@@ -275,10 +276,10 @@ private:
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
   bool m_changed;
+  bool m_DBPrefsChanged;
   bool m_IsReadOnly;
   PWSfile::HeaderRecord m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
-  static Reporter *m_Reporter; // set as soon as possible to show errors
 
   // THE password database
   //  Key = entry's uuid; Value = entry's CItemData
@@ -302,6 +303,7 @@ private:
   void (*m_pfcnNotifyListModified) (LPARAM);
   LPARAM m_NotifyInstance;
   bool m_bNotify;
-  Asker *m_asker;
+  static Reporter *m_pReporter; // set as soon as possible to show errors
+  static Asker *m_pAsker;
 };
 #endif /* __PWSCORE_H */

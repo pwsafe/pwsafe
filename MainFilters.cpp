@@ -28,14 +28,15 @@
 #include "GeneralMsgBox.h"
 #include "MFCMessages.h"
 
+#include "corelib/corelib.h"
 #include "corelib/PWSFilters.h"
 #include "corelib/PWHistory.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/match.h"
 #include "corelib/PWSfile.h"
 #include "corelib/PWSdirs.h"
-
 #include "corelib/os/file.h"
+#include "corelib/XML/XMLDefs.h"
 
 using namespace std;
 
@@ -716,11 +717,11 @@ void DboxMain::ImportFilters()
   const stringT XSDfn(_T("pwsafe_filter.xsd"));
   stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-#if defined(USE_XML_LIBRARY) && USE_XML_LIBRARY != EXPAT
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   // Expat is a non-validating parser - no use for Schema!
   if (!pws_os::FileExists(XSDFilename)) {
-    cs_temp.Format(IDS_MISSINGXSD, XSDfn.c_str());
-    cs_title.LoadString(IDS_CANTVALIDATEXML);
+    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
+    cs_title.LoadString(IDSC_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }

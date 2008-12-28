@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.14.2
+RELEASENAME = 3.15.2
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -39,7 +39,7 @@ LIGHT = $(WIXDIR)/light.exe
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
-	docs/ChangeLog.txt Release/pwsafe.exe help/default/pwsafe.chm
+	docs/ChangeLog.txt bin/pwsafe/releasem/pwsafe.exe help/default/pwsafe.chm
 
 .PHONY: all release bin-release src-release installables signatures \
 	upload md5sums sha1sums msi nsis upload-latest updat-pos i18n
@@ -56,7 +56,10 @@ upload: upload-latest
 	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig $(UPLOAD_DST))
 
 upload-latest: latest.xml
-	scp $< ronys@passwordsafe.sourceforge.net:~/mygroupdir/htdocs/
+	echo "cd htdocs" > putlatest.tmp
+	echo "put $<" >> putlatest.tmp
+	sftp -b putlatest.tmp ronys,passwordsafe@web.sourceforge.net
+	$(RM) putlatest.tmp
 
 latest.xml: version.h
 	Misc/make-latest-xml.pl > $@
@@ -99,6 +102,7 @@ release: bin-release src-release i18n
 
 bin-release:
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
+
 	$(CP) $(BIN_MANIFEST) $(RELEASEDIR)/$(BINRELNAME)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME); \
 	$(MV) foo.zip $(BINRELNAME).zip)

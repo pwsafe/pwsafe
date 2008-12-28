@@ -23,7 +23,7 @@
 // XML File Import constants - used by Expat and Xerces and will be by MSXML
 #include "../XMLFileValidation.h"
 
-class MFileValidator
+class MFileValidator : public XMLFileValidation
 {
 public:
   MFileValidator();

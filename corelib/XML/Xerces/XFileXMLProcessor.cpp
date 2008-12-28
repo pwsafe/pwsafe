@@ -78,7 +78,8 @@ XFileXMLProcessor::~XFileXMLProcessor()
 // ---------------------------------------------------------------------------
 bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
-                                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl)
+                                int &nITER, int &nRecordsWithUnknownFields, 
+                                UnknownFieldList &uhfl)
 {
   bool bEerrorOccurred = false;
   bool b_into_empty = false;
@@ -108,6 +109,14 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
     return false;
   }
 
+#ifdef UNICODE
+  const XMLCh* xmlfilename = strXMLFileName.c_str();
+  const XMLCh* schemafilename = strXSDFileName.c_str();
+#else
+  const XMLCh* xmlfilename = XMLString::transcode(strXMLFileName.c_str());
+  const XMLCh* schemafilename = XMLString::transcode(strXSDFileName.c_str());
+#endif
+
   //  Create a SAX2 parser object.
   SAX2XMLReader* pSAX2Parser = XMLReaderFactory::createXMLReader(&sec_mm);
 
@@ -120,11 +129,13 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setFeature(XMLUni::fgXercesSkipDTDValidation, true);
  
   // Set properties
-  pSAX2Parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
-                           (void *)strXSDFileName.c_str());
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,
-                           (void *)XMLUni::fgSGXMLScanner);
+                          (void *)XMLUni::fgSGXMLScanner);
   pSAX2Parser->setInputBufferSize(4096);
+
+  // Set schema file name (also via property)
+  pSAX2Parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
+                           (void *)schemafilename);
 
   // Create SAX handler object and install it on the pSAX2Parser, as the
   // document and error pSAX2Handler.
@@ -132,18 +143,17 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
-  if (m_bValidation) {
-    pSAX2Handler->SetVariables(NULL, m_bValidation, ImportedPrefix, m_delimiter,
-                               NULL, NULL);
-  } else {
+  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_xmlcore, m_bValidation, 
+                             ImportedPrefix, m_delimiter,
+                             m_bValidation ? NULL : m_possible_aliases, 
+                             m_bValidation ? NULL : m_possible_shortcuts);
+  if (!m_bValidation) {
     b_into_empty = m_xmlcore->GetNumEntries() == 0;
-    pSAX2Handler->SetVariables(m_xmlcore, m_bValidation, ImportedPrefix, m_delimiter,
-                               m_possible_aliases, m_possible_shortcuts);
   }
 
   try {
     // Let's begin the parsing now
-    pSAX2Parser->parse(strXMLFileName.c_str());
+    pSAX2Parser->parse(xmlfilename);
   }
   catch (const OutOfMemoryException&) {
     LoadAString(strResultText, IDCS_XERCESOUTOFMEMORY);
@@ -180,6 +190,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       m_numEntriesImported = pSAX2Handler->getNumEntries();
       // Maybe import errors (PWHistory field processing)
       m_strResultText = pSAX2Handler->getImportErrors();
+      pSAX2Handler->AddEntries();
 
       m_bRecordHeaderErrors = pSAX2Handler->getRecordHeaderErrors();
       nRecordsWithUnknownFields = pSAX2Handler->getNumRecordsWithUnknownFields();
@@ -187,82 +198,16 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       if (b_into_empty) {
         m_bDatabaseHeaderErrors = pSAX2Handler->getDatabaseHeaderErrors();
         nITER = pSAX2Handler->getNumIterations();
-
-        UnknownFieldList::const_iterator vi_IterUXFE;
-        for (vi_IterUXFE = pSAX2Handler->m_ukhxl.begin();
-             vi_IterUXFE != pSAX2Handler->m_ukhxl.end();
-             vi_IterUXFE++) {
-          UnknownFieldEntry ukxfe = *vi_IterUXFE;
-          if (ukxfe.st_length > 0) {
-            uhfl.push_back(ukxfe);
-          }
-        }
-
-        PWSprefs *prefs = PWSprefs::GetInstance();
-        int ivalue;
-        // Integer/Boolean preferences
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_DISPLAYEXPANDEDADDEDITDLG - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::DisplayExpandedAddEditDlg, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_IDLETIMEOUT - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::IdleTimeout, ivalue);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_MAINTAINDATETIMESTAMPS - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::MaintainDateTimeStamps, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_NUMPWHISTORYDEFAULT - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::NumPWHistoryDefault, ivalue);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWDIGITMINLENGTH - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWDigitMinLength, ivalue);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWLOWERCASEMINLENGTH - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWLowercaseMinLength, ivalue);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWMAKEPRONOUNCEABLE - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWMakePronounceable, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWSYMBOLMINLENGTH - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWSymbolMinLength, ivalue);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWUPPERCASEMINLENGTH - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWUppercaseMinLength, ivalue);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWDEFAULTLENGTH - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWDefaultLength, ivalue);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWUSEDIGITS - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWUseDigits, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWUSEEASYVISION - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWUseEasyVision, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWUSEHEXDIGITS - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWUseHexDigits, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWUSELOWERCASE - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWUseLowercase, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWUSESYMBOLS - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWUseSymbols, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_PWUSEUPPERCASE - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::PWUseUppercase, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_SAVEIMMEDIATELY - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::SaveImmediately, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_SAVEPASSWORDHISTORY - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::SavePasswordHistory, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_SHOWNOTESDEFAULT - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::ShowNotesDefault, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_SHOWPASSWORDINTREE - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::ShowPasswordInTree, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_SHOWPWDEFAULT - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::ShowPWDefault, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_SHOWUSERNAMEINTREE - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::ShowUsernameInTree, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_SORTASCENDING - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::SortAscending, ivalue == 1);
-        if ((ivalue = pSAX2Handler->getXMLPref(XLE_TREEDISPLAYSTATUSATOPEN - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, ivalue);
-          if ((ivalue = pSAX2Handler->getXMLPref(XLE_USEDEFAULTUSER - XLE_PREF_START)) != -1)
-          prefs->SetPref(PWSprefs::UseDefaultUser, ivalue == 1);
-
-        // String preferences
-        if (!pSAX2Handler->getDefaultAutotypeString().empty())
-          prefs->SetPref(PWSprefs::DefaultAutotypeString,
-                         pSAX2Handler->getDefaultAutotypeString().c_str());
-        if (!pSAX2Handler->getDefaultUsername().empty())
-          prefs->SetPref(PWSprefs::DefaultUsername,
-                         pSAX2Handler->getDefaultUsername().c_str());
+        pSAX2Handler->AddDBUnknownFieldsPreferences(uhfl);
       } else
         m_bDatabaseHeaderErrors = false;
     }
   }
+
+#ifndef UNICODE
+  XMLString::release((XMLCh **)&xmlfilename);
+  XMLString::release((XMLCh **)&schemafilename);
+#endif
 
   //  Delete the pSAX2Parser itself.  Must be done prior to calling Terminate, below.
   delete pSAX2Parser;

@@ -24,7 +24,7 @@
 #include "PWSfile.h"
 #include "Match.h"
 #include "ItemData.h"
-#include "proxy.h"
+#include "Proxy.h"
 
 // All the fields that we can use for filtering entries:
 
@@ -158,6 +158,8 @@ struct st_FilterRow {
     etype = CItemData::ET_INVALID;
     ltype = LC_INVALID;
   }
+  void SetFilterComplete() {bFilterComplete = true;}
+  void ClearFilterComplete() {bFilterComplete = false;}
 };
 
 // The following structure is needed for entry filtering

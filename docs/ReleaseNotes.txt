@@ -1,5 +1,5 @@
-Password Safe 3.14.02 Release Notes - September 2008
-====================================================
+Password Safe 3.15.02 Release Notes - December 2008
+===================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,51 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.14.02
+Bugs fixed in 3.15.02
 =====================
+[2423397] Sorting direction database preference was not being saved in
+the database.  See "Changes to Existing Features" below.
+
+Changes to Existing Features in 3.15.02
+=======================================
+[] Support interoperability with tools that access edit control text
+by setting PWS_PW_MODE environment variable to "NORMAL".
+[2423397] Changes to preferences stored in the database are no longer
+silently saved in the database (including any changes to any entries).
+A new flag is shown in the Status Bar to indicate the preferences have
+been changed and the user can decide to save these, or not, when closing
+the database, directly or when ending the application.
+
+New Features for 3.15.02
+========================
+[2450841] The user can use the DragBar to drag and drop the group name
+when a group is selected. Pressing the Ctrl key while dragging the group,
+when a group or entry is selected, will only copy the immediate parent group.
+Standard behaviour is to copy all groups up to the root of the database with
+dots between successive group names.
+[2450827] Add a new menu item (on Edit Menu or right-click context
+menu) to go to the corresponding base entry of an Alias or Shortcut. As
+part of this change, only relevant items are shown on the Edit menu depending
+on the current selected item (group or normal, shortcut base, alias base,
+alias or shortcut entry).
+[2425045] During Edit, if the entry has been changed and the user presses
+the Cancel button, they are asked to confirm losing their changes.
+[2415952] The currrent display status of the Find Toolbar is remembered at
+application close and, if visible, it is will be shown the next time the
+application is started.
+
+Bugs fixed in 3.15.01
+=====================
+[2429189, 2429675] No longer requires MFC dll.
+
+Bugs fixed in 3.15
+==================
+[2407346] "Open Another" and "Create New" actions in "Incorrect
+Passkey" dialog box working again.
+[2407325] Prevent creation of a group name with '.', which confuses
+PasswordSafe.
+[2407072] Can now tab to read-only checkbox in password entry form via
+File->Open or recently used list.
 [2269930] Track write permission of file in opening dialog: If the
 user chooses a file with different permission than the original, then
 the r-o status is updated accordingly.
@@ -23,22 +66,25 @@ corrected.
 selected entry.
 [2100429] Handle invalid time field in database gracefully. Thanks to
 David B. Martin for his help in tracking this down.
+[1958728] More graceful handling of corrupt databases - avoid "out of
+memory" failures. Thanks to Serkan Kenar for his help on this.
 [] Correct display of tree items on restore from minimize when 'X'
 button used to minimize.
 [] Ensure XML Import correctly processes normal entries with a 
 password field that is in alias or shortcut form.
 
-Changes to Existing Features in 3.14.02
-=======================================
+Changes to Existing Features in 3.15
+====================================
+None.
 
-
-New Features for 3.14.02
-========================
-[Open Discussion] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature
-supported by some Clipboard Viewers.
-[Open Discussion] Add feature to display a subset of the password. Useful
+New Features for 3.15
+=====================
+[] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
+Clipboard Viewers.
+[] Add feature to display a subset of the password. This is useful
 for websites that need different particular characters from a password at
-each login.
+each login. To access this, select an item, right-click and choose
+Display Subset of Password.
 [2203438] Remove "[alt]", "[ssh]" and "{alt}" special keywords from URL
 when copying to the clipboard.
 [2144489] Click on the text next to edit fields to copy the field to

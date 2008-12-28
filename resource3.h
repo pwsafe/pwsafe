@@ -177,8 +177,6 @@
 #define IDS_RECORDSIMPORTED             5338
 #define IDS_RECORDSNOTREAD              5339
 #define IDS_PICKKEEPASSFILE             5340
-#define IDS_MISSINGXSD                  5341
-#define IDS_CANTVALIDATEXML             5342
 #define IDS_PICKXMLFILE                 5343
 #define IDS_FAILEDXMLVALIDATE           5344
 #define IDS_XMLERRORS                   5345
@@ -239,9 +237,7 @@
 #define IDS_MENUEXPCOLGROUP             5400
 #define IDS_MENUEDITENTRY               5401
 #define IDS_MENUVIEWENTRY               5402
-#define IDS_MENUDELETEENTRY             5403
 #define IDS_MENUDELETEGROUP             5404
-#define IDS_MENURENAMEENTRY             5405
 #define IDS_MENURENAMEGROUP             5406
 #define IDS_MAXNUMDAYSEXCEEDED          5407
 #define IDS_HELPMENU                    5408
@@ -321,7 +317,6 @@
 #define IDS_CASE_INSENSITIVE            5482
 #define IDS_CASE_SENSITIVE              5483
 #define IDS_CANTEMAIL                   5484
-#define IDS_MENUBROWSEURL               5485
 #define IDS_MENUSENDEMAIL               5486
 #define IDS_SELECTREPORT                5487
 #define IDS_NOREPORTSEXIST              5488
@@ -351,7 +346,6 @@
 #define IDS_CANTSPECIFYMINNUMBER        5512
 #define IDS_SAMPLETEXT                  5513
 #define IDS_EMPTYSAMPLETEXT             5514
-#define IDS_MENUCOPYURL                 5515
 #define IDS_MENUCOPYEMAIL               5516
 #define IDS_COPYEMAIL                   5517
 #define IDS_DELETESBASE                 5518
@@ -483,3 +477,5 @@
 #define IDS_CLICKTOCOPY                 5646
 #define IDS_SUBSETINDEXZERO             5647
 #define IDS_SUBSETINDEXTOOBIG           5648
+#define IDS_MENUCREATESHORTCUT          5649
+#define IDS_AREYOUSURE                  5650

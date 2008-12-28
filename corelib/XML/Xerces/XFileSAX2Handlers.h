@@ -29,8 +29,8 @@
 #ifndef __XFILESAX2HANDLERS_H
 #define __XFILESAX2HANDLERS_H
 
-// XML File Import constants - used by Expat and Xerces and will be by MSXML
 #include "../XMLFileValidation.h"
+#include "../XMLFileHandlers.h"
 
 #include "XFileValidator.h"
 
@@ -45,48 +45,14 @@
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-// Entry types
-enum {NORMAL = 0, ALIAS, SHORTCUT};
-
-// New imported entry
-struct pw_entry {
-  StringX group;
-  StringX title;
-  StringX username;
-  StringX password;
-  StringX url;
-  StringX autotype;
-  StringX ctime;
-  StringX atime;
-  StringX xtime;
-  StringX xtime_interval;
-  StringX pmtime;
-  StringX rmtime;
-  StringX pwhistory;
-  StringX notes;
-  StringX uuid;
-  PWPolicy pwp;
-  UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
-  int entrytype;
-  bool bforce_normal_entry;
-};
-
-struct pwhistory_entry {
-  StringX changed;
-  StringX oldpassword;
-};
 
 XERCES_CPP_NAMESPACE_USE
 
-class XFileSAX2Handlers : public DefaultHandler
+class XFileSAX2Handlers : public DefaultHandler, public XMLFileHandlers
 {
 public:
   XFileSAX2Handlers();
   virtual ~XFileSAX2Handlers();
-
-  void SetVariables(PWScore *core, const bool &bValidation,
-                    const stringT &ImportedPrefix, const TCHAR &delimiter,
-                    UUIDList *possible_aliases, UUIDList *possible_shortcuts);
 
   // -----------------------------------------------------------------------
   //  Handlers for the SAX ContentHandler interface
@@ -100,7 +66,6 @@ public:
                   const XMLCh* const qname);
   void setDocumentLocator(const Locator *const locator) {m_pLocator = locator;}
   void startDocument();
-  bool getIfErrors() {return m_bErrors;}
 
   // -----------------------------------------------------------------------
   //  Handlers for the SAX ErrorHandler interface
@@ -108,64 +73,19 @@ public:
   void warning(const SAXParseException& exc);
   void error(const SAXParseException& exc);
   void fatalError(const SAXParseException& exc);
-  
-  inline int getXMLPref(int num)
-  {
-    assert(num >= 0 && num < NUMPREFSINXML);
-    return prefsinXML[num];
-  }
-  stringT getDefaultAutotypeString() {return m_sDefaultAutotypeString;}
-  stringT getDefaultUsername() {return m_sDefaultUsername;}
-  stringT getValidationResult() {return m_strValidationResult;}
-  stringT getImportErrors() {return m_strImportErrors;}
-  int getNumEntries() {return m_numEntries;}
-  int getNumIterations() {return m_nITER;}
-  int getNumRecordsWithUnknownFields() {return m_nRecordsWithUnknownFields;}
-  TCHAR getDelimiter() {return m_delimiter;}
-  bool getDatabaseHeaderErrors() {return m_bDatabaseHeaderErrors;}
-  bool getRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
-  UnknownFieldList m_ukhxl;  // For header unknown fields
+  stringT getValidationResult() {return m_strValidationResult;}
 
 private:
   void FormatError(const SAXParseException& e, const int type);
 
   // Local variables
   XFileValidator *m_pValidator;
-  PWScore *m_xmlcore;
-  UUIDList *m_possible_aliases;
-  UUIDList *m_possible_shortcuts;
-  pw_entry *cur_entry;
-  pwhistory_entry *cur_pwhistory_entry;
+
   const Locator *m_pLocator;
 
-  StringX m_strElemContent;
-  stringT m_ImportedPrefix;
   stringT m_strValidationResult;
-  stringT m_strImportErrors;
-  int m_nRecordsWithUnknownFields;
-  int m_whichtime, m_ipwh;
-  int m_fieldlen;
-  bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;
-  bool m_bErrorsFound, m_bErrors;
-  bool m_bentrybeingprocessed;
-  bool m_bValidation;
-  bool m_bheader;
-  TCHAR m_delimiter;
-  unsigned char m_ctype;
-  unsigned char * m_pfield;
-
-  // Preferences possibly stored in database
-  // Note: boolean is integer to allow an 'not present' value of '-1'
-  int prefsinXML[NUMPREFSINXML];
-  stringT m_sDefaultAutotypeString;
-  stringT m_sDefaultUsername;
-  int m_nITER;
-  int m_numEntries;
-
-  static const struct st_file_elements {
-    TCHAR *name; st_file_element_data file_element_data;
-  } m_file_elements[XLE_ELEMENTS];
+  bool m_bErrorsFound;
 };
 
 #endif /* __XFILESAX2HANDLERS_H */
