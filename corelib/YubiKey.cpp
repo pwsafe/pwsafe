@@ -20,20 +20,28 @@
 
 using namespace std;
 
-//static const char *AuthServer = "http://api.yubico.com/wsapi/verify?";
-static const char *AuthServer = "https://63.146.69.105/wsapi/verify?";
+static const char *AuthServer = "http://api.yubico.com/wsapi/verify?";
+//static const char *AuthServer = "https://63.146.69.105/wsapi/verify?";
+#if 0
 static const char *OurID ="708";
-
 // API Key:	San67hskXHG7Ya3pi0JSw9AEqX0=
 static unsigned char apiKey[20] = {0x49, 0xa9, 0xfa, 0xee, 0x1b,
                                    0x24, 0x5c, 0x71, 0xbb, 0x61,
                                    0xad, 0xe9, 0x8b, 0x42, 0x52,
                                    0xc3, 0xd0, 0x04, 0xa9, 0x7d};
+#endif
+
+YubiKeyAuthenticator::YubiKeyAuthenticator(unsigned int apiID,
+                                           const YubiApiKey_t &apiKey)
+  : m_apiID(apiID)
+{
+  memcpy(m_apiKey, apiKey, sizeof(YubiApiKey_t));
+}
 
 
 stringT YubiKeyAuthenticator::SignReq(const string &msg)
 {
-  HMAC<SHA1> hmac(apiKey, sizeof(apiKey));
+  HMAC<SHA1> hmac(m_apiKey, sizeof(m_apiKey));
   hmac.Update(reinterpret_cast<const unsigned char *>(msg.c_str()),
               msg.length());
   unsigned char hcal[HMAC<SHA1>::HASHLEN];
@@ -43,17 +51,21 @@ stringT YubiKeyAuthenticator::SignReq(const string &msg)
 
 bool YubiKeyAuthenticator::VerifySig(const string &msg, const string &h)
 {
-  BYTE *hv = new BYTE[2*h.length()]; // a bit too much, who cares?
-  size_t hlen = 0;
-  CString H(h.c_str()); // kludge to workaround char/wchar_t pain
-  PWSUtil::Base64Decode(LPCTSTR(H), hv, hlen);
-  if (hlen != HMAC<SHA1>::HASHLEN)
-    return false;
-  HMAC<SHA1> hmac(apiKey, sizeof(apiKey));
+  HMAC<SHA1> hmac(m_apiKey, sizeof(m_apiKey));
   hmac.Update(reinterpret_cast<const unsigned char *>(msg.c_str()),
               msg.length());
   unsigned char hcal[HMAC<SHA1>::HASHLEN];
   hmac.Final(hcal);
+
+  BYTE *hv = new BYTE[2*h.length()]; // a bit too much, who cares?
+  size_t hlen = 0;
+  CString H(h.c_str()); // kludge to workaround char/wchar_t pain
+  PWSUtil::Base64Decode(LPCTSTR(H), hv, hlen);
+  if (hlen != HMAC<SHA1>::HASHLEN) {
+    TRACE(_T("YubiKeyAuthenticator::VerifySig: bad hlen(%d)\n"), hlen);
+    delete[] hv;
+    return false;
+  }
   bool retval = (std::memcmp(hcal, hv, HMAC<SHA1>::HASHLEN) == 0);
   delete[] hv;
   return retval;
@@ -70,16 +82,19 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
   int otp_strlen;
   conv.ToUTF8(otp.c_str(), otp_str, otp_strlen);
   bool retval = false;
-  string req("id="); req += OurID;
-  req += "&otp=";
-  req += reinterpret_cast<const char *>(otp_str);
-  stringT req_sig = SignReq(req);
-  req += "&h=";
+
+  ostringstream os;
+  os << "id=" << m_apiID;
+  os << "&otp=" << otp_str;
+  stringT req_sig = SignReq(os.str());
 
   StringX Req;
-  conv.FromUTF8(reinterpret_cast<const unsigned char *>(req.c_str()),
-                req.size(), Req);
+  conv.FromUTF8(reinterpret_cast<const unsigned char *>(os.str().c_str()),
+                os.str().size(), Req);
+#if 0
+  Req += _T("&h=");
   Req += req_sig.c_str();
+#endif
   CString urlStr(AuthServer);
   urlStr += Req.c_str();
 
@@ -107,10 +122,10 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
           rsp_status = line; //.substr(7);
         else if (line.find("info=") == 0)
           rsp_info = line; //.substr(7);
-        else if (line.empty())
+        else if (line.empty() || line == "\n" || line == "\r")
           continue;
         else {
-          TRACE(_T("Unexpected value in response\n"));
+          TRACE(_T("Unexpected value in response: %s\n"), line.c_str());
           m_error = _T("Malformed response");
           goto done;
         }

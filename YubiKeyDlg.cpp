@@ -10,19 +10,24 @@
 //
 
 #include "stdafx.h"
-#include "YubiKeyDlg.h"
 #include "PasswordSafe.h" // for extern app.
 #include "ThisMfcApp.h" // ditto
-#include "corelib/YubiKey.h"
+#include "YubiKeyDlg.h"
+#include "corelib/Util.h"
 
 // YubiKeyDlg dialog
 
 IMPLEMENT_DYNAMIC(CYubiKeyDlg, CPWDialog)
 
-CYubiKeyDlg::CYubiKeyDlg(CWnd* pParent /*=NULL*/)
-: CPWDialog(CYubiKeyDlg::IDD, pParent), m_YKpubID(_T("")),
-  m_YKinfo(_T("")), m_otp(_T("")), m_YKstatus(_T(""))
+CYubiKeyDlg::CYubiKeyDlg(CWnd* pParent,
+                         const StringX &yPubID,
+                         unsigned int yapiID,
+                         const YubiApiKey_t &yapiKey)
+: CPWDialog(CYubiKeyDlg::IDD, pParent), m_YKpubID(yPubID.c_str()),
+  m_apiID(yapiID),
+  m_YKinfo(_T("")), m_otp(_T("")), m_YKstatus(_T("")), m_apiKeyStr(_T(""))
 {
+  memcpy(m_apiKey, yapiKey, sizeof(yapiKey));
 }
 
 CYubiKeyDlg::~CYubiKeyDlg()
@@ -39,17 +44,35 @@ BOOL CYubiKeyDlg::OnInitDialog()
     m_YKinfo += _T("\"\r\nTo disable YubiKey support, click OK.\r\n");
     m_YKinfo += _T("To change the YubiKey, activate your new YubiKey below");
   }
+  unsigned char hasKey = 0;
+  for (size_t i = 0; i < sizeof(m_apiKey); i++) hasKey |= m_apiKey[i];
+  if (hasKey != 0) {
+    stringT keystr = PWSUtil::Base64Encode((const BYTE *)m_apiKey,
+                                           sizeof(m_apiKey));
+    m_apiKeyStr = keystr.c_str();
+  }
   CPWDialog::OnInitDialog();
   return TRUE;
 }
 
 void CYubiKeyDlg::DoDataExchange(CDataExchange* pDX)
 {
-   CPWDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_YK_OTP, m_otp);
-   DDV_MaxChars(pDX, m_otp, 44);
-   DDX_Text(pDX, IDC_YK_STATUS, m_YKstatus);
-   DDX_Text(pDX, IDC_YK_INFO, m_YKinfo);
+  CPWDialog::DoDataExchange(pDX);
+  DDX_Text(pDX, IDC_YK_OTP, m_otp);
+  DDV_MaxChars(pDX, m_otp, 44);
+  DDX_Text(pDX, IDC_YK_STATUS, m_YKstatus);
+  DDX_Text(pDX, IDC_YK_INFO, m_YKinfo);
+  DDX_Text(pDX, IDC_YK_ID, m_apiID);
+  DDX_Text(pDX, IDC_YK_KEY, m_apiKeyStr);
+	DDV_MaxChars(pDX, m_apiKeyStr, 28);
+  if (pDX->m_bSaveAndValidate) { // dbox to data
+    if (m_apiKeyStr.GetLength() == 28) {
+      StringX keystr(m_apiKeyStr);
+      size_t keylen;
+      BYTE *key = (BYTE *)m_apiKey;
+      PWSUtil::Base64Decode(keystr, key, keylen);
+    }
+  }
 }
 
 
@@ -81,7 +104,7 @@ void CYubiKeyDlg::OnOk()
 
 bool CYubiKeyDlg::VerifyOTP(CString &error)
 {
-  YubiKeyAuthenticator yka;
+  YubiKeyAuthenticator yka(m_apiID, m_apiKey);
 
   if (!yka.VerifyOTP(LPCTSTR(m_otp))) {
     error = yka.GetError().c_str();

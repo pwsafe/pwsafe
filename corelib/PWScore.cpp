@@ -126,7 +126,7 @@ void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
 void PWScore::ClearData(void)
 {
   if (m_passkey_len > 0 &&
-      GetHeader().m_YubiKeyPubID.empty()) {
+      GetHeader().m_YubiKey.PubID.empty()) {
     trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
     delete[] m_passkey;
     m_passkey_len = 0;
@@ -1135,12 +1135,13 @@ int PWScore::CheckPassword(const StringX &filename, StringX &passkey)
     // If the check fails AND YubiKey set, treat passkey as authentication
     // request, and recover actual passkey IFF reply is affirmative.
     if (status == PWSfile::WRONG_PASSWORD &&
-        !GetHeader().m_YubiKeyPubID.empty() &&
+        !GetHeader().m_YubiKey.PubID.empty() &&
         // check that length matches YubiKey OTP
         passkey.length() == 44 &&
         // and that the public key id matches that of the db!
-        GetHeader().m_YubiKeyPubID == passkey.substr(0,12)) {
-      YubiKeyAuthenticator yka;
+        GetHeader().m_YubiKey.PubID == passkey.substr(0,12)) {
+      YubiKeyAuthenticator yka(GetHeader().m_YubiKey.apiID,
+                               GetHeader().m_YubiKey.apiKey);
       if (yka.VerifyOTP(passkey.c_str())) {
         status = PWSfile::SUCCESS;
         passkey = GetPassKey();

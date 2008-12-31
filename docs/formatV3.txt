@@ -152,7 +152,7 @@ Database Description        0x0a        Text          Y              [11]
 Database Filters            0x0b        Text          Y              [12]
 Reserved                    0x0c        -                            [13]
 Reserved                    0x0d        -                            [13]
-YubiKey PublicID            0x0e        Text          Y              [14]
+YubiKey information         0x0e        Text          Y              [14]
 End of Entry                0xff        [empty]       Y              [15]
 
 [1] The version number of the database format. For this version, the value
@@ -240,10 +240,12 @@ format version 0x0305.
 versions of PasswordSafe. To ensure compatability beweeen versions,
 use of these values should be avoided.
 
-[14] This is the public idenitifier of the YubiKey associated with the
-database. The application will check the one-time password (OTP)
-entered by the user against this value before sending it for
-verification.
+[14] This is information specific to the YubiKey associated with the
+database. Specifically: The public identifier of the YubiKey (12 bytes
+ASCII), followed by the API ID (4 bytes little-endian), followed by
+the API key (20 bytes). The application will check the one-time
+password (OTP) entered by the user against this value before sending
+it for verification, using the ID and API key as required by Yubico.
 
 [15] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.

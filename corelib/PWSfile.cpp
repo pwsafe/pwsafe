@@ -91,9 +91,11 @@ PWSfile::HeaderRecord::HeaderRecord()
     m_nITER(0), m_prefString(_T("")), m_whenlastsaved(0),
     m_lastsavedby(_T("")), m_lastsavedon(_T("")),
     m_whatlastsaved(_T("")),
-    m_dbname(_T("")), m_dbdesc(_T("")),
-    m_YubiKeyPubID(_T(""))
+    m_dbname(_T("")), m_dbdesc(_T(""))
 {
+  m_YubiKey.PubID = _T("");
+  m_YubiKey.apiID = 0;
+  memset(m_YubiKey.apiKey, 0x00, sizeof(m_YubiKey.apiKey));
   memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
 }
 
@@ -104,11 +106,14 @@ PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h)
     m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
     m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
     m_whatlastsaved(h.m_whatlastsaved),
-    m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc),
-    m_YubiKeyPubID(h.m_YubiKeyPubID)
+    m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc)
 {
+  m_YubiKey.PubID = h.m_YubiKey.PubID;
+  m_YubiKey.apiID = h.m_YubiKey.apiID;
+  memcpy(m_YubiKey.apiKey, h.m_YubiKey.apiKey,
+         sizeof(m_YubiKey.apiKey));
   memcpy(m_file_uuid_array, h.m_file_uuid_array,
-    sizeof(m_file_uuid_array));
+         sizeof(m_file_uuid_array));
 }
 
 PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
@@ -125,9 +130,12 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
     m_whatlastsaved = h.m_whatlastsaved;
     m_dbname = h.m_dbname;
     m_dbdesc = h.m_dbdesc;
-    m_YubiKeyPubID = h.m_YubiKeyPubID;
+    m_YubiKey.PubID = h.m_YubiKey.PubID;
+    m_YubiKey.apiID = h.m_YubiKey.apiID;
+    memcpy(m_YubiKey.apiKey, h.m_YubiKey.apiKey,
+           sizeof(m_YubiKey.apiKey));
     memcpy(m_file_uuid_array, h.m_file_uuid_array,
-      sizeof(m_file_uuid_array));
+           sizeof(m_file_uuid_array));
   }
   return *this;
 }

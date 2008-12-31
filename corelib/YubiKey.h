@@ -15,9 +15,14 @@
  */
 #include "os/typedefs.h"
 
+typedef unsigned char YubiApiKey_t[20];
+
 class YubiKeyAuthenticator
 {
  public:
+  YubiKeyAuthenticator(unsigned int apiID,
+                       const YubiApiKey_t &apiKey);
+
   bool VerifyOTP(const stringT &otp);
   stringT GetError() const {return m_error;}
 
@@ -25,6 +30,8 @@ class YubiKeyAuthenticator
   stringT SignReq(const std::string &msg);
   bool VerifySig(const std::string &msg, const std::string &h);
   stringT m_error;
+  unsigned int m_apiID;
+  YubiApiKey_t m_apiKey;
 };
 
 #define __YUBIKEY_H

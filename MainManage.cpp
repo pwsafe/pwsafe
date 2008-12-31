@@ -886,15 +886,24 @@ void DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
 
 void DboxMain::OnYubiKey()
 {
-  CYubiKeyDlg YKDlg(this);
-  YKDlg.m_YKpubID = m_core.GetHeader().m_YubiKeyPubID.c_str();
+  CYubiKeyDlg YKDlg(this,
+                    m_core.GetHeader().m_YubiKey.PubID,
+                    m_core.GetHeader().m_YubiKey.apiID,
+                    m_core.GetHeader().m_YubiKey.apiKey);
   app.DisableAccelerator();
   INT_PTR rc = YKDlg.DoModal();
   app.EnableAccelerator();
   if (rc == IDOK) {
-    m_core.SetChanged(YKDlg.m_YKpubID != 
-                      m_core.GetHeader().m_YubiKeyPubID.c_str());
-    m_core.GetHeader().m_YubiKeyPubID = LPCTSTR(YKDlg.m_YKpubID);
+    m_core.SetChanged(YKDlg.GetYKpubID() != 
+                      m_core.GetHeader().m_YubiKey.PubID.c_str() ||
+                      YKDlg.GetApiID() != 
+                      m_core.GetHeader().m_YubiKey.apiID ||
+                      YKDlg.GetApiKey() != 
+                      m_core.GetHeader().m_YubiKey.apiKey);
+    m_core.GetHeader().m_YubiKey.PubID = LPCTSTR(YKDlg.GetYKpubID());
+    m_core.GetHeader().m_YubiKey.apiID = YKDlg.GetApiID();
+    memcpy(m_core.GetHeader().m_YubiKey.apiKey, YKDlg.GetApiKey(),
+           sizeof(YubiApiKey_t));
   }
 }
 

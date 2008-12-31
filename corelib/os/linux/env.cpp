@@ -26,13 +26,17 @@ static stringT towc(const char *val)
   stringT retval;
   assert(val != NULL);
   int len = std::strlen(val);
-  int wsize = std::mbtowc(NULL, val, len);
-  ASSERT(wsize > 0);
-  wchar_t *wvalue = new wchar_t[wsize+1];
-  wsize = std::mbtowc(wvalue, val, len);
-  wvalue[wsize] = 0;
-  retval = wvalue;
-  delete[] wvalue;
+  int wsize;
+  const char *p = val;
+  wchar_t wvalue;
+  do {
+    wsize = mbtowc(&wvalue, p, MB_CUR_MAX);
+    if (wsize <= 0)
+      break;
+    retval += wvalue;
+    p += wsize;
+    len -= wsize;
+  } while (len != 1);
   return retval;
 }
 #endif
