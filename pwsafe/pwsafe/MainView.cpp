@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2009 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -1861,8 +1861,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent )
 BOOL DboxMain::IsWorkstationLocked() const
 {
   BOOL Result = false;
-  HDESK hDesktop = OpenDesktop(_T("default"), 0, false,
-    DESKTOP_SWITCHDESKTOP);
+  HDESK hDesktop = OpenInputDesktop(0, FALSE, DESKTOP_SWITCHDESKTOP);
   if( hDesktop != 0 ) {
     // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
     Result = ! SwitchDesktop(hDesktop);
