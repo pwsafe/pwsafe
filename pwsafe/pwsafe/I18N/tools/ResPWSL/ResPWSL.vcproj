@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\obj\ResPWL\Debug"
-			IntermediateDirectory="..\obj\ResPWL\Debug"
+			OutputDirectory="..\bin\ResPWSL\Debug"
+			IntermediateDirectory="..\obj\ResPWSL\Debug"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -48,10 +48,10 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile="..\obj\ResPWL\Debug"
-				AssemblerListingLocation="..\obj\ResPWL\Debug"
-				ObjectFile="..\obj\ResPWL\Debug"
-				ProgramDataBaseFileName="..\obj\ResPWL\Debug"
+				PrecompiledHeaderFile="..\obj\ResPWSL\Debug/ResPWSL.pch"
+				AssemblerListingLocation="..\obj\ResPWSL\Debug/"
+				ObjectFile="..\obj\ResPWSL\Debug/"
+				ProgramDataBaseFileName="..\obj\ResPWSL\Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -106,8 +106,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".."
-			IntermediateDirectory="..\obj\ResPWL\Release/"
+			OutputDirectory="..\bin\ResPWSL\Release"
+			IntermediateDirectory="..\obj\ResPWSL\Release"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -138,10 +138,10 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile="..\obj\ResPWL\Release/ResPWSL.pch"
-				AssemblerListingLocation="..\obj\ResPWL\Release/"
-				ObjectFile="..\obj\ResPWL\Release/"
-				ProgramDataBaseFileName="..\obj\ResPWL\Release/"
+				PrecompiledHeaderFile="..\obj\ResPWSL\Release/ResPWSL.pch"
+				AssemblerListingLocation="..\obj\ResPWSL\Release/"
+				ObjectFile="..\obj\ResPWSL\Release/"
+				ProgramDataBaseFileName="..\obj\ResPWSL\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -159,10 +159,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
-				OutputFile="$(OutDir)\ResPWSL.exe"
+				OutputFile="$(OutDir)/ResPWSL.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile="$(OutDir)\ResPWSL.pdb"
+				ProgramDatabaseFile="$(OutDir)/ResPWSL.pdb"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -178,7 +178,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="$(OutDir)\ResPWSL.bsc"
+				OutputFile="$(OutDir)/ResPWSL.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
