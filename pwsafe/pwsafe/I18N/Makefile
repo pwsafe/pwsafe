@@ -42,8 +42,8 @@ dlls/pwsafeDE_DE.dll : pos/pwsafe_de.po
 		$(RM) foo.dll)
 	$(CHMOD) 755 $@
 # No need to change anything below this line
-RESTEXT = ./tools/ResText.exe
-RESPWSL = ./tools/ResPWSL.exe
+RESTEXT = ./tools/bin/restext/release/ResText.exe
+RESPWSL = ./tools/bin/respwsl/release/ResPWSL.exe
 CHMOD = /usr/bin/chmod
 RM = /usr/bin/rm
 
