@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,10 +22,20 @@
 #define MYERROR	{CUtils::Error(); return FALSE;}
 
 CResModule::CResModule(void)
+	: m_bTranslatedStrings(0)
+	, m_bDefaultStrings(0)
+	, m_bTranslatedDialogStrings(0)
+	, m_bDefaultDialogStrings(0)
+	, m_bTranslatedMenuStrings(0)
+	, m_bDefaultMenuStrings(0)
+	, m_bTranslatedAcceleratorStrings(0)
+	, m_bDefaultAcceleratorStrings(0)
+	, m_wTargetLang(0)
+	, m_hResDll(NULL)
+	, m_hUpdateRes(NULL)
+	, m_bQuiet(false)
+	, m_bRTL(false)
 {
-	m_hResDll = NULL;
-	m_bQuiet = FALSE;
-	m_wTargetLang = 0;
 }
 
 CResModule::~CResModule(void)
@@ -232,7 +242,7 @@ BOOL CResModule::ExtractString(UINT nID)
 		pp++;
 		std::wstring msgid = std::wstring(pp, len);
 		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH*2];
-		ZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
+		SecureZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
 		wcscpy(pBuf, msgid.c_str());
 		CUtils::StringExtend(pBuf);
 
@@ -289,7 +299,7 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 		pp++;
 		std::wstring msgid = std::wstring(pp, len);
 		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH*2];
-		ZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
+		SecureZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
 		wcscpy(pBuf, msgid.c_str());
 		CUtils::StringExtend(pBuf);
 		msgid = std::wstring(pBuf);
@@ -308,7 +318,7 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 	}
 
 	WORD * newTable = new WORD[nMem + (nMem % 2)];
-	ZeroMemory(newTable, (nMem + (nMem % 2))*2);
+	SecureZeroMemory(newTable, (nMem + (nMem % 2))*2);
 
 	size_t index = 0;
 	for (int i=0; i<16; ++i)
@@ -317,7 +327,7 @@ BOOL CResModule::ReplaceString(UINT nID, WORD wLanguage)
 		p++;
 		std::wstring msgid = std::wstring(p, len);
 		WCHAR * pBuf = new WCHAR[MAX_STRING_LENGTH*2];
-		ZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
+		SecureZeroMemory(pBuf, MAX_STRING_LENGTH*2*sizeof(WCHAR));
 		wcscpy(pBuf, msgid.c_str());
 		CUtils::StringExtend(pBuf);
 		msgid = std::wstring(pBuf);
@@ -489,7 +499,7 @@ BOOL CResModule::ReplaceMenu(UINT nID, WORD wLanguage)
 			if (!CountMemReplaceMenuResource((WORD *)p, &nMem, NULL))
 				goto DONE_ERROR;
 			WORD * newMenu = new WORD[nMem + (nMem % 2)+2];
-			ZeroMemory(newMenu, (nMem + (nMem % 2)+2)*2);
+			SecureZeroMemory(newMenu, (nMem + (nMem % 2)+2)*2);
 			size_t index = 2;		// MenuHeader has 2 WORDs zero
 			if (!CountMemReplaceMenuResource((WORD *)p, &index, newMenu))
 			{
@@ -520,7 +530,7 @@ BOOL CResModule::ReplaceMenu(UINT nID, WORD wLanguage)
 			if (!CountMemReplaceMenuExResource((WORD *)(p0 + offset), &nMem, NULL))
 				goto DONE_ERROR;
 			WORD * newMenu = new WORD[nMem + (nMem % 2) + 4];
-			ZeroMemory(newMenu, (nMem + (nMem % 2) + 4) * 2);
+			SecureZeroMemory(newMenu, (nMem + (nMem % 2) + 4) * 2);
 			CopyMemory(newMenu, p0, 2 * sizeof(WORD) + sizeof(DWORD));
 			size_t index = 4;		// MenuExHeader has 2 x WORD + 1 x DWORD
 			if (!CountMemReplaceMenuExResource((WORD *)(p0 + offset), &index, newMenu))
@@ -594,7 +604,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 		if (flags & MF_POPUP)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
-			ZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
+			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
 			_tcscpy(pBuf, str);
 			CUtils::StringExtend(pBuf);
 
@@ -612,7 +622,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 		else if (id != 0)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
-			ZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
+			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
 			_tcscpy(pBuf, str);
 			CUtils::StringExtend(pBuf);
 
@@ -737,7 +747,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			if (menuId == 0)
 				menuId = (WORD)-1;
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
-			ZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
+			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
 			_tcscpy(pBuf, str);
 			CUtils::StringExtend(pBuf);
 
@@ -762,7 +772,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 		} else if (menuId != 0)
 		{
 			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
-			ZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
+			SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
 			_tcscpy(pBuf, str);
 			CUtils::StringExtend(pBuf);
 
@@ -913,7 +923,7 @@ BOOL CResModule::ExtractAccelerator(UINT nID)
 			continue;
 
 		TCHAR * pBuf = new TCHAR[1024];
-		ZeroMemory(pBuf, 1024 * sizeof(TCHAR));
+		SecureZeroMemory(pBuf, 1024 * sizeof(TCHAR));
 
 		// include the menu ID in the msgid to make sure that 'duplicate'
 		// accelerator keys are listed in the po-file.
@@ -962,7 +972,7 @@ BOOL CResModule::ExtractAccelerator(UINT nID)
 		RESOURCEENTRY AKey_entry = m_StringEntries[wstr];
 
 		TCHAR szTempBuf[1024];
-		ZeroMemory(szTempBuf, 1024 * sizeof(TCHAR));
+		SecureZeroMemory(szTempBuf, 1024 * sizeof(TCHAR));
 		std::wstring wmenu = _T("");
 		pME_iter = m_MenuEntries.find(wID);
 		if (pME_iter != m_MenuEntries.end()) 
@@ -1024,7 +1034,7 @@ BOOL CResModule::ReplaceAccelerator(UINT nID, WORD wLanguage)
 			continue;
 
 		TCHAR * pBuf = new TCHAR[1024];
-		ZeroMemory(pBuf, 1024 * sizeof(TCHAR));
+		SecureZeroMemory(pBuf, 1024 * sizeof(TCHAR));
 
 		_stprintf(pBuf, _T("ID:%d:"), lpaccelNew[i].cmd);
 
@@ -1151,7 +1161,7 @@ BOOL CResModule::ExtractDialog(UINT nID)
 	if (dlg.caption)
 	{
 		TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
-		ZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
+		SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
 		_tcscpy(pBuf, dlg.caption);
 		CUtils::StringExtend(pBuf);
 
@@ -1166,7 +1176,7 @@ BOOL CResModule::ExtractDialog(UINT nID)
 	while (bNumControls-- != 0)
 	{
 		TCHAR szTitle[500];
-		ZeroMemory(szTitle, sizeof(szTitle));
+		SecureZeroMemory(szTitle, sizeof(szTitle));
 		BOOL  bCode;
 
 		lpDlgItem = GetControlInfo((WORD *) lpDlgItem, &dlgItem, dlg.dialogEx, &bCode);
@@ -1217,7 +1227,7 @@ BOOL CResModule::ReplaceDialog(UINT nID, WORD wLanguage)
 	if (!CountMemReplaceDialogResource(p, &nMem, NULL))
 		goto DONE_ERROR;
 	WORD * newDialog = new WORD[nMem + (nMem % 2)];
-	ZeroMemory(newDialog, (nMem + (nMem % 2))*2);
+	SecureZeroMemory(newDialog, (nMem + (nMem % 2))*2);
 
 	size_t index = 0;
 	if (!CountMemReplaceDialogResource(lpDlg, &index, newDialog))
@@ -1863,7 +1873,7 @@ BOOL CALLBACK CResModule::EnumResWriteLangCallback(HMODULE /*hModule*/, LPCTSTR 
 void CResModule::ReplaceStr(LPCWSTR src, WORD * dest, size_t * count, int * translated, int * def)
 {
 	TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
-	ZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
+	SecureZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
 	wcscpy(pBuf, src);
 	CUtils::StringExtend(pBuf);
 
