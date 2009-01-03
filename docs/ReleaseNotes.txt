@@ -14,11 +14,11 @@ Bugs fixed in 3.15.03
 
 Changes to Existing Features in 3.15.03
 =======================================
-None
+None.
 
 New Features for 3.15.03
 ========================
-None
+None.
 
 Bugs fixed in 3.15.02
 =====================
@@ -96,12 +96,12 @@ when copying to the clipboard.
 [2144489] Click on the text next to edit fields to copy the field to
 the clipboard. Ctrl+Click on the URL will launch the browser. Text will
 flash to show what it has done (green - copy, pink - launch).
-[] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
-Clipboard Viewers.
-[] Add feature to display a subset of the password. This is useful
+[1871364] Add feature to display a subset of the password. This is useful
 for websites that need different particular characters from a password at
 each login. To access this, select an item, right-click and choose
-Display Subset of Password.
+Display Subset of Password.  This can also be added to the user's toolbar.
+[] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
+Clipboard Viewers.
 
 Bugs fixed in 3.14.01
 =====================
