@@ -1153,14 +1153,19 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
           DWORD_PTR itemData;
 
           itemData = GetItemData(m_hitemDrop);
-          ASSERT(itemData != NULL);
-          ci = (CItemData *)itemData;
-          cs_group = ci->GetGroup();
+          if (itemData == NULL) {
+            // Dropping on a group
+            cs_group = CSecString(GetGroup(m_hitemDrop));
+          } else {
+            // Dropping on an entry
+            ci = (CItemData *)itemData;
+            cs_group = ci->GetGroup();
+          }
 
           itemData = GetItemData(m_hitemDrag);
           ASSERT(itemData != NULL);
           ci = (CItemData *)itemData;
-          cs_title.Format(IDS_SCTARGET, ci->GetTitle());
+          cs_title.Format(IDS_SCTARGET, ci->GetTitle().c_str());
           cs_user = ci->GetUser();
 
           // If there is a matching entry in our list, generate unique one
