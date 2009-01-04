@@ -76,10 +76,10 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_LockCount(0),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_changed(false), m_IsReadOnly(false),
-                     m_nRecordsWithUnknownFields(0),
+                     m_changed(false), m_DBPrefsChanged(false),
+                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
                      m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
-                     m_bNotify(false), m_DBPrefsChanged(false)
+                     m_bNotify(false)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
