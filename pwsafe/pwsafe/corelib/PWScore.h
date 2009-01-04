@@ -13,6 +13,7 @@
 
 #include <map> // for CList
 
+#include "os/pws_tchar.h"
 #include "ItemData.h"
 #include "StringX.h"
 #include "PWSfile.h"

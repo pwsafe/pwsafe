@@ -12,7 +12,7 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 									ItemField.cpp UUIDGen.cpp Debug.cpp PWSprefs.cpp \
 									ItemData.cpp PWSfile.cpp PWHistory.cpp \
 									PWSfileV1V2.cpp PWSfileV3.cpp \
-									PWSFilters.cpp PWSXMLFilters.cpp \
+									PWSFilters.cpp \
 									UnknownField.cpp  VerifyFormat.cpp Match.cpp \
 									UTF8Conv.cpp Report.cpp PWScore.cpp \
 									XMLprefs.cpp tinyxml/tinyxml.cpp \
