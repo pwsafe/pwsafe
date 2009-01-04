@@ -1,1 +1,1 @@
-Restext version as of revision 11791.
+ResText version as of TortoiseSVN ResText revision 14346.
