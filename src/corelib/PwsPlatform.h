@@ -52,7 +52,8 @@
 #define PwsPlatform_h
 
 #if defined(_WIN32)
-#include "../stdafx.h" // ONLY place in corelib which refers to parent. Ugh.
+// ONLY place in corelib which refers to parent. Ugh.
+#include "../Windows/stdafx.h"
 #else
 // some globally useful includes for non-Windows
 #include <cassert>

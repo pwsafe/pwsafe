@@ -12,7 +12,7 @@
 
 #include "../PWDialog.h"
 #include "PWHdrCtrlNoChng.h"
-#include "../corelib/PWSFilters.h"
+#include "../../corelib/PWSFilters.h"
 
 #include <vector>
 

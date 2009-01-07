@@ -130,15 +130,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\resource.h"
+				RelativePath="..\resource.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\resource2.h"
+				RelativePath="..\resource2.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\resource3.h"
+				RelativePath="..\resource3.h"
 				>
 			</File>
 			<File
@@ -146,7 +146,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\version.h"
+				RelativePath="..\version.h"
 				>
 			</File>
 		</Filter>
@@ -156,19 +156,19 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\..\corelib\corelib.rc2"
+				RelativePath="..\corelib\corelib.rc2"
 				>
 			</File>
 			<File
-				RelativePath="..\..\PasswordSafe.rc"
+				RelativePath="..\PasswordSafe.rc"
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\PasswordSafe2.rc2"
+				RelativePath="..\res\PasswordSafe2.rc2"
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\PasswordSafe3.rc2"
+				RelativePath="..\res\PasswordSafe3.rc2"
 				>
 			</File>
 		</Filter>

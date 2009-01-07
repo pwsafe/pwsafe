@@ -20,8 +20,8 @@
 			OutputDirectory="..\..\bin\test\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\test\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\UserVariables.vsprops"
-			UseOfMFC="2"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>
@@ -48,7 +48,7 @@
 				AdditionalIncludeDirectories="..\..\corelib\obj\$(ConfigurationName)\$(ConfigurationName)"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="false"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
@@ -110,7 +110,7 @@
 			OutputDirectory="..\..\bin\test\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\test\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -197,7 +197,7 @@
 			OutputDirectory="..\..\bin\test\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\test\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -289,7 +289,7 @@
 			OutputDirectory="..\..\bin\test\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\test\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -391,7 +391,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="NU-Debug|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -399,7 +399,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="NU-Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

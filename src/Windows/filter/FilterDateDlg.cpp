@@ -11,8 +11,8 @@
 
 #include "../stdafx.h"
 #include "FilterDateDlg.h"
-#include "../corelib/itemdata.h"
-#include "../corelib/corelib.h"
+#include "../../corelib/itemdata.h"
+#include "../../corelib/corelib.h"
 
 // CFilterDateDlg dialog
 

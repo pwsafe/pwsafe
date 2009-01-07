@@ -15,7 +15,7 @@
 #include "SetHistoryFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
 #include "../resource3.h"
-#include "../corelib/corelib.h"
+#include "../../corelib/corelib.h"
 
 // CSetFiltersDlg dialog
 

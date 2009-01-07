@@ -14,11 +14,11 @@
 #include "ManageFiltersDlg.h"
 #include "../DboxMain.h"
 #include "../PWResizeDialog.h"
-#include "../corelib/PWSFilters.h"
-#include "../corelib/match.h"
+#include "../../corelib/PWSFilters.h"
+#include "../../corelib/match.h"
 
 #include "../resource3.h"
-#include "../corelib/corelib.h"
+#include "../../corelib/corelib.h"
 
 #include <vector>
 #include <map>

@@ -12,10 +12,10 @@
 
 #include "SetHistoryFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
-#include "../corelib/PWSFilters.h"
+#include "../../corelib/PWSFilters.h"
 
 #include "../resource3.h"
-#include "../corelib/corelib.h"
+#include "../../corelib/corelib.h"
 
 #include <algorithm>
 

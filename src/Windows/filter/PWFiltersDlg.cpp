@@ -19,8 +19,8 @@
 
 #include "../resource2.h"
 #include "../resource3.h"
-#include "../corelib/corelib.h"
-#include "../corelib/PWSFilters.h"
+#include "../../corelib/corelib.h"
+#include "../../corelib/PWSFilters.h"
 
 // CPWFiltersDlg dialog
 

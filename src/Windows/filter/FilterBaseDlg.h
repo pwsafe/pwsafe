@@ -12,7 +12,7 @@
  */
 
 #include "../PWDialog.h" // base class
-#include "../corelib/Match.h" // for PWSMatch::MatchRule
+#include "../../corelib/Match.h" // for PWSMatch::MatchRule
 
 class CFilterBaseDlg : public CPWDialog
 {

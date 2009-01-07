@@ -11,7 +11,7 @@
 
 #include "../stdafx.h"
 #include "FilterIntegerDlg.h"
-#include "../corelib/corelib.h"
+#include "../../corelib/corelib.h"
 
 // CFilterIntegerDlg dialog
 

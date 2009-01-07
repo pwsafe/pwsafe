@@ -1,3 +1,4 @@
+
 /*
 * Copyright (c) 2003-2009 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
@@ -7,7 +8,7 @@
 */
 // TwoFishTest.h: Unit test for TwoFish implementation
 #include "test.h"
-#include "../../corelib/TwoFish.h"
+#include "../corelib/TwoFish.h"
 
 class CTwoFishTest : public Test
 {
