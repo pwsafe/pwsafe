@@ -52,20 +52,20 @@ static char THIS_FILE[] = __FILE__;
 // File Handler Wrappers as Expat is a C not a C++ interface
 static EFileHandlers *pFileHandler(NULL);
 
-void WstartFileElement(void *userdata, const XML_Char *name,
+static void WstartFileElement(void *userdata, const XML_Char *name,
                   const XML_Char **attrs)
 {
   ASSERT(pFileHandler);
   pFileHandler->startElement(userdata, name, attrs);
 }
 
-void WendFileElement(void *userdata, const XML_Char *name)
+static void WendFileElement(void *userdata, const XML_Char *name)
 {
   ASSERT(pFileHandler);
   pFileHandler->endElement(userdata, name);
 }
 
-void WcharacterFileData(void *userdata, const XML_Char *s, int length)
+static void WcharacterFileData(void *userdata, const XML_Char *s, int length)
 {
   ASSERT(pFileHandler);
   pFileHandler->characterData(userdata, s, length);
@@ -74,19 +74,19 @@ void WcharacterFileData(void *userdata, const XML_Char *s, int length)
 // Secure Memory Wrappers as Expat is a C not a C++ interface
 static ESecMemMgr *pSecMM(NULL);
 
-void* WFile_malloc(size_t size)
+static void* WFile_malloc(size_t size)
 {
   ASSERT(pSecMM);
   return pSecMM->malloc(size);
 }
 
-void* WFile_realloc(void *p, size_t size)
+static void* WFile_realloc(void *p, size_t size)
 {
   ASSERT(pSecMM);
   return pSecMM->realloc(p, size);
 }
 
-void WFile_free(void *p)
+static void WFile_free(void *p)
 {
   ASSERT(pSecMM);
   pSecMM->free(p);

@@ -267,13 +267,13 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
   }
 
   else if (XMLString::equals(qname, L"filter_entry")) {
-    if (m_type == FI_NORMAL) {
+    if (m_type == DFTYPE_MAIN) {
       cur_filter->num_Mactive++;
       cur_filter->vMfldata.push_back(*cur_filterentry);
-    } else if (m_type == FI_HISTORY) {
+    } else if (m_type == DFTYPE_PWHISTORY) {
       cur_filter->num_Hactive++;
       cur_filter->vHfldata.push_back(*cur_filterentry);
-    } else if (m_type == FI_POLICY) {
+    } else if (m_type == DFTYPE_PWPOLICY) {
       cur_filter->num_Pactive++;
       cur_filter->vPfldata.push_back(*cur_filterentry);
     }
@@ -281,198 +281,198 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
   }
 
   else if (XMLString::equals(qname, L"grouptitle")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_GROUPTITLE;
   }
 
   else if (XMLString::equals(qname, L"group")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_GROUP;
   }
 
   else if (XMLString::equals(qname, L"title")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_TITLE;
   }
 
   else if (XMLString::equals(qname, L"username")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_USER;
   }
 
   else if (XMLString::equals(qname, L"password")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_PASSWORD;
     cur_filterentry->ftype = FT_PASSWORD;
   }
 
   else if (XMLString::equals(qname, L"url")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_URL;
   }
 
   else if (XMLString::equals(qname, L"autotype")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_AUTOTYPE;
   }
 
   else if (XMLString::equals(qname, L"notes")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_NOTES;
   }
 
   else if (XMLString::equals(qname, L"create_time")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_CTIME;
   }
 
   else if (XMLString::equals(qname, L"password_modified_time")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_PMTIME;
   }
 
   else if (XMLString::equals(qname, L"last_access_time")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_ATIME;
   }
 
   else if (XMLString::equals(qname, L"expiry_time")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_XTIME;
   }
 
   else if (XMLString::equals(qname, L"record_modified_time")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_RMTIME;
   }
 
   else if (XMLString::equals(qname, L"password_expiry_interval")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = FT_XTIME_INT;
   }
 
   else if (XMLString::equals(qname, L"entrytype")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_ENTRYTYPE;
     cur_filterentry->ftype = FT_ENTRYTYPE;
   }
 
   else if (XMLString::equals(qname, L"unknownfields")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->ftype = FT_UNKNOWNFIELDS;
   }
 
   else if (XMLString::equals(qname, L"password_history")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_PWHIST;
     cur_filterentry->ftype = FT_PWHIST;
   }
 
   else if (XMLString::equals(qname, L"history_present")) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = HT_PRESENT;
   }
 
   else if (XMLString::equals(qname, L"history_active")) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = HT_ACTIVE;
   }
 
   else if (XMLString::equals(qname, L"history_number")) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = HT_NUM;
   }
 
   else if (XMLString::equals(qname, L"history_maximum")) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = HT_MAX;
   }
 
   else if (XMLString::equals(qname, L"history_changedate")) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = HT_CHANGEDATE;
   }
 
   else if (XMLString::equals(qname, L"history_passwords")) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_PASSWORD;
     cur_filterentry->ftype = HT_PASSWORDS;
   }
 
   else if (XMLString::equals(qname, L"password_policy")) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_POLICY;
     cur_filterentry->ftype = FT_POLICY;
   }
 
   else if (XMLString::equals(qname, L"policy_present")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_PRESENT;
   }
 
   else if (XMLString::equals(qname, L"policy_length")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_LENGTH;
   }
 
   else if (XMLString::equals(qname, L"policy_number_lowercase")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_LOWERCASE;
   }
 
   else if (XMLString::equals(qname, L"policy_number_uppercase")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_UPPERCASE;
   }
 
   else if (XMLString::equals(qname, L"policy_number_digits")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_DIGITS;
   }
 
   else if (XMLString::equals(qname, L"policy_number_symbols")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_SYMBOLS;
   }
 
   else if (XMLString::equals(qname, L"policy_easyvision")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_EASYVISION;
   }
 
   else if (XMLString::equals(qname, L"policy_pronounceable")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_PRONOUNCEABLE;
   }
 
   else if (XMLString::equals(qname, L"policy_hexadecimal")) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_HEXADECIMAL;
   }

@@ -1861,8 +1861,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent )
 BOOL DboxMain::IsWorkstationLocked() const
 {
   BOOL Result = false;
-  HDESK hDesktop = OpenDesktop(_T("default"), 0, false,
-                               DESKTOP_SWITCHDESKTOP);
+  HDESK hDesktop = OpenInputDesktop(0, FALSE, DESKTOP_SWITCHDESKTOP);
   if( hDesktop != 0 ) {
     // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
     Result = ! SwitchDesktop(hDesktop);

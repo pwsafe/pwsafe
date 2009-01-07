@@ -1,5 +1,5 @@
-Password Safe 3.15.02 Release Notes - December 2008
-===================================================
+Password Safe 3.15.03 Release Notes - January 2009
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,6 +8,18 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
+Bugs fixed in 3.15.03
+=====================
+[2481370] Can now create shortcut by right-mouse down dragging.
+
+Changes to Existing Features in 3.15.03
+=======================================
+None.
+
+New Features for 3.15.03
+========================
+None.
+
 Bugs fixed in 3.15.02
 =====================
 [2423397] Sorting direction database preference was not being saved in
@@ -15,13 +27,13 @@ the database.  See "Changes to Existing Features" below.
 
 Changes to Existing Features in 3.15.02
 =======================================
-[] Support interoperability with tools that access edit control text
-by setting PWS_PW_MODE environment variable to "NORMAL".
 [2423397] Changes to preferences stored in the database are no longer
 silently saved in the database (including any changes to any entries).
 A new flag is shown in the Status Bar to indicate the preferences have
 been changed and the user can decide to save these, or not, when closing
 the database, directly or when ending the application.
+[] Support interoperability with tools that access edit control text
+by setting PWS_PW_MODE environment variable to "NORMAL".
 
 New Features for 3.15.02
 ========================
@@ -79,17 +91,17 @@ None.
 
 New Features for 3.15
 =====================
-[] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
-Clipboard Viewers.
-[] Add feature to display a subset of the password. This is useful
-for websites that need different particular characters from a password at
-each login. To access this, select an item, right-click and choose
-Display Subset of Password.
 [2203438] Remove "[alt]", "[ssh]" and "{alt}" special keywords from URL
 when copying to the clipboard.
 [2144489] Click on the text next to edit fields to copy the field to
 the clipboard. Ctrl+Click on the URL will launch the browser. Text will
 flash to show what it has done (green - copy, pink - launch).
+[1871364] Add feature to display a subset of the password. This is useful
+for websites that need different particular characters from a password at
+each login. To access this, select an item, right-click and choose
+Display Subset of Password.  This can also be added to the user's toolbar.
+[] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
+Clipboard Viewers.
 
 Bugs fixed in 3.14.01
 =====================

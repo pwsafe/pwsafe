@@ -50,7 +50,7 @@ using namespace std;
 
 EFileValidator::EFileValidator()
 {
-  m_elementstack.clear();
+  m_element_stack.clear();
   m_sErrorMsg.clear();
   m_iprevious_element = 0;
   m_b_inheader = false;
@@ -65,23 +65,23 @@ EFileValidator::EFileValidator()
 
 EFileValidator::~EFileValidator()
 {
-  m_elementstack.clear();
+  m_element_stack.clear();
 }
 
 bool EFileValidator::startElement(stringT & strStartElement)
 {
   m_iErrorCode = 0;
   if (strStartElement == _T("passwordsafe")) {
-    if (!m_elementstack.empty() || m_ielement_occurs[XLE_PASSWORDSAFE] > 0) {
+    if (!m_element_stack.empty() || m_ielement_occurs[XLE_PASSWORDSAFE] > 0) {
       m_iErrorCode = XLPEC_UNEXPECTED_ELEMENT;
       return false;
     } else {
-      m_elementstack.push_back(XLE_PASSWORDSAFE);
+      m_element_stack.push_back(XLE_PASSWORDSAFE);
       return true;
     }
   }
 
-  if (m_elementstack.empty())
+  if (m_element_stack.empty())
     return false;
 
   st_file_element_data edata;
@@ -91,7 +91,7 @@ bool EFileValidator::startElement(stringT & strStartElement)
     return false;
   }
 
-  m_iprevious_element = m_elementstack.back();
+  m_iprevious_element = m_element_stack.back();
   int icurrent_element = m_b_inentry ? edata.element_entry_code :
                                        edata.element_code;
   if (icurrent_element == XLE_ENTRY) {
@@ -401,7 +401,7 @@ bool EFileValidator::startElement(stringT & strStartElement)
     return false;
   }
 
-  m_elementstack.push_back(icurrent_element);
+  m_element_stack.push_back(icurrent_element);
   return true;
 }
 
@@ -424,7 +424,7 @@ bool EFileValidator::endElement(stringT & endElement, StringX &strValue, int &da
     return false;
   }
 
-  int &icurrent_element = m_elementstack.back();
+  int &icurrent_element = m_element_stack.back();
   switch (icurrent_element) {
     case XLE_CTIME:
     case XLE_ATIME:
@@ -452,7 +452,7 @@ bool EFileValidator::endElement(stringT & endElement, StringX &strValue, int &da
       break;
   }
 
-  m_elementstack.pop_back();
+  m_element_stack.pop_back();
   return true;
 }
 

@@ -56,6 +56,8 @@ EFilterHandlers::~EFilterHandlers()
 void XMLCALL EFilterHandlers::startElement(void *userdata, const XML_Char *name,
                                            const XML_Char **attrs)
 {
+  m_strElemContent = _T("");
+
   if (m_bValidation) {
     stringT element_name(name);
     if (!m_pValidator->startElement(element_name)) {
@@ -116,8 +118,6 @@ void XMLCALL EFilterHandlers::startElement(void *userdata, const XML_Char *name,
     return;
   }
 
-  m_strElemContent = _T("");
-
   if (_tcscmp(name, _T("filters")) == 0) {
     m_unique_filternames.clear();
     m_strErrorMessage.clear();
@@ -158,9 +158,6 @@ start_errors:
 void XMLCALL EFilterHandlers::characterData(void * /* userdata */, const XML_Char *s,
                                             int length)
 {
-  if (m_bValidation)
-    return;
-
   XML_Char *xmlchData = new XML_Char[length + 1];
 #if _MSC_VER >= 1400
   _tcsncpy_s(xmlchData, length + 1, s, length);
@@ -175,9 +172,8 @@ void XMLCALL EFilterHandlers::characterData(void * /* userdata */, const XML_Cha
 void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
 {
   if (m_bValidation) {
-    int &element_datatype = m_element_datatypes.top();
     stringT element_name(name);
-    if (!m_pValidator->endElement(element_name, m_strElemContent, element_datatype)) {
+    if (!m_pValidator->endElement(element_name, m_strElemContent)) {
       m_bErrors = true;
       m_iErrorCode = m_pValidator->getErrorCode();
       m_strErrorMessage = m_pValidator->getErrorMsg();
@@ -206,7 +202,11 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
 
   st_filter_element_data edata;
 
-  if (_tcscmp(name, _T("filter")) == 0) {
+  if (_tcscmp(name, _T("filters")) == 0) {
+    return;
+  }
+
+  else if (_tcscmp(name, _T("filter")) == 0) {
     INT_PTR rc = IDYES;
     st_Filterkey fk;
     fk.fpool = m_FPool;
@@ -226,13 +226,13 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
   }
 
   else if (_tcscmp(name, _T("filter_entry")) == 0) {
-    if (m_type == FI_NORMAL) {
+    if (m_type == DFTYPE_MAIN) {
       cur_filter->num_Mactive++;
       cur_filter->vMfldata.push_back(*cur_filterentry);
-    } else if (m_type == FI_HISTORY) {
+    } else if (m_type == DFTYPE_PWHISTORY) {
       cur_filter->num_Hactive++;
       cur_filter->vHfldata.push_back(*cur_filterentry);
-    } else if (m_type == FI_POLICY) {
+    } else if (m_type == DFTYPE_PWPOLICY) {
       cur_filter->num_Pactive++;
       cur_filter->vPfldata.push_back(*cur_filterentry);
     }
@@ -240,7 +240,7 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
   }
 
   else if (m_pValidator->GetElementInfo(name, edata)) {
-    m_type = edata.type;
+    m_type = edata.filter_type;
     cur_filterentry->mtype = edata.mt;
     cur_filterentry->ftype = (FieldType)edata.ft;
   }

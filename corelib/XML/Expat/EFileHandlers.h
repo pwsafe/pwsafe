@@ -54,7 +54,7 @@ private:
   // Local variables
   EFileValidator *m_pValidator;
 
-  std::stack<int> m_element_datatypes;
+  std::stack<int> m_element_datatype;
 };
 
 #endif /* __EFILEHANDLERS_H */

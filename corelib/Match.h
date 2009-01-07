@@ -23,7 +23,7 @@ namespace PWSMatch {
   enum MatchRule {
     MR_INVALID = 0,  // Not valid value
     // For string, integer & date comparisons/filtering
-    MR_EQUALS = 1, MR_NOTEQUAL,
+    MR_EQUALS, MR_NOTEQUAL,
     MR_ACTIVE, MR_INACTIVE,
     MR_PRESENT, MR_NOTPRESENT,
     MR_SET, MR_NOTSET,

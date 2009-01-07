@@ -79,7 +79,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
 
   switch (icurrent_element) {
     case XLE_PASSWORDSAFE:
-      m_element_datatypes.push(XLD_NA);
+      m_element_datatype.push(XLD_NA);
 
       // Only interested in the delimiter attribute
       for (int i = 0; attrs[i]; i += 2) {
@@ -117,11 +117,11 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       m_delimiter = m_strElemContent[0];
       break;
     case XLE_UNKNOWNHEADERFIELDS:
-      m_element_datatypes.push(XLD_NA);
+      m_element_datatype.push(XLD_NA);
       break;
     case XLE_HFIELD:
     case XLE_RFIELD:
-      m_element_datatypes.push(XLD_XS_BASE64BINARY);
+      m_element_datatype.push(XLD_XS_BASE64BINARY);
       // Only interested in the ftype attribute
       for (int i = 0; attrs[i]; i += 2) {
         if (_tcscmp(attrs[i], _T("ftype")) == 0) {
@@ -138,7 +138,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       }
       break;
     case XLE_ENTRY:
-      m_element_datatypes.push(XLD_NA);
+      m_element_datatype.push(XLD_NA);
 	  if (m_bValidation)
 		  return;
 
@@ -155,10 +155,10 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_HISTORY_ENTRIES:
     case XLE_PREFERENCES:
     case XLE_ENTRY_PASSWORDPOLICY:
-      m_element_datatypes.push(XLD_NA);
+      m_element_datatype.push(XLD_NA);
       break;
     case XLE_HISTORY_ENTRY:
-      m_element_datatypes.push(XLD_NA);
+      m_element_datatype.push(XLD_NA);
       break;
     case XLE_CTIME:
     case XLE_ATIME:
@@ -167,7 +167,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_PMTIME:
     case XLE_RMTIME:
     case XLE_CHANGED:
-      m_element_datatypes.push(XLD_NA);
+      m_element_datatype.push(XLD_NA);
       break;
     case XLE_GROUP:
     case XLE_TITLE:
@@ -180,22 +180,22 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_PWHISTORY:
     case XLE_DEFAULTUSERNAME:
     case XLE_DEFAULTAUTOTYPESTRING:
-      m_element_datatypes.push(XLD_XS_STRING);
+      m_element_datatype.push(XLD_XS_STRING);
       break;
     case XLE_XTIME_INTERVAL:
-      m_element_datatypes.push(XLD_EXPIRYDAYSTYPE);
+      m_element_datatype.push(XLD_EXPIRYDAYSTYPE);
       break;
     case XLE_UUID:
-      m_element_datatypes.push(XLD_UUIDTYPE);
+      m_element_datatype.push(XLD_UUIDTYPE);
       break;
     case XLE_DATE:
-      m_element_datatypes.push(XLD_XS_DATE);
+      m_element_datatype.push(XLD_XS_DATE);
       break;
     case XLE_TIME:
-      m_element_datatypes.push(XLD_XS_TIME);
+      m_element_datatype.push(XLD_XS_TIME);
       break;
     case XLE_NUMBERHASHITERATIONS:
-      m_element_datatypes.push(XLD_NUMHASHTYPE);
+      m_element_datatype.push(XLD_NUMHASHTYPE);
       break;
     case XLE_DISPLAYEXPANDEDADDEDITDLG:
     case XLE_MAINTAINDATETIMESTAMPS:
@@ -222,20 +222,20 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_ENTRY_PWUSEUPPERCASE:
     case XLE_ENTRY_PWMAKEPRONOUNCEABLE:
     case XLE_STATUS:
-      m_element_datatypes.push(XLD_BOOLTYPE);
+      m_element_datatype.push(XLD_BOOLTYPE);
       break;
     case XLE_PWDEFAULTLENGTH:
     case XLE_ENTRY_PWLENGTH:
-      m_element_datatypes.push(XLD_PASSWORDLENGTHTYPE);
+      m_element_datatype.push(XLD_PASSWORDLENGTHTYPE);
       break;
     case XLE_IDLETIMEOUT:
-      m_element_datatypes.push(XLD_TIMEOUTTYPE);
+      m_element_datatype.push(XLD_TIMEOUTTYPE);
       break;
     case XLE_TREEDISPLAYSTATUSATOPEN:
-      m_element_datatypes.push(XLD_DISPLAYSTATUSTYPE);
+      m_element_datatype.push(XLD_DISPLAYSTATUSTYPE);
       break;
     case XLE_NUMPWHISTORYDEFAULT:
-      m_element_datatypes.push(XLD_PWHISTORYTYPE);
+      m_element_datatype.push(XLD_PWHISTORYTYPE);
       break;
     case XLE_PWDIGITMINLENGTH:
     case XLE_PWLOWERCASEMINLENGTH:
@@ -245,11 +245,11 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_ENTRY_PWUPPERCASEMINLENGTH:
     case XLE_ENTRY_PWDIGITMINLENGTH:
     case XLE_ENTRY_PWSYMBOLMINLENGTH:
-      m_element_datatypes.push(XLD_PASSWORDLENGTHTYPE2);
+      m_element_datatype.push(XLD_PASSWORDLENGTHTYPE2);
       break;
     case XLE_MAX:
     case XLE_NUM:
-      m_element_datatypes.push(XLD_PWHISTORYTYPE);
+      m_element_datatype.push(XLD_PWHISTORYTYPE);
       break;
     default:
       ASSERT(0);
@@ -293,7 +293,7 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
   StringX buffer(_T(""));
 
   if (m_bValidation) {
-    int &element_datatype = m_element_datatypes.top();
+    int &element_datatype = m_element_datatype.top();
     stringT element_name(name);
     if (!m_pValidator->endElement(element_name, m_strElemContent, element_datatype)) {
       m_bErrors = true;
@@ -303,7 +303,7 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
     }
   }
 
-  m_element_datatypes.pop();
+  m_element_datatype.pop();
 
   if (m_bValidation) {
     if (_tcscmp(name, _T("entry")) == 0)

@@ -23,7 +23,7 @@
 
 // Error codes
 // Xml filTer Parsing Error Codes = 'XTPEC' prefix
-
+// Error codes never include zero!
 enum ErrorCodes {
   XTPEC_EXCEEDED_MAXOCCURS       = 1,
   XTPEC_UNEXPECTED_ELEMENT,
@@ -37,9 +37,9 @@ enum ErrorCodes {
 };
 
 // Elements stack value
-// Xml filTer Elements = 'XTE' prefix
+// Xml filTer Element Codes= 'XTE' prefix
 
-enum XTE_FILTERS {
+enum XTE_Codes {
   XTE_FILTERS                    = 0,
   XTE_FILTER,
 
@@ -97,11 +97,12 @@ enum XTE_FILTERS {
   XTE_TYPE,
 
   // Last element
-  XTE_LAST_ELEMENT
+  XTE_LAST_ELEMENT,
+  XTE_INVALID             = 0xffff
 };
 
-// Xml filTer Ruletypes = 'XTR' prefix
-enum XTT_RULETYPES {
+// Xml filTer Rule codes = 'XTR' prefix
+enum XTR_Codes {
   XTR_NA                  = 0x8000,
   XTR_BOOLEANACTIVERULE   = 0x4000,
   XTR_BOOLEANPRESENTRULE  = 0x2000,
@@ -113,7 +114,9 @@ enum XTT_RULETYPES {
   XTR_PASSWORDHISTORYRULE = 0x0080,
   XTR_PASSWORDPOLICYRULE  = 0x0040,
   XTR_STRINGRULE          = 0x0020,
-  XTR_STRINGPRESENTRULE   = 0x0010
+  XTR_STRINGPRESENTRULE   = 0x0010,
+
+  XTR_BOOLEANONLY = (XTR_BOOLEANACTIVERULE | XTR_BOOLEANPRESENTRULE | XTR_BOOLEANSETRULE),
 };
 
 // XML Test Types
@@ -129,7 +132,7 @@ enum XTT_TESTTYPES {
 
 // XML Data Types
 // Xml filTer Datatypes = 'XTD' prefix
-enum XTD_DATATYPES {
+enum XTD_DataTypes {
   // Not applicable - i.e. high level element with no actual value
   XTD_NA = 0,
 

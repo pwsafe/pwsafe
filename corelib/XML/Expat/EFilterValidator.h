@@ -28,26 +28,35 @@
 // PWS includes
 #include "../../StringX.h"
 #include "../../Match.h"
+#include "../../PWSFilters.h"
 
-#include <vector>
+#include <stack>
 #include <map>
 
 // Expat includes
 #include <expat.h>
 
 const struct st_filter_element_data {
-  unsigned short int element_code /* XTE_FILTERS */;
-  unsigned short int element_entrytype /* XTN_ENTRYTYPES */;
+  XTE_Codes element_code;
+  XTR_Codes rule_code;
   short int element_maxoccurs;
-  unsigned short int type;
+  FilterType filter_type; 
   PWSMatch::MatchType mt;
-  unsigned short int ft /* FieldType */;
+  FieldType ft;
 };
 
-const struct st_filter_testtypes {
+const struct st_filter_rulecodes {
   PWSMatch::MatchRule mr;
-  unsigned short int element_entrytype /* XTN_ENTRYTYPES */;
+  int irule_code;
 };
+
+typedef std::map<const stringT, const st_filter_element_data> Filter_Element_Map;
+typedef std::map<const stringT, const st_filter_element_data> :: const_iterator cFilter_Element_iter;
+typedef std::pair<const stringT, const st_filter_element_data> Filter_Element_Pair;
+
+typedef std::map<const stringT, const st_filter_rulecodes> Filter_Rulecodes_Map;
+typedef std::map<const stringT, const st_filter_rulecodes> :: const_iterator cFilter_Rules_iter;
+typedef std::pair<const stringT, const st_filter_rulecodes> Filter_Rules_Pair;
 
 class EFilterValidator
 {
@@ -56,9 +65,9 @@ public:
   ~EFilterValidator();
 
   bool startElement(stringT &strStartElement);
-  bool endElement(stringT &strEndElement, StringX &strElemContent, int &datatype);
+  bool endElement(stringT &strEndElement, StringX &strElemContent);
 
-  bool VerifyXMLDataType(const StringX &strElemContent, const int &datatype);
+  bool VerifyXMLDataType(const StringX &strElemContent, const XTD_DataTypes &datatype);
   bool GetElementInfo(const XML_Char *name, st_filter_element_data &edata);
   PWSMatch::MatchRule GetMatchRule(const TCHAR *cs_rule);
 
@@ -66,33 +75,33 @@ public:
   stringT getErrorMsg() {return m_sErrorMsg;}
 
 private:
-  bool VerifyStartElement(const st_filter_element_data &filter_element_data);
-  bool VerifyXMLRule(const StringX &strElemContent, const int &datatype);
+  bool VerifyStartElement(cFilter_Element_iter e_iter);
+  bool VerifyXMLRule(const StringX &strElemContent, const XTR_Codes &rule_code);
   bool VerifyXMLDate(const StringX &strElemContent);
   StringX Trim(const StringX &s, const TCHAR *set = NULL);
 
-  std::map<stringT, st_filter_element_data> m_element_map;
-  std::map<stringT, st_filter_testtypes> m_testtypes_map;
-  typedef std::pair<stringT, st_filter_element_data> filter_element_pair;
-  typedef std::pair<stringT, st_filter_testtypes> filter_rules_pair;
+  Filter_Element_Map m_element_map;
+  Filter_Rulecodes_Map m_rulecode_map;
 
-  std::vector<int> m_elementstack;
-  std::vector<int> m_elementtype;
+  std::stack<XTE_Codes> m_element_code_stack;
+  std::stack<XTD_DataTypes> m_element_datatype_stack;
 
   stringT m_sErrorMsg;
-  int m_ielement_occurs[XTE_LAST_ELEMENT];
-  int m_igroup_element;
-  int m_idatetime_element;
-  int m_irule_type;
   int m_iErrorCode;
+
+  int m_ielement_occurs[XTE_LAST_ELEMENT];
+  XTE_Codes m_group_element_code;
+  XTE_Codes m_datetime_element_code;
+  XTR_Codes m_rule_code;
   bool m_bfiltergroup;
+  PWSMatch::MatchRule m_matchrule;
 
   static const struct st_filter_elements {
     TCHAR *name; st_filter_element_data filter_element_data;
   } m_filter_elements[XTE_LAST_ELEMENT];
   static const struct st_filter_rules {
-    TCHAR *name; st_filter_testtypes filter_testtypes;
-  } m_filter_rules[PWSMatch::MR_LAST];
+    TCHAR *name; st_filter_rulecodes filter_rulecode_data;
+  } m_filter_rulecodes[PWSMatch::MR_LAST];
 };
 
 #endif /* __EFILTERVALIDATOR_H */

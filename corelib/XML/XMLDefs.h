@@ -35,8 +35,6 @@
 
 #define PWS_XML_FILTER_VERSION 1
 
-enum {FI_NORMAL = 0, FI_HISTORY, FI_POLICY, FI_INVALID};
-
 // enum for SAX2 error types
 enum {SAX2_WARNING, SAX2_ERROR, SAX2_FATALERROR};
 

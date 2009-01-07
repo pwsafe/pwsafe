@@ -175,8 +175,9 @@
 #define IDSC_EXPATMISSINGDT             3339
 #define IDSC_EXPATMISSINGPWH            3340
 #define IDSC_EXPATEXCEEDMAXOCCURS       3341
-#define IDSC_EXPATDATETMISSING          3342
+#define IDSC_EXPATMISSINGTELM           3342
 #define IDSC_EXPATUNEXPFILTERFLD        3343
-#define IDSC_MISSINGXSD                 3344
-#define IDSC_CANTVALIDATEXML            3345
-#define IDSC_FILTERSKEPT                3346
+#define IDSC_EXPATBADDATA               3344
+#define IDSC_MISSINGXSD                 3345
+#define IDSC_CANTVALIDATEXML            3346
+#define IDSC_FILTERSKEPT                3347

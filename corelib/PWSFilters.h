@@ -26,6 +26,11 @@
 #include "ItemData.h"
 #include "Proxy.h"
 
+enum FilterType {DFTYPE_INVALID = 0,
+                 DFTYPE_MAIN,
+                 DFTYPE_PWHISTORY, 
+                 DFTYPE_PWPOLICY};
+
 // All the fields that we can use for filtering entries:
 
 enum FieldType {
