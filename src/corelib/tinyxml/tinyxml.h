@@ -48,8 +48,8 @@ distribution.
 #endif
 
 #define TIXML_USE_STL /* ronys - for PasswordSafe */
-#include "../os/typedefs.h" /* ronys - for PasswordSafe */
-#include "../os/pws_tchar.h" /* ditto */
+#include "os/typedefs.h" /* ronys - for PasswordSafe */
+#include "os/pws_tchar.h" /* ditto */
 
 #ifdef TIXML_USE_STL
 	#include <string>

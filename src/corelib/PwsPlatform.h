@@ -53,7 +53,7 @@
 
 #if defined(_WIN32)
 // ONLY place in corelib which refers to parent. Ugh.
-#include "../Windows/stdafx.h"
+#include "../ui/Windows/stdafx.h"
 #else
 // some globally useful includes for non-Windows
 #include <cassert>

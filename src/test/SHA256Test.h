@@ -7,7 +7,7 @@
 */
 // SHA256Test.h: Unit test for SHA256 implementation
 #include "test.h"
-#include "../corelib/sha256.h"
+#include "corelib/sha256.h"
 
 class CSHA256Test : public Test
 {

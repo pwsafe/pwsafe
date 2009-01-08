@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -43,14 +43,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -92,10 +93,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -124,10 +125,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -168,10 +169,10 @@
 		</Configuration>
 		<Configuration
 			Name="Demo|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -195,16 +196,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -245,10 +246,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-Debug|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -275,10 +276,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -320,10 +321,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-Release|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -352,10 +353,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -396,10 +397,10 @@
 		</Configuration>
 		<Configuration
 			Name="DebugE|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -422,15 +423,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(ExpatDir)\include"
+				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -472,10 +473,10 @@
 		</Configuration>
 		<Configuration
 			Name="DebugM|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -498,15 +499,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -548,10 +549,10 @@
 		</Configuration>
 		<Configuration
 			Name="DebugX|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -574,15 +575,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(XercesDir)\include"
+				AdditionalIncludeDirectories="..;$(XercesDir)\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -624,10 +625,10 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseE|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -651,16 +652,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(ExpatDir)\include"
+				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -701,10 +702,10 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseM|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -728,16 +729,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -778,10 +779,10 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseX|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -805,16 +806,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(XercesDir)\include"
+				AdditionalIncludeDirectories="..;$(XercesDir)\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -855,10 +856,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-DebugE|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -881,15 +882,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(ExpatDir)\include"
+				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -931,10 +932,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-DebugM|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -957,15 +958,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -1007,10 +1008,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-DebugX|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -1033,15 +1034,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(XercesDir)\include"
+				AdditionalIncludeDirectories="..;$(XercesDir)\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -1083,10 +1084,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-ReleaseE|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -1110,16 +1111,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(ExpatDir)\include"
+				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -1160,10 +1161,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-ReleaseM|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -1187,16 +1188,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -1237,10 +1238,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-ReleaseX|Win32"
-			OutputDirectory=".\obj\$(ConfigurationName)"
-			IntermediateDirectory=".\obj\$(ConfigurationName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -1264,16 +1265,16 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(XercesDir)\include"
+				AdditionalIncludeDirectories="..;$(XercesDir)\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=".\obj\$(ConfigurationName)/corelib.pch"
-				AssemblerListingLocation=".\obj\$(ConfigurationName)/"
-				ObjectFile=".\obj\$(ConfigurationName)/"
-				ProgramDataBaseFileName=".\obj\$(ConfigurationName)/"
+				PrecompiledHeaderFile="..\obj\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\obj\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\obj\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -1329,10 +1330,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\os\windows\dir.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\XML\EXPAT\EFileHandlers.cpp"
 				>
 			</File>
@@ -1357,15 +1354,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\os\windows\env.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\XML\EXPAT\ESecMemMgr.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\os\windows\file.cpp"
 				>
 			</File>
 			<File
@@ -1382,10 +1371,6 @@
 			</File>
 			<File
 				RelativePath=".\Match.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\os\windows\mem.cpp"
 				>
 			</File>
 			<File
@@ -1453,10 +1438,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\os\windows\rand.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Report.cpp"
 				>
 			</File>
@@ -1470,10 +1451,6 @@
 			</File>
 			<File
 				RelativePath=".\StringX.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\os\windows\sys.cpp"
 				>
 			</File>
 			<File
@@ -1503,163 +1480,6 @@
 			<File
 				RelativePath=".\UTF8Conv.cpp"
 				>
-			</File>
-			<File
-				RelativePath=".\os\windows\utf8conv.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Demo|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugE|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugM|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugX|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseE|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseM|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="ReleaseX|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-DebugE|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-DebugM|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-DebugX|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-ReleaseE|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-ReleaseM|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-ReleaseX|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Util.cpp"
@@ -1752,10 +1572,6 @@
 			</File>
 			<File
 				RelativePath=".\XML\EXPAT\ESecMemMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\os\file.h"
 				>
 			</File>
 			<File
@@ -1863,10 +1679,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\os\sys.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SysInfo.h"
 				>
 			</File>
@@ -1892,10 +1704,6 @@
 			</File>
 			<File
 				RelativePath=".\UTF8Conv.h"
-				>
-			</File>
-			<File
-				RelativePath=".\os\utf8conv.h"
 				>
 			</File>
 			<File

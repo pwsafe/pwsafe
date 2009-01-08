@@ -8,7 +8,7 @@
 */
 // TwoFishTest.h: Unit test for TwoFish implementation
 #include "test.h"
-#include "../corelib/TwoFish.h"
+#include "corelib/TwoFish.h"
 
 class CTwoFishTest : public Test
 {

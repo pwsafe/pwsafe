@@ -35,8 +35,8 @@ distribution.
 #endif
 
 #include "tinyxml.h"
-#include "../os/utf8conv.h"
-#include "../os/file.h"
+#include "os/utf8conv.h"
+#include "os/file.h"
 
 const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
 const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
