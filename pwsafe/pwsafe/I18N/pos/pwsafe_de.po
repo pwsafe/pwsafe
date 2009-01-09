@@ -1,13 +1,37 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: Karel Van der Gucht <Karel@VanderGucht.de>\n"
-"Language-Team: Karel Van der Gucht <Karel@VanderGucht.de>\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 1900-01-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -22,5139 +46,3736 @@ msgstr ""
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
-#: ID:315,
 msgid " "
 msgstr " "
 
-#: ID:204,
 msgid "  All Password History ignored."
 msgstr "  Gesamte Passworthistorie ignoriert."
 
-#: ID:191,
 msgid "  Field is too long."
 msgstr "  Feld ist zu lang."
 
-#: ID:190,
 msgid "  Field is too short."
 msgstr "  Feld ist zu kurz."
 
-#: ID:190,
 msgid "  Invalid date/time value."
-msgstr "  Datum bzw. Uhreit ung¸ltig."
+msgstr "  Datum bzw. Uhreit ungÈßÆ"
 
-#: ID:191,
 msgid "  Invalid field separator character found - only a single blank is allowed between fields."
-msgstr "Ung¸ltiges Feldtrennzeichen gefunden - nur ein einzelnes Leerzeichen ist zwischen Feldern erlaubt."
+msgstr "UngÈß•s Feldtrennzeichen gefunden - nur ein einzelnes Leerzeichen ist zwischen Feldern erlaubt."
 
-#: ID:190,
 #, c-format
 msgid "  Invalid header: \"%s\"."
-msgstr "  Ung¸ltiger Header: \"%s\"."
+msgstr "  UngÈß•r Header: \"%s\"."
 
-#: ID:190,
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
-msgstr "  Ung¸ltige Anzahl alter gespeicherter Passworter %d."
+msgstr "  UngÈß• Anzahl alter gespeicherter Passworter %d."
 
-#: ID:190,
 msgid "  Invalid password length found."
-msgstr "  Ung¸ltige Passwortl‰nge gefunden."
+msgstr "  UngÈß• Passwortl‰Æße gefunden."
 
-#: ID:190,
 #, c-format
 msgid "  Invalid status value: %d"
-msgstr "  Ung¸ltiger Statuswert: %d"
+msgstr "  UngÈß•r Statuswert: %d"
 
-#: ID:336,
+#. Resource IDs: (32105)
+msgid " &Classic Toolbar"
+msgstr ""
+
+#. Resource IDs: (32104)
+msgid " &New Toolbar"
+msgstr ""
+
 msgid " 'Autotype'"
 msgstr " 'Autom. Eingabe'"
 
-#: ID:336,
 msgid " 'Creation Time'"
 msgstr "'Erstellungszeit'"
 
-#: ID:347,
 msgid " 'Group'"
 msgstr " 'Gruppe'"
 
-#: ID:336,
 msgid " 'Last Access Time'"
 msgstr "'Letzter Zugriff'"
 
-#: ID:336,
 msgid " 'Notes'"
 msgstr "'Anmerkungen'"
 
-#: ID:336,
 msgid " 'Password Expiry Time'"
 msgstr "'Passwort Ablaufzeit'"
 
-#: ID:336,
 msgid " 'Password History'"
 msgstr " 'Passworthistorie'"
 
-#: ID:336,
 msgid " 'Password Modification Time'"
-msgstr "'Passwort ƒnderungszeit'"
+msgstr "'Passwort ƒÆderungszeit'"
 
-#: ID:345,
 msgid " 'Password Policy'"
 msgstr "'Passwort Richtlinie'"
 
-#: ID:336,
 msgid " 'Password'"
 msgstr "'Passwort'"
 
-#: ID:336,
 msgid " 'Record Modification Time'"
-msgstr " 'Datensatz ƒnderungszeit'"
+msgstr " 'Datensatz ƒÆderungszeit'"
 
-#: ID:347,
 msgid " 'Title'"
 msgstr " 'Titel'"
 
-#: ID:336,
 msgid " 'URL'"
 msgstr " 'URL'"
 
-#: ID:347,
 msgid " 'User'"
 msgstr " 'Benutzer'"
 
-#: ID:332,
 #, c-format
 msgid " Copy # %d"
 msgstr " Kopieren # %d"
 
-#: ID:339,
 #, c-format
 msgid " Drag # %d"
 msgstr " Drag # %d"
 
-#: ID:203,
 #, c-format
 msgid " Import # %d"
 msgstr " Importieren # %d"
 
-#: ID:205,
 #, c-format
 msgid " Open # %d"
-msgstr " ÷ffnen # %d"
+msgstr " ÷¶fnen # %d"
 
-#: ID:328,
 #, c-format
 msgid " [Process ID=%s]"
 msgstr " [Prozess ID=%s]"
 
-#: ID:350,
 msgid "#"
 msgstr "#"
 
-#: Control-ID:1194,
 msgid "#entries"
 msgstr "#entries"
 
-#: Control-ID:1192,
 msgid "#format"
 msgstr "#format"
 
-#: Control-ID:1193,
 msgid "#groups"
 msgstr "#groups"
 
-#: Control-ID:1256,
 msgid "#unkflds"
 msgstr "#unkflds"
 
-#: Control-ID:1255,
 msgid "#uuid"
 msgstr "#uuid"
 
-#: Control-ID:1197,
 msgid "#what"
 msgstr "#what"
 
-#: Control-ID:1196,
 msgid "#when"
 msgstr "#when"
 
-#: Control-ID:1195,
 msgid "#who"
 msgstr "#who"
 
-#: ID:3868,
 #, c-format
 msgid "%1 contained an unexpected object."
-msgstr "%1 enth‰lt ein unerwartetes Objekt."
+msgstr "%1 enth‰¨¥ ein unerwartetes Objekt."
 
-#: ID:3868,
 #, c-format
 msgid "%1 contains an incorrect schema."
-msgstr "%1 enth‰lt ein falsches Schema."
+msgstr "%1 enth‰¨¥ ein falsches Schema."
 
-#: ID:3867,
 #, c-format
 msgid "%1 contains an invalid path."
-msgstr "%1 enth‰lt einen ung¸ltigen Pfad."
+msgstr "%1 enth‰¨¥ einen ungÈß•n Pfad."
 
-#: ID:3867,
 #, c-format
 msgid "%1 could not be created because the directory is full."
 msgstr "%1 konnte nicht erstellt werden weil das Verzeichnis voll ist."
 
-#: ID:3867,
 #, c-format
 msgid "%1 could not be opened because there are too many open files."
-msgstr "%1 konnte nicht geˆffnet werden, weil zu viele Dateien offen sind."
+msgstr "%1 konnte nicht geÊ¶Æet werden, weil zu viele Dateien offen sind."
 
-#: ID:3867,
 #, c-format
 msgid "%1 could not be removed because it is the current directory."
-msgstr "%1 konnte nicht gelˆscht werden, weil es das derzeitige Verzeichnis ist."
+msgstr "%1 konnte nicht gel„£®t werden, weil es das derzeitige Verzeichnis ist."
 
-#: ID:3868,
 #, c-format
 msgid "%1 has a bad format."
 msgstr "%1 hat ein falsches Format."
 
-#: ID:3867,
 #, c-format
 msgid "%1 was not found."
 msgstr "%1 wurde nicht gefunden."
 
-#: ID:3860,
 #, c-format
-msgid ""
-"%1: %2\n"
-"Continue running script?"
-msgstr ""
-"%1: %2\n"
-"Skript weiter ausf¸hren?"
+msgid "%1: %2\nContinue running script?"
+msgstr "%1: %2\nSkript weiter ausfÂÆø"
 
-#: ID:3859,
 #, c-format
-msgid ""
-"%1\n"
-"Cannot find this file.\n"
-"Please verify that the correct path and file name are given."
-msgstr ""
-"%1\n"
-"Datei nicht gefunden.\n"
-"Stellen sie sicher das Pfad und Dateiname richtig angegeben sind."
+msgid "%1\nCannot find this file.\nPlease verify that the correct path and file name are given."
+msgstr "%1\nDatei nicht gefunden.\nStellen sie sicher das Pfad und Dateiname richtig angegeben sind."
 
-#: ID:341,
 #, c-format
 msgid "%d"
 msgstr "%d"
 
-#: ID:351,
 #, c-format
 msgid "%d (%d) items"
 msgstr "%d (%d) Angaben"
 
-#: ID:328,
 #, c-format
 msgid "%d items"
-msgstr "%d Eintr‰ge"
+msgstr "%d Eintr‰ß•"
 
-#: ID:330,
 #, c-format
 msgid "%d of %d matches."
-msgstr "%d von %d ‹bereinstimmungen."
+msgstr "%d von %d ‹¢ereinstimmungen."
 
-#: ID:333,
 #, c-format
-msgid ""
-"%s \n"
-"\n"
-"Can't open file. Please choose another."
-msgstr ""
-"%s \n"
-"\n"
-"Kann Datei nicht ˆffnen. Bitte andere ausw‰hlen."
+msgid "%s \n\nCan't open file. Please choose another."
+msgstr "%s \n\nKann Datei nicht Ê¶Æen. Bitte andere ausw‰®¨en."
 
-#: ID:346,
 #, c-format
 msgid "%s copied %s"
 msgstr "%s kopierte %s"
 
-#: ID:341,
 #, c-format
 msgid "%s file being imported: %s"
 msgstr "%s Datei beim Importieren: %s"
 
-#: ID:326,
 #, c-format
 msgid "%s is a directory"
 msgstr "%s ist ein Verzeichnis"
 
-#: ID:204,
 #, c-format
 msgid "%s%s%s_Report.txt"
 msgstr "%s%s%s_Report.txt"
 
-#: ID:333,
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Could not open file for reading!"
-msgstr ""
-"%s\n"
-"\n"
-"Konnte Datei nicht zum Lesen ˆffnen!"
+msgid "%s\n\nCould not open file for reading!"
+msgstr "%s\n\nKonnte Datei nicht zum Lesen Ê¶Æen!"
 
-#: ID:333,
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Could not open file for writing!"
-msgstr ""
-"%s\n"
-"\n"
-"Kann Datei nicht zum Schreiben ˆffnen!"
+msgid "%s\n\nCould not open file for writing!"
+msgstr "%s\n\nKann Datei nicht zum Schreiben Ê¶Æen!"
 
-#: ID:333,
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"File corrupt or truncated!\n"
-"Data may have been lost or modified.\n"
-"Continue anyway?"
-msgstr ""
-"%s\n"
-"\n"
-"Datei ist besch‰digt oder abgeschnitten!\n"
-"Mˆglicherweise sind Daten verloren oder ver‰ndert.\n"
-"Trotzdem weiterfahren?"
+msgid "%s\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"
+msgstr "%s\n\nDatei ist besch‰§©gt oder abgeschnitten!\nMÁ¨©cherweise sind Daten verloren oder ver‰Æ§ert.\nTrotzdem weiterfahren?"
 
-#: ID:334,
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"File is currently locked by %s"
-msgstr ""
-"%s\n"
-"\n"
-"Datei ist aktuell gesperrt durch %s"
+msgid "%s\n\nFile is currently locked by %s"
+msgstr "%s\n\nDatei ist aktuell gesperrt durch %s"
 
-#: ID:334,
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Invalid format"
-msgstr ""
-"%s\n"
-"\n"
-"Ung¸ltiges Format"
+msgid "%s\n\nInvalid format"
+msgstr "%s\n\nUngÈß•s Format"
 
-#: ID:190,
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"The configuration file will not be used."
-msgstr ""
-"%s\n"
-"\n"
-"Die Konfigurationsdatei wird nicht verwendet."
+msgid "%s\n\nThe configuration file will not be used."
+msgstr "%s\n\nDie Konfigurationsdatei wird nicht verwendet."
 
-#: ID:333,
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Unknown error"
-msgstr ""
-"%s\n"
-"\n"
-"Unbekannter Fehler"
+msgid "%s\n\nUnknown error"
+msgstr "%s\n\nUnbekannter Fehler"
 
-#: Control-ID:1026,#:
-#: Control-ID:1306,
+#. Resource IDs: (32202)
+msgid "&About Password Safe..."
+msgstr ""
+
+#. Resource IDs: (32051)
+msgid "&Add Entry..\tCtrl+A"
+msgstr ""
+
 msgid "&Apply"
-msgstr "&‹bernehmen"
+msgstr "&‹¢ernehmen"
 
-#: Control-ID:1356,#:
-#: Control-ID:1356,
+#. Resource IDs: (32112)
+msgid "&Apply current"
+msgstr ""
+
 msgid "&Autotype:"
 msgstr "&Autom. Eingabe:"
 
-#: ID:332,
 msgid "&Browse to URL"
 msgstr "&Gehe zu URL"
 
-#: ID:343,
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&Gehe zu URL\tStrg+L"
 
-#: Control-ID:1118,#:
-#: Control-ID:1118,
+#. Resource IDs: (32151)
+msgid "&Change Safe Combination..."
+msgstr ""
+
 msgid "&Clear"
-msgstr "Lˆs&chen"
+msgstr "L„¶£hen"
 
-#: ID:351,
+#. Resource IDs: (32252)
+msgid "&Clear Recent History"
+msgstr ""
+
+#. Resource IDs: (32008)
+msgid "&Clear Recent Safe List"
+msgstr ""
+
 msgid "&Clear current"
-msgstr "&Lˆsche aktuell"
+msgstr "&L„£®e aktuell"
 
-#: Control-ID:1343,
+#. Resource IDs: (32004)
+msgid "&Close\tCtrl+F4"
+msgstr ""
+
+#. Resource IDs: (32118)
+msgid "&Compare"
+msgstr ""
+
 msgid "&Copy"
 msgstr "&Kopieren"
 
-#: ID:332,
+#. Resource IDs: (32058)
+msgid "&Copy Password to Clipboard"
+msgstr ""
+
+#. Resource IDs: (32058)
+msgid "&Copy Password to Clipboard\tCtrl+C"
+msgstr ""
+
 msgid "&Copy Password to clipboard"
 msgstr "&Passwort in Zwischenablage kopieren"
 
-#: Control-ID:1041,
 msgid "&Create a New Database"
 msgstr "&Neue Datenbank erstellen"
 
-#: Control-ID:1344,
 msgid "&Delete"
-msgstr "&Lˆschen"
+msgstr "&L„£®en"
 
-#: ID:332,
+#. Resource IDs: (32053)
+msgid "&Delete Entry\tDel"
+msgstr ""
+
+#. Resource IDs: (32053)
+msgid "&Delete Group"
+msgstr ""
+
 msgid "&Delete from Recent Entry List"
-msgstr "Lˆschen aus der Liste der letzten Eintr‰ge"
+msgstr "L„£®en aus der Liste der letzten Eintr‰ß•"
 
-#: Control-ID:1015,#:
-#: Control-ID:1038,
 msgid "&Don't ask me again"
 msgstr "&Nicht mehr nachfragen"
 
-#: Control-ID:1015,
 msgid "&Don't remind me again"
 msgstr "&Nicht mehr erinnern"
 
-#: Control-ID:1342,
+#. Resource IDs: (32107)
+msgid "&Dragbar visible"
+msgstr ""
+
+#. Resource IDs: (32056)
+msgid "&Duplicate Entry"
+msgstr ""
+
+#. Resource IDs: (32056)
+msgid "&Duplicate Entry\tCtrl+D"
+msgstr ""
+
 msgid "&Edit"
 msgstr "&Editieren"
 
-#: Control-ID:1346,
 msgid "&Export"
 msgstr "&Export"
 
-#: Control-ID:2,
+#. Resource IDs: (32001)
+msgid "&File"
+msgstr ""
+
+#. Resource IDs: (32110)
+msgid "&Filters"
+msgstr ""
+
+#. Resource IDs: (32119)
+msgid "&Find"
+msgstr ""
+
+#. Resource IDs: (32055)
+msgid "&Find Entry...\tCtrl+F"
+msgstr ""
+
 msgid "&Finish"
 msgstr "&Beenden"
 
-#: Control-ID:1088,
 msgid "&Font:"
 msgstr "&Schriftart:"
 
-#: Control-ID:1025,#:
-#: Control-ID:1025,
 msgid "&Generate"
 msgstr "&Generierung"
 
-#: Control-ID:57670,#:
-#: Control-ID:9,#:
-#: Control-ID:57670,
+#. Resource IDs: (32069)
+msgid "&Go to Base entry"
+msgstr ""
+
 msgid "&Help"
 msgstr "&Hilfe"
 
-#: ID:328,#:
-#: ID:3842,
 msgid "&Hide"
 msgstr "&Ausblenden"
 
-#: Control-ID:1345,
 msgid "&Import"
 msgstr "&Importieren"
 
-#: Control-ID:1143,
 msgid "&Keep"
 msgstr "&Beibehalten"
 
-#: ID:329,#:
-#: Control-ID:1100,#:
-#: Control-ID:1100,
+#. Resource IDs: (32150)
+msgid "&Manage"
+msgstr ""
+
+#. Resource IDs: (32113)
+msgid "&Manage..."
+msgstr ""
+
+#. Resource IDs: (32122)
+msgid "&Merge"
+msgstr ""
+
+#. Resource IDs: (32253)
+msgid "&Minimize"
+msgstr ""
+
 msgid "&More >>"
 msgstr "&Mehr >>"
 
-#: Control-ID:1341,
 msgid "&New"
 msgstr "&Neu"
 
-#: Control-ID:65535,
 msgid "&New "
 msgstr "&Neu "
 
-#: Control-ID:2,#:
-#: Control-ID:2,
+#. Resource IDs: (32003)
+msgid "&New...\tCtrl+N"
+msgstr ""
+
+#. Resource IDs: (32111)
+msgid "&New/Edit Filter"
+msgstr ""
+
 msgid "&No"
 msgstr "&Nein"
 
-#: Control-ID:65535,#:
-#: Control-ID:1354,
 msgid "&Notes:"
 msgstr "&Notizen:"
 
-#: Control-ID:1024,
 msgid "&Open Another Database..."
-msgstr "&Andere Datenbasis ˆffnen"
+msgstr "&Andere Datenbasis Ê¶Æen"
 
-#: Control-ID:1071,#:
-#: Control-ID:1071,
+#. Resource IDs: (32002)
+msgid "&Open...\tCtrl+O"
+msgstr ""
+
+#. Resource IDs: (32154)
+msgid "&Options..."
+msgstr ""
+
 msgid "&Override Policy"
-msgstr "Richtlinie ¸berschreiben"
+msgstr "Richtlinie ‚≥£hreiben"
 
-#: Control-ID:65535,#:
-#: Control-ID:1353,
+#. Resource IDs: (32116)
+msgid "&Password Font"
+msgstr ""
+
 msgid "&Password:"
 msgstr "&Passwort:"
 
-#: Control-ID:1023,
+#. Resource IDs: (32010)
+msgid "&Plain Text (tab separated)..."
+msgstr ""
+
+#. Resource IDs: (32016)
+msgid "&Plain Text..."
+msgstr ""
+
+#. Resource IDs: (32020)
+msgid "&Properties"
+msgstr ""
+
 msgid "&Quit"
 msgstr "&Beenden"
 
-#: ID:327,
+#. Resource IDs: (65535)
+msgid "&Recent Entries History"
+msgstr ""
+
 msgid "&Recent Safes"
 msgstr "&Letzte Sicherungen"
 
-#: Control-ID:1,
+#. Resource IDs: (32117)
+msgid "&Reports"
+msgstr ""
+
+#. Resource IDs: (32254)
+msgid "&Restore"
+msgstr ""
+
+#. Resource IDs: (32153)
+msgid "&Restore from Backup...\tCtrl+R"
+msgstr ""
+
 msgid "&Save to Disk"
 msgstr "Auf Festplatte &Speichern"
 
-#: ID:351,
+#. Resource IDs: (32005)
+msgid "&Save\tCtrl+S"
+msgstr ""
+
 msgid "&Set current"
 msgstr "&Setze aktuell"
 
-#: ID:328,#:
-#: Control-ID:1014,#:
-#: Control-ID:1014,
 msgid "&Show"
 msgstr "Ansicht"
 
-#: Control-ID:1090,
 msgid "&Size:"
-msgstr "&Grˆﬂe"
+msgstr "&Gr"
 
-#: Control-ID:65535,#:
-#: Control-ID:1351,#:
-#: Control-ID:65535,
 msgid "&Title:"
 msgstr "&Titel:"
 
-#: Control-ID:1022,
+#. Resource IDs: (32115)
+msgid "&Tree/List Font"
+msgstr ""
+
 msgid "&Try Again"
 msgstr "&Wiederholen"
 
-#: Control-ID:65535,#:
-#: Control-ID:1352,#:
-#: Control-ID:65535,
 msgid "&Username:"
 msgstr "Ben&utzername:"
 
-#: Control-ID:1268,
+#. Resource IDs: (32123)
+msgid "&Validate"
+msgstr ""
+
+#. Resource IDs: (32101)
+msgid "&View"
+msgstr ""
+
 msgid "&View Aliases"
 msgstr "&Alias anzeigen"
 
-#: Control-ID:1,#:
-#: Control-ID:1,
+#. Resource IDs: (32013, 32015)
+msgid "&XML format..."
+msgstr ""
+
 msgid "&Yes"
 msgstr "&Ja"
 
-#: ID:353,
 msgid "'Clear Clipboard on Minimize' and the double click action of 'Copy Password and Minimize' conflict. Double click action has been changed to 'Copy Password'."
-msgstr "'Zwischenablage nach Minimieren lˆschen' und doppelklick von 'Passwort in die Zwischenablage kopieren, minimieren' widersprechen sich. DoppelKlick wurde ge‰ndert in 'Passwort kopieren'."
+msgstr "'Zwischenablage nach Minimieren l„£®en' und doppelklick von 'Passwort in die Zwischenablage kopieren, minimieren' widersprechen sich. DoppelKlick wurde ge‰Æ§ert in 'Passwort kopieren'."
 
-#: Control-ID:65535,
 msgid "(Also used to replace periods in the Title field.)"
 msgstr "(Auch verwendet um Punktzeichen im Titelfeld zu ersetzen.)"
 
-#: Control-ID:1097,
 msgid "(Requires a restart of PasswordSafe to take effect.)"
 msgstr "(Bedingt ein Wiederstart von PasswordSafe um wirksam zu werden.)"
 
-#: Control-ID:1285,#:
-#: Control-ID:1287,#:
-#: Control-ID:1289,#:
-#: Control-ID:1291,
 msgid "(at least"
 msgstr "(zumindest"
 
-#: ID:207,#:
-#: ID:346,
 msgid "(case insensitive)"
-msgstr "(schreibungsunabh‰ngig)"
+msgstr "(schreibungsunabh‰Æßig)"
 
-#: ID:207,#:
-#: ID:346,
 msgid "(case sensitive)"
-msgstr "(schreibungsabh‰ngig)"
+msgstr "(schreibungsabh‰Æßig)"
 
-#: Control-ID:1286,#:
-#: Control-ID:1288,#:
-#: Control-ID:1290,#:
-#: Control-ID:1292,
 msgid ")"
 msgstr ")"
 
-#: ID:204,
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
 
-#: Control-ID:1223,
 msgid "..."
 msgstr "..."
 
-#: Control-ID:1017,
 msgid "...."
 msgstr "...."
 
-#: Control-ID:1293,#:
-#: Control-ID:1294,
 msgid "....."
 msgstr "....."
 
-#: Control-ID:1260,#:
-#: Control-ID:1261,
 msgid "......."
 msgstr "......."
 
-#: Control-ID:1180,
 msgid "255"
 msgstr "255"
 
-#: Control-ID:1156,
 msgid "<"
 msgstr "<"
 
-#: Control-ID:1157,
+#. Resource IDs: (32221)
+msgid "<- Copy to Orignal"
+msgstr ""
+
 msgid "<<"
 msgstr "<<"
 
-#: ID:329,
 msgid "<< &Less"
 msgstr "<< &Weniger"
 
-#: ID:191,
-msgid ""
-"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
-"<Pwsafe_Settings></Pwsafe_Settings>"
-msgstr ""
-"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
-"<Pwsafe_Settings></Pwsafe_Settings>"
+msgid "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
+msgstr "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
 
-#: ID:343,
 msgid "<b><font color=\"green\">This is the latest release!</font></b>"
 msgstr "<b><font color=\"green\">Dies ist die neueste Version!</font></b>"
 
-#: ID:343,
 msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr "<b><font color=\"red\">Eine neue Version ist verf¸gbar.</font></b>"
+msgstr "<b><font color=\"red\">Eine neue Version ist verf·≤Æ</font></b>"
 
-#: ID:343,
 msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
 msgstr "<b><font color=\"red\">Konnte Versionsinformation nicht vom Server holen.</font></b>"
 
-#: ID:342,
 msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
 msgstr "<b><font color=\"red\">Konnte Server nicht erreichen.</font></b>"
 
-#: Control-ID:1154,
 msgid ">"
 msgstr ">"
 
-#: Control-ID:1155,
 msgid ">>"
 msgstr ">>"
 
-#: ID:329,
 msgid "A dot is invalid as the first character of the Group field."
-msgstr "Ein Punkt ist als erstes Zeichen einer Gruppe nicht zul‰ssig."
+msgstr "Ein Punkt ist als erstes Zeichen einer Gruppe nicht zul‰≥≥ig."
 
-#: ID:326,
 msgid "A fatal error occured: "
 msgstr "Fataler Fehler aufgetreten: "
 
-#: ID:3867,
 #, c-format
 msgid "A hardware I/O error was reported while accessing %1."
-msgstr "Hardware I/O Fehler aufgetreten w‰hrend des Zugriffes auf %1."
+msgstr "Hardware I/O Fehler aufgetreten w‰®≤end des Zugriffes auf %1."
 
-#: ID:3867,
 #, c-format
 msgid "A locking violation occurred while accessing %1."
 msgstr "Sperrverletzung aufgetreten beim Zugriff auf %1."
 
-#: Control-ID:65535,
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
-msgstr "Eine neue Passwort Datenbank wird erstellt. Die Safe Kombination die sie eingeben wird verwendet um die Passwort Datenbank zu verschl¸sseln. Die Safe Kombination kann jedes Zeichen der Tastatur benutzen, und beachtet die Groﬂ-/Kleinschreibung."
+msgstr "Eine neue Passwort Datenbank wird erstellt. Die Safe Kombination die sie eingeben wird verwendet um die Passwort Datenbank zu verschlÂ¨Æ. Die Safe Kombination kann jedes Zeichen der Tastatur benutzen, und beachtet die Groﬂ≠/Kleinschreibung."
 
-#: ID:3843,
 msgid "A required resource was unavailable."
-msgstr "Die erforderliche Ressource war nicht verf¸gbar."
+msgstr "Die erforderliche Ressource war nicht verf·≤Æ"
 
-#: ID:3867,
 #, c-format
 msgid "A sharing violation occurred while accessing %1."
 msgstr "Verletzung aufgetreten beim gleichzeitigen Zugriff auf %1."
 
-#: ID:345,#:
-#: Control-ID:1092,
 msgid "AaBbYyZz 0O1lIL"
 msgstr "AaBbYyZz 0O1lIL"
 
-#: Dlg-ID:110,
 msgid "About Password Safe"
-msgstr "‹ber Password Safe"
+msgstr "‹¢er Password Safe"
 
-#: ID:3867,
 #, c-format
 msgid "Access to %1 was denied."
 msgstr "Zugriff auf %1 verweigert."
 
-#: ID:350,
 msgid "Active"
 msgstr "Aktiv"
 
-#: Dlg-ID:111,
-msgid "Add Entry"
-msgstr "F¸ge Eintrag ein"
+#. Resource IDs: (32051)
+msgid "Add &Entry"
+msgstr ""
 
-#: ID:340,#:
-#: Control-ID:1123,
+#. Resource IDs: (32057)
+msgid "Add &Group"
+msgstr ""
+
+msgid "Add Entry"
+msgstr "F≈©ntrag ein"
+
+#. Resource IDs: (32057)
+msgid "Add Group"
+msgstr ""
+
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: ID:339,
 msgid "Advanced Compare Options"
 msgstr "Erweiterte Vergleichsoptionen"
 
-#: ID:341,
 msgid "Advanced Find Options"
 msgstr "Erweiterte Suchoptionen"
 
-#: Dlg-ID:113,
 msgid "Advanced Merge Extra"
 msgstr "Erweiterte Merge Extra"
 
-#: ID:339,
 msgid "Advanced Merge Options"
 msgstr "Erweiterte Merge Optionen"
 
-#: ID:339,
 msgid "Advanced Text Export Options"
 msgstr "Erweiterte Text Export Optionen"
 
-#: ID:339,
 msgid "Advanced XML Export Options"
 msgstr "Erweiterte XML Export Optionen"
 
-#: Control-ID:1252,#:
-#: Control-ID:1253,
 msgid "Advanced..."
 msgstr "Erweitert..."
 
-#: ID:205,
 msgid "Alias"
 msgstr "Alias"
 
-#: ID:3841,
 msgid "All Files (*.*)"
 msgstr "Alle Dateien (*.*)"
 
-#: ID:339,
 msgid "All available columns are being displayed."
-msgstr "Alle verf¸gbaren Spalten werden angezeigt."
+msgstr "Alle verf·≤•n Spalten werden angezeigt."
 
-#: Control-ID:1333,
 msgid "Allow multiple instances (requires all instances to be restarted)"
 msgstr "Mehrere Instanzen erlauben (bedingt ein Wiederstart aller Instanzen)"
 
-#: Control-ID:65535,
 msgid "Also used to replace periods in the Title field."
 msgstr "Auch benutzt um Punktzeichen im Titel Feld zu ersetzen."
 
-#: Control-ID:65535,
 msgid "Alternate Browser "
 msgstr "Alternativer Browser "
 
-#: Control-ID:1043,
 msgid "Always keep Password Safe on top"
 msgstr "Password Safe immer im Vordergrund"
 
-#: ID:314,
 msgid "Always on top"
 msgstr "Immer im Vordergrund"
 
-#: ID:342,
 msgid "An alias cannot refer to itself!"
 msgstr "Ein Alias kann nicht auf sichselbst verweisen!"
 
-#: ID:3867,#:
-#: ID:3868,
 #, c-format
 msgid "An attempt was made to access %1 past its end."
 msgstr "Versuch am Ende vorbei zuzugreifen auf %1."
 
-#: ID:3868,
 #, c-format
 msgid "An attempt was made to read from the writing %1."
 msgstr "Leseversuch von der zu schreibende %1."
 
-#: ID:3868,
 #, c-format
 msgid "An attempt was made to write to the reading %1."
 msgstr "Schreibversuch auf die zu lesende %1."
 
-#: ID:329,
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
 msgstr "Ein Eintrag mit Gruppe \"%s\", Titel \"%s\" und Benutzername \"%s\" besteht bereits."
 
-#: ID:339,
 #, c-format
 msgid "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
 msgstr "Ein Eintrag mit leerer Gruppe, Titel \"%s\" und Benutzername \"%s\" besteht bereits."
 
-#: ID:3843,
 msgid "An invalid argument was encountered."
-msgstr "Ung¸ltiges Argument angetroffen."
+msgstr "UngÈß•s Argument angetroffen."
 
-#: ID:3867,
 #, c-format
 msgid "An invalid file handle was associated with %1."
-msgstr "Ung¸ltige Dateihandle war verbunden mit %1."
+msgstr "UngÈß• Dateihandle war verbunden mit %1."
 
-#: ID:3859,
 #, c-format
 msgid "An unexpected error occurred while reading %1."
 msgstr "Unerwarteter Fehler beim Lesen von %1 aufgetreten."
 
-#: ID:3859,
 #, c-format
 msgid "An unexpected error occurred while writing %1."
 msgstr "Unerwarteter Fehler beim Schreiben von %1 aufgetreten."
 
-#: ID:3843,
 msgid "An unknown error has occurred."
 msgstr "Unbekannter Fehler aufgetreten."
 
-#: ID:3867,#:
-#: ID:3868,
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "Unbekannter Fehler aufgetreten beim Zugriff auf %1."
 
-#: ID:3843,
 msgid "An unsupported operation was attempted."
-msgstr "Versuch einer nicht unterst¸tzten Operation."
+msgstr "Versuch einer nicht unterst‰•Æ Operation."
 
-#: ID:208,
 msgid "And"
 msgstr "Und"
 
-#: ID:351,
 msgid "And / Or"
 msgstr "Und / Oder"
 
-#: Control-ID:1116,#:
-#: Control-ID:1116,
 msgid "Any field last changed on:"
-msgstr "Irgendein Feld zuletzt ge‰ndert am:"
+msgstr "Irgendein Feld zuletzt ge‰Æ§ert am:"
 
-#: ID:353,#:
-#: Control-ID:1187,#:
-#: Control-ID:1216,
 msgid "Apply"
-msgstr "‹bernehmen"
+msgstr "‹¢ernehmen"
 
-#: ID:341,
 #, c-format
 msgid "Are you sure you want to delete the selected %s?"
-msgstr "Sind sie sicher das ausgew‰hlte %s lˆschen zu wollen?"
+msgstr "Sind sie sicher das ausgew‰®¨te %s l„£®en zu wollen?"
 
-#: ID:350,
 msgid "Arg1"
 msgstr "Arg1"
 
-#: ID:350,
 msgid "Arg2"
 msgstr "Arg2"
 
-#: ID:330,
 msgid "As the double quotation character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "Weil G‰nzef¸ﬂchen das ganze Notizfeld abgrenzen, kann es nicht benutzt werden um vielfach Zeilen zu begrenzen. Bitte ein anderes Zeichen verwenden."
+msgstr "Weil G‰Æ∫efË•Æ das ganze Notizfeld abgrenzen, kann es nicht benutzt werden um vielfach Zeilen zu begrenzen. Bitte ein anderes Zeichen verwenden."
 
-#: ID:331,
-msgid ""
-"At least one type of character (lowercase, uppercase, digits,\n"
-"symbols, hexadecimal) must be permitted."
-msgstr ""
-"Zumindest eine Art von Zeichen (Kleinbuchstabe, Groﬂbuchstabe,\n"
-"Ziffer, Symbol, hexadezimal) sollte erlaubt sein."
+msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
+msgstr "Zumindest eine Art von Zeichen (Kleinbuchstabe, Groﬂ¢uchstabe,\nZiffer, Symbol, hexadezimal) sollte erlaubt sein."
 
-#: ID:340,
 #, c-format
 msgid "At least one unknown %s field is now in use.  Any found have been ignored."
 msgstr "Zumindest ein unbekanntes %s Feld ist jetzt in Benutzung. Andere wurden ausgelassen."
 
-#: ID:188,
 msgid "AutoType\t"
 msgstr "Autom. Eingabe\t"
 
-#: ID:353,
 msgid "Autoload"
 msgstr "Autoladen"
 
-#: ID:325,#:
-#: ID:340,#:
-#: Control-ID:65535,
 msgid "Autotype"
 msgstr "Autom. Eingabe"
 
-#: Control-ID:65535,
 msgid "Available Fields:"
-msgstr "Verf¸gbare Felder:"
+msgstr "Verf·≤• Felder:"
 
-#: Control-ID:65535,
 msgid "Available Filters:"
-msgstr "Verf¸gbare Filter:"
+msgstr "Verf·≤• Filter:"
 
-#: Control-ID:65535,
 msgid "Backup Name"
 msgstr "Name der Sicherungskopie"
 
-#: Control-ID:65535,
 msgid "Backup directory:"
 msgstr "Verzeichnis der Sicherungskopie:"
 
-#: Dlg-ID:137,
 msgid "Backups"
 msgstr "Sicherungskopien"
 
-#: Control-ID:65535,
 #, fuzzy
 msgid "Base:"
 msgstr "Basis:"
 
-#: Control-ID:1213,#:
-#: Control-ID:1213,
 msgid "Browse"
 msgstr "Suchen"
 
-#: ID:325,
 msgid "Browse to URL"
 msgstr "Gehe zu URL"
 
-#: Control-ID:65535,
 msgid "Browser Command Line parameters"
 msgstr "Browser Kommandozeilenparameter"
 
-#: ID:203,
+#. Resource IDs: (32061)
+msgid "C&lear Clipboard"
+msgstr ""
+
+#. Resource IDs: (32061)
+msgid "C&lear Clipboard\tCtrl+Del"
+msgstr ""
+
 msgid "C:F[R-O]"
 msgstr "C:F[R-O]"
 
-#: ID:203,
 msgid "C:F[R/W]"
 msgstr "C:F[R/W]"
 
-#: ID:202,
 msgid "C:None  "
 msgstr "C:None  "
 
-#: ID:202,
 msgid "C:Reg   "
 msgstr "C:Reg   "
 
-#: ID:339,
 msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "Nur von 1 bis 30 Tage kann gewarnt werden bevor das Passwort abl‰uft"
+msgstr "Nur von 1 bis 30 Tage kann gewarnt werden bevor das Passwort abl‰µ¶t"
 
-#: ID:210,
 #, c-format
-msgid ""
-"Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\n"
-"Please copy it from your installation file, or re-install PasswordSafe."
-msgstr ""
-"Kann die XML Defintionsdatei (%s) im Anwenderverzeichnis von PasswordSafe nicht finden.\r\n"
-"Bitte von der Installationsdatei kopieren, oder PasswordSafe nochmal installieren."
+msgid "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
+msgstr "Kann die XML Defintionsdatei (%s) im Anwenderverzeichnis von PasswordSafe nicht finden.\r\nBitte von der Installationsdatei kopieren, oder PasswordSafe nochmal installieren."
 
-#: ID:208,
 msgid "Can't obtain the schema version."
 msgstr "Kann die Version des Schema nicht ermitteln."
 
-#: ID:347,#:
-#: Control-ID:2,#:
-#: Control-ID:2,
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ID:348,
 msgid "Cannot be less than zero."
 msgstr "Kann nicht kleiner 0 sein."
 
-#: ID:348,
 #, c-format
 msgid "Cannot be more than %d"
 msgstr "Kann nicht mehr als %d sein"
 
-#: ID:189,
 msgid "Cannot create lock file - no permission in directory?"
 msgstr "Kann keine lock-Datei erzeugen - keine Rechte im Verzeichnis?"
 
-#: ID:332,
 msgid "Cannot process as this entry has been deleted from the open database."
-msgstr "Bearbeitung nciht mˆglich, weil der Eintrag aus der aktuellen Datenbank gelˆscht wurde."
+msgstr "Bearbeitung nciht mÁ¨©ch, weil der Eintrag aus der aktuellen Datenbank gel„£®t wurde."
 
-#: ID:331,
 msgid "Cannot verify old safe combination - file gone?"
-msgstr "Kann die alte Safe Kombination nicht pr¸fen - Datei weg?"
+msgstr "Kann die alte Safe Kombination nicht prÓ†≠ Datei weg?"
 
-#: Control-ID:1162,#:
-#: Control-ID:1310,#:
-#: Control-ID:1310,
 msgid "Case Sensitive"
-msgstr "Groﬂ-/Kleinschreibung"
+msgstr "Groﬂ≠/Kleinschreibung"
 
-#: ID:343,
 msgid "Case insensitive search"
-msgstr "Suchen ohne Groﬂ-/Kleinschreibung"
+msgstr "Suchen ohne Groﬂ≠/Kleinschreibung"
 
-#: ID:343,
 msgid "Case sensitive search"
-msgstr "Suchen mit Groﬂ-/Kleinschreibung"
+msgstr "Suchen mit Groﬂ≠/Kleinschreibung"
 
-#: ID:349,
-msgid "Change Date"
-msgstr "Datum ‰ndern"
-
-#: Dlg-ID:127,
-msgid "Change Safe Combination"
-msgstr "ƒndere die Safe Kombination"
-
-#: ID:319,
-msgid ""
-"Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n"
-"\n"
-"Entries with more than this new maximum already saved will remain unchanged."
+#. Resource IDs: (32114)
+msgid "Change &Font"
 msgstr ""
-"ƒndere die maximale Anzahl gespeicherte Passwˆrter f¸r Eingaben die zur Zeit die Passworthistorie mit weniger als die neue maximale Anzahl speichern.\n"
-"\n"
-"Eingaben mit mehr als die neue maximale Anzahl bleiben hiervon unber¸hrt."
 
-#: ID:3887,
+msgid "Change Date"
+msgstr "Datum ‰Æ§ern"
+
+msgid "Change Safe Combination"
+msgstr "ƒÆdere die Safe Kombination"
+
+msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
+msgstr "ƒÆdere die maximale Anzahl gespeicherte Passw‚¥•r fÂ©Ægaben die zur Zeit die Passworthistorie mit weniger als die neue maximale Anzahl speichern.\n\nEingaben mit mehr als die neue maximale Anzahl bleiben hiervon unber"
+
 msgid "Check"
 msgstr "Aktiviere"
 
-#: Dlg-ID:128,#:
-#: Dlg-ID:145,
 msgid "Clear Clipboard"
-msgstr "Zwischenablage lˆschen"
+msgstr "Zwischenablage l„£®en"
 
-#: Control-ID:1141,
 msgid "Clear History"
-msgstr "Historie lˆschen"
+msgstr "Historie l„£®en"
 
-#: Control-ID:1062,
 msgid "Clear clipboard upon exit"
-msgstr "Zwischenablage nach Beenden lˆschen"
+msgstr "Zwischenablage nach Beenden l„£®en"
 
-#: Control-ID:1061,
 msgid "Clear clipboard upon minimize"
-msgstr "Zwischenablage nach Minimieren lˆschen"
+msgstr "Zwischenablage nach Minimieren l„£®en"
 
-#: ID:351,
 msgid "Click here to pick field"
 msgstr "Klick hier um das Feld zu nehmen"
 
-#: ID:353,
 msgid "Click to copy to clipboard"
 msgstr "Klick zum Kopieren in die Zwischenablage"
 
-#: ID:351,
 msgid "Click to enable/disable this row"
 msgstr "Klick zum Freigeben/Sperren der Zeile"
 
-#: ID:352,
+#. Resource IDs: (352)
 msgid "Click to insert a new row below"
-msgstr "Klick um eine neue Zeile einzuf¸gen"
+msgstr ""
 
-#: ID:352,
 msgid "Click to remove this row"
-msgstr "Klick zum Lˆschen der Zeile"
+msgstr "Klick zum L„£®en der Zeile"
 
-#: ID:352,
 msgid "Click to set criteria for matching the field"
 msgstr "Klick um der Kriterien dem Feld anzugleichen"
 
-#: ID:352,
 msgid "Click to set the field to filter by"
 msgstr "Klick zum setzen der Filterkriterien"
 
-#: ID:352,
 #, fuzzy
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Klick to toggle and/or relation zur vorherigen Zeile"
 
-#: Control-ID:1,#:
-#: Control-ID:1,
 msgid "Close"
 msgstr "Schliessen"
 
-#: Dlg-ID:114,
+#. Resource IDs: (32109)
+msgid "Collapse All\tCtrl+Alt+Minus"
+msgstr ""
+
 #, fuzzy
 msgid "Column Picker"
 msgstr "Spaltengreifer"
 
-#: ID:203,
 msgid "Column header row not recognised as first record. No records imported."
-msgstr "Zeile mit Spaltenkopf nicht als erste Datensatz erkannt. Keine Datens‰tze importiert."
+msgstr "Zeile mit Spaltenkopf nicht als erste Datensatz erkannt. Keine Datens‰¥∫e importiert."
 
-#: Control-ID:1080,
 msgid "Comma"
 msgstr "Komma"
 
-#: ID:3857,
 msgid "Command failed."
 msgstr "Befehl fehlgeschlagen."
 
-#: ID:346,
 msgid "Compare"
 msgstr "Vergleichen"
 
-#: ID:335,
 msgid "Compare Complete"
 msgstr "Vergleich beendet"
 
-#: Dlg-ID:115,
 msgid "Compare Database Results"
 msgstr "Vergleiche der Datenbasis Ergebnisse"
 
-#: ID:335,
 #, c-format
-msgid ""
-"Compare complete of current database:\n"
-"\t %s\n"
-" and:\n"
-"\t %s"
-msgstr ""
-"Vollst‰ndiger Vergleich zwischen aktueller Datenbank:\n"
-"\t %s\n"
-" und:\n"
-"\t %s"
+msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
+msgstr "Vollst‰Æ§iger Vergleich zwischen aktueller Datenbank:\n\t %s\n und:\n\t %s"
 
-#: ID:343,
+#. Resource IDs: (32019)
+msgid "Compare..."
+msgstr ""
+
 #, c-format
 msgid "Comparing current database with: %s"
 msgstr "Vergleiche aktuelle Datenbank mit: %s"
 
-#: ID:340,
 msgid "Comparison"
 msgstr "Vergleich"
 
-#: Control-ID:65535,
 msgid "Comparison Database:"
 msgstr "Vergleichsdatenbank:"
 
-#: Control-ID:65535,#:
-#: Control-ID:65535,
 msgid "Con&firm Password:"
-msgstr "Best‰tige Passwort:"
+msgstr "Best‰¥©ge Passwort:"
 
-#: Control-ID:1221,
 msgid "Configuration Information"
 msgstr "Konfigurationsinformation"
 
-#: ID:191,
 #, c-format
-msgid ""
-"Configuration file error:\n"
-"%s\n"
-"%s\n"
-"line %d column %d"
-msgstr ""
-"Fehler Konfigurationdatei:\n"
-"%s\n"
-"%s\n"
-"Zeile %d Spalte %d"
+msgid "Configuration file error:\n%s\n%s\nline %d column %d"
+msgstr "Fehler Konfigurationdatei:\n%s\n%s\nZeile %d Spalte %d"
 
-#: ID:342,
 msgid "Confirm Close Dialog"
-msgstr "Schlieﬂen-Dialog best‰tigen"
+msgstr "Schlieﬂ•n-Dialog best‰¥©gen"
 
-#: Control-ID:1019,
 msgid "Confirm deletion of items"
-msgstr "Lˆschen von Elementen best‰tigen"
+msgstr "L„£®en von Elementen best‰¥©gen"
 
-#: Control-ID:1021,
 msgid "Confirm item copy to clipboard"
-msgstr "Kopieren von Elementen in Zwischenablage best‰tigen"
+msgstr "Kopieren von Elementen in Zwischenablage best‰¥©gen"
 
-#: ID:340,
 #, c-format
-msgid ""
-"Confirm that you wish to copy this entry from the %s database to the %s database?\n"
-"\n"
-"If already present in the target database, it will be replaced!"
-msgstr ""
-"Sind sie sicher dass dieser Eintrag von der %s Datenbank in die %s Datenbank kopiert werden soll?\n"
-"\n"
-"Wenn dieser Eintrag bereits in der Zieldatenbank besteht, wird er ersetzt werden!"
+msgid "Confirm that you wish to copy this entry from the %s database to the %s database?\n\nIf already present in the target database, it will be replaced!"
+msgstr "Sind sie sicher dass dieser Eintrag von der %s Datenbank in die %s Datenbank kopiert werden soll?\n\nWenn dieser Eintrag bereits in der Zieldatenbank besteht, wird er ersetzt werden!"
 
-#: Control-ID:65535,
 msgid "Confirmation:"
-msgstr "Best‰tigung:"
+msgstr "Best‰¥©gung:"
 
-#: ID:335,
 #, c-format
 msgid "Conflicting entries for |%s|%s|%s|. Added merged entry as |%s|%s|%s|. Differing field(s): %s"
-msgstr "Widerspr¸chliche Eintr‰ge f¸r |%s|%s|%s|. Zusammengef¸gte Eintrag |%s|%s|%s| eingef¸gt. Unterschiedliche Felder: %s"
+msgstr "WidersprÏ©£he Eintr‰ß• fÏ•≥|%s|%s|. ZusammengefÂ†Öintrag |%s|%s|%s| eingefÓ†ïnterschiedliche Felder: %s"
 
-#: ID:347,#:
-#: Control-ID:1,
 msgid "Continue"
 msgstr "Weiter"
 
-#: Control-ID:1129,
 msgid "Copy"
 msgstr "Kopieren"
 
-#: ID:332,
+#. Resource IDs: (32060)
+msgid "Copy &Notes to Clipboard"
+msgstr ""
+
+#. Resource IDs: (32060)
+msgid "Copy &Notes to Clipboard\tCtrl+G"
+msgstr ""
+
 msgid "Copy &Notes to clipboard"
 msgstr "&Notizen in Zwischenablage kopieren"
 
-#: ID:332,
+#. Resource IDs: (32064)
+msgid "Copy &URL to Clipboard"
+msgstr ""
+
+#. Resource IDs: (32059)
+msgid "Copy &Username to Clipboard"
+msgstr ""
+
+#. Resource IDs: (32059)
+msgid "Copy &Username to Clipboard\tCtrl+U"
+msgstr ""
+
 msgid "Copy &Username to clipboard"
 msgstr "Kopiere Ben&utzername in Zwischenablage"
 
-#: Control-ID:1174,
 msgid "Copy All"
 msgstr "Alles kopieren"
 
-#: ID:345,
 msgid "Copy Email to Clipboard"
 msgstr "Kopiere Email in Zwischenablage"
 
-#: ID:345,
-msgid "Copy URL to Clipboard"
-msgstr "Kopiere URL in Zwischenablage"
+#. Resource IDs: (32270)
+msgid "Copy Here"
+msgstr ""
 
-#: ID:332,
+#. Resource IDs: (32064)
+msgid "Copy URL to Clipboard\tCtrl+Alt+L"
+msgstr ""
+
 msgid "Copy URL to clipboard"
 msgstr "Kopiere URL in Zwischenablage"
 
-#: ID:325,
 msgid "Copy notes to clipboard"
 msgstr "Notizen zur Zwischenablage kopieren"
 
-#: ID:325,
 msgid "Copy password to clipboard"
 msgstr "Passwort in die Zwischenablage kopieren"
 
-#: ID:325,
 msgid "Copy password to clipboard, minimize"
 msgstr "Passwort in die Zwischenablage kopieren, minimieren"
 
-#: Control-ID:1150,
 msgid "Copy to Clipboard"
 msgstr "In die Zwischenablage kopieren"
 
-#: ID:353,
+#. Resource IDs: (32222)
+msgid "Copy to Comparison DB ->"
+msgstr ""
+
 msgid "Copy to DB"
 msgstr "Zur DB kopieren"
 
-#: ID:325,
 msgid "Copy username to clipboard"
 msgstr "Benutzername in die Zwischenablage kopieren"
 
-#: Control-ID:1218,
 msgid "Copyright Notice"
 msgstr "Copyright-Hinweis"
 
-#: ID:326,
 #, c-format
 msgid "Could not access file: %s"
 msgstr "Kein Zugriif auf Datei: %s"
 
-#: ID:3857,
 msgid "Could not start print job."
 msgstr "Konnte die Druckaufgabe nicht starten."
 
-#: ID:332,
 msgid "Couldn't save database - Please save manually"
 msgstr "Konnte Datenbank nicht speichern - bitte manuell speichern"
 
-#: ID:191,
+#. Resource IDs: (354)
+msgid "Create &Shortcut"
+msgstr ""
+
 #, c-format
 msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Erstelle SchemaCache%2d Fehler 0x%08X w‰hrend %s."
+msgstr "Erstelle SchemaCache%2d Fehler 0x%08X w‰®≤end %s."
 
-#: Dlg-ID:117,
 msgid "Create Shortcut"
-msgstr "Tastenk¸rzel erstellen"
+msgstr "TastenkÂ¨†erstellen"
 
-#: Control-ID:1199,
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Erstelle zwischenzeitliche Sicherungkopie (.ibak) vor dem Speichern"
 
-#: ID:327,
 msgid "Created"
 msgstr "Erstellt"
 
-#: ID:189,
 msgid "Created Time\t"
 msgstr "Erstellzeit\t"
 
-#: Control-ID:1108,#:
-#: Control-ID:1108,
 msgid "Created on:"
 msgstr "Erstellt am:"
 
-#: ID:351,
 msgid "Criteria"
 msgstr "Kriterien"
 
-#: Control-ID:65535,
 msgid "Current Value:"
 msgstr "Aktueller Wert:"
 
-#: ID:343,
 #, c-format
-msgid ""
-"Current version:\t%s\r\n"
-"Latest version:\t%s\r\n"
-"\r\n"
-"Please visit the PasswordSafe website to download the latest version."
-msgstr ""
-"Aktuelle Version:\t%s\r\n"
-"Neueste Version:\t%s\r\n"
-"\r\n"
-"Bitte besuchen Sie die PasswordSafe Webseite, um die neueste Version herunterzuladen."
+msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nPlease visit the PasswordSafe website to download the latest version."
+msgstr "Aktuelle Version:\t%s\r\nNeueste Version:\t%s\r\n\r\nBitte besuchen Sie die PasswordSafe Webseite, um die neueste Version herunterzuladen."
 
-#: ID:343,
 #, c-format
-msgid ""
-"Current version:\t%s\r\n"
-"Latest version:\t%s\r\n"
-"\r\n"
-"Your purchase includes free upgrades for one year.\r\n"
-"Please contact the PasswordSafe Administrator for your upgrade."
-msgstr ""
-"Aktuelle Version:\t%s\r\n"
-"Neueste Version:\t%s\r\n"
-"\r\n"
-"Diese Anschaffung enth‰lt kostenlose Upgrades f¸r ein Jahr.\r\n"
-"Bitte kontaktieren Sie den PasswordSafe Administrator f¸r ein Upgrade."
+msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nYour purchase includes free upgrades for one year.\r\nPlease contact the PasswordSafe Administrator for your upgrade."
+msgstr "Aktuelle Version:\t%s\r\nNeueste Version:\t%s\r\n\r\nDiese Anschaffung enth‰¨¥ kostenlose Upgrades fÂ©Æ Jahr.\r\nBitte kontaktieren Sie den PasswordSafe Administrator fÂ©Æ Upgrade."
 
-#: ID:353,
+#. Resource IDs: (32320)
+msgid "Customize &Main Toolbar"
+msgstr ""
+
+#. Resource IDs: (32320)
+msgid "Customize Main Toolbar"
+msgstr ""
+
 msgid "Database"
 msgstr "Datenbank"
 
-#: Control-ID:65535,
 msgid "Database Unique ID:"
 msgstr "Datenbank Unique ID:"
 
-#: Control-ID:65535,
 msgid "Database format:"
 msgstr "Databankformat:"
 
-#: ID:337,
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "Datenbank ist Nur-Lesen. Somit kann keine Einstellung der Datenbank gespeichert werden."
 
-#: Control-ID:1200,
 msgid "Database name"
 msgstr "Datenbankname"
 
-#: ID:337,
 msgid "Database validated - no problems found."
-msgstr "Datenbank ¸berpr¸ft - keine Probleme gefunden."
+msgstr "Datenbank ‚∞≤‡≠†keine Probleme gefunden."
 
-#: Control-ID:1122,#:
-#: Control-ID:1122,
 msgid "Date/Time Information"
 msgstr "Datum/Zeit Information"
 
-#: Control-ID:1322,
 msgid "Date:"
 msgstr "Datum:"
 
-#: Control-ID:65535,
 msgid "Default Autotype string:"
 msgstr "Standard autom. Eingabe:"
 
-#: Control-ID:65535,
 msgid "Default Username"
 msgstr "Standard-Benutzername"
 
-#: ID:331,
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr "Anzahl der gespeicherten Passworthistorien muss zwischen 1 und 255 sein."
 
-#: ID:352,
 msgid "Delete"
-msgstr "Lˆschen"
+msgstr "L„£®en"
 
-#: Dlg-ID:116,
 msgid "Delete Confirmation"
-msgstr "Best‰tigung lˆschen"
+msgstr "Best‰¥©gung l„£®en"
 
-#: ID:338,
-msgid "Delete Entry\tDel"
-msgstr "Eintrag lˆschen\tEntf"
+#. Resource IDs: (32053)
+msgid "Delete Entry"
+msgstr ""
 
-#: ID:338,
 msgid "Delete Group\tDel"
-msgstr "Gruppe lˆschen\tEntf"
+msgstr "Gruppe l„£®en\tEntf"
 
-#: ID:341,
 msgid "Delete a Base Entry Confirmation?"
-msgstr "Best‰tigung f¸r Basis-Eintrag lˆschen?"
+msgstr "Best‰¥©gung f‚°≥is-Eintrag l„£®en?"
 
-#: ID:352,
 msgid "Delete a filter"
-msgstr "Filter lˆschen"
+msgstr "Filter l„£®en"
 
-#: ID:340,
 msgid "Deselect all entries"
-msgstr "Alle Eintr‰ge abw‰hlen"
+msgstr "Alle Eintr‰ß• abw‰®¨en"
 
-#: ID:340,
 msgid "Deselect some entries"
-msgstr "Einige Eintr‰ge abw‰hlen"
+msgstr "Einige Eintr‰ß• abw‰®¨en"
 
-#: ID:3859,
 msgid "Destination disk drive is full."
 msgstr "Zeilfestplatte ist voll."
 
-#: ID:337,
 msgid "Destination location does not exist or is not accessible."
 msgstr "Ziel besteht nicht oder ist nicht zugreifbar"
 
-#: ID:3867,
 #, c-format
 msgid "Disk full while accessing %1."
-msgstr "Platte voll w‰hren Zugriff auf %1."
+msgstr "Platte voll w‰®≤en Zugriff auf %1."
 
-#: ID:3860,
 msgid "Dispatch exception: %1"
 msgstr "Dispatch Ausnahme: %1"
 
-#: Dlg-ID:138,
 msgid "Display"
 msgstr "Anzeige"
 
-#: Dlg-ID:151,#:
-#: Dlg-ID:152,#:
-#: Dlg-ID:153,#:
-#: Dlg-ID:154,#:
-#: Dlg-ID:155,#:
-#: Dlg-ID:156,
 msgid "Display Filter - "
 msgstr "Anzeigefilter - "
 
-#: ID:333,
+#. Resource IDs: (32262)
+msgid "Display subset of Password"
+msgstr ""
+
 #, c-format
 msgid "Do you want to save changes to the password database: %s?"
-msgstr "Mˆchten Sie die ƒnderungen an der Passwortdatenbank speichern: %s?"
+msgstr "M„®¥en Sie die ƒÆderungen an der Passwortdatenbank speichern: %s?"
 
-#: ID:336,
 msgid "Do you want to save changes to the password list?"
-msgstr "Mˆchten Sie die ƒnderungen an der Passwortliste speichern?"
+msgstr "M„®¥en Sie die ƒÆderungen an der Passwortliste speichern?"
 
-#: ID:352,
 msgid "Do you wish to replace it?"
 msgstr "Wollen sie das ersetzen?"
 
-#: ID:328,
 #, c-format
-msgid ""
-"Do you wish to save the changes made to database:\r\n"
-"\r\n"
-"%s\r\n"
-"\r\n"
-"or Cancel the shutdown\\restart\\logoff?"
-msgstr ""
-"Mˆchten Sie die ƒnderungen an der Datenbank speichern:\r\n"
-"\r\n"
-"%s\r\n"
-"\r\n"
-"oder das Herunterfahren\\Neustart\\Abmelden abbrechen?"
+msgid "Do you wish to save the changes made to database:\r\n\r\n%s\r\n\r\nor Cancel the shutdown\\restart\\logoff?"
+msgstr "M„®¥en Sie die ƒÆderungen an der Datenbank speichern:\r\n\r\n%s\r\n\r\noder das Herunterfahren\\Neustart\\Abmelden abbrechen?"
 
-#: ID:314,
 msgid "Double-Click on entry to Autotype"
 msgstr "Eintrag doppelklicken um autom. einzugeben"
 
-#: ID:314,
 msgid "Double-Click on entry to Browse to URL"
 msgstr "Eintrag doppelklicken um zur URL zu gehen"
 
-#: ID:314,
 msgid "Double-Click on entry to Copy Notes"
 msgstr "Eintrag doppelklicken um Notizen zu kopieren"
 
-#: ID:315,
 msgid "Double-Click on entry to Copy Password"
 msgstr "Eintrag doppelklicken um Passwort zu kopieren"
 
-#: ID:315,
 msgid "Double-Click on entry to Copy Password and Minimize"
 msgstr "Eintrag doppelklicken um Passwort zu kopieren und minimieren"
 
-#: ID:315,
 msgid "Double-Click on entry to Copy Username"
 msgstr "Eintrag doppelklicken um Benutzername zu kopieren"
 
-#: ID:315,
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Eintrag doppelklicken um Anzuzeigen/Editieren"
 
-#: Control-ID:65535,
 msgid "Double-click action"
 msgstr "Doppelklick-Aktion"
 
-#: ID:342,
 #, fuzzy, c-format
-msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n"
-"\r\n"
-"The dropped entry now references that entry's base entry."
-msgstr ""
-"Gedropter Eintrag '%s:%s:%s' Passwort zeigt auf einem Eintrag der auch ein Alias ist.\r\n"
-"\r\n"
-"Der gedropter Eintrag verweist nun auf einem Basis-Eintrag des Eintrages."
+msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n\r\nThe dropped entry now references that entry's base entry."
+msgstr "Gedropter Eintrag '%s:%s:%s' Passwort zeigt auf einem Eintrag der auch ein Alias ist.\r\n\r\nDer gedropter Eintrag verweist nun auf einem Basis-Eintrag des Eintrages."
 
-#: ID:350,
+#. Resource IDs: (32021)
+msgid "E&xit"
+msgstr ""
+
+#. Resource IDs: (32021)
+msgid "E&xit\tCtrl+Q\\Alt+F4"
+msgstr ""
+
 msgid "Easyvision characters"
 msgstr "Easyvision Zeichen"
 
-#: Dlg-ID:121,
 msgid "Edit Entry"
 msgstr "Eintrag bearbeiten"
 
-#: ID:338,
 msgid "Edit Entry\tCtrl+Enter"
 msgstr "Eintrag bearbeiten\tStrg+Enter"
 
-#: Dlg-ID:122,
 msgid "Edit Shortcut"
-msgstr "Tastenk¸rzel bearbeiten"
+msgstr "TastenkÂ¨†bearbeiten"
 
-#: ID:203,
+#. Resource IDs: (32052)
+msgid "Edit/&View Entry..."
+msgstr ""
+
+#. Resource IDs: (32052)
+msgid "Edit/&View Entry...\tCtrl+Enter"
+msgstr ""
+
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
-msgstr "Eines oder beide von Gruppe/Titel und Passwortspalten fehlen. Keine Datens‰tze importiert."
+msgstr "Eines oder beide von Gruppe/Titel und Passwortspalten fehlen. Keine Datens‰¥∫e importiert."
 
-#: ID:209,
 #, fuzzy, c-format
 msgid "Element \"%s\" exceeded its MaxOccurs of %s."
-msgstr "Element \"%s\" hat seine MaxOccurs of %s ¸berschritten."
+msgstr "Element \"%s\" hat seine MaxOccurs of %s ‚≥£hritten."
 
-#: ID:204,
 #, c-format
 msgid "Empty line %d skipped"
-msgstr "Leere Zeile %d ¸bersprungen"
+msgstr "Leere Zeile %d ‚≥∞rungen"
 
-#: Dlg-ID:118,
 msgid "Encrypt/Decrypt"
-msgstr "Verschl¸sseln/Entschl¸sseln"
+msgstr "VerschlÂ¨Æ/EntschlÂ¨Æ"
 
-#: ID:327,
 msgid "Encryption failed"
-msgstr "Verschl¸sselung gescheitert"
+msgstr "VerschlÂ¨µng gescheitert"
 
-#: ID:204,
 msgid "End Report"
 msgstr "Bericht beenden"
 
-#: Control-ID:65535,
 msgid "Enter Key:"
-msgstr "K¸rzel eingeben:"
+msgstr "KÂ¨†eingeben:"
 
-#: Dlg-ID:130,#:
-#: Dlg-ID:132,
 msgid "Enter Safe Combination"
 msgstr "Safekombination eingeben"
 
-#: Control-ID:65535,
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
 msgstr "Positionen des Passwortzeichen getrennt mit Leerzeichen, Komma oder Strichpunkt:"
 
-#: Dlg-ID:149,
 msgid "Enter your Sample Text below"
 msgstr "Beispieltext unten eingeben"
 
-#: ID:336,
 msgid "Entries in both databases but with differences:"
-msgstr "Eintr‰ge in beiden Datenbanken aber mit Unterschiede:"
+msgstr "Eintr‰ß• in beiden Datenbanken aber mit Unterschiede:"
 
-#: ID:336,
 #, c-format
 msgid "Entries only in comparison database (%s):"
-msgstr "Eintr‰ge nur in der Vergleichsdatenbank (%s):"
+msgstr "Eintr‰ß• nur in der Vergleichsdatenbank (%s):"
 
-#: ID:336,
 #, c-format
 msgid "Entries only in current database (%s):"
-msgstr "Eintr‰ge nur in der aktuellen Datenbank (%s):"
+msgstr "Eintr‰ß• nur in der aktuellen Datenbank (%s):"
 
-#: ID:205,
 #, c-format
 msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat eine ung¸ltige Passworthistorie.  Er wurde mit den vorhandenen Daten wieder aufgebaut.  Ein Teil der Historie kˆnnte verloren gegangen sein."
+msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat eine ungÈß• Passworthistorie.  Er wurde mit den vorhandenen Daten wieder aufgebaut.  Ein Teil der Historie kÓÆ¥e verloren gegangen sein."
 
-#: ID:205,
 #, c-format
 msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" had an invalid UUID field.  This has been corrected."
-msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat ein ung¸ltiges UUID Feld. Es wurde korrigiert."
+msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat ein ungÈß•s UUID Feld. Es wurde korrigiert."
 
-#: ID:205,
 #, c-format
 msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry does not exist."
-msgstr "Eintrag \"%s, %s, %s\" hat ein Passwort im richtigen Format f¸r ein Alias, aber der Basis-Eintrag besteht nicht."
+msgstr "Eintrag \"%s, %s, %s\" hat ein Passwort im richtigen Format fÂ©Æ Alias, aber der Basis-Eintrag besteht nicht."
 
-#: ID:205,
 #, c-format
 msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry is already an alias."
-msgstr "Eintrag \"%s, %s, %s\" hat ein Passwort im richtigen Format f¸r ein Alias, aber der Basis-Eintrag ist bereits ein Alias."
+msgstr "Eintrag \"%s, %s, %s\" hat ein Passwort im richtigen Format fÂ©Æ Alias, aber der Basis-Eintrag ist bereits ein Alias."
 
-#: ID:205,
 msgid "Entry import warnings"
 msgstr "Ein"
 
-#: ID:205,
 #, c-format
 msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
-msgstr "Eintrag der Zeile %d enth‰lt ein ung¸ltig \"%s \" Feld. Es wurde ignoriert."
+msgstr "Eintrag der Zeile %d enth‰¨¥ ein ungÈß†\"%s \" Feld. Es wurde ignoriert."
 
-#: ID:205,
+#. Resource IDs: (205)
 #, c-format
 msgid "Entry on line %d with Group=\"%s\", Title=\"%s\", User=\"%s\" already exists. Added imported entry with title=\"%s\"."
-msgstr "Eintrag in zeile %d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingef¸gt."
+msgstr ""
 
-#: ID:205,
+#. Resource IDs: (205)
 #, c-format
 msgid "Entry on line %d with no group, Title=\"%s\", User=\"%s\" already exists. Added imported entry with title=\"%s\"."
-msgstr "Eintrag in zeile %d ohne Gruppe, Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingef¸gt."
+msgstr ""
 
-#: ID:349,
+#, c-format
 msgid "Entry type"
 msgstr "Typ des Eintrags"
 
-#: ID:209,
 msgid "Error"
 msgstr "Fehler"
 
-#: ID:191,
 #, c-format
 msgid "Error (%08X): line %d character %d %s"
 msgstr "Fehler (%08X): Zeile %d Zeichen %d %s"
 
-#: ID:190,
-msgid ""
-"Error - unable to determine settings configuration!\n"
-"\n"
-"No application settings will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Fehler - Einstellungskonfiguration nicht ermittelbar!\n"
-"\n"
-"Keine Anwendungseinstellungen werden gesichert.\n"
-"\n"
-"Datenbankeinstellungen werden in die aktuelle Datenbank beim Schliessen gespeichert, vorausgesetzt sie ist nicht Nur-Lesen oder gesperrt durch ein andere Benutzer."
+msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Fehler - Einstellungskonfiguration nicht ermittelbar!\n\nKeine Anwendungseinstellungen werden gesichert.\n\nDatenbankeinstellungen werden in die aktuelle Datenbank beim Schliessen gespeichert, vorausgesetzt sie ist nicht Nur-Lesen oder gesperrt durch ein andere Benutzer."
 
-#: ID:190,
 #, c-format
 msgid "Error in a Password History sub-field starting at position %d (within the History field): "
 msgstr "Fehler im Unterfeld der Passworthistorie beginnend bei Position %d (im Historiefeld): "
 
-#: ID:204,
 msgid "Error: A file with this name already exists"
 msgstr "Fehler: ein Datei mit diesem Namen besteht bereits"
 
-#: ID:203,
+#. Resource IDs: (203)
 msgid "Error: File is read-only"
-msgstr "Fehler: Datei ist schreibgesch¸tzt"
+msgstr ""
 
-#: Control-ID:1078,
 msgid "Escape key closes application"
-msgstr "Escape-Taste schlieﬂt Anwendung."
+msgstr "Escape-Taste schlieﬂ¥ Anwendung."
 
-#: Control-ID:65535,
 msgid "Example:"
 msgstr "Beispiel:"
 
-#: ID:347,#:
-#: Control-ID:1004,
 msgid "Exit"
 msgstr "Beenden"
 
-#: ID:338,
+#. Resource IDs: (32108)
+msgid "Expand All\tCtrl+Alt+Plus"
+msgstr ""
+
 msgid "Expand/Collapse Group\tCtrl+Enter"
 msgstr "Gruppe erweitern/reduzieren\tStrg+Enter"
 
-#: ID:327,
 msgid "Expiry Date/Time"
 msgstr "Ablaufdatum/-zeit"
 
-#: ID:353,
 msgid "Export"
 msgstr "Exportieren"
 
-#: Dlg-ID:123,
+#. Resource IDs: (32009)
+msgid "Export &To"
+msgstr ""
+
 msgid "Export Text"
 msgstr "Exportiere Text"
 
-#: Dlg-ID:112,
 msgid "Export Text Extra"
 msgstr "Text Extra exportieren"
 
-#: Dlg-ID:124,
 msgid "Export XML"
 msgstr "Exportiere XML"
 
-#: ID:3857,
 msgid "Failed to create empty document."
 msgstr "Erstellen eines leeren Dokuments fehlgeschlagen."
 
-#: ID:3857,
 msgid "Failed to launch help."
 msgstr "Start der Hilfe gehlgeschlagen."
 
-#: ID:208,
 msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
-msgstr "Sperrung der Konfigurationsdatei fehlgeschlagen - geˆffnet von einer anderen Instanz von PasswordSafe?"
+msgstr "Sperrung der Konfigurationsdatei fehlgeschlagen - geÊ¶Æet von einer anderen Instanz von PasswordSafe?"
 
-#: ID:3857,
 msgid "Failed to open document."
-msgstr "Dokument ˆffnen fehlgeschlagen."
+msgstr "Dokument Ê¶Æen fehlgeschlagen."
 
-#: ID:337,
 msgid "Failed to save changed preferences."
-msgstr "Speichern der ge‰nderten Einstellungen fehlgeschlagen."
+msgstr "Speichern der ge‰Æ§erten Einstellungen fehlgeschlagen."
 
-#: ID:3857,
 msgid "Failed to save document."
 msgstr "Speichern des Dokuments fehlgeschlagen."
 
-#: ID:209,
 msgid "Fatal Error"
 msgstr "Fataler Fehler"
 
-#: ID:350,#:
-#: ID:351,
 msgid "Field"
 msgstr "Feld"
 
-#: Control-ID:65535,
 msgid "Field Separator:"
 msgstr "Feld Trennzeichen:"
 
-#: ID:349,
 msgid "Field active"
 msgstr "Feld aktiv"
 
-#: ID:349,
 msgid "Field present"
 msgstr "Feld vorhanden"
 
-#: ID:328,
 msgid "File In Use"
 msgstr "Datei in Verwendung"
 
-#: ID:333,
 msgid "File Read Error"
 msgstr "Dateilesefehler"
 
-#: ID:333,
 msgid "File Write Error"
 msgstr "Dateischreibfehler"
 
-#: ID:189,
 #, c-format
 msgid "File ends on line %d before ending double quote of last entry's note field."
-msgstr "Datei endet in Zeile %d ohne Anf¸hrungszeichen am Schluss des letzten Notizfeldes."
+msgstr "Datei endet in Zeile %d ohne AnfÂÆßszeichen am Schluss des letzten Notizfeldes."
 
-#: ID:334,
 msgid "File lock error"
 msgstr "Fehler beim Sperren der Datei"
 
-#: ID:333,
 msgid "File open error"
-msgstr "Fehler beim ÷ffnen der Datei"
+msgstr "Fehler beim ÷¶fnen der Datei"
 
-#: ID:328,
 msgid "File open error."
-msgstr "Fehler beim ÷ffnen der Datei."
+msgstr "Fehler beim ÷¶fnen der Datei."
 
-#: ID:190,
 msgid "File or path not found"
 msgstr "Datei oder Pfad nicht gefunden"
 
-#: ID:326,
 msgid "File or path not found."
 msgstr "Datei oder Pfad nicht gefunden."
 
-#: ID:333,
 msgid "File version warning"
 msgstr "Dateiversionswarnung"
 
-#: ID:335,
 #, c-format
-msgid ""
-"File: %s failed validation against XML Schema:\r\n"
-"\r\n"
-"%s"
-msgstr ""
-"Datei: %s Validierung mit XML Schema fehlgeschlagen:\r\n"
-"\r\n"
-"%s"
+msgid "File: %s failed validation against XML Schema:\r\n\r\n%s"
+msgstr "Datei: %s Validierung mit XML Schema fehlgeschlagen:\r\n\r\n%s"
 
-#: ID:335,
 #, c-format
-msgid ""
-"File: %s passed Validation but had the following errors during import:\r\n"
-"\r\n"
-"%s"
-msgstr ""
-"Datei: %s bestand Validierung aber mit folgende Fehler w‰hrend des Importierens:\r\n"
-"\r\n"
-"%s"
+msgid "File: %s passed Validation but had the following errors during import:\r\n\r\n%s"
+msgstr "Datei: %s bestand Validierung aber mit folgende Fehler w‰®≤end des Importierens:\r\n\r\n%s"
 
-#: ID:335,
 #, c-format
-msgid ""
-"File: %s was imported (entries validated %d / imported %d) but had the following errors:\r\n"
-"\r\n"
-"%s"
-msgstr ""
-"Datei: %s wurde importiert (Validierte Eintr‰ge %d / importiert %d) aber mit folgende Fehler:\r\n"
-"\r\n"
-"%s"
+msgid "File: %s was imported (entries validated %d / imported %d) but had the following errors:\r\n\r\n%s"
+msgstr "Datei: %s wurde importiert (Validierte Eintr‰ß• %d / importiert %d) aber mit folgende Fehler:\r\n\r\n%s"
 
-#: ID:209,
 #, c-format
 msgid "Filter %s already exists in the database, do you wish to replace it with this?"
 msgstr "Filter %s besteht bereits in der Datenbank, wollen sie es mit diesem ersetzen?"
 
-#: Control-ID:65535,
 msgid "Filter name:"
 msgstr "Filtername:"
 
-#: ID:352,
 msgid "Filters successfully exported"
 msgstr "Filter erfolgreich exportiert"
 
-#: ID:352,
 msgid "Filters successfully imported"
 msgstr "Filter erfolgreich importiert"
 
-#: ID:210,
 #, fuzzy
 msgid "Filters within the database will be kept as \"unknown fields\"."
 msgstr "Filter werden in der Datenbank als \"Unbekannte Felder\" abgelegt."
 
-#: ID:346,
 msgid "Find"
 msgstr "Suchen"
 
-#: Dlg-ID:148,
+#. Resource IDs: (32102)
+msgid "Flattened &List"
+msgstr ""
+
 msgid "Font"
 msgstr "Schriftart"
 
-#: Control-ID:1089,
 msgid "Font st&yle:"
 msgstr "Schriftart "
 
-#: ID:342,
-msgid ""
-"For security, the database must be closed before connecting to the Internet.\r\n"
-"Press OK to close database and continue (Changes will be saved)"
-msgstr ""
-"Aus Sicherheitsgr¸nden muss die Datenbank geschlossen werden vor dem Verbinden ins Internet.\r\n"
-"Dr¸cke OK um die Datenbank zu schliessen und weiterzumachen (ƒnderungen werden gespeichert)"
+msgid "For security, the database must be closed before connecting to the Internet.\r\nPress OK to close database and continue (Changes will be saved)"
+msgstr "Aus SicherheitsgrÂÆ†muss die Datenbank geschlossen werden vor dem Verbinden ins Internet.\r\nDrÂ†èK um die Datenbank zu schliessen und weiterzumachen (ƒÆderungen werden gespeichert)"
 
-#: ID:203,
 #, c-format
 msgid "Found %d known column headers:"
-msgstr "%d bekannt Spaltenkˆpfe gefunden:"
+msgstr "%d bekannt Spaltenk‡¶• gefunden:"
 
-#: ID:330,
 msgid "Found 1 match."
-msgstr "1 ‹bereinstimmung gefunden."
+msgstr "1 ‹¢ereinstimmung gefunden."
 
-#: Control-ID:1176,
 msgid "Fully collapsed"
 msgstr "Alle reduziert"
 
-#: Control-ID:1177,
 msgid "Fully expanded"
 msgstr "Alle erweitert"
 
-#: Control-ID:1052,
 msgid "Generate pronounceable passwords"
-msgstr "Generiere aussprechbare Passwˆrter"
+msgstr "Generiere aussprechbare Passw‚¥•r"
 
-#: ID:326,
+#. Resource IDs: (57670)
+msgid "Get &Help\tF1"
+msgstr ""
+
 msgid "Given path is a directory or file is read-only"
 msgstr "Angegebener Pfad ist ein Verzeichnis oder die Datei ist Nur-Lesen"
 
-#: Control-ID:1357,
 #, fuzzy
 msgid "Go"
 msgstr "Los"
 
-#: ID:327,
 msgid "Group"
 msgstr "Gruppe"
 
-#: ID:339,
 msgid "Group [Mandatory Field]"
 msgstr "Gruppe [Pflichtfeld]"
 
-#: ID:327,
 msgid "Group/Title"
 msgstr "Gruppe/Titel"
 
-#: ID:188,
 msgid "Group/Title\t"
 msgstr "Gruppe/Titel\t"
 
-#: ID:188,
 msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
-msgstr "Gruppe/Titel\tBenutzername\tPasswort\tURL\tAutom. Eingabe\tErstellt am\tPasswort ge‰ndert\tLetzter Zugriff\tDatum Passwortablauf\tIntervall Passwortablauf\tEintrag ge‰ndert\tPasswortrichtlinie\tHistorie\tNotizen"
+msgstr "Gruppe/Titel\tBenutzername\tPasswort\tURL\tAutom. Eingabe\tErstellt am\tPasswort ge‰Æ§ert\tLetzter Zugriff\tDatum Passwortablauf\tIntervall Passwortablauf\tEintrag ge‰Æ§ert\tPasswortrichtlinie\tHistorie\tNotizen"
 
-#: Control-ID:65535,#:
-#: Control-ID:1350,#:
-#: Control-ID:65535,
 msgid "Group:"
 msgstr "Gruppe:"
 
-#: ID:191,
 msgid "Group\t"
 msgstr "Gruppe\t"
 
-#: ID:328,
 msgid "Group\tTitle\tUsername\tPassword Expiry Date\r\n"
 msgstr "Gruppe\tTitel\tBenutzername\tPasswort Ablaufdatum\r\n"
 
-#: ID:328,
 msgid "H"
 msgstr "H"
 
-#: ID:351,#:
-#: Control-ID:57670,
 msgid "Help"
 msgstr "Hilfe"
 
-#: Control-ID:57670,#:
-#: Control-ID:57670,
 msgid "Help (F1)"
 msgstr "Hilfe (F1)"
 
-#: ID:350,
 msgid "Hexadecimal characters"
 msgstr "Hexadecimale Zeichen"
 
-#: ID:331,
 msgid "Hexadecimal is mutually exclusive to all other options!"
 msgstr "Hexadecimal schliesst alle andere Optionen aus!"
 
-#: ID:353,
 msgid "Hide Dragbar"
 msgstr "Dragleiste ausblenden"
 
-#: ID:346,
 msgid "Hide Toolbar"
 msgstr "Toolleiste ausblenden"
 
-#: ID:189,
 msgid "History\t"
 msgstr "Historie\t"
 
-#: Control-ID:1088,
 msgid "Hot Key"
 msgstr "Hot Key"
 
-#: Control-ID:1087,
 msgid "HotKey1"
 msgstr "HotKey1"
 
 #. Accelerator Entry for Menu ID:32002; ''
-#: Corresponding Menu ID:32002;
-#: ''
 msgid "ID:32002:V C +O"
 msgstr "ID:32002:V C +O"
 
 #. Accelerator Entry for Menu ID:32003; ''
-#: Corresponding Menu ID:32003;
-#: ''
 msgid "ID:32003:V C +N"
 msgstr "ID:32003:V C +N"
 
 #. Accelerator Entry for Menu ID:32005; ''
-#: Corresponding Menu ID:32005;
-#: ''
 msgid "ID:32005:V C +S"
 msgstr "ID:32005:V C +S"
 
 #. Accelerator Entry for Menu ID:32021; ''
-#: Corresponding Menu ID:32021;
-#: ''
 msgid "ID:32021:V C +Q"
 msgstr "ID:32021:V C +Q"
 
 #. Accelerator Entry for Menu ID:32051; ''
-#: Corresponding Menu ID:32051;
-#: ''
 msgid "ID:32051:V C +A"
 msgstr "ID:32051:V C +A"
 
 #. Accelerator Entry for Menu ID:32055; ''
-#: Corresponding Menu ID:32055;
-#: ''
 msgid "ID:32055:V C +F"
 msgstr "ID:32055:V C +F"
 
 #. Accelerator Entry for Menu ID:32056; ''
-#: Corresponding Menu ID:32056;
-#: ''
 msgid "ID:32056:V C +D"
 msgstr "ID:32056:V C +D"
 
 #. Accelerator Entry for Menu ID:32058; ''
-#: Corresponding Menu ID:32058;
-#: ''
 msgid "ID:32058:V C +C"
 msgstr "ID:32058:V C +C"
 
 #. Accelerator Entry for Menu ID:32059; ''
-#: Corresponding Menu ID:32059;
-#: ''
 msgid "ID:32059:V C +U"
 msgstr "ID:32059:V C +U"
 
 #. Accelerator Entry for Menu ID:32060; ''
-#: Corresponding Menu ID:32060;
-#: ''
 msgid "ID:32060:V C +G"
 msgstr "ID:32060:V C +G"
 
 #. Accelerator Entry for Menu ID:32062; ''
-#: Corresponding Menu ID:32062;
-#: ''
 msgid "ID:32062:V C +L"
 msgstr "ID:32062:V C +L"
 
 #. Accelerator Entry for Menu ID:32063; ''
-#: Corresponding Menu ID:32063;
-#: ''
 msgid "ID:32063:V C +T"
 msgstr "ID:32063:V C +T"
 
 #. Accelerator Entry for Menu ID:32064; ''
-#: Corresponding Menu ID:32064;
-#: ''
 msgid "ID:32064:VAC +L"
 msgstr "ID:32064:VAC +L"
 
 #. Accelerator Entry for Menu ID:32152; ''
-#: Corresponding Menu ID:32152;
-#: ''
 msgid "ID:32152:V C +B"
 msgstr "ID:32152:V C +B"
 
 #. Accelerator Entry for Menu ID:32153; ''
-#: Corresponding Menu ID:32153;
-#: ''
 msgid "ID:32153:V C +R"
 msgstr "ID:32153:V C +R"
 
 #. Accelerator Entry for Menu ID:32303; ''
-#: Corresponding Menu ID:32303;
-#: ''
 msgid "ID:32303:VAC +S"
 msgstr "ID:32303:VAC +S"
 
 #. Accelerator Entry for Menu ID:32306; ''
-#: Corresponding Menu ID:32306;
-#: ''
 msgid "ID:32306:VAC +A"
 msgstr "ID:32306:VAC +A"
 
 #. Accelerator Entry for Menu ID:32308; ''
-#: Corresponding Menu ID:32308;
-#: ''
 msgid "ID:32308:VAC +C"
 msgstr "ID:32308:VAC +C"
 
 #. Accelerator Entry for Menu ID:32500; ''
-#: Corresponding Menu ID:32500;
-#: ''
 msgid "ID:32500:V C +C"
 msgstr "ID:32500:V C +C"
 
 #. Accelerator Entry for Menu ID:32501; ''
-#: Corresponding Menu ID:32501;
-#: ''
 msgid "ID:32501:V C +E"
 msgstr "ID:32501:V C +E"
 
 #. Accelerator Entry for Menu ID:32502; ''
-#: Corresponding Menu ID:32502;
-#: ''
 msgid "ID:32502:V C +F"
 msgstr "ID:32502:V C +F"
 
 #. Accelerator Entry for Menu ID:32503; ''
-#: Corresponding Menu ID:32503;
-#: ''
 msgid "ID:32503:V C +L"
 msgstr "ID:32503:V C +L"
 
 #. Accelerator Entry for Menu ID:32504; ''
-#: Corresponding Menu ID:32504;
-#: ''
 msgid "ID:32504:V C +S"
 msgstr "ID:32504:V C +S"
 
-#: ID:344,
 msgid "Icon"
 msgstr "Symbol"
 
-#: ID:320,
 #, fuzzy
 msgid "If enabled, a 'snapshot' will be taken before every save, and named according to the options listed below."
 msgstr "Wenn aktiviert, wird vor jeder Sicherung ein 'snapshot' gemacht, und so benannt wie es die Optionen unten angeben."
 
-#: ID:330,
 msgid "If requested, then a delimiter character must be entered!"
 msgstr "Wenn erforderlich muss ein Trennzeichen eingegeben werden!"
 
-#: Dlg-ID:125,
+#. Resource IDs: (32014)
+msgid "Import &From"
+msgstr ""
+
+#. Resource IDs: (32120)
+msgid "Import &Text"
+msgstr ""
+
+#. Resource IDs: (32121)
+msgid "Import &XML"
+msgstr ""
+
 msgid "Import Text Settings"
 msgstr "Text-Einstellungen importieren"
 
-#: ID:343,
 msgid "Import Text failed"
 msgstr "Text-Import fehlgeschlagen"
 
-#: Dlg-ID:126,
 msgid "Import XML Settings"
 msgstr "XML-Einstellungen importieren"
 
-#: ID:341,
 msgid "Import XML failed"
 msgstr "XML-Import fehlgeschlagen"
 
-#: Control-ID:65535,
 msgid "Import under Group?"
 msgstr "In Gruppe importieren?"
 
-#: Control-ID:65535,
 msgid "Import under group?"
 msgstr "In Gruppe importieren?"
 
-#: ID:346,
 msgid "Import_Text"
 msgstr "Import_Text"
 
-#: ID:346,
 msgid "Import_XML"
 msgstr "Import_XML"
 
-#: ID:330,#:
-#: ID:353,
 msgid "Imported"
 msgstr "Importiert"
 
-#: ID:334,
 #, c-format
 msgid "Imported %d %s"
 msgstr "Importiert %d %s"
 
-#: Control-ID:1229,
 msgid "In"
 msgstr "In"
 
-#: ID:340,
 #, c-format
 msgid "In Headers(%s)/In Entries("
-msgstr "In Headers(%s)/In Eintr‰ge("
+msgstr "In Headers(%s)/In Eintr‰ß•("
 
-#: ID:350,
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: Dlg-ID:146,
 msgid "Incorrect Passkey"
-msgstr "Falscher Hauptschl¸ssel"
+msgstr "Falscher Hauptschl"
 
-#: ID:331,
 msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"
-msgstr "Falscher Hauptschl¸ssel, keine PasswordSafe-Datenbank oder Datenbank korrupt. (Die Sicherungskopie der Datenbank hat den selben Namen wie das Original, mit angeh‰ngten '~')"
+msgstr "Falscher HauptschlÂ¨¨ keine PasswordSafe-Datenbank oder Datenbank korrupt. (Die Sicherungskopie der Datenbank hat den selben Namen wie das Original, mit angeh‰Æßten '~')"
 
-#: ID:204,
 msgid "Incorrect password"
 msgstr "Falsches Passwort"
 
-#: ID:337,
 msgid "Incremented Number [001-999]"
-msgstr "Hochgez‰hlte Nummer [001-999]"
+msgstr "Hochgez‰®¨te Nummer [001-999]"
 
-#: ID:354,
 #, c-format
 msgid "Index is bigger than password length (%d)."
-msgstr "Index ist grˆsser als die Passwortl‰nge (%d)."
+msgstr "Index ist gr„≥•r als die Passwortl‰Æße (%d)."
 
-#: ID:353,
 msgid "Index must be greater than or equal to 1."
-msgstr "Der Index muss grˆﬂer oder gleich 1 sein. "
+msgstr "Der Index muss grÔ•≤ oder gleich 1 sein. "
 
-#: Control-ID:65535,
 msgid "Initial system tray icon"
 msgstr "Initiales Symbol im Infobereich"
 
-#: Control-ID:65535,
 msgid "Initial tree view"
 msgstr "Baumansicht am Anfang"
 
-#: ID:3857,
 msgid "Insufficient memory to perform operation."
-msgstr "Nicht gen¸gend Speicher um die Operation auszuf¸hren."
+msgstr "Nicht genÓ§†Speicher um die Operation auszufÂÆÆ"
 
-#: Control-ID:65535,
 msgid "Intermediate Backups"
 msgstr "Zwischenzeitliche Siecherungskopie"
 
-#: ID:3857,
 msgid "Internal application error."
 msgstr "Interner Anwendungsfehler."
 
-#: ID:203,
 msgid "Internal error. Import failed. No records imported."
-msgstr "Interner Fehler. Import fehlgeschlagen. Keine Datens‰tze importiert."
+msgstr "Interner Fehler. Import fehlgeschlagen. Keine Datens‰¥∫e importiert."
 
-#: ID:204,
 msgid "Internal error: An invalid flag was specified"
-msgstr "Interner Fehler: ung¸ltiges Flag definiert"
+msgstr "Interner Fehler: ungÈß•s Flag definiert"
 
-#: ID:208,
 msgid "Internal error: Couldn't initialize config file XML structure"
 msgstr "Interner Fehler: Couldn't initialize config file XML structure"
 
-#: ID:189,
 #, fuzzy
 msgid "Internal error: Invalid oflag or pmode argument"
-msgstr "Interner Fehler: ung¸ltiges oflag oder pmode Argument"
+msgstr "Interner Fehler: ungÈß•s oflag oder pmode Argument"
 
-#: ID:204,
 msgid "Internal error: Out of file handles"
 msgstr "Interner Fehler: kein Dateihandler mehr"
 
-#: ID:190,
 msgid "Internal error: Unexpected error number"
 msgstr "Interner Fehler: unerwartete Fehlernummer"
 
-#: ID:208,
 msgid "Invalid Filter schema."
-msgstr "Ung¸ltiges Filterschema"
+msgstr "UngÈß•s Filterschema"
 
-#: ID:209,
 msgid "Invalid data in element: "
-msgstr "Ung¸ltige Daten in Element:"
+msgstr "UngÈß• Daten in Element:"
 
-#: ID:3857,
 msgid "Invalid filename."
-msgstr "Ung¸ltiger Dateiname."
+msgstr "UngÈß•r Dateiname."
 
-#: ID:189,
 #, c-format
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
-msgstr "Ung¸ltiger Eingabe in Zeil %d. Anzahl Felder getrennt mit '%c' nicht wie erwartet."
+msgstr "UngÈß•r Eingabe in Zeil %d. Anzahl Felder getrennt mit '%c' nicht wie erwartet."
 
-#: Control-ID:1143,
+#. Resource IDs: (32017)
+msgid "KeePass..."
+msgstr ""
+
 msgid "Keep"
 msgstr "Behalten"
 
-#: ID:189,
 msgid "Last Access Time\t"
 msgstr "Letzte Zugriffszeit\t"
 
-#: ID:327,
 msgid "Last Accessed"
 msgstr "Letzter Zugriff"
 
-#: ID:328,
 msgid "Last Modified"
-msgstr "Zuletzt ge‰ndert"
+msgstr "Zuletzt ge‰Æ§ert"
 
-#: Control-ID:1112,#:
-#: Control-ID:1112,
 msgid "Last accessed on:"
 msgstr "Letzter Zugriff am:"
 
-#: Control-ID:65535,
 msgid "Last saved by:"
 msgstr "Zuletzt gespeichert von:"
 
-#: Control-ID:65535,
 msgid "Last saved on:"
 msgstr "Zuletzt gespeichert am:"
 
-#: ID:342,
 #, c-format
 msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-msgstr "Neueste Version? Klick <a href=\"%s\">hiee</a> zum Nachpr¸fen."
+msgstr "Neueste Version? Klick <a href=\"%s\">hiee</a> zum Nachpr"
 
-#: ID:331,
-msgid ""
-"Length of passwords generated in hexadecimal format must be even\n"
-"as each byte is two hexadecimal digits."
-msgstr ""
-"Die Passwortl‰nge im hexadezimalen Format muss gerade sein\n"
-"weil jedes Byte aus 2 Hexadezimalzeichen besteht."
+msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
+msgstr "Die Passwortl‰Æße im hexadezimalen Format muss gerade sein\nweil jedes Byte aus 2 Hexadezimalzeichen besteht."
 
-#: ID:204,
 #, c-format
 msgid "Line %d skipped"
-msgstr "Zeile %d ¸bersprungen"
+msgstr "Zeile %d ‚≥∞rungen"
 
-#: ID:205,
 #, c-format
 msgid "Line %d skipped. It has an empty mandatory Password field."
-msgstr "Zeile %d ¸bersprungen. Passwort darf nicht leer sein."
+msgstr "Zeile %d ‚≥∞rungen. Passwort darf nicht leer sein."
 
-#: ID:205,
 #, c-format
 msgid "Line %d skipped. It has an empty mandatory Title field."
-msgstr "Zeile %d ¸bersprungen. Titel darf nicht leer sein."
+msgstr "Zeile %d ‚≥∞rungen. Titel darf nicht leer sein."
 
-#: ID:189,
 #, c-format
 msgid "Line %d: "
 msgstr "Zeile %d: "
 
-#: Control-ID:65535,#:
-#: Control-ID:65535,
 msgid "Line delimiter in Notes field:"
 msgstr "Zeilentrennzeichen im Notizenfeld:"
 
-#: Control-ID:1152,
 msgid "List"
 msgstr "Liste"
 
-#: Dlg-ID:119,
 msgid "List of Expired Passwords"
-msgstr "Liste der abgelaufenene Passwˆrter"
+msgstr "Liste der abgelaufenene Passw‚¥•r"
 
-#: Control-ID:1257,#:
-#: Control-ID:1012,#:
-#: Control-ID:1303,#:
-#: Control-ID:1347,
 msgid "List1"
 msgstr "List1"
 
-#: ID:329,
 msgid "Lock Safe"
 msgstr "Safe sperren"
 
-#: Control-ID:1077,
 msgid "Lock password database after "
 msgstr "Passwort-Datenbank sperren nach "
 
-#: Control-ID:1026,
 msgid "Lock password database on minimize"
 msgstr "Passwort-Datenbank sperren wenn minimiert"
 
-#: Control-ID:1073,
 msgid "Lock password database on workstation lock"
 msgstr "Passwort-Datenbank sperren wenn Computer gesperrt"
 
-#: ID:3866,
 msgid "Mail system DLL is invalid."
-msgstr "Mail system DLL ist ung¸ltig."
+msgstr "Mail system DLL ist ungÈßÆ"
 
-#: Dlg-ID:158,
+#. Resource IDs: (32152)
+msgid "Make &Backup\tCtrl+B"
+msgstr ""
+
 msgid "Manage Filters"
 msgstr "Verwalte Filter"
 
-#: Control-ID:65535,
 msgid "Manage password history of current entries"
-msgstr "Verwalte Passworthistorie der aktuellen Eintr‰ge"
+msgstr "Verwalte Passworthistorie der aktuellen Eintr‰ß•"
 
-#: ID:209,
 msgid "Mandatory delimiter attribute invalid."
-msgstr "Vorgeschriebenes Trennattribut ung¸ltig."
+msgstr "Vorgeschriebenes Trennattribut ungÈßÆ"
 
-#: ID:209,
 msgid "Mandatory delimiter attribute missing."
 msgstr "Vorgeschriebenes Trennattribut fehlt."
 
-#: ID:209,
 msgid "Mandatory element (title and/or password) missing."
 msgstr "Pflichtelement (Titel und/oder Passwort) fehlt."
 
-#: ID:209,
 #, fuzzy
 msgid "Mandatory ftype attribute missing."
 msgstr "Vorgeschriebenes ftype-Attribut fehlt."
 
-#: Control-ID:1212,
 msgid "Max."
 msgstr "Max."
 
-#: Control-ID:65535,
 msgid "Max:"
 msgstr "Max:"
 
-#: ID:338,
-msgid ""
-"Maximum number of backups kept using incremented number suffix\n"
-"must be between 1 and 999."
-msgstr ""
-"Maximale Anzahl an Sicherungsdateien mit fortlaufender Nummerierung\n"
-"muss zwischen 1 und 999 liegen."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
+msgstr "Maximale Anzahl an Sicherungsdateien mit fortlaufender Nummerierung\nmuss zwischen 1 und 999 liegen."
 
-#: ID:338,
 #, c-format
 msgid "Maximum number of days that can be specified is %d"
 msgstr "Maximale Anzahl an Tagen, die angegeben werden kann, ist %d"
 
-#: ID:349,
 msgid "Maximum number stored"
 msgstr "Max. gespeicherte Nummer"
 
-#: ID:348,
 msgid "Maximum value for first number and 'Between' rule"
-msgstr "Maximaler Wert f¸r die erste Zahl und 'Zwsischen'-Regel"
+msgstr "Maximaler Wert f‰©• erste Zahl und 'Zwsischen'-Regel"
 
-#: ID:347,
 msgid "Merge"
-msgstr "Zusammenf¸hren"
+msgstr "Zusammenf"
 
-#: ID:335,
 msgid "Merge Completed"
-msgstr "Zusammenf¸hren beendet"
+msgstr "ZusammenfÂÆ†beendet"
 
-#: ID:335,
 #, c-format
-msgid ""
-"Merge completed: %d %s added\r\n"
-"(%d %s, %d %s, %d %s)"
-msgstr ""
-"Merge komplett: %d %s eingef¸gt\r\n"
-"(%d %s, %d %s, %d %s)"
+msgid "Merge completed: %d %s added\r\n(%d %s, %d %s, %d %s)"
+msgstr "Merge komplett: %d %s eingefÏ≤ún(%d %s, %d %s, %d %s)"
 
-#: ID:335,
+#. Resource IDs: (32018)
+msgid "Merge..."
+msgstr ""
+
 #, c-format
 msgid "Merging database: %s"
-msgstr "F¸ge Datenbank %s zur aktuellen hinzu"
+msgstr "Fƒ°tenbank %s zur aktuellen hinzu"
 
-#: Control-ID:1250,
 msgid "Minimize after Autotype"
 msgstr "Minimieren nach autom. Eingabe"
 
-#: ID:350,
 msgid "Minimum digit characters"
-msgstr "Minimales Z‰hlzeichen"
+msgstr "Minimales Z‰®¨zeichen"
 
-#: ID:349,
 msgid "Minimum lowercase characters"
 msgstr "Minumum Anzahl Kleinbuchstaben"
 
-#: ID:350,
 msgid "Minimum symbol characters"
 msgstr "Minumum Anzahl Symbole"
 
-#: ID:349,
 msgid "Minimum uppercase characters"
 msgstr "Minumum Anzahl Grossbuchstaben"
 
-#: Dlg-ID:139,
 msgid "Misc."
 msgstr "Verschiedenes."
 
-#: ID:209,
 msgid "Missing STATUS, MAX or NUM element in PWHISTORY."
 msgstr "STATUS, MAX oder NUM Element in PWHISTORY fehlt."
 
-#: ID:210,
 msgid "Missing XSD File"
 msgstr "XSD Datei fehlt"
 
-#: ID:209,
-msgid "Missing date element"
-msgstr "Datumelement fehlt"
-
-#: ID:209,
 msgid "Missing date/time element."
 msgstr "Datum/Uhrzeit Element fehlt."
 
-#: ID:3887,
+#. Resource IDs: (209)
+#, c-format
+msgid "Missing test element \"%s\"."
+msgstr ""
+
 msgid "Mixed"
 msgstr "Gemischt"
 
-#: ID:348,
+#. Resource IDs: (32271)
+msgid "Move Here"
+msgstr ""
+
 #, c-format
 msgid "Must be at least %d"
 msgstr "Muss mindestens %d sein"
 
-#: ID:353,
 msgid "Name"
 msgstr "Name"
 
-#: Control-ID:1037,#:
-#: Control-ID:1037,
 msgid "Name. Name. Name."
 msgstr "Name. Name. Name."
 
-#: ID:328,
+#. Resource IDs: (32103)
+msgid "Nested &Tree"
+msgstr ""
+
 msgid "Never"
 msgstr "Niemals"
 
-#: ID:348,#:
-#: Dlg-ID:30721,
 msgid "New"
 msgstr "Neu"
 
-#: Control-ID:1003,
 msgid "New Database"
 msgstr "Neue Datenbank"
 
-#: ID:332,
 msgid "New Group"
 msgstr "Neue Gruppe"
 
-#: Control-ID:65535,
 msgid "New Safe Combination:"
 msgstr "Neue Safekombination:"
 
-#: ID:343,
 msgid "New Version Found!"
-msgstr "Neue Version verf¸bgar!"
+msgstr "Neue Version verf·≤°"
 
-#: ID:331,
 msgid "New safe combination and confirmation do not match"
-msgstr "Neue Safekombination und Best‰tigung sind nicht identisch"
+msgstr "Neue Safekombination und Best‰¥©gung sind nicht identisch"
 
-#: ID:340,#:
-#: Control-ID:1083,#:
-#: Control-ID:1083,
 msgid "No"
 msgstr "Nein"
 
-#: ID:329,
 msgid "No Safe open"
 msgstr "Kein Safe offen"
 
-#: Control-ID:1183,
 msgid "No change"
-msgstr "Keine ƒnderung"
+msgstr "Keine ƒÆderung"
 
-#: ID:351,
 msgid "No criteria defined"
 msgstr "Keine Kriteria definiert"
 
-#: ID:335,
 msgid "No database open with which to compare against another database!"
-msgstr "Keine Datenbank geˆffnet um sie mit einer weiteren Datenbank zu vergleichen!"
+msgstr "Keine Datenbank geÊ¶Æet um sie mit einer weiteren Datenbank zu vergleichen!"
 
-#: ID:345,
 msgid "No entry exists within this database matching your specifications."
 msgstr "Kein Eintrag in dieser Datenbank passt auf Ihre Beschreibung"
 
-#: ID:3843,
 msgid "No error message is available."
 msgstr "Keine Nachricht zum Fehler vorhanden."
 
-#: ID:3867,#:
-#: ID:3868,
 msgid "No error occurred."
 msgstr "Kein Fehler aufgetreten."
 
-#: ID:330,
 msgid "No fields selected for export!"
-msgstr "Keine Felder f¸r den Export markiert!"
+msgstr "Keine Felder f‰•Æ Export markiert!"
 
-#: ID:341,
 msgid "No fields selected for searching!"
 msgstr "Keine Felder zum Durchsuchen markiert!"
 
-#: ID:340,
 msgid "No fields selected to compare!"
 msgstr "Keine Felder zum Vergleich markiert!"
 
-#: ID:348,
 msgid "No fields selected to filter the display!"
-msgstr "Keine Felder ausgew‰hlt um die Anzeige zu filtern!"
+msgstr "Keine Felder ausgew‰®¨t um die Anzeige zu filtern!"
 
-#: ID:330,
 msgid "No function selected for basing your restrictions."
-msgstr "Kein Funktion ausgew‰hlt um Einschr‰nkungen aufzusetzen."
+msgstr "Kein Funktion ausgew‰®¨t um Einschr‰Æ´ungen aufzusetzen."
 
-#: ID:351,
 msgid "No items matched your filter"
-msgstr "Kein Eintrag stimmt dem Filter ¸berein"
+msgstr "Kein Eintrag stimmt dem Filter ‚•©n"
 
-#: ID:330,
 msgid "No matches found."
-msgstr "Keine ‹bereinstimmungen gefunden."
+msgstr "Keine ‹¢ereinstimmungen gefunden."
 
-#: ID:330,
 msgid "No object selected for basing your restrictions."
-msgstr "Kein Objekt ausgew‰hlt um Einschr‰nkungen aufzusetzen."
+msgstr "Kein Objekt ausgew‰®¨t um Einschr‰Æ´ungen aufzusetzen."
 
-#: ID:204,
 msgid "No records in import file!"
-msgstr "Keine Datens‰tze in der Importdatei enthalten!"
+msgstr "Keine Datens‰¥∫e in der Importdatei enthalten!"
 
-#: ID:344,
 msgid "No reports exist in the same directory as the current database."
 msgstr "Kein Report besteht im selben Verzeichnis wie die aktuelle Datenbank."
 
-#: ID:349,
 msgid "No rows are enabled"
 msgstr "Keine Zeile freigegeben"
 
-#: ID:349,
 msgid "No rule selected"
-msgstr "Keine Regel ausgew‰hlt"
+msgstr "Keine Regel ausgew‰®¨t"
 
-#: ID:337,
 msgid "None"
 msgstr "Keine"
 
-#: ID:3857,
 msgid "Not all of the system registry entries (or INI file) were removed."
-msgstr "Nicht alle Registry-Eintr‰ge (oder INI-Dateien) konnten entfernt werden."
+msgstr "Nicht alle Registry-Eintr‰ß• (oder INI-Dateien) konnten entfernt werden."
 
-#: ID:189,#:
-#: ID:327,
+#. Resource IDs: (33150)
+msgid "Note: Empty fields are shown as ¬ª*¬ª"
+msgstr ""
+
+#. Resource IDs: (33126)
+msgid "Note: Entry format is ¬ªGroup¬ªTitle¬ªUsername¬ª"
+msgstr ""
+
 msgid "Notes"
 msgstr "Notizen"
 
-#: ID:348,
 msgid "Number is set to the maximum value.  'Greater than' is not allowed."
-msgstr "Nummer auf Maximalwert gesetzt. 'Grˆﬂer als' ist nicht erlaubt."
+msgstr "Nummer auf Maximalwert gesetzt. 'GrÔ•≤ als' ist nicht erlaubt."
 
-#: ID:348,
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "Nummer auf Minimalwert gesetzt. 'Kleiner als' ist nicht erlaubt."
 
-#: Control-ID:65535,
 msgid "Number of Entries:"
-msgstr "Anzahl der Eintr‰ge:"
+msgstr "Anzahl der Eintr‰ß•:"
 
-#: Control-ID:65535,
 msgid "Number of Groups:"
 msgstr "Anzahl der Gruppen:"
 
-#: ID:190,
 #, c-format
-msgid ""
-"Number of entries processed: %d\n"
-"\n"
-"Number of UUIDs fixed: %d\n"
-"\n"
-"Number of Password Histories fixed: %d\n"
-"\n"
-"Number of Alias warnings issued %d\n"
-"\n"
-"Number of Shortcut warnings issued %d"
-msgstr ""
-"%d Eintr‰ge wurden bearbeitet.\n"
-"\n"
-"%d UUIDs wurden korrigiert.\n"
-"\n"
-"%d Passworthistorien wurden korrigiert.\n"
-"\n"
-"%d Aliaswarnungen wurden ausgegeben.\n"
-"\n"
-"%d Tastenk¸rzelwarnungen wurden ausgegeben."
+msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued %d\n\nNumber of Shortcut warnings issued %d"
+msgstr "%d Eintr‰ß• wurden bearbeitet.\n\n%d UUIDs wurden korrigiert.\n\n%d Passworthistorien wurden korrigiert.\n\n%d Aliaswarnungen wurden ausgegeben.\n\n%d TastenkÂ¨∑arnungen wurden ausgegeben."
 
-#: ID:337,
 #, c-format
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
-msgstr "Bei %d Eintr‰gen wurde ... auf den neuen Standard ge‰ndert"
+msgstr "Bei %d Eintr‰ß•n wurde ... auf den neuen Standard ge‰Æ§ert"
 
-#: ID:337,
 #, c-format
 msgid "Number of entries that had their settings changed to not save password history was: %d"
-msgstr "Bei %d Eintr‰gen wurde das Speichern der Passworthistorie abgeschaltet"
+msgstr "Bei %d Eintr‰ß•n wurde das Speichern der Passworthistorie abgeschaltet"
 
-#: ID:337,
 #, c-format
 msgid "Number of entries that had their settings changed to save password history was: %d"
-msgstr "Bei %d Eintr‰gen wurde das Speichern der Passworthistorie eingeschaltet"
+msgstr "Bei %d Eintr‰ß•n wurde das Speichern der Passworthistorie eingeschaltet"
 
-#: Control-ID:1266,
 msgid "Number of unknown fields:"
 msgstr "Anzahl der unbekannten Felder:"
 
-#: ID:349,
 msgid "Number stored"
 msgstr "Nummer abgespeichert"
 
-#: ID:351,#:
-#: Control-ID:1,#:
-#: Control-ID:1,
 msgid "OK"
 msgstr "OK"
 
-#: ID:330,
 msgid "Off"
 msgstr "Aus"
 
-#: Control-ID:65535,
 msgid "Old Safe Combination:"
 msgstr "Alte Safekombination:"
 
-#: ID:330,#:
-#: Control-ID:1179,#:
-#: Control-ID:1228,
 msgid "On"
 msgstr "An"
 
-#: ID:340,
 #, c-format
 msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): %d; In both (identical): %d"
 msgstr "Nur in der Original-Datenbank: %d; Nur in der Vergleichsdatenbank: %d; mit Unterschieden in Beiden: %d; Identisch in Beiden: %d"
 
-#: ID:3841,
 msgid "Open"
-msgstr "÷ffnen"
+msgstr "÷¶fnen"
 
-#: Control-ID:65535,
 msgid "Open Password Database:"
-msgstr "÷ffne die Passwortdatenbank"
+msgstr "÷¶fne die Passwortdatenbank"
 
-#: Control-ID:1086,#:
-#: Control-ID:1086,
 msgid "Open as read-only"
-msgstr "÷ffne im Nur-Lese-Modus"
+msgstr "÷¶fne im Nur-Lese-Modus"
 
-#: ID:333,
 msgid "Open database"
-msgstr "÷ffne Datenbank"
+msgstr "÷¶fne Datenbank"
 
-#: Control-ID:1300,
 msgid "Open database read-only by default"
-msgstr "Datenbank standardm‰ﬂig f¸r Nur-Lesen ˆffnen"
+msgstr "Datenbank standardm‰ü©g fÓµ≤-Lesen Ê¶Æen"
 
-#: ID:327,
 msgid "Options"
 msgstr "Optionen"
 
-#: ID:208,#:
-#: Control-ID:65535,
 msgid "Or"
 msgstr "oder"
 
-#: ID:340,
 msgid "Original"
 msgstr "Original"
 
-#: Control-ID:65535,
 msgid "Original Database:"
 msgstr "Original Datenbank:"
 
-#: Control-ID:1081,#:
-#: Control-ID:1201,#:
-#: Control-ID:1207,
 msgid "Other:"
 msgstr "Andere:"
 
-#: ID:3843,
 msgid "Out of memory."
 msgstr "Nicht genug Speicher."
 
-#: ID:192,
 msgid "OutOfMemoryException."
-msgstr "Nichtgen¸gendSpeicherAusnahme "
+msgstr "NichtgenÓ§ìpeicherAusnahme "
 
-#: ID:339,
 msgid "PWS_CPF_CDD"
 msgstr "PWS_CPF_CDD"
 
-#: ID:341,
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
 
-#: ID:192,
 #, c-format
-msgid ""
-"Parse error at line %d, column %d:\n"
-"Error: %s\n"
-"%s\n"
-"\n"
-msgstr ""
-"Parse Fehler bei Zeile %d, Spalte %d:\n"
-"Fehler: %s\n"
-"%s\n"
-"\n"
+msgid "Parse error at line %d, column %d:\nError: %s\n%s\n\n"
+msgstr "Parse Fehler bei Zeile %d, Spalte %d:\nFehler: %s\n%s\n\n"
 
-#: ID:334,
 msgid "Passkey incorrect"
-msgstr "Hauptschl¸ssel ung¸ltig"
+msgstr "HauptschlÂ¨†ung"
 
-#: ID:327,
 msgid "Password"
 msgstr "Passwort"
 
-#: Control-ID:1114,
 msgid "Password Expires on:"
-msgstr "Passwort g¸ltig bis:"
+msgstr "Passwort gÈß†bis:"
 
-#: ID:327,
 msgid "Password Expiry Date"
 msgstr "Passwortablaufdatum"
 
-#: ID:189,
 msgid "Password Expiry Date\t"
 msgstr "Passwortablaufdatum\t"
 
-#: ID:348,
 msgid "Password Expiry Interval"
 msgstr "Passwortablauf-Intervall"
 
-#: ID:192,
 msgid "Password Expiry Interval\t"
 msgstr "Passwortablauf-Intervall\t"
 
-#: Control-ID:1175,
 msgid "Password Histor&y"
 msgstr "Passworthistorie"
 
-#: ID:340,#:
-#: ID:350,#:
-#: Dlg-ID:120,#:
-#: Dlg-ID:140,
 msgid "Password History"
 msgstr "Passworthistorie"
 
-#: ID:351,
 msgid "Password History Filter"
 msgstr "Filter Passworthistorie"
 
-#: ID:327,
 msgid "Password Modified"
-msgstr "Passwort ge‰ndert"
+msgstr "Passwort ge‰Æ§ert"
 
-#: ID:189,
 msgid "Password Modified Time\t"
-msgstr "Passwort ge‰ndert um\t"
+msgstr "Passwort ge‰Æ§ert um\t"
 
-#: ID:345,#:
-#: Dlg-ID:141,
 msgid "Password Policy"
 msgstr "Passwortrichtlinie"
 
-#: ID:351,
 msgid "Password Policy Filter"
 msgstr "Passwortrichtlinie Filter"
 
-#: ID:329,
 msgid "Password Policy Override"
-msgstr "Passwortrichtlinie ¸berschreiben"
+msgstr "Passwortrichtlinie ‚≥£hreiben"
 
-#: ID:192,
 msgid "Password Policy\t"
 msgstr "Passwortrichtlinie\t"
 
-#: ID:3585,#:
-#: Dlg-ID:134,
 msgid "Password Safe"
 msgstr "Password Safe"
 
-#: ID:337,
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Untitled Restored Backup>"
 
-#: ID:326,
 #, c-format
-msgid ""
-"Password Safe has been compiled as %s but CPU is really %s.\n"
-"You may not be able to open files or saved files may be incompatible with other platforms."
-msgstr ""
-"Password Safe wurde als %s kompiliert, aber die CPU ist ein %s.\n"
-"You may not be able to open files or saved files may be incompatible with other platforms."
+msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
+msgstr "Password Safe wurde als %s kompiliert, aber die CPU ist ein %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
 
-#: Control-ID:65535,
 msgid "Password Safe has been minimized. Would you like to clear the clipboard as a security precaution?"
-msgstr "Password Safe wurde minimiert. Mˆchten Sie die Zwischenablage aus Sicherheitsgr¸nden leeren?"
+msgstr "Password Safe wurde minimiert. M„®¥en Sie die Zwischenablage aus SicherheitsgrÂÆ†leeren?"
 
-#: Control-ID:1000,
 msgid "Password Safe x.xx"
 msgstr "Password Safe x.xx"
 
-#: ID:339,
 msgid "Password [Mandatory Field]"
 msgstr "Passwort [Pflichtfeld]"
 
-#: Control-ID:65535,
 msgid "Password database"
 msgstr "Passwortdatenbank"
 
-#: Control-ID:1114,
 msgid "Password expires on:"
-msgstr "Passwort l‰uft ab am:"
+msgstr "Passwort l‰µ¶t ab am:"
 
-#: ID:341,
 msgid "Password implies this is an alias entry, but "
 msgstr "Laut Passwort ist dies ein Alias-Eintrag, aber"
 
-#: ID:342,
-msgid ""
-"Password implies this is an alias entry, but specifies a base entry with no title.\r\n"
-"A title is mandatory for every entry."
-msgstr ""
-"Laut Passwort ist dies ein Alias-Eintrag. Der zugehˆrige Basis-Eintrag hat aber keinen Titel.\r\n"
-"Ein Titel ist aber f¸r jeden Eintrag erforderlich."
+msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nA title is mandatory for every entry."
+msgstr "Laut Passwort ist dies ein Alias-Eintrag. Der zugeh‚©ße Basis-Eintrag hat aber keinen Titel.\r\nEin Titel ist aber fÍ•§en Eintrag erforderlich."
 
-#: ID:188,
 msgid "Password is too short"
 msgstr "Passwort ist zu kurz"
 
-#: Control-ID:1110,
 msgid "Password last changed on:"
-msgstr "Passwort ge‰ndert am:"
+msgstr "Passwort ge‰Æ§ert am:"
 
-#: ID:345,
 msgid "Password length is less than sum of 'at least' constraints"
-msgstr "Passwort k¸rzer als Mindestl‰ngenbedingung"
+msgstr "Passwort kÂ≤†als Mindestl‰Æßenbedingung"
 
-#: ID:331,
 msgid "Password length must be between 4 and 1024."
-msgstr "Passwortl‰nge muss zwischen 4 und 1024 liegen."
+msgstr "Passwortl‰Æße muss zwischen 4 und 1024 liegen."
 
-#: Control-ID:65535,
 msgid "Password length:"
-msgstr "Passwortl‰nge:"
+msgstr "Passwortl‰Æße:"
 
-#: ID:349,
 msgid "Password minimum length"
-msgstr "Minimale L‰nge des Passwortes"
+msgstr "Minimale L‰Æße des Passwortes"
 
-#: ID:188,
 msgid "Password should be mixed case, with at least one digit or punctuation character"
-msgstr "Das Passwort sollte Klein- und Groﬂbuchstaben sowie mindestens eine Ziffer oder ein Sonderzeichen enthalten"
+msgstr "Das Passwort sollte Klein- und Groﬂ¢uchstaben sowie mindestens eine Ziffer oder ein Sonderzeichen enthalten"
 
-#: ID:188,
 msgid "Password\t"
 msgstr "Passwort\t"
 
-#: ID:332,
-msgid "Perform Auto&Type"
-msgstr "Autom. Eingabe ausf¸hren"
-
-#: ID:337,
-msgid "Please Choose a Backup to restore:"
-msgstr "W‰hlen Sie eine Datensicherung zum Wiederherstellen aus:"
-
-#: ID:335,
-msgid "Please Choose a Database to Compare with current open database"
-msgstr "W‰hlen Sie bitte eine Datenbank zum Vergleich mit der aktuell geˆffneten"
-
-#: ID:335,
-msgid "Please Choose a Database to Merge"
-msgstr "W‰hlen Sie bitte eine Datenbank zum Zusammenf¸hren"
-
-#: ID:333,
-msgid "Please Choose a Database to Open:"
-msgstr "W‰hlen Sie bitte eine Datenbank zum ÷ffnen:"
-
-#: ID:334,
-msgid "Please Choose a KeePass Text File to Import"
-msgstr "Bitte w‰hlen Sie eine KeePass-Textdatei zum Import"
-
-#: ID:336,
-msgid "Please Choose a Name for this Backup:"
-msgstr "Bitte w‰hlen Sie einen Namen f¸r diese Datensicherung:"
-
-#: ID:334,
-msgid "Please Choose a Text File to Import"
-msgstr "Bitte w‰hlen sie eine Textdatei zum Importieren"
-
-#: ID:334,
-msgid "Please Choose a XML File to Import"
-msgstr "Bitte w‰hlen sie eine XML-datei zum Importieren"
-
-#: ID:333,
-msgid "Please choose a name for the current (Untitled) database:"
-msgstr "Bitte w‰hlen Sie einen Namen f¸r die aktuell unbenannte Datenbank"
-
-#: ID:338,
-msgid "Please choose a name for the new database"
-msgstr "Bitte w‰hlen Sie einen Namen f¸r die neue Datenbank"
-
-#: ID:334,
-msgid "Please choose a new name for the current database:"
-msgstr "Bitte w‰hlen Sie einen neuen Namen f¸r die aktuelle Datenbank:"
-
-#: ID:331,
-msgid ""
-"Please confirm that you wish to delete ALL PasswordSafe related information for the current user from the Windows registry\n"
-"\n"
+#. Resource IDs: (32063)
+msgid "Perform Auto &type\tCtrl+T"
 msgstr ""
-"Best‰tigen sie das Lˆschen ALLER PasswordSafe Informationen f¸r den aktuellen Benutzer aus der Windows Registry\n"
-"\n"
 
-#: ID:353,
+#. Resource IDs: (32063)
+msgid "Perform Auto type"
+msgstr ""
+
+msgid "Perform Auto&Type"
+msgstr "Autom. Eingabe ausf"
+
+msgid "Please Choose a Backup to restore:"
+msgstr "W‰®¨en Sie eine Datensicherung zum Wiederherstellen aus:"
+
+msgid "Please Choose a Database to Compare with current open database"
+msgstr "W‰®¨en Sie bitte eine Datenbank zum Vergleich mit der aktuell geÊ¶Æeten"
+
+msgid "Please Choose a Database to Merge"
+msgstr "W‰®¨en Sie bitte eine Datenbank zum Zusammenf"
+
+msgid "Please Choose a Database to Open:"
+msgstr "W‰®¨en Sie bitte eine Datenbank zum ÷¶fnen:"
+
+msgid "Please Choose a KeePass Text File to Import"
+msgstr "Bitte w‰®¨en Sie eine KeePass-Textdatei zum Import"
+
+msgid "Please Choose a Name for this Backup:"
+msgstr "Bitte w‰®¨en Sie einen Namen f‰©•se Datensicherung:"
+
+msgid "Please Choose a Text File to Import"
+msgstr "Bitte w‰®¨en sie eine Textdatei zum Importieren"
+
+msgid "Please Choose a XML File to Import"
+msgstr "Bitte w‰®¨en sie eine XML-datei zum Importieren"
+
+msgid "Please choose a name for the current (Untitled) database:"
+msgstr "Bitte w‰®¨en Sie einen Namen f‰©• aktuell unbenannte Datenbank"
+
+msgid "Please choose a name for the new database"
+msgstr "Bitte w‰®¨en Sie einen Namen f‰©• neue Datenbank"
+
+msgid "Please choose a new name for the current database:"
+msgstr "Bitte w‰®¨en Sie einen neuen Namen f‰©• aktuelle Datenbank:"
+
+msgid "Please confirm that you wish to delete ALL PasswordSafe related information for the current user from the Windows registry\n\n"
+msgstr "Best‰¥©gen sie das L„£®en ALLER PasswordSafe Informationen f‰•Æ aktuellen Benutzer aus der Windows Registry\n\n"
+
 #, c-format
 msgid "Please confirm you wish to delete the %s filter %s?"
-msgstr "Bitte best‰tige das Lˆschen von %s Filter %s?"
+msgstr "Bitte best‰¥©ge das L„£®en von %s Filter %s?"
 
-#: Control-ID:65535,
 msgid "Please do not use this option unless you understand and accept the risks."
 msgstr "Bitte benutzen Sie diese Option nur, wenn Sie deren Risiken kennen und akzeptieren."
 
-#: Control-ID:1227,
 msgid "Please do not use this option unless you understand and accept the risks.  This option bypasses the security provided by this program."
-msgstr "Bitte verwenden Sie diese Option nur, wenn Sie die Risiken verstanden und akzeptiert haben. Diese Option umgeht die von PasswordSafe zur Verf¸gung gestellte Sicherheit."
+msgstr "Bitte verwenden Sie diese Option nur, wenn Sie die Risiken verstanden und akzeptiert haben. Diese Option umgeht die von PasswordSafe zur VerfÓß†gestellte Sicherheit."
 
-#: ID:3858,
 msgid "Please enter a GUID."
 msgstr "Bitte GUID eingeben."
 
-#: ID:3858,
 msgid "Please enter a currency."
-msgstr "Bitte W‰hrung eingeben."
+msgstr "Bitte W‰®≤ung eingeben."
 
-#: ID:3858,
 msgid "Please enter a date and/or time."
 msgstr "Bitte Datum und/oder Uhreit eingeben."
 
-#: ID:3858,
 msgid "Please enter a date."
 msgstr "Bitte Datum eingeben."
 
-#: ID:3858,
 #, c-format
 msgid "Please enter a number between %1 and %2."
 msgstr "Bitte eine Zahl zwischen %1 und %2 eingeben."
 
-#: ID:3858,
 msgid "Please enter a number."
 msgstr "Bitte eine Zahl eingeben."
 
-#: ID:3858,
 msgid "Please enter a positive integer."
 msgstr "Bitte eine positive Ganzzahl eingeben."
 
-#: ID:330,
 msgid "Please enter a search string"
 msgstr "Bitte einen Suchbegriff eingeben."
 
-#: ID:3858,
 msgid "Please enter a time."
 msgstr "Bitte Uhrzeit eingeben."
 
-#: Control-ID:65535,
 msgid "Please enter an encryption or decryption key"
-msgstr "Bitte einen kryptografischen Schl¸ssel eingeben."
+msgstr "Bitte einen kryptografischen SchlÂ¨†eingeben."
 
-#: ID:3858,
 #, c-format
 msgid "Please enter an integer between %1 and %2."
 msgstr "Bitte eine Ganzzahl zwischen %1 und %2 eingeben."
 
-#: ID:3858,
 msgid "Please enter an integer between 0 and 255."
 msgstr "Bitte eine Ganzzahl zwischen 0 und 255 eingeben."
 
-#: ID:3858,
 msgid "Please enter an integer."
 msgstr "Bitte eine Ganzzahl eingeben."
 
-#: ID:3858,
 #, c-format
 msgid "Please enter no more than %1 characters."
 msgstr "Bitte nicht mehr als %1 Zeichen eingeben."
 
-#: Control-ID:65535,
 msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
-msgstr "Bitte die aktuelle Safekombination eingeben, gefolgt von der neuen. Tippen Sie die neue Safekombination zur Best‰tigung erneut ein."
+msgstr "Bitte die aktuelle Safekombination eingeben, gefolgt von der neuen. Tippen Sie die neue Safekombination zur Best‰¥©gung erneut ein."
 
-#: ID:329,
 msgid "Please enter the key and verify it."
-msgstr "Bitte den Schl¸ssel eingeben und ¸berpr¸fen Sie ihn."
+msgstr "Bitte den SchlÂ¨†eingeben und ‚∞≤Ó†ìie ihn."
 
-#: Control-ID:65535,#:
-#: Control-ID:65535,
 msgid "Please enter the safe combination for this password database."
-msgstr "Bitte die Safekombination f¸r diese Passwortdatenbank eingeben."
+msgstr "Bitte die Safekombination f‰©•se Passwortdatenbank eingeben."
 
-#: ID:337,
 msgid "Please enter your backup database prefix!"
-msgstr "Bitte geben Sie das Pr‰fix Ihrer Datenbanksicherung an!"
+msgstr "Bitte geben Sie das Pr‰¶©x Ihrer Datenbanksicherung an!"
 
-#: ID:334,
 msgid "Please name the XML file"
-msgstr "Bitte w‰hlen Sie einen Namen f¸r die XML-Datei"
+msgstr "Bitte w‰®¨en Sie einen Namen f‰©• XML-Datei"
 
-#: ID:334,
 msgid "Please name the exported database"
-msgstr "Bitte w‰hlen Sie einen Namen f¸r die exporierte Datenbank"
+msgstr "Bitte w‰®¨en Sie einen Namen f‰©• exporierte Datenbank"
 
-#: ID:334,
 msgid "Please name the plaintext file"
-msgstr "Bitte w‰hlen Sie einen Namen f¸r die Klartextdatei"
+msgstr "Bitte w‰®¨en Sie einen Namen f‰©• Klartextdatei"
 
-#: ID:352,
 msgid "Please name this filter"
 msgstr "Filter benennen"
 
-#: ID:3858,
 msgid "Please select a button."
-msgstr "Bitte einen Knopf ausw‰hlen."
+msgstr "Bitte einen Knopf ausw‰®¨en."
 
-#: ID:343,
 msgid "Please select report to view."
-msgstr "Bitte w‰hlen Sie einen Bericht zur Ansicht."
+msgstr "Bitte w‰®¨en Sie einen Bericht zur Ansicht."
 
-#: ID:348,
 msgid "Please specify text"
 msgstr "Bitte Text angeben"
 
-#: ID:337,
 msgid "Please specify the destination location to contain all backups."
-msgstr "Bitte w‰hlen Sie den Speicherort f¸r alle Datensicherungen."
+msgstr "Bitte w‰®¨en Sie den Speicherort f·¨¨e Datensicherungen."
 
-#: ID:345,
 #, c-format
 msgid "Please specify the name & group for the shortcut to '%s':"
-msgstr "Bitte geben Sie Name & Gruppe f¸r das Tastenk¸rzel '%s' an:"
+msgstr "Bitte geben Sie Name & Gruppe f‰°≥ TastenkÂ¨†'%s' an:"
 
-#: ID:337,
 msgid "Please specify the sub-directory to contain all backups."
-msgstr "Bitte w‰hlen Sie das Unterverzeichnis f¸r alle Datensicherungen."
+msgstr "Bitte w‰®¨en Sie das Unterverzeichnis f·¨¨e Datensicherungen."
 
-#: ID:344,
 msgid "Please visit the <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe website.</a>"
 msgstr "Bitte besuchen Sie die <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe website.</a>"
 
-#: ID:349,
 msgid "Previous Passwords"
-msgstr "Fr¸here Passwˆrter"
+msgstr "Fr‚•†Passw‚¥•r"
 
-#: ID:350,
 msgid "Pronounceable passwords"
-msgstr "Aussprechbare Passwˆrter"
+msgstr "Aussprechbare Passw‚¥•r"
 
-#: Dlg-ID:136,
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: ID:346,
 msgid "Pswd"
 msgstr "Pswd"
 
-#: ID:339,
 msgid "Purchase unlimited &U3 version..."
-msgstr "Kaufen Sie eine unbeschr‰nkte &U3-Version..."
+msgstr "Kaufen Sie eine unbeschr‰Æ´te &U3-Version..."
 
-#: Control-ID:1235,
 msgid "Put groups first in display tree"
 msgstr "Gruppen im Baum zuerst anzeigen"
 
-#: Control-ID:1072,
 msgid "Put icon in System Tray"
 msgstr "Symbol im Infobereich"
 
-#: Control-ID:1030,
 msgid "Query user to set default username"
 msgstr "Benutzer nach Einstellund des Standardbenutzernamen fragen"
 
-#: ID:315,
 msgid "R/O"
 msgstr "R/O"
 
-#: Control-ID:65535,#:
-#: Control-ID:65535,
 msgid "Random Password"
-msgstr "Zuf‰lliges Passwort"
+msgstr "Zuf‰¨¨iges Passwort"
 
-#: Control-ID:65535,
 msgid "Random password generation rules"
-msgstr "Regeln zur Generierung von Passwˆrtern"
+msgstr "Regeln zur Generierung von Passw‚¥•rn"
 
-#: ID:203,
 msgid "Read Error"
 msgstr "Lesefehler"
 
-#: ID:347,
 msgid "Read-Only"
 msgstr "Nur Lesen"
 
-#: ID:347,
 msgid "Read-Write"
 msgstr "Lesen/Schreiben"
 
-#: ID:327,
 msgid "Recent"
 msgstr "Zuletzt"
 
-#: Control-ID:1096,
+#. Resource IDs: (1096)
 msgid "Recent Databases on File Menu rather than as a sub-menu."
-msgstr "zuletzt benutzte Datenbanken im Datei-Men¸ statt als Untermen¸."
+msgstr ""
 
-#: Control-ID:1095,
 msgid "Recent PasswordSafe Databases"
 msgstr "Zuletzt benutzte PasswortSafe-Datenbanken"
 
-#: ID:189,
 msgid "Record Modified Time\t"
-msgstr "Speichere das Datum der letzten ƒnderung\t"
+msgstr "Speichere das Datum der letzten ƒÆderung\t"
 
-#: Control-ID:1121,
 msgid "Record last access times"
 msgstr "Speichere das Datum des letzten Zugriffs"
 
-#: Control-ID:1297,
 msgid "Recurring"
 msgstr "Periodisch"
 
-#: ID:348,
 #, c-format
 msgid "Recurring (%d days)"
 msgstr "Periodisch (%d Tage)"
 
-#: Control-ID:65535,#:
-#: Control-ID:1295,
 msgid "Remember last"
 msgstr "Merke letzte"
 
-#: Control-ID:1188,
 msgid "Remove PasswordSafe data from Registry"
-msgstr "Entferne PasswortSafe-Eintr‰ge aus der Registrierungsdatenbank"
+msgstr "Entferne PasswortSafe-Eintr‰ß• aus der Registrierungsdatenbank"
 
-#: ID:338,
-msgid "Rename &Entry\tF2"
-msgstr "&Eintrag umbenennen\tF2"
+#. Resource IDs: (32054)
+msgid "Rename Entry"
+msgstr ""
 
-#: ID:338,
+#. Resource IDs: (32054)
+msgid "Rename Entry\tF2"
+msgstr ""
+
+#. Resource IDs: (32054)
+msgid "Rename Group"
+msgstr ""
+
 msgid "Rename Group\tF2"
 msgstr "Gruppe umbenennen\tF2"
 
-#: ID:347,
 msgid "Report created"
 msgstr "Bericht erstellt"
 
-#: ID:204,
 #, c-format
 msgid "Report of %s function started at %s"
 msgstr "Report von %s Funktion begonnen am %s"
 
-#: Control-ID:65535,
 msgid "Requested Values:"
 msgstr "Erforderliche Werte:"
 
-#: Control-ID:1158,#:
-#: Control-ID:1158,
-msgid "Restrict to a subset of entries:"
-msgstr "Beschr‰nke auf eine Teilmenge der Eintr‰ge:"
+#. Resource IDs: (32211)
+msgid "Reset Columns"
+msgstr ""
 
-#: ID:348,
+msgid "Restrict to a subset of entries:"
+msgstr "Beschr‰Æ´e auf eine Teilmenge der Eintr‰ß•:"
+
 #, c-format
 msgid "Row %d is incomplete. Please ensure both Field and Criteria are set."
-msgstr "Zeile %d ist unvollst‰ndig. Stellen sie sicher das Feld und Kriteria gesetzt sind."
+msgstr "Zeile %d ist unvollst‰Æ§ig. Stellen sie sicher das Feld und Kriteria gesetzt sind."
 
-#: ID:351,
 msgid "Row number"
 msgstr "Zeilennummer"
 
-#: ID:350,
 msgid "Rule"
 msgstr "Regel"
 
-#: Control-ID:65535,#:
-#: Control-ID:65535,
 msgid "Rule:"
 msgstr "Regel:"
 
-#: ID:328,
 msgid "S"
 msgstr "S"
 
-#: Control-ID:1119,#:
-#: Control-ID:1119,
 msgid "S&et..."
 msgstr "S&etze..."
 
-#: ID:192,
 #, fuzzy, c-format
-msgid ""
-"SAX Parse Error during %s\n"
-"%s."
-msgstr ""
-"SAX Parse Fehler w‰hrend %s\n"
-"%s."
+msgid "SAX Parse Error during %s\n%s."
+msgstr "SAX Parse Fehler w‰®≤end %s\n%s."
 
-#: ID:191,
 #, fuzzy, c-format
 msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "SAX Parse%2d Fehler 0x%08X w‰hrend %s."
+msgstr "SAX Parse%2d Fehler 0x%08X w‰®≤end %s."
 
-#: Dlg-ID:131,
 msgid "Safe Combination Entry"
 msgstr "Eingabe der Safekombination"
 
-#: Dlg-ID:133,
 msgid "Safe Combination Setup"
 msgstr "Einstellung Safekombination"
 
-#: Control-ID:65535,#:
-#: Control-ID:65535,
 msgid "Safe Combination:"
 msgstr "Safe Kombination:"
 
-#: Control-ID:1205,
 msgid "Same as database's"
 msgstr "Gleiche wie in der Datenbank"
 
-#: Control-ID:1178,
 msgid "Same as when last saved"
 msgstr "Gleiche wie zuletzt gespeichert"
 
-#: Control-ID:1073,
 msgid "Sample"
 msgstr "Beispiel"
 
-#: ID:345,
 msgid "Sample text cannot be empty"
 msgstr "Beispieltext kann nicht leer sein"
 
-#: Control-ID:1137,
 msgid "Save"
 msgstr "Speichern"
 
-#: ID:3841,
+#. Resource IDs: (32006)
+msgid "Save &As...\tF12"
+msgstr ""
+
 msgid "Save As"
 msgstr "Speichern unter"
 
-#: ID:332,
 msgid "Save Error"
 msgstr "Fehler beim Speichern"
 
-#: ID:3857,
 #, c-format
 msgid "Save changes to %1?"
-msgstr "ƒnderungen speichern nach %1?"
+msgstr "ƒÆderungen speichern nach %1?"
 
-#: Control-ID:1045,
 msgid "Save database immediately after Edit or Add"
-msgstr "Datenbank sofort nach ƒndern o. Hinzuf¸gen speichern"
+msgstr "Datenbank sofort nach ƒÆdern o. HinzufÓ†≥peichern"
 
-#: Control-ID:1094,
 msgid "Sc&ript:"
 msgstr "Sk&ript:"
 
-#: ID:208,
 msgid "Schema does not have a version number."
 msgstr "Schema hat keine Versionsnummer."
 
-#: ID:348,
 msgid "Search"
 msgstr "Suchen"
 
-#: ID:330,
 msgid "Search has wrapped, continuing from the top."
 msgstr "Suche hat das Ende erreicht, wird am Anfang fortgesetzt."
 
-#: ID:348,
 msgid "Second date must be later than first"
-msgstr "Das zweite Datum muss sp‰ter liegen als das erste"
+msgstr "Das zweite Datum muss sp‰¥•r liegen als das erste"
 
-#: ID:348,
 msgid "Second number must be more than first"
-msgstr "Die zweite Nummer muss grˆﬂer als die erste sein."
+msgstr "Die zweite Nummer muss grÔ•≤ als die erste sein."
 
-#: Dlg-ID:142,
 msgid "Security"
 msgstr "Sicherheit"
 
-#: Control-ID:65535,
 msgid "See LICENSE for open source details."
 msgstr "See LICENSE for open source details."
 
-#: ID:208,
 msgid "See Password History filters"
 msgstr "Siehe Filter Passworthistorie"
 
-#: ID:208,
 msgid "See Password Policy filters"
 msgstr "Seihe Passwortrichtlinie Filter"
 
-#: ID:3867,
 #, c-format
 msgid "Seek failed on %1"
 msgstr "Seek bei %1 gescheitert"
 
-#: ID:352,
 msgid "Select"
 msgstr "Auswahl"
 
-#: ID:337,
 msgid "Select Browser:"
-msgstr "Browser w‰hlen"
+msgstr "Browser w‰®¨en"
 
-#: ID:338,
 msgid "Select Location for Intermediate Backups"
-msgstr "W‰hle den Speicherort f¸r tempor‰re Datensicherung"
+msgstr "W‰®¨e den Speicherort f‰•≠por‰≤• Datensicherung"
 
-#: ID:340,
 msgid "Select all entries"
-msgstr "W‰hle alle Eintr‰ge"
+msgstr "W‰®¨e alle Eintr‰ß•"
 
-#: ID:352,
 msgid "Select and apply a filter"
-msgstr "Filter ausw‰hlen und anwenden"
+msgstr "Filter ausw‰®¨en und anwenden"
 
-#: ID:340,
 msgid "Select some entries"
-msgstr "Einige Eintr‰ge ausw‰hlen"
+msgstr "Einige Eintr‰ß• ausw‰®¨en"
 
-#: Control-ID:1153,
 msgid "Selected"
-msgstr "Ausgew‰lt"
+msgstr "Ausgew‰¨¥"
 
-#: Control-ID:65535,
 msgid "Selected Fields:"
-msgstr "Gew‰hlte Felder:"
+msgstr "Gew‰®¨te Felder:"
 
-#: Control-ID:65535,
 msgid "Selected filter details:"
-msgstr "Details ausgew‰hltes Filter:"
+msgstr "Details ausgew‰®¨tes Filter:"
 
-#: ID:343,
 msgid "Send &email\tCtrl+E"
 msgstr "Send &Email\tStrg+E"
 
-#: ID:3866,
 msgid "Send Mail failed to send message."
 msgstr "Senden der Email fehlgeschlagen."
 
-#: ID:353,
 msgid "Session"
 msgstr "Sitzung"
 
-#: ID:331,
 msgid "Set Date/Time"
 msgstr "Datum/Uhrzeit setzen"
 
-#: Dlg-ID:144,
 msgid "Set Default Username?"
 msgstr "Standard-Benutzername setzen?"
 
-#: ID:351,
 msgid "Set Display Filter"
 msgstr "Anzeigefilter setzen"
 
-#: ID:349,#:
-#: Dlg-ID:150,
 msgid "Set Display Filters"
 msgstr "Anzeigefilter setzen"
 
-#: ID:349,
 #, c-format
 msgid "Set Display Filters: %d Added; %d Active"
 msgstr "Anzeigefilter setzen: %d dazu; %d aktiv"
 
-#: ID:345,
 msgid "Set Entry's Password Policy"
 msgstr "Passwortrichtlinie des Eintrages setzen"
 
-#: Dlg-ID:135,
 msgid "Set Password Expiry Date/Time"
 msgstr "Passwortablaufdatum/Uhrzeit setzen"
 
-#: ID:349,
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
 msgstr "Filter Passworthistorie setzen: %d dazu; %d Aktiv"
 
-#: ID:349,
 #, c-format
 msgid "Set Password Policy Filters: %d Added; %d Active"
 msgstr "Filter Passwortrichtlinie setzen: %d dazu; %d Aktiv"
 
-#: Control-ID:1038,
 msgid "Set Sample &Text"
 msgstr "Beispiel&text setzen"
 
-#: Control-ID:1186,
 msgid "Set maximum number of passwords saved to above value"
-msgstr "Setze die maximale Anzahl an gespeicherten Passwˆrtern auf obigen Wert"
+msgstr "Setze die maximale Anzahl an gespeicherten Passw‚¥•rn auf obigen Wert"
 
-#: ID:348,
 msgid "Shift+click to view current policy"
 msgstr "Umschalt+Klick um aktuelle Richtlinie anzuzeigen"
 
-#: ID:205,
 msgid "Shortcut"
-msgstr "Tastenk¸rzel"
+msgstr "Tastenk"
 
-#: ID:353,
 msgid "Show Dragbar"
 msgstr "Dragleiste einblenden"
 
-#: ID:346,
 msgid "Show Toolbar"
 msgstr "Toolleiste einblenden"
 
-#: Dlg-ID:159,
 msgid "Show a subset of the Password"
 msgstr "Teilmenge des Passwortes zeigen"
 
-#: Control-ID:1262,
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
-msgstr "Zeige Eintr‰ge mit identisch-verglichenen Feldern (Hinweis: unbekannte Felder wurden nicht verglichen.)"
+msgstr "Zeige Eintr‰ß• mit identisch-verglichenen Feldern (Hinweis: unbekannte Felder wurden nicht verglichen.)"
 
-#: Control-ID:1246,
 msgid "Show grid lines in display list"
 msgstr "Zeige Gitterlinien in der angezeigten Liste"
 
-#: Control-ID:1296,
 msgid "Show notes as ToolTips in display tree && list views"
 msgstr "Zeige Hinweise in Baum- und Listen-Darstellung als ToolTip"
 
-#: Control-ID:1190,
 msgid "Show notes in edit"
 msgstr "Zeige Hinweise beim Editieren"
 
-#: Control-ID:1028,
 msgid "Show password in add && edit"
-msgstr "Zeige Passwort beim Hinzuf¸gen und Editieren"
+msgstr "Zeige Passwort beim HinzufÓ†µnd Editieren"
 
-#: Control-ID:1031,
 msgid "Show password in display tree"
 msgstr "Zeige Passwort in der Baumdarstellung"
 
-#: Control-ID:1254,
 msgid "Show username in display tree"
 msgstr "Zeige Benutzername in der Baumdarstellung"
 
-#: ID:334,
 #, c-format
 msgid "Skipped %d %s"
-msgstr "%d %s ¸bersprungen"
+msgstr "%d %s ‚≥∞rungen"
 
-#: ID:331,
-msgid ""
-"Sorry - your requested HotKey is already being used.\n"
-"\n"
-"This feature has been temporarily disabled.\n"
-"\n"
-"To re-enable in this session, please select a different key combination."
-msgstr ""
-"Schade, aber der von Ihnen vorgeschlagene Hotkey wird bereits verwendet.\n"
-"\n"
-"Diese Eigenschaft wurde vor¸bergehend abgeschaltet.\n"
-"\n"
-"Um es wieder einzuschalten w‰hlen Sie bitte eine andere Tastenkombination."
+msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
+msgstr "Schade, aber der von Ihnen vorgeschlagene Hotkey wird bereits verwendet.\n\nDiese Eigenschaft wurde vor‚ß•hend abgeschaltet.\n\nUm es wieder einzuschalten w‰®¨en Sie bitte eine andere Tastenkombination."
 
-#: ID:345,
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
-msgstr "Schade, aber 'aussprechbar' und 'leicht lesbar' kˆnnen nicht zusammen verwendet werden"
+msgstr "Schade, aber 'aussprechbar' und 'leicht lesbar' kÓÆ•n nicht zusammen verwendet werden"
 
-#: ID:345,
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options"
-msgstr "Schade, aber bei den Optionen 'aussprechbar' und 'leicht lesbar' kann man keine Mindestl‰nge f¸r Passwˆrter vorgeben"
+msgstr "Schade, aber bei den Optionen 'aussprechbar' und 'leicht lesbar' kann man keine Mindestl‰Æße f‡°≥sw‚¥•r vorgeben"
 
-#: ID:353,
 msgid "Source"
 msgstr "Quelle"
 
-#: Control-ID:1220,
 msgid "Start PasswordSafe at Login"
 msgstr "Starte PasswortSafe beim Einloggen"
 
-#: ID:204,
 msgid "Start Report"
 msgstr "Starte Bericht"
 
-#: ID:319,
 msgid "Start saving password history for all entries, to the above number of entries."
-msgstr "Beginne mit der Speicherung der Passworthistorie f¸r alle Eintr‰ge von obiger Angaben."
+msgstr "Beginne mit der Speicherung der Passworthistorie f·¨¨e Eintr‰ß• von obiger Angaben."
 
-#: Control-ID:1185,
 msgid "Start saving previous passwords"
-msgstr "Beginne mit der Speicherung vorheriger Passwˆrter"
+msgstr "Beginne mit der Speicherung vorheriger Passw‚¥•r"
 
-#: Control-ID:1264,
 msgid "Static"
 msgstr "statisch"
 
-#: Control-ID:1037,
 msgid "Static_Static"
 msgstr "Static_Static"
 
-#: ID:334,
 msgid "Status"
 msgstr "Status"
 
-#: Control-ID:65535,
 msgid "Status:"
 msgstr "Status:"
 
-#: ID:319,
-msgid ""
-"Stop saving password history for all entries.\n"
-"\n"
-"Saved histories will not be touched, but password changes will no longer be stored by default."
-msgstr ""
-"Beende das Speichern der Passworthistorie f¸r alle Eintr‰ge.\n"
-"\n"
-"Gespeicherte Passworthistorien werden nicht ge‰ndert, aber Passwort‰nderungen werden nicht l‰nger standardm‰ﬂig gespeichert."
+msgid "Stop saving password history for all entries.\n\nSaved histories will not be touched, but password changes will no longer be stored by default."
+msgstr "Beende das Speichern der Passworthistorie f·¨¨e Eintr‰ß•.\n\nGespeicherte Passworthistorien werden nicht ge‰Æ§ert, aber Passwort‰Æ§erungen werden nicht l‰Æßer standardm‰ü©g gespeichert."
 
-#: Control-ID:1184,
 msgid "Stop saving previous passwords"
-msgstr "Beende das Speichern vorheriger Passwˆrter"
+msgstr "Beende das Speichern vorheriger Passw‚¥•r"
 
-#: Control-ID:1322,
 msgid "String value:"
 msgstr "String Wert:"
 
-#: Control-ID:65535,
 msgid "Suffix:"
 msgstr "Suffix:"
 
-#: Dlg-ID:143,
 msgid "System"
 msgstr "System"
 
-#: ID:189,
 msgid "System error: No more file handles available"
-msgstr "Systemfehler: kein Dateihandle mehr verf¸gbar"
+msgstr "Systemfehler: kein Dateihandle mehr verf"
 
-#: ID:3857,
 msgid "System registry entries have been removed and the INI file (if any) was deleted."
-msgstr "Eintr‰ge in der Registrierungsdatenbank und INI-Dateien (falls es welche gab) wurden entfernt."
+msgstr "Eintr‰ß• in der Registrierungsdatenbank und INI-Dateien (falls es welche gab) wurden entfernt."
 
-#: Control-ID:65535,
 msgid "SystemTray"
 msgstr "Infobereich"
 
-#: ID:338,
 msgid "TRIAL"
 msgstr "TRIAL"
 
-#: Control-ID:1079,
 msgid "Tab"
 msgstr "Tab"
 
-#: Control-ID:1110,
 msgid "Target last changed on:"
-msgstr "Ziel wurde zuletzt ge‰ndert am:"
+msgstr "Ziel wurde zuletzt ge‰Æ§ert am:"
 
-#: ID:347,
 msgid "Text"
 msgstr "Text"
 
-#: Control-ID:1322,
 msgid "Text:"
 msgstr "Text:"
 
-#: ID:333,
 msgid "That file is already open."
-msgstr "Diese Datei ist bereits geˆffnet."
+msgstr "Diese Datei ist bereits geÊ¶Æet."
 
-#: ID:205,
 #, c-format
 msgid "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base entry. It cannot be imported."
 msgstr "Der %s Eintrag \"%s, %s, %s\" zeigt nicht auf ein normaler oder bestehenden %s Basis-Eintrag. Es kann nicht importiert werden."
 
-#: ID:330,
 msgid "The combination cannot be blank."
 msgstr "Die Safekombination darf nicht leer sein."
 
-#: ID:332,
+#. Resource IDs: (210)
 #, c-format
-msgid ""
-"The database %s couldn't be opened.\n"
-"Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgid "The contents [\"%s\"] of element \"%s\" is invalid/unexpected."
 msgstr ""
-"Die Datenbank %s konnte nicht geˆffnet werden.\n"
-"Wollen Sie woanders danach suchen, eine neue Datenbank anlegen oder PasswortSafe beenden?"
 
-#: ID:339,
 #, c-format
-msgid ""
-"The database %s is apparently being used by:\n"
-"\n"
-"%s%s.\n"
-"\n"
-"Open the database for Read-Only or Exit?\r\n"
-"\r\n"
-"Note: Only one user at a time can open the database for writing."
-msgstr ""
-"Die Datenbank %s wird anscheinend schon verwendet von:\n"
-"\n"
-"%s%s.\n"
-"\n"
-"Soll die Datenbank im Nur-lese-Modus geˆffnet oder PasswortSafe beendet werden?\r\n"
-"\r\n"
-"Hinweis: die Datenbank kann immer nur von einem Benutzer zum Schreiben geˆffnet werden."
+msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgstr "Die Datenbank %s konnte nicht geÊ¶Æet werden.\nWollen Sie woanders danach suchen, eine neue Datenbank anlegen oder PasswortSafe beenden?"
 
-#: ID:328,
+#. Resource IDs: (339)
 #, c-format
-msgid ""
-"The database %s is apparently being used by:\n"
-"\n"
-"%s%s.\n"
-"\n"
-"Open the database for Read-Only, Read-Write, or Exit?\r\n"
-"\r\n"
-"Note: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\n"
-"including another copy of Password Safe running on your machine."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\r\n\r\nNote: Only one user at a time can open the database for writing."
 msgstr ""
-"Die Datenbank %s wird anscheinend schon verwendet von:\n"
-"\n"
-"%s%s.\n"
-"\n"
-"Soll die Datenbank im Nur-lese-Modus oder mit Schreibzugriff  geˆffnet oder PasswortSafe beendet werden?\r\n"
-"\r\n"
-"Hinweis: W‰hlen Sie \"mit Schreibzugriff\" nur wenn Sie sich sicher sind, dass diese Datei wirklich nicht verwendet wird,\n"
-"auch nicht von einer anderen Instanz von PasswortSafe."
 
-#: ID:329,
+#. Resource IDs: (328)
+#, c-format
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgstr ""
+
 msgid "The entered passwords do not match.  Please re-enter them."
-msgstr "Die eingegebenen Passwˆrter sind unterschiedlich.  Bitte erneut eingeben."
+msgstr "Die eingegebenen Passw‚¥•r sind unterschiedlich.  Bitte erneut eingeben."
 
-#: ID:3857,
 msgid "The file is too large to open."
-msgstr "Datei ist zu groﬂ um sie zu ˆffnen."
+msgstr "Datei ist zu groﬂ†um sie zu Ê¶Æen."
 
-#: ID:194,
 msgid "The file was not found."
 msgstr "Datei nicht gefunden."
 
-#: ID:208,
 #, c-format
 msgid "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
-msgstr "Die Filter XML Version (%d) ist grˆﬂer als die von PasswordSafe unterst¸tzte (%d)."
+msgstr "Die Filter XML Version (%d) ist grÔ•≤ als die von PasswordSafe unterst‰•†(%d)."
 
-#: ID:208,
 #, c-format
 msgid "The filter XML version (%d) is greater than the current schema (%d)."
-msgstr "XML Version (%d) des Filters grˆﬂer als das aktuelle Schema (%d)."
+msgstr "XML Version (%d) des Filters grÔ•≤ als das aktuelle Schema (%d)."
 
-#: ID:208,
 msgid "The filter XML version is missing."
 msgstr "Die Filter XML Version fehlt."
 
-#: ID:204,
 msgid "The following columns will be processed: "
 msgstr "Folgende Spalten werden verarbeitet: "
 
-#: ID:343,
 #, c-format
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
 msgstr "Folgender Eintrag wurde in die %s Datenbank kopiert: '%s:%s:%s'"
 
-#: ID:331,
 msgid "The old safe combination is not correct"
 msgstr "Die alte Safekombination ist nicht korrekt"
 
-#: ID:333,
 #, c-format
-msgid ""
-"The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr ""
-"Die Originaldatenbank \"%s\" ist in einem alten Dateiformat (vor Version 3.0) gespeichert. Sie wird nicht ge‰ndert.\n"
-"Ihre ƒnderungen werden als \"%s\" im neuen Dateiformat gespeichert, welches von alten PasswortSafe-Versionen nicht benutzbar ist. Um Ihre ƒnderungen im alten Dateiformat zu speichern, benutzen Sie \"Datei -> Export -> Altes (1.x oder 2) Format\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
+msgstr "Die Originaldatenbank \"%s\" ist in einem alten Dateiformat (vor Version 3.0) gespeichert. Sie wird nicht ge‰Æ§ert.\nIhre ƒÆderungen werden als \"%s\" im neuen Dateiformat gespeichert, welches von alten PasswortSafe-Versionen nicht benutzbar ist. Um Ihre ƒÆderungen im alten Dateiformat zu speichern, benutzen Sie \"Datei -> Export -> Altes (1.x oder 2) Format\"."
 
-#: ID:333,
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr "Die Originaldatenbank \"%s\" ist in einem alten Dateiformat (vor Version 3.0) gespeichert. Die Daten werden nun im neuen Dateiformat gespeichert, welches von alten PasswortSafe-Versionen nicht benutzbar ist. Um Ihre Daten im alten Dateiformat zu speichern, benutzen Sie \"Datei -> Export -> Altes (1.x oder 2) Format\"."
 
-#: ID:342,
 #, c-format
-msgid ""
-"The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n"
-"\r\n"
-"Do you wish this entry to point to the 'real' base entry?"
-msgstr ""
-"Das Passwort ist im Alias-Format, aber der referenzierte Eintrag '%s:%s:%s' selbst ist ebenfalls im Alias-Format.\r\n"
-"\r\n"
-"Wollen Sie, dass dieser Eintrag auf den 'echten' Basis-Eintrag zeigt?"
+msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n\r\nDo you wish this entry to point to the 'real' base entry?"
+msgstr "Das Passwort ist im Alias-Format, aber der referenzierte Eintrag '%s:%s:%s' selbst ist ebenfalls im Alias-Format.\r\n\r\nWollen Sie, dass dieser Eintrag auf den 'echten' Basis-Eintrag zeigt?"
 
-#: Control-ID:65535,
 msgid "The password of the selected item has been copied to the clipboard. The clipboard will be securely cleared when Password Safe is closed."
-msgstr "Das Passwort des ausgew‰hlten Eintrages wurde in die Zwischenablage kopiert. Die Zwischenablage wird beim Schlieﬂen von PasswortSafe sicher gelˆscht."
+msgstr "Das Passwort des ausgew‰®¨ten Eintrages wurde in die Zwischenablage kopiert. Die Zwischenablage wird beim Schlieﬂ•n von PasswortSafe sicher gel„£®t."
 
-#: Control-ID:65535,
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
-msgstr "Die Safekombination wurde drei mal ohne Erfolg eingegeben. Wenn Sie sie nicht wissen, kˆnnen Sie entweder eine andere Passwortdatenbank probieren zu ˆffnen oder eine neue, leere Passwortdatenbank anlegen."
+msgstr "Die Safekombination wurde drei mal ohne Erfolg eingegeben. Wenn Sie sie nicht wissen, kÓÆ•n Sie entweder eine andere Passwortdatenbank probieren zu Ê¶Æen oder eine neue, leere Passwortdatenbank anlegen."
 
-#: ID:329,
 msgid "The two entries do not match."
-msgstr "Die beiden Eintr‰ge sind verschieden."
+msgstr "Die beiden Eintr‰ß• sind verschieden."
 
-#: ID:345,
 msgid "There are more than one entry that fits your selection. Please be more specific."
-msgstr "Es gibt mehrere Eintr‰ge die Ihrer Auswahl entsprechen. Seien Sie bitte genauer."
+msgstr "Es gibt mehrere Eintr‰ß• die Ihrer Auswahl entsprechen. Seien Sie bitte genauer."
 
-#: ID:344,
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
 msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag oder schon eine Alias-Basis."
 
-#: ID:320,
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "Dies erlaubt Ihnen, Sicherungsdateien an einem anderen Ort zu verwahren. Stellen Sie bitte sicher, dass Sie Schreibberechtigung in diesem Verzeichnis haben."
 
-#: ID:329,
 msgid "This database is in read-only mode. No changes to this entry will be saved."
-msgstr "Diese Datenbank ist im Nur-Lese-Modus geˆffnet. ƒnderungen werden NICHT gespeichert."
+msgstr "Diese Datenbank ist im Nur-Lese-Modus geÊ¶Æet. ƒÆderungen werden NICHT gespeichert."
 
-#: ID:335,
 msgid "This database is the same as the current database!"
-msgstr "Das ist die gleiche Datenbank, wie die aktuell geˆffnete!"
+msgstr "Das ist die gleiche Datenbank, wie die aktuell geÊ¶Æete!"
 
-#: ID:341,
-#, c-format
-msgid ""
-"This entry has the following %d %s:\r\n"
-"%s"
+#. Resource IDs: (354)
+msgid "This entry has been changed. Are you sure you wish to cancel?"
 msgstr ""
-"Dieser Eintrag hat folgende %d %s:\r\n"
-"%s"
 
-#: ID:345,
 #, c-format
-msgid ""
-"This entry has the following %d %s:\r\n"
-"%s\r\n"
-"Please confirm you wish to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
-"Dieser Eintrag hat folgende %d %s:\r\n"
-"%s\r\n"
-"Bitte best‰tigen Sie, dass Sie fortfahren mˆchten (alle Verkn¸pfungen zu diesem Eintrag werden gelˆscht)?"
+msgid "This entry has the following %d %s:\r\n%s"
+msgstr "Dieser Eintrag hat folgende %d %s:\r\n%s"
 
-#: ID:341,
 #, c-format
-msgid ""
-"This entry has the following %d %s:\r\n"
-"%s\r\n"
-"Please confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr ""
-"Dieser Eintrag hat folgende %d %s:\r\n"
-"%s\r\n"
-"Bitte best‰tigen Sie, dass Sie fortfahren mˆchten (Passwˆrter des Alias-Eintrages werden durch das Passwort dieses Eintrags ersetzt)?"
+msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (All shortcuts to this entry will be deleted)?"
+msgstr "Dieser Eintrag hat folgende %d %s:\r\n%s\r\nBitte best‰¥©gen Sie, dass Sie fortfahren m„®¥en (alle VerknÂÆßen zu diesem Eintrag werden gel„£®t)?"
 
-#: ID:329,
+#, c-format
+msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr "Dieser Eintrag hat folgende %d %s:\r\n%s\r\nBitte best‰¥©gen Sie, dass Sie fortfahren m„®¥en (Passw‚¥•r des Alias-Eintrages werden durch das Passwort dieses Eintrags ersetzt)?"
+
 msgid "This entry must have a password."
 msgstr "Dieser Eintrag muss ein Passwort enthalten."
 
-#: ID:328,
 msgid "This entry must have a title."
 msgstr "Dieser Eintrag muss einen Titel enthalten."
 
-#: ID:344,
 msgid "This entry must have a valid target entry."
-msgstr "Dieser Eintrag muss einen g¸ltigen Zieleintrag enthalten."
+msgstr "Dieser Eintrag muss einen gÈß•n Zieleintrag enthalten."
 
-#: ID:353,
 msgid "This filter already exists"
 msgstr "Das Filter besteht bereits"
 
-#: Control-ID:1269,
 msgid "This is an alias."
 msgstr "Dies ist ein Alias."
 
-#: ID:3857,
 #, fuzzy, c-format
 msgid "This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s."
-msgstr "Dieses Programm wurde gebunden mit der fehlenden Exportfunktion %s der Datei %s. Mˆglicherweise ist die Version von %s inkompatibel."
+msgstr "Dieses Programm wurde gebunden mit der fehlenden Exportfunktion %s der Datei %s. MÁ¨©cherweise ist die Version von %s inkompatibel."
 
-#: ID:3857,
 #, c-format
 msgid "This program requires the file %s, which was not found on this system."
 msgstr "Dieses Programm erfordert die Datei %s, welche auf diesem System nicht gefunden wurde."
 
-#: ID:344,
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
-msgstr "Das Tastenk¸rzel-Ziel [%s:%s:%s] ist kein normaler Eintrag oder schon ein Tastenk¸rzelbasis."
+msgstr "Das TastenkÂ¨≠Ziel [%s:%s:%s] ist kein normaler Eintrag oder schon ein TastenkÂ¨¢asis."
 
-#: ID:338,
 #, c-format
-msgid ""
-"This version of PasswordSafe does not support more than %d entries in a database.\n"
-"To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
-"Do you want to open this database anyway?\n"
-"(Saving this database will result in the removal of unread entries!)"
-msgstr ""
-"Diese Version von PasswortSafe unterst¸tzt nicht mehr als %d Eintr‰ge in einer Datenbank.\n"
-"Um eine unlimitierte Version f¸r die U3-Platform zu bekommen, besuchen Sie http://software.u3.com\n"
-"Wollen Sie diese Datenbank dennoch ˆffnen?\n"
-"BEIM SPEICHERN DER DATENBANK GEHEN DIE ‹BERZƒHLIGEN EINTRƒGE VERLOREN!"
+msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nDo you want to open this database anyway?\n(Saving this database will result in the removal of unread entries!)"
+msgstr "Diese Version von PasswortSafe unterst‰†Æicht mehr als %d Eintr‰ß• in einer Datenbank.\nUm eine unlimitierte Version f‰©• U3-Platform zu bekommen, besuchen Sie http://software.u3.com\nWollen Sie diese Datenbank dennoch Ê¶Æen?\nBEIM SPEICHERN DER DATENBANK GEHEN DIE ‹ÇERZƒàLIGEN EINTRƒáE VERLOREN!"
 
-#: ID:338,
 #, c-format
-msgid ""
-"This version of PasswordSafe does not support more than %d entries in a database.\n"
-"To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
-"Note: Saving this database will result in the removal of unread entries!"
-msgstr ""
-"Diese Version von PasswordSafe unterst¸tzt nicht mehr als %d Eintr‰ge in der Datenbank.\n"
-"Um ein nicht limitierte Version f¸r die U3 Platform , besuche bitte http://software.u3.com\n"
-"Hinweis: beim Speichern der Datenbank werden nicht gelesene Eintr‰ge gelˆscht!"
+msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nNote: Saving this database will result in the removal of unread entries!"
+msgstr "Diese Version von PasswordSafe unterst‰†Æicht mehr als %d Eintr‰ß• in der Datenbank.\nUm ein nicht limitierte Version f‰©• U3 Platform , besuche bitte http://software.u3.com\nHinweis: beim Speichern der Datenbank werden nicht gelesene Eintr‰ß• gel„£®t!"
 
-#: ID:319,
 msgid "This will clear all traces of Password Safe from the machine's registry. It may also cause previous versions of Password Safe to revert to default values for some settings."
-msgstr "Dies wird alle Spuren von PasswortSafe aus der Registrierungsdatenbank dieses Rechners lˆschen. Es kann auch dazu f¸hren, dass fr¸here Versionen von PasswortSafe Standart-Werte f¸r einige Einstellungen verwenden."
+msgstr "Dies wird alle Spuren von PasswortSafe aus der Registrierungsdatenbank dieses Rechners l„£®en. Es kann auch dazu fÂÆ¨ dass fr‚•†Versionen von PasswortSafe Standart-Werte fÂ©Æige Einstellungen verwenden."
 
-#: ID:341,
 #, c-format
 msgid "This will delete %d entries which are within this group and its subgroups."
-msgstr "Dies wird %d Eintr‰ge lˆschen, die sich innerhalb dieser Gruppe und ihrer Untergruppen befinden."
+msgstr "Dies wird %d Eintr‰ß• l„£®en, die sich innerhalb dieser Gruppe und ihrer Untergruppen befinden."
 
-#: ID:341,
 msgid "This will delete an entry which is within this group and/or its subgroups."
-msgstr "Dies wird einen Eintrag lˆschen, der sich innerhalb dieser Gruppe oder ihrer Untergruppen befindet."
+msgstr "Dies wird einen Eintrag l„£®en, der sich innerhalb dieser Gruppe oder ihrer Untergruppen befindet."
 
-#: ID:331,
 msgid "Time out period must be between 1 and 120 minutes."
-msgstr "Die Dauer der Zeit¸berschreitung muss zwischen 1 und 120 Minuten liegen."
+msgstr "Die Dauer der Zeit‚≥£hreitung muss zwischen 1 und 120 Minuten liegen."
 
-#: ID:327,
 msgid "Title"
 msgstr "Titel"
 
-#: ID:339,
 msgid "Title [Mandatory Field]"
 msgstr "Titel [Pflichtfeld]"
 
-#: ID:192,
 msgid "Title\t"
 msgstr "Titel\t"
 
-#: Control-ID:65535,
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
-msgstr "Um einen neuen Eintrag einzuf¸gen, f¸llen Sie einfach die unten stehenden Felder aus. Zumindest den Titel und das Passwort werden benˆtigt. Der Standard-Benutzername wird als Benutzername verwendet, falls Sie einen gesetzt haben."
+msgstr "Um einen neuen Eintrag einzufÓ¨†fÂÆ†Sie einfach die unten stehenden Felder aus. Zumindest den Titel und das Passwort werden ben‰©ßt. Der Standard-Benutzername wird als Benutzername verwendet, falls Sie einen gesetzt haben."
 
-#: Control-ID:1198,
 msgid "To edit this entry from the current password file, simply make the desired changes in the fields below.  Note that at least a title and a password are required."
-msgstr "Um diesen Eintrag der aktuellen Datenbank zu ‰ndern, machen Sie Ihre ƒnderungen einfach in den unten stehenden Feldern. Hinweis: Mindestens Titel und Passwort werden benˆtigt."
+msgstr "Um diesen Eintrag der aktuellen Datenbank zu ‰Æ§ern, machen Sie Ihre ƒÆderungen einfach in den unten stehenden Feldern. Hinweis: Mindestens Titel und Passwort werden ben‰©ßt."
 
-#: Control-ID:1284,
+#. Resource IDs: (32106)
+msgid "Toolbar &visible"
+msgstr ""
+
 msgid "Treat fields that only contain 'whitespace' as empty"
 msgstr "Behandele Felder dir nur 'whitespace' enhalten als seien sie leer."
 
-#: Control-ID:1013,
 msgid "Tree1"
 msgstr "Baum1"
 
-#: ID:338,
 msgid "Trial Version Limitation"
-msgstr "Einschr‰nkung der Test-Version"
+msgstr "Einschr‰Æ´ung der Test-Version"
 
-#: ID:208,
 msgid "Trouble reading Filter. Click 'Yes' to remove from database, 'No' to retain it."
-msgstr "Problem beim Lesen des Filters. Klick 'Ja' zum Lˆschen in der Datenbank, 'Nein' zum Beibehalten."
+msgstr "Problem beim Lesen des Filters. Klick 'Ja' zum L„£®en in der Datenbank, 'Nein' zum Beibehalten."
 
-#: ID:203,
 #, c-format
 msgid "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
-msgstr "Problem mit einem Nicht-Text-Feld (z.B. Uhrzeit) im Datensatz '%s' - Bitte ¸berpr¸fen Sie Ihre Daten sorgf‰ltig."
+msgstr "Problem mit einem Nicht-Text-Feld (z.B. Uhrzeit) im Datensatz '%s' - Bitte ‚∞≤Ó†ìie Ihre Daten sorgf‰¨¥ig."
 
-#: ID:343,
 msgid "Trying to contact server..."
 msgstr "Versuche einen Server zu kontaktieren..."
 
-#: Control-ID:1355,#:
-#: Control-ID:1355,
 msgid "U&RL:"
 msgstr "U&RL:"
 
-#: ID:327,
 msgid "URL"
 msgstr "URL"
 
-#: ID:188,
 msgid "URL\t"
 msgstr "URL\t"
 
-#: ID:190,
-msgid ""
-"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be saved in your registry entry on this computer.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Kann keine neue XML-Konfigurationsdatei anlegen oder Einstellungen zu einer bestehenden XML-Konfigurationsdatei hinzuf¸gen.\n"
-"\n"
-"Die gesamten Einstellungen werden in der Registrierungsdatenbank dieses Rechners gespeichert.\n"
-"\n"
-"Einstellungen, die die Datenbank betreffen, werden beim Schlieﬂen in der Datenbank gespeichert, vorausgesetzt, dass diese nicht nur-lesbar oder durch andere Benutzer gesperrt ist."
+msgid "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Kann keine neue XML-Konfigurationsdatei anlegen oder Einstellungen zu einer bestehenden XML-Konfigurationsdatei hinzufÓÆún\nDie gesamten Einstellungen werden in der Registrierungsdatenbank dieses Rechners gespeichert.\n\nEinstellungen, die die Datenbank betreffen, werden beim Schlieﬂ•n in der Datenbank gespeichert, vorausgesetzt, dass diese nicht nur-lesbar oder durch andere Benutzer gesperrt ist."
 
-#: ID:337,
 msgid "Unable to create intermediate backup."
 msgstr "Kann die Zwischen-Datensicherung nicht anlegen."
 
-#: ID:332,
 msgid "Unable to display URL"
 msgstr "Kann die URL nicht anzeigen"
 
-#: ID:190,
-msgid ""
-"Unable to get configuration file lock.\n"
-"\n"
-"Will use registry."
-msgstr ""
-"Kann die Konfigurationsdatei nicht sperren.\n"
-"\n"
-"Verwende die Registrierungsdatenbank."
+msgid "Unable to get configuration file lock.\n\nWill use registry."
+msgstr "Kann die Konfigurationsdatei nicht sperren.\n\nVerwende die Registrierungsdatenbank."
 
-#: ID:352,
 #, c-format
-msgid ""
-"Unable to import \"autoload_filters.xml\" filters.\n"
-"\n"
-"%s"
-msgstr ""
-"Kann Filter \"autoload_filters.xml\" nicht importieren.\n"
-"\n"
-"%s"
+msgid "Unable to import \"autoload_filters.xml\" filters.\n\n%s"
+msgstr "Kann Filter \"autoload_filters.xml\" nicht importieren.\n\n%s"
 
-#: ID:191,
 msgid "Unable to load configuration file"
-msgstr "Kann die Konfigurationsdatei nicht ˆffnen"
+msgstr "Kann die Konfigurationsdatei nicht Ê¶Æen"
 
-#: ID:3866,
 msgid "Unable to load mail system support."
-msgstr "Kann die email-Unterst¸tzung nicht starten."
+msgstr "Kann die email-UnterstÂÆß nicht starten."
 
-#: ID:3859,
 #, c-format
 msgid "Unable to read from %1, it is opened by someone else."
 msgstr "Kann nicht aus %1 lesen. Es wird schon von jemand anderem verwendet."
 
-#: ID:189,
 msgid "Unable to read locker?"
 msgstr "Sperrenden nicht ermittelbar?"
 
-#: ID:3865,
 msgid "Unable to read write-only property."
 msgstr "Kann die Nur-Schreib-Eigenschaft nicht lesen."
 
-#: ID:191,
 msgid "Unable to save configuration file"
 msgstr "Kann Konfigurationsdatei nicht speichern"
 
-#: ID:343,
 msgid "Unable to send email"
 msgstr "Kann email nicht senden"
 
-#: ID:190,
-msgid ""
-"Unable to update your entries in the existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be loaded from this file but no changes will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Kann Ihre Eintr‰ge nicht in der existierenden XML-Konfigurationsdatei aktualisieren.\n"
-"Die gesamten Einstellungen werden daraus geladen, aber ƒnderungen werden nicht gespeichert.\n"
-"\n"
-"Einstellungen, die die Datenbank betreffen, werden beim Schlieﬂen in der Datenbank gespeichert, vorausgesetzt, dass diese nicht nur-lesbar oder durch andere Benutzer gesperrt ist."
+msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Kann Ihre Eintr‰ß• nicht in der existierenden XML-Konfigurationsdatei aktualisieren.\nDie gesamten Einstellungen werden daraus geladen, aber ƒÆderungen werden nicht gespeichert.\n\nEinstellungen, die die Datenbank betreffen, werden beim Schlieﬂ•n in der Datenbank gespeichert, vorausgesetzt, dass diese nicht nur-lesbar oder durch andere Benutzer gesperrt ist."
 
-#: ID:191,
 msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
-msgstr "Kann die Microsoft XML-Unterst¸tzung nicht verwenden. Weder Version 3, Version 4 noch Version 6 scheinen verf¸gbar."
+msgstr "Kann die Microsoft XML-UnterstÂÆß nicht verwenden. Weder Version 3, Version 4 noch Version 6 scheinen verf·≤Æ"
 
-#: ID:191,
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
 msgstr "Kann auf Ihrem Rechner die XML-Datei nicht mittels XML-Schema-Datei (XSD) validieren."
 
-#: ID:3865,
 msgid "Unable to write read-only property."
 msgstr "Kann die Nur-Lese Eigenschaft nicht schreiben."
 
-#: ID:3859,
 #, c-format
 msgid "Unable to write to %1, it is read-only or opened by someone else."
 msgstr "Kann nicht in %1 schreiben. Es wird schon von jemand anderem verwendet."
 
-#: ID:3887,
 msgid "Uncheck"
 msgstr "Deaktiviere"
 
-#: ID:209,
+#. Resource IDs: (209)
+msgid "Unexpected element: Only one field allowed per filter entry."
+msgstr ""
+
+#. Resource IDs: (209)
 #, c-format
-msgid "Unexpected element: %s"
-msgstr "Unerwartetes Element: %s"
+msgid "Unexpected element: \"%s\"."
+msgstr ""
 
-#: ID:209,
-msgid "Unexpected element: Only one field allowed in filter entry."
-msgstr "Unerwartetes Element: es ist nur ein Feld bei der Filtereingabe erlaubt."
-
-#: ID:3859,
 msgid "Unexpected file format."
 msgstr "Unerwartetes Dateiformat"
 
-#: ID:329,
 msgid "Unknown            "
 msgstr "Unbekannt            "
 
-#: ID:209,
+#. Resource IDs: (209)
 #, c-format
-msgid "Unknown element: %s"
-msgstr "Unbekanntes Element: %s"
+msgid "Unknown element: \"%s\"."
+msgstr ""
 
-#: ID:350,
 msgid "Unknown fields"
 msgstr "Unbekannte Felder"
 
-#: Control-ID:1263,
 msgid "Unknown fields:"
 msgstr "Unbekannte Felder:"
 
-#: ID:329,
+#. Resource IDs: (32251)
+msgid "Unlock"
+msgstr ""
+
 msgid "Unlock Safe"
 msgstr "Safe entsperren"
 
-#: ID:3841,
 msgid "Untitled"
 msgstr "Unbenannt"
 
-#: ID:313,
-msgid ""
-"Usage: pwsafe [-r|-v] [password database]\n"
-"or pwsafe [-e|-d] filename\n"
-"or pwsafe [-c]\n"
-"or pwsafe [-s] [password database]\n"
-"or pwsafe -m\n"
-"\n"
-" where:\n"
-"  -r = open read-only\n"
-"  -v = validate & repair\n"
-"  -e/d = encrypt/decrypt file\n"
-"  -c = start closed i.e., no open database\n"
-"  -s = start silently (minimized)\n"
-"  -m = start minimized & closed\n"
-"\n"
-"In addition, the following flags may be used:\n"
-" -u user (use user's preferences instead of login name)\n"
-" -h host (use host to look up preferences instead of the machine's name)\n"
-" -g config_file (use config_file instead of pwsafe.cfg)"
-msgstr ""
-"Benutzung: pwsafe [-r|-v] [Passwortdatenbank]\n"
-" oder pwsafe [-e|-d] Dateiname\n"
-" oder pwsafe [-c]\n"
-" oder pwsafe [-s] [Passwortdatenbank]\n"
-" oder pwsafe -m\n"
-"\n"
-" wobei:\n"
-"  -r = im Nur-Lese-Modus ˆffnen\n"
-"  -v = ‹berpr¸fen und Reparieren\n"
-"  -e/d = ver- / ent-schl¸ssele Datei\n"
-"  -c = starte geschlossen (ˆffne keine Datenbank zu Beginn)\n"
-"  -s = starte ruhig und minimiert\n"
-"  -m = starte minimiert und geschlossen\n"
-"\n"
-"Folgende Optionen kˆnnen zus‰tzlich verwendet werden:\n"
-" -u Benutzer (benutze die Einstellungen des benannten Benutzers statt des Login-Namens)\n"
-" -h Rechner (benutze den Rechnernamen statt des Namens dieses Rechners um die Benutzereinstellungen zu suchen)\n"
-" -g Konfigurationsdatei (statt pwsafe.cfg)"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)"
+msgstr "Benutzung: pwsafe [-r|-v] [Passwortdatenbank]\n oder pwsafe [-e|-d] Dateiname\n oder pwsafe [-c]\n oder pwsafe [-s] [Passwortdatenbank]\n oder pwsafe -m\n\n wobei:\n  -r = im Nur-Lese-Modus Ê¶Æen\n  -v = ‹¢erprÓ†µnd Reparieren\n  -e/d = ver- / ent-schlÂ¨• Datei\n  -c = starte geschlossen (Ê¶Æe keine Datenbank zu Beginn)\n  -s = starte ruhig und minimiert\n  -m = starte minimiert und geschlossen\n\nFolgende Optionen kÓÆ•n zus‰¥∫lich verwendet werden:\n -u Benutzer (benutze die Einstellungen des benannten Benutzers statt des Login-Namens)\n -h Rechner (benutze den Rechnernamen statt des Namens dieses Rechners um die Benutzereinstellungen zu suchen)\n -g Konfigurationsdatei (statt pwsafe.cfg)"
 
-#: Control-ID:1029,
 msgid "Use"
 msgstr "Nutzen"
 
-#: Control-ID:1048,
 msgid "Use UPPERCASE letters"
-msgstr "Verwende Groﬂbuchstaben"
+msgstr "Verwende Groﬂ¢uchstaben"
 
-#: Control-ID:1049,
 msgid "Use digits"
 msgstr "Verwende Zahlen"
 
-#: Control-ID:1070,
 msgid "Use hexadecimal digits only (0-9,a-f)"
 msgstr "Verwende Hexadezimalzahlen (0-9,a-f)"
 
-#: Control-ID:1047,
 msgid "Use lowercase letters"
 msgstr "Verwende Kleinbuchstaben"
 
-#: Control-ID:1051,
 msgid "Use only easy-to-read characters (i.e., no  'l', '1', etc.)"
 msgstr "Verwende leicht zu lesende Zeichen (z.B. kein  'l', '1', usw.)"
 
-#: Control-ID:1050,
 msgid "Use symbols (i.e., &, %, $, etc.)"
 msgstr "Verwende Symbole (z.B. &, %, $, usw.)"
 
-#: ID:320,
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
 msgstr "Benutze die hier eingestellte Anwendung um die URL eines Eintrags aufzurufen wenn diese mit [alt] beginnt. z.B. '[alt]http://foo.com'"
 
-#: ID:346,
 msgid "User"
 msgstr "Benutzer"
 
-#: ID:327,
 msgid "User Name"
 msgstr "Benutzername"
 
-#: ID:339,
 msgid "User [Mandatory Field]"
 msgstr "Benutzer [Pflichtfeld]"
 
-#: ID:188,
 msgid "Username\t"
 msgstr "Benutzername\t"
 
-#: Control-ID:65535,
 msgid "Using application:"
 msgstr "Benutze Programm:"
 
-#: ID:206,#:
-#: ID:347,
+#. Resource IDs: (206, 347)
 msgid "Validate"
-msgstr "‹berpr¸fe"
-
-#: ID:335,
-#, c-format
-msgid ""
-"Validated %d %s\r\n"
-"\r\n"
-"Imported %d %s"
 msgstr ""
-"‹berpr¸ft %d %s\r\n"
-"\r\n"
-"Importiert %d %s"
 
-#: Control-ID:1322,
+#, c-format
+msgid "Validated %d %s\r\n\r\nImported %d %s"
+msgstr "‹¢erpr‡•§ %s\r\n\r\nImportiert %d %s"
+
 msgid "Value:"
 msgstr "Wert:"
 
-#: Control-ID:65535,
 msgid "Verify Key:"
-msgstr "‹berpr¸fe Schl¸ssel:"
+msgstr "‹¢erpr”£hlÂ¨∫"
 
-#: Control-ID:65535,
+#. Resource IDs: (65535)
 msgid "Verify:"
-msgstr "‹berpr¸fe:"
+msgstr ""
 
-#: ID:352,
 msgid "View"
 msgstr "Anzeige"
 
-#: ID:344,
 msgid "View Aliases"
 msgstr "Aliase ansehen"
 
-#: ID:330,
 msgid "View Entry"
 msgstr "Zeige Eintrag"
 
-#: ID:338,
 msgid "View Entry\tCtrl+Enter"
 msgstr "Zeige Eintrag\tSTRG-Enter"
 
-#: ID:347,#:
-#: Dlg-ID:157,
 msgid "View Report"
 msgstr "Zeige Report"
 
-#: ID:344,
 msgid "View Shortcut"
-msgstr "Zeige Tastenk¸rzel"
+msgstr "Zeige Tastenk"
 
-#: ID:345,
 msgid "View Shortcuts"
-msgstr "Zeige Tastenk¸rzel"
+msgstr "Zeige Tastenk"
 
-#: ID:352,
 msgid "View a filter"
 msgstr "Filter anzeigen"
 
-#: Control-ID:1259,
 msgid "View report"
 msgstr "Zeige Report"
 
-#: ID:325,#:
-#: ID:332,
 msgid "View/Edit selected entry"
-msgstr "Zeige/‰ndere ausgew‰hlten Eintrag"
+msgstr "Zeige/‰Æ§ere ausgew‰®¨ten Eintrag"
 
-#: ID:341,
-msgid ""
-"WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
-"\n"
-"Do you wish to continue?"
+#. Resource IDs: (32201)
+msgid "Visit Password Safe &website..."
 msgstr ""
-"WARNUNG: die Benutzung eines externen Editors kann sensible Daten auf Ihrer Festplatte hinterlassen.\n"
-"\n"
-"Wollen Sie fortfahren?"
 
-#: Control-ID:1232,
+msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
+msgstr "WARNUNG: die Benutzung eines externen Editors kann sensible Daten auf Ihrer Festplatte hinterlassen.\n\nWollen Sie fortfahren?"
+
 msgid "Warn"
 msgstr "Warnen"
 
-#: ID:209,
 msgid "Warning"
 msgstr "Warnung"
 
-#: Control-ID:65535,
 msgid "Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is *NOT* sufficient. This bypasses the security of the program."
-msgstr "WARNUNG: Diese Operation wird einen ungesch¸tzte Kopie ALLER Passwˆrter aus der Datenbank anlegen. Diese Kopie nach Benutzung nur zu lˆschen ist NICHT ausreichend. Dies umgeht die Sicherheit dieses Programmes."
+msgstr "WARNUNG: Diese Operation wird einen ungesch‰•†Kopie ALLER Passw‚¥•r aus der Datenbank anlegen. Diese Kopie nach Benutzung nur zu l„£®en ist NICHT ausreichend. Dies umgeht die Sicherheit dieses Programmes."
 
-#: Control-ID:1226,
 msgid "Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is NOT sufficient."
-msgstr "WARNUNG: Diese Operation wird einen ungesch¸tzte Kopie ALLER Passwˆrter aus der Datenbank anlegen. Diese Kopie nach Benutzung nur zu lˆschen ist NICHT ausreichend."
+msgstr "WARNUNG: Diese Operation wird einen ungesch‰•†Kopie ALLER Passw‚¥•r aus der Datenbank anlegen. Diese Kopie nach Benutzung nur zu l„£®en ist NICHT ausreichend."
 
-#: ID:331,
 #, c-format
-msgid ""
-"Weak passphrase:\n"
-"\n"
-" %s"
-msgstr ""
-"Schwache Safekombination:\n"
-"\n"
-"%s"
+msgid "Weak passphrase:\n\n %s"
+msgstr "Schwache Safekombination:\n\n%s"
 
-#: Control-ID:1115,#:
-#: Control-ID:1109,#:
-#: Control-ID:1111,#:
-#: Control-ID:1113,#:
-#: Control-ID:1117,#:
-#: Control-ID:1105,
 msgid "Whenever"
 msgstr "Wannimmer"
 
-#: ID:332,
 #, c-format
-msgid ""
-"Would you like to set \"%s\" as your default username?\n"
-"\n"
-"It would then automatically be put in the dialog each time you add a new item."
-msgstr ""
-"Wollen Sie \"%s\" als Ihren Standardbenutzernamen setzen?\n"
-"\n"
-"Er wird dann automatisch beim Anlegen neuer Eintr‰ge als Benutzername eingetragen."
+msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
+msgstr "Wollen Sie \"%s\" als Ihren Standardbenutzernamen setzen?\n\nEr wird dann automatisch beim Anlegen neuer Eintr‰ß• als Benutzername eingetragen."
 
-#: ID:320,
 msgid "Write when an entry was accessed in the database. Ignored in read-only mode."
 msgstr "Schreibe, wenn auf einen Eintrag zugegriffen wurde. Wird im Nur-Lese-Modus ignoriert."
 
-#: ID:347,
 msgid "XML"
 msgstr "XML"
 
-#: ID:191,
 #, c-format
 msgid "XML %s: line %d character %d: %s"
 msgstr "XML %s: Zeile %d Zeichen %d: %s"
 
-#: ID:340,
 msgid "Yes"
 msgstr "Ja"
 
-#: Control-ID:1084,#:
-#: Control-ID:1084,
 msgid "Yes:"
 msgstr "Ja:"
 
-#: Control-ID:65535,
 msgid "You can use the Copy button below to place this list into the Clipboard."
-msgstr "Sie kˆnnen die Kopieren-Knopf unten verwenden um diese Liste in die Zwischenablage zu legen."
+msgstr "Sie kÓÆ•n die Kopieren-Knopf unten verwenden um diese Liste in die Zwischenablage zu legen."
 
-#: ID:346,
 msgid "You must save this database before it can be exported."
 msgstr "Datenbank muss vor dem Exportieren zuerst gespeichert werden."
 
-#: ID:330,
 msgid "[No current database]"
-msgstr "[keine Datenbank geˆffnet]"
+msgstr "[keine Datenbank geÊ¶Æet]"
 
-#: ID:328,
 msgid "[Notes hidden - click here to display]"
 msgstr "[Hinweise versteckt - klicken Sie hier um sie anzuzeigen]"
 
-#: ID:2004,
-msgid ""
-"\n"
-"Add New Entry"
-msgstr ""
-"\n"
-"F¸ge neuen Eintrag ein"
+msgid "\nAdd New Entry"
+msgstr "\nF‡Æ•uen Eintrag ein"
 
-#: ID:2020,
-msgid ""
-"\n"
-"Advanced Find Options"
-msgstr ""
-"\n"
-"Erweiterte Suchen-Optionen"
+msgid "\nAdvanced Find Options"
+msgstr "\nErweiterte Suchen-Optionen"
 
-#: ID:2004,
-msgid ""
-"\n"
-"Browse to URL/Send Email"
-msgstr ""
-"\n"
-"URL aufrufen / Email senden"
+msgid "\nBrowse to URL/Send Email"
+msgstr "\nURL aufrufen / Email senden"
 
-#: ID:2020,
-msgid ""
-"\n"
-"Case insensitive search"
-msgstr ""
-"\n"
-"Groﬂschreibung missachtende Suche"
+msgid "\nCase insensitive search"
+msgstr "\nGroﬂ≥chreibung missachtende Suche"
 
-#: ID:2020,
-msgid ""
-"\n"
-"Case sensitive search"
-msgstr ""
-"\n"
-"Groﬂschreibung beachtende Suche"
+msgid "\nCase sensitive search"
+msgstr "\nGroﬂ≥chreibung beachtende Suche"
 
-#: ID:2020,
-msgid ""
-"\n"
-"Clear Find"
-msgstr ""
-"\n"
-"Lˆsche Suchbegriff"
+msgid "\nClear Find"
+msgstr "\nL„£®e Suchbegriff"
 
-#: ID:2004,
-msgid ""
-"\n"
-"Clear the clipboard contents"
-msgstr ""
-"\n"
-"Inhalt der Zwischenablage lˆschen"
+msgid "\nClear the clipboard contents"
+msgstr "\nInhalt der Zwischenablage l„£®en"
 
-#: ID:2001,
-msgid ""
-"\n"
-"Close Database"
-msgstr ""
-"\n"
-"Datenbank schlieﬂen"
+msgid "\nClose Database"
+msgstr "\nDatenbank schlieﬂ•n"
 
-#: ID:2019,
-msgid ""
-"\n"
-"Close Find Bar"
-msgstr ""
-"\n"
-"Suchleiste schlieﬂen"
+msgid "\nClose Find Bar"
+msgstr "\nSuchleiste schlieﬂ•n"
 
-#: ID:2007,
-msgid ""
-"\n"
-"Collapse All"
-msgstr ""
-"\n"
-"Alle reduzieren"
+msgid "\nCollapse All"
+msgstr "\nAlle reduzieren"
 
-#: ID:2002,
-msgid ""
-"\n"
-"Compare two Databases"
-msgstr ""
-"\n"
-"Zwei Datenbanken vergleichen"
+msgid "\nCompare two Databases"
+msgstr "\nZwei Datenbanken vergleichen"
 
-#: ID:2004,
-msgid ""
-"\n"
-"Copy Notes to Clipboard"
-msgstr ""
-"\n"
-"Notizen in Zwischenablage kopieren"
+msgid "\nCopy Notes to Clipboard"
+msgstr "\nNotizen in Zwischenablage kopieren"
 
-#: ID:2004,
-msgid ""
-"\n"
-"Copy Password to Clipboard"
-msgstr ""
-"\n"
-"Passwort in Zwischenablage kopieren"
+msgid "\nCopy Password to Clipboard"
+msgstr "\nPasswort in Zwischenablage kopieren"
 
-#: ID:2004,
-msgid ""
-"\n"
-"Copy Username to Clipboard"
-msgstr ""
-"\n"
-"Benutzername in Zwischenablage kopieren"
+msgid "\nCopy Username to Clipboard"
+msgstr "\nBenutzername in Zwischenablage kopieren"
 
-#: ID:2020,
-msgid ""
-"\n"
-"Create report of previous Find search"
-msgstr ""
-"\n"
-"Erstelle Report der letzten Suche"
+msgid "\nCreate report of previous Find search"
+msgstr "\nErstelle Report der letzten Suche"
 
-#: ID:2004,
-msgid ""
-"\n"
-"Delete an Entry"
-msgstr ""
-"\n"
-"Einen Eintrag lˆschen"
+msgid "\nDelete an Entry"
+msgstr "\nEinen Eintrag l„£®en"
 
-#: ID:2017,
-msgid ""
-"\n"
-"Display subset of Password"
-msgstr ""
-"\n"
-"Teilmenge des Passwortes anzeigen"
+msgid "\nDisplay subset of Password"
+msgstr "\nTeilmenge des Passwortes anzeigen"
 
-#: ID:2007,
-msgid ""
-"\n"
-"Edit Filters"
-msgstr ""
-"\n"
-"Editiere Filter"
+msgid "\nEdit Filters"
+msgstr "\nEditiere Filter"
 
-#: ID:2004,
-msgid ""
-"\n"
-"Edit an Entry"
-msgstr ""
-"\n"
-"Einen Eintrag bearbeiten"
+msgid "\nEdit an Entry"
+msgstr "\nEinen Eintrag bearbeiten"
 
-#: ID:191,
+#. Resource IDs: (191)
 #, c-format
-msgid ""
-"\n"
-"Error in Password History for entry: ª%sª%sª%sª: "
+msgid "\nError in Password History for entry: ¬ª%s¬ª%s¬ª%s¬ª: "
 msgstr ""
-"\n"
-"Fehler in Passworthistorie f¸r Eintrag: ª%sª%sª%sª: "
 
-#: ID:2007,
-msgid ""
-"\n"
-"Expand All"
+msgid "\nExpand All"
+msgstr "\nAlle erweitern"
+
+msgid "\nExport to Text"
+msgstr "\nAls Text exportieren"
+
+msgid "\nExport to XML"
+msgstr "\nAls XML exportieren"
+
+msgid "\nFind"
+msgstr "\nSuchen"
+
+#. Resource IDs: (2005)
+msgid "\nGo to Base entry"
 msgstr ""
-"\n"
-"Alle erweitern"
 
-#: ID:2001,
-msgid ""
-"\n"
-"Export to Text"
-msgstr ""
-"\n"
-"Als Text exportieren"
+msgid "\nHelp"
+msgstr "\nHilfe"
 
-#: ID:2001,
-msgid ""
-"\n"
-"Export to XML"
-msgstr ""
-"\n"
-"Als XML exportieren"
+msgid "\nImport Text"
+msgstr "\nImportiere Text"
 
-#: ID:2004,#:
-#: ID:2019,
-msgid ""
-"\n"
-"Find"
-msgstr ""
-"\n"
-"Suchen"
+msgid "\nImport XML"
+msgstr "\nImportiere XML"
 
-#: ID:3605,
-msgid ""
-"\n"
-"Help"
-msgstr ""
-"\n"
-"Hilfe"
+msgid "\nList View/Tree View"
+msgstr "\nListenansicht/Baumansicht"
 
-#: ID:2002,
-msgid ""
-"\n"
-"Import Text"
-msgstr ""
-"\n"
-"Importiere Text"
+msgid "\nMake New Database"
+msgstr "\nNeue Datenbank erstellen"
 
-#: ID:2001,
-msgid ""
-"\n"
-"Import XML"
-msgstr ""
-"\n"
-"Importiere XML"
+msgid "\nManage Filters"
+msgstr "\nVerwalte Filter"
 
-#: ID:2017,
-msgid ""
-"\n"
-"List View/Tree View"
-msgstr ""
-"\n"
-"Listenansicht/Baumansicht"
+msgid "\nMerge into Database"
+msgstr "\nIn Datenbank zusammenf"
 
-#: ID:2001,
-msgid ""
-"\n"
-"Make New Database"
-msgstr ""
-"\n"
-"Neue Datenbank erstellen"
+msgid "\nOpen Another Database"
+msgstr "\nAndere Datenbank Ê¶Æen"
 
-#: ID:2008,
-msgid ""
-"\n"
-"Manage Filters"
-msgstr ""
-"\n"
-"Verwalte Filter"
+msgid "\nOptions"
+msgstr "\nOptionen"
 
-#: ID:2002,
-msgid ""
-"\n"
-"Merge into Database"
-msgstr ""
-"\n"
-"In Datenbank zusammenf¸hren"
+msgid "\nPerform Autotype"
+msgstr "\nAutom. Eingabe starten"
 
-#: ID:2001,
-msgid ""
-"\n"
-"Open Another Database"
-msgstr ""
-"\n"
-"Andere Datenbank ˆffnen"
+msgid "\nPlease try another"
+msgstr "\nBitte probieren Sie andere"
 
-#: ID:2010,
-msgid ""
-"\n"
-"Options"
-msgstr ""
-"\n"
-"Optionen"
+msgid "\nProgram will terminate."
+msgstr "\nProgramm wird beendet."
 
-#: ID:2004,
-msgid ""
-"\n"
-"Perform Autotype"
-msgstr ""
-"\n"
-"Autom. Eingabe starten"
+msgid "\nSave Database"
+msgstr "\nDatenbank speichern"
 
-#: ID:331,
-msgid ""
-"\n"
-"Please try another"
-msgstr ""
-"\n"
-"Bitte probieren Sie andere"
+msgid "\nSave Database As..."
+msgstr "\nDatenbank speichern unter..."
 
-#: ID:326,
-msgid ""
-"\n"
-"Program will terminate."
-msgstr ""
-"\n"
-"Programm wird beendet."
+msgid "\nSet/Clear Filters"
+msgstr "\nFilter Setzen/L„£®en"
 
-#: ID:2001,
-msgid ""
-"\n"
-"Save Database"
-msgstr ""
-"\n"
-"Datenbank speichern"
-
-#: ID:2001,
-msgid ""
-"\n"
-"Save Database As..."
-msgstr ""
-"\n"
-"Datenbank speichern unter..."
-
-#: ID:2008,
-msgid ""
-"\n"
-"Set/Clear Filters"
-msgstr ""
-"\n"
-"Filter Setzen/Lˆschen"
-
-#: ID:192,
 #, fuzzy
-msgid ""
-"\n"
-"Unexpected exception during parsing."
-msgstr ""
-"\n"
-"Unerwartete Ausnahme w‰hrend Parse."
+msgid "\nUnexpected exception during parsing."
+msgstr "\nUnerwartete Ausnahme w‰®≤end Parse."
 
-#: ID:331,
-msgid ""
-"\n"
-"Use it anyway?"
-msgstr ""
-"\n"
-"Trotzdem verwenden?"
+msgid "\nUse it anyway?"
+msgstr "\nTrotzdem verwenden?"
 
-#: ID:2017,
-msgid ""
-"\n"
-"View Reports"
-msgstr ""
-"\n"
-"Zeige Reporte"
+msgid "\nView Reports"
+msgstr "\nZeige Reporte"
 
-#: ID:328,
-msgid ""
-"\n"
-"\n"
-"Cannot open database. It probably does not exist.\n"
-"A new database will be created."
-msgstr ""
-"\n"
-"\n"
-"Kann Datenbank nicht ˆffnen. Sie existiert wahrscheinlich nicht.\n"
-"Eine neue Datenbank wird angelegt."
+msgid "\n\nCannot open database. It probably does not exist.\nA new database will be created."
+msgstr "\n\nKann Datenbank nicht Ê¶Æen. Sie existiert wahrscheinlich nicht.\nEine neue Datenbank wird angelegt."
 
-#: ID:335,
-msgid ""
-"\n"
-"\n"
-"Databases identical!"
-msgstr ""
-"\n"
-"\n"
-"Datenbank sind identisch!"
+msgid "\n\nDatabases identical!"
+msgstr "\n\nDatenbank sind identisch!"
 
-#: ID:341,
-msgid ""
-"\n"
-"\n"
-"Unknown fields will also be copied with the entry."
-msgstr ""
-"\n"
-"\n"
-"Unbekannte Felder werden auch mit dem Eintrag kopiert werden."
+msgid "\n\nUnknown fields will also be copied with the entry."
+msgstr "\n\nUnbekannte Felder werden auch mit dem Eintrag kopiert werden."
 
-#: ID:329,
-msgid ""
-"\r\n"
-"Autotype: "
-msgstr ""
-"\r\n"
-"Autom. Eingabe: "
+msgid "\r\nAutotype: "
+msgstr "\r\nAutom. Eingabe: "
 
-#: ID:345,
-msgid ""
-"\r\n"
-"Email: "
-msgstr ""
-"\r\n"
-"Email: "
+msgid "\r\nEmail: "
+msgstr "\r\nEmail: "
 
-#: ID:341,
-msgid ""
-"\r\n"
-"This field is being edited in your\r\n"
-"default text editor."
-msgstr ""
-"\r\n"
-"Dieses Feld wird in Ihrem \r\n"
-"Standard-Texteditor bearbeitet."
+msgid "\r\nThis field is being edited in your\r\ndefault text editor."
+msgstr "\r\nDieses Feld wird in Ihrem \r\nStandard-Texteditor bearbeitet."
 
-#: ID:329,
-msgid ""
-"\r\n"
-"URL: "
-msgstr ""
-"\r\n"
-"URL: "
+msgid "\r\nURL: "
+msgstr "\r\nURL: "
 
-#: ID:342,
-msgid ""
-"\r\n"
-"\r\n"
-"Select Yes to continue with this password or No to cancel?"
-msgstr ""
-"\r\n"
-"\r\n"
-"W‰hlen Sie Ja um mit diesem Passwort fortzufahren oder Nein zum Abbruch."
+msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
+msgstr "\r\n\r\nW‰®¨en Sie Ja um mit diesem Passwort fortzufahren oder Nein zum Abbruch."
 
-#: ID:346,
 #, c-format
 msgid "\t%s was restricted to the following fields:"
-msgstr "\t%s wurde auf folgende Felder beschr‰nkt:"
+msgstr "\t%s wurde auf folgende Felder beschr‰Æ´t:"
 
-#: ID:336,
 #, c-format
-msgid ""
-"\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n"
-"\t\thas the following fields have differences:"
-msgstr ""
-"\tEintrag - Gruppe:\"%s\"; Titel:\"%s\"; Benutzer:\"%s\"\r\n"
-"\t\tfolgende Felder enthalten Unterschiede:"
+msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas the following fields have differences:"
+msgstr "\tEintrag - Gruppe:\"%s\"; Titel:\"%s\"; Benutzer:\"%s\"\r\n\t\tfolgende Felder enthalten Unterschiede:"
 
-#: ID:335,
 #, c-format
 msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
 msgstr "\tGruppe:'%s'; Titel:'%s'; Benutzer:'%s'"
 
-#: ID:347,
 #, c-format
 msgid "\tNo entries were found containing search string : '%s'"
-msgstr "\tEs wurden keine Eintr‰ge gefunden, die '%s' enthalten."
+msgstr "\tEs wurden keine Eintr‰ß• gefunden, die '%s' enthalten."
 
-#: ID:346,
 #, c-format
-msgid ""
-"\tThe following advanced options were selected:\r\n"
-"\t\t %s"
-msgstr ""
-"\tDie folgenden erweiterten Optionen wurden ausgew‰hlt:\r\n"
-"\t\t %s"
+msgid "\tThe following advanced options were selected:\r\n\t\t %s"
+msgstr "\tDie folgenden erweiterten Optionen wurden ausgew‰®¨t:\r\n\t\t %s"
 
-#: ID:347,
 #, c-format
 msgid "\tThe following entries were found containing search string : '%s'"
-msgstr "\tDie folgenden Eintr‰ge enthalten '%s'"
+msgstr "\tDie folgenden Eintr‰ß• enthalten '%s'"
 
-#: ID:205,
 msgid "\tThis entry has been made an alias of associated base entry."
-msgstr "\tDieser Eintrag wurde zum Alias des zugehˆrigen Basis-Eintrags gemacht."
+msgstr "\tDieser Eintrag wurde zum Alias des zugeh‚©ßen Basis-Eintrags gemacht."
 
-#: ID:205,
 msgid "\tThis entry remains a normal entry and the password has not be changed."
-msgstr "\tDieser Eintrag bleibt ein normaler Eintrag und das Passwort wurde nicht ge‰ndert."
+msgstr "\tDieser Eintrag bleibt ein normaler Eintrag und das Passwort wurde nicht ge‰Æ§ert."
 
-#: ID:206,
 msgid "a base entry of a shortcut"
-msgstr "Basis-Eintrag eines Tastenk¸rzels"
+msgstr "Basis-Eintrag eines TastenkÂ¨≥"
 
-#: ID:206,
 msgid "a base entry of an alias"
 msgstr "Basis-Eintrag eines Alias"
 
-#: ID:206,
 msgid "a normal entry"
 msgstr "Normaler Eintrag"
 
-#: ID:206,
 msgid "a shortcut entry"
-msgstr "Tastenk¸rzel Eintrag"
+msgstr "TastenkÂ¨†Eintrag"
 
-#: ID:207,
 msgid "after"
 msgstr "nach"
 
-#: ID:344,
 msgid "alias"
 msgstr "Alias"
 
-#: ID:344,
 msgid "aliases"
 msgstr "Alias"
 
-#: ID:206,
 msgid "an alias entry"
 msgstr "Alias Eintrag"
 
-#: ID:3841,
 msgid "an unnamed file"
 msgstr "eine unbenannte Datei"
 
-#: Control-ID:1307,#:
-#: Control-ID:1307,
 msgid "and"
 msgstr "und"
 
-#: Control-ID:1352,
 msgid "as default username"
 msgstr "als Standardbenutzername"
 
-#: ID:190,
 msgid "autotype:"
 msgstr "autom. Eingabe"
 
-#: ID:207,
 msgid "before"
 msgstr "vevor"
 
-#: ID:206,
 msgid "begins with"
 msgstr "beginnt mit"
 
-#: ID:207,
 msgid "between"
 msgstr "zwischen"
 
-#: ID:326,
 msgid "big endian"
 msgstr "Big Endian"
 
-#: ID:344,
 msgid "conflict"
 msgstr "Konflikt"
 
-#: ID:344,
 msgid "conflicts"
 msgstr "Konflikte"
 
-#: ID:206,
 msgid "contains"
-msgstr "enth‰lt"
+msgstr "enth‰¨¥"
 
-#: Control-ID:1093,
 msgid "databases."
 msgstr "Datenbanken."
 
-#: Control-ID:1321,
 msgid "day(s)"
 msgstr "Tag(e)"
 
-#: Control-ID:1298,
 msgid "days"
 msgstr "Tage"
 
-#: Control-ID:65535,
 msgid "days before passwords expire"
-msgstr "Anzahl Tage bis Passwˆrter ablaufen"
+msgstr "Anzahl Tage bis Passw‚¥•r ablaufen"
 
-#: ID:206,
 msgid "does not begin with"
 msgstr "beginnt nicht mit"
 
-#: ID:206,
 msgid "does not contain"
-msgstr "enth‰lt nicht"
+msgstr "enth‰¨¥ nicht"
 
-#: ID:206,
 msgid "does not end with"
 msgstr "endet nicht mit"
 
-#: ID:206,
 msgid "does not equal"
 msgstr "gleicht nicht"
 
-#: ID:206,
 msgid "ends with"
 msgstr "endet mit"
 
-#: ID:344,
 msgid "entries"
-msgstr "Eintr‰ge"
+msgstr "Eintr‰ß•"
 
-#: ID:344,
 msgid "entry"
 msgstr "Eintrag"
 
-#: ID:206,
 msgid "equals"
 msgstr "gleicht"
 
-#: Control-ID:1191,
 msgid "filename"
 msgstr "Dateiname"
 
-#: ID:207,
 msgid "greater than"
-msgstr "grˆﬂer als"
+msgstr "grÔ•≤ als"
 
-#: ID:207,
 msgid "greater than or equal to"
-msgstr "grˆﬂer als oder gleich mit"
+msgstr "grÔ•≤ als oder gleich mit"
 
-#: ID:208,
 msgid "has expired"
 msgstr "ist abgelaufen"
 
-#: Control-ID:65535,
 msgid "has the following entries with expired passwords:"
-msgstr "hat folgende Eintr‰ge mit abgelaufenem Passwort:"
+msgstr "hat folgende Eintr‰ß• mit abgelaufenem Passwort:"
 
-#: ID:314,
 msgid "http://passwordsafe.sourceforge.net/"
 msgstr "http://passwordsafe.sourceforge.net/"
 
-#: ID:191,
 msgid "import"
 msgstr "importiere"
 
-#: Control-ID:1320,
 msgid "in"
 msgstr "in"
 
-#: ID:207,
 msgid "invalid!"
-msgstr "ung¸ltig!"
+msgstr "ungÈß°"
 
-#: ID:206,
 msgid "is"
 msgstr "ist"
 
-#: ID:207,
 msgid "is active"
 msgstr "ist aktiv"
 
-#: ID:207,
 msgid "is inactive"
 msgstr "ist inaktiv"
 
-#: ID:206,
 msgid "is not"
 msgstr "ist nicht"
 
-#: ID:207,
 msgid "is not present"
 msgstr "ist nicht vorhanden"
 
-#: ID:207,
 msgid "is not set"
 msgstr "ist nicht gesetzt"
 
-#: ID:207,
 msgid "is present"
 msgstr "ist vorhanden"
 
-#: ID:207,
 msgid "is set"
 msgstr "ist gesetzt"
 
-#: Control-ID:1144,#:
-#: Control-ID:1144,
 msgid "last passwords"
-msgstr "letzte Passwˆrter"
+msgstr "letzte Passw‚¥•r"
 
-#: ID:207,
 msgid "less than"
 msgstr "weniger als"
 
-#: ID:207,
 msgid "less than or equal to"
 msgstr "kleiner als oder gleich mit"
 
-#: ID:326,
 msgid "little endian"
 msgstr "Little Endian"
 
-#: Control-ID:65535,
 msgid "minutes idle"
 msgstr "Minuten Leerlauf"
 
-#: ID:342,
 #, c-format
 msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "Mehrere Eintr‰ge mit Titel %s und Benutzername %s oder Gruppe %s und Titel %s existieren."
+msgstr "Mehrere Eintr‰ß• mit Titel %s und Benutzername %s oder Gruppe %s und Titel %s existieren."
 
-#: ID:342,
 #, c-format
 msgid "multiple entries exist with title=%s."
-msgstr "Mehrere Eintr‰ge mit Titel %s existieren."
+msgstr "Mehrere Eintr‰ß• mit Titel %s existieren."
 
-#: ID:342,
 #, c-format
 msgid "no entry exists in the root with title=%s and username=%s."
 msgstr "In der Wurzel besteht kein Eintrag mit Titel %s und Benutzername %s."
 
-#: ID:342,
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
 msgstr "Kein Eintrag mit Gruppe %s, Titel %s und leerem Benutzernamen besteht."
 
-#: ID:342,
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
 msgstr "Kein Eintrag mit Gruppe %s, Titel %s und Benutzername %s besteht."
 
-#: ID:342,
 #, c-format
 msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
 msgstr "Kein Eintrag mit Titel %s und Benutzername %s oder mit Gruppe %s und Titel %s besteht."
 
-#: ID:342,
 #, c-format
 msgid "no entry exists with title=%s."
 msgstr "Kein Eintrag mit Titel=%s besteht."
 
-#: ID:204,
 #, c-format
 msgid "on database %s"
 msgstr "auf Datenbank %s"
 
-#: ID:3869,
 msgid "pixels"
 msgstr "Pixels"
 
-#: Control-ID:65535,
 msgid "previous passwords per entry"
-msgstr "bisherige Passwˆrter pro Eintrag"
+msgstr "bisherige Passw‚¥•r pro Eintrag"
 
-#: ID:338,
 msgid "pwsafe"
 msgstr "pwsafe"
 
-#: ID:344,
 msgid "shortcut"
-msgstr "Tastenk¸rzel"
+msgstr "Tastenk"
 
-#: ID:346,
 #, c-format
 msgid "shortcut to %s"
-msgstr "Verkn¸pfung mit %s"
+msgstr "VerknÂÆß mit %s"
 
-#: ID:344,
 msgid "shortcuts"
-msgstr "Verkn¸pfungen"
+msgstr "VerknÂÆßen"
 
-#: Control-ID:1265,
 msgid "static"
 msgstr "statisch"
 
-#: ID:346,
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "Teilmenge: '%s' Feld '%s' '%s' %s"
 
-#: Control-ID:65535,#:
-#: Control-ID:65535,
 msgid "the following text:"
 msgstr "der folgende Text:"
 
-#: Control-ID:1098,
 msgid "used entries in System Tray menu."
-msgstr "benutzte Eintr‰ge des Infobereichs."
+msgstr "benutzte Eintr‰ß• des Infobereichs."
 
-#: ID:191,
+#. Resource IDs: (32011)
+msgid "v&1.x format..."
+msgstr ""
+
+#. Resource IDs: (32012)
+msgid "v&2 format..."
+msgstr ""
+
 msgid "validation"
 msgstr "Validierung"
 
-#: Control-ID:1209,
 msgid "whatever"
 msgstr "egal"
 
-#: Control-ID:65535,#:
-#: Control-ID:65535,
 msgid "where"
 msgstr "wo"
 
-#: ID:208,
 msgid "will expire"
 msgstr "wird ablaufen"
 
-#: ID:208,
 #, c-format
 msgid "within %d day(s)"
 msgstr "binnen %d Tag(en)"

@@ -15,7 +15,8 @@
 #
 
 #Update the following for each language we support
-POS = pwsafe.pot pos/pwsafesv.po
+
+POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po pos/pwsafe_pl.po 
 DLLS = dlls/pwsafeSV_SE.dll dlls/pwsafeES_ES.dll dlls/pwsafeDE_DE.dll dlls/pwsafePL_PL.dll
 
 # Currently we need a rule per language, due to the LCID.
@@ -58,7 +59,6 @@ RM = /usr/bin/rm
 
 BASE_DLL = ../bin/language/release/pwsafe_base.dll
 
-POS = pwsafe.pot pos/pwsafesv.po
 
 .PHONY: update-pos dlls
 
