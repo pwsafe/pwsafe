@@ -35,8 +35,8 @@
 #include "corelib/match.h"
 #include "corelib/PWSfile.h"
 #include "corelib/PWSdirs.h"
-
 #include "corelib/os/file.h"
+#include "corelib/XML/XMLDefs.h"
 
 using namespace std;
 

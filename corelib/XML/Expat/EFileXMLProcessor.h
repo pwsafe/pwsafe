@@ -28,7 +28,6 @@
 #include "EFileHandlers.h"
 
 #include "../../UnknownField.h"
-#include "../../UUIDGen.h"
 #include "../../os/typedefs.h"
 
 #include <stdlib.h>
@@ -59,14 +58,10 @@ public:
   bool getIfRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
 private:
-  void AddEntries();
-
   PWScore *m_xmlcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
   stringT m_strResultText;
-  stringT m_ImportedPrefix;
-  stringT m_strImportErrors;
   int m_numEntriesValidated, m_numEntriesImported;
   TCHAR m_delimiter;
   bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;

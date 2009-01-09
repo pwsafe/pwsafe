@@ -107,36 +107,34 @@ XMLFileValidation::~XMLFileValidation()
 
 #if   USE_XML_LIBRARY == EXPAT
 bool XMLFileValidation::GetElementInfo(const XML_Char *name, st_file_element_data &edata)
-{
-  const stringT strValue(name);
 #elif USE_XML_LIBRARY == MSXML
-bool XMLFileValidation::GetElementInfo(const wchar_t *name, int numchars, st_file_element_data &edata)
+bool XMLFileValidation::GetElementInfo(const wchar_t *name, st_file_element_data &edata)
+#elif USE_XML_LIBRARY == XERCES
+bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &edata)
+#endif
 {
 #ifdef _UNICODE
   const stringT strValue(name);
-  numchars = numchars;  // stop warning : unreferenced formal parameter
-#else
+#else   // NON-UNICODE
+#if   USE_XML_LIBRARY == EXPAT
+  const stringT strValue(name);
+#elif USE_XML_LIBRARY == MSXML
 #if _MSC_VER >= 1400
-  TCHAR* szData = new TCHAR[numchars + 2];
+  size_t numchars = wcslen(name);
+  char* szData = new char[numchars + 2];
   size_t num_converted;
   wcstombs_s(&num_converted, szData, numchars + 2, name, numchars);
 #else
   wcstombs(szData, name, numchars);
-#endif
+#endif  // MSXML NON-UNICODE _MSC_VER
   const stringT strValue(szData);
   delete szData;
-#endif
 #elif USE_XML_LIBRARY == XERCES
-bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &edata)
-{
-#ifdef UNICODE
-  const stringT strValue(name);
-#else
   char *szData = XMLString::transcode(name);
   const stringT strValue(szData);
   XMLString::release(&szData);
-#endif
-#endif
+#endif  // EXPAT, MSXML or XERCES
+#endif  // NON-UNICODE
 
   if (strValue.length() == 0)
     return false;

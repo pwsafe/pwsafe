@@ -440,13 +440,13 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("filter_entry")) == 0) {
-    if (m_type == FI_NORMAL) {
+    if (m_type == DFTYPE_MAIN) {
       cur_filter->num_Mactive++;
       cur_filter->vMfldata.push_back(*cur_filterentry);
-    } else if (m_type == FI_HISTORY) {
+    } else if (m_type == DFTYPE_PWHISTORY) {
       cur_filter->num_Hactive++;
       cur_filter->vHfldata.push_back(*cur_filterentry);
-    } else if (m_type == FI_POLICY) {
+    } else if (m_type == DFTYPE_PWPOLICY) {
       cur_filter->num_Pactive++;
       cur_filter->vPfldata.push_back(*cur_filterentry);
     }
@@ -454,198 +454,198 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("grouptitle")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_GROUPTITLE;
   }
 
   else if (_tcscmp(szCurElement, _T("group")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_GROUP;
   }
 
   else if (_tcscmp(szCurElement, _T("title")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_TITLE;
   }
 
   else if (_tcscmp(szCurElement, _T("username")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_USER;
   }
 
   else if (_tcscmp(szCurElement, _T("password")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_PASSWORD;
     cur_filterentry->ftype = FT_PASSWORD;
   }
 
   else if (_tcscmp(szCurElement, _T("url")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_URL;
   }
 
   else if (_tcscmp(szCurElement, _T("autotype")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_AUTOTYPE;
   }
 
   else if (_tcscmp(szCurElement, _T("notes")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_NOTES;
   }
 
   else if (_tcscmp(szCurElement, _T("create_time")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_CTIME;
   }
 
   else if (_tcscmp(szCurElement, _T("password_modified_time")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_PMTIME;
   }
 
   else if (_tcscmp(szCurElement, _T("last_access_time")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_ATIME;
   }
 
   else if (_tcscmp(szCurElement, _T("expiry_time")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_XTIME;
   }
 
   else if (_tcscmp(szCurElement, _T("record_modified_time")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_RMTIME;
   }
 
   else if (_tcscmp(szCurElement, _T("password_expiry_interval")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = FT_XTIME_INT;
   }
 
   else if (_tcscmp(szCurElement, _T("entrytype")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_ENTRYTYPE;
     cur_filterentry->ftype = FT_ENTRYTYPE;
   }
 
   else if (_tcscmp(szCurElement, _T("unknownfields")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->ftype = FT_UNKNOWNFIELDS;
   }
 
   else if (_tcscmp(szCurElement, _T("password_history")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_PWHIST;
     cur_filterentry->ftype = FT_PWHIST;
   }
 
   else if (_tcscmp(szCurElement, _T("history_present")) == 0) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = HT_PRESENT;
   }
 
   else if (_tcscmp(szCurElement, _T("history_active")) == 0) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = HT_ACTIVE;
   }
 
   else if (_tcscmp(szCurElement, _T("history_number")) == 0) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = HT_NUM;
   }
 
   else if (_tcscmp(szCurElement, _T("history_maximum")) == 0) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = HT_MAX;
   }
 
   else if (_tcscmp(szCurElement, _T("history_changedate")) == 0) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = HT_CHANGEDATE;
   }
 
   else if (_tcscmp(szCurElement, _T("history_passwords")) == 0) {
-    m_type = FI_HISTORY;
+    m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_PASSWORD;
     cur_filterentry->ftype = HT_PASSWORDS;
   }
 
   else if (_tcscmp(szCurElement, _T("password_policy")) == 0) {
-    m_type = FI_NORMAL;
+    m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_POLICY;
     cur_filterentry->ftype = FT_POLICY;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_present")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_PRESENT;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_length")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_LENGTH;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_number_lowercase")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_LOWERCASE;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_number_uppercase")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_UPPERCASE;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_number_digits")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_DIGITS;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_number_symbols")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_SYMBOLS;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_easyvision")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_EASYVISION;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_pronounceable")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_PRONOUNCEABLE;
   }
 
   else if (_tcscmp(szCurElement, _T("policy_hexadecimal")) == 0) {
-    m_type = FI_POLICY;
+    m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_HEXADECIMAL;
   }

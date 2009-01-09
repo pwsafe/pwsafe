@@ -108,8 +108,8 @@ BEGIN
   IDCS_XERCESEXCEPTION    "\nUnexpected exception during parsing."
   IDCS_XERCESOUTOFMEMORY  "OutOfMemoryException."
   IDSC_EXPATPARSEERROR    "Parse error at line %d, column %d:\nError: %s\n%s\n\n"
-  IDSC_EXPATUNKNELEMENT   "Unknown element: %s"
-  IDSC_EXPATUNEXPECTED    "Unexpected element: %s"
+  IDSC_EXPATUNKNELEMENT   "Unknown element: ""%s""."
+  IDSC_EXPATUNEXPECTED    "Unexpected element: ""%s""."
   IDSC_EXPATMISSINGTG     "Mandatory element (title and/or password) missing."
   IDSC_EXPATINVALIDDATA   "Invalid data in element: "
   IDSC_EXPATMISSINGDT     "Missing date/time element."
@@ -253,11 +253,12 @@ END
 STRINGTABLE
 BEGIN
   IDSC_FILTEREXISTS        "Filter %s already exists in the database, do you wish to replace it with this?"
-  IDSC_EXPATDATETMISSING   "Missing date element"
+  IDSC_EXPATMISSINGTELM    "Missing test element ""%s""."
   IDSC_EXPATNODELIMITER    "Mandatory delimiter attribute missing."
   IDSC_EXPATBADDELIMITER   "Mandatory delimiter attribute invalid."
   IDSC_EXPATFTYPEMISSING   "Mandatory ftype attribute missing."
-  IDSC_EXPATUNEXPFILTERFLD "Unexpected element: Only one field allowed in filter entry."
+  IDSC_EXPATUNEXPFILTERFLD "Unexpected element: Only one field allowed per filter entry."
+  IDSC_EXPATBADDATA        "The contents [""%s""] of element ""%s"" is invalid/unexpected."
   IDSC_CANTVALIDATEXML     "Missing XSD File"
   IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
 END

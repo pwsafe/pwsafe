@@ -48,20 +48,21 @@ static char THIS_FILE[] = __FILE__;
 // File Handler Wrappers as Expat is a C not a C++ interface
 static EFilterHandlers* pFilterHandler(NULL);
 
-void WstartFilterElement(void *userdata, const XML_Char *name,
-                  const XML_Char **attrs)
+static void WstartFilterElement(void *userdata, const XML_Char *name,
+                         const XML_Char **attrs)
 {
   ASSERT(pFilterHandler);
   pFilterHandler->startElement(userdata, name, attrs);
 }
 
-void WendFilterElement(void *userdata, const XML_Char *name)
+static void WendFilterElement(void *userdata, const XML_Char *name)
 {
   ASSERT(pFilterHandler);
   pFilterHandler->endElement(userdata, name);
 }
 
-void WcharacterFilterData(void *userdata, const XML_Char *s, int length)
+static void WcharacterFilterData(void *userdata, const XML_Char *s,
+                          int length)
 {
   ASSERT(pFilterHandler);
   pFilterHandler->characterData(userdata, s, length);
@@ -70,19 +71,19 @@ void WcharacterFilterData(void *userdata, const XML_Char *s, int length)
 // Secure Memory Wrappers as Expat is a C not a C++ interface
 ESecMemMgr* pSecMM;
 
-void* WFilter_malloc(size_t size)
+static void* WFilter_malloc(size_t size)
 {
   ASSERT(pSecMM);
   return pSecMM->malloc(size);
 }
 
-void* WFilter_realloc(void *p, size_t size)
+static void* WFilter_realloc(void *p, size_t size)
 {
   ASSERT(pSecMM);
   return pSecMM->realloc(p, size);
 }
 
-void WFilter_free(void *p)
+static void WFilter_free(void *p)
 {
   ASSERT(pSecMM);
   pSecMM->free(p);
@@ -135,6 +136,7 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
   XML_SetElementHandler(pParser, WstartFilterElement, WendFilterElement);
   XML_SetCharacterDataHandler(pParser, WcharacterFilterData);
   XML_UseParserAsHandlerArg(pParser);
+  //XML_SetUserData(pParser, (void *)pFilterHandler);
 
   pFilterHandler->SetVariables(m_pAsker, &m_MapFilters, m_FPool, m_bValidation);
 

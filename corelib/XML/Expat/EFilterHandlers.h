@@ -26,7 +26,6 @@
 #include "../../proxy.h"
 
 #include <set>
-#include <stack>
 
 // Expat includes
 #include <expat.h>
@@ -67,9 +66,6 @@ private:
 
   // To ensure filtername is unique
   std::set<const stringT> m_unique_filternames;
-
-  // Date types
-  std::stack<int> m_element_datatypes;
 
   // Local variables
   st_filters *cur_filter;

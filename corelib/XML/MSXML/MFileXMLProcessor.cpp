@@ -17,11 +17,9 @@
 #include "MFileSAX2Handlers.h"
 #include <msxml6.h>
 
-#include "../../ItemData.h"
 #include "../../corelib.h"
 #include "../../PWScore.h"
 #include "../../UnknownField.h"
-#include "../../PWSprefs.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -113,12 +111,10 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
   //  Create ContentHandlerImpl object
   MFileSAX2ContentHandler* pCH = new MFileSAX2ContentHandler();
-  if (m_bValidation)
-    pCH->SetVariables(NULL, m_bValidation, ImportedPrefix, m_delimiter,
-    m_possible_aliases, m_possible_shortcuts);
-  else
-    pCH->SetVariables(m_xmlcore, m_bValidation, ImportedPrefix, m_delimiter,
-    m_possible_aliases, m_possible_shortcuts);
+  pCH->SetVariables(m_bValidation ? NULL : m_xmlcore, m_bValidation, 
+                    ImportedPrefix, m_delimiter,
+                    m_bValidation ? NULL : m_possible_aliases, 
+                    m_bValidation ? NULL : m_possible_shortcuts);
 
   //  Create ErrorHandlerImpl object
   MFileSAX2ErrorHandler* pEH = new MFileSAX2ErrorHandler();
@@ -205,6 +201,8 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
         } else {
           m_numEntriesImported = pCH->m_numEntries;
           m_strResultText = pCH->m_strImportErrors;  // Maybe import errors (PWHistory field processing)
+          // Now add entries
+          pCH->AddEntries();
 
           m_bRecordHeaderErrors = pCH->m_bRecordHeaderErrors;
           nRecordsWithUnknownFields = pCH->m_nRecordsWithUnknownFields;
@@ -212,73 +210,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
           if (b_into_empty) {
             m_bDatabaseHeaderErrors = pCH->m_bDatabaseHeaderErrors;
             nITER = pCH->m_nITER;
-
-            UnknownFieldList::const_iterator vi_IterUXFE;
-            for (vi_IterUXFE = pCH->m_ukhxl.begin();
-                 vi_IterUXFE != pCH->m_ukhxl.end();
-                 vi_IterUXFE++) {
-              UnknownFieldEntry ukxfe = *vi_IterUXFE;
-              if (ukxfe.st_length > 0) {
-                uhfl.push_back(ukxfe);
-              }
-            }
-            PWSprefs *prefs = PWSprefs::GetInstance();
-            if (pCH->m_bDisplayExpandedAddEditDlg != -1)
-              prefs->SetPref(PWSprefs::DisplayExpandedAddEditDlg, pCH->m_bDisplayExpandedAddEditDlg == 1);
-            if (pCH->m_bMaintainDateTimeStamps != -1)
-              prefs->SetPref(PWSprefs::MaintainDateTimeStamps, pCH->m_bMaintainDateTimeStamps == 1);
-            if (pCH->m_bPWUseDigits != -1)
-              prefs->SetPref(PWSprefs::PWUseDigits, pCH->m_bPWUseDigits == 1);
-            if (pCH->m_bPWUseEasyVision != -1)
-              prefs->SetPref(PWSprefs::PWUseEasyVision, pCH->m_bPWUseEasyVision == 1);
-            if (pCH->m_bPWUseHexDigits != -1)
-              prefs->SetPref(PWSprefs::PWUseHexDigits, pCH->m_bPWUseHexDigits == 1);
-            if (pCH->m_bPWUseLowercase != -1)
-              prefs->SetPref(PWSprefs::PWUseLowercase, pCH->m_bPWUseLowercase == 1);
-            if (pCH->m_bPWUseSymbols != -1)
-              prefs->SetPref(PWSprefs::PWUseSymbols, pCH->m_bPWUseSymbols == 1);
-            if (pCH->m_bPWUseUppercase != -1)
-              prefs->SetPref(PWSprefs::PWUseUppercase, pCH->m_bPWUseUppercase == 1);
-            if (pCH->m_bPWMakePronounceable != -1)
-              prefs->SetPref(PWSprefs::PWMakePronounceable, pCH->m_bPWMakePronounceable == 1);
-            if (pCH->m_bSaveImmediately != -1)
-              prefs->SetPref(PWSprefs::SaveImmediately, pCH->m_bSaveImmediately == 1);
-            if (pCH->m_bSavePasswordHistory != -1)
-              prefs->SetPref(PWSprefs::SavePasswordHistory, pCH->m_bSavePasswordHistory == 1);
-            if (pCH->m_bShowNotesDefault != -1)
-              prefs->SetPref(PWSprefs::ShowNotesDefault, pCH->m_bShowNotesDefault == 1);
-            if (pCH->m_bShowPasswordInTree != -1)
-              prefs->SetPref(PWSprefs::ShowPasswordInTree, pCH->m_bShowPasswordInTree == 1);
-            if (pCH->m_bShowPWDefault != -1)
-              prefs->SetPref(PWSprefs::ShowPWDefault, pCH->m_bShowPWDefault == 1);
-            if (pCH->m_bShowUsernameInTree != -1)
-              prefs->SetPref(PWSprefs::ShowUsernameInTree, pCH->m_bShowUsernameInTree == 1);
-            if (pCH->m_bSortAscending != -1)
-              prefs->SetPref(PWSprefs::SortAscending, pCH->m_bSortAscending == 1);
-            if (pCH->m_bUseDefaultUser != -1)
-              prefs->SetPref(PWSprefs::UseDefaultUser, pCH->m_bUseDefaultUser == 1);
-            if (pCH->m_iIdleTimeout != -1)
-              prefs->SetPref(PWSprefs::IdleTimeout, pCH->m_iIdleTimeout);
-            if (pCH->m_iNumPWHistoryDefault != -1)
-              prefs->SetPref(PWSprefs::NumPWHistoryDefault, pCH->m_iNumPWHistoryDefault);
-            if (pCH->m_iPWDefaultLength != -1)
-              prefs->SetPref(PWSprefs::PWDefaultLength, pCH->m_iPWDefaultLength);
-            if (pCH->m_iTreeDisplayStatusAtOpen != -1)
-              prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, pCH->m_iTreeDisplayStatusAtOpen);
-            if (pCH->m_iPWDigitMinLength != -1)
-              prefs->SetPref(PWSprefs::PWDigitMinLength, pCH->m_iPWDigitMinLength);
-            if (pCH->m_iPWLowercaseMinLength != -1)
-              prefs->SetPref(PWSprefs::PWLowercaseMinLength, pCH->m_iPWLowercaseMinLength);
-            if (pCH->m_iPWSymbolMinLength != -1)
-              prefs->SetPref(PWSprefs::PWSymbolMinLength, pCH->m_iPWSymbolMinLength);
-            if (pCH->m_iPWUppercaseMinLength != -1)
-              prefs->SetPref(PWSprefs::PWUppercaseMinLength, pCH->m_iPWUppercaseMinLength);
-            if (!pCH->m_sDefaultAutotypeString.empty())
-              prefs->SetPref(PWSprefs::DefaultAutotypeString,
-                             pCH->m_sDefaultAutotypeString.c_str());
-            if (!pCH->m_sDefaultUsername.empty())
-              prefs->SetPref(PWSprefs::DefaultUsername,
-                             pCH->m_sDefaultUsername.c_str());
+            pCH->AddDBUnknownFieldsPreferences(uhfl);
           } else
             m_bDatabaseHeaderErrors = false;
         }

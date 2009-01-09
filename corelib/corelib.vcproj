@@ -1694,6 +1694,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XML\XMLFileHandlers.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XML\XMLFileValidation.cpp"
 				>
 			</File>
@@ -1796,6 +1800,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\MSXML\MFilterXMLProcessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Proxy.h"
 				>
 			</File>
 			<File
@@ -1932,6 +1940,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\XMLFileDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XML\XMLFileHandlers.h"
 				>
 			</File>
 			<File
