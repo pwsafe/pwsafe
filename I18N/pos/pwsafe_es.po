@@ -410,6 +410,10 @@ msgstr "&Fuente:"
 msgid "&Generate"
 msgstr "&Generar"
 
+#. Resource IDs: (32069)
+msgid "&Go to Base entry"
+msgstr ""
+
 msgid "&Help"
 msgstr "&Ayuda"
 
@@ -1083,9 +1087,6 @@ msgstr "Copiar E-Mail al Portapapeles"
 msgid "Copy Here"
 msgstr ""
 
-msgid "Copy URL to Clipboard"
-msgstr "Copiar URL al Portapapeles"
-
 #. Resource IDs: (32064)
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr ""
@@ -1215,9 +1216,6 @@ msgstr "Confirmación de Borrado"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr ""
-
-msgid "Delete Entry\tDel"
-msgstr "Eliminar Entrada\tDel"
 
 msgid "Delete Group\tDel"
 msgstr "Eliminar Grupo\tDel"
@@ -2043,11 +2041,12 @@ msgid "Missing XSD File"
 msgstr ""
 
 #. Resource IDs: (209)
-msgid "Missing date element"
+msgid "Missing date/time element."
 msgstr ""
 
 #. Resource IDs: (209)
-msgid "Missing date/time element."
+#, c-format
+msgid "Missing test element \"%s\"."
 msgstr ""
 
 msgid "Mixed"
@@ -2588,9 +2587,6 @@ msgstr "Recordar último"
 msgid "Remove PasswordSafe data from Registry"
 msgstr "Borrar datos de PasswordSafe del registro"
 
-msgid "Rename &Entry\tF2"
-msgstr "Renombrar &Entrada\tF2"
-
 #. Resource IDs: (32054)
 msgid "Rename Entry"
 msgstr ""
@@ -2925,17 +2921,24 @@ msgstr ""
 msgid "The combination cannot be blank."
 msgstr "La contraseña no puede estar en blanco."
 
+#. Resource IDs: (210)
+#, c-format
+msgid "The contents [\"%s\"] of element \"%s\" is invalid/unexpected."
+msgstr ""
+
 #, c-format
 msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
 msgstr "No se puede abrir la base de datos %s.\n¿Desea abrirla desde otro sitio (Buscar), crear una nueva base de datos (Nueva), o Salir?"
 
+#. Resource IDs: (339)
 #, c-format
-msgid "The database %s is apparently being used by:\n\n%s%s.\n\nOpen the database for Read-Only or Exit?\r\n\r\nNote: Only one user at a time can open the database for writing."
-msgstr "Parece que la base de datos %s está siendo usada por:\n\n%s%s.\n\n¿Desea abrir la base de datos en Solo lectura o Salir?\r\n\r\nNota: Una base de datos no puede estar abierta por varios usuarios a la vez para escritura."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\r\n\r\nNote: Only one user at a time can open the database for writing."
+msgstr ""
 
+#. Resource IDs: (328)
 #, c-format
-msgid "The database %s is apparently being used by:\n\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\nincluding another copy of Password Safe running on your machine."
-msgstr "La base de datos %s está aparentemente en uso por:\n\n%s%s.\n\nAbrir base de datos para Solo Lectura, Lectura-Escritura, o Salir?\r\n\r\nNota: Escoger \"Lectura-Escritura\" solo si está seguro de que el fichero no está siendo usado por nadie más,\nincluyendo otra instancia de Password Safe ejecutandose en el sistema."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgstr ""
 
 msgid "The entered passwords do not match.  Please re-enter them."
 msgstr "La contraseña introducida no coincide. Por favor, introduzcala de nuevo."
@@ -3003,6 +3006,10 @@ msgstr "esta base de datos está en modo Solo lectura. Los cambios no serán gua
 
 msgid "This database is the same as the current database!"
 msgstr "¡Esta base de datos es la misma que la actual!"
+
+#. Resource IDs: (354)
+msgid "This entry has been changed. Are you sure you wish to cancel?"
+msgstr ""
 
 #, c-format
 msgid "This entry has the following %d %s:\r\n%s"
@@ -3171,12 +3178,12 @@ msgid "Uncheck"
 msgstr "Uncheck"
 
 #. Resource IDs: (209)
-#, c-format
-msgid "Unexpected element: %s"
+msgid "Unexpected element: Only one field allowed per filter entry."
 msgstr ""
 
 #. Resource IDs: (209)
-msgid "Unexpected element: Only one field allowed in filter entry."
+#, c-format
+msgid "Unexpected element: \"%s\"."
 msgstr ""
 
 msgid "Unexpected file format."
@@ -3187,7 +3194,7 @@ msgstr "Desconocido"
 
 #. Resource IDs: (209)
 #, c-format
-msgid "Unknown element: %s"
+msgid "Unknown element: \"%s\"."
 msgstr ""
 
 msgid "Unknown fields"
@@ -3427,6 +3434,10 @@ msgstr "\nExportar a XML"
 
 msgid "\nFind"
 msgstr "\nBuscar"
+
+#. Resource IDs: (2005)
+msgid "\nGo to Base entry"
+msgstr ""
 
 msgid "\nHelp"
 msgstr "\nAyuda"
