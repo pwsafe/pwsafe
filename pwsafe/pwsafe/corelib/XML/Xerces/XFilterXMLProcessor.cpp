@@ -184,8 +184,8 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
     bEerrorOccurred = true;
     strResultText = pSAX2Handler->getValidationResult();
     Format(m_strResultText, IDSC_XERCESPARSEERROR, 
-           m_bValidation ? cs_validation.c_str() : cs_import.c_str()), 
-           strResultText.c_str();
+           m_bValidation ? cs_validation.c_str() : cs_import.c_str(), 
+           strResultText.c_str());
   } else {
     m_strResultText = strResultText;
   }

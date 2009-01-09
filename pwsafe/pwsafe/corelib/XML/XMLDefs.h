@@ -15,16 +15,25 @@
 #define XERCES 3
 
 #if USE_XML_LIBRARY == EXPAT
+#ifndef XML_STATIC
+#define XML_STATIC
+#endif
 #ifdef UNICODE
 #define XML_UNICODE_WCHAR_T
+#define XML_UNICODE
 #else
 #undef XML_UNICODE_WCHAR_T
+#undef XML_UNICODE
+#endif
+#endif
+
+#if USE_XML_LIBRARY == XERCES
+#ifndef XERCES_STATIC_LIBRARY
+#define XERCES_STATIC_LIBRARY
 #endif
 #endif
 
 #define PWS_XML_FILTER_VERSION 1
-
-enum {FI_NORMAL = 0, FI_HISTORY, FI_POLICY, FI_INVALID};
 
 // enum for SAX2 error types
 enum {SAX2_WARNING, SAX2_ERROR, SAX2_FATALERROR};

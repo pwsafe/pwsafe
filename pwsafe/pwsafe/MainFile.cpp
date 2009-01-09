@@ -38,6 +38,7 @@
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
 #include "corelib/os/file.h"
+#include "corelib/XML/XMLDefs.h"
 
 #include <sys/types.h>
 #include <bitset>

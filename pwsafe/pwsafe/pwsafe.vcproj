@@ -604,7 +604,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib libexpatw.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib libexpatwMT.lib"
 				ShowProgress="0"
 				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -818,7 +818,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_3D.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_static_3D.lib"
 				ShowProgress="0"
 				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -924,7 +924,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib libexpatw.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib libexpatwMT.lib"
 				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -1128,7 +1128,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_3.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_static_3.lib"
 				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -1231,7 +1231,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib libexpat.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib libexpatMT.lib"
 				ShowProgress="0"
 				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -1445,7 +1445,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_3D.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_static_3D.lib"
 				ShowProgress="0"
 				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -1551,7 +1551,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib libexpat.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib libexpatMT.lib"
 				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -1755,7 +1755,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_3.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_static_3.lib"
 				OutputFile=".\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -2540,6 +2540,10 @@
 			</File>
 			<File
 				RelativePath=".\TryAgainDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\version.h"
 				>
 			</File>
 			<File

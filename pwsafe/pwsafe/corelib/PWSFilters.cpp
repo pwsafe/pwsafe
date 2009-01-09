@@ -14,6 +14,7 @@
 #include "corelib.h"
 #include "PWScore.h"
 #include "StringX.h"
+#include "Util.h"
 #include "os/file.h"
 #include "os/dir.h"
 
@@ -62,64 +63,61 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
 
-  const char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
+  const char *sztab4, *sztab5, *szendl;
   if (bFile) {
-    sztab1 = "\t";
-    sztab2 = "\t\t";
-    sztab3 = "\t\t\t";
     sztab4 = "\t\t\t\t";
+    sztab5 = "\t\t\t\t\t";
     szendl = "\n";
   } else {
-    sztab1 = sztab2 = sztab3 = sztab4 = "\0";
+    sztab4 = sztab5 = "\0";
     szendl = "\0";
   }
 
   if (st_fldata.mtype != PWSMatch::MT_BOOL)
-    oss << sztab3 << "<test>" << szendl;
+    oss << sztab4 << "<test>" << szendl;
 
   switch (st_fldata.mtype) {
     case PWSMatch::MT_STRING:
       // Even if rule == 'present'/'not present', need to put 'string' & 'case' XML
       // elements to make schema work, since W3C Schema V1.0 does NOT support 
       // conditional processing :-(
-      oss << sztab4 << "<string>";
+      // 'string' needs special processing to place within CDATA XML construct
       if (!st_fldata.fstring.empty()) { // string empty if 'present' or 'not present'
-        utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
-        oss << utf8;
+        PWSUtil::WriteXMLField(oss, "string", st_fldata.fstring, utf8conv, sztab5);
+      } else {
+        oss << sztab5 << "<string></string>" << szendl;
       }
-      oss << "</string>" << szendl;
-      oss << sztab4 << "<case>" << st_fldata.fcase 
+      oss << sztab5 << "<case>" << st_fldata.fcase 
           << "</case>" << szendl;
       break;
     case PWSMatch::MT_PASSWORD:
-      utf8conv.ToUTF8(st_fldata.fstring, utf8, utf8Len);
-      oss << sztab4 << "<string>" << utf8
-                                              << "</string>" << szendl;
-      oss << sztab4 << "<case>" << st_fldata.fcase 
+      // 'string' needs special processing to place within CDATA XML construct
+      PWSUtil::WriteXMLField(oss, "string", st_fldata.fstring, utf8conv, sztab5);
+      oss << sztab5 << "<case>" << st_fldata.fcase 
                                               << "</case>" << szendl;
-      oss << sztab4 << "<warn>" << st_fldata.fcase 
+      oss << sztab5 << "<warn>" << st_fldata.fcase 
                                               << "</warn>" << szendl;
       break;
     case PWSMatch::MT_INTEGER:
-      oss << sztab4 << "<num1>" << st_fldata.fcase 
+      oss << sztab5 << "<num1>" << st_fldata.fcase 
                                               << "</num1>" << endl;
-      oss << sztab4 << "<num2>" << st_fldata.fcase 
+      oss << sztab5 << "<num2>" << st_fldata.fcase 
                                               << "</num2>" << endl;
       break;
     case PWSMatch::MT_DATE:
       {
       const StringX tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
       utf8conv.ToUTF8(tmp1.substr(0, 10), utf8, utf8Len);
-      oss << sztab4 << "<date1>" << utf8
+      oss << sztab5 << "<date1>" << utf8
                                               << "</date1>" << szendl;
       const StringX tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
       utf8conv.ToUTF8(tmp2.substr(0, 10), utf8, utf8Len);
-      oss << sztab4 << "<date2>" << utf8
+      oss << sztab5 << "<date2>" << utf8
                                               << "</date2>" << szendl;
       }
       break;
     case PWSMatch::MT_ENTRYTYPE:
-      oss << sztab4 <<  "<type>" << szentry[st_fldata.etype]
+      oss << sztab5 << "<type>" << szentry[st_fldata.etype]
                                               << "</type>" << szendl;
       break;
     case PWSMatch::MT_BOOL:
@@ -128,7 +126,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       ASSERT(0);
   }
   if (st_fldata.mtype != PWSMatch::MT_BOOL)
-    oss << sztab3 << "</test>" << szendl;
+    oss << sztab4 << "</test>" << szendl;
 }
 
 static string GetFilterXML(const st_filters &filters, bool bWithFormatting)

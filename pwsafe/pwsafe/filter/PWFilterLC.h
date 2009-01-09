@@ -37,8 +37,6 @@ class CSetPolicyFiltersDlg;
 #define FLC_FLD_CBX_SET      0x08
 #define FLC_LGC_CBX_ENABLED  0x10
 
-enum FilterType {DFTYPE_MAIN, DFTYPE_PWHISTORY, DFTYPE_PWPOLICY};
-
 class CPWFiltersDlg;
 
 struct st_Fcbxdata {

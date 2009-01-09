@@ -54,7 +54,7 @@ private:
   bool VerifyXMLTime(const StringX &strElemContent);
   StringX Trim(const StringX &s, const TCHAR *set = NULL);
 
-  std::vector<int> m_elementstack;
+  std::vector<int> m_element_stack;
 
   stringT m_sErrorMsg;
   int m_ielement_occurs[XLE_LAST_ELEMENT];
