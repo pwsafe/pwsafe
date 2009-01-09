@@ -16,7 +16,7 @@
 
 #Update the following for each language we support
 POS = pwsafe.pot pos/pwsafesv.po
-DLLS = dlls/pwsafeSV_SE.dll dlls/pwsafeES_ES.dll dlls/pwsafeDE_DE.dll
+DLLS = dlls/pwsafeSV_SE.dll dlls/pwsafeES_ES.dll dlls/pwsafeDE_DE.dll dlls/pwsafePL_PL.dll
 
 # Currently we need a rule per language, due to the LCID.
 # I'm sure that we can improve on this...
@@ -41,6 +41,15 @@ dlls/pwsafeDE_DE.dll : pos/pwsafe_de.po
 		../$(RESPWSL) apply foo.dll 0x0407; \
 		$(RM) foo.dll)
 	$(CHMOD) 755 $@
+
+dlls/pwsafePL_PL.dll : pos/pwsafe_pl.po
+	(cd dlls; \
+		../$(RESTEXT) apply ../$(BASE_DLL) foo.dll ../$^; \
+		../$(RESPWSL) apply foo.dll 0x0415; \
+		$(RM) foo.dll)
+	$(CHMOD) 755 $@
+
+
 # No need to change anything below this line
 RESTEXT = ./tools/bin/restext/release/ResText.exe
 RESPWSL = ./tools/bin/respwsl/release/ResPWSL.exe
