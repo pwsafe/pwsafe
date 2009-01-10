@@ -76,7 +76,7 @@
 				OutputFile="..\bin\$(ConfigurationName)\corelibtest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;../lib/$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="&quot;../../lib/$(ConfigurationName)&quot;"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -167,7 +167,7 @@
 				OutputFile="..\bin\$(ConfigurationName)\corelibtest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;../lib/$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="&quot;../../lib/$(ConfigurationName)&quot;"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -258,7 +258,7 @@
 				OutputFile="..\bin\$(ConfigurationName)\corelibtest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;../lib/$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="&quot;../../lib/$(ConfigurationName)&quot;"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -346,11 +346,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="corelib.lib;os.lib"
+				AdditionalDependencies="corelib.lib os.lib"
 				OutputFile="..\bin\$(ConfigurationName)\corelibtest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;../lib/$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="&quot;../../lib/$(ConfigurationName)&quot;"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
