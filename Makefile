@@ -26,7 +26,6 @@ SVN = /cygdrive/c/local/Subversion/bin/svn
 GPG = /usr/local/bin/gpg
 GPG_KEY = ronys@users.sourceforge.net
 GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
-MD5SUM = /usr/bin/md5sum
 SHA1SUM = /usr/bin/sha1sum
 UPLOAD_CMD = /usr/local/bin/rsync -avP -e ssh
 UPLOAD_DST =  ronys@frs.sourceforge.net:uploads/
@@ -42,7 +41,7 @@ BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
 	docs/ChangeLog.txt bin/pwsafe/releasem/pwsafe.exe help/default/pwsafe.chm
 
 .PHONY: all release bin-release src-release installables signatures \
-	upload md5sums sha1sums msi nsis upload-latest updat-pos i18n
+	upload sha1sums msi nsis upload-latest updat-pos i18n
 
 all: release installables signatures sha1sums
 
@@ -61,15 +60,9 @@ upload-latest: latest.xml
 	sftp -b putlatest.tmp ronys,passwordsafe@web.sourceforge.net
 	$(RM) putlatest.tmp
 
-latest.xml: version.h
-	Misc/make-latest-xml.pl > $@
+latest.xml: src/ui/Windows/version.h
+	Misc/make-latest-xml.pl $< > $@
 	chmod 644 $@
-
-md5sums:
-	(cd $(RELEASEDIR); \
-	 $(MD5SUM) pwsafe-$(RELEASENAME).exe \
-	 pwsafe-$(RELEASENAME).msi \
-	 $(BINRELNAME).zip $(SRCRELNAME).zip)
 
 sha1sums:
 	(cd $(RELEASEDIR); \

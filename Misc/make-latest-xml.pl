@@ -2,10 +2,11 @@
 
 # This script prints an XML fragment that can be parsed by
 # the application to determine if there's a newer release available.
-# The script parses version.h to get the information it needs.
+# The script parses version.h file passed to it in the command line
+# to get the information it needs.
 # For the XML format description, see AboutDlg.cpp
 
-open(FILE, "version.h") || die "Couldn't find version.h\n";
+open(FILE, $ARGV[0]) || die "Couldn't find version.h\n";
 
 my @verline;
 my ($Major, $Minor, $Build, $Revision);
