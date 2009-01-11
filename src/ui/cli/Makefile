@@ -4,16 +4,21 @@
 SRC         = main.cpp
 
 COREPATH        = ../../corelib
-LIBPATH         = $(COREPATH)/lib
-OBJPATH         = ./obj
-BINPATH         = ./bin
+OSPATH          = ../../os
+LIBPATH         = ../../lib
+OBJPATH         = ../../obj
+BINPATH         = ../../bin
 
 #destination related macros
 OBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(SRC)))
-LIB	     = $(LIBPATH)/libcore.a
 EXE	    = $(BINPATH)/pwsafe
 
-CXXFLAGS +=  -Wall -I$(COREPATH)
+LIBCORE	= $(LIBPATH)/libcore.a
+LIBOS  	= $(LIBPATH)/libos.a
+LIBS    = $(LIBCORE) $(LIBOS)
+
+CXXFLAGS +=  -Wall -I$(COREPATH) -I../..
+
 # rules
 .PHONY: all clean deepclean setup
 
@@ -26,12 +31,15 @@ $(OBJPATH)/%.o : %.cpp
 all : setup $(EXE)
 
 
-$(LIB): 
+$(LIBCORE): 
 	$(MAKE) -C $(COREPATH)
 
-$(EXE): $(LIB) $(OBJ)
+$(LIBOS): 
+	$(MAKE) -C $(OSPATH)/linux
+
+$(EXE): $(LIBS) $(OBJ)
 	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^)  -o $@ $(LD_FLAGS) \
-	-L$(LIBPATH) -lcore -luuid
+	-L$(LIBPATH) -lcore -los -luuid
 
 clean:
 	rm -f *~ $(OBJ) $(EXE) $(LIB) $(DEPENDFILE)
