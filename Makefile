@@ -38,7 +38,7 @@ LIGHT = $(WIXDIR)/light.exe
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
-	docs/ChangeLog.txt bin/pwsafe/releasem/pwsafe.exe help/default/pwsafe.chm
+	docs/ChangeLog.txt src/bin/releasem/pwsafe.exe help/default/pwsafe.chm
 
 .PHONY: all release bin-release src-release installables signatures \
 	upload sha1sums msi nsis upload-latest updat-pos i18n
