@@ -17,10 +17,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\test\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\test\$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -39,13 +39,13 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName="..\..\obj\test\$(ConfigurationName)/corelibtest.tlb"
+				TypeLibraryName="..\obj\$(ConfigurationName)\$(ProjectName)/corelibtest.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\corelib\obj\$(ConfigurationName)\$(ConfigurationName)"
+				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -71,10 +71,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="corelib.lib os.lib"
 				ShowProgress="0"
-				OutputFile="..\..\bin\test\$(ConfigurationName)\corelibtest.exe"
+				OutputFile="..\bin\$(ConfigurationName)\corelibtest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../lib/$(ConfigurationName)"
+				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -107,10 +110,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\test\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\test\$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -129,14 +132,14 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName="..\..\obj\test\$(ConfigurationName)/corelibtest.tlb"
+				TypeLibraryName="..\obj\$(ConfigurationName)\$(ProjectName)/corelibtest.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\..\corelib\obj\$(ConfigurationName)"
+				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_MBCS_;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -161,9 +164,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\..\bin\test\$(ConfigurationName)\corelibtest.exe"
+				AdditionalDependencies="corelib.lib;os.lib"
+				OutputFile="..\bin\$(ConfigurationName)\corelibtest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../../lib/$(ConfigurationName)"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -194,10 +199,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-Debug|Win32"
-			OutputDirectory="..\..\bin\test\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\test\$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -216,13 +221,13 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName="..\..\obj\test\$(ConfigurationName)/corelibtest.tlb"
+				TypeLibraryName="..\obj\$(ConfigurationName)\$(ProjectName)/corelibtest.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\corelib\obj\$(ConfigurationName)"
+				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -249,10 +254,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				UseUnicodeResponseFiles="false"
+				AdditionalDependencies="corelib.lib;os.lib"
 				ShowProgress="0"
-				OutputFile="..\..\bin\test\$(ConfigurationName)\corelibtest.exe"
+				OutputFile="..\bin\$(ConfigurationName)\corelibtest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../../lib/$(ConfigurationName)"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -286,10 +293,10 @@
 		</Configuration>
 		<Configuration
 			Name="NU-Release|Win32"
-			OutputDirectory="..\..\bin\test\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\test\$(ConfigurationName)"
+			OutputDirectory="..\bin\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
@@ -308,14 +315,14 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName="..\..\obj\test\$(ConfigurationName)/corelibtest.tlb"
+				TypeLibraryName="..\obj\$(ConfigurationName)\$(ProjectName)/corelibtest.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\..\corelib\obj\$(ConfigurationName)"
+				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_MBCS_;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -340,9 +347,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="..\..\bin\test\$(ConfigurationName)\corelibtest.exe"
+				AdditionalDependencies="corelib.lib os.lib"
+				OutputFile="..\bin\$(ConfigurationName)\corelibtest.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../../lib/$(ConfigurationName)"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -391,7 +400,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="NU-Debug|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -399,7 +408,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="NU-Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
