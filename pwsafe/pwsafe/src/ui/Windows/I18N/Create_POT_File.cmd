@@ -5,7 +5,7 @@ Rem
 
 setlocal
 set RESTEXT=tools\bin\ResText\Release\ResText.exe
-set DLL=..\bin\language\release\pwsafe_base.dll
+set DLL=..\..\..\bin\release\pwsafe_base.dll
 set POT=pos\pwsafe.pot
 
 if not exist %RESTEXT% goto no_program
