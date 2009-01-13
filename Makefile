@@ -36,6 +36,9 @@ WIXDIR = /cygdrive/c/local/WIX/bin
 CANDLE = $(WIXDIR)/candle.exe
 LIGHT = $(WIXDIR)/light.exe
 
+I18N_DIR =./src/ui/Windows/I18N
+POT_FILE = $(I18N_DIR)/pwsafe.pot
+
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
 	docs/ChangeLog.txt src/bin/releasem/pwsafe.exe help/default/pwsafe.chm
@@ -101,12 +104,12 @@ bin-release:
 	$(MV) foo.zip $(BINRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
-src-release: ChangeLog I18N/pwsafe.pot
+src-release: ChangeLog $(POT_FILE)
 	$(SVN) export --non-interactive . C:\\TMP\\$(SRCRELNAME)
 	$(MV) C:\\TMP\\$(SRCRELNAME) $(RELEASEDIR)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
 	$(CP) version.h $(RELEASEDIR)/$(SRCRELNAME)
-	$(CP) I18N/pwsafe.pot $(RELEASEDIR)/$(SRCRELNAME)
+	$(CP) $(POT_FILE) $(RELEASEDIR)/$(SRCRELNAME)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
@@ -114,14 +117,14 @@ src-release: ChangeLog I18N/pwsafe.pot
 ChangeLog:
 	$(SVN) log -v --xml | $(PYTHON) $(SVN2LOG) -L -H -s -O
 
-I18N/pwsafe.pot: bin/language/pwsafe_base.dll
-	$(MAKE) -C I18N pwsafe.pot
+$(POT_FILE): src/bin/release/pwsafe_base.dll
+	$(MAKE) -C $(I18N_DIR) pwsafe.pot
 
 update-pos:
-	$(MAKE) -C I18N $@
+	$(MAKE) -C $(I18N_DIR) $@
 
 i18n:
-	$(MAKE) -C I18N dlls
+	$(MAKE) -C $(I18N_DIR) dlls
 
 
 # Local variables:

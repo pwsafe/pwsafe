@@ -57,7 +57,7 @@ RESPWSL = ./tools/bin/respwsl/release/ResPWSL.exe
 CHMOD = /usr/bin/chmod
 RM = /usr/bin/rm
 
-BASE_DLL = ../bin/language/release/pwsafe_base.dll
+BASE_DLL = ../../../bin/release/pwsafe_base.dll
 
 
 .PHONY: update-pos dlls
