@@ -1,20 +1,20 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelib", "..\..\corelib\corelib.vcproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelib", "src\corelib\corelib.vcproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelibtest", "..\..\test\corelibtest.vcproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelibtest", "src\test\corelibtest.vcproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27} = {261882E8-80AF-4373-A8CC-A8D52E24BF27}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "pwsafe.vcproj", "{A3313FA9-CB57-48C2-B660-EE4BF94714D2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\Windows\pwsafe.vcproj", "{A3313FA9-CB57-48C2-B660-EE4BF94714D2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27} = {261882E8-80AF-4373-A8CC-A8D52E24BF27}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languageDLL", "language\languageDLL.vcproj", "{FC821168-0D64-45EA-881D-4842A3A670CC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languageDLL", "src\ui\Windows\language\languageDLL.vcproj", "{FC821168-0D64-45EA-881D-4842A3A670CC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "..\..\os\windows\os.vcproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os.vcproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -100,7 +100,6 @@ Global
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseE|Win32.ActiveCfg = Release|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseE|Win32.Build.0 = Release|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseM|Win32.ActiveCfg = Release|Win32
-		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseM|Win32.Build.0 = Release|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseX|Win32.ActiveCfg = Release|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.ReleaseX|Win32.Build.0 = Release|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug|Win32.ActiveCfg = Debug|Win32
