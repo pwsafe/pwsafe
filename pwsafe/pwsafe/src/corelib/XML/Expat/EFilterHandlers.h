@@ -23,7 +23,7 @@
 
 // PWS includes
 #include "../../PWSFilters.h"
-#include "../../proxy.h"
+#include "../../Proxy.h"
 
 #include <set>
 
