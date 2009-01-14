@@ -10,6 +10,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\Windows\pwsafe.vcproj", "{A3313FA9-CB57-48C2-B660-EE4BF94714D2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27} = {261882E8-80AF-4373-A8CC-A8D52E24BF27}
+		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73} = {D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languageDLL", "src\ui\Windows\language\languageDLL.vcproj", "{FC821168-0D64-45EA-881D-4842A3A670CC}"
