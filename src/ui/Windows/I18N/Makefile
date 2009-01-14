@@ -52,25 +52,38 @@ dlls/pwsafePL_PL.dll : pos/pwsafe_pl.po
 
 
 # No need to change anything below this line
-RESTEXT = ./tools/bin/restext/release/ResText.exe
-RESPWSL = ./tools/bin/respwsl/release/ResPWSL.exe
+export RESTEXT = ./tools/bin/restext/release/ResText.exe
+export RESPWSL = ./tools/bin/respwsl/release/ResPWSL.exe
 CHMOD = /usr/bin/chmod
 RM = /usr/bin/rm
+VCBUILD = /cygdrive/c/local/MSVS8/vc/vcpackages/vcbuild.exe
 
 BASE_DLL = ../../../bin/release/pwsafe_base.dll
 
 
-.PHONY: update-pos dlls
+.PHONY: update-pos dlls tools clean
 
-update-pos: $(POS)
+update-pos: tools $(POS)
 
 $(POS): $(BASE_DLL)
 
 %.po: $(BASE_DLL)
 	$(RESTEXT) extract $^ $@
 
-pwsafe.pot: $(BASE_DLL)
-	$(RESTEXT) extract -noupdate $^ $@
+pwsafe.pot: tools $(BASE_DLL)
+	$(RESTEXT) extract -noupdate $(BASE_DLL) $@
 
 dlls : $(DLLS)
+
+tools : 
+	$(MAKE) -C tools
+
+clean :
+	$(MAKE) -C tools clean
+
+$(RESTEXT) :
+	(cd tools/ResText; $(VCBUILD) ResText.sln Release\|Win32)
+
+$(RESPWSL) :
+	(cd tools/ResPWSL; $(VCBUILD) ResPWSL.sln Release\|Win32)
 
