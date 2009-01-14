@@ -187,8 +187,11 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
 int PWSfile::CheckPassword(const StringX &filename,
                            const StringX &passkey, VERSION &version)
 {
-  int status;
 
+  if (passkey.empty())
+    return WRONG_PASSWORD;
+
+  int status;
   version = UNKNOWN_VERSION;
   status = PWSfileV3::CheckPassword(filename, passkey);
   if (status == SUCCESS)
