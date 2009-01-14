@@ -28,12 +28,12 @@
 
 #include "XML/XMLDefs.h"
 
-#if USE_XML_LIBRARY == XERCES
-#include "XML/Xerces/XFileXMLProcessor.h"
+#if USE_XML_LIBRARY == EXPAT
+#include "XML/Expat/EFileXMLProcessor.h"
 #elif USE_XML_LIBRARY == MSXML
 #include "XML/MSXML/MFileXMLProcessor.h"
-#elif USE_XML_LIBRARY == EXPAT
-#include "XML/Expat/EFileXMLProcessor.h"
+#elif USE_XML_LIBRARY == XERCES
+#include "XML/Xerces/XFileXMLProcessor.h"
 #endif
 
 #include <fstream> // for WritePlaintextFile
