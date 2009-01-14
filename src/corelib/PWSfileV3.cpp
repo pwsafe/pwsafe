@@ -15,9 +15,13 @@
 #include "PWSdirs.h"
 #include "corelib.h"
 #include "os/file.h"
+
+#include "XML/XMLDefs.h"
+
 #ifdef _WIN32
 #include <io.h>
 #endif
+
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>

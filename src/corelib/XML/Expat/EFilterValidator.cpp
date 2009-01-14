@@ -779,4 +779,4 @@ StringX EFilterValidator::Trim(const StringX &s, const TCHAR *set)
   return retval;
 }
 
-#endif
+#endif /* USE_XML_LIBRARY == EXPAT */

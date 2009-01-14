@@ -32,4 +32,4 @@ MFileValidator::MFileValidator()
 {
 }
 
-#endif /* USE_XML_LIBRARY */
+#endif /* USE_XML_LIBRARY == MSXML */
