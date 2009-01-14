@@ -26,7 +26,7 @@
 // PWS includes
 #include "../../StringX.h"
 #include "../../PWSFilters.h"
-#include "../../proxy.h"
+#include "../../Proxy.h"
 
 #include <stdlib.h>
 #include <string.h>

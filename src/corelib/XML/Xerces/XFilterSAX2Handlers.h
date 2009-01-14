@@ -31,7 +31,7 @@
 
 // PWS includes
 #include "../../PWSFilters.h"
-#include "../../proxy.h"
+#include "../../Proxy.h"
 
 // Xerces includes
 #include <xercesc/sax2/Attributes.hpp>

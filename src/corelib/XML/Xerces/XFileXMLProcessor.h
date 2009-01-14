@@ -34,7 +34,7 @@
 
 #include "../../UnknownField.h"
 #include "../../UUIDGen.h"
-#include "../../os/typedefs.h"
+#include "os/typedefs.h"
 
 #include <stdlib.h>
 #include <string.h>
