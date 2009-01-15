@@ -604,7 +604,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
- 				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib libexpatw.lib"
+ 				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib libexpatwMT.lib"
 				ShowProgress="0"
  				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
