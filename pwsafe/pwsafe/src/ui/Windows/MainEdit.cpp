@@ -14,6 +14,7 @@
 #include "ThisMfcApp.h"
 #include "corelib/pwsprefs.h"
 #include "DDSupport.h"
+//#include "StringXStream.h"
 
 // dialog boxen
 #include "DboxMain.h"
@@ -1243,7 +1244,9 @@ void DboxMain::AutoType(const CItemData &ci)
 {
   StringX AutoCmd = ci.GetAutoType();
   StringX user(ci.GetUser());
-  StringX pwd;
+  StringX group, title, pwd, notes;
+  std::vector<StringX> notes_lines;
+  StringX::size_type index;
 
   uuid_array_t base_uuid, entry_uuid;
   CItemData::EntryType entrytype = ci.GetEntryType();
@@ -1258,13 +1261,59 @@ void DboxMain::AutoType(const CItemData &ci)
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
       pwd = iter->second.GetPassword();
+      notes = iter->second.GetNotes();
       if (entrytype == CItemData::ET_SHORTCUT) {
+        group = iter->second.GetGroup();
+        title = iter->second.GetTitle();
         user = iter->second.GetUser();
         AutoCmd = iter->second.GetAutoType();
       }
     }
   } else {
+    group = ci.GetGroup();
+    title = ci.GetTitle();
     pwd = ci.GetPassword();
+    notes = ci.GetNotes();
+  }
+
+  // No recursive substitution (e.g. \p or \u), although '\t' will be replaced by a tab
+  if (!notes.empty()) {
+    // Use \n and \r to tokenise this line
+    StringX::size_type start(0), end(0);
+    const StringX delim = _T("\r\n");
+    StringX line;
+    while (end != StringX::npos) {
+      end = notes.find(delim, start);
+      line = (notes.substr(start, (end == StringX::npos) ? StringX::npos : end - start));
+      index = 0;
+      for (;;) {
+        index = line.find(_T("\\t"), index);
+        if (index == line.npos)
+          break;
+        line.replace(index, 2, _T("\t"));
+        index += 1;
+      }
+      notes_lines.push_back(line);
+      start = ((end > (StringX::npos - delim.size()))
+                          ? StringX::npos : end + delim.size());
+    }
+    // Now change '\n' to '\r' in the complete notes field
+    index = 0;
+    for (;;) {
+      index = notes.find(_T("\r\n"), index);
+      if (index == notes.npos)
+        break;
+      notes.replace(index, 2, _T("\r"));
+      index += 1;
+    }
+    index = 0;
+    for (;;) {
+      index = notes.find(_T("\\t"), index);
+      if (index == notes.npos)
+        break;
+      notes.replace(index, 2, _T("\t"));
+      index += 1;
+    }
   }
 
   // If empty, try the database default
@@ -1326,12 +1375,13 @@ void DboxMain::AutoType(const CItemData &ci)
 
   Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
+  int gNumIts;
   for (int n = 0; n < N; n++){
     curChar = AutoCmd[n];
     if (curChar == TCHAR('\\')) {
       n++;
       if (n < N)
-        curChar=AutoCmd[n];
+        curChar = AutoCmd[n];
 
       switch (curChar){
         case TCHAR('\\'):
@@ -1344,12 +1394,46 @@ void DboxMain::AutoType(const CItemData &ci)
         case TCHAR('t'):
           tmp += TCHAR('\t');
           break;
+        case TCHAR('g'):
+          tmp += group;
+          break;
+        case TCHAR('i'):
+          tmp += title;
+          break;
         case TCHAR('u'):
           tmp += user;
           break;
         case TCHAR('p'):
           tmp += pwd;
           break;
+        case TCHAR('o'):
+        {
+          if (n == (N - 1)) {
+            // This was the last character - send the lot!
+            tmp += notes;
+            break;
+          }
+          int line_number(0);
+          gNumIts = 0;
+          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
+            if (_istdigit(AutoCmd[n])) {
+              line_number *= 10;
+              line_number += (AutoCmd[n] - TCHAR('0'));
+            } else
+              break; // for loop
+          }
+          if (line_number == 0) {
+            // Send the lot
+            tmp += notes;
+          } else if (line_number <= (int)notes_lines.size()) {
+            // User specifies a too big a line number - ignore the lot
+            tmp += notes_lines[line_number - 1];
+          }
+    
+          // Backup the extra character that delimited the \oNNN string
+          n--;
+          break; // case 'o'
+        }
         case TCHAR('d'):
         {
           // Delay is going to change - send what we have with old delay
@@ -1357,10 +1441,9 @@ void DboxMain::AutoType(const CItemData &ci)
           // start collecting new delay
           tmp = _T("");
           int newdelay = 0;
-          int gNumIts = 0;
-
+          gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (isdigit(AutoCmd[n])) {
+            if (_istdigit(AutoCmd[n])) {
               newdelay *= 10;
               newdelay += (AutoCmd[n] - TCHAR('0'));
             } else
@@ -1371,8 +1454,18 @@ void DboxMain::AutoType(const CItemData &ci)
           ks.SetAndDelay(newdelay);
           break; // case 'd'
         }
+        case TCHAR('b'): // backspace!
+          tmp += TCHAR('\b');
+          break;
+        // Ignore explicit control characters
+        case TCHAR('a'): // bell (can't hear it during testing!)
+        case TCHAR('v'): // vertical tab
+        case TCHAR('f'): // form feed
+        case TCHAR('e'): // escape
+        case TCHAR('x'): // hex digits (\xNN)
+        // Ignore any others!
+        // '\cC', '\uXXXX', '\OOO', '\<any other charatcer not recognised above>'
         default:
-          tmp += _T("\\") + curChar;
           break;
       }
     } else
