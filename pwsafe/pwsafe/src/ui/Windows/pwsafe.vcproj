@@ -2564,235 +2564,235 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath=".\res\abase.bmp"
+				RelativePath="..\graphics\abase.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\abase.ico"
+				RelativePath="..\graphics\abase.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\abase_exp.bmp"
+				RelativePath="..\graphics\abase_exp.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\abase_exp.ico"
+				RelativePath="..\graphics\abase_exp.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\abase_warn.bmp"
+				RelativePath="..\graphics\abase_warn.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\abase_warn.ico"
+				RelativePath="..\graphics\abase_warn.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\about_classic.bmp"
+				RelativePath="..\graphics\toolbar\about_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\about_new.bmp"
+				RelativePath="..\graphics\toolbar\about_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\about_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\about_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\add_classic.bmp"
+				RelativePath="..\graphics\toolbar\add_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\add_new.bmp"
+				RelativePath="..\graphics\toolbar\add_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\add_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\add_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\alias.bmp"
+				RelativePath="..\graphics\alias.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\alias.ico"
+				RelativePath="..\graphics\alias.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\applyfilter_classic.bmp"
+				RelativePath="..\graphics\toolbar\applyfilter_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\applyfilter_new.bmp"
+				RelativePath="..\graphics\toolbar\applyfilter_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\applyfilter_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\applyfilter_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\autotype_classic.bmp"
+				RelativePath="..\graphics\toolbar\autotype_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\autotype_new.bmp"
+				RelativePath="..\graphics\toolbar\autotype_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\autotype_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\autotype_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\backup_classic.bmp"
+				RelativePath="..\graphics\toolbar\backup_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\backup_new.bmp"
+				RelativePath="..\graphics\toolbar\backup_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\backup_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\backup_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\blank.bmp"
+				RelativePath="..\graphics\blank.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\browseurl_classic.bmp"
+				RelativePath="..\graphics\toolbar\browseurl_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\browseurl_new.bmp"
+				RelativePath="..\graphics\toolbar\browseurl_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\browseurl_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\browseurl_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changecombo_classic.bmp"
+				RelativePath="..\graphics\toolbar\changecombo_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changecombo_new.bmp"
+				RelativePath="..\graphics\toolbar\changecombo_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changecombo_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\changecombo_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changefont_classic.bmp"
+				RelativePath="..\graphics\toolbar\changefont_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changefont_new.bmp"
+				RelativePath="..\graphics\toolbar\changefont_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changefont_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\changefont_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changepswdfont_classic.bmp"
+				RelativePath="..\graphics\toolbar\changepswdfont_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changepswdfont_new.bmp"
+				RelativePath="..\graphics\toolbar\changepswdfont_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\changepswdfont_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\changepswdfont_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\checked.bmp"
+				RelativePath="..\graphics\checked.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\clearclipboard_classic.bmp"
+				RelativePath="..\graphics\toolbar\clearclipboard_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\clearclipboard_new.bmp"
+				RelativePath="..\graphics\toolbar\clearclipboard_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\clearclipboard_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\clearclipboard_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\close_classic.bmp"
+				RelativePath="..\graphics\toolbar\close_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\close_new.bmp"
+				RelativePath="..\graphics\toolbar\close_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\close_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\close_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\collapseall_classic.bmp"
+				RelativePath="..\graphics\toolbar\collapseall_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\collapseall_new.bmp"
+				RelativePath="..\graphics\toolbar\collapseall_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\collapseall_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\collapseall_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\compare_classic.bmp"
+				RelativePath="..\graphics\toolbar\compare_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\compare_new.bmp"
+				RelativePath="..\graphics\toolbar\compare_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\compare_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\compare_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copynotes_classic.bmp"
+				RelativePath="..\graphics\toolbar\copynotes_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copynotes_new.bmp"
+				RelativePath="..\graphics\toolbar\copynotes_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copynotes_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\copynotes_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copypassword_classic.bmp"
+				RelativePath="..\graphics\toolbar\copypassword_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copypassword_new.bmp"
+				RelativePath="..\graphics\toolbar\copypassword_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copypassword_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\copypassword_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copyuser_classic.bmp"
+				RelativePath="..\graphics\toolbar\copyuser_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copyuser_new.bmp"
+				RelativePath="..\graphics\toolbar\copyuser_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copyuser_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\copyuser_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2800,463 +2800,463 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\cpane.bmp"
+				RelativePath="..\graphics\cpane.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\cpane.ico"
+				RelativePath="..\graphics\cpane.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\cpane_s.bmp"
+				RelativePath="..\graphics\cpane_s.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\cpanetxt.bmp"
+				RelativePath="..\graphics\cpanetxt.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\createshortcut_classic.bmp"
+				RelativePath="..\graphics\toolbar\createshortcut_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\createshortcut_new.bmp"
+				RelativePath="..\graphics\toolbar\createshortcut_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\createshortcut_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\createshortcut_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\cutsomizetoolbar_classic.bmp"
+				RelativePath="..\graphics\toolbar\cutsomizetoolbar_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\cutsomizetoolbar_new.bmp"
+				RelativePath="..\graphics\toolbar\cutsomizetoolbar_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDGroup.bmp"
+				RelativePath="..\graphics\DDGroup.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDGroupX.bmp"
+				RelativePath="..\graphics\DDGroupX.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDNotes.bmp"
+				RelativePath="..\graphics\DDNotes.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDNotesX.bmp"
+				RelativePath="..\graphics\DDNotesX.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDPassword.bmp"
+				RelativePath="..\graphics\DDPassword.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDPasswordX.bmp"
+				RelativePath="..\graphics\DDPasswordX.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDTitle.bmp"
+				RelativePath="..\graphics\DDTitle.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDTitleX.bmp"
+				RelativePath="..\graphics\DDTitleX.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDURL.bmp"
+				RelativePath="..\graphics\DDURL.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDURLX.bmp"
+				RelativePath="..\graphics\DDURLX.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDUser.bmp"
+				RelativePath="..\graphics\DDUser.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\DDUserX.bmp"
+				RelativePath="..\graphics\DDUserX.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\delete_classic.bmp"
+				RelativePath="..\graphics\toolbar\delete_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\delete_new.bmp"
+				RelativePath="..\graphics\toolbar\delete_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\delete_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\delete_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\duplicate_classic.bmp"
+				RelativePath="..\graphics\toolbar\duplicate_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\duplicate_new.bmp"
+				RelativePath="..\graphics\toolbar\duplicate_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\duplicate_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\duplicate_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\empty.bmp"
+				RelativePath="..\graphics\empty.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exit_classic.bmp"
+				RelativePath="..\graphics\toolbar\exit_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exit_new.bmp"
+				RelativePath="..\graphics\toolbar\exit_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exit_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\exit_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\expandall_classic.bmp"
+				RelativePath="..\graphics\toolbar\expandall_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\expandall_new.bmp"
+				RelativePath="..\graphics\toolbar\expandall_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\expandall_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\expandall_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\export_classic.bmp"
+				RelativePath="..\graphics\toolbar\export_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\export_new.bmp"
+				RelativePath="..\graphics\toolbar\export_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\export_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\export_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exporttext_classic.bmp"
+				RelativePath="..\graphics\toolbar\exporttext_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exporttext_new.bmp"
+				RelativePath="..\graphics\toolbar\exporttext_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exporttext_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\exporttext_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exportXML_classic.bmp"
+				RelativePath="..\graphics\toolbar\exportXML_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exportXML_new.bmp"
+				RelativePath="..\graphics\toolbar\exportXML_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exportXML_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\exportXML_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\filter_active.bmp"
+				RelativePath="..\graphics\filter_active.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\filter_active_watermark.bmp"
+				RelativePath="..\graphics\filter_active_watermark.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\filter_inactive.bmp"
+				RelativePath="..\graphics\filter_inactive.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\find_classic.bmp"
+				RelativePath="..\graphics\toolbar\find_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\find_new.bmp"
+				RelativePath="..\graphics\toolbar\find_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\find_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\find_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findadvanced_classic.bmp"
+				RelativePath="..\graphics\toolbar\findadvanced_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findadvanced_new.bmp"
+				RelativePath="..\graphics\toolbar\findadvanced_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findcase_i_classic.bmp"
+				RelativePath="..\graphics\toolbar\findcase_i_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findcase_i_new.bmp"
+				RelativePath="..\graphics\toolbar\findcase_i_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findcase_s_classic.bmp"
+				RelativePath="..\graphics\toolbar\findcase_s_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findcase_s_new.bmp"
+				RelativePath="..\graphics\toolbar\findcase_s_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findclear_classic.bmp"
+				RelativePath="..\graphics\toolbar\findclear_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findclear_new.bmp"
+				RelativePath="..\graphics\toolbar\findclear_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findclose_classic.bmp"
+				RelativePath="..\graphics\toolbar\findclose_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findclose_new.bmp"
+				RelativePath="..\graphics\toolbar\findclose_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findctrlplaceholder.bmp"
+				RelativePath="..\graphics\toolbar\findctrlplaceholder.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findreport_classic.bmp"
+				RelativePath="..\graphics\toolbar\findreport_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findreport_new.bmp"
+				RelativePath="..\graphics\toolbar\findreport_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\groupenter_classic.bmp"
+				RelativePath="..\graphics\toolbar\groupenter_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\groupenter_new.bmp"
+				RelativePath="..\graphics\toolbar\groupenter_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\groupenter_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\groupenter_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\help_classic.bmp"
+				RelativePath="..\graphics\toolbar\help_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\help_new.bmp"
+				RelativePath="..\graphics\toolbar\help_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\help_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\help_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\import_classic.bmp"
+				RelativePath="..\graphics\toolbar\import_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\import_new.bmp"
+				RelativePath="..\graphics\toolbar\import_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\import_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\import_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\importtext_classic.bmp"
+				RelativePath="..\graphics\toolbar\importtext_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\importtext_new.bmp"
+				RelativePath="..\graphics\toolbar\importtext_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\importtext_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\importtext_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\importXML_classic.bmp"
+				RelativePath="..\graphics\toolbar\importXML_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\importXML_new.bmp"
+				RelativePath="..\graphics\toolbar\importXML_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\importXML_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\importXML_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\listtree_classic.bmp"
+				RelativePath="..\graphics\toolbar\listtree_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\listtree_new.bmp"
+				RelativePath="..\graphics\toolbar\listtree_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\listtree_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\listtree_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\lock_classic.bmp"
+				RelativePath="..\graphics\toolbar\lock_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\lock_new.bmp"
+				RelativePath="..\graphics\toolbar\lock_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\lock_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\lock_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\locked_tray.ico"
+				RelativePath="..\graphics\locked_tray.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\managefilters_classic.bmp"
+				RelativePath="..\graphics\toolbar\managefilters_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\managefilters_new.bmp"
+				RelativePath="..\graphics\toolbar\managefilters_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\managefilters_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\managefilters_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\merge_classic.bmp"
+				RelativePath="..\graphics\toolbar\merge_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\merge_new.bmp"
+				RelativePath="..\graphics\toolbar\merge_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\merge_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\merge_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\new_classic.bmp"
+				RelativePath="..\graphics\toolbar\new_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\new_new.bmp"
+				RelativePath="..\graphics\toolbar\new_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\new_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\new_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\node.bmp"
+				RelativePath="..\graphics\node.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal.bmp"
+				RelativePath="..\graphics\normal.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal.bmp"
+				RelativePath="..\graphics\normal.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal.ico"
+				RelativePath="..\graphics\normal.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal.ico"
+				RelativePath="..\graphics\normal.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal_exp.bmp"
+				RelativePath="..\graphics\normal_exp.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal_exp.bmp"
+				RelativePath="..\graphics\normal_exp.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal_exp.ico"
+				RelativePath="..\graphics\normal_exp.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal_exp.ico"
+				RelativePath="..\graphics\normal_exp.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal_warn.bmp"
+				RelativePath="..\graphics\normal_warn.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal_warn.bmp"
+				RelativePath="..\graphics\normal_warn.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal_warn.ico"
+				RelativePath="..\graphics\normal_warn.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\normal_warn.ico"
+				RelativePath="..\graphics\normal_warn.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\open_classic.bmp"
+				RelativePath="..\graphics\toolbar\open_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\open_new.bmp"
+				RelativePath="..\graphics\toolbar\open_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\open_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\open_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\options_classic.bmp"
+				RelativePath="..\graphics\toolbar\options_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\options_new.bmp"
+				RelativePath="..\graphics\toolbar\options_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\options_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\options_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\passwordchars_classic.bmp"
+				RelativePath="..\graphics\toolbar\passwordchars_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\passwordchars_new.bmp"
+				RelativePath="..\graphics\toolbar\passwordchars_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\passwordchars_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\passwordchars_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -3408,215 +3408,215 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\properties_classic.bmp"
+				RelativePath="..\graphics\toolbar\properties_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\properties_new.bmp"
+				RelativePath="..\graphics\toolbar\properties_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\properties_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\properties_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\psafetxt.bmp"
+				RelativePath="..\graphics\psafetxt.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\pws_db.bmp"
+				RelativePath="..\graphics\pws_db.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\restore_classic.bmp"
+				RelativePath="..\graphics\toolbar\restore_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\restore_new.bmp"
+				RelativePath="..\graphics\toolbar\restore_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\restore_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\restore_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\save_classic.bmp"
+				RelativePath="..\graphics\toolbar\save_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\save_new.bmp"
+				RelativePath="..\graphics\toolbar\save_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\save_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\save_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\saveas_classic.bmp"
+				RelativePath="..\graphics\toolbar\saveas_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\saveas_new.bmp"
+				RelativePath="..\graphics\toolbar\saveas_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\saveas_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\saveas_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\sbase.bmp"
+				RelativePath="..\graphics\sbase.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\sbase.ico"
+				RelativePath="..\graphics\sbase.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\sbase_exp.bmp"
+				RelativePath="..\graphics\sbase_exp.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\sbase_exp.ico"
+				RelativePath="..\graphics\sbase_exp.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\sbase_warn.bmp"
+				RelativePath="..\graphics\sbase_warn.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\sbase_warn.ico"
+				RelativePath="..\graphics\sbase_warn.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\sendemail_classic.bmp"
+				RelativePath="..\graphics\toolbar\sendemail_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\sendemail_new.bmp"
+				RelativePath="..\graphics\toolbar\sendemail_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\sendemail_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\sendemail_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\setfilter_classic.bmp"
+				RelativePath="..\graphics\toolbar\setfilter_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\setfilter_new.bmp"
+				RelativePath="..\graphics\toolbar\setfilter_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\setfilter_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\setfilter_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\shortcut.bmp"
+				RelativePath="..\graphics\shortcut.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\shortcut.ico"
+				RelativePath="..\graphics\shortcut.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\tray.ico"
+				RelativePath="..\graphics\tray.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\tray_blue.ico"
+				RelativePath="..\graphics\tray_blue.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\tray_white.ico"
+				RelativePath="..\graphics\tray_white.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\tray_yellow.ico"
+				RelativePath="..\graphics\tray_yellow.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\unchecked.bmp"
+				RelativePath="..\graphics\unchecked.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\unlock_classic.bmp"
+				RelativePath="..\graphics\toolbar\unlock_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\unlock_new.bmp"
+				RelativePath="..\graphics\toolbar\unlock_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\unlock_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\unlock_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\unlocked_tray.ico"
+				RelativePath="..\graphics\unlocked_tray.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\validate_classic.bmp"
+				RelativePath="..\graphics\toolbar\validate_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\validate_new.bmp"
+				RelativePath="..\graphics\toolbar\validate_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\validate_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\validate_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewedit_classic.bmp"
+				RelativePath="..\graphics\toolbar\viewedit_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewedit_new.bmp"
+				RelativePath="..\graphics\toolbar\viewedit_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewedit_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\viewedit_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewfilter_classic.bmp"
+				RelativePath="..\graphics\toolbar\viewfilter_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewfilter_new.bmp"
+				RelativePath="..\graphics\toolbar\viewfilter_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewfilter_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\viewfilter_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewreports_classic.bmp"
+				RelativePath="..\graphics\toolbar\viewreports_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewreports_new.bmp"
+				RelativePath="..\graphics\toolbar\viewreports_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewreports_new_disabled.bmp"
+				RelativePath="..\graphics\toolbar\viewreports_new_disabled.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\w95mbx01.ico"
+				RelativePath="..\graphics\w95mbx01.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\w95mbx02.ico"
+				RelativePath="..\graphics\w95mbx02.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\w95mbx03.ico"
+				RelativePath="..\graphics\w95mbx03.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\res\w95mbx04.ico"
+				RelativePath="..\graphics\w95mbx04.ico"
 				>
 			</File>
 		</Filter>
