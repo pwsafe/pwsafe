@@ -94,11 +94,11 @@
 ; the installer.  It can be placed, by itself, on a publicly available
 ; location.
 ; 
-; the script is setup for 2 languages now (English + German)
+; The script is currently setup for 2 languages (English + German)
 ; It's prepared for using Swedish and Spanish. Remove the comments ";-L-"
-; supplementary languages can be easily brought in
-; following "peaces" have to be provided
-; - all language specific "Langstring"
+; Additional languages can be easily added.
+; To do so, the following should be provided:
+; - all language specific "LangString", in file "pwsafe.lng"
 ; - several MUI_LANGUAGE
 ; - several "File" for the language specific DLL
 ; - "Delete ...DLL" for each language (at install time)
@@ -172,6 +172,8 @@
 ;-L-  !insertmacro MUI_LANGUAGE "Spanish"
 ;-L-  !insertmacro MUI_LANGUAGE "Swedish"
 
+  !include "pwsafe.lng"
+
 ;--------------------------------
 ; Interface Settings
 
@@ -180,21 +182,6 @@
 ;--------------------------------
 ;Reserve Files
 
-LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_GERMAN}  "Wähle Typ der Installation"
-;-L-LangString RESERVE_TITLE ${LANG_SPANISH} "Choose Installation Type [ES]"
-;-L-LangString RESERVE_TITLE ${LANG_SWEDISH} "Choose Installation Type [SV]"
-
-LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_GERMAN}  "Regulär (verwendet Registry, einsetzbar für normaler ArbeitsPC)"
-;-L-LangString RESERVE_FIELD1 ${LANG_SPANISH} "Regular (uses Registry, suitable for home or single user PC) [ES]"
-;-L-LangString RESERVE_FIELD1 ${LANG_SWEDISH} "Regular (uses Registry, suitable for home or single user PC) [SV]"
-
-LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_GERMAN}  "Grün (für Disk-on-Key; verwendet keine lokale Registry)"
-;-L-LangString RESERVE_FIELD2 ${LANG_SPANISH} "Green (for Disk-on-Key; does not use host Registry) [ES]"
-;-L-LangString RESERVE_FIELD2 ${LANG_SWEDISH} "Green (for Disk-on-Key; does not use host Registry) [SV]"
-
   ; NSIS documentation states that it's a Good Idea to put the following
   ; two lines when using a custom dialog:  
   ReserveFile "pws-install.ini"
@@ -202,11 +189,6 @@ LangString RESERVE_FIELD2 ${LANG_GERMAN}  "Grün (für Disk-on-Key; verwendet kein
 
 ;--------------------------------
 ; The program itself
-
-LangString PROGRAM_FILES ${LANG_ENGLISH} "Program Files"
-LangString PROGRAM_FILES ${LANG_GERMAN}  "Programm Dateien"
-;-L-LangString PROGRAM_FILES ${LANG_SPANISH} "Program Files [ES]"
-;-L-LangString PROGRAM_FILES ${LANG_SWEDISH} "Program Files [SV]"
 
 Section "$(PROGRAM_FILES)" ProgramFiles
   ;Read the chosen installation type: 1 means "Green", 0 - "Regular"
@@ -306,11 +288,6 @@ languageDone:
 GreenInstall:
 SectionEnd
 
-LangString START_AUTO ${LANG_ENGLISH} "Start automatically"
-LangString START_AUTO ${LANG_GERMAN}  "Automatisch starten"
-;-L-LangString START_AUTO ${LANG_SPANISH} "Start automatically [ES]"
-;-L-LangString START_AUTO ${LANG_SWEDISH} "Start automatically [SV]"
-
 ;--------------------------------
 ; Start with Windows
 Section "$(START_AUTO)" StartUp
@@ -319,11 +296,6 @@ SectionEnd
 
 ;--------------------------------
 ; Start menu
-
-LangString START_SHOW ${LANG_ENGLISH} "Show in start menu"
-LangString START_SHOW ${LANG_GERMAN}  "Im Startmenü anziegen"
-;-L-LangString START_SHOW ${LANG_SPANISH} "Show in start menu [ES]"
-;-L-LangString START_SHOW ${LANG_SWEDISH} "Show in start menu [SV]"
 
 Section "$(START_SHOW)" StartMenu
 
@@ -338,14 +310,8 @@ Section "$(START_SHOW)" StartMenu
 
 SectionEnd
 
-
 ;--------------------------------
 ; Desktop shortcut
-
-LangString START_SHORTCUT ${LANG_ENGLISH} "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_GERMAN}  "Verknüpfung auf Benutzeroberfläche"
-;-L-LangString START_SHORTCUT ${LANG_SPANISH} "Install desktop shortcut [ES]"
-;-L-LangString START_SHORTCUT ${LANG_SWEDISH} "Install desktop shortcut [SV]"
 
 Section "$(START_SHORTCUT)" DesktopShortcut
 
@@ -354,30 +320,8 @@ Section "$(START_SHORTCUT)" DesktopShortcut
 
 SectionEnd
 
-
 ;--------------------------------
 ; Descriptions
-
-  ; Language strings
-  LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
-  LangString DESC_ProgramFiles ${LANG_GERMAN} "Installiert die notwendigen Dateien um Password Safe laufen zu lassen."
-;-L-  LangString DESC_ProgramFiles ${LANG_SPANISH} "Installs the basic files necessary to run Password Safe. [ES]"
-;-L-  LangString DESC_ProgramFiles ${LANG_SWEDISH} "Installs the basic files necessary to run Password Safe. [SV]"
-
-  LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
-  LangString DESC_StartUp ${LANG_GERMAN} "Startet Password Safe beim Windows boot/login."
-;-L-  LangString DESC_StartUp ${LANG_SPANISH} "Starts Password Safe as part of Windows boot/login. [ES]"
-;-L-  LangString DESC_StartUp ${LANG_SWEDISH} "Starts Password Safe as part of Windows boot/login. [SV]"
-
-  LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
-  LangString DESC_StartMenu ${LANG_GERMAN} "Erstellt ein Eintrag im Start Menü für Password Safe."
-;-L-  LangString DESC_StartMenu ${LANG_SPANISH} "Creates an entry in the start menu for Password Safe. [ES]"
-;-L-  LangString DESC_StartMenu ${LANG_SWEDISH} "Creates an entry in the start menu for Password Safe. [SV]"
-
-  LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
-  LangString DESC_DesktopShortcut ${LANG_GERMAN} "Erzeugt eine Verknüpfung zu Password Safe auf der Benutzeroberfläche."
-;-L-  LangString DESC_DesktopShortcut ${LANG_SPANISH} "Places a shortcut to Password Safe on your desktop. [ES]"
-;-L-  LangString DESC_DesktopShortcut ${LANG_SWEDISH} "Places a shortcut to Password Safe on your desktop. [SV]"
   
   ; Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -386,7 +330,6 @@ SectionEnd
     !insertmacro MUI_DESCRIPTION_TEXT ${StartMenu} $(DESC_StartMenu)
     !insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} $(DESC_DesktopShortcut)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
-
 
 ;--------------------------------
 ; Uninstaller Section
@@ -474,32 +417,6 @@ is_winME:
 
     
 FunctionEnd
-
-; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
-LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_GERMAN} "Type der Installation"
-;-L-LangString TEXT_GC_TITLE ${LANG_SPANISH} "Installation Type [ES]"
-;-L-LangString TEXT_GC_TITLE ${LANG_SWEDISH} "Installation Type [SV]"
-
-LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_GERMAN} "Wähle Regulär zur Verwendung in einem PC und Grün für eine portable installation. Wenn sie nicht sicher sind, 'Regulär' auswählen."
-;-L-LangString TEXT_GC_SUBTITLE ${LANG_SPANISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [ES]"
-;-L-LangString TEXT_GC_SUBTITLE ${LANG_SWEDISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [SV]"
-
-LangString PSWINI_TITLE ${LANG_ENGLISH} "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_GERMAN} "Wähle Typ der Installation"
-;-L-LangString PSWINI_TITLE ${LANG_SPANISH} "Choose Installation Type [ES]"
-;-L-LangString PSWINI_TITLE ${LANG_SWEDISH} "Choose Installation Type [SV]"
-
-LangString PSWINI_TEXT1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_GERMAN} "Regulär (verwendet Registry, einsetzbar für normaler ArbeitsPC)"
-;-L-LangString PSWINI_TEXT1 ${LANG_SPANISH} "Regular (uses Registry, suitable for home or single user PC) [ES]"
-;-L-LangString PSWINI_TEXT1 ${LANG_SWEDISH} "Regular (uses Registry, suitable for home or single user PC) [SV]"
-
-LangString PSWINI_TEXT2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_GERMAN} "Grün (für Disk-on-Key; verwendet keine lokale Registry)"
-;-L-LangString PSWINI_TEXT2 ${LANG_SPANISH} "Green (for Disk-on-Key; does not use host Registry) [ES]"
-;-L-LangString PSWINI_TEXT2 ${LANG_SWEDISH} "Green (for Disk-on-Key; does not use host Registry) [SV]"
 
 Function GreenOrRegular
   !insertmacro MUI_HEADER_TEXT "$(TEXT_GC_TITLE)" "$(TEXT_GC_SUBTITLE)"
