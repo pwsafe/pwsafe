@@ -17,6 +17,10 @@
 
 
 
+
+  
+
+  
   
 
   
@@ -32,6 +36,7 @@
 
   
   
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
@@ -40,7 +45,9 @@
 
 
 
+
 <h3>Password Aliases</h3>
+
 
 
 <p>If you're using a "single sign-on" system that allows you to share
@@ -50,7 +57,9 @@ entries accordingly, so that changing one password affects all other
 related entries. This is called "aliasing" entries. This section describes how to define and use such aliases.</p>
 
 
+
 <h4>Summary</h4>
+
 
 
 <p>The basic idea is to allow one entry's password to be referred to
@@ -67,13 +76,20 @@ this may sound complicated, in fact it's quite simple and intuitive to
 use. The hardest part is setting up the aliases, as described below.</p>
 
 
+
 <h4>Defining an alias</h4>
+
 
 
 <p>In Password Safe, an entry can refer to another's password by means
 of a specially formatted password in the referring entry. The format is
-the "name" of the referred-to entry enclosed in square brackets. "Name"
-in this context means all of the following fields, separated by colons:
+the "name" of the referred-to entry enclosed in square brackets. Most
+of the time, you can think of "name" as synonymous with the title field
+of an entry, so if the base entry's title is "master", for example,
+then entering "[master]" (without the quotes) in another entry's
+password field is enough to define the other entry as an alias of
+"master".</p>
+<p>In the general case, a "name" can contain all of the following fields, separated by colons:
 Group, Title and User name. Note that if the title is unique in the
 database, then the
 other fields are optional. Likewise, if the group and
@@ -82,7 +98,8 @@ the corresponding user or group doesn't have to be
 specified.</p>
 
 
-<p>In Password Safe, only the Title field is mandatory.  Group and User name 
+
+<p>In Password Safe entries, only the Title field is mandatory.  Group and User name 
 fields are optional as long as the resulting combination of "group/title/user&nbsp;name"
 is unique. As indicated above, the alias' "password" is in the form [g:t:u] but
 in fact you only have to specify enough information to uniquely identify
@@ -98,15 +115,19 @@ title 't' in group 'g' and with no user name value and [:t:] says entry with
 title 't' in the root with no user name value etc.</p>
 
 
+
 <p>The following examples should make this clear.</p>
+
 
 
 <h4>Examples</h4>
 
 
+
 <p>1. If the base entry's title is "LDAP Server", and there are no
 other entries with that title, then an alias will be defined by an
 entry that has "[LDAP Server]" in the password field.</p>
+
 
 
 <p>2. If there are "LDAP Server" entries in two different groups, say
@@ -115,15 +136,19 @@ entry that has "[LDAP Server]" in the password field.</p>
 the information you have provided uniquely identifies the base entry.</p>
 
 
+
 <p>3. Different user names can also be used to differentiate between
 similar base entries, e.g., "[LDAP Server:Joe]" and "[LDAP
 Server:Mary]".</p>
 
 
+
 <p>4. Finally, all three fields may be specified, as in "[Dept. A:LDAP Server:Joe]"</p>
 
 
+
 <h4>Display</h4>
+
 
 
 <p>Base entries, that is, entries with at least one alias "pointing" to
@@ -131,7 +156,9 @@ them, are displayed with a green triangle instead of a green square in
 the nested tree view.</p>
 
 
+
 <p>Alias entries are shown with white triangles.</p>
+
 
 
 <p><img style="border: 1px solid ; width: 163px; height: 127px;" alt="Alias example" src="images/alias_example.jpg"><br>
@@ -141,8 +168,10 @@ the nested tree view.</p>
 
 
 
+
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Alias"> <param name="Keyword" value="Password"> </object>
 </p>
+
 
 
 </body>
