@@ -7,9 +7,10 @@
  */
 #ifndef __safecombinationentry_H
 #define __safecombinationentry_H
-/** \file
-* 
-*/
+
+/** \file safecombinationentry.h
+ * 
+ */
 
 #endif /* __safecombinationentry_H */
 
@@ -24,7 +25,9 @@
  */
 
 ////@begin includes
+#include "wx/valgen.h"
 ////@end includes
+#include "corelib/PWScore.h"
 
 /*!
  * Forward declarations
@@ -42,7 +45,7 @@
 #define ID_DBASECOMBOBOX 10002
 #define ID_ELLIPSIS 10003
 #define ID_PASSWORD 10004
-#define ID_CHECKBOX 10005
+#define ID_READONLY 10005
 #define ID_NEWDB 10006
 #define SYMBOL_CSAFECOMBINATIONENTRY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CSAFECOMBINATIONENTRY_TITLE _("Safe Combination Entry")
@@ -58,13 +61,14 @@
 
 class CSafeCombinationEntry: public wxDialog
 {    
-  DECLARE_DYNAMIC_CLASS( CSafeCombinationEntry )
+  DECLARE_CLASS( CSafeCombinationEntry )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  CSafeCombinationEntry();
-  CSafeCombinationEntry( wxWindow* parent, wxWindowID id = SYMBOL_CSAFECOMBINATIONENTRY_IDNAME, const wxString& caption = SYMBOL_CSAFECOMBINATIONENTRY_TITLE, const wxPoint& pos = SYMBOL_CSAFECOMBINATIONENTRY_POSITION, const wxSize& size = SYMBOL_CSAFECOMBINATIONENTRY_SIZE, long style = SYMBOL_CSAFECOMBINATIONENTRY_STYLE );
+  CSafeCombinationEntry(PWScore &core);
+  CSafeCombinationEntry(wxWindow* parent, PWScore &core,
+                        wxWindowID id = SYMBOL_CSAFECOMBINATIONENTRY_IDNAME, const wxString& caption = SYMBOL_CSAFECOMBINATIONENTRY_TITLE, const wxPoint& pos = SYMBOL_CSAFECOMBINATIONENTRY_POSITION, const wxSize& size = SYMBOL_CSAFECOMBINATIONENTRY_SIZE, long style = SYMBOL_CSAFECOMBINATIONENTRY_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CSAFECOMBINATIONENTRY_IDNAME, const wxString& caption = SYMBOL_CSAFECOMBINATIONENTRY_TITLE, const wxPoint& pos = SYMBOL_CSAFECOMBINATIONENTRY_POSITION, const wxSize& size = SYMBOL_CSAFECOMBINATIONENTRY_SIZE, long style = SYMBOL_CSAFECOMBINATIONENTRY_STYLE );
@@ -101,9 +105,12 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationEntry member variables
-  wxComboBox* m_filename;
   wxTextCtrl* m_password;
 ////@end CSafeCombinationEntry member variables
+ private:
+  wxString m_filename;
+  bool m_readOnly;
+  PWScore &m_core;
 };
 
 #endif

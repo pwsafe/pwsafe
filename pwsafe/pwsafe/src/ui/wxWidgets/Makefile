@@ -26,16 +26,14 @@ OUTPUTPATH=GCCDebug
 OBJECTPATH=GCCDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WXWIN)/GCCBuildDebugGTK2/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildDebugGTK2" --libs`
+LIBS=`$(WXWIN)/GCCBuildDebugGTK2/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildDebugGTK2" --libs` -lcore -los -luuid
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb
-LIBPATH=
+LIBPATH=-L../../../lib/debug
 CPPINC=`$(WXWIN)/GCCBuildDebugGTK2/wx-config --inplace --cxxflags`
 GCCFLAGS=
-LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
-CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
 LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2/lib/wx/include/gtk2-ansi-debug-static-2.6"
 MACPACKAGEINFO=
@@ -56,16 +54,14 @@ OUTPUTPATH=GCCRelease
 OBJECTPATH=GCCRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WXWIN)/GCCBuildReleaseGTK2/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildReleaseGTK2" --libs`
+LIBS=`$(WXWIN)/GCCBuildReleaseGTK2/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildReleaseGTK2" --libs` -lcore -los -luuid
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
-LIBPATH=
+LIBPATH=-L../../../lib/release
 CPPINC=`$(WXWIN)/GCCBuildReleaseGTK2/wx-config --inplace --cxxflags`
 GCCFLAGS=
-LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
-CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
 LIBDIRNAME=$(WXWIN)/GCCBuildReleaseGTK2/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2/lib/wx/include/gtk2-ansi-release-static-2.6"
 MACPACKAGEINFO=
@@ -94,8 +90,6 @@ DEBUGFLAGS=-ggdb
 LIBPATH=
 CPPINC=`$(WXWIN)/GCCBuildDebugGTK2Unicode/wx-config --inplace --cxxflags`
 GCCFLAGS=
-LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
-CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
 LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2Unicode/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2Unicode/lib/wx/include/gtk2-unicode-debug-static-2.6"
 MACPACKAGEINFO=
@@ -124,13 +118,16 @@ LIBPATH=
 CPPINC=`$(WXWIN)/GCCBuildReleaseGTK2Unicode/wx-config --inplace --cxxflags`
 GCCFLAGS=
 LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
-CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
-LIBDIRNAME=$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib/wx/include/gtk2-unicode-release-static-2.6"
 MACPACKAGEINFO=
 endif
 endif
 endif
+
+CPPINC += -I../../
+
+LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
+CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
 
 OBJECTS=$(OBJECTPATH)/passwordsafeframe.o $(OBJECTPATH)/pwsafeapp.o $(OBJECTPATH)/safecombinationentry.o $(RESOURCEOBJECT)
 

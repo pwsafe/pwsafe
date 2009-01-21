@@ -1027,7 +1027,7 @@
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">"m_filename"</string>
+                  <string name="proxy-Member variable name">""</string>
                   <string name="proxy-Strings">""</string>
                   <string name="proxy-Initial value">""</string>
                   <string name="proxy-Help text">""</string>
@@ -1039,7 +1039,7 @@
                   <bool name="proxy-Enabled">1</bool>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
                   <string name="proxy-Data variable">"m_filename"</string>
-                  <string name="proxy-Data validator">""</string>
+                  <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                   <string name="proxy-Data source">""</string>
                   <string name="proxy-Data class name">""</string>
                   <string name="proxy-Data class implementation filename">""</string>
@@ -1312,7 +1312,7 @@
                 <bool name="proxy-wxFIXED_MINSIZE">0</bool>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
                 <document>
-                  <string name="title">"wxCheckBox: ID_CHECKBOX"</string>
+                  <string name="title">"wxCheckBox: ID_READONLY"</string>
                   <string name="type">"dialog-control-document"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"checkbox"</string>
@@ -1321,7 +1321,7 @@
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
-                  <string name="proxy-Id name">"ID_CHECKBOX"</string>
+                  <string name="proxy-Id name">"ID_READONLY"</string>
                   <long name="proxy-Id value">10005</long>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Class">"wxCheckBox"</string>
@@ -1336,7 +1336,7 @@
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
                   <string name="proxy-Data variable">"m_readOnly"</string>
-                  <string name="proxy-Data validator">""</string>
+                  <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                   <string name="proxy-Data source">""</string>
                   <string name="proxy-Data class name">""</string>
                   <string name="proxy-Data class implementation filename">""</string>

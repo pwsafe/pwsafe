@@ -1,6 +1,9 @@
 # Baby Makefile for Linux
 #
 
+CONFIG=debug
+#CONFIG=release
+
 NAME=corelib
 
 # Following not used in Linux build
@@ -22,8 +25,8 @@ LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 
 SRC             = $(LIBSRC)
 
-OBJPATH         = ../obj/$(NAME)
-LIBPATH         = ../lib
+OBJPATH         = ../../obj/$(CONFIG)/$(NAME)
+LIBPATH         = ../../lib/$(CONFIG)
 
 #destination related macros
 LIBOBJ	  = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
@@ -31,8 +34,15 @@ LIB	     = $(LIBPATH)/libcore.a
 OBJ	     = $(LIBOBJ)
 
 CXXFLAGS +=  -Wall -I..
+
+ifeq ($(CONFIG),debug)
+CXXFLAGS += -O0 -ggdb
+else ifeq ($(CONFIG),release)
+CXXFLAGS += -O
+endif
+
 # rules
-.PHONY: all clean setup
+.PHONY: all debug release clean setup
 
 $(OBJPATH)/%.o : %.c
 	$(CC) -g  $(CFLAGS)   -c $< -o $@
@@ -41,6 +51,9 @@ $(OBJPATH)/%.o : %.cpp
 	$(CXX) -g $(CXXFLAGS) -c $< -o $@
 
 all : setup $(LIB)
+
+debug release:
+	$(MAKE) all CONFIG=$@
 
 $(LIB): $(LIBOBJ)
 	ar rvus $@ $(filter %.o,$^)
