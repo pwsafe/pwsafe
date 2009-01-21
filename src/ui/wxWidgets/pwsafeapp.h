@@ -21,6 +21,7 @@
 #include "wx/image.h"
 #include "safecombinationentry.h"
 ////@end includes
+#include "corelib/PWScore.h"
 
 /*!
  * Forward declarations
@@ -67,6 +68,8 @@ public:
 
 ////@begin PwsafeApp member variables
 ////@end PwsafeApp member variables
+ private:
+    PWScore m_core;
 };
 
 /*!
