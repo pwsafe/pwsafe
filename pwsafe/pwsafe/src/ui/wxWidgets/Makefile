@@ -30,7 +30,7 @@ LIBS=`$(WXWIN)/GCCBuildDebugGTK2/wx-config --inplace --exec-prefix="$(WXWIN)/GCC
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
-DEBUGFLAGS=-ggdb
+DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=-L../../../lib/debug
 CPPINC=`$(WXWIN)/GCCBuildDebugGTK2/wx-config --inplace --cxxflags`
 GCCFLAGS=
@@ -86,7 +86,7 @@ LIBS=`$(WXWIN)/GCCBuildDebugGTK2Unicode/wx-config --inplace --exec-prefix="$(WXW
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
-DEBUGFLAGS=-ggdb
+DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=
 CPPINC=`$(WXWIN)/GCCBuildDebugGTK2Unicode/wx-config --inplace --cxxflags`
 GCCFLAGS=
@@ -129,7 +129,11 @@ CPPINC += -I../../
 LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
 CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
 
-OBJECTS=$(OBJECTPATH)/passwordsafeframe.o $(OBJECTPATH)/pwsafeapp.o $(OBJECTPATH)/safecombinationentry.o $(RESOURCEOBJECT)
+OBJECTS=$(OBJECTPATH)/passwordsafeframe.o \
+	$(OBJECTPATH)/pwsafeapp.o \
+	$(OBJECTPATH)/safecombinationentry.o \
+	$(OBJECTPATH)/safecombinationsetup.o \
+	$(RESOURCEOBJECT)
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
 
@@ -175,6 +179,9 @@ $(OBJECTPATH)/pwsafeapp.o:	pwsafeapp.cpp pwsafeapp.h safecombinationentry.h
 
 $(OBJECTPATH)/safecombinationentry.o:	safecombinationentry.cpp safecombinationentry.h
 	$(CXX) -c -o $@ $(CPPFLAGS) safecombinationentry.cpp
+
+$(OBJECTPATH)/safecombinationsetup.o:	safecombinationsetup.cpp safecombinationsetup.h
+	$(CXX) -c -o $@ $(CPPFLAGS) safecombinationsetup.cpp
 
 .PHONY:	all clean
 ### End DialogBlocks generated body
