@@ -270,8 +270,9 @@ public:
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
-  StringX GetAutoTypeString(const StringX AutoCmd, const StringX user, 
-                            const StringX pwd);
+  StringX GetAutoTypeString(const StringX AutoCmd, 
+                            const StringX group, const StringX title, const StringX user, 
+                            const StringX pwd, const StringX notes);
   void UpdateLastClipboardAction(const int iaction);
 
   //{{AFX_DATA(DboxMain)

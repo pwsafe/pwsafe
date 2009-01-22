@@ -1048,8 +1048,9 @@ void CEditDlg::OnStcClicked(UINT nID)
       break;
     case IDC_STATIC_AUTO:
       m_stc_autotype.FlashBkgnd(crefGreen);
-      cs_data = m_pDbx->GetAutoTypeString(StringX(m_autotype), StringX(m_username), 
-                                          StringX(m_realpassword));
+      cs_data = m_pDbx->GetAutoTypeString(StringX(m_autotype),
+                                          StringX(m_group), StringX(m_title), StringX(m_username), 
+                                          StringX(m_realpassword), StringX(m_notes));
       iaction = CItemData::AUTOTYPE;
       break;
     default:
