@@ -209,8 +209,13 @@ int DboxMain::Restore()
 void DboxMain::OnValidate() 
 {
   stringT cs_msg;
-  if (!m_core.Validate(cs_msg))
+  bool bchanged = m_core.Validate(cs_msg);
+  if (!bchanged)
     LoadAString(cs_msg, IDS_VALIDATEOK);
+  else {
+    SetChanged(Data);
+    ChangeOkUpdate();
+  }
 
   AfxMessageBox(cs_msg.c_str(), MB_OK);
 }

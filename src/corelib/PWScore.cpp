@@ -1855,7 +1855,7 @@ PWScore::Validate(stringT &status)
       m_pwlist.erase(iter); // erasing item in mid-iteration!
       AddEntry(fixedItem);
     }
-    if (ci.ValidatePWHistory() != 0) {
+    if (!ci.ValidatePWHistory()) {
       Format(cs_Error, IDSC_VALIDATEPWH,
              ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
       rpt.WriteLine(cs_Error);

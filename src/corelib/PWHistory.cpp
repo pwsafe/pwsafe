@@ -33,10 +33,12 @@ bool CreatePWHistoryList(const StringX &pwh_str,
   int n;
   iStringXStream ism(StringX(pwh_s, 1, 2)); // max history 1 byte hex
   ism >> hex >> pwh_max;
-  if (!ism) return false;
+  if (!ism)
+    return false;
   iStringXStream isn(StringX(pwh_s, 3, 2)); // cur # entries 1 byte hex
   isn >> hex >> n;
-  if (!isn) return false;
+  if (!isn)
+    return false;
 
   // Sanity check: Each entry has at least 12 bytes representing
   // time + pw length
@@ -44,6 +46,12 @@ bool CreatePWHistoryList(const StringX &pwh_str,
   if (pwh_s.length() - 5 < unsigned(12 * n)) {
     num_err = n;
     return false;
+  }
+
+  // Case when password history field is too long and no passwords present
+  if (n == 0 && pwh_s.length() != 5) {
+    num_err = (size_t)-1;
+    return retval;
   }
 
   size_t offset = 1 + 2 + 2; // where to extract the next token from pwh_s
