@@ -36,6 +36,19 @@
 
 ////@begin control identifiers
 #define ID_PASSWORDSAFEFRAME 10001
+#define ID_MENU_CLEAR_MRU 10011
+#define ID_EXPORTMENU 10013
+#define ID_EXPORT2OLD1XFORMAT 10013
+#define ID_EXPORT2V2FORMAT 10014
+#define ID_EXPORT2PLAINTEXT 10015
+#define ID_EXPORT2XML 10016
+#define ID_IMPORTMENU 10017
+#define ID_IMPORT_PLAINTEXT 10018
+#define ID_IMPORT_XML 10019
+#define ID_IMPORT_KEEPASS 10020
+#define ID_MERGE 10021
+#define ID_COMPARE 10022
+#define ID_MENUITEM 10012
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
 #define SYMBOL_PASSWORDSAFEFRAME_IDNAME ID_PASSWORDSAFEFRAME
@@ -70,14 +83,16 @@ public:
     void CreateControls();
 
 ////@begin PasswordSafeFrame event handler declarations
+
 ////@end PasswordSafeFrame event handler declarations
 
 ////@begin PasswordSafeFrame member function declarations
-    /// Retrieves bitmap resources
-    wxBitmap GetBitmapResource( const wxString& name );
 
-    /// Retrieves icon resources
-    wxIcon GetIconResource( const wxString& name );
+  /// Retrieves bitmap resources
+  wxBitmap GetBitmapResource( const wxString& name );
+
+  /// Retrieves icon resources
+  wxIcon GetIconResource( const wxString& name );
 ////@end PasswordSafeFrame member function declarations
 
     /// Should we show tooltips?
