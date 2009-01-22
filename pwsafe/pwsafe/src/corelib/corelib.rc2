@@ -75,7 +75,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued %d\n\nNumber of Shortcut warnings issued %d"
+IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d"
   IDSC_AUTOTYPE           "autotype:"
   IDSC_NOCONFIGLOCK       "Unable to get configuration file lock.\n\nWill use registry."
   IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."

@@ -1081,7 +1081,7 @@ bool CItemData::ValidatePWHistory()
 
   size_t pwh_max, num_err;
   PWHistList PWHistList;
-  bool pwh_status = CreatePWHistoryList(pwh,  pwh_max, num_err,
+  bool pwh_status = CreatePWHistoryList(pwh, pwh_max, num_err,
                                         PWHistList, TMC_EXPORT_IMPORT);
   if (num_err == 0)
     return true;
