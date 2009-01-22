@@ -1484,6 +1484,8 @@ void DboxMain::AutoType(const CItemData &ci)
   BlockInput(false);
 #endif
 
+  notes_lines.clear();
+
   // If we hid it, now show it
   if (bMinOnAuto)
     return;
@@ -1497,8 +1499,9 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 }
 
-StringX DboxMain::GetAutoTypeString(const StringX autocmd, const StringX user, 
-                                    const StringX pwd)
+StringX DboxMain::GetAutoTypeString(const StringX autocmd, 
+                                    const StringX group, const StringX title, const StringX user, 
+                                    const StringX pwd, const StringX notes)
 {
   // If empty, try the database default
   StringX AutoCmd(autocmd);
@@ -1515,6 +1518,50 @@ StringX DboxMain::GetAutoTypeString(const StringX autocmd, const StringX user,
         else
           AutoCmd = _T("\\p\\n");
       }
+    }
+  }
+
+  StringX Notes(notes);
+  std::vector<StringX> notes_lines;
+  StringX::size_type index;
+
+    // No recursive substitution (e.g. \p or \u), although '\t' will be replaced by a tab
+  if (!notes.empty()) {
+    // Use \n and \r to tokenise this line
+    StringX::size_type start(0), end(0);
+    const StringX delim = _T("\r\n");
+    StringX line;
+    while (end != StringX::npos) {
+      end = Notes.find(delim, start);
+      line = (Notes.substr(start, (end == StringX::npos) ? StringX::npos : end - start));
+      index = 0;
+      for (;;) {
+        index = line.find(_T("\\t"), index);
+        if (index == line.npos)
+          break;
+        line.replace(index, 2, _T("\t"));
+        index += 1;
+      }
+      notes_lines.push_back(line);
+      start = ((end > (StringX::npos - delim.size()))
+                          ? StringX::npos : end + delim.size());
+    }
+    // Now change '\n' to '\r' in the complete notes field
+    index = 0;
+    for (;;) {
+      index = Notes.find(_T("\r\n"), index);
+      if (index == Notes.npos)
+        break;
+      Notes.replace(index, 2, _T("\r"));
+      index += 1;
+    }
+    index = 0;
+    for (;;) {
+      index = Notes.find(_T("\\t"), index);
+      if (index == Notes.npos)
+        break;
+      Notes.replace(index, 2, _T("\t"));
+      index += 1;
     }
   }
 
@@ -1540,22 +1587,70 @@ StringX DboxMain::GetAutoTypeString(const StringX autocmd, const StringX user,
         case TCHAR('t'):
           tmp += TCHAR('\t');
           break;
+        case TCHAR('g'):
+          tmp += group;
+          break;
+        case TCHAR('i'):
+          tmp += title;
+          break;
         case TCHAR('u'):
           tmp += user;
           break;
         case TCHAR('p'):
           tmp += pwd;
           break;
+        case TCHAR('o'):
+        {
+          if (n == (N - 1)) {
+            // This was the last character - send the lot!
+            tmp += Notes;
+            break;
+          }
+          int line_number(0);
+          int gNumIts(0);
+          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
+            if (_istdigit(AutoCmd[n])) {
+              line_number *= 10;
+              line_number += (AutoCmd[n] - TCHAR('0'));
+            } else
+              break; // for loop
+          }
+          if (line_number == 0) {
+            // Send the lot
+            tmp += notes;
+          } else if (line_number <= (int)notes_lines.size()) {
+            // User specifies a too big a line number - ignore the lot
+            tmp += notes_lines[line_number - 1];
+          }
+    
+          // Backup the extra character that delimited the \oNNN string
+          n--;
+          break; // case 'o'
+        }
         case TCHAR('d'):
-          // Ignore delay!
+          // Ignore delay - treat it as just a string!
+          tmp += TCHAR("\\d");
           break; // case 'd'
+        case TCHAR('b'): // backspace!
+          tmp += TCHAR('\b');
+          break;
+        // Ignore explicit control characters
+        case TCHAR('a'): // bell (can't hear it during testing!)
+        case TCHAR('v'): // vertical tab
+        case TCHAR('f'): // form feed
+        case TCHAR('e'): // escape
+        case TCHAR('x'): // hex digits (\xNN)
+          break;
+        // Ignore any others!
+        // '\cC', '\uXXXX', '\OOO', '\<any other charatcer not recognised above>'
         default:
-          tmp += _T("\\") + curChar;
           break;
       }
     } else
       tmp += curChar;
   }
+
+  notes_lines.clear();
   return tmp;
 }
 
