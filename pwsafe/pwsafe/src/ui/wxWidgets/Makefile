@@ -177,7 +177,7 @@ $(OBJECTPATH)/passwordsafeframe.o:	passwordsafeframe.cpp passwordsafeframe.h
 $(OBJECTPATH)/pwsafeapp.o:	pwsafeapp.cpp pwsafeapp.h safecombinationentry.h
 	$(CXX) -c -o $@ $(CPPFLAGS) pwsafeapp.cpp
 
-$(OBJECTPATH)/safecombinationentry.o:	safecombinationentry.cpp safecombinationentry.h
+$(OBJECTPATH)/safecombinationentry.o:	safecombinationentry.cpp safecombinationentry.h safecombinationsetup.h
 	$(CXX) -c -o $@ $(CPPFLAGS) safecombinationentry.cpp
 
 $(OBJECTPATH)/safecombinationsetup.o:	safecombinationsetup.cpp safecombinationsetup.h

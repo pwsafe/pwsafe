@@ -29,6 +29,7 @@
 using namespace std;
 
 #include "pwsafeapp.h"
+#include "passwordsafeframe.h"
 #include "corelib/SysInfo.h"
 #include "corelib/PWSprefs.h"
 
@@ -195,25 +196,21 @@ bool PwsafeApp::OnInit()
   }
   // dbox.SetValidate(cmd_validate);
   
-  // Get the file, r/w mode and password from user
-  // Note that file may be new
-	CSafeCombinationEntry* initWindow = new CSafeCombinationEntry(NULL, m_core);
-	int returnValue = initWindow->ShowModal();
-	initWindow->Destroy();
+  if (!cmd_closed) {
+    // Get the file, r/w mode and password from user
+    // Note that file may be new
+    CSafeCombinationEntry* initWindow = new CSafeCombinationEntry(NULL, m_core);
+    int returnValue = initWindow->ShowModal();
+    initWindow->Destroy();
 
-  if (returnValue == wxID_OK) {
-    // check password, if not new
-    // start main window
-    cout << "selected database: " << m_core.GetCurFile();
-    if (m_core.IsReadOnly())
-      cout << "[ro]";
-    cout << endl;
-  } else {
-    // display appropriate error message, go home.
+    if (returnValue != wxID_OK) {
+      return false;
+    }
   }
 
-	// A modal dialog application should return false to terminate the app.
-	return false;
+  PasswordSafeFrame *pws = new PasswordSafeFrame(NULL);
+  pws->Show();
+  return true;
 }
 
 
