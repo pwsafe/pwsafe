@@ -196,6 +196,8 @@ bool PwsafeApp::OnInit()
   }
   // dbox.SetValidate(cmd_validate);
   
+  PasswordSafeFrame *pws = new PasswordSafeFrame(NULL, m_core);
+
   if (!cmd_closed) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
@@ -206,9 +208,9 @@ bool PwsafeApp::OnInit()
     if (returnValue != wxID_OK) {
       return false;
     }
+    pws->Load(initWindow->GetPassword());
   }
 
-  PasswordSafeFrame *pws = new PasswordSafeFrame(NULL);
   pws->Show();
   return true;
 }
