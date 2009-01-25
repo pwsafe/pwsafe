@@ -1094,29 +1094,7 @@ void DboxMain::OnCopyNotes()
     }
   }
 
-  const StringX notes = ci->GetNotes();
-  const StringX url = ci->GetURL();
-  const StringX autotype = ci->GetAutoType();
-  StringX clipboard_data;
-  CString cs_text;
-
-  clipboard_data = notes;
-  if (!url.empty()) {
-    if (ci->IsURLEmail())
-      cs_text.LoadString(IDS_COPYURL);
-    else
-      cs_text.LoadString(IDS_COPYEMAIL);
-    clipboard_data += LPCTSTR(cs_text);
-    clipboard_data += url;
-  }
-
-  if (!autotype.empty()) {
-    cs_text.LoadString(IDS_COPYAUTOTYPE);
-    clipboard_data += LPCTSTR(cs_text);
-    clipboard_data += autotype;
-  }
-
-  SetClipboardData(clipboard_data);
+  SetClipboardData(ci->GetNotes());
   UpdateLastClipboardAction(CItemData::NOTES);
   UpdateAccessTime(ci_original);
 }
