@@ -133,6 +133,8 @@ OBJECTS=$(OBJECTPATH)/passwordsafeframe.o \
 	$(OBJECTPATH)/pwsafeapp.o \
 	$(OBJECTPATH)/safecombinationentry.o \
 	$(OBJECTPATH)/safecombinationsetup.o \
+	$(OBJECTPATH)/PWSgrid.o \
+	$(OBJECTPATH)/PWStree.o \
 	$(RESOURCEOBJECT)
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
@@ -171,8 +173,15 @@ $(OUTPUTPATH)/$(PROGRAM).app/Contents/PkgInfo: $(OUTPUTPATH)/$(PROGRAM) $(INFOPL
 	ln -f $(OUTPUTPATH)/$(PROGRAM) $(OUTPUTPATH)/$(PROGRAM).app/Contents/MacOS/$(PROGRAM)
 	cp -f $(ICNSSOURCE) $(ICNSDEST)
 
-$(OBJECTPATH)/passwordsafeframe.o:	passwordsafeframe.cpp passwordsafeframe.h
+$(OBJECTPATH)/passwordsafeframe.o:	passwordsafeframe.cpp passwordsafeframe.h \
+																		PWSgrid.h PWStree.h
 	$(CXX) -c -o $@ $(CPPFLAGS) passwordsafeframe.cpp
+
+$(OBJECTPATH)/PWSgrid.o:	PWSgrid.cpp PWSgrid.h
+	$(CXX) -c -o $@ $(CPPFLAGS) PWSgrid.cpp
+
+$(OBJECTPATH)/PWStree.o:	PWStree.cpp PWStree.h
+	$(CXX) -c -o $@ $(CPPFLAGS) PWStree.cpp
 
 $(OBJECTPATH)/pwsafeapp.o:	pwsafeapp.cpp pwsafeapp.h safecombinationentry.h
 	$(CXX) -c -o $@ $(CPPFLAGS) pwsafeapp.cpp

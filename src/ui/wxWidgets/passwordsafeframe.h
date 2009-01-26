@@ -22,7 +22,6 @@
 
 ////@begin includes
 #include "wx/frame.h"
-#include "wx/grid.h"
 ////@end includes
 #include "corelib/PWScore.h"
 
@@ -31,6 +30,8 @@
  */
 
 ////@begin forward declarations
+class PWSGrid;
+class PWSTreeCtrl;
 ////@end forward declarations
 
 /*!
@@ -89,7 +90,6 @@
 #define ID_RESTORE 10058
 #define ID_OPTIONS 10059
 #define ID_MENUITEM 10012
-#define ID_LISTBOX 10060
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
 #define SYMBOL_PASSWORDSAFEFRAME_IDNAME ID_PASSWORDSAFEFRAME
@@ -129,6 +129,12 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
   void OnExitClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
+  void OnListViewClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
+  void OnTreeViewClick( wxCommandEvent& event );
+
 ////@end PasswordSafeFrame event handler declarations
 
 ////@begin PasswordSafeFrame member function declarations
@@ -150,10 +156,14 @@ public:
     int Load(const wxString &passwd);
     
 ////@begin PasswordSafeFrame member variables
+  PWSGrid* m_grid;
+  PWSTreeCtrl* m_tree;
 ////@end PasswordSafeFrame member variables
  private:
+  void ShowGrid(bool show = true);
+  void ShowTree(bool show = true);
     PWScore &m_core;
-    wxGrid *m_grid;
+    enum {TREE, GRID} m_currentView;
   };
 
 #endif

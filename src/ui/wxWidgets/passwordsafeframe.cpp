@@ -24,6 +24,8 @@
 #endif
 
 ////@begin includes
+#include "PWSgrid.h"
+#include "PWStree.h"
 ////@end includes
 
 #include "passwordsafeframe.h"
@@ -48,6 +50,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 ////@begin PasswordSafeFrame event table entries
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
 
+  EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
+
+  EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
+
 ////@end PasswordSafeFrame event table entries
 
 END_EVENT_TABLE()
@@ -58,7 +64,7 @@ END_EVENT_TABLE()
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core)
+: m_core(core), m_currentView(GRID)
 {
     Init();
 }
@@ -67,7 +73,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core)
+  : m_core(core), m_currentView(GRID)
 {
     Init();
     Create( parent, id, caption, pos, size, style );
@@ -108,6 +114,8 @@ PasswordSafeFrame::~PasswordSafeFrame()
 void PasswordSafeFrame::Init()
 {
 ////@begin PasswordSafeFrame member initialisation
+  m_grid = NULL;
+  m_tree = NULL;
 ////@end PasswordSafeFrame member initialisation
 }
 
@@ -214,15 +222,14 @@ void PasswordSafeFrame::CreateControls()
   menuBar->Append(itemMenu79, _("Help"));
   itemFrame1->SetMenuBar(menuBar);
 
-  m_grid = new wxGrid(itemFrame1, ID_LISTBOX,
-                      wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+  m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
   m_grid->SetDefaultColSize(50);
   m_grid->SetDefaultRowSize(25);
   m_grid->SetColLabelSize(25);
-  m_grid->SetRowLabelSize(15);
+  m_grid->SetRowLabelSize(50);
   m_grid->CreateGrid(0, 2, wxGrid::wxGridSelectRows);
-  m_grid->SetColLabelValue(0, _("Title"));
-  m_grid->SetColLabelValue(1, _("User"));
+
+  m_tree = new PWSTreeCtrl( itemFrame1, ID_TREECTRL, wxDefaultPosition, wxSize(100, 100), wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
 
 ////@end PasswordSafeFrame content construction
 }
@@ -271,6 +278,25 @@ int PasswordSafeFrame::Load(const wxString &passwd)
 
 bool PasswordSafeFrame::Show(bool show)
 {
+  ShowGrid(show && (m_currentView == GRID));
+  ShowTree(show && (m_currentView == TREE));
+  return wxFrame::Show(show);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
+ */
+
+void PasswordSafeFrame::OnExitClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT in PasswordSafeFrame.
+  // Before editing this code, remove the block markers.
+  Destroy();
+////@end wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT in PasswordSafeFrame. 
+}
+
+void PasswordSafeFrame::ShowGrid(bool show)
+{
   if (show) {
     int N = m_grid->GetNumberRows();
     if (N > 0)
@@ -289,18 +315,33 @@ bool PasswordSafeFrame::Show(bool show)
       row++;
     }
   }
-  return wxFrame::Show(show);
+  m_grid->Show(show);
 }
 
+void PasswordSafeFrame::ShowTree(bool show)
+{
+  m_tree->Show(show);
+}
+
+
 /*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
  */
 
-void PasswordSafeFrame::OnExitClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT in PasswordSafeFrame.
-  // Before editing this code, remove the block markers.
-  Destroy();
-////@end wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT in PasswordSafeFrame. 
+  ShowTree(false);
+  ShowGrid(true);
+}
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
+ */
+
+void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& event )
+{
+  ShowGrid(false);
+  ShowTree(true);
 }
 
