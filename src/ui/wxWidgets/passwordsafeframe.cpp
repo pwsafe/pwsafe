@@ -222,14 +222,29 @@ void PasswordSafeFrame::CreateControls()
   menuBar->Append(itemMenu79, _("Help"));
   itemFrame1->SetMenuBar(menuBar);
 
-  m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-  m_grid->SetDefaultColSize(50);
-  m_grid->SetDefaultRowSize(25);
-  m_grid->SetColLabelSize(25);
-  m_grid->SetRowLabelSize(50);
-  m_grid->CreateGrid(0, 2, wxGrid::wxGridSelectRows);
+  wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
+  itemFrame1->SetSizer(itemBoxSizer83);
 
-  m_tree = new PWSTreeCtrl( itemFrame1, ID_TREECTRL, wxDefaultPosition, wxSize(100, 100), wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
+  // Start with grid shown
+  m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+  m_grid->CreateGrid(0, 2, wxGrid::wxGridSelectRows);
+  // m_grid->AutoSizeColumns(); -- not a good idea
+  // set column width to half of window width
+  m_grid->SetColLabelValue(0, _("Title"));
+  m_grid->SetColLabelValue(1, _("User"));
+
+  itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
+  int w,h;
+  GetClientSize(&w, &h);
+  m_grid->SetSize(w, h);
+  itemBoxSizer83->Show(m_grid);
+  // and tree hidden. TBD - restore initial view from preference.
+  m_tree = new PWSTreeCtrl( itemFrame1, ID_TREECTRL, wxDefaultPosition,
+                            wxSize(100, 100),
+                            wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
+  itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
+  itemBoxSizer83->Hide(m_tree);
+  itemBoxSizer83->Layout();
 
 ////@end PasswordSafeFrame content construction
 }
@@ -315,6 +330,9 @@ void PasswordSafeFrame::ShowGrid(bool show)
       row++;
     }
   }
+  int w,h;
+  GetClientSize(&w, &h);
+  m_grid->SetSize(w, h);
   m_grid->Show(show);
 }
 
