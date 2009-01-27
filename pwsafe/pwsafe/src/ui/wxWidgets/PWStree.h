@@ -5,13 +5,9 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-#ifndef __PWSTreeCtrl_H
-#define __PWSTreeCtrl_H
 /** \file
 * 
 */
-
-#endif /* __PWSTreeCtrl_H */
 
 #ifndef _PWSTREECTRL_H_
 #define _PWSTREECTRL_H_
@@ -24,6 +20,7 @@
 ////@begin includes
 #include "wx/treectrl.h"
 ////@end includes
+#include "corelib/ItemData.h"
 
 /*!
  * Forward declarations
@@ -77,6 +74,8 @@ public:
 ////@end PWSTreeCtrl event handler declarations
 
 ////@begin PWSTreeCtrl member function declarations
+  void Clear() {DeleteAllItems();} // consistent name w/PWSgrid
+  void AddItem(const CItemData &item);
 
 ////@end PWSTreeCtrl member function declarations
 

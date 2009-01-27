@@ -110,3 +110,16 @@ void PWSTreeCtrl::CreateControls()
 ////@end PWSTreeCtrl content construction
 }
 
+void PWSTreeCtrl::AddItem(const CItemData &item)
+{
+  wxString group = item.GetGroup().c_str();
+  wxString title = item.GetTitle().c_str();
+  wxString user = item.GetUser().c_str();
+  wxString disp = title;
+  if (!group.empty())
+    disp = group + "." + disp;
+  if (!user.empty())
+    disp += " [" + user + "]";
+  AppendItem(GetRootItem(), disp);
+}
+
