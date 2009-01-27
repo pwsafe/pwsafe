@@ -232,16 +232,20 @@ void PasswordSafeFrame::CreateControls()
   // set column width to half of window width
   m_grid->SetColLabelValue(0, _("Title"));
   m_grid->SetColLabelValue(1, _("User"));
-
-  itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
   int w,h;
   GetClientSize(&w, &h);
   m_grid->SetSize(w, h);
+  int cw = w/2; // 2 = number of columns
+  m_grid->SetColSize(0, cw);
+  m_grid->SetColSize(1, cw);
+
+  itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
   itemBoxSizer83->Show(m_grid);
   // and tree hidden. TBD - restore initial view from preference.
   m_tree = new PWSTreeCtrl( itemFrame1, ID_TREECTRL, wxDefaultPosition,
                             wxSize(100, 100),
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
+  m_tree->SetSize(w, h);
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
   itemBoxSizer83->Hide(m_tree);
   itemBoxSizer83->Layout();
@@ -313,9 +317,7 @@ void PasswordSafeFrame::OnExitClick( wxCommandEvent& event )
 void PasswordSafeFrame::ShowGrid(bool show)
 {
   if (show) {
-    int N = m_grid->GetNumberRows();
-    if (N > 0)
-      m_grid->DeleteRows(0, N);
+    m_grid->Clear();
 
     m_grid->AppendRows(m_core.GetNumEntries());
     ItemListConstIter iter;
@@ -323,10 +325,7 @@ void PasswordSafeFrame::ShowGrid(bool show)
     for (iter = m_core.GetEntryIter();
          iter != m_core.GetEntryEndIter();
          iter++) {
-      wxString title = iter->second.GetTitle().c_str();
-      wxString user = iter->second.GetUser().c_str();
-      m_grid->SetCellValue(row, 0, title);
-      m_grid->SetCellValue(row, 1, user);
+      m_grid->AddItem(iter->second, row);
       row++;
     }
   }
@@ -338,6 +337,16 @@ void PasswordSafeFrame::ShowGrid(bool show)
 
 void PasswordSafeFrame::ShowTree(bool show)
 {
+  if (show) {
+    m_tree->DeleteAllItems();
+    ItemListConstIter iter;
+    for (iter = m_core.GetEntryIter();
+         iter != m_core.GetEntryEndIter();
+         iter++) {
+      m_tree->AddItem(iter->second);
+    }
+  }
+
   m_tree->Show(show);
 }
 

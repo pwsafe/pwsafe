@@ -5,13 +5,9 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
-#ifndef __pwsgrid_H
-#define __pwsgrid_H
 /** \file
 * 
 */
-
-#endif /* __pwsgrid_H */
 
 #ifndef _PWSGRID_H_
 #define _PWSGRID_H_
@@ -24,6 +20,7 @@
 ////@begin includes
 #include "wx/grid.h"
 ////@end includes
+#include "corelib/ItemData.h"
 
 /*!
  * Forward declarations
@@ -77,7 +74,8 @@ public:
 ////@end PWSGrid event handler declarations
 
 ////@begin PWSGrid member function declarations
-
+  void Clear();
+  void AddItem(const CItemData &item, int row);
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 

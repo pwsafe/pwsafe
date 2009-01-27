@@ -145,3 +145,18 @@ wxIcon PWSGrid::GetIconResource( const wxString& name )
   return wxNullIcon;
 ////@end PWSGrid icon retrieval
 }
+
+void PWSGrid::Clear()
+{
+  int N = GetNumberRows();
+  if (N > 0)
+    DeleteRows(0, N);
+}
+
+void PWSGrid::AddItem(const CItemData &item, int row)
+{
+  wxString title = item.GetTitle().c_str();
+  wxString user = item.GetUser().c_str();
+  SetCellValue(row, 0, title);
+  SetCellValue(row, 1, user);
+}
