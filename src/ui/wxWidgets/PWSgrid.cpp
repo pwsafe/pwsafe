@@ -108,6 +108,12 @@ void PWSGrid::CreateControls()
 {    
 ////@begin PWSGrid content construction
 ////@end PWSGrid content construction
+  CreateGrid(0, 2, wxGrid::wxGridSelectRows);
+  // AutoSizeColumns(); -- not a good idea
+  // set column width to half of window width
+  SetColLabelValue(0, _("Title"));
+  SetColLabelValue(1, _("User"));
+  SetRowLabelSize(0);
 }
 
 

@@ -227,11 +227,6 @@ void PasswordSafeFrame::CreateControls()
 
   // Start with grid shown
   m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-  m_grid->CreateGrid(0, 2, wxGrid::wxGridSelectRows);
-  // m_grid->AutoSizeColumns(); -- not a good idea
-  // set column width to half of window width
-  m_grid->SetColLabelValue(0, _("Title"));
-  m_grid->SetColLabelValue(1, _("User"));
   int w,h;
   GetClientSize(&w, &h);
   m_grid->SetSize(w, h);
