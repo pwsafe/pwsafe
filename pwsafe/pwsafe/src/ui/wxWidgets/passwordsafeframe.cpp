@@ -226,21 +226,15 @@ void PasswordSafeFrame::CreateControls()
   itemFrame1->SetSizer(itemBoxSizer83);
 
   // Start with grid shown
-  m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
-  int w,h;
-  GetClientSize(&w, &h);
-  m_grid->SetSize(w, h);
-  int cw = w/2; // 2 = number of columns
-  m_grid->SetColSize(0, cw);
-  m_grid->SetColSize(1, cw);
+  m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition,
+                        itemFrame1->GetClientSize(), wxHSCROLL|wxVSCROLL );
 
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
   itemBoxSizer83->Show(m_grid);
   // and tree hidden. TBD - restore initial view from preference.
   m_tree = new PWSTreeCtrl( itemFrame1, ID_TREECTRL, wxDefaultPosition,
-                            wxSize(100, 100),
+                            itemFrame1->GetClientSize(),
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
-  m_tree->SetSize(w, h);
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
   itemBoxSizer83->Hide(m_tree);
   itemBoxSizer83->Layout();
