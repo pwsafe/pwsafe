@@ -74,11 +74,13 @@ public:
 ////@end PWSTreeCtrl event handler declarations
 
 ////@begin PWSTreeCtrl member function declarations
+////@end PWSTreeCtrl member function declarations
   void Clear() {DeleteAllItems();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
-
-////@end PWSTreeCtrl member function declarations
-
+ private:
+  bool ExistsInTree(wxTreeItemId node,
+                    const StringX &s, wxTreeItemId &si);
+  wxTreeItemId AddGroup(const StringX &group);
 ////@begin PWSTreeCtrl member variables
 ////@end PWSTreeCtrl member variables
 };

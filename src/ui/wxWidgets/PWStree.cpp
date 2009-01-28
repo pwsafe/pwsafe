@@ -110,16 +110,76 @@ void PWSTreeCtrl::CreateControls()
 ////@end PWSTreeCtrl content construction
 }
 
+// XXX taken from Windows PWSTreeCtrl.cpp
+// XXX move to corelib
+static StringX GetPathElem(StringX &path)
+{
+  // Get first path element and chop it off, i.e., if
+  // path = "a.b.c.d"
+  // will return "a" and path will be "b.c.d"
+  // (assuming GROUP_SEP is '.')
+  const char GROUP_SEP = '.';
+
+  StringX retval;
+  StringX::size_type N = path.find(GROUP_SEP);
+  if (N == StringX::npos) {
+    retval = path;
+    path = "";
+  } else {
+    const StringX::size_type Len = path.length();
+    retval = path.substr(0, N);
+    path = path.substr(Len - N - 1);
+  }
+  return retval;
+}
+
+bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,
+                               const StringX &s, wxTreeItemId &si)
+{
+  // returns true iff s is a direct descendant of node
+  wxTreeItemIdValue cookie;
+  wxTreeItemId ti = GetFirstChild(node, cookie);
+
+  while (ti) {
+    const wxString itemText = GetItemText(ti);
+    if (itemText == s.c_str()) {
+      si = ti;
+      return true;
+    }
+    ti = GetNextChild(ti, cookie);
+  }
+  return false;
+}
+
+
+wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
+{
+  wxTreeItemId ti = GetRootItem();
+  // Add a group at the end of path
+  wxTreeItemId si;
+  if (!group.empty()) {
+    StringX path = group;
+    StringX s;
+    do {
+      s = GetPathElem(path);
+      if (!ExistsInTree(ti, s, si)) {
+        ti = AppendItem(ti, s.c_str());
+        // SetItemImage(ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
+      } else
+        ti = si;
+    } while (!path.empty());
+  }
+  return ti;
+}
+
 void PWSTreeCtrl::AddItem(const CItemData &item)
 {
-  wxString group = item.GetGroup().c_str();
   wxString title = item.GetTitle().c_str();
   wxString user = item.GetUser().c_str();
   wxString disp = title;
-  if (!group.empty())
-    disp = group + "." + disp;
+  wxTreeItemId gnode = AddGroup(item.GetGroup());
   if (!user.empty())
     disp += " [" + user + "]";
-  AppendItem(GetRootItem(), disp);
+  AppendItem(gnode, disp);
 }
 
