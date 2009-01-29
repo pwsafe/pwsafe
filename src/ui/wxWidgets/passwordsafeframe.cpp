@@ -29,6 +29,7 @@
 ////@end includes
 
 #include "passwordsafeframe.h"
+#include "corelib/PWSprefs.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -225,20 +226,26 @@ void PasswordSafeFrame::CreateControls()
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
   itemFrame1->SetSizer(itemBoxSizer83);
 
-  // Start with grid shown
   m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition,
                         itemFrame1->GetClientSize(), wxHSCROLL|wxVSCROLL );
 
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
-  itemBoxSizer83->Show(m_grid);
-  // and tree hidden. TBD - restore initial view from preference.
+
   m_tree = new PWSTreeCtrl( itemFrame1, ID_TREECTRL, wxDefaultPosition,
                             itemFrame1->GetClientSize(),
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
-  itemBoxSizer83->Hide(m_tree);
   itemBoxSizer83->Layout();
 
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  const StringX lastView = prefs->GetPref(PWSprefs::LastView);
+  if (lastView == "list") {
+    itemBoxSizer83->Show(m_grid);
+    itemBoxSizer83->Hide(m_tree);
+  } else {
+    itemBoxSizer83->Show(m_tree);
+    itemBoxSizer83->Hide(m_grid);
+  }
 ////@end PasswordSafeFrame content construction
 }
 
@@ -346,6 +353,7 @@ void PasswordSafeFrame::ShowTree(bool show)
 
 void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
 {
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, "list");
   ShowTree(false);
   ShowGrid(true);
 }
@@ -357,6 +365,7 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& event )
 {
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, "tree");
   ShowGrid(false);
   ShowTree(true);
 }

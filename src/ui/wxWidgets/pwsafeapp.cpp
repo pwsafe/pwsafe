@@ -1,13 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        pwsafeapp.cpp
-// Purpose:     
-// Author:      Rony Shapiro
-// Modified by: 
-// Created:     Wed 14 Jan 2009 10:11:38 PM IST
-// RCS-ID:      
-// Copyright:   Copyright (c) 2003-2009 Rony Shapiro <ronys@users.sourceforge.net>
-// Licence:     
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * Copyright (c) 2003-2009 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License 2.0 terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license-2.0.php
+ */
+
+/** \file pwsafeapp.cpp
+* 
+*/
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -183,7 +184,14 @@ bool PwsafeApp::OnInit()
     PWSprefs::SetConfigFile(cfg_file.c_str());
 
   m_core.SetReadOnly(cmd_ro);
+  // if filename passed in command line, it tkae precedence
+  // over that in preference:
+  if (filename.empty()) {
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    filename =  prefs->GetPref(PWSprefs::CurrentFile).c_str();
+  }
   m_core.SetCurFile(filename.c_str());
+
   if (cmd_closed) {
     m_core.SetCurFile(wxT(""));
     // dbox.SetStartClosed(true);
@@ -222,6 +230,11 @@ bool PwsafeApp::OnInit()
 
 int PwsafeApp::OnExit()
 {    
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (!m_core.GetCurFile().empty())
+    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+  // Save Application related preferences
+  prefs->SaveApplicationPreferences();
 ////@begin PwsafeApp cleanup
 	return wxApp::OnExit();
 ////@end PwsafeApp cleanup
