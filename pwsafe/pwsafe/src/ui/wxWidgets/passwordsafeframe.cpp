@@ -127,6 +127,10 @@ void PasswordSafeFrame::Init()
 
 void PasswordSafeFrame::CreateControls()
 {    
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  const StringX lastView = prefs->GetPref(PWSprefs::LastView);
+  m_currentView = (lastView == "list") ? GRID : TREE;
+
 ////@begin PasswordSafeFrame content construction
   PasswordSafeFrame* itemFrame1 = this;
 
@@ -182,6 +186,8 @@ void PasswordSafeFrame::CreateControls()
   wxMenu* itemMenu47 = new wxMenu;
   itemMenu47->Append(ID_LIST_VIEW, _("Flattened &List"), _T(""), wxITEM_RADIO);
   itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), _T(""), wxITEM_RADIO);
+  if (m_currentView == TREE)
+    itemMenu47->Check(ID_TREE_VIEW, true);
   itemMenu47->AppendSeparator();
   itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Tooolbar &visible"), _T(""), wxITEM_CHECK);
   itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), _T(""), wxITEM_CHECK);
@@ -237,15 +243,7 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
   itemBoxSizer83->Layout();
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  const StringX lastView = prefs->GetPref(PWSprefs::LastView);
-  if (lastView == "list") {
-    itemBoxSizer83->Show(m_grid);
-    itemBoxSizer83->Hide(m_tree);
-  } else {
-    itemBoxSizer83->Show(m_tree);
-    itemBoxSizer83->Hide(m_grid);
-  }
+
 ////@end PasswordSafeFrame content construction
 }
 
