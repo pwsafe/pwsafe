@@ -49,6 +49,8 @@ IMPLEMENT_CLASS( PasswordSafeFrame, wxFrame )
 BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 ////@begin PasswordSafeFrame event table entries
+  EVT_UPDATE_UI( wxID_CLOSE, PasswordSafeFrame::OnCloseUpdate )
+
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
 
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
@@ -186,8 +188,6 @@ void PasswordSafeFrame::CreateControls()
   wxMenu* itemMenu47 = new wxMenu;
   itemMenu47->Append(ID_LIST_VIEW, _("Flattened &List"), _T(""), wxITEM_RADIO);
   itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), _T(""), wxITEM_RADIO);
-  if (m_currentView == TREE)
-    itemMenu47->Check(ID_TREE_VIEW, true);
   itemMenu47->AppendSeparator();
   itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Tooolbar &visible"), _T(""), wxITEM_CHECK);
   itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), _T(""), wxITEM_CHECK);
@@ -234,7 +234,6 @@ void PasswordSafeFrame::CreateControls()
 
   m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition,
                         itemFrame1->GetClientSize(), wxHSCROLL|wxVSCROLL );
-
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
 
   m_tree = new PWSTreeCtrl( itemFrame1, ID_TREECTRL, wxDefaultPosition,
@@ -243,8 +242,9 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
   itemBoxSizer83->Layout();
 
-
 ////@end PasswordSafeFrame content construction
+  if (m_currentView == TREE)
+    itemMenu47->Check(ID_TREE_VIEW, true);
 }
 
 
@@ -283,10 +283,29 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
 ////@end PasswordSafeFrame icon retrieval
 }
 
+void PasswordSafeFrame::SetTitle(const wxString& title)
+{
+  wxString newtitle = "PasswordSafe";
+  if (!title.empty()) {
+    newtitle += " - ";
+    StringX fname = title.c_str();
+    StringX::size_type findex = fname.rfind("/");
+    if (findex != StringX::npos)
+      fname = fname.substr(findex + 1);
+    newtitle += fname.c_str();
+  }
+  wxFrame::SetTitle(newtitle);
+}
 
 int PasswordSafeFrame::Load(const wxString &passwd)
 {
-  return m_core.ReadCurFile(passwd.c_str());
+  int status = m_core.ReadCurFile(passwd.c_str());
+  if (status == PWScore::SUCCESS) {
+    SetTitle(m_core.GetCurFile().c_str());
+  } else {
+    SetTitle("");
+  }
+  return status;
 }
 
 bool PasswordSafeFrame::Show(bool show)
@@ -366,5 +385,83 @@ void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& event )
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, "tree");
   ShowGrid(false);
   ShowTree(true);
+}
+
+int PasswordSafeFrame::Save()
+{
+  int rc = m_core.WriteCurFile();
+  if (rc != PWScore::SUCCESS) {
+    wxString msg(_("Failed to save database "));
+    msg += m_core.GetCurFile().c_str();
+    wxMessageDialog dlg(this, msg, GetTitle(),
+                        (wxICON_ERROR | wxOK));
+    dlg.ShowModal();
+  }
+  return rc;
+}
+
+int PasswordSafeFrame::SaveIfChanged()
+{
+  // offer to save existing database if it was modified.
+  // used before loading another
+  // returns PWScore::SUCCESS if save succeeded or if user decided
+  // not to save
+
+  if (m_core.IsChanged()) {
+    wxString prompt(_("Do you want to save changes to the password database: "));
+    prompt += m_core.GetCurFile().c_str();
+    prompt += "?";
+    wxMessageDialog dlg(this, prompt, GetTitle(),
+                        (wxICON_QUESTION | wxCANCEL |
+                         wxYES_NO | wxYES_DEFAULT));
+    int rc = dlg.ShowModal();
+    switch (rc) {
+      case wxCANCEL:
+        return PWScore::USER_CANCEL;
+      case wxYES:
+        rc = Save();
+        // Make sure that file was successfully written
+        if (rc == PWScore::SUCCESS)
+          break;
+        else
+          return PWScore::CANT_OPEN_FILE;
+      case wxNO:
+        // Reset changed flag
+        // SetChanged(Clear);
+        break;
+    }
+  }
+  return PWScore::SUCCESS;
+}
+
+void PasswordSafeFrame::ClearData()
+{
+  m_core.ReInit();
+  m_grid->BeginBatch();
+  m_grid->ClearGrid();
+  m_grid->EndBatch();
+  m_tree->DeleteAllItems();
+}
+
+
+/*!
+ * wxEVT_UPDATE_UI event handler for wxID_CLOSE
+ */
+
+void PasswordSafeFrame::OnCloseUpdate( wxUpdateUIEvent& event )
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Save Application related preferences
+  prefs->SaveApplicationPreferences();
+  if( !m_core.GetCurFile().empty() ) {
+    int rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS)
+      return;
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
+    m_core.SetCurFile(_T(""));
+    ClearData();
+    SetTitle("");
+  }
 }
 

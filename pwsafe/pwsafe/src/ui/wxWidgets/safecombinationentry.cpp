@@ -29,9 +29,10 @@
 #include "safecombinationsetup.h"
 #include "corelib/PWSdirs.h"
 #include "os/file.h"
-
 ////@begin XPM images
 ////@end XPM images
+#include "../graphics/cpane.xpm"
+#include "../graphics/psafetxt.xpm"
 
 
 /*!
@@ -140,7 +141,10 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/cpane.bmp")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap(itemDialog1, wxID_STATIC,
+                                                         wxBitmap(cpane_xpm),
+                                                         wxDefaultPosition,
+                                                         itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
@@ -149,7 +153,10 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/psafetxt.bmp")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(111, 16)), 0 );
+  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap(itemDialog1, wxID_STATIC,
+                                                          wxBitmap(psafetxt_xpm),
+                                                         wxDefaultPosition,
+                                                         itemDialog1->ConvertDialogToPixels(wxSize(111, 16)), 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Version 3.16"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -209,6 +216,10 @@ void CSafeCombinationEntry::CreateControls()
 ////@end CSafeCombinationEntry content construction
   // if m_readOnly, then don't allow user to change it
   itemCheckBox15->Enable(!m_readOnly);
+  // if filename field not empty, set focus to password:
+  if (!m_filename.empty()) {
+    FindWindow(ID_PASSWORD)->SetFocus();
+  }
 }
 
 

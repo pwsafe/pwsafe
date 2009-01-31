@@ -126,6 +126,9 @@ public:
 
 ////@begin PasswordSafeFrame event handler declarations
 
+  /// wxEVT_UPDATE_UI event handler for wxID_CLOSE
+  void OnCloseUpdate( wxUpdateUIEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
   void OnExitClick( wxCommandEvent& event );
 
@@ -151,6 +154,7 @@ public:
 
     // Overriden virtuals
     virtual bool Show(bool show = true);
+    virtual void SetTitle(const wxString& title);
     
     // PasswordSafe specifics:
     int Load(const wxString &passwd);
@@ -160,10 +164,13 @@ public:
   PWSTreeCtrl* m_tree;
 ////@end PasswordSafeFrame member variables
  private:
+  int SaveIfChanged();
+  int Save();
   void ShowGrid(bool show = true);
   void ShowTree(bool show = true);
-    PWScore &m_core;
-    enum {TREE, GRID} m_currentView;
+  void ClearData();
+  PWScore &m_core;
+  enum {TREE, GRID} m_currentView;
   };
 
 #endif

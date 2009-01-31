@@ -652,6 +652,7 @@
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="event-handler-0">"wxEVT_UPDATE_UI|OnCloseUpdate|NONE||"</string>
                 <string name="proxy-Id name">"wxID_CLOSE"</string>
                 <long name="proxy-Id value">5001</long>
                 <string name="proxy-Label">"&amp;Close"</string>
@@ -2309,14 +2310,6 @@
             <string name="proxy-type">"wbBoxSizerProxy"</string>
             <string name="proxy-Orientation">"Horizontal"</string>
             <string name="proxy-Member variable name">""</string>
-            <string name="proxy-AlignH">"Centre"</string>
-            <string name="proxy-AlignV">"Centre"</string>
-            <long name="proxy-Stretch factor">0</long>
-            <long name="proxy-Border">5</long>
-            <bool name="proxy-wxLEFT">1</bool>
-            <bool name="proxy-wxRIGHT">1</bool>
-            <bool name="proxy-wxTOP">1</bool>
-            <bool name="proxy-wxBOTTOM">1</bool>
             <bool name="proxy-wxSHAPED">0</bool>
             <bool name="proxy-wxADJUST_MINSIZE">0</bool>
             <bool name="proxy-wxFIXED_MINSIZE">0</bool>
@@ -2369,8 +2362,8 @@
               <string name="proxy-Custom styles">""</string>
               <long name="proxy-X">-1</long>
               <long name="proxy-Y">-1</long>
-              <long name="proxy-Width">49</long>
-              <long name="proxy-Height">46</long>
+              <long name="proxy-Width">39</long>
+              <long name="proxy-Height">35</long>
               <string name="proxy-AlignH">"Centre"</string>
               <string name="proxy-AlignV">"Centre"</string>
               <long name="proxy-Stretch factor">0</long>
@@ -2481,8 +2474,8 @@
                   <string name="proxy-Custom styles">""</string>
                   <long name="proxy-X">-1</long>
                   <long name="proxy-Y">-1</long>
-                  <long name="proxy-Width">111</long>
-                  <long name="proxy-Height">16</long>
+                  <long name="proxy-Width">88</long>
+                  <long name="proxy-Height">12</long>
                   <string name="proxy-AlignH">"Centre"</string>
                   <string name="proxy-AlignV">"Centre"</string>
                   <long name="proxy-Stretch factor">0</long>
