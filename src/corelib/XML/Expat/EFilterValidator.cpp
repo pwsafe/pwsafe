@@ -70,7 +70,7 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_GROUPTITLE, XTR_STRINGRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_GROUPTITLE}},
   {_T("title"),
     {XTE_TITLE, XTR_STRINGRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_TITLE}},
-  {_T("username"),
+  {_T("user"),
     {XTE_USERNAME, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_USER}},
   {_T("notes"),
     {XTE_NOTES, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_NOTES}},

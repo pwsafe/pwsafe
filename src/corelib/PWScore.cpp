@@ -26,7 +26,7 @@
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
 
-#include "XML/XMLDefs.h"
+#include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #if USE_XML_LIBRARY == EXPAT
 #include "XML/Expat/EFileXMLProcessor.h"

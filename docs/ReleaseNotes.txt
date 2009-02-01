@@ -13,6 +13,8 @@ Bugs fixed in 3.15.03
 [2529736] Validate now corrects all Password History errors
 [2509817] Control characters no longer sent via Autotype.
 [2481370] Can now create shortcut by right-mouse down dragging.
+[] Can now process filters (within the database or imported) based on
+'username' field ("user" in the XML file).
 
 Changes to Existing Features in 3.15.03
 =======================================

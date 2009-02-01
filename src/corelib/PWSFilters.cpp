@@ -18,7 +18,7 @@
 #include "os/file.h"
 #include "os/dir.h"
 
-#include "XML/XMLDefs.h"
+#include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #if   USE_XML_LIBRARY == EXPAT
 #include "XML/Expat/EFilterXMLProcessor.h"

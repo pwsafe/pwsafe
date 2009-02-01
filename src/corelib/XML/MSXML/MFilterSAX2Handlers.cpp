@@ -471,7 +471,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_TITLE;
   }
 
-  else if (_tcscmp(szCurElement, _T("username")) == 0) {
+  else if (_tcscmp(szCurElement, _T("user")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_USER;
