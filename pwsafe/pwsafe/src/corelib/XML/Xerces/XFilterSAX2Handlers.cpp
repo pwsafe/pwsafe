@@ -298,7 +298,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_TITLE;
   }
 
-  else if (XMLString::equals(qname, L"username")) {
+  else if (XMLString::equals(qname, L"user")) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_USER;
@@ -597,7 +597,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
 
 void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type)
 {
-  TCHAR szFormatString[MAX_PATH * 2] = {0};
+  stringT FormatString;
   int iLineNumber, iCharacter;
 
 #ifdef UNICODE
@@ -624,14 +624,10 @@ void XFilterSAX2Handlers::FormatError(const SAXParseException& e, const int type
       assert(0);
   }
 
-#if (_MSC_VER >= 1400)
-  _stprintf_s(szFormatString, MAX_PATH * 2, cs_format.c_str(),
-              cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
-#else
-  _stprintf(szFormatString, cs_format.c_str(), iLineNumber, iCharacter, szErrorMessage);
-#endif
+  Format(FormatString, cs_format.c_str(),
+         cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
 
-  m_strValidationResult += szFormatString;
+  m_strValidationResult += FormatString;
 #ifndef UNICODE
   XMLString::release(&szErrorMessage);
 #endif

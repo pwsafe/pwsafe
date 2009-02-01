@@ -16,7 +16,7 @@
 #include "corelib.h"
 #include "os/file.h"
 
-#include "XML/XMLDefs.h"
+#include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #ifdef _WIN32
 #include <io.h>

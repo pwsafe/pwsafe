@@ -35,6 +35,7 @@
 #include "corelib/match.h"
 #include "corelib/PWSfile.h"
 #include "corelib/PWSdirs.h"
+#include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #include "os/file.h"
 
