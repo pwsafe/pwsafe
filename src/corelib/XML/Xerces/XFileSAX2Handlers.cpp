@@ -176,7 +176,7 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
 
 void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
 {
-  TCHAR szFormatString[MAX_PATH * 2] = {0};
+  std::wstring FormatString;
   int iLineNumber, iCharacter;
 
 #ifdef UNICODE
@@ -203,14 +203,10 @@ void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
       assert(0);
   }
 
-#if (_MSC_VER >= 1400)
-  _stprintf_s(szFormatString, MAX_PATH * 2, cs_format.c_str(),
-              cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
-#else
-  _stprintf(szFormatString, cs_format.c_str(), iLineNumber, iCharacter, szErrorMessage);
-#endif
+  Format(FormatString, cs_format.c_str(),
+         cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
 
-  m_strValidationResult += szFormatString;
+  m_strValidationResult += FormatString;
 #ifndef UNICODE
   XMLString::release(&szErrorMessage);
 #endif
