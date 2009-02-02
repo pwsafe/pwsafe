@@ -29,7 +29,9 @@
 ////@end includes
 
 #include "passwordsafeframe.h"
+#include "safecombinationprompt.h"
 #include "corelib/PWSprefs.h"
+#include "corelib/PWSdirs.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -49,7 +51,9 @@ IMPLEMENT_CLASS( PasswordSafeFrame, wxFrame )
 BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 ////@begin PasswordSafeFrame event table entries
-  EVT_UPDATE_UI( wxID_CLOSE, PasswordSafeFrame::OnCloseUpdate )
+  EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
+
+  EVT_MENU( wxID_CLOSE, PasswordSafeFrame::OnCloseClick )
 
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
 
@@ -133,7 +137,6 @@ void PasswordSafeFrame::CreateControls()
   const StringX lastView = prefs->GetPref(PWSprefs::LastView);
   m_currentView = (lastView == "list") ? GRID : TREE;
 
-////@begin PasswordSafeFrame content construction
   PasswordSafeFrame* itemFrame1 = this;
 
   wxMenuBar* menuBar = new wxMenuBar;
@@ -242,7 +245,6 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
   itemBoxSizer83->Layout();
 
-////@end PasswordSafeFrame content construction
   if (m_currentView == TREE)
     itemMenu47->Check(ID_TREE_VIEW, true);
 }
@@ -444,11 +446,42 @@ void PasswordSafeFrame::ClearData()
 }
 
 
+
+
 /*!
- * wxEVT_UPDATE_UI event handler for wxID_CLOSE
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
  */
 
-void PasswordSafeFrame::OnCloseUpdate( wxUpdateUIEvent& event )
+void PasswordSafeFrame::OnOpenClick( wxCommandEvent& event )
+{
+  stringT dir = PWSdirs::GetSafeDir();
+  //Open-type dialog box
+  wxFileDialog fd(this, _("Please Choose a Database to Open:"),
+                  dir.c_str(), "pwsafe.psafe3",
+                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|"
+                   "Password Safe Backups (*.bak)|*.bak|"
+                   "Password Safe Intermediate Backups (*.ibak)|*.ibak|"
+                    "All files (*.*)|*.*"),
+                  (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
+
+  while (1) {
+    if (fd.ShowModal() == wxID_OK) {
+      int rc = Open(fd.GetPath()); // prompt for password of new file and load.
+      if (rc == PWScore::SUCCESS) {
+        break;
+      }
+    } else { // user cancelled 
+      break;
+    }
+  }
+}
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
+ */
+
+void PasswordSafeFrame::OnCloseClick( wxCommandEvent& event )
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -465,3 +498,136 @@ void PasswordSafeFrame::OnCloseUpdate( wxUpdateUIEvent& event )
   }
 }
 
+int PasswordSafeFrame::Open(const wxString &fname)
+{ // prompt for password, try to Load.
+  CSafeCombinationPrompt pwdprompt(this);
+  pwdprompt.SetFileName(fname);
+  if (pwdprompt.ShowModal() == wxID_OK) {
+    m_core.SetCurFile(fname.c_str());
+    wxString password = pwdprompt.GetPassword();
+    return Load(password);
+  } else
+    return PWScore::USER_CANCEL;
+#if 0
+  //Check that this file isn't already open
+  if (pszFilename == m_core.GetCurFile() && !m_needsreading) {
+    //It is the same damn file
+    cs_text.LoadString(IDS_ALREADYOPEN);
+    cs_title.LoadString(IDS_OPENDATABASE);
+    MessageBox(cs_text, cs_title, MB_OK|MB_ICONWARNING);
+    return PWScore::ALREADY_OPEN;
+  }
+
+  rc = SaveIfChanged();
+  if (rc != PWScore::SUCCESS)
+    return rc;
+
+  // if we were using a different file, unlock it
+  // do this before GetAndCheckPassword() as that
+  // routine gets a lock on the new file
+  if( !m_core.GetCurFile().empty() ) {
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
+  }
+
+  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
+  switch (rc) {
+    case PWScore::SUCCESS:
+      app.AddToMRU(pszFilename.c_str());
+      m_bAlreadyToldUserNoSave = false;
+      break; // Keep going...
+    case PWScore::CANT_OPEN_FILE:
+      temp.Format(IDS_SAFENOTEXIST, pszFilename.c_str());
+      cs_title.LoadString(IDS_FILEOPENERROR);
+      MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
+    case TAR_OPEN:
+      return Open();
+    case TAR_NEW:
+      return New();
+    case PWScore::WRONG_PASSWORD:
+    case PWScore::USER_CANCEL:
+      /*
+      If the user just cancelled out of the password dialog,
+      assume they want to return to where they were before...
+      */
+      return PWScore::USER_CANCEL;
+    default:
+      ASSERT(0); // we should take care of all cases explicitly
+      return PWScore::USER_CANCEL; // conservative behaviour for release version
+  }
+
+  // clear the data before loading the new file
+  ClearData();
+
+  cs_title.LoadString(IDS_FILEREADERROR);
+  MFCAsker q;
+  MFCReporter r;
+  m_core.SetAsker(&q);
+  m_core.SetReporter(&r);
+  rc = m_core.ReadFile(pszFilename, passkey);
+  m_core.SetAsker(NULL);
+  m_core.SetReporter(NULL);
+  switch (rc) {
+    case PWScore::SUCCESS:
+      break;
+    case PWScore::CANT_OPEN_FILE:
+      temp.Format(IDS_CANTOPENREADING, pszFilename.c_str());
+      MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
+      /*
+      Everything stays as is... Worst case,
+      they saved their file....
+      */
+      return PWScore::CANT_OPEN_FILE;
+    case PWScore::BAD_DIGEST:
+    {
+      temp.Format(IDS_FILECORRUPT, pszFilename.c_str());
+      const int yn = MessageBox(temp, cs_title, MB_YESNO|MB_ICONERROR);
+      if (yn == IDYES) {
+        rc = PWScore::SUCCESS;
+        break;
+      } else
+        return rc;
+    }
+#ifdef DEMO
+    case PWScore::LIMIT_REACHED:
+    {
+      CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
+      CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
+      const int yn = MessageBox(cs_msg, cs_title, MB_YESNO|MB_ICONWARNING);
+      if (yn == IDNO) {
+        return PWScore::USER_CANCEL;
+      }
+      rc = PWScore::SUCCESS;
+      m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, FALSE);
+      break;
+    }
+#endif
+    default:
+      temp.Format(IDS_UNKNOWNERROR, pszFilename.c_str());
+      MessageBox(temp, cs_title, MB_OK|MB_ICONERROR);
+      return rc;
+  }
+  m_core.SetCurFile(pszFilename);
+#if !defined(POCKET_PC)
+  m_titlebar = PWSUtil::NormalizeTTT(_T("Password Safe - ") +
+                                     m_core.GetCurFile()).c_str();
+  SetWindowText(LPCTSTR(m_titlebar));
+#endif
+  CheckExpiredPasswords();
+  ChangeOkUpdate();
+
+  // Tidy up filters
+  m_currentfilter.Empty();
+  m_bFilterActive = false;
+
+  RefreshViews();
+  SetInitialDatabaseDisplay();
+  m_core.SetDefUsername(PWSprefs::GetInstance()->
+                        GetPref(PWSprefs::DefaultUsername));
+  m_core.SetUseDefUser(PWSprefs::GetInstance()->
+                       GetPref(PWSprefs::UseDefaultUser) ? true : false);
+  m_needsreading = false;
+  SelectFirstEntry();
+
+  return rc;
+#endif
+}

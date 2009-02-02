@@ -126,8 +126,11 @@ public:
 
 ////@begin PasswordSafeFrame event handler declarations
 
-  /// wxEVT_UPDATE_UI event handler for wxID_CLOSE
-  void OnCloseUpdate( wxUpdateUIEvent& event );
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
+  void OnOpenClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
+  void OnCloseClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
   void OnExitClick( wxCommandEvent& event );
@@ -164,6 +167,7 @@ public:
   PWSTreeCtrl* m_tree;
 ////@end PasswordSafeFrame member variables
  private:
+  int Open(const wxString &fname); // prompt for password, try to Load.
   int SaveIfChanged();
   int Save();
   void ShowGrid(bool show = true);
