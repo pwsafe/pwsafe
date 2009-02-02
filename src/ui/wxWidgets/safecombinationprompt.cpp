@@ -24,6 +24,7 @@
 ////@end includes
 
 #include "safecombinationprompt.h"
+#include "os/file.h"
 
 ////@begin XPM images
 #include "../graphics/cpane.xpm"
@@ -34,7 +35,7 @@
  * CSafeCombinationPrompt type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( CSafeCombinationPrompt, wxDialog )
+IMPLEMENT_CLASS( CSafeCombinationPrompt, wxDialog )
 
 
 /*!
@@ -57,12 +58,12 @@ END_EVENT_TABLE()
  * CSafeCombinationPrompt constructors
  */
 
-CSafeCombinationPrompt::CSafeCombinationPrompt()
-{
-  Init();
-}
-
-CSafeCombinationPrompt::CSafeCombinationPrompt( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+CSafeCombinationPrompt::CSafeCombinationPrompt(wxWindow* parent, PWScore &core,
+                                               const wxString &fname, wxWindowID id,
+                                               const wxString& caption,
+                                               const wxPoint& pos,
+                                               const wxSize& size, long style)
+: m_core(core), m_filename(fname), m_tries(0)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -145,13 +146,14 @@ void CSafeCombinationPrompt::CreateControls()
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe\ncombination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
+  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_PASSWORD, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
   itemBoxSizer8->Add(itemTextCtrl10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
 
   itemBoxSizer2->Add(itemStdDialogButtonSizer11, 0, wxGROW|wxALL, 5);
   wxButton* itemButton12 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemButton12->SetDefault();
   itemStdDialogButtonSizer11->AddButton(itemButton12);
 
   wxButton* itemButton13 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -164,7 +166,7 @@ void CSafeCombinationPrompt::CreateControls()
 
   // Set validators
   itemStaticText7->SetValidator( wxGenericValidator(& m_filename) );
-  itemTextCtrl10->SetValidator( wxGenericValidator(& m_passwd) );
+  itemTextCtrl10->SetValidator( wxGenericValidator(& m_password) );
 ////@end CSafeCombinationPrompt content construction
 }
 
@@ -216,10 +218,40 @@ wxIcon CSafeCombinationPrompt::GetIconResource( const wxString& name )
 
 void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CSafeCombinationPrompt.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CSafeCombinationPrompt. 
+  if (Validate() && TransferDataFromWindow()) {
+    if (m_password.empty()) {
+      wxMessageDialog err(this, _("The combination cannot be blank."),
+                          _("Error"), wxOK | wxICON_EXCLAMATION);
+      err.ShowModal();
+      return;
+    }
+    if (!pws_os::FileExists(m_filename.c_str())) {
+      wxMessageDialog err(this, _("File or path not found."),
+                          _("Error"), wxOK | wxICON_EXCLAMATION);
+      err.ShowModal();
+      return;
+    }
+    if (m_core.CheckPassword(m_filename.c_str(),
+                             m_password.c_str()) != PWScore::SUCCESS) {
+      wxString errmess;
+      if (m_tries >= 2) {
+        errmess = _("Three strikes - yer out!");
+      } else {
+        m_tries++;
+        errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
+      }
+      wxMessageDialog err(this, errmess,
+                          _("Error"), wxOK | wxICON_EXCLAMATION);
+      err.ShowModal();
+      wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_PASSWORD);
+      txt->SetSelection(-1,-1);
+      txt->SetFocus();
+      return;
+    }
+    // m_core.SetReadOnly(m_readOnly);
+    m_core.SetCurFile(m_filename.c_str());
+    EndModal(wxID_OK);
+  }
 }
 
 
