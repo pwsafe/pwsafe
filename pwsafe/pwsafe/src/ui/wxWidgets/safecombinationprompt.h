@@ -20,6 +20,7 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
+#include "corelib/PWScore.h"
 
 /*!
  * Forward declarations
@@ -34,7 +35,7 @@
 
 ////@begin control identifiers
 #define ID_CSAFECOMBINATIONPROMPT 10062
-#define ID_TEXTCTRL 10063
+#define ID_PASSWORD 10063
 #define SYMBOL_CSAFECOMBINATIONPROMPT_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CSAFECOMBINATIONPROMPT_TITLE _("Enter Safe Combination")
 #define SYMBOL_CSAFECOMBINATIONPROMPT_IDNAME ID_CSAFECOMBINATIONPROMPT
@@ -49,13 +50,13 @@
 
 class CSafeCombinationPrompt: public wxDialog
 {    
-  DECLARE_DYNAMIC_CLASS( CSafeCombinationPrompt )
+  DECLARE_CLASS( CSafeCombinationPrompt )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  CSafeCombinationPrompt();
-  CSafeCombinationPrompt( wxWindow* parent, wxWindowID id = SYMBOL_CSAFECOMBINATIONPROMPT_IDNAME, const wxString& caption = SYMBOL_CSAFECOMBINATIONPROMPT_TITLE, const wxPoint& pos = SYMBOL_CSAFECOMBINATIONPROMPT_POSITION, const wxSize& size = SYMBOL_CSAFECOMBINATIONPROMPT_SIZE, long style = SYMBOL_CSAFECOMBINATIONPROMPT_STYLE );
+  CSafeCombinationPrompt(wxWindow* parent, PWScore &core, const wxString &fname,
+                         wxWindowID id = SYMBOL_CSAFECOMBINATIONPROMPT_IDNAME, const wxString& caption = SYMBOL_CSAFECOMBINATIONPROMPT_TITLE, const wxPoint& pos = SYMBOL_CSAFECOMBINATIONPROMPT_POSITION, const wxSize& size = SYMBOL_CSAFECOMBINATIONPROMPT_SIZE, long style = SYMBOL_CSAFECOMBINATIONPROMPT_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CSAFECOMBINATIONPROMPT_IDNAME, const wxString& caption = SYMBOL_CSAFECOMBINATIONPROMPT_TITLE, const wxPoint& pos = SYMBOL_CSAFECOMBINATIONPROMPT_POSITION, const wxSize& size = SYMBOL_CSAFECOMBINATIONPROMPT_SIZE, long style = SYMBOL_CSAFECOMBINATIONPROMPT_STYLE );
@@ -69,8 +70,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-  void SetFileName(const wxString &fname) {m_filename = fname;}
-  wxString GetPassword() const {return m_passwd;}
+  wxString GetPassword() const {return m_password;}
   
 ////@begin CSafeCombinationPrompt event handler declarations
 
@@ -95,9 +95,11 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationPrompt member variables
-  wxString m_filename;
-  wxString m_passwd;
 ////@end CSafeCombinationPrompt member variables
+  PWScore &m_core;
+  wxString m_filename;
+  wxString m_password;
+  unsigned m_tries;
 };
 
 #endif

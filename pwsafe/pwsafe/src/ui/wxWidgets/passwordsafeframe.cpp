@@ -500,12 +500,14 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& event )
 
 int PasswordSafeFrame::Open(const wxString &fname)
 { // prompt for password, try to Load.
-  CSafeCombinationPrompt pwdprompt(this);
-  pwdprompt.SetFileName(fname);
+  CSafeCombinationPrompt pwdprompt(this, m_core, fname);
   if (pwdprompt.ShowModal() == wxID_OK) {
     m_core.SetCurFile(fname.c_str());
     wxString password = pwdprompt.GetPassword();
-    return Load(password);
+    int retval = Load(password);
+    if (retval == PWScore::SUCCESS)
+      Show();
+    return retval;
   } else
     return PWScore::USER_CANCEL;
 #if 0
