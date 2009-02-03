@@ -18,7 +18,8 @@ Bugs fixed in 3.15.03
 
 Changes to Existing Features in 3.15.03
 =======================================
-None.
+[Open Discussion] Ctrl+F no longer toggles the Find Toolbar but shows
+it if not currently visible.
 
 New Features for 3.15.03
 ========================
