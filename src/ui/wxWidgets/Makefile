@@ -134,6 +134,7 @@ OBJECTS=$(OBJECTPATH)/passwordsafeframe.o \
 	$(OBJECTPATH)/safecombinationentry.o \
 	$(OBJECTPATH)/safecombinationsetup.o \
 	$(OBJECTPATH)/safecombinationprompt.o \
+	$(OBJECTPATH)/properties.o \
 	$(OBJECTPATH)/PWSgrid.o \
 	$(OBJECTPATH)/PWStree.o \
 	$(RESOURCEOBJECT)
@@ -175,7 +176,7 @@ $(OUTPUTPATH)/$(PROGRAM).app/Contents/PkgInfo: $(OUTPUTPATH)/$(PROGRAM) $(INFOPL
 	cp -f $(ICNSSOURCE) $(ICNSDEST)
 
 $(OBJECTPATH)/passwordsafeframe.o:	passwordsafeframe.cpp passwordsafeframe.h \
-																		safecombinationprompt.h \
+																		safecombinationprompt.h properties.h \
 																		PWSgrid.h PWStree.h
 	$(CXX) -c -o $@ $(CPPFLAGS) passwordsafeframe.cpp
 
@@ -196,6 +197,9 @@ $(OBJECTPATH)/safecombinationsetup.o:	safecombinationsetup.cpp safecombinationse
 
 $(OBJECTPATH)/safecombinationprompt.o:	safecombinationprompt.cpp safecombinationprompt.h
 	$(CXX) -c -o $@ $(CPPFLAGS) safecombinationprompt.cpp
+
+$(OBJECTPATH)/properties.o:	properties.cpp properties.h
+	$(CXX) -c -o $@ $(CPPFLAGS) properties.cpp
 
 .PHONY:	all clean
 ### Begin DialogBlocks generated body
