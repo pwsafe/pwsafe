@@ -30,6 +30,7 @@
 
 #include "passwordsafeframe.h"
 #include "safecombinationprompt.h"
+#include "properties.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSdirs.h"
 
@@ -54,6 +55,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
 
   EVT_MENU( wxID_CLOSE, PasswordSafeFrame::OnCloseClick )
+
+  EVT_MENU( wxID_PROPERTIES, PasswordSafeFrame::OnPropertiesClick )
 
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
 
@@ -633,3 +636,15 @@ int PasswordSafeFrame::Open(const wxString &fname)
   return rc;
 #endif
 }
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
+ */
+
+void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& event )
+{
+  CProperties props(this, m_core);
+  props.ShowModal();
+}
+

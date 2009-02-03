@@ -132,6 +132,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
   void OnCloseClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
+  void OnPropertiesClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
   void OnExitClick( wxCommandEvent& event );
 
