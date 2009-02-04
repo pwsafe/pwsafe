@@ -31,6 +31,7 @@ using namespace std;
 
 #include "pwsafeapp.h"
 #include "passwordsafeframe.h"
+#include "version.h"
 #include "corelib/SysInfo.h"
 #include "corelib/PWSprefs.h"
 
@@ -131,7 +132,9 @@ void PwsafeApp::Init()
 
 bool PwsafeApp::OnInit()
 {    
-
+  SetAppName(pwsafeAppName);
+  m_core.SetApplicationNameAndVersion(pwsafeAppName.c_str(),
+                                      DWORD((MINORVERSION << 16) | MAJORVERSION));
 #if wxUSE_XPM
 	wxImage::AddHandler(new wxXPMHandler);
 #endif

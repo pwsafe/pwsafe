@@ -27,6 +27,7 @@
 
 #include "safecombinationentry.h"
 #include "safecombinationsetup.h"
+#include "version.h"
 #include "corelib/PWSdirs.h"
 #include "os/file.h"
 ////@begin XPM images
@@ -159,7 +160,11 @@ void CSafeCombinationEntry::CreateControls()
                                                          itemDialog1->ConvertDialogToPixels(wxSize(111, 16)), 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Version 3.16"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText7 = new wxStaticText(itemDialog1, wxID_STATIC,
+                                                   wxString::Format(_("Version %d.%d"),
+                                                                    MAJORVERSION,
+                                                                    MINORVERSION),
+                                                   wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Open Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );

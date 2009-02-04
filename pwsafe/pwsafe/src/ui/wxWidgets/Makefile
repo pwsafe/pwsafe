@@ -124,10 +124,13 @@ endif
 endif
 endif
 
-CPPINC += -I../../
+SVN_VERSION = $(shell svnversion -n ../../..)
+
+CPPINC += -I../..
 
 LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
 CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
+CPPFLAGS += -DSVN_VERSION=\"$(SVN_VERSION)\"
 
 OBJECTS=$(OBJECTPATH)/passwordsafeframe.o \
 	$(OBJECTPATH)/pwsafeapp.o \
@@ -137,6 +140,7 @@ OBJECTS=$(OBJECTPATH)/passwordsafeframe.o \
 	$(OBJECTPATH)/properties.o \
 	$(OBJECTPATH)/PWSgrid.o \
 	$(OBJECTPATH)/PWStree.o \
+	$(OBJECTPATH)/version.o \
 	$(RESOURCEOBJECT)
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
@@ -186,7 +190,8 @@ $(OBJECTPATH)/PWSgrid.o:	PWSgrid.cpp PWSgrid.h
 $(OBJECTPATH)/PWStree.o:	PWStree.cpp PWStree.h
 	$(CXX) -c -o $@ $(CPPFLAGS) PWStree.cpp
 
-$(OBJECTPATH)/pwsafeapp.o:	pwsafeapp.cpp pwsafeapp.h safecombinationentry.h
+$(OBJECTPATH)/pwsafeapp.o:	pwsafeapp.cpp pwsafeapp.h \
+														safecombinationentry.h version.h
 	$(CXX) -c -o $@ $(CPPFLAGS) pwsafeapp.cpp
 
 $(OBJECTPATH)/safecombinationentry.o:	safecombinationentry.cpp safecombinationentry.h safecombinationsetup.h
@@ -200,6 +205,9 @@ $(OBJECTPATH)/safecombinationprompt.o:	safecombinationprompt.cpp safecombination
 
 $(OBJECTPATH)/properties.o:	properties.cpp properties.h
 	$(CXX) -c -o $@ $(CPPFLAGS) properties.cpp
+
+$(OBJECTPATH)/version.o:	version.cpp version.h
+	$(CXX) -c -o $@ $(CPPFLAGS) version.cpp
 
 .PHONY:	all clean
 ### Begin DialogBlocks generated body
