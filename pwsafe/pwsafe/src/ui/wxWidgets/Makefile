@@ -13,7 +13,7 @@ CONFIG=debug
 
 # debug
 ifeq ($(CONFIG),debug)
-WXWIN=/home/ronys/src/wxwidgets2.8-2.8.7.1
+WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2d
 WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildDebugGTK2/wx-config --version`)
 CXX=g++
@@ -41,7 +41,7 @@ MACPACKAGEINFO=
 # release
 else
 ifeq ($(CONFIG),release)
-WXWIN=/home/ronys/src/wxwidgets2.8-2.8.7.1
+WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2
 WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildReleaseGTK2/wx-config --version`)
 CXX=g++
@@ -69,7 +69,7 @@ MACPACKAGEINFO=
 # unicodedebug
 else
 ifeq ($(CONFIG),unicodedebug)
-WXWIN=/home/ronys/src/wxwidgets2.8-2.8.7.1
+WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2ud
 WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildDebugGTK2Unicode/wx-config --version`)
 CXX=g++
@@ -96,7 +96,7 @@ MACPACKAGEINFO=
 
 # unicoderelease
 else
-WXWIN=/home/ronys/src/wxwidgets2.8-2.8.7.1
+WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2u
 WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildReleaseGTK2Unicode/wx-config --version`)
 CXX=g++
