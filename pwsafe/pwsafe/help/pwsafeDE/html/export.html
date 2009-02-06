@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Eintr&auml;ge exportieren</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><!-- VdG 3.15 DE 31/01/2009 -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Eintr&auml;ge exportieren</h2>
+<p><b>Password Safe</b> unterst&uuml;tzt das Exportieren (und Importieren) der gespeicherten Passw&ouml;rter zu (und von) verschiedenen Formate. Das Exportieren von Daten erreichen sie im Men&uuml; <b>Datei-&gt;Exportiere zu</b>. Die unterst&uuml;tzten Formate sind:</p>
+<ul>
+  <li>Password Safe v1 (zur Verwendung mit Version 1.x von <b>Password Safe</b>)</li>
+  <li>Password Safe v2 (zur Verwendung mit Version 2.x von <b>Password Safe</b>)</li>
+  <li><a href="#te">Volltext</a></li>
+  <li><a href="#xml">XML</a></li>
+</ul>
+<p>F&uuml;r fr&uuml;here Versionen von <b>Password Safe</b> w&auml;hlen sie einfach das gew&uuml;nschte Format und definieren sie den Namen der Passwortdatenbank.</p>
+<h3><a name="te"></a>Text Export</h3>
+<hr><small><span style="color: rgb(255, 0, 0);"><b>Hinweis:</b> der exportierte Text ist eine ungesch&uuml;tzte Kopie der Passworteintr&auml;ge. Das L&ouml;schen dieser Datei nach deren Verwendung ist <b>nicht</b> ausreichend um sie f&uuml;r einen Angreifer unzug&auml;nglich zu machen. Im Gegenteil, hiermit umgehen sie bewusst die Sicherheit der Anwendung.<br>Bitte verwenden sie diese M&ouml;glichkeit <b>NICHT</b>, au&szlig;er sie verstehen und akzeptieren die Risiken.</span>
+</small>
+<hr>
+<p><b>Password Safe</b> unterst&uuml;tzt das Exportieren von Passworteintr&auml;ge in Textdateien. Diese Dateien k&ouml;nnen dann von anderen Anwendungen verwendet und  bearbeitet werden.<br> Zuerst werden sie aufgefordert das General-Passwort einzugeben als Best&auml;tigung dass sie die Datenbank in eine unverschl&uuml;sselte reine Textdatei exportieren m&ouml;chten.<br>
+<br>
+</p>
+<img alt="Export Text" src="images/export.jpg">
+<p>Sie k&ouml;nnen einige Optionen angeben:</p>
+<ul>
+  <li>
+    <p>Die Felder der Passworteintr&auml;ge werden beim Export mit TAB-Zeichen getrennt. Die Felder sind Gruppe.Titel, Benutzername, Passwort und Notizen. Das Feld Gruppe.Titel wird als ein Feld betrachtet. Wenn ein Feld Leerzeichen enth&auml;lt, wird es in G&auml;nzef&uuml;&szlig;chen gesetzt. Nur das Feld Notizen kann mehrere Zeilen enthalten. Normalerweise w&uuml;rde man jede Zeile in einer neuen Zeile ablegen. Dies macht aber ein Vergleich zwischen mehreren exportierten Dateien ungleich schwerer. Um dies zu verhindern, kann beim Export f&uuml;r das Zeilenende ein Trennzeichen definiert werden. Wenn sie eine solchen Datei mit Trennzeichen wieder importieren (dieses Trennzeichen muss definiert sein) wird es wie eine gesamte Zeile erscheinen in die Datenbank.<br>
+Wenn gew&uuml;nscht, k&ouml;nnen sie ankreuzen dass sie alle getrennten Zeilen im Feld Notizen in einer Zeile ablegen wollen, und geben sie das Trennzeichen an. Weil das gesamte Feld Notizen in G&auml;nzef&uuml;&szlig;chen gesetzt wird, wird dieses Zeichen anschlie&szlig;end nicht als Trennzeichen f&uuml;r Zeilen erkannt.
+</p>
+  </li>
+</ul>
+<ul>
+  <li>Erweiterte Kontrolle zum exportierten Format k&ouml;nnen sie festlegen durch Klicken auf "Erweitert". Folgender Dialog wird angezeigt:</li>
+</ul>
+<p><img alt="Erweiterte Text Export Optionen" src="images/export_text_adv.jpg"></p>
+<p>Diese Dialog unterst&uuml;tzt es nur einige der Eintr&auml;ge, basierend auf vorhandenem Text in einem bestimmten Feld, aus zu w&auml;hlen. Ebenfalls k&ouml;nnen die zu exportierenden Felder festgelegt werden. Klick auf OK wenn sie fertig sind, oder Abbrechen um ohne &Auml;nderung zum Dialog "Text Exportieren" zur&uuml;ckzukehren.</p>
+<p>
+Sie werden aufgefordert den Namen und den Pfad der neuen Datei einzugeben, und eventuell zu best&auml;tigen eine Datei die bereits mit demselben Namen besteht zu &uuml;berschreiben.</p>
+<hr><small>Hinweis: Details zum Format der exportierten Textdatei finden sie im Kapitel "<a href="imp_exp_text_details.html">Text Export &amp; Import Format</a>".</small>
+<hr>
+<p></p>
+<h3><a name="xml"></a>XML</h3>
+XML (eXtensible Markup Language) ist ein popul&auml;res Format um Daten zwischen Anwendungen zu &uuml;bertragen.
+<b>Password Safe</b> kann Datenbankeintr&auml;ge in diesem Format exportieren (und importieren). Die Struktur (oder <i>Schema</i>) womit die Daten exportiert und validiert werden, steht in der Datei <i>pwsafe.xsd</i>. Sie ist Teil dieser Distribution. Diese Datei wird verwendet wenn <b>Password Safe</b> XML Daten importiert, und sollte den Anwendungen zur Verf&uuml;gung gestellt werden die diese exportierten Daten verwenden wollen.<br>
+<hr><small><b style="color: rgb(255, 0, 0);">Hinweis:</b>
+ der exportierte Text ist eine ungesch&uuml;tzte Kopie der Passworteintr&auml;ge. Das L&ouml;schen dieser Datei nach deren Verwendung ist <b>nicht</b> ausreichend um sie f&uuml;r einen Angreifer unzug&auml;nglich zu machen. Im Gegenteil, hiermit umgehen sie bewusst die Sicherheit dieser Anwendung.<br>Bitte verwenden sie diese M&ouml;glichkeit <b>NICHT</b>, au&szlig;er sie verstehen und akzeptieren die Risiken.</small></span>
+<hr>
+Die Ansicht der XML Dateien ist festgelegt in <i>pwsafe.xsl</i> - eine eXtensible Stylesheet Language Datei. Eine Beispieldatei ist der Distribution beigef&uuml;gt. Sie k&ouml;nnen sie nach eigenen Bed&uuml;rfnissen ab&auml;ndern. Diese Datei ist nur ein Beispiel, und sie ist einfach zu &auml;ndern um die Felder anzuzeigen die sie brauchen. Weil dies nur die Anzeige der Daten und nicht die Daten selbst &auml;ndert, sind sie immer noch in der Lage es in <b>Password Safe</b> zu einem sp&auml;teren Zeitpunkt zu importieren.<br>
+<br>
+Wie beim Text Exportieren k&ouml;nnen sie definieren welche Eintr&auml;ge und Felder zur XML Datei exportiert werden sollen: durch Klicken auf "Erweitert" im Export Dialog. Dies wird folgender Dialog aufmachen:<br>
+<img alt="Erweiterte XML Export Optionen" src="images/export_xml_adv.jpg"><br>
+<br>
+<p>Dieser Dialog erlaubt es nur ein Teil der Eintr&auml;ge, basierend auf ein Text in spezifischen Feldern, auszuw&auml;hlen. Auch die Felder k&ouml;nnen spezifiziert werden. Klicke OK wenn sie fertig sind oder Abbrechen um ohne jegliche &Auml;nderung zum vorherigen Dialog zur&uuml;ckzukehren. Bemerke dass das XML Schema Titel und Passwort zwingend voraussetzt. Aus diesem Grund k&ouml;nnen diese nicht abgew&auml;hlt werden.</p>
+<p>
+Sie werden dann aufgefordert den Namen der neuen Datei anzugeben und gegebenenfalls zu best&auml;tigen eine bereits vorhandene Datei mit demselben Namen zu &uuml;berschreiben.</p>
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+ <param name="Keyword" value="Export Passworteintr&auml;ge">
+ <param name="Keyword" value="Import Passworteintr&auml;ge">
+ <param name="Keyword" value="Excel Passwort Daten">
+ <param name="Keyword" value="Konvertieren von bestehenden Passwort Daten">
+</object>
+</body>
+</html>

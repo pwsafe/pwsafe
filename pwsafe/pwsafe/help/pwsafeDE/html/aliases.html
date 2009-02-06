@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Alias</title>
+<!-- pwsafe version: 3.11--><!-- Modified: 20/11/2007 --><!--Popup control --><!-- VdG 3.15 DE 31/01/2009 -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<h3>Passwort Alias</h3>
+<p>Wenn sie ein System mit "einziger Anmeldung" verwenden, dass es Ihnen erlaubt in mehreren Systemen / Server / Anwendungen, usw. dasselbe Passwort einzusetzen, k&ouml;nnen sie in <b>Password Safe</b> die Eintr&auml;ge so einstellen, das bei &Auml;nderung eines Eintrages auch alle anderen artverwandte Eintr&auml;ge mit ge&auml;ndert werden. Diese nennt man "Alias" Eintr&auml;ge. Dieser Beitrag beschreibt die Definition und Anwendung dieser Alias.</p>
+<h4>Zusammenfassung</h4>
+<p>Der Grundgedanke dabei ist zu erlauben dass das Passwort eines Eintrages von einem anderen Eintrag mitbenutzt wird. Der zu benutzende Eintrag wird
+<b>Basis</b> genannt und der benutzende Eintrag (oder Eintr&auml;ge) wird (werden) <b>Alias</b> genannt. Wenn ein Eintrag als Alias zu einem anderen Eintrag gesetzt wurde, 'folgt' das Alias Passwort gewisserma&szlig;en das Passwort des Basiseintrages. Wenn sie das Passwort eines Alias in die Zwischenablage kopieren, wird tats&auml;chlich das Passwort der Basis kopiert. Wenn sie das Passwort der Basis &auml;ndern, spiegelt sich dies  unmittelbar in s&auml;mtliche Aliaseintr&auml;ge wieder. Obwohl dies kompliziert klingen mag, ist es eigentlich eher einfach und intuitiv. Am  Aufwendigsten daran ist das Aufsetzen der Alias, wie unten beschrieben.</p>
+<h4>Definition eines Alias</h4>
+<p>In <b>Password Safe</b> kann ein Eintrag auf das Passwort eines anderen Eintrag verweisen, mittels eines speziell formatierten Passwortes im benutzenden Eintrag. Das Format ist der "Name" vom benutzten Eintrag eingeschlossen in eckigen Klammern. Meistens versteht man unter "Name" das Synonym vom Feld Titel eines Eintrages, als ob wenn der Titel eines Eintrages z.B. "Master" ist, die Eingabe von "[Master]" (ohne G&auml;nsef&uuml;&szlig;chen) im Fel Passwort eines anderen Eintrages gen&uuml;gend ist um diesen als Alias von "Master" zu definieren. Im allgemeinen, "Name" kann in diesem Kontext nachstehend genannte Felder, getrennt mit Doppelpunkt enthalten: Gruppe, Titel und Benutzername. Beachte dass, wenn der Titel in der Datenbank eindeutig ist, die anderen Felder optional sind. Gleiches gilt wenn Gruppe und Titel zusammen oder Title und Benutzernamen zusammen einen eindeutigen Eintrag ergeben.</p>
+<p>Bei Eintr&auml;ge in <b>Password Safe</b> ist nur das Titelfeld obligatorisch. Gruppe und Benutzername sind optional solange die resultierende Kombination aus Gruppe/Titel/Benutzername eindeutig ist. Wie oben erw&auml;hnt besteht das 'Alias Passwort' aus der Form [g:t:b] aber tats&auml;chlich ist es ausreichend gen&uuml;gend Information anzugeben um den Basiseintrag eindeutig zu identifizieren. Also, wenn nur ein einziger Eintrag mit Titel 't' in der Datenbank vorhanden ist, w&uuml;rde [t] ausreichen, weil Titel obligatorisch ist, und mit nur einem angegebenen Element nimmt man an das es der Titel ist. Wenn mehr als einen Eintrag bestehen w&uuml;rde mit diesem Titel, kommt eine Warnung hoch, und Sie m&uuml;ssten genauer den Basiseintrag spezifizieren durch Angeben der Gruppe, des Benutzernamens oder eventuell sogar beide! So lange es ein einziger Eintrag gibt der mit den angegebenen Informationen zusammenpasst, werden die folgenden Formate angenommen: [g:t:b], [g:t], [t:b] oder [t]. Wenn sie ein Doppelpunkt ohne dazugeh&ouml;rigen Wert angeben, wird von einem leeren Feld ausgegangen. Zum Beispiel: [g:t:] gibt einen Eintrag mit Titel 't' in Gruppe 'g' ohne Benutzernamen an, und [:t:] einen Eintrag mit Titel 't' in der Wurzel,  ohne Benutzernamen usw.</p>
+<p>Die folgenden Beispiele sollten dies klarstellen.</p>
+<h4>Beispiele</h4>
+<p>1. Wenn der Titel des Basiseintrages "LDAP Server" ist, und kein anderer Eintrag mit diesem Titel besteht, dann ist ein Alias mit dem Wert "[LDAP Server]" im  Passwortfeld eindeutig definiert.</p>
+<p>2. Wenn der Wert "LDAP Server" in Eintr&auml;ge von zwei verschiedenen Gruppen vorkommt -sagen wir "Abt. A" und "Abt. B"- dann kann der Eintrag f&uuml;r letztere mit
+"[Abt. B:LDAP Server]" spezifiziert werden. Bemerke dass der Benutzername nicht angegeben sein muss, wenn die angegebene Information ausreicht um den Basiseintrag eindeutig zu identifizieren.</p>
+<p>3. Unterschiedliche Benutzernamen k&ouml;nnen auch benutzt werden um zwischen gleichartige Basiseintr&auml;ge zu Differenzieren, z.B. "[LDAP Server:Joe]" und "[LDAP
+Server:Mary]".</p>
+<p>4. Schlu&szlig;endlich, alle drei Felder k&ouml;nnen angegeben sein wie in "[Abt. A:LDAP Server:Joe]"</p>
+<h4>Anzeige</h4>
+<p>Basiseintr&auml;ge, d.h. Eintr&auml;ge mit mindestens ein Alias der auf ihn verweist, werden angezeigt mit einem gr&uuml;nen Dreieck anstelle des gr&uuml;nen Rechtecks in der Baumstruktur.</p>
+<p>Alias Eintr&auml;ge sind mit einem wei&szlig;en Dreieck gekennzeichnet.</p>
+<p><img style="border: 1px solid ; width: 163px; height: 127px;" alt="Alias Beispiel" src="images/alias_example.jpg"><br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+ <param name="Keyword" value="Alias">
+ <param name="Keyword" value="Passwort">
+</object>
+</p>
+</body>
+</html>
