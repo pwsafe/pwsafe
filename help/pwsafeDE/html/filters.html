@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+  <title>Filter</title>
+<!-- pwsafe version: 2.14--><!-- Modified: 18/11/2005 --><!--Popup control --><!-- VdG 3.15 DE 31/01/2009 -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<h1><object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>Filter</h1>
+<div class="instr"><br>
+Ein "Filter" ist ein Kriterium (oder ein Satz an Kriterien) das ein Eintrag entspricht oder auch nicht. <b>Password Safe</b> erlaubt es Filter zu definieren um nur die Eintr&auml;ge anzuzeigen die dem gegebenen Filter entsprechen. Sie k&ouml;nnen das Filter f&uuml;r eine einmalige Abfrage hernehmen, oder sie k&ouml;nnen die Filter definieren, mit Namen versehen und dauerhaft abspeichern. Filter k&ouml;nnen in der Datenbank abgelegt werden, oder extern, um die Filter f&uuml;r mehrere Datenbanken gemeinsam verwenden zu k&ouml;nnen.<br>
+<h2>Filter definieren</h2>
+Um ein neues Filter zu definieren, w&auml;hle das Men&uuml; <b>Ansicht-&gt;Filter-&gt;Filter neu/bearbeiten</b> aus. Folgender Dialog wird angezeigt:<br>
+<img alt="Dialog Anzeigefilter setzen" src="images/filter.jpg"><br>
+<br>
+Wie sie sehen, besteht jedes Filter aus ein oder mehrere <b>Zeilen</b>, wobei jede dieser Zeilen ein <b>Kriterium</b> f&uuml;r ein gegebenes <b>Feld</b> umfasst. Die Bedingungen die in jeder Zeile definiert sind, k&ouml;nnen entweder "und" oder "oder" der Bedingung in der vorherigen Zeile sein. Auf diese Weise k&ouml;nnen sie Filter zusammenstellen wie:<br><br>
+1. Alle Eintr&auml;ge mit dem Benutzernamen "josef" oder "Josef" oder "JOSEF":<br>
+<img alt="Beispiel 1" src="images/filter-ex1.jpg"><br><br>
+2. Alle Eintr&auml;ge mit dem Benutzernamen "Josef" erstellt nach dem 18ten Januar 2009<br>
+<img alt="Beispiel 2" src="images/filter-ex2.jpg"><br><br>
+3. Alle Eintr&auml;ge mit den Benutzernamen "Josef" oder "Maria"<br>
+<img alt="Beispiel 3" src="images/filter-ex3.jpg"><br>
+<br>
+Wie sie sehen k&ouml;nnen, Filter k&ouml;nnen einigerma&szlig;en komplex werden.<br>
+<br>
+Die Spalten im Filter sehen wie folgt aus:<br>
+<ul>
+  <li>'#' - Dies ist die Zeilennummer. Sie wird nur aus Bequemlichkeit angezeigt, und kann nicht ge&auml;ndert werden.</li>
+  <li>'?' - Dies markiert ob die Zeile <b>aktiv</b> ist oder nicht. Nur aktive Zeilen werden angewandt wenn das Filter eingesetzt wird. Mit Klicken kann die Markierung f&uuml;r die jeweilige Zeile ein- bzw. ausgeschaltet werden.</li>
+  <li>'+' - Dies f&uuml;gt beim Klicken eine neue Zeile unterhalb der jetzigen Zeile ein.</li>
+  <li>'-' - Dies l&ouml;scht die aktuelle Zeile. <b>Hinweis:</b> das L&ouml;schen einer Zeile ist unwiderruflich. Vielleicht w&auml;re es besser sie nur zu <b>deaktivieren</b> mit '?'.</li>
+  <li>'Und/Oder' - Dies erlaubt die Festlegung der Verkn&uuml;pfung zwischen dieser Regel und der Regel in der Zeile dar&uuml;ber.</li>
+  <li>'Feld' - W&auml;hlt das gew&uuml;nschte Feld aus, z.B. Benutzername, Titel, Gruppe, Notizen, usw.</li>
+  <li>'Kriterien' - Stellt den Wert ein in dem sie interessiert sind f&uuml;r das ausgew&auml;hlte Feld. Wenn sie einmal ein Feld ausgew&auml;hlt haben, klicken sie darauf und ein Dialog wird dann angezeigt womit sie die erforderlichen Kriterien festlegen k&ouml;nnen.</li>
+</ul>
+</div>
+<h2>Filter anwenden</h2>
+Nach der Definition eines Filters, gen&uuml;gt das Anklicken von '&Uuml;bernehmen' und das Filter wird auf die Eintr&auml;ge in der Datenbank ausgef&uuml;hrt. Der Filterdialog bleibt offen. Dies ist n&uuml;tzlich um die Filterung anzupassen und zu verfeinern auf Basis der Resultate mit der Filterung. Mit Klicken auf 'OK' wird das Filter ausgef&uuml;hrt und den Filterdialog verlassen.<br>
+<br>
+<h2><a name="ManagingFilters"></a>Verwalten</h2>
+Filter definieren und editieren ist ein einfacher und bequemer Weg sie anzuwenden, aber nur f&uuml;r einmal. Wenn sie allerdings w&uuml;nschen &ouml;fter mehrere Filter anzuwenden, dann k&ouml;nnen sie diese abspeichern und im Dialog <b>Ansicht-&gt;Filter-&gt;Verwalten</b> auf einfache Art und Weise verwalten.<br>
+<img alt="Filter verwalten" src="images/filter_mng.jpg"><br>
+<br>
+Der Dialog 'Verwalte Filter' hat zwei Tabellen. Die obere listet die Filter auf, und die untere listet die Elemente des ausgew&auml;hlten Filters auf.<br>
+<ul>
+  <li>Um ein neues Filter hinzuzuf&uuml;gen, klicke auf 'Neu'. Dies ist das Gleiche wie Men&uuml; <b>Ansicht-&gt;Filter-&gt;Filter neu/bearbeiten</b>.</li>
+  <li>Um ein Filter zu bearbeiten, klicke es an, und dr&uuml;cke 'Bearbeiten'.</li>
+  <li>Um ein bestehendes Filter anzuwenden, klicke auf '&Uuml;bernehmen' in der gew&uuml;nschte Filterzeile. Beachte das nur ein Filter zur selben Zeit angewendet werden kann.</li>
+</ul>
+<br>
+<h4>Filter speichern</h4>
+Filter k&ouml;nnen entweder als Teil der aktuellen Datenbank abgespeichert werden, oder extern als XML Datei. Das externe Abspeichern von Filtern ist ein guter Weg um Filter &uuml;ber mehrere Datenbanken gemeinsam verwenden zu k&ouml;nnen. Das Abspeichern in die Datenbank hingegen stellt sicher das eventuell sensible Informationen in den Filtern gesch&uuml;tzt sind (und bleiben).<br>
+<ul>
+  <li>Um Filter in einer externen Datei auszulagern: markiere 'Exportieren' in eine oder mehrere der gew&uuml;nschten Filterzeilen, dann klicke die Taste  'Exportieren'.</li>
+  <li>Um Filter in die aktuelle Datenbank auszulagern: markiere 'Zur DB kopieren' und klicke dann die Taste 'Kopieren'.</li>
+  <li>Um extern gespeicherte Filter zu laden: klicke die Taste 'Importieren'.</li>
+</ul>
+<b>Hinweis:</b><br>Beim Starten sucht <b>Password Safe</b> nach einer Datei mit dem Namen <i>autoload_filters.xml</i> im selben Verzeichnis wo die Datei <i>pwsafe.cfg</i> steht (standardm&auml;&szlig;ig das Verzeichnis wo <b>Password Safe</b> installiert ist). Wenn diese Datei besteht, dann wird sie automatisch importiert und die enthaltenen Filter stehen von Anfang an zur Verf&uuml;gung. Dies ist dann n&uuml;tzlich wenn sie Filter definiert haben die sie &uuml;ber mehrere Datenbanken anwenden wollen, ohne sie jedes Mal von Hand importieren zu m&uuml;ssen.<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+ <param name="Keyword" value="Men&uuml; Anzeigen">
+ <param name="Keyword" value="Baumdarstellung">
+ <param name="Keyword" value="Listendarstellung">
+</object>
+</body>
+</html>

@@ -1,27 +1,52 @@
 [OPTIONS]
 Auto Index=Yes
 Compatibility=1.1 or later
-Compiled file=pwsafede.chm
-Contents file=pwsafede.hhc
-Default topic=html\pws_intro.htm
-Display compile notes=Yes
+Compiled file=pwsafeDE_DE.chm
+Contents file=pwsafeDE.hhc
+Default topic=html\Welcome.html
 Display compile progress=Yes
-Error log file=pwsafede.log
+Error log file=pwsafeDE.log
 Full-text search=Yes
+Index file=pwsafeDE.hhk
 Language=0x407 Deutsch (Deutschland)
-Title=Password Safe - Deutsche Hilfe für Version 2.06
+Title=HTML Help für Password Safe
+
 
 [FILES]
-html\pws_add_data.htm
-html\pws_combo_chg.htm
-html\pws_combo_entry.htm
-html\pws_combo_err.htm
-html\pws_context_help.htm
-html\pws_edit.htm
-html\pws_empty.htm
-html\pws_install_help.htm
-html\pws_intro.htm
-html\pws_main.htm
-html\pws_opts.htm
+html\popups.js
+html\style.css
+html\about_combinations.html
+html\about_pws.html
+html\autotype.html
+html\backup_and_restore.html
+html\backups_tab.html
+html\change_combo.html
+html\create_new_db.html
+html\credits.html
+html\display_tab.html
+html\edit_menu.html
+html\entering_pwd.html
+html\export.html
+html\file_menu.html
+html\filters.html
+html\help_menu.html
+html\imp_exp_text_details.html
+html\import.html
+html\manage_menu.html
+html\menu_toolbar.html
+html\misc_tab.html
+html\password_history.html
+html\password_history_tab.html
+html\password_policies.html
+html\preferences.html
+html\retrieve_pwd.html
+html\searching.html
+html\security_tab.html
+html\system_tab.html
+html\upgrade_from_v1x.html
+html\view_menu.html
+html\Welcome.html
+html\aliases.html
 
 [INFOTYPES]
+

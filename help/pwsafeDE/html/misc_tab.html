@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Verschiedenes</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><!-- VdG 3.15 DE 31/01/2009 -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		<!-- Popup Source File -->
+<h2>Verschiedenes</h2>
+		<img src="images/options/misc_tab.jpg" alt="Reiter Verschiedenes"><br>
+<p>Mehrere Standardeinstellungen sind im Reiter <b>Verschiedenes</b> zusammengefasst.</p>
+<div class="instr">
+<h3>L&ouml;schen von Elementen best&auml;tigen</h3>
+<p>Wenn markiert, wird der Benutzer bei jedem Versuch ein Passworteintrag zu l&ouml;schen aufgefordert dies zu best&auml;tigen.</p>
+<h3>Speichere das Datum des letzten Zugriffs</h3>
+Wenn markiert, merkt sich <b>Password Safe</b> die Zeit f&uuml;r jeden Eintrag auf den zugegriffen wurde (z.B. wann das Passwort kopiert wurde, oder wenn die Details zum Eintrag angeschaut wurden, usw.). Diese Zeit wird mit dem Eintrag gespeichert, und kann angesehen werden im Dialog zum Eintrag.<br>
+<b>Hinweis:</b><br>
+<small><ul>
+  <li>Wenn dies freigegeben ist, wird eventuell die Datenbank ge&auml;ndert, auch wenn kein Eintrag bearbeitet wird. Dies kann dazu f&uuml;hren dass sie zum Speichern der Datenbank aufgefordert werden beim Verlassen der Anwendung, auch wenn sie explizit nichts ge&auml;ndert haben.</li>
+  <li>Wenn die Datenbank in NUR Lesen Modus ge&ouml;ffnet wurde, werden die Zugriffszeiten <b>nicht</b> aktualisiert.</li>
+</ul></small>
+<h3>Taste Escape schlie&szlig;t die Anwendung</h3>
+<p>Wenn markiert, kann mit der Taste <b>Esc</b> die Anwendung <b>Password Safe</b> geschlossen werden, wenn sie maximiert ist. Beachte dass wenn die Anwendung im Infobereich freigegeben ist (mit der Option 'Symbol im Infobereich'), die Taste <b>Esc</b> nur das Hauptfenster schlie&szlig;t. Die Anwendung kann dann mit einem Doppelklick im Infobereich wieder maximiert werden.</p>
+<h3>Hotkey</h3>
+<p>Wenn markiert, wird ein Dr&uuml;cken der Tastenkombination im Feld rechts <b>Password Safe</b> wieder herstellen aus dem Infobereich (wenn minimiert) oder sie wieder in Vordergrund bringen, soweit sie von anderen Anwendungen verdeckt ist. Die Tastenkombination kann nur ge&auml;ndert werden, solange diese Option markiert ist.</p>
+<h3>Doppelklick-Aktion</h3>
+<p>Dies erlaubt es festzulegen welche Aktion <b>Password Safe</b> ausf&uuml;hrt wenn sie ein Doppelklick auf einem Eintrag ausf&uuml;hren. Standardm&auml;&szlig;ig wird das Passwort des Eintrages in die Zwischenablage kopiert. Diese Aktionen stehen zur Verf&uuml;gung:</p>
+<p></p>
+<ul>
+  <li>Autom. Eingabe</li>
+  <li>Gehe zu URL</li>
+  <li>Notizen in die Zwischenablage kopieren</li>
+  <li>Passwort in die Zwischenablage kopieren</li>
+  <li>Benutzername in die Zwischenablage kopieren</li>
+  <li>Eintrag bearbeiten</li>
+  <li>Passwort in die Zwischenablage kopieren, minimieren</li>
+</ul>
+<p>Beachte dass die letzte Aktion "Passwort in die Zwischenablage kopieren, minimieren" nicht funktioniert wie erwartet, wenn gleichzeitig die Option "Zwischenablage nach Minimieren l&ouml;schen" markiert ist im <a href="security_tab.html">Reiter Sicherheit</a>.</p>
+<h3>Autom. Eingabe</h3>
+<ul>
+  <li><b>Minimieren nach Autom. Eingabe</b> wird standardm&auml;&szlig;ig <b>Password Safe</b> minimieren wenn Autom. Eingabe eingeschaltet ist. Wenn diese Option ausgeschaltet wird, wird <b>Password Safe</b> sich hinter alle angezeigten Fenster stellen.</li>
+  <li><b>Standardzeichen bei autom. Eingabe:</b>
+Hier k&ouml;nnen sie die standardm&auml;&szlig;igen Zeichen f&uuml;r die Autom. Eingabe festlegen f&uuml;r alle Eintr&auml;ge. Beachte dass man dies per Eintrag auch &uuml;berschreiben kann. Diese Option ist dann sinnvoll wenn sie f&uuml;r alle Eintr&auml;ge z.B. die Verz&ouml;gerung &auml;ndern wollen. Siehe <a href="autotype.html">hier</a> f&uuml;r mehr Details &uuml;ber Autom. Eingabe.</li>
+</ul>
+<h3>Standard-Benutzername</h3>
+Hiermit k&ouml;nnen sie den Standardbenutzernamen definieren der automatisch beim Erstellen eines neuen Eintrages im Feld Benutzername eingetragen werden soll. Wenn markiert, wird dieser Name im Feld Benutzername eines jeden neuen Eintrages ausgef&uuml;llt. Nat&uuml;rlich kann er dann bearbeitet werden, wenn sie wollen.<br>
+<h3><a name="AltBrowser"></a>Alternativer Browser</h3>
+Der Browser der in diesem Feld definiert wird, wird verwendet bei der Funktion "Los" im ausgew&auml;hlten Eintrag, wenn der Eintrag im URL das "[alt]" vor der URL steht, z.B.  "[alt]http://www.foo.net". Dies ist dann sinnvoll, wenn der Standardbrowser Firefox ist, und sie wollen auf eine Internet-Seite zugreifen, wovon sie wissen dass sie mit Internet Explorer am besten dargestellt wird. In diesem Falle w&uuml;rden sie den Internet Explorer als "Alternativer Browser" festlegen, mit z.B.  "C:\Program Files\Internet Explorer\iexplorer.exe".<br>
+Weitere ben&ouml;tigte Parameter f&uuml;r die Kommandozeile k&ouml;nnen im Fenster "Browser Kommandozeilenparameter" angegeben werden.
+		</div>
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br>
+<br>
+<br>
+		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="Reiter Verschiedenes">
+			<param name="Keyword" value="Best&auml;tigen L&ouml;schen">
+			<param name="Keyword" value="Best&auml;tigen Speichern">
+			<param name="Keyword" value="Autom. &Auml;nderungen speichern">
+		</object>
+</body>
+</html>

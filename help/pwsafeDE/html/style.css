@@ -1,98 +1,75 @@
-/* ----------------------------------------------------- */
+/* Modified: 15/06/2005 */
 
-body	{
-	font-family: Verdana, Helvetica, sans-serif;
-	font-size: 10pt;
-	line-height: 14pt;
-	color: #000000;
-	background-color: #FFFFFF;
-	margin-top: 0;
-	margin-bottom: 20pt;
-	margin-left: 10pt;
-	margin-right: 15pt;
-        text-align: left
-	}
-
-/* ----------------------------------------------------- */
-
-h1	{
-	font-size: 28pt;
-        font-weight: normal;
-	line-height: 28pt;
-	margin-top: 20pt;
-	margin-bottom: 5pt
-	}
-
-
-h2	{
-	font-size: 14pt;
-	color: #000000;
-	font-weight: normal;
-	margin-top: 10pt;
-	margin-bottom: 10pt
-	}
-
-h3	{
-	font-size: 11pt;
-	color: #000000;
-	font-weight: bold;
-	margin-top: 15pt;
-	margin-bottom: -5pt
-	}
-
-h4	{
-	font-size: 10pt;
-	color: #000000;
-	font-weight: bold;
-	margin-top: 15pt;
-	margin-bottom: -5pt
-	}
-
-/* ----------------------------------------------------- */
-
-a:link	{
-	color: #0069CE;
-	text-decoration: none;
-	}
-
-a:visited
+BODY
 	{
-	color: #0069CE;
-	text-decoration: none;
+	font-family:"Trebuchet MS",verdana,arial,helvetica,tahoma;
+	color:black;
+	font-size="small";
+	background-color: white;
 	}
 
-a:active
+A:link {color: #0069CE; text-decoration: none;} 
+A:visited {color: #0069CE; text-decoration: none;}
+A:active {color: #B22222; text-decoration: none;}
+A:hover { Color: maroon; text-decoration: underline;}
+
+.instr
 	{
-	color: #B22222;
-	text-decoration: none;
+	margin-left: .25in;
 	}
 
-a:hover	{
-	color: maroon;
-	text-decoration: underline;
+DD	{
+	text-indent: 10%;
 	}
 
-a.headline
+li p
 	{
-	color: #000000;
-	text-decoration: none;
-	}
+	margin-top: .75em;
+	margin-bottom: 1.25em;	
+	}	
 
-a.headline:visited
+li	{
+	margin-left: .15in;
+	}	 
+
+ol li
 	{
-	color: #000000;
-	text-decoration: none;
+	margin-left: .10in;
 	}
 
-a.headline:active
+ul	{
+	list-style: disc;
+	}
+
+ul.onestep
 	{
-	color: #000000;
-	text-decoration: none;
+	list-style: disc;
 	}
 
-a.headline:hover
+
+/* tables */
+
+table
 	{
-	color: #990000;
-	text-decoration: none;
+	font-size: 100%;
+	text-align: left;
+	margin-top: 0em;
 	}
 
+tr	{
+	margin: .25em;
+	vertical-align: top;
+	}
+
+th	{
+	text-align: left;
+	margin: .25em;
+	vertical-align: top;
+	background: #ffffff;
+	}
+
+td	{
+	margin: .25em;
+	vertical-align: top;
+	padding: 0;
+	}
