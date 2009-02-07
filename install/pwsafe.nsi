@@ -169,12 +169,12 @@
 ; to enable a language : remove the ";" in front, to disable: put a ";" in front
 
 !define LANGUAGE_GERMAN
-!define LANGUAGE_SPANISH
-!define LANGUAGE_SWEDISH
-!define LANGUAGE_DUTCH
-!define LANGUAGE_FRENCH
-!define LANGUAGE_RUSSIAN
-!define LANGUAGE_POLISH
+;!define LANGUAGE_SPANISH
+;!define LANGUAGE_SWEDISH
+;!define LANGUAGE_DUTCH
+;!define LANGUAGE_FRENCH
+;!define LANGUAGE_RUSSIAN
+;!define LANGUAGE_POLISH
 
   !insertmacro MUI_LANGUAGE "English"
 !ifdef LANGUAGE_GERMAN
@@ -229,8 +229,8 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
-  File "..\bin\pwsafe\releasem\pwsafe.exe"
-  File /oname=p98.exe "..\bin\pwsafe\nu-releasem\pwsafe.exe" 
+  File "..\src\bin\releasem\pwsafe.exe"
+  File /oname=p98.exe "..\src\bin\nu-releasem\pwsafe.exe" 
   File "..\help\default\pwsafe.chm"
   File "..\LICENSE"
   File "..\README.TXT"
@@ -240,31 +240,31 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\pwsafe.xsl"
   File "..\xml\pwsafe_filter.xsd"
 !ifdef LANGUAGE_GERMAN
-  File /nonfatal "..\bin\language\release\pwsafeDE_DE.dll"
+  File /nonfatal "..\src\bin\release\pwsafeDE_DE.dll"
   File /nonfatal "..\help\pwsafeDE\pwsafeDE_DE.chm"
 !endif
 !ifdef LANGUAGE_SPANISH
-  File /nonfatal "..\bin\language\release\pwsafeES_ES.dll"
+  File /nonfatal "..\src\bin\release\pwsafeES_ES.dll"
   File /nonfatal "..\help\pwsafeES\pwsafeES_ES.chm"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  File /nonfatal "..\bin\language\release\pwsafeSV_SE.dll"
+  File /nonfatal "..\src\bin\release\pwsafeSV_SE.dll"
   File /nonfatal "..\help\pwsafeSV\pwsafeSV_SE.chm"
 !endif
 !ifdef LANGUAGE_DUTCH
-  File /nonfatal "..\bin\language\release\pwsafeNL_NL.dll"
+  File /nonfatal "..\src\bin\release\pwsafeNL_NL.dll"
   File /nonfatal "..\help\pwsafeNL\pwsafeNL_NL.chm"
 !endif
 !ifdef LANGUAGE_FRENCH
-  File /nonfatal "..\bin\language\release\pwsafeFR_FR.dll"
+  File /nonfatal "..\src\bin\release\pwsafeFR_FR.dll"
   File /nonfatal "..\help\pwsafeFR\pwsafeFR_FR.chm"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  File /nonfatal "..\bin\language\release\pwsafeRU_RU.dll"
+  File /nonfatal "..\src\bin\release\pwsafeRU_RU.dll"
   File /nonfatal "..\help\pwsafeRU\pwsafeRU_RU.chm"
 !endif
 !ifdef LANGUAGE_POLISH
-  File /nonfatal "..\bin\language\release\pwsafePL_PL.dll"
+  File /nonfatal "..\src\bin\release\pwsafePL_PL.dll"
   File /nonfatal "..\help\pwsafePL\pwsafePL_PL.chm"
 !endif
 
