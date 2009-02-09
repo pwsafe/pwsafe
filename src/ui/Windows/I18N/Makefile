@@ -17,51 +17,59 @@
 #Update the following for each language we support
 
 POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po pos/pwsafe_pl.po 
-DLLS = dlls/pwsafeSV_SE.dll dlls/pwsafeES_ES.dll dlls/pwsafeDE_DE.dll dlls/pwsafePL_PL.dll
+
+DLL_LIST = pwsafeSV_SE.dll pwsafeES_ES.dll pwsafeDE_DE.dll pwsafePL_PL.dll
+DEST_DIR = ../../../bin/release
+DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
+
+help:
+	@echo "Make one of:"
+	@echo "update-pos dlls tools clean help"
+
 
 # Currently we need a rule per language, due to the LCID.
 # I'm sure that we can improve on this...
 
-dlls/pwsafeSV_SE.dll : pos/pwsafe_sv.po
-	(cd dlls; \
-		../$(RESTEXT) apply ../$(BASE_DLL) foo.dll ../$^; \
-		../$(RESPWSL) apply foo.dll 0x041d; \
+$(DEST_DIR)/pwsafeSV_SE.dll : pos/pwsafe_sv.po
+	(cd $(DEST_DIR); \
+ 	 $(RESTEXT) apply $(notdir $(BASE_DLL)) foo.dll ../../ui/Windows/I18N/$^; \
+	 $(RESPWSL) apply foo.dll 0x041d; \
+	 $(RM) foo.dll)
+	$(CHMOD) 755 $@
+
+$(DEST_DIR)/pwsafeES_ES.dll : pos/pwsafe_es.po
+	(cd $(DEST_DIR); \
+		$(RESTEXT) apply $(notdir $(BASE_DLL)) foo.dll ../../ui/Windows/I18N/$^; \
+		$(RESPWSL) apply foo.dll 0x0c0a; \
 		$(RM) foo.dll)
 	$(CHMOD) 755 $@
 
-dlls/pwsafeES_ES.dll : pos/pwsafe_es.po
-	(cd dlls; \
-		../$(RESTEXT) apply ../$(BASE_DLL) foo.dll ../$^; \
-		../$(RESPWSL) apply foo.dll 0x0c0a; \
+$(DEST_DIR)/pwsafeDE_DE.dll : pos/pwsafe_de.po
+	(cd $(DEST_DIR); \
+		$(RESTEXT) apply $(notdir $(BASE_DLL)) foo.dll ../../ui/Windows/I18N/$^; \
+		$(RESPWSL) apply foo.dll 0x0407; \
 		$(RM) foo.dll)
 	$(CHMOD) 755 $@
 
-dlls/pwsafeDE_DE.dll : pos/pwsafe_de.po
-	(cd dlls; \
-		../$(RESTEXT) apply ../$(BASE_DLL) foo.dll ../$^; \
-		../$(RESPWSL) apply foo.dll 0x0407; \
-		$(RM) foo.dll)
-	$(CHMOD) 755 $@
-
-dlls/pwsafePL_PL.dll : pos/pwsafe_pl.po
-	(cd dlls; \
-		../$(RESTEXT) apply ../$(BASE_DLL) foo.dll ../$^; \
-		../$(RESPWSL) apply foo.dll 0x0415; \
+$(DEST_DIR)/pwsafePL_PL.dll : pos/pwsafe_pl.po
+	(cd $(DEST_DIR); \
+		$(RESTEXT) apply $(notdir $(BASE_DLL)) foo.dll ../../ui/Windows/I18N/$^; \
+		$(RESPWSL) apply foo.dll 0x0415; \
 		$(RM) foo.dll)
 	$(CHMOD) 755 $@
 
 
 # No need to change anything below this line
-export RESTEXT = ./tools/bin/restext/release/ResText.exe
-export RESPWSL = ./tools/bin/respwsl/release/ResPWSL.exe
+export RESTEXT = $(CURDIR)/tools/bin/restext/release/ResText.exe
+export RESPWSL = $(CURDIR)/tools/bin/respwsl/release/ResPWSL.exe
 CHMOD = /usr/bin/chmod
 RM = /usr/bin/rm
 VCBUILD = /cygdrive/c/local/MSVS8/vc/vcpackages/vcbuild.exe
 
-BASE_DLL = ../../../bin/release/pwsafe_base.dll
+BASE_DLL = $(DEST_DIR)/pwsafe_base.dll
 
 
-.PHONY: update-pos dlls tools clean
+.PHONY: update-pos dlls tools clean help
 
 update-pos: tools $(POS)
 

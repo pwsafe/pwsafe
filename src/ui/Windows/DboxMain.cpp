@@ -1096,7 +1096,7 @@ void DboxMain::OnAbout()
 
 void DboxMain::OnPasswordSafeWebsite()
 {
-  HINSTANCE stat = ::ShellExecute(NULL, NULL, _T("http://passwordsafe.sourceforge.net/"),
+  HINSTANCE stat = ::ShellExecute(NULL, NULL, _T("http://pwsafe.org/"),
     NULL, _T("."), SW_SHOWNORMAL);
   if (int(stat) <= 32) {
 #ifdef _DEBUG
