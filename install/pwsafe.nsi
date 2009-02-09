@@ -230,7 +230,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
   File "..\src\bin\releasem\pwsafe.exe"
-  File /oname=p98.exe "..\src\bin\nu-releasem\pwsafe.exe" 
+;"no Win98"  File /oname=p98.exe "..\src\bin\nu-releasem\pwsafe.exe" 
   File "..\help\default\pwsafe.chm"
   File "..\LICENSE"
   File "..\README.TXT"
@@ -268,6 +268,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File /nonfatal "..\help\pwsafePL\pwsafePL_PL.chm"
 !endif
 
+  Goto dont_install_Win98
   ; If installing under Windows98, delete pwsafe.exe, rename
   ; p98.exe pwsafe.exe
   ; Otherwise, delete p98.exe
@@ -279,6 +280,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   isnt_98:
     Delete $INSTDIR\p98.exe
   lbl_cont:
+dont_install_Win98:
 
 !ifdef LANGUAGE_SPANISH
   IntCmp $LANGUAGE 1034 languageSpanish
@@ -712,7 +714,9 @@ Function .onInit
  !insertmacro INSTALLOPTIONS_EXTRACT "pws-install.ini"
  Call GetWindowsVersion
  Pop $R0
+; Strcpy $R0 '98' ; ONLY for test
  StrCmp $R0 '95' is_win95
+ StrCmp $R0 '98' is_win98
  StrCmp $R0 'ME' is_winME
  StrCpy $HOST_OS $R0
  
@@ -783,6 +787,9 @@ extraLanguage:
  Return
 is_win95:
   MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+  Quit
+is_win98:
+  MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
   Quit
 is_winME:
   MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
