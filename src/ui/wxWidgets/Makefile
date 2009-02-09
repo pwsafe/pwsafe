@@ -126,22 +126,23 @@ endif
 
 SVN_VERSION = $(shell svnversion -n ../../..)
 
+DEPDIR= ./deps
+
 CPPINC += -I../..
 
 LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
 CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
 CPPFLAGS += -DSVN_VERSION=\"$(SVN_VERSION)\"
 
-OBJECTS=$(OBJECTPATH)/passwordsafeframe.o \
-	$(OBJECTPATH)/pwsafeapp.o \
-	$(OBJECTPATH)/safecombinationentry.o \
-	$(OBJECTPATH)/safecombinationsetup.o \
-	$(OBJECTPATH)/safecombinationprompt.o \
-	$(OBJECTPATH)/properties.o \
-	$(OBJECTPATH)/PWSgrid.o \
-	$(OBJECTPATH)/PWStree.o \
-	$(OBJECTPATH)/version.o \
-	$(RESOURCEOBJECT)
+SOURCES= passwordsafeframe.cpp \
+	pwsafeapp.cpp safecombinationentry.cpp \
+	safecombinationsetup.cpp safecombinationprompt.cpp \
+	properties.cpp PWSgrid.cpp \
+	PWStree.cpp version.cpp
+
+OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
+OBJECTS += $(RESOURCEOBJECT)
+
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
 
@@ -162,6 +163,9 @@ $(OUTPUTPATH)/$(PROGRAM):	$(OBJECTS)
 	$(CXX) -o $@ $(OBJECTS) $(LDFLAGS)
 
 
+$(OBJECTPATH)/%.o : %.cpp
+	$(CXX) -c -o $@ $(CPPFLAGS) $<
+
 # Windows only
 $(OBJECTPATH)/$(RCFILEOBJ):	$(RCFILESRC)
 	$(RESCOMP) --use-temp-file -i$< -o$@ $(RESPATH) --include-dir . --define NOPCH
@@ -179,35 +183,14 @@ $(OUTPUTPATH)/$(PROGRAM).app/Contents/PkgInfo: $(OUTPUTPATH)/$(PROGRAM) $(INFOPL
 	ln -f $(OUTPUTPATH)/$(PROGRAM) $(OUTPUTPATH)/$(PROGRAM).app/Contents/MacOS/$(PROGRAM)
 	cp -f $(ICNSSOURCE) $(ICNSDEST)
 
-$(OBJECTPATH)/passwordsafeframe.o:	passwordsafeframe.cpp passwordsafeframe.h \
-																		safecombinationprompt.h properties.h \
-																		PWSgrid.h PWStree.h
-	$(CXX) -c -o $@ $(CPPFLAGS) passwordsafeframe.cpp
+$(DEPDIR)/%.d: %.cpp
+	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
+	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
 
-$(OBJECTPATH)/PWSgrid.o:	PWSgrid.cpp PWSgrid.h
-	$(CXX) -c -o $@ $(CPPFLAGS) PWSgrid.cpp
+include $(SOURCES:%.cpp=$(DEPDIR)/%.d)
 
-$(OBJECTPATH)/PWStree.o:	PWStree.cpp PWStree.h
-	$(CXX) -c -o $@ $(CPPFLAGS) PWStree.cpp
-
-$(OBJECTPATH)/pwsafeapp.o:	pwsafeapp.cpp pwsafeapp.h \
-														safecombinationentry.h version.h
-	$(CXX) -c -o $@ $(CPPFLAGS) pwsafeapp.cpp
-
-$(OBJECTPATH)/safecombinationentry.o:	safecombinationentry.cpp safecombinationentry.h safecombinationsetup.h
-	$(CXX) -c -o $@ $(CPPFLAGS) safecombinationentry.cpp
-
-$(OBJECTPATH)/safecombinationsetup.o:	safecombinationsetup.cpp safecombinationsetup.h
-	$(CXX) -c -o $@ $(CPPFLAGS) safecombinationsetup.cpp
-
-$(OBJECTPATH)/safecombinationprompt.o:	safecombinationprompt.cpp safecombinationprompt.h
-	$(CXX) -c -o $@ $(CPPFLAGS) safecombinationprompt.cpp
-
-$(OBJECTPATH)/properties.o:	properties.cpp properties.h
-	$(CXX) -c -o $@ $(CPPFLAGS) properties.cpp
-
-$(OBJECTPATH)/version.o:	version.cpp version.h
-	$(CXX) -c -o $@ $(CPPFLAGS) version.cpp
 
 .PHONY:	all clean
 ### Begin DialogBlocks generated body
