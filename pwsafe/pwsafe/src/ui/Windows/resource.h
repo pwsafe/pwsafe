@@ -89,7 +89,6 @@
 #define IDI_UNLOCKEDICON                209
 #define IDB_CLOGO                       220
 #define IDB_CLOGO_SMALL                 221
-#define IDB_CTEXT                       222
 #define IDB_PSLOGO                      223
 #define IDB_PWSDB                       224
 #define IDB_ALIAS                       230

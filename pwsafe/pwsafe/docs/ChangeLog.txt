@@ -2,6 +2,174 @@ This file lists the changes made to older versions of
 PasswordSafe. The changes for the current version and those
 immediately preceding it are noted in ReleaseNotes.txt.
 
+Bugs fixed in 3.14.01
+=====================
+[2096504] All user set fields are now checked when merging databases.
+[2096164] -h, -u and -g command line functionality restored.
+[2088540] Showing Dragbar is now independent of displaying the
+Toolbar.
+[2085103] New database can no longer be created as R/O.
+[2085089] Database field in "Safe combination Entry" dialog no longer
+loses focus to passphrase field after each character change.
+
+Bugs fixed in 3.14
+==================
+[2071489] off-by-one bug in range for generated passwords fixed.
+[1978486] The R/W status of a database is unchanged if it is already 
+open and the user cancels an open file action.
+[1978475] Clear clipboard options are no longer interchanged.
+[1970652] No longer crashes when user exits search for non-existant
+database.
+[1966718] Text in 'Notes" now has horizontal scroll bar during Add.
+[1959193] PWS now honors the read-only command line parameter (-r)
+for first file open. Afterwards, the behavior is determined by the R/O
+open preference or user selecting read-only at open time.
+[1954268] Aliases and shortcuts now processed correctly during merge.
+[1933174, 2015132] Reports from Import (Text or XML), Compare, Merge
+and Find are no longer written to disk by default.
+[] Expired icon now correct after password change.
+[] Current tree state is now updated correctly upon exit (Thanks to
+Norman)
+[] Correct display of tree items on restore from minimize.
+
+Changes to Existing Features in 3.14
+====================================
+[1958303] TreeView buttons (+/-) now larger without significantly
+increasing the visible bitmap image.  Also, now transparent.
+[] Drop down list of databases at start-up now retains order of usage
+rather than sorted alphabetically.
+[] A new Double-click action has been added: Copy password to
+clipboard and then minimize. Thanks to Garrett for his work on this.
+
+New Features for 3.14
+=====================
+[2004500] CTRL-A now selects all of the Notes field in Add & Edit.
+[1817880, 2018365] Option to allow restricting only a single instance per user.
+If set and another copy of PasswordSafe started, focus is given to the
+existing instance.
+[] The entries displayed can now be filtered based on rules on every
+field in the database.
+[] Add Dragbar and also allow D&D from Tree onto a text field to drop the
+entry's password value.
+[] During initial open, tooltips in the drop down list box will display 
+the full database names and paths.
+
+Bugs fixed in 3.13
+==================
+[1941360] Rename with F2 now enables Save button.
+[1940311] Password Policy now ignores length requirements if not applicable.
+[1938057] Non-Latin text now correctly exported to plain text file.
+[1926678, 1937293,1939294] Reduce GDI object leaks that cause display problems
+during hibernation, screen locking and remote access.
+[1914433] It is now possible to view the password policy set for an
+individual entry, by shift-clicking on the checked Override Policy
+checkbox. A tooltip explaining this is shown when relevant.
+[1904391] Many functions, e.g.,  cancelling a rename of an entry,
+inter-instance Drag & Drop, no longer collapse the entire tree.
+[1904254] Non-text fields (e.g., time) are not shown in Advanced
+Search, as they are not searched.
+[1900655] Compare advanced subset now applies to current and comparison
+databases.
+[1899876] Fixed title/user problem when opening v1.7 databases.
+[1598836] Correct treeview now displayed after restore from timeout lock.
+[1478022] Correct description of this fix in the Release Notes to avoid
+user confusion thinking it does something different.
+[] Ensure first entry is selected when opening an existing database.
+[] XML export of password history fixed for when number to be saved > 99.
+[] Fix incorrect lock file handling during SaveAs.
+
+Changes to Existing Features in 3.13
+====================================
+[] Improved compare database reporting.
+[] Copying an empty field to the clipboard now emptied the clipboard
+(previously, no action was performed).
+
+New Features for 3.13
+=====================
+[1914644] Password expiry can now be set as an (optionally repeating)
+interval. This is indicated in the List view by an asterisk after the 
+expiry date.
+[1904254] Find now searches all text fields by default.
+[1901380] Find result highlighted and selected.
+[1901380] If the Esc key is not being used to minimize PasswordSafe, then
+it will close the Find Toolbar.
+[1901380] F3 (Repeat Find) works even if the Find Toolbar has been closed.
+[1887159] PasswordSafe may be configured to open databases 'Read-only' by
+default.  This can still be overriden during open if the file itself
+is not read-only.
+[1664535] Interpret "Remember 0 last databases" on the System Options as 
+"do not store any opened database".
+[1399569, 912188] Separate the clear clipboard options on minimize and exit.
+[1207606] Notes may optionally be shown as tooltips.
+[988806] The Status Bar now provides Feedback on double click actions.
+[] Alt+F4, in addition to Ctrl+Q, now closes the application.
+[] Allow user to Hide/Show main toolbar.
+[] Ability to create/view a report of the previous Find request.
+
+Bugs fixed in 3.12
+==================
+[1855658, 1436850] Implement font for password display correctly.
+[1850271] Save after Compare no longer corrupts database.
+[1849881, 700973] Pressing a character in the List view will now jump to the
+next entry with text beginning with that character in the second column. This
+is a change from previous behaviour, which only looked in the first column,
+now occupied by the icon.
+[1849830] Help now works properly for Manage->Option, displaying the
+relevant topic.
+[1849818] Browse-to no longer falsely reports "failed to browse to
+URL".
+[1843631] "Browse to Icon" now correctly shown using new Toolbar.
+[1841525] Increasing the number of passwords saved no longer deletes the
+existing Password History.
+[1833609, 1535341, 1502036] Fully support multiple monitors.
+[1749268] Mouse clicks on tree view plus/minus boxes now works correctly.
+[1670193] Better Vista support (Allow use of Windows Common Controls
+V6 with Vista).
+[1478022] User must save a restored database before it can be exported.
+[1440693] Fix standard keyboard access to context menu (Shift+F10).
+[] Allow Expand/Collapse for read-only databases via toolbar.
+[] Set focus to new view on switching between Tree <-> List views.
+[] Update toolbar when view changes (List <-> Tree).
+[] Set title bar text when opening a database at startup.
+[] Allow List view to process all characters e.g. Page Up/Down, Home, End,
+Arrows etc.
+[] Fix program crash on clicking CompareResults dialog header.
+[] Toolbar Save button correctly enabled after drag & drop operations.
+
+Changes to Existing Features in 3.12
+====================================
+[1885710, 1852862] When re-showing the Find toolbar, any existing search
+argument is selected to allow easier deletion and modification.
+[1865009] Give user advanced option to ignore whitespace-only
+differences during compare.
+[1846688, 1224373] When generating a new password, it is no longer displayed
+in a separate window for approval. If you want to generate another
+password, just click on Generate again. If you want to revert to the
+existing password when editing an entry, just click on Cancel.
+[1841221] During drag & drop, a 1.5 scond delay was introduced before
+expanding a group that the cursor "hovers" upon.
+[] New disabled buttons for New Toolbar.
+
+New Features for 3.12
+=====================
+[1842449, 1000639] Implement standard F3 for repeat Find shortcut.
+[1838738] Implement minimum lengths of types of characters in the
+password policy i.e. 3 uppercase + 2 lowercase + 1 digit etc.  Feature
+is incompatible with 'pronounceable' or 'easy-to-read' passwords.
+[1676241, 1511829, 1436850, 1426250, 1078998, 996240, 771845] Allow
+user to select a font for Passwords, so that similar characters can be
+distinguished e.g. 0 & O, 1, I & l.
+[] Implement individual password policy for entries that will override
+the current database policy.  User can still override the individual
+policy or the database policy.
+[] An entry may have multiple references, or "shortcuts" to it,
+similar to Windows' shortcuts. These may be thought of as "synonyms"
+of the entry. To create a shortcut, drag an entry with the right mouse
+button pressed.
+[] Graphics added to menus.
+[] New password generation option: Pronounceable passwords. Thanks to
+Tom Van Vleck, Morrie Gasser, and Dan Edwards.
+
 Bugs fixed in 3.11.1
 ====================
 [1837534] Autotype handles tab correctly when typing to Internet
