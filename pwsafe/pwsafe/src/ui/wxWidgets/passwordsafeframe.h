@@ -144,6 +144,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
   void OnTreeViewClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
+  void OnChangePasswdClick( wxCommandEvent& event );
+
 ////@end PasswordSafeFrame event handler declarations
 
 ////@begin PasswordSafeFrame member function declarations

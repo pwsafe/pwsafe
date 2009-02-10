@@ -24,6 +24,7 @@
 #endif
 
 ////@begin includes
+#include "safecombinationchange.h"
 #include "PWSgrid.h"
 #include "PWStree.h"
 ////@end includes
@@ -63,6 +64,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
 
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
+
+  EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
 
 ////@end PasswordSafeFrame event table entries
 
@@ -646,5 +649,20 @@ void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& event )
 {
   CProperties props(this, m_core);
   props.ShowModal();
+}
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
+ */
+
+void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& event )
+{
+  CSafeCombinationChange* window = new CSafeCombinationChange(this, m_core);
+  int returnValue = window->ShowModal();
+  if (returnValue == wxID_OK) {
+    m_core.ChangePassword(window->GetNewpasswd().c_str());
+  }
+  window->Destroy();
 }
 
