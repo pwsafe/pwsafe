@@ -7,7 +7,7 @@ rem  set in UserVariables.vsprops
 rem Other processing can be added as required.
 
 if not exist "%TortoiseSVNDir%\bin\SubWCRev.exe" goto :Error1
-"%TortoiseSVNDir%\bin\SubWCRev.exe" .\ version.in version.h
+"%TortoiseSVNDir%\bin\SubWCRev.exe" ..\..\.. version.in version.h
 goto :Done
 :Error1
 if not exist "%ProjectDir%\version.h" goto :Error2
