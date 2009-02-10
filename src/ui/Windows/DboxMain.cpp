@@ -91,6 +91,21 @@ CString DboxMain::CS_COPYUSERNAME;
 CString DboxMain::CS_COPYNOTESFLD;
 CString DboxMain::CS_AUTOTYPE;
 
+void DboxMain::CS_local_strings ()
+{
+  // VdG the local strings are set
+  CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
+  CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
+  CS_VIEWENTRY.LoadString(IDS_MENUVIEWENTRY);
+  CS_DELETEGROUP.LoadString(IDS_MENUDELETEGROUP);
+  CS_RENAMEGROUP.LoadString(IDS_MENURENAMEGROUP);
+  CS_SENDEMAIL.LoadString(IDS_MENUSENDEMAIL);
+  CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
+  CS_CREATESHORTCUT.LoadString(IDS_MENUCREATESHORTCUT);
+  CS_SETFILTERS.LoadString(IDS_SETFILTERS);
+  CS_CLEARFILTERS.LoadString(IDS_CLEARFILTERS);
+}
+
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
@@ -116,16 +131,8 @@ DboxMain::DboxMain(CWnd* pParent)
   // Now get it from the Menu directly
 
   // Now for ones not in the main Menu at startup
-  CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
-  CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
-  CS_VIEWENTRY.LoadString(IDS_MENUVIEWENTRY);
-  CS_DELETEGROUP.LoadString(IDS_MENUDELETEGROUP);
-  CS_RENAMEGROUP.LoadString(IDS_MENURENAMEGROUP);
-  CS_SENDEMAIL.LoadString(IDS_MENUSENDEMAIL);
-  CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
-  CS_CREATESHORTCUT.LoadString(IDS_MENUCREATESHORTCUT);
-  CS_SETFILTERS.LoadString(IDS_SETFILTERS);
-  CS_CLEARFILTERS.LoadString(IDS_CLEARFILTERS);
+  // VdG set the local strings to the default values
+  CS_local_strings ();
 
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -673,6 +680,9 @@ void DboxMain::InitPasswordSafe()
 
   m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefaultUser));
   m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername));
+
+  // VdG set the local strings to the language dependant values
+  CS_local_strings ();
 
   SetMenu(app.m_mainmenu);  // Now show menu...
 
