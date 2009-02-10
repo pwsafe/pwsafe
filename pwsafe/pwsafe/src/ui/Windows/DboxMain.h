@@ -207,6 +207,7 @@ public:
   int GetHeaderWidth(const int iType);
   void CalcHeaderWidths();
   void UnFindItem();
+  void CS_local_strings();
 
   void UpdateToolBar(bool state);
   void UpdateToolBarForSelectedItem(CItemData *ci);
