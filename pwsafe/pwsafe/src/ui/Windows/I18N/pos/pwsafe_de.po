@@ -388,8 +388,8 @@ msgid "&About Password Safe..."
 msgstr "Über &Password Safe"
 
 #. Resource IDs: (32051)
-msgid "&Add Entry..\tCtrl+A"
-msgstr "Eintrag &einfügen\tCtrl+A"
+msgid "&Add Entry...\tCtrl+A"
+msgstr "Eintrag &einfügen...\tCtrl+A"
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -407,7 +407,7 @@ msgstr "&Autom. Eingabe:"
 msgid "&Browse to URL"
 msgstr "&Gehe zu URL"
 
-#. Resource IDs: (343, 32062)
+#. Resource IDs: (32062)
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&Gehe zu URL\tStrg+L"
 
@@ -503,6 +503,10 @@ msgstr "&Bearbeiten"
 msgid "&Export"
 msgstr "&Exportieren"
 
+#. Resource IDs: (32001)
+msgid "&File"
+msgstr "&Datei"
+
 #. Resource IDs: (32110)
 msgid "&Filters"
 msgstr "&Filter"
@@ -519,10 +523,6 @@ msgstr "Eintrag &Suchen...\tCtrl+F"
 msgid "&Finish"
 msgstr "&Beenden"
 
-#. Resource IDs: (32001)
-msgid "&File"
-msgstr "&Datei"
-
 #. Resource IDs: (1088)
 msgid "&Font:"
 msgstr "&Schriftart:"
@@ -530,6 +530,10 @@ msgstr "&Schriftart:"
 #. Resource IDs: (1025)
 msgid "&Generate"
 msgstr "&Generierung"
+
+#. Resource IDs: (32069)
+msgid "&Go to Base entry"
+msgstr "&Gehe zum Basiseintrag"
 
 #. Resource IDs: (9, 32200, 57670)
 msgid "&Help"
@@ -575,6 +579,10 @@ msgstr "&Neu"
 msgid "&New "
 msgstr "&Neu "
 
+#. Resource IDs: (32003)
+msgid "&New...\tCtrl+N"
+msgstr "&Neu...\tCtrl+N"
+
 #. Resource IDs: (32111)
 msgid "&New/Edit Filter"
 msgstr "Filter &neu/bearbeiten"
@@ -586,10 +594,6 @@ msgstr "&Nein"
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
 msgstr "&Notizen:"
-
-#. Resource IDs: (32003)
-msgid "&New...\tCtrl+N"
-msgstr "&Neu...\tCtrl+N"
 
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
@@ -1409,10 +1413,6 @@ msgstr "Kopiere Email in Zwischenablage"
 msgid "Copy Here"
 msgstr "Hierher kopieren"
 
-#. Resource IDs: (345)
-msgid "Copy URL to Clipboard"
-msgstr "Kopiere URL in Zwischenablage"
-
 #. Resource IDs: (32064)
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "URL in Zwischenablage kopieren\tCtrl+Alt+L"
@@ -1466,7 +1466,7 @@ msgstr "Konnte die Druckaufgabe nicht starten."
 msgid "Couldn't save database - Please save manually"
 msgstr "Konnte Datenbank nicht speichern - bitte manuell speichern"
 
-#. Resource IDs: (32068)
+#. Resource IDs: (354)
 msgid "Create &Shortcut"
 msgstr "Tasten&kürzel erstellen"
 
@@ -1594,10 +1594,6 @@ msgstr "Bestätigung löschen"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr "Eintrag löschen"
-
-#. Resource IDs: (338)
-msgid "Delete Entry\tDel"
-msgstr "Eintrag löschen\tEntf"
 
 #. Resource IDs: (338)
 msgid "Delete Group\tDel"
@@ -2672,12 +2668,13 @@ msgid "Missing XSD File"
 msgstr "XSD Datei fehlt"
 
 #. Resource IDs: (209)
-msgid "Missing date element"
-msgstr "Datumelement fehlt"
-
-#. Resource IDs: (209)
 msgid "Missing date/time element."
 msgstr "Datum/Uhrzeit Element fehlt."
+
+#. Resource IDs: (209)
+#, c-format
+msgid "Missing test element \"%s\"."
+msgstr "Testelement \"%s\" fehlt."
 
 #. Resource IDs: (3887)
 msgid "Mixed"
@@ -2857,9 +2854,9 @@ msgid ""
 "\n"
 "Number of Password Histories fixed: %d\n"
 "\n"
-"Number of Alias warnings issued %d\n"
+"Number of Alias warnings issued: %d\n"
 "\n"
-"Number of Shortcut warnings issued %d"
+"Number of Shortcut warnings issued: %d"
 msgstr ""
 "%d Einträge wurden bearbeitet.\n"
 "\n"
@@ -3324,7 +3321,7 @@ msgstr "Bitte wählen Sie das Unterverzeichnis für alle Sicherungsdateien."
 
 #. Resource IDs: (344)
 msgid "Please visit the <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe website.</a>"
-msgstr "Bitte besuchen Sie die <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe website.</a>"
+msgstr "Bitte besuchen Sie die <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -3418,10 +3415,6 @@ msgstr "Merke letzte"
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe data from Registry"
 msgstr "Entferne Password Safe-Einträge aus der Registry"
-
-#. Resource IDs: (338)
-msgid "Rename &Entry\tF2"
-msgstr "&Eintrag umbenennen\tF2"
 
 #. Resource IDs: (32054)
 msgid "Rename Entry"
@@ -3874,6 +3867,11 @@ msgstr "Der %s Eintrag \"%s, %s, %s\" zeigt nicht auf ein normaler oder bestehen
 msgid "The combination cannot be blank."
 msgstr "Das General-Passwort darf nicht leer sein."
 
+#. Resource IDs: (210)
+#, c-format
+msgid "The contents [\"%s\"] of element \"%s\" is invalid/unexpected."
+msgstr "Der Inhalt [\"%s\"] von Element \"%s\" ist ungültig/unerwartet."
+
 #. Resource IDs: (332)
 #, c-format
 msgid ""
@@ -3886,15 +3884,20 @@ msgstr ""
 #. Resource IDs: (339)
 #, c-format
 msgid ""
-"The database %s is apparently being used by:\n"
+"The database:\n"
+"%s\n"
 "\n"
+"is apparently being used by:\n"
 "%s%s.\n"
 "\n"
 "Open the database for Read-Only or Exit?\r\n"
 "\r\n"
 "Note: Only one user at a time can open the database for writing."
 msgstr ""
-"Die Datenbank %s wird scheinbar schon benutzt von:\n"
+"Die Datenbank:\n"
+"%s\n"
+"\n"
+"wird scheinbar schon benutzt von:\n"
 "\n"
 "%s%s.\n"
 "\n"
@@ -3905,8 +3908,10 @@ msgstr ""
 #. Resource IDs: (328)
 #, c-format
 msgid ""
-"The database %s is apparently being used by:\n"
+"The database:\n"
+"%s\n"
 "\n"
+"is apparently being used by:\n"
 "%s%s.\n"
 "\n"
 "Open the database for Read-Only, Read-Write, or Exit?\r\n"
@@ -3914,8 +3919,9 @@ msgid ""
 "Note: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\n"
 "including another copy of Password Safe running on your machine."
 msgstr ""
-"Die Datenbank %s wird scheinbar schon benutzt von:\n"
-"\n"
+"Die Datenbank:\n"
+"%s\n"
+" wird scheinbar schon benutzt von:\n"
 "%s%s.\n"
 "\n"
 "Öffnen der Datenbank im Nur-lese-Modus oder mit Schreibzugriff, oder beenden?\r\n"
@@ -4019,6 +4025,10 @@ msgstr "Diese Datenbank ist im Nur-Lese-Modus geöffnet. Änderungen werden NICH
 #. Resource IDs: (335)
 msgid "This database is the same as the current database!"
 msgstr "Das ist die gleiche Datenbank, wie die aktuell geöffnete!"
+
+#. Resource IDs: (354)
+msgid "This entry has been changed. Are you sure you wish to cancel?"
+msgstr "Dieser Eintrag wurde geändert. Sind sie sicher Abbrechen zu wollen?"
 
 #. Resource IDs: (341)
 #, c-format
@@ -4295,13 +4305,13 @@ msgid "Uncheck"
 msgstr "Deaktiviere"
 
 #. Resource IDs: (209)
-#, c-format
-msgid "Unexpected element: %s"
-msgstr "Unerwartetes Element: %s"
+msgid "Unexpected element: Only one field allowed per filter entry."
+msgstr "Unerwartetes Element: es ist nur EIN Feld bei der Filtereingabe erlaubt."
 
 #. Resource IDs: (209)
-msgid "Unexpected element: Only one field allowed in filter entry."
-msgstr "Unerwartetes Element: es ist nur ein Feld bei der Filtereingabe erlaubt."
+#, c-format
+msgid "Unexpected element: \"%s\"."
+msgstr "Unerwartetes Element: \"%s\"."
 
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
@@ -4313,8 +4323,8 @@ msgstr "Unbekannt            "
 
 #. Resource IDs: (209)
 #, c-format
-msgid "Unknown element: %s"
-msgstr "Unbekanntes Element: %s"
+msgid "Unknown element: \"%s\"."
+msgstr "Unbekanntes Element: \"%s\"."
 
 #. Resource IDs: (350)
 msgid "Unknown fields"
@@ -4781,6 +4791,14 @@ msgstr ""
 "\n"
 "Suchen"
 
+#. Resource IDs: (2005)
+msgid ""
+"\n"
+"Go to Base entry"
+msgstr ""
+"\n"
+"Gehe zum Basiseintrag"
+
 #. Resource IDs: (3605)
 msgid ""
 "\n"
@@ -5193,7 +5211,7 @@ msgstr "hat folgende Einträge mit abgelaufenem Passwort:"
 
 #. Resource IDs: (314)
 msgid "http://passwordsafe.sourceforge.net/"
-msgstr "http://passwordsafe.sourceforge.net/"
+msgstr "http://pwsafe.org/"
 
 #. Resource IDs: (191)
 msgid "import"
@@ -5369,4 +5387,11 @@ msgstr "wird ablaufen"
 #, c-format
 msgid "within %d day(s)"
 msgstr "binnen %d Tag(en)"
+
+#~ msgid "Copy URL to Clipboard"
+#~ msgstr "Kopiere URL in Zwischenablage"
+#~ msgid "Delete Entry\tDel"
+#~ msgstr "Eintrag löschen\tEntf"
+#~ msgid "Rename &Entry\tF2"
+#~ msgstr "&Eintrag umbenennen\tF2"
 
