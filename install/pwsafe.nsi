@@ -169,12 +169,12 @@
 ; to enable a language : remove the ";" in front, to disable: put a ";" in front
 
 !define LANGUAGE_GERMAN
-;!define LANGUAGE_SPANISH
-;!define LANGUAGE_SWEDISH
+!define LANGUAGE_SPANISH
+!define LANGUAGE_SWEDISH
 ;!define LANGUAGE_DUTCH
 ;!define LANGUAGE_FRENCH
 ;!define LANGUAGE_RUSSIAN
-;!define LANGUAGE_POLISH
+!define LANGUAGE_POLISH
 
   !insertmacro MUI_LANGUAGE "English"
 !ifdef LANGUAGE_GERMAN
