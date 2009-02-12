@@ -53,9 +53,13 @@ IMPLEMENT_CLASS( PasswordSafeFrame, wxFrame )
 BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 ////@begin PasswordSafeFrame event table entries
+  EVT_CLOSE( PasswordSafeFrame::OnCloseWindow )
+
   EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
 
   EVT_MENU( wxID_CLOSE, PasswordSafeFrame::OnCloseClick )
+
+  EVT_MENU( wxID_SAVE, PasswordSafeFrame::OnSaveClick )
 
   EVT_MENU( wxID_PROPERTIES, PasswordSafeFrame::OnPropertiesClick )
 
@@ -329,10 +333,7 @@ bool PasswordSafeFrame::Show(bool show)
 
 void PasswordSafeFrame::OnExitClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT in PasswordSafeFrame.
-  // Before editing this code, remove the block markers.
-  Destroy();
-////@end wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT in PasswordSafeFrame. 
+  Close();
 }
 
 void PasswordSafeFrame::ShowGrid(bool show)
@@ -424,16 +425,17 @@ int PasswordSafeFrame::SaveIfChanged()
                          wxYES_NO | wxYES_DEFAULT));
     int rc = dlg.ShowModal();
     switch (rc) {
-      case wxCANCEL:
+      case wxID_CANCEL:
         return PWScore::USER_CANCEL;
-      case wxYES:
+      case wxID_YES:
         rc = Save();
         // Make sure that file was successfully written
-        if (rc == PWScore::SUCCESS)
+        if (rc == PWScore::SUCCESS) {
+          m_core.UnlockFile(m_core.GetCurFile().c_str());
           break;
-        else
+        } else
           return PWScore::CANT_OPEN_FILE;
-      case wxNO:
+      case wxID_NO:
         // Reset changed flag
         // SetChanged(Clear);
         break;
@@ -497,7 +499,6 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& event )
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS)
       return;
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
     m_core.SetCurFile(_T(""));
     ClearData();
     SetTitle("");
@@ -529,13 +530,6 @@ int PasswordSafeFrame::Open(const wxString &fname)
   rc = SaveIfChanged();
   if (rc != PWScore::SUCCESS)
     return rc;
-
-  // if we were using a different file, unlock it
-  // do this before GetAndCheckPassword() as that
-  // routine gets a lock on the new file
-  if( !m_core.GetCurFile().empty() ) {
-    m_core.UnlockFile(m_core.GetCurFile().c_str());
-  }
 
   rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
   switch (rc) {
@@ -664,5 +658,35 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& event )
     m_core.ChangePassword(window->GetNewpasswd().c_str());
   }
   window->Destroy();
+}
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
+ */
+
+void PasswordSafeFrame::OnSaveClick( wxCommandEvent& event )
+{
+  Save();
+}
+
+
+/*!
+ * wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
+ */
+
+void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
+{
+  // Save Application related preferences
+  PWSprefs::GetInstance()->SaveApplicationPreferences();
+
+  if (event.CanVeto()) {
+    int rc = SaveIfChanged();
+    if (rc == PWScore::USER_CANCEL) {
+      event.Veto();
+      return;
+    }
+  }
+  Destroy();
 }
 
