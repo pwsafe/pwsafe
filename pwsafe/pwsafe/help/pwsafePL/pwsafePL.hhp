@@ -1,16 +1,16 @@
 [OPTIONS]
 Auto Index=Yes
 Compatibility=1.1 or later
-Compiled file=pwsafePL.chm
+Compiled file=pwsafePL_PL.chm
 Contents file=pwsafePL.hhc
 Default topic=html\Welcome.html
-Display compile notes=Yes
 Display compile progress=Yes
 Error log file=pwsafePL.log
 Full-text search=Yes
 Index file=pwsafePL.hhk
-Language=0x415 Polish (Poland)
+Language=0x415 Polnisch
 Title=HTML Help for Password Safe
+
 
 [FILES]
 html\popups.js
@@ -44,3 +44,4 @@ html\view_menu.html
 html\Welcome.html
 
 [INFOTYPES]
+
