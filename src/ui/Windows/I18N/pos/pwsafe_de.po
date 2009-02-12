@@ -1468,7 +1468,7 @@ msgstr "Konnte Datenbank nicht speichern - bitte manuell speichern"
 
 #. Resource IDs: (354)
 msgid "Create &Shortcut"
-msgstr "Tasten&kürzel erstellen"
+msgstr "&Verknüpfung erstellen"
 
 #. Resource IDs: (191)
 #, c-format
@@ -3313,7 +3313,7 @@ msgstr "Bitte wählen Sie den Speicherort für alle Sicherungsdateieen."
 #. Resource IDs: (345)
 #, c-format
 msgid "Please specify the name & group for the shortcut to '%s':"
-msgstr "Bitte geben Sie Name & Gruppe für die Verknüpfung '%s' an:"
+msgstr "Bitte geben Sie Name && Gruppe für die Verknüpfung '%s' an:"
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
