@@ -135,6 +135,7 @@ void CSafeCombinationChange::CreateControls()
 
   wxTextCtrl* itemTextCtrl6 = new wxTextCtrl( itemDialog1, ID_OLDPASSWD, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
   itemFlexGridSizer4->Add(itemTextCtrl6, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemTextCtrl6->SetFocus();
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("New safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText7, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -152,6 +153,7 @@ void CSafeCombinationChange::CreateControls()
 
   itemBoxSizer2->Add(itemStdDialogButtonSizer11, 0, wxGROW|wxALL, 5);
   wxButton* itemButton12 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemButton12->SetDefault();
   itemStdDialogButtonSizer11->AddButton(itemButton12);
 
   wxButton* itemButton13 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );

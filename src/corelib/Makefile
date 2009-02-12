@@ -1,10 +1,12 @@
-# Baby Makefile for Linux
-#
+# Makefile for Linux build of pwsafe
+# corelib library
 
 CONFIG=debug
 #CONFIG=release
 
 NAME=corelib
+
+DEPDIR= ./deps
 
 # Following not used in Linux build
 NOTSRC          = 					SAXHandlers.cpp \
@@ -59,7 +61,16 @@ $(LIB): $(LIBOBJ)
 	ar rvus $@ $(filter %.o,$^)
 
 clean:
-	rm -f *~ $(OBJ) $(TEST) $(LIB) $(DEPENDFILE)
+	@rm -f *~ $(OBJ) $(TEST) $(LIB)
+	@rm -rf $(DEPDIR)
 
 setup:
-	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(LIBPATH)
+	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(LIBPATH) $(DEPDIR)
+
+$(DEPDIR)/%.d: %.cpp
+	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/tinyxml;$(RM) $@; \
+	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
+
+-include $(SRC:%.cpp=$(DEPDIR)/%.d)

@@ -151,11 +151,12 @@ $(OBJECTPATH):
 	mkdir -p $(OBJECTPATH)
 
 clean:
-	rm -f $(OBJECTPATH)/*.o
-	rm -f $(OBJECTPATH)/*.res
-	rm -fr .deps .pch
-	rm -fr $(PROGRAM).app
-	rm -f $(OUTPUTPATH)/$(PROGRAM)
+	@rm -f $(OBJECTPATH)/*.o
+	@rm -f $(OBJECTPATH)/*.res
+	@rm -fr .deps .pch
+	@rm -fr $(PROGRAM).app
+	@rm -f $(OUTPUTPATH)/$(PROGRAM)
+	@rm -rf $(DEPDIR)
 
 help:
 	@echo "Usage: make -f Makefile CONFIG=[debug|release|unicodedebug|unicoderelease] [all|clean|help]"
@@ -190,7 +191,7 @@ $(DEPDIR)/%.d: %.cpp
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 
-include $(SOURCES:%.cpp=$(DEPDIR)/%.d)
+-include $(SOURCES:%.cpp=$(DEPDIR)/%.d)
 
 
 .PHONY:	all clean

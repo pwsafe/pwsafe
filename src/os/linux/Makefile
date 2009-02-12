@@ -1,8 +1,11 @@
-# Baby Makefile for Linux
+# Makefile for Linux os-dependent library of
+# pwsafe
 #
 
 CONFIG=debug
 #CONFIG=release
+
+DEPDIR= ./deps
 
 NAME=os
 
@@ -46,7 +49,16 @@ $(LIB): $(LIBOBJ)
 	ar rvus $@ $(filter %.o,$^)
 
 clean:
-	rm -f *~ $(OBJ) $(TEST) $(LIB) $(DEPENDFILE)
+	@rm -f *~ $(OBJ) $(TEST) $(LIB)
+	@rm -rf $(DEPDIR)
 
 setup:
 	@mkdir -p $(OBJPATH) $(LIBPATH)
+
+$(DEPDIR)/%.d: %.cpp
+	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
+	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
+
+-include $(SRC:%.cpp=$(DEPDIR)/%.d)

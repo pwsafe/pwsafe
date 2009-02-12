@@ -126,11 +126,17 @@ public:
 
 ////@begin PasswordSafeFrame event handler declarations
 
+  /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
+  void OnCloseWindow( wxCloseEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
   void OnOpenClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
   void OnCloseClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
+  void OnSaveClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
   void OnPropertiesClick( wxCommandEvent& event );
