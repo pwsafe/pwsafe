@@ -95,23 +95,23 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Datei Men&uuml;">
+			<param name="Name" value="Men&uuml; Datei">
 			<param name="Local" value="html\file_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Editieren Men&uuml;">
+			<param name="Name" value="Men&uuml; Bearbeiten">
 			<param name="Local" value="html\edit_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Ansicht Men&uuml;">
+			<param name="Name" value="Men&uuml; Ansicht">
 			<param name="Local" value="html\view_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Verwalten Men&uuml;">
+			<param name="Name" value="Men&uuml; Verwalten">
 			<param name="Local" value="html\manage_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Hilfe Men&uuml;">
+			<param name="Name" value="Men&uuml; Hilfe">
 			<param name="Local" value="html\help_menu.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
