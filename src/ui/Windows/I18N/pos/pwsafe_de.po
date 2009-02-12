@@ -1477,7 +1477,7 @@ msgstr "Erstelle SchemaCache%2d Fehler 0x%08X während %s."
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
-msgstr "Tastenkürzel erstellen"
+msgstr "Verknüpfung erstellen"
 
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
@@ -1738,7 +1738,7 @@ msgstr "Eintrag bearbeiten\tStrg+Enter"
 
 #. Resource IDs: (122)
 msgid "Edit Shortcut"
-msgstr "Tastenkürzel bearbeiten"
+msgstr "Verknüpfung bearbeiten"
 
 #. Resource IDs: (32052)
 msgid "Edit/&View Entry..."
@@ -2866,7 +2866,7 @@ msgstr ""
 "\n"
 "%d Aliaswarnungen wurden ausgegeben.\n"
 "\n"
-"%d Tastenkürzelwarnungen wurden ausgegeben."
+"%d Verknüpfungslwarnungen wurden ausgegeben."
 
 #. Resource IDs: (337)
 #, c-format
@@ -3313,7 +3313,7 @@ msgstr "Bitte wählen Sie den Speicherort für alle Sicherungsdateieen."
 #. Resource IDs: (345)
 #, c-format
 msgid "Please specify the name & group for the shortcut to '%s':"
-msgstr "Bitte geben Sie Name & Gruppe für das Tastenkürzel '%s' an:"
+msgstr "Bitte geben Sie Name & Gruppe für die Verknüpfung '%s' an:"
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -3691,7 +3691,7 @@ msgstr "Umschalt+Klick um aktuelle Richtlinie anzuzeigen"
 
 #. Resource IDs: (205)
 msgid "Shortcut"
-msgstr "Tastenkürzel"
+msgstr "Verknüpfung"
 
 #. Resource IDs: (353)
 msgid "Show Dragbar"
@@ -4094,7 +4094,7 @@ msgstr "Dieses Programm erfordert die Datei %s, welche auf diesem System nicht g
 #. Resource IDs: (344)
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
-msgstr "Das Tastenkürzel-Ziel [%s:%s:%s] ist kein normaler Eintrag oder schon ein Tastenkürzelbasis."
+msgstr "Das Ziel der Verknüpfung [%s:%s:%s] ist kein normaler Eintrag oder schon eine Verknüpfung."
 
 #. Resource IDs: (338)
 #, c-format
@@ -4487,11 +4487,11 @@ msgstr "Zeige Report"
 
 #. Resource IDs: (344)
 msgid "View Shortcut"
-msgstr "Zeige Tastenkürzel"
+msgstr "Zeige Verknüpfung"
 
 #. Resource IDs: (345)
 msgid "View Shortcuts"
-msgstr "Zeige Tastenkürzel"
+msgstr "Zeige Verknüpfungen"
 
 #. Resource IDs: (352)
 msgid "View a filter"
@@ -5067,7 +5067,7 @@ msgstr "\tDieser Eintrag bleibt ein normaler Eintrag und das Passwort wurde nich
 
 #. Resource IDs: (206)
 msgid "a base entry of a shortcut"
-msgstr "Basis-Eintrag eines Tastenkürzels"
+msgstr "Basis-Eintrag einer Verknüpfung"
 
 #. Resource IDs: (206)
 msgid "a base entry of an alias"
@@ -5079,7 +5079,7 @@ msgstr "Normaler Eintrag"
 
 #. Resource IDs: (206)
 msgid "a shortcut entry"
-msgstr "Tastenkürzel Eintrag"
+msgstr "Verknüpfungs-Eintrag"
 
 #. Resource IDs: (207)
 msgid "after"
@@ -5331,7 +5331,7 @@ msgstr "pwsafe"
 
 #. Resource IDs: (344)
 msgid "shortcut"
-msgstr "Tastenkürzel"
+msgstr "Verknüpfung"
 
 #. Resource IDs: (346)
 #, c-format
