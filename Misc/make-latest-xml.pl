@@ -2,15 +2,14 @@
 
 # This script prints an XML fragment that can be parsed by
 # the application to determine if there's a newer release available.
-# The script parses version.h to get the information it needs.
-# For the XML format description, see AboutDlg.cpp
-
-open(FILE, "version.h") || die "Couldn't find version.h\n";
+# The script parses the file passed as arg (version.h)
+# to get the information it needs.
+# For the XML format description, see ../src/ui/Windows/AboutDlg.cpp
 
 my @verline;
 my ($Major, $Minor, $Build, $Revision);
 
-while (<FILE>) {
+while (<>) {
     if (/#define\sPRODUCTVER/) {
         s/,/ /g;
         @verline = split;
@@ -19,7 +18,7 @@ while (<FILE>) {
         last;
     }
 };
-close FILE;
+
 print "<VersionInfo>\n";
 print " <Product name=PasswordSafe variant=PC";
 print " major=$Major minor=$Minor build=$Build rev=$Revision />\n";
