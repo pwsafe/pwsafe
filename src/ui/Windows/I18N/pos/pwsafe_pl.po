@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-02-10 23:22+0100\n"
+"PO-Revision-Date: 2009-02-12 21:36+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3417,8 +3417,8 @@ msgid "Please specify the destination location to contain all backups."
 msgstr "Wybierz folder docelowy dla kopii zapasowych"
 
 #. Resource IDs: (345)
-#, c-format
-msgid "Please specify the name & group for the shortcut to '%s':"
+#, fuzzy, c-format
+msgid "Please specify the name && group for the shortcut to '%s':"
 msgstr "Podaj nazwę i grupę dla skrótu do '%s':"
 
 #. Resource IDs: (337)

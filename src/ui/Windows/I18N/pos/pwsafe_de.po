@@ -3312,7 +3312,7 @@ msgstr "Bitte wählen Sie den Speicherort für alle Sicherungsdateieen."
 
 #. Resource IDs: (345)
 #, c-format
-msgid "Please specify the name & group for the shortcut to '%s':"
+msgid "Please specify the name && group for the shortcut to '%s':"
 msgstr "Bitte geben Sie Name && Gruppe für die Verknüpfung '%s' an:"
 
 #. Resource IDs: (337)
