@@ -1187,8 +1187,7 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
 void DboxMain::OnFind()
 {
   // Show Find Toolbar
-  if (!m_FindToolBar.IsVisible())
-    SetFindToolBar(true);
+  SetFindToolBar(true);
 }
 
 void DboxMain::OnClearClipboard()
