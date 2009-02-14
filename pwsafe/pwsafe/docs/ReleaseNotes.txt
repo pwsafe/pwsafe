@@ -11,6 +11,9 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.16.1
 ====================
 [] Lock on Windows Lock works again.
+[] Ctrl+F sets focus to the find string edit box.
+[] No longers asks for confirmation of Cancel during Edit in read only
+mode as that is the only option available to the user.
 
 Bugs fixed in 3.16
 ==================
