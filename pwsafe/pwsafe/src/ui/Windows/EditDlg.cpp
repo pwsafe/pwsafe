@@ -218,16 +218,17 @@ void CEditDlg::OnShowPassword()
 
 void CEditDlg::OnCancel() 
 {
-  if (m_group        != m_ci->GetGroup() ||
-      m_title        != m_ci->GetTitle() ||
-      m_username     != m_ci->GetUser() ||
-      m_realnotes    != m_ci->GetNotes() ||
-      m_URL          != m_ci->GetURL() ||
-      m_autotype     != m_ci->GetAutoType() ||
-      m_PWHistory    != m_ci->GetPWHistory() ||
-      m_locXTime     != m_oldlocXTime ||
-      m_XTimeInt     != m_oldXTimeInt ||
-      m_realpassword != m_oldRealPassword) {
+  if (!m_Edit_IsReadOnly &&
+      (m_group        != m_ci->GetGroup() ||
+       m_title        != m_ci->GetTitle() ||
+       m_username     != m_ci->GetUser() ||
+       m_realnotes    != m_ci->GetNotes() ||
+       m_URL          != m_ci->GetURL() ||
+       m_autotype     != m_ci->GetAutoType() ||
+       m_PWHistory    != m_ci->GetPWHistory() ||
+       m_locXTime     != m_oldlocXTime ||
+       m_XTimeInt     != m_oldXTimeInt ||
+       m_realpassword != m_oldRealPassword)) {
     int rc = AfxMessageBox(IDS_AREYOUSURE, 
                            MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
     if (rc != IDYES)
