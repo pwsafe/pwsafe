@@ -1,5 +1,5 @@
-Password Safe 3.16 Release Notes - February 2009
-================================================
+Password Safe 3.16.1 Release Notes - February 2009
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,10 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.16.1
+====================
+[] Lock on Windows Lock works again.
 
 Bugs fixed in 3.16
 ==================
