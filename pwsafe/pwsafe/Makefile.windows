@@ -44,7 +44,7 @@ BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
 	docs/ChangeLog.txt src/bin/releasem/pwsafe.exe help/default/pwsafe.chm
 
 .PHONY: all release bin-release src-release installables signatures \
-	upload sha1sums msi nsis upload-latest updat-pos i18n
+	upload sha1sums msi nsis upload-latest updat-pos i18n save-map
 
 all: release installables signatures sha1sums
 
@@ -94,7 +94,7 @@ msi:
 	$(RM) pwsafe.wixobj
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 
-release: bin-release src-release i18n
+release: bin-release save-map src-release i18n
 
 bin-release:
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
@@ -103,6 +103,10 @@ bin-release:
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME); \
 	$(MV) foo.zip $(BINRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
+
+save-map:
+	gzip -9c  src/bin/releasem/pwsafe.map > \
+		$(RELEASEDIR)/pwsafe-$(RELEASENAME).map.gz
 
 src-release: ChangeLog $(POT_FILE)
 	$(SVN) export --non-interactive . C:\\TMP\\$(SRCRELNAME)
