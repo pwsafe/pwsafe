@@ -436,7 +436,27 @@ BOOL CEditDlg::OnInitDialog()
 
   CString cs_text;
   if (m_Edit_IsReadOnly) {
+    // Disable buttons
     GetDlgItem(IDOK)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_SET)->EnableWindow(FALSE);
+
+    // Disable Checkbox
+    GetDlgItem(IDC_OVERRIDE_POLICY)->EnableWindow(FALSE);
+
+    // Disable Edit control in the Group Combo [always ID=1001]
+    GetDlgItem(IDC_GROUP)->GetDlgItem(1001)->SendMessage(EM_SETREADONLY, TRUE, 0);
+
+    // Disable normal Edit controls
+    GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_USERNAME)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, TRUE, 0);
+
     cs_text.LoadString(IDS_VIEWENTRY);
     SetWindowText(cs_text);
     cs_text.LoadString(IDS_DATABASEREADONLY);
