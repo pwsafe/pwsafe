@@ -70,7 +70,9 @@ typedef u_int64_t uint64;
 typedef int errno_t;
 
 #ifdef UNICODE
+#ifndef _T
 #define _T(x) L ## x
+#endif
 typedef wchar_t TCHAR;
 #else
 #define _T(x) x

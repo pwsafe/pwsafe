@@ -26,6 +26,11 @@ namespace pws_os {
 
   extern size_t mbstowcs(wchar_t *dst, size_t maxdstlen,
                          const char *src, size_t srclen, bool isUTF8 = true);
+#ifndef _WIN32
+  // General conversion from char* to std::wstring routine
+  // for use in os/linux
+  extern std::wstring towc(const char *val);
+#endif
 };
 #endif /* __OSUTF8CONV_H */
 //-----------------------------------------------------------------------------

@@ -19,27 +19,7 @@
 
 
 #include "../env.h"
-
-#ifdef UNICODE
-static stringT towc(const char *val)
-{
-  stringT retval;
-  assert(val != NULL);
-  int len = std::strlen(val);
-  int wsize;
-  const char *p = val;
-  wchar_t wvalue;
-  do {
-    wsize = mbtowc(&wvalue, p, MB_CUR_MAX);
-    if (wsize <= 0)
-      break;
-    retval += wvalue;
-    p += wsize;
-    len -= wsize;
-  } while (len != 1);
-  return retval;
-}
-#endif
+#include "../utf8conv.h" // for pws_os::towc
 
 stringT pws_os::getenv(const char *env, bool is_path)
 {
@@ -48,7 +28,7 @@ stringT pws_os::getenv(const char *env, bool is_path)
   char *value = std::getenv(env);
   if (value != NULL) {
 #ifdef UNICODE
-    retval = towc(value);
+    retval = pws_os::towc(value);
 #else
     retval = value;
 #endif
@@ -68,7 +48,7 @@ stringT pws_os::getusername()
   if (user == NULL)
     user = "?";
 #ifdef UNICODE
-  retval = towc(user);
+  retval = pws_os::towc(user);
 #else
   retval = user;
 #endif
@@ -84,7 +64,7 @@ stringT pws_os::gethostname()
     name[0] = '?'; name[1] = '\0';
   }
 #ifdef UNICODE
-  retval = towc(name);
+  retval = pws_os::towc(name);
 #else
   retval = name;
 #endif

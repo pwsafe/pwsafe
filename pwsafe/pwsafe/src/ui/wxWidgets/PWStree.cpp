@@ -124,7 +124,7 @@ static StringX GetPathElem(StringX &path)
   StringX::size_type N = path.find(GROUP_SEP);
   if (N == StringX::npos) {
     retval = path;
-    path = "";
+    path = _T("");
   } else {
     const StringX::size_type Len = path.length();
     retval = path.substr(0, N);
@@ -179,7 +179,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   wxString disp = title;
   wxTreeItemId gnode = AddGroup(item.GetGroup());
   if (!user.empty())
-    disp += " [" + user + "]";
+    disp += _T(" [") + user + _("]");
   AppendItem(gnode, disp);
 }
 

@@ -10,19 +10,25 @@
  * \file Linux-specific implementation of dir.h
  */
 #include "../dir.h"
+#include "../utf8conv.h" // for pws_os::towc
 #include <unistd.h>
 #include <limits.h>
 #include <cassert>
+#include <cstdlib>
 
 stringT pws_os::getexecdir()
 {
   char path[PATH_MAX];
 
-  if (readlink("/proc/self/exe", path, PATH_MAX) < 0)
-    return "?";
+  if (::readlink("/proc/self/exe", path, PATH_MAX) < 0)
+    return _T("?");
   else {
+#ifdef UNICODE
+    stringT retval(pws_os::towc(path));
+#else
     stringT retval(path);
-    stringT::size_type last_slash = retval.find_last_of("/");
+#endif
+    stringT::size_type last_slash = retval.find_last_of(_T("/"));
     return retval.substr(0, last_slash + 1);
   }
 }
@@ -33,14 +39,31 @@ stringT pws_os::getcwd()
   if (::getcwd(curdir, PATH_MAX) == NULL) {
     curdir[0] = '?'; curdir[1] = '\0';
   }
+#ifdef UNICODE
+  stringT CurDir(pws_os::towc(curdir));
+#else
   stringT CurDir(curdir);
+#endif
   return CurDir;
 }
 
 bool pws_os::chdir(const stringT &dir)
 {
   assert(!dir.empty());
-  return (::chdir(dir.c_str()) == 0);
+  const char *szdir = NULL;
+#ifdef UNICODE
+  size_t N = std::wcstombs(NULL, dir.c_str(), 0) + 1;
+  assert(N > 0);
+  szdir = new char[N];
+  std::wcstombs(const_cast<char *>(szdir), dir.c_str(), N);
+#else
+  szdir = dir.c_str();
+#endif
+  bool retval = (::chdir(szdir) == 0);
+#ifdef UNICODE
+  delete[] szdir;
+#endif
+  return retval;
 }
 
   // In following, drive will be empty on non-Windows platforms
@@ -50,16 +73,16 @@ bool pws_os::splitpath(const stringT &path,
 {
   if (path.empty())
     return false;
-  drive = "";
-  stringT::size_type last_slash = path.find_last_of("/");
+  drive = _T("");
+  stringT::size_type last_slash = path.find_last_of(_T("/"));
   dir = path.substr(0, last_slash + 1);
-  stringT::size_type last_dot = path.find_last_of(".");
+  stringT::size_type last_dot = path.find_last_of(_T("."));
   if (last_dot != stringT::npos && last_dot > last_slash) {
     file = path.substr(last_slash + 1, last_dot - last_slash - 1);
     ext = path.substr(last_dot + 1);
   } else {
     file = path.substr(last_slash + 1);
-    ext = "";
+    ext = _T("");
   }
   return true;
 }
@@ -70,10 +93,10 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
   stringT retval(drive);
   retval += dir;
   if (!dir.empty() && retval[retval.length()-1] != '/')
-    retval += "/";
+    retval += _T("/");
   retval += file;
   if (!ext.empty()) {
-    retval += ".";
+    retval += _T(".");
     retval += ext;
   }
   return retval;

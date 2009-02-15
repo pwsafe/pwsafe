@@ -337,13 +337,20 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   if (bsFields.count() == 0)
     return SUCCESS;
 
-  ofstream ofs(filename.c_str());
+  CUTF8Conv conv;
+#ifdef UNICODE
+  int fnamelen;
+  const unsigned char *fname = NULL;
+  conv.ToUTF8(filename, fname, fnamelen); 
+#else
+  const char *fname = filename.c_str();
+#endif
+  ofstream ofs(reinterpret_cast<const char *>(fname));
 
   if (!ofs)
     return CANT_OPEN_FILE;
 
   StringX hdr(_T(""));
-  CUTF8Conv conv;
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
 
@@ -516,7 +523,15 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const int &subgroup_object, const int &subgroup_function,
                           const TCHAR delimiter, const OrderedItemList *il)
 {
-  ofstream of(filename.c_str());
+#ifdef UNICODE
+  const unsigned char *fname = NULL;
+  CUTF8Conv conv;
+  int fnamelen;
+  conv.ToUTF8(filename, fname, fnamelen); 
+#else
+  const char *fname = filename.c_str();
+#endif
+  ofstream of(reinterpret_cast<const char *>(fname));
 
   if (!of)
     return CANT_OPEN_FILE;
@@ -738,7 +753,15 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  CReport &rpt)
 {
   stringT csError;
-  ifstreamT ifs(filename.c_str());
+#ifdef UNICODE
+  const unsigned char *fname = NULL;
+  CUTF8Conv conv;
+  int fnamelen;
+  conv.ToUTF8(filename, fname, fnamelen); 
+#else
+  const char *fname = filename.c_str();
+#endif
+  ifstreamT ifs(reinterpret_cast<const char *>(fname));
 
   if (!ifs)
     return CANT_OPEN_FILE;
@@ -1676,7 +1699,15 @@ int
 PWScore::ImportKeePassTextFile(const StringX &filename)
 {
   static const TCHAR *ImportedPrefix = { _T("ImportedKeePass") };
-  ifstreamT ifs(filename.c_str());
+#ifdef UNICODE
+  CUTF8Conv conv;
+  const unsigned char *fname = NULL;
+  int fnamelen;
+  conv.ToUTF8(filename, fname, fnamelen); 
+#else
+  const char *fname = filename.c_str();
+#endif
+  ifstreamT ifs(reinterpret_cast<const char *>(fname));
 
   if (!ifs) {
     return CANT_OPEN_FILE;

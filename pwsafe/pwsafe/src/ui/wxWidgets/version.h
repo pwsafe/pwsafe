@@ -16,19 +16,19 @@
 #include <wx/string.h>
 
 #ifdef linux
-#define APPNAME "PasswordSafe (linux)"
+#define APPNAME _T("PasswordSafe (linux)")
 #else
-#define APPNAME "PasswordSafe (wxWidgets)"
+#define APPNAME _T("PasswordSafe (wxWidgets)")
 #endif
 
 #define MAJORVERSION 0
 #define MINORVERSION 1
 
 // define following for custom/experimental versions
-#define SPECIALBUILD "pre-alpha"
+#define SPECIALBUILD _T("pre-alpha")
 
 #ifndef SPECIALBUILD
-#define SPECIALBUILD ""
+#define SPECIALBUILD _T("")
 #endif
 
 // SVN_VERSION should be provided via -D from Makefile

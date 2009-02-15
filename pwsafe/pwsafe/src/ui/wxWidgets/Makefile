@@ -9,13 +9,17 @@
 # unicoderelease
 ################################################################################
 
-CONFIG=debug
+CONFIG=unicodedebug
+
+WX_CONFIG=/usr/bin/wx-config
 
 # debug
 ifeq ($(CONFIG),debug)
+#Override - debug isn't standard
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
+WX_CONFIG=$(WXWIN)/GCCBuildDebugGTK2/wx-config
 TOOLCHAINNAME=gtk2d
-WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildDebugGTK2/wx-config --version`)
+WXVERSION:=$(shell echo `$(WX_CONFIG) --version`)
 CXX=g++
 CC=gcc
 RESCOMP=windres.exe
@@ -26,13 +30,13 @@ OUTPUTPATH=GCCDebug
 OBJECTPATH=GCCDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WXWIN)/GCCBuildDebugGTK2/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildDebugGTK2" --libs` -lcore -los -luuid
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -luuid
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=-L../../../lib/debug
-CPPINC=`$(WXWIN)/GCCBuildDebugGTK2/wx-config --inplace --cxxflags`
+CPPINC=`$(WX_CONFIG) --debug=yes --unicode=no --inplace --cxxflags`
 GCCFLAGS=
 LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2/lib/wx/include/gtk2-ansi-debug-static-2.6"
@@ -43,7 +47,7 @@ else
 ifeq ($(CONFIG),release)
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2
-WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildReleaseGTK2/wx-config --version`)
+WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=no --unicode=no --version`)
 CXX=g++
 CC=gcc
 RESCOMP=windres.exe
@@ -54,13 +58,13 @@ OUTPUTPATH=GCCRelease
 OBJECTPATH=GCCRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WXWIN)/GCCBuildReleaseGTK2/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildReleaseGTK2" --libs` -lcore -los -luuid
+LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs` -lcore -los -luuid
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
 LIBPATH=-L../../../lib/release
-CPPINC=`$(WXWIN)/GCCBuildReleaseGTK2/wx-config --inplace --cxxflags`
+CPPINC=`$(WX_CONFIG) --debug=no --unicode=no --inplace --cxxflags`
 GCCFLAGS=
 LIBDIRNAME=$(WXWIN)/GCCBuildReleaseGTK2/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2/lib/wx/include/gtk2-ansi-release-static-2.6"
@@ -71,7 +75,7 @@ else
 ifeq ($(CONFIG),unicodedebug)
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2ud
-WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildDebugGTK2Unicode/wx-config --version`)
+WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=yes --unicode=yes --version`)
 CXX=g++
 CC=gcc
 RESCOMP=windres.exe
@@ -82,13 +86,13 @@ OUTPUTPATH=GCCUnicodeDebug
 OBJECTPATH=GCCUnicodeDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WXWIN)/GCCBuildDebugGTK2Unicode/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildDebugGTK2Unicode" --libs`
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -luuid
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
-LIBPATH=
-CPPINC=`$(WXWIN)/GCCBuildDebugGTK2Unicode/wx-config --inplace --cxxflags`
+LIBPATH=-L../../../lib/unicodedebug
+CPPINC=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags` -DUNICODE
 GCCFLAGS=
 LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2Unicode/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2Unicode/lib/wx/include/gtk2-unicode-debug-static-2.6"
@@ -98,7 +102,7 @@ MACPACKAGEINFO=
 else
 WXWIN=/usr/src/wxwidgets2.8-2.8.7.1
 TOOLCHAINNAME=gtk2u
-WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildReleaseGTK2Unicode/wx-config --version`)
+WXVERSION:=$(shell echo `$(WX_CONFIG) --debug=no --unicode=yes --version`)
 CXX=g++
 CC=gcc
 RESCOMP=windres.exe
@@ -109,13 +113,13 @@ OUTPUTPATH=GCCUnicodeRelease
 OBJECTPATH=GCCUnicodeRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WXWIN)/GCCBuildReleaseGTK2Unicode/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildReleaseGTK2Unicode" --libs`
+LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -luuid
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
-LIBPATH=
-CPPINC=`$(WXWIN)/GCCBuildReleaseGTK2Unicode/wx-config --inplace --cxxflags`
+LIBPATH=-L../../../lib/unicoderelease
+CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE
 GCCFLAGS=
 LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib/wx/include/gtk2-unicode-release-static-2.6"
@@ -146,6 +150,9 @@ OBJECTS += $(RESOURCEOBJECT)
 
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
+
+debug release unicodedebug unicoderelease:
+	$(MAKE) all CONFIG=$@
 
 $(OBJECTPATH):
 	mkdir -p $(OBJECTPATH)
