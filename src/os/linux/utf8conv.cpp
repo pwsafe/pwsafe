@@ -12,8 +12,13 @@
 
 #include "../typedefs.h"
 #include "../utf8conv.h"
-#include <stdlib.h>
-#include <locale.h>
+#include <cstdlib>
+#include <clocale>
+#include <cassert>
+#include <cstring>
+#include <string>
+
+using namespace std;
 
 class Startup {
 public:
@@ -36,4 +41,23 @@ size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
                         const char *src, size_t , bool )
 {
   return ::mbstowcs(dst, src, maxdstlen) + 1;
+}
+
+wstring pws_os::towc(const char *val)
+{
+  wstring retval;
+  assert(val != NULL);
+  int len = strlen(val);
+  int wsize;
+  const char *p = val;
+  wchar_t wvalue;
+  do {
+    wsize = mbtowc(&wvalue, p, MB_CUR_MAX);
+    if (wsize <= 0)
+      break;
+    retval += wvalue;
+    p += wsize;
+    len -= wsize;
+  } while (len != 1);
+  return retval;
 }

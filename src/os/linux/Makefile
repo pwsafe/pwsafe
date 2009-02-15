@@ -2,8 +2,10 @@
 # pwsafe
 #
 
-CONFIG=debug
+#CONFIG=debug
 #CONFIG=release
+CONFIG=unicodedebug
+#CONFIG=unicoderelease
 
 DEPDIR= ./deps
 
@@ -29,10 +31,14 @@ ifeq ($(CONFIG),debug)
 CXXFLAGS += -O0 -ggdb
 else ifeq ($(CONFIG),release)
 CXXFLAGS += -O
+else ifeq ($(CONFIG),unicodedebug)
+CXXFLAGS += -O0 -ggdb -DUNICODE
+else ifeq ($(CONFIG),release)
+CXXFLAGS += -O -DUNICODE
 endif
 
 # rules
-.PHONY: all debug release clean setup
+.PHONY: all debug release unicodedebug unicoderelease clean setup
 
 $(OBJPATH)/%.o : %.c
 	$(CC) -g  $(CFLAGS)   -c $< -o $@
@@ -42,7 +48,7 @@ $(OBJPATH)/%.o : %.cpp
 
 all : setup $(LIB)
 
-debug release:
+debug release unicodedebug unicoderelease:
 	$(MAKE) all CONFIG=$@
 
 $(LIB): $(LIBOBJ)

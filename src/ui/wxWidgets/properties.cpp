@@ -106,7 +106,7 @@ void CProperties::Init()
 ////@begin CProperties member initialisation
 ////@end CProperties member initialisation
   m_database = m_core.GetCurFile().c_str();
-  m_databaseformat = wxString::Format("%d.%02d",
+  m_databaseformat = wxString::Format(_T("%d.%02d"),
                                       m_core.GetHeader().m_nCurrentMajorVersion,
                                       m_core.GetHeader().m_nCurrentMinorVersion);
   std::vector<stringT> aryGroups;
@@ -128,9 +128,9 @@ void CProperties::Init()
     m_wholastsaved = _("Unknown");
   } else {
     wxString user = m_core.GetHeader().m_lastsavedby.empty() ?
-      "?" : m_core.GetHeader().m_lastsavedby.c_str();
+      _T("?") : m_core.GetHeader().m_lastsavedby.c_str();
     wxString host = m_core.GetHeader().m_lastsavedon.empty() ?
-      "?" : m_core.GetHeader().m_lastsavedon.c_str();
+      _T("?") : m_core.GetHeader().m_lastsavedon.c_str();
     m_wholastsaved = wxString::Format(_("%s on %s"), user.c_str(), host.c_str());
   }
 
@@ -162,7 +162,7 @@ void CProperties::Init()
     if (num == 0)
       m_unknownfields += _("No)");
     else {
-      wls = wxString::Format("%d)", num);
+      wls = wxString::Format(_("%d)"), num);
       m_unknownfields += wls;
     }
   } else {

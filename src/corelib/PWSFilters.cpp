@@ -402,7 +402,15 @@ int PWSFilters::WriteFilterXMLFile(const StringX &filename,
                                    const PWSfile::HeaderRecord hdr,
                                    const StringX &currentfile)
 {
-  ofstream of(filename.c_str());
+#ifdef UNICODE
+  CUTF8Conv conv;
+  int fnamelen;
+  const unsigned char *fname = NULL;
+  conv.ToUTF8(filename, fname, fnamelen); 
+#else
+  const char *fname = filename.c_str();
+#endif
+  ofstream of(reinterpret_cast<const char *>(fname));
   if (!of)
     return PWScore::CANT_OPEN_FILE;
   else

@@ -94,38 +94,76 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 
 bool pws_os::CopyAFile(const stringT &from, const stringT &to)
 {
+  const char *szfrom = NULL;
+  const char *szto = NULL;
+  bool retval = false;
+#ifndef UNICODE
+  szfrom = from.c_str();
+  szto = to.c_str();
+#else
+  size_t fromsize = wcstombs(NULL, from.c_str(), 0) + 1;
+  szfrom = new char[fromsize];
+  wcstombs(const_cast<char *>(szfrom), from.c_str(), fromsize);
+  size_t tosize = wcstombs(NULL, to.c_str(), 0) + 1;
+  assert(tosize > 0);
+  szto = new char[tosize];
+  wcstombs(const_cast<char *>(szto), to.c_str(), tosize);
+#endif /* UNICODE */
   // can we read the source?
-  if (::access(from.c_str(), R_OK) != 0)
-    return false;
-  // creates dirs as needed
-  stringT::size_type start = (to[0] == '/') ? 1 : 0;
-  stringT::size_type stop;
-  do {
-    stop = to.find_first_of("/", start);
-    if (stop != stringT::npos)
-      ::mkdir(to.substr(start, stop).c_str(), 0700); // fail if already there - who cares?
-    start = stop + 1;
-  } while (stop != stringT::npos);
-  ifstream src(from.c_str(), ios_base::in|ios_base::binary);
-  ofstream dst(to.c_str(), ios_base::out|ios_base::binary);
-  const size_t BUFSIZE = 2048;
-  char buf[BUFSIZE];
-  size_t readBytes;
+  bool readable = ::access(szfrom, R_OK) == 0;
+  if (!readable) {
+    retval = false;
+  } else { // creates dirs as needed
 
-  do {
-    src.read(buf, BUFSIZE);
-    readBytes = src.gcount();
-    dst.write(buf, readBytes);
-  } while(readBytes != 0);
-  return true;
+    string cto(szto);
+    string::size_type start = (cto[0] == '/') ? 1 : 0;
+    string::size_type stop;
+    do {
+      stop = cto.find_first_of("/", start);
+      if (stop != stringT::npos)
+        ::mkdir(cto.substr(start, stop).c_str(), 0700); // fail if already there - who cares?
+      start = stop + 1;
+    } while (stop != stringT::npos);
+
+    ifstream src(szfrom, ios_base::in|ios_base::binary);
+    ofstream dst(szto, ios_base::out|ios_base::binary);
+    const size_t BUFSIZE = 2048;
+    char buf[BUFSIZE];
+    size_t readBytes;
+
+    do {
+      src.read(buf, BUFSIZE);
+      readBytes = src.gcount();
+      dst.write(buf, readBytes);
+    } while(readBytes != 0);
+    retval = true;
+  }
+#ifdef UNICODE
+  delete[] szfrom;
+  delete[] szto;
+#endif
+  return retval;
 }
 
 bool pws_os::DeleteAFile(const stringT &filename)
 {
-  return ::unlink(filename.c_str());
+#ifndef UNICODE
+  const char *szfn =  filename.c_str();
+#else
+  size_t fnsize = wcstombs(NULL, filename.c_str(), 0) + 1;
+  assert(fnsize > 0);
+  const char *szfn = new char[fnsize];
+  wcstombs(const_cast<char *>(szfn), filename.c_str(), fnsize);
+#endif /* UNICODE */
+
+  bool retval = (::unlink(szfn) == 0);
+#ifdef UNICODE
+  delete[] szfn;
+#endif
+  return retval;
 }
 
-static stringT filterString;
+static string filterString;
 
 static int filterFunc(const struct dirent *de)
 {
@@ -134,16 +172,31 @@ static int filterFunc(const struct dirent *de)
 
 void pws_os::FindFiles(const stringT &filter, vector<stringT> &res)
 {
+  if (filter.empty())
+    return;
   // filter is a full path with a filter file name.
+  const char *szfilter;
+#ifdef UNICODE
+  size_t fltsize = wcstombs(NULL, filter.c_str(), 0) + 1;
+  assert(fltsize > 0);
+  szfilter = new char[fltsize];
+  wcstombs(const_cast<char *>(szfilter), filter.c_str(), fltsize);
+#else
+  szfilter = filter.c_str();
+#endif /* UNICODE */
+  string cfilter(szfilter);
+#ifdef UNICODE
+  delete[] szfilter;
+#endif
   // start by splitting it up
-  stringT dir;
-  stringT::size_type last_slash = filter.find_last_of("/");
-  if (last_slash != stringT::npos) {
-    dir = filter.substr(0, last_slash);
-    filterString = filter.substr(last_slash + 1);
+  string dir;
+  string::size_type last_slash = cfilter.find_last_of("/");
+  if (last_slash != string::npos) {
+    dir = cfilter.substr(0, last_slash);
+    filterString = cfilter.substr(last_slash + 1);
   } else {
     dir = ".";
-    filterString = filter;
+    filterString = cfilter;
   }
   res.clear();
   struct dirent **namelist;
@@ -152,7 +205,17 @@ void pws_os::FindFiles(const stringT &filter, vector<stringT> &res)
   if (nMatches <= 0)
     return;
   while (nMatches-- != 0) {
+#ifndef UNICODE
     res.push_back(namelist[nMatches]->d_name);
+#else
+    size_t wname_len = ::mbstowcs(NULL,
+                                  namelist[nMatches]->d_name,
+                                  0) + 1;
+    wchar_t *wname = new wchar_t[wname_len];
+    mbstowcs(wname, namelist[nMatches]->d_name, wname_len);
+    res.push_back(wname);
+    delete[] wname;
+#endif
     free(namelist[nMatches]);
   }
   free(namelist);
@@ -258,7 +321,28 @@ bool pws_os::IsLockedFile(const stringT &filename)
 
 std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 {
-  return ::fopen(filename.c_str(), mode);
+  const char *cfname = NULL;
+  const char *cmode = NULL;
+#ifdef UNICODE
+  size_t fnsize = wcstombs(NULL, filename.c_str(), 0) + 1;
+  assert(fnsize > 0);
+  cfname = new char[fnsize];
+  wcstombs(const_cast<char *>(cfname), filename.c_str(), fnsize);
+
+  size_t modesize = wcstombs(NULL, mode, 0) + 1;
+  assert(modesize > 0);
+  cmode = new char[modesize];
+  wcstombs(const_cast<char *>(cmode), mode, modesize);
+#else
+  cfname = filename.c_str();
+  cmode = mode;
+#endif /* UNICODE */
+  FILE *retval = ::fopen(cfname, cmode);
+#ifdef UNICODE
+  delete[] cfname;
+  delete[] cmode;
+#endif
+  return retval;
 }
 
 long pws_os::fileLength(std::FILE *fp)

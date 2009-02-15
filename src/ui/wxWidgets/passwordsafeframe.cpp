@@ -145,7 +145,7 @@ void PasswordSafeFrame::CreateControls()
 {    
   PWSprefs *prefs = PWSprefs::GetInstance();
   const StringX lastView = prefs->GetPref(PWSprefs::LastView);
-  m_currentView = (lastView == "list") ? GRID : TREE;
+  m_currentView = (lastView == _T("list")) ? GRID : TREE;
 
   PasswordSafeFrame* itemFrame1 = this;
 
@@ -297,11 +297,11 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
 
 void PasswordSafeFrame::SetTitle(const wxString& title)
 {
-  wxString newtitle = "PasswordSafe";
+  wxString newtitle = _T("PasswordSafe");
   if (!title.empty()) {
-    newtitle += " - ";
+    newtitle += _T(" - ");
     StringX fname = title.c_str();
-    StringX::size_type findex = fname.rfind("/");
+    StringX::size_type findex = fname.rfind(_T("/"));
     if (findex != StringX::npos)
       fname = fname.substr(findex + 1);
     newtitle += fname.c_str();
@@ -315,7 +315,7 @@ int PasswordSafeFrame::Load(const wxString &passwd)
   if (status == PWScore::SUCCESS) {
     SetTitle(m_core.GetCurFile().c_str());
   } else {
-    SetTitle("");
+    SetTitle(_T(""));
   }
   return status;
 }
@@ -379,7 +379,7 @@ void PasswordSafeFrame::ShowTree(bool show)
 
 void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
 {
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, "list");
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
   ShowTree(false);
   ShowGrid(true);
 }
@@ -391,7 +391,7 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& event )
 {
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, "tree");
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
   ShowGrid(false);
   ShowTree(true);
 }
@@ -419,7 +419,7 @@ int PasswordSafeFrame::SaveIfChanged()
   if (m_core.IsChanged()) {
     wxString prompt(_("Do you want to save changes to the password database: "));
     prompt += m_core.GetCurFile().c_str();
-    prompt += "?";
+    prompt += _T("?");
     wxMessageDialog dlg(this, prompt, GetTitle(),
                         (wxICON_QUESTION | wxCANCEL |
                          wxYES_NO | wxYES_DEFAULT));
@@ -465,10 +465,10 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& event )
   stringT dir = PWSdirs::GetSafeDir();
   //Open-type dialog box
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
-                  dir.c_str(), "pwsafe.psafe3",
+                  dir.c_str(), _("pwsafe.psafe3"),
                   _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|"
-                   "Password Safe Backups (*.bak)|*.bak|"
-                   "Password Safe Intermediate Backups (*.ibak)|*.ibak|"
+                    "Password Safe Backups (*.bak)|*.bak|"
+                    "Password Safe Intermediate Backups (*.ibak)|*.ibak|"
                     "All files (*.*)|*.*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
@@ -501,7 +501,7 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& event )
       return;
     m_core.SetCurFile(_T(""));
     ClearData();
-    SetTitle("");
+    SetTitle(_T(""));
   }
 }
 
