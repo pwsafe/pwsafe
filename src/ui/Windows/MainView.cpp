@@ -973,7 +973,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   m_MainToolBar.GetWindowRect(&rect);
 
   // RClick over Main Toolbar - allow Customize Main toolbar
-  if (mp.x > appl_rect.left && mp.x < appl_rect.right &&
+  if (m_MainToolBar.IsVisible() &&
+      mp.x > appl_rect.left && mp.x < appl_rect.right &&
       mp.y > rect.top && mp.y < rect.bottom) {
     if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
       minfo.dwMenuData = IDR_POPCUSTOMIZETOOLBAR;
