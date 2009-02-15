@@ -14,6 +14,7 @@ Bugs fixed in 3.16.1
 [] Ctrl+F sets focus to the find string edit box.
 [] No longers asks for confirmation of Cancel during Edit in read only
 mode as that is the only option available to the user.
+[] Right-click context menu now correct when user hides toolbars.
 
 Bugs fixed in 3.16
 ==================
