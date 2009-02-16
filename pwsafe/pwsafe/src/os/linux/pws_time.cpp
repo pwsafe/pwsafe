@@ -11,6 +11,7 @@
  */
 
 #include "pws_time.h"
+#include "../utf8conv.h"
 
 struct tm *gmtime64_r(const __time64_t *timep, struct tm *result)
 {
@@ -33,4 +34,17 @@ CTime::CTime(int Y, int M, int D, int h, int m, int s, int dst)
   m_tm.tm_hour = h; m_tm.tm_min = m; m_tm.tm_sec = s;
   m_tm.tm_isdst = dst;
   m_t = mktime(&m_tm);
+}
+
+int pws_os::asctime(TCHAR *s, unsigned int, tm const *t)
+{
+#ifdef UNICODE
+  char cbuf[26]; // length specified in man (3) asctime
+  asctime_r(t, cbuf);
+  std::wstring wstr = pws_os::towc(cbuf);
+  std::copy(wstr.begin(), wstr.end(), s);
+#else
+  asctime_r(t, s);
+#endif
+  return 0;
 }
