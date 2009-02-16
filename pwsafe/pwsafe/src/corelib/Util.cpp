@@ -91,6 +91,7 @@ void ConvertString(const StringX &text,
   ASSERT(len != 0);
 #else
   mbstate_t mbs;
+  memset(&mbs, '\0', sizeof(mbs));
   size_t len = wcsrtombs(NULL, &txtstr, 0, &mbs);
   txt = new unsigned char[len+1];
   len = wcsrtombs((char *)txt, &txtstr, len, &mbs);
