@@ -16,7 +16,6 @@ namespace pws_os {
    */
     extern int wctoi(const wchar_t *s);
     extern double wctof(const wchar_t *s);
-    extern int sswscanf(const wchar_t *str, const wchar_t *format, ...);
 };
 
 #endif /* __PWS_STR_H */

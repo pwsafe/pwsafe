@@ -91,7 +91,7 @@ distribution.
         #ifdef UNICODE
 		  #define TIXML_SNPRINTF swprintf
 		  #define TIXML_SNSCANF  snscanf
-          #define TIXML_SSCANF  pws_os::sswscanf
+          #define TIXML_SSCANF  swscanf
         #else
 		  #define TIXML_SNPRINTF snprintf
 		  #define TIXML_SNSCANF  snscanf
