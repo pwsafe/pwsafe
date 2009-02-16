@@ -58,6 +58,6 @@ wstring pws_os::towc(const char *val)
     retval += wvalue;
     p += wsize;
     len -= wsize;
-  } while (len != 1);
+  } while (len != 0);
   return retval;
 }
