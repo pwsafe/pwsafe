@@ -13,6 +13,7 @@
 #include "PasswordSubsetDlg.h"
 #include "PwFont.h"
 #include "corelib/StringX.h"
+#include "corelib/PWSprefs.h"
 
 #include <vector>
 
@@ -71,11 +72,25 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   CPWDialog::OnInitDialog();
 
   ApplyPasswordFont(GetDlgItem(IDC_SUBSETRESULTS));
+
+  CRect rect;
+  PWSprefs::GetInstance()->GetPrefPSSRect(rect.top, rect.bottom, 
+                                          rect.left, rect.right);
+
+  if (rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) {
+    GetWindowRect(&rect);
+  }
+  MoveWindow(rect.left, rect.top, rect.Width(), rect.Height());
+
   return TRUE;
 }
 
 void CPasswordSubsetDlg::OnCancel()
 {
+  CRect rect;
+  GetWindowRect(&rect);
+  PWSprefs::GetInstance()->SetPrefPSSRect(rect.top, rect.bottom,
+                                          rect.left, rect.right);
   if (m_bshown)
     CPWDialog::EndDialog(4);
   else
