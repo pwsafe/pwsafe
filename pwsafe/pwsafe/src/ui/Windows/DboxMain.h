@@ -275,6 +275,7 @@ public:
                             const StringX group, const StringX title, const StringX user, 
                             const StringX pwd, const StringX notes);
   void UpdateLastClipboardAction(const int iaction);
+  void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -437,7 +438,6 @@ protected:
   void SetFindToolBar(bool bShow);
   void ApplyFilters();
 
-  void PlaceWindow(CRect *prect, UINT showCmd);
   HRGN GetWorkAreaRegion();
   void GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork);
   void ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork);

@@ -11,6 +11,7 @@
 #include "stdafx.h"
 
 #include "PasswordSubsetDlg.h"
+#include "DboxMain.h"
 #include "PwFont.h"
 #include "corelib/StringX.h"
 #include "corelib/PWSprefs.h"
@@ -47,6 +48,7 @@ CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, CItemData* pci)
   : CPWDialog(CPasswordSubsetDlg::IDD, pParent), m_pci(pci), m_bshown(false),
   m_warningmsg(_T(""))
 {
+  m_pDbx = static_cast<DboxMain *>(pParent);
 }
 
 void CPasswordSubsetDlg::DoDataExchange(CDataExchange* pDX)
@@ -80,7 +82,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   if (rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) {
     GetWindowRect(&rect);
   }
-  MoveWindow(rect.left, rect.top, rect.Width(), rect.Height());
+  m_pDbx->PlaceWindow(this, &rect, SW_SHOW);
 
   return TRUE;
 }

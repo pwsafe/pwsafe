@@ -674,7 +674,7 @@ void DboxMain::InitPasswordSafe()
     GetWindowRect(&rect);
     SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
   } else {
-    PlaceWindow(&rect, SW_HIDE);
+    PlaceWindow(this, &rect, SW_HIDE);
   }
 #endif
 
@@ -2819,12 +2819,12 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   return iEnable;
 }
 
-void DboxMain::PlaceWindow(CRect *prect, UINT showCmd)
+void DboxMain::PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd)
 {
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
   HRGN hrgnWork = GetWorkAreaRegion();
 
-  GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
+  pwnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
   wp.flags = 0;
   wp.showCmd = showCmd;
   wp.rcNormalPosition = *prect;
@@ -2836,7 +2836,7 @@ void DboxMain::PlaceWindow(CRect *prect, UINT showCmd)
       ClipRectToMonitor(NULL, &wp.rcNormalPosition, FALSE);
   }
 
-  SetWindowPlacement(&wp);
+  pwnd->SetWindowPlacement(&wp);
   ::DeleteObject(hrgnWork);
 }
 

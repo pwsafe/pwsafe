@@ -15,6 +15,8 @@
 #include "PWDialog.h"
 #include "ControlExtns.h"
 
+class DboxMain;
+
 #define WM_DISPLAYPASSWORDSUBSET (WM_APP + 1)
 
 // Simple class to ensure only numbers, space, comma and semi-colons
@@ -47,7 +49,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-
+  DboxMain *m_pDbx;
   LRESULT OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lParam */);
 
   CItemData* m_pci;
