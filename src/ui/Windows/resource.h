@@ -311,7 +311,6 @@
 #define IDC_DEFPWSHOW                   1027
 #define IDC_DEFPWSHOWINEDIT             1028
 #define IDC_USEDEFUSER                  1029
-#define IDC_DEFPWSHOWINEDIT2            1029
 #define IDC_QUERYSETDEF                 1030
 #define IDC_DEFPWSHOWINTREE             1031
 #define IDC_CRYPTKEY1                   1032
@@ -451,7 +450,6 @@
 #define IDC_SHOWNOTES                   1189
 #define IDC_DEFNOTESSHOWINEDIT          1190
 #define IDC_DATABASENAME                1191
-#define IDC_DEFNOTESSHOWINEDIT2         1191
 #define IDC_DATABASEFORMAT              1192
 #define IDC_NUMGROUPS                   1193
 #define IDC_NUMENTRIES                  1194
@@ -490,10 +488,8 @@
 #define IDC_PREEXPIRYWARNDAYS           1233
 #define IDC_PREWARNEXPIRYSPIN           1234
 #define IDC_DEFEXPLORERTREE             1235
-#define IDC_DEFEXPLORERTREE2            1236
 #define IDC_DEFENABLEGRIDLINES          1246
 #define IDC_LIST_HEADER                 1247
-#define IDC_DEFENABLEGRIDLINES2         1247
 #define IDC_CPLIST                      1248
 #define IDC_DEFAULTAUTOTYPE             1249
 #define IDC_MINIMIZEONAUTOTYPE          1250
@@ -542,7 +538,6 @@
 #define IDC_STATIC_REMLAST              1295
 #define IDC_DEFNTSHOWASTIPSINVIEWS      1296
 #define IDC_REUSE_ON_CHANGE             1297
-#define IDC_DEFNTSHOWASTIPSINVIEWS2     1297
 #define IDC_STATIC_LTINTERVAL_NOW       1298
 #define IDC_STATIC_LTINTERVAL_ALWAYS    1299
 #define IDC_DEFAULTOPENRO               1300
@@ -609,7 +604,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        447
+#define _APS_NEXT_RESOURCE_VALUE        446
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1362
 #define _APS_NEXT_SYMED_VALUE           160
