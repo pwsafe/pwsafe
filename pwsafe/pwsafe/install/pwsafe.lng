@@ -20,7 +20,7 @@
 
 LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
 !ifdef LANGUAGE_GERMAN
-LangString RESERVE_TITLE ${LANG_GERMAN}  "Wähle Typ der Installation"
+LangString RESERVE_TITLE ${LANG_GERMAN}  "Wählen Sie die Art der Installation"
 !endif
 !ifdef LANGUAGE_SPANISH
 LangString RESERVE_TITLE ${LANG_SPANISH} "Choose Installation Type [ES]"
@@ -40,10 +40,13 @@ LangString RESERVE_TITLE ${LANG_RUSSIAN} "Choose Installation Type [RU]"
 !ifdef LANGUAGE_POLISH
 LangString RESERVE_TITLE ${LANG_POLISH} "Choose Installation Type [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+LangString RESERVE_TITLE ${LANG_ITALIAN} "Choose Installation Type [IT]"
+!endif
 
 LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
 !ifdef LANGUAGE_GERMAN
-LangString RESERVE_FIELD1 ${LANG_GERMAN}  "Regulär (verwendet Registry, einsetzbar für normaler ArbeitsPC)"
+LangString RESERVE_FIELD1 ${LANG_GERMAN}  "Standard (verwendet Registry, einsetzbar am normalen ArbeitsPC)"
 !endif
 !ifdef LANGUAGE_SPANISH
 LangString RESERVE_FIELD1 ${LANG_SPANISH} "Regular (uses Registry, suitable for home or single user PC) [ES]"
@@ -62,6 +65,9 @@ LangString RESERVE_FIELD1 ${LANG_RUSSIAN} "Regular (uses Registry, suitable for 
 !endif
 !ifdef LANGUAGE_POLISH
 LangString RESERVE_FIELD1 ${LANG_POLISH} "Regular (uses Registry, suitable for home or single user PC) [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString RESERVE_FIELD1 ${LANG_ITALIAN} "Regular (uses Registry, suitable for home or single user PC) [IT]"
 !endif
 
 LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
@@ -85,6 +91,9 @@ LangString RESERVE_FIELD2 ${LANG_RUSSIAN} "Green (for Disk-on-Key; does not use 
 !endif
 !ifdef LANGUAGE_POLISH
 LangString RESERVE_FIELD2 ${LANG_POLISH} "Green (for Disk-on-Key; does not use host Registry) [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString RESERVE_FIELD2 ${LANG_ITALIAN} "Green (for Disk-on-Key; does not use host Registry) [IT]"
 !endif
 
 ;--------------------------------
@@ -112,6 +121,9 @@ LangString PROGRAM_FILES ${LANG_RUSSIAN} "Program Files [RU]"
 !ifdef LANGUAGE_POLISH
 LangString PROGRAM_FILES ${LANG_POLISH} "Program Files [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+LangString PROGRAM_FILES ${LANG_ITALIAN} "Program Files [IT]"
+!endif
 
 ;--------------------------------
 ; Start with Windows
@@ -138,13 +150,16 @@ LangString START_AUTO ${LANG_RUSSIAN} "Start automatically [RU]"
 !ifdef LANGUAGE_POLISH
 LangString START_AUTO ${LANG_POLISH} "Start automatically [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+LangString START_AUTO ${LANG_ITALIAN} "Start automatically [IT]"
+!endif
 
 ;--------------------------------
 ; Start menu
 
 LangString START_SHOW ${LANG_ENGLISH} "Show in start menu"
 !ifdef LANGUAGE_GERMAN
-LangString START_SHOW ${LANG_GERMAN}  "Im Startmenü anziegen"
+LangString START_SHOW ${LANG_GERMAN}  "Im Startmenü anzeigen"
 !endif
 !ifdef LANGUAGE_SPANISH
 LangString START_SHOW ${LANG_SPANISH} "Show in start menu [ES]"
@@ -164,13 +179,16 @@ LangString START_SHOW ${LANG_RUSSIAN} "Show in start menu [RU]"
 !ifdef LANGUAGE_POLISH
 LangString START_SHOW ${LANG_POLISH} "Show in start menu [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+LangString START_SHOW ${LANG_ITALIAN} "Show in start menu [IT]"
+!endif
 
 ;--------------------------------
 ; Desktop shortcut
 
 LangString START_SHORTCUT ${LANG_ENGLISH} "Install desktop shortcut"
 !ifdef LANGUAGE_GERMAN
-LangString START_SHORTCUT ${LANG_GERMAN}  "Verknüpfung auf Benutzeroberfläche"
+LangString START_SHORTCUT ${LANG_GERMAN}  "Verknüpfung auf der Benutzeroberfläche"
 !endif
 !ifdef LANGUAGE_SPANISH
 LangString START_SHORTCUT ${LANG_SPANISH} "Install desktop shortcut [ES]"
@@ -190,6 +208,9 @@ LangString START_SHORTCUT ${LANG_RUSSIAN} "Install desktop shortcut [RU]"
 !ifdef LANGUAGE_POLISH
 LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
+!endif
 
 ;--------------------------------
 ; Descriptions
@@ -197,7 +218,7 @@ LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
   ; Language strings
   LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
 !ifdef LANGUAGE_GERMAN
-  LangString DESC_ProgramFiles ${LANG_GERMAN} "Installiert die notwendigen Dateien um Password Safe laufen zu lassen."
+  LangString DESC_ProgramFiles ${LANG_GERMAN} "Installiert die notwendigen Dateien, um Password Safe laufen zu lassen."
 !endif
 !ifdef LANGUAGE_SPANISH
   LangString DESC_ProgramFiles ${LANG_SPANISH} "Installs the basic files necessary to run Password Safe. [ES]"
@@ -217,10 +238,13 @@ LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
 !ifdef LANGUAGE_POLISH
   LangString DESC_ProgramFiles ${LANG_POLISH} "Installs the basic files necessary to run Password Safe. [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+  LangString DESC_ProgramFiles ${LANG_ITALIAN} "Installs the basic files necessary to run Password Safe. [IT]"
+!endif
 
   LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
 !ifdef LANGUAGE_GERMAN
-  LangString DESC_StartUp ${LANG_GERMAN} "Startet Password Safe beim Windows boot/login."
+  LangString DESC_StartUp ${LANG_GERMAN} "Startet Password Safe beim Hochfahren von Windows."
 !endif
 !ifdef LANGUAGE_SPANISH
   LangString DESC_StartUp ${LANG_SPANISH} "Starts Password Safe as part of Windows boot/login. [ES]"
@@ -239,6 +263,9 @@ LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
 !endif
 !ifdef LANGUAGE_POLISH
   LangString DESC_StartUp ${LANG_POLISH} "Starts Password Safe as part of Windows boot/login. [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+  LangString DESC_StartUp ${LANG_ITALIAN} "Starts Password Safe as part of Windows boot/login. [IT]"
 !endif
 
   LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
@@ -263,6 +290,9 @@ LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
 !ifdef LANGUAGE_POLISH
   LangString DESC_StartMenu ${LANG_POLISH} "Creates an entry in the start menu for Password Safe. [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+  LangString DESC_StartMenu ${LANG_ITALIAN} "Creates an entry in the start menu for Password Safe. [IT]"
+!endif
 
   LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
 !ifdef LANGUAGE_GERMAN
@@ -286,13 +316,16 @@ LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
 !ifdef LANGUAGE_POLISH
   LangString DESC_DesktopShortcut ${LANG_POLISH} "Places a shortcut to Password Safe on your desktop. [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+  LangString DESC_DesktopShortcut ${LANG_ITALIAN} "Places a shortcut to Password Safe on your desktop. [IT]"
+!endif
   
 
 ;--------------------------------
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
 !ifdef LANGUAGE_GERMAN
-LangString TEXT_GC_TITLE ${LANG_GERMAN} "Type der Installation"
+LangString TEXT_GC_TITLE ${LANG_GERMAN} "Art der Installation"
 !endif
 !ifdef LANGUAGE_SPANISH
 LangString TEXT_GC_TITLE ${LANG_SPANISH} "Installation Type [ES]"
@@ -312,10 +345,13 @@ LangString TEXT_GC_TITLE ${LANG_RUSSIAN} "Installation Type [RU]"
 !ifdef LANGUAGE_POLISH
 LangString TEXT_GC_TITLE ${LANG_POLISH} "Installation Type [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+LangString TEXT_GC_TITLE ${LANG_ITALIAN} "Installation Type [IT]"
+!endif
 
 LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
 !ifdef LANGUAGE_GERMAN
-LangString TEXT_GC_SUBTITLE ${LANG_GERMAN} "Wähle Regulär zur Verwendung in einem PC und Grün für eine portable installation. Wenn sie nicht sicher sind, 'Regulär' auswählen."
+LangString TEXT_GC_SUBTITLE ${LANG_GERMAN} "Wählen Sie Standard zur Verwendung in einem PC und Grün für eine portable Installation. Wenn Sie nicht sicher sind, wählen Sie 'Standard' aus."
 !endif
 !ifdef LANGUAGE_SPANISH
 LangString TEXT_GC_SUBTITLE ${LANG_SPANISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [ES]"
@@ -335,10 +371,13 @@ LangString TEXT_GC_SUBTITLE ${LANG_RUSSIAN} "Choose Regular for use on a single 
 !ifdef LANGUAGE_POLISH
 LangString TEXT_GC_SUBTITLE ${LANG_POLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+LangString TEXT_GC_SUBTITLE ${LANG_ITALIAN} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [IT]"
+!endif
 
 LangString PSWINI_TITLE ${LANG_ENGLISH} "Choose Installation Type"
 !ifdef LANGUAGE_GERMAN
-LangString PSWINI_TITLE ${LANG_GERMAN} "Wähle Typ der Installation"
+LangString PSWINI_TITLE ${LANG_GERMAN} "Wählen Sie die Art der Installation"
 !endif
 !ifdef LANGUAGE_SPANISH
 LangString PSWINI_TITLE ${LANG_SPANISH} "Choose Installation Type [ES]"
@@ -358,10 +397,13 @@ LangString PSWINI_TITLE ${LANG_RUSSIAN} "Choose Installation Type [RU]"
 !ifdef LANGUAGE_POLISH
 LangString PSWINI_TITLE ${LANG_POLISH} "Choose Installation Type [PL]"
 !endif
+!ifdef LANGUAGE_ITALIAN
+LangString PSWINI_TITLE ${LANG_ITALIAN} "Choose Installation Type [IT]"
+!endif
 
 LangString PSWINI_TEXT1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
 !ifdef LANGUAGE_GERMAN
-LangString PSWINI_TEXT1 ${LANG_GERMAN} "Regulär (verwendet Registry, einsetzbar für normaler ArbeitsPC)"
+LangString PSWINI_TEXT1 ${LANG_GERMAN} "Standard (verwendet Registry, einsetzbar am normalen ArbeitsPC)"
 !endif
 !ifdef LANGUAGE_SPANISH
 LangString PSWINI_TEXT1 ${LANG_SPANISH} "Regular (uses Registry, suitable for home or single user PC) [ES]"
@@ -380,6 +422,9 @@ LangString PSWINI_TEXT1 ${LANG_RUSSIAN} "Regular (uses Registry, suitable for ho
 !endif
 !ifdef LANGUAGE_POLISH
 LangString PSWINI_TEXT1 ${LANG_POLISH} "Regular (uses Registry, suitable for home or single user PC) [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString PSWINI_TEXT1 ${LANG_ITALIAN} "Regular (uses Registry, suitable for home or single user PC) [IT]"
 !endif
 
 LangString PSWINI_TEXT2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
@@ -403,4 +448,7 @@ LangString PSWINI_TEXT2 ${LANG_RUSSIAN} "Green (for Disk-on-Key; does not use ho
 !endif
 !ifdef LANGUAGE_POLISH
 LangString PSWINI_TEXT2 ${LANG_POLISH} "Green (for Disk-on-Key; does not use host Registry) [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString PSWINI_TEXT2 ${LANG_ITALIAN} "Green (for Disk-on-Key; does not use host Registry) [IT]"
 !endif

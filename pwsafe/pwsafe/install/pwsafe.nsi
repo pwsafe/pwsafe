@@ -175,6 +175,7 @@
 ;!define LANGUAGE_FRENCH
 ;!define LANGUAGE_RUSSIAN
 !define LANGUAGE_POLISH
+;!define LANGUAGE_ITALIAN
 
   !insertmacro MUI_LANGUAGE "English"
 !ifdef LANGUAGE_GERMAN
@@ -197,6 +198,9 @@
 !endif
 !ifdef LANGUAGE_POLISH
   !insertmacro MUI_LANGUAGE "Polish"
+!endif
+!ifdef LANGUAGE_ITALIAN
+  !insertmacro MUI_LANGUAGE "Italian"
 !endif
 
   !include "pwsafe.lng"
@@ -267,6 +271,10 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File /nonfatal "..\src\bin\release\pwsafePL_PL.dll"
   File /nonfatal "..\help\pwsafePL\pwsafePL_PL.chm"
 !endif
+!ifdef LANGUAGE_ITALIAN
+  File /nonfatal "..\src\bin\release\pwsafeIT_IT.dll"
+  File /nonfatal "..\help\pwsafePL\pwsafeIT_IT.chm"
+!endif
 
   Goto dont_install_Win98
   ; If installing under Windows98, delete pwsafe.exe, rename
@@ -303,6 +311,9 @@ dont_install_Win98:
 !ifdef LANGUAGE_POLISH
   IntCmp $LANGUAGE 1045 languagePolish
 !endif
+!ifdef LANGUAGE_ITALIAN
+  IntCmp $LANGUAGE 1040 languageItalian
+!endif
   ; if language = english or "other" : remove all languageXX_XX.DLL
   ; else : English or no specific language
 !ifdef LANGUAGE_GERMAN
@@ -332,6 +343,10 @@ dont_install_Win98:
 !ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL_PL.dll
     Delete $INSTDIR\pwsafePL_PL.chm
+!endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT_IT.dll
+    Delete $INSTDIR\pwsafeIT_IT.chm
 !endif
     goto languageDone
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
@@ -364,6 +379,10 @@ languageGerman:
 !ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL_PL.dll
     Delete $INSTDIR\pwsafePL_PL.chm
+!endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT_IT.dll
+    Delete $INSTDIR\pwsafeIT_IT.chm
 !endif
     goto languageDone
 !endif
@@ -398,6 +417,10 @@ languageSpanish:
     Delete $INSTDIR\pwsafePL_PL.dll
     Delete $INSTDIR\pwsafePL_PL.chm
 !endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT_IT.dll
+    Delete $INSTDIR\pwsafeIT_IT.chm
+!endif
     goto languageDone
 !endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
@@ -431,6 +454,10 @@ languageSwedish:
     Delete $INSTDIR\pwsafePL_PL.dll
     Delete $INSTDIR\pwsafePL_PL.chm
 !endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT_IT.dll
+    Delete $INSTDIR\pwsafeIT_IT.chm
+!endif
     goto languageDone
 !endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
@@ -462,6 +489,10 @@ languageDutch:
 !ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL_PL.dll
     Delete $INSTDIR\pwsafePL_PL.chm
+!endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT_IT.dll
+    Delete $INSTDIR\pwsafeIT_IT.chm
 !endif
     goto languageDone
 !endif
@@ -496,6 +527,10 @@ languageFrench:
     Delete $INSTDIR\pwsafePL_PL.dll
     Delete $INSTDIR\pwsafePL_PL.chm
 !endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT_IT.dll
+    Delete $INSTDIR\pwsafeIT_IT.chm
+!endif
     goto languageDone
 !endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
@@ -529,6 +564,10 @@ languageRussian:
     Delete $INSTDIR\pwsafePL_PL.dll
     Delete $INSTDIR\pwsafePL_PL.chm
 !endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT_IT.dll
+    Delete $INSTDIR\pwsafeIT_IT.chm
+!endif
     goto languageDone
 !endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
@@ -561,6 +600,47 @@ languagePolish:
 !ifdef LANGUAGE_POLISH
 ;    Delete $INSTDIR\pwsafePL_PL.dll
 ;    Delete $INSTDIR\pwsafePL_PL.chm
+!endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT_IT.dll
+    Delete $INSTDIR\pwsafeIT_IT.chm
+!endif
+    goto languageDone
+!endif
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
+!ifdef LANGUAGE_ITALIAN
+languageItalian:
+!ifdef LANGUAGE_GERMAN
+    Delete $INSTDIR\pwsafeDE_DE.dll
+    Delete $INSTDIR\pwsafeDE_DE.chm
+!endif
+!ifdef LANGUAGE_SPANISH
+    Delete $INSTDIR\pwsafeES_ES.dll
+    Delete $INSTDIR\pwsafeES_ES.chm
+!endif
+!ifdef LANGUAGE_SWEDISH
+    Delete $INSTDIR\pwsafeSV_SE.dll
+    Delete $INSTDIR\pwsafeSV_SE.chm
+!endif
+!ifdef LANGUAGE_DUTCH
+    Delete $INSTDIR\pwsafeNL_NL.dll
+    Delete $INSTDIR\pwsafeNL_NL.chm
+!endif
+!ifdef LANGUAGE_FRENCH
+    Delete $INSTDIR\pwsafeFR_FR.dll
+    Delete $INSTDIR\pwsafeFR_FR.chm
+!endif
+!ifdef LANGUAGE_RUSSIAN
+    Delete $INSTDIR\pwsafeRU_RU.dll
+    Delete $INSTDIR\pwsafeRU_RU.chm
+!endif
+!ifdef LANGUAGE_POLISH
+    Delete $INSTDIR\pwsafePL_PL.dll
+    Delete $INSTDIR\pwsafePL_PL.chm
+!endif
+!ifdef LANGUAGE_ITALIAN
+;    Delete $INSTDIR\pwsafeIT_IT.dll
+;    Delete $INSTDIR\pwsafeIT_IT.chm
 !endif
     goto languageDone
 !endif
@@ -687,6 +767,10 @@ Section "Uninstall"
   Delete "$INSTDIR\pwsafePL_PL.dll"
   Delete "$INSTDIR\pwsafePL_PL.chm"
 !endif
+!ifdef LANGUAGE_ITALIAN
+  Delete "$INSTDIR\pwsafeIT_IT.dll"
+  Delete "$INSTDIR\pwsafeIT_IT.chm"
+!endif
 
   ; remove directory if it's empty
   RMDir  "$INSTDIR"
@@ -743,6 +827,9 @@ Function .onInit
 !ifdef LANGUAGE_POLISH
   goto extraLanguage
 !endif
+!ifdef LANGUAGE_ITALIAN
+  goto extraLanguage
+!endif
   goto NOextraLanguage
  
 extraLanguage:  
@@ -776,6 +863,10 @@ extraLanguage:
 !ifdef LANGUAGE_POLISH
   Push ${LANG_POLISH}
   Push Polish
+!endif
+!ifdef LANGUAGE_ITALIAN
+  Push ${LANG_ITALIAN}
+  Push Italian
 !endif
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
