@@ -176,7 +176,7 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
 
 void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
 {
-  std::wstring FormatString;
+  stringT FormatString;
   int iLineNumber, iCharacter;
 
 #ifdef UNICODE

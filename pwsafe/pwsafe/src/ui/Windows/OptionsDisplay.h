@@ -35,6 +35,7 @@ public:
   BOOL m_enablegrid;
   BOOL m_pwshowinedit;
   BOOL m_notesshowinedit;
+  BOOL m_wordwrapnotes;
   BOOL m_preexpirywarn;
 #if defined(POCKET_PC)
   BOOL m_dcshowspassword;
