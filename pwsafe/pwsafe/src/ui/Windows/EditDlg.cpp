@@ -126,8 +126,9 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_ci->GetXTimeInt(m_XTimeInt);
   m_oldXTimeInt = m_XTimeInt;
 
-  m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
-                              _T("! &Edit externally"));
+  CString csMenu(MAKEINTRESOURCE(IDS_EDITEXTERNALLY));
+  m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, csMenu);
+
   m_num_dependents = 0;
   m_dependents = _T("");
   m_base = _T("");
@@ -921,9 +922,9 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
   STARTUPINFO si;
   PROCESS_INFORMATION pi;
 
-  ZeroMemory( &si, sizeof(si) );
+  ZeroMemory(&si, sizeof(si));
   si.cb = sizeof(si);
-  ZeroMemory( &pi, sizeof(pi) );
+  ZeroMemory(&pi, sizeof(pi));
 
   DWORD dwCreationFlags(0);
 #ifdef _UNICODE
@@ -939,8 +940,15 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
                      NULL, lpPathBuffer, &si, &pi)) {
-    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+    TRACE("CreateProcess failed (%d).\n", GetLastError());
+    // Delete temporary file
+    _tremove(self->m_szTempName);
+    memset(self->m_szTempName, 0, sizeof(self->m_szTempName));
+    return 0;
   }
+
+  TRACE(_T("%d\n"), sizeof(self->m_szTempName));
+  WaitForInputIdle(pi.hProcess, INFINITE);
 
   // Wait until child process exits.
   WaitForSingleObject(pi.hProcess, INFINITE);
@@ -991,6 +999,7 @@ LRESULT CEditDlg::OnExternalEditorEnded(WPARAM, LPARAM)
 
   // Delete temporary file
   _tremove(m_szTempName);
+  memset(m_szTempName, 0, sizeof(m_szTempName));
   return 0;
 }
 

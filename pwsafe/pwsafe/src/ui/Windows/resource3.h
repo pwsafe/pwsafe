@@ -479,3 +479,4 @@
 #define IDS_SUBSETINDEXTOOBIG           5648
 #define IDS_MENUCREATESHORTCUT          5649
 #define IDS_AREYOUSURE                  5650
+#define IDS_EDITEXTERNALLY              5651
