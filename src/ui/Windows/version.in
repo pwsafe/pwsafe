@@ -5,6 +5,7 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
+
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
@@ -17,13 +18,14 @@
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define FILEVER        3, 16, 1, $WCREV$
-#define PRODUCTVER     3, 16, 1, $WCREV$
-#define STRFILEVER     "3, 16, 1 , $WCREV$$WCMODS?+:$\0"
-#define STRPRODUCTVER  "3, 16, 1, $WCREV$$WCMODS?+:$\0"
+#define FILEVER        3, 16, 2, $WCREV$
+#define PRODUCTVER     3, 16, 2, $WCREV$
+#define STRFILEVER     "3, 16, 2 , $WCREV$$WCMODS?+:$\0"
+#define STRPRODUCTVER  "3, 16, 2, $WCREV$$WCMODS?+:$\0"
 
-// Following should usually be blank
+// Only define SPECIAL_BUILD before here (in version.in) if needed!
+#ifndef SPECIAL_BUILD
 #define SPECIAL_BUILD _T("")
-// #define SPECIAL_BUILD _T("???")
+#endif
 
 #endif // _VERSION_H_

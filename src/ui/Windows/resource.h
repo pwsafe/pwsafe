@@ -302,6 +302,7 @@
 #define IDC_DELITEM                     1017
 #define IDC_VERIFY                      1018
 #define IDC_CONFIRMDELETE               1019
+#define IDC_NOTESWW                     1020
 #define IDC_CONFIRMCOPY                 1021
 #define IDC_TRYAGAIN                    1022
 #define IDC_QUIT                        1023
@@ -599,6 +600,7 @@
 #define IDC_GETSUBSET                   1359
 #define IDC_SUBSETRESULTS               1360
 #define IDC_STATICSUBSETWARNING         1361
+#define IDC_DEFNOTESWRAP                1362
 
 // Next default values for new objects
 // 
@@ -606,7 +608,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        446
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1362
+#define _APS_NEXT_CONTROL_VALUE         1363
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

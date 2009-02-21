@@ -53,6 +53,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_DEFEXPLORERTREE, m_explorertree);
   DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
   DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_notesshowinedit);
+  DDX_Check(pDX, IDC_DEFNOTESWRAP, m_wordwrapnotes);
   DDX_Check(pDX, IDC_DEFENABLEGRIDLINES, m_enablegrid);
   DDX_Check(pDX, IDC_PREWARNEXPIRY, m_preexpirywarn);
   DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_preexpirywarndays);

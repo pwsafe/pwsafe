@@ -33,10 +33,11 @@ CString CAddDlg::CS_HIDE;
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
   : CPWDialog(CAddDlg::IDD, pParent),
-  m_password(_T("")), m_notes(_T("")), m_username(_T("")), m_title(_T("")),
+  m_password(_T("")), m_username(_T("")), m_title(_T("")),
   m_group(_T("")), m_URL(_T("")), m_autotype(_T("")),
+  m_notes(_T("")),  m_notesww(_T("")),
   m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)), m_XTimeInt(0),
-  m_isPwHidden(false), m_OverridePolicy(FALSE)
+  m_isPwHidden(false), m_OverridePolicy(FALSE), m_bWordWrap(FALSE)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -56,6 +57,29 @@ CAddDlg::CAddDlg(CWnd* pParent)
 #endif
   }
   m_pwp.Empty();
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  m_bWordWrap = prefs->GetPref(PWSprefs::NotesWordWrap) ? TRUE : FALSE;
+
+  std::vector<st_context_menu> vmenu_items(1);
+
+  st_context_menu st_cm;
+  stringT cs_menu_string;
+
+  LoadAString(cs_menu_string, IDS_WORD_WRAP);
+  st_cm.menu_string = cs_menu_string;
+  st_cm.message_number = WM_EDIT_WORDWRAP;
+  st_cm.flags = m_bWordWrap == TRUE ? MF_CHECKED : MF_UNCHECKED;
+  vmenu_items[0] = st_cm;
+
+  m_pex_notes = new CEditExtn(vmenu_items);
+  m_pex_notesww = new CEditExtn(vmenu_items);
+}
+
+CAddDlg::~CAddDlg()
+{
+  delete m_pex_notes;
+  delete m_pex_notesww;
 }
 
 BOOL CAddDlg::OnInitDialog() 
@@ -67,11 +91,17 @@ BOOL CAddDlg::OnInitDialog()
 
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
   } else {
     HidePassword();
   }
+
+  GetDlgItem(IDC_NOTES)->EnableWindow(m_bWordWrap == TRUE ? FALSE : TRUE);
+  GetDlgItem(IDC_NOTESWW)->EnableWindow(m_bWordWrap == TRUE ? TRUE : FALSE);
+  GetDlgItem(IDC_NOTES)->ShowWindow(m_bWordWrap == TRUE ? SW_HIDE : SW_SHOW);
+  GetDlgItem(IDC_NOTESWW)->ShowWindow(m_bWordWrap == TRUE ? SW_SHOW : SW_HIDE);
 
   UpdateData(FALSE);
 
@@ -104,6 +134,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
    m_ex_password.DoDDX(pDX, m_password);
    m_ex_password2.DoDDX(pDX, m_password2);
    DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
+   DDX_Text(pDX, IDC_NOTESWW, (CString&)m_notesww);
    DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
    DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
    DDX_Text(pDX, IDC_XTIME, (CString&)m_locXTime);
@@ -119,7 +150,8 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_GROUP, m_ex_group);
    DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
    DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
-   DDX_Control(pDX, IDC_NOTES, m_ex_notes);
+   DDX_Control(pDX, IDC_NOTES, *m_pex_notes);
+   DDX_Control(pDX, IDC_NOTESWW, *m_pex_notesww);
    DDX_Control(pDX, IDC_USERNAME, m_ex_username);
    DDX_Control(pDX, IDC_TITLE, m_ex_title);
    DDX_Control(pDX, IDC_URL, m_ex_URL);
@@ -138,12 +170,14 @@ BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
   ON_BN_CLICKED(IDC_XTIME_CLEAR, OnBnClickedClearXTime)
   ON_BN_CLICKED(IDC_XTIME_SET, OnBnClickedSetXTime)
   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
-  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, &CAddDlg::OnBnClickedOverridePolicy)
+  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
+  ON_MESSAGE(WM_EDIT_WORDWRAP, OnWordWrap)
 END_MESSAGE_MAP()
-
 
 void CAddDlg::OnCancel() 
 {
+  if (AfxMessageBox(IDS_AREYOUSURE, 
+                         MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2) == IDYES)
   CPWDialog::OnCancel();
 }
 
@@ -203,6 +237,8 @@ void CAddDlg::OnOK()
     if (m_isPwHidden)
       m_password2.Empty();
   }
+  if (m_bWordWrap == TRUE)
+    m_notes = m_notesww;
   m_notes.EmptyIfOnlyWhiteSpace();
   m_URL.EmptyIfOnlyWhiteSpace();
   m_autotype.EmptyIfOnlyWhiteSpace();
@@ -303,7 +339,6 @@ void CAddDlg::OnBnClickedMore()
     SetPref(PWSprefs::DisplayExpandedAddEditDlg, m_isExpanded);
   ResizeDialog();
 }
-
 
 void CAddDlg::OnBnClickedOk()
 {
@@ -424,7 +459,33 @@ void CAddDlg::SelectAllNotes()
 {
   // Here from PreTranslateMessage iff User pressed Ctrl+A
   // in Notes control
-  ((CEdit *)GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
+  ((CEdit *)GetDlgItem(m_bWordWrap == TRUE ? IDC_NOTESWW : IDC_NOTES))->
+            SetSel(0, -1, TRUE);
+}
+
+LRESULT CAddDlg::OnWordWrap(WPARAM, LPARAM)
+{
+  m_bWordWrap = m_bWordWrap == TRUE ? FALSE : TRUE;
+  // Get value of notes from dialog.
+  UpdateData(TRUE);
+  if (m_bWordWrap == FALSE)
+    m_notes = m_notesww;
+  else
+    m_notesww = m_notes;
+  // Update dalog
+  UpdateData(FALSE);
+
+  GetDlgItem(IDC_NOTES)->EnableWindow(m_bWordWrap == TRUE ? FALSE : TRUE);
+  GetDlgItem(IDC_NOTESWW)->EnableWindow(m_bWordWrap == TRUE ? TRUE : FALSE);
+  GetDlgItem(IDC_NOTES)->ShowWindow(m_bWordWrap == TRUE ? SW_HIDE : SW_SHOW);
+  GetDlgItem(IDC_NOTESWW)->ShowWindow(m_bWordWrap == TRUE ? SW_SHOW : SW_HIDE);
+
+  ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
+  ((CEdit*)GetDlgItem(IDC_NOTESWW))->Invalidate();
+
+  m_pex_notes->UpdateState(WM_EDIT_WORDWRAP, m_bWordWrap);
+  m_pex_notesww->UpdateState(WM_EDIT_WORDWRAP, m_bWordWrap);
+  return 0;
 }
 
 BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)

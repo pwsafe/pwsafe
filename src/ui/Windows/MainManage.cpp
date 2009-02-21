@@ -280,7 +280,9 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::ListViewGridLines) ? TRUE : FALSE;
   display.m_notesshowinedit = prefs->
     GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
-  display.m_preexpirywarn = prefs->
+  display.m_wordwrapnotes = prefs->
+    GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
+    display.m_preexpirywarn = prefs->
     GetPref(PWSprefs::PreExpiryWarn) ? TRUE : FALSE;
   display.m_preexpirywarndays = prefs->
     GetPref(PWSprefs::PreExpiryWarnDays);
@@ -450,6 +452,8 @@ void DboxMain::OnOptions()
       display.m_enablegrid == TRUE);
     prefs->SetPref(PWSprefs::ShowNotesDefault,
       display.m_notesshowinedit == TRUE);
+    prefs->SetPref(PWSprefs::NotesWordWrap,
+      display.m_wordwrapnotes == TRUE);
     prefs->SetPref(PWSprefs::PreExpiryWarn,
       display.m_preexpirywarn == TRUE);
     prefs->SetPref(PWSprefs::PreExpiryWarnDays,
