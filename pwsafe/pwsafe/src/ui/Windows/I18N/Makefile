@@ -16,9 +16,12 @@
 
 #Update the following for each language we support
 
-POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po pos/pwsafe_pl.po 
+POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po \
+	pos/pwsafe_pl.po pos/pwsafe_zh.po
 
-DLL_LIST = pwsafeSV_SE.dll pwsafeES_ES.dll pwsafeDE_DE.dll pwsafePL_PL.dll
+DLL_LIST = pwsafeSV_SE.dll pwsafeES_ES.dll pwsafeDE_DE.dll \
+	pwsafePL_PL.dll pwsafeZH_CN.dll
+
 DEST_DIR = ../../../bin/release
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
 
@@ -55,6 +58,13 @@ $(DEST_DIR)/pwsafePL_PL.dll : pos/pwsafe_pl.po
 	(cd $(DEST_DIR); \
 		$(RESTEXT) apply $(notdir $(BASE_DLL)) foo.dll ../../ui/Windows/I18N/$^; \
 		$(RESPWSL) apply foo.dll 0x0415; \
+		$(RM) foo.dll)
+	$(CHMOD) 755 $@
+
+$(DEST_DIR)/pwsafeZH_CN.dll : pos/pwsafe_zh.po
+	(cd $(DEST_DIR); \
+		$(RESTEXT) apply $(notdir $(BASE_DLL)) foo.dll ../../ui/Windows/I18N/$^; \
+		$(RESPWSL) apply foo.dll 0x0804; \
 		$(RM) foo.dll)
 	$(CHMOD) 755 $@
 
