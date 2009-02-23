@@ -178,6 +178,10 @@ msgstr " Öffnen # %d"
 msgid " [Process ID=%s]"
 msgstr " [Prozess ID=%s]"
 
+#. Resource IDs: (354)
+msgid "! &Edit externally"
+msgstr ""
+
 #. Resource IDs: (350)
 msgid "#"
 msgstr "#"
@@ -2870,6 +2874,26 @@ msgstr "Password Safe"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Untitled Restored Backup>"
 
+#. Resource IDs: (317)
+msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Backups (*.bak)|*.bak||"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (326)
 #, c-format
 msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
@@ -3131,6 +3155,10 @@ msgstr "Bitte besuchen Sie die <a href=\"http://pwsafe.org/\">PasswordSafe websi
 #. Resource IDs: (349)
 msgid "Previous Passwords"
 msgstr "Frühere Passwörter"
+
+#. Resource IDs: (317)
+msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Pronounceable passwords"
@@ -3498,6 +3526,10 @@ msgstr "Verknüpfung"
 msgid "Show Dragbar"
 msgstr "Dragleiste einblenden"
 
+#. Resource IDs: (354)
+msgid "Show Notes"
+msgstr ""
+
 #. Resource IDs: (346)
 msgid "Show Toolbar"
 msgstr "Toolleiste einblenden"
@@ -3519,12 +3551,12 @@ msgid "Show notes as ToolTips in display tree && list views"
 msgstr "Zeige Notizen in Baum- und Listen-Darstellung als ToolTip"
 
 #. Resource IDs: (1190)
-msgid "Show notes in edit"
-msgstr "Zeige Notizen beim Bearbeiten"
+msgid "Show notes in Edit"
+msgstr ""
 
 #. Resource IDs: (1028)
-msgid "Show password in add && edit"
-msgstr "Zeige Passwort beim Hinzufügen &und Bearbeiten"
+msgid "Show password in Add && Edit"
+msgstr ""
 
 #. Resource IDs: (1031)
 msgid "Show password in display tree"
@@ -3634,6 +3666,10 @@ msgstr "Ziel wurde zuletzt geändert am:"
 #. Resource IDs: (347)
 msgid "Text"
 msgstr "Text"
+
+#. Resource IDs: (316)
+msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -4168,6 +4204,14 @@ msgstr "Schwaches General-Passwort:\n\n%s"
 msgid "Whenever"
 msgstr "Wannimmer"
 
+#. Resource IDs: (354)
+msgid "Word Wrap"
+msgstr ""
+
+#. Resource IDs: (1362)
+msgid "Word Wrap Notes in Add && Edit"
+msgstr ""
+
 #. Resource IDs: (332)
 #, c-format
 msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
@@ -4185,6 +4229,14 @@ msgstr "XML"
 #, c-format
 msgid "XML %s: line %d character %d: %s"
 msgstr "XML %s: Zeile %d Zeichen %d: %s"
+
+#. Resource IDs: (316)
+msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "XML files (*.xml)|*.xml||"
+msgstr ""
 
 #. Resource IDs: (340)
 msgid "Yes"

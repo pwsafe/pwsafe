@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FreeDoctor <Freedoctor@qq.com>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -164,6 +164,10 @@ msgstr " 打开 # %d"
 #, c-format
 msgid " [Process ID=%s]"
 msgstr " [进程 ID=%s]"
+
+#. Resource IDs: (354)
+msgid "! &Edit externally"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "#"
@@ -337,10 +341,6 @@ msgstr "关于 Password Safe(&A)..."
 
 #. Resource IDs: (32051)
 msgid "&Add Entry...\tCtrl+A"
-msgstr "添加项目(&A)...\tCtrl+A"
-
-#. Resource IDs: (32051)
-msgid "&Add Entry..\tCtrl+A"
 msgstr "添加项目(&A)...\tCtrl+A"
 
 #. Resource IDs: (1026, 1306)
@@ -2681,11 +2681,6 @@ msgstr "组数量合计:"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued %d\n\nNumber of Shortcut warnings issued %d"
-msgstr "项目数量进程: %d\n\nUUID 固定数量: %d\n\n历史密码固定数量: %d\n\n别名警告结果数量: %d\n\n快捷方式警告结果数量: %d"
-
-#. Resource IDs: (190)
-#, c-format
 msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d"
 msgstr "项目数量进程: %d\n\nUUID 固定数量: %d\n\n历史密码固定数量: %d\n\n别名警告结果数量: %d\n\n快捷方式警告结果数量: %d"
 
@@ -2865,6 +2860,26 @@ msgstr "Password Safe"
 #. Resource IDs: (337)
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <未命名恢复备份>"
+
+#. Resource IDs: (317)
+msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
+msgstr ""
+
+#. Resource IDs: (317)
+msgid "Password Safe Backups (*.bak)|*.bak||"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (326)
 #, c-format
@@ -3113,8 +3128,8 @@ msgstr "请指定包含所有备份文件的目标位置！"
 
 #. Resource IDs: (345)
 #, c-format
-msgid "Please specify the name & group for the shortcut to '%s':"
-msgstr "请指定 名称和组 快捷方式到 '%s':  "
+msgid "Please specify the name && group for the shortcut to '%s':"
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -3127,6 +3142,10 @@ msgstr "请访问 <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
 msgstr "早期密码"
+
+#. Resource IDs: (317)
+msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Pronounceable passwords"
@@ -3494,6 +3513,10 @@ msgstr "快捷方式"
 msgid "Show Dragbar"
 msgstr "显示字段状态符"
 
+#. Resource IDs: (354)
+msgid "Show Notes"
+msgstr ""
+
 #. Resource IDs: (346)
 msgid "Show Toolbar"
 msgstr "显示工具栏"
@@ -3515,12 +3538,12 @@ msgid "Show notes as ToolTips in display tree && list views"
 msgstr "在树状目录与列表视图显示工具提示备注内容"
 
 #. Resource IDs: (1190)
-msgid "Show notes in edit"
-msgstr "编辑时显示备注内容"
+msgid "Show notes in Edit"
+msgstr ""
 
 #. Resource IDs: (1028)
-msgid "Show password in add && edit"
-msgstr "添加和编辑时显示密码"
+msgid "Show password in Add && Edit"
+msgstr ""
 
 #. Resource IDs: (1031)
 msgid "Show password in display tree"
@@ -3630,6 +3653,10 @@ msgstr "目标最后更改时间:"
 #. Resource IDs: (347)
 msgid "Text"
 msgstr "文本"
+
+#. Resource IDs: (316)
+msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -4164,6 +4191,14 @@ msgstr "弱密码语句:\n\n %s"
 msgid "Whenever"
 msgstr "Whenever"
 
+#. Resource IDs: (354)
+msgid "Word Wrap"
+msgstr ""
+
+#. Resource IDs: (1362)
+msgid "Word Wrap Notes in Add && Edit"
+msgstr ""
+
 #. Resource IDs: (332)
 #, c-format
 msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
@@ -4181,6 +4216,14 @@ msgstr "XML"
 #, c-format
 msgid "XML %s: line %d character %d: %s"
 msgstr "XML %s: 行 %d 字符 %d: %s"
+
+#. Resource IDs: (316)
+msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "XML files (*.xml)|*.xml||"
+msgstr ""
 
 #. Resource IDs: (340)
 msgid "Yes"
