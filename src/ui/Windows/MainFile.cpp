@@ -293,9 +293,7 @@ int DboxMain::NewFile(StringX &newfilename)
                    v3FileName.c_str(),
                    OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                    OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                   SUFFIX3_FILTERS
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     fd.m_ofn.Flags &= ~OFN_READONLY;
@@ -467,11 +465,7 @@ int DboxMain::Open()
                    DEFAULT_SUFFIX,
                    NULL,
                    OFN_FILEMUSTEXIST | OFN_LONGNAMES,
-                   SUFFIX_FILTERS
-                   _T("Password Safe Backups (*.bak)|*.bak|")
-                   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
@@ -772,20 +766,18 @@ int DboxMain::SaveAs()
   //SaveAs-type dialog box
   StringX cf(m_core.GetCurFile());
   if (cf.empty()) {
-    CString defname;
-    defname.LoadString(IDS_DEFDBNAME); // reasonable default for first time user
+    CString defname(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
     cf = LPCTSTR(defname);
   }
   stringT v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX );
+
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
                    v3FileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   SUFFIX_FILTERS
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
                    this);
     if (m_core.GetCurFile().empty())
       cs_text.LoadString(IDS_NEWNAME1);
@@ -875,9 +867,7 @@ void DboxMain::OnExportVx(UINT nID)
                    OldFormatFileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   SUFFIX_FILTERS
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     rc = fd.DoModal();
@@ -936,16 +926,14 @@ void DboxMain::OnExportText()
       //SaveAs-type dialog box
       stringT TxtFileName = PWSUtil::GetNewFileName(cs_temp.c_str(), _T("txt"));
       cs_text.LoadString(IDS_NAMETEXTFILE);
+
       while (1) {
         CFileDialog fd(FALSE,
                        _T("txt"),
                        TxtFileName.c_str(),
                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                        |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                       _T("Text files (*.txt)|*.txt|")
-                       _T("CSV files (*.csv)|*.csv|")
-                       _T("All files (*.*)|*.*|")
-                       _T("|"),
+                       CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
                        this);
         fd.m_ofn.lpstrTitle = cs_text;
         rc = fd.DoModal();
@@ -1005,15 +993,14 @@ void DboxMain::OnExportXML()
       stringT XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
                                                     _T("xml"));
       cs_text.LoadString(IDS_NAMEXMLFILE);
+
       while (1) {
         CFileDialog fd(FALSE,
                        _T("xml"),
                        XMLFileName.c_str(),
                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                        |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                       _T("XML files (*.xml)|*.xml|")
-                       _T("All files (*.*)|*.*|")
-                       _T("|"),
+                       CString(MAKEINTRESOURCE(IDS_FDF_X_ALL)),
                        this);
         fd.m_ofn.lpstrTitle = cs_text;
         rc = fd.DoModal();
@@ -1072,14 +1059,12 @@ void DboxMain::OnImportText()
   StringX ImportedPrefix(dlg.m_groupName);
   CString cs_text, cs_title, cs_temp;
   TCHAR fieldSeparator(dlg.m_Separator[0]);
+
   CFileDialog fd(TRUE,
                  _T("txt"),
                  NULL,
                  OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                 _T("Text files (*.txt)|*.txt|")
-                 _T("CSV files (*.csv)|*.csv|")
-                 _T("All files (*.*)|*.*|")
-                 _T("|"),
+                 CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
                  this);
   cs_text.LoadString(IDS_PICKTEXTFILE);
   fd.m_ofn.lpstrTitle = cs_text;
@@ -1173,10 +1158,7 @@ void DboxMain::OnImportKeePass()
                  _T("txt"),
                  NULL,
                  OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                 _T("Text files (*.txt)|*.txt|")
-                 _T("CSV files (*.csv)|*.csv|")
-                 _T("All files (*.*)|*.*|")
-                 _T("|"),
+                 CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
                  this);
   cs_text.LoadString(IDS_PICKKEEPASSFILE);
   fd.m_ofn.lpstrTitle = cs_text;
@@ -1246,12 +1228,11 @@ void DboxMain::OnImportXML()
     return;
 
   stringT ImportedPrefix(dlg.m_groupName);
-
   CFileDialog fd(TRUE,
                  _T("xml"),
                  NULL,
                  OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                 _T("XML files (*.xml)|*.xml||"),
+                 CString(MAKEINTRESOURCE(IDS_FDF_XML)),
                  this);
   cs_text.LoadString(IDS_PICKXMLFILE);
   fd.m_ofn.lpstrTitle = cs_text;
@@ -1367,11 +1348,7 @@ int DboxMain::Merge()
                    DEFAULT_SUFFIX,
                    NULL,
                    OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_READONLY|OFN_LONGNAMES,
-                   SUFFIX_FILTERS
-                   _T("Password Safe Backups (*.bak)|*.bak|")
-                   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
                    this);
     cs_temp.LoadString(IDS_PICKMERGEFILE);
     fd.m_ofn.lpstrTitle = cs_temp;
@@ -1771,11 +1748,7 @@ void DboxMain::OnCompare()
                    DEFAULT_SUFFIX,
                    NULL,
                    OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                   SUFFIX_FILTERS
-                   _T("Password Safe Backups (*.bak)|*.bak|")
-                   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();

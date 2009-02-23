@@ -72,7 +72,7 @@ int DboxMain::BackupSafe()
                    currbackup.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   _T("Password Safe Backups (*.bak)|*.bak||"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_BU)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
@@ -131,9 +131,7 @@ int DboxMain::Restore()
                    _T("bak"),
                    currbackup.c_str(),
                    OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                   _T("Password Safe Backups (*.bak)|*.bak|")
-                   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
