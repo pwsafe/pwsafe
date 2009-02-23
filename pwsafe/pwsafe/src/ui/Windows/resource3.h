@@ -23,6 +23,17 @@
 #define IDS_READ_ONLY                   5028
 #define IDS_BLANK                       5029
 
+// File Dailog filters
+#define IDS_FDF_V3_ALL                  5050
+#define IDS_FDF_DB_ALL                  5051
+#define IDS_FDF_DB_BU_ALL               5052
+#define IDS_FDF_T_C_ALL                 5053
+#define IDS_FDF_X_ALL                   5054
+#define IDS_FDF_XML                     5055
+#define IDS_FDF_BU                      5056
+#define IDS_FDF_BUS                     5057
+#define IDS_FDF_PR_ALL                  5058
+
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100
 #define IDS_RESETPWHISTORYON            5101

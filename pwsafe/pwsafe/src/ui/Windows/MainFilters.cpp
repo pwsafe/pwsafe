@@ -679,9 +679,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
                    XMLFileName.c_str(),
                    OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                    OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                   _T("XML files (*.xml)|*.xml|")
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_X_ALL)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     rc = fd.DoModal();
@@ -732,7 +730,7 @@ void DboxMain::ImportFilters()
                  _T("xml"),
                  NULL,
                  OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
-                 _T("XML files (*.xml)|*.xml||"),
+                 CString(MAKEINTRESOURCE(IDS_FDF_XML)),
                  this);
   cs_text.LoadString(IDS_PICKXMLFILE);
   fd.m_ofn.lpstrTitle = cs_text;

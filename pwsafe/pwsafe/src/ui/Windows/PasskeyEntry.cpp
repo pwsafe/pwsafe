@@ -315,9 +315,7 @@ void CPasskeyEntry::OnCreateDb()
                    v3FileName.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   SUFFIX3_FILTERS
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
@@ -502,11 +500,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
                  DEFAULT_SUFFIX,
                  NULL,
                  OFN_FILEMUSTEXIST | OFN_LONGNAMES,
-                 SUFFIX_FILTERS
-                 _T("Password Safe Backups (*.bak)|*.bak|")
-                 _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-                 _T("All files (*.*)|*.*|")
-                 _T("|"),
+                 CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
                  this);
   fd.m_ofn.lpstrTitle = cs_text;
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))

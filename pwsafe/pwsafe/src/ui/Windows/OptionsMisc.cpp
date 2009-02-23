@@ -266,9 +266,7 @@ void COptionsMisc::OnBrowseForLocation()
   CFileDialog fd(TRUE, NULL, NULL,
                  OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
                  OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
-                 _T("Programs (*.exe)|*.exe|")
-                 _T("All files (*.*)|*.*|")
-                 _T("|"),
+                 CString(MAKEINTRESOURCE(IDS_FDF_PR_ALL)),
                  this);
 
   cs_title.LoadString(IDS_SELECTBROWSER);
