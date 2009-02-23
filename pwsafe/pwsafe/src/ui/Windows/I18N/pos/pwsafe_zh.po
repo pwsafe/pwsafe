@@ -82,11 +82,11 @@ msgstr "传统工具栏(&C)"
 
 #. Resource IDs: (32104)
 msgid " &New Toolbar"
-msgstr " 新式工具栏(&N)"
+msgstr "新式工具栏(&N)"
 
 #. Resource IDs: (336)
 msgid " 'Autotype'"
-msgstr " '自动复制'"
+msgstr " '自动输入'"
 
 #. Resource IDs: (336)
 msgid " 'Creation Time'"
@@ -353,7 +353,7 @@ msgstr "应用当前(&A)"
 
 #. Resource IDs: (1356)
 msgid "&Autotype:"
-msgstr "自动复制(&A):"
+msgstr "自动输入(&A):"
 
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
@@ -573,11 +573,11 @@ msgstr "密码(&P):"
 
 #. Resource IDs: (32010)
 msgid "&Plain Text (tab separated)..."
-msgstr "明码文本(分隔符标记)(&P)..."
+msgstr "无格式文本(分隔符标记)(&P)..."
 
 #. Resource IDs: (32016)
 msgid "&Plain Text..."
-msgstr "明码文本(&P)..."
+msgstr "无格式文本(&P)..."
 
 #. Resource IDs: (32020)
 msgid "&Properties"
@@ -669,7 +669,7 @@ msgstr "“最小化时清空剪贴板”和双击“复制密码和最小化”
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in the Title field.)"
-msgstr "(同时替换标题字段的句号)"
+msgstr "(同时循环置换于标题字段)"
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
@@ -873,11 +873,11 @@ msgstr "允许多种实例 (需要重启 Password Safe)"
 
 #. Resource IDs: (65535)
 msgid "Also used to replace periods in the Title field."
-msgstr "同时替换标题字段的句号"
+msgstr "同时循环置换在标题字段"
 
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
-msgstr "替用浏览器"
+msgstr "更换默认浏览器"
 
 #. Resource IDs: (1043)
 msgid "Always keep Password Safe on top"
@@ -992,7 +992,7 @@ msgstr "至少有一个未知 %s 字段正在使用中，所有已经建立的�
 
 #. Resource IDs: (188)
 msgid "AutoType\t"
-msgstr "自动复制\t"
+msgstr "自动输入\t"
 
 #. Resource IDs: (353)
 msgid "Autoload"
@@ -1000,7 +1000,7 @@ msgstr "自动加载"
 
 #. Resource IDs: (325, 340, 65535)
 msgid "Autotype"
-msgstr "自动复制"
+msgstr "自动输入"
 
 #. Resource IDs: (65535)
 msgid "Available Fields:"
@@ -1126,7 +1126,7 @@ msgstr "更改保险箱密码"
 
 #. Resource IDs: (319)
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
-msgstr "如果当前存储数量较少，更改当前项目保存历史密码数量到新的最大值；对于已经保存大于该新建值的项目历史密码将保留不删除！"
+msgstr "如果当前存储数量较少，更改当前项目保存历史密码数量到新的最大值；对于已经保存大于该新建值的项目历史密码将保留不更改！"
 
 #. Resource IDs: (3887)
 msgid "Check"
@@ -1186,7 +1186,7 @@ msgstr "关闭"
 
 #. Resource IDs: (32109)
 msgid "Collapse All\tCtrl+Alt+Minus"
-msgstr "全部收缩\tCtrl+Alt+Minus"
+msgstr "全部收缩\tCtrl+Alt+减号键"
 
 #. Resource IDs: (114, 32210)
 msgid "Column Picker"
@@ -1467,7 +1467,7 @@ msgstr "日期:"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
-msgstr "默认自动复制字串:"
+msgstr "默认自动输入字串:"
 
 #. Resource IDs: (65535)
 msgid "Default Username"
@@ -1559,7 +1559,7 @@ msgstr "你是否希望保存所作的更改到数据库:\r\n\r\n%s\r\n\r\n或�
 
 #. Resource IDs: (314)
 msgid "Double-Click on entry to Autotype"
-msgstr "双击项目自动复制"
+msgstr "双击项目自动输入"
 
 #. Resource IDs: (314)
 msgid "Double-Click on entry to Browse to URL"
@@ -1987,7 +1987,7 @@ msgstr "组/标题\t"
 
 #. Resource IDs: (188)
 msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
-msgstr "组/标题\t用户名\t密码\t网址\t自动复制\t创建时间\t密码修改时间\t最后访问时间\t密码失效日期\t密码失效间隔\t记录修改时间\t密码策略\t历史密码\t备注"
+msgstr "组/标题\t用户名\t密码\t网址\t自动输入\t创建时间\t密码修改时间\t最后访问时间\t密码失效日期\t密码失效间隔\t记录修改时间\t密码策略\t历史密码\t备注"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -2242,7 +2242,7 @@ msgstr "初始系统托盘图标"
 
 #. Resource IDs: (65535)
 msgid "Initial tree view"
-msgstr "初始为树状目录查看"
+msgstr "初始树状目录视图为"
 
 #. Resource IDs: (3857)
 msgid "Insufficient memory to perform operation."
@@ -2332,7 +2332,7 @@ msgstr "最后保存时间:"
 #. Resource IDs: (342)
 #, c-format
 msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-msgstr "需要最新版本，单击 <a href=\"%s\">这里</a> 检查！"
+msgstr "获得最新版本，单击 <a href=\"%s\">这里</a> 检查！"
 
 #. Resource IDs: (331)
 msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
@@ -2471,7 +2471,7 @@ msgstr "合并数据库: %s"
 
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
-msgstr "自动复制后最小化"
+msgstr "自动输入后最小化"
 
 #. Resource IDs: (350)
 msgid "Minimum digit characters"
@@ -2573,7 +2573,7 @@ msgstr "没有打开密码保险箱！"
 
 #. Resource IDs: (1183)
 msgid "No change"
-msgstr "没有更改！"
+msgstr "不更改"
 
 #. Resource IDs: (351)
 msgid "No criteria defined"
@@ -2692,21 +2692,21 @@ msgstr "项目数量进程: %d\n\nUUID 固定数量: %d\n\n历史密码固定数
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
-msgstr "该项目的“最大保存密码数量”已经更改到新默认值:%d"
+msgstr "该项目的“最大保存密码数量”已经更改为新默认值:%d"
 
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their settings changed to not save password history was: %d"
-msgstr "该项目数量设置已经更改到不保存历史密码:%d"
+msgstr "该项目数量设置已经更改为不保存历史密码:%d"
 
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their settings changed to save password history was: %d"
-msgstr "该项目数量设置已经更改到保存历史密码:%d"
+msgstr "该项目数量设置已经更改为保存历史密码:%d"
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
-msgstr "未知数字字段:"
+msgstr "未知字段数量:"
 
 #. Resource IDs: (349)
 msgid "Number stored"
@@ -2767,7 +2767,7 @@ msgstr "原件"
 
 #. Resource IDs: (65535)
 msgid "Original Database:"
-msgstr "数据库原件:"
+msgstr "原始数据库:"
 
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
@@ -2933,15 +2933,15 @@ msgstr "密码\t"
 
 #. Resource IDs: (32063)
 msgid "Perform Auto &type\tCtrl+T"
-msgstr "执行自动复制(&T)\tCtrl+T"
+msgstr "执行自动输入(&T)\tCtrl+T"
 
 #. Resource IDs: (32063)
 msgid "Perform Auto type"
-msgstr "执行自动复制"
+msgstr "执行自动输入"
 
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
-msgstr "执行自动复制(&T)"
+msgstr "执行自动输入(&T)"
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -2989,7 +2989,7 @@ msgstr "请为当前数据库选定一个新名称"
 
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete ALL PasswordSafe related information for the current user from the Windows registry\n\n"
-msgstr "请确认你需要从当前用户 Windows 注册表删除的所有与本应用程序相关的信息！\n\n"
+msgstr "请确认你需要从当前用户 Windows 注册表删除所有与本应用程序相关的信息！\n\n"
 
 #. Resource IDs: (353)
 #, c-format
@@ -3085,11 +3085,11 @@ msgstr "请命名 XML 文件！"
 
 #. Resource IDs: (334)
 msgid "Please name the exported database"
-msgstr "请命名输出数据库！"
+msgstr "请命名输出数据库"
 
 #. Resource IDs: (334)
 msgid "Please name the plaintext file"
-msgstr "请命名明码文本文件！"
+msgstr "请命名无格式文本文件"
 
 #. Resource IDs: (352)
 msgid "Please name this filter"
@@ -3372,7 +3372,7 @@ msgstr "安全"
 
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
-msgstr "       简体中文: 小镇医生"
+msgstr "       简体中文: [email=Freedoctor@qq.com]小镇医生[/email]"
 
 #. Resource IDs: (208)
 msgid "See Password History filters"
@@ -3512,7 +3512,7 @@ msgstr "在列表显示行列栅格线"
 
 #. Resource IDs: (1296)
 msgid "Show notes as ToolTips in display tree && list views"
-msgstr "在树状目录与列表查看显示工具提示备注内容"
+msgstr "在树状目录与列表视图显示工具提示备注内容"
 
 #. Resource IDs: (1190)
 msgid "Show notes in edit"
@@ -3541,11 +3541,11 @@ msgstr "抱歉，你所请求的热键已使用在其它地方！\n该功能已�
 
 #. Resource IDs: (345)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
-msgstr "抱歉，“可发音密码”和“易读字符”选项不被同时支持！"
+msgstr "抱歉，“可发音密码”和“易解读字符”选项不被同时支持！"
 
 #. Resource IDs: (345)
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options"
-msgstr "抱歉，不能指定一个最少数量的字符用于“可发音”或“易读”选项！"
+msgstr "抱歉，不能指定一个最少数量的字符用于“可发音密码”或“易解读字符”选项！"
 
 #. Resource IDs: (353)
 msgid "Source"
@@ -3561,7 +3561,7 @@ msgstr "开始报告"
 
 #. Resource IDs: (319)
 msgid "Start saving password history for all entries, to the above number of entries."
-msgstr "为所有项目启动保存历史密码到上面的项目数量。"
+msgstr "为所有项目启动保存历史密码到上面的项目数量！"
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
@@ -3585,7 +3585,7 @@ msgstr "状态:"
 
 #. Resource IDs: (319)
 msgid "Stop saving password history for all entries.\n\nSaved histories will not be touched, but password changes will no longer be stored by default."
-msgstr "为所有项目停止保存历史密码，保存的历史密码将不被触犯，但更改密码将不再默认存储。"
+msgstr "为所有项目停止保存历史密码，保存的历史密码将不被触犯，但更改密码将不再默认存储！"
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
@@ -4040,7 +4040,7 @@ msgstr "使用小写字母"
 
 #. Resource IDs: (1051)
 msgid "Use only easy-to-read characters (i.e., no  'l', '1', etc.)"
-msgstr "仅使用易读字符 (如: no  'l', '1', 等)"
+msgstr "仅使用易解读字符 (如: no  'l', '1', 等)"
 
 #. Resource IDs: (1050)
 msgid "Use symbols (i.e., &, %, $, etc.)"
@@ -4048,7 +4048,7 @@ msgstr "使用符号 (如: &, %, $, 等)"
 
 #. Resource IDs: (320)
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
-msgstr "使用该应用程序指定这里浏览你的项目网址时，开始前缀: [alt]，例如: “[alt]http://foo.com”"
+msgstr "使用应用程序在这里浏览一个项目网址字段以 [alt] 开始时，例如: “[alt]http://foo.com”"
 
 #. Resource IDs: (346)
 msgid "User"
@@ -4345,7 +4345,7 @@ msgstr "\n选项"
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"
-msgstr "\n执行自动复制"
+msgstr "\n执行自动输入"
 
 #. Resource IDs: (331)
 msgid "\nPlease try another"
@@ -4369,7 +4369,7 @@ msgstr "\n设定/清除筛选"
 
 #. Resource IDs: (192)
 msgid "\nUnexpected exception during parsing."
-msgstr "\n分析期间意外事故"
+msgstr "\n分析期间意外事故！"
 
 #. Resource IDs: (331)
 msgid "\nUse it anyway?"
@@ -4393,7 +4393,7 @@ msgstr "\n\n未知字段将同样被复制在项目中！"
 
 #. Resource IDs: (329)
 msgid "\r\nAutotype: "
-msgstr "\r\n自动复制:"
+msgstr "\r\n自动输入:"
 
 #. Resource IDs: (345)
 msgid "\r\nEmail: "
@@ -4451,11 +4451,11 @@ msgstr "\t该项残余一个正常项目和密码未被更改！"
 
 #. Resource IDs: (206)
 msgid "a base entry of a shortcut"
-msgstr "一个基本项目的快捷方式"
+msgstr "一个基于项目的快捷方式"
 
 #. Resource IDs: (206)
 msgid "a base entry of an alias"
-msgstr "一个脚本项目的别名"
+msgstr "一个基于脚本项目的别名"
 
 #. Resource IDs: (206)
 msgid "a normal entry"
@@ -4475,7 +4475,7 @@ msgstr "别名"
 
 #. Resource IDs: (344)
 msgid "aliases"
-msgstr "别名"
+msgstr "个别名"
 
 #. Resource IDs: (206)
 msgid "an alias entry"
@@ -4495,7 +4495,7 @@ msgstr "作为默认用户名"
 
 #. Resource IDs: (190)
 msgid "autotype:"
-msgstr "自动复制:"
+msgstr "自动输入:"
 
 #. Resource IDs: (207)
 msgid "before"
@@ -4503,7 +4503,7 @@ msgstr "之前"
 
 #. Resource IDs: (206)
 msgid "begins with"
-msgstr "开始在"
+msgstr "开始"
 
 #. Resource IDs: (207)
 msgid "between"
@@ -4519,7 +4519,7 @@ msgstr "冲突"
 
 #. Resource IDs: (344)
 msgid "conflicts"
-msgstr "冲突"
+msgstr "个冲突"
 
 #. Resource IDs: (206)
 msgid "contains"
@@ -4535,7 +4535,7 @@ msgstr "天"
 
 #. Resource IDs: (1298)
 msgid "days"
-msgstr "天"
+msgstr "天后"
 
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
@@ -4543,7 +4543,7 @@ msgstr "天前提醒密码失效"
 
 #. Resource IDs: (206)
 msgid "does not begin with"
-msgstr "不开始在"
+msgstr "不开始"
 
 #. Resource IDs: (206)
 msgid "does not contain"
@@ -4551,7 +4551,7 @@ msgstr "不包含"
 
 #. Resource IDs: (206)
 msgid "does not end with"
-msgstr "不结束在"
+msgstr "不结束"
 
 #. Resource IDs: (206)
 msgid "does not equal"
@@ -4559,11 +4559,11 @@ msgstr "不等于"
 
 #. Resource IDs: (206)
 msgid "ends with"
-msgstr "结束在"
+msgstr "结束"
 
 #. Resource IDs: (344)
 msgid "entries"
-msgstr "项目"
+msgstr "个项目"
 
 #. Resource IDs: (344)
 msgid "entry"
@@ -4615,11 +4615,11 @@ msgstr "是"
 
 #. Resource IDs: (207)
 msgid "is active"
-msgstr "已运行"
+msgstr "活动"
 
 #. Resource IDs: (207)
 msgid "is inactive"
-msgstr "未运行"
+msgstr "非活动"
 
 #. Resource IDs: (206)
 msgid "is not"
@@ -4627,7 +4627,7 @@ msgstr "不是"
 
 #. Resource IDs: (207)
 msgid "is not present"
-msgstr "未呈现"
+msgstr "不显示"
 
 #. Resource IDs: (207)
 msgid "is not set"
@@ -4635,7 +4635,7 @@ msgstr "未设定"
 
 #. Resource IDs: (207)
 msgid "is present"
-msgstr "已呈现"
+msgstr "显示"
 
 #. Resource IDs: (207)
 msgid "is set"
@@ -4643,7 +4643,7 @@ msgstr "已设定"
 
 #. Resource IDs: (1144)
 msgid "last passwords"
-msgstr "个最后密码(&K)"
+msgstr "个最后密码"
 
 #. Resource IDs: (207)
 msgid "less than"
@@ -4749,7 +4749,7 @@ msgstr "v1.x 旧版格式(&1)..."
 
 #. Resource IDs: (32012)
 msgid "v&2 format..."
-msgstr "v2 旧版格式(&2)..."
+msgstr "v2   旧版格式(&2)..."
 
 #. Resource IDs: (191)
 msgid "validation"
