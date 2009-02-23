@@ -39,7 +39,6 @@ public:
   void ShowNotes();
   void HideNotes();
 
-
 protected:
   BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnInitDialog();
@@ -65,6 +64,8 @@ protected:
   afx_msg void OnEnKillfocusNotes();
   afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
+  afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
+  afx_msg LRESULT OnShowNotes(WPARAM, LPARAM);
 
   DECLARE_MESSAGE_MAP()
 
@@ -76,7 +77,7 @@ private:
   CSecString m_group;
   CSecString m_realpassword, m_oldRealPassword;
   CSecString m_password, m_password2;
-  CSecString m_notes, m_realnotes;
+  CSecString m_notes, m_notesww, m_realnotes;
   CSecString m_URL;
   CSecString m_autotype;
   CSecString m_locCTime;
@@ -84,6 +85,7 @@ private:
   time_t m_tttXTime;
   time_t m_tttCPMTime;  // Password creation or last changed datetime
   int m_XTimeInt, m_oldXTimeInt;
+
   // Password History related stuff
   size_t m_NumPWHistory;
   size_t m_MaxPWHistory;
@@ -109,6 +111,7 @@ private:
   CEditExtn m_ex_URL;
   CEditExtn m_ex_autotype;
   CEditExtn *m_pex_notes;
+  CEditExtn *m_pex_notesww;
 
   CStaticExtn m_stc_group;
   CStaticExtn m_stc_title;
@@ -130,6 +133,8 @@ private:
   CToolTipCtrl* m_ToolTipCtrl;
 
   BOOL m_OverridePolicy;
+  BOOL m_bWordWrap;
+  BOOL m_bShowNotes;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -61,9 +61,11 @@ DECLARE_HANDLE(HDROP);
 // Process Compare Result Dialog click/menu functions
 #define WM_COMPARE_RESULT_FUNCTION (WM_APP + 30)
 
-// External Editor
+// Edit/Add extra context menu messages
 #define WM_CALL_EXTERNAL_EDITOR  (WM_APP + 40)
 #define WM_EXTERNAL_EDITOR_ENDED (WM_APP + 41)
+#define WM_EDIT_WORDWRAP         (WM_APP + 42)
+#define WM_EDIT_SHOWNOTES        (WM_APP + 43)
 
 // Simulate Ctrl+F from Find Toolbar "enter"
 #define WM_TOOLBAR_FIND (WM_APP + 50)
@@ -275,6 +277,7 @@ public:
                             const StringX group, const StringX title, const StringX user, 
                             const StringX pwd, const StringX notes);
   void UpdateLastClipboardAction(const int iaction);
+  void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -437,7 +440,6 @@ protected:
   void SetFindToolBar(bool bShow);
   void ApplyFilters();
 
-  void PlaceWindow(CRect *prect, UINT showCmd);
   HRGN GetWorkAreaRegion();
   void GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork);
   void ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork);

@@ -35,7 +35,7 @@ LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
-LIBPATH=-L../../../lib/debug
+LIBPATH=../../../lib/debug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=no --inplace --cxxflags`
 GCCFLAGS=
 LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2/lib
@@ -63,7 +63,7 @@ LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
-LIBPATH=-L../../../lib/release
+LIBPATH=../../../lib/release
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=no --inplace --cxxflags`
 GCCFLAGS=
 LIBDIRNAME=$(WXWIN)/GCCBuildReleaseGTK2/lib
@@ -91,7 +91,7 @@ LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
-LIBPATH=-L../../../lib/unicodedebug
+LIBPATH=../../../lib/unicodedebug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags` -DUNICODE
 GCCFLAGS=
 LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2Unicode/lib
@@ -118,10 +118,10 @@ LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
-LIBPATH=-L../../../lib/unicoderelease
+LIBPATH=../../../lib/unicoderelease
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE
 GCCFLAGS=
-LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
+LDFLAGS=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS)
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib/wx/include/gtk2-unicode-release-static-2.6"
 MACPACKAGEINFO=
 endif
@@ -134,7 +134,7 @@ DEPDIR= ./deps
 
 CPPINC += -I../..
 
-LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
+LDFLAGS=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS)
 CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
 CPPFLAGS += -DSVN_VERSION=\"$(SVN_VERSION)\"
 
@@ -168,7 +168,9 @@ clean:
 help:
 	@echo "Usage: make -f Makefile CONFIG=[debug|release|unicodedebug|unicoderelease] [all|clean|help]"
 
-$(OUTPUTPATH)/$(PROGRAM):	$(OBJECTS)
+LIBRARIES=$(LIBPATH)/libcore.a $(LIBPATH)/libos.a
+
+$(OUTPUTPATH)/$(PROGRAM):	$(OBJECTS) $(LIBRARIES)
 	$(CXX) -o $@ $(OBJECTS) $(LDFLAGS)
 
 

@@ -72,7 +72,7 @@ int DboxMain::BackupSafe()
                    currbackup.c_str(),
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   _T("Password Safe Backups (*.bak)|*.bak||"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_BU)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
@@ -131,9 +131,7 @@ int DboxMain::Restore()
                    _T("bak"),
                    currbackup.c_str(),
                    OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                   _T("Password Safe Backups (*.bak)|*.bak|")
-                   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-                   _T("|"),
+                   CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
@@ -280,7 +278,9 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::ListViewGridLines) ? TRUE : FALSE;
   display.m_notesshowinedit = prefs->
     GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
-  display.m_preexpirywarn = prefs->
+  display.m_wordwrapnotes = prefs->
+    GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
+    display.m_preexpirywarn = prefs->
     GetPref(PWSprefs::PreExpiryWarn) ? TRUE : FALSE;
   display.m_preexpirywarndays = prefs->
     GetPref(PWSprefs::PreExpiryWarnDays);
@@ -450,6 +450,8 @@ void DboxMain::OnOptions()
       display.m_enablegrid == TRUE);
     prefs->SetPref(PWSprefs::ShowNotesDefault,
       display.m_notesshowinedit == TRUE);
+    prefs->SetPref(PWSprefs::NotesWordWrap,
+      display.m_wordwrapnotes == TRUE);
     prefs->SetPref(PWSprefs::PreExpiryWarn,
       display.m_preexpirywarn == TRUE);
     prefs->SetPref(PWSprefs::PreExpiryWarnDays,

@@ -240,7 +240,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 #else
   size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
   char *lfn = new char[lfs];
-  wcstombs(lfn, lock_filename.c_str(), lock_filename.length());
+  wcstombs(lfn, lock_filename.c_str(), lfs);
 #endif
   int fh = open(lfn, (O_CREAT | O_EXCL | O_WRONLY),
                  (S_IREAD | S_IWRITE));
@@ -305,7 +305,7 @@ void pws_os::UnlockFile(const stringT &filename,
 #else
   size_t lfs = wcstombs(NULL, lock_filename.c_str(), lock_filename.length()) + 1;
   char *lfn = new char[lfs];
-  wcstombs(lfn, lock_filename.c_str(), lock_filename.length());
+  wcstombs(lfn, lock_filename.c_str(), lfs);
 #endif
   unlink(lfn);
 #ifdef UNICODE

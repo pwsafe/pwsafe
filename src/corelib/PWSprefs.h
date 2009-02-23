@@ -75,7 +75,7 @@ public:
     ShowToolbar, ShowNotesAsTooltipsInViews, DefaultOpenRO,
     MultipleInstances, ShowDragbar,
     ClearClipboardOnMinimize, ClearClipboardOnExit,
-    ShowFindToolBarOnOpen,
+    ShowFindToolBarOnOpen, NotesWordWrap,
     NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
@@ -134,6 +134,8 @@ public:
   // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefRect(long top, long bottom, long left, long right);
+  void GetPrefPSSRect(long &top, long &bottom, long &left, long &right) const;
+  void SetPrefPSSRect(long top, long bottom, long left, long right);
   int GetMRUList(stringT *MRUFiles);
   int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
 
@@ -205,7 +207,7 @@ private:
   bool m_boolValues[NumBoolPrefs];
   unsigned int m_intValues[NumIntPrefs];
   StringX m_stringValues[NumStringPrefs];
-  struct {long top, bottom, left, right; bool changed;} m_rect;
+  struct {long top, bottom, left, right; bool changed;} m_rect, m_PSSrect;
   bool m_boolChanged[NumBoolPrefs];
   bool m_intChanged[NumIntPrefs];
   bool m_stringChanged[NumStringPrefs];

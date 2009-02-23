@@ -14,6 +14,8 @@
 #include "corelib/BlowFish.h"  // ditto
 #include "corelib/PWSrand.h"   // ditto
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -143,23 +145,27 @@ LRESULT CStaticExtn::OnMouseLeave(WPARAM, LPARAM)
 
 CEditExtn::CEditExtn(COLORREF focusColor)
   : m_bIsFocused(FALSE), m_lastposition(-1),
-    m_message_number(-1), m_menustring(""), m_crefInFocus(focusColor)
+    m_crefInFocus(focusColor)
 {
   m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
+
+  m_vmenu_items.empty();
 }
 
-CEditExtn::CEditExtn(int message_number, LPCTSTR menustring,
+CEditExtn::CEditExtn(std::vector<st_context_menu> vmenu_items,
                      COLORREF focusColor)
   : m_bIsFocused(FALSE), m_lastposition(-1),
-    m_message_number(message_number), m_menustring(menustring),
     m_crefInFocus(focusColor)
 {
   m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
   // Don't allow if menu string is empty.
-  if (m_menustring.IsEmpty())
-    m_message_number = -1;
+  if (vmenu_items.size()  == 0) {
+    m_vmenu_items.clear();
+  } else {
+    m_vmenu_items = vmenu_items;
+  }
 }
 
 CEditExtn::~CEditExtn()
@@ -238,9 +244,20 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
   }
 }
 
+struct equal_cmd
+{
+  equal_cmd(int const& nCmd) : m_nCmd(nCmd) {}
+  bool operator()(st_context_menu const& context_menu) const
+  {
+    return (context_menu.message_number == m_nCmd);
+  }
+private:
+  int m_nCmd;
+};
+
 void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-  if (m_message_number < 0) {
+  if (m_vmenu_items.size() == 0) {
     CEdit::OnContextMenu(pWnd, point);
     return;
   }
@@ -281,7 +298,11 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
 
   menu.InsertMenu(8, MF_BYPOSITION | MF_SEPARATOR);
 
-  menu.InsertMenu(9, MF_BYPOSITION , m_message_number, m_menustring);
+  for (size_t i = 0; i < m_vmenu_items.size(); i++) {
+      menu.InsertMenu(i + 9, MF_BYPOSITION | m_vmenu_items[i].flags,
+                      m_vmenu_items[i].message_number,
+                      m_vmenu_items[i].menu_string.c_str());
+  }
 
   if (point.x == -1 || point.y == -1) {
     CRect rc;
@@ -297,7 +318,10 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   if (nCmd < 0)
     return;
 
-  if (nCmd == m_message_number) {
+  std::vector<st_context_menu>::iterator iter;
+  iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
+                      equal_cmd(nCmd));
+  if (iter != m_vmenu_items.end()) {
     this->GetParent()->SendMessage(nCmd);
     return;
   }
@@ -315,6 +339,18 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
       break;
     default:
       break;
+  }
+}
+
+void CEditExtn::UpdateState(const int message_number, const BOOL new_state)
+{
+  std::vector<st_context_menu>::iterator iter;
+  iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
+                      equal_cmd(message_number));
+  if (iter != m_vmenu_items.end()) {
+    int flags = new_state == TRUE ? MF_CHECKED : MF_UNCHECKED;
+    iter->flags = flags;
+    return;
   }
 }
 
@@ -600,8 +636,8 @@ CSecEditExtn::CSecEditExtn()
 {
 }
 
-CSecEditExtn::CSecEditExtn(int message_number, LPCTSTR szmenustring)
-  : CEditExtn(message_number, szmenustring, (RGB(255, 222, 222))),
+CSecEditExtn::CSecEditExtn(std::vector<st_context_menu> vmenu_items)
+  : CEditExtn(vmenu_items, (RGB(255, 222, 222))),
     m_impl(new Impl), m_secure(true), m_in_recursion(false)
 {
 }

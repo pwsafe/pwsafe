@@ -7,9 +7,9 @@
 */
 
 #pragma once
-#include "SecString.h" // for CSecEditExtn
+#include "SecString.h"        // for CSecEditExtn
 #include "InfoDisplay.h"      // for Listbox Tooltips
-#include <vector>             // for Listbox Tooltips
+#include <vector>             // for Listbox Tooltips & EditExtn menus
 
 // ControlExtns.h : header file
 // Extensions to standard Static, Edit, ListBox and Combobox Controls
@@ -75,14 +75,21 @@ protected:
   DECLARE_MESSAGE_MAP()
 };
 
+struct st_context_menu {
+  int message_number;
+  stringT menu_string;
+  int flags;
+};
+
 class CEditExtn : public CEdit
 {
   // Construction
 public:
   CEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
-  CEditExtn(int message_number, LPCTSTR szmenustring,
+  CEditExtn(std::vector<st_context_menu> vmenu_items, 
             COLORREF focusColor = (RGB(222, 255, 222))); //light green
   void ChangeColour() {m_bIsFocused = TRUE;}
+  void UpdateState(const int message_number, const BOOL new_state);
 
   // Attributes
 private:
@@ -93,8 +100,7 @@ private:
   const COLORREF m_crefInFocus;
 
   int m_lastposition, m_nStartChar, m_nEndChar;
-  int m_message_number;
-  CString m_menustring;
+  std::vector<st_context_menu> m_vmenu_items;
 
   // Operations
 public:
@@ -130,7 +136,7 @@ class CSecEditExtn : public CEditExtn
 {
  public:
   CSecEditExtn();
-  CSecEditExtn(int message_number, LPCTSTR szmenustring);
+  CSecEditExtn(std::vector<st_context_menu> vmenu_items);
   virtual ~CSecEditExtn();
 
   // Overriding virtuals doesn't work, due to defective

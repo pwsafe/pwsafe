@@ -92,6 +92,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ClearClipboardOnMinimize"), true, ptApplication},    // application
   {_T("ClearClipboardOnExit"), true, ptApplication},        // application
   {_T("ShowFindToolBarOnOpen"), false, ptApplication},      // application
+  {_T("NotesWordWrap"), false, ptApplication},              // application
 };
 
 // Default value = -1 means set at runtime
@@ -178,6 +179,8 @@ PWSprefs::PWSprefs() : m_XML_Config(NULL)
 
   m_rect.top = m_rect.bottom = m_rect.left = m_rect.right = -1;
   m_rect.changed = false;
+  m_PSSrect.top = m_PSSrect.bottom = m_PSSrect.left = m_PSSrect.right = -1;
+  m_PSSrect.changed = false;
 
   m_MRUitems = new stringT[m_int_prefs[MaxMRUItems].maxVal];
   InitializePreferences();
@@ -234,6 +237,15 @@ void PWSprefs::GetPrefRect(long &top, long &bottom,
   bottom = m_rect.bottom;
   left = m_rect.left;
   right = m_rect.right;
+}
+
+void PWSprefs::GetPrefPSSRect(long &top, long &bottom,
+                              long &left, long &right) const
+{
+  top = m_PSSrect.top;
+  bottom = m_PSSrect.bottom;
+  left = m_PSSrect.left;
+  right = m_PSSrect.right;
 }
 
 int PWSprefs::GetMRUList(stringT *MRUFiles)
@@ -436,6 +448,25 @@ void PWSprefs::SetPrefRect(long top, long bottom,
     m_prefs_changed[APP_PREF] = true;
 }
 
+void PWSprefs::SetPrefPSSRect(long top, long bottom,
+                              long left, long right)
+{
+  if (m_PSSrect.top != top) {
+    m_PSSrect.top = top; m_PSSrect.changed = true;
+  }
+  if (m_PSSrect.bottom != bottom) {
+    m_PSSrect.bottom = bottom; m_PSSrect.changed = true;
+  }
+  if (m_PSSrect.left != left) {
+    m_PSSrect.left = left; m_PSSrect.changed = true;
+  }
+  if (m_PSSrect.right != right) {
+    m_PSSrect.right = right; m_PSSrect.changed = true;
+  }
+  if (m_PSSrect.changed)
+    m_prefs_changed[APP_PREF] = true;
+}
+
 StringX PWSprefs::Store()
 {
   /*
@@ -485,7 +516,6 @@ StringX PWSprefs::Store()
     }
   }
 
-  os << ends;
   return os.str();
 }
 
@@ -838,11 +868,21 @@ void PWSprefs::LoadProfileFromRegistry()
   m_rect.top = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
                                     _T("top"), -1);
   m_rect.bottom = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
-                                       _T("bottom"), -1);
+                                    _T("bottom"), -1);
   m_rect.left = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
-                                     _T("left"), -1);
+                                    _T("left"), -1);
   m_rect.right = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
-                                      _T("right"), -1);
+                                    _T("right"), -1);
+
+  // Load last Password subset window size & pos:
+  m_PSSrect.top = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
+                                    _T("PSS_top"), -1);
+  m_PSSrect.bottom = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
+                                    _T("PSS_bottom"), -1);
+  m_PSSrect.left = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
+                                    _T("PSS_left"), -1);
+  m_PSSrect.right = ::AfxGetApp()->GetProfileInt(PWS_REG_POSITION,
+                                    _T("PSS_right"), -1);
 #endif /* _WIN32 */
 }
 
@@ -942,6 +982,11 @@ bool PWSprefs::LoadProfileFromFile()
   m_rect.bottom = m_XML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
   m_rect.left = m_XML_Config->Get(m_csHKCU_POS, _T("left"), -1);
   m_rect.right = m_XML_Config->Get(m_csHKCU_POS, _T("right"), -1);
+
+  m_PSSrect.top = m_XML_Config->Get(m_csHKCU_POS, _T("PSS_top"), -1);
+  m_PSSrect.bottom = m_XML_Config->Get(m_csHKCU_POS, _T("PSS_bottom"), -1);
+  m_PSSrect.left = m_XML_Config->Get(m_csHKCU_POS, _T("PSS_left"), -1);
+  m_PSSrect.right = m_XML_Config->Get(m_csHKCU_POS, _T("PSS_right"), -1);
 
   // Load most recently used file list
   for (i = m_intValues[MaxMRUItems]; i > 0; i--) {
@@ -1044,13 +1089,49 @@ void PWSprefs::SaveApplicationPreferences()
       {
         stringT obuff;
         Format(obuff, _T("%d"), m_rect.top);
-         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
         Format(obuff, _T("%d"), m_rect.bottom);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
         Format(obuff, _T("%d"), m_rect.left);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
         Format(obuff, _T("%d"), m_rect.right);
         VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
+        break;
+      }
+      case CF_FILE_RO:
+      case CF_NONE:
+      default:
+        break;
+    }
+    m_rect.changed = false;
+  } // m_rect.changed
+
+  if (m_PSSrect.changed) {
+    switch (m_ConfigOptions) {
+      case CF_REGISTRY:
+#ifdef _WIN32
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
+                               _T("PSS_top"), m_PSSrect.top);
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
+                               _T("PSS_bottom"), m_PSSrect.bottom);
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
+                               _T("PSS_left"), m_PSSrect.left);
+        ::AfxGetApp()->WriteProfileInt(PWS_REG_POSITION,
+                               _T("PSS_right"), m_PSSrect.right);
+#endif /* _WIN32 */
+        break;
+      case CF_FILE_RW:
+      case CF_FILE_RW_NEW:
+      {
+        stringT obuff;
+        Format(obuff, _T("%d"), m_PSSrect.top);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("PSS_top"), obuff) == 0);
+        Format(obuff, _T("%d"), m_PSSrect.bottom);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("PSS_bottom"), obuff) == 0);
+        Format(obuff, _T("%d"), m_PSSrect.left);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("PSS_left"), obuff) == 0);
+        Format(obuff, _T("%d"), m_PSSrect.right);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("PSS_right"), obuff) == 0);
         break;
       }
       case CF_FILE_RO:
@@ -1368,7 +1449,6 @@ stringT PWSprefs::GetXMLPreferences()
     }
   }
   os << "\t</Preferences>" << endl << endl;
-  os << ends;
   retval = os.str().c_str();
   return retval;
 }

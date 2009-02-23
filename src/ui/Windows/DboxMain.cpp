@@ -91,7 +91,7 @@ CString DboxMain::CS_COPYUSERNAME;
 CString DboxMain::CS_COPYNOTESFLD;
 CString DboxMain::CS_AUTOTYPE;
 
-void DboxMain::CS_local_strings ()
+void DboxMain::CS_local_strings()
 {
   // VdG the local strings are set
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
@@ -125,19 +125,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST)
 {
-  // Set up static versions of menu items.  Old method was to do a LoadString
-  // but then we needed 2 copies - one in StringTable and one in the Menu definitions
-  // Both would need to be maintained in step and during I18N.
-  // Now get it from the Menu directly
-
-  // Now for ones not in the main Menu at startup
-  // VdG set the local strings to the default values
-  CS_local_strings ();
-
-  //{{AFX_DATA_INIT(DboxMain)
-  // NOTE: the ClassWizard will add member initialization here
-  //}}AFX_DATA_INIT
-
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
@@ -674,15 +661,19 @@ void DboxMain::InitPasswordSafe()
     GetWindowRect(&rect);
     SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
   } else {
-    PlaceWindow(&rect, SW_HIDE);
+    PlaceWindow(this, &rect, SW_HIDE);
   }
 #endif
 
   m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefaultUser));
   m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername));
 
+  // Set up static versions of menu items.  Old method was to do a LoadString
+  // but then we needed 2 copies - one in StringTable and one in the Menu definitions
+  // Both would need to be maintained in step and during I18N.
+  // Now get it from the Menu directly
   // VdG set the local strings to the language dependant values
-  CS_local_strings ();
+  CS_local_strings();
 
   SetMenu(app.m_mainmenu);  // Now show menu...
 
@@ -2819,12 +2810,12 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   return iEnable;
 }
 
-void DboxMain::PlaceWindow(CRect *prect, UINT showCmd)
+void DboxMain::PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd)
 {
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
   HRGN hrgnWork = GetWorkAreaRegion();
 
-  GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
+  pwnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
   wp.flags = 0;
   wp.showCmd = showCmd;
   wp.rcNormalPosition = *prect;
@@ -2836,7 +2827,7 @@ void DboxMain::PlaceWindow(CRect *prect, UINT showCmd)
       ClipRectToMonitor(NULL, &wp.rcNormalPosition, FALSE);
   }
 
-  SetWindowPlacement(&wp);
+  pwnd->SetWindowPlacement(&wp);
   ::DeleteObject(hrgnWork);
 }
 

@@ -18,7 +18,7 @@ CExtThread::CExtThread(AFX_THREADPROC proc, LPVOID p)
 CExtThread * CExtThread::BeginThread(AFX_THREADPROC proc, LPVOID p)
 {
   CExtThread *thread = new CExtThread(proc, p);
-  if(!thread->CreateThread( )) {
+  if(!thread->CreateThread()) {
     delete thread;
     return NULL;
   }

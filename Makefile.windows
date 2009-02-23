@@ -2,13 +2,13 @@
 # The RELEASENAME should be changed per release
 # The RELEASEDIR should be set to whatever works for you.
 #
-# 'make -f Makefile.release' or 'make -f Makefile.release release'
+# 'make' or 'make release'
 # will build both binary and source zipfiles.
 # bin-release or src-release will build only what their names imply.
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.16.1
+RELEASENAME = 3.16.2
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 

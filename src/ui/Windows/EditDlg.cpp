@@ -68,7 +68,8 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_ci(ci), m_Edit_IsReadOnly(false),
   m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
   m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
-  m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL)
+  m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL),
+  m_bWordWrap(FALSE), m_bShowNotes(FALSE)
 {
   ASSERT(ci != NULL);
   m_pDbx = static_cast<DboxMain *>(pParent);
@@ -103,6 +104,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_URL = m_ci->GetURL();
   m_autotype = m_ci->GetAutoType();
   m_notes = HIDDEN_NOTES;
+  m_notesww = HIDDEN_NOTES;
   m_realnotes = m_ci->GetNotes();
   m_PWHistory = m_ci->GetPWHistory();
   m_locCTime = m_ci->GetCTimeL();
@@ -126,8 +128,36 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_ci->GetXTimeInt(m_XTimeInt);
   m_oldXTimeInt = m_XTimeInt;
 
-  m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
-                              _T("! &Edit externally"));
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  m_bShowNotes = prefs->GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
+  m_bWordWrap = prefs->GetPref(PWSprefs::NotesWordWrap) ? TRUE : FALSE;
+
+  std::vector<st_context_menu> vmenu_items(3);
+
+  st_context_menu st_cm;
+  stringT cs_menu_string;
+
+  LoadAString(cs_menu_string, IDS_WORD_WRAP);
+  st_cm.menu_string = cs_menu_string;
+  st_cm.message_number = WM_EDIT_WORDWRAP;
+  st_cm.flags = m_bWordWrap == TRUE ? MF_CHECKED : MF_UNCHECKED;
+  vmenu_items[0] = st_cm;
+
+  LoadAString(cs_menu_string, IDS_SHOW_NOTES);
+  st_cm.menu_string = cs_menu_string;
+  st_cm.message_number = WM_EDIT_SHOWNOTES;
+  st_cm.flags = m_bShowNotes == TRUE ? MF_CHECKED : MF_UNCHECKED;
+  vmenu_items[1] = st_cm;
+
+  LoadAString(cs_menu_string, IDS_EDITEXTERNALLY);
+  st_cm.menu_string = cs_menu_string;
+  st_cm.message_number = WM_CALL_EXTERNAL_EDITOR;
+  st_cm.flags = 0;
+  vmenu_items[2] = st_cm;
+
+  m_pex_notes = new CEditExtn(vmenu_items);
+  m_pex_notesww = new CEditExtn(vmenu_items);
+
   m_num_dependents = 0;
   m_dependents = _T("");
   m_base = _T("");
@@ -136,6 +166,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 CEditDlg::~CEditDlg()
 {
   delete m_pex_notes;
+  delete m_pex_notesww;
   delete m_ToolTipCtrl;
 }
 
@@ -145,6 +176,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    m_ex_password.DoDDX(pDX, m_password);
    m_ex_password2.DoDDX(pDX, m_password2);
    DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
+   DDX_Text(pDX, IDC_NOTESWW, (CString&)m_notesww);
    DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
    DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
    DDX_Text(pDX, IDC_URL, (CString&)m_URL);
@@ -163,6 +195,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
    DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
    DDX_Control(pDX, IDC_NOTES, *m_pex_notes);
+   DDX_Control(pDX, IDC_NOTESWW, *m_pex_notesww);
    DDX_Control(pDX, IDC_USERNAME, m_ex_username);
    DDX_Control(pDX, IDC_TITLE, m_ex_title);
    DDX_Control(pDX, IDC_URL, m_ex_URL);
@@ -193,11 +226,15 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
   ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
   ON_EN_SETFOCUS(IDC_NOTES, OnEnSetfocusNotes)
+  ON_EN_SETFOCUS(IDC_NOTESWW, OnEnSetfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
+  ON_EN_KILLFOCUS(IDC_NOTESWW, OnEnKillfocusNotes)
   ON_EN_CHANGE(IDC_URL, OnEnChangeUrl)
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_AUTO, OnStcClicked)
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
+  ON_MESSAGE(WM_EDIT_WORDWRAP, OnWordWrap)
+  ON_MESSAGE(WM_EDIT_SHOWNOTES, OnShowNotes)
 #if defined(POCKET_PC)
   ON_WM_SHOWWINDOW()
 #endif
@@ -262,7 +299,7 @@ void CEditDlg::OnOK()
     m_realpassword = m_password;
 
   if (!m_isNotesHidden)
-    m_realnotes = m_notes;
+    m_realnotes = m_bWordWrap == TRUE ? m_notesww : m_notes;
 
   bool bIsModified, bIsPswdModified;
   bIsModified = (m_group != m_ci->GetGroup() ||
@@ -454,6 +491,7 @@ BOOL CEditDlg::OnInitDialog()
     GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, TRUE, 0);
 
@@ -508,11 +546,16 @@ BOOL CEditDlg::OnInitDialog()
     HidePassword();
   }
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
+  if (m_bShowNotes == TRUE) {
     ShowNotes();
   } else {
     HideNotes();
   }
+
+  GetDlgItem(IDC_NOTES)->EnableWindow(m_bWordWrap == TRUE ? FALSE : TRUE);
+  GetDlgItem(IDC_NOTESWW)->EnableWindow(m_bWordWrap == TRUE ? TRUE : FALSE);
+  GetDlgItem(IDC_NOTES)->ShowWindow(m_bWordWrap == TRUE ? SW_HIDE : SW_SHOW);
+  GetDlgItem(IDC_NOTESWW)->ShowWindow(m_bWordWrap == TRUE ? SW_SHOW : SW_HIDE);
 
   if (!m_Edit_IsReadOnly) {
     // Populate the groups combo box
@@ -540,7 +583,6 @@ BOOL CEditDlg::OnInitDialog()
   else
     cs_text = _T("");
   GetDlgItem(IDC_XTIME_RECUR2)->SetWindowText(cs_text);
-
 
   UpdateData(FALSE);
   // create tooltip unconditionally, JIC
@@ -631,19 +673,32 @@ void CEditDlg::ShowNotes()
 {
   m_isNotesHidden = false;
   m_notes = m_realnotes;
+  m_notesww = m_realnotes;
 
   ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
-  GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
-}
+  ((CEdit*)GetDlgItem(IDC_NOTESWW))->Invalidate();
+ }
 
 void CEditDlg::HideNotes()
 {
   m_isNotesHidden = true;
-  if (m_notes != HIDDEN_NOTES) {
-    m_realnotes = m_notes;
-    m_notes = HIDDEN_NOTES;
+  if (m_bWordWrap == TRUE) {
+    if (m_notesww != HIDDEN_NOTES) {
+      m_realnotes = m_notesww;
+      m_notes = HIDDEN_NOTES;
+      m_notesww = HIDDEN_NOTES;
+    }
+  } else {
+    if (m_notes != HIDDEN_NOTES) {
+      m_realnotes = m_notes;
+      m_notes = HIDDEN_NOTES;
+      m_notesww = HIDDEN_NOTES;
+    }
   }
+
+
   ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
+  ((CEdit*)GetDlgItem(IDC_NOTESWW))->Invalidate();
 }
 
 void CEditDlg::OnRandom() 
@@ -852,8 +907,7 @@ void CEditDlg::OnEnSetfocusNotes()
 void CEditDlg::OnEnKillfocusNotes()
 {
   UpdateData(TRUE);
-  if (!m_isNotesHidden &&
-      !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
+  if (!m_isNotesHidden && m_bShowNotes == FALSE) {
     HideNotes();
   }
   UpdateData(FALSE);
@@ -921,9 +975,9 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
   STARTUPINFO si;
   PROCESS_INFORMATION pi;
 
-  ZeroMemory( &si, sizeof(si) );
+  ZeroMemory(&si, sizeof(si));
   si.cb = sizeof(si);
-  ZeroMemory( &pi, sizeof(pi) );
+  ZeroMemory(&pi, sizeof(pi));
 
   DWORD dwCreationFlags(0);
 #ifdef _UNICODE
@@ -939,8 +993,15 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
                      NULL, lpPathBuffer, &si, &pi)) {
-    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+    TRACE("CreateProcess failed (%d).\n", GetLastError());
+    // Delete temporary file
+    _tremove(self->m_szTempName);
+    memset(self->m_szTempName, 0, sizeof(self->m_szTempName));
+    return 0;
   }
+
+  TRACE(_T("%d\n"), sizeof(self->m_szTempName));
+  WaitForInputIdle(pi.hProcess, INFINITE);
 
   // Wait until child process exits.
   WaitForSingleObject(pi.hProcess, INFINITE);
@@ -986,11 +1047,15 @@ LRESULT CEditDlg::OnExternalEditorEnded(WPARAM, LPARAM)
   m_realnotes = note.c_str();
   // We are still displaying the old text, so replace that too
   m_notes = m_realnotes;
+  m_notesww = m_realnotes;
+
   UpdateData(FALSE);
   ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
+  ((CEdit*)GetDlgItem(IDC_NOTESWW))->Invalidate();
 
   // Delete temporary file
   _tremove(m_szTempName);
+  memset(m_szTempName, 0, sizeof(m_szTempName));
   return 0;
 }
 
@@ -1059,7 +1124,7 @@ void CEditDlg::OnStcClicked(UINT nID)
       break;
     case IDC_STATIC_NOTES:
       m_stc_notes.FlashBkgnd(crefGreen);
-      cs_data = StringX(m_notes);
+      cs_data = StringX(m_bWordWrap == TRUE ? m_notesww : m_notes);
       iaction = CItemData::NOTES;
       break;
     case IDC_STATIC_URL:
@@ -1071,7 +1136,8 @@ void CEditDlg::OnStcClicked(UINT nID)
       m_stc_autotype.FlashBkgnd(crefGreen);
       cs_data = m_pDbx->GetAutoTypeString(StringX(m_autotype),
                                           StringX(m_group), StringX(m_title), StringX(m_username), 
-                                          StringX(m_realpassword), StringX(m_notes));
+                                          StringX(m_realpassword), 
+                                          StringX(m_bWordWrap == TRUE ? m_notesww : m_notes));
       iaction = CItemData::AUTOTYPE;
       break;
     default:
@@ -1085,7 +1151,8 @@ void CEditDlg::SelectAllNotes()
 {
   // User pressed Ctrl+A
   ShowNotes();
-  ((CEdit *)GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
+  ((CEdit *)GetDlgItem(m_bWordWrap == TRUE ? IDC_NOTESWW : IDC_NOTES))->
+            SetSel(0, -1, TRUE);
 }
 
 BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
@@ -1123,3 +1190,39 @@ void CEditDlg::OnEnChangeUrl()
   GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
 }
 
+LRESULT CEditDlg::OnWordWrap(WPARAM, LPARAM)
+{
+  m_bWordWrap = m_bWordWrap == TRUE ? FALSE : TRUE;
+  // Get value of notes from dialog.
+  UpdateData(TRUE);
+  if (m_bWordWrap == FALSE)
+    m_notes = m_notesww;
+  else
+    m_notesww = m_notes;
+  // Update dalog
+  UpdateData(FALSE);
+
+  GetDlgItem(IDC_NOTES)->EnableWindow(m_bWordWrap == TRUE ? FALSE : TRUE);
+  GetDlgItem(IDC_NOTESWW)->EnableWindow(m_bWordWrap == TRUE ? TRUE : FALSE);
+  GetDlgItem(IDC_NOTES)->ShowWindow(m_bWordWrap == TRUE ? SW_HIDE : SW_SHOW);
+  GetDlgItem(IDC_NOTESWW)->ShowWindow(m_bWordWrap == TRUE ? SW_SHOW : SW_HIDE);
+
+  m_pex_notes->UpdateState(WM_EDIT_WORDWRAP, m_bWordWrap);
+  m_pex_notesww->UpdateState(WM_EDIT_WORDWRAP, m_bWordWrap);
+  return 0L;
+}
+
+LRESULT CEditDlg::OnShowNotes(WPARAM, LPARAM)
+{
+  m_bShowNotes = m_bShowNotes == TRUE ? FALSE : TRUE;
+  if (m_bShowNotes == TRUE) {
+    ShowNotes();
+  } else {
+    HideNotes();
+  }
+  UpdateData(FALSE);
+
+  m_pex_notes->UpdateState(WM_EDIT_SHOWNOTES, m_bShowNotes);
+  m_pex_notesww->UpdateState(WM_EDIT_SHOWNOTES, m_bShowNotes);
+  return 0L;
+}

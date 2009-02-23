@@ -19,12 +19,14 @@ class CAddDlg : public CPWDialog
   // Construction
 public:
   CAddDlg(CWnd* pParent = NULL);   // standard constructor
+  virtual ~CAddDlg();
 
   // Dialog Data
   //{{AFX_DATA(CAddDlg)
   enum { IDD = IDD_ADD };
   CSecString m_password, m_password2;
   CSecString m_notes;
+  CSecString m_notesww;
   CSecString m_username;
   CSecString m_title;
   CSecString m_group;
@@ -45,13 +47,15 @@ public:
 
   CComboBoxExtn m_ex_group;
   CSecEditExtn m_ex_password, m_ex_password2;
-  CEditExtn m_ex_notes;
+  CEditExtn *m_pex_notes;
+  CEditExtn *m_pex_notesww;
   CEditExtn m_ex_username;
   CEditExtn m_ex_title;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_autotype;
   //}}AFX_DATA
   BOOL m_OverridePolicy;
+  BOOL m_bWordWrap;
 
   // Overrides
   // Implementation
@@ -72,6 +76,7 @@ protected:
   afx_msg void OnBnClickedSetXTime();
   afx_msg void OnCheckedSavePasswordHistory();
   afx_msg void OnBnClickedOverridePolicy();
+  afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

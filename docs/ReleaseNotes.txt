@@ -1,4 +1,4 @@
-Password Safe 3.16.1 Release Notes - February 2009
+Password Safe 3.16.2 Release Notes - February 2009
 ==================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -7,6 +7,20 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.16.2
+====================
+
+
+Changes to Existing Features in 3.16.2
+=======================================
+
+
+New Features for 3.16.2
+========================
+[] New preference to word wrap the Notes field in Add & Edit. Also,
+ability to override this and showing the notes by right-click context
+menu.
 
 Bugs fixed in 3.16.1
 ====================

@@ -45,19 +45,19 @@ size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
 
 wstring pws_os::towc(const char *val)
 {
-  wstring retval;
+  wstring retval(L"");
   assert(val != NULL);
   int len = strlen(val);
   int wsize;
   const char *p = val;
   wchar_t wvalue;
-  do {
+  while (len > 0) {
     wsize = mbtowc(&wvalue, p, MB_CUR_MAX);
     if (wsize <= 0)
       break;
     retval += wvalue;
     p += wsize;
     len -= wsize;
-  } while (len != 1);
+  };
   return retval;
 }
