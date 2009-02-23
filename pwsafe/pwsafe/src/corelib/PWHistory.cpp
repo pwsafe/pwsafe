@@ -100,6 +100,6 @@ StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)
   ostringstreamT os;
   os.fill(charT('0'));
   os << hex << setw(1) << status
-     << setw(2) << pwh_max << setw(2) << pwh_num << ends;
+     << setw(2) << pwh_max << setw(2) << pwh_num;
   return os.str().c_str();
 }

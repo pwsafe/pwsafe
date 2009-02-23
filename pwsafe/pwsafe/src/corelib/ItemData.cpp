@@ -273,7 +273,7 @@ StringX CItemData::GetXTimeInt() const
     return _T("");
 
   oStringXStream os;
-  os << xint << ends;
+  os << xint;
   return os.str();
 }
 
@@ -376,7 +376,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       history += pwshe.changedate;
       ostringstreamT os1;
       os1 << hex << charT(' ') << setfill(charT('0')) << setw(4)
-          << pwshe.password.length() << charT(' ') << ends;
+          << pwshe.password.length() << charT(' ');
       history += os1.str().c_str();
       history += pwshe.password;
     }
@@ -935,7 +935,7 @@ void CItemData::SetPWPolicy(const PWPolicy &pwp)
        << setw(3) << pwp.digitminlength
        << setw(3) << pwp.lowerminlength
        << setw(3) << pwp.symbolminlength
-       << setw(3) << pwp.upperminlength << ends;
+       << setw(3) << pwp.upperminlength;
     cs_pwp = os.str().c_str();
   }
   SetField(m_PWPolicy, cs_pwp);

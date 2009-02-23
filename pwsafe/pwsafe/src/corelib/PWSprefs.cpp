@@ -516,7 +516,6 @@ StringX PWSprefs::Store()
     }
   }
 
-  os << ends;
   return os.str();
 }
 
@@ -1450,7 +1449,6 @@ stringT PWSprefs::GetXMLPreferences()
     }
   }
   os << "\t</Preferences>" << endl << endl;
-  os << ends;
   retval = os.str().c_str();
   return retval;
 }
