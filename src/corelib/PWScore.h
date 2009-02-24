@@ -136,7 +136,7 @@ public:
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
                      const stringT &userBackupDir);
-  int CheckPassword(const StringX &filename, const StringX &passkey);
+  int CheckPassword(const StringX &filename, StringX &passkey);
   void ChangePassword(const StringX &newPassword);
   
   bool LockFile(const stringT &filename, stringT &locker);
@@ -253,6 +253,7 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
+  PWSfile::HeaderRecord &GetHeader() {return m_hdr;}
   
   // Filters
   PWSFilters m_MapFilters;

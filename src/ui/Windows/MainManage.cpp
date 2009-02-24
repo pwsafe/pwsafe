@@ -28,6 +28,7 @@
 #include "OptionsPasswordHistory.h"
 #include "OptionsMisc.h"
 #include "OptionsBackup.h"
+#include "YubiKeyDlg.h"
 
 using namespace std;
 
@@ -874,3 +875,27 @@ void DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
     AfxMessageBox(cs_Msg);
   }
 }
+
+void DboxMain::OnYubiKey()
+{
+  CYubiKeyDlg YKDlg(this,
+                    m_core.GetHeader().m_YubiKey.PubID,
+                    m_core.GetHeader().m_YubiKey.apiID,
+                    m_core.GetHeader().m_YubiKey.apiKey);
+  app.DisableAccelerator();
+  INT_PTR rc = YKDlg.DoModal();
+  app.EnableAccelerator();
+  if (rc == IDOK) {
+    m_core.SetChanged(YKDlg.GetYKpubID() != 
+                      m_core.GetHeader().m_YubiKey.PubID.c_str() ||
+                      YKDlg.GetApiID() != 
+                      m_core.GetHeader().m_YubiKey.apiID ||
+                      YKDlg.GetApiKey() != 
+                      m_core.GetHeader().m_YubiKey.apiKey);
+    m_core.GetHeader().m_YubiKey.PubID = LPCTSTR(YKDlg.GetYKpubID());
+    m_core.GetHeader().m_YubiKey.apiID = YKDlg.GetApiID();
+    memcpy(m_core.GetHeader().m_YubiKey.apiKey, YKDlg.GetApiKey(),
+           sizeof(YubiApiKey_t));
+  }
+}
+
