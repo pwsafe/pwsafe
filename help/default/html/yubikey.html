@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Using YubiKey Devices</title>
+
+
+<!-- pwsafe version: 3.14.02Y--><!-- Modified: 20/07/2006 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+
+<body>
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Using YubiKey Devices</h2>
+
+<span style="font-weight: bold;">Password Safe</span>
+supports authentication using Yubico's <a href="http://yubico.com/products/yubikey/">YubiKey</a>
+authentication token. This is a small device that plugs into your
+computer's USB port, and generates a cryptographic one time password
+(OTP) whenever the device's button is pressed.<br>
+
+Password Safe allows you to associate your password database with your
+YubiKey device. Once you've done this, you can use your YubiKey to
+unlock your database, instead of re-entering your master passphrase
+("combination").<br>
+
+Note that in order to open your database the first time, you still need
+to enter your master passphrase.<br>
+
+<br>
+
+<h3>Associating your Yubikey device to your database</h3>
+
+<ol>
+
+  <li>Choose "YubiKey..." from the <a href="manage_menu.html">Manage</a>
+menu. The following screen will be displayed:</li>
+
+</ol>
+
+<br>
+
+<img style="width: 402px; height: 260px;" alt="YubiKey configuration" src="images/yubikey1.jpg">
+<ol start="2">
+
+  <li>Insert your YubiKey device in a USB slot on your PC, and
+then touch the YubiKey's button. A string of characters will be typed
+by the device, and sent by <span style="font-weight: bold;">Password
+Safe</span> to Yubico's authentication server. If the
+authentication is successful, the dialog box will close. If not, an
+error message describing the error will be displayed.</li>
+
+  <li>That's it! From now on, you can use your YubiKey to unlock
+this database by pressing its button instead of typing the passphrase
+when promted for the safe combination.</li>
+
+</ol>
+
+<p><span style="font-weight: bold;"></span></p>
+
+<hr style="width: 100%; height: 2px;">
+<p><span style="font-weight: bold;">Note: </span>The
+first time you open the database, you still need to enter the safe
+combination. YubiKey cannot be used to open a database, only to unlock
+a previously opened one.</p>
+
+<hr style="width: 100%; height: 2px;">
+<h3>Changing your YubiKey or disabling YubiKey support</h3>
+
+<p>Once you've associated your database with a specific YubiKey
+device, the YubiKey screen can be used to change the device, or to
+disable YubiKey support (for example, if you've lost your YubiKey). The
+YubiKey screen will appear as follows:</p>
+
+<img style="width: 402px; height: 260px;" alt="YubiKey configuration" src="images/yubikey2.jpg">
+<ul>
+
+  <li>To disable YubiKey support, just click OK while leaving the
+YubiKey field empty.</li>
+
+  <li>To associate the database with a different YubiKey, just
+activate the YubiKey as you did the first time. After authentication,
+the new YubiKey will be associated with the database instead of the
+previous one, and the window will close.</li>
+
+  <li>To leave the current YubiKey associated with the database,
+just click on Cancel.</li>
+
+</ul>
+
+<br>
+
+<br>
+
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="YubiKey"> </object>
+</body>
+</html>
