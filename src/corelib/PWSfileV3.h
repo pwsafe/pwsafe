@@ -32,6 +32,7 @@ public:
     HDR_DBNAME = 0x09,                 // added in format 0x0302
     HDR_DBDESC = 0x0a,                 // added in format 0x0302
     HDR_FILTERS = 0x0b,                // added in format 0x0305
+    HDR_YUBIKEY = 0x0e,
     HDR_LAST,                          // Start of unknown fields!
     HDR_END = 0xff};                   // header field types, per formatV{2,3}.txt
 
@@ -55,7 +56,7 @@ public:
 private:
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
-  HMAC_SHA256 m_hmac;
+  HMAC<SHA256> m_hmac;
   CUTF8Conv m_utf8conv;
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,

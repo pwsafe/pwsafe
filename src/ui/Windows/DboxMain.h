@@ -188,7 +188,7 @@ public:
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
   void RefreshViews(const int iView = iBothViews);
 
-  int CheckPassword(const StringX &filename, const StringX &passkey)
+  int CheckPassword(const StringX &filename, StringX &passkey)
   {return m_core.CheckPassword(filename, passkey);}
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
   void SetChanged(ChangeType changed);

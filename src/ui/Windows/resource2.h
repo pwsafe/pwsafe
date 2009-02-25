@@ -83,6 +83,7 @@
 #define ID_MENUITEM_RESTORE             32153
 #define ID_MENUITEM_OPTIONS             32154
 #define ID_MENUITEM_VALIDATE            32155
+#define ID_MENUITEM_YUBIKEY             32156
 
 // Help menu
 #define ID_HELPMENU                     32200

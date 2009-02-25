@@ -718,6 +718,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\http.h"
+				>
+			</File>
+			<File
 				RelativePath="..\mem.h"
 				>
 			</File>
@@ -767,6 +771,10 @@
 			</File>
 			<File
 				RelativePath=".\file.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\http.cpp"
 				>
 			</File>
 			<File

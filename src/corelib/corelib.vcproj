@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\lib\$(ConfigurationName)"
- 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -93,10 +93,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
- 			OutputDirectory="..\lib\$(ConfigurationName)"
- 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\lib\$(ConfigurationName)"
+			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
- 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -196,7 +196,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
- 				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -272,7 +272,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
- 				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
+				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -348,7 +348,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
- 				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -424,7 +424,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
- 				AdditionalIncludeDirectories="..;$(XercesDir)\include"
+				AdditionalIncludeDirectories="..;$(XercesDir)\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -501,7 +501,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
- 				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
+				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -578,7 +578,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
- 				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -655,7 +655,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
- 				AdditionalIncludeDirectories="..;$(XercesDir)\include"
+				AdditionalIncludeDirectories="..;$(XercesDir)\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -745,10 +745,6 @@
 			</File>
 			<File
 				RelativePath=".\XML\EXPAT\ESecMemMgr.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hmac.cpp"
 				>
 			</File>
 			<File
@@ -917,6 +913,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\XERCES\XSecMemMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\YubiKey.cpp"
 				>
 			</File>
 		</Filter>
@@ -1154,6 +1154,10 @@
 			</File>
 			<File
 				RelativePath=".\XML\XERCES\XSecMemMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\YubiKey.h"
 				>
 			</File>
 		</Filter>

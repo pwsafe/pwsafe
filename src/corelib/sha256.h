@@ -17,7 +17,7 @@
 class SHA256
 {
 public:
-  enum {HASHLEN = 32};
+  enum {HASHLEN = 32, BLOCKSIZE = 64};
   SHA256();
   ~SHA256();
   void Update(const unsigned char *in, size_t inlen);
@@ -27,7 +27,7 @@ private:
   ulong64 length;
   size_t curlen;
   ulong32 state[8];
-  unsigned char buf[64];
+  unsigned char buf[BLOCKSIZE];
 };
 
 #endif /* _SHA256_H_ */

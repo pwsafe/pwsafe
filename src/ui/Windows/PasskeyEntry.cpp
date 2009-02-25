@@ -406,8 +406,8 @@ void CPasskeyEntry::OnOK()
 
   DboxMain* pDbx = (DboxMain*) GetParent();
   ASSERT(pDbx != NULL);
-
-  if (pDbx->CheckPassword(LPCTSTR(m_filespec), LPCTSTR(m_passkey)) != PWScore::SUCCESS) {
+  StringX pk = StringX(m_passkey);
+  if (pDbx->CheckPassword(LPCTSTR(m_filespec), pk) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
 
@@ -430,8 +430,9 @@ void CPasskeyEntry::OnOK()
       m_ctlPasskey.SetSel(MAKEWORD(-1, 0));
       m_ctlPasskey.SetFocus();
     }
-  } else {
+  } else { // password checks out OK
     CPWDialog::OnOK();
+    m_passkey = pk.c_str(); // for YubiKey case.
   }
 }
 

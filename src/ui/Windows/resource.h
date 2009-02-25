@@ -282,6 +282,7 @@
 #define IDB_PASSWORDCHARS_CLASSIC       443
 #define IDB_PASSWORDCHARS_NEW           444
 #define IDB_PASSWORDCHARS_NEW_D         445
+#define IDD_YUBIKEY                     446
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -601,14 +602,20 @@
 #define IDC_SUBSETRESULTS               1360
 #define IDC_STATICSUBSETWARNING         1361
 #define IDC_DEFNOTESWRAP                1362
+#define IDC_YK_OTP                      1363
+#define IDC_YK_STATUS                   1364
+#define IDC_YK_INFO                     1365
+#define IDC_YK_ID                       1366
+#define IDC_EDIT2                       1367
+#define IDC_YK_KEY                      1368
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        446
+#define _APS_NEXT_RESOURCE_VALUE        447
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1363
+#define _APS_NEXT_CONTROL_VALUE         1369
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

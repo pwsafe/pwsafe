@@ -86,7 +86,8 @@ void CPasskeyChangeDlg::OnOK()
   CString cs_msg, cs_text;
 
   UpdateData(TRUE);
-  int rc = app.m_core.CheckPassword(app.m_core.GetCurFile(), m_oldpasskey);
+  StringX pk = StringX(m_oldpasskey);
+  int rc = app.m_core.CheckPassword(app.m_core.GetCurFile(), pk);
   if (rc == PWScore::WRONG_PASSWORD)
     AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)

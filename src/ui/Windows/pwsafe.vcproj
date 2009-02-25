@@ -83,7 +83,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib Crypt32.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -186,7 +186,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib Crypt32.lib"
 				ShowProgress="0"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -292,7 +292,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib Crypt32.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -395,7 +395,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib libexpatwMT.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib libexpatwMT.lib Crypt32.lib"
 				ShowProgress="0"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -502,7 +502,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib msxml6.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib msxml6.lib Crypt32.lib"
 				ShowProgress="0"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -609,7 +609,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_static_3D.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_static_3D.lib Crypt32.lib"
 				ShowProgress="0"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -715,7 +715,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib libexpatwMT.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib libexpatwMT.lib Crypt32.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -817,7 +817,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib Crypt32.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -921,7 +921,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_static_3.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_static_3.lib Crypt32.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -1335,6 +1335,10 @@
 				RelativePath=".\winview.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\YubiKeyDlg.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1722,6 +1726,10 @@
 			</File>
 			<File
 				RelativePath=".\winview.h"
+				>
+			</File>
+			<File
+				RelativePath=".\YubiKeyDlg.h"
 				>
 			</File>
 		</Filter>

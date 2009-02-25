@@ -75,7 +75,7 @@ int PWSfileV3::Close()
   if (m_fd == NULL)
     return SUCCESS; // idempotent
 
-  unsigned char digest[HMAC_SHA256::HASHLEN];
+  unsigned char digest[HMAC<SHA256>::HASHLEN];
   m_hmac.Final(digest);
 
   // Write or verify HMAC, depending on RWmode.
@@ -86,9 +86,9 @@ int PWSfileV3::Close()
   } else { // Read
     // We're here *after* TERMINAL_BLOCK has been read
     // and detected (by _readcbc) - just read hmac & verify
-    unsigned char d[HMAC_SHA256::HASHLEN];
+    unsigned char d[HMAC<SHA256>::HASHLEN];
     fread(d, sizeof(d), 1, m_fd);
-    if (memcmp(d, digest, HMAC_SHA256::HASHLEN) == 0)
+    if (memcmp(d, digest, HMAC<SHA256>::HASHLEN) == 0)
       return PWSfile::Close();
     else {
       PWSfile::Close();
@@ -499,6 +499,27 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
+  if (!m_hdr.m_YubiKey.PubID.empty()) {
+    // collect and serialize YubiKey data
+    unsigned char yubibuf[12 + sizeof(int) //  |pubID| +
+                          + sizeof(m_hdr.m_YubiKey.apiKey)]; // |apiID| + |apiKey|
+    memset(yubibuf, '?', sizeof(yubibuf));
+
+    const unsigned char *utf8;
+    int utf8Len;
+    bool utf8status = m_utf8conv.ToUTF8(m_hdr.m_YubiKey.PubID,
+                                        utf8, utf8Len);
+    if (!utf8status) { status = FAILURE; goto end; }
+    if (utf8Len > 12) // we only care about first 12 = pubID
+      utf8Len = 12;
+    memcpy(yubibuf, utf8, utf8Len);
+    *((unsigned int *)(yubibuf + 12)) = m_hdr.m_YubiKey.apiID;
+    memcpy((yubibuf + 12 + sizeof(int)), m_hdr.m_YubiKey.apiKey,
+           sizeof(m_hdr.m_YubiKey.apiKey));
+
+    numWritten = WriteCBC(HDR_YUBIKEY, yubibuf, sizeof(yubibuf));
+    if (numWritten <= 0) { status = FAILURE; goto end; }
+  }
   if (!m_MapFilters.empty()) {
     ostringstream oss;
     m_MapFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
@@ -695,7 +716,29 @@ int PWSfileV3::ReadHeader()
         m_hdr.m_dbname = text;
         break;
 
-      case HDR_DBDESC:
+      case HDR_YUBIKEY:
+        {
+          //  deserialize YubiKey data
+          if (utf8Len == (12 + sizeof(int) + sizeof(m_hdr.m_YubiKey.apiKey))) {
+            utf8status = m_utf8conv.FromUTF8(utf8, 12, text);
+            text[12] = TCHAR(0);
+            m_hdr.m_YubiKey.PubID = text;
+            m_hdr.m_YubiKey.apiID = *((unsigned int *)(utf8 + 12));
+            memcpy(m_hdr.m_YubiKey.apiKey, (utf8 + 12 + sizeof(int)),
+                   sizeof(m_hdr.m_YubiKey.apiKey));
+          } else { // size wrong
+            TRACE(_T("Bad or old YubiKey record in header\n"));
+            // use what we can
+            if (utf8Len == 12) {
+              utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+              text[12] = TCHAR(0);
+              m_hdr.m_YubiKey.PubID = text;
+            }
+          }
+        }
+        break;
+
+    case HDR_DBDESC:
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         m_hdr.m_dbdesc = text;

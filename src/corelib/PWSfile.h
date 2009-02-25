@@ -19,6 +19,7 @@
 #include "UnknownField.h"
 #include "StringX.h"
 #include "Proxy.h"
+#include "YubiKey.h"
 
 #define MIN_HASH_ITERATIONS 2048
 
@@ -64,6 +65,11 @@ public:
     StringX m_lastsavedon; // and by which machine
     StringX m_whatlastsaved; // and by what application
     StringX m_dbname, m_dbdesc; // descriptive name, description
+    struct {
+      StringX PubID;  // public ID of YubiKey associated with this database
+      unsigned int apiID; // apiID used to authenticate against server
+      YubiApiKey_t apiKey; // apiKey used to authenticate against server
+    } m_YubiKey; // Info used for YubiKey authentication
   };
 
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,

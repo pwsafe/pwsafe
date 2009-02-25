@@ -8,6 +8,7 @@
 #define TEST_TWOFISH
 #define TEST_SHA256
 #define TEST_HMAC_SHA256
+#define TEST_HMAC_SHA1
 #define TEST_STRINGX
 
 #ifdef TEST_TWOFISH
@@ -18,6 +19,9 @@
 #endif
 #ifdef TEST_HMAC_SHA256
 #include "HMAC_SHA256Test.h"
+#endif
+#ifdef TEST_HMAC_SHA1
+#include "HMAC_SHA1Test.h"
 #endif
 #ifdef TEST_STRINGX
 #include "StringXTest.h"
@@ -51,11 +55,17 @@ int main()
   t4.run();
   t4.report();
 #endif
-#ifdef TEST_STRINGX
-  StringXTest t5;
+#ifdef TEST_HMAC_SHA1
+  CHMAC_SHA1Test t5;
   t5.setStream(&cout);
   t5.run();
   t5.report();
+#endif
+#ifdef TEST_STRINGX
+  StringXTest t6;
+  t6.setStream(&cout);
+  t6.run();
+  t6.report();
 #endif
   return 0;
 }

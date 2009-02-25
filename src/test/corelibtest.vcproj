@@ -251,6 +251,10 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\HMAC_SHA1Test.h"
+				>
+			</File>
+			<File
 				RelativePath=".\HMAC_SHA256Test.h"
 				>
 			</File>
