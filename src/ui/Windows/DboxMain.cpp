@@ -995,6 +995,7 @@ void DboxMain::OnBrowse()
 
     if (!ci->IsURLEmpty()) {
       LaunchBrowser(ci->GetURL().c_str());
+      SetClipboardData(ci->GetPassword());
       UpdateAccessTime(ci_original);
     }
   }
