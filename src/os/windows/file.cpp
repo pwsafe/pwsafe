@@ -14,9 +14,11 @@
 #include <LMCONS.H> // for UNLEN definition
 #include <shellapi.h>
 #include <shlwapi.h>
+
 #include <io.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
 #include "../typedefs.h"
 #include "../file.h"
 #include "../dir.h"
@@ -94,7 +96,6 @@ bool pws_os::DeleteAFile(const stringT &filename)
 {
   return DeleteFile(filename.c_str()) == TRUE;
 }
-
 
 void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
 {

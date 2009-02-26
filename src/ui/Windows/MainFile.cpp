@@ -1394,7 +1394,8 @@ void DboxMain::OnMerge()
 #define MRG_POLICY     0x0400
 #define MRG_XTIME      0x0200
 #define MRG_XTIME_INT  0x0100
-#define MRG_UNUSED     0x00ff
+#define MRG_EXECUTE    0x0080
+#define MRG_UNUSED     0x007f
 
 int DboxMain::Merge(const StringX &pszFilename) {
   /* open file they want to merge */
@@ -1563,6 +1564,11 @@ int DboxMain::Merge(const StringX &pszFilename) {
       if (oxtint != cxtint) {
         diff_flags |= MRG_XTIME_INT;
         cs_temp.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+        csDiffs += cs_temp + _T(", ");
+      }
+      if (otherItem.GetExecuteString() != curItem.GetExecuteString()) {
+        diff_flags |= MRG_EXECUTE;
+        cs_temp.LoadString(IDS_EXECUTESTRING);
         csDiffs += cs_temp + _T(", ");
       }
       if (diff_flags |= 0) {
@@ -1964,6 +1970,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
 
          Third byte
          1... ....  POLICY   [0x10]
+         .1.. ....  EXECUTE  [0x11]
         */
         bsConflicts.reset();
 
@@ -2004,6 +2011,9 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
         if (m_bsFields.test(CItemData::POLICY) &&
             currentItem.GetPWPolicy() != compItem.GetPWPolicy())
           bsConflicts.flip(CItemData::POLICY);
+        if (m_bsFields.test(CItemData::EXECUTE) &&
+            currentItem.GetExecuteString() != compItem.GetExecuteString())
+          bsConflicts.flip(CItemData::EXECUTE);
 
         currentPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
@@ -2182,6 +2192,8 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     if (m_bsFields.test(CItemData::POLICY))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
+    if (m_bsFields.test(CItemData::EXECUTE))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPEXECUTESTRING));
     rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   }

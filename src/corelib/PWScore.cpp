@@ -363,6 +363,8 @@ int PWScore::WritePlaintextFile(const StringX &filename,
     ofs << endl;
   } else {
     // user chose fields, build custom header
+    // Header fields MUST be in the same order as actual fields written
+    // See CItemData::GetPlaintext
     StringX cs_temp;
     if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE)) {
       LoadAString(cs_temp, IDSC_EXPHDRGROUPTITLE);
@@ -414,12 +416,16 @@ int PWScore::WritePlaintextFile(const StringX &filename,
       LoadAString(cs_temp, IDSC_EXPHDRRMTIME);
       hdr += cs_temp;
     }
+    if (bsFields.test(CItemData::POLICY)) {
+      LoadAString(cs_temp, IDSC_EXPHDRPWPOLICY);
+      hdr += cs_temp;
+    }
     if (bsFields.test(CItemData::PWHIST)) {
       LoadAString(cs_temp, IDSC_EXPHDRPWHISTORY);
       hdr += cs_temp;
     }
-    if (bsFields.test(CItemData::POLICY)) {
-      LoadAString(cs_temp, IDSC_EXPHDRPWPOLICY);
+    if (bsFields.test(CItemData::EXECUTE)) {
+      LoadAString(cs_temp, IDSC_EXPHDREXECUTESTRING);
       hdr += cs_temp;
     }
     if (bsFields.test(CItemData::NOTES)) {
@@ -781,7 +787,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
-               POLICY, HISTORY, NOTES, NUMFIELDS};
+               POLICY, HISTORY, EXECUTE, NOTES, NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
   for (int i = 0; i < NUMFIELDS; i++)
@@ -1101,6 +1107,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
           break;
       }
     }
+    if (i_Offset[EXECUTE] >= 0 && tokens.size() > (size_t)i_Offset[EXECUTE])
+      temp.SetExecuteString(tokens[i_Offset[EXECUTE]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.

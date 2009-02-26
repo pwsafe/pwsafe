@@ -7,8 +7,8 @@
 */
 #ifndef __PWS_STR_H
 #define __PWS_STR_H
-#include "../typedefs.h"
 
+#include "../typedefs.h"
 
 namespace pws_os {
   /**

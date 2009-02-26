@@ -132,7 +132,7 @@ private:
   static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
   static CString CS_SETFILTERS, CS_CLEARFILTERS, CS_CREATESHORTCUT, CS_GOTOBASEENTRY;
   static CString CS_DUPLICATEENTRY, CS_COPYPASSWORD, CS_COPYUSERNAME, CS_COPYNOTESFLD;
-  static CString CS_AUTOTYPE;
+  static CString CS_AUTOTYPE, CS_EXECUTE;
   static const CString DEFAULT_AUTOTYPE;
 
 public:
@@ -277,6 +277,8 @@ public:
                             const StringX group, const StringX title, const StringX user, 
                             const StringX pwd, const StringX notes);
   void UpdateLastClipboardAction(const int iaction);
+  StringX GetExpandedString(StringX cs_Execute_String, CItemData *ci,
+                            stringT &errmsg, StringX::size_type &st_column);
   void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
 
   //{{AFX_DATA(DboxMain)
@@ -466,6 +468,8 @@ protected:
   afx_msg void OnUpdateTrayAutoType(CCmdUI *pCmdUI);
   afx_msg void OnTrayCopyURL(UINT nID);
   afx_msg void OnUpdateTrayCopyURL(CCmdUI *pCmdUI);
+  afx_msg void OnTrayExecute(UINT nID);
+  afx_msg void OnUpdateTrayExecute(CCmdUI *pCmdUI);
 #endif
 
   // Generated message map functions
@@ -545,6 +549,7 @@ protected:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnAutoType();
   afx_msg void OnGotoBaseEntry();
+  afx_msg void OnExecuteString();
   afx_msg void OnColumnPicker();
   afx_msg void OnResetColumns();
 #if defined(POCKET_PC)
@@ -638,6 +643,19 @@ private:
   void RegistryAnonymity();
   void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID);
   void SetUpMenuStrings(CMenu *pPopupMenu);
+  
+  struct st_ExecuteStringTokens {
+    StringX name;
+    StringX sindex;
+    int index;
+    bool is_variable;
+    bool has_brackets;
+  };
+
+  int ParseExecuteString(const StringX sInputString, 
+                         std::vector<st_ExecuteStringTokens> &v_estokens, 
+                         stringT &errmsg, StringX::size_type &st_column);
+  int ProcessIndex(const StringX &sIndex, int &var_index, StringX::size_type &st_column);
 
   static const struct UICommandTableEntry {
     UINT ID;

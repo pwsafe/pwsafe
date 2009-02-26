@@ -93,7 +93,7 @@ public:
     NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
     PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, XTIME = 0x0a,
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
-    PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11,
+    PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, EXECUTE = 0x12,
     LAST,        // Start of unknown fields!
     END = 0xff}; // field types, per formatV{2,3}.txt
 
@@ -104,10 +104,10 @@ public:
 
     // entry type
     enum EntryType {ET_INVALID = -1,
-      ET_NORMAL = 0, 
-      ET_ALIASBASE = 1, ET_ALIAS = 2, 
-      ET_SHORTCUTBASE = 4, ET_SHORTCUT = 8,
-      ET_LAST};
+                    ET_NORMAL = 0, 
+                    ET_ALIASBASE = 1, ET_ALIAS = 2, 
+                    ET_SHORTCUTBASE = 4, ET_SHORTCUT = 8,
+                    ET_LAST};
 
     // a bitset for indicating a subset of an item's fields: 
     typedef std::bitset<LAST> FieldBits;
@@ -169,6 +169,8 @@ public:
     StringX GetPWHistory() const;  // V30
     void GetPWPolicy(PWPolicy &pwp) const;
     StringX GetPWPolicy() const;
+    StringX GetExecuteString() const;
+
     // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
     // it's used for multi-line notes and to replace '.' within the Title field.
     StringX GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
@@ -222,6 +224,8 @@ public:
     void SetPWHistory(const StringX &PWHistory);  // V30
     void SetPWPolicy(const PWPolicy &pwp);
     bool SetPWPolicy(const stringT &cs_pwp);
+    void SetExecuteString(const StringX &cs_ExecuteString);
+
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy
     void *GetDisplayInfo() const {return m_display_info;}
@@ -247,6 +251,7 @@ public:
     BOOL IsUserEmpty() const {return m_User.IsEmpty();}
     BOOL IsNotesEmpty() const {return m_Notes.IsEmpty();}
     BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
+    BOOL IsExecuteStringEmpty() const {return m_ExecuteString.IsEmpty();}
     void SerializePlainText(std::vector<char> &v, CItemData *cibase = NULL) const;
     bool DeserializePlainText(const std::vector<char> &v);
     bool SetField(int type, unsigned char *data, int len);
@@ -297,6 +302,7 @@ private:
   CItemField m_PWHistory;
   CItemField m_PWPolicy;
   CItemField m_XTimeInterval;
+  CItemField m_ExecuteString;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
@@ -345,4 +351,3 @@ inline bool CItemData::IsTextField(unsigned char t)
 // Local variables:
 // mode: c++
 // End:
-

@@ -56,7 +56,7 @@ CItemData::CItemData()
   m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
   m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
   m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT),
-  m_entrytype(ET_NORMAL), m_display_info(NULL)
+  m_entrytype(ET_NORMAL), m_display_info(NULL), m_ExecuteString(EXECUTE)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -69,7 +69,8 @@ CItemData::CItemData(const CItemData &that) :
   m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
-  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info)
+  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info),
+  m_ExecuteString(that.m_ExecuteString)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
@@ -277,6 +278,11 @@ StringX CItemData::GetXTimeInt() const
   return os.str();
 }
 
+StringX CItemData::GetExecuteString() const
+{
+  return GetField(m_ExecuteString);
+}
+
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
                                 unsigned char * &pdata,
                                 const CItemField &item) const
@@ -327,9 +333,9 @@ StringX CItemData::GetPWHistory() const
 }
 
 StringX CItemData::GetPlaintext(const TCHAR &separator,
-                                  const FieldBits &bsFields,
-                                  const TCHAR &delimiter,
-                                  const CItemData *cibase) const
+                                const FieldBits &bsFields,
+                                const TCHAR &delimiter,
+                                const CItemData *cibase) const
 {
   StringX ret(_T(""));
 
@@ -401,6 +407,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   // Notes field must be last, for ease of parsing import
   if (bsFields.count() == bsFields.size()) {
     // Everything - note can't actually set all bits via dialog!
+    // Must be in same order as full header
     ret = grouptitle + separator + 
           user + separator +
           csPassword + separator + 
@@ -414,9 +421,11 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
           GetRMTimeExp() + separator +
           GetPWPolicy() + separator +
           history + separator +
+          GetExecuteString() + separator +
           _T("\"") + notes + _T("\"");
   } else {
     // Not everything
+    // Must be in same order as custom header
     if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE))
       ret += grouptitle + separator;
     else if (bsFields.test(CItemData::GROUP))
@@ -447,6 +456,8 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       ret += GetPWPolicy() + separator;
     if (bsFields.test(CItemData::PWHIST))
       ret += history + separator;
+    if (bsFields.test(CItemData::EXECUTE))
+      ret += GetExecuteString() + separator;
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
     // remove trailing separator
@@ -629,6 +640,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     }
   }
 
+  tmp = GetExecuteString();
+  if (bsExport.test(CItemData::EXECUTE) && !tmp.empty())
+    PWSUtil::WriteXMLField(oss, "execute_string", tmp, utf8conv);
+
   if (NumberUnknownFields() > 0) {
     oss << "\t\t<unknownrecordfields>" << endl;
     for (unsigned int i = 0; i != NumberUnknownFields(); i++) {
@@ -808,9 +823,9 @@ void CItemData::SetNotes(const StringX &notes, TCHAR delimiter)
   }
 }
 
-void CItemData::SetGroup(const StringX &title)
+void CItemData::SetGroup(const StringX &group)
 {
-  SetField(m_Group, title);
+  SetField(m_Group, group);
 }
 
 void CItemData::SetUUID(const uuid_array_t &UUID)
@@ -974,6 +989,11 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
   return true;
 }
 
+void CItemData::SetExecuteString(const StringX &cs_ExecuteString)
+{
+  SetField(m_ExecuteString, cs_ExecuteString);
+}
+
 BlowFish *CItemData::MakeBlowFish() const
 {
   ASSERT(IsSessionKeySet);
@@ -994,6 +1014,7 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_Group = that.m_Group;
     m_URL = that.m_URL;
     m_AutoType = that.m_AutoType;
+    m_ExecuteString = that.m_ExecuteString;
     m_tttCTime = that.m_tttCTime;
     m_tttPMTime = that.m_tttPMTime;
     m_tttATime = that.m_tttATime;
@@ -1023,6 +1044,7 @@ void CItemData::Clear()
   m_Notes.Empty();
   m_URL.Empty();
   m_AutoType.Empty();
+  m_ExecuteString.Empty();
   m_tttCTime.Empty();
   m_tttPMTime.Empty();
   m_tttATime.Empty();
@@ -1439,6 +1461,10 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
     case PWHIST:
       if (!pull_string(str, data, len)) return false;
       SetPWHistory(str);
+      break;
+    case EXECUTE:
+      if (!pull_string(str, data, len)) return false;
+      SetExecuteString(str);
       break;
     case END:
       break;

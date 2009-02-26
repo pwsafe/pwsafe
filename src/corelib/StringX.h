@@ -18,16 +18,17 @@
 
 #ifndef _STRINGX_H_
 #define _STRINGX_H_
-#include <string>
 
+#include <string>
 #include <memory>
 #include <limits>
 #include <cstdlib> // for malloc
 #include <cstring> // for memset
-#include "os/typedefs.h"
+
+#include "../os/typedefs.h"
+
 namespace S_Alloc
 {
-
   template <typename T>
     class SecureAlloc
     {
@@ -157,7 +158,7 @@ template<class T> int CompareNoCase(const T &s1, const T &s2);
 template<class T> void ToLower(T &s);
 template<class T> void ToUpper(T &s);
 template<class T> T &TrimRight(T &s, const TCHAR *set = NULL);
-template<class T> T & TrimLeft(T &s, const TCHAR *set = NULL);
+template<class T> T &TrimLeft(T &s, const TCHAR *set = NULL);
 template<class T> T &Trim(T &s, const TCHAR *set = NULL);
 template<class T> void EmptyIfOnlyWhiteSpace(T &s);
 template<class T> int Replace(T &s, TCHAR from, TCHAR to);

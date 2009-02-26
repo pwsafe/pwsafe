@@ -2453,22 +2453,6 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="NU-Debug|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						AdditionalIncludeDirectories="../.."
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="NU-Release|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						AdditionalIncludeDirectories="../.."
-					/>
-				</FileConfiguration>
-				<FileConfiguration
 					Name="DebugE|Win32"
 					>
 					<Tool
@@ -2510,6 +2494,22 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="ReleaseX|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="../.."
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="NU-Debug|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="../.."
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="NU-Release|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"

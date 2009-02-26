@@ -7,6 +7,7 @@
 */
 #ifndef __DIR_H
 #define __DIR_H
+
 #include "typedefs.h"
 
 namespace pws_os {

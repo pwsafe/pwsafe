@@ -5,20 +5,25 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#ifndef __MEM_H
-#define __MEM_H
+
+#ifndef __RUN_H
+#define __RUN_H
+
 #include "typedefs.h"
+#include "../corelib/StringX.h"
 
 namespace pws_os {
   /**
-   * platform-indepenedent functions to lock and unlock memory
-   * in RAM. Useful to prevent sensitive stuff from being swapped
-   * to a snoopable swap file/device
+   * runcmd executes the command
+   * getruncmd return path to the command to be run based on Windows
+   * Run command search rules or Liunx equivalent
    */
-  extern bool mlock(void *p, size_t size);
-  extern bool munlock(void *p, size_t size);
+  extern StringX getruncmd(const StringX first_part, bool &bfound);
+  
+  extern bool runcmd(const StringX execute_string);
 };
-#endif /* __MEM_H */
+
+#endif /* __GETRUNCMD_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

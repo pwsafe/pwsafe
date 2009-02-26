@@ -90,6 +90,7 @@ CString DboxMain::CS_COPYPASSWORD;
 CString DboxMain::CS_COPYUSERNAME;
 CString DboxMain::CS_COPYNOTESFLD;
 CString DboxMain::CS_AUTOTYPE;
+CString DboxMain::CS_EXECUTE;
 
 void DboxMain::CS_local_strings()
 {
@@ -196,6 +197,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
+  ON_COMMAND(ID_MENUITEM_EXECUTE, OnExecuteString)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -328,6 +330,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnUpdateTrayAutoType)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYURL1, ID_MENUITEM_TRAYCOPYURLMAX, OnTrayCopyURL)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYURL1, ID_MENUITEM_TRAYCOPYURLMAX, OnUpdateTrayCopyURL)
+  ON_COMMAND_RANGE(ID_MENUITEM_TRAYEXECUTE1, ID_MENUITEM_TRAYEXECUTEMAX, OnTrayExecute)
+  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYEXECUTE1, ID_MENUITEM_TRAYEXECUTEMAX, OnUpdateTrayExecute)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 #endif
@@ -370,6 +374,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_BROWSEURL, true, true, false, false},
   {ID_MENUITEM_SENDEMAIL, true, true, false, false},
   {ID_MENUITEM_AUTOTYPE, true, true, false, false},
+  {ID_MENUITEM_EXECUTE, true, true, false, false},
   {ID_MENUITEM_COPYURL, true, true, false, false},
   {ID_MENUITEM_COPYEMAIL, true, true, false, false},
   {ID_MENUITEM_GOTOBASEENTRY, true, true, false, false},
@@ -1580,7 +1585,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
   miinfo.fMask = MIIM_ID | MIIM_STRING;
   miinfo.dwTypeData = tcMenuString;  
 
-  std::bitset<10> bsMenuItems;
+  std::bitset<11> bsMenuItems;
   for (int i = 0; i < count; i++) {
     ZeroMemory(tcMenuString, _MAX_PATH * sizeof(TCHAR));
     miinfo.cch = _MAX_PATH;
@@ -1628,6 +1633,10 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
           bsMenuItems.set(9);
           break;
         default:
+        case ID_MENUITEM_EXECUTE:             // bitset position 10
+          CS_EXECUTE = tcMenuString;
+          bsMenuItems.set(10);
+          break;
           break;
       }
     }
@@ -1680,6 +1689,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
         pPopupMenu->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
         pPopupMenu->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
         pPopupMenu->RemoveMenu(ID_MENUITEM_AUTOTYPE, MF_BYCOMMAND);
+        pPopupMenu->RemoveMenu(ID_MENUITEM_EXECUTE, MF_BYCOMMAND);
         pPopupMenu->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
         pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
       }
@@ -1713,6 +1723,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYURL, CS_COPYURL);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_AUTOTYPE, CS_AUTOTYPE);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXECUTE, CS_EXECUTE);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CREATESHORTCUT, CS_CREATESHORTCUT);
       }
     }
@@ -2684,6 +2695,11 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
             iEnable = FALSE;
           }
         }
+      }
+      break;
+    case ID_MENUITEM_EXECUTE:
+      if (ci == NULL || ci->IsExecuteStringEmpty()) {
+        iEnable = FALSE;
       }
       break;
     case ID_MENUITEM_CREATESHORTCUT:
