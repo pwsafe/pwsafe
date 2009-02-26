@@ -7,23 +7,28 @@ database that has been opened but locked.
 
 2. Modifications to PasswordSafe:
 2.1 Add a YubiKey... Menu item to the Manage menu. This menu item will
-be active if and only if a database is open. Selecting this item will
-open a dialog box in which the user will enter the OTP from the
-Yubikey. Pwsafe will take the publicID from the OTP and store it in a
-field in the database header. If the field already exists in the
-database header, its contents will be displayed. This will allow the
-user to change the YubiKey associated with a given database, or remove
-the association entirely (by clearing the field).
-2.2 A database header field will be added to store a YubiKey PublicID.
+be active if and only if a database is open.
+The dialog box associated with this entry allows the user to
+a. Configure the database for YubiKey authentication
+b. Modify the configration data
+c. Clear configuration data, disabling YubiKey authentication for the
+current database.
+The data required for YubiKey authentication is:
+a. The API ID
+b. The API key associated with the API ID
+c. The YubiKey's publicID.
+(a) & (b) are retrieved from the Yubico website (TBD). Currently the
+user needs to get this manually. Future versions will provide
+self-proivisioning of this information directly between PWS and
+Yubico's website. (c) will be derived from an OTP provided by the
+user.
+2.2 All the above information will be store in the order listed in a
+designated database header field.
 2.3 Unlocking a database: When a YubiKey is associated with a
-database, there will b a graphic indicator in the Enter Safe
+database, a graphic indicator will appear in the Enter Safe
 Combination dialog box. In this case, the user may enter either the
 database passphrase (as usual), or the YubiKey one-time password
 (OTP). If the latter, (a) the publicID is checked against that
 associated with the database, and if OK, (b) a validation request is
 sent to the Yubicom server, and the reply verified. only an OK status
 will result in the database being unlocked.
-
-3. YubiKey Server authentication info:
-Id:	708
-API Key:	San67hskXHG7Ya3pi0JSw9AEqX0=

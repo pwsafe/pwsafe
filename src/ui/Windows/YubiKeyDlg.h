@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2009 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -49,4 +49,7 @@ public:
   unsigned int m_apiID;
   YubiApiKey_t m_apiKey;
   CString m_apiKeyStr;
+  BOOL m_ykEnabled; // False means user doesn't want yubikey. If true,
+  //                   id & api key must be filled for OK to be enabled.
+   afx_msg void OnBnClickedYkEnabled();
 };

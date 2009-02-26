@@ -20,16 +20,8 @@
 
 using namespace std;
 
+// Following should be https, currently unavailable :-(
 static const char *AuthServer = "http://api.yubico.com/wsapi/verify?";
-//static const char *AuthServer = "https://63.146.69.105/wsapi/verify?";
-#if 0
-static const char *OurID ="708";
-// API Key:	San67hskXHG7Ya3pi0JSw9AEqX0=
-static unsigned char apiKey[20] = {0x49, 0xa9, 0xfa, 0xee, 0x1b,
-                                   0x24, 0x5c, 0x71, 0xbb, 0x61,
-                                   0xad, 0xe9, 0x8b, 0x42, 0x52,
-                                   0xc3, 0xd0, 0x04, 0xa9, 0x7d};
-#endif
 
 YubiKeyAuthenticator::YubiKeyAuthenticator(unsigned int apiID,
                                            const YubiApiKey_t &apiKey)
@@ -91,10 +83,11 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
   StringX Req;
   conv.FromUTF8(reinterpret_cast<const unsigned char *>(os.str().c_str()),
                 os.str().size(), Req);
-#if 0
+#if 0 // still can't get this to work. Needs to be enabled on server?
   Req += _T("&h=");
   Req += req_sig.c_str();
 #endif
+
   CString urlStr(AuthServer);
   urlStr += Req.c_str();
 
@@ -115,13 +108,13 @@ bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
       string line, rsp_hash, rsp_timestamp, rsp_status, rsp_info;
       while (getline(is, line)) {
         if (line.find("h=") == 0)
-          rsp_hash = line.substr(2);
+          rsp_hash = line.substr(2, line.length()-3);
         else if (line.find("t=") == 0)
-          rsp_timestamp = line; //.substr(2);
+          rsp_timestamp = line.substr(0, line.length()-1);
         else if (line.find("status=") == 0)
-          rsp_status = line; //.substr(7);
+          rsp_status = line.substr(0, line.length()-1);
         else if (line.find("info=") == 0)
-          rsp_info = line; //.substr(7);
+          rsp_info = line.substr(0, line.length()-1);
         else if (line.empty() || line == "\n" || line == "\r")
           continue;
         else {

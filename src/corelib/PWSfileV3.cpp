@@ -722,7 +722,8 @@ int PWSfileV3::ReadHeader()
           if (utf8Len == (12 + sizeof(int) + sizeof(m_hdr.m_YubiKey.apiKey))) {
             utf8status = m_utf8conv.FromUTF8(utf8, 12, text);
             text[12] = TCHAR(0);
-            m_hdr.m_YubiKey.PubID = text;
+            // m_hdr.m_YubiKey.PubID = text;
+            m_hdr.m_YubiKey.PubID.assign(text.c_str(), 12);
             m_hdr.m_YubiKey.apiID = *((unsigned int *)(utf8 + 12));
             memcpy(m_hdr.m_YubiKey.apiKey, (utf8 + 12 + sizeof(int)),
                    sizeof(m_hdr.m_YubiKey.apiKey));

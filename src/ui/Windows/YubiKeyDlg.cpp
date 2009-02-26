@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2009 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,6 +26,7 @@ CYubiKeyDlg::CYubiKeyDlg(CWnd* pParent,
 : CPWDialog(CYubiKeyDlg::IDD, pParent), m_YKpubID(yPubID.c_str()),
   m_apiID(yapiID),
   m_YKinfo(_T("")), m_otp(_T("")), m_YKstatus(_T("")), m_apiKeyStr(_T(""))
+  , m_ykEnabled(FALSE)
 {
   memcpy(m_apiKey, yapiKey, sizeof(yapiKey));
 }
@@ -36,13 +37,16 @@ CYubiKeyDlg::~CYubiKeyDlg()
 
 BOOL CYubiKeyDlg::OnInitDialog() 
 {
-  if (m_YKpubID.IsEmpty()) {
-    m_YKinfo = _T("To enable YubiKey support, activate your YubiKey below");
+  m_ykEnabled = !m_YKpubID.IsEmpty();
+  if (!m_ykEnabled) {
+    m_YKinfo = _T("To enable YubiKey support, please ")
+      _T("click on the checkbox and fill in the following")
+      _T("(Client ID and API Key may be taken from ")
+      _T("https://api.yubico.com/yms/getapi.php):");
   } else {
     m_YKinfo = _T("This database is associated with YubiKey \"");
     m_YKinfo += m_YKpubID;
-    m_YKinfo += _T("\"\r\nTo disable YubiKey support, click OK.\r\n");
-    m_YKinfo += _T("To change the YubiKey, activate your new YubiKey below");
+    m_YKinfo += _T("\"\r\nTo disable YubiKey support, please clear the checkbox");
   }
   unsigned char hasKey = 0;
   for (size_t i = 0; i < sizeof(m_apiKey); i++) hasKey |= m_apiKey[i];
@@ -57,28 +61,30 @@ BOOL CYubiKeyDlg::OnInitDialog()
 
 void CYubiKeyDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
-  DDX_Text(pDX, IDC_YK_OTP, m_otp);
-  DDV_MaxChars(pDX, m_otp, 44);
-  DDX_Text(pDX, IDC_YK_STATUS, m_YKstatus);
-  DDX_Text(pDX, IDC_YK_INFO, m_YKinfo);
-  DDX_Text(pDX, IDC_YK_ID, m_apiID);
-  DDX_Text(pDX, IDC_YK_KEY, m_apiKeyStr);
-	DDV_MaxChars(pDX, m_apiKeyStr, 28);
-  if (pDX->m_bSaveAndValidate) { // dbox to data
-    if (m_apiKeyStr.GetLength() == 28) {
-      StringX keystr(m_apiKeyStr);
-      size_t keylen;
-      BYTE *key = (BYTE *)m_apiKey;
-      PWSUtil::Base64Decode(keystr, key, keylen);
-    }
-  }
+   CPWDialog::DoDataExchange(pDX);
+   DDX_Text(pDX, IDC_YK_INFO, m_YKinfo);
+   DDX_Text(pDX, IDC_YK_ID, m_apiID);
+   DDX_Text(pDX, IDC_YK_OTP, m_otp);
+   DDV_MaxChars(pDX, m_otp, 44);
+   DDX_Text(pDX, IDC_YK_STATUS, m_YKstatus);
+   DDX_Text(pDX, IDC_YK_KEY, m_apiKeyStr);
+   DDV_MaxChars(pDX, m_apiKeyStr, 28);
+   if (pDX->m_bSaveAndValidate) { // dbox to data
+      if (m_apiKeyStr.GetLength() == 28) {
+         StringX keystr(m_apiKeyStr);
+         size_t keylen;
+         BYTE *key = (BYTE *)m_apiKey;
+         PWSUtil::Base64Decode(keystr, key, keylen);
+      }
+   }
+   DDX_Check(pDX, IDC_YK_ENABLED, m_ykEnabled);
 }
 
 
 BEGIN_MESSAGE_MAP(CYubiKeyDlg, CPWDialog)
    ON_BN_CLICKED(IDOK, &CYubiKeyDlg::OnOk)
   ON_BN_CLICKED(IDHELP, &CYubiKeyDlg::OnHelp)
+  ON_BN_CLICKED(IDC_YK_ENABLED, &CYubiKeyDlg::OnBnClickedYkEnabled)
 END_MESSAGE_MAP()
 
 
@@ -118,4 +124,18 @@ void CYubiKeyDlg::OnHelp()
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + _T("::/html/yubikey.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
+
+void CYubiKeyDlg::OnBnClickedYkEnabled()
+{
+  UpdateData(TRUE); // get data from control
+  if (!m_ykEnabled) { // if checkbox cleared, clear data
+    m_apiID = 0;
+    m_apiKeyStr = _T("");
+    m_otp = _T("");
+    UpdateData(FALSE);
+  }
+  GetDlgItem(IDC_YK_ID)->EnableWindow(m_ykEnabled);
+  GetDlgItem(IDC_YK_KEY)->EnableWindow(m_ykEnabled);
+  GetDlgItem(IDC_YK_OTP)->EnableWindow(m_ykEnabled);
 }

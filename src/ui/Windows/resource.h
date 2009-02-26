@@ -608,6 +608,7 @@
 #define IDC_YK_ID                       1366
 #define IDC_EDIT2                       1367
 #define IDC_YK_KEY                      1368
+#define IDC_YK_ENABLED                  1369
 
 // Next default values for new objects
 // 
@@ -615,7 +616,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        447
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1369
+#define _APS_NEXT_CONTROL_VALUE         1370
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif
