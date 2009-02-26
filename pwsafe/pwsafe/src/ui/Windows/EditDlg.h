@@ -80,6 +80,7 @@ private:
   CSecString m_notes, m_notesww, m_realnotes;
   CSecString m_URL;
   CSecString m_autotype;
+  CSecString m_executestring;
   CSecString m_locCTime;
   CSecString m_locPMTime, m_locATime, m_locXTime, m_locRMTime;
   time_t m_tttXTime;
@@ -110,6 +111,7 @@ private:
   CEditExtn m_ex_title;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_autotype;
+  CEditExtn m_ex_executestring;
   CEditExtn *m_pex_notes;
   CEditExtn *m_pex_notesww;
 
@@ -120,6 +122,7 @@ private:
   CStaticExtn m_stc_notes;
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_autotype; 
+  CStaticExtn m_stc_executestring;
 
   CButton m_MoreLessBtn;
   CButton m_ViewDependentsBtn;

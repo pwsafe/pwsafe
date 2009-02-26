@@ -549,6 +549,10 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         pNewRecentEntryMenu[i]->InsertMenu(6, MF_BYPOSITION | MF_STRING,
                                            ID_MENUITEM_TRAYDELETE1 + i,
                                            cs_text);
+        cs_text.LoadString(IDS_TRAYEXECUTE);
+        pNewRecentEntryMenu[i]->InsertMenu(7, MF_BYPOSITION | MF_STRING,
+                                           ID_MENUITEM_TRAYEXECUTE1 + i,
+                                           cs_text);
 
         // Insert new popup menu at the bottom of the list
         // pos 0  = Clear Entries

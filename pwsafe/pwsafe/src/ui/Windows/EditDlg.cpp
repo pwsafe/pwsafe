@@ -111,6 +111,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_locATime = m_ci->GetATimeL();
   m_locRMTime = m_ci->GetRMTimeL();
   m_locPMTime = m_ci->GetPMTimeL();
+  m_executestring = m_ci->GetExecuteString();
 
   if (!m_locPMTime.IsEmpty())
     m_ci->GetPMTime(m_tttCPMTime);
@@ -181,6 +182,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
    DDX_Text(pDX, IDC_URL, (CString&)m_URL);
    DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
+   DDX_Text(pDX, IDC_EXECUTE, (CString&)m_executestring);
    DDX_Text(pDX, IDC_CTIME, (CString&)m_locCTime);
    DDX_Text(pDX, IDC_PMTIME, (CString&)m_locPMTime);
    DDX_Text(pDX, IDC_ATIME, (CString&)m_locATime);
@@ -200,6 +202,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_TITLE, m_ex_title);
    DDX_Control(pDX, IDC_URL, m_ex_URL);
    DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
+   DDX_Control(pDX, IDC_EXECUTE, m_ex_executestring);
    DDX_Check(pDX, IDC_OVERRIDE_POLICY, m_OverridePolicy);
 
    DDX_Control(pDX, IDC_STATIC_GROUP, m_stc_group);
@@ -209,6 +212,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
    DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
    DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);   
+   DDX_Control(pDX, IDC_STATIC_EXECUTE, m_stc_executestring);  
 }
 
 BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
@@ -230,7 +234,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTESWW, OnEnKillfocusNotes)
   ON_EN_CHANGE(IDC_URL, OnEnChangeUrl)
-  ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_AUTO, OnStcClicked)
+  ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_EXECUTE, OnStcClicked)
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
   ON_MESSAGE(WM_EDIT_WORDWRAP, OnWordWrap)
@@ -262,6 +266,7 @@ void CEditDlg::OnCancel()
        m_realnotes    != m_ci->GetNotes() ||
        m_URL          != m_ci->GetURL() ||
        m_autotype     != m_ci->GetAutoType() ||
+       m_executestring != m_ci->GetExecuteString() ||
        m_PWHistory    != m_ci->GetPWHistory() ||
        m_locXTime     != m_oldlocXTime ||
        m_XTimeInt     != m_oldXTimeInt ||
@@ -308,6 +313,7 @@ void CEditDlg::OnOK()
                  m_realnotes != m_ci->GetNotes() ||
                  m_URL != m_ci->GetURL() ||
                  m_autotype != m_ci->GetAutoType() ||
+                 m_executestring != m_ci->GetExecuteString() ||
                  m_PWHistory != m_ci->GetPWHistory() ||
                  m_locXTime != m_oldlocXTime ||
                  m_XTimeInt != m_oldXTimeInt);
@@ -375,6 +381,24 @@ void CEditDlg::OnOK()
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     goto dont_close;
   }
+
+  if (!m_executestring.IsEmpty()) {
+    //Check Execute string parses - don't substitute
+    stringT errmsg;
+    size_t st_column;
+    m_pDbx->GetExpandedString(m_executestring, NULL, errmsg, st_column);
+    if (errmsg.length() > 0) {
+      CString cs_title(MAKEINTRESOURCE(IDS_EXECUTESTRING_ERROR));
+      CString cs_temp(MAKEINTRESOURCE(IDS_EXS_IGNOREORFIX));
+      CString cs_errmsg;
+      cs_errmsg.Format(IDS_EXS_ERRORMSG, (int)st_column, errmsg.c_str());
+      cs_errmsg += cs_temp;
+      int rc = MessageBox(cs_errmsg, cs_title,
+                          MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2);
+      if (rc == IDNO)
+        goto dont_close;
+    }
+  }
   //End check
 
   // Everything OK, update fields
@@ -387,6 +411,7 @@ void CEditDlg::OnOK()
   m_ci->SetAutoType(m_autotype);
   m_ci->SetPWHistory(m_PWHistory);
   m_ci->SetPWPolicy(m_pwp);
+  m_ci->SetExecuteString(m_executestring);
 
   time_t t;
   time(&t);
@@ -603,6 +628,8 @@ BOOL CEditDlg::OnInitDialog()
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_CLICKTOCOPYEXPAND);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_EXECUTE), cs_ToolTip);
 
     EnableToolTips();
     m_ToolTipCtrl->Activate(TRUE);
@@ -615,6 +642,7 @@ BOOL CEditDlg::OnInitDialog()
   m_stc_notes.SetHighlight(true, crefWhite);
   m_stc_URL.SetHighlight(true, crefWhite);
   m_stc_autotype.SetHighlight(true, crefWhite);
+  m_stc_executestring.SetHighlight(true, crefWhite);
 
   GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
 
@@ -786,6 +814,8 @@ void CEditDlg::ResizeDialog()
     IDC_STATIC_URL,
     IDC_AUTOTYPE,
     IDC_STATIC_AUTO,
+    IDC_EXECUTE,
+    IDC_STATIC_EXECUTE,
     IDC_CTIME,
     IDC_STATIC_CTIME,
     IDC_PMTIME,
@@ -1139,6 +1169,24 @@ void CEditDlg::OnStcClicked(UINT nID)
                                           StringX(m_realpassword), 
                                           StringX(m_bWordWrap == TRUE ? m_notesww : m_notes));
       iaction = CItemData::AUTOTYPE;
+      break;
+    case IDC_STATIC_EXECUTE:
+      m_stc_executestring.FlashBkgnd(crefGreen);
+      // If Shift pressed - just copy un-substituted Execute String
+      if (GetKeyState(VK_CONTROL) != 0 || m_executestring.IsEmpty()) {
+        cs_data = StringX(m_executestring);
+      } else {
+        stringT errmsg;
+        size_t st_column;
+        cs_data = m_pDbx->GetExpandedString(m_executestring, m_ci, errmsg, st_column);
+        if (errmsg.length() > 0) {
+          CString cs_title(MAKEINTRESOURCE(IDS_EXECUTESTRING_ERROR));
+          CString cs_errmsg;
+          cs_errmsg.Format(IDS_EXS_ERRORMSG, (int)st_column, errmsg.c_str());
+          MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
+        }
+      }
+      iaction = CItemData::EXECUTE;
       break;
     default:
       ASSERT(0);

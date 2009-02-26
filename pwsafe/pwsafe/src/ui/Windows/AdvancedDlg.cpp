@@ -225,6 +225,9 @@ BOOL CAdvancedDlg::OnInitDialog()
   cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::XTIME_INT);
+  cs_text.LoadString(IDS_EXECUTESTRING);
+  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+  m_pLC_Selected->SetItemData(iItem, CItemData::EXECUTE);
 
   switch (m_iIndex) {
     case ADV_EXPORT_XML:

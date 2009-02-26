@@ -14,6 +14,8 @@
 #include "ControlExtns.h"
 #include "corelib/ItemData.h"
 
+class DboxMain;
+
 class CAddDlg : public CPWDialog
 {
   // Construction
@@ -32,6 +34,7 @@ public:
   CSecString m_group;
   CSecString m_URL;
   CSecString m_autotype;
+  CSecString m_executestring;
   CSecString m_locXTime;
   time_t m_tttXTime;
   time_t m_tttCPMTime;  // Password creation or last changed datetime
@@ -53,6 +56,7 @@ public:
   CEditExtn m_ex_title;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_autotype;
+  CEditExtn m_ex_executestring;
   //}}AFX_DATA
   BOOL m_OverridePolicy;
   BOOL m_bWordWrap;
@@ -82,6 +86,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
+  DboxMain *m_pDbx;
   void SelectAllNotes();
 
   CButton m_moreLessBtn;

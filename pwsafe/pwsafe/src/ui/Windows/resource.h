@@ -380,6 +380,7 @@
 #define IDC_URL                         1101
 #define IDC_AUTOTYPE                    1102
 #define IDC_EXPIRYDATE                  1103
+#define IDC_EXECUTE                     1103
 #define IDC_EXPIRYTIME                  1104
 #define IDC_STATIC_CURRENT_XTIME        1105
 #define IDC_STATIC_CTIME                1108
@@ -595,11 +596,12 @@
 #define IDC_STATIC_NOTES                1354
 #define IDC_STATIC_URL                  1355
 #define IDC_STATIC_AUTO                 1356
-#define IDC_LAUNCH                      1357
-#define IDC_SUBSET                      1358
-#define IDC_GETSUBSET                   1359
-#define IDC_SUBSETRESULTS               1360
-#define IDC_STATICSUBSETWARNING         1361
+#define IDC_STATIC_EXECUTE              1357
+#define IDC_LAUNCH                      1358
+#define IDC_SUBSET                      1359
+#define IDC_GETSUBSET                   1360
+#define IDC_SUBSETRESULTS               1361
+#define IDC_STATICSUBSETWARNING         1362
 #define IDC_DEFNOTESWRAP                1362
 
 // Next default values for new objects

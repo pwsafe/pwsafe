@@ -255,6 +255,7 @@ bool EFileValidator::startElement(stringT & strStartElement)
     case XLE_PASSWORD:
     case XLE_URL:
     case XLE_AUTOTYPE:
+    case XLE_EXECUTE:
     case XLE_NOTES:
     case XLE_UUID:
     case XLE_CTIME:

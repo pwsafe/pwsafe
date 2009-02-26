@@ -284,4 +284,45 @@ void DboxMain::OnUpdateTrayCopyURL(CCmdUI *)
 {
 }
 
+void DboxMain::OnTrayExecute(UINT nID)
+{
+  ASSERT((nID >= ID_MENUITEM_TRAYEXECUTE1) && (nID <= ID_MENUITEM_TRAYEXECUTEMAX));
+
+  CItemData ci;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYEXECUTE1, ci))
+    return;
+
+  if (ci.IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
+
+  StringX cs_URL = ci.GetURL();
+  StringX::size_type ipos;
+  ipos = cs_URL.find(_T("[alt]"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
+  ipos = cs_URL.find(_T("[ssh]"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
+  ipos = cs_URL.find(_T("{alt}"));
+  if (ipos != StringX::npos)
+    cs_URL.replace(ipos, 5, _T(""));
+  SetClipboardData(cs_URL);
+
+  UpdateLastClipboardAction(CItemData::URL);
+  UpdateAccessTime(&ci);
+}
+
+void DboxMain::OnUpdateTrayExecute(CCmdUI *)
+{
+}
+
 #endif /*  POCKET_PC */

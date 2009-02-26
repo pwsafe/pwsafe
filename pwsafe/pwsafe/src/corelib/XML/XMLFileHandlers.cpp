@@ -123,6 +123,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_entry->notes = _T("");
       cur_entry->uuid = _T("");
       cur_entry->pwp.Empty();
+      cur_entry->execute_string = _T("");
       cur_entry->entrytype = NORMAL;
       cur_entry->bforce_normal_entry = false;
       m_whichtime = -1;
@@ -326,6 +327,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_XTIME_INTERVAL:
       cur_entry->xtime_interval = Trim(m_strElemContent);
+      break;
+    case XLE_EXECUTE:
+      cur_entry->execute_string = m_strElemContent;
       break;
     case XLE_UNKNOWNRECORDFIELDS:
       if (!cur_entry->uhrxl.empty())
@@ -575,7 +579,8 @@ void XMLFileHandlers::AddEntries()
     }
     if (!cur_entry->rmtime.empty())
       tempitem.SetRMTime(cur_entry->rmtime.c_str());
-
+    if (!cur_entry->execute_string.empty())
+      tempitem.SetExecuteString(cur_entry->execute_string);
     if (cur_entry->pwp.flags != 0) {
       tempitem.SetPWPolicy(cur_entry->pwp);
     }

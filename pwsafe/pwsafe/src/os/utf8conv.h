@@ -18,7 +18,7 @@ namespace pws_os {
   /*
    * See a Unix man page for details. Most important to note
    * that if dst == NULL, required size is returned.
-   * make  sure maxdstlen is greater or equal to
+   * make sure maxdstlen is greater or equal to
    * wcstombs(NULL, 0, src, srclen) + 1
    */
   extern size_t wcstombs(char *dst, size_t maxdstlen,

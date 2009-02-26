@@ -211,7 +211,8 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
   if (m_core.GetNumEntries() != 0) {
     BOOL State = (entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
-                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT,
+                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
+                 ID_MENUITEM_EXECUTE, ID_MENUITEM_EDIT,
                  ID_MENUITEM_PASSWORDSUBSET};
 
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
@@ -2061,10 +2062,8 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL)
                         !csAltBrowser.IsEmpty());
 
   SHELLEXECUTEINFO si;
+  ZeroMemory(&si, sizeof(si));
   si.cbSize = sizeof(SHELLEXECUTEINFO);
-  si.fMask = 0;
-  si.hwnd = NULL;
-  si.lpVerb = si.lpFile = si.lpParameters = si.lpDirectory = NULL;
   si.nShow = SW_SHOWNORMAL;
 
   if (!useAltBrowser) {
@@ -2080,7 +2079,7 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL)
   }
 
   BOOL shellExecStatus = ::ShellExecuteEx(&si);
-  if(shellExecStatus != TRUE) {
+  if (shellExecStatus != TRUE) {
     AfxMessageBox(errID, MB_ICONSTOP);
     return FALSE;
   }
