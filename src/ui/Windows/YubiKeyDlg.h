@@ -13,6 +13,8 @@
 
 #include "PWDialog.h"
 #include "corelib/YubiKey.h"
+#include "RichEditCtrlExtn.h"
+#include "afxcmn.h"
 
 class CYubiKeyDlg : public CPWDialog
 {
@@ -51,5 +53,7 @@ public:
   CString m_apiKeyStr;
   BOOL m_ykEnabled; // False means user doesn't want yubikey. If true,
   //                   id & api key must be filled for OK to be enabled.
-   afx_msg void OnBnClickedYkEnabled();
+  afx_msg void OnBnClickedYkEnabled();
+  CRichEditCtrlExtn m_YKinfoCtrl;
 };
+

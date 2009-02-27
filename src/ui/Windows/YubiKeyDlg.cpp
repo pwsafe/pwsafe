@@ -29,6 +29,7 @@ CYubiKeyDlg::CYubiKeyDlg(CWnd* pParent,
   , m_ykEnabled(FALSE)
 {
   memcpy(m_apiKey, yapiKey, sizeof(yapiKey));
+  m_ykEnabled = !m_YKpubID.IsEmpty();
 }
 
 CYubiKeyDlg::~CYubiKeyDlg()
@@ -37,17 +38,24 @@ CYubiKeyDlg::~CYubiKeyDlg()
 
 BOOL CYubiKeyDlg::OnInitDialog() 
 {
-  m_ykEnabled = !m_YKpubID.IsEmpty();
+  CPWDialog::OnInitDialog();
   if (!m_ykEnabled) {
     m_YKinfo = _T("To enable YubiKey support, please ")
-      _T("click on the checkbox and fill in the following")
-      _T("(Client ID and API Key may be taken from ")
-      _T("https://api.yubico.com/yms/getapi.php):");
+      _T("click on the checkbox and fill in the\r\nfollowing fields")
+      _T(" (You can get a Client ID and API Key from ")
+      _T("<a href=\"https://api.yubico.com/yms/getapi.php\">")
+      _T("\r\nhttps://api.yubico.com/yms/getapi.php</a>):");
   } else {
     m_YKinfo = _T("This database is associated with YubiKey \"");
     m_YKinfo += m_YKpubID;
     m_YKinfo += _T("\"\r\nTo disable YubiKey support, please clear the checkbox");
   }
+  m_YKinfoCtrl.SetWindowText(m_YKinfo);
+
+  GetDlgItem(IDC_YK_ID)->EnableWindow(m_ykEnabled);
+  GetDlgItem(IDC_YK_KEY)->EnableWindow(m_ykEnabled);
+  GetDlgItem(IDC_YK_OTP)->EnableWindow(m_ykEnabled);
+
   unsigned char hasKey = 0;
   for (size_t i = 0; i < sizeof(m_apiKey); i++) hasKey |= m_apiKey[i];
   if (hasKey != 0) {
@@ -55,14 +63,13 @@ BOOL CYubiKeyDlg::OnInitDialog()
                                            sizeof(m_apiKey));
     m_apiKeyStr = keystr.c_str();
   }
-  CPWDialog::OnInitDialog();
   return TRUE;
 }
 
 void CYubiKeyDlg::DoDataExchange(CDataExchange* pDX)
 {
    CPWDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_YK_INFO, m_YKinfo);
+   DDX_Control(pDX, IDC_YK_INFO, m_YKinfoCtrl);
    DDX_Text(pDX, IDC_YK_ID, m_apiID);
    DDX_Text(pDX, IDC_YK_OTP, m_otp);
    DDV_MaxChars(pDX, m_otp, 44);
@@ -78,6 +85,7 @@ void CYubiKeyDlg::DoDataExchange(CDataExchange* pDX)
       }
    }
    DDX_Check(pDX, IDC_YK_ENABLED, m_ykEnabled);
+   DDX_Control(pDX, IDC_YK_INFO, m_YKinfoCtrl);
 }
 
 
@@ -139,3 +147,4 @@ void CYubiKeyDlg::OnBnClickedYkEnabled()
   GetDlgItem(IDC_YK_KEY)->EnableWindow(m_ykEnabled);
   GetDlgItem(IDC_YK_OTP)->EnableWindow(m_ykEnabled);
 }
+
