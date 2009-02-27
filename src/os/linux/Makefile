@@ -14,7 +14,8 @@ NAME=os
 LIBSRC          = file.cpp mem.cpp \
 									sys.cpp env.cpp \
 									dir.cpp utf8conv.cpp \
-									rand.cpp pws_time.cpp pws_str.cpp
+									rand.cpp pws_time.cpp pws_str.cpp \
+									run.cpp
 
 SRC             = $(LIBSRC)
 

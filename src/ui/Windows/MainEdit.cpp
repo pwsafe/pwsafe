@@ -1713,7 +1713,7 @@ void DboxMain::OnExecuteString()
     t or title         Title
     u or user          Username
     p or password      Password
-    a or autotype      AutoType
+    a or autotype      AutoType. NOT yet implemented. See Note 5 below.
     url                URL
     n or n[0]          The complete Notes field (also: notes or notes[0]). 
                        See note 3 below.
@@ -1734,6 +1734,18 @@ void DboxMain::OnExecuteString()
           LF will be taken as 'enter'.
   Note 4: Any trailing CR and/or LF are removed from single lines selected from
           the Notes field.
+  Note 5: Autotype is currently NOT implemented. If present in the Execute string
+          it will be ignored and removed from the string to be executed.
+          A planned update will allow this variable to be specified and the 
+          AutoType performed once the target window is active. Differing from 
+          other variables, this one will be able to take a value to override the
+          entry's current value. The format is expected to be ($autotype can 
+          replace $a in the following examples):
+          $a           Use current entry value
+          ${a}         Use current entry value
+          $a(value)    Use autotype string specified between the round brackets
+          ${a}(value)  Use autotype string specified between the round brackets
+
   NOTE:   Be sure to add quotes around your string if required e.g. if your 
           database directory contains spaces, to access a text file in it based
           on your open database name, you would need the following (with quotes):
