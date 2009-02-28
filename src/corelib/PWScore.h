@@ -254,6 +254,7 @@ public:
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
   PWSfile::HeaderRecord &GetHeader() {return m_hdr;}
+  bool IsYubikeyEnabled() const {return m_hdr.m_YubiKey.apiID != 0;}
   
   // Filters
   PWSFilters m_MapFilters;

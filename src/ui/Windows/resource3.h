@@ -493,3 +493,5 @@
 #define IDS_EDITEXTERNALLY              5651
 #define IDS_WORD_WRAP                   5652
 #define IDS_SHOW_NOTES                  5653
+#define IDS_PKENTRY_PWOTP_PROMPT        5654
+#define IDS_PKENTRY_PWOTP               5655

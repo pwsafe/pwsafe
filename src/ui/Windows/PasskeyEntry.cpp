@@ -230,7 +230,14 @@ CPasskeyEntry::OnInitDialog(void)
       SetHeight(N);
     }
     m_MRU_combo.SetToolTipStrings(cs_tooltips);
-  }
+  } else { // m_index != GCP_FIRST
+    if (app.m_core.IsYubikeyEnabled()) {
+      GetDlgItem(IDC_PKENTRY_PROMPT)->
+        SetWindowText(CString(MAKEINTRESOURCE(IDS_PKENTRY_PWOTP_PROMPT)));
+      GetDlgItem(IDC_PKENTRY)->
+        SetWindowText(CString(MAKEINTRESOURCE(IDS_PKENTRY_PWOTP)));
+    }
+  } // if (m_index == GCP_FIRST)
 
   // Change Exit button to say "Advanced" if necessary!
   if (m_index == GCP_ADVANCED) {
