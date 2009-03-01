@@ -30,6 +30,9 @@ CYubiKeyDlg::CYubiKeyDlg(CWnd* pParent,
 {
   memcpy(m_apiKey, yapiKey, sizeof(yapiKey));
   m_ykEnabled = !m_YKpubID.IsEmpty();
+  if (m_ykEnabled) { // if we've a pub ID, we also have a key - show it
+    m_apiKeyStr = PWSUtil::Base64Encode(m_apiKey, sizeof(m_apiKey)).c_str();
+  }
 }
 
 CYubiKeyDlg::~CYubiKeyDlg()
@@ -102,18 +105,26 @@ void CYubiKeyDlg::OnOk()
 {
   // validate OTP, blablabla
   UpdateData(TRUE); // get data from control
-  if (m_otp.IsEmpty()) { // an empty string is fine,
-    //                      means that we don't want to use YubiKey.
-    m_YKpubID = m_otp;
+  if (m_ykEnabled) { 
+    // if required fields empty, complain
+    if (m_apiID == 0 || m_apiKeyStr.IsEmpty()) {
+      CString errmess(MAKEINTRESOURCE(IDS_YK_MISSING));
+      m_YKstatus = errmess;
+      UpdateData(FALSE);
+      return; // don't close dbox
+    }
+    if (VerifyOTP(m_YKstatus)) { // an empty otp will make this fail
+      m_YKpubID = m_otp.Left(12);
+      CPWDialog::OnOK();
+    } else { // verify failed, show why
+      UpdateData(FALSE);
+      return; // leaves dbox open
+    } // VerifyOTP()
+  } else { // !m_ykEnabled
+    m_YKpubID = _T(""); // this tells the caller that we're
+    //                     no longer interested in authentication
     CPWDialog::OnOK();
-    return;
   }
-  if (VerifyOTP(m_YKstatus)) {
-    m_YKpubID = m_otp.Left(12);
-    CPWDialog::OnOK();
-  }
-  else // verify failed, show why
-    UpdateData(FALSE);
 }
 
 bool CYubiKeyDlg::VerifyOTP(CString &error)

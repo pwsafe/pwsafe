@@ -65,14 +65,19 @@ bool YubiKeyAuthenticator::VerifySig(const string &msg, const string &h)
 
 bool YubiKeyAuthenticator::VerifyOTP(const stringT &otp)
 {
-  m_error = _T("");
-  pws_os::HttpClient client;
-  m_error = _T("Sending authentication request");
 
+  if (otp.empty()) {
+    m_error = _T("Empty OTP");
+    return false;
+  }
+
+  m_error = _T("Sending authentication request");
+  pws_os::HttpClient client;
   CUTF8Conv conv;
   const unsigned char *otp_str;
   int otp_strlen;
   conv.ToUTF8(otp.c_str(), otp_str, otp_strlen);
+
   bool retval = false;
 
   ostringstream os;

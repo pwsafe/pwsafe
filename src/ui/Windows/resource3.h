@@ -495,3 +495,4 @@
 #define IDS_SHOW_NOTES                  5653
 #define IDS_PKENTRY_PWOTP_PROMPT        5654
 #define IDS_PKENTRY_PWOTP               5655
+#define IDS_YK_MISSING                  5656
