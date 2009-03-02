@@ -392,10 +392,12 @@ void DboxMain::Delete(bool inRecursion)
       const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
       if (entrytype == CItemData::ET_ALIASBASE) {
         cs_type.LoadString(num_dependents == 1 ? IDS_ALIAS : IDS_ALIASES);
-        cs_msg.Format(IDS_DELETEABASE, dependentslist.size(), cs_type, csDependents);
+        cs_msg.Format(IDS_DELETEABASE, dependentslist.size(),
+                      cs_type, csDependents.c_str());
       } else {
         cs_type.LoadString(num_dependents == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);
-        cs_msg.Format(IDS_DELETESBASE, dependentslist.size(), cs_type, csDependents);
+        cs_msg.Format(IDS_DELETESBASE, dependentslist.size(),
+                      cs_type, csDependents.c_str());
       }
 
       if (MessageBox(cs_msg, cs_title, MB_ICONQUESTION | MB_YESNO) == IDNO) {

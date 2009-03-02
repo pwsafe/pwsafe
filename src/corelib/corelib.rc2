@@ -159,7 +159,6 @@ END
 STRINGTABLE
 BEGIN
   IDSC_IMPORTNUMBER        " Import # %d"
-  IDSC_READNUMBER          " Open # %d"
 END
 
 STRINGTABLE
