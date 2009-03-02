@@ -16,7 +16,7 @@ namespace pws_os {
   /**
    * runcmd executes the command
    * getruncmd return path to the command to be run based on Windows
-   * Run command search rules or Liunx equivalent
+   * Run command search rules or Linux equivalent
    */
   extern StringX getruncmd(const StringX first_part, bool &bfound);
   

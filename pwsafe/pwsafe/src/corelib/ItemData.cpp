@@ -55,8 +55,8 @@ CItemData::CItemData()
   m_URL(URL), m_AutoType(AUTOTYPE),
   m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
   m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-  m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT),
-  m_entrytype(ET_NORMAL), m_display_info(NULL), m_ExecuteString(EXECUTE)
+    m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_ExecuteString(EXECUTE),
+  m_entrytype(ET_NORMAL), m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -69,8 +69,8 @@ CItemData::CItemData(const CItemData &that) :
   m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
-  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info),
-  m_ExecuteString(that.m_ExecuteString)
+  m_ExecuteString(that.m_ExecuteString), m_entrytype(that.m_entrytype),
+  m_display_info(that.m_display_info)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
