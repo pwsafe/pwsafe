@@ -432,13 +432,10 @@
 #define IDS_PHEXADECIMAL                5588
 #define IDS_PASSWORDHISTORY             5589
 #define IDS_UNKNOWNFIELDSFILTER         5590
-#define IDS_FILTERNUM                   5593
 #define IDS_FILTERACTIVE                5594
 #define IDS_FILTERINACTIVE              5595
 #define IDS_FILTERFIELD                 5596
 #define IDS_FILTERRULE                  5597
-#define IDS_FILTERARG1                  5598
-#define IDS_FILTERARG2                  5599
 #define IDS_NOITEMSPASSEDFILTERING      5600
 #define IDS_NOTDEFINED                  5601
 #define IDS_SETDISPLAYFILTERS           5602
