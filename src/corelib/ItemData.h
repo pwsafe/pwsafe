@@ -332,12 +332,12 @@ private:
   // Laziness is a Virtue:
   StringX GetField(const CItemField &field) const;
   void GetField(const CItemField &field, unsigned char *value,
-    unsigned int &length) const;
+                unsigned int &length) const;
   void GetUnknownField(unsigned char &type, unsigned int &length,
-    unsigned char * &pdata, const CItemField &item) const;
+                       unsigned char * &pdata, const CItemField &item) const;
   void SetField(CItemField &field, const StringX &value);
   void SetField(CItemField &field, const unsigned char *value,
-    unsigned int length);
+                unsigned int length);
 };
 
 inline bool CItemData::IsTextField(unsigned char t)
