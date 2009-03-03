@@ -92,7 +92,7 @@ BOOL CViewReport::OnInitDialog()
   CFont *pOldFont = dc.SelectObject(m_editreport.GetFont());
 
   // Get Height
-  dc.DrawText(lpszText, m_dwDatasize, &textRect, DT_CALCRECT | DT_NOCLIP);
+  dc.DrawText(lpszText, m_pString.length(), &textRect, DT_CALCRECT | DT_NOCLIP);
 
   // Get width of longest line - ignores tabs - but no issue as edit control has
   // horizontal scroll bars
