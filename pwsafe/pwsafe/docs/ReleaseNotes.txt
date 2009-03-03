@@ -10,7 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.16.2
 ====================
-
+[2657132] View Reports no longer causes application crash.
 
 Changes to Existing Features in 3.16.2
 =======================================
