@@ -281,11 +281,16 @@ void ThisMfcApp::LoadLocalizedStuff()
   const CString cs_ExePath(PWSdirs::GetExeDir().c_str());
   CString cs_ResPath;
   const CString format_string = (cs_CTRY.IsEmpty()) ?
-    _T("%spwsafe%s%s.dll") : _T("%spwsafe%s_%s.dll");
+                      _T("%spwsafe%s%s.dll") : _T("%spwsafe%s_%s.dll");
   cs_ResPath.Format(format_string, cs_ExePath, cs_LANG, cs_CTRY);
   m_hInstResDLL = LoadLibrary(cs_ResPath);
 
-  if(m_hInstResDLL == NULL) {
+  if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
+    // Now try base
+    cs_ResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, cs_LANG);
+    m_hInstResDLL = LoadLibrary(cs_ResPath);
+  }
+  if (m_hInstResDLL == NULL) {
     TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
           PWSUtil::GetTimeStamp());
   } else { // successfully loaded a resource dll, check version
