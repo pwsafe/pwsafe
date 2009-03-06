@@ -9,6 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelibtest", "src\test\cor
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\Windows\pwsafe.vcproj", "{A3313FA9-CB57-48C2-B660-EE4BF94714D2}"
 	ProjectSection(ProjectDependencies) = postProject
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0} = {FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27} = {261882E8-80AF-4373-A8CC-A8D52E24BF27}
 		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73} = {D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}
 	EndProjectSection
@@ -16,6 +17,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languageDLL", "src\ui\Windows\language\languageDLL.vcproj", "{FC821168-0D64-45EA-881D-4842A3A670CC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os.vcproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_autotype", "src\ui\Windows\pws_autotype\pws_autotype.vcproj", "{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +106,24 @@ Global
 		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.ReleaseM|Win32.Build.0 = ReleaseM|Win32
 		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.ReleaseX|Win32.ActiveCfg = ReleaseX|Win32
 		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}.ReleaseX|Win32.Build.0 = ReleaseX|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Debug|Win32.Build.0 = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugE|Win32.ActiveCfg = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugE|Win32.Build.0 = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugM|Win32.ActiveCfg = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugM|Win32.Build.0 = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugX|Win32.ActiveCfg = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugX|Win32.Build.0 = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Demo|Win32.ActiveCfg = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Demo|Win32.Build.0 = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Release|Win32.ActiveCfg = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Release|Win32.Build.0 = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.ReleaseE|Win32.ActiveCfg = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.ReleaseE|Win32.Build.0 = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.ReleaseM|Win32.ActiveCfg = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.ReleaseM|Win32.Build.0 = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.ReleaseX|Win32.ActiveCfg = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.ReleaseX|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

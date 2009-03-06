@@ -17,6 +17,7 @@
 #include "corelib/PWScore.h"
 #include "SystemTray.h"
 #include "PWSRecentFileList.h"
+#include "os/run.h"
 
 #include <afxmt.h>
 //-----------------------------------------------------------------------------
@@ -41,7 +42,12 @@ public:
   CMenu* m_mainmenu;
   BOOL m_mruonfilemenu;
   HINSTANCE m_hInstResDLL;
+  HINSTANCE m_AT_HK_module;
+
+  st_autotype_ddl m_autotype_ddl;
+
   static const UINT m_uiRegMsg;
+  static const UINT m_uiWH_SHELL;
 
   virtual BOOL InitInstance();
   virtual int ExitInstance();

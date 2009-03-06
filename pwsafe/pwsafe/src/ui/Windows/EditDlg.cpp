@@ -16,15 +16,18 @@
 #include "EditDlg.h"
 #include "PwFont.h"
 #include "OptionsPasswordPolicy.h"
-#include "corelib/PWCharPool.h"
-#include "corelib/PwsPlatform.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/ItemData.h"
-#include "os/typedefs.h"
 #include "ExpDTDlg.h"
 #include "PWHistDlg.h"
 #include "ControlExtns.h"
 #include "ExtThread.h"
+
+#include "corelib/PWCharPool.h"
+#include "corelib/PwsPlatform.h"
+#include "corelib/PWSprefs.h"
+#include "corelib/ItemData.h"
+#include "corelib/PWSAuxParse.h"
+
+#include "os/typedefs.h"
 
 #include <shlwapi.h>
 #include <fstream>
@@ -63,13 +66,13 @@ static const COLORREF crefGreen = (RGB(222, 255, 222));
 static const COLORREF crefPink  = (RGB(255, 222, 222));
 static const COLORREF crefWhite = (RGB(255, 255, 255));
 
-CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
+CEditDlg::CEditDlg(CItemData *ci, const StringX currentDB, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
   m_ci(ci), m_Edit_IsReadOnly(false),
   m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
   m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
   m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL),
-  m_bWordWrap(FALSE), m_bShowNotes(FALSE)
+  m_bWordWrap(FALSE), m_bShowNotes(FALSE), m_currentDB(currentDB)
 {
   ASSERT(ci != NULL);
   m_pDbx = static_cast<DboxMain *>(pParent);
@@ -386,7 +389,10 @@ void CEditDlg::OnOK()
     //Check Execute string parses - don't substitute
     stringT errmsg;
     size_t st_column;
-    m_pDbx->GetExpandedString(m_executestring, NULL, errmsg, st_column);
+    bool bAutoType(false);
+    StringX sxAutotype(_T(""));
+    PWSAuxParse::GetExpandedString(m_executestring, _T(""), NULL,
+                     bAutoType, sxAutotype, errmsg, st_column);
     if (errmsg.length() > 0) {
       CString cs_title(MAKEINTRESOURCE(IDS_EXECUTESTRING_ERROR));
       CString cs_temp(MAKEINTRESOURCE(IDS_EXS_IGNOREORFIX));
@@ -1164,8 +1170,9 @@ void CEditDlg::OnStcClicked(UINT nID)
       break;
     case IDC_STATIC_AUTO:
       m_stc_autotype.FlashBkgnd(crefGreen);
-      cs_data = m_pDbx->GetAutoTypeString(StringX(m_autotype),
-                                          StringX(m_group), StringX(m_title), StringX(m_username), 
+      cs_data = PWSAuxParse::GetAutoTypeString(StringX(m_autotype),
+                                          StringX(m_group), StringX(m_title), 
+                                          StringX(m_username), 
                                           StringX(m_realpassword), 
                                           StringX(m_bWordWrap == TRUE ? m_notesww : m_notes));
       iaction = CItemData::AUTOTYPE;
@@ -1178,7 +1185,10 @@ void CEditDlg::OnStcClicked(UINT nID)
       } else {
         stringT errmsg;
         size_t st_column;
-        cs_data = m_pDbx->GetExpandedString(m_executestring, m_ci, errmsg, st_column);
+        cs_data = PWSAuxParse::GetExpandedString(m_executestring, 
+                       m_currentDB, m_ci, 
+                       m_pDbx->m_bDoAutoType, m_pDbx->m_AutoType,
+                       errmsg, st_column);
         if (errmsg.length() > 0) {
           CString cs_title(MAKEINTRESOURCE(IDS_EXECUTESTRING_ERROR));
           CString cs_errmsg;
@@ -1226,9 +1236,12 @@ BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
 void CEditDlg::OnBnClickedLaunch()
 {
   UpdateData(TRUE);
-  StringX cs_data = StringX(m_URL);
+  StringX sx_url = StringX(m_URL);
+  StringX sx_autotype = PWSAuxParse::GetAutoTypeString(m_autotype, 
+                                        m_group, m_title, m_username, 
+                                        m_realpassword, m_realnotes);
   int iaction = CItemData::URL;
-  m_pDbx->LaunchBrowser(CString(cs_data.c_str()));
+  m_pDbx->LaunchBrowser(sx_url.c_str(), sx_autotype);
   m_pDbx->UpdateLastClipboardAction(iaction);
 }
 

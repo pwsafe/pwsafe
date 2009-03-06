@@ -8,10 +8,6 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
 
-#include "os/typedefs.h"
-#include "os/dir.h"
-#include "os/file.h"
-#include "os/mem.h"
 #include "PWScore.h"
 #include "corelib.h"
 #include "BlowFish.h"
@@ -27,6 +23,12 @@
 #include "StringXStream.h"
 
 #include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+
+#include "os/typedefs.h"
+#include "os/dir.h"
+#include "os/debug.h"
+#include "os/file.h"
+#include "os/mem.h"
 
 #if USE_XML_LIBRARY == EXPAT
 #include "XML/Expat/EFileXMLProcessor.h"
@@ -1291,12 +1293,12 @@ int PWScore::ReadFile(const StringX &a_filename,
          * the uniqueness requirement of uuids.
          */
          if (m_pwlist.find(uuid) != m_pwlist.end()) {
-#ifdef DEBUG
-           TRACE(_T("Non-Unique uuid detected:\n"));
+#if defined( _DEBUG ) || defined( DEBUG )
+           pws_os::Trace0(_T("Non-Unique uuid detected:\n"));
            CItemData::FieldBits bf;
            bf.flip();
            StringX dump = temp.GetPlaintext(TCHAR(':'), bf, TCHAR('-'), NULL);
-           TRACE(_T("%s\n"), dump);
+           pws_os::Trace(_T("%s\n"), dump);
 #endif
            temp.CreateUUID(); // replace duplicated uuid
            temp.GetUUID(uuid); // refresh uuid_array
@@ -1407,7 +1409,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     i++;
     num_found--;
     if (!pws_os::DeleteAFile(excess_file)) {
-      TRACE(_T("DeleteFile(%s) failed"), excess_file);
+      pws_os::Trace(_T("DeleteFile(%s) failed"), excess_file);
       continue;
     }
   }
@@ -1874,7 +1876,7 @@ PWScore::Validate(stringT &status)
   LoadAString(cs_temp, IDSC_RPTVALIDATE);
   rpt.StartReport(cs_temp.c_str(), GetCurFile().c_str());
 
-  TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
+  pws_os::Trace(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 
   UUIDList possible_aliases, possible_shortcuts;
   ItemListIter iter;
@@ -1928,7 +1930,7 @@ PWScore::Validate(stringT &status)
   possible_aliases.clear();
   possible_shortcuts.clear();
 
-  TRACE(_T("%s : End validation. %d entries processed\n"), 
+  pws_os::Trace(_T("%s : End validation. %d entries processed\n"), 
         PWSUtil::GetTimeStamp(), n + 1);
   rpt.EndReport();
 

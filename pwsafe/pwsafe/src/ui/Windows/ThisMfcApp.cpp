@@ -42,13 +42,14 @@
 #include "PWSRecentFileList.h"
 #include "corelib/PWSprefs.h"
 
+#include "PWPropertyPage.h"  // for finding current propertysheet:
+#include "MFCMessages.h"
+
+#include "pws_autotype/pws_at.h"
+
 #include "Shlwapi.h"
 
 #include <vector>
-// for finding current propertysheet:
-#include "PWPropertyPage.h"
-
-#include "MFCMessages.h"
 
 using namespace std;
 
@@ -58,10 +59,10 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static const TCHAR *UNIQUE_PWS_GUID =
-          _T("PasswordSafe-{3FE0D665-1AE6-49b2-8359-326407D56470}");
+#define UNIQUE_PWS_GUID _T("PasswordSafe-{3FE0D665-1AE6-49b2-8359-326407D56470}")
 
-const UINT ThisMfcApp::m_uiRegMsg = RegisterWindowMessage(UNIQUE_PWS_GUID);
+const UINT ThisMfcApp::m_uiRegMsg   = RegisterWindowMessage(UNIQUE_PWS_GUID);
+const UINT ThisMfcApp::m_uiWH_SHELL = RegisterWindowMessage(UNIQUE_PWS_SHELL);
 
 BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
   //  ON_COMMAND(ID_HELP, CWinApp::OnHelp)
@@ -81,7 +82,7 @@ ThisMfcApp::ThisMfcApp() :
   m_bUseAccelerator( true ),
 #endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
-  m_HotKeyPressed(false), m_hMutexOneInstance(NULL)
+  m_HotKeyPressed(false), m_hMutexOneInstance(NULL), m_AT_HK_module(NULL)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -116,6 +117,17 @@ ThisMfcApp::ThisMfcApp() :
 
 ThisMfcApp::~ThisMfcApp()
 {
+  if (m_AT_HK_module != NULL) {
+    // Autotype UnInitialise just in case - should have been done
+    // during the callback process.  It will probably return failed
+    // but we don't care.
+    m_autotype_ddl.pUnInit(m_autotype_ddl.hCBWnd);
+    BOOL brc = FreeLibrary(m_AT_HK_module);
+    TRACE(_T("ThisMfcApp::~ThisMfcApp - Free Autotype DLL: %s\n"),
+          brc == TRUE ? _T("OK") : _T("FAILED"));
+    m_AT_HK_module = NULL;
+  }
+
   delete m_TrayIcon;
   delete m_pMRU;
   delete m_mainmenu;
@@ -378,6 +390,31 @@ void ThisMfcApp::LoadLocalizedStuff()
         PWSUtil::GetTimeStamp(), cs_HelpPath);
 
   m_csHelpFile = cs_HelpPath;
+
+  // Support Autotype with Launch Browser and Execute String
+  // Try to load DLL to call back when window active for Autotype
+#if defined( _DEBUG ) || defined( DEBUG )
+  const CString pws_at_path_string = _T("%spws_at_D.dll");
+#else
+  const CString pws_at_path_string = _T("%spws_at.dll");
+#endif
+  cs_ResPath.Format(pws_at_path_string, cs_ExePath);
+  m_AT_HK_module = LoadLibrary(cs_ResPath);
+  if (m_AT_HK_module == NULL) {
+    // Better tell someone I suppose
+    AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
+  } else {
+    TRACE(_T("ThisMfcApp::LoadLocalizedStuff - AutoType DLL Loaded: OK\n"));
+    m_autotype_ddl.pInit  = (AT_PROC)GetProcAddress(m_AT_HK_module,
+					                         "AT_HK_Initialise");
+    TRACE(_T("ThisMfcApp::LoadLocalizedStuff - Found AT_HK_Initialise: %s\n"),
+               m_autotype_ddl.pInit != NULL ? _T("OK") : _T("FAILED"));
+
+    m_autotype_ddl.pUnInit = (AT_PROC)GetProcAddress(m_AT_HK_module,
+					                         "AT_HK_UnInitialise");
+    TRACE(_T("ThisMfcApp::LoadLocalizedStuff - Found AT_HK_UnInitialise: %s\n"),
+               m_autotype_ddl.pUnInit != NULL ? _T("OK") : _T("FAILED"));
+  }
 }
 
 bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)

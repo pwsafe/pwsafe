@@ -12,6 +12,8 @@
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
+#include "RUEList.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -22,10 +24,9 @@
 #include "resource3.h"  // String resources
 #endif
 
-#include "DboxMain.h"
-#include "RUEList.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/pwscore.h"
+#include "corelib/PWSAuxParse.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -175,7 +176,11 @@ void DboxMain::OnTrayBrowse(UINT nID)
   }
 
   if (!ci.IsURLEmpty()) {
-    LaunchBrowser(ci.GetURL().c_str());
+    StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci.GetAutoType(),
+                                  ci.GetGroup(), ci.GetTitle(), 
+                                  ci.GetUser(), ci.GetPassword(), 
+                                  ci.GetNotes());
+    LaunchBrowser(ci.GetURL().c_str(), sxAutotype);
     SetClipboardData(ci.GetPassword());
   }
   UpdateAccessTime(&ci);

@@ -1,0 +1,100 @@
+
+  The Execute String is parsed using the dollar as indicating the start of 
+  a variable. NO recursive substitution is performed.
+
+  Variables are specified as '$name' and are case sensitive.  The name must 
+  start with an alphabetic character and the remaining characters must be 
+  alphanumeric.
+
+  To use a variable followed by an alphanumeric character in the Execute 
+  String, enclose it in curly brackets e.g. '${name}string'.
+
+  To use a '$' in the string as normal text and not indicating that the 
+  following text is a variable name, escape it using a back-slash ('\') 
+  e.g. '\$text' becomes '$text' and is not treated as a variable called 'text'.
+
+  To use a back-slash before a '$' as a back-slash, escape it with a 
+  back-slash e.g.  '\\$name' becomes '\$name' in the resulting text and
+  '$name' is treated as a variable. A back-slash does not have to be escaped
+  unless it precedes a '$' indicating a following variable.
+
+  Valid formats:
+    'a' = alpha, 'x' = alphanumeric, 'n' = digits, '*' != alphanumeric,
+    '.' = any character
+  1. $axxxx*...... 
+  2. ${axxxx}.....
+  3. $axxxx[n]....
+  4. ${axxxx[n]}..
+  Index value 'n' in above can be preceded by '+' or '-' e.g. [-2] or [2] or [+2].
+  PWS treats an index that equates to zero as meaning the complete field.
+
+  The following variables are recognised (as of 20 Feb. 09):
+
+  Application related:
+    appdir      Directory containing the PWS application. See notes 1 & 2 below.
+
+  Current open database related:
+    dbdir       Directory of current open database. See notes 1 & 2 below.
+    fulldb      Full path, filename and extension of current open database.
+                See note 2 below.
+    dbname      Current open database filename
+    dbextn      Current open database extension
+
+  Current entry related:
+    g or group         Group (full tree structure back to root with groups 
+                       separated by dots)
+    G or GROUP         The group containing this entry only
+    t or title         Title
+    u or user          Username
+    p or password      Password
+    a or autotype      AutoType. NOT yet implemented. See Note 5 below.
+    url                URL
+    n or n[0]          The complete Notes field (also: notes or notes[0]). 
+                       See note 3 below.
+    n[i] or notes[i]   i'th line of the Notes field counting from the start, 
+                       i.e. i=1 is the first line, i=2 means the second line 
+                       etc. See note 4 below.
+    n[-i] or notes[-i] i'th line of the Notes field counting from the end, 
+                       i.e. i=1 is the last line, i=2 means the penultimate 
+                       line etc. See note 4 below.
+
+  Note 1: Directory values (appdir or dbdir) do not have an ending '\'.  
+          Remember to add this if you need it in your Execute String.
+  Note 2: The contents of variables (including directory and full path values)
+          may contain blanks. You may need to enclose the result in quotes in
+          your Execute String for correct execution.
+  Note 3: If the Notes field contains more than one line, it will include any
+          embedded CR or LF. This may cause issues when executed as CR and/or
+          LF will be taken as 'enter'.
+  Note 4: Any trailing CR and/or LF are removed from single lines selected from
+          the Notes field.
+  Note 5: Autotype is currently NOT implemented. If present in the Execute string
+          it will be ignored and removed from the string to be executed.
+          A planned update will allow this variable to be specified and the 
+          AutoType performed once the target window is active. Differing from 
+          other variables, this one will be able to take a value to override the
+          entry's current value. The format is expected to be ($autotype can 
+          replace $a in the following examples):
+          $a           Use current entry value
+          ${a}         Use current entry value
+          $a(value)    Use autotype string specified between the round brackets
+          ${a}(value)  Use autotype string specified between the round brackets
+
+  NOTE:   Be sure to add quotes around your string if required e.g. if your 
+          database directory contains spaces, to access a text file in it based
+          on your open database name, you would need the following (with quotes):
+          "$dbdir\\$dbname.txt"
+          Notice that the back-slash is escaped so that the '$dbname' is 
+          recognised as a variable.
+
+  On Windows, the normal substitution of enviornmental variables (specified as
+  %variable_name%) is performed. e.g. %windir%\notepad.exe becomes 
+  c:\Windows\notepad.exe (on my system anyway!).
+  Current values set in your environment can be determined by running 'cmd.exe'
+  and using the 'set' command.
+  Any unknown environmental variable is left unchanged in the execute string e.g.
+  %xyz%\notepad.exe remains as %xyz%\notepad.exe if variable 'xyz' is not set.
+  Windows environmental variables are not case sensitive.
+
+  After parsing, the resultant string is then 'executed' via ShellExecute.
+

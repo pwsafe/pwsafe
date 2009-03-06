@@ -20,7 +20,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -83,11 +83,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;..\..\bin\Release"
 				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -122,7 +122,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -186,12 +186,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib htmlhelp.lib"
 				ShowProgress="0"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;..\..\bin\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -229,7 +229,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -292,11 +292,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib msxml6.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(MSXML60SDKDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;;..\..\bin\Release"
 				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -324,6 +324,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cscript post_build.vbs"
 			/>
 		</Configuration>
 		<Configuration
@@ -331,7 +332,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -395,12 +396,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib libexpatwMT.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib htmlhelp.lib libexpatwMT.lib"
 				ShowProgress="0"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(ExpatDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(ExpatDir)\lib&quot;;..\..\bin\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -431,6 +432,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cscript post_build.vbs"
 			/>
 		</Configuration>
 		<Configuration
@@ -438,7 +440,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -502,12 +504,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib msxml6.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib htmlhelp.lib msxml6.lib"
 				ShowProgress="0"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(MSXML60SDKDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;;..\..\bin\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -538,6 +540,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cscript post_build.vbs"
 			/>
 		</Configuration>
 		<Configuration
@@ -545,7 +548,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -609,12 +612,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib xerces-c_static_3D.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib htmlhelp.lib xerces-c_static_3D.lib"
 				ShowProgress="0"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(XercesDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(XercesDir)\lib&quot;;..\..\bin\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -645,6 +648,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cscript post_build.vbs"
 			/>
 		</Configuration>
 		<Configuration
@@ -652,7 +656,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -715,11 +719,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib libexpatwMT.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib libexpatwMT.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(ExpatDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(ExpatDir)\lib&quot;;..\..\bin\Release"
 				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -747,6 +751,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cscript post_build.vbs"
 			/>
 		</Configuration>
 		<Configuration
@@ -754,7 +759,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -817,11 +822,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib msxml6.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib msxml6.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(MSXML60SDKDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;;..\..\bin\Release"
 				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				GenerateMapFile="true"
 				MapFileName="$(OutDir)\$(TargetName).map"
@@ -851,6 +856,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cscript post_build.vbs"
 			/>
 		</Configuration>
 		<Configuration
@@ -858,7 +864,7 @@
 			OutputDirectory="..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;.\UserVariables.vsprops"
+			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -921,11 +927,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="htmlhelp.lib corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib xerces-c_static_3.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib xerces-c_static_3.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\lib\$(ConfigurationName);$(HTMLWSDir)\lib;$(XercesDir)\lib"
+				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(XercesDir)\lib&quot;;..\..\bin\Release"
 				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -953,6 +959,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="cscript post_build.vbs"
 			/>
 		</Configuration>
 	</Configurations>

@@ -13,16 +13,18 @@
 #include "PWSrand.h"
 #include "PwsPlatform.h"
 #include "corelib.h"
+#include "StringXStream.h"
+#include "Util.h"
+
+#include "os/debug.h"
 #include "os/pws_tchar.h"
 #include "os/dir.h"
 
 #include <stdio.h>
 #include <sys/timeb.h>
 #include <time.h>
-#include "Util.h"
 #include <sstream>
 #include <iomanip>
-#include "StringXStream.h"
 
 using namespace std;
 
@@ -272,7 +274,7 @@ size_t _readcbc(FILE *fp,
   type = lengthblock[sizeof(int)]; // type is first byte after the length
 
   if (length < 0) { // sanity check
-    TRACE("_readcbc: Read negative length - aborting\n");
+    pws_os::Trace0(_T("_readcbc: Read negative length - aborting\n"));
     buffer = NULL;
     buffer_len = 0;
     trashMemory(lengthblock, BS);
@@ -280,7 +282,7 @@ size_t _readcbc(FILE *fp,
   }
 
   if ((file_len != 0 && length >= file_len)) {
-    TRACE("_readcbc: Read size larger than file length - aborting\n");
+    pws_os::Trace0(_T("_readcbc: Read size larger than file length - aborting\n"));
     buffer = NULL;
     buffer_len = 0;
     trashMemory(lengthblock, BS);

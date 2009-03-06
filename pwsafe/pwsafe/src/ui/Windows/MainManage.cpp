@@ -15,6 +15,7 @@
 #include "Shortcut.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/PWSdirs.h"
+#include "corelib/PWSAuxParse.h"
 
 // dialog boxen
 #include "DboxMain.h"

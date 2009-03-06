@@ -83,8 +83,8 @@ void CKeySend::NewSendChar(TCHAR c)
   input[1].ki.dwFlags |= KEYEVENTF_KEYUP;
 
   status = ::SendInput(2, input, sizeof(INPUT));
-  if (status != 1)
-    TRACE(_T("CKeySend::SendChar: SendInput failed\n"));
+  if (status != 2)
+    TRACE(_T("CKeySend::SendChar: SendInput failed status=%d\n"), status);
   ::Sleep(m_delay);
 }
 

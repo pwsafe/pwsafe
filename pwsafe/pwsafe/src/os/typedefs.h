@@ -96,8 +96,6 @@ typedef int HANDLE;
 // assorted conveniences:
 #define ASSERT(p) assert(p)
 #define VERIFY(p) if (!(p)) TRACE("VERIFY Failed")
-#define TRACE(...) // nothing, for now...
-#define TRACE0(...) // nothing, for now...
 #ifndef TRUE
 #define TRUE true
 #endif

@@ -15,9 +15,11 @@
 #include "DboxMain.h"
 #include "AddDlg.h"
 #include "PwFont.h"
+#include "ExpDTDlg.h"
+
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
-#include "ExpDTDlg.h"
+#include "corelib/PWSAuxParse.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -304,7 +306,10 @@ void CAddDlg::OnOK()
     //Check Execute string parses - don't substitute
     stringT errmsg;
     size_t st_column;
-    m_pDbx->GetExpandedString(m_executestring, NULL, errmsg, st_column);
+    bool bAutoType(false);
+    StringX sxAutotype(_T(""));
+    PWSAuxParse::GetExpandedString(m_executestring, _T(""), NULL, 
+       bAutoType, sxAutotype, errmsg, st_column);
     if (errmsg.length() > 0) {
       CString cs_title(MAKEINTRESOURCE(IDS_EXECUTESTRING_ERROR));
       CString cs_temp(MAKEINTRESOURCE(IDS_EXS_IGNOREORFIX));
