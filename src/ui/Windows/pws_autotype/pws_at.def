@@ -1,0 +1,5 @@
+LIBRARY	"pws_at"
+
+EXPORTS
+  AT_HK_Initialise
+  AT_HK_UnInitialise

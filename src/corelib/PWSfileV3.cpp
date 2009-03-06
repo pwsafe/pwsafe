@@ -14,6 +14,8 @@
 #include "PWSFilters.h"
 #include "PWSdirs.h"
 #include "corelib.h"
+
+#include "os/debug.h"
 #include "os/file.h"
 
 #include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
@@ -164,7 +166,7 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
   int utf8Len;
   status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
   if (!status)
-    TRACE(_T("ToUTF8(%s) failed\n"), data);
+    pws_os::Trace(_T("ToUTF8(%s) failed\n"), data);
   return WriteCBC(type, utf8, utf8Len);
 }
 
@@ -618,7 +620,7 @@ int PWSfileV3::ReadHeader()
           utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, pref);
           m_hdr.m_prefString = pref;
           if (!utf8status)
-            TRACE(_T("FromUTF8(m_prefString) failed\n"));
+            pws_os::Trace0(_T("FromUTF8(m_prefString) failed\n"));
         } else
           m_hdr.m_prefString = _T("");
         break;
@@ -631,7 +633,7 @@ int PWSfileV3::ReadHeader()
           m_hdr.m_displaystatus.push_back(v == TCHAR('1'));
         }
         if (!utf8status)
-          TRACE(_T("FromUTF8(m_displaystatus) failed\n"));
+          pws_os::Trace0(_T("FromUTF8(m_displaystatus) failed\n"));
         break;
 
       case HDR_LASTUPDATETIME: /* When last saved */
@@ -641,7 +643,7 @@ int PWSfileV3::ReadHeader()
           if (utf8 != NULL) utf8[utf8Len] = '\0';
             utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
             if (!utf8status)
-              TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
+              pws_os::Trace0(_T("FromUTF8(m_whenlastsaved) failed\n"));
             iStringXStream is(text);
             is >> hex >> m_hdr.m_whenlastsaved;
         } else if (utf8Len == 4) {
@@ -666,7 +668,7 @@ int PWSfileV3::ReadHeader()
             m_hdr.m_lastsavedby = uh.substr(0,ulen);
             m_hdr.m_lastsavedon = uh.substr(ulen);
           } else
-            TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
+            pws_os::Trace0(_T("FromUTF8(m_wholastsaved) failed\n"));
         }
         break;
 
@@ -675,7 +677,7 @@ int PWSfileV3::ReadHeader()
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         m_hdr.m_whatlastsaved = text;
         if (!utf8status)
-          TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
+          pws_os::Trace0(_T("FromUTF8(m_whatlastsaved) failed\n"));
         break;
 
       case HDR_LASTUPDATEUSER:
@@ -766,9 +768,9 @@ int PWSfileV3::ReadHeader()
 #ifdef _DEBUG
         stringT cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
-        TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
+        pws_os::Trace(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
         cs_timestamp.c_str(), fieldType, utf8Len, utf8Len);
-        PWSDebug::HexDump(utf8, utf8Len, cs_timestamp);
+        pws_os::HexDump(utf8, utf8Len, cs_timestamp);
 #endif
 #endif
         break;

@@ -14,9 +14,12 @@
 #include "StringX.h"
 #include "Fish.h"
 #include "PwsPlatform.h"
+#include "UTF8Conv.h"
+
+#include "os/debug.h"
 #include "os/typedefs.h"
 #include "os/mem.h"
-#include "UTF8Conv.h"
+
 #include <sstream>
 
 #define SaltLength 20
@@ -65,7 +68,7 @@ inline int getInt32(const unsigned char buf[4])
 #if defined(_DEBUG)
   if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
-    TRACE0( "Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n" );
+    pws_os::Trace0(_T("Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n"));
   }
 #endif
   return *(int *) buf;
@@ -75,7 +78,7 @@ inline int getInt32(const unsigned char buf[4])
   // if CPU is really little endian
   if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
-    TRACE0( "Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n" );
+    pws_os::Trace0(_T("Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n"));
   }
 #endif
   return (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24) );
@@ -95,7 +98,7 @@ inline void putInt32(unsigned char buf[4], const int val )
 #if defined(_DEBUG)
   if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
-    TRACE0( "Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n" );
+    pws_os::Trace0(_T("Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n"));
   }
 #endif
 #elif defined(PWS_BIG_ENDIAN)
@@ -108,7 +111,7 @@ inline void putInt32(unsigned char buf[4], const int val )
   // if CPU is really little endian
   if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
-    TRACE0( "Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n" );
+    pws_os::Trace0(_T("Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n"));
   }
 #endif
 #else

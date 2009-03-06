@@ -21,12 +21,27 @@
 #include "PwFont.h"
 #include "MFCMessages.h"
 #include "version.h"
+// dialog boxen
+#include "DboxMain.h"
+#include "TryAgainDlg.h"
+#include "PasskeyEntry.h"
+#include "ExpPWListDlg.h"
+#include "GeneralMsgBox.h"
+#include "InfoDisplay.h"
+
+// widget override?
+#include "SysColStatic.h"
 
 #include "corelib/corelib.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
+#include "corelib/PWSFilters.h"
+#include "corelib/PWSAuxParse.h"
+
 #include "os/file.h"
+
+#include "pws_autotype/pws_at.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -36,27 +51,21 @@
 #include "resource3.h"  // String resources
 #endif
 
-// dialog boxen
-#include "DboxMain.h"
-
-#include "TryAgainDlg.h"
-#include "PasskeyEntry.h"
-#include "ExpPWListDlg.h"
-#include "GeneralMsgBox.h"
-#include "InfoDisplay.h"
-#include "corelib/PWSFilters.h"
-
-// widget override?
-#include "SysColStatic.h"
-
 #ifdef POCKET_PC
 #include "pocketpc/PocketPC.h"
 #include "ShowPasswordDlg.h"
 #endif
 
+#include "psapi.h"    // For EnumProcesses
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
 #include <bitset>
+
+#if _MSC_VER < 1500
+#include <winable.h>  // For BlockInput
+#else
+#include <winuser.h>  // For BlockInput
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -124,7 +133,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
   m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
-  m_currentfilterpool(FPOOL_LAST)
+  m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
+  m_AutoType(_T(""))
 {
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
@@ -140,6 +150,7 @@ DboxMain::DboxMain(CWnd* pParent)
 DboxMain::~DboxMain()
 {
   m_core.UnRegisterOnListModified();
+
   ::DestroyIcon(m_hIcon);
   ::DestroyIcon(m_hIconSm);
 
@@ -154,10 +165,71 @@ LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
   return (LRESULT)app.m_uiRegMsg;
 }
 
+LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam)
+{
+  // We are only being called for HSHELL_WINDOWACTIVATED
+  // wParam = Process ID
+  // lParam = Process Handle
+
+  BOOL brc;
+  if (!m_bDoAutoType || (m_bDoAutoType && m_AutoType.empty())) {
+    // Should never happen as we should not be active if not doing AutoType!
+    brc = app.m_autotype_ddl.pUnInit(app.m_autotype_ddl.hCBWnd);
+    TRACE(_T("DboxMain::OnWH_SHELL_CallBack - Error - AT_HK_UnInitialise : %s\n"),
+          brc == TRUE ? _T("OK") : _T("FAILED"));
+    // Reset Autotype
+    m_bDoAutoType = false;
+    m_AutoType.clear();
+    // Reset Keyboard/Mouse Input
+    TRACE(_T("DboxMain::OnWH_SHELL_CallBack - BlockInput reset\n"));
+#if _MSC_VER < 1500
+    ::BlockInput(false);
+#else
+    BlockInput(false);
+#endif
+    return FALSE;
+  }
+
+  // Deactivate us ASAP
+  brc = app.m_autotype_ddl.pUnInit(app.m_autotype_ddl.hCBWnd);
+  TRACE(_T("DboxMain::OnWH_SHELL_CallBack - AT_HK_UnInitialise after callback : %s\n"),
+         brc == TRUE ? _T("OK") : _T("FAILED"));
+
+  // Wait for time to do Autotype - if we can.
+  bool bFoundProcess(false);
+  // Check if process still there.
+  if (wParam != 0 && lParam != 0) {
+    DWORD dwProcesses[1024], dwBytesNeeded;
+    if (!EnumProcesses(dwProcesses, sizeof(dwProcesses), &dwBytesNeeded)) {
+      for (int i = 0; i < (int)(dwBytesNeeded / sizeof(DWORD)); i++) {
+        if (dwProcesses[i] == (DWORD)wParam) {
+          bFoundProcess = true;
+          break;
+        }
+      }
+    }
+  }
+
+  if (bFoundProcess)
+    WaitForInputIdle((HANDLE)lParam, INFINITE);
+  else
+    Sleep(2000);
+
+  // Do Autotype!  Note: All fields were substituted before getting here
+  DoAutoType(m_AutoType);
+
+  // Reset AutoType
+  m_bDoAutoType = false;
+  m_AutoType.clear();
+
+  return 0L;
+}
+
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   //{{AFX_MSG_MAP(DboxMain)
 
   ON_REGISTERED_MESSAGE(app.m_uiRegMsg, OnAreYouMe)
+  ON_REGISTERED_MESSAGE(app.m_uiWH_SHELL, OnWH_SHELL_CallBack)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUTOOLBAR_START, ID_MENUTOOLBAR_END, OnUpdateMenuToolbar)
 
   // File Menu
@@ -842,6 +914,10 @@ BOOL DboxMain::OnInitDialog()
     SelectFirstEntry();
   }
 
+  if (app.m_AT_HK_module != NULL && 
+      app.m_autotype_ddl.pInit != NULL && app.m_autotype_ddl.pUnInit != NULL) {
+    app.m_autotype_ddl.hCBWnd = this->m_hWnd;
+  }
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -999,7 +1075,11 @@ void DboxMain::OnBrowse()
     }
 
     if (!ci->IsURLEmpty()) {
-      LaunchBrowser(ci->GetURL().c_str());
+      StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci->GetAutoType(),
+                                    ci->GetGroup(), ci->GetTitle(), 
+                                    ci->GetUser(), ci->GetPassword(), 
+                                    ci->GetNotes());
+      LaunchBrowser(ci->GetURL().c_str(), sxAutotype);
       SetClipboardData(ci->GetPassword());
       UpdateAccessTime(ci_original);
     }

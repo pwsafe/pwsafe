@@ -8,12 +8,13 @@
 
 #include "Report.h"
 #include "Util.h"
-#include "Debug.h"
 #include "corelib.h"
+#include "StringX.h"
+
 #include "os/dir.h"
+#include "os/debug.h"
 #include "os/file.h"
 #include "os/utf8conv.h"
-#include "StringX.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -84,7 +85,7 @@ bool CReport::SaveToDisk()
   stringT path(m_csDataBase);
   stringT drive, dir, file, ext;
   if (!pws_os::splitpath(path, drive, dir, file, ext)) {
-    PWSDebug::IssueError(_T("StartReport: Finding path to database"));
+    pws_os::IssueError(_T("StartReport: Finding path to database"));
     return false;
   }
 
@@ -92,7 +93,7 @@ bool CReport::SaveToDisk()
          drive.c_str(), dir.c_str(), m_tcAction.c_str());
 
   if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == NULL) {
-    PWSDebug::IssueError(_T("StartReport: Opening log file"));
+    pws_os::IssueError(_T("StartReport: Opening log file"));
     return false;
   }
 
@@ -154,7 +155,7 @@ bool CReport::SaveToDisk()
 
       // Re-open file
       if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
-        PWSDebug::IssueError(_T("StartReport: Opening log file"));
+        pws_os::IssueError(_T("StartReport: Opening log file"));
         return false;
       }
     }
@@ -202,7 +203,7 @@ bool CReport::SaveToDisk()
 
     // Re-open file
     if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == NULL) {
-      PWSDebug::IssueError(_T("StartReport: Opening log file"));
+      pws_os::IssueError(_T("StartReport: Opening log file"));
       return false;
     }
   }

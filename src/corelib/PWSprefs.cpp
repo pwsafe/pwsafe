@@ -6,9 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #include "PWSprefs.h"
-#include "os/typedefs.h"
-#include "os/pws_tchar.h"
-#include "os/file.h"
 #include "corelib.h"
 #include "PWSfile.h"
 #include "SysInfo.h"
@@ -17,6 +14,12 @@
 #include "PWSdirs.h"
 #include "VerifyFormat.h"
 #include "StringXStream.h"
+
+#include "os/typedefs.h"
+#include "os/debug.h"
+#include "os/pws_tchar.h"
+#include "os/file.h"
+
 #ifdef _WIN32
 #include <AfxWin.h> // for AfxGetApp()
 #include <LMCons.h> // for UNLEN
@@ -726,7 +729,7 @@ void PWSprefs::InitializePreferences()
       break;
   }
   if (!cs_msg.empty())
-    TRACE(cs_msg.c_str());
+    pws_os::Trace0(cs_msg.c_str());
 
   // Check someone has introduced a conflict & silently resolve.
   if ((m_intValues[DoubleClickAction] == DoubleClickCopyPasswordMinimize) &&
@@ -1359,17 +1362,17 @@ void PWSprefs::DeleteOldPrefs()
                            KEY_ALL_ACCESS,
                            &hSubkey);
   if (dw != ERROR_SUCCESS) {
-    TRACE(_T("PWSprefs::DeleteOldPrefs: RegOpenKeyEx failed\n"));
+    pws_os::Trace0(_T("PWSprefs::DeleteOldPrefs: RegOpenKeyEx failed\n"));
     return;
   }
 
   dw = ::AfxGetApp()->DelRegTree(hSubkey, OldSubKey.c_str());
   if (dw != ERROR_SUCCESS) {
-    TRACE(_T("PWSprefs::DeleteOldPrefs: DelRegTree failed\n"));
+    pws_os::Trace0(_T("PWSprefs::DeleteOldPrefs: DelRegTree failed\n"));
   }
   dw = ::RegCloseKey(hSubkey);
   if (dw != ERROR_SUCCESS) {
-    TRACE(_T("PWSprefs::DeleteOldPrefs: RegCloseKey failed\n"));
+    pws_os::Trace0(_T("PWSprefs::DeleteOldPrefs: RegCloseKey failed\n"));
   }
 #endif /* _WIN32 */
 }

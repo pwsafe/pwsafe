@@ -133,7 +133,6 @@ private:
   static CString CS_SETFILTERS, CS_CLEARFILTERS, CS_CREATESHORTCUT, CS_GOTOBASEENTRY;
   static CString CS_DUPLICATEENTRY, CS_COPYPASSWORD, CS_COPYUSERNAME, CS_COPYNOTESFLD;
   static CString CS_AUTOTYPE, CS_EXECUTE;
-  static const CString DEFAULT_AUTOTYPE;
 
 public:
   // default constructor
@@ -223,7 +222,7 @@ public:
   void SetValidate(bool state) {m_bValidate = state;}
   void MakeRandomPassword(StringX& password, PWPolicy &pwp);
   bool SetPasswordPolicy(PWPolicy &pwp);
-  BOOL LaunchBrowser(const CString &csURL);
+  BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype);
   void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
@@ -273,12 +272,10 @@ public:
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
-  StringX GetAutoTypeString(const StringX AutoCmd, 
-                            const StringX group, const StringX title, const StringX user, 
-                            const StringX pwd, const StringX notes);
+  void DoAutoType(const StringX &sxAutotype, const StringX group = _T(""), 
+                  const StringX title = _T(""), const StringX user = _T(""), 
+                  const StringX pwd = _T(""), const StringX notes = _T(""));
   void UpdateLastClipboardAction(const int iaction);
-  StringX GetExpandedString(StringX cs_Execute_String, CItemData *ci,
-                            stringT &errmsg, StringX::size_type &st_column);
   void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
 
   //{{AFX_DATA(DboxMain)
@@ -298,6 +295,9 @@ public:
   //}}AFX_DATA
 
   CRUEList m_RUEList;   // recent entry lists
+
+  bool m_bDoAutoType;
+  StringX m_AutoType;
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -475,6 +475,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(DboxMain)
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
+  afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
   virtual BOOL OnInitDialog();
   afx_msg void OnUpdateMenuToolbar(CCmdUI *pCmdUI);
   afx_msg void OnDestroy();
@@ -644,19 +645,6 @@ private:
   void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID);
   void SetUpMenuStrings(CMenu *pPopupMenu);
   
-  struct st_ExecuteStringTokens {
-    StringX name;
-    StringX sindex;
-    int index;
-    bool is_variable;
-    bool has_brackets;
-  };
-
-  int ParseExecuteString(const StringX sInputString, 
-                         std::vector<st_ExecuteStringTokens> &v_estokens, 
-                         stringT &errmsg, StringX::size_type &st_column);
-  int ProcessIndex(const StringX &sIndex, int &var_index, StringX::size_type &st_column);
-
   static const struct UICommandTableEntry {
     UINT ID;
     enum {InOpenRW=0, InOpenRO=1, InEmpty=2, InClosed=3, bOK_LAST};

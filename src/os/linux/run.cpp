@@ -10,31 +10,23 @@
  * \file Linux-specific implementation of run.h - DUMMY!
  */
 
-#include <stdlib.h>
-
 #include "../run.h"
 
-StringX pws_os::getruncmd(const StringX first_part, bool &bfound)
+StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
 {
-	// Stub! (not sure we need more than this on Linux)
-	return first_part;
+	// Stub!
+	return first_parm;
 }
 
-bool pws_os::runcmd(const StringX execute_string)
+bool pws_os::runcmd(const StringX &execute_string, const StringX &sxAutotype)
 {
-#ifndef UNICODE
-  const char *exec_str = execute_string.c_str();
-#else
-  size_t slen = wcstombs(NULL, execute_string.c_str(), 0) + 1;
-  if (slen <= 1)
-    return false;
-  char *exec_str = new char[slen];
-  wcstombs(exec_str, execute_string.c_str(), slen);
-#endif
-  int status = system(exec_str);
-  if (status == -1) // e.g., fork() failed
-    return false;
-  if (!WIFEXITED(status)) // child didn't terminate normally
-    return false;
-  return (WEXITSTATUS(status) == 0);
+	// Stub!
+	return false;
+}
+
+bool pws_os::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
+                      const StringX &sxAutotype);
+{
+	// Stub!
+	return false;
 }

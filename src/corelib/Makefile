@@ -18,7 +18,7 @@ NOTSRC          = 					SAXHandlers.cpp \
 LIBSRC          = sha1.cpp sha256.cpp BlowFish.cpp hmac.cpp \
 		              TwoFish.cpp PWCharPool.cpp PWSdirs.cpp \
 	                PWSrand.cpp SysInfo.cpp Util.cpp StringX.cpp \
-									ItemField.cpp UUIDGen.cpp Debug.cpp PWSprefs.cpp \
+									ItemField.cpp UUIDGen.cpp PWSprefs.cpp \
 									ItemData.cpp PWSfile.cpp PWHistory.cpp \
 									PWSfileV1V2.cpp PWSfileV3.cpp \
 									PWSFilters.cpp \

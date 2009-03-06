@@ -262,3 +262,18 @@ BEGIN
   IDSC_CANTVALIDATEXML     "Missing XSD File"
   IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
 END
+
+STRINGTABLE
+BEGIN
+  IDSC_EXS_INPUTEMPTY      "Input string is empty"
+  IDSC_EXS_VARNAMEEMPTY    "Variable name is empty"
+  IDSC_EXS_FIRSTNOTALPHA   "First character of variable name must be alphabetic"
+  IDSC_EXS_VARNAMEINVALID  "Variable name must be alphanumeric"
+  IDSC_EXS_MISSINGCURLYBKT "Missing ending curly bracket for variable name"
+  IDSC_EXS_MISSINGSQUAREBKT "Missing ending square bracket for index value"
+  IDSC_EXS_INVALIDINDEX    "Index is invalid or missing"
+  IDSC_EXS_INDEXNOTNUMERIC "Index not numeric"
+  IDSC_EXS_UNMATCHEDQUOTES "There are unmatched quotes in the execute string"
+  IDSC_EXS_INVALIDBRACKETS "Characters present between end of index ']' and '}'"
+  IDSC_EXS_MISSINGROUNDBKT "Missing ending round bracket for Autotype value"
+END

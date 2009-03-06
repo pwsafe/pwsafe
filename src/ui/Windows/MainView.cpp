@@ -30,19 +30,30 @@
 #include "PWFont.h"
 #include "InfoDisplay.h"
 #include "ViewReport.h"
+
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
 #include "corelib/corelib.h"
 #include "corelib/PWHistory.h"
-#include "corelib/Debug.h"
-#include "os/dir.h"
 #include "corelib/StringXStream.h"
+
+#include "os/Debug.h"
+#include "os/dir.h"
+#include "os/run.h"
+
+#include "pws_autotype/pws_at.h"
 
 #include "commctrl.h"
 #include <shlwapi.h>
 #include <vector>
 #include <algorithm>
 #include <sys/stat.h>
+
+#if _MSC_VER < 1500
+#include <winable.h>  // For BlockInput
+#else
+#include <winuser.h>  // For BlockInput
+#endif
 
 using namespace std;
 
@@ -301,7 +312,7 @@ void DboxMain::setupBars()
 
     statustext[CPWStatusBar::SB_CLIPBOARDACTION] = IDS_BLANK;
     // Set up Configuration source indicator (debug only)
-#ifdef DEBUG
+#if defined( _DEBUG ) || defined( DEBUG )
     statustext[CPWStatusBar::SB_CONFIG] = PWSprefs::GetInstance()->GetConfigIndicator();
 #endif /* DEBUG */
     // Set up the rest - all but one empty as pane now re-sized according to contents
@@ -2015,7 +2026,7 @@ void DboxMain::UpdateSystemTray(const STATE s)
   }
 }
 
-BOOL DboxMain::LaunchBrowser(const CString &csURL)
+BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype)
 {
   CString theURL(csURL);
 
@@ -2052,38 +2063,38 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL)
   int altReplacements = theURL.Replace(_T("[alt]"), _T(""));
   int alt2Replacements = (theURL.Replace(_T("[ssh]"), _T("")) +
                           theURL.Replace(_T("{alt}"), _T("")));
+  int autotypeReplacements = theURL.Replace(_T("[autotype]"), _T(""));
 
   if (alt2Replacements <= 0 && !isMailto && theURL.Find(_T("://")) == -1)
     theURL = _T("http://") + theURL;
 
-  CString csAltBrowser(PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::AltBrowser).c_str());
+  StringX sxAltBrowser(PWSprefs::GetInstance()->
+                       GetPref(PWSprefs::AltBrowser));
   bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) &&
-                        !csAltBrowser.IsEmpty());
+                        !sxAltBrowser.empty());
 
-  SHELLEXECUTEINFO si;
-  ZeroMemory(&si, sizeof(si));
-  si.cbSize = sizeof(SHELLEXECUTEINFO);
-  si.nShow = SW_SHOWNORMAL;
-
+  StringX sxFile, sxParameters(_T(""));
   if (!useAltBrowser) {
-    si.lpFile = theURL;
+    sxFile = theURL;
   } else { // alternate browser specified, invoke w/optional args
-    CString csCmdLineParms(PWSprefs::GetInstance()->
-                           GetPref(PWSprefs::AltBrowserCmdLineParms).c_str());
+    sxFile = sxAltBrowser;
+    StringX sxCmdLineParms(PWSprefs::GetInstance()->
+                           GetPref(PWSprefs::AltBrowserCmdLineParms));
 
-    if (!csCmdLineParms.IsEmpty())
-      theURL = csCmdLineParms + _T(" ") + theURL;
-    si.lpFile = csAltBrowser;
-    si.lpParameters = theURL;
+    if (!sxCmdLineParms.empty())
+      sxParameters = sxCmdLineParms + StringX(_T(" ")) + StringX(theURL);
+    else
+      sxParameters = StringX(theURL);
   }
 
-  BOOL shellExecStatus = ::ShellExecuteEx(&si);
-  if (shellExecStatus != TRUE) {
+  bool rc = pws_os::issuecmd(sxFile, sxParameters, 
+                             autotypeReplacements > 0 ? sxAutotype : _T(""),
+                             app.m_autotype_ddl);
+
+  if (!rc) {
     AfxMessageBox(errID, MB_ICONSTOP);
-    return FALSE;
   }
-  return TRUE;
+  return rc ? TRUE : FALSE;
 }
 
 void DboxMain::SetColumns()
@@ -2699,7 +2710,7 @@ bool DboxMain::GetDriveAndDirectory(const StringX &cs_infile, CString &cs_drive,
 
   pws_os::splitpath(applicationpath, appdrive, appdir, file, ext);
   if (!pws_os::splitpath(inpath, drive, dir, file, ext)) {
-    PWSDebug::IssueError(_T("View Report: Error finding path to database"));
+    pws_os::IssueError(_T("View Report: Error finding path to database"));
     return false;
   }
 

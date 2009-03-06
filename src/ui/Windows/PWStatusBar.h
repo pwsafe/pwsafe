@@ -15,7 +15,7 @@ class CPWStatusBar : public CStatusBar
   DECLARE_DYNAMIC(CPWStatusBar)
 
   enum {SB_DBLCLICK = 0, SB_CLIPBOARDACTION,
-#ifdef DEBUG
+#if defined( _DEBUG ) || defined( DEBUG )
         SB_CONFIG,
 #endif
         SB_MODIFIED, SB_READONLY, SB_NUM_ENT, SB_FILTER,

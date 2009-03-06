@@ -26,6 +26,8 @@ ability to override this and showing the notes by right-click context
 menu.
 [] Add new field 'Execute String' to allow commands etc. to be executed
 via Ctrl+E or menu.  See help for details.
+[] Support AutoType with 'Browse to URL' and new 'Execute String' functions.
+See help for details.
 
 Bugs fixed in 3.16.1
 ====================

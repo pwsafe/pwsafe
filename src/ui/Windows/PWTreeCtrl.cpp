@@ -19,11 +19,14 @@
 #include "DboxMain.h"
 #include "DDSupport.h"
 #include "InfoDisplay.h"
-#include "corelib/ItemData.h"
 #include "SecString.h"
+#include "SMemFile.h"
+
+#include "corelib/ItemData.h"
 #include "corelib/Util.h"
 #include "corelib/Pwsprefs.h"
-#include "SMemFile.h"
+
+#include "os/debug.h"
 
 using namespace std;
 
@@ -1531,7 +1534,7 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CSecStri
   CString cs_timestamp;
   cs_timestamp = PWSUtil::GetTimeStamp();
   TRACE(_T("%s: Drop data: length %d/0x%04x, value:\n"), cs_timestamp, inLen, inLen);
-  PWSUtil::HexDump(in_buffer, inLen, cs_timestamp);
+  pws_os::HexDump(in_buffer, inLen, cs_timestamp);
 #endif /* DUMP_DATA */
 
   if (inLen <= 0)
@@ -2037,7 +2040,7 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
   CString cs_timestamp = PWSUtil::GetTimeStamp();
   TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp,
         dwBufLen, dwBufLen);
-  PWSUtil::HexDump(lpDataBuffer, dwBufLen, cs_timestamp);
+  pws_os::HexDump(lpDataBuffer, dwBufLen, cs_timestamp);
 #endif /* DUMP_DATA */
 
   BOOL retval(FALSE);

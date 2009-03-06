@@ -22,7 +22,7 @@ class CEditDlg : public CPWDialog
 {
 public:
   // default constructor
-  CEditDlg(CItemData *ci, CWnd* pParent = NULL);
+  CEditDlg(CItemData *ci, const StringX currentDB, CWnd* pParent = NULL);
   virtual ~CEditDlg();
 
   enum { IDD = IDD_EDIT };
@@ -33,6 +33,7 @@ public:
   int m_ibasedata;
   uuid_array_t m_base_uuid;
   PWPolicy m_pwp;
+  StringX m_currentDB;
 
   void ShowPassword();
   void HidePassword();

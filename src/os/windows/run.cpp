@@ -14,15 +14,19 @@
 #include <shellapi.h>
 
 #include "../run.h"
+#include "../debug.h"
 #include "../dir.h"
 #include "../env.h"
 #include "../file.h"
 #include "../utf8conv.h"
 
+#include "../../ui/Windows/pws_autotype/pws_at.h"
+
 #include <vector>
 #include <algorithm>
 
-bool pws_os::runcmd(const StringX execute_string)
+bool pws_os::runcmd(const StringX &execute_string, const StringX &sxAutotype,
+                    const st_autotype_ddl &autotype_ddl)
 {
   // Get first parameter either enclosed by quotes or delimited by a space
   StringX full_string(execute_string), first_part(_T("")), the_rest(_T(""));
@@ -81,28 +85,57 @@ bool pws_os::runcmd(const StringX execute_string)
 
   first_part = pws_os::getruncmd(first_part, bfound);
 
+  bool rc;
+  if (bfound)
+    rc = issuecmd(first_part, the_rest, sxAutotype, autotype_ddl);
+  else
+    rc = issuecmd(full_string, _T(""), sxAutotype, autotype_ddl);
+
+  return rc;
+}
+
+bool pws_os::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
+                      const StringX &sxAutotype,
+                      const st_autotype_ddl &autotype_ddl)
+{
   SHELLEXECUTEINFO si;
   ZeroMemory(&si, sizeof(si));
   si.cbSize = sizeof(SHELLEXECUTEINFO);
-  si.nShow = SW_SHOW;
+  si.nShow = SW_SHOWNORMAL;
   si.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_DOENVSUBST;
 
-  if (bfound) {
-    si.lpFile = first_part.c_str();
-    si.lpParameters = the_rest.c_str();
-  } else {
-    si.lpFile = full_string.c_str();
+  si.lpFile = sxFile.c_str();
+  if (!sxParameters.empty()) {
+    si.lpParameters = sxParameters.c_str();
+  }
+
+  BOOL bAT_init(FALSE);
+
+  if (!sxAutotype.empty()) {
+    if (autotype_ddl.pInit != NULL && autotype_ddl.pUnInit != NULL &&
+        autotype_ddl.hCBWnd != NULL) {
+      // OK - try and make it tell us!  Won't if another instance of
+      // PWS is doing this at exactly the same time - silly user!
+      bAT_init = autotype_ddl.pInit(autotype_ddl.hCBWnd);
+      pws_os::Trace(_T("pws_os::issuecmd - AT_HK_Initialise: %s\n"),
+                bAT_init == TRUE ? _T("OK") : _T("FAILED"));
+    }
   }
 
   BOOL shellExecStatus = ::ShellExecuteEx(&si);
   if (shellExecStatus != TRUE) {
     // ShellExecute writes its own message on failure!
+    if (bAT_init) {
+      bAT_init = autotype_ddl.pUnInit(autotype_ddl.hCBWnd);
+      pws_os::Trace(_T("pws_os::issuecmd - AT_HK_UnInitialise: %s\n"),
+            bAT_init == TRUE ? _T("OK") : _T("FAILED"));
+    }
     return false;
   }
   return true;
 }
 
-StringX pws_os::getruncmd(const StringX first_part, bool &bfound)
+StringX pws_os::getruncmd(const StringX sxFile, bool &bfound)
 {
   // 1. If first parameter is in quotes - assume fully qualified - don't search.
   // 2. If first parameter starts with '%, assume it is going to be replaced by the
@@ -115,7 +148,7 @@ StringX pws_os::getruncmd(const StringX first_part, bool &bfound)
   std::vector<StringX> vpaths;
   std::vector<StringX> vextns;
 
-  StringX full_pgm(first_part), sx_cwd;
+  StringX full_pgm(sxFile), sx_cwd;
   StringX sx_temp, sx_dirs, sx_extns;
 
   stringT path, drive, dir, fname, extn;

@@ -250,9 +250,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
 /* #ifdef _DEBUG
             stringT cs_timestamp;
             cs_timestamp = PWSUtil::GetTimeStamp();
-            TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n",
+            pws_os::Trace(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n",
             cs_timestamp, m_ctype, m_fieldlen, m_fieldlen);
-            PWSDebug::HexDump(m_pfield, m_fieldlen, cs_timestamp);
+            pws_os::HexDump(m_pfield, m_fieldlen, cs_timestamp);
 #endif /* DEBUG */
           } else {
             m_bDatabaseHeaderErrors = true;
@@ -628,10 +628,10 @@ void XMLFileHandlers::AddEntries()
           /* #ifdef _DEBUG
           stringT cs_timestamp;
           cs_timestamp = PWSUtil::GetTimeStamp();
-          TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n",
+          pws_os::Trace(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n",
           cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username,
           unkrfe.uc_Type, (int)unkrfe.st_length, (int)unkrfe.st_length);
-          PWSDebug::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
+          pws_os::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
           #endif /* DEBUG */
           tempitem.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
       }

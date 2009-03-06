@@ -12,9 +12,7 @@
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
-#include "corelib/pwsprefs.h"
 #include "DDSupport.h"
-//#include "StringXStream.h"
 
 // dialog boxen
 #include "DboxMain.h"
@@ -27,6 +25,9 @@
 #include "ClearQuestionDlg.h"
 #include "CreateShortcutDlg.h"
 #include "PasswordSubsetDlg.h"
+
+#include "corelib/pwsprefs.h"
+#include "corelib/PWSAuxParse.h"
 
 #include "os/dir.h"
 #include "os/run.h"
@@ -44,9 +45,9 @@
  */
  
 #if _MSC_VER < 1500
-#include <winable.h>
+#include <winable.h>  // For BlockInput
 #else
-#include <winuser.h>
+#include <winuser.h>  // For BlockInput
 #endif
 
 #ifdef _DEBUG
@@ -600,7 +601,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
   // Need to take care that we handle a rebuilt list.
   CItemData editedItem(*ci);
 
-  CEditDlg dlg_edit(&editedItem, this);
+  CEditDlg dlg_edit(&editedItem, m_core.GetCurFile(), this);
 
   if (pcore->GetUseDefUser())
     dlg_edit.m_defusername = pcore->GetDefUsername();
@@ -1220,15 +1221,11 @@ void DboxMain::OnAutoType()
   }
 }
 
-const CString DboxMain::DEFAULT_AUTOTYPE = _T("\\u\\t\\p\\n");
-
 void DboxMain::AutoType(const CItemData &ci)
 {
   StringX AutoCmd = ci.GetAutoType();
   StringX user(ci.GetUser());
   StringX group, title, pwd, notes;
-  std::vector<StringX> notes_lines;
-  StringX::size_type index;
 
   uuid_array_t base_uuid, entry_uuid;
   CItemData::EntryType entrytype = ci.GetEntryType();
@@ -1258,46 +1255,6 @@ void DboxMain::AutoType(const CItemData &ci)
     notes = ci.GetNotes();
   }
 
-  // No recursive substitution (e.g. \p or \u), although '\t' will be replaced by a tab
-  if (!notes.empty()) {
-    // Use \n and \r to tokenise this line
-    StringX::size_type start(0), end(0);
-    const StringX delim = _T("\r\n");
-    StringX line;
-    while (end != StringX::npos) {
-      end = notes.find(delim, start);
-      line = (notes.substr(start, (end == StringX::npos) ? StringX::npos : end - start));
-      index = 0;
-      for (;;) {
-        index = line.find(_T("\\t"), index);
-        if (index == line.npos)
-          break;
-        line.replace(index, 2, _T("\t"));
-        index += 1;
-      }
-      notes_lines.push_back(line);
-      start = ((end > (StringX::npos - delim.size()))
-                          ? StringX::npos : end + delim.size());
-    }
-    // Now change '\n' to '\r' in the complete notes field
-    index = 0;
-    for (;;) {
-      index = notes.find(_T("\r\n"), index);
-      if (index == notes.npos)
-        break;
-      notes.replace(index, 2, _T("\r"));
-      index += 1;
-    }
-    index = 0;
-    for (;;) {
-      index = notes.find(_T("\\t"), index);
-      if (index == notes.npos)
-        break;
-      notes.replace(index, 2, _T("\t"));
-      index += 1;
-    }
-  }
-
   // If empty, try the database default
   if (AutoCmd.empty()) {
     AutoCmd = PWSprefs::GetInstance()->
@@ -1315,30 +1272,6 @@ void DboxMain::AutoType(const CItemData &ci)
     }
   }
 
-  CKeySend ks;
-  // Turn off CAPSLOCK
-  bool bCapsLock = false;
-  if (GetKeyState(VK_CAPITAL)) {
-    bCapsLock = true;
-    ks.SetCapsLock(false);
-  }
-
-  StringX tmp(_T(""));
-  TCHAR curChar;
-  const int N = AutoCmd.length();
-  ks.ResetKeyboardState();
-
-#if _MSC_VER < 1500
-  ::BlockInput(true);
-#else
-  BlockInput(true);
-#endif
-
-  // Note that minimizing the window before calling ci.Get*()
-  // will cause garbage to be read if "lock on minimize" selected,
-  // since that will clear the data [Bugs item #1026630]
-  // (this is why we read user & pwd before actual use)
-
   // Rules are ("Minimize on Autotype" takes precedence):
   // 1. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
   //    not restore it (previous default action - but a pain if locked
@@ -1355,15 +1288,106 @@ void DboxMain::AutoType(const CItemData &ci)
   else
     ShowWindow(SW_HIDE);
 
+  DoAutoType(AutoCmd, group, title, user, pwd, notes);
+
+  // If we hid it, now show it
+  if (bMinOnAuto)
+    return;
+
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
+    SetWindowPos(&wndTopMost, 0, 0, 0, 0,
+                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+  } else {
+    SetWindowPos(&wndBottom, 0, 0, 0, 0,
+                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+  }
+}
+
+void DboxMain::DoAutoType(const StringX &sx_autotype, const StringX sx_group, 
+                          const StringX sx_title, const StringX sx_user,
+                          const StringX sx_pwd, const StringX sx_notes)
+{
+  StringX tmp(_T(""));
+  StringX sxnotes(sx_notes);
+  TCHAR curChar;
+  const int N = sx_autotype.length();
+  CKeySend ks;
+  bool bCapsLock = false;
+  std::vector<StringX> vsx_notes_lines;
+  StringX::size_type index;
+
+  // No recursive substitution (e.g. \p or \u), 
+  // although '\t' will be replaced by a tab
+  if (!sxnotes.empty()) {
+    // Use \n and \r to tokenise this line
+    StringX::size_type start(0), end(0);
+    const StringX delim = _T("\r\n");
+    StringX line;
+    while (end != StringX::npos) {
+      end = sxnotes.find(delim, start);
+      line = (sxnotes.substr(start, 
+                    (end == StringX::npos) ? StringX::npos : end - start));
+      index = 0;
+      for (;;) {
+        index = line.find(_T("\\t"), index);
+        if (index == line.npos)
+          break;
+        line.replace(index, 2, _T("\t"));
+        index += 1;
+      }
+      vsx_notes_lines.push_back(line);
+      start = ((end > (StringX::npos - delim.size()))
+                          ? StringX::npos : end + delim.size());
+    }
+    // Now change '\n' to '\r' in the complete notes field
+    index = 0;
+    for (;;) {
+      index = sxnotes.find(_T("\r\n"), index);
+      if (index == StringX::npos)
+        break;
+      sxnotes.replace(index, 2, _T("\r"));
+      index += 1;
+    }
+    index = 0;
+    for (;;) {
+      index = sxnotes.find(_T("\\t"), index);
+      if (index == StringX::npos)
+        break;
+      sxnotes.replace(index, 2, _T("\t"));
+      index += 1;
+    }
+  }
+
+  // Turn off CAPSLOCK
+  if (GetKeyState(VK_CAPITAL)) {
+    bCapsLock = true;
+    ks.SetCapsLock(false);
+  }
+
+  ks.ResetKeyboardState();
+
+  // Stop Keyboard/Mouse Input
+  TRACE(_T("DboxMain::DoAutoType - BlockInput set\n"));
+#if _MSC_VER < 1500
+  ::BlockInput(true);
+#else
+  BlockInput(true);
+#endif
+
+  // Note that minimizing the window before calling ci.Get*()
+  // will cause garbage to be read if "lock on minimize" selected,
+  // since that will clear the data [Bugs item #1026630]
+  // (this is why we read user & pwd before actual use)
+
   Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
   int gNumIts;
   for (int n = 0; n < N; n++){
-    curChar = AutoCmd[n];
+    curChar = sx_autotype[n];
     if (curChar == TCHAR('\\')) {
       n++;
       if (n < N)
-        curChar = AutoCmd[n];
+        curChar = sx_autotype[n];
 
       switch (curChar){
         case TCHAR('\\'):
@@ -1377,39 +1401,39 @@ void DboxMain::AutoType(const CItemData &ci)
           tmp += TCHAR('\t');
           break;
         case TCHAR('g'):
-          tmp += group;
+          tmp += sx_group;
           break;
         case TCHAR('i'):
-          tmp += title;
+          tmp += sx_title;
           break;
         case TCHAR('u'):
-          tmp += user;
+          tmp += sx_user;
           break;
         case TCHAR('p'):
-          tmp += pwd;
+          tmp += sx_pwd;
           break;
         case TCHAR('o'):
         {
           if (n == (N - 1)) {
             // This was the last character - send the lot!
-            tmp += notes;
+            tmp += sxnotes;
             break;
           }
           int line_number(0);
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(AutoCmd[n])) {
+            if (_istdigit(sx_autotype[n])) {
               line_number *= 10;
-              line_number += (AutoCmd[n] - TCHAR('0'));
+              line_number += (sx_autotype[n] - TCHAR('0'));
             } else
               break; // for loop
           }
           if (line_number == 0) {
             // Send the lot
-            tmp += notes;
-          } else if (line_number <= (int)notes_lines.size()) {
+            tmp += sxnotes;
+          } else if (line_number <= (int)vsx_notes_lines.size()) {
             // User specifies a too big a line number - ignore the lot
-            tmp += notes_lines[line_number - 1];
+            tmp += vsx_notes_lines[line_number - 1];
           }
     
           // Backup the extra character that delimited the \oNNN string
@@ -1425,9 +1449,9 @@ void DboxMain::AutoType(const CItemData &ci)
           int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(AutoCmd[n])) {
+            if (_istdigit(sx_autotype[n])) {
               newdelay *= 10;
-              newdelay += (AutoCmd[n] - TCHAR('0'));
+              newdelay += (sx_autotype[n] - TCHAR('0'));
             } else
               break; // for loop
           }
@@ -1460,180 +1484,15 @@ void DboxMain::AutoType(const CItemData &ci)
 
   Sleep(100);
 
+  // Reset Keyboard/Mouse Input
+  TRACE(_T("DboxMain::DoAutoType - BlockInput reset\n"));
 #if _MSC_VER < 1500
   ::BlockInput(false);
 #else
   BlockInput(false);
 #endif
 
-  notes_lines.clear();
-
-  // If we hid it, now show it
-  if (bMinOnAuto)
-    return;
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
-    SetWindowPos(&wndTopMost, 0, 0, 0, 0,
-                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
-  } else {
-    SetWindowPos(&wndBottom, 0, 0, 0, 0,
-                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
-  }
-}
-
-StringX DboxMain::GetAutoTypeString(const StringX autocmd, 
-                                    const StringX group, const StringX title, const StringX user, 
-                                    const StringX pwd, const StringX notes)
-{
-  // If empty, try the database default
-  StringX AutoCmd(autocmd);
-  if (AutoCmd.empty()) {
-    AutoCmd = PWSprefs::GetInstance()->
-              GetPref(PWSprefs::DefaultAutotypeString);
-
-    // If still empty, take this default
-    if (AutoCmd.empty()) {
-      // checking for user and password for default settings
-      if (!pwd.empty()){
-        if (!user.empty())
-          AutoCmd = DEFAULT_AUTOTYPE;
-        else
-          AutoCmd = _T("\\p\\n");
-      }
-    }
-  }
-
-  StringX Notes(notes);
-  std::vector<StringX> notes_lines;
-  StringX::size_type index;
-
-    // No recursive substitution (e.g. \p or \u), although '\t' will be replaced by a tab
-  if (!notes.empty()) {
-    // Use \n and \r to tokenise this line
-    StringX::size_type start(0), end(0);
-    const StringX delim = _T("\r\n");
-    StringX line;
-    while (end != StringX::npos) {
-      end = Notes.find(delim, start);
-      line = (Notes.substr(start, (end == StringX::npos) ? StringX::npos : end - start));
-      index = 0;
-      for (;;) {
-        index = line.find(_T("\\t"), index);
-        if (index == line.npos)
-          break;
-        line.replace(index, 2, _T("\t"));
-        index += 1;
-      }
-      notes_lines.push_back(line);
-      start = ((end > (StringX::npos - delim.size()))
-                          ? StringX::npos : end + delim.size());
-    }
-    // Now change '\n' to '\r' in the complete notes field
-    index = 0;
-    for (;;) {
-      index = Notes.find(_T("\r\n"), index);
-      if (index == Notes.npos)
-        break;
-      Notes.replace(index, 2, _T("\r"));
-      index += 1;
-    }
-    index = 0;
-    for (;;) {
-      index = Notes.find(_T("\\t"), index);
-      if (index == Notes.npos)
-        break;
-      Notes.replace(index, 2, _T("\t"));
-      index += 1;
-    }
-  }
-
-  StringX tmp(_T(""));
-  TCHAR curChar;
-  const int N = AutoCmd.length();
-
-  for (int n = 0; n < N; n++){
-    curChar = AutoCmd[n];
-    if (curChar == TCHAR('\\')) {
-      n++;
-      if (n < N)
-        curChar = AutoCmd[n];
-
-      switch (curChar){
-        case TCHAR('\\'):
-          tmp += TCHAR('\\');
-          break;
-        case TCHAR('n'):
-        case TCHAR('r'):
-          tmp += TCHAR('\r');
-          break;
-        case TCHAR('t'):
-          tmp += TCHAR('\t');
-          break;
-        case TCHAR('g'):
-          tmp += group;
-          break;
-        case TCHAR('i'):
-          tmp += title;
-          break;
-        case TCHAR('u'):
-          tmp += user;
-          break;
-        case TCHAR('p'):
-          tmp += pwd;
-          break;
-        case TCHAR('o'):
-        {
-          if (n == (N - 1)) {
-            // This was the last character - send the lot!
-            tmp += Notes;
-            break;
-          }
-          int line_number(0);
-          int gNumIts(0);
-          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(AutoCmd[n])) {
-              line_number *= 10;
-              line_number += (AutoCmd[n] - TCHAR('0'));
-            } else
-              break; // for loop
-          }
-          if (line_number == 0) {
-            // Send the lot
-            tmp += notes;
-          } else if (line_number <= (int)notes_lines.size()) {
-            // User specifies a too big a line number - ignore the lot
-            tmp += notes_lines[line_number - 1];
-          }
-    
-          // Backup the extra character that delimited the \oNNN string
-          n--;
-          break; // case 'o'
-        }
-        case TCHAR('d'):
-          // Ignore delay - treat it as just a string!
-          tmp += TCHAR("\\d");
-          break; // case 'd'
-        case TCHAR('b'): // backspace!
-          tmp += TCHAR('\b');
-          break;
-        // Ignore explicit control characters
-        case TCHAR('a'): // bell (can't hear it during testing!)
-        case TCHAR('v'): // vertical tab
-        case TCHAR('f'): // form feed
-        case TCHAR('e'): // escape
-        case TCHAR('x'): // hex digits (\xNN)
-          break;
-        // Ignore any others!
-        // '\cC', '\uXXXX', '\OOO', '\<any other charatcer not recognised above>'
-        default:
-          break;
-      }
-    } else
-      tmp += curChar;
-  }
-
-  notes_lines.clear();
-  return tmp;
+  vsx_notes_lines.clear();
 }
 
 void DboxMain::OnGotoBaseEntry()
@@ -1666,106 +1525,6 @@ void DboxMain::OnGotoBaseEntry()
 
 void DboxMain::OnExecuteString()
 {
-/*
-  The Execute String is parsed using the dollar as indicating the start of 
-  a variable. NO recursive substitution is performed.
-
-  Variables are specified as '$name' and are case sensitive.  The name must 
-  start with an alphabetic character and the remaining characters must be 
-  alphanumeric.
-
-  To use a variable followed by an alphanumeric character in the Execute 
-  String, enclose it in curly brackets e.g. '${name}string'.
-
-  To use a '$' in the string as normal text and not indicating that the 
-  following text is a variable name, escape it using a back-slash ('\') 
-  e.g. '\$text' becomes '$text' and is not treated as a variable called 'text'.
-
-  To use a back-slash before a '$' as a back-slash, escape it with a 
-  back-slash e.g.  '\\$name' becomes '\$name' in the resulting text and
-  '$name' is treated as a variable. A back-slash does not have to be escaped
-  unless it precedes a '$' indicating a following variable.
-
-  Valid formats:
-    'a' = alpha, 'x' = alphanumeric, 'n' = digits, '*' != alphanumeric,
-    '.' = any character
-  1. $axxxx*...... 
-  2. ${axxxx}.....
-  3. $axxxx[n]....
-  4. ${axxxx[n]}..
-  Index value 'n' in above can be preceded by '+' or '-' e.g. [-2] or [2] or [+2].
-  PWS treats an index that equates to zero as meaning the complete field.
-
-  The following variables are recognised (as of 20 Feb. 09):
-
-  Application related:
-    appdir      Directory containing the PWS application. See notes 1 & 2 below.
-
-  Current open database related:
-    dbdir       Directory of current open database. See notes 1 & 2 below.
-    fulldb      Full path, filename and extension of current open database.
-                See note 2 below.
-    dbname      Current open database filename
-    dbextn      Current open database extension
-
-  Current entry related:
-    g or group         Group (full tree structure back to root with groups 
-                       separated by dots)
-    G or GROUP         The group containing this entry only
-    t or title         Title
-    u or user          Username
-    p or password      Password
-    a or autotype      AutoType. NOT yet implemented. See Note 5 below.
-    url                URL
-    n or n[0]          The complete Notes field (also: notes or notes[0]). 
-                       See note 3 below.
-    n[i] or notes[i]   i'th line of the Notes field counting from the start, 
-                       i.e. i=1 is the first line, i=2 means the second line 
-                       etc. See note 4 below.
-    n[-i] or notes[-i] i'th line of the Notes field counting from the end, 
-                       i.e. i=1 is the last line, i=2 means the penultimate 
-                       line etc. See note 4 below.
-
-  Note 1: Directory values (appdir or dbdir) do not have an ending '\'.  
-          Remember to add this if you need it in your Execute String.
-  Note 2: The contents of variables (including directory and full path values)
-          may contain blanks. You may need to enclose the result in quotes in
-          your Execute String for correct execution.
-  Note 3: If the Notes field contains more than one line, it will include any
-          embedded CR or LF. This may cause issues when executed as CR and/or
-          LF will be taken as 'enter'.
-  Note 4: Any trailing CR and/or LF are removed from single lines selected from
-          the Notes field.
-  Note 5: Autotype is currently NOT implemented. If present in the Execute string
-          it will be ignored and removed from the string to be executed.
-          A planned update will allow this variable to be specified and the 
-          AutoType performed once the target window is active. Differing from 
-          other variables, this one will be able to take a value to override the
-          entry's current value. The format is expected to be ($autotype can 
-          replace $a in the following examples):
-          $a           Use current entry value
-          ${a}         Use current entry value
-          $a(value)    Use autotype string specified between the round brackets
-          ${a}(value)  Use autotype string specified between the round brackets
-
-  NOTE:   Be sure to add quotes around your string if required e.g. if your 
-          database directory contains spaces, to access a text file in it based
-          on your open database name, you would need the following (with quotes):
-          "$dbdir\\$dbname.txt"
-          Notice that the back-slash is escaped so that the '$dbname' is 
-          recognised as a variable.
-
-  On Windows, the normal substitution of enviornmental variables (specified as
-  %variable_name%) is performed. e.g. %windir%\notepad.exe becomes 
-  c:\Windows\notepad.exe (on my system anyway!).
-  Current values set in your environment can be determined by running 'cmd.exe'
-  and using the 'set' command.
-  Any unknown environmental variable is left unchanged in the execute string e.g.
-  %xyz%\notepad.exe remains as %xyz%\notepad.exe if variable 'xyz' is not set.
-  Windows environmental variables are not case sensitive.
-
-  After parsing, the resultant string is then 'executed' via ShellExecute.
-  */
 
   if (SelItemOk() != TRUE)
     return;
@@ -1787,14 +1546,17 @@ void DboxMain::OnExecuteString()
     }
   }
 
-  StringX cs_Execute_String, cs_Expanded_ES;
-  cs_Execute_String = ci->GetExecuteString();
-  if (cs_Execute_String.empty())
+  StringX sx_Execute_String, sx_Expanded_ES;
+  sx_Execute_String = ci->GetExecuteString();
+  if (sx_Execute_String.empty())
     return;
 
   stringT errmsg;
   StringX::size_type st_column;
-  cs_Expanded_ES = GetExpandedString(cs_Execute_String, ci, errmsg, st_column);
+  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_Execute_String, 
+                       m_core.GetCurFile(), ci, 
+                       m_bDoAutoType, m_AutoType, 
+                       errmsg, st_column);
   if (errmsg.length() > 0) {
     CString cs_title, cs_errmsg;
     cs_title.LoadString(IDS_EXECUTESTRING_ERROR);
@@ -1803,137 +1565,19 @@ void DboxMain::OnExecuteString()
     return;
   }
 
+  m_AutoType = PWSAuxParse::GetAutoTypeString(m_AutoType, ci->GetGroup(), 
+                                 ci->GetTitle(), ci->GetUser(), 
+                                 ci->GetPassword(), ci->GetNotes());
   SetClipboardData(ci->GetPassword());
-  if (!pws_os::runcmd(cs_Expanded_ES))
+  bool rc = pws_os::runcmd(sx_Expanded_ES, m_AutoType, app.m_autotype_ddl);
+  if (!rc) {
+    m_bDoAutoType = false;
+    m_AutoType.clear();
     return;
+  }
 
   UpdateLastClipboardAction(CItemData::EXECUTE);
   UpdateAccessTime(ci_original);
-}
-
-StringX DboxMain::GetExpandedString(StringX cs_Execute_String, CItemData *ci,
-                                    stringT &errmsg, StringX::size_type &st_column)
-{
-  std::vector<st_ExecuteStringTokens> v_estokens;
-  std::vector<st_ExecuteStringTokens>::iterator es_iter;
-  std::vector<StringX> notes_lines;
-  StringX notes, retval(_T(""));
-  stringT path, drive, dir, fname, extn;
-  stringT dbdir;
-
-  int ierr = ParseExecuteString(cs_Execute_String, v_estokens, errmsg, st_column);
-
-  if (ierr > 0 || ci == NULL) {
-    v_estokens.clear();
-    return retval;
-  }
-
-  // derive current db's directory and basename:
-  path = m_core.GetCurFile().c_str();
-  pws_os::splitpath(path, drive, dir, fname, extn);
-  dbdir = pws_os::makepath(drive, dir, _T(""), _T(""));
-
-  notes = ci->GetNotes();
-  if (!ci->IsNotesEmpty()) {
-    // Use \n and \r to tokenise this line
-    StringX::size_type start(0), end(0);
-    const StringX delim = _T("\r\n");
-    StringX line;
-    StringX::size_type index;
-    while (end != StringX::npos) {
-      end = notes.find(delim, start);
-      line = (notes.substr(start, (end == StringX::npos) ? StringX::npos : end - start));
-      index = 0;
-      // Remove all tabs - \t
-      for (;;) {
-        index = line.find(_T("\\t"), index);
-        if (index == line.npos)
-          break;
-        line.replace(index, 2, _T(""));
-        index += 1;
-      }
-      notes_lines.push_back(line);
-      start = ((end > (StringX::npos - delim.size()))
-                          ? StringX::npos : end + delim.size());
-    }
-  }
-
-  for (es_iter = v_estokens.begin(); es_iter < v_estokens.end(); es_iter++) {
-    st_ExecuteStringTokens &st_estoken = *es_iter;
-
-    if (!st_estoken.is_variable) {
-      retval += st_estoken.name.c_str();
-      continue;
-    }
-  
-    if (st_estoken.name == _T("appdir")) {
-      retval += pws_os::getexecdir().c_str();
-    } else
-    if (st_estoken.name == _T("dbdir")) {
-      retval += dbdir.c_str();
-    } else
-    if (st_estoken.name == _T("fulldb")) {
-      retval += path.c_str();
-    } else
-    if (st_estoken.name == _T("dbname")) {
-      retval += fname.c_str();
-    } else
-    if (st_estoken.name == _T("dbextn")) {
-      retval += extn.c_str();
-    } else
-    if (st_estoken.name == _T("g") || st_estoken.name == _T("group")) {
-      retval += ci->GetGroup();
-    } else
-    if (st_estoken.name == _T("G") || st_estoken.name == _T("GROUP")) {
-      StringX g = ci->GetGroup();
-      StringX::size_type index;
-      index = g.rfind(_T("."));
-      if (index != StringX::npos) {
-        g = g.substr(index + 1);
-      }
-      retval += g;
-    } else
-    if (st_estoken.name == _T("t") || st_estoken.name == _T("title")) {
-      retval += ci->GetTitle();
-    } else
-    if (st_estoken.name == _T("u") || st_estoken.name == _T("user")) {
-      retval += ci->GetUser();
-    } else
-    if (st_estoken.name == _T("p") || st_estoken.name == _T("password")) {
-      retval += ci->GetPassword();
-    } else
-    if (st_estoken.name == _T("a") || st_estoken.name == _T("autotype")) {
-      //retval += ci->GetAutoType(); ignore for now
-    } else
-    if (st_estoken.name == _T("url")) {
-      retval += ci->GetURL();
-    } else
-    if (st_estoken.name == _T("n") || st_estoken.name == _T("notes")) {
-      if (st_estoken.index == 0) {
-        retval += notes;
-      } else {
-        // If line there - use it; otherwise ignore it
-        if (st_estoken.index > 0 && st_estoken.index <= (int)notes_lines.size()) {
-          retval += notes_lines[st_estoken.index - 1];
-        } else
-        if (st_estoken.index < 0 && abs(st_estoken.index) <= (int)notes_lines.size()) {
-          retval += notes_lines[notes_lines.size() + st_estoken.index];
-        }
-      }
-    } else {
-      // Unknown variable name - rebuild it
-      retval += _T("$");
-      if (st_estoken.has_brackets)
-        retval += _T("(");
-      retval += st_estoken.name.c_str();
-      if (st_estoken.index != 0)
-        retval += st_estoken.sindex.c_str();
-      if (st_estoken.has_brackets)
-        retval += _T(")");
-    }
-  }
-  v_estokens.clear();
-  return retval;
 }
 
 void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
@@ -2323,306 +1967,4 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
 
   // All OK
   return true;
-}
-
-int DboxMain::ParseExecuteString(const StringX sInputString, 
-                                 std::vector<st_ExecuteStringTokens> &v_estokens,
-                                 stringT &errmsg, StringX::size_type &st_column)
-{
-  // tokenize into separate elements
-  std::vector<st_ExecuteStringTokens>::iterator es_iter;
-  std::vector<size_t> v_pos;
-  StringX::iterator str_Iter;
-  st_ExecuteStringTokens st_estoken;
-
-  int ierr(0);
-  int var_index(0);
-
-  const stringT alphanum = _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-
-  if (sInputString.length() == 0) {
-    ierr = 1;  // String is empty!
-    goto exit;
-  }
-
-  size_t num_quotes(0);
-  for (StringX::size_type l = 0; l < sInputString.length(); l++) {
-    if (sInputString[l] == _T('"'))
-      num_quotes++;
-  }
-
-  if (num_quotes % 2 != 0) {
-    st_column = sInputString.find(_T('"'));
-    ierr = 9;  // Unmatched quotes
-    goto exit;
-  }
-
-  // tokenize into separate elements using $ as the field separator
-  for (StringX::size_type st_startpos = 0;
-       st_startpos < sInputString.size();
-       /* st_startpos advanced in body */) {
-    StringX::size_type st_next = sInputString.find(_T('$'), st_startpos);
-    if (st_next == StringX::npos)
-      st_next = sInputString.size();
-    if (st_next > 0) {
-      st_estoken.name = sInputString.substr(st_startpos, st_next - st_startpos);
-      st_estoken.is_variable  = st_startpos == 0 ? false : true;
-      st_estoken.index = 0;
-      st_estoken.has_brackets = false;
-      st_estoken.sindex = _T("");
-      v_estokens.push_back(st_estoken);
-      v_pos.push_back(st_startpos);
-    }
-    st_startpos = st_next + 1; // too complex for for statement
-  } // tokenization for loop
-
-  // Check if escaped - ending character of previous token == '\'
-  // Make sure this '\' is not escaped itself!
-  for (size_t st_idx = v_estokens.size() - 1; st_idx > 0 ; st_idx--) {
-    st_ExecuteStringTokens &st_estoken = v_estokens[st_idx - 1];
-    StringX::size_type name_len = st_estoken.name.length();
-    if (name_len == 0 || (name_len >= 2 && 
-            st_estoken.name.substr(name_len - 2, 2).compare(_T("\\\\")) == 0))
-      continue;
-
-    if (st_estoken.name.substr(name_len - 1, 1).compare(_T("\\")) == 0) {
-      st_estoken.name = st_estoken.name.substr(0, name_len - 1) + _T("$") +
-                              v_estokens[st_idx].name;
-      v_estokens.erase(v_estokens.begin() + st_idx);
-    }
-  }
-
-  // Check if variable enclosed in curly brackets
-  for (size_t st_idx = 0; st_idx < v_estokens.size(); st_idx++) {
-    if (v_estokens[st_idx].name.length() == 0)
-      continue;
-
-    str_Iter = v_estokens[st_idx].name.begin();
-    // Does it start with a curly bracket?
-    if (*str_Iter == _T('{')) {
-      v_estokens[st_idx].has_brackets = true;
-      StringX var, nonvar, sindex(_T(""));
-      // Yes - Find end curly bracket
-      StringX::size_type st_end_cb = v_estokens[st_idx].name.find(_T('}'));
-      if (st_end_cb == StringX::npos) {
-        st_column = v_pos[st_idx] + v_estokens[st_idx].name.length();
-        ierr = 5;  // Missing end curly bracket
-        goto exit;
-      }
-      // Now see if there is an Index here
-      StringX::size_type st_start_sb = v_estokens[st_idx].name.find(_T('['));
-      if (st_start_sb != StringX::npos) {
-        // Yes  - find end square bracket
-        if (st_start_sb > st_end_cb) {
-          // Square backet after end of variable
-          var = v_estokens[st_idx].name.substr(1, st_end_cb - 1);
-          nonvar = v_estokens[st_idx].name.substr(st_end_cb + 1);
-          v_estokens[st_idx].name = var;
-          if (nonvar.length() > 0) {
-            st_estoken.name = nonvar;
-            st_estoken.is_variable = false;
-            st_estoken.index = 0;
-            st_estoken.has_brackets = false;
-            v_estokens.insert(v_estokens.begin() + st_idx + 1, st_estoken);
-            v_pos.insert(v_pos.begin() + st_idx + 1, v_pos[st_idx] + st_end_cb);
-          }
-          continue;
-        }
-        StringX::size_type st_end_sb = v_estokens[st_idx].name.find(_T(']'), st_start_sb);
-        if (st_end_sb == StringX::npos) {
-          st_column = v_pos[st_idx] + 1;
-          ierr = 6;  // Missing end square bracket
-          goto exit;
-        }
-        // The end-curly backet must immediately follow the end-square bracket
-        if (st_end_cb != st_end_sb + 1) {
-          st_column = v_pos[st_idx] + st_end_sb + 1;
-          ierr = 10;  // Characters between ']' and ')'
-          goto exit;
-        }
-        sindex = v_estokens[st_idx].name.substr(st_start_sb + 1, st_end_sb - st_start_sb - 1);
-        v_estokens[st_idx].sindex = sindex;
-        // Now check index
-        ierr = ProcessIndex(sindex, var_index, st_column);
-        if (ierr > 0) {
-          st_column += v_pos[st_idx];
-          goto exit;
-        }
-
-        v_estokens[st_idx].index = var_index;
-        var = v_estokens[st_idx].name.substr(1, st_start_sb - 1);
-        nonvar = v_estokens[st_idx].name.substr(st_end_cb + 1);
-      } else {
-        // No square bracket
-        // Split current token into 'variable' and 'non-variable' parts
-        var = v_estokens[st_idx].name.substr(1, st_end_cb - 1);
-        nonvar = v_estokens[st_idx].name.substr(st_end_cb + 1);
-      }
-      v_estokens[st_idx].name = var;
-      if (nonvar.length() > 0) {
-        st_estoken.name = nonvar;
-        st_estoken.is_variable = false;
-        st_estoken.index = 0;
-        st_estoken.has_brackets = false;
-        v_estokens.insert(v_estokens.begin() + st_idx + 1, st_estoken);
-        v_pos.insert(v_pos.begin() + st_idx + 1, v_pos[st_idx] + st_end_cb);
-      }
-    }
-  }
-
-  // Now use rules of variables to get the real variable
-  for (size_t st_idx = 0; st_idx < v_estokens.size(); st_idx++) {
-    if (!v_estokens[st_idx].is_variable)
-      continue;
-
-    if (v_estokens[st_idx].name.length() == 0) {
-      st_column = v_pos[st_idx];
-      ierr = 2;  // Variable name is empty
-      goto exit;
-    }
-
-    str_Iter = v_estokens[st_idx].name.begin();
-    if (!isalpha(*str_Iter)) {
-      st_column = v_pos[st_idx];
-      ierr = 3;  // First character of variable is not aplhabetic
-      goto exit;
-    }
-    StringX::size_type st_next = v_estokens[st_idx].name.find_first_not_of(alphanum.c_str());
-    if (st_next != StringX::npos) {
-      // Split current token into 'variable' and 'non-variable' parts
-      StringX var = v_estokens[st_idx].name.substr(0, st_next);
-      StringX nonvar = v_estokens[st_idx].name.substr(st_next);
-      v_estokens[st_idx].name = var;
-      // Before saving non-variable part - check if it is an Index e.g. var[i]
-      if (nonvar.c_str()[0] == _T('[')) {
-        // Find ending square bracket
-        StringX::size_type st_end_sb = nonvar.find(_T(']'));
-        if (st_end_sb == StringX::npos) {
-          st_column = v_pos[st_idx] + var.length() + 2;
-          ierr = 6;  // Missing end square bracket
-          goto exit;
-        }
-        StringX sindex = nonvar.substr(1, st_end_sb - 1);
-        v_estokens[st_idx].sindex = sindex;
-        // Now check index
-        ierr = ProcessIndex(sindex, var_index, st_column);
-        if (ierr > 0) {
-          st_column += v_pos[st_idx] + var.length();
-          goto exit;
-        }
-
-        v_estokens[st_idx].index = var_index;
-        nonvar = nonvar.substr(st_end_sb + 1);
-      } else {
-        // Not a square bracket
-        if (v_estokens[st_idx].has_brackets) {
-          st_column = v_pos[st_idx] + st_next + 1;
-          ierr = 4;  // Variable must be alphanumeric
-          goto exit;
-        }
-      }
-      if (!nonvar.empty()) {
-        st_estoken.name = nonvar;
-        st_estoken.is_variable = false;
-        st_estoken.index = 0;
-        st_estoken.has_brackets = false;
-        v_estokens.insert(v_estokens.begin() + st_idx + 1, st_estoken);
-        v_pos.insert(v_pos.begin() + st_idx + 1, v_pos[st_idx] + st_next);
-      }
-    }
-  }
-
-exit:
-  UINT uimsg(0);
-  switch (ierr) {
-    case 0:
-      break;
-    case 1:
-      uimsg = IDS_EXS_INPUTEMPTY;
-      break;
-    case 2:
-      uimsg = IDS_EXS_VARNAMEEMPTY;
-      break;
-    case 3:
-      uimsg = IDS_EXS_FIRSTNOTALPHA;
-      break;
-    case 4:
-      uimsg = IDS_EXS_VARNAMEINVALID;
-      break;
-    case 5:
-      uimsg = IDS_EXS_MISSINGCURLYBKT;
-      break;
-    case 6:
-      uimsg = IDS_EXS_MISSINGSQUAREBKT;
-      break;
-    case 7:
-      uimsg = IDS_EXS_INVALIDINDEX;
-      break;
-    case 8:
-      uimsg = IDS_EXS_INDEXNOTNUMERIC;
-      break;
-    case 9:
-      uimsg = IDS_EXS_UNMATCHEDQUOTES;
-      break;
-    case 10:
-      uimsg = IDS_EXS_INVALIDBRACKETS;
-      break;
-  }
-  if (uimsg != 0)
-    LoadAString(errmsg, uimsg);
-  else
-    errmsg = _T("");
-
-  if (ierr > 0) {
-    v_estokens.clear();
-  }
-  v_pos.clear();
-  return ierr;
-}
-
-int DboxMain::ProcessIndex(const StringX &sIndex, int &var_index, StringX::size_type &st_column)
-{
-  const stringT num = _T("0123456789");
-
-  StringX sindex(sIndex);
-  int ierr(0);
-  bool negative_vindex(false);
-
-  st_column = 0;
-
-  if (sindex.length() == 0) {
-    st_column = 2;
-    ierr = 7;  // Index is invalid or missing
-    goto exit;
-  }
-
-  if (sindex[0] == _T('-') || sindex[0] == _T('+')) {
-    if (sindex.length() == 1) {
-      st_column = 2;
-      ierr = 7;  // Index is invalid or missing
-      goto exit;
-    }
-    negative_vindex = sindex[0] == _T('-') ? true : false;
-    sindex = sindex.substr(1);
-  }
-
-  StringX::size_type nondigit = sindex.find_first_not_of(num.c_str());
-  if (nondigit != StringX::npos) {
-    st_column = nondigit + 1;
-    ierr = 8;  // Index is not numeric
-    goto exit;
-  }
-
-  var_index = _wtoi(sindex.c_str());
-  if (negative_vindex && var_index == 0) { // i.e. [-0]
-    st_column = 2;
-    ierr = 7;  // Index is invalid or missing
-    goto exit;
-  }
-
-  if (negative_vindex)
-    var_index *= (-1);
-
-exit:
-  return ierr;
 }

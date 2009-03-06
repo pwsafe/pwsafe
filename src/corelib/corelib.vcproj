@@ -20,7 +20,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -96,7 +96,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -173,7 +173,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -250,7 +250,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -326,7 +326,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -402,7 +402,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -478,7 +478,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -555,7 +555,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -632,7 +632,7 @@
 			OutputDirectory="..\lib\$(ConfigurationName)"
 			IntermediateDirectory="..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -717,10 +717,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Debug.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\XML\EXPAT\EFileHandlers.cpp"
 				>
 			</File>
@@ -790,6 +786,10 @@
 			</File>
 			<File
 				RelativePath=".\PWHistory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PWSAuxParse.cpp"
 				>
 			</File>
 			<File
@@ -1015,6 +1015,14 @@
 			</File>
 			<File
 				RelativePath=".\PWCharPool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWHistory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWSAuxParse.h"
 				>
 			</File>
 			<File
