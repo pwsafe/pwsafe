@@ -10,7 +10,9 @@
 #define _OSDEBUG_H
 
 #include "typedefs.h"
+#ifdef _WIN32
 #include "wtypes.h"
+#endif
 
 namespace pws_os {
   // MFC TRACE equivalent in MFC, non-MFC Windows and non-Windows
