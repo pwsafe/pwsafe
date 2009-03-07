@@ -701,6 +701,10 @@ msgstr ""
 msgid "&Yes"
 msgstr "&Tak"
 
+#. Resource IDs: (32156)
+msgid "&YubiKey..."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and the double click action of 'Copy Password and Minimize' conflict. Double click action has been changed to 'Copy Password'."
 msgstr "Akcja 'Wyczyść schowek przy minimalizowaniu' i przypisana do podwójnego kliknięcia 'Kopiuj Hasło i Minimalizuj' kolidują ze sobą. Podwójnemu kliknięciu przypisano akcję 'Kopiuj Hasło'. "
@@ -830,6 +834,14 @@ msgstr "Wymagany plik zasobów jest niedostępny."
 msgid "A sharing violation occurred while accessing %1."
 msgstr "Nastąpiło naruszenie zasad współużytkowania podczas dostępu do %1."
 
+#. Resource IDs: (65535)
+msgid "API ID:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "API Key:"
+msgstr ""
+
 #. Resource IDs: (345, 1092)
 msgid "AaBbYyZz 0O1lIL"
 msgstr "AaBbYyZz 0O1lIL"
@@ -842,6 +854,10 @@ msgstr "O Password Safe"
 #, fuzzy, c-format
 msgid "Access to %1 was denied."
 msgstr "Dostęp do %1 został wzbroniony"
+
+#. Resource IDs: (1365)
+msgid "Activate your YubiKey in the following text box to enable YubiKey support"
+msgstr ""
 
 #. Resource IDs: (350)
 #, fuzzy
@@ -4380,6 +4396,14 @@ msgstr "Możesz umieścić tę listę w schowku klikając przycisk 'Kopiuj'."
 #. Resource IDs: (346)
 msgid "You must save this database before it can be exported."
 msgstr "Musisz zapisać bazę danych przed jej eksportowaniem."
+
+#. Resource IDs: (446)
+msgid "YubiKey"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey:"
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "[No current database]"

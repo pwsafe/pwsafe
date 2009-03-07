@@ -663,6 +663,10 @@ msgstr "XML 格式(&X)..."
 msgid "&Yes"
 msgstr "是(&Y)"
 
+#. Resource IDs: (32156)
+msgid "&YubiKey..."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and the double click action of 'Copy Password and Minimize' conflict. Double click action has been changed to 'Copy Password'."
 msgstr "“最小化时清空剪贴板”和双击“复制密码和最小化”冲突；双击操作已经被更改为“复制密码”！"
@@ -790,6 +794,14 @@ msgstr "一个所需资源无法使用！"
 msgid "A sharing violation occurred while accessing %1."
 msgstr "一个共享违反发生在访问 %1 期间！"
 
+#. Resource IDs: (65535)
+msgid "API ID:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "API Key:"
+msgstr ""
+
 #. Resource IDs: (345, 1092)
 msgid "AaBbYyZz 0O1lIL"
 msgstr "感谢使用小镇医生汉化软件！"
@@ -802,6 +814,10 @@ msgstr "关于 Password Safe"
 #, c-format
 msgid "Access to %1 was denied."
 msgstr "访问 %1 被拒绝！"
+
+#. Resource IDs: (1365)
+msgid "Activate your YubiKey in the following text box to enable YubiKey support"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Active"
@@ -4240,6 +4256,14 @@ msgstr "你可以使用下面的复制按钮复制该位置列表到剪贴板里
 #. Resource IDs: (346)
 msgid "You must save this database before it can be exported."
 msgstr "在它可被输出之前你必须先保存该数据库！"
+
+#. Resource IDs: (446)
+msgid "YubiKey"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey:"
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "[No current database]"

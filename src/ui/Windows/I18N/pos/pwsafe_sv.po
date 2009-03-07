@@ -694,6 +694,10 @@ msgstr ""
 msgid "&Yes"
 msgstr "&Ja"
 
+#. Resource IDs: (32156)
+msgid "&YubiKey..."
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and the double click action of 'Copy Password and Minimize' conflict. Double click action has been changed to 'Copy Password'."
 msgstr ""
@@ -821,6 +825,14 @@ msgstr "En begärd resurs var inte tillgänglig."
 msgid "A sharing violation occurred while accessing %1."
 msgstr "Ett delningsfel inträffade under anslutning till %1."
 
+#. Resource IDs: (65535)
+msgid "API ID:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "API Key:"
+msgstr ""
+
 #. Resource IDs: (345, 1092)
 msgid "AaBbYyZz 0O1lIL"
 msgstr ""
@@ -833,6 +845,10 @@ msgstr "Om Password Safe"
 #, c-format
 msgid "Access to %1 was denied."
 msgstr "Tillgång till %1 nekades."
+
+#. Resource IDs: (1365)
+msgid "Activate your YubiKey in the following text box to enable YubiKey support"
+msgstr ""
 
 #. Resource IDs: (350)
 msgid "Active"
@@ -4282,6 +4298,14 @@ msgstr "Du kan använda Kopiera-knappen nedan för att placera listan på klippb
 
 #. Resource IDs: (346)
 msgid "You must save this database before it can be exported."
+msgstr ""
+
+#. Resource IDs: (446)
+msgid "YubiKey"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "YubiKey:"
 msgstr ""
 
 #. Resource IDs: (330)
