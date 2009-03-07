@@ -48,7 +48,7 @@ namespace pws_os {
    *
    * getruncmd uses Windows Run command search rules or Liunx equivalent
    */
-  extern StringX getruncmd(const StringX sxFile, bool &bfound);
+  extern StringX getruncmd(const StringX &sxFile, bool &bfound);
 
 #ifdef _WIN32
   extern bool runcmd(const StringX &execute_string, const StringX &sxAutotype,
@@ -63,7 +63,7 @@ namespace pws_os {
 #endif
 };
 
-#endif /* __GETRUNCMD_H */
+#endif /* __RUN_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

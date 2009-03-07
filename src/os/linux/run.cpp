@@ -15,7 +15,8 @@
 StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
 {
 	// Stub!
-	return first_parm;
+  bfound = true;
+	return sxFile;
 }
 
 bool pws_os::runcmd(const StringX &execute_string, const StringX &sxAutotype)
@@ -25,7 +26,7 @@ bool pws_os::runcmd(const StringX &execute_string, const StringX &sxAutotype)
 }
 
 bool pws_os::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                      const StringX &sxAutotype);
+                      const StringX &sxAutotype)
 {
 	// Stub!
 	return false;
