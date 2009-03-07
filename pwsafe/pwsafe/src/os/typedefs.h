@@ -57,6 +57,7 @@ typedef void *HANDLE;
 #else /* !defined(_WIN32) */
 #include <sys/types.h>
 #include "linux/pws_time.h"
+#include "debug.h"
 typedef int8_t  int8;
 typedef int16_t int16;
 typedef int32_t int32;
@@ -95,7 +96,8 @@ typedef int HANDLE;
 
 // assorted conveniences:
 #define ASSERT(p) assert(p)
-#define VERIFY(p) if (!(p)) TRACE("VERIFY Failed")
+#define VERIFY(p) if (!(p)) TRACE(_T("VERIFY Failed"))
+#define TRACE pws_os::Trace
 #ifndef TRUE
 #define TRUE true
 #endif
