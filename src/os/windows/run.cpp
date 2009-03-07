@@ -135,7 +135,7 @@ bool pws_os::issuecmd(const StringX &sxFile, const StringX &sxParameters,
   return true;
 }
 
-StringX pws_os::getruncmd(const StringX sxFile, bool &bfound)
+StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
 {
   // 1. If first parameter is in quotes - assume fully qualified - don't search.
   // 2. If first parameter starts with '%, assume it is going to be replaced by the
