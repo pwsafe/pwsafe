@@ -32,3 +32,7 @@ database passphrase (as usual), or the YubiKey one-time password
 associated with the database, and if OK, (b) a validation request is
 sent to the Yubicom server, and the reply verified. only an OK status
 will result in the database being unlocked.
+
+3. For debugging, the following link can be used for computing
+HMAC-SHA1 signatures for OTP validation requests and responses: 
+https://api.yubico.com/sigtest/sign_demo.php
