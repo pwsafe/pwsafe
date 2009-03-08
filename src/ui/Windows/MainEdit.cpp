@@ -1569,7 +1569,7 @@ void DboxMain::OnExecuteString()
                                  ci->GetTitle(), ci->GetUser(), 
                                  ci->GetPassword(), ci->GetNotes());
   SetClipboardData(ci->GetPassword());
-  bool rc = pws_os::runcmd(sx_Expanded_ES, m_AutoType, app.m_autotype_ddl);
+  bool rc = m_runner.runcmd(sx_Expanded_ES, m_AutoType);
   if (!rc) {
     m_bDoAutoType = false;
     m_AutoType.clear();

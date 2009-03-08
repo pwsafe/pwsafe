@@ -36,6 +36,8 @@
 #include "ControlExtns.h"
 #include "corelib/PWSFilters.h"
 #include "DDStatic.h"
+#include "os/run.h"
+
 #include <vector>
 #include <map>
 
@@ -679,6 +681,8 @@ private:
 
   void CreateGroups();
   int m_bNumPassedFiltering;
+
+  PWSRun m_runner; // for executing external programs
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)

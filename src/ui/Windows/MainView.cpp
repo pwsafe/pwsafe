@@ -2087,9 +2087,8 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype)
       sxParameters = StringX(theURL);
   }
 
-  bool rc = pws_os::issuecmd(sxFile, sxParameters, 
-                             autotypeReplacements > 0 ? sxAutotype : _T(""),
-                             app.m_autotype_ddl);
+  bool rc = m_runner.issuecmd(sxFile, sxParameters, 
+                              autotypeReplacements > 0 ? sxAutotype : _T(""));
 
   if (!rc) {
     AfxMessageBox(errID, MB_ICONSTOP);

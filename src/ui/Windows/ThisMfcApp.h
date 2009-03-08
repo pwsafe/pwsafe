@@ -42,9 +42,6 @@ public:
   CMenu* m_mainmenu;
   BOOL m_mruonfilemenu;
   HINSTANCE m_hInstResDLL;
-  HINSTANCE m_AT_HK_module;
-
-  st_autotype_ddl m_autotype_ddl;
 
   static const UINT m_uiRegMsg;
   static const UINT m_uiWH_SHELL;
