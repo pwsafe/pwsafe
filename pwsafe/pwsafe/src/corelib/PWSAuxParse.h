@@ -21,6 +21,9 @@
 class CItemData;
 
 namespace PWSAuxParse {
+  // Call following with NULL ci and/or empty sxCurrentDB
+  // will only validate the execute string (non-empty serrmsg means
+  // parse failed, reason in same).
   StringX GetExpandedString(const StringX &sxExecute_String,
                             const StringX &sxCurrentDB,
                             CItemData *ci, bool &bAutoType,

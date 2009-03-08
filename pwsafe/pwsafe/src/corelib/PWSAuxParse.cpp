@@ -55,15 +55,12 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxExecute_String,
   stringT spath, sdrive, sdir, sfname, sextn;
   stringT sdbdir;
 
-  ASSERT(ci != NULL);
-  if (ci == NULL || sxCurrentDB.empty())
-    return sxretval;
-
   UINT uierr = ParseExecuteString(sxExecute_String, v_estokens, 
                                   bAutoType, sxAutotype, 
                                   serrmsg, st_column);
 
-  if (uierr > 0) {
+  // if called with NULL ci, then we just parse to validate
+  if (uierr > 0 || ci == NULL || sxCurrentDB.empty()) {
     v_estokens.clear();
     return sxretval;
   }
