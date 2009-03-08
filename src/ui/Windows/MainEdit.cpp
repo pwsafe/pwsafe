@@ -1557,7 +1557,7 @@ void DboxMain::OnExecuteString()
                        m_core.GetCurFile(), ci, 
                        m_bDoAutoType, m_AutoType, 
                        errmsg, st_column);
-  if (errmsg.length() > 0) {
+  if (!errmsg.empty()) {
     CString cs_title, cs_errmsg;
     cs_title.LoadString(IDS_EXECUTESTRING_ERROR);
     cs_errmsg.Format(IDS_EXS_ERRORMSG, (int)st_column, errmsg.c_str());
