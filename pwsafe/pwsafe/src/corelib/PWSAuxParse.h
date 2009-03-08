@@ -6,15 +6,19 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+/*
+ * Declaration of utility functions that parse the two small
+ * 'languages' used for 'autotype' and 'execute' command processing.
+ */
+
 #ifndef _PWSAUXPARSE_H
 #define _PWSAUXPARSE_H
 
 #include "StringX.h"
-#include "ItemData.h"
-
-#include <vector>
 
 #define DEFAULT_AUTOTYPE _T("\\u\\t\\p\\n")
+
+class CItemData;
 
 namespace PWSAuxParse {
   StringX GetExpandedString(const StringX &sxExecute_String,
@@ -23,10 +27,10 @@ namespace PWSAuxParse {
                             StringX &sxAutotype, stringT &serrmsg,
                             StringX::size_type &st_column);
 
-  StringX GetAutoTypeString(const StringX sxAutoCmd,
-                            const StringX sxgroup, const StringX sxtitle,
-                            const StringX sxuser,  const StringX sxpwd,
-                            const StringX sxnotes);
+  StringX GetAutoTypeString(const StringX &sxAutoCmd,
+                            const StringX &sxgroup, const StringX &sxtitle,
+                            const StringX &sxuser,  const StringX &sxpwd,
+                            const StringX &sxnotes);
 };
 
 #endif /* _PWSAUXPARSE_H */

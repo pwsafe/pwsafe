@@ -6,14 +6,22 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+/*
+ * Implementation of utility functions that parse the two small
+ * 'languages' used for 'autotype' and 'execute' command processing.
+ */
+
+#include <vector>
+
 #include "PWSAuxParse.h"
 #include "PWSprefs.h"
 #include "corelib.h"
+#include "ItemData.h"
 
 #include "os/dir.h"
 #include "os/file.h"
 
-// Internal strutures/functions
+// Internal structures, forward declarations
 
 struct st_ExecuteStringTokens {
   StringX sxname;        // Variable name
@@ -23,15 +31,17 @@ struct st_ExecuteStringTokens {
   bool has_brackets;     // Variable enclosed in curly brackets
 };
 
-UINT ParseExecuteString(const StringX &sxInputString,
-                        std::vector<st_ExecuteStringTokens> &v_estokens,
-                        bool &bDoAutoType, StringX &sxAutoType,
-                        stringT &serrmsg, StringX::size_type &st_column);
+static UINT ParseExecuteString(const StringX &sxInputString,
+                               std::vector<st_ExecuteStringTokens> &v_estokens,
+                               bool &bDoAutoType, StringX &sxAutoType,
+                               stringT &serrmsg, StringX::size_type &st_column);
 
-UINT ProcessIndex(const StringX &sxIndex, int &var_index,
-                  StringX::size_type &st_column);
+static UINT ProcessIndex(const StringX &sxIndex, int &var_index,
+                         StringX::size_type &st_column);
 
+//-----------------------------------------------------------------
 // Externally visible functions
+//-----------------------------------------------------------------
 StringX PWSAuxParse::GetExpandedString(const StringX &sxExecute_String,
                                        const StringX &sxCurrentDB, 
                                        CItemData *ci, bool &bAutoType,
@@ -45,16 +55,16 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxExecute_String,
   stringT spath, sdrive, sdir, sfname, sextn;
   stringT sdbdir;
 
+  ASSERT(ci != NULL);
+  if (ci == NULL || sxCurrentDB.empty())
+    return sxretval;
+
   UINT uierr = ParseExecuteString(sxExecute_String, v_estokens, 
                                   bAutoType, sxAutotype, 
                                   serrmsg, st_column);
 
-  if (uierr > 0 || ci == NULL) {
+  if (uierr > 0) {
     v_estokens.clear();
-    return sxretval;
-  }
-
-  if (sxCurrentDB.length() == 0 || ci == NULL) {
     return sxretval;
   }
 
@@ -167,10 +177,12 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxExecute_String,
   return sxretval;
 }
 
-StringX PWSAuxParse::GetAutoTypeString(const StringX sxInAutoCmd,
-                                       const StringX sxgroup, const StringX sxtitle,
-                                       const StringX sxuser,  const StringX sxpwd,
-                                       const StringX sxnotes)
+StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
+                                       const StringX &sxgroup,
+                                       const StringX &sxtitle,
+                                       const StringX &sxuser,
+                                       const StringX &sxpwd,
+                                       const StringX &sxnotes)
 {
   // If empty, try the database default
   StringX sxAutoCmd(sxInAutoCmd);
@@ -324,11 +336,13 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX sxInAutoCmd,
   return sxtmp;
 }
 
+//-----------------------------------------------------------------
 // Internal functions
-UINT ParseExecuteString(const StringX &sxInputString,
-                        std::vector<st_ExecuteStringTokens> &v_estokens,
-                        bool &bDoAutoType, StringX &sxAutoType,
-                        stringT &serrmsg, StringX::size_type &st_column)
+//-----------------------------------------------------------------
+static UINT ParseExecuteString(const StringX &sxInputString,
+                               std::vector<st_ExecuteStringTokens> &v_estokens,
+                               bool &bDoAutoType, StringX &sxAutoType,
+                               stringT &serrmsg, StringX::size_type &st_column)
 {
   // tokenize into separate elements
   std::vector<st_ExecuteStringTokens>::iterator es_iter;
@@ -342,7 +356,7 @@ UINT ParseExecuteString(const StringX &sxInputString,
   const stringT alphanum =
     _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
 
-  if (sxInputString.length() == 0) {
+  if (sxInputString.empty()) {
   // String is empty!
     uierr = IDSC_EXS_INPUTEMPTY;
     goto exit;
@@ -595,8 +609,8 @@ exit:
   return uierr;
 }
 
-UINT ProcessIndex(const StringX &sx_Index, int &var_index, 
-                  StringX::size_type &st_column)
+static UINT ProcessIndex(const StringX &sx_Index, int &var_index, 
+                         StringX::size_type &st_column)
 {
   const stringT num = _T("0123456789");
 
@@ -620,7 +634,7 @@ UINT ProcessIndex(const StringX &sx_Index, int &var_index,
       uierr = IDSC_EXS_INVALIDINDEX;
       goto exit;
     }
-    negative_vindex = sxindex[0] == _T('-') ? true : false;
+    negative_vindex = (sxindex[0] == _T('-'));
     sxindex = sxindex.substr(1);
   }
 
