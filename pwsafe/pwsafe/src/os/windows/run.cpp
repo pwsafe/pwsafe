@@ -20,19 +20,114 @@
 #include "../file.h"
 #include "../utf8conv.h"
 
-#include "../../ui/Windows/pws_autotype/pws_at.h"
+#include "../../ui/Windows/pws_autotype/pws_at.h" // ??!!??
 
 #include <vector>
 #include <algorithm>
 
-bool pws_os::runcmd(const StringX &execute_string, const StringX &sxAutotype,
-                    const st_autotype_ddl &autotype_ddl)
+typedef BOOL (*AT_PROC)(HWND);
+
+struct st_run_impl {
+  AT_PROC pInit;   // Pointer to   Initialise function in pws_at(_D).dll
+  AT_PROC pUnInit; // Pointer to UnInitialise function in pws_at(_D).dll
+  HWND hCBWnd;     // Handle to Window to receive SendMessage for processing
+                   //   It is the main DboxMain window.
+  HINSTANCE m_AT_HK_module;
+
+  bool isValid() const {return m_AT_HK_module != NULL;}
+
+  st_run_impl()
+    : pInit(NULL), pUnInit(NULL), hCBWnd(NULL), m_AT_HK_module(NULL) {
+    // Support Autotype with Launch Browser and Execute String
+    // Try to load DLL to call back when window active for Autotype
+    stringT dll_loc = pws_os::getexecdir();
+#if defined( _DEBUG ) || defined( DEBUG )
+    dll_loc += _T("%spws_at_D.dll");
+#else
+    dll_loc += _T("%spws_at.dll");
+#endif
+    m_AT_HK_module = LoadLibrary(dll_loc.c_str());
+    if (m_AT_HK_module != NULL) {
+      pws_os::Trace(_T("st_run_impl::st_run_impl - AutoType DLL Loaded: OK\n"));
+      pInit  = (AT_PROC)GetProcAddress(m_AT_HK_module, "AT_HK_Initialise");
+      pws_os::Trace(_T("st_run_impl::st_run_impl - Found AT_HK_Initialise: %s\n"),
+            pInit != NULL ? _T("OK") : _T("FAILED"));
+
+      pUnInit = (AT_PROC)GetProcAddress(m_AT_HK_module, "AT_HK_UnInitialise");
+      pws_os::Trace(_T("st_run_impl::st_run_impl - Found AT_HK_UnInitialise: %s\n"),
+            pUnInit != NULL ? _T("OK") : _T("FAILED"));
+    }
+  }
+
+  st_run_impl(const st_run_impl &that)
+    : pInit(that.pInit), pUnInit(that.pUnInit),
+      hCBWnd(that.hCBWnd), m_AT_HK_module(that.m_AT_HK_module) {}
+
+  st_run_impl &operator=(const st_run_impl &that)
+  {
+    if (this != &that) {
+      pInit = that.pInit;
+      pUnInit = that.pUnInit;
+      hCBWnd = that.hCBWnd;
+      m_AT_HK_module = that.m_AT_HK_module;
+    }
+    return *this;
+  }
+
+  ~st_run_impl() {
+    if (m_AT_HK_module != NULL) {
+      // Autotype UnInitialise just in case - should have been done
+      // during the callback process.  It will probably return failed
+      // but we don't care.
+      pUnInit(hCBWnd);
+      BOOL brc = FreeLibrary(m_AT_HK_module);
+      pws_os::Trace(_T("st_run_impl::~st_run_impl - Free Autotype DLL: %s\n"),
+                    brc == TRUE ? _T("OK") : _T("FAILED"));
+      m_AT_HK_module = NULL;
+    }
+  }
+};
+
+PWSRun::PWSRun()
+{
+  impl = new st_run_impl;
+
+}
+
+PWSRun::~PWSRun()
+{
+  delete impl;
+}
+
+bool PWSRun::isValid() const
+{
+  return ((impl != NULL) && impl->isValid());
+}
+
+void PWSRun::Set(void *data)
+{
+  if (impl != NULL)
+    impl->hCBWnd = reinterpret_cast<HWND>(data);
+}
+
+bool PWSRun::UnInit()
+{
+  if (impl != NULL) {
+    return impl->pUnInit(impl->hCBWnd) == TRUE;
+  } else
+    return false;
+}
+
+bool PWSRun::runcmd(const StringX &execute_string, const StringX &sxAutotype)
 {
   // Get first parameter either enclosed by quotes or delimited by a space
   StringX full_string(execute_string), first_part(_T("")), the_rest(_T(""));
   StringX env_var, sx_temp(_T(""));
   StringX::size_type end_delim;
   bool bfound(true);
+
+  if (!isValid())
+    return false;
 
   TrimLeft(full_string, _T(" "));
   if (full_string.c_str()[0] == _T('"')) {
@@ -83,21 +178,23 @@ bool pws_os::runcmd(const StringX &execute_string, const StringX &sxAutotype,
   // Replace string by rebuilt string
   first_part = sx_temp;
 
-  first_part = pws_os::getruncmd(first_part, bfound);
+  first_part = getruncmd(first_part, bfound);
 
   bool rc;
   if (bfound)
-    rc = issuecmd(first_part, the_rest, sxAutotype, autotype_ddl);
+    rc = issuecmd(first_part, the_rest, sxAutotype);
   else
-    rc = issuecmd(full_string, _T(""), sxAutotype, autotype_ddl);
+    rc = issuecmd(full_string, _T(""), sxAutotype);
 
   return rc;
 }
 
-bool pws_os::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                      const StringX &sxAutotype,
-                      const st_autotype_ddl &autotype_ddl)
+bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
+                      const StringX &sxAutotype)
 {
+  if (!isValid())
+    return false;
+
   SHELLEXECUTEINFO si;
   ZeroMemory(&si, sizeof(si));
   si.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -112,13 +209,13 @@ bool pws_os::issuecmd(const StringX &sxFile, const StringX &sxParameters,
   BOOL bAT_init(FALSE);
 
   if (!sxAutotype.empty()) {
-    if (autotype_ddl.pInit != NULL && autotype_ddl.pUnInit != NULL &&
-        autotype_ddl.hCBWnd != NULL) {
+    if (impl->pInit != NULL && impl->pUnInit != NULL &&
+        impl->hCBWnd != NULL) {
       // OK - try and make it tell us!  Won't if another instance of
       // PWS is doing this at exactly the same time - silly user!
-      bAT_init = autotype_ddl.pInit(autotype_ddl.hCBWnd);
-      pws_os::Trace(_T("pws_os::issuecmd - AT_HK_Initialise: %s\n"),
-                bAT_init == TRUE ? _T("OK") : _T("FAILED"));
+      bAT_init = impl->pInit(impl->hCBWnd);
+      pws_os::Trace(_T("PWSRun::issuecmd - AT_HK_Initialise: %s\n"),
+                    bAT_init == TRUE ? _T("OK") : _T("FAILED"));
     }
   }
 
@@ -126,16 +223,16 @@ bool pws_os::issuecmd(const StringX &sxFile, const StringX &sxParameters,
   if (shellExecStatus != TRUE) {
     // ShellExecute writes its own message on failure!
     if (bAT_init) {
-      bAT_init = autotype_ddl.pUnInit(autotype_ddl.hCBWnd);
-      pws_os::Trace(_T("pws_os::issuecmd - AT_HK_UnInitialise: %s\n"),
-            bAT_init == TRUE ? _T("OK") : _T("FAILED"));
+      bAT_init = impl->pUnInit(impl->hCBWnd);
+      pws_os::Trace(_T("PWSRun::issuecmd - AT_HK_UnInitialise: %s\n"),
+                    bAT_init == TRUE ? _T("OK") : _T("FAILED"));
     }
     return false;
   }
   return true;
 }
 
-StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
+StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound)
 {
   // 1. If first parameter is in quotes - assume fully qualified - don't search.
   // 2. If first parameter starts with '%, assume it is going to be replaced by the
@@ -297,7 +394,7 @@ StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
         if (pws_os::FileExists(stringT((sx_dirs + full_pgm).c_str()))) {
           full_pgm = sx_dirs + full_pgm;
           bfound = true;
-         goto exit;
+          goto exit;
         }
       }
     }
@@ -319,7 +416,7 @@ StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
     bool bexists;
     HKEY hSubkey;
     StringX csSubkey = StringX(_T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\")) +
-                       full_pgm;
+      full_pgm;
     bexists = (::RegOpenKeyEx(HKEY_LOCAL_MACHINE,
                               csSubkey.c_str(),
                               0L,
@@ -351,8 +448,8 @@ StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
           if (sx_temp[len - 1] == _T(';'))
             sx_temp = sx_temp.substr(0, len - 1) + _T('\\');
           else
-          if (sx_temp[len - 1] != _T('\\') && sx_temp[len - 1] != _T('/'))
-            sx_temp = sx_temp + _T('\\');
+            if (sx_temp[len - 1] != _T('\\') && sx_temp[len - 1] != _T('/'))
+              sx_temp = sx_temp + _T('\\');
           full_pgm =  sx_temp + full_pgm;
           bfound = true;
         }
@@ -363,6 +460,6 @@ StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
     }
   }
 
-exit:
+ exit:
   return full_pgm;
 }

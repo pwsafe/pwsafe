@@ -6,61 +6,45 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+/**
+ * Interface for a "smart autotype" object. "Smart" in this context
+ * means that we don't start simulating user keystrokes until a new
+ * window has appeared and is ready to take input. This allows us
+ * to "seamlessly" combine browse-to (or execute) and autotype in
+ * one operation.
+ */
+
 #ifndef __RUN_H
 #define __RUN_H
 
 #include "typedefs.h"
 #include "../corelib/StringX.h"
 
-#ifdef _WIN32
-typedef BOOL (*AT_PROC)(HWND);
+struct st_run_impl; // helper structure, platform-dependant
 
-struct st_autotype_ddl {
-  AT_PROC pInit;   // Pointer to   Initialise function in pws_at(_D).dll
-  AT_PROC pUnInit; // Pointer to UnInitialise function in pws_at(_D).dll
-  HWND hCBWnd;     // Handle to Window to receive SendMessage for processing
-                   //   It is the main DboxMain window.
+class PWSRun {
+public:
+  PWSRun();
+  ~PWSRun();
 
-  st_autotype_ddl()
-    : pInit(NULL), pUnInit(NULL), hCBWnd(NULL) {}
+  bool isValid() const; // false if failed to init st_run_impl
+  void Set(void *data); // set platform-dependant data
+  bool UnInit(); // platform-dependant
 
-  st_autotype_ddl(const st_autotype_ddl &that)
-    : pInit(that.pInit), pUnInit(that.pUnInit),
-      hCBWnd(that.hCBWnd) {}
-
-  st_autotype_ddl &operator=(const st_autotype_ddl &that)
-  {
-    if (this != &that) {
-      pInit = that.pInit;
-      pUnInit = that.pUnInit;
-      hCBWnd = that.hCBWnd;
-    }
-    return *this;
-  }
-};
-#endif
-
-namespace pws_os {
   /**
    * getruncmd return path to the command to be run based on Windows
    * runcmd    splits string into command and its parameters
    * issuecmd  executes the command (also used from LaunchBrowser)
    *
-   * getruncmd uses Windows Run command search rules or Liunx equivalent
+   * getruncmd uses Windows Run command search rules or Linux equivalent
    */
-  extern StringX getruncmd(const StringX &sxFile, bool &bfound);
+  StringX getruncmd(const StringX &sxFile, bool &bfound);
 
-#ifdef _WIN32
-  extern bool runcmd(const StringX &execute_string, const StringX &sxAutotype,
-                     const st_autotype_ddl &autotype_ddl);
-  extern bool issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                       const StringX &sxAutotype,
-                       const st_autotype_ddl &autotype_ddl);
-#else
-  extern bool runcmd(const StringX &execute_string, const StringX &sxAutotype);
-  extern bool issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                       const StringX &sxAutotype);
-#endif
+  bool runcmd(const StringX &execute_string, const StringX &sxAutotype);
+  bool issuecmd(const StringX &sxFile, const StringX &sxParameters, 
+                const StringX &sxAutotype);
+private:
+  st_run_impl *impl;
 };
 
 #endif /* __RUN_H */

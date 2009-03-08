@@ -171,12 +171,12 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam)
   // wParam = Process ID
   // lParam = Process Handle
 
-  BOOL brc;
+  bool brc;
   if (!m_bDoAutoType || (m_bDoAutoType && m_AutoType.empty())) {
     // Should never happen as we should not be active if not doing AutoType!
-    brc = app.m_autotype_ddl.pUnInit(app.m_autotype_ddl.hCBWnd);
+    brc = m_runner.UnInit();
     TRACE(_T("DboxMain::OnWH_SHELL_CallBack - Error - AT_HK_UnInitialise : %s\n"),
-          brc == TRUE ? _T("OK") : _T("FAILED"));
+          brc ? _T("OK") : _T("FAILED"));
     // Reset Autotype
     m_bDoAutoType = false;
     m_AutoType.clear();
@@ -191,9 +191,9 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam)
   }
 
   // Deactivate us ASAP
-  brc = app.m_autotype_ddl.pUnInit(app.m_autotype_ddl.hCBWnd);
+  brc = m_runner.UnInit();
   TRACE(_T("DboxMain::OnWH_SHELL_CallBack - AT_HK_UnInitialise after callback : %s\n"),
-         brc == TRUE ? _T("OK") : _T("FAILED"));
+         brc ? _T("OK") : _T("FAILED"));
 
   // Wait for time to do Autotype - if we can.
   bool bFoundProcess(false);
@@ -914,9 +914,10 @@ BOOL DboxMain::OnInitDialog()
     SelectFirstEntry();
   }
 
-  if (app.m_AT_HK_module != NULL && 
-      app.m_autotype_ddl.pInit != NULL && app.m_autotype_ddl.pUnInit != NULL) {
-    app.m_autotype_ddl.hCBWnd = this->m_hWnd;
+  if (m_runner.isValid()) {
+    m_runner.Set(m_hWnd); 
+  } else {
+    AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
   return TRUE;  // return TRUE unless you set the focus to a control
 }
