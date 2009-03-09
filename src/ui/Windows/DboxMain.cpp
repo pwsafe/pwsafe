@@ -41,8 +41,6 @@
 
 #include "os/file.h"
 
-#include "pws_autotype/pws_at.h"
-
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
 #else

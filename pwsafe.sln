@@ -18,7 +18,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languageDLL", "src\ui\Windo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os.vcproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_autotype", "src\ui\Windows\pws_autotype\pws_autotype.vcproj", "{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_autotype", "src\os\windows\pws_autotype\pws_autotype.vcproj", "{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,8 +114,8 @@ Global
 		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugM|Win32.Build.0 = Debug|Win32
 		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugX|Win32.ActiveCfg = Debug|Win32
 		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.DebugX|Win32.Build.0 = Debug|Win32
-		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Demo|Win32.ActiveCfg = Release|Win32
-		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Demo|Win32.Build.0 = Release|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Demo|Win32.ActiveCfg = Debug|Win32
+		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Demo|Win32.Build.0 = Debug|Win32
 		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Release|Win32.ActiveCfg = Release|Win32
 		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.Release|Win32.Build.0 = Release|Win32
 		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}.ReleaseE|Win32.ActiveCfg = Release|Win32

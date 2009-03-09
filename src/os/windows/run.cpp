@@ -20,7 +20,7 @@
 #include "../file.h"
 #include "../utf8conv.h"
 
-#include "../../ui/Windows/pws_autotype/pws_at.h" // ??!!??
+#include "pws_autotype/pws_at.h"
 
 #include <vector>
 #include <algorithm>
