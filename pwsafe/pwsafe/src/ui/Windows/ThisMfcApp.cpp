@@ -45,7 +45,7 @@
 #include "PWPropertyPage.h"  // for finding current propertysheet:
 #include "MFCMessages.h"
 
-#include "pws_autotype/pws_at.h"
+#include "os/windows/pws_autotype/pws_at.h"
 
 #include "Shlwapi.h"
 

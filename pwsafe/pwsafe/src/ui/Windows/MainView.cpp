@@ -41,8 +41,6 @@
 #include "os/dir.h"
 #include "os/run.h"
 
-#include "pws_autotype/pws_at.h"
-
 #include "commctrl.h"
 #include <shlwapi.h>
 #include <vector>
