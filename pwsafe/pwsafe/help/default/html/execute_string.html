@@ -1,0 +1,194 @@
+<html>
+
+<head>
+<title>Execute String</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+<font size=+4 color="red"><i>Draft</i></font>
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Execute String</h2>
+
+<p>This field contains a command that Password Safe will execute when so instructed. It is
+equivalent to typing this into a DOS or CMD box or, if it just specifies a file
+name, double clicking the file in Windows Explorer.</p>
+
+<p>However, Password Safe is able to substitute values associated with this database and this
+particular entry before actually executing it. These values replace 'variables'
+in this command string. Variable names broadly follow the Perl and other
+scripting rules as detailed below:</p>
+
+<p>The 'Execute String' is parsed using the dollar ('$') as indicating the
+start of a variable. NO recursive substitution is performed.</p>
+
+<ul>
+<li>Variables are specified as '$name' and <i>are case sensitive</i>. The name must start with an
+alphabetic character and the remaining characters must be alphanumeric. The variable name is 
+terminated either by encountering a non-alphanumeric character or the end of the Execute String.</li>
+<ul>
+<li>To use a variable followed by an alphanumeric character in the Execute String, enclose it in
+curly brackets e.g.<br>
+'${name}string'.</li>
+
+<li>To use a '$' in the
+string as normal text and not indicating that the following text is a variable
+name, escape it using a back-slash ('\') e.g. '\$text' becomes '$text' and is
+not treated as a variable called 'text'.</li>
+
+<li>To use a back-slash before a '$' as a back-slash, escape it with a back-slash e.g. '\\$name'
+becomes '\$name' in the resulting text and '$name' is treated as a variable. A
+back-slash does not have to be escaped unless it precedes a '$' indicating a
+following variable.</li>
+</ul>
+
+<br>
+
+<li>Valid formats are:</li>
+
+<ul>
+<li>$axxxx*..........</li>
+
+<li>${axxxx}.........</li>
+
+<li>$axxxx[n]........</li>
+
+<li>${axxxx[n]}......
+
+<br>
+where the following describes the permitted characters:</li>
+
+<ul>
+<li>'a' is any alphabetic character,</li>
+<li>'x' is any alphanumeric character,</li>
+<li>'n' is any digit (The first digit within the square brackets may be 
+preceded with a plus or minus sign e.g. '+' or '-',</li>
+<li>'*' is any character that is NOT alphanumeric,</li>
+<li>'.' is any character<li>
+</ul>
+As mentioned above, a numerical value within square brackets is called an 'Index
+value'. As shown above, the Index value 'n' can be preceded by '+' or '-' e.g.
+[-2] or [2] or [+2]. Password Safe treats an index that equates to zero as
+meaning the complete field.
+</ul>
+
+<br>
+
+<li>The following variables are currently recognised:</li>
+
+<br>
+
+<ul>
+<li>Application related:</li>
+
+<table border=0 cellspacing=0 cellpadding=10 width="90%">
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tr><td>appdir</td><td>Directory containing the Password Safe application. See notes 1 &amp; 2
+  below.</td></tr>
+</table>
+
+<br>
+
+<li>Current open database related:</li>
+
+<table border=0 cellspacing=0 cellpadding=10 width="90%">
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tr><td>dbdir</td><td>Directory of current open database. See notes 1 &amp; 2 below.</td></tr>
+ <tr><td>fulldb</td><td>Full path, filename and extension of current open database. See
+  note 2 below.</td></tr>
+ <tr><td>dbname</td><td>Current open database filename.</td></tr>
+ <tr><td>dbextn</td><td>urrent open database extension.</td></tr>
+</table>
+
+<br>
+
+<li>Current entry related:</li>
+
+<table border=0 cellspacing=0 cellpadding=10 width="90%">
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tr><td>g or group</td><td>Group (full tree structure back to root with groups separated by
+  dots).</td></tr>
+ <tr><td>G or GROUP</td><td>The group containing this entry only.</td></tr>
+ <tr><td>t or title</td><td>Title</td></tr>
+ <tr><td>u or user</td><td>Username</td></tr>
+ <tr><td>p or password</td><td>Password</td></tr>
+ <tr><td>a or autotype</td><td>AutoType. See Note 5 below.</td></tr>
+ <tr><td>url</td><td>URL</td></tr>
+ <tr><td>n or n[0]</td><td>The complete Notes field (also: notes or notes[0]). See note 3
+  below.</td></tr>
+ <tr><td>n[i] or notes[i]</td><td>i<sup>th</sup> line of the Notes field counting from the start, i.e. i=1
+  is the first line, i=2 means the second line etc. See note 4 below.</td></tr>
+ <tr><td>n[-i] or notes[-i]</td><td>i<sup>th</sup> line of the Notes field counting from the end, i.e. i=1 is
+  the last line, i=2 means the penultimate line etc. See note 4 below.</td></tr>
+</table>
+
+<br>
+
+<table border=0 cellspacing=0 cellpadding=10 width="90%">
+ <colgroup><col width="5%"><col width="95%"></colgroup>
+ <tr><th align="center">Notes</th><th>&nbsp;</th></tr>
+ <tr><td align="center">1</td><td>Directory values (appdir or dbdir) do not have an ending '\'.
+  Remember to add this if you need it in your Execute String.</td></tr>
+ <tr><td align="center">2</td><td>The contents of variables (including directory and full path
+  values) may contain blanks. You may need to enclose the result in quotes in
+  your Execute String for correct execution.</td></tr>
+ <tr><td align="center">3</td><td>If the Notes field contains more than one line, it will include
+  any embedded carraige return (CR) or line feed (LF). This may cause issues when executed as CR and/or LF
+  will be taken as 'enter'.</td></tr>
+ <tr><td align="center">4</td><td>Any trailing CR and/or LF are removed from single lines selected
+  from the Notes field.</td></tr>
+ <tr><td align="center">5</td><td>If the AutoType variable is present in the Execute string,
+  AutoType will be performed once the target window is active. The variable and
+  its value, if present, will be removed from the string that is executed. This
+  variable can appear anywhere in the Execute String as it only specifies what
+  Password Safe will do after the command string has been executed. Differing
+  from other variables, this one will be able to take a value to override the
+  entry's current value. The format is ($autotype can replace $a in the following
+  examples):<br>
+  <table  border=0 cellspacing=0 cellpadding=10>
+   <colgroup><col width="20%"><col width="80%"></colgroup>
+   <tr><td>$a</td><td>Use current entry value.</td></tr>
+   <tr><td>${a}</td><td>Use current entry value (used if text immediately follows the '$a' variable).</td></tr>
+   <tr><td>$a(value)</td><td>Use autotype string specified between the round brackets.</td></tr>
+   <tr><td>${a}(value)</td><td>Use autotype string specified between the round brackets.</td></tr>
+  </table>
+  </td></tr>
+</table>
+
+<p><b>Note:</b> Be sure to add quotes around your string if required e.g. if your
+database directory contains spaces, to access a text file in it based on your
+open database name, you would need the following (with quotes):<br>
+'$dbdir\\$dbname.txt'<br>
+Notice that the back-slash is escaped so that the '$dbname' is recognised as a
+variable.</p>
+
+<p>On Windows, the normal substitution of environmental variables
+(specified as %variable_name%) is performed. For example:
+'%windir%\notepad.exe' could become (depending on your installation)
+'C:\Windows\notepad.exe'. Current values set in your environment can
+be determined by running 'cmd.exe' and issuing the 'set' command without any 
+parameters. Any unknown environmental variable is left unchanged in the 
+execute string e.g. %xyz%\notepad.exe remains as %xyz%\notepad.exe if
+variable 'xyz' is not set. Note: Windows environmental variables are not 
+case sensitive.</p>
+
+<hr>
+
+<br>
+<br>
+<br>
+<br>
+
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Execute String"> <param name="Keyword" value="Using Execute String"> </object>
+</body>
+
+</html>
