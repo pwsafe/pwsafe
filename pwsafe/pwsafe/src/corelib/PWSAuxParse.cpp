@@ -20,6 +20,7 @@
 
 #include "os/dir.h"
 #include "os/file.h"
+#include "os/pws_tchar.h"
 
 // Internal structures, forward declarations
 
@@ -346,6 +347,7 @@ static UINT ParseExecuteString(const StringX &sxInputString,
   std::vector<size_t> v_pos;
   StringX::iterator str_Iter;
   st_ExecuteStringTokens st_estoken;
+  size_t st_num_quotes(0);
 
   UINT uierr(0);
   int var_index(0);
@@ -359,7 +361,6 @@ static UINT ParseExecuteString(const StringX &sxInputString,
     goto exit;
   }
 
-  size_t st_num_quotes(0);
   for (StringX::size_type l = 0; l < sxInputString.length(); l++) {
     if (sxInputString[l] == _T('"'))
       st_num_quotes++;
@@ -614,6 +615,7 @@ static UINT ProcessIndex(const StringX &sx_Index, int &var_index,
   StringX sxindex(sx_Index);
   UINT uierr(0);
   bool negative_vindex(false);
+  StringX::size_type st_nondigit(0);
 
   st_column = 0;
 
@@ -635,7 +637,7 @@ static UINT ProcessIndex(const StringX &sx_Index, int &var_index,
     sxindex = sxindex.substr(1);
   }
 
-  StringX::size_type st_nondigit = sxindex.find_first_not_of(num.c_str());
+  st_nondigit = sxindex.find_first_not_of(num.c_str());
   if (st_nondigit != StringX::npos) {
     st_column = st_nondigit + 1;
     // Index is not numeric
@@ -643,7 +645,7 @@ static UINT ProcessIndex(const StringX &sx_Index, int &var_index,
     goto exit;
   }
 
-  var_index = _wtoi(sxindex.c_str());
+  var_index = _tstoi(sxindex.c_str());
   if (negative_vindex && var_index == 0) { // i.e. [-0]
     st_column = 2;
     // Index is invalid or missing
