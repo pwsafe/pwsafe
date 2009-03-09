@@ -139,10 +139,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
 
   if (!FAILED(hr)) {  // Create SchemaCache
     //  Initialize the SchemaCache object with the XSD filename
-    CComVariant cvXSDFileName;
-    cvXSDFileName.vt = VT_BSTR;
-    CString cs_XSDfname(strXSDFileName.c_str());
-    cvXSDFileName.bstrVal = cs_XSDfname.AllocSysString();
+    CComVariant cvXSDFileName = strXSDFileName.c_str();
     hr = pSchemaCache->add(L"", cvXSDFileName);
     if (hr != S_OK) {
       LoadAString(m_strResultText, IDSC_INVALID_SCHEMA);
@@ -216,10 +213,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
 #endif
       hr = pSAX2Reader->parseURL(wcURL);
     } else {
-      CComVariant cvXMLData;
-      cvXMLData.vt = VT_BSTR;
-      CString cs_XMLData(strXMLData.c_str());
-      cvXMLData.bstrVal = cs_XMLData.AllocSysString();
+      CComVariant cvXMLData = strXMLData.c_str();
       hr = pSAX2Reader->parse(cvXMLData);
     }
 
