@@ -145,10 +145,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
   if (!FAILED(hr)) {  // Create SchemaCache
     //  Initialize the SchemaCache object with the XSD filename
-    CComVariant cvXSDFileName;
-    CString XSDfn(strXSDFileName.c_str());
-    cvXSDFileName.vt = VT_BSTR;
-    cvXSDFileName.bstrVal = XSDfn.AllocSysString();
+    CComVariant cvXSDFileName = strXSDFileName.c_str();
     hr = pSchemaCache->add(L"", cvXSDFileName);
 
     //  Set the SAXReader/Schema Cache features and properties
