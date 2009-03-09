@@ -42,9 +42,9 @@ struct st_run_impl {
     // Try to load DLL to call back when window active for Autotype
     stringT dll_loc = pws_os::getexecdir();
 #if defined( _DEBUG ) || defined( DEBUG )
-    dll_loc += _T("%spws_at_D.dll");
+    dll_loc += _T("pws_at_D.dll");
 #else
-    dll_loc += _T("%spws_at.dll");
+    dll_loc += _T("pws_at.dll");
 #endif
     m_AT_HK_module = LoadLibrary(dll_loc.c_str());
     if (m_AT_HK_module != NULL) {
