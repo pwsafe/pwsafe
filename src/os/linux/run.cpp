@@ -7,25 +7,53 @@
 */
 
 /**
- * \file Linux-specific implementation of run.h - DUMMY!
+ * \file Linux-specific implementation of run.h - INCOMPLETE & UNTESTED
  */
 
 #include "../run.h"
 
-StringX pws_os::getruncmd(const StringX &sxFile, bool &bfound)
+// Platform-specific implementation details
+struct st_run_impl {
+};
+
+PWSRun::PWSRun()
+{
+  impl = new st_run_impl;
+}
+
+PWSRun::~PWSRun()
+{
+  delete impl;
+}
+
+bool PWSRun::isValid() const
+{
+  return (impl != NULL);
+}
+
+void PWSRun::Set(void *)
+{
+}
+
+bool UnInit() // currently only needed in Windows impl.
+{
+  return true;
+}
+
+StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound)
 {
 	// Stub!
   bfound = true;
 	return sxFile;
 }
 
-bool pws_os::runcmd(const StringX &execute_string, const StringX &sxAutotype)
+bool PWSRun::runcmd(const StringX &execute_string, const StringX &sxAutotype)
 {
 	// Stub!
 	return false;
 }
 
-bool pws_os::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
+bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
                       const StringX &sxAutotype)
 {
 	// Stub!

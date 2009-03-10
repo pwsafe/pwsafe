@@ -13,7 +13,7 @@ NAME=os
 
 LIBSRC          = debug.cpp dir.cpp env.cpp \
                   file.cpp mem.cpp pws_str.cpp \
-                  pws_time.cpp rand.cpp run.cpp\ 
+                  pws_time.cpp rand.cpp run.cpp\
                   sys.cpp utf8conv.cpp
 
 SRC             = $(LIBSRC)
@@ -41,30 +41,30 @@ endif
 .PHONY: all debug release unicodedebug unicoderelease clean setup
 
 $(OBJPATH)/%.o : %.c
-  $(CC) -g  $(CFLAGS)   -c $< -o $@
+	$(CC) -g  $(CFLAGS)   -c $< -o $@
 
 $(OBJPATH)/%.o : %.cpp
-  $(CXX) -g $(CXXFLAGS) -c $< -o $@
+	$(CXX) -g $(CXXFLAGS) -c $< -o $@
 
 all : setup $(LIB)
 
 debug release unicodedebug unicoderelease:
-  $(MAKE) all CONFIG=$@
+	$(MAKE) all CONFIG=$@
 
 $(LIB): $(LIBOBJ)
-  ar rvus $@ $(filter %.o,$^)
+	ar rvus $@ $(filter %.o,$^)
 
 clean:
-  @rm -f *~ $(OBJ) $(TEST) $(LIB)
-  @rm -rf $(DEPDIR)
+	@rm -f *~ $(OBJ) $(TEST) $(LIB)
+	@rm -rf $(DEPDIR)
 
 setup:
-  @mkdir -p $(OBJPATH) $(LIBPATH)
+	@mkdir -p $(OBJPATH) $(LIBPATH)
 
 $(DEPDIR)/%.d: %.cpp
-  @set -e; mkdir -p $(DEPDIR); $(RM) $@; \
-  $(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
-  sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
-  $(RM) $@.$$$$
+	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
+	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
 
 -include $(SRC:%.cpp=$(DEPDIR)/%.d)

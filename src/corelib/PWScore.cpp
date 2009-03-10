@@ -1409,7 +1409,7 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     i++;
     num_found--;
     if (!pws_os::DeleteAFile(excess_file)) {
-      pws_os::Trace(_T("DeleteFile(%s) failed"), excess_file);
+      pws_os::Trace(_T("DeleteFile(%s) failed"), excess_file.c_str());
       continue;
     }
   }

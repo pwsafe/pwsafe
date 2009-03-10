@@ -8,7 +8,7 @@
 
 #include "../debug.h"
 
-#ifdef defined(_DEBUG) || defined(DEBUG)
+#if defined(_DEBUG) || defined(DEBUG)
 
 // TRACE replacement - only need this Debug mode
 #include <stdio.h>
