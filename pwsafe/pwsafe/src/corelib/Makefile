@@ -11,7 +11,8 @@ NAME=corelib
 DEPDIR= ./deps
 
 # Following not used in Linux build
-NOTSRC          = PWSclipboard.cpp
+NOTSRC          = PWSclipboard.cpp \
+									tinyxml/tinystr.cpp
 
 LIBSRC          = BlowFish.cpp hmac.cpp \
                   ItemData.cpp ItemField.cpp  \
@@ -26,7 +27,7 @@ LIBSRC          = BlowFish.cpp hmac.cpp \
                   TwoFish.cpp UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp UUIDGen.cpp \
                   VerifyFormat.cpp XMLprefs.cpp \
-                  tinyxml/tinystr.cpp tinyxml/tinyxml.cpp \
+                  tinyxml/tinyxml.cpp \
                   tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Expat/EFileHandlers.cpp XML/Expat/EFileValidator.cpp \
@@ -63,30 +64,32 @@ endif
 .PHONY: all debug release unicodedebug unicoderelease clean setup
 
 $(OBJPATH)/%.o : %.c
-  $(CC) -g  $(CFLAGS)   -c $< -o $@
+	$(CC) -g  $(CFLAGS)   -c $< -o $@
 
 $(OBJPATH)/%.o : %.cpp
-  $(CXX) -g $(CXXFLAGS) -c $< -o $@
+	$(CXX) -g $(CXXFLAGS) -c $< -o $@
 
 all : setup $(LIB)
 
 debug release unicodedebug unicoderelease:
-  $(MAKE) all CONFIG=$@
+	$(MAKE) all CONFIG=$@
 
 $(LIB): $(LIBOBJ)
-  ar rvus $@ $(filter %.o,$^)
+	ar rvus $@ $(filter %.o,$^)
 
 clean:
-  @rm -f *~ $(OBJ) $(TEST) $(LIB)
-  @rm -rf $(DEPDIR)
+	@rm -f *~ $(OBJ) $(TEST) $(LIB)
+	@rm -rf $(DEPDIR)
 
 setup:
-  @mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(OBJPATH)/XML/Expat $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)
+	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(OBJPATH)/XML/Expat $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)
 
 $(DEPDIR)/%.d: %.cpp
-  @set -e; mkdir -p $(DEPDIR) $(DEPDIR)/tinyxml;$(RM) $@; \
-  $(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
-  sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
-  $(RM) $@.$$$$
+	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/tinyxml; \
+	mkdir -p $(DEPDIR)/XML/Xerces $(DEPDIR)/XML/Expat; \
+	$(RM) $@; \
+	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	$(RM) $@.$$$$
 
 -include $(SRC:%.cpp=$(DEPDIR)/%.d)

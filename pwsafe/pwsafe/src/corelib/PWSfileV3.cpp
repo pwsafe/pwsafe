@@ -166,7 +166,7 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
   int utf8Len;
   status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
   if (!status)
-    pws_os::Trace(_T("ToUTF8(%s) failed\n"), data);
+    pws_os::Trace(_T("ToUTF8(%s) failed\n"), data.c_str());
   return WriteCBC(type, utf8, utf8Len);
 }
 
