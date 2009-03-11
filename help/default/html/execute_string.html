@@ -1,150 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-
 <head>
-<title>Execute String</title>
-<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+
+
+
+  
+  <title>Execute String</title>
+<!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>
+  
   
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
+
+
 <body>
 
-<font size=+4 color="red"><i>Draft</i></font>
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
-<h2>Execute String</h2>
+<h1>Execute String</h1>
 
-<p>This field contains a command that Password Safe will execute when so instructed. It is
-equivalent to typing this into a DOS or CMD box or, if it just specifies a file
-name, double clicking the file in Windows Explorer.</p>
 
-<p>However, Password Safe is able to substitute values associated with this database and this
-particular entry before actually executing it. These values replace 'variables'
-in this command string. Variable names broadly follow the Perl and other
-scripting rules as detailed below:</p>
+<p>An entry's&nbsp;'Execute'&nbsp;field can contain a command that will
+be run when the Execute action is selected. The command can be anthing
+that you can type in the Start-&gt;Run box of your computer.</p>
 
-<p>The 'Execute String' is parsed using the dollar ('$') as indicating the
-start of a variable. NO recursive substitution is performed.</p>
+
+<p>In addition Password Safe is able to pass arguments to the command
+such as the entry's username, password, etc., as described below. This
+allows you to 'program' fairly complex actions, such as invoking a
+remote access program and passing it the username and password
+associated with the entry.</p>
+
+
+<p>In general, 'variables' are replaced with values associatedwith them
+before being passed to the computer for execution. The dollar ('$')
+sign is used to indicate a variable.</p>
+
 
 <ul>
-<li>Variables are specified as '$name' and <i>are case sensitive</i>. The name must start with an
-alphabetic character and the remaining characters must be alphanumeric. The variable name is 
+
+  <li>Variables are specified as '$name' and <i>are case sensitive</i>. Variable names always start with an
+alphabetic character and the remaining characters are alphanumeric. The variable name is 
 terminated either by encountering a non-alphanumeric character or the end of the Execute String.</li>
-<ul>
-<li>To use a variable followed by an alphanumeric character in the Execute String, enclose it in
-curly brackets e.g.<br>
-'${name}string'.</li>
 
-<li>To use a '$' in the
+  <ul>
+
+    <li>To use a variable immediately followed by an alphanumeric character in the Execute String, enclose the variable's name in
+curly brackets e.g., '${varname}string'.</li>
+
+
+    <li>To use a '$' in the
 string as normal text and not indicating that the following text is a variable
 name, escape it using a back-slash ('\') e.g. '\$text' becomes '$text' and is
 not treated as a variable called 'text'.</li>
 
-<li>To use a back-slash before a '$' as a back-slash, escape it with a back-slash e.g. '\\$name'
+
+    <li>To use a back-slash before a '$' as a back-slash, escape it with a back-slash e.g. '\\$name'
 becomes '\$name' in the resulting text and '$name' is treated as a variable. A
 back-slash does not have to be escaped unless it precedes a '$' indicating a
 following variable.</li>
-</ul>
-
-<br>
-
-<li>Valid formats are:</li>
-
-<ul>
-<li>$axxxx*..........</li>
-
-<li>${axxxx}.........</li>
-
-<li>$axxxx[n]........</li>
-
-<li>${axxxx[n]}......
-
-<br>
-where the following describes the permitted characters:</li>
-
-<ul>
-<li>'a' is any alphabetic character,</li>
-<li>'x' is any alphanumeric character,</li>
-<li>'n' is any digit (The first digit within the square brackets may be 
-preceded with a plus or minus sign e.g. '+' or '-',</li>
-<li>'*' is any character that is NOT alphanumeric,</li>
-<li>'.' is any character<li>
-</ul>
-As mentioned above, a numerical value within square brackets is called an 'Index
-value'. As shown above, the Index value 'n' can be preceded by '+' or '-' e.g.
+    <li>A variable may be followed by&nbsp;a numerical value within square brackets is called an 'Index
+value'. The Index value 'n' can be preceded by '+' or '-' e.g.
 [-2] or [2] or [+2]. Password Safe treats an index that equates to zero as
 meaning the complete field.
-</ul>
+    </li>
 
-<br>
+  </ul>
 
-<li>The following variables are currently recognised:</li>
 
-<br>
+  <br>
 
-<ul>
-<li>Application related:</li>
 
-<table border=0 cellspacing=0 cellpadding=10 width="90%">
+  <li>The following variables are currently recognised:</li>
+
+
+  <br>
+
+
+  <ul>
+
+    <li>Application related:</li>
+
+
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
  <colgroup><col width="15%"><col width="85%"></colgroup>
- <tr><td>appdir</td><td>Directory containing the Password Safe application. See notes 1 &amp; 2
-  below.</td></tr>
-</table>
+ <tbody>
+        <tr>
+          <td style="font-weight: bold;">appdir</td>
+          <td>Directory containing the Password Safe application. See notes <a href="#n1">1</a> &amp; <a href="#n2">2</a>
+  below.</td>
+        </tr>
 
-<br>
+      </tbody>
+    </table>
 
-<li>Current open database related:</li>
 
-<table border=0 cellspacing=0 cellpadding=10 width="90%">
+    <br>
+
+
+    <li>Current&nbsp;database related:</li>
+
+
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
  <colgroup><col width="15%"><col width="85%"></colgroup>
- <tr><td>dbdir</td><td>Directory of current open database. See notes 1 &amp; 2 below.</td></tr>
- <tr><td>fulldb</td><td>Full path, filename and extension of current open database. See
-  note 2 below.</td></tr>
- <tr><td>dbname</td><td>Current open database filename.</td></tr>
- <tr><td>dbextn</td><td>urrent open database extension.</td></tr>
-</table>
+ <tbody>
+        <tr>
+          <td style="font-weight: bold;">dbdir</td>
+          <td>Directory of current open database. See notes <a href="#n1">1</a> &amp; <a href="#n2">2</a> below.</td>
+        </tr>
 
-<br>
+ <tr>
+          <td style="font-weight: bold;">fulldb</td>
+          <td>Full path, filename and extension of current open database. See
+  note <a href="#n2">2</a> below.</td>
+        </tr>
 
-<li>Current entry related:</li>
+ <tr>
+          <td style="font-weight: bold;">dbname</td>
+          <td>Current open database filename.</td>
+        </tr>
 
-<table border=0 cellspacing=0 cellpadding=10 width="90%">
+ <tr>
+          <td style="font-weight: bold;">dbextn</td>
+          <td>Current open database extension.</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+
+    <br>
+
+
+    <li>Current entry related:</li>
+
+
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
  <colgroup><col width="15%"><col width="85%"></colgroup>
- <tr><td>g or group</td><td>Group (full tree structure back to root with groups separated by
-  dots).</td></tr>
- <tr><td>G or GROUP</td><td>The group containing this entry only.</td></tr>
- <tr><td>t or title</td><td>Title</td></tr>
- <tr><td>u or user</td><td>Username</td></tr>
- <tr><td>p or password</td><td>Password</td></tr>
- <tr><td>a or autotype</td><td>AutoType. See Note 5 below.</td></tr>
- <tr><td>url</td><td>URL</td></tr>
- <tr><td>n or n[0]</td><td>The complete Notes field (also: notes or notes[0]). See note 3
-  below.</td></tr>
- <tr><td>n[i] or notes[i]</td><td>i<sup>th</sup> line of the Notes field counting from the start, i.e. i=1
-  is the first line, i=2 means the second line etc. See note 4 below.</td></tr>
- <tr><td>n[-i] or notes[-i]</td><td>i<sup>th</sup> line of the Notes field counting from the end, i.e. i=1 is
-  the last line, i=2 means the penultimate line etc. See note 4 below.</td></tr>
-</table>
+ <tbody>
+        <tr>
+          <td style="font-weight: bold;">g <span style="font-weight: normal;">or</span> group</td>
+          <td>Group (full tree structure back to root with groups separated by
+  dots).</td>
+        </tr>
 
-<br>
+ <tr>
+          <td style="font-weight: bold;">G <span style="font-weight: normal;">or</span> GROUP</td>
+          <td>The group containing this entry only.</td>
+        </tr>
 
-<table border=0 cellspacing=0 cellpadding=10 width="90%">
+ <tr>
+          <td style="font-weight: bold;">t <span style="font-weight: normal;">or</span> title</td>
+          <td>Title</td>
+        </tr>
+
+ <tr>
+          <td style="font-weight: bold;">u <span style="font-weight: normal;">or</span> user</td>
+          <td>Username</td>
+        </tr>
+
+ <tr>
+          <td style="font-weight: bold;">p <span style="font-weight: normal;">or</span> password</td>
+          <td>Password</td>
+        </tr>
+
+ <tr>
+          <td style="font-weight: bold;">a <span style="font-weight: normal;">or </span>autotype</td>
+          <td>AutoType. See Note <a href="#n5">5</a> below.</td>
+        </tr>
+
+ <tr>
+          <td style="font-weight: bold;">url</td>
+          <td>URL</td>
+        </tr>
+
+ <tr>
+          <td><span style="font-weight: bold;">n</span> or <span style="font-weight: bold;">n[0]</span></td>
+          <td>The complete Notes field (also: notes or notes[0]). See note <a href="#n3">3</a>
+  below.</td>
+        </tr>
+
+ <tr>
+          <td><span style="font-weight: bold;">n[i]</span> or <span style="font-weight: bold;">notes[i]</span></td>
+          <td>i<sup>th</sup> line of the Notes field counting from the start, i.e. i=1
+  is the first line, i=2 means the second line etc. See note <a href="#n4">4</a> below.</td>
+        </tr>
+
+ <tr>
+          <td><span style="font-weight: bold;">n[-i]</span> or <span style="font-weight: bold;">notes[-i]</span></td>
+          <td>i<sup>th</sup> line of the Notes field counting from the end, i.e. i=1 is
+  the last line, i=2 means the penultimate line etc. See note <a href="#n4">4</a> below.</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+
+    <br>
+
+
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
  <colgroup><col width="5%"><col width="95%"></colgroup>
- <tr><th align="center">Notes</th><th>&nbsp;</th></tr>
- <tr><td align="center">1</td><td>Directory values (appdir or dbdir) do not have an ending '\'.
-  Remember to add this if you need it in your Execute String.</td></tr>
- <tr><td align="center">2</td><td>The contents of variables (including directory and full path
+ <tbody>
+        <tr>
+          <th align="center">Notes</th>
+          <th>&nbsp;</th>
+        </tr>
+
+ <tr>
+          <td align="center">1<a name="n1"></a></td>
+          <td>Directory values (appdir or dbdir) do not have an ending '\'.
+  Remember to add this if you need it in your Execute String.</td>
+        </tr>
+
+ <tr>
+          <td align="center">2<a name="n2"></a></td>
+          <td>The contents of variables (including directory and full path
   values) may contain blanks. You may need to enclose the result in quotes in
-  your Execute String for correct execution.</td></tr>
- <tr><td align="center">3</td><td>If the Notes field contains more than one line, it will include
+  your Execute String for correct execution.</td>
+        </tr>
+
+ <tr>
+          <td align="center">3<a name="n3"></a></td>
+          <td>If the Notes field contains more than one line, it will include
   any embedded carraige return (CR) or line feed (LF). This may cause issues when executed as CR and/or LF
-  will be taken as 'enter'.</td></tr>
- <tr><td align="center">4</td><td>Any trailing CR and/or LF are removed from single lines selected
-  from the Notes field.</td></tr>
- <tr><td align="center">5</td><td>If the AutoType variable is present in the Execute string,
+  will be taken as 'enter'.</td>
+        </tr>
+
+ <tr>
+          <td align="center">4<a name="n4"></a></td>
+          <td>Any trailing CR and/or LF are removed from single lines selected
+  from the Notes field.</td>
+        </tr>
+
+ <tr>
+          <td align="center">5<a name="n5"></a></td>
+          <td>If the AutoType variable is present in the Execute string,
   AutoType will be performed once the target window is active. The variable and
   its value, if present, will be removed from the string that is executed. This
   variable can appear anywhere in the Execute String as it only specifies what
@@ -152,43 +251,79 @@ meaning the complete field.
   from other variables, this one will be able to take a value to override the
   entry's current value. The format is ($autotype can replace $a in the following
   examples):<br>
-  <table  border=0 cellspacing=0 cellpadding=10>
-   <colgroup><col width="20%"><col width="80%"></colgroup>
-   <tr><td>$a</td><td>Use current entry value.</td></tr>
-   <tr><td>${a}</td><td>Use current entry value (used if text immediately follows the '$a' variable).</td></tr>
-   <tr><td>$a(value)</td><td>Use autotype string specified between the round brackets.</td></tr>
-   <tr><td>${a}(value)</td><td>Use autotype string specified between the round brackets.</td></tr>
-  </table>
-  </td></tr>
-</table>
 
-<p><b>Note:</b> Be sure to add quotes around your string if required e.g. if your
+  
+          <table border="0" cellpadding="10" cellspacing="0">
+
+   <colgroup><col width="20%"><col width="80%"></colgroup>
+   <tbody>
+              <tr>
+                <td>$a</td>
+                <td>Use current entry value.</td>
+              </tr>
+
+   <tr>
+                <td>${a}</td>
+                <td>Use current entry value (used if text immediately follows the '$a' variable).</td>
+              </tr>
+
+   <tr>
+                <td>$a(value)</td>
+                <td>Use autotype string specified between the round brackets.</td>
+              </tr>
+
+   <tr>
+                <td>${a}(value)</td>
+                <td>Use autotype string specified between the round brackets.</td>
+              </tr>
+
+  
+            </tbody>
+          </table>
+
+  </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+
+    <p><b>Note:</b> Be sure to add quotes around your string if required e.g., if your
 database directory contains spaces, to access a text file in it based on your
 open database name, you would need the following (with quotes):<br>
+
 '$dbdir\\$dbname.txt'<br>
+
 Notice that the back-slash is escaped so that the '$dbname' is recognised as a
 variable.</p>
 
-<p>On Windows, the normal substitution of environmental variables
+
+    <p>On Windows, the normal substitution of environmental variables
 (specified as %variable_name%) is performed. For example:
 '%windir%\notepad.exe' could become (depending on your installation)
 'C:\Windows\notepad.exe'. Current values set in your environment can
 be determined by running 'cmd.exe' and issuing the 'set' command without any 
 parameters. Any unknown environmental variable is left unchanged in the 
-execute string e.g. %xyz%\notepad.exe remains as %xyz%\notepad.exe if
-variable 'xyz' is not set. Note: Windows environmental variables are not 
+execute string e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if
+variable 'xyz' is not set. Note: Windows environmental variables are <span style="font-weight: bold;">not</span> 
 case sensitive.</p>
 
-<hr>
 
-<br>
-<br>
-<br>
-<br>
+    <hr>
+
+    <br>
+
+    <br>
+
+    <br>
+
+    <br>
 
 
-<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-<param name="Keyword" value="Execute String"> <param name="Keyword" value="Using Execute String"> </object>
+
+    <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+    <param name="Keyword" value="Execute String"> <param name="Keyword" value="Using Execute String"> </object>
+  </ul>
+</ul>
 </body>
-
 </html>
