@@ -77,15 +77,21 @@ bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
     return false;
 
   // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
-  // issues with CTime constructor after apply daylight savings offset.
+  // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
     t = (time_t)0;
     return true;
   }
 
-  const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
-
-  t = (time_t)ct.GetTime();
+  struct tm xtm = { 0 };
+  xtm.tm_year = yyyy - 1900;
+  xtm.tm_mon = mon - 1;
+  xtm.tm_mday = dd;
+  xtm.tm_hour = hh;
+  xtm.tm_min = min;
+  xtm.tm_sec = ss;
+  xtm.tm_isdst = -1;
+  t = mktime(&xtm);
 
   return true;
 }
@@ -132,23 +138,32 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
     return false;
 
   // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
-  // issues with CTime constructor after apply daylight savings offset.
+  // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
     t = (time_t)0;
     return true;
   }
 
-  const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
+  time_t xt;
+  struct tm xtm = { 0 };
+  xtm.tm_year = yyyy - 1900;
+  xtm.tm_mon = mon - 1;
+  xtm.tm_mday = dd;
+  xtm.tm_hour = hh;
+  xtm.tm_min = min;
+  xtm.tm_sec = ss;
+  xtm.tm_isdst = -1;
+  xt = mktime(&xtm);
 
   iDOW = str_days.find(dow);
   if (iDOW == stringT::npos)
     return false;
 
   iDOW = (iDOW / 3) + 1;
-  if (iDOW != stringT::size_type(ct.GetDayOfWeek()))
+  if (iDOW != stringT::size_type(xtm.tm_wday + 1))
     return false;
 
-  t = (time_t)ct.GetTime();
+  t = xt;
 
   return true;
 }
@@ -192,15 +207,21 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
     return false;
 
   // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
-  // issues with CTime constructor after apply daylight savings offset.
+  // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
     t = (time_t)0;
     return true;
   }
 
-  const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
-
-  t = (time_t)ct.GetTime();
+  struct tm xtm = { 0 };
+  xtm.tm_year = yyyy - 1900;
+  xtm.tm_mon = mon - 1;
+  xtm.tm_mday = dd;
+  xtm.tm_hour = hh;
+  xtm.tm_min = min;
+  xtm.tm_sec = ss;
+  xtm.tm_isdst = -1;
+  t = mktime(&xtm);
 
   return true;
 }
@@ -239,15 +260,18 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t)
     return false;
 
   // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
-  // issues with CTime constructor after apply daylight savings offset.
+  // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
     t = (time_t)0;
     return true;
   }
 
-  const CTime ct(yyyy, mon, dd, 0, 0, 0, -1);
-
-  t = (time_t)ct.GetTime();
+  struct tm xtm = { 0 };
+  xtm.tm_year = yyyy - 1900;
+  xtm.tm_mon = mon - 1;
+  xtm.tm_mday = dd;
+  xtm.tm_isdst = -1;
+  t = mktime(&xtm);
 
   return true;
 }
