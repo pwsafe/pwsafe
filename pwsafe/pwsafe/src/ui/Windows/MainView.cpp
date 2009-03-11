@@ -2085,8 +2085,11 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype)
       sxParameters = StringX(theURL);
   }
 
+  TrimLeft(sxFile);
+  m_bDoAutoType = autotypeReplacements > 0;
+  m_AutoType = sxAutotype;
   bool rc = m_runner.issuecmd(sxFile, sxParameters, 
-                              autotypeReplacements > 0 ? sxAutotype : _T(""));
+                              m_bDoAutoType ? sxAutotype : _T(""));
 
   if (!rc) {
     AfxMessageBox(errID, MB_ICONSTOP);
