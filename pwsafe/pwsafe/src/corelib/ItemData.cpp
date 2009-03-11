@@ -1239,10 +1239,18 @@ bool CItemData::Matches(time_t time1, time_t time2, int iObject,
   else {
     time_t testtime;
     if (tValue != (time_t)0) {
-      CTime ct(tValue);
-      CTime ct2;
-      ct2 = CTime(ct.GetYear(), ct.GetMonth(), ct.GetDay(), 0, 0, 0);
-      testtime = (time_t)ct2.GetTime();
+      struct tm st;
+#if _MSC_VER >= 1400
+      errno_t err;
+      err = localtime_s(&st, &tValue);  // secure version
+      ASSERT(err == 0);
+#else
+      st = *localtime(&tValue);
+#endif
+      st.tm_hour = 0;
+      st.tm_min = 0;
+      st.tm_sec = 0;
+      testtime = mktime(&st);
     } else
       testtime = (time_t)0;
     return PWSMatch::Match(time1, time2, testtime, iFunction);

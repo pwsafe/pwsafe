@@ -10,10 +10,13 @@
 #include <string.h>
 #include <cstdarg>
 #include "StringX.h"
+
 #include "os/pws_tchar.h"
+
 #ifdef _WIN32
 #include <afx.h>
 #endif
+
 // A few convenience functions for StringX & stringT
 
 template<class T> int CompareNoCase(const T &s1, const T &s2)

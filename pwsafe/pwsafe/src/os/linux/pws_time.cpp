@@ -18,24 +18,6 @@ struct tm *gmtime64_r(const __time64_t *timep, struct tm *result)
   return gmtime_r((const time_t *)timep, result);
 }
 
-CTime::CTime() :m_t(0)
-{
-  localtime_r(&m_t, &m_tm);
-}
-
-CTime::CTime(time_t t) :m_t(t)
-{
-  localtime_r(&m_t, &m_tm);
-}
-
-CTime::CTime(int Y, int M, int D, int h, int m, int s, int dst)
-{
-  m_tm.tm_year = Y; m_tm.tm_mon = M; m_tm.tm_mday = D;
-  m_tm.tm_hour = h; m_tm.tm_min = m; m_tm.tm_sec = s;
-  m_tm.tm_isdst = dst;
-  m_t = mktime(&m_tm);
-}
-
 int pws_os::asctime(TCHAR *s, unsigned int, tm const *t)
 {
 #ifdef UNICODE
