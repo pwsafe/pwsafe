@@ -168,6 +168,10 @@
 			<param name="Name" value="Preferences">
 			<param name="Local" value="html\preferences.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Execute String">
+			<param name="Local" value="html\execute_string.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Program Credits">
