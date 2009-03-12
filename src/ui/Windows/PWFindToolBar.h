@@ -51,6 +51,7 @@ public:
 
   CEditExtn m_findedit;
   CStaticExtn m_findresults;
+  void SetSearchDirection(int iFindDirection) {m_iFindDirection = iFindDirection;}
 
 protected:
   //{{AFX_MSG(CPWFindToolBar)
@@ -72,7 +73,7 @@ private:
   CFont m_FindTextFont;
   int m_iMaxNumButtons, m_iNum_Bitmaps, m_NumBits;
   int m_iWMSGID;
-  int m_toolbarMode, m_bitmode;
+  int m_toolbarMode, m_bitmode, m_iFindDirection;
   bool m_bVisible, m_bCaseSensitive, m_bAdvanced;
 
   std::vector<int> m_indices; // array of found items

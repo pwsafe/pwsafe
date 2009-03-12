@@ -359,6 +359,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 
   ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolBar)
   ON_COMMAND(ID_TOOLBUTTON_FIND, OnToolBarFind)
+  ON_COMMAND(ID_TOOLBUTTON_FINDUP, OnToolBarFindUp)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE, OnToolBarFindCase)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE_I, OnToolBarFindCase)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE_S, OnToolBarFindCase)
@@ -502,6 +503,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_TOOLBUTTON_CLOSEFIND, true, true, true, false},
   {ID_TOOLBUTTON_FINDEDITCTRL, true, true, false, false},
   {ID_TOOLBUTTON_FIND, true, true, false, false},
+  {ID_TOOLBUTTON_FINDUP, true, true, false, false},
   {ID_TOOLBUTTON_FINDCASE, true, true, false, false},
   {ID_TOOLBUTTON_FINDCASE_I, true, true, false, false},
   {ID_TOOLBUTTON_FINDCASE_S, true, true, false, false},
