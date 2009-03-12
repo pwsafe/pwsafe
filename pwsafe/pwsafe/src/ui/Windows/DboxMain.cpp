@@ -198,7 +198,7 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam)
   // Check if process still there.
   if (wParam != 0 && lParam != 0) {
     DWORD dwProcesses[1024], dwBytesNeeded;
-    if (!EnumProcesses(dwProcesses, sizeof(dwProcesses), &dwBytesNeeded)) {
+    if (EnumProcesses(dwProcesses, sizeof(dwProcesses), &dwBytesNeeded) != 0) {
       for (int i = 0; i < (int)(dwBytesNeeded / sizeof(DWORD)); i++) {
         if (dwProcesses[i] == (DWORD)wParam) {
           bFoundProcess = true;
