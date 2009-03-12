@@ -499,3 +499,5 @@
 #define IDS_CANTLOAD_AUTOTYPEDLL        5660
 #define IDS_EXS_ERRORMSG                5661
 #define IDS_EXS_IGNOREORFIX             5662
+#define IDS_SEARCHTOP                   5663
+#define IDS_SEARCHBOTTOM                5665

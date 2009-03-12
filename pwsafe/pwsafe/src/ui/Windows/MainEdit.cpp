@@ -1815,6 +1815,21 @@ void DboxMain::OnToolBarFind()
   // Called when the user presses the Find button on the Find Toolbar or
   // when they press enter when the search string has focus or
   // when they press F3
+  if (GetKeyState(VK_SHIFT) & 0x8000) {
+    // User clicked on Toolbar button with Shift key down
+    OnToolBarFindUp();
+    return;
+  }
+  m_FindToolBar.SetSearchDirection(FIND_DOWN);
+  m_FindToolBar.Find();
+}
+
+void DboxMain::OnToolBarFindUp()
+{
+  // Called when the user presses the Find button on the Find Toolbar or
+  // when they press enter when the search string has focus or
+  // when they press Shift+F3
+  m_FindToolBar.SetSearchDirection(FIND_UP);
   m_FindToolBar.Find();
 }
 

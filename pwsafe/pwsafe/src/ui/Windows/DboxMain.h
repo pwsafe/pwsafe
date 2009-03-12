@@ -110,6 +110,8 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 // Hotkey value ID
 #define PWS_HOTKEY_ID 5767
 
+enum SearchDirection {FIND_UP = -1, FIND_DOWN = 1};
+
 // Index values for which dialog to show during GetAndCheckPassword
 enum {GCP_FIRST = 0,        // At startup of PWS
       GCP_NORMAL = 1,       // Only OK, CANCEL & HELP buttons
@@ -576,6 +578,7 @@ protected:
   afx_msg void OnImportXML();
 
   afx_msg void OnToolBarFind();
+  afx_msg void OnToolBarFindUp();
   afx_msg void OnCustomizeToolbar();
   afx_msg void OnToolBarFindCase();
   afx_msg void OnToolBarFindAdvanced();

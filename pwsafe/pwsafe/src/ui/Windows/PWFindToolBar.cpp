@@ -91,7 +91,8 @@ CPWFindToolBar::CPWFindToolBar()
   m_subgroup_object(0), m_subgroup_function(0),
   m_last_subgroup_name(_T("")), m_last_subgroup_set(BST_UNCHECKED),
   m_last_subgroup_object(0), m_last_subgroup_function(0),
-  m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1)
+  m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1),
+  m_iFindDirection(FIND_DOWN)
 {
   m_bsFields.reset();
   m_last_bsFields.reset();
@@ -418,7 +419,7 @@ void CPWFindToolBar::Find()
   DboxMain* pDbx = static_cast<DboxMain *>(m_pDbx);
   ASSERT(pDbx != NULL);
 
-  CString cs_status;
+  CString cs_status, cs_temp;
   m_findedit.GetWindowText(m_search_text);
   if (m_search_text.IsEmpty()) {
     cs_status.LoadString(IDS_ENTERSEARCHSTRING);
@@ -477,10 +478,20 @@ void CPWFindToolBar::Find()
     if (m_numFound == 1) {
       pDbx->SelectFindEntry(m_indices[0], TRUE);
     } else {
-      m_lastshown++;
-      if (m_lastshown >= m_numFound) {
-        cs_status.LoadString(IDS_SEARCHWRAPPED);
+      if (m_iFindDirection == FIND_DOWN) {
+        m_lastshown++;
+      } else {
+        m_lastshown--;
+      }
+      if (m_iFindDirection == FIND_DOWN && m_lastshown >= m_numFound) {
+        cs_temp.LoadString(IDS_SEARCHTOP);
+        cs_status.Format(IDS_SEARCHWRAPPED, cs_temp);
         m_lastshown = 0;
+      } else
+      if (m_iFindDirection == FIND_UP   && m_lastshown == 0xffffffff) {
+        cs_temp.LoadString(IDS_SEARCHBOTTOM);
+        cs_status.Format(IDS_SEARCHWRAPPED, cs_temp);
+        m_lastshown = m_numFound - 1;
       } else
         cs_status.Format(IDS_FOUNDMATCHES, m_lastshown + 1, m_numFound);
       pDbx->SelectFindEntry(m_indices[m_lastshown], TRUE);

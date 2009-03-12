@@ -28,6 +28,8 @@ menu.
 via Ctrl+E or menu.  See help for details.
 [] Support AutoType with 'Browse to URL' and new 'Execute String' functions.
 See help for details.
+[] Implement "Find Up" via clicking Find toolbar button with Shift key down or
+pressing 'Shift+F3' for repeat find up.
 
 Bugs fixed in 3.16.1
 ====================
