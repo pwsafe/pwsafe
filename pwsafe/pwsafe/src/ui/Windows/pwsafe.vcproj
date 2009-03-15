@@ -1159,10 +1159,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\model.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OptionsBackup.cpp"
 				>
 			</File>
@@ -1338,10 +1334,6 @@
 				RelativePath=".\ViewReport.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\winview.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1509,10 +1501,6 @@
 			</File>
 			<File
 				RelativePath=".\MFCmessages.h"
-				>
-			</File>
-			<File
-				RelativePath=".\model.h"
 				>
 			</File>
 			<File
@@ -1720,15 +1708,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\view.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ViewReport.h"
-				>
-			</File>
-			<File
-				RelativePath=".\winview.h"
 				>
 			</File>
 		</Filter>
