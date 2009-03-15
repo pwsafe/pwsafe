@@ -12,55 +12,49 @@
 <!-- Popup Source File -->
 <h2>Kommandozeilen Argumente</h2>
 <p>Wenn Sie <b>Password Safe</b> ohne Argumente aufrufen,
- wird die Anwendung nach dem General-Passwort der zuletzt ge&ouml;ffneten Datenbank fragen,
- oder nach dem General-Passwort f&uuml;r eine neue Datenbank, wenn vorher noch keine auf Ihrem Computer
+ wird die Anwendung nach dem Master-Passwort der zuletzt ge&ouml;ffneten Datenbank fragen,
+ oder nach dem Master-Passwort f&uuml;r eine neue Datenbank, wenn vorher noch keine auf Ihrem Computer
  er&ouml;ffnet wurde (z.B. bei der erstmaligen Anwendung von <b>Password Safe</b>).
-Es ist aber auch m&ouml;glich dies abzu&auml;ndern durch Aufrufen von <b>Password Safe</b> wie folgt:</p>
+Es ist aber auch m&ouml;glich dies durch Aufrufen von <b>Password Safe</b> wie folgt abzu&auml;ndern:</p>
 <ul>
   <li><i>pwsafe</i> <b>Datenbank</b><br>
-Dies wird die angegebene Datenbank &ouml;ffnen, anstelle der zuletzt ge&ouml;ffnete. Wenn nur eine Dateiname ohne Pfad
-angegeben ist, wird in dem Verzeichnis gesucht von wo die Anwendung aufgerufen wurde. Wenn im Dateinamen und/oder
-der Pfad Leerzeichen vorkommen, sollte es mit G&auml;nzef&uuml;&szlig;chen eingeschlossen sein.
+Dies wird die angegebene Datenbank &ouml;ffnen, anstelle der zuletzt ge&ouml;ffneten. Wenn nur ein Dateiname ohne Pfad angegeben ist, wird in dem Verzeichnis gesucht, aus welchem die Anwendung aufgerufen wurde. Wenn im Dateinamen und/oder der Pfad Leerzeichen vorkommen, sollte es mit G&auml;nsef&uuml;&szlig;chen eingeschlossen sein.
   </li>
   <li><i>pwsafe</i> <b>-r Datenbank</b><br>
 Dies wird die angegebene Datenbank in NUR-Lese Modus &ouml;ffnen.</li>
   <li><i>pwsafe </i><b>-v Datenbank</b><br>
-  Nachdem das richtige General-Passwort eingegeben wurde,
-    wird die Datenbank &uuml;berpr&uuml;ft. Hierbei werden eventuell vorhandene interne Inkonsistenzen ausgebessert.
-    Dies ist n&uuml;tzlich wenn Datenbanken verwendet werden, die von anderen Anwendungen erzeugt wurden.</li>
+  Nachdem das richtige Master-Passwort eingegeben wurde, wird die Datenbank &uuml;berpr&uuml;ft. Hierbei werden eventuell vorhandene interne Inkonsistenzen ausgebessert. Dies ist n&uuml;tzlich, wenn Datenbanken verwendet werden die von anderen Anwendungen erzeugt wurden.</li>
   <li><i>pwsafe</i> <b>-e Dateiname</b><br>
-  Hierbei wird der Benutzer aufgefordert eine Passphrase (ein Kennwort bestehend aus mehreren W&ouml;rtern) einzugeben.
-  Die Datei wird anschlie&szlig;end verschl&uuml;sselt mit einem Schl&uuml;ssel der von der Passphase abgeleitet ist.
-  <b>Bemerkung:</b> die Datei kann <i>jede Art</i> von Datei sein. Die verschl&uuml;sselte Datei hat den selben Dateinamen,
+  Hierbei wird der Benutzer aufgefordert, eine Passphrase (ein Kennwort bestehend aus mehreren W&ouml;rtern) einzugeben. Die Datei wird anschlie&szlig;end mit einem Schl&uuml;ssel, der von der Passphrase abgeleitet wurde, verschl&uuml;sselt.
+  <b>Bemerkung:</b> Die Datei kann <i>jede Art</i> von Datei sein. Die verschl&uuml;sselte Datei hat den selben Dateinamen,
   mit der angeh&auml;ngten Erweiterung ".PSF".<br>
   </li>
   <li><i>pwsafe</i> <b>-d Dateiname</b><br>
 Hierbei wird der Benutzer aufgefordert eine Passphrase (ein Kennwort bestehend aus mehreren W&ouml;rtern) einzugeben.
 Die Datei wird anschlie&szlig;end entschl&uuml;sselt mit einem Schl&uuml;ssel der von der Passphase abgeleitet ist.
-<b>Bemerkung:</b>  dies wird nur funktionieren mit Dateien die vorher mit pwsafe und dem Argument '-e'
+<b>Bemerkung:</b> Dies wird nur funktionieren mit Dateien die vorher mit pwsafe und dem Argument '-e'
 aufgerufen wurden (siehe oben).</li>
   <li><i>pwsafe </i><b>-c</b><br>
     Dies wird die Anwendung starten, ohne dass eine Datenbank ge&ouml;ffnet wird. Auch der anf&auml;ngliche Er&ouml;ffnungsdialog wird nicht ausgef&uuml;hrt.
     (Um eine Datenbank zu er&ouml;ffnen, gehe zum Men&uuml; Datei).</li>
   <li><i>pwsafe </i><b>-s</b><br>
     Dies wird die Anwendung "leise" (<b>s</b>ilent) starten, d.h. minimiert und ohne Datenbank. Wenn die Datenbank aus der Minimierung rausgeholt wird,
-    erscheint der Er&ouml;ffnungdialog. (Diese Option wird eingesetzt um die Anwendung bei der Benutzeranmeldung zu starten mit einer Verkn&uuml;pfung im Startverzeichnis).  <b>Bemerkung:</b> dies stellt die Anwendung implizit im der Systemleiste.</li>
+    erscheint der Er&ouml;ffnungdialog. (Diese Option wird eingesetzt, um die Anwendung bei der Benutzeranmeldung zu starten mit einer Verkn&uuml;pfung im Startverzeichnis).  <b>Bemerkung:</b> Dies stellt die Anwendung implizit im der Systemleiste.</li>
   <li><i>pwsafe</i> <b>-m</b><br>
     Dies ist dasselbe wie '<b>-c</b>'. Au&szlig;erdem wird die Anwendung minimiert gestartet.</li>
 </ul>
 Zus&auml;tzlich werden folgende Argumente akzeptiert:<br>
 <ul>
   <li><b>-u</b> <i>Benutzername</i><br>
-Hiermit kann die Anwendung angehalten werden das Lesen und Schreiben der Einstellungen unter dem angegebenen <i>Benutzername</i> zu machen, anstatt es unter dem Anmeldenamen zu tun.</li>
+Hiermit kann die Anwendung angehalten werden, das Lesen und Schreiben der Einstellungen unter dem angegebenen <i>Benutzername</i> zu machen, anstatt es unter dem Anmeldenamen zu tun.</li>
   <li><b>-h</b> <i>Rechnername</i><br>
-  Hiermit kann die Anwendung angehalten werden das Lesen und Schreiben der Einstellungen auf dem angegebenen <i>Rechnernamen</i> zu machen, anstatt es unter dem Maschinennamen zu tun.</li>
+  Hiermit kann die Anwendung angehalten werden, das Lesen und Schreiben der Einstellungen auf dem angegebenen <i>Rechnernamen</i> zu machen, anstatt es unter dem Maschinennamen zu tun.</li>
   <li><b>-g</b> <i>konfig_datei</i><br>
-  Hiermit kann die Anwendung angehalten werden die angegebene Datei f&uuml;r das Laden und Abspeichern der Einstellungen zu verwenden, anstatt der standardm&auml;&szlig;ige  pwsafe.cfg. Wenn nur eine Dateiname ohne Pfad angegeben ist, wird in dem Verzeichnis gesucht von wo die Anwendung aufgerufen wurde. Wenn im Dateinamen und/oder
-der Pfad Leerzeichen vorkommen, sollte es mit G&auml;nzef&uuml;&szlig;chen eingeschlossen sein.</li>
+  Hiermit kann die Anwendung angehalten werden, die angegebene Datei f&uuml;r das Laden und Abspeichern der Einstellungen zu verwenden, anstatt der standardm&auml;&szlig;ige  pwsafe.cfg. Wenn nur eine Dateiname ohne Pfad angegeben ist, wird in dem Verzeichnis gesucht, aus welchem die Anwendung aufgerufen wurde. Wenn im Dateinamen und/oder der Pfad Leerzeichen vorkommen, sollte es in G&auml;nsef&uuml;&szlig;chen eingeschlossen sein.</li>
 </ul>
 <ul>
 </ul>
-Diese Argumente k&ouml;nnten n&uuml;tzlich sein wenn Sie dieselbe Einstellungen &uuml;ber mehrere Maschinen gemeinsam benutzen m&ouml;chten, z.B. wenn sie <b>Password Safe</b> aus einer disk-on-key betreiben.<br>
+Diese Argumente k&ouml;nnten n&uuml;tzlich sein, wenn Sie dieselbe Einstellungen &uuml;ber mehrere Maschinen gemeinsam benutzen m&ouml;chten, z.B. wenn Sie <b>Password Safe</b> aus einer disk-on-key betreiben.<br>
 <br>
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
  <param name="Keyword" value="NUR Lesen">
