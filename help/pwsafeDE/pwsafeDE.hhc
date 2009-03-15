@@ -42,7 +42,7 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Ein Wort &uuml;ber General-Passw&ouml;rter">
+			<param name="Name" value="Ein Wort &uuml;ber Master-Passw&ouml;rter">
 			<param name="Local" value="html\about_combinations.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -50,7 +50,7 @@
 			<param name="Local" value="html\entering_pwd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Setzen der Passwort Richtlinie">
+			<param name="Name" value="Setzen der Passwortrichtlinie">
 			<param name="Local" value="html\password_policies.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -58,7 +58,7 @@
 			<param name="Local" value="html\password_history.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="&Auml;ndern des General-Passwortes">
+			<param name="Name" value="&Auml;ndern des Master-Passwortes">
 			<param name="Local" value="html\change_combo.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">

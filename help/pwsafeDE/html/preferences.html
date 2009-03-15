@@ -12,16 +12,16 @@
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Password Safe Voreinstellungen<o:p></h2>
-<hr>Wie manche andere Anwendungen auch hat <b>Password Safe</b> die M&ouml;glichkeit sein Verhalten und Aussehen einzustellen um sich so gut wie m&ouml;glich Ihre N&ouml;te und W&uuml;nsche einzustellen. Viele Anwendungen speichern solche Voreinstellungen in die Windows Registry ab, in eine Art von Gewohnheit und Bequemlichkeit. Fr&uuml;here Versionen von <b>Password Safe</b> haben die Registry auch eingesetzt, dies brachte aber folgende Probleme mit sich:<br>
-1. Einige der konfigurierbaren Voreinstellungen sind sicherheitsrelevant, und das Abspeichern in einer offenen Ablage wie die Windows Registry k&ouml;nnte einem Angreifer zum Zugang zur Datenbank verhelfen (z.B. wenn der Angreifer nach Ablauf der Pause z.B. auf die Datenbank zugreift, wo der Anwender selber weiterhin von einer Datenbanksperrung ausgeht).<br>
-2. Einige Leute betreiben <b>Password Safe</b> von einer disk-on-key. Oder sie betreiben eine Datenbank gemeinsam von mehreren Maschinen aus. In diesem Falle w&auml;re es ung&uuml;nstig die Registry zu verwenden.<br>
+<hr>Wie manche andere Anwendungen auch hat <b>Password Safe</b> die M&ouml;glichkeit sein Verhalten und Aussehen einzustellen, um sich so gut wie m&ouml;glich auf Ihre N&ouml;te und W&uuml;nsche einzustellen. Viele Anwendungen speichern solche Voreinstellungen in die Windows Registry ab, eine Art von Gewohnheit und Bequemlichkeit. Fr&uuml;here Versionen von <b>Password Safe</b> haben die Registry auch eingesetzt, dies brachte aber folgende Probleme mit sich:<br>
+1. Einige der konfigurierbaren Voreinstellungen sind sicherheitsrelevant, und das Abspeichern in einer offenen Ablage wie die Windows Registry k&ouml;nnte einem Angreifer beim Zugang zur Datenbank helfen (z.B. wenn der Angreifer nach Ablauf der Pause auf die Datenbank zugreift, wo der Anwender selber weiterhin von einer Datenbanksperrung ausgeht).<br>
+2. Einige Leute betreiben <b>Password Safe</b> von einer disk-on-key. Oder Sie betreiben eine Datenbank gemeinsam von mehreren Maschinen aus. In diesem Falle w&auml;re es ung&uuml;nstig die Registry zu verwenden.<br>
 <br>
 <b>Password Safe</b> hat eine Anzahl Voreinstellungen, jeder mit einem sinnvollen Wert besetzt. Wenn ein Benutzer diesen Wert auf einem anderen Wert einstellt, wird dieser neue Wert von <b>Password Safe</b> gespeichert.<br>
 <b>Password Safe</b> kennt sicherheitsrelevante und nicht sicherheitsrelevante Voreinstellungen.  Die ersteren werden in der Datenbank abgespeichert, verschl&uuml;sselt mit demselben Schl&uuml;ssel womit auch die Daten vom Benutzer abgelegt sind.<br>
 Die anderen, nicht sicherheitsrelevante Daten werden in der Konfigurationsdatei pwsafe.cfg abgespeichert. Diese Datei ist in XML Format abgelegt, mit Aufteilung der Daten per Host Maschine und Benutzer. Somit kann diese Datei von verschiedenen Benutzer und Maschinen gemeinsam benutzt werden.<br>
-Standardm&auml;&szlig;ig wird die Datei pwsafe.cfg im selben Verzeichnis wie die ausf&uuml;hrbare Anwendung pwsafe.exe. Wenn hingegen die Umgebungsvariable PWS_PREFSDIR gesetzt ist, wird <b>Passowrd Safe</b> die Datei verwenden die dort angegeben ist. Dies ist dann sinnvoll wenn der Schreibzugriff zum Verzeichnis wo pwsafe.exe liegt eingeschr&auml;nkt ist.<br>
+Standardm&auml;&szlig;ig wird die Datei pwsafe.cfg im selben Verzeichnis wie die ausf&uuml;hrbare Anwendung pwsafe.exe abgelegt. Wenn hingegen die Umgebungsvariable PWS_PREFSDIR gesetzt ist, wird <b>Passowrd Safe</b> die Datei verwenden die dort angegeben ist. Dies ist dann sinnvoll, wenn der Schreibzugriff zum Verzeichnis wo pwsafe.exe liegt eingeschr&auml;nkt ist.<br>
 <br>
-Die folgenden Tabellen beschreiben die Konfigurationselemente. Die meisten k&ouml;nnen mit dem <b><a href="manage_menu.html">Verwalten-&gt;Optionen</a></b> Dialog konfiguriert werden.<br>
+Die folgenden Tabellen beschreiben die Konfigurationselemente. Die meisten k&ouml;nnen mit dem Dialog <b><a href="manage_menu.html">Verwalten-&gt;Optionen</a></b> konfiguriert werden.<br>
 <hr>
 <h4>Boolean (wahr/falsch) Voreinstellungen</h4>
 <table style="width: 640px;" border="1" cellpadding="2" cellspacing="2" width="100%">
@@ -234,7 +234,7 @@ Die folgenden Tabellen beschreiben die Konfigurationselemente. Die meisten k&oum
       <td style="width: 214px;">ExplorerTypeTree</td>
       <td style="width: 68px;"> falsch</td>
       <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Zeige Gruppen zuerst an in Baumdarstellung</small></td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>Zeige Gruppen zuerst in Baumdarstellung an</small></td>
     </tr>
     <tr>
       <td style="width: 214px;">ListViewGridLines</td>
@@ -388,7 +388,7 @@ Die folgenden Tabellen beschreiben die Konfigurationselemente. Die meisten k&oum
       <td style="width: 115px;">pwsafe.cfg</td>
       <td style="width: 40px;"> 1</td>
       <td style="width: 40px;"> 30</td>
-      <td style="width: 180px;"><small>Wann ein Warnung geben bei Passw&ouml;rtern die bald ablaufen</small></td>
+      <td style="width: 180px;"><small>Wann ein Warnung abgeben bei Passw&ouml;rtern die bald ablaufen</small></td>
     </tr>
   </tbody>
 </table>
@@ -448,7 +448,7 @@ Die folgenden Tabellen beschreiben die Konfigurationselemente. Die meisten k&oum
       <td style="width: 185px;">AltBrowser</td>
       <td style="width: 80px;"> &lt;keine&gt;</td>
       <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Alternative Browser</small></td>
+      <td style="width: 399px;"><small>Alternativer Browser</small></td>
     </tr>
     <tr>
       <td style="width: 185px;">ListColumns</td>

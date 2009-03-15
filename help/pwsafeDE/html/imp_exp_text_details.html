@@ -12,19 +12,19 @@
 <!-- Popup Source File -->
 <h2>Volltext Export &amp; Import Format</h2>
 <hr>
-<p><span style="color: rgb(255, 0, 0);"><b><i><u>Warnung</u></i>:</b> der Export von sensiblen Informationen aus einer <b>Password Safe</b> Datenbank in einer Textdatei bringt erhebliche Sicherheitsprobleme mit sich. Bei diesem Vorgang wird eine ungesch&uuml;tzte Kopie der Passw&ouml;rter in der Datenbank erstellt. Das L&ouml;schen dieser Kopie nach deren Verwendung ist <b>nicht</b> ausreichend und darum m&uuml;ssten andere Anwendungen eingesetzt werden um die Daten "garantiert" zu l&ouml;schen (z.B. externe Hilfsmitteln zum "Schreddern" der Daten). Der Export von sensiblen Informationen aus einer <b>Password Safe</b> Datenbank umgeht die Sicherheit der Anwendung.</span></p>
+<p><span style="color: rgb(255, 0, 0);"><b><i><u>Warnung</u></i>:</b> Der Export von sensiblen Informationen aus einer <b>Password Safe</b> Datenbank in einer Textdatei bringt erhebliche Sicherheitsprobleme mit sich. Bei diesem Vorgang wird eine ungesch&uuml;tzte Kopie der Passw&ouml;rter in der Datenbank erstellt. Das L&ouml;schen dieser Kopie nach deren Verwendung ist <b>nicht</b> ausreichend und darum m&uuml;ssten andere Anwendungen eingesetzt werden, um die Daten "garantiert" zu l&ouml;schen (z.B. externe Hilfsmitteln zum "Schreddern" der Daten). Der Export von sensiblen Informationen aus einer <b>Password Safe</b> Datenbank umgeht die Sicherheit der Anwendung.</span></p>
 <hr>
-<small>Hinweis: das Exportieren und Importieren zu/von Textdateien wurde in Version V3.06 ge&auml;ndert. Auf dieser Seite wird das aktuelle Format beschrieben.</small>
+<small>Hinweis: Das Exportieren und Importieren zu/von Textdateien wurde in Version V3.06 ge&auml;ndert. Auf dieser Seite wird das aktuelle Format beschrieben.</small>
 <hr>
 <p>Exportierter Text wird:</p>
 <ul>
   <li>beginnen mit einer Titel-Zeile als erster Datensatz in der Textdatei</li>
-  <li>ein Trennzeichen anwenden um das "neue Zeile"-Zeichen in Notizen mit mehr als einer Zeile und den Punkt ('.') im Feld Titel zu ersetzen. Das Standardtrennzeichen ist '&raquo;' [Alt+0187]. Es kann wenn notwendig &uuml;berschrieben werden.</li>
+  <li>ein Trennzeichen anwenden, um das "neue Zeile"-Zeichen in Notizen mit mehr als einer Zeile und den Punkt ('.') im Feld Titel zu ersetzen. Das Standardtrennzeichen ist '&raquo;' [Alt+0187]. Es kann, wenn notwendig, &uuml;berschrieben werden.</li>
 </ul>
 <p>Importierter Text setzt voraus dass:</p>
 <ul>
   <li>eine Titel-Zeile als erste Zeile in der Textdatei vorhanden ist.</li>
-  <li>ein Trennzeichen da ist um das "neue Zeile"-Zeichen in Notizen mit mehr als einer Zeile und den Punkt ('.') im Feld Titel zur&uuml;ckzuersetzen. Das Standardtrennzeichen ist '&raquo;' [Alt+0187]. Es kann wenn notwendig &uuml;berschrieben werden.</li>
+  <li>ein Trennzeichen da ist, um das "neue Zeile"-Zeichen in Notizen mit mehr als einer Zeile und den Punkt ('.') im Feld Titel zur&uuml;ckzuersetzen. Das Standardtrennzeichen ist '&raquo;' [Alt+0187]. Es kann, wenn notwendig, &uuml;berschrieben werden.</li>
 </ul>
 <p>Die Titel-Zeile enth&auml;llt f&uuml;r einen vollst&auml;ndigen Export standardm&auml;&szlig;ig folgende Felder, getrennt mit einem TAB-Zeichen.</p>
 <ul>
@@ -41,14 +41,14 @@
   <li>Historie</li>
   <li>Notizen</li>
 </ul>
-<p>Beim Exportieren von Daten, k&ouml;nne sie auf "Erweitert" dr&uuml;cken um eine beliebige Anzahl dieser Felder auszuschlie&szlig;en in der Titel-Zeile und den Datens&auml;tzen. In der Option "Erweitert" (siehe unten) definieren sie eine Untermenge an Eintr&auml;ge die sie Exportieren wollen.</p>
+<p>Beim Exportieren von Daten, k&ouml;nnen Sie auf "Erweitert" dr&uuml;cken, um eine beliebige Anzahl dieser Felder auszuschlie&szlig;en in der Titel-Zeile und den Datens&auml;tzen. In der Option "Erweitert" (siehe unten) definieren Sie eine Untermenge an Eintr&auml;ge die Sie Exportieren wollen.</p>
 <p><img alt="Dialog Erweiterte Text Export" src="images/adv_txt_ex.jpg"></p>
 <p>Beim Importieren muss die eingebaute Titel-Zeile exakt die Elemente als 'Spalten-K&ouml;pfe' enthalten, wie oben definiert. Wenn irgendein 'Spalten-Kopf' wiederholt wird, werden nur die Daten des letzten &uuml;bernommen beim Importieren. Wenn ein 'Spalten-Kopf' nicht in der obigen Liste vorkommt, wird er beim Importieren nicht ber&uuml;cksichtigt. Die Daten m&uuml;ssen mit dem Trennzeichen unterteilt sein wie es im Dialog Text Importieren definiert wurde.</p>
 <hr>
 <small>Hinweis:<br>
 <ul>
-  <li>Um &uuml;berhaupt Daten importieren zu k&ouml;nnen zu <b>Password Safe</b> <i><u>m&uuml;ssen</u></i> unbedingt die Felder Titel und Passwort vorhanden sein. Sie d&uuml;rfen weder nur Leerzeichen oder sogar leer sein, wie es auch ist beim Hinzuf&uuml;gen eines Eintrages zu einer Datenbank.</li>
-  <li>Es besteht keine Einschr&auml;nkung in der Reihenfolge der 'Spalten-K&ouml;pfe'. <b>Password Safe</b> wird die mitgebrachte Titel-Zeile verwenden um die spezifizierten Daten im richtigen Feld abzulegen.</li>
+  <li>Um &uuml;berhaupt Daten zu <b>Password Safe</b> importieren zu k&ouml;nnen <i><u>m&uuml;ssen</u></i> unbedingt die Felder Titel und Passwort vorhanden sein. Sie d&uuml;rfen weder nur Leerzeichen noch leer sein, wie es auch der Fall ist beim Einf&uuml;gen eines Eintrages zu einer Datenbank.</li>
+  <li>Es besteht keine Einschr&auml;nkung in der Reihenfolge der 'Spalten-K&ouml;pfe'. <b>Password Safe</b> wird die mitgebrachte Titel-Zeile verwenden, um die spezifizierten Daten im richtigen Feld abzulegen.</li>
 </ul>
 </small>
 <hr>
@@ -111,7 +111,7 @@
       <td style="padding: 0in 5.4pt;">Notizen</td>
       <td style="padding: 0in 5.4pt;">
       <ul>
-        <li>Das Feld Notizen sollte mit G&auml;nsef&uuml;&szlig;chen eingeschlossen sein ("wie dies").</li>
+        <li>Das Feld Notizen sollte in G&auml;nsef&uuml;&szlig;chen eingeschlossen sein ("wie dies").</li>
         <li>Das Feld Notizen sollte kein Trennzeichen enthalten, weil es sonst beim Importieren in "neue Zeile" umgesetzt wird.</li>
       </ul>
       </td>
@@ -180,7 +180,7 @@
     <td style="padding: 0in 15.4pt;">ddd</td><td>die Kurzform des Wochentages; z.B. Mon = Montag, Tue = Dienstag (Tuesday) usw.</td>
     </tr>
     <tr>
-    <td style="padding: 0in 15.4pt;">hh</td><td>die Stunde (24-teilg).</td>
+    <td style="padding: 0in 15.4pt;">hh</td><td>die Stunde (24-teilig).</td>
     </tr>
     <tr>
     <td style="padding: 0in 15.4pt;">mm</td><td>die Minuten</td>
