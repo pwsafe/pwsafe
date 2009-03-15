@@ -4,7 +4,6 @@
 #include "stdafx.h"
 
 #include "pws_at.h"
-#include <stdio.h>
 
 /*
  In PWS:
