@@ -656,26 +656,24 @@ void DboxMain::InitPasswordSafe()
   CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
 
   if (szTreeFont != _T("")) {
-    LOGFONT *ptreefont = new LOGFONT;
-    memset(ptreefont, 0, sizeof(LOGFONT)); 
-    ExtractFont(szTreeFont, ptreefont);
-    m_pFontTree->CreateFontIndirect(ptreefont);
+    LOGFONT treefont;
+    memset(&treefont, 0, sizeof(LOGFONT)); 
+    ExtractFont(szTreeFont, &treefont);
+    m_pFontTree->CreateFontIndirect(&treefont);
     // transfer the fonts to the tree windows
     m_ctlItemTree.SetFont(m_pFontTree);
     m_ctlItemList.SetFont(m_pFontTree);
     m_LVHdrCtrl.SetFont(m_pFontTree);
-    delete ptreefont;
   }
 
   // Set up fonts before playing with Tree/List views
   CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
   if (szPasswordFont != _T("")) {
-    LOGFONT *pPasswordfont = new LOGFONT;
-    memset(pPasswordfont, 0, sizeof(LOGFONT)); 
-    ExtractFont(szPasswordFont, pPasswordfont);
-    SetPasswordFont(pPasswordfont);
-    delete pPasswordfont;
+    LOGFONT Passwordfont;
+    memset(&Passwordfont, 0, sizeof(LOGFONT)); 
+    ExtractFont(szPasswordFont, &Passwordfont);
+    SetPasswordFont(&Passwordfont);
   }
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView).c_str();
@@ -1197,15 +1195,8 @@ void DboxMain::OnU3ShopWebsite()
 {
 #ifdef DEMO
   ::ShellExecute(NULL, NULL,
-    _T("http://software.u3.com/Product_Details.aspx?productId=294&Selection=7"),
-    NULL, _T("."), SW_SHOWNORMAL);
-  /*
-  * TBD - point to language-specific sites:
-  * FRENCH: Same as above plus "&Lang=f"
-  * ITALIAN: "&Lang=it"
-  * GERMAN:  "&Lang=de"
-  * SPANISH: "&Lang=es "
-  */
+                 _T("https://www.plimus.com/jsp/dev_store1.jsp?developerId=320534"),
+                 NULL, _T("."), SW_SHOWNORMAL);
 #endif
 }
 
@@ -1455,7 +1446,7 @@ DboxMain::OnToolTipText(UINT,
   } else
     return FALSE;
 
-  if (cs_TipText.GetLength() == 0)
+  if (cs_TipText.IsEmpty())
     return TRUE;  // message handled
 
   // Assume ToolTip is greater than 80 characters in ALL cases and so use
@@ -2931,8 +2922,7 @@ void DboxMain::PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd)
 
 HRGN DboxMain::GetWorkAreaRegion()
 {
-  HRGN hrgn;
-  hrgn = CreateRectRgn(0, 0, 0, 0);
+  HRGN hrgn = CreateRectRgn(0, 0, 0, 0);
 
   HDC hdc = ::GetDC(NULL);
   EnumDisplayMonitors(hdc, NULL, EnumScreens, (LPARAM)&hrgn);
@@ -2968,10 +2958,7 @@ void DboxMain::ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork)
     mi.cbSize = sizeof(mi);
     GetMonitorInfo(MonitorFromRect(prc, MONITOR_DEFAULTTONEAREST), &mi);
 
-    if (fWork)
-      rc = mi.rcWork;
-    else
-      rc = mi.rcMonitor;
+    rc = (fWork) ? mi.rcWork : mi.rcMonitor;
   }
 
   prc->left = max(rc.left, min(rc.right-w, prc->left));
