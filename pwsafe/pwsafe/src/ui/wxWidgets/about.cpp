@@ -25,6 +25,7 @@
 
 #include "about.h"
 #include "version.h"
+#include "passwordsafeframe.h"
 ////@begin XPM images
 ////@end XPM images
 
@@ -222,15 +223,85 @@ void CAbout::OnCloseClick( wxCommandEvent& event )
 }
 
 
+/*
+ * The latest version information is in
+ * http://pwsafe.org/latest.xml
+ *
+ * And is of the form:
+ * <VersionInfo>
+ *  <Product name=PasswordSafe variant=PC major=3 minor=10 build=2 rev=1710 />
+ *  <Product name=PasswordSafe variant=PPc major=1 minor=9 build=2
+ *    rev=100 />
+ *  <Product name=PasswordSafe variant=U3 major=3 minor=10 build=2
+ *    rev=1710 />
+ *  <Product name=SWTPasswordSafe variant=Java major=0 minor=6
+ *    build=0 rev=1230 />
+ * </VersionInfo>
+ *
+ * Note: The "rev" is the svn commit number. Not using it (for now),
+ *       as I think it's too volatile.
+ */
+
 /*!
  * wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCTRL1
  */
 
 void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& event )
 {
-////@begin wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCTRL1 in CAbout.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCTRL1 in CAbout. 
+  // Get the latest.xml file from our site, compare to version,
+  // and notify the user
+  // First, make sure database is closed: Sensitive data with an
+  // open socket makes me uneasy...
+  PasswordSafeFrame *pFrm = static_cast<PasswordSafeFrame *>(GetParent());
+
+  if (pFrm->GetNumEntries() != 0) {
+    const wxString cs_txt(_("For security, the database must be closed before "
+                            "connecting to the Internet.\r\nPress OK to close "
+                            "database and continue (Changes will be saved)"));
+    const wxString cs_title(_("Confirm Close Dialog"));
+    wxMessageDialog dlg(this, cs_txt, cs_title,
+                        (wxICON_QUESTION | wxOK | wxCANCEL));
+    int rc = dlg.ShowModal();
+    if (rc == wxCANCEL)
+      return; // no hard feelings
+    // Close database, prompt for save if changed
+    wxCommandEvent closeEvent(wxEVT_COMMAND_MENU_SELECTED, wxID_CLOSE);
+    pFrm->ProcessEvent(closeEvent);
+    // User could have cancelled save, need to check if really closed:
+    if (pFrm->GetNumEntries() != 0)
+      return;
+  }
+  pFrm->Update(); // show user that we closed database
+  ASSERT(pFrm->GetNumEntries() == 0);
+  // safe to open external connection
+  wxString latest;
+  switch (CheckLatestVersion(latest)) {
+    case CANT_CONNECT:
+      m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
+      break;
+    case UP2DATE:
+      m_newVerStatus.LoadString(IDS_UP2DATE);
+      break;
+    case NEWER_AVAILABLE:
+    {
+      CString newer;
+      newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
+                   m_appversion, latest);
+      m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
+      MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
+      break;
+    }
+    case CANT_READ:
+      m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
+      break;
+    default:
+      break;
+  }
+
+  m_RECExNewVerStatus.SetFont(GetFont());
+  m_RECExNewVerStatus.SetWindowText(m_newVerStatus);
+  m_RECExNewVerStatus.Invalidate();
+  UpdateData(FALSE);
+  GetDlgItem(IDOK)->SetFocus();
 }
 

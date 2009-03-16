@@ -124,6 +124,8 @@ public:
     /// Creates the controls and sizers
     void CreateControls();
 
+    ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
+    
 ////@begin PasswordSafeFrame event handler declarations
 
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME

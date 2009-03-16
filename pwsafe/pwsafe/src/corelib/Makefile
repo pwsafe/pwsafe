@@ -14,7 +14,7 @@ DEPDIR= ./deps
 NOTSRC          = PWSclipboard.cpp \
 									tinyxml/tinystr.cpp
 
-LIBSRC          = BlowFish.cpp hmac.cpp \
+LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
                   ItemData.cpp ItemField.cpp  \
                   Match.cpp PWCharPool.cpp \
                   PWHistory.cpp PWSAuxParse.cpp \
