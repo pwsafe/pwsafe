@@ -387,15 +387,16 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
   UINT nItem = pMenu->GetMenuItemCount();
   for (UINT i = 0; i < nItem; i++) {  // loop over each item in menu
     // get menu item info
-    TCHAR itemname[256];
+    TCHAR itemname[256] = {_T('\0')};
     CMenuItemInfo miinfo;
-    miinfo.fMask = MIIM_SUBMENU | MIIM_DATA | MIIM_ID | MIIM_TYPE;
+    miinfo.fMask = MIIM_SUBMENU | MIIM_DATA | MIIM_FTYPE | MIIM_ID | 
+                   MIIM_STRING;
     miinfo.dwTypeData = itemname;
     miinfo.cch = sizeof(itemname);
     pMenu->GetMenuItemInfo(i, &miinfo, TRUE);
     CMenuItemData* pmd = (CMenuItemData*)miinfo.dwItemData;
 
-    if (pmd && !pmd->IsCMID()) {
+    if (pmd != NULL && !pmd->IsCMID()) {
       continue; // owner-draw menu item isn't mine--leave it alone
     }
 
@@ -416,7 +417,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
         // will still be there.
         //
         miinfo.fType |= MFT_OWNERDRAW;
-        miinfo.fMask |= MIIM_TYPE;
+        miinfo.fMask |= MIIM_FTYPE | MIIM_STRING;
         if (!pmd) {                           // if no item data:
           pmd = new CMenuItemData;            //   create one
           ASSERT(pmd);                        //   (I hope)
@@ -469,7 +470,8 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
       // now add the menu to list of "converted" menus
       HMENU hmenu = pMenu->GetSafeHmenu();
       ASSERT(hmenu);
-      MenuVectorIter iter = std::find(m_menuList.begin(), m_menuList.end(), hmenu);
+      MenuVectorIter iter = std::find(m_menuList.begin(), m_menuList.end(),
+                                      hmenu);
       if (iter == m_menuList.end())
         m_menuList.push_back(hmenu);
 

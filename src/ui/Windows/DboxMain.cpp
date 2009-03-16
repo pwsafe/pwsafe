@@ -99,7 +99,7 @@ CString DboxMain::CS_COPYNOTESFLD;
 CString DboxMain::CS_AUTOTYPE;
 CString DboxMain::CS_EXECUTE;
 
-void DboxMain::CS_local_strings()
+void DboxMain::SetLocalStrings()
 {
   // VdG the local strings are set
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
@@ -750,7 +750,7 @@ void DboxMain::InitPasswordSafe()
   // Both would need to be maintained in step and during I18N.
   // Now get it from the Menu directly
   // VdG set the local strings to the language dependant values
-  CS_local_strings();
+  SetLocalStrings();
 
   SetMenu(app.m_mainmenu);  // Now show menu...
 
@@ -919,6 +919,10 @@ BOOL DboxMain::OnInitDialog()
   } else {
     AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
+
+  // Set up Menu strings
+  SetUpMenuStrings();
+
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -1644,13 +1648,20 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
   }
 }
 
-void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
+void DboxMain::SetUpMenuStrings()
 {
   // Can't use GetMenuItemID, as it does not understand that with the MENUEX
   // format, Popup menus can have IDs
-  ASSERT(pPopupMenu);
+  CMenu *pMainMenu;
+  CMenu *pEditMenu;
+  pMainMenu = new CMenu;
+  pMainMenu->LoadMenu(IDR_MAINMENU);
+  int epos = app.FindMenuItem(pMainMenu, ID_EDITMENU);
+  ASSERT(epos != -1);
 
-  const int count = pPopupMenu->GetMenuItemCount();
+  pEditMenu = pMainMenu->GetSubMenu(epos);
+
+  const int count = pEditMenu->GetMenuItemCount();
 
   TCHAR tcMenuString[_MAX_PATH] = {0};
   MENUITEMINFO miinfo;
@@ -1659,11 +1670,11 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
   miinfo.fMask = MIIM_ID | MIIM_STRING;
   miinfo.dwTypeData = tcMenuString;  
 
-  std::bitset<11> bsMenuItems;
+  std::bitset<11> bsMenuItems; // easy way to check that we have them all
   for (int i = 0; i < count; i++) {
     ZeroMemory(tcMenuString, _MAX_PATH * sizeof(TCHAR));
     miinfo.cch = _MAX_PATH;
-    pPopupMenu->GetMenuItemInfo(i, &miinfo, TRUE);
+    pEditMenu->GetMenuItemInfo(i, &miinfo, TRUE);
     if (miinfo.wID >= 1) {
       switch(miinfo.wID) {
         case ID_MENUITEM_DELETE:              // bitset position 0
@@ -1706,11 +1717,11 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
           CS_AUTOTYPE = tcMenuString;
           bsMenuItems.set(9);
           break;
-        default:
         case ID_MENUITEM_EXECUTE:             // bitset position 10
           CS_EXECUTE = tcMenuString;
           bsMenuItems.set(10);
           break;
+        default:
           break;
       }
     }
@@ -1718,16 +1729,14 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
     if (bsMenuItems.count() == bsMenuItems.size())
       break;
   }
+  pMainMenu->DestroyMenu();
+  delete pMainMenu;
 }
 
 void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
 {
   // Original OnInitMenu code
   // All main menus are POPUPs (see PasswordSafe2.rc2)
-
-  // Set up menu string values
-  if (CS_DELETEENTRY.IsEmpty())
-    SetUpMenuStrings(pPopupMenu);
 
   // This routine changes the text in the menu via "ModifyMenu" and
   // adds the "check" mark via CheckMenuRadioItem for view type and toolbar.
