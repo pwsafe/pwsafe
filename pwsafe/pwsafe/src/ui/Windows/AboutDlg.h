@@ -13,6 +13,7 @@
 #include "PWDialog.h"
 #include "DboxMain.h"
 #include "RichEditCtrlExtn.h"
+#include "corelib/CheckVersion.h"
 
 class CAboutDlg : public CPWDialog
 {
@@ -47,8 +48,7 @@ private:
   CRichEditCtrlExtn m_RECExNewVerStatus;
   CRichEditCtrlExtn m_RECExWebSite;
 
-  enum CheckStatus {UP2DATE, NEWER_AVAILABLE, CANT_CONNECT, CANT_READ};
-  CheckStatus CheckLatestVersion(CString &latest);
+  CheckVersion::CheckStatus CheckLatestVersion(stringT &latest);
   void CheckNewVer();
 
   static bool OnCheckVersion(const CString &URL, const CString &FName, LPARAM instance);

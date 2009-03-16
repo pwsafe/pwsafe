@@ -18,10 +18,10 @@
 #include "RichEditCtrlExtn.h"
 #include "version.h"
 
-// for fetching & reading version xml file:
+// for fetching xml file:
 #include <afxinet.h>
 #include "corelib/UTF8Conv.h"
-#include "corelib/tinyxml/tinyxml.h"
+
 #include "corelib/SysInfo.h"
 
 #include "resource.h"
@@ -126,7 +126,7 @@ void CAboutDlg::CheckNewVer()
     const CString cs_txt(MAKEINTRESOURCE(IDS_CLOSE_B4_CHECK));
     const CString cs_title(MAKEINTRESOURCE(IDS_CONFIRM_CLOSE));
     int rc = MessageBox(cs_txt, cs_title,
-      (MB_ICONQUESTION | MB_OKCANCEL));
+                        (MB_ICONQUESTION | MB_OKCANCEL));
     if (rc == IDCANCEL)
       return; // no hard feelings
     // Close database, prompt for save if changed
@@ -140,28 +140,28 @@ void CAboutDlg::CheckNewVer()
   // safe to open external connection
   m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
   UpdateData(FALSE);
-  CString latest;
+  stringT latest;
   switch (CheckLatestVersion(latest)) {
-    case CANT_CONNECT:
-      m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
-      break;
-    case UP2DATE:
-      m_newVerStatus.LoadString(IDS_UP2DATE);
-      break;
-    case NEWER_AVAILABLE:
+  case CheckVersion::CANT_CONNECT:
+    m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
+    break;
+  case CheckVersion::UP2DATE:
+    m_newVerStatus.LoadString(IDS_UP2DATE);
+    break;
+  case CheckVersion::NEWER_AVAILABLE:
     {
       CString newer;
       newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
-                   m_appversion, latest);
+                   m_appversion, latest.c_str());
       m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
       MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
       break;
     }
-    case CANT_READ:
-      m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
-      break;
-    default:
-      break;
+  case CheckVersion::CANT_READ:
+    m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
+    break;
+  default:
+    break;
   }
 
   m_RECExNewVerStatus.SetFont(GetFont());
@@ -171,32 +171,7 @@ void CAboutDlg::CheckNewVer()
   GetDlgItem(IDOK)->SetFocus();
 }
 
-static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
-{
-  ASSERT(v2 != NULL);
-  return (v1 != NULL && CString(v1) == v2);
-}
-
-/*
-* The latest version information is in
-* http://pwsafe.org/latest.xml
-*
-* And is of the form:
-* <VersionInfo>
-*  <Product name=PasswordSafe variant=PC major=3 minor=10 build=2 rev=1710 />
-*  <Product name=PasswordSafe variant=PPc major=1 minor=9 build=2
-*    rev=100 />
-*  <Product name=PasswordSafe variant=U3 major=3 minor=10 build=2
-*    rev=1710 />
-*  <Product name=SWTPasswordSafe variant=Java major=0 minor=6
-*    build=0 rev=1230 />
-* </VersionInfo>
-*
-* Note: The "rev" is the svn commit number. Not using it (for now),
-*       as I think it's too volatile.
-*/
-
-CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
+CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(stringT &latest)
 {
   CInternetSession session(_T("PasswordSafe Version Check"));
   CStdioFile *fh;
@@ -208,7 +183,7 @@ CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
                          1, (INTERNET_FLAG_TRANSFER_BINARY | INTERNET_FLAG_RELOAD));
   } catch (CInternetException *) {
     // throw;
-    return CANT_CONNECT;
+    return CheckVersion::CANT_CONNECT;
   }
   ASSERT(fh != NULL);
   CString latest_xml;
@@ -228,7 +203,7 @@ CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
       fh->Close();
       delete fh;
       session.Close();
-      return CANT_READ;
+      return CheckVersion::CANT_READ;
     } else
       latest_xml += chunk.c_str();
   }
@@ -237,53 +212,6 @@ CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
   delete fh;
   session.Close();
   waitCursor.Restore(); // restore normal cursor
-  // Parse the file we just retrieved
-  TiXmlDocument doc; 
-  if (doc.Parse(latest_xml) == NULL)
-    return CANT_READ;
-  TiXmlNode *pRoot = doc.FirstChildElement();
-
-  if (!pRoot || !SafeCompare(pRoot->Value(), _T("VersionInfo")))
-    return CANT_READ;
-
-  TiXmlNode *pProduct = 0;
-  while((pProduct = pRoot->IterateChildren(pProduct)) != NULL) {
-    if (SafeCompare(pProduct->Value(), _T("Product"))) {
-      TiXmlElement *pElem = pProduct->ToElement();
-      if (pElem == NULL)
-        return CANT_READ;
-      const TCHAR *prodName = pElem->Attribute(_T("name"));
-      if (SafeCompare(prodName, _T("PasswordSafe"))) {
-        const TCHAR *pVariant = pElem->Attribute(_T("variant"));
-        if (pVariant == NULL) continue;
-        const CString variant(pVariant);
-        // Determine which variant is relevant for us
-        if ((SysInfo::IsUnderU3() && variant == _T("U3")) ||
-          variant == _T("PC")) {
-            int major(0), minor(0), build(0), revision(0);
-            pElem->QueryIntAttribute(_T("major"), &major);
-            pElem->QueryIntAttribute(_T("minor"), &minor);
-            pElem->QueryIntAttribute(_T("build"), &build);
-            pElem->QueryIntAttribute(_T("rev"), &revision);
-            // Not using svn rev info - too volatile
-            if ((major > m_nMajor) ||
-              (major == m_nMajor && minor > m_nMinor) ||
-              (major == m_nMajor && minor == m_nMinor &&
-              build > m_nBuild)
-              ) {
-                if (build == 0) { // hide build # if zero (formal release)
-                  latest.Format(_T("%s V%d.%02d (%d)"), AfxGetAppName(), 
-                    major, minor, revision);
-                } else {
-                  latest.Format(_T("%s V%d.%02d.%02d (%d)"), AfxGetAppName(), 
-                    major, minor, build, revision);
-                }
-                return NEWER_AVAILABLE;
-            }
-            return UP2DATE;
-        } // handled our variant
-      } // Product name == PasswordSafe
-    } // Product element
-  } // IterateChildren
-  return CANT_READ;
+  CheckVersion vh(m_nMajor, m_nMinor, m_nBuild);
+  return vh.CheckLatestVersion(LPCTSTR(latest_xml), latest);
 }
