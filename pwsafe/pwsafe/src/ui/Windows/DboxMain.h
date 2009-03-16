@@ -212,7 +212,7 @@ public:
   int GetHeaderWidth(const int iType);
   void CalcHeaderWidths();
   void UnFindItem();
-  void CS_local_strings();
+  void SetLocalStrings();
 
   void UpdateToolBar(bool state);
   void UpdateToolBarForSelectedItem(CItemData *ci);
@@ -648,7 +648,7 @@ private:
   void DeleteColumn(const int iType);
   void RegistryAnonymity();
   void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID);
-  void SetUpMenuStrings(CMenu *pPopupMenu);
+  void SetUpMenuStrings();
   
   static const struct UICommandTableEntry {
     UINT ID;

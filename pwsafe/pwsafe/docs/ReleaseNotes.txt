@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.16.2
 ====================
+[2689144] PWS no longer goes into a loop if the main menu has not yet
+been displayed when accessing the recent entries via the system tray icon.
 [2664703] Load base locale DLL if can't find a specific sub-locale version
 [2657132] View Reports no longer causes application crash.
 
