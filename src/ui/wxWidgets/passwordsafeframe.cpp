@@ -703,7 +703,7 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT in PasswordSafeFrame.
   // Before editing this code, remove the block markers.
   CAbout* window = new CAbout(this);
-  int returnValue = window->ShowModal();
+  window->ShowModal();
   window->Destroy();
 ////@end wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT in PasswordSafeFrame. 
 }

@@ -64,23 +64,23 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
         // Determine which variant is relevant for us
         if ((SysInfo::IsUnderU3() && variant == _T("U3")) ||
           variant == _T("PC")) {
-            int major(0), minor(0), build(0), revision(0);
-            pElem->QueryIntAttribute(_T("major"), &major);
-            pElem->QueryIntAttribute(_T("minor"), &minor);
-            pElem->QueryIntAttribute(_T("build"), &build);
-            pElem->QueryIntAttribute(_T("rev"), &revision);
+            int xmajor(0), xminor(0), xbuild(0), xrevision(0);
+            pElem->QueryIntAttribute(_T("major"), &xmajor);
+            pElem->QueryIntAttribute(_T("minor"), &xminor);
+            pElem->QueryIntAttribute(_T("build"), &xbuild);
+            pElem->QueryIntAttribute(_T("rev"), &xrevision);
             // Not using svn rev info - too volatile
-            if ((major > m_nMajor) ||
-              (major == m_nMajor && minor > m_nMinor) ||
-              (major == m_nMajor && minor == m_nMinor &&
-              build > m_nBuild)
+            if ((xmajor > m_nMajor) ||
+              (xmajor == m_nMajor && xminor > m_nMinor) ||
+              (xmajor == m_nMajor && xminor == m_nMinor &&
+              xbuild > m_nBuild)
               ) {
-                if (build == 0) { // hide build # if zero (formal release)
+                if (xbuild == 0) { // hide build # if zero (formal release)
                   Format(latest, _T("PasswordSafe V%d.%02d (%d)"),
-                         major, minor, revision);
+                         xmajor, xminor, xrevision);
                 } else {
                   Format(latest, _T("PasswordSafe V%d.%02d.%02d (%d)"),
-                         major, minor, build, revision);
+                         xmajor, xminor, xbuild, xrevision);
                 }
                 return NEWER_AVAILABLE;
             }
