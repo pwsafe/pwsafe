@@ -717,6 +717,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CheckVersion.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XML\EXPAT\EFileHandlers.cpp"
 				>
 			</File>
@@ -927,6 +931,10 @@
 			>
 			<File
 				RelativePath=".\BlowFish.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CheckVersion.h"
 				>
 			</File>
 			<File
