@@ -25,6 +25,7 @@
 
 ////@begin includes
 #include "safecombinationchange.h"
+#include "about.h"
 #include "PWSgrid.h"
 #include "PWStree.h"
 ////@end includes
@@ -70,6 +71,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
 
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
+
+  EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
 ////@end PasswordSafeFrame event table entries
 
@@ -688,5 +691,20 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
     }
   }
   Destroy();
+}
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
+ */
+
+void PasswordSafeFrame::OnAboutClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT in PasswordSafeFrame.
+  // Before editing this code, remove the block markers.
+  CAbout* window = new CAbout(this);
+  int returnValue = window->ShowModal();
+  window->Destroy();
+////@end wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT in PasswordSafeFrame. 
 }
 
