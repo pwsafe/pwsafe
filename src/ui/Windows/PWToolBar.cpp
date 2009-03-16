@@ -114,7 +114,7 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
 
 // Additional Control IDs not on ToolBar
 const UINT CPWToolBar::m_OtherIDs[] = {
-  ID_MENUITEM_SENDEMAIL,   // MUST be first to allow Browse URL <-> Send Email switching
+  ID_MENUITEM_SENDEMAIL,  // MUST be first to allow Browse URL <-> Send Email switching
   ID_MENUITEM_PROPERTIES,
   ID_MENUITEM_GROUPENTER,
   ID_MENUITEM_DUPLICATEENTRY,
@@ -131,7 +131,7 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_BACKUPSAFE,
   ID_MENUITEM_RESTORE,
   ID_MENUITEM_VALIDATE,
-  ID_MENUITEM_EXIT,
+  ID_MENUITEM_EXIT,       // main EXIT
   ID_MENUITEM_ABOUT,
   ID_MENUITEM_TRAYUNLOCK,
   ID_MENUITEM_TRAYLOCK,
@@ -140,7 +140,8 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_EXPORTMENU,
   ID_IMPORTMENU,
   ID_MENUITEM_CREATESHORTCUT,
-  ID_MENUITEM_CUSTOMIZETOOLBAR
+  ID_MENUITEM_CUSTOMIZETOOLBAR,
+  ID_MENUITEM_EXIT_ST     // SystemTray EXIT
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -181,24 +182,24 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
 
 // Additional bitmaps not on ToolBar
 const UINT CPWToolBar::m_OtherClassicBMs[] = {
-  IDB_SENDEMAIL_CLASSIC,   // MUST be first to allow Browse URL <-> Send Email switching
+  IDB_SENDEMAIL_CLASSIC,    // MUST be first to allow Browse URL <-> Send Email switching
   IDB_PROPERTIES_CLASSIC,
   IDB_GROUPENTER_CLASSIC,
   IDB_DUPLICATE_CLASSIC,
   IDB_CHANGEFONTMENU_CLASSIC,
   IDB_CHANGEFONTMENU_CLASSIC,
   IDB_CHANGEPSWDFONTMENU_CLASSIC,
-  IDB_COMPARE_CLASSIC,     // For report of the same name
-  IDB_FIND_CLASSIC,        // For report of the same name
-  IDB_IMPORTTEXT_CLASSIC,  // For report of the same name
-  IDB_IMPORTXML_CLASSIC,   // For report of the same name
-  IDB_MERGE_CLASSIC,       // For report of the same name
-  IDB_VALIDATE_CLASSIC,    // For report of the same name
+  IDB_COMPARE_CLASSIC,      // For report of the same name
+  IDB_FIND_CLASSIC,         // For report of the same name
+  IDB_IMPORTTEXT_CLASSIC,   // For report of the same name
+  IDB_IMPORTXML_CLASSIC,    // For report of the same name
+  IDB_MERGE_CLASSIC,        // For report of the same name
+  IDB_VALIDATE_CLASSIC,     // For report of the same name
   IDB_CHANGECOMBO_CLASSIC,
   IDB_BACKUPSAFE_CLASSIC,
   IDB_RESTORE_CLASSIC,
-  IDB_VALIDATE_CLASSIC,    // Yes, it is correct to be here twice!
-  IDB_EXIT_CLASSIC,
+  IDB_VALIDATE_CLASSIC,     // Yes, it is correct to be here twice!
+  IDB_EXIT_CLASSIC,         // main EXIT
   IDB_ABOUT_CLASSIC,
   IDB_TRAYUNLOCK_CLASSIC,
   IDB_TRAYLOCK_CLASSIC,
@@ -207,7 +208,8 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_EXPORT_CLASSIC,
   IDB_IMPORT_CLASSIC,
   IDB_CREATESHORTCUT_CLASSIC,
-  IDB_CUSTOMIZETBAR_CLASSIC
+  IDB_CUSTOMIZETBAR_CLASSIC,
+  IDB_EXIT_CLASSIC          // SystemTray EXIT
 };
 
 const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
@@ -291,17 +293,17 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_CHANGEFONTMENU_NEW,
   IDB_CHANGEFONTMENU_NEW,
   IDB_CHANGEPSWDFONTMENU_NEW,
-  IDB_COMPARE_NEW,         // For report of the same name
-  IDB_FIND_NEW,            // For report of the same name
-  IDB_IMPORTTEXT_NEW,      // For report of the same name
-  IDB_IMPORTXML_NEW,       // For report of the same name
-  IDB_MERGE_NEW,           // For report of the same name
-  IDB_VALIDATE_NEW,        // For report of the same name
+  IDB_COMPARE_NEW,        // For report of the same name
+  IDB_FIND_NEW,           // For report of the same name
+  IDB_IMPORTTEXT_NEW,     // For report of the same name
+  IDB_IMPORTXML_NEW,      // For report of the same name
+  IDB_MERGE_NEW,          // For report of the same name
+  IDB_VALIDATE_NEW,       // For report of the same name
   IDB_CHANGECOMBO_NEW,
   IDB_BACKUPSAFE_NEW,
   IDB_RESTORE_NEW,
   IDB_VALIDATE_NEW,       // Yes, it is correct to be here twice!
-  IDB_EXIT_NEW,
+  IDB_EXIT_NEW,           // main EXIT
   IDB_ABOUT_NEW,
   IDB_TRAYUNLOCK_NEW,
   IDB_TRAYLOCK_NEW,
@@ -310,7 +312,8 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_EXPORT_NEW,
   IDB_IMPORT_NEW,
   IDB_CREATESHORTCUT_NEW,
-  IDB_CUSTOMIZETBAR_NEW
+  IDB_CUSTOMIZETBAR_NEW,
+  IDB_EXIT_NEW            // SystemTray EXIT
 };
 
 // Additional bitmaps not on ToolBar
@@ -341,7 +344,8 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_EXPORT_NEW_D,
   IDB_IMPORT_NEW_D,
   IDB_CREATESHORTCUT_NEW_D,
-  IDB_CUSTOMIZETBAR_NEW     // Don't need another disabled bitmap as never dispayed
+  IDB_CUSTOMIZETBAR_NEW,    // Don't need another disabled bitmap as never dispayed
+  IDB_EXIT_NEW_D            // SystemTray EXIT
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)

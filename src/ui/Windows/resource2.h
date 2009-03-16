@@ -28,6 +28,7 @@
 #define ID_MENUITEM_COMPARE             32019
 #define ID_MENUITEM_PROPERTIES          32020
 #define ID_MENUITEM_EXIT                32021
+#define ID_MENUITEM_EXIT_ST             32022
 
 // Edit menu
 #define ID_EDITMENU                     32050
