@@ -17,7 +17,6 @@
 #ifndef __PWDIALOG_H
 #define __PWDIALOG_H
 #include <afxwin.h>
-//#include "DboxMain.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -31,8 +30,6 @@
 #include "pocketpc/PwsPopupDialog.h"
 typedef CPwsPopupDialog CPWDialog;
 #else
-
-class DboxMain;
 
 class CPWDialog : public CDialog
 {
