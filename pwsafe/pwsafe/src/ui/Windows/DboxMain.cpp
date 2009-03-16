@@ -339,6 +339,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_NOTIFY(HDN_ITEMCHANGED, IDC_LIST_HEADER, OnHeaderNotify)
 
   ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
+  ON_COMMAND(ID_MENUITEM_EXIT_ST, OnOK)
   ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
   ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
 
@@ -494,6 +495,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CLEARRECENTENTRIES, true, true, true, false},
   {ID_MENUITEM_MINIMIZE, true, true, true, true},
   {ID_MENUITEM_UNMINIMIZE, true, true, true, true},
+  {ID_MENUITEM_EXIT_ST, true, true, true, true},
   // Default Main Toolbar buttons - if not menu items
   //   None
   // Optional Main Toolbar buttons
@@ -1103,7 +1105,7 @@ void DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
   pCmdUI->Enable(FALSE);
 }
 
-void  DboxMain::SetStartSilent(bool state)
+void DboxMain::SetStartSilent(bool state)
 {
   m_IsStartSilent = state;
   if (state) {
@@ -2831,6 +2833,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       }
       ReleaseDC(pDC);
 #endif
+      break;
+    }
+    // -VdG- Disable SystemTray-Exit if CPWDialog "open"
+    case ID_MENUITEM_EXIT_ST:
+    {
+      //if ( m_nDialogOpen != 0 )
+      //  iEnable = false;
       break;
     }
     // Disable Minimize if already minimized

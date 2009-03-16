@@ -6,8 +6,8 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#include "PWDialog.h"
 #include "DboxMain.h"
+#include "PWDialog.h"
 
 #if defined(POCKET_PC)
 #error "TBD - define proper Dialog base class for PPC"
@@ -44,3 +44,4 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   }
   return CDialog::WindowProc(message, wParam, lParam);
 }
+
