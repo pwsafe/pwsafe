@@ -153,6 +153,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
   void OnChangePasswdClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
+  void OnAboutClick( wxCommandEvent& event );
+
 ////@end PasswordSafeFrame event handler declarations
 
 ////@begin PasswordSafeFrame member function declarations

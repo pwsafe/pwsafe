@@ -141,7 +141,7 @@ CPPFLAGS += -DSVN_VERSION=\"$(SVN_VERSION)\"
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
 	safecombinationsetup.cpp safecombinationprompt.cpp \
-	safecombinationchange.cpp \
+	safecombinationchange.cpp about.cpp \
 	properties.cpp PWSgrid.cpp \
 	PWStree.cpp version.cpp
 
