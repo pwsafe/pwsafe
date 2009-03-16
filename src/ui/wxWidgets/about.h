@@ -19,6 +19,7 @@
  */
 
 ////@begin includes
+#include "wx/hyperlink.h"
 ////@end includes
 
 /*!
@@ -35,6 +36,8 @@
 ////@begin control identifiers
 #define ID_CABOUT 10078
 #define wxID_VERSIONSTR 10079
+#define ID_HYPERLINKCTRL1 10081
+#define ID_HYPERLINKCTRL 10080
 #define SYMBOL_CABOUT_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CABOUT_TITLE _("About Password Safe")
 #define SYMBOL_CABOUT_IDNAME ID_CABOUT
@@ -49,7 +52,7 @@
 
 class CAbout: public wxDialog
 {    
-  DECLARE_DYNAMIC_CLASS( CAbout )
+  DECLARE_CLASS( CAbout )
   DECLARE_EVENT_TABLE()
 
 public:
@@ -70,6 +73,12 @@ public:
   void CreateControls();
 
 ////@begin CAbout event handler declarations
+
+  /// wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCTRL1
+  void OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
+  void OnCloseClick( wxCommandEvent& event );
 
 ////@end CAbout event handler declarations
 
