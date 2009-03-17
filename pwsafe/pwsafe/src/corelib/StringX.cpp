@@ -153,8 +153,26 @@ template<class T> void Format(T &s, const TCHAR *fmt, ...)
   va_list args;
 
   va_start(args, fmt);
+#ifdef _WIN32
   int len = _vsctprintf(fmt, args) + 1;
   TCHAR *buffer = new TCHAR[len];
+#else
+  // Linux doesn't do this correctly :-(
+  int guess = 10;
+  int len = guess;
+  TCHAR *buffer;
+  while (1) {
+    buffer = new TCHAR[len];
+    len = _vstprintf_s(buffer, len, fmt, args);
+    if (len > 0)
+      break;
+    else { // too small, resize & try again
+      delete[] buffer;
+      guess *= 2;
+      len = guess;
+    }
+  }
+#endif
   _vstprintf_s(buffer, len, fmt, args);
   s = buffer;
   delete[] buffer;
@@ -168,8 +186,26 @@ template<class T> void Format(T &s, int fmt, ...)
   va_start(args, fmt);
   T fmt_str;
   LoadAString(fmt_str, fmt);
+#ifdef _WIN32
   int len = _vsctprintf(fmt_str.c_str(), args) + 1;
   TCHAR *buffer = new TCHAR[len];
+#else
+  // Linux doesn't do this correctly :-(
+  int guess = 10;
+  int len = guess;
+  TCHAR *buffer;
+  while (1) {
+    buffer = new TCHAR[len];
+    len = _vstprintf_s(buffer, len, fmt_str.c_str(), args);
+    if (len > 0)
+      break;
+    else { // too small, resize & try again
+      delete[] buffer;
+      guess *= 2;
+      len = guess;
+    }
+  }
+#endif
   _vstprintf_s(buffer, len, fmt_str.c_str(), args);
   s = buffer;
   delete[] buffer;

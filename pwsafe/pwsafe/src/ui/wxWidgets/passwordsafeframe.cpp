@@ -449,6 +449,7 @@ int PasswordSafeFrame::SaveIfChanged()
 
 void PasswordSafeFrame::ClearData()
 {
+  m_core.ClearData();
   m_core.ReInit();
   m_grid->BeginBatch();
   m_grid->ClearGrid();
