@@ -41,10 +41,10 @@ Der nachstehende Hinweis beschreibt die Funktionsweise in allen Einzelheiten.</l
   <li><b>Autom. Eingabe:</b> Wenn dieses Feld nicht leer ist, wird dessen Inhalt den standardm&auml;&szlig;igen Inhalt f&uuml;r das 'automatische Eingeben' ersetzen.
 F&uuml;r mehr Information, siehe Hilfe zu "<a href="autotype.html">Autom. Eingabe</a>".</li>
   <li><b>Ausf&uuml;hren:</b> Wenn dieses Feld nicht leer ist, wird dessen Inhalt bei der Aktion 'Ausf&uuml;hren' als Kommando dem Betriebssystem &uuml;bergeben. Es k&ouml;nnen Variablen mit &uuml;bergeben werden. F&uuml;r mehr Information, siehe Hilfe zu "<a href="execute_string.html">Ausf&uuml;hren</a>".</li>
-  <li><b>Datum/Zeit Information:</b> Dieses NUR-Lesen Feld h&auml;lt die Information des gew&auml;hlten Eintrages zum Erstellzeitpunkt, zuletzt zugegriffen, usw. auf dem laufenden. Diese Information wird im Fenster Eintrag Einf&uuml;gen nicht angezeigt.
+  <li><b>Datum/Zeit Information:</b> Dieses NUR-Lesen Feld h&auml;lt die Information des gew&auml;hlten Eintrages zum Erstellzeitpunkt, zuletzt zugegriffen, usw. auf dem Laufenden. Diese Information wird im Fenster Eintrag Einf&uuml;gen nicht angezeigt.
 </li>
   <li><b>Passwort g&uuml;ltig bis:</b> Um das Ablaufdatum eines Passworteintrages zu setzen, klicken Sie auf Taste 'Setzen' and geben Sie das gew&uuml;nschte Ablaufdatum an, entweder als absoluter Tag (z.B.  "25.01.2009") oder als relativer Tag zu Heute (z.B. "30 Tage"). Wenn das Ablaufdatum sich n&auml;hert, wird <b>Password Safe</b> sowohl beim Start melden, dass das Passwort ge&auml;ndert werden soll, als auch den Eintrag mit einer anderen Farbe hinterlegen.<br>
-Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer" Ablauf bestimmen. Dies bewirkt, dass ein <b>neues</b> Ablaufdatum berechnet wird basierend auf der Anzahl festgelegten Tage, wenn das Passwort abge&auml;ndert wird. Zum Beispiel: Sie erstellen einen Eintrag am 11ten Januar, und legen periodisch 5 Tage fest. Sie bekommen dann am 16ten Januar eine Ablaufmeldung. Wenn Sie das Passwort am 17ten Januar &auml;ndern, wird das neue Ablaufdatum am 22ten Januar sein (5 Tage nachdem das Passwort gesetzt wurde).<br>
+Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer" Ablauf bestimmen. Dies bewirkt, dass ein <b>neues</b> Ablaufdatum berechnet wird basierend auf der Anzahl festgelegten Tagen, wenn das Passwort abge&auml;ndert wird. Zum Beispiel: Sie erstellen einen Eintrag am 11ten Januar, und legen periodisch 5 Tage fest. Sie bekommen dann am 16ten Januar eine Ablaufmeldung. Wenn Sie das Passwort am 17ten Januar &auml;ndern, wird das neue Ablaufdatum am 22ten Januar sein (5 Tage nachdem das Passwort gesetzt wurde).<br>
     <br>
     <div style="text-align: center;"><img alt="Dialog f&uuml;r Ablaufdatum" src="images/entry_expiry.jpg"></div>
   </li>
@@ -59,7 +59,7 @@ Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer"
 <ol>
   <li>Die Datenbank &ouml;ffnen wo der neue Eintrag rein soll</li>
   <li>W&auml;hlen Sie im Men&uuml; <b>Bearbeiten</b> <b>Eintrag einf&uuml;gen</b> aus</li>
-  <li>Geben Sie die notwendige Information im Dialogfenster <b>F&uuml;ge Eintrag ein</b> ein</li>
+  <li>Geben Sie die notwendige Information im Dialogfenster <b>Eintrag Einf&uuml;gen</b> ein</li>
 </ol>
 <hr> <small><b>Hinweis:</b> Wenn ein Gruppenname ausgew&auml;hlt ist, und dann eine neuer Eintrag eingef&uuml;gt wird, wird f&uuml;r diesen Eintrag der Gruppenname im <b>F&uuml;ge Eintrag ein</b> Dialogfenster vorbelegt. Wenn ein neuer Name im Gruppenfeld eingegeben wird, wird diese Gruppe neu erstellt.<br>
 </small>
@@ -75,7 +75,7 @@ Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer"
   <li>Um eine Passwortrichtlinie speziell f&uuml;r den aktuellen Eintrag zu definieren, markiere <b>Richtlinie &uuml;bergehen</b>.
 Diese Richtlinie wird zu diesem Eintrag abgespeichert, und wird standardm&auml;&szlig;ig f&uuml;r diesen Eintrag verwendet, wenn ein neues Passwort generiert wird. Diese M&ouml;glichkeit ist vor allem dann n&uuml;tzlich an Standorte die bestimmte Anforderungen an Passw&ouml;rter haben die nicht mit Ihren Standardanforderungen &uuml;bereinstimmen.</li>
   <li>Um die nicht standardm&auml;&szlig;ige Passwortrichtlinie eines Eintrages zu sehen, sollten Sie die Taste Umschalten halten bevor Sie auf <b>Generate</b> dr&uuml;cken.</li>
-  <li>Wenn das Passwort oder der Benutzername diakritische Zeichen (wie "&acute;", "`", "^", "&uml;" oder "~" zum Beispiel) gefolgt von einem Buchstaben der &uuml;ber die Tastatur ge&auml;ndert werden kann ("a" zum Beispiel), muss das Passwort so "[~][space][space][a]" eingegeben werden (Dies trifft f&uuml;r auf nicht-US Tastaturen zu).</li>
+  <li>Wenn das Passwort oder der Benutzername diakritische Zeichen (wie "&acute;", "`", "^", "&uml;" oder "~" zum Beispiel) gefolgt von einem Buchstaben der &uuml;ber die Tastatur ge&auml;ndert werden kann ("a" zum Beispiel), muss das Passwort so "[~][space][space][a]" eingegeben werden (Dies trifft auf nicht-US Tastaturen zu).</li>
   <li>Wenn Sie ein "single sign-on" System einsetzen das erlaubt dasselbe Passwort f&uuml;r verschiedene Maschinen/Server/Anwendungen usw. gleichzeitig einzusetzen, kann mit <b>Password Safe</b> so ein Eintrag entsprechend verwaltet werden. Wenn Sie ein Passwort &auml;ndern, werden alle anderen gleichverwandte Passw&ouml;rter mit ge&auml;ndert. Diese werden "Alias" Eintr&auml;ge genannt, und wird im Detail <a href="aliases.html">hier</a> beschrieben.</li>
 </ul>
 </small>
@@ -99,7 +99,7 @@ Es ist m&ouml;glich <b>Password Safe</b> so zu konfigurieren, dass es sich die l
 <ul>
   <li>Rechtsklick auf die Gruppe and w&auml;hlen Sie <b>Gruppe umbenennen</b> aus der Liste aus</li>
 </ul>
-<hr> <small><b>Hinweis:</b> Gruppennamen k&ouml;nnen verschachtelt werden, durch setzen eines Gruppennamens in einer anderen Gruppe.<br>
+<hr> <small><b>Hinweis:</b> Gruppennamen k&ouml;nnen verschachtelt werden, durch Setzen eines Gruppennamens in einer anderen Gruppe.<br>
 </small>
 <hr><br>
  </div>

@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>String ausf&uuml;hren</title>
-<!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control -->
+<!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control --><!-- VdG 3.17 DE 17/03/2009 -->
   <script language="javascript" src="html/popups.js">
   </script>
   <link rel="stylesheet" type="text/css" href="style.css">
@@ -11,14 +11,14 @@
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>String ausf&uuml;hren</h2>
-<p>Das Feld <i>Ausf&uuml;hren</i> eines Eintrages enth&auml;lt ein Kommando. Dieses Kommando wird ausgef&uuml;hrt, wenn der Men&uuml;punkt <i>Ausf&uuml;hren</i> ausgew&auml;hlt wird. Das Kommando kann alles das enthalten was nach Start-&gt;Ausf&uuml;hren am Komputer auch eingegeben werden kann.</p>
-<p>Zus&auml;tzlich kann <b>Password Safe</b> Parameter zum Kommando &uuml;bergeben, wie da sind: Benutzername, Password, usw. So k&ouml;nnen einigermassen komplizierte Aktionen programmiert werden, wie z.B. Aufrufen eines Programmes &uuml;ber Fernzugriff mit &Uuml;bergabe von Benutzername und Password.</p>
-<p>In der Regel werden 'Variablen' ersetzt durch die dazugeh&ouml;rigen Werte, bevor das Kommando dem Komputer &uuml;bergeben wird. Ein Dollarzeichen ('$') kennzeichnet die Variablen.</p>
+<p>Das Feld <i>Ausf&uuml;hren</i> eines Eintrages enth&auml;lt ein Kommando. Dieses Kommando wird ausgef&uuml;hrt, wenn der Men&uuml;punkt <i>Ausf&uuml;hren</i> ausgew&auml;hlt wird. Das Kommando kann alles das enthalten was nach Start-&gt;Ausf&uuml;hren am Computer auch eingegeben werden kann.</p>
+<p>Zus&auml;tzlich kann <b>Password Safe</b> Parameter zum Kommando &uuml;bergeben, wie da sind: Benutzername, Passwort, usw. So k&ouml;nnen einigermaßen komplizierte Aktionen programmiert werden, wie z.B. Aufrufen eines Programms &uuml;ber Fernzugriff mit &Uuml;bergabe von Benutzername und Passwort.</p>
+<p>In der Regel werden 'Variablen' ersetzt durch die dazugeh&ouml;rigen Werte, bevor das Kommando dem Computer &uuml;bergeben wird. Ein Dollarzeichen ('$') kennzeichnet die Variablen.</p>
 <ul>
-  <li>Variablen sind spezifiziert mit '$name' und <i>sie sind case sensitive</i>. Variablennamen beginnen immer mit einem alphabetischen Zeichen, gefolgt von alphanumerischen Zeichen. Der Variablenname endet beim n&auml;chsten nicht-alphanumerischen Zeichen, oder am Ende des Kommandostrings.</li>
+  <li>Variablen sind spezifiziert mit '$name' und <i>sie sind case sensitive</i>. Namen von Variablen beginnen immer mit einem alphabetischen Zeichen, gefolgt von alphanumerischen Zeichen. Der Variablenname endet beim n&auml;chsten nicht-alphanumerischen Zeichen, oder am Ende des Kommandostrings.</li>
   <ul>
-    <li>Wenn direkt an einem Variablenname ein alphanumerisches Zeichen anschliesst, sollte der Variablenname in geschweifte Klammer gesetzt werden. Z.B. '${varname}string'.</li>
-    <li>Um das Zeichen '$' in einem normalen Text nicht als Veriablenindikator zu verwenden, muss ein umgekehrter Schr&auml;gstrich ('\') vorangestellt werden, z.B.  '\$text' wird als Text '$text' und nicht als Variable 'text' interpretiert.</li>
+    <li>Wenn direkt an einem Variablenname ein alphanumerisches Zeichen anschließt, sollte der Variablenname in geschweifte Klammer gesetzt werden. Z.B. '${varname}string'.</li>
+    <li>Um das Zeichen '$' in einem normalen Text nicht als Variablenindikator zu verwenden, muss ein umgekehrter Schr&auml;gstrich ('\') vorangestellt werden, z.B.  '\$text' wird als Text '$text' und nicht als Variable 'text' interpretiert.</li>
     <li>Um vor dem Zeichen '$' ein umgekehrter Schr&auml;gstrich einzusetzen, setzt man ein doppelter ('\\') ein, z.B. aus '\\$name' wird '\$name', und '$name' wird als Variable interpretiert. Ein umgekehrter Schr&auml;gstrich ('\'), der nicht zum Zeichen '$' verwendet wird, kann als einzelnes Zeichen dargestellt werden.</li>
     <li>Eine Variable die von einem numerischen Wert in eckigen Klammern gefolgt wird, wird als Indexwert bezeichnet. Der Indexwert 'n' kann einem '+' oder '-' vorangestellt sein. Es kann z.B. [-2] oder [2] oder [+2] sein. <b>Password Safe</b> behandelt ein Indexwert von Null als das komplette Feld.</li>
   </ul>
@@ -32,7 +32,7 @@
  <tbody>
         <tr>
           <td style="font-weight: bold;">appdir</td>
-          <td>Verzeichnis des Programmes Password Safe. Siehe Noten <a href="#n1">1</a> und <a href="#n2">2</a> unten.</td>
+          <td>Verzeichnis des Programms Password Safe. Siehe Noten <a href="#n1">1</a> und <a href="#n2">2</a> unten.</td>
         </tr>
       </tbody>
     </table>
@@ -70,7 +70,7 @@
         </tr>
  <tr>
           <td style="font-weight: bold;">G <span style="font-weight: normal;">oder</span> GROUP</td>
-          <td>Nur die Gruppe die diesen Entrag enth&auml;lt.</td>
+          <td>Nur die Gruppe die diesen Eintrag enth&auml;lt.</td>
         </tr>
  <tr>
           <td style="font-weight: bold;">t <span style="font-weight: normal;">oder</span> title</td>
@@ -82,7 +82,7 @@
         </tr>
  <tr>
           <td style="font-weight: bold;">p <span style="font-weight: normal;">oder</span> password</td>
-          <td>Password</td>
+          <td>Passwort</td>
         </tr>
  <tr>
           <td style="font-weight: bold;">a <span style="font-weight: normal;">oder </span>autotype</td>
@@ -98,11 +98,11 @@
         </tr>
  <tr>
           <td><span style="font-weight: bold;">n[i]</span> oder <span style="font-weight: bold;">notes[i]</span></td>
-          <td>i<sup>th</sup> Zeile im Feld Notizen, beginnend am Anfang. z.B. i=1 ist die erste Zeile, i=2 ist die zweite Zeile, usw. Siehe Note <a href="#n4">4</a> unten.</td>
+          <td>i<sup>th</sup> Zeile im Feld Notizen, beginnend am Anfang. Z.B. i=1 ist die erste Zeile, i=2 ist die zweite Zeile, usw. Siehe Note <a href="#n4">4</a> unten.</td>
         </tr>
  <tr>
           <td><span style="font-weight: bold;">n[-i]</span> oder <span style="font-weight: bold;">notes[-i]</span></td>
-          <td>i<sup>th</sup> Zeile im Feld Notizen, beginnend am Ende, i.e. z.B. i=1 ist die letzte Zeile, i=2 ist die vorletzte Zeile, usw. Siehe Note <a href="#n4">4</a> unten.</td>
+          <td>i<sup>th</sup> Zeile im Feld Notizen, beginnend am Ende. z.B. i=1 ist die letzte Zeile, i=2 ist die vorletzte Zeile, usw. Siehe Note <a href="#n4">4</a> unten.</td>
         </tr>
       </tbody>
     </table>
@@ -132,7 +132,7 @@
         </tr>
  <tr>
           <td align="center">5<a name="n5"></a></td>
-          <td>Wenn die Variable f&uuml;r Autom.Eingabe vorhanden ist, wird die Autom.Eingabe ausgef&uuml;hrt im Moment wo das Windows Fenster aktiv ist. Die Variable und der Wert (soweit vohanden) werden entfernt aus dem auszuführenden String. Diese Variable kann beliebig im auszuf&uuml;hrenden String stehen, weil sie nur definiert was <b>Password Safe</b> tut nach der Ausf&uuml;hrung des Kommandostrings. Im Unterschied zu den anderen Variablen, kann es dadurch den aktuellen Wert im Eintrag &uuml;bergehen. Das Format ist ($autotype k&ouml;nnte $a ersetzen in den folgenden Beispiele):<br>
+          <td>Wenn die Variable f&uuml;r Autom.Eingabe vorhanden ist, wird die Autom.Eingabe ausgef&uuml;hrt im Moment wo das Windows Fenster aktiv ist. Die Variable und der Wert (soweit vorhanden) werden entfernt aus dem auszuführenden String. Diese Variable kann beliebig im auszuf&uuml;hrenden String stehen, weil sie nur definiert was <b>Password Safe</b> tut nach der Ausf&uuml;hrung des Kommandostrings. Im Unterschied zu den anderen Variablen, kann es dadurch den aktuellen Wert im Eintrag &uuml;bergehen. Das Format ist ($autotype k&ouml;nnte $a ersetzen in den folgenden Beispiele):<br>
           <table border="0" cellpadding="10" cellspacing="0">
    <colgroup><col width="20%"><col width="80%"></colgroup>
    <tbody>
@@ -142,14 +142,14 @@
               </tr>
    <tr>
                 <td>${a}</td>
-                <td>Verwende den Wert des aktuellen Eintrages (wenn Text direkt an der Variable '$a' anschliesst).</td>
+                <td>Verwende den Wert des aktuellen Eintrages (wenn Text direkt an der Variable '$a' anschließt).</td>
               </tr>
    <tr>
-                <td>$a(value)</td>
+                <td>$a(Wert)</td>
                 <td>Verwende den Wert in runden Klammern als Autom.Eingabe.</td>
               </tr>
    <tr>
-                <td>${a}(value)</td>
+                <td>${a}(Wert)</td>
                 <td>Verwende den Wert in runden Klammern als Autom.Eingabe.</td>
               </tr>
             </tbody>
