@@ -452,6 +452,14 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
               iCtrlID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX)
             iCtrlID = ID_MENUITEM_COPYUSERNAME;
           else
+          if (iCtrlID >= ID_MENUITEM_TRAYRUNCMD1 &&
+              iCtrlID <= ID_MENUITEM_TRAYRUNCMDMAX)
+            iCtrlID = ID_MENUITEM_RUNCOMMAND;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYBROWSEPLUS1 &&
+              iCtrlID <= ID_MENUITEM_TRAYBROWSEPLUSMAX)
+            iCtrlID = ID_MENUITEM_BROWSEURLPLUS;
+          else
           if (iCtrlID >= ID_MENUITEM_TRAYVIEWEDIT1 &&
               iCtrlID <= ID_MENUITEM_TRAYVIEWEDITMAX)
             iCtrlID = ID_MENUITEM_EDIT;

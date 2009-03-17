@@ -157,11 +157,19 @@ void DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
 
 void DboxMain::OnTrayBrowse(UINT nID)
 {
-  ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
+  ASSERT(((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX)) ||
+         ((nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX)));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
-    return;
+  const bool bDoAutotype = (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && 
+                           (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX);
+  if (!bDoAutotype) {
+    if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
+      return;
+  } else {
+    if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSEPLUS1, ci))
+      return;
+  }
 
   if (ci.IsShortcut()) {
     // This is an shortcut
@@ -180,7 +188,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
                                   ci.GetGroup(), ci.GetTitle(), 
                                   ci.GetUser(), ci.GetPassword(), 
                                   ci.GetNotes());
-    LaunchBrowser(ci.GetURL().c_str(), sxAutotype);
+    LaunchBrowser(ci.GetURL().c_str(), sxAutotype, bDoAutotype);
     SetClipboardData(ci.GetPassword());
   }
   UpdateAccessTime(&ci);
@@ -190,11 +198,19 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 {
   int nID = pCmdUI->m_nID;
 
-  ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
+  ASSERT(((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX)) ||
+         ((nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX)));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
-    return;
+  const bool bDoAutotype = (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && 
+                           (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX);
+  if (!bDoAutotype) {
+    if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
+      return;
+  } else {
+    if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSEPLUS1, ci))
+      return;
+  }
 
   if (ci.IsShortcut()) {
     // This is an shortcut
@@ -289,12 +305,12 @@ void DboxMain::OnUpdateTrayCopyURL(CCmdUI *)
 {
 }
 
-void DboxMain::OnTrayExecute(UINT nID)
+void DboxMain::OnTrayRunCommand(UINT nID)
 {
-  ASSERT((nID >= ID_MENUITEM_TRAYEXECUTE1) && (nID <= ID_MENUITEM_TRAYEXECUTEMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYRUNCMD1) && (nID <= ID_MENUITEM_TRAYRUNCMDMAX));
 
   CItemData ci;
-  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYEXECUTE1, ci))
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYRUNCMD1, ci))
     return;
 
   if (ci.IsShortcut()) {
@@ -326,7 +342,7 @@ void DboxMain::OnTrayExecute(UINT nID)
   UpdateAccessTime(&ci);
 }
 
-void DboxMain::OnUpdateTrayExecute(CCmdUI *)
+void DboxMain::OnUpdateTrayRunCommand(CCmdUI *)
 {
 }
 

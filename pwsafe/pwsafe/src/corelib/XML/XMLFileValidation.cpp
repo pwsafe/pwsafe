@@ -68,7 +68,7 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("password"), {0, XLE_PASSWORD}},
   {_T("url"), {0, XLE_URL}},
   {_T("autotype"), {0, XLE_AUTOTYPE}},
-  {_T("execute_string"), {0, XLE_EXECUTE}},
+  {_T("runcommand"), {0, XLE_RUNCOMMAND}},
   {_T("notes"), {0, XLE_NOTES}},
   {_T("uuid"), {0, XLE_UUID}},
   {_T("ctime"), {0, XLE_CTIME}},

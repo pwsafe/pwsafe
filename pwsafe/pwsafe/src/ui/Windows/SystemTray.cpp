@@ -66,6 +66,7 @@
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
 #include "corelib/StringX.h"
+#include "corelib/ItemData.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -515,6 +516,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
       for (size_t i = 0; i < num_recent_entries; i++) {
         const StringX cEntry = m_menulist[i].string;
+        CItemData *pci = m_menulist[i].pci;
 
         pNewRecentEntryMenu[i] = new CMenu;
         pNewRecentEntryMenu[i]->CreatePopupMenu();
@@ -522,36 +524,62 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         CString cs_text;
 
         cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
-        pNewRecentEntryMenu[i]->InsertMenu(0, MF_BYPOSITION | MF_STRING,
+        int ipos = 0;
+        pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                                            ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
                                            cs_text);
-        cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
-        pNewRecentEntryMenu[i]->InsertMenu(1, MF_BYPOSITION | MF_STRING,
-                                           ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
-                                           cs_text);
-        cs_text.LoadString(IDS_TRAYCOPYNOTES);
-        pNewRecentEntryMenu[i]->InsertMenu(2, MF_BYPOSITION | MF_STRING,
-                                           ID_MENUITEM_TRAYCOPYNOTES1 + i,
-                                           cs_text);
-        cs_text.LoadString(IDS_TRAYCOPYURL);
-        pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
-                                           ID_MENUITEM_TRAYCOPYURL1 + i,
-                                           cs_text);
-        cs_text.LoadString(IDS_TRAYBROWSE);
-        pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
-                                           ID_MENUITEM_TRAYBROWSE1 + i,
-                                           cs_text);
+        ipos++;
+        if (!pci->IsUserEmpty()) {
+          cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
+          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
+                                             cs_text);
+          ipos++;
+        }
+
+        if (!pci->IsNotesEmpty()) {
+          cs_text.LoadString(IDS_TRAYCOPYNOTES);
+          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYCOPYNOTES1 + i,
+                                             cs_text);
+          ipos++;
+        }
+
         cs_text.LoadString(IDS_TRAYAUTOTYPE);
-        pNewRecentEntryMenu[i]->InsertMenu(5, MF_BYPOSITION | MF_STRING,
+        pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                                            ID_MENUITEM_TRAYAUTOTYPE1 + i,
                                            cs_text);
+        ipos++;
+
+        if (!pci->IsURLEmpty()) {
+          cs_text.LoadString(IDS_TRAYCOPYURL);
+          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYCOPYURL1 + i,
+                                             cs_text);
+          ipos++;
+          cs_text.LoadString(IDS_TRAYBROWSE);
+          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYBROWSE1 + i,
+                                             cs_text);
+          ipos++;
+          cs_text.LoadString(IDS_TRAYBROWSEPLUS);
+          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYBROWSEPLUS1 + i,
+                                             cs_text);
+          ipos++;
+        }
+
+        if (!pci->IsRunCommandEmpty()) {
+          cs_text.LoadString(IDS_TRAYRUNCOMMAND);
+          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYRUNCMD1 + i,
+                                             cs_text);
+          ipos++;
+        }
+
         cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
-        pNewRecentEntryMenu[i]->InsertMenu(6, MF_BYPOSITION | MF_STRING,
+        pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                                            ID_MENUITEM_TRAYDELETE1 + i,
-                                           cs_text);
-        cs_text.LoadString(IDS_TRAYEXECUTE);
-        pNewRecentEntryMenu[i]->InsertMenu(7, MF_BYPOSITION | MF_STRING,
-                                           ID_MENUITEM_TRAYEXECUTE1 + i,
                                            cs_text);
 
         // Insert new popup menu at the bottom of the list

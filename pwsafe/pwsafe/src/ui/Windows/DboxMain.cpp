@@ -77,6 +77,7 @@ static char THIS_FILE[] = __FILE__;
 */
 
 const TCHAR *HIDDEN_PASSWORD = _T("**************");
+
 CString DboxMain::CS_DELETEENTRY;
 CString DboxMain::CS_DELETEGROUP;
 CString DboxMain::CS_RENAMEENTRY;
@@ -97,7 +98,8 @@ CString DboxMain::CS_COPYPASSWORD;
 CString DboxMain::CS_COPYUSERNAME;
 CString DboxMain::CS_COPYNOTESFLD;
 CString DboxMain::CS_AUTOTYPE;
-CString DboxMain::CS_EXECUTE;
+CString DboxMain::CS_RUNCOMMAND;
+CString DboxMain::CS_BROWSEURLPLUS;
 
 void DboxMain::SetLocalStrings()
 {
@@ -255,6 +257,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_GROUPENTER, OnEdit)
   ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
   ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnBrowse)
+  ON_COMMAND(ID_MENUITEM_BROWSEURLPLUS, OnBrowsePlus)
   ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
   ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
   ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
@@ -267,7 +270,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
-  ON_COMMAND(ID_MENUITEM_EXECUTE, OnExecuteString)
+  ON_COMMAND(ID_MENUITEM_RUNCOMMAND, OnRunCommand)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -402,8 +405,10 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnUpdateTrayAutoType)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYURL1, ID_MENUITEM_TRAYCOPYURLMAX, OnTrayCopyURL)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYURL1, ID_MENUITEM_TRAYCOPYURLMAX, OnUpdateTrayCopyURL)
-  ON_COMMAND_RANGE(ID_MENUITEM_TRAYEXECUTE1, ID_MENUITEM_TRAYEXECUTEMAX, OnTrayExecute)
-  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYEXECUTE1, ID_MENUITEM_TRAYEXECUTEMAX, OnUpdateTrayExecute)
+  ON_COMMAND_RANGE(ID_MENUITEM_TRAYRUNCMD1, ID_MENUITEM_TRAYRUNCMDMAX, OnTrayRunCommand)
+  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYRUNCMD1, ID_MENUITEM_TRAYRUNCMDMAX, OnUpdateTrayRunCommand)
+  ON_COMMAND_RANGE(ID_MENUITEM_TRAYBROWSEPLUS1, ID_MENUITEM_TRAYBROWSEPLUSMAX, OnTrayBrowse)
+  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYBROWSEPLUS1, ID_MENUITEM_TRAYBROWSEPLUSMAX, OnUpdateTrayBrowse)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 #endif
@@ -444,9 +449,10 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COPYNOTESFLD, true, true, false, false},
   {ID_MENUITEM_CLEARCLIPBOARD, true, true, true, false},
   {ID_MENUITEM_BROWSEURL, true, true, false, false},
+  {ID_MENUITEM_BROWSEURLPLUS, true, true, false, false},
   {ID_MENUITEM_SENDEMAIL, true, true, false, false},
   {ID_MENUITEM_AUTOTYPE, true, true, false, false},
-  {ID_MENUITEM_EXECUTE, true, true, false, false},
+  {ID_MENUITEM_RUNCOMMAND, true, true, false, false},
   {ID_MENUITEM_COPYURL, true, true, false, false},
   {ID_MENUITEM_COPYEMAIL, true, true, false, false},
   {ID_MENUITEM_GOTOBASEENTRY, true, true, false, false},
@@ -1060,8 +1066,18 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
 #endif
 }
 
+void DboxMain::OnBrowsePlus()
+{
+  DoBrowse(true);
+}
+
 // Called to open a web browser to the URL associated with an entry.
 void DboxMain::OnBrowse()
+{
+  DoBrowse(false);
+}
+
+void DboxMain::DoBrowse(const bool bDoAutotype)
 {
   CItemData *ci = getSelectedItem();
   CItemData *ci_original(ci);
@@ -1084,7 +1100,7 @@ void DboxMain::OnBrowse()
                                     ci->GetGroup(), ci->GetTitle(), 
                                     ci->GetUser(), ci->GetPassword(), 
                                     ci->GetNotes());
-      LaunchBrowser(ci->GetURL().c_str(), sxAutotype);
+      LaunchBrowser(ci->GetURL().c_str(), sxAutotype, bDoAutotype);
       SetClipboardData(ci->GetPassword());
       UpdateAccessTime(ci_original);
     }
@@ -1670,7 +1686,7 @@ void DboxMain::SetUpMenuStrings()
   miinfo.fMask = MIIM_ID | MIIM_STRING;
   miinfo.dwTypeData = tcMenuString;  
 
-  std::bitset<11> bsMenuItems; // easy way to check that we have them all
+  std::bitset<12> bsMenuItems; // easy way to check that we have them all
   for (int i = 0; i < count; i++) {
     ZeroMemory(tcMenuString, _MAX_PATH * sizeof(TCHAR));
     miinfo.cch = _MAX_PATH;
@@ -1717,9 +1733,13 @@ void DboxMain::SetUpMenuStrings()
           CS_AUTOTYPE = tcMenuString;
           bsMenuItems.set(9);
           break;
-        case ID_MENUITEM_EXECUTE:             // bitset position 10
-          CS_EXECUTE = tcMenuString;
+        case ID_MENUITEM_RUNCOMMAND:          // bitset position 10
+          CS_RUNCOMMAND = tcMenuString;
           bsMenuItems.set(10);
+          break;
+        case ID_MENUITEM_BROWSEURLPLUS:       // bitset position 11
+          CS_BROWSEURLPLUS = tcMenuString;
+          bsMenuItems.set(11);
           break;
         default:
           break;
@@ -1742,10 +1762,31 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
   // adds the "check" mark via CheckMenuRadioItem for view type and toolbar.
   // It now tailors the Edit menu depending on whether a Group or Entry is selected.
   // "EnableMenuItem" is handled by the UPDATE_UI routines
+  bool bGroupSelected(false);
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
   const bool bItemSelected = (SelItemOk() == TRUE);
+  CItemData *pci(NULL);
+  CItemData::EntryType etype(CItemData::ET_INVALID);
 
-  bool bGroupSelected(false);
+  if (bItemSelected) {
+    pci = getSelectedItem();
+    ASSERT(pci != NULL);
+
+    // Save entry type before changing pci
+    etype = pci->GetEntryType();
+    if (etype == CItemData::ET_SHORTCUT) {
+      // This is an shortcut
+      uuid_array_t entry_uuid, base_uuid;
+      pci->GetUUID(entry_uuid);
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+  
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        pci = &iter->second;
+      }
+    }
+  }
+
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
     bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
@@ -1753,6 +1794,21 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
 
   // If Edit menu selected (contains 'Delete' menu item)
   if (uiMenuID == ID_EDITMENU) {
+    // Delete all entries and rebuild depending on group/entry selected
+    // and, if entry, if fields are non-empty
+    pPopupMenu->RemoveMenu(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_EDITMENU_SEPARATOR3, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_COPYPASSWORD, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_COPYUSERNAME, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_COPYNOTESFLD, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_AUTOTYPE, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+
     if (bGroupSelected) {
       // Group selected
       pPopupMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
@@ -1761,21 +1817,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
                              ID_MENUITEM_RENAME, CS_RENAMEGROUP);
       pPopupMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
                              ID_MENUITEM_GROUPENTER, CS_EXPCOLGROUP);
-
-      if (app.FindMenuItem(pPopupMenu, ID_EDITMENU_SEPARATOR3) != -1) {
-        // No entry selected - remove inappropriate menu items
-        pPopupMenu->RemoveMenu(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_EDITMENU_SEPARATOR3, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_COPYPASSWORD, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_COPYUSERNAME, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_COPYNOTESFLD, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_AUTOTYPE, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_EXECUTE, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
-        pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
-      }
     } else {
       // Entry selected
       pPopupMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
@@ -1795,86 +1836,52 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
         pPopupMenu->ModifyMenu(ID_MENUITEM_GROUPENTER, MF_BYCOMMAND,
                                ID_MENUITEM_EDIT, CS_EDITENTRY);
       }
-      if (app.FindMenuItem(pPopupMenu, ID_EDITMENU_SEPARATOR3) == -1) {
-        // Add missing menu items (deleted when menu shown and group selected)
-        pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_DUPLICATEENTRY, CS_DUPLICATEENTRY);
-        pPopupMenu->AppendMenu(MF_SEPARATOR, ID_EDITMENU_SEPARATOR3, (LPCTSTR)NULL);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYPASSWORD, CS_COPYPASSWORD);
+      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, MF_BYCOMMAND | MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_DUPLICATEENTRY, CS_DUPLICATEENTRY);
+      pPopupMenu->AppendMenu(MF_SEPARATOR, ID_EDITMENU_SEPARATOR3, (LPCTSTR)NULL);
+
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYPASSWORD, CS_COPYPASSWORD);
+
+      if (!pci->IsUserEmpty())
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYUSERNAME, CS_COPYUSERNAME);
+
+        if (!pci->IsNotesEmpty())
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYNOTESFLD, CS_COPYNOTESFLD);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYURL, CS_COPYURL);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_AUTOTYPE, CS_AUTOTYPE);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_EXECUTE, CS_EXECUTE);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CREATESHORTCUT, CS_CREATESHORTCUT);
+
+        if (!pci->IsURLEmpty()) {
+        const bool bIsEmail = pci->IsURLEmail();
+        if (bIsEmail) {
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
+        } else {
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_COPYURL, CS_COPYURL);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLPLUS, CS_BROWSEURLPLUS);
+        }
+        UpdateBrowseURLSendEmailButton(bIsEmail);
       }
-    }
-  
-    if (bItemSelected) {
-      CItemData *ci = getSelectedItem();
-      ASSERT(ci != NULL);
-  
-      CItemData::EntryType etype = ci->GetEntryType();
-      if (app.FindMenuItem(pPopupMenu, ID_MENUITEM_CREATESHORTCUT) == -1 &&
-          app.FindMenuItem(pPopupMenu, ID_MENUITEM_GOTOBASEENTRY) == -1 &&
-          etype != CItemData::ET_ALIASBASE) {
-        // Add missing menu items (deleted when menu shown and group selected)
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CREATESHORTCUT, CS_CREATESHORTCUT);
-      }
+
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_AUTOTYPE, CS_AUTOTYPE);
+
+      if (!pci->IsRunCommandEmpty())
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_RUNCOMMAND, CS_RUNCOMMAND);
+
       switch (etype) {
         case CItemData::ET_NORMAL:
         case CItemData::ET_SHORTCUTBASE:
           // Allow creation of a shortcut
-          pPopupMenu->ModifyMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND,
-                                 ID_MENUITEM_CREATESHORTCUT, CS_CREATESHORTCUT);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_CREATESHORTCUT, CS_CREATESHORTCUT);
           break;
         case CItemData::ET_ALIASBASE:
-          // Can't have a shortcut to an AliasBase entry
-          pPopupMenu->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
-          pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+          // Can't have a shortcut to an AliasBase entry + can't goto base
           break;
         case CItemData::ET_ALIAS:
         case CItemData::ET_SHORTCUT:
           // Allow going to the appropriate base entry
-          pPopupMenu->ModifyMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND,
-                                 ID_MENUITEM_GOTOBASEENTRY, CS_GOTOBASEENTRY);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_GOTOBASEENTRY, CS_GOTOBASEENTRY);
           break;
         default:
           ASSERT(0);
-      }
-      
-      if (ci->IsShortcut()) {
-        // This is an shortcut
-        uuid_array_t entry_uuid, base_uuid;
-        ci->GetUUID(entry_uuid);
-        m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-  
-        ItemListIter iter = m_core.Find(base_uuid);
-        if (iter != End()) {
-          ci = &iter->second;
-        }
-      }
-  
-      if (!ci->IsURLEmpty()) {
-        const bool bIsEmail = ci->IsURLEmail();
-        if (bIsEmail) {
-          pPopupMenu->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
-                                 ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
-          pPopupMenu->ModifyMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND,
-                                 ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
-        } else {
-          pPopupMenu->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
-                                 ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
-          pPopupMenu->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
-                                 ID_MENUITEM_COPYURL, CS_COPYURL);
-        }
-        UpdateBrowseURLSendEmailButton(bIsEmail);
-      } else {
-        pPopupMenu->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
-                               ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
-        pPopupMenu->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
-                               ID_MENUITEM_COPYURL, CS_COPYURL);
       }
     }
   }  // Edit menu
@@ -2754,6 +2761,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_SENDEMAIL:
     case ID_MENUITEM_COPYURL:
     case ID_MENUITEM_COPYEMAIL:
+    case ID_MENUITEM_BROWSEURLPLUS:
       if (bGroupSelected) {
         // Not allowed if a Group is selected
         iEnable = FALSE;
@@ -2780,8 +2788,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         }
       }
       break;
-    case ID_MENUITEM_EXECUTE:
-      if (ci == NULL || ci->IsExecuteStringEmpty()) {
+    case ID_MENUITEM_RUNCOMMAND:
+      if (ci == NULL || ci->IsRunCommandEmpty()) {
         iEnable = FALSE;
       }
       break;

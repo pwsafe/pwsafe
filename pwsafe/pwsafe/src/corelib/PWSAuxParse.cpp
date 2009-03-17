@@ -8,7 +8,7 @@
 
 /*
  * Implementation of utility functions that parse the two small
- * 'languages' used for 'autotype' and 'execute' command processing.
+ * 'languages' used for 'autotype' and 'run' command processing.
  */
 
 #include <vector>
@@ -24,7 +24,7 @@
 
 // Internal structures, forward declarations
 
-struct st_ExecuteStringTokens {
+struct st_RunCommandTokens {
   StringX sxname;        // Variable name
   StringX sxindex;       // If index present, exact string user entered
   int index;             // If index present, numerical value
@@ -32,10 +32,10 @@ struct st_ExecuteStringTokens {
   bool has_brackets;     // Variable enclosed in curly brackets
 };
 
-static UINT ParseExecuteString(const StringX &sxInputString,
-                               std::vector<st_ExecuteStringTokens> &v_estokens,
-                               bool &bDoAutoType, StringX &sxAutoType,
-                               stringT &serrmsg, StringX::size_type &st_column);
+static UINT ParseRunCommand(const StringX &sxInputString,
+                            std::vector<st_RunCommandTokens> &v_rctokens,
+                            bool &bDoAutoType, StringX &sxAutoType,
+                            stringT &serrmsg, StringX::size_type &st_column);
 
 static UINT ProcessIndex(const StringX &sxIndex, int &var_index,
                          StringX::size_type &st_column);
@@ -43,26 +43,26 @@ static UINT ProcessIndex(const StringX &sxIndex, int &var_index,
 //-----------------------------------------------------------------
 // Externally visible functions
 //-----------------------------------------------------------------
-StringX PWSAuxParse::GetExpandedString(const StringX &sxExecute_String,
+StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
                                        CItemData *ci, bool &bAutoType,
                                        StringX &sxAutotype, stringT &serrmsg, 
                                        StringX::size_type &st_column)
 {
-  std::vector<st_ExecuteStringTokens> v_estokens;
-  std::vector<st_ExecuteStringTokens>::iterator es_iter;
+  std::vector<st_RunCommandTokens> v_rctokens;
+  std::vector<st_RunCommandTokens>::iterator rc_iter;
   std::vector<StringX> vsxnotes_lines;
   StringX sxnotes, sxretval(_T(""));
   stringT spath, sdrive, sdir, sfname, sextn;
   stringT sdbdir;
 
-  UINT uierr = ParseExecuteString(sxExecute_String, v_estokens, 
-                                  bAutoType, sxAutotype, 
-                                  serrmsg, st_column);
+  UINT uierr = ParseRunCommand(sxRun_Command, v_rctokens, 
+                               bAutoType, sxAutotype, 
+                               serrmsg, st_column);
 
   // if called with NULL ci, then we just parse to validate
   if (uierr > 0 || ci == NULL || sxCurrentDB.empty()) {
-    v_estokens.clear();
+    v_rctokens.clear();
     return sxretval;
   }
 
@@ -97,33 +97,33 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxExecute_String,
     }
   }
 
-  for (es_iter = v_estokens.begin(); es_iter < v_estokens.end(); es_iter++) {
-    st_ExecuteStringTokens &st_estoken = *es_iter;
+  for (rc_iter = v_rctokens.begin(); rc_iter < v_rctokens.end(); rc_iter++) {
+    st_RunCommandTokens &st_rctoken = *rc_iter;
 
-    if (!st_estoken.is_variable) {
-      sxretval += st_estoken.sxname.c_str();
+    if (!st_rctoken.is_variable) {
+      sxretval += st_rctoken.sxname.c_str();
       continue;
     }
 
-    if (st_estoken.sxname == _T("appdir")) {
+    if (st_rctoken.sxname == _T("appdir")) {
       sxretval += pws_os::getexecdir().c_str();
     } else
-    if (st_estoken.sxname == _T("dbdir")) {
+    if (st_rctoken.sxname == _T("dbdir")) {
       sxretval += sdbdir.c_str();
     } else
-    if (st_estoken.sxname == _T("fulldb")) {
+    if (st_rctoken.sxname == _T("fulldb")) {
       sxretval += spath.c_str();
     } else
-    if (st_estoken.sxname == _T("dbname")) {
+    if (st_rctoken.sxname == _T("dbname")) {
       sxretval += sfname.c_str();
     } else
-    if (st_estoken.sxname == _T("dbextn")) {
+    if (st_rctoken.sxname == _T("dbextn")) {
       sxretval += sextn.c_str();
     } else
-    if (st_estoken.sxname == _T("g") || st_estoken.sxname == _T("group")) {
+    if (st_rctoken.sxname == _T("g") || st_rctoken.sxname == _T("group")) {
       sxretval += ci->GetGroup();
     } else
-    if (st_estoken.sxname == _T("G") || st_estoken.sxname == _T("GROUP")) {
+    if (st_rctoken.sxname == _T("G") || st_rctoken.sxname == _T("GROUP")) {
       StringX sxg = ci->GetGroup();
       StringX::size_type st_index;
       st_index = sxg.rfind(_T("."));
@@ -132,46 +132,46 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxExecute_String,
       }
       sxretval += sxg;
     } else
-    if (st_estoken.sxname == _T("t") || st_estoken.sxname == _T("title")) {
+    if (st_rctoken.sxname == _T("t") || st_rctoken.sxname == _T("title")) {
       sxretval += ci->GetTitle();
     } else
-    if (st_estoken.sxname == _T("u") || st_estoken.sxname == _T("user")) {
+    if (st_rctoken.sxname == _T("u") || st_rctoken.sxname == _T("user")) {
       sxretval += ci->GetUser();
     } else
-    if (st_estoken.sxname == _T("p") || st_estoken.sxname == _T("password")) {
+    if (st_rctoken.sxname == _T("p") || st_rctoken.sxname == _T("password")) {
       sxretval += ci->GetPassword();
     } else
-    if (st_estoken.sxname == _T("a") || st_estoken.sxname == _T("autotype")) {
+    if (st_rctoken.sxname == _T("a") || st_rctoken.sxname == _T("autotype")) {
       // Do nothing - autotype variable handled elsewhere
     } else
-    if (st_estoken.sxname == _T("url")) {
+    if (st_rctoken.sxname == _T("url")) {
       sxretval += ci->GetURL();
     } else
-    if (st_estoken.sxname == _T("n") || st_estoken.sxname == _T("notes")) {
-      if (st_estoken.index == 0) {
+    if (st_rctoken.sxname == _T("n") || st_rctoken.sxname == _T("notes")) {
+      if (st_rctoken.index == 0) {
         sxretval += sxnotes;
       } else {
         // If line there - use it; otherwise ignore it
-        if (st_estoken.index > 0 && st_estoken.index <= (int)vsxnotes_lines.size()) {
-          sxretval += vsxnotes_lines[st_estoken.index - 1];
+        if (st_rctoken.index > 0 && st_rctoken.index <= (int)vsxnotes_lines.size()) {
+          sxretval += vsxnotes_lines[st_rctoken.index - 1];
         } else
-        if (st_estoken.index < 0 && abs(st_estoken.index) <= (int)vsxnotes_lines.size()) {
-          sxretval += vsxnotes_lines[vsxnotes_lines.size() + st_estoken.index];
+        if (st_rctoken.index < 0 && abs(st_rctoken.index) <= (int)vsxnotes_lines.size()) {
+          sxretval += vsxnotes_lines[vsxnotes_lines.size() + st_rctoken.index];
         }
       }
     } else {
       // Unknown variable name - rebuild it
       sxretval += _T("$");
-      if (st_estoken.has_brackets)
+      if (st_rctoken.has_brackets)
         sxretval += _T("(");
-      sxretval += st_estoken.sxname.c_str();
-      if (st_estoken.index != 0)
-        sxretval += st_estoken.sxindex.c_str();
-      if (st_estoken.has_brackets)
+      sxretval += st_rctoken.sxname.c_str();
+      if (st_rctoken.index != 0)
+        sxretval += st_rctoken.sxindex.c_str();
+      if (st_rctoken.has_brackets)
         sxretval += _T(")");
     }
   }
-  v_estokens.clear();
+  v_rctokens.clear();
   return sxretval;
 }
 
@@ -337,16 +337,16 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
 //-----------------------------------------------------------------
 // Internal functions
 //-----------------------------------------------------------------
-static UINT ParseExecuteString(const StringX &sxInputString,
-                               std::vector<st_ExecuteStringTokens> &v_estokens,
-                               bool &bDoAutoType, StringX &sxAutoType,
-                               stringT &serrmsg, StringX::size_type &st_column)
+static UINT ParseRunCommand(const StringX &sxInputString,
+                            std::vector<st_RunCommandTokens> &v_rctokens,
+                            bool &bDoAutoType, StringX &sxAutoType,
+                            stringT &serrmsg, StringX::size_type &st_column)
 {
   // tokenize into separate elements
-  std::vector<st_ExecuteStringTokens>::iterator es_iter;
+  std::vector<st_RunCommandTokens>::iterator rc_iter;
   std::vector<size_t> v_pos;
   StringX::iterator str_Iter;
-  st_ExecuteStringTokens st_estoken;
+  st_RunCommandTokens st_rctoken;
   size_t st_num_quotes(0);
 
   UINT uierr(0);
@@ -381,12 +381,12 @@ static UINT ParseExecuteString(const StringX &sxInputString,
     if (st_next == StringX::npos)
       st_next = sxInputString.size();
     if (st_next > 0) {
-      st_estoken.sxname = sxInputString.substr(st_startpos, st_next - st_startpos);
-      st_estoken.sxindex = _T("");
-      st_estoken.index = 0;
-      st_estoken.is_variable  = st_startpos == 0 ? false : true;
-      st_estoken.has_brackets = false;
-      v_estokens.push_back(st_estoken);
+      st_rctoken.sxname = sxInputString.substr(st_startpos, st_next - st_startpos);
+      st_rctoken.sxindex = _T("");
+      st_rctoken.index = 0;
+      st_rctoken.is_variable  = st_startpos == 0 ? false : true;
+      st_rctoken.has_brackets = false;
+      v_rctokens.push_back(st_rctoken);
       v_pos.push_back(st_startpos);
     }
     st_startpos = st_next + 1; // too complex for for statement
@@ -394,59 +394,59 @@ static UINT ParseExecuteString(const StringX &sxInputString,
 
   // Check if escaped - ending character of previous token == '\'
   // Make sure this '\' is not escaped itself!
-  for (size_t st_idx = v_estokens.size() - 1; st_idx > 0 ; st_idx--) {
-    st_ExecuteStringTokens &st_estoken = v_estokens[st_idx - 1];
-    StringX::size_type name_len = st_estoken.sxname.length();
+  for (size_t st_idx = v_rctokens.size() - 1; st_idx > 0 ; st_idx--) {
+    st_RunCommandTokens &st_rctoken = v_rctokens[st_idx - 1];
+    StringX::size_type name_len = st_rctoken.sxname.length();
     if (name_len == 0 || (name_len >= 2 &&
-            st_estoken.sxname.substr(name_len - 2, 2).compare(_T("\\\\")) == 0))
+            st_rctoken.sxname.substr(name_len - 2, 2).compare(_T("\\\\")) == 0))
       continue;
 
-    if (st_estoken.sxname.substr(name_len - 1, 1).compare(_T("\\")) == 0) {
-      st_estoken.sxname = st_estoken.sxname.substr(0, name_len - 1) + 
-                         _T("$") + v_estokens[st_idx].sxname;
-      v_estokens.erase(v_estokens.begin() + st_idx);
+    if (st_rctoken.sxname.substr(name_len - 1, 1).compare(_T("\\")) == 0) {
+      st_rctoken.sxname = st_rctoken.sxname.substr(0, name_len - 1) + 
+                         _T("$") + v_rctokens[st_idx].sxname;
+      v_rctokens.erase(v_rctokens.begin() + st_idx);
     }
   }
 
   // Check if variable enclosed in curly brackets
-  for (size_t st_idx = 0; st_idx < v_estokens.size(); st_idx++) {
-    if (v_estokens[st_idx].sxname.length() == 0)
+  for (size_t st_idx = 0; st_idx < v_rctokens.size(); st_idx++) {
+    if (v_rctokens[st_idx].sxname.length() == 0)
       continue;
 
-    str_Iter = v_estokens[st_idx].sxname.begin();
+    str_Iter = v_rctokens[st_idx].sxname.begin();
     // Does it start with a curly bracket?
     if (*str_Iter == _T('{')) {
-      v_estokens[st_idx].has_brackets = true;
+      v_rctokens[st_idx].has_brackets = true;
       StringX sxvar, sxnonvar, sxindex(_T(""));
       // Yes - Find end curly bracket
-      StringX::size_type st_end_cb = v_estokens[st_idx].sxname.find(_T('}'));
+      StringX::size_type st_end_cb = v_rctokens[st_idx].sxname.find(_T('}'));
       if (st_end_cb == StringX::npos) {
-        st_column = v_pos[st_idx] + v_estokens[st_idx].sxname.length();
+        st_column = v_pos[st_idx] + v_rctokens[st_idx].sxname.length();
         // Missing end curly bracket
         uierr = IDSC_EXS_MISSINGCURLYBKT;
         goto exit;
       }
       // Now see if there is an Index here
-      StringX::size_type st_start_sb = v_estokens[st_idx].sxname.find(_T('['));
+      StringX::size_type st_start_sb = v_rctokens[st_idx].sxname.find(_T('['));
       if (st_start_sb != StringX::npos) {
         // Yes  - find end square bracket
         if (st_start_sb > st_end_cb) {
           // Square backet after end of variable
-          sxvar = v_estokens[st_idx].sxname.substr(1, st_end_cb - 1);
-          sxnonvar = v_estokens[st_idx].sxname.substr(st_end_cb + 1);
-          v_estokens[st_idx].sxname = sxvar;
+          sxvar = v_rctokens[st_idx].sxname.substr(1, st_end_cb - 1);
+          sxnonvar = v_rctokens[st_idx].sxname.substr(st_end_cb + 1);
+          v_rctokens[st_idx].sxname = sxvar;
           if (sxnonvar.length() > 0) {
-            st_estoken.sxname = sxnonvar;
-            st_estoken.sxindex = _T("");
-            st_estoken.index = 0;
-            st_estoken.is_variable = false;
-            st_estoken.has_brackets = false;
-            v_estokens.insert(v_estokens.begin() + st_idx + 1, st_estoken);
+            st_rctoken.sxname = sxnonvar;
+            st_rctoken.sxindex = _T("");
+            st_rctoken.index = 0;
+            st_rctoken.is_variable = false;
+            st_rctoken.has_brackets = false;
+            v_rctokens.insert(v_rctokens.begin() + st_idx + 1, st_rctoken);
             v_pos.insert(v_pos.begin() + st_idx + 1, v_pos[st_idx] + st_end_cb);
           }
           continue;
         }
-        StringX::size_type st_end_sb = v_estokens[st_idx].sxname.find(_T(']'), st_start_sb);
+        StringX::size_type st_end_sb = v_rctokens[st_idx].sxname.find(_T(']'), st_start_sb);
         if (st_end_sb == StringX::npos) {
           st_column = v_pos[st_idx] + 1;
           // Missing end square bracket
@@ -460,8 +460,8 @@ static UINT ParseExecuteString(const StringX &sxInputString,
           uierr = IDSC_EXS_INVALIDBRACKETS;
           goto exit;
         }
-        sxindex = v_estokens[st_idx].sxname.substr(st_start_sb + 1, st_end_sb - st_start_sb - 1);
-        v_estokens[st_idx].sxindex = sxindex;
+        sxindex = v_rctokens[st_idx].sxname.substr(st_start_sb + 1, st_end_sb - st_start_sb - 1);
+        v_rctokens[st_idx].sxindex = sxindex;
         // Now check index
         uierr = ProcessIndex(sxindex, var_index, st_column);
         if (uierr > 0) {
@@ -469,53 +469,53 @@ static UINT ParseExecuteString(const StringX &sxInputString,
           goto exit;
         }
 
-        v_estokens[st_idx].index = var_index;
-        sxvar = v_estokens[st_idx].sxname.substr(1, st_start_sb - 1);
-        sxnonvar = v_estokens[st_idx].sxname.substr(st_end_cb + 1);
+        v_rctokens[st_idx].index = var_index;
+        sxvar = v_rctokens[st_idx].sxname.substr(1, st_start_sb - 1);
+        sxnonvar = v_rctokens[st_idx].sxname.substr(st_end_cb + 1);
       } else {
         // No square bracket
         // Split current token into 'variable' and 'non-variable' parts
-        sxvar = v_estokens[st_idx].sxname.substr(1, st_end_cb - 1);
-        sxnonvar = v_estokens[st_idx].sxname.substr(st_end_cb + 1);
+        sxvar = v_rctokens[st_idx].sxname.substr(1, st_end_cb - 1);
+        sxnonvar = v_rctokens[st_idx].sxname.substr(st_end_cb + 1);
       }
-      v_estokens[st_idx].sxname = sxvar;
+      v_rctokens[st_idx].sxname = sxvar;
       if (sxnonvar.length() > 0) {
-        st_estoken.sxname = sxnonvar;
-        st_estoken.sxindex = _T("");
-        st_estoken.index = 0;
-        st_estoken.is_variable = false;
-        st_estoken.has_brackets = false;
-        v_estokens.insert(v_estokens.begin() + st_idx + 1, st_estoken);
+        st_rctoken.sxname = sxnonvar;
+        st_rctoken.sxindex = _T("");
+        st_rctoken.index = 0;
+        st_rctoken.is_variable = false;
+        st_rctoken.has_brackets = false;
+        v_rctokens.insert(v_rctokens.begin() + st_idx + 1, st_rctoken);
         v_pos.insert(v_pos.begin() + st_idx + 1, v_pos[st_idx] + st_end_cb);
       }
     }
   }
 
   // Now use rules of variables to get the real variable
-  for (size_t st_idx = 0; st_idx < v_estokens.size(); st_idx++) {
-    if (!v_estokens[st_idx].is_variable)
+  for (size_t st_idx = 0; st_idx < v_rctokens.size(); st_idx++) {
+    if (!v_rctokens[st_idx].is_variable)
       continue;
 
-    if (v_estokens[st_idx].sxname.length() == 0) {
+    if (v_rctokens[st_idx].sxname.length() == 0) {
       st_column = v_pos[st_idx];
       // Variable name is empty
       uierr = IDSC_EXS_VARNAMEEMPTY;
       goto exit;
     }
 
-    str_Iter = v_estokens[st_idx].sxname.begin();
+    str_Iter = v_rctokens[st_idx].sxname.begin();
     if (!isalpha(*str_Iter)) {
       st_column = v_pos[st_idx];
       // First character of variable is not alphabetic
       uierr = IDSC_EXS_FIRSTNOTALPHA;
       goto exit;
     }
-    StringX::size_type st_next = v_estokens[st_idx].sxname.find_first_not_of(alphanum.c_str());
+    StringX::size_type st_next = v_rctokens[st_idx].sxname.find_first_not_of(alphanum.c_str());
     if (st_next != StringX::npos) {
       // Split current token into 'variable' and 'non-variable' parts
-      StringX sxvar = v_estokens[st_idx].sxname.substr(0, st_next);
-      StringX sxnonvar = v_estokens[st_idx].sxname.substr(st_next);
-      v_estokens[st_idx].sxname = sxvar;
+      StringX sxvar = v_rctokens[st_idx].sxname.substr(0, st_next);
+      StringX sxnonvar = v_rctokens[st_idx].sxname.substr(st_next);
+      v_rctokens[st_idx].sxname = sxvar;
       // Before saving non-variable part - check if it is an Index e.g. var[i]
       if (sxnonvar.c_str()[0] == _T('[')) {
         // Find ending square bracket
@@ -527,7 +527,7 @@ static UINT ParseExecuteString(const StringX &sxInputString,
           goto exit;
         }
         StringX sxindex = sxnonvar.substr(1, st_end_sb - 1);
-        v_estokens[st_idx].sxindex = sxindex;
+        v_rctokens[st_idx].sxindex = sxindex;
         // Now check index
         uierr = ProcessIndex(sxindex, var_index, st_column);
         if (uierr > 0) {
@@ -535,11 +535,11 @@ static UINT ParseExecuteString(const StringX &sxInputString,
           goto exit;
         }
 
-        v_estokens[st_idx].index = var_index;
+        v_rctokens[st_idx].index = var_index;
         sxnonvar = sxnonvar.substr(st_end_sb + 1);
       } else {
         // Not a square bracket
-        if (v_estokens[st_idx].has_brackets) {
+        if (v_rctokens[st_idx].has_brackets) {
           st_column = v_pos[st_idx] + st_next + 1;
           // Variable must be alphanumeric
           uierr = IDSC_EXS_VARNAMEINVALID;
@@ -547,12 +547,12 @@ static UINT ParseExecuteString(const StringX &sxInputString,
         }
       }
       if (!sxnonvar.empty()) {
-        st_estoken.sxname = sxnonvar;
-        st_estoken.sxindex = _T("");
-        st_estoken.index = 0;
-        st_estoken.is_variable = false;
-        st_estoken.has_brackets = false;
-        v_estokens.insert(v_estokens.begin() + st_idx + 1, st_estoken);
+        st_rctoken.sxname = sxnonvar;
+        st_rctoken.sxindex = _T("");
+        st_rctoken.index = 0;
+        st_rctoken.is_variable = false;
+        st_rctoken.has_brackets = false;
+        v_rctokens.insert(v_rctokens.begin() + st_idx + 1, st_rctoken);
         v_pos.insert(v_pos.begin() + st_idx + 1, v_pos[st_idx] + st_next);
       }
     }
@@ -561,20 +561,20 @@ static UINT ParseExecuteString(const StringX &sxInputString,
   // Special Autotype processing
   bDoAutoType = false;
   sxAutoType.clear();
-  for (size_t st_idx = 0; st_idx < v_estokens.size(); st_idx++) {
-    if (!v_estokens[st_idx].is_variable)
+  for (size_t st_idx = 0; st_idx < v_rctokens.size(); st_idx++) {
+    if (!v_rctokens[st_idx].is_variable)
       continue;
 
     // Is it a autotype variable?
-    if (v_estokens[st_idx].sxname == _T("a") ||
-        v_estokens[st_idx].sxname == _T("autotype")) {
+    if (v_rctokens[st_idx].sxname == _T("a") ||
+        v_rctokens[st_idx].sxname == _T("autotype")) {
       bDoAutoType = true;
       // Is the next token text and starts with '('?
-      if (st_idx + 1 < v_estokens.size() &&
-          !v_estokens[st_idx + 1].is_variable &&
-          v_estokens[st_idx + 1].sxname.c_str()[0] == _T('(')) {
+      if (st_idx + 1 < v_rctokens.size() &&
+          !v_rctokens[st_idx + 1].is_variable &&
+          v_rctokens[st_idx + 1].sxname.c_str()[0] == _T('(')) {
         // Find ending round bracket
-        StringX sx_autotype = v_estokens[st_idx + 1].sxname;
+        StringX sx_autotype = v_rctokens[st_idx + 1].sxname;
         StringX::size_type st_end_rb = sx_autotype.find(_T(')'));
         if (st_end_rb == StringX::npos) {
           st_column = v_pos[st_idx + 1] + sx_autotype.length() + 2;
@@ -583,12 +583,12 @@ static UINT ParseExecuteString(const StringX &sxInputString,
           goto exit;
         }
         sxAutoType = sx_autotype.substr(1, st_end_rb - 1);
-        v_estokens[st_idx + 1].sxname = sx_autotype.substr(st_end_rb + 1);
+        v_rctokens[st_idx + 1].sxname = sx_autotype.substr(st_end_rb + 1);
         // Check if anythnig left in this text - none -> delete
-        if (v_estokens[st_idx + 1].sxname.length() == 0)
-          v_estokens.erase(v_estokens.begin() + st_idx + 1);
+        if (v_rctokens[st_idx + 1].sxname.length() == 0)
+          v_rctokens.erase(v_rctokens.begin() + st_idx + 1);
         // Now delete Autotype variable
-        v_estokens.erase(v_estokens.begin() + st_idx);
+        v_rctokens.erase(v_rctokens.begin() + st_idx);
         break;
       }
     }
@@ -601,7 +601,7 @@ exit:
     serrmsg = _T("");
 
   if (uierr > 0) {
-    v_estokens.clear();
+    v_rctokens.clear();
   }
   v_pos.clear();
   return uierr;

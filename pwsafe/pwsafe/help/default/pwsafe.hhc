@@ -169,8 +169,8 @@
 			<param name="Local" value="html\preferences.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Execute String">
-			<param name="Local" value="html\execute_string.html">
+			<param name="Name" value="Run Command">
+			<param name="Local" value="html\run_command.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">

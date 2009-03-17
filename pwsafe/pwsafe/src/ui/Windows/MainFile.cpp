@@ -1566,9 +1566,9 @@ int DboxMain::Merge(const StringX &pszFilename) {
         cs_temp.LoadString(IDS_PASSWORDEXPIRYDATEINT);
         csDiffs += cs_temp + _T(", ");
       }
-      if (otherItem.GetExecuteString() != curItem.GetExecuteString()) {
+      if (otherItem.GetRunCommand() != curItem.GetRunCommand()) {
         diff_flags |= MRG_EXECUTE;
-        cs_temp.LoadString(IDS_EXECUTESTRING);
+        cs_temp.LoadString(IDS_RUNCOMMAND);
         csDiffs += cs_temp + _T(", ");
       }
       if (diff_flags |= 0) {
@@ -1970,7 +1970,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
 
          Third byte
          1... ....  POLICY   [0x10]
-         .1.. ....  EXECUTE  [0x11]
+         .1.. ....  RUNCMD   [0x11]
         */
         bsConflicts.reset();
 
@@ -2011,9 +2011,9 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
         if (m_bsFields.test(CItemData::POLICY) &&
             currentItem.GetPWPolicy() != compItem.GetPWPolicy())
           bsConflicts.flip(CItemData::POLICY);
-        if (m_bsFields.test(CItemData::EXECUTE) &&
-            currentItem.GetExecuteString() != compItem.GetExecuteString())
-          bsConflicts.flip(CItemData::EXECUTE);
+        if (m_bsFields.test(CItemData::RUNCMD) &&
+            currentItem.GetRunCommand() != compItem.GetRunCommand())
+          bsConflicts.flip(CItemData::RUNCMD);
 
         currentPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
@@ -2192,8 +2192,8 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     if (m_bsFields.test(CItemData::POLICY))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
-    if (m_bsFields.test(CItemData::EXECUTE))
-      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPEXECUTESTRING));
+    if (m_bsFields.test(CItemData::RUNCMD))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
     rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   }

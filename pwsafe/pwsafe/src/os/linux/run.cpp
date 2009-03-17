@@ -47,7 +47,7 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound)
 	return sxFile;
 }
 
-bool PWSRun::runcmd(const StringX &execute_string, const StringX &sxAutotype)
+bool PWSRun::runcmd(const StringX &runcommand, const StringX &sxAutotype)
 {
 	// Stub!
 	return false;

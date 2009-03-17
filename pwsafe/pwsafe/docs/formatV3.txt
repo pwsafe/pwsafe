@@ -264,7 +264,7 @@ Autotype                    0x0e        Text          Y              [11]
 Password History            0x0f        Text          Y              [12]
 Password Policy             0x10        Text          Y              [13]
 Password Expiry Interval    0x11        2 bytes       Y              [14]
-Execute String              0x12        Text          Y
+Run Command                 0x12        Text          Y
 End of Entry                0xff        [empty]       Y              [15]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is

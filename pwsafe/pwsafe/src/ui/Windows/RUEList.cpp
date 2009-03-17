@@ -54,9 +54,9 @@ void CRUEList::SetMax(size_t newmax)
     m_RUEList.resize(newmax);
 }
 
-bool CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuStrings) const
+bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) const
 {
-  RUEntryStringImage itemstringimage;
+  RUEntryData ruentrydata;
   bool retval = false;
 
   RUEListConstIter iter;
@@ -64,8 +64,9 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuSt
   for (iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
     ItemListConstIter pw_listpos = m_core.Find(iter->RUEuuid);
     if (pw_listpos == m_core.GetEntryEndIter()) {
-      itemstringimage.string = _T("");
-      itemstringimage.image = -1;
+      ruentrydata.string = _T("");
+      ruentrydata.image = -1;
+      ruentrydata.pci = NULL;
     } else {
       const CItemData &ci = m_core.GetEntry(pw_listpos);
       StringX group = ci.GetGroup();
@@ -81,10 +82,11 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuSt
       if (user.empty())
         user = _T("*");
 
-      itemstringimage.string = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
-      itemstringimage.image = m_pDbx->GetEntryImage(ci);
+      ruentrydata.string = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
+      ruentrydata.image = m_pDbx->GetEntryImage(ci);
+      ruentrydata.pci = (CItemData *)&ci;
     }
-    ListofAllMenuStrings.push_back(itemstringimage);
+    ListofAllMenuStrings.push_back(ruentrydata);
     retval = true;
   }
   return retval;

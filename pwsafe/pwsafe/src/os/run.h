@@ -10,7 +10,7 @@
  * Interface for a "smart autotype" object. "Smart" in this context
  * means that we don't start simulating user keystrokes until a new
  * window has appeared and is ready to take input. This allows us
- * to "seamlessly" combine browse-to (or execute) and autotype in
+ * to "seamlessly" combine browse-to (or run) and autotype in
  * one operation.
  */
 
@@ -40,7 +40,7 @@ public:
    */
   StringX getruncmd(const StringX &sxFile, bool &bfound);
 
-  bool runcmd(const StringX &execute_string, const StringX &sxAutotype);
+  bool runcmd(const StringX &run_command, const StringX &sxAutotype);
   bool issuecmd(const StringX &sxFile, const StringX &sxParameters, 
                 const StringX &sxAutotype);
 private:

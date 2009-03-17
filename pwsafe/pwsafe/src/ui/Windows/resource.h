@@ -282,6 +282,12 @@
 #define IDB_PASSWORDCHARS_CLASSIC       443
 #define IDB_PASSWORDCHARS_NEW           444
 #define IDB_PASSWORDCHARS_NEW_D         445
+#define IDB_BROWSEURLPLUS_CLASSIC       446
+#define IDB_BROWSEURLPLUS_NEW           447
+#define IDB_BROWSEURLPLUS_NEW_D         448
+#define IDB_RUNCMD_CLASSIC              449
+#define IDB_RUNCMD_NEW                  450
+#define IDB_RUNCMD_NEW_D                451
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -380,7 +386,7 @@
 #define IDC_URL                         1101
 #define IDC_AUTOTYPE                    1102
 #define IDC_EXPIRYDATE                  1103
-#define IDC_EXECUTE                     1103
+#define IDC_RUNCMD                      1103
 #define IDC_EXPIRYTIME                  1104
 #define IDC_STATIC_CURRENT_XTIME        1105
 #define IDC_STATIC_CTIME                1108
@@ -596,7 +602,7 @@
 #define IDC_STATIC_NOTES                1354
 #define IDC_STATIC_URL                  1355
 #define IDC_STATIC_AUTO                 1356
-#define IDC_STATIC_EXECUTE              1357
+#define IDC_STATIC_RUNCMD               1357
 #define IDC_LAUNCH                      1358
 #define IDC_SUBSET                      1359
 #define IDC_GETSUBSET                   1360
@@ -608,7 +614,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        446
+#define _APS_NEXT_RESOURCE_VALUE        452
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1363
 #define _APS_NEXT_SYMED_VALUE           160

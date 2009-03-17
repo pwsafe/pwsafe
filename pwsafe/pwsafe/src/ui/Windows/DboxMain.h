@@ -136,7 +136,7 @@ private:
   static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
   static CString CS_SETFILTERS, CS_CLEARFILTERS, CS_CREATESHORTCUT, CS_GOTOBASEENTRY;
   static CString CS_DUPLICATEENTRY, CS_COPYPASSWORD, CS_COPYUSERNAME, CS_COPYNOTESFLD;
-  static CString CS_AUTOTYPE, CS_EXECUTE;
+  static CString CS_AUTOTYPE, CS_RUNCOMMAND, CS_BROWSEURLPLUS;
 
 public:
   // default constructor
@@ -226,7 +226,8 @@ public:
   void SetValidate(bool state) {m_bValidate = state;}
   void MakeRandomPassword(StringX& password, PWPolicy &pwp);
   bool SetPasswordPolicy(PWPolicy &pwp);
-  BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype);
+  BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
+                     const bool bDoAutotype);
   void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
@@ -472,8 +473,8 @@ protected:
   afx_msg void OnUpdateTrayAutoType(CCmdUI *pCmdUI);
   afx_msg void OnTrayCopyURL(UINT nID);
   afx_msg void OnUpdateTrayCopyURL(CCmdUI *pCmdUI);
-  afx_msg void OnTrayExecute(UINT nID);
-  afx_msg void OnUpdateTrayExecute(CCmdUI *pCmdUI);
+  afx_msg void OnTrayRunCommand(UINT nID);
+  afx_msg void OnUpdateTrayRunCommand(CCmdUI *pCmdUI);
 #endif
 
   // Generated message map functions
@@ -493,6 +494,7 @@ protected:
   afx_msg void OnU3ShopWebsite();
   afx_msg void OnPasswordSafeWebsite();
   afx_msg void OnBrowse();
+  afx_msg void OnBrowsePlus();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
   afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -554,7 +556,7 @@ protected:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnAutoType();
   afx_msg void OnGotoBaseEntry();
-  afx_msg void OnExecuteString();
+  afx_msg void OnRunCommand();
   afx_msg void OnColumnPicker();
   afx_msg void OnResetColumns();
 #if defined(POCKET_PC)
@@ -649,6 +651,7 @@ private:
   void RegistryAnonymity();
   void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID);
   void SetUpMenuStrings();
+  void DoBrowse(const bool bDoAutotype);
   
   static const struct UICommandTableEntry {
     UINT ID;
