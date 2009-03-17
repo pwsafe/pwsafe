@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-02-25 16:27+0100\n"
+"PO-Revision-Date: 2009-03-17 00:10+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -84,14 +84,6 @@ msgstr "  Ungültige Passwortlänge gefunden."
 msgid "  Invalid status value: %d"
 msgstr "  Ungültiger Statuswert: %d"
 
-#. Resource IDs: (32105)
-msgid " &Classic Toolbar"
-msgstr "&Klassische Toolleiste"
-
-#. Resource IDs: (32104)
-msgid " &New Toolbar"
-msgstr "&Moderne Toolleiste"
-
 #. Resource IDs: (336)
 msgid " 'Autotype'"
 msgstr " 'Autom. Eingabe'"
@@ -99,6 +91,10 @@ msgstr " 'Autom. Eingabe'"
 #. Resource IDs: (336)
 msgid " 'Creation Time'"
 msgstr "'Erstellungszeit'"
+
+#. Resource IDs: (354)
+msgid " 'Execute String'"
+msgstr "'String ausführen'"
 
 #. Resource IDs: (347)
 msgid " 'Group'"
@@ -163,11 +159,6 @@ msgstr " Drag # %d"
 msgid " Import # %d"
 msgstr " Importieren # %d"
 
-#. Resource IDs: (205)
-#, c-format
-msgid " Open # %d"
-msgstr " Öffnen # %d"
-
 #. Resource IDs: (328)
 #, c-format
 msgid " [Process ID=%s]"
@@ -176,10 +167,6 @@ msgstr " [Prozess ID=%s]"
 #. Resource IDs: (354)
 msgid "! &Edit externally"
 msgstr "! &Extern bearbeiten"
-
-#. Resource IDs: (350)
-msgid "#"
-msgstr "#"
 
 #. Resource IDs: (1194)
 msgid "#entries"
@@ -437,6 +424,10 @@ msgstr "&Gehe zu URL\tStrg+L"
 msgid "&Change Safe Combination..."
 msgstr "&Master-Passwort ändern"
 
+#. Resource IDs: (32105)
+msgid "&Classic Toolbar"
+msgstr "&Klassische Toolleiste"
+
 #. Resource IDs: (1118)
 msgid "&Clear"
 msgstr "Lös&chen"
@@ -521,6 +512,18 @@ msgstr "Eintrag &duplizieren\tCtrl+D"
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
+#. Resource IDs: (32064)
+msgid "&Execute"
+msgstr "&Ausführen"
+
+#. Resource IDs: (354)
+msgid "&Execute String"
+msgstr "&String ausführen"
+
+#. Resource IDs: (32064)
+msgid "&Execute\tCtrl+E"
+msgstr "&Ausführen\tStrg+E"
+
 #. Resource IDs: (1346)
 msgid "&Export"
 msgstr "&Exportieren"
@@ -600,6 +603,10 @@ msgstr "&Neu"
 #. Resource IDs: (65535)
 msgid "&New "
 msgstr "&Neu "
+
+#. Resource IDs: (32104)
+msgid "&New Toolbar"
+msgstr "&Moderne Toolleiste"
 
 #. Resource IDs: (32003)
 msgid "&New...\tCtrl+N"
@@ -1043,14 +1050,6 @@ msgstr "Übernehmen"
 msgid "Are you sure you want to delete the selected %s?"
 msgstr "Sind sie sicher das ausgewählte %s löschen zu wollen?"
 
-#. Resource IDs: (350)
-msgid "Arg1"
-msgstr "Arg1"
-
-#. Resource IDs: (350)
-msgid "Arg2"
-msgstr "Arg2"
-
 #. Resource IDs: (330)
 msgid "As the double quotation character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
 msgstr "Weil Gänzefüßchen das ganze Feld Notizen abgrenzen, kann es nicht benutzt werden um vielfach Zeilen zu begrenzen. Bitte ein anderes Zeichen benutzen."
@@ -1216,6 +1215,10 @@ msgstr ""
 "\n"
 "Eingaben mit mehr als die neue maximale Anzahl bleiben hiervon unberührt."
 
+#. Resource IDs: (210)
+msgid "Characters present between end of index ']' and '}'"
+msgstr "Vorhandene Zeichen zwischen Indexende ']' und '}'"
+
 #. Resource IDs: (3887)
 msgid "Check"
 msgstr "Aktiviere"
@@ -1247,6 +1250,10 @@ msgstr "Klicken Sie zum Kopieren in die Zwischenablage"
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
 msgstr "Klicken Sie zum Freigeben/Sperren der Zeile"
+
+#. Resource IDs: (354)
+msgid "Click to expand and copy to clipboard, Ctrl+Click to copy to unexpanded"
+msgstr ""
 
 #. Resource IDs: (352)
 msgid "Click to insert a new row below"
@@ -1892,10 +1899,25 @@ msgstr ""
 "\n"
 "Datenbankeinstellungen werden in die aktuelle Datenbank beim Schließen gespeichert, vorausgesetzt sie ist nicht Nur-Lesen oder gesperrt durch ein andere Benutzer."
 
+#. Resource IDs: (354)
+#, c-format
+msgid ""
+"Error at column %d:\n"
+"\n"
+"%s"
+msgstr ""
+"Fehler bei Spalte %d:\n"
+"\n"
+"%s"
+
 #. Resource IDs: (190)
 #, c-format
 msgid "Error in a Password History sub-field starting at position %d (within the History field): "
 msgstr "Fehler im Unterfeld der Passworthistorie beginnend bei Position %d (im Feld Historie): "
+
+#. Resource IDs: (354)
+msgid "Error parsing Execute String"
+msgstr "Fehler beim Parsen des auszuführenden String"
 
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
@@ -1912,6 +1934,18 @@ msgstr "Taste Escape schließt die Anwendung"
 #. Resource IDs: (65535)
 msgid "Example:"
 msgstr "Beispiel:"
+
+#. Resource IDs: (1357)
+msgid "Execute"
+msgstr "Ausführen"
+
+#. Resource IDs: (354)
+msgid "Execute String"
+msgstr "String ausführen"
+
+#. Resource IDs: (192)
+msgid "Execute String\t"
+msgstr "String ausführen\t"
 
 #. Resource IDs: (347, 1004)
 msgid "Exit"
@@ -2092,6 +2126,10 @@ msgstr "Filter werden in der Datenbank als \"unknown fields\" abgelegt."
 msgid "Find"
 msgstr "Suchen"
 
+#. Resource IDs: (210)
+msgid "First character of variable name must be alphabetic"
+msgstr "Erstes Zeichen einer Variablen muss alfabetisch sein"
+
 #. Resource IDs: (32102)
 msgid "Flattened &List"
 msgstr "&Tabelle"
@@ -2162,8 +2200,8 @@ msgid "Group/Title\t"
 msgstr "Gruppe/Titel\t"
 
 #. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
-msgstr "Gruppe/Titel\tBenutzername\tPasswort\tURL\tAutom. Eingabe\tErstellt am\tPasswort geändert\tLetzter Zugriff\tDatum Passwortablauf\tIntervall Passwortablauf\tEintrag geändert\tPasswortrichtlinie\tHistorie\tNotizen"
+msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tExecute String\tNotes"
+msgstr "Gruppe/Titel\tBenutzername\tPasswort\tURL\tAutom. Eingabe\tErstellt am\tPasswort geändert\tLetzter Zugriff\tDatum Passwortablauf\tIntervall Passwortablauf\tEintrag geändert\tPasswortrichtlinie\tHistorie\tString ausführen\tNotizen"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -2265,9 +2303,13 @@ msgstr "ID:32062:V C +L"
 msgid "ID:32063:V C +T"
 msgstr "ID:32063:V C +T"
 
-#. Accelerator Entry for Menu ID:32064; 'Copy &URL to Clipboard'
-msgid "ID:32064:VAC +L"
-msgstr "ID:32064:VAC +L"
+#. Accelerator Entry for Menu ID:32064; '&Execute'
+msgid "ID:32064:V C +E"
+msgstr "ID:32064:V C +E"
+
+#. Accelerator Entry for Menu ID:32065; 'Copy &URL to Clipboard'
+msgid "ID:32065:VAC +L"
+msgstr "ID:32065:VAC +L"
 
 #. Accelerator Entry for Menu ID:32152; 'Make &Backup\tCtrl+B'
 msgid "ID:32152:V C +B"
@@ -2408,17 +2450,29 @@ msgstr "Hochgezählte Nummer [001-999]"
 msgid "Index is bigger than password length (%d)."
 msgstr "Index ist grösser als die Passwortlänge (%d)."
 
+#. Resource IDs: (210)
+msgid "Index is invalid or missing"
+msgstr "Index ungültig oder nicht vorhanden"
+
 #. Resource IDs: (353)
 msgid "Index must be greater than or equal to 1."
 msgstr "Der Index muss größer oder gleich 1 sein. "
+
+#. Resource IDs: (210)
+msgid "Index not numeric"
+msgstr "Index nicht numerisch"
+
+#. Resource IDs: (65535)
+msgid "Initial Tree View"
+msgstr "Anfängliche Baumansicht"
 
 #. Resource IDs: (65535)
 msgid "Initial system tray icon"
 msgstr "Anfängliches Symbol im Infobereich"
 
-#. Resource IDs: (65535)
-msgid "Initial tree view"
-msgstr "Anfängliche Baumansicht"
+#. Resource IDs: (210)
+msgid "Input string is empty"
+msgstr "Eingabestring ist leer"
 
 #. Resource IDs: (3857)
 msgid "Insufficient memory to perform operation."
@@ -2692,6 +2746,18 @@ msgstr "XSD Datei fehlt"
 #. Resource IDs: (209)
 msgid "Missing date/time element."
 msgstr "Datum/Uhrzeit Element fehlt."
+
+#. Resource IDs: (210)
+msgid "Missing ending curly bracket for variable name"
+msgstr "Keine geschweifte Klammer am Ende des Variablennamens"
+
+#. Resource IDs: (211)
+msgid "Missing ending round bracket for Autotype value"
+msgstr "Keine runde Klammer am Ende des Wertes für die Autom. Eingabe"
+
+#. Resource IDs: (210)
+msgid "Missing ending square bracket for index value"
+msgstr "Keine eckige Klammer am Ende des Indexwertes"
 
 #. Resource IDs: (209)
 #, c-format
@@ -3390,7 +3456,7 @@ msgid "Purchase unlimited &U3 version..."
 msgstr "Kaufen Sie eine unbeschränkte &U3-Version..."
 
 #. Resource IDs: (1235)
-msgid "Put groups first in display tree"
+msgid "Put Groups first in Tree View"
 msgstr "Gruppen im Baum zuerst anzeigen"
 
 #. Resource IDs: (1072)
@@ -3589,7 +3655,7 @@ msgstr "Änderungen speichern nach %1?"
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after Edit or Add"
-msgstr "Datenbank sofort nach Bearbeiten oder Hinzufügen speichern"
+msgstr "Datenbank sofort nach Bearbeiten oder Einfügen speichern"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
@@ -3604,8 +3670,9 @@ msgid "Search"
 msgstr "Suchen"
 
 #. Resource IDs: (330)
-msgid "Search has wrapped, continuing from the top."
-msgstr "Suche hat das Ende erreicht, wird am Anfang fortgesetzt."
+#, c-format
+msgid "Search has wrapped, continuing from the %s."
+msgstr "Suche hat umgebrochen, Fortsetzung am %s."
 
 #. Resource IDs: (348)
 msgid "Second date must be later than first"
@@ -3747,9 +3814,29 @@ msgstr "Dragleiste einblenden"
 msgid "Show Notes"
 msgstr "Notizen anzeigen"
 
+#. Resource IDs: (1296)
+msgid "Show Notes as ToolTips in Tree && List views"
+msgstr "Zeige Notizen in Baum- und Listen-Darstellung als ToolTip"
+
+#. Resource IDs: (1190)
+msgid "Show Notes in Edit"
+msgstr "Zeige Notizen beim Bearbeiten"
+
+#. Resource IDs: (1028)
+msgid "Show Password in Add && Edit"
+msgstr "Zeige Passwort beim Einfügen &und Bearbeiten"
+
+#. Resource IDs: (1031)
+msgid "Show Password in Tree View"
+msgstr "Zeige Passwort in der Baumdarstellung"
+
 #. Resource IDs: (346)
 msgid "Show Toolbar"
 msgstr "Toolleiste einblenden"
+
+#. Resource IDs: (1254)
+msgid "Show Username in Tree View"
+msgstr "Zeige Benutzername in der Baumdarstellung"
 
 #. Resource IDs: (159)
 msgid "Show a subset of the Password"
@@ -3760,28 +3847,8 @@ msgid "Show entries with identical compared fields (Note: Unknown fields were no
 msgstr "Zeige Einträge mit identisch-verglichenen Feldern (Hinweis: unbekannte Felder wurden nicht verglichen.)"
 
 #. Resource IDs: (1246)
-msgid "Show grid lines in display list"
-msgstr "Zeige Gitterlinien in der angezeigten Liste"
-
-#. Resource IDs: (1296)
-msgid "Show notes as ToolTips in display tree && list views"
-msgstr "Zeige Notizen in Baum- und Listen-Darstellung als ToolTip"
-
-#. Resource IDs: (1190)
-msgid "Show notes in Edit"
-msgstr "Zeige Notizen beim Bearbeiten"
-
-#. Resource IDs: (1028)
-msgid "Show password in Add && Edit"
-msgstr "Zeige Passwort beim Hinzufügen &und Bearbeiten"
-
-#. Resource IDs: (1031)
-msgid "Show password in display tree"
-msgstr "Zeige Passwort in der Baumdarstellung"
-
-#. Resource IDs: (1254)
-msgid "Show username in display tree"
-msgstr "Zeige Benutzername in der Baumdarstellung"
+msgid "Show grid lines in List View"
+msgstr "Zeige Gitterlinien in der Listendarstellung"
 
 #. Resource IDs: (334)
 #, c-format
@@ -4063,6 +4130,10 @@ msgstr "Die beiden Einträge sind verschieden."
 msgid "There are more than one entry that fits your selection. Please be more specific."
 msgstr "Es gibt mehrere Einträge die Ihrer Auswahl entsprechen. Seien Sie bitte genauer."
 
+#. Resource IDs: (210)
+msgid "There are unmatched quotes in the execute string"
+msgstr "Die Gänsefüßchen im auszuführenden String stimmen nicht"
+
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -4274,6 +4345,10 @@ msgstr "Kann die Zwischen-Sicherung nicht anlegen."
 msgid "Unable to display URL"
 msgstr "Kann die URL nicht anzeigen"
 
+#. Resource IDs: (354)
+msgid "Unable to execute string"
+msgstr "Kann String nicht ausführen"
+
 #. Resource IDs: (190)
 msgid ""
 "Unable to get configuration file lock.\n"
@@ -4302,6 +4377,14 @@ msgstr "Kann die Konfigurationsdatei nicht öffnen"
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
 msgstr "Kann die email-Unterstützung nicht starten."
+
+#. Resource IDs: (354)
+msgid ""
+"Unable to load the necessary DLL to support Autotype during Launch of a Browser or Execute a string.\n"
+"Autotype for these functions is disabled."
+msgstr ""
+"Kann die notwendige DLL zur Autom.Eingabe beim Starten eines Browsers oder Ausführen eines Strings nicht laden.\n"
+"Autom.Eingabe für diese Funktionen ist abgeschaltet."
 
 #. Resource IDs: (3859)
 #, c-format
@@ -4510,6 +4593,14 @@ msgstr ""
 #. Resource IDs: (1322)
 msgid "Value:"
 msgstr "Wert:"
+
+#. Resource IDs: (210)
+msgid "Variable name is empty"
+msgstr "Variablenname ist leer"
+
+#. Resource IDs: (210)
+msgid "Variable name must be alphanumeric"
+msgstr "Variablenname muss alfabetisch sein"
 
 #. Resource IDs: (65535)
 msgid "Verify Key:"
@@ -4829,6 +4920,14 @@ msgstr ""
 "\n"
 "Fehler in Passworthistorie für Eintrag: »%s»%s»%s»: "
 
+#. Resource IDs: (2005)
+msgid ""
+"\n"
+"Execute String"
+msgstr ""
+"\n"
+"String ausführen"
+
 #. Resource IDs: (2007)
 msgid ""
 "\n"
@@ -5035,6 +5134,16 @@ msgstr ""
 "\n"
 "Datenbanken sind identisch!"
 
+#. Resource IDs: (354)
+msgid ""
+"\n"
+"\n"
+"Ignore this and save anyway - Yes/no?"
+msgstr ""
+"\n"
+"\n"
+"Ignorieren und trotzdem sichern - Ja/Nein?"
+
 #. Resource IDs: (341)
 msgid ""
 "\n"
@@ -5198,6 +5307,10 @@ msgstr "zwischen"
 #. Resource IDs: (326)
 msgid "big endian"
 msgstr "Big Endian"
+
+#. Resource IDs: (355)
+msgid "bottom"
+msgstr "Ende"
 
 #. Resource IDs: (344)
 msgid "conflict"
@@ -5425,6 +5538,10 @@ msgstr "Teilmenge: '%s' Feld '%s' '%s' %s"
 msgid "the following text:"
 msgstr "der folgende Text:"
 
+#. Resource IDs: (354)
+msgid "top"
+msgstr "Beginn"
+
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
 msgstr "benutzte Einträge im Infobereich."
@@ -5457,4 +5574,13 @@ msgstr "wird ablaufen"
 #, c-format
 msgid "within %d day(s)"
 msgstr "binnen %d Tag(en)"
+
+#~ msgid " Open # %d"
+#~ msgstr " Öffnen # %d"
+#~ msgid "#"
+#~ msgstr "#"
+#~ msgid "Arg1"
+#~ msgstr "Arg1"
+#~ msgid "Arg2"
+#~ msgstr "Arg2"
 
