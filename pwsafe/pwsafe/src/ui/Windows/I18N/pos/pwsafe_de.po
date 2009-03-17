@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-03-17 00:10+0100\n"
+"PO-Revision-Date: 2009-03-17 21:06+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgstr "  Datum bzw. Uhreit ungültig."
 
 #. Resource IDs: (191)
 msgid "  Invalid field separator character found - only a single blank is allowed between fields."
-msgstr "Ungültiges Feldtrennzeichen gefunden - nur ein einzelnes Leerzeichen ist zwischen Feldern erlaubt."
+msgstr "  Ungültiges Feldtrennzeichen gefunden - nur ein einzelnes Leerzeichen ist zwischen Feldern erlaubt."
 
 #. Resource IDs: (190)
 #, c-format
@@ -1253,7 +1253,7 @@ msgstr "Klicken Sie zum Freigeben/Sperren der Zeile"
 
 #. Resource IDs: (354)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy to unexpanded"
-msgstr ""
+msgstr "Klicken sie zum Ausklappen und in die Zwischenanlage Kopieren, Strg+Klicken zum Einklappen und Kopieren"
 
 #. Resource IDs: (352)
 msgid "Click to insert a new row below"

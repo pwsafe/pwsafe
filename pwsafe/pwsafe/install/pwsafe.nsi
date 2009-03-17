@@ -238,6 +238,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
   File "..\src\bin\releasem\pwsafe.exe"
+  File "..\src\bin\releasem\pws_at.dll"
 ;"no Win98"  File /oname=p98.exe "..\src\bin\nu-releasem\pwsafe.exe" 
   File "..\help\default\pwsafe.chm"
   File "..\LICENSE"
@@ -811,6 +812,7 @@ Section "Uninstall"
 
   ; Delete all installed files in the directory
   Delete "$INSTDIR\pwsafe.exe"
+  Delete "$INSTDIR\pws_at.dll"
   Delete "$INSTDIR\pwsafe.chm"
   Delete "$INSTDIR\pwsafe.xsd"
   Delete "$INSTDIR\pwsafe.xsl"
