@@ -7,8 +7,8 @@ Default topic=html\Welcome.html
 Display compile progress=Yes
 Error log file=pwsafeDE.log
 Full-text search=Yes
-Index file=pwsafe.hhk
-Language=0x407 German (Germany)
+Index file=pwsafeDE.hhk
+Language=0x407 Deutsch (Deutschland)
 Title=HTML Help für Password Safe
 
 
@@ -47,6 +47,7 @@ html\upgrade_from_v1x.html
 html\view_menu.html
 html\Welcome.html
 html\aliases.html
+html\execute_string.html
 
 [INFOTYPES]
 
