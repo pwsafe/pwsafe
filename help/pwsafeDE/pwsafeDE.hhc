@@ -161,12 +161,16 @@
 			<param name="Local" value="html\aliases.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Volltext Export &amp; Import Format">
+			<param name="Name" value="Text Export &amp; Import Format">
 			<param name="Local" value="html\imp_exp_text_details.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Voreinstellungen">
 			<param name="Local" value="html\preferences.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="String ausführen">
+			<param name="Local" value="html\execute_string.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
