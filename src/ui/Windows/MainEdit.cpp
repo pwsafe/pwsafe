@@ -144,7 +144,7 @@ void DboxMain::OnAdd()
     temp.SetNotes(dlg_add.m_notes);
     temp.SetURL(dlg_add.m_URL);
     temp.SetAutoType(dlg_add.m_autotype);
-    temp.SetExecuteString(dlg_add.m_executestring);
+    temp.SetRunCommand(dlg_add.m_runcommand);
     time(&t);
     temp.SetCTime(t);
 
@@ -898,7 +898,7 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetPassword(ci->GetPassword());
     ci2.SetURL(ci->GetURL());
     ci2.SetAutoType(ci->GetAutoType());
-    ci2.SetExecuteString(ci->GetExecuteString());
+    ci2.SetRunCommand(ci->GetRunCommand());
     ci2.SetNotes(ci->GetNotes());
     time_t t;
     int xint;
@@ -1175,8 +1175,8 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
     case CItemData::AUTOTYPE:
       imsg = IDS_AUTOTYPE;
       break;
-    case CItemData::EXECUTE:
-      imsg = IDS_EXECUTESTRING;
+    case CItemData::RUNCMD:
+      imsg = IDS_RUNCOMMAND;
       break;
     default:
       ASSERT(0);
@@ -1303,13 +1303,14 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 }
 
-void DboxMain::DoAutoType(const StringX &sx_autotype, const StringX sx_group, 
+void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX sx_group, 
                           const StringX sx_title, const StringX sx_user,
                           const StringX sx_pwd, const StringX sx_notes)
 {
   StringX tmp(_T(""));
   StringX sxnotes(sx_notes);
   TCHAR curChar;
+  StringX sx_autotype(sx_in_autotype);
   const int N = sx_autotype.length();
   CKeySend ks;
   bool bCapsLock = false;
@@ -1523,7 +1524,7 @@ void DboxMain::OnGotoBaseEntry()
   }
 }
 
-void DboxMain::OnExecuteString()
+void DboxMain::OnRunCommand()
 {
 
   if (SelItemOk() != TRUE)
@@ -1546,21 +1547,21 @@ void DboxMain::OnExecuteString()
     }
   }
 
-  StringX sx_Execute_String, sx_Expanded_ES;
-  sx_Execute_String = ci->GetExecuteString();
-  if (sx_Execute_String.empty())
+  StringX sx_RunCommand, sx_Expanded_ES;
+  sx_RunCommand = ci->GetRunCommand();
+  if (sx_RunCommand.empty())
     return;
 
   stringT errmsg;
   StringX::size_type st_column;
-  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_Execute_String, 
+  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_RunCommand, 
                        m_core.GetCurFile(), ci, 
                        m_bDoAutoType, m_AutoType, 
                        errmsg, st_column);
   if (!errmsg.empty()) {
     CString cs_title, cs_errmsg;
-    cs_title.LoadString(IDS_EXECUTESTRING_ERROR);
-    cs_errmsg.Format(IDS_EXS_ERRORMSG, (int)st_column, errmsg.c_str());
+    cs_title.LoadString(IDS_RUNCOMMAND_ERROR);
+    cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
     MessageBox(cs_errmsg, cs_title, MB_ICONQUESTION | MB_OK);
     return;
   }
@@ -1576,7 +1577,7 @@ void DboxMain::OnExecuteString()
     return;
   }
 
-  UpdateLastClipboardAction(CItemData::EXECUTE);
+  UpdateLastClipboardAction(CItemData::RUNCMD);
   UpdateAccessTime(ci_original);
 }
 

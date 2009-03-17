@@ -38,7 +38,7 @@ struct st_run_impl {
 
   st_run_impl()
     : pInit(NULL), pUnInit(NULL), hCBWnd(NULL), m_AT_HK_module(NULL) {
-    // Support Autotype with Launch Browser and Execute String
+    // Support Autotype with Launch Browser and Run Command
     // Try to load DLL to call back when window active for Autotype
     stringT dll_loc = pws_os::getexecdir();
 #if defined( _DEBUG ) || defined( DEBUG )
@@ -118,10 +118,10 @@ bool PWSRun::UnInit()
     return false;
 }
 
-bool PWSRun::runcmd(const StringX &execute_string, const StringX &sxAutotype)
+bool PWSRun::runcmd(const StringX &run_command, const StringX &sxAutotype)
 {
   // Get first parameter either enclosed by quotes or delimited by a space
-  StringX full_string(execute_string), first_part(_T("")), the_rest(_T(""));
+  StringX full_string(run_command), first_part(_T("")), the_rest(_T(""));
   StringX env_var, sx_temp(_T(""));
   StringX::size_type end_delim;
   bool bfound(true);

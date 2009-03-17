@@ -36,7 +36,7 @@ CString CAddDlg::CS_HIDE;
 CAddDlg::CAddDlg(CWnd* pParent)
   : CPWDialog(CAddDlg::IDD, pParent),
   m_password(_T("")), m_username(_T("")), m_title(_T("")),
-  m_group(_T("")), m_URL(_T("")), m_autotype(_T("")), m_executestring(_T("")),
+  m_group(_T("")), m_URL(_T("")), m_autotype(_T("")), m_runcommand(_T("")),
   m_notes(_T("")),  m_notesww(_T("")),
   m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)), m_XTimeInt(0),
   m_isPwHidden(false), m_OverridePolicy(FALSE), m_bWordWrap(FALSE)
@@ -146,7 +146,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
    DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
    DDX_Text(pDX, IDC_URL, (CString&)m_URL);
    DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
-   DDX_Text(pDX, IDC_EXECUTE, (CString&)m_executestring);
+   DDX_Text(pDX, IDC_RUNCMD, (CString&)m_runcommand);
    DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
    DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
    DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 255);
@@ -160,7 +160,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_TITLE, m_ex_title);
    DDX_Control(pDX, IDC_URL, m_ex_URL);
    DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
-   DDX_Control(pDX, IDC_EXECUTE, m_ex_executestring);
+   DDX_Control(pDX, IDC_RUNCMD, m_ex_runcommand);
 
    GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
    DDX_Check(pDX, IDC_OVERRIDE_POLICY, m_OverridePolicy);
@@ -302,25 +302,25 @@ void CAddDlg::OnOK()
     return;
   }
 
-  if (m_executestring.GetLength() > 0) {
-    //Check Execute string parses - don't substitute
+  if (m_runcommand.GetLength() > 0) {
+    //Check Run Command parses - don't substitute
     stringT errmsg;
     size_t st_column;
     bool bAutoType(false);
     StringX sxAutotype(_T(""));
-    PWSAuxParse::GetExpandedString(m_executestring, _T(""), NULL, 
+    PWSAuxParse::GetExpandedString(m_runcommand, _T(""), NULL, 
        bAutoType, sxAutotype, errmsg, st_column);
     if (errmsg.length() > 0) {
-      CString cs_title(MAKEINTRESOURCE(IDS_EXECUTESTRING_ERROR));
-      CString cs_temp(MAKEINTRESOURCE(IDS_EXS_IGNOREORFIX));
+      CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
+      CString cs_temp(MAKEINTRESOURCE(IDS_RUN_IGNOREORFIX));
       CString cs_errmsg;
-      cs_errmsg.Format(IDS_EXS_ERRORMSG, (int)st_column, errmsg.c_str());
+      cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
       cs_errmsg += cs_temp;
       int rc = MessageBox(cs_errmsg, cs_title, 
                           MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2);
       if (rc == IDNO) {
         UpdateData(FALSE);
-        ((CEdit*)GetDlgItem(IDC_EXECUTE))->SetFocus();
+        ((CEdit*)GetDlgItem(IDC_RUNCMD))->SetFocus();
         return;
       }
     }
@@ -380,8 +380,8 @@ void CAddDlg::ResizeDialog()
     IDC_STATIC_URL,
     IDC_AUTOTYPE,
     IDC_STATIC_AUTO,
-    IDC_EXECUTE,
-    IDC_STATIC_EXECUTE,
+    IDC_RUNCMD,
+    IDC_STATIC_RUNCMD,
     IDC_SAVE_PWHIST,
     IDC_XTIME,
     IDC_XTIME_RECUR,

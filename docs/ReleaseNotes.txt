@@ -26,9 +26,9 @@ New Features for 3.16.2
 [] New preference to word wrap the Notes field in Add & Edit. Also,
 ability to override this and showing the notes by right-click context
 menu.
-[] Add new field 'Execute String' to allow commands etc. to be executed
+[] Add new field 'Run Command' to allow commands etc. to be executed
 via Ctrl+E or menu.  See help for details.
-[] Support AutoType with 'Browse to URL' and new 'Execute String' functions.
+[] Support AutoType with 'Browse to URL' and new 'Run Command' functions.
 See help for details.
 [] Implement "Find Up" via clicking Find toolbar button with Shift key down or
 pressing 'Shift+F3' for repeat find up.

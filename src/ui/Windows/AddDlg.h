@@ -34,7 +34,7 @@ public:
   CSecString m_group;
   CSecString m_URL;
   CSecString m_autotype;
-  CSecString m_executestring;
+  CSecString m_runcommand;
   CSecString m_locXTime;
   time_t m_tttXTime;
   time_t m_tttCPMTime;  // Password creation or last changed datetime
@@ -56,7 +56,7 @@ public:
   CEditExtn m_ex_title;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_autotype;
-  CEditExtn m_ex_executestring;
+  CEditExtn m_ex_runcommand;
   //}}AFX_DATA
   BOOL m_OverridePolicy;
   BOOL m_bWordWrap;

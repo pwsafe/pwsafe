@@ -55,7 +55,7 @@ CItemData::CItemData()
   m_URL(URL), m_AutoType(AUTOTYPE),
   m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
   m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-    m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_ExecuteString(EXECUTE),
+    m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
   m_entrytype(ET_NORMAL), m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
@@ -69,7 +69,7 @@ CItemData::CItemData(const CItemData &that) :
   m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
-  m_ExecuteString(that.m_ExecuteString), m_entrytype(that.m_entrytype),
+  m_RunCommand(that.m_RunCommand), m_entrytype(that.m_entrytype),
   m_display_info(that.m_display_info)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
@@ -278,9 +278,9 @@ StringX CItemData::GetXTimeInt() const
   return os.str();
 }
 
-StringX CItemData::GetExecuteString() const
+StringX CItemData::GetRunCommand() const
 {
-  return GetField(m_ExecuteString);
+  return GetField(m_RunCommand);
 }
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
@@ -421,7 +421,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
           GetRMTimeExp() + separator +
           GetPWPolicy() + separator +
           history + separator +
-          GetExecuteString() + separator +
+          GetRunCommand() + separator +
           _T("\"") + notes + _T("\"");
   } else {
     // Not everything
@@ -456,8 +456,8 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       ret += GetPWPolicy() + separator;
     if (bsFields.test(CItemData::PWHIST))
       ret += history + separator;
-    if (bsFields.test(CItemData::EXECUTE))
-      ret += GetExecuteString() + separator;
+    if (bsFields.test(CItemData::RUNCMD))
+      ret += GetRunCommand() + separator;
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
     // remove trailing separator
@@ -640,9 +640,9 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     }
   }
 
-  tmp = GetExecuteString();
-  if (bsExport.test(CItemData::EXECUTE) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "execute_string", tmp, utf8conv);
+  tmp = GetRunCommand();
+  if (bsExport.test(CItemData::RUNCMD) && !tmp.empty())
+    PWSUtil::WriteXMLField(oss, "run_command", tmp, utf8conv);
 
   if (NumberUnknownFields() > 0) {
     oss << "\t\t<unknownrecordfields>" << endl;
@@ -989,9 +989,9 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
   return true;
 }
 
-void CItemData::SetExecuteString(const StringX &cs_ExecuteString)
+void CItemData::SetRunCommand(const StringX &cs_RunCommand)
 {
-  SetField(m_ExecuteString, cs_ExecuteString);
+  SetField(m_RunCommand, cs_RunCommand);
 }
 
 BlowFish *CItemData::MakeBlowFish() const
@@ -1014,7 +1014,7 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_Group = that.m_Group;
     m_URL = that.m_URL;
     m_AutoType = that.m_AutoType;
-    m_ExecuteString = that.m_ExecuteString;
+    m_RunCommand = that.m_RunCommand;
     m_tttCTime = that.m_tttCTime;
     m_tttPMTime = that.m_tttPMTime;
     m_tttATime = that.m_tttATime;
@@ -1044,7 +1044,7 @@ void CItemData::Clear()
   m_Notes.Empty();
   m_URL.Empty();
   m_AutoType.Empty();
-  m_ExecuteString.Empty();
+  m_RunCommand.Empty();
   m_tttCTime.Empty();
   m_tttPMTime.Empty();
   m_tttATime.Empty();
@@ -1470,9 +1470,9 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
       if (!pull_string(str, data, len)) return false;
       SetPWHistory(str);
       break;
-    case EXECUTE:
+    case RUNCMD:
       if (!pull_string(str, data, len)) return false;
-      SetExecuteString(str);
+      SetRunCommand(str);
       break;
     case END:
       break;

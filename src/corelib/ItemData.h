@@ -93,7 +93,7 @@ public:
     NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
     PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, XTIME = 0x0a,
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
-    PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, EXECUTE = 0x12,
+    PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12,
     LAST,        // Start of unknown fields!
     END = 0xff}; // field types, per formatV{2,3}.txt
 
@@ -169,7 +169,7 @@ public:
     StringX GetPWHistory() const;  // V30
     void GetPWPolicy(PWPolicy &pwp) const;
     StringX GetPWPolicy() const;
-    StringX GetExecuteString() const;
+    StringX GetRunCommand() const;
 
     // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
     // it's used for multi-line notes and to replace '.' within the Title field.
@@ -224,7 +224,7 @@ public:
     void SetPWHistory(const StringX &PWHistory);  // V30
     void SetPWPolicy(const PWPolicy &pwp);
     bool SetPWPolicy(const stringT &cs_pwp);
-    void SetExecuteString(const StringX &cs_ExecuteString);
+    void SetRunCommand(const StringX &cs_RunCommand);
 
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy
@@ -251,7 +251,7 @@ public:
     BOOL IsUserEmpty() const {return m_User.IsEmpty();}
     BOOL IsNotesEmpty() const {return m_Notes.IsEmpty();}
     BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
-    BOOL IsExecuteStringEmpty() const {return m_ExecuteString.IsEmpty();}
+    BOOL IsRunCommandEmpty() const {return m_RunCommand.IsEmpty();}
     void SerializePlainText(std::vector<char> &v, CItemData *cibase = NULL) const;
     bool DeserializePlainText(const std::vector<char> &v);
     bool SetField(int type, unsigned char *data, int len);
@@ -302,7 +302,7 @@ private:
   CItemField m_PWHistory;
   CItemField m_PWPolicy;
   CItemField m_XTimeInterval;
-  CItemField m_ExecuteString;
+  CItemField m_RunCommand;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;

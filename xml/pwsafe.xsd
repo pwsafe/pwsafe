@@ -238,7 +238,7 @@
                 </xs:complexType>
               <!-- End Password Policy Fields -->
               </xs:element>
-              <xs:element name="execute_string" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="runcommand" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="unknownrecordfields" minOccurs="0" maxOccurs="1">
               <!-- Start Unknown Record Fields -->
                 <xs:complexType>

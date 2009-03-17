@@ -24,7 +24,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tExecute String\tNotes"
+  IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tNotes"
   IDSC_EXPHDRGROUPTITLE   "Group/Title\t"
   IDSC_EXPHDRUSERNAME     "Username\t"
   IDSC_EXPHDRPASSWORD     "Password\t"
@@ -41,7 +41,7 @@ BEGIN
   IDSC_EXPHDRTITLE        "Title\t"
   IDSC_EXPHDRPWPOLICY     "Password Policy\t"
   IDSC_EXPHDRXTIMEINT     "Password Expiry Interval\t"
-  IDSC_EXPHDREXECUTESTRING "Execute String\t"
+  IDSC_EXPHDRRUNCOMMAND   "Run Command\t"
 END
 
 STRINGTABLE
@@ -273,7 +273,7 @@ BEGIN
   IDSC_EXS_MISSINGSQUAREBKT "Missing ending square bracket for index value"
   IDSC_EXS_INVALIDINDEX    "Index is invalid or missing"
   IDSC_EXS_INDEXNOTNUMERIC "Index not numeric"
-  IDSC_EXS_UNMATCHEDQUOTES "There are unmatched quotes in the execute string"
+  IDSC_EXS_UNMATCHEDQUOTES "There are unmatched quotes in the run command"
   IDSC_EXS_INVALIDBRACKETS "Characters present between end of index ']' and '}'"
   IDSC_EXS_MISSINGROUNDBKT "Missing ending round bracket for Autotype value"
 END

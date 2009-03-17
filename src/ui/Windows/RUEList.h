@@ -33,9 +33,10 @@ struct RUEntry {
   uuid_array_t RUEuuid;
 };
 
-struct RUEntryStringImage {
+struct RUEntryData {
   StringX string;
   int image;
+  CItemData *pci;
 };
 
 // identifies menu owner-draw data as mine
@@ -67,7 +68,7 @@ public:
   // Data retrieval
   size_t GetCount() const {return m_RUEList.size();}
   size_t GetMax() const {return m_maxentries;}
-  bool GetAllMenuItemStrings(std::vector<RUEntryStringImage> &) const;
+  bool GetAllMenuItemStrings(std::vector<RUEntryData> &) const;
   bool GetPWEntry(size_t, CItemData &); // NOT const!
 
   // Data setting

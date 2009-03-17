@@ -221,7 +221,7 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
     BOOL State = (entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
                  ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
-                 ID_MENUITEM_EXECUTE, ID_MENUITEM_EDIT,
+                 ID_MENUITEM_RUNCOMMAND, ID_MENUITEM_EDIT,
                  ID_MENUITEM_PASSWORDSUBSET};
 
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
@@ -1116,10 +1116,12 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       pPopup->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
                          ID_MENUITEM_COPYURL, CS_COPYURL);
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_GRAYED);
+      pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURLPLUS, MF_GRAYED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
       UpdateBrowseURLSendEmailButton(false);
     } else {
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_ENABLED);
+      pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURLPLUS, MF_ENABLED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
       const bool bIsEmail = pci->IsURLEmail();
       if (bIsEmail) {
@@ -1127,6 +1129,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
                            ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
         pPopup->ModifyMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND,
                            ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
+        pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURLPLUS, MF_GRAYED);
       } else {
         pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
                            ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
@@ -2024,7 +2027,8 @@ void DboxMain::UpdateSystemTray(const STATE s)
   }
 }
 
-BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype)
+BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
+                             const bool bDoAutotype)
 {
   CString theURL(csURL);
 
@@ -2062,6 +2066,7 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype)
   int alt2Replacements = (theURL.Replace(_T("[ssh]"), _T("")) +
                           theURL.Replace(_T("{alt}"), _T("")));
   int autotypeReplacements = theURL.Replace(_T("[autotype]"), _T(""));
+  int no_autotype = theURL.Replace(_T("[xa]"), _T(""));
 
   if (alt2Replacements <= 0 && !isMailto && theURL.Find(_T("://")) == -1)
     theURL = _T("http://") + theURL;
@@ -2086,10 +2091,17 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype)
   }
 
   TrimLeft(sxFile);
-  m_bDoAutoType = autotypeReplacements > 0;
-  m_AutoType = sxAutotype;
-  bool rc = m_runner.issuecmd(sxFile, sxParameters, 
-                              m_bDoAutoType ? sxAutotype : _T(""));
+  // Obey user's No Autotype flag [xa]
+  if (no_autotype > 0) {
+    m_bDoAutoType = false;
+    m_AutoType.clear();
+  } else {
+    // Either do it because they pressed the right menu/shortcut
+    // or they had specified Do Auotype flag [autotype]
+    m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
+    m_AutoType = m_bDoAutoType ? sxAutotype : _T("");
+  }
+  bool rc = m_runner.issuecmd(sxFile, sxParameters, m_AutoType);
 
   if (!rc) {
     AfxMessageBox(errID, MB_ICONSTOP);

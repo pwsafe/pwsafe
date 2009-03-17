@@ -8,7 +8,7 @@
 
 /*
  * Declaration of utility functions that parse the two small
- * 'languages' used for 'autotype' and 'execute' command processing.
+ * 'languages' used for 'autotype' and 'run' command processing.
  */
 
 #ifndef _PWSAUXPARSE_H
@@ -22,9 +22,9 @@ class CItemData;
 
 namespace PWSAuxParse {
   // Call following with NULL ci and/or empty sxCurrentDB
-  // will only validate the execute string (non-empty serrmsg means
+  // will only validate the run command (non-empty serrmsg means
   // parse failed, reason in same).
-  StringX GetExpandedString(const StringX &sxExecute_String,
+  StringX GetExpandedString(const StringX &sxRun_Command,
                             const StringX &sxCurrentDB,
                             CItemData *ci, bool &bAutoType,
                             StringX &sxAutotype, stringT &serrmsg,

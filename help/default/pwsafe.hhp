@@ -26,7 +26,6 @@ html\credits.html
 html\display_tab.html
 html\edit_menu.html
 html\entering_pwd.html
-html\execute_string.html
 html\export.html
 html\file_menu.html
 html\filters.html
@@ -41,6 +40,7 @@ html\password_history_tab.html
 html\password_policies.html
 html\preferences.html
 html\retrieve_pwd.html
+html\run_command.html
 html\searching.html
 html\security_tab.html
 html\system_tab.html

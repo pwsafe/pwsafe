@@ -5,7 +5,7 @@
 
 
   
-  <title>Execute String</title>
+  <title>Run Command</title>
 <!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>
@@ -21,11 +21,11 @@
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
-<h1>Execute String</h1>
+<h1>Run Command</h1>
 
 
-<p>An entry's&nbsp;'Execute'&nbsp;field can contain a command that will
-be run when the Execute action is selected. The command can be anthing
+<p>An entry's&nbsp;'Run Command'&nbsp;field can contain a command that will
+be run when the Run Command action is selected. The command can be anthing
 that you can type in the Start-&gt;Run box of your computer.</p>
 
 
@@ -45,11 +45,11 @@ sign is used to indicate a variable.</p>
 
   <li>Variables are specified as '$name' and <i>are case sensitive</i>. Variable names always start with an
 alphabetic character and the remaining characters are alphanumeric. The variable name is 
-terminated either by encountering a non-alphanumeric character or the end of the Execute String.</li>
+terminated either by encountering a non-alphanumeric character or the end of the Run Command.</li>
 
   <ul>
 
-    <li>To use a variable immediately followed by an alphanumeric character in the Execute String, enclose the variable's name in
+    <li>To use a variable immediately followed by an alphanumeric character in the Run Command, enclose the variable's name in
 curly brackets e.g., '${varname}string'.</li>
 
 
@@ -218,14 +218,14 @@ meaning the complete field.
  <tr>
           <td align="center">1<a name="n1"></a></td>
           <td>Directory values (appdir or dbdir) do not have an ending '\'.
-  Remember to add this if you need it in your Execute String.</td>
+  Remember to add this if you need it in your Run Command.</td>
         </tr>
 
  <tr>
           <td align="center">2<a name="n2"></a></td>
           <td>The contents of variables (including directory and full path
   values) may contain blanks. You may need to enclose the result in quotes in
-  your Execute String for correct execution.</td>
+  your Run Command for correct execution.</td>
         </tr>
 
  <tr>
@@ -243,10 +243,10 @@ meaning the complete field.
 
  <tr>
           <td align="center">5<a name="n5"></a></td>
-          <td>If the AutoType variable is present in the Execute string,
+          <td>If the AutoType variable is present in the Run Command,
   AutoType will be performed once the target window is active. The variable and
   its value, if present, will be removed from the string that is executed. This
-  variable can appear anywhere in the Execute String as it only specifies what
+  variable can appear anywhere in the Run Command as it only specifies what
   Password Safe will do after the command string has been executed. Differing
   from other variables, this one will be able to take a value to override the
   entry's current value. The format is ($autotype can replace $a in the following
@@ -304,7 +304,7 @@ variable.</p>
 'C:\Windows\notepad.exe'. Current values set in your environment can
 be determined by running 'cmd.exe' and issuing the 'set' command without any 
 parameters. Any unknown environmental variable is left unchanged in the 
-execute string e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if
+Run Command e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if
 variable 'xyz' is not set. Note: Windows environmental variables are <span style="font-weight: bold;">not</span> 
 case sensitive.</p>
 
@@ -322,7 +322,7 @@ case sensitive.</p>
 
 
     <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-    <param name="Keyword" value="Execute String"> <param name="Keyword" value="Using Execute String"> </object>
+    <param name="Keyword" value="Run Command"> <param name="Keyword" value="Using Run Command"> </object>
   </ul>
 </ul>
 </body>

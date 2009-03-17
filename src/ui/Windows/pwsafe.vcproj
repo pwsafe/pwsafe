@@ -1825,6 +1825,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\browseurlplus_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\browseurlplus_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\browseurlplus_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\changecombo_classic.bmp"
 				>
 			</File>
@@ -2590,6 +2602,18 @@
 			</File>
 			<File
 				RelativePath="..\graphics\toolbar\restore_new_disabled.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\runcmd_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\runcmd_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\runcmd_new_disabled.bmp"
 				>
 			</File>
 			<File

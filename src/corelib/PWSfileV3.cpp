@@ -239,9 +239,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetPWHistory();
   if (!tmp.empty())
     WriteCBC(CItemData::PWHIST, tmp);
-  tmp = item.GetExecuteString();
+  tmp = item.GetRunCommand();
   if (!tmp.empty())
-    WriteCBC(CItemData::EXECUTE, tmp);
+    WriteCBC(CItemData::RUNCMD, tmp);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = item.GetURFIterBegin();
