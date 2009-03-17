@@ -38,6 +38,7 @@
 #define wxID_VERSIONSTR 10079
 #define ID_HYPERLINKCTRL1 10081
 #define ID_HYPERLINKCTRL 10080
+#define ID_TEXTCTRL 10082
 #define SYMBOL_CABOUT_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CABOUT_TITLE _("About Password Safe")
 #define SYMBOL_CABOUT_IDNAME ID_CABOUT
@@ -95,6 +96,7 @@ public:
   static bool ShowToolTips();
 
 ////@begin CAbout member variables
+  wxTextCtrl* m_newVerStatus;
 ////@end CAbout member variables
 };
 

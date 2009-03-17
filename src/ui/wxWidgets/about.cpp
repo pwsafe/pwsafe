@@ -19,6 +19,8 @@
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
+#include <wx/url.h>
+
 
 ////@begin includes
 ////@end includes
@@ -26,6 +28,7 @@
 #include "about.h"
 #include "version.h"
 #include "passwordsafeframe.h"
+#include "corelib/CheckVersion.h"
 ////@begin XPM images
 ////@end XPM images
 
@@ -108,6 +111,7 @@ CAbout::~CAbout()
 void CAbout::Init()
 {
 ////@begin CAbout member initialisation
+  m_newVerStatus = NULL;
 ////@end CAbout member initialisation
 }
 
@@ -160,8 +164,12 @@ void CAbout::CreateControls()
   wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("Copyright (c) 2003-2009 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
   itemBoxSizer4->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxButton* itemButton15 = new wxButton( itemDialog1, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer4->Add(itemButton15, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  m_newVerStatus = new wxTextCtrl( itemDialog1, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_READONLY|wxNO_BORDER );
+  m_newVerStatus->SetBackgroundColour(wxColour(230, 231, 232));
+  itemBoxSizer4->Add(m_newVerStatus, 0, wxALIGN_LEFT|wxALL, 5);
+
+  wxButton* itemButton16 = new wxButton( itemDialog1, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer4->Add(itemButton16, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
 ////@end CAbout content construction
   const wxString vstring = pwsafeAppName + _T(" ") + pwsafeVersionString;
@@ -274,34 +282,67 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& event )
   pFrm->Update(); // show user that we closed database
   ASSERT(pFrm->GetNumEntries() == 0);
   // safe to open external connection
-  wxString latest;
-  switch (CheckLatestVersion(latest)) {
-    case CANT_CONNECT:
-      m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
+  m_newVerStatus->Clear();
+  *m_newVerStatus << _("Trying to contact server...");
+  m_newVerStatus->Show();
+  stringT latext_xml;
+  wxURL url(_("http://pwsafe.org/latest.xml"));
+  wxInputStream *in_stream = url.GetInputStream();
+  unsigned char buff[BUFSIZ+1];
+  StringX chunk;
+  stringT latest_xml;
+  CUTF8Conv conv;
+  CheckVersion::CheckStatus status = CheckVersion::UP2DATE;
+  do {
+    in_stream->Read(buff, BUFSIZ);
+    size_t nRead = in_stream->LastRead();
+    if (nRead != 0) {
+      buff[nRead] = '\0';
+      // change to widechar representation
+      if (!conv.FromUTF8(buff, nRead, chunk)) {
+        delete in_stream;
+        status = CheckVersion::CANT_READ;
+        break;
+      } else {
+        latest_xml += chunk.c_str();
+      }
+    }
+  } while (!in_stream->Eof());
+  delete in_stream;
+  if (url.GetError() != wxURL_NOERR)
+    status = CheckVersion::CANT_CONNECT;
+
+  stringT latest;
+  if (status == CheckVersion::UP2DATE) {
+    CheckVersion cv(MAJORVERSION, MINORVERSION, 0);
+    status = cv.CheckLatestVersion(latest_xml, latest);
+  }
+  m_newVerStatus->Clear();
+  switch (status) {
+    case CheckVersion::CANT_CONNECT:
+      *m_newVerStatus << _("Couldn't contact server.");
       break;
-    case UP2DATE:
-      m_newVerStatus.LoadString(IDS_UP2DATE);
+    case CheckVersion::UP2DATE:
+      *m_newVerStatus << _("This is the latest release!");
       break;
-    case NEWER_AVAILABLE:
+    case CheckVersion::NEWER_AVAILABLE:
     {
-      CString newer;
-      newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
-                   m_appversion, latest);
-      m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
-      MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
+      wxString newer(_("Current version: "));
+      newer += pwsafeVersionString;
+      newer += _("\r\nLatest version:\t"); newer += latest.c_str();
+      newer += _("\r\n\r\nPlease visit the PasswordSafe website to download the latest version.");
+      const wxString cs_title(_("Newer Version Found!"));
+      *m_newVerStatus << cs_title;
+      wxMessageDialog dlg(this, newer, cs_title, wxOK);
+      dlg.ShowModal();
       break;
     }
-    case CANT_READ:
-      m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
+    case CheckVersion::CANT_READ:
+      *m_newVerStatus << _("Could not read server version data.");
       break;
     default:
       break;
   }
-
-  m_RECExNewVerStatus.SetFont(GetFont());
-  m_RECExNewVerStatus.SetWindowText(m_newVerStatus);
-  m_RECExNewVerStatus.Invalidate();
-  UpdateData(FALSE);
-  GetDlgItem(IDOK)->SetFocus();
+  m_newVerStatus->Show();
 }
 
