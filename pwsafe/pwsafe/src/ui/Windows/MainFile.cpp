@@ -202,6 +202,16 @@ BOOL DboxMain::OpenOnInit(void)
     PostMessage(WM_COMMAND, ID_MENUITEM_VALIDATE);
     m_bValidate = false;
   }
+
+  // Set Dragbar images correctly
+  if (m_core.GetNumEntries() == 0) {
+    m_DDGroup.SetStaticState(false);
+    m_DDTitle.SetStaticState(false);
+    m_DDPassword.SetStaticState(false);
+    m_DDUser.SetStaticState(false);
+    m_DDNotes.SetStaticState(false);
+    m_DDURL.SetStaticState(false);
+  }
   return TRUE;
 }
 
@@ -271,6 +281,14 @@ int DboxMain::New()
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
   }
+
+  // Set Dragbar images correctly
+  m_DDGroup.SetStaticState(false);
+  m_DDTitle.SetStaticState(false);
+  m_DDPassword.SetStaticState(false);
+  m_DDUser.SetStaticState(false);
+  m_DDNotes.SetStaticState(false);
+  m_DDURL.SetStaticState(false);
 
   UpdateMenuAndToolBar(true);
 
