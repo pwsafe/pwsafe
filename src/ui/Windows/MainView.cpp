@@ -254,7 +254,7 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
     if (bDragBarState) {
       // Note: Title & Password are mandatory
       if (entry == NULL) {
-        m_DDGroup.SetStaticState(true);
+        m_DDGroup.SetStaticState(m_core.GetNumEntries() == 0 ? false : true);
         m_DDTitle.SetStaticState(false);
         m_DDPassword.SetStaticState(false);
         m_DDUser.SetStaticState(false);
@@ -3041,7 +3041,7 @@ void DboxMain::SetToolBarPositions()
     // since last shown
     CItemData *entry = GetLastSelected();
     if (entry == NULL) {
-      m_DDGroup.SetStaticState(true);
+      m_DDGroup.SetStaticState(m_core.GetNumEntries() == 0 ? false : true);
       m_DDTitle.SetStaticState(false);
       m_DDPassword.SetStaticState(false);
       m_DDUser.SetStaticState(false);

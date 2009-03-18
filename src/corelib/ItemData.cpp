@@ -642,7 +642,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   tmp = GetRunCommand();
   if (bsExport.test(CItemData::RUNCMD) && !tmp.empty())
-    PWSUtil::WriteXMLField(oss, "run_command", tmp, utf8conv);
+    PWSUtil::WriteXMLField(oss, "runcommand", tmp, utf8conv);
 
   if (NumberUnknownFields() > 0) {
     oss << "\t\t<unknownrecordfields>" << endl;
