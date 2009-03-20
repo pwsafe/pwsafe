@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-03-17 21:06+0100\n"
+"PO-Revision-Date: 2009-03-20 19:06+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -92,10 +92,6 @@ msgstr " 'Autom. Eingabe'"
 msgid " 'Creation Time'"
 msgstr "'Erstellungszeit'"
 
-#. Resource IDs: (354)
-msgid " 'Execute String'"
-msgstr "'String ausführen'"
-
 #. Resource IDs: (347)
 msgid " 'Group'"
 msgstr " 'Gruppe'"
@@ -131,6 +127,10 @@ msgstr "'Passwort'"
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
 msgstr " 'Datensatz Änderungszeit'"
+
+#. Resource IDs: (354)
+msgid " 'Run Command'"
+msgstr "'Kommando ausführen'"
 
 #. Resource IDs: (347)
 msgid " 'Title'"
@@ -416,6 +416,10 @@ msgstr "&Autom. Eingabe:"
 msgid "&Browse to URL"
 msgstr "&Gehe zu URL"
 
+#. Resource IDs: (355)
+msgid "&Browse to URL + Autotype"
+msgstr "&Gehe zu URL + Autom.Eingabe"
+
 #. Resource IDs: (32062)
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&Gehe zu URL\tStrg+L"
@@ -511,18 +515,6 @@ msgstr "Eintrag &duplizieren\tCtrl+D"
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "&Bearbeiten"
-
-#. Resource IDs: (32064)
-msgid "&Execute"
-msgstr "&Ausführen"
-
-#. Resource IDs: (354)
-msgid "&Execute String"
-msgstr "&String ausführen"
-
-#. Resource IDs: (32064)
-msgid "&Execute\tCtrl+E"
-msgstr "&Ausführen\tStrg+E"
 
 #. Resource IDs: (1346)
 msgid "&Export"
@@ -680,9 +672,13 @@ msgstr "&Berichte"
 msgid "&Restore"
 msgstr "&Wiederherstellen"
 
-#. Resource IDs: (32153)
-msgid "&Restore from Backup...\tCtrl+R"
-msgstr "&Wiederherstellen aus Sicherung...\tCtrl+R"
+#. Resource IDs: (354, 32064)
+msgid "&Run Command"
+msgstr "&Kommando ausführen"
+
+#. Resource IDs: (32064)
+msgid "&Run Command\tCtrl+R"
+msgstr "&Kommando ausführen\tCtrl+R"
 
 #. Resource IDs: (1)
 msgid "&Save to Disk"
@@ -1111,6 +1107,14 @@ msgstr "Suchen"
 msgid "Browse to URL"
 msgstr "Gehe zu URL"
 
+#. Resource IDs: (32071)
+msgid "Browse to URL + &Autotype"
+msgstr "Gehe zu URL + &Autom.Eingabe"
+
+#. Resource IDs: (32071)
+msgid "Browse to URL + Autotype\tAlt+L"
+msgstr "Gehe zu URL + Autom.Eingabe\tAlt+L"
+
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters"
 msgstr "Browser Kommandozeilenparameter"
@@ -1442,6 +1446,10 @@ msgstr "Kopiere Email in Zwischenablage"
 msgid "Copy Here"
 msgstr "Hierher kopieren"
 
+#. Resource IDs: (329)
+msgid "Copy URL to Clipboard"
+msgstr "URL in Zwischenablage kopieren"
+
 #. Resource IDs: (32064)
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "URL in Zwischenablage kopieren\tCtrl+Alt+L"
@@ -1602,7 +1610,7 @@ msgstr "Datum:"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
-msgstr "Standardzeichen bei autom. Eingabe:"
+msgstr "Standardsatz bei autom. Eingabe:"
 
 #. Resource IDs: (65535)
 msgid "Default Username"
@@ -1916,8 +1924,8 @@ msgid "Error in a Password History sub-field starting at position %d (within the
 msgstr "Fehler im Unterfeld der Passworthistorie beginnend bei Position %d (im Feld Historie): "
 
 #. Resource IDs: (354)
-msgid "Error parsing Execute String"
-msgstr "Fehler beim Parsen des auszuführenden String"
+msgid "Error parsing Run Command"
+msgstr "Fehler beim Parsen des auszuführenden Kommandos"
 
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
@@ -1934,18 +1942,6 @@ msgstr "Taste Escape schließt die Anwendung"
 #. Resource IDs: (65535)
 msgid "Example:"
 msgstr "Beispiel:"
-
-#. Resource IDs: (1357)
-msgid "Execute"
-msgstr "Ausführen"
-
-#. Resource IDs: (354)
-msgid "Execute String"
-msgstr "String ausführen"
-
-#. Resource IDs: (192)
-msgid "Execute String\t"
-msgstr "String ausführen\t"
 
 #. Resource IDs: (347, 1004)
 msgid "Exit"
@@ -2200,8 +2196,8 @@ msgid "Group/Title\t"
 msgstr "Gruppe/Titel\t"
 
 #. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tExecute String\tNotes"
-msgstr "Gruppe/Titel\tBenutzername\tPasswort\tURL\tAutom. Eingabe\tErstellt am\tPasswort geändert\tLetzter Zugriff\tDatum Passwortablauf\tIntervall Passwortablauf\tEintrag geändert\tPasswortrichtlinie\tHistorie\tString ausführen\tNotizen"
+msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tNotes"
+msgstr "Gruppe/Titel\tBenutzername\tPasswort\tURL\tAutom. Eingabe\tErstellt am\tPasswort geändert\tLetzter Zugriff\tDatum Passwortablauf\tIntervall Passwortablauf\tEintrag geändert\tPasswortrichtlinie\tHistorie\tKommando ausführen\tNotizen"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -2303,21 +2299,17 @@ msgstr "ID:32062:V C +L"
 msgid "ID:32063:V C +T"
 msgstr "ID:32063:V C +T"
 
-#. Accelerator Entry for Menu ID:32064; '&Execute'
-msgid "ID:32064:V C +E"
-msgstr "ID:32064:V C +E"
+#. Accelerator Entry for Menu ID:32064; '&Run Command'
+msgid "ID:32064:V C +R"
+msgstr "ID:32064:V C +R"
 
 #. Accelerator Entry for Menu ID:32065; 'Copy &URL to Clipboard'
 msgid "ID:32065:VAC +L"
 msgstr "ID:32065:VAC +L"
 
-#. Accelerator Entry for Menu ID:32152; 'Make &Backup\tCtrl+B'
-msgid "ID:32152:V C +B"
-msgstr "ID:32152:V C +B"
-
-#. Accelerator Entry for Menu ID:32153; '&Restore from Backup...\tCtrl+R'
-msgid "ID:32153:V C +R"
-msgstr "ID:32153:V C +R"
+#. Accelerator Entry for Menu ID:32071; 'Browse to URL + &Autotype'
+msgid "ID:32071:VA  +L"
+msgstr "ID:32071:VA  +L"
 
 #. Accelerator Entry for Menu ID:32303; ''
 msgid "ID:32303:VAC +S"
@@ -2350,6 +2342,10 @@ msgstr "ID:32503:V C +L"
 #. Accelerator Entry for Menu ID:32504; ''
 msgid "ID:32504:V C +S"
 msgstr "ID:32504:V C +S"
+
+#. Accelerator Entry for Menu ID:5486; ''
+msgid "ID:5486:V C +E"
+msgstr "ID:5486:V C +E"
 
 #. Resource IDs: (344)
 msgid "Icon"
@@ -2629,8 +2625,8 @@ msgid "Mail system DLL is invalid."
 msgstr "Mail system DLL ist ungültig."
 
 #. Resource IDs: (32152)
-msgid "Make &Backup\tCtrl+B"
-msgstr "&Sicherung erstelllen\tCtrl+B"
+msgid "Make Backup"
+msgstr "Sicherung erstelllen"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -3235,12 +3231,12 @@ msgid "Password\t"
 msgstr "Passwort\t"
 
 #. Resource IDs: (32063)
-msgid "Perform Auto &type\tCtrl+T"
-msgstr "Autom. &Eingabe ausführen\tCtrl+T"
+msgid "Perform Auto &Type"
+msgstr "Autom. Eingabe ausführen"
 
 #. Resource IDs: (32063)
-msgid "Perform Auto type"
-msgstr "Autom. Eingabe ausführen"
+msgid "Perform Auto &type\tCtrl+T"
+msgstr "Autom. &Eingabe ausführen\tCtrl+T"
 
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
@@ -3561,6 +3557,10 @@ msgstr "Erforderliche Werte:"
 msgid "Reset Columns"
 msgstr "Spalten rücksetzen"
 
+#. Resource IDs: (32153)
+msgid "Restore from Backup..."
+msgstr "Wiederherstellen aus Sicherung..."
+
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
 msgstr "Beschränke auf eine Teilmenge der Einträge:"
@@ -3581,6 +3581,18 @@ msgstr "Regel"
 #. Resource IDs: (65535)
 msgid "Rule:"
 msgstr "Regel:"
+
+#. Resource IDs: (1357)
+msgid "Run Cmd"
+msgstr "Kommando"
+
+#. Resource IDs: (354)
+msgid "Run Command"
+msgstr "Kommando ausführen"
+
+#. Resource IDs: (192)
+msgid "Run Command\t"
+msgstr "Kommando ausführen\t"
 
 #. Resource IDs: (328)
 msgid "S"
@@ -4131,8 +4143,8 @@ msgid "There are more than one entry that fits your selection. Please be more sp
 msgstr "Es gibt mehrere Einträge die Ihrer Auswahl entsprechen. Seien Sie bitte genauer."
 
 #. Resource IDs: (210)
-msgid "There are unmatched quotes in the execute string"
-msgstr "Die Gänsefüßchen im auszuführenden String stimmen nicht"
+msgid "There are unmatched quotes in the run command"
+msgstr "Die Gänsefüßchen im auszuführenden Kommando stimmen nicht überein"
 
 #. Resource IDs: (344)
 #, c-format
@@ -4345,10 +4357,6 @@ msgstr "Kann die Zwischen-Sicherung nicht anlegen."
 msgid "Unable to display URL"
 msgstr "Kann die URL nicht anzeigen"
 
-#. Resource IDs: (354)
-msgid "Unable to execute string"
-msgstr "Kann String nicht ausführen"
-
 #. Resource IDs: (190)
 msgid ""
 "Unable to get configuration file lock.\n"
@@ -4380,10 +4388,10 @@ msgstr "Kann die email-Unterstützung nicht starten."
 
 #. Resource IDs: (354)
 msgid ""
-"Unable to load the necessary DLL to support Autotype during Launch of a Browser or Execute a string.\n"
+"Unable to load the necessary DLL to support Autotype during Launch of a Browser or Run a command.\n"
 "Autotype for these functions is disabled."
 msgstr ""
-"Kann die notwendige DLL zur Autom.Eingabe beim Starten eines Browsers oder Ausführen eines Strings nicht laden.\n"
+"Kann die notwendige DLL zur Autom.Eingabe beim Starten eines Browsers oder Ausführen eines Kommandos nicht laden.\n"
 "Autom.Eingabe für diese Funktionen ist abgeschaltet."
 
 #. Resource IDs: (3859)
@@ -4398,6 +4406,10 @@ msgstr "Sperrenden nicht ermittelbar?"
 #. Resource IDs: (3865)
 msgid "Unable to read write-only property."
 msgstr "Kann die Nur-Schreib-Eigenschaft nicht lesen."
+
+#. Resource IDs: (354)
+msgid "Unable to run command"
+msgstr "Kann Kommando nicht ausführen"
 
 #. Resource IDs: (191)
 msgid "Unable to save configuration file"
@@ -4775,6 +4787,14 @@ msgstr ""
 "\n"
 "Erweiterte Suchen-Optionen"
 
+#. Resource IDs: (2005)
+msgid ""
+"\n"
+"Browse to URL + Autotype"
+msgstr ""
+"\n"
+"Gehe zu URL + Autom.Eingabe"
+
 #. Resource IDs: (2004)
 msgid ""
 "\n"
@@ -4920,14 +4940,6 @@ msgstr ""
 "\n"
 "Fehler in Passworthistorie für Eintrag: »%s»%s»%s»: "
 
-#. Resource IDs: (2005)
-msgid ""
-"\n"
-"Execute String"
-msgstr ""
-"\n"
-"String ausführen"
-
 #. Resource IDs: (2007)
 msgid ""
 "\n"
@@ -5046,7 +5058,7 @@ msgid ""
 "Perform Autotype"
 msgstr ""
 "\n"
-"Autom. Eingabe starten"
+"Autom. Eingabe ausführen"
 
 #. Resource IDs: (331)
 msgid ""
@@ -5063,6 +5075,14 @@ msgid ""
 msgstr ""
 "\n"
 "Programm wird beendet."
+
+#. Resource IDs: (2005)
+msgid ""
+"\n"
+"Run Command"
+msgstr ""
+"\n"
+"Kommando ausführen"
 
 #. Resource IDs: (2001)
 msgid ""
@@ -5154,14 +5174,6 @@ msgstr ""
 "\n"
 "Unbekannte Felder eines Eintrags werden auch mitkopiert."
 
-#. Resource IDs: (329)
-msgid ""
-"\r\n"
-"Autotype: "
-msgstr ""
-"\r\n"
-"Autom. Eingabe: "
-
 #. Resource IDs: (345)
 msgid ""
 "\r\n"
@@ -5179,14 +5191,6 @@ msgstr ""
 "\r\n"
 "Dieses Feld wird in Ihrem \r\n"
 "Standard-Texteditor bearbeitet."
-
-#. Resource IDs: (329)
-msgid ""
-"\r\n"
-"URL: "
-msgstr ""
-"\r\n"
-"URL: "
 
 #. Resource IDs: (342)
 msgid ""
@@ -5290,7 +5294,7 @@ msgstr "als Standardbenutzername"
 
 #. Resource IDs: (190)
 msgid "autotype:"
-msgstr "autom. Eingabe"
+msgstr "autom. Eingabe:"
 
 #. Resource IDs: (207)
 msgid "before"
@@ -5575,6 +5579,46 @@ msgstr "wird ablaufen"
 msgid "within %d day(s)"
 msgstr "binnen %d Tag(en)"
 
+#~ msgid " 'Execute String'"
+#~ msgstr "'String ausführen'"
+#~ msgid "&Execute"
+#~ msgstr "&Ausführen"
+#~ msgid "&Execute String"
+#~ msgstr "&String ausführen"
+#~ msgid "&Execute\tCtrl+E"
+#~ msgstr "&Ausführen\tStrg+E"
+#~ msgid "Execute"
+#~ msgstr "Ausführen"
+#~ msgid "Execute String"
+#~ msgstr "String ausführen"
+#~ msgid "Execute String\t"
+#~ msgstr "String ausführen\t"
+#~ msgid "ID:32152:V C +B"
+#~ msgstr "ID:32152:V C +B"
+#~ msgid "ID:32153:V C +R"
+#~ msgstr "ID:32153:V C +R"
+#~ msgid "Perform Auto type"
+#~ msgstr "Autom. Eingabe ausführen"
+#~ msgid "Unable to execute string"
+#~ msgstr "Kann String nicht ausführen"
+#~ msgid ""
+#~ "\n"
+#~ "Execute String"
+#~ msgstr ""
+#~ "\n"
+#~ "String ausführen"
+#~ msgid ""
+#~ "\r\n"
+#~ "Autotype: "
+#~ msgstr ""
+#~ "\r\n"
+#~ "Autom. Eingabe: "
+#~ msgid ""
+#~ "\r\n"
+#~ "URL: "
+#~ msgstr ""
+#~ "\r\n"
+#~ "URL: "
 #~ msgid " Open # %d"
 #~ msgstr " Öffnen # %d"
 #~ msgid "#"
