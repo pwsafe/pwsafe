@@ -21,6 +21,8 @@ Changes to Existing Features in 3.16.2
 [] When doing a Browse to URL, the password of the current entry is
 copied to the clipboard. This is action is not performed if the Browse
 is invoked during Edit.
+[] Shortcut 'Ctrl+B' (Manage Menu->Backup) has been removed. Shortcut
+'Ctrl+R' (Manage Menu->Restore) has been re-assigned to the "Run Command".
 
 New Features for 3.16.2
 ========================
@@ -28,7 +30,7 @@ New Features for 3.16.2
 ability to override this and showing the notes by right-click context
 menu.
 [] Add new field 'Run Command' to allow commands etc. to be executed
-via Ctrl+E or menu.  See help for details.
+via Ctrl+R or Edit menu.  See help for details.
 [] Support AutoType with 'Browse to URL' and new 'Run Command' functions.
 See help for details.
 [] Implement "Find Up" via clicking Find toolbar button with Shift key down or
