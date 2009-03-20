@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>String ausf&uuml;hren</title>
+  <title>Kommando ausf&uuml;hren</title>
 <!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control --><!-- VdG 3.17 DE 17/03/2009 -->
   <script language="javascript" src="html/popups.js">
   </script>
@@ -10,14 +10,14 @@
 <body>
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
-<h2>String ausf&uuml;hren</h2>
+<h2>Kommando ausf&uuml;hren</h2>
 <p>Das Feld <i>Ausf&uuml;hren</i> eines Eintrages enth&auml;lt ein Kommando. Dieses Kommando wird ausgef&uuml;hrt, wenn der Men&uuml;punkt <i>Ausf&uuml;hren</i> ausgew&auml;hlt wird. Das Kommando kann alles das enthalten was nach Start-&gt;Ausf&uuml;hren am Computer auch eingegeben werden kann.</p>
 <p>Zus&auml;tzlich kann <b>Password Safe</b> Parameter zum Kommando &uuml;bergeben, wie da sind: Benutzername, Passwort, usw. So k&ouml;nnen einigermaßen komplizierte Aktionen programmiert werden, wie z.B. Aufrufen eines Programms &uuml;ber Fernzugriff mit &Uuml;bergabe von Benutzername und Passwort.</p>
 <p>In der Regel werden 'Variablen' ersetzt durch die dazugeh&ouml;rigen Werte, bevor das Kommando dem Computer &uuml;bergeben wird. Ein Dollarzeichen ('$') kennzeichnet die Variablen.</p>
 <ul>
   <li>Variablen sind spezifiziert mit '$name' und <i>sie sind case sensitive</i>. Namen von Variablen beginnen immer mit einem alphabetischen Zeichen, gefolgt von alphanumerischen Zeichen. Der Variablenname endet beim n&auml;chsten nicht-alphanumerischen Zeichen, oder am Ende des Kommandostrings.</li>
   <ul>
-    <li>Wenn direkt an einem Variablenname ein alphanumerisches Zeichen anschließt, sollte der Variablenname in geschweifte Klammer gesetzt werden. Z.B. '${varname}string'.</li>
+    <li>Wenn direkt an einem Variablenname ein alphanumerisches Zeichen anschließt, sollte der Variablenname in geschweifte Klammer gesetzt werden. Z.B. '${varname}blabla'.</li>
     <li>Um das Zeichen '$' in einem normalen Text nicht als Variablenindikator zu verwenden, muss ein umgekehrter Schr&auml;gstrich ('\') vorangestellt werden, z.B.  '\$text' wird als Text '$text' und nicht als Variable 'text' interpretiert.</li>
     <li>Um vor dem Zeichen '$' ein umgekehrter Schr&auml;gstrich einzusetzen, setzt man ein doppelter ('\\') ein, z.B. aus '\\$name' wird '\$name', und '$name' wird als Variable interpretiert. Ein umgekehrter Schr&auml;gstrich ('\'), der nicht zum Zeichen '$' verwendet wird, kann als einzelnes Zeichen dargestellt werden.</li>
     <li>Eine Variable die von einem numerischen Wert in eckigen Klammern gefolgt wird, wird als Indexwert bezeichnet. Der Indexwert 'n' kann einem '+' oder '-' vorangestellt sein. Es kann z.B. [-2] oder [2] oder [+2] sein. <b>Password Safe</b> behandelt ein Indexwert von Null als das komplette Feld.</li>
@@ -116,11 +116,11 @@
         </tr>
  <tr>
           <td align="center">1<a name="n1"></a></td>
-          <td>Verzeichnisse (appdir oder dbdir) haben kein '\' am Ende. Achten sie darauf wenn sie dies im auszuf&uuml;hrenden String brauchen.</td>
+          <td>Verzeichnisse (appdir oder dbdir) haben kein '\' am Ende. Achten sie darauf wenn sie dies im auszuf&uuml;hrenden Kommando brauchen.</td>
         </tr>
  <tr>
           <td align="center">2<a name="n2"></a></td>
-          <td>Der Inhalt einer Variablen (sowohl Verzeichnisse als auch ganze Pfade) kann Leerzeichen enthalten. Unter Umst&auml;nden muss dieser Inhalt in G&auml;nsef&uuml;&szlig;chen eingeschlossen werden um den auszuf&uuml;hrenden String auch richtig auszuf&uuml;hren.</td>
+          <td>Der Inhalt einer Variablen (sowohl Verzeichnisse als auch ganze Pfade) kann Leerzeichen enthalten. Unter Umst&auml;nden muss dieser Inhalt in G&auml;nsef&uuml;&szlig;chen eingeschlossen werden um das auszuf&uuml;hrende Kommando auch richtig auszuf&uuml;hren.</td>
         </tr>
  <tr>
           <td align="center">3<a name="n3"></a></td>
@@ -132,7 +132,7 @@
         </tr>
  <tr>
           <td align="center">5<a name="n5"></a></td>
-          <td>Wenn die Variable f&uuml;r Autom.Eingabe vorhanden ist, wird die Autom.Eingabe ausgef&uuml;hrt im Moment wo das Windows Fenster aktiv ist. Die Variable und der Wert (soweit vorhanden) werden entfernt aus dem auszuführenden String. Diese Variable kann beliebig im auszuf&uuml;hrenden String stehen, weil sie nur definiert was <b>Password Safe</b> tut nach der Ausf&uuml;hrung des Kommandostrings. Im Unterschied zu den anderen Variablen, kann es dadurch den aktuellen Wert im Eintrag &uuml;bergehen. Das Format ist ($autotype k&ouml;nnte $a ersetzen in den folgenden Beispiele):<br>
+          <td>Wenn die Variable f&uuml;r Autom.Eingabe vorhanden ist, wird die Autom.Eingabe ausgef&uuml;hrt im Moment wo das Windows Fenster aktiv ist. Die Variable und der Wert (soweit vorhanden) werden entfernt aus dem auszuführenden Kommando. Diese Variable kann beliebig im auszuf&uuml;hrenden Kommando stehen, weil es nur definiert was <b>Password Safe</b> tut nach der Ausf&uuml;hrung des Kommandos. Im Unterschied zu den anderen Variablen, kann es dadurch den aktuellen Wert im Eintrag &uuml;bergehen. Das Format ist ($autotype k&ouml;nnte $a ersetzen in den folgenden Beispiele):<br>
           <table border="0" cellpadding="10" cellspacing="0">
    <colgroup><col width="20%"><col width="80%"></colgroup>
    <tbody>
@@ -158,13 +158,13 @@
         </tr>
       </tbody>
     </table>
-    <p><b>Note:</b> Stellen sie sicher das der String gegebenenfalls in G&auml;nsef&uuml;&szlig;chen eingeschlossen ist. Z.B. wenn das Datenbankverzeichnis Leerzeichen enth&auml;lt, ist f&uuml;r den Zugriff auf eine Textdatei mit dem Namen der aktuellen Datenbank folgendes notwendig (inkl. Hochkomma):<br>
+    <p><b>Note:</b> Stellen sie sicher das das Kommando gegebenenfalls in G&auml;nsef&uuml;&szlig;chen eingeschlossen ist. Z.B. wenn das Datenbankverzeichnis Leerzeichen enth&auml;lt, ist f&uuml;r den Zugriff auf eine Textdatei mit dem Namen der aktuellen Datenbank folgendes notwendig (inkl. Hochkomma):<br>
 '$dbdir\\$dbname.txt'<br>
 Bemerken sie dass der umgekehrter Schr&auml;gstrich ('\\') zweimal eingesetzt ist, um '$dbname' als Variable zu erkennen.</p>
-    <p>Für Windows werden Umgebungsvariable (definiert als %Variablenname%) normal ersetzt. Z.B., '%windir%\notepad.exe' wird (abh&auml;ngig von der Installation) in 'C:\Windows\notepad.exe' umgewandelt. Die aktuellen Werte der Umgebungsvariablen k&ouml;nnen ermittelt werden durch Ausf&uuml;hren von 'cmd.exe' und Absetzen des Befehles 'set' ohne Parameter. S&auml;mtliche unbekannte Umgebungsvariablen bleiben unver&auml;ndert im auszuf&uuml;hrenden String, z.B. %xyz%\notepad.exe bleibt %xyz%\notepad.exe wenn die Variable 'xyz' nicht besteht. Note: Windows Umgebungsvariablen sind <b>nicht</b> case sensitive.</p>
+    <p>Für Windows werden Umgebungsvariable (definiert als %Variablenname%) normal ersetzt. Z.B., '%windir%\notepad.exe' wird (abh&auml;ngig von der Installation) in 'C:\Windows\notepad.exe' umgewandelt. Die aktuellen Werte der Umgebungsvariablen k&ouml;nnen ermittelt werden durch Ausf&uuml;hren von 'cmd.exe' und Absetzen des Befehles 'set' ohne Parameter. S&auml;mtliche unbekannte Umgebungsvariablen bleiben unver&auml;ndert im auszuf&uuml;hrenden Kommando, z.B. %xyz%\notepad.exe bleibt %xyz%\notepad.exe wenn die Variable 'xyz' nicht besteht. Note: Windows Umgebungsvariablen sind <b>nicht</b> case sensitive.</p>
     <br>
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-    <param name="Keyword" value="String ausf&uuml;hren">
+    <param name="Keyword" value="Kommando ausf&uuml;hren">
 </object>
   </ul>
 </ul>
