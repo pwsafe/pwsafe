@@ -608,7 +608,7 @@
 #define IDC_GETSUBSET                   1360
 #define IDC_SUBSETRESULTS               1361
 #define IDC_STATICSUBSETWARNING         1362
-#define IDC_DEFNOTESWRAP                1362
+#define IDC_DEFNOTESWRAP                1363
 
 // Next default values for new objects
 // 
@@ -616,7 +616,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        452
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1363
+#define _APS_NEXT_CONTROL_VALUE         1364
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif
