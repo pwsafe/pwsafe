@@ -501,3 +501,7 @@
 #define IDS_SEARCHTOP                   5663
 #define IDS_SEARCHBOTTOM                5665
 #define IDS_TRAYBROWSEPLUS              5666
+#define IDS_LAUNCH                      5667
+#define IDS_LAUNCHPLUS                  5668
+#define IDS_CLICKTOGOPLUS               5669
+

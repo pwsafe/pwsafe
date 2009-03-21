@@ -72,7 +72,8 @@ CEditDlg::CEditDlg(CItemData *ci, const StringX currentDB, CWnd* pParent)
   m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
   m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
   m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL),
-  m_bWordWrap(FALSE), m_bShowNotes(FALSE), m_currentDB(currentDB)
+  m_bWordWrap(FALSE), m_bShowNotes(FALSE), m_currentDB(currentDB),
+  m_bLaunchPlus(false)
 {
   ASSERT(ci != NULL);
   m_pDbx = static_cast<DboxMain *>(pParent);
@@ -636,6 +637,8 @@ BOOL CEditDlg::OnInitDialog()
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYEXPAND);
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_RUNCMD), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_CLICKTOGOPLUS);
+    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_LAUNCH), cs_ToolTip);
 
     EnableToolTips();
     m_ToolTipCtrl->Activate(TRUE);
@@ -1230,6 +1233,21 @@ BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
     return TRUE;
   }
 
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_CONTROL &&
+      !m_bLaunchPlus && GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
+    CString cs_text(MAKEINTRESOURCE(IDS_LAUNCHPLUS));
+    GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
+    m_bLaunchPlus = true;
+    return TRUE;
+  }
+
+  if (pMsg->message == WM_KEYUP && pMsg->wParam == VK_CONTROL &&
+      m_bLaunchPlus && GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
+    CString cs_text(MAKEINTRESOURCE(IDS_LAUNCH));
+    GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
+    m_bLaunchPlus = false;
+    return TRUE;
+  }
   return CPWDialog::PreTranslateMessage(pMsg);
 }
 
@@ -1241,8 +1259,19 @@ void CEditDlg::OnBnClickedLaunch()
                                         m_group, m_title, m_username, 
                                         m_realpassword, m_realnotes);
   int iaction = CItemData::URL;
-  m_pDbx->LaunchBrowser(sx_url.c_str(), sx_autotype, false);
+  const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
+  m_pDbx->LaunchBrowser(sx_url.c_str(), sx_autotype, bDoAutoType);
   m_pDbx->UpdateLastClipboardAction(iaction);
+  if (bDoAutoType) {
+    // Reset button
+    BYTE KeyState[256];
+    ASSERT(GetKeyboardState(&KeyState[0]));
+    KeyState[VK_CONTROL] = 0x80;
+    ASSERT(SetKeyboardState(&KeyState[0]));
+    CString cs_text(MAKEINTRESOURCE(IDS_LAUNCH));
+    GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
+  }
+  m_bLaunchPlus = false;
 }
 
 void CEditDlg::OnEnChangeUrl()

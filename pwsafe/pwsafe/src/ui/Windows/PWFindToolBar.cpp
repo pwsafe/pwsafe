@@ -409,6 +409,7 @@ void CPWFindToolBar::ClearFind()
   m_subgroup_object = m_subgroup_function = 0;
   m_last_subgroup_object = m_last_subgroup_function = 0;
   m_lastshown = size_t(-1);
+  m_indices.clear();
 }
 
 void CPWFindToolBar::Find()
