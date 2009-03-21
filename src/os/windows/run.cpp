@@ -126,9 +126,6 @@ bool PWSRun::runcmd(const StringX &run_command, const StringX &sxAutotype)
   StringX::size_type end_delim;
   bool bfound(true);
 
-  if (!isValid())
-    return false;
-
   TrimLeft(full_string, _T(" "));
   if (full_string.c_str()[0] == _T('"')) {
     end_delim = full_string.find(_T('"'), 1);
@@ -192,9 +189,6 @@ bool PWSRun::runcmd(const StringX &run_command, const StringX &sxAutotype)
 bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
                       const StringX &sxAutotype)
 {
-  if (!isValid())
-    return false;
-
   SHELLEXECUTEINFO si;
   ZeroMemory(&si, sizeof(si));
   si.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -208,7 +202,7 @@ bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters,
 
   BOOL bAT_init(FALSE);
 
-  if (!sxAutotype.empty()) {
+  if (!sxAutotype.empty() && isValid()) {
     if (impl->pInit != NULL && impl->pUnInit != NULL &&
         impl->hCBWnd != NULL) {
       // OK - try and make it tell us!  Won't if another instance of

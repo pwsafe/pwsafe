@@ -139,6 +139,7 @@ private:
   BOOL m_OverridePolicy;
   BOOL m_bWordWrap;
   BOOL m_bShowNotes;
+  bool m_bLaunchPlus;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

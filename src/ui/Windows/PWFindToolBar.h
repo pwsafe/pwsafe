@@ -29,6 +29,7 @@ public:
 
   void ShowFindToolBar(bool bShow);
   bool IsVisible() {return m_bVisible;}
+  bool EntriesFound() {return !m_indices.empty();}
   void GetSearchText(CString &csFindString)
   {m_findedit.GetWindowText(csFindString);}
   void Find();

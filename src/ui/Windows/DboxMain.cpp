@@ -100,6 +100,9 @@ CString DboxMain::CS_COPYNOTESFLD;
 CString DboxMain::CS_AUTOTYPE;
 CString DboxMain::CS_RUNCOMMAND;
 CString DboxMain::CS_BROWSEURLPLUS;
+CString DboxMain::CS_SHOWFINDTOOLBAR;
+CString DboxMain::CS_SHOWFINDNEXT;
+CString DboxMain::CS_SHOWFINDPREVIOUS;
 
 void DboxMain::SetLocalStrings()
 {
@@ -210,9 +213,10 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam)
     }
   }
 
-  if (bFoundProcess)
+  if (bFoundProcess) {
+    TRACE(_T("WaitForInputIdle - Process ID:%d (Handle:0x%08x)\n"), wParam, lParam);
     WaitForInputIdle((HANDLE)lParam, INFINITE);
-  else
+  } else
     Sleep(2000);
 
   // Do Autotype!  Note: All fields were substituted before getting here
@@ -1686,7 +1690,7 @@ void DboxMain::SetUpMenuStrings()
   miinfo.fMask = MIIM_ID | MIIM_STRING;
   miinfo.dwTypeData = tcMenuString;  
 
-  std::bitset<12> bsMenuItems; // easy way to check that we have them all
+  std::bitset<15> bsMenuItems; // easy way to check that we have them all 0-14
   for (int i = 0; i < count; i++) {
     ZeroMemory(tcMenuString, _MAX_PATH * sizeof(TCHAR));
     miinfo.cch = _MAX_PATH;
@@ -1740,6 +1744,18 @@ void DboxMain::SetUpMenuStrings()
         case ID_MENUITEM_BROWSEURLPLUS:       // bitset position 11
           CS_BROWSEURLPLUS = tcMenuString;
           bsMenuItems.set(11);
+          break;
+        case ID_MENUITEM_FIND:                // bitset position 12
+          CS_SHOWFINDTOOLBAR = tcMenuString;
+          bsMenuItems.set(12);
+          break;
+        case ID_TOOLBUTTON_FIND:              // bitset position 13
+          CS_SHOWFINDNEXT = tcMenuString;
+          bsMenuItems.set(13);
+          break;
+        case ID_TOOLBUTTON_FINDUP:            // bitset position 14
+          CS_SHOWFINDPREVIOUS = tcMenuString;
+          bsMenuItems.set(14);
           break;
         default:
           break;
@@ -1796,6 +1812,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
   if (uiMenuID == ID_EDITMENU) {
     // Delete all entries and rebuild depending on group/entry selected
     // and, if entry, if fields are non-empty
+    pPopupMenu->RemoveMenu(ID_MENUITEM_FIND, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_TOOLBUTTON_FIND, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_TOOLBUTTON_FINDUP, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_EDITMENU_SEPARATOR3, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_MENUITEM_COPYPASSWORD, MF_BYCOMMAND);
@@ -1808,6 +1827,19 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
     pPopupMenu->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+
+    if (!m_FindToolBar.IsVisible()) {
+      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, MF_BYCOMMAND | MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_FIND, CS_SHOWFINDTOOLBAR);
+      //pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FIND, CS_SHOWFINDTOOLBAR);
+    } else if (m_FindToolBar.EntriesFound()) {
+      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, MF_BYCOMMAND | MF_ENABLED | MF_STRING,
+                             ID_TOOLBUTTON_FIND, CS_SHOWFINDNEXT);
+      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, MF_BYCOMMAND | MF_ENABLED | MF_STRING,
+                             ID_TOOLBUTTON_FINDUP, CS_SHOWFINDPREVIOUS);
+      //pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_TOOLBUTTON_FIND, CS_SHOWFINDNEXT);
+      //pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_TOOLBUTTON_FINDUP, CS_SHOWFINDPREVIOUS);
+    }
 
     if (bGroupSelected) {
       // Group selected
