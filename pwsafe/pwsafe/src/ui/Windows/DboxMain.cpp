@@ -270,7 +270,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
   ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
   ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
-  ON_COMMAND(ID_MENUITEM_FIND, OnFind)
   ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
@@ -283,6 +282,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_DRAGBAR, OnShowHideDragbar)
   ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
   ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
+  ON_COMMAND(ID_MENUITEM_SHOWFINDTOOLBAR, OnFind)
   ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
   ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
   ON_COMMAND(ID_MENUITEM_CHANGETREEFONT, OnChangeTreeFont)
@@ -366,8 +366,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_TOOLBUTTON_VIEWREPORTS, OnViewReports)
 
   ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolBar)
-  ON_COMMAND(ID_TOOLBUTTON_FIND, OnToolBarFind)
-  ON_COMMAND(ID_TOOLBUTTON_FINDUP, OnToolBarFindUp)
+  ON_COMMAND(ID_MENUITEM_FIND, OnToolBarFind)
+  ON_COMMAND(ID_MENUITEM_FINDUP, OnToolBarFindUp)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE, OnToolBarFindCase)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE_I, OnToolBarFindCase)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE_S, OnToolBarFindCase)
@@ -446,6 +446,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_DELETE, true, false, false, false},
   {ID_MENUITEM_RENAME, true, false, false, false},
   {ID_MENUITEM_FIND, true, true, false, false},
+  {ID_MENUITEM_FINDUP, true, true, false, false},
   {ID_MENUITEM_DUPLICATEENTRY, true, false, false, false},
   {ID_MENUITEM_ADDGROUP, true, false, true, false},
   {ID_MENUITEM_COPYPASSWORD, true, true, false, false},
@@ -467,6 +468,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_SHOWHIDE_DRAGBAR, true, true, true, true},
   {ID_MENUITEM_NEW_TOOLBAR, true, true, true, true},
   {ID_MENUITEM_OLD_TOOLBAR, true, true, true, true},
+  {ID_MENUITEM_SHOWFINDTOOLBAR, true, true, false, false},
   {ID_MENUITEM_EXPANDALL, true, true, true, false},
   {ID_MENUITEM_COLLAPSEALL, true, true, true, false},
   {ID_MENUITEM_CHANGETREEFONT, true, true, true, false},
@@ -514,8 +516,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Find Toolbar
   {ID_TOOLBUTTON_CLOSEFIND, true, true, true, false},
   {ID_TOOLBUTTON_FINDEDITCTRL, true, true, false, false},
-  {ID_TOOLBUTTON_FIND, true, true, false, false},
-  {ID_TOOLBUTTON_FINDUP, true, true, false, false},
   {ID_TOOLBUTTON_FINDCASE, true, true, false, false},
   {ID_TOOLBUTTON_FINDCASE_I, true, true, false, false},
   {ID_TOOLBUTTON_FINDCASE_S, true, true, false, false},
@@ -1674,14 +1674,15 @@ void DboxMain::SetUpMenuStrings()
   // format, Popup menus can have IDs
   CMenu *pMainMenu;
   CMenu *pEditMenu;
+  CMenu *pViewMenu;
   pMainMenu = new CMenu;
   pMainMenu->LoadMenu(IDR_MAINMENU);
+
   int epos = app.FindMenuItem(pMainMenu, ID_EDITMENU);
   ASSERT(epos != -1);
 
   pEditMenu = pMainMenu->GetSubMenu(epos);
-
-  const int count = pEditMenu->GetMenuItemCount();
+  const int ecount = pEditMenu->GetMenuItemCount();
 
   TCHAR tcMenuString[_MAX_PATH] = {0};
   MENUITEMINFO miinfo;
@@ -1690,8 +1691,8 @@ void DboxMain::SetUpMenuStrings()
   miinfo.fMask = MIIM_ID | MIIM_STRING;
   miinfo.dwTypeData = tcMenuString;  
 
-  std::bitset<15> bsMenuItems; // easy way to check that we have them all 0-14
-  for (int i = 0; i < count; i++) {
+  std::bitset<14> bsEMenuItems; // easy way to check that we have them all 0-13
+  for (int i = 0; i < ecount; i++) {
     ZeroMemory(tcMenuString, _MAX_PATH * sizeof(TCHAR));
     miinfo.cch = _MAX_PATH;
     pEditMenu->GetMenuItemInfo(i, &miinfo, TRUE);
@@ -1699,72 +1700,95 @@ void DboxMain::SetUpMenuStrings()
       switch(miinfo.wID) {
         case ID_MENUITEM_DELETE:              // bitset position 0
           CS_DELETEENTRY = tcMenuString;
-          bsMenuItems.set(0);
+          bsEMenuItems.set(0);
           break;
         case ID_MENUITEM_RENAME:              // bitset position 1
           CS_RENAMEENTRY = tcMenuString;
-          bsMenuItems.set(1);
+          bsEMenuItems.set(1);
           break;
         case ID_MENUITEM_BROWSEURL:           // bitset position 2
           CS_BROWSEURL = tcMenuString;
-          bsMenuItems.set(2);
+          bsEMenuItems.set(2);
           break;
         case ID_MENUITEM_COPYURL:             // bitset position 3
           CS_COPYURL = tcMenuString;
-          bsMenuItems.set(3);
+          bsEMenuItems.set(3);
           break;
         case ID_MENUITEM_GOTOBASEENTRY:       // bitset position 4
           CS_GOTOBASEENTRY = tcMenuString;
-          bsMenuItems.set(4);
+          bsEMenuItems.set(4);
           break;
         case ID_MENUITEM_DUPLICATEENTRY:      // bitset position 5
           CS_DUPLICATEENTRY = tcMenuString;
-          bsMenuItems.set(5);
+          bsEMenuItems.set(5);
           break;
         case ID_MENUITEM_COPYPASSWORD:        // bitset position 6
           CS_COPYPASSWORD = tcMenuString;
-          bsMenuItems.set(6);
+          bsEMenuItems.set(6);
           break;
         case ID_MENUITEM_COPYUSERNAME:        // bitset position 7
           CS_COPYUSERNAME = tcMenuString;
-          bsMenuItems.set(7);
+          bsEMenuItems.set(7);
           break;
         case ID_MENUITEM_COPYNOTESFLD:        // bitset position 8
           CS_COPYNOTESFLD = tcMenuString;
-          bsMenuItems.set(8);
+          bsEMenuItems.set(8);
           break;
         case ID_MENUITEM_AUTOTYPE:            // bitset position 9
           CS_AUTOTYPE = tcMenuString;
-          bsMenuItems.set(9);
+          bsEMenuItems.set(9);
           break;
         case ID_MENUITEM_RUNCOMMAND:          // bitset position 10
           CS_RUNCOMMAND = tcMenuString;
-          bsMenuItems.set(10);
+          bsEMenuItems.set(10);
           break;
         case ID_MENUITEM_BROWSEURLPLUS:       // bitset position 11
           CS_BROWSEURLPLUS = tcMenuString;
-          bsMenuItems.set(11);
+          bsEMenuItems.set(11);
           break;
         case ID_MENUITEM_FIND:                // bitset position 12
-          CS_SHOWFINDTOOLBAR = tcMenuString;
-          bsMenuItems.set(12);
-          break;
-        case ID_TOOLBUTTON_FIND:              // bitset position 13
           CS_SHOWFINDNEXT = tcMenuString;
-          bsMenuItems.set(13);
+          bsEMenuItems.set(12);
           break;
-        case ID_TOOLBUTTON_FINDUP:            // bitset position 14
+        case ID_MENUITEM_FINDUP:              // bitset position 13
           CS_SHOWFINDPREVIOUS = tcMenuString;
-          bsMenuItems.set(14);
+          bsEMenuItems.set(13);
           break;
         default:
           break;
       }
     }
     // If we have them all - leave now
-    if (bsMenuItems.count() == bsMenuItems.size())
+    if (bsEMenuItems.count() == bsEMenuItems.size())
       break;
   }
+
+  int vpos = app.FindMenuItem(pMainMenu, ID_VIEWMENU);
+  ASSERT(vpos != -1);
+
+  pViewMenu = pMainMenu->GetSubMenu(vpos);
+  const int vcount = pViewMenu->GetMenuItemCount();
+
+  std::bitset<1> bsVMenuItems; // easy way to check that we have them all 0
+  for (int i = 0; i < vcount; i++) {
+    ZeroMemory(tcMenuString, _MAX_PATH * sizeof(TCHAR));
+    miinfo.cch = _MAX_PATH;
+    pViewMenu->GetMenuItemInfo(i, &miinfo, TRUE);
+    if (miinfo.wID >= 1) {
+      switch(miinfo.wID) {
+        case ID_MENUITEM_SHOWFINDTOOLBAR:     // bitset position 0
+          CS_SHOWFINDTOOLBAR = tcMenuString;
+          bsVMenuItems.set(0);
+          break;
+        default:
+          break;
+      }
+    }
+    // If we have them all - leave now
+    if (bsVMenuItems.count() == bsVMenuItems.size())
+      break;
+  }
+
   pMainMenu->DestroyMenu();
   delete pMainMenu;
 }
@@ -1813,8 +1837,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
     // Delete all entries and rebuild depending on group/entry selected
     // and, if entry, if fields are non-empty
     pPopupMenu->RemoveMenu(ID_MENUITEM_FIND, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_TOOLBUTTON_FIND, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_TOOLBUTTON_FINDUP, MF_BYCOMMAND);
+    pPopupMenu->RemoveMenu(ID_MENUITEM_FINDUP, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_EDITMENU_SEPARATOR3, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_MENUITEM_COPYPASSWORD, MF_BYCOMMAND);
@@ -1828,17 +1851,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
     pPopupMenu->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
     pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
 
-    if (!m_FindToolBar.IsVisible()) {
+    if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
       pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_FIND, CS_SHOWFINDTOOLBAR);
-      //pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_FIND, CS_SHOWFINDTOOLBAR);
-    } else if (m_FindToolBar.EntriesFound()) {
+                             ID_MENUITEM_FIND, CS_SHOWFINDNEXT);
       pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_TOOLBUTTON_FIND, CS_SHOWFINDNEXT);
-      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_TOOLBUTTON_FINDUP, CS_SHOWFINDPREVIOUS);
-      //pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_TOOLBUTTON_FIND, CS_SHOWFINDNEXT);
-      //pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_TOOLBUTTON_FINDUP, CS_SHOWFINDPREVIOUS);
+                             ID_MENUITEM_FINDUP, CS_SHOWFINDPREVIOUS);
     }
 
     if (bGroupSelected) {
@@ -1920,6 +1937,14 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
 
   // If View menu selected (contains 'Flattened &List' menu item)
   if (uiMenuID == ID_VIEWMENU) {
+    // Delete Show Find Toolbar menu item
+    pPopupMenu->RemoveMenu(ID_MENUITEM_SHOWFINDTOOLBAR, MF_BYCOMMAND);
+    if (!m_FindToolBar.IsVisible()) {
+      // Put it back if not visible
+      pPopupMenu->InsertMenu(ID_VIEWMENU_SEPARATOR1, 
+                             MF_BYCOMMAND | MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_SHOWFINDTOOLBAR, CS_SHOWFINDTOOLBAR);
+    }
     pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
                                    bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW,
                                    MF_BYCOMMAND);
