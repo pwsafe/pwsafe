@@ -1195,7 +1195,7 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
   UpdateStatusBar();
 }
 
-void DboxMain::OnFind()
+void DboxMain::OnShowFindToolbar()
 {
   // Show Find Toolbar
   SetFindToolBar(true);
