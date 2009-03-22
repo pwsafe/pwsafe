@@ -529,7 +529,6 @@ protected:
   afx_msg void OnDelete();
   afx_msg void OnEdit();
   afx_msg void OnRename();
-  afx_msg void OnFind();
   afx_msg void OnDuplicateEntry();
   afx_msg void OnOptions();
   afx_msg void OnValidate();
@@ -542,6 +541,7 @@ protected:
   afx_msg void OnShowHideDragbar();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();
+  afx_msg void OnShowFindToolbar();
   afx_msg void OnExpandAll();
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeTreeFont();
