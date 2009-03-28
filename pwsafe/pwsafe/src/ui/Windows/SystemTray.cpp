@@ -518,6 +518,11 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         const StringX cEntry = m_menulist[i].string;
         CItemData *pci = m_menulist[i].pci;
 
+        if (pci == NULL) {
+          TRACE(_T("CSystemTray::OnTrayNotification: null m_menulist[%d].pci"), i);
+          continue;
+        }
+
         pNewRecentEntryMenu[i] = new CMenu;
         pNewRecentEntryMenu[i]->CreatePopupMenu();
 
