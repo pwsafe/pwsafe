@@ -309,7 +309,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
         }
         case TCHAR('d'):
           // Ignore delay - treat it as just a string!
-          sxtmp += TCHAR("\\d");
+          sxtmp += _T("\\d");
           break; // case 'd'
         case TCHAR('b'): // backspace!
           sxtmp += TCHAR('\b');
