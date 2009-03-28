@@ -40,6 +40,36 @@ static UINT ParseRunCommand(const StringX &sxInputString,
 static UINT ProcessIndex(const StringX &sxIndex, int &var_index,
                          StringX::size_type &st_column);
 
+static void ParseNotes(StringX &sxNotes,
+                       std::vector<StringX> &vsxnotes_lines)
+{
+  if (!sxNotes.empty()) {
+    // Use \n and \r to tokenise this line
+    StringX::size_type st_start(0), st_end(0);
+    const StringX sxdelim = _T("\r\n");
+    StringX sxline;
+    StringX::size_type st_index;
+    while (st_end != StringX::npos) {
+      st_end = sxNotes.find(sxdelim, st_start);
+      sxline = (sxNotes.substr(st_start, 
+                   (st_end == StringX::npos) ? StringX::npos : st_end - st_start));
+      st_index = 0;
+      // Remove all tabs - \t
+      for (;;) {
+        st_index = sxline.find(_T("\\t"), st_index);
+        if (st_index == StringX::npos)
+          break;
+        sxline.replace(st_index, 2, _T(""));
+        st_index += 1;
+      }
+      vsxnotes_lines.push_back(sxline);
+      st_start = ((st_end > (StringX::npos - sxdelim.size()))
+                          ? StringX::npos : st_end + sxdelim.size());
+    }
+  }
+}
+                       
+
 //-----------------------------------------------------------------
 // Externally visible functions
 //-----------------------------------------------------------------
@@ -51,8 +81,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
 {
   std::vector<st_RunCommandTokens> v_rctokens;
   std::vector<st_RunCommandTokens>::iterator rc_iter;
-  std::vector<StringX> vsxnotes_lines;
-  StringX sxnotes, sxretval(_T(""));
+  StringX sxretval(_T(""));
   stringT spath, sdrive, sdir, sfname, sextn;
   stringT sdbdir;
 
@@ -70,32 +99,6 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   spath = sxCurrentDB.c_str();
   pws_os::splitpath(spath, sdrive, sdir, sfname, sextn);
   sdbdir = pws_os::makepath(sdrive, sdir, _T(""), _T(""));
-
-  sxnotes = ci->GetNotes();
-  if (!ci->IsNotesEmpty()) {
-    // Use \n and \r to tokenise this line
-    StringX::size_type st_start(0), st_end(0);
-    const StringX sxdelim = _T("\r\n");
-    StringX sxline;
-    StringX::size_type st_index;
-    while (st_end != StringX::npos) {
-      st_end = sxnotes.find(sxdelim, st_start);
-      sxline = (sxnotes.substr(st_start, 
-                   (st_end == StringX::npos) ? StringX::npos : st_end - st_start));
-      st_index = 0;
-      // Remove all tabs - \t
-      for (;;) {
-        st_index = sxline.find(_T("\\t"), st_index);
-        if (st_index == StringX::npos)
-          break;
-        sxline.replace(st_index, 2, _T(""));
-        st_index += 1;
-      }
-      vsxnotes_lines.push_back(sxline);
-      st_start = ((st_end > (StringX::npos - sxdelim.size()))
-                          ? StringX::npos : st_end + sxdelim.size());
-    }
-  }
 
   for (rc_iter = v_rctokens.begin(); rc_iter < v_rctokens.end(); rc_iter++) {
     st_RunCommandTokens &st_rctoken = *rc_iter;
@@ -148,14 +151,19 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += ci->GetURL();
     } else
     if (st_rctoken.sxname == _T("n") || st_rctoken.sxname == _T("notes")) {
+      StringX sxnotes = ci->GetNotes();
+
       if (st_rctoken.index == 0) {
         sxretval += sxnotes;
       } else {
+        std::vector<StringX> vsxnotes_lines;
+        ParseNotes(sxnotes, vsxnotes_lines);
         // If line there - use it; otherwise ignore it
         if (st_rctoken.index > 0 && st_rctoken.index <= (int)vsxnotes_lines.size()) {
           sxretval += vsxnotes_lines[st_rctoken.index - 1];
         } else
-        if (st_rctoken.index < 0 && abs(st_rctoken.index) <= (int)vsxnotes_lines.size()) {
+        if (st_rctoken.index < 0 &&
+            abs(st_rctoken.index) <= (int)vsxnotes_lines.size()) {
           sxretval += vsxnotes_lines[vsxnotes_lines.size() + st_rctoken.index];
         }
       }
