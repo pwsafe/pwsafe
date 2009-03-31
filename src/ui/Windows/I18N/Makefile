@@ -17,10 +17,10 @@
 #Update the following for each language we support
 
 POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po \
-	pos/pwsafe_pl.po pos/pwsafe_zh.po
+	pos/pwsafe_pl.po pos/pwsafe_zh.po pos/pwsafe_ru.po
 
 DLL_LIST = pwsafeSV_SE.dll pwsafeES_ES.dll pwsafeDE_DE.dll \
-	pwsafePL_PL.dll pwsafeZH_CN.dll
+	pwsafePL_PL.dll pwsafeZH_CN.dll pwsafeRU_RU.dll
 
 DEST_DIR = ../../../bin/release
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
@@ -68,6 +68,12 @@ $(DEST_DIR)/pwsafeZH_CN.dll : pos/pwsafe_zh.po
 		$(RM) foo.dll)
 	$(CHMOD) 755 $@
 
+$(DEST_DIR)/pwsafeRU_RU.dll : pos/pwsafe_ru.po
+	(cd $(DEST_DIR); \
+		$(RESTEXT) apply $(notdir $(BASE_DLL)) foo.dll ../../ui/Windows/I18N/$^; \
+		$(RESPWSL) apply foo.dll 0x0419; \
+		$(RM) foo.dll)
+	$(CHMOD) 755 $@
 
 # No need to change anything below this line
 export RESTEXT = $(CURDIR)/tools/bin/restext/release/ResText.exe

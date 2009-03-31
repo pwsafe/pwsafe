@@ -102,14 +102,6 @@ msgstr "  Hittat felaktig längd på lösenord."
 msgid "  Invalid status value: %d"
 msgstr "  Felaktigt statusvärde: %d"
 
-#. Resource IDs: (32105)
-msgid " &Classic Toolbar"
-msgstr ""
-
-#. Resource IDs: (32104)
-msgid " &New Toolbar"
-msgstr ""
-
 #. Resource IDs: (336)
 msgid " 'Autotype'"
 msgstr " 'Autoskriv'"
@@ -154,6 +146,10 @@ msgstr " 'Lösenord'"
 msgid " 'Record Modification Time'"
 msgstr " 'Registrera ändringstidpunkt'"
 
+#. Resource IDs: (354)
+msgid " 'Run Command'"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr ""
@@ -181,11 +177,6 @@ msgstr " Drag # %d"
 msgid " Import # %d"
 msgstr " Importera # %d"
 
-#. Resource IDs: (205)
-#, c-format
-msgid " Open # %d"
-msgstr " Öppna # %d"
-
 #. Resource IDs: (328)
 #, c-format
 msgid " [Process ID=%s]"
@@ -193,10 +184,6 @@ msgstr " [Process ID=%s]"
 
 #. Resource IDs: (354)
 msgid "! &Edit externally"
-msgstr ""
-
-#. Resource IDs: (350)
-msgid "#"
 msgstr ""
 
 #. Resource IDs: (1194)
@@ -306,11 +293,6 @@ msgstr "%d av %d matchar."
 msgid "%s \n\nCan't open file. Please choose another."
 msgstr "%s \n\nKan inte öppna filen. Välj en annan."
 
-#. Resource IDs: (346)
-#, c-format
-msgid "%s copied %s"
-msgstr ""
-
 #. Resource IDs: (341)
 #, c-format
 msgid "%s file being imported: %s"
@@ -386,12 +368,20 @@ msgstr "Auto&skrift:"
 msgid "&Browse to URL"
 msgstr "&Gå till URL"
 
+#. Resource IDs: (355)
+msgid "&Browse to URL + Autotype"
+msgstr ""
+
 #. Resource IDs: (32062)
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&Gå till URL\tCtrl+G"
 
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
+msgstr ""
+
+#. Resource IDs: (32105)
+msgid "&Classic Toolbar"
 msgstr ""
 
 #. Resource IDs: (1118)
@@ -496,10 +486,6 @@ msgstr ""
 msgid "&Find"
 msgstr ""
 
-#. Resource IDs: (32055)
-msgid "&Find Entry...\tCtrl+F"
-msgstr ""
-
 #. Resource IDs: (2)
 msgid "&Finish"
 msgstr ""
@@ -559,6 +545,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "&New "
 msgstr "&Ny"
+
+#. Resource IDs: (32104)
+msgid "&New Toolbar"
+msgstr ""
 
 #. Resource IDs: (32003)
 msgid "&New...\tCtrl+N"
@@ -632,8 +622,12 @@ msgstr ""
 msgid "&Restore"
 msgstr ""
 
-#. Resource IDs: (32153)
-msgid "&Restore from Backup...\tCtrl+R"
+#. Resource IDs: (354, 32065)
+msgid "&Run Command"
+msgstr ""
+
+#. Resource IDs: (32065)
+msgid "&Run Command\tCtrl+R"
 msgstr ""
 
 #. Resource IDs: (1)
@@ -699,8 +693,8 @@ msgid "'Clear Clipboard on Minimize' and the double click action of 'Copy Passwo
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "(Also used to replace periods in the Title field.)"
-msgstr "(Också som ersättning för punkter i titelfältet.)"
+msgid "(Also used to replace periods in Title field)"
+msgstr ""
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
@@ -996,16 +990,11 @@ msgid "Apply"
 msgstr "Verkställ"
 
 #. Resource IDs: (341)
-#, c-format
-msgid "Are you sure you want to delete the selected %s?"
-msgstr "Är du säker på att du vill radera den valda %s?"
-
-#. Resource IDs: (350)
-msgid "Arg1"
+msgid "Are you sure you want to delete the selected entry?"
 msgstr ""
 
-#. Resource IDs: (350)
-msgid "Arg2"
+#. Resource IDs: (355)
+msgid "Are you sure you want to delete the selected group?"
 msgstr ""
 
 #. Resource IDs: (330)
@@ -1032,6 +1021,10 @@ msgstr ""
 #. Resource IDs: (325, 340, 65535)
 msgid "Autotype"
 msgstr "Autoskrivning"
+
+#. Resource IDs: (355)
+msgid "Autotype copied "
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Available Fields:"
@@ -1066,6 +1059,14 @@ msgstr "Bläddra"
 #. Resource IDs: (325)
 msgid "Browse to URL"
 msgstr "Gå till URL"
+
+#. Resource IDs: (32072)
+msgid "Browse to URL + &Autotype"
+msgstr ""
+
+#. Resource IDs: (32072)
+msgid "Browse to URL + Autotype\tAlt+L"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters"
@@ -1162,6 +1163,10 @@ msgstr "Ändra Safe-nyckel"
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
 msgstr "Ändra det maximala antalet sparade lösenord till poster, som nu sparar lösenordshistorik upp till det nya antalet, om det nu sparas färre.\n\nPoster med fler redan sparade lösenord än det nya maximala antalet kvarstår oförändrade."
 
+#. Resource IDs: (210)
+msgid "Characters present between end of index ']' and '}'"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Check"
 msgstr "Kontrollera"
@@ -1194,6 +1199,14 @@ msgstr ""
 
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
+msgstr ""
+
+#. Resource IDs: (354)
+msgid "Click to expand and copy to clipboard, Ctrl+Click to copy to unexpanded"
+msgstr ""
+
+#. Resource IDs: (355)
+msgid "Click to go to link, Ctrl+Click to go and Autotype"
 msgstr ""
 
 #. Resource IDs: (352)
@@ -1359,6 +1372,10 @@ msgstr ""
 
 #. Resource IDs: (32270)
 msgid "Copy Here"
+msgstr ""
+
+#. Resource IDs: (329)
+msgid "Copy URL to Clipboard"
 msgstr ""
 
 #. Resource IDs: (32064)
@@ -1774,10 +1791,19 @@ msgstr "Fel (%08X): rad %d tecken %d %s"
 msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr "Fel - kan inte fastställa konfigurationsinställningar!\n\nInga programinställningar kommer att sparas.\n\nDatabasrelaterade inställningar sparas i den öppna databasen när den stängs, om den inte bara är läsbar eller låst av annan användare."
 
+#. Resource IDs: (354)
+#, c-format
+msgid "Error at column %d:\n\n%s"
+msgstr ""
+
 #. Resource IDs: (190)
 #, c-format
 msgid "Error in a Password History sub-field starting at position %d (within the History field): "
 msgstr "Fel i lösenordshistoriks underfält som börjar i positionen %d (inom historikfältet): "
+
+#. Resource IDs: (354)
+msgid "Error parsing Run Command"
+msgstr ""
 
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
@@ -1864,8 +1890,8 @@ msgid "Field"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Field Separator:"
-msgstr "Fältavgränsare:"
+msgid "Field Separator"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Field active"
@@ -1956,6 +1982,18 @@ msgstr ""
 msgid "Find"
 msgstr ""
 
+#. Resource IDs: (32055)
+msgid "Find Next\tF3"
+msgstr ""
+
+#. Resource IDs: (32056)
+msgid "Find Previous\tShift+F3"
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "First character of variable name must be alphabetic"
+msgstr ""
+
 #. Resource IDs: (32102)
 msgid "Flattened &List"
 msgstr ""
@@ -2005,6 +2043,14 @@ msgstr "Sökvägen är en mapp eller så är filen bara läsbar"
 msgid "Go"
 msgstr ""
 
+#. Resource IDs: (355)
+msgid "Go "
+msgstr ""
+
+#. Resource IDs: (355)
+msgid "Go+"
+msgstr ""
+
 #. Resource IDs: (327)
 msgid "Group"
 msgstr "Grupp"
@@ -2012,6 +2058,10 @@ msgstr "Grupp"
 #. Resource IDs: (339)
 msgid "Group [Mandatory Field]"
 msgstr "Grupp [Obligatorisk]"
+
+#. Resource IDs: (355)
+msgid "Group copied "
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "Group/Title"
@@ -2022,7 +2072,7 @@ msgid "Group/Title\t"
 msgstr "Grupp/Titel\t"
 
 #. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
+msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tNotes"
 msgstr ""
 
 #. Resource IDs: (1350, 65535)
@@ -2097,56 +2147,56 @@ msgstr ""
 msgid "ID:32051:V C +A"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32055; '&Find Entry...\tCtrl+F'
-msgid "ID:32055:V C +F"
+#. Accelerator Entry for Menu ID:32057; '&Duplicate Entry'
+msgid "ID:32057:V C +D"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32056; '&Duplicate Entry'
-msgid "ID:32056:V C +D"
+#. Accelerator Entry for Menu ID:32059; '&Copy Password to Clipboard'
+msgid "ID:32059:V C +C"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32058; '&Copy Password to Clipboard'
-msgid "ID:32058:V C +C"
+#. Accelerator Entry for Menu ID:32060; 'Copy &Username to Clipboard'
+msgid "ID:32060:V C +U"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32059; 'Copy &Username to Clipboard'
-msgid "ID:32059:V C +U"
+#. Accelerator Entry for Menu ID:32061; 'Copy &Notes to Clipboard'
+msgid "ID:32061:V C +G"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32060; 'Copy &Notes to Clipboard'
-msgid "ID:32060:V C +G"
+#. Accelerator Entry for Menu ID:32063; '&Browse to URL'
+msgid "ID:32063:V C +L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32062; '&Browse to URL'
-msgid "ID:32062:V C +L"
+#. Accelerator Entry for Menu ID:32064; 'Perform Auto &Type'
+msgid "ID:32064:V C +T"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32063; 'Perform Auto type'
-msgid "ID:32063:V C +T"
+#. Accelerator Entry for Menu ID:32065; '&Run Command'
+msgid "ID:32065:V C +R"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32064; 'Copy &URL to Clipboard'
-msgid "ID:32064:VAC +L"
+#. Accelerator Entry for Menu ID:32066; 'Copy &URL to Clipboard'
+msgid "ID:32066:VAC +L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32152; 'Make &Backup\tCtrl+B'
-msgid "ID:32152:V C +B"
+#. Accelerator Entry for Menu ID:32072; 'Browse to URL + &Autotype'
+msgid "ID:32072:VA  +L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32153; '&Restore from Backup...\tCtrl+R'
-msgid "ID:32153:V C +R"
+#. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
+msgid "ID:32108:V C +F"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32303; ''
-msgid "ID:32303:VAC +S"
+#. Accelerator Entry for Menu ID:32302; ''
+msgid "ID:32302:VAC +S"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32306; ''
-msgid "ID:32306:VAC +A"
+#. Accelerator Entry for Menu ID:32305; ''
+msgid "ID:32305:VAC +A"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32308; ''
-msgid "ID:32308:VAC +C"
+#. Accelerator Entry for Menu ID:32307; ''
+msgid "ID:32307:VAC +C"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32500; ''
@@ -2167,6 +2217,10 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32504; ''
 msgid "ID:32504:V C +S"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:5486; ''
+msgid "ID:5486:V C +E"
 msgstr ""
 
 #. Resource IDs: (344)
@@ -2268,17 +2322,29 @@ msgstr "Ökande tal [001-999]"
 msgid "Index is bigger than password length (%d)."
 msgstr ""
 
+#. Resource IDs: (210)
+msgid "Index is invalid or missing"
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Index must be greater than or equal to 1."
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "Index not numeric"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Initial Tree View"
 msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Initial system tray icon"
 msgstr "Startikon i meddelandefältet"
 
-#. Resource IDs: (65535)
-msgid "Initial tree view"
-msgstr "Primär trädvy"
+#. Resource IDs: (210)
+msgid "Input string is empty"
+msgstr ""
 
 #. Resource IDs: (3857)
 msgid "Insufficient memory to perform operation."
@@ -2435,7 +2501,7 @@ msgid "Mail system DLL is invalid."
 msgstr "e-postsystemets DLL är ogiltig."
 
 #. Resource IDs: (32152)
-msgid "Make &Backup\tCtrl+B"
+msgid "Make Backup"
 msgstr ""
 
 #. Resource IDs: (158)
@@ -2543,6 +2609,18 @@ msgstr ""
 
 #. Resource IDs: (209)
 msgid "Missing date/time element."
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "Missing ending curly bracket for variable name"
+msgstr ""
+
+#. Resource IDs: (211)
+msgid "Missing ending round bracket for Autotype value"
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "Missing ending square bracket for index value"
 msgstr ""
 
 #. Resource IDs: (209)
@@ -2703,6 +2781,10 @@ msgstr ""
 msgid "Notes"
 msgstr "Notat"
 
+#. Resource IDs: (355)
+msgid "Notes copied "
+msgstr ""
+
 #. Resource IDs: (348)
 msgid "Number is set to the maximum value.  'Greater than' is not allowed."
 msgstr ""
@@ -2807,6 +2889,10 @@ msgstr "Ursprunglig databas:"
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
 msgstr "Övrigt:"
+
+#. Resource IDs: (1207)
+msgid "Other: "
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "Out of memory."
@@ -2986,12 +3072,12 @@ msgstr "Lösenordet borde bestå av blandade tecken med åtminståne en siffra e
 msgid "Password\t"
 msgstr "Lösenord\t"
 
-#. Resource IDs: (32063)
-msgid "Perform Auto &type\tCtrl+T"
+#. Resource IDs: (32064)
+msgid "Perform Auto &Type"
 msgstr ""
 
 #. Resource IDs: (32063)
-msgid "Perform Auto type"
+msgid "Perform Auto &type\tCtrl+T"
 msgstr ""
 
 #. Resource IDs: (332)
@@ -3195,8 +3281,8 @@ msgstr ""
 msgid "Properties"
 msgstr "Egenskaper"
 
-#. Resource IDs: (346)
-msgid "Pswd"
+#. Resource IDs: (355)
+msgid "Pswd copied "
 msgstr ""
 
 #. Resource IDs: (339)
@@ -3204,8 +3290,8 @@ msgid "Purchase unlimited &U3 version..."
 msgstr "Köp den öppna &U3 versionen..."
 
 #. Resource IDs: (1235)
-msgid "Put groups first in display tree"
-msgstr "Samla grupper först i trädvyn"
+msgid "Put Groups first in Tree View"
+msgstr ""
 
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
@@ -3309,6 +3395,10 @@ msgstr ""
 msgid "Reset Columns"
 msgstr ""
 
+#. Resource IDs: (32153)
+msgid "Restore from Backup..."
+msgstr ""
+
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
 msgstr "Begränsa till en undergrupp poster:"
@@ -3328,6 +3418,22 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Rule:"
+msgstr ""
+
+#. Resource IDs: (1357)
+msgid "Run Cmd"
+msgstr ""
+
+#. Resource IDs: (354)
+msgid "Run Command"
+msgstr ""
+
+#. Resource IDs: (192)
+msgid "Run Command\t"
+msgstr ""
+
+#. Resource IDs: (355)
+msgid "RunCmd copied "
 msgstr ""
 
 #. Resource IDs: (328)
@@ -3414,8 +3520,9 @@ msgid "Search"
 msgstr ""
 
 #. Resource IDs: (330)
-msgid "Search has wrapped, continuing from the top."
-msgstr "Sökningen omstartad och fortsätter från början."
+#, c-format
+msgid "Search has wrapped, continuing from the %s."
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Second date must be later than first"
@@ -3549,6 +3656,10 @@ msgstr ""
 msgid "Shortcut"
 msgstr ""
 
+#. Resource IDs: (32108)
+msgid "Show &Find Toolbar\tCtrl+F"
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Show Dragbar"
 msgstr ""
@@ -3557,8 +3668,28 @@ msgstr ""
 msgid "Show Notes"
 msgstr ""
 
+#. Resource IDs: (1296)
+msgid "Show Notes as ToolTips in Tree && List views"
+msgstr ""
+
+#. Resource IDs: (1190)
+msgid "Show Notes in Edit"
+msgstr ""
+
+#. Resource IDs: (1028)
+msgid "Show Password in Add && Edit"
+msgstr ""
+
+#. Resource IDs: (1031)
+msgid "Show Password in Tree View"
+msgstr ""
+
 #. Resource IDs: (346)
 msgid "Show Toolbar"
+msgstr ""
+
+#. Resource IDs: (1254)
+msgid "Show Username in Tree View"
 msgstr ""
 
 #. Resource IDs: (159)
@@ -3570,28 +3701,8 @@ msgid "Show entries with identical compared fields (Note: Unknown fields were no
 msgstr "Visa poster med identiska jämförda fält (Notera: Okända fält jämfördes inte.)"
 
 #. Resource IDs: (1246)
-msgid "Show grid lines in display list"
-msgstr "Visa radlinjer i tabeller"
-
-#. Resource IDs: (1296)
-msgid "Show notes as ToolTips in display tree && list views"
+msgid "Show grid lines in List View"
 msgstr ""
-
-#. Resource IDs: (1190)
-msgid "Show notes in Edit"
-msgstr ""
-
-#. Resource IDs: (1028)
-msgid "Show password in Add && Edit"
-msgstr ""
-
-#. Resource IDs: (1031)
-msgid "Show password in display tree"
-msgstr "Visa lösenordet i trädvyn"
-
-#. Resource IDs: (1254)
-msgid "Show username in display tree"
-msgstr "Visa användare i trädvyn"
 
 #. Resource IDs: (334)
 #, c-format
@@ -3805,6 +3916,10 @@ msgstr "De två posterna matchar inte."
 msgid "There are more than one entry that fits your selection. Please be more specific."
 msgstr ""
 
+#. Resource IDs: (210)
+msgid "There are unmatched quotes in the run command"
+msgstr ""
+
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -3911,6 +4026,10 @@ msgstr "Titel"
 msgid "Title [Mandatory Field]"
 msgstr "Titel [Obligatorisk]"
 
+#. Resource IDs: (355)
+msgid "Title copied "
+msgstr ""
+
 #. Resource IDs: (192)
 msgid "Title\t"
 msgstr "Titel\t"
@@ -3960,6 +4079,10 @@ msgstr "U&RL:"
 msgid "URL"
 msgstr "URL"
 
+#. Resource IDs: (355)
+msgid "URL copied "
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "URL\t"
 msgstr "URL\t"
@@ -3993,6 +4116,10 @@ msgstr "Kan inte starta konfigurationsfilen"
 msgid "Unable to load mail system support."
 msgstr "Kan inte starta systemstöd för e-post."
 
+#. Resource IDs: (354)
+msgid "Unable to load the necessary DLL to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
+msgstr ""
+
 #. Resource IDs: (3859)
 #, c-format
 msgid "Unable to read from %1, it is opened by someone else."
@@ -4006,6 +4133,10 @@ msgstr "Kan du inte identifiera vem som låser filen?"
 #. Resource IDs: (3865)
 msgid "Unable to read write-only property."
 msgstr "Kan inte läsa från W-O enhet."
+
+#. Resource IDs: (354)
+msgid "Unable to run command"
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "Unable to save configuration file"
@@ -4118,10 +4249,6 @@ msgstr "Använd symboler (t. ex., &, %, $, etc.)"
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
 msgstr "Använd det program som anges här för att bläddra när en posts URL-fält börjar med [alt], t. ex., '[alt]http:foo.com'"
 
-#. Resource IDs: (346)
-msgid "User"
-msgstr ""
-
 #. Resource IDs: (327)
 msgid "User Name"
 msgstr "Användare"
@@ -4129,6 +4256,10 @@ msgstr "Användare"
 #. Resource IDs: (339)
 msgid "User [Mandatory Field]"
 msgstr "Användare [Obligatorisk]"
+
+#. Resource IDs: (355)
+msgid "User copied "
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Username\t"
@@ -4149,6 +4280,14 @@ msgstr ""
 
 #. Resource IDs: (1322)
 msgid "Value:"
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "Variable name is empty"
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "Variable name must be alphanumeric"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -4300,6 +4439,10 @@ msgstr "\nLägg till ny post"
 msgid "\nAdvanced Find Options"
 msgstr "\nAvancerade sökval"
 
+#. Resource IDs: (2005)
+msgid "\nBrowse to URL + Autotype"
+msgstr ""
+
 #. Resource IDs: (2004)
 msgid "\nBrowse to URL/Send Email"
 msgstr "\nGå till URL/Skicka e-post"
@@ -4360,6 +4503,10 @@ msgstr "\nRadera en post"
 msgid "\nDisplay subset of Password"
 msgstr ""
 
+#. Resource IDs: (2004)
+msgid "\nDuplicate Entry"
+msgstr ""
+
 #. Resource IDs: (2007)
 msgid "\nEdit Filters"
 msgstr ""
@@ -4385,9 +4532,13 @@ msgstr "\nExportera som text"
 msgid "\nExport to XML"
 msgstr "\nExportera till XML"
 
-#. Resource IDs: (2004, 2019)
-msgid "\nFind"
-msgstr "\nSök"
+#. Resource IDs: (2004)
+msgid "\nFind Next"
+msgstr ""
+
+#. Resource IDs: (2004)
+msgid "\nFind Previous"
+msgstr ""
 
 #. Resource IDs: (2005)
 msgid "\nGo to Base entry"
@@ -4441,6 +4592,10 @@ msgstr "\nFörsök med en annan"
 msgid "\nProgram will terminate."
 msgstr "\nProgrammet avslutas."
 
+#. Resource IDs: (2005)
+msgid "\nRun Command"
+msgstr ""
+
 #. Resource IDs: (2001)
 msgid "\nSave Database"
 msgstr "\nSpara databasen"
@@ -4451,6 +4606,10 @@ msgstr "\nSpara databasen som..."
 
 #. Resource IDs: (2008)
 msgid "\nSet/Clear Filters"
+msgstr ""
+
+#. Resource IDs: (2007)
+msgid "\nShow Find Toolbar"
 msgstr ""
 
 #. Resource IDs: (192)
@@ -4473,13 +4632,13 @@ msgstr "\n\nKan inte öppna databasen. Den finns antagligen inte.\nEn ny databas
 msgid "\n\nDatabases identical!"
 msgstr "\n\nDatabaserna är identiska!"
 
+#. Resource IDs: (354)
+msgid "\n\nIgnore this and save anyway - Yes/no?"
+msgstr ""
+
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nOkända fält kommer också att kopieras med posten."
-
-#. Resource IDs: (329)
-msgid "\r\nAutotype: "
-msgstr "\r\nAutoskrift:"
 
 #. Resource IDs: (345)
 msgid "\r\nEmail: "
@@ -4488,10 +4647,6 @@ msgstr ""
 #. Resource IDs: (341)
 msgid "\r\nThis field is being edited in your\r\ndefault text editor."
 msgstr "\r\nDetta fält ändras i din\r\nförvalda texteditor."
-
-#. Resource IDs: (329)
-msgid "\r\nURL: "
-msgstr "\r\nURL: "
 
 #. Resource IDs: (342)
 msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
@@ -4600,6 +4755,10 @@ msgstr ""
 # never see this.
 msgid "big endian"
 msgstr "big endian"
+
+#. Resource IDs: (355)
+msgid "bottom"
+msgstr ""
 
 #. Resource IDs: (344)
 msgid "conflict"
@@ -4827,6 +4986,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "the following text:"
 msgstr "följande text:"
+
+#. Resource IDs: (354)
+msgid "top"
+msgstr ""
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."

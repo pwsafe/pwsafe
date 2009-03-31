@@ -1155,28 +1155,28 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
       m_lastclipboardaction = _T("");
       break;
     case CItemData::GROUP:
-      imsg = IDS_GROUP;
+      imsg = IDS_GROUPCOPIED;
       break;
     case CItemData::TITLE:
-      imsg = IDS_TITLE;
+      imsg = IDS_TITLECOPIED;
       break;
     case CItemData::USER:
-      imsg = IDS_USER;
+      imsg = IDS_USERCOPIED;
       break;
     case CItemData::PASSWORD:
-      imsg = IDS_PSWD;
+      imsg = IDS_PSWDCOPIED;
       break;
     case CItemData::NOTES:
-      imsg = IDS_NOTES;
+      imsg = IDS_NOTESCOPIED;
       break;
     case CItemData::URL:
-      imsg = IDS_URL;
+      imsg = IDS_URLCOPIED;
       break;
     case CItemData::AUTOTYPE:
-      imsg = IDS_AUTOTYPE;
+      imsg = IDS_AUTOTYPECOPIED;
       break;
     case CItemData::RUNCMD:
-      imsg = IDS_RUNCOMMAND;
+      imsg = IDS_RUNCMDCOPIED;
       break;
     default:
       ASSERT(0);
@@ -1189,8 +1189,8 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
                            szTimeFormat, 80 /* sizeof(szTimeFormat) / sizeof(TCHAR) */));
     GetTimeFormat(LOCALE_USER_DEFAULT, 0, NULL, szTimeFormat,
                   szTimeString, 80 /* sizeof(szTimeString) / sizeof(TCHAR) */);
-    m_lastclipboardaction.Format(IDS_CLIPBOARDACTION, CString(MAKEINTRESOURCE(imsg)), 
-                                 szTimeString);
+    m_lastclipboardaction.LoadString(imsg);
+    m_lastclipboardaction += szTimeString;
   }
   UpdateStatusBar();
 }
