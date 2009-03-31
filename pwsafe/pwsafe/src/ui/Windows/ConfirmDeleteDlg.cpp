@@ -63,7 +63,7 @@ BOOL CConfirmDeleteDlg::OnInitDialog(void)
     GetDlgItem(IDC_DELETECHILDREN)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_CLEARCHECK)->EnableWindow(TRUE);
   }
-  cs_text.Format(IDS_DELITEM, m_numchildren > 0 ? _T("group") : _T("entry"));
+  cs_text.LoadString((m_numchildren > 0) ? IDS_DELGRP : IDS_DELENT);
   GetDlgItem(IDC_DELITEM)->SetWindowText(cs_text);
   return TRUE;
 }

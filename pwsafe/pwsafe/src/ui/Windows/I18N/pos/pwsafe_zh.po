@@ -76,14 +76,6 @@ msgstr "  建立的密码长度无效！"
 msgid "  Invalid status value: %d"
 msgstr "  无效状态值: %d！"
 
-#. Resource IDs: (32105)
-msgid " &Classic Toolbar"
-msgstr "传统工具栏(&C)"
-
-#. Resource IDs: (32104)
-msgid " &New Toolbar"
-msgstr "新式工具栏(&N)"
-
 #. Resource IDs: (336)
 msgid " 'Autotype'"
 msgstr " '自动输入'"
@@ -128,6 +120,10 @@ msgstr " '密码'"
 msgid " 'Record Modification Time'"
 msgstr " '记录修改时间'"
 
+#. Resource IDs: (354)
+msgid " 'Run Command'"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr " '标题'"
@@ -155,11 +151,6 @@ msgstr " 拖曳 # %d"
 msgid " Import # %d"
 msgstr " 输入 # %d"
 
-#. Resource IDs: (205)
-#, c-format
-msgid " Open # %d"
-msgstr " 打开 # %d"
-
 #. Resource IDs: (328)
 #, c-format
 msgid " [Process ID=%s]"
@@ -168,10 +159,6 @@ msgstr " [进程 ID=%s]"
 #. Resource IDs: (354)
 msgid "! &Edit externally"
 msgstr ""
-
-#. Resource IDs: (350)
-msgid "#"
-msgstr "#"
 
 #. Resource IDs: (1194)
 msgid "#entries"
@@ -280,11 +267,6 @@ msgstr "%d 中 %d 相匹配！"
 msgid "%s \n\nCan't open file. Please choose another."
 msgstr "%s \n\n不能打开文件，请选定其它！"
 
-#. Resource IDs: (346)
-#, c-format
-msgid "%s copied %s"
-msgstr "%s 复制 %s"
-
 #. Resource IDs: (341)
 #, c-format
 msgid "%s file being imported: %s"
@@ -359,6 +341,10 @@ msgstr "自动输入(&A):"
 msgid "&Browse to URL"
 msgstr "浏览网址(&B)"
 
+#. Resource IDs: (355)
+msgid "&Browse to URL + Autotype"
+msgstr ""
+
 #. Resource IDs: (32062)
 msgid "&Browse to URL\tCtrl+L"
 msgstr "浏览网址(&B)\tCtrl+L"
@@ -366,6 +352,10 @@ msgstr "浏览网址(&B)\tCtrl+L"
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
 msgstr "更改保险箱密码(&C)..."
+
+#. Resource IDs: (32105)
+msgid "&Classic Toolbar"
+msgstr ""
 
 #. Resource IDs: (1118)
 msgid "&Clear"
@@ -467,10 +457,6 @@ msgstr "筛选(&F)"
 msgid "&Find"
 msgstr "查找(&F)"
 
-#. Resource IDs: (32055)
-msgid "&Find Entry...\tCtrl+F"
-msgstr "查找项目(&F)...\tCtrl+F"
-
 #. Resource IDs: (2)
 msgid "&Finish"
 msgstr "完成(&F)"
@@ -530,6 +516,10 @@ msgstr "新建(&N)"
 #. Resource IDs: (65535)
 msgid "&New "
 msgstr "新建(&N)"
+
+#. Resource IDs: (32104)
+msgid "&New Toolbar"
+msgstr ""
 
 #. Resource IDs: (32003)
 msgid "&New...\tCtrl+N"
@@ -603,9 +593,13 @@ msgstr "报告(&R)"
 msgid "&Restore"
 msgstr "恢复(&R)"
 
-#. Resource IDs: (32153)
-msgid "&Restore from Backup...\tCtrl+R"
-msgstr "恢复备份(&R)...\tCtrl+R"
+#. Resource IDs: (354, 32065)
+msgid "&Run Command"
+msgstr ""
+
+#. Resource IDs: (32065)
+msgid "&Run Command\tCtrl+R"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "&Save to Disk"
@@ -668,8 +662,8 @@ msgid "'Clear Clipboard on Minimize' and the double click action of 'Copy Passwo
 msgstr "“最小化时清空剪贴板”和双击“复制密码和最小化”冲突；双击操作已经被更改为“复制密码”！"
 
 #. Resource IDs: (65535)
-msgid "(Also used to replace periods in the Title field.)"
-msgstr "(同时循环置换于标题字段)"
+msgid "(Also used to replace periods in Title field)"
+msgstr ""
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
@@ -965,17 +959,12 @@ msgid "Apply"
 msgstr "应用"
 
 #. Resource IDs: (341)
-#, c-format
-msgid "Are you sure you want to delete the selected %s?"
-msgstr "你是否确认需要删除选定的 %s？"
+msgid "Are you sure you want to delete the selected entry?"
+msgstr ""
 
-#. Resource IDs: (350)
-msgid "Arg1"
-msgstr "Arg1"
-
-#. Resource IDs: (350)
-msgid "Arg2"
-msgstr "Arg2"
+#. Resource IDs: (355)
+msgid "Are you sure you want to delete the selected group?"
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "As the double quotation character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
@@ -1001,6 +990,10 @@ msgstr "自动加载"
 #. Resource IDs: (325, 340, 65535)
 msgid "Autotype"
 msgstr "自动输入"
+
+#. Resource IDs: (355)
+msgid "Autotype copied "
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Available Fields:"
@@ -1033,6 +1026,14 @@ msgstr "浏览"
 #. Resource IDs: (325)
 msgid "Browse to URL"
 msgstr "浏览网址"
+
+#. Resource IDs: (32072)
+msgid "Browse to URL + &Autotype"
+msgstr ""
+
+#. Resource IDs: (32072)
+msgid "Browse to URL + Autotype\tAlt+L"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters"
@@ -1128,6 +1129,10 @@ msgstr "更改保险箱密码"
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
 msgstr "如果当前存储数量较少，更改当前项目保存历史密码数量到新的最大值；对于已经保存大于该新建值的项目历史密码将保留不更改！"
 
+#. Resource IDs: (210)
+msgid "Characters present between end of index ']' and '}'"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Check"
 msgstr "校验"
@@ -1159,6 +1164,14 @@ msgstr "单击复制到剪贴板"
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
 msgstr "单击 启用/禁止 该行"
+
+#. Resource IDs: (354)
+msgid "Click to expand and copy to clipboard, Ctrl+Click to copy to unexpanded"
+msgstr ""
+
+#. Resource IDs: (355)
+msgid "Click to go to link, Ctrl+Click to go and Autotype"
+msgstr ""
 
 #. Resource IDs: (352)
 msgid "Click to insert a new row below"
@@ -1324,6 +1337,10 @@ msgstr "复制邮箱到剪贴板"
 #. Resource IDs: (32270)
 msgid "Copy Here"
 msgstr "复制这里"
+
+#. Resource IDs: (329)
+msgid "Copy URL to Clipboard"
+msgstr ""
 
 #. Resource IDs: (32064)
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
@@ -1738,10 +1755,19 @@ msgstr "错误 (%08X): 行 %d 字符 %d %s"
 msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr "错误 - 不能确定所设配置，应用程序配置将不被保存；\n如果它不是只读状态或被其它用户锁定，在打开的数据库被关闭时数据库相关设置将被存储！"
 
+#. Resource IDs: (354)
+#, c-format
+msgid "Error at column %d:\n\n%s"
+msgstr ""
+
 #. Resource IDs: (190)
 #, c-format
 msgid "Error in a Password History sub-field starting at position %d (within the History field): "
 msgstr "在一个历史密码子字段起始位置错误 %d (在历史密码字段里): "
+
+#. Resource IDs: (354)
+msgid "Error parsing Run Command"
+msgstr ""
 
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
@@ -1828,8 +1854,8 @@ msgid "Field"
 msgstr "字段"
 
 #. Resource IDs: (65535)
-msgid "Field Separator:"
-msgstr "字段分隔符:"
+msgid "Field Separator"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Field active"
@@ -1920,6 +1946,18 @@ msgstr "数据库筛选范围将被保持为“未知字段”！"
 msgid "Find"
 msgstr "查找"
 
+#. Resource IDs: (32055)
+msgid "Find Next\tF3"
+msgstr ""
+
+#. Resource IDs: (32056)
+msgid "Find Previous\tShift+F3"
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "First character of variable name must be alphabetic"
+msgstr ""
+
 #. Resource IDs: (32102)
 msgid "Flattened &List"
 msgstr "展开列表(&L)"
@@ -1969,6 +2007,14 @@ msgstr "指定路径是一个目录或文件为只读属性！"
 msgid "Go"
 msgstr "浏览"
 
+#. Resource IDs: (355)
+msgid "Go "
+msgstr ""
+
+#. Resource IDs: (355)
+msgid "Go+"
+msgstr ""
+
 #. Resource IDs: (327)
 msgid "Group"
 msgstr "组"
@@ -1976,6 +2022,10 @@ msgstr "组"
 #. Resource IDs: (339)
 msgid "Group [Mandatory Field]"
 msgstr "组 [强制字段]"
+
+#. Resource IDs: (355)
+msgid "Group copied "
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "Group/Title"
@@ -1986,8 +2036,8 @@ msgid "Group/Title\t"
 msgstr "组/标题\t"
 
 #. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
-msgstr "组/标题\t用户名\t密码\t网址\t自动输入\t创建时间\t密码修改时间\t最后访问时间\t密码失效日期\t密码失效间隔\t记录修改时间\t密码策略\t历史密码\t备注"
+msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tNotes"
+msgstr ""
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -2061,57 +2111,57 @@ msgstr "ID:32021:V C +Q"
 msgid "ID:32051:V C +A"
 msgstr "ID:32051:V C +A"
 
-#. Accelerator Entry for Menu ID:32055; '&Find Entry...\tCtrl+F'
-msgid "ID:32055:V C +F"
-msgstr "ID:32055:V C +F"
+#. Accelerator Entry for Menu ID:32057; '&Duplicate Entry'
+msgid "ID:32057:V C +D"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32056; '&Duplicate Entry'
-msgid "ID:32056:V C +D"
-msgstr "ID:32056:V C +D"
+#. Accelerator Entry for Menu ID:32059; '&Copy Password to Clipboard'
+msgid "ID:32059:V C +C"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32058; '&Copy Password to Clipboard'
-msgid "ID:32058:V C +C"
-msgstr "ID:32058:V C +C"
+#. Accelerator Entry for Menu ID:32060; 'Copy &Username to Clipboard'
+msgid "ID:32060:V C +U"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32059; 'Copy &Username to Clipboard'
-msgid "ID:32059:V C +U"
-msgstr "ID:32059:V C +U"
+#. Accelerator Entry for Menu ID:32061; 'Copy &Notes to Clipboard'
+msgid "ID:32061:V C +G"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32060; 'Copy &Notes to Clipboard'
-msgid "ID:32060:V C +G"
-msgstr "ID:32060:V C +G"
+#. Accelerator Entry for Menu ID:32063; '&Browse to URL'
+msgid "ID:32063:V C +L"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32062; '&Browse to URL'
-msgid "ID:32062:V C +L"
-msgstr "ID:32062:V C +L"
+#. Accelerator Entry for Menu ID:32064; 'Perform Auto &Type'
+msgid "ID:32064:V C +T"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32063; 'Perform Auto type'
-msgid "ID:32063:V C +T"
-msgstr "ID:32063:V C +T"
+#. Accelerator Entry for Menu ID:32065; '&Run Command'
+msgid "ID:32065:V C +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32064; 'Copy &URL to Clipboard'
-msgid "ID:32064:VAC +L"
-msgstr "ID:32064:VAC +L"
+#. Accelerator Entry for Menu ID:32066; 'Copy &URL to Clipboard'
+msgid "ID:32066:VAC +L"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32152; 'Make &Backup\tCtrl+B'
-msgid "ID:32152:V C +B"
-msgstr "ID:32152:V C +B"
+#. Accelerator Entry for Menu ID:32072; 'Browse to URL + &Autotype'
+msgid "ID:32072:VA  +L"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32153; '&Restore from Backup...\tCtrl+R'
-msgid "ID:32153:V C +R"
-msgstr "ID:32153:V C +R"
+#. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
+msgid "ID:32108:V C +F"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32303; ''
-msgid "ID:32303:VAC +S"
-msgstr "ID:32303:VAC +S"
+#. Accelerator Entry for Menu ID:32302; ''
+msgid "ID:32302:VAC +S"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32306; ''
-msgid "ID:32306:VAC +A"
-msgstr "ID:32306:VAC +A"
+#. Accelerator Entry for Menu ID:32305; ''
+msgid "ID:32305:VAC +A"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32308; ''
-msgid "ID:32308:VAC +C"
-msgstr "ID:32308:VAC +C"
+#. Accelerator Entry for Menu ID:32307; ''
+msgid "ID:32307:VAC +C"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32500; ''
 msgid "ID:32500:V C +C"
@@ -2132,6 +2182,10 @@ msgstr "ID:32503:V C +L"
 #. Accelerator Entry for Menu ID:32504; ''
 msgid "ID:32504:V C +S"
 msgstr "ID:32504:V C +S"
+
+#. Accelerator Entry for Menu ID:5486; ''
+msgid "ID:5486:V C +E"
+msgstr ""
 
 #. Resource IDs: (344)
 msgid "Icon"
@@ -2232,17 +2286,29 @@ msgstr "递增数字 [001-999]"
 msgid "Index is bigger than password length (%d)."
 msgstr "指数大于密码长度 (%d)！"
 
+#. Resource IDs: (210)
+msgid "Index is invalid or missing"
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Index must be greater than or equal to 1."
 msgstr "指数必须大于或等于 1 ！"
+
+#. Resource IDs: (210)
+msgid "Index not numeric"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Initial Tree View"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Initial system tray icon"
 msgstr "初始系统托盘图标"
 
-#. Resource IDs: (65535)
-msgid "Initial tree view"
-msgstr "初始树状目录视图为"
+#. Resource IDs: (210)
+msgid "Input string is empty"
+msgstr ""
 
 #. Resource IDs: (3857)
 msgid "Insufficient memory to perform operation."
@@ -2395,8 +2461,8 @@ msgid "Mail system DLL is invalid."
 msgstr "邮件系统 DLL 无效！"
 
 #. Resource IDs: (32152)
-msgid "Make &Backup\tCtrl+B"
-msgstr "生成备份(&B)\tCtrl+B"
+msgid "Make Backup"
+msgstr ""
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -2504,6 +2570,18 @@ msgstr "缺少 XSD 文件！"
 #. Resource IDs: (209)
 msgid "Missing date/time element."
 msgstr "缺少 日期/时间 元素！"
+
+#. Resource IDs: (210)
+msgid "Missing ending curly bracket for variable name"
+msgstr ""
+
+#. Resource IDs: (211)
+msgid "Missing ending round bracket for Autotype value"
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "Missing ending square bracket for index value"
+msgstr ""
 
 #. Resource IDs: (209)
 #, c-format
@@ -2663,6 +2741,10 @@ msgstr "备注: 项目格式为 »组»标题»用户名»"
 msgid "Notes"
 msgstr "备注"
 
+#. Resource IDs: (355)
+msgid "Notes copied "
+msgstr ""
+
 #. Resource IDs: (348)
 msgid "Number is set to the maximum value.  'Greater than' is not allowed."
 msgstr "数量已被设定到最大值，再“大于”将不被允许的！"
@@ -2767,6 +2849,10 @@ msgstr "原始数据库:"
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
 msgstr "其它:"
+
+#. Resource IDs: (1207)
+msgid "Other: "
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "Out of memory."
@@ -2946,13 +3032,13 @@ msgstr "密码应该混合大小写和至少一个数字或标点字符！"
 msgid "Password\t"
 msgstr "密码\t"
 
+#. Resource IDs: (32064)
+msgid "Perform Auto &Type"
+msgstr ""
+
 #. Resource IDs: (32063)
 msgid "Perform Auto &type\tCtrl+T"
 msgstr "执行自动输入(&T)\tCtrl+T"
-
-#. Resource IDs: (32063)
-msgid "Perform Auto type"
-msgstr "执行自动输入"
 
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
@@ -3155,17 +3241,17 @@ msgstr "可发音密码"
 msgid "Properties"
 msgstr "属性"
 
-#. Resource IDs: (346)
-msgid "Pswd"
-msgstr "Pswd"
+#. Resource IDs: (355)
+msgid "Pswd copied "
+msgstr ""
 
 #. Resource IDs: (339)
 msgid "Purchase unlimited &U3 version..."
 msgstr "购买无限制 U3 版本(&U)..."
 
 #. Resource IDs: (1235)
-msgid "Put groups first in display tree"
-msgstr "在树状目录首位放置分组"
+msgid "Put Groups first in Tree View"
+msgstr ""
 
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
@@ -3269,6 +3355,10 @@ msgstr "被请求的值:"
 msgid "Reset Columns"
 msgstr "重置栏目"
 
+#. Resource IDs: (32153)
+msgid "Restore from Backup..."
+msgstr ""
+
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
 msgstr "限于一个项目的子集:"
@@ -3289,6 +3379,22 @@ msgstr "规则"
 #. Resource IDs: (65535)
 msgid "Rule:"
 msgstr "规则:"
+
+#. Resource IDs: (1357)
+msgid "Run Cmd"
+msgstr ""
+
+#. Resource IDs: (354)
+msgid "Run Command"
+msgstr ""
+
+#. Resource IDs: (192)
+msgid "Run Command\t"
+msgstr ""
+
+#. Resource IDs: (355)
+msgid "RunCmd copied "
+msgstr ""
 
 #. Resource IDs: (328)
 msgid "S"
@@ -3374,8 +3480,9 @@ msgid "Search"
 msgstr "查找"
 
 #. Resource IDs: (330)
-msgid "Search has wrapped, continuing from the top."
-msgstr "查找已换行，继续从头开始！"
+#, c-format
+msgid "Search has wrapped, continuing from the %s."
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Second date must be later than first"
@@ -3509,6 +3616,10 @@ msgstr "Shift+单击查看当前策略"
 msgid "Shortcut"
 msgstr "快捷方式"
 
+#. Resource IDs: (32108)
+msgid "Show &Find Toolbar\tCtrl+F"
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "Show Dragbar"
 msgstr "显示字段状态符"
@@ -3517,9 +3628,29 @@ msgstr "显示字段状态符"
 msgid "Show Notes"
 msgstr ""
 
+#. Resource IDs: (1296)
+msgid "Show Notes as ToolTips in Tree && List views"
+msgstr ""
+
+#. Resource IDs: (1190)
+msgid "Show Notes in Edit"
+msgstr ""
+
+#. Resource IDs: (1028)
+msgid "Show Password in Add && Edit"
+msgstr ""
+
+#. Resource IDs: (1031)
+msgid "Show Password in Tree View"
+msgstr ""
+
 #. Resource IDs: (346)
 msgid "Show Toolbar"
 msgstr "显示工具栏"
+
+#. Resource IDs: (1254)
+msgid "Show Username in Tree View"
+msgstr ""
 
 #. Resource IDs: (159)
 msgid "Show a subset of the Password"
@@ -3530,28 +3661,8 @@ msgid "Show entries with identical compared fields (Note: Unknown fields were no
 msgstr "显示项目使用同一比较字段 (注意: 未知字段不能比较！)"
 
 #. Resource IDs: (1246)
-msgid "Show grid lines in display list"
-msgstr "在列表显示行列栅格线"
-
-#. Resource IDs: (1296)
-msgid "Show notes as ToolTips in display tree && list views"
-msgstr "在树状目录与列表视图显示工具提示备注内容"
-
-#. Resource IDs: (1190)
-msgid "Show notes in Edit"
+msgid "Show grid lines in List View"
 msgstr ""
-
-#. Resource IDs: (1028)
-msgid "Show password in Add && Edit"
-msgstr ""
-
-#. Resource IDs: (1031)
-msgid "Show password in display tree"
-msgstr "树状目录时显示密码"
-
-#. Resource IDs: (1254)
-msgid "Show username in display tree"
-msgstr "树状目录时显示用户名"
 
 #. Resource IDs: (334)
 #, c-format
@@ -3765,6 +3876,10 @@ msgstr "两个项目不匹配！"
 msgid "There are more than one entry that fits your selection. Please be more specific."
 msgstr "这里存在大于符合你选定的一个项目，请具体选定更多项目！"
 
+#. Resource IDs: (210)
+msgid "There are unmatched quotes in the run command"
+msgstr ""
+
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -3871,6 +3986,10 @@ msgstr "标题"
 msgid "Title [Mandatory Field]"
 msgstr "标题 [强制字段]"
 
+#. Resource IDs: (355)
+msgid "Title copied "
+msgstr ""
+
 #. Resource IDs: (192)
 msgid "Title\t"
 msgstr "标题\t"
@@ -3920,6 +4039,10 @@ msgstr "网址(&R):"
 msgid "URL"
 msgstr "网址"
 
+#. Resource IDs: (355)
+msgid "URL copied "
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "URL\t"
 msgstr "网址\t"
@@ -3953,6 +4076,10 @@ msgstr "不能加载配置文件！"
 msgid "Unable to load mail system support."
 msgstr "不能加载邮件系统支持！"
 
+#. Resource IDs: (354)
+msgid "Unable to load the necessary DLL to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
+msgstr ""
+
 #. Resource IDs: (3859)
 #, c-format
 msgid "Unable to read from %1, it is opened by someone else."
@@ -3965,6 +4092,10 @@ msgstr "不读取保险箱？"
 #. Resource IDs: (3865)
 msgid "Unable to read write-only property."
 msgstr "不能读取只写属性！"
+
+#. Resource IDs: (354)
+msgid "Unable to run command"
+msgstr ""
 
 #. Resource IDs: (191)
 msgid "Unable to save configuration file"
@@ -4077,10 +4208,6 @@ msgstr "使用符号 (如: &, %, $, 等)"
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
 msgstr "使用应用程序在这里浏览一个项目网址字段以 [alt] 开始时，例如: “[alt]http://foo.com”"
 
-#. Resource IDs: (346)
-msgid "User"
-msgstr "用户"
-
 #. Resource IDs: (327)
 msgid "User Name"
 msgstr "用户名"
@@ -4088,6 +4215,10 @@ msgstr "用户名"
 #. Resource IDs: (339)
 msgid "User [Mandatory Field]"
 msgstr "用户 [强制字段]"
+
+#. Resource IDs: (355)
+msgid "User copied "
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Username\t"
@@ -4109,6 +4240,14 @@ msgstr "验证 %d %s\r\n\r\n输入 %d %s"
 #. Resource IDs: (1322)
 msgid "Value:"
 msgstr "值:"
+
+#. Resource IDs: (210)
+msgid "Variable name is empty"
+msgstr ""
+
+#. Resource IDs: (210)
+msgid "Variable name must be alphanumeric"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Verify Key:"
@@ -4257,6 +4396,10 @@ msgstr "\n添加新项目"
 msgid "\nAdvanced Find Options"
 msgstr "\n高级查找选项"
 
+#. Resource IDs: (2005)
+msgid "\nBrowse to URL + Autotype"
+msgstr ""
+
 #. Resource IDs: (2004)
 msgid "\nBrowse to URL/Send Email"
 msgstr "\浏览网址/发送邮件"
@@ -4317,6 +4460,10 @@ msgstr "\n删除一个项目"
 msgid "\nDisplay subset of Password"
 msgstr "\n显示密码子集"
 
+#. Resource IDs: (2004)
+msgid "\nDuplicate Entry"
+msgstr ""
+
 #. Resource IDs: (2007)
 msgid "\nEdit Filters"
 msgstr "\n编辑筛选"
@@ -4342,9 +4489,13 @@ msgstr "\n输出文本"
 msgid "\nExport to XML"
 msgstr "\n输出 XML"
 
-#. Resource IDs: (2004, 2019)
-msgid "\nFind"
-msgstr "\n查找"
+#. Resource IDs: (2004)
+msgid "\nFind Next"
+msgstr ""
+
+#. Resource IDs: (2004)
+msgid "\nFind Previous"
+msgstr ""
 
 #. Resource IDs: (2005)
 msgid "\nGo to Base entry"
@@ -4398,6 +4549,10 @@ msgstr "\n请尝试其它"
 msgid "\nProgram will terminate."
 msgstr "\n程序将终止"
 
+#. Resource IDs: (2005)
+msgid "\nRun Command"
+msgstr ""
+
 #. Resource IDs: (2001)
 msgid "\nSave Database"
 msgstr "\n保存数据库"
@@ -4409,6 +4564,10 @@ msgstr "\n另存数据库为..."
 #. Resource IDs: (2008)
 msgid "\nSet/Clear Filters"
 msgstr "\n设定/清除筛选"
+
+#. Resource IDs: (2007)
+msgid "\nShow Find Toolbar"
+msgstr ""
 
 #. Resource IDs: (192)
 msgid "\nUnexpected exception during parsing."
@@ -4430,13 +4589,13 @@ msgstr "\n\n不能打开数据库，它可能不存在，一个新数据库将�
 msgid "\n\nDatabases identical!"
 msgstr "\n\n相同数据库！"
 
+#. Resource IDs: (354)
+msgid "\n\nIgnore this and save anyway - Yes/no?"
+msgstr ""
+
 #. Resource IDs: (341)
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\n未知字段将同样被复制在项目中！"
-
-#. Resource IDs: (329)
-msgid "\r\nAutotype: "
-msgstr "\r\n自动输入:"
 
 #. Resource IDs: (345)
 msgid "\r\nEmail: "
@@ -4445,10 +4604,6 @@ msgstr "\r\n邮箱:"
 #. Resource IDs: (341)
 msgid "\r\nThis field is being edited in your\r\ndefault text editor."
 msgstr "\r\n该字段正在你的默认文本编辑器中编辑！"
-
-#. Resource IDs: (329)
-msgid "\r\nURL: "
-msgstr "\r\n网址:"
 
 #. Resource IDs: (342)
 msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
@@ -4555,6 +4710,10 @@ msgstr "之间"
 #. Resource IDs: (326)
 msgid "big endian"
 msgstr "big endian"
+
+#. Resource IDs: (355)
+msgid "bottom"
+msgstr ""
 
 #. Resource IDs: (344)
 msgid "conflict"
@@ -4781,6 +4940,10 @@ msgstr "子集: “%s” 字段 “%s” “%s”“%s”"
 #. Resource IDs: (65535)
 msgid "the following text:"
 msgstr "下列文本:"
+
+#. Resource IDs: (354)
+msgid "top"
+msgstr ""
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."

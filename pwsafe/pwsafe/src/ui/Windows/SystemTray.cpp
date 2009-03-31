@@ -621,7 +621,10 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     for (size_t i = 0; i < num_recent_entries; i++) {
       irc = pMainRecentEntriesMenu->GetMenuItemInfo(i + 4, &miinfo, TRUE);
-      ASSERT(irc != 0);
+      if (irc == 0) {
+        TRACE(_T("CSystemTray::OnTrayNotification: GetMenuItemInfo(%d) = 0"), i + 4);
+        continue;
+      }
       pmd = (CRUEItemData*)miinfo.dwItemData;
       delete pmd;
       delete pNewRecentEntryMenu[i];

@@ -288,7 +288,7 @@
 #define IDS_NOFIELDSFORSEARCH           5443
 #define IDS_NUMCHILD                    5444
 #define IDS_NUMCHILDREN                 5445
-#define IDS_DELITEM                     5446
+#define IDS_DELENT                      5446
 #define IDS_EXTERNAL_EDITOR_WARNING     5447
 #define IDS_NOTES_IN_EXTERNAL_EDITOR    5448
 #define IDS_CPF_TVDD                    5449
@@ -367,7 +367,6 @@
 #define IDS_ADVCASE_INSENSITIVE         5524
 #define IDS_ADVCASE_SENSITIVE           5525
 #define IDS_ADVANCEDFIELDS              5526
-#define IDS_CLIPBOARDACTION             5527
 #define IDS_USER                        5528
 #define IDS_PSWD                        5529
 #define IDS_SHOWTOOLBAR                 5530
@@ -504,4 +503,12 @@
 #define IDS_LAUNCH                      5667
 #define IDS_LAUNCHPLUS                  5668
 #define IDS_CLICKTOGOPLUS               5669
-
+#define IDS_DELGRP                      5670
+#define IDS_GROUPCOPIED                 5671
+#define IDS_TITLECOPIED                 5672
+#define IDS_USERCOPIED                  5673
+#define IDS_PSWDCOPIED                  5674
+#define IDS_NOTESCOPIED                 5675
+#define IDS_URLCOPIED                   5676
+#define IDS_AUTOTYPECOPIED              5677
+#define IDS_RUNCMDCOPIED                5678
