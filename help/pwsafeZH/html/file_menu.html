@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>文件菜单</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		<!-- Popup Source File -->
+<h2>文件菜单</h2>
+		<img style="width: 173px; height: 316px;" alt="file menu" src="images%5Cfile_menu.png">
+<p><b>文件菜单</b>包含涉及管理与创建新 <span style="font-weight: bold;">Password Safe</span> 数据库选项。</p>
+<div class="instr">
+<h3>新建</h3>
+<p>新建一个空白 password safe 数据库。</p>
+<h3>打开</h3>
+<p>打开一个现有 password safe 数据库。</p>
+<h3>关闭</h3>
+<p>在不退出应用程序的情况下只关闭当前已打开的 password safe 数据库。</p>
+<h3>最近保险箱</h3>
+<p>该文件菜单部份可列出最近打开过的数据库文件。如果是首次使用 <b>Password Safe</b> 该部份将为空白。</p>
+<hr style="width: 100%; height: 2px;">
+<p><small><span style="font-weight: bold;">备注:</span></small></p>
+<ul>
+  <small>
+  </small><li><small>最近打开文件列表可通过选择“<span style="font-weight: bold;">清除最近保险箱列表</span>”清除。</small></li>
+  <small>
+  </small><li><small>最近 <span style="font-weight: bold;">Password Safe</span> 文件保存数量可通过<a href="system_tab.html">管理-&gt;选项-&gt;系统</a>对话框配置，如果你偏好在文件菜单查看最近文件或作为一个子菜单，也同样可以在这里配置。</small></li>
+</ul>
+<hr style="width: 100%; height: 2px;">
+<ul>
+</ul>
+<h3>保存</h3>
+<p>保存所有更改到当前保险箱。如不保存前面所作的更改或数据库被打开为只读，那么所作改动将被丢弃。</p>
+<h3>另存为</h3>
+<p>保存当前保险箱的一个副本在一个新名称或位置下。</p>
+<h3>输出</h3>
+<p>输出当前数据库内容为一个<a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">外部文件</a>任一旧 <span style="font-weight: bold;">Password Safe</span> 数据库格式 XML 或文本文件。查看<a href="export.html">这里</a>获得更多有关输出数据库为其它格式的信息。
+			</p>
+<h3>输入</h3>
+<p>输入一个以前<a href="export.html">输出</a>的内容或正确格式化的文本文件、XML 或一个公共应用程序保存的密码数据库到当前数据库里。
+查看<a href="import.html">这里</a>获得更多有关输入文本文件的信息。</p>
+<h3>合并</h3>
+<p>合并一个 <b>Password Safe</b> 数据库或备份文件(.bak)到当前数据库里。只读模式禁止合并。</p>
+<h3>比较</h3>
+<p>比较当前打开的数据库与其它数据库。</p>
+<hr style="width: 100%; height: 2px;">
+<p><small><b>备注:</b> 合并与比较操作两者都可能耗费较长时间，尤其是大数据库。</small></p>
+<hr style="width: 100%; height: 2px;">
+<h3>属性</h3>
+显示当前被打开的 password safe 数据库有关信息。例如: 版本格式、组数量、项目数量以及最后保存时间并且由谁所作的保存等相关信息。
+<h3>退出</h3>
+<p>关闭 <b>Password Safe</b> 程序。如果对数据库所作的改动一直未给予保存，关闭时将被提示保存数据库。</p>
+		</div>
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br>
+<br>
+<br>
+		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="文件菜单">
+			<param name="Keyword" value="已存密码">
+			<param name="Keyword" value="输出">
+			<param name="Keyword" value="输入">
+		</object>
+</body>
+</html>

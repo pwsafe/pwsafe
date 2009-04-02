@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>系统选项卡</title>
+<!-- pwsafe version: 3.03--><!-- Modified: 10/10/2006 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>系统选项卡</h2>
+<img style="width: 394px; height: 462px;" alt="system tab" src="images/options/system_tab.png">
+<p>系统选项卡提供访问设置
+Password Safe 涉及系统在运行时的相互作用。</p>
+<div class="instr">
+<h3>在系统托盘放置图标</h3>
+<p>如勾选， <b>Password Safe</b> 将最小化至系统托盘区域；如不勾选，程序将最小化至任务栏。</p>
+<p>系统托盘图标将指示密码数据库是否被锁定。锁定为
+	 (<img style="width: 32px; height: 32px;" alt="locked" src="images/locked_tray.gif">)，未锁定为
+	  (<img style="width: 32px; height: 32px;" alt="unlocked" src="images/unlocked_tray.gif">)。如数据库被锁定，当用户从最小化恢复时将被提示输入主密码。</p>
+<h3>记住最后 <span style="font-style: italic;">N</span>
+个在系统托盘菜单使用过的项目</h3>
+如<span style="font-weight: bold;">放置图标在系统托盘</span>选项被启用，可以在没有经过程序主窗口时，在系统托盘图标右击直接转到大部分最近用过的项目。
+该选项允许用户配置多少最近使用过的项目保存在系统托盘图标列表中。
+<h3>启动系统时自动运行 Password Safe</h3>
+如勾选该项，当启动系统时将导致 Password Safe 自动启动在系统托盘。
+注意，在首次双击系统托盘图标时程序将提示输入保险箱密码。
+<h3>最近 Passwordsafe 数据库</h3>
+<p>该控制命令允许用户配置在文件菜单显示多少最近打开过的数据库。
+注意需要退出和重启
+<b>Password Safe</b> 以使改变生效。</p>
+<h3>最近数据库在文件菜单上作为子菜单使用</h3>
+该选项确定如何让最近数据库呈现在文件菜单上 - 直接在菜单上或作为一个子菜单。<br>
+<h3>默认打开数据库为只读</h3>
+设置该选项将导致 <span style="font-weight: bold;">Password Safe</span> 打开数据库为默认只读模式。
+该选项也许有助于多用户环境，设为默认后的 <span style="font-weight: bold;">Password Safe</span>
+允许由谁为第一人称写访问打开数据库与限制其它人在只读模式。使用该选项，用户可以通过位置策略限定谁可以写访问一个特定的数据库。
+<h3>从注册表删除 Password Safe 数据</h3>
+在 3.05 版本之前 <span style="font-weight: bold;">Password Safe</span> 用过注册表存储配置数据，例如: 非默认选项设置、最后打开的数据库等等。
+从这个版本开始，该信息被分成数据库-特定的用户/计算机 特定的设置，后者存储在一个单独的配置文件中。
+选择该选项和单击<span style="font-weight: bold;">应用</span>按钮将导致注册表设置被清除。这是有助于比如希望删除 <span style="font-weight: bold;">Password Safe</span> 在用户的 PC 上的遗迹。注意，不管如何，
+该方法在旧版本的 <span style="font-weight: bold;">Password Safe</span> 上将恢复默认值给部份设置。<br>
+<span style="font-weight: bold;"></span>
+<hr style="width: 100%; height: 2px;"><span style="font-weight: bold;">备注:<br>
+</span>
+<ul>
+  <li>如果早期版本的 <span style="font-weight: bold;">Password Safe</span> 从未被安装或假如数据已被删除，则勾选框和<span style="font-weight: bold;">应用 </span>按钮不被显示。</li>
+  <li>在极少情况下，<span style="font-weight: bold;">Password Safe</span> 位置不能创建或写入配置文件时，注册表将被使用。</li>
+</ul>
+<hr style="width: 100%; height: 2px;"></div>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="系统选项卡"> <param name="Keyword" value="锁定数据库"> <param name="Keyword" value="确认复制到剪贴板"> <param name="Keyword" value="清空剪贴板"> </object>
+</body>
+</html>

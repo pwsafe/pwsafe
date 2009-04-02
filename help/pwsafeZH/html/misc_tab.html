@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>杂项选项卡</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		<!-- Popup Source File -->
+<h2>杂项选项卡</h2>
+		<img src="images/options/misc_tab.png" style="width: 394px; height: 462px;" alt="Misc tab"><br>
+<p>一些程序默认混杂的选项显示在<b>杂项选项卡</b>。</p>
+<div class="instr">
+<h3>确认项目删除</h3>
+<p>当勾选时，每次尝试删除一个密码项目均显示要求用户确认的提示对话。</p>
+<h3>记录最后访问时间</h3>
+当勾选时，<span style="font-weight: bold;">Password Safe</span> 将记录每个项目被访问的时间
+(例如: 当密码被复制或项目的详细资料被查看时等等)。
+被存储的项目时间信息可通过项目对话框查看。<br>
+<span style="font-weight: bold;">备注:<br>
+</span>
+<ul>
+  <li><small>当启用该选项时，即使在没有编辑项目时数据库也将被修改。
+该方法在退出程序时可能提示用户保存数据库，即使没有更改任何数据。</small></li><li><small>当数据库被打开为只读模式时，访问时间<span style="font-weight: bold;">不</span>更新。</small></li>
+</ul>
+<h3>Esc 键关闭本程序</h3>
+<p>勾选该项，<b>Esc</b> 可被用于关闭
+			<b>Password Safe</b> 在最大化时。注意如果系统托盘被启用(通过放置图标在系统托盘选项)，则
+			<b>Esc</b> 只关闭主窗口，通过双击系统托盘图标可被重新打开。</p>
+<h3>热键</h3>
+<p>当勾选时，用户可以选择自己想要的某个键作为 PasswordSafe 最小化在系统托盘时的快速恢复热键，
+按键后将依次出现在右侧显示框里。该功能极有助于当窗口被其它应用程序掩盖时的快速恢复。
+当选中此项时用户可以依次更改此热键，然后单击确定按钮保存它。</p>
+<h3>双击项目</h3>
+<p>该项允许用户定义当双击一个项目时 PasswordSafe 将作出何种动作。
+初始默认状态为复制项目密码到剪贴板。可用操作如下:</p>
+<p></p>
+<ul>
+  <li>自动输入</li>
+  <li>浏览网址</li>
+  <li>复制备注到剪贴板</li>
+  <li>复制密码到剪贴板</li>
+  <li>复制密码到剪贴板后立即最小化</li>
+  <li>复制用户名到剪贴板</li>
+  <li>查看/编辑 选中项目</li>
+  </ul>
+<p>注意“复制密码到剪贴板后立即最小化”选项，不能与“最小化时清空剪贴板”选项同时存在；确实需要复制后最小化功能，必须先把<a href="security_tab.html">安全选项卡</a>中选中的“最小化时清空剪贴板”勾选框去掉才起效。</p>
+<h3>自动输入</h3>
+<ul>
+  <li><span style="font-weight: bold;">自动输入后最小化</span> 默认状态时，<span style="font-weight: bold;">Password Safe</span> 在自动输入时将被最小化。如清除勾选框，<span style="font-weight: bold;">Password Safe</span> 将移动所有显示窗口“在后面”取代。</li>
+  <li><span style="font-weight: bold;">默认自动输入字串</span>
+在这里用户可以指定自动输入字串默认给所有项目。注意可以忽略每个基础项目上的这些。
+该选项有助于，例如: 用户希望为所有项目更改延迟。查看<a href="autotype.html">这里</a>获得更多自动输入详细信息。</li>
+</ul>
+<h3>默认用户名</h3>
+该选项允许用户设定用于每次新建一个密码项目时自动生成的一个默认用户名。
+当选中时，名称输入将被插入到新项目用户名字段里作为默认。当然，如果需要用户可以编辑它。<br>
+<h3><a name="AltBrowser"></a>更换浏览器</h3>
+用户所指定在这里的浏览器，将被用于为一个选定项目使用“浏览”操作。当项目存在网址时可在之前放置“[alt]”，如: “[alt]http://www.foo.net”。这是有帮助的，例如: 
+假设用户的默认浏览器是 Firefox，并且希望访问一个网站使用 Internet Explorer，在这种情况下应该指定
+Internet Explorer 作为用户的替换浏览器 (典型位置: “C:\Program
+Files\Internet Explorer\iexplorer.exe“)。<br>
+通过浏览器命令行参数字段，用户可以指定命令行选项给浏览器。
+		</div>
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br>
+<br>
+<br>
+		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="杂项选项卡">
+			<param name="Keyword" value="确认删除">
+			<param name="Keyword" value="确认保存">
+			<param name="Keyword" value="热键">
+			<param name="Keyword" value="更换浏览器">
+			<param name="Keyword" value="默认用户名">
+			<param name="Keyword" value="更改自动保存">
+		</object>
+	
+</body>
+</html>

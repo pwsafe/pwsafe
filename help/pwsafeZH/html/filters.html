@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-2052" http-equiv="Content-Type">
+  <title>筛选</title>
+<!-- pwsafe version: 3.15--><!-- Modified: 3/1/2009 -->
+<!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<h1><object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>筛选</h1>
+<div class="instr"><br>
+“筛选”是任一项目匹配或不匹配的规则(或规则的设定)。<span style="font-weight: bold;">PasswordSafe
+</span>允许用户定义筛选与只显示项目匹配的一个特定筛选。可以定义一个筛选作为一个以前的查询或定义多个筛选，
+命名它们并持续储存它们作为重复使用。
+也可以筛选任一存储的除数据库外或外部的数据，作为共享一样的筛选交叉多个数据库。<br>
+
+<h2>定义一个筛选</h2>
+
+要定义一个新筛选，选择查看-&gt;筛选-&gt;新建/编辑筛选菜单项目。下列对话框将被显示:<br>
+<img style="width: 491px; height: 340px;" alt="Display Filter dialog box" src="images/filter.png"><br>
+<br>
+为了便于查看，每个筛选由一个或多个<span style="font-weight: bold;">行，</span>在每个行位置定义一个
+<span style="font-weight: bold;">规则</span>给一个特定的<span style="font-weight: bold;">字段</span>。
+条件式定义每个行可选择“和”与“或”关联前一行。该项允许定义下列各种筛选:<br>
+1.所有项目包含一个用户名“joe”或“Joe”或“JOE”<br>
+<img style="width: 471px; height: 72px;" alt="example1" src="images/filter-ex1.png"><br>
+2.所有项目具有一个用户名“Joe”(精确的)创建在2008年5月1日之后<br>
+<img style="width: 471px; height: 72px;" alt="example2" src="images/filter-ex2.png"><br>
+3.使用项目包含一个用户名“Joe”或“Mary”<br>
+<img style="width: 471px; height: 72px;" alt="example3" src="images/filter-ex3.png"><br>
+<br>
+为便于查看，筛选可任意组合。<br>
+<br>
+下列是筛选表格栏目标识:<br>
+<ul>
+  <li>“#”- 该列为行编号。为了方便而显示及不能修改。</li>
+  <li>“?”- 勾选框在栏目中用以确定该行是否<span style="font-weight: bold;">激活</span>或禁用，只有激活的行被用于筛选。
+  	单击勾选框启用/禁用行。</li>
+  <li>“+”- 单击这里插入一个新行在下面。</li>
+  <li>“-”- 单击这里删除当前行。<span style="font-weight: bold;">注: </span>由于删除一个行是永久性的，可以只<span style="font-weight: bold;">禁用</span>而替代删除它。</li>
+  <li>“和/或”- 该项允许用户确定与前一行结果的关系。</li>
+  <li>“字段”- 选择想要的项目字段。例如: 用户名、标题、组、备注等。</li>
+  <li>“规则”- 定义用户所选中字段的值。一旦选中一个字段，单击时将弹出一个对话框允许用户指定规则，选择需要哪个被显示于表格。</li>
+</ul>
+</div>
+<h2>应用一个筛选</h2>
+一旦定义一个筛选，单击“应用”将筛选数据库中的项目，当离开时设定显示筛选对话框将被打开。
+这有助于定位和提取基于筛选的结果。单击“确定”将同样应用筛选，但会直接关闭设定显示筛选对话框。
+<br>
+<br>
+<h2><a name="ManagingFilters"></a>管理筛选</h2>
+设定/编辑筛选对于筛选一个过去的任务是个好方法。
+不管如何，假如用户查找的多个筛选需要重复使用，那么可以存储这些并供以后管理使用。使用该菜单可点击查看-&gt;筛选-&gt;管理...对话框操作。<br>
+<img style="width: 560px; height: 379px;" alt="Manage Filters" src="images/filter_mng.png"><br>
+<br>
+管理筛选对话框有两层表格。上层表格列出筛选方式，下层表格显示当前选中的筛选内容。<br>
+<ul>
+  <li>需要添加一个新筛选，单击“新建”按钮。等同于选择 查看-&gt;筛选-&gt;新建/编辑筛选菜单项。</li>
+  <li>需要编辑一个现有筛选，选择项目后单击“编辑”按钮。</li>
+  <li>需要应用一个现有筛选，选中想要筛选行的勾选框，然后单击“应用”按钮。注意同一时间一次只能应用一个筛选项。</li>
+</ul>
+<br>
+<span style="font-weight: bold;"></span>
+<h4>存储筛选</h4>
+筛选可存储任一作为当前数据库中的部份或输出到外部作为 XML 文件。
+存储筛选到外部是个好方法，因为可以跨数据库共享筛选，但存储它们作为数据库部份时，请确保潜在的敏感信息在筛选中是受保护的。<br>
+<ul>
+  <li>需要存储筛选在一个外部文件里: 设定输出用户想要存储的外部筛选勾选框，然后单击输出按钮。</li>
+  <li>需要存储筛选在当前数据库: 设定复制到数据库勾选框，然后单击复制按钮。</li>
+  <li>需要加载一个外部存储的筛选: 单击输入按钮。</li>
+</ul>
+<span style="font-weight: bold;">备注:<br>
+<span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></span>当启动时，
+	PasswordSafe 搜索一个与 pwsafe.cfg 文件(默认状态在 PasswordSafe 安装目录位置)在相同目录下的文件名为 autoload_filters.xml 的文件。
+	如该文件存在，则它被自动导入并筛选它所包含准备使用的信息。
+这是有助于假如用户有一个想要共享跨越多个数据库的筛选设定，很显然每次启动将导入它们。<br>
+<span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></span>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="筛选">
+ </object>
+</body>
+</html>

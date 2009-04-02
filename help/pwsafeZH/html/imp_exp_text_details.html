@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>输出与输入纯文本文件格式</title>
+<!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+   <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h1><span style="font-size: 14pt;" lang="EN-GB">输出与输入纯文本文件格式<o:p></o:p></span></h1>
+<hr style="width: 100%; height: 2px;">
+<p class="MsoNormal" style="text-align: justify;"><b style="color: rgb(255, 0, 0);"><i><u><span style="font-size: 11pt;" lang="EN-GB">警告</span></u></i></b><span style="font-size: 11pt;" lang="EN-GB"><span style="color: rgb(255, 0, 0);">: 从一个 Password Safe 数据库输出敏感信息为一个文本文件存在严重的安全后果。
+该操作将创建一个无保护的</span><b style="color: rgb(255, 0, 0);"></b><span style="color: rgb(255, 0, 0);">密码数据库副本。在</span><b style="color: rgb(255, 0, 0);">不</b><span style="color: rgb(255, 0, 0);">充分使用与其它作用后请适时删除该副本及擦除数据
+(例如: 第三方 &ldquo;粉碎&rdquo; 文件公用程序)。输出的敏感数据事实上将绕开 Password Safe 程序的安全措施。</span></span></p>
+<hr style="width: 100%; height: 2px;">
+<small>备注: 输出与输入文本文件功能从 V3.06 开始后被改变。该页面描述了当前格式。</small>
+<hr style="width: 100%; height: 2px;">
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">输出文本将:<o:p></o:p></span></p>
+<ul>
+  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; 
+font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">文本文件以标题行作为开始<o:p></o:p></span></span></li>
+  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">使用一个分隔符代替
+多行备注字段的 &ldquo;换行符&rdquo; 及呈现在标题字段的句号 (&lsquo;.&rsquo;)；<span style="">&nbsp; </span>
+默认为 &lsquo;&raquo;&rsquo; [Alt+0187]，如果需要则可以被覆盖。<o:p></o:p></span></span></li>
+</ul>
+<p class="MsoListBullet" style="margin-left: 0in; text-align: justify; text-indent: 0in;"><span style="font-size: 11pt;" lang="EN-GB">输入文本假定存在:<span style=""></span><o:p></o:p></span></p>
+<ul>
+  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">文本文件以标题行作为开始。<o:p></o:p></span></span></li>
+  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">使用一个分隔符恢复
+多行备注字段的 &ldquo;换行符&rdquo; 及呈现在标题字段的句号 (&lsquo;.&rsquo;)；<span style="">&nbsp; </span>
+默认为 &lsquo;&raquo;&rsquo; [Alt+0187]，如果需要则可以被覆盖。</span></span></li>
+</ul>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">
+目前标题行完整数据输出包含下列标记分隔的默认字段:<o:p></o:p></span></p>
+<ul>
+  <li><span style="font-size: 11pt;" lang="EN-GB"><o:p></o:p>组/标题<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">用户名<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">密码<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">网址<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">自动输入<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">创建时间<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">修改密码时间<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">最后访问时间<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">密码失效日期<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">记录修改时间<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">历史密码<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">备注<o:p></o:p></span></li>
+</ul>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB"><span style=""></span>
+在输出数据时，可以使用“高级”功能排除这些标题行字段中的许多记录。
+高级选项同样允许用户指定输出项目的一个子集，显示如下:</span></p>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><img style="width: 382px; height: 461px;" alt="Advanced Text Export dialog box" src="images/export_text_adv.png"><span style="font-size: 11pt;" lang="EN-GB"><u><o:p></o:p></u></span></p>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">
+在输入数据时，提供标题行必须包括“栏目标题”精确匹配上面的任何一个。
+<span style=""></span>如果存在“栏目标题”重复，在输入时只有最后一个数据被添加到项目；
+<span style=""></span>如果一个“栏目标题”不匹配上面的任何一个，栏目中的数据在输入时将被忽略。
+<span style=""></span>字段必须被字段分隔符分隔指定给输入文本对话框中的数据。</span></p>
+<hr style="width: 100%; height: 2px;">
+<small>备注:<br>
+</small>
+<ul>
+  <li><small>需要输入所有数据到 Password Safe 里，标题与密码字段 <i><u>必须</u></i>
+存在和既不可间隔也不可空缺，因为这里将添加一个新项目到现有数据库中。</small></li>
+</ul>
+<ul>
+  <li><small>这里并没有与“栏目标题”相似的限制。Password Safe 将提供标题行正确添加规定数据到右边的字段中。</small></li>
+</ul>
+<hr style="width: 100%; height: 2px;"><span style="font-size: 11pt;" lang="EN-GB"><o:p></o:p></span><span style="font-size: 11pt; font-family: &quot;Times New Roman&quot;;" lang="EN-GB"></span>
+<h2><u><span style="font-size: 11pt;" lang="EN-GB">数据格式<o:p></o:p></span></u></h2>
+<table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="1" cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr style="">
+      <td style="border: 1pt solid windowtext; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><b><span style="font-size: 11pt;" lang="EN-GB">栏目标题/字段<o:p></o:p></span></b></p>
+      </td>
+      <td style="border-style: solid solid solid none; border-color: windowtext windowtext windowtext -moz-use-text-color; border-width: 1pt 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><b><span style="font-size: 11pt;" lang="EN-GB">注释<o:p></o:p></span></b></p>
+    </td>
+    </tr>
+    <tr style="">
+    <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">组/标题<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">如呈现，
+组被句号 (&lsquo;.&rsquo;) 分隔。<span style=""></span>标题字段不能空格、空缺或包含分隔符。<o:p></o:p></span></p>
+      </td>
+      </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">用户名<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB"><o:p>&nbsp;</o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">密码<o:p></o:p></span></p>
+      </td>
+     <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">不能空格或空缺。<o:p></o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">网址<o:p></o:p></span></p>
+      </td>
+     <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB"><o:p>&nbsp;</o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">自动输入<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB"><o:p>&nbsp;</o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">创建时间<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">查看下列备注 <a href="#1"><sup>1</sup></a><o:p></o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">修改密码时间<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">查看下列备注 <a href="#1"><sup>1</sup></a><o:p></o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">最后访问时间<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">查看下列备注 <a href="#1"><sup>1</sup></a><o:p></o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">密码失效日期<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">查看下列备注 <a href="#1"><sup>1</sup></a><o:p></o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">记录修改时间<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">查看下列备注 <a href="#1"><sup>1</sup></a><o:p></o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">历史密码<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">查看下列备注 <a href="#2"><sup>2</sup></a><o:p></o:p></span></p>
+      </td>
+    </tr>
+    <tr style="">
+      <td style="border-style: none solid solid; border-color: -moz-use-text-color windowtext windowtext; border-width: medium 1pt 1pt; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">备注<o:p></o:p></span></p>
+      </td>
+      <td style="border-style: none solid solid none; border-color: -moz-use-text-color windowtext windowtext -moz-use-text-color; border-width: medium 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <ul>
+        <li><span style="font-size: 11pt;" lang="EN-GB">备注字段应加上双引号 (“这样”)。</span></li>
+        <li><span style="font-size: 11pt;" lang="EN-GB">备注字段不应包含分隔符，因为输入后将被转移到一个新行。<o:p></o:p></span></li>
+      </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB"><o:p>&nbsp;</o:p></span><br>
+<u><span style="font-size: 11pt;" lang="EN-GB">备注:</span></u><span style="font-size: 11pt;" lang="EN-GB"><o:p></o:p></span></p>
+<table class="MsoTableGrid" style="border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr style="">
+      <td style="padding: 0in 5.4pt; width: 35.4pt;" valign="top" width="47">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><sup><span style="font-size: 11pt;" lang="EN-GB"><a name="1"></a>1<o:p></o:p></span></sup></p>
+      </td>
+      <td style="padding: 0in 5.4pt; width: 457.35pt;" valign="top" width="610">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">时间字段可为下列 3 个格式之一:<o:p></o:p></span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ol>
+  <li><span style="font-size: 11pt;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt; font-family: &quot;Courier New&quot;;" lang="EN-GB">yyyy/mm/dd
+hh:mm:ss</span></span><span style="font-size: 11pt;" lang="EN-GB"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>例如:
+2007/01/26
+19:31:25<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt; font-family: &quot;Courier New&quot;;" lang="EN-GB">ddd
+MMM dd hh:mm:ss yyyy</span></span><span style="font-size: 11pt;" lang="EN-GB"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>例如: 星期五 一月 26 19:31:25 2007<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt; font-family: &quot;Courier New&quot;;" lang="EN-GB">yyyy-mm-ddThh:mm:ss</span></span><span style="font-size: 11pt;" lang="EN-GB"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>例如:
+2007-01-26T19:31:25</span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">0 &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;撤销复位</span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">即时 &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 使用输入操作时间<br>
+    </span></li>
+</ol>
+<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">位置:<o:p></o:p></span></p>
+<ul>
+  <li><span style="font-size: 11pt;" lang="EN-GB">yyyy<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>完整年份<span style="">&nbsp; </span>值在 1970 至 2038之间。<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">mm<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>月份 例如: 01 表示一月，02 表示二月 等等。<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">dd<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>一个月中的第几日。<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">MMM<span style="">&nbsp;&nbsp;&nbsp;&nbsp;</span>月份简易格式 例如: Jan 表示一月，Feb 表示二月 等等。<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">ddd<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>星期的简易格式 例如:
+Mon 表示星期一，Tue 表示星期二 等等。<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">hh<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>使用 24 小时计时。<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">mm<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>分<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">ss<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>秒</span></li>
+</ul>
+<span style="font-size: 11pt;" lang="EN-GB">&nbsp;<br>
+</span>
+<hr style="width: 100%; height: 2px;">
+<small>备注: 格式 "2" 是以 ANSI C 函数 <big><a name="asctime">"</a><code>asctime</code>"</big>(将时间和日期以字符串格式表示) 输出与格式 "3" 遵照 ISO 8601 标准输出。</small>
+<hr style="width: 100%; height: 2px;">
+<table class="MsoTableGrid" style="border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr style="">
+      <td style="padding: 0in 5.4pt; width: 35.4pt;" valign="top" width="47">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><sup><span style="font-size: 11pt;" lang="EN-GB"><a name="2"></a>2<o:p></o:p></span></sup></p>
+      </td>
+      <td style="padding: 0in 5.4pt; width: 457.35pt;" valign="top" width="610">
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">历史密码
+的表示在输出项目记录为一个文本字段，包括一个标题然后为所需旧密码项目数量:<o:p></o:p></span></p>
+      </td>
+    </tr>
+</tbody>
+</table>
+<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">历史密码标题:<o:p></o:p></span></p>
+<ul>
+  <li><span style="font-size: 11pt;" lang="EN-GB">1
+十六进制数字<span style="">&nbsp;&nbsp;&nbsp;
+    </span>该项目保存历史密码状态 (0 = no; 1 = yes)<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">2
+十六进制数字<span style="">&nbsp;&nbsp;&nbsp;
+    </span>在该项目的最大项目编号<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">2
+十六进制数字<span style="">&nbsp;&nbsp;&nbsp;
+    </span>当前保存项目编号<o:p></o:p></span></li>
+</ul>
+<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB"><o:p></o:p>每个历史密码项目:<o:p></o:p></span></p>
+<ul>
+  <li><span style="font-size: 11pt;" lang="EN-GB">8
+十六进制数字<span style="">&nbsp;&nbsp;&nbsp;
+</span>当时的旧密码设置<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">4
+十六进制数字<span style="">&nbsp;&nbsp;&nbsp;
+    </span>旧密码长度<o:p></o:p></span></li>
+  <li><span style="font-size: 11pt;" lang="EN-GB">字符串<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style=""></span>旧密码<o:p></o:p></span></li>
+</ul>
+<!-- Added some white space at the bottom for natural scrolling --><br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="输出密码项目"> <param name="Keyword" value="输入密码项目"> <param name="Keyword" valuetext="" password="" data="">
+<param name="Keyword" value="转换现有密码数据"></object>
+</body>
+</html>

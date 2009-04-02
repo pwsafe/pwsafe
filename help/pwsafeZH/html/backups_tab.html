@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>备份选项卡</title>
+<!-- pwsafe version: 3.05--><!-- Modified: 21/11/2006 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>备份选项卡</h2>
+<img style="width: 394px; height: 462px;" alt="backups tab" src="images/options/backups_tab.png">
+<p>备份选项卡允许配置如何创建自动备份和管理。</p>
+<div class="instr">
+<h3>编辑或添加后直接保存数据库</h3>
+<p>当勾选此项，<b>Password Safe</b> 将直接保存所有被更改的密码项目，不需等待用户使用<b>保存</b>或<b>另存为</b>及确认。</p>
+<h3><span style="font-weight: bold;"></span>保存之前创建中间备份 (.ibak)</h3>
+<p>当勾选此项，<span style="font-weight: bold;">Password
+Safe</span> 将在每次保存之前复制数据库。备份副本的名称和位置及应该保存多少副本定义在下列字段。</p>
+<h3>备份名称</h3>
+<p>备份文件名称由&nbsp;<span style="font-weight: bold;">基于</span>(默认状态，数据库名称没有 .psafe3 扩展名)一个<span style="font-weight: bold;">后缀</span>(无、一个运行计数或备份的日期/时间)的名称。
+在这里可以配置命名备份文件及保存多少数量的备份文件。<span style="font-weight: bold;">Password Safe</span>
+将自动删除超过所指定备份数量的旧数据库。注意，如果备份文件后缀为一个递增数量编号(运行计数) Password Safe 将只删除旧数据库。</p>
+<h3>备份目录</h3>
+<p>默认状态，<span style="font-weight: bold;">Password Safe </span>将存储备份文件在当前打开的数据库相同目录下。
+在该字段可以指定一个备用位置，例如: 指定一个目录，网络驱动器、U 盘等等。当然，必须要有指定目录的写入权限。</p>
+</div>
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="安全选项卡"> <param name="Keyword" value="锁定数据库"> <param name="Keyword" value="确认复制到剪贴板"> <param name="Keyword" value="清空剪贴板"> </object>
+</body>
+</html>
