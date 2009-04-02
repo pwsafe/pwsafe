@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>备份与恢复数据库</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		<!-- Popup Source File -->
+<h2>备份与恢复数据库</h2>
+<p>由于存储在密码数据库中的信息通常是敏感和重要的，&nbsp;<b><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span>Password Safe</b>
+为备份与恢复密码数据库提供了不同的机制。该章节描述了如何手工生成密码数据库备份。&nbsp;<span style="font-weight: bold;">Password Safe&nbsp;</span>同样可以配置在每次保存数据库时<span style="font-style: italic;">自动</span>生成数据库备份。这样的备份被命名为<span style="font-style: italic;">中间备份</span>并描述在<a href="backups_tab.html">这里</a>。</p>
+<h3>生成备份</h3>
+<p>安全的创建一个当前密码数据库副本。</p>
+<div class="instr">
+<ol>
+				<li>单击<b>生成备份</b></li>
+				<li>为备份文件选择一个位置</li>
+				<li>单击<b>保存</b></li>
+</ol>
+			<br>
+<hr>
+			<small><b>备注:</b>&nbsp;<b><u>强烈建议</u></b>经常生成密码数据库备份文件，这样将帮助保护密码列表防止系统事故或文件被破坏。
+备份加密，使用相同的主密码作为当前数据库备份。<br>
+</small>
+			
+<hr>
+		</div>
+<h3>恢复备份</h3>
+<p>恢复一个备份的密码数据库文件。</p>
+<div class="instr">
+			
+<ol>
+				<li>单击<b>恢复备份</b></li>
+				<li>定位备份文件的位置和选择文件进行恢复</li>
+				<li>单击<b>打开</b><br>将出现密码提示对话框。</li>
+				<li>输入数据库密码并单击<b>确定</b></li>
+</ol>
+<hr>
+			<small><b>备注:</b><br>
+</small>
+<ul>
+  <li><small>恢复的数据库具有“保存的” <b>Password Safe</b> 标准数据库扩展名 (.psafe3)。在文件菜单选定<b>保存</b>或<b>另存为</b>，
+如果退出程序之前没有对文件作出保存操作，程序将提示 "保存" 数据库和为它选定一个名称。</small></li>
+  <li><small>在这里除备份与恢复描述之外，当保存一个更改之前 Password Safe 将自动的保存一个数据库副本，
+副本使用除扩展名外其余与当前数据库相同的目录和名称(备份扩展名为 ".ibak" 代替保存的数据库 ".psafe3")。查看<a href="backups_tab.html">这里</a>了解更多关于自动备份的信息。</small></li>
+</ul>
+<hr>
+		</div>
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br>
+<br>
+<br>
+		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="恢复备份">
+			<param name="Keyword" value="生成备份">
+		</object>
+	
+</body>
+</html>

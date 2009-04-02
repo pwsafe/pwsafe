@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>安全选项卡</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>安全选项卡</h2>
+<img style="width: 394px; height: 462px;" alt="security tab" src="images/options/security_tab.png">
+<p>安全选项卡提供用户访问控制安全设置。其易用性和程序安全受这里列出的选项影响，但根本上不参与加密密码数据库。</p>
+<div class="instr">
+<h3>最小化时清空剪贴板</h3>
+<p>勾选此项，当应用程序最小化时程序将清空剪贴板中的所有存储数据内容 (如密码)。
+这是预防其他任何人或任何其它程序从剪贴板中读取内容。注意选择该选项对于在<a href="misc_tab.html">杂项选项卡</a>中双击操作“复制密码到剪贴板并最小化”选项将导致意外结果(双击项目时密码虽然被复制，但最小化时却又被立即清空掉)。</p>
+<h3>退出程序时清空剪贴板</h3>
+<p>勾选此项，当界面被最小化或关闭时程序将清空剪贴板中的所有存储数据内容。这是预防其他任何人或任何其它程序从剪贴板中读取内容。</p>
+<h3></h3>
+<h3>确认项目复制到剪贴板</h3>
+<p>勾选此项时，显示一个提示对话框要求用户每次从数据库复制密码到剪贴板时进行确认。</p>
+<h3>最小化时锁定密码数据库</h3>
+<p>勾选此项，当程序最小化时自动锁定密码数据库，而当再次最大化访问程序时必需输入密码。</p>
+<h3>锁定密码数据库在工作站界面</h3>
+<p>勾选此项将导致密码数据库空闲在规定的时间后被锁定在工作站界面。目的是预防未经用户授权访问时访问工作站。</p>
+<h3>密码数据库空闲超时后自动锁定...</h3>
+<p>勾选此选项和设置一个时间将导致 <b>Password Safe</b> 在所设定间隔时间过后还没有用户操作应用程序时自动锁定密码数据库。</p>
+</div>
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="安全选项卡"> <param name="Keyword" value="锁定数据库"> <param name="Keyword" value="确认复制到剪贴板"> <param name="Keyword" value="清空剪贴板"> </object>
+</body>
+</html>

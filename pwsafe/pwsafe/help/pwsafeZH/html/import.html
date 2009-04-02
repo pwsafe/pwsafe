@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>输入项目</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		<!-- Popup Source File -->
+<h2>输入项目</h2>
+<p><span style="font-weight: bold;">Password Safe</span> 允许用户输入其它格式的密码信息。
+这些文件可能通过其它应用程序所生成，输出成一个电子表格甚至利用记事本或类似的文字编辑器手工制作的文件。</p>
+<p><span style="font-weight: bold;">Password Safe</span> 支持格式为:</p>
+<ul>
+  <li><a href="#text">文本文件</a></li>
+  <li><a href="#XML">XML</a></li>
+  <li>已存密码(其它密码管理实用程序生成的文件)</li>
+</ul>
+<div class="instr">
+<h3><a name="text"></a>文本格式</h3>
+<p>文本文件用于输入包含一个或多个密码项目组成的密码项目文件。每个字段里的项目都是由一个字段分隔符分隔和每个项目可包含一个或多个行。
+输入文本文件格式详细情况可在“<a href="imp_exp_text_details.html">纯文本输出与输入格式</a>”章节中找到。</p>
+<h3>输入文本设置对话</h3>
+<p>可在处理文件之前配置输入到文本文件中的字段分隔符与输入到新项目里的默认组名称。</p>
+<p><img style="width: 332px; height: 205px;" alt="Import Text Settings" src="images/import.png"></p>
+<p> </p>
+<ol>
+         <li><b>文件 &gt; 输入...</b></li>
+         <li>选择<b>纯文本文件...</b></li>
+         <li>为需要输入的文本文件设定输入设置与参数</li>
+    <li>如果一个备注字段已使用复式线分隔符，任何前一条输出或使用一个文本编辑器以便把它输入到这里，在输入处理时，备注字段将被复式线替换符号分成一个新行。</li>
+         <li>单击<b>确定</b></li>
+    <li>选择文本文件输入。</li>
+    <li>在输入过程结尾，出现一个小对话框显示有多少额外项目及多少(如果有)分析不成功。</li>
+</ol>
+<hr>
+			<small><b><span style="color: rgb(255, 0, 0);">要点</span>: </b>输入首行文件必须有一列标记分隔每项目包含的字段名称，例如: 
+“组/标题、用户名、密码、网址”等。该行是通过“<a href="export.html">输出文本</a>”函数自动生成，但必须手工添加给文件创建自其它工具。<br>
+</small>
+<hr style="width: 100%; height: 2px;">
+<h3><a name="XML"></a>XML</h3>
+XML(可扩展置标语言)是一个流行格式作为传递应用程序来往数据的文件。<span style="font-weight: bold;">Password Safe</span> 可以输入 XML 文件，
+它是按照图解定义生成在文件 <span style="font-style: italic;">pwsafe.xsd</span> 中，以分配部份作为条件。
+		</div>
+        <!-- Added some white space at the bottom for natural scrolling -->
+		<br>
+<br>
+<br>
+        <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="输入密码项目">
+			<param name="Keyword" value="输出密码项目">
+			<param name="Keyword" value="Excel 密码数据">
+			<param name="Keyword" value="转换现有密码数据">
+		</object>
+</body>
+</html>

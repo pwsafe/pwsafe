@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>自动输入</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>自动输入</h2>
+<p><b>自动输入</b>为用户提供一个简易快捷输入用户名与密码信息的途径。
+单击需输入的用户名和密码及递送主机认可的数据。默认状态，公式跟随自动击键如下: <a name="defautotext"></a>用户名，接着换行、密码、再换行、最后输入键(<i>用户名</i>
+<b>换行</b><i>密码</i> <b>换行输入</b>)。
+该操作能满足大部分网站所需要的用户名/密码验证。</p>
+<p>为了网站或应用程序需要不同的数据，可以在<a href="#autotype_details">自定义自动输入</a>章节下设计描述自动输入特性。注意也可以通过选项对话框的<span style="font-style: normal;"><a href="misc_tab.html">杂项</a>选项卡</span>自定义<span style="font-style: normal;"><a href="#defautotext">默认</a></span>自动输入文本。
+这是很有帮助的，如自动输入能非常快速的输入到计算机中。</p>
+<div class="instr">
+<h3>使用自动输入</h3>
+<ol>
+  <li>把光标置于表单的用户名字段里</li>
+  <li>最大化或打开 Password Safe</li>
+  <li>选定一个密码项目</li>
+  <li><b>Ctrl -T</b> 或右击和选定<b>执行自动输入</b>或在工具栏按钮单击启动。</li>
+</ol>
+<h3><a name="autotype_details"></a>自定义自动输入</h3>
+<p>由于网站或应用程序存在需要用户名字段和密码字段来使用登录按钮登录，可以修改<a href="#N1">“自动输入”</a>字段特征指定想要填写的文本，特征如下:</p>
+<ul>
+  <li><span style="font-weight: bold;">\u</span>&nbsp;代替用户名关联项目。&nbsp;</li>
+  <li><span style="font-weight: bold;">\p</span>&nbsp;代替密码关联项目。</li>
+  <li><span style="font-weight: bold;">\g</span>&nbsp;代替组关联项目。</li>
+  <li><span style="font-weight: bold;">\i</span>&nbsp;&nbsp;代替标题关联项目。</li>
+  <li><span style="font-weight: bold;">\o</span>&nbsp;代替备注 (可能多行文本) 关联字段。</li>
+  <ul>
+    <li>&nbsp;所有行字符“\n”、“\r”或“\r\n”结束均转换为“\r”(回车)。</li>
+    <li>不代替生成转义序列在备注字段里 (例如: “\u”、“\p”
+等。)除“\t”之外序列使用制表符取代。</li>
+  </ul>
+  <li><span style="font-weight: bold;">\o</span><span style="font-style: italic; font-weight: bold;">NNN</span>
+是代替备注字段某行内容</li>
+  <ul>
+    <li><span style="font-style: italic;">NNN </span>可通过一至三个数字 (例如: \o5 为第五行
+，\o45 为第四十五行等等。)</li>
+    <li>行尾字符<span style="font-style: italic;">不</span>包括。</li>
+    <li>如果 <span style="font-style: italic;">NNN </span>大于备注字段行数，则没有效果。<br>
+ </li>
+  </ul>
+  <hr> <small><b>备注:</b> 这是一个最简便支持应用程序自动输入的方式，需要第二次密码或其它任意文本为认证过程部份。</small>
+   <hr> <li><span style="font-weight: bold;">\b</span>
+代替退格键。&nbsp;<span style="font-weight: bold;"></span></li>
+  <li><span style="font-weight: bold;">\t</span>代替换行键，空指令字段有效。&nbsp;</li>
+  <li><span style="font-weight: bold;">\n</span>代替回车键，按回车按钮效果。&nbsp;</li>
+  <li><span style="font-weight: bold;">\\</span>代替反斜杠 ( \ ) 键。&nbsp;</li>
+  <li><span style="font-weight: bold;">\d<span style="font-style: italic;">NNN</span></span> 设置字符之间的延迟 <span style="font-style: italic;">NNN</span> 毫秒，
+而不用 10 (默认)。<br>
+    <hr> <small><b>备注:</b> 可以使用 \d 命令连贯一个数字。例如: \d999\d999\d999\d010 给予 3 秒延迟(3.007, 精确的)。 \d 命令设置字符间延迟和同时立即产生延迟。</small>
+    <hr> </li>
+  <li>所有其它文本输入示列。<br>
+  </li>
+</ul>
+<p><span style="font-weight: bold;">示例:</span>
+下列可用于银行帐号位置 (12345)，必须输入在用户和密码前:<br>
+<br>
+<span style="font-style: italic;">12345\t\u\t\p\t\n</span></p>
+<p><span style="font-style: italic;"></span></p>
+</div>
+<hr> <small><b>备注:</b>&nbsp;<a name="N1">默认情况，自动输入字段不显示在添加或编辑对话框。
+要访问自动输入字段，可以在对话框单击“更多&gt;&gt;”按钮。<br>
+<br>
+如果自动输入存在问题，可能需要禁用第三方插件弹出拦截。即用户使用自动输入功能时弹出插件拦截报告问题的相互影响。</a></small>
+<hr><!-- Added some white space at the bottom for natural scrolling --><a name="N1"><b><br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="自动输入"> <param name="Keyword" value="使用自动输入"> </object>
+</b></a>
+</body>
+</html>

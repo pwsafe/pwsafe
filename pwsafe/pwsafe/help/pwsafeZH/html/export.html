@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>输出项目</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+     <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>输出项目</h2>
+<p><span style="font-weight: bold;">Password Safe</span> 支持已存储密码输出(和输入)到(从)若干格式文件。
+需要删除数据使用文件 -&gt; 输出菜单。支持格式为:</p>
+<ul>
+  <li>Password Safe v1 (适用版本为 1.x 的 Password Safe)</li>
+  <li>Password Safe v2 (适用版本为 2.x 的 Password Safe)</li>
+  <li><a href="#te">纯文本文件</a></li>
+  <li><a href="#xml">XML</a></li>
+</ul>
+<p>输出适用于早期版本的 <span style="font-weight: bold;">Password Safe</span> 文件，只需选择想要的格式和指定希望创建的数据库文件名称。</p>
+<h3><a name="te"></a>输出文本</h3>
+<hr> <small><b style="color: rgb(255, 0, 0);">备注:</b><span style="color: rgb(255, 0, 0);"> 输出文本为所指定密码项目的一个</span><span style="font-weight: bold; color: rgb(255, 0, 0);">无保护</span><span style="color: rgb(255, 0, 0);">副本。在</span><span style="font-weight: bold; color: rgb(255, 0, 0);">不</span><span style="color: rgb(255, 0, 0);">充分使用后请删除该文件副本，使攻击程序难以获得及有效的绕过安全程序。</span><br style="color: rgb(255, 0, 0);">
+<span style="color: rgb(255, 0, 0);">请最好</span><span style="font-weight: bold; color: rgb(255, 0, 0);">不要</span><span style="color: rgb(255, 0, 0);">使用该操作，除非你已了解和接受该风险！</span><br>
+</small>
+<hr>
+<p><span style="font-weight: bold;">Password Safe</span> 允许输出密码项目为文本文件。该文件可能因此被使用或被其它程序修改。<br>
+将首先询问输入主密码或让确认可能输出数据库为一个未加密的文本文件。<br>
+<br>
+</p>
+<img style="width: 427px; height: 276px;" alt="Export Text" src="images%5Cexport.png">
+<p> 同样可以指定部份选项:</p>
+<ul>
+    <li>
+<p>密码项目将被输出字段之间存在标记的文件。例如: 在组、标题、用户名、密码和备注字段之间。“组/标题”考虑为单字段。
+任何字段包含一个空白时将被输出在双引号字符里。
+只有备注字段可以包含多行项目。正常处理每个备注行位置在输出文本字段里使用一个分隔行。
+不过，这样使得它难以分类或使用比较两个不同输出文件时。要克服这个可以在输出它们时指定一个多行定界符分隔。
+如果转到输入一个文本文件创建具有这样一个定界符，<span style="font-weight: bold;"></span>那么它必须被指定，
+所有备注行将作为一个单独行出现在数据库结果里。<br>
+如果必要，标记想要标记的所有分隔行于备注字段的一行上然后输入符号用作定界符。
+由于备注字段整体被双引号标注，该符号禁止被选为多行定界符。</p>
+</li>
+</ul>
+<ul>
+ <li>更多控制输出格式可以通过单击“高级”按钮。将出现下列对话框:</li>
+</ul>
+<p><img style="width: 382px; height: 461px;" alt="Advanced Text Export Options" src="images/export_text_adv.png"></p>
+<p>该对话框允许只输出基于文本指定字段项目的部份和/或指定哪些字段被输出。
+在选定完成时单击确定或取消不作出任何更改返回到输出文本对话框。</p>
+<p>此时将询问用户提供新文件名称以及如果文件已存在所指定的目录时确认覆盖同名文件。</p>
+<hr style="width: 100%; height: 2px;"><small>备注: 详细的输出文本文件格式资料被建立在“<a href="imp_exp_text_details.html">纯文本文件输出与输入格式</a>”节段。</small>
+<hr style="width: 100%; height: 2px;">
+<p></p>
+<h3><a name="xml"></a>XML</h3>
+XML (可扩展置标语言)是一种流行格式作为应用程序之间传递数据。Password Safe 可以输出(和输入)数据库项目为这种格式。
+构造(或<span style="font-style: italic;">规划</span>) 以输出数据和验证定义为标准的文件<span style="font-style: italic;">pwsafe.xsd</span>，
+是提供作为布局的一部份。该文件被用于 Password Safe 在输入输出 XML 数据时。<br>
+<hr style="width: 100%; height: 2px;"><small><b style="color: rgb(255, 0, 0);">备注:</b><span style="color: rgb(255, 0, 0);"> 输出文件为选定密码项目的一个</span><span style="font-weight: bold; color: rgb(255, 0, 0);">无保护</span><span style="color: rgb(255, 0, 0);">副本,请记得在</span><span style="font-weight: bold; color: rgb(255, 0, 0);">不</span><span style="color: rgb(255, 0, 0);">使用后及时删除它，
+以防黑客入侵并有效绕过安全程序轻松获取其中敏感信息。该文件可以使用其它文本编辑器轻易打开，比如: Windows 记事本！</span><br style="color: rgb(255, 0, 0);">
+<span style="color: rgb(255, 0, 0);">请最好</span><span style="font-weight: bold; color: rgb(255, 0, 0);">不要</span><span style="color: rgb(255, 0, 0);">使用该操作，除非你已了解和接受该风险！</span></small>
+<hr style="width: 100%; height: 2px;">
+显示的 XML 文件是使用 <span style="font-style: italic;">pwsafe.xsl</span>(可扩展样式语言文件)表示的。
+它是一个样品文件，可以根据你自己需要作出修改，提供作为一部份布局。
+该文件只是一个样品和你可以轻易修改它显示你想要显示的任何字段。
+虽然只作为显示数据和即使不修改它，但在稍后你将依旧可以输入它到 Password Safe 中。<br>
+<br>
+作为文本输出选项，你可以控制项目和字段输出到 XML 文件，通过单击输出 XML 对话框上的高级按钮进入。该对话框将显示如下:<br>
+<img style="width: 382px; height: 461px;" alt="Advanced XML Export Options" src="images/export_xml_adv.png"><br>
+<br>
+<p>该对话框允许你只输出部份项目，
+基于指定字段的文本和/或指定哪些字段被输出。完成时单击确定或取消返回到输出 XML 对话框不作出任何更改。
+请注意 XML 规划需要标题和密码字段，因此这些不能被取消选定。</p>
+<p>
+你将接着被询问需要供给新文件名和如果文件已存在于你所指定的目录时需要确认覆盖同名文件。</p>
+&nbsp;<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="输出密码项目"> <param name="Keyword" value="输入密码项目"> <param name="Keyword" value="Excel 密码数据"> <param name="Keyword" value="转换现有密码数据">
+</object>
+</body>
+</html>

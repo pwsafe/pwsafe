@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>用户名和密码</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>用户名、密码和组</h2>
+<img style="width: 457px; height: 387px;" alt="Edit/View Entry" src="images%5Cedit_view_entry.png">
+<p>下列小部分信息关联每个密码项目:</p>
+<ul>
+  <li><b>组</b>: 以一些相关项目命名的分组(组织)</li>
+  <li><b>标题</b>: 为一个密码项目的友好命名</li>
+  <li><b>用户名</b>: 用户使用名称</li>
+  <li><b>密码</b>: 该相关项目的密码</li>
+  <li><b>备注</b>: 自由形态常规备注字段</li>
+</ul>
+另外，下列字段可被用于(在添加或编辑对话框按“更多&gt;&gt;”按钮可见):<br>
+<br>
+<img style="width: 459px; height: 280px;" alt="Extra fields" src="images/edit_view_entry_more.png"><br>
+<ul>
+  <li><span style="font-weight: bold;">网址</span>:
+与该项目关联的网址。如果该字段不为空，则“浏览”选项启用。如果协议未指定，则“http://”被假定(例如:“www.foo.net”与“http://www.foo.net”等同)。下列备注描述网址处理更多细节。</li>
+</ul>
+<hr style="width: 100%; height: 2px;">
+<ul>
+  <small><span style="font-weight: bold;">备注: <br>
+  </span></small><li><small>默认情况下，Password Safe 通常使用 PC 浏览器打开网页。如果需要，可以指定一个<span style="font-style: italic;">更换浏览器</span>
+在网址前放置“[alt]”例如:“[alt]http://www.foo.net”。这是非常有帮助的，例如: 如果你的默认浏览器是 Firefox 和希望访问一个网站时具有 Internet Explorer 的最佳状态。
+需要配置一个更换浏览器，请使用<a href="misc_tab.html#AltBrowser">管理-&gt;选项-&gt;杂项</a>对话框。</small></li>
+  <li><small>也可以指定一个电子邮箱地址，例如，mailto:joe@somewhere.com 作为网址，在这种情况下，默认邮件将被引用到“浏览”操作。</small></li>
+  <li><small>假如“{alt}”被放置到网址之前，则它将传递
+“原样”到更换浏览器，也就是说，在没有增加指定协议“http://”的情况下，如果更换浏览器是一个远程访问的应用程序，这是非常有用的。例如: 一个 SSH 客户机， [ssh] 将达到一样的效果。<br>
+  </small></li>
+</ul>
+<hr style="width: 100%; height: 2px;">
+<ul>
+  <li><span style="font-weight: bold;">自动输入</span>:
+如果此字段不是空的，其内容取代默认值为自动输入功能。欲了解更多信息，查看“<a href="autotype.html">自动输入</a>”帮助主题。</li>
+  <li><span style="font-weight: bold;">日期/时间信息</span>:
+这是只读字段帮助在所选项目被创建时保存的跟踪信息等等。该信息不显示在添加项目对话框。</li>
+  <li><span style="font-weight: bold;">密码失效时间:</span>设定密码失效日期，单击“设定”按钮和指定所期望的失效日期，无论作为一个绝对日期
+(例如: "2007-03-17")或相对天数(例如: "在 30 天之后")。当定量日期接近时，<span style="font-weight: bold;">Password Safe</span> 将通知你启动时的密码应该更改，同时也标记该项目为一个显著的颜色。<br>
+如果设定“在<span style="font-style: italic;">N </span>天后”，则可以指定一个“重复”失效。该选项将促使一个<span style="font-weight: bold;">新</span>
+的和当更改项目密码时产生的以指定天数为基础计算的失效日期。例如: 假设创建一个项目在
+1 月 1 日和指定在 5 天之后重复失效日期，将在 1 月 6 日开始得到一个失效通知；如果在 1 月 7 日更改密码，那么新的失效日期将在 1 月 12 日(假定失效日期已被设定在 5 天之后的前提下)。<br>
+    <br>
+    <div style="text-align: center;"><img style="width: 332px; height: 188px;" alt="Entry Expiration Dialog Box" src="images/entry_expiry.png"></div>
+  </li>
+  <li>&nbsp;需要取消失效设定，单击“取消”。&nbsp;<span style="font-weight: bold;"></span></li>
+</ul>
+<div style="margin-left: 40px;"><span style="font-weight: bold;"></span>
+<hr style="width: 100%; height: 2px;"><small><span style="font-weight: bold;">备注: Password Safe </span>将<span style="font-style: italic;">只有</span>在用户密码失效时提醒用户，它是提醒用户负责更改密码。</small>
+<hr style="width: 100%; height: 2px;"></div>
+<p>仅标题和密码字段是必需的，其它所有为可选。</p>
+<div class="instr">
+<h3>创建一个新用户名和密码项目</h3>
+<ol>
+  <li>打开数据库在想要的位置新建项目</li>
+  <li>从<b>编辑</b>菜单，选择<b>添加项目</b></li>
+  <li>输入信息到<b>编辑/查看项目</b>对话字段为必需的信息</li>
+</ol>
+<hr> <small><b>备注:</b>&nbsp;如果一个组名称已选定然后添加一个新项目，项目将有组名称填充在<b>编辑/查看项目</b>对话；
+如果一个新组名称被添加到组字段，那么这个组名称将被创建。<br>
+</small>
+<hr>
+<h3>生成和编辑密码</h3>
+<p>如果希望可以手工输入属于自己的密码到密码字段里，或可以使用 <b>Password Safe</b> 生成一个基于当前<a href="password_policies.html">密码策略</a>的密码。
+需要 <span style="font-weight: bold;">Password Safe </span>生成一个密码，仅需在<span style="font-weight: bold;">编辑/查看项目</span>对话单击<span style="font-weight: bold;">生成</span>按钮；如果不满意该结果，可以再次单击<span style="font-weight: bold;">生成</span>或手工编辑密码。</p>
+<ol>
+</ol>
+<hr> <small><b>备注:</b>
+<ul>
+  <li>要给当前项目定义一个特定的密码策略，勾选<b>忽略策略</b>，
+该策略将被存储除此项目之外和将被用于每当给此项目生成一个新密码时的默认设定。
+当默认策略不符合网站特殊要求的密码时，该功能是非常有用的。</li>
+  <li>要查看一个项目的非默认密码策略，按下 Shift 键然后单击生成按钮。</li>
+  <li>如果密码或用户名包含一个区分字符(例如:“&acute;”、 “`”、 “^”、 “&uml;”或“~”)
+在键盘上其次的字符可以被修改(例如:“a”)，密码必须被输入为“[~][空格]
+[空格][a]”(这些仅适用于非美式键盘)。</li>
+  <li>如果使用一个“单点登录”系统允许共享相同密码跨越不同的计算机/服务器/应用程序等。
+可以设置 <span style="font-weight: bold;">Password Safe</span>
+相应项目，以便修改一个密码影响其它所有相关项目，这便是所谓的“别名”项目。详细解释<a href="aliases.html">在这里</a>。</li>
+</ul>
+</small>
+<hr>
+<h3>历史密码</h3>
+这是有可能配置 <b>Password Safe</b> 保存一个项目的最后几个密码，当项目被创建或查看一个现有项目时，这里可完成任何一个。
+要查看最近相关项目密码或更改最近保存密码数量，单击“历史密码...”按钮。这里将调用<a href="password_history.html">历史密码</a>
+对话框。如果有为项目保存早期密码，编辑对话框将指示有多少数量。
+<h3>编辑现有项目</h3>
+<ol>
+  <li>从列表选择密码项目进行编辑</li>
+  <li>从<b>编辑</b>菜单选择<b>编辑/查看项目</b> </li>
+</ol>
+<hr> <small><b>备注:</b>&nbsp;默认情况下，密码是被隐藏的，需要查看项目相关密码，单击旁边的<b>显示</b>按钮。
+	<br>
+</small>
+<hr>
+<h3>添加一个新组</h3>
+<ol>
+  <li>从<b>编辑</b>菜单选择<b>添加组</b> </li>
+  <li>输入组名称</li>
+</ol>
+<h3>编辑一个组名称</h3>
+<ul>
+  <li>右击组名称从下拉列表选择<b>重命名组</b>
+</li>
+</ul>
+<hr> <small><b>备注:</b>&nbsp;组名称可被“嵌套”，放置一个组名称在其它组名称的内部及下面。<br>
+</small>
+<hr><br>
+ </div>
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="用户名">
+  <param name="Keyword" value="添加密码项目">
+  <param name="Keyword" value="存储密码">
+  <param name="Keyword" value="组">
+  <param name="Keyword" value="生成密码">
+  <param name="Keyword" value="密码">
+  <param name="Keyword" value="编辑密码项目">
+  <param name="Keyword" value="查看密码项目">
+  <param name="Keyword" value="重命名密码项目">
+  <param name="Keyword" value="浏览">
+  <param name="Keyword" value="更换浏览器">
+  <param name="Keyword" value="ssh">
+  <param name="Keyword" value="网址">
+</object>
+</body>
+</html>

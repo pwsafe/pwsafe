@@ -1,0 +1,564 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-2052" http-equiv="Content-Type">
+  <title>参数选择</title>
+<!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h1><span style="font-size: 14pt;" lang="EN-GB">PasswordSafe 参数选择<o:p></o:p></span></h1>
+<hr style="width: 100%; height: 2px;">像许多应用程序一样，
+PasswordSafe 允许用户配置它的性能与外观为符合用户偏好和所需的最佳套件。
+许多应用程序把如此的参数选择存储在 Windows “注册表”，似乎是一种约定成俗与方便的事情。
+早期版本的 PasswordSafe 也用过注册表，但经过验证存在问题的原因如下:<br>
+1. 一些可配置的参数选择与安全是相关的并存储它们在一个开放的储存库中，如 Windows 注册表
+也许能让黑客获得访问数据库的权利 (例如，假定黑客通过禁止数据库锁定一个禁止超时后，
+用户总以为数据库被安全的锁定在运行之外，而黑客却因此能方便的访问它)。<br>
+2. 许多人使用的 PasswordSafe 是在 U 盘上的或相反共享同样的数据库跨越多个计算机，
+如此共享配置数据在注册表是不切实际的。<br>
+<br>
+PasswordSafe 有许多的参数选择，每个都具有一个合理的默认值。
+当用户更改配置为一个非默认值时，新值便存储在 PasswordSafe 中。<br>
+PasswordSafe 定义参数选择以安全相关或非安全相关为目的。
+前者保存在数据库，加密使用一样的密匙作为用户数据。<br>
+非安全相关的参数选择保存在一个配置文件 pwsafe.cfg 中。该文件是 XML 格式，具有每个主机与每个用户节点。
+因此该文件可以共享在不同的用户与跨越不同的计算机之间。<br>
+默认情况下，pwsafe.cfg 保存在 pwsafe.exe 可执行程序相同目录下。
+无论何种情况，PWS_PREFSDIR 环境变量的设置，
+pwsafe 都将使用这里存储配置文件。这对于写入 pwsafe.exe 安装目录位置权限约束是极有帮助的。<br>
+<br>
+下列表格描述配置项，大部分可通过<a href="manage_menu.html">管理-&gt;选项</a>对话框配置。<br>
+<hr style="width: 100%; height: 2px;">
+<h4><span style="font-size: 11pt;" lang="EN-GB"><o:p></o:p></span><span style="font-size: 11pt; font-family: &quot;Times New Roman&quot;;" lang="EN-GB"></span>布尔值 (true/false) 参数选择</h4>
+<table style="width: 640px;" border="1" cellpadding="2" cellspacing="2" width="100%">
+  <tbody>
+    <tr>
+      <td style="font-weight: bold; width: 214px;" align="center" valign="middle">首选项</td>
+      <td style="font-weight: bold; width: 68px;" align="center" valign="middle">默认</td>
+      <td style="font-weight: bold; width: 140px;" align="center" valign="middle">存储位置</td>
+      <td style="width: 200px;" align="center" valign="middle"><span style="font-weight: bold;">注释</span></td>
+    </tr>
+    <tr>
+      <td style="width: 214px;">alwaysontop</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>主窗口总在上面</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">showpwdefault</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>默认显示密码</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">showpwinlist</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>列表视图显示密码</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">sortascending</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>升序筛选</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">usedefuser</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>使用默认用户</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">saveimmediately</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>立即保存</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwuselowercase</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>密码生成策略</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwuseuppercase</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>密码生成策略</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwusedigits</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>密码生成策略</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwusesymbols</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>密码生成策略</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwusehexdigits</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>密码生成策略</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pweasyvision</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>密码生成策略</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">dontaskquestion</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>不询问问题</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">deletequestion</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>删除时询问</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DCShowsPassword</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>文档显示密码</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DontAskMinimizeClearYesNo</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>最小化清除不询问 是/否</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DatabaseClear</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>数据库清除</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DontAskSaveMinimize</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>最小化时不询问保存</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">QuerySetDef</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>默认查询设定</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">UseNewToolbar</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>使用新式工具栏</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">UseSystemTray</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>使用系统托盘</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">LockOnWindowLock</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>锁定在最后界面</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">LockOnIdleTimeout</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>空闲超时锁定</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">EscExits</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>设 Esc 键退出</small></td>
+    </tr>
+
+
+    <tr>
+      <td style="width: 214px;">HotKeyEnabled</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>启用热键</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">MRUOnFileMenu</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>大部分最近用过的数据库</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DisplayExpandedAddEditDlg</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>默认 更多/缩减 细节</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">MaintainDateTimeStamps</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>维护 日期/时间 印记</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">SavePasswordHistory</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>保存历史密码</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">FindWraps</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>查找换行</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">ShowNotesDefault</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> 数据库</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>默认显示备注内容</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">BackupBeforeEverySave</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>每次保存之前备份</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">PreExpiryWarn</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>密码失效提醒</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">ExplorerTypeTree</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>在树状目录首位显示分组</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">ListViewGridLines</td>
+      <td style="width: 68px;"> false</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>在列表视图显示网格线</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">MinimizeOnAutotype</td>
+      <td style="width: 68px;"> true</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 200px; text-align: left;" valign="middle"><small>自动输入时最小化</small></td>
+    </tr>
+
+  </tbody>
+</table>
+<br>
+<h4>数值参数选择</h4>
+<table style="width: 780px;" border="1" cellpadding="2" cellspacing="2" width="100%">
+
+  <tbody>
+    <tr>
+      <td style="width: 185px; font-weight: bold;" align="center" valign="middle">首选项</td>
+      <td style="width: 194px; font-weight: bold;" align="center" valign="middle">默认</td>
+      <td style="width: 115px; font-weight: bold;" align="center" valign="middle">存储位置</td>
+      <td style="width: 40px; font-weight: bold;" align="center" valign="middle">最小</td>
+      <td style="width: 40px; font-weight: bold;" align="center" valign="middle">最大</td>
+      <td style="width: 180px; font-weight: bold;" align="center" valign="middle">注释</td>
+    </tr>
+    <tr>
+      <td style="width: 185px;">column1width</td>
+      <td style="width: 194px;">n/a</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>栏目 1 宽度</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">column2width</td>
+      <td style="width: 194px;"> n/a</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>栏目 2 宽度</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">column3width</td>
+      <td style="width: 194px;"> n/a</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>栏目 3 宽度</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">column4width</td>
+      <td style="width: 194px;"> n/a</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>栏目 4 宽度</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">sortedcolumn</td>
+      <td style="width: 194px;"> 0</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 0</td>
+      <td style="width: 40px;"> 15</td>
+      <td style="width: 180px;"><small>筛选栏目</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">pwlendefault</td>
+      <td style="width: 194px;"> 8</td>
+      <td style="width: 115px;">数据库</td>
+      <td style="width: 40px;"> 4</td>
+      <td style="width: 40px;"> 1024</td>
+      <td style="width: 180px;"><small>默认密码长度</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">maxmruitems</td>
+      <td style="width: 194px;"> 4</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 0</td>
+      <td style="width: 40px;"> 20</td>
+      <td style="width: 180px;"><small>大部分最近用过的数据库</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">IdleTimeout</td>
+      <td style="width: 194px;"> 5</td>
+      <td style="width: 115px;">数据库</td>
+      <td style="width: 40px;"> 1</td>
+      <td style="width: 40px;"> 120</td>
+      <td style="width: 180px;"><small>空闲超时</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">DoubleClickAction</td>
+      <td style="width: 194px;"> 双击复制密码</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>双击操作</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">HotKey</td>
+      <td style="width: 194px;"> 无</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> n/a</td>
+      <td style="width: 40px;"> n/a</td>
+      <td style="width: 180px;"><small>热键</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">MaxREItems</td>
+      <td style="width: 194px;"> 25</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 0</td>
+      <td style="width: 40px;"> 25</td>
+      <td style="width: 180px;"><small>最近项目最大数量</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">TreeDisplayStatusAtOpen</td>
+      <td style="width: 194px;"> 全部收缩</td>
+      <td style="width: 115px;">数据库</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>打开时树状目录状态</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">NumPWHistoryDefault</td>
+      <td style="width: 194px;"> 3</td>
+      <td style="width: 115px;">数据库</td>
+      <td style="width: 40px;"> 0</td>
+      <td style="width: 40px;"> 255</td>
+      <td style="width: 180px;"><small>保存多少历史密码</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">BackupSuffix</td>
+      <td style="width: 194px;"> 0</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;"> n/a</td>
+      <td style="width: 180px;"><small>备份后缀</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">BackupMaxIncremented</td>
+      <td style="width: 194px;"> 1</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 1</td>
+      <td style="width: 40px;"> 999</td>
+      <td style="width: 180px;"><small>最大备份增量</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">PreExpiryWarnDays</td>
+      <td style="width: 194px;"> 1</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 1</td>
+      <td style="width: 40px;"> 30</td>
+      <td style="width: 180px;"><small>涉及密码失效提醒的时间</small></td>
+    </tr>
+
+  </tbody>
+</table>
+<br>
+<h4>文本参数选择</h4>
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+
+  <tbody>
+    <tr>
+      <td style="font-weight: bold;" align="center" valign="middle">首选项</td>
+      <td style="font-weight: bold;" align="center" valign="middle">默认</td>
+      <td style="font-weight: bold;" align="center" valign="middle">存储位置</td>
+      <td style="font-weight: bold;" align="center" valign="middle">注释</td>
+    </tr>
+    <tr>
+      <td style="width: 185px;">currentbackup</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>最后备份文件的路径与名称</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">currentfile</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>当前 (也就是最后) 已打开的文件</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">lastview</td>
+      <td style="width: 80px;"> 树状目录</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>最后视图选中: 树或列表视图</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">defusername</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;">数据库</td>
+      <td style="width: 399px;"><small>默认用户名</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">treefont</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>树状目录字体</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">BackupPrefixValue</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>备份前缀值</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">BackupDir</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>备份目录</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">AltBrowser</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>更换浏览器</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">ListColumns</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>非默认栏目排序</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">ColumnWidths</td>
+      <td style="width: 80px;"> &lt;无&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>非默认栏目宽度</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">DefaultAutotypeString</td>
+      <td style="width: 80px;">\u\t\p\t\n</td>
+      <td style="width: 110px;">数据库</td>
+      <td style="width: 399px;"><small>默认自动输入字串</small></td>
+    </tr>
+
+  </tbody>
+</table>
+<br>
+<br>
+&nbsp;<!-- Added some white space at the bottom for natural scrolling --><br>
+
+
+<br>
+
+
+<br>
+
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="输出密码项目"> <param name="Keyword" value="输入密码项目"> <param name="Keyword" valuetext="" password="" data="">
+<param name="Keyword" value="转换现有密码数据"></object>
+</body>
+</html>
