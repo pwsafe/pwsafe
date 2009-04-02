@@ -68,12 +68,12 @@ static const COLORREF crefWhite = (RGB(255, 255, 255));
 
 CEditDlg::CEditDlg(CItemData *ci, const StringX currentDB, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
-  m_ci(ci), m_Edit_IsReadOnly(false),
-  m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
-  m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
-  m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL),
-  m_bWordWrap(FALSE), m_bShowNotes(FALSE), m_currentDB(currentDB),
-  m_bLaunchPlus(false)
+    m_ci(ci), m_Edit_IsReadOnly(false),
+    m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
+    m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
+    m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL),
+    m_bWordWrap(FALSE), m_bShowNotes(FALSE), m_currentDB(currentDB),
+    m_bLaunchPlus(false), m_last_TFC(0)
 {
   ASSERT(ci != NULL);
   m_pDbx = static_cast<DboxMain *>(pParent);
@@ -184,9 +184,6 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_NOTESWW, (CString&)m_notesww);
    DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
    DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
-   DDX_Text(pDX, IDC_URL, (CString&)m_URL);
-   DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
-   DDX_Text(pDX, IDC_RUNCMD, (CString&)m_runcommand);
    DDX_Text(pDX, IDC_CTIME, (CString&)m_locCTime);
    DDX_Text(pDX, IDC_PMTIME, (CString&)m_locPMTime);
    DDX_Text(pDX, IDC_ATIME, (CString&)m_locATime);
@@ -204,9 +201,6 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_NOTESWW, *m_pex_notesww);
    DDX_Control(pDX, IDC_USERNAME, m_ex_username);
    DDX_Control(pDX, IDC_TITLE, m_ex_title);
-   DDX_Control(pDX, IDC_URL, m_ex_URL);
-   DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
-   DDX_Control(pDX, IDC_RUNCMD, m_ex_runcommand);
    DDX_Check(pDX, IDC_OVERRIDE_POLICY, m_OverridePolicy);
 
    DDX_Control(pDX, IDC_STATIC_GROUP, m_stc_group);
@@ -214,9 +208,13 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_STATIC_USERNAME, m_stc_username);
    DDX_Control(pDX, IDC_STATIC_PASSWORD, m_stc_password);
    DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
-   DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
-   DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);   
-   DDX_Control(pDX, IDC_STATIC_RUNCMD, m_stc_runcommand);  
+   DDX_Control(pDX, IDC_TXT_FLDS_COMBO, m_txtFieldsList_combo);
+   DDX_Control(pDX, IDC_TXT_FLD, m_TextFieldEdit);
+   // If we're moving data from controls to members, set
+   // member corresponding to current combobox
+   if (pDX->m_bSaveAndValidate == TRUE) {
+     OnCbnSelchangeTxtFldsCombo(); // does a bit extra work, but who cares...
+   }
 }
 
 BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
@@ -237,7 +235,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_EN_SETFOCUS(IDC_NOTESWW, OnEnSetfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTESWW, OnEnKillfocusNotes)
-  ON_EN_CHANGE(IDC_URL, OnEnChangeUrl)
+  ON_EN_CHANGE(IDC_TXT_FLD, OnEnChangeTxtField)
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_RUNCMD, OnStcClicked)
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
@@ -246,6 +244,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
 #if defined(POCKET_PC)
   ON_WM_SHOWWINDOW()
 #endif
+  ON_CBN_SELCHANGE(IDC_TXT_FLDS_COMBO, &CEditDlg::OnCbnSelchangeTxtFldsCombo)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -524,8 +523,6 @@ BOOL CEditDlg::OnInitDialog()
     GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, TRUE, 0);
 
     cs_text.LoadString(IDS_VIEWENTRY);
     SetWindowText(cs_text);
@@ -633,10 +630,6 @@ BOOL CEditDlg::OnInitDialog()
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
-    cs_ToolTip.LoadString(IDS_CLICKTOCOPYEXPAND);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_RUNCMD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOGOPLUS);
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_LAUNCH), cs_ToolTip);
 
@@ -649,15 +642,23 @@ BOOL CEditDlg::OnInitDialog()
   m_stc_username.SetHighlight(true, crefWhite);
   m_stc_password.SetHighlight(true, crefWhite);
   m_stc_notes.SetHighlight(true, crefWhite);
-  m_stc_URL.SetHighlight(true, crefWhite);
-  m_stc_autotype.SetHighlight(true, crefWhite);
-  m_stc_runcommand.SetHighlight(true, crefWhite);
 
   GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
 
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
   ResizeDialog();
+
+  // Populate the Text Fields combobox
+  m_txtFieldsList_combo.AddString(CString(MAKEINTRESOURCE(IDS_URL)));
+  m_txtFieldsList_combo.AddString(CString(MAKEINTRESOURCE(IDS_AUTOTYPE)));
+  m_txtFieldsList_combo.AddString(CString(MAKEINTRESOURCE(IDS_RUNCMND)));
+  // Select URL value
+  m_txtFieldsList_combo.SetCurSel(0);
+  // Set Text field to URL value
+  m_TextFieldEdit.SetWindowText(m_URL);
+  // Update Go button, plus some extraneous stuff
+  OnCbnSelchangeTxtFldsCombo();
 
   m_ex_group.ChangeColour();
 
@@ -819,12 +820,8 @@ void CEditDlg::ResizeDialog()
   const int TopHideableControl = IDC_TOP_HIDEABLE;
   const int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
   const int controls[]={
-    IDC_URL,
-    IDC_STATIC_URL,
-    IDC_AUTOTYPE,
-    IDC_STATIC_AUTO,
-    IDC_RUNCMD,
-    IDC_STATIC_RUNCMD,
+    IDC_TXT_FLDS_COMBO,
+    IDC_TXT_FLD,
     IDC_CTIME,
     IDC_STATIC_CTIME,
     IDC_PMTIME,
@@ -1166,41 +1163,6 @@ void CEditDlg::OnStcClicked(UINT nID)
       cs_data = StringX(m_bWordWrap == TRUE ? m_notesww : m_notes);
       iaction = CItemData::NOTES;
       break;
-    case IDC_STATIC_URL:
-      m_stc_URL.FlashBkgnd(crefGreen);
-      cs_data = StringX(m_URL);
-      iaction = CItemData::URL;
-      break;
-    case IDC_STATIC_AUTO:
-      m_stc_autotype.FlashBkgnd(crefGreen);
-      cs_data = PWSAuxParse::GetAutoTypeString(StringX(m_autotype),
-                                          StringX(m_group), StringX(m_title), 
-                                          StringX(m_username), 
-                                          StringX(m_realpassword), 
-                                          StringX(m_bWordWrap == TRUE ? m_notesww : m_notes));
-      iaction = CItemData::AUTOTYPE;
-      break;
-    case IDC_STATIC_RUNCMD:
-      m_stc_runcommand.FlashBkgnd(crefGreen);
-      // If Shift pressed - just copy un-substituted Run Command
-      if (GetKeyState(VK_CONTROL) != 0 || m_runcommand.IsEmpty()) {
-        cs_data = StringX(m_runcommand);
-      } else {
-        stringT errmsg;
-        size_t st_column;
-        cs_data = PWSAuxParse::GetExpandedString(m_runcommand, 
-                       m_currentDB, m_ci, 
-                       m_pDbx->m_bDoAutoType, m_pDbx->m_AutoType,
-                       errmsg, st_column);
-        if (errmsg.length() > 0) {
-          CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
-          CString cs_errmsg;
-          cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
-          MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
-        }
-      }
-      iaction = CItemData::RUNCMD;
-      break;
     default:
       ASSERT(0);
   }
@@ -1254,6 +1216,9 @@ BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
 void CEditDlg::OnBnClickedLaunch()
 {
   UpdateData(TRUE);
+  // 0 = URL, 1 = Autotype, 2 = RunCmd
+  int fieldType = m_txtFieldsList_combo.GetCurSel();
+  if (fieldType == 0) {
   StringX sx_url = StringX(m_URL);
   StringX sx_autotype = PWSAuxParse::GetAutoTypeString(m_autotype, 
                                         m_group, m_title, m_username, 
@@ -1272,12 +1237,23 @@ void CEditDlg::OnBnClickedLaunch()
     GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
   }
   m_bLaunchPlus = false;
+  } else { // Execute RunCmd
+    ASSERT(fieldType == 2);
+    // XXX TBD fill in RunCmd logic
+  }
 }
 
-void CEditDlg::OnEnChangeUrl()
+void CEditDlg::OnEnChangeTxtField()
 {
-  UpdateData(TRUE);
-  GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
+  // 0 = URL, 1 = Autotype, 2 = RunCmd
+  int fieldType = m_txtFieldsList_combo.GetCurSel();
+
+  CString text;
+  m_TextFieldEdit.GetWindowText(text);
+  // Activate Go iff fieldType != 1 && Text itself isn't empty
+
+  GetDlgItem(IDC_LAUNCH)->EnableWindow((fieldType == 1 ||
+                                        text.IsEmpty()) ? FALSE : TRUE);
 }
 
 LRESULT CEditDlg::OnWordWrap(WPARAM, LPARAM)
@@ -1315,4 +1291,41 @@ LRESULT CEditDlg::OnShowNotes(WPARAM, LPARAM)
   m_pex_notes->UpdateState(WM_EDIT_SHOWNOTES, m_bShowNotes);
   m_pex_notesww->UpdateState(WM_EDIT_SHOWNOTES, m_bShowNotes);
   return 0L;
+}
+
+void CEditDlg::OnCbnSelchangeTxtFldsCombo()
+{
+  // get previous, possibly changed, text where it belongs
+  CString oldText;
+  m_TextFieldEdit.GetWindowText(oldText);
+  switch (m_last_TFC) {
+  case 0: // URL
+    m_URL = LPCTSTR(oldText);
+    break;
+  case 1: // AutoType
+    m_autotype = LPCTSTR(oldText);
+    break;
+  case 2: // RunCmd
+    m_runcommand = LPCTSTR(oldText);
+    break;
+  default:
+    ASSERT(0);
+  }
+  // now update text field to reflect new combobox value
+  m_last_TFC = m_txtFieldsList_combo.GetCurSel();
+  switch (m_last_TFC) {
+  case 0: // URL
+    m_TextFieldEdit.SetWindowText(m_URL);
+    GetDlgItem(IDC_LAUNCH)->EnableWindow(m_URL.IsEmpty() ? FALSE : TRUE);
+    break;
+  case 1: // AutoType
+    m_TextFieldEdit.SetWindowText(m_autotype);
+    break;
+  case 2: // RunCmd
+    m_TextFieldEdit.SetWindowText(m_runcommand);
+    GetDlgItem(IDC_LAUNCH)->EnableWindow(m_runcommand.IsEmpty() ? FALSE : TRUE);
+    break;
+  default:
+    ASSERT(0);
+  }
 }

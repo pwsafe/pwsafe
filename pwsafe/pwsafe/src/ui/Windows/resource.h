@@ -609,6 +609,10 @@
 #define IDC_SUBSETRESULTS               1361
 #define IDC_STATICSUBSETWARNING         1362
 #define IDC_DEFNOTESWRAP                1363
+#define IDC_TXT_FLDS_COMBO              1365
+#define IDC_TXT_FLD                     1366
+#define IDC_LIST2                       1367
+#define IDC_COMBOBOXEX1                 1368
 
 // Next default values for new objects
 // 
@@ -616,7 +620,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        452
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1364
+#define _APS_NEXT_CONTROL_VALUE         1369
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif
