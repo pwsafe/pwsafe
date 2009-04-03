@@ -18,14 +18,14 @@
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define FILEVER        3, 16, 2, $WCREV$
-#define PRODUCTVER     3, 16, 2, $WCREV$
-#define STRFILEVER     "3, 16, 2 , $WCREV$$WCMODS?+:$\0"
-#define STRPRODUCTVER  "3, 16, 2, $WCREV$$WCMODS?+:$\0"
+#define FILEVER        3, 17, 0, $WCREV$
+#define PRODUCTVER     3, 17, 0, $WCREV$
+#define STRFILEVER     "3, 17, 0 , $WCREV$$WCMODS?+:$\0"
+#define STRPRODUCTVER  "3, 17, 0, $WCREV$$WCMODS?+:$\0"
 
 // Only define SPECIAL_BUILD before here (in version.in) if needed!
 #ifndef SPECIAL_BUILD
-#define SPECIAL_BUILD _T("")
+#define SPECIAL_BUILD _T("pre1")
 #endif
 
 #endif // _VERSION_H_
