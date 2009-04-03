@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.16.2
+RELEASENAME = 3.17-pre1
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -37,11 +37,17 @@ CANDLE = $(WIXDIR)/candle.exe
 LIGHT = $(WIXDIR)/light.exe
 
 I18N_DIR =./src/ui/Windows/I18N
+I18N_DLL_DIR = ./src/bin/release
 POT_FILE = $(I18N_DIR)/pwsafe.pot
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
-	docs/ChangeLog.txt src/bin/releasem/pwsafe.exe help/default/pwsafe.chm
+		docs/ChangeLog.txt src/bin/releasem/pwsafe.exe src/bin/releasem/pws_at.dll \
+		help/default/pwsafe.chm
+I18N_MANIFEST = help/pwsafeDE/pwsafeDE_DE.chm help/pwsafeZH/pwsafeZH_CN.chm \
+								$(I18N_DLL_DIR)/pwsafeDE.dll $(I18N_DLL_DIR)/pwsafeES.dll \
+								$(I18N_DLL_DIR)/pwsafePL.dll $(I18N_DLL_DIR)/pwsafeRU.dll \
+	              $(I18N_DLL_DIR)/pwsafeSV.dll $(I18N_DLL_DIR)/pwsafeZH.dll
 
 .PHONY: all release bin-release src-release installables signatures \
 	upload sha1sums msi nsis upload-latest updat-pos i18n save-map
@@ -100,6 +106,7 @@ bin-release:
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
 
 	$(CP) $(BIN_MANIFEST) $(RELEASEDIR)/$(BINRELNAME)
+	$(CP) $(I18N_MANIFEST) $(RELEASEDIR)/$(BINRELNAME)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME); \
 	$(MV) foo.zip $(BINRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
@@ -121,7 +128,7 @@ src-release: ChangeLog $(POT_FILE)
 ChangeLog:
 	$(SVN) log -v --xml | $(PYTHON) $(SVN2LOG) -L -H -s -O
 
-$(POT_FILE): src/bin/release/pwsafe_base.dll
+$(POT_FILE): $(I18N_DLL_DIR)/pwsafe_base.dll
 	$(MAKE) -C $(I18N_DIR) pwsafe.pot
 
 update-pos:
