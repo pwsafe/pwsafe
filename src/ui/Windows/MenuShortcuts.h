@@ -28,6 +28,9 @@ public:
 	const TCHAR *name;
   // Menu item's parent or zero
   UINT uiParentID;
+  // Sequential menu item position (i.e. in going through the menus)
+  // Used to sort shortcuts in the CListCtrl in OptionsShortcuts
+  int iMenuPosition;
   // Default values
 	unsigned char cdefVirtKey;
 	bool bdefCtrl;
@@ -40,13 +43,14 @@ public:
 	bool bShift;
 
   CMenuShortcut()
-  : name(NULL), uiParentID(0),
+  : name(NULL), uiParentID(0), iMenuPosition(0),
   cdefVirtKey(0), bdefCtrl(false), bdefAlt(false), bdefShift(false),
   cVirtKey(0), bCtrl(false), bAlt(false), bShift(false)
   {}
 
   CMenuShortcut(const CMenuShortcut &that)
   : name(_tcsdup(that.name)), uiParentID(that.uiParentID),
+  iMenuPosition(that.iMenuPosition),
   cdefVirtKey(that.cdefVirtKey),
   bdefCtrl(that.bdefCtrl), bdefAlt(that.bdefAlt), bdefShift(that.bdefShift),
   cVirtKey(that.cVirtKey),
@@ -63,6 +67,7 @@ public:
     free((void *)name);
     name = _tcsdup(that.name);
     uiParentID = that.uiParentID;
+    iMenuPosition = that.iMenuPosition;
     cdefVirtKey = that.cdefVirtKey;
     bdefCtrl = that.bdefCtrl;
     bdefAlt = that.bdefAlt;

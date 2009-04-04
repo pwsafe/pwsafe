@@ -208,6 +208,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // Now get all other Menu items
   CMenuShortcut mst;
   mst.name = tcMenuString;
+  mst.iMenuPosition = 0;
 
   // Do Main Menu (uiParentID == 0)
   count = pMainMenu->GetMenuItemCount();
@@ -220,6 +221,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -239,6 +241,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -259,6 +262,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -279,6 +283,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -299,6 +304,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -319,6 +325,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -339,6 +346,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -359,6 +367,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -379,6 +388,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -399,6 +409,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -419,6 +430,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }
@@ -437,6 +449,7 @@ void DboxMain::SetUpInitialMenuStrings()
   if (miinfo.wID >= 1) {
     mst.name = _tcsdup(tcMenuString);
     m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+    mst.iMenuPosition++;
     free((void *)mst.name);
     mst.name = NULL;
   }
@@ -455,6 +468,7 @@ void DboxMain::SetUpInitialMenuStrings()
     if (miinfo.wID >= 1) {
       mst.name = _tcsdup(tcMenuString);
       m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
       free((void *)mst.name);
       mst.name = NULL;
     }

@@ -96,7 +96,7 @@ void CSHCTListCtrl::OnLButtonDown(UINT /* nFlags*/ , CPoint point)
       m_pHotKey->MoveWindow(&subitemrect);
     }
 
-    m_id = (UINT)GetItemData(m_item);
+    m_id = (UINT)LOWORD(GetItemData(m_item));
     iter = m_pParent->GetMapMenuShortcutsIter(m_id);
 
     WORD vModifiers = (iter->second.bCtrl ? HOTKEYF_CONTROL : 0) |
@@ -144,7 +144,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
     goto exit;
   }
 
-  m_id = (UINT)GetItemData(m_item);
+  m_id = (UINT)LOWORD(GetItemData(m_item));
 
   iter = m_pParent->GetMapMenuShortcutsIter(m_id);
   citer = m_pParent->GetMapKeyNameIDConstIter(iter->second.cVirtKey);
@@ -262,7 +262,7 @@ void CSHCTListCtrl::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
 
   *pResult = CDRF_DODEFAULT;
   const int iSubItem = pLVCD->iSubItem;
-  const UINT id = (UINT)pLVCD->nmcd.lItemlParam;
+  const UINT id = (UINT)LOWORD(pLVCD->nmcd.lItemlParam);
   MapMenuShortcutsIter iter;
 
   switch(pLVCD->nmcd.dwDrawStage) {

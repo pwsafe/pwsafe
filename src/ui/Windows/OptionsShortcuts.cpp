@@ -92,8 +92,13 @@ BOOL COptionsShortcuts::OnInitDialog()
     sMenuItemtext.Remove(TCHAR('&'));
     iItem = m_ShortcutLC.InsertItem(++iItem, sMenuItemtext);
     m_ShortcutLC.SetItemText(iItem, 1, str);
-    m_ShortcutLC.SetItemData(iItem, iter->first);
+    DWORD dwData = MAKELONG(iter->first, iter->second.iMenuPosition);
+    m_ShortcutLC.SetItemData(iItem, dwData);
   }
+
+  // Now sort via Menu item position
+  m_ShortcutLC.SortItems(CompareFunc, NULL);
+
   m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
   m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 
@@ -128,7 +133,7 @@ void COptionsShortcuts::OnBnClickedResetAll()
   UINT id;
 
   for (int i = 0; i < m_ShortcutLC.GetItemCount(); i++) {
-    id = (UINT)m_ShortcutLC.GetItemData(i);
+    id = (UINT)LOWORD(m_ShortcutLC.GetItemData(i));
 
     iter = m_MapMenuShortcuts.find(id);
     citer = m_MapKeyNameID.find(iter->second.cdefVirtKey);
@@ -242,7 +247,8 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
                               m_MapMenuShortcuts.end(),
                               inuse);
     if (inuse_iter != m_MapMenuShortcuts.end() && 
-        inuse_iter->first != iter->first) {
+        inuse_iter->first != iter->first &&
+        iter->second.cVirtKey != (unsigned char)0) {
       // Shortcut in use
       cs_warning.Format(IDS_SHCT_WARNING3, mst_str, inuse_iter->second.name);
       goto set_warning;
@@ -277,4 +283,11 @@ BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
   }
 
   return CPWPropertyPage::PreTranslateMessage(pMsg);
+}
+
+int CALLBACK COptionsShortcuts::CompareFunc(LPARAM lParam1, LPARAM lParam2,
+                                            LPARAM lParamSort)
+{
+  UNREFERENCED_PARAMETER(lParamSort);
+  return (int)(HIWORD(lParam1) - HIWORD(lParam2));
 }
