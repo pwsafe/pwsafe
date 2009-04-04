@@ -377,6 +377,7 @@ int DboxMain::Close()
 
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
+  prefs->SaveShortcuts();
 
   if (m_bOpen) {
     // try and save it first
@@ -668,6 +669,7 @@ int DboxMain::Save()
 
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
+  prefs->SaveShortcuts();
 
   if (m_core.GetCurFile().empty())
     return SaveAs();
@@ -2636,6 +2638,7 @@ void DboxMain::OnOK()
   // wipe data, save prefs, go home.
   ClearData();
   prefs->SaveApplicationPreferences();
+  prefs->SaveShortcuts();
   // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
   m_menuManager.Cleanup();
 

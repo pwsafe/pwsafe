@@ -58,6 +58,7 @@
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
 #include <bitset>
+#include <algorithm>
 
 #if _MSC_VER < 1500
 #include <winable.h>  // For BlockInput
@@ -78,44 +79,12 @@ static char THIS_FILE[] = __FILE__;
 
 const TCHAR *HIDDEN_PASSWORD = _T("**************");
 
-CString DboxMain::CS_DELETEENTRY;
-CString DboxMain::CS_DELETEGROUP;
-CString DboxMain::CS_RENAMEENTRY;
-CString DboxMain::CS_RENAMEGROUP;
-CString DboxMain::CS_ADDGROUP;
-CString DboxMain::CS_EDITENTRY;
-CString DboxMain::CS_VIEWENTRY;
-CString DboxMain::CS_BROWSEURL;
-CString DboxMain::CS_SENDEMAIL;
-CString DboxMain::CS_COPYURL;
-CString DboxMain::CS_COPYEMAIL;
-CString DboxMain::CS_EXPCOLGROUP;
 CString DboxMain::CS_SETFILTERS;
 CString DboxMain::CS_CLEARFILTERS;
-CString DboxMain::CS_CREATESHORTCUT;
-CString DboxMain::CS_GOTOBASEENTRY;
-CString DboxMain::CS_DUPLICATEENTRY;
-CString DboxMain::CS_COPYPASSWORD;
-CString DboxMain::CS_COPYUSERNAME;
-CString DboxMain::CS_COPYNOTESFLD;
-CString DboxMain::CS_AUTOTYPE;
-CString DboxMain::CS_RUNCOMMAND;
-CString DboxMain::CS_BROWSEURLPLUS;
-CString DboxMain::CS_SHOWFINDTOOLBAR;
-CString DboxMain::CS_SHOWFINDNEXT;
-CString DboxMain::CS_SHOWFINDPREVIOUS;
 
 void DboxMain::SetLocalStrings()
 {
   // VdG the local strings are set
-  CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
-  CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
-  CS_VIEWENTRY.LoadString(IDS_MENUVIEWENTRY);
-  CS_DELETEGROUP.LoadString(IDS_MENUDELETEGROUP);
-  CS_RENAMEGROUP.LoadString(IDS_MENURENAMEGROUP);
-  CS_SENDEMAIL.LoadString(IDS_MENUSENDEMAIL);
-  CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
-  CS_CREATESHORTCUT.LoadString(IDS_MENUCREATESHORTCUT);
   CS_SETFILTERS.LoadString(IDS_SETFILTERS);
   CS_CLEARFILTERS.LoadString(IDS_CLEARFILTERS);
 }
@@ -140,6 +109,10 @@ DboxMain::DboxMain(CWnd* pParent)
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
   m_AutoType(_T(""))
 {
+  // Set menus to be rebuilt with user's shortcuts
+  for (int i = 0; i < NUMPOPUPMENUS; i++)
+    m_bDoShortcuts[i] = true;
+
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
@@ -154,6 +127,12 @@ DboxMain::DboxMain(CWnd* pParent)
 DboxMain::~DboxMain()
 {
   m_core.UnRegisterOnListModified();
+
+  MapKeyNameIDIter iter;
+  for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
+    free((void *)iter->second);
+    iter->second = NULL;
+  }
 
   ::DestroyIcon(m_hIcon);
   ::DestroyIcon(m_hIconSm);
@@ -259,6 +238,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
   ON_COMMAND(ID_MENUITEM_CREATESHORTCUT, OnCreateShortcut)
   ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
+  ON_COMMAND(ID_MENUITEM_VIEW, OnEdit)
   ON_COMMAND(ID_MENUITEM_GROUPENTER, OnEdit)
   ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
   ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnBrowse)
@@ -270,7 +250,9 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_COPYEMAIL, OnCopyURL)
   ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
   ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
+  ON_COMMAND(ID_MENUITEM_DELETEGROUP, OnDelete)
   ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
+  ON_COMMAND(ID_MENUITEM_RENAMEGROUP, OnRename)
   ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
@@ -441,11 +423,13 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu
   {ID_MENUITEM_ADD, true, false, true, false},
-  {ID_MENUITEM_CREATESHORTCUT, true, false, false, false},
   {ID_MENUITEM_EDIT, true, true, false, false},
+  {ID_MENUITEM_VIEW, true, true, false, false},
   {ID_MENUITEM_GROUPENTER, true, true, false, false},
   {ID_MENUITEM_DELETE, true, false, false, false},
+  {ID_MENUITEM_DELETEGROUP, true, false, false, false},
   {ID_MENUITEM_RENAME, true, false, false, false},
+  {ID_MENUITEM_RENAMEGROUP, true, false, false, false},
   {ID_MENUITEM_FIND, true, true, false, false},
   {ID_MENUITEM_FINDUP, true, true, false, false},
   {ID_MENUITEM_DUPLICATEENTRY, true, false, false, false},
@@ -462,6 +446,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COPYURL, true, true, false, false},
   {ID_MENUITEM_COPYEMAIL, true, true, false, false},
   {ID_MENUITEM_GOTOBASEENTRY, true, true, false, false},
+  {ID_MENUITEM_CREATESHORTCUT, true, false, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -763,7 +748,7 @@ void DboxMain::InitPasswordSafe()
   // VdG set the local strings to the language dependant values
   SetLocalStrings();
 
-  SetMenu(app.m_mainmenu);  // Now show menu...
+  SetMenu(app.m_pMainMenu);  // Now show menu...
 
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
@@ -932,7 +917,7 @@ BOOL DboxMain::OnInitDialog()
   }
 
   // Set up Menu strings
-  SetUpMenuStrings();
+  SetUpInitialMenuStrings();
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -1669,467 +1654,6 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
   }
 }
 
-void DboxMain::SetUpMenuStrings()
-{
-  // Can't use GetMenuItemID, as it does not understand that with the MENUEX
-  // format, Popup menus can have IDs
-  CMenu *pMainMenu;
-  CMenu *pEditMenu;
-  CMenu *pViewMenu;
-  pMainMenu = new CMenu;
-  pMainMenu->LoadMenu(IDR_MAINMENU);
-
-  int epos = app.FindMenuItem(pMainMenu, ID_EDITMENU);
-  ASSERT(epos != -1);
-
-  pEditMenu = pMainMenu->GetSubMenu(epos);
-  const int ecount = pEditMenu->GetMenuItemCount();
-
-  TCHAR tcMenuString[_MAX_PATH] = {0};
-  MENUITEMINFO miinfo;
-  memset(&miinfo, 0x00, sizeof(MENUITEMINFO));
-  miinfo.cbSize = sizeof(MENUITEMINFO);
-  miinfo.fMask = MIIM_ID | MIIM_STRING;
-  miinfo.dwTypeData = tcMenuString;  
-
-  std::bitset<15> bsEMenuItems; // easy way to check that we have them all 0-14
-  for (int i = 0; i < ecount; i++) {
-    ZeroMemory(tcMenuString, _MAX_PATH * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pEditMenu->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      switch(miinfo.wID) {
-        case ID_MENUITEM_DELETE:              // bitset position 0
-          CS_DELETEENTRY = tcMenuString;
-          bsEMenuItems.set(0);
-          break;
-        case ID_MENUITEM_RENAME:              // bitset position 1
-          CS_RENAMEENTRY = tcMenuString;
-          bsEMenuItems.set(1);
-          break;
-        case ID_MENUITEM_BROWSEURL:           // bitset position 2
-          CS_BROWSEURL = tcMenuString;
-          bsEMenuItems.set(2);
-          break;
-        case ID_MENUITEM_COPYURL:             // bitset position 3
-          CS_COPYURL = tcMenuString;
-          bsEMenuItems.set(3);
-          break;
-        case ID_MENUITEM_GOTOBASEENTRY:       // bitset position 4
-          CS_GOTOBASEENTRY = tcMenuString;
-          bsEMenuItems.set(4);
-          break;
-        case ID_MENUITEM_DUPLICATEENTRY:      // bitset position 5
-          CS_DUPLICATEENTRY = tcMenuString;
-          bsEMenuItems.set(5);
-          break;
-        case ID_MENUITEM_COPYPASSWORD:        // bitset position 6
-          CS_COPYPASSWORD = tcMenuString;
-          bsEMenuItems.set(6);
-          break;
-        case ID_MENUITEM_COPYUSERNAME:        // bitset position 7
-          CS_COPYUSERNAME = tcMenuString;
-          bsEMenuItems.set(7);
-          break;
-        case ID_MENUITEM_COPYNOTESFLD:        // bitset position 8
-          CS_COPYNOTESFLD = tcMenuString;
-          bsEMenuItems.set(8);
-          break;
-        case ID_MENUITEM_AUTOTYPE:            // bitset position 9
-          CS_AUTOTYPE = tcMenuString;
-          bsEMenuItems.set(9);
-          break;
-        case ID_MENUITEM_RUNCOMMAND:          // bitset position 10
-          CS_RUNCOMMAND = tcMenuString;
-          bsEMenuItems.set(10);
-          break;
-        case ID_MENUITEM_BROWSEURLPLUS:       // bitset position 11
-          CS_BROWSEURLPLUS = tcMenuString;
-          bsEMenuItems.set(11);
-          break;
-        case ID_MENUITEM_FIND:                // bitset position 12
-          CS_SHOWFINDNEXT = tcMenuString;
-          bsEMenuItems.set(12);
-          break;
-        case ID_MENUITEM_FINDUP:              // bitset position 13
-          CS_SHOWFINDPREVIOUS = tcMenuString;
-          bsEMenuItems.set(13);
-          break;
-        case ID_MENUITEM_ADDGROUP:            // bitset position 14
-          CS_ADDGROUP = tcMenuString;
-          bsEMenuItems.set(14);
-          break;
-        default:
-          break;
-      }
-    }
-    // If we have them all - leave now
-    if (bsEMenuItems.count() == bsEMenuItems.size())
-      break;
-  }
-
-  int vpos = app.FindMenuItem(pMainMenu, ID_VIEWMENU);
-  ASSERT(vpos != -1);
-
-  pViewMenu = pMainMenu->GetSubMenu(vpos);
-  const int vcount = pViewMenu->GetMenuItemCount();
-
-  std::bitset<1> bsVMenuItems; // easy way to check that we have them all 0
-  for (int i = 0; i < vcount; i++) {
-    ZeroMemory(tcMenuString, _MAX_PATH * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pViewMenu->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      switch(miinfo.wID) {
-        case ID_MENUITEM_SHOWFINDTOOLBAR:     // bitset position 0
-          CS_SHOWFINDTOOLBAR = tcMenuString;
-          bsVMenuItems.set(0);
-          break;
-        default:
-          break;
-      }
-    }
-    // If we have them all - leave now
-    if (bsVMenuItems.count() == bsVMenuItems.size())
-      break;
-  }
-
-  pMainMenu->DestroyMenu();
-  delete pMainMenu;
-}
-
-void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID)
-{
-  // Original OnInitMenu code
-  // All main menus are POPUPs (see PasswordSafe2.rc2)
-
-  // This routine changes the text in the menu via "ModifyMenu" and
-  // adds the "check" mark via CheckMenuRadioItem for view type and toolbar.
-  // It now tailors the Edit menu depending on whether a Group or Entry is selected.
-  // "EnableMenuItem" is handled by the UPDATE_UI routines
-  bool bGroupSelected(false);
-  const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
-  const bool bItemSelected = (SelItemOk() == TRUE);
-  CItemData *pci(NULL);
-  CItemData::EntryType etype(CItemData::ET_INVALID);
-
-  if (bItemSelected) {
-    pci = getSelectedItem();
-    ASSERT(pci != NULL);
-
-    // Save entry type before changing pci
-    etype = pci->GetEntryType();
-    if (etype == CItemData::ET_SHORTCUT) {
-      // This is an shortcut
-      uuid_array_t entry_uuid, base_uuid;
-      pci->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-  
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        pci = &iter->second;
-      }
-    }
-  }
-
-  if (bTreeView) {
-    HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
-    bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
-  }
-
-  // If Edit menu selected (contains 'Delete' menu item)
-  if (uiMenuID == ID_EDITMENU) {
-    // Delete all entries and rebuild depending on group/entry selected
-    // and, if entry, if fields are non-empty
-    pPopupMenu->RemoveMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_GROUPENTER, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_FIND, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_FINDUP, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_ADDGROUP, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_EDITMENU_SEPARATOR2, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_EDITMENU_SEPARATOR3, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_COPYPASSWORD, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_COPYUSERNAME, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_COPYNOTESFLD, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_AUTOTYPE, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
-    pPopupMenu->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
-
-    // Rename & 'Add Group' only valid in Tree view
-    if (!m_IsListView) {
-      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, 
-                             MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_RENAME, 
-                             bGroupSelected ? CS_RENAMEGROUP : CS_RENAMEENTRY);
-      pPopupMenu->InsertMenu(ID_MENUITEM_CLEARCLIPBOARD, 
-                             MF_BYCOMMAND | MF_SEPARATOR,
-                             ID_EDITMENU_SEPARATOR2);
-      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR2, 
-                             MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_ADDGROUP, CS_ADDGROUP);
-    }
-
-    // Only have Find Next/Previous if find still active and entries were found
-    if (m_FindToolBar.IsVisible() && m_FindToolBar.EntriesFound()) {
-      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, 
-                             MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_FIND, CS_SHOWFINDNEXT);
-      pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, 
-                             MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_FINDUP, CS_SHOWFINDPREVIOUS);
-    }
-
-    if (bGroupSelected) {
-      // Group selected
-      pPopupMenu->InsertMenu(ID_MENUITEM_RENAME, 
-                             MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_DELETE, CS_DELETEGROUP);
-      pPopupMenu->InsertMenu(ID_MENUITEM_DELETE, 
-                             MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_GROUPENTER, CS_EXPCOLGROUP);
-    } else {
-      if (pci != NULL) {
-        // Entry is selected
-        if (!m_IsListView)
-          pPopupMenu->ModifyMenu(ID_MENUITEM_RENAME, 
-                                 MF_BYCOMMAND,
-                                 ID_MENUITEM_RENAME, CS_RENAMEENTRY);
-        pPopupMenu->InsertMenu(m_IsListView ? 
-                               ID_EDITMENU_SEPARATOR1 : ID_MENUITEM_RENAME, 
-                               MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_DELETE, CS_DELETEENTRY);
-        if (m_core.IsReadOnly()) {
-          pPopupMenu->InsertMenu(ID_MENUITEM_DELETE, 
-                                 MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_EDIT, CS_VIEWENTRY);
-        } else {
-          pPopupMenu->InsertMenu(ID_MENUITEM_DELETE, 
-                                 MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_EDIT, CS_EDITENTRY);
-        }
-        pPopupMenu->InsertMenu(ID_EDITMENU_SEPARATOR1, 
-                               MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_DUPLICATEENTRY, CS_DUPLICATEENTRY);
-        pPopupMenu->AppendMenu(MF_SEPARATOR, 
-                               ID_EDITMENU_SEPARATOR3);
-
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                               ID_MENUITEM_COPYPASSWORD, CS_COPYPASSWORD);
-
-        if (!pci->IsUserEmpty())
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                 ID_MENUITEM_COPYUSERNAME, CS_COPYUSERNAME);
-
-        if (!pci->IsNotesEmpty())
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                 ID_MENUITEM_COPYNOTESFLD, CS_COPYNOTESFLD);
-
-        if (!pci->IsURLEmpty()) {
-          const bool bIsEmail = pci->IsURLEmail();
-          if (bIsEmail) {
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                   ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                   ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
-          } else {
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                   ID_MENUITEM_COPYURL, CS_COPYURL);
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                   ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                   ID_MENUITEM_BROWSEURLPLUS, CS_BROWSEURLPLUS);
-          }
-          UpdateBrowseURLSendEmailButton(bIsEmail);
-        }
-
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                               ID_MENUITEM_AUTOTYPE, CS_AUTOTYPE);
-
-        if (!pci->IsRunCommandEmpty())
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                 ID_MENUITEM_RUNCOMMAND, CS_RUNCOMMAND);
-
-        switch (etype) {
-          case CItemData::ET_NORMAL:
-          case CItemData::ET_SHORTCUTBASE:
-            // Allow creation of a shortcut
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                   ID_MENUITEM_CREATESHORTCUT, CS_CREATESHORTCUT);
-            break;
-          case CItemData::ET_ALIASBASE:
-            // Can't have a shortcut to an AliasBase entry + can't goto base
-            break;
-          case CItemData::ET_ALIAS:
-          case CItemData::ET_SHORTCUT:
-            // Allow going to the appropriate base entry
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, 
-                                   ID_MENUITEM_GOTOBASEENTRY, CS_GOTOBASEENTRY);
-            break;
-          default:
-            ASSERT(0);
-        }
-      }
-    }
-  }  // Edit menu
-
-  // If View menu selected (contains 'Flattened &List' menu item)
-  if (uiMenuID == ID_VIEWMENU) {
-    // Delete Show Find Toolbar menu item
-    pPopupMenu->RemoveMenu(ID_MENUITEM_SHOWFINDTOOLBAR, MF_BYCOMMAND);
-    if (!m_FindToolBar.IsVisible()) {
-      // Put it back if not visible
-      pPopupMenu->InsertMenu(ID_VIEWMENU_SEPARATOR1, 
-                             MF_BYCOMMAND | MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_SHOWFINDTOOLBAR, CS_SHOWFINDTOOLBAR);
-    }
-    pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
-                                   bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW,
-                                   MF_BYCOMMAND);
-
-    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND |
-                              m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
-
-    bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
-    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
-                              bDragBarState ? MF_CHECKED : MF_UNCHECKED);
-  
-    pPopupMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
-                           m_bFilterActive ? MF_CHECKED : MF_UNCHECKED,
-                           ID_MENUITEM_APPLYFILTER,
-                           m_bFilterActive ? CS_CLEARFILTERS : CS_SETFILTERS);
-
-  // JHF m_toolbarMode is not for WinCE (as in .h)
-#if !defined(POCKET_PC)
-    pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR, 
-                                   ID_MENUITEM_OLD_TOOLBAR,
-                                   m_toolbarMode, MF_BYCOMMAND);
-#endif
-  }  // View menu
-}
-
-// helps with MRU by allowing ON_UPDATE_COMMAND_UI
-void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
-{
-  // Original OnInitMenu code
-  // All main menus are POPUPs (see PasswordSafe2.rc2)
-
-  // Don't do the old OnInitMenu processing if the right-click context menu
-  // (IDR_POPEDITMENU or IDR_POPEDITGROUP) is being processed. Only for the Main Menu
-  // (ID_EDITMENU).
-  ASSERT(pPopupMenu != NULL);
-
-  MENUINFO minfo;
-  memset(&minfo, 0x00, sizeof(minfo));
-  minfo.cbSize = sizeof(MENUINFO);
-  minfo.fMask = MIM_MENUDATA;
-  pPopupMenu->GetMenuInfo(&minfo);
-  if (minfo.dwMenuData == ID_EDITMENU || minfo.dwMenuData == ID_VIEWMENU)
-    CustomiseMenu(pPopupMenu, minfo.dwMenuData);
-
-  // http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
-  // This code comes from the MFC Documentation, and is adapted from 
-  // CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
-  CCmdUI state; // Check the enabled state of various menu items
-  state.m_pMenu = pPopupMenu;
-  ASSERT(state.m_pOther == NULL);
-  ASSERT(state.m_pParentMenu == NULL);
-
-  // Is the menu in question a popup in the top-level menu? If so, set m_pOther
-  // to this menu. Note that m_pParentMenu == NULL indicates that the menu is a
-  // secondary popup.
-  CMenu *hParentMenu;
-  if (AfxGetThreadState()->m_hTrackingMenu == pPopupMenu->m_hMenu) {
-    state.m_pParentMenu = pPopupMenu; // Parent == child for tracking popup.
-  } else
-  if ((hParentMenu = this->GetMenu()) != NULL) {
-    CWnd* pParent = this;
-    // Child windows don't have menus--need to go to the top!
-    if (pParent != NULL && (hParentMenu = pParent->GetMenu()) != NULL) {
-      int nIndexMax = hParentMenu->GetMenuItemCount();
-      for (int nIndex = 0; nIndex < nIndexMax; nIndex++) {
-        CMenu *submenu = hParentMenu->GetSubMenu(nIndex);
-        if (submenu != NULL && submenu->m_hMenu == pPopupMenu->m_hMenu) {
-          // When popup is found, m_pParentMenu is containing menu.
-          state.m_pParentMenu = CMenu::FromHandle(hParentMenu->GetSafeHmenu());
-          break;
-        }
-      }
-    }
-  }
-
-  state.m_nIndexMax = pPopupMenu->GetMenuItemCount();
-  for (state.m_nIndex = 0; state.m_nIndex < state.m_nIndexMax; state.m_nIndex++) {
-    state.m_nID = pPopupMenu->GetMenuItemID(state.m_nIndex);
-    if (state.m_nID == 0)
-      continue; // Menu separator or invalid cmd - ignore it.
-    ASSERT(state.m_pOther == NULL);
-    ASSERT(state.m_pMenu != NULL);
-    if (state.m_nID == (UINT)-1) {
-      // Possibly a popup menu, route to first item of that popup.
-      state.m_pSubMenu = pPopupMenu->GetSubMenu(state.m_nIndex);
-      if (state.m_pSubMenu == NULL ||
-          (state.m_nID = state.m_pSubMenu->GetMenuItemID(0)) == 0 ||
-          state.m_nID == (UINT)-1) {
-        continue; // First item of popup can't be routed to.
-      }
-      state.DoUpdate(this, TRUE); // Popups are never auto disabled.
-    } else {
-      // Normal menu item.
-      // Auto enable/disable if frame window has m_bAutoMenuEnable
-      // set and command is _not_ a system command.
-      state.m_pSubMenu = NULL;
-      state.DoUpdate(this, FALSE);
-    }
-
-    // Adjust for menu deletions and additions.
-    UINT nCount = pPopupMenu->GetMenuItemCount();
-    if (nCount < state.m_nIndexMax) {
-      state.m_nIndex -= (state.m_nIndexMax - nCount);
-      while(state.m_nIndex < nCount &&
-            pPopupMenu->GetMenuItemID(state.m_nIndex) == state.m_nID) {
-        state.m_nIndex++;
-      }
-    }
-    state.m_nIndexMax = nCount;
-  }
-
-  // Ignore SystemTray popup menu
-  if (!m_bImageInLV || minfo.dwMenuData != IDR_POPTRAY)
-    return;
-
-  // System Tray Popup menu processing only
-  minfo.fMask = MIM_STYLE;
-  minfo.dwStyle = MNS_CHECKORBMP | MNS_AUTODISMISS;
-  pPopupMenu->SetMenuInfo(&minfo);
-
-  MENUITEMINFO miinfo;
-  memset(&miinfo, 0x00, sizeof(miinfo));
-  miinfo.cbSize = sizeof(miinfo);
-  CRUEItemData *pmd;
-
-  for (UINT pos = 0; pos < pPopupMenu->GetMenuItemCount(); pos++) {
-    miinfo.fMask = MIIM_FTYPE | MIIM_DATA;
-    pPopupMenu->GetMenuItemInfo(pos, &miinfo, TRUE);
-    pmd = (CRUEItemData *)miinfo.dwItemData;
-
-    if (pmd && pmd->IsRUEID() && !(miinfo.fType & MFT_OWNERDRAW) &&
-        pmd->nImage >= 0) {
-      miinfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
-      miinfo.hbmpItem = HBMMENU_CALLBACK;
-      miinfo.fType = MFT_STRING;
-
-      pPopupMenu->SetMenuItemInfo(pos, &miinfo, TRUE);
-    }
-  }
-}
-
 #if defined(POCKET_PC)
 void DboxMain::OnShowPassword()
 {
@@ -2459,6 +1983,7 @@ BOOL DboxMain::OnQueryEndSession()
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
+  prefs->SaveShortcuts();
 
   if (m_core.IsReadOnly())
     return TRUE;

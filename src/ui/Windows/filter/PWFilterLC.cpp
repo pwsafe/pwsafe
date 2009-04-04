@@ -1559,9 +1559,6 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
   CRect rect;
   GetSubItemRect(m_iItem, iSubItem, LVIR_BOUNDS, rect);
 
-  CRect rectClient;
-  GetClientRect(&rectClient);
-
   m_pComboBox = new CComboBox;
   ASSERT(m_pComboBox);
 

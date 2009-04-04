@@ -4,6 +4,29 @@
 
 // Menus and Toolbars
 
+/*
+
+*** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
+*** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
+*** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
+
+Do NOT change the value of any resource used in a menu from V3.17 onwards.
+
+*** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
+*** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
+*** WARNING *** *** WARNING *** *** WARNING *** *** WARNING *** *** WARNING ***
+
+  These values may be in the user's config file, if they define their own
+  shortcuts.
+
+  You may delete an entry or add new ones with new IDs or change the order of
+  menu items in any menu or move a menu item to a new menu,
+
+  BUT THE VALUE FOR A PARTICULAR FUNCTION MUST NOT CHANGE
+    e.g. ID_MENUITEM_OPEN must remain 32002
+
+*/
+
 #define ID_MENUTOOLBAR_START            32000
 
 // File menu
@@ -34,26 +57,30 @@
 #define ID_EDITMENU                     32050
 #define ID_MENUITEM_ADD                 32051
 #define ID_MENUITEM_EDIT                32052
-#define ID_MENUITEM_DELETE              32053
-#define ID_MENUITEM_RENAME              32054
-#define ID_MENUITEM_FIND                32055
-#define ID_MENUITEM_FINDUP              32056
-#define ID_MENUITEM_DUPLICATEENTRY      32057
-#define ID_MENUITEM_ADDGROUP            32058
-#define ID_MENUITEM_COPYPASSWORD        32059
-#define ID_MENUITEM_COPYUSERNAME        32060
-#define ID_MENUITEM_COPYNOTESFLD        32061
-#define ID_MENUITEM_CLEARCLIPBOARD      32062
-#define ID_MENUITEM_BROWSEURL           32063
-#define ID_MENUITEM_AUTOTYPE            32064
-#define ID_MENUITEM_RUNCOMMAND          32065
-#define ID_MENUITEM_COPYURL             32066
-#define ID_MENUITEM_SENDEMAIL           32067
-#define ID_MENUITEM_COPYEMAIL           32068
-#define ID_MENUITEM_GROUPENTER          32069
-#define ID_MENUITEM_CREATESHORTCUT      32070
-#define ID_MENUITEM_GOTOBASEENTRY       32071
-#define ID_MENUITEM_BROWSEURLPLUS       32072
+#define ID_MENUITEM_VIEW                32053
+#define ID_MENUITEM_GROUPENTER          32054
+#define ID_MENUITEM_DELETE              32055
+#define ID_MENUITEM_DELETEGROUP         32056
+#define ID_MENUITEM_RENAME              32057
+#define ID_MENUITEM_RENAMEGROUP         32058
+#define ID_MENUITEM_FIND                32059
+#define ID_MENUITEM_FINDUP              32060
+#define ID_MENUITEM_DUPLICATEENTRY      32061
+#define ID_MENUITEM_ADDGROUP            32062
+#define ID_MENUITEM_CLEARCLIPBOARD      32063
+#define ID_MENUITEM_COPYPASSWORD        32064
+#define ID_MENUITEM_PASSWORDSUBSET      32065
+#define ID_MENUITEM_COPYUSERNAME        32066
+#define ID_MENUITEM_COPYNOTESFLD        32067
+#define ID_MENUITEM_COPYURL             32068
+#define ID_MENUITEM_COPYEMAIL           32069
+#define ID_MENUITEM_BROWSEURL           32070
+#define ID_MENUITEM_BROWSEURLPLUS       32071
+#define ID_MENUITEM_SENDEMAIL           32072
+#define ID_MENUITEM_AUTOTYPE            32073
+#define ID_MENUITEM_RUNCOMMAND          32074
+#define ID_MENUITEM_CREATESHORTCUT      32075
+#define ID_MENUITEM_GOTOBASEENTRY       32076
 
 // View menu
 #define ID_VIEWMENU                     32101
@@ -66,20 +93,21 @@
 #define ID_MENUITEM_SHOWFINDTOOLBAR     32108
 #define ID_MENUITEM_EXPANDALL           32109
 #define ID_MENUITEM_COLLAPSEALL         32110
-#define ID_FILTERMENU                   32111
-#define ID_MENUITEM_EDITFILTER          32112
-#define ID_MENUITEM_APPLYFILTER         32113
-#define ID_MENUITEM_MANAGEFILTERS       32114
-#define ID_CHANGEFONTMENU               32115
-#define ID_MENUITEM_CHANGETREEFONT      32116
-#define ID_MENUITEM_CHANGEPSWDFONT      32117
-#define ID_REPORTSMENU                  32118
-#define ID_MENUITEM_REPORT_COMPARE      32119
-#define ID_MENUITEM_REPORT_FIND         32120
-#define ID_MENUITEM_REPORT_IMPORTTEXT   32121
-#define ID_MENUITEM_REPORT_IMPORTXML    32122
-#define ID_MENUITEM_REPORT_MERGE        32123
-#define ID_MENUITEM_REPORT_VALIDATE     32124
+#define ID_MENUITEM_REFRESH             32111
+#define ID_FILTERMENU                   32112
+#define ID_MENUITEM_EDITFILTER          32113
+#define ID_MENUITEM_APPLYFILTER         32114
+#define ID_MENUITEM_MANAGEFILTERS       32115
+#define ID_CHANGEFONTMENU               32116
+#define ID_MENUITEM_CHANGETREEFONT      32117
+#define ID_MENUITEM_CHANGEPSWDFONT      32118
+#define ID_REPORTSMENU                  32119
+#define ID_MENUITEM_REPORT_COMPARE      32120
+#define ID_MENUITEM_REPORT_FIND         32121
+#define ID_MENUITEM_REPORT_IMPORTTEXT   32122
+#define ID_MENUITEM_REPORT_IMPORTXML    32123
+#define ID_MENUITEM_REPORT_MERGE        32124
+#define ID_MENUITEM_REPORT_VALIDATE     32125
 
 // Manage menu
 #define ID_MANAGEMENU                   32150
@@ -87,7 +115,8 @@
 #define ID_MENUITEM_BACKUPSAFE          32152
 #define ID_MENUITEM_RESTORE             32153
 #define ID_MENUITEM_OPTIONS             32154
-#define ID_MENUITEM_VALIDATE            32155
+#define ID_MENUITEM_CUSTOMIZETOOLBAR    32155
+#define ID_MENUITEM_VALIDATE            32156
 
 // Help menu
 #define ID_HELPMENU                     32200
@@ -115,7 +144,6 @@
 // or only on mouse right-click popup menu
 #define ID_TOOLBUTTON_LISTTREE          32260
 #define ID_TOOLBUTTON_VIEWREPORTS       32261
-#define ID_MENUITEM_PASSWORDSUBSET      32262
 
 // Right Mouse Drag
 #define ID_MENUITEM_COPYHERE            32270
@@ -123,19 +151,20 @@
 #define ID_MENUITEM_RCREATESHORTCUT     32272
 #define ID_MENUITEM_CANCEL              32273
 
-// Find Toolbar
-#define ID_TOOLBUTTON_CLOSEFIND         32300
-#define ID_TOOLBUTTON_FINDEDITCTRL      32301
-#define ID_TOOLBUTTON_FINDCASE          32302
-#define ID_TOOLBUTTON_FINDCASE_I        32303
-#define ID_TOOLBUTTON_FINDCASE_S        32304
-#define ID_TOOLBUTTON_FINDADVANCED      32305
-#define ID_TOOLBUTTON_FINDREPORT        32306
-#define ID_TOOLBUTTON_CLEARFIND         32307
-#define ID_TOOLBUTTON_FINDRESULTS       32308
+#define ID_MENUITEM_RESETSHORTCUT       32290
+#define ID_MENUITEM_REMOVESHORTCUT      32291
 
-#define ID_MENUITEM_CUSTOMIZETOOLBAR    32320
-#define ID_MENUITEM_REFRESH             32321
+// Find Toolbar - also dummy menu for shortcuts
+#define ID_FINDMENU                     32300
+#define ID_TOOLBUTTON_CLOSEFIND         32301
+#define ID_TOOLBUTTON_CLEARFIND         32302
+#define ID_TOOLBUTTON_FINDEDITCTRL      32303
+#define ID_TOOLBUTTON_FINDCASE          32304
+#define ID_TOOLBUTTON_FINDCASE_I        32305
+#define ID_TOOLBUTTON_FINDCASE_S        32306
+#define ID_TOOLBUTTON_FINDADVANCED      32307
+#define ID_TOOLBUTTON_FINDREPORT        32308
+#define ID_TOOLBUTTON_FINDRESULTS       32309
 
 #define ID_MENUTOOLBAR_END              32499
 
@@ -148,11 +177,6 @@
 #define ID_FLC_INSERT                   32506
 #define ID_FLC_PREVIOUS                 32507
 #define ID_FLC_NEXT                     32508
-
-#define ID_EDITMENU_SEPARATOR1          32900
-#define ID_EDITMENU_SEPARATOR2          32901
-#define ID_EDITMENU_SEPARATOR3          32902
-#define ID_VIEWMENU_SEPARATOR1          32910
 
 // System menu
 #define ID_SYSMENU_ALWAYSONTOP          33000

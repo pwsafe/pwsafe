@@ -10,13 +10,18 @@
 #ifdef _WIN32
 #include <afx.h>
 #endif
-#include "os/typedefs.h"
-#include "os/sys.h"
+
 #include "XMLprefs.h"
-#include "tinyxml/tinyxml.h"
 #include "PWSprefs.h"
 #include "corelib.h"
 #include "StringXStream.h"
+
+#include "tinyxml/tinyxml.h"
+
+#include "os/typedefs.h"
+#include "os/sys.h"
+
+#include <vector>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -409,4 +414,103 @@ TiXmlElement *CXMLprefs::FindNode(TiXmlElement *parentNode,
     }
   }
   return parentNode;
+}
+
+std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csKeyName)
+{
+  std::vector<st_prefShortcut> v_Shortcuts;
+  ASSERT(m_pXMLDoc != NULL); // shouldn't be called if not loaded
+
+  if (m_pXMLDoc == NULL) // just in case
+    return v_Shortcuts;
+
+  v_Shortcuts.clear();
+  int count(0), iNumKeys(0);
+  TiXmlElement* pElem;
+  TiXmlElement* pChild;
+
+  // Parse all keys from the base key name (keys separated by a '\')
+  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+
+  // Traverse the xml using the keys parsed from the base key name to find the correct node
+  if (pcsKeys == NULL)
+    return v_Shortcuts;
+
+  TiXmlElement *rootElem = m_pXMLDoc->RootElement();
+  TiXmlHandle hShortcutsNode(0);
+
+  if (rootElem != NULL) {
+    // returns the last node in the chain
+    TiXmlElement *SNode = FindNode(rootElem, pcsKeys, iNumKeys);
+    hShortcutsNode = SNode;
+  }
+  delete[] pcsKeys;
+
+  if (rootElem == NULL || hShortcutsNode.ToNode() == NULL)
+    return v_Shortcuts;
+
+  for (pElem = hShortcutsNode.FirstChild(_T("Shortcut")).ToElement(); pElem;
+        pElem = pElem->NextSiblingElement()) {
+    st_prefShortcut cur;
+    int itemp;
+
+    pChild = hShortcutsNode.Child(_T("Shortcut"), count).ToElement();
+
+    pChild->Attribute(_T("id"), &itemp);
+    cur.id = itemp;
+    pChild->Attribute(_T("Key"), &itemp);
+    cur.cVirtKey = (unsigned char)itemp;
+    pChild->Attribute(_T("Alt"), &itemp);
+    cur.bAlt = itemp != 0;
+    pChild->Attribute(_T("Ctrl"), &itemp);
+    cur.bCtrl = itemp != 0;
+    pChild->Attribute(_T("Shift"), &itemp);
+    cur.bShift = itemp != 0;
+    v_Shortcuts.push_back(cur);
+    count++;
+  }
+  return v_Shortcuts;
+}
+
+int CXMLprefs::SetShortcuts(const stringT &csKeyName, 
+                            std::vector<st_prefShortcut> v_shortcuts)
+{
+  // m_pXMLDoc may be NULL if Load() not called b4 Set,
+  // or if called & failed
+
+  if (m_pXMLDoc == NULL && !CreateXML(false))
+    return false;
+
+  int iRetVal = XML_SUCCESS;
+  int iNumKeys = 0;
+
+  // Parse all keys from the base key name (keys separated by a '\')
+  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+
+  // Traverse the xml using the keys parsed from the base key name to 
+  // find the correct node
+  if (pcsKeys != NULL) {
+    TiXmlElement *rootElem = m_pXMLDoc->RootElement();
+
+    if (rootElem != NULL) {
+      // returns the last node in the chain
+      TiXmlElement *foundNode = FindNode(rootElem, pcsKeys, iNumKeys, TRUE);
+
+      for (size_t i = 0; i < v_shortcuts.size(); i++) { 
+        TiXmlElement* element = new TiXmlElement(_T("Shortcut"));
+        foundNode->LinkEndChild(element);
+        stringT csValue = _T("");
+        Format(csValue, _T("%u"), v_shortcuts[i].id);
+        element->SetAttribute(_T("id"), csValue);
+        element->SetAttribute(_T("Ctrl"), v_shortcuts[i].bCtrl ? 1 : 0);
+        element->SetAttribute(_T("Alt"), v_shortcuts[i].bAlt ? 1 : 0);
+        element->SetAttribute(_T("Shift"), v_shortcuts[i].bShift ? 1 : 0);
+        element->SetAttribute(_T("Key"), (int)v_shortcuts[i].cVirtKey);
+      }
+    } else
+      iRetVal = XML_LOAD_FAILED;
+
+    delete [] pcsKeys;
+  }
+  return iRetVal;
 }

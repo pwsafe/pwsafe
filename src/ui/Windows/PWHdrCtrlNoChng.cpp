@@ -9,7 +9,7 @@
 // PWHdrCtrlNoChng.cpp : implementation file
 //
 
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "PWHdrCtrlNoChng.h"
 
 // CPWHdrCtrlNoChng

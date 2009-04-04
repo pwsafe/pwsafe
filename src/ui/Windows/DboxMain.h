@@ -36,6 +36,7 @@
 #include "ControlExtns.h"
 #include "corelib/PWSFilters.h"
 #include "DDStatic.h"
+#include "MenuShortcuts.h"
 #include "os/run.h"
 
 #include <vector>
@@ -112,6 +113,12 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 
 enum SearchDirection {FIND_UP = -1, FIND_DOWN = 1};
 
+// List of all Popup menus in the Main Menu
+enum PopupMenus {FILEMENU = 0, EXPORTMENU, IMPORTMENU, 
+                 EDITMENU, VIEWMENU, FILTERMENU, 
+                 CHANGEFONTMENU, REPORTSMENU, MANAGEMENU, 
+                 HELPMENU, NUMPOPUPMENUS};
+
 // Index values for which dialog to show during GetAndCheckPassword
 enum {GCP_FIRST = 0,        // At startup of PWS
       GCP_NORMAL = 1,       // Only OK, CANCEL & HELP buttons
@@ -131,14 +138,9 @@ class DboxMain
 private:
   static void StopFind(LPARAM instance);
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-  static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
-  static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
-  static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
-  static CString CS_SETFILTERS, CS_CLEARFILTERS, CS_CREATESHORTCUT, CS_GOTOBASEENTRY;
-  static CString CS_DUPLICATEENTRY, CS_COPYPASSWORD, CS_COPYUSERNAME, CS_COPYNOTESFLD;
-  static CString CS_AUTOTYPE, CS_RUNCOMMAND, CS_BROWSEURLPLUS;
-  static CString CS_SHOWFINDTOOLBAR, CS_SHOWFINDNEXT, CS_SHOWFINDPREVIOUS;
-  static CString CS_ADDGROUP;
+
+  // Only need these if not on default menus
+  static CString CS_SETFILTERS, CS_CLEARFILTERS;
 
 public:
   // default constructor
@@ -651,8 +653,10 @@ private:
   void AddColumn(const int iType, const int iIndex);
   void DeleteColumn(const int iType);
   void RegistryAnonymity();
-  void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID);
-  void SetUpMenuStrings();
+  void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID, const bool bDoShortcuts);
+  void SetUpMenuStrings(CMenu *pPopupMenu);
+  void SetUpInitialMenuStrings();
+  void UpdateAccelTable();
   void DoBrowse(const bool bDoAutotype);
   
   static const struct UICommandTableEntry {
@@ -691,6 +695,19 @@ private:
   int m_bNumPassedFiltering;
 
   PWSRun m_runner; // for executing external programs
+
+  // Menu Shortcuts
+  MapMenuShortcuts m_MapMenuShortcuts;
+  // Mapping of virtual key to key name in user's locale
+  MapKeyNameID m_MapKeyNameID;
+  // Menu items we don't allow the user to modify:
+  // Any popup menu and Exit and Help
+  std::vector<UINT> m_UnmodifyableMenuItems;
+  // These are the mnemonics to the highest level menu e.g. File, Edit etc.
+  // Of form Alt+F, E, V, M, H - but using user's I18N letters.
+  std::vector<st_MenuShortcut> m_ReservedShortcuts;
+
+  bool m_bDoShortcuts[NUMPOPUPMENUS];
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)

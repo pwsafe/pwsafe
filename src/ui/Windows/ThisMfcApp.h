@@ -39,7 +39,7 @@ public:
 
   DboxMain* m_maindlg;
   PWScore m_core;
-  CMenu* m_mainmenu;
+  CMenu* m_pMainMenu;
   BOOL m_mruonfilemenu;
   HINSTANCE m_hInstResDLL;
 

@@ -82,7 +82,8 @@ ThisMfcApp::ThisMfcApp() :
   m_bUseAccelerator( true ),
 #endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
-  m_HotKeyPressed(false), m_hMutexOneInstance(NULL)
+  m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
+  m_ghAccelTable(NULL)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -119,7 +120,9 @@ ThisMfcApp::~ThisMfcApp()
 {
   delete m_TrayIcon;
   delete m_pMRU;
-  delete m_mainmenu;
+
+  m_pMainMenu->DestroyMenu();
+  delete m_pMainMenu;
 
   // Alhough the system will do this automatically - I like to be clean!
   CloseHandle(m_hMutexOneInstance);
@@ -637,28 +640,37 @@ BOOL ThisMfcApp::InitInstance()
 
   int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
   m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
-  m_mainmenu = new CMenu;
-  m_mainmenu->LoadMenu(IDR_MAINMENU);
+  m_pMainMenu = new CMenu;
+  m_pMainMenu->LoadMenu(IDR_MAINMENU);
 
   CMenu new_popupmenu;
 
+  MENUINFO minfo;
+  memset(&minfo, 0x00, sizeof(minfo));
+  minfo.cbSize = sizeof(MENUINFO);
+  minfo.fMask = MIM_MENUDATA;
+
   // Menu position indices (File & Close).
-  int fpos, cpos, epos, vpos;
+  int pos1, pos2;
+  CMenu *pMenu1, *pMenu2;
 
   // Look for "File" menu.
-  fpos = FindMenuItem(m_mainmenu, ID_FILEMENU);
-  ASSERT(fpos != -1);
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_FILEMENU);
+  ASSERT(pos1 != -1);
 
-  CMenu* file_submenu = m_mainmenu->GetSubMenu(fpos);
-  if (file_submenu != NULL) // Look for "Close Database"
-    cpos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_FILEMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+  if (pMenu1 != NULL) // Look for "Close Database"
+    pos2 = FindMenuItem(pMenu1, ID_MENUITEM_CLOSE);
   else
-    cpos = -1;
+    pos2 = -1;
 
   m_pMRU = new CPWSRecentFileList(0, _T("MRU"), _T("Safe%d"),
                                  ((nMRUItems != 0) ? nMRUItems : 1));
   if (nMRUItems > 0) {
-    if (cpos > -1) {
+    if (pos2 > -1) {
       int irc;
       // Create New Popup Menu
       new_popupmenu.CreatePopupMenu();
@@ -671,73 +683,114 @@ BOOL ThisMfcApp::InitInstance()
                                        ID_FILE_MRU_ENTRY1, cs_recent);
         ASSERT(irc != 0);
         // Insert Popup onto main menu
-        ASSERT(file_submenu != NULL);
-        irc = file_submenu->InsertMenu(cpos + 2,
-                                       MF_BYPOSITION | MF_POPUP,
-                                       UINT_PTR(new_popupmenu.m_hMenu),
-                                       cs_recentsafes);
+        ASSERT(pMenu1 != NULL);
+        irc = pMenu1->InsertMenu(pos2 + 2,
+                                 MF_BYPOSITION | MF_POPUP,
+                                 UINT_PTR(new_popupmenu.m_hMenu),
+                                 cs_recentsafes);
         ASSERT(irc != 0);
       } else {  // MRU entries inline
-        ASSERT(file_submenu != NULL);
-        irc = file_submenu->InsertMenu(cpos + 2, MF_BYPOSITION, 
-                                       ID_FILE_MRU_ENTRY1, cs_recent);
+        ASSERT(pMenu1 != NULL);
+        irc = pMenu1->InsertMenu(pos2 + 2, MF_BYPOSITION, 
+                                 ID_FILE_MRU_ENTRY1, cs_recent);
         ASSERT(irc != 0);
       } // m_mruonfilemenu
 
       m_pMRU->ReadList();
     } // pos > -1
   } else { // nMRUItems <= 0
-    if (cpos > -1) {
+    if (pos2 > -1) {
       int irc;
       // Remove extra separator
-      ASSERT(file_submenu != NULL);
-      irc = file_submenu->RemoveMenu(cpos + 1, MF_BYPOSITION);
-      ASSERT( irc != 0);
+      ASSERT(pMenu1 != NULL);
+      irc = pMenu1->RemoveMenu(pos2 + 1, MF_BYPOSITION);
+      ASSERT(irc != 0);
       // Remove Clear MRU menu item.
-      irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
+      irc = pMenu1->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
       ASSERT( irc != 0);
     }
   }
+  // Do File Menu Export submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_EXPORTMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_EXPORTMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do File Menu Import submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_IMPORTMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_IMPORTMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do Edit Menu
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_EDITMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_EDITMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+  // Do View Menu
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_VIEWMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_VIEWMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+  // Do View Menu Filter submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_FILTERMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_FILTERMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do View Menu ChangeFont submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_CHANGEFONTMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_CHANGEFONTMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do View Menu Reports submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_REPORTSMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_REPORTSMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do Manage Menu
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_MANAGEMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_MANAGEMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+  // Do Help Menu
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_HELPMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_HELPMENU;
+  pMenu1->SetMenuInfo(&minfo);
 
 #ifdef DEMO
   // add specific menu item for demo version
-  int hpos = FindMenuItem(m_mainmenu, ID_HELPMENU);
-  ASSERT(hpos != -1);
-
-  CMenu* help_submenu = m_mainmenu->GetSubMenu(hpos);
-  if (help_submenu != NULL) {
-    help_submenu->InsertMenu(2, MF_BYPOSITION, ID_MENUITEM_U3SHOP_WEBSITE,
-                             CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
+  // relies on last pMenu -> Help Menu
+  if (pMenu1 != NULL) {
+    pMenu1->InsertMenu(2, MF_BYPOSITION, ID_MENUITEM_U3SHOP_WEBSITE,
+                       CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
   }
 #endif /* DEMO */
 
-  // Look for "Edit" menu.
-  epos = FindMenuItem(m_mainmenu, ID_EDITMENU);
-  ASSERT(epos != -1);
-
-  CMenu* edit_submenu = m_mainmenu->GetSubMenu(epos);
-  if (edit_submenu != NULL) {
-    MENUINFO minfo;
-    memset(&minfo, 0x00, sizeof(minfo));
-    minfo.cbSize = sizeof(MENUINFO);
-    minfo.fMask = MIM_MENUDATA;
-    minfo.dwMenuData = ID_EDITMENU;
-    edit_submenu->SetMenuInfo(&minfo);
-  }
-
-  // Look for "View" menu.
-  vpos = FindMenuItem(m_mainmenu, ID_VIEWMENU);
-  ASSERT(epos != -1);
-
-  CMenu* view_submenu = m_mainmenu->GetSubMenu(vpos);
-  if (view_submenu != NULL) {
-    MENUINFO minfo;
-    memset(&minfo, 0x00, sizeof(minfo));
-    minfo.cbSize = sizeof(MENUINFO);
-    minfo.fMask = MIM_MENUDATA;
-    minfo.dwMenuData = ID_VIEWMENU;
-    view_submenu->SetMenuInfo(&minfo);
-  }
   /*
   * normal startup
   */
@@ -769,8 +822,8 @@ BOOL ThisMfcApp::InitInstance()
 
   // Set up an Accelerator table
 #if !defined(POCKET_PC)
-  m_ghAccelTable = LoadAccelerators(AfxGetResourceHandle(),
-    MAKEINTRESOURCE(IDR_ACCS));
+  m_ghAccelTable = ::LoadAccelerators(AfxGetResourceHandle(),
+                                      MAKEINTRESOURCE(IDR_ACCS));
 #endif
 
   CLWnd ListenerWnd(dbox);

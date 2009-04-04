@@ -76,8 +76,7 @@ struct st_CompareData {
   }
 };
 
-struct equal_id
-{
+struct equal_id {
   equal_id(int const& id) : m_id(id) {}
   bool operator()(st_CompareData const& rdata) const
   {

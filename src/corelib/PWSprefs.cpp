@@ -20,6 +20,8 @@
 #include "os/pws_tchar.h"
 #include "os/file.h"
 
+#include <algorithm>
+
 #ifdef _WIN32
 #include <AfxWin.h> // for AfxGetApp()
 #include <LMCons.h> // for UNLEN
@@ -279,7 +281,7 @@ int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
   for (i = 0, cnt = 1; i < n; i++) {
     if (MRUFiles[i].empty() ||
       // Don't remember backup files
-        MRUFiles[i].substr(MRUFiles[i].length() - 4) == _T(".bak") ||
+      MRUFiles[i].substr(MRUFiles[i].length() - 4) == _T(".bak") ||
       MRUFiles[i].substr(MRUFiles[i].length() - 5) == _T(".bak~") ||
       MRUFiles[i].substr(MRUFiles[i].length() - 5) == _T(".ibak") ||
       MRUFiles[i].substr(MRUFiles[i].length() - 6) == _T(".ibak~"))
@@ -468,6 +470,35 @@ void PWSprefs::SetPrefPSSRect(long top, long bottom,
   }
   if (m_PSSrect.changed)
     m_prefs_changed[APP_PREF] = true;
+}
+
+// std::sort for shortcuts
+struct shortcut_less {
+  bool operator ()(st_prefShortcut const& a, st_prefShortcut const& b) const {
+    return (a.id < b.id);
+  }
+};
+
+bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
+{
+  return (a.id       == b.id &&
+          a.cVirtKey == b.cVirtKey &&
+          a.bCtrl    == b.bCtrl &&
+          a.bAlt     == b.bAlt &&
+          a.bShift   == b.bShift);
+};
+
+void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)
+{
+  std::vector<st_prefShortcut> vSortedShortcuts(vShortcuts);
+  std::sort(vSortedShortcuts.begin(), vSortedShortcuts.end(), shortcut_less());
+  if (m_vShortcuts.size() == vSortedShortcuts.size() &&
+      std::equal(m_vShortcuts.begin(), m_vShortcuts.end(), 
+                 vSortedShortcuts.begin(), equal_shortcuts))
+    return;
+ 
+  m_vShortcuts = vSortedShortcuts;
+  m_prefs_changed[SHC_PREF] = true;
 }
 
 StringX PWSprefs::Store()
@@ -670,12 +701,14 @@ void PWSprefs::InitializePreferences()
   xmlify(charT('H'), hn);
   stringT un = si->GetEffectiveUser();
   xmlify(charT('u'), un);
-  m_csHKCU =  hn.c_str(); m_csHKCU += _T("\\");
+  m_csHKCU =  hn.c_str();
+  m_csHKCU += _T("\\");
   m_csHKCU += un.c_str();
   // set up other keys
   m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
   m_csHKCU_POS  = m_csHKCU + _T("\\Position");
   m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
+  m_csHKCU_SHCT = m_csHKCU + _T("\\Shortcuts");
 
   // Does the registry entry exist for this user?
   m_bRegistryKeyExists = CheckRegistryExists();
@@ -996,7 +1029,11 @@ bool PWSprefs::LoadProfileFromFile()
     Format(csSubkey, _T("Safe%02d"), i);
     m_MRUitems[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
   }
+
+  m_vShortcuts = m_XML_Config->GetShortcuts(m_csHKCU_SHCT);
+  std::sort(m_vShortcuts.begin(), m_vShortcuts.end(), shortcut_less());
   retval = true;
+
 exit:
   delete m_XML_Config;
   m_XML_Config = NULL;
@@ -1016,20 +1053,20 @@ void PWSprefs::SaveApplicationPreferences()
 
   if (m_ConfigOptions == CF_FILE_RW ||
       m_ConfigOptions == CF_FILE_RW_NEW) {
-      // Load prefs file in case it was changed elsewhere
-      // Here we need to explicitly lock from before
-      // load to after store
+    // Load prefs file in case it was changed elsewhere
+    // Here we need to explicitly lock from before
+    // load to after store
     m_XML_Config = new CXMLprefs(m_configfilename.c_str());
-      if (!m_XML_Config->Lock()) {
-        // punt to registry!
-        m_ConfigOptions = CF_REGISTRY;
-        delete m_XML_Config;
-        m_XML_Config = NULL;
-      } else { // acquired lock
-        // if file exists, load to get other values
-        if (pws_os::FileExists(m_configfilename.c_str()))
-          m_XML_Config->Load(); // we ignore failures here. why bother?
-      }
+    if (!m_XML_Config->Lock()) {
+      // punt to registry!
+      m_ConfigOptions = CF_REGISTRY;
+      delete m_XML_Config;
+      m_XML_Config = NULL;
+    } else { // acquired lock
+      // if file exists, load to get other values
+      if (pws_os::FileExists(m_configfilename.c_str()))
+        m_XML_Config->Load(); // we ignore failures here. why bother?
+    }
   }
   UpdateTimeStamp();
 
@@ -1153,26 +1190,82 @@ void PWSprefs::SaveApplicationPreferences()
     m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
     // Now put back the ones we want
     stringT csSubkey;
-    for (i = 0; i < n; i++)
+    for (i = 0; i < n; i++) {
       if (!m_MRUitems[i].empty()) {
         Format(csSubkey, _T("Safe%02d"), i+1);
         m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
       }
+    }
   }
 
   if (m_ConfigOptions == CF_FILE_RW ||
-    m_ConfigOptions == CF_FILE_RW_NEW) {
-      if (m_XML_Config->Store()) // can't be new after succ. store
-        m_ConfigOptions = CF_FILE_RW;
-      else if (!m_XML_Config->getReason().empty() &&
-               m_Reporter != NULL)
-        (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
-      m_XML_Config->Unlock();
-      delete m_XML_Config;
-      m_XML_Config = NULL;
+      m_ConfigOptions == CF_FILE_RW_NEW) {
+    if (m_XML_Config->Store()) // can't be new after succ. store
+      m_ConfigOptions = CF_FILE_RW;
+    else
+    if (!m_XML_Config->getReason().empty() &&
+        m_Reporter != NULL)
+      (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
+
+    m_XML_Config->Unlock();
+    delete m_XML_Config;
+    m_XML_Config = NULL;
   }
 
   m_prefs_changed[APP_PREF] = false;
+}
+
+void PWSprefs::SaveShortcuts()
+{
+  if (!m_prefs_changed[SHC_PREF])
+    return;
+
+  // change to config dir
+  // dirs' d'tor will put us back when we leave
+  // needed for case where m_configfilename was passed relatively
+  PWSdirs dirs(PWSdirs::GetConfigDir());
+
+  if (m_ConfigOptions == CF_FILE_RW ||
+      m_ConfigOptions == CF_FILE_RW_NEW) {
+    // Load prefs file in case it was changed elsewhere
+    // Here we need to explicitly lock from before
+    // load to after store
+    m_XML_Config = new CXMLprefs(m_configfilename.c_str());
+    if (!m_XML_Config->Lock()) {
+      // punt to registry!
+      m_ConfigOptions = CF_REGISTRY;
+      delete m_XML_Config;
+      m_XML_Config = NULL;
+    } else { // acquired lock
+      // if file exists, load to get other values
+      if (pws_os::FileExists(m_configfilename.c_str()))
+        m_XML_Config->Load(); // we ignore failures here. why bother?
+    }
+  }
+
+  if (m_ConfigOptions == CF_FILE_RW ||
+      m_ConfigOptions == CF_FILE_RW_NEW) {
+    // Delete ALL shortcut entries
+    m_XML_Config->DeleteSetting(m_csHKCU_SHCT, _T(""));
+    // Now put back the ones we want
+    if (m_vShortcuts.size() > 0)
+      m_XML_Config->SetShortcuts(m_csHKCU_SHCT, m_vShortcuts);
+  }
+
+  if (m_ConfigOptions == CF_FILE_RW ||
+      m_ConfigOptions == CF_FILE_RW_NEW) {
+    if (m_XML_Config->Store()) // can't be new after succ. store
+      m_ConfigOptions = CF_FILE_RW;
+    else
+    if (!m_XML_Config->getReason().empty() &&
+        m_Reporter != NULL)
+      (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
+
+    m_XML_Config->Unlock();
+    delete m_XML_Config;
+    m_XML_Config = NULL;
+  }
+  m_prefs_changed[SHC_PREF] = false;
 }
 
 bool PWSprefs::OfferDeleteRegistry() const

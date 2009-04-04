@@ -29,6 +29,7 @@
 #include "OptionsPasswordHistory.h"
 #include "OptionsMisc.h"
 #include "OptionsBackup.h"
+#include "OptionsShortcuts.h"
 
 using namespace std;
 
@@ -230,6 +231,8 @@ void DboxMain::OnOptions()
   COptionsSystem          system;
   COptionsMisc            misc;
   COptionsBackup          backup;
+  COptionsShortcuts       shortcuts;
+
   PWSprefs               *prefs = PWSprefs::GetInstance();
   BOOL                    prevLockOIT; // lock on idle timeout set?
   BOOL                    brc, save_hotkey_enabled;
@@ -398,6 +401,10 @@ void DboxMain::OnOptions()
   backup.m_backuplocation = backupDir.IsEmpty() ? 0 : 1;
   backup.m_userbackupotherlocation = backupDir;
 
+  shortcuts.InitialSetup(m_MapMenuShortcuts, m_MapKeyNameID,
+                         m_UnmodifyableMenuItems,
+                         m_ReservedShortcuts);
+
   optionsDlg.AddPage(&backup);
   optionsDlg.AddPage(&display);
   optionsDlg.AddPage(&misc);
@@ -405,6 +412,7 @@ void DboxMain::OnOptions()
   optionsDlg.AddPage(&passwordhistory);
   optionsDlg.AddPage(&security);
   optionsDlg.AddPage(&system);
+  optionsDlg.AddPage(&shortcuts);
 
   /*
   **  Remove the "Apply Now" button.
@@ -722,6 +730,30 @@ void DboxMain::OnOptions()
       m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
       // Finally, keep prefs file updated:
       prefs->SaveApplicationPreferences();
+
+    if (shortcuts.IsChanged()) {
+      m_MapMenuShortcuts = shortcuts.GetMaps();
+      std::vector<st_prefShortcut> vShortcuts;
+      MapMenuShortcutsIter iter;
+      for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
+        iter++) {
+        if (iter->second.cVirtKey != iter->second.cdefVirtKey ||
+            iter->second.bCtrl    != iter->second.bdefCtrl    ||
+            iter->second.bAlt     != iter->second.bdefAlt     ||
+            iter->second.bShift   != iter->second.bdefShift) {
+          st_prefShortcut stxst;
+          stxst.id = iter->first;
+          stxst.cVirtKey = iter->second.cVirtKey;
+          stxst.bCtrl = iter->second.bCtrl;
+          stxst.bAlt = iter->second.bAlt;
+          stxst.bShift = iter->second.bShift;
+          vShortcuts.push_back(stxst);
+        }
+      }
+      prefs->SetPrefShortcuts(vShortcuts);
+      prefs->SaveShortcuts();
+      UpdateAccelTable();
+    }
   }
   // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
