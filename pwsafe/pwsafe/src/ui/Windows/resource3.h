@@ -513,3 +513,10 @@
 #define IDS_AUTOTYPECOPIED              5677
 #define IDS_RUNCMDCOPIED                5678
 #define IDS_RUNCMND                     5679
+#define IDS_COL_MENUITEM                5680
+#define IDS_COL_SHORTCUT                5681
+#define IDS_SHCT_TOOLTIP0               5682
+#define IDS_SHCT_TOOLTIP1               5683
+#define IDS_SHCT_WARNING1               5684
+#define IDS_SHCT_WARNING2               5685
+#define IDS_SHCT_WARNING3               5686

@@ -7,7 +7,12 @@
 */
 #ifndef __XMLPREFS_H
 #define __XMLPREFS_H
+
 #include "os/typedefs.h"
+#include "PWSprefs.h"
+
+#include <vector>
+
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs class
 //
@@ -46,6 +51,10 @@ class CXMLprefs
           int iValue);
   int Set(const stringT &csBaseKeyName, const stringT &csValueName,
           const stringT &csValue);
+
+  std::vector<st_prefShortcut> GetShortcuts(const stringT &csKeyName);
+  int SetShortcuts(const stringT &csKeyName, 
+                   std::vector<st_prefShortcut> v_shortcuts);
 
   bool DeleteSetting(const stringT &csBaseKeyName, const stringT &csValueName);
   stringT getReason() const {return m_Reason;} // why something went wrong

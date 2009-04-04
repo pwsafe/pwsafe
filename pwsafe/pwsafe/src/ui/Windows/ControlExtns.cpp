@@ -244,8 +244,7 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
   }
 }
 
-struct equal_cmd
-{
+struct equal_cmd {
   equal_cmd(int const& nCmd) : m_nCmd(nCmd) {}
   bool operator()(st_context_menu const& context_menu) const
   {
@@ -616,8 +615,7 @@ void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
 
 const TCHAR FILLER = TCHAR(0x08); // ASCII backspace doesn't occur in Edit
 
-struct CSecEditExtn::Impl
-{
+struct CSecEditExtn::Impl {
   Impl() : m_field(0) {
     unsigned char key[20];
     PWSrand::GetInstance()->GetRandomData(key, sizeof(key));

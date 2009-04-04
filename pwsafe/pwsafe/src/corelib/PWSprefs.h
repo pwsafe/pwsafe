@@ -33,8 +33,18 @@
 #include "Proxy.h"
 #include "os/typedefs.h"
 
+#include <vector>
+
 extern HANDLE s_cfglockFileHandle;
 extern int s_cfgLockCount;
+
+struct st_prefShortcut {
+  unsigned int id;
+  unsigned char cVirtKey;
+  bool bAlt;
+  bool bCtrl;
+  bool bShift;
+};
 
 class CXMLprefs;
 
@@ -51,6 +61,7 @@ public:
   StringX Store(); // returns string for saving in file
 
   void SaveApplicationPreferences();
+  void SaveShortcuts();
 
   enum  BoolPrefs {AlwaysOnTop, ShowPWDefault,
     ShowPasswordInTree,
@@ -152,6 +163,10 @@ public:
   // for display in status bar (debug)
   int GetConfigIndicator() const;
 
+  // Get & set vector of user shortcuts (only in XML cnfig file)
+  std::vector<st_prefShortcut> GetPrefShortcuts() {return m_vShortcuts;}
+  void SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts);
+
   // for OptionSystem property sheet - support removing registry traces
   bool OfferDeleteRegistry() const;
   void DeleteRegistryEntries();  
@@ -164,8 +179,8 @@ private:
   PWSprefs();
   ~PWSprefs();
 
-  // Preferences changed (Database or Application)
-  enum {DB_PREF = 0, APP_PREF = 1};
+  // Preferences changed (Database or Application or Shortcuts)
+  enum {DB_PREF = 0, APP_PREF = 1, SHC_PREF = 2};
 
   bool WritePref(const StringX &name, bool val);
   bool WritePref(const StringX &name, unsigned int val);
@@ -190,10 +205,10 @@ private:
 
   bool m_bRegistryKeyExists;
   enum {CF_NONE, CF_REGISTRY, CF_FILE_RO,
-    CF_FILE_RW, CF_FILE_RW_NEW} m_ConfigOptions;
-  stringT m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF;
+        CF_FILE_RW, CF_FILE_RW_NEW} m_ConfigOptions;
+  stringT m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF, m_csHKCU_SHCT;
 
-  bool m_prefs_changed[2];  // 0 - DB stored pref; 1 - App related pref
+  bool m_prefs_changed[3];  // 0 - DB stored pref; 1 - App related pref; 2 - Shortcut
 
   enum PrefType {ptObsolete = 0, ptDatabase, ptApplication};
   static const struct boolPref {
@@ -213,5 +228,6 @@ private:
   bool m_stringChanged[NumStringPrefs];
 
   stringT *m_MRUitems;
+  std::vector<st_prefShortcut> m_vShortcuts;
 };
 #endif /*  __PWSPREFS_H */

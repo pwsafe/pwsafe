@@ -1147,6 +1147,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MainMenu.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MainView.cpp"
 				>
 			</File>
@@ -1180,6 +1184,10 @@
 			</File>
 			<File
 				RelativePath=".\OptionsSecurity.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OptionsShortcuts.cpp"
 				>
 			</File>
 			<File
@@ -1235,7 +1243,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\filter\PWHdrCtrlNoChng.cpp"
+				RelativePath=".\PWHdrCtrlNoChng.cpp"
 				>
 			</File>
 			<File
@@ -1296,6 +1304,14 @@
 			</File>
 			<File
 				RelativePath=".\filter\SetPolicyFiltersDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SHCTHotKey.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SHCTListCtrl.cpp"
 				>
 			</File>
 			<File
@@ -1496,6 +1512,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MenuShortcuts.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MenuTipper.h"
 				>
 			</File>
@@ -1525,6 +1545,10 @@
 			</File>
 			<File
 				RelativePath=".\OptionsSecurity.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OptionsShortcuts.h"
 				>
 			</File>
 			<File
@@ -1588,7 +1612,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\filter\PWHdrCtrlNoChng.h"
+				RelativePath=".\PWHdrCtrlNoChng.h"
 				>
 			</File>
 			<File
@@ -1665,6 +1689,14 @@
 			</File>
 			<File
 				RelativePath=".\filter\SetPolicyFiltersDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SHCTHotKey.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SHCTListCtrl.h"
 				>
 			</File>
 			<File

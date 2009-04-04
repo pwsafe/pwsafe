@@ -11,7 +11,7 @@
 // CPWFiltersDlg dialog
 
 #include "../PWResizeDialog.h"
-#include "PWHdrCtrlNoChng.h"
+#include "../PWHdrCtrlNoChng.h"
 #include "corelib/Itemdata.h"
 #include "corelib/PWSFilters.h"
 #include "PWFilterLC.h"

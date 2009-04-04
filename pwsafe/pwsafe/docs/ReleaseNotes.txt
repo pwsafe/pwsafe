@@ -12,7 +12,7 @@ Bugs fixed in 3.17
 ==================
 [2689144] PWS no longer goes into a loop if the main menu has not yet
 been displayed when accessing the recent entries via the system tray icon.
-[2664703] Load base locale DLL if can't find a specific sub-locale version
+[2664703] Load base locale DLL if can't find a specific sub-locale version.
 [2657132] View Reports no longer causes application crash.
 [] Correct DragBar bitmaps for a New database.
 
@@ -33,10 +33,12 @@ operation. See help for details.
 ability to override this and showing the notes by right-click context
 menu.
 [] Add new field 'Run Command' to allow arbitrary commands, such as
-terminal emulators, etc. to be executed via Ctrl+R or from theEdit
+terminal emulators, etc. to be executed via Ctrl+R or from the Edit
 menu. See help for details. 
-[] Implement "Find Up" via clicking Find toolbar button with Shift key down or
-pressing 'Shift+F3' for repeat find up.
+[] Implement "Find Up" via clicking Find toolbar button with Shift key down
+or pressing 'Shift+F3' for repeat find up.
+[] Allow users to set their own shortcut keys for menu items. Seelct via
+Manage->Options->Shortcuts.
 
 Bugs fixed in 3.16.1
 ====================
@@ -50,7 +52,7 @@ mode as that is the only option available to the user.
 
 Bugs fixed in 3.16
 ==================
-[2529736] Validate now corrects all Password History errors
+[2529736] Validate now corrects all Password History errors.
 [2509817] Control characters no longer sent via Autotype.
 [2481370] Can now create shortcut by right-mouse down dragging.
 [2423397] Sorting direction database preference was not being saved in
@@ -139,4 +141,3 @@ each login. To access this, select an item, right-click and choose
 Display Subset of Password.  This can also be added to the user's toolbar.
 [] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
 Clipboard Viewers.
-

@@ -229,7 +229,11 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
     pCmdUI->Enable(FALSE);
   } else {
     const bool bIsEmail = ci.IsURLEmail();
-    CString cs_text = bIsEmail ? CS_SENDEMAIL : CS_BROWSEURL;
+    MapMenuShortcutsIter iter;
+    iter = m_MapMenuShortcuts.find(bIsEmail ? ID_MENUITEM_SENDEMAIL : 
+                                              ID_MENUITEM_BROWSEURL);
+    ASSERT(iter != m_MapMenuShortcuts.end());
+    CString cs_text = iter->second.name;
     int nPos = cs_text.Find(_T("\t"));
     if (nPos > 0)
       cs_text = cs_text.Left(nPos);

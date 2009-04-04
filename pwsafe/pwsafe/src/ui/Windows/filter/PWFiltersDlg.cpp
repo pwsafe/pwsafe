@@ -15,7 +15,7 @@
 #include "../stdafx.h"
 #include "../ThisMfcApp.h" // for online help
 #include "PWFiltersDlg.h"
-#include "PWHdrCtrlNoChng.h"
+#include "../PWHdrCtrlNoChng.h"
 
 #include "../resource2.h"
 #include "../resource3.h"

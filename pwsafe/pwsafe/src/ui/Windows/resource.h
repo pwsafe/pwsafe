@@ -56,6 +56,7 @@
 #define IDD_VIEWREPORT                  157
 #define IDD_MANAGEFILTERS               158
 #define IDD_PASSWORDSUBSET              159
+#define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
 #define IDR_POPCOPYTOCOMPARISON         171
 #define IDR_POPCOPYTOORIGINAL           172
@@ -65,6 +66,7 @@
 #define IDR_POPTRAY                     176
 #define IDR_POPTREE                     177
 #define IDR_POPRIGHTDRAG                178
+#define IDR_POPRESETSHORTCUT            179
 #define IDI_CORNERICON                  180
 #define IDI_LOCKEDICON                  181
 #define IDI_MBASKICON                   182
@@ -288,6 +290,7 @@
 #define IDB_RUNCMD_CLASSIC              449
 #define IDB_RUNCMD_NEW                  450
 #define IDB_RUNCMD_NEW_D                451
+#define IDD_PS_SHORTCUTS                452
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -611,16 +614,19 @@
 #define IDC_DEFNOTESWRAP                1363
 #define IDC_TXT_FLDS_COMBO              1365
 #define IDC_TXT_FLD                     1366
-#define IDC_LIST2                       1367
-#define IDC_COMBOBOXEX1                 1368
+#define IDC_SHORTCUTLIST                1367
+#define IDC_RESETALLSHORTCUTS           1368
+#define IDC_SHORTCUTHOTKEY              1369
+#define IDC_STATIC_SHCTWARNING          1370
+#define IDC_SHORTCUTLC_HEADER           1371
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        452
+#define _APS_NEXT_RESOURCE_VALUE        453
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1369
+#define _APS_NEXT_CONTROL_VALUE         1372
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif
