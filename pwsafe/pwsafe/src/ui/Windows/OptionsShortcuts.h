@@ -74,6 +74,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+  static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   CPWHdrCtrlNoChng m_SHCTHeader;
 
   MapMenuShortcuts m_MapMenuShortcuts;
