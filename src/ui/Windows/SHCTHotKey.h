@@ -16,20 +16,24 @@ class CSHCTListCtrl;
 
 class CSHCTHotKey : public CHotKeyCtrl
 {
-	DECLARE_DYNAMIC(CSHCTHotKey)
+  DECLARE_DYNAMIC(CSHCTHotKey)
 
 public:
-	CSHCTHotKey();
-	virtual ~CSHCTHotKey();
+  CSHCTHotKey();
+  virtual ~CSHCTHotKey();
 
   void SetMyParent(CSHCTListCtrl *pParent)
   {m_pParent = pParent;}
 
 protected:
   afx_msg void OnKillFocus(CWnd *pWnd);
+  afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags); 
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags); 
 
-	DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 
 private:
   CSHCTListCtrl *m_pParent;
+  bool m_bHandled;
 };

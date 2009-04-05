@@ -34,26 +34,23 @@ public:
 	~COptionsShortcuts();
 
   bool IsChanged() {return m_bChanged;}
+  void SetChanged() {m_bChanged = true;}
 
   void InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const MapKeyNameID MapKeyNameID,
                     const std::vector<UINT> ExcludedMenuItems,
-                    const std::vector<st_MenuShortcut> ReservedShortcuts)
-  {m_MapMenuShortcuts = MapMenuShortcuts;
-   m_MapKeyNameID = MapKeyNameID;
-   m_ExcludedMenuItems = ExcludedMenuItems;
-   m_ReservedShortcuts = ReservedShortcuts;}
+                    const std::vector<st_MenuShortcut> ReservedShortcuts);
 
   MapMenuShortcuts GetMaps() {return m_MapMenuShortcuts;}
 
-  MapMenuShortcutsIter GetMapMenuShortcutsIter(const UINT id)
+  MapMenuShortcutsIter GetMapMenuShortcutsIter(const UINT &id)
   {return m_MapMenuShortcuts.find(id);}
 
-  MapKeyNameIDConstIter GetMapKeyNameIDConstIter(const unsigned char vc)
-  {return m_MapKeyNameID.find(vc);}
+  MapKeyNameIDConstIter GetMapKeyNameIDConstIter(const st_KeyIDExt &st_KIDEx)
+  {return m_MapKeyNameID.find(st_KIDEx);}
 
   void OnHotKeyKillFocus(const int item, const UINT id,
-                         const WORD vVirtualKeyCode, const WORD vModifiers);
+                         const WORD wVirtualKeyCode, const WORD wModifiers);
 
   void ClearWarning() {m_stc_warning.ShowWindow(SW_HIDE);}
 

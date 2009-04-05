@@ -29,7 +29,7 @@ public:
   void SaveHotKey();
   bool IsHotKeyActive() {return m_bHotKeyActive;}
 
-  void OnHotKeyKillFocus(const WORD vVirtualKeyCode, const WORD vModifiers);
+  void OnHotKeyKillFocus(const WORD wVirtualKeyCode, const WORD wModifiers);
 
 protected:
   INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
@@ -54,6 +54,6 @@ private:
   char *m_pchTip;
   int m_item;
   UINT m_id;
-  bool m_bChanged, m_bHotKeyActive;
+  bool m_bHotKeyActive;
   COLORREF m_crWindowText, m_crRedText;
 };

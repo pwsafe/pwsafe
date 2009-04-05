@@ -48,6 +48,17 @@ BEGIN_MESSAGE_MAP(COptionsShortcuts, CPropertyPage)
   ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
+void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
+                    const MapKeyNameID MapKeyNameID,
+                    const std::vector<UINT> ExcludedMenuItems,
+                    const std::vector<st_MenuShortcut> ReservedShortcuts)
+{
+  m_MapMenuShortcuts = MapMenuShortcuts;
+  m_MapKeyNameID = MapKeyNameID;
+  m_ExcludedMenuItems = ExcludedMenuItems;
+  m_ReservedShortcuts = ReservedShortcuts;
+}
+
 BOOL COptionsShortcuts::OnInitDialog()
 {
   CPropertyPage::OnInitDialog();
@@ -81,8 +92,11 @@ BOOL COptionsShortcuts::OnInitDialog()
         continue;
 
     if (iter->second.cVirtKey != 0) {
-          citer = m_MapKeyNameID.find(iter->second.cVirtKey);
-          str.Format(_T("%s%s%s%s"),
+       st_KeyIDExt st_KIDEx;
+       st_KIDEx.id = iter->second.cVirtKey;
+       st_KIDEx.bExtended = iter->second.bExtended;
+       citer = m_MapKeyNameID.find(st_KIDEx);
+       str.Format(_T("%s%s%s%s"),
               iter->second.bCtrl  ? _T("Ctrl + ")  : _T(""),
               iter->second.bAlt   ? _T("Alt + ")   : _T(""),
               iter->second.bShift ? _T("Shift + ") : _T(""),
@@ -138,15 +152,19 @@ void COptionsShortcuts::OnBnClickedResetAll()
   MapKeyNameIDConstIter citer;
   CString str;
   UINT id;
+  st_KeyIDExt st_KIDEx;
 
   for (int i = 0; i < m_ShortcutLC.GetItemCount(); i++) {
     id = (UINT)LOWORD(m_ShortcutLC.GetItemData(i));
 
     iter = m_MapMenuShortcuts.find(id);
-    citer = m_MapKeyNameID.find(iter->second.cdefVirtKey);
+    st_KIDEx.id = iter->second.cdefVirtKey;
+    st_KIDEx.bExtended = iter->second.bdefExtended;
+    citer = m_MapKeyNameID.find(st_KIDEx);
     iter->second.bCtrl = iter->second.bdefCtrl;
     iter->second.bAlt = iter->second.bdefAlt;
     iter->second.bShift = iter->second.bdefShift;
+    iter->second.bExtended = iter->second.bdefExtended;
     iter->second.cVirtKey = iter->second.cdefVirtKey;
 
     if (citer != m_MapKeyNameID.end() || iter->second.cdefVirtKey != 0) {
@@ -173,10 +191,11 @@ struct reserved {
   reserved(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
   bool operator()(st_MenuShortcut const& rdata) const
   {
-    return (m_st_mst.cVirtKey == rdata.cVirtKey &&
-            m_st_mst.bCtrl    == rdata.bCtrl    &&
-            m_st_mst.bAlt     == rdata.bAlt     &&
-            m_st_mst.bShift   == rdata.bShift);
+    return (m_st_mst.cVirtKey  == rdata.cVirtKey &&
+            m_st_mst.bCtrl     == rdata.bCtrl    &&
+            m_st_mst.bAlt      == rdata.bAlt     &&
+            m_st_mst.bShift    == rdata.bShift   &&
+            m_st_mst.bExtended == rdata.bExtended);
   }
 
   st_MenuShortcut m_st_mst;
@@ -187,10 +206,11 @@ struct already_inuse {
   already_inuse(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
   bool operator()(MapMenuShortcutsPair const & p) const
   {
-    return (p.second.cVirtKey == m_st_mst.cVirtKey &&
-            p.second.bCtrl    == m_st_mst.bCtrl    &&
-            p.second.bAlt     == m_st_mst.bAlt     &&
-            p.second.bShift   == m_st_mst.bShift);
+    return (p.second.cVirtKey  == m_st_mst.cVirtKey &&
+            p.second.bCtrl     == m_st_mst.bCtrl    &&
+            p.second.bAlt      == m_st_mst.bAlt     &&
+            p.second.bShift    == m_st_mst.bShift   &&
+            p.second.bExtended == m_st_mst.bExtended);
   }
 
   st_MenuShortcut m_st_mst;
@@ -199,22 +219,27 @@ struct already_inuse {
 // Tortuous route to get here!
 // m_HotKey looses focus and calls parent (CListCtrl) that calls here
 void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
-                                          const WORD vVirtualKeyCode, 
-                                          const WORD vModifiers)
+                                          const WORD wVirtualKeyCode, 
+                                          const WORD wModifiers)
 {
   CString str(_T("")), mst_str(_T(""));
   CString cs_warning;
-  MapMenuShortcutsIter iter;
+  MapMenuShortcutsIter iter, inuse_iter;
   MapKeyNameIDConstIter citer;
   st_MenuShortcut st_mst;
+  st_KeyIDExt st_KIDEx;
 
-  iter = m_MapMenuShortcuts.find(id);
-  citer = m_MapKeyNameID.find((unsigned char)vVirtualKeyCode);
+  st_KIDEx.id = (unsigned char)wVirtualKeyCode;
+  st_KIDEx.bExtended = (wModifiers & HOTKEYF_EXT) == HOTKEYF_EXT;
+  citer = m_MapKeyNameID.find(st_KIDEx);
 
-  st_mst.bCtrl = (vModifiers & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
-  st_mst.bAlt = (vModifiers & HOTKEYF_ALT) == HOTKEYF_ALT;
-  st_mst.bShift = (vModifiers & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
-  st_mst.cVirtKey = (unsigned char)vVirtualKeyCode;
+  st_mst.bCtrl     = (wModifiers & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+  st_mst.bAlt      = (wModifiers & HOTKEYF_ALT) == HOTKEYF_ALT;
+  st_mst.bShift    = (wModifiers & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+  st_mst.bExtended = st_KIDEx.bExtended;
+  st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
+
+  already_inuse inuse(st_mst);
 
   if (st_mst.cVirtKey != 0) {
     mst_str.Format(_T("%s%s%s%s"),
@@ -224,18 +249,11 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
                    citer->second);
   }
 
+  iter = m_MapMenuShortcuts.find(id);
   if (citer == m_MapKeyNameID.end()) {
     // Invalid shortcut
     cs_warning.LoadString(IDS_SHCT_WARNING1);
     goto set_warning;
-  } else {
-    if (iter->second.cVirtKey != 0) {
-      str.Format(_T("%s%s%s%s"),
-                 iter->second.bCtrl  ? _T("Ctrl + ")  : _T(""),
-                 iter->second.bAlt   ? _T("Alt + ")   : _T(""),
-                 iter->second.bShift ? _T("Shift + ") : _T(""),
-                 citer->second);
-    }
   }
 
   if (std::find_if(m_ReservedShortcuts.begin(),
@@ -246,32 +264,38 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
     goto set_warning;
   }
 
-  // Check not already in use
-  {
-    already_inuse inuse(st_mst);
-    MapMenuShortcutsIter inuse_iter;
+  // Check not already in use (ignore if deleting current shortcut)
+  if (st_mst.cVirtKey != (unsigned char)0) {
     inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
                               m_MapMenuShortcuts.end(),
                               inuse);
     if (inuse_iter != m_MapMenuShortcuts.end() && 
-        inuse_iter->first != iter->first &&
-        iter->second.cVirtKey != (unsigned char)0) {
+        inuse_iter->first != iter->first) {
       // Shortcut in use
       cs_warning.Format(IDS_SHCT_WARNING3, mst_str, inuse_iter->second.name);
       goto set_warning;
-    } else {
-      // Not reserved and not already in use - implement
-      iter->second.bCtrl = st_mst.bCtrl;
-      iter->second.bAlt = st_mst.bAlt;
-      iter->second.bShift = st_mst.bShift;
-      iter->second.cVirtKey = st_mst.cVirtKey;
-
-      m_ShortcutLC.SetItemText(item, 1, str);
-      m_ShortcutLC.RedrawItems(item, item);
-      m_ShortcutLC.UpdateWindow();
-      m_bChanged = true;
     }
   }
+
+  if (iter->second.cVirtKey != 0) {
+    str.Format(_T("%s%s%s%s"),
+               iter->second.bCtrl  ? _T("Ctrl + ")  : _T(""),
+               iter->second.bAlt   ? _T("Alt + ")   : _T(""),
+               iter->second.bShift ? _T("Shift + ") : _T(""),
+               citer->second);
+  }
+
+  // Not reserved and not already in use - implement
+  iter->second.bCtrl = st_mst.bCtrl;
+  iter->second.bAlt = st_mst.bAlt;
+  iter->second.bShift = st_mst.bShift;
+  iter->second.bExtended = st_mst.bExtended;
+  iter->second.cVirtKey = st_mst.cVirtKey;
+
+  m_ShortcutLC.SetItemText(item, 1, str);
+  m_ShortcutLC.RedrawItems(item, item);
+  m_ShortcutLC.UpdateWindow();
+  m_bChanged = true;
   return;
 
 set_warning:
