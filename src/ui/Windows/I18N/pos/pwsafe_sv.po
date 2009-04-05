@@ -348,9 +348,8 @@ msgid "&About Password Safe..."
 msgstr ""
 
 #. Resource IDs: (32051)
-#, fuzzy
-msgid "&Add Entry...\tCtrl+A"
-msgstr "Ändra posten\tCtrl+Enter"
+msgid "&Add Entry..."
+msgstr ""
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -360,10 +359,6 @@ msgstr ""
 msgid "&Apply current"
 msgstr ""
 
-#. Resource IDs: (1356)
-msgid "&Autotype:"
-msgstr "Auto&skrift:"
-
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
 msgstr "&Gå till URL"
@@ -371,10 +366,6 @@ msgstr "&Gå till URL"
 #. Resource IDs: (355)
 msgid "&Browse to URL + Autotype"
 msgstr ""
-
-#. Resource IDs: (32062)
-msgid "&Browse to URL\tCtrl+L"
-msgstr "&Gå till URL\tCtrl+G"
 
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
@@ -403,7 +394,7 @@ msgid "&Clear current"
 msgstr ""
 
 #. Resource IDs: (32004)
-msgid "&Close\tCtrl+F4"
+msgid "&Close"
 msgstr ""
 
 #. Resource IDs: (32118)
@@ -418,10 +409,6 @@ msgstr ""
 msgid "&Copy Password to Clipboard"
 msgstr ""
 
-#. Resource IDs: (32058)
-msgid "&Copy Password to Clipboard\tCtrl+C"
-msgstr ""
-
 #. Resource IDs: (332)
 msgid "&Copy Password to clipboard"
 msgstr "&Kopiera lösenordet till klippbordet"
@@ -434,8 +421,8 @@ msgstr "&Skapa en ny databas"
 msgid "&Delete"
 msgstr ""
 
-#. Resource IDs: (32053)
-msgid "&Delete Entry\tDel"
+#. Resource IDs: (32056)
+msgid "&Delete Entry"
 msgstr ""
 
 #. Resource IDs: (32053)
@@ -460,10 +447,6 @@ msgstr ""
 
 #. Resource IDs: (32056)
 msgid "&Duplicate Entry"
-msgstr ""
-
-#. Resource IDs: (32056)
-msgid "&Duplicate Entry\tCtrl+D"
 msgstr ""
 
 #. Resource IDs: (1342, 32050)
@@ -551,7 +534,7 @@ msgid "&New Toolbar"
 msgstr ""
 
 #. Resource IDs: (32003)
-msgid "&New...\tCtrl+N"
+msgid "&New..."
 msgstr ""
 
 #. Resource IDs: (32111)
@@ -571,7 +554,7 @@ msgid "&Open Another Database..."
 msgstr "&Öppna en annan databas..."
 
 #. Resource IDs: (32002)
-msgid "&Open...\tCtrl+O"
+msgid "&Open..."
 msgstr ""
 
 #. Resource IDs: (32154)
@@ -614,6 +597,10 @@ msgstr ""
 msgid "&Recent Safes"
 msgstr "&Senaste Safer"
 
+#. Resource IDs: (32111)
+msgid "&Refresh"
+msgstr ""
+
 #. Resource IDs: (32117)
 msgid "&Reports"
 msgstr ""
@@ -626,16 +613,12 @@ msgstr ""
 msgid "&Run Command"
 msgstr ""
 
-#. Resource IDs: (32065)
-msgid "&Run Command\tCtrl+R"
+#. Resource IDs: (32005)
+msgid "&Save"
 msgstr ""
 
 #. Resource IDs: (1)
 msgid "&Save to Disk"
-msgstr ""
-
-#. Resource IDs: (32005)
-msgid "&Save\tCtrl+S"
 msgstr ""
 
 #. Resource IDs: (351)
@@ -679,6 +662,10 @@ msgstr ""
 #. Resource IDs: (1268)
 msgid "&View Aliases"
 msgstr "&Visa alias"
+
+#. Resource IDs: (32053)
+msgid "&View Entry..."
+msgstr ""
 
 #. Resource IDs: (32013, 32015)
 msgid "&XML format..."
@@ -1064,8 +1051,8 @@ msgstr "Gå till URL"
 msgid "Browse to URL + &Autotype"
 msgstr ""
 
-#. Resource IDs: (32072)
-msgid "Browse to URL + Autotype\tAlt+L"
+#. Resource IDs: (32073)
+msgid "Browse to URL + Autotype"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -1074,10 +1061,6 @@ msgstr "Browserns kommandoparametrar"
 
 #. Resource IDs: (32061)
 msgid "C&lear Clipboard"
-msgstr ""
-
-#. Resource IDs: (32061)
-msgid "C&lear Clipboard\tCtrl+Del"
 msgstr ""
 
 #. Resource IDs: (203)
@@ -1175,6 +1158,10 @@ msgstr "Kontrollera"
 msgid "Clear Clipboard"
 msgstr "Rensa klippbordet"
 
+#. Resource IDs: (32302)
+msgid "Clear Find"
+msgstr ""
+
 #. Resource IDs: (1141)
 # I need a little bigger button to room the text!
 #, fuzzy
@@ -1233,8 +1220,12 @@ msgstr ""
 msgid "Close"
 msgstr "Stäng"
 
-#. Resource IDs: (32109)
-msgid "Collapse All\tCtrl+Alt+Minus"
+#. Resource IDs: (32301)
+msgid "Close Find Bar"
+msgstr ""
+
+#. Resource IDs: (32110)
+msgid "Collapse All"
 msgstr ""
 
 #. Resource IDs: (114, 32210)
@@ -1338,10 +1329,6 @@ msgstr "Kopia"
 msgid "Copy &Notes to Clipboard"
 msgstr ""
 
-#. Resource IDs: (32060)
-msgid "Copy &Notes to Clipboard\tCtrl+G"
-msgstr ""
-
 #. Resource IDs: (332)
 msgid "Copy &Notes to clipboard"
 msgstr "Kopiera n&otat till klippbordet"
@@ -1352,10 +1339,6 @@ msgstr ""
 
 #. Resource IDs: (32059)
 msgid "Copy &Username to Clipboard"
-msgstr ""
-
-#. Resource IDs: (32059)
-msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr ""
 
 #. Resource IDs: (332)
@@ -1376,10 +1359,6 @@ msgstr ""
 
 #. Resource IDs: (329)
 msgid "Copy URL to Clipboard"
-msgstr ""
-
-#. Resource IDs: (32064)
-msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr ""
 
 #. Resource IDs: (332)
@@ -1447,6 +1426,10 @@ msgstr ""
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Skapa mellanlagrande backuper (.ibak) före spara"
+
+#. Resource IDs: (32308)
+msgid "Create report of previous Find search"
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "Created"
@@ -1541,10 +1524,6 @@ msgstr "Radera bekräftelse"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr ""
-
-#. Resource IDs: (338)
-msgid "Delete Group\tDel"
-msgstr "Ta bort gruppen\tDel"
 
 #. Resource IDs: (341)
 msgid "Delete a Base Entry Confirmation?"
@@ -1663,9 +1642,9 @@ msgstr ""
 msgid "Edit Entry"
 msgstr "Postmeny"
 
-#. Resource IDs: (338)
-msgid "Edit Entry\tCtrl+Enter"
-msgstr "Ändra posten\tCtrl+Enter"
+#. Resource IDs: (32052)
+msgid "Edit Entry..."
+msgstr ""
 
 #. Resource IDs: (122)
 msgid "Edit Shortcut"
@@ -1673,10 +1652,6 @@ msgstr ""
 
 #. Resource IDs: (32052)
 msgid "Edit/&View Entry..."
-msgstr ""
-
-#. Resource IDs: (32052)
-msgid "Edit/&View Entry...\tCtrl+Enter"
 msgstr ""
 
 #. Resource IDs: (203)
@@ -1825,13 +1800,13 @@ msgstr "Exempel:"
 msgid "Exit"
 msgstr "Avsluta"
 
-#. Resource IDs: (32108)
-msgid "Expand All\tCtrl+Alt+Plus"
+#. Resource IDs: (32109)
+msgid "Expand All"
 msgstr ""
 
-#. Resource IDs: (338)
-msgid "Expand/Collapse Group\tCtrl+Enter"
-msgstr "Expandera/minimera grupp\tCtrl+Enter"
+#. Resource IDs: (32054)
+msgid "Expand/Collapse Group"
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "Expiry Date/Time"
@@ -1899,6 +1874,10 @@ msgstr ""
 
 #. Resource IDs: (349)
 msgid "Field present"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Field:"
 msgstr ""
 
 #. Resource IDs: (328)
@@ -1982,12 +1961,12 @@ msgstr ""
 msgid "Find"
 msgstr ""
 
-#. Resource IDs: (32055)
-msgid "Find Next\tF3"
+#. Resource IDs: (32061)
+msgid "Find Next"
 msgstr ""
 
-#. Resource IDs: (32056)
-msgid "Find Previous\tShift+F3"
+#. Resource IDs: (32062)
+msgid "Find Previous"
 msgstr ""
 
 #. Resource IDs: (210)
@@ -2107,14 +2086,6 @@ msgstr ""
 msgid "Hexadecimal is mutually exclusive to all other options!"
 msgstr "Hexadecimalt data utesluter alla andra teckenval!"
 
-#. Resource IDs: (353)
-msgid "Hide Dragbar"
-msgstr ""
-
-#. Resource IDs: (346)
-msgid "Hide Toolbar"
-msgstr ""
-
 #. Resource IDs: (189)
 msgid "History\t"
 msgstr "Historik\t"
@@ -2147,56 +2118,60 @@ msgstr ""
 msgid "ID:32051:V C +A"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32057; '&Duplicate Entry'
-msgid "ID:32057:V C +D"
+#. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
+msgid "ID:32063:V C +D"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32059; '&Copy Password to Clipboard'
-msgid "ID:32059:V C +C"
+#. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
+msgid "ID:32066:V C +C"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32060; 'Copy &Username to Clipboard'
-msgid "ID:32060:V C +U"
+#. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
+msgid "ID:32068:V C +U"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32061; 'Copy &Notes to Clipboard'
-msgid "ID:32061:V C +G"
+#. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
+msgid "ID:32069:V C +G"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32063; '&Browse to URL'
-msgid "ID:32063:V C +L"
+#. Accelerator Entry for Menu ID:32070; 'Copy &URL to Clipboard'
+msgid "ID:32070:VAC +L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32064; 'Perform Auto &Type'
-msgid "ID:32064:V C +T"
+#. Accelerator Entry for Menu ID:32072; '&Browse to URL'
+msgid "ID:32072:V C +L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32065; '&Run Command'
-msgid "ID:32065:V C +R"
+#. Accelerator Entry for Menu ID:32073; 'Browse to URL + &Autotype'
+msgid "ID:32073:VA  +L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32066; 'Copy &URL to Clipboard'
-msgid "ID:32066:VAC +L"
+#. Accelerator Entry for Menu ID:32074; 'Send &email'
+msgid "ID:32074:V C +E"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32072; 'Browse to URL + &Autotype'
-msgid "ID:32072:VA  +L"
+#. Accelerator Entry for Menu ID:32075; 'Perform Auto &Type'
+msgid "ID:32075:V C +T"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32076; '&Run Command'
+msgid "ID:32076:V C +R"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32302; ''
-msgid "ID:32302:VAC +S"
+#. Accelerator Entry for Menu ID:32302; 'Clear Find'
+msgid "ID:32302:VAC +C"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32305; ''
-msgid "ID:32305:VAC +A"
+#. Accelerator Entry for Menu ID:32304; ''
+msgid "ID:32304:VAC +S"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32307; ''
-msgid "ID:32307:VAC +C"
+#. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
+msgid "ID:32307:VAC +A"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32500; ''
@@ -2217,10 +2192,6 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32504; ''
 msgid "ID:32504:V C +S"
-msgstr ""
-
-#. Accelerator Entry for Menu ID:5486; ''
-msgid "ID:5486:V C +E"
 msgstr ""
 
 #. Resource IDs: (344)
@@ -2399,6 +2370,10 @@ msgstr "Ogiltigt filnamn."
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr "Ogiltig inmatning på rad %d. Antalet fält separerade med '%c' förväntades inte."
 
+#. Resource IDs: (356)
+msgid "Invalid shortcut ignored."
+msgstr ""
+
 #. Resource IDs: (32017)
 msgid "KeePass..."
 msgstr ""
@@ -2439,6 +2414,10 @@ msgstr "Senast sparad den:"
 #, c-format
 msgid "Latest version? Click <a href=\"%s\">here</a> to check."
 msgstr "Senaste version? Klicka <a href=\"%s\">här</a> för att kontrollera."
+
+#. Resource IDs: (356)
+msgid "Left click here to change. Right click here to reset or remove it. After selecting the shortcut key combination, press Enter to set it."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
@@ -2551,6 +2530,10 @@ msgstr ""
 
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
+msgstr ""
+
+#. Resource IDs: (356)
+msgid "Menu Item"
 msgstr ""
 
 #. Resource IDs: (347)
@@ -3076,13 +3059,13 @@ msgstr "Lösenord\t"
 msgid "Perform Auto &Type"
 msgstr ""
 
-#. Resource IDs: (32063)
-msgid "Perform Auto &type\tCtrl+T"
-msgstr ""
-
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
 msgstr "Utför Autoskri&vning"
+
+#. Resource IDs: (32075)
+msgid "Perform Auto&type"
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -3362,21 +3345,21 @@ msgstr "Kom ihåg sista"
 msgid "Remove PasswordSafe data from Registry"
 msgstr "Ta bort information om PasswordSafe i registret"
 
+#. Resource IDs: (32291)
+msgid "Remove this shortcut"
+msgstr ""
+
+#. Resource IDs: (32058)
+msgid "Rename"
+msgstr ""
+
 #. Resource IDs: (32054)
 msgid "Rename Entry"
 msgstr ""
 
 #. Resource IDs: (32054)
-msgid "Rename Entry\tF2"
-msgstr ""
-
-#. Resource IDs: (32054)
 msgid "Rename Group"
 msgstr ""
-
-#. Resource IDs: (338)
-msgid "Rename Group\tF2"
-msgstr "Ändra gruppnamn\tF2"
 
 #. Resource IDs: (347)
 msgid "Report created"
@@ -3391,8 +3374,21 @@ msgstr "Rapport på %s åtgärd som startade %s "
 msgid "Requested Values:"
 msgstr ""
 
+#. Resource IDs: (356)
+#, c-format
+msgid "Reserved shortcut '%s' ignored."
+msgstr ""
+
+#. Resource IDs: (1368)
+msgid "Reset All"
+msgstr ""
+
 #. Resource IDs: (32211)
 msgid "Reset Columns"
+msgstr ""
+
+#. Resource IDs: (32290)
+msgid "Reset this shortcut"
 msgstr ""
 
 #. Resource IDs: (32153)
@@ -3487,7 +3483,7 @@ msgid "Save"
 msgstr "Spara"
 
 #. Resource IDs: (32006)
-msgid "Save &As...\tF12"
+msgid "Save &As..."
 msgstr ""
 
 #. Resource IDs: (3841)
@@ -3589,9 +3585,9 @@ msgstr "Valda fält:"
 msgid "Selected filter details:"
 msgstr ""
 
-#. Resource IDs: (343)
-msgid "Send &email\tCtrl+E"
-msgstr "Skicka &epost\tCtrl+E"
+#. Resource IDs: (32074)
+msgid "Send &email"
+msgstr ""
 
 #. Resource IDs: (3866)
 msgid "Send Mail failed to send message."
@@ -3656,12 +3652,21 @@ msgstr ""
 msgid "Shortcut"
 msgstr ""
 
-#. Resource IDs: (32108)
-msgid "Show &Find Toolbar\tCtrl+F"
+#. Resource IDs: (356)
+#, c-format
+msgid "Shortcut '%s' already assigned to menu item '%s'."
 msgstr ""
 
-#. Resource IDs: (353)
-msgid "Show Dragbar"
+#. Resource IDs: (356)
+msgid "Shortcut Key"
+msgstr ""
+
+#. Resource IDs: (452)
+msgid "Shortcuts"
+msgstr ""
+
+#. Resource IDs: (32108)
+msgid "Show &Find Toolbar"
 msgstr ""
 
 #. Resource IDs: (354)
@@ -3682,10 +3687,6 @@ msgstr ""
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
-msgstr ""
-
-#. Resource IDs: (346)
-msgid "Show Toolbar"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -3807,6 +3808,10 @@ msgstr ""
 
 #. Resource IDs: (316)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (356)
+msgid "Text will be red if the shortcut is different to its default value."
 msgstr ""
 
 #. Resource IDs: (1322)
@@ -4071,10 +4076,6 @@ msgstr ""
 msgid "Trying to contact server..."
 msgstr "Försöker kontakta servern..."
 
-#. Resource IDs: (1355)
-msgid "U&RL:"
-msgstr "U&RL:"
-
 #. Resource IDs: (327)
 msgid "URL"
 msgstr "URL"
@@ -4309,10 +4310,6 @@ msgstr ""
 #. Resource IDs: (330)
 msgid "View Entry"
 msgstr "Visa posten"
-
-#. Resource IDs: (338)
-msgid "View Entry\tCtrl+Enter"
-msgstr "Visa posten\tCtrl+Enter"
 
 #. Resource IDs: (157, 347)
 msgid "View Report"
