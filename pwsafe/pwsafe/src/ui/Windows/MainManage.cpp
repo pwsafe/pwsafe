@@ -732,24 +732,29 @@ void DboxMain::OnOptions()
       prefs->SaveApplicationPreferences();
 
     if (shortcuts.IsChanged()) {
-      m_MapMenuShortcuts = shortcuts.GetMaps();
+      // Create vector of shortcuts for user's config file
       std::vector<st_prefShortcut> vShortcuts;
       MapMenuShortcutsIter iter;
+      m_MapMenuShortcuts = shortcuts.GetMaps();
+
       for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
         iter++) {
         // User should not have these sub-entries in their config file
-        if (iter->first == ID_MENUITEM_DELETE ||
+          // As we cannot handle them
+        if (iter->first == ID_MENUITEM_DELETE      ||
             iter->first == ID_MENUITEM_DELETEENTRY ||
             iter->first == ID_MENUITEM_DELETEGROUP ||
+            iter->first == ID_MENUITEM_RENAME      ||
             iter->first == ID_MENUITEM_RENAMEENTRY ||
             iter->first == ID_MENUITEM_RENAMEGROUP) {
           continue;
         }
         // Now only those different from default
-        if (iter->second.cVirtKey != iter->second.cdefVirtKey ||
-            iter->second.bCtrl    != iter->second.bdefCtrl    ||
-            iter->second.bAlt     != iter->second.bdefAlt     ||
-            iter->second.bShift   != iter->second.bdefShift) {
+        if (iter->second.cVirtKey  != iter->second.cdefVirtKey  ||
+            iter->second.bCtrl     != iter->second.bdefCtrl     ||
+            iter->second.bAlt      != iter->second.bdefAlt      ||
+            iter->second.bExtended != iter->second.bdefExtended ||
+            iter->second.bShift    != iter->second.bdefShift) {
           st_prefShortcut stxst;
           stxst.id = iter->first;
           stxst.cVirtKey = iter->second.cVirtKey;
@@ -762,6 +767,10 @@ void DboxMain::OnOptions()
       prefs->SetPrefShortcuts(vShortcuts);
       prefs->SaveShortcuts();
       UpdateAccelTable();
+
+      // Set menus to be rebuilt with user's shortcuts
+      for (int i = 0; i < NUMPOPUPMENUS; i++)
+        m_bDoShortcuts[i] = true;
     }
   }
   // JHF no hotkeys under WinCE

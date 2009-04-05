@@ -20,6 +20,20 @@ struct st_MenuShortcut {
 	bool bCtrl;
 	bool bAlt;
 	bool bShift;
+  bool bExtended;
+};
+
+struct st_KeyIDExt {
+	unsigned char id;
+	bool bExtended;
+
+  bool operator < (const st_KeyIDExt & rhs) const {
+	  return id < rhs.id;
+  }
+
+  bool operator == (const st_KeyIDExt & rhs) const {
+	  return (id == rhs.id && bExtended == rhs.bExtended) ;
+  }
 };
 
 class CMenuShortcut {
@@ -36,16 +50,18 @@ public:
 	bool bdefCtrl;
 	bool bdefAlt;
 	bool bdefShift;
+  bool bdefExtended;
   // new User values
 	unsigned char cVirtKey;
 	bool bCtrl;
 	bool bAlt;
 	bool bShift;
+  bool bExtended;
 
   CMenuShortcut()
   : name(NULL), uiParentID(0), iMenuPosition(0),
-  cdefVirtKey(0), bdefCtrl(false), bdefAlt(false), bdefShift(false),
-  cVirtKey(0), bCtrl(false), bAlt(false), bShift(false)
+  cdefVirtKey(0), bdefCtrl(false), bdefAlt(false), bdefShift(false), bdefExtended(false),
+  cVirtKey(0), bCtrl(false), bAlt(false), bShift(false), bExtended(false)
   {}
 
   CMenuShortcut(const CMenuShortcut &that)
@@ -53,13 +69,44 @@ public:
   iMenuPosition(that.iMenuPosition),
   cdefVirtKey(that.cdefVirtKey),
   bdefCtrl(that.bdefCtrl), bdefAlt(that.bdefAlt), bdefShift(that.bdefShift),
+  bdefExtended(that.bdefExtended),
   cVirtKey(that.cVirtKey),
-  bCtrl(that.bCtrl), bAlt(that.bAlt), bShift(that.bShift)
+  bCtrl(that.bCtrl), bAlt(that.bAlt), bShift(that.bShift), bExtended(that.bExtended)
   {}
 
   ~CMenuShortcut()
   {
     free((void *)name);
+  }
+
+  void ClearKeyFlags()
+  {
+    // Only clear Key/flags - not menu position or name
+    cdefVirtKey = (unsigned char)0;
+    bdefCtrl = false;
+    bdefAlt = false;
+    bdefShift = false;
+    bdefExtended = false;
+    cVirtKey = (unsigned char)0;
+    bCtrl = false;
+    bAlt = false;
+    bShift = false;
+    bExtended = false;
+  }
+
+  void SetKeyFlags(const CMenuShortcut &that)
+  {
+    // Only set Key/flags - not menu position or name
+    cdefVirtKey = that.cdefVirtKey;
+    bdefCtrl = that.bdefCtrl;
+    bdefAlt = that.bdefAlt;
+    bdefShift = that.bdefShift;
+    bdefExtended = that.bdefExtended;
+    cVirtKey = that.cVirtKey;
+    bCtrl = that.bCtrl;
+    bAlt = that.bAlt;
+    bShift = that.bShift;
+    bExtended = that.bExtended;
   }
 
   CMenuShortcut &operator=(const CMenuShortcut &that)
@@ -73,10 +120,12 @@ public:
       bdefCtrl = that.bdefCtrl;
       bdefAlt = that.bdefAlt;
       bdefShift = that.bdefShift;
+      bdefExtended = that.bdefExtended;
       cVirtKey = that.cVirtKey;
       bCtrl = that.bCtrl;
       bAlt = that.bAlt;
       bShift = that.bShift;
+      bExtended = that.bExtended;
     }
     return *this;
   }
@@ -88,7 +137,7 @@ typedef std::pair<UINT, CMenuShortcut> MapMenuShortcutsPair;
 typedef MapMenuShortcuts::iterator MapMenuShortcutsIter;
 
 // Key is the virtual key
-typedef std::map<const unsigned char, const TCHAR *> MapKeyNameID;
-typedef std::pair<const unsigned char, const TCHAR *> MapKeyNameIDPair;
+typedef std::map<const st_KeyIDExt, const TCHAR *> MapKeyNameID;
+typedef std::pair<const st_KeyIDExt, const TCHAR *> MapKeyNameIDPair;
 typedef MapKeyNameID::const_iterator MapKeyNameIDConstIter;
 typedef MapKeyNameID::iterator MapKeyNameIDIter;

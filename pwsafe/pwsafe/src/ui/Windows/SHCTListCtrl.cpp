@@ -25,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 
 CSHCTListCtrl::CSHCTListCtrl()
 : m_pParent(NULL), m_pHotKey(NULL), m_pchTip(NULL), m_pwchTip(NULL),
-  m_bChanged(false), m_bHotKeyActive(false)
+  m_bHotKeyActive(false)
 {
   m_pHotKey = new CSHCTHotKey;
   m_crWindowText = ::GetSysColor(COLOR_WINDOWTEXT);
@@ -60,8 +60,9 @@ void CSHCTListCtrl::Init(COptionsShortcuts *pParent)
   EnableToolTips(TRUE);
 }
 
-void CSHCTListCtrl::OnLButtonDown(UINT /* nFlags*/ , CPoint point)
+void CSHCTListCtrl::OnLButtonDown(UINT nFlags , CPoint point)
 {
+  UNREFERENCED_PARAMETER(nFlags);
   MapMenuShortcutsIter iter;
   MapKeyNameIDConstIter citer;
   CRect subitemrect;
@@ -99,9 +100,10 @@ void CSHCTListCtrl::OnLButtonDown(UINT /* nFlags*/ , CPoint point)
     m_id = (UINT)LOWORD(GetItemData(m_item));
     iter = m_pParent->GetMapMenuShortcutsIter(m_id);
 
-    WORD vModifiers = (iter->second.bCtrl ? HOTKEYF_CONTROL : 0) |
-                      (iter->second.bAlt ? HOTKEYF_ALT : 0) |
-                      (iter->second.bShift ? HOTKEYF_SHIFT : 0);
+    WORD vModifiers = (iter->second.bCtrl     ? HOTKEYF_CONTROL : 0) |
+                      (iter->second.bAlt      ? HOTKEYF_ALT     : 0) |
+                      (iter->second.bShift    ? HOTKEYF_SHIFT   : 0) |
+                      (iter->second.bExtended ? HOTKEYF_EXT     : 0);
     m_pHotKey->SetHotKey(iter->second.cVirtKey, vModifiers);
 
     m_pHotKey->EnableWindow(TRUE);
@@ -145,19 +147,24 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
   }
 
   m_id = (UINT)LOWORD(GetItemData(m_item));
-
   iter = m_pParent->GetMapMenuShortcutsIter(m_id);
-  citer = m_pParent->GetMapKeyNameIDConstIter(iter->second.cVirtKey);
+
+  st_KeyIDExt st_KIDEx;
+  st_KIDEx.id = iter->second.cVirtKey;
+  st_KIDEx.bExtended = iter->second.bExtended;
+
+  citer = m_pParent->GetMapKeyNameIDConstIter(st_KIDEx);
 
   PopupMenu.LoadMenu(IDR_POPRESETSHORTCUT);
   CMenu* pContextMenu = PopupMenu.GetSubMenu(0);
   if (iter->second.cVirtKey == 0)
     pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
 
-  if (iter->second.cVirtKey == iter->second.cdefVirtKey &&
-      iter->second.bCtrl    == iter->second.bdefCtrl &&
-      iter->second.bAlt     == iter->second.bdefAlt &&
-      iter->second.bShift   == iter->second.bdefShift)
+  if (iter->second.cVirtKey   == iter->second.cdefVirtKey &&
+      iter->second.bCtrl      == iter->second.bdefCtrl    &&
+      iter->second.bAlt       == iter->second.bdefAlt     &&
+      iter->second.bShift     == iter->second.bdefShift   &&
+      iter->second.bExtended  == iter->second.bdefExtended)
     pContextMenu->RemoveMenu(ID_MENUITEM_RESETSHORTCUT, MF_BYCOMMAND);
 
   if (pContextMenu->GetMenuItemCount() == 0)
@@ -173,6 +180,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
     iter->second.bCtrl = false;
     iter->second.bAlt = false;
     iter->second.bShift = false;
+    iter->second.bExtended = false;
     iter->second.cVirtKey = (unsigned char)0;
     str = _T("");
     goto update;
@@ -184,10 +192,14 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
   iter->second.bCtrl = iter->second.bdefCtrl;
   iter->second.bAlt = iter->second.bdefAlt;
   iter->second.bShift = iter->second.bdefShift;
+  iter->second.bExtended = iter->second.bdefExtended;
   iter->second.cVirtKey = iter->second.cdefVirtKey;
 
   if (iter->second.cVirtKey != 0) {
-    citer = m_pParent->GetMapKeyNameIDConstIter(iter->second.cVirtKey);
+    st_KeyIDExt st_KIDEx;
+    st_KIDEx.id = iter->second.cVirtKey;
+    st_KIDEx.bExtended = iter->second.bExtended;
+    citer = m_pParent->GetMapKeyNameIDConstIter(st_KIDEx);
     str.Format(_T("%s%s%s%s"),
                iter->second.bCtrl  ? _T("Ctrl + ")  : _T(""),
                iter->second.bAlt   ? _T("Alt + ")   : _T(""),
@@ -201,7 +213,9 @@ update:
   SetItemText(m_item, 1, str);
   RedrawItems(m_item, m_item);
   UpdateWindow();
-  m_bChanged = true;
+
+  if (m_pParent != NULL)
+    m_pParent->SetChanged();
 
 exit:
   if (m_pParent != NULL)
@@ -214,21 +228,21 @@ exit:
 void CSHCTListCtrl::SaveHotKey()
 {
   if (m_bHotKeyActive) {
-    WORD vVK, vMod;
-    m_pHotKey->GetHotKey(vVK, vMod);
-    OnHotKeyKillFocus(vVK, vMod);
+    WORD wVK, wMod;
+    m_pHotKey->GetHotKey(wVK, wMod);
+    OnHotKeyKillFocus(wVK, wMod);
   }
 }
 
-void CSHCTListCtrl::OnHotKeyKillFocus(const WORD vVirtualKeyCode, 
-                                      const WORD vModifiers)
+void CSHCTListCtrl::OnHotKeyKillFocus(const WORD wVirtualKeyCode, 
+                                      const WORD wModifiers)
 {
   m_pHotKey->EnableWindow(FALSE);
   m_pHotKey->ShowWindow(SW_HIDE);
 
   if (m_pParent != NULL) {
     m_pParent->OnHotKeyKillFocus(m_item, m_id, 
-                                 vVirtualKeyCode, vModifiers);
+                                 wVirtualKeyCode, wModifiers);
   }
 
   m_bHotKeyActive = false;
@@ -238,21 +252,21 @@ void CSHCTListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
   CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
-  //UpdateWindow();
+  UpdateWindow();
 }
 
 void CSHCTListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
   SaveHotKey();
   CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
-  //UpdateWindow();
+  UpdateWindow();
 }
 
 BOOL CSHCTListCtrl::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
   SaveHotKey();
   BOOL brc = CListCtrl::OnMouseWheel(nFlags, zDelta, pt);
-  //UpdateWindow();
+  UpdateWindow();
   return brc;
 }
 
@@ -278,10 +292,11 @@ void CSHCTListCtrl::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
       switch (iSubItem) {
         case SHCT_MENUITEMTEXT:
           iter = m_pParent->GetMapMenuShortcutsIter(id);
-          if (iter->second.cVirtKey != iter->second.cdefVirtKey ||
-              iter->second.bCtrl    != iter->second.bdefCtrl ||
-              iter->second.bAlt     != iter->second.bdefAlt ||
-              iter->second.bShift   != iter->second.bdefShift)
+          if (iter->second.cVirtKey  != iter->second.cdefVirtKey ||
+              iter->second.bCtrl     != iter->second.bdefCtrl    ||
+              iter->second.bAlt      != iter->second.bdefAlt     ||
+              iter->second.bShift    != iter->second.bdefShift   ||
+              iter->second.bExtended != iter->second.bdefExtended)
             pLVCD->clrText = m_crRedText;
           break;
         case SHCT_SHORTCUTKEYS:
