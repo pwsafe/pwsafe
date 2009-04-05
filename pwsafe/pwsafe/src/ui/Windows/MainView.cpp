@@ -207,7 +207,7 @@ void DboxMain::UpdateToolBar(bool state)
     BOOL State = (state) ? FALSE : TRUE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
-    mainTBCtrl.EnableButton(ID_MENUITEM_DELETE, State);
+    mainTBCtrl.EnableButton(ID_MENUITEM_DELETEENTRY, State);
     mainTBCtrl.EnableButton(ID_MENUITEM_SAVE, State);
   }
 }

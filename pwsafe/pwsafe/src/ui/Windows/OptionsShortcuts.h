@@ -37,11 +37,11 @@ public:
 
   void InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const MapKeyNameID MapKeyNameID,
-                    const std::vector<UINT> UnmodifyableMenuItems,
+                    const std::vector<UINT> ExcludedMenuItems,
                     const std::vector<st_MenuShortcut> ReservedShortcuts)
   {m_MapMenuShortcuts = MapMenuShortcuts;
    m_MapKeyNameID = MapKeyNameID;
-   m_UnmodifyableMenuItems = UnmodifyableMenuItems;
+   m_ExcludedMenuItems = ExcludedMenuItems;
    m_ReservedShortcuts = ReservedShortcuts;}
 
   MapMenuShortcuts GetMaps() {return m_MapMenuShortcuts;}
@@ -80,7 +80,7 @@ private:
 
   MapMenuShortcuts m_MapMenuShortcuts;
   MapKeyNameID m_MapKeyNameID;
-  std::vector<UINT> m_UnmodifyableMenuItems;
+  std::vector<UINT> m_ExcludedMenuItems;
   std::vector<st_MenuShortcut> m_ReservedShortcuts;
 
   bool m_bChanged;

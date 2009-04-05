@@ -402,7 +402,7 @@ void DboxMain::OnOptions()
   backup.m_userbackupotherlocation = backupDir;
 
   shortcuts.InitialSetup(m_MapMenuShortcuts, m_MapKeyNameID,
-                         m_UnmodifyableMenuItems,
+                         m_ExcludedMenuItems,
                          m_ReservedShortcuts);
 
   optionsDlg.AddPage(&backup);
@@ -737,6 +737,15 @@ void DboxMain::OnOptions()
       MapMenuShortcutsIter iter;
       for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
         iter++) {
+        // User should not have these sub-entries in their config file
+        if (iter->first == ID_MENUITEM_DELETE ||
+            iter->first == ID_MENUITEM_DELETEENTRY ||
+            iter->first == ID_MENUITEM_DELETEGROUP ||
+            iter->first == ID_MENUITEM_RENAMEENTRY ||
+            iter->first == ID_MENUITEM_RENAMEGROUP) {
+          continue;
+        }
+        // Now only those different from default
         if (iter->second.cVirtKey != iter->second.cdefVirtKey ||
             iter->second.bCtrl    != iter->second.bdefCtrl    ||
             iter->second.bAlt     != iter->second.bdefAlt     ||
