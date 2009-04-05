@@ -75,9 +75,9 @@ BOOL COptionsShortcuts::OnInitDialog()
     if (iter->second.uiParentID == 0)
       continue;
 
-    if (std::find(m_UnmodifyableMenuItems.begin(),
-                  m_UnmodifyableMenuItems.end(),
-                  iter->first) != m_UnmodifyableMenuItems.end())
+    if (std::find(m_ExcludedMenuItems.begin(),
+                  m_ExcludedMenuItems.end(),
+                  iter->first) != m_ExcludedMenuItems.end())
         continue;
 
     if (iter->second.cVirtKey != 0) {

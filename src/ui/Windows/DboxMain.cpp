@@ -249,9 +249,9 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_COPYURL, OnCopyURL)
   ON_COMMAND(ID_MENUITEM_COPYEMAIL, OnCopyURL)
   ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
-  ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
+  ON_COMMAND(ID_MENUITEM_DELETEENTRY, OnDelete)
   ON_COMMAND(ID_MENUITEM_DELETEGROUP, OnDelete)
-  ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
+  ON_COMMAND(ID_MENUITEM_RENAMEENTRY, OnRename)
   ON_COMMAND(ID_MENUITEM_RENAMEGROUP, OnRename)
   ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
@@ -426,9 +426,9 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EDIT, true, true, false, false},
   {ID_MENUITEM_VIEW, true, true, false, false},
   {ID_MENUITEM_GROUPENTER, true, true, false, false},
-  {ID_MENUITEM_DELETE, true, false, false, false},
+  {ID_MENUITEM_DELETEENTRY, true, false, false, false},
   {ID_MENUITEM_DELETEGROUP, true, false, false, false},
-  {ID_MENUITEM_RENAME, true, false, false, false},
+  {ID_MENUITEM_RENAMEENTRY, true, false, false, false},
   {ID_MENUITEM_RENAMEGROUP, true, false, false, false},
   {ID_MENUITEM_FIND, true, true, false, false},
   {ID_MENUITEM_FINDUP, true, true, false, false},
@@ -2443,7 +2443,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // Items not allowed in List View
     case ID_MENUITEM_ADDGROUP:
-    case ID_MENUITEM_RENAME:
+    case ID_MENUITEM_RENAMEENTRY:
+    case ID_MENUITEM_RENAMEGROUP:
     case ID_MENUITEM_EXPANDALL:
     case ID_MENUITEM_COLLAPSEALL:
       if (m_IsListView)

@@ -698,11 +698,15 @@ private:
 
   // Menu Shortcuts
   MapMenuShortcuts m_MapMenuShortcuts;
+
   // Mapping of virtual key to key name in user's locale
   MapKeyNameID m_MapKeyNameID;
-  // Menu items we don't allow the user to modify:
-  // Any popup menu and Exit and Help
-  std::vector<UINT> m_UnmodifyableMenuItems;
+
+  // Menu items we don't allow the user to modify or see in Options
+  // Shortcuts CListCtrl
+  // Any popup menu and Exit and Help + a few special one
+  std::vector<UINT> m_ExcludedMenuItems;
+
   // These are the mnemonics to the highest level menu e.g. File, Edit etc.
   // Of form Alt+F, E, V, M, H - but using user's I18N letters.
   std::vector<st_MenuShortcut> m_ReservedShortcuts;

@@ -64,18 +64,21 @@ public:
 
   CMenuShortcut &operator=(const CMenuShortcut &that)
   {
-    free((void *)name);
-    name = _tcsdup(that.name);
-    uiParentID = that.uiParentID;
-    iMenuPosition = that.iMenuPosition;
-    cdefVirtKey = that.cdefVirtKey;
-    bdefCtrl = that.bdefCtrl;
-    bdefAlt = that.bdefAlt;
-    bdefShift = that.bdefShift;
-    cVirtKey = that.cVirtKey;
-    bCtrl = that.bCtrl;
-    bAlt = that.bAlt;
-    bShift = that.bShift;
+    if (this != &that) {
+      free((void *)name);
+      name = _tcsdup(that.name);
+      uiParentID = that.uiParentID;
+      iMenuPosition = that.iMenuPosition;
+      cdefVirtKey = that.cdefVirtKey;
+      bdefCtrl = that.bdefCtrl;
+      bdefAlt = that.bdefAlt;
+      bdefShift = that.bdefShift;
+      cVirtKey = that.cVirtKey;
+      bCtrl = that.bCtrl;
+      bAlt = that.bAlt;
+      bShift = that.bShift;
+    }
+    return *this;
   }
 };
 
