@@ -250,39 +250,39 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\pwsafe_filter.xsd"
   
 !ifdef LANGUAGE_CHINESE
-  File /nonfatal "..\src\bin\release\pwsafeZH.dll"
+  File /nonfatal "..\src\bin\release\pwsafeZH_CN.dll"
   File /nonfatal "..\help\pwsafeZH\pwsafeZH_CN.chm"
 !endif
 !ifdef LANGUAGE_GERMAN
-  File /nonfatal "..\src\bin\release\pwsafeDE.dll"
+  File /nonfatal "..\src\bin\release\pwsafeDE_DE.dll"
   File /nonfatal "..\help\pwsafeDE\pwsafeDE_DE.chm"
 !endif
 !ifdef LANGUAGE_SPANISH
-  File /nonfatal "..\src\bin\release\pwsafeES.dll"
+  File /nonfatal "..\src\bin\release\pwsafeES_ES.dll"
   File /nonfatal "..\help\pwsafeES\pwsafeES_ES.chm"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  File /nonfatal "..\src\bin\release\pwsafeSV.dll"
+  File /nonfatal "..\src\bin\release\pwsafeSV_SE.dll"
   File /nonfatal "..\help\pwsafeSV\pwsafeSV_SE.chm"
 !endif
 !ifdef LANGUAGE_DUTCH
-  File /nonfatal "..\src\bin\release\pwsafeNL.dll"
+  File /nonfatal "..\src\bin\release\pwsafeNL_NL.dll"
   File /nonfatal "..\help\pwsafeNL\pwsafeNL_NL.chm"
 !endif
 !ifdef LANGUAGE_FRENCH
-  File /nonfatal "..\src\bin\release\pwsafeFR.dll"
+  File /nonfatal "..\src\bin\release\pwsafeFR_FR.dll"
   File /nonfatal "..\help\pwsafeFR\pwsafeFR_FR.chm"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  File /nonfatal "..\src\bin\release\pwsafeRU.dll"
+  File /nonfatal "..\src\bin\release\pwsafeRU_RU.dll"
   File /nonfatal "..\help\pwsafeRU\pwsafeRU_RU.chm"
 !endif
 !ifdef LANGUAGE_POLISH
-  File /nonfatal "..\src\bin\release\pwsafePL.dll"
+  File /nonfatal "..\src\bin\release\pwsafePL_PL.dll"
   File /nonfatal "..\help\pwsafePL\pwsafePL_PL.chm"
 !endif
 !ifdef LANGUAGE_ITALIAN
-  File /nonfatal "..\src\bin\release\pwsafeIT.dll"
+  File /nonfatal "..\src\bin\release\pwsafeIT_IT.dll"
   File /nonfatal "..\help\pwsafePL\pwsafeIT_IT.chm"
 !endif
 
