@@ -1320,6 +1320,9 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
+    if (pci->IsRunCommandEmpty()) {
+      pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
+    }
 
     // use this DboxMain for commands
     pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
