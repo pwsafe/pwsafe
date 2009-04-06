@@ -68,6 +68,8 @@ public:
   void EndDrop() {m_bDropped = true;}
   void SetFilterState(bool bState);
   bool WasLabelEdited() {return m_bEditLabelCompleted;};
+  void SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier);
+  void SetRenameKey(const unsigned char cVirtKey, const unsigned char cModifier);
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
@@ -81,7 +83,6 @@ protected:
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg void OnTimer(UINT nIDEvent);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-  //
   //afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
   //}}AFX_MSG
 
@@ -140,4 +141,10 @@ private:
   // Filter
   bool m_bFilterActive;
   bool m_bEditLabelCompleted;
+
+  // Delete/Rename Shortcuts
+  WPARAM m_wpDeleteMsg, m_wpDeleteKey;
+  WPARAM m_wpRenameMsg, m_wpRenameKey;
+  bool m_bDeleteCtrl, m_bDeleteShift;
+  bool m_bRenameCtrl, m_bRenameShift;
 };

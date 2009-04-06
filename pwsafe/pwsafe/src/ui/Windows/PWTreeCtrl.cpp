@@ -178,7 +178,11 @@ CPWTreeCtrl::CPWTreeCtrl()
   : m_isRestoring(false), m_bWithinThisInstance(true),
   m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
   m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
-  m_bFilterActive(false)
+  m_bFilterActive(false),
+  m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
+  m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
+  m_bDeleteCtrl(false), m_bDeleteShift(false),
+  m_bRenameCtrl(false), m_bRenameShift(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -250,6 +254,22 @@ void CPWTreeCtrl::OnDestroy()
   m_DropTarget->Revoke();
 }
 
+void CPWTreeCtrl::SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier)
+{
+  m_wpDeleteMsg = ((cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
+  m_wpDeleteKey = cVirtKey;
+  m_bDeleteCtrl = (cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+  m_bDeleteShift = (cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+}
+
+void CPWTreeCtrl::SetRenameKey(const unsigned char cVirtKey, const unsigned char cModifier)
+{
+  m_wpRenameMsg = ((cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
+  m_wpRenameKey = cVirtKey;
+  m_bRenameCtrl = (cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+  m_bRenameShift = (cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+}
+
 BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
 {
   // When an item is being edited make sure the edit control
@@ -260,12 +280,25 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
     return TRUE; // DO NOT process further
   }
 
-  // F2 key -> begin in-place editing of an item
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
-    HTREEITEM hItem = GetSelectedItem();
-    if (hItem != NULL && !m_pDbx->IsMcoreReadOnly())
-      EditLabel(hItem);
-    return TRUE;
+  // Process User's Delete shortcut
+  if (pMsg->message == m_wpDeleteMsg && pMsg->wParam == m_wpDeleteKey) {
+    if (m_bDeleteCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+        m_bDeleteShift == (GetKeyState(VK_SHIFT)   < 0)) {
+      if (m_pDbx != NULL)
+        m_pDbx->SendMessage(WM_COMMAND, MAKEWPARAM(ID_MENUITEM_DELETEENTRY, 1), 0);
+      return TRUE;
+    }
+  }
+  
+  // Process user's Rename shortcut
+  if (pMsg->message == m_wpRenameMsg && pMsg->wParam == m_wpRenameKey) {
+    if (m_bRenameCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+        m_bRenameShift == (GetKeyState(VK_SHIFT)   < 0)) {
+      HTREEITEM hItem = GetSelectedItem();
+      if (hItem != NULL && !m_pDbx->IsMcoreReadOnly())
+        EditLabel(hItem);
+      return TRUE;
+    }
   }
 
   // Let the parent class do its thing

@@ -456,16 +456,17 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csKeyName)
 
     pChild = hShortcutsNode.Child(_T("Shortcut"), count).ToElement();
 
+    cur.cModifier = (unsigned char)0;
     pChild->Attribute(_T("id"), &itemp);
     cur.id = itemp;
     pChild->Attribute(_T("Key"), &itemp);
     cur.cVirtKey = (unsigned char)itemp;
-    pChild->Attribute(_T("Alt"), &itemp);
-    cur.bAlt = itemp != 0;
     pChild->Attribute(_T("Ctrl"), &itemp);
-    cur.bCtrl = itemp != 0;
+    cur.cModifier |= itemp != 0 ? HOTKEYF_CONTROL : 0;
+    pChild->Attribute(_T("Alt"), &itemp);
+    cur.cModifier |= itemp != 0 ? HOTKEYF_ALT : 0;
     pChild->Attribute(_T("Shift"), &itemp);
-    cur.bShift = itemp != 0;
+    cur.cModifier |= itemp != 0 ? HOTKEYF_SHIFT : 0;
     v_Shortcuts.push_back(cur);
     count++;
   }
@@ -502,9 +503,12 @@ int CXMLprefs::SetShortcuts(const stringT &csKeyName,
         stringT csValue = _T("");
         Format(csValue, _T("%u"), v_shortcuts[i].id);
         element->SetAttribute(_T("id"), csValue);
-        element->SetAttribute(_T("Ctrl"), v_shortcuts[i].bCtrl ? 1 : 0);
-        element->SetAttribute(_T("Alt"), v_shortcuts[i].bAlt ? 1 : 0);
-        element->SetAttribute(_T("Shift"), v_shortcuts[i].bShift ? 1 : 0);
+        element->SetAttribute(_T("Ctrl"), 
+          (v_shortcuts[i].cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? 1 : 0);
+        element->SetAttribute(_T("Alt"),
+          (v_shortcuts[i].cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT     ? 1 : 0);
+        element->SetAttribute(_T("Shift"),
+          (v_shortcuts[i].cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT   ? 1 : 0);
         element->SetAttribute(_T("Key"), (int)v_shortcuts[i].cVirtKey);
       }
     } else

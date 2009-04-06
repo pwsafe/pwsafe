@@ -734,41 +734,55 @@ void DboxMain::OnOptions()
     if (shortcuts.IsChanged()) {
       // Create vector of shortcuts for user's config file
       std::vector<st_prefShortcut> vShortcuts;
-      MapMenuShortcutsIter iter;
+      MapMenuShortcutsIter iter, iter_entry, iter_group;
       m_MapMenuShortcuts = shortcuts.GetMaps();
 
       for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
         iter++) {
         // User should not have these sub-entries in their config file
-          // As we cannot handle them
-        if (iter->first == ID_MENUITEM_DELETE      ||
-            iter->first == ID_MENUITEM_DELETEENTRY ||
+        if (iter->first == ID_MENUITEM_DELETEENTRY ||
             iter->first == ID_MENUITEM_DELETEGROUP ||
-            iter->first == ID_MENUITEM_RENAME      ||
             iter->first == ID_MENUITEM_RENAMEENTRY ||
             iter->first == ID_MENUITEM_RENAMEGROUP) {
           continue;
         }
         // Now only those different from default
         if (iter->second.cVirtKey  != iter->second.cdefVirtKey  ||
-            iter->second.bCtrl     != iter->second.bdefCtrl     ||
-            iter->second.bAlt      != iter->second.bdefAlt      ||
-            iter->second.bExtended != iter->second.bdefExtended ||
-            iter->second.bShift    != iter->second.bdefShift) {
+            iter->second.cModifier != iter->second.cdefModifier) {
           st_prefShortcut stxst;
           stxst.id = iter->first;
           stxst.cVirtKey = iter->second.cVirtKey;
-          stxst.bCtrl = iter->second.bCtrl;
-          stxst.bAlt = iter->second.bAlt;
-          stxst.bShift = iter->second.bShift;
+          stxst.cModifier = iter->second.cModifier;
           vShortcuts.push_back(stxst);
         }
       }
       prefs->SetPrefShortcuts(vShortcuts);
       prefs->SaveShortcuts();
+
+      // Set up the shortcuts based on the main entry
+      // for Delete and Rename
+      iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
+      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEENTRY);
+      iter_entry->second.SetKeyFlags(iter->second);
+      iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
+      iter_group->second.SetKeyFlags(iter->second);
+
+      // Now tell the CTreeCtrl & CListCtrl the key for Delete
+      m_ctlItemTree.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
+      m_ctlItemList.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
+
+      iter = m_MapMenuShortcuts.find(ID_MENUITEM_RENAME);
+      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEENTRY);
+      iter_entry->second.SetKeyFlags(iter->second);
+      iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
+      iter_group->second.SetKeyFlags(iter->second);
+
+      // Now tell the CTreeCtrl the key for Rename (not CListCtrl)
+      m_ctlItemTree.SetRenameKey(iter->second.cVirtKey, iter->second.cModifier);
+
       UpdateAccelTable();
 
-      // Set menus to be rebuilt with user's shortcuts
+      // Set menus to be rebuilt with user's changed shortcuts
       for (int i = 0; i < NUMPOPUPMENUS; i++)
         m_bDoShortcuts[i] = true;
     }
@@ -788,7 +802,7 @@ void DboxMain::OnOptions()
     if (mod & HOTKEYF_SHIFT) 
       wModifiers |= MOD_SHIFT; 
     brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
-      UINT(wModifiers), UINT(wVirtualKeyCode));
+                         UINT(wModifiers), UINT(wVirtualKeyCode));
     if (brc == FALSE)
       AfxMessageBox(IDS_NOHOTKEY, MB_OK);
   }
