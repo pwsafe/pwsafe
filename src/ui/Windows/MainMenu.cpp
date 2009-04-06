@@ -39,7 +39,7 @@ st_ShortcutKeyNameID ShortcutKeys[256];
 // Functor for count_if
 struct CountShortcuts {
   bool operator()(std::pair<const UINT, CMenuShortcut> &p) {
-    return (p.second.cVirtKey != 0);
+    return (p.second.cVirtKey != (unsigned char)0);
   }
 };
 
@@ -49,9 +49,10 @@ struct CreateAccelTable {
   void operator()(std::pair<UINT, CMenuShortcut> p)
   {
     if (p.second.cVirtKey != 0) {
-      m_pacceltbl->fVirt = FVIRTKEY | (p.second.bCtrl  ? FCONTROL : 0) |
-                                      (p.second.bAlt   ? FALT     : 0) |
-                                      (p.second.bShift ? FSHIFT   : 0);
+      m_pacceltbl->fVirt = FVIRTKEY |
+                           ((p.second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? FCONTROL : 0) |
+                           ((p.second.cModifier & HOTKEYF_ALT)    == HOTKEYF_ALT      ? FALT     : 0) |
+                           ((p.second.cModifier & HOTKEYF_SHIFT)  == HOTKEYF_SHIFT    ? FSHIFT   : 0);
       m_pacceltbl->key = (WORD)p.second.cVirtKey;
       m_pacceltbl->cmd = (WORD)p.first;
       m_pacceltbl++;
@@ -62,22 +63,29 @@ private:
   ACCEL *m_pacceltbl;
 };
 
-BOOL IsExtended(int code)
+bool IsExtended(int code)
 {
-  if (code == VK_SNAPSHOT)                    // print screen
-    return TRUE;
-  if (code >= VK_PRIOR && code <= VK_DOWN)    // pgup, pg down, home, end, cursor keys
-    return TRUE;
-  if (code >= VK_INSERT && code <= VK_DELETE) // ins, del
-    return TRUE;
-  if (code >= VK_LWIN && code <= VK_APPS)     // winkeys & application key
-    return TRUE;
-  if (code == VK_DIVIDE)                      // Numpad '/'
-    return TRUE;
-  if (code == VK_NUMLOCK)
-    return TRUE;
-
-  return FALSE;
+  switch (code) {
+    case VK_PRIOR:                       // Page Up
+    case VK_NEXT:                        // Page Down
+    case VK_END:                         // End
+    case VK_HOME:                        // Home
+    case VK_LEFT:                        // Left arrow cursor
+    case VK_UP:                          // Up arrow cursor
+    case VK_RIGHT:                       // Right arrow cursor
+    case VK_DOWN:                        // Down arrow cursor
+    case VK_SNAPSHOT:                    // Print Screen
+    case VK_INSERT:                      // Insert
+    case VK_DELETE:                      // Delete
+    case VK_LWIN:                        // Left Windows Key
+    case VK_RWIN:                        // Right Windows Key
+    case VK_APPS:                        // Windows Application Key
+    case VK_DIVIDE:                      // Numeric pad '/'
+    case VK_NUMLOCK:                     // Numlock
+      return true;
+    default:
+      return false;
+  }
 }
 
 void DboxMain::SetUpInitialMenuStrings()
@@ -112,17 +120,12 @@ void DboxMain::SetUpInitialMenuStrings()
   // The following are only in the Menu to get the correct string
   // for the action.  Add here to stop them being in the Shortcut
   // Options CListCtrl.
-  // User can alter the function using the base value
-  // ID_MENUITEM_RENAME
-  // Can't seem to get new shortcut for Delete working (yet)
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_DELETE);
+  // User can alter the function using the base values
+  // ID_MENUITEM_DELETE & ID_MENUITEM_RENAME
   m_ExcludedMenuItems.push_back(ID_MENUITEM_DELETEENTRY);
   m_ExcludedMenuItems.push_back(ID_MENUITEM_DELETEGROUP);
   m_ExcludedMenuItems.push_back(ID_MENUITEM_RENAMEENTRY);
   m_ExcludedMenuItems.push_back(ID_MENUITEM_RENAMEGROUP);
-
-  // Temporarily deny change to Rename/F2 until TreeCtrl updated
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_RENAME);
 
   // Add in the zero/None entry
   pname = _tcsdup(_T(""));
@@ -142,8 +145,8 @@ void DboxMain::SetUpInitialMenuStrings()
       continue;
 
     st_KIDEx.id = (unsigned char)i;
-    st_KIDEx.bExtended = IsExtended(i) == TRUE;
-    sKeyName = cHKC.GetKeyName((UINT)i, IsExtended(i));
+    st_KIDEx.bExtended = IsExtended(i);
+    sKeyName = cHKC.GetKeyName((UINT)i, IsExtended(i) ? TRUE : FALSE);
     if (!sKeyName.IsEmpty()) {
       // Make value into "Sentence Case" e.g. "Enter" or "Num Plus" etc.
       CString cstoken, sKeyName2(_T(""));
@@ -187,10 +190,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // Maybe different in other languages
   st_MenuShortcut st_mst;
   st_mst.cVirtKey;
-	st_mst.bCtrl = false;
-	st_mst.bAlt = true;
-	st_mst.bShift = false;
-  st_mst.bExtended = false;
+	st_mst.cModifier = HOTKEYF_ALT;
 
   for (int i = 0; i < count; i++) {
     ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
@@ -208,32 +208,15 @@ void DboxMain::SetUpInitialMenuStrings()
 
   // Add 3 special keys F1 (for Help), Ctrl+Q/Alt+F4 (Exit)
   st_mst.cVirtKey = VK_F1;
-	st_mst.bCtrl = false;
-	st_mst.bAlt = false;
-	st_mst.bShift = false;
-  st_mst.bExtended = false;
+  st_mst.cModifier = 0;
   m_ReservedShortcuts.push_back(st_mst);
 
   st_mst.cVirtKey = 'Q';
-	st_mst.bCtrl = true;
-	st_mst.bAlt = false;
-	st_mst.bShift = false;
-  st_mst.bExtended = false;
+  st_mst.cModifier = HOTKEYF_CONTROL;
   m_ReservedShortcuts.push_back(st_mst);
 
   st_mst.cVirtKey = VK_F4;
-	st_mst.bCtrl = false;
-	st_mst.bAlt = true;
-	st_mst.bShift = false;
-  st_mst.bExtended = false;
-  m_ReservedShortcuts.push_back(st_mst);
-
-  // Temporarily deny change to Rename/F2 until TreeCtrl updated
-  st_mst.cVirtKey = VK_F2;
-	st_mst.bCtrl = false;
-	st_mst.bAlt = false;
-	st_mst.bShift = false;
-  st_mst.bExtended = false;
+	st_mst.cModifier = HOTKEYF_ALT;
   m_ReservedShortcuts.push_back(st_mst);
 
   // Now get all other Menu items
@@ -539,14 +522,11 @@ void DboxMain::SetUpInitialMenuStrings()
       if (iter != m_MapMenuShortcuts.end()) {
         iter->second.cdefVirtKey = iter->second.cVirtKey = 
           (unsigned char)paccel->key;
-	      iter->second.bdefCtrl = iter->second.bCtrl =
-          (paccel->fVirt & FCONTROL) == FCONTROL;
-	      iter->second.bdefAlt = iter->second.bAlt = 
-          (paccel->fVirt & FALT) == FALT;
-    	  iter->second.bdefShift = iter->second.bShift =
-          (paccel->fVirt & FSHIFT) == FSHIFT;
-        iter->second.bdefExtended = iter->second.bExtended =
-          IsExtended((int)paccel->key) == TRUE;
+	      iter->second.cdefModifier = iter->second.cModifier =
+          ((paccel->fVirt & FCONTROL) == FCONTROL ? HOTKEYF_CONTROL : 0) |
+          ((paccel->fVirt & FALT)     == FALT     ? HOTKEYF_ALT     : 0) |
+          ((paccel->fVirt & FSHIFT)   == FSHIFT   ? HOTKEYF_SHIFT   : 0) |
+          (IsExtended((int)paccel->key)           ? HOTKEYF_EXT     : 0);
       }
       paccel++;
     }
@@ -565,25 +545,18 @@ void DboxMain::SetUpInitialMenuStrings()
     st_prefShortcut stxst = vShortcuts[i];
     iter = m_MapMenuShortcuts.find(stxst.id);
     if (iter != m_MapMenuShortcuts.end() ||
-        (iter->second.cVirtKey != stxst.cVirtKey ||
-	       iter->second.bCtrl    != stxst.bCtrl    ||
-	       iter->second.bAlt     != stxst.bAlt     ||
-  	     iter->second.bShift   != stxst.bShift)) {
-      iter->second.cVirtKey = stxst.cVirtKey;
-	    iter->second.bCtrl    = stxst.bCtrl;
-	    iter->second.bAlt     = stxst.bAlt;
-  	  iter->second.bShift   = stxst.bShift;
-      iter->second.bExtended = IsExtended((int)stxst.cVirtKey) == TRUE;
+        (iter->second.cVirtKey  != stxst.cVirtKey  ||
+	       iter->second.cModifier != stxst.cModifier)) {
+      iter->second.cVirtKey  = stxst.cVirtKey;
+	    iter->second.cModifier = stxst.cModifier;
     } else {
       // Either unknown Control ID or no different from default
       bUserShortcutsChanged = true;
       vShortcuts.erase(vShortcuts.begin() + i);
     }
     // User should not have these sub-entries in their config file
-    if (stxst.id == ID_MENUITEM_DELETE      ||
-        stxst.id == ID_MENUITEM_DELETEENTRY ||
+    if (stxst.id == ID_MENUITEM_DELETEENTRY ||
         stxst.id == ID_MENUITEM_DELETEGROUP ||
-        stxst.id == ID_MENUITEM_RENAME      ||
         stxst.id == ID_MENUITEM_RENAMEENTRY ||
         stxst.id == ID_MENUITEM_RENAMEGROUP) {
       bUserShortcutsChanged = true;
@@ -602,12 +575,19 @@ void DboxMain::SetUpInitialMenuStrings()
   iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
   iter_group->second.SetKeyFlags(iter->second);
 
+  // Now tell the TreeCtrl the key for Delete
+  m_ctlItemTree.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
+  m_ctlItemList.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
+
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_RENAME);
   iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEENTRY);
   iter_entry->second.SetKeyFlags(iter->second);
   iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
   iter_group->second.SetKeyFlags(iter->second);
 
+  // Now tell the TreeCtrl the key for Rename
+  m_ctlItemTree.SetRenameKey(iter->second.cVirtKey, iter->second.cModifier);
+  
   UpdateAccelTable();
 }
 
@@ -664,13 +644,10 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
         CString str;
         if (iter->second.cVirtKey != 0) {
           st_KIDEx.id = iter->second.cVirtKey;
-          st_KIDEx.bExtended = iter->second.bExtended;
+          st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
           citer = m_MapKeyNameID.find(st_KIDEx);
-          str.Format(_T("%s\t%s%s%s%s"), iter->second.name,
-              iter->second.bCtrl  ? _T("Ctrl+")  : _T(""),
-              iter->second.bAlt   ? _T("Alt+")   : _T(""),
-              iter->second.bShift ? _T("Shift+") : _T(""),
-              citer->second);
+          str.Format(_T("%s\t%s"), iter->second.name, 
+                     CMenuShortcut::FormatShortcut(iter, citer));
         } else {
           str = iter->second.name;
         }

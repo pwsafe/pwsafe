@@ -100,10 +100,7 @@ void CSHCTListCtrl::OnLButtonDown(UINT nFlags , CPoint point)
     m_id = (UINT)LOWORD(GetItemData(m_item));
     iter = m_pParent->GetMapMenuShortcutsIter(m_id);
 
-    WORD vModifiers = (iter->second.bCtrl     ? HOTKEYF_CONTROL : 0) |
-                      (iter->second.bAlt      ? HOTKEYF_ALT     : 0) |
-                      (iter->second.bShift    ? HOTKEYF_SHIFT   : 0) |
-                      (iter->second.bExtended ? HOTKEYF_EXT     : 0);
+    WORD vModifiers = iter->second.cModifier;
     m_pHotKey->SetHotKey(iter->second.cVirtKey, vModifiers);
 
     m_pHotKey->EnableWindow(TRUE);
@@ -151,7 +148,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 
   st_KeyIDExt st_KIDEx;
   st_KIDEx.id = iter->second.cVirtKey;
-  st_KIDEx.bExtended = iter->second.bExtended;
+  st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
 
   citer = m_pParent->GetMapKeyNameIDConstIter(st_KIDEx);
 
@@ -161,10 +158,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
     pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
 
   if (iter->second.cVirtKey   == iter->second.cdefVirtKey &&
-      iter->second.bCtrl      == iter->second.bdefCtrl    &&
-      iter->second.bAlt       == iter->second.bdefAlt     &&
-      iter->second.bShift     == iter->second.bdefShift   &&
-      iter->second.bExtended  == iter->second.bdefExtended)
+      iter->second.cModifier  == iter->second.cdefModifier)
     pContextMenu->RemoveMenu(ID_MENUITEM_RESETSHORTCUT, MF_BYCOMMAND);
 
   if (pContextMenu->GetMenuItemCount() == 0)
@@ -177,11 +171,8 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
                                          pt.x, pt.y, this);
 
   if (nID == ID_MENUITEM_REMOVESHORTCUT) {
-    iter->second.bCtrl = false;
-    iter->second.bAlt = false;
-    iter->second.bShift = false;
-    iter->second.bExtended = false;
     iter->second.cVirtKey = (unsigned char)0;
+    iter->second.cModifier = (unsigned char)0;
     str = _T("");
     goto update;
   }
@@ -189,22 +180,15 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
   if (nID != ID_MENUITEM_RESETSHORTCUT)
     goto exit;
 
-  iter->second.bCtrl = iter->second.bdefCtrl;
-  iter->second.bAlt = iter->second.bdefAlt;
-  iter->second.bShift = iter->second.bdefShift;
-  iter->second.bExtended = iter->second.bdefExtended;
   iter->second.cVirtKey = iter->second.cdefVirtKey;
+  iter->second.cModifier = iter->second.cdefModifier;
 
   if (iter->second.cVirtKey != 0) {
     st_KeyIDExt st_KIDEx;
     st_KIDEx.id = iter->second.cVirtKey;
-    st_KIDEx.bExtended = iter->second.bExtended;
+    st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
     citer = m_pParent->GetMapKeyNameIDConstIter(st_KIDEx);
-    str.Format(_T("%s%s%s%s"),
-               iter->second.bCtrl  ? _T("Ctrl + ")  : _T(""),
-               iter->second.bAlt   ? _T("Alt + ")   : _T(""),
-               iter->second.bShift ? _T("Shift + ") : _T(""),
-               citer->second);
+    str = CMenuShortcut::FormatShortcut(iter, citer);
   } else {
     str = _T("");
   }
@@ -293,10 +277,7 @@ void CSHCTListCtrl::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
         case SHCT_MENUITEMTEXT:
           iter = m_pParent->GetMapMenuShortcutsIter(id);
           if (iter->second.cVirtKey  != iter->second.cdefVirtKey ||
-              iter->second.bCtrl     != iter->second.bdefCtrl    ||
-              iter->second.bAlt      != iter->second.bdefAlt     ||
-              iter->second.bShift    != iter->second.bdefShift   ||
-              iter->second.bExtended != iter->second.bdefExtended)
+              iter->second.cModifier != iter->second.cdefModifier)
             pLVCD->clrText = m_crRedText;
           break;
         case SHCT_SHORTCUTKEYS:

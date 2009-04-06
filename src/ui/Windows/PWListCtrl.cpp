@@ -21,7 +21,9 @@ static char THIS_FILE[] = __FILE__;
 
 CPWListCtrl::CPWListCtrl()
   : m_FindTimerID(0), m_csFind(_T("")), m_bMouseInWindow(false), 
-  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bFilterActive(false)
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bFilterActive(false),
+  m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
+  m_bDeleteCtrl(false), m_bDeleteShift(false)
 {
 }
 
@@ -83,6 +85,30 @@ void CPWListCtrl::OnDestroy()
   // Remove dummy ImageList. PWTreeCtrl removes the real one!
   m_pDbx->m_pImageList0->DeleteImageList();
   delete m_pDbx->m_pImageList0;
+}
+
+void CPWListCtrl::SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier)
+{
+  m_wpDeleteMsg = ((cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
+  m_wpDeleteKey = cVirtKey;
+  m_bDeleteCtrl = (cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+  m_bDeleteShift = (cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+}
+
+BOOL CPWListCtrl::PreTranslateMessage(MSG* pMsg)
+{
+  // Process User's Delete shortcut
+  if (pMsg->message == m_wpDeleteMsg && pMsg->wParam == m_wpDeleteKey) {
+    if (m_bDeleteCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+        m_bDeleteShift == (GetKeyState(VK_SHIFT)   < 0)) {
+      if (m_pDbx != NULL)
+        m_pDbx->SendMessage(WM_COMMAND, MAKEWPARAM(ID_MENUITEM_DELETEENTRY, 1), 0);
+      return TRUE;
+    }
+  }
+  
+  // Let the parent class do its thing
+  return CListCtrl::PreTranslateMessage(pMsg);
 }
 
 void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)

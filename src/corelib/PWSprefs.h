@@ -41,9 +41,7 @@ extern int s_cfgLockCount;
 struct st_prefShortcut {
   unsigned int id;
   unsigned char cVirtKey;
-  bool bAlt;
-  bool bCtrl;
-  bool bShift;
+  unsigned char cModifier;
 };
 
 class CXMLprefs;

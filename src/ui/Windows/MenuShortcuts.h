@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "corelib/StringX.h"
+
 #include <map>
 #include <vector>
 #include <algorithm>
@@ -17,10 +19,7 @@
 // Structure used for vector of reserved Hotkeys
 struct st_MenuShortcut {
 	unsigned char cVirtKey;
-	bool bCtrl;
-	bool bAlt;
-	bool bShift;
-  bool bExtended;
+  unsigned char cModifier;
 };
 
 struct st_KeyIDExt {
@@ -36,42 +35,45 @@ struct st_KeyIDExt {
   }
 };
 
+class CMenuShortcut;
+
+// Key is the Control ID
+typedef std::map<unsigned int, CMenuShortcut> MapMenuShortcuts;
+typedef std::pair<unsigned int, CMenuShortcut> MapMenuShortcutsPair;
+typedef MapMenuShortcuts::iterator MapMenuShortcutsIter;
+
+// Key is the virtual key
+typedef std::map<const st_KeyIDExt, const TCHAR *> MapKeyNameID;
+typedef std::pair<const st_KeyIDExt, const TCHAR *> MapKeyNameIDPair;
+typedef MapKeyNameID::const_iterator MapKeyNameIDConstIter;
+typedef MapKeyNameID::iterator MapKeyNameIDIter;
+
 class CMenuShortcut {
 public:
   // Menu item text
 	const TCHAR *name;
   // Menu item's parent or zero
-  UINT uiParentID;
+  unsigned int uiParentID;
   // Sequential menu item position (i.e. in going through the menus)
   // Used to sort shortcuts in the CListCtrl in OptionsShortcuts
   int iMenuPosition;
   // Default values
 	unsigned char cdefVirtKey;
-	bool bdefCtrl;
-	bool bdefAlt;
-	bool bdefShift;
-  bool bdefExtended;
+	unsigned char cdefModifier;
   // new User values
 	unsigned char cVirtKey;
-	bool bCtrl;
-	bool bAlt;
-	bool bShift;
-  bool bExtended;
+	unsigned char cModifier;
 
   CMenuShortcut()
   : name(NULL), uiParentID(0), iMenuPosition(0),
-  cdefVirtKey(0), bdefCtrl(false), bdefAlt(false), bdefShift(false), bdefExtended(false),
-  cVirtKey(0), bCtrl(false), bAlt(false), bShift(false), bExtended(false)
+  cdefVirtKey(0), cdefModifier(0), cVirtKey(0), cModifier(0)
   {}
 
   CMenuShortcut(const CMenuShortcut &that)
   : name(_tcsdup(that.name)), uiParentID(that.uiParentID),
   iMenuPosition(that.iMenuPosition),
-  cdefVirtKey(that.cdefVirtKey),
-  bdefCtrl(that.bdefCtrl), bdefAlt(that.bdefAlt), bdefShift(that.bdefShift),
-  bdefExtended(that.bdefExtended),
-  cVirtKey(that.cVirtKey),
-  bCtrl(that.bCtrl), bAlt(that.bAlt), bShift(that.bShift), bExtended(that.bExtended)
+  cdefVirtKey(that.cdefVirtKey), cdefModifier(that.cdefModifier),
+  cVirtKey(that.cVirtKey), cModifier(that.cModifier)
   {}
 
   ~CMenuShortcut()
@@ -81,32 +83,20 @@ public:
 
   void ClearKeyFlags()
   {
-    // Only clear Key/flags - not menu position or name
+    // Only clear Key/flags - not name, parent ID or menu position
     cdefVirtKey = (unsigned char)0;
-    bdefCtrl = false;
-    bdefAlt = false;
-    bdefShift = false;
-    bdefExtended = false;
+    cdefModifier = (unsigned char)0;
     cVirtKey = (unsigned char)0;
-    bCtrl = false;
-    bAlt = false;
-    bShift = false;
-    bExtended = false;
+    cModifier = (unsigned char)0;
   }
 
   void SetKeyFlags(const CMenuShortcut &that)
   {
-    // Only set Key/flags - not menu position or name
+    // Only set Key/flags - not name, parent ID or menu position
     cdefVirtKey = that.cdefVirtKey;
-    bdefCtrl = that.bdefCtrl;
-    bdefAlt = that.bdefAlt;
-    bdefShift = that.bdefShift;
-    bdefExtended = that.bdefExtended;
+    cdefModifier = that.cdefModifier;
     cVirtKey = that.cVirtKey;
-    bCtrl = that.bCtrl;
-    bAlt = that.bAlt;
-    bShift = that.bShift;
-    bExtended = that.bExtended;
+    cModifier = that.cModifier;
   }
 
   CMenuShortcut &operator=(const CMenuShortcut &that)
@@ -117,27 +107,18 @@ public:
       uiParentID = that.uiParentID;
       iMenuPosition = that.iMenuPosition;
       cdefVirtKey = that.cdefVirtKey;
-      bdefCtrl = that.bdefCtrl;
-      bdefAlt = that.bdefAlt;
-      bdefShift = that.bdefShift;
-      bdefExtended = that.bdefExtended;
+      cdefModifier = that.cdefModifier;
       cVirtKey = that.cVirtKey;
-      bCtrl = that.bCtrl;
-      bAlt = that.bAlt;
-      bShift = that.bShift;
-      bExtended = that.bExtended;
+      cModifier = that.cModifier;
     }
     return *this;
   }
+
+  static CString FormatShortcut(MapMenuShortcutsIter iter, 
+                         MapKeyNameIDConstIter citer);
+
+
+  static CString FormatShortcut(st_MenuShortcut mst, 
+                         MapKeyNameIDConstIter citer);
 };
 
-// Key is the Control ID
-typedef std::map<UINT, CMenuShortcut> MapMenuShortcuts;
-typedef std::pair<UINT, CMenuShortcut> MapMenuShortcutsPair;
-typedef MapMenuShortcuts::iterator MapMenuShortcutsIter;
-
-// Key is the virtual key
-typedef std::map<const st_KeyIDExt, const TCHAR *> MapKeyNameID;
-typedef std::pair<const st_KeyIDExt, const TCHAR *> MapKeyNameIDPair;
-typedef MapKeyNameID::const_iterator MapKeyNameIDConstIter;
-typedef MapKeyNameID::iterator MapKeyNameIDIter;

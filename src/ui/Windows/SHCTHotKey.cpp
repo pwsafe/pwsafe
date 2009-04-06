@@ -48,13 +48,13 @@ void CSHCTHotKey::OnKillFocus(CWnd *pWnd)
 
 void CSHCTHotKey::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-  if (nChar != VK_DELETE && nChar != VK_SPACE)
+  if (nChar != VK_DELETE && nChar != VK_SPACE && nChar != VK_ESCAPE)
     CHotKeyCtrl::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
 void CSHCTHotKey::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-  if (nChar == VK_DELETE || nChar == VK_SPACE) {
+  if (nChar == VK_DELETE || nChar == VK_SPACE || nChar == VK_ESCAPE) {
     WORD wVK, wMod;
     GetHotKey(wVK, wMod);
 

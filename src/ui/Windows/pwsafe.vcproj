@@ -1159,6 +1159,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MenuShortcuts.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MenuTipper.cpp"
 				>
 			</File>
