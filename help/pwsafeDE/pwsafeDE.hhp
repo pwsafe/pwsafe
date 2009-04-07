@@ -1,7 +1,7 @@
 [OPTIONS]
 Auto Index=Yes
 Compatibility=1.1 or later
-Compiled file=pwsafeDE_DE.chm
+Compiled file=pwsafeDE.chm
 Contents file=pwsafeDE.hhc
 Default topic=html\Welcome.html
 Display compile progress=Yes

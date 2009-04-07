@@ -1,13 +1,14 @@
 [OPTIONS]
 Auto Index=Yes
 Compatibility=1.1 or later
-Compiled file=pwsafeFR_FR.chm
+Compiled file=pwsafeFR.chm
 Contents file=pwsafefr.hhc
 Default topic=html\pws_intro.htm
 Display compile progress=Yes
 Error log file=pwsafefr.log
 Full-text search=Yes
 Language=0x40c Französisch (Frankreich)
+Title=HTML Help pour Password Safe
 
 
 [FILES]
