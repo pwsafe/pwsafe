@@ -217,6 +217,8 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   citer = m_MapKeyNameID.find(st_KIDEx);
 
   // Stop compiler complaining - put this here even if not needed
+  st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
+  st_mst.cModifier = (unsigned char)wModifiers;
   already_inuse inuse(st_mst);
 
   if (citer == m_MapKeyNameID.end()) {
@@ -224,9 +226,6 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
     cs_warning.LoadString(IDS_SHCT_WARNING1);
     goto set_warning;
   }
-
-  st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
-  st_mst.cModifier = (unsigned char)wModifiers;
 
   if (st_mst.cVirtKey != 0) {
     mst_str = CMenuShortcut::FormatShortcut(st_mst, citer);
@@ -241,6 +240,7 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   }
 
   // Check not already in use (ignore if deleting current shortcut)
+  iter = m_MapMenuShortcuts.find(id);
   if (st_mst.cVirtKey != (unsigned char)0) {
     inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
                               m_MapMenuShortcuts.end(),
@@ -253,7 +253,6 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
     }
   }
 
-  iter = m_MapMenuShortcuts.find(id);
   if (iter->second.cVirtKey != 0) {
     str = CMenuShortcut::FormatShortcut(iter, citer);
   }
