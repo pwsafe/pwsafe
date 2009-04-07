@@ -1,14 +1,14 @@
 [OPTIONS]
 Auto Index=Yes
 Compatibility=1.1 or later
-Compiled file=pwsafeZH_CN.chm
+Compiled file=pwsafeZH.chm
 Contents file=pwsafe.hhc
 Default topic=html\Welcome.html
 Display compile progress=Yes
 Error log file=pwsafe.log
 Full-text search=Yes
 Index file=pwsafe.hhk
-Language=0x0804 ZH_CN (Simplified Chinese)
+Language=0x804 
 Title=Password Safe °ïÖúÖ÷Ìâ
 
 

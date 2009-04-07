@@ -102,7 +102,7 @@
 ; - several MUI_LANGUAGE
 ; - several "File" for the language specific DLL
 ; - "Delete ...DLL" for each language (at install time)
-; - 'Delete "$INSTDIR\pwsafeDE_DE.dll"'  for each language (at uninstall time)
+; - 'Delete "$INSTDIR\pwsafeDE.dll"'  for each language (at uninstall time)
 ; - "Push" in the "Language selection dialog"
 
 ;-----------------------------------------
@@ -250,40 +250,40 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\pwsafe_filter.xsd"
   
 !ifdef LANGUAGE_CHINESE
-  File /nonfatal "..\src\bin\release\pwsafeZH_CN.dll"
-  File /nonfatal "..\help\pwsafeZH\pwsafeZH_CN.chm"
+  File /nonfatal "..\src\bin\release\pwsafeZH.dll"
+  File /nonfatal "..\help\pwsafeZH\pwsafeZH.chm"
 !endif
 !ifdef LANGUAGE_GERMAN
-  File /nonfatal "..\src\bin\release\pwsafeDE_DE.dll"
-  File /nonfatal "..\help\pwsafeDE\pwsafeDE_DE.chm"
+  File /nonfatal "..\src\bin\release\pwsafeDE.dll"
+  File /nonfatal "..\help\pwsafeDE\pwsafeDE.chm"
 !endif
 !ifdef LANGUAGE_SPANISH
-  File /nonfatal "..\src\bin\release\pwsafeES_ES.dll"
-  File /nonfatal "..\help\pwsafeES\pwsafeES_ES.chm"
+  File /nonfatal "..\src\bin\release\pwsafeES.dll"
+  File /nonfatal "..\help\pwsafeES\pwsafeES.chm"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  File /nonfatal "..\src\bin\release\pwsafeSV_SE.dll"
-  File /nonfatal "..\help\pwsafeSV\pwsafeSV_SE.chm"
+  File /nonfatal "..\src\bin\release\pwsafeSV.dll"
+  File /nonfatal "..\help\pwsafeSV\pwsafeSV.chm"
 !endif
 !ifdef LANGUAGE_DUTCH
-  File /nonfatal "..\src\bin\release\pwsafeNL_NL.dll"
-  File /nonfatal "..\help\pwsafeNL\pwsafeNL_NL.chm"
+  File /nonfatal "..\src\bin\release\pwsafeNL.dll"
+  File /nonfatal "..\help\pwsafeNL\pwsafeNL.chm"
 !endif
 !ifdef LANGUAGE_FRENCH
-  File /nonfatal "..\src\bin\release\pwsafeFR_FR.dll"
-  File /nonfatal "..\help\pwsafeFR\pwsafeFR_FR.chm"
+  File /nonfatal "..\src\bin\release\pwsafeFR.dll"
+  File /nonfatal "..\help\pwsafeFR\pwsafeFR.chm"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  File /nonfatal "..\src\bin\release\pwsafeRU_RU.dll"
-  File /nonfatal "..\help\pwsafeRU\pwsafeRU_RU.chm"
+  File /nonfatal "..\src\bin\release\pwsafeRU.dll"
+  File /nonfatal "..\help\pwsafeRU\pwsafeRU.chm"
 !endif
 !ifdef LANGUAGE_POLISH
-  File /nonfatal "..\src\bin\release\pwsafePL_PL.dll"
-  File /nonfatal "..\help\pwsafePL\pwsafePL_PL.chm"
+  File /nonfatal "..\src\bin\release\pwsafePL.dll"
+  File /nonfatal "..\help\pwsafePL\pwsafePL.chm"
 !endif
 !ifdef LANGUAGE_ITALIAN
-  File /nonfatal "..\src\bin\release\pwsafeIT_IT.dll"
-  File /nonfatal "..\help\pwsafePL\pwsafeIT_IT.chm"
+  File /nonfatal "..\src\bin\release\pwsafeIT.dll"
+  File /nonfatal "..\help\pwsafePL\pwsafeIT.chm"
 !endif
 
   Goto dont_install_Win98
@@ -330,80 +330,80 @@ dont_install_Win98:
   ; if language = english or "other" : remove all languageXX_XX.DLL
   ; else : English or no specific language
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
-    Delete $INSTDIR\pwsafeSV_SE.chm
+    Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-    Delete $INSTDIR\pwsafeIT_IT.dll
-    Delete $INSTDIR\pwsafeIT_IT.chm
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
 !ifdef LANGUAGE_GERMAN
 languageGerman:
 !ifdef LANGUAGE_GERMAN
-;    Delete $INSTDIR\pwsafeDE_DE.dll
-;    Delete $INSTDIR\pwsafeDE_DE.chm
+;    Delete $INSTDIR\pwsafeDE.dll
+;    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
-    Delete $INSTDIR\pwsafeSV_SE.chm
+    Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-    Delete $INSTDIR\pwsafeIT_IT.dll
-    Delete $INSTDIR\pwsafeIT_IT.chm
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 !endif
@@ -411,36 +411,36 @@ languageGerman:
 !ifdef LANGUAGE_CHINESE
 languageCHINESE:
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-;    Delete $INSTDIR\pwsafeZH_CN.dll
-;    Delete $INSTDIR\pwsafeZH_CN.chm
+;    Delete $INSTDIR\pwsafeZH.dll
+;    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
-    Delete $INSTDIR\pwsafeSV_SE.chm
+    Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
     goto languageDone
 !endif
@@ -448,40 +448,40 @@ languageCHINESE:
 !ifdef LANGUAGE_SPANISH
 languageSpanish:
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-;    Delete $INSTDIR\pwsafeES_ES.dll
-;    Delete $INSTDIR\pwsafeES_ES.chm
+;    Delete $INSTDIR\pwsafeES.dll
+;    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
-    Delete $INSTDIR\pwsafeSV_SE.chm
+    Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-    Delete $INSTDIR\pwsafeIT_IT.dll
-    Delete $INSTDIR\pwsafeIT_IT.chm
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 !endif
@@ -489,40 +489,40 @@ languageSpanish:
 !ifdef LANGUAGE_SWEDISH
 languageSwedish:
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-;    Delete $INSTDIR\pwsafeSV_SE.dll
-;    Delete $INSTDIR\pwsafeSV_SE.chm
+;    Delete $INSTDIR\pwsafeSV.dll
+;    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-    Delete $INSTDIR\pwsafeIT_IT.dll
-    Delete $INSTDIR\pwsafeIT_IT.chm
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 !endif
@@ -530,39 +530,39 @@ languageSwedish:
 !ifdef LANGUAGE_DUTCH
 languageDutch:
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
+    Delete $INSTDIR\pwsafeSV.dll
 !endif
 !ifdef LANGUAGE_DUTCH
-;    Delete $INSTDIR\pwsafeNL_NL.dll
-;    Delete $INSTDIR\pwsafeNL_NL.chm
+;    Delete $INSTDIR\pwsafeNL.dll
+;    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-    Delete $INSTDIR\pwsafeIT_IT.dll
-    Delete $INSTDIR\pwsafeIT_IT.chm
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 !endif
@@ -570,40 +570,40 @@ languageDutch:
 !ifdef LANGUAGE_FRENCH
 languageFrench:
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
-    Delete $INSTDIR\pwsafeSV_SE.chm
+    Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-;    Delete $INSTDIR\pwsafeFR_FR.dll
-;    Delete $INSTDIR\pwsafeFR_FR.chm
+;    Delete $INSTDIR\pwsafeFR.dll
+;    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-    Delete $INSTDIR\pwsafeIT_IT.dll
-    Delete $INSTDIR\pwsafeIT_IT.chm
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 !endif
@@ -611,40 +611,40 @@ languageFrench:
 !ifdef LANGUAGE_RUSSIAN
 languageRussian:
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
-    Delete $INSTDIR\pwsafeSV_SE.chm
+    Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-;    Delete $INSTDIR\pwsafeRU_RU.dll
-;    Delete $INSTDIR\pwsafeRU_RU.chm
+;    Delete $INSTDIR\pwsafeRU.dll
+;    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-    Delete $INSTDIR\pwsafeIT_IT.dll
-    Delete $INSTDIR\pwsafeIT_IT.chm
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 !endif
@@ -652,40 +652,40 @@ languageRussian:
 !ifdef LANGUAGE_POLISH
 languagePolish:
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
-    Delete $INSTDIR\pwsafeSV_SE.chm
+    Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-;    Delete $INSTDIR\pwsafePL_PL.dll
-;    Delete $INSTDIR\pwsafePL_PL.chm
+;    Delete $INSTDIR\pwsafePL.dll
+;    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-    Delete $INSTDIR\pwsafeIT_IT.dll
-    Delete $INSTDIR\pwsafeIT_IT.chm
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 !endif
@@ -693,40 +693,40 @@ languagePolish:
 !ifdef LANGUAGE_ITALIAN
 languageItalian:
 !ifdef LANGUAGE_GERMAN
-    Delete $INSTDIR\pwsafeDE_DE.dll
-    Delete $INSTDIR\pwsafeDE_DE.chm
+    Delete $INSTDIR\pwsafeDE.dll
+    Delete $INSTDIR\pwsafeDE.chm
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-    Delete $INSTDIR\pwsafeES_ES.dll
-    Delete $INSTDIR\pwsafeES_ES.chm
+    Delete $INSTDIR\pwsafeES.dll
+    Delete $INSTDIR\pwsafeES.chm
 !endif
 !ifdef LANGUAGE_SWEDISH
-    Delete $INSTDIR\pwsafeSV_SE.dll
-    Delete $INSTDIR\pwsafeSV_SE.chm
+    Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
-    Delete $INSTDIR\pwsafeNL_NL.dll
-    Delete $INSTDIR\pwsafeNL_NL.chm
+    Delete $INSTDIR\pwsafeNL.dll
+    Delete $INSTDIR\pwsafeNL.chm
 !endif
 !ifdef LANGUAGE_FRENCH
-    Delete $INSTDIR\pwsafeFR_FR.dll
-    Delete $INSTDIR\pwsafeFR_FR.chm
+    Delete $INSTDIR\pwsafeFR.dll
+    Delete $INSTDIR\pwsafeFR.chm
 !endif
 !ifdef LANGUAGE_RUSSIAN
-    Delete $INSTDIR\pwsafeRU_RU.dll
-    Delete $INSTDIR\pwsafeRU_RU.chm
+    Delete $INSTDIR\pwsafeRU.dll
+    Delete $INSTDIR\pwsafeRU.chm
 !endif
 !ifdef LANGUAGE_POLISH
-    Delete $INSTDIR\pwsafePL_PL.dll
-    Delete $INSTDIR\pwsafePL_PL.chm
+    Delete $INSTDIR\pwsafePL.dll
+    Delete $INSTDIR\pwsafePL.chm
 !endif
 !ifdef LANGUAGE_ITALIAN
-;    Delete $INSTDIR\pwsafeIT_IT.dll
-;    Delete $INSTDIR\pwsafeIT_IT.chm
+;    Delete $INSTDIR\pwsafeIT.dll
+;    Delete $INSTDIR\pwsafeIT.chm
 !endif
     goto languageDone
 !endif
@@ -827,40 +827,40 @@ Section "Uninstall"
   Delete "$INSTDIR\Microsoft.VC80.CRT.manifest"
   Delete "$INSTDIR\Microsoft.VC80.MFC.manifest"
 !ifdef LANGUAGE_GERMAN
-  Delete "$INSTDIR\pwsafeDE_DE.dll"
-  Delete "$INSTDIR\pwsafeDE_DE.chm"
+  Delete "$INSTDIR\pwsafeDE.dll"
+  Delete "$INSTDIR\pwsafeDE.chm"
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH_CN.dll
-    Delete $INSTDIR\pwsafeZH_CN.chm
+    Delete $INSTDIR\pwsafeZH.dll
+    Delete $INSTDIR\pwsafeZH.chm
 !endif
 !ifdef LANGUAGE_SPANISH
-  Delete "$INSTDIR\pwsafeES_ES.dll"
-  Delete "$INSTDIR\pwsafeES_ES.chm"
+  Delete "$INSTDIR\pwsafeES.dll"
+  Delete "$INSTDIR\pwsafeES.chm"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  Delete "$INSTDIR\pwsafeSV_SE.dll"
-  Delete "$INSTDIR\pwsafeSV_SE.chm"
+  Delete "$INSTDIR\pwsafeSV.dll"
+  Delete "$INSTDIR\pwsafeSV.chm"
 !endif
 !ifdef LANGUAGE_DUTCH
-  Delete "$INSTDIR\pwsafeNL_NL.dll"
-  Delete "$INSTDIR\pwsafeNL_NL.chm"
+  Delete "$INSTDIR\pwsafeNL.dll"
+  Delete "$INSTDIR\pwsafeNL.chm"
 !endif
 !ifdef LANGUAGE_FRENCH
-  Delete "$INSTDIR\pwsafeFR_FR.dll"
-  Delete "$INSTDIR\pwsafeFR_FR.chm"
+  Delete "$INSTDIR\pwsafeFR.dll"
+  Delete "$INSTDIR\pwsafeFR.chm"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  Delete "$INSTDIR\pwsafeRU_RU.dll"
-  Delete "$INSTDIR\pwsafeRU_RU.chm"
+  Delete "$INSTDIR\pwsafeRU.dll"
+  Delete "$INSTDIR\pwsafeRU.chm"
 !endif
 !ifdef LANGUAGE_POLISH
-  Delete "$INSTDIR\pwsafePL_PL.dll"
-  Delete "$INSTDIR\pwsafePL_PL.chm"
+  Delete "$INSTDIR\pwsafePL.dll"
+  Delete "$INSTDIR\pwsafePL.chm"
 !endif
 !ifdef LANGUAGE_ITALIAN
-  Delete "$INSTDIR\pwsafeIT_IT.dll"
-  Delete "$INSTDIR\pwsafeIT_IT.chm"
+  Delete "$INSTDIR\pwsafeIT.dll"
+  Delete "$INSTDIR\pwsafeIT.chm"
 !endif
 
   ; remove directory if it's empty
