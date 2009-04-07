@@ -139,7 +139,8 @@ void DboxMain::SetUpInitialMenuStrings()
     if (i == 0x07 || i == 0x0A || i == 0x0B ||
         i == 0x40 || i == 0x5E ||
         (i >= 0x5B && i <= 0x5D) ||
-        (i >= 0x88 && i <= 0x9F) ||
+        (i >= 0x88 && i <= 0x8F) ||
+        (i >= 0x92 && i <= 0x9F) ||
         (i >= 0xA6 && i <= 0xB9) ||
         (i >= 0xC1 && i <= 0xDA))
       continue;

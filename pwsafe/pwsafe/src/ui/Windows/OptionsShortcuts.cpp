@@ -216,20 +216,20 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   st_KIDEx.bExtended = (wModifiers & HOTKEYF_EXT) == HOTKEYF_EXT;
   citer = m_MapKeyNameID.find(st_KIDEx);
 
-  st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
-  st_mst.cModifier = (unsigned char)wModifiers;
-
+  // Stop compiler complaining - put this here even if not needed
   already_inuse inuse(st_mst);
 
-  if (st_mst.cVirtKey != 0) {
-    mst_str = CMenuShortcut::FormatShortcut(st_mst, citer);
-  }
-
-  iter = m_MapMenuShortcuts.find(id);
   if (citer == m_MapKeyNameID.end()) {
     // Invalid shortcut
     cs_warning.LoadString(IDS_SHCT_WARNING1);
     goto set_warning;
+  }
+
+  st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
+  st_mst.cModifier = (unsigned char)wModifiers;
+
+  if (st_mst.cVirtKey != 0) {
+    mst_str = CMenuShortcut::FormatShortcut(st_mst, citer);
   }
 
   if (std::find_if(m_ReservedShortcuts.begin(),
@@ -253,6 +253,7 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
     }
   }
 
+  iter = m_MapMenuShortcuts.find(id);
   if (iter->second.cVirtKey != 0) {
     str = CMenuShortcut::FormatShortcut(iter, citer);
   }
