@@ -545,6 +545,10 @@ msgstr "密码字体(&P)"
 msgid "&Password:"
 msgstr "密码(&P):"
 
+#. Resource IDs: (2132)
+msgid "&Paste"
+msgstr ""
+
 #. Resource IDs: (32010)
 msgid "&Plain Text (tab separated)..."
 msgstr "纯文本文件(分隔符标记)(&P)..."
@@ -616,6 +620,10 @@ msgstr "树状目录/列表字体(&T)"
 #. Resource IDs: (1022)
 msgid "&Try Again"
 msgstr "重试(&T)"
+
+#. Resource IDs: (2132)
+msgid "&Undo"
+msgstr ""
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1411,6 +1419,10 @@ msgstr "创建时间:"
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "规则"
+
+#. Resource IDs: (2132)
+msgid "Cu&t"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Current Value:"
@@ -3513,6 +3525,10 @@ msgstr "定位失败 %1！"
 #. Resource IDs: (352)
 msgid "Select"
 msgstr "选定"
+
+#. Resource IDs: (2132)
+msgid "Select &All"
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Select Browser:"
