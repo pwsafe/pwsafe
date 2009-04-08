@@ -70,6 +70,12 @@ typedef u_int64_t uint64;
 
 typedef int errno_t;
 
+// Fake these for shortcut prefs
+#define HOTKEYF_SHIFT           0x01
+#define HOTKEYF_CONTROL         0x02
+#define HOTKEYF_ALT             0x04
+#define HOTKEYF_EXT             0x08
+
 #ifdef UNICODE
 #ifndef _T
 #define _T(x) L ## x
