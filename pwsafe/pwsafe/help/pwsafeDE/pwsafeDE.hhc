@@ -152,7 +152,7 @@
 			<param name="Local" value="html\system_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Verknüpfungen">
+			<param name="Name" value="Schnelltasten">
 			<param name="Local" value="html\shortcuts_tab.html">
 			</OBJECT>
 	</UL>
