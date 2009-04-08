@@ -13,7 +13,7 @@
 #include "corelib/ItemField.h" // for CSecEditExtn
 #include "corelib/BlowFish.h"  // ditto
 #include "corelib/PWSrand.h"   // ditto
-
+#include "resource2.h" // for CEditExtn context menu
 #include <algorithm>
 
 #ifdef _DEBUG
@@ -25,17 +25,6 @@ static char THIS_FILE[] = __FILE__;
 // Pick a number at the end of the WM_USER range
 #define EM_SELECTALL (WM_APP - 1)
 
-// Right-click Edit Context Menu
-#define MENUSTRING_UNDO        _T("&Undo")
-// Separator
-#define MENUSTRING_CUT         _T("Cu&t")
-#define MENUSTRING_COPY        _T("&Copy")
-#define MENUSTRING_PASTE       _T("&Paste")
-#define MENUSTRING_DELETE      _T("&Delete")
-// Separator
-#define MENUSTRING_SELECTALL   _T("Select &All")
-// Separator
-// Custom menu goes here!
 
 #if defined(UNICODE)
 #define EDIT_CLIPBOARD_TEXT_FORMAT  CF_UNICODETEXT
@@ -268,32 +257,38 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   BOOL bReadOnly = GetStyle() & ES_READONLY;
   DWORD flags = CanUndo() && !bReadOnly ? 0 : MF_GRAYED;
 
-  menu.InsertMenu(0, MF_BYPOSITION | flags, EM_UNDO, MENUSTRING_UNDO);
+  menu.InsertMenu(0, MF_BYPOSITION | flags, EM_UNDO,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_UNDO)));
 
   menu.InsertMenu(1, MF_BYPOSITION | MF_SEPARATOR);
 
   DWORD sel = GetSel();
   flags = LOWORD(sel) == HIWORD(sel) ? MF_GRAYED : 0;
   // Add it in position 2 but adding the next will make it 3
-  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_COPY, MENUSTRING_COPY);
+  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_COPY,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_COPY)));
 
   flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
-  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_CUT, MENUSTRING_CUT);
+  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_CUT,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_CUT)));
 
   flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
   // Add it in position 4 but adding the next will make it 5
-  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_CLEAR, MENUSTRING_DELETE);
+  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_CLEAR,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_DELETE)));
 
   flags = IsClipboardFormatAvailable(EDIT_CLIPBOARD_TEXT_FORMAT) &&
                                      !bReadOnly ? 0 : MF_GRAYED;
-  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_PASTE, MENUSTRING_PASTE);
+  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_PASTE,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_PASTE)));
 
   menu.InsertMenu(6, MF_BYPOSITION | MF_SEPARATOR);
 
   int len = GetWindowTextLength();
   flags = (!len || (LOWORD(sel) == 0 && HIWORD(sel) == len)) ? MF_GRAYED : 0;
 
-  menu.InsertMenu(7, MF_BYPOSITION | flags, EM_SELECTALL, MENUSTRING_SELECTALL);
+  menu.InsertMenu(7, MF_BYPOSITION | flags, EM_SELECTALL,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_SELECTALL)));
 
   menu.InsertMenu(8, MF_BYPOSITION | MF_SEPARATOR);
 

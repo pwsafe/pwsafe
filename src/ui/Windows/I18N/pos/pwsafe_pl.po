@@ -581,6 +581,10 @@ msgstr ""
 msgid "&Password:"
 msgstr "&Hasło"
 
+#. Resource IDs: (2132)
+msgid "&Paste"
+msgstr ""
+
 #. Resource IDs: (32010)
 msgid "&Plain Text (tab separated)..."
 msgstr ""
@@ -653,6 +657,10 @@ msgstr ""
 #. Resource IDs: (1022)
 msgid "&Try Again"
 msgstr "&Spróbuj ponownie"
+
+#. Resource IDs: (2132)
+msgid "&Undo"
+msgstr ""
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1472,6 +1480,10 @@ msgstr "Utworzono:"
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "Kryteria"
+
+#. Resource IDs: (2132)
+msgid "Cu&t"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Current Value:"
@@ -3634,6 +3646,10 @@ msgstr "Szukanie nie powiodło się %1"
 #, fuzzy
 msgid "Select"
 msgstr "Wybierz"
+
+#. Resource IDs: (2132)
+msgid "Select &All"
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Select Browser:"

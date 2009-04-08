@@ -24,7 +24,8 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
   BUT THE VALUE FOR A PARTICULAR FUNCTION MUST NOT CHANGE
     e.g. ID_MENUITEM_OPEN must remain 32002
-
+  (Otherwise, a user may be unpleasantly surprised, when his shortcut for, say,
+   copying a password ends of deleting the current entry...)
 */
 
 #define ID_MENUTOOLBAR_START            32000
@@ -222,3 +223,12 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
 #define ID_MENUITEM_TRAYBROWSEPLUS1     33376
 #define ID_MENUITEM_TRAYBROWSEPLUSMAX   33400
+
+// Following for CEditExtn context menu
+// Really string constants, but "logically" they're menus...
+#define IDS_MENUSTRING_UNDO        34100
+#define IDS_MENUSTRING_CUT         34101
+#define IDS_MENUSTRING_COPY        34102
+#define IDS_MENUSTRING_PASTE       34103
+#define IDS_MENUSTRING_DELETE      34104
+#define IDS_MENUSTRING_SELECTALL   34105
