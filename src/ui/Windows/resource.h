@@ -56,6 +56,7 @@
 #define IDD_VIEWREPORT                  157
 #define IDD_MANAGEFILTERS               158
 #define IDD_PASSWORDSUBSET              159
+#define IDR_POPTRAY2                    168
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
 #define IDR_POPCOPYTOCOMPARISON         171

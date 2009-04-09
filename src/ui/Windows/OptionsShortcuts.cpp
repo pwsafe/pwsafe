@@ -205,20 +205,21 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
                                           const WORD wVirtualKeyCode, 
                                           const WORD wModifiers)
 {
-  CString str(_T("")), mst_str(_T(""));
+  CString str(_T(""));
   CString cs_warning;
   MapMenuShortcutsIter iter, inuse_iter;
   MapKeyNameIDConstIter citer;
   st_MenuShortcut st_mst;
   st_KeyIDExt st_KIDEx;
 
+  st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
+  st_mst.cModifier = wVirtualKeyCode == 0 ? 0 : (unsigned char)wModifiers;
+
   st_KIDEx.id = (unsigned char)wVirtualKeyCode;
   st_KIDEx.bExtended = (wModifiers & HOTKEYF_EXT) == HOTKEYF_EXT;
   citer = m_MapKeyNameID.find(st_KIDEx);
 
   // Stop compiler complaining - put this here even if not needed
-  st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
-  st_mst.cModifier = (unsigned char)wModifiers;
   already_inuse inuse(st_mst);
 
   if (citer == m_MapKeyNameID.end()) {
@@ -228,14 +229,14 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   }
 
   if (st_mst.cVirtKey != 0) {
-    mst_str = CMenuShortcut::FormatShortcut(st_mst, citer);
+    str = CMenuShortcut::FormatShortcut(st_mst, citer);
   }
 
   if (std::find_if(m_ReservedShortcuts.begin(),
                    m_ReservedShortcuts.end(),
                    reserved(st_mst)) != m_ReservedShortcuts.end()) {
     // Reserved shortcut ignored
-    cs_warning.Format(IDS_SHCT_WARNING2, mst_str);
+    cs_warning.Format(IDS_SHCT_WARNING2, str);
     goto set_warning;
   }
 
@@ -248,13 +249,9 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
     if (inuse_iter != m_MapMenuShortcuts.end() && 
         inuse_iter->first != iter->first) {
       // Shortcut in use
-      cs_warning.Format(IDS_SHCT_WARNING3, mst_str, inuse_iter->second.name);
+      cs_warning.Format(IDS_SHCT_WARNING3, str, inuse_iter->second.name);
       goto set_warning;
     }
-  }
-
-  if (iter->second.cVirtKey != 0) {
-    str = CMenuShortcut::FormatShortcut(iter, citer);
   }
 
   // Not reserved and not already in use - implement

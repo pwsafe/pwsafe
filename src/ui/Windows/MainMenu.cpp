@@ -121,9 +121,12 @@ void DboxMain::SetUpInitialMenuStrings()
   // for the action.  Add here to stop them being in the Shortcut
   // Options CListCtrl.
   // User can alter the function using the base values
-  // ID_MENUITEM_DELETE & ID_MENUITEM_RENAME
+  // ID_MENUITEM_EDIT, ID_MENUITEM_DELETE & ID_MENUITEM_RENAME
+  m_ExcludedMenuItems.push_back(ID_MENUITEM_VIEW);
+
   m_ExcludedMenuItems.push_back(ID_MENUITEM_DELETEENTRY);
   m_ExcludedMenuItems.push_back(ID_MENUITEM_DELETEGROUP);
+
   m_ExcludedMenuItems.push_back(ID_MENUITEM_RENAMEENTRY);
   m_ExcludedMenuItems.push_back(ID_MENUITEM_RENAMEGROUP);
 
@@ -133,12 +136,13 @@ void DboxMain::SetUpInitialMenuStrings()
   st_KIDEx.bExtended = false;
   m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
 
-  // Now add in locale key names
+  // Now add in locale key names (note range 0xE0-0xFF not used)
   for (int i = 1; i < 0xE0; i++) {
     // Following are reserved or unassigned by Windows
-    if (i == 0x07 || i == 0x0A || i == 0x0B ||
-        i == 0x40 || i == 0x5E ||
-        (i >= 0x5B && i <= 0x5D) ||
+    if ( i == 0x07 || i == 0x0A || 
+         i == 0x0B || i == 0x1B ||
+        (i >= 0x3A && i <= 0x40) ||
+        (i >= 0x5B && i <= 0x5F) ||
         (i >= 0x88 && i <= 0x8F) ||
         (i >= 0x92 && i <= 0x9F) ||
         (i >= 0xA6 && i <= 0xB9) ||
@@ -191,7 +195,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // Maybe different in other languages
   st_MenuShortcut st_mst;
   st_mst.cVirtKey;
-	st_mst.cModifier = HOTKEYF_ALT;
+  st_mst.cModifier = HOTKEYF_ALT;
 
   for (int i = 0; i < count; i++) {
     ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
@@ -489,6 +493,44 @@ void DboxMain::SetUpInitialMenuStrings()
     }
   }
 
+  // Don't need Find Toolbar menu again here
+  pMainMenu->DestroyMenu();
+
+  // Do some System Tray menu items not on a menu!
+  pMainMenu->LoadMenu(IDR_POPTRAY2);
+
+  mst.uiParentID = 0;
+  ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
+  miinfo.cch = _MAX_PATH;
+  pMainMenu->GetMenuItemInfo(0, &miinfo, TRUE);
+  if (miinfo.wID >= 1) {
+    mst.name = _tcsdup(tcMenuString);
+    m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+    mst.iMenuPosition++;
+    free((void *)mst.name);
+    mst.name = NULL;
+  }
+
+  pos1 = app.FindMenuItem(pMainMenu, ID_TRAYMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = pMainMenu->GetSubMenu(pos1);
+  count = pMenu1->GetMenuItemCount();
+  mst.uiParentID = ID_TRAYMENU;
+
+  for (int i = 0; i < count; i++) {
+    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
+    miinfo.cch = _MAX_PATH;
+    pMenu1->GetMenuItemInfo(i, &miinfo, TRUE);
+    if (miinfo.wID >= 1) {
+      mst.name = _tcsdup(tcMenuString);
+      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
+      free((void *)mst.name);
+      mst.name = NULL;
+    }
+  }
+
   // No longer need any menus
   pMainMenu->DestroyMenu();
   delete pMainMenu;
@@ -556,7 +598,8 @@ void DboxMain::SetUpInitialMenuStrings()
       vShortcuts.erase(vShortcuts.begin() + i);
     }
     // User should not have these sub-entries in their config file
-    if (stxst.id == ID_MENUITEM_DELETEENTRY ||
+    if (stxst.id == ID_MENUITEM_VIEW ||
+        stxst.id == ID_MENUITEM_DELETEENTRY ||
         stxst.id == ID_MENUITEM_DELETEGROUP ||
         stxst.id == ID_MENUITEM_RENAMEENTRY ||
         stxst.id == ID_MENUITEM_RENAMEGROUP) {
@@ -569,7 +612,11 @@ void DboxMain::SetUpInitialMenuStrings()
     PWSprefs::GetInstance()->SetPrefShortcuts(vShortcuts);
 
   // Set up the shortcuts based on the main entry
-  // for Delete and Rename
+  // for View, Delete and Rename
+  iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDIT);
+  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEW);
+  iter_entry->second.SetKeyFlags(iter->second);
+
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
   iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEENTRY);
   iter_entry->second.SetKeyFlags(iter->second);

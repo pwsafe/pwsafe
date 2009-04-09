@@ -29,9 +29,6 @@ CSHCTHotKey::~CSHCTHotKey()
 
 BEGIN_MESSAGE_MAP(CSHCTHotKey, CHotKeyCtrl)
   ON_WM_KILLFOCUS()
-  ON_WM_KEYUP()
-  ON_WM_KEYDOWN()
-  ON_WM_CHAR()
 END_MESSAGE_MAP()
 
 // SHCTHotKey message handlers
@@ -46,37 +43,51 @@ void CSHCTHotKey::OnKillFocus(CWnd *pWnd)
   }
 }
 
-void CSHCTHotKey::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
 {
-  if (nChar != VK_DELETE && nChar != VK_SPACE && nChar != VK_ESCAPE)
-    CHotKeyCtrl::OnKeyDown(nChar, nRepCnt, nFlags);
-}
+  if (pMsg->message == WM_KEYDOWN || pMsg->message == WM_KEYUP) {
+    const UINT nChar = pMsg->wParam;
+    if ((nChar == VK_RETURN && 
+            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+        (nChar == VK_TAB &&
+            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+        (nChar == VK_NUMLOCK &&
+            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+        (nChar == VK_SCROLL &&
+            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+        (nChar == VK_CANCEL &&
+            (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
+        (nChar == VK_DELETE) ||
+        (nChar == VK_SPACE)  ||
+        (nChar == VK_BACK) ) {
+    if (pMsg->message == WM_KEYUP)
+      return TRUE;
 
-void CSHCTHotKey::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-  if (nChar == VK_DELETE || nChar == VK_SPACE || nChar == VK_ESCAPE) {
-    WORD wVK, wMod;
-    GetHotKey(wVK, wMod);
+      WORD wVK, wMod;
+      GetHotKey(wVK, wMod);
 
-    // No current key means don't want to use the current modifiers.
-    if (wVK != 0)
-      wMod = 0;
+      // Enter sets the Hotkey unless user did Ctrl+Enter, or
+      // Alt+Enter or Ctrl+Alt+Enter, in which is taken as a HotKey
+      if (nChar == VK_RETURN && 
+          ((wMod & HOTKEYF_CONTROL) != HOTKEYF_CONTROL &&
+           (wMod & HOTKEYF_ALT    ) != HOTKEYF_ALT    )) {
+        CHotKeyCtrl::PreTranslateMessage(pMsg);
+      }
 
-    // Set extended to make sure we get DEL and not NUM DECIMAL
-    if (nChar == VK_DELETE)
-      wMod |= HOTKEYF_EXT;
+      // No current key means don't want to use the current modifiers.
+      if (wVK != 0)
+        wMod = 0;
 
-    wVK = (WORD)nChar;
-    SetHotKey(wVK, wMod);
+      // Set extended to make sure we get DEL and not NUM DECIMAL
+      if (nChar == VK_DELETE)
+        wMod |= HOTKEYF_EXT;
 
-    m_pParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_SHORTCUTHOTKEY, EN_CHANGE), 0);
-  } else
-    CHotKeyCtrl::OnKeyUp(nChar, nRepCnt, nFlags);
+      wVK = (WORD)nChar;
+      SetHotKey(wVK, wMod);
 
-}
-
-void CSHCTHotKey::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-  if (nChar != ' ')
-    CHotKeyCtrl::OnChar(nChar, nRepCnt, nFlags);
+      m_pParent->SendMessage(WM_COMMAND, MAKEWPARAM(IDC_SHORTCUTHOTKEY, EN_CHANGE), 0);
+      return TRUE;
+    }
+  }
+  return CHotKeyCtrl::PreTranslateMessage(pMsg);
 }

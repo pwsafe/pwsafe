@@ -81,25 +81,25 @@ public:
 
   DROPEFFECT StartDragging(RECT* rClient)
   {
-    TRACE(_T("CStaticDataSource::StartDragging\n"));
+    //TRACE(_T("CStaticDataSource::StartDragging\n"));
 
     DelayRenderData(CF_UNICODETEXT);
     DelayRenderData(CF_TEXT);
 
-    TRACE(_T("CStaticDataSource::StartDragging - calling DoDragDrop\n"));
+    //TRACE(_T("CStaticDataSource::StartDragging - calling DoDragDrop\n"));
     DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY, rClient, m_pDropSource);
 
-    TRACE(_T("CStaticDataSource::StartDragging - returned from DoDragDrop, dropEffect=%d\n"),
-      dropEffect);
+    //TRACE(_T("CStaticDataSource::StartDragging - returned from DoDragDrop, dropEffect=%d\n"),
+    //  dropEffect);
 
     if (m_DDstatic.m_hgDataTXT != NULL) {
-      TRACE(_T("CStaticDataSource::StartDragging - Unlock/Free m_hgDataTXT\n"));
+      //TRACE(_T("CStaticDataSource::StartDragging - Unlock/Free m_hgDataTXT\n"));
       GlobalUnlock(m_DDstatic.m_hgDataTXT);
       GlobalFree(m_DDstatic.m_hgDataTXT);
       m_DDstatic.m_hgDataTXT = NULL;
     }
     if (m_DDstatic.m_hgDataUTXT != NULL) {
-      TRACE(_T("CStaticDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n"));
+      //TRACE(_T("CStaticDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n"));
       GlobalUnlock(m_DDstatic.m_hgDataUTXT);
       GlobalFree(m_DDstatic.m_hgDataUTXT);
       m_DDstatic.m_hgDataUTXT = NULL;
@@ -281,7 +281,7 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
 
     // Start dragging
     m_bDropped = false;
-    TRACE(_T("CDDStatic::OnMouseMove: call m_pDataSource->StartDragging\n"));
+    //TRACE(_T("CDDStatic::OnMouseMove: call m_pDataSource->StartDragging\n"));
     DROPEFFECT de = m_pDataSource->StartDragging(&rClient);
 
     if (de == DROPEFFECT_NONE) {
@@ -541,7 +541,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    TRACE(_T("CDDStatic::OnRenderGlobalData - Alloc global memory\n"));
+    //TRACE(_T("CDDStatic::OnRenderGlobalData - Alloc global memory\n"));
     *phgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(*phgData != NULL);
     if (*phgData == NULL)
