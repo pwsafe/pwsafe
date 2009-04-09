@@ -1835,11 +1835,14 @@ DboxMain::startLockCheckTimer(){
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 {
-  // Do NOT pass the ESC along if preference EscExits is false.
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
+    // If Find Toolbar visible, close it and do not pass the ESC along.
+    if (m_FindToolBar.IsVisible()) {
+      OnHideFindToolBar();
+      return TRUE;
+    }
+    // Do NOT pass the ESC along if preference EscExits is false.
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
-      if (m_FindToolBar.IsVisible())
-        OnHideFindToolBar();
       return TRUE;
     }
   }
@@ -2325,7 +2328,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   if (it == m_MapUICommandTable.end()) {
     // Don't have it - allow by default
-    TRACE(_T("m_UICommandTable is out of date - i18n issue?"));
+    TRACE(_T("Menu resource ID: %d not found in m_UICommandTable. Please investigate and correct.\n"), nID);
     return TRUE;
   }
 

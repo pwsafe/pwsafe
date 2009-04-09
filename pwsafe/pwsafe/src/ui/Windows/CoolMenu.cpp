@@ -438,7 +438,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
           } else
           if (iCtrlID >= ID_MENUITEM_TRAYDELETE1 &&
               iCtrlID <= ID_MENUITEM_TRAYDELETEMAX)
-            iCtrlID = ID_MENUITEM_DELETE;
+            iCtrlID = ID_MENUITEM_DELETEENTRY;
           else
           if (iCtrlID >= ID_MENUITEM_TRAYCOPYNOTES1 &&
               iCtrlID <= ID_MENUITEM_TRAYCOPYNOTESMAX)

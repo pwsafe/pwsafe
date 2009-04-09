@@ -752,6 +752,18 @@ void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
     IDtoImages[ID] = j;
     j++;
   }
+
+  // Delete Group has same image as Delete Entry
+  ID2ImageMapIter iter;
+  iter = IDtoImages.find(ID_MENUITEM_DELETEENTRY);
+  if (iter != IDtoImages.end()) {
+    IDtoImages[ID_MENUITEM_DELETEGROUP] = iter->second;
+  }
+  // View has same image as Edit
+  iter = IDtoImages.find(ID_MENUITEM_EDIT);
+  if (iter != IDtoImages.end()) {
+    IDtoImages[ID_MENUITEM_VIEW] = iter->second;
+  }
 }
 
 void CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,

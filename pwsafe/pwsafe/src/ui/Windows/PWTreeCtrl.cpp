@@ -119,14 +119,14 @@ public:
     DelayRenderData(CF_TEXT);
 
     m_tree.m_cfdropped = 0;
-    TRACE(_T("CPWTDataSource::StartDragging - calling DoDragDrop\n"));
+    //TRACE(_T("CPWTDataSource::StartDragging - calling DoDragDrop\n"));
     DROPEFFECT de = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
                                rClient, m_DropSource);
     // Cleanup:
     // Standard processing is for the recipient to do this!!!
     if (de == DROPEFFECT_NONE) {
       if (m_tree.m_hgDataALL != NULL) {
-        TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataALL\n"));
+        //TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataALL\n"));
         LPVOID lpData = GlobalLock(m_tree.m_hgDataALL);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataALL);
         if (lpData != NULL && memsize > 0) {
@@ -137,7 +137,7 @@ public:
         m_tree.m_hgDataALL = NULL;
       }
       if (m_tree.m_hgDataTXT != NULL) {
-        TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataTXT\n"));
+        //TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataTXT\n"));
         LPVOID lpData = GlobalLock(m_tree.m_hgDataTXT);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataTXT);
         if (lpData != NULL && memsize > 0) {
@@ -148,7 +148,7 @@ public:
         m_tree.m_hgDataTXT = NULL;
       }
       if (m_tree.m_hgDataUTXT != NULL) {
-        TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n"));
+        //TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n"));
         LPVOID lpData = GlobalLock(m_tree.m_hgDataUTXT);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataUTXT);
         if (lpData != NULL && memsize > 0) {
