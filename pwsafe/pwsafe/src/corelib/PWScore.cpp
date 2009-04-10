@@ -75,7 +75,7 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
-                     m_LockCount(0),
+                     m_LockCount(0), m_LockCount2(0),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_changed(false), m_DBPrefsChanged(false),
@@ -2518,11 +2518,11 @@ void PWScore::UnlockFile(const stringT &filename)
 bool PWScore::LockFile2(const stringT &filename, stringT &locker)
 {
   return pws_os::LockFile(filename, locker,
-                          m_lockFileHandle2, m_LockCount);
+                          m_lockFileHandle2, m_LockCount2);
 }
 
 void PWScore::UnlockFile2(const stringT &filename)
 {
   return pws_os::UnlockFile(filename, 
-                            m_lockFileHandle2, m_LockCount);
+                            m_lockFileHandle2, m_LockCount2);
 }
