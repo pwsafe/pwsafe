@@ -147,7 +147,8 @@ public:
   bool LockFile2(const stringT &filename, stringT &locker);
   void UnlockFile2(const stringT &filename);
   void MoveLock()
-  {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;}
+  {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;
+   m_LockCount = m_LockCount2; m_LockCount2 = 0;}
   
   void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor);
   void SetReadOnly(bool state) { m_IsReadOnly = state;}
@@ -272,6 +273,7 @@ private:
   HANDLE m_lockFileHandle;
   HANDLE m_lockFileHandle2;
   int m_LockCount;
+  int m_LockCount2;
   bool m_usedefuser;
   StringX m_defusername;
   stringT m_AppNameAndVersion;
