@@ -740,7 +740,8 @@ void DboxMain::OnOptions()
       for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
         iter++) {
         // User should not have these sub-entries in their config file
-        if (iter->first == ID_MENUITEM_VIEW || 
+        if (iter->first == ID_MENUITEM_GROUPENTER ||
+            iter->first == ID_MENUITEM_VIEW || 
             iter->first == ID_MENUITEM_DELETEENTRY ||
             iter->first == ID_MENUITEM_DELETEGROUP ||
             iter->first == ID_MENUITEM_RENAMEENTRY ||

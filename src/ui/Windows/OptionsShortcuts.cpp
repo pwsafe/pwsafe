@@ -116,7 +116,7 @@ BOOL COptionsShortcuts::OnInitDialog()
   // Now sort via Menu item position
   m_ShortcutLC.SortItems(CompareFunc, NULL);
 
-  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
+  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);
   m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 
   m_ShortcutLC.ModifyStyle(LVS_OWNERDRAWFIXED, 0, 0);
@@ -260,6 +260,8 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
 
   m_ShortcutLC.SetItemText(item, 1, str);
   m_ShortcutLC.RedrawItems(item, item);
+  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);
+  m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
   m_ShortcutLC.UpdateWindow();
   m_bChanged = true;
   return;

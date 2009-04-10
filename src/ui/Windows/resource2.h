@@ -169,9 +169,6 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_TOOLBUTTON_FINDREPORT        32308
 #define ID_TOOLBUTTON_FINDRESULTS       32309
 
-// Tray menu - also dummy menu for shortcuts 
-#define ID_TRAYMENU                     32350
-
 #define ID_MENUTOOLBAR_END              32499
 
 #define ID_FLC_CRITERIA                 32500

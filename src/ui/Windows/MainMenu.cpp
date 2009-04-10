@@ -117,6 +117,11 @@ void DboxMain::SetUpInitialMenuStrings()
   m_ExcludedMenuItems.push_back(ID_MENUITEM_EXIT);
   m_ExcludedMenuItems.push_back(ID_HELP);
 
+  // Plus Expand/Collapse group - function of TreeCtrl and is
+  // the Enter key, which cannot be assigned via the Shortcut
+  // Property Page
+  m_ExcludedMenuItems.push_back(ID_MENUITEM_GROUPENTER);
+
   // The following are only in the Menu to get the correct string
   // for the action.  Add here to stop them being in the Shortcut
   // Options CListCtrl.
@@ -493,44 +498,6 @@ void DboxMain::SetUpInitialMenuStrings()
     }
   }
 
-  // Don't need Find Toolbar menu again here
-  pMainMenu->DestroyMenu();
-
-  // Do some System Tray menu items not on a menu!
-  pMainMenu->LoadMenu(IDR_POPTRAY2);
-
-  mst.uiParentID = 0;
-  ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-  miinfo.cch = _MAX_PATH;
-  pMainMenu->GetMenuItemInfo(0, &miinfo, TRUE);
-  if (miinfo.wID >= 1) {
-    mst.name = _tcsdup(tcMenuString);
-    m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-    mst.iMenuPosition++;
-    free((void *)mst.name);
-    mst.name = NULL;
-  }
-
-  pos1 = app.FindMenuItem(pMainMenu, ID_TRAYMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = pMainMenu->GetSubMenu(pos1);
-  count = pMenu1->GetMenuItemCount();
-  mst.uiParentID = ID_TRAYMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu1->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
-
   // No longer need any menus
   pMainMenu->DestroyMenu();
   delete pMainMenu;
@@ -598,7 +565,8 @@ void DboxMain::SetUpInitialMenuStrings()
       vShortcuts.erase(vShortcuts.begin() + i);
     }
     // User should not have these sub-entries in their config file
-    if (stxst.id == ID_MENUITEM_VIEW ||
+    if (stxst.id == ID_MENUITEM_GROUPENTER ||
+        stxst.id == ID_MENUITEM_VIEW ||
         stxst.id == ID_MENUITEM_DELETEENTRY ||
         stxst.id == ID_MENUITEM_DELETEGROUP ||
         stxst.id == ID_MENUITEM_RENAMEENTRY ||
