@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-04-11 22:33+0300\n"
+"PO-Revision-Date: 2009-04-14 01:40+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -351,6 +351,10 @@ msgstr "&Применить"
 #. Resource IDs: (32114)
 msgid "&Apply current"
 msgstr "&Применить текущий"
+
+#. Resource IDs: (1356)
+msgid "&Autotype:"
+msgstr "&Автонабор:"
 
 #. Resource IDs: (332, 32072)
 msgid "&Browse to URL"
@@ -1965,10 +1969,6 @@ msgstr "Поле активно"
 msgid "Field present"
 msgstr "Поле присутствует"
 
-#. Resource IDs: (65535)
-msgid "Field:"
-msgstr "Поле:"
-
 #. Resource IDs: (328)
 msgid "File In Use"
 msgstr "Файл используется"
@@ -3486,9 +3486,9 @@ msgstr "Правило"
 msgid "Rule:"
 msgstr "Правило:"
 
-#. Resource IDs: (355)
-msgid "Run Cmd"
-msgstr "Выполнить"
+#. Resource IDs: (1357)
+msgid "Run Cmd:"
+msgstr "Выполнить:"
 
 #. Resource IDs: (354)
 msgid "Run Command"
@@ -3887,7 +3887,7 @@ msgstr "Табуляция"
 
 #. Resource IDs: (1110)
 msgid "Target last changed on:"
-msgstr "Целевой элемент изменялся:"
+msgstr "Целевой элемент изменен:"
 
 #. Resource IDs: (347)
 msgid "Text"
@@ -4169,6 +4169,10 @@ msgstr "Проблемы с нетекстовыми полями (напр. в�
 msgid "Trying to contact server..."
 msgstr "Соединение с сервером..."
 
+#. Resource IDs: (1355)
+msgid "U&RL:"
+msgstr "Сс&ылка:"
+
 #. Resource IDs: (327)
 msgid "URL"
 msgstr "Ссылка"
@@ -4378,7 +4382,7 @@ msgstr "Проверить"
 msgid "Validated %d %s\r\n\r\nImported %d %s"
 msgstr "Проверено %d %s\r\n\r\nИмпортировано %d %s"
 
-#. Resource IDs: (1322, 65535)
+#. Resource IDs: (1322)
 msgid "Value:"
 msgstr "Значение:"
 
