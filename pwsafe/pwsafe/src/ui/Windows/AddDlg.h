@@ -13,7 +13,6 @@
 #include "PWDialog.h"
 #include "ControlExtns.h"
 #include "corelib/ItemData.h"
-#include "afxwin.h"
 
 class DboxMain;
 
@@ -55,6 +54,9 @@ public:
   CEditExtn *m_pex_notesww;
   CEditExtn m_ex_username;
   CEditExtn m_ex_title;
+  CEditExtn m_ex_URL;
+  CEditExtn m_ex_autotype;
+  CEditExtn m_ex_runcommand;
   //}}AFX_DATA
   BOOL m_OverridePolicy;
   BOOL m_bWordWrap;
@@ -93,12 +95,6 @@ private:
   bool m_isExpanded;
   void ResizeDialog();
   static CString CS_SHOW, CS_HIDE;
-  // For selecting url/autotype/runCmd text fields
-  int m_last_TFC; // combobox index before selection changed
-  CComboBox m_txtFieldsList_combo;
-  // value of url/auto/runCmd field, depending on currently selected combobox
-  CEdit m_TextFieldEdit;
-  afx_msg void OnCbnSelchangeTxtFldsCombo();
 };
 //-----------------------------------------------------------------------------
 // Local variables:
