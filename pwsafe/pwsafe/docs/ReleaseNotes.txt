@@ -1,5 +1,5 @@
-Password Safe 3.17 Beta Release Notes - April 2009
-==================================================
+Password Safe 3.17 Beta2 Release Notes - April 2009
+===================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,32 +8,34 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.17 Beta
-=======================
-[2750090} Using SaveAs now unlocks original database on successful
+Bugs fixed in 3.17 Beta2
+========================
+[2750090] Using SaveAs now unlocks original database on successful
 completion of the save.
 [2689144] PWS no longer goes into a loop if the main menu has not yet
 been displayed when accessing the recent entries via the system tray icon.
 [2664703] Load base locale DLL if can't find a specific sub-locale version.
 [2657132] View Reports no longer causes application crash.
-[] Correct DragBar bitmaps for a New database.
+[] Correct DragBar bitmaps for a new database.
 
-Changes to Existing Features in 3.17 Beta
-=========================================
+Changes to Existing Features in 3.17 Beta2
+==========================================
 [] When doing a Browse to URL, the password of the current entry is
 copied to the clipboard. This is action is not performed if the Browse
-is invoked during Edit.
+is invoked from the Edit dialog box.
 [] Shortcut 'Ctrl+B' (Manage Menu->Backup) has been removed. Shortcut
-'Ctrl+R' (Manage Menu->Restore) has been re-assigned to the "Run Command".
+'Ctrl+R' (Manage Menu->Restore) has been re-assigned to the new "Run
+Command" function.
 
-New Features for 3.17 Beta
-==========================
-[1954166] New preference to word wrap the Notes field in Add &
-Edit. Also, ability to override this and showing the notes by
-right-click context menu.
+New Features for 3.17 Beta2
+===========================
+[1954166] New preference to control word wrap in the Notes field in
+Add & Edit. This can be overridden for a specific entry by
+right-clicking in the Notes field.
 [1533621, 1722481] There's a new, "Browse+" action that combines
 browsing to an entry's URL and entering the username, password,
-etc. in a single operation. See help for details.
+etc. in a single operation. Note that this does not work (yet) for all
+browsers and all sites. See help for details.
 [1405326] Add new field 'Run Command' to allow arbitrary commands,
 such as terminal emulators, etc. to be executed via Ctrl+R or from the
 Edit menu. See help for details. 
