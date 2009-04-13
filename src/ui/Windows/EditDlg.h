@@ -15,7 +15,6 @@
 #include "ExtThread.h"
 #include "corelib/ItemData.h"
 #include "corelib/PWHistory.h"
-#include "afxwin.h"
 
 class DboxMain;
 
@@ -61,7 +60,7 @@ protected:
   afx_msg void OnBnClickedOverridePolicy();
   afx_msg void OnBnClickedLaunch();
   afx_msg void OnStcClicked(UINT nId);
-  afx_msg void OnEnChangeTxtField();
+  afx_msg void OnEnChangeUrl();
   afx_msg void OnEnSetfocusNotes();
   afx_msg void OnEnKillfocusNotes();
   afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
@@ -111,6 +110,9 @@ private:
   CSecEditExtn m_ex_password2;
   CEditExtn m_ex_username;
   CEditExtn m_ex_title;
+  CEditExtn m_ex_URL;
+  CEditExtn m_ex_autotype;
+  CEditExtn m_ex_runcommand;
   CEditExtn *m_pex_notes;
   CEditExtn *m_pex_notesww;
 
@@ -119,6 +121,9 @@ private:
   CStaticExtn m_stc_username;
   CStaticExtn m_stc_password;
   CStaticExtn m_stc_notes;
+  CStaticExtn m_stc_URL;
+  CStaticExtn m_stc_autotype; 
+  CStaticExtn m_stc_runcommand;
 
   CButton m_MoreLessBtn;
   CButton m_ViewDependentsBtn;
@@ -129,18 +134,12 @@ private:
   CExtThread *m_thread; // worker thread
   static UINT ExternalEditorThread(LPVOID me);
   TCHAR m_szTempName[MAX_PATH + 1];
-  CToolTipCtrl *m_ToolTipCtrl;
+  CToolTipCtrl* m_ToolTipCtrl;
 
   BOOL m_OverridePolicy;
   BOOL m_bWordWrap;
   BOOL m_bShowNotes;
   bool m_bLaunchPlus;
-  afx_msg void OnCbnSelchangeTxtFldsCombo();
-  // For selecting url/autotype/runCmd text fields
-  int m_last_TFC; // combobox index before selection changed
-  CComboBox m_txtFieldsList_combo;
-  // value of url/auto/runCmd field, depending on currently selected combobox
-  CEdit m_TextFieldEdit;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

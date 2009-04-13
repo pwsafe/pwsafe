@@ -35,12 +35,11 @@ CString CAddDlg::CS_HIDE;
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
   : CPWDialog(CAddDlg::IDD, pParent),
-    m_password(_T("")), m_username(_T("")), m_title(_T("")),
-    m_group(_T("")), m_URL(_T("")), m_autotype(_T("")), m_runcommand(_T("")),
-    m_notes(_T("")),  m_notesww(_T("")),
-    m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)), m_XTimeInt(0),
-    m_isPwHidden(false), m_OverridePolicy(FALSE), m_bWordWrap(FALSE),
-    m_last_TFC(0)
+  m_password(_T("")), m_username(_T("")), m_title(_T("")),
+  m_group(_T("")), m_URL(_T("")), m_autotype(_T("")), m_runcommand(_T("")),
+  m_notes(_T("")),  m_notesww(_T("")),
+  m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)), m_XTimeInt(0),
+  m_isPwHidden(false), m_OverridePolicy(FALSE), m_bWordWrap(FALSE)
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
   m_isExpanded = PWSprefs::GetInstance()->
@@ -118,7 +117,7 @@ BOOL CAddDlg::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_MaxPWHistory);  // Default suggestion of max. to keep!
 
-  // Populate the group combo box
+  // Populate the combo box
   if (m_ex_group.GetCount() == 0) {
       std::vector<stringT> aryGroups;
       app.m_core.GetUniqueGroups(aryGroups);
@@ -126,13 +125,6 @@ BOOL CAddDlg::OnInitDialog()
         m_ex_group.AddString(aryGroups[igrp].c_str());
       }
   }
-
-  // Populate the Text Fields combobox
-  m_txtFieldsList_combo.AddString(CString(MAKEINTRESOURCE(IDS_URL)));
-  m_txtFieldsList_combo.AddString(CString(MAKEINTRESOURCE(IDS_AUTOTYPE)));
-  m_txtFieldsList_combo.AddString(CString(MAKEINTRESOURCE(IDS_RUNCMND)));
-  m_txtFieldsList_combo.SetCurSel(0);
-
   time(&m_tttCPMTime);
 
   m_ex_group.ChangeColour();
@@ -152,6 +144,9 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
 
    DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
+   DDX_Text(pDX, IDC_URL, (CString&)m_URL);
+   DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
+   DDX_Text(pDX, IDC_RUNCMD, (CString&)m_runcommand);
    DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
    DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
    DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 255);
@@ -163,16 +158,12 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Control(pDX, IDC_NOTESWW, *m_pex_notesww);
    DDX_Control(pDX, IDC_USERNAME, m_ex_username);
    DDX_Control(pDX, IDC_TITLE, m_ex_title);
+   DDX_Control(pDX, IDC_URL, m_ex_URL);
+   DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
+   DDX_Control(pDX, IDC_RUNCMD, m_ex_runcommand);
 
    GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
    DDX_Check(pDX, IDC_OVERRIDE_POLICY, m_OverridePolicy);
-   DDX_Control(pDX, IDC_TXT_FLDS_COMBO, m_txtFieldsList_combo);
-   DDX_Control(pDX, IDC_TXT_FLD, m_TextFieldEdit);
-   // If we're moving data from controls to members, set
-   // member corresponding to current combobox
-   if (pDX->m_bSaveAndValidate == TRUE) {
-     OnCbnSelchangeTxtFldsCombo(); // does a bit extra work, but who cares...
-   }
 }
 
 BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
@@ -186,7 +177,6 @@ BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
   ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
   ON_MESSAGE(WM_EDIT_WORDWRAP, OnWordWrap)
-  ON_CBN_SELCHANGE(IDC_TXT_FLDS_COMBO, &CAddDlg::OnCbnSelchangeTxtFldsCombo)
 END_MESSAGE_MAP()
 
 void CAddDlg::OnCancel() 
@@ -386,8 +376,12 @@ void CAddDlg::ResizeDialog()
   int TopHideableControl = IDC_TOP_HIDEABLE;
   int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
   int controls[] = {
-    IDC_TXT_FLDS_COMBO,
-    IDC_TXT_FLD,
+    IDC_URL,
+    IDC_STATIC_URL,
+    IDC_AUTOTYPE,
+    IDC_STATIC_AUTO,
+    IDC_RUNCMD,
+    IDC_STATIC_RUNCMD,
     IDC_SAVE_PWHIST,
     IDC_XTIME,
     IDC_XTIME_RECUR,
@@ -532,39 +526,4 @@ BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)
     return TRUE;
   }
   return CPWDialog::PreTranslateMessage(pMsg);
-}
-
-void CAddDlg::OnCbnSelchangeTxtFldsCombo()
-{
-  // get previous, possibly changed, text where it belongs
-  CString oldText;
-  m_TextFieldEdit.GetWindowText(oldText);
-  switch (m_last_TFC) {
-  case 0: // URL
-    m_URL = LPCTSTR(oldText);
-    break;
-  case 1: // AutoType
-    m_autotype = LPCTSTR(oldText);
-    break;
-  case 2: // RunCmd
-    m_runcommand = LPCTSTR(oldText);
-    break;
-  default:
-    ASSERT(0);
-  }
-  // now update text field to reflect new combobox value
-  m_last_TFC = m_txtFieldsList_combo.GetCurSel();
-  switch (m_last_TFC) {
-  case 0: // URL
-    m_TextFieldEdit.SetWindowText(m_URL);
-    break;
-  case 1: // AutoType
-    m_TextFieldEdit.SetWindowText(m_autotype);
-    break;
-  case 2: // RunCmd
-    m_TextFieldEdit.SetWindowText(m_runcommand);
-    break;
-  default:
-    ASSERT(0);
-  }
 }
