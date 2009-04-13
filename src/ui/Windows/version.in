@@ -23,7 +23,7 @@
 #define STRFILEVER     "3, 17, 0 , $WCREV$$WCMODS?+:$\0"
 #define STRPRODUCTVER  "3, 17, 0, $WCREV$$WCMODS?+:$\0"
 
-#define SPECIAL_BUILD _T("beta")
+#define SPECIAL_BUILD _T("beta2")
 
 // Only define SPECIAL_BUILD before here (in version.in) if needed!
 #ifndef SPECIAL_BUILD

@@ -172,6 +172,10 @@
 			<param name="Name" value="Run Command">
 			<param name="Local" value="html\run_command.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Shortcut Keys">
+			<param name="Local" value="html\Shortcut_Keys.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Program Credits">
