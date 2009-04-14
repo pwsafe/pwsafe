@@ -333,6 +333,10 @@ msgstr "应用(&A)"
 msgid "&Apply current"
 msgstr "应用当前(&A)"
 
+#. Resource IDs: (1356)
+msgid "&Autotype:"
+msgstr ""
+
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
 msgstr "浏览网址(&B)"
@@ -1853,10 +1857,6 @@ msgstr "活动字段"
 msgid "Field present"
 msgstr "当前字段"
 
-#. Resource IDs: (65535)
-msgid "Field:"
-msgstr "字段:"
-
 #. Resource IDs: (328)
 msgid "File In Use"
 msgstr "文件正在使用！"
@@ -2137,6 +2137,10 @@ msgstr "ID:32076:V C +R"
 
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar'
 msgid "ID:32108:V C +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32154; '&Options...'
+msgid "ID:32154:V C +M"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
@@ -3389,9 +3393,9 @@ msgstr "规则"
 msgid "Rule:"
 msgstr "规则:"
 
-#. Resource IDs: (355)
-msgid "Run Cmd"
-msgstr "运行命令"
+#. Resource IDs: (1357)
+msgid "Run Cmd:"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "Run Command"
@@ -4052,6 +4056,10 @@ msgstr "让人深感不安的一个无原文(例如：时间) 字段在档案“
 #. Resource IDs: (343)
 msgid "Trying to contact server..."
 msgstr "正在尝试联系服务器..."
+
+#. Resource IDs: (1355)
+msgid "U&RL:"
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "URL"
