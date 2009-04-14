@@ -29,6 +29,9 @@
 #include "GeneralMsgBox.h"
 #include "InfoDisplay.h"
 
+// Set Ctrl/Alt/Shift strings for menus
+#include "MenuShortcuts.h"
+
 // widget override?
 #include "SysColStatic.h"
 
@@ -880,6 +883,7 @@ BOOL DboxMain::OnInitDialog()
     m_LVHdrCtrl.SubclassWindow(pHeader->GetSafeHwnd());
   }
 
+  CMenuShortcut::InitStrings();
   ConfigureSystemMenu();
   InitPasswordSafe();
 

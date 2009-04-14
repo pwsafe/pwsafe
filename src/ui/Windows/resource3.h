@@ -519,3 +519,6 @@
 #define IDS_SHCT_WARNING1               5684
 #define IDS_SHCT_WARNING2               5685
 #define IDS_SHCT_WARNING3               5686
+#define IDS_CTRLP                       5687
+#define IDS_ALTP                        5688
+#define IDS_SHIFTP                      5689
