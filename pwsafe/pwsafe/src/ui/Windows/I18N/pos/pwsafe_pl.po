@@ -367,6 +367,10 @@ msgstr "&Zastosuj"
 msgid "&Apply current"
 msgstr ""
 
+#. Resource IDs: (1356)
+msgid "&Autotype:"
+msgstr ""
+
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
 msgstr "&Przejdź do adresu URL"
@@ -1928,10 +1932,6 @@ msgstr "Pole aktywne"
 msgid "Field present"
 msgstr "Pole istnieje"
 
-#. Resource IDs: (65535)
-msgid "Field:"
-msgstr ""
-
 #. Resource IDs: (328)
 #, fuzzy
 msgid "File In Use"
@@ -2222,6 +2222,10 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32154; '&Options...'
+msgid "ID:32154:V C +M"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
@@ -3507,7 +3511,7 @@ msgid "Rule:"
 msgstr "Reguła:"
 
 #. Resource IDs: (1357)
-msgid "Run Cmd"
+msgid "Run Cmd:"
 msgstr ""
 
 #. Resource IDs: (354)
@@ -4181,6 +4185,10 @@ msgstr "Problem z nietekstowym (np. czas) polem w rekordzie '%s - sprawdź dokł
 #. Resource IDs: (343)
 msgid "Trying to contact server..."
 msgstr "Próba połączenia z serwerem..."
+
+#. Resource IDs: (1355)
+msgid "U&RL:"
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "URL"

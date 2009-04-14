@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.17-beta2
+RELEASENAME = 3.17
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -39,6 +39,7 @@ LIGHT = $(WIXDIR)/light.exe
 I18N_DIR =./src/ui/Windows/I18N
 I18N_DLL_DIR = ./src/bin/release
 POT_FILE = $(I18N_DIR)/pwsafe.pot
+HELP_DIR = ./help
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
@@ -50,9 +51,9 @@ I18N_MANIFEST = help/pwsafeDE/pwsafeDE_DE.chm help/pwsafeZH/pwsafeZH_CN.chm \
 	              $(I18N_DLL_DIR)/pwsafeSV.dll $(I18N_DLL_DIR)/pwsafeZH.dll
 
 .PHONY: all release bin-release src-release installables signatures \
-	upload sha1sums msi nsis upload-latest updat-pos i18n save-map
+	upload sha1sums msi nsis upload-latest updat-pos i18n save-map help
 
-all: release installables signatures sha1sums
+all: help release installables signatures sha1sums
 
 upload: upload-latest
 	(cd $(RELEASEDIR); \
@@ -100,7 +101,7 @@ msi:
 	$(RM) pwsafe.wixobj
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 
-release: bin-release save-map src-release i18n
+release:  i18n bin-release save-map src-release
 
 bin-release:
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
@@ -137,6 +138,8 @@ update-pos:
 i18n:
 	$(MAKE) -C $(I18N_DIR) dlls
 
+help:
+	$(MAKE) -C $(HELP_DIR)
 
 # Local variables:
 # mode: Makefile

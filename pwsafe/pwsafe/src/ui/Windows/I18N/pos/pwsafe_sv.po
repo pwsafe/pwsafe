@@ -359,6 +359,10 @@ msgstr ""
 msgid "&Apply current"
 msgstr ""
 
+#. Resource IDs: (1356)
+msgid "&Autotype:"
+msgstr ""
+
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
 msgstr "&Gå till URL"
@@ -1888,10 +1892,6 @@ msgstr ""
 msgid "Field present"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Field:"
-msgstr ""
-
 #. Resource IDs: (328)
 msgid "File In Use"
 msgstr "Filen används"
@@ -2172,6 +2172,10 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32154; '&Options...'
+msgid "ID:32154:V C +M"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
@@ -3429,7 +3433,7 @@ msgid "Rule:"
 msgstr ""
 
 #. Resource IDs: (1357)
-msgid "Run Cmd"
+msgid "Run Cmd:"
 msgstr ""
 
 #. Resource IDs: (354)
@@ -4091,6 +4095,10 @@ msgstr ""
 #. Resource IDs: (343)
 msgid "Trying to contact server..."
 msgstr "Försöker kontakta servern..."
+
+#. Resource IDs: (1355)
+msgid "U&RL:"
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "URL"

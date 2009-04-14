@@ -1,5 +1,5 @@
-Password Safe 3.17 Beta2 Release Notes - April 2009
-===================================================
+Password Safe 3.17 Release Notes - April 2009
+=============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.17 Beta2
-========================
+Bugs fixed in 3.17
+==================
 [2750090] Using SaveAs now unlocks original database on successful
 completion of the save.
 [2689144] PWS no longer goes into a loop if the main menu has not yet
@@ -18,8 +18,8 @@ been displayed when accessing the recent entries via the system tray icon.
 [2657132] View Reports no longer causes application crash.
 [] Correct DragBar bitmaps for a new database.
 
-Changes to Existing Features in 3.17 Beta2
-==========================================
+Changes to Existing Features in 3.17
+====================================
 [] When doing a Browse to URL, the password of the current entry is
 copied to the clipboard. This is action is not performed if the Browse
 is invoked from the Edit dialog box.
@@ -27,8 +27,8 @@ is invoked from the Edit dialog box.
 'Ctrl+R' (Manage Menu->Restore) has been re-assigned to the new "Run
 Command" function.
 
-New Features for 3.17 Beta2
-===========================
+New Features for 3.17
+=====================
 [1954166] New preference to control word wrap in the Notes field in
 Add & Edit. This can be overridden for a specific entry by
 right-clicking in the Notes field.
