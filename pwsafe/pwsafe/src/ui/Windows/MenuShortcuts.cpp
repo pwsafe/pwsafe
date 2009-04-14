@@ -11,6 +11,18 @@
 #include "stdafx.h"
 
 #include "MenuShortcuts.h"
+#include "resource3.h"
+
+CString CMenuShortcut::CS_CTRLP(_T("Error"));
+CString CMenuShortcut::CS_ALTP(_T("Error"));
+CString CMenuShortcut::CS_SHIFTP(_T("Error"));
+
+void CMenuShortcut::InitStrings()
+{
+  CS_CTRLP.LoadString(IDS_CTRLP);
+  CS_ALTP.LoadString(IDS_ALTP);
+  CS_SHIFTP.LoadString(IDS_SHIFTP);
+}
 
 CString CMenuShortcut::FormatShortcut(MapMenuShortcutsIter iter, 
                                       MapKeyNameIDConstIter citer)
@@ -18,9 +30,9 @@ CString CMenuShortcut::FormatShortcut(MapMenuShortcutsIter iter,
   CString str(_T(""));
 
   str.Format(_T("%s%s%s%s"),
-      (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? _T("Ctrl+")  : _T(""),
-      (iter->second.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? _T("Alt+")   : _T(""),
-      (iter->second.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? _T("Shift+") : _T(""),
+      (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? CS_CTRLP : _T(""),
+      (iter->second.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? CS_ALTP : _T(""),
+      (iter->second.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? CS_SHIFTP : _T(""),
       citer->second);
 
   return str;
@@ -32,9 +44,9 @@ CString CMenuShortcut::FormatShortcut(st_MenuShortcut mst,
   CString str(_T(""));
 
   str.Format(_T("%s%s%s%s"),
-      (mst.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? _T("Ctrl+")  : _T(""),
-      (mst.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? _T("Alt+")   : _T(""),
-      (mst.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? _T("Shift+") : _T(""),
+      (mst.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? CS_CTRLP : _T(""),
+      (mst.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? CS_ALTP : _T(""),
+      (mst.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? CS_SHIFTP : _T(""),
       citer->second);
 
   return str;

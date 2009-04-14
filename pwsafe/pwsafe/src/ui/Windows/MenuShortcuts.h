@@ -114,11 +114,15 @@ public:
     return *this;
   }
 
-  static CString FormatShortcut(MapMenuShortcutsIter iter, 
-                         MapKeyNameIDConstIter citer);
+  static void InitStrings();
 
+  static CString FormatShortcut(MapMenuShortcutsIter iter, 
+                                MapKeyNameIDConstIter citer);
 
   static CString FormatShortcut(st_MenuShortcut mst, 
-                         MapKeyNameIDConstIter citer);
+                                MapKeyNameIDConstIter citer);
+
+private:
+  static CString CS_CTRLP, CS_ALTP, CS_SHIFTP;
 };
 
