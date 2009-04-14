@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-04-11 05:48+0100\n"
+"PO-Revision-Date: 2009-04-14 00:08+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -428,6 +428,10 @@ msgstr "&Übernehmen"
 #. Resource IDs: (32112)
 msgid "&Apply current"
 msgstr "Aktuelles anwenden"
+
+#. Resource IDs: (1356)
+msgid "&Autotype:"
+msgstr "&Autom. Eingabe"
 
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
@@ -1779,7 +1783,7 @@ msgstr "&Beenden"
 
 #. Resource IDs: (32021)
 msgid "E&xit\tCtrl+Q\\Alt+F4"
-msgstr "&Beenden\tCtrl+Q\\Alt+F4"
+msgstr "&Beenden\tStrg+Q\\Alt+F4"
 
 #. Resource IDs: (350)
 msgid "Easyvision characters"
@@ -2038,10 +2042,6 @@ msgstr "Feld aktiv"
 #. Resource IDs: (349)
 msgid "Field present"
 msgstr "Feld vorhanden"
-
-#. Resource IDs: (65535)
-msgid "Field:"
-msgstr "Feld:"
 
 #. Resource IDs: (328)
 msgid "File In Use"
@@ -3652,8 +3652,8 @@ msgid "Rule:"
 msgstr "Regel:"
 
 #. Resource IDs: (1357)
-msgid "Run Cmd"
-msgstr "Ausführen"
+msgid "Run Cmd:"
+msgstr "Ausführen:"
 
 #. Resource IDs: (354)
 msgid "Run Command"
@@ -4416,6 +4416,10 @@ msgstr "Problem mit einem Nicht-Text-Feld (z.B. Uhrzeit) im Datensatz '%s' - Bit
 #. Resource IDs: (343)
 msgid "Trying to contact server..."
 msgstr "Versuche einen Server zu kontaktieren..."
+
+#. Resource IDs: (1355)
+msgid "U&RL:"
+msgstr "U&RL:"
 
 #. Resource IDs: (327)
 msgid "URL"
@@ -5693,4 +5697,7 @@ msgstr "wird ablaufen"
 #, c-format
 msgid "within %d day(s)"
 msgstr "binnen %d Tag(en)"
+
+#~ msgid "Field:"
+#~ msgstr "Feld:"
 

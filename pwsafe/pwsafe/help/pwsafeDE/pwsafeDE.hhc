@@ -176,6 +176,10 @@
 			<param name="Name" value="Kommando ausführen">
 			<param name="Local" value="html\run_command.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Schnelltasten">
+			<param name="Local" value="html\shortcut_keys.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Programm Danksagung">
