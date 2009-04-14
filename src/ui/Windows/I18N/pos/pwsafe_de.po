@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-04-14 00:08+0100\n"
+"PO-Revision-Date: 2009-04-14 23:48+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -969,6 +969,10 @@ msgstr "Mehrere Instanzen erlauben (bedingt ein Wiederstart aller Instanzen)"
 msgid "Also used to replace periods in the Title field."
 msgstr "Auch benutzt um Punktzeichen in Feld Titel zu ersetzen."
 
+#. Resource IDs: (356)
+msgid "Alt+"
+msgstr "Alt+"
+
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
 msgstr "Alternativer Browser "
@@ -1559,6 +1563,10 @@ msgstr "Erstellt am:"
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "Kriterien"
+
+#. Resource IDs: (356)
+msgid "Ctrl+"
+msgstr "Strg+"
 
 #. Resource IDs: (2132)
 msgid "Cu&t"
@@ -3886,6 +3894,10 @@ msgstr "Beispiel&text setzen"
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Setze die maximale Anzahl an gespeicherten Passwörtern auf obigen Wert"
+
+#. Resource IDs: (356)
+msgid "Shift+"
+msgstr "Umsch+"
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
