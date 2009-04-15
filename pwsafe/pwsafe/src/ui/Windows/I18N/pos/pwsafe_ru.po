@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-04-14 01:40+0300\n"
+"PO-Revision-Date: 2009-04-15 20:44+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -882,6 +882,10 @@ msgstr "Разрешить одновременный запуск нескол�
 msgid "Also used to replace periods in the Title field."
 msgstr "Также используется при замене точек в заголовке"
 
+#. Resource IDs: (356)
+msgid "Alt+"
+msgstr "Alt+"
+
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
 msgstr "Альтернативный браузер "
@@ -1450,6 +1454,10 @@ msgstr "Создан:"
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "Критерий"
+
+#. Resource IDs: (356)
+msgid "Ctrl+"
+msgstr "Ctrl+"
 
 #. Resource IDs: (2132)
 msgid "Cu&t"
@@ -3727,6 +3735,10 @@ msgstr "Задать примерный &текст"
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Установить максимальное количество сохраняемых паролей равным указанному значению"
+
+#. Resource IDs: (356)
+msgid "Shift+"
+msgstr "Shift+"
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
