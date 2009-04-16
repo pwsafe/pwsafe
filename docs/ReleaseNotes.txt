@@ -14,6 +14,8 @@ Bugs fixed in 3.17
 completion of the save.
 [2689144] PWS no longer goes into a loop if the main menu has not yet
 been displayed when accessing the recent entries via the system tray icon.
+[2664657] Installer now prompts for elevation to administrator rights
+on Windows Vista.
 [2664703] Load base locale DLL if can't find a specific sub-locale version.
 [2657132] View Reports no longer causes application crash.
 [] Correct DragBar bitmaps for a new database.
