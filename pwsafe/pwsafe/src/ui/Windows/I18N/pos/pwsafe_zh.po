@@ -869,6 +869,10 @@ msgstr "允许多种实例(需要重启 Password Safe)"
 msgid "Also used to replace periods in the Title field."
 msgstr "也代替标题字段的句号"
 
+#. Resource IDs: (356)
+msgid "Alt+"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
 msgstr "替换浏览器"
@@ -1423,6 +1427,10 @@ msgstr "创建时间:"
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "规则"
+
+#. Resource IDs: (356)
+msgid "Ctrl+"
+msgstr ""
 
 #. Resource IDs: (2132)
 msgid "Cu&t"
@@ -3624,6 +3632,10 @@ msgstr "示例文字(&T)"
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "设定最大保存密码数量至上面的值"
+
+#. Resource IDs: (356)
+msgid "Shift+"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"

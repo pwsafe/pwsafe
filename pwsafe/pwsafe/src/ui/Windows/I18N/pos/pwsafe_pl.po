@@ -912,6 +912,10 @@ msgstr "Zezwalaj na wielokrotne otwarcie programu (wymaga restartu wszystkich in
 msgid "Also used to replace periods in the Title field."
 msgstr "Zastępuje także kropki w polu Nazwy."
 
+#. Resource IDs: (356)
+msgid "Alt+"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
 msgstr "Przeglądarka"
@@ -1484,6 +1488,10 @@ msgstr "Utworzono:"
 #. Resource IDs: (351)
 msgid "Criteria"
 msgstr "Kryteria"
+
+#. Resource IDs: (356)
+msgid "Ctrl+"
+msgstr ""
 
 #. Resource IDs: (2132)
 msgid "Cu&t"
@@ -3747,6 +3755,10 @@ msgstr "Ustaw Przykład & Tekst"
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Ustaw maksymalną liczbę zapisywanych haseł do powyższej wartości"
+
+#. Resource IDs: (356)
+msgid "Shift+"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
