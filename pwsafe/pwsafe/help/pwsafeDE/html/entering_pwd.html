@@ -27,14 +27,15 @@ Zus&auml;tzlich k&ouml;nnen noch folgende Felder verwendet werden (sichtbar nach
   <li><b>URL:</b> Die URL die sich auf diesen Eintrag bezieht. Wenn dieses Feld nicht leer ist, dann ist die "Gehe zu" Option aktiviert.
 Wenn kein Protokoll angegeben ist, wird "http://" angenommen (z.B. "www.foo.net" ist gleich mit "http://www.foo.net").
 Der nachstehende Hinweis beschreibt die Funktionsweise in allen Einzelheiten.</li>
+  <li><b>Los:</b> Vorausgesetzt das Feld URL ist nicht leer, bewirkt ein Dr&uuml;cken dieser Taste das der Browser zu der eingegebenen Adresse geht. Wenn Sie die Taste <i>Los</i> zusammen mit der Strg Taste dr&uuml;cken, wird nach dem &Ouml;ffnen des Browsers auch die Autom.Eingabe ausgef&uuml;hrt.</li>
 </ul>
 <hr>
 <ul>
-  <small><b>Hinweis:</b></br>
+  <small><b>Die nachfolgenden Hinweise beschreiben das Verhalten der URL-Eingabe genauer:</b></br>
   </small><li><small>Standardm&auml;&szlig;ig wird <b>Password Safe</b> den Browser verwenden, welchen Ihr PC in der Regel zum &ouml;ffnen von Internetseiten hernimmt. Wenn erw&uuml;nscht, k&ouml;nnen Sie einen <i>alternativen Browser</i> angeben durch Angabe von '[alt]' in eckigen Klammern vor der URL, z.B. "[alt]http://www.foo.net". Dies ist n&uuml;tzlich, wenn der Standardbrowser Firefox ist, und Sie w&uuml;nschen aber auf eine Seite zuzugreifen, die am besten mit dem Internet Explorer funktioniert. Den alternativen Browser k&ouml;nnen Sie konfigurieren im <b><a href="misc_tab.html#AltBrowser">Verwalten-&gt;Optionen-&gt;Verschiedenes</a></b> Fensterdialog.</small></li>
   <li><small>Sie k&ouml;nnen auch eine Emailadresse wie z.B. mailto:josef@irgendwo.com f&uuml;r die URL festlegen. In diesem Falle w&uuml;rde die Standardmailanwendung aufgerufen werden mit der "Gehe zu" Aktion.</small></li>
-  <li><small>Wenn '{alt}' in geschweiften Klammern vor der URL gesetzt wird, dann wird es 'wie-es-ist' dem alternativen Browser &uuml;bergeben, ohne dass 'http://' hinzugef&uuml;gt wird, wenn kein Protokoll definiert ist. Die ist dann sinnvoll, wenn der alternative Browser eine Anwendung mit Fernzugriff ist, z.B. ein SSH Client. [ssh] w&uuml;rde denselben Effekt haben.<br>
-    </small></li>
+  <li><small>Wenn '{alt}' in geschweiften Klammern vor der URL gesetzt wird, dann wird es 'wie-es-ist' dem alternativen Browser &uuml;bergeben, ohne dass 'http://' hinzugef&uuml;gt wird, wenn kein Protokoll definiert ist. Die ist dann sinnvoll, wenn der alternative Browser eine Anwendung mit Fernzugriff ist, z.B. ein SSH Client. [ssh] w&uuml;rde denselben Effekt haben.<br></small></li>
+  <li><small>Wenn '[autotype]' vor der URL steht, wird Password Safe nach der Anzeige und Aktivierung des Browsers die Funktion Autom.Eingabe ausf&uuml;hren. Wenn im Feld Autom.Eingabe nichts eingegeben ist, wird der standardm&auml;&szlig;ige Wert eingesetzt.<br></small></li>
 </ul>
 <hr>
 <ul>
