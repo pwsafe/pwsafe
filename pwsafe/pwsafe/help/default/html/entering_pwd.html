@@ -3,6 +3,10 @@
 <head>
 
 
+
+  
+
+  
   
 
   
@@ -12,11 +16,13 @@
   </script>
   
   
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
+
 
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
@@ -25,61 +31,83 @@
 
 
 
+
 <img style="width: 434px; height: 385px;" alt="Edit/View Entry" src="images%5Cedit_view_entry.jpg">
 <p>The following bits of information are associated with each
 password entry:</p>
 
 
+
 <ul>
+
 
 
 
   <li><b>Group</b>: A name for grouping (organizing) several related entries</li>
 
 
+
   <li><b>Title</b>: A friendly name for a password entry</li>
+
 
 
   <li><b>User name</b>: The user name</li>
 
 
+
   <li><b>Password</b>: The password</li>
+
 
 
   <li><b>Notes</b>: Free-form general notes field</li>
 
 
+
 </ul>
+
 
 
 In addition, the following fields may be used (viewable by pressing the
 "More&gt;&gt;" button on the Add or Edit dialog box):<br>
 
 
+
 <br>
+
 
 
 <img style="width: 447px; height: 308px;" alt="Extra fields" src="images/edit_view_entry_more.jpg"><br>
 
 
+
 <ul>
+
 
 
   <li><span style="font-weight: bold;">URL</span>:
 The URL associated
 with the entry. If this field is not empty, then the "Go" button
 is enabled. If the protocol is not specified, then "http://" is assumed
-(e.g., "www.foo.net" is the same as "http://www.foo.net"). The following notes describe the way URLs are handled in more detail.</li>
+(e.g., "www.foo.net" is the same as "http://www.foo.net").</li>
+
+
+  <li><span style="font-weight: bold;">Go</span>:
+    If the URL field is not empty, clicking on this button will&nbsp;browse to the specified URL. Clicking with the Control key
+    pressed (Ctrl+Click) will, in addition, invoke the autotype
+    function on the opened browser page.
+  </li>
 
 
 </ul>
+
 
 
 <hr style="width: 100%; height: 2px;">
 <ul>
 
 
-  <small><span style="font-weight: bold;">Notes:</span></small>
+
+  <small><span style="font-weight: bold;"> The following notes describe the way URLs are handled in more detail:</span></small>
 
   <li><small>By default, Password Safe will use the browser that your
 PC usually opens web pages with. If desired, you can specify an
@@ -91,9 +119,11 @@ configure an alternate browser, use the <a href="misc_tab.html#AltBrowser">Manag
     </small></li>
 
 
+
   <li><small>You can specify an e-mail address such as
 mailto:joe@somewhere.com as the URL, in which case your default mailing
 application will be invoked by the "Go" button.</small></li>
+
 
 
   <li><small>If '{alt}' is put before the URL, then it is passed
@@ -103,17 +133,21 @@ remote access application, e.g., an SSH client. [ssh] will achieve the
 same effect.</small></li>
 
 
+
   <li><small>If '[autotype]' is found before the URL, then after the
 URL has been displayed/actioned, Password Safe then perform the Autotype
 action using this entry's Autotype field, or the default value if not
 specified.</small></li>
 
 
+
 </ul>
+
 
 
 <hr style="width: 100%; height: 2px;">
 <ul>
+
 
 
   <li><span style="font-weight: bold;">Autotype</span>:
@@ -121,6 +155,7 @@ If this field
 is not empty, the its content replaces the default value for the
 autotype function. For more information, see the
 "<a href="autotype.html">Auto Type</a>" help topic.</li>
+
   <li><span style="font-weight: bold;">Run Cmd:</span> This field can
 be used to specify a command or program to be run via the 'Run Command'
 action (via the Edit menu, right-click popup menu or Ctrl-R). <span style="font-weight: bold;">Password Safe</span> is able to pass arguments to the command
@@ -128,10 +163,12 @@ such as the entry's username, password, etc., as described <a href="run_command.
 
 
 
+
   <li><span style="font-weight: bold;">Date/Time
 Information</span>:
 These read-only fields help keep track of when the selected entry was
 created, last accessed, etc.</li>
+
 
 
 
@@ -145,6 +182,7 @@ will notify you upon startup that the password should be changed,
 as well as marking the entry in a distinct color.<br>
 
 
+
 If you choose "In <span style="font-style: italic;">N </span>days", 
 then you may specify a "Recurring" expiration. This will cause a 
     <span style="font-weight: bold;">new </span>expiration
@@ -156,20 +194,27 @@ on January 7th, then the new expiration will be on January 12th (5 days
 after the password has been set).<br>
 
 
+
     <br>
 
 
+
+    
     <div style="text-align: center;"><img style="width: 324px; height: 186px;" alt="Entry Expiration Dialog Box" src="images/entry_expiry.jpg"></div>
 
 
+
   </li>
+
 
 
   <li>&nbsp;To cancel the expiration, click on
 "Clear".&nbsp;<span style="font-weight: bold;"></span></li>
 
 
+
 </ul>
+
 
 
 <div style="margin-left: 40px;"><span style="font-weight: bold;"></span>
@@ -181,28 +226,36 @@ have expired. It is the user's responsibility to change the password.</small>
 <hr style="width: 100%; height: 2px;"></div>
 
 
+
 <p>Only the title and password fields are required; all others
 are optional.</p>
+
 
 
 <div class="instr">
 <h3>Creating a New User Name and Password Entry</h3>
 
 
+
 <ol>
+
 
 
   <li>Open the database where you wish to place the new entry</li>
 
 
+
   <li>From the <b>Edit</b> menu, select <b>Add Entry</b></li>
+
 
 
   <li>Enter information into the <b>Edit/View Entry</b>
 dialog fields as necessary</li>
 
 
+
 </ol>
+
 
 
 <hr> <small><b>Note:</b>&nbsp;If a Group
@@ -212,8 +265,10 @@ If a name of a new group is added to the Group field, that Group will
 be created.</small><br>
 
 
+
 <hr>
 <h3>Generating and Editing Passwords</h3>
+
 
 
 <p>If you wish, you can enter your own password into the password
@@ -225,9 +280,11 @@ dialog. If you're unhappy with the result, you can click on <span style="font-we
 again, or edit the password manually.</p>
 
 
+
 <hr>
 <small><b>Notes:</b>
 <ul>
+
 
 
   <li>To define a&nbsp;password policy specifically for the current entry,
@@ -238,8 +295,10 @@ feature is useful for sites that have specific requirements for
 passwords that your default policy doesn't meet.</li>
 
 
+
   <li>To view an entry's non-default password policy, press on the 
 Shift key before clicking on the Generate button.</li>
+
 
 
   <li>If your password or user name contains a diacritical
@@ -247,6 +306,7 @@ character ("&acute;", "`", "^", "&uml;" or "~" for instance)
 followed by a character that can be modified by it on your keyboard
 ("a" for instance), the password must be entered as "[~][space]
 [space][a]" (This applies to non-US keyboards only).</li>
+
 
 
   <li>If you're using a "single sign-on" system that allows you to
@@ -257,12 +317,15 @@ related entries. This is called "aliasing" entries, and is explained in
 detail <a href="aliases.html">here</a>.</li>
 
 
+
 </ul>
+
 
 
 </small>
 <hr>
 <h3>Password History</h3>
+
 
 
 <p>It is possible to configure <b>Password Safe</b> to save the last few passwords of an entry. This can be done either when the entry is created,
@@ -271,19 +334,25 @@ recent passwords that are kept, click on the "Password History..." button. This 
 dialog box. The Edit dialog box indicates if previous passwords are kept for the entry, and if so, how many.</p>
 
 
+
 <h3>Editing Existing Entries</h3>
+
 
 
 <ol>
 
 
+
   <li>Select the password entry to edit from the list</li>
+
 
 
   <li>Select <b>Edit/View Entry</b> from the <b>Edit</b> menu</li>
 
 
+
 </ol>
+
 
 
 <hr>
@@ -291,52 +360,68 @@ dialog box. The Edit dialog box indicates if previous passwords are kept for the
 the password associated with the Entry click <b>Show Password</b>.</small><br>
 
 
+
 <hr>
 <h3>Add a New Group</h3>
+
 
 
 <ol>
 
 
+
   <li>Select <b>Add Group</b> from the <b>Edit</b> menu</li>
+
 
 
   <li>Enter the Group name</li>
 
 
+
 </ol>
+
 
 
 <h3>Edit a Group Name</h3>
 
 
+
 <ul>
+
 
 
   <li>Right-click on the group and select <b>Rename Group</b>
 from the drop down list</li>
 
 
+
 </ul>
+
 
 
 <hr> <small><b>Note:</b>&nbsp;Group names
 can be "nested," placing a group name within/under another group name.<br>
 
 
+
 </small>
 <hr><br>
+
 
 
  </div>
 
 
+
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 
-<br>
 
 <br>
+
+
+<br>
+
 
 
 
