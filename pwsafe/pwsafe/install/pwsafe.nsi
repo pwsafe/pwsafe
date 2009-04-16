@@ -135,7 +135,7 @@
   Var HOST_OS
 
   ;Request application privileges for Windows Vista
-  RequestExecutionLevel user
+  RequestExecutionLevel admin
 
 ;--------------------------------
 ; Pages
