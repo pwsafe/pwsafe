@@ -899,6 +899,10 @@ msgstr ""
 msgid "Also used to replace periods in the Title field."
 msgstr "Också som ersättning för punkter i titelfältet."
 
+#. Resource IDs: (356)
+msgid "Alt+"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
 msgstr "Växla Browser"
@@ -1457,6 +1461,10 @@ msgstr "Skapat den:"
 
 #. Resource IDs: (351)
 msgid "Criteria"
+msgstr ""
+
+#. Resource IDs: (356)
+msgid "Ctrl+"
 msgstr ""
 
 #. Resource IDs: (2132)
@@ -3663,6 +3671,10 @@ msgstr ""
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Välj ovanstående tal för max antal sparade lösenord"
+
+#. Resource IDs: (356)
+msgid "Shift+"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
