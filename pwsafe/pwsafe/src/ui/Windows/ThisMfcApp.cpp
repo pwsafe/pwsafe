@@ -83,7 +83,7 @@ ThisMfcApp::ThisMfcApp() :
 #endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
-  m_ghAccelTable(NULL)
+  m_ghAccelTable(NULL), m_pMainMenu(NULL)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -121,8 +121,10 @@ ThisMfcApp::~ThisMfcApp()
   delete m_TrayIcon;
   delete m_pMRU;
 
-  m_pMainMenu->DestroyMenu();
-  delete m_pMainMenu;
+  if (m_pMainMenu){
+    m_pMainMenu->DestroyMenu();
+    delete m_pMainMenu;
+  }
 
   // Alhough the system will do this automatically - I like to be clean!
   CloseHandle(m_hMutexOneInstance);
@@ -572,6 +574,12 @@ BOOL ThisMfcApp::InitInstance()
   // Command line parsing MUST be done before the first PWSprefs lookup!
   // (since user/host/config file may be overriden!)
   bool allDone = false;
+  
+  // Get application version information
+  GetApplicationVersionData();
+
+  LoadLocalizedStuff();
+
   bool parseVal = ParseCommandLine(dbox, allDone);
 
   if (allDone)
@@ -622,11 +630,6 @@ BOOL ThisMfcApp::InitInstance()
 
   // Needed for RichEditCtrls in Dialogs (i.e. not explicitly "created").
   AfxInitRichEdit2();
-
-  // Get application version information
-  GetApplicationVersionData();
-
-  LoadLocalizedStuff();
 
   // PWScore needs it to get into database header if/when saved
   m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor);
