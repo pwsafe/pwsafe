@@ -45,7 +45,7 @@ BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
 		docs/ChangeLog.txt src/bin/releasem/pwsafe.exe src/bin/releasem/pws_at.dll \
 		help/default/pwsafe.chm
-I18N_MANIFEST = help/pwsafeDE/pwsafeDE_DE.chm help/pwsafeZH/pwsafeZH_CN.chm \
+I18N_MANIFEST = help/pwsafeDE/pwsafeDE.chm help/pwsafeZH/pwsafeZH.chm \
 								$(I18N_DLL_DIR)/pwsafeDE.dll $(I18N_DLL_DIR)/pwsafeES.dll \
 								$(I18N_DLL_DIR)/pwsafePL.dll $(I18N_DLL_DIR)/pwsafeRU.dll \
 	              $(I18N_DLL_DIR)/pwsafeSV.dll $(I18N_DLL_DIR)/pwsafeZH.dll
