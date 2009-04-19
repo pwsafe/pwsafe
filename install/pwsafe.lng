@@ -29,7 +29,7 @@ LangString RESERVE_TITLE ${LANG_SIMPCHINESE} "Ñ¡Ôñ°²×°ÀàÐÍ"
 LangString RESERVE_TITLE ${LANG_SPANISH} "Choose Installation Type [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString RESERVE_TITLE ${LANG_SWEDISH} "Choose Installation Type [SV]"
+LangString RESERVE_TITLE ${LANG_SWEDISH} "Välj installationstyp"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString RESERVE_TITLE ${LANG_DUTCH} "Choose Installation Type [NL]"
@@ -58,7 +58,7 @@ LangString RESERVE_FIELD1 ${LANG_SIMPCHINESE} "³£¹æ (Ê¹ÓÃ×¢²á±í£¬ÊÊºÏ¼ÒÍ¥»ò¸öÈËÓ
 LangString RESERVE_FIELD1 ${LANG_SPANISH} "Regular (uses Registry, suitable for home or single user PC) [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString RESERVE_FIELD1 ${LANG_SWEDISH} "Regular (uses Registry, suitable for home or single user PC) [SV]"
+LangString RESERVE_FIELD1 ${LANG_SWEDISH} "Standard (använder Registret, passar hemanvändare eller fristående PC-installation)"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString RESERVE_FIELD1 ${LANG_DUTCH} "Regular (uses Registry, suitable for home or single user PC) [NL]"
@@ -87,7 +87,7 @@ LangString RESERVE_FIELD2 ${LANG_SIMPCHINESE} "ÂÌÉ« (ÊÊºÏ U ÅÌ£¬²»Ê¹ÓÃÖ÷»ú×¢²á±í
 LangString RESERVE_FIELD2 ${LANG_SPANISH} "Green (for Disk-on-Key; does not use host Registry) [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString RESERVE_FIELD2 ${LANG_SWEDISH} "Green (for Disk-on-Key; does not use host Registry) [SV]"
+LangString RESERVE_FIELD2 ${LANG_SWEDISH} "Grön (for Disk-on-Key; använder inte datorns register)"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString RESERVE_FIELD2 ${LANG_DUTCH} "Green (for Disk-on-Key; does not use host Registry) [NL]"
@@ -119,7 +119,7 @@ LangString PROGRAM_FILES ${LANG_SIMPCHINESE} "³ÌÐòÎÄ¼þ "
 LangString PROGRAM_FILES ${LANG_SPANISH} "Program Files [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString PROGRAM_FILES ${LANG_SWEDISH} "Program Files [SV]"
+LangString PROGRAM_FILES ${LANG_SWEDISH} "Programfiler"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString PROGRAM_FILES ${LANG_DUTCH} "Program Files [NL]"
@@ -151,7 +151,7 @@ LangString START_AUTO ${LANG_SIMPCHINESE}  "×Ô¶¯Æô¶¯"
 LangString START_AUTO ${LANG_SPANISH} "Start automatically [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString START_AUTO ${LANG_SWEDISH} "Start automatically [SV]"
+LangString START_AUTO ${LANG_SWEDISH} "Starta automatiskt"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString START_AUTO ${LANG_DUTCH} "Start automatically [NL]"
@@ -183,7 +183,7 @@ LangString START_SHOW ${LANG_SIMPCHINESE} "ÔÚ¿ªÊ¼²Ëµ¥ÏÔÊ¾"
 LangString START_SHOW ${LANG_SPANISH} "Show in start menu [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString START_SHOW ${LANG_SWEDISH} "Show in start menu [SV]"
+LangString START_SHOW ${LANG_SWEDISH} "Visa i startmenyn"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString START_SHOW ${LANG_DUTCH} "Show in start menu [NL]"
@@ -215,7 +215,7 @@ LangString START_SHORTCUT ${LANG_SIMPCHINESE} "°²×°×ÀÃæ¿ì½Ý·½Ê½"
 LangString START_SHORTCUT ${LANG_SPANISH} "Install desktop shortcut [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString START_SHORTCUT ${LANG_SWEDISH} "Install desktop shortcut [SV]"
+LangString START_SHORTCUT ${LANG_SWEDISH} "Installera genväg på skrivbordet"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString START_SHORTCUT ${LANG_DUTCH} "Install desktop shortcut [NL]"
@@ -248,7 +248,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_ProgramFiles ${LANG_SPANISH} "Installs the basic files necessary to run Password Safe. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_ProgramFiles ${LANG_SWEDISH} "Installs the basic files necessary to run Password Safe. [SV]"
+  LangString DESC_ProgramFiles ${LANG_SWEDISH} "Installera de basfiler som är nödvändiga för att köra Password Safe."
 !endif
 !ifdef LANGUAGE_DUTCH
   LangString DESC_ProgramFiles ${LANG_DUTCH} "Installs the basic files necessary to run Password Safe. [NL]"
@@ -277,7 +277,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_StartUp ${LANG_SPANISH} "Starts Password Safe as part of Windows boot/login. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_StartUp ${LANG_SWEDISH} "Starts Password Safe as part of Windows boot/login. [SV]"
+  LangString DESC_StartUp ${LANG_SWEDISH} "Startar Password Safe som en del av Windows bootning/inloggning."
 !endif
 !ifdef LANGUAGE_DUTCH
   LangString DESC_StartUp ${LANG_DUTCH} "Starts Password Safe as part of Windows boot/login. [NL]"
@@ -306,7 +306,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_StartMenu ${LANG_SPANISH} "Creates an entry in the start menu for Password Safe. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_StartMenu ${LANG_SWEDISH} "Creates an entry in the start menu for Password Safe. [SV]"
+  LangString DESC_StartMenu ${LANG_SWEDISH} "Skapar en post i startmenyn till Password Safe."
 !endif
 !ifdef LANGUAGE_DUTCH
   LangString DESC_StartMenu ${LANG_DUTCH} "Creates an entry in the start menu for Password Safe. [NL]"
@@ -367,7 +367,7 @@ LangString TEXT_GC_TITLE ${LANG_SIMPCHINESE} "°²×°ÀàÐÍ"
 LangString TEXT_GC_TITLE ${LANG_SPANISH} "Installation Type [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString TEXT_GC_TITLE ${LANG_SWEDISH} "Installation Type [SV]"
+LangString TEXT_GC_TITLE ${LANG_SWEDISH} "Installationstyp"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString TEXT_GC_TITLE ${LANG_DUTCH} "Installation Type [NL]"
@@ -396,7 +396,8 @@ LangString TEXT_GC_SUBTITLE ${LANG_SIMPCHINESE} "Ñ¡Ôñ³£¹æÊÊºÏÊ¹ÓÃÔÚ¸öÈË PC ÉÏ£¬Â
 LangString TEXT_GC_SUBTITLE ${LANG_SPANISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString TEXT_GC_SUBTITLE ${LANG_SWEDISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [SV]"
+LangString TEXT_GC_SUBTITLE ${LANG_SWEDISH} "Välj standard för användning på en =
+vanlig PC, Grön för portabel installation. Om du inte är säker är 'Standard' bra."
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString TEXT_GC_SUBTITLE ${LANG_DUTCH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [NL]"
@@ -425,7 +426,7 @@ LangString PSWINI_TITLE ${LANG_SIMPCHINESE} "Ñ¡Ôñ°²×°ÀàÐÍ"
 LangString PSWINI_TITLE ${LANG_SPANISH} "Choose Installation Type [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString PSWINI_TITLE ${LANG_SWEDISH} "Choose Installation Type [SV]"
+LangString PSWINI_TITLE ${LANG_SWEDISH} "Välj installationstyp"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString PSWINI_TITLE ${LANG_DUTCH} "Choose Installation Type [NL]"
@@ -454,7 +455,7 @@ LangString PSWINI_TEXT1 ${LANG_SIMPCHINESE} "³£¹æ (Ê¹ÓÃ×¢²á±í£¬ÊÊºÏ¼ÒÍ¥»ò¸öÈËÓÃ»
 LangString PSWINI_TEXT1 ${LANG_SPANISH} "Regular (uses Registry, suitable for home or single user PC) [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString PSWINI_TEXT1 ${LANG_SWEDISH} "Regular (uses Registry, suitable for home or single user PC) [SV]"
+LangString PSWINI_TEXT1 ${LANG_SWEDISH} "Vanlig(använder Registret, passar för hemanvändare eller fristående PC)"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString PSWINI_TEXT1 ${LANG_DUTCH} "Regular (uses Registry, suitable for home or single user PC) [NL]"
@@ -483,7 +484,7 @@ LangString PSWINI_TEXT2 ${LANG_SIMPCHINESE} "ÂÌÉ« (ÊÊºÏ U ÅÌ£¬²»Ê¹ÓÃÖ÷»ú×¢²á±í)"
 LangString PSWINI_TEXT2 ${LANG_SPANISH} "Green (for Disk-on-Key; does not use host Registry) [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString PSWINI_TEXT2 ${LANG_SWEDISH} "Green (for Disk-on-Key; does not use host Registry) [SV]"
+LangString PSWINI_TEXT2 ${LANG_SWEDISH} "Grön (för Disk-on-Key; använder inte värddatorns Register)"
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString PSWINI_TEXT2 ${LANG_DUTCH} "Green (for Disk-on-Key; does not use host Registry) [NL]"
