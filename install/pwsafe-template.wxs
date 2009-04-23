@@ -48,14 +48,17 @@
 	      Name='Password Safe PWSAFE_VERSION' ShortName='pwsafe'
 	      Icon='pwsafe.exe' IconIndex='0' Advertise='yes' />
 	    </File>
+	    <File Id='file6' Name='pws_at.dll' DiskId='1'
+	      Source='src\bin\release\pws_at.dll' Vital='yes'> 
+	    </File>
 	  </Component>
 	  <Component Id='SupportingFiles'
 	    Guid='2cb36029-a029-4f15-9838-4acacb823ce7'> 
-	    <File Id='file6' Name='pwsafe.xsd' DiskId='1'
+	    <File Id='file7' Name='pwsafe.xsd' DiskId='1'
 	    Source='xml\pwsafe.xsd' Vital='yes' />
-	    <File Id='file7' Name='pwsafe.xsl' DiskId='1'
+	    <File Id='file8' Name='pwsafe.xsl' DiskId='1'
 	    Source='xml\pwsafe.xsl' Vital='yes' />
-	    <File Id='file8' Name='pwsafe_filter.xsd' DiskId='1'
+	    <File Id='file9' Name='pwsafe_filter.xsd' DiskId='1'
 	    Source='xml\pwsafe_filter.xsd' Vital='yes' />
 	  </Component>
 	</Directory>
