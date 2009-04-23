@@ -60,7 +60,7 @@ Manage->Options->Shortcuts.
 
 Bugs fixed in 3.16.1
 ====================
-[2599930] All fields, buttons, checknoxes that could change an entry's
+[2599930] All fields, buttons, checkboxes that could change an entry's
 data are disabled if the database is in read-only mode.
 [] Lock on Windows Lock works again.
 [] Ctrl+F sets focus to the find string edit box.

@@ -335,7 +335,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_DesktopShortcut ${LANG_SPANISH} "Places a shortcut to Password Safe on your desktop. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_DesktopShortcut ${LANG_SWEDISH} "Places a shortcut to Password Safe on your desktop. [SV]"
+  LangString DESC_DesktopShortcut ${LANG_SWEDISH} "Placerar en genväg till ä Password Safe ditt skrivbord."
 !endif
 !ifdef LANGUAGE_DUTCH
   LangString DESC_DesktopShortcut ${LANG_DUTCH} "Places a shortcut to Password Safe on your desktop. [NL]"
