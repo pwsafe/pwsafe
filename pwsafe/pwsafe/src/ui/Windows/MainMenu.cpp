@@ -609,11 +609,13 @@ void DboxMain::SetUpInitialMenuStrings()
 
 void DboxMain::UpdateAccelTable()
 {
-  ACCEL *pacceltbl;
+  ACCEL *pacceltbl, *pxatbl;
   int numscs(0);
   CountShortcuts cntscs;
+
+  // Add on space of 3 reserved shortcuts
   numscs = std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
-                         cntscs);
+                         cntscs) + 3;
   if (numscs == 0) {
     // None!
     if (app.m_ghAccelTable != NULL) {
@@ -630,6 +632,20 @@ void DboxMain::UpdateAccelTable()
   // Populate it
   CreateAccelTable create_accel_table(pacceltbl);
   for_each(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), create_accel_table);
+
+  // Add back in the 3 reserved
+  pxatbl = pacceltbl + (numscs - 3);
+  pxatbl->fVirt = FVIRTKEY | FCONTROL;
+  pxatbl->key = (WORD)'Q';
+  pxatbl->cmd = (WORD)ID_MENUITEM_EXIT;
+  pxatbl++;
+  pxatbl->fVirt = FVIRTKEY | FALT;
+  pxatbl->key = (WORD)VK_F4;
+  pxatbl->cmd = (WORD)ID_MENUITEM_EXIT;
+  pxatbl++;
+  pxatbl->fVirt = FVIRTKEY;
+  pxatbl->key = (WORD)VK_F1;
+  pxatbl->cmd = (WORD)ID_HELP;
 
   // Replace current one
   DestroyAcceleratorTable(app.m_ghAccelTable);
