@@ -21,6 +21,7 @@
 #include "wx/treectrl.h"
 ////@end includes
 #include "corelib/ItemData.h"
+#include "corelib/PWScore.h"
 
 /*!
  * Forward declarations
@@ -49,13 +50,13 @@ class PWSTreeCtrl;
 
 class PWSTreeCtrl: public wxTreeCtrl
 {    
-  DECLARE_DYNAMIC_CLASS( PWSTreeCtrl )
+  DECLARE_CLASS( PWSTreeCtrl )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  PWSTreeCtrl();
-  PWSTreeCtrl(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
+  PWSTreeCtrl(PWScore &core);
+  PWSTreeCtrl(wxWindow* parent, PWScore &core, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
 
   /// Creation
   bool Create(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
@@ -71,9 +72,19 @@ public:
 
 ////@begin PWSTreeCtrl event handler declarations
 
+  /// wxEVT_COMMAND_TREE_DELETE_ITEM event handler for ID_TREECTRL
+  void OnTreectrlDeleteItem( wxTreeEvent& event );
+
+  /// wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
+  void OnTreectrlItemActivated( wxTreeEvent& event );
+
+  /// wxEVT_RIGHT_DOWN event handler for ID_TREECTRL
+  void OnRightDown( wxMouseEvent& event );
+
 ////@end PWSTreeCtrl event handler declarations
 
 ////@begin PWSTreeCtrl member function declarations
+
 ////@end PWSTreeCtrl member function declarations
   void Clear() {DeleteAllItems();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
@@ -83,6 +94,7 @@ public:
   wxTreeItemId AddGroup(const StringX &group);
 ////@begin PWSTreeCtrl member variables
 ////@end PWSTreeCtrl member variables
+  PWScore &m_core;
 };
 
 #endif
