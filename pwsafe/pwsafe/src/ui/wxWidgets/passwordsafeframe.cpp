@@ -252,7 +252,7 @@ void PasswordSafeFrame::CreateControls()
                         itemFrame1->GetClientSize(), wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
 
-  m_tree = new PWSTreeCtrl( itemFrame1, ID_TREECTRL, wxDefaultPosition,
+  m_tree = new PWSTreeCtrl( itemFrame1, m_core, ID_TREECTRL, wxDefaultPosition,
                             itemFrame1->GetClientSize(),
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
@@ -704,7 +704,7 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& event )
 ////@begin wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT in PasswordSafeFrame.
   // Before editing this code, remove the block markers.
   CAbout* window = new CAbout(this);
-  window->ShowModal();
+  int returnValue = window->ShowModal();
   window->Destroy();
 ////@end wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT in PasswordSafeFrame. 
 }

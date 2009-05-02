@@ -22,8 +22,9 @@
 
 ////@begin includes
 ////@end includes
-
+#include <wx/clipbrd.h>
 #include "PWStree.h"
+#include "corelib/PWSprefs.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -33,7 +34,7 @@
  * PWSTreeCtrl type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( PWSTreeCtrl, wxTreeCtrl )
+IMPLEMENT_CLASS( PWSTreeCtrl, wxTreeCtrl )
 
 
 /*!
@@ -43,21 +44,40 @@ IMPLEMENT_DYNAMIC_CLASS( PWSTreeCtrl, wxTreeCtrl )
 BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
 
 ////@begin PWSTreeCtrl event table entries
+  EVT_TREE_DELETE_ITEM( ID_TREECTRL, PWSTreeCtrl::OnTreectrlDeleteItem )
+  EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
+  EVT_RIGHT_DOWN( PWSTreeCtrl::OnRightDown )
+
 ////@end PWSTreeCtrl event table entries
 
 END_EVENT_TABLE()
 
 
+// helper class to match CItemData with wxTreeItemId
+class PWTreeItemData : public wxTreeItemData
+{
+public:
+  PWTreeItemData(const CItemData &item)
+  {
+    item.GetUUID(m_uuid);
+  }
+  const uuid_array_t &GetUUID() const {return m_uuid;}
+private:
+  uuid_array_t m_uuid;
+};
+
 /*!
  * PWSTreeCtrl constructors
  */
 
-PWSTreeCtrl::PWSTreeCtrl()
+PWSTreeCtrl::PWSTreeCtrl(PWScore &core) : m_core(core)
 {
   Init();
 }
 
-PWSTreeCtrl::PWSTreeCtrl(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+PWSTreeCtrl::PWSTreeCtrl(wxWindow* parent, PWScore &core,
+                         wxWindowID id, const wxPoint& pos,
+                         const wxSize& size, long style) : m_core(core)
 {
   Init();
   Create(parent, id, pos, size, style);
@@ -174,12 +194,101 @@ wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
 
 void PWSTreeCtrl::AddItem(const CItemData &item)
 {
+  wxTreeItemData *data = new PWTreeItemData(item);
   wxString title = item.GetTitle().c_str();
   wxString user = item.GetUser().c_str();
   wxString disp = title;
   wxTreeItemId gnode = AddGroup(item.GetGroup());
   if (!user.empty())
     disp += _T(" [") + user + _("]");
-  AppendItem(gnode, disp);
+  AppendItem(gnode, disp, -1, -1, data);
+}
+
+
+/*!
+ * wxEVT_COMMAND_TREE_DELETE_ITEM event handler for ID_TREECTRL
+ */
+
+void PWSTreeCtrl::OnTreectrlDeleteItem( wxTreeEvent& event )
+{
+////@begin wxEVT_COMMAND_TREE_DELETE_ITEM event handler for ID_TREECTRL in PWSTreeCtrl.
+  // Before editing this code, remove the block markers.
+  wxMessageBox(_("DeleteMe"));
+////@end wxEVT_COMMAND_TREE_DELETE_ITEM event handler for ID_TREECTRL in PWSTreeCtrl. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
+ */
+
+void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& event )
+{
+  wxTreeItemId id = event.GetItem();
+  if (!id.IsOk())
+    return;
+
+  PWTreeItemData *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(id));
+  // return if a group is selected
+  if (itemData == NULL)
+    return;
+
+  ItemListConstIter citer = m_core.Find(itemData->GetUUID());
+  if (citer == m_core.GetEntryEndIter())
+    return;
+  const CItemData &theItem = citer->second;
+
+  wxString action;
+  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)) {
+  case PWSprefs::DoubleClickAutoType:
+    action = _("AutoType");
+    //PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
+    break;
+  case PWSprefs::DoubleClickBrowse:
+    action = _("Browse");
+    //PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURL);
+    break;
+  case PWSprefs::DoubleClickCopyNotes:
+    action = _("CopyNotes");
+    //OnCopyNotes();
+    break;
+  case PWSprefs::DoubleClickCopyPassword:
+    //OnCopyPassword();
+    if (wxTheClipboard->Open()) {
+      wxTheClipboard->SetData(new wxTextDataObject(theItem.GetPassword().c_str()));
+      wxTheClipboard->Close();
+    }
+
+    break;
+  case PWSprefs::DoubleClickCopyUsername:
+    action = _("CopyUsername");
+    // OnCopyUsername();
+    break;
+	case PWSprefs::DoubleClickCopyPasswordMinimize:
+    action = _("CopyPasswordMinimize");
+	  //OnCopyPasswordMinimize();
+	  break;
+  case PWSprefs::DoubleClickViewEdit:
+    action = _("ViewEdit");
+    // PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
+    break;
+  default:
+    ASSERT(0);
+  }
+  if (!action.empty())
+    wxMessageBox(action);
+}
+
+
+/*!
+ * wxEVT_RIGHT_DOWN event handler for ID_TREECTRL
+ */
+
+void PWSTreeCtrl::OnRightDown( wxMouseEvent& event )
+{
+////@begin wxEVT_RIGHT_DOWN event handler for ID_TREECTRL in PWSTreeCtrl.
+  // Before editing this code, remove the block markers.
+  wxMessageBox(_("RightClick!"));
+////@end wxEVT_RIGHT_DOWN event handler for ID_TREECTRL in PWSTreeCtrl. 
 }
 
