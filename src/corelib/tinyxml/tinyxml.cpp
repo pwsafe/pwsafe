@@ -1447,11 +1447,14 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
     char *utf8buf = new char[utf8bufsize];
 #ifdef _WIN32
     utf8bufsize = pws_os::wcstombs(utf8buf, utf8bufsize, buffer.c_str(), buffer.length());
-#else
-    utf8bufsize = ::wcstombs(utf8buf, buffer.c_str(), buffer.length());
-#endif
     assert(utf8bufsize != 0);
     fwrite(utf8buf, utf8bufsize, 1, cfile);
+ #else
+    utf8bufsize = ::wcstombs(utf8buf, buffer.c_str(), buffer.length());
+    assert(utf8bufsize != 0);
+    fflush(cfile);
+    write(fileno(cfile), utf8buf, utf8bufsize); // because fwide() > 0
+ #endif
     delete[] utf8buf;
 #endif
 	}
