@@ -146,6 +146,24 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
   void OnExitClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
+  void OnEditClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
+  void OnClearclipboardClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
+  void OnCopypasswordClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
+  void OnCopyusernameClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
+  void OnCopynotesfldClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
+  void OnCopyurlClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
   void OnListViewClick( wxCommandEvent& event );
 
@@ -192,7 +210,8 @@ public:
   void ClearData();
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
-  };
+  const CItemData *GetSelectedEntry() const;
+};
 
 #endif
     // _PASSWORDSAFEFRAME_H_

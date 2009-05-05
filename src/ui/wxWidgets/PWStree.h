@@ -85,6 +85,7 @@ public:
 ////@end PWSTreeCtrl member function declarations
   void Clear() {DeleteAllItems();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
+  const CItemData *GetItem(const wxTreeItemId &id) const;
  private:
   bool ExistsInTree(wxTreeItemId node,
                     const StringX &s, wxTreeItemId &si);

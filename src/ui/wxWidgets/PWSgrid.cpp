@@ -193,6 +193,22 @@ void PWSGrid::OnCellRightClick( wxGridEvent& event )
 ////@end wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX in PWSGrid. 
 }
 
+const CItemData *PWSGrid::GetItem(int row) const
+{
+  if (row < 0 || row > const_cast<PWSGrid *>(this)->GetNumberRows())
+    return NULL;
+  RowUUIDMapT::const_iterator iter = m_row_map.find(row);
+  if (iter != m_row_map.end()) {
+    uuid_array_t uuid;
+    iter->second.GetUUID(uuid);
+    ItemListConstIter citer = m_core.Find(uuid);
+    if (citer == m_core.GetEntryEndIter())
+      return NULL;
+    return &citer->second;
+  }
+  return NULL;
+}
+
 
 /*!
  * wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
@@ -200,19 +216,7 @@ void PWSGrid::OnCellRightClick( wxGridEvent& event )
 
 void PWSGrid::OnLeftDClick( wxGridEvent& event )
 {
-  int row = event.GetRow();
-  if (row < 0)
-    return;
-  RowUUIDMapT::iterator iter = m_row_map.find(row);
-  if (iter != m_row_map.end()) {
-    uuid_array_t uuid;
-    iter->second.GetUUID(uuid);
-    ItemListConstIter citer = m_core.Find(uuid);
-    if (citer == m_core.GetEntryEndIter())
-      return;
-    const CItemData &theItem = citer->second;
-    PWSdca::Doit(theItem);
-  }
-
+  const CItemData *item = GetItem(event.GetRow());
+  if (item != NULL)
+    PWSdca::Doit(*item);
 }
-
