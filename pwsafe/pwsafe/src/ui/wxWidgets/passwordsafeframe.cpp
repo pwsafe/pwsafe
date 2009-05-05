@@ -66,6 +66,18 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
 
+  EVT_MENU( ID_EDIT, PasswordSafeFrame::OnEditClick )
+
+  EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
+
+  EVT_MENU( ID_COPYPASSWORD, PasswordSafeFrame::OnCopypasswordClick )
+
+  EVT_MENU( ID_COPYUSERNAME, PasswordSafeFrame::OnCopyusernameClick )
+
+  EVT_MENU( ID_COPYNOTESFLD, PasswordSafeFrame::OnCopynotesfldClick )
+
+  EVT_MENU( ID_COPYURL, PasswordSafeFrame::OnCopyurlClick )
+
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
 
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
@@ -457,8 +469,17 @@ void PasswordSafeFrame::ClearData()
   m_tree->DeleteAllItems();
 }
 
-
-
+const CItemData *PasswordSafeFrame::GetSelectedEntry() const
+{
+  if (m_tree->IsShown()) {
+    // get selected from tree
+    return m_tree->GetItem(m_tree->GetSelection());
+  } else if (m_grid->IsShown()) {
+    // get selected from grid
+    return m_grid->GetItem(m_grid->GetGridCursorRow());
+  }
+  return NULL;
+}
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN

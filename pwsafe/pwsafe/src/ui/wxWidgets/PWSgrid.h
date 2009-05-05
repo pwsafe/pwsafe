@@ -101,6 +101,8 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
+  const CItemData *GetItem(int row) const;
+  
 ////@begin PWSGrid member variables
 ////@end PWSGrid member variables
 

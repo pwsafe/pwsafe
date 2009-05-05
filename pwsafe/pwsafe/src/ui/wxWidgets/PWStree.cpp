@@ -202,7 +202,22 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   AppendItem(gnode, disp, -1, -1, data);
 }
 
+const CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
+{
+  if (!id.IsOk())
+    return NULL;
 
+  PWTreeItemData *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(id));
+  // return if a group is selected
+  if (itemData == NULL)
+    return NULL;
+
+  ItemListConstIter citer = m_core.Find(itemData->GetUUID());
+  if (citer == m_core.GetEntryEndIter())
+    return NULL;
+  return &citer->second;
+
+}
 
 
 /*!
@@ -211,21 +226,9 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
 
 void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& event )
 {
-  wxTreeItemId id = event.GetItem();
-  if (!id.IsOk())
-    return;
-
-  PWTreeItemData *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(id));
-  // return if a group is selected
-  if (itemData == NULL)
-    return;
-
-  ItemListConstIter citer = m_core.Find(itemData->GetUUID());
-  if (citer == m_core.GetEntryEndIter())
-    return;
-  const CItemData &theItem = citer->second;
-
-  PWSdca::Doit(theItem);
+  const CItemData *item = GetItem(event.GetItem());
+  if (item != NULL)
+    PWSdca::Doit(*item);
 }
 
 

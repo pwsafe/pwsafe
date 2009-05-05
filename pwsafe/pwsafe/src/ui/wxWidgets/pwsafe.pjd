@@ -1105,6 +1105,7 @@
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnEditClick|SHOWMESSAGE|Edit Entry placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_EDIT"</string>
                 <long name="proxy-Id value">10023</long>
                 <string name="proxy-Label">"Edit/&amp;View Entry...\tCtrl+Enter"</string>
@@ -1255,6 +1256,7 @@
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnClearclipboardClick|SHOWMESSAGE|Clear Clipboard placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_CLEARCLIPBOARD"</string>
                 <long name="proxy-Id value">10027</long>
                 <string name="proxy-Label">"C&amp;lear Clipboard\tCtrl+Del"</string>
@@ -1288,6 +1290,7 @@
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnCopypasswordClick|SHOWMESSAGE|copy password placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_COPYPASSWORD"</string>
                 <long name="proxy-Id value">10028</long>
                 <string name="proxy-Label">"&amp;Copy Password to Clipboard\tCtrl+C"</string>
@@ -1309,6 +1312,7 @@
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnCopyusernameClick|SHOWMESSAGE|copy username placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_COPYUSERNAME"</string>
                 <long name="proxy-Id value">10029</long>
                 <string name="proxy-Label">"Copy &amp;Username to Clipboard\tCtrl+U"</string>
@@ -1330,6 +1334,7 @@
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnCopynotesfldClick|SHOWMESSAGE|copy notes placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_COPYNOTESFLD"</string>
                 <long name="proxy-Id value">10030</long>
                 <string name="proxy-Label">"Copy &amp;Notes to Clipboard\tCtrl+G"</string>
@@ -1351,6 +1356,7 @@
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbMenuItemProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_MENU_SELECTED|OnCopyurlClick|SHOWMESSAGE|copy url placeholder|PasswordSafeFrame"</string>
                 <string name="proxy-Id name">"ID_COPYURL"</string>
                 <long name="proxy-Id value">10031</long>
                 <string name="proxy-Label">"Copy URL to Clipboard\tCtrl+Alt+L"</string>
