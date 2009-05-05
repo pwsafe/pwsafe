@@ -214,7 +214,8 @@ stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName,
 
       if (foundNode != NULL) {
         // get the text of the node (will be the value we requested)
-        csValue = stringT(foundNode->GetText());
+        const TCHAR *val = foundNode->GetText(); 
+        csValue = (val != NULL) ? val : _T("");
       }
     }
     delete[] pcsKeys;
