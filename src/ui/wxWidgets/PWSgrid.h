@@ -21,6 +21,9 @@
 #include "wx/grid.h"
 ////@end includes
 #include "corelib/ItemData.h"
+#include "corelib/PWScore.h"
+#include "corelib/UUIDGen.h"
+#include <map>
 
 /*!
  * Forward declarations
@@ -42,6 +45,8 @@ class PWSGrid;
 #define SYMBOL_PWSGRID_POSITION wxDefaultPosition
 ////@end control identifiers
 
+typedef std::map<int, CUUIDGen> RowUUIDMapT;
+
 
 /*!
  * PWSGrid class declaration
@@ -49,13 +54,15 @@ class PWSGrid;
 
 class PWSGrid: public wxGrid
 {    
-  DECLARE_DYNAMIC_CLASS( PWSGrid )
+  DECLARE_CLASS( PWSGrid )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  PWSGrid();
-  PWSGrid(wxWindow* parent, wxWindowID id = ID_LISTBOX, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxHSCROLL|wxVSCROLL);
+  PWSGrid(PWScore &core);
+  PWSGrid(wxWindow* parent, PWScore &core,
+          wxWindowID id = ID_LISTBOX, const wxPoint& pos = wxDefaultPosition,
+          const wxSize& size = wxDefaultSize, long style = wxHSCROLL|wxVSCROLL);
 
   /// Creation
   bool Create(wxWindow* parent, wxWindowID id = ID_LISTBOX, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxHSCROLL|wxVSCROLL);
@@ -68,14 +75,22 @@ public:
 
   /// Creates the controls and sizers
   void CreateControls();
-
+  
+  void Clear();
+  void AddItem(const CItemData &item, int row);
+  
 ////@begin PWSGrid event handler declarations
+
+  /// wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX
+  void OnCellRightClick( wxGridEvent& event );
+
+  /// wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
+  void OnLeftDClick( wxGridEvent& event );
 
 ////@end PWSGrid event handler declarations
 
 ////@begin PWSGrid member function declarations
-  void Clear();
-  void AddItem(const CItemData &item, int row);
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -88,6 +103,10 @@ public:
 
 ////@begin PWSGrid member variables
 ////@end PWSGrid member variables
+
+ private:
+  PWScore &m_core;
+  RowUUIDMapT m_row_map;
 };
 
 #endif

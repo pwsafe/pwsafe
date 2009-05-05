@@ -22,9 +22,8 @@
 
 ////@begin includes
 ////@end includes
-#include <wx/clipbrd.h>
 #include "PWStree.h"
-#include "corelib/PWSprefs.h"
+#include "pwsdca.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -44,7 +43,6 @@ IMPLEMENT_CLASS( PWSTreeCtrl, wxTreeCtrl )
 BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
 
 ////@begin PWSTreeCtrl event table entries
-  EVT_TREE_DELETE_ITEM( ID_TREECTRL, PWSTreeCtrl::OnTreectrlDeleteItem )
   EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
   EVT_RIGHT_DOWN( PWSTreeCtrl::OnRightDown )
 
@@ -205,17 +203,6 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
 }
 
 
-/*!
- * wxEVT_COMMAND_TREE_DELETE_ITEM event handler for ID_TREECTRL
- */
-
-void PWSTreeCtrl::OnTreectrlDeleteItem( wxTreeEvent& event )
-{
-////@begin wxEVT_COMMAND_TREE_DELETE_ITEM event handler for ID_TREECTRL in PWSTreeCtrl.
-  // Before editing this code, remove the block markers.
-  wxMessageBox(_("DeleteMe"));
-////@end wxEVT_COMMAND_TREE_DELETE_ITEM event handler for ID_TREECTRL in PWSTreeCtrl. 
-}
 
 
 /*!
@@ -238,45 +225,7 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& event )
     return;
   const CItemData &theItem = citer->second;
 
-  wxString action;
-  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)) {
-  case PWSprefs::DoubleClickAutoType:
-    action = _("AutoType");
-    //PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
-    break;
-  case PWSprefs::DoubleClickBrowse:
-    action = _("Browse");
-    //PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURL);
-    break;
-  case PWSprefs::DoubleClickCopyNotes:
-    action = _("CopyNotes");
-    //OnCopyNotes();
-    break;
-  case PWSprefs::DoubleClickCopyPassword:
-    //OnCopyPassword();
-    if (wxTheClipboard->Open()) {
-      wxTheClipboard->SetData(new wxTextDataObject(theItem.GetPassword().c_str()));
-      wxTheClipboard->Close();
-    }
-
-    break;
-  case PWSprefs::DoubleClickCopyUsername:
-    action = _("CopyUsername");
-    // OnCopyUsername();
-    break;
-	case PWSprefs::DoubleClickCopyPasswordMinimize:
-    action = _("CopyPasswordMinimize");
-	  //OnCopyPasswordMinimize();
-	  break;
-  case PWSprefs::DoubleClickViewEdit:
-    action = _("ViewEdit");
-    // PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
-    break;
-  default:
-    ASSERT(0);
-  }
-  if (!action.empty())
-    wxMessageBox(action);
+  PWSdca::Doit(theItem);
 }
 
 
