@@ -2138,6 +2138,8 @@
               <long name="title-mode">0</long>
               <long name="locked">0</long>
               <string name="proxy-type">"wbGridProxy"</string>
+              <string name="event-handler-0">"wxEVT_GRID_CELL_RIGHT_CLICK|OnCellRightClick|SHOWMESSAGE|I'm right-clicked!|PWSGrid"</string>
+              <string name="event-handler-1">"wxEVT_GRID_CELL_LEFT_DCLICK|OnLeftDClick|SHOWMESSAGE|I'm clicked!|PWSGrid"</string>
               <string name="proxy-Id name">"ID_LISTBOX"</string>
               <long name="proxy-Id value">10060</long>
               <string name="proxy-Name">""</string>
@@ -2214,9 +2216,8 @@
               <long name="title-mode">0</long>
               <long name="locked">0</long>
               <string name="proxy-type">"wbTreeCtrlProxy"</string>
-              <string name="event-handler-0">"wxEVT_COMMAND_TREE_DELETE_ITEM|OnTreectrlDeleteItem|SHOWMESSAGE|DeleteMe|PWSTreeCtrl"</string>
-              <string name="event-handler-1">"wxEVT_COMMAND_TREE_ITEM_ACTIVATED|OnTreectrlItemActivated|SHOWMESSAGE|I'm activated!|PWSTreeCtrl"</string>
-              <string name="event-handler-2">"wxEVT_RIGHT_DOWN|OnRightDown|SHOWMESSAGE|RightClick!|PWSTreeCtrl"</string>
+              <string name="event-handler-0">"wxEVT_COMMAND_TREE_ITEM_ACTIVATED|OnTreectrlItemActivated|SHOWMESSAGE|I'm activated!|PWSTreeCtrl"</string>
+              <string name="event-handler-1">"wxEVT_RIGHT_DOWN|OnRightDown|SHOWMESSAGE|RightClick!|PWSTreeCtrl"</string>
               <string name="proxy-Id name">"ID_TREECTRL"</string>
               <long name="proxy-Id value">10061</long>
               <string name="proxy-Name">""</string>

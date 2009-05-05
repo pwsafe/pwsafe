@@ -248,7 +248,7 @@ void PasswordSafeFrame::CreateControls()
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
   itemFrame1->SetSizer(itemBoxSizer83);
 
-  m_grid = new PWSGrid( itemFrame1, ID_LISTBOX, wxDefaultPosition,
+  m_grid = new PWSGrid( itemFrame1, m_core, ID_LISTBOX, wxDefaultPosition,
                         itemFrame1->GetClientSize(), wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
 
@@ -681,9 +681,6 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
 {
-  // Save Application related preferences
-  PWSprefs::GetInstance()->SaveApplicationPreferences();
-
   if (event.CanVeto()) {
     int rc = SaveIfChanged();
     if (rc == PWScore::USER_CANCEL) {

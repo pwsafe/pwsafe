@@ -23,7 +23,9 @@
 ////@begin includes
 ////@end includes
 
+#include <utility> // for make_pair
 #include "PWSgrid.h"
+#include "pwsdca.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -33,7 +35,7 @@
  * PWSGrid type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( PWSGrid, wxGrid )
+IMPLEMENT_CLASS( PWSGrid, wxGrid )
 
 
 /*!
@@ -43,6 +45,9 @@ IMPLEMENT_DYNAMIC_CLASS( PWSGrid, wxGrid )
 BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
 
 ////@begin PWSGrid event table entries
+  EVT_GRID_CELL_RIGHT_CLICK( PWSGrid::OnCellRightClick )
+  EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
+
 ////@end PWSGrid event table entries
 
 END_EVENT_TABLE()
@@ -52,12 +57,14 @@ END_EVENT_TABLE()
  * PWSGrid constructors
  */
 
-PWSGrid::PWSGrid()
+PWSGrid::PWSGrid(PWScore &core) : m_core(core)
 {
   Init();
 }
 
-PWSGrid::PWSGrid(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
+PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
+                 wxWindowID id, const wxPoint& pos,
+                 const wxSize& size, long style) : m_core(core)
 {
   Init();
   Create(parent, id, pos, size, style);
@@ -168,4 +175,44 @@ void PWSGrid::AddItem(const CItemData &item, int row)
   wxString user = item.GetUser().c_str();
   SetCellValue(row, 0, title);
   SetCellValue(row, 1, user);
+  uuid_array_t uuid;
+  item.GetUUID(uuid);
+  m_row_map.insert(std::make_pair(row, CUUIDGen(uuid)));
 }
+
+
+/*!
+ * wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX
+ */
+
+void PWSGrid::OnCellRightClick( wxGridEvent& event )
+{
+////@begin wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX in PWSGrid.
+  // Before editing this code, remove the block markers.
+  wxMessageBox(_("I'm right-clicked!"));
+////@end wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX in PWSGrid. 
+}
+
+
+/*!
+ * wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
+ */
+
+void PWSGrid::OnLeftDClick( wxGridEvent& event )
+{
+  int row = event.GetRow();
+  if (row < 0)
+    return;
+  RowUUIDMapT::iterator iter = m_row_map.find(row);
+  if (iter != m_row_map.end()) {
+    uuid_array_t uuid;
+    iter->second.GetUUID(uuid);
+    ItemListConstIter citer = m_core.Find(uuid);
+    if (citer == m_core.GetEntryEndIter())
+      return;
+    const CItemData &theItem = citer->second;
+    PWSdca::Doit(theItem);
+  }
+
+}
+

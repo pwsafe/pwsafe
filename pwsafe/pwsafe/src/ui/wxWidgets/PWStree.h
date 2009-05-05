@@ -72,9 +72,6 @@ public:
 
 ////@begin PWSTreeCtrl event handler declarations
 
-  /// wxEVT_COMMAND_TREE_DELETE_ITEM event handler for ID_TREECTRL
-  void OnTreectrlDeleteItem( wxTreeEvent& event );
-
   /// wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
   void OnTreectrlItemActivated( wxTreeEvent& event );
 
