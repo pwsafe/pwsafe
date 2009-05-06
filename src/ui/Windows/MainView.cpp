@@ -1643,13 +1643,13 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent )
         !(m_core.IsChanged() || m_bTSUpdated ||
         m_core.WasDisplayStatusChanged()) ||
         Save() == PWScore::SUCCESS) {
-      TRACE("locking database\n");
-      if (IsWindowVisible()){
-        ShowWindow(SW_MINIMIZE);
-      }
+      TRACE(_T("locking database\n"));
+      ShowWindow(SW_MINIMIZE);
       ClearData(false);
       if (nIDEvent == TIMER_CHECKLOCK)
         KillTimer(TIMER_CHECKLOCK);
+    } else {
+      TRACE(_T("Timer lock kicked in, but not minimizing.\n"));
     }
   }
 }
