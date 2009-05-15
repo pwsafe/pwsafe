@@ -42,7 +42,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
   m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
   m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
-  m_ToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
+  m_pToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
 {
   //{{AFX_DATA_INIT(CAdvancedDlg)
   //}}AFX_DATA_INIT
@@ -62,7 +62,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
 CAdvancedDlg::~CAdvancedDlg()
 {
   if (m_iIndex != ADV_MERGE)
-    delete m_ToolTipCtrl;
+    delete m_pToolTipCtrl;
 }
 
 BOOL CAdvancedDlg::OnInitDialog()
@@ -315,30 +315,30 @@ BOOL CAdvancedDlg::OnInitDialog()
   // Tooltips
   EnableToolTips();
 
-  m_ToolTipCtrl = new CToolTipCtrl;
-  if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE("Unable To create Advanced Dialog ToolTip\n");
     return TRUE;
   }
 
   // Activate the tooltip control.
-  m_ToolTipCtrl->Activate(TRUE);
-  m_ToolTipCtrl->SetMaxTipWidth(300);
+  m_pToolTipCtrl->Activate(TRUE);
+  m_pToolTipCtrl->SetMaxTipWidth(300);
   // Quadruple the time to allow reading by user
-  int iTime = m_ToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_ToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
+  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
   // Set the tooltip
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
   CString cs_ToolTip;
   cs_ToolTip.LoadString(IDS_ADVANCED_SELECTSOME);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_SELECTSOME), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_SELECTSOME), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_ADVANCED_SELECTALL);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_SELECTALL), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_SELECTALL), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTSOME);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTSOME), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTSOME), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
 
   return TRUE;
 }
@@ -615,8 +615,8 @@ void CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
 // tooltip control for processing.
 BOOL CAdvancedDlg::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_ToolTipCtrl != NULL)
-    m_ToolTipCtrl->RelayEvent(pMsg);
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
 
   return CPWDialog::PreTranslateMessage(pMsg);
 }

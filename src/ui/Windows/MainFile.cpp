@@ -940,7 +940,7 @@ void DboxMain::OnExportText()
   INT_PTR rc = et.DoModal();
   if (rc == IDOK) {
     StringX newfile;
-    StringX pw(et.m_exportTextPassword);
+    StringX pw(et.GetPasskey());
     if (m_core.CheckPassword(cs_temp, pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
@@ -1006,7 +1006,7 @@ void DboxMain::OnExportXML()
   INT_PTR rc = eXML.DoModal();
   if (rc == IDOK) {
     StringX newfile;
-    StringX pw(eXML.m_ExportXMLPassword);
+    StringX pw(eXML.GetPasskey());
     if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box

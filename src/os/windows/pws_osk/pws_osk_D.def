@@ -1,0 +1,8 @@
+; pws_osk_D.def : Declares the module parameters for the Debug DLL.
+
+LIBRARY      "pws_osk_D"
+
+EXPORTS
+  OSK_GetKeyboardData
+  OSK_ListKeyboards
+  OSK_GetVersion

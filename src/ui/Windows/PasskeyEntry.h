@@ -25,6 +25,9 @@
 * mumble sigh)...
 */
 
+class DboxMain;
+class CVKeyBoardDlg;
+
 class CPasskeyEntry
   : public CPWDialog
 {
@@ -47,19 +50,21 @@ public:
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
   int m_treatwhitespaceasempty;
+  HINSTANCE m_OSK_module;
 
 private:
   // Dialog Data
   enum { IDD_BASIC = IDD_PASSKEYENTRY };
   enum { IDD_WEXIT = IDD_PASSKEYENTRY_WITHEXIT };
-  //{{AFX_DATA(CPasskeyEntry)
   enum { IDD = IDD_PASSKEYENTRY_FIRST };
+
+  //{{AFX_DATA(CPasskeyEntry)
 #if !defined(POCKET_PC)
   CSysColStatic m_ctlLogo;
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
 #endif
-  CSecEditExtn m_ctlPasskey;
+  CSecEditExtn *m_pctlPasskey;
   CSecString m_passkey;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;
@@ -97,19 +102,22 @@ protected:
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnPasskeyKillfocus();
 #endif
-  //}}AFX_MSG
   afx_msg void OnCreateDb();
-
-  DECLARE_MESSAGE_MAP()
-
-public:
   afx_msg void OnComboEditChange();
   afx_msg void OnComboSelChange();
   afx_msg void OnOpenFileBrowser();
+  afx_msg void OnVirtualKeyboard();
+  afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
 
 private:
+  DboxMain *m_pDbx;
   void SetHeight(const int num);
   void UpdateRO();
+  void ProcessPhrase();
+  CVKeyBoardDlg *m_pVKeyBoardDlg;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

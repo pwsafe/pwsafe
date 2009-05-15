@@ -46,6 +46,7 @@
 #include "MFCMessages.h"
 
 #include "os/windows/pws_autotype/pws_at.h"
+#include "os/dir.h"
 
 #include "Shlwapi.h"
 
@@ -83,7 +84,7 @@ ThisMfcApp::ThisMfcApp() :
 #endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
-  m_ghAccelTable(NULL), m_pMainMenu(NULL)
+  m_ghAccelTable(NULL), m_pMainMenu(NULL), m_bOSK_module(false)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -384,6 +385,48 @@ void ThisMfcApp::LoadLocalizedStuff()
         PWSUtil::GetTimeStamp(), cs_HelpPath);
 
   m_csHelpFile = cs_HelpPath;
+
+  // Support On Sreen Keyboards for Passphrase Entry, New DBs and Change Passphrase
+  // Try to load DLL
+  stringT dll_loc = pws_os::getexecdir();
+#if defined( _DEBUG ) || defined( DEBUG )
+  dll_loc += _T("pws_osk_D.dll");
+#else
+  dll_loc += _T("pws_osk.dll");
+#endif
+  HINSTANCE OSK_module = LoadLibrary(dll_loc.c_str());
+  if (OSK_module == NULL) {
+    TRACE(_T("ThisMfcApp::ThisMfcApp - Unable to load OSK DLL. OSK not available.\n"));
+  } else {
+    TRACE(_T("ThisMfcApp::ThisMfcApp - OSK DLL loaded OK.\n"));
+
+    LP_OSK_GetKeyboardData pGetKBData;
+    LP_OSK_ListKeyboards pListKBs;
+    LP_OSK_GetVersion pOSKVersion;
+
+    pGetKBData  = (LP_OSK_GetKeyboardData)GetProcAddress(OSK_module, "OSK_GetKeyboardData");
+    pListKBs    = (LP_OSK_ListKeyboards)GetProcAddress(OSK_module, "OSK_ListKeyboards");
+    pOSKVersion = (LP_OSK_GetVersion)GetProcAddress(OSK_module, "OSK_GetVersion");
+
+    pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Found OSK_GetVersion: %s\n"),
+            pOSKVersion != NULL ? _T("OK") : _T("FAILED"));
+    pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Found OSK_ListKeyboards: %s\n"),
+            pListKBs != NULL ? _T("OK") : _T("FAILED"));
+    pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Found OSK_GetKeyboardData: %s\n"),
+            pGetKBData != NULL ? _T("OK") : _T("FAILED"));
+
+    if (pListKBs == NULL || pGetKBData == NULL || pOSKVersion == NULL)
+      TRACE(_T("ThisMfcApp::ThisMfcApp - Unable to get all required OSK functions. OSK not available.\n"));
+    else if (pOSKVersion() != PWS_VERSION) {
+      AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
+    } else
+      m_bOSK_module = true;
+
+    BOOL brc = FreeLibrary(OSK_module);
+    pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Free OSK DLL: %s\n"),
+                  brc == TRUE ? _T("OK") : _T("FAILED"));
+    OSK_module = NULL;
+  }
 }
 
 bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)

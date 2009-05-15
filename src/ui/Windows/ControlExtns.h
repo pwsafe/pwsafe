@@ -7,6 +7,7 @@
 */
 
 #pragma once
+
 #include "SecString.h"        // for CSecEditExtn
 #include "InfoDisplay.h"      // for Listbox Tooltips
 #include <vector>             // for Listbox Tooltips & EditExtn menus
@@ -14,6 +15,8 @@
 // ControlExtns.h : header file
 // Extensions to standard Static, Edit, ListBox and Combobox Controls
 
+// Pick a number at the end of the WM_USER range
+#define EM_SELECTALL (WM_APP - 1)
 
 // timer event numbers used to by ControlExtns for ListBox tooltips.
 #define TIMER_LB_HOVER     0x0A
@@ -124,6 +127,7 @@ protected:
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+
 };
 
 // Following is meant for sensitive information that you really don't

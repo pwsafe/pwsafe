@@ -74,6 +74,6 @@ protected:
   void SetExample();
 
 private:
-  CToolTipCtrl* m_ToolTipCtrl;
+  CToolTipCtrl* m_pToolTipCtrl;
 };
 

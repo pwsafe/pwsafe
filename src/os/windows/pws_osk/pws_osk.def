@@ -1,0 +1,8 @@
+; pws_osk.def : Declares the module parameters for the Release DLL.
+
+LIBRARY      "pws_osk"
+
+EXPORTS
+  OSK_GetKeyboardData
+  OSK_ListKeyboards
+  OSK_GetVersion

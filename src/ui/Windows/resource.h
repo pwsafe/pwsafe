@@ -56,6 +56,7 @@
 #define IDD_VIEWREPORT                  157
 #define IDD_MANAGEFILTERS               158
 #define IDD_PASSWORDSUBSET              159
+#define IDD_VKEYBOARD                   160
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
 #define IDR_POPCOPYTOCOMPARISON         171
@@ -619,6 +620,7 @@
 #define IDC_SHORTCUTHOTKEY              1369
 #define IDC_STATIC_SHCTWARNING          1370
 #define IDC_SHORTCUTLC_HEADER           1371
+#define IDC_VKB                         1372
 
 // Next default values for new objects
 // 
@@ -626,7 +628,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        453
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1372
+#define _APS_NEXT_CONTROL_VALUE         1373
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

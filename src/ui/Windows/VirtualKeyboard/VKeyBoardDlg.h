@@ -1,0 +1,182 @@
+/*
+* Copyright (c) 2009 David Kelvin <c-273@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
+
+// It is Unicode ONLY.
+
+#pragma once
+
+// VKeyBoardDlg.h : header file
+//-----------------------------------------------------------------------------
+
+#define NUM_KEYS (IDC_VKBBTN_KBD51 - IDC_VKBBTN_KBD01 + 1)
+#define NUM_DIGITS (IDC_VKBBTN_N9 - IDC_VKBBTN_N0 + 1)
+
+#include "../ThisMfcApp.h"
+#include "../PWDialog.h"
+#include "../resource.h"
+#include "../SecString.h"
+#include "VKresource.h"
+
+#include "../../../os/windows/pws_osk/pws_osk.h"
+
+#include "VKBButton.h"
+
+#define WM_INSERTBUFFER (WM_APP - 10)
+
+enum eJapanese {ENGLISH = 0, JAPANESE};    // Used for m_Kana
+enum eHK       {HIRAGANA = 0, KATAKANA};   // Used for m_Hiragana
+enum eSize     {HALF = 0, FULL};           // Used for m_Size
+
+struct st_Keyboard_Layout {
+  UINT uiKLID;
+  UINT uiCtrlID;
+
+  st_Keyboard_Layout()
+    : uiKLID(0), uiCtrlID(0)
+  {
+  }
+
+  st_Keyboard_Layout(const st_Keyboard_Layout &that)
+    : uiKLID(that.uiKLID), uiCtrlID(that.uiCtrlID)
+  {
+  }
+
+  st_Keyboard_Layout &operator=(const st_Keyboard_Layout &that)
+  {
+    if (this != &that) {
+      uiKLID = that.uiKLID;
+      uiCtrlID = that.uiCtrlID;
+    }
+    return *this;
+  }
+};
+
+typedef std::vector<st_Keyboard_Layout> vKeyboard_Layouts;
+typedef vKeyboard_Layouts::const_iterator KBL_citer;
+
+typedef std::map<BYTE, const st_SC2CHAR> Map_st_SC2Char;
+typedef Map_st_SC2Char::iterator Iter_Map_st_SC2CHAR;
+
+class CVKeyBoardDlg : public CPWDialog
+{
+public:
+  CVKeyBoardDlg(CWnd* pParent, HINSTANCE OSK_module, LPCWSTR wcKLID = NULL);   // standard constructor
+  ~CVKeyBoardDlg();
+
+  enum { IDD = IDD_VKEYBOARD };
+
+  CComboBox m_cbxKeyBoards;
+
+  const CSecString &GetPassphrase() const
+  {return m_phrase;}
+  const UINT &GetKLID() const
+  {return m_uiKLID;}
+
+  void ResetKeyboard();
+
+protected:
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  BOOL OnInitDialog();
+
+  int m_phrasecount;
+
+  BOOL PreTranslateMessage(MSG* pMsg);
+
+  //{{AFX_MSG(CVKeyBoardDlg)
+  afx_msg void OnPostNcDestroy();
+  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd * pWnd, UINT nCtlColor);
+  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+  afx_msg void OnCancel();
+  afx_msg void OnInsert();
+  afx_msg void OnRandomize();
+  afx_msg void OnClearBuffer();
+  afx_msg void OnBackSpace();
+  afx_msg void OnShift();
+  afx_msg void OnLCtrl();
+  afx_msg void OnRCtrl();
+  afx_msg void OnRHCtrl();
+  afx_msg void OnAltNum();
+  afx_msg void OnAltGr();
+  afx_msg void OnCapsLock();
+  afx_msg void OnSpaceBar();
+  afx_msg void OnKeySize();
+  afx_msg void OnHiragana();
+  afx_msg void OnNumerics(UINT nID);
+  afx_msg void OnKeys(UINT nID);
+  afx_msg void OnChangeKeyboard();
+  afx_msg void OnChangeKeyboardType();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
+
+  int m_iKeyboard;
+
+private:
+  void GetAllKeyboardsAvailable();
+  void ProcessKeyboard(const UINT uiKLID, const bool bSetType = true);
+  void ResetKeys();
+  void SetDeadKeyEnvironment(const bool bState);
+  void SetButtons();
+  void SetNormalButtons();
+  void SetDeadKeyButtons();
+  void SetJapaneseKeyboard();
+  void SetKoreanKeyboard();
+  void SetStandardKeyboard();
+  void SetSpecialKeys();
+  void ApplyUnicodeFont(CWnd* pDlgItem);
+  void DoRCtrl(const bool bDoFull);
+
+  CToolTipCtrl* m_pToolTipCtrl;
+  CFont *m_pPassphraseFont;
+
+  CVKBButton m_vkbb_Alt, m_vkbb_AltGr, m_vkbb_CapsLock, m_vkbb_AltNum, m_vkbb_BackSpace;
+  CVKBButton m_vkbb_LShift, m_vkbb_LCtrl, m_vkbb_RShift, m_vkbb_RCtrl, m_vkbb_RHCtrl;
+  CVKBButton m_vkbb_Randomize;
+  CVKBButton m_vkbb_InsertClose, m_vkbb_Insert, m_vkbb_Cancel, m_vkbb_ClearBuffer;
+
+  CVKBButton m_vkbb_SpaceBar;
+  CVKBButton m_vkbb_Numbers[NUM_DIGITS];
+  CVKBButton m_vkbb_Keys[NUM_KEYS];
+
+  // Japanese
+  CVKBButton m_vkbb_SmallSpaceBar, m_vkbb_Size, m_vkbb_Hiragana;
+
+  wchar_t m_wcDeadKey;
+  wchar_t * m_pnumbers[NUM_DIGITS];
+  BYTE m_scancodes[NUM_KEYS];
+
+  CString m_selectedkb;
+
+  st_VKBD * m_pstvkbd;
+  Map_st_SC2Char m_map_stSC2Char;
+  std::vector<BYTE> m_vsc;
+
+  CSecString m_phrase;
+  int m_altchar;
+  int m_Size, m_Hiragana, m_Kana;
+  bool m_bAltNum, m_bAltGr, m_bCapsLock, m_bRandom;
+  bool m_bShift, m_bLCtrl, m_bRCtrl;
+  bool m_bSaveShift, m_bSaveLCtrl, m_bSaveRCtrl, m_bSaveAltGr, m_bSaveCapsLock;
+  bool m_bLCtrlChars, m_bAltGrChars, m_bRCtrlChars, m_bDeadKeyActive;
+  bool m_bAllow_bC, m_bAllow_bS, m_bAllow_lC, m_bAllow_lS;
+  bool m_bAllow_gC, m_bAllow_gS, m_bAllow_rC, m_bAllow_rS;
+
+  UINT m_uiKLID, m_uiPhysKLID;
+  vKeyboard_Layouts m_KBL;
+  BYTE m_State, m_SaveState;
+  CBrush m_pBkBrush;
+
+  HINSTANCE m_OSK_module;
+  LP_OSK_GetKeyboardData m_pGetKBData;
+  LP_OSK_ListKeyboards m_pListKBs;
+  st_KBImpl m_stKBImpl;
+  CWnd * m_pParent;
+};
+//-----------------------------------------------------------------------------
+// Local variables:
+// mode: c++
+// End:

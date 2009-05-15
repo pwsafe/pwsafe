@@ -232,3 +232,4 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define IDS_MENUSTRING_PASTE       34103
 #define IDS_MENUSTRING_DELETE      34104
 #define IDS_MENUSTRING_SELECTALL   34105
+#define IDS_MENUSTRING_SHOWVKB     34106

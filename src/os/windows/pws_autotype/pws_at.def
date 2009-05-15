@@ -1,3 +1,5 @@
+; pws_at.def : Declares the module parameters for the Release DLL.
+
 LIBRARY	"pws_at"
 
 EXPORTS

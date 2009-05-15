@@ -84,7 +84,11 @@ public:
   {return CSecString(m_mystring.SpanIncluding(lpszCharSet));}
   CSecString SpanExcluding(LPCTSTR lpszCharSet)
   {return CSecString(m_mystring.SpanExcluding(lpszCharSet));}
-#else
+  int Delete(int start, int count = 1)
+  {return m_mystring.Delete(start, count);}
+  int Insert(int index, const CSecString &ss)
+  {return m_mystring.Insert(index, ss.m_mystring);}
+#else  // _WIN32
   TCHAR GetAt(int nIndex);
   void SetAt(int nIndex, TCHAR ch);
   operator LPCTSTR() const;
@@ -111,7 +115,9 @@ public:
   void EmptyIfOnlyWhiteSpace();
   CSecString SpanIncluding(LPCTSTR lpszCharSet);
   CSecString SpanExcluding(LPCTSTR lpszCharSet);
-#endif
+  int Delete(int start, int count = 1);
+  int Insert(int index, const CSecString &ss);
+#endif // _WIN32
 
   operator CString() const {return m_mystring;}
   operator CString&() {return m_mystring;}

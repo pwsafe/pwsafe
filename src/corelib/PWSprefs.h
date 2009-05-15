@@ -97,6 +97,7 @@ public:
     TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
     ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,
+    LastUsedKeyboard,
     NumStringPrefs};
 
   // for DoubleClickAction

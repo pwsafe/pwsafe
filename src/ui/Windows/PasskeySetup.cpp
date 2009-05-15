@@ -13,6 +13,9 @@
 #include "corelib/PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/pwsprefs.h"
+#include "os/dir.h"
+#include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -27,6 +30,8 @@
 #include "PasskeySetup.h"
 #include "PwFont.h"
 
+#include <iomanip>  // For setbase and setw
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -37,42 +42,99 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd* pParent)
-  : CPWDialog(CPasskeySetup::IDD, pParent)
+  : CPWDialog(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
+  m_OSK_module(NULL), m_LastFocus(IDC_PASSKEY)
 {
   m_passkey = _T("");
   m_verify = _T("");
+
+  m_pctlPasskey = new CSecEditExtn;
+  m_pctlVerify = new CSecEditExtn;
+
+  if (app.m_bOSK_module) {
+    stringT dll_loc = pws_os::getexecdir();
+#if defined( _DEBUG ) || defined( DEBUG )
+    dll_loc += _T("pws_osk_D.dll");
+#else
+    dll_loc += _T("pws_osk.dll");
+#endif
+    m_OSK_module = LoadLibrary(dll_loc.c_str());
+
+    if (m_OSK_module == NULL) {
+      TRACE(_T("CPasskeySetup::CPasskeySetup - Unable to load OSK DLL. OSK not available.\n"));
+    } else {
+      TRACE(_T("CPasskeySetup::CPasskeySetup - OSK DLL loaded OK.\n"));
+    }
+  }
 }
+
+CPasskeySetup::~CPasskeySetup()
+{
+  delete m_pctlPasskey;
+  delete m_pctlVerify;
+
+  if (m_OSK_module != NULL) {
+    BOOL brc = FreeLibrary(m_OSK_module);
+    pws_os::Trace(_T("CPasskeySetup::~CPasskeySetup - Free OSK DLL: %s\n"),
+                  brc == TRUE ? _T("OK") : _T("FAILED"));
+    m_OSK_module = NULL;
+  }
+
+  if (m_pVKeyBoardDlg != NULL) {
+    // Save Last Used Keyboard
+    UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
+    std::wostringstream os;
+    os.fill(L'0');
+    os << std::nouppercase << std::hex << std::setw(8) << uiKLID;
+    StringX cs_KLID = os.str().c_str();
+    PWSprefs::GetInstance()->SetPref(PWSprefs::LastUsedKeyboard, cs_KLID);
+
+    m_pVKeyBoardDlg->DestroyWindow();
+    delete m_pVKeyBoardDlg;
+  }
+}
+
+void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
+{
+  CPWDialog::DoDataExchange(pDX);
+  
+  // Can't use DDX_Text for CSecEditExtn
+  m_pctlPasskey->DoDDX(pDX, m_passkey);
+  m_pctlVerify->DoDDX(pDX, m_verify);
+
+  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
+  DDX_Control(pDX, IDC_VERIFY, *m_pctlVerify);
+}
+
+BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
+  ON_MESSAGE(WM_INSERTBUFFER, OnInsertBuffer)
+  ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
+  ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
+#if defined(POCKET_PC)
+  ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
+  ON_EN_KILLFOCUS(IDC_VERIFY, OnPasskeyKillfocus)
+#endif
+END_MESSAGE_MAP()
 
 BOOL CPasskeySetup::OnInitDialog() 
 {
   CPWDialog::OnInitDialog();
   ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
-  ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetPasswordChar(PSSWDCHAR);
-  ((CEdit*)GetDlgItem(IDC_VERIFY))->SetPasswordChar(PSSWDCHAR);
+
+  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+  m_pctlVerify->SetPasswordChar(PSSWDCHAR);
+
+  // Only show virtual Keyboard menu if we can load DLL
+  if (!app.m_bOSK_module) {
+    GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
+  }
 
   return TRUE;
 }
-
-void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
-{
-  CPWDialog::DoDataExchange(pDX);
-  // Can't use DDX_Text for CSecEditExtn
-  m_ctlPasskey.DoDDX(pDX, m_passkey);
-  m_ctlVerify.DoDDX(pDX, m_verify);
-  DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
-  DDX_Control(pDX, IDC_VERIFY, m_ctlVerify);
-}
-
-BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)
-  ON_BN_CLICKED(ID_HELP, OnHelp)
-#if defined(POCKET_PC)
-  ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
-  ON_EN_SETFOCUS(IDC_VERIFY, OnPasskeySetfocus)
-  ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
-  ON_EN_KILLFOCUS(IDC_VERIFY, OnPasskeyKillfocus)
-#endif
-END_MESSAGE_MAP()
 
 void CPasskeySetup::OnCancel() 
 {
@@ -142,15 +204,104 @@ void CPasskeySetup::OnPasskeyKillfocus()
 {
   EnableWordCompletion(m_hWnd);
 }
+#endif
 
+void CPasskeySetup::OnPasskeySetfocus()
+{
+  m_LastFocus = IDC_PASSKEY;
+
+#if defined(POCKET_PC)
 /************************************************************************/
 /* When the password field is activated, pull up the SIP and disable    */
 /* word completion.                                                     */
 /************************************************************************/
-void CPasskeySetup::OnPasskeySetfocus()
-{
   DisableWordCompletion(m_hWnd);
-}
 #endif
+}
 
-//-----------------------------------------------------------------------------
+void CPasskeySetup::OnVerifykeySetfocus()
+{
+  m_LastFocus = IDC_VERIFY;
+
+#if defined(POCKET_PC)
+/************************************************************************/
+/* When the password field is activated, pull up the SIP and disable    */
+/* word completion.                                                     */
+/************************************************************************/
+  DisableWordCompletion(m_hWnd);
+#endif
+}
+
+void CPasskeySetup::OnVirtualKeyboard()
+{
+  // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
+  if (!app.m_bOSK_module || m_OSK_module == NULL)
+    return;
+
+  if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
+    // Already there - move to top
+    m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    return;
+  }
+
+  // If not already created - do it, otherwise just reset it
+  if (m_pVKeyBoardDlg == NULL) {
+    StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, m_OSK_module, cs_LUKBD.c_str());
+    m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
+  } else {
+    m_pVKeyBoardDlg->ResetKeyboard();
+  }
+
+  // Now show it and make it top
+  m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+
+  return;
+}
+
+LRESULT CPasskeySetup::OnInsertBuffer(WPARAM, LPARAM)
+{
+  // Update the variables
+  UpdateData(TRUE);
+
+  // Get the buffer
+  CSecString vkbuffer = m_pVKeyBoardDlg->GetPassphrase();
+
+  CSecEditExtn * m_pSecCtl(NULL);
+  CSecString * m_pSecString;
+
+  switch (m_LastFocus) {
+    case IDC_PASSKEY:
+      m_pSecCtl = m_pctlPasskey;
+      m_pSecString = &m_passkey;
+      break;
+    case IDC_VERIFY:
+      m_pSecCtl = m_pctlVerify;
+      m_pSecString = &m_verify;
+      break;
+    default:
+      // Error!
+      ASSERT(0);
+      return 0L;
+  }
+
+  // Find the selected characters - if any
+  int nStartChar, nEndChar;
+  m_pSecCtl->GetSel(nStartChar, nEndChar);
+
+  // If any characters seelcted - delete them
+  if (nStartChar != nEndChar)
+    m_pSecString->Delete(nStartChar, nEndChar - nStartChar);
+
+  // Insert the buffer
+  m_pSecString->Insert(nStartChar, vkbuffer);
+
+  // Update the dialog
+  UpdateData(FALSE);
+
+  // Put cursor at end of inserted text
+  m_pSecCtl->SetSel(nStartChar + vkbuffer.GetLength(),
+                    nStartChar + vkbuffer.GetLength());
+
+  return 0L;
+}

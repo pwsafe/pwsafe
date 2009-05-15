@@ -34,7 +34,7 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(COptionsMisc, CPropertyPage)
 
 COptionsMisc::COptionsMisc()
-  : CPWPropertyPage(COptionsMisc::IDD), m_ToolTipCtrl(NULL)
+  : CPWPropertyPage(COptionsMisc::IDD), m_pToolTipCtrl(NULL)
 {
   //{{AFX_DATA_INIT(COptionsMisc)
   //}}AFX_DATA_INIT
@@ -42,7 +42,7 @@ COptionsMisc::COptionsMisc()
 
 COptionsMisc::~COptionsMisc()
 {
-  delete m_ToolTipCtrl;
+  delete m_pToolTipCtrl;
 }
 
 void COptionsMisc::DoDataExchange(CDataExchange* pDX)
@@ -144,23 +144,23 @@ BOOL COptionsMisc::OnInitDialog()
   // Tooltips on Property Pages
   EnableToolTips();
 
-  m_ToolTipCtrl = new CToolTipCtrl;
-  if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE("Unable To create Property Page ToolTip\n");
     return TRUE;
   }
 
   // Activate the tooltip control.
-  m_ToolTipCtrl->Activate(TRUE);
-  m_ToolTipCtrl->SetMaxTipWidth(300);
+  m_pToolTipCtrl->Activate(TRUE);
+  m_pToolTipCtrl->SetMaxTipWidth(300);
 
   // Set the tooltip
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
   CString cs_ToolTip;
   cs_ToolTip.LoadString(IDS_MAINTAINDATETIMESTAMPS);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_MAINTAINDATETIMESTAMPS), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_MAINTAINDATETIMESTAMPS), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_OTHERBROWSERLOCATION);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OTHERBROWSERLOCATION), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OTHERBROWSERLOCATION), cs_ToolTip);
 
   return TRUE;
 }
@@ -285,8 +285,8 @@ void COptionsMisc::OnBrowseForLocation()
 // tooltip control for processing.
 BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_ToolTipCtrl != NULL)
-    m_ToolTipCtrl->RelayEvent(pMsg);
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
 
   return CPropertyPage::PreTranslateMessage(pMsg);
 }

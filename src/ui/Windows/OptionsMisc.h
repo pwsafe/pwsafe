@@ -74,5 +74,5 @@ public:
   BOOL PreTranslateMessage(MSG* pMsg);
 
 private:
-  CToolTipCtrl* m_ToolTipCtrl;
+  CToolTipCtrl* m_pToolTipCtrl;
 };

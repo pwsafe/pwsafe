@@ -67,7 +67,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
   return TRUE;
 }
 
-__declspec(dllexport) BOOL AT_HK_Initialise(HWND hWnd)
+AT_API BOOL AT_HK_Initialise(HWND hWnd)
 {
   // Calling process: Initialise(m_hWnd)
   if (hWndServer != NULL)
@@ -86,7 +86,7 @@ __declspec(dllexport) BOOL AT_HK_Initialise(HWND hWnd)
   return FALSE;
 }
 
-__declspec(dllexport) BOOL AT_HK_UnInitialise(HWND hWnd)
+AT_API BOOL AT_HK_UnInitialise(HWND hWnd)
 {
   // UnInitialise(m_hWnd)
   if (hWndServer != hWnd || hWnd == NULL)

@@ -22,10 +22,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// Pick a number at the end of the WM_USER range
-#define EM_SELECTALL (WM_APP - 1)
-
-
 #if defined(UNICODE)
 #define EDIT_CLIPBOARD_TEXT_FORMAT  CF_UNICODETEXT
 #else
@@ -139,7 +135,7 @@ CEditExtn::CEditExtn(COLORREF focusColor)
   m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
 
-  m_vmenu_items.empty();
+  m_vmenu_items.clear();
 }
 
 CEditExtn::CEditExtn(std::vector<st_context_menu> vmenu_items,
@@ -150,7 +146,7 @@ CEditExtn::CEditExtn(std::vector<st_context_menu> vmenu_items,
   m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
   // Don't allow if menu string is empty.
-  if (vmenu_items.size()  == 0) {
+  if (vmenu_items.size() == 0) {
     m_vmenu_items.clear();
   } else {
     m_vmenu_items = vmenu_items;
@@ -257,43 +253,42 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   BOOL bReadOnly = GetStyle() & ES_READONLY;
   DWORD flags = CanUndo() && !bReadOnly ? 0 : MF_GRAYED;
 
-  menu.InsertMenu(0, MF_BYPOSITION | flags, EM_UNDO,
+  int iPos(0);
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, EM_UNDO,
                   CString(MAKEINTRESOURCE(IDS_MENUSTRING_UNDO)));
 
-  menu.InsertMenu(1, MF_BYPOSITION | MF_SEPARATOR);
+  menu.InsertMenu(iPos++, MF_BYPOSITION | MF_SEPARATOR);
 
   DWORD sel = GetSel();
   flags = LOWORD(sel) == HIWORD(sel) ? MF_GRAYED : 0;
-  // Add it in position 2 but adding the next will make it 3
-  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_COPY,
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, WM_COPY,
                   CString(MAKEINTRESOURCE(IDS_MENUSTRING_COPY)));
 
   flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
-  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_CUT,
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, WM_CUT,
                   CString(MAKEINTRESOURCE(IDS_MENUSTRING_CUT)));
 
   flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
-  // Add it in position 4 but adding the next will make it 5
-  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_CLEAR,
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, WM_CLEAR,
                   CString(MAKEINTRESOURCE(IDS_MENUSTRING_DELETE)));
 
   flags = IsClipboardFormatAvailable(EDIT_CLIPBOARD_TEXT_FORMAT) &&
                                      !bReadOnly ? 0 : MF_GRAYED;
-  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_PASTE,
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, WM_PASTE,
                   CString(MAKEINTRESOURCE(IDS_MENUSTRING_PASTE)));
 
-  menu.InsertMenu(6, MF_BYPOSITION | MF_SEPARATOR);
+  menu.InsertMenu(iPos++, MF_BYPOSITION | MF_SEPARATOR);
 
   int len = GetWindowTextLength();
   flags = (!len || (LOWORD(sel) == 0 && HIWORD(sel) == len)) ? MF_GRAYED : 0;
 
-  menu.InsertMenu(7, MF_BYPOSITION | flags, EM_SELECTALL,
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, EM_SELECTALL,
                   CString(MAKEINTRESOURCE(IDS_MENUSTRING_SELECTALL)));
 
-  menu.InsertMenu(8, MF_BYPOSITION | MF_SEPARATOR);
+  menu.InsertMenu(iPos++, MF_BYPOSITION | MF_SEPARATOR);
 
   for (size_t i = 0; i < m_vmenu_items.size(); i++) {
-      menu.InsertMenu(i + 9, MF_BYPOSITION | m_vmenu_items[i].flags,
+      menu.InsertMenu(i + iPos, MF_BYPOSITION | m_vmenu_items[i].flags,
                       m_vmenu_items[i].message_number,
                       m_vmenu_items[i].menu_string.c_str());
   }
@@ -305,11 +300,11 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
     ClientToScreen(&point);
   }
 
-  int nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
+  UINT nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
                                  TPM_RETURNCMD | TPM_RIGHTBUTTON, 
                                  point.x, point.y, this);
 
-  if (nCmd < 0)
+  if (nCmd == 0)
     return;
 
   std::vector<st_context_menu>::iterator iter;
