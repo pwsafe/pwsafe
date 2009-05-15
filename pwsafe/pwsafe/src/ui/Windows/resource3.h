@@ -522,3 +522,4 @@
 #define IDS_CTRLP                       5687
 #define IDS_ALTP                        5688
 #define IDS_SHIFTP                      5689
+#define IDS_OSK_VERSION_MISMATCH        5690

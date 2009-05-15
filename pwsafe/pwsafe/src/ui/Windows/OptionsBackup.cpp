@@ -41,7 +41,7 @@ int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
 IMPLEMENT_DYNCREATE(COptionsBackup, CPropertyPage)
 
 COptionsBackup::COptionsBackup(): CPWPropertyPage(COptionsBackup::IDD),
-  m_ToolTipCtrl(NULL)
+  m_pToolTipCtrl(NULL)
 {
   //{{AFX_DATA_INIT(COptionsBackup)
   //}}AFX_DATA_INIT
@@ -49,7 +49,7 @@ COptionsBackup::COptionsBackup(): CPWPropertyPage(COptionsBackup::IDD),
 
 COptionsBackup::~COptionsBackup()
 {
-  delete m_ToolTipCtrl;
+  delete m_pToolTipCtrl;
 }
 
 void COptionsBackup::SetCurFile(const CString &currentFile)
@@ -136,26 +136,26 @@ BOOL COptionsBackup::OnInitDialog()
   // Tooltips on Property Pages
   EnableToolTips();
 
-  m_ToolTipCtrl = new CToolTipCtrl;
-  if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE("Unable To create Property Page ToolTip\n");
     return TRUE;
   }
 
   // Activate the tooltip control.
-  m_ToolTipCtrl->Activate(TRUE);
-  m_ToolTipCtrl->SetMaxTipWidth(300);
+  m_pToolTipCtrl->Activate(TRUE);
+  m_pToolTipCtrl->SetMaxTipWidth(300);
   // Quadruple the time to allow reading by user - there is a lot there!
-  int iTime = m_ToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_ToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
+  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
   // Set the tooltip
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
   CString cs_ToolTip;
   cs_ToolTip.LoadString(IDS_BACKUPBEFORESAVE);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_BACKUPBEFORESAVE), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_BACKUPBEFORESAVE), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_USERBACKUPOTHERLOCATION);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_USERBACKUPOTHERLOCATION), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_USERBACKUPOTHERLOCATION), cs_ToolTip);
 
   return TRUE;
 }
@@ -351,8 +351,8 @@ void COptionsBackup::OnUserPrefixKillfocus()
 // tooltip control for processing.
 BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_ToolTipCtrl != NULL)
-    m_ToolTipCtrl->RelayEvent(pMsg);
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
 
   return CPropertyPage::PreTranslateMessage(pMsg);
 }

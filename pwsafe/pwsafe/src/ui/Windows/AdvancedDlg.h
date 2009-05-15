@@ -73,5 +73,5 @@ protected:
 private:
   static int CALLBACK AdvCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   CListCtrl *m_pLC_List, *m_pLC_Selected;
-  CToolTipCtrl* m_ToolTipCtrl;
+  CToolTipCtrl* m_pToolTipCtrl;
 };

@@ -24,6 +24,8 @@
 #define STRPRODUCTVER  "3, 17, 1, $WCREV$$WCMODS?+:$\0"
 
 
+#define SPECIAL_BUILD _T("VKB")
+
 // Only define SPECIAL_BUILD before here (in version.in) if needed!
 #ifndef SPECIAL_BUILD
 #define SPECIAL_BUILD _T("")

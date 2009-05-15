@@ -1354,6 +1354,14 @@
 				RelativePath=".\ViewReport.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\VirtualKeyboard\VKBButton.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\VirtualKeyboard\VKeyBoardDlg.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1747,6 +1755,26 @@
 				RelativePath=".\ViewReport.h"
 				>
 			</File>
+			<File
+				RelativePath=".\VirtualKeyboard\VKBButton.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VirtualKeyboard\VKeyBoardDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VirtualKeyboard\VKresource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VirtualKeyboard\VKresource3.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VirtualKeyboard\VKShiftState.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -1777,7 +1805,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\about.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\about.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\about_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\about_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1789,7 +1829,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\add.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\add.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\add_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\add_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1809,7 +1861,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\applyfilter.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\applyfilter.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\applyfilter_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\applyfilter_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1821,7 +1885,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\autotype.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\autotype.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\autotype_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\autotype_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1833,7 +1909,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\backup.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\backup.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\backup_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\backup_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1849,7 +1937,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\browseurl.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\browseurl.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\browseurl_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\browseurl_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1861,7 +1961,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\browseurlplus.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\browseurlplus.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\browseurlplus_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\browseurlplus_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1873,7 +1985,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\changecombo.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\changecombo.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\changecombo_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\changecombo_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1885,7 +2009,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\changefont.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\changefont.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\changefont_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\changefont_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1897,7 +2033,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\changepswdfont.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\changepswdfont.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\changepswdfont_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\changepswdfont_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1913,7 +2061,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\clearclipboard.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\clearclipboard.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\clearclipboard_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\clearclipboard_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1925,7 +2085,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\close.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\close.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\close_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\close_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1937,7 +2109,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\collapseall.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\collapseall.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\collapseall_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\collapseall_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1949,7 +2133,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\compare.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\compare.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\compare_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\compare_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1961,7 +2157,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\copynotes.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\copynotes.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\copynotes_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\copynotes_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1973,7 +2181,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\copypassword.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\copypassword.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\copypassword_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\copypassword_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1985,7 +2205,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\copyuser.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\copyuser.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\copyuser_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\copyuser_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2017,7 +2249,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\createshortcut.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\createshortcut.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\createshortcut_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\createshortcut_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2026,6 +2270,14 @@
 			</File>
 			<File
 				RelativePath="..\graphics\toolbar\createshortcut_new_disabled.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\cutsomizetoolbar.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\cutsomizetoolbar.bmp"
 				>
 			</File>
 			<File
@@ -2085,7 +2337,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\delete.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\delete.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\delete_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\delete_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2097,7 +2361,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\duplicate.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\duplicate.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\duplicate_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\duplicate_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2113,7 +2389,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\exit.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\exit.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\exit_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\exit_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2125,7 +2413,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\expandall.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\expandall.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\expandall_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\expandall_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2137,7 +2437,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\export.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\export.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\export_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\export_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2149,7 +2461,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\exporttext.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\exporttext.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\exporttext_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\exporttext_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2161,7 +2485,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\exportXML.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\exportXML.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\exportXML_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\exportXML_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2185,7 +2521,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\find.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\find.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\find_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\find_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2197,11 +2545,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\findadvanced.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\findadvanced.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\findadvanced_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath="..\graphics\toolbar\findadvanced_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\findcase_i.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\findcase_i.bmp"
 				>
 			</File>
 			<File
@@ -2213,6 +2577,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\findcase_s.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\findcase_s.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\findcase_s_classic.bmp"
 				>
 			</File>
@@ -2221,11 +2593,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\findclear.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\findclear.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\findclear_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath="..\graphics\toolbar\findclear_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\findclose.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\findclose.bmp"
 				>
 			</File>
 			<File
@@ -2241,6 +2629,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\findreport.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\findreport.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\findreport_classic.bmp"
 				>
 			</File>
@@ -2249,7 +2645,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\groupenter.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\groupenter.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\groupenter_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\groupenter_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2261,7 +2669,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\help.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\help.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\help_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\help_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2273,7 +2693,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\import.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\import.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\import_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\import_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2285,7 +2717,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\importtext.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\importtext.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\importtext_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\importtext_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2297,7 +2741,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\importXML.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\importXML.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\importXML_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\importXML_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2309,7 +2765,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\listtree.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\listtree.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\listtree_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\listtree_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2321,7 +2789,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\lock.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\lock.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\lock_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\lock_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2337,7 +2817,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\managefilters.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\managefilters.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\managefilters_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\managefilters_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2349,7 +2841,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\merge.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\merge.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\merge_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\merge_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2361,7 +2865,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\new.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\new.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\new_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2425,7 +2941,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\open.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\open.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\open_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\open_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2437,7 +2965,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\options.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\options.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\options_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\options_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2449,7 +2989,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\passwordchars.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\passwordchars_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\passwordchars_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2609,7 +3161,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\properties.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\properties.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\properties_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\properties_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2629,7 +3193,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\restore.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\restore.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\restore_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\restore_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2641,7 +3217,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\runcmd.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\runcmd.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\runcmd_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\runcmd_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2653,7 +3241,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\save.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\save.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\save_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\save_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2665,7 +3265,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\saveas.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\saveas.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\saveas_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\saveas_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2701,7 +3313,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\sendemail.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\sendemail.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\sendemail_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\sendemail_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2713,7 +3337,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\setfilter.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\setfilter.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\setfilter_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\setfilter_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2753,7 +3389,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\unlock.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\unlock.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\unlock_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\unlock_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2769,7 +3417,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\validate.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\validate.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\validate_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\validate_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2781,7 +3441,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\classic\viewedit.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\viewedit.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\viewedit_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\viewedit_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2805,7 +3477,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\viewreports.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\classic\viewreports.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\viewreports_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\viewreports_disabled.bmp"
 				>
 			</File>
 			<File
@@ -2814,6 +3498,14 @@
 			</File>
 			<File
 				RelativePath="..\graphics\toolbar\viewreports_new_disabled.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\vkbd.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\VirtualKeyboard\res\VKPasswordSafe3.rc2"
 				>
 			</File>
 			<File

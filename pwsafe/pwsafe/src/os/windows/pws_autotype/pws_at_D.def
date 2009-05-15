@@ -1,3 +1,5 @@
+; pws_at_D.def : Declares the module parameters for the Debug DLL.
+
 LIBRARY	"pws_at_D"
 
 EXPORTS

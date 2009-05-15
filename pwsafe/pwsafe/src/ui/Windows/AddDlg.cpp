@@ -134,6 +134,7 @@ BOOL CAddDlg::OnInitDialog()
 void CAddDlg::DoDataExchange(CDataExchange* pDX)
 {
    CPWDialog::DoDataExchange(pDX);
+
    m_ex_password.DoDDX(pDX, m_password);
    m_ex_password2.DoDDX(pDX, m_password2);
    DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);

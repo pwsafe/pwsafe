@@ -149,6 +149,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("PasswordFont"), _T(""), ptApplication},                      // application
   {_T("TreeListSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication}, // application
   {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},     // application
+  {_T("LastUsedKeyboard"), _T(""), ptApplication},                  // application 
 };
 
 PWSprefs *PWSprefs::GetInstance()

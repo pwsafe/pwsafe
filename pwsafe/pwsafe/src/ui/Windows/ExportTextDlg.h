@@ -20,22 +20,27 @@
 #include "ControlExtns.h"
 #include "PWDialog.h"
 
+class CVKeyBoardDlg;
+
 class CExportTextDlg : public CPWDialog
 {
   // Construction
 public:
   CExportTextDlg(CWnd* pParent = NULL);   // standard constructor
+  ~CExportTextDlg();
+
+  const CSecString &GetPasskey() const {return m_passkey;}
 
   // Dialog Data
   //{{AFX_DATA(CExportTextDlg)
   enum { IDD = IDD_EXPORT_TEXT };
-  CSecString m_exportTextPassword;
   CString m_defexpdelim;
   //}}AFX_DATA
 
   CItemData::FieldBits m_bsExport;
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
+  HINSTANCE m_OSK_module;
 
   // Overrides
   // ClassWizard generated virtual function overrides
@@ -52,11 +57,15 @@ protected:
   afx_msg void OnAdvanced();
   afx_msg void OnHelp();
   virtual void OnOK();
+  afx_msg void OnVirtualKeyboard();
+  afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 
 private:
   void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX,
                                     const CString &delimiter);
-  CSecEditExtn m_ctlExportTextPassword;
+  CSecEditExtn *m_pctlPasskey;
+  CSecString m_passkey;
+  CVKeyBoardDlg *m_pVKeyBoardDlg;
 };

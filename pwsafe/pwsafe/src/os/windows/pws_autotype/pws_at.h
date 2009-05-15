@@ -10,21 +10,22 @@
 #ifndef _PWS_AT_H
 #define _PWS_AT_H
 
-// No need for dllimport versions as DLL is Run-time dynamically
-// used and not Load-time.
-
 #ifdef PWS_AT_EXPORTS
+#define AT_API __declspec(dllexport)
+#else
+#define AT_API __declspec(dllimport)
+#endif /* PWS_AT_EXPORTS */
+
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* Start bracket of __cplusplus */
 
-__declspec(dllexport) BOOL AT_HK_Initialise(HWND hWnd);
-__declspec(dllexport) BOOL AT_HK_UnInitialise(HWND hWnd);
+AT_API BOOL AT_HK_Initialise(HWND hWnd);
+AT_API BOOL AT_HK_UnInitialise(HWND hWnd);
 
 #ifdef __cplusplus
 }
-#endif
-#endif
+#endif /* End bracket of __cplusplus */
 
 #define UNIQUE_PWS_SHELL L"PasswordSafe-{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}"
 

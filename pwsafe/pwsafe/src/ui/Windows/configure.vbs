@@ -8,8 +8,10 @@
 
 ' Simple VBScript to set up the Visual Studio Properties file for PasswordSafe
 
-Dim objFileSystem, objOutputFile
-Dim strOutputFile, strFileLocation
+Dim objFileSystem, objFileSystem_AT, objFileSystem_OSK
+Dim objOutputFile, objOutputFile_AT, objOutputFile_OSK
+Dim strOutputFile, strOutputFile_AT, strOutputFile_OSK
+Dim strFileLocation
 Dim str1, str2, str3,CRLF
 Dim rc
 
@@ -99,7 +101,56 @@ objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("</VisualStudioPropertySheet>")
 
 objOutputFile.Close
-
 Set objFileSystem = Nothing
+
+Set objFileSystem_AT = CreateObject("Scripting.fileSystemObject")
+strOutputFile_AT = "..\..\os\Windows\pws_autotype\AT_UserVariables.vsprops"
+Set objOutputFile_AT = objFileSystem_AT.CreateTextFile(strOutputFile_AT, TRUE)
+
+objOutputFile_AT.WriteLine("<?xml version=""1.0"" encoding=""Windows-1252""?>")
+objOutputFile_AT.WriteLine("<VisualStudioPropertySheet")
+objOutputFile_AT.WriteLine("  ProjectType=""Visual C++""")
+objOutputFile_AT.WriteLine("	Version=""8.00""")
+objOutputFile_AT.WriteLine("	Name=""UserVariables""")
+objOutputFile_AT.WriteLine("	>")
+objOutputFile_AT.WriteLine("	<UserMacro")
+objOutputFile_AT.WriteLine("		Name=""ConfigurationName""")
+objOutputFile_AT.WriteLine("		Value=""$(ConfigurationName)""")
+objOutputFile_AT.WriteLine("		PerformEnvironmentSet=""true""")
+objOutputFile_AT.WriteLine("	/>")
+objOutputFile_AT.WriteLine("	<UserMacro")
+objOutputFile_AT.WriteLine("		Name=""OutDir""")
+objOutputFile_AT.WriteLine("		Value=""$(OutDir)""")
+objOutputFile_AT.WriteLine("		PerformEnvironmentSet=""true""")
+objOutputFile_AT.WriteLine("	/>")
+objOutputFile_AT.WriteLine("</VisualStudioPropertySheet>")
+
+objOutputFile_AT.Close
+Set objFileSystem_AT = Nothing
+
+Set objFileSystem_OSK = CreateObject("Scripting.fileSystemObject")
+strOutputFile_OSK = "..\..\os\Windows\pws_osk\OSK_UserVariables.vsprops"
+Set objOutputFile_OSK = objFileSystem_OSK.CreateTextFile(strOutputFile_OSK, TRUE)
+
+objOutputFile_OSK.WriteLine("<?xml version=""1.0"" encoding=""Windows-1252""?>")
+objOutputFile_OSK.WriteLine("<VisualStudioPropertySheet")
+objOutputFile_OSK.WriteLine("  ProjectType=""Visual C++""")
+objOutputFile_OSK.WriteLine("	Version=""8.00""")
+objOutputFile_OSK.WriteLine("	Name=""UserVariables""")
+objOutputFile_OSK.WriteLine("	>")
+objOutputFile_OSK.WriteLine("	<UserMacro")
+objOutputFile_OSK.WriteLine("		Name=""ConfigurationName""")
+objOutputFile_OSK.WriteLine("		Value=""$(ConfigurationName)""")
+objOutputFile_OSK.WriteLine("		PerformEnvironmentSet=""true""")
+objOutputFile_OSK.WriteLine("	/>")
+objOutputFile_OSK.WriteLine("	<UserMacro")
+objOutputFile_OSK.WriteLine("		Name=""OutDir""")
+objOutputFile_OSK.WriteLine("		Value=""$(OutDir)""")
+objOutputFile_OSK.WriteLine("		PerformEnvironmentSet=""true""")
+objOutputFile_OSK.WriteLine("	/>")
+objOutputFile_OSK.WriteLine("</VisualStudioPropertySheet>")
+
+objOutputFile_OSK.Close
+Set objFileSystem_OSK = Nothing
 
 WScript.Quit(0)

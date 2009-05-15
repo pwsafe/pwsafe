@@ -14,11 +14,16 @@
 #include "PWDialog.h"
 #include "ControlExtns.h"
 
+class CVKeyBoardDlg;
+
 class CPasskeySetup : public CPWDialog
 {
   // Construction
 public:
   CPasskeySetup(CWnd* pParent = NULL);   // standard constructor
+  ~CPasskeySetup();
+
+  HINSTANCE m_OSK_module;
 
   // Dialog Data
   //{{AFX_DATA(CPasskeySetup)
@@ -40,15 +45,23 @@ protected:
   virtual void OnCancel();
   virtual void OnOK();
   afx_msg void OnHelp();
-#if defined(POCKET_PC)
   afx_msg void OnPasskeySetfocus();
+  afx_msg void OnVerifykeySetfocus();
+#if defined(POCKET_PC)
   afx_msg void OnPasskeyKillfocus();
 #endif
+  afx_msg void OnVirtualKeyboard();
+  afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
+
 private:
-  CSecEditExtn m_ctlPasskey;
-  CSecEditExtn m_ctlVerify;
+  CSecEditExtn * m_pctlPasskey;
+  CSecEditExtn * m_pctlVerify;
+  CVKeyBoardDlg *m_pVKeyBoardDlg;
+  UINT m_CtrlID;
+  UINT m_LastFocus;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

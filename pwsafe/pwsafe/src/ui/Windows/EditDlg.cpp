@@ -71,7 +71,7 @@ CEditDlg::CEditDlg(CItemData *ci, const StringX currentDB, CWnd* pParent)
   m_ci(ci), m_Edit_IsReadOnly(false),
   m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
   m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
-  m_original_entrytype(CItemData::ET_NORMAL), m_ToolTipCtrl(NULL),
+  m_original_entrytype(CItemData::ET_NORMAL), m_pToolTipCtrl(NULL),
   m_bWordWrap(FALSE), m_bShowNotes(FALSE), m_currentDB(currentDB),
   m_bLaunchPlus(false)
 {
@@ -172,12 +172,13 @@ CEditDlg::~CEditDlg()
 {
   delete m_pex_notes;
   delete m_pex_notesww;
-  delete m_ToolTipCtrl;
+  delete m_pToolTipCtrl;
 }
 
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
 {
    CPWDialog::DoDataExchange(pDX);
+
    m_ex_password.DoDDX(pDX, m_password);
    m_ex_password2.DoDDX(pDX, m_password2);
    DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
@@ -618,30 +619,30 @@ BOOL CEditDlg::OnInitDialog()
 
   UpdateData(FALSE);
   // create tooltip unconditionally, JIC
-  m_ToolTipCtrl = new CToolTipCtrl;
-  if (!m_ToolTipCtrl->Create(this, 0)) {
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, 0)) {
     TRACE("Unable To create Edit Dialog ToolTip\n");
   } else {
     CString cs_ToolTip;
     if (m_OverridePolicy == TRUE) {
      cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
-      m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
+      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
     }
     cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_GROUP), cs_ToolTip);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_TITLE), cs_ToolTip);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_GROUP), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_TITLE), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYEXPAND);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_RUNCMD), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_RUNCMD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOGOPLUS);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_LAUNCH), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LAUNCH), cs_ToolTip);
 
     EnableToolTips();
-    m_ToolTipCtrl->Activate(TRUE);
+    m_pToolTipCtrl->Activate(TRUE);
   }
 
   m_stc_group.SetHighlight(true, crefWhite);
@@ -1129,9 +1130,9 @@ void CEditDlg::OnBnClickedOverridePolicy()
   if (m_OverridePolicy == TRUE) {
     CString cs_ToolTip;
     cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip);
   } else
-    m_ToolTipCtrl->DelTool(GetDlgItem(IDC_OVERRIDE_POLICY));
+    m_pToolTipCtrl->DelTool(GetDlgItem(IDC_OVERRIDE_POLICY));
 }
 
 void CEditDlg::OnStcClicked(UINT nID)
@@ -1222,8 +1223,8 @@ BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
  * Part of the chicken waving needed to get
  * tooltips to do their thing.
  */
-  if (m_ToolTipCtrl != NULL)
-    m_ToolTipCtrl->RelayEvent(pMsg);
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
 
   // if user hit Ctrl+A in Notes control, then SelectAllNotes
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' &&

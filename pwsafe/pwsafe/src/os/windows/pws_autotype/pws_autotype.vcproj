@@ -20,6 +20,7 @@
 			OutputDirectory="..\..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
+			InheritedPropertySheets=".\AT_UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -96,7 +97,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine=""
+				CommandLine="cscript at_post_build.vbs"
 			/>
 		</Configuration>
 		<Configuration
@@ -104,6 +105,7 @@
 			OutputDirectory="..\..\..\bin\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
+			InheritedPropertySheets=".\AT_UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -178,7 +180,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine=""
+				CommandLine="cscript at_post_build.vbs"
 			/>
 		</Configuration>
 	</Configurations>

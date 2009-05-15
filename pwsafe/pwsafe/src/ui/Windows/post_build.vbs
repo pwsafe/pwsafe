@@ -9,8 +9,13 @@
 ' Copy pws_at(_D).dll from Debug/Release 'bin' libraries to the
 ' configuration's own 'bin' library
 
+' Copy pws_osk(_D).dll from Debug/Release 'bin' libraries to the
+' configuration's own 'bin' library
+
 ' For the stdout.WriteLine to work, this Post-Build Event script
 ' MUST be executed via cscript command.
+
+Option Explicit
 
 If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
     MsgBox " Host: " & WScript.FullName & vbCRLF & _
@@ -21,8 +26,21 @@ If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
     Wscript.Quit(99)
 End If
 
+' Copy Autotype DLL if required
+Call CopyDLL("at")
+
+' Copy On-screen Keyboard DLL if required
+Call CopyDLL("osk")
+
+WScript.Quit(0)
+
+' Subroutines
+
+Sub CopyDLL(strWhichDLL)
+
 Dim oShell, objFSO
-Dim strConfig, strOutDir, strInfile, strOutfile
+Dim strConfig, strConfigLC
+Dim strInDir, strOutDir, strInfile, strOutfile
 Dim objInfile, objOutfile, strDLL
 Dim rc, bOutputFileExists
 
@@ -36,11 +54,11 @@ strOutDir = oShell.ExpandEnvironmentStrings("%OutDir%")
 
 ' If either emtpy - prompt the user to re-run 'configure.vbs'
 If strConfig = "%ConfigurationName%" Then
-  EndScript 1
+  Call EndScript(1, "")
 End If
 
 If strOutDir = "%OutDir%" Then
-  EndScript 2
+  Call EndScript(2, "")
 End If
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
@@ -54,7 +72,7 @@ Select Case strConfigLC
     rc = -1
   Case "debuge", "debugm", "debugx"
     strInDir = Replace(strOutDir, strConfig , "Debug")
-    strDLL = "pws_at_D.dll"
+    strDLL = "pws_" & strWhichDLL & "_D.dll"
     strInfile = strInDir & "\" & strDLL
     If Not objFSO.FileExists(strInfile) Then
     	rc = 3
@@ -64,7 +82,7 @@ Select Case strConfigLC
     strOutfile = strOutDir & "\" & strDLL
   Case "demo", "releasee", "releasem", "releasex"
     strInDir = Replace(strOutDir, strConfig , "Release")
-    strDLL = "pws_at.dll"
+    strDLL = "pws_" & strWhichDLL & ".dll"
     strInfile = strInDir & "\" & strDLL
     If Not objFSO.FileExists(strInfile) Then
     	rc = 4
@@ -77,7 +95,7 @@ Select Case strConfigLC
 End Select
 
 If rc <> 0 Then
-  EndScript rc
+  Call EndScript(rc, strDLL)
 End If
 
 ' Check if the output DLL exists for this configuration
@@ -100,16 +118,21 @@ Else
   objFSO.CopyFile  strInfile, strOutfile, OverwriteExisting
 End If
 
-EndScript rc
+' Tidy up objects
+Set objInfile = Nothing
+Set objOutfile = Nothing
+Set oShell = Nothing
+Set objFSO = Nothing
 
-' Next statement not really needed as EndScript tidies up and exits
-' but just in case.....
-WScript.Quit(ExitCode)
+Call EndScript(rc, strDLL)
 
-Sub EndScript(iCode)
+End Sub
+
+Sub EndScript(iCode, strDLL)
 ' As there is no 'goto' in vbscript, this allows the script to be
 ' terminated just by calling this subroutine with an exit code
 
+Dim stdFSO, stdout
 Dim ExitCode
 Dim strErrorMsg
 
@@ -136,10 +159,10 @@ Select Case iCode
     strErrorMsg = "'Output directory' variable is not set." & vbCRLF & _
                   "Please close this solution and re-run 'configure.vbs'."
   Case 3
-    strErrorMsg = "Debug pws_at_D.dll does not exist." & vbCRLF & _
+    strErrorMsg = "Debug '" & strDLL & "' does not exist." & vbCRLF & _
                   "Please ensure that the Debug build completed without error."
   Case 4
-    strErrorMsg = "Release pws_at.dll does not exist." & vbCRLF & _
+    strErrorMsg = "Release '" & strDLL & "' does not exist." & vbCRLF & _
                   "Please ensure that the Release build completed without error."
   Case 5
     strErrorMsg = "Unknown configuration: '" & strConfig & "'. Unable to continue."
@@ -151,18 +174,14 @@ Select Case iCode
     ExitCode = 0
 End Select
 
-if (ExitCode <> 0) Then
-    MsgBox strErrorMsg, vbCritical, "Error: " & WScript.ScriptName
-End If
-
 ' Tidy up objects
 Set stdFSO = Nothing
-Set objInfile = Nothing
-Set objOutfile = Nothing
-Set oShell = Nothing
-Set objFSO = Nothing
+Set stdout = Nothing
 
-' Byee
-WScript.Quit(ExitCode)
+' Byee if serious error
+if (ExitCode <> 0) Then
+	MsgBox strErrorMsg, vbCritical, "Error: " & WScript.ScriptName
+  WScript.Quit(ExitCode)
+End If
 
 End Sub

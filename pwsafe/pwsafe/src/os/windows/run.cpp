@@ -25,7 +25,7 @@
 #include <vector>
 #include <algorithm>
 
-typedef BOOL (*AT_PROC)(HWND);
+typedef AT_API BOOL (* AT_PROC) (HWND);
 
 struct st_run_impl {
   AT_PROC pInit;   // Pointer to   Initialise function in pws_at(_D).dll
