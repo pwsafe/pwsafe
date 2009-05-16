@@ -1,5 +1,5 @@
-Password Safe 3.17.1 Release Notes - April 2009
-===============================================
+Password Safe 3.17.2 Release Notes - May 2009
+=============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,17 +8,21 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.17.1
+Bugs fixed in 3.17.2
 ====================
-[2779705] Reserved shortcuts (Ctrl+Q, Alt+F4 and F1) now work.
+None
 
-Changes to Existing Features in 3.17.1
+Changes to Existing Features in 3.17.2
 ======================================
 None
 
-New Features for 3.17.1
+New Features for 3.17.2
 =======================
-None
+Implement Virtual Keyboards for pass-phrase entry.
+
+Bugs fixed in 3.17.1
+====================
+[2779705] Reserved shortcuts (Ctrl+Q, Alt+F4 and F1) now work.
 
 Bugs fixed in 3.17
 ==================
