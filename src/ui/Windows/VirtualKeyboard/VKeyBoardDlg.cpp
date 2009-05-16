@@ -12,7 +12,6 @@
 //-----------------------------------------------------------------------------
 
 #include "../stdafx.h"
-#include "../PwFont.h"
 
 #include "VKeyBoardDlg.h"
 #include "VKShiftState.h"

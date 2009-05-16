@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+  ProjectType="Visual C++"
+	Version="8.00"
+	Name="UserVariables"
+	>
+	<UserMacro
+		Name="ConfigurationName"
+		Value="$(ConfigurationName)"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="OutDir"
+		Value="$(OutDir)"
+		PerformEnvironmentSet="true"
+	/>
+</VisualStudioPropertySheet>
