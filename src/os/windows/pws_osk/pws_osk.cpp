@@ -16,8 +16,8 @@
 #include <algorithm>
 
 // Internal routines
-void SetupDeadKeyMaps();
-void ClearDeadKeyMaps();
+static void SetupDeadKeyMaps();
+static void ClearDeadKeyMaps();
 
 // Data
 
@@ -145,7 +145,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   if (!bFound) {
     for (int i = 0; i < MAX_ROWS; i++) {
       stKBImpl.stVKBD.stSC2CHAR[i].SC = 0;
-      stKBImpl.stVKBD.stSC2CHAR[i].bsDeadKey = (unsigned long)0;
+      stKBImpl.stVKBD.stSC2CHAR[i].bsDeadKey = 0UL;
       for (int j = 0; j < 16; j++) {
         stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j] = 0;
       }
@@ -166,18 +166,12 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     stKBImpl.stVKBD.stSC2CHAR[i].SC = pstIVKBD->stISC2CHAR[i].SC;
     stKBImpl.stVKBD.stSC2CHAR[i].bsDeadKey = (unsigned long)pstIVKBD->stISC2CHAR[i].uiDeadKey;
 
-    for (int j = 0; j < 4; j++)
+    for (int j = 0; j < 4; j++) {
       stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j]      = wc_Chars[pstIVKBD->stISC2CHAR[i].uiOffset1][j];
-
-    for (int j = 0; j < 4; j++)
       stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j + 4]  = wc_Chars[pstIVKBD->stISC2CHAR[i].uiOffset2][j];
-
-    for (int j = 0; j < 4; j++)
       stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j + 8]  = wc_Chars[pstIVKBD->stISC2CHAR[i].uiOffset3][j];
-
-    for (int j = 0; j < 4; j++)
       stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j + 12] = wc_Chars[pstIVKBD->stISC2CHAR[i].uiOffset4][j];
-
+    }
     if (!bLCtrl && pstIVKBD->stISC2CHAR[i].uiOffset2 != 0)
       bLCtrl = true;
 
@@ -303,7 +297,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     const Vct_ISCSS2MC * pvctISCSS2MC = MC2[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc2;
     for (citer_mc2 = pvctISCSS2MC->begin(); citer_mc2 != pvctISCSS2MC->end(); citer_mc2++) {
-      m_mapSCSS2Char2.insert(std::make_pair((*citer_mc2).uiSCSS, (*citer_mc2).uiOffset));
+      m_mapSCSS2Char2.insert(std::make_pair(citer_mc2->uiSCSS, citer_mc2->uiOffset));
     }
     stKBImpl.pmapSCSS2Char2 = &m_mapSCSS2Char2;
   } else
@@ -322,7 +316,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     const Vct_ISCSS2MC * pvctISCSS2MC = MC3[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc3;
     for (citer_mc3 = pvctISCSS2MC->begin(); citer_mc3 != pvctISCSS2MC->end(); citer_mc3++) {
-      m_mapSCSS2Char3.insert(std::make_pair((*citer_mc3).uiSCSS, (*citer_mc3).uiOffset));
+      m_mapSCSS2Char3.insert(std::make_pair(citer_mc3->uiSCSS, citer_mc3->uiOffset));
     }
     stKBImpl.pmapSCSS2Char3 = &m_mapSCSS2Char3;
   } else
@@ -341,7 +335,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     const Vct_ISCSS2MC * pvctISCSS2MC = MC4[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc4;
     for (citer_mc4 = pvctISCSS2MC->begin(); citer_mc4 != pvctISCSS2MC->end(); citer_mc4++) {
-      m_mapSCSS2Char4.insert(std::make_pair((*citer_mc4).uiSCSS, (*citer_mc4).uiOffset));
+      m_mapSCSS2Char4.insert(std::make_pair(citer_mc4->uiSCSS, citer_mc4->uiOffset));
     }
     stKBImpl.pmapSCSS2Char4 = &m_mapSCSS2Char4;
   } else
@@ -373,7 +367,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
 }
 
 // Internal routines
-void SetupDeadKeyMaps()
+static void SetupDeadKeyMaps()
 {
   // Include code to insert data into the maps
 #include "OSK_Insert_DeadKey_DataMaps.inc"
@@ -381,17 +375,14 @@ void SetupDeadKeyMaps()
 
 // Functor for for_each
 struct Clear_Map {
-  Clear_Map() {}
   void operator()(std::pair<unsigned int, Map_IDK2SCSS *> p)
   {
     p.second->clear();
   }
 };
 
-void ClearDeadKeyMaps()
+static void ClearDeadKeyMaps()
 {
   // Clear the deadkey_combined character maps
-  Clear_Map cm;
-
-  for_each(m_mapIKLID2DK2SCSS.begin(), m_mapIKLID2DK2SCSS.end(), cm);
+  for_each(m_mapIKLID2DK2SCSS.begin(), m_mapIKLID2DK2SCSS.end(), Clear_Map());
 }

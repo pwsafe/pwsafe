@@ -10,10 +10,9 @@
 // pws_osk.h : main header file for the pws_osk DLL
 //
 
-#include "voskeys.h"
-
 #ifndef _PWS_OSK_H
 #define _PWS_OSK_H
+#include "voskeys.h"
 
 #define PWS_VERSION 1
 
