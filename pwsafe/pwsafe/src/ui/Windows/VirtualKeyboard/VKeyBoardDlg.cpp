@@ -589,7 +589,7 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
 
 void CVKeyBoardDlg::OnSpaceBar()
 {
-  // SpaceBar key - if a DeadKey is active, this adds the origianl character
+  // SpaceBar key - if a DeadKey is active, this adds the original character
   CString cs_wtxt;
   m_vkbb_SpaceBar.GetWindowText(cs_wtxt);
   m_phrase += CSecString(cs_wtxt);
@@ -1062,7 +1062,7 @@ void CVKeyBoardDlg::SetNormalButtons()
 
             // If negative, it MAY be a multi-character value - although some Asian languages do
             // use Unicode values greater than 0x7FFF.
-            // We only have 2, 3 & 4 multi-character sequences.  0xFFF8-F are reseverved in
+            // We only have 2, 3 & 4 multi-character sequences.  0xFFF8-F are reserved in
             // the Unicode standard and so we are covered.
             switch ((short int)wc_temp) {
               case -2:
@@ -1095,7 +1095,7 @@ void CVKeyBoardDlg::SetNormalButtons()
             }
             bDeadKey = iter_sc->second.bsDeadKey.test(index);
           }
-          // Now set charatcer on key
+          // Now set character on key
           m_vkbb_Keys[i].SetWindowText(cs_temp);
           m_vkbb_Keys[i].EnableWindow(cs_temp.IsEmpty() ? FALSE : TRUE);
           m_vkbb_Keys[i].ShowWindow(SW_SHOW);
@@ -1124,7 +1124,7 @@ void CVKeyBoardDlg::SetNormalButtons()
         wc_temp = iter_sc->second.wcChar[index];
         bDeadKey = iter_sc->second.bsDeadKey.test(index);
       }
-      if ((int)wc_temp == 0)
+      if (wc_temp == 0)
         cs_temp.Empty();
       else
         cs_temp = wc_temp;
