@@ -29,6 +29,12 @@ struct st_SC2CHAR {
 };
 
 // For bitset below
+// b == Base character
+// l == Base + Left Control
+// g == Base + Alt Gr
+// r == Base + Right Control
+// s == with Shift key
+// C == with Caps Lock Key
 enum eSpecials { b, bC, sb, sbC, l, lC, sl, slC, g, gC, sg, sgC, r, rC, sr, srC};
            
 struct st_VKBD {
@@ -75,14 +81,14 @@ struct st_SCSS2Offset {
   ushort uiOffset;             // Offset into multi-character table
 };
 
-// Dead Keydata area for application
+// Valid Combination characters for a Dead Key
 // 1. Shiftstate 
 // 2. Scan code
-// 3. Dead Key
-struct st_SCSS2DKChar {
+// 3. Dead Key combination character
+struct st_SCSSCC {
   BYTE SC;                     // Scan code
   BYTE SS;                     // Shift state
-  wchar_t wcDKchar;            // Dead Key combination character
+  wchar_t wcCC;                // Dead Key combination character
 };
 
 // Dead Keydata area internally
@@ -118,12 +124,12 @@ struct st_IKLID2VKBD {
 
 // Maps given keyboard's key's 'scancode + shiftstate' to
 // a multi-character values
-typedef std::map<ushort, ushort> Map_SCSS2Char;
-typedef Map_SCSS2Char::const_iterator CIter_Map_SCSS2Char;
+typedef std::map<ushort, ushort> Map_SCSS2MC;
+typedef Map_SCSS2MC::const_iterator CIter_Map_SCSS2MC;
 
 // Maps a given keyboard's DeadKey to map of scancode + shiftstate to character
-typedef std::multimap<wchar_t, st_SCSS2DKChar> MMap_DK2SCSS;
-typedef MMap_DK2SCSS::iterator Iter_MMap_DK2SCSS;
+typedef std::multimap<wchar_t, st_SCSSCC> MMap_DK2SCSSCC;
+typedef MMap_DK2SCSSCC::iterator Iter_MMap_DK2SCSSCC;
 
 // Used to build the deadkey maps when user selects a keyboard.
 // Input: KLID
@@ -135,13 +141,13 @@ typedef std::vector<const st_IDKSCSS2Offset> Vct_IDeadkeys;
 typedef Vct_IDeadkeys::const_iterator CIter_Vct_IDeadkeys;
 
 // Maps a given KLID's DeadKey to data area of scancode + shiftstate to character
-typedef std::map<wchar_t, const Vct_IDeadkeys *> Map_IDK2SCSS;
-typedef Map_IDK2SCSS::iterator Iter_Map_IDK2SCSS;
+typedef std::map<wchar_t, const Vct_IDeadkeys *> Map_IDK2SCSSCC;
+typedef Map_IDK2SCSSCC::iterator Iter_Map_IDK2SCSSCC;
 
 // Maps a given KLID to map of DeadKeys to map of scancode
 // to lower + upper case offset
-typedef std::map<unsigned int, Map_IDK2SCSS *> Map_IKLID2DK2SCSS;
-typedef Map_IKLID2DK2SCSS::iterator Iter_Map_IKLID2DK2SCSS;
+typedef std::map<unsigned int, Map_IDK2SCSSCC *> Map_IKLID2DK2SCSSCC;
+typedef Map_IKLID2DK2SCSSCC::iterator Iter_Map_IKLID2DK2SCSSCC;
 
 // Implementation structure
 struct st_KBImpl {
@@ -157,11 +163,12 @@ struct st_KBImpl {
   wchar_t * wcDK;  // [ NUM_UNIQUE_DK];
   
   // Maps to 2-, 3- and 4-multibyte characters (if any)
-  Map_SCSS2Char * pmapSCSS2Char2;
-  Map_SCSS2Char * pmapSCSS2Char3;
-  Map_SCSS2Char * pmapSCSS2Char4;
+  Map_SCSS2MC * pmapSCSS2MC2;
+  Map_SCSS2MC * pmapSCSS2MC3;
+  Map_SCSS2MC * pmapSCSS2MC4;
+
   // Map to DeadKeys (if any)
-  MMap_DK2SCSS  * pmmapDK2SCSS;
+  MMap_DK2SCSSCC  * pmmapDK2SCSSCC;
 };
 
 #endif /* _VOSKEYS_H */

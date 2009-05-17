@@ -648,7 +648,7 @@ LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)
   int nStartChar, nEndChar;
   m_pctlPasskey->GetSel(nStartChar, nEndChar);
 
-  // If any characters seelcted - delete them
+  // If any characters selected - delete them
   if (nStartChar != nEndChar)
     m_passkey.Delete(nStartChar, nEndChar - nStartChar);
 

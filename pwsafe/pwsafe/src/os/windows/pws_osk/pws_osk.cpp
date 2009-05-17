@@ -46,13 +46,13 @@ static void ClearDeadKeyMaps();
 
 // This maps KLID to a map holding its deadkey
 // and combined characters (if any)
-static Map_IKLID2DK2SCSS m_mapIKLID2DK2SCSS;
+static Map_IKLID2DK2SCSSCC m_mapIKLID2DK2SCSSCC;
 
 // Maps that we keep and give the caller pointers to them
-static Map_SCSS2Char m_mapSCSS2Char2;
-static Map_SCSS2Char m_mapSCSS2Char3;
-static Map_SCSS2Char m_mapSCSS2Char4;
-static MMap_DK2SCSS  m_mmapDK2SCSS;
+static Map_SCSS2MC  m_mapSCSS2MC2;
+static Map_SCSS2MC  m_mapSCSS2MC3;
+static Map_SCSS2MC  m_mapSCSS2MC4;
+static MMap_DK2SCSSCC m_mmapDK2SCSSCC;
 
 // One map per KLID that maps the deadkey and combined characters
 //  for that keyboard: "static Map_IDK2SC m_map_IDK2SC_<KLID>;" e.g.
@@ -81,15 +81,15 @@ BOOL APIENTRY DllMain(HMODULE hModule,
       ClearDeadKeyMaps();
 
       // Clear main map
-      m_mapIKLID2DK2SCSS.clear();
+      m_mapIKLID2DK2SCSSCC.clear();
 
       // Clear user multi-character maps
-      m_mapSCSS2Char2.clear();
-      m_mapSCSS2Char3.clear();
-      m_mapSCSS2Char4.clear();
+      m_mapSCSS2MC2.clear();
+      m_mapSCSS2MC3.clear();
+      m_mapSCSS2MC4.clear();
 
       // Clear user Deadkey Maps
-      m_mmapDK2SCSS.clear();
+      m_mmapDK2SCSSCC.clear();
       break;
   }
 
@@ -122,10 +122,10 @@ OSK_API void OSK_ListKeyboards(UINT &uiKLID, UINT &uiCtrlID)
 
 OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
 {
-  m_mapSCSS2Char2.clear();
-  m_mapSCSS2Char3.clear();
-  m_mapSCSS2Char4.clear();
-  m_mmapDK2SCSS.clear();
+  m_mapSCSS2MC2.clear();
+  m_mapSCSS2MC3.clear();
+  m_mapSCSS2MC4.clear();
+  m_mmapDK2SCSSCC.clear();
 
   stKBImpl.wcMC2 = (wchar_t *)&(wcMC2[0][0]);
   stKBImpl.wcMC3 = (wchar_t *)&(wcMC3[0][0]);
@@ -150,10 +150,10 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
         stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j] = 0;
       }
     }
-    stKBImpl.pmapSCSS2Char2 = NULL;
-    stKBImpl.pmapSCSS2Char3 = NULL;
-    stKBImpl.pmapSCSS2Char4 = NULL;
-    stKBImpl.pmmapDK2SCSS   = NULL;
+    stKBImpl.pmapSCSS2MC2 = NULL;
+    stKBImpl.pmapSCSS2MC3 = NULL;
+    stKBImpl.pmapSCSS2MC4 = NULL;
+    stKBImpl.pmmapDK2SCSSCC = NULL;
     return FALSE;
   }
 
@@ -297,11 +297,11 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     const Vct_ISCSS2MC * pvctISCSS2MC = MC2[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc2;
     for (citer_mc2 = pvctISCSS2MC->begin(); citer_mc2 != pvctISCSS2MC->end(); citer_mc2++) {
-      m_mapSCSS2Char2.insert(std::make_pair(citer_mc2->uiSCSS, citer_mc2->uiOffset));
+      m_mapSCSS2MC2.insert(std::make_pair(citer_mc2->uiSCSS, citer_mc2->uiOffset));
     }
-    stKBImpl.pmapSCSS2Char2 = &m_mapSCSS2Char2;
+    stKBImpl.pmapSCSS2MC2 = &m_mapSCSS2MC2;
   } else
-    stKBImpl.pmapSCSS2Char2 = NULL;
+    stKBImpl.pmapSCSS2MC2 = NULL;
 
   bFound = false;
   for (int i = 0; i < NUM_MC3; i++) {
@@ -316,11 +316,11 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     const Vct_ISCSS2MC * pvctISCSS2MC = MC3[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc3;
     for (citer_mc3 = pvctISCSS2MC->begin(); citer_mc3 != pvctISCSS2MC->end(); citer_mc3++) {
-      m_mapSCSS2Char3.insert(std::make_pair(citer_mc3->uiSCSS, citer_mc3->uiOffset));
+      m_mapSCSS2MC3.insert(std::make_pair(citer_mc3->uiSCSS, citer_mc3->uiOffset));
     }
-    stKBImpl.pmapSCSS2Char3 = &m_mapSCSS2Char3;
+    stKBImpl.pmapSCSS2MC3 = &m_mapSCSS2MC3;
   } else
-    stKBImpl.pmapSCSS2Char3 = NULL;
+    stKBImpl.pmapSCSS2MC3 = NULL;
 
   bFound = false;
   for (int i = 0; i < NUM_MC4; i++) {
@@ -335,33 +335,33 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     const Vct_ISCSS2MC * pvctISCSS2MC = MC4[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc4;
     for (citer_mc4 = pvctISCSS2MC->begin(); citer_mc4 != pvctISCSS2MC->end(); citer_mc4++) {
-      m_mapSCSS2Char4.insert(std::make_pair(citer_mc4->uiSCSS, citer_mc4->uiOffset));
+      m_mapSCSS2MC4.insert(std::make_pair(citer_mc4->uiSCSS, citer_mc4->uiOffset));
     }
-    stKBImpl.pmapSCSS2Char4 = &m_mapSCSS2Char4;
+    stKBImpl.pmapSCSS2MC4 = &m_mapSCSS2MC4;
   } else
-    stKBImpl.pmapSCSS2Char4 = NULL;
+    stKBImpl.pmapSCSS2MC4 = NULL;
 
-  Iter_Map_IKLID2DK2SCSS iter = m_mapIKLID2DK2SCSS.find(uiKLID);
+  Iter_Map_IKLID2DK2SCSSCC iter = m_mapIKLID2DK2SCSSCC.find(uiKLID);
 
-  if (iter != m_mapIKLID2DK2SCSS.end()) {
+  if (iter != m_mapIKLID2DK2SCSSCC.end()) {
     // Build the DeadKey multi-map for the caller
-    Map_IDK2SCSS *pmapIDK2SCSS = iter->second;
-    Iter_Map_IDK2SCSS iter_xdk;
-    for (iter_xdk = pmapIDK2SCSS->begin(); iter_xdk != pmapIDK2SCSS->end(); iter_xdk++) {
+    Map_IDK2SCSSCC *pmapIDK2SCSSCC = iter->second;
+    Iter_Map_IDK2SCSSCC iter_xdk;
+    for (iter_xdk = pmapIDK2SCSSCC->begin(); iter_xdk != pmapIDK2SCSSCC->end(); iter_xdk++) {
       wchar_t dk = iter_xdk->first;
       const Vct_IDeadkeys * pvIDeadKeys = iter_xdk->second;
       CIter_Vct_IDeadkeys citer_vidks;
       for (citer_vidks = pvIDeadKeys->begin();  citer_vidks != pvIDeadKeys->end(); citer_vidks++) {
-        st_SCSS2DKChar stSCSS2DKChar;
-        stSCSS2DKChar.SC = citer_vidks->SC;
-        stSCSS2DKChar.SS = citer_vidks->SS;
-        stSCSS2DKChar.wcDKchar = wcDK[citer_vidks->uiDKOffset];
-        m_mmapDK2SCSS.insert(std::make_pair(dk, stSCSS2DKChar));
+        st_SCSSCC stSCSSCC;
+        stSCSSCC.SC = citer_vidks->SC;
+        stSCSSCC.SS = citer_vidks->SS;
+        stSCSSCC.wcCC = wcDK[citer_vidks->uiDKOffset];
+        m_mmapDK2SCSSCC.insert(std::make_pair(dk, stSCSSCC));
       }
     }
-    stKBImpl.pmmapDK2SCSS   = &m_mmapDK2SCSS;
+    stKBImpl.pmmapDK2SCSSCC = &m_mmapDK2SCSSCC;
   } else
-    stKBImpl.pmmapDK2SCSS   = NULL;
+    stKBImpl.pmmapDK2SCSSCC = NULL;
 
   return TRUE;
 }
@@ -375,7 +375,7 @@ static void SetupDeadKeyMaps()
 
 // Functor for for_each
 struct Clear_Map {
-  void operator()(std::pair<unsigned int, Map_IDK2SCSS *> p)
+  void operator()(std::pair<unsigned int, Map_IDK2SCSSCC *> p)
   {
     p.second->clear();
   }
@@ -384,5 +384,5 @@ struct Clear_Map {
 static void ClearDeadKeyMaps()
 {
   // Clear the deadkey_combined character maps
-  for_each(m_mapIKLID2DK2SCSS.begin(), m_mapIKLID2DK2SCSS.end(), Clear_Map());
+  for_each(m_mapIKLID2DK2SCSSCC.begin(), m_mapIKLID2DK2SCSSCC.end(), Clear_Map());
 }
