@@ -1379,14 +1379,14 @@ namespace KeyboardLayouts {
         }
 
         if (alDead.Count > 0) {
-          sw_OSK_Define_DeadKey_DataMaps.WriteLine("  static Map_IDK2SCSS m_map_IDK2SCSS_{0};", kbl.Key);
+          sw_OSK_Define_DeadKey_DataMaps.WriteLine("  static Map_IDK2SCSSCC m_map_IDK2SCSSCC_{0};", kbl.Key);
         }
 
         bool bFirst = alDead.Count > 0;
         foreach (DeadKey dk in alDead) {
           if (bFirst) {
             sw_OSK_DeadKey_Data.WriteLine("\r\n//\r\n// Keyboard {0} - {1} deadkeys\r\n//", kbl.Key, kbl.Name);
-            sw_OSK_Insert_DeadKey_DataMaps.WriteLine("\r\n  m_mapIKLID2DK2SCSS.insert(std::make_pair(0x{0}, &m_map_IDK2SCSS_{0}));",
+            sw_OSK_Insert_DeadKey_DataMaps.WriteLine("\r\n  m_mapIKLID2DK2SCSSCC.insert(std::make_pair(0x{0}, &m_map_IDK2SCSSCC_{0}));",
                                                     kbl.Key);
             bFirst = false;
           }
@@ -1428,7 +1428,7 @@ namespace KeyboardLayouts {
           sw_OSK_DeadKey_Data.Write("                                                     ");
           sw_OSK_DeadKey_Data.WriteLine("dtaDeadkey_{0}_x{1} + {2});", kbl.Key,
                                         ((ushort)dk.DeadCharacter).ToString("x4"), dk.Count);
-          sw_OSK_Insert_DeadKey_DataMaps.WriteLine("  m_map_IDK2SCSS_{0}.insert(std::make_pair(0x{1:x4}, &vctDeadkey_{0}_x{1}));",
+          sw_OSK_Insert_DeadKey_DataMaps.WriteLine("  m_map_IDK2SCSSCC_{0}.insert(std::make_pair(0x{1:x4}, &vctDeadkey_{0}_x{1}));",
                                                    kbl.Key, ((ushort)dk.DeadCharacter).ToString("x4"));
         }
         sw_OSK_KB_Data.WriteLine("\r\n};");

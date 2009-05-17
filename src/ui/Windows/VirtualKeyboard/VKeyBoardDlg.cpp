@@ -493,6 +493,13 @@ void CVKeyBoardDlg::OnInsert()
 
 void CVKeyBoardDlg::OnCancel()
 {
+  // If pressed when a Dead Key is active, just cancel this
+  if (m_bDeadKeyActive) {
+    SetDeadKeyEnvironment(false);
+    SetButtons();
+    return;
+  }
+
   // Cancel dialog - modeless - just hide
   ShowWindow(SW_HIDE);
 }
@@ -548,8 +555,8 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
     wc_temp = lpwtxt[0];
     cs_wtxt.ReleaseBuffer();
 
-    Iter_MMap_DK2SCSS iter_DK2SCSS = m_stKBImpl.pmmapDK2SCSS->find(wc_temp);
-    if (iter_DK2SCSS == m_stKBImpl.pmmapDK2SCSS->end()) {
+    Iter_MMap_DK2SCSSCC iter_DK2SCSSCC = m_stKBImpl.pmmapDK2SCSSCC->find(wc_temp);
+    if (iter_DK2SCSSCC == m_stKBImpl.pmmapDK2SCSSCC->end()) {
       TRACE(_T("OnKeys; Unknown deadkey pressed!"));
       ASSERT(0);
     } else {
@@ -1007,7 +1014,7 @@ void CVKeyBoardDlg::SetNormalButtons()
   } else {
     // Normal keys
     Iter_Map_st_SC2CHAR iter_sc;
-    CIter_Map_SCSS2Char citer_scss;
+    CIter_Map_SCSS2MC citer_scss;
     CString cs_temp;
     wchar_t wc_temp;
     int index;
@@ -1066,8 +1073,8 @@ void CVKeyBoardDlg::SetNormalButtons()
             // the Unicode standard and so we are covered.
             switch ((short int)wc_temp) {
               case -2:
-                citer_scss = m_stKBImpl.pmapSCSS2Char2->find(uiSCSS);
-                if (citer_scss != m_stKBImpl.pmapSCSS2Char2->end()) {
+                citer_scss = m_stKBImpl.pmapSCSS2MC2->find(uiSCSS);
+                if (citer_scss != m_stKBImpl.pmapSCSS2MC2->end()) {
                   wchar_t pctemp2[3] = {0, 0, 0};
                   memcpy((void *)&pctemp2[0], (void *)&m_stKBImpl.wcMC2[citer_scss->second * 2 * sizeof(wchar_t)], 2 * sizeof(wchar_t));
                   cs_temp = pctemp2;
@@ -1075,8 +1082,8 @@ void CVKeyBoardDlg::SetNormalButtons()
                   cs_temp = wc_temp;
                 break;
               case -3:
-                citer_scss = m_stKBImpl.pmapSCSS2Char3->find(uiSCSS);
-                if (citer_scss != m_stKBImpl.pmapSCSS2Char3->end()) {
+                citer_scss = m_stKBImpl.pmapSCSS2MC3->find(uiSCSS);
+                if (citer_scss != m_stKBImpl.pmapSCSS2MC3->end()) {
                   wchar_t pctemp3[4] = {0, 0, 0, 0};
                   memcpy((void *)&pctemp3[0], (void *)&m_stKBImpl.wcMC3[citer_scss->second * 3 * sizeof(wchar_t)], 3 * sizeof(wchar_t));
                   cs_temp = pctemp3;
@@ -1084,8 +1091,8 @@ void CVKeyBoardDlg::SetNormalButtons()
                   cs_temp = wc_temp;
                 break;
               case -4:
-                citer_scss = m_stKBImpl.pmapSCSS2Char4->find(uiSCSS);
-                if (citer_scss != m_stKBImpl.pmapSCSS2Char4->end()) {
+                citer_scss = m_stKBImpl.pmapSCSS2MC4->find(uiSCSS);
+                if (citer_scss != m_stKBImpl.pmapSCSS2MC4->end()) {
                   wchar_t pctemp4[5] = {0, 0, 0, 0, 0};
                   memcpy((void *)&pctemp4[0], (void *)&m_stKBImpl.wcMC4[citer_scss->second * 4 * sizeof(wchar_t)], 4 * sizeof(wchar_t));
                   cs_temp = pctemp4;
@@ -1164,10 +1171,10 @@ void CVKeyBoardDlg::SetDeadKeyButtons()
 
   // Now put back associated combination values
   CString cs_temp;
-  Iter_MMap_DK2SCSS iter_mm, iter_low, iter_up;
+  Iter_MMap_DK2SCSSCC iter_mm, iter_low, iter_up;
 
-  iter_low = m_stKBImpl.pmmapDK2SCSS->lower_bound(m_wcDeadKey);
-  iter_up = m_stKBImpl.pmmapDK2SCSS->upper_bound(m_wcDeadKey);
+  iter_low = m_stKBImpl.pmmapDK2SCSSCC->lower_bound(m_wcDeadKey);
+  iter_up = m_stKBImpl.pmmapDK2SCSSCC->upper_bound(m_wcDeadKey);
 
   // Only 2 states are saved for Dead Keys - shifted or not.
   // Shifted   == Shift OR CapsLock
@@ -1186,7 +1193,7 @@ void CVKeyBoardDlg::SetDeadKeyButtons()
       continue;
 
     std::vector<BYTE>::size_type index = iter_sc - m_vsc.begin();
-    cs_temp = iter_mm->second.wcDKchar;
+    cs_temp = iter_mm->second.wcCC;
 
     if (m_vsc[index] == 0x39) {
       // Space Bar
@@ -1496,6 +1503,12 @@ void CVKeyBoardDlg::SetDeadKeyEnvironment(const bool bState)
     m_State &= ~(VST_SHIFT | VST_LCTRL | VST_ALTGR | VST_RCTRL | VST_CAPSLOCK);
   } else {
     m_State = m_SaveState;
+
+    m_bShift = m_bSaveShift;
+    m_bLCtrl = m_bSaveLCtrl;
+    m_bRCtrl = m_bSaveRCtrl;
+    m_bAltGr = m_bSaveAltGr;
+    m_bCapsLock = m_bSaveCapsLock;
   }
 
   m_cbxKeyBoards.EnableWindow(bEnable);
@@ -1637,7 +1650,7 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
     LOGFONT lf;
     memset(&lf, 0, sizeof(LOGFONT));
     lf.lfHeight = -16;
-    lf.lfWeight = FW_SEMIBOLD;
+    lf.lfWeight = FW_NORMAL;
     wcsncpy_s(lf.lfFaceName, LF_FACESIZE, tch_fontname, _tcslen(tch_fontname));
     lf.lfPitchAndFamily = FF_MODERN | FIXED_PITCH;
     m_pPassphraseFont->CreateFontIndirect(&lf);
