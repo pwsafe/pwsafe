@@ -1223,7 +1223,7 @@ void CVKeyBoardDlg::OnChangeKeyboard()
     return;
 
   // Get the requested layout
-  UINT uiKLID = m_cbxKeyBoards.GetItemData(isel);
+  UINT uiKLID = (UINT)m_cbxKeyBoards.GetItemData(isel);
   if (uiKLID == m_uiKLID)
     return;
 
@@ -1638,7 +1638,7 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
     memset(&lf, 0, sizeof(LOGFONT));
     lf.lfHeight = -16;
     lf.lfWeight = FW_SEMIBOLD;
-    _tcsncpy(lf.lfFaceName, tch_fontname, _tcslen(tch_fontname));
+    wcsncpy_s(lf.lfFaceName, LF_FACESIZE, tch_fontname, _tcslen(tch_fontname));
     lf.lfPitchAndFamily = FF_MODERN | FIXED_PITCH;
     m_pPassphraseFont->CreateFontIndirect(&lf);
   }
