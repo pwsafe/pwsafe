@@ -1269,10 +1269,6 @@ void CVKeyBoardDlg::OnChangeKeyboardType()
 {
   UpdateData(TRUE);
 
-  // Reset numbers and scan codes
-  m_bRandom = false;
-  m_vkbb_Randomize.SetPushedState(m_bRandom);
-
   // Set up characters
   ProcessKeyboard(m_uiKLID, false);
 
@@ -1310,6 +1306,10 @@ void CVKeyBoardDlg::ProcessKeyboard(const UINT uiKLID, const bool bSetType)
 {
   BOOL brc = m_pGetKBData(uiKLID, m_stKBImpl);
   ASSERT(brc);
+
+  // Reset numbers and scan codes
+  m_bRandom = false;
+  m_vkbb_Randomize.SetPushedState(false);
 
   m_bAltGrChars = m_stKBImpl.stVKBD.bsValidSpecials.test(g);
 
