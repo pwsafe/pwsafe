@@ -107,6 +107,7 @@ void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp)
   password = pwchars.MakePassword();
 
   SetClipboardData(password);
+  UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 
 bool DboxMain::SetPasswordPolicy(PWPolicy &pwp)

@@ -1096,6 +1096,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype)
                                     ci->GetNotes());
       LaunchBrowser(ci->GetURL().c_str(), sxAutotype, bDoAutotype);
       SetClipboardData(ci->GetPassword());
+      UpdateLastClipboardAction(CItemData::PASSWORD);
       UpdateAccessTime(ci_original);
     }
   }
