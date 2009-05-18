@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl"?>
+
+<!--
+    Special Notes:
+    1. Korean keyboard:
+          'b' == English
+          'g' == Korean
+    1. Japanese keyboard:
+          'b' == English (only one width)
+          'l' == Japanese Kana + Hiragana
+          'g' == Japanese Kana + Katakana (full width)
+          'r' == Japanese Kana + Katakana (half width)
+-->
+
+<keyboards xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="user_keyboards.xsd">
+  <keyboard klid="0001FFFF" kname="Chinese ChaJei">
+    <key scancode="39" b="0020" bC="0020" sb="0020" sbC="0020" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="29" b="20ac" bC="20ac" sb="007e" sbC="007e" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="02" b="0031" bC="0031" sb="0021" sbC="0021" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="03" b="0032" bC="0032" sb="0040" sbC="0040" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="04" b="0033" bC="0033" sb="0023" sbC="0023" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="05" b="0034" bC="0034" sb="0024" sbC="0024" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="06" b="0035" bC="0035" sb="0025" sbC="0025" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="07" b="0036" bC="0036" sb="005e" sbC="005e" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="08" b="0037" bC="0037" sb="0026" sbC="0026" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="09" b="0038" bC="0038" sb="002a" sbC="002a" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0a" b="0039" bC="0039" sb="0029" sbC="0029" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0b" b="0030" bC="0030" sb="0028" sbC="0028" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0c" b="002d" bC="002d" sb="005f" sbC="005f" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0d" b="003d" bC="003d" sb="002b" sbC="002b" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="10" b="624b" bC="624b" sb="0071" sbC="0051" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="11" b="7530" bC="7530" sb="0077" sbC="0057" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="12" b="6c34" bC="6c34" sb="0065" sbC="0045" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="13" b="53e3" bC="53e3" sb="0072" sbC="0052" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="14" b="5eff" bC="5eff" sb="0074" sbC="0054" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="15" b="535c" bC="535c" sb="0079" sbC="0059" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="16" b="5c71" bC="5c71" sb="0075" sbC="0055" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="17" b="6208" bC="6208" sb="0069" sbC="0049" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="18" b="4eba" bC="4eba" sb="006f" sbC="004f" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="19" b="5fc3" bC="5fc3" sb="0070" sbC="0050" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1a" b="005b" bC="005b" sb="007b" sbC="007b" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1b" b="005d" bC="005d" sb="007d" sbC="007d" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2b" b="005c" bC="005c" sb="007c" sbC="007c" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1e" b="65e5" bC="65e5" sb="0061" sbC="0041" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1f" b="5c38" bC="5c38" sb="0073" sbC="0053" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="20" b="6728" bC="6728" sb="0064" sbC="0044" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="21" b="706b" bC="706b" sb="0066" sbC="0046" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="22" b="571f" bC="571f" sb="0067" sbC="0047" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="23" b="7af9" bC="7af9" sb="0068" sbC="0048" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="24" b="5341" bC="5341" sb="006a" sbC="004a" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="25" b="5927" bC="5927" sb="006b" sbC="004b" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="26" b="4e2d" bC="4e2d" sb="006c" sbC="004c" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="27" b="003b" bC="003b" sb="003a" sbC="003a" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="28" b="0027" bC="0027" sb="0022" sbC="0022" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2c" b="ff3a" bC="ff3a" sb="007a" sbC="005a" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2d" b="96e3" bC="96e3" sb="0078" sbC="0058" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2e" b="91d1" bC="91d1" sb="0063" sbC="0043" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2f" b="5973" bC="5973" sb="0076" sbC="0056" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="30" b="6708" bC="6708" sb="0062" sbC="0042" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="31" b="5f13" bC="5f13" sb="006e" sbC="004e" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="32" b="4e00" bC="4e00" sb="006d" sbC="004d" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="33" b="002c" bC="002c" sb="003c" sbC="003c" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="34" b="002e" bC="002e" sb="003e" sbC="003e" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="35" b="002f" bC="002f" sb="003f" sbC="003f" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+  </keyboard>
+  <keyboard klid="0002FFFF" kname="Chinese Bopomofo">
+    <key scancode="39" b="0020" bC="0020" sb="0020" sbC="0020" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="29" b="20ac" bC="20ac" sb="007e" sbC="007e" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="02" b="3105" bC="3105" sb="0021" sbC="0021" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="03" b="3109" bC="3109" sb="0040" sbC="0040" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="04" b="02c7" bC="02c7" sb="0023" sbC="0023" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="05" b="02bd" bC="02bd" sb="0024" sbC="0024" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="06" b="3113" bC="3113" sb="0025" sbC="0025" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="07" b="02ca" bC="02ca" sb="005e" sbC="005e" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="08" b="02d9" bC="02d9" sb="0026" sbC="0026" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="09" b="311a" bC="311a" sb="002a" sbC="002a" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0a" b="311e" bC="311e" sb="0029" sbC="0029" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0b" b="3122" bC="3122" sb="0028" sbC="0028" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0c" b="3126" bC="3126" sb="005f" sbC="005f" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0d" b="003d" bC="003d" sb="002b" sbC="002b" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="10" b="3106" bC="3106" sb="0071" sbC="0051" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="11" b="310a" bC="310a" sb="0077" sbC="0057" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="12" b="310d" bC="310d" sb="0065" sbC="0045" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="13" b="3110" bC="3110" sb="0072" sbC="0052" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="14" b="3114" bC="3114" sb="0074" sbC="0054" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="15" b="3117" bC="3117" sb="0079" sbC="0059" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="16" b="3127" bC="3127" sb="0075" sbC="0055" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="17" b="311b" bC="311b" sb="0069" sbC="0049" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="18" b="311f" bC="311f" sb="006f" sbC="004f" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="19" b="3123" bC="3123" sb="0070" sbC="0050" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1a" b="005b" bC="005b" sb="007b" sbC="007b" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1b" b="005d" bC="005d" sb="007d" sbC="007d" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2b" b="005c" bC="005c" sb="007c" sbC="007c" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1e" b="3107" bC="3107" sb="0061" sbC="0041" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1f" b="310b" bC="310b" sb="0073" sbC="0053" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="20" b="310e" bC="310e" sb="0064" sbC="0044" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="21" b="3111" bC="3111" sb="0066" sbC="0046" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="22" b="3115" bC="3115" sb="0067" sbC="0047" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="23" b="3118" bC="3118" sb="0068" sbC="0048" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="24" b="3128" bC="3128" sb="006a" sbC="004a" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="25" b="311c" bC="311c" sb="006b" sbC="004b" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="26" b="3120" bC="3120" sb="006c" sbC="004c" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="27" b="3124" bC="3124" sb="003a" sbC="003a" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="28" b="0027" bC="0027" sb="0022" sbC="0022" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2c" b="3108" bC="3108" sb="007a" sbC="005a" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2d" b="310c" bC="310c" sb="0078" sbC="0058" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2e" b="310f" bC="310f" sb="0063" sbC="0043" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2f" b="3112" bC="3112" sb="0076" sbC="0056" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="30" b="3116" bC="3116" sb="0062" sbC="0042" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="31" b="3119" bC="3119" sb="006e" sbC="004e" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="32" b="3129" bC="3129" sb="006d" sbC="004d" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="33" b="311d" bC="311d" sb="003c" sbC="003c" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="34" b="3121" bC="3121" sb="003e" sbC="003e" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="35" b="3125" bC="3125" sb="003f" sbC="003f" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+  </keyboard>
+  <keyboard klid="0003FFFF" kname="Korean">
+    <key scancode="39" b="0020" bC="0020" sb="0020" sbC="0020" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="29" b="0060" bC="0060" sb="007e" sbC="007e" l="0000" lC="0000" sl="0000" slC="0000" g="0060" gC="0060" sg="007e" sgC="007e" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="02" b="0031" bC="0031" sb="0021" sbC="0021" l="0000" lC="0000" sl="0000" slC="0000" g="0031" gC="0031" sg="0021" sgC="0021" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="03" b="0032" bC="0032" sb="0040" sbC="0040" l="0000" lC="0000" sl="0000" slC="0000" g="0032" gC="0032" sg="0040" sgC="0040" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="04" b="0033" bC="0033" sb="0023" sbC="0023" l="0000" lC="0000" sl="0000" slC="0000" g="0033" gC="0033" sg="0023" sgC="0023" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="05" b="0034" bC="0034" sb="0024" sbC="0024" l="0000" lC="0000" sl="0000" slC="0000" g="0034" gC="0034" sg="0024" sgC="0024" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="06" b="0035" bC="0035" sb="0025" sbC="0025" l="0000" lC="0000" sl="0000" slC="0000" g="0035" gC="0035" sg="0025" sgC="0025" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="07" b="0036" bC="0036" sb="005e" sbC="005e" l="0000" lC="0000" sl="0000" slC="0000" g="0036" gC="0036" sg="005e" sgC="005e" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="08" b="0037" bC="0037" sb="0026" sbC="0026" l="0000" lC="0000" sl="0000" slC="0000" g="0037" gC="0037" sg="0026" sgC="0026" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="09" b="0038" bC="0038" sb="002a" sbC="002a" l="0000" lC="0000" sl="0000" slC="0000" g="0038" gC="0038" sg="002a" sgC="002a" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0a" b="0039" bC="0039" sb="0029" sbC="0029" l="0000" lC="0000" sl="0000" slC="0000" g="0039" gC="0039" sg="0029" sgC="0029" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0b" b="0030" bC="0030" sb="0028" sbC="0028" l="0000" lC="0000" sl="0000" slC="0000" g="0030" gC="0030" sg="0028" sgC="0028" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0c" b="002d" bC="002d" sb="005f" sbC="005f" l="0000" lC="0000" sl="0000" slC="0000" g="002d" gC="002d" sg="005f" sgC="005f" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="0d" b="003d" bC="003d" sb="002b" sbC="002b" l="0000" lC="0000" sl="0000" slC="0000" g="003d" gC="003d" sg="002b" sgC="002b" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="10" b="0071" bC="0051" sb="0051" sbC="0071" l="0000" lC="0000" sl="0000" slC="0000" g="1107" gC="1107" sg="1108" sgC="1108" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="11" b="0077" bC="0057" sb="0057" sbC="0077" l="0000" lC="0000" sl="0000" slC="0000" g="110c" gC="110c" sg="110d" sgC="110d" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="12" b="0065" bC="0045" sb="0045" sbC="0065" l="0000" lC="0000" sl="0000" slC="0000" g="1103" gC="1103" sg="1104" sgC="1104" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="13" b="0072" bC="0052" sb="0052" sbC="0072" l="0000" lC="0000" sl="0000" slC="0000" g="1100" gC="1100" sg="1101" sgC="1101" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="14" b="0074" bC="0054" sb="0054" sbC="0074" l="0000" lC="0000" sl="0000" slC="0000" g="1109" gC="1109" sg="110a" sgC="110a" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="15" b="0079" bC="0059" sb="0059" sbC="0079" l="0000" lC="0000" sl="0000" slC="0000" g="116d" gC="116d" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="16" b="0075" bC="0055" sb="0055" sbC="0075" l="0000" lC="0000" sl="0000" slC="0000" g="1167" gC="1167" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="17" b="0069" bC="0049" sb="0049" sbC="0069" l="0000" lC="0000" sl="0000" slC="0000" g="1163" gC="1163" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="18" b="006f" bC="004f" sb="004f" sbC="006f" l="0000" lC="0000" sl="0000" slC="0000" g="1162" gC="1162" sg="1164" sgC="1164" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="19" b="0070" bC="0050" sb="0050" sbC="0070" l="0000" lC="0000" sl="0000" slC="0000" g="1166" gC="1166" sg="1168" sgC="1168" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1a" b="005b" bC="005b" sb="007b" sbC="007b" l="0000" lC="0000" sl="0000" slC="0000" g="005b" gC="005b" sg="007b" sgC="007b" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1b" b="005d" bC="005d" sb="007d" sbC="007d" l="0000" lC="0000" sl="0000" slC="0000" g="005d" gC="005d" sg="007d" sgC="007d" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2b" b="20a9" bC="20a9" sb="007c" sbC="007c" l="0000" lC="0000" sl="0000" slC="0000" g="20a9" gC="20a9" sg="007c" sgC="007c" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1e" b="0061" bC="0041" sb="0041" sbC="0061" l="0000" lC="0000" sl="0000" slC="0000" g="1106" gC="1106" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="1f" b="0073" bC="0053" sb="0053" sbC="0073" l="0000" lC="0000" sl="0000" slC="0000" g="1102" gC="1102" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="20" b="0064" bC="0044" sb="0044" sbC="0064" l="0000" lC="0000" sl="0000" slC="0000" g="110b" gC="110b" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="21" b="0066" bC="0046" sb="0046" sbC="0066" l="0000" lC="0000" sl="0000" slC="0000" g="1105" gC="1105" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="22" b="0067" bC="0047" sb="0047" sbC="0067" l="0000" lC="0000" sl="0000" slC="0000" g="1112" gC="1112" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="23" b="0068" bC="0048" sb="0048" sbC="0068" l="0000" lC="0000" sl="0000" slC="0000" g="1169" gC="1169" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="24" b="006a" bC="004a" sb="004a" sbC="006a" l="0000" lC="0000" sl="0000" slC="0000" g="1165" gC="1165" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="25" b="006b" bC="004b" sb="004b" sbC="006b" l="0000" lC="0000" sl="0000" slC="0000" g="1161" gC="1161" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="26" b="006c" bC="004c" sb="004c" sbC="006c" l="0000" lC="0000" sl="0000" slC="0000" g="1175" gC="1175" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="27" b="003b" bC="003a" sb="003a" sbC="003a" l="0000" lC="0000" sl="0000" slC="0000" g="003b" gC="003b" sg="003a" sgC="003a" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="28" b="0027" bC="0022" sb="0022" sbC="0022" l="0000" lC="0000" sl="0000" slC="0000" g="0027" gC="0027" sg="0022" sgC="0022" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2c" b="007a" bC="005a" sb="005a" sbC="007a" l="0000" lC="0000" sl="0000" slC="0000" g="110f" gC="110f" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2d" b="0078" bC="0058" sb="0058" sbC="0078" l="0000" lC="0000" sl="0000" slC="0000" g="1110" gC="1110" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2e" b="0063" bC="0043" sb="0043" sbC="0063" l="0000" lC="0000" sl="0000" slC="0000" g="110e" gC="110e" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="2f" b="0076" bC="0056" sb="0056" sbC="0076" l="0000" lC="0000" sl="0000" slC="0000" g="1111" gC="1111" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="30" b="0062" bC="0042" sb="0042" sbC="0062" l="0000" lC="0000" sl="0000" slC="0000" g="1172" gC="1172" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="31" b="006e" bC="004e" sb="004e" sbC="006e" l="0000" lC="0000" sl="0000" slC="0000" g="116e" gC="116e" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="32" b="006d" bC="004d" sb="004d" sbC="006d" l="0000" lC="0000" sl="0000" slC="0000" g="1173" gC="1173" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="33" b="002c" bC="002c" sb="003c" sbC="003c" l="0000" lC="0000" sl="0000" slC="0000" g="002c" gC="002c" sg="003c" sgC="003c" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="34" b="002e" bC="002e" sb="003e" sbC="003e" l="0000" lC="0000" sl="0000" slC="0000" g="002e" gC="002e" sg="003e" sgC="003e" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="35" b="002f" bC="002f" sb="003f" sbC="003f" l="0000" lC="0000" sl="0000" slC="0000" g="002f" gC="002f" sg="003f" sgC="003f" r="0000" rC="0000" sr="0000" srC="0000" />
+  </keyboard>
+  <keyboard klid="0004FFFF" kname="Japanese">
+    <key scancode="39" b="0020" bC="0020" sb="0020" sbC="0020" l="0000" lC="0000" sl="0000" slC="0000" g="0000" gC="0000" sg="0000" sgC="0000" r="0000" rC="0000" sr="0000" srC="0000" />
+    <key scancode="29" b="0060" bC="0060" sb="007e" sbC="007e" l="308d" lC="308d" sl="308d" slC="308d" g="30ed" gC="30ed" sg="30ed" sgC="30ed" r="ff9b" rC="ff9b" sr="ff9b" srC="ff9b" />
+    <key scancode="02" b="0031" bC="0031" sb="0021" sbC="0021" l="306c" lC="306c" sl="306c" slC="306c" g="30cc" gC="30cc" sg="30cc" sgC="30cc" r="ff87" rC="ff87" sr="ff87" srC="ff87" />
+    <key scancode="03" b="0032" bC="0032" sb="0040" sbC="0040" l="3075" lC="3075" sl="3075" slC="3075" g="30d5" gC="30d5" sg="30d5" sgC="30d5" r="ff8c" rC="ff8c" sr="ff8c" srC="ff8c" />
+    <key scancode="04" b="0033" bC="0033" sb="0023" sbC="0023" l="3042" lC="3042" sl="3041" slC="3041" g="30a2" gC="30a2" sg="30a1" sgC="30a1" r="ff71" rC="ff71" sr="ff67" srC="ff67" />
+    <key scancode="05" b="0034" bC="0034" sb="0024" sbC="0024" l="3046" lC="3046" sl="3045" slC="3045" g="30a6" gC="30a6" sg="30a5" sgC="30a5" r="ff73" rC="ff73" sr="ff69" srC="ff69" />
+    <key scancode="06" b="0035" bC="0035" sb="0025" sbC="0025" l="3048" lC="3048" sl="3047" slC="3047" g="30a8" gC="30a8" sg="30a7" sgC="30a7" r="ff74" rC="ff74" sr="ff6a" srC="ff6a" />
+    <key scancode="07" b="0036" bC="0036" sb="005e" sbC="005e" l="304a" lC="304a" sl="3049" slC="3049" g="30aa" gC="30aa" sg="30a9" sgC="30a9" r="ff75" rC="ff75" sr="ff6b" srC="ff6b" />
+    <key scancode="08" b="0037" bC="0037" sb="0026" sbC="0026" l="3084" lC="3084" sl="3083" slC="3083" g="30e4" gC="30e4" sg="30e3" sgC="30a3" r="ff94" rC="ff94" sr="ff6c" srC="ff6c" />
+    <key scancode="09" b="0038" bC="0038" sb="002a" sbC="002a" l="3086" lC="3086" sl="3085" slC="3085" g="30e6" gC="30e6" sg="30e5" sgC="30e5" r="ff95" rC="ff95" sr="ff6d" srC="ff6d" />
+    <key scancode="0a" b="0039" bC="0039" sb="0029" sbC="0029" l="3088" lC="3088" sl="3087" slC="3087" g="30e8" gC="30e8" sg="30e7" sgC="30e7" r="ff96" rC="ff96" sr="ff6e" srC="ff6e" />
+    <key scancode="0b" b="0030" bC="0030" sb="0028" sbC="0028" l="308f" lC="308f" sl="3092" slC="3092" g="30ef" gC="30ef" sg="30f2" sgC="30f2" r="ff9c" rC="ff9c" sr="ff66" srC="ff66" />
+    <key scancode="0c" b="002d" bC="002d" sb="005f" sbC="005f" l="307b" lC="307b" sl="30fc" slC="30fc" g="30db" gC="30db" sg="30fc" sgC="30fc" r="ff8e" rC="ff8e" sr="ff70" srC="ff70" />
+    <key scancode="0d" b="003d" bC="003d" sb="002b" sbC="002b" l="3078" lC="3078" sl="3078" slC="3078" g="30d8" gC="30d8" sg="30d8" sgC="30d8" r="ff8d" rC="ff8d" sr="ff8d" srC="ff8d" />
+    <key scancode="10" b="0071" bC="0051" sb="0051" sbC="0071" l="305f" lC="305f" sl="305f" slC="305f" g="30bf" gC="30bf" sg="30bf" sgC="30bf" r="ff80" rC="ff80" sr="ff80" srC="ff80" />
+    <key scancode="11" b="0077" bC="0057" sb="0057" sbC="0077" l="3066" lC="3066" sl="3066" slC="3066" g="30c6" gC="30c6" sg="30c6" sgC="30c6" r="ff83" rC="ff83" sr="ff83" srC="ff83" />
+    <key scancode="12" b="0065" bC="0045" sb="0045" sbC="0065" l="3044" lC="3044" sl="3043" slC="3043" g="30a4" gC="30a4" sg="30a3" sgC="30a3" r="ff72" rC="ff72" sr="ff68" srC="ff68" />
+    <key scancode="13" b="0072" bC="0052" sb="0052" sbC="0072" l="3059" lC="3059" sl="3059" slC="3059" g="30b9" gC="30b9" sg="30b9" sgC="30b9" r="ff7d" rC="ff7d" sr="ff7d" srC="ff7d" />
+    <key scancode="14" b="0074" bC="0054" sb="0054" sbC="0074" l="304b" lC="304b" sl="304b" slC="304b" g="30ab" gC="30ab" sg="30ab" sgC="30ab" r="ff76" rC="ff76" sr="ff76" srC="ff76" />
+    <key scancode="15" b="0079" bC="0059" sb="0059" sbC="0079" l="3093" lC="3093" sl="3093" slC="3093" g="30f3" gC="30f3" sg="30f3" sgC="30f3" r="ff9d" rC="ff9d" sr="ff9d" srC="ff9d" />
+    <key scancode="16" b="0075" bC="0055" sb="0055" sbC="0075" l="306a" lC="306a" sl="306a" slC="306a" g="30ca" gC="30ca" sg="30ca" sgC="30ca" r="ff85" rC="ff85" sr="ff85" srC="ff85" />
+    <key scancode="17" b="0069" bC="0049" sb="0049" sbC="0069" l="306b" lC="306b" sl="306b" slC="306b" g="30cb" gC="30cb" sg="30cb" sgC="30cb" r="ff86" rC="ff86" sr="ff86" srC="ff86" />
+    <key scancode="18" b="006f" bC="004f" sb="004f" sbC="006f" l="3089" lC="3089" sl="3089" slC="3089" g="30e9" gC="30e9" sg="30e9" sgC="30e9" r="ff97" rC="ff97" sr="ff97" srC="ff97" />
+    <key scancode="19" b="0070" bC="0050" sb="0050" sbC="0070" l="305b" lC="305b" sl="305b" slC="305b" g="30bb" gC="30bb" sg="30bb" sgC="30bb" r="ff7e" rC="ff7e" sr="ff7e" srC="ff7e" />
+    <key scancode="1a" b="005b" bC="005b" sb="007b" sbC="007b" l="309b" lC="309b" sl="300c" slC="300c" g="309b" gC="309b" sg="300c" sgC="300c" r="ff9e" rC="ff9e" sr="ff0c" srC="ff0c" />
+    <key scancode="1b" b="005d" bC="005d" sb="007d" sbC="007d" l="309c" lC="309c" sl="300d" slC="300d" g="309c" gC="309c" sg="300d" sgC="300d" r="ff9f" rC="ff9f" sr="ff0d" srC="ff0d" />
+    <key scancode="7d" b="00a5" bC="00a5" sb="007c" sbC="007c" l="3080" lC="3080" sl="3080" slC="3080" g="30e0" gC="30e0" sg="30e0" sgC="30e0" r="ff91" rC="ff91" sr="ff91" srC="ff91" />
+    <key scancode="1e" b="0061" bC="0041" sb="0041" sbC="0061" l="3061" lC="3061" sl="3061" slC="3061" g="30c1" gC="30c1" sg="30c1" sgC="30c1" r="ff81" rC="ff81" sr="ff81" srC="ff81" />
+    <key scancode="1f" b="0073" bC="0053" sb="0053" sbC="0073" l="3068" lC="3068" sl="3068" slC="3068" g="30c8" gC="30c8" sg="30c8" sgC="30c8" r="ff84" rC="ff84" sr="ff84" srC="ff84" />
+    <key scancode="20" b="0064" bC="0044" sb="0044" sbC="0064" l="3057" lC="3057" sl="3057" slC="3057" g="30b7" gC="30b7" sg="30b7" sgC="30b7" r="ff7c" rC="ff7c" sr="ff7c" srC="ff7c" />
+    <key scancode="21" b="0066" bC="0046" sb="0046" sbC="0066" l="306f" lC="306f" sl="306f" slC="306f" g="30cf" gC="30cf" sg="30cf" sgC="30cf" r="ff8a" rC="ff8a" sr="ff8a" srC="ff8a" />
+    <key scancode="22" b="0067" bC="0047" sb="0047" sbC="0067" l="304d" lC="304d" sl="304d" slC="304d" g="30ad" gC="30ad" sg="30ad" sgC="30ad" r="ff77" rC="ff77" sr="ff77" srC="ff77" />
+    <key scancode="23" b="0068" bC="0048" sb="0048" sbC="0068" l="304f" lC="304f" sl="304f" slC="304f" g="30af" gC="30af" sg="30af" sgC="30af" r="ff78" rC="ff78" sr="ff78" srC="ff78" />
+    <key scancode="24" b="006a" bC="004a" sb="004a" sbC="006a" l="307e" lC="307e" sl="3074" slC="3074" g="30de" gC="30de" sg="30de" sgC="30de" r="ff8f" rC="ff8f" sr="ff8f" srC="ff8f" />
+    <key scancode="25" b="006b" bC="004b" sb="004b" sbC="006b" l="306e" lC="306e" sl="306e" slC="306e" g="30ce" gC="30ce" sg="30ce" sgC="30ce" r="ff89" rC="ff89" sr="ff89" srC="ff89" />
+    <key scancode="26" b="006c" bC="004c" sb="004c" sbC="006c" l="308a" lC="308a" sl="308a" slC="308a" g="30ea" gC="30ea" sg="30ea" sgC="30ea" r="ff98" rC="ff98" sr="ff98" srC="ff98" />
+    <key scancode="27" b="003b" bC="003b" sb="002b" sbC="002b" l="308c" lC="308c" sl="308c" slC="308c" g="30ec" gC="30ec" sg="30ec" sgC="00ec" r="ff9a" rC="ff9a" sr="ff9a" srC="ff9a" />
+    <key scancode="28" b="003a" bC="003a" sb="002a" sbC="002a" l="3051" lC="3051" sl="3051" slC="3051" g="30ba" gC="30ba" sg="30ba" sgC="00ba" r="ff79" rC="ff79" sr="ff79" srC="ff79" />
+    <key scancode="2c" b="007a" bC="005a" sb="005a" sbC="007a" l="3064" lC="3064" sl="3063" slC="3063" g="30c4" gC="30c4" sg="30c4" sgC="30c4" r="ff82" rC="ff82" sr="ff6f" srC="ff6f" />
+    <key scancode="2d" b="0078" bC="0058" sb="0058" sbC="0078" l="3055" lC="3055" sl="3055" slC="3055" g="30b5" gC="30b5" sg="30b5" sgC="30b5" r="ff7b" rC="ff7b" sr="ff7b" srC="ff7b" />
+    <key scancode="2e" b="0063" bC="0043" sb="0043" sbC="0063" l="305d" lC="305d" sl="305d" slC="305d" g="30bd" gC="30bd" sg="30bd" sgC="30bd" r="ff7f" rC="ff7f" sr="ff7f" srC="ff7f" />
+    <key scancode="2f" b="0076" bC="0056" sb="0056" sbC="0076" l="3072" lC="3072" sl="3072" slC="3072" g="30d2" gC="30d2" sg="30d2" sgC="30d2" r="ff8b" rC="ff8b" sr="ff8b" srC="ff8b" />
+    <key scancode="30" b="0062" bC="0042" sb="0042" sbC="0062" l="3053" lC="3053" sl="3053" slC="3053" g="30b3" gC="30b3" sg="30b3" sgC="30b3" r="ff7a" rC="ff7a" sr="ff7a" srC="ff7a" />
+    <key scancode="31" b="006e" bC="004e" sb="004e" sbC="006e" l="307f" lC="307f" sl="307f" slC="307f" g="30df" gC="30df" sg="30df" sgC="30df" r="ff90" rC="ff90" sr="ff90" srC="ff90" />
+    <key scancode="32" b="006d" bC="004d" sb="004d" sbC="006d" l="3082" lC="3082" sl="3082" slC="3082" g="30e2" gC="30e2" sg="30e2" sgC="30e2" r="ff93" rC="ff93" sr="ff93" srC="ff93" />
+    <key scancode="33" b="002c" bC="002c" sb="003c" sbC="003c" l="306d" lC="306d" sl="3001" slC="3001" g="30cd" gC="30cd" sg="3001" sgC="3001" r="ff88" rC="ff88" sr="ff01" srC="ff01" />
+    <key scancode="34" b="002e" bC="002e" sb="003e" sbC="003e" l="308b" lC="308b" sl="3002" slC="3002" g="30eb" gC="30f0" sg="3002" sgC="3002" r="ff99" rC="ff99" sr="ff02" srC="ff02" />
+    <key scancode="35" b="002f" bC="002f" sb="003f" sbC="003f" l="3081" lC="3081" sl="30fb" slC="30fb" g="30e1" gC="30e1" sg="30fb" sgC="30fb" r="ff92" rC="ff92" sr="fffb" srC="fffb" />
+    <key scancode="73" b="005c" bC="005f" sb="003c" sbC="005f" l="3081" lC="3081" sl="30fb" slC="30fb" g="30e1" gC="30e1" sg="30fb" sgC="30fb" r="ff92" rC="ff92" sr="fffb" srC="fffb" />
+  </keyboard>
+</keyboards>
