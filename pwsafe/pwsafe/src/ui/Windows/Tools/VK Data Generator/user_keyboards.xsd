@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:annotation>
+  <xs:documentation xml:lang="en">
+    This XML Schema corresponds to V3.18 of Password Safe.
+    This describes keyboards that cannot be extracted or need extra changes.
+    Each keyboard must have a unique keyboard layout ID (KLID) and name.
+    To make different from those in Winodws, these should end with 'FFF'.
+    The Japanese keyboard is different as there are XX versions.
+    
+    Each keyboard has keys denoted by their scan code,  and then the 
+    definition of the Unicode characters. Dead Keys and Multi-character
+    values are not supported.
+      b = base character (pressing the key without shift, caps, control or alt keys)
+      l = with the Left Control key
+      g = with the Alt Gr key
+      r = with the Right Control key
+    Then each of these can be with or without the Shift and Caps Lock key
+      C = with the Caps Lock key
+      s = with the Shift key (left or right)
+
+    Giving four sets of four:
+      "b, bC, sb, sbC", "l, lC, sl, slC", "g, gC, sg, sgC", "r, rC, sr, srC"
+  </xs:documentation>
+</xs:annotation>
+
+<xs:simpleType name="klidType">
+  <xs:restriction base="xs:hexBinary">
+    <xs:length value="4" fixed="true" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="scType">
+  <xs:restriction base="xs:hexBinary">
+    <xs:length value="1" fixed="true" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="wcharType">
+  <xs:restriction base="xs:hexBinary">
+    <xs:length value="2" fixed="true" />
+  </xs:restriction>
+</xs:simpleType>
+
+  <xs:element name="keyboards">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="keyboard" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="key" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="scancode" type="scType" use="required" />
+                  <xs:attribute name="b"    type="wcharType" use="required" />
+                  <xs:attribute name="bC"   type="wcharType" use="required" />
+                  <xs:attribute name="sb"   type="wcharType" use="required" />
+                  <xs:attribute name="sbC"  type="wcharType" use="required" />
+                  <xs:attribute name="l"    type="wcharType" use="required" />
+                  <xs:attribute name="lC"   type="wcharType" use="required" />
+                  <xs:attribute name="sl"   type="wcharType" use="required" />
+                  <xs:attribute name="slC"  type="wcharType" use="required" />
+                  <xs:attribute name="g"    type="wcharType" use="required" />
+                  <xs:attribute name="gC"   type="wcharType" use="required" />
+                  <xs:attribute name="sg"   type="wcharType" use="required" />
+                  <xs:attribute name="sgC"  type="wcharType" use="required" />
+                  <xs:attribute name="r"    type="wcharType" use="required" />
+                  <xs:attribute name="rC"   type="wcharType" use="required" />
+                  <xs:attribute name="sr"   type="wcharType" use="required" />
+                  <xs:attribute name="srC"  type="wcharType" use="required" />
+                </xs:complexType>
+                <xs:unique name="UniqueScancode">
+                  <xs:selector xpath="key" />
+                  <xs:field xpath="@scancode" />
+                </xs:unique>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="klid" type="klidType" use="required" />
+            <xs:attribute name="kname" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
