@@ -362,6 +362,7 @@ void CDDStatic::SendToClipboard()
   if (m_pci == NULL) {
     if (!m_groupname.empty()) {
       m_pDbx->SetClipboardData(m_groupname);
+      m_pDbx->UpdateLastClipboardAction(CItemData::GROUP);
     }
     return;
   }

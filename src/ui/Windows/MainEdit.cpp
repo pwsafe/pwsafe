@@ -1004,7 +1004,6 @@ void DboxMain::OnCopyPassword()
   }
 
   SetClipboardData(ci->GetPassword());
-
   UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(ci_original);
 }
@@ -1140,6 +1139,7 @@ void DboxMain::OnCopyURL()
   ipos = cs_URL.find(_T("{alt}"));
   if (ipos != StringX::npos)
     cs_URL.replace(ipos, 5, _T(""));
+
   SetClipboardData(cs_URL);
   UpdateLastClipboardAction(CItemData::URL);
   UpdateAccessTime(ci_original);

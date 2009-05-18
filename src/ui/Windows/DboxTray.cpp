@@ -190,6 +190,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
                                   ci.GetNotes());
     LaunchBrowser(ci.GetURL().c_str(), sxAutotype, bDoAutotype);
     SetClipboardData(ci.GetPassword());
+    UpdateLastClipboardAction(CItemData::PASSWORD);
   }
   UpdateAccessTime(&ci);
 }
