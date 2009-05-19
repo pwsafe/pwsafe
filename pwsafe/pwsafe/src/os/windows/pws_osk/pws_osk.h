@@ -14,7 +14,7 @@
 #define _PWS_OSK_H
 #include "voskeys.h"
 
-#define PWS_VERSION 1
+#define VK_DLL_VERSION 1
 
 #ifdef PWS_OSK_EXPORTS
 #define OSK_API __declspec(dllexport)

@@ -417,7 +417,7 @@ void ThisMfcApp::LoadLocalizedStuff()
 
     if (pListKBs == NULL || pGetKBData == NULL || pOSKVersion == NULL)
       TRACE(_T("ThisMfcApp::ThisMfcApp - Unable to get all required OSK functions. OSK not available.\n"));
-    else if (pOSKVersion() != PWS_VERSION) {
+    else if (pOSKVersion() != VK_DLL_VERSION) {
       AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
     } else
       m_bOSK_module = true;

@@ -98,11 +98,17 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 OSK_API int OSK_GetVersion()
 {
-  return PWS_VERSION;
+  // Return current version to ensure caller and DLL are in step
+  // with regard to calling functions and Implemention Structure
+  return VK_DLL_VERSION;
 }
 
 OSK_API void OSK_ListKeyboards(UINT &uiKLID, UINT &uiCtrlID)
 {
+  // Provide list of supported keyboards in this DLL
+  // Called with uiKLID = 0 to intialise and return first entry
+  // Continues returning information. End of list signalled by returning
+  // zero uiKLID.
   static int KLID_index = 0;
 
   if (uiKLID == 0)
@@ -122,6 +128,7 @@ OSK_API void OSK_ListKeyboards(UINT &uiKLID, UINT &uiCtrlID)
 
 OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
 {
+  // Return user's keyboard data
   m_mapSCSS2MC2.clear();
   m_mapSCSS2MC3.clear();
   m_mapSCSS2MC4.clear();
@@ -134,6 +141,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
 
   bool bFound(false);
   int index(0), ivector(0);
+  // Look for this KLID
   for (int i = 0; i < NUM_KEYBOARDS; i++) {
     if (IKLID2VKBD[i].uiKLID == uiKLID) {
       bFound = true;
@@ -143,6 +151,8 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   }
 
   if (!bFound) {
+    // Not found - zero calling Implementation structure
+    // and return FALSE
     for (int i = 0; i < MAX_ROWS; i++) {
       stKBImpl.stVKBD.stSC2CHAR[i].SC = 0;
       stKBImpl.stVKBD.stSC2CHAR[i].bsDeadKey = 0UL;
@@ -161,6 +171,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   stKBImpl.stVKBD.uiCtrlID = pstIVKBD->uiCtrlID;
   stKBImpl.stVKBD.numScanCodes = pstIVKBD->numScanCodes;
 
+  // Build keyboard data (expand offsets to actual key characters)
   bool bLCtrl(false), bAltGr(false), bRCtrl(false);
   for (int i = 0; i < (int)pstIVKBD->numScanCodes; i++) {
     stKBImpl.stVKBD.stSC2CHAR[i].SC = pstIVKBD->stISC2CHAR[i].SC;
@@ -172,12 +183,15 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
       stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j + 8]  = wc_Chars[pstIVKBD->stISC2CHAR[i].uiOffset3][j];
       stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j + 12] = wc_Chars[pstIVKBD->stISC2CHAR[i].uiOffset4][j];
     }
+    // Check if any valid characters to display with Left Control key
     if (!bLCtrl && pstIVKBD->stISC2CHAR[i].uiOffset2 != 0)
       bLCtrl = true;
 
+    // Check if any valid characters to display with AltGr key
     if (!bAltGr && pstIVKBD->stISC2CHAR[i].uiOffset3 != 0)
       bAltGr = true;
 
+    // Check if any valid characters to display with Right Control key
     if (!bRCtrl && pstIVKBD->stISC2CHAR[i].uiOffset4 != 0)
       bRCtrl = true;
   }
@@ -185,6 +199,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   // Set up which special key combinations are valid
   stKBImpl.stVKBD.bsValidSpecials.reset();
   {
+    // First Base character
     bool bSpecials[4] = {false, false, false, false};
     for (int i = 0; i < (int)pstIVKBD->numScanCodes; i++) {
       if (!bSpecials[0] && stKBImpl.stVKBD.stSC2CHAR[i].wcChar[0] != 0)
@@ -210,6 +225,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   }
 
   if (bLCtrl) {
+    // Now Left Control
     bool bSpecials[4] = {false, false, false, false};
     for (int i = 0; i < (int)pstIVKBD->numScanCodes; i++) {
       if (!bSpecials[0] && stKBImpl.stVKBD.stSC2CHAR[i].wcChar[4] != 0)
@@ -235,6 +251,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   }
 
   if (bAltGr) {
+    // Now AltGr
     bool bSpecials[4] = {false, false, false, false};
     for (int i = 0; i < (int)pstIVKBD->numScanCodes; i++) {
       if (!bSpecials[0] && stKBImpl.stVKBD.stSC2CHAR[i].wcChar[8] != 0)
@@ -260,6 +277,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   }
 
   if (bRCtrl) {
+    // Lastly Right Control
     bool bSpecials[4] = {false, false, false, false};
     for (int i = 0; i < (int)pstIVKBD->numScanCodes; i++) {
       if (!bSpecials[0] && stKBImpl.stVKBD.stSC2CHAR[i].wcChar[12] != 0)
@@ -285,6 +303,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   }
 
   bFound = false;
+  // Now look to see if any 2-character 'characters'
   for (int i = 0; i < NUM_MC2; i++) {
     if (MC2[i].uiKLID == uiKLID) {
       bFound = true;
@@ -294,6 +313,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   }
 
   if (bFound) {
+    // Set up map for this keyboard
     const Vct_ISCSS2MC * pvctISCSS2MC = MC2[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc2;
     for (citer_mc2 = pvctISCSS2MC->begin(); citer_mc2 != pvctISCSS2MC->end(); citer_mc2++) {
@@ -304,6 +324,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     stKBImpl.pmapSCSS2MC2 = NULL;
 
   bFound = false;
+  // Now look to see if any 3-character 'characters'
   for (int i = 0; i < NUM_MC3; i++) {
     if (MC3[i].uiKLID == uiKLID) {
       bFound = true;
@@ -313,6 +334,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   }
 
   if (bFound) {
+    // Set up map for this keyboard
     const Vct_ISCSS2MC * pvctISCSS2MC = MC3[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc3;
     for (citer_mc3 = pvctISCSS2MC->begin(); citer_mc3 != pvctISCSS2MC->end(); citer_mc3++) {
@@ -323,6 +345,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     stKBImpl.pmapSCSS2MC3 = NULL;
 
   bFound = false;
+  // Now look to see if any 4-character 'characters'
   for (int i = 0; i < NUM_MC4; i++) {
     if (MC4[i].uiKLID == uiKLID) {
       bFound = true;
@@ -332,6 +355,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   }
 
   if (bFound) {
+    // Set up map for this keyboard
     const Vct_ISCSS2MC * pvctISCSS2MC = MC4[ivector].pvctISCSS2MC;
     CIter_Vct_ISCSS2MC citer_mc4;
     for (citer_mc4 = pvctISCSS2MC->begin(); citer_mc4 != pvctISCSS2MC->end(); citer_mc4++) {
@@ -341,10 +365,13 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   } else
     stKBImpl.pmapSCSS2MC4 = NULL;
 
+  // Now look to see if this keyboard has any Dead Keys
   Iter_Map_IKLID2DK2SCSSCC iter = m_mapIKLID2DK2SCSSCC.find(uiKLID);
 
   if (iter != m_mapIKLID2DK2SCSSCC.end()) {
     // Build the DeadKey multi-map for the caller
+    // It is a multi-map as a single Dead Key may have a number of
+    // associated composite characters - e.g. an accent on multiple vowels
     Map_IDK2SCSSCC *pmapIDK2SCSSCC = iter->second;
     Iter_Map_IDK2SCSSCC iter_xdk;
     for (iter_xdk = pmapIDK2SCSSCC->begin(); iter_xdk != pmapIDK2SCSSCC->end(); iter_xdk++) {
