@@ -88,6 +88,7 @@ BOOL COptionsMisc::OnInitDialog()
     // add the strings in alphabetical order
     int nIndex;
     CString cs_text;
+
     cs_text.LoadString(IDS_DCAAUTOTYPE);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
@@ -97,6 +98,11 @@ BOOL COptionsMisc::OnInitDialog()
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
     m_DCA_to_Index[PWSprefs::DoubleClickBrowse] = nIndex;
+
+    cs_text.LoadString(IDS_DCABROWSEPLUS);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowsePlus);
+    m_DCA_to_Index[PWSprefs::DoubleClickBrowsePlus] = nIndex;
 
     cs_text.LoadString(IDS_DCACOPYNOTES);
     nIndex = m_dblclk_cbox.AddString(cs_text);

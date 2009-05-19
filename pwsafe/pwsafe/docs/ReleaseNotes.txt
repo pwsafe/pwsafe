@@ -19,7 +19,8 @@ None
 
 New Features for 3.17.2
 =======================
-Implement Virtual Keyboards for pass-phrase entry.
+[2793280] Browse+Autotype added to allowed double click actions
+[] Implement Virtual Keyboards for pass-phrase entry.
 
 Bugs fixed in 3.17.1
 ====================

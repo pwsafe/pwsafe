@@ -105,7 +105,8 @@ public:
     DoubleClickAutoType = 2, DoubleClickBrowse = 3, 
     DoubleClickCopyNotes = 4, DoubleClickCopyUsername = 5,
     DoubleClickCopyPasswordMinimize = 6,
-    maxDCA = 6};
+    DoubleClickBrowsePlus = 7,
+    maxDCA = 7};
 
   // for TreeDisplayStatusAtOpen
   enum {minTDS = 0, AllCollapsed = 0, AllExpanded = 1, AsPerLastSave = 2,
