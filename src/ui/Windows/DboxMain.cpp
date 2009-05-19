@@ -1039,6 +1039,9 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
     case PWSprefs::DoubleClickBrowse:
       PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURL);
       break;
+    case PWSprefs::DoubleClickBrowsePlus:
+      PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURLPLUS);
+      break;
     case PWSprefs::DoubleClickCopyNotes:
       OnCopyNotes();
       break;

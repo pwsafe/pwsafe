@@ -304,6 +304,9 @@ void DboxMain::setupBars()
 	  case PWSprefs::DoubleClickCopyPasswordMinimize:
 		statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORDMIN;
 		break;
+      case PWSprefs::DoubleClickBrowsePlus:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSEPLUS;
+        break;
       default:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOMPANY;
     }

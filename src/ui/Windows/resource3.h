@@ -22,6 +22,7 @@
 #define IDS_STATCOPYPASSWORDMIN         5027
 #define IDS_READ_ONLY                   5028
 #define IDS_BLANK                       5029
+#define IDS_STATBROWSEPLUS              5030
 
 // File Dailog filters
 #define IDS_FDF_V3_ALL                  5050
@@ -52,6 +53,7 @@
 #define IDS_DCACOPYUSERNAME             5195
 #define IDS_DCAVIEWEDIT                 5196
 #define IDS_DCACOPYPASSWORDMIN          5197
+#define IDS_DCABROWSEPLUS               5198
 
 // Program strings
 #define IDS_LITTLEENDIAN                5207
