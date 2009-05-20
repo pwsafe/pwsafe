@@ -973,7 +973,9 @@ namespace KeyboardLayouts {
       int iMC4_Offset = -1;
       int iDK_Offset = -1;
       // Initialise Char_List with most used entry
-      // NOTE: This MUST be the first entry as offset == 0 is used in PWS
+      // NOTE: This MUST be the first entry as offset == 0 is used in the DLL
+      // to determine is there are any valid characters to be displayed in
+      // this quartet
       int iOffset = 0;
       Char_List.Add(" 0x0000, 0x0000, 0x0000, 0x0000");
       Char_Use_Count.Add(0);
@@ -983,14 +985,18 @@ namespace KeyboardLayouts {
       StreamWriter sw_OSK_KLID2VKBDX_Table = new StreamWriter("OSK_KLID2VKBDX_Table.inc");
       sw_OSK_KLID2VKBDX_Table.WriteLine(sBanner, version, dateTime);
       string Cmd_arg = "";
-      bool bAll = false;
+      bool bAll = false, bXML_Only = false;
       sw_OSK_KLID2VKBDX_Table.WriteLine("static const st_IKLID2VKBD IKLID2VKBD[] = {");
       if (args.Length > 0) {
         Cmd_arg = args[0].ToUpper();
         if (Cmd_arg.CompareTo("ALL") == 0)
           bAll = true;
+        else if (Cmd_arg.CompareTo("XML-ONLY") == 0) {
+          bXML_Only = true;
+          kbd_layout_list.Clear();
+        }
       }
-      if (Cmd_arg.Length > 0 && !bAll) {
+      if (Cmd_arg.Length > 0 && !bAll && !bXML_Only) {
         sw_OSK_KLID2VKBDX_Table.WriteLine("  {{0x{0}, &VKBD_{0}}},  // {1,4}", Cmd_arg, iCountMain);
         iCountMain++;
       } else {
@@ -998,7 +1004,7 @@ namespace KeyboardLayouts {
         foreach (kbd_layout kbl in kbd_layout_list) {
           i++;
           // Exclude Dvorak keyboard or those requiring an IME + a few others
-          // Unlesscommand argument 'all' specified
+          // Unless command argument 'all' specified
           if (!bAll && KLID_Exclude_List.Contains(kbl.Key))
             continue;
 
@@ -1435,6 +1441,10 @@ namespace KeyboardLayouts {
         sw_OSK_KB_Data.WriteLine();
       }
 
+      // If caller specified a KLID - don't do XML as well
+      if (Cmd_arg.Length > 0 && !bAll && !bXML_Only)
+        goto finish_up;
+
       // Process XML Custom keyboards
       // Expects 2 files in this executable's directory:
       // user_keyboard.xml and user_keyboards.xsd
@@ -1460,6 +1470,24 @@ namespace KeyboardLayouts {
         xml_vld.DoXML(false, "user_keyboards.xml");
 
         foreach (st_XML_Keyboard xmlkbd in xml_vld.XMLKeyboards) {
+          // Check unique
+          kbd_layout kbl = new kbd_layout();
+          string sKey = xmlkbd.KLID.ToUpper();
+          string sName = xmlkbd.Name;
+          if (kbd_layout_list.Exists(delegate(kbd_layout kblX)
+                                     {return kblX.Key == sKey;})) {
+            sw_log.WriteLine("Duplicate KLID '{0}' encountered. This keyboard has not been processed.", sKey);
+            continue;
+          }
+          if (kbd_layout_list.Exists(delegate(kbd_layout kblX)
+                                     {return kblX.Name == sName;})) {
+            sw_log.WriteLine("Duplicate Keyboard Name '{0}' encountered. This keyboard has not been processed.", sName);
+            continue;
+          }
+          kbl.Key = sKey;
+          kbl.Name = sName;
+          kbd_layout_list.Add(kbl);
+
           sw_OSK_KLID2VKBDX_Table.WriteLine("  {{0x{0}, &VKBD_{0}}},  // {1,4}", xmlkbd.KLID,
                                             iCountMain);
           iCountMain++;
