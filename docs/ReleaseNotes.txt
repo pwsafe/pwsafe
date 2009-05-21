@@ -12,6 +12,8 @@ Bugs fixed in 3.17.2
 ====================
 [2789873] Status bar now updated properly after Browse to URL and other
 actions that copied data to the clipboard.
+[2782413] No longer crashes when loading 0302 formatted headers (from
+~v3.08).
 
 Changes to Existing Features in 3.17.2
 ======================================

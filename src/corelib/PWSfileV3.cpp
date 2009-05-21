@@ -660,11 +660,11 @@ int PWSfileV3::ReadHeader()
           if (utf8 != NULL) utf8[utf8Len] = '\0';
           utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
           if (utf8status) {
-            iStringXStream is(text);
+            StringX tlen = text.substr(0,4);
+            iStringXStream is(tlen);
             int ulen = 0;
-            is >> setw(4) >> hex >> ulen;
-            StringX uh;
-            is >> setw(text.length() - ulen + 1) >> uh;
+            is >> hex >> ulen;
+            StringX uh = text.substr(4);;
             m_hdr.m_lastsavedby = uh.substr(0,ulen);
             m_hdr.m_lastsavedon = uh.substr(ulen);
           } else
