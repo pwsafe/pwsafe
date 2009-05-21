@@ -15,11 +15,11 @@
 
 class CPWResizeDialog : public CPWDialog
 {
-	DECLARE_DYNAMIC(CPWResizeDialog)
+  DECLARE_DYNAMIC(CPWResizeDialog)
 
 public:
-	CPWResizeDialog(UINT nIDTemplate, CWnd* pParent = NULL);   // standard constructor
-	virtual ~CPWResizeDialog();
+  CPWResizeDialog(UINT nIDTemplate, CWnd* pParent = NULL);   // standard constructor
+  virtual ~CPWResizeDialog();
 
   void AddMainCtrlID(UINT iMainCtrl) {m_iMainCtrl = iMainCtrl;}
   void AddBtnsCtrlIDs(std::vector<UINT> viBottomButtons, int iFocus = 0);

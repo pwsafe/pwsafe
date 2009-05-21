@@ -136,16 +136,16 @@ bool PwsafeApp::OnInit()
   m_core.SetApplicationNameAndVersion(pwsafeAppName.c_str(),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
 #if wxUSE_XPM
-	wxImage::AddHandler(new wxXPMHandler);
+  wxImage::AddHandler(new wxXPMHandler);
 #endif
 #if wxUSE_LIBPNG
-	wxImage::AddHandler(new wxPNGHandler);
+  wxImage::AddHandler(new wxPNGHandler);
 #endif
 #if wxUSE_LIBJPEG
-	wxImage::AddHandler(new wxJPEGHandler);
+  wxImage::AddHandler(new wxJPEGHandler);
 #endif
 #if wxUSE_GIF
-	wxImage::AddHandler(new wxGIFHandler);
+  wxImage::AddHandler(new wxGIFHandler);
 #endif
   // Parse command line
   wxCmdLineParser cmdParser(cmdLineDesc, argc, argv);
@@ -239,7 +239,7 @@ int PwsafeApp::OnExit()
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
 ////@begin PwsafeApp cleanup
-	return wxApp::OnExit();
+  return wxApp::OnExit();
 ////@end PwsafeApp cleanup
 }
 

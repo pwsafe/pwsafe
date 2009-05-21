@@ -166,6 +166,8 @@ BOOL CAdvancedDlg::OnInitDialog()
   if (m_iIndex == ADV_MERGE)
     return TRUE;
 
+  // m_pLC_List are those fields that aren't currently selected but could be
+  // m_pLC_Selected are those fields already selected
   m_pLC_List = (CListCtrl*)GetDlgItem(IDC_ADVANCED_LIST);
   m_pLC_Selected = (CListCtrl*)GetDlgItem(IDC_ADVANCED_SELECTED);
 
@@ -174,21 +176,39 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_pLC_List->SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
   m_pLC_Selected->SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
 
-  if (m_iIndex == ADV_COMPARE) {
-    cs_text.LoadString(IDS_CREATED);
-    iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-    m_pLC_List->SetItemData(iItem, CItemData::CTIME);
-    cs_text.LoadString(IDS_PASSWORDMODIFIED);
-    iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-    m_pLC_List->SetItemData(iItem, CItemData::PMTIME);
-    cs_text.LoadString(IDS_LASTACCESSED);
-    iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-    m_pLC_List->SetItemData(iItem, CItemData::ATIME);
-    cs_text.LoadString(IDS_LASTMODIFIED);
-    iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-    m_pLC_List->SetItemData(iItem, CItemData::RMTIME);
-  } else {
-    if (m_iIndex != ADV_FIND) {
+  // Deal with non-text fields
+  switch (m_iIndex) {
+    case ADV_COMPARE:
+      // All these are potential comparison fields
+      cs_text.LoadString(IDS_CREATED);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::CTIME);
+      cs_text.LoadString(IDS_PASSWORDMODIFIED);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::PMTIME);
+      cs_text.LoadString(IDS_LASTACCESSED);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::ATIME);
+      cs_text.LoadString(IDS_LASTMODIFIED);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::RMTIME);
+      cs_text.LoadString(IDS_PASSWORDEXPIRYDATE);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::XTIME);
+      cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::XTIME_INT);
+      cs_text.LoadString(IDS_PWPOLICY);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::POLICY);
+      break;
+    case ADV_FIND:
+      // Don't add any of these - they are not text fields
+      break;
+    case ADV_MERGE:
+    case ADV_EXPORT_TEXT:
+    case ADV_EXPORT_XML:
+      // All these are already selected fields
       cs_text.LoadString(IDS_CREATED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::CTIME);
@@ -198,18 +218,25 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_LASTACCESSED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::ATIME);
-      cs_text.LoadString(IDS_EXPIRYDATETIME);
+      cs_text.LoadString(IDS_PASSWORDEXPIRYDATE);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::XTIME);
+      cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::XTIME_INT);
       cs_text.LoadString(IDS_LASTMODIFIED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME);
       cs_text.LoadString(IDS_PWPOLICY);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::POLICY);
-    }
+      break;
+    default:
+      ASSERT(FALSE);
+      break;
   }
 
+  // Deal with text fields - all selected by default
   cs_text.LoadString(IDS_NOTES);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::NOTES);
@@ -222,13 +249,11 @@ BOOL CAdvancedDlg::OnInitDialog()
   cs_text.LoadString(IDS_PWHISTORY);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::PWHIST);
-  cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::XTIME_INT);
   cs_text.LoadString(IDS_RUNCOMMAND);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::RUNCMD);
 
+  // Deal with standard text fields
   switch (m_iIndex) {
     case ADV_EXPORT_XML:
       cs_text.LoadString(IDS_GROUP);
@@ -258,7 +283,9 @@ BOOL CAdvancedDlg::OnInitDialog()
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
       break;
-    default:
+    case ADV_FIND:
+    case ADV_MERGE:
+    case ADV_EXPORT_TEXT:
       cs_text.LoadString(IDS_GROUP);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::GROUP);
@@ -271,6 +298,8 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_PASSWORD);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
+    default:
+      ASSERT(FALSE);
   }
 
   if (m_bsFields.count() != 0) {
@@ -606,7 +635,7 @@ void CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
     case ADV_EXPORT_TEXT:
       break;
     default:
-      ASSERT(0);
+      ASSERT(FALSE);
   }
 }
 

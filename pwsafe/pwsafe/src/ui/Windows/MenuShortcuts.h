@@ -18,20 +18,20 @@
 
 // Structure used for vector of reserved Hotkeys
 struct st_MenuShortcut {
-	unsigned char cVirtKey;
+  unsigned char cVirtKey;
   unsigned char cModifier;
 };
 
 struct st_KeyIDExt {
-	unsigned char id;
-	bool bExtended;
+  unsigned char id;
+  bool bExtended;
 
   bool operator < (const st_KeyIDExt & rhs) const {
-	  return id < rhs.id;
+    return id < rhs.id;
   }
 
   bool operator == (const st_KeyIDExt & rhs) const {
-	  return (id == rhs.id && bExtended == rhs.bExtended) ;
+    return (id == rhs.id && bExtended == rhs.bExtended) ;
   }
 };
 
@@ -51,18 +51,18 @@ typedef MapKeyNameID::iterator MapKeyNameIDIter;
 class CMenuShortcut {
 public:
   // Menu item text
-	const TCHAR *name;
+  const TCHAR *name;
   // Menu item's parent or zero
   unsigned int uiParentID;
   // Sequential menu item position (i.e. in going through the menus)
   // Used to sort shortcuts in the CListCtrl in OptionsShortcuts
   int iMenuPosition;
   // Default values
-	unsigned char cdefVirtKey;
-	unsigned char cdefModifier;
+  unsigned char cdefVirtKey;
+  unsigned char cdefModifier;
   // new User values
-	unsigned char cVirtKey;
-	unsigned char cModifier;
+  unsigned char cVirtKey;
+  unsigned char cModifier;
 
   CMenuShortcut()
   : name(NULL), uiParentID(0), iMenuPosition(0),

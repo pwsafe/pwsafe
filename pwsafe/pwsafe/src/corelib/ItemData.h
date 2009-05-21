@@ -174,7 +174,7 @@ public:
     // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
     // it's used for multi-line notes and to replace '.' within the Title field.
     StringX GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
-      const TCHAR &delimiter, const CItemData *cibase) const;
+                         const TCHAR &delimiter, const CItemData *cibase) const;
     std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
                        const CItemData *cibase, bool bforce_normal_entry) const;
     void GetUnknownField(unsigned char &type, unsigned int &length,
@@ -296,7 +296,7 @@ private:
   CItemField m_AutoType;
   CItemField m_tttATime;  // last 'A'ccess time
   CItemField m_tttCTime;  // 'C'reation time
-  CItemField m_tttXTime;  // password 'L'ifetime
+  CItemField m_tttXTime;  // password e'X'iry time
   CItemField m_tttPMTime; // last 'P'assword 'M'odification time
   CItemField m_tttRMTime; // last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
@@ -320,7 +320,7 @@ private:
 
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const StringX &name,
-    StringX &title, StringX &username);
+                 StringX &title, StringX &username);
   StringX GetTime(int whichtime, int result_format) const; // V30
   void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30

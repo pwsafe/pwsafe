@@ -25,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 CClearQuestionDlg::CClearQuestionDlg(CWnd* pParent)
   : CPWDialog(CClearQuestionDlg::IDD, pParent)
 {
-  m_dontaskquestion =PWSprefs::GetInstance()->
+  m_dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DontAskQuestion);
 }
 

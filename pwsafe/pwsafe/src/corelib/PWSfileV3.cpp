@@ -125,7 +125,7 @@ int PWSfileV3::CheckPassword(const StringX &filename,
   unsigned char salt[SaltLengthV3];
   fread(salt, 1, sizeof(salt), fd);
 
-  unsigned char Nb[sizeof(unsigned int)];;
+  unsigned char Nb[sizeof(unsigned int)];
   fread(Nb, 1, sizeof(Nb), fd);
   { // block to shut up compiler warning w.r.t. goto
     const unsigned int N = getInt32(Nb);
@@ -426,7 +426,7 @@ int PWSfileV3::WriteHeader()
   // write some actual data (at last!)
   size_t numWritten = 0;
   // Write version number
-  unsigned char vnb[sizeof(VersionNum)];;
+  unsigned char vnb[sizeof(VersionNum)];
   vnb[0] = (unsigned char) (VersionNum & 0xff);
   vnb[1] = (unsigned char) ((VersionNum & 0xff00) >> 8);
   m_hdr.m_nCurrentMajorVersion = (unsigned short) ((VersionNum & 0xff00) >> 8);
@@ -664,7 +664,7 @@ int PWSfileV3::ReadHeader()
             iStringXStream is(tlen);
             int ulen = 0;
             is >> hex >> ulen;
-            StringX uh = text.substr(4);;
+            StringX uh = text.substr(4);
             m_hdr.m_lastsavedby = uh.substr(0,ulen);
             m_hdr.m_lastsavedon = uh.substr(ulen);
           } else

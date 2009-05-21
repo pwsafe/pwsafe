@@ -42,20 +42,20 @@ bool UnInit() // currently only needed in Windows impl.
 
 StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound)
 {
-	// Stub!
+  // Stub!
   bfound = true;
-	return sxFile;
+  return sxFile;
 }
 
 bool PWSRun::runcmd(const StringX &runcommand, const StringX &sxAutotype)
 {
-	// Stub!
-	return false;
+  // Stub!
+  return false;
 }
 
 bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
                       const StringX &sxAutotype)
 {
-	// Stub!
-	return false;
+  // Stub!
+  return false;
 }

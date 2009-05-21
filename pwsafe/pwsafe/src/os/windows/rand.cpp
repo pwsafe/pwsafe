@@ -23,19 +23,19 @@ static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = NULL;
 
 bool pws_os::InitRandomDataFunction()
 {
-	// Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
-	TCHAR szFileName[ MAX_PATH ];
-	memset( szFileName, 0, MAX_PATH );
-	GetSystemDirectory( szFileName, MAX_PATH );
-	int nLen = _tcslen( szFileName );
-	if (nLen > 0) {
+  // Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
+  TCHAR szFileName[ MAX_PATH ];
+  memset( szFileName, 0, MAX_PATH );
+  GetSystemDirectory( szFileName, MAX_PATH );
+  int nLen = _tcslen( szFileName );
+  if (nLen > 0) {
     if (szFileName[ nLen - 1 ] != '\\')
       _tcscat_s( szFileName, MAX_PATH, _T("\\") );
   }
-	_tcscat_s( szFileName, MAX_PATH, _T("ADVAPI32.DLL") );
+  _tcscat_s( szFileName, MAX_PATH, _T("ADVAPI32.DLL") );
 
-	HMODULE hLib = LoadLibrary( szFileName );
-	// End of change.  (Lockheed Martin) Secure Coding  11-14-2007
+  HMODULE hLib = LoadLibrary( szFileName );
+  // End of change.  (Lockheed Martin) Secure Coding  11-14-2007
 
   BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG) = NULL;
   if (hLib != NULL) {

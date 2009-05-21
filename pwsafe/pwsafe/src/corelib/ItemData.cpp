@@ -1574,6 +1574,8 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   push_string(v, POLICY, GetPWPolicy());
   push_string(v, PWHIST, GetPWHistory());
 
+  push_string(v, RUNCMD, GetRunCommand());
+
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();
        vi_IterURFE != GetURFIterEnd();

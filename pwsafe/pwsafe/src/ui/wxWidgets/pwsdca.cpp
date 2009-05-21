@@ -39,10 +39,10 @@ void PWSdca::Doit(const CItemData &item)
     action = _("CopyUsername");
     // OnCopyUsername();
     break;
-	case PWSprefs::DoubleClickCopyPasswordMinimize:
+  case PWSprefs::DoubleClickCopyPasswordMinimize:
     action = _("CopyPasswordMinimize");
-	  //OnCopyPasswordMinimize();
-	  break;
+    //OnCopyPasswordMinimize();
+    break;
   case PWSprefs::DoubleClickViewEdit:
     action = _("ViewEdit");
     // PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);

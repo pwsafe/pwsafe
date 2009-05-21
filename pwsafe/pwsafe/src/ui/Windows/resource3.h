@@ -80,7 +80,6 @@
 #define IDS_PASSWORDMODIFIED            5228
 #define IDS_LASTACCESSED                5229
 #define IDS_PASSWORDEXPIRYDATE          5230
-#define IDS_EXPIRYDATETIME              5231
 #define IDS_LASTMODIFIED                5232
 #define IDS_COPYTITLE                   5233
 #define IDS_PROCESSID                   5234
@@ -525,3 +524,4 @@
 #define IDS_ALTP                        5688
 #define IDS_SHIFTP                      5689
 #define IDS_OSK_VERSION_MISMATCH        5690
+#define IDS_COMPXTIME_INT               5691

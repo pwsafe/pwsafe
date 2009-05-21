@@ -17,7 +17,7 @@
 IMPLEMENT_DYNAMIC(CPWResizeDialog, CPWDialog)
 
 CPWResizeDialog::CPWResizeDialog(UINT nIDTemplate, CWnd* pParent /*=NULL*/)
-	: CPWDialog(nIDTemplate, pParent),
+  : CPWDialog(nIDTemplate, pParent),
   m_bInitDone(false), m_bStatusBarOK(false),
   m_DialogMaxHeight(-1), m_DialogMaxWidth(-1),
   m_iMainCtrl(0), m_numbtns(-1), m_numsbpanes(-1), m_pstatustext(NULL)
