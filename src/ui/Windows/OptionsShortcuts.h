@@ -27,11 +27,11 @@
 
 class COptionsShortcuts : public CPWPropertyPage
 {
-	DECLARE_DYNAMIC(COptionsShortcuts)
+  DECLARE_DYNAMIC(COptionsShortcuts)
 
 public:
-	COptionsShortcuts();   // standard constructor
-	~COptionsShortcuts();
+  COptionsShortcuts();   // standard constructor
+  ~COptionsShortcuts();
 
   bool IsChanged() {return m_bChanged;}
   void SetChanged() {m_bChanged = true;}
@@ -63,13 +63,13 @@ public:
   CStaticExtn m_stc_warning;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS);
   afx_msg void OnBnClickedResetAll();
 
-	DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 
 private:
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);

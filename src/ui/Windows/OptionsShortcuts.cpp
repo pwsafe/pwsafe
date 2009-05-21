@@ -37,7 +37,7 @@ COptionsShortcuts::~COptionsShortcuts()
 
 void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
 {
-	CPropertyPage::DoDataExchange(pDX);
+  CPropertyPage::DoDataExchange(pDX);
 
   DDX_Control(pDX, IDC_SHORTCUTLIST, m_ShortcutLC);
   DDX_Control(pDX, IDC_STATIC_SHCTWARNING, m_stc_warning);

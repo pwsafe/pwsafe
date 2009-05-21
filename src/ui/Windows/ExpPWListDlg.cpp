@@ -95,7 +95,7 @@ BOOL CExpPWListDlg::OnInitDialog()
   m_expPWListCtrl.InsertColumn(2, cs_text);
   cs_text.LoadString(IDS_USERNAME);
   m_expPWListCtrl.InsertColumn(3, cs_text);
-  cs_text.LoadString(IDS_EXPIRYDATETIME);
+  cs_text.LoadString(IDS_PASSWORDEXPIRYDATE);
   m_expPWListCtrl.InsertColumn(4, cs_text);
 
   m_pImageList = new CImageList();

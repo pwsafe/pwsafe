@@ -979,7 +979,7 @@ void DboxMain::OnCopyPassword()
   //Remind the user about clipboard security
   CClearQuestionDlg clearDlg(this);
   if (clearDlg.m_dontaskquestion == FALSE &&
-    clearDlg.DoModal() == IDCANCEL)
+      clearDlg.DoModal() == IDCANCEL)
     return;
 
   CItemData *ci = getSelectedItem();

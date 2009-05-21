@@ -92,7 +92,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
           if (utf8status)
             m_strElemContent = str.c_str();
           else
-			      m_strElemContent = attrs[i + 1];
+            m_strElemContent = attrs[i + 1];
 #else
           m_strElemContent = attrs[i + 1];
 #endif
@@ -139,8 +139,8 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       break;
     case XLE_ENTRY:
       m_element_datatype.push(XLD_NA);
-	  if (m_bValidation)
-		  return;
+      if (m_bValidation)
+        return;
 
       // Only interested in the normal attribute
       for (int i = 0; attrs[i]; i += 2) {

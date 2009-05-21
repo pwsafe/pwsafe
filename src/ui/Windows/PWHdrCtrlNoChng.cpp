@@ -26,11 +26,11 @@ CPWHdrCtrlNoChng::~CPWHdrCtrlNoChng()
 }
 
 BEGIN_MESSAGE_MAP(CPWHdrCtrlNoChng, CHeaderCtrl)
-	//{{AFX_MSG_MAP(CPWHdrCtrlNoChng)
-	ON_WM_SETCURSOR()
-	ON_WM_LBUTTONDBLCLK()
+  //{{AFX_MSG_MAP(CPWHdrCtrlNoChng)
+  ON_WM_SETCURSOR()
+  ON_WM_LBUTTONDBLCLK()
   ON_NOTIFY_REFLECT(HDN_BEGINTRACK, OnBeginTrack) 
-	//}}AFX_MSG_MAP
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 // CPWHdrCtrlNoChng message handlers
@@ -38,14 +38,14 @@ END_MESSAGE_MAP()
 BOOL CPWHdrCtrlNoChng::OnSetCursor(CWnd* /* pWnd */, UINT /* nHitTest */, UINT /* message */)
 {
   // Disable by returning TRUE and not calling base class
-  //	return CHeaderCtrl::OnSetCursor(pWnd, nHitTest, message);
-	return TRUE;
+  //  return CHeaderCtrl::OnSetCursor(pWnd, nHitTest, message);
+  return TRUE;
 }
 
 void CPWHdrCtrlNoChng::OnLButtonDblClk(UINT /* nFlags */, CPoint /* point */)
 {
   // Disable by not calling base case
-  //	CHeaderCtrl::OnLButtonDblClk(nFlags, point);
+  //  CHeaderCtrl::OnLButtonDblClk(nFlags, point);
 }
 
 void CPWHdrCtrlNoChng::OnBeginTrack(NMHDR * /*pNotifyStruct*/, LRESULT* pResult)

@@ -613,8 +613,8 @@ void DboxMain::OnOptions()
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
       case PWSprefs::DoubleClickViewEdit:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
-	  case PWSprefs::DoubleClickCopyPasswordMinimize:
-		statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORDMIN; break;
+      case PWSprefs::DoubleClickCopyPasswordMinimize:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORDMIN; break;
       case PWSprefs::DoubleClickBrowsePlus:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSEPLUS; break;
       default:

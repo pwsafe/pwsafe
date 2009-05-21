@@ -30,8 +30,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 struct st_ShortcutKeyNameID {
-	const TCHAR *name;
-	unsigned char id;
+  const TCHAR *name;
+  unsigned char id;
 };
 
 st_ShortcutKeyNameID ShortcutKeys[256];
@@ -226,7 +226,7 @@ void DboxMain::SetUpInitialMenuStrings()
   m_ReservedShortcuts.push_back(st_mst);
 
   st_mst.cVirtKey = VK_F4;
-	st_mst.cModifier = HOTKEYF_ALT;
+  st_mst.cModifier = HOTKEYF_ALT;
   m_ReservedShortcuts.push_back(st_mst);
 
   // Now get all other Menu items
@@ -532,7 +532,7 @@ void DboxMain::SetUpInitialMenuStrings()
       if (iter != m_MapMenuShortcuts.end()) {
         iter->second.cdefVirtKey = iter->second.cVirtKey = 
           (unsigned char)paccel->key;
-	      iter->second.cdefModifier = iter->second.cModifier =
+          iter->second.cdefModifier = iter->second.cModifier =
           ((paccel->fVirt & FCONTROL) == FCONTROL ? HOTKEYF_CONTROL : 0) |
           ((paccel->fVirt & FALT)     == FALT     ? HOTKEYF_ALT     : 0) |
           ((paccel->fVirt & FSHIFT)   == FSHIFT   ? HOTKEYF_SHIFT   : 0) |
@@ -556,9 +556,9 @@ void DboxMain::SetUpInitialMenuStrings()
     iter = m_MapMenuShortcuts.find(stxst.id);
     if (iter != m_MapMenuShortcuts.end() ||
         (iter->second.cVirtKey  != stxst.cVirtKey  ||
-	       iter->second.cModifier != stxst.cModifier)) {
+         iter->second.cModifier != stxst.cModifier)) {
       iter->second.cVirtKey  = stxst.cVirtKey;
-	    iter->second.cModifier = stxst.cModifier;
+      iter->second.cModifier = stxst.cModifier;
     } else {
       // Either unknown Control ID or no different from default
       bUserShortcutsChanged = true;

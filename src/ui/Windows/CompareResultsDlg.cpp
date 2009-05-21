@@ -126,6 +126,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
     cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
     m_LCResults.InsertColumn(XTIME, cs_header, LVCFMT_CENTER);
   }
+  if (m_bsFields.test(CItemData::XTIME_INT)) {
+    cs_header.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+    m_LCResults.InsertColumn(XTIME_INT, cs_header, LVCFMT_CENTER);
+  }
   if (m_bsFields.test(CItemData::PMTIME)) {
     cs_header.LoadString(IDS_PASSWORDMODIFIED);
     m_LCResults.InsertColumn(PMTIME, cs_header, LVCFMT_CENTER);
@@ -137,6 +141,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
   if (m_bsFields.test(CItemData::POLICY)) {
     cs_header.LoadString(IDS_PWPOLICY);
     m_LCResults.InsertColumn(POLICY, cs_header, LVCFMT_CENTER);
+  }
+  if (m_bsFields.test(CItemData::RUNCMD)) {
+    cs_header.LoadString(IDS_RUNCOMMAND);
+    m_LCResults.InsertColumn(RUNCMD, cs_header, LVCFMT_CENTER);
   }
   m_nCols = m_LCResults.GetHeaderCtrl()->GetItemCount();
 
@@ -321,12 +329,16 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::ATIME) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::XTIME))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::XTIME) ? _T("X") : _T("-"));
+      if (m_bsFields.test(CItemData::XTIME_INT))
+        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::XTIME_INT) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::PMTIME))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PMTIME) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::RMTIME))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::RMTIME) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::POLICY))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::POLICY) ? _T("X") : _T("-"));
+      if (m_bsFields.test(CItemData::RUNCMD))
+        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::RUNCMD) ? _T("X") : _T("-"));
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(BOTH, st_data.id));
@@ -828,9 +840,11 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_pmtime(MAKEINTRESOURCE(IDS_COMPPMTIME));
     const CString csx_atime(MAKEINTRESOURCE(IDS_COMPATIME));
     const CString csx_xtime(MAKEINTRESOURCE(IDS_COMPXTIME));
+    const CString csx_xtimeint(MAKEINTRESOURCE(IDS_COMPXTIME_INT));
     const CString csx_rmtime(MAKEINTRESOURCE(IDS_COMPRMTIME));
     const CString csx_pwhistory(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     const CString csx_policy(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
+    const CString csx_runcmd(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
 
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
          cd_iter++) {
@@ -848,9 +862,11 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::PMTIME)) buffer += csx_pmtime;
       if (st_data.bsDiffs.test(CItemData::ATIME)) buffer += csx_atime;
       if (st_data.bsDiffs.test(CItemData::XTIME)) buffer += csx_xtime;
+      if (st_data.bsDiffs.test(CItemData::XTIME_INT)) buffer += csx_xtimeint;
       if (st_data.bsDiffs.test(CItemData::RMTIME)) buffer += csx_rmtime;
       if (st_data.bsDiffs.test(CItemData::PWHIST)) buffer += csx_pwhistory;
       if (st_data.bsDiffs.test(CItemData::POLICY)) buffer += csx_policy;
+      if (st_data.bsDiffs.test(CItemData::RUNCMD)) buffer += csx_runcmd;
       m_prpt->WriteLine((LPCTSTR)buffer);
     }
     m_prpt->WriteLine();

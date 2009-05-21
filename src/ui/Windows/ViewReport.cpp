@@ -21,7 +21,7 @@ IMPLEMENT_DYNAMIC(CViewReport, CPWResizeDialog)
 
 CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
                          CReport *pRpt /*=NULL*/)
-	: CPWResizeDialog(CViewReport::IDD, pParent),
+  : CPWResizeDialog(CViewReport::IDD, pParent),
   m_pRpt(pRpt), m_bMemoryAllocOK(false)
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
@@ -41,7 +41,7 @@ CViewReport::~CViewReport()
 
 void CViewReport::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+  CDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_EDITREPORT, m_editreport);
 }
 

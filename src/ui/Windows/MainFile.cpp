@@ -1969,28 +1969,29 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
         // Difference flags:
         /*
          First byte (values in square brackets taken from ItemData.h)
-         1... ....  NAME     [0x00] - n/a - depreciated
-         .1.. ....  UUID     [0x01] - n/a - unique
-         ..1. ....  GROUP    [0x02] - not checked - must be identical
-         ...1 ....  TITLE    [0x03] - not checked - must be identical
-         .... 1...  USER     [0x04] - not checked - must be identical
-         .... .1..  NOTES    [0x05]
-         .... ..1.  PASSWORD [0x06]
-         .... ...1  CTIME    [0x07] - not checked by default
+         1... ....  NAME      [0x00] - n/a - depreciated
+         .1.. ....  UUID      [0x01] - n/a - unique
+         ..1. ....  GROUP     [0x02] - not checked - must be identical
+         ...1 ....  TITLE     [0x03] - not checked - must be identical
+         .... 1...  USER      [0x04] - not checked - must be identical
+         .... .1..  NOTES     [0x05]
+         .... ..1.  PASSWORD  [0x06]
+         .... ...1  CTIME     [0x07] - not checked by default
 
          Second byte
-         1... ....  PMTIME   [0x08] - not checked by default
-         .1.. ....  ATIME    [0x09] - not checked by default
-         ..1. ....  XTIME    [0x0a] - not checked by default
-         ...1 ....  RESERVED [0x0b] - not used
-         .... 1...  RMTIME   [0x0c] - not checked by default
-         .... .1..  URL      [0x0d]
-         .... ..1.  AUTOTYPE [0x0e]
-         .... ...1  PWHIST   [0x0f]
+         1... ....  PMTIME    [0x08] - not checked by default
+         .1.. ....  ATIME     [0x09] - not checked by default
+         ..1. ....  XTIME     [0x0a] - not checked by default
+         ...1 ....  RESERVED  [0x0b] - not used
+         .... 1...  RMTIME    [0x0c] - not checked by default
+         .... .1..  URL       [0x0d]
+         .... ..1.  AUTOTYPE  [0x0e]
+         .... ...1  PWHIST    [0x0f]
 
          Third byte
-         1... ....  POLICY   [0x10]
-         .1.. ....  RUNCMD   [0x11]
+         1... ....  POLICY    [0x10] - not checked by default
+         .1.. ....  XTIME_INT [0x11] - not checked by default
+         ..1. ....  RUNCMD    [0x12]
         */
         bsConflicts.reset();
 
@@ -2018,6 +2019,13 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
           if (m_bsFields.test(CItemData::RMTIME) &&
               currentItem.GetRMTime() != compItem.GetRMTime())
             bsConflicts.flip(CItemData::RMTIME);
+          if (m_bsFields.test(CItemData::XTIME_INT)) {
+            int current_xint, comp_xint;
+            currentItem.GetXTimeInt(current_xint);
+            compItem.GetXTimeInt(comp_xint);
+            if (current_xint != comp_xint)
+              bsConflicts.flip(CItemData::XTIME_INT);
+          }
         }
         if (m_bsFields.test(CItemData::URL) &&
             FieldsNotEqual(currentItem.GetURL(), compItem.GetURL()))
@@ -2208,6 +2216,8 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPXTIME));
     if (m_bsFields.test(CItemData::RMTIME))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPRMTIME));
+    if (m_bsFields.test(CItemData::XTIME_INT))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPXTIME_INT));
     if (m_bsFields.test(CItemData::PWHIST))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     if (m_bsFields.test(CItemData::POLICY))
@@ -2385,8 +2395,9 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   // Copy *pfromcore -> *ptocore entry at fromPos
 
   ItemListIter toPos;
-  StringX group, title, user, notes, password, url, autotype, pwhistory;
+  StringX group, title, user, notes, password, url, autotype, pwhistory, runcmd;
   time_t ct, at, xt, pmt, rmt;
+  int xint;
   PWPolicy pwp;
   int nfromUnknownRecordFields;
   bool bFromUUIDIsNotInTo;
@@ -2403,12 +2414,14 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   url = fromEntry->GetURL();
   autotype = fromEntry->GetAutoType();
   pwhistory = fromEntry->GetPWHistory();
+  runcmd = fromEntry->GetRunCommand();
   fromEntry->GetCTime(ct);
   fromEntry->GetATime(at);
   fromEntry->GetXTime(xt);
   fromEntry->GetPMTime(pmt);
   fromEntry->GetRMTime(rmt);
   fromEntry->GetPWPolicy(pwp);
+  fromEntry->GetXTimeInt(xint);
   nfromUnknownRecordFields = fromEntry->NumberUnknownFields();
 
   bFromUUIDIsNotInTo = (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter());
@@ -2424,12 +2437,14 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     toEntry->SetURL(url);
     toEntry->SetAutoType(autotype);
     toEntry->SetPWHistory(pwhistory);
+    toEntry->SetRunCommand(runcmd);
     toEntry->SetCTime(ct);
     toEntry->SetATime(at);
     toEntry->SetXTime(xt);
     toEntry->SetPMTime(pmt);
     toEntry->SetRMTime(rmt);
     toEntry->SetPWPolicy(pwp);
+    toEntry->SetXTimeInt(xint);
 
     // If the UUID is not in use, copy it too, otherwise reuse current
     if (bFromUUIDIsNotInTo)
@@ -2478,12 +2493,14 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     temp.SetURL(url);
     temp.SetAutoType(autotype);
     temp.SetPWHistory(pwhistory);
+    temp.SetRunCommand(runcmd);
     temp.SetCTime(ct);
     temp.SetATime(at);
     temp.SetXTime(xt);
     temp.SetPMTime(pmt);
     temp.SetRMTime(rmt);
     temp.SetPWPolicy(pwp);
+    temp.SetXTimeInt(xint);
     if (nfromUnknownRecordFields != 0) {
       ptocore->IncrementNumRecordsWithUnknownFields();
 

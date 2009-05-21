@@ -17,18 +17,18 @@ class DboxMain;
 
 class CViewReport : public CPWResizeDialog
 {
-	DECLARE_DYNAMIC(CViewReport)
+  DECLARE_DYNAMIC(CViewReport)
 
 public:
-	CViewReport(CWnd* pParent = NULL,
-    CReport *pRpt = NULL);   // standard constructor
-	virtual ~CViewReport();
+  CViewReport(CWnd* pParent = NULL,
+  CReport *pRpt = NULL);   // standard constructor
+  virtual ~CViewReport();
 
 // Dialog Data
-	enum { IDD = IDD_VIEWREPORT };
+  enum { IDD = IDD_VIEWREPORT };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
 
   DboxMain *m_pDbx;
