@@ -11,6 +11,8 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.17.2
 ====================
 [2795428] Browse+ on Toolbar now inactive if no URL present
+[2795427] Duplicate of "Display Subset of Password" removed from Context
+Menu (right-click on entry).
 [2789873] Status bar now updated properly after Browse to URL and other
 actions that copied data to the clipboard.
 [2782413] No longer crashes when loading 0302 formatted headers (from
