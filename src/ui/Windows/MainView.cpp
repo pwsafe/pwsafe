@@ -243,9 +243,11 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
 
     if (entry == NULL || entry->IsURLEmpty()) {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, FALSE);
       UpdateBrowseURLSendEmailButton(false);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, TRUE);
       const bool bIsEmail = entry->IsURLEmail();
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
