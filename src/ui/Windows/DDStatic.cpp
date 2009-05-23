@@ -172,6 +172,33 @@ void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
   SetBitmap((HBITMAP)m_NOTOKbitmap);
 }
 
+void CDDStatic::ReInit(const UINT nImageID, const UINT nDisabledImageID)
+{
+  // Detach old bitmaps, attach new ones
+  m_OKbitmap.Detach();
+  m_NOTOKbitmap.Detach();
+
+  BOOL brc;
+  brc = m_OKbitmap.Attach(::LoadImage(
+                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+  ASSERT(brc);
+
+
+  brc = m_NOTOKbitmap.Attach(::LoadImage(
+                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
+                  MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+  ASSERT(brc);
+
+  if (m_bState) {
+    SetBitmap((HBITMAP)m_OKbitmap);
+  } else {
+    SetBitmap((HBITMAP)m_NOTOKbitmap);
+  }
+}
+
 BEGIN_MESSAGE_MAP(CDDStatic, CStaticExtn)
   //{{AFX_MSG_MAP(CDDStatic)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
