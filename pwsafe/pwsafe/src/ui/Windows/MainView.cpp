@@ -377,15 +377,8 @@ void DboxMain::setupBars()
   m_FindToolBar.SetBarStyle(dwStyle);
   m_FindToolBar.SetWindowText(_T("Find"));
 
-  // Set up DragBar bitmaps before calling SetToolBar
-  m_DDGroup.Init(IDB_DRAGGROUP, IDB_DRAGGROUPX);
-  m_DDTitle.Init(IDB_DRAGTITLE, IDB_DRAGTITLEX);
-  m_DDUser.Init(IDB_DRAGUSER, IDB_DRAGUSERX);
-  m_DDPassword.Init(IDB_DRAGPASSWORD, IDB_DRAGPASSWORDX);
-  m_DDNotes.Init(IDB_DRAGNOTES, IDB_DRAGNOTESX);
-  m_DDURL.Init(IDB_DRAGURL, IDB_DRAGURLX);
 
-  // Set toolbar according to graphic capabilities, overridable by user choice.
+  // Set dragbar & toolbar according to graphic capabilities, overridable by user choice.
   if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar))  {
     SetToolbar(ID_MENUITEM_OLD_TOOLBAR, true);
   } else {
@@ -1606,14 +1599,51 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
   m_toolbarMode = menuItem;
 
   if (bInit) {
+    // Dragbar
+    if (menuItem == ID_MENUITEM_NEW_TOOLBAR) {
+      m_DDGroup.Init(IDB_DRAGGROUP_NEW, IDB_DRAGGROUPX_NEW);
+      m_DDTitle.Init(IDB_DRAGTITLE_NEW, IDB_DRAGTITLEX_NEW);
+      m_DDUser.Init(IDB_DRAGUSER_NEW, IDB_DRAGUSERX_NEW);
+      m_DDPassword.Init(IDB_DRAGPASSWORD_NEW, IDB_DRAGPASSWORDX_NEW);
+      m_DDNotes.Init(IDB_DRAGNOTES_NEW, IDB_DRAGNOTESX_NEW);
+      m_DDURL.Init(IDB_DRAGURL_NEW, IDB_DRAGURLX_NEW);
+    } else if (menuItem == ID_MENUITEM_OLD_TOOLBAR) {
+      m_DDGroup.Init(IDB_DRAGGROUP_CLASSIC, IDB_DRAGGROUPX_CLASSIC);
+      m_DDTitle.Init(IDB_DRAGTITLE_CLASSIC, IDB_DRAGTITLEX_CLASSIC);
+      m_DDUser.Init(IDB_DRAGUSER_CLASSIC, IDB_DRAGUSERX_CLASSIC);
+      m_DDPassword.Init(IDB_DRAGPASSWORD_CLASSIC, IDB_DRAGPASSWORDX_CLASSIC);
+      m_DDNotes.Init(IDB_DRAGNOTES_CLASSIC, IDB_DRAGNOTESX_CLASSIC);
+      m_DDURL.Init(IDB_DRAGURL_CLASSIC, IDB_DRAGURLX_CLASSIC);
+    } else {
+      ASSERT(0);
+    }
     m_MainToolBar.LoadDefaultToolBar(m_toolbarMode);
     m_FindToolBar.LoadDefaultToolBar(m_toolbarMode);
     CString csButtonNames = PWSprefs::GetInstance()->
       GetPref(PWSprefs::MainToolBarButtons).c_str();
     m_MainToolBar.CustomizeButtons(csButtonNames);
-  } else {
+  } else { // !bInit - changing bitmaps
     m_MainToolBar.ChangeImages(m_toolbarMode);
     m_FindToolBar.ChangeImages(m_toolbarMode);
+    if (menuItem == ID_MENUITEM_NEW_TOOLBAR) {
+      m_DDGroup.ReInit(IDB_DRAGGROUP_NEW, IDB_DRAGGROUPX_NEW);
+      m_DDTitle.ReInit(IDB_DRAGTITLE_NEW, IDB_DRAGTITLEX_NEW);
+      m_DDUser.ReInit(IDB_DRAGUSER_NEW, IDB_DRAGUSERX_NEW);
+      m_DDPassword.ReInit(IDB_DRAGPASSWORD_NEW, IDB_DRAGPASSWORDX_NEW);
+      m_DDNotes.ReInit(IDB_DRAGNOTES_NEW, IDB_DRAGNOTESX_NEW);
+      m_DDURL.ReInit(IDB_DRAGURL_NEW, IDB_DRAGURLX_NEW);
+    } else if (menuItem == ID_MENUITEM_OLD_TOOLBAR) {
+      m_DDGroup.ReInit(IDB_DRAGGROUP_CLASSIC, IDB_DRAGGROUPX_CLASSIC);
+      m_DDTitle.ReInit(IDB_DRAGTITLE_CLASSIC, IDB_DRAGTITLEX_CLASSIC);
+      m_DDUser.ReInit(IDB_DRAGUSER_CLASSIC, IDB_DRAGUSERX_CLASSIC);
+      m_DDPassword.ReInit(IDB_DRAGPASSWORD_CLASSIC, IDB_DRAGPASSWORDX_CLASSIC);
+      m_DDNotes.ReInit(IDB_DRAGNOTES_CLASSIC, IDB_DRAGNOTESX_CLASSIC);
+      m_DDURL.ReInit(IDB_DRAGURL_CLASSIC, IDB_DRAGURLX_CLASSIC);
+    } else {
+      ASSERT(0);
+    }
+    m_DDGroup.Invalidate(); m_DDTitle.Invalidate(); m_DDUser.Invalidate();
+    m_DDPassword.Invalidate(); m_DDNotes.Invalidate(); m_DDURL.Invalidate();
   }
   m_menuManager.SetImageList(&m_MainToolBar);
 

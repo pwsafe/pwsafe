@@ -270,18 +270,30 @@
 #define IDB_EMPTY                       428
 #define IDB_BLANK                       429
 #define IDD_EXPORTFILTERS               430
-#define IDB_DRAGGROUP                   431
-#define IDB_DRAGTITLE                   432
-#define IDB_DRAGUSER                    433
-#define IDB_DRAGPASSWORD                434
-#define IDB_DRAGNOTES                   435
-#define IDB_DRAGURL                     436
-#define IDB_DRAGGROUPX                  437
-#define IDB_DRAGTITLEX                  438
-#define IDB_DRAGUSERX                   439
-#define IDB_DRAGPASSWORDX               440
-#define IDB_DRAGNOTESX                  441
-#define IDB_DRAGURLX                    442
+#define IDB_DRAGGROUP_NEW               431
+#define IDB_DRAGGROUP_CLASSIC           453
+#define IDB_DRAGTITLE_NEW               432
+#define IDB_DRAGTITLE_CLASSIC           454
+#define IDB_DRAGUSER_NEW                433
+#define IDB_DRAGUSER_CLASSIC            455
+#define IDB_DRAGPASSWORD_NEW            434
+#define IDB_DRAGPASSWORD_CLASSIC        456
+#define IDB_DRAGNOTES_NEW               435
+#define IDB_DRAGNOTES_CLASSIC           457
+#define IDB_DRAGURL_NEW                 436
+#define IDB_DRAGURL_CLASSIC             458
+#define IDB_DRAGGROUPX_NEW              437
+#define IDB_DRAGGROUPX_CLASSIC          459
+#define IDB_DRAGTITLEX_NEW              438
+#define IDB_DRAGTITLEX_CLASSIC          460
+#define IDB_DRAGUSERX_NEW               439
+#define IDB_DRAGUSERX_CLASSIC           461
+#define IDB_DRAGPASSWORDX_NEW           440
+#define IDB_DRAGPASSWORDX_CLASSIC       462
+#define IDB_DRAGNOTESX_NEW              441
+#define IDB_DRAGNOTESX_CLASSIC          463
+#define IDB_DRAGURLX_NEW                442
+#define IDB_DRAGURLX_CLASSIC            464
 #define IDB_PASSWORDCHARS_CLASSIC       443
 #define IDB_PASSWORDCHARS_NEW           444
 #define IDB_PASSWORDCHARS_NEW_D         445
@@ -626,7 +638,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        453
+#define _APS_NEXT_RESOURCE_VALUE        465
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1373
 #define _APS_NEXT_SYMED_VALUE           160
