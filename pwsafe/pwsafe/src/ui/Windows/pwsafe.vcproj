@@ -2289,51 +2289,51 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDGroup.bmp"
+				RelativePath="..\graphics\dragbar\Group.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDGroupX.bmp"
+				RelativePath="..\graphics\dragbar\GroupX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDNotes.bmp"
+				RelativePath="..\graphics\dragbar\Notes.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDNotesX.bmp"
+				RelativePath="..\graphics\dragbar\NotesX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDPassword.bmp"
+				RelativePath="..\graphics\dragbar\Password.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDPasswordX.bmp"
+				RelativePath="..\graphics\dragbar\PasswordX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDTitle.bmp"
+				RelativePath="..\graphics\dragbar\Title.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDTitleX.bmp"
+				RelativePath="..\graphics\dragbar\TitleX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDURL.bmp"
+				RelativePath="..\graphics\dragbar\URL.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDURLX.bmp"
+				RelativePath="..\graphics\dragbar\URLX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDUser.bmp"
+				RelativePath="..\graphics\dragbar\User.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\DDUserX.bmp"
+				RelativePath="..\graphics\dragbar\UserX.bmp"
 				>
 			</File>
 			<File
