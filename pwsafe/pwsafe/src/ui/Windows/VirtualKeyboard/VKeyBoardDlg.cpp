@@ -697,10 +697,10 @@ void CVKeyBoardDlg::OnAltNum()
 
   bEnable = m_bAltNum ? FALSE : TRUE;
 
-  // Don't touch the Left/Right Control keys if Korean or Japanese keyboard
-  if (m_bLCtrlChars && (m_uiKLID != KOREAN_KBD && m_uiKLID != JAPANESE_KBD))
+  // Don't touch the Left/Right Control keys if Japanese keyboard
+  if (m_bLCtrlChars && m_uiKLID != JAPANESE_KBD)
     m_vkbb_LCtrl.EnableWindow(bEnable);
-  if (m_bRCtrlChars && (m_uiKLID != KOREAN_KBD && m_uiKLID != JAPANESE_KBD))
+  if (m_bRCtrlChars && m_uiKLID != JAPANESE_KBD)
     m_vkbb_RCtrl.EnableWindow(bEnable);
 
   if (m_bAltGrChars)
@@ -1316,15 +1316,13 @@ void CVKeyBoardDlg::ProcessKeyboard(const UINT uiKLID, const bool bSetType)
   // Check to see if the special keys are needed for this keyboard.
   // Note: Japanese uses them all - but they mean different things and so
   // we must disable them here
-  if (m_uiKLID != JAPANESE_KBD)
-    m_bLCtrlChars = m_stKBImpl.stVKBD.bsValidSpecials.test(l);
-  else
+  if (m_uiKLID == JAPANESE_KBD) {
     m_bLCtrlChars = false;
-
-  if (m_uiKLID != KOREAN_KBD && m_uiKLID != JAPANESE_KBD)
-    m_bRCtrlChars = m_stKBImpl.stVKBD.bsValidSpecials.test(r);
-  else
     m_bRCtrlChars = false;
+  } else {
+    m_bLCtrlChars = m_stKBImpl.stVKBD.bsValidSpecials.test(l);
+    m_bRCtrlChars = m_stKBImpl.stVKBD.bsValidSpecials.test(r);
+  }
 
   m_vkbb_LCtrl.EnableWindow(m_bLCtrlChars ? TRUE : FALSE);
   m_vkbb_AltGr.EnableWindow(m_bAltGrChars ? TRUE : FALSE);
@@ -1516,9 +1514,12 @@ void CVKeyBoardDlg::SetDeadKeyEnvironment(const bool bState)
   m_vkbb_Insert.EnableWindow(bEnable);
   m_vkbb_ClearBuffer.EnableWindow(bEnable);
 
-  m_vkbb_LCtrl.EnableWindow(m_bLCtrl ? TRUE : FALSE);
-  m_vkbb_RCtrl.EnableWindow(m_bRCtrl ? TRUE : FALSE);
-  m_vkbb_AltGr.EnableWindow(m_bAltGr ? TRUE : FALSE);
+  if (m_bLCtrlChars)
+    m_vkbb_LCtrl.EnableWindow(m_bLCtrl ? TRUE : FALSE);
+  if (m_bRCtrlChars)
+    m_vkbb_RCtrl.EnableWindow(m_bRCtrl ? TRUE : FALSE);
+  if (m_bAltGrChars)
+    m_vkbb_AltGr.EnableWindow(m_bAltGr ? TRUE : FALSE);
 
   m_vkbb_AltNum.EnableWindow(bEnable);
   GetDlgItem(IDC_VK101)->EnableWindow(bEnable);
@@ -1586,6 +1587,10 @@ void CVKeyBoardDlg::SetSpecialKeys()
     bShowRCtrl = m_Hiragana == HIRAGANA;
     bEnableHK = true;
   }
+  if (m_uiKLID == JAPANESE_KBD) {
+    m_vkbb_LCtrl.EnableWindow(FALSE);
+    m_vkbb_RCtrl.EnableWindow(FALSE);
+  }
 
   m_vkbb_SpaceBar.EnableWindow(bEnableSpaceBar ? TRUE : FALSE);
   m_vkbb_SpaceBar.ShowWindow(bEnableSpaceBar ? SW_SHOW : SW_HIDE);
@@ -1640,6 +1645,7 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
   if (m_pPassphraseFont == NULL) {
     m_pPassphraseFont = new CFont;
     TCHAR* tch_fontname;
+
     tch_fontname = _T("Arial Unicode MS");
 
     // Note these font names are less than the max. permitted length
