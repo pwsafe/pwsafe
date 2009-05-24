@@ -43,7 +43,6 @@ protected:
   afx_msg void OnTimer(UINT nIDEvent);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
-  afx_msg void OnDestroy();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 

@@ -153,14 +153,13 @@ void CDDStatic::Init(const UINT nImageID, const UINT nDisabledImageID)
   brc = m_OKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   ASSERT(brc);
-
 
   brc = m_NOTOKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   ASSERT(brc);
 
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
@@ -182,15 +181,18 @@ void CDDStatic::ReInit(const UINT nImageID, const UINT nDisabledImageID)
   brc = m_OKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   ASSERT(brc);
-
-
+  
   brc = m_NOTOKbitmap.Attach(::LoadImage(
                   ::AfxFindResourceHandle(MAKEINTRESOURCE(nDisabledImageID), RT_BITMAP),
                   MAKEINTRESOURCE(nDisabledImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
   ASSERT(brc);
+
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  SetBitmapBackground(m_OKbitmap, crCOLOR_3DFACE);
+  SetBitmapBackground(m_NOTOKbitmap, crCOLOR_3DFACE);
 
   if (m_bState) {
     SetBitmap((HBITMAP)m_OKbitmap);
@@ -206,7 +208,6 @@ BEGIN_MESSAGE_MAP(CDDStatic, CStaticExtn)
   ON_WM_LBUTTONDOWN()
   ON_WM_TIMER()
   ON_WM_MOUSEMOVE()
-  ON_WM_DESTROY()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -221,14 +222,6 @@ void CDDStatic::SetStaticState(const bool state)
   } else {
     SetBitmap((HBITMAP)m_NOTOKbitmap);
   }
-}
-
-void CDDStatic::OnDestroy()
-{
-  m_OKbitmap.DeleteObject();
-  m_NOTOKbitmap.DeleteObject();
-
-  CStaticExtn::OnDestroy();
 }
 
 void CDDStatic::OnLButtonDown(UINT nFlags, CPoint point)
