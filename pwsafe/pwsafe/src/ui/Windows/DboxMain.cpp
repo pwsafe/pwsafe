@@ -2386,8 +2386,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     // Items not allowed if a Group is selected
     case ID_MENUITEM_DUPLICATEENTRY:
     case ID_MENUITEM_COPYPASSWORD:
-    case ID_MENUITEM_COPYUSERNAME:
-    case ID_MENUITEM_COPYNOTESFLD:
     case ID_MENUITEM_AUTOTYPE:
     case ID_MENUITEM_EDIT:
     case ID_MENUITEM_PASSWORDSUBSET:
@@ -2402,12 +2400,14 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       if (bGroupSelected || !bAliasOrShortcut)
         iEnable = FALSE;
       break;
-    // Not allowed if Group selected or the item selected has an empty URL
+    // Not allowed if Group selected or the item selected has an empty field
     case ID_MENUITEM_BROWSEURL:
     case ID_MENUITEM_SENDEMAIL:
     case ID_MENUITEM_COPYURL:
     case ID_MENUITEM_COPYEMAIL:
     case ID_MENUITEM_BROWSEURLPLUS:
+    case ID_MENUITEM_COPYUSERNAME:
+    case ID_MENUITEM_COPYNOTESFLD:
       if (bGroupSelected) {
         // Not allowed if a Group is selected
         iEnable = FALSE;
@@ -2428,8 +2428,22 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
             }
           }
 
-          if (ci->IsURLEmpty()) {
-            iEnable = FALSE;
+          switch (nID) {
+            case ID_MENUITEM_COPYUSERNAME:
+              if (ci->IsUserEmpty()) {
+                iEnable = FALSE;
+              }
+              break;
+            case ID_MENUITEM_COPYNOTESFLD:
+              if (ci->IsNotesEmpty()) {
+                iEnable = FALSE;
+              }
+              break;
+            default:
+              if (ci->IsURLEmpty()) {
+                iEnable = FALSE;
+              }
+              break;
           }
         }
       }

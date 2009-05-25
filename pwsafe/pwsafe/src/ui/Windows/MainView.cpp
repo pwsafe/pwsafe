@@ -252,6 +252,18 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
 
+    if (entry == NULL || entry->IsNotesEmpty()) {
+      mainTBCtrl.EnableButton(ID_MENUITEM_COPYNOTESFLD, FALSE);
+    } else {
+      mainTBCtrl.EnableButton(ID_MENUITEM_COPYNOTESFLD, TRUE);
+    }
+
+    if (entry == NULL || entry->IsUserEmpty()) {
+      mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, FALSE);
+    } else {
+      mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, TRUE);
+    }
+
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     if (bDragBarState) {
       // Note: Title & Password are mandatory
@@ -2936,7 +2948,6 @@ void DboxMain::SetToolBarPositions()
     m_DDURL.GetWindowRect(&dragrect);
     ScreenToClient(&dragrect);
     m_DDURL.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-
     rect.top += dragrect.Height() + 2 * i;
   } else {
     m_DDGroup.ShowWindow(SW_HIDE);
