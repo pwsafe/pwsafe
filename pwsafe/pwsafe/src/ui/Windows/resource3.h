@@ -525,3 +525,5 @@
 #define IDS_SHIFTP                      5689
 #define IDS_OSK_VERSION_MISMATCH        5690
 #define IDS_COMPXTIME_INT               5691
+#define IDS_TREEFONT                    5692
+#define IDS_PSWDFONT                    5693

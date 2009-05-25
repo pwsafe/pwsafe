@@ -633,6 +633,9 @@
 #define IDC_STATIC_SHCTWARNING          1370
 #define IDC_SHORTCUTLC_HEADER           1371
 #define IDC_VKB                         1372
+#define IDC_SETSAMPLETEXT               1373
+#define IDC_RESETFONT                   1374
+
 
 // Next default values for new objects
 // 
@@ -640,7 +643,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        465
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1373
+#define _APS_NEXT_CONTROL_VALUE         1375
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

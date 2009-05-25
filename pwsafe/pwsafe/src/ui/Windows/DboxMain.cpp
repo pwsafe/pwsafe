@@ -85,6 +85,8 @@ const TCHAR *HIDDEN_PASSWORD = _T("**************");
 CString DboxMain::CS_SETFILTERS;
 CString DboxMain::CS_CLEARFILTERS;
 
+LOGFONT dfltTreeListFont;
+
 void DboxMain::SetLocalStrings()
 {
   // VdG the local strings are set
@@ -654,6 +656,12 @@ void DboxMain::InitPasswordSafe()
 
   // Set up fonts before playing with Tree/List views
   m_pFontTree = new CFont;
+
+  // Get current font & save it
+  CFont * pCurrentFont;
+  pCurrentFont = GetFont();
+  pCurrentFont->GetLogFont(&dfltTreeListFont);
+  
   CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
 
   if (szTreeFont != _T("")) {

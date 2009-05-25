@@ -13,6 +13,7 @@
 void GetPasswordFont(LOGFONT *plogfont);
 void SetPasswordFont(LOGFONT *plogfont);
 void ApplyPasswordFont(CWnd* pDlgItem);
+void GetDefaultPasswordFont(LOGFONT &lf);
 void DeletePasswordFont();
 
 //-----------------------------------------------------------------------------

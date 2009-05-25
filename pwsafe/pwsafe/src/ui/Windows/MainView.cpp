@@ -1718,7 +1718,7 @@ void DboxMain::OnChangeTreeFont()
   // Allow user to apply changes to font
   StringX cs_TreeListSampleText = prefs->GetPref(PWSprefs::TreeListSampleText);
 
-  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL);
+  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL, TLFONT);
 
   fontdlg.m_sampletext = cs_TreeListSampleText.c_str();
 
@@ -1743,8 +1743,19 @@ void DboxMain::OnChangeTreeFont()
     // Reset column widths
     AutoResizeColumns();
 
-    // save user's choice of Tree/List font
-    prefs->SetPref(PWSprefs::TreeFont, LPCTSTR(treefont_str));
+    // Check if default
+    CString csfn(lf.lfFaceName), csdfltfn(dfltTreeListFont.lfFaceName);
+    if (lf.lfHeight == dfltTreeListFont.lfHeight && 
+        lf.lfWeight == dfltTreeListFont.lfWeight &&
+        lf.lfItalic == dfltTreeListFont.lfItalic && 
+        csfn == csdfltfn) {
+      // delete config Tree/List font
+      prefs->ResetPref(PWSprefs::TreeFont);
+    } else {
+      // save user's choice of Tree/List font
+      prefs->SetPref(PWSprefs::TreeFont, LPCTSTR(treefont_str));
+    }
+
     // save user's sample text
     prefs->SetPref(PWSprefs::TreeListSampleText,
                    LPCTSTR(fontdlg.m_sampletext));
@@ -1762,7 +1773,7 @@ void DboxMain::OnChangePswdFont()
   // Allow user to apply changes to font
   StringX cs_PswdSampleText = prefs->GetPref(PWSprefs::PswdSampleText);
 
-  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
+  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL, PWFONT);
 
   fontdlg.m_sampletext = cs_PswdSampleText.c_str();
 
@@ -1776,8 +1787,23 @@ void DboxMain::OnChangePswdFont()
 
     // transfer the new font to the passwords
     SetPasswordFont(&lf);
-    // save user's choice of password font
-    prefs->SetPref(PWSprefs::PasswordFont, LPCTSTR(pswdfont_str));
+
+    LOGFONT dfltfont;
+    GetDefaultPasswordFont(dfltfont);
+
+    // Check if default
+    CString csfn(lf.lfFaceName), csdfltfn(dfltfont.lfFaceName);
+    if (lf.lfHeight == dfltfont.lfHeight && 
+        lf.lfWeight == dfltfont.lfWeight &&
+        lf.lfItalic == dfltfont.lfItalic && 
+        csfn == csdfltfn) {
+      // delete config password font
+      prefs->ResetPref(PWSprefs::PasswordFont);
+    } else {
+      // save user's choice of password font
+      prefs->SetPref(PWSprefs::PasswordFont, LPCTSTR(pswdfont_str));
+    }
+
     // save user's sample text
     prefs->SetPref(PWSprefs::PswdSampleText, LPCTSTR(fontdlg.m_sampletext));
   }
