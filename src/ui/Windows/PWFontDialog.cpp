@@ -59,7 +59,6 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
   // lParam = m_cf.lCustData when uiMsg == WM_INITDIALOG
   // but we don't need it as 'pwfd_self' must be set before calling
   // since we cannot be sure WM_INITDIALOG is the first call.
-  // Note: psh15 == pshhelp == "Help Button"
   if (uiMsg == WM_INITDIALOG) {
     ASSERT(pwfd_self);
 
