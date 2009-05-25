@@ -10,6 +10,10 @@
 
 // CPWFontDialog
 
+enum {PWFONT, TLFONT};
+
+extern LOGFONT dfltTreeListFont;
+
 class CPWFontDialog : public CFontDialog
 {
   DECLARE_DYNAMIC(CPWFontDialog)
@@ -18,16 +22,24 @@ public:
   CPWFontDialog(LPLOGFONT lplfInitial = NULL,
     DWORD dwFlags = CF_EFFECTS | CF_SCREENFONTS,
     CDC* pdcPrinter = NULL,
-    CWnd* pParentWnd = NULL);
+    CWnd* pParentWnd = NULL,
+    int iType = PWFONT);
 #ifndef _AFX_NO_RICHEDIT_SUPPORT
   CPWFontDialog(const CHARFORMAT& charformat,
     DWORD dwFlags = CF_SCREENFONTS,
     CDC* pdcPrinter = NULL,
-    CWnd* pParentWnd = NULL);
+    CWnd* pParentWnd = NULL,
+    int iType = PWFONT);
 #endif
   virtual ~CPWFontDialog();
 
-  CString m_sampletext;
+  CString m_sampletext, m_title;
+  int m_iType;
+
+// Dialog Data
+  //{{AFX_DATA(CXFontDialog)
+  //enum { IDD = IDD_PWFONTDIALOG };
+  //}}AFX_DATA
 
 protected:
   DECLARE_MESSAGE_MAP()

@@ -154,6 +154,10 @@ public:
   void SetPref(IntPrefs pref_enum, unsigned int value);
   void SetPref(StringPrefs pref_enum, const StringX &value);
 
+  void ResetPref(BoolPrefs pref_enum);
+  void ResetPref(IntPrefs pref_enum);
+  void ResetPref(StringPrefs pref_enum);
+
   // CPSWRecentFileList needs to know if it can use registry or not:
   bool IsUsingRegistry() const {return m_ConfigOptions == CF_REGISTRY;}
 

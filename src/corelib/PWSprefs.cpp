@@ -341,6 +341,27 @@ void PWSprefs::SetPref(StringPrefs pref_enum, const StringX &value)
   }
 }
 
+void PWSprefs::ResetPref(BoolPrefs pref_enum)
+{
+  m_boolValues[pref_enum] = m_bool_prefs[pref_enum].defVal;
+  m_boolChanged[pref_enum] = true;
+  m_prefs_changed[m_bool_prefs[pref_enum].pt == ptDatabase ? DB_PREF : APP_PREF] = true;
+}
+
+void PWSprefs::ResetPref(IntPrefs pref_enum)
+{
+  m_intValues[pref_enum] = m_int_prefs[pref_enum].defVal;
+  m_intChanged[pref_enum] = true;
+  m_prefs_changed[m_int_prefs[pref_enum].pt == ptDatabase ? DB_PREF : APP_PREF] = true;
+}
+
+void PWSprefs::ResetPref(StringPrefs pref_enum)
+{
+  m_stringValues[pref_enum] = m_string_prefs[pref_enum].defVal;
+  m_stringChanged[pref_enum] = true;
+  m_prefs_changed[m_string_prefs[pref_enum].pt == ptDatabase ? DB_PREF : APP_PREF] = true;
+}
+
 bool PWSprefs::WritePref(const StringX &name, bool val)
 {
   // Used to save to config destination at database save and application termination
