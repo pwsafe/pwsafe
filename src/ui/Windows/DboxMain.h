@@ -281,9 +281,9 @@ public:
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
-  void DoAutoType(const StringX &sxAutotype, const StringX group = _T(""), 
-                  const StringX title = _T(""), const StringX user = _T(""), 
-                  const StringX pwd = _T(""), const StringX notes = _T(""));
+  void DoAutoType(const StringX &sxAutotype, const StringX &group = _T(""), 
+                  const StringX &title = _T(""), const StringX &user = _T(""), 
+                  const StringX &pwd = _T(""), const StringX &notes = _T(""));
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
 
