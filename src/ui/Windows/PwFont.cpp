@@ -83,3 +83,41 @@ void DeletePasswordFont()
     pPasswordFont = NULL;
   }
 }
+
+static CString GetToken(CString& str, LPCTSTR c)
+{
+  // helper function for ExtractFont()
+  int pos = str.Find(c);
+  CString token = str.Left(pos);
+  str = str.Mid(pos + 1);
+  return token;
+}
+
+void ExtractFont(const CString &str, LOGFONT &logfont)
+{
+  CString s(str);
+  memset(&logfont, 0, sizeof(LOGFONT));
+  logfont.lfHeight = _ttol((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfWidth = _ttol((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfEscapement = _ttol((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfOrientation = _ttol((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfWeight = _ttol((LPCTSTR)GetToken(s, _T(",")));
+
+#pragma warning(push)
+#pragma warning(disable:4244) //conversion from 'int' to 'BYTE', possible loss of data
+  logfont.lfItalic = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfUnderline = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfStrikeOut = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfCharSet = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfOutPrecision = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfClipPrecision = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfQuality = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfPitchAndFamily = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+#pragma warning(pop)
+
+#if (_MSC_VER >= 1400)
+  _tcscpy_s(logfont.lfFaceName, LF_FACESIZE, s);
+#else
+  _tcscpy(logfont.lfFaceName, s;
+#endif  
+}
