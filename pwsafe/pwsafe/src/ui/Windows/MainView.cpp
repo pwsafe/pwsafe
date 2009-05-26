@@ -1821,43 +1821,6 @@ void DboxMain::OnChangePswdFont()
   }
 }
 
-static CString GetToken(CString& str, LPCTSTR c)
-{
-  // helper function for DboxMain::ExtractFont()
-  int pos = str.Find(c);
-  CString token = str.Left(pos);
-  str = str.Mid(pos + 1);
-
-  return token;
-}
-
-void DboxMain::ExtractFont(CString& str, LOGFONT *plogfont)
-{
-  plogfont->lfHeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfWidth = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfEscapement = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfOrientation = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfWeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
-
-#pragma warning(push)
-#pragma warning(disable:4244) //conversion from 'int' to 'BYTE', possible loss of data
-  plogfont->lfItalic = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfUnderline = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfStrikeOut = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfCharSet = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfOutPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfClipPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfQuality = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  plogfont->lfPitchAndFamily = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-#pragma warning(pop)
-
-#if (_MSC_VER >= 1400)
-  _tcscpy_s(plogfont->lfFaceName, LF_FACESIZE, str);
-#else
-  _tcscpy(plogfont->lfFaceName, str);
-#endif  
-}
-
 void DboxMain::UpdateSystemTray(const STATE s)
 {
   switch (s) {

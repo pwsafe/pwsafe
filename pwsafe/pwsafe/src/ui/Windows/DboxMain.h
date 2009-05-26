@@ -636,7 +636,6 @@ private:
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
   bool DecrementAndTestIdleLockCounter();
-  void ExtractFont(CString& str, LOGFONT *plogfont);
   int SaveIfChanged();
   void CheckExpiredPasswords();
   void UnMinimize(bool update_windows);

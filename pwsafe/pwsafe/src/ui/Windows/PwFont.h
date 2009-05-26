@@ -15,6 +15,7 @@ void SetPasswordFont(LOGFONT *plogfont);
 void ApplyPasswordFont(CWnd* pDlgItem);
 void GetDefaultPasswordFont(LOGFONT &lf);
 void DeletePasswordFont();
+void ExtractFont(const CString& str, LOGFONT &logfont);
 
 //-----------------------------------------------------------------------------
 // Local variables:
