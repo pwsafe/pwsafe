@@ -1303,9 +1303,9 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 }
 
-void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX sx_group, 
-                          const StringX sx_title, const StringX sx_user,
-                          const StringX sx_pwd, const StringX sx_notes)
+void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group, 
+                          const StringX &sx_title, const StringX &sx_user,
+                          const StringX &sx_pwd, const StringX &sx_notes)
 {
   StringX tmp(_T(""));
   StringX sxnotes(sx_notes);
