@@ -671,6 +671,7 @@ void DboxMain::InitPasswordSafe()
       szTreeFont.IsEmpty()) {
     const CString MS_SanSerif8 = _T("-11,0,0,0,400,0,0,0,177,1,2,1,34,MS Sans Serif");
     szTreeFont = MS_SanSerif8;
+    ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
   }
   
   if (!szTreeFont.IsEmpty()) { // either preference or our own fallback
