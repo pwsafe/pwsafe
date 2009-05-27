@@ -92,6 +92,7 @@ protected:
 private:
   bool ParseCommandLine(DboxMain &dbox, bool &allDone);
   void LoadLocalizedStuff();
+  bool CheckIfVKAvialable();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
   HANDLE m_hMutexOneInstance;
 

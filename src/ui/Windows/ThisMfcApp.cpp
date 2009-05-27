@@ -72,6 +72,18 @@ END_MESSAGE_MAP()
 
 static MFCReporter aReporter;
 
+// Callback Routine to find Unicode font for Virtual Keyboard
+int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *, 
+                                    int , LPARAM lParam)
+{
+  // Found one
+  bool *pFound = (bool *)lParam;
+  *pFound = true;
+
+  // Don’t call me anymore – I’m done
+  return 0;
+}
+
 //#ifdef _DEBUG
 //static CMemoryState oldMemState, newMemState, diffMemState;
 //#endif
@@ -385,8 +397,16 @@ void ThisMfcApp::LoadLocalizedStuff()
         PWSUtil::GetTimeStamp(), cs_HelpPath);
 
   m_csHelpFile = cs_HelpPath;
+  
+  m_bOSK_module = CheckIfVKAvialable();
+}
 
-  // Support On Sreen Keyboards for Passphrase Entry, New DBs and Change Passphrase
+bool ThisMfcApp::CheckIfVKAvialable()
+{
+  // Check if we can support On Sreen Keyboards for Passphrase Entry, 
+  // New DBs and Change Passphrase
+  bool bVKAvailable(false);
+
   // Try to load DLL
   stringT dll_loc = pws_os::getexecdir();
 #if defined( _DEBUG ) || defined( DEBUG )
@@ -397,6 +417,7 @@ void ThisMfcApp::LoadLocalizedStuff()
   HINSTANCE OSK_module = LoadLibrary(dll_loc.c_str());
   if (OSK_module == NULL) {
     TRACE(_T("ThisMfcApp::ThisMfcApp - Unable to load OSK DLL. OSK not available.\n"));
+    return false;
   } else {
     TRACE(_T("ThisMfcApp::ThisMfcApp - OSK DLL loaded OK.\n"));
 
@@ -420,13 +441,33 @@ void ThisMfcApp::LoadLocalizedStuff()
     else if (pOSKVersion() != VK_DLL_VERSION) {
       AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
     } else
-      m_bOSK_module = true;
+      bVKAvailable = true;
 
     BOOL brc = FreeLibrary(OSK_module);
     pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Free OSK DLL: %s\n"),
                   brc == TRUE ? _T("OK") : _T("FAILED"));
     OSK_module = NULL;
   }
+
+  if (!bVKAvailable)
+    return false;
+
+  // We have the DLL, now check Unicode font installed
+  HDC hDC = GetDC(NULL);
+  bool bFound(false);
+  LOGFONT lf = {0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
+                L"Arial Unicode MS"};
+  EnumFontFamiliesEx(hDC, &lf, (FONTENUMPROC)EnumFontFamiliesExProc, (LPARAM)(&bFound), 0);
+  ReleaseDC(NULL, hDC);
+
+  if (!bFound) {
+    TRACE(_T("ThisMfcApp::ThisMfcApp - Arial Unicode MS font not installed. OSK not available.\n"));
+    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
+    return false;
+  }
+
+  // We have the DLL and the Font!
+  return true;
 }
 
 bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
