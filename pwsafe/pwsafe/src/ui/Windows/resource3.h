@@ -527,3 +527,4 @@
 #define IDS_COMPXTIME_INT               5691
 #define IDS_TREEFONT                    5692
 #define IDS_PSWDFONT                    5693
+#define IDS_OSK_NO_UNICODE_FONT         5694
