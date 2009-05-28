@@ -16,8 +16,9 @@ Schneier - 'nuff said.
 3. Open Source: The source code for the project is available for
 inspection. For more information, see http://passwordsafe.sourceforge.net
 
-Password Safe currently runs on Windows 95, 98, ME, NT4, 2000 and
-XP, as well as Microsoft's PocketPC. Support for additional platforms
+The current version of Password Safe currently runs on Windows 2000,
+XP and Vista. Older versions are still available supporting Windows
+95, 98, ME, NT, as well as PocketPC. Support for additional platforms
 is planned for future releases. 
 
 Downloading:
@@ -25,45 +26,39 @@ Downloading:
 The latest & greatest version of Password Safe may be downloaded from
 https://sourceforge.net/project/showfiles.php?group_id=41019
 
-Non-English Versions:
-=====================
-A French version of the help file may be found in
-http://passwordsafe.sourceforge.net/pwsafefr.zip (Thanks to Laurent
-Masson).
+Non-English Support:
+====================
+Thanks to the help of volunteers from all over the world, PasswordSafe
+now has built-in support for the following languages:
+- Chinese
+- German
+- Polish
+- Russian
+- Spanish
+- Swedish
+Older versions have translations to other languages as well, see
+http://pwsafe.org/nonenglish.shtml for the complete list.
 
-A Russian version of the help file may be found in
-http://passwordsafe.sourceforge.net/pwsaferu.zip (Thanks to Maxim
-Tikhonov). 
-
-A German version of the help file may be found in
-http://passwordsafe.sourceforge.net/pwsafege.zip (Thanks to Sebastian
-Juergens).
-
-An Italian version of the help file may be found in
-http://home.datacomm.ch/winzozz/passwordsafe.htm (Thanks to Stefano)
-
-Kimmo 'Yodakoski' Koskinen has translated both the help file and the
-entire PasswordSafe (version 2.07) application to Finnish! These may
-be downloaded from http://tinyurl.com/7yqdv and
-http://tinyurl.com/5z3h3, respectively. The source files are available
-from http://tinyurl.com/5wt66. 
-
-If anyone is interested in doing such work in other
+If you are interested  in making Password Safe available in other
 languages, please let me (https://sourceforge.net/users/ronys) know.
 
 Installation:
 =============
-Nothing special. No "Setup", no dependencies, no annoying wizard, no
-need to sacrifice a goat and/or reboot your computer. Just extract the
-files (using WinZip, for example) to any directory, double-click on
-the Pwsafe.exe icon,and that's it. "Advanced" users may want to
-create a shortcut to their desktop and/or Start menu.
+For convenience, Password Safe is packaged into an executable
+installer program. This installs the program, sets up shortcuts and
+allows you to uninstall the program from the Windows Control
+Panel. However, if you prefer, the -bin.zip file contains all the
+files you need. Just extract the files (using WinZip, for example) to
+any directory, double-click on the Pwsafe.exe icon,and that's
+it. You may want to create a shortcut to your desktop and/or Start
+menu. Finally, a Microsoft installer (.msi) package is also
+available.
 
 License:
 ========
 Password Safe is available under the restrictions set forth in the
-standard "Artistic License". For more details, see the LICENSE file
-that comes with the package.
+standard "Artistic License 2.0". For more details, see the LICENSE
+file that comes with the package.
 
 Password Safe 3.06 and later makes use of the TinyXML project
 (http://www.grinninglizard.com/tinyxml/index.html), which is available 
@@ -92,7 +87,7 @@ http://lists.sourceforge.net/lists/listinfo/passwordsafe-devel
 
 New releases are announced on the passwordsafe-announce mailing list:
 
-http://lists.sourceforge.net/lists/listinfo/passwordsafe-announce)
+http://lists.sourceforge.net/lists/listinfo/passwordsafe-announce
 
 Last but not least: PasswordSafe is and will always remain an open
 source project, free for and redistribution. However, donations to the
