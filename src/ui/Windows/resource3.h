@@ -528,3 +528,6 @@
 #define IDS_TREEFONT                    5692
 #define IDS_PSWDFONT                    5693
 #define IDS_OSK_NO_UNICODE_FONT         5694
+#define IDS_ENTRYEXISTS1                5695
+#define IDS_ENTRYEXISTS3                5696
+

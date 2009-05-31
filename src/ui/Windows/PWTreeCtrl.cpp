@@ -675,9 +675,15 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
         CSecString temp;
         if (group.empty())
-          temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
+          if (newUser.empty())
+            temp.Format(IDS_ENTRYEXISTS3, newTitle.c_str());
+          else
+            temp.Format(IDS_ENTRYEXISTS2, newTitle.c_str(), newUser.c_str());
         else
-          temp.Format(IDS_ENTRYEXISTS, group, newTitle, newUser);
+          if (newUser.empty())
+            temp.Format(IDS_ENTRYEXISTS1, group.c_str(), newTitle.c_str());
+          else
+            temp.Format(IDS_ENTRYEXISTS, group.c_str(), newTitle.c_str(), newUser.c_str());
         AfxMessageBox(temp);
         goto bad_exit;
       }
@@ -776,10 +782,8 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
 bad_exit:
   // Refresh display to show old text - if we don't no one else will
-  RECT rect;
-  if (GetItemRect(ti, &rect, FALSE) != FALSE) {
-    InvalidateRect(&rect);
-  }
+  m_pDbx->RefreshViews();
+
   // restore text
   // (not that this is documented anywhere in MS's docs...)
   *pLResult = FALSE;
