@@ -112,7 +112,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
-  m_AutoType(_T(""))
+  m_AutoType(_T("")), m_pToolTipCtrl(NULL)
 {
   // Set menus to be rebuilt with user's shortcuts
   for (int i = 0; i < NUMPOPUPMENUS; i++)
@@ -146,6 +146,8 @@ DboxMain::~DboxMain()
   delete m_pwchTip;
   delete m_pFontTree;
   DeletePasswordFont();
+
+  delete m_pToolTipCtrl;
 }
 
 LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
@@ -938,6 +940,30 @@ BOOL DboxMain::OnInitDialog()
 
   // Set up Menu strings
   SetUpInitialMenuStrings();
+
+  // create tooltip unconditionally
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
+    TRACE("Unable To create mainf DboxMain Dialog ToolTip\n");
+  } else {
+    EnableToolTips();
+    m_pToolTipCtrl->Activate(TRUE);
+    // Quadruple the time to allow reading by user
+    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, 2 * iTime);
+    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, 2 * iTime);
+    m_pToolTipCtrl->SetMaxTipWidth(300);
+
+    CString cs_ToolTip;
+    cs_ToolTip.LoadString(IDS_DRAGTOCOPY);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGGROUP), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGTITLE), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGUSER), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGPASSWORD), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGNOTES), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGURL), cs_ToolTip);
+  }
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -1859,6 +1885,10 @@ DboxMain::startLockCheckTimer(){
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 {
+  // Do Dragbar tooltips
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
     // If Find Toolbar visible, close it and do not pass the ESC along.
     if (m_FindToolBar.IsVisible()) {
