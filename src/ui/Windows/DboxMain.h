@@ -711,6 +711,9 @@ private:
   std::vector<st_MenuShortcut> m_ReservedShortcuts;
 
   bool m_bDoShortcuts[NUMPOPUPMENUS];
+
+  // Used for DragBar Tooltips
+  CToolTipCtrl* m_pToolTipCtrl;;
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)
