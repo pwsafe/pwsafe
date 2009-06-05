@@ -85,49 +85,46 @@ BOOL COptionsMisc::OnInitDialog()
   // For some reason, MFC calls us twice when initializing.
   // Populate the combo box only once.
   if(m_dblclk_cbox.GetCount() == 0) {
-    // add the strings in alphabetical order
+    // ComboBox now sorted - no need to add in English alphabetical order
     int nIndex;
     CString cs_text;
 
     cs_text.LoadString(IDS_DCAAUTOTYPE);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
-    m_DCA_to_Index[PWSprefs::DoubleClickAutoType] = nIndex;
 
     cs_text.LoadString(IDS_DCABROWSE);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
-    m_DCA_to_Index[PWSprefs::DoubleClickBrowse] = nIndex;
 
     cs_text.LoadString(IDS_DCABROWSEPLUS);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowsePlus);
-    m_DCA_to_Index[PWSprefs::DoubleClickBrowsePlus] = nIndex;
 
     cs_text.LoadString(IDS_DCACOPYNOTES);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
-    m_DCA_to_Index[PWSprefs::DoubleClickCopyNotes] = nIndex;
 
     cs_text.LoadString(IDS_DCACOPYPASSWORD);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
-    m_DCA_to_Index[PWSprefs::DoubleClickCopyPassword] = nIndex;
 
     cs_text.LoadString(IDS_DCACOPYPASSWORDMIN);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPasswordMinimize);
-    m_DCA_to_Index[PWSprefs::DoubleClickCopyPasswordMinimize] = nIndex;
 
     cs_text.LoadString(IDS_DCACOPYUSERNAME);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
-    m_DCA_to_Index[PWSprefs::DoubleClickCopyUsername] = nIndex;
 
     cs_text.LoadString(IDS_DCAVIEWEDIT);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
-    m_DCA_to_Index[PWSprefs::DoubleClickViewEdit] = nIndex;
+    
+    for (int i = 0; i < m_dblclk_cbox.GetCount(); i++) {
+      int ival = (int)m_dblclk_cbox.GetItemData(i);
+      m_DCA_to_Index[ival] = i;
+    }
   }
 
   if (m_doubleclickaction < PWSprefs::minDCA ||

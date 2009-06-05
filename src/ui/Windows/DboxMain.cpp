@@ -75,6 +75,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+IMPLEMENT_DYNAMIC(DboxMain, CDialog)
+
 /*
 * This is the string to be displayed instead of the actual password, unless
 * the user chooses to see the password:
@@ -1074,7 +1076,16 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
     OnShowPassword();
   }
 #else
-  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)) {
+  CItemData *pci = getSelectedItem();
+  if (pci == NULL)
+    return;
+
+  short iDCA;
+  pci->GetDCA(iDCA);
+  if (iDCA < PWSprefs::minDCA || iDCA > PWSprefs::maxDCA)
+    iDCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+
+  switch (iDCA) {
     case PWSprefs::DoubleClickAutoType:
       PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
       break;

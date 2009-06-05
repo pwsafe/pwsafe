@@ -24,12 +24,12 @@
 IMPLEMENT_DYNAMIC(CPWHistDlg, CDialog)
 
 CPWHistDlg::CPWHistDlg(CWnd* pParent, bool IsReadOnly,
-                       CSecString &HistStr, PWHistList &PWHistList,
+                       CSecString &HistStr, PWHistList &pwhistlist,
                        size_t NumPWHistory, size_t &MaxPWHistory,
                        BOOL &SavePWHistory)
   : CPWDialog(CPWHistDlg::IDD, pParent),
   m_PWH_IsReadOnly(IsReadOnly),
-  m_HistStr(HistStr), m_PWHistList(PWHistList),
+  m_HistStr(HistStr), m_pwhistlist(pwhistlist),
   m_NumPWHistory(NumPWHistory), m_MaxPWHistory(MaxPWHistory),
   m_SavePWHistory(SavePWHistory),
   m_ClearPWHistory(false),
@@ -66,7 +66,7 @@ BOOL CPWHistDlg::OnInitDialog()
 
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
 
-  BOOL bpwh_count = m_PWHistList.empty() ? FALSE : TRUE;
+  BOOL bpwh_count = m_pwhistlist.empty() ? FALSE : TRUE;
   GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bpwh_count);
   GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
 
@@ -86,8 +86,8 @@ BOOL CPWHistDlg::OnInitDialog()
 
   PWHistList::iterator iter;
   DWORD nIdx;
-  for (iter = m_PWHistList.begin(), nIdx = 0;
-       iter != m_PWHistList.end(); iter++, nIdx++) {
+  for (iter = m_pwhistlist.begin(), nIdx = 0;
+       iter != m_pwhistlist.end(); iter++, nIdx++) {
     int nPos = 0;
     const PWHistEntry pwhentry = *iter;
     if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
@@ -154,7 +154,7 @@ void CPWHistDlg::OnOK()
   */
 
   if (m_ClearPWHistory == TRUE) {
-    m_PWHistList.erase(m_PWHistList.begin(), m_PWHistList.end());
+    m_pwhistlist.clear();
     m_HistStr = m_HistStr.Left(5);
   }
 
@@ -172,7 +172,7 @@ void CPWHistDlg::OnOK()
       _T("%1x%02x%02x"),
       (m_SavePWHistory == FALSE) ? 0 : 1,
       m_MaxPWHistory,
-      m_PWHistList.size()
+      m_pwhistlist.size()
       );
     if (m_HistStr.GetLength() >= 5) {
       for (int i = 0; i < 5; i++) m_HistStr.SetAt(i, buffer[i]);
@@ -198,7 +198,7 @@ void CPWHistDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
     return;
 
   size_t itempos = size_t(m_PWHistListCtrl.GetItemData(item));
-  const PWHistEntry pwhentry = m_PWHistList[itempos];
+  const PWHistEntry pwhentry = m_pwhistlist[itempos];
   DboxMain *pDbx = static_cast<DboxMain *>(GetParent()->GetParent());
   pDbx->SetClipboardData(pwhentry.password);
 }
@@ -248,8 +248,8 @@ int CALLBACK CPWHistDlg::PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
   int nSortColumn = self->m_iSortedColumn;
   size_t Lpos = (size_t)lParam1;
   size_t Rpos = (size_t)lParam2;
-  const PWHistEntry pLHS = self->m_PWHistList[Lpos];
-  const PWHistEntry pRHS = self->m_PWHistList[Rpos];
+  const PWHistEntry pLHS = self->m_pwhistlist[Lpos];
+  const PWHistEntry pRHS = self->m_pwhistlist[Rpos];
   CSecString password1, changedate1;
   CSecString password2, changedate2;
   time_t t1, t2;
@@ -282,7 +282,7 @@ void CPWHistDlg::OnBnClickedPwhCopyAll()
   CSecString HistStr;
   PWHistList::iterator iter;
 
-  for (iter = m_PWHistList.begin(); iter != m_PWHistList.end(); iter++) {
+  for (iter = m_pwhistlist.begin(); iter != m_pwhistlist.end(); iter++) {
     const PWHistEntry &ent = *iter;
     HistStr += ent.changedate;
     HistStr += _T("\t");

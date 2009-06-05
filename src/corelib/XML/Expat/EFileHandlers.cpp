@@ -176,6 +176,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_URL:
     case XLE_AUTOTYPE:
     case XLE_RUNCOMMAND:
+    case XLE_DCA:
     case XLE_NOTES:
     case XLE_OLDPASSWORD:
     case XLE_PWHISTORY:

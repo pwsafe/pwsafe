@@ -55,11 +55,12 @@ public:
   void SetSearchDirection(int iFindDirection) {m_iFindDirection = iFindDirection;}
 
 protected:
+  BOOL PreTranslateMessage(MSG* pMsg);
+
   //{{AFX_MSG(CPWFindToolBar)
   afx_msg void OnDestroy();
+  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
   //}}AFX_MSG
-
-  BOOL PreTranslateMessage(MSG* pMsg);
 
   DECLARE_MESSAGE_MAP()
 

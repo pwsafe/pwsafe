@@ -7,7 +7,6 @@
 #define IDR_MAINMENU                    102
 #define IDR_FILTERACCELERATOR           103
 #define IDD_ABOUTBOX                    110
-#define IDD_ADD                         111
 #define IDD_ADVANCED                    112
 #define IDD_ADVANCEDMERGE               113
 #define IDD_COLUMNCHOOSER               114
@@ -17,7 +16,6 @@
 #define IDD_CRYPTKEYENTRY               118
 #define IDD_DISPLAY_EXPIRED_ENTRIES     119
 #define IDD_DLG_PWHIST                  120
-#define IDD_EDIT                        121
 #define IDD_EDIT_SHORTCUT               122
 #define IDD_EXPORT_TEXT                 123
 #define IDD_EXPORT_XML                  124
@@ -271,29 +269,17 @@
 #define IDB_BLANK                       429
 #define IDD_EXPORTFILTERS               430
 #define IDB_DRAGGROUP_NEW               431
-#define IDB_DRAGGROUP_CLASSIC           453
 #define IDB_DRAGTITLE_NEW               432
-#define IDB_DRAGTITLE_CLASSIC           454
 #define IDB_DRAGUSER_NEW                433
-#define IDB_DRAGUSER_CLASSIC            455
 #define IDB_DRAGPASSWORD_NEW            434
-#define IDB_DRAGPASSWORD_CLASSIC        456
 #define IDB_DRAGNOTES_NEW               435
-#define IDB_DRAGNOTES_CLASSIC           457
 #define IDB_DRAGURL_NEW                 436
-#define IDB_DRAGURL_CLASSIC             458
 #define IDB_DRAGGROUPX_NEW              437
-#define IDB_DRAGGROUPX_CLASSIC          459
 #define IDB_DRAGTITLEX_NEW              438
-#define IDB_DRAGTITLEX_CLASSIC          460
 #define IDB_DRAGUSERX_NEW               439
-#define IDB_DRAGUSERX_CLASSIC           461
 #define IDB_DRAGPASSWORDX_NEW           440
-#define IDB_DRAGPASSWORDX_CLASSIC       462
 #define IDB_DRAGNOTESX_NEW              441
-#define IDB_DRAGNOTESX_CLASSIC          463
 #define IDB_DRAGURLX_NEW                442
-#define IDB_DRAGURLX_CLASSIC            464
 #define IDB_PASSWORDCHARS_CLASSIC       443
 #define IDB_PASSWORDCHARS_NEW           444
 #define IDB_PASSWORDCHARS_NEW_D         445
@@ -304,6 +290,22 @@
 #define IDB_RUNCMD_NEW                  450
 #define IDB_RUNCMD_NEW_D                451
 #define IDD_PS_SHORTCUTS                452
+#define IDB_DRAGGROUP_CLASSIC           453
+#define IDB_DRAGTITLE_CLASSIC           454
+#define IDB_DRAGUSER_CLASSIC            455
+#define IDB_DRAGPASSWORD_CLASSIC        456
+#define IDB_DRAGNOTES_CLASSIC           457
+#define IDB_DRAGURL_CLASSIC             458
+#define IDB_DRAGGROUPX_CLASSIC          459
+#define IDB_DRAGTITLEX_CLASSIC          460
+#define IDB_DRAGUSERX_CLASSIC           461
+#define IDB_DRAGPASSWORDX_CLASSIC       462
+#define IDB_DRAGNOTESX_CLASSIC          463
+#define IDB_DRAGURLX_CLASSIC            464
+#define IDD_ADDEDIT_BASIC               465
+#define IDD_ADDEDIT_ADDITIONAL          466
+#define IDD_ADDEDIT_DATETIMES           467
+#define IDD_ADDEDIT_PASSWORDPOLICY      468
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -370,7 +372,6 @@
 #define IDC_EXPORT_XML_PASSWORD         1068
 #define IDC_EXPORT_TEXT_PASSWORD        1069
 #define IDC_USEHEXDIGITS                1070
-#define IDC_OVERRIDE_POLICY             1071
 #define IDC_DEFPWUSESYSTRAY             1072
 #define IDC_LOCKONSCREEN                1073
 #define IDC_DEFPWRECENTRYHELP           1074
@@ -398,13 +399,13 @@
 #define IDC_STATIC_RESTART              1097
 #define IDC_STATIC_MAXREITEMS           1098
 #define IDC_MAXREITEMS                  1099
-#define IDC_MORE                        1100
 #define IDC_URL                         1101
 #define IDC_AUTOTYPE                    1102
 #define IDC_EXPIRYDATE                  1103
-#define IDC_RUNCMD                      1103
 #define IDC_EXPIRYTIME                  1104
 #define IDC_STATIC_CURRENT_XTIME        1105
+#define IDC_RUNCMD                      1106
+#define IDC_XTIME_RECUR                 1107
 #define IDC_STATIC_CTIME                1108
 #define IDC_CTIME                       1109
 #define IDC_STATIC_PMTIME               1110
@@ -414,16 +415,12 @@
 #define IDC_STATIC_XTIME                1114
 #define IDC_XTIME                       1115
 #define IDC_STATIC_RMTIME               1116
-#define IDC_XTIME_RECUR                 1116
 #define IDC_RMTIME                      1117
 #define IDC_XTIME_CLEAR                 1118
 #define IDC_XTIME_SET                   1119
-#define IDC_XTIME_RECUR2                1120
 #define IDC_MAINTAINDATETIMESTAMPS      1121
 #define IDC_STATIC_DTGROUP              1122
 #define IDC_STATIC_DTEXPGROUP           1123
-#define IDC_TOP_HIDEABLE                1124
-#define IDC_BOTTOM_HIDEABLE             1125
 #define IDC_LEFT_HIDEABLE               1126
 #define IDC_RIGHT_HIDEABLE              1127
 #define IDC_EXPIRED_PASSWORD_LIST       1128
@@ -458,12 +455,9 @@
 #define IDC_ADVANCED_SUBGROUP_OBJECT    1161
 #define IDC_ADVANCED_SUBGROUP_CASE      1162
 #define IDC_PWH_COPY_ALL                1174
-#define IDC_PWHIST                      1175
 #define IDC_TREE_DISPLAY_COLLAPSED      1176
 #define IDC_TREE_DISPLAY_EXPANDED       1177
 #define IDC_TREE_DISPLAY_LASTSAVE       1178
-#define IDC_PWHSTATUS                   1179
-#define IDC_PWHMAX                      1180
 #define IDC_DOUBLE_CLICK_ACTION         1181
 #define IDC_PWHISTORYNOACTION           1183
 #define IDC_RESETPWHISTORYOFF           1184
@@ -536,7 +530,6 @@
 #define IDC_STATICGROUPRUNKNFLDS        1267
 #define IDC_VIEWDEPENDENTS              1268
 #define IDC_STATIC_ISANALIAS            1269
-#define IDC_STATIC_ALIASGRP             1270
 #define IDC_NEWVER_STATUS               1272
 #define IDC_VISIT_WEBSITE               1273
 #define IDC_TRAYICONCOLOUR              1274
@@ -619,7 +612,6 @@
 #define IDC_STATIC_URL                  1355
 #define IDC_STATIC_AUTO                 1356
 #define IDC_STATIC_RUNCMD               1357
-#define IDC_LAUNCH                      1358
 #define IDC_SUBSET                      1359
 #define IDC_GETSUBSET                   1360
 #define IDC_SUBSETRESULTS               1361
@@ -635,15 +627,22 @@
 #define IDC_VKB                         1372
 #define IDC_SETSAMPLETEXT               1373
 #define IDC_RESETFONT                   1374
-
+#define IDC_USEDEFAULTPWPOLICY          1375
+#define IDC_ENTRYPWPOLICY               1376
+#define IDC_RESETPWPOLICY               1377
+#define IDC_DCA_DEFAULT                 1378
+#define IDC_LAUNCH                      1379
+#define IDC_STATIC_DTSTATS              1380
+#define IDC_STATIC_PWH_ADD              1381
+#define IDC_STATIC_PWH_EDIT             1382
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        465
+#define _APS_NEXT_RESOURCE_VALUE        469
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1375
+#define _APS_NEXT_CONTROL_VALUE         1383
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

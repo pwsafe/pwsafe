@@ -54,6 +54,35 @@ struct PWPolicy {
     }
     return *this;
   }
+
+  bool operator==(const PWPolicy &that) const
+  {
+    if (this != &that) {
+      if (flags           != that.flags ||
+          length          != that.length ||
+          digitminlength  != that.digitminlength ||
+          lowerminlength  != that.lowerminlength ||
+          symbolminlength != that.symbolminlength ||
+          upperminlength  != that.upperminlength)
+       return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const PWPolicy &that) const
+  {
+    if (this != &that) {
+      if (flags           != that.flags ||
+          length          != that.length ||
+          digitminlength  != that.digitminlength ||
+          lowerminlength  != that.lowerminlength ||
+          symbolminlength != that.symbolminlength ||
+          upperminlength  != that.upperminlength)
+       return true;
+    }
+    return false;
+  }
+
   void Empty()
   { 
     flags = 0; length = 0;
@@ -93,7 +122,7 @@ public:
     NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
     PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, XTIME = 0x0a,
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
-    PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12,
+    PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12, DCA = 0x13,
     LAST,        // Start of unknown fields!
     END = 0xff}; // field types, per formatV{2,3}.txt
 
@@ -170,6 +199,8 @@ public:
     void GetPWPolicy(PWPolicy &pwp) const;
     StringX GetPWPolicy() const;
     StringX GetRunCommand() const;
+    void GetDCA(short &iDCA)  const;
+    StringX GetDCA() const;
 
     // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
     // it's used for multi-line notes and to replace '.' within the Title field.
@@ -225,6 +256,8 @@ public:
     void SetPWPolicy(const PWPolicy &pwp);
     bool SetPWPolicy(const stringT &cs_pwp);
     void SetRunCommand(const StringX &cs_RunCommand);
+    void SetDCA(const short &iDCA);
+    bool SetDCA(const stringT &cs_DCA);
 
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy
@@ -303,6 +336,7 @@ private:
   CItemField m_PWPolicy;
   CItemField m_XTimeInterval;
   CItemField m_RunCommand;
+  CItemField m_DCA;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;

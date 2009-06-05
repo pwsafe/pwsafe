@@ -23,8 +23,10 @@
 #ifdef _WIN32
 #include <afx.h>
 #endif
+
 #include "corelib/StringX.h"
 #include "os/typedefs.h"
+
 //-----------------------------------------------------------------------------
 class CSecString
 {

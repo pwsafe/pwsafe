@@ -23,11 +23,14 @@ actions that copied data to the clipboard.
 
 Changes to Existing Features in 3.17.2
 ======================================
-New toolbar icon set has been replaced with icons based on famfamfam's
+[] New toolbar icon set has been replaced with icons based on famfamfam's
 silk set.
+[] Rework Add and Edit dialogs into Property Pages to allow for future
+growth without large dialogs.
 
 New Features for 3.17.2
 =======================
+[2793283] Allow entry to override doubleclick setting.
 [2793280] Browse+Autotype added to allowed double click actions.
 [] Implement Virtual Keyboards for pass-phrase entry.
 [] DragBar now has ToolTips to inform user of its use.

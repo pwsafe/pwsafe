@@ -106,6 +106,13 @@
     <xs:maxInclusive value="255" />
   </xs:restriction>
 </xs:simpleType>
+
+<xs:simpleType name="dcaType">
+  <xs:restriction base="xs:int">
+    <xs:minInclusive value="0" />
+    <xs:maxInclusive value="7" />
+  </xs:restriction>
+</xs:simpleType>
 <!-- End of Special types -->
 
 <!-- Start of proper Password Safe validation XSD -->
@@ -239,6 +246,7 @@
               <!-- End Password Policy Fields -->
               </xs:element>
               <xs:element name="runcommand" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dca" type="dcaType" minOccurs="0" maxOccurs="1" />
               <xs:element name="unknownrecordfields" minOccurs="0" maxOccurs="1">
               <!-- Start Unknown Record Fields -->
                 <xs:complexType>

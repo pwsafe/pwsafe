@@ -18,9 +18,7 @@
 * Truly a workaround for M'soft dain bramage.
 */
 
-#ifndef __PWPROPERTYPAGE_H
-#define __PWPROPERTYPAGE_H
-#include <afxwin.h>
+#pragma once
 
 class CPWPropertyPage : public CPropertyPage
 {
@@ -28,6 +26,13 @@ public:
   CPWPropertyPage(UINT nID) : CPropertyPage(nID) {}
   virtual ~CPWPropertyPage() {}
   virtual const TCHAR *GetHelpName() const = 0;
-};
 
-#endif /* __PWPROPERTYPAGE_H */
+  // Following override to reset idle timeout on any event
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+
+  DECLARE_DYNAMIC(CPWPropertyPage)
+};
+//-----------------------------------------------------------------------------
+// Local variables:
+// mode: c++
+// End:

@@ -38,161 +38,65 @@ void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp)
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  COptionsPasswordPolicy passwordpolicy;
+  bool pwuselowercase, pwuseuppercase;
+  bool pwusedigits, pwusesymbols, pweasyvision, pwusehexdigits;
+  bool pwmakepronounceable;
+  int pwdefaultlength;
+  int pwdigitminlength, pwlowerminlength, pwsymbolminlength, pwupperminlength;
 
   if (pwp.flags != 0) {
-    passwordpolicy.m_pwuselowercase = 
-      (pwp.flags & PWSprefs::PWPolicyUseLowercase) ? TRUE : FALSE;
-    passwordpolicy.m_pwuseuppercase = 
-      (pwp.flags & PWSprefs::PWPolicyUseUppercase) ? TRUE : FALSE;
-    passwordpolicy.m_pwusedigits = 
-      (pwp.flags & PWSprefs::PWPolicyUseDigits) ? TRUE : FALSE;
-    passwordpolicy.m_pwusesymbols = 
-      (pwp.flags & PWSprefs::PWPolicyUseSymbols) ? TRUE : FALSE;
-    passwordpolicy.m_pwusehexdigits = 
-      (pwp.flags & PWSprefs::PWPolicyUseHexDigits) ? TRUE : FALSE;
-    passwordpolicy.m_pweasyvision = 
-      (pwp.flags & PWSprefs::PWPolicyUseEasyVision) ? TRUE : FALSE;
-    passwordpolicy.m_pwmakepronounceable = 
-      (pwp.flags & PWSprefs::PWPolicyMakePronounceable) ? TRUE : FALSE;
-    passwordpolicy.m_pwdefaultlength = pwp.length;
-    passwordpolicy.m_pwdigitminlength = pwp.digitminlength;
-    passwordpolicy.m_pwlowerminlength = pwp.lowerminlength;
-    passwordpolicy.m_pwsymbolminlength = pwp.symbolminlength;
-    passwordpolicy.m_pwupperminlength = pwp.upperminlength;
+    pwuselowercase = (pwp.flags & PWSprefs::PWPolicyUseLowercase) == 
+                      PWSprefs::PWPolicyUseLowercase;
+    pwuseuppercase = (pwp.flags & PWSprefs::PWPolicyUseUppercase) == 
+                      PWSprefs::PWPolicyUseUppercase;
+    pwusedigits = (pwp.flags & PWSprefs::PWPolicyUseDigits) == 
+                   PWSprefs::PWPolicyUseDigits;
+    pwusesymbols = (pwp.flags & PWSprefs::PWPolicyUseSymbols) == 
+                    PWSprefs::PWPolicyUseSymbols;
+    pwusehexdigits = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) == 
+                      PWSprefs::PWPolicyUseHexDigits;
+    pweasyvision = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) == 
+                    PWSprefs::PWPolicyUseEasyVision;
+    pwmakepronounceable = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) == 
+                           PWSprefs::PWPolicyMakePronounceable;
+    pwdefaultlength = pwp.length;
+    pwdigitminlength = pwp.digitminlength;
+    pwlowerminlength = pwp.lowerminlength;
+    pwsymbolminlength = pwp.symbolminlength;
+    pwupperminlength = pwp.upperminlength;
   } else {
-    passwordpolicy.m_pwuselowercase = prefs->
-      GetPref(PWSprefs::PWUseLowercase);
-    passwordpolicy.m_pwuseuppercase = prefs->
-      GetPref(PWSprefs::PWUseUppercase);
-    passwordpolicy.m_pwusedigits = prefs->
-      GetPref(PWSprefs::PWUseDigits);
-    passwordpolicy.m_pwusesymbols = prefs->
-      GetPref(PWSprefs::PWUseSymbols);
-    passwordpolicy.m_pwusehexdigits = prefs->
-      GetPref(PWSprefs::PWUseHexDigits);
-    passwordpolicy.m_pweasyvision = prefs->
-      GetPref(PWSprefs::PWUseEasyVision);
-    passwordpolicy.m_pwmakepronounceable = prefs->
-      GetPref(PWSprefs::PWMakePronounceable);
-    passwordpolicy.m_pwdefaultlength = prefs->
-      GetPref(PWSprefs::PWDefaultLength);
-    passwordpolicy.m_pwdigitminlength = prefs->
-      GetPref(PWSprefs::PWDigitMinLength);
-    passwordpolicy.m_pwlowerminlength = prefs->
-      GetPref(PWSprefs::PWLowercaseMinLength);
-    passwordpolicy.m_pwsymbolminlength = prefs->
-      GetPref(PWSprefs::PWSymbolMinLength);
-    passwordpolicy.m_pwupperminlength = prefs->
-      GetPref(PWSprefs::PWUppercaseMinLength);
+    pwuselowercase = prefs->GetPref(PWSprefs::PWUseLowercase);
+    pwuseuppercase = prefs->GetPref(PWSprefs::PWUseUppercase);
+    pwusedigits = prefs->GetPref(PWSprefs::PWUseDigits);
+    pwusesymbols = prefs->GetPref(PWSprefs::PWUseSymbols);
+    pwusehexdigits = prefs->GetPref(PWSprefs::PWUseHexDigits);
+    pweasyvision = prefs->GetPref(PWSprefs::PWUseEasyVision);
+    pwmakepronounceable = prefs->GetPref(PWSprefs::PWMakePronounceable);
+    pwdefaultlength = prefs->GetPref(PWSprefs::PWDefaultLength);
+    pwdigitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
+    pwlowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
+    pwsymbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
+    pwupperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
   }
 
-
   UINT numlowercase(0), numuppercase(0), numdigits(0), numsymbols(0);
-  if (passwordpolicy.m_pwuselowercase)
-    numlowercase = (passwordpolicy.m_pwlowerminlength == 0) ? 1 : passwordpolicy.m_pwlowerminlength;
-  if (passwordpolicy.m_pwuseuppercase)
-    numuppercase = (passwordpolicy.m_pwupperminlength == 0) ? 1 : passwordpolicy.m_pwupperminlength;
-  if (passwordpolicy.m_pwusedigits)
-    numdigits = (passwordpolicy.m_pwdigitminlength == 0) ? 1 : passwordpolicy.m_pwdigitminlength;
-  if (passwordpolicy.m_pwusesymbols)
-    numsymbols = (passwordpolicy.m_pwsymbolminlength == 0) ? 1 : passwordpolicy.m_pwsymbolminlength;  
-
-  CPasswordCharPool pwchars(passwordpolicy.m_pwdefaultlength,
+  if (pwuselowercase)
+    numlowercase = (pwlowerminlength == 0) ? 1 : pwlowerminlength;
+  if (pwuseuppercase)
+    numuppercase = (pwupperminlength == 0) ? 1 : pwupperminlength;
+  if (pwusedigits)
+    numdigits = (pwdigitminlength == 0) ? 1 : pwdigitminlength;
+  if (pwusesymbols)
+    numsymbols = (pwsymbolminlength == 0) ? 1 : pwsymbolminlength;
+ 
+  CPasswordCharPool pwchars(pwdefaultlength,
                             numlowercase, numuppercase, numdigits, numsymbols,
-                            passwordpolicy.m_pwusehexdigits == TRUE,
-                            passwordpolicy.m_pweasyvision == TRUE,
-                            passwordpolicy.m_pwmakepronounceable == TRUE);
+                            pwusehexdigits == TRUE,
+                            pweasyvision == TRUE,
+                            pwmakepronounceable == TRUE);
 
   password = pwchars.MakePassword();
 
   SetClipboardData(password);
   UpdateLastClipboardAction(CItemData::PASSWORD);
-}
-
-bool DboxMain::SetPasswordPolicy(PWPolicy &pwp)
-{
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  COptionsPasswordPolicy passwordpolicy;
-
-  if (pwp.flags != 0) {
-    passwordpolicy.m_pwuselowercase = 
-      (pwp.flags & PWSprefs::PWPolicyUseLowercase) ? TRUE : FALSE;
-    passwordpolicy.m_pwuseuppercase = 
-      (pwp.flags & PWSprefs::PWPolicyUseUppercase) ? TRUE : FALSE;
-    passwordpolicy.m_pwusedigits = 
-      (pwp.flags & PWSprefs::PWPolicyUseDigits) ? TRUE : FALSE;
-    passwordpolicy.m_pwusesymbols = 
-      (pwp.flags & PWSprefs::PWPolicyUseSymbols) ? TRUE : FALSE;
-    passwordpolicy.m_pwusehexdigits = 
-      (pwp.flags & PWSprefs::PWPolicyUseHexDigits) ? TRUE : FALSE;
-    passwordpolicy.m_pweasyvision = 
-      (pwp.flags & PWSprefs::PWPolicyUseEasyVision) ? TRUE : FALSE;
-    passwordpolicy.m_pwmakepronounceable = 
-      (pwp.flags & PWSprefs::PWPolicyMakePronounceable) ? TRUE : FALSE;
-    passwordpolicy.m_pwdefaultlength = pwp.length;
-    passwordpolicy.m_pwdigitminlength = pwp.digitminlength;
-    passwordpolicy.m_pwlowerminlength = pwp.lowerminlength;
-    passwordpolicy.m_pwsymbolminlength = pwp.symbolminlength;
-    passwordpolicy.m_pwupperminlength = pwp.upperminlength;
-  } else {
-    passwordpolicy.m_pwuselowercase = prefs->
-      GetPref(PWSprefs::PWUseLowercase);
-    passwordpolicy.m_pwuseuppercase = prefs->
-      GetPref(PWSprefs::PWUseUppercase);
-    passwordpolicy.m_pwusedigits = prefs->
-      GetPref(PWSprefs::PWUseDigits);
-    passwordpolicy.m_pwusesymbols = prefs->
-      GetPref(PWSprefs::PWUseSymbols);
-    passwordpolicy.m_pwusehexdigits = prefs->
-      GetPref(PWSprefs::PWUseHexDigits);
-    passwordpolicy.m_pweasyvision = prefs->
-      GetPref(PWSprefs::PWUseEasyVision);
-    passwordpolicy.m_pwmakepronounceable = prefs->
-      GetPref(PWSprefs::PWMakePronounceable);
-    passwordpolicy.m_pwdefaultlength = prefs->
-      GetPref(PWSprefs::PWDefaultLength);
-    passwordpolicy.m_pwdigitminlength = prefs->
-      GetPref(PWSprefs::PWDigitMinLength);
-    passwordpolicy.m_pwlowerminlength = prefs->
-      GetPref(PWSprefs::PWLowercaseMinLength);
-    passwordpolicy.m_pwsymbolminlength = prefs->
-      GetPref(PWSprefs::PWSymbolMinLength);
-    passwordpolicy.m_pwupperminlength = prefs->
-      GetPref(PWSprefs::PWUppercaseMinLength);
-  }
-
-  // Start with existing password policy
-  CPropertySheet optionsDlg(IDS_SETPASSWORDPOLICY);
-
-  // Display COptionsPasswordPolicy page
-  optionsDlg.AddPage(&passwordpolicy);
-  optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW; // remove "Apply Now" button
-
-  INT_PTR rc = optionsDlg.DoModal();
-  if (rc == IDCANCEL)
-    return false;
-
-  pwp.Empty();
-  if (passwordpolicy.m_pwuselowercase)
-    pwp.flags |= PWSprefs::PWPolicyUseLowercase;
-  if (passwordpolicy.m_pwuseuppercase)
-    pwp.flags |= PWSprefs::PWPolicyUseUppercase;
-  if (passwordpolicy.m_pwusedigits)
-    pwp.flags |= PWSprefs::PWPolicyUseDigits;
-  if (passwordpolicy.m_pwusesymbols)
-    pwp.flags |= PWSprefs::PWPolicyUseSymbols;
-  if (passwordpolicy.m_pwusehexdigits)
-    pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
-  if (passwordpolicy.m_pweasyvision)
-    pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
-  if (passwordpolicy.m_pwmakepronounceable)
-    pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
-  pwp.length = passwordpolicy.m_pwdefaultlength;
-  pwp.digitminlength = passwordpolicy.m_pwdigitminlength;
-  pwp.lowerminlength = passwordpolicy.m_pwlowerminlength;
-  pwp.symbolminlength = passwordpolicy.m_pwsymbolminlength;
-  pwp.upperminlength = passwordpolicy.m_pwupperminlength;
-  return true;
 }
