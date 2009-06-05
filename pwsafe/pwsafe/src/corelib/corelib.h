@@ -64,6 +64,7 @@
 #define IDCS_XERCESOUTOFMEMORY          3061
 #define IDSC_EXPATPARSEERROR            3062
 #define IDSC_EXPHDRRUNCOMMAND           3063
+#define IDSC_EXPHDRDCA                  3064
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231

@@ -55,8 +55,8 @@ CItemData::CItemData()
   m_URL(URL), m_AutoType(AUTOTYPE),
   m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
   m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-    m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
-  m_entrytype(ET_NORMAL), m_display_info(NULL)
+  m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
+  m_DCA(DCA), m_entrytype(ET_NORMAL), m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -69,8 +69,8 @@ CItemData::CItemData(const CItemData &that) :
   m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
-  m_RunCommand(that.m_RunCommand), m_entrytype(that.m_entrytype),
-  m_display_info(that.m_display_info)
+  m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA),
+  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
@@ -278,6 +278,26 @@ StringX CItemData::GetXTimeInt() const
   return os.str();
 }
 
+void CItemData::GetDCA(short &iDCA) const
+{
+  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+  unsigned int tlen = sizeof(in); // ditto
+
+  GetField(m_DCA, (unsigned char *)in, tlen);
+
+  if (tlen != 0) {
+    ASSERT(tlen == sizeof(short));
+    memcpy(&iDCA, in, sizeof(short));
+  } else {
+    iDCA = -1;
+  }
+}
+
+StringX CItemData::GetDCA() const
+{
+  return GetField(m_DCA);
+}
+
 StringX CItemData::GetRunCommand() const
 {
   return GetField(m_RunCommand);
@@ -368,15 +388,15 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     // History exported as "00000" if empty, to make parsing easier
     BOOL pwh_status;
     size_t pwh_max, num_err;
-    PWHistList PWHistList;
+    PWHistList pwhistlist;
 
     pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                     PWHistList, TMC_EXPORT_IMPORT);
+                                     pwhistlist, TMC_EXPORT_IMPORT);
 
     //  Build export string
-    history = MakePWHistoryHeader(pwh_status, pwh_max, PWHistList.size());
+    history = MakePWHistoryHeader(pwh_status, pwh_max, pwhistlist.size());
     PWHistList::iterator iter;
-    for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
+    for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
       const PWHistEntry &pwshe = *iter;
       history += _T(' ');
       history += pwshe.changedate;
@@ -422,6 +442,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
           GetPWPolicy() + separator +
           history + separator +
           GetRunCommand() + separator +
+          GetDCA() + separator +
           _T("\"") + notes + _T("\"");
   } else {
     // Not everything
@@ -458,6 +479,8 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       ret += history + separator;
     if (bsFields.test(CItemData::RUNCMD))
       ret += GetRunCommand() + separator;
+    if (bsFields.test(CItemData::DCA))
+      ret += GetDCA() + separator;
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
     // remove trailing separator
@@ -533,7 +556,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   oss << "\t\t<uuid><![CDATA[" << uuid << "]]></uuid>" << endl;
 
   time_t t;
-  int xint;
+  int i32;
+  short i16;
 
   GetCTime(t);
   if (bsExport.test(CItemData::CTIME) && (long)t != 0L)
@@ -547,9 +571,9 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   if (bsExport.test(CItemData::XTIME) && (long)t != 0L)
     oss << PWSUtil::GetXMLTime(2, "xtime", t, utf8conv);
 
-  GetXTimeInt(xint);
-  if (bsExport.test(CItemData::XTIME_INT) && xint > 0 && xint <= 3650)
-    oss << "\t\t<xtime_interval>" << xint << "</xtime_interval>" << endl;
+  GetXTimeInt(i32);
+  if (bsExport.test(CItemData::XTIME_INT) && i32 > 0 && i32 <= 3650)
+    oss << "\t\t<xtime_interval>" << i32 << "</xtime_interval>" << endl;
 
   GetPMTime(t);
   if (bsExport.test(CItemData::PMTIME) && (long)t != 0L)
@@ -597,20 +621,20 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   if (bsExport.test(CItemData::PWHIST)) {
     size_t pwh_max, num_err;
-    PWHistList PWHistList;
+    PWHistList pwhistlist;
     bool pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                          PWHistList, TMC_XML);
+                                          pwhistlist, TMC_XML);
     oss << dec;
-    if (pwh_status || pwh_max > 0 || !PWHistList.empty()) {
+    if (pwh_status || pwh_max > 0 || !pwhistlist.empty()) {
       oss << "\t\t<pwhistory>" << endl;
       oss << "\t\t\t<status>" << pwh_status << "</status>" << endl;
       oss << "\t\t\t<max>" << pwh_max << "</max>" << endl;
-      oss << "\t\t\t<num>" << PWHistList.size() << "</num>" << endl;
-      if (!PWHistList.empty()) {
+      oss << "\t\t\t<num>" << pwhistlist.size() << "</num>" << endl;
+      if (!pwhistlist.empty()) {
         oss << "\t\t\t<history_entries>" << endl;
         int num = 1;
         PWHistList::iterator hiter;
-        for (hiter = PWHistList.begin(); hiter != PWHistList.end();
+        for (hiter = pwhistlist.begin(); hiter != pwhistlist.end();
              hiter++) {
           const unsigned char * utf8 = NULL;
           int utf8Len = 0;
@@ -643,6 +667,11 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   tmp = GetRunCommand();
   if (bsExport.test(CItemData::RUNCMD) && !tmp.empty())
     PWSUtil::WriteXMLField(oss, "runcommand", tmp, utf8conv);
+
+  GetDCA(i16);
+  if (bsExport.test(CItemData::DCA) && 
+      i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
+    oss << "\t\t<dca>" << i16 << "</dca>" << endl;
 
   if (NumberUnknownFields() > 0) {
     oss << "\t\t<unknownrecordfields>" << endl;
@@ -915,6 +944,8 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   if (xint_str.find_first_not_of(_T("0123456789")) == stringT::npos) {
     istringstreamT is(xint_str);
     is >> xint;
+    if (is.fail())
+      return false;
     if (xint >= 0 && xint <= 3650) {
       SetXTimeInt(xint);
       return true;
@@ -994,6 +1025,34 @@ void CItemData::SetRunCommand(const StringX &cs_RunCommand)
   SetField(m_RunCommand, cs_RunCommand);
 }
 
+void CItemData::SetDCA(const short &iDCA)
+{
+   
+   SetField(m_DCA, (const unsigned char *)&iDCA, sizeof(short));
+}
+
+bool CItemData::SetDCA(const stringT &cs_DCA)
+{
+  short iDCA(-1);
+
+  if (cs_DCA.empty()) {
+    SetDCA(iDCA);
+    return true;
+  }
+
+  if (cs_DCA.find_first_not_of(_T("0123456789")) == stringT::npos) {
+    istringstreamT is(cs_DCA);
+    is >> iDCA;
+    if (is.fail())
+      return false;
+    if (iDCA == -1 || (iDCA >= PWSprefs::minDCA && iDCA <= PWSprefs::maxDCA)) {
+      SetDCA(iDCA);
+      return true;
+    }
+  }
+  return false;
+}
+
 BlowFish *CItemData::MakeBlowFish() const
 {
   ASSERT(IsSessionKeySet);
@@ -1015,6 +1074,7 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_URL = that.m_URL;
     m_AutoType = that.m_AutoType;
     m_RunCommand = that.m_RunCommand;
+    m_DCA = that.m_DCA;
     m_tttCTime = that.m_tttCTime;
     m_tttPMTime = that.m_tttPMTime;
     m_tttATime = that.m_tttATime;
@@ -1045,6 +1105,7 @@ void CItemData::Clear()
   m_URL.Empty();
   m_AutoType.Empty();
   m_RunCommand.Empty();
+  m_DCA.Empty();
   m_tttCTime.Empty();
   m_tttPMTime.Empty();
   m_tttATime.Empty();
@@ -1102,13 +1163,13 @@ bool CItemData::ValidatePWHistory()
   }
 
   size_t pwh_max, num_err;
-  PWHistList PWHistList;
+  PWHistList pwhistlist;
   bool pwh_status = CreatePWHistoryList(pwh, pwh_max, num_err,
-                                        PWHistList, TMC_EXPORT_IMPORT);
+                                        pwhistlist, TMC_EXPORT_IMPORT);
   if (num_err == 0)
     return true;
 
-  size_t listnum = PWHistList.size();
+  size_t listnum = pwhistlist.size();
 
   if (pwh_max == 0 && listnum == 0) {
     SetPWHistory(_T(""));
@@ -1125,7 +1186,7 @@ bool CItemData::ValidatePWHistory()
   StringX history = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
 
   PWHistList::iterator iter;
-  for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
+  for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
     const PWHistEntry &pwshe = *iter;
     history += pwshe.changedate;
     oStringXStream os1;
@@ -1362,6 +1423,17 @@ static bool pull_int(int &i, unsigned char *data, size_t len)
   return true;
 }
 
+static bool pull_int16(short &i16, unsigned char *data, size_t len)
+{
+  if (len == sizeof(short)) {
+    i16 = *reinterpret_cast<short *>(data);
+  } else {
+    ASSERT(0);
+    return false;
+  }
+  return true;
+}
+
 bool CItemData::DeserializePlainText(const std::vector<char> &v)
 {
   vector<char>::const_iterator iter = v.begin();
@@ -1396,7 +1468,9 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
 {
   StringX str;
   time_t t;
-  int xint;
+  int i32;
+  short i16;
+
   switch (type) {
     case NAME:
       ASSERT(0); // not serialized, or in v3 format
@@ -1447,8 +1521,8 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
       SetXTime(t);
       break;
     case XTIME_INT:
-      if (!pull_int(xint, data, len)) return false;
-      SetXTimeInt(xint);
+      if (!pull_int(i32, data, len)) return false;
+      SetXTimeInt(i32);
       break;
     case POLICY:
       if (!pull_string(str, data, len)) return false;
@@ -1473,6 +1547,10 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
     case RUNCMD:
       if (!pull_string(str, data, len)) return false;
       SetRunCommand(str);
+      break;
+    case DCA:
+      if (!pull_int16(i16, data, len)) return false;
+      SetDCA(i16);
       break;
     case END:
       break;
@@ -1535,7 +1613,8 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   StringX tmp;
   uuid_array_t uuid_array;
   time_t t = 0;
-  int xi = 0;
+  int i32 = 0;
+  short i16 = 0;
 
   v.clear();
   GetUUID(uuid_array);
@@ -1569,12 +1648,13 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   GetXTime(t);   push_time(v, XTIME, t);
   GetRMTime(t);  push_time(v, RMTIME, t);
 
-  GetXTimeInt(xi); push_int(v, XTIME_INT, xi);
+  GetXTimeInt(i32); push_int(v, XTIME_INT, i32);
 
   push_string(v, POLICY, GetPWPolicy());
   push_string(v, PWHIST, GetPWHistory());
 
   push_string(v, RUNCMD, GetRunCommand());
+  GetDCA(i16); push_int(v, DCA, i16);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();

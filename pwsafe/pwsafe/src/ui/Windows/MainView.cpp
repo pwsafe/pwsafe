@@ -1317,7 +1317,7 @@ CItemData *DboxMain::getSelectedItem()
       ASSERT(di != NULL && di->list_index == i);
     }
   } else {
-    // heirarchy tree mode; go from HTREEITEM to index
+    // hierarchy tree mode; go from HTREEITEM to index
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     if (ti != NULL) {
       retval = (CItemData *)m_ctlItemTree.GetItemData(ti);

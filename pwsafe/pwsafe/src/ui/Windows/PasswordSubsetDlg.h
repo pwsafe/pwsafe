@@ -45,6 +45,7 @@ protected:
   BOOL OnInitDialog();
   virtual void OnCancel();
   //{{AFX_MSG(CPasswordSubsetDlg)
+  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 

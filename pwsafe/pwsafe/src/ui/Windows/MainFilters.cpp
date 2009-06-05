@@ -371,14 +371,14 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
   int iValue(0);
 
   size_t pwh_max, err_num;
-  PWHistList PWHistList;
+  PWHistList pwhistlist;
   PWHistList::iterator pwshe_iter;
 
   bool status = CreatePWHistoryList(pci->GetPWHistory(),
                                     pwh_max, err_num,
-                                    PWHistList, TMC_EXPORT_IMPORT);
+                                    pwhistlist, TMC_EXPORT_IMPORT);
 
-  bPresent = pwh_max > 0 || !PWHistList.empty();
+  bPresent = pwh_max > 0 || !pwhistlist.empty();
 
   vFilterRows::const_iterator Flt_citer;
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
@@ -411,7 +411,7 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
           mt = PWSMatch::MT_BOOL;
           break;
         case HT_NUM:
-          iValue = PWHistList.size();
+          iValue = pwhistlist.size();
           mt = PWSMatch::MT_INTEGER;
           break;
         case HT_MAX:
@@ -431,7 +431,7 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
       const int ifunction = (int)st_fldata.rule;
       switch (mt) {
         case PWSMatch::MT_STRING:
-          for (pwshe_iter = PWHistList.begin(); pwshe_iter != PWHistList.end(); pwshe_iter++) {
+          for (pwshe_iter = pwhistlist.begin(); pwshe_iter != pwhistlist.end(); pwshe_iter++) {
             PWHistEntry pwshe = *pwshe_iter;
             thistest_rc = PWSMatch::Match(st_fldata.fstring, pwshe.password,
                                   st_fldata.fcase == BST_CHECKED ? -ifunction : ifunction);
@@ -446,7 +446,7 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
           tests++;
           break;
         case PWSMatch::MT_DATE:
-          for (pwshe_iter = PWHistList.begin(); pwshe_iter != PWHistList.end(); pwshe_iter++) {
+          for (pwshe_iter = pwhistlist.begin(); pwshe_iter != pwhistlist.end(); pwshe_iter++) {
             const PWHistEntry pwshe = *pwshe_iter;
             CTime ct(pwshe.changetttdate);
             CTime ct2;

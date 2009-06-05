@@ -265,7 +265,8 @@ Password History            0x0f        Text          Y              [12]
 Password Policy             0x10        Text          Y              [13]
 Password Expiry Interval    0x11        2 bytes       Y              [14]
 Run Command                 0x12        Text          Y
-End of Entry                0xff        [empty]       Y              [15]
+Double-Click Action         0x13        2 bytes       Y              [15]
+End of Entry                0xff        [empty]       Y              [16]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -348,13 +349,13 @@ in the past and has then been disabled but the history hasn't been cleared.
     "ffffnnnllluuudddsss"
 where:
      ffff = 4 hexadecimal digits representing the following flags
-        UseLowercase =      0x8000  - can have a minimum length
-        UseUppercase =      0x4000  - can have a minimum length
-        UseDigits =         0x2000  - can have a minimum length
-        UseSymbols =        0x1000  - can have a minimum length
-        UseHexDigits =      0x0800 (if set, then no other flags can be set)
-        UseEasyVision =     0x0400
-        MakePronounceable = 0x0200
+        UseLowercase        0x8000  - can have a minimum length
+        UseUppercase        0x4000  - can have a minimum length
+        UseDigits           0x2000  - can have a minimum length
+        UseSymbols          0x1000  - can have a minimum length
+        UseHexDigits        0x0800 (if set, then no other flags can be set)
+        UseEasyVision       0x0400
+        MakePronounceable   0x0200
         Unused              0x01ff
     nnn  = 3 hexadecimal digits password total length
     lll  = 3 hexadecimal digits password minimum number of lowercase characters
@@ -368,7 +369,19 @@ the password is changed, until this value is unset.  Valid values are 1-3650
 corresponding to up to approximately 10 years.  A value of zero is equivalent to
 this field not being set.
 
-[15] An explicit end of entry field is useful for supporting new fields
+[15] A two byte field contain the value of the Double-Click Action 'preference 
+value' (0xff means use the current Application default):
+Current 'preference values' are:
+    CopyPassword           0
+    ViewEdit               1
+    AutoType               2
+    Browse                 3
+    CopyNotes              4
+    CopyUsername           5
+    CopyPasswordMinimize   6
+    BrowsePlus             7
+
+[16] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility

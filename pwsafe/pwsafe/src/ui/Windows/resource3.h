@@ -531,3 +531,11 @@
 #define IDS_ENTRYEXISTS1                5695
 #define IDS_ENTRYEXISTS3                5696
 #define IDS_DRAGTOCOPY                  5697
+#define IDS_ADDENTRY                    5698
+#define IDS_EDITENTRY                   5699
+#define IDS_NA                          5700
+#define IDS_ISANALIAS                   5701
+#define IDS_ISANALIASBASE               5702
+#define IDS_ISASHORTCUTBASE             5703
+#define IDS_COMPDCA                     5704
+#define IDS_DCA                         5705

@@ -120,29 +120,22 @@ enum PopupMenus {FILEMENU = 0, EXPORTMENU, IMPORTMENU,
                  HELPMENU, NUMPOPUPMENUS};
 
 // Index values for which dialog to show during GetAndCheckPassword
-enum {GCP_FIRST = 0,        // At startup of PWS
-      GCP_NORMAL = 1,       // Only OK, CANCEL & HELP buttons
+enum {GCP_FIRST      = 0,   // At startup of PWS
+      GCP_NORMAL     = 1,   // Only OK, CANCEL & HELP buttons
       GCP_UNMINIMIZE = 2,   // Only OK, CANCEL & HELP buttons
-      GCP_WITHEXIT = 3,     // OK, CANCEL, EXIT & HELP buttons
-      GCP_ADVANCED = 4};    // OK, CANCEL, HELP buttons & ADVANCED checkbox
+      GCP_WITHEXIT   = 3,   // OK, CANCEL, EXIT & HELP buttons
+      GCP_ADVANCED   = 4};  // OK, CANCEL, HELP buttons & ADVANCED checkbox
 
 //-----------------------------------------------------------------------------
-class DboxMain
-  : public CDialog
+class DboxMain : public CDialog
 {
 #if defined(POCKET_PC)
   friend class CMyListCtrl;
 #endif
 
-  // static methods and variables
-private:
-  static void StopFind(LPARAM instance);
-  static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-
-  // Only need these if not on default menus
-  static CString CS_SETFILTERS, CS_CLEARFILTERS;
-
 public:
+  DECLARE_DYNAMIC(DboxMain)
+
   // default constructor
   DboxMain(CWnd* pParent = NULL);
   ~DboxMain();
@@ -229,7 +222,6 @@ public:
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) {m_bValidate = state;}
   void MakeRandomPassword(StringX& password, PWPolicy &pwp);
-  bool SetPasswordPolicy(PWPolicy &pwp);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
                      const bool bDoAutotype);
   void UpdatePasswordHistory(int iAction, int num_default);
@@ -261,8 +253,12 @@ public:
   void AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid,
                          const CItemData::EntryType type)
   {m_core.AddDependentEntry(base_uuid, entry_uuid, type);}
+
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
+  void SetEntryImage(const int &index, const int nImage, const bool bOneEntry = false);
+  void SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry = false);
+
   void RefreshImages();
   bool FieldsNotEqual(StringX a, StringX b);
   void CreateShortcutEntry(CItemData *ci, const StringX &cs_group,
@@ -308,13 +304,15 @@ public:
   bool m_bDoAutoType;
   StringX m_AutoType;
 
+  // Used in Add & Edit & OptionsPasswordPolicy
+  PWPolicy m_pwp;
+  
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
   //}}AFX_VIRTUAL
 
-protected:
   HICON m_hIcon;
   HICON m_hIconSm;
 
@@ -418,8 +416,6 @@ protected:
   void SetDCAText();
   void SortListView();
   void UpdateBrowseURLSendEmailButton(const bool bIsEmail);
-  void SetEntryImage(const int &index, const int nImage, const bool bOneEntry = false);
-  void SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry = false);
 
   //Version of message functions with return values
   int Save(void);
@@ -608,6 +604,13 @@ protected:
                           PWScore *pcore = 0, int adv_type = -1);
 
 private:
+  // static methods and variables
+  static void StopFind(LPARAM instance);
+  static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+
+  // Only need these if not on default menus
+  static CString CS_SETFILTERS, CS_CLEARFILTERS;
+
   StringX m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   PWScore &m_core;
   bool m_IsStartSilent;
@@ -713,7 +716,7 @@ private:
   bool m_bDoShortcuts[NUMPOPUPMENUS];
 
   // Used for DragBar Tooltips
-  CToolTipCtrl* m_pToolTipCtrl;;
+  CToolTipCtrl* m_pToolTipCtrl;
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)

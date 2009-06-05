@@ -40,21 +40,26 @@ class CStaticExtn : public CStatic
 public:
   CStaticExtn();
   void SetColour(COLORREF cfUser)
-  {m_bUserColour = TRUE; m_cfUser = cfUser;}
+  {m_bUserColour = true; m_cfUser = cfUser;}
   void ResetColour()
-  {m_bUserColour = FALSE;}
-  BOOL GetColourState()
-  {return m_bUserColour;}
+  {m_bUserColour = false;}
   void FlashBkgnd(COLORREF cfFlashColour);
   void SetHighlight(bool bHighlight, COLORREF cfHighlightColour)
   {m_bHighlight = bHighlight; m_cfHighlightColour = cfHighlightColour;}
 
+  inline int IsFlashing() {return m_iFlashing;}
+  inline bool GetColourState()  {return m_bUserColour;}
+  inline bool IsHighlighted() {return m_bHighlight;}
+  inline bool IsMouseInWindow() {return m_bMouseInWindow;}
+  inline COLORREF GetFlashColour() {return m_cfFlashColour;}
+  inline COLORREF GetHighlightColour() {return m_cfHighlightColour;}
+  inline COLORREF GetUserColour() {return m_cfUser;}
+
   // Attributes
 private:
-  BOOL m_bUserColour, m_bMouseInWindow, m_bHighlight;
-  COLORREF m_cfUser;
   int m_iFlashing;
-  COLORREF m_cfOldColour, m_cfFlashColour, m_cfHighlightColour;
+  COLORREF m_cfUser, m_cfOldColour, m_cfFlashColour, m_cfHighlightColour;
+  bool m_bUserColour, m_bMouseInWindow, m_bHighlight;
 
   // Operations
 public:
@@ -71,10 +76,10 @@ public:
   // Generated message map functions
 protected:
   //{{AFX_MSG(CStaticExtn)
-  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 };
 

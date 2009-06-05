@@ -430,6 +430,10 @@ int PWScore::WritePlaintextFile(const StringX &filename,
       LoadAString(cs_temp, IDSC_EXPHDRRUNCOMMAND);
       hdr += cs_temp;
     }
+    if (bsFields.test(CItemData::DCA)) {
+      LoadAString(cs_temp, IDSC_EXPHDRDCA);
+      hdr += cs_temp;
+    }
     if (bsFields.test(CItemData::NOTES)) {
       LoadAString(cs_temp, IDSC_EXPHDRNOTES);
       hdr += cs_temp;
@@ -789,7 +793,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
-               POLICY, HISTORY, RUNCMD, NOTES, NUMFIELDS};
+               POLICY, HISTORY, RUNCMD, DCA, NOTES, NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
   for (int i = 0; i < NUMFIELDS; i++)
@@ -1111,6 +1115,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
     if (i_Offset[RUNCMD] >= 0 && tokens.size() > (size_t)i_Offset[RUNCMD])
       temp.SetRunCommand(tokens[i_Offset[RUNCMD]].c_str());
+    if (i_Offset[DCA] >= 0 && tokens.size() > (size_t)i_Offset[DCA])
+      temp.SetRunCommand(tokens[i_Offset[DCA]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.

@@ -133,7 +133,23 @@ void CPWFindToolBar::OnDestroy()
 
 BEGIN_MESSAGE_MAP(CPWFindToolBar, CToolBar)
   ON_WM_DESTROY()
+  ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
+
+HBRUSH CPWFindToolBar::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+  HBRUSH hbr = CToolBar::OnCtlColor(pDC, pWnd, nCtlColor);
+
+  // Only deal with Static controls and then
+  // Only with our special one - change colour of warning message
+  if (nCtlColor == CTLCOLOR_STATIC && pWnd->GetDlgCtrlID() == ID_TOOLBUTTON_FINDEDITCTRL) {
+    if (((CStaticExtn *)pWnd)->GetColourState()) {
+      COLORREF cfUser = ((CStaticExtn *)pWnd)->GetUserColour();
+      pDC->SetTextColor(cfUser);
+    }
+  }
+  return hbr;
+}
 
 // CPWFindToolBar message handlers
 

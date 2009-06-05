@@ -65,6 +65,7 @@ void CPasswordSubsetDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPasswordSubsetDlg, CPWDialog)
   //{{AFX_MSG_MAP(CPasswordSubsetDlg)
+  ON_WM_CTLCOLOR()
   ON_MESSAGE(WM_DISPLAYPASSWORDSUBSET, OnDisplayStatus)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -85,6 +86,23 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   m_pDbx->PlaceWindow(this, &rect, SW_SHOW);
 
   return TRUE;
+}
+
+HBRUSH CPasswordSubsetDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+  HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+  // Only deal with Static controls and then
+  // Only with our special one - change colour of warning message
+  if (nCtlColor == CTLCOLOR_STATIC && pWnd->GetDlgCtrlID() == IDC_STATICSUBSETWARNING) {
+    if (((CStaticExtn *)pWnd)->GetColourState()) {
+      COLORREF cfUser = ((CStaticExtn *)pWnd)->GetUserColour();
+      pDC->SetTextColor(cfUser);
+    }
+  }
+
+  // Let's get out of here
+  return hbr;
 }
 
 void CPasswordSubsetDlg::OnCancel()
@@ -124,6 +142,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
         m_warningmsg.Format(IDS_SUBSETINDEXTOOBIG,ipwlengh);
       else
         m_warningmsg.LoadString(IDS_SUBSETINDEXZERO);
+
       m_stcwarningmsg.SetWindowText(m_warningmsg);
       m_stcwarningmsg.SetColour(RGB(255, 0, 0));
       m_stcwarningmsg.Invalidate();

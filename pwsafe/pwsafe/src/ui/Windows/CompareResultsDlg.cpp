@@ -146,6 +146,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
     cs_header.LoadString(IDS_RUNCOMMAND);
     m_LCResults.InsertColumn(RUNCMD, cs_header, LVCFMT_CENTER);
   }
+  if (m_bsFields.test(CItemData::DCA)) {
+    cs_header.LoadString(IDS_DCA);
+    m_LCResults.InsertColumn(DCA, cs_header, LVCFMT_CENTER);
+  }
   m_nCols = m_LCResults.GetHeaderCtrl()->GetItemCount();
 
   m_numOnlyInCurrent = m_OnlyInCurrent.size();
@@ -339,6 +343,8 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::POLICY) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::RUNCMD))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::RUNCMD) ? _T("X") : _T("-"));
+      if (m_bsFields.test(CItemData::DCA))
+        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::DCA) ? _T("X") : _T("-"));
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(BOTH, st_data.id));
@@ -845,6 +851,7 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_pwhistory(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     const CString csx_policy(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
     const CString csx_runcmd(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
+    const CString csx_dca(MAKEINTRESOURCE(IDS_COMPDCA));
 
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
          cd_iter++) {
@@ -867,6 +874,7 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::PWHIST)) buffer += csx_pwhistory;
       if (st_data.bsDiffs.test(CItemData::POLICY)) buffer += csx_policy;
       if (st_data.bsDiffs.test(CItemData::RUNCMD)) buffer += csx_runcmd;
+      if (st_data.bsDiffs.test(CItemData::DCA)) buffer += csx_dca;
       m_prpt->WriteLine((LPCTSTR)buffer);
     }
     m_prpt->WriteLine();

@@ -13,6 +13,7 @@
 #include "PWScore.h"
 #include "PWSFilters.h"
 #include "PWSdirs.h"
+#include "PWSprefs.h"
 #include "corelib.h"
 
 #include "os/debug.h"
@@ -184,6 +185,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   int status = SUCCESS;
   StringX tmp;
   uuid_array_t item_uuid;
+  time_t t = 0;
+  int i32;
+  short i16;
 
   item.GetUUID(item_uuid);
   WriteCBC(CItemData::UUID, item_uuid, sizeof(uuid_array_t));
@@ -202,36 +206,34 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetAutoType();
   if (!tmp.empty())
     WriteCBC(CItemData::AUTOTYPE, tmp);
-  time_t t = 0;
-  int t32;
   item.GetCTime(t);
   if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::CTIME, (unsigned char *)&t32, sizeof(t32));
+    i32 = (int)t;
+    WriteCBC(CItemData::CTIME, (unsigned char *)&i32, sizeof(i32));
   }
   item.GetPMTime(t);
   if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::PMTIME, (unsigned char *)&t32, sizeof(t32));
+    i32 = (int)t;
+    WriteCBC(CItemData::PMTIME, (unsigned char *)&i32, sizeof(i32));
   }
   item.GetATime(t);
   if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::ATIME, (unsigned char *)&t32, sizeof(t32));
+    i32 = (int)t;
+    WriteCBC(CItemData::ATIME, (unsigned char *)&i32, sizeof(i32));
   }
   item.GetXTime(t);
   if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::XTIME, (unsigned char *)&t32, sizeof(t32));
+    i32 = (int)t;
+    WriteCBC(CItemData::XTIME, (unsigned char *)&i32, sizeof(i32));
   }
-  item.GetXTimeInt(t32);
-  if (t32 > 0 && t32 <= 3650) {
-    WriteCBC(CItemData::XTIME_INT, (unsigned char *)&t32, sizeof(t32));
+  item.GetXTimeInt(i32);
+  if (i32 > 0 && i32 <= 3650) {
+    WriteCBC(CItemData::XTIME_INT, (unsigned char *)&i32, sizeof(i32));
   }
   item.GetRMTime(t);
   if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::RMTIME, (unsigned char *)&t32, sizeof(t32));
+    i32 = (int)t;
+    WriteCBC(CItemData::RMTIME, (unsigned char *)&i32, sizeof(i32));
   }
   tmp = item.GetPWPolicy();
   if (!tmp.empty())
@@ -242,6 +244,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetRunCommand();
   if (!tmp.empty())
     WriteCBC(CItemData::RUNCMD, tmp);
+  item.GetDCA(i16);
+  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
+    WriteCBC(CItemData::DCA, (unsigned char *)&i16, sizeof(short));
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = item.GetURFIterBegin();

@@ -24,7 +24,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tNotes"
+  IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\tNotes"
   IDSC_EXPHDRGROUPTITLE   "Group/Title\t"
   IDSC_EXPHDRUSERNAME     "Username\t"
   IDSC_EXPHDRPASSWORD     "Password\t"
@@ -42,6 +42,7 @@ BEGIN
   IDSC_EXPHDRPWPOLICY     "Password Policy\t"
   IDSC_EXPHDRXTIMEINT     "Password Expiry Interval\t"
   IDSC_EXPHDRRUNCOMMAND   "Run Command\t"
+  IDSC_EXPHDRDCA          "DCA\t"
 END
 
 STRINGTABLE

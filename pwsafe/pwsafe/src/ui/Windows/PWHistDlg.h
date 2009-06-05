@@ -20,7 +20,7 @@ class CPWHistDlg : public CPWDialog
 
 public:
   CPWHistDlg(CWnd* pParent, bool IsReadOnly,
-    CSecString &HistStr, PWHistList &PWHistList,
+    CSecString &HistStr, PWHistList &pwhistlist,
     size_t NumPWHistory, size_t &MaxPWHistory,
     BOOL &SavePWHistory);
 
@@ -39,7 +39,7 @@ private:
   const bool m_PWH_IsReadOnly;
   // Following reference members from EditDlg
   CSecString &m_HistStr;
-  PWHistList &m_PWHistList;
+  PWHistList &m_pwhistlist;
   const size_t m_NumPWHistory;
   size_t &m_MaxPWHistory;
   BOOL &m_SavePWHistory;

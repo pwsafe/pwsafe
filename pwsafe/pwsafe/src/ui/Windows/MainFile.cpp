@@ -1415,7 +1415,8 @@ void DboxMain::OnMerge()
 #define MRG_XTIME      0x0200
 #define MRG_XTIME_INT  0x0100
 #define MRG_EXECUTE    0x0080
-#define MRG_UNUSED     0x007f
+#define MRG_DCA        0x0040
+#define MRG_UNUSED     0x003f
 
 int DboxMain::Merge(const StringX &pszFilename) {
   /* open file they want to merge */
@@ -1588,6 +1589,11 @@ int DboxMain::Merge(const StringX &pszFilename) {
       }
       if (otherItem.GetRunCommand() != curItem.GetRunCommand()) {
         diff_flags |= MRG_EXECUTE;
+        cs_temp.LoadString(IDS_RUNCOMMAND);
+        csDiffs += cs_temp + _T(", ");
+      }
+      if (otherItem.GetDCA() != curItem.GetDCA()) {
+        diff_flags |= MRG_DCA;
         cs_temp.LoadString(IDS_RUNCOMMAND);
         csDiffs += cs_temp + _T(", ");
       }
@@ -1992,6 +1998,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
          1... ....  POLICY    [0x10] - not checked by default
          .1.. ....  XTIME_INT [0x11] - not checked by default
          ..1. ....  RUNCMD    [0x12]
+         ...1 ....  DCA       [0x13]
         */
         bsConflicts.reset();
 
@@ -2042,6 +2049,9 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
         if (m_bsFields.test(CItemData::RUNCMD) &&
             currentItem.GetRunCommand() != compItem.GetRunCommand())
           bsConflicts.flip(CItemData::RUNCMD);
+        if (m_bsFields.test(CItemData::DCA) &&
+            currentItem.GetDCA() != compItem.GetDCA())
+          bsConflicts.flip(CItemData::DCA);
 
         currentPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
@@ -2224,6 +2234,8 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
     if (m_bsFields.test(CItemData::RUNCMD))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
+    if (m_bsFields.test(CItemData::DCA))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPDCA));
     rpt.WriteLine((LPCTSTR)buffer);
     rpt.WriteLine();
   }
@@ -2395,7 +2407,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   // Copy *pfromcore -> *ptocore entry at fromPos
 
   ItemListIter toPos;
-  StringX group, title, user, notes, password, url, autotype, pwhistory, runcmd;
+  StringX group, title, user, notes, password, url, autotype, pwhistory, runcmd, dca;
   time_t ct, at, xt, pmt, rmt;
   int xint;
   PWPolicy pwp;
@@ -2415,6 +2427,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   autotype = fromEntry->GetAutoType();
   pwhistory = fromEntry->GetPWHistory();
   runcmd = fromEntry->GetRunCommand();
+  dca = fromEntry->GetDCA();
   fromEntry->GetCTime(ct);
   fromEntry->GetATime(at);
   fromEntry->GetXTime(xt);
@@ -2438,6 +2451,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     toEntry->SetAutoType(autotype);
     toEntry->SetPWHistory(pwhistory);
     toEntry->SetRunCommand(runcmd);
+    toEntry->SetDCA(dca.c_str());
     toEntry->SetCTime(ct);
     toEntry->SetATime(at);
     toEntry->SetXTime(xt);
@@ -2494,6 +2508,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     temp.SetAutoType(autotype);
     temp.SetPWHistory(pwhistory);
     temp.SetRunCommand(runcmd);
+    temp.SetDCA(dca.c_str());
     temp.SetCTime(ct);
     temp.SetATime(at);
     temp.SetXTime(xt);
