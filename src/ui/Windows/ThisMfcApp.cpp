@@ -96,7 +96,8 @@ ThisMfcApp::ThisMfcApp() :
 #endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
-  m_ghAccelTable(NULL), m_pMainMenu(NULL), m_bOSK_module(false)
+  m_ghAccelTable(NULL), m_pMainMenu(NULL), m_bOSK_module(false),
+  m_bACCEL_Table_Created(false)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -138,6 +139,10 @@ ThisMfcApp::~ThisMfcApp()
     m_pMainMenu->DestroyMenu();
     delete m_pMainMenu;
   }
+
+  // Rules state - if create then must destroy
+  if (m_bACCEL_Table_Created && app.m_ghAccelTable != NULL)
+    DestroyAcceleratorTable(app.m_ghAccelTable);
 
   // Alhough the system will do this automatically - I like to be clean!
   CloseHandle(m_hMutexOneInstance);

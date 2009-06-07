@@ -82,6 +82,7 @@ public:
   CString GetHelpFileName() const {return m_csHelpFile;}
   DWORD GetFileVersionMajorMinor() const {return m_dwMajorMinor;}
   DWORD GetFileVersionBuildRevision() const {return m_dwBuildRevision;}
+  void SetACCELTableCreated() {m_bACCEL_Table_Created = true;}
 
   DECLARE_MESSAGE_MAP()
 
@@ -101,7 +102,7 @@ private:
   HICON m_ClosedIcon;
   CSystemTray *m_TrayIcon; // DboxMain needs to be constructed first
   STATE m_TrayLockedState;
-  bool m_HotKeyPressed;
+  bool m_HotKeyPressed, m_bACCEL_Table_Created;
   DWORD m_dwMajorMinor;
   DWORD m_dwBuildRevision;
   CString m_csFileVersionString;
