@@ -55,6 +55,8 @@ const UINT CAddEdit_PasswordPolicy::nonHexLengthSpins[CAddEdit_PasswordPolicy::N
 CAddEdit_PasswordPolicy::CAddEdit_PasswordPolicy(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,CAddEdit_PasswordPolicy::IDD, pAEMD)
 {
+  // We are given the Policy - set Dialog variables
+  SetVariablesFromPolicy();
 }
 
 CAddEdit_PasswordPolicy::~CAddEdit_PasswordPolicy()
@@ -139,9 +141,6 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   pspin->SetRange(0, 1024);
   pspin->SetBase(10);
   pspin->SetPos(m_pwupperminlength);
-
-  // We are given the Policy - set Dialog variables
-  SetVariablesFromPolicy();
 
   // Disable controls based on m_ipolicy
   SetPolicyControls();
