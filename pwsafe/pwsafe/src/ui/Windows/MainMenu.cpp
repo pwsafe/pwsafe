@@ -650,6 +650,7 @@ void DboxMain::UpdateAccelTable()
   // Replace current one
   DestroyAcceleratorTable(app.m_ghAccelTable);
   app.m_ghAccelTable = CreateAcceleratorTable(pacceltbl, numscs);
+  app.SetACCELTableCreated();
 }
 
 void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
