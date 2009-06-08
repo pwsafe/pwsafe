@@ -783,9 +783,18 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 	}
 #ifndef UNICODE
 	_ftprintf( cfile, _T("<%s"), value.c_str() );
-#else
+#else /* UNICODE */
+#ifdef WIN32
+  size_t utf8bufsize = 3 * value.length(); // upper limit
+  char *utf8buf = new char[utf8bufsize+1];
+  utf8bufsize = pws_os::wcstombs(utf8buf, utf8bufsize, value.c_str(), value.length());
+  assert(utf8bufsize != 0);
+  utf8buf[utf8bufsize] = '\0';
+	fprintf( cfile, "<%s", utf8buf );
+#else /* !WIN32 */
 	_ftprintf( cfile, _T("<%ls"), value.c_str() );
-#endif
+#endif /* WIN32 */
+#endif /* UNICODE */
 	const TiXmlAttribute* attrib;
 	for ( attrib = attributeSet.First(); attrib; attrib = attrib->Next() )
 	{
@@ -808,9 +817,13 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 		firstChild->Print( cfile, depth + 1 );
 #ifndef UNICODE
 		_ftprintf( cfile, _T("</%s>"), value.c_str() );
-#else
+#else /* UNICODE */
+#ifdef WIN32
+		fprintf( cfile, "</%s>", utf8buf );
+#else /* !WIN32 */
 		_ftprintf( cfile, _T("</%ls>"), value.c_str() );
-#endif
+#endif /* WIN32 */
+#endif /* UNICODE */
 	}
 	else
 	{
@@ -831,9 +844,16 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 #ifndef UNICODE
 		_ftprintf( cfile, _T("</%s>"), value.c_str() );
 #else
+#ifdef WIN32
+		fprintf( cfile, "</%s>", utf8buf );
+#else /* !WIN32 */
 		_ftprintf( cfile, _T("</%ls>"), value.c_str() );
+#endif /* WIN32 */
 #endif
 	}
+#if defined(UNICODE) && defined(WIN32)
+  delete[] utf8buf;
+#endif
 }
 
 
@@ -1076,15 +1096,11 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 			// Newline character. No special rules for this. Append all the characters
 			// since the last string, and include the newline.
 #ifdef UNICODE
-      // translate from lastpos to (p-lastPos+1) to wchar_t
-#ifdef _WIN32
-      pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos + 1));
-#else /* !_WIN32 */
-      ::mbstowcs(wbuf, lastPos, (p-lastPos+1));
-#endif /* !_WIN32 */
-      data.append(wbuf, (p-lastPos+1));
-#else /* !UNICODE */
-      data.append( lastPos, (p-lastPos+1) );  // append, include the newline
+            // translate from lastpos to (p-lastPos+1) to wchar_t
+            pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos + 1));
+            data.append(wbuf, (p-lastPos+1));
+#else
+			data.append( lastPos, (p-lastPos+1) );  // append, include the newline
 #endif
 			++p;									// move past the newline
 			lastPos = p;							// and point to the new buffer (may be 0)
@@ -1096,14 +1112,10 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 			if ( (p-lastPos) > 0 ) {
 #ifdef UNICODE
                 // translate from lastpos to (p-lastPos) to wchar_t
-#ifdef _WIN32
                 int nw = pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos));
-#else /* !_WIN32 */
-                int nw = ::mbstowcs(wbuf, lastPos, (p-lastPos));
-#endif
                 assert(nw > 0 && nw <= p-lastPos);
                 data.append(wbuf, nw);
-#else /* !UNICODE */
+#else
                 data.append( lastPos, (p-lastPos) );	// do not add the CR
 #endif
 			}
@@ -1130,14 +1142,10 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	if ( p-lastPos ) {
 #ifdef UNICODE
     // translate from lastpos to (p-lastPos) to wchar_t
-#ifdef _WIN32
     pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos));
-#else /* !_WIN32 */
-    ::mbstowcs(wbuf, lastPos, (p-lastPos));
-#endif /* !_WIN32 */
     data.append(wbuf, (p-lastPos));
 #else
-    data.append( lastPos, (p-lastPos) );
+data.append( lastPos, (p-lastPos) );
 #endif
 	}		
 	delete [] buf;
@@ -1151,7 +1159,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	if (  Error() )
     return false;
   else
-    return true;
+		return true;
 }
 
 
@@ -1286,11 +1294,7 @@ void TiXmlAttribute::Print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) cons
 
 	if (value.find ('\"') == TIXML_STRING::npos) {
 		if ( cfile ) {
-#ifndef UNICODE
-            _ftprintf (cfile, _T("%s=\"%s\""), n.c_str(), v.c_str() );
-#else
-            _ftprintf (cfile, _T("%ls=\"%ls\""), n.c_str(), v.c_str() );
-#endif
+      _ftprintf (cfile, _T("%s=\"%s\""), n.c_str(), v.c_str() );
 		}
 		if ( str ) {
 			(*str) += n; (*str) += _T("=\""); (*str) += v; (*str) += _T("\"");
@@ -1298,11 +1302,7 @@ void TiXmlAttribute::Print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) cons
 	}
 	else {
 		if ( cfile ) {
-#ifndef UNICODE
-            _ftprintf (cfile, _T("%s='%s'"), n.c_str(), v.c_str() );
-#else
-            _ftprintf (cfile, _T("%ls='%ls'"), n.c_str(), v.c_str() );
-#endif
+      _ftprintf (cfile, _T("%s='%s'"), n.c_str(), v.c_str() );
 		}
 		if ( str ) {
 			(*str) += n; (*str) += _T("='"); (*str) += v; (*str) += _T("'");
@@ -1378,11 +1378,7 @@ void TiXmlComment::Print( FILE* cfile, int depth ) const
 	{
 		_ftprintf( cfile,  _T("    ") );
 	}
-#ifndef UNICODE
 	_ftprintf( cfile, _T("<!--%s-->"), value.c_str() );
-#else
-	_ftprintf( cfile, _T("<!--%ls-->"), value.c_str() );
-#endif
 }
 
 
@@ -1420,21 +1416,21 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
 		for ( i=0; i<depth; i++ ) {
 			_ftprintf( cfile, _T("    ") );
 		}
-	// unformatted output:
+    // unformatted output
+#ifdef WIN32
 #ifndef UNICODE
 		_ftprintf( cfile, _T("<![CDATA[%s]]>\n"), value.c_str() );
-#else
+#else /* UNICODE */
     size_t utf8bufsize = 3 * value.length(); // upper limit
     char *utf8buf = new char[utf8bufsize];
-#ifdef _WIN32
     utf8bufsize = pws_os::wcstombs(utf8buf, utf8bufsize, value.c_str(), value.length());
-#else
-    utf8bufsize = ::wcstombs(utf8buf, value.c_str(), value.length());
-#endif
     assert(utf8bufsize != 0);
 		_ftprintf( cfile, _T("<![CDATA[%s]]>\n"), utf8buf );
     delete[] utf8buf;
-#endif
+#endif /* UNICODE */
+#else /* !WIN32 */
+		_ftprintf( cfile, _T("<![CDATA[%s]]>\n"), value.c_str() );
+#endif /* WIN32 */
 	}
 	else
 	{
@@ -1442,21 +1438,21 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
 		EncodeString( value, &buffer );
 #ifndef UNICODE
     fwrite(buffer.c_str(), buffer.length()*sizeof(TCHAR), 1, cfile);
-#else
-    size_t utf8bufsize = 3 * value.length(); // upper limit
+#else /* UNICODE */
+    size_t utf8bufsize = 3 * buffer.length(); // upper limit
     char *utf8buf = new char[utf8bufsize];
-#ifdef _WIN32
+#ifdef WIN32
     utf8bufsize = pws_os::wcstombs(utf8buf, utf8bufsize, buffer.c_str(), buffer.length());
     assert(utf8bufsize != 0);
     fwrite(utf8buf, utf8bufsize, 1, cfile);
- #else
+#else /* !WIN32 */
     utf8bufsize = ::wcstombs(utf8buf, buffer.c_str(), buffer.length());
     assert(utf8bufsize != 0);
     fflush(cfile);
     write(fileno(cfile), utf8buf, utf8bufsize); // because fwide() > 0
- #endif
+#endif /* WIN32 */
     delete[] utf8buf;
-#endif
+#endif /* UNICODE */
 	}
 }
 
@@ -1531,27 +1527,15 @@ void TiXmlDeclaration::Print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) co
 	if ( str )	 (*str) += _T("<?xml ");
 
 	if ( !version.empty() ) {
-#ifndef UNICODE
 		if ( cfile ) _ftprintf (cfile, _T("version=\"%s\" "), version.c_str ());
-#else
-		if ( cfile ) _ftprintf (cfile, _T("version=\"%ls\" "), version.c_str ());
-#endif
 		if ( str ) { (*str) += _T("version=\""); (*str) += version; (*str) += _T("\" "); }
 	}
 	if ( !encoding.empty() ) {
-#ifndef UNICODE
 		if ( cfile ) _ftprintf (cfile, _T("encoding=\"%s\" "), encoding.c_str ());
-#else
-		if ( cfile ) _ftprintf (cfile, _T("encoding=\"%ls\" "), encoding.c_str ());
-#endif
 		if ( str ) { (*str) += _T("encoding=\""); (*str) += encoding; (*str) += _T("\" "); }
 	}
 	if ( !standalone.empty() ) {
-#ifndef UNICODE
 		if ( cfile ) _ftprintf (cfile, _T("standalone=\"%s\" "), standalone.c_str ());
-#else
-		if ( cfile ) _ftprintf (cfile, _T("standalone=\"%ls\" "), standalone.c_str ());
-#endif
 		if ( str ) { (*str) += _T("standalone=\""); (*str) += standalone; (*str) += _T("\" "); }
 	}
 	if ( cfile ) _ftprintf( cfile, _T("?>") );
@@ -1591,7 +1575,7 @@ void TiXmlUnknown::Print( FILE* cfile, int depth ) const
 {
 	for ( int i=0; i<depth; i++ )
 		_ftprintf( cfile, _T("    ") );
-#ifndef UNICODE
+#if !defined(UNICODE) || defined(WIN32)
 	_ftprintf( cfile, _T("<%s>"), value.c_str() );
 #else
 	_ftprintf( cfile, _T("<%ls>"), value.c_str() );
