@@ -335,7 +335,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_DesktopShortcut ${LANG_SPANISH} "Places a shortcut to Password Safe on your desktop. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_DesktopShortcut ${LANG_SWEDISH} "Placerar en genväg till ä Password Safe ditt skrivbord."
+  LangString DESC_DesktopShortcut ${LANG_SWEDISH} "Placerar en genväg till Password Safe på ditt skrivbord."
 !endif
 !ifdef LANGUAGE_DUTCH
   LangString DESC_DesktopShortcut ${LANG_DUTCH} "Places a shortcut to Password Safe on your desktop. [NL]"
@@ -396,7 +396,7 @@ LangString TEXT_GC_SUBTITLE ${LANG_SIMPCHINESE} "Ñ¡Ôñ³£¹æÊÊºÏÊ¹ÓÃÔÚ¸öÈË PC ÉÏ£¬Â
 LangString TEXT_GC_SUBTITLE ${LANG_SPANISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-LangString TEXT_GC_SUBTITLE ${LANG_SWEDISH} "Välj standard för användning på en vanlig PC, Grön för portabel installation. Om du inte är säker är 'Standard' bra."
+LangString TEXT_GC_SUBTITLE ${LANG_SWEDISH} "Välj Standard för användning på en vanlig PC, Grön för mobil installation. Om du inte är säker är 'Standard' bra."
 !endif
 !ifdef LANGUAGE_DUTCH
 LangString TEXT_GC_SUBTITLE ${LANG_DUTCH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [NL]"
