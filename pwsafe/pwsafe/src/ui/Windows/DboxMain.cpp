@@ -1340,9 +1340,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d%s"),
                                         nMajor, nMinor, nBuild, SPECIAL_BUILD);
 
-    app.DisableAccelerator();
     rc = dbox_pkentry->DoModal();
-    app.EnableAccelerator();
 
     if (rc == IDOK && index == GCP_ADVANCED) {
       m_bAdvanced = dbox_pkentry->m_bAdvanced;

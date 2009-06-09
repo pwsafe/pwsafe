@@ -65,7 +65,8 @@ CAddEdit_PasswordPolicy::~CAddEdit_PasswordPolicy()
 
 void CAddEdit_PasswordPolicy::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CAddEdit_PropertyPage::DoDataExchange(pDX);
+
   //{{AFX_DATA_MAP(CAddEdit_PasswordPolicy)
   DDX_Radio(pDX, IDC_USEDEFAULTPWPOLICY, M_ipolicy());
 

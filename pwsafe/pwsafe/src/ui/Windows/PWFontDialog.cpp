@@ -68,9 +68,9 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
   if (uiMsg == WM_COMMAND && HIWORD(wParam) == BN_CLICKED) {
     if (LOWORD(wParam) == IDC_SETSAMPLETEXT) {
       CSampleTextDlg stDlg(NULL, pwfd_self->m_sampletext);
-      app.DisableAccelerator();
+
       INT_PTR rc = stDlg.DoModal();
-      app.EnableAccelerator();
+
       if (rc == IDOK) {
         pwfd_self->m_sampletext = stDlg.m_sampletext;
         ::SetDlgItemText(hdlg, stc5, pwfd_self->m_sampletext);

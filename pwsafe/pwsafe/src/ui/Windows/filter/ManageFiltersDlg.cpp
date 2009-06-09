@@ -101,7 +101,8 @@ void CManageFiltersDlg::OnDestroy()
 
 void CManageFiltersDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
+
   DDX_Control(pDX, IDC_FILTERLC, m_FilterLC);
   DDX_Control(pDX, IDC_FILTERPROPERTIES, m_FilterProperties);
 }

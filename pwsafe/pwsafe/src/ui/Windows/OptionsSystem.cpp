@@ -31,7 +31,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem property page
 
-IMPLEMENT_DYNCREATE(COptionsSystem, CPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsSystem, CPWPropertyPage)
 
 COptionsSystem::COptionsSystem() : CPWPropertyPage(COptionsSystem::IDD)
 {
@@ -48,7 +48,8 @@ COptionsSystem::~COptionsSystem()
 
 void COptionsSystem::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CPWPropertyPage::DoDataExchange(pDX);
+
   //{{AFX_DATA_MAP(COptionsSystem)
   DDX_Text(pDX, IDC_MAXREITEMS, m_maxreitems);
   DDV_MinMaxInt(pDX, m_maxreitems, 0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
@@ -63,7 +64,7 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsSystem, CPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsSystem, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsSystem)
   ON_BN_CLICKED(IDC_DEFPWUSESYSTRAY, OnUseSystemTray)
   ON_BN_CLICKED(IDC_STARTUP, OnStartup)
@@ -107,7 +108,7 @@ void COptionsSystem::OnSetDeleteRegistry()
 
 BOOL COptionsSystem::OnInitDialog() 
 {
-  BOOL bResult = CPropertyPage::OnInitDialog();
+  BOOL bResult = CPWPropertyPage::OnInitDialog();
 
   bool bofferdeleteregistry = 
     PWSprefs::GetInstance()->OfferDeleteRegistry();
@@ -178,7 +179,7 @@ BOOL COptionsSystem::OnKillActive()
 {
   // Needed as we have DDV routines.
 
-  return CPropertyPage::OnKillActive();
+  return CPWPropertyPage::OnKillActive();
 }
 
 // Override PreTranslateMessage() so RelayEvent() can be 
@@ -189,5 +190,5 @@ BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
   if (m_ToolTipCtrl != NULL)
     m_ToolTipCtrl->RelayEvent(pMsg);
 
-  return CPropertyPage::PreTranslateMessage(pMsg);
+  return CPWPropertyPage::PreTranslateMessage(pMsg);
 }

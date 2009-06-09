@@ -41,7 +41,8 @@ CViewReport::~CViewReport()
 
 void CViewReport::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWResizeDialog::DoDataExchange(pDX);
+
   DDX_Control(pDX, IDC_EDITREPORT, m_editreport);
 }
 

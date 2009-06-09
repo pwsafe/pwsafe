@@ -31,6 +31,7 @@
 #include "Properties.h"
 #include "GeneralMsgBox.h"
 #include "MFCMessages.h"
+#include "PWFileDialog.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
 #include "corelib/PWSdirs.h"
@@ -306,13 +307,13 @@ int DboxMain::NewFile(StringX &newfilename)
   INT_PTR rc;
 
   while (1) {
-    CFileDialog fd(FALSE,
-                   DEFAULT_SUFFIX,
-                   v3FileName.c_str(),
-                   OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
-                   OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                   CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
-                   this);
+    CPWFileDialog fd(FALSE,
+                     DEFAULT_SUFFIX,
+                     v3FileName.c_str(),
+                     OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                        OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                     CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
+                     this);
     fd.m_ofn.lpstrTitle = cs_text;
     fd.m_ofn.Flags &= ~OFN_READONLY;
     if (!dir.empty())
@@ -321,7 +322,7 @@ int DboxMain::NewFile(StringX &newfilename)
     rc = fd.DoModal();
 
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling
       PostQuitMessage(0);
@@ -480,12 +481,12 @@ int DboxMain::Open()
 
   //Open-type dialog box
   while (1) {
-    CFileDialog fd(TRUE,
-                   DEFAULT_SUFFIX,
-                   NULL,
-                   OFN_FILEMUSTEXIST | OFN_LONGNAMES,
-                   CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
-                   this);
+    CPWFileDialog fd(TRUE,
+                     DEFAULT_SUFFIX,
+                     NULL,
+                     OFN_FILEMUSTEXIST | OFN_LONGNAMES,
+                     CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
+                     this);
     fd.m_ofn.lpstrTitle = cs_text;
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
       fd.m_ofn.Flags |= OFN_READONLY;
@@ -495,7 +496,7 @@ int DboxMain::Open()
       fd.m_ofn.lpstrInitialDir = dir.c_str();
     INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
@@ -792,13 +793,13 @@ int DboxMain::SaveAs()
   stringT v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX );
 
   while (1) {
-    CFileDialog fd(FALSE,
-                   DEFAULT_SUFFIX,
-                   v3FileName.c_str(),
-                   OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                   |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
-                   this);
+    CPWFileDialog fd(FALSE,
+                     DEFAULT_SUFFIX,
+                     v3FileName.c_str(),
+                     OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                        OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                     CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
+                     this);
     if (m_core.GetCurFile().empty())
       cs_text.LoadString(IDS_NEWNAME1);
     else
@@ -809,7 +810,7 @@ int DboxMain::SaveAs()
       fd.m_ofn.lpstrInitialDir = dir.c_str();
     rc = fd.DoModal();
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
@@ -882,17 +883,17 @@ void DboxMain::OnExportVx(UINT nID)
                                                       _T("dat") );
   cs_text.LoadString(IDS_NAMEEXPORTFILE);
   while (1) {
-    CFileDialog fd(FALSE,
-                   DEFAULT_SUFFIX,
-                   OldFormatFileName.c_str(),
-                   OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                   |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
-                   this);
+    CPWFileDialog fd(FALSE,
+                     DEFAULT_SUFFIX,
+                     OldFormatFileName.c_str(),
+                     OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                        OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                     CString(MAKEINTRESOURCE(IDS_FDF_DB_ALL)),
+                     this);
     fd.m_ofn.lpstrTitle = cs_text;
     rc = fd.DoModal();
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
@@ -948,17 +949,17 @@ void DboxMain::OnExportText()
       cs_text.LoadString(IDS_NAMETEXTFILE);
 
       while (1) {
-        CFileDialog fd(FALSE,
-                       _T("txt"),
-                       TxtFileName.c_str(),
-                       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                       CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
-                       this);
+        CPWFileDialog fd(FALSE,
+                         _T("txt"),
+                         TxtFileName.c_str(),
+                         OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                            OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                         CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
+                         this);
         fd.m_ofn.lpstrTitle = cs_text;
         rc = fd.DoModal();
         if (m_inExit) {
-          // If U3ExitNow called while in CFileDialog,
+          // If U3ExitNow called while in CPWFileDialog,
           // PostQuitMessage makes us return here instead
           // of exiting the app. Try resignalling 
           PostQuitMessage(0);
@@ -1015,17 +1016,17 @@ void DboxMain::OnExportXML()
       cs_text.LoadString(IDS_NAMEXMLFILE);
 
       while (1) {
-        CFileDialog fd(FALSE,
-                       _T("xml"),
-                       XMLFileName.c_str(),
-                       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                       CString(MAKEINTRESOURCE(IDS_FDF_X_ALL)),
-                       this);
+        CPWFileDialog fd(FALSE,
+                         _T("xml"),
+                         XMLFileName.c_str(),
+                         OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                            OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                         CString(MAKEINTRESOURCE(IDS_FDF_X_ALL)),
+                         this);
         fd.m_ofn.lpstrTitle = cs_text;
         rc = fd.DoModal();
         if (m_inExit) {
-          // If U3ExitNow called while in CFileDialog,
+          // If U3ExitNow called while in CPWFileDialog,
           // PostQuitMessage makes us return here instead
           // of exiting the app. Try resignalling 
           PostQuitMessage(0);
@@ -1080,17 +1081,17 @@ void DboxMain::OnImportText()
   CString cs_text, cs_title, cs_temp;
   TCHAR fieldSeparator(dlg.m_Separator[0]);
 
-  CFileDialog fd(TRUE,
-                 _T("txt"),
-                 NULL,
-                 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                 CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
-                 this);
+  CPWFileDialog fd(TRUE,
+                   _T("txt"),
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                   CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
+                   this);
   cs_text.LoadString(IDS_PICKTEXTFILE);
   fd.m_ofn.lpstrTitle = cs_text;
   INT_PTR rc = fd.DoModal();
   if (m_inExit) {
-    // If U3ExitNow called while in CFileDialog,
+    // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
     // of exiting the app. Try resignalling 
     PostQuitMessage(0);
@@ -1174,17 +1175,17 @@ void DboxMain::OnImportKeePass()
     return;
 
   CString cs_text, cs_title, cs_temp;
-  CFileDialog fd(TRUE,
-                 _T("txt"),
-                 NULL,
-                 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                 CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
-                 this);
+  CPWFileDialog fd(TRUE,
+                   _T("txt"),
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                   CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
+                   this);
   cs_text.LoadString(IDS_PICKKEEPASSFILE);
   fd.m_ofn.lpstrTitle = cs_text;
   INT_PTR rc = fd.DoModal();
   if (m_inExit) {
-    // If U3ExitNow called while in CFileDialog,
+    // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
     // of exiting the app. Try resignalling 
     PostQuitMessage(0);
@@ -1248,18 +1249,18 @@ void DboxMain::OnImportXML()
     return;
 
   stringT ImportedPrefix(dlg.m_groupName);
-  CFileDialog fd(TRUE,
-                 _T("xml"),
-                 NULL,
-                 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                 CString(MAKEINTRESOURCE(IDS_FDF_XML)),
-                 this);
+  CPWFileDialog fd(TRUE,
+                   _T("xml"),
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                   CString(MAKEINTRESOURCE(IDS_FDF_XML)),
+                   this);
   cs_text.LoadString(IDS_PICKXMLFILE);
   fd.m_ofn.lpstrTitle = cs_text;
 
   INT_PTR rc = fd.DoModal();
   if (m_inExit) {
-    // If U3ExitNow called while in CFileDialog,
+    // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
     // of exiting the app. Try resignalling 
     PostQuitMessage(0);
@@ -1364,12 +1365,13 @@ int DboxMain::Merge()
 
   //Open-type dialog box
   while (1) {
-    CFileDialog fd(TRUE,
-                   DEFAULT_SUFFIX,
-                   NULL,
-                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_READONLY|OFN_LONGNAMES,
-                   CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
-                   this);
+    CPWFileDialog fd(TRUE,
+                     DEFAULT_SUFFIX,
+                     NULL,
+                     OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
+                        OFN_READONLY | OFN_LONGNAMES,
+                     CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
+                     this);
     cs_temp.LoadString(IDS_PICKMERGEFILE);
     fd.m_ofn.lpstrTitle = cs_temp;
     stringT dir = PWSdirs::GetSafeDir();
@@ -1377,7 +1379,7 @@ int DboxMain::Merge()
       fd.m_ofn.lpstrInitialDir = dir.c_str();
     INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
@@ -1776,19 +1778,19 @@ void DboxMain::OnCompare()
 
   //Open-type dialog box
   while (1) {
-    CFileDialog fd(TRUE,
-                   DEFAULT_SUFFIX,
-                   NULL,
-                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                   CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
-                   this);
+    CPWFileDialog fd(TRUE,
+                     DEFAULT_SUFFIX,
+                     NULL,
+                     OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                     CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
+                     this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
     rc = fd.DoModal();
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);

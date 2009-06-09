@@ -21,7 +21,7 @@
 
 // CPWHistDlg dialog
 
-IMPLEMENT_DYNAMIC(CPWHistDlg, CDialog)
+IMPLEMENT_DYNAMIC(CPWHistDlg, CPWDialog)
 
 CPWHistDlg::CPWHistDlg(CWnd* pParent, bool IsReadOnly,
                        CSecString &HistStr, PWHistList &pwhistlist,

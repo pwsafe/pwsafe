@@ -8,17 +8,18 @@
 
 #include "PasswordSafe.h"
 #include "DboxMain.h"
+#include "ThisMfcApp.h"
 #include "AddEdit_PropertySheet.h"
 
 #include "corelib/ItemData.h"
 #include "corelib/PWSprefs.h"
 
-IMPLEMENT_DYNAMIC(CAddEdit_PropertySheet, CPropertySheet)
+IMPLEMENT_DYNAMIC(CAddEdit_PropertySheet, CPWPropertySheet)
 
 CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
                                                PWScore *pcore, CItemData *pci,
                                                const StringX currentDB)
-  : CPropertySheet(nID, pParent)
+  : CPWPropertySheet(nID, pParent)
 {
   m_AEMD.uicaller = nID;
 
@@ -192,7 +193,8 @@ CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
 
 BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-  // There is no OnOK for CPropertySheet - so we make our own!
+  // There is no OnOK for classes derived from CPropertySheet,
+  // so we make our own!
   if (LOWORD(wParam) == IDOK) {
     // First send a message to all loaded pages using base class
     // function.
@@ -318,7 +320,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         break;
     }
   }
-  return CPropertySheet::OnCommand(wParam, lParam);
+  return CPWPropertySheet::OnCommand(wParam, lParam);
 }
 
 void CAddEdit_PropertySheet::UpdateHistory()

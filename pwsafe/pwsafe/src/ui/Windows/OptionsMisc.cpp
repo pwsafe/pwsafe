@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "PWFileDialog.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h" // for DoubleClickAction enums
 #include "os/dir.h"
@@ -31,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc property page
 
-IMPLEMENT_DYNCREATE(COptionsMisc, CPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsMisc, CPWPropertyPage)
 
 COptionsMisc::COptionsMisc()
   : CPWPropertyPage(COptionsMisc::IDD), m_pToolTipCtrl(NULL)
@@ -47,7 +48,7 @@ COptionsMisc::~COptionsMisc()
 
 void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CPWPropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsMisc)
   DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
@@ -69,7 +70,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsMisc, CPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsMisc, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsMisc)
   ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
   ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
@@ -80,7 +81,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsMisc::OnInitDialog() 
 {
-  CPropertyPage::OnInitDialog();
+  CPWPropertyPage::OnInitDialog();
 
   // For some reason, MFC calls us twice when initializing.
   // Populate the combo box only once.
@@ -248,7 +249,7 @@ void COptionsMisc::OnOK()
     }
   }
 #endif 
-  CPropertyPage::OnOK();
+  CPWPropertyPage::OnOK();
 }
 
 void COptionsMisc::OnBrowseForLocation()
@@ -266,11 +267,11 @@ void COptionsMisc::OnBrowseForLocation()
     cs_initiallocation = path.c_str();
   }
 
-  CFileDialog fd(TRUE, NULL, NULL,
-                 OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
-                 OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
-                 CString(MAKEINTRESOURCE(IDS_FDF_PR_ALL)),
-                 this);
+  CPWFileDialog fd(TRUE, NULL, NULL,
+                   OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
+                      OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
+                   CString(MAKEINTRESOURCE(IDS_FDF_PR_ALL)),
+                   this);
 
   cs_title.LoadString(IDS_SELECTBROWSER);
   fd.m_ofn.lpstrTitle = cs_title;
@@ -291,5 +292,5 @@ BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
-  return CPropertyPage::PreTranslateMessage(pMsg);
+  return CPWPropertyPage::PreTranslateMessage(pMsg);
 }

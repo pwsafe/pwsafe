@@ -13,6 +13,8 @@
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "Shortcut.h"
+#include "PWFileDialog.h"
+#include "PWPropertySheet.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/PWSdirs.h"
 #include "corelib/PWSAuxParse.h"
@@ -45,9 +47,9 @@ void DboxMain::OnPasswordChange()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
   CPasskeyChangeDlg changeDlg(this);
-  app.DisableAccelerator();
+
   INT_PTR rc = changeDlg.DoModal();
-  app.EnableAccelerator();
+
   if (rc == IDOK) {
     m_core.ChangePassword(changeDlg.m_newpasskey);
   }
@@ -69,13 +71,13 @@ int DboxMain::BackupSafe()
   CString cs_temp, cs_title;
   //SaveAs-type dialog box
   while (1) {
-    CFileDialog fd(FALSE,
-                   _T("bak"),
-                   currbackup.c_str(),
-                   OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                   | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   CString(MAKEINTRESOURCE(IDS_FDF_BU)),
-                   this);
+    CPWFileDialog fd(FALSE,
+                     _T("bak"),
+                     currbackup.c_str(),
+                     OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                        OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                     CString(MAKEINTRESOURCE(IDS_FDF_BU)),
+                     this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
     if (!dir.empty())
@@ -83,7 +85,7 @@ int DboxMain::BackupSafe()
 
     rc = fd.DoModal();
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
@@ -129,12 +131,12 @@ int DboxMain::Restore()
   cs_text.LoadString(IDS_PICKRESTORE);
   //Open-type dialog box
   while (1) {
-    CFileDialog fd(TRUE,
-                   _T("bak"),
-                   currbackup.c_str(),
-                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                   CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
-                   this);
+    CPWFileDialog fd(TRUE,
+                     _T("bak"),
+                     currbackup.c_str(),
+                     OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                     CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
+                     this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
     if (!dir.empty())
@@ -142,7 +144,7 @@ int DboxMain::Restore()
 
     INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
@@ -223,7 +225,7 @@ void DboxMain::OnValidate()
 void DboxMain::OnOptions() 
 {
   const CString PWSLnkName(_T("Password Safe")); // for startup shortcut
-  CPropertySheet optionsDlg(IDS_OPTIONS, this);
+  CPWPropertySheet        optionsDlg(IDS_OPTIONS, this);
   COptionsDisplay         display;
   COptionsSecurity        security;
   COptionsPasswordPolicy  passwordpolicy;
@@ -427,9 +429,8 @@ void DboxMain::OnOptions()
 #endif
 
   passwordhistory.m_pDboxMain = this;
-  app.DisableAccelerator();
+
   INT_PTR rc = optionsDlg.DoModal();
-  app.EnableAccelerator();
 
   if (rc == IDOK) {
     /*

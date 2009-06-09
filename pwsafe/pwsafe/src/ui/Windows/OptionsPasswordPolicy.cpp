@@ -29,7 +29,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy property page
 
-IMPLEMENT_DYNCREATE(COptionsPasswordPolicy, CPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsPasswordPolicy, CPWPropertyPage)
 
 const UINT COptionsPasswordPolicy::nonHex[COptionsPasswordPolicy::N_NOHEX] = {
   IDC_USELOWERCASE, IDC_USEUPPERCASE, IDC_USEDIGITS,
@@ -58,7 +58,8 @@ COptionsPasswordPolicy::~COptionsPasswordPolicy()
 
 void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CPWPropertyPage::DoDataExchange(pDX);
+
   //{{AFX_DATA_MAP(COptionsPasswordPolicy)
   DDX_Text(pDX, IDC_DEFPWLENGTH, m_pwdefaultlength);
   DDX_Text(pDX, IDC_MINDIGITLENGTH, m_pwdigitminlength);
@@ -75,7 +76,7 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, CPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordPolicy)
   ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUsehexdigits)
   ON_BN_CLICKED(IDC_USELOWERCASE, OnUselowercase)
@@ -92,7 +93,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsPasswordPolicy::OnInitDialog() 
 {
-  CPropertyPage::OnInitDialog();
+  CPWPropertyPage::OnInitDialog();
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
   CSpinButtonCtrl* pspinD = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
@@ -315,7 +316,7 @@ void COptionsPasswordPolicy::OnMakePronounceable()
 
 BOOL COptionsPasswordPolicy::OnKillActive()
 {
-  CPropertyPage::OnKillActive();
+  CPWPropertyPage::OnKillActive();
 
   // Check that options, as set, are valid.
   if (m_pwusehexdigits &&
