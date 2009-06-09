@@ -31,7 +31,7 @@ void CColumnChooserDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_CPLIST, m_ccListCtrl);
 }
 
-BEGIN_MESSAGE_MAP(CColumnChooserDlg, CDialog)
+BEGIN_MESSAGE_MAP(CColumnChooserDlg, CPWDialog)
   //{{AFX_MSG_MAP(CColumnChooserDlg)
   ON_WM_DESTROY()
   ON_WM_SHOWWINDOW()
@@ -45,7 +45,7 @@ END_MESSAGE_MAP()
 BOOL CColumnChooserDlg::Create(UINT nID, CWnd *parent)
 {
   m_pLVHdrCtrl = NULL;
-  return CDialog::Create(nID, parent);
+  return CPWDialog::Create(nID, parent);
 }
 
 BOOL CColumnChooserDlg::OnInitDialog()
@@ -83,7 +83,7 @@ void CColumnChooserDlg::OnStyleChanged(int nStyleType, LPSTYLESTRUCT lpStyleStru
     if (oldStyle != newStyle && m_pLVHdrCtrl != NULL)
       m_pLVHdrCtrl->SetLVState(newStyle != 0 ? SW_SHOW : SW_HIDE);
   }
-  CDialog::OnStyleChanged(nStyleType, lpStyleStruct);
+  CPWDialog::OnStyleChanged(nStyleType, lpStyleStruct);
 }
 
 void CColumnChooserDlg::PostNcDestroy()

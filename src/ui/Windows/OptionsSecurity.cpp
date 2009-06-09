@@ -29,7 +29,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSecurity property page
 
-IMPLEMENT_DYNCREATE(COptionsSecurity, CPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsSecurity, CPWPropertyPage)
 
 COptionsSecurity::COptionsSecurity() : CPWPropertyPage(COptionsSecurity::IDD)
 {
@@ -43,7 +43,8 @@ COptionsSecurity::~COptionsSecurity()
 
 void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CPWPropertyPage::DoDataExchange(pDX);
+
   //{{AFX_DATA_MAP(COptionsSecurity)
   DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_clearclipboardonexit);
   DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_clearclipboardonminimize);
@@ -55,7 +56,7 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsSecurity, CPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsSecurity, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
   ON_BN_CLICKED(IDC_LOCKBASE, OnLockbase)
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockbase)
@@ -74,7 +75,7 @@ void COptionsSecurity::OnLockbase()
 
 BOOL COptionsSecurity::OnInitDialog() 
 {
-  CPropertyPage::OnInitDialog();
+  CPWPropertyPage::OnInitDialog();
 
   OnLockbase();
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
@@ -90,7 +91,7 @@ BOOL COptionsSecurity::OnInitDialog()
 
 BOOL COptionsSecurity::OnKillActive()
 {
-  CPropertyPage::OnKillActive();
+  CPWPropertyPage::OnKillActive();
 
   // Check that options, as set, are valid.
   if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {

@@ -30,7 +30,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory property page
 
-IMPLEMENT_DYNCREATE(COptionsPasswordHistory, CPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsPasswordHistory, CPWPropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory()
   : CPWPropertyPage(COptionsPasswordHistory::IDD)
@@ -48,7 +48,8 @@ COptionsPasswordHistory::~COptionsPasswordHistory()
 
 void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CPWPropertyPage::DoDataExchange(pDX);
+
   //{{AFX_DATA_MAP(COptionsPasswordHistory)
   DDX_Check(pDX, IDC_SAVEPWHISTORY, m_savepwhistory);
   DDX_Text(pDX, IDC_DEFPWHNUM, m_pwhistorynumdefault);
@@ -56,7 +57,7 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
   DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_pwhaction);
 }
 
-BEGIN_MESSAGE_MAP(COptionsPasswordHistory, CPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsPasswordHistory, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordHistory)
   ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
   ON_BN_CLICKED(IDC_APPLYPWHCHANGESNOW, OnApplyPWHChanges)
@@ -72,7 +73,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsPasswordHistory::OnInitDialog() 
 {
-  BOOL bResult = CPropertyPage::OnInitDialog();
+  BOOL bResult = CPWPropertyPage::OnInitDialog();
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
@@ -113,7 +114,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 
 BOOL COptionsPasswordHistory::OnKillActive()
 {
-  CPropertyPage::OnKillActive();
+  CPWPropertyPage::OnKillActive();
 
   // Check that options, as set, are valid.
   if (m_savepwhistory && ((m_pwhistorynumdefault < 1) || (m_pwhistorynumdefault > 255))) {
@@ -154,7 +155,7 @@ BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
   if (m_ToolTipCtrl != NULL)
     m_ToolTipCtrl->RelayEvent(pMsg);
 
-  return CPropertyPage::PreTranslateMessage(pMsg);
+  return CPWPropertyPage::PreTranslateMessage(pMsg);
 }
 
 void COptionsPasswordHistory::OnPWHistoryNoAction()

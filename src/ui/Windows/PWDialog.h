@@ -14,8 +14,8 @@
 * instead of directly from CDialog
 */
 
-#ifndef __PWDIALOG_H
-#define __PWDIALOG_H
+#pragma once
+
 #include <afxwin.h>
 
 #if defined(POCKET_PC)
@@ -33,17 +33,15 @@ typedef CPwsPopupDialog CPWDialog;
 
 class CPWDialog : public CDialog
 {
-
-protected:
+public:
   CPWDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL)
     : CDialog(nIDTemplate, pParentWnd) {}
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  // Following override to stop accelerators interfering
+  virtual INT_PTR DoModal();
 
-public:
   DECLARE_DYNAMIC(CPWDialog)
 };
 #endif /* POCKET_PC */
-
-#endif /* __PWDIALOG_H */

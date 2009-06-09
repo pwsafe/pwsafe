@@ -92,9 +92,7 @@ void DboxMain::OnAdd()
   */
   add_entry_psh.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
-  app.DisableAccelerator();
   INT_PTR rc = add_entry_psh.DoModal();
-  app.EnableAccelerator();
 
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
@@ -155,9 +153,7 @@ void DboxMain::OnCreateShortcut()
     dlg_createshortcut.m_username = m_core.GetDefUsername();
   }
 
-  app.DisableAccelerator();
   INT_PTR rc = dlg_createshortcut.DoModal();
-  app.EnableAccelerator();
 
   if (rc == IDOK) {
     PWSprefs *prefs = PWSprefs::GetInstance();
@@ -597,9 +593,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
   edit_entry_psh.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
-  app.DisableAccelerator();
   INT_PTR rc = edit_entry_psh.DoModal();
-  app.EnableAccelerator();
 
   if (rc == IDOK && uicaller == IDS_EDITENTRY) {
     // Out with the old, in with the new
@@ -762,9 +756,7 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
     dlg_editshortcut.m_defusername = pcore->GetDefUsername();
   dlg_editshortcut.m_Edit_IsReadOnly = pcore->IsReadOnly();
 
-  app.DisableAccelerator();
   INT_PTR rc = dlg_editshortcut.DoModal();
-  app.EnableAccelerator();
 
   if (rc == IDOK) {
     // Out with the old, in with the new
@@ -992,11 +984,8 @@ void DboxMain::OnDisplayPswdSubset()
 
   CPasswordSubsetDlg DisplaySubsetDlg(this, ci);
 
-  app.DisableAccelerator();
   if (DisplaySubsetDlg.DoModal() != IDCANCEL)
     UpdateAccessTime(ci_original);
-
-  app.EnableAccelerator();
 }
 
 void DboxMain::OnCopyUsername()

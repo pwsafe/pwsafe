@@ -11,6 +11,8 @@
 #include "PWResizeDialog.h"
 #include "corelib/report.h"
 
+#include "resource.h"
+
 // CViewReport dialog
 
 class DboxMain;

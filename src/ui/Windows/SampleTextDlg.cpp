@@ -17,10 +17,10 @@
 
 // SampleTextDlg dialog
 
-IMPLEMENT_DYNAMIC(CSampleTextDlg, CDialog)
+IMPLEMENT_DYNAMIC(CSampleTextDlg, CPWDialog)
 
 CSampleTextDlg::CSampleTextDlg(CWnd* pParent, CString sampletext)
-  : CDialog(CSampleTextDlg::IDD, pParent), m_sampletext(sampletext)
+  : CPWDialog(CSampleTextDlg::IDD, pParent), m_sampletext(sampletext)
 {
 }
 
@@ -30,7 +30,7 @@ CSampleTextDlg::~CSampleTextDlg()
 
 BOOL CSampleTextDlg::OnInitDialog() 
 {
-  CDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   ((CEdit*)GetDlgItem(IDC_SAMPLETEXT))->SetFocus();
   return FALSE;
@@ -38,12 +38,12 @@ BOOL CSampleTextDlg::OnInitDialog()
 
 void CSampleTextDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_SAMPLETEXT, m_sampletext);
   DDX_Control(pDX, IDC_SAMPLETEXT, m_ex_sampletext);
 }
 
-BEGIN_MESSAGE_MAP(CSampleTextDlg, CDialog)
+BEGIN_MESSAGE_MAP(CSampleTextDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, OnOK)
 END_MESSAGE_MAP()
 
@@ -56,5 +56,5 @@ void CSampleTextDlg::OnOK()
     return;
   }
 
-  CDialog::OnOK();
+  CPWDialog::OnOK();
 }

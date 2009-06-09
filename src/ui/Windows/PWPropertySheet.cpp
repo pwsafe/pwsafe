@@ -8,15 +8,12 @@
 
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
-#include "PWDialog.h"
+#include "PWPropertySheet.h"
 
-#if defined(POCKET_PC)
-#error "TBD - define proper Dialog base class for PPC"
-#endif
+IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 
-IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 
-LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   // List of all the events that signify actual user activity, as opposed
   // to Windows internal events...
@@ -40,15 +37,15 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
         p = p->GetParent();
     }
     if (p == NULL)
-      TRACE(_T("CPWFileDialog::WindowProc - couldn't find DboxMain ancestor\n"));
+      TRACE(_T("CPWPropertySheet::WindowProc - couldn't find DboxMain ancestor\n"));
   }
-  return CDialog::WindowProc(message, wParam, lParam);
+  return CPropertySheet::WindowProc(message, wParam, lParam);
 }
 
-INT_PTR CPWDialog::DoModal()
+INT_PTR CPWPropertySheet::DoModal()
 {
   app.DisableAccelerator();
-  INT_PTR rc = CDialog::DoModal();
+  INT_PTR rc = CPropertySheet::DoModal();
   app.EnableAccelerator();
 
   return rc;

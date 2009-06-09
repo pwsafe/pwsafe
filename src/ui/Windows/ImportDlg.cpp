@@ -35,7 +35,8 @@ CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
 
 void CImportDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
+
   //{{AFX_DATA_MAP(CImportDlg)
   DDX_Text(pDX, IDC_GROUP_NAME, m_groupName);
   DDX_Text(pDX, IDC_OTHER_SEPARATOR, m_Separator);
@@ -48,7 +49,7 @@ void CImportDlg::DoDataExchange(CDataExchange* pDX)
   DDV_CheckImpDelimiter(pDX, m_defimpdelim);
 }
 
-BEGIN_MESSAGE_MAP(CImportDlg, CDialog)
+BEGIN_MESSAGE_MAP(CImportDlg, CPWDialog)
   //{{AFX_MSG_MAP(CImportDlg)
   ON_BN_CLICKED(IDC_OTHER, OnOther)
   ON_BN_CLICKED(IDC_COMMA, OnComma)
@@ -137,5 +138,5 @@ void CImportDlg::OnOK()
   }
 
   UpdateData(FALSE);
-  CDialog::OnOK();
+  CPWDialog::OnOK();
 }

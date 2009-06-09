@@ -528,9 +528,7 @@ void CPWFindToolBar::ShowFindAdvanced()
   CAdvancedDlg Adv(this, ADV_FIND, m_bsFields, m_subgroup_name, m_subgroup_set,
     m_subgroup_object, m_subgroup_function);
 
-  app.DisableAccelerator(); // don't allow accelerator keys
   INT_PTR rc = Adv.DoModal();
-  app.EnableAccelerator();  // allow accelerator keys again
 
   if (rc == IDOK) {
     m_bAdvanced = true;

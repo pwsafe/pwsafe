@@ -12,6 +12,7 @@ class PWScore;
 class DboxMain;
 class ItemData;
 
+#include "PWPropertySheet.h"
 #include "AddEdit_PropertyPage.h"
 #include "AddEdit_Basic.h"
 #include "AddEdit_Additional.h"
@@ -19,7 +20,7 @@ class ItemData;
 #include "AddEdit_PasswordPolicy.h"
 #include "SecString.h"
 
-class CAddEdit_PropertySheet : public CPropertySheet
+class CAddEdit_PropertySheet : public CPWPropertySheet
 {
 public:
   CAddEdit_PropertySheet(UINT nID, CWnd* pDbx, PWScore *pcore, CItemData *pci,

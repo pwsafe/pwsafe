@@ -27,6 +27,7 @@
 #include "filter/ManageFiltersDlg.h"
 #include "GeneralMsgBox.h"
 #include "MFCMessages.h"
+#include "PWFileDialog.h"
 
 #include "corelib/corelib.h"
 #include "corelib/PWSFilters.h"
@@ -674,17 +675,17 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
                                                   _T("filters.xml"));
   cs_text.LoadString(IDS_NAMEXMLFILE);
   while (1) {
-    CFileDialog fd(FALSE,
-                   _T("xml"),
-                   XMLFileName.c_str(),
-                   OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
-                   OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                   CString(MAKEINTRESOURCE(IDS_FDF_X_ALL)),
-                   this);
+    CPWFileDialog fd(FALSE,
+                     _T("xml"),
+                     XMLFileName.c_str(),
+                     OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                        OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                     CString(MAKEINTRESOURCE(IDS_FDF_X_ALL)),
+                     this);
     fd.m_ofn.lpstrTitle = cs_text;
     rc = fd.DoModal();
     if (m_inExit) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling
       PostQuitMessage(0);
@@ -726,18 +727,18 @@ void DboxMain::ImportFilters()
   }
 #endif
 
-  CFileDialog fd(TRUE,
-                 _T("xml"),
-                 NULL,
-                 OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
-                 CString(MAKEINTRESOURCE(IDS_FDF_XML)),
-                 this);
+  CPWFileDialog fd(TRUE,
+                   _T("xml"),
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                   CString(MAKEINTRESOURCE(IDS_FDF_XML)),
+                   this);
   cs_text.LoadString(IDS_PICKXMLFILE);
   fd.m_ofn.lpstrTitle = cs_text;
 
   INT_PTR rc = fd.DoModal();
   if (m_inExit) {
-    // If U3ExitNow called while in CFileDialog,
+    // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
     // of exiting the app. Try resignalling
     PostQuitMessage(0);

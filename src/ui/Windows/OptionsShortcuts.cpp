@@ -22,7 +22,7 @@
 
 // COptionsShortcuts dialog
 
-IMPLEMENT_DYNAMIC(COptionsShortcuts, CPropertyPage)
+IMPLEMENT_DYNAMIC(COptionsShortcuts, CPWPropertyPage)
 
 COptionsShortcuts::COptionsShortcuts(): CPWPropertyPage(COptionsShortcuts::IDD),
   m_bChanged(false)
@@ -37,13 +37,13 @@ COptionsShortcuts::~COptionsShortcuts()
 
 void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CPWPropertyPage::DoDataExchange(pDX);
 
   DDX_Control(pDX, IDC_SHORTCUTLIST, m_ShortcutLC);
   DDX_Control(pDX, IDC_STATIC_SHCTWARNING, m_stc_warning);
 }
 
-BEGIN_MESSAGE_MAP(COptionsShortcuts, CPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsShortcuts, CPWPropertyPage)
   ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnBnClickedResetAll)
   ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
@@ -61,7 +61,7 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
 
 BOOL COptionsShortcuts::OnInitDialog()
 {
-  CPropertyPage::OnInitDialog();
+  CPWPropertyPage::OnInitDialog();
 
   m_ShortcutLC.Init(this);
 

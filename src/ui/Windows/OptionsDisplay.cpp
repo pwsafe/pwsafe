@@ -30,7 +30,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay property page
 
-IMPLEMENT_DYNCREATE(COptionsDisplay, CPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsDisplay, CPWPropertyPage)
 
 COptionsDisplay::COptionsDisplay() : CPWPropertyPage(COptionsDisplay::IDD)
 {
@@ -44,7 +44,8 @@ COptionsDisplay::~COptionsDisplay()
 
 void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CPWPropertyPage::DoDataExchange(pDX);
+
   //{{AFX_DATA_MAP(COptionsDisplay)
   DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
   DDX_Check(pDX, IDC_DEFUNSHOWINTREE, m_showusernameintree);
@@ -65,7 +66,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsDisplay, CPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsDisplay, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsDisplay)
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
   ON_BN_CLICKED(IDC_DEFUNSHOWINTREE, OnDisplayUserInTree)
@@ -84,7 +85,7 @@ void COptionsDisplay::OnPreWarn()
 
 BOOL COptionsDisplay::OnInitDialog() 
 {
-  CPropertyPage::OnInitDialog();
+  CPWPropertyPage::OnInitDialog();
 
   OnPreWarn();
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
@@ -103,7 +104,7 @@ BOOL COptionsDisplay::OnInitDialog()
 
 BOOL COptionsDisplay::OnKillActive()
 {
-  CPropertyPage::OnKillActive();
+  CPWPropertyPage::OnKillActive();
 
   // Check that options, as set, are valid.
   if ((m_preexpirywarndays < 1) || (m_preexpirywarndays > 30)) {

@@ -38,7 +38,7 @@ int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup property page
 
-IMPLEMENT_DYNCREATE(COptionsBackup, CPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsBackup, CPWPropertyPage)
 
 COptionsBackup::COptionsBackup(): CPWPropertyPage(COptionsBackup::IDD),
   m_pToolTipCtrl(NULL)
@@ -66,7 +66,7 @@ void COptionsBackup::SetCurFile(const CString &currentFile)
 
 void COptionsBackup::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  CPWPropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsBackup)
   DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
@@ -80,7 +80,7 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsBackup, CPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsBackup, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsBackup)
   ON_BN_CLICKED(IDC_BACKUPBEFORESAVE, OnBackupBeforeSave)
   ON_BN_CLICKED(IDC_DFLTBACKUPPREFIX, OnBackupPrefix)
@@ -95,7 +95,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsBackup::OnInitDialog()
 {
-  CPropertyPage::OnInitDialog();
+  CPWPropertyPage::OnInitDialog();
 
   if(m_backupsuffix_cbox.GetCount() == 0) {
     // add the strings in alphabetical order
@@ -293,12 +293,12 @@ void COptionsBackup::OnOK()
 {
   UpdateData(TRUE);
 
-  CPropertyPage::OnOK();
+  CPWPropertyPage::OnOK();
 }
 
 BOOL COptionsBackup::OnKillActive()
 {
-  CPropertyPage::OnKillActive();
+  CPWPropertyPage::OnKillActive();
 
   if (m_backupbeforesave != TRUE)
     return TRUE;
@@ -354,7 +354,7 @@ BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
-  return CPropertyPage::PreTranslateMessage(pMsg);
+  return CPWPropertyPage::PreTranslateMessage(pMsg);
 }
 
 void COptionsBackup::OnBrowseForLocation()

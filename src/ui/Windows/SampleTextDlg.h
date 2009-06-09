@@ -12,8 +12,9 @@
 
 #include "resource.h"
 #include "ControlExtns.h"
+#include "PWDialog.h"
 
-class CSampleTextDlg : public CDialog
+class CSampleTextDlg : public CPWDialog
 {
   DECLARE_DYNAMIC(CSampleTextDlg)
 

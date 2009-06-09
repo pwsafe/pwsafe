@@ -14,6 +14,7 @@ down the streetsky.  [Groucho Marx]
 */
 
 #include "PasswordSafe.h"
+#include "PWFileDialog.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/Pwsdirs.h"
 #include "os/file.h"
@@ -357,20 +358,20 @@ void CPasskeyEntry::OnCreateDb()
   stringT v3FileName = PWSUtil::GetNewFileName(LPCTSTR(cf), DEFAULT_SUFFIX );
 
   while (1) {
-    CFileDialog fd(FALSE,
-                   DEFAULT_SUFFIX,
-                   v3FileName.c_str(),
-                   OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                   |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                   CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
-                   this);
+    CPWFileDialog fd(FALSE,
+                     DEFAULT_SUFFIX,
+                     v3FileName.c_str(),
+                     OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                        OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                     CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
+                     this);
     fd.m_ofn.lpstrTitle = cs_text;
     stringT dir = PWSdirs::GetSafeDir();
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
     rc = fd.DoModal();
     if (((DboxMain*) GetParent())->ExitRequested()) {
-      // If U3ExitNow called while in CFileDialog,
+      // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling
       PostQuitMessage(0);
@@ -415,9 +416,7 @@ void CPasskeyEntry::OnExitAdvanced()
   CAdvancedDlg Adv(this, m_adv_type, m_bsFields, m_subgroup_name,
     m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
-  app.DisableAccelerator();
   INT_PTR rc = Adv.DoModal();
-  app.EnableAccelerator();
 
   if (rc == IDOK) {
     m_bAdvanced = true;
@@ -545,12 +544,12 @@ void CPasskeyEntry::OnOpenFileBrowser()
   CString cs_text(MAKEINTRESOURCE(IDS_CHOOSEDATABASE));
 
   //Open-type dialog box
-  CFileDialog fd(TRUE,
-                 DEFAULT_SUFFIX,
-                 NULL,
-                 OFN_FILEMUSTEXIST | OFN_LONGNAMES,
-                 CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
-                 this);
+  CPWFileDialog fd(TRUE,
+                   DEFAULT_SUFFIX,
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_LONGNAMES,
+                   CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
+                   this);
   fd.m_ofn.lpstrTitle = cs_text;
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
       fd.m_ofn.Flags |= OFN_READONLY;
@@ -562,7 +561,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
 
   INT_PTR rc = fd.DoModal();
   if (((DboxMain*) GetParent())->ExitRequested()) {
-    // If U3ExitNow called while in CFileDialog,
+    // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
     // of exiting the app. Try resignalling
     PostQuitMessage(0);
