@@ -14,6 +14,7 @@
 #include "Util.h"
 #include "Match.h"
 #include "ItemField.h"
+#include "PWSprefs.h"
 #include "UUIDGen.h"
 #include "StringX.h"
 #include <time.h> // for time_t
@@ -60,10 +61,14 @@ struct PWPolicy {
     if (this != &that) {
       if (flags           != that.flags ||
           length          != that.length ||
-          digitminlength  != that.digitminlength ||
-          lowerminlength  != that.lowerminlength ||
-          symbolminlength != that.symbolminlength ||
-          upperminlength  != that.upperminlength)
+          ((flags & PWSprefs::PWPolicyUseDigits) == PWSprefs::PWPolicyUseDigits &&
+            digitminlength  != that.digitminlength) ||
+          ((flags & PWSprefs::PWPolicyUseLowercase) == PWSprefs::PWPolicyUseLowercase &&
+            lowerminlength  != that.lowerminlength) ||
+          ((flags & PWSprefs::PWPolicyUseSymbols) == PWSprefs::PWPolicyUseSymbols &&
+            symbolminlength != that.symbolminlength) ||
+          ((flags & PWSprefs::PWPolicyUseUppercase) == PWSprefs::PWPolicyUseUppercase &&
+            upperminlength  != that.upperminlength))
        return false;
     }
     return true;
@@ -74,10 +79,14 @@ struct PWPolicy {
     if (this != &that) {
       if (flags           != that.flags ||
           length          != that.length ||
-          digitminlength  != that.digitminlength ||
-          lowerminlength  != that.lowerminlength ||
-          symbolminlength != that.symbolminlength ||
-          upperminlength  != that.upperminlength)
+          ((flags & PWSprefs::PWPolicyUseDigits) == PWSprefs::PWPolicyUseDigits &&
+            digitminlength  != that.digitminlength) ||
+          ((flags & PWSprefs::PWPolicyUseLowercase) == PWSprefs::PWPolicyUseLowercase &&
+            lowerminlength  != that.lowerminlength) ||
+          ((flags & PWSprefs::PWPolicyUseSymbols) == PWSprefs::PWPolicyUseSymbols &&
+            symbolminlength != that.symbolminlength) ||
+          ((flags & PWSprefs::PWPolicyUseUppercase) == PWSprefs::PWPolicyUseUppercase &&
+            upperminlength  != that.upperminlength))
        return true;
     }
     return false;

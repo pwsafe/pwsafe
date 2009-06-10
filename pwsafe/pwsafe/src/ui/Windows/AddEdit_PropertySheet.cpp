@@ -79,8 +79,8 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
     // Date & Time initialisation
     m_AEMD.locCTime.LoadString(IDS_NA);
-    m_AEMD.locXTime = m_AEMD.locATime = m_AEMD.locRMTime = m_AEMD.locPMTime = m_AEMD.oldlocXTime =
-          m_AEMD.locCTime;
+    m_AEMD.locXTime = m_AEMD.locATime = m_AEMD.locRMTime = m_AEMD.locPMTime = 
+          m_AEMD.oldlocXTime = m_AEMD.locCTime;
     m_AEMD.tttXTime = m_AEMD.tttCPMTime = (time_t)0;
     m_AEMD.oldXTimeInt = m_AEMD.XTimeInt = 0;
 
@@ -198,13 +198,14 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
   if (LOWORD(wParam) == IDOK) {
     // First send a message to all loaded pages using base class
     // function.
-    // We don't care about the result, just want them all to update
-    // their variables in the Master Data area.
+    // We want them all to update their variables in the Master Data area.
+    // And call OnApply() rather than the default OnOK processing
     // Note: This message is only sent to PropertyPages that have been
     // loaded - i.e. the user has selected to view them, since obviously
     // the user would not have changed their values if not displayed. Duh!
-    SendMessage(PSM_QUERYSIBLINGS,
-                (WPARAM)CAddEdit_PropertyPage::PP_UPDATE_VARIABLES, 0L);
+    if (SendMessage(PSM_QUERYSIBLINGS,
+                (WPARAM)CAddEdit_PropertyPage::PP_UPDATE_VARIABLES, 0L) != 0)
+      return TRUE;
 
     time_t t;
     switch (m_AEMD.uicaller) {
@@ -240,7 +241,10 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetURL(m_AEMD.URL);
           m_AEMD.pci->SetAutoType(m_AEMD.autotype);
           m_AEMD.pci->SetPWHistory(m_AEMD.PWHistory);
-          m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+          if (m_AEMD.pwp != m_AEMD.default_pwp)
+            m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+          else
+            m_AEMD.pci->SetPWPolicy(_T(""));
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
         }
@@ -309,7 +313,10 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetPWPolicy(_T(""));
         } else {
           m_AEMD.pci->SetXTime(m_AEMD.tttXTime);
-          m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+          if (m_AEMD.pwp != m_AEMD.default_pwp)
+            m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+          else
+            m_AEMD.pci->SetPWPolicy(_T(""));
         }
         break;
       case IDS_VIEWENTRY:
@@ -319,6 +326,9 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         ASSERT(0);
         break;
     }
+    // Now end it all so that OnApply isn't called again
+    CPWPropertySheet::EndDialog(IDOK);
+    return TRUE;
   }
   return CPWPropertySheet::OnCommand(wParam, lParam);
 }
