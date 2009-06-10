@@ -42,14 +42,16 @@ public:
   //{{AFX_VIRTUAL(COptionsSecurity)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
   // Implementation
 protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsSecurity)
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);
   afx_msg void OnLockbase();
-  virtual BOOL OnInitDialog();
   afx_msg BOOL OnKillActive();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()

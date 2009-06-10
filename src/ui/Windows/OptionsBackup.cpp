@@ -289,13 +289,6 @@ void COptionsBackup::SetExample()
   GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(cs_example);
 }
 
-void COptionsBackup::OnOK()
-{
-  UpdateData(TRUE);
-
-  CPWPropertyPage::OnOK();
-}
-
 BOOL COptionsBackup::OnKillActive()
 {
   CPWPropertyPage::OnKillActive();

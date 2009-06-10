@@ -22,6 +22,7 @@
 #include "resource3.h"  // String resources
 #endif
 #include "OptionsMisc.h"
+#include "Options_PropertySheet.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,7 +76,8 @@ BEGIN_MESSAGE_MAP(COptionsMisc, CPWPropertyPage)
   ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
   ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
   ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
-  ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged) 
+  ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -202,9 +204,29 @@ void COptionsMisc::OnUsedefuser()
   }
 }
 
-void COptionsMisc::OnOK() 
+LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
 {
   UpdateData(TRUE);
+
+  // Security asked for DoubleClickAction value
+  switch (wParam) {
+    case COptions_PropertySheet::PP_GET_DCA:
+      {
+      int * pDCA = (int *)lParam;
+      ASSERT(pDCA != NULL);
+      *pDCA = (int)m_doubleclickaction;
+      return 1L;
+      }
+    default:
+      break;
+  }
+  return 0L;
+}
+
+BOOL COptionsMisc::OnApply() 
+{
+  UpdateData(TRUE);
+
   // JHF ditto
 #if !defined(POCKET_PC)
   WORD wVirtualKeyCode, wModifiers;
@@ -213,43 +235,30 @@ void COptionsMisc::OnOK()
   m_hotkey_value = v;
 #endif
   m_csBrowser = m_otherbrowserlocation;
-  // feature conflict resolution:
-  // If user selected the CopyPasswordAndMinimize dbl-click
-  // action, AND ClearClipboardOnMinimize is true,
-  // then alert user to the conflict, and get her
-  // preferred solution
-  // The following code isn't bulletproof: If the user sets the
-  // ClearClipboardOnMinimize checkbox and then selects
-  // DoubleClickCopyPasswordMinimize without clicking OK on the
-  // propsheet's OK in between, the preference won't have been update.
-  // Also, Setting the preference doesn't work here, as the
-  // parent will override this based on the checkbox's value.
-  // The only right way to do this is to subclass the CPropertySheet
-  // dialog, add a cross-sheet validation member function and
-  // call it from here.
-  // For now, I'm chickening out and documenting the issue in the online help
-#ifdef CHICKENED_OUT
-  if (m_doubleclickaction == 
-      m_DCA_to_Index[PWSprefs::DoubleClickCopyPasswordMinimize] &&
-      // Following is THE WRONG QUESTION - see long comment
-      // above for an explanation why
-      PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-    switch (MessageBox(_T("Yo man, I got troubles"),NULL,
-                       MB_YESNOCANCEL|MB_ICONQUESTION)) {
-    case IDYES:
-      // Following DOESN'T WORK - see long comment above for an explanation why
-      PWSprefs::GetInstance()->SetPref(PWSprefs::ClearClipboardOnMinimize, false);
-      break;
-    case IDNO:
-      break;
-    case IDCANCEL:
-      return;
-    default:
-      ASSERT(0); // keep compiler happy
-    }
+
+  // Go ask Security for ClearClipboardOnMinimize value
+  BOOL bClearClipboardOnMinimize;
+  if (QuerySiblings(COptions_PropertySheet::PP_GET_CCOM,
+                    (LPARAM)&bClearClipboardOnMinimize) == 0L) {
+    // Security not loaded - get from Prefs
+    bClearClipboardOnMinimize = 
+        PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize);
   }
-#endif 
-  CPWPropertyPage::OnOK();
+
+  if (m_doubleclickaction == PWSprefs::DoubleClickCopyPasswordMinimize &&
+      bClearClipboardOnMinimize) {
+    AfxMessageBox(IDS_MINIMIZECONFLICT);
+
+    // Are we the current page, if not activate this page
+    COptions_PropertySheet *pPS = (COptions_PropertySheet *)GetParent();
+    if (pPS->GetActivePage() != (CPWPropertyPage *)this)
+      pPS->SetActivePage(this);
+
+    m_dblclk_cbox.SetFocus();
+    return FALSE;
+  }
+
+  return CPWPropertyPage::OnApply();
 }
 
 void COptionsMisc::OnBrowseForLocation()

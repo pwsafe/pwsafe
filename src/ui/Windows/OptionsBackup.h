@@ -51,15 +51,14 @@ public:
   //{{AFX_VIRTUAL(COptionsBackup)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
 
   // Implementation
 protected:
-  virtual BOOL OnInitDialog();
-  virtual void OnOK();
-  afx_msg BOOL OnKillActive();
   // Generated message map functions
   //{{AFX_MSG(COptionsBackup)
+  afx_msg BOOL OnKillActive();
   afx_msg void OnBackupPrefix();
   afx_msg void OnBackupDirectory();
   afx_msg void OnBackupBeforeSave();
