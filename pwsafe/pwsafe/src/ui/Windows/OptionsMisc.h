@@ -55,14 +55,15 @@ public:
   //{{AFX_VIRTUAL(COptionsMisc)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
   // Implementation
 protected:
-  virtual BOOL OnInitDialog();
-  virtual void OnOK();
   // Generated message map functions
   //{{AFX_MSG(COptionsMisc)
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);
   afx_msg void OnEnableHotKey();
   afx_msg void OnUsedefuser();
   afx_msg void OnBrowseForLocation();

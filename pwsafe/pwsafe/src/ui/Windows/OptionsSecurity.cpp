@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/PWSprefs.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -19,6 +20,7 @@
 #include "resource3.h"  // String resources
 #endif
 #include "OptionsSecurity.h"
+#include "Options_PropertySheet.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,6 +62,7 @@ BEGIN_MESSAGE_MAP(COptionsSecurity, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
   ON_BN_CLICKED(IDC_LOCKBASE, OnLockbase)
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockbase)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -89,6 +92,25 @@ BOOL COptionsSecurity::OnInitDialog()
   // EXCEPTION: OCX Property Pages should return FALSE
 }
 
+LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
+{
+  UpdateData(TRUE);
+
+  // Misc has asked for ClearClipboardOnMinimize value
+  switch (wParam) {
+    case COptions_PropertySheet::PP_GET_CCOM:
+      {
+      BOOL * pCCOM = (BOOL *)lParam;
+      ASSERT(pCCOM != NULL);
+      *pCCOM = (BOOL)m_clearclipboardonminimize;
+      }
+      return 1L;
+    default:
+      break;
+  }
+  return 0L;
+}
+
 BOOL COptionsSecurity::OnKillActive()
 {
   CPWPropertyPage::OnKillActive();
@@ -101,4 +123,33 @@ BOOL COptionsSecurity::OnKillActive()
   }
 
   return TRUE;
+}
+
+BOOL COptionsSecurity::OnApply() 
+{
+  UpdateData(TRUE);
+
+  // Go ask Misc for DoubleClickAction value
+  int iDoubleClickAction;
+  if (QuerySiblings(COptions_PropertySheet::PP_GET_DCA,
+                    (LPARAM)&iDoubleClickAction) == 0L) {
+    // Misc not loaded - get from Prefs
+    iDoubleClickAction = 
+        PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+  }
+
+  if (m_clearclipboardonminimize &&
+      iDoubleClickAction == PWSprefs::DoubleClickCopyPasswordMinimize) {
+    AfxMessageBox(IDS_MINIMIZECONFLICT);
+
+    // Are we the current page, if not activate this page
+    COptions_PropertySheet *pPS = (COptions_PropertySheet *)GetParent();
+    if (pPS->GetActivePage() != (CPWPropertyPage *)this)
+      pPS->SetActivePage(this);
+
+    GetDlgItem(IDC_CLEARBOARDONMINIMIZE)->SetFocus();
+    return FALSE;
+  }
+
+  return CPWPropertyPage::OnApply();
 }

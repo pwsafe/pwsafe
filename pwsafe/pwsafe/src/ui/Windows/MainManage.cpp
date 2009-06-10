@@ -24,6 +24,7 @@
 
 #include "PasskeyChangeDlg.h"
 #include "TryAgainDlg.h"
+#include "Options_PropertySheet.h"
 #include "OptionsSystem.h"
 #include "OptionsSecurity.h"
 #include "OptionsDisplay.h"
@@ -225,7 +226,7 @@ void DboxMain::OnValidate()
 void DboxMain::OnOptions() 
 {
   const CString PWSLnkName(_T("Password Safe")); // for startup shortcut
-  CPWPropertySheet        optionsDlg(IDS_OPTIONS, this);
+  COptions_PropertySheet  optionsPS(IDS_OPTIONS, this);
   COptionsDisplay         display;
   COptionsSecurity        security;
   COptionsPasswordPolicy  passwordpolicy;
@@ -407,19 +408,19 @@ void DboxMain::OnOptions()
                          m_ExcludedMenuItems,
                          m_ReservedShortcuts);
 
-  optionsDlg.AddPage(&backup);
-  optionsDlg.AddPage(&display);
-  optionsDlg.AddPage(&misc);
-  optionsDlg.AddPage(&passwordpolicy);
-  optionsDlg.AddPage(&passwordhistory);
-  optionsDlg.AddPage(&security);
-  optionsDlg.AddPage(&system);
-  optionsDlg.AddPage(&shortcuts);
+  optionsPS.AddPage(&backup);
+  optionsPS.AddPage(&display);
+  optionsPS.AddPage(&misc);
+  optionsPS.AddPage(&passwordpolicy);
+  optionsPS.AddPage(&passwordhistory);
+  optionsPS.AddPage(&security);
+  optionsPS.AddPage(&system);
+  optionsPS.AddPage(&shortcuts);
 
   /*
   **  Remove the "Apply Now" button.
   */
-  optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW;
+  optionsPS.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
   // Disable Hotkey around this as the user may press the current key when 
   // selecting the new key!
@@ -430,17 +431,9 @@ void DboxMain::OnOptions()
 
   passwordhistory.m_pDboxMain = this;
 
-  INT_PTR rc = optionsDlg.DoModal();
+  INT_PTR rc = optionsPS.DoModal();
 
   if (rc == IDOK) {
-    /*
-    **  First check user hasn't introduced a conflict
-    */
-    if ((misc.m_doubleclickaction == PWSprefs::DoubleClickCopyPasswordMinimize) &&
-         security.m_clearclipboardonminimize == TRUE) {
-      misc.m_doubleclickaction = PWSprefs::DoubleClickCopyPassword;
-      AfxMessageBox(IDS_MINIMIZECONFLICT);
-    }
     /*
     **  Now save all the options.
     */
