@@ -143,12 +143,12 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_pwupperminlength);
 
-  // Disable controls based on m_ipolicy
-  SetPolicyControls();
-
   // Set up values
   do_hex(m_pwusehexdigits == TRUE);
   do_easyorpronounceable(m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE);
+
+  // Disable controls based on m_ipolicy
+  SetPolicyControls();
 
   UINT uiChk = (M_ipolicy() == CAddEdit_PropertySheet::DEFAULT_POLICY) ?
                 IDC_USEDEFAULTPWPOLICY : IDC_ENTRYPWPOLICY;
@@ -235,10 +235,10 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
-      // MUST return 0 to force all pages to get called
-      // UpdateData already performed - so data up-to-date
-      // Which is why this call is done!
-      return 0L;
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
   }
   return 0L;
 }
@@ -504,6 +504,7 @@ void CAddEdit_PasswordPolicy::OnResetPolicy()
 
   do_hex(m_pwusehexdigits == TRUE);
   do_easyorpronounceable(m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE);
+  SetPolicyControls();
 }
 
 void CAddEdit_PasswordPolicy::OnSetDefaultPWPolicy()
