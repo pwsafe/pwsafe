@@ -57,7 +57,7 @@ void pws_os::Trace0(LPCTSTR )
 #include "../../corelib/StringX.h"
 
 // This routine uses Windows functions
-void pws_os::IssueError(const stringT &csFunction)
+void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 {
   LPVOID lpMsgBuf;
   LPVOID lpDisplayBuf;
@@ -75,7 +75,10 @@ void pws_os::IssueError(const stringT &csFunction)
        (lstrlen((LPCTSTR)lpMsgBuf) + csFunction.length() + 40) * sizeof(TCHAR));
   wsprintf((LPTSTR)lpDisplayBuf, TEXT("%s failed with error %d: %s"),
            csFunction.c_str(), dw, lpMsgBuf);
-  MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
+  if (bMsgBox)
+    MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
+  else
+    OutputDebugString((LPCTSTR)lpDisplayBuf);
 
   LocalFree(lpMsgBuf);
   LocalFree(lpDisplayBuf);
@@ -147,7 +150,7 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
   };
 }
 #else  /* _DEBUG or DEBUG */
-void pws_os::IssueError(const stringT &)
+void pws_os::IssueError(const stringT &, bool )
 {
 }
 
