@@ -67,6 +67,13 @@ BOOL APIENTRY DllMain(HMODULE hModule,
   return TRUE;
 }
 
+AT_API int AT_HK_GetVersion()
+{
+  // Return current version to ensure caller and DLL are in step
+  // with regard to calling functions and Implemention Structure
+  return AT_DLL_VERSION;
+}
+
 AT_API BOOL AT_HK_Initialise(HWND hWnd)
 {
   // Calling process: Initialise(m_hWnd)
@@ -107,9 +114,9 @@ static LRESULT CALLBACK ShellProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
   if (nCode == HSHELL_WINDOWACTIVATED) {
     DWORD dwProcessId(0);
-    // wParam == handle to the activated window
+    // wParam == handle to the activated window - get Process ID
     GetWindowThreadProcessId((HWND)wParam, &dwProcessId);
-    PostMessage(hWndServer, m_uiWH_SHELL, (WPARAM)dwProcessId, (LPARAM)wParam);
+    PostMessage(hWndServer, m_uiWH_SHELL, (WPARAM)dwProcessId, 0L);
   }
 
   return CallNextHookEx(m_shl_hook, nCode, wParam, lParam);

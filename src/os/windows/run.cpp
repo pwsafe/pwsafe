@@ -25,11 +25,13 @@
 #include <vector>
 #include <algorithm>
 
-typedef AT_API BOOL (* AT_PROC) (HWND);
+typedef AT_API BOOL (* AT_PROC_BOOL) (HWND);
+typedef AT_API int  (* AT_PROC_INT) ();
 
 struct st_run_impl {
-  AT_PROC pInit;   // Pointer to   Initialise function in pws_at(_D).dll
-  AT_PROC pUnInit; // Pointer to UnInitialise function in pws_at(_D).dll
+  AT_PROC_BOOL pInit;   // Pointer to   Initialise function in pws_at(_D).dll
+  AT_PROC_BOOL pUnInit; // Pointer to UnInitialise function in pws_at(_D).dll
+  AT_PROC_INT  pGetVer; // Pointer to   GetVersion function in pws_at(_D).dll
   HWND hCBWnd;     // Handle to Window to receive SendMessage for processing
                    //   It is the main DboxMain window.
   HINSTANCE m_AT_HK_module;
@@ -49,13 +51,26 @@ struct st_run_impl {
     m_AT_HK_module = LoadLibrary(dll_loc.c_str());
     if (m_AT_HK_module != NULL) {
       pws_os::Trace(_T("st_run_impl::st_run_impl - AutoType DLL Loaded: OK\n"));
-      pInit  = (AT_PROC)GetProcAddress(m_AT_HK_module, "AT_HK_Initialise");
+      pInit  = (AT_PROC_BOOL)GetProcAddress(m_AT_HK_module, "AT_HK_Initialise");
       pws_os::Trace(_T("st_run_impl::st_run_impl - Found AT_HK_Initialise: %s\n"),
             pInit != NULL ? _T("OK") : _T("FAILED"));
 
-      pUnInit = (AT_PROC)GetProcAddress(m_AT_HK_module, "AT_HK_UnInitialise");
+      pUnInit = (AT_PROC_BOOL)GetProcAddress(m_AT_HK_module, "AT_HK_UnInitialise");
       pws_os::Trace(_T("st_run_impl::st_run_impl - Found AT_HK_UnInitialise: %s\n"),
             pUnInit != NULL ? _T("OK") : _T("FAILED"));
+
+      pGetVer = (AT_PROC_INT)GetProcAddress(m_AT_HK_module, "AT_HK_GetVersion");
+      pws_os::Trace(_T("st_run_impl::st_run_impl - Found AT_HK_GetVersion: %s\n"),
+            pGetVer != NULL ? _T("OK") : _T("FAILED"));
+
+      if (pGetVer == NULL || pGetVer() != AT_DLL_VERSION) {
+        pws_os::Trace(_T("st_run_impl::st_run_impl - Unable to determine DLL version")
+                      _T(" or incorrect version\n"));
+        BOOL brc = FreeLibrary(m_AT_HK_module);
+        pws_os::Trace(_T("st_run_impl::st_run_impl - Free Autotype DLL: %s\n"),
+                      brc == TRUE ? _T("OK") : _T("FAILED"));
+        m_AT_HK_module = NULL;
+      }
     }
   }
 
@@ -91,7 +106,6 @@ struct st_run_impl {
 PWSRun::PWSRun()
 {
   impl = new st_run_impl;
-
 }
 
 PWSRun::~PWSRun()

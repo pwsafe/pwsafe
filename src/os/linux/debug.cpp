@@ -82,7 +82,7 @@ void pws_os::Trace0(LPCTSTR )
 #include "../../corelib/StringX.h"
 
 // This routine uses Windows functions
-void pws_os::IssueError(const stringT &csFunction)
+void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 {
   // Stub?
 }
@@ -153,7 +153,7 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
   };
 }
 #else  /* _DEBUG or DEBUG */
-void pws_os::IssueError(const stringT &)
+void pws_os::IssueError(const stringT &, bool )
 {
 }
 

@@ -10,6 +10,8 @@
 #ifndef _PWS_AT_H
 #define _PWS_AT_H
 
+#define AT_DLL_VERSION 1
+
 #ifdef PWS_AT_EXPORTS
 #define AT_API __declspec(dllexport)
 #else
@@ -22,6 +24,7 @@ extern "C" {
 
 AT_API BOOL AT_HK_Initialise(HWND hWnd);
 AT_API BOOL AT_HK_UnInitialise(HWND hWnd);
+AT_API int  AT_HK_GetVersion();
 
 #ifdef __cplusplus
 }

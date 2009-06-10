@@ -157,11 +157,11 @@ LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
   return (LRESULT)app.m_uiRegMsg;
 }
 
-LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam)
+LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
 {
   // We are only being called for HSHELL_WINDOWACTIVATED
   // wParam = Process ID
-  // lParam = Process Handle
+  // lParam = 0
 
   bool brc;
   if (!m_bDoAutoType || (m_bDoAutoType && m_AutoType.empty())) {
@@ -188,27 +188,39 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam)
          brc ? _T("OK") : _T("FAILED"));
 
   // Wait for time to do Autotype - if we can.
-  bool bFoundProcess(false);
   // Check if process still there.
-  if (wParam != 0 && lParam != 0) {
-    DWORD dwProcesses[1024], dwBytesNeeded;
-    if (EnumProcesses(dwProcesses, sizeof(dwProcesses), &dwBytesNeeded) != 0) {
-      for (int i = 0; i < (int)(dwBytesNeeded / sizeof(DWORD)); i++) {
-        if (dwProcesses[i] == (DWORD)wParam) {
-          bFoundProcess = true;
-          break;
-        }
-      }
-    }
+  HANDLE hProcess(NULL);
+  if (wParam != 0) {
+    hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, (DWORD)wParam);
   }
 
-  if (bFoundProcess) {
-    TRACE(_T("WaitForInputIdle - Process ID:%d (Handle:0x%08x)\n"), wParam, lParam);
-    WaitForInputIdle((HANDLE)lParam, INFINITE);
-  } else
+  if (hProcess != NULL) {
+    TRACE(_T("WaitForInputIdle - Process ID:%d\n"), wParam);
+    DWORD dwrc = WaitForInputIdle(hProcess, INFINITE);
+#ifdef _DEBUG
+    switch (dwrc) {
+      case 0:
+        TRACE(_T("WaitForInputIdle satisfied successfully.\n"));
+        break;
+      case WAIT_TIMEOUT:
+        TRACE(_T("WaitForInputIdle time interval expired.\n"));
+        break;
+      case WAIT_FAILED:
+        pws_os::IssueError(_T("WaitForInputIdle"), false);
+        break;
+      default:
+        break;
+    }
+#endif
+    CloseHandle(hProcess);
+  } else {
+    // Could not find process - so just wait abitrary amount
     Sleep(2000);
+  }
 
   // Do Autotype!  Note: All fields were substituted before getting here
+  // Pure guess to wait 1 second.  Might be more or less but certainly > 0
+  Sleep(1000);
   DoAutoType(m_AutoType);
 
   // Reset AutoType

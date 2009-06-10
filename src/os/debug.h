@@ -19,9 +19,10 @@ namespace pws_os {
   void Trace(LPCTSTR lpszFormat, ...);
   void Trace0(LPCTSTR lpszFormat);
 
-  // Opens a messagebox with text of last system error, titlebar
+  // Opens a messagebox or write to debugger window 
+  // with text of last system error, titlebar
   // is csFunction
-  void IssueError(const stringT &csFunction);
+  void IssueError(const stringT &csFunction, bool bMsgBox = true);
 
   /*
     Outputs a printable version of memory dump (hex + ascii)
