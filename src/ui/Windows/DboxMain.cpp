@@ -196,22 +196,24 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
 
   if (hProcess != NULL) {
     TRACE(_T("WaitForInputIdle - Process ID:%d\n"), wParam);
-    DWORD dwrc = WaitForInputIdle(hProcess, INFINITE);
-#ifdef _DEBUG
-    switch (dwrc) {
+    // Don't use INFINITE as may be a problem on user's system and do
+    // not want to wait forever - pick a reasonable upperbound, say, 8 seconds?
+    switch (WaitForInputIdle(hProcess, 8000)) {
       case 0:
         TRACE(_T("WaitForInputIdle satisfied successfully.\n"));
         break;
       case WAIT_TIMEOUT:
+        // Must be a problem with the user's process!
         TRACE(_T("WaitForInputIdle time interval expired.\n"));
         break;
       case WAIT_FAILED:
+        // Problem - wait same amount of time as if could not find process
         pws_os::IssueError(_T("WaitForInputIdle"), false);
+        Sleep(2000);
         break;
       default:
         break;
     }
-#endif
     CloseHandle(hProcess);
   } else {
     // Could not find process - so just wait abitrary amount
