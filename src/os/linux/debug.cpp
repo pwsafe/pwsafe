@@ -85,6 +85,10 @@ void pws_os::Trace0(LPCTSTR )
 void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 {
   // Stub?
+  if (bMsgBox)
+    cout << csFunction;
+  else
+    cerr << csFunction;
 }
 
 void pws_os::HexDump(unsigned char *pmemory, const int &length,
