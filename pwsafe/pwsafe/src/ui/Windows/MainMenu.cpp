@@ -364,7 +364,7 @@ void DboxMain::SetUpInitialMenuStrings()
   for (size_t i = 0; i < vShortcuts.size(); i++) {
     st_prefShortcut stxst = vShortcuts[i];
     iter = m_MapMenuShortcuts.find(stxst.id);
-    if (iter != m_MapMenuShortcuts.end() ||
+    if (iter != m_MapMenuShortcuts.end() &&
         (iter->second.cVirtKey  != stxst.cVirtKey  ||
          iter->second.cModifier != stxst.cModifier)) {
       iter->second.cVirtKey  = stxst.cVirtKey;
