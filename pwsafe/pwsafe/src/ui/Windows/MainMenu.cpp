@@ -61,7 +61,7 @@ private:
   ACCEL *m_pacceltbl;
 };
 
-bool IsExtended(int code)
+static bool IsExtended(int code)
 {
   switch (code) {
     case VK_PRIOR:                       // Page Up
@@ -98,40 +98,35 @@ void DboxMain::SetUpInitialMenuStrings()
   TCHAR *pname;
   st_KeyIDExt st_KIDEx;
 
+  // Following are excluded from list of user-configurable
+  // shortcuts
+  UINT excludedMenuItems[] = {
   // Add user Excluded Menu Items - anything that is a Popup Menu
-  m_ExcludedMenuItems.push_back(ID_FILEMENU);
-  m_ExcludedMenuItems.push_back(ID_EXPORTMENU);
-  m_ExcludedMenuItems.push_back(ID_IMPORTMENU);
-  m_ExcludedMenuItems.push_back(ID_EDITMENU);
-  m_ExcludedMenuItems.push_back(ID_VIEWMENU);
-  m_ExcludedMenuItems.push_back(ID_FILTERMENU);
-  m_ExcludedMenuItems.push_back(ID_CHANGEFONTMENU);
-  m_ExcludedMenuItems.push_back(ID_REPORTSMENU);
-  m_ExcludedMenuItems.push_back(ID_MANAGEMENU);
-  m_ExcludedMenuItems.push_back(ID_HELPMENU);
-  m_ExcludedMenuItems.push_back(ID_FINDMENU);
+    ID_FILEMENU, ID_EXPORTMENU, ID_IMPORTMENU, ID_EDITMENU,
+    ID_VIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
+    ID_MANAGEMENU, ID_HELPMENU,ID_FINDMENU,
 
   // Plus Exit (2 shortcuts Ctrl+Q and Alt+F4) and Help (F1)
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_EXIT);
-  m_ExcludedMenuItems.push_back(ID_HELP);
+    ID_MENUITEM_EXIT, ID_HELP,
 
   // Plus Expand/Collapse group - function of TreeCtrl and is
   // the Enter key, which cannot be assigned via the Shortcut
   // Property Page
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_GROUPENTER);
+    ID_MENUITEM_GROUPENTER,
 
   // The following are only in the Menu to get the correct string
   // for the action.  Add here to stop them being in the Shortcut
   // Options CListCtrl.
   // User can alter the function using the base values
   // ID_MENUITEM_EDIT, ID_MENUITEM_DELETE & ID_MENUITEM_RENAME
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_VIEW);
+    ID_MENUITEM_VIEW,
+    ID_MENUITEM_DELETEENTRY, ID_MENUITEM_DELETEGROUP,
+    
+    ID_MENUITEM_RENAMEENTRY, ID_MENUITEM_RENAMEGROUP,
+  };
 
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_DELETEENTRY);
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_DELETEGROUP);
-
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_RENAMEENTRY);
-  m_ExcludedMenuItems.push_back(ID_MENUITEM_RENAMEGROUP);
+  m_ExcludedMenuItems.assign(excludedMenuItems,
+                             excludedMenuItems + (sizeof(excludedMenuItems)/sizeof(UINT)));
 
   // Add in the zero/None entry
   pname = _tcsdup(_T(""));
