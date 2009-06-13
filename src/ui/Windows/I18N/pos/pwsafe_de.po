@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-06-12 17:25+0100\n"
+"PO-Revision-Date: 2009-06-13 10:02+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -561,6 +561,10 @@ msgstr "&Filter"
 #. Resource IDs: (32119)
 msgid "&Find"
 msgstr "&Suchen"
+
+#. Resource IDs: (32079)
+msgid "&Find..."
+msgstr "&Suchen..."
 
 #. Resource IDs: (2)
 msgid "&Finish"
@@ -1150,7 +1154,7 @@ msgstr "Sperrverletzung aufgetreten beim Zugriff auf %1."
 
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
-msgstr "Eine neue Passwortdatenbank wird erstellt. Das Master-Passwort das sie eingeben, wird benutzt um die Passwortdatenbank zu verschlüsseln. Für das Master-Passwort kann jedes Zeichen der Tastatur benutzt werden. Dabei wird die Groß-/Kleinschreibung beachtet."
+msgstr "Eine neue Passwortdatenbank wird erstellt. Das Master-Passwort das sie eingeben, wird benutzt um die Passwortdatenbank zu verschlüsseln. Für das Master-Passwort kann jedes Zeichen der physischen oder der virtuellen Tastatur benutzt werden. Dabei wird die Groß-/Kleinschreibung beachtet."
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1432,11 +1436,11 @@ msgstr "Verfügbare Filter:"
 
 #. Resource IDs: (518)
 msgid "Azeri Cyrillic"
-msgstr ""
+msgstr "Azeri (Kyrillisch)"
 
 #. Resource IDs: (515)
 msgid "Azeri Latin"
-msgstr ""
+msgstr "Azeri (Lateinisch)"
 
 #. Resource IDs: (65535)
 msgid "Backup Name"
@@ -1464,11 +1468,11 @@ msgstr ""
 
 #. Resource IDs: (519)
 msgid "Belgian (Comma)"
-msgstr ""
+msgstr "Belgisch (Komma)"
 
 #. Resource IDs: (517)
 msgid "Belgian (Period)"
-msgstr ""
+msgstr "Belgisch (Punkt)"
 
 #. Resource IDs: (517)
 msgid "Belgian French"
@@ -1492,7 +1496,7 @@ msgstr "Rschr"
 
 #. Resource IDs: (518)
 msgid "Bosnian (Cyrillic)"
-msgstr ""
+msgstr "Bosnisch (Kyrillisch)"
 
 #. Resource IDs: (1213)
 msgid "Browse"
@@ -1516,11 +1520,11 @@ msgstr "Browser Kommandozeilenparameter"
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bulgarisch"
 
 #. Resource IDs: (518)
 msgid "Bulgarian (Latin)"
-msgstr ""
+msgstr "Bulgarisch (Lateinisch)"
 
 #. Resource IDs: (521)
 msgid "Bulgarian (Phonetic Traditional)"
@@ -1577,7 +1581,7 @@ msgstr ""
 
 #. Resource IDs: (520)
 msgid "Canadian Multilingual Standard"
-msgstr ""
+msgstr "Kanada (Standard -- Multilingual)"
 
 #. Resource IDs: (2, 347, 32273)
 msgid "Cancel"
@@ -1760,7 +1764,7 @@ msgstr "Klicken Sie zum Umschalten zu Koreanisch"
 
 #. Resource IDs: (510)
 msgid "Click to toggle Caps Lock key."
-msgstr ""
+msgstr "Klicken zum Umschalten der Feststelltaste"
 
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
@@ -2081,11 +2085,11 @@ msgstr "Tschechisch"
 
 #. Resource IDs: (518)
 msgid "Czech (QWERTY)"
-msgstr ""
+msgstr "Tschechisch (QWERTY)"
 
 #. Resource IDs: (520)
 msgid "Czech Programmers"
-msgstr ""
+msgstr "Tschechisch (Programmierer)"
 
 #. Resource IDs: (357)
 msgid "DCA"
@@ -2294,7 +2298,7 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Dutch"
-msgstr ""
+msgstr "Niederländisch"
 
 #. Resource IDs: (32021)
 msgid "E&xit"
@@ -2489,7 +2493,7 @@ msgstr "Taste Escape schließt die Anwendung"
 
 #. Resource IDs: (515)
 msgid "Estonian"
-msgstr ""
+msgstr "Estnisch"
 
 #. Resource IDs: (65535)
 msgid "Example:"
@@ -2529,7 +2533,7 @@ msgstr "XML Exportieren"
 
 #. Resource IDs: (516)
 msgid "Faeroese"
-msgstr ""
+msgstr "Färöisch"
 
 #. Resource IDs: (3857)
 msgid "Failed to create empty document."
@@ -2688,7 +2692,7 @@ msgstr "Finnisch"
 
 #. Resource IDs: (519)
 msgid "Finnish with Sami"
-msgstr ""
+msgstr "Finnisch mit Samisch"
 
 #. Resource IDs: (210)
 msgid "First character of variable name must be alphabetic"
@@ -2725,7 +2729,7 @@ msgstr "1 Übereinstimmung gefunden."
 
 #. Resource IDs: (514)
 msgid "French"
-msgstr ""
+msgstr "Französisch"
 
 #. Resource IDs: (1176)
 msgid "Fully collapsed"
@@ -2737,7 +2741,7 @@ msgstr "Alles ausgeklappt"
 
 #. Resource IDs: (520)
 msgid "Gaelic"
-msgstr ""
+msgstr "Gälisch"
 
 #. Resource IDs: (1025)
 msgid "Generate"
@@ -2749,7 +2753,7 @@ msgstr "Generiere aussprechbare Passwörter"
 
 #. Resource IDs: (516)
 msgid "Georgian"
-msgstr ""
+msgstr "Georgisch"
 
 #. Resource IDs: (520)
 msgid "Georgian (Ergonomic)"
@@ -2761,11 +2765,11 @@ msgstr ""
 
 #. Resource IDs: (513)
 msgid "German"
-msgstr ""
+msgstr "Deutsch"
 
 #. Resource IDs: (518)
 msgid "German (IBM)"
-msgstr ""
+msgstr "Deutsch (IBM)"
 
 #. Resource IDs: (57670)
 msgid "Get &Help\tF1"
@@ -2793,27 +2797,27 @@ msgstr "Griechisch"
 
 #. Resource IDs: (518)
 msgid "Greek (220)"
-msgstr ""
+msgstr "Griechisch (220)"
 
 #. Resource IDs: (520)
 msgid "Greek (220) Latin"
-msgstr ""
+msgstr "Griechisch (220, Lateinisch)"
 
 #. Resource IDs: (520)
 msgid "Greek (319)"
-msgstr ""
+msgstr "Griechisch (319)"
 
 #. Resource IDs: (521)
 msgid "Greek (319) Latin"
-msgstr ""
+msgstr "Griechisch (319, Lateinisch)"
 
 #. Resource IDs: (521)
 msgid "Greek Latin"
-msgstr ""
+msgstr "Griechisch (Lateinisch)"
 
 #. Resource IDs: (521)
 msgid "Greek Polytonic"
-msgstr ""
+msgstr "Griechisch (Polytonisch)"
 
 #. Resource IDs: (327)
 msgid "Group"
@@ -2853,7 +2857,7 @@ msgstr "Gruppe\tTitel\tBenutzername\tPasswort Ablaufdatum\r\n"
 
 #. Resource IDs: (516)
 msgid "Gujarati"
-msgstr ""
+msgstr "Gudscharati"
 
 #. Resource IDs: (328)
 msgid "H"
@@ -2869,7 +2873,7 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebräisch"
 
 #. Resource IDs: (351, 57670)
 msgid "Help"
@@ -2889,7 +2893,7 @@ msgstr "Hexadecimal schliesst alle andere Optionen aus!"
 
 #. Resource IDs: (519)
 msgid "Hindi Traditional"
-msgstr ""
+msgstr "Hindi (traditionell)"
 
 #. Resource IDs: (189)
 msgid "History\t"
@@ -2905,11 +2909,11 @@ msgstr "HotKey1"
 
 #. Resource IDs: (514)
 msgid "Hungarian"
-msgstr ""
+msgstr "Ungarisch "
 
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
-msgstr ""
+msgstr "Ungarisch (101-Tastatur)"
 
 #. Resource IDs: (1269)
 msgid "I am a ..."
@@ -3017,7 +3021,7 @@ msgstr "ID:32504:V C +S"
 
 #. Resource IDs: (514)
 msgid "Icelandic"
-msgstr ""
+msgstr "Isländisch"
 
 #. Resource IDs: (344)
 msgid "Icon"
@@ -3038,7 +3042,7 @@ msgid ""
 "\n"
 "You may need to also select the Shift key to see them."
 msgstr ""
-"Wenn die Tastatur Zeichen via %s unterstützt, dann wird diese Taste freigegeben, und kann dazu benutzt werden.\n"
+"Wenn die Tastatur Zeichen via %s unterstützt, dann wird diese Taste freigegeben, und kann benutzt werden.\n"
 "\n"
 "Eventuell muss auch die Stelltaste ausgewählt werden um sie zu sehen."
 
@@ -3220,7 +3224,7 @@ msgstr "Ungültige Verknüpfung ignoriert."
 
 #. Resource IDs: (518)
 msgid "Irish"
-msgstr ""
+msgstr "Irisch"
 
 #. Resource IDs: (514)
 msgid "Italian"
@@ -3228,11 +3232,11 @@ msgstr "Italienisch"
 
 #. Resource IDs: (518)
 msgid "Italian (142)"
-msgstr ""
+msgstr "Italienisch (142)"
 
 #. Resource IDs: (521)
 msgid "Japanese"
-msgstr ""
+msgstr "Japanisch"
 
 #. Resource IDs: (516)
 msgid "Kannada"
@@ -3240,7 +3244,7 @@ msgstr "Kanadisch"
 
 #. Resource IDs: (516)
 msgid "Kazakh"
-msgstr ""
+msgstr "Kasachisch"
 
 #. Resource IDs: (32017)
 msgid "KeePass..."
@@ -3256,7 +3260,7 @@ msgstr "Tastatur type:"
 
 #. Resource IDs: (521)
 msgid "Korean"
-msgstr ""
+msgstr "Koreanisch"
 
 #. Resource IDs: (516)
 msgid "Kyrgyz Cyrillic"
@@ -3297,19 +3301,19 @@ msgstr "Neueste Version? Klicken Sie <a href=\"%s\">hier</a> um nach zu prüfen.
 
 #. Resource IDs: (517)
 msgid "Latin American"
-msgstr ""
+msgstr "Lateinamerikanisch"
 
 #. Resource IDs: (515)
 msgid "Latvian"
-msgstr ""
+msgstr "Lettisch"
 
 #. Resource IDs: (519)
 msgid "Latvian (QWERTY)"
-msgstr ""
+msgstr "Lettisch (QWERTY)"
 
 #. Resource IDs: (510)
 msgid "Left Ctrl key"
-msgstr ""
+msgstr "Linke Strg Taste"
 
 #. Resource IDs: (356)
 msgid "Left click here to change. Right click here to reset or remove it. After selecting the shortcut key combination, press Enter to set it."
@@ -3361,11 +3365,11 @@ msgstr "List1"
 
 #. Resource IDs: (519)
 msgid "Lithuanian"
-msgstr ""
+msgstr "Litauisch"
 
 #. Resource IDs: (515)
 msgid "Lithuanian IBM"
-msgstr ""
+msgstr "Litauisch (IBM)"
 
 #. Resource IDs: (520)
 msgid "Lithuanian Standard"
@@ -3541,7 +3545,7 @@ msgstr "Gemischt"
 
 #. Resource IDs: (517)
 msgid "Mongolian Cyrillic"
-msgstr ""
+msgstr "Mongolisches Kyrillisch"
 
 #. Resource IDs: (32271)
 msgid "Move Here"
@@ -3682,7 +3686,7 @@ msgstr "Keine"
 
 #. Resource IDs: (514)
 msgid "Norwegian"
-msgstr ""
+msgstr "Norwegisch"
 
 #. Resource IDs: (516)
 msgid "Norwegian with Sami"
@@ -4244,11 +4248,11 @@ msgstr "Bitte besuchen Sie die <a href=\"http://pwsafe.org/\">PasswordSafe websi
 
 #. Resource IDs: (519)
 msgid "Polish (214)"
-msgstr ""
+msgstr "Polnisch (214)"
 
 #. Resource IDs: (514)
 msgid "Polish (Programmers)"
-msgstr ""
+msgstr "Polnisch (Programmierer)"
 
 #. Resource IDs: (517)
 msgid "Portuguese"
@@ -4256,7 +4260,7 @@ msgstr "Portugiesisch"
 
 #. Resource IDs: (514)
 msgid "Portuguese (Brazilian ABNT)"
-msgstr ""
+msgstr "Portugiesisch  (Brasilianisch, ABNT)"
 
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
@@ -4490,7 +4494,7 @@ msgstr "Russisch"
 
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
-msgstr ""
+msgstr "Russisch (Schreibmaschine)"
 
 #. Resource IDs: (328)
 msgid "S"
@@ -4536,11 +4540,11 @@ msgstr "Gleich wie zuletzt gespeichert"
 
 #. Resource IDs: (520)
 msgid "Sami Extended Finland-Sweden"
-msgstr ""
+msgstr "Samisch-erweitert Finnland-Schweden"
 
 #. Resource IDs: (519)
 msgid "Sami Extended Norway"
-msgstr ""
+msgstr "Samisch-erweitert Norwegen"
 
 #. Resource IDs: (1073)
 msgid "Sample"
@@ -4635,7 +4639,7 @@ msgstr "Browser auswählen:"
 
 #. Resource IDs: (65535)
 msgid "Select Keyboard:"
-msgstr "Wähle Sie die Tastatur aus:"
+msgstr "Wählen Sie die Tastatur aus:"
 
 #. Resource IDs: (338)
 msgid "Select Location for Intermediate Backups"
@@ -4675,11 +4679,11 @@ msgstr "Senden der Email fehlgeschlagen."
 
 #. Resource IDs: (518)
 msgid "Serbian (Cyrillic)"
-msgstr ""
+msgstr "Serbisch (Kyrillisch)"
 
 #. Resource IDs: (517)
 msgid "Serbian (Latin)"
-msgstr ""
+msgstr "Serbisch (Lateinisch)"
 
 #. Resource IDs: (517)
 msgid "Sesotho sa Leboa"
@@ -4878,7 +4882,7 @@ msgstr "Spanisch"
 
 #. Resource IDs: (518)
 msgid "Spanish Variation"
-msgstr ""
+msgstr "Spanisch (Variation)"
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
@@ -5041,7 +5045,7 @@ msgstr "Der %s Eintrag \"%s, %s, %s\" zeigt nicht auf ein normaler oder bestehen
 
 #. Resource IDs: (510)
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
-msgstr "Die ALT Taste wird an keiner Tastatur verwendet um zeichen auszuwählen. Verwende die 'Alt Num' Taste um Zeichen in dezimaler Form einzugeben."
+msgstr "Die ALT Taste wird an keiner Tastatur verwendet um zeichen auszuwählen. Verwenden Sie die 'Alt Num' Taste um Zeichen in dezimaler Form einzugeben."
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
@@ -5391,11 +5395,11 @@ msgstr "Versuche einen Server zu kontaktieren..."
 
 #. Resource IDs: (519)
 msgid "Turkish F"
-msgstr ""
+msgstr "Türkisch F"
 
 #. Resource IDs: (515)
 msgid "Turkish Q"
-msgstr ""
+msgstr "Türkisch Q"
 
 #. Resource IDs: (516)
 msgid "Turkmen"
@@ -5554,11 +5558,11 @@ msgstr "Unerwartetes Dateiformat"
 
 #. Resource IDs: (517)
 msgid "United Kingdom"
-msgstr ""
+msgstr "Vereinigtes Königreich"
 
 #. Resource IDs: (517)
 msgid "United Kingdom Extended"
-msgstr ""
+msgstr "Vereinigtes Königreich erweitert"
 
 #. Resource IDs: (520)
 msgid "United States-International"
@@ -5643,11 +5647,11 @@ msgstr "Nutze"
 
 #. Resource IDs: (1375)
 msgid "Use Database Defaults"
-msgstr "Verwende Standard Datenbasis"
+msgstr "Datenbank Standard anwenden"
 
 #. Resource IDs: (1378)
 msgid "Use Default"
-msgstr "Verwende Standard"
+msgstr "Standard anwenden"
 
 #. Resource IDs: (1048)
 msgid "Use UPPERCASE letters"
@@ -5707,7 +5711,7 @@ msgstr ""
 
 #. Resource IDs: (518)
 msgid "Uzbek Cyrillic"
-msgstr ""
+msgstr "Usbekisches Kyrillisch"
 
 #. Resource IDs: (206, 347)
 msgid "Validate"
