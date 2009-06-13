@@ -29,16 +29,14 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-struct st_ShortcutKeyNameID {
+static struct {
   const TCHAR *name;
   unsigned char id;
-};
-
-st_ShortcutKeyNameID ShortcutKeys[256];
+} ShortcutKeys[256];
 
 // Functor for count_if
 struct CountShortcuts {
-  bool operator()(std::pair<const UINT, CMenuShortcut> &p) {
+  bool operator()(const std::pair<const UINT, CMenuShortcut> &p) {
     return (p.second.cVirtKey != (unsigned char)0);
   }
 };
@@ -46,7 +44,7 @@ struct CountShortcuts {
 // Functor for for_each
 struct CreateAccelTable {
   CreateAccelTable(ACCEL *pacceltbl) : m_pacceltbl(pacceltbl) {}
-  void operator()(std::pair<UINT, CMenuShortcut> p)
+  void operator()(const std::pair<UINT, CMenuShortcut> &p)
   {
     if (p.second.cVirtKey != 0) {
       m_pacceltbl->fVirt = FVIRTKEY |
@@ -876,6 +874,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_FIND, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_FINDUP, tc_dummy);
+      } else { // otherwise just add "Find..."
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_FINDELLIPSIS, tc_dummy);
       }
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
