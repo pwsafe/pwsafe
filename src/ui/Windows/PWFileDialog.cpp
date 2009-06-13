@@ -10,6 +10,8 @@
 #include "DboxMain.h"
 #include "PWFileDialog.h"
 
+extern const TCHAR *EYE_CATCHER;
+
 IMPLEMENT_DYNAMIC(CPWFileDialog, CFileDialog)
 
 LRESULT CPWFileDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
@@ -29,7 +31,8 @@ LRESULT CPWFileDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     CWnd *p = GetParent();
     while (p != NULL) {
       DboxMain *pDbx = dynamic_cast<DboxMain *>(p);
-      if (pDbx != NULL) {
+      if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
+          _tcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
         pDbx->ResetIdleLockCounter();
         break;
       } else
