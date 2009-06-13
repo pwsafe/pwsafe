@@ -234,7 +234,7 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
     iter = m_MapMenuShortcuts.find(bIsEmail ? ID_MENUITEM_SENDEMAIL : 
                                               ID_MENUITEM_BROWSEURL);
     ASSERT(iter != m_MapMenuShortcuts.end());
-    CString cs_text = iter->second.name;
+    CString cs_text = iter->second.name.c_str();
     int nPos = cs_text.Find(_T("\t"));
     if (nPos > 0)
       cs_text = cs_text.Left(nPos);

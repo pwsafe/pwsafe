@@ -9,6 +9,7 @@
 //
 
 #include "stdafx.h"
+#include <algorithm>
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -103,15 +104,16 @@ BOOL COptionsShortcuts::OnInitDialog()
 
     // Remove the ampersand from the menu item the user sees here
     iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
-    CString sMenuItemtext = CString(iter_parent->second.name) + 
-                                  CString(_T(" \xbb ")) +
-                                  CString(iter->second.name);
+    ASSERT(iter_parent != m_MapMenuShortcuts.end());
+    CString sMenuItemtext = (CString(iter_parent->second.name.c_str()) + 
+                             CString(_T(" \xbb ")) +
+                             CString(iter->second.name.c_str()));
     sMenuItemtext.Remove(TCHAR('&'));
     iItem = m_ShortcutLC.InsertItem(++iItem, sMenuItemtext);
     m_ShortcutLC.SetItemText(iItem, 1, str);
     DWORD dwData = MAKELONG(iter->first, iter->second.iMenuPosition);
     m_ShortcutLC.SetItemData(iItem, dwData);
-  }
+  } // foreach m_MapMenuShortcuts
 
   // Now sort via Menu item position
   m_ShortcutLC.SortItems(CompareFunc, NULL);
