@@ -14,7 +14,6 @@
 
 #include <map>
 #include <vector>
-#include <algorithm>
 
 // Structure used for vector of reserved Hotkeys
 struct st_MenuShortcut {
@@ -51,7 +50,7 @@ typedef MapKeyNameID::iterator MapKeyNameIDIter;
 class CMenuShortcut {
 public:
   // Menu item text
-  const TCHAR *name;
+  stringT name;
   // Menu item's parent or zero
   unsigned int uiParentID;
   // Sequential menu item position (i.e. in going through the menus)
@@ -65,20 +64,19 @@ public:
   unsigned char cModifier;
 
   CMenuShortcut()
-  : name(NULL), uiParentID(0), iMenuPosition(0),
-  cdefVirtKey(0), cdefModifier(0), cVirtKey(0), cModifier(0)
+  : uiParentID(0), iMenuPosition(0),
+    cdefVirtKey(0), cdefModifier(0), cVirtKey(0), cModifier(0)
   {}
 
   CMenuShortcut(const CMenuShortcut &that)
-  : name(_tcsdup(that.name)), uiParentID(that.uiParentID),
-  iMenuPosition(that.iMenuPosition),
-  cdefVirtKey(that.cdefVirtKey), cdefModifier(that.cdefModifier),
-  cVirtKey(that.cVirtKey), cModifier(that.cModifier)
+  : name(that.name), uiParentID(that.uiParentID),
+    iMenuPosition(that.iMenuPosition),
+    cdefVirtKey(that.cdefVirtKey), cdefModifier(that.cdefModifier),
+    cVirtKey(that.cVirtKey), cModifier(that.cModifier)
   {}
 
   ~CMenuShortcut()
   {
-    free((void *)name);
   }
 
   void ClearKeyFlags()
@@ -102,8 +100,7 @@ public:
   CMenuShortcut &operator=(const CMenuShortcut &that)
   {
     if (this != &that) {
-      free((void *)name);
-      name = _tcsdup(that.name);
+      name = that.name;
       uiParentID = that.uiParentID;
       iMenuPosition = that.iMenuPosition;
       cdefVirtKey = that.cdefVirtKey;

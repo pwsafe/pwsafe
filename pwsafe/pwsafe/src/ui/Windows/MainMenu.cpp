@@ -29,11 +29,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static struct {
-  const TCHAR *name;
-  unsigned char id;
-} ShortcutKeys[256];
-
 // Functor for count_if
 struct CountShortcuts {
   bool operator()(const std::pair<const UINT, CMenuShortcut> &p) {
@@ -86,11 +81,45 @@ static bool IsExtended(int code)
   }
 }
 
+static void InsertShortcuts(CMenu *pMenu, unsigned int parentID, MapMenuShortcuts &mms)
+{
+  // if parentID == 0, we're processing a toplevel menu,
+  // else, we're passed the menu in which the desired
+  // submenu resides.
+  if (parentID != 0) {
+    int pos1 = app.FindMenuItem(pMenu, parentID);
+    ASSERT(pos1 != -1);
+    pMenu = pMenu->GetSubMenu(pos1);
+  }
+  TCHAR tcMenuString[_MAX_PATH + 1];
+  CMenuShortcut mst;
+  mst.iMenuPosition = 0;
+  mst.uiParentID = parentID;
+
+  MENUITEMINFO miinfo;
+  memset(&miinfo, 0x00, sizeof(MENUITEMINFO));
+  miinfo.cbSize = sizeof(MENUITEMINFO);
+  miinfo.fMask = MIIM_ID | MIIM_STRING;
+  miinfo.dwTypeData = tcMenuString;
+  int count = pMenu->GetMenuItemCount();
+
+  for (int i = 0; i < count; i++) {
+    ZeroMemory(tcMenuString, sizeof(tcMenuString));
+    miinfo.cch = _MAX_PATH;
+    pMenu->GetMenuItemInfo(i, &miinfo, TRUE);
+    if (miinfo.wID >= 1) {
+      mst.name = tcMenuString;
+      mms.insert(MapMenuShortcutsPair(miinfo.wID, mst));
+      mst.iMenuPosition++;
+    }
+  }
+}
+
 void DboxMain::SetUpInitialMenuStrings()
 {
   CMenu *pMainMenu;
-  CMenu *pMenu1, *pMenu2;
-  int pos1, pos2, count;
+  CMenu *pMenu1;
+  int pos1, count;
 
   CHotKeyCtrl cHKC;
   CString sKeyName;
@@ -223,273 +252,61 @@ void DboxMain::SetUpInitialMenuStrings()
   m_ReservedShortcuts.push_back(st_mst);
 
   // Now get all other Menu items
+  // (ronys) I think we can do the following properly via recursive descent. Later.
+
   CMenuShortcut mst;
   mst.name = tcMenuString;
   mst.iMenuPosition = 0;
 
   // Do Main Menu (uiParentID == 0)
-  count = pMainMenu->GetMenuItemCount();
-  mst.uiParentID = 0;
+  InsertShortcuts(pMainMenu, 0, m_MapMenuShortcuts);
 
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMainMenu->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
   // Do File Menu
+  InsertShortcuts(pMainMenu, ID_FILEMENU, m_MapMenuShortcuts);
+
   pos1 = app.FindMenuItem(pMainMenu, ID_FILEMENU);
   ASSERT(pos1 != -1);
-
   pMenu1 = pMainMenu->GetSubMenu(pos1);
-  count = pMenu1->GetMenuItemCount();
-  mst.uiParentID = ID_FILEMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu1->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
 
   // Do File Menu Export submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_EXPORTMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  count = pMenu2->GetMenuItemCount();
-  mst.uiParentID = ID_EXPORTMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu2->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMenu1, ID_EXPORTMENU, m_MapMenuShortcuts);
 
   // Do File Menu Import submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_IMPORTMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  count = pMenu2->GetMenuItemCount();
-  mst.uiParentID = ID_IMPORTMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu2->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMenu1, ID_IMPORTMENU, m_MapMenuShortcuts);
 
   // Do Edit Menu
-  pos1 = app.FindMenuItem(pMainMenu, ID_EDITMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = pMainMenu->GetSubMenu(pos1);
-  count = pMenu1->GetMenuItemCount();
-  mst.uiParentID = ID_EDITMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu1->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMainMenu, ID_EDITMENU, m_MapMenuShortcuts);
 
   // Do View Menu
+  InsertShortcuts(pMainMenu, ID_VIEWMENU, m_MapMenuShortcuts);
+
   pos1 = app.FindMenuItem(pMainMenu, ID_VIEWMENU);
   ASSERT(pos1 != -1);
-
   pMenu1 = pMainMenu->GetSubMenu(pos1);
-  count = pMenu1->GetMenuItemCount();
-  mst.uiParentID = ID_VIEWMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu1->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
 
   // Do View Menu Filter submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_FILTERMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  count = pMenu2->GetMenuItemCount();
-  mst.uiParentID = ID_FILTERMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu2->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMenu1, ID_FILTERMENU, m_MapMenuShortcuts);
 
   // Do View Menu ChangeFont submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_CHANGEFONTMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  count = pMenu2->GetMenuItemCount();
-  mst.uiParentID = ID_CHANGEFONTMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu2->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMenu1, ID_CHANGEFONTMENU, m_MapMenuShortcuts);
 
   // Do View Menu Reports submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_REPORTSMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  count = pMenu2->GetMenuItemCount();
-  mst.uiParentID = ID_REPORTSMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu2->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMenu1, ID_REPORTSMENU, m_MapMenuShortcuts);
 
   // Do Manage Menu
-  pos1 = app.FindMenuItem(pMainMenu, ID_MANAGEMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = pMainMenu->GetSubMenu(pos1);
-  count = pMenu1->GetMenuItemCount();
-  mst.uiParentID = ID_MANAGEMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu1->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMainMenu, ID_MANAGEMENU, m_MapMenuShortcuts);
 
   // Do Help Menu
-  pos1 = app.FindMenuItem(pMainMenu, ID_HELPMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = pMainMenu->GetSubMenu(pos1);
-  count = pMenu1->GetMenuItemCount();
-  mst.uiParentID = ID_HELPMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu1->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMainMenu, ID_HELPMENU, m_MapMenuShortcuts);
 
   // Don't need main menu again here
   pMainMenu->DestroyMenu();
 
   // Do Find toolbar menu items not on a menu!
   pMainMenu->LoadMenu(IDR_POPFIND);
+  InsertShortcuts(pMainMenu, 0, m_MapMenuShortcuts);
 
-  mst.uiParentID = 0;
-  ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-  miinfo.cch = _MAX_PATH;
-  pMainMenu->GetMenuItemInfo(0, &miinfo, TRUE);
-  if (miinfo.wID >= 1) {
-    mst.name = _tcsdup(tcMenuString);
-    m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-    mst.iMenuPosition++;
-    free((void *)mst.name);
-    mst.name = NULL;
-  }
-
-  pos1 = app.FindMenuItem(pMainMenu, ID_FINDMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = pMainMenu->GetSubMenu(pos1);
-  count = pMenu1->GetMenuItemCount();
-  mst.uiParentID = ID_FINDMENU;
-
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
-    miinfo.cch = _MAX_PATH;
-    pMenu1->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1) {
-      mst.name = _tcsdup(tcMenuString);
-      m_MapMenuShortcuts.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
-      free((void *)mst.name);
-      mst.name = NULL;
-    }
-  }
+  InsertShortcuts(pMainMenu, ID_FINDMENU, m_MapMenuShortcuts);
 
   // No longer need any menus
   pMainMenu->DestroyMenu();
@@ -672,10 +489,10 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
           st_KIDEx.id = iter->second.cVirtKey;
           st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
           citer = m_MapKeyNameID.find(st_KIDEx);
-          str.Format(_T("%s\t%s"), iter->second.name, 
+          str.Format(_T("%s\t%s"), iter->second.name.c_str(), 
                      CMenuShortcut::FormatShortcut(iter, citer));
         } else {
-          str = iter->second.name;
+          str = iter->second.name.c_str();
         }
         pPopupMenu->ModifyMenu(miinfo.wID, MF_BYCOMMAND | miinfo.fState, miinfo.wID, str);
       }
