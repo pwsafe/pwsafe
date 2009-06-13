@@ -355,14 +355,14 @@ void DboxMain::SetUpInitialMenuStrings()
     pacceltbl = paccel = NULL;
   }
 
-  // Now go through the default table and see if the user has changed anything
-  // Now change the user's shortcuts as per their preferences
-  std::vector<st_prefShortcut> vShortcuts;
-  vShortcuts = PWSprefs::GetInstance()->GetPrefShortcuts();
+  // Now go through the default table and see if the user has changed anything,
+  // change shortcuts as per preferences
+  std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
   bool bUserShortcutsChanged(false);
-  for (size_t i = 0; i < vShortcuts.size(); i++) {
-    st_prefShortcut stxst = vShortcuts[i];
+  size_t N = vShortcuts.size();
+  for (size_t i = 0; i < N; i++) {
+    const st_prefShortcut &stxst = vShortcuts[i];
     iter = m_MapMenuShortcuts.find(stxst.id);
     if (iter != m_MapMenuShortcuts.end() &&
         (iter->second.cVirtKey  != stxst.cVirtKey  ||
@@ -386,6 +386,8 @@ void DboxMain::SetUpInitialMenuStrings()
     }
   }
 
+  // If we had trouble with the shortcut preferences, fix it for next time
+  // XXX (Is this always the Right Thing to do?)
   if (bUserShortcutsChanged)
     PWSprefs::GetInstance()->SetPrefShortcuts(vShortcuts);
 
@@ -423,17 +425,9 @@ void DboxMain::UpdateAccelTable()
   int numscs(0);
   CountShortcuts cntscs;
 
-  // Add on space of 3 reserved shortcuts
+  // Add on space of 3 reserved shortcuts (Ctrl-Q, F4, F1)
   numscs = std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
                          cntscs) + 3;
-  if (numscs == 0) {
-    // None!
-    if (app.m_ghAccelTable != NULL) {
-      DestroyAcceleratorTable(app.m_ghAccelTable);
-      app.m_ghAccelTable = NULL;
-    }
-    return;
-  }
 
   // Get new table space
   pacceltbl = (LPACCEL)LocalAlloc(LPTR, numscs * sizeof(ACCEL));
