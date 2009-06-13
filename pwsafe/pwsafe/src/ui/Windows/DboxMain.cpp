@@ -289,6 +289,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
   ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
   ON_COMMAND(ID_MENUITEM_SHOWFINDTOOLBAR, OnShowFindToolbar)
+  ON_COMMAND(ID_MENUITEM_FINDELLIPSIS, OnShowFindToolbar)
   ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
   ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
   ON_COMMAND(ID_MENUITEM_CHANGETREEFONT, OnChangeTreeFont)
@@ -453,6 +454,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_DELETEGROUP, true, false, false, false},
   {ID_MENUITEM_RENAMEENTRY, true, false, false, false},
   {ID_MENUITEM_RENAMEGROUP, true, false, false, false},
+  {ID_MENUITEM_FINDELLIPSIS, true, true, false, false},
   {ID_MENUITEM_FIND, true, true, false, false},
   {ID_MENUITEM_FINDUP, true, true, false, false},
   {ID_MENUITEM_DUPLICATEENTRY, true, false, false, false},
