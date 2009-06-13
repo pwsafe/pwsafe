@@ -301,6 +301,8 @@ public:
 
   CRUEList m_RUEList;   // recent entry lists
 
+  TCHAR *m_eye_catcher;
+
   bool m_bDoAutoType;
   StringX m_AutoType;
 

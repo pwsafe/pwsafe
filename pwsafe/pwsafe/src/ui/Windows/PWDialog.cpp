@@ -14,6 +14,8 @@
 #error "TBD - define proper Dialog base class for PPC"
 #endif
 
+extern const TCHAR *EYE_CATCHER;
+
 IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 
 LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
@@ -33,7 +35,8 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     CWnd *p = GetParent();
     while (p != NULL) {
       DboxMain *pDbx = dynamic_cast<DboxMain *>(p);
-      if (pDbx != NULL) {
+      if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
+          _tcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
         pDbx->ResetIdleLockCounter();
         break;
       } else

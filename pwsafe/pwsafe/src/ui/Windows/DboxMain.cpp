@@ -84,6 +84,8 @@ IMPLEMENT_DYNAMIC(DboxMain, CDialog)
 
 const TCHAR *HIDDEN_PASSWORD = _T("**************");
 
+const TCHAR *EYE_CATCHER = _T("DBXM");
+
 CString DboxMain::CS_SETFILTERS;
 CString DboxMain::CS_CLEARFILTERS;
 
@@ -116,6 +118,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
   m_AutoType(_T("")), m_pToolTipCtrl(NULL)
 {
+  m_eye_catcher = _tcsdup(EYE_CATCHER);
+
   // Set menus to be rebuilt with user's shortcuts
   for (int i = 0; i < NUMPOPUPMENUS; i++)
     m_bDoShortcuts[i] = true;
@@ -150,6 +154,8 @@ DboxMain::~DboxMain()
   DeletePasswordFont();
 
   delete m_pToolTipCtrl;
+
+  free(m_eye_catcher);
 }
 
 LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
