@@ -280,7 +280,7 @@ BOOL CAddEdit_PasswordPolicy::OnApply()
     }
   }
   if (!m_pwuselowercase && !m_pwuseuppercase &&
-      !m_pwusedigits    && !m_pwusesymbols) {
+      !m_pwusedigits    && !m_pwusesymbols   && !m_pwusehexdigits) {
       AfxMessageBox(IDS_MUSTHAVEONEOPTION);
       goto error;
   }
