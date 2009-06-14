@@ -186,7 +186,12 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
 {
   pFocus = NULL; // caller should set focus to this if non-null
   // Check that options, as set, are valid.
+
+  // Hex is tricky: if user selected it, then other checkboxes are
+  // disabled and ignored. But it's possible for the user to set
+  // hex and others, so we warn only in the latter case.
   if (m_pwusehexdigits &&
+      (GetDlgItem(nonHex[0])->IsWindowEnabled() == TRUE) &&
       (m_pwuselowercase || m_pwuseuppercase || m_pwusedigits ||
        m_pwusesymbols   || m_pweasyvision   || m_pwmakepronounceable)) {
     AfxMessageBox(IDS_HEXMUTUALLYEXCL);
