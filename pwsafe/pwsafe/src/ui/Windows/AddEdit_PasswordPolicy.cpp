@@ -182,61 +182,63 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   return TRUE;
 }
 
-BOOL CAddEdit_PasswordPolicy::OnKillActive()
+bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
 {
-  CAddEdit_PropertyPage::OnKillActive();
-
-  CWnd *pFocus(NULL);
-
+  pFocus = NULL; // caller should set focus to this if non-null
   // Check that options, as set, are valid.
   if (m_pwusehexdigits &&
-     (m_pwuselowercase || m_pwuseuppercase || m_pwusedigits ||
-      m_pwusesymbols   || m_pweasyvision   || m_pwmakepronounceable)) {
+      (m_pwuselowercase || m_pwuseuppercase || m_pwusedigits ||
+       m_pwusesymbols   || m_pweasyvision   || m_pwmakepronounceable)) {
     AfxMessageBox(IDS_HEXMUTUALLYEXCL);
     pFocus = GetDlgItem(IDC_USEHEXDIGITS);
-    goto error;
+    return false;
   }
-
   if (m_pwusehexdigits && (m_pwdefaultlength % 2 != 0)) {
     AfxMessageBox(IDS_HEXMUSTBEEVEN);
     pFocus = GetDlgItem(IDC_DEFPWLENGTH);
-    goto error;
+    return false;
   }
 
   if (!m_pwuselowercase && !m_pwuseuppercase &&
       !m_pwusedigits    && !m_pwusesymbols   && !m_pwusehexdigits) {
     AfxMessageBox(IDS_MUSTHAVEONEOPTION);
-    goto error;
+    return false;
   }
 
   if ((m_pwdefaultlength < 4) || (m_pwdefaultlength > 1024)) {
     AfxMessageBox(IDS_DEFAULTPWLENGTH);
     pFocus = GetDlgItem(IDC_DEFPWLENGTH);
-    goto error;
+    return false;
   }
 
   if (!(m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable) &&
       (m_pwdigitminlength + m_pwlowerminlength +
-           m_pwsymbolminlength + m_pwupperminlength) > m_pwdefaultlength) {
+       m_pwsymbolminlength + m_pwupperminlength) > m_pwdefaultlength) {
     AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
     pFocus = GetDlgItem(IDC_DEFPWLENGTH);
-    goto error;
+    return false;
   }
 
   if ((m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable))
     m_pwdigitminlength = m_pwlowerminlength =
-                  m_pwsymbolminlength = m_pwupperminlength = 1;
-  //End check
+      m_pwsymbolminlength = m_pwupperminlength = 1;
+  return true;
+}
 
-  SetPolicyFromVariables();
 
-  return TRUE;
+BOOL CAddEdit_PasswordPolicy::OnKillActive()
+{
+  CAddEdit_PropertyPage::OnKillActive();
 
-error:
-  if (pFocus != NULL)
-    pFocus->SetFocus();
-
-  return FALSE;
+  CWnd *pFocus(NULL);
+  if (ValidatePolicy(pFocus)) {
+    SetPolicyFromVariables();
+    return TRUE;
+  } else {
+    if (pFocus != NULL)
+      pFocus->SetFocus();
+    return FALSE;
+  }
 }
 
 LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -272,51 +274,18 @@ BOOL CAddEdit_PasswordPolicy::OnApply()
     return CAddEdit_PropertyPage::OnApply();
   }
 
-  if (m_pwusehexdigits) {
-    if (m_pwdefaultlength % 2 != 0) {
-      AfxMessageBox(IDS_HEXMUSTBEEVEN);
-      pFocus = GetDlgItem(IDC_DEFPWLENGTH);
-      goto error;
-    }
+  if (ValidatePolicy(pFocus)) {
+    SetPolicyFromVariables();
+    return CAddEdit_PropertyPage::OnApply();
+  } else {
+    // Are we the current page? If not activate this page
+    if (m_ae_psh->GetActivePage() != (CAddEdit_PropertyPage *)this)
+      m_ae_psh->SetActivePage(this);
+
+    if (pFocus != NULL)
+      pFocus->SetFocus();
+    return FALSE;
   }
-  if (!m_pwuselowercase && !m_pwuseuppercase &&
-      !m_pwusedigits    && !m_pwusesymbols   && !m_pwusehexdigits) {
-      AfxMessageBox(IDS_MUSTHAVEONEOPTION);
-      goto error;
-  }
-
-  if ((m_pwdefaultlength < 4) || (m_pwdefaultlength > 1024)) {
-    AfxMessageBox(IDS_DEFAULTPWLENGTH);
-    pFocus = GetDlgItem(IDC_DEFPWLENGTH);
-    goto error;
-  }
-
-  if (!(m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable) &&
-      (m_pwdigitminlength  + m_pwlowerminlength +
-            m_pwsymbolminlength + m_pwupperminlength) > m_pwdefaultlength) {
-    AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
-    pFocus = GetDlgItem(IDC_DEFPWLENGTH);
-    goto error;
-  }
-
-  if ((m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable))
-    m_pwdigitminlength = m_pwlowerminlength =
-                  m_pwsymbolminlength = m_pwupperminlength = 1;
-  //End check
-
-  SetPolicyFromVariables();
-
-  return CAddEdit_PropertyPage::OnApply();
-
-error:
-  // Are we the current page, if not activate this page
-  if (m_ae_psh->GetActivePage() != (CAddEdit_PropertyPage *)this)
-    m_ae_psh->SetActivePage(this);
-
-  if (pFocus != NULL)
-    pFocus->SetFocus();
-
-  return FALSE;
 }
 
 void CAddEdit_PasswordPolicy::do_hex(const bool bHex)

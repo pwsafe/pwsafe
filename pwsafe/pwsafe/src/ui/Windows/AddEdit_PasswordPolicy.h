@@ -11,14 +11,10 @@
 #pragma once
 
 #include "AddEdit_PropertyPage.h"
-#include "corelib/ItemData.h"
-
 #include "resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_PasswordPolicy dialog
-
-class DboxMain;
 
 class CAddEdit_PasswordPolicy : public CAddEdit_PropertyPage
 {
@@ -82,6 +78,7 @@ private:
   void SetPolicyControls();
   void SetPolicyFromVariables();
   void SetVariablesFromPolicy();
+  bool ValidatePolicy(CWnd *&pFocus); // is policy self-consistent?
 
   void do_hex(const bool bHex);                 // bHex == true enable hex
   void do_easyorpronounceable(const bool bSet); // bSet == true enable one of these options
