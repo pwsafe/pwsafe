@@ -166,10 +166,6 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_pwupperminlength);
 
-  // Set up values
-  //do_hex(m_pwusehexdigits == TRUE);
-  //do_easyorpronounceable(m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE);
-
   // Disable controls based on m_ipolicy
   SetPolicyControls();
 
@@ -508,8 +504,7 @@ void CAddEdit_PasswordPolicy::OnMakePronounceable()
   }
 
   do_easyorpronounceable(IsDlgButtonChecked(IDC_PRONOUNCEABLE) == BST_CHECKED);
-  // Do not use UpdateData(FALSE) here or
-  // all the good work in "do_easyorpronounceable" will be undone
+  UpdateData(FALSE);
 }
 
 void CAddEdit_PasswordPolicy::OnResetPolicy()
@@ -544,8 +539,6 @@ void CAddEdit_PasswordPolicy::OnResetPolicy()
     m_save_enabled[i][0] = m_save_enabled[i][1] = bEnable;
   }
 
-  //do_hex(m_pwusehexdigits == TRUE);
-  //do_easyorpronounceable(m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE);
   SetPolicyControls();
 }
 
@@ -621,15 +614,6 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
 
   GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(bEnable);
   UpdateData(FALSE);
-
-  //if (m_pwuselowercase == TRUE)
-  //  OnUseLowerCase();
-  //if (m_pwuseuppercase == TRUE)
-  //  OnUseUpperCase();
-  //if (m_pwusedigits == TRUE)
-  //  OnUseDigits();
-  //if (m_pwusesymbols == TRUE)
-  //  OnUseSymbols();
 }
 
 void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
