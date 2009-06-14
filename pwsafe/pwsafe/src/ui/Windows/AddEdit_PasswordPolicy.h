@@ -92,8 +92,9 @@ private:
   static const UINT LenTxts[N_HEX_LENGTHS * 2];       // IDs of text associated with length
   static const UINT nonHexLengths[N_HEX_LENGTHS];     // IDs of said lengths
   static const UINT nonHexLengthSpins[N_HEX_LENGTHS]; // IDs of said lengths' spinboxes
-  BOOL m_savebool[N_NOHEX];                           // Save cb's state when disabling hex
-  UINT m_savelen[N_HEX_LENGTHS];                      // Save lengths when disabling box
+  // 2nd idex: 0 = pronounceable; 1 = hex
+  BOOL m_save_enabled[N_HEX_LENGTHS][2];   // Save when disabling hex/pronounceable
+  BOOL m_save_visible[N_HEX_LENGTHS];   // Save when disabling hex/pronounceable
 };
 //-----------------------------------------------------------------------------
 // Local variables:

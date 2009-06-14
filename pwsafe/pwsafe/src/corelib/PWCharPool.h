@@ -48,8 +48,9 @@ public:
 
 private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,
-    DIGIT = 2, SYMBOL = 3, HEXDIGIT = 4, NUMTYPES = 5};
-  CharType GetRandomCharType(unsigned int rand) const; // select a chartype with weighted probability
+                 DIGIT = 2, SYMBOL = 3, HEXDIGIT = 4, NUMTYPES = 5};
+  // select a chartype with weighted probability
+  CharType GetRandomCharType(unsigned int rand) const;
   charT GetRandomChar(CharType t, unsigned int rand) const;
   StringX MakePronounceable() const;
 
