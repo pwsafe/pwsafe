@@ -103,7 +103,7 @@ CPasswordCharPool::CPasswordCharPool(uint pwlen,
   // See GetRandomCharType to understand what this does and why
   m_x[0] = 0;
   m_sumlengths = 0;
-  for (int i = 0; i< NUMTYPES; i++) {
+  for (int i = 0; i < NUMTYPES; i++) {
     m_x[i+1] = m_x[i] + m_lengths[i];
     m_sumlengths += m_lengths[i];
   }
@@ -147,9 +147,19 @@ charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned i
 
 StringX CPasswordCharPool::MakePassword() const
 {
+  // We don't care if the policy is inconsistent e.g. 
+  // number of lower case chars > 1 + make pronouceable
+  // The individual routines (normal, hex, pronouceable) will
+  // ignore what they don't need.
+  // Saves an awful amount of bother with  setting values to zero and
+  // back as the user changes their minds!
+
+  // Order of priority:
+  // pronouceable, hex, easyvision/normal
+
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
-         m_usesymbols || m_usehexdigits || m_pronounceable);
+         m_usesymbols   || m_usehexdigits || m_pronounceable);
 
   int lowercaseneeded, uppercaseneeded, digitsneeded, symbolsneeded;
   int hexdigitsneeded;
@@ -167,15 +177,15 @@ StringX CPasswordCharPool::MakePassword() const
     charT ch;
     CharType type;
 
-    lowercaseneeded = m_numlowercase;
-    uppercaseneeded = m_numuppercase;
-    digitsneeded = m_numdigits;
-    symbolsneeded = m_numsymbols;
-    hexdigitsneeded = (m_usehexdigits) ? 1 : 0;
+    hexdigitsneeded = (m_usehexdigits) ? m_pwlen : 0;
+    lowercaseneeded = (m_usehexdigits) ? 0 : m_numlowercase;
+    uppercaseneeded = (m_usehexdigits) ? 0 : m_numuppercase;
+    digitsneeded    = (m_usehexdigits) ? 0 : m_numdigits;
+    symbolsneeded   = (m_usehexdigits) ? 0 : m_numsymbols;
 
     // If following assertion doesn't hold, we'll never exit the do loop!
     ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
-      digitsneeded + symbolsneeded + hexdigitsneeded);
+               digitsneeded + symbolsneeded + hexdigitsneeded);
 
     temp = _T("");    // empty the password string
 
@@ -185,7 +195,7 @@ StringX CPasswordCharPool::MakePassword() const
       // avoid having to generate two random numbers for each
       // character. Alternately, we could have had a m_rand
       // data member. Which solution is uglier is debatable.
-      type = GetRandomCharType(rand);
+      type = (m_usehexdigits) ? HEXDIGIT : GetRandomCharType(rand);
       ch = GetRandomChar(type, rand);
       temp += ch;
       /*
@@ -224,8 +234,8 @@ StringX CPasswordCharPool::MakePassword() const
     * been more elegant than a do loop, but this takes less stack...
     */
     pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
-      digitsneeded <= 0 && symbolsneeded <= 0 && 
-      hexdigitsneeded <= 0);
+                  digitsneeded <= 0 && symbolsneeded <= 0 && 
+                  hexdigitsneeded <= 0);
 
     if (pwRulesMet) {
       password = temp;
