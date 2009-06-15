@@ -1,5 +1,5 @@
-Password Safe 3.17.2 Release Notes - May 2009
-=============================================
+Password Safe 3.18-pre Release Notes - June 2009
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,23 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.17.2
-====================
+New Features for 3.18-pre
+=========================
+[2793283] Allow entry to override doubleclick setting.
+[2793280] Browse+Autotype added to configurable double click actions.
+[] Implement Virtual Keyboards for multilingual passphrase entry.
+[] DragBar now has ToolTips to inform user of its use.
+[] User can close the currently open database via the System Tray
+menu.
+
+Changes to Existing Features in 3.18-pre
+========================================
+[] New toolbar icon set has been replaced with icons based on famfamfam's
+silk set.
+[] Reworked Add and Edit dialogs into Property Pages.
+
+Bugs fixed in 3.18-pre
+======================
 [2795428] Browse+ on Toolbar now inactive if no URL present
 [2795427] Duplicate of "Display Subset of Password" removed from Context
 Menu (right-click on entry).
@@ -17,28 +32,10 @@ Menu (right-click on entry).
 actions that copied data to the clipboard.
 [2782413] No longer crashes when loading 0302 formatted headers (from
 ~v3.08).
+[2779705] Reserved shortcuts (Ctrl+Q, Alt+F4 and F1) now work.
 [] Run Command now correctly copied via Drag & Drop.
 [] Allow all fields to be selected for Compare function.
 [] Fixed crash if renaming an entry to one that already exists.
-
-Changes to Existing Features in 3.17.2
-======================================
-[] New toolbar icon set has been replaced with icons based on famfamfam's
-silk set.
-[] Rework Add and Edit dialogs into Property Pages to allow for future
-growth without large dialogs.
-
-New Features for 3.17.2
-=======================
-[2793283] Allow entry to override doubleclick setting.
-[2793280] Browse+Autotype added to allowed double click actions.
-[] Implement Virtual Keyboards for pass-phrase entry.
-[] DragBar now has ToolTips to inform user of its use.
-[] Add Close to System Tray menu to close the current open database.
-
-Bugs fixed in 3.17.1
-====================
-[2779705] Reserved shortcuts (Ctrl+Q, Alt+F4 and F1) now work.
 
 Bugs fixed in 3.17
 ==================

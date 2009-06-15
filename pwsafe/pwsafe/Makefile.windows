@@ -8,7 +8,9 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.18-pre
+RELEASENUM = 3.18
+RELEASE_SPECIAL = -pre
+RELEASENAME = $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -32,7 +34,7 @@ UPLOAD_DST =  ronys@frs.sourceforge.net:uploads/
 PYTHON = /usr/bin/python
 SVN2LOG = ../../python/svn2log.py
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
-WIXDIR = /cygdrive/c/local/WIX/bin
+WIXDIR = /cygdrive/c/local/WIX
 CANDLE = $(WIXDIR)/candle.exe
 LIGHT = $(WIXDIR)/light.exe
 
@@ -93,7 +95,7 @@ nsis:
 	$(MV) install/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 msi:
-	$(SED) 's/PWSAFE_VERSION/$(RELEASENAME)/' \
+	$(SED) 's/PWSAFE_VERSION/$(RELEASENUM)/' \
 		< install/pwsafe-template.wxs > install/pwsafe.wxs
 	$(CANDLE) install/pwsafe.wxs
 	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
