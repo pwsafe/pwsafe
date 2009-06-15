@@ -972,11 +972,21 @@ BOOL DboxMain::OnInitDialog()
   } else {
     EnableToolTips();
     m_pToolTipCtrl->Activate(TRUE);
-    // Quadruple the time to allow reading by user
-    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
-    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, 2 * iTime);
-    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, 2 * iTime);
+
+    /* Set tooltip intervals in milli-seconds.
+    In this case, the "tool's bounding rectangle" == each DragBar bitmap
+    TTDT_INITIAL: Time the pointer must remain stationary within a tool's 
+                  bounding rectangle before the tool tip window appears. 
+    TTDT_AUTOPOP: Time the tool tip window remains visible, if the pointer
+                  is stationary within a tool's bounding rectangle.
+    TTDT_RESHOW:  Time it takes for subsequent tool tip windows to appear
+                  as the pointer moves from one tool to another. 
+    */
+    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, 2000);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 5000);
+    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, 4000);
+
+    // Set maximum width to force Windows to wrap the text.
     m_pToolTipCtrl->SetMaxTipWidth(300);
 
     CString cs_ToolTip;
