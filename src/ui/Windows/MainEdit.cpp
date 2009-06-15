@@ -543,6 +543,10 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     pcore = &m_core;
 
   CItemData editedItem(*ci);
+  // As ci may be invalidated if database is Locked while in this routine, 
+  // we use a clone
+  CItemData originalItem(*ci);
+  ci = NULL; // not strictly needed  - just a reminder to use originalItem
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
   CAddEdit_PropertySheet edit_entry_psh(uicaller, this, pcore, &editedItem, pcore->GetCurFile()); 
@@ -553,9 +557,9 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     edit_entry_psh.SetDefUsername(pcore->GetDefUsername());
 
   uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
-  CItemData::EntryType entrytype = ci->GetEntryType();
+  CItemData::EntryType entrytype = originalItem.GetEntryType();
 
-  ci->GetUUID(original_uuid);  // Edit doesn't change this!
+  originalItem.GetUUID(original_uuid);  // Edit doesn't change this!
   if (entrytype == CItemData::ET_ALIASBASE || entrytype == CItemData::ET_SHORTCUTBASE) {
     // Base entry
     UUIDList dependentslist;
@@ -613,7 +617,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
     ItemListIter iter;
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_NORMAL &&
-        ci->GetPassword() != newPassword) {
+        originalItem.GetPassword() != newPassword) {
       // Original was a 'normal' entry and the password has changed
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
@@ -651,7 +655,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     }
 
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_ALIASBASE &&
-        ci->GetPassword() != newPassword) {
+        originalItem.GetPassword() != newPassword) {
       // Original was a base but might now be an alias of another entry!
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
