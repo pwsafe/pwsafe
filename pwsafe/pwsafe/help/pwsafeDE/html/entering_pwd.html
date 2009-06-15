@@ -11,7 +11,15 @@
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Benutzernamen, Passw&ouml;rter und Gruppen</h2>
-<img alt="Eintrag bearbeiten" src="images/edit_view_entry.jpg">
+<p>Die Eingabe von Benutzernamen, Passw&ouml;rter und Gruppen, zusammen mit den dazugeh&ouml;rigen Parametern, erfolgt &uuml;ber mehrere Reiter:
+<ul>
+  <li><i>Basis</i></li>
+  <li><i>Zus&auml;tzlich</i></li>
+  <li><i>Datum und Uhrzeit</i></li>
+  <li><i>Passwortrichtlinie</i></li>
+</ul>
+Die wichtigsten Elemente sind im <b>Reiter <i>Basis</i></b> zusammengefasst.</p>
+<img alt="Eintrag bearbeiten: Basis" src="images/edit_view_entry_base.jpg">
 <p>Folgende Informationselemente geh&ouml;ren zu jedem Passworteintrag:</p>
 <ul>
   <li><b>Gruppe</b>: ein Name zum Zusammenfassen aller artverwandten Eintr&auml;ge</li>
@@ -19,10 +27,9 @@
   <li><b>Benutzername</b>: der eigentliche Benutzername</li>
   <li><b>Passwort</b>: das dazugeh&ouml;rige Passwort</li>
   <li><b>Notizen</b>: allgemeine Notizen zu diesem Eintrag</li>
+  <li><small>Nur das <b>Titel</b>- und das <b>Passwort</b>feld sind Pflichtfelder. Alle anderen sind optional.</small></li>
 </ul>
-Zus&auml;tzlich k&ouml;nnen noch folgende Felder verwendet werden (sichtbar nach Dr&uuml;cken der Taste "Mehr &gt;&gt;"):<br>
-<br>
-<img alt="Extra Felder" src="images/edit_view_entry_more.jpg"><br>
+<p>In diesem Reiter kann auch die URL eingestellt werden:</p>
 <ul>
   <li><b>URL:</b> Die URL die sich auf diesen Eintrag bezieht. Wenn dieses Feld nicht leer ist, dann ist die "Gehe zu" Option aktiviert.
 Wenn kein Protokoll angegeben ist, wird "http://" angenommen (z.B. "www.foo.net" ist gleich mit "http://www.foo.net").
@@ -30,59 +37,63 @@ Der nachstehende Hinweis beschreibt die Funktionsweise in allen Einzelheiten.</l
   <li><b>Los:</b> Vorausgesetzt das Feld URL ist nicht leer, bewirkt ein Dr&uuml;cken dieser Taste das der Browser zu der eingegebenen Adresse geht. Wenn Sie die Taste <i>Los</i> zusammen mit der Strg Taste dr&uuml;cken, wird nach dem &Ouml;ffnen des Browsers auch die Autom.Eingabe ausgef&uuml;hrt.</li>
 </ul>
 <hr>
-<ul>
-  <small><b>Die nachfolgenden Hinweise beschreiben das Verhalten der URL-Eingabe genauer:</b></br>
-  </small><li><small>Standardm&auml;&szlig;ig wird <b>Password Safe</b> den Browser verwenden, welchen Ihr PC in der Regel zum &ouml;ffnen von Internetseiten hernimmt. Wenn erw&uuml;nscht, k&ouml;nnen Sie einen <i>alternativen Browser</i> angeben durch Angabe von '[alt]' in eckigen Klammern vor der URL, z.B. "[alt]http://www.foo.net". Dies ist n&uuml;tzlich, wenn der Standardbrowser Firefox ist, und Sie w&uuml;nschen aber auf eine Seite zuzugreifen, die am besten mit dem Internet Explorer funktioniert. Den alternativen Browser k&ouml;nnen Sie konfigurieren im <b><a href="misc_tab.html#AltBrowser">Verwalten-&gt;Optionen-&gt;Verschiedenes</a></b> Fensterdialog.</small></li>
-  <li><small>Sie k&ouml;nnen auch eine Emailadresse wie z.B. mailto:josef@irgendwo.com f&uuml;r die URL festlegen. In diesem Falle w&uuml;rde die Standardmailanwendung aufgerufen werden mit der "Gehe zu" Aktion.</small></li>
-  <li><small>Wenn '{alt}' in geschweiften Klammern vor der URL gesetzt wird, dann wird es 'wie-es-ist' dem alternativen Browser &uuml;bergeben, ohne dass 'http://' hinzugef&uuml;gt wird, wenn kein Protokoll definiert ist. Die ist dann sinnvoll, wenn der alternative Browser eine Anwendung mit Fernzugriff ist, z.B. ein SSH Client. [ssh] w&uuml;rde denselben Effekt haben.<br></small></li>
-  <li><small>Wenn '[autotype]' vor der URL steht, wird Password Safe nach der Anzeige und Aktivierung des Browsers die Funktion Autom.Eingabe ausf&uuml;hren. Wenn im Feld Autom.Eingabe nichts eingegeben ist, wird der standardm&auml;&szlig;ige Wert eingesetzt.<br></small></li>
-</ul>
+<ul><small>
+  <b>Die nachfolgenden Hinweise beschreiben das Verhalten der URL-Eingabe genauer:</b>
+  <li>Standardm&auml;&szlig;ig wird <b>Password Safe</b> den Browser verwenden, welchen Ihr PC in der Regel zum &ouml;ffnen von Internetseiten hernimmt. Wenn erw&uuml;nscht, k&ouml;nnen Sie einen <i>alternativen Browser</i> angeben durch Angabe von '[alt]' in eckigen Klammern vor der URL, z.B. "[alt]http://www.foo.net". Dies ist n&uuml;tzlich, wenn der Standardbrowser Firefox ist, und Sie w&uuml;nschen aber auf eine Seite zuzugreifen, die am besten mit dem Internet Explorer funktioniert. Den alternativen Browser k&ouml;nnen Sie konfigurieren im Dialogfenster <b><a href="misc_tab.html#AltBrowser">Verwalten-&gt;Optionen-&gt;Verschiedenes</a></b>.</li>
+  <li>Sie k&ouml;nnen auch eine Emailadresse wie z.B. mailto:josef@irgendwo.com f&uuml;r die URL festlegen. In diesem Falle w&uuml;rde die Standardmailanwendung aufgerufen werden mit der "Gehe zu" Aktion.</li>
+  <li>>Wenn '{alt}' in geschweiften Klammern vor der URL gesetzt wird, dann wird es 'wie-es-ist' dem alternativen Browser &uuml;bergeben, ohne dass 'http://' hinzugef&uuml;gt wird, wenn kein Protokoll definiert ist. Die ist dann sinnvoll, wenn der alternative Browser eine Anwendung mit Fernzugriff ist, z.B. ein SSH Client. [ssh] w&uuml;rde denselben Effekt haben.<br></li>
+  <li>Wenn '[autotype]' vor der URL steht, wird Password Safe nach der Anzeige und Aktivierung des Browsers die Funktion Autom.Eingabe ausf&uuml;hren. Wenn im Feld Autom.Eingabe nichts eingegeben ist, wird der standardm&auml;&szlig;ige Wert eingesetzt.<br></li>
+</small></ul>
 <hr>
+<h3>Reiter <i>Zus&auml;tzlich</i></h3>
+<img alt="Eintrag bearbeiten: Zus&auml;tzlich" src="images/edit_view_entry_add.jpg">
 <ul>
-  <li><b>Autom. Eingabe:</b> Wenn dieses Feld nicht leer ist, wird dessen Inhalt den standardm&auml;&szlig;igen Inhalt f&uuml;r das 'automatische Eingeben' ersetzen.
-F&uuml;r mehr Information, siehe Hilfe zu "<a href="autotype.html">Autom. Eingabe</a>".</li>
+  <li><b>Autom. Eingabe:</b> Wenn dieses Feld nicht leer ist, wird dessen Inhalt den standardm&auml;&szlig;igen Inhalt f&uuml;r das 'automatische Eingeben' ersetzen. F&uuml;r mehr Information, siehe Hilfe zu "<a href="autotype.html">Autom. Eingabe</a>".</li>
   <li><b>Ausf&uuml;hren:</b> Wenn dieses Feld nicht leer ist, wird dessen Inhalt bei der Aktion 'Ausf&uuml;hren' als Kommando dem Betriebssystem &uuml;bergeben. Es k&ouml;nnen Variablen mit &uuml;bergeben werden. F&uuml;r mehr Information, siehe Hilfe zu "<a href="execute_string.html">Ausf&uuml;hren</a>".</li>
-  <li><b>Datum/Zeit Information:</b> Dieses NUR-Lesen Feld h&auml;lt die Information des gew&auml;hlten Eintrages zum Erstellzeitpunkt, zuletzt zugegriffen, usw. auf dem Laufenden. Diese Information wird im Fenster Eintrag Einf&uuml;gen nicht angezeigt.
+  <li><b>Doppelklick-Aktion:</b></li> Dies erlaubt es festzulegen welche Aktion <b>Password Safe</b> ausf&uuml;hrt, wenn Sie ein Doppelklick auf diesem Eintrag ausf&uuml;hren. Standardm&auml;&szlig;ig wird die im Dialog <a href="misc_tab.html">Verwalten-&gt;Optionen-&gt;Verschiedenes</a> festgelegte Aktion ausgef&uuml;hrt.</li>
+  <li><b>Passworthistorie:</b> Es ist m&ouml;glich <b>Password Safe</b> so zu konfigurieren, dass es sich die letzten paar Passw&ouml;rter eines Eintrages merkt. Dies kann eingestellt werden beim Erstellen des Eintrages, oder sp&auml;ter wenn Sie diesen Eintrag bearbeiten. Um die j&uuml;ngsten Passw&ouml;rter eines Eintrages zu sehen, oder die Anzahl der Passw&ouml;rter die sich <b>Password Safe</b> merkt zu &auml;ndern, dr&uuml;cken Sie auf die Taste "Passworthistorie". Dies ruft das Dialogfenster <a href="password_history.html">Passworthistorie</a> auf. Dieser Dialog zeigt die fr&uuml;heren Passw&ouml;rter und die Anzahl, wenn vorhanden, an.</li>
+</ul>
+<h3>Reiter <i>Datum und Uhrzeit</i></h3>
+<img alt="Eintrag bearbeiten: Datum und Uhrzeit" src="images/edit_view_entry_date.jpg">
+<ul>
+  <li><b>Passwortablaufdatum:</b> Um das Ablaufdatum eines Passworteintrages zu setzen, geben Sie das gew&uuml;nschte Ablaufdatum an, entweder als absoluter Tag (z.B. "25.01.2009") oder als relativer Tag zu Heute (z.B. "30 Tage") und klicken Sie auf die Taste <i>Setzen</i>. Wenn das Ablaufdatum sich n&auml;hert, wird <b>Password Safe</b> sowohl beim Start melden, dass das Passwort ge&auml;ndert werden soll, als auch den Eintrag mit einer anderen Farbe hinterlegen.<br>
+Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer" Ablauf bestimmen. Dies bewirkt, dass ein <b>neues</b> Ablaufdatum berechnet wird basierend auf der Anzahl festgelegten Tagen, wenn das Passwort abge&auml;ndert wird. Zum Beispiel: Sie erstellen einen Eintrag am 11ten Januar, und legen periodisch 5 Tage fest. Sie bekommen dann am 16ten Januar eine Ablaufmeldung. Wenn Sie das Passwort am 17ten Januar &auml;ndern, wird das neue Ablaufdatum am 22ten Januar sein (5 Tage nachdem das Passwort gesetzt wurde).</li>
+  <li>Um das Ablaufdatum abzustellen, klicken Sie auf <i>L&ouml;schen</i>.</li>
+  <li><b>Datum/Zeit Information:</b> Dieses NUR-Lesen Feld h&auml;lt die Information des gew&auml;hlten Eintrages zum Erstellzeitpunkt, zuletzt zugegriffen, usw. auf dem Laufenden. Diese Information wird im Dialog Eintrag Einf&uuml;gen nicht angezeigt.
 </li>
-  <li><b>Passwort g&uuml;ltig bis:</b> Um das Ablaufdatum eines Passworteintrages zu setzen, klicken Sie auf Taste 'Setzen' and geben Sie das gew&uuml;nschte Ablaufdatum an, entweder als absoluter Tag (z.B.  "25.01.2009") oder als relativer Tag zu Heute (z.B. "30 Tage"). Wenn das Ablaufdatum sich n&auml;hert, wird <b>Password Safe</b> sowohl beim Start melden, dass das Passwort ge&auml;ndert werden soll, als auch den Eintrag mit einer anderen Farbe hinterlegen.<br>
-Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer" Ablauf bestimmen. Dies bewirkt, dass ein <b>neues</b> Ablaufdatum berechnet wird basierend auf der Anzahl festgelegten Tagen, wenn das Passwort abge&auml;ndert wird. Zum Beispiel: Sie erstellen einen Eintrag am 11ten Januar, und legen periodisch 5 Tage fest. Sie bekommen dann am 16ten Januar eine Ablaufmeldung. Wenn Sie das Passwort am 17ten Januar &auml;ndern, wird das neue Ablaufdatum am 22ten Januar sein (5 Tage nachdem das Passwort gesetzt wurde).<br>
-    <br>
-    <div style="text-align: center;"><img alt="Dialog f&uuml;r Ablaufdatum" src="images/entry_expiry.jpg"></div>
-  </li>
-  <li>Um das Ablaufdatum abzustellen, klick auf "L&ouml;schen".</li>
 </ul>
 <div style="margin-left: 40px;">
 <hr><small><b>Hinweis: Password Safe</b> wird <b>nur</b> dann den Benutzer warnen, wenn eine der Passw&ouml;rter abgelaufen ist. Es liegt in der Verantwortung des Benutzers das Passwort zu &auml;ndern.</small>
 <hr></div>
-<p>Nur das Titel- und das Passwortfeld sind Pflichtfelder. alle anderen sind optional.</p>
+<h3>Reiter <i>Passwortrichtlinie</i></h3>
+<img alt="Eintrag bearbeiten: Passwortrichtlinie" src="images/edit_view_entry_policy.jpg">
+<p>Wenn Sie f&uuml;r einen Eintrag nicht die standardm&auml;&szlig;ig festgelegte Passwortrichtlinie (siehe hierzu <a href="password_policies.html">Verwalten-&gt;Optionen-&gt;Passwortrichtlinie</a>) benutzen wollen, k&ouml;nnen Sie nach Ausw&auml;hlen von "Verwende die Richtlinie unten:" eine eigens f&uuml;r diesen Eintrag festgelegte Passwortrichtlinie zusammenstellen.</p>
 <div class="instr">
 <h3>Erstellen eines neuen Eintrag mit Benutzername und Passwort</h3>
 <ol>
-  <li>Die Datenbank &ouml;ffnen wo der neue Eintrag rein soll</li>
-  <li>W&auml;hlen Sie im Men&uuml; <b>Bearbeiten</b> <b>Eintrag einf&uuml;gen</b> aus</li>
+  <li>Die Datenbank &ouml;ffnen wo der neue Eintrag eingef&uuml;gt werden soll</li>
+  <li>W&auml;hlen Sie im Men&uuml; <b>Bearbeiten &gt; Eintrag einf&uuml;gen</b> aus</li>
   <li>Geben Sie die notwendige Information im Dialogfenster <b>Eintrag Einf&uuml;gen</b> ein</li>
 </ol>
-<hr> <small><b>Hinweis:</b> Wenn ein Gruppenname ausgew&auml;hlt ist, und dann eine neuer Eintrag eingef&uuml;gt wird, wird f&uuml;r diesen Eintrag der Gruppenname im <b>F&uuml;ge Eintrag ein</b> Dialogfenster vorbelegt. Wenn ein neuer Name im Gruppenfeld eingegeben wird, wird diese Gruppe neu erstellt.<br>
+<hr> <small><b>Hinweis:</b> Wenn ein Gruppenname ausgew&auml;hlt ist, und dann eine neuer Eintrag eingef&uuml;gt wird, wird f&uuml;r diesen Eintrag der Gruppenname im Dialogfenster <b>F&uuml;ge Eintrag ein</b> vorbelegt. Wenn ein neuer Name im Gruppenfeld eingegeben wird, wird diese Gruppe neu erstellt.<br>
 </small>
 <hr>
 <h3>Passw&ouml;rter generieren und bearbeiten</h3>
-<p>Wenn gew&uuml;nscht, k&ouml;nnen ein eigens Passwort h&auml;ndisch im Passwortfeld eingegeben werden, oder <b>Password Safe</b> generiert eine neues Passwort auf Basis der derzeitig g&uuml;ltige <a href="password_policies.html">Passwortrichtlinien</a>.</p>
+<p>Wenn gew&uuml;nscht, k&ouml;nnen ein eigenes Passwort h&auml;ndisch im Passwortfeld eingegeben werden, oder <b>Password Safe</b> generiert eine neues Passwort auf Basis der derzeitig g&uuml;ltige <a href="password_policies.html">Passwortrichtlinien</a>.</p>
 <ol>
-  <li>Im <b>F&uuml;ge Eintrag ein</b> Dialogfenster <b>Generate</b> klicken</li>
-  <li>Wenn Sie nicht zufrieden sind mit dem Ergebnis, klicken Sie erneut <b>Generate</b>, oder geben Sie das Passwort h&auml;ndisch ein.</li>
+  <li>Im Dialogfenster <b>Eintrag Einf&uuml;gen</b> die Taste <b>Generierung</b> klicken</li>
+  <li>Wenn Sie nicht zufrieden sind mit dem Ergebnis, klicken Sie erneut <b>Generierung</b>, oder geben Sie das Passwort h&auml;ndisch ein.</li>
 </ol>
 <hr> <small><b>Hinweise:</b>
 <ul>
   <li>Um eine Passwortrichtlinie speziell f&uuml;r den aktuellen Eintrag zu definieren, markiere <b>Richtlinie &uuml;bergehen</b>.
 Diese Richtlinie wird zu diesem Eintrag abgespeichert, und wird standardm&auml;&szlig;ig f&uuml;r diesen Eintrag verwendet, wenn ein neues Passwort generiert wird. Diese M&ouml;glichkeit ist vor allem dann n&uuml;tzlich an Standorte die bestimmte Anforderungen an Passw&ouml;rter haben die nicht mit Ihren Standardanforderungen &uuml;bereinstimmen.</li>
-  <li>Um die nicht standardm&auml;&szlig;ige Passwortrichtlinie eines Eintrages zu sehen, sollten Sie die Taste Umschalten halten bevor Sie auf <b>Generate</b> dr&uuml;cken.</li>
+  <li>Um die nicht standardm&auml;&szlig;ige Passwortrichtlinie eines Eintrages zu sehen, sollten Sie die Taste Umschalten halten bevor Sie auf <b>Generierung</b> dr&uuml;cken.</li>
   <li>Wenn das Passwort oder der Benutzername diakritische Zeichen (wie "&acute;", "`", "^", "&uml;" oder "~" zum Beispiel) gefolgt von einem Buchstaben der &uuml;ber die Tastatur ge&auml;ndert werden kann ("a" zum Beispiel), muss das Passwort so "[~][space][space][a]" eingegeben werden (Dies trifft auf nicht-US Tastaturen zu).</li>
   <li>Wenn Sie ein "single sign-on" System einsetzen das erlaubt dasselbe Passwort f&uuml;r verschiedene Maschinen/Server/Anwendungen usw. gleichzeitig einzusetzen, kann mit <b>Password Safe</b> so ein Eintrag entsprechend verwaltet werden. Wenn Sie ein Passwort &auml;ndern, werden alle anderen gleichverwandte Passw&ouml;rter mit ge&auml;ndert. Diese werden "Alias" Eintr&auml;ge genannt, und wird im Detail <a href="aliases.html">hier</a> beschrieben.</li>
 </ul>
 </small>
 <hr>
-<h3>Passworthistorie</h3>
-Es ist m&ouml;glich <b>Password Safe</b> so zu konfigurieren, dass es sich die letzten paar Passw&ouml;rter eines Eintrages merkt. Dies kann eingestellt werden beim Erstellen des Eintrages, oder sp&auml;ter wenn Sie diesen Eintrag bearbeiten. Um die j&uuml;ngsten Passw&ouml;rter eines Eintrages zu sehen, oder die Anzahl der Passw&ouml;rter die sich <b>Password Safe</b> merkt zu &auml;ndern, dr&uuml;cken Sie auf die Taste "Passworthistorie". Dies ruft den Fensterdialog <a href="password_history.html">Passworthistorie</a> auf. Dieses Fenster zeigt die fr&uuml;heren Passw&ouml;rter und die Anzahl, wenn vorhanden, an.
 <h3>Bestehende Eintr&auml;ge bearbeiten</h3>
 <ol>
   <li>W&auml;hlen Sie den Passworteintrag zum Bearbeiten in der Liste aus</li>
@@ -98,7 +109,7 @@ Es ist m&ouml;glich <b>Password Safe</b> so zu konfigurieren, dass es sich die l
 </ol>
 <h3>Gruppenname bearbeiten</h3>
 <ul>
-  <li>Rechtsklick auf die Gruppe and w&auml;hlen Sie <b>Gruppe umbenennen</b> aus der Liste aus</li>
+  <li>Rechtsklick auf die Gruppe und w&auml;hlen Sie <b>Gruppe umbenennen</b> aus der Liste aus</li>
 </ul>
 <hr> <small><b>Hinweis:</b> Gruppennamen k&ouml;nnen verschachtelt werden, durch Setzen eines Gruppennamens in einer anderen Gruppe.<br>
 </small>

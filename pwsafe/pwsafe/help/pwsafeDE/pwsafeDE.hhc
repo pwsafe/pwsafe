@@ -66,7 +66,7 @@
 			<param name="Local" value="html\autotype.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Datenbasen sichern und wiederherstellen">
+			<param name="Name" value="Datenbanken sichern und wiederherstellen">
 			<param name="Local" value="html\backup_and_restore.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">

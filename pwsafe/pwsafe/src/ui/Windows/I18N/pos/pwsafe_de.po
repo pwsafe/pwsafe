@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-06-13 10:02+0100\n"
+"PO-Revision-Date: 2009-06-14 21:58+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -644,7 +644,7 @@ msgstr "&Notizen:"
 
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
-msgstr "&Andere Datenbasis öffnen"
+msgstr "&Andere Datenbank öffnen"
 
 #. Resource IDs: (32002)
 msgid "&Open..."
@@ -1720,7 +1720,7 @@ msgstr "Klicken Sie um eine neue Zeile einzufügen"
 
 #. Resource IDs: (510)
 msgid "Click to randomise the characters in the virtual keypad."
-msgstr "Klicken zum willkürlichen Anordnen der Zeichen in der virtuellen Tastatur"
+msgstr "Klicken zum zufälligen Anordnen der Zeichen in der virtuellen Tastatur"
 
 #. Resource IDs: (352)
 msgid "Click to remove this row"
@@ -1808,7 +1808,7 @@ msgstr "Vergleich beendet"
 
 #. Resource IDs: (115)
 msgid "Compare Database Results"
-msgstr "Vergleiche der Datenbasis Ergebnisse"
+msgstr "Vergleiche der Datenbank Ergebnisse"
 
 #. Resource IDs: (335)
 #, c-format
@@ -2243,7 +2243,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
-msgstr "Doppelklick-Aktion:"
+msgstr "Doppelklick Aktion:"
 
 #. Resource IDs: (314)
 msgid "Double-Click on entry to Autotype"
@@ -2978,6 +2978,10 @@ msgstr "ID:32075:V C +T"
 #. Accelerator Entry for Menu ID:32076; '&Run Command'
 msgid "ID:32076:V C +R"
 msgstr "ID:32076:V C +R"
+
+#. Accelerator Entry for Menu ID:32079; '&Find...'
+msgid "ID:32079:V C +F"
+msgstr "ID:32079:V C +F"
 
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
@@ -4320,7 +4324,7 @@ msgstr "Regeln zur Generierung von Zufallspasswörtern"
 
 #. Resource IDs: (8002)
 msgid "Randomize"
-msgstr ""
+msgstr "Zufällig"
 
 #. Resource IDs: (203)
 msgid "Read Error"
@@ -4429,7 +4433,7 @@ msgstr "Diese Verknüpfung rücksetzen"
 
 #. Resource IDs: (1377)
 msgid "Reset to Database Defaults"
-msgstr "Rücksetzen auf Datenbasis Standard"
+msgstr "Rücksetzen auf Datenbank Standard"
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
@@ -4869,8 +4873,8 @@ msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr "Schade, aber 'aussprechbar' und 'leicht lesbar' können nicht gemeinsam benutzt werden"
 
 #. Resource IDs: (345)
-msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options"
-msgstr "Schade, aber bei den Optionen 'aussprechbar' und 'leicht lesbar' kann man keine Mindestlänge für Passwörter vorgeben"
+msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
+msgstr "Schade, aber bei den Optionen 'aussprechbar' und 'leicht lesbar' kann man keine Mindestlänge für Passwörter vorgeben. Angaben wurden ignoriert."
 
 #. Resource IDs: (353)
 msgid "Source"
@@ -4910,7 +4914,7 @@ msgstr "Static_Static"
 
 #. Resource IDs: (1380)
 msgid "Statistics"
-msgstr "statiken"
+msgstr "Statistiken"
 
 #. Resource IDs: (334)
 msgid "Status"
