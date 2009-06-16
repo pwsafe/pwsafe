@@ -10,8 +10,9 @@
 #include "DboxMain.h"
 #include "PWPropertySheet.h"
 
-IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
+extern const TCHAR *EYE_CATCHER;
 
+IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -30,7 +31,8 @@ LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     CWnd *p = GetParent();
     while (p != NULL) {
       DboxMain *pDbx = dynamic_cast<DboxMain *>(p);
-      if (pDbx != NULL) {
+      if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
+          _tcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
         pDbx->ResetIdleLockCounter();
         break;
       } else
