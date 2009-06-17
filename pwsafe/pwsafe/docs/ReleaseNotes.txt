@@ -16,6 +16,7 @@ New Features for 3.18-pre
 [] DragBar now has ToolTips to inform user of its use.
 [] User can close the currently open database via the System Tray
 menu.
+[] Improved Merge reporting.
 
 Changes to Existing Features in 3.18-pre
 ========================================
