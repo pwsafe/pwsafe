@@ -1691,7 +1691,8 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent )
         m_core.WasDisplayStatusChanged()) ||
         Save() == PWScore::SUCCESS) {
       TRACE(_T("locking database\n"));
-      ShowWindow(SW_MINIMIZE);
+      if (IsWindowVisible())
+        ShowWindow(SW_MINIMIZE);
       ClearData(false);
       if (nIDEvent == TIMER_CHECKLOCK)
         KillTimer(TIMER_CHECKLOCK);
