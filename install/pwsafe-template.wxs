@@ -52,7 +52,7 @@
 	      Source='src\bin\release\pws_at.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file7' Name='pws_osk.dll' DiskId='1'
-	      Source='src\bin\release\pws_at.dll' Vital='yes'> 
+	      Source='src\bin\release\pws_osk.dll' Vital='yes'> 
 	    </File>
 	  </Component>
 	  <Component Id='SupportingFiles'
