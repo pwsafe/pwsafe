@@ -1596,7 +1596,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
       }
       if (otherItem.GetDCA() != curItem.GetDCA()) {
         diff_flags |= MRG_DCA;
-        cs_temp.LoadString(IDS_RUNCOMMAND);
+        cs_temp.LoadString(IDS_DCA);
         csDiffs += cs_temp + _T(", ");
       }
       if (diff_flags |= 0) {
