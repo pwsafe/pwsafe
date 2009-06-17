@@ -764,6 +764,10 @@ void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
   if (iter != IDtoImages.end()) {
     IDtoImages[ID_MENUITEM_VIEW] = iter->second;
   }
+
+  // special case, pending re-org:
+  // Edit->Find... menu uses same bitmap as View->Show Find Toolbar
+  IDtoImages[ID_MENUITEM_FINDELLIPSIS] = IDtoImages[ID_MENUITEM_SHOWFINDTOOLBAR];
 }
 
 void CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,
