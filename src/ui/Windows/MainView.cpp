@@ -3110,7 +3110,8 @@ void DboxMain::OnToolBarFindReport()
     for (i = 0; i < (int)pindices->size(); i++) {
       index = pindices->at(i);
       CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(index);
-      buffer.Format(IDS_COMPARESTATS, ci->GetGroup(), ci->GetTitle(), ci->GetUser());
+      buffer.Format(IDS_COMPARESTATS, ci->GetGroup().c_str(),
+                    ci->GetTitle().c_str(), ci->GetUser().c_str());
       rpt.WriteLine((LPCTSTR)buffer, false);
     }
   }
