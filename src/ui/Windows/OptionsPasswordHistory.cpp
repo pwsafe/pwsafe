@@ -82,6 +82,9 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_pwhistorynumdefault);
 
+  GetDlgItem(IDC_PWHSPIN)->EnableWindow(m_savepwhistory);
+  GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(m_savepwhistory);
+
   // Tooltips on Property Pages
   EnableToolTips();
 
