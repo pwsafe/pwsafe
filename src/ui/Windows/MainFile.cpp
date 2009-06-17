@@ -1488,6 +1488,9 @@ int DboxMain::Merge(const StringX &pszFilename) {
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_MERGINGDATABASE, pszFilename.c_str());
   rpt.WriteLine((LPCTSTR)cs_temp);
+  std::vector<StringX> vs_added;
+  std::vector<StringX> vs_AliasesAdded;
+  std::vector<StringX> vs_ShortcutsAdded;
 
   /*
   Purpose:
@@ -1594,7 +1597,11 @@ int DboxMain::Merge(const StringX &pszFilename) {
         cs_temp.LoadString(IDS_RUNCOMMAND);
         csDiffs += cs_temp + _T(", ");
       }
-      if (otherItem.GetDCA() != curItem.GetDCA()) {
+      // Must use integer values not compare strings
+      short other_hDCA, cur_hDCA; 
+      otherItem.GetDCA(other_hDCA);
+      curItem.GetDCA(cur_hDCA);
+      if (other_hDCA != cur_hDCA) {
         diff_flags |= MRG_DCA;
         cs_temp.LoadString(IDS_DCA);
         csDiffs += cs_temp + _T(", ");
@@ -1611,12 +1618,8 @@ int DboxMain::Merge(const StringX &pszFilename) {
         /* note it as an issue for the user */
         CString warnMsg;
         warnMsg.Format(IDS_MERGECONFLICTS, 
-                       otherItem.GetGroup().c_str(), 
-                       otherItem.GetTitle().c_str(),
-                       otherItem.GetUser().c_str(),
-                       otherItem.GetGroup().c_str(), 
-                       newTitle.c_str(), 
-                       otherItem.GetUser().c_str(),
+                       otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str(),
+                       otherGroup.c_str(), newTitle.c_str(), otherUser.c_str(),
                        csDiffs);
 
         /* log it */
@@ -1643,25 +1646,61 @@ int DboxMain::Merge(const StringX &pszFilename) {
       }
 
       m_core.AddEntry(otherItem);
+      StringX sx_added = StringX(_T("\xbb")) + 
+                           otherGroup + StringX(_T("\xbb")) + 
+                           otherTitle + StringX(_T("\xbb")) +
+                           otherUser  + StringX(_T("\xbb"));
+      vs_added.push_back(sx_added);
       numAdded++;
     }
     if (et == CItemData::ET_ALIASBASE)
       numAliasesAdded += MergeDependents(&othercore, 
                       base_uuid, new_base_uuid,
-                      bTitleRenamed, timeStr, CItemData::ET_ALIAS);
+                      bTitleRenamed, timeStr, CItemData::ET_ALIAS, vs_AliasesAdded);
     if (et == CItemData::ET_SHORTCUTBASE)
       numShortcutsAdded += MergeDependents(&othercore,
                       base_uuid, new_base_uuid, 
-                      bTitleRenamed, timeStr, CItemData::ET_SHORTCUT); 
+                      bTitleRenamed, timeStr, CItemData::ET_SHORTCUT, vs_ShortcutsAdded); 
   } // iteration over other core's entries
 
   othercore.ClearData();
 
+  CString resultStr;
+  if (numAdded > 0) {
+    CString cs_singular_plural_type(MAKEINTRESOURCE(numAdded == 1 ? IDS_ENTRY : IDS_ENTRIES));
+    CString cs_singular_plural_verb(MAKEINTRESOURCE(numAdded == 1 ? IDS_WAS : IDS_WERE));
+    resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
+    rpt.WriteLine((LPCTSTR)resultStr);
+    for (size_t i = 0; i < vs_added.size(); i++) {
+      resultStr.Format(_T("\t%s"), vs_added[i].c_str());
+      rpt.WriteLine((LPCTSTR)resultStr);
+    }
+  }
+  if (numAliasesAdded > 0) {
+    CString cs_singular_plural_type(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_ALIAS : IDS_ALIASES));
+    CString cs_singular_plural_verb(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_WAS : IDS_WERE));
+    resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
+    rpt.WriteLine((LPCTSTR)resultStr);
+    for (size_t i = 0; i < vs_AliasesAdded.size(); i++) {
+      resultStr.Format(_T("\t%s"), vs_AliasesAdded[i].c_str());
+      rpt.WriteLine((LPCTSTR)resultStr);
+    }
+  }
+  if (numShortcutsAdded > 0) {
+    CString cs_singular_plural_type(MAKEINTRESOURCE(numShortcutsAdded == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS));
+    CString cs_singular_plural_verb(MAKEINTRESOURCE(numShortcutsAdded == 1 ? IDS_WAS : IDS_WERE));
+    resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
+    rpt.WriteLine((LPCTSTR)resultStr);
+    for (size_t i = 0; i < vs_ShortcutsAdded.size(); i++) {
+      resultStr.Format(_T("\t%s"), vs_ShortcutsAdded[i].c_str());
+      rpt.WriteLine((LPCTSTR)resultStr);
+    }
+  }
+      
   waitCursor.Restore(); /* restore normal cursor */
 
   /* tell the user we're done & provide short merge report */
   int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
-  CString resultStr;
   const CString cs_entries(MAKEINTRESOURCE(totalAdded == 1 ? IDS_ENTRY : IDS_ENTRIES));
   const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ? IDS_CONFLICT : IDS_CONFLICTS));
   const CString cs_aliases(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_ALIAS : IDS_ALIASES));
@@ -1670,8 +1709,6 @@ int DboxMain::Merge(const StringX &pszFilename) {
                    totalAdded, cs_entries, numConflicts, cs_conflicts,
                    numAliasesAdded, cs_aliases,
                    numShortcutsAdded, cs_shortcuts);
-  cs_title.LoadString(IDS_MERGECOMPLETED2);
-  //MessageBox(resultStr, cs_title, MB_OK);
   rpt.WriteLine((LPCTSTR)resultStr);
   rpt.EndReport();
 
@@ -1697,7 +1734,8 @@ int DboxMain::Merge(const StringX &pszFilename) {
 int DboxMain::MergeDependents(PWScore *pothercore,
                               uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
                               const bool bTitleRenamed, CString &timeStr, 
-                              const CItemData::EntryType et)
+                              const CItemData::EntryType et,
+                              std::vector<StringX> &vs_added)
 {
   UUIDList dependentslist;
   UUIDListIter paiter;
@@ -1753,6 +1791,11 @@ int DboxMain::MergeDependents(PWScore *pothercore,
     } else
       ASSERT(0);
 
+    StringX sx_added = StringX(_T("\xbb")) + 
+                         tempitem.GetGroup() + StringX(_T("\xbb")) + 
+                         tempitem.GetTitle() + StringX(_T("\xbb")) +
+                         tempitem.GetUser()  + StringX(_T("\xbb"));
+    vs_added.push_back(sx_added);
     numadded++;
   }
   return numadded;

@@ -302,7 +302,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   } else if (M_original_entrytype() == CItemData::ET_ALIAS) {
     // Update password to alias form
     // Show text stating that it is an alias
-    M_realpassword() = M_oldRealPassword() = M_base();
+    M_realpassword() = M_oldRealPassword() = m_password = M_base();
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
 
     cs_text.Format(IDS_ISANALIAS, M_base());

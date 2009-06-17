@@ -431,7 +431,7 @@ protected:
   int MergeDependents(PWScore *pothercore, 
                       uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
                       const bool bTitleRenamed, CString &timeStr, 
-                      const CItemData::EntryType et);
+                      const CItemData::EntryType et, std::vector<StringX> &vs_added);
   int Compare(const StringX &cs_Filename1, const StringX &cs_Filename2);
 
   int BackupSafe(void);

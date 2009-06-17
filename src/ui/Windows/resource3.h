@@ -197,7 +197,6 @@
 #define IDS_MERGECONFLICTS              5349
 #define IDS_MERGINGDATABASE             5350
 #define IDS_MERGECOMPLETED              5351
-#define IDS_MERGECOMPLETED2             5352
 #define IDS_NOCOMPAREFILE               5353
 #define IDS_PICKCOMPAREFILE             5354
 #define IDS_COMPARESAME                 5355
@@ -539,3 +538,6 @@
 #define IDS_ISASHORTCUTBASE             5703
 #define IDS_COMPDCA                     5704
 #define IDS_DCA                         5705
+#define IDS_MERGEADDED                  5706
+#define IDS_WAS                         5707
+#define IDS_WERE                        5708
