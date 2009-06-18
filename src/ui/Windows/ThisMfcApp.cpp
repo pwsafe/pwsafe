@@ -74,7 +74,7 @@ static MFCReporter aReporter;
 
 // Callback Routine to find Unicode font for Virtual Keyboard
 int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *, 
-                                    int , LPARAM lParam)
+                                    DWORD , LPARAM lParam)
 {
   // Found one
   bool *pFound = (bool *)lParam;
@@ -462,7 +462,7 @@ bool ThisMfcApp::CheckIfVKAvialable()
   bool bFound(false);
   LOGFONT lf = {0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
                 L"Arial Unicode MS"};
-  EnumFontFamiliesEx(hDC, &lf, (FONTENUMPROC)EnumFontFamiliesExProc, (LPARAM)(&bFound), 0);
+  EnumFontFamiliesEx(hDC, &lf, (FONTENUMPROC)&EnumFontFamiliesExProc, (LPARAM)(&bFound), 0);
   ReleaseDC(NULL, hDC);
 
   if (!bFound) {
