@@ -28,6 +28,10 @@
 
       <td style="width: 10px;"></td>
 
+      <td ;="" align="center">Alias</td>
+
+      <td style="width: 10px;"></td>
+
       <td ;="" align="center">Group</td>
 
     </tr>
@@ -35,6 +39,10 @@
     <tr>
 
       <td><img alt="Menu Edit Entry" src="images/edit_menu.jpg"></td>
+
+      <td></td>
+
+      <td><img alt="Menu Edit Alias" src="images/edit_x_menu.jpg"></td>
 
       <td></td>
 
@@ -116,6 +124,19 @@ this will have no effect.</p>
 
 <p>Copy the current selection's password to the clipboard.</p>
 
+<h3>Display subset of Password</h3>
+
+<p>This action displays a window that allows you to specify which
+characters of a password to display. This is useful for sites that ask
+for parts of a password to login. For example, a password might be
+"qAdm3ddENc", and you might be asked to enter the first, third, fifth
+and eighth letters. This window allows you to do this in a convenient
+manner: In the upper field you enter the positions of the
+password characters you want for the subset of the password. You can
+use spaces, commas or semi-colons to separate the positions. The
+corresponding characters of the password are shown in the lower field.
+To quit, please use the <b>Esc</b> key.</p>
+
 <h3>Copy User Name to Clipboard</h3>
 
 <p>Copy current selection's user name to the clipboard.</p>
@@ -132,10 +153,22 @@ clipboard.</p>
 <h3>Browse to URL</h3>
 
 <p>When an entry is selected, and the entry has a URL associated
-with
-it, then this will invoke the default browser to the URL. If no entry
+with it, then this will invoke the default browser to the URL. If no entry
 is selected, or the selected entry's URL is blank, this command will be
 disabled.</p>
+
+<h3>Browse to URL + Autotype</h3>
+
+<p>When an entry is selected, and the entry has a URL associated
+with it, then this will invoke the default browser to the URL. If no entry
+is selected, or the selected entry's URL is blank, this command will be
+disabled.</p>
+<p>Automatically input user name and password into the selected
+input field.<br>
+
+<small><i>See <a href="autotype.html">Using
+Auto Type</a> for more information.</i></small></p>
+
 
 <h3>Perform Auto Type</h3>
 
@@ -144,6 +177,13 @@ input field.<br>
 
 <small><i>See <a href="autotype.html">Using
 Auto Type</a> for more information.</i></small></p>
+
+<h3>Run Command</h3>
+
+<p>This will execute the command in the field <i>Run Cmd</i> of the selected entry.<br>
+<small><i>See <a href="run_command.html">Using
+Run Command</a> for more information.</i></small></p>
+
 
 <h3>Create Shortcut</h3>
 
@@ -157,10 +197,18 @@ where <span style="font-style: italic;">x </span>is
 the title of the original entry. Of course, you can edit the name, move
 or delete the shortcut, just like a regular entry.</p>
 
+<h3>Go to Base entry</h3>
+
+<p>This item will only appear for a shortcut or alias entry.
+After clicking <b>Go to Base entry</b> the corresponding
+base entry will be selected.</p>
+
 </div>
 
 <h2>Right mouse click actions </h2>
-
+<p>All functions in the <b>Edit</b> menu can
+also be reached by clicking the right mouse button on the corresponding
+entry, alias or group.</p>
 <table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
 
   <tbody>
@@ -196,33 +244,10 @@ or delete the shortcut, just like a regular entry.</p>
   </tbody>
 </table>
 
-<p>Many of the functions in the <b>Edit</b> menu can
-also be
-reached by clicking the right mouse button on the corresponding
-entry or group. Here we'll describe only those functions that
-haven't been mentioned&nbsp;in&nbsp;the <a href="#edit_menu">previous
+<p>All functionality is described in the <a href="#edit_menu">previous
 section</a>.</p>
 
 <div class="instr">
-<h3>Display subset of Password</h3>
-
-<p>This action displays a window that allows you to specify which
-characters of a password to display. This is useful for sites that ask
-for parts of a password to login. For example, a password might be
-"qAdm3ddENc", and you might be asked to enter the first, third, fifth
-and eighth letters. This window allows you to do this in a convenient
-manner: In the upper field you enter the positions of the
-password characters you want for the subset of the password. You can
-use spaces, commas or semi-colons to separate the positions. The
-corresponding characters of the password are shown in the lower field.
-To quit, please use the <b>Esc</b> key.</p>
-
-<h3>Go to Base entry</h3>
-
-<p>This item will only appear for a shortcut or alias entry.
-After clicking <b>Go to Base entry</b> the corresponding
-base entry will be selected.</p>
-
 </div>
 
 <!-- Added some white space at the bottom for natural scrolling -->

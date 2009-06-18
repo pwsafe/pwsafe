@@ -1,114 +1,52 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-
-
-
-  
-
-  
-  
-
-  
-  <title>User Names and Passwords</title>
+<title>User Names and Passwords</title>
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>
-  
-  
-  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-
-
 <body>
-
-
-
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>User Names, Passwords, and Groups</h2>
-
-
-
-
-<img style="width: 434px; height: 385px;" alt="Edit/View Entry" src="images%5Cedit_view_entry.jpg">
+<p>Username, passwords and groups together with the additional parameters are managed in 4 tabs:
+<ul>
+  <li><b><i>Basic</i>:</b> all necesarry elements for password management</li>
+  <li><b><i>Additional</i>:</b> additional specifications, including history</li>
+  <li><b><i>Dates and Times</i>:</b> expiry and statistics</li>
+  <li><b><i>Password Policy</i>:</b> specific differences to the default</li>
+</ul>
+<h3>Tab <i>Basic</i></h3>
+<p>In this tab the most inportant elements are combined.</p>
+<img alt="Edit/View Entry" src="images/edit_view_entry_base.jpg">
 <p>The following bits of information are associated with each
 password entry:</p>
-
-
-
 <ul>
-
-
-
-
   <li><b>Group</b>: A name for grouping (organizing) several related entries</li>
-
-
-
   <li><b>Title</b>: A friendly name for a password entry</li>
-
-
-
   <li><b>User name</b>: The user name</li>
-
-
-
   <li><b>Password</b>: The password</li>
-
-
-
   <li><b>Notes</b>: Free-form general notes field</li>
-
-
-
+  <li><small>Only the <b>title</b> and <b>password</b> fields are required; all others are optional.</small></li>
 </ul>
-
-
-
-In addition, the following fields may be used (viewable by pressing the
-"More&gt;&gt;" button on the Add or Edit dialog box):<br>
-
-
-
+In addition, the field URL may be set in this tab:<br>
 <br>
-
-
-
-<img style="width: 447px; height: 308px;" alt="Extra fields" src="images/edit_view_entry_more.jpg"><br>
-
-
-
 <ul>
-
-
-
   <li><span style="font-weight: bold;">URL</span>:
-The URL associated
-with the entry. If this field is not empty, then the "Go" button
+The URL associated with the entry. If this field is not empty, then the "Go" button
 is enabled. If the protocol is not specified, then "http://" is assumed
 (e.g., "www.foo.net" is the same as "http://www.foo.net").</li>
-
-
   <li><span style="font-weight: bold;">Go</span>:
     If the URL field is not empty, clicking on this button will&nbsp;browse to the specified URL. Clicking with the Control key
     pressed (Ctrl+Click) will, in addition, invoke the autotype
     function on the opened browser page.
   </li>
-
-
 </ul>
-
-
-
 <hr style="width: 100%; height: 2px;">
 <ul>
-
-
-
   <small><span style="font-weight: bold;"> The following notes describe the way URLs are handled in more detail:</span></small>
-
   <li><small>By default, Password Safe will use the browser that your
 PC usually opens web pages with. If desired, you can specify an
     <span style="font-style: italic;">alternate browser </span>by
@@ -117,314 +55,150 @@ is useful, for example, if your default browser is Firefox, and you
 wish to access a website that works best with Internet Explorer. To
 configure an alternate browser, use the <a href="misc_tab.html#AltBrowser">Manage-&gt;Options-&gt;Misc.</a> dialog box.
     </small></li>
-
-
-
   <li><small>You can specify an e-mail address such as
 mailto:joe@somewhere.com as the URL, in which case your default mailing
 application will be invoked by the "Go" button.</small></li>
-
-
-
   <li><small>If '{alt}' is put before the URL, then it is passed
 'as-is' to the alternate browser, that is, without adding 'http://' if
 no protocol is specified. This is useful if the alternate browser is a
 remote access application, e.g., an SSH client. [ssh] will achieve the
 same effect.</small></li>
-
-
-
   <li><small>If '[autotype]' is found before the URL, then after the
 URL has been displayed/actioned, Password Safe then perform the Autotype
 action using this entry's Autotype field, or the default value if not
 specified.</small></li>
-
-
-
 </ul>
-
-
-
 <hr style="width: 100%; height: 2px;">
+
+
+<h3>Tab <i>Additional</i></h3>
+<img alt="Edit/View Additional" src="images/edit_view_entry_add.jpg"><br>
 <ul>
-
-
-
-  <li><span style="font-weight: bold;">Autotype</span>:
+  <li><b>Autotype:</b>
 If this field
 is not empty, the its content replaces the default value for the
 autotype function. For more information, see the
 "<a href="autotype.html">Auto Type</a>" help topic.</li>
-
-  <li><span style="font-weight: bold;">Run Cmd:</span> This field can
+  <li><b>Run Cmd:</b> This field can
 be used to specify a command or program to be run via the 'Run Command'
 action (via the Edit menu, right-click popup menu or Ctrl-R). <span style="font-weight: bold;">Password Safe</span> is able to pass arguments to the command
 such as the entry's username, password, etc., as described <a href="run_command.html">here</a>.</li>
 
+<li><b>Double click on entry:</b>
+This allows you to define what action PasswordSafe will take when
+you double-click on an entry. The default is to copy the entry's
+password to the clipboard. The default action is set in <a href="misc_tab.html">Manage-&gt;Options-&gt;Misc.</a>.</li>
+<li><b>Password History:</b>
+It is possible to configure <b>Password Safe</b> to save the last few passwords of an entry. This can be done either when the entry is created,
+or when viewing an existing entry. To view the recent passwords associated with the entry, or to change the number of
+recent passwords that are kept, click on the "Password History..." button. This will invoke the <a href="password_history.html">Password History</a>
+dialog box. The Edit dialog box indicates if previous passwords are kept for the entry, and if so, how many.</li>
+</ul>
 
-
-
-  <li><span style="font-weight: bold;">Date/Time
-Information</span>:
-These read-only fields help keep track of when the selected entry was
-created, last accessed, etc.</li>
-
-
-
-
+<h3>Tab <i>Dates and Times</i></h3>
+<img alt="Edit/View Dates and Times" src="images/edit_view_entry_date.jpg">
+<ul>
   <li><span style="font-weight: bold;">Password
 Expires on:</span>To
 set a password expiration date, click on the "Set..." button and
 specify the desired expiration date, either as an absolute date (e.g.,
-"March 17th 2007"), or relative from today (e.g., "30 days from now"). 
-When the exiration date approaches, <span style="font-weight: bold;">Password Safe</span> 
-will notify you upon startup that the password should be changed, 
+"March 17th 2007"), or relative from today (e.g., "30 days from now").
+When the exiration date approaches, <span style="font-weight: bold;">Password Safe</span>
+will notify you upon startup that the password should be changed,
 as well as marking the entry in a distinct color.<br>
-
-
-
-If you choose "In <span style="font-style: italic;">N </span>days", 
-then you may specify a "Recurring" expiration. This will cause a 
+If you choose "In <span style="font-style: italic;">N </span>days",
+then you may specify a "Recurring" expiration. This will cause a
     <span style="font-weight: bold;">new </span>expiration
 date to be calculated based on the specified number of days and when
 you change the entry's password. For example, if you create an entry on
 January 1st and specify a 5 day recurring expiration. You will get an
 expiration notice starting on January 6th. If you change the password
 on January 7th, then the new expiration will be on January 12th (5 days
-after the password has been set).<br>
-
-
-
-    <br>
-
-
-
-    
-    <div style="text-align: center;"><img style="width: 324px; height: 186px;" alt="Entry Expiration Dialog Box" src="images/entry_expiry.jpg"></div>
-
-
-
-  </li>
-
-
-
-  <li>&nbsp;To cancel the expiration, click on
-"Clear".&nbsp;<span style="font-weight: bold;"></span></li>
-
-
-
+after the password has been set). </li>
+  <li>&nbsp;To cancel the expiration, click on "Clear".</li>
+  <li><span style="font-weight: bold;">Date/Time
+Information</span>:
+These read-only fields help keep track of when the selected entry was
+created, last accessed, etc.</li>
 </ul>
-
-
-
 <div style="margin-left: 40px;"><span style="font-weight: bold;"></span>
 <hr style="width: 100%; height: 2px;">
 <small><span style="font-weight: bold;">Note: Password Safe </span>will
 <span style="font-style: italic;">only </span>warn the user when passwords
 have expired. It is the user's responsibility to change the password.</small>
-
 <hr style="width: 100%; height: 2px;"></div>
-
-
-
-<p>Only the title and password fields are required; all others
-are optional.</p>
-
+<h3>Tab <i>Password Policy</i></h3>
+<img alt="Edit/View Password Policy" src="images/edit_view_entry_policy.jpg"><br>
+<p>If you don't want to use the default password policy (see <a href="password_policies.html">Setting a Password Policy<a>), you can define in this tab a different password policy, marking "Use the policy below" and setting the apropriate elements.</p>
 
 
 <div class="instr">
 <h3>Creating a New User Name and Password Entry</h3>
-
-
-
 <ol>
-
-
-
   <li>Open the database where you wish to place the new entry</li>
-
-
-
   <li>From the <b>Edit</b> menu, select <b>Add Entry</b></li>
-
-
-
   <li>Enter information into the <b>Edit/View Entry</b>
 dialog fields as necessary</li>
-
-
-
 </ol>
-
-
-
 <hr> <small><b>Note:</b>&nbsp;If a Group
 name is selected and then a new entry added, that entry will have that
 Group name prefilled in the <b>Edit/View Entry</b> dialog.
 If a name of a new group is added to the Group field, that Group will
 be created.</small><br>
-
-
-
 <hr>
 <h3>Generating and Editing Passwords</h3>
-
-
-
 <p>If you wish, you can enter your own password into the password
 field manually, or you can have <b>Password Safe</b>
 generate a new one based on the current <a href="password_policies.html">Password Policy</a>.
 To have <span style="font-weight: bold;">Password Safe </span>generate a password, just click on
-<span style="font-weight: bold;">Generate</span> in the <span style="font-weight: bold;">Edit/View Entry</span> 
+<span style="font-weight: bold;">Generate</span> in the <span style="font-weight: bold;">Edit/View Entry</span>
 dialog. If you're unhappy with the result, you can click on <span style="font-weight: bold;">Generate</span>
 again, or edit the password manually.</p>
-
-
-
 <hr>
 <small><b>Notes:</b>
 <ul>
-
-
-
-  <li>To define a&nbsp;password policy specifically for the current entry,
-check <b>Override Policy</b>.
-This policy will be stored along with the entry, and will be used by
-default whenever a new password is generated for this entry. This
-feature is useful for sites that have specific requirements for
-passwords that your default policy doesn't meet.</li>
-
-
-
-  <li>To view an entry's non-default password policy, press on the 
-Shift key before clicking on the Generate button.</li>
-
-
-
   <li>If your password or user name contains a diacritical
 character ("&acute;", "`", "^", "&uml;" or "~" for instance)
 followed by a character that can be modified by it on your keyboard
 ("a" for instance), the password must be entered as "[~][space]
 [space][a]" (This applies to non-US keyboards only).</li>
-
-
-
   <li>If you're using a "single sign-on" system that allows you to
 share the same password across different machines/servers/applications,
 etc. you can setup <span style="font-weight: bold;">Password Safe</span>
 entries accordingly, so that changing one password affects all other
 related entries. This is called "aliasing" entries, and is explained in
 detail <a href="aliases.html">here</a>.</li>
-
-
-
 </ul>
-
-
-
 </small>
 <hr>
-<h3>Password History</h3>
-
-
-
-<p>It is possible to configure <b>Password Safe</b> to save the last few passwords of an entry. This can be done either when the entry is created,
-or when viewing an existing entry. To view the recent passwords associated with the entry, or to change the number of
-recent passwords that are kept, click on the "Password History..." button. This will invoke the <a href="password_history.html">Password History</a>
-dialog box. The Edit dialog box indicates if previous passwords are kept for the entry, and if so, how many.</p>
-
-
-
 <h3>Editing Existing Entries</h3>
-
-
-
 <ol>
-
-
-
   <li>Select the password entry to edit from the list</li>
-
-
-
   <li>Select <b>Edit/View Entry</b> from the <b>Edit</b> menu</li>
-
-
-
 </ol>
-
-
-
 <hr>
-<small><b>Note:</b>&nbsp;By default, passwords are obscured. To see 
+<small><b>Note:</b>&nbsp;By default, passwords are obscured. To see
 the password associated with the Entry click <b>Show Password</b>.</small><br>
-
-
-
 <hr>
 <h3>Add a New Group</h3>
-
-
-
 <ol>
-
-
-
   <li>Select <b>Add Group</b> from the <b>Edit</b> menu</li>
-
-
-
   <li>Enter the Group name</li>
-
-
-
 </ol>
-
-
-
 <h3>Edit a Group Name</h3>
-
-
-
 <ul>
-
-
-
   <li>Right-click on the group and select <b>Rename Group</b>
 from the drop down list</li>
-
-
-
 </ul>
-
-
-
 <hr> <small><b>Note:</b>&nbsp;Group names
 can be "nested," placing a group name within/under another group name.<br>
-
-
-
 </small>
 <hr><br>
-
-
-
  </div>
-
-
-
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
-
-
 <br>
-
-
 <br>
-
-
-
-
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
   <param name="Keyword" value="User Names">
   <param name="Keyword" value="Add Password Entries">
