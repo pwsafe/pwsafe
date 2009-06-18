@@ -17,10 +17,14 @@
     <tr>
       <td align="center";>Eintrag</td>
       <td style="width: 10px;"></td>
+      <td align="center";>Alias</td>
+      <td style="width: 10px;"></td>
       <td align="center";>Gruppe</td>
-     </tr>
-   <tr>
+    </tr>
+    <tr>
       <td><img alt="Men&uuml; Eintrag Bearbeiten" src="images/edit_menu.jpg"></td>
+      <td></td>
+      <td><img alt="Men&uuml; Alias Bearbeiten" src="images/edit_x_menu.jpg"></td>
       <td></td>
       <td><img alt="Men&uuml; Gruppe Bearbeiten" src="images/edit_g_menu.jpg"></td>
     </tr>
@@ -38,6 +42,9 @@
 <p>Wenn ein Eintrag ausgew&auml;hlt ist, wird dieser Eintrag gel&ouml;scht. Wenn eine Gruppe ausgew&auml;hlt ist (in Baumdarstellung), wird diese Gruppe mit allen sich darin befindlichen Eintr&auml;gen gel&ouml;scht. Dies muss best&auml;tigt werden, wenn mehr als ein Eintrag in der ausgew&auml;hlten Gruppe vorhanden ist. Dies ist deaktiviert, wenn eine Datenbank in NUR-Lesen Modus ge&ouml;ffnet ist.</p>
 <h3>Eintrag umbenennen / Gruppe umbenennen</h3>
 <p>Der ausgew&auml;hlte Eintrag wird umbenannt (oder Gruppe, in Baumdarstellung). Dies ist deaktiviert, wenn eine Datenbank in NUR-Lesen Modus ge&ouml;ffnet ist. </p>
+<h3>Suchen</h3>
+<p>Suche nach einem gegebenen Text in den Eintr&auml;gen. Standardm&auml;&szlig;ig werden alle Felder durchsucht, mit Ausnahme der Passw&ouml;rter.<br>
+<small><i>Siehe <a href="searching.html">Suchen</a> f&uuml;r mehr Information.</i></small></p><p></p>
 <h3>Eintrag duplizieren</h3>
 <p>Der ausgew&auml;hlte Eintrag wird dupliziert. Dies ist deaktiviert, wenn eine Datenbank in NUR-Lesen Modus ge&ouml;ffnet ist.</p>
 <h3>Gruppe einf&uuml;gen</h3>
@@ -46,6 +53,8 @@
 <p>L&ouml;scht die Zwischenablage. Dies l&ouml;scht in der Zwischenablage nur die Sachen, die von <b>Password Safe</b> (Passwort, Benutzername, Notizen, usw.) stammen. Wenn der momentane Inhalt in der Zwischenablage nicht von <b>Password Safe</b> stammt, dann passiert damit nichts.</p>
 <h3>Passwort in Zwischenablage kopieren</h3>
 <p>Kopiert das Passwort vom ausgew&auml;hlten Eintrag in die Zwischenablage.</p>
+<h3>Teilmenge des Passwortes anzeigen</h3>
+<p>Im oberen Feld des Dialoges k&ouml;nnen Sie die Positionen der Zeichen im Passwort eingeben, die sie f&uuml;r die Teilmenge des Passwortes ben&ouml;tigen. Als Trennzeichen dient das Leerzeichen, das Komma oder der Strichpunkt. Im unteren Feld werden die Zeichen, die mit den Positionen &uuml;bereinstimmen, angezeigt. Aus diesem Dialog kehren sie mit <b>Esc</b> zur&uuml;ck.</p>
 <h3>Benutzername in Zwischenablage kopieren</h3>
 <p>Kopiert den Benutzernamen vom ausgew&auml;hlten Eintrag in die Zwischenablage.</p>
 <h3>Notizen in Zwischenablage kopieren</h3>
@@ -63,14 +72,17 @@ Wenn kein Eintrag ausgew&auml;hlt ist, oder es ist keine URL mit diesem Eintrag 
 <p>Benutzername und Passwort werden automatisch in das ausgew&auml;hlte Eingabeformular eingef&uuml;gt.<br>
 			<small><i>Siehe <a href="autotype.html">Autom. Eingabe anwenden</a> f&uuml;r mehr Information.</i></small>
 			</p>
-<h3>Ausf&uuml;hren</h3>
+<h3>Kommando Ausf&uuml;hren</h3>
 <p>Mit dieser Auswahl f&uuml;hren sie das Kommando, welches im Feld <i>Ausf&uuml;hren</i> eines Eintrages enthalten ist, aus.
 <small><i>Siehe <a href="execute_string.html">String ausf&uuml;hren</a> f&uuml;r mehr Information.</i></small>
 </p>
 <h3>Verkn&uuml;pfung erstellen</h3>
 <p>Wenn ein Eintrag ausgew&auml;hlt ist, erstellen Sie hiermit eine Verkn&uuml;pfung zu diesem Eintrag; typischerweise angewendet in einer Gruppe. Dies ist dann n&uuml;tzlich, wenn einen Eintrag zu mehreren Gruppen geh&ouml;ren soll, ohne dass Sie die Daten duplizieren m&uuml;ssen. Diese Verkn&uuml;pfung wird durch ein gesondertes Symbol <img style="width: 16px; height: 16px;" alt="shortcut" src="images/shortcut.jpg"> angedeutet und hat standardm&auml;&szlig;ig den Namen "Verk&uuml;pfung mit <i>x</i>", wo <i>x</i> der Name des originalen Eintrages ist. Nat&uuml;rlich kann diese Verkn&uuml;pfung bearbeitet, gel&ouml;scht oder verschoben werden, wie jeder normaler Eintrag auch.</p>
+<h3>Gehe zum Basiseintrag</h3>
+<p>Dieser Punkt kommt nur dann vor, wenn Sie ein verkn&uuml;pfter Eintrag oder ein Alias-Eintrag anklicken. Nach einem Klick auf <b>Gehe zum Basiseintrag</b> wird der Basiseintrag, der zu diesem Eintrag geh&ouml;rt, ausgew&auml;hlt.</p>
 		</div>
 <h2>Rechtsklick Bearbeiten</h2>
+<p>Alle Punkte im Men&uuml; <b>Bearbeiten</b> k&ouml;nnen auch mit einem rechten Mausklick auf den entsprechenden Eintrag, Alias bzw. Gruppe erreicht werden.</p>
 <table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
   <tbody>
     <tr>
@@ -89,12 +101,8 @@ Wenn kein Eintrag ausgew&auml;hlt ist, oder es ist keine URL mit diesem Eintrag 
     </tr>
   </tbody>
 </table>
-<p>Viele Punkte im Men&uuml; <b>Bearbeiten</b> k&ouml;nnen auch mit einem rechten Mausklick auf den entsprechenden Eintrag bzw. Gruppe erreicht werden. Hier werden nur die Punkte behandelt, die im Kapitel <b>Men&uuml; Bearbeiten</b> oben noch nicht abgehandelt wurden.</p>
+<p>Alle Menüpunkte sind im Kapitel <b>Men&uuml; Bearbeiten</b> oben abgehandelt worden.</p>
 <div class="instr">
-<h3>Teilmenge des Passwortes anzeigen</h3>
-<p>Im oberen Feld des Dialoges k&ouml;nnen Sie die Positionen der Zeichen im Passwort eingeben, die sie f&uuml;r die Teilmenge des Passwortes ben&ouml;tigen. Als Trennzeichen dient das Leerzeichen, das Komma oder der Strichpunkt. Im unteren Feld werden die Zeichen, die mit den Positionen &uuml;bereinstimmen, angezeigt. Aus diesem Dialog kehren sie mit <b>Esc</b> zur&uuml;ck.</p>
-<h3>Gehe zum Basiseintrag</h3>
-<p>Dieser Punkt kommt nur dann vor, wenn Sie ein verkn&uuml;pfter Eintrag oder ein Alias-Eintrag mit der rechten Maustaste anklicken. Nach einem Klick auf <b>Gehe zum Basiseintrag</b> wird der Basiseintrag, der zu diesem Eintrag geh&ouml;rt, ausgew&auml;hlt.</p>
 		</div>
 		<!-- Added some white space at the bottom for natural scrolling -->
 		<br>

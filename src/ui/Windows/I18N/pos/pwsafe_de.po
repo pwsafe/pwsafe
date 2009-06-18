@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-06-14 21:58+0100\n"
+"PO-Revision-Date: 2009-06-18 09:06+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1890,8 +1890,14 @@ msgstr "Bestätigung:"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Conflicting entries for |%s|%s|%s|. Added merged entry as |%s|%s|%s|. Differing field(s): %s"
-msgstr "Widersprüchliche Einträge für |%s|%s|%s|. Zusammengeführter Eintrag |%s|%s|%s| eingefügt. Unterschiedliche Felder: %s"
+msgid ""
+"Conflicting entries for »%s»%s»%s».\r\n"
+"  Added merged entry as »%s»%s»%s».\r\n"
+"    Differing field(s): %s"
+msgstr ""
+"Widersprüchliche Einträge für »%s»%s»%s».\r\n"
+"  Zusammengeführter Eintrag als »%s»%s»%s» eingefügt.\r\n"
+"    Unterschiedliche Felder: %s"
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -3468,27 +3474,14 @@ msgstr "Menüeintrag"
 msgid "Merge"
 msgstr "Zusammenführen"
 
-#. Resource IDs: (335)
-msgid "Merge Completed"
-msgstr "Zusammenführen beendet"
-
-#. Resource IDs: (335)
-#, c-format
-msgid ""
-"Merge completed: %d %s added\r\n"
-"(%d %s, %d %s, %d %s)"
-msgstr ""
-"Zusammenführen komplett: %d %s eingefügt\r\n"
-"(%d %s, %d %s, %d %s)"
-
 #. Resource IDs: (32018)
 msgid "Merge..."
 msgstr "&Zusammenführen..."
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Merging database: %s"
-msgstr "Füge Datenbank %s zur aktuellen hinzu"
+msgid "Merging database: %s\r\n"
+msgstr "Datenbank %s wird zusammengeführt\r\n"
 
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
@@ -6352,6 +6345,26 @@ msgstr ""
 "\r\n"
 "Email: "
 
+#. Resource IDs: (335)
+#, c-format
+msgid ""
+"\r\n"
+"Merge completed: %d %s added\r\n"
+"(%d %s, %d %s, %d %s)"
+msgstr ""
+"\r\n"
+"Zusammenführen komplett: %d %s hizugefügt\r\n"
+"(%d %s, %d %s, %d %s)"
+
+#. Resource IDs: (357)
+#, c-format
+msgid ""
+"\r\n"
+"The following new %s %s merged into this database:"
+msgstr ""
+"\r\n"
+"Folgender neue %s %s zusammengeführt mit dieser Datenbank:"
+
 #. Resource IDs: (341)
 msgid ""
 "\r\n"
@@ -6732,6 +6745,14 @@ msgstr "v&2 Format..."
 msgid "validation"
 msgstr "Validierung"
 
+#. Resource IDs: (357)
+msgid "was"
+msgstr "war"
+
+#. Resource IDs: (357)
+msgid "were"
+msgstr "wo"
+
 #. Resource IDs: (1209)
 msgid "whatever"
 msgstr "egal"
@@ -6753,6 +6774,8 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid "Merge Completed"
+#~ msgstr "Zusammenführen beendet"
 #~ msgid "&Override Policy"
 #~ msgstr "Richtlinie übergehen"
 #~ msgid "255"
