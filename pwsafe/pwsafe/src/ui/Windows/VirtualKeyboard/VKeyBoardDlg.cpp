@@ -250,7 +250,8 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   // they have this font installed, fell foul of it, so using the
   // bad method!!!
   // Code left here in case user repents, so that the 'proper' method
-  // can be re-instated.  HDC hDC = ::GetDC(NULL);
+  // can be re-instated.
+  HDC hDC = ::GetDC(NULL);
   bool bFound(false);
   LOGFONT lf = {0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
                 L"Arial Unicode MS"};
