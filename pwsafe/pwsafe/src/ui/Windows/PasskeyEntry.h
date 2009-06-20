@@ -50,7 +50,6 @@ public:
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
   int m_treatwhitespaceasempty;
-  HINSTANCE m_OSK_module;
 
 private:
   // Dialog Data

@@ -42,7 +42,7 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   : CPWDialog(CPasskeyChangeDlg::IDD, pParent), m_pVKeyBoardDlg(NULL),
-  m_LastFocus(IDC_OLDPASSKEY), m_OSK_module(NULL)
+  m_LastFocus(IDC_OLDPASSKEY)
 {
   m_oldpasskey = _T("");
   m_newpasskey = _T("");
@@ -51,22 +51,6 @@ CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   m_pctlNewPasskey = new CSecEditExtn;
   m_pctlOldPasskey = new CSecEditExtn;
   m_pctlConfirmNew = new CSecEditExtn;
-
-  if (app.m_bOSK_module) {
-    stringT dll_loc = pws_os::getexecdir();
-#if defined( _DEBUG ) || defined( DEBUG )
-    dll_loc += _T("pws_osk_D.dll");
-#else
-    dll_loc += _T("pws_osk.dll");
-#endif
-    m_OSK_module = LoadLibrary(dll_loc.c_str());
-
-    if (m_OSK_module == NULL) {
-      TRACE(_T("CPasskeyChangeDlg::CPasskeyChangeDlg - Unable to load OSK DLL. OSK not available.\n"));
-    } else {
-      TRACE(_T("CPasskeyChangeDlg::CPasskeyChangeDlg - OSK DLL loaded OK.\n"));
-    }
-  }
 }
 
 CPasskeyChangeDlg::~CPasskeyChangeDlg()
@@ -74,13 +58,6 @@ CPasskeyChangeDlg::~CPasskeyChangeDlg()
   delete m_pctlOldPasskey;
   delete m_pctlNewPasskey;
   delete m_pctlConfirmNew;
-  
-  if (m_OSK_module != NULL) {
-    BOOL brc = FreeLibrary(m_OSK_module);
-    pws_os::Trace(_T("CPasskeyChangeDlg::~CPasskeyChangeDlg - Free OSK DLL: %s\n"),
-                  brc == TRUE ? _T("OK") : _T("FAILED"));
-    m_OSK_module = NULL;
-  }
 
   if (m_pVKeyBoardDlg != NULL) {
     // Save Last Used Keyboard
@@ -137,7 +114,7 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   m_pctlConfirmNew->SetPasswordChar(PSSWDCHAR);
 
   // Only show virtual Keyboard menu if we can load DLL
-  if (!app.m_bOSK_module) {
+  if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
@@ -253,7 +230,7 @@ void CPasskeyChangeDlg::OnConfirmNewSetfocus()
 void CPasskeyChangeDlg::OnVirtualKeyboard()
 {
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
-  if (!app.m_bOSK_module || m_OSK_module == NULL)
+  if (!CVKeyBoardDlg::IsOSKAvailable())
     return;
 
   if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
@@ -265,7 +242,7 @@ void CPasskeyChangeDlg::OnVirtualKeyboard()
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, m_OSK_module, cs_LUKBD.c_str());
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
     m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
   } else {
     m_pVKeyBoardDlg->ResetKeyboard();
