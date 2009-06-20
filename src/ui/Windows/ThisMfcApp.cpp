@@ -72,18 +72,6 @@ END_MESSAGE_MAP()
 
 static MFCReporter aReporter;
 
-// Callback Routine to find Unicode font for Virtual Keyboard
-int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *, 
-                                    DWORD , LPARAM lParam)
-{
-  // Found one
-  bool *pFound = (bool *)lParam;
-  *pFound = true;
-
-  // Don’t call me anymore – I’m done
-  return 0;
-}
-
 //#ifdef _DEBUG
 //static CMemoryState oldMemState, newMemState, diffMemState;
 //#endif
@@ -406,6 +394,25 @@ void ThisMfcApp::LoadLocalizedStuff()
   m_bOSK_module = CheckIfVKAvialable();
 }
 
+// Callback Routine to find Unicode font for Virtual Keyboard
+// The following code IS used by the correct method. One user, 
+// who insists that, they have this font installed, fell foul 
+// of it, so using the bad method!!!
+// Code left here in case user repents, so that the 'proper' method
+// can be re-instated.
+/*
+int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *, 
+                                    DWORD , LPARAM lParam)
+{
+  // Found one
+  bool *pFound = (bool *)lParam;
+  *pFound = true;
+
+  // Don’t call me anymore – I’m done
+  return 0;
+}
+*/
+
 bool ThisMfcApp::CheckIfVKAvialable()
 {
   // Check if we can support On Sreen Keyboards for Passphrase Entry, 
@@ -458,6 +465,12 @@ bool ThisMfcApp::CheckIfVKAvialable()
     return false;
 
   // We have the DLL, now check Unicode font installed
+  // The following IS the correct method. One user, who insists that,
+  // they have this font installed, fell foul of it, so using the
+  // bad method!!!
+  // Code left here in case user repents, so that the 'proper' method
+  // can be re-instated.
+  /*
   HDC hDC = GetDC(NULL);
   bool bFound(false);
   LOGFONT lf = {0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
@@ -467,6 +480,59 @@ bool ThisMfcApp::CheckIfVKAvialable()
 
   if (!bFound) {
     TRACE(_T("ThisMfcApp::ThisMfcApp - Arial Unicode MS font not installed. OSK not available.\n"));
+    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
+    return false;
+  }
+  */
+
+  // We have the DLL, now check Unicode font installed
+  CFont font;
+  LOGFONT lf;
+  TCHAR * tch_fontname;
+  TCHAR wfm_fontname[32];
+
+  memset(&lf, 0, sizeof(LOGFONT));
+  lf.lfHeight = -16;
+  lf.lfWeight = FW_NORMAL;
+  lf.lfCharSet = DEFAULT_CHARSET;
+  tch_fontname = _T("Arial Unicode MS");
+  _tcsncpy_s(lf.lfFaceName, LF_FACESIZE, tch_fontname, _tcslen(tch_fontname));
+
+  BOOL brc = font.CreateFontIndirect(&lf);
+
+  // Windows Font Mapper is a real pain!!!
+  // Even if you put garbage for the font name, it still won't fail.
+  // It will create a font that 'it' thinks is nearest!
+  // But just in case it does "the right thing" ....
+  if (brc == FALSE) {
+    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
+    return false;
+  }
+
+  // So we have to assign it and get what font it chose in order
+  // to decide if it got the right one.  Grrrrr!
+  CDC dc;
+  brc = dc.CreateCompatibleDC(NULL);
+
+  // If we can't create a device context, give in early
+  if (brc == FALSE) {
+    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
+    return false;
+  }
+
+  // Set the Window Font Mapper font into device context
+  CFont* orignal_font = dc.SelectObject(&font);
+
+  // Now get the name 'it' decided we wanted!
+  dc.GetTextFace(sizeof(wfm_fontname), wfm_fontname);
+
+  // Restore original font, delete the DC and font
+  dc.SelectObject(orignal_font);
+  dc.DeleteDC();
+  font.DeleteObject();
+
+  // Now check if it found the 'right one'
+  if (_tcscmp(tch_fontname, wfm_fontname) != 0) {
     AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
     return false;
   }
