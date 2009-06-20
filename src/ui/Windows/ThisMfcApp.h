@@ -22,12 +22,6 @@
 #include <afxmt.h>
 //-----------------------------------------------------------------------------
 
-#include "os/windows/pws_osk/pws_osk.h"
-
-typedef OSK_API void (* LP_OSK_ListKeyboards) (UINT &uiKLID, UINT &uiCtrlID);
-typedef OSK_API BOOL (* LP_OSK_GetKeyboardData) (UINT uiKLID, st_KBImpl &stKBImpl);
-typedef OSK_API int  (* LP_OSK_GetVersion) ();
-
 class DboxMain;
 
 class ThisMfcApp

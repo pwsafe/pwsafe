@@ -21,10 +21,15 @@
 #include "../resource.h"
 #include "../SecString.h"
 #include "VKresource.h"
-
-#include "../../../os/windows/pws_osk/pws_osk.h"
-
 #include "VKBButton.h"
+#include "../../../os/windows/pws_osk/pws_osk.h"
+#include <vector>
+#include <map>
+
+typedef OSK_API void (* LP_OSK_ListKeyboards) (UINT &uiKLID, UINT &uiCtrlID);
+typedef OSK_API BOOL (* LP_OSK_GetKeyboardData) (UINT uiKLID, st_KBImpl &stKBImpl);
+typedef OSK_API int  (* LP_OSK_GetVersion) ();
+
 
 #define WM_INSERTBUFFER (WM_APP - 10)
 
@@ -65,17 +70,14 @@ typedef Map_st_SC2Char::iterator Iter_Map_st_SC2CHAR;
 class CVKeyBoardDlg : public CPWDialog
 {
 public:
-  CVKeyBoardDlg(CWnd* pParent, HINSTANCE OSK_module, LPCWSTR wcKLID = NULL);   // standard constructor
+  static bool IsOSKAvailable(); // true iff dll available, right version, etc.
+  CVKeyBoardDlg(CWnd* pParent, HINSTANCE OSK_module, LPCWSTR wcKLID = NULL);
   ~CVKeyBoardDlg();
 
   enum { IDD = IDD_VKEYBOARD };
 
-  CComboBox m_cbxKeyBoards;
-
-  const CSecString &GetPassphrase() const
-  {return m_phrase;}
-  const UINT &GetKLID() const
-  {return m_uiKLID;}
+  const CSecString &GetPassphrase() const {return m_phrase;}
+  const UINT &GetKLID() const {return m_uiKLID;}
 
   void ResetKeyboard();
 
@@ -84,6 +86,7 @@ protected:
   BOOL OnInitDialog();
 
   int m_phrasecount;
+  CComboBox m_cbxKeyBoards;
 
   BOOL PreTranslateMessage(MSG* pMsg);
 
