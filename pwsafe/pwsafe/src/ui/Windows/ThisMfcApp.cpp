@@ -39,6 +39,7 @@
 #include "SingleInstance.h"
 
 #include "CryptKeyEntry.h"
+#include "VirtualKeyboard/VKeyBoardDlg.h" // XXX temp
 #include "PWSRecentFileList.h"
 #include "corelib/PWSprefs.h"
 
@@ -243,6 +244,7 @@ void ThisMfcApp::LoadLocalizedStuff()
 {
   /*
   Looks for localized version of resources and help files, loads them if found
+  (Also tries to setup on-screen keyboard)
 
   Format of resource-only DLL names (in dir returned by GetExeDir)
     pwsafeLL_CC.dll
@@ -394,151 +396,9 @@ void ThisMfcApp::LoadLocalizedStuff()
   m_bOSK_module = CheckIfVKAvialable();
 }
 
-// Callback Routine to find Unicode font for Virtual Keyboard
-// The following code IS used by the correct method. One user, 
-// who insists that, they have this font installed, fell foul 
-// of it, so using the bad method!!!
-// Code left here in case user repents, so that the 'proper' method
-// can be re-instated.
-/*
-int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *, 
-                                    DWORD , LPARAM lParam)
-{
-  // Found one
-  bool *pFound = (bool *)lParam;
-  *pFound = true;
-
-  // Don’t call me anymore – I’m done
-  return 0;
-}
-*/
-
 bool ThisMfcApp::CheckIfVKAvialable()
 {
-  // Check if we can support On Sreen Keyboards for Passphrase Entry, 
-  // New DBs and Change Passphrase
-  bool bVKAvailable(false);
-
-  // Try to load DLL
-  stringT dll_loc = pws_os::getexecdir();
-#if defined( _DEBUG ) || defined( DEBUG )
-  dll_loc += _T("pws_osk_D.dll");
-#else
-  dll_loc += _T("pws_osk.dll");
-#endif
-  HINSTANCE OSK_module = LoadLibrary(dll_loc.c_str());
-  if (OSK_module == NULL) {
-    TRACE(_T("ThisMfcApp::ThisMfcApp - Unable to load OSK DLL. OSK not available.\n"));
-    return false;
-  } else {
-    TRACE(_T("ThisMfcApp::ThisMfcApp - OSK DLL loaded OK.\n"));
-
-    LP_OSK_GetKeyboardData pGetKBData;
-    LP_OSK_ListKeyboards pListKBs;
-    LP_OSK_GetVersion pOSKVersion;
-
-    pGetKBData  = (LP_OSK_GetKeyboardData)GetProcAddress(OSK_module, "OSK_GetKeyboardData");
-    pListKBs    = (LP_OSK_ListKeyboards)GetProcAddress(OSK_module, "OSK_ListKeyboards");
-    pOSKVersion = (LP_OSK_GetVersion)GetProcAddress(OSK_module, "OSK_GetVersion");
-
-    pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Found OSK_GetVersion: %s\n"),
-            pOSKVersion != NULL ? _T("OK") : _T("FAILED"));
-    pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Found OSK_ListKeyboards: %s\n"),
-            pListKBs != NULL ? _T("OK") : _T("FAILED"));
-    pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Found OSK_GetKeyboardData: %s\n"),
-            pGetKBData != NULL ? _T("OK") : _T("FAILED"));
-
-    if (pListKBs == NULL || pGetKBData == NULL || pOSKVersion == NULL)
-      TRACE(_T("ThisMfcApp::ThisMfcApp - Unable to get all required OSK functions. OSK not available.\n"));
-    else if (pOSKVersion() != VK_DLL_VERSION) {
-      AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
-    } else
-      bVKAvailable = true;
-
-    BOOL brc = FreeLibrary(OSK_module);
-    pws_os::Trace(_T("ThisMfcApp::ThisMfcApp - Free OSK DLL: %s\n"),
-                  brc == TRUE ? _T("OK") : _T("FAILED"));
-    OSK_module = NULL;
-  }
-
-  if (!bVKAvailable)
-    return false;
-
-  // We have the DLL, now check Unicode font installed
-  // The following IS the correct method. One user, who insists that,
-  // they have this font installed, fell foul of it, so using the
-  // bad method!!!
-  // Code left here in case user repents, so that the 'proper' method
-  // can be re-instated.
-  /*
-  HDC hDC = GetDC(NULL);
-  bool bFound(false);
-  LOGFONT lf = {0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
-                L"Arial Unicode MS"};
-  EnumFontFamiliesEx(hDC, &lf, (FONTENUMPROC)&EnumFontFamiliesExProc, (LPARAM)(&bFound), 0);
-  ReleaseDC(NULL, hDC);
-
-  if (!bFound) {
-    TRACE(_T("ThisMfcApp::ThisMfcApp - Arial Unicode MS font not installed. OSK not available.\n"));
-    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
-    return false;
-  }
-  */
-
-  // We have the DLL, now check Unicode font installed
-  CFont font;
-  LOGFONT lf;
-  TCHAR * tch_fontname;
-  TCHAR wfm_fontname[32];
-
-  memset(&lf, 0, sizeof(LOGFONT));
-  lf.lfHeight = -16;
-  lf.lfWeight = FW_NORMAL;
-  lf.lfCharSet = DEFAULT_CHARSET;
-  tch_fontname = _T("Arial Unicode MS");
-  _tcsncpy_s(lf.lfFaceName, LF_FACESIZE, tch_fontname, _tcslen(tch_fontname));
-
-  BOOL brc = font.CreateFontIndirect(&lf);
-
-  // Windows Font Mapper is a real pain!!!
-  // Even if you put garbage for the font name, it still won't fail.
-  // It will create a font that 'it' thinks is nearest!
-  // But just in case it does "the right thing" ....
-  if (brc == FALSE) {
-    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
-    return false;
-  }
-
-  // So we have to assign it and get what font it chose in order
-  // to decide if it got the right one.  Grrrrr!
-  CDC dc;
-  brc = dc.CreateCompatibleDC(NULL);
-
-  // If we can't create a device context, give in early
-  if (brc == FALSE) {
-    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
-    return false;
-  }
-
-  // Set the Window Font Mapper font into device context
-  CFont* orignal_font = dc.SelectObject(&font);
-
-  // Now get the name 'it' decided we wanted!
-  dc.GetTextFace(sizeof(wfm_fontname), wfm_fontname);
-
-  // Restore original font, delete the DC and font
-  dc.SelectObject(orignal_font);
-  dc.DeleteDC();
-  font.DeleteObject();
-
-  // Now check if it found the 'right one'
-  if (_tcscmp(tch_fontname, wfm_fontname) != 0) {
-    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
-    return false;
-  }
-
-  // We have the DLL and the Font!
-  return true;
+  return CVKeyBoardDlg::IsOSKAvailable();
 }
 
 bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
