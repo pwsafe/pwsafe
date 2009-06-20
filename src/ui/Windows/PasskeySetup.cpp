@@ -50,22 +50,6 @@ CPasskeySetup::CPasskeySetup(CWnd* pParent)
 
   m_pctlPasskey = new CSecEditExtn;
   m_pctlVerify = new CSecEditExtn;
-
-  if (app.m_bOSK_module) {
-    stringT dll_loc = pws_os::getexecdir();
-#if defined( _DEBUG ) || defined( DEBUG )
-    dll_loc += _T("pws_osk_D.dll");
-#else
-    dll_loc += _T("pws_osk.dll");
-#endif
-    m_OSK_module = LoadLibrary(dll_loc.c_str());
-
-    if (m_OSK_module == NULL) {
-      TRACE(_T("CPasskeySetup::CPasskeySetup - Unable to load OSK DLL. OSK not available.\n"));
-    } else {
-      TRACE(_T("CPasskeySetup::CPasskeySetup - OSK DLL loaded OK.\n"));
-    }
-  }
 }
 
 CPasskeySetup::~CPasskeySetup()
@@ -128,7 +112,7 @@ BOOL CPasskeySetup::OnInitDialog()
   m_pctlVerify->SetPasswordChar(PSSWDCHAR);
 
   // Only show virtual Keyboard menu if we can load DLL
-  if (!app.m_bOSK_module) {
+  if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
@@ -235,7 +219,7 @@ void CPasskeySetup::OnVerifykeySetfocus()
 void CPasskeySetup::OnVirtualKeyboard()
 {
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
-  if (!app.m_bOSK_module || m_OSK_module == NULL)
+  if (!CVKeyBoardDlg::IsOSKAvailable())
     return;
 
   if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
@@ -247,7 +231,7 @@ void CPasskeySetup::OnVirtualKeyboard()
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, m_OSK_module, cs_LUKBD.c_str());
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
     m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
   } else {
     m_pVKeyBoardDlg->ResetKeyboard();

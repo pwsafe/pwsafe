@@ -39,7 +39,6 @@
 #include "SingleInstance.h"
 
 #include "CryptKeyEntry.h"
-#include "VirtualKeyboard/VKeyBoardDlg.h" // XXX temp
 #include "PWSRecentFileList.h"
 #include "corelib/PWSprefs.h"
 
@@ -85,7 +84,7 @@ ThisMfcApp::ThisMfcApp() :
 #endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
-  m_ghAccelTable(NULL), m_pMainMenu(NULL), m_bOSK_module(false),
+  m_ghAccelTable(NULL), m_pMainMenu(NULL),
   m_bACCEL_Table_Created(false)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
@@ -392,13 +391,6 @@ void ThisMfcApp::LoadLocalizedStuff()
         PWSUtil::GetTimeStamp(), cs_HelpPath);
 
   m_csHelpFile = cs_HelpPath;
-  
-  m_bOSK_module = CheckIfVKAvialable();
-}
-
-bool ThisMfcApp::CheckIfVKAvialable()
-{
-  return CVKeyBoardDlg::IsOSKAvailable();
 }
 
 bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)

@@ -36,28 +36,12 @@ CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
   : CPWDialog(CExportXMLDlg::IDD, pParent),
   m_subgroup_set(BST_UNCHECKED),
   m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0),
-  m_OSK_module(NULL), m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL)
+  m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL)
 {
   m_passkey = _T("");
   m_defexpdelim = _T("\xbb");
 
   m_pctlPasskey = new CSecEditExtn;
-
-  if (app.m_bOSK_module) {
-    stringT dll_loc = pws_os::getexecdir();
-#if defined( _DEBUG ) || defined( DEBUG )
-    dll_loc += _T("pws_osk_D.dll");
-#else
-    dll_loc += _T("pws_osk.dll");
-#endif
-    m_OSK_module = LoadLibrary(dll_loc.c_str());
-
-    if (m_OSK_module == NULL) {
-      TRACE(_T("CExportXMLDlg::CExportXMLDlg - Unable to load OSK DLL. OSK not available.\n"));
-    } else {
-      TRACE(_T("CExportXMLDlg::CExportXMLDlg - OSK DLL loaded OK.\n"));
-    }
-  }
 }
 
 BOOL CExportXMLDlg::OnInitDialog() 
@@ -71,7 +55,7 @@ BOOL CExportXMLDlg::OnInitDialog()
   ((CEdit*)GetDlgItem(IDC_EXPORT_XML_PASSWORD))->SetPasswordChar(PSSWDCHAR);
   
   // Only show virtual Keyboard menu if we can load DLL
-  if (!app.m_bOSK_module) {
+  if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_VKB)->EnableWindow(FALSE);
   }
@@ -82,13 +66,6 @@ BOOL CExportXMLDlg::OnInitDialog()
 CExportXMLDlg::~CExportXMLDlg()
 {
   delete m_pctlPasskey;
-
-  if (m_OSK_module != NULL) {
-    BOOL brc = FreeLibrary(m_OSK_module);
-    pws_os::Trace(_T("CPasskeyEntry::~CPasskeyEntry - Free OSK DLL: %s\n"),
-                  brc == TRUE ? _T("OK") : _T("FAILED"));
-    m_OSK_module = NULL;
-  }
 
   if (m_pVKeyBoardDlg != NULL) {
     // Save Last Used Keyboard
@@ -185,7 +162,7 @@ void CExportXMLDlg::OnAdvanced()
 void CExportXMLDlg::OnVirtualKeyboard()
 {
   // Shouldn't be here if couldn't load DLL. Static control disabled/hidden
-  if (!app.m_bOSK_module || m_OSK_module == NULL)
+  if (!CVKeyBoardDlg::IsOSKAvailable())
     return;
 
   if (m_pVKeyBoardDlg != NULL && m_pVKeyBoardDlg->IsWindowVisible()) {
@@ -197,7 +174,7 @@ void CExportXMLDlg::OnVirtualKeyboard()
   // If not already created - do it, otherwise just reset it
   if (m_pVKeyBoardDlg == NULL) {
     StringX cs_LUKBD = PWSprefs::GetInstance()->GetPref(PWSprefs::LastUsedKeyboard);
-    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, m_OSK_module, cs_LUKBD.c_str());
+    m_pVKeyBoardDlg = new CVKeyBoardDlg(this, cs_LUKBD.c_str());
     m_pVKeyBoardDlg->Create(CVKeyBoardDlg::IDD);
   } else {
     m_pVKeyBoardDlg->ResetKeyboard();

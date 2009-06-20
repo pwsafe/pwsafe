@@ -71,7 +71,7 @@ class CVKeyBoardDlg : public CPWDialog
 {
 public:
   static bool IsOSKAvailable(); // true iff dll available, right version, etc.
-  CVKeyBoardDlg(CWnd* pParent, HINSTANCE OSK_module, LPCWSTR wcKLID = NULL);
+  CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID = NULL);
   ~CVKeyBoardDlg();
 
   enum { IDD = IDD_VKEYBOARD };

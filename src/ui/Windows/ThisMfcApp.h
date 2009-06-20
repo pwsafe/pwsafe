@@ -42,7 +42,6 @@ public:
   CMenu* m_pMainMenu;
   BOOL m_mruonfilemenu;
   HINSTANCE m_hInstResDLL;
-  bool m_bOSK_module;
 
   static const UINT m_uiRegMsg;
   static const UINT m_uiWH_SHELL;
@@ -87,7 +86,6 @@ protected:
 private:
   bool ParseCommandLine(DboxMain &dbox, bool &allDone);
   void LoadLocalizedStuff();
-  bool CheckIfVKAvialable();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
   HANDLE m_hMutexOneInstance;
 

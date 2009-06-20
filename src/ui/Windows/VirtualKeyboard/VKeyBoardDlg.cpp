@@ -187,7 +187,6 @@ static int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *,
   // Don't call me anymore - I'm done
   return 0;
 }
-#else
 #endif
 
 
@@ -198,8 +197,6 @@ bool CVKeyBoardDlg::IsOSKAvailable()
    * 1. Can load the dll
    * 2. Version matches + has required functions
    * 3. Can find the required font.
-   *
-   * As a side effect, loads the dll and set required function pointers.
    */
   bool bVKAvailable(false);
 
@@ -217,13 +214,13 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   } else {
     TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n"));
 
-    LP_OSK_GetKeyboardData pGetKBData;
-    LP_OSK_ListKeyboards pListKBs;
-    LP_OSK_GetVersion pOSKVersion;
 
-    pGetKBData  = (LP_OSK_GetKeyboardData)GetProcAddress(OSK_module, "OSK_GetKeyboardData");
-    pListKBs    = (LP_OSK_ListKeyboards)GetProcAddress(OSK_module, "OSK_ListKeyboards");
-    pOSKVersion = (LP_OSK_GetVersion)GetProcAddress(OSK_module, "OSK_GetVersion");
+    LP_OSK_GetKeyboardData pGetKBData  = (LP_OSK_GetKeyboardData)GetProcAddress(OSK_module,
+                                                                                "OSK_GetKeyboardData");
+    LP_OSK_ListKeyboards pListKBs = (LP_OSK_ListKeyboards)GetProcAddress(OSK_module,
+                                                                         "OSK_ListKeyboards");
+    LP_OSK_GetVersion pOSKVersion = (LP_OSK_GetVersion)GetProcAddress(OSK_module,
+                                                                      "OSK_GetVersion");
 
     pws_os::Trace(_T("CVKeyBoardDlg::IsOSKAvailable - Found OSK_GetVersion: %s\n"),
                   pOSKVersion != NULL ? _T("OK") : _T("FAILED"));
@@ -242,7 +239,6 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     BOOL brc = FreeLibrary(OSK_module);
     pws_os::Trace(_T("CVKeyBoardDlg::IsOSKAvailable - Free OSK DLL: %s\n"),
                   brc == TRUE ? _T("OK") : _T("FAILED"));
-    OSK_module = NULL;
   }
 
   if (!bVKAvailable)
@@ -266,10 +262,6 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   if (!bFound) {
     TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - Arial Unicode MS font not installed. OSK not available.\n"));
     AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
-    BOOL brc = FreeLibrary(OSK_module);
-    pws_os::Trace(_T("CVKeyBoardDlg::IsOSKAvailable - Free OSK DLL: %s\n"),
-                  brc == TRUE ? _T("OK") : _T("FAILED"));
-    OSK_module = NULL;
     return false;
   }
 #else
@@ -330,15 +322,14 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 }
 
 //-----------------------------------------------------------------------------
-CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, HINSTANCE OSK_module, LPCWSTR wcKLID)
-  : CPWDialog(CVKeyBoardDlg::IDD, pParent),
-  m_pParent(pParent), m_OSK_module(OSK_module),
-  m_pToolTipCtrl(NULL), m_pPassphraseFont(NULL),
-  m_phrase(L""), m_phrasecount(0), m_State(0), m_SaveState(0),
-  m_bShift(false), m_bLCtrl(false), m_bRCtrl(false), m_bAltGr(false), m_bAltNum(false),
-  m_bCapsLock(false), m_bRandom(false),
-  m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
-  m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0)
+CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
+  : CPWDialog(CVKeyBoardDlg::IDD, pParent), m_pParent(pParent),
+    m_pToolTipCtrl(NULL), m_pPassphraseFont(NULL),
+    m_phrase(L""), m_phrasecount(0), m_State(0), m_SaveState(0),
+    m_bShift(false), m_bLCtrl(false), m_bRCtrl(false), m_bAltGr(false), m_bAltNum(false),
+    m_bCapsLock(false), m_bRandom(false),
+    m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
+    m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0)
 {
   // Verify all is OK
   ASSERT(sizeof(defscancodes101) / sizeof(BYTE) == NUM_KEYS);
@@ -353,8 +344,17 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, HINSTANCE OSK_module, LPCWSTR wcKLID
   // Set background colour for for dialog as white
   m_pBkBrush.CreateSolidBrush(RGB(255, 255, 255));
 
-  // Get required pointers to functions in DLL - already checked at startup to be there
-  // and the matching version
+  // dll is guaranteed to be loadable, right version and in general 100% kosher
+  // by IsOSKAvailable(). Caller is responsible to call that, though...
+  stringT dll_loc = pws_os::getexecdir();
+#if defined( _DEBUG ) || defined( DEBUG )
+  dll_loc += _T("pws_osk_D.dll");
+#else
+  dll_loc += _T("pws_osk.dll");
+#endif
+  m_OSK_module = LoadLibrary(dll_loc.c_str());
+
+  ASSERT(m_OSK_module != NULL);
   m_pGetKBData = (LP_OSK_GetKeyboardData)GetProcAddress(m_OSK_module, "OSK_GetKeyboardData");
   m_pListKBs   = (LP_OSK_ListKeyboards)GetProcAddress(m_OSK_module, "OSK_ListKeyboards");
 
@@ -391,6 +391,8 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
 
   if (m_pToolTipCtrl != NULL)
     delete m_pToolTipCtrl;
+
+  FreeLibrary(m_OSK_module);
 }
 
 void CVKeyBoardDlg::OnPostNcDestroy()

@@ -23,8 +23,6 @@ public:
   CPasskeyChangeDlg(CWnd* pParent = NULL);   // standard constructor
   ~CPasskeyChangeDlg();
 
-  HINSTANCE m_OSK_module;
-
   // Dialog Data
   //{{AFX_DATA(CPasskeyChangeDlg)
   enum { IDD = IDD_KEYCHANGE_DIALOG };
