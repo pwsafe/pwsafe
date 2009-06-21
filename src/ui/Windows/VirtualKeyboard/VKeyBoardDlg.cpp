@@ -193,6 +193,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
    * 3. Can find the required font.
    */
   bool bVKAvailable(false);
+  static bool warnedAlready(false); // warn only once per process.
 
   // Try to load DLL
   stringT dll_loc = pws_os::getexecdir();
@@ -225,10 +226,12 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 
     if (pListKBs == NULL || pGetKBData == NULL || pOSKVersion == NULL)
       TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - Unable to get all required OSK functions. OSK not available.\n"));
-    else if (pOSKVersion() != VK_DLL_VERSION) {
-      AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
-    } else
+    else if (pOSKVersion() == VK_DLL_VERSION) {
       bVKAvailable = true;
+    } else if (!warnedAlready) {
+      warnedAlready = true;
+      AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
+    }
 
     BOOL brc = FreeLibrary(OSK_module);
     pws_os::Trace(_T("CVKeyBoardDlg::IsOSKAvailable - Free OSK DLL: %s\n"),
@@ -297,7 +300,10 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 finish_check:
   if (!bFound) {
     TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - Arial Unicode MS font not installed. OSK not available.\n"));
-    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
+    if (!warnedAlready) {
+      warnedAlready = true;
+      AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
+    }
     return false;
   }
 
