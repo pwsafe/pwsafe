@@ -18,6 +18,9 @@
 #include "VKresource.h"
 #include "VKresource3.h"
 
+#include "../PasswordSafe.h" // for app extern declaration
+#include "../ThisMfcApp.h" // for NoSysEnvWarnings()
+
 #include "../../../os/dir.h"
 #include "../../../os/windows/pws_osk/pws_osk.h"
 #include "../../../corelib/PWSrand.h"
@@ -228,7 +231,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
       TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - Unable to get all required OSK functions. OSK not available.\n"));
     else if (pOSKVersion() == VK_DLL_VERSION) {
       bVKAvailable = true;
-    } else if (!warnedAlready) {
+    } else if (!warnedAlready && !app.NoSysEnvWarnings()) {
       warnedAlready = true;
       AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
     }
@@ -300,7 +303,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 finish_check:
   if (!bFound) {
     TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - Arial Unicode MS font not installed. OSK not available.\n"));
-    if (!warnedAlready) {
+    if (!warnedAlready&& !app.NoSysEnvWarnings()) {
       warnedAlready = true;
       AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
     }
