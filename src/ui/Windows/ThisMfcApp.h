@@ -76,6 +76,7 @@ public:
   DWORD GetFileVersionMajorMinor() const {return m_dwMajorMinor;}
   DWORD GetFileVersionBuildRevision() const {return m_dwBuildRevision;}
   void SetACCELTableCreated() {m_bACCEL_Table_Created = true;}
+  bool NoSysEnvWarnings() const {return m_noSysEnvWarnings;}
 
   DECLARE_MESSAGE_MAP()
 
@@ -100,6 +101,7 @@ private:
   CString m_csFileVersionString;
   CString m_csCopyrightString;
   CString m_csHelpFile;
+  bool m_noSysEnvWarnings; // set by '-q' command line argument
 };
 //-----------------------------------------------------------------------------
 // Local variables:

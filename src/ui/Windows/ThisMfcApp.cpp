@@ -85,7 +85,7 @@ ThisMfcApp::ThisMfcApp() :
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
-  m_bACCEL_Table_Created(false)
+  m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -528,6 +528,9 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             arg++;
             PWSprefs::SetConfigFile(stringT(*arg));
           }
+        break;
+        case TCHAR('Q'): case TCHAR('q'): // be Quiet re missing fonts, dlls, etc.
+          m_noSysEnvWarnings = true;
         break;
         default:
           Usage();

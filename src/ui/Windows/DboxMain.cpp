@@ -958,7 +958,7 @@ BOOL DboxMain::OnInitDialog()
 
   if (m_runner.isValid()) {
     m_runner.Set(m_hWnd); 
-  } else {
+  } else if (!app.NoSysEnvWarnings()) {
     AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
 
