@@ -1201,8 +1201,10 @@ void CVKeyBoardDlg::SetNormalButtons()
     for (int i = 0; i < NUM_KEYS; i++) {
       bDeadKey = false;
       cs_temp.Empty();
-      if (m_scancodes[i] == 0) {
-        // Zero scancode == unused key - disable/don't show
+      if (m_scancodes[i] == 0 || 
+          m_map_stSC2Char.find(m_scancodes[i]) == m_map_stSC2Char.end()) {
+        // Zero scancode or not in our map to a character 
+        //     == unused key - disable/don't show
         m_vkbb_Keys[i].SetWindowText(cs_temp);
         m_vkbb_Keys[i].EnableWindow(FALSE);
         m_vkbb_Keys[i].ShowWindow(SW_HIDE);
