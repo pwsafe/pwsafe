@@ -187,6 +187,8 @@ static int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *,
   return 0;
 }
 
+bool CVKeyBoardDlg::m_bArialFont = false;
+
 bool CVKeyBoardDlg::IsOSKAvailable()
 {
   /**
@@ -247,70 +249,59 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   // We have the DLL, now check Unicode font installed
   bool bFound(false);
   LOGFONT lf = {0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
-                L"Arial Unicode MS"};
+                _T("")};
+  const TCHAR * ARIALUMS = _T("Arial Unicode MS");
+  const TCHAR * ARIALU   = _T("Arial Unicode");
+  const TCHAR * LUCIDAUS = _T("Lucida Sans Unicode");
+ 
+  HDC hDC = ::GetDC(NULL);
 
-  CString cs_PWS_OSK_FONT_ALT;
-  BOOL bOSK_FONT_ALT = cs_PWS_OSK_FONT_ALT.GetEnvironmentVariable(_T("PWS_OSK_FONT_ALT"));
+  // First check for Arial Unicode MS
+  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
+           ARIALUMS, _tcslen(ARIALUMS) * sizeof(TCHAR)); 
+  EnumFontFamiliesEx(hDC, &lf,
+                     (FONTENUMPROC)&EnumFontFamiliesExProc,
+                     (LPARAM)(&bFound), 0);
 
-  // Did user override via PWS_OSK_FONT_ALT env var?
-  if (bOSK_FONT_ALT == FALSE) {
-    // No - The following IS the correct method and much smaller!
-    HDC hDC = ::GetDC(NULL);
-    EnumFontFamiliesEx(hDC, &lf,
-                       (FONTENUMPROC)&EnumFontFamiliesExProc,
-                       (LPARAM)(&bFound), 0);
-    ::ReleaseDC(NULL, hDC);
-  } else {
-    // Yes - This is an alternative method and is bigger and more convoluted!
-    CFont font;
-    const TCHAR *tch_fontname = _T("Arial Unicode MS");
-    TCHAR wfm_fontname[32] = {0};
-
-    // Try and create font
-    BOOL brc = font.CreateFontIndirect(&lf);
-
-    // Windows Font Mapper is a real pain!!!
-    // Even if you put garbage for the font name, it still won't fail.
-    // It will create a font that 'it' thinks is nearest!
-    // But just in case it does "the right thing" ....
-    if (brc == FALSE)
-      goto finish_check;
-
-    // So we have to assign it and get what font it chose in order
-    // to decide if it got the right one.  Grrrrr!
-    CDC dc;
-    brc = dc.CreateCompatibleDC(NULL);
-
-    // If we can't create a device context, give up early
-    if (brc == FALSE)
-      goto finish_check;
-
-    // Set the Window Font Mapper font into device context
-    CFont* orignal_font = dc.SelectObject(&font);
-
-    // Now get the name 'it' decided we wanted!
-    dc.GetTextFace(sizeof(wfm_fontname), wfm_fontname);
-
-    // Restore original font, delete the DC and font
-    dc.SelectObject(orignal_font);
-    dc.DeleteDC();
-    font.DeleteObject();
-
-    // Now check if it found the 'right one'
-    bFound = _tcscmp(tch_fontname, wfm_fontname) == 0;
+  if (bFound) {
+    m_bArialFont = true;
+    goto exit;
   }
 
-finish_check:
-  if (!bFound) {
-    TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - Arial Unicode MS font not installed. OSK not available.\n"));
-    if (!warnedAlready&& !app.NoSysEnvWarnings()) {
-      warnedAlready = true;
-      AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
-    }
-    return false;
+  // Next check for Arial Unicode (commercial version of MS font)
+  memset(lf.lfFaceName, 0, LF_FACESIZE * sizeof(TCHAR));
+  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
+           ARIALU, _tcslen(ARIALU) * sizeof(TCHAR)); 
+  EnumFontFamiliesEx(hDC, &lf,
+                     (FONTENUMPROC)&EnumFontFamiliesExProc,
+                     (LPARAM)(&bFound), 0);
+
+  if (bFound) {
+    m_bArialFont = true;
+    goto exit;
   }
+
+  // Lastly check for Lucida Sans Unicode
+  memset(lf.lfFaceName, 0, LF_FACESIZE * sizeof(TCHAR));
+  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
+           LUCIDAUS, _tcslen(LUCIDAUS) * sizeof(TCHAR)); 
+  EnumFontFamiliesEx(hDC, &lf,
+                     (FONTENUMPROC)&EnumFontFamiliesExProc,
+                     (LPARAM)(&bFound), 0);
+
+  if (bFound)
+    goto exit;
+
+  TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n"));
+  if (!warnedAlready && !app.NoSysEnvWarnings()) {
+    warnedAlready = true;
+    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
+  }
+  return false;
 
   // We have the DLL and the Font!
+exit:
+  ::ReleaseDC(NULL, hDC);
   return true;
 }
 
@@ -319,7 +310,8 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   : CPWDialog(CVKeyBoardDlg::IDD, pParent), m_pParent(pParent),
     m_pToolTipCtrl(NULL), m_pPassphraseFont(NULL),
     m_phrase(L""), m_phrasecount(0), m_State(0), m_SaveState(0),
-    m_bShift(false), m_bLCtrl(false), m_bRCtrl(false), m_bAltGr(false), m_bAltNum(false),
+    m_bShift(false), m_bLCtrl(false), m_bRCtrl(false),
+    m_bAltGr(false), m_bAltNum(false),
     m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
     m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0)
@@ -459,6 +451,10 @@ END_MESSAGE_MAP()
 BOOL CVKeyBoardDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  // If not using the Arial Unicode font, show the warning.
+  if (!m_bArialFont)
+    GetDlgItem(IDC_STATIC_OSKFONT)->ShowWindow(SW_SHOW);
 
   // Subclass the buttons - default is a 'flat' button
   for (int i = 0; i < NUM_DIGITS; i++) {

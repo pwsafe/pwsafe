@@ -397,7 +397,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
 {
   /*
    * Command line processing:
-   * Historically, it appears that if a filename was passed as a commadline argument,
+   * Historically, it appears that if a filename was passed as a commandline argument,
    * the application would prompt the user for the password, and the encrypt or decrypt
    * the named file, based on the file's suffix. Ugh.
    *
@@ -482,23 +482,23 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         } // -e or -d flag
         case TCHAR('C'): case TCHAR('c'):
           m_core.SetCurFile(_T(""));
-        dbox.SetStartClosed(true);
-        break;
+          dbox.SetStartClosed(true);
+          break;
         case TCHAR('M'): case TCHAR('m'):// closed & minimized
           m_core.SetCurFile(_T(""));
-        dbox.SetStartClosed(true);
-        dbox.SetStartSilent(true);
-        break;
+          dbox.SetStartClosed(true);
+          dbox.SetStartSilent(true);
+          break;
         case TCHAR('R'): case TCHAR('r'):
           m_core.SetReadOnly(true);
-        break;
+          break;
         case TCHAR('S'): case TCHAR('s'):
           startSilent = true;
-        dbox.SetStartSilent(true);
-        break;
+          dbox.SetStartSilent(true);
+          break;
         case TCHAR('V'): case TCHAR('v'):
           dbox.SetValidate(true);
-        break;
+          break;
         case TCHAR('U'): case TCHAR('u'): // set effective user
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
@@ -508,7 +508,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             arg++;
             SysInfo::GetInstance()->SetEffectiveUser(LPCTSTR(*arg));
           }
-        break;
+          break;
         case TCHAR('H'): case TCHAR('h'): // set effective host
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
@@ -518,7 +518,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             arg++;
             SysInfo::GetInstance()->SetEffectiveHost(LPCTSTR(*arg));
           }
-        break;
+          break;
         case TCHAR('G'): case TCHAR('g'): // override default config file
           // ensure there's another non-flag argument
           if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
@@ -528,10 +528,10 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             arg++;
             PWSprefs::SetConfigFile(stringT(*arg));
           }
-        break;
+          break;
         case TCHAR('Q'): case TCHAR('q'): // be Quiet re missing fonts, dlls, etc.
           m_noSysEnvWarnings = true;
-        break;
+          break;
         default:
           Usage();
           return false;
@@ -600,6 +600,12 @@ BOOL ThisMfcApp::InitInstance()
   // MUST (indirectly) create PWSprefs first
   // Ensures all things like saving locations etc. are set up.
   PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Update Quiet value if via environmental variable rather than 
+  // command line flag
+  CString cs_PWS_QUIET;
+  if (cs_PWS_QUIET.GetEnvironmentVariable(_T("PWS_QUIET")) != FALSE)
+    m_noSysEnvWarnings = true;
 
   // Check if the user allows muliple instances.
   // For this to apply, consistently, must use the same copy of PasswordSafe
