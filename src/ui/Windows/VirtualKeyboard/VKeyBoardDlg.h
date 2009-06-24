@@ -167,6 +167,7 @@ private:
   bool m_bLCtrlChars, m_bAltGrChars, m_bRCtrlChars, m_bDeadKeyActive;
   bool m_bAllow_bC, m_bAllow_bS, m_bAllow_lC, m_bAllow_lS;
   bool m_bAllow_gC, m_bAllow_gS, m_bAllow_rC, m_bAllow_rS;
+  static bool m_bArialFont;
 
   UINT m_uiKLID, m_uiPhysKLID;
   vKeyboard_Layouts m_KBL;

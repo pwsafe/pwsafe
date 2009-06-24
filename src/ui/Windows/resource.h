@@ -635,6 +635,7 @@
 #define IDC_STATIC_DTSTATS              1380
 #define IDC_STATIC_PWH_ADD              1381
 #define IDC_STATIC_PWH_EDIT             1382
+#define IDC_STATIC_OSKFONT              1383
 
 // Next default values for new objects
 // 
@@ -642,7 +643,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        469
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1383
+#define _APS_NEXT_CONTROL_VALUE         1384
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif
