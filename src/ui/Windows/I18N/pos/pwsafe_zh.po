@@ -4114,7 +4114,7 @@ msgid "Requested Values:"
 msgstr "被请求的值:"
 
 #. Resource IDs: (356)
-msgid "Required Unicode font (Arial Unicode MS) is not installed on this system.\n\nUnable to provide Virtual Keyboard."
+msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
 msgstr ""
 
 #. Resource IDs: (356)
@@ -4543,6 +4543,10 @@ msgstr ""
 
 #. Resource IDs: (515)
 msgid "Slovenian"
+msgstr ""
+
+#. Resource IDs: (1383)
+msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
 msgstr ""
 
 #. Resource IDs: (520)
@@ -5170,8 +5174,8 @@ msgid "Urdu"
 msgstr ""
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)"
-msgstr "用法: pwsafe [-r|-v] [password database]\n或 pwsafe [-e|-d] 文件名称\n或 pwsafe [-c]\n或 pwsafe [-s] [password database]\n或 pwsafe -m\n\n 位置:\n  -r = 打开为只读\n  -v = 验证和修复\n  -e/d = 加密/解密文件\n  -c = 启动关闭 如:不打开数据库\n  -s = 静默启动 (最小化)\n  -m = 启动最小化和关闭\n\n另外，下列标志可能被使用:\n -u 用户 (利用用户参数选择代替登录名称)\n -h 主机 (使用主机查找参数选择代替机器名称)\n -g config_file (使用 config_file 代替 pwsafe.cfg)"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
+msgstr ""
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -5659,8 +5663,8 @@ msgstr "\t%s 限于下列字段:"
 
 #. Resource IDs: (336)
 #, c-format
-msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas the following fields have differences:"
-msgstr "\t项目 - 组:“%s”; 标题:“%s”; 用户:“%s”\r\n\t\t下列字段存在差异:"
+msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas differences in the following fields:"
+msgstr ""
 
 #. Resource IDs: (335)
 #, c-format
