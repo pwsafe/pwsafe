@@ -4140,7 +4140,7 @@ msgid "Requested Values:"
 msgstr ""
 
 #. Resource IDs: (356)
-msgid "Required Unicode font (Arial Unicode MS) is not installed on this system.\n\nUnable to provide Virtual Keyboard."
+msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
 msgstr ""
 
 #. Resource IDs: (356)
@@ -4569,6 +4569,10 @@ msgstr ""
 
 #. Resource IDs: (515)
 msgid "Slovenian"
+msgstr ""
+
+#. Resource IDs: (1383)
+msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
 msgstr ""
 
 #. Resource IDs: (520)
@@ -5196,8 +5200,8 @@ msgid "Urdu"
 msgstr ""
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)"
-msgstr "Uso: pwsafe [-r|-v] [archivo de contraseñas]\no pwsafe [-e|-d] nombre-de-archivo\no pwsafe [-c]\no pwsafe [-s] [archivo de contraseñas]\no pwsafe -m\n\n donde:\n  -r = abrir como Solo lectura\n  -v = validar y reparar\n  -e/d = cifrar/descifrar archivo\n  -c = iniciar 'cerrado' (sin abrir base de datos de contraseñas)\n  -s = iniciar modo silecioso (minimizado)\n  -m = iniciar minimizado y 'cerrado'\n\nAdemás, pueden usarse las siguientes opciones:\n -u usuario (usar preferencias del usuario en vez del nombre de sesión)\n -h host (usar host para buscar preferencias en vez de usar el nombre de la máquina)\n -g config (usar archivo config en vez de pwsafe.cfg)"
+msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
+msgstr ""
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -5685,7 +5689,7 @@ msgstr "\t%s fue restringido a los siguientes campos:"
 
 #. Resource IDs: (336)
 #, c-format
-msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas the following fields have differences:"
+msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas differences in the following fields:"
 msgstr ""
 
 #. Resource IDs: (335)
