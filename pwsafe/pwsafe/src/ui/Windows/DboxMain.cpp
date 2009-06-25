@@ -300,6 +300,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
   ON_COMMAND(ID_MENUITEM_CHANGETREEFONT, OnChangeTreeFont)
   ON_COMMAND(ID_MENUITEM_CHANGEPSWDFONT, OnChangePswdFont)
+  ON_COMMAND(ID_MENUITEM_VKEYBOARDFONT, OnChangeVKFont)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReports)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
@@ -490,6 +491,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COLLAPSEALL, true, true, true, false},
   {ID_MENUITEM_CHANGETREEFONT, true, true, true, false},
   {ID_MENUITEM_CHANGEPSWDFONT, true, true, true, false},
+  {ID_MENUITEM_VKEYBOARDFONT, true, true, true, false},
   {ID_MENUITEM_REPORT_COMPARE, true, true, true, true},
   {ID_MENUITEM_REPORT_FIND, true, true, true, true},
   {ID_MENUITEM_REPORT_IMPORTTEXT, true, true, true, true},

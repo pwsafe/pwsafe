@@ -40,7 +40,25 @@ CPWFontDialog::CPWFontDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrint
 
   pwfd_self = this;
   m_sampletext.LoadString(IDS_SAMPLETEXT);
-  m_title.LoadString(iType == PWFONT ? IDS_PSWDFONT : IDS_TREEFONT);
+  UINT uiID(0);
+  switch (iType) {
+    case PWFONT:
+      uiID = IDS_PSWDFONT;
+      break;
+    case TLFONT:
+      uiID = IDS_TREEFONT;
+      break;
+    case VKFONT:
+      uiID = IDS_VKBDFONT;
+      // Set up default font, which is NONE
+      memcpy(&m_dfltVKBDFont, lplfInitial, sizeof(LOGFONT));
+      memset(m_dfltVKBDFont.lfFaceName, 0, LF_FACESIZE * sizeof(TCHAR));
+      break;
+    default:
+      ASSERT(0);
+  }
+  m_title.LoadString(uiID);
+  m_bReset = false;
 }
 
 CPWFontDialog::~CPWFontDialog()
@@ -63,6 +81,22 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
     ASSERT(pwfd_self);
 
     ::SetWindowText(hdlg, pwfd_self->m_title);
+
+    if (pwfd_self->m_iType == VKFONT) {
+      // Disable things we don't allow changed
+      EnableWindow(GetDlgItem(hdlg, cmb2), FALSE); // style
+      EnableWindow(GetDlgItem(hdlg, stc2), FALSE); // style
+
+      EnableWindow(GetDlgItem(hdlg, cmb3), FALSE); // size
+      EnableWindow(GetDlgItem(hdlg, stc3), FALSE); // size
+      // Make Edit in Size ComboBox R/O
+      SendMessage(GetDlgItem(GetDlgItem(hdlg, cmb3), 1001), 
+                     EM_SETREADONLY, TRUE, 0);
+
+      EnableWindow(GetDlgItem(hdlg, cmb5), FALSE); // script
+      ShowWindow(GetDlgItem(hdlg, cmb5), SW_HIDE); // script
+      ShowWindow(GetDlgItem(hdlg, stc7), SW_HIDE); // script
+    }
     return TRUE;
   }
   if (uiMsg == WM_COMMAND && HIWORD(wParam) == BN_CLICKED) {
@@ -79,6 +113,11 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
       return TRUE;  // We processed message
     }
     if (LOWORD(wParam) == IDC_RESETFONT) {
+      if (pwfd_self->m_iType == VKFONT) {
+        pwfd_self->m_bReset = true;
+        pwfd_self->PostMessage(WM_COMMAND, IDABORT, 0);
+        return TRUE;  // We processed message
+      }
       LOGFONT dfltFont;
       TCHAR wc_pt[4] = {0, 0, 0, 0};
       // Due to a documentation bug in WM_CHOOSEFONT_SETLOGFONT - instead of just this:

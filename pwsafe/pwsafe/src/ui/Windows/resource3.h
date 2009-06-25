@@ -541,3 +541,6 @@
 #define IDS_MERGEADDED                  5706
 #define IDS_WAS                         5707
 #define IDS_WERE                        5708
+#define IDS_VKBDFONT                    5709
+#define IDS_OSKFONT                     5710
+#define IDS_USRFONT                     5711

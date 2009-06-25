@@ -24,6 +24,7 @@
 #include "../../../os/dir.h"
 #include "../../../os/windows/pws_osk/pws_osk.h"
 #include "../../../corelib/PWSrand.h"
+#include "../../../corelib/PWSprefs.h"
 
 #include <sstream>
 #include <iomanip>  // For setbase and setw
@@ -187,7 +188,11 @@ static int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *,
   return 0;
 }
 
-bool CVKeyBoardDlg::m_bArialFont = false;
+int  CVKeyBoardDlg::m_iFont = -1;
+bool CVKeyBoardDlg::m_bUserSpecifiedFont = false;
+TCHAR * CVKeyBoardDlg::ARIALUMS = _T("Arial Unicode MS");
+TCHAR * CVKeyBoardDlg::ARIALU   = _T("Arial Unicode");
+TCHAR * CVKeyBoardDlg::LUCIDAUS = _T("Lucida Sans Unicode");
 
 bool CVKeyBoardDlg::IsOSKAvailable()
 {
@@ -250,13 +255,29 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   bool bFound(false);
   LOGFONT lf = {0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
                 _T("")};
-  const TCHAR * ARIALUMS = _T("Arial Unicode MS");
-  const TCHAR * ARIALU   = _T("Arial Unicode");
-  const TCHAR * LUCIDAUS = _T("Lucida Sans Unicode");
- 
+
   HDC hDC = ::GetDC(NULL);
 
-  // First check for Arial Unicode MS
+  // First check user's font (if any)
+  StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
+                                 GetPref(PWSprefs::VKeyboardFontName);
+  if (cs_VKeyboardFont.length() != 0 && 
+      cs_VKeyboardFont.length() <= LF_FACESIZE) {
+    m_bUserSpecifiedFont = true;
+    memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
+             cs_VKeyboardFont.c_str(), cs_VKeyboardFont.length() * sizeof(TCHAR));
+
+    EnumFontFamiliesEx(hDC, &lf,
+                       (FONTENUMPROC)&EnumFontFamiliesExProc,
+                       (LPARAM)(&bFound), 0);
+  }
+
+  if (bFound) {
+    m_iFont = USER_FONT;
+    goto exit;
+  }
+
+  // Next check for Arial Unicode MS
   memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
            ARIALUMS, _tcslen(ARIALUMS) * sizeof(TCHAR)); 
   EnumFontFamiliesEx(hDC, &lf,
@@ -264,7 +285,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
                      (LPARAM)(&bFound), 0);
 
   if (bFound) {
-    m_bArialFont = true;
+    m_iFont = ARIALMS_FONT;
     goto exit;
   }
 
@@ -277,7 +298,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
                      (LPARAM)(&bFound), 0);
 
   if (bFound) {
-    m_bArialFont = true;
+    m_iFont = ARIAL_FONT;
     goto exit;
   }
 
@@ -289,20 +310,20 @@ bool CVKeyBoardDlg::IsOSKAvailable()
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
                      (LPARAM)(&bFound), 0);
 
-  if (bFound)
+  if (bFound) {
+    m_iFont = LUCIDA_FONT;
     goto exit;
+  }
 
   TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n"));
   if (!warnedAlready && !app.NoSysEnvWarnings()) {
     warnedAlready = true;
     AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
   }
-  return false;
 
-  // We have the DLL and the Font!
 exit:
   ::ReleaseDC(NULL, hDC);
-  return true;
+  return bFound;
 }
 
 //-----------------------------------------------------------------------------
@@ -452,10 +473,6 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  // If not using the Arial Unicode font, show the warning.
-  if (!m_bArialFont)
-    GetDlgItem(IDC_STATIC_OSKFONT)->ShowWindow(SW_SHOW);
-
   // Subclass the buttons - default is a 'flat' button
   for (int i = 0; i < NUM_DIGITS; i++) {
     m_vkbb_Numbers[i].SubclassDlgItem(IDC_VKBBTN_N0 + i, this);
@@ -592,6 +609,39 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALTNUM), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_VKSTATIC_RANDOMIZE);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKRANDOMIZE), cs_ToolTip);
+
+
+  // If not using the user specified font, show the warning.
+  if (m_iFont != USER_FONT && m_bUserSpecifiedFont) {
+    StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
+                                 GetPref(PWSprefs::VKeyboardFontName);
+    GetDlgItem(IDC_INFO)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_INFO)->EnableWindow(TRUE);
+    TCHAR * pszFont(NULL);
+    switch (m_iFont) {
+      case ARIALMS_FONT:
+        pszFont = ARIALUMS;
+        break;
+      case ARIAL_FONT:
+        pszFont = ARIALU;
+        break;
+      case LUCIDA_FONT:
+        pszFont = LUCIDAUS;
+        break;
+      default:
+        ASSERT(0);
+    }
+    if (pszFont != NULL) {
+      cs_ToolTip.Format(IDS_USRFONT, cs_VKeyboardFont.c_str(), pszFont);
+      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_INFO), cs_ToolTip);
+    }
+  } else
+  if (m_iFont == LUCIDA_FONT) {
+    GetDlgItem(IDC_INFO)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_INFO)->EnableWindow(TRUE);
+    cs_ToolTip.LoadString(IDS_OSKFONT);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_INFO), cs_ToolTip);
+  }
 
   // Set up characters
   ProcessKeyboard(m_uiKLID);
@@ -1799,9 +1849,26 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
 
   if (m_pPassphraseFont == NULL) {
     m_pPassphraseFont = new CFont;
-    TCHAR* tch_fontname;
 
-    tch_fontname = _T("Arial Unicode MS");
+    TCHAR * pszFont(NULL);
+    StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
+                                 GetPref(PWSprefs::VKeyboardFontName);
+    switch (m_iFont) {
+      case USER_FONT:
+        pszFont = (TCHAR *)cs_VKeyboardFont.c_str();
+        break;
+      case ARIALMS_FONT:
+        pszFont = ARIALUMS;
+        break;
+      case ARIAL_FONT:
+        pszFont = ARIALU;
+        break;
+      case LUCIDA_FONT:
+        pszFont = LUCIDAUS;
+        break;
+      default:
+        ASSERT(0);
+    }
 
     // Note these font names are less than the max. permitted length
     // (LF_FACESIZE = 31 + null). No need to check length before copy.
@@ -1812,8 +1879,9 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
     memset(&lf, 0, sizeof(LOGFONT));
     lf.lfHeight = -16;
     lf.lfWeight = FW_NORMAL;
-    wcsncpy_s(lf.lfFaceName, LF_FACESIZE, tch_fontname, _tcslen(tch_fontname));
-    lf.lfPitchAndFamily = FF_MODERN | FIXED_PITCH;
+    lf.lfCharSet = DEFAULT_CHARSET;
+    wcsncpy_s(lf.lfFaceName, LF_FACESIZE, pszFont, _tcslen(pszFont));
+
     m_pPassphraseFont->CreateFontIndirect(&lf);
   }
 

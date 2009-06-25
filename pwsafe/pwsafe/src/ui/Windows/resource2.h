@@ -111,6 +111,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_REPORT_IMPORTXML    32123
 #define ID_MENUITEM_REPORT_MERGE        32124
 #define ID_MENUITEM_REPORT_VALIDATE     32125
+#define ID_MENUITEM_VKEYBOARDFONT       32126
 
 // Manage menu
 #define ID_MANAGEMENU                   32150
