@@ -144,7 +144,8 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_IMPORTMENU,
   ID_MENUITEM_CREATESHORTCUT,
   ID_MENUITEM_CUSTOMIZETOOLBAR,
-  ID_MENUITEM_EXIT_ST     // SystemTray EXIT
+  ID_MENUITEM_EXIT_ST,     // SystemTray EXIT
+  ID_MENUITEM_VKEYBOARDFONT
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -214,7 +215,8 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_IMPORT_CLASSIC,
   IDB_CREATESHORTCUT_CLASSIC,
   IDB_CUSTOMIZETBAR_CLASSIC,
-  IDB_EXIT_CLASSIC          // SystemTray EXIT
+  IDB_EXIT_CLASSIC,          // SystemTray EXIT
+  IDB_CHANGEVKBDFONTMENU_CLASSIC
 };
 
 const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
@@ -322,7 +324,8 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_IMPORT_NEW,
   IDB_CREATESHORTCUT_NEW,
   IDB_CUSTOMIZETBAR_NEW,
-  IDB_EXIT_NEW            // SystemTray EXIT
+  IDB_EXIT_NEW,            // SystemTray EXIT
+  IDB_CHANGEVKBDFONTMENU_NEW
 };
 
 // Additional bitmaps not on ToolBar
@@ -354,7 +357,8 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_IMPORT_NEW_D,
   IDB_CREATESHORTCUT_NEW_D,
   IDB_CUSTOMIZETBAR_NEW,    // Don't need another disabled bitmap as never dispayed
-  IDB_EXIT_NEW_D            // SystemTray EXIT
+  IDB_EXIT_NEW_D,            // SystemTray EXIT
+  IDB_CHANGEVKBDFONTMENU_NEW_D
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)

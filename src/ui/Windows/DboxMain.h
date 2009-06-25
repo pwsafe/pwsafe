@@ -547,6 +547,7 @@ protected:
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeTreeFont();
   afx_msg void OnChangePswdFont();
+  afx_msg void OnChangeVKFont();
   afx_msg void OnViewReports(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();
   afx_msg void OnManageFilters(); // From Toolbar button

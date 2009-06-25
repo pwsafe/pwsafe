@@ -10,7 +10,7 @@
 
 // CPWFontDialog
 
-enum {PWFONT, TLFONT};
+enum {PWFONT, TLFONT, VKFONT};
 
 extern LOGFONT dfltTreeListFont;
 
@@ -35,6 +35,8 @@ public:
 
   CString m_sampletext, m_title;
   int m_iType;
+  LOGFONT m_dfltVKBDFont;
+  bool m_bReset;
 
 // Dialog Data
   //{{AFX_DATA(CXFontDialog)

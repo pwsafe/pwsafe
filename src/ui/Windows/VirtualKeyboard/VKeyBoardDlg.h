@@ -30,6 +30,7 @@ typedef OSK_API void (* LP_OSK_ListKeyboards) (UINT &uiKLID, UINT &uiCtrlID);
 typedef OSK_API BOOL (* LP_OSK_GetKeyboardData) (UINT uiKLID, st_KBImpl &stKBImpl);
 typedef OSK_API int  (* LP_OSK_GetVersion) ();
 
+enum {USER_FONT, ARIALMS_FONT, ARIAL_FONT, LUCIDA_FONT};
 
 #define WM_INSERTBUFFER (WM_APP - 10)
 
@@ -71,6 +72,11 @@ class CVKeyBoardDlg : public CPWDialog
 {
 public:
   static bool IsOSKAvailable(); // true iff dll available, right version, etc.
+
+  static TCHAR * ARIALUMS;
+  static TCHAR * ARIALU;
+  static TCHAR * LUCIDAUS;
+
   CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID = NULL);
   ~CVKeyBoardDlg();
 
@@ -167,7 +173,9 @@ private:
   bool m_bLCtrlChars, m_bAltGrChars, m_bRCtrlChars, m_bDeadKeyActive;
   bool m_bAllow_bC, m_bAllow_bS, m_bAllow_lC, m_bAllow_lS;
   bool m_bAllow_gC, m_bAllow_gS, m_bAllow_rC, m_bAllow_rS;
-  static bool m_bArialFont;
+
+  static int m_iFont;
+  static bool m_bUserSpecifiedFont;
 
   UINT m_uiKLID, m_uiPhysKLID;
   vKeyboard_Layouts m_KBL;

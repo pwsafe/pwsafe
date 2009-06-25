@@ -306,6 +306,10 @@
 #define IDD_ADDEDIT_ADDITIONAL          466
 #define IDD_ADDEDIT_DATETIMES           467
 #define IDD_ADDEDIT_PASSWORDPOLICY      468
+#define IDB_EXCLAMATION                 470
+#define IDB_CHANGEVKBDFONTMENU_CLASSIC  471
+#define IDB_CHANGEVKBDFONTMENU_NEW      472
+#define IDB_CHANGEVKBDFONTMENU_NEW_D    473
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -635,13 +639,13 @@
 #define IDC_STATIC_DTSTATS              1380
 #define IDC_STATIC_PWH_ADD              1381
 #define IDC_STATIC_PWH_EDIT             1382
-#define IDC_STATIC_OSKFONT              1383
+#define IDC_INFO                        1383
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        469
+#define _APS_NEXT_RESOURCE_VALUE        474
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1384
 #define _APS_NEXT_SYMED_VALUE           160
