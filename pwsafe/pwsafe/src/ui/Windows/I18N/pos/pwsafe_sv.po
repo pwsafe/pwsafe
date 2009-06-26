@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-06-25 16:10+0100\n"
+"PO-Revision-Date: 2009-06-26 15:56+0100\n"
 "Last-Translator: Björn Nordwall <nordwall.b@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -173,7 +173,7 @@ msgstr " 'Lösenord'"
 
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
-msgstr " 'Registrerings ändringstidpunkt'"
+msgstr " 'Registreringens ändringstidpunkt'"
 
 #. Resource IDs: (354)
 msgid " 'Run Command'"
@@ -343,7 +343,7 @@ msgstr ""
 # [ronys] of Text or XML format. First %s is either 'Text' or 'XML'
 # [ronys] second is name of file.
 #. Resource IDs: (341)
-#, fuzzy, c-format
+#, c-format
 msgid "%s file being imported: %s"
 msgstr "%s filen som importeras: %s"
 
@@ -1303,7 +1303,7 @@ msgstr "Ett försök gjordes att få tillgång till %1 efter dess avslut."
 # [ronys] - odd, but I can't find where this is used. It could have
 # [ronys] bee nremoved from the code.
 #. Resource IDs: (3868)
-#, fuzzy, c-format
+#, c-format
 msgid "An attempt was made to read from the writing %1."
 msgstr "Ett försök gjordes att läsa från %1 som skrivs."
 
@@ -1311,7 +1311,7 @@ msgstr "Ett försök gjordes att läsa från %1 som skrivs."
 # [ronys] - odd, but I can't find where this is used. It could have
 # [ronys] bee nremoved from the code.
 #. Resource IDs: (3868)
-#, fuzzy, c-format
+#, c-format
 msgid "An attempt was made to write to the reading %1."
 msgstr "Ett försök gjordes att skriva till %1 som läses."
 
@@ -1467,13 +1467,10 @@ msgstr "Säkerhetskopior"
 # Not shore where Base appears and therefore what the translation would be.
 # [ronys] This is from the Manage->Options->Backups dialog box.
 #. Resource IDs: (65535)
-#, fuzzy
 msgid "Base:"
 msgstr "Bas:"
 
 # Nor sure where this one pops up. Basic could be translated different
-  ways.
-[ronys] This is the first tab in the new Add and Edit dialog boxes.
 #. Resource IDs: (465)
 msgid "Basic"
 msgstr "Enkel"
