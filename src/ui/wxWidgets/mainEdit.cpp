@@ -27,6 +27,7 @@
 #include "PWStree.h"
 
 #include "passwordsafeframe.h"
+#include "addeditpropsheet.h"
 #include "pwsclip.h"
 
 
@@ -36,10 +37,9 @@
 
 void PasswordSafeFrame::OnEditClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT in PasswordSafeFrame.
-  // Before editing this code, remove the block markers.
-  wxMessageBox(_("Edit Entry placeholder"));
-////@end wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT in PasswordSafeFrame. 
+  AddEditPropSheet editDbox(this);
+  editDbox.ShowModal();
+  
 }
 
 
