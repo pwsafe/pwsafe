@@ -144,7 +144,8 @@ SOURCES= passwordsafeframe.cpp \
 	safecombinationchange.cpp about.cpp \
 	properties.cpp PWSgrid.cpp \
 	PWStree.cpp version.cpp \
-	pwsclip.cpp pwsdca.cpp mainEdit.cpp
+	pwsclip.cpp pwsdca.cpp mainEdit.cpp \
+	addeditpropsheet.cpp
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
 OBJECTS += $(RESOURCEOBJECT)

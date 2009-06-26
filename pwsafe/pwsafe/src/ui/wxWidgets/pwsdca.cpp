@@ -45,7 +45,7 @@ void PWSdca::Doit(const CItemData &item)
     break;
   case PWSprefs::DoubleClickViewEdit:
     action = _("ViewEdit");
-    // PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
+    wxMessageBox(_("ItemDblClickPlaceholder"));
     break;
   default:
     ASSERT(0);
