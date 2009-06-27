@@ -37,9 +37,11 @@
 
 void PasswordSafeFrame::OnEditClick( wxCommandEvent& event )
 {
-  AddEditPropSheet editDbox(this);
-  editDbox.ShowModal();
-  
+  const CItemData *item = GetSelectedEntry();
+  if (item != NULL) {
+    AddEditPropSheet editDbox(this, m_core, AddEditPropSheet::EDIT, *item);
+    editDbox.ShowModal(); // update view if returned OK, all the rest done internally
+  }
 }
 
 

@@ -23,6 +23,8 @@
 ////@begin includes
 #include "wx/bookctrl.h"
 ////@end includes
+#include <vector>
+#include "corelib/PWSprefs.h"
 
 #include "addeditpropsheet.h"
 
@@ -34,7 +36,7 @@
  * AddEditPropSheet type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( AddEditPropSheet, wxPropertySheetDialog )
+IMPLEMENT_CLASS( AddEditPropSheet, wxPropertySheetDialog )
 
 
 /*!
@@ -44,6 +46,12 @@ IMPLEMENT_DYNAMIC_CLASS( AddEditPropSheet, wxPropertySheetDialog )
 BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
 ////@begin AddEditPropSheet event table entries
+  EVT_BUTTON( ID_BUTTON2, AddEditPropSheet::OnShowHideClick )
+
+  EVT_BUTTON( ID_BUTTON3, AddEditPropSheet::OnGenerateButtonClick )
+
+  EVT_BUTTON( ID_GO_BTN, AddEditPropSheet::OnGoButtonClick )
+
 ////@end AddEditPropSheet event table entries
 
 END_EVENT_TABLE()
@@ -53,12 +61,12 @@ END_EVENT_TABLE()
  * AddEditPropSheet constructors
  */
 
-AddEditPropSheet::AddEditPropSheet()
-{
-  Init();
-}
-
-AddEditPropSheet::AddEditPropSheet( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
+                                   AddOrEdit type, const CItemData &item,
+                                   wxWindowID id, const wxString& caption,
+                                   const wxPoint& pos, const wxSize& size,
+                                   long style)
+: m_core(core), m_type(type), m_item(item)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -80,6 +88,7 @@ bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& 
   LayoutDialog();
   Centre();
 ////@end AddEditPropSheet creation
+  ItemFieldsToPropSheet();
   return true;
 }
 
@@ -102,6 +111,10 @@ AddEditPropSheet::~AddEditPropSheet()
 void AddEditPropSheet::Init()
 {
 ////@begin AddEditPropSheet member initialisation
+  m_groupCtrl = NULL;
+  m_PasswordCtrl = NULL;
+  m_ShowHideCtrl = NULL;
+  m_Password2Ctrl = NULL;
 ////@end AddEditPropSheet member initialisation
 }
 
@@ -127,9 +140,9 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText6 = new wxStaticText( itemPanel2, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer5->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxArrayString itemComboBox7Strings;
-  wxComboBox* itemComboBox7 = new wxComboBox( itemPanel2, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, itemComboBox7Strings, wxCB_DROPDOWN );
-  itemFlexGridSizer5->Add(itemComboBox7, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxArrayString m_groupCtrlStrings;
+  m_groupCtrl = new wxComboBox( itemPanel2, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_groupCtrlStrings, wxCB_DROPDOWN );
+  itemFlexGridSizer5->Add(m_groupCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemFlexGridSizer5->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -152,15 +165,15 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText15 = new wxStaticText( itemPanel2, wxID_STATIC, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer5->Add(itemStaticText15, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl16 = new wxTextCtrl( itemPanel2, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemFlexGridSizer5->Add(itemTextCtrl16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_PasswordCtrl = new wxTextCtrl( itemPanel2, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemFlexGridSizer5->Add(m_PasswordCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer17 = new wxBoxSizer(wxHORIZONTAL);
   itemFlexGridSizer5->Add(itemBoxSizer17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
   itemBoxSizer17->Add(10, 10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxButton* itemButton19 = new wxButton( itemPanel2, ID_BUTTON2, _("&Hide"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer17->Add(itemButton19, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
+  m_ShowHideCtrl = new wxButton( itemPanel2, ID_BUTTON2, _("&Hide"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer17->Add(m_ShowHideCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   itemBoxSizer17->Add(10, 10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -170,8 +183,8 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText22 = new wxStaticText( itemPanel2, wxID_STATIC, _("Confirm:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer5->Add(itemStaticText22, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl23 = new wxTextCtrl( itemPanel2, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-  itemFlexGridSizer5->Add(itemTextCtrl23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Password2Ctrl = new wxTextCtrl( itemPanel2, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+  itemFlexGridSizer5->Add(m_Password2Ctrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemFlexGridSizer5->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -185,7 +198,7 @@ void AddEditPropSheet::CreateControls()
   itemFlexGridSizer5->Add(itemBoxSizer27, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
   itemBoxSizer27->Add(10, 10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxButton* itemButton29 = new wxButton( itemPanel2, ID_BUTTON, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton29 = new wxButton( itemPanel2, ID_GO_BTN, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer27->Add(itemButton29, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxBoxSizer* itemBoxSizer30 = new wxBoxSizer(wxHORIZONTAL);
@@ -418,6 +431,11 @@ void AddEditPropSheet::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel87, _("Password Policy"));
 
+  // Set validators
+  itemTextCtrl10->SetValidator( wxGenericValidator(& m_title) );
+  itemTextCtrl13->SetValidator( wxGenericValidator(& m_user) );
+  itemTextCtrl26->SetValidator( wxGenericValidator(& m_url) );
+  itemTextCtrl32->SetValidator( wxGenericValidator(& m_notes) );
 ////@end AddEditPropSheet content construction
 }
 
@@ -455,4 +473,104 @@ wxIcon AddEditPropSheet::GetIconResource( const wxString& name )
   wxUnusedVar(name);
   return wxNullIcon;
 ////@end AddEditPropSheet icon retrieval
+}
+
+void AddEditPropSheet::ItemFieldsToPropSheet()
+{
+  // Populate the combo box
+  std::vector<stringT> aryGroups;
+  m_core.GetUniqueGroups(aryGroups);
+  for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
+    m_groupCtrl->Append(aryGroups[igrp].c_str());
+  }
+  // select relevant group
+  const StringX group = m_item.GetGroup();
+  if (!group.empty())
+    for (size_t igrp = 0; igrp < aryGroups.size(); igrp++)
+      if (group == aryGroups[igrp].c_str()) {
+        m_groupCtrl->SetSelection(igrp);
+        break;
+      }
+  
+  m_title = m_item.GetTitle().c_str();
+  m_user = m_item.GetUser().c_str();
+  m_url = m_item.GetURL().c_str();
+  m_password = m_item.GetPassword();
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
+    ShowPassword();
+  } else {
+    HidePassword();
+  }
+
+  m_PasswordCtrl->ChangeValue(m_password.c_str());
+  // Enable Go button iff m_url isn't empty
+  wxWindow *goBtn = FindWindow(ID_GO_BTN);
+  goBtn->Enable(!m_url.empty());
+  m_notes = m_item.GetNotes().c_str();
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
+ */
+
+void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN in AddEditPropSheet.
+  // Before editing this code, remove the block markers.
+  wxMessageBox(_("'Go' placeholder"));
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN in AddEditPropSheet. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
+ */
+
+void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3 in AddEditPropSheet.
+  // Before editing this code, remove the block markers.
+  wxMessageBox(_("'Generate' placeholder"));
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3 in AddEditPropSheet. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
+ */
+
+void AddEditPropSheet::OnShowHideClick( wxCommandEvent& event )
+{
+  if (m_isPWHidden) {
+    ShowPassword();
+  } else {
+    m_password = m_PasswordCtrl->GetValue(); // save visible password
+    HidePassword();
+  }
+}
+
+void AddEditPropSheet::ShowPassword()
+{
+  m_isPWHidden = false;
+  m_ShowHideCtrl->SetLabel(_("&Hide"));
+
+  m_PasswordCtrl->ChangeValue(m_password.c_str());
+  // XXX Can't change wxTE_PASSWORD style - need to think of something else.
+  // Disable confirmation Ctrl, as the user can see the password entered
+  m_Password2Ctrl->ChangeValue(_(""));
+  m_Password2Ctrl->Enable(false);
+}
+
+void AddEditPropSheet::HidePassword()
+{
+  m_isPWHidden = true;
+  m_ShowHideCtrl->SetLabel(_("&Show"));
+
+  // XXX Can't change wxTE_PASSWORD style - need to think of something else.
+
+  // Need verification as the user can not see the password entered
+  m_Password2Ctrl->ChangeValue(m_password.c_str());
+  m_Password2Ctrl->Enable(true);
 }
