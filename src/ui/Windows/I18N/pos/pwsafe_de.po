@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-06-25 22:13+0100\n"
+"PO-Revision-Date: 2009-06-27 13:58+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -791,6 +791,10 @@ msgstr "&Alias anzeigen"
 #. Resource IDs: (32053)
 msgid "&View Entry..."
 msgstr "Eintrag &anzeigen..."
+
+#. Resource IDs: (32126)
+msgid "&Virtual Keyboard Font"
+msgstr "&Virtuelle Tastatur Schrifart"
 
 #. Resource IDs: (32013, 32015)
 msgid "&XML format..."
@@ -2740,7 +2744,7 @@ msgstr "Schriftart"
 
 #. Resource IDs: (1089)
 msgid "Font st&yle:"
-msgstr "Schriftart "
+msgstr "Schriftart Stil:"
 
 #. Resource IDs: (342)
 msgid ""
@@ -4767,6 +4771,10 @@ msgstr "Beispiel&text setzen"
 msgid "Set Tree/List display font"
 msgstr "Schriftart setzen von Baum/Liste"
 
+#. Resource IDs: (357)
+msgid "Set Virtual Keyboard font"
+msgstr "Schrifart der virtuellen Tastatur setzen"
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Setze die maximale Anzahl an gespeicherten Passwörtern auf obigen Wert"
@@ -5933,6 +5941,11 @@ msgstr "Sie können den Kopieren-Knopf unten benutzen um diese Liste in die Zwis
 #. Resource IDs: (346)
 msgid "You must save this database before it can be exported."
 msgstr "Datenbank muss vor dem Exportieren zuerst gespeichert werden."
+
+#. Resource IDs: (357)
+#, c-format
+msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
+msgstr "Die erforderliche Schrifart '%s' ist in diesem System nicht installiert. Es wird '%s' verwendet."
 
 #. Resource IDs: (330)
 msgid "[No current database]"
