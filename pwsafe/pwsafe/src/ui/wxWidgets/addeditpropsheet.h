@@ -20,12 +20,15 @@
 
 ////@begin includes
 #include "wx/propdlg.h"
+#include "wx/valgen.h"
 #include "wx/spinctrl.h"
 #include "wx/grid.h"
 #include "wx/datectrl.h"
 #include "wx/dateevt.h"
 #include "wx/statline.h"
 ////@end includes
+#include "corelib/ItemData.h"
+#include "corelib/PWScore.h"
 
 /*!
  * Forward declarations
@@ -49,7 +52,7 @@
 #define ID_BUTTON3 10097
 #define ID_TEXTCTRL3 10091
 #define ID_TEXTCTRL4 10092
-#define ID_BUTTON 10093
+#define ID_GO_BTN 10093
 #define ID_TEXTCTRL7 10098
 #define ID_PANEL_ADDITIONAL 10085
 #define ID_TEXTCTRL6 10094
@@ -96,13 +99,19 @@
 
 class AddEditPropSheet: public wxPropertySheetDialog
 {    
-  DECLARE_DYNAMIC_CLASS( AddEditPropSheet )
+  DECLARE_CLASS( AddEditPropSheet )
   DECLARE_EVENT_TABLE()
 
 public:
+  enum AddOrEdit {ADD, EDIT}; // to tweak UI, mainly
   /// Constructors
-  AddEditPropSheet();
-  AddEditPropSheet( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME, const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE, long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
+  AddEditPropSheet(wxWindow* parent, PWScore &core,
+                   AddOrEdit type, const CItemData &item,
+                   wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
+                   const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE,
+                   const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION,
+                   const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE,
+                   long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME, const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE, long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
@@ -118,9 +127,30 @@ public:
 
 ////@begin AddEditPropSheet event handler declarations
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
+  void OnShowHideClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
+  void OnGenerateButtonClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
+  void OnGoButtonClick( wxCommandEvent& event );
+
 ////@end AddEditPropSheet event handler declarations
 
 ////@begin AddEditPropSheet member function declarations
+
+  wxString GetTitle() const { return m_title ; }
+  void SetTitle(wxString value) { m_title = value ; }
+
+  wxString GetUser() const { return m_user ; }
+  void SetUser(wxString value) { m_user = value ; }
+
+  wxString GetUrl() const { return m_url ; }
+  void SetUrl(wxString value) { m_url = value ; }
+
+  wxString GetNotes() const { return m_notes ; }
+  void SetNotes(wxString value) { m_notes = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -133,7 +163,25 @@ public:
   static bool ShowToolTips();
 
 ////@begin AddEditPropSheet member variables
-////@end AddEditPropSheet member variables
+  wxComboBox* m_groupCtrl;
+  wxTextCtrl* m_PasswordCtrl;
+  wxButton* m_ShowHideCtrl;
+  wxTextCtrl* m_Password2Ctrl;
+private:
+  wxString m_title;
+  wxString m_user;
+  wxString m_url;
+  wxString m_notes;
+  ////@end AddEditPropSheet member variables
+  StringX m_password;
+  bool m_isPWHidden;
+
+  PWScore &m_core;
+  AddOrEdit m_type;
+  CItemData m_item;
+  void ItemFieldsToPropSheet();
+  void ShowPassword();
+  void HidePassword();
 };
 
 #endif
