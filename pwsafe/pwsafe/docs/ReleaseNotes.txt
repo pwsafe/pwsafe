@@ -1,5 +1,5 @@
-Password Safe 3.18-pre Release Notes - June 2009
-================================================
+Password Safe 3.18 Release Notes - June 2009
+============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.18-pre
-=========================
+New Features for 3.18
+=====================
 [2793283] Allow entry to override doubleclick setting.
 [2793280] Browse+Autotype added to configurable double click actions.
 [] Implement Virtual Keyboards for multilingual passphrase entry.
@@ -18,14 +18,14 @@ New Features for 3.18-pre
 menu.
 [] Improved Merge reporting.
 
-Changes to Existing Features in 3.18-pre
-========================================
+Changes to Existing Features in 3.18
+====================================
 [] New toolbar icon set has been replaced with icons based on famfamfam's
 silk set.
 [] Reworked Add and Edit dialogs into Property Pages.
 
-Bugs fixed in 3.18-pre
-======================
+Bugs fixed in 3.18
+==================
 [2795428] Browse+ on Toolbar now inactive if no URL present
 [2795427] Duplicate of "Display Subset of Password" removed from Context
 Menu (right-click on entry).
