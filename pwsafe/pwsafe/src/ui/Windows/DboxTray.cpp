@@ -231,8 +231,12 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   } else {
     const bool bIsEmail = ci.IsURLEmail();
     MapMenuShortcutsIter iter;
-    iter = m_MapMenuShortcuts.find(bIsEmail ? ID_MENUITEM_SENDEMAIL : 
-                                              ID_MENUITEM_BROWSEURL);
+	if (!bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
+		iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURL);
+	else if (!bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX))
+		iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURLPLUS);
+	else if (bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
+		iter = m_MapMenuShortcuts.find(ID_MENUITEM_SENDEMAIL);
     ASSERT(iter != m_MapMenuShortcuts.end());
     CString cs_text = iter->second.name.c_str();
     int nPos = cs_text.Find(_T("\t"));
