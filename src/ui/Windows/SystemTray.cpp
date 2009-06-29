@@ -468,21 +468,21 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     const int i_state = app.GetSystemTrayState();
     switch (i_state) {
-      case ThisMfcApp::UNLOCKED:
+    case ThisMfcApp::UNLOCKED:
       {
         const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
         pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
                                  ID_MENUITEM_TRAYLOCK, csLock);
         break;
       }
-      case ThisMfcApp::LOCKED:
+    case ThisMfcApp::LOCKED:
       {
         const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
         pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
                                  ID_MENUITEM_TRAYUNLOCK, csUnLock);
         break;
       }
-      default:
+    default:
       break;
     }
 
@@ -567,11 +567,13 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
                                              ID_MENUITEM_TRAYBROWSE1 + i,
                                              cs_text);
           ipos++;
-          cs_text.LoadString(IDS_TRAYBROWSEPLUS);
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYBROWSEPLUS1 + i,
-                                             cs_text);
-          ipos++;
+          if (!pci->IsURLEmail()) {
+            cs_text.LoadString(IDS_TRAYBROWSEPLUS);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYBROWSEPLUS1 + i,
+                                               cs_text);
+            ipos++;
+          }
         }
 
         if (!pci->IsRunCommandEmpty()) {
