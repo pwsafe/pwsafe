@@ -683,6 +683,10 @@ msgstr "&Ver Alias"
 msgid "&View Entry..."
 msgstr ""
 
+#. Resource IDs: (32126)
+msgid "&Virtual Keyboard Font"
+msgstr ""
+
 #. Resource IDs: (32013, 32015)
 msgid "&XML format..."
 msgstr ""
@@ -4473,6 +4477,10 @@ msgstr "&Texto de ejemplo"
 msgid "Set Tree/List display font"
 msgstr ""
 
+#. Resource IDs: (357)
+msgid "Set Virtual Keyboard font"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Establecer número máximo de contraseñas guardadas a un valor superior"
@@ -5442,6 +5450,11 @@ msgstr "Puedes usar el botón Copiar de debajo para poner esta lista en el porta
 #. Resource IDs: (346)
 msgid "You must save this database before it can be exported."
 msgstr "Se debe guardar la base de datos antes de exportarla."
+
+#. Resource IDs: (357)
+#, c-format
+msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "[No current database]"

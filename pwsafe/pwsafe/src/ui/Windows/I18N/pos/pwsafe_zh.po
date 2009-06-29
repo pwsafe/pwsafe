@@ -657,6 +657,10 @@ msgstr "查看别名(&V)"
 msgid "&View Entry..."
 msgstr "查看项目(&V)..."
 
+#. Resource IDs: (32126)
+msgid "&Virtual Keyboard Font"
+msgstr ""
+
 #. Resource IDs: (32013, 32015)
 msgid "&XML format..."
 msgstr "XML 格式(&X)..."
@@ -4447,6 +4451,10 @@ msgstr "示例文字(&T)"
 msgid "Set Tree/List display font"
 msgstr ""
 
+#. Resource IDs: (357)
+msgid "Set Virtual Keyboard font"
+msgstr ""
+
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
 msgstr "设定最大保存密码数量至上面的值"
@@ -5416,6 +5424,11 @@ msgstr "你可以使用下面的复制按钮复制该位置列表到剪贴板里
 #. Resource IDs: (346)
 msgid "You must save this database before it can be exported."
 msgstr "在它可被输出之前你必须先保存该数据库！"
+
+#. Resource IDs: (357)
+#, c-format
+msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "[No current database]"
