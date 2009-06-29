@@ -250,8 +250,7 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
       const bool bIsEmail = entry->IsURLEmail();
-	  bIsEmail ? mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, FALSE) :
-		  mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, TRUE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, bIsEmail ? FALSE : TRUE);
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
 
