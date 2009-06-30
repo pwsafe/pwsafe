@@ -661,7 +661,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_core.AddEntry(m_item);
       // refresh tree view
       m_tree->UpdateItem(m_item);
-      // XXX refresh  list view!
+      m_grid->UpdateItem(m_item);
     }
       break;
 

@@ -167,17 +167,37 @@ void PWSGrid::Clear()
   int N = GetNumberRows();
   if (N > 0)
     DeleteRows(0, N);
+  m_row_map.clear();
+  m_uuid_map.clear();
 }
 
-void PWSGrid::AddItem(const CItemData &item, int row)
+void PWSGrid::DisplayItem(const CItemData &item, int row)
 {
   wxString title = item.GetTitle().c_str();
   wxString user = item.GetUser().c_str();
   SetCellValue(row, 0, title);
   SetCellValue(row, 1, user);
+}
+
+
+void PWSGrid::AddItem(const CItemData &item, int row)
+{
+  DisplayItem(item, row);
   uuid_array_t uuid;
   item.GetUUID(uuid);
   m_row_map.insert(std::make_pair(row, CUUIDGen(uuid)));
+  m_uuid_map.insert(std::make_pair(CUUIDGen(uuid), row));
+}
+
+void PWSGrid::UpdateItem(const CItemData &item)
+{  
+  uuid_array_t uuid;
+  item.GetUUID(uuid);
+  UUIDRowMapT::iterator iter = m_uuid_map.find(CUUIDGen(uuid));
+  if (iter != m_uuid_map.end()) {
+    int row = iter->second;
+    DisplayItem(item, row);
+  }
 }
 
 
