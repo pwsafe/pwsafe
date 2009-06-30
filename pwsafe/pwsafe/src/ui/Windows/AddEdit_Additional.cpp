@@ -169,6 +169,10 @@ BOOL CAddEdit_Additional::OnInitDialog()
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
 
+    cs_text.LoadString(IDS_DCARUN);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickRun);
+
     for (int i = 0; i < m_dblclk_cbox.GetCount(); i++) {
       int ival = (int)m_dblclk_cbox.GetItemData(i);
       m_DCA_to_Index[ival] = i;

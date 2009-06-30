@@ -323,6 +323,9 @@ void DboxMain::setupBars()
       case PWSprefs::DoubleClickBrowsePlus:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSEPLUS;
         break;
+      case PWSprefs::DoubleClickRun:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATRUN;
+        break;
       default:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOMPANY;
     }
