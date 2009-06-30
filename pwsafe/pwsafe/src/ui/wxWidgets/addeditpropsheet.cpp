@@ -27,6 +27,8 @@
 #include "corelib/PWSprefs.h"
 
 #include "addeditpropsheet.h"
+#include "PWSgrid.h"
+#include "PWStree.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -45,6 +47,7 @@ IMPLEMENT_CLASS( AddEditPropSheet, wxPropertySheetDialog )
 
 BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
+  EVT_BUTTON( wxID_OK, AddEditPropSheet::OnOk )
 ////@begin AddEditPropSheet event table entries
   EVT_BUTTON( ID_BUTTON2, AddEditPropSheet::OnShowHideClick )
 
@@ -62,11 +65,12 @@ END_EVENT_TABLE()
  */
 
 AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
+                                   PWSGrid *grid, PWSTreeCtrl *tree,
                                    AddOrEdit type, const CItemData &item,
                                    wxWindowID id, const wxString& caption,
                                    const wxPoint& pos, const wxSize& size,
                                    long style)
-: m_core(core), m_type(type), m_item(item)
+: m_core(core), m_grid(grid), m_tree(tree), m_type(type), m_item(item)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -573,4 +577,157 @@ void AddEditPropSheet::HidePassword()
   // Need verification as the user can not see the password entered
   m_Password2Ctrl->ChangeValue(m_password.c_str());
   m_Password2Ctrl->Enable(true);
+}
+
+void AddEditPropSheet::OnOk(wxCommandEvent& event)
+{
+  if (Validate() && TransferDataFromWindow()) {
+    time_t t;
+    const wxString group = m_groupCtrl->GetValue();
+    const StringX password = m_PasswordCtrl->GetValue().c_str();
+
+    switch (m_type) {
+    case EDIT: {
+      bool bIsModified, bIsPSWDModified;
+      short iDCA;
+      m_item.GetDCA(iDCA);
+      // Check if modified
+      bIsModified = (group       != m_item.GetGroup().c_str()      ||
+                     m_title     != m_item.GetTitle().c_str()      ||
+                     m_user      != m_item.GetUser().c_str()       ||
+                     m_notes     != m_item.GetNotes().c_str()      ||
+                     m_url       != m_item.GetURL().c_str()        ||
+#ifdef NOTYET
+                     m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
+                     m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
+                     m_AEMD.DCA         != iDCA                        ||
+                     m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
+                     m_AEMD.locXTime    != m_AEMD.oldlocXTime          ||
+                     m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
+                     m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
+                     (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
+                      m_AEMD.pwp         != m_AEMD.oldpwp)
+#else 
+                     0
+#endif
+                     );
+
+      bIsPSWDModified = (password != m_item.GetPassword());
+
+      if (bIsModified) {
+        // Just modify all - even though only 1 may have actually been modified
+        m_item.SetGroup(group.c_str());
+        m_item.SetTitle(m_title.c_str());
+        m_item.SetUser(m_user.empty() ?
+                       m_core.GetDefUsername().c_str() : m_user.c_str());
+        m_item.SetNotes(m_notes.c_str());
+        m_item.SetURL(m_url.c_str());
+#ifdef NOTYET
+        m_item.SetAutoType(m_AEMD.autotype);
+        m_item.SetPWHistory(m_AEMD.PWHistory);
+        if (m_AEMD.ipolicy == DEFAULT_POLICY)
+          m_item.SetPWPolicy(_T(""));
+        else
+          m_item.SetPWPolicy(m_AEMD.pwp);
+        m_item.SetRunCommand(m_AEMD.runcommand);
+        m_item.SetDCA(m_AEMD.DCA);
+#endif
+      } // bIsModified
+
+      time(&t);
+      if (bIsPSWDModified) {
+        m_item.SetPassword(password);
+#ifdef NOTYET
+        if (SavePWHistory)
+          UpdateHistory();
+#endif
+        m_item.SetPMTime(t);
+      }
+      if (bIsModified || bIsPSWDModified)
+        m_item.SetRMTime(t);
+#ifdef NOTYET
+      if (m_AEMD.oldlocXTime != m_AEMD.locXTime)
+        m_item.SetXTime(m_AEMD.tttXTime);
+      if (m_AEMD.oldXTimeInt != m_AEMD.XTimeInt)
+        m_item.SetXTimeInt(m_AEMD.XTimeInt);
+#endif
+      // All fields in m_item now reflect user's edits
+      // Let's update the core's data
+      uuid_array_t uuid;
+      m_item.GetUUID(uuid);
+      ItemListIter listpos = m_core.Find(uuid);
+      ASSERT(listpos != m_core.GetEntryEndIter());
+      m_core.RemoveEntryAt(listpos);
+      m_core.AddEntry(m_item);
+      // refresh tree view
+      m_tree->UpdateItem(m_item);
+      // XXX refresh  list view!
+    }
+      break;
+
+    case ADD:
+      m_item.SetGroup(group.c_str());
+      m_item.SetTitle(m_title.c_str());
+      m_item.SetUser(m_user.empty() ?
+                     m_core.GetDefUsername().c_str() : m_user.c_str());
+      m_item.SetNotes(m_notes.c_str());
+      m_item.SetURL(m_url.c_str());
+      m_item.SetPassword(password);
+#ifdef NOTYET
+      m_item.SetAutoType(m_AEMD.autotype);
+      m_item.SetRunCommand(m_AEMD.runcommand);
+      m_item.SetDCA(m_AEMD.DCA);
+#endif
+      time(&t);
+      m_item.SetCTime(t);
+#ifdef NOTYET
+      if (m_AEMD.XTimeInt > 0 && m_AEMD.XTimeInt <= 3650)
+        m_item.SetXTimeInt(m_AEMD.XTimeInt);
+
+      if (m_AEMD.SavePWHistory == TRUE)
+        m_item.SetPWHistory(MakePWHistoryHeader(TRUE, m_AEMD.MaxPWHistory, 0));
+
+      if (m_AEMD.ibasedata > 0) {
+        // Password in alias format AND base entry exists
+        // No need to check if base is an alias as already done in
+        // call to PWScore::GetBaseEntry
+        uuid_array_t alias_uuid;
+        m_item.GetUUID(alias_uuid);
+        m_AEMD.pcore->AddDependentEntry(m_AEMD.base_uuid, alias_uuid, CItemData::ET_ALIAS);
+        m_item.SetPassword(_T("[Alias]"));
+        m_item.SetAlias();
+        ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
+        if (iter != m_AEMD.pDbx->End()) {
+          const CItemData &cibase = iter->second;
+          DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+          int nImage = m_AEMD.pDbx->GetEntryImage(cibase);
+          m_AEMD.pDbx->SetEntryImage(di->list_index, nImage, true);
+          m_AEMD.pDbx->SetEntryImage(di->tree_item, nImage, true);
+        }
+      } else {
+        m_item.SetPassword(m_AEMD.realpassword);
+        m_item.SetNormal();
+      }
+
+      if (m_item.IsAlias()) {
+        m_item.SetXTime((time_t)0);
+        m_item.SetPWPolicy(_T(""));
+      } else {
+        m_item.SetXTime(m_AEMD.tttXTime);
+        if (m_AEMD.ipolicy == DEFAULT_POLICY)
+          m_item.SetPWPolicy(_T(""));
+        else
+          m_item.SetPWPolicy(m_AEMD.pwp);
+      }
+#endif
+      break;
+    case VIEW:
+      // No Update
+      break;
+    default:
+      ASSERT(0);
+      break;
+    }
+  }
+  EndModal(wxID_OK);
 }

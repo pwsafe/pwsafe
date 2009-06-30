@@ -93,6 +93,10 @@
 ////@end control identifiers
 
 
+class PWSGrid;
+class PWSTreeCtrl;
+
+
 /*!
  * AddEditPropSheet class declaration
  */
@@ -103,9 +107,10 @@ class AddEditPropSheet: public wxPropertySheetDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  enum AddOrEdit {ADD, EDIT}; // to tweak UI, mainly
+  enum AddOrEdit {ADD, EDIT, VIEW}; // to tweak UI, mainly
   /// Constructors
   AddEditPropSheet(wxWindow* parent, PWScore &core,
+                   PWSGrid *grid, PWSTreeCtrl *tree,
                    AddOrEdit type, const CItemData &item,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE,
@@ -137,7 +142,7 @@ public:
   void OnGoButtonClick( wxCommandEvent& event );
 
 ////@end AddEditPropSheet event handler declarations
-
+  void OnOk(wxCommandEvent& event);
 ////@begin AddEditPropSheet member function declarations
 
   wxString GetTitle() const { return m_title ; }
@@ -177,6 +182,9 @@ private:
   bool m_isPWHidden;
 
   PWScore &m_core;
+  PWSGrid* m_grid; // to update display
+  PWSTreeCtrl* m_tree; // to update display
+
   AddOrEdit m_type;
   CItemData m_item;
   void ItemFieldsToPropSheet();
