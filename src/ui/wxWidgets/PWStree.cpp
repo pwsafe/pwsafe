@@ -22,6 +22,7 @@
 
 ////@begin includes
 ////@end includes
+#include <utility> // for make_pair
 #include "PWStree.h"
 #include "pwsdca.h"
 
@@ -190,16 +191,38 @@ wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
   return ti;
 }
 
-void PWSTreeCtrl::AddItem(const CItemData &item)
+
+wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
 {
-  wxTreeItemData *data = new PWTreeItemData(item);
   wxString title = item.GetTitle().c_str();
   wxString user = item.GetUser().c_str();
   wxString disp = title;
-  wxTreeItemId gnode = AddGroup(item.GetGroup());
   if (!user.empty())
     disp += _T(" [") + user + _("]");
-  AppendItem(gnode, disp, -1, -1, data);
+  return disp;
+}
+
+void PWSTreeCtrl::UpdateItem(const CItemData &item)
+{
+  // XXX fails if the item's *group* has changed. Grrr.
+  const wxTreeItemId node = Find(item);
+  if (node.IsOk()) {
+    const wxString disp = ItemDisplayString(item);
+    SetItemText(node, disp);
+    Update();
+  }
+}
+
+
+void PWSTreeCtrl::AddItem(const CItemData &item)
+{
+  wxTreeItemData *data = new PWTreeItemData(item);
+  wxTreeItemId gnode = AddGroup(item.GetGroup());
+  const wxString disp = ItemDisplayString(item);
+  wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
+  uuid_array_t uuid;
+  item.GetUUID(uuid);
+  m_item_map.insert(std::make_pair(CUUIDGen(uuid), titem));
 }
 
 const CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
@@ -217,6 +240,40 @@ const CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
     return NULL;
   return &citer->second;
 
+}
+
+
+
+wxTreeItemId PWSTreeCtrl::Find(const uuid_array_t &uuid) const
+{
+  wxTreeItemId fail;
+  CUUIDGen cuuid(uuid);
+  UUIDTIMapT::const_iterator iter = m_item_map.find(cuuid);
+  if (iter != m_item_map.end())
+    return iter->second;
+  else
+    return fail;
+}
+
+wxTreeItemId PWSTreeCtrl::Find(const CItemData &item) const
+{
+  uuid_array_t uuid;
+  item.GetUUID(uuid);
+  return Find(uuid);
+}
+
+bool PWSTreeCtrl::Remove(const uuid_array_t &uuid)
+{
+  wxTreeItemId id = Find(uuid);
+  if (id.IsOk()) {
+    m_item_map.erase(CUUIDGen(uuid));
+    Delete(id);
+    Refresh();
+    Update();
+    return true;
+  } else {
+    return false;
+  }
 }
 
 

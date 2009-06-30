@@ -22,6 +22,8 @@
 ////@end includes
 #include "corelib/ItemData.h"
 #include "corelib/PWScore.h"
+#include "corelib/UUIDGen.h"
+#include <map>
 
 /*!
  * Forward declarations
@@ -43,6 +45,7 @@ class PWSTreeCtrl;
 #define SYMBOL_PWSTREECTRL_POSITION wxDefaultPosition
 ////@end control identifiers
 
+typedef std::map<CUUIDGen, wxTreeItemId, CUUIDGen::ltuuid> UUIDTIMapT;
 
 /*!
  * PWSTreeCtrl class declaration
@@ -85,14 +88,20 @@ public:
 ////@end PWSTreeCtrl member function declarations
   void Clear() {DeleteAllItems();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
+  void UpdateItem(const CItemData &item);
   const CItemData *GetItem(const wxTreeItemId &id) const;
+  wxTreeItemId Find(const uuid_array_t &uuid) const;
+  wxTreeItemId Find(const CItemData &item) const;
+  bool Remove(const uuid_array_t &uuid); // only remove from dispayed tree, not from m_core
  private:
   bool ExistsInTree(wxTreeItemId node,
                     const StringX &s, wxTreeItemId &si);
   wxTreeItemId AddGroup(const StringX &group);
+  wxString ItemDisplayString(const CItemData &item) const;
 ////@begin PWSTreeCtrl member variables
 ////@end PWSTreeCtrl member variables
   PWScore &m_core;
+  UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
 };
 
 #endif
