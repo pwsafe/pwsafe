@@ -1144,6 +1144,9 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
     case PWSprefs::DoubleClickViewEdit:
       PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
       break;
+    case PWSprefs::DoubleClickRun:
+      OnRunCommand();
+      break;
     default:
       ASSERT(0);
   }
