@@ -86,7 +86,7 @@ public:
 ////@begin PWSTreeCtrl member function declarations
 
 ////@end PWSTreeCtrl member function declarations
-  void Clear() {DeleteAllItems();} // consistent name w/PWSgrid
+  void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   const CItemData *GetItem(const wxTreeItemId &id) const;

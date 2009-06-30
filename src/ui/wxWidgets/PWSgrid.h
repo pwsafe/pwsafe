@@ -46,6 +46,7 @@ class PWSGrid;
 ////@end control identifiers
 
 typedef std::map<int, CUUIDGen> RowUUIDMapT;
+typedef std::map<CUUIDGen, int, CUUIDGen::ltuuid> UUIDRowMapT;
 
 
 /*!
@@ -78,6 +79,7 @@ public:
   
   void Clear();
   void AddItem(const CItemData &item, int row);
+  void UpdateItem(const CItemData &item);
   
 ////@begin PWSGrid event handler declarations
 
@@ -107,8 +109,10 @@ public:
 ////@end PWSGrid member variables
 
  private:
+  void DisplayItem(const CItemData &item, int row);
   PWScore &m_core;
   RowUUIDMapT m_row_map;
+  UUIDRowMapT m_uuid_map;
 };
 
 #endif
