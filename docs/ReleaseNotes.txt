@@ -12,6 +12,7 @@ Bugs fixed in 3.18.1
 ====================
 [2813295] 'Browse + Autotype' system tray menu items fixed - thanks to
 Vasily for reporting and sending the patches for this.
+[] Fix crash error using External Editor on Notes field.
 
 New Features for 3.18
 =====================
