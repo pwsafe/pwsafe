@@ -109,6 +109,7 @@ private:
 
   COLORREF m_group_cfOldColour, m_title_cfOldColour, m_user_cfOldColour;
   COLORREF m_pswd_cfOldColour, m_notes_cfOldColour, m_URL_cfOldColour;
+  BOOL m_bOKSave, m_bOKCancel;
 
   CToolTipCtrl *m_pToolTipCtrl;
 };

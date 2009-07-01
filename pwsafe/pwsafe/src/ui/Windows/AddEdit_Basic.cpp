@@ -848,8 +848,8 @@ LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
   if (rc != IDYES)
     return 0L;
 
-  GetDlgItem(IDOK)->EnableWindow(FALSE);
-  GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+  m_bOKSave = GetParent()->GetDlgItem(IDOK)->EnableWindow(FALSE);
+  m_bOKCancel = GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 
   const CString cs_text(MAKEINTRESOURCE(IDS_NOTES_IN_EXTERNAL_EDITOR));
   CWnd *pwnotes = GetDlgItem(IDC_NOTES);
@@ -977,6 +977,11 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   // Delete temporary file
   _tremove(m_szTempName);
   memset(m_szTempName, 0, sizeof(m_szTempName));
+
+  // Restore Sheet buttons
+  GetParent()->GetDlgItem(IDOK)->EnableWindow(m_bOKSave == 0 ? TRUE : FALSE);
+  GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
+
   return 0;
 }
 
