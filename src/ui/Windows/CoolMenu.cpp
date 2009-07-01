@@ -102,7 +102,7 @@ LRESULT CCoolMenuManager::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
       OnMenuSelect((UINT)LOWORD(wp), (UINT)HIWORD(wp), (HMENU)lp);
       break;
     case WM_MENUCHAR:
-      LRESULT lr = OnMenuChar((TCHAR)LOWORD(wp), (UINT)HIWORD(wp), 
+      LRESULT lr = OnMenuChar((wchar_t)LOWORD(wp), (UINT)HIWORD(wp), 
                               CMenu::FromHandle((HMENU)lp));
       if (lr != 0)
         return lr;
@@ -387,7 +387,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
   UINT nItem = pMenu->GetMenuItemCount();
   for (UINT i = 0; i < nItem; i++) {  // loop over each item in menu
     // get menu item info
-    TCHAR itemname[256] = {_T('\0')};
+    wchar_t itemname[256] = {L'\0'};
     CMenuItemInfo miinfo;
     miinfo.fMask = MIIM_SUBMENU | MIIM_DATA | MIIM_FTYPE | MIIM_ID | 
                    MIIM_STRING;
@@ -472,7 +472,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
             miinfo.dwItemData = (ULONG_PTR)pmd; //   set in menu item data
             miinfo.fMask |= MIIM_DATA;          //   set item data
         }
-        pmd->text = miinfo.dwTypeData;        // copy menu item string
+        pmd->text = miinfo.dwTypeData;          // copy menu item string
       }
 
       // now add the menu to list of "converted" menus
@@ -488,9 +488,9 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
       if (miinfo.fType & MFT_OWNERDRAW) {     // if ownerdraw:
         miinfo.fType &= ~MFT_OWNERDRAW;       //   turn it off
         miinfo.fMask |= MIIM_TYPE;            //   change item type
-        ASSERT(pmd);                        //   sanity check
-        sItemName = pmd->text;              //   save name before deleting pmd
-      } else                                // otherwise:
+        ASSERT(pmd);                          //   sanity check
+        sItemName = pmd->text;                //   save name before deleting pmd
+      } else                                  // otherwise:
         sItemName = miinfo.dwTypeData;        //   use name from MENUITEMINFO
 
       // NOTE: pmd (item data) could still be left hanging around even
@@ -498,16 +498,16 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
       // calls pCmdUI->SetText to set text of item and MFC sets the type
       // to MFT_STRING.
       //
-      miinfo.dwItemData = NULL;             // item data is NULL
-      miinfo.fMask |= MIIM_DATA;            // change it
-      delete pmd;                           // and item data too
+      miinfo.dwItemData = NULL;               // item data is NULL
+      miinfo.fMask |= MIIM_DATA;              // change it
+      delete pmd;                             // and item data too
       PMDVectorIter iter = std::find(m_pmdList.begin(), m_pmdList.end(), pmd);
       if (iter != m_pmdList.end())
         m_pmdList.erase(iter);
 
       if (miinfo.fMask & MIIM_TYPE) {
         // if setting name, copy name from CString to buffer and set cch
-        _tcsncpy(itemname, sItemName, sizeof(itemname));
+        wcsncpy_s(itemname, _countof(itemname), sItemName, _countof(itemname));
         miinfo.dwTypeData = itemname;
         miinfo.cch = sItemName.GetLength();
       }
@@ -540,7 +540,7 @@ LRESULT CCoolMenuManager::OnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMenu
     CMenuItemData* pmd = (CMenuItemData*)miinfo.dwItemData;
     if ((miinfo.fType & MFT_OWNERDRAW) && pmd && pmd->IsCMID()) {
       CString& text = pmd->text;
-      int iAmpersand = text.Find(_T('&'));
+      int iAmpersand = text.Find(L'&');
       if (iAmpersand >= 0 && toupper(nChar) == toupper(text[iAmpersand + 1]))
         arItemsMatched.Add(i);
     }
@@ -627,7 +627,7 @@ HBITMAP CCoolMenuManager::GetMFCDotBitmap()
   // and then see what bitmap MFC set in the menu item.
   CMenu menu;
   VERIFY(menu.CreateMenu());
-  VERIFY(menu.AppendMenu(MFT_STRING, 0, (LPCTSTR)NULL));
+  VERIFY(menu.AppendMenu(MFT_STRING, 0, (LPCWSTR)NULL));
   CCmdUI cui;
   cui.m_pMenu = &menu;
   cui.m_nIndex = 0;

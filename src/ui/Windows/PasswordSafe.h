@@ -58,7 +58,7 @@ extern ThisMfcApp app;
 * the user chooses to see the password:
 */
 
-extern const TCHAR *HIDDEN_PASSWORD;
+extern const wchar_t *HIDDEN_PASSWORD;
 
 //-----------------------------------------------------------------------------
 // Local variables:

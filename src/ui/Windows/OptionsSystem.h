@@ -23,7 +23,7 @@ public:
   COptionsSystem();
   ~COptionsSystem();
 
-  const TCHAR *GetHelpName() const {return _T("system_tab");}
+  const wchar_t *GetHelpName() const {return L"system_tab";}
 
   // Dialog Data
   //{{AFX_DATA(COptionsSystem)

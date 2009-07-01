@@ -73,9 +73,9 @@ class CVKeyBoardDlg : public CPWDialog
 public:
   static bool IsOSKAvailable(); // true iff dll available, right version, etc.
 
-  static TCHAR * ARIALUMS;
-  static TCHAR * ARIALU;
-  static TCHAR * LUCIDAUS;
+  static wchar_t * ARIALUMS;
+  static wchar_t * ARIALU;
+  static wchar_t * LUCIDAUS;
 
   CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID = NULL);
   ~CVKeyBoardDlg();

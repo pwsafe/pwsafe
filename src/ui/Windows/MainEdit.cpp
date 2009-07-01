@@ -61,7 +61,7 @@ void DboxMain::OnAdd()
   CItemData temp;
   temp.CreateUUID();
 
-  CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, &temp, _T("")); 
+  CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, &temp, L""); 
 
   if (m_core.GetUseDefUser()) {
     add_entry_psh.SetUsername(m_core.GetDefUsername());
@@ -85,7 +85,7 @@ void DboxMain::OnAdd()
     }
   }
   add_entry_psh.SetGroup(m_TreeViewGroup);
-  m_TreeViewGroup = _T(""); // for next time
+  m_TreeViewGroup = L""; // for next time
 
   /*
   **  Remove the "Apply Now" button.
@@ -198,7 +198,7 @@ void DboxMain::CreateShortcutEntry(CItemData *ci, const StringX &cs_group,
   temp.SetUser(cs_user);
 
   m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
-  temp.SetPassword(_T("[Shortcut]"));
+  temp.SetPassword(L"[Shortcut]");
   temp.SetShortcut();
   ItemListIter iter = m_core.Find(base_uuid);
   if (iter != End()) {
@@ -261,10 +261,10 @@ void DboxMain::OnAddGroup()
     if (m_TreeViewGroup.empty())
       m_TreeViewGroup = cmys_text;
     else
-      m_TreeViewGroup += _T(".") + cmys_text;
+      m_TreeViewGroup += L"." + cmys_text;
     HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup.c_str());
     m_ctlItemTree.SelectItem(newGroup);
-    m_TreeViewGroup = _T(""); // for next time
+    m_TreeViewGroup = L""; // for next time
     m_ctlItemTree.EditLabel(newGroup);
   }
 }
@@ -489,7 +489,7 @@ void DboxMain::Delete(bool inRecursion)
       }
     }
   }
-  m_TreeViewGroup = _T("");
+  m_TreeViewGroup = L"";
 }
 
 void DboxMain::OnRename()
@@ -563,7 +563,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
   if (entrytype == CItemData::ET_ALIASBASE || entrytype == CItemData::ET_SHORTCUTBASE) {
     // Base entry
     UUIDList dependentslist;
-    StringX csDependents(_T(""));
+    StringX csDependents(L"");
 
     pcore->GetAllDependentEntries(original_uuid, dependentslist, 
              entrytype == CItemData::ET_ALIASBASE ? CItemData::ET_ALIAS : CItemData::ET_SHORTCUT);
@@ -586,10 +586,10 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     ItemListIter iter = pcore->Find(original_base_uuid);
     if (iter != End()) {
       const CItemData &cibase = iter->second;
-      CSecString cs_base = _T("[") +
-                           cibase.GetGroup() + _T(":") +
-                           cibase.GetTitle() + _T(":") +
-                           cibase.GetUser()  + _T("]");
+      CSecString cs_base = L"[" +
+                           cibase.GetGroup() + L":" +
+                           cibase.GetTitle() + L":" +
+                           cibase.GetUser()  + L"]";
       edit_entry_psh.SetBase(cs_base);
       edit_entry_psh.SetOriginalEntrytype(CItemData::ET_ALIAS);
     }
@@ -622,7 +622,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
         pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-        editedItem.SetPassword(_T("[Alias]"));
+        editedItem.SetPassword(L"[Alias]");
         editedItem.SetAlias();
       } else {
         // Still 'normal'
@@ -644,7 +644,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         if (edit_entry_psh.GetIBasedata() > 0) {
           // Still an alias
           pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-          editedItem.SetPassword(_T("[Alias]"));
+          editedItem.SetPassword(L"[Alias]");
           editedItem.SetAlias();
         } else {
           // No longer an alias
@@ -661,7 +661,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         // Now an alias
         // Make this one an alias
         pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-        editedItem.SetPassword(_T("[Alias]"));
+        editedItem.SetPassword(L"[Alias]");
         editedItem.SetAlias();
         // Move old aliases across
         pcore->MoveDependentEntries(original_uuid, new_base_uuid, CItemData::ET_ALIAS);
@@ -699,7 +699,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
     if (editedItem.IsAlias() || editedItem.IsShortcut()) {
       editedItem.SetXTime((time_t)0);
-      editedItem.SetPWPolicy(_T(""));
+      editedItem.SetPWPolicy(L"");
     }
 
     pcore->RemoveEntryAt(listpos);
@@ -828,7 +828,7 @@ void DboxMain::OnDuplicateEntry()
     do {
       i++;
       s_copy.Format(IDS_COPYNUMBER, i);
-      ci2_title = ci2_title0 + LPCTSTR(s_copy);
+      ci2_title = ci2_title0 + LPCWSTR(s_copy);
       listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
     } while (listpos != m_core.GetEntryEndIter());
 
@@ -886,10 +886,10 @@ void DboxMain::OnDuplicateEntry()
       iter = m_core.Find(base_uuid);
       if (iter != m_core.GetEntryEndIter()) {
         StringX cs_tmp;
-        cs_tmp = _T("[") +
-                 iter->second.GetGroup() + _T(":") +
-                 iter->second.GetTitle() + _T(":") +
-                 iter->second.GetUser()  + _T("]");
+        cs_tmp = L"[" +
+                 iter->second.GetGroup() + L":" +
+                 iter->second.GetTitle() + L":" +
+                 iter->second.GetUser()  + L"]";
         ci2.SetPassword(cs_tmp);
       }
     }
@@ -1070,15 +1070,15 @@ void DboxMain::OnCopyURL()
 
   StringX cs_URL = ci->GetURL();
   StringX::size_type ipos;
-  ipos = cs_URL.find(_T("[alt]"));
+  ipos = cs_URL.find(L"[alt]");
   if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, _T(""));
-  ipos = cs_URL.find(_T("[ssh]"));
+    cs_URL.replace(ipos, 5, L"");
+  ipos = cs_URL.find(L"[ssh]");
   if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, _T(""));
-  ipos = cs_URL.find(_T("{alt}"));
+    cs_URL.replace(ipos, 5, L"");
+  ipos = cs_URL.find(L"{alt}");
   if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, _T(""));
+    cs_URL.replace(ipos, 5, L"");
 
   SetClipboardData(cs_URL);
   UpdateLastClipboardAction(CItemData::URL);
@@ -1088,11 +1088,11 @@ void DboxMain::OnCopyURL()
 void DboxMain::UpdateLastClipboardAction(const int iaction)
 {
   int imsg(0);
-  m_lastclipboardaction = _T("");
+  m_lastclipboardaction = L"";
   switch (iaction) {
     case -1:
       // Clipboard cleared
-      m_lastclipboardaction = _T("");
+      m_lastclipboardaction = L"";
       break;
     case CItemData::GROUP:
       imsg = IDS_GROUPCOPIED;
@@ -1124,11 +1124,11 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
   }
 
   if (iaction > 0) {
-    TCHAR szTimeFormat[80], szTimeString[80];
+    wchar_t szTimeFormat[80], szTimeString[80];
     VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, 
-                           szTimeFormat, 80 /* sizeof(szTimeFormat) / sizeof(TCHAR) */));
+                           szTimeFormat, 80 /* sizeof(szTimeFormat) / sizeof(wchar_t) */));
     GetTimeFormat(LOCALE_USER_DEFAULT, 0, NULL, szTimeFormat,
-                  szTimeString, 80 /* sizeof(szTimeString) / sizeof(TCHAR) */);
+                  szTimeString, 80 /* sizeof(szTimeString) / sizeof(wchar_t) */);
     m_lastclipboardaction.LoadString(imsg);
     m_lastclipboardaction += szTimeString;
   }
@@ -1207,7 +1207,7 @@ void DboxMain::AutoType(const CItemData &ci)
         if (!user.empty())
           AutoCmd = DEFAULT_AUTOTYPE;
         else
-          AutoCmd = _T("\\p\\n");
+          AutoCmd = L"\\p\\n";
       }
     }
   }
@@ -1247,9 +1247,9 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
                           const StringX &sx_title, const StringX &sx_user,
                           const StringX &sx_pwd, const StringX &sx_notes)
 {
-  StringX tmp(_T(""));
+  StringX tmp(L"");
   StringX sxnotes(sx_notes);
-  TCHAR curChar;
+  wchar_t curChar;
   StringX sx_autotype(sx_in_autotype);
   const int N = sx_autotype.length();
   CKeySend ks;
@@ -1262,7 +1262,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   if (!sxnotes.empty()) {
     // Use \n and \r to tokenise this line
     StringX::size_type start(0), end(0);
-    const StringX delim = _T("\r\n");
+    const StringX delim = L"\r\n";
     StringX line;
     while (end != StringX::npos) {
       end = sxnotes.find(delim, start);
@@ -1270,10 +1270,10 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
                     (end == StringX::npos) ? StringX::npos : end - start));
       index = 0;
       for (;;) {
-        index = line.find(_T("\\t"), index);
+        index = line.find(L"\\t", index);
         if (index == line.npos)
           break;
-        line.replace(index, 2, _T("\t"));
+        line.replace(index, 2, L"\t");
         index += 1;
       }
       vsx_notes_lines.push_back(line);
@@ -1283,18 +1283,18 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
     // Now change '\n' to '\r' in the complete notes field
     index = 0;
     for (;;) {
-      index = sxnotes.find(_T("\r\n"), index);
+      index = sxnotes.find(L"\r\n", index);
       if (index == StringX::npos)
         break;
-      sxnotes.replace(index, 2, _T("\r"));
+      sxnotes.replace(index, 2, L"\r");
       index += 1;
     }
     index = 0;
     for (;;) {
-      index = sxnotes.find(_T("\\t"), index);
+      index = sxnotes.find(L"\\t", index);
       if (index == StringX::npos)
         break;
-      sxnotes.replace(index, 2, _T("\t"));
+      sxnotes.replace(index, 2, L"\t");
       index += 1;
     }
   }
@@ -1308,7 +1308,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   ks.ResetKeyboardState();
 
   // Stop Keyboard/Mouse Input
-  TRACE(_T("DboxMain::DoAutoType - BlockInput set\n"));
+  TRACE(L"DboxMain::DoAutoType - BlockInput set\n");
 #if _MSC_VER < 1500
   ::BlockInput(true);
 #else
@@ -1325,35 +1325,35 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   int gNumIts;
   for (int n = 0; n < N; n++){
     curChar = sx_autotype[n];
-    if (curChar == TCHAR('\\')) {
+    if (curChar == L'\\') {
       n++;
       if (n < N)
         curChar = sx_autotype[n];
 
       switch (curChar){
-        case TCHAR('\\'):
-          tmp += TCHAR('\\');
+        case L'\\':
+          tmp += L'\\';
           break;
-        case TCHAR('n'):
-        case TCHAR('r'):
-          tmp += TCHAR('\r');
+        case L'n':
+        case L'r':
+          tmp += L'\r';
           break;
-        case TCHAR('t'):
-          tmp += TCHAR('\t');
+        case L't':
+          tmp += L'\t';
           break;
-        case TCHAR('g'):
+        case L'g':
           tmp += sx_group;
           break;
-        case TCHAR('i'):
+        case L'i':
           tmp += sx_title;
           break;
-        case TCHAR('u'):
+        case L'u':
           tmp += sx_user;
           break;
-        case TCHAR('p'):
+        case L'p':
           tmp += sx_pwd;
           break;
-        case TCHAR('o'):
+        case L'o':
         {
           if (n == (N - 1)) {
             // This was the last character - send the lot!
@@ -1365,7 +1365,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
             if (_istdigit(sx_autotype[n])) {
               line_number *= 10;
-              line_number += (sx_autotype[n] - TCHAR('0'));
+              line_number += (sx_autotype[n] - L'0');
             } else
               break; // for loop
           }
@@ -1381,18 +1381,18 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
           n--;
           break; // case 'o'
         }
-        case TCHAR('d'):
+        case L'd':
         {
           // Delay is going to change - send what we have with old delay
           ks.SendString(tmp);
           // start collecting new delay
-          tmp = _T("");
+          tmp = L"";
           int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
             if (_istdigit(sx_autotype[n])) {
               newdelay *= 10;
-              newdelay += (sx_autotype[n] - TCHAR('0'));
+              newdelay += (sx_autotype[n] - L'0');
             } else
               break; // for loop
           }
@@ -1401,15 +1401,15 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
           ks.SetAndDelay(newdelay);
           break; // case 'd'
         }
-        case TCHAR('b'): // backspace!
-          tmp += TCHAR('\b');
+        case L'b': // backspace!
+          tmp += L'\b';
           break;
         // Ignore explicit control characters
-        case TCHAR('a'): // bell (can't hear it during testing!)
-        case TCHAR('v'): // vertical tab
-        case TCHAR('f'): // form feed
-        case TCHAR('e'): // escape
-        case TCHAR('x'): // hex digits (\xNN)
+        case L'a': // bell (can't hear it during testing!)
+        case L'v': // vertical tab
+        case L'f': // form feed
+        case L'e': // escape
+        case L'x': // hex digits (\xNN)
         // Ignore any others!
         // '\cC', '\uXXXX', '\OOO', '\<any other charatcer not recognised above>'
         default:
@@ -1426,7 +1426,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   Sleep(100);
 
   // Reset Keyboard/Mouse Input
-  TRACE(_T("DboxMain::DoAutoType - BlockInput reset\n"));
+  TRACE(L"DboxMain::DoAutoType - BlockInput reset\n");
 #if _MSC_VER < 1500
   ::BlockInput(false);
 #else
@@ -1492,7 +1492,7 @@ void DboxMain::OnRunCommand()
   if (sx_RunCommand.empty())
     return;
 
-  stringT errmsg;
+  std::wstring errmsg;
   StringX::size_type st_column;
   sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_RunCommand, 
                        m_core.GetCurFile(), ci, 
@@ -1528,7 +1528,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   UUIDList possible_aliases, possible_shortcuts;
   StringX Group, Title, User;
   POSITION pos;
-  TCHAR *dot;
+  wchar_t *dot;
   uuid_array_t entry_uuid;
   bool bAddToViews;
 
@@ -1544,7 +1544,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
     pDDObject->ToItem(tempitem);
 
     if (in_oblist.m_bDragNode) {
-      dot = (!DropGroup.empty() && !tempitem.GetGroup().empty()) ? _T(".") : _T("");
+      dot = (!DropGroup.empty() && !tempitem.GetGroup().empty()) ? L"." : L"";
       Group = DropGroup + dot + tempitem.GetGroup();
     } else {
       Group = DropGroup;
@@ -1570,17 +1570,17 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
     // Potentially remove outer single square brackets as GetBaseEntry expects only
     // one set of square brackets (processing import and user edit of entries)
-    if (cs_tmp.substr(0, 2) == _T("[[") &&
-        cs_tmp.substr(cs_tmp.length() - 2) == _T("]]")) {
+    if (cs_tmp.substr(0, 2) == L"[[" &&
+        cs_tmp.substr(cs_tmp.length() - 2) == L"]]") {
       cs_tmp = cs_tmp.substr(1, cs_tmp.length() - 2);
       pl.InputType = CItemData::ET_ALIAS;
     }
 
     // Potentially remove tilde as GetBaseEntry expects only
     // one set of square brackets (processing import and user edit of entries)
-    if (cs_tmp.substr(0, 2) == _T("[~") &&
-        cs_tmp.substr(cs_tmp.length() - 2) == _T("~]")) {
-      cs_tmp = _T("[") + cs_tmp.substr(2, cs_tmp.length() - 4) + _T("]");
+    if (cs_tmp.substr(0, 2) == L"[~" &&
+        cs_tmp.substr(cs_tmp.length() - 2) == L"~]") {
+      cs_tmp = L"[" + cs_tmp.substr(2, cs_tmp.length() - 4) + L"]";
       pl.InputType = CItemData::ET_SHORTCUT;
     }
 
@@ -1605,7 +1605,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           continue;
         }
         m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_ALIAS);
-        tempitem.SetPassword(_T("[Alias]"));
+        tempitem.SetPassword(L"[Alias]");
         tempitem.SetAlias();
       } else
       if (pl.InputType == CItemData::ET_SHORTCUT) {
@@ -1619,7 +1619,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           continue;
         }
         m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
-        tempitem.SetPassword(_T("[Shortcut]"));
+        tempitem.SetPassword(L"[Shortcut]");
         tempitem.SetShortcut();
       }
     } else
@@ -1689,27 +1689,27 @@ bool GTUCompare(const StringX &elem1, const StringX &elem2)
 {
   StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
 
-  StringX::size_type i1 = g1.find(_T(':'));
+  StringX::size_type i1 = g1.find(L':');
   g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
-  StringX::size_type i2 = g2.find(_T(':'));
+  StringX::size_type i2 = g2.find(L':');
   g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
   if (g1 != g2)
     return g1.compare(g2) < 0;
 
   tmp1 = elem1.substr(g1.length() + 1);
   tmp2 = elem2.substr(g2.length() + 1);
-  i1 = tmp1.find(_T(':'));
+  i1 = tmp1.find(L':');
   t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
-  i2 = tmp2.find(_T(':'));
+  i2 = tmp2.find(L':');
   t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
   if (t1 != t2)
     return t1.compare(t2) < 0;
 
   tmp1 = tmp1.substr(t1.length() + 1);
   tmp2 = tmp2.substr(t2.length() + 1);
-  i1 = tmp1.find(_T(':'));
+  i1 = tmp1.find(L':');
   u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
-  i2 = tmp2.find(_T(':'));
+  i2 = tmp2.find(L':');
   u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
   return u1.compare(u2) < 0;
 }
@@ -1728,8 +1728,8 @@ void DboxMain::SortDependents(UUIDList &dlist, StringX &csDependents)
     diter->GetUUID(dependent_uuid);
     iter = m_core.Find(dependent_uuid);
     if (iter != m_core.GetEntryEndIter()) {
-      cs_dependent = iter->second.GetGroup() + _T(":") +
-                     iter->second.GetTitle() + _T(":") +
+      cs_dependent = iter->second.GetGroup() + L":" +
+                     iter->second.GetTitle() + L":" +
                      iter->second.GetUser();
       sorted_dependents.push_back(cs_dependent);
     }
@@ -1739,7 +1739,7 @@ void DboxMain::SortDependents(UUIDList &dlist, StringX &csDependents)
   csDependents.clear();
 
   for (sd_iter = sorted_dependents.begin(); sd_iter != sorted_dependents.end(); sd_iter++) {
-    csDependents += _T("\t[") +  *sd_iter + _T("]\r\n");
+    csDependents += L"\t[" +  *sd_iter + L"]\r\n";
   }
 }
 

@@ -36,7 +36,7 @@ BOOL CSecString::LoadString(const UINT &nID)
   return m_mystring.LoadString(nID);
 }
 
-void CSecString::Format(LPCTSTR lpszFormat, ... )
+void CSecString::Format(LPCWSTR lpszFormat, ... )
 {
   va_list args;
   va_start(args, lpszFormat);
@@ -62,28 +62,19 @@ const CSecString& CSecString::operator=(const CSecString& stringSrc)
   return *this;
 }
 
-const CSecString& CSecString::operator=(TCHAR ch)
+const CSecString& CSecString::operator=(wchar_t ch)
 {
   trashstring();
   m_mystring = ch;
   return *this;
 }
 
-const CSecString& CSecString::operator=(LPCTSTR lpsz)
+const CSecString& CSecString::operator=(LPCWSTR lpsz)
 {
   trashstring();
   m_mystring = lpsz;
   return *this;
 }
-
-#ifndef UNICODE // do we need this at all?
-const CSecString&CSecString::operator=(const unsigned char* psz)
-{
-  trashstring();
-  m_mystring = psz;
-  return *this;
-}
-#endif
 
 CSecString operator+(const CSecString& string1,const CSecString& string2)
 {
@@ -92,28 +83,28 @@ CSecString operator+(const CSecString& string1,const CSecString& string2)
   return s;
 }
 
-CSecString operator+(const CSecString& string, TCHAR ch)
+CSecString operator+(const CSecString& string, wchar_t ch)
 {
   CSecString s;
   s = (CSecString)(string.m_mystring + ch);
   return s;
 }
 
-CSecString operator+(TCHAR ch, const CSecString& string)
+CSecString operator+(wchar_t ch, const CSecString& string)
 {
   CSecString s;
   s = (CSecString)(ch + string.m_mystring);
   return s;
 }
 
-CSecString operator+(const CSecString& string, LPCTSTR lpsz)
+CSecString operator+(const CSecString& string, LPCWSTR lpsz)
 {
   CSecString s;
   s = (CSecString)(string.m_mystring + lpsz);
   return s;
 }
 
-CSecString operator+(LPCTSTR lpsz, const CSecString& string)
+CSecString operator+(LPCWSTR lpsz, const CSecString& string)
 {
   CSecString s;
   s = (CSecString)(lpsz + string.m_mystring);

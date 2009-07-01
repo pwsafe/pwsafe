@@ -54,7 +54,7 @@ public:
 
   void ClearWarning() {m_stc_warning.ShowWindow(SW_HIDE);}
 
-  const TCHAR *GetHelpName() const {return _T("menu_shortcuts");}
+  const wchar_t *GetHelpName() const {return L"menu_shortcuts";}
 
   // Dialog Data
   //{{AFX_DATA(COptionsBackup)

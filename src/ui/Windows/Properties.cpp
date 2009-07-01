@@ -21,15 +21,15 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
 {
   m_database = CString(core.GetCurFile().c_str());
 
-  m_databaseformat.Format(_T("%d.%02d"),
+  m_databaseformat.Format(L"%d.%02d",
                           core.GetHeader().m_nCurrentMajorVersion,
                           core.GetHeader().m_nCurrentMinorVersion);
 
-  std::vector<stringT> aryGroups;
+  std::vector<std::wstring> aryGroups;
   core.GetUniqueGroups(aryGroups);
-  m_numgroups.Format(_T("%d"), aryGroups.size());
+  m_numgroups.Format(L"%d", aryGroups.size());
 
-  m_numentries.Format(_T("%d"), core.GetNumEntries());
+  m_numentries.Format(L"%d", core.GetNumEntries());
 
   time_t twls = core.GetHeader().m_whenlastsaved;
   if (twls == 0) {
@@ -47,10 +47,10 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
     m_whenlastsaved.Trim();
   } else {
     CString user = core.GetHeader().m_lastsavedby.empty() ?
-      _T("?") : core.GetHeader().m_lastsavedby.c_str();
+      L"?" : core.GetHeader().m_lastsavedby.c_str();
     CString host = core.GetHeader().m_lastsavedon.empty() ?
-      _T("?") : core.GetHeader().m_lastsavedon.c_str();
-    m_wholastsaved.Format(_T("%s on %s"), user, host);
+      L"?" : core.GetHeader().m_lastsavedon.c_str();
+    m_wholastsaved.Format(L"%s on %s", user, host);
   }
 
   CString wls = core.GetHeader().m_whatlastsaved.c_str();
@@ -65,7 +65,7 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
   core.GetFileUUID(file_uuid_array);
 
   if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
-    m_file_uuid = _T("N/A");
+    m_file_uuid = L"N/A";
   else {
     ostringstreamT os;
     CUUIDGen huuid(file_uuid_array, true); // true for canonical format
@@ -81,10 +81,10 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
 
     m_unknownfields.Format(IDS_UNKNOWNFIELDS, cs_HdrYesNo);
     if (num == 0)
-      m_unknownfields += cs_No + _T(")");
+      m_unknownfields += cs_No + L")";
     else {
-      wls.Format(_T("%d"), num);
-      m_unknownfields += wls + _T(")");
+      wls.Format(L"%d", num);
+      m_unknownfields += wls + L")";
     }
   } else {
     m_unknownfields.LoadString(IDS_NONE);

@@ -24,7 +24,7 @@ public:
   COptionsPasswordPolicy();
   ~COptionsPasswordPolicy();
 
-  const TCHAR *GetHelpName() const {return _T("password_policies");}
+  const wchar_t *GetHelpName() const {return L"password_policies";}
 
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordPolicy)

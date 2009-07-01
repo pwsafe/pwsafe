@@ -22,11 +22,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#if defined(UNICODE)
 #define EDIT_CLIPBOARD_TEXT_FORMAT  CF_UNICODETEXT
-#else
-#define EDIT_CLIPBOARD_TEXT_FORMAT  CF_TEXT
-#endif
 
 const COLORREF crefInFocus = (RGB(222, 255, 222));  // Light green
 const COLORREF crefNoFocus = (RGB(255, 255, 255));  // White
@@ -380,7 +376,7 @@ void CListBoxExtn::ActivateToolTips()
   m_bUseToolTips = true;
   m_pLBToolTips = new CInfoDisplay;
 
-  if (!m_pLBToolTips->Create(0, 0, _T(""), this)) {
+  if (!m_pLBToolTips->Create(0, 0, L"", this)) {
     // failed
     delete m_pLBToolTips;
     m_pLBToolTips = NULL;
@@ -576,7 +572,7 @@ void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
 // so that sensitive information doesn't leak in a debug version...
 //-----------------------------------------------------------------
 
-const TCHAR FILLER = TCHAR(0x08); // ASCII backspace doesn't occur in Edit
+const wchar_t FILLER = 0x08; // ASCII backspace doesn't occur in Edit
 
 struct CSecEditExtn::Impl {
   Impl() : m_field(0) {
@@ -657,7 +653,7 @@ afx_msg void CSecEditExtn::OnUpdate()
 #ifdef DEBUG_CSECEDITEXTN
   CString dstr;
   GetWindowText(dstr);
-  TRACE(_T("CSecEditExtn::OnUpdate(%s)\n"),dstr);
+  TRACE(L"CSecEditExtn::OnUpdate(%s)\n",dstr);
 #endif
   if (m_secure) {
     if (!m_in_recursion)
@@ -727,7 +723,7 @@ void CSecEditExtn::OnSecureUpdate()
   }
   m_in_recursion = true; // the following change will trigger another update
 #ifdef DEBUG_CSECEDITEXTN
-  TRACE(_T("CSecEditExtn::OnSecureUpdate: GetSel(%d, %d), str = %s\n"),
+  TRACE(L"CSecEditExtn::OnSecureUpdate: GetSel(%d, %d), str = %s\n",
         startSel, endSel, str);
 #endif
   SetSecureText(str);

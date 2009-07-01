@@ -70,16 +70,16 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   HGLOBAL hGlobal;
   hGlobal = pDataObject->GetGlobalData(m_ccddCPFID);
 
-  LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
+  LPCWSTR pData = (LPCWSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
   DWORD procID;
   int iDDType, iType;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData, _T("%08x%02x%02x"), &procID, &iDDType, &iType);
+  swscanf_s(pData, L"%08x%02x%02x", &procID, &iDDType, &iType);
 #else
-  _stscanf(pData, _T("08x%02x%02x"), &procID, &iDDType, &iType);
+  swscanf(pData, L"08x%02x%02x", &procID, &iDDType, &iType);
 #endif
 
   // Check if it is ours?
@@ -137,7 +137,7 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   HD_ITEM hdi;
   hdi.mask = HDI_WIDTH | HDI_LPARAM | HDI_TEXT;
   enum { sizeOfBuffer = 256 };
-  TCHAR lpBuffer[sizeOfBuffer];
+  wchar_t lpBuffer[sizeOfBuffer];
   hdi.pszText = lpBuffer;
   hdi.cchTextMax = sizeOfBuffer;
 
@@ -149,9 +149,9 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
     return;
 
   // Get the data: ColumnChooser Listbox needs the column string
-  const size_t iLen = _tcslen(lpBuffer);
+  const size_t iLen = wcslen(lpBuffer);
   CString cs_text;
-  cs_text.Format(_T("%08x%02x%02x%04x%s"), GetCurrentProcessId(),
+  cs_text.Format(L"%08x%02x%02x%04x%s", GetCurrentProcessId(),
     FROMHDR, m_dwHDRType, iLen, lpBuffer);
 
   // Set drag image
@@ -164,7 +164,7 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   GetClientRect(&rClient);
 
   // Start dragging
-  StartDragging((BYTE *)LPCTSTR(cs_text), cs_text.GetLength() * sizeof(TCHAR),
+  StartDragging((BYTE *)LPCWSTR(cs_text), cs_text.GetLength() * sizeof(wchar_t),
     m_ccddCPFID, &rClient, &point);
 
   // End dragging image

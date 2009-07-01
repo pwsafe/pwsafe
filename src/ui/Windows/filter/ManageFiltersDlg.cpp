@@ -33,8 +33,8 @@ CManageFiltersDlg::CManageFiltersDlg(CWnd* pParent,
                                PWSFilters &mapfilters)
   : CPWDialog(CManageFiltersDlg::IDD, pParent),
   m_bFilterActive(bFilterActive), m_MapFilters(mapfilters),
-  m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(_T("")),
-  m_activefilterpool(FPOOL_LAST), m_activefiltername(_T("")),
+  m_selectedfilterpool(FPOOL_LAST), m_selectedfiltername(L""),
+  m_activefilterpool(FPOOL_LAST), m_activefiltername(L""),
   m_selectedfilter(-1), m_activefilter(-1),
   m_bDBFiltersChanged(false),
   m_num_to_export(0), m_num_to_copy(0),
@@ -164,16 +164,16 @@ BOOL CManageFiltersDlg::OnInitDialog()
   bool bAddDummy(false);
   if (m_FilterLC.GetItemCount() == 0) {
     bAddDummy = true;
-    int iItem = m_FilterLC.InsertItem(0 /* MFLC_FILTER_NAME */,_T(""));
+    int iItem = m_FilterLC.InsertItem(0 /* MFLC_FILTER_NAME */, L"");
     CString cs_source = GetFilterPoolName(FPOOL_SESSION);
 
     m_FilterLC.SetItemText(iItem, MFLC_FILTER_SOURCE, cs_source);
-    m_FilterLC.SetItemText(iItem, MFLC_INUSE, _T("."));
-    m_FilterLC.SetItemText(iItem, MFLC_COPYTODATABASE, _T("."));
-    m_FilterLC.SetItemText(iItem, MFLC_EXPORT, _T("."));
+    m_FilterLC.SetItemText(iItem, MFLC_INUSE, L".");
+    m_FilterLC.SetItemText(iItem, MFLC_COPYTODATABASE, L".");
+    m_FilterLC.SetItemText(iItem, MFLC_EXPORT, L".");
 
     st_FilterItemData *pflt_idata = new st_FilterItemData;
-    pflt_idata->flt_key.cs_filtername = _T(".");
+    pflt_idata->flt_key.cs_filtername = L".";
     pflt_idata->flt_key.fpool = FPOOL_SESSION;
     pflt_idata->flt_flags = MFLT_REQUEST_COPY_TO_DB | MFLT_REQUEST_EXPORT | MFLT_INUSE;
     m_FilterLC.SetItemData(iItem, (DWORD)pflt_idata);
@@ -201,10 +201,10 @@ BOOL CManageFiltersDlg::OnInitDialog()
   dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES;
   m_FilterProperties.SetExtendedStyle(dwExStyle);
 
-  cs_text = _T(" # ");
+  cs_text = L" # ";
   m_FilterProperties.InsertColumn(MFPRP_FILTER_NUMBER, cs_text);
   cs_text.LoadString(IDS_FILTERACTIVE);
-  cs_text += _T("?");
+  cs_text += L"?";
   m_FilterProperties.InsertColumn(MFPRP_FILTER_ACTIVE, cs_text);
   cs_text.LoadString(IDS_AND_OR);
   m_FilterProperties.InsertColumn(MFPRP_AND_OR, cs_text);
@@ -513,7 +513,7 @@ void CManageFiltersDlg::OnFilterDelete()
   if (m_selectedfilter < 0)
     return;
 
-  CString cs_pool(_T(""));
+  CString cs_pool(L"");
   CString cs_selected = m_FilterLC.GetItemText(m_selectedfilter, 0);
 
   PWSFilters::iterator mf_iter;
@@ -547,13 +547,13 @@ void CManageFiltersDlg::OnFilterDelete()
   if (m_selectedfilter == m_activefilter) {
     m_activefilter = -1;
     m_activefilterpool = FPOOL_LAST;
-    m_activefiltername = _T("");
+    m_activefiltername = L"";
     m_pDbx->ClearFilter();
   }
 
   m_selectedfilter = -1;
   m_selectedfilterpool = FPOOL_LAST;
-  GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(_T(""));
+  GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(L"");
   // Nothing selected
   GetDlgItem(IDC_FILTEREDIT)->EnableWindow(FALSE);
   GetDlgItem(IDC_FILTERDELETE)->EnableWindow(FALSE);
@@ -619,7 +619,7 @@ void CManageFiltersDlg::ClearFilter()
   m_pDbx->ClearFilter();
 
   m_activefilterpool = FPOOL_LAST;
-  m_activefiltername = _T("");
+  m_activefiltername = L"";
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
   pflt_idata->flt_flags &= ~MFLT_INUSE;
   m_activefilter = -1;
@@ -646,16 +646,16 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     i++;
     n++;
 
-    cs_num.Format(_T("%d"), n);
+    cs_num.Format(L"%d", n);
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
-    cs_ftype.TrimRight(_T('\t'));
+    cs_ftype.TrimRight(L'\t');
     cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
     if (Flt_iter != pfilters->vMfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
     else
-      cs_ltype = _T("");
+      cs_ltype = L"";
 
     iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, cs_num);
     m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, cs_act);
@@ -673,11 +673,11 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     i++;
     CString cs_history, cs_temp;
     cs_history.LoadString(IDS_SETPWHISTFILTERS);
-    iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, _T("-"));
-    m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, _T("---"));
-    m_FilterProperties.SetItemText(iItem, MFPRP_AND_OR, _T("---"));
-    m_FilterProperties.SetItemText(iItem, MFPRP_FIELD, _T("---"));
-    cs_temp = _T("---  ") + cs_history + _T("  ---");
+    iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, L"-");
+    m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, L"---");
+    m_FilterProperties.SetItemText(iItem, MFPRP_AND_OR, L"---");
+    m_FilterProperties.SetItemText(iItem, MFPRP_FIELD, L"---");
+    cs_temp = L"---  " + cs_history + L"  ---";
     m_FilterProperties.SetItemText(iItem, MFPRP_CRITERIA_TEXT, cs_temp);
   }
 
@@ -688,16 +688,16 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     i++;
     n++;
 
-    cs_num.Format(_T("%d"), n);
+    cs_num.Format(L"%d", n);
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
-    cs_ftype.TrimRight(_T('\t'));
+    cs_ftype.TrimRight(L'\t');
     cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
     if (Flt_iter != pfilters->vHfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
     else
-      cs_ltype = _T("");
+      cs_ltype = L"";
 
     iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, cs_num);
     m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, cs_act);
@@ -710,11 +710,11 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     i++;
     CString cs_policy, cs_temp;
     cs_policy.LoadString(IDS_SETPWPOLICYFILTER);
-    iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, _T("-"));
-    m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, _T("---"));
-    m_FilterProperties.SetItemText(iItem, MFPRP_AND_OR, _T("---"));
-    m_FilterProperties.SetItemText(iItem, MFPRP_FIELD, _T("---"));
-    cs_temp = _T("---  ") + cs_policy + _T("  ---");
+    iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, L"-");
+    m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, L"---");
+    m_FilterProperties.SetItemText(iItem, MFPRP_AND_OR, L"---");
+    m_FilterProperties.SetItemText(iItem, MFPRP_FIELD, L"---");
+    cs_temp = L"---  " + cs_policy + L"  ---";
     m_FilterProperties.SetItemText(iItem, MFPRP_CRITERIA_TEXT, cs_temp);
   }
 
@@ -725,16 +725,16 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     i++;
     n++;
 
-    cs_num.Format(_T("%d"), n);
+    cs_num.Format(L"%d", n);
     UINT nID = GetFieldTypeName(st_fldata.ftype);
     cs_ftype.LoadString(nID);
-    cs_ftype.TrimRight(_T('\t'));
+    cs_ftype.TrimRight(L'\t');
     cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
     if (Flt_iter != pfilters->vPfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
     else
-      cs_ltype = _T("");
+      cs_ltype = L"";
 
     iItem = m_FilterProperties.InsertItem(i /* MFPRP_FILTER_NUMBER */, cs_num);
     m_FilterProperties.SetItemText(iItem, MFPRP_FILTER_ACTIVE, cs_act);
@@ -788,9 +788,9 @@ void CManageFiltersDlg::UpdateFilterList()
     m_FilterLC.SetItemText(iItem, MFLC_FILTER_SOURCE, cs_source);
     // Add dummy fields where checkbox images will be. OnCustomDraw will make the colour
     // of this text the same as the background i.e. invisible.
-    m_FilterLC.SetItemText(iItem, MFLC_INUSE, _T("."));
-    m_FilterLC.SetItemText(iItem, MFLC_COPYTODATABASE, _T("."));
-    m_FilterLC.SetItemText(iItem, MFLC_EXPORT, _T("."));
+    m_FilterLC.SetItemText(iItem, MFLC_INUSE, L".");
+    m_FilterLC.SetItemText(iItem, MFLC_COPYTODATABASE, L".");
+    m_FilterLC.SetItemText(iItem, MFLC_EXPORT, L".");
 
     if (m_bFilterActive &&
         mf_iter->first.fpool == m_activefilterpool &&
@@ -1164,7 +1164,7 @@ CString CManageFiltersDlg::GetFilterPoolName(FilterPool fp)
     default:
       ASSERT(0);
   }
-  CString cs_pool(_T(""));
+  CString cs_pool(L"");
   if (uiname > 0)
     cs_pool.LoadString(uiname);
 
@@ -1289,7 +1289,7 @@ void CManageFiltersDlg::SortFilterView()
 void CManageFiltersDlg::OnHelp()
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/filters.html#ManagingFilters");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/filters.html#ManagingFilters";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 

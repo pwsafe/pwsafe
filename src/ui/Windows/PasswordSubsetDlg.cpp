@@ -35,18 +35,18 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
   // Ensure character is a digit or a valid delimiter
   // Otherwise just ignore it!
-  if (isdigit(nChar) || nChar == _T(' ') || nChar == _T(';') || nChar == _T(',') ||
+  if (isdigit(nChar) || nChar == L' ' || nChar == L';' || nChar == L',' ||
       nChar == VK_BACK) {
     CEdit::OnChar(nChar, nRepCnt, nFlags);
   }
-  if (nChar == _T(' ') || nChar == _T(';') || nChar == _T(',') || nChar == VK_RETURN)
+  if (nChar == L' ' || nChar == L';' || nChar == L',' || nChar == VK_RETURN)
     GetParent()->SendMessage(WM_DISPLAYPASSWORDSUBSET);
 }
 
 //-----------------------------------------------------------------------------
 CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, CItemData* pci)
   : CPWDialog(CPasswordSubsetDlg::IDD, pParent), m_pci(pci), m_bshown(false),
-  m_warningmsg(_T(""))
+  m_warningmsg(L"")
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
 }
@@ -120,7 +120,7 @@ void CPasswordSubsetDlg::OnCancel()
 LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lParam */)
 {
   UpdateData(TRUE);
-  m_stcwarningmsg.SetWindowText(_T(""));
+  m_stcwarningmsg.SetWindowText(L"");
   m_stcwarningmsg.ResetColour();
   m_subset.Trim();
 
@@ -130,13 +130,13 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   StringX sPassword = m_pci->GetPassword();
   const int ipwlengh = sPassword.length();
 
-  while (resToken != _T("") && icurpos != -1) {
+  while (resToken != L"" && icurpos != -1) {
     lastpos = icurpos;
-    resToken = m_subset.Tokenize(_T(";, "), icurpos);
-    if (resToken == _T(""))
+    resToken = m_subset.Tokenize(L";, ", icurpos);
+    if (resToken == L"")
       continue;
 
-    int ipos = _ttoi(resToken);
+    int ipos = _wtoi(resToken);
     if (ipos > ipwlengh || ipos == 0) {
       if (ipos != 0)
         m_warningmsg.Format(IDS_SUBSETINDEXTOOBIG,ipwlengh);
@@ -158,7 +158,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   StringX sSubset;
   for (citer = vpos.begin(); citer != vpos.end(); citer++) {
     sSubset += sPassword[*citer];
-    sSubset += _T(" ");
+    sSubset += L" ";
   }
   m_results.SetWindowText(sSubset.c_str());
   m_bshown = true;

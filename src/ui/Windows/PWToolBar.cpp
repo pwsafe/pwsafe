@@ -55,19 +55,19 @@
 // They should match m_MainToolBarIDs below.
 // Note a separator is denoted by '~'
 const CString CPWToolBar::m_csMainButtons[] = {
-  _T("new"), _T("open"), _T("close"), _T("save"), _T("~"),
-  _T("copypassword"), _T("copyuser"), _T("copynotes"), _T("clearclipboard"), _T("~"),
-  _T("autotype"), _T("browseurl"), _T("~"),
-  _T("add"), _T("viewedit"), _T("~"),
-  _T("delete"), _T("~"),
-  _T("expandall"), _T("collapseall"), _T("~"),
-  _T("options"), _T("~"),
-  _T("help"),
+  L"new", L"open", L"close", L"save", L"~",
+  L"copypassword", L"copyuser", L"copynotes", L"clearclipboard", L"~",
+  L"autotype", L"browseurl", L"~",
+  L"add", L"viewedit", L"~",
+  L"delete", L"~",
+  L"expandall", L"collapseall", L"~",
+  L"options", L"~",
+  L"help",
   // Optional (non-default) buttons next
-  _T("exporttext"), _T("exportxml"), _T("importtext"), _T("importxml"), 
-  _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("find"), _T("viewreports"), 
-  _T("applyfilters"), _T("setfilters"), _T("managefilters"), _T("passwordsubset"),
-  _T("browse+autotype"), _T("runcommand")
+  L"exporttext", L"exportxml", L"importtext", L"importxml", 
+  L"saveas", L"compare", L"merge", L"listtree", L"find", L"viewreports", 
+  L"applyfilters", L"setfilters", L"managefilters", L"passwordsubset",
+  L"browse+autotype", L"runcommand"
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -367,25 +367,18 @@ CPWToolBar::CPWToolBar()
 :  m_bitmode(1), m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
 {
   // Make sure the developer has kept everything in step!
-  ASSERT(sizeof(m_MainToolBarIDs) / sizeof(UINT) ==
-         sizeof(m_csMainButtons) / sizeof(m_csMainButtons[0]));
+  ASSERT(_countof(m_MainToolBarIDs) == _countof(m_csMainButtons));
 
-  ASSERT(sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) ==
-         sizeof(m_MainToolBarNewBMs) / sizeof(UINT));
-  ASSERT(sizeof(m_MainToolBarNewBMs) / sizeof(UINT) ==
-         sizeof(m_MainToolBarNewDisBMs) / sizeof(UINT));
+  ASSERT(_countof(m_MainToolBarClassicBMs) == _countof(m_MainToolBarNewBMs));
+  ASSERT(_countof(m_MainToolBarNewBMs) == _countof(m_MainToolBarNewDisBMs));
 
-  ASSERT(sizeof(m_OtherIDs) / sizeof(UINT) ==
-         sizeof(m_OtherClassicBMs) / sizeof(UINT));
-  ASSERT(sizeof(m_OtherClassicBMs) / sizeof(UINT) ==
-         sizeof(m_OtherNewBMs) / sizeof(UINT));
-  ASSERT(sizeof(m_OtherNewBMs) / sizeof(UINT) ==
-         sizeof(m_OtherNewDisBMs) / sizeof(UINT));
+  ASSERT(_countof(m_OtherIDs) == _countof(m_OtherClassicBMs));
+  ASSERT(_countof(m_OtherClassicBMs) == _countof(m_OtherNewBMs));
+  ASSERT(_countof(m_OtherNewBMs) == _countof(m_OtherNewDisBMs));
 
-  m_iMaxNumButtons = sizeof(m_MainToolBarIDs) / sizeof(UINT);
+  m_iMaxNumButtons = _countof(m_MainToolBarIDs);
   m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
-  m_iNum_Bitmaps = sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) +
-                   sizeof(m_OtherClassicBMs) / sizeof(UINT);
+  m_iNum_Bitmaps = _countof(m_MainToolBarClassicBMs) + _countof(m_OtherClassicBMs);
 }
 
 CPWToolBar::~CPWToolBar()
@@ -499,8 +492,8 @@ void CPWToolBar::Init(const int NumBits, bool bRefresh)
   m_DisabledImageLists[0].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
   m_DisabledImageLists[1].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
 
-  int iNum_Bitmaps = sizeof(m_MainToolBarClassicBMs) / sizeof(UINT);
-  int iNum_Others  = sizeof(m_OtherClassicBMs) / sizeof(UINT);
+  int iNum_Bitmaps = _countof(m_MainToolBarClassicBMs);
+  int iNum_Others  = _countof(m_OtherClassicBMs);
 
   for (i = 0; i < iNum_Bitmaps; i++) {
     if (m_MainToolBarClassicBMs[i] == IDB_BROWSEURL_CLASSIC) {
@@ -541,7 +534,7 @@ void CPWToolBar::Init(const int NumBits, bool bRefresh)
     m_pOriginalTBinfo[i].iString = bIsSeparator ? -1 : j;
 
     if (i <= m_iNumDefaultButtons)
-      m_csDefaultButtonString += m_csMainButtons[i] + _T(" ");
+      m_csDefaultButtonString += m_csMainButtons[i] + L" ";
 
     if (m_MainToolBarIDs[i] == ID_HELP)
       m_iNumDefaultButtons = i;
@@ -582,14 +575,14 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
   int curPos(0);
   // Note all separators will be treated as the first!
   i = 0;
-  CString csToken = csButtonNames.Tokenize(_T(" "), curPos);
-  while (csToken != _T("") && curPos != -1) {
+  CString csToken = csButtonNames.Tokenize(L" ", curPos);
+  while (csToken != L"" && curPos != -1) {
     cstring_iter = std::find(vcsButtonNameArray.begin(), vcsButtonNameArray.end(), csToken);
     if (cstring_iter != vcsButtonNameArray.end()) {
       int index = (int)(cstring_iter - vcsButtonNameArray.begin());
       tbCtrl.AddButtons(1, &m_pOriginalTBinfo[index]);
     }
-    csToken = csButtonNames.Tokenize(_T(" "), curPos);
+    csToken = csButtonNames.Tokenize(L" ", curPos);
   }
 
   tbCtrl.AutoSize();
@@ -597,7 +590,7 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
 
 CString CPWToolBar::GetButtonString()
 {
-  CString cs_buttonnames(_T(""));
+  CString cs_buttonnames(L"");
   TBBUTTONINFO tbinfo;
   int num_buttons, i;
 
@@ -620,7 +613,7 @@ CString CPWToolBar::GetButtonString()
     tbCtrl.GetButtonInfo(i, &tbinfo);
 
     if (tbinfo.fsStyle & TBSTYLE_SEP) {
-      cs_buttonnames += _T("~ ");
+      cs_buttonnames += L"~ ";
       continue;
     }
 
@@ -628,7 +621,7 @@ CString CPWToolBar::GetButtonString()
                           tbinfo.idCommand);
     if (uint_iter != vcsButtonIDArray.end()) {
       int index = (int)(uint_iter - vcsButtonIDArray.begin());
-      cs_buttonnames += m_csMainButtons[index] + _T(" ");
+      cs_buttonnames += m_csMainButtons[index] + L" ";
     }
   }
 
@@ -696,28 +689,29 @@ void CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
   // includes separators which don't have strings giving an even bigger buffer!
   // Because they are a concatenation of null terminated strings terminated by a double
   // null, they cannot be stored in a CString variable,
-  TCHAR *lpszTBCustomizationStrings = new TCHAR[m_iMaxNumButtons * 64];
+  wchar_t *lpszTBCustomizationStrings = new wchar_t[m_iMaxNumButtons * 64];
   const int maxlength = m_iMaxNumButtons * 64;
 
   // By clearing, ensures string ends with a double NULL
-  memset(lpszTBCustomizationStrings, 0x00, maxlength * sizeof(TCHAR));
+  memset(lpszTBCustomizationStrings, 0x00, maxlength * sizeof(wchar_t));
 
   j = 0;
   for (i = 0; i < m_iMaxNumButtons; i++) {
     if (m_MainToolBarIDs[i] != ID_SEPARATOR) {
       CString cs_buttondesc;
       cs_buttondesc.LoadString(m_MainToolBarIDs[i]);
-      int iPos = cs_buttondesc.ReverseFind(_T('\n'));
+      int iPos = cs_buttondesc.ReverseFind(L'\n');
       if (iPos < 0) // could happen with incomplete translation
         continue;
       cs_buttondesc = cs_buttondesc.Right(cs_buttondesc.GetLength() - iPos - 1);
       int idesclen = cs_buttondesc.GetLength();
-      TCHAR *szDescription = cs_buttondesc.GetBuffer(idesclen);
+      wchar_t *szDescription = cs_buttondesc.GetBuffer(idesclen);
 #if _MSC_VER >= 1400
-      memcpy_s(&lpszTBCustomizationStrings[j], maxlength - j, szDescription, idesclen * sizeof(TCHAR));
+      memcpy_s(&lpszTBCustomizationStrings[j], maxlength - j, szDescription, 
+               idesclen * sizeof(wchar_t));
 #else
-      ASSERT((maxlength - j) > idesclen * sizeof(TCHAR));
-      memcpy(&lpszTBCustomizationStrings[j], szDescription, idesclen * sizeof(TCHAR));
+      ASSERT((maxlength - j) > idesclen * sizeof(wchar_t));
+      memcpy(&lpszTBCustomizationStrings[j], szDescription, idesclen * sizeof(wchar_t));
 #endif
       cs_buttondesc.ReleaseBuffer();
       j += idesclen + 1;
@@ -741,7 +735,7 @@ void CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
 void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
 {
   int i, j(0);
-  int iNum_ToolBarIDs = sizeof(m_MainToolBarIDs) / sizeof(UINT);
+  int iNum_ToolBarIDs = _countof(m_MainToolBarIDs);
   for (i = 0; i < iNum_ToolBarIDs; i++) {
     UINT ID = m_MainToolBarIDs[i];
     if (ID == ID_SEPARATOR)
@@ -750,7 +744,7 @@ void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
     j++;
   }
 
-  int iNum_OtherIDs  = sizeof(m_OtherIDs) / sizeof(UINT);
+  int iNum_OtherIDs  = _countof(m_OtherIDs);
   for (i = 0; i < iNum_OtherIDs; i++) {
     UINT ID = m_OtherIDs[i];
     IDtoImages[ID] = j;

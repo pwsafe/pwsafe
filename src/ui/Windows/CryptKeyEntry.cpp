@@ -31,7 +31,7 @@ static char THIS_FILE[] = __FILE__;
 //-----------------------------------------------------------------------------
 CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
   : CPWDialog(CCryptKeyEntry::IDD, pParent),
-  m_cryptkey1(_T("")), m_cryptkey2(_T(""))
+  m_cryptkey1(L""), m_cryptkey2(L"")
 {
 }
 
@@ -78,11 +78,11 @@ void CCryptKeyEntry::OnOK()
 void CCryptKeyEntry::OnHelp() 
 {
 #if defined(POCKET_PC)
-  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#comboentry", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/create_new_db.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/create_new_db.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 

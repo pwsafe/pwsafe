@@ -161,7 +161,7 @@ void COptionsPasswordPolicy::do_nohex(const bool bNonHex)
     }
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       UINT id = nonHexLengths[i];
-      cs_value.Format(_T("%d"), m_savelen[i]);
+      cs_value.Format(L"%d", m_savelen[i]);
       GetDlgItem(id)->SetWindowText(cs_value);
       GetDlgItem(id)->EnableWindow(m_save[i]);
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(m_save[i]);
@@ -181,7 +181,7 @@ void COptionsPasswordPolicy::do_nohex(const bool bNonHex)
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       UINT id = nonHexLengths[i];
       GetDlgItem(id)->EnableWindow(FALSE);
-      GetDlgItem(id)->SetWindowText(_T("0"));
+      GetDlgItem(id)->SetWindowText(L"0");
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
       GetDlgItem(LenTxts[i*2])->EnableWindow(FALSE);
       GetDlgItem(LenTxts[i*2 + 1])->EnableWindow(FALSE);

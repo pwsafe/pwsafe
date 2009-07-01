@@ -33,7 +33,7 @@ CQuerySetDef::CQuerySetDef(CWnd* pParent)
   : CPWDialog(CQuerySetDef::IDD, pParent)
 {
   m_querycheck = FALSE;
-  m_message = _T("");
+  m_message = L"";
 }
 
 void CQuerySetDef::DoDataExchange(CDataExchange* pDX)

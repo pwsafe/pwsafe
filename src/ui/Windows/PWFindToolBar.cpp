@@ -86,10 +86,10 @@ CPWFindToolBar::CPWFindToolBar()
   : m_bitmode(1), m_bVisible(true), 
   m_bCaseSensitive(false), m_bAdvanced(false),
   m_lastshown(size_t(-1)), m_numFound(size_t(-1)),
-  m_last_search_text(_T("")), m_last_cs_search(false),
-  m_subgroup_name(_T("")), m_subgroup_set(BST_UNCHECKED),
+  m_last_search_text(L""), m_last_cs_search(false),
+  m_subgroup_name(L""), m_subgroup_set(BST_UNCHECKED),
   m_subgroup_object(0), m_subgroup_function(0),
-  m_last_subgroup_name(_T("")), m_last_subgroup_set(BST_UNCHECKED),
+  m_last_subgroup_name(L""), m_last_subgroup_set(BST_UNCHECKED),
   m_last_subgroup_object(0), m_last_subgroup_function(0),
   m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1),
   m_iFindDirection(FIND_DOWN)
@@ -97,13 +97,13 @@ CPWFindToolBar::CPWFindToolBar()
   m_bsFields.reset();
   m_last_bsFields.reset();
 
-  m_iMaxNumButtons = sizeof(m_FindToolBarIDs) / sizeof(UINT);
+  m_iMaxNumButtons = _countof(m_FindToolBarIDs);
   m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
 
-  ASSERT(sizeof(m_FindToolBarClassicBMs) / sizeof(UINT) ==
-    sizeof(m_FindToolBarNewBMs) / sizeof(UINT));
+  ASSERT(_countof(m_FindToolBarClassicBMs) ==
+         _countof(m_FindToolBarNewBMs));
 
-  m_iNum_Bitmaps = sizeof(m_FindToolBarClassicBMs) / sizeof(UINT);
+  m_iNum_Bitmaps = _countof(m_FindToolBarClassicBMs);
 
   LOGFONT lf;
   memset(&lf, 0, sizeof(lf));
@@ -112,7 +112,7 @@ CPWFindToolBar::CPWFindToolBar()
   lf.lfHeight = -11;
   lf.lfWeight = FW_LIGHT;
   lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
-  CString strDefaultFont = _T("MS Sans Serif");
+  CString strDefaultFont = L"MS Sans Serif";
   lstrcpy(lf.lfFaceName, strDefaultFont);
   VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
 }
@@ -184,11 +184,11 @@ BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
         if (iCharIndex == iStartChar && iCharIndex == iEndChar) {
           // Nothing selected - forward backspace
           m_findedit.SetSel(iCharIndex, iCharIndex + 1);
-          m_findedit.ReplaceSel(_T(""));
+          m_findedit.ReplaceSel(L"");
         } else if (iTextLen > (iEndChar - iStartChar)) {
-          m_findedit.ReplaceSel(_T(""));
+          m_findedit.ReplaceSel(L"");
         } else {
-          m_findedit.SetWindowText(_T(""));
+          m_findedit.SetWindowText(L"");
         }
         m_findedit.Invalidate();
         return TRUE;
@@ -339,7 +339,7 @@ void CPWFindToolBar::AddExtraControls()
   SetButtonInfo(index, ID_TOOLBUTTON_FINDRESULTS, TBBS_SEPARATOR, FINDRESULTS_WIDTH);
 
   rect = CRect(0, 0, FINDRESULTS_WIDTH, iBtnHeight);
-  VERIFY(m_findresults.Create(_T(""), WS_CHILD | WS_VISIBLE |
+  VERIFY(m_findresults.Create(L"", WS_CHILD | WS_VISIBLE |
                               SS_LEFTNOWORDWRAP | SS_CENTERIMAGE,
                               CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
                               this, ID_TOOLBUTTON_FINDEDITCTRL));
@@ -413,14 +413,14 @@ void CPWFindToolBar::ClearFind()
   if (this->GetSafeHwnd() == NULL)
     return;
 
-  m_findedit.SetWindowText(_T(""));
+  m_findedit.SetWindowText(L"");
   m_findresults.ResetColour();
-  m_findresults.SetWindowText(_T(""));
+  m_findresults.SetWindowText(L"");
 
   m_bCaseSensitive = m_bAdvanced = m_last_cs_search = false;
   m_numFound = size_t(-1);
-  m_last_search_text = _T("");
-  m_subgroup_name = m_last_subgroup_name = _T("");
+  m_last_search_text = L"";
+  m_subgroup_name = m_last_subgroup_name = L"";
   m_subgroup_set = m_last_subgroup_set = BST_UNCHECKED;
   m_subgroup_object = m_subgroup_function = 0;
   m_last_subgroup_object = m_last_subgroup_function = 0;

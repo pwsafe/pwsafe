@@ -23,7 +23,7 @@ public:
   COptionsBackup();
   ~COptionsBackup();
 
-  const TCHAR *GetHelpName() const {return _T("backups_tab");}
+  const wchar_t *GetHelpName() const {return L"backups_tab";}
 
   // Should be part of ctor, but MFC doesn't requires
   // default ctor. Grrr.

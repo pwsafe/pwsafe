@@ -90,7 +90,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 
   m_ToolTipCtrl = new CToolTipCtrl;
   if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE("Unable To create Property Page ToolTip\n");
+    TRACE(L"Unable To create Property Page ToolTip\n");
     return bResult;
   }
 

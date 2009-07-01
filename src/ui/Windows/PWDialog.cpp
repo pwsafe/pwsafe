@@ -14,7 +14,7 @@
 #error "TBD - define proper Dialog base class for PPC"
 #endif
 
-extern const TCHAR *EYE_CATCHER;
+extern const wchar_t *EYE_CATCHER;
 
 IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 
@@ -36,14 +36,14 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     while (p != NULL) {
       DboxMain *pDbx = dynamic_cast<DboxMain *>(p);
       if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
-          _tcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
+          wcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
         pDbx->ResetIdleLockCounter();
         break;
       } else
         p = p->GetParent();
     }
     if (p == NULL)
-      TRACE(_T("CPWFileDialog::WindowProc - couldn't find DboxMain ancestor\n"));
+      TRACE(L"CPWFileDialog::WindowProc - couldn't find DboxMain ancestor\n");
   }
   return CDialog::WindowProc(message, wParam, lParam);
 }

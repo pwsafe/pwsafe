@@ -11,7 +11,7 @@
 
 class MFCAsker : public Asker
 {
-  bool operator()(const stringT &question) {
+  bool operator()(const std::wstring &question) {
     int msg_rc = AfxMessageBox(question.c_str(), MB_YESNO | 
                                MB_ICONQUESTION | MB_DEFBUTTON2);
     return msg_rc == IDYES;
@@ -20,7 +20,7 @@ class MFCAsker : public Asker
 
 class MFCReporter : public Reporter
 {
-  void operator()(const stringT &message) {
+  void operator()(const std::wstring &message) {
     AfxMessageBox(message.c_str(), MB_OK | MB_ICONEXCLAMATION);
   }
 };

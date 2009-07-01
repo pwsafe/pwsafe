@@ -23,7 +23,7 @@ class CPWFiltersDlg : public CPWResizeDialog
   DECLARE_DYNAMIC(CPWFiltersDlg)
 public:
   CPWFiltersDlg(CWnd* pParent = NULL, const FilterType &ftype = DFTYPE_MAIN,
-                const CString &filtername = _T(""));
+                const CString &filtername = L"");
   ~CPWFiltersDlg();
 
   void UpdateStatusText();

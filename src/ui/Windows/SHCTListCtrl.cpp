@@ -173,7 +173,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
   if (nID == ID_MENUITEM_REMOVESHORTCUT) {
     iter->second.cVirtKey = (unsigned char)0;
     iter->second.cModifier = (unsigned char)0;
-    str = _T("");
+    str = L"";
     goto update;
   }
 
@@ -190,7 +190,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
     citer = m_pParent->GetMapKeyNameIDConstIter(st_KIDEx);
     str = CMenuShortcut::FormatShortcut(iter, citer);
   } else {
-    str = _T("");
+    str = L"";
   }
 
 update:
@@ -381,86 +381,41 @@ BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult
 #define LONG_TOOLTIPS
 
 #ifdef LONG_TOOLTIPS
+    if (pNMHDR->code == TTN_NEEDTEXTA) {
+      delete m_pchTip;
 
-#ifdef _UNICODE
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
-    delete m_pchTip;
-
-    m_pchTip = new char[cs_TipText.GetLength() + 1];
+      m_pchTip = new char[cs_TipText.GetLength() + 1];
 #if (_MSC_VER >= 1400)
-    size_t num_converted;
-    wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
-               cs_TipText.GetLength() + 1);
+      size_t num_converted;
+      wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
+                 cs_TipText.GetLength() + 1);
 #else
-    wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
+      wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
 #endif
-    pTTTA->lpszText = (LPSTR)m_pchTip;
-  } else {
-    delete m_pwchTip;
+      pTTTA->lpszText = (LPSTR)m_pchTip;
+    } else {
+      delete m_pwchTip;
 
-    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-    lstrcpyn(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-    pTTTW->lpszText = (LPWSTR)m_pwchTip;
-  }
-
-#else // Unicode
-
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
-    delete m_pchTip;
-
-    m_pchTip = new char[cs_TipText.GetLength() + 1];
-    lstrcpyn(m_pchTip, cs_TipText, cs_TipText.GetLength()+1);
-    pTTTA->lpszText = (LPSTR)m_pchTip;
-  } else {
-    delete m_pwchTip;
-
-    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-#if _MSC_VER >= 1400
-    size_t numconverted;
-    mbstowcs_s(&numconverted, m_pwchTip, cs_TipText.GetLength() + 1, cs_TipText, 
-               cs_TipText.GetLength() + 1);
-#else
-    mbstowcs(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
-    pTTTW->lpszText = m_pwchTip;
-  }
-
-#endif // UNICODE/ASCII
-
+      m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
+      lstrcpyn(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
+      pTTTW->lpszText = (LPWSTR)m_pwchTip;
+    }
 #else // Short Tooltips!
-
-#ifdef _UNICODE
     if (pNMHDR->code == TTN_NEEDTEXTA) {
       int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
                                   pTTTA->szText,
-                                  sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
+                                  _countof(pTTTA->szText),
                                   NULL, NULL);
       if (n > 0)
         pTTTA->szText[n - 1] = 0;
-    } else
+    } else {
 #if _MSC_VER >= 1400
-      _tcsncpy_s(pTTTW->szText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])),
-      cs_TipText, _TRUNCATE);
+      wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText)),
+                cs_TipText, _TRUNCATE);
 #else
-      _tcsncpy(pTTTW->szText, cs_TipText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])));
+      wcsncpy(pTTTW->szText, cs_TipText, _countof(pTTTW->szText));
 #endif
-
-#else  // UNICODE
-
-    if (pNMHDR->code == TTN_NEEDTEXTA)
-#if _MSC_VER >= 1400
-      _tcsncpy_s(pTTTA->szText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])),
-                 cs_TipText, _TRUNCATE);
-#else
-      _tcsncpy(pTTTA->szText, cs_TipText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
-#endif
-    else {
-      int n = MultiByteToWideChar(CP_ACP, 0, cs_TipText, -1, pTTTW->szText,
-                                  sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
-      if (n > 0)
-        pTTTW->szText[n - 1] = 0;
     }
-#endif // UNICODE/ASCII
 #endif // Long/short tooltips
 
     return TRUE;   // we found a tool tip,

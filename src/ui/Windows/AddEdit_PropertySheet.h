@@ -24,7 +24,7 @@ class CAddEdit_PropertySheet : public CPWPropertySheet
 {
 public:
   CAddEdit_PropertySheet(UINT nID, CWnd* pDbx, PWScore *pcore, CItemData *pci,
-                         const StringX currentDB = _T(""));
+                         const StringX currentDB = L"");
   ~CAddEdit_PropertySheet();
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 

@@ -55,11 +55,11 @@ COptionsBackup::~COptionsBackup()
 void COptionsBackup::SetCurFile(const CString &currentFile)
 {
   // derive current db's directory and basename:
-  stringT path(currentFile);
-  stringT drive, dir, base, ext;
+  std::wstring path(currentFile);
+  std::wstring drive, dir, base, ext;
 
   pws_os::splitpath(path, drive, dir, base, ext);
-  path = pws_os::makepath(drive, dir, _T(""), _T(""));
+  path = pws_os::makepath(drive, dir, L"", L"");
   m_currentFileDir = path.c_str();
   m_currentFileBasename = base.c_str();
 }
@@ -105,7 +105,7 @@ BOOL COptionsBackup::OnInitDialog()
     m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_None);
     m_BKSFX_to_Index[PWSprefs::BKSFX_None] = nIndex;
 
-    nIndex = m_backupsuffix_cbox.AddString(_T("YYYYMMDD_HHMMSS"));
+    nIndex = m_backupsuffix_cbox.AddString(L"YYYYMMDD_HHMMSS");
     m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_DateTime);
     m_BKSFX_to_Index[PWSprefs::BKSFX_DateTime] = nIndex;
 
@@ -121,7 +121,7 @@ BOOL COptionsBackup::OnInitDialog()
 
   m_backupsuffix_cbox.SetCurSel(m_BKSFX_to_Index[m_backupsuffix]);
 
-  GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(_T(""));
+  GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(L"");
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_BKPMAXINCSPIN);
 
@@ -138,7 +138,7 @@ BOOL COptionsBackup::OnInitDialog()
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE("Unable To create Property Page ToolTip\n");
+    TRACE(L"Unable To create Property Page ToolTip\n");
     return TRUE;
   }
 
@@ -185,7 +185,7 @@ void COptionsBackup::OnBackupPrefix()
   switch (m_backupprefix) {
     case 0:
       GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(FALSE);
-      m_userbackupprefix = _T("");
+      m_userbackupprefix = L"";
       break;
     case 1:
       GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(TRUE);
@@ -205,7 +205,7 @@ void COptionsBackup::OnBackupDirectory()
     case 0:
       GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(FALSE);
       GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(FALSE);
-      m_userbackupotherlocation = _T("");
+      m_userbackupotherlocation = L"";
       break;
     case 1:
       GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(TRUE);
@@ -267,25 +267,25 @@ void COptionsBackup::SetExample()
       time(&now);
       CString cs_datetime = PWSUtil::ConvertToDateTimeString(now,
                                                              TMC_EXPORT_IMPORT).c_str();
-      cs_example += _T("_");
+      cs_example += L"_";
       cs_example = cs_example + cs_datetime.Left(4) +  // YYYY
         cs_datetime.Mid(5,2) +  // MM
         cs_datetime.Mid(8,2) +  // DD
-        _T("_") +
+        L"_" +
         cs_datetime.Mid(11,2) +  // HH
         cs_datetime.Mid(14,2) +  // MM
         cs_datetime.Mid(17,2);   // SS
       break;
     }
   case 2:
-    cs_example += _T("_001");
+    cs_example += L"_001";
     break;
   case 0:
   default:
     break;
   }
 
-  cs_example += _T(".ibak");
+  cs_example += L".ibak";
   GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(cs_example);
 }
 
@@ -310,8 +310,8 @@ BOOL COptionsBackup::OnKillActive()
       return FALSE;
     }
 
-    if (m_userbackupotherlocation.Right(1) != _T("\\")) {
-      m_userbackupotherlocation += _T("\\");
+    if (m_userbackupotherlocation.Right(1) != L"\\") {
+      m_userbackupotherlocation += L"\\";
       UpdateData(FALSE);
     }
 
@@ -368,7 +368,7 @@ void COptionsBackup::OnBrowseForLocation()
   CString cs_text(MAKEINTRESOURCE(IDS_OPTBACKUPTITLE));
   bi.lpszTitle = cs_text;
   bi.lpfn = SetSelProc;
-  bi.lParam = (LPARAM)(LPCTSTR) cs_initiallocation;
+  bi.lParam = (LPARAM)(LPCWSTR) cs_initiallocation;
 
   // Show the dialog and get the itemIDList for the
   // selected folder.
@@ -377,11 +377,11 @@ void COptionsBackup::OnBrowseForLocation()
   if(pIDL != NULL) {
     // Create a buffer to store the path, then
     // get the path.
-    TCHAR buffer[_MAX_PATH] = { 0 };
+    wchar_t buffer[_MAX_PATH] = { 0 };
     if(::SHGetPathFromIDList(pIDL, buffer) != 0)
       m_userbackupotherlocation = CString(buffer);
     else
-      m_userbackupotherlocation = _T("");
+      m_userbackupotherlocation = L"";
 
     UpdateData(FALSE);
 

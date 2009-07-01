@@ -22,8 +22,8 @@ class CEditShortcutDlg : public CPWDialog
 public:
   // default constructor
   CEditShortcutDlg(CItemData *ci, CWnd* pParent = NULL,
-    const CSecString &cs_tg = _T(""), const CSecString &cs_tt = _T(""), 
-    const CSecString &cs_tu = _T(""));
+    const CSecString &cs_tg = L"", const CSecString &cs_tt = L"", 
+    const CSecString &cs_tu = L"");
   virtual ~CEditShortcutDlg();
 
   enum { IDD = IDD_EDIT_SHORTCUT };

@@ -98,13 +98,13 @@ void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filterty
   m_pHeaderCtrl->SetDlgCtrlID(IDC_FILTERLC_HEADER);
   CString cs_text;
 
-  cs_text = _T(" # ");
+  cs_text = L" # ";
   InsertColumn(FLC_FILTER_NUMBER, cs_text);
-  cs_text = _T(" ? ");
+  cs_text = L" ? ";
   InsertColumn(FLC_ENABLE_BUTTON, cs_text);
-  cs_text = _T(" + ");
+  cs_text = L" + ";
   InsertColumn(FLC_ADD_BUTTON, cs_text);
-  cs_text = _T(" - ");
+  cs_text = L" - ";
   InsertColumn(FLC_REM_BUTTON, cs_text);
   cs_text.LoadString(IDS_AND_OR);
   InsertColumn(FLC_LGC_COMBOBOX, cs_text);
@@ -160,12 +160,12 @@ void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filterty
   SetUpComboBoxData();
 
   // Add dummy item to set column widths
-  InsertItem(0, _T("."));  // FLC_ENABLE_BUTTON
-  SetItemText(0, FLC_ADD_BUTTON, _T("."));
-  SetItemText(0, FLC_REM_BUTTON, _T("."));
-  SetItemText(0, FLC_LGC_COMBOBOX, _T("."));
-  SetItemText(0, FLC_FLD_COMBOBOX, _T("."));
-  SetItemText(0, FLC_CRITERIA_TEXT, _T("."));
+  InsertItem(0, L".");  // FLC_ENABLE_BUTTON
+  SetItemText(0, FLC_ADD_BUTTON, L".");
+  SetItemText(0, FLC_REM_BUTTON, L".");
+  SetItemText(0, FLC_LGC_COMBOBOX, L".");
+  SetItemText(0, FLC_FLD_COMBOBOX, L".");
+  SetItemText(0, FLC_CRITERIA_TEXT, L".");
   SetItemData(0, FLC_CRITERIA_REDTXT | FLC_FLD_CBX_ENABLED);
   m_iItem = 0;
 
@@ -249,7 +249,7 @@ void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filterty
     }
 
     if (i == 0)
-      cs_text = _T("");
+      cs_text = L"";
     else
       cs_text = vLcbx_data[st_fldata.ltype == LC_AND ? 0 : 1].cs_text;
  
@@ -262,7 +262,7 @@ void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filterty
   // Always show one filter!
   if (m_pvfdata->size() == 0) {
     AddFilter_Controls();
-    SetItemText(i, FLC_LGC_COMBOBOX, _T(""));
+    SetItemText(i, FLC_LGC_COMBOBOX, L"");
 
     // Add a new filter to vector
     st_FilterRow newfilter;
@@ -426,7 +426,7 @@ void CPWFilterLC::ResetFilter(const int num)
   m_pvfdata->at(num).Empty();
   if (num == 0) {
     m_pvfdata->at(num).ltype = LC_INVALID;
-    SetItemText(num, FLC_LGC_COMBOBOX, _T(""));
+    SetItemText(num, FLC_LGC_COMBOBOX, L"");
   } else {
     m_pvfdata->at(num).ltype = LC_AND;
     SetItemText(num, FLC_LGC_COMBOBOX, vLcbx_data[0].cs_text);
@@ -464,11 +464,11 @@ int CPWFilterLC::AddFilter_Controls()
 
   int newID = m_numfilters;
 
-  cs_text.Format(_T("%d"), newID + 1);
+  cs_text.Format(L"%d", newID + 1);
   InsertItem(newID, cs_text);  // FLC_FILTER_NUMBER
-  SetItemText(newID, FLC_ENABLE_BUTTON, _T(""));
-  SetItemText(newID, FLC_ADD_BUTTON, _T("+"));
-  SetItemText(newID, FLC_REM_BUTTON, _T("-"));
+  SetItemText(newID, FLC_ENABLE_BUTTON, L"");
+  SetItemText(newID, FLC_ADD_BUTTON, L"+");
+  SetItemText(newID, FLC_REM_BUTTON, L"-");
   cs_text.LoadString(IDSC_AND);
   SetItemText(newID, FLC_LGC_COMBOBOX, cs_text);
   cs_text.LoadString(IDS_PICKFIELD);
@@ -500,7 +500,7 @@ void CPWFilterLC::MoveDown()
   CString cs_text;
 
   for (int i = m_iItem; i < m_numfilters - 1; i++) {
-    cs_text.Format(_T("%d"), i + 1);
+    cs_text.Format(L"%d", i + 1);
     SetItemText(i, FLC_FILTER_NUMBER, cs_text);
 
     cs_text = GetItemText(i + 1, FLC_FLD_COMBOBOX);
@@ -537,7 +537,7 @@ void CPWFilterLC::MoveUp(const int nAfter)
   DWORD_PTR dwData;
 
   for (int i = m_numfilters - 2; i > nAfter; i--) {
-    cs_text.Format(_T("%d"), i + 2);
+    cs_text.Format(L"%d", i + 2);
     SetItemText(i + 1, FLC_FILTER_NUMBER, cs_text);
 
     cs_text = GetItemText(i, FLC_FLD_COMBOBOX);
@@ -577,7 +577,7 @@ void CPWFilterLC::ResetAndOr()
   }
 
   // Except for the first one
-  SetItemText(0, FLC_LGC_COMBOBOX, _T(""));
+  SetItemText(0, FLC_LGC_COMBOBOX, L"");
   dwData = GetItemData(0);
   dwData &= ~FLC_LGC_CBX_ENABLED;
   SetItemData(0, dwData);
@@ -959,7 +959,7 @@ void CPWFilterLC::CancelField(const int iItem)
 
 void CPWFilterLC::SetLogic(const int iItem)
 {
-  CString cs_text(_T(""));
+  CString cs_text(L"");
   if (iItem == 0) {
     SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
     goto delete_combo;
@@ -1000,7 +1000,7 @@ delete_combo:
 
 void CPWFilterLC::CancelLogic(const int iItem)
 {
-  CString cs_text(_T(""));
+  CString cs_text(L"");
   // Get offset into vector of controls
   if (iItem == 0) {
     SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
@@ -1135,7 +1135,7 @@ bool CPWFilterLC::GetCriterion()
         st_fldata.mtype = PWSMatch::MT_PASSWORD;
         st_fldata.ftype = ft;
         st_fldata.rule = m_fpswd.m_rule;
-        st_fldata.fstring = LPCTSTR(m_fpswd.m_string);
+        st_fldata.fstring = LPCWSTR(m_fpswd.m_string);
         st_fldata.fcase = (m_fpswd.m_case == BST_CHECKED);
         if (st_fldata.rule != PWSMatch::MR_WILLEXPIRE)
           st_fldata.fnum1 = 0;
@@ -1316,169 +1316,169 @@ void CPWFilterLC::SetUpComboBoxData()
     switch (m_iType) {
       case DFTYPE_MAIN:
         stf.cs_text.LoadString(IDSC_EXPHDRGROUP);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_GROUP;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRTITLE);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_TITLE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRGROUPTITLE);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_GROUPTITLE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRUSERNAME);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_USER;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRPASSWORD);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_PASSWORD;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRNOTES);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_NOTES;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRURL);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_URL;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRAUTOTYPE);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_AUTOTYPE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRCTIME);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_CTIME;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRATIME);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_ATIME;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRPMTIME);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_PMTIME;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRXTIME);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_XTIME;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRXTIMEINT);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_XTIME_INT;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRRMTIME);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_RMTIME;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PASSWORDHISTORY);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_PWHIST;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRPWPOLICY);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_POLICY;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_ENTRYTYPE);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_ENTRYTYPE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_UNKNOWNFIELDSFILTER);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_UNKNOWNFIELDS;
         vFcbx_data.push_back(stf);
         break;
       case DFTYPE_PWHISTORY:
         stf.cs_text.LoadString(IDS_PRESENT);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_PRESENT;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HACTIVE);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_ACTIVE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HNUM);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_NUM;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HMAX);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_MAX;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HDATE);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_CHANGEDATE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_HPSWD);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = HT_PASSWORDS;
         vFcbx_data.push_back(stf);
         break;
       case DFTYPE_PWPOLICY:
         stf.cs_text.LoadString(IDS_PRESENT);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_PRESENT;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PLENGTH);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_LENGTH;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PLOWER);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_LOWERCASE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PUPPER);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_UPPERCASE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PDIGITS);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_DIGITS;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PSYMBOL);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_SYMBOLS;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PHEXADECIMAL);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_HEXADECIMAL;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PEASYVISION);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_EASYVISION;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PPRONOUNCEABLE);
-        stf.cs_text.TrimRight(_T('\t'));
+        stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_PRONOUNCEABLE;
         vFcbx_data.push_back(stf);
         break;
@@ -2019,86 +2019,40 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
 #define LONG_TOOLTIPS
 
 #ifdef LONG_TOOLTIPS
+    if (pNMHDR->code == TTN_NEEDTEXTA) {
+      delete m_pchTip;
 
-#ifdef _UNICODE
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
-    delete m_pchTip;
-
-    m_pchTip = new char[cs_TipText.GetLength() + 1];
+      m_pchTip = new char[cs_TipText.GetLength() + 1];
 #if (_MSC_VER >= 1400)
-    size_t num_converted;
-    wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
-               cs_TipText.GetLength() + 1);
+      size_t num_converted;
+      wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
+                 cs_TipText.GetLength() + 1);
 #else
-    wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
+      wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
 #endif
-    pTTTA->lpszText = (LPSTR)m_pchTip;
-  } else {
-    delete m_pwchTip;
+      pTTTA->lpszText = (LPSTR)m_pchTip;
+    } else {
+      delete m_pwchTip;
 
-    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-    lstrcpyn(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-    pTTTW->lpszText = (LPWSTR)m_pwchTip;
-  }
-
-#else // Unicode
-
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
-    delete m_pchTip;
-
-    m_pchTip = new char[cs_TipText.GetLength() + 1];
-    lstrcpyn(m_pchTip, cs_TipText, cs_TipText.GetLength()+1);
-    pTTTA->lpszText = (LPSTR)m_pchTip;
-  } else {
-    delete m_pwchTip;
-
-    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-#if _MSC_VER >= 1400
-    size_t numconverted;
-    mbstowcs_s(&numconverted, m_pwchTip, cs_TipText.GetLength() + 1, cs_TipText, 
-               cs_TipText.GetLength() + 1);
-#else
-    mbstowcs(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
-    pTTTW->lpszText = m_pwchTip;
-  }
-
-#endif // UNICODE/ASCII
-
+      m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
+      lstrcpyn(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
+      pTTTW->lpszText = (LPWSTR)m_pwchTip;
+    }
 #else // Short Tooltips!
-
-#ifdef _UNICODE
     if (pNMHDR->code == TTN_NEEDTEXTA) {
       int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
-                                  pTTTA->szText,
-                                  sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
+                                  pTTTA->szText, _countof(pTTTA->szText),
                                   NULL, NULL);
       if (n > 0)
         pTTTA->szText[n - 1] = 0;
-    } else
+    } else {
 #if _MSC_VER >= 1400
-      _tcsncpy_s(pTTTW->szText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])),
-      cs_TipText, _TRUNCATE);
+      wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText),
+               cs_TipText, _TRUNCATE);
 #else
-      _tcsncpy(pTTTW->szText, cs_TipText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])));
+      wcsncpy(pTTTW->szText, cs_TipText, _countof(pTTTW->szText));
 #endif
-
-#else  // UNICODE
-
-    if (pNMHDR->code == TTN_NEEDTEXTA)
-#if _MSC_VER >= 1400
-      _tcsncpy_s(pTTTA->szText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])),
-                 cs_TipText, _TRUNCATE);
-#else
-      _tcsncpy(pTTTA->szText, cs_TipText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
-#endif
-    else {
-      int n = MultiByteToWideChar(CP_ACP, 0, cs_TipText, -1, pTTTW->szText,
-                                  sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
-      if (n > 0)
-        pTTTW->szText[n - 1] = 0;
     }
-#endif // UNICODE/ASCII
 #endif // Long/short tooltips
 
     return TRUE;   // we found a tool tip,

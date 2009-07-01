@@ -35,8 +35,7 @@ class CExpPWListDlg : public CPWDialog
 public:
   CExpPWListDlg(CWnd* pParent,
     const ExpiredList &expPWList,
-    const CString& a_filespec = _T("")
-    );
+    const CString& a_filespec = L"");
   virtual ~CExpPWListDlg();
 
   // Dialog Data

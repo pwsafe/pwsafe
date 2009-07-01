@@ -48,7 +48,7 @@ protected:
   virtual void PostNcDestroy();
   virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-  void DrawText(CDC& dc, LPCTSTR lpText, CRect& rc, UINT flags);
+  void DrawText(CDC& dc, LPCWSTR lpText, CRect& rc, UINT flags);
 
   afx_msg void OnPaint();
   afx_msg void OnTimer(UINT_PTR nIDEvent);

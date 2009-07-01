@@ -43,9 +43,9 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
 
   if (a_filespec.GetLength() > FILE_DISP_LEN) {
     // m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
-    // m_message.Insert(0, _T("..."));
+    // m_message.Insert(0, L"...");
     m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) + 
-      _T(" ... ") + a_filespec.Right(FILE_DISP_LEN/2);
+                     L" ... " + a_filespec.Right(FILE_DISP_LEN/2);
   } else {
     m_message = a_filespec;
   }
@@ -88,7 +88,7 @@ BOOL CExpPWListDlg::OnInitDialog()
   //m_expPWListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_SUBITEMIMAGES );
 
   CString cs_text;
-  m_expPWListCtrl.InsertColumn(0, _T(""));
+  m_expPWListCtrl.InsertColumn(0, L"");
   cs_text.LoadString(IDS_GROUP);
   m_expPWListCtrl.InsertColumn(1, cs_text);
   cs_text.LoadString(IDS_TITLE);
@@ -171,10 +171,10 @@ void CExpPWListDlg::OnOK()
 void CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 {
   CString title(MAKEINTRESOURCE(IDS_COPYTITLE));
-  const StringX CRLF = _T("\r\n");
-  const StringX TAB = _T("\t");
+  const StringX CRLF = L"\r\n";
+  const StringX TAB = L"\t";
 
-  StringX data = LPCTSTR(title);
+  StringX data = LPCWSTR(title);
 
   ExpiredList::const_iterator itempos;
 

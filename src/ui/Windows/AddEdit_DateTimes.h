@@ -30,7 +30,7 @@ public:
   CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD);
   ~CAddEdit_DateTimes();
 
-  const TCHAR *GetHelpName() const {return _T("TO_DO!");}
+  const wchar_t *GetHelpName() const {return L"TO_DO!";}
 
   static bool m_bNumDaysFailed;
 

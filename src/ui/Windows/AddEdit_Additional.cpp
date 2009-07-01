@@ -98,7 +98,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-      TRACE("Unable To create CAddEdit_Additional Dialog ToolTip\n");
+      TRACE(L"Unable To create CAddEdit_Additional Dialog ToolTip\n");
     } else {
       EnableToolTips();
       // Delay initial show & reshow
@@ -239,7 +239,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
        iter != M_pwhistlist().end(); iter++, nIdx++) {
     int nPos = 0;
     const PWHistEntry pwhentry = *iter;
-    if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
+    if (pwhentry.changedate != L"1970-01-01 00:00:00")
       nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate.c_str());
     else {
       cs_text.LoadString(IDS_UNKNOWN);
@@ -260,11 +260,11 @@ BOOL CAddEdit_Additional::OnInitDialog()
   }
   m_PWHistListCtrl.SetRedraw(TRUE);
 
-  TCHAR buffer[10];
+  wchar_t buffer[10];
 #if _MSC_VER >= 1400
-  _stprintf_s(buffer, 10, _T("%d"), M_NumPWHistory());
+  swprintf_s(buffer, 10, L"%d", M_NumPWHistory());
 #else
-  _stprintf(buffer, _T("%d"), M_NumPWHistory());
+  swprintf(buffer, L"%d", M_NumPWHistory());
 #endif
 
   UpdateData(FALSE);
@@ -275,12 +275,12 @@ BOOL CAddEdit_Additional::OnInitDialog()
 void CAddEdit_Additional::OnHelp()
 {
 #if defined(POCKET_PC)
-  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#adddata"), NULL, NULL,
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
                 FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/entering_pwd.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 
@@ -384,11 +384,11 @@ BOOL CAddEdit_Additional::OnApply()
 
   if (M_runcommand().GetLength() > 0) {
     //Check Run Command parses - don't substitute
-    stringT errmsg;
+    std::wstring errmsg;
     size_t st_column;
     bool bAutoType(false);
-    StringX sxAutotype(_T(""));
-    PWSAuxParse::GetExpandedString(M_runcommand(), _T(""), NULL,
+    StringX sxAutotype(L"");
+    PWSAuxParse::GetExpandedString(M_runcommand(), L"", NULL,
                                    bAutoType, sxAutotype, errmsg, st_column);
     if (errmsg.length() > 0) {
       CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
@@ -434,17 +434,17 @@ BOOL CAddEdit_Additional::OnApply()
   }
 
   if (!(M_PWHistory().IsEmpty() && M_SavePWHistory() == FALSE)) {
-    TCHAR buffer[6];
+    wchar_t buffer[6];
 #if _MSC_VER >= 1400
-    _stprintf_s(buffer, 6, _T("%1x%02x%02x"),
-               (M_SavePWHistory() == FALSE) ? 0 : 1,
-                M_MaxPWHistory(),
-                M_pwhistlist().size());
-#else
-    _stprintf(buffer, _T("%1x%02x%02x"),
+    swprintf_s(buffer, 6, L"%1x%02x%02x",
               (M_SavePWHistory() == FALSE) ? 0 : 1,
-               M_MaxPWHistory(),
-               M_pwhistlist().size());
+              M_MaxPWHistory(),
+              M_pwhistlist().size());
+#else
+    swprintf(buffer, L"%1x%02x%02x",
+             (M_SavePWHistory() == FALSE) ? 0 : 1,
+             M_MaxPWHistory(),
+             M_pwhistlist().size());
 #endif
     if (M_PWHistory().GetLength() >= 5) {
       for (int i = 0; i < 5; i++) M_PWHistory().SetAt(i, buffer[i]);
@@ -520,7 +520,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
       if (GetKeyState(VK_CONTROL) != 0 || M_runcommand().IsEmpty()) {
         cs_data = StringX(M_runcommand());
       } else {
-        stringT errmsg;
+        std::wstring errmsg;
         size_t st_column;
         cs_data = PWSAuxParse::GetExpandedString(M_runcommand(),
                                                  M_currentDB(),
@@ -652,9 +652,9 @@ void CAddEdit_Additional::OnPWHCopyAll()
   for (iter = M_pwhistlist().begin(); iter != M_pwhistlist().end(); iter++) {
     const PWHistEntry &ent = *iter;
     HistStr += ent.changedate;
-    HistStr += _T("\t");
+    HistStr += L"\t";
     HistStr += ent.password;
-    HistStr += _T("\r\n");
+    HistStr += L"\r\n";
   }
 
   M_pDbx()->SetClipboardData(HistStr);

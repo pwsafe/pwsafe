@@ -28,7 +28,7 @@
 #include <malloc.h>  // Use the _malloca/_freea functions (changed from original)
 
 ////////////////////////////////////////////////////////////////////////////////
-// LPTSTR CreateUniqueName(pszGUID, pszBuffer, nMode)
+// LPWSTR CreateUniqueName(pszGUID, pszBuffer, nMode)
 //
 // Creates a "unique" name, where the meaning of "unique" depends on the nMode 
 // flag values. Returns pszBuffer
@@ -53,7 +53,7 @@
 //                                       on different desktops.
 //        SI_SYSTEM_UNIQUE             - Allow only one instance on the whole system  
 //
-LPTSTR CreateUniqueName(LPCTSTR pszGUID, LPTSTR pszBuffer, int iBuffLen,
+LPWSTR CreateUniqueName(LPCWSTR pszGUID, LPWSTR pszBuffer, int iBuffLen,
                         int nMode  /* = SI_TRUSTEE_UNIQUE */)
 {
   if (pszBuffer == NULL) {
@@ -64,9 +64,9 @@ LPTSTR CreateUniqueName(LPCTSTR pszGUID, LPTSTR pszBuffer, int iBuffLen,
   // First copy GUID to destination buffer
   if (pszGUID)
 #if _MSC_VER >= 1400
-    _tcscpy_s(pszBuffer, iBuffLen, pszGUID);
+    wcscpy_s(pszBuffer, iBuffLen, pszGUID);
 #else
-    _tcscpy(pszBuffer, pszGUID);
+    wcscpy(pszBuffer, pszGUID);
 #endif
   else
     *pszBuffer = 0;
@@ -74,20 +74,20 @@ LPTSTR CreateUniqueName(LPCTSTR pszGUID, LPTSTR pszBuffer, int iBuffLen,
   if (nMode & SI_DESKTOP_UNIQUE) {
     // Name should be desktop unique, so add current desktop name
 #if _MSC_VER >= 1400
-    _tcscat_s(pszBuffer, iBuffLen, _T("-"));
+    wcscat_s(pszBuffer, iBuffLen, L"-");
 #else
-    _tcscat(pszBuffer, _T("-"));
+    wcscat(pszBuffer, L"-");
 #endif
     HDESK hDesk    = GetThreadDesktop(GetCurrentThreadId());
-    ULONG cchDesk  = MAX_PATH - _tcslen(pszBuffer) - 1;
+    ULONG cchDesk  = MAX_PATH - wcslen(pszBuffer) - 1;
 
-    if (!GetUserObjectInformation(hDesk, UOI_NAME, pszBuffer + _tcslen(pszBuffer), 
+    if (!GetUserObjectInformation(hDesk, UOI_NAME, pszBuffer + wcslen(pszBuffer), 
                                   cchDesk, &cchDesk))
       // Call will fail on Win9x
 #if _MSC_VER >= 1400
-      _tcsncat_s(pszBuffer, iBuffLen, _T("Win9x"), cchDesk);
+      wcsncat_s(pszBuffer, iBuffLen, L"Win9x", cchDesk);
 #else
-      _tcsncat(pszBuffer, _T("Win9x"), cchDesk);
+      wsncat(pszBuffer, L"Win9x", cchDesk);
 #endif
   }
   if (nMode & SI_SESSION_UNIQUE) {
@@ -96,14 +96,14 @@ LPTSTR CreateUniqueName(LPCTSTR pszGUID, LPTSTR pszBuffer, int iBuffLen,
     HANDLE hToken = NULL;
     // Try to open the token (fails on Win9x) and check necessary buffer size
     if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken) &&
-        (MAX_PATH - _tcslen(pszBuffer) > 9)) {
+        (MAX_PATH - wcslen(pszBuffer) > 9)) {
       DWORD cbBytes = 0;
 
       if (!GetTokenInformation(hToken, TokenStatistics, NULL, cbBytes, &cbBytes) &&
            GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
         PTOKEN_STATISTICS pTS = (PTOKEN_STATISTICS)_malloca(cbBytes);
         if (GetTokenInformation(hToken, TokenStatistics, (LPVOID) pTS, cbBytes, &cbBytes)) {
-          wsprintf(pszBuffer + _tcslen(pszBuffer), _T("-%08x%08x"), 
+          wsprintf(pszBuffer + wcslen(pszBuffer), L"-%08x%08x", 
                    pTS->AuthenticationId.HighPart, pTS->AuthenticationId.LowPart);
         }
         _freea(pTS);
@@ -112,18 +112,18 @@ LPTSTR CreateUniqueName(LPCTSTR pszGUID, LPTSTR pszBuffer, int iBuffLen,
   }
   if (nMode & SI_TRUSTEE_UNIQUE) {
     // Name should be unique to the current user
-    TCHAR szUser[64] = {0};
-    TCHAR szDomain[64] = {0};
+    wchar_t szUser[64] = {0};
+    wchar_t szDomain[64] = {0};
     DWORD cchUser  = 64;
     DWORD cchDomain  = 64;
 
     if (GetUserName(szUser, &cchUser)) {
       // Since NetApi() calls are quite time consuming
       // we retrieve the domain name from an environment variable
-      cchDomain = GetEnvironmentVariable(_T("USERDOMAIN"), szDomain, cchDomain);
-      UINT cchUsed = _tcslen(pszBuffer);
+      cchDomain = GetEnvironmentVariable(L"USERDOMAIN", szDomain, cchDomain);
+      UINT cchUsed = wcslen(pszBuffer);
       if (MAX_PATH - cchUsed > cchUser + cchDomain + 3) {
-        wsprintf(pszBuffer + cchUsed, _T("-%s-%s"), szDomain, szUser);
+        wsprintf(pszBuffer + cchUsed, L"-%s-%s", szDomain, szUser);
       }
     }
   }

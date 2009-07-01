@@ -25,7 +25,7 @@ public:
   CAddEdit_PasswordPolicy(CWnd *pParent, st_AE_master_data *pAEMD);
   ~CAddEdit_PasswordPolicy();
 
-  const TCHAR *GetHelpName() const {return _T("TO_DO!");}
+  const wchar_t *GetHelpName() const {return L"TO_DO!";}
 
   // Dialog Data
   //{{AFX_DATA(CAddEdit_PasswordPolicy)

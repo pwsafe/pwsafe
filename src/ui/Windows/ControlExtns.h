@@ -85,7 +85,7 @@ protected:
 
 struct st_context_menu {
   int message_number;
-  stringT menu_string;
+  std::wstring menu_string;
   int flags;
 };
 

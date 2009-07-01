@@ -25,7 +25,7 @@ class CPWPropertyPage : public CPropertyPage
 public:
   CPWPropertyPage(UINT nID) : CPropertyPage(nID) {}
   virtual ~CPWPropertyPage() {}
-  virtual const TCHAR *GetHelpName() const = 0;
+  virtual const wchar_t *GetHelpName() const = 0;
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);

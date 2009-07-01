@@ -102,7 +102,7 @@ BOOL CFilterDateDlg::OnInitDialog()
     m_rule2selection[PWSMatch::MR_BETWEEN] = iItem;
   }
 
-  TCHAR szBuf[81];       // workspace
+  wchar_t szBuf[81];       // workspace
   VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
 
   m_dtp1.SetFormat(szBuf);

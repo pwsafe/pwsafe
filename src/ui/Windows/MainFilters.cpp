@@ -614,7 +614,7 @@ void DboxMain::OnManageFilters()
 
   st_Filterkey fkl, fku;
   fkl.fpool = FPOOL_DATABASE;
-  fkl.cs_filtername = _T("");
+  fkl.cs_filtername = L"";
 
   if (m_MapFilters.size() != 0) {
     mf_lower_iter = m_MapFilters.lower_bound(fkl);
@@ -623,7 +623,7 @@ void DboxMain::OnManageFilters()
     if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
       // Now find upper bound of database filters
       fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
-      fku.cs_filtername = _T("");
+      fku.cs_filtername = L"";
       mf_upper_iter = m_MapFilters.upper_bound(fku);
 
       // Delete existing database filters (if any)
@@ -654,7 +654,7 @@ void DboxMain::OnManageFilters()
     if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
       // Now find upper bound of database filters
       fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
-      fku.cs_filtername = _T("");
+      fku.cs_filtername = L"";
       mf_upper_iter = m_MapFilters.upper_bound(fku);
 
       // Copy database filters (if any) to the core
@@ -671,12 +671,12 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
   // do the export
   //SaveAs-type dialog box
-  stringT XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                                  _T("filters.xml"));
+  std::wstring XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                  L"filters.xml");
   cs_text.LoadString(IDS_NAMEXMLFILE);
   while (1) {
     CPWFileDialog fd(FALSE,
-                     _T("xml"),
+                     L"xml",
                      XMLFileName.c_str(),
                      OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
@@ -700,7 +700,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
   PWSfile::HeaderRecord hdr = m_core.GetHeader();
   StringX currentfile = m_core.GetCurFile();
-  rc = Filters.WriteFilterXMLFile(LPCTSTR(cs_newfile), hdr, currentfile);
+  rc = Filters.WriteFilterXMLFile(LPCWSTR(cs_newfile), hdr, currentfile);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
@@ -714,8 +714,8 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 void DboxMain::ImportFilters()
 {
   CString cs_title, cs_temp, cs_text;
-  const stringT XSDfn(_T("pwsafe_filter.xsd"));
-  stringT XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
+  const std::wstring XSDfn(L"pwsafe_filter.xsd");
+  std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   // Expat is a non-validating parser - no use for Schema!
@@ -728,7 +728,7 @@ void DboxMain::ImportFilters()
 #endif
 
   CPWFileDialog fd(TRUE,
-                   _T("xml"),
+                   L"xml",
                    NULL,
                    OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
                    CString(MAKEINTRESOURCE(IDS_FDF_XML)),
@@ -748,13 +748,13 @@ void DboxMain::ImportFilters()
     return;
 
   if (rc == IDOK) {
-    stringT strErrors;
+    std::wstring strErrors;
     CString XMLFilename = fd.GetPathName();
     CWaitCursor waitCursor;  // This may take a while!
 
     MFCAsker q;
-    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, _T(""),
-                                          stringT(XMLFilename),
+    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_IMPORTED, L"",
+                                          std::wstring(XMLFilename),
                                           XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
 
@@ -768,7 +768,7 @@ void DboxMain::ImportFilters()
         break;
       case PWScore::SUCCESS:
         if (!strErrors.empty()) {
-          stringT csErrors = strErrors + _T("\n");
+          std::wstring csErrors = strErrors + L"\n";
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(),
                          csErrors.c_str());
         } else {

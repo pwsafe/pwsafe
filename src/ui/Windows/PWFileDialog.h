@@ -11,8 +11,8 @@
 class CPWFileDialog : public CFileDialog
 {
 public:
-  CPWFileDialog(BOOL bOpenFileDialog, LPCTSTR lpszDefExt = NULL, LPCTSTR lpszFileName = NULL,
-                DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, LPCTSTR lpszFilter = NULL,
+  CPWFileDialog(BOOL bOpenFileDialog, LPCWSTR lpszDefExt = NULL, LPCWSTR lpszFileName = NULL,
+                DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, LPCWSTR lpszFilter = NULL,
                 CWnd* pParentWnd = NULL, DWORD dwSize = 0)
   : CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter,
                 pParentWnd, dwSize) {}

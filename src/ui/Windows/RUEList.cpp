@@ -64,7 +64,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
   for (iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
     ItemListConstIter pw_listpos = m_core.Find(iter->RUEuuid);
     if (pw_listpos == m_core.GetEntryEndIter()) {
-      ruentrydata.string = _T("");
+      ruentrydata.string = L"";
       ruentrydata.image = -1;
       ruentrydata.pci = NULL;
     } else {
@@ -74,13 +74,13 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
       StringX user = ci.GetUser();
 
       if (group.empty())
-        group = _T("*");
+        group = L"*";
 
       if (title.empty())
-        title = _T("*");
+        title = L"*";
 
       if (user.empty())
-        user = _T("*");
+        user = L"*";
 
       ruentrydata.string = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
       ruentrydata.image = m_pDbx->GetEntryImage(ci);

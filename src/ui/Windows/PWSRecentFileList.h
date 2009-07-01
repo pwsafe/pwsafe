@@ -20,8 +20,8 @@
 class CPWSRecentFileList : public CRecentFileList
 {
 public:
-  CPWSRecentFileList(UINT nStart, LPCTSTR lpszSection,
-    LPCTSTR lpszEntryFormat, int nSize,
+  CPWSRecentFileList(UINT nStart, LPCWSTR lpszSection,
+    LPCWSTR lpszEntryFormat, int nSize,
     int nMaxDispLen = AFX_ABBREV_FILENAME_LEN)
     : CRecentFileList(nStart, lpszSection, lpszEntryFormat,
     nSize, nMaxDispLen){}

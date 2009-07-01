@@ -43,7 +43,7 @@ public:
   INT_PTR DoModal();
 
   // Buttons operations
-  void AddButton(UINT uIDC, LPCTSTR pszText,
+  void AddButton(UINT uIDC, LPCWSTR pszText,
     BOOL bIsDefault = FALSE,
     BOOL bIsEscape = FALSE);
   void AddButton(UINT uIDC, UINT uIdText = (UINT)-1,
@@ -51,17 +51,17 @@ public:
     BOOL bIsEscape = FALSE);
 
   // Title operations
-  void SetTitle(LPCTSTR pszTitle);
+  void SetTitle(LPCWSTR pszTitle);
   void SetTitle(UINT uIdTitle);
 
   // Message operations
   BOOL SetMsg(UINT uMsgId);
-  BOOL SetMsg(LPCTSTR pszMsg);
+  BOOL SetMsg(LPCWSTR pszMsg);
 
   // Icon operations
   void SetIcon(HICON hIcon);
   void SetIcon(UINT uIcon);
-  void SetStandardIcon(LPCTSTR pszIconName);
+  void SetStandardIcon(LPCWSTR pszIconName);
   void SetStandardIcon(UINT uIcon);
 
   // Metric enumerators (see SetMetric and GetMetric)
@@ -131,7 +131,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralMsgBox - inlined member functions
 
-inline void CGeneralMsgBox::SetTitle(LPCTSTR pszTitle)
+inline void CGeneralMsgBox::SetTitle(LPCWSTR pszTitle)
 { m_strTitle = pszTitle; }
 
 inline void CGeneralMsgBox::SetTitle(UINT uIdTitle)

@@ -23,7 +23,7 @@ public:
   COptionsSecurity();
   ~COptionsSecurity();
 
-  const TCHAR *GetHelpName() const {return _T("security_tab");}
+  const wchar_t *GetHelpName() const {return L"security_tab";}
 
   // Dialog Data
   //{{AFX_DATA(COptionsSecurity)

@@ -26,9 +26,9 @@
 
 IMPLEMENT_DYNAMIC(CPWFiltersDlg, CPWResizeDialog)
 
-CPWFiltersDlg::CPWFiltersDlg(CWnd* pParent /*=NULL*/,
-                             const FilterType &filtertype /*=DFTYPE_MAIN*/,
-                             const CString &filtername /*=_T("")*/)
+CPWFiltersDlg::CPWFiltersDlg(CWnd* pParent /* = NULL */,
+                             const FilterType &filtertype /* = DFTYPE_MAIN */,
+                             const CString &filtername /* = L"" */)
   : CPWResizeDialog(CPWFiltersDlg::IDD, pParent),
   m_numfilters(0), m_iType(filtertype), m_hAccel(NULL), 
   m_filtername(filtername), m_bAllowSet(true)
@@ -46,11 +46,9 @@ BOOL CPWFiltersDlg::OnInitDialog()
   UINT other_bns[] = {IDOK, IDCANCEL, ID_HELP};
 
   if (m_iType == DFTYPE_MAIN && m_bAllowSet)
-    vibottombtns.assign(main_bns,
-                        main_bns + sizeof(main_bns)/sizeof(main_bns[0]));
+    vibottombtns.assign(main_bns, main_bns + _countof(main_bns));
   else
-    vibottombtns.assign(other_bns,
-                        other_bns + sizeof(other_bns)/sizeof(other_bns[0]));
+    vibottombtns.assign(other_bns, other_bns + _countof(other_bns));
 
   AddMainCtrlID(IDC_FILTERLC);
   AddBtnsCtrlIDs(vibottombtns);
@@ -71,7 +69,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
 
   m_FilterLC.Init(this, m_pfilters, m_iType);
   if (m_filtername.IsEmpty() || m_pfilters->fname.empty())
-    m_filtername = _T("Filter1");
+    m_filtername = L"Filter1";
   else
     m_filtername = m_pfilters->fname.c_str();
 
@@ -244,8 +242,8 @@ bool CPWFiltersDlg::VerifyFilters()
 void CPWFiltersDlg::OnHelp()
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/filters.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/filters.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CPWFiltersDlg::OnFNameKillFocus()

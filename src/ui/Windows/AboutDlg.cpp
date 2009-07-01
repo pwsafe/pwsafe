@@ -39,7 +39,7 @@ CAboutDlg::CAboutDlg(CWnd* pParent)
 {
   CString verstat;
   // Following since text in quotes is not to be translated
-  verstat.Format(IDS_LATEST_VERSION, _T("[check_version]"));
+  verstat.Format(IDS_LATEST_VERSION, L"[check_version]");
   m_newVerStatus = verstat;
 }
 
@@ -71,26 +71,26 @@ BOOL CAboutDlg::OnInitDialog()
   // which is of the form "MM, NN, BB, rev"
   CString csFileVersionString, csRevision;
   csFileVersionString = app.GetFileVersionString();
-  int revIndex = csFileVersionString.ReverseFind(TCHAR(','));
+  int revIndex = csFileVersionString.ReverseFind(L',');
   if (revIndex >= 0) {
     int len = csFileVersionString.GetLength();
     csRevision = csFileVersionString.Right(len - revIndex - 1);
     csRevision.Trim();
   }
   if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(_T("%s V%d.%02d (%s)%s"), AfxGetAppName(), 
+    m_appversion.Format(L"%s V%d.%02d (%s)%s", AfxGetAppName(), 
                         m_nMajor, m_nMinor, csRevision, SPECIAL_BUILD);
   } else {
-    m_appversion.Format(_T("%s V%d.%02d.%02d (%s)%s"), AfxGetAppName(), 
+    m_appversion.Format(L"%s V%d.%02d.%02d (%s)%s", AfxGetAppName(), 
                         m_nMajor, m_nMinor, m_nBuild, csRevision, SPECIAL_BUILD);
   }
 #ifdef _DEBUG
-  m_appversion += _T(" [Debug]");
+  m_appversion += L" [Debug]";
 #endif
   m_appcopyright = app.GetCopyrightString();
 
 #ifdef DEMO
-  m_appversion += _T(" ") + CString(MAKEINTRESOURCE(IDS_DEMO));
+  m_appversion += L" " + CString(MAKEINTRESOURCE(IDS_DEMO));
 #endif
 
   GetDlgItem(IDC_APPVERSION)->SetWindowText(m_appversion);
@@ -106,7 +106,7 @@ BOOL CAboutDlg::OnInitDialog()
 
 bool CAboutDlg::OnCheckVersion(const CString &URL, const CString & /* lpszFName */, LPARAM instance)
 {
-  if (URL == _T("[check_version]")) {
+  if (URL == L"[check_version]") {
     CAboutDlg *self = (CAboutDlg *)instance;
     self->CheckNewVer();
     return true;
@@ -140,28 +140,28 @@ void CAboutDlg::CheckNewVer()
   // safe to open external connection
   m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
   UpdateData(FALSE);
-  stringT latest;
+  std::wstring latest;
   switch (CheckLatestVersion(latest)) {
-  case CheckVersion::CANT_CONNECT:
-    m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
-    break;
-  case CheckVersion::UP2DATE:
-    m_newVerStatus.LoadString(IDS_UP2DATE);
-    break;
-  case CheckVersion::NEWER_AVAILABLE:
-    {
+    case CheckVersion::CANT_CONNECT:
+      m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
+      break;
+    case CheckVersion::UP2DATE:
+      m_newVerStatus.LoadString(IDS_UP2DATE);
+      break;
+    case CheckVersion::NEWER_AVAILABLE:
+      {
       CString newer;
       newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
                    m_appversion, latest.c_str());
       m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
       MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
       break;
-    }
-  case CheckVersion::CANT_READ:
-    m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
-    break;
-  default:
-    break;
+      }
+    case CheckVersion::CANT_READ:
+      m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
+      break;
+    default:
+      break;
   }
 
   m_RECExNewVerStatus.SetFont(GetFont());
@@ -171,15 +171,15 @@ void CAboutDlg::CheckNewVer()
   GetDlgItem(IDOK)->SetFocus();
 }
 
-CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(stringT &latest)
+CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
 {
-  CInternetSession session(_T("PasswordSafe Version Check"));
+  CInternetSession session(L"PasswordSafe Version Check");
   CStdioFile *fh;
   // Put up hourglass...this might take a while
   CWaitCursor waitCursor;
   try {
     // Loading the file as binary since we're treating it as UTF-8
-    fh = session.OpenURL(_T("http://pwsafe.org/latest.xml"),
+    fh = session.OpenURL(L"http://pwsafe.org/latest.xml",
                          1, (INTERNET_FLAG_TRANSFER_BINARY | INTERNET_FLAG_RELOAD));
   } catch (CInternetException *) {
     // throw;
@@ -187,12 +187,7 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(stringT &latest)
   }
   ASSERT(fh != NULL);
   CString latest_xml;
-#ifndef UNICODE
-  CString line;
-  while (fh->ReadString(line) == TRUE)
-    latest_xml += line;
-#else
-  unsigned char buff[BUFSIZ+1];
+  unsigned char buff[BUFSIZ + 1];
   StringX chunk;
   UINT nRead;
   CUTF8Conv conv;
@@ -207,11 +202,10 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(stringT &latest)
     } else
       latest_xml += chunk.c_str();
   }
-#endif /* UNICODE */
   fh->Close();
   delete fh;
   session.Close();
   waitCursor.Restore(); // restore normal cursor
   CheckVersion vh(m_nMajor, m_nMinor, m_nBuild);
-  return vh.CheckLatestVersion(LPCTSTR(latest_xml), latest);
+  return vh.CheckLatestVersion(LPCWSTR(latest_xml), latest);
 }

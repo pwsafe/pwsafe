@@ -26,8 +26,8 @@ CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
 {
   //{{AFX_DATA_INIT(CImportDlg)
   m_groupName.LoadString(IDS_IMPORTED);
-  m_Separator = _T("|");
-  m_defimpdelim = _T("\xbb");
+  m_Separator = L"|";
+  m_defimpdelim = L"\xbb";
   m_tab = 0;
   m_group = 0;
   //}}AFX_DATA_INIT
@@ -116,8 +116,8 @@ void CImportDlg::OnYesGroup()
 void CImportDlg::OnHelp() 
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/import.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/import.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CImportDlg::OnOK() 
@@ -125,8 +125,8 @@ void CImportDlg::OnOK()
   UpdateData(TRUE);
 
   switch (m_tab) {
-    case 0: m_Separator = _T("\t"); break;
-    case 1: m_Separator = _T(","); break;
+    case 0: m_Separator = L"\t"; break;
+    case 1: m_Separator = L","; break;
     case 2: break; // m_Separator will get value from edit control
     default: 
       ASSERT(0);
@@ -134,7 +134,7 @@ void CImportDlg::OnOK()
   }
 
   if (m_group == 0) {
-    m_groupName = _T("");
+    m_groupName = L"";
   }
 
   UpdateData(FALSE);

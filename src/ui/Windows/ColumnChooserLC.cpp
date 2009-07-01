@@ -71,16 +71,16 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   HGLOBAL hGlobal;
   hGlobal = pDataObject->GetGlobalData(m_ccddCPFID);
 
-  LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
+  LPCWSTR pData = (LPCWSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
   DWORD procID;
   int iDDType, dw_type, iLen;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData, _T("%08x%02x%02x%04x"), &procID, &iDDType, &dw_type, &iLen);
+  swscanf_s(pData, L"%08x%02x%02x%04x", &procID, &iDDType, &dw_type, &iLen);
 #else
-  _stscanf(pData, _T("08x%02x%02x%04x"), &procID, &iDDType, &dw_type, &iLen);
+  swscanf(pData, L"08x%02x%02x%04x", &procID, &iDDType, &dw_type, &iLen);
 #endif
 
   // Check if it is ours?
@@ -121,7 +121,7 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
 
   // ListView HeaderCtrl only needs the type as it uses main routine
   // to add/delete columns via SendMessage
-  cs_text.Format(_T("%08x%02x%02x"), GetCurrentProcessId(), FROMCC, dw_type);
+  cs_text.Format(L"%08x%02x%02x", GetCurrentProcessId(), FROMCC, dw_type);
 
   // Get client window position
   CPoint currentClientPosition;
@@ -138,8 +138,8 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
   GetClientRect(&rClient);
 
   // Start dragging
-  StartDragging((BYTE *)LPCTSTR(cs_text),
-    cs_text.GetLength() * sizeof(TCHAR),
+  StartDragging((BYTE *)LPCWSTR(cs_text),
+    cs_text.GetLength() * sizeof(wchar_t),
     m_ccddCPFID, &rClient, &point);
 
   // End dragging image

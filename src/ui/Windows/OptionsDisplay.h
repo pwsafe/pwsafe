@@ -23,7 +23,7 @@ public:
   COptionsDisplay();
   ~COptionsDisplay();
 
-  const TCHAR *GetHelpName() const {return _T("display_tab");}
+  const wchar_t *GetHelpName() const {return L"display_tab";}
   // Dialog Data
   //{{AFX_DATA(COptionsDisplay)
   enum { IDD = IDD_PS_DISPLAY };
