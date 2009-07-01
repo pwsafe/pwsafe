@@ -14,6 +14,8 @@
 //              Update 09.11.2006: (ronys)
 //                 - Get to compile cleanly under MSVS2005
 //                 - const correctness, char -> TCHAR, minor cleanups
+//              Update 01.07.2009: (c-273)
+//                 - TCHAR -> wchar_t
 //*******************************************************************
 
 // Includes
@@ -78,7 +80,7 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
   CFile cfFull;
   CString sExePath, sExe, sSpecialFolder;
 
-  TCHAR *chTmp = sExePath.GetBuffer(MAX_PATH);
+  wchar_t *chTmp = sExePath.GetBuffer(MAX_PATH);
 
   GetModuleFileName(NULL, chTmp, MAX_PATH);
 
@@ -88,12 +90,12 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
   if (!GetSpecialFolder(SpecialFolder, sSpecialFolder))
     return FALSE;
 
-  sSpecialFolder += LnkName + _T(".") + _T("lnk");
+  sSpecialFolder += LnkName + L"." + L"lnk";
 
-  if (LnkTarget == _T("_this")) {
+  if (LnkTarget == L"_this") {
     cfFull.SetFilePath(sExePath);
     sExe = cfFull.GetFileName();
-    sExe.Delete(sExe.Find(_T(".")) + 1, 3);
+    sExe.Delete(sExe.Find(L".") + 1, 3);
   } else {
     sExePath = LnkTarget;
   }
@@ -117,26 +119,17 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
       psl->SetArguments(m_sCmdArg);
 
     if (SUCCEEDED(psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf))) {
-#ifndef UNICODE
-      WCHAR wsz[MAX_PATH];
-      MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, sSpecialFolder,
-                          -1, wsz, MAX_PATH);
-#endif
       /* Call IShellLink::SetIconLocation with the file containing
          the icon and the index of the icon */
       if (!IconLocation.IsEmpty()) {
         hr = psl->SetIconLocation(IconLocation, IconIndex);
 #ifdef _DEBUG
         if (FAILED(hr))
-          TRACE(_T("IconLocation not changed!\n"));
+          TRACE(L"IconLocation not changed!\n");
 #endif
       }
 
-#ifndef UNICODE
-      if (SUCCEEDED(ppf->Save(wsz, TRUE)))
-#else
       if (SUCCEEDED(ppf->Save(sSpecialFolder, TRUE)))
-#endif
       {
         bRet = TRUE;
       }
@@ -145,8 +138,8 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
     psl->Release();
   } 
 
-  TRACE(bRet ? _T("Lnk Written!\n") :
-    _T("Lnk NOT Written! CreateShortCut(...) failed!\n"));
+  TRACE(bRet ? L"Lnk Written!\n" :
+               L"Lnk NOT Written! CreateShortCut(...) failed!\n");
   return bRet;
 }
 
@@ -175,7 +168,7 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
 {
   CFile cfFull;
   CString sExePath, sExe, sSpecialFolder;
-  TCHAR *chTmp = sExePath.GetBuffer(MAX_PATH);
+  wchar_t *chTmp = sExePath.GetBuffer(MAX_PATH);
 
   GetModuleFileName(NULL, chTmp, MAX_PATH);
   sExePath.ReleaseBuffer();
@@ -186,31 +179,31 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
   // Work with the special folder's path (contained in szPath)
   cfFull.SetFilePath(sExePath);
   sExe = cfFull.GetFileName();
-  sExe.Delete(sExe.Find(_T(".")) + 1, 3);
-  sSpecialFolder += LnkName + _T(".") + _T("lnk");
+  sExe.Delete(sExe.Find(L".") + 1, 3);
+  sSpecialFolder += LnkName + L"." + L"lnk";
 
   // DELETE THE LINK:
   SHFILEOPSTRUCT FIO;
   memset(&FIO, 0, sizeof SHFILEOPSTRUCT);
   //  FIO.pTo=NULL; // MUST be NULL
-  FIO.wFunc=FO_DELETE;
-  FIO.fFlags=FOF_NOERRORUI|FOF_NOCONFIRMATION;
+  FIO.wFunc = FO_DELETE;
+  FIO.fFlags = FOF_NOERRORUI|FOF_NOCONFIRMATION;
 
-  if (sSpecialFolder.Find(TCHAR('\0'))!=sSpecialFolder.GetLength()) {
-    FIO.fFlags|=FOF_MULTIDESTFILES;
+  if (sSpecialFolder.Find(L'\0') != sSpecialFolder.GetLength()) {
+    FIO.fFlags |= FOF_MULTIDESTFILES;
   }
   if (sSpecialFolder.Right(1)) {
-    sSpecialFolder+=TCHAR('\0');
+    sSpecialFolder += L'\0';
   }
-  FIO.pFrom=&*sSpecialFolder;
+  FIO.pFrom = &*sSpecialFolder;
 
   int bD = SHFileOperation(&FIO);
 
   if (!bD) {
-    TRACE(_T("Lnk Deleted!\n"));
+    TRACE(L"Lnk Deleted!\n");
     return TRUE;
   } else {
-    TRACE(_T("Lnk NOT Deleted! DeleteShortCut(...) FAILED!\n"));
+    TRACE(L"Lnk NOT Deleted! DeleteShortCut(...) FAILED!\n");
     return FALSE;
   }
 }
@@ -228,17 +221,17 @@ BOOL CShortcut::isLinkExist(const CString &LnkName,
     return FALSE;
 
   // Work with the special folder's path (contained in szPath)
-  sSpecialFolder += _T("\\");
-  sSpecialFolder += LnkName + _T(".") + _T("lnk");
+  sSpecialFolder += L"\\";
+  sSpecialFolder += LnkName + L"." + L"lnk";
 
   if (CFile::GetStatus(sSpecialFolder, cfStatus)) {
 #ifdef _DEBUG
-    afxDump << _T("Full file name = ") << cfStatus.m_szFullName << _T("\n");
+    afxDump << L"Full file name = " << cfStatus.m_szFullName << L"\n";
 #endif
     return TRUE;
   } else {
 #ifdef _DEBUG
-    afxDump << _T("File NOT available = ") << cfStatus.m_szFullName << _T("\n");
+    afxDump << L"File NOT available = " << cfStatus.m_szFullName << L"\n";
 #endif
     return FALSE;
   }
@@ -264,8 +257,8 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
 {
   HRESULT hres;     
   IShellLink* psl;
-  TCHAR *szGotPath = LnkPath.GetBuffer(MAX_PATH); 
-  TCHAR *szDescription = LnkDescription.GetBuffer(MAX_PATH);
+  wchar_t *szGotPath = LnkPath.GetBuffer(MAX_PATH); 
+  wchar_t *szDescription = LnkDescription.GetBuffer(MAX_PATH);
   CString sLnkFile, sSpecialFolder;
   CString sLong;
   WIN32_FIND_DATA wfd;  
@@ -274,7 +267,7 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
   if (!GetSpecialFolder(SpecialFolder, sSpecialFolder))
     return 1; // return ERROR
   // build a linkfile:
-  sLnkFile = sSpecialFolder + LnkName + _T(".lnk");
+  sLnkFile = sSpecialFolder + LnkName + L".lnk";
 
   // Get a pointer to the IShellLink interface. 
   hres = CoCreateInstance(CLSID_ShellLink,
@@ -288,15 +281,7 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
     hres = psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf);
 
     if (SUCCEEDED(hres)) { 
-#ifndef UNICODE
-      WCHAR wsz[MAX_PATH];  
-      // Ensure that the string is Unicode. 
-      MultiByteToWideChar(CP_ACP, 0, sLnkFile,//lpszLinkFile,
-                          -1, wsz, MAX_PATH);   // Load the shortcut. 
-      hres = ppf->Load(wsz, STGM_READ); 
-#else
       hres = ppf->Load(sLnkFile, STGM_READ); 
-#endif
       if (SUCCEEDED(hres)) {   // Resolve the link. 
         hres = psl->Resolve(hwnd, SLR_ANY_MATCH); 
 
@@ -354,7 +339,7 @@ BOOL CShortcut::GetSpecialFolder(UINT SpecialFolder,
   hr = SHGetSpecialFolderLocation(NULL, SpecialFolder, &pidl);
   if (SUCCEEDED(hr)) {  // Convert the item ID list's binary
     // representation into a file system path
-    TCHAR szPath[_MAX_PATH];
+    wchar_t szPath[_MAX_PATH];
     if (SHGetPathFromIDList(pidl, szPath)) {
       // Allocate a pointer to an IMalloc interface
       LPMALLOC pMalloc;
@@ -370,7 +355,7 @@ BOOL CShortcut::GetSpecialFolder(UINT SpecialFolder,
 
       // Work with the special folder's path (contained in szPath)
       SpecialFolderString = szPath;
-      SpecialFolderString += _T("\\");
+      SpecialFolderString += L"\\";
       return TRUE;
     }
   }
@@ -395,15 +380,15 @@ int CShortcut::ShortToLongPathName(const CString &sShortPath, CString &sLongPath
   if (0xffffffff == GetFileAttributes(sShortPath)) return 0;
 
   // Special characters.
-  CString sep = _T("\\");
-  CString colon = _T(":");
+  CString sep = L"\\";
+  CString colon = L":";
 
   CString sDrive, sCutPath, sTmpShort;
 
   // Copy the short path into the work buffer and convert forward
   // slashes to backslashes.
   CString path = sShortPath;
-  path.Replace(_T("/"), sep);
+  path.Replace(L"/", sep);
 
   // We need a marker for stepping through the path.
   int right = 0;

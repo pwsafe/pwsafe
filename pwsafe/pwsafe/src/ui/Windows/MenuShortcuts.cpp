@@ -13,9 +13,9 @@
 #include "MenuShortcuts.h"
 #include "resource3.h"
 
-CString CMenuShortcut::CS_CTRLP(_T("Error"));
-CString CMenuShortcut::CS_ALTP(_T("Error"));
-CString CMenuShortcut::CS_SHIFTP(_T("Error"));
+CString CMenuShortcut::CS_CTRLP(L"Error");
+CString CMenuShortcut::CS_ALTP(L"Error");
+CString CMenuShortcut::CS_SHIFTP(L"Error");
 
 void CMenuShortcut::InitStrings()
 {
@@ -27,12 +27,12 @@ void CMenuShortcut::InitStrings()
 CString CMenuShortcut::FormatShortcut(MapMenuShortcutsIter iter, 
                                       MapKeyNameIDConstIter citer)
 {
-  CString str(_T(""));
+  CString str(L"");
 
-  str.Format(_T("%s%s%s%s"),
-      (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? CS_CTRLP : _T(""),
-      (iter->second.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? CS_ALTP : _T(""),
-      (iter->second.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? CS_SHIFTP : _T(""),
+  str.Format(L"%s%s%s%s",
+      (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? CS_CTRLP  : L"",
+      (iter->second.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? CS_ALTP   : L"",
+      (iter->second.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? CS_SHIFTP : L"",
       citer->second);
 
   return str;
@@ -41,12 +41,12 @@ CString CMenuShortcut::FormatShortcut(MapMenuShortcutsIter iter,
 CString CMenuShortcut::FormatShortcut(st_MenuShortcut mst, 
                                       MapKeyNameIDConstIter citer)
 {
-  CString str(_T(""));
+  CString str(L"");
 
-  str.Format(_T("%s%s%s%s"),
-      (mst.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? CS_CTRLP : _T(""),
-      (mst.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? CS_ALTP : _T(""),
-      (mst.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? CS_SHIFTP : _T(""),
+  str.Format(L"%s%s%s%s",
+      (mst.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? CS_CTRLP  : L"",
+      (mst.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? CS_ALTP   : L"",
+      (mst.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? CS_SHIFTP : L"",
       citer->second);
 
   return str;

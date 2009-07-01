@@ -24,7 +24,7 @@ class CInfoDisplay : public CWnd
 public:
   CInfoDisplay();
   virtual ~CInfoDisplay();
-  BOOL Create(int x, int y, LPCTSTR caption, CWnd * parent);
+  BOOL Create(int x, int y, LPCWSTR caption, CWnd * parent);
 
 protected:
   DECLARE_MESSAGE_MAP()

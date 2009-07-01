@@ -99,16 +99,16 @@ BOOL COptionsShortcuts::OnInitDialog()
        citer = m_MapKeyNameID.find(st_KIDEx);
        str = CMenuShortcut::FormatShortcut(iter, citer);
     } else {
-      str = _T("");
+      str = L"";
     }
 
     // Remove the ampersand from the menu item the user sees here
     iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
     ASSERT(iter_parent != m_MapMenuShortcuts.end());
     CString sMenuItemtext = (CString(iter_parent->second.name.c_str()) + 
-                             CString(_T(" \xbb ")) +
+                             CString(L" \xbb ") +
                              CString(iter->second.name.c_str()));
-    sMenuItemtext.Remove(TCHAR('&'));
+    sMenuItemtext.Remove(L'&');
     iItem = m_ShortcutLC.InsertItem(++iItem, sMenuItemtext);
     m_ShortcutLC.SetItemText(iItem, 1, str);
     DWORD dwData = MAKELONG(iter->first, iter->second.iMenuPosition);
@@ -165,7 +165,7 @@ void COptionsShortcuts::OnBnClickedResetAll()
     if (citer != m_MapKeyNameID.end() || iter->second.cdefVirtKey != 0) {
       str = CMenuShortcut::FormatShortcut(iter, citer);
     } else {
-      str = _T("");
+      str = L"";
     }
     m_ShortcutLC.SetItemText(i, 1, str);
   }
@@ -207,7 +207,7 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
                                           const WORD wVirtualKeyCode, 
                                           const WORD wModifiers)
 {
-  CString str(_T(""));
+  CString str(L"");
   CString cs_warning;
   MapMenuShortcutsIter iter, inuse_iter;
   MapKeyNameIDConstIter citer;

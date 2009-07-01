@@ -40,7 +40,7 @@ struct st_CompareData {
   bool unknflds1;  // comparison DB
 
   st_CompareData()
-    : bsDiffs(0), group(_T("")), title(_T("")), user(_T("")),
+    : bsDiffs(0), group(L""), title(L""), user(L""),
     id(0), indatabase(0), listindex(0),
     unknflds0(false), unknflds1(false)
   {

@@ -53,7 +53,7 @@ public:
   void EnableAccelerator() { m_bUseAccelerator = true; }
   void DisableAccelerator() { m_bUseAccelerator = false; }
 
-  BOOL SetTooltipText(LPCTSTR ttt) {return m_TrayIcon->SetTooltipText(ttt);}
+  BOOL SetTooltipText(LPCWSTR ttt) {return m_TrayIcon->SetTooltipText(ttt);}
   BOOL SetMenuDefaultItem(UINT uItem)
   {return m_TrayIcon->SetMenuDefaultItem(uItem, FALSE);}
   BOOL IsIconVisible() const {return m_TrayIcon->Visible();}
@@ -68,7 +68,7 @@ public:
   bool WasHotKeyPressed() {return m_HotKeyPressed;}
   void SetHotKeyPressed(bool state) {m_HotKeyPressed = state;}
   int FindMenuItem(CMenu* Menu, UINT MenuID);
-  int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
+  int FindMenuItem(CMenu* Menu, LPCWSTR MenuString);
   void GetApplicationVersionData();
   CString GetFileVersionString() const {return m_csFileVersionString;}
   CString GetCopyrightString() const {return m_csCopyrightString;}

@@ -83,8 +83,8 @@ void CMenuTipManager::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu)
     if (prompt.IsEmpty())
       m_wndTip.Cancel(); // no prompt: cancel tip
     else {
-      prompt.Replace(_T("&"), _T("&&"));
-      prompt = _T(" ") + prompt + _T(" ");
+      prompt.Replace(L"&", L"&&");
+      prompt = L" " + prompt + L" ";
       CRect rc = GetMenuTipRect(hMenu, nItemID);
       m_wndTip.SetWindowPos(&CWnd::wndTopMost, rc.left, rc.top,
                             rc.Width(), rc.Height(), SWP_NOACTIVATE);
@@ -127,9 +127,9 @@ CRect CMenuTipManager::GetMenuTipRect(HMENU hmenu, UINT nID)
 //
 static BOOL CALLBACK MyEnumProc(HWND hwnd, LPARAM lParam)
 {
-  TCHAR buf[16];
-  GetClassName(hwnd, buf, sizeof(buf)/sizeof(buf[0]));
-  if (_tcscmp(buf, _T("#32768")) == 0) { // special classname for menus
+  wchar_t buf[16];
+  GetClassName(hwnd, buf, _countof(buf));
+  if (wcscmp(buf, L"#32768") == 0) { // special classname for menus
     *((HWND*)lParam) = hwnd;  // found it
     return FALSE;
   }

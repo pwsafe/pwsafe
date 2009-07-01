@@ -48,7 +48,7 @@ private:
   CRichEditCtrlExtn m_RECExNewVerStatus;
   CRichEditCtrlExtn m_RECExWebSite;
 
-  CheckVersion::CheckStatus CheckLatestVersion(stringT &latest);
+  CheckVersion::CheckStatus CheckLatestVersion(std::wstring &latest);
   void CheckNewVer();
 
   static bool OnCheckVersion(const CString &URL, const CString &FName, LPARAM instance);

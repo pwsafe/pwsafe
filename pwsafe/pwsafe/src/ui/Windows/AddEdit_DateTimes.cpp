@@ -102,7 +102,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   // Time fields
   time(&M_tttCPMTime());
 
-  TCHAR szBuf[81];       // workspace
+  wchar_t szBuf[81];     // workspace
   CString sTimeFormat;   // the time format being worked on
   CString sDateFormat;
   CString sSearch;       // the string to search for
@@ -140,7 +140,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, szBuf, 80));
   // Search for ":ss".
   sSearch = szBuf;
-  sSearch += _T("ss");
+  sSearch += L"ss";
   nIndex = sTimeFormat.Find(sSearch);
 
   if (nIndex != -1) {
@@ -149,7 +149,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   } else {
     // No ":ss", so try ":s".
     sSearch = szBuf;
-    sSearch += _T("s");
+    sSearch += L"s";
     nIndex = sTimeFormat.Find(sSearch);
 
     if (nIndex != -1 ) {
@@ -254,12 +254,12 @@ BOOL CAddEdit_DateTimes::OnApply()
 void CAddEdit_DateTimes::OnHelp()
 {
 #if defined(POCKET_PC)
-  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#adddata"), NULL, NULL,
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
                 FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/entering_pwd.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 
@@ -267,7 +267,7 @@ void CAddEdit_DateTimes::OnClearXTime()
 {
   M_locXTime().LoadString(IDS_NEVER);
   GetDlgItem(IDC_XTIME)->SetWindowText((CString)M_locXTime());
-  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(_T(""));
+  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(L"");
   M_tttXTime() = (time_t)0;
   M_XTimeInt() = 0;
 }
@@ -297,7 +297,7 @@ void CAddEdit_DateTimes::OnSetXTime()
   M_tttXTime() = (time_t)LDateTime.GetTime();
   M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), TMC_LOCALE);
 
-  CString cs_text(_T(""));
+  CString cs_text(L"");
   if (M_XTimeInt() != 0) // recurring expiration
     cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
 

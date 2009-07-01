@@ -23,7 +23,7 @@ class CAdvancedDlg : public CPWDialog
   // Construction
 public:
   CAdvancedDlg(CWnd* pParent = NULL, int iIndex = -1,
-    CItemData::FieldBits bsFields = 0, CString subgroup_name = _T(""),
+    CItemData::FieldBits bsFields = 0, CString subgroup_name = L"",
     int subgroup_set = BST_UNCHECKED, 
     int subgroup_object = 0, int subgroup_function = 0);   // standard constructor
   virtual CAdvancedDlg::~CAdvancedDlg();

@@ -26,7 +26,7 @@ public:
   CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD);
   ~CAddEdit_Basic();
 
-  const TCHAR *GetHelpName() const {return _T("TO_DO!");}
+  const wchar_t *GetHelpName() const {return L"TO_DO!";}
 
   static CString CS_SHOW, CS_HIDE;
   static CSecString HIDDEN_NOTES;
@@ -60,7 +60,7 @@ public:
 
   CExtThread *m_thread; // worker thread
   static UINT ExternalEditorThread(LPVOID me);
-  TCHAR m_szTempName[MAX_PATH + 1];
+  wchar_t m_szTempName[MAX_PATH + 1];
 
   bool m_isPWHidden, m_isNotesHidden;
   bool m_bWordWrap, m_bLaunchPlus;

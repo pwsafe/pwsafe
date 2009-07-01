@@ -23,7 +23,7 @@
 */
 
 // Following is Most Recent Entry field separator for dynamic menu:
-#define MRE_FS _T("\xbb")
+#define MRE_FS L"\xbb"
 
 // Recent Entry structure for m_RUEList
 struct RUEntry {

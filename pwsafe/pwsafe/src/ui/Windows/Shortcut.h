@@ -56,8 +56,8 @@ public:
   void SetCmdArguments(const CString &sArg) {m_sCmdArg = sArg;}
   /*! Use this routine to create a ShortCut (ShellLink) for this Application */
   BOOL CreateShortCut(const CString &LnkTarget, const CString &LnkName,
-    UINT SpecialFolder, const CString &LnkDescription = _T(""),
-    const CString &IconLocation = _T(""), UINT IconIndex = 1);
+    UINT SpecialFolder, const CString &LnkDescription = L"",
+    const CString &IconLocation = L"", UINT IconIndex = 1);
   /*! Use this routine to delete any Shortcut */
   BOOL DeleteShortCut(const CString &LnkName, UINT SpecialFolder);
 

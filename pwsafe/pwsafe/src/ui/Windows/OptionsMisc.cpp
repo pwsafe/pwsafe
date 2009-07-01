@@ -156,7 +156,7 @@ BOOL COptionsMisc::OnInitDialog()
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE("Unable To create Property Page ToolTip\n");
+    TRACE(L"Unable To create Property Page ToolTip\n");
     return TRUE;
   }
 
@@ -271,12 +271,12 @@ void COptionsMisc::OnBrowseForLocation()
   INT_PTR rc;
 
   if (m_csBrowser.IsEmpty())
-    cs_initiallocation = _T("C:\\");
+    cs_initiallocation = L"C:\\";
   else {
-    stringT path = m_csBrowser;
-    stringT drive, dir, name, ext;
+    std::wstring path = m_csBrowser;
+    std::wstring drive, dir, name, ext;
     pws_os::splitpath(path, drive, dir, name, ext);
-    path = pws_os::makepath(drive, dir, _T(""), _T(""));
+    path = pws_os::makepath(drive, dir, L"", L"");
     cs_initiallocation = path.c_str();
   }
 

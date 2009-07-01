@@ -18,8 +18,8 @@ class CCreateShortcutDlg : public CPWDialog
   // Construction
 public:
   CCreateShortcutDlg(CWnd* pParent = NULL,
-    const CSecString &cs_tg = _T(""), const CSecString &cs_tt = _T(""), 
-    const CSecString &cs_tu = _T(""));
+    const CSecString &cs_tg = L"", const CSecString &cs_tt = L"", 
+    const CSecString &cs_tu = L"");
 
   // Dialog Data
   //{{AFX_DATA(CCreateShortcutDlg)

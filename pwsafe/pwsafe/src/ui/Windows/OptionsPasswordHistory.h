@@ -26,7 +26,7 @@ public:
   ~COptionsPasswordHistory();
   DboxMain *m_pDboxMain;
 
-  const TCHAR *GetHelpName() const {return _T("password_history_tab");}
+  const wchar_t *GetHelpName() const {return L"password_history_tab";}
 
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordHistory)

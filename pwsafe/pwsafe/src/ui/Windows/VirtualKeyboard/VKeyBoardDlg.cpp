@@ -140,7 +140,7 @@ const UINT k101[] = {
                      0x0003FFFF   // Korean
            };
 
-const std::vector<UINT> vk101(k101, k101 + sizeof(k101) / sizeof(UINT));
+const std::vector<UINT> vk101(k101, k101 + _countof(k101));
 
 // Constants for characters on Japanese Keys (Hiragana, Katakana, Half-Width, Full-Width)
 const wchar_t wcHiragana[3] = {0x3072, 0x3089, 0};
@@ -190,9 +190,9 @@ static int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *,
 
 int  CVKeyBoardDlg::m_iFont = -1;
 bool CVKeyBoardDlg::m_bUserSpecifiedFont = false;
-TCHAR * CVKeyBoardDlg::ARIALUMS = _T("Arial Unicode MS");
-TCHAR * CVKeyBoardDlg::ARIALU   = _T("Arial Unicode");
-TCHAR * CVKeyBoardDlg::LUCIDAUS = _T("Lucida Sans Unicode");
+wchar_t * CVKeyBoardDlg::ARIALUMS = L"Arial Unicode MS";
+wchar_t * CVKeyBoardDlg::ARIALU   = L"Arial Unicode";
+wchar_t * CVKeyBoardDlg::LUCIDAUS = L"Lucida Sans Unicode";
 
 bool CVKeyBoardDlg::IsOSKAvailable()
 {
@@ -206,18 +206,18 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   static bool warnedAlready(false); // warn only once per process.
 
   // Try to load DLL
-  stringT dll_loc = pws_os::getexecdir();
+  std::wstring dll_loc = pws_os::getexecdir();
 #if defined( _DEBUG ) || defined( DEBUG )
-  dll_loc += _T("pws_osk_D.dll");
+  dll_loc += L"pws_osk_D.dll";
 #else
-  dll_loc += _T("pws_osk.dll");
+  dll_loc += L"pws_osk.dll";
 #endif
   HINSTANCE OSK_module = LoadLibrary(dll_loc.c_str());
   if (OSK_module == NULL) {
-    TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n"));
+    TRACE(L"CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n");
     return false;
   } else {
-    TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n"));
+    TRACE(L"CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n");
 
 
     LP_OSK_GetKeyboardData pGetKBData  = (LP_OSK_GetKeyboardData)GetProcAddress(OSK_module,
@@ -227,15 +227,15 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     LP_OSK_GetVersion pOSKVersion = (LP_OSK_GetVersion)GetProcAddress(OSK_module,
                                                                       "OSK_GetVersion");
 
-    pws_os::Trace(_T("CVKeyBoardDlg::IsOSKAvailable - Found OSK_GetVersion: %s\n"),
-                  pOSKVersion != NULL ? _T("OK") : _T("FAILED"));
-    pws_os::Trace(_T("CVKeyBoardDlg::IsOSKAvailable - Found OSK_ListKeyboards: %s\n"),
-                  pListKBs != NULL ? _T("OK") : _T("FAILED"));
-    pws_os::Trace(_T("CVKeyBoardDlg::IsOSKAvailable - Found OSK_GetKeyboardData: %s\n"),
-                  pGetKBData != NULL ? _T("OK") : _T("FAILED"));
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found OSK_GetVersion: %s\n",
+                  pOSKVersion != NULL ? L"OK" : L"FAILED");
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found OSK_ListKeyboards: %s\n",
+                  pListKBs != NULL ? L"OK" : L"FAILED");
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Found OSK_GetKeyboardData: %s\n",
+                  pGetKBData != NULL ? L"OK" : L"FAILED");
 
     if (pListKBs == NULL || pGetKBData == NULL || pOSKVersion == NULL)
-      TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - Unable to get all required OSK functions. OSK not available.\n"));
+      TRACE(L"CVKeyBoardDlg::IsOSKAvailable - Unable to get all required OSK functions. OSK not available.\n");
     else if (pOSKVersion() == VK_DLL_VERSION) {
       bVKAvailable = true;
     } else if (!warnedAlready && !app.NoSysEnvWarnings()) {
@@ -244,8 +244,8 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     }
 
     BOOL brc = FreeLibrary(OSK_module);
-    pws_os::Trace(_T("CVKeyBoardDlg::IsOSKAvailable - Free OSK DLL: %s\n"),
-                  brc == TRUE ? _T("OK") : _T("FAILED"));
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Free OSK DLL: %s\n",
+                  brc == TRUE ? L"OK" : L"FAILED");
   }
 
   if (!bVKAvailable)
@@ -254,7 +254,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   // We have the DLL, now check Unicode font installed
   bool bFound(false);
   LOGFONT lf = {0, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0,
-                _T("")};
+                L""};
 
   HDC hDC = ::GetDC(NULL);
 
@@ -264,8 +264,8 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   if (cs_VKeyboardFont.length() != 0 && 
       cs_VKeyboardFont.length() <= LF_FACESIZE) {
     m_bUserSpecifiedFont = true;
-    memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
-             cs_VKeyboardFont.c_str(), cs_VKeyboardFont.length() * sizeof(TCHAR));
+    memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
+             cs_VKeyboardFont.c_str(), cs_VKeyboardFont.length() * sizeof(wchar_t));
 
     EnumFontFamiliesEx(hDC, &lf,
                        (FONTENUMPROC)&EnumFontFamiliesExProc,
@@ -278,8 +278,8 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   }
 
   // Next check for Arial Unicode MS
-  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
-           ARIALUMS, _tcslen(ARIALUMS) * sizeof(TCHAR)); 
+  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
+           ARIALUMS, wcslen(ARIALUMS) * sizeof(wchar_t)); 
   EnumFontFamiliesEx(hDC, &lf,
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
                      (LPARAM)(&bFound), 0);
@@ -290,9 +290,9 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   }
 
   // Next check for Arial Unicode (commercial version of MS font)
-  memset(lf.lfFaceName, 0, LF_FACESIZE * sizeof(TCHAR));
-  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
-           ARIALU, _tcslen(ARIALU) * sizeof(TCHAR)); 
+  memset(lf.lfFaceName, 0, LF_FACESIZE * sizeof(wchar_t));
+  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
+           ARIALU, wcslen(ARIALU) * sizeof(wchar_t)); 
   EnumFontFamiliesEx(hDC, &lf,
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
                      (LPARAM)(&bFound), 0);
@@ -303,9 +303,9 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   }
 
   // Lastly check for Lucida Sans Unicode
-  memset(lf.lfFaceName, 0, LF_FACESIZE * sizeof(TCHAR));
-  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(TCHAR),
-           LUCIDAUS, _tcslen(LUCIDAUS) * sizeof(TCHAR)); 
+  memset(lf.lfFaceName, 0, LF_FACESIZE * sizeof(wchar_t));
+  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
+           LUCIDAUS, wcslen(LUCIDAUS) * sizeof(wchar_t)); 
   EnumFontFamiliesEx(hDC, &lf,
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
                      (LPARAM)(&bFound), 0);
@@ -315,7 +315,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     goto exit;
   }
 
-  TRACE(_T("CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n"));
+  TRACE(L"CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n");
   if (!warnedAlready && !app.NoSysEnvWarnings()) {
     warnedAlready = true;
     AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
@@ -338,10 +338,10 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
     m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0)
 {
   // Verify all is OK
-  ASSERT(sizeof(defscancodes101) / sizeof(BYTE) == NUM_KEYS);
-  ASSERT(sizeof(defscancodes102) / sizeof(BYTE) == NUM_KEYS);
-  ASSERT(sizeof(defscancodes106) / sizeof(BYTE) == NUM_KEYS);
-  ASSERT(sizeof(pdefnumbers) / sizeof(wchar_t *) == NUM_DIGITS);
+  ASSERT(_countof(defscancodes101) == NUM_KEYS);
+  ASSERT(_countof(defscancodes102) == NUM_KEYS);
+  ASSERT(_countof(defscancodes106) == NUM_KEYS);
+  ASSERT(_countof(pdefnumbers) == NUM_DIGITS);
 
   // Initialise numbers
   for (int i = 0; i < NUM_DIGITS; i++)
@@ -352,11 +352,11 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
 
   // dll is guaranteed to be loadable, right version and in general 100% kosher
   // by IsOSKAvailable(). Caller is responsible to call that, though...
-  stringT dll_loc = pws_os::getexecdir();
+  std::wstring dll_loc = pws_os::getexecdir();
 #if defined( _DEBUG ) || defined( DEBUG )
-  dll_loc += _T("pws_osk_D.dll");
+  dll_loc += L"pws_osk_D.dll";
 #else
-  dll_loc += _T("pws_osk.dll");
+  dll_loc += L"pws_osk.dll";
 #endif
   m_OSK_module = LoadLibrary(dll_loc.c_str());
 
@@ -573,7 +573,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE("Unable To create Advanced Dialog ToolTip\n");
+    TRACE(L"Unable To create Advanced Dialog ToolTip\n");
     return TRUE;
   }
 
@@ -617,7 +617,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
                                  GetPref(PWSprefs::VKeyboardFontName);
     GetDlgItem(IDC_INFO)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_INFO)->EnableWindow(TRUE);
-    TCHAR * pszFont(NULL);
+    wchar_t * pszFont(NULL);
     switch (m_iFont) {
       case ARIALMS_FONT:
         pszFont = ARIALUMS;
@@ -741,12 +741,12 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
     iter_sc = m_map_stSC2Char.find(m_scancodes[nID - IDC_VKBBTN_KBD01]);
     if (iter_sc != m_map_stSC2Char.end()) {
       if (state2index[m_State] < 0) {
-        TRACE(_T("OnKeys; Unknown state!"));
+        TRACE(L"OnKeys; Unknown state!");
         ASSERT(0);
       }
       bDeadKeyPressed = iter_sc->second.bsDeadKey.test(state2index[m_State]);
     } else {
-      TRACE(_T("OnKeys: Unknown scancode pressed!"));
+      TRACE(L"OnKeys: Unknown scancode pressed!");
       ASSERT(0);
     }
   }
@@ -760,7 +760,7 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
 
     Iter_MMap_DK2SCSSCC iter_DK2SCSSCC = m_stKBImpl.pmmapDK2SCSSCC->find(wc_temp);
     if (iter_DK2SCSSCC == m_stKBImpl.pmmapDK2SCSSCC->end()) {
-      TRACE(_T("OnKeys; Unknown deadkey pressed!"));
+      TRACE(L"OnKeys; Unknown deadkey pressed!");
       ASSERT(0);
     } else {
       m_wcDeadKey = wc_temp;
@@ -1210,7 +1210,7 @@ void CVKeyBoardDlg::SetNormalButtons()
   if (m_bAltNum) {
     // Normal keys disbled if using AltNum
     for (int i = 0; i < NUM_KEYS; i++) {
-      m_vkbb_Keys[i].SetWindowText(_T(""));
+      m_vkbb_Keys[i].SetWindowText(L"");
       m_vkbb_Keys[i].EnableWindow(FALSE);
       m_vkbb_Keys[i].SetDeadKeyState(false);
     }
@@ -1243,7 +1243,7 @@ void CVKeyBoardDlg::SetNormalButtons()
       index = state2index[m_State];
 
     if (state2index[m_State] < 0) {
-      TRACE(_T("SetButtons: Unknown state! (1)"));
+      TRACE(L"SetButtons: Unknown state! (1)");
       ASSERT(0);
     }
 
@@ -1262,7 +1262,7 @@ void CVKeyBoardDlg::SetNormalButtons()
         iter_sc = m_map_stSC2Char.find(m_scancodes[i]);
         if (iter_sc != m_map_stSC2Char.end()) {
           if (index < 0) {
-            TRACE(_T("SetButtons: Unknown state! (2)"));
+            TRACE(L"SetButtons: Unknown state! (2)");
             ASSERT(0);
           } else {
             // Get scancode + shiftstate value
@@ -1330,7 +1330,7 @@ void CVKeyBoardDlg::SetNormalButtons()
     } else {
       if (index < 0) {
         wc_temp = (wchar_t)0;
-        TRACE(_T("SetButtons: Unknown state! (3)"));
+        TRACE(L"SetButtons: Unknown state! (3)");
         ASSERT(0);
       } else {
         wc_temp = iter_sc->second.wcChar[index];
@@ -1363,14 +1363,14 @@ void CVKeyBoardDlg::SetDeadKeyButtons()
 
   // Clear out buttons
   for (int i = 0; i < NUM_KEYS; i++) {
-    m_vkbb_Keys[i].SetWindowText(_T(""));
+    m_vkbb_Keys[i].SetWindowText(L"");
     m_vkbb_Keys[i].EnableWindow(FALSE);
     m_vkbb_Keys[i].SetDeadKeyState(false);
   }
 
   // And the Space Bar which allows user to type in the DeadKey
   // in its own right
-  m_vkbb_SpaceBar.SetWindowText(_T(""));
+  m_vkbb_SpaceBar.SetWindowText(L"");
   m_vkbb_SpaceBar.EnableWindow(FALSE);
   m_vkbb_SpaceBar.SetDeadKeyState(false);
 
@@ -1850,12 +1850,12 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
   if (m_pPassphraseFont == NULL) {
     m_pPassphraseFont = new CFont;
 
-    TCHAR * pszFont(NULL);
+    wchar_t * pszFont(NULL);
     StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
                                  GetPref(PWSprefs::VKeyboardFontName);
     switch (m_iFont) {
       case USER_FONT:
-        pszFont = (TCHAR *)cs_VKeyboardFont.c_str();
+        pszFont = (wchar_t *)cs_VKeyboardFont.c_str();
         break;
       case ARIALMS_FONT:
         pszFont = ARIALUMS;
@@ -1880,7 +1880,7 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
     lf.lfHeight = -16;
     lf.lfWeight = FW_NORMAL;
     lf.lfCharSet = DEFAULT_CHARSET;
-    wcsncpy_s(lf.lfFaceName, LF_FACESIZE, pszFont, _tcslen(pszFont));
+    wcsncpy_s(lf.lfFaceName, LF_FACESIZE, pszFont, wcslen(pszFont));
 
     m_pPassphraseFont->CreateFontIndirect(&lf);
   }

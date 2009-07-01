@@ -25,7 +25,7 @@ static CFont *pPasswordFont(NULL);
     lf.lfHeight = -16;
     lf.lfWeight = FW_NORMAL;
     lf.lfPitchAndFamily = FF_MODERN | FIXED_PITCH;
-    lf.lfFaceName = TCHAR("Courier"); // max size = LF_FACESIZE (32)
+    lf.lfFaceName = L"Courier"; // max size = LF_FACESIZE (32)
 */
 static LOGFONT dfltPWFont = {
   -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FIXED_PITCH,
@@ -84,7 +84,7 @@ void DeletePasswordFont()
   }
 }
 
-static CString GetToken(CString& str, LPCTSTR c)
+static CString GetToken(CString& str, LPCWSTR c)
 {
   // helper function for ExtractFont()
   int pos = str.Find(c);
@@ -97,27 +97,27 @@ void ExtractFont(const CString &str, LOGFONT &logfont)
 {
   CString s(str);
   memset(&logfont, 0, sizeof(LOGFONT));
-  logfont.lfHeight = _ttol((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfWidth = _ttol((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfEscapement = _ttol((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfOrientation = _ttol((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfWeight = _ttol((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfHeight      = _wtol((LPCWSTR)GetToken(s, L","));
+  logfont.lfWidth       = _wtol((LPCWSTR)GetToken(s, L","));
+  logfont.lfEscapement  = _wtol((LPCWSTR)GetToken(s, L","));
+  logfont.lfOrientation = _wtol((LPCWSTR)GetToken(s, L","));
+  logfont.lfWeight      = _wtol((LPCWSTR)GetToken(s, L","));
 
 #pragma warning(push)
 #pragma warning(disable:4244) //conversion from 'int' to 'BYTE', possible loss of data
-  logfont.lfItalic = _ttoi((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfUnderline = _ttoi((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfStrikeOut = _ttoi((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfCharSet = _ttoi((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfOutPrecision = _ttoi((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfClipPrecision = _ttoi((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfQuality = _ttoi((LPCTSTR)GetToken(s, _T(",")));
-  logfont.lfPitchAndFamily = _ttoi((LPCTSTR)GetToken(s, _T(",")));
+  logfont.lfItalic         = _wtoi((LPCWSTR)GetToken(s, L","));
+  logfont.lfUnderline      = _wtoi((LPCWSTR)GetToken(s, L","));
+  logfont.lfStrikeOut      = _wtoi((LPCWSTR)GetToken(s, L","));
+  logfont.lfCharSet        = _wtoi((LPCWSTR)GetToken(s, L","));
+  logfont.lfOutPrecision   = _wtoi((LPCWSTR)GetToken(s, L","));
+  logfont.lfClipPrecision  = _wtoi((LPCWSTR)GetToken(s, L","));
+  logfont.lfQuality        = _wtoi((LPCWSTR)GetToken(s, L","));
+  logfont.lfPitchAndFamily = _wtoi((LPCWSTR)GetToken(s, L","));
 #pragma warning(pop)
 
 #if (_MSC_VER >= 1400)
-  _tcscpy_s(logfont.lfFaceName, LF_FACESIZE, s);
+  wcscpy_s(logfont.lfFaceName, LF_FACESIZE, s);
 #else
-  _tcscpy(logfont.lfFaceName, s;
+  wcscpy(logfont.lfFaceName, s;
 #endif  
 }

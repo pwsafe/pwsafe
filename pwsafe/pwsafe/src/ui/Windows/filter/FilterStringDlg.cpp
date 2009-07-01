@@ -24,7 +24,7 @@ IMPLEMENT_DYNAMIC(CFilterStringDlg, CFilterBaseDlg)
 
 CFilterStringDlg::CFilterStringDlg(CWnd* pParent /*=NULL*/)
   : CFilterBaseDlg(CFilterStringDlg::IDD, pParent),
-  m_case(BST_UNCHECKED), m_string(_T("")),
+  m_case(BST_UNCHECKED), m_string(L""),
   m_add_present(false)
 {
 }
@@ -125,7 +125,7 @@ BOOL CFilterStringDlg::OnInitDialog()
   } else {
     m_cbxRule.SetCurSel(-1);
     m_case = BST_UNCHECKED;
-    m_string = _T("");
+    m_string = L"";
   }
 
   UpdateData(FALSE);

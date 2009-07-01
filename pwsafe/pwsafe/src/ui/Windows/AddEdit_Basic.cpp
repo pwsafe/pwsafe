@@ -30,16 +30,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wifstream ifstreamT;
-typedef std::wofstream ofstreamT;
-#else
-typedef std::ifstream ifstreamT;
-typedef std::ofstream ofstreamT;
-#endif
-
-static TCHAR PSSWDCHAR = TCHAR('*');
+static wchar_t PSSWDCHAR = L'*';
 
 CSecString CAddEdit_Basic::HIDDEN_NOTES;
 
@@ -78,7 +69,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   std::vector<st_context_menu> vmenu_items(3);
 
   st_context_menu st_cm;
-  stringT cs_menu_string;
+  std::wstring cs_menu_string;
 
   LoadAString(cs_menu_string, IDS_WORD_WRAP);
   st_cm.menu_string = cs_menu_string;
@@ -186,7 +177,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-      TRACE("Unable To create CAddEdit_Basic Dialog ToolTip\n");
+      TRACE(L"Unable To create CAddEdit_Basic Dialog ToolTip\n");
     } else {
       EnableToolTips();
       // Delay initial show & reshow
@@ -261,7 +252,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   // Populate the combo box
   if (m_ex_group.GetCount() == 0) {
-      std::vector<stringT> aryGroups;
+      std::vector<std::wstring> aryGroups;
       M_pcore()->GetUniqueGroups(aryGroups);
       for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
         m_ex_group.AddString(aryGroups[igrp].c_str());
@@ -322,12 +313,12 @@ BOOL CAddEdit_Basic::OnInitDialog()
 void CAddEdit_Basic::OnHelp()
 {
 #if defined(POCKET_PC)
-  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#adddata"), NULL, NULL,
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
                 FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/entering_pwd.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 
@@ -864,8 +855,8 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 {
   CAddEdit_Basic *self = (CAddEdit_Basic *)me;
 
-  TCHAR szExecName[MAX_PATH + 1];
-  TCHAR lpPathBuffer[4096];
+  wchar_t szExecName[MAX_PATH + 1];
+  wchar_t lpPathBuffer[4096];
   DWORD dwBufSize(4096);
 
   // Get the temp path
@@ -874,26 +865,26 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   // Create a temporary file.
   GetTempFileName(lpPathBuffer,          // directory for temp files
-                  _T("NTE"),             // temp file name prefix
+                  L"NTE",                // temp file name prefix
                   0,                     // create unique name
                   self->m_szTempName);   // buffer for name
 
   // Open it and put the Notes field in it
-  ofstreamT ofs(self->m_szTempName);
+  std::wofstream ofs(self->m_szTempName);
   if (ofs.bad())
     return 16;
 
-  ofs << LPCTSTR(self->M_realnotes()) << std::endl;
+  ofs << LPCWSTR(self->M_realnotes()) << std::endl;
   ofs.flush();
   ofs.close();
 
   // Find out the users default editor for "txt" files
   DWORD dwSize(MAX_PATH);
-  HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, _T(".txt"), _T("Open"),
+  HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", L"Open",
                                     szExecName, &dwSize);
   if (int(stat) != S_OK) {
 #ifdef _DEBUG
-    AfxMessageBox(_T("oops"));
+    AfxMessageBox(L"oops");
 #endif
     return 16;
   }
@@ -907,27 +898,25 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   ZeroMemory(&pi, sizeof(pi));
 
   DWORD dwCreationFlags(0);
-#ifdef _UNICODE
   dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
-#endif
 
   CString cs_CommandLine;
 
   // Make the command line = "<program>" "file"
-  cs_CommandLine.Format(_T("\"%s\" \"%s\""), szExecName, self->m_szTempName);
+  cs_CommandLine.Format(L"\"%s\" \"%s\"", szExecName, self->m_szTempName);
   int ilen = cs_CommandLine.GetLength();
-  LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
+  LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags,
                      NULL, lpPathBuffer, &si, &pi)) {
-    TRACE("CreateProcess failed (%d).\n", GetLastError());
+    TRACE(L"CreateProcess failed (%d).\n", GetLastError());
     // Delete temporary file
-    _tremove(self->m_szTempName);
+    _wremove(self->m_szTempName);
     memset(self->m_szTempName, 0, sizeof(self->m_szTempName));
     return 0;
   }
 
-  TRACE(_T("%d\n"), sizeof(self->m_szTempName));
+  TRACE(L"%d\n", sizeof(self->m_szTempName));
   WaitForInputIdle(pi.hProcess, INFINITE);
 
   // Wait until child process exits.
@@ -947,20 +936,20 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
 
   // Now get what the user saved in this file and put it back into Notes field
-  ifstreamT ifs(m_szTempName);
+  std::wifstream ifs(m_szTempName);
   if (ifs.bad())
     return 16;
 
   M_realnotes().Empty();
-  stringT linebuf, note;
+  std::wstring linebuf, note;
 
   // Get first line
-  getline(ifs, note, TCHAR('\n'));
+  getline(ifs, note, L'\n');
 
   // Now get the rest (if any)
   while (!ifs.eof()) {
-    getline(ifs, linebuf, TCHAR('\n'));
-    note += _T("\r\n");
+    getline(ifs, linebuf, L'\n');
+    note += L"\r\n";
     note += linebuf;
   }
 
@@ -975,7 +964,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   ((CEdit*)GetDlgItem(IDC_NOTESWW))->Invalidate();
 
   // Delete temporary file
-  _tremove(m_szTempName);
+  _wremove(m_szTempName);
   memset(m_szTempName, 0, sizeof(m_szTempName));
 
   // Restore Sheet buttons

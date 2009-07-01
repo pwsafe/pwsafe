@@ -53,7 +53,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
   }
 
   if (m_subgroup_set == BST_UNCHECKED)
-    m_subgroup_name = _T("*");
+    m_subgroup_name = L"*";
 
   if (m_bsFields.count() == 0)
     m_bsFields.set();
@@ -171,8 +171,8 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_pLC_List = (CListCtrl*)GetDlgItem(IDC_ADVANCED_LIST);
   m_pLC_Selected = (CListCtrl*)GetDlgItem(IDC_ADVANCED_SELECTED);
 
-  m_pLC_List->InsertColumn(0, _T(""));
-  m_pLC_Selected->InsertColumn(0, _T(""));
+  m_pLC_List->InsertColumn(0, L"");
+  m_pLC_Selected->InsertColumn(0, L"");
   m_pLC_List->SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
   m_pLC_Selected->SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
 
@@ -346,7 +346,7 @@ BOOL CAdvancedDlg::OnInitDialog()
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE("Unable To create Advanced Dialog ToolTip\n");
+    TRACE(L"Unable To create Advanced Dialog ToolTip\n");
     return TRUE;
   }
 
@@ -404,24 +404,24 @@ void CAdvancedDlg::OnHelp()
   CString cs_HelpTopic(app.GetHelpFileName());
   switch (m_iIndex) {
     case ADV_COMPARE:
-      cs_HelpTopic += _T("::/html/comparex.html");
+      cs_HelpTopic += L"::/html/comparex.html";
       break;
     case ADV_MERGE:
-      cs_HelpTopic += _T("::/html/mergex.html");
+      cs_HelpTopic += L"::/html/mergex.html";
       break;
     case ADV_EXPORT_TEXT:
-      cs_HelpTopic += _T("::/html/exporttextx.html");
+      cs_HelpTopic += L"::/html/exporttextx.html";
       break;
     case ADV_EXPORT_XML:
-      cs_HelpTopic += _T("::/html/exportxmlx.html");
+      cs_HelpTopic += L"::/html/exportxmlx.html";
       break;
     case ADV_FIND:
-      cs_HelpTopic += _T("::/html/findx.html");
+      cs_HelpTopic += L"::/html/findx.html";
       break;
     default:
       ASSERT(FALSE);
   }
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CAdvancedDlg::OnOK()
@@ -487,7 +487,7 @@ void CAdvancedDlg::OnOK()
       m_subgroup_function *= (-1);
   }
 
-  if (m_subgroup_name == _T("*"))
+  if (m_subgroup_name == L"*")
     m_subgroup_name.Empty();
 
   CPWDialog::OnOK();

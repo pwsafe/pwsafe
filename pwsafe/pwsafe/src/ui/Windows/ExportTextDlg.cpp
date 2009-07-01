@@ -26,7 +26,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static TCHAR PSSWDCHAR = TCHAR('*');
+static wchar_t PSSWDCHAR = L'*';
 
 /////////////////////////////////////////////////////////////////////////////
 // CExportTextDlg dialog
@@ -35,11 +35,11 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
   : CPWDialog(CExportTextDlg::IDD, pParent),
   m_subgroup_set(BST_UNCHECKED),
-  m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0),
+  m_subgroup_name(L""), m_subgroup_object(0), m_subgroup_function(0),
   m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL)
 {
-  m_passkey = _T("");
-  m_defexpdelim = _T("\xbb");
+  m_passkey = L"";
+  m_defexpdelim = L"\xbb";
 
   m_pctlPasskey = new CSecEditExtn;
 }
@@ -139,8 +139,8 @@ void AFXAPI CExportTextDlg::DDV_CheckExpDelimiter(CDataExchange* pDX,
 void CExportTextDlg::OnHelp()
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/export.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/export.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CExportTextDlg::OnOK() 

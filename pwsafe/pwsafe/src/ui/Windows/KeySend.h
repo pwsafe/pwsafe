@@ -23,14 +23,14 @@ public:
   ~CKeySend(void);
   void SendString(const StringX &data);
   void ResetKeyboardState();
-  void SendChar(TCHAR c);
+  void SendChar(wchar_t c);
   void SetDelay(int d);
   void SetAndDelay(int d);
   void SetCapsLock(const bool bstate);
 
 private:
-  void OldSendChar(TCHAR c);
-  void NewSendChar(TCHAR c);
+  void OldSendChar(wchar_t c);
+  void NewSendChar(wchar_t c);
   int m_delay;
   HKL m_hlocale;
   bool m_isOldOS;

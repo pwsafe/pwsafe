@@ -38,15 +38,15 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static TCHAR PSSWDCHAR = TCHAR('*');
+static wchar_t PSSWDCHAR = L'*';
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd* pParent)
   : CPWDialog(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
   m_OSK_module(NULL), m_LastFocus(IDC_PASSKEY)
 {
-  m_passkey = _T("");
-  m_verify = _T("");
+  m_passkey = L"";
+  m_verify = L"";
 
   m_pctlPasskey = new CSecEditExtn;
   m_pctlVerify = new CSecEditExtn;
@@ -59,8 +59,8 @@ CPasskeySetup::~CPasskeySetup()
 
   if (m_OSK_module != NULL) {
     BOOL brc = FreeLibrary(m_OSK_module);
-    pws_os::Trace(_T("CPasskeySetup::~CPasskeySetup - Free OSK DLL: %s\n"),
-                  brc == TRUE ? _T("OK") : _T("FAILED"));
+    pws_os::Trace(L"CPasskeySetup::~CPasskeySetup - Free OSK DLL: %s\n",
+                  brc == TRUE ? L"OK" : L"FAILED");
     m_OSK_module = NULL;
   }
 
@@ -171,11 +171,11 @@ void CPasskeySetup::OnOK()
 void CPasskeySetup::OnHelp() 
 {
 #if defined(POCKET_PC)
-  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#newdatabase"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#newdatabase", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/create_new_db.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/create_new_db.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 

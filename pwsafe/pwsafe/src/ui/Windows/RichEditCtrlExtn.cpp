@@ -26,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
   Note that there is a callback function available to allow the parent to process
   clicks on any link in the text.
 
-  bool pfcnNotifyLinkClicked (LPTSTR lpszURL, LPTSTR lpszFriendlyName, LPARAM self);
+  bool pfcnNotifyLinkClicked (LPWSTR lpszURL, LPWSTR lpszFriendlyName, LPARAM self);
 
   If the parent has not registered for the callback, the link is processed by this
   control and it should open the appropriate URL in the user's default browser.
@@ -176,10 +176,10 @@ bool CRichEditCtrlExtn::iStartCompare(st_format elem1, st_format elem2)
   return (elem1.iEnd < elem2.iEnd);
 }
 
-void CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
+void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
 {
   int iError;
-  CRichEditCtrl::SetWindowText(_T(""));
+  CRichEditCtrl::SetWindowText(L"");
   ShowWindow(SW_HIDE);
 
   CString cs_formatstring(lpszString);
@@ -221,10 +221,10 @@ void CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
         } else if (format_iter->entrytype == Name) {
           cf2.dwMask = CFM_FACE;
 #if (_MSC_VER >= 1400)
-          memcpy_s(cf2.szFaceName, LF_FACESIZE * sizeof(TCHAR),
-                   format_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
+          memcpy_s(cf2.szFaceName, LF_FACESIZE * sizeof(wchar_t),
+                   format_iter->tcszFACENAME, LF_FACESIZE * sizeof(wchar_t));
 #else
-          memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
+          memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, LF_FACESIZE * sizeof(wchar_t));
 #endif
         }
         SetSelectionCharFormat(cf2);
@@ -285,13 +285,13 @@ CString CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
   bool bNestedBold(false), bNestedItalic(false), bNestedUnderline(false),
        bNestedAnchor(false), bOverlapped(false);
 
-  csToken = csHTML.Tokenize(_T("<>"), curPos);
+  csToken = csHTML.Tokenize(L"<>", curPos);
   while (csToken != "" && curPos != -1) {
     oldPos = curPos - csToken.GetLength() - 1;
     CString a = csHTML.Mid(oldPos - 1, 1);
     CString b = csHTML.Mid(curPos - 1, 1);
-    if (csHTML.Mid(oldPos - 1, 1) == _T("<") &&
-      csHTML.Mid(curPos - 1, 1) == _T(">")) {
+    if (csHTML.Mid(oldPos - 1, 1) == L"<" &&
+      csHTML.Mid(curPos - 1, 1) == L">") {
         bHTMLTag = true;
     } else
       bHTMLTag = false;
@@ -300,59 +300,59 @@ CString CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
       // Must be a HTML Tag
       csHTMLTag = csToken;
       csHTMLTag.MakeLower();
-      if (csHTMLTag == _T("b")) {
+      if (csHTMLTag == L"b") {
         type_stack.push(Bold);
         iBold++;
         if (iBold != 1) bNestedBold = true;
         goto vnext;
-      } else if (csHTMLTag == _T("/b")) {
+      } else if (csHTMLTag == L"/b") {
         int &iLastType = type_stack.top();
         if (iLastType != Bold)
           bOverlapped = true;
         iBold--;
         type_stack.pop();
         goto vnext;
-      } else if (csHTMLTag == _T("i")) {
+      } else if (csHTMLTag == L"i") {
         type_stack.push(Italic);
         iItalic++;
         if (iItalic != 1) bNestedItalic = true;
         goto vnext;
-      } else if (csHTMLTag == _T("/i")) {
+      } else if (csHTMLTag == L"/i") {
         int &iLastType = type_stack.top();
         if (iLastType != Italic)
           bOverlapped = true;
         iItalic--;
         type_stack.pop();
         goto vnext;
-      } else if (csHTMLTag == _T("u")) {
+      } else if (csHTMLTag == L"u") {
         type_stack.push(Underline);
         iUnderline++;
         if (iUnderline != 1) bNestedUnderline = true;
         goto vnext;
-      } else if (csHTMLTag == _T("/u")) {
+      } else if (csHTMLTag == L"/u") {
         int &iLastType = type_stack.top();
         if (iLastType != Underline)
           bOverlapped = true;
         iUnderline--;
         type_stack.pop();
         goto vnext;
-      } else if (csHTMLTag.Left(4) == _T("font")) {
+      } else if (csHTMLTag.Left(4) == L"font") {
         type_stack.push(Font);
         iFont++;
         goto vnext;
-      } else if (csHTMLTag == _T("/font")) {
+      } else if (csHTMLTag == L"/font") {
         int &iLastType = type_stack.top();
         if (iLastType != Font)
           bOverlapped = true;
         iFont--;
         type_stack.pop();
         goto vnext;
-      } else if (csHTMLTag.Left(6) == _T("a href")) {
+      } else if (csHTMLTag.Left(6) == L"a href") {
         type_stack.push(Link);
         iAnchor++;
         if (iAnchor != 1) bNestedAnchor = true;
         goto vnext;
-      } else if (csHTMLTag == _T("/a")) {
+      } else if (csHTMLTag == L"/a") {
         int &iLastType = type_stack.top();
         if (iLastType != Link)
           bOverlapped = true;
@@ -364,7 +364,7 @@ CString CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
 
 vnext:
     oldPos = curPos;
-    csToken = csHTML.Tokenize(_T("<>"), curPos);
+    csToken = csHTML.Tokenize(L"<>", curPos);
   };
 
   if (bNestedBold)
@@ -391,7 +391,7 @@ vnext:
   iError = ierrorcode;
 
   if (ierrorcode != 0) {
-    return _T("");
+    return L"";
   }
 
   // Now really process the HTML
@@ -414,13 +414,13 @@ vnext:
 
   curPos = oldPos = 0;
 
-  csToken = csHTML.Tokenize(_T("<>"), curPos);
+  csToken = csHTML.Tokenize(L"<>", curPos);
   while (csToken != "" && curPos != -1) {
     oldPos = curPos - csToken.GetLength() - 1;
     CString a = csHTML.Mid(oldPos - 1, 1);
     CString b = csHTML.Mid(curPos - 1, 1);
-    if (csHTML.Mid(oldPos - 1, 1) == _T("<") &&
-      csHTML.Mid(curPos - 1, 1) == _T(">")) {
+    if (csHTML.Mid(oldPos - 1, 1) == L"<" &&
+      csHTML.Mid(curPos - 1, 1) == L">") {
         bHTMLTag = true;
     } else
       bHTMLTag = false;
@@ -432,46 +432,46 @@ vnext:
       // Must be a HTML Tag
       csHTMLTag = csToken;
       csHTMLTag.MakeLower();
-      if (csHTMLTag == _T("b")) {
+      if (csHTMLTag == L"b") {
         this_format.entrytype = Bold;
         this_format.iStart = iTextPosition;
         format_stack.push(this_format);
         goto next;
       } else
-      if (csHTMLTag == _T("/b")) {
+      if (csHTMLTag == L"/b") {
         st_format& cur_format = format_stack.top();
         cur_format.iEnd = iTextPosition;
         m_vFormat.push_back(cur_format);
         format_stack.pop();
         goto next;
       } else
-      if (csHTMLTag == _T("i")) {
+      if (csHTMLTag == L"i") {
         this_format.entrytype = Italic;
         this_format.iStart = iTextPosition;
         format_stack.push(this_format);
         goto next;
       } else
-      if (csHTMLTag == _T("/i")) {
+      if (csHTMLTag == L"/i") {
         st_format& cur_format = format_stack.top();
         cur_format.iEnd = iTextPosition;
         m_vFormat.push_back(cur_format);
         format_stack.pop();
         goto next;
       } else
-      if (csHTMLTag == _T("u")) {
+      if (csHTMLTag == L"u") {
         this_format.entrytype = Underline;
         this_format.iStart = iTextPosition;
         format_stack.push(this_format);
         goto next;
       } else
-      if (csHTMLTag == _T("/u")) {
+      if (csHTMLTag == L"/u") {
         st_format& cur_format = format_stack.top();
         cur_format.iEnd = iTextPosition;
         m_vFormat.push_back(cur_format);
         format_stack.pop();
         goto next;
       } else
-      if (csHTMLTag == _T("/font")) {
+      if (csHTMLTag == L"/font") {
         std::bitset<3> &bsLastFont = vFontChange.back();
         int &iFontChangeStart = vFontChangeStart.back();
         st_format& cur_format = format_stack.top();
@@ -482,9 +482,9 @@ vnext:
           cur_format.iEnd = iTextPosition;
           memset(cur_format.tcszFACENAME, 0x00, sizeof(cur_format.tcszFACENAME));
 #if (_MSC_VER >= 1400)
-          _tcscpy_s(cur_format.tcszFACENAME, LF_FACESIZE, (LPCTSTR)csLastFaceName);
+          wcscpy_s(cur_format.tcszFACENAME, LF_FACESIZE, (LPCWSTR)csLastFaceName);
 #else
-          _tcscpy(cur_format.tcszFACENAME, (LPCTSTR)csLastFaceName);
+          wcscpy(cur_format.tcszFACENAME, (LPCWSTR)csLastFaceName);
 #endif
           m_vFormat.push_back(cur_format);
           vLastFacenames.pop_back();
@@ -519,42 +519,42 @@ vnext:
         vFontChangeStart.pop_back();
         format_stack.pop();
         goto next;
-      } else if (csHTMLTag == _T("/a")) {
+      } else if (csHTMLTag == L"/a") {
         goto next;
       }
 
       // Check for fonts
       // <font face="xxxxx" size="n" color="xxxxx">....</font>
-      if (csHTMLTag.Left(5) == _T("font ")) {
+      if (csHTMLTag.Left(5) == L"font ") {
         CString csFontToken, csFontVerb, csFontVerbValue;
         int curFontPos(0);
 
         bsFontChange.reset();
-        csFontToken = csHTMLTag.Tokenize(_T("\""), curFontPos);
+        csFontToken = csHTMLTag.Tokenize(L"\"", curFontPos);
         csFontVerb = csFontToken.Right(6);
         csFontVerb.TrimLeft();
         // Skip over first token of 'font verb='
-        csFontVerbValue = csHTMLTag.Tokenize(_T("\""), curFontPos);
+        csFontVerbValue = csHTMLTag.Tokenize(L"\"", curFontPos);
         while (csFontVerbValue != "" && curFontPos != -1) {
-          if (csFontVerb == _T("face=")) {
+          if (csFontVerb == L"face=") {
             bsFontChange.set(FACENAMECHANGED);
             vLastFacenames.push_back(csFontVerbValue);
           } else
-            if (csFontVerb == _T("size=")) {
+            if (csFontVerb == L"size=") {
               bsFontChange.set(SIZECHANGED);
               iCurrentFontPointSize = ConvertSizeToPoints(csFontVerbValue, iCurrentFontSize);
               vLastSizes.push_back(iCurrentFontPointSize);
             } else
-              if (csFontVerb == _T("color=")) {
+              if (csFontVerb == L"color=") {
                 bsFontChange.set(COLOURCHANGED);
                 COLORREF crNewFontColour = ConvertColourToColorRef(csFontVerbValue);
                 vLastColours.push_back(crNewFontColour);
               }
 
-              csFontVerb = csHTMLTag.Tokenize(_T("\""), curFontPos);
+              csFontVerb = csHTMLTag.Tokenize(L"\"", curFontPos);
               if (csFontVerb.IsEmpty() && curFontPos == -1)
                 break;
-              csFontVerbValue = csHTMLTag.Tokenize(_T("\""), curFontPos);
+              csFontVerbValue = csHTMLTag.Tokenize(L"\"", curFontPos);
         };
         vFontChange.push_back(bsFontChange);
         vFontChangeStart.push_back(iTextPosition);
@@ -565,24 +565,24 @@ vnext:
       // check for hyperlink
       // <a href="http://www.microsoft.com">Friendly name</a>
 
-      if (csHTMLTag.Left(7) == _T("a href=")) {
+      if (csHTMLTag.Left(7) == L"a href=") {
         long dwTEnd;
         CString csURL;
-        dwTEnd = csHTMLTag.Find(_T("\""), 8);
+        dwTEnd = csHTMLTag.Find(L"\"", 8);
         if (dwTEnd >= 0) {
           csURL = csHTMLTag.Mid(8, dwTEnd - 8);
           if (!csURL.IsEmpty()) {
             csURL.MakeLower();
 #if (_MSC_VER >= 1400)
-            _tcscpy_s(this_ALink.tcszURL, _MAX_PATH, csURL);
+            wcscpy_s(this_ALink.tcszURL, _MAX_PATH, csURL);
 #else
-            _tcscpy(this_ALink.tcszURL, csURL);
+            wcscpy(this_ALink.tcszURL, csURL);
 #endif
           }
         }
         // Now get Friendly Name (note doing this within the while loop!)
         oldPos = curPos;
-        csToken = csHTML.Tokenize(_T("<>"), curPos);
+        csToken = csHTML.Tokenize(L"<>", curPos);
         csText += csToken;
         this_ALink.iStart = iTextPosition;
         iTextPosition += csToken.GetLength();
@@ -592,12 +592,12 @@ vnext:
       }
     }
 
-    csToken.Replace(_T("&lt;"), _T("<"));
-    csToken.Replace(_T("&gt;"), _T(">"));
+    csToken.Replace(L"&lt;", L"<");
+    csToken.Replace(L"&gt;", L">");
     // Real text or unknown HTML tag
     if (bHTMLTag) {
       // We didn't recognise it! Put back the < & >
-      csText += _T("<") + csToken + _T(">");
+      csText += L"<" + csToken + L">";
       iTextPosition += csToken.GetLength() + 2;
     } else {
       csText += csToken;
@@ -606,7 +606,7 @@ vnext:
 
 next:
     oldPos = curPos;
-    csToken = csHTML.Tokenize(_T("<>"), curPos);
+    csToken = csHTML.Tokenize(L"<>", curPos);
   };
 
   return csText;
@@ -618,14 +618,14 @@ COLORREF CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
   // Note COLORREF = 0x00bbggrr but HTML = 0x00rrggbb
   // Values for named colours here are in COLORREF format
   long retval(0L);
-  if (csValue.Left(1) == _T("#")) {
+  if (csValue.Left(1) == L"#") {
     // Convert HTML to COLORREF
     ASSERT(csValue.GetLength() == 7);
     int icolour;
 #if _MSC_VER >= 1400
-    _stscanf_s(csValue.Mid(1), _T("%06x"), &icolour);
+    swscanf_s(csValue.Mid(1), L"%06x", &icolour);
 #else
-    _stscanf(csValue.Mid(1), _T("%06x"), &retval);
+    swscanf(csValue.Mid(1), L("%06x", &retval);
 #endif
     int ired = (icolour & 0xff0000) >> 16;
     int igreen = (icolour & 0xff00);
@@ -633,37 +633,37 @@ COLORREF CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
     return (COLORREF)(iblue + igreen + ired);
   }
 
-  if (csValue.CompareNoCase(_T("Black")) == 0)
+  if (csValue.CompareNoCase(L"Black") == 0)
     retval = 0L;
-  else if (csValue.CompareNoCase(_T("Green")) == 0)
+  else if (csValue.CompareNoCase(L"Green") == 0)
     retval = 0x008000L;
-  else if (csValue.CompareNoCase(_T("Silver")) == 0)
+  else if (csValue.CompareNoCase(L"Silver") == 0)
     retval = 0xc0c0c0L;
-  else if (csValue.CompareNoCase(_T("Lime")) == 0)
+  else if (csValue.CompareNoCase(L"Lime") == 0)
     retval = 0x00ff00L;
-  else if (csValue.CompareNoCase(_T("Gray")) == 0)
+  else if (csValue.CompareNoCase(L"Gray") == 0)
     retval = 0x808080L;
-  else if (csValue.CompareNoCase(_T("Olive")) == 0)
+  else if (csValue.CompareNoCase(L"Olive") == 0)
     retval = 0x008080L;
-  else if (csValue.CompareNoCase(_T("White")) == 0)
+  else if (csValue.CompareNoCase(L"White") == 0)
     retval = 0xffffffL;
-  else if (csValue.CompareNoCase(_T("Yellow")) == 0)
+  else if (csValue.CompareNoCase(L"Yellow") == 0)
     retval = 0x00ffffL;
-  else if (csValue.CompareNoCase(_T("Maroon")) == 0)
+  else if (csValue.CompareNoCase(L"Maroon") == 0)
     retval = 0x000080L;
-  else if (csValue.CompareNoCase(_T("Navy")) == 0)
+  else if (csValue.CompareNoCase(L"Navy") == 0)
     retval = 0x800000L;
-  else if (csValue.CompareNoCase(_T("Red")) == 0)
+  else if (csValue.CompareNoCase(L"Red") == 0)
     retval = 0x0000ffL;
-  else if (csValue.CompareNoCase(_T("Blue")) == 0)
+  else if (csValue.CompareNoCase(L"Blue") == 0)
     retval = 0xff0000L;
-  else if (csValue.CompareNoCase(_T("Purple")) == 0)
+  else if (csValue.CompareNoCase(L"Purple") == 0)
     retval = 0x800080L;
-  else if (csValue.CompareNoCase(_T("Teal")) == 0)
+  else if (csValue.CompareNoCase(L"Teal") == 0)
     retval = 0x808000L;
-  else if (csValue.CompareNoCase(_T("Fuchsia")) == 0)
+  else if (csValue.CompareNoCase(L"Fuchsia") == 0)
     retval = 0xff00ffL;
-  else if (csValue.CompareNoCase(_T("Aqua")) == 0)
+  else if (csValue.CompareNoCase(L"Aqua") == 0)
     retval = 0xffff00L;
 
   return (COLORREF)retval;
@@ -673,11 +673,11 @@ int CRichEditCtrlExtn::ConvertSizeToPoints(CString &csValue, int &iCurrentSize)
 {
   int retval(0), iSize, absSize;
 
-  iSize = _tstoi(csValue);
+  iSize = _wtoi(csValue);
   absSize = iSize < 0 ? (-iSize) : iSize;
   ASSERT(absSize > 0 && absSize < 8);
 
-  if (csValue.Left(1) == _T("+") || csValue.Left(1) == _T("-")) {
+  if (csValue.Left(1) == L"+" || csValue.Left(1) == L"-") {
     // It is a "relative" change
     iSize = iCurrentSize + iSize;
     if (iSize < 1)

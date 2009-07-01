@@ -91,7 +91,7 @@ static void InsertShortcuts(CMenu *pMenu, unsigned int parentID, MapMenuShortcut
     ASSERT(pos1 != -1);
     pMenu = pMenu->GetSubMenu(pos1);
   }
-  TCHAR tcMenuString[_MAX_PATH + 1];
+  wchar_t tcMenuString[_MAX_PATH + 1];
   CMenuShortcut mst;
   mst.iMenuPosition = 0;
   mst.uiParentID = parentID;
@@ -123,8 +123,8 @@ void DboxMain::SetUpInitialMenuStrings()
 
   CHotKeyCtrl cHKC;
   CString sKeyName;
-  LPCTSTR ptcKeyName;
-  TCHAR *pname;
+  LPCWSTR ptcKeyName;
+  wchar_t *pname;
   st_KeyIDExt st_KIDEx;
 
   // Following are excluded from list of user-configurable
@@ -155,10 +155,10 @@ void DboxMain::SetUpInitialMenuStrings()
   };
 
   m_ExcludedMenuItems.assign(excludedMenuItems,
-                             excludedMenuItems + (sizeof(excludedMenuItems)/sizeof(UINT)));
+                             excludedMenuItems + _countof(excludedMenuItems));
 
   // Add in the zero/None entry
-  pname = _tcsdup(_T(""));
+  pname = _wcsdup(L"");
   st_KIDEx.id = 0;
   st_KIDEx.bExtended = false;
   m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
@@ -181,21 +181,21 @@ void DboxMain::SetUpInitialMenuStrings()
     sKeyName = cHKC.GetKeyName((UINT)i, IsExtended(i) ? TRUE : FALSE);
     if (!sKeyName.IsEmpty()) {
       // Make value into "Sentence Case" e.g. "Enter" or "Num Plus" etc.
-      CString cstoken, sKeyName2(_T(""));
+      CString cstoken, sKeyName2(L"");
       int curPos = 0;
       sKeyName.Trim();
-      cstoken = sKeyName.Tokenize(_T(" "), curPos);
+      cstoken = sKeyName.Tokenize(L" ", curPos);
       while (!cstoken.IsEmpty()) {
         CString cstemp1 = cstoken.Left(1);
         CString cstemp2 = cstoken.Right(cstoken.GetLength() - 1);
         cstemp1.MakeUpper();
         cstemp2.MakeLower();
-        sKeyName2 += cstemp1 + cstemp2 + CString(_T(" "));
-        cstoken = sKeyName.Tokenize(_T(" "), curPos);
+        sKeyName2 += cstemp1 + cstemp2 + CString(L" ");
+        cstoken = sKeyName.Tokenize(L" ", curPos);
       };
       sKeyName2.Trim();
       ptcKeyName = sKeyName2.GetBuffer(sKeyName2.GetLength());
-      pname = _tcsdup(ptcKeyName);
+      pname = _wcsdup(ptcKeyName);
       sKeyName2.ReleaseBuffer();
       m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
     }
@@ -204,7 +204,7 @@ void DboxMain::SetUpInitialMenuStrings()
   pMainMenu = new CMenu;
   pMainMenu->LoadMenu(IDR_MAINMENU);
 
-  TCHAR tcMenuString[_MAX_PATH + 1];
+  wchar_t tcMenuString[_MAX_PATH + 1];
 
   MENUINFO minfo;
   memset(&minfo, 0x00, sizeof(minfo));
@@ -225,12 +225,12 @@ void DboxMain::SetUpInitialMenuStrings()
   st_mst.cModifier = HOTKEYF_ALT;
 
   for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(TCHAR));
+    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(wchar_t));
     miinfo.cch = _MAX_PATH;
     pMainMenu->GetMenuItemInfo(i, &miinfo, TRUE);
     if (miinfo.wID >= 1) {
       CString csMainMenuItem = tcMenuString;
-      int iamp = csMainMenuItem.Find(TCHAR('&'));
+      int iamp = csMainMenuItem.Find(L'&');
       if (iamp >= 0 && iamp < csMainMenuItem.GetLength() - 1) {
         st_mst.cVirtKey = (unsigned char)csMainMenuItem[iamp + 1];
         m_ReservedShortcuts.push_back(st_mst);
@@ -483,7 +483,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
           st_KIDEx.id = iter->second.cVirtKey;
           st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
           citer = m_MapKeyNameID.find(st_KIDEx);
-          str.Format(_T("%s\t%s"), iter->second.name.c_str(), 
+          str.Format(L"%s\t%s", iter->second.name.c_str(), 
                      CMenuShortcut::FormatShortcut(iter, citer));
         } else {
           str = iter->second.name.c_str();
@@ -510,7 +510,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   const bool bReadOnly = m_core.IsReadOnly();
   CItemData *pci(NULL);
   CItemData::EntryType etype(CItemData::ET_INVALID);
-  const TCHAR *tc_dummy = _T(" ");
+  const wchar_t *tc_dummy = L" ";
 
   // Except for Edit & View menus, we only get here if the Shortcuts have changed and
   // we need to rebuild menu item text

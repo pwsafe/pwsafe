@@ -42,15 +42,15 @@ typedef std::pair<unsigned int, CMenuShortcut> MapMenuShortcutsPair;
 typedef MapMenuShortcuts::iterator MapMenuShortcutsIter;
 
 // Key is the virtual key
-typedef std::map<const st_KeyIDExt, const TCHAR *> MapKeyNameID;
-typedef std::pair<const st_KeyIDExt, const TCHAR *> MapKeyNameIDPair;
+typedef std::map<const st_KeyIDExt, const wchar_t *> MapKeyNameID;
+typedef std::pair<const st_KeyIDExt, const wchar_t *> MapKeyNameIDPair;
 typedef MapKeyNameID::const_iterator MapKeyNameIDConstIter;
 typedef MapKeyNameID::iterator MapKeyNameIDIter;
 
 class CMenuShortcut {
 public:
   // Menu item text
-  stringT name;
+  std::wstring name;
   // Menu item's parent or zero
   unsigned int uiParentID;
   // Sequential menu item position (i.e. in going through the menus)

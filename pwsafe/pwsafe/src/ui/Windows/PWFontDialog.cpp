@@ -52,7 +52,7 @@ CPWFontDialog::CPWFontDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrint
       uiID = IDS_VKBDFONT;
       // Set up default font, which is NONE
       memcpy(&m_dfltVKBDFont, lplfInitial, sizeof(LOGFONT));
-      memset(m_dfltVKBDFont.lfFaceName, 0, LF_FACESIZE * sizeof(TCHAR));
+      memset(m_dfltVKBDFont.lfFaceName, 0, LF_FACESIZE * sizeof(wchar_t));
       break;
     default:
       ASSERT(0);
@@ -119,7 +119,7 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
         return TRUE;  // We processed message
       }
       LOGFONT dfltFont;
-      TCHAR wc_pt[4] = {0, 0, 0, 0};
+      wchar_t wc_pt[4] = {0, 0, 0, 0};
       // Due to a documentation bug in WM_CHOOSEFONT_SETLOGFONT - instead of just this:
       //   pwfd_self->SendMessage(WM_CHOOSEFONT_SETLOGFONT, 0, (LPARAM)&dfltFont);
       // Need to do:
@@ -138,7 +138,7 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
       // Assume "Internal Leading" == 0
       CClientDC dc((CWnd *)pwfd_self);
       int pt = -MulDiv(dfltFont.lfHeight, 72, dc.GetDeviceCaps(LOGPIXELSY));
-      _sntprintf_s(wc_pt, 4, _T("%d"), pt);
+      _snwprintf_s(wc_pt, 4, L"%d", pt);
       SendMessage(GetDlgItem(hdlg, cmb1), CB_SELECTSTRING, (WPARAM)(-1),
                   (LPARAM)dfltFont.lfFaceName);
       SendMessage(GetDlgItem(hdlg, cmb3), CB_SELECTSTRING, (WPARAM)(-1),

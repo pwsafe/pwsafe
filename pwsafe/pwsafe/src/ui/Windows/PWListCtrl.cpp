@@ -20,7 +20,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPWListCtrl::CPWListCtrl()
-  : m_FindTimerID(0), m_csFind(_T("")), m_bMouseInWindow(false), 
+  : m_FindTimerID(0), m_csFind(L""), m_bMouseInWindow(false), 
   m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bFilterActive(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_bDeleteCtrl(false), m_bDeleteShift(false)
@@ -61,17 +61,17 @@ LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
   bool bFirst;
   if (m_FindTimerID != 0) {
     KillTimer(TIMER_FIND);
-    m_csFind += (TCHAR)wParam;
+    m_csFind += (wchar_t)wParam;
     bFirst = false;
   } else {
-    m_csFind = (TCHAR)wParam;
+    m_csFind = (wchar_t)wParam;
     bFirst = true;
   }
 
   if (!FindNext(m_csFind, iSubItem) && !bFirst) {
     // Didn't find a match when more than one character
     // Emulate CListCtrl and try again (once) with this matching the first character
-    m_csFind = (TCHAR)wParam;
+    m_csFind = (wchar_t)wParam;
     FindNext(m_csFind, iSubItem);
   }
 

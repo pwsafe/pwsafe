@@ -65,7 +65,7 @@ LRESULT CPopupText::OnSetText(WPARAM , LPARAM lp)
   GetWindowRect(&rc);
   int h = rc.Height();
   CClientDC dc(this);
-  DrawText(dc, CString((LPCTSTR)lp), rc, DT_CALCRECT); //  | DT_PATH_ELLIPSIS
+  DrawText(dc, CString((LPCWSTR)lp), rc, DT_CALCRECT); //  | DT_PATH_ELLIPSIS
   int w = rc.Width();
   rc.InflateRect(m_szMargins);
   if (m_szMargins.cy)
@@ -77,7 +77,7 @@ LRESULT CPopupText::OnSetText(WPARAM , LPARAM lp)
   return Default();
 }
 
-void CPopupText::DrawText(CDC& dc, LPCTSTR lpText, CRect& rc, UINT flags)
+void CPopupText::DrawText(CDC& dc, LPCWSTR lpText, CRect& rc, UINT flags)
 {
   CBrush b(GetSysColor(COLOR_INFOBK)); // use tooltip bg color
   dc.FillRect(&rc, &b);

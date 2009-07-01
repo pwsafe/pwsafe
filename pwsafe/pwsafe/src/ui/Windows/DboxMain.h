@@ -277,9 +277,9 @@ public:
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
-  void DoAutoType(const StringX &sxAutotype, const StringX &group = _T(""), 
-                  const StringX &title = _T(""), const StringX &user = _T(""), 
-                  const StringX &pwd = _T(""), const StringX &notes = _T(""));
+  void DoAutoType(const StringX &sxAutotype, const StringX &group = L"", 
+                  const StringX &title = L"", const StringX &user = L"", 
+                  const StringX &pwd = L"", const StringX &notes = L"");
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
 
@@ -301,7 +301,7 @@ public:
 
   CRUEList m_RUEList;   // recent entry lists
 
-  TCHAR *m_eye_catcher;
+  wchar_t *m_eye_catcher;
 
   bool m_bDoAutoType;
   StringX m_AutoType;

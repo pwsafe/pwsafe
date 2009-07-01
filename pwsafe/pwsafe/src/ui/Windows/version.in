@@ -25,7 +25,7 @@
 
 // Only define SPECIAL_BUILD before here (in version.in) if needed!
 #ifndef SPECIAL_BUILD
-#define SPECIAL_BUILD _T("")
+#define SPECIAL_BUILD L""
 #endif
 
 #endif // _VERSION_H_

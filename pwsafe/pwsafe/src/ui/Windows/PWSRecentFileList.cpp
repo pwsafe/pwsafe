@@ -33,7 +33,7 @@ void CPWSRecentFileList::ReadList()
   } else {
     const int nMRUItems = pref->GetPref(PWSprefs::MaxMRUItems);
     ASSERT(nMRUItems == m_nSize);
-    stringT *arrNames = new stringT[nMRUItems];
+    std::wstring *arrNames = new std::wstring[nMRUItems];
     pref->GetMRUList(arrNames);
     for (int i = 0; i < nMRUItems; i++)
       m_arrNames[i] = arrNames[i].c_str();
@@ -50,7 +50,7 @@ void CPWSRecentFileList::WriteList()
   } else {
     const int num_MRU = GetSize();
     const int max_MRU = ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1;
-    stringT *csMRUFiles = new stringT[num_MRU];
+    std::wstring *csMRUFiles = new std::wstring[num_MRU];
 
     for (int i = 0; i < num_MRU; i++) {
       csMRUFiles[i] = (*this)[i];
@@ -66,5 +66,5 @@ bool CPWSRecentFileList::IsMRUEmpty()
 {
   CString csMRUFileName;
 
-  return GetDisplayName(csMRUFileName, 0, _T(""), 0, TRUE) == FALSE;
+  return GetDisplayName(csMRUFileName, 0, L"", 0, TRUE) == FALSE;
 }

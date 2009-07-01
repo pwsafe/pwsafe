@@ -33,17 +33,6 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wstring stringT;
-typedef std::wifstream ifstreamT;
-typedef std::wofstream ofstreamT;
-#else
-typedef std::string stringT;
-typedef std::ifstream ifstreamT;
-typedef std::ofstream ofstreamT;
-#endif
-
 CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent,
   const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
@@ -175,7 +164,7 @@ BOOL CEditShortcutDlg::OnInitDialog()
   if (!m_Edit_IsReadOnly) {
     // Populate the groups combo box
     if (m_ex_group.GetCount() == 0) {
-      std::vector<stringT> aryGroups;
+      std::vector<std::wstring> aryGroups;
       app.m_core.GetUniqueGroups(aryGroups);
       for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
         m_ex_group.AddString(aryGroups[igrp].c_str());
@@ -183,12 +172,12 @@ BOOL CEditShortcutDlg::OnInitDialog()
     }
   }
 
-  CSecString cs_explanation, cs_target(_T(""));
+  CSecString cs_explanation, cs_target(L"");
   if (!m_tg.IsEmpty())
-    cs_target = m_tg + _T(".");
+    cs_target = m_tg + L".";
   cs_target += m_tt;
   if (!m_tu.IsEmpty())
-    cs_target += _T(".") + m_tu;
+    cs_target += L"." + m_tu;
   cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
   GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_explanation);
 
@@ -201,12 +190,12 @@ BOOL CEditShortcutDlg::OnInitDialog()
 void CEditShortcutDlg::OnHelp() 
 {
 #if defined(POCKET_PC)
-  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), 
-                NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#editview", 
+                NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/entering_pwd.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 

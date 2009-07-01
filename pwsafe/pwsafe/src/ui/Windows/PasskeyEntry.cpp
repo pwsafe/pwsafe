@@ -47,7 +47,7 @@ down the streetsky.  [Groucho Marx]
 
 #include <iomanip>  // For setbase and setw
 
-static TCHAR PSSWDCHAR = TCHAR('*');
+static wchar_t PSSWDCHAR = L'*';
 
 // See DboxMain.h for the relevant enum
 int CPasskeyEntry::dialog_lookup[5] = {
@@ -69,7 +69,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_bForceReadOnly(bForceReadOnly),
   m_adv_type(adv_type), m_bAdvanced(false),
   m_subgroup_set(BST_UNCHECKED),
-  m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0),
+  m_subgroup_name(L""), m_subgroup_object(0), m_subgroup_function(0),
   m_treatwhitespaceasempty(BST_CHECKED), m_pVKeyBoardDlg(NULL)
 {
   DBGMSG("CPasskeyEntry()\n");
@@ -77,12 +77,12 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
     DBGMSG("** FIRST **\n");
   }
 
-  m_passkey = _T("");
+  m_passkey = L"";
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_message = a_filespec;
   m_bsFields.set();
 
-  if (pws_os::getenv("PWS_PW_MODE", false) == _T("NORMAL"))
+  if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
 
   m_pDbx = static_cast<DboxMain *>(pParent);
@@ -157,8 +157,8 @@ static CString NarrowPathText(const CString &text)
   const int Width = 48;
   CString retval;
   if (text.GetLength() > Width) {
-    retval =  text.Left(Width/2-5) +
-      _T(" ... ") + text.Right(Width/2);
+    retval =  text.Left(Width / 2 - 5) +
+                   L" ... " + text.Right(Width / 2);
   } else {
     retval = text;
   }
@@ -332,7 +332,7 @@ void CPasskeyEntry::OnCreateDb()
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
-  stringT v3FileName = PWSUtil::GetNewFileName(LPCTSTR(cf), DEFAULT_SUFFIX );
+  std::wstring v3FileName = PWSUtil::GetNewFileName(LPCWSTR(cf), DEFAULT_SUFFIX);
 
   while (1) {
     CPWFileDialog fd(FALSE,
@@ -343,7 +343,7 @@ void CPasskeyEntry::OnCreateDb()
                      CString(MAKEINTRESOURCE(IDS_FDF_V3_ALL)),
                      this);
     fd.m_ofn.lpstrTitle = cs_text;
-    stringT dir = PWSdirs::GetSafeDir();
+    std::wstring dir = PWSdirs::GetSafeDir();
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
     rc = fd.DoModal();
@@ -432,7 +432,7 @@ void CPasskeyEntry::OnOK()
 
 void CPasskeyEntry::ProcessPhrase()
 {
-  if (m_pDbx->CheckPassword(LPCTSTR(m_filespec), LPCTSTR(m_passkey)) != PWScore::SUCCESS) {
+  if (m_pDbx->CheckPassword(LPCWSTR(m_filespec), LPCWSTR(m_passkey)) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
 
@@ -463,11 +463,11 @@ void CPasskeyEntry::ProcessPhrase()
 void CPasskeyEntry::OnHelp()
 {
 #if defined(POCKET_PC)
-  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#comboentry", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/create_new_db.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/create_new_db.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 
@@ -477,7 +477,7 @@ void CPasskeyEntry::UpdateRO()
 {
   if (!m_bForceReadOnly) { // if allowed, changed r-o state to reflect file's permission
     bool fro;
-    if (pws_os::FileExists(LPCTSTR(m_filespec), fro) && fro) {
+    if (pws_os::FileExists(LPCWSTR(m_filespec), fro) && fro) {
       m_PKE_ReadOnly = TRUE;
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
     } else { // no file or write-enabled
@@ -532,7 +532,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
       fd.m_ofn.Flags |= OFN_READONLY;
     else
       fd.m_ofn.Flags &= ~OFN_READONLY;
-  stringT dir = PWSdirs::GetSafeDir();
+  std::wstring dir = PWSdirs::GetSafeDir();
   if (!dir.empty())
     fd.m_ofn.lpstrInitialDir = dir.c_str();
 

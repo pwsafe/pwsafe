@@ -62,19 +62,19 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   // Set up data used by all Property Pages, as appropriate
   if (m_AEMD.uicaller == IDS_ADDENTRY) {
     // Basic initialisation
-    m_AEMD.group = _T("");
-    m_AEMD.title = _T("");
-    m_AEMD.username = _T("");
-    m_AEMD.realpassword = _T("");
-    m_AEMD.realnotes = _T("");
-    m_AEMD.URL = _T("");
+    m_AEMD.group = L"";
+    m_AEMD.title = L"";
+    m_AEMD.username = L"";
+    m_AEMD.realpassword = L"";
+    m_AEMD.realnotes = L"";
+    m_AEMD.URL = L"";
 
     // Entry type initialisation
     m_AEMD.original_entrytype = CItemData::ET_NORMAL;
 
     // Additional initialisation
-    m_AEMD.autotype = _T("");
-    m_AEMD.runcommand = _T("");
+    m_AEMD.autotype = L"";
+    m_AEMD.runcommand = L"";
     m_AEMD.oldDCA = m_AEMD.DCA = -1;
 
     // Date & Time initialisation
@@ -242,7 +242,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetAutoType(m_AEMD.autotype);
           m_AEMD.pci->SetPWHistory(m_AEMD.PWHistory);
           if (m_AEMD.ipolicy == DEFAULT_POLICY)
-            m_AEMD.pci->SetPWPolicy(_T(""));
+            m_AEMD.pci->SetPWPolicy(L"");
           else
             m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
@@ -293,7 +293,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           uuid_array_t alias_uuid;
           m_AEMD.pci->GetUUID(alias_uuid);
           m_AEMD.pcore->AddDependentEntry(m_AEMD.base_uuid, alias_uuid, CItemData::ET_ALIAS);
-          m_AEMD.pci->SetPassword(_T("[Alias]"));
+          m_AEMD.pci->SetPassword(L"[Alias]");
           m_AEMD.pci->SetAlias();
           ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
           if (iter != m_AEMD.pDbx->End()) {
@@ -310,11 +310,11 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
         if (m_AEMD.pci->IsAlias()) {
           m_AEMD.pci->SetXTime((time_t)0);
-          m_AEMD.pci->SetPWPolicy(_T(""));
+          m_AEMD.pci->SetPWPolicy(L"");
         } else {
           m_AEMD.pci->SetXTime(m_AEMD.tttXTime);
           if (m_AEMD.ipolicy == DEFAULT_POLICY)
-            m_AEMD.pci->SetPWPolicy(_T(""));
+            m_AEMD.pci->SetPWPolicy(L"");
           else
             m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
         }
@@ -337,7 +337,7 @@ void CAddEdit_PropertySheet::UpdateHistory()
 {
   size_t num = m_AEMD.pwhistlist.size();
   PWHistEntry pwh_ent;
-  pwh_ent.password = LPCTSTR(m_AEMD.oldRealPassword);
+  pwh_ent.password = LPCWSTR(m_AEMD.oldRealPassword);
   time_t t;
   m_AEMD.pci->GetPMTime(t);
   if ((long)t == 0L) // if never set - try creation date
@@ -350,7 +350,7 @@ void CAddEdit_PropertySheet::UpdateHistory()
   if (pwh_ent.changedate.empty()) {
     CString unk;
     unk.LoadString(IDS_UNKNOWN);
-    pwh_ent.changedate = LPCTSTR(unk);
+    pwh_ent.changedate = LPCWSTR(unk);
   }
 
   // Now add the latest
@@ -372,14 +372,14 @@ void CAddEdit_PropertySheet::UpdateHistory()
   CSecString new_PWHistory;
   CString buffer;
 
-  buffer.Format(_T("1%02x%02x"), m_AEMD.MaxPWHistory, num);
+  buffer.Format(L"1%02x%02x", m_AEMD.MaxPWHistory, num);
   new_PWHistory = CSecString(buffer);
 
   PWHistList::iterator iter;
   for (iter = m_AEMD.pwhistlist.begin(); iter != m_AEMD.pwhistlist.end(); iter++) {
     const PWHistEntry pwshe = *iter;
 
-    buffer.Format(_T("%08x%04x%s"),
+    buffer.Format(L"%08x%04x%s",
                   (long) pwshe.changetttdate, pwshe.password.length(),
                   pwshe.password.c_str());
     new_PWHistory += CSecString(buffer);

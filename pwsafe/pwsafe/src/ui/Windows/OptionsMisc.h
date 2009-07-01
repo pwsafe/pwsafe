@@ -23,7 +23,7 @@ public:
   COptionsMisc();
   ~COptionsMisc();
 
-  const TCHAR *GetHelpName() const {return _T("misc_tab");}
+  const wchar_t *GetHelpName() const {return L"misc_tab";}
 
   // Dialog Data
   //{{AFX_DATA(COptionsMisc)

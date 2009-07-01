@@ -44,7 +44,7 @@ BOOL CFilterActionsDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  CString cs_title(_T("")), cs_button(_T(""));
+  CString cs_title(L""), cs_button(L"");
   UINT idTitle(0), idButton(0);
   switch (m_function) {
     case FA_DELETE:
@@ -83,7 +83,7 @@ void CFilterActionsDlg::OnExecute()
   if (isel != -1) {
     m_combo.GetLBText(isel, m_selected);
   } else {
-    m_selected = _T("");
+    m_selected = L"";
   }
 
   CPWDialog::OnOK();

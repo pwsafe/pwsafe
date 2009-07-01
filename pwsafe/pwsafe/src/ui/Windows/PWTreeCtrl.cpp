@@ -39,7 +39,7 @@ static char THIS_FILE[] = __FILE__;
 // Hover time of 1.5 seconds before expanding a group during D&D
 #define HOVERTIME 1500
 
-static const TCHAR GROUP_SEP = TCHAR('.');
+static const wchar_t GROUP_SEP = L'.';
 
 // following header for D&D data passed over OLE:
 // Process ID of sender (to determine if src == tgt)
@@ -93,7 +93,7 @@ public:
     //  Only process the request if data has been dropped.
     SCODE sCode = COleDropSource::QueryContinueDrag(bEscapePressed, dwKeyState);
     if (sCode == DRAGDROP_S_DROP) {
-      TRACE(_T("CStaticDropSource::QueryContinueDrag - dropped\n"));
+      TRACE(L"CStaticDropSource::QueryContinueDrag - dropped\n");
       m_tree.EndDrop();
     }
     return sCode;
@@ -119,14 +119,14 @@ public:
     DelayRenderData(CF_TEXT);
 
     m_tree.m_cfdropped = 0;
-    //TRACE(_T("CPWTDataSource::StartDragging - calling DoDragDrop\n"));
+    //TRACE(L"CPWTDataSource::StartDragging - calling DoDragDrop\n");
     DROPEFFECT de = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
                                rClient, m_DropSource);
     // Cleanup:
     // Standard processing is for the recipient to do this!!!
     if (de == DROPEFFECT_NONE) {
       if (m_tree.m_hgDataALL != NULL) {
-        //TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataALL\n"));
+        //TRACE(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataALL\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataALL);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataALL);
         if (lpData != NULL && memsize > 0) {
@@ -137,7 +137,7 @@ public:
         m_tree.m_hgDataALL = NULL;
       }
       if (m_tree.m_hgDataTXT != NULL) {
-        //TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataTXT\n"));
+        //TRACE(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataTXT\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataTXT);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataTXT);
         if (lpData != NULL && memsize > 0) {
@@ -148,7 +148,7 @@ public:
         m_tree.m_hgDataTXT = NULL;
       }
       if (m_tree.m_hgDataUTXT != NULL) {
-        //TRACE(_T("CPWTDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n"));
+        //TRACE(L"CPWTDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n");
         LPVOID lpData = GlobalLock(m_tree.m_hgDataUTXT);
         SIZE_T memsize = GlobalSize(m_tree.m_hgDataUTXT);
         if (lpData != NULL && memsize > 0) {
@@ -497,17 +497,17 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
     // We cannot allow in-place edit if these fields contain braces!
     currentTitle = ci->GetTitle();
-    if (currentTitle.FindOneOf(_T("[]{}")) != -1)
+    if (currentTitle.FindOneOf(L"[]{}") != -1)
       return;
 
     currentUser = ci->GetUser();
     if (prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
-      currentUser.FindOneOf(_T("[]{}")) != -1)
+      currentUser.FindOneOf(L"[]{}") != -1)
       return;
 
     currentPassword = ci->GetPassword();
     if (prefs->GetPref(PWSprefs::ShowPasswordInTree) &&
-      currentPassword.FindOneOf(_T("[]{}")) != -1)
+      currentPassword.FindOneOf(L"[]{}") != -1)
       return;
   }
   // In case we have to revert:
@@ -516,12 +516,12 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   *pLResult = FALSE;
 }
 
-static bool splitLeafText(const TCHAR *lt, StringX &newTitle, 
+static bool splitLeafText(const wchar_t *lt, StringX &newTitle, 
                           StringX &newUser, StringX &newPassword)
 {
   bool bPasswordSet(false);
 
-  newTitle = newUser = newPassword = _T("");
+  newTitle = newUser = newPassword = L"";
 
   CString cs_leafText(lt);
   cs_leafText.Trim();
@@ -529,24 +529,24 @@ static bool splitLeafText(const TCHAR *lt, StringX &newTitle,
     return false;
 
   // Check no duplicate braces
-  int OpenSquareBraceIndex = cs_leafText.Find(TCHAR('['));
+  int OpenSquareBraceIndex = cs_leafText.Find(L'[');
   if (OpenSquareBraceIndex >= 0)
-    if (cs_leafText.Find(TCHAR('['), OpenSquareBraceIndex + 1) != -1)
+    if (cs_leafText.Find(L'[', OpenSquareBraceIndex + 1) != -1)
       return false;
 
-  int CloseSquareBraceIndex = cs_leafText.Find(TCHAR(']'));
+  int CloseSquareBraceIndex = cs_leafText.Find(L']');
   if (CloseSquareBraceIndex >= 0)
-    if (cs_leafText.Find(TCHAR(']'), CloseSquareBraceIndex + 1) != -1)
+    if (cs_leafText.Find(L']', CloseSquareBraceIndex + 1) != -1)
       return false;
 
-  int OpenCurlyBraceIndex = cs_leafText.Find(TCHAR('{'));
+  int OpenCurlyBraceIndex = cs_leafText.Find(L'{');
   if (OpenCurlyBraceIndex >= 0)
-    if (cs_leafText.Find(TCHAR('{'), OpenCurlyBraceIndex + 1) != -1)
+    if (cs_leafText.Find(L'{', OpenCurlyBraceIndex + 1) != -1)
       return false;
 
-  int CloseCurlyBraceIndex = cs_leafText.Find(TCHAR('}'));
+  int CloseCurlyBraceIndex = cs_leafText.Find(L'}');
   if (CloseCurlyBraceIndex >= 0)
-    if (cs_leafText.Find(TCHAR('}'), CloseCurlyBraceIndex + 1) != -1)
+    if (cs_leafText.Find(L'}', CloseCurlyBraceIndex + 1) != -1)
       return false;
 
   // Check we have both open and close brackets
@@ -657,7 +657,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
-      ptvinfo->item.pszText[0] != TCHAR('\0')) { // empty if text deleted - not allowed
+      ptvinfo->item.pszText[0] != L'\0') { // empty if text deleted - not allowed
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
     if (IsLeaf(ptvinfo->item.hItem)) {
@@ -700,14 +700,14 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
       treeDispString = newTitle;
       if (bShowUsernameInTree) {
-        treeDispString += _T(" [");
+        treeDispString += L" [";
         treeDispString += newUser;
-        treeDispString += _T("]");
+        treeDispString += L"]";
 
         if (bShowPasswordInTree) {
-          treeDispString += _T(" {");
+          treeDispString += L" {";
           treeDispString += newPassword;
-          treeDispString += _T("}");
+          treeDispString += L"}";
         }
       }
 
@@ -718,7 +718,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       // the "ptvinfo->item.pszText" buffer.
       PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
                        treeDispString.c_str(), ptvinfo->item.cchTextMax);
-      ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = TCHAR('\0');
+      ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = L'\0';
 
       // update corresponding List mode text
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
@@ -847,7 +847,7 @@ static CSecString GetPathElem(CSecString &path)
   int N = path.Find(GROUP_SEP);
   if (N == -1) {
     retval = path;
-    path = _T("");
+    path = L"";
   } else {
     const int Len = path.GetLength();
     retval = CSecString(path.Left(N));
@@ -896,10 +896,10 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group)
 bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
   TV_INSERTSTRUCT  tvstruct;
-  TCHAR sztBuffer[260];  // max visible
+  wchar_t sztBuffer[260];  // max visible
 
   tvstruct.item.hItem = hitemDrag;
-  tvstruct.item.cchTextMax = sizeof(sztBuffer)/sizeof(TCHAR) - 1;
+  tvstruct.item.cchTextMax = _countof(sztBuffer) - 1;
   tvstruct.item.pszText = sztBuffer;
   tvstruct.item.mask = (TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE |
                         TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT);
@@ -1054,13 +1054,13 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         // Get base of original alias and make this copy point to it
         m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
         m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_ALIAS);
-        temp.SetPassword(CSecString(_T("[Alias]")));
+        temp.SetPassword(CSecString(L"[Alias]"));
         break;
       case CItemData::ET_SHORTCUT:
         // Get base of original shortcut and make this copy point to it
         m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
         m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_SHORTCUT);
-        temp.SetPassword(CSecString(_T("[Shortcut]")));
+        temp.SetPassword(CSecString(L"[Shortcut]"));
         break;
       default:
         ASSERT(0);
@@ -1227,7 +1227,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
 
   if (hitemDrop == NULL && GetCount() == 0) {
     // Dropping on to an empty database
-    CSecString DropGroup (_T(""));
+    CSecString DropGroup (L"");
     ProcessData(pData, lBufLen, DropGroup);
     SelectItem(GetRootItem());
     retval = TRUE;
@@ -1337,7 +1337,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   delete pil;
 
   if (de == DROPEFFECT_NONE) {
-    TRACE(_T("m_DataSource->StartDragging() failed"));
+    TRACE(L"m_DataSource->StartDragging() failed");
     // Do cleanup - otherwise this is the responsibility of the recipient!
     if (m_hgDataALL != NULL) {
       LPVOID lpData = GlobalLock(m_hgDataALL);
@@ -1570,7 +1570,7 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CSecStri
 #ifdef DUMP_DATA
   CString cs_timestamp;
   cs_timestamp = PWSUtil::GetTimeStamp();
-  TRACE(_T("%s: Drop data: length %d/0x%04x, value:\n"), cs_timestamp, inLen, inLen);
+  TRACE(L"%s: Drop data: length %d/0x%04x, value:\n", cs_timestamp, inLen, inLen);
   pws_os::HexDump(in_buffer, inLen, cs_timestamp);
 #endif /* DUMP_DATA */
 
@@ -1670,14 +1670,14 @@ CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
 
   CSecString treeDispString = ci.GetTitle();
   if (bShowUsernameInTree) {
-    treeDispString += _T(" [");
+    treeDispString += L" [";
     treeDispString += ci.GetUser();
-    treeDispString += _T("]");
+    treeDispString += L"]";
 
     if (bShowPasswordInTree) {
-      treeDispString += _T(" {");
+      treeDispString += L" {";
       treeDispString += ci.GetPassword();
-      treeDispString += _T("}");
+      treeDispString += L"}";
     }
   }
   return treeDispString;
@@ -1797,7 +1797,7 @@ BOOL CPWTreeCtrl::OnEraseBkgnd(CDC* pDC)
 BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 {
   if (m_hgDataALL != NULL) {
-    TRACE(_T("CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataALL\n"));
+    TRACE(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataALL\n");
     LPVOID lpData = GlobalLock(m_hgDataALL);
     SIZE_T memsize = GlobalSize(m_hgDataALL);
     if (lpData != NULL && memsize > 0) {
@@ -1808,7 +1808,7 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     m_hgDataALL = NULL;
   }
   if (m_hgDataTXT != NULL) {
-    TRACE(_T("CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n"));
+    TRACE(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataTXT);
     SIZE_T memsize = GlobalSize(m_hgDataTXT);
     if (lpData != NULL && memsize > 0) {
@@ -1819,7 +1819,7 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     m_hgDataTXT = NULL;
   }
   if (m_hgDataUTXT != NULL) {
-    TRACE(_T("CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n"));
+    TRACE(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataUTXT);
     SIZE_T memsize = GlobalSize(m_hgDataUTXT);
     if (lpData != NULL && memsize > 0) {
@@ -1846,7 +1846,7 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
 {
   if (!IsLeaf(m_hitemDrag)) {
-    TRACE(_T("CPWTreeCtrl::RenderTextData - not a leaf!\n"));
+    TRACE(L"CPWTreeCtrl::RenderTextData - not a leaf!\n");
     return FALSE;
   }
 
@@ -1894,13 +1894,11 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
   LPSTR lpszA(NULL);
   LPWSTR lpszW(NULL);
 
-#ifdef UNICODE
-  // We are Unicode!
   if (cfFormat == CF_UNICODETEXT) {
     // So is requested data!
     dwBufLen = (ilen + 1) * sizeof(wchar_t);
     lpszW = new WCHAR[ilen + 1];
-    TRACE(_T("lpszW allocated %p, size %d\n"), lpszW, dwBufLen);
+    TRACE(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
 #if (_MSC_VER >= 1400)
     (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata, ilen);
 #else
@@ -1913,35 +1911,11 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
     ASSERT(dwBufLen != 0);
     lpszA = new char[dwBufLen];
-    TRACE(_T("lpszA allocated %p, size %d\n"), lpszA, dwBufLen);
+    TRACE(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
     WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
     cs_dragdata.ReleaseBuffer();
     lpszW = NULL;
   }
-#else
-  // We are Ascii!
-  if (cfFormat == CF_TEXT) {
-    // So is requested data!
-    dwBufLen = ilen + 1;
-    lpszA = new char[ilen + 1];
-    TRACE(_T("lpszA allocated %p, size %d\n"), lpszA, dwBufLen);
-#if (_MSC_VER >= 1400)
-    (void) strncpy_s(lpszA, ilen + 1, cs_dragdata, ilen);
-#else
-    (void)strncpy(lpszA, cs_dragdata, ilen);
-    lpszA[ilen] = '\0';
-#endif
-  } else {
-    // They want it in UNICODE - use lpszA temporarily
-    lpszA = cs_dragdata.GetBuffer(ilen + 1);
-    dwBufLen = MultiByteToWideChar(CP_ACP, 0, lpszA, -1, NULL, NULL);
-    lpszW = new WCHAR[dwBufLen];
-    TRACE(_T("lpszW allocated %p, size %d\n"), lpszW, dwBufLen);
-    MultiByteToWideChar(CP_ACP, 0, lpszA, -1, lpszW, dwBufLen);
-    cs_dragdata.ReleaseBuffer();
-    lpszA = NULL;
-  }
-#endif
 
   LPVOID lpData(NULL);
   LPVOID lpDataBuffer;
@@ -1956,7 +1930,7 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    TRACE(_T("CPWTreeCtrl::OnRenderTextData - Alloc global memory\n"));
+    TRACE(L"CPWTreeCtrl::OnRenderTextData - Alloc global memory\n");
     *phgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(*phgData != NULL);
     if (*phgData == NULL)
@@ -1973,15 +1947,15 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     GlobalUnlock(*phgData);
     retval = TRUE;
   } else {
-    TRACE(_T("CPWTreeCtrl::OnRenderTextData - *phGlobal NOT NULL!\n"));
+    TRACE(L"CPWTreeCtrl::OnRenderTextData - *phGlobal NOT NULL!\n");
     SIZE_T inSize = GlobalSize(*phGlobal);
     SIZE_T ourSize = GlobalSize(*phgData);
     if (inSize < ourSize) {
       // Pre-allocated space too small.  Not allowed to increase it - FAIL
-      TRACE(_T("CPWTreeCtrl::OnRenderTextData - NOT enough room - FAIL\n"));
+      TRACE(L"CPWTreeCtrl::OnRenderTextData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      TRACE(_T("CPWTreeCtrl::OnRenderTextData - enough room - copy our data\n"));
+      TRACE(L"CPWTreeCtrl::OnRenderTextData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -1997,9 +1971,9 @@ bad_return:
   // Finished with buffer - trash it
   trashMemory(lpDataBuffer, dwBufLen);
   // Free the strings (only one is actually in use)
-  TRACE(_T("lpszA freed %p\n"), lpszA);
+  TRACE(L"lpszA freed %p\n", lpszA);
   delete[] lpszA;
-  TRACE(_T("lpszW freed %p\n"), lpszW);
+  TRACE(L"lpszW freed %p\n", lpszW);
   delete[] lpszW;
   // Since lpDataBuffer pointed to one of the above - just zero the pointer
   lpDataBuffer = NULL;
@@ -2007,7 +1981,7 @@ bad_return:
   // If retval == TRUE, recipient is responsible for freeing the global memory
   // if D&D succeeds (see after StartDragging in OnMouseMove)
   if (retval == FALSE) {
-    TRACE(_T("CPWTreeCtrl::RenderTextData - returning FALSE!\n"));
+    TRACE(L"CPWTreeCtrl::RenderTextData - returning FALSE!\n");
     if (*phgData != NULL) {
       LPVOID lpData = GlobalLock(*phgData);
       SIZE_T memsize = GlobalSize(*phgData);
@@ -2019,19 +1993,11 @@ bad_return:
       *phgData = NULL;
     }
   } else {
-    TRACE(_T("CPWTreeCtrl::RenderTextData - D&D Data:"));
+    TRACE(L"CPWTreeCtrl::RenderTextData - D&D Data:");
     if (cfFormat == CF_UNICODETEXT) {
-#ifdef UNICODE
-      TRACE(_T("\"%s\"\n"), (LPWSTR)lpData);  // we are Unicode, data is Unicode
-#else
-      TRACE(_T("\"%S\"\n"), (LPSTR)lpData);   // we are NOT Unicode, data is Unicode
-#endif
+      TRACE(L"\"%s\"\n", (LPWSTR)lpData);  // we are Unicode, data is Unicode
     } else {
-#ifdef UNICODE
-      TRACE(_T("\"%S\"\n"), (LPSTR)lpData);  // we are Unicode, data is NOT Unicode
-#else
-      TRACE(_T("\"%s\"\n"), (LPWSTR)lpData);  // we are NOT Unicode, data is NOT Unicode
-#endif
+      TRACE(L"\"%S\"\n", (LPSTR)lpData);  // we are Unicode, data is NOT Unicode
     }
   }
 
@@ -2075,14 +2041,14 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
 
 #ifdef DUMP_DATA
   CString cs_timestamp = PWSUtil::GetTimeStamp();
-  TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp,
+  TRACE(L"%s: Drag data: length %d/0x%04x, value:\n", cs_timestamp,
         dwBufLen, dwBufLen);
   pws_os::HexDump(lpDataBuffer, dwBufLen, cs_timestamp);
 #endif /* DUMP_DATA */
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    TRACE(_T("CPWTreeCtrl::OnRenderAllData - Alloc global memory\n"));
+    TRACE(L"CPWTreeCtrl::OnRenderAllData - Alloc global memory\n");
     m_hgDataALL = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(m_hgDataALL != NULL);
     if (m_hgDataALL == NULL)
@@ -2098,15 +2064,15 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
     *phGlobal = m_hgDataALL;
     retval = TRUE;
   } else {
-    TRACE(_T("CPWTreeCtrl::OnRenderAllData - *phGlobal NOT NULL!\n"));
+    TRACE(L"CPWTreeCtrl::OnRenderAllData - *phGlobal NOT NULL!\n");
     SIZE_T inSize = GlobalSize(*phGlobal);
     SIZE_T ourSize = GlobalSize(m_hgDataALL);
     if (inSize < ourSize) {
       // Pre-allocated space too small.  Not allowed to increase it - FAIL
-      TRACE(_T("CPWTreeCtrl::OnRenderAllData - NOT enough room - FAIL\n"));
+      TRACE(L"CPWTreeCtrl::OnRenderAllData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      TRACE(_T("CPWTreeCtrl::OnRenderAllData - enough room - copy our data\n"));
+      TRACE(L"CPWTreeCtrl::OnRenderAllData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -2128,7 +2094,7 @@ bad_return:
   // If retval == TRUE, recipient is responsible for freeing the global memory
   // if D&D succeeds
   if (retval == FALSE) {
-    TRACE(_T("CPWTreeCtrl::RenderAllData - returning FALSE!\n"));
+    TRACE(L"CPWTreeCtrl::RenderAllData - returning FALSE!\n");
     if (m_hgDataALL != NULL) {
       LPVOID lpData = GlobalLock(m_hgDataALL);
       SIZE_T memsize = GlobalSize(m_hgDataALL);

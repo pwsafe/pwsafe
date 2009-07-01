@@ -62,7 +62,7 @@ void CInfoDisplay::OnPaint()
     CString s = text;
     while(TRUE) { /* scan string */
       CString line;
-      int p = s.Find(_T("\n"));
+      int p = s.Find(L"\n");
       if (p < 0)
         line = s;
       else { /* one line */
@@ -100,7 +100,7 @@ void CInfoDisplay::OnPaint()
   int y = r.top;
   while(TRUE) { /* scan string */
     CString line;
-    int p = s.Find(_T("\n"));
+    int p = s.Find(L"\n");
     if (p < 0)
       line = s;
     else { /* one line */
@@ -125,13 +125,13 @@ BOOL CInfoDisplay::OnEraseBkgnd(CDC* pDC)
   return TRUE;
 }
 
-BOOL CInfoDisplay::Create(int /* x */, int /* y */, LPCTSTR sztext, CWnd * parent)
+BOOL CInfoDisplay::Create(int /* x */, int /* y */, LPCWSTR sztext, CWnd * parent)
 {
   ASSERT(parent != NULL);
   if (parent == NULL)
     return FALSE;
    
-  LPCTSTR NDclass = AfxRegisterWndClass(0,    // no class styles
+  LPCWSTR NDclass = AfxRegisterWndClass(0,    // no class styles
                                         NULL, // default arrow cursor
                                         (HBRUSH)(COLOR_INFOBK + 1),
                                         NULL);

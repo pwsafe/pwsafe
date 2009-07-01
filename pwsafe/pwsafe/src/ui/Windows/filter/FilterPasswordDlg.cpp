@@ -24,7 +24,7 @@ IMPLEMENT_DYNAMIC(CFilterPasswordDlg, CFilterBaseDlg)
 
 CFilterPasswordDlg::CFilterPasswordDlg(CWnd* pParent /*=NULL*/)
   : CFilterBaseDlg(CFilterPasswordDlg::IDD, pParent),
-  m_case(BST_UNCHECKED), m_string(_T("")), m_num1(0),
+  m_case(BST_UNCHECKED), m_string(L""), m_num1(0),
   m_maxDays(2)
 {
 }

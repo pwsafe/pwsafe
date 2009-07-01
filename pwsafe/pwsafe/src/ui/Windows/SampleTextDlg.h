@@ -19,7 +19,7 @@ class CSampleTextDlg : public CPWDialog
   DECLARE_DYNAMIC(CSampleTextDlg)
 
 public:
-  CSampleTextDlg(CWnd* pParent = NULL, CString sampletext = _T(""));
+  CSampleTextDlg(CWnd* pParent = NULL, CString sampletext = L"");
   virtual ~CSampleTextDlg();
 
   // Dialog Data

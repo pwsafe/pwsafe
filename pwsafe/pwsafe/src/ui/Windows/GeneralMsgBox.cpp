@@ -133,7 +133,7 @@ INT_PTR CGeneralMsgBox::DoModal()
 
 // Add a button
 void CGeneralMsgBox::AddButton(UINT uIDC,           // button command ID
-                               LPCTSTR pszText,     // button text
+                               LPCWSTR pszText,     // button text
                                BOOL bIsDefault,     // set the button as default
                                BOOL bIsEscape)      // return this command if user press escape
 {
@@ -176,7 +176,7 @@ BOOL CGeneralMsgBox::SetMsg(UINT uMsgId)
   return m_strMsg.LoadString(uMsgId);
 }
 
-BOOL CGeneralMsgBox::SetMsg(LPCTSTR pszMsg)
+BOOL CGeneralMsgBox::SetMsg(LPCWSTR pszMsg)
 {
   m_strMsg = pszMsg;
   return TRUE;
@@ -212,14 +212,14 @@ void CGeneralMsgBox::SetIcon(UINT uIcon)
   SetIcon(AfxGetApp()->LoadIcon(uIcon));
 }
 
-void CGeneralMsgBox::SetStandardIcon(LPCTSTR pszIconName)
+void CGeneralMsgBox::SetStandardIcon(LPCWSTR pszIconName)
 {
   SetIcon(AfxGetApp()->LoadStandardIcon(pszIconName));
 }
 
 void CGeneralMsgBox::SetStandardIcon(UINT uIcon)
 {
-  LPCTSTR pszIconName;
+  LPCWSTR pszIconName;
   switch (uIcon) {
     case MB_ICONEXCLAMATION:   // Also: MB_ICONWARNING
       pszIconName = IDI_WARNING;

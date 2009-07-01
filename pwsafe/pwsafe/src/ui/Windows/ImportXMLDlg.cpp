@@ -66,14 +66,14 @@ void CImportXMLDlg::OnYesGroup()
 void CImportXMLDlg::OnHelp() 
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/importxml.html");
-  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/importxml.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CImportXMLDlg::OnOK() 
 {
   if (m_group == 0) {
-    m_groupName = _T("");
+    m_groupName = L"";
     UpdateData(FALSE);
   } else {
     GetDlgItemText(IDC_GROUP_NAME,m_groupName);
