@@ -23,6 +23,8 @@
 ////@begin includes
 ////@end includes
 #include <utility> // for make_pair
+#include <vector>
+
 #include "PWStree.h"
 #include "pwsdca.h"
 
@@ -165,7 +167,7 @@ bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,
       si = ti;
       return true;
     }
-    ti = GetNextChild(ti, cookie);
+    ti = GetNextSibling(ti);
   }
   return false;
 }
@@ -202,13 +204,44 @@ wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
   return disp;
 }
 
+wxString PWSTreeCtrl::GetPath(const wxTreeItemId &node) const
+{
+  wxString retval;
+  std::vector<wxString> v;
+  const wxTreeItemId root = GetRootItem();
+  wxTreeItemId parent = GetItemParent(node);
+
+  while (parent != root) {
+    v.push_back(GetItemText(parent));
+    parent = GetItemParent(parent);
+  }
+  std::vector<wxString>::reverse_iterator iter;
+  for(iter = v.rbegin(); iter != v.rend(); iter++) {
+    retval += *iter;
+    if ((iter + 1) != v.rend())
+      retval += _(".");
+  }
+  return retval;
+}
+
 void PWSTreeCtrl::UpdateItem(const CItemData &item)
 {
-  // XXX fails if the item's *group* has changed. Grrr.
   const wxTreeItemId node = Find(item);
   if (node.IsOk()) {
-    const wxString disp = ItemDisplayString(item);
-    SetItemText(node, disp);
+    const wxString oldGroup = GetPath(node);
+    const wxString newGroup = item.GetGroup().c_str();
+    if (oldGroup == newGroup) {
+      const wxString disp = ItemDisplayString(item);
+      SetItemText(node, disp);
+    } else { // uh-oh - group's changed
+      uuid_array_t uuid;
+      item.GetUUID(uuid);
+      // remove old item
+      m_item_map.erase(CUUIDGen(uuid));
+      Delete(node);
+      // add new group
+      AddItem(item);
+    }
     Update();
   }
 }

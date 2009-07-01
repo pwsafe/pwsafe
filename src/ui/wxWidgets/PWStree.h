@@ -98,6 +98,7 @@ public:
                     const StringX &s, wxTreeItemId &si);
   wxTreeItemId AddGroup(const StringX &group);
   wxString ItemDisplayString(const CItemData &item) const;
+  wxString GetPath(const wxTreeItemId &node) const;
 ////@begin PWSTreeCtrl member variables
 ////@end PWSTreeCtrl member variables
   PWScore &m_core;
