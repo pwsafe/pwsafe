@@ -546,3 +546,7 @@
 #define IDS_VKBDFONT                    5709
 #define IDS_OSKFONT                     5710
 #define IDS_USRFONT                     5711
+#define IDS_MD_MSG1                     5712
+#define IDS_MD_MSG2                     5713
+#define IDS_MD_MSG3                     5714
+#define IDS_MD_CAPTION                  5715

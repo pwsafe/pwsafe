@@ -16,6 +16,11 @@ Vasily for reporting and sending the patches for this.
 
 New Features for 3.18
 =====================
+[] Add minidump support for release builds so that we can try to solve
+issues with more information than Windows normally provides.
+
+New Features for 3.18
+=====================
 [2793283] Allow entry to override doubleclick setting.
 [2793280] Browse+Autotype added to configurable double click actions.
 [] Implement Virtual Keyboards for multilingual passphrase entry.
