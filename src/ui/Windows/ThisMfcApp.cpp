@@ -52,6 +52,14 @@
 
 #include <vector>
 
+// Only produce minidumps in release code
+#ifndef _DEBUG
+#include "Dbghelp.h"
+void InstallFaultHandler(const int major, const int minor, const int build,
+                         const TCHAR * revision, const DWORD dwTimeStamp);
+void RemoveFaultHandler();
+#endif
+
 using namespace std;
 
 #ifdef _DEBUG
@@ -72,9 +80,13 @@ END_MESSAGE_MAP()
 
 static MFCReporter aReporter;
 
-//#ifdef _DEBUG
-//static CMemoryState oldMemState, newMemState, diffMemState;
-//#endif
+#ifndef _DEBUG
+extern wchar_t *wcRevision;
+extern wchar_t *wcMsg1;
+extern wchar_t *wcMsg2;
+extern wchar_t *wcMsg3;
+extern wchar_t *wcCaption;
+#endif
 
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
@@ -87,6 +99,46 @@ ThisMfcApp::ThisMfcApp() :
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
   m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false)
 {
+  // Get application version information
+  GetApplicationVersionData();
+
+  // Only produce minidumps in release code
+#ifndef _DEBUG
+  // ONLY add minidump generation to Release versions!
+  HMODULE module = GetModuleHandle(NULL);
+  DWORD timestamp = GetTimestampForLoadedLibrary(module);
+
+  DWORD dwMajorMinor = GetFileVersionMajorMinor();
+  DWORD dwBuildRevision = GetFileVersionBuildRevision();
+
+  int iMajor(0), iMinor(0), iBuild(0);
+  if (dwMajorMinor > 0) {
+    iMajor = HIWORD(dwMajorMinor);
+    iMinor = LOWORD(dwMajorMinor);
+    iBuild = HIWORD(dwBuildRevision);
+  }
+
+  CString csFileVersionString, csRevision(L"");
+  csFileVersionString = GetFileVersionString();
+  int revIndex = csFileVersionString.ReverseFind(L',');
+  if (revIndex >= 0) {
+    int len = csFileVersionString.GetLength();
+    csRevision = csFileVersionString.Right(len - revIndex - 1);
+    csRevision.Trim();
+  }
+
+  // Don't show the standard Application error box - we will handle it
+  // Note, there is no way to 'Add' an error mode. Only way is to
+  // change it twice, first returns previous state, second adds
+  // what we want.
+  DWORD dwMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
+  SetErrorMode(dwMode | SEM_NOGPFAULTERRORBOX);
+
+  LPTSTR revision = csRevision.GetBuffer(csRevision.GetLength() + 1);
+  InstallFaultHandler(iMajor, iMinor, iBuild, revision, timestamp);
+  csRevision.ReleaseBuffer();
+#endif
+
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
   // Double check that *_ENDIAN has been correctly set!
@@ -144,14 +196,10 @@ ThisMfcApp::~ThisMfcApp()
   // here, and (2) is irrelevant for HH_CLOSE_ALL, so we call ::HtmlHelp
   ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 #endif
-//#ifdef _DEBUG
-//  newMemState.Checkpoint();
-//  if (diffMemState.Difference(oldMemState, newMemState)) {
-//    TRACE(L"Memory leaked!\n");
-//    diffMemState.DumpAllObjectsSince();
-//    return;
-//  }
-//#endif
+
+#ifndef _DEBUG
+  RemoveFaultHandler();
+#endif
 }
 
 #if !defined(POCKET_PC)
@@ -584,9 +632,6 @@ BOOL ThisMfcApp::InitInstance()
   // Command line parsing MUST be done before the first PWSprefs lookup!
   // (since user/host/config file may be overriden!)
   bool allDone = false;
-  
-  // Get application version information
-  GetApplicationVersionData();
 
   LoadLocalizedStuff();
 

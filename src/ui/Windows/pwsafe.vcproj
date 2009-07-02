@@ -292,12 +292,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib msxml6.lib"
+        AdditionalOptions="/OPT:REF"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib dbghelp.lib htmlhelp.lib msxml6.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;;..\..\bin\Release"
-				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
+				GenerateDebugInformation="true"
+        ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -719,12 +721,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib libexpatwMT.lib"
+        AdditionalOptions="/OPT:REF"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib dbghelp.lib htmlhelp.lib libexpatwMT.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(ExpatDir)\lib&quot;;..\..\bin\Release"
-				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
+				GenerateDebugInformation="true"
+        ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -822,12 +826,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib msxml6.lib"
+        AdditionalOptions="/OPT:REF"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib dbghelp.lib htmlhelp.lib msxml6.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(MSXML60SDKDir)\lib&quot;;..\..\bin\Release"
-				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
+				GenerateDebugInformation="true"
+        ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				GenerateMapFile="true"
 				MapFileName="$(OutDir)\$(TargetName).map"
 				SubSystem="2"
@@ -927,12 +933,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib htmlhelp.lib xerces-c_static_3.lib"
+        AdditionalOptions="/OPT:REF"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib dbghelp.lib htmlhelp.lib xerces-c_static_3.lib"
 				OutputFile="..\..\bin\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;..\..\lib\$(ConfigurationName)&quot;;&quot;$(HTMLWSDir)\lib&quot;;&quot;$(XercesDir)\lib&quot;;..\..\bin\Release"
-				ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
+				GenerateDebugInformation="true"
+        ProgramDatabaseFile="..\..\bin\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -1388,6 +1396,10 @@
 			</File>
 			<File
 				RelativePath=".\VirtualKeyboard\VKeyBoardDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Win32FaultHandler.cpp"
 				>
 			</File>
 		</Filter>
