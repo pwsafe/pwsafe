@@ -97,7 +97,8 @@ ThisMfcApp::ThisMfcApp() :
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
-  m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false)
+  m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
+  m_bPermitTestdump(false)
 {
   // Get application version information
   GetApplicationVersionData();
@@ -483,8 +484,20 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
     bool fileGiven = false;
 
     while (arg != argvec.end()) {
-      // everything starting with '-' is a flag,
-      // everything else is the name of a file.
+      // Everything starting with '-' is a normal flag,
+      // everything else is the name of a file, unless an
+      // "extended flags" which starts with '--' and so must
+      // be dealt with first.
+      if ((*arg).Left(2) == L"--") {
+        // Extended flags must be in full (no abbreviations)
+        // If extended flag is not recognised - just ignore
+        // If a normal flag is not recognised - show Usage
+        if ((*arg) == "--testdump") {
+          m_bPermitTestdump = true;
+          arg++;
+          continue;
+        }
+      }
       if ((*arg)[0] == L'-') {
         switch ((*arg)[1]) {
         case L'E': case L'e':

@@ -32,6 +32,7 @@ protected:
   virtual BOOL OnInitDialog();
   // Generated message map functions
   //{{AFX_MSG(CAboutDlg)
+  afx_msg void OnTakeTestdump();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

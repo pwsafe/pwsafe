@@ -51,6 +51,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CPWDialog)
+  ON_BN_CLICKED(IDC_TAKETESTDUMP, OnTakeTestdump)
 END_MESSAGE_MAP()
 
 BOOL CAboutDlg::OnInitDialog()
@@ -209,3 +210,24 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
   CheckVersion vh(m_nMajor, m_nMinor, m_nBuild);
   return vh.CheckLatestVersion(LPCWSTR(latest_xml), latest);
 }
+
+// The following is to stop the optimizing compiler removing
+// the 'designed' error.
+#pragma optimize("", off)
+
+// Take Test Dump
+void CAboutDlg::OnTakeTestdump()
+{
+  //Create an error
+  char *p = (char *)0xBADC0DE; // Ummm!!, a dirty bad thing
+
+  // Create a access violation
+  char c = *p;
+
+  // Code TRACE macro just to stop warning local variable is not referenced.
+  // It will never be executed!
+  TRACE(L"Error %c\n", c);
+}
+
+//Put things back!
+#pragma optimize("", on)

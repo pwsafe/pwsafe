@@ -67,5 +67,60 @@ non-Unicode versions of all three implementations are in progress.  Work
 is also needed to ensure that error processing is correct and that associated
 messages are produced correctly.</p>
 
+<h3>Minidump Production</h3>
+
+<p>In order to help debug user problems when Windows justs says "there has
+been an error", a "Windows Unhandled Fault Handler" has been added. This will
+create a minidump, which can then be used to find where the error took place
+and, hopefully, why.</p>
+
+<p>An extra "extended" Command Line flag of "--testdump" has been introduced
+for two reasons. Firstly, it allows the developer to test the minidump process,
+which is only available in the Release version of the executable and, secondly,
+allows the translators to check that the error screen displays as they wish.
+<u>Note to Translators:</u> the error screen is a basic Windows function and has a
+fixed width. This is the reason why the minidump file name and directory have been
+split onto separate lines.</p>
+
+<p><u>Note: Extended flags start with two minus signs ('--') and must be specified
+in full - i.e. no abbreviations.  They are not displayed in the Usage notes for
+the normal users and no error message or display is shown if they are not
+recognised.</u></p>
+
+<p>With this flag set, there will appear an extra button in the bottom right
+hand corner of the "About PasswordSafe" dialog.  Click it, and a minidump should
+be produced.<p>
+
+<p>In order to process the minimdump, either the free Microsoft Windbg program can be
+used (see Microsoft's site for details), or Visual Studio (VS) can be used.  In the
+latter case (and probably the former too!):
+<ol>
+<li>You need the source corresponding to the failing release version.  This should be
+available from SourceForge web site either in the normal Download section or based
+on the revision number associated with that release. Without the corresponding source,
+VS can only show Windows source and line numbes in PasswordSafe source.  With the
+corresponding source, VS can show you the exact line in PasswordSafe where the error
+took place and also the other statements within PasswordSafe as you follow the stack
+trace.</li>
+<li>You need the Program Debug Database (pwsafe.pdb) associated with the failing release.
+This is not normally uploaded to the SourceForge web site with the release
+package.  It is large (~11.5MB or ~3MB compressed).  Since this must correspond
+to the PasswordSafe executable that had the error, maybe this and, possibly, the
+associated Link Map can be uploaded to a Developers section on this web site to aid
+all developers.</li>
+<li>You should probably maintain the directory structure of the project as described
+in the source downloaded from SourceForge and place the Program Debug Database file
+in the '..\src\bin\releasem' directory.</li>
+<li>Save the user's minidump file on your PC.  Use VS to Open this <u>as a
+Project</u> (e.g. File->Open->Project/Solution).</li>
+<li>In the Debugging Options, specify the directory containing the corresponding PDB file.
+(Go to: Tools->Options->Debugging->Symbols and add this directory in the section
+entitled "Symbol file (.pdb) locations:").</li>
+<li>Press F5 to start debugging and away you go.</li>
+</ol>
+
+<br>
+<br>
+<br>
 </body>
 </html>

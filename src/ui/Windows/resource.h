@@ -640,6 +640,7 @@
 #define IDC_STATIC_PWH_ADD              1381
 #define IDC_STATIC_PWH_EDIT             1382
 #define IDC_INFO                        1383
+#define IDC_TAKETESTDUMP                1384
 
 // Next default values for new objects
 // 
@@ -647,7 +648,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        474
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1384
+#define _APS_NEXT_CONTROL_VALUE         1385
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif
