@@ -60,11 +60,11 @@ public:
   void ShowIcon() {m_TrayIcon->ShowIcon();}
   void HideIcon() {m_TrayIcon->HideIcon();}
 
-  afx_msg void OnHelp();
   enum STATE {LOCKED, UNLOCKED, CLOSED};
   void SetSystemTrayState(STATE);
   STATE GetSystemTrayState() const {return m_TrayLockedState;}
   int SetClosedTrayIcon(int &icon, bool bSet = true);
+
   bool WasHotKeyPressed() {return m_HotKeyPressed;}
   void SetHotKeyPressed(bool state) {m_HotKeyPressed = state;}
   int FindMenuItem(CMenu* Menu, UINT MenuID);
@@ -77,6 +77,9 @@ public:
   DWORD GetFileVersionBuildRevision() const {return m_dwBuildRevision;}
   void SetACCELTableCreated() {m_bACCEL_Table_Created = true;}
   bool NoSysEnvWarnings() const {return m_noSysEnvWarnings;}
+  bool PermitTestdump() const {return m_bPermitTestdump;}
+
+  afx_msg void OnHelp();
 
   DECLARE_MESSAGE_MAP()
 
@@ -102,6 +105,7 @@ private:
   CString m_csCopyrightString;
   CString m_csHelpFile;
   bool m_noSysEnvWarnings; // set by '-q' command line argument
+  bool m_bPermitTestdump;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
