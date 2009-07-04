@@ -98,7 +98,6 @@ bool AddEditPropSheet::Create( wxWindow* parent, wxWindowID id, const wxString& 
   return true;
 }
 
-
 /*!
  * AddEditPropSheet destructor
  */
@@ -121,6 +120,7 @@ void AddEditPropSheet::Init()
   m_PasswordCtrl = NULL;
   m_ShowHideCtrl = NULL;
   m_Password2Ctrl = NULL;
+  m_DCAcomboBox = NULL;
 ////@end AddEditPropSheet member initialisation
 }
 
@@ -244,9 +244,18 @@ void AddEditPropSheet::CreateControls()
   itemCheckBox42->SetValue(false);
   itemBoxSizer41->Add(itemCheckBox42, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxArrayString itemComboBox43Strings;
-  wxComboBox* itemComboBox43 = new wxComboBox( itemPanel33, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, itemComboBox43Strings, wxCB_DROPDOWN );
-  itemBoxSizer41->Add(itemComboBox43, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxArrayString m_DCAcomboBoxStrings;
+  m_DCAcomboBoxStrings.Add(_("Auto Type"));
+  m_DCAcomboBoxStrings.Add(_("Browse"));
+  m_DCAcomboBoxStrings.Add(_("Browse + Auto Type"));
+  m_DCAcomboBoxStrings.Add(_("Copy Notes"));
+  m_DCAcomboBoxStrings.Add(_("Copy Password"));
+  m_DCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
+  m_DCAcomboBoxStrings.Add(_("Copy Username"));
+  m_DCAcomboBoxStrings.Add(_("View/Edit Entry"));
+  m_DCAcomboBoxStrings.Add(_("Execute Run command"));
+  m_DCAcomboBox = new wxComboBox( itemPanel33, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
+  itemBoxSizer41->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer44Static = new wxStaticBox(itemPanel33, wxID_ANY, _("Password History"));
   wxStaticBoxSizer* itemStaticBoxSizer44 = new wxStaticBoxSizer(itemStaticBoxSizer44Static, wxVERTICAL);
@@ -442,6 +451,9 @@ void AddEditPropSheet::CreateControls()
   itemTextCtrl13->SetValidator( wxGenericValidator(& m_user) );
   itemTextCtrl26->SetValidator( wxGenericValidator(& m_url) );
   itemTextCtrl32->SetValidator( wxGenericValidator(& m_notes) );
+  itemTextCtrl37->SetValidator( wxGenericValidator(& m_autotype) );
+  itemTextCtrl39->SetValidator( wxGenericValidator(& m_runcmd) );
+  itemCheckBox42->SetValidator( wxGenericValidator(& m_useDefaultDCA) );
 ////@end AddEditPropSheet content construction
 }
 
@@ -514,6 +526,39 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   wxWindow *goBtn = FindWindow(ID_GO_BTN);
   goBtn->Enable(!m_url.empty());
   m_notes = m_item.GetNotes().c_str();
+  m_autotype = m_item.GetAutoType().c_str();
+  m_runcmd = m_item.GetRunCommand().c_str();
+
+  // double-click action:
+
+  // following based on m_DCAcomboBoxStrings
+  // which is generated via DialogBlocks - unify these later
+  struct {short pv; wxString name;}
+  dcaMapping[] =
+    {{PWSprefs::DoubleClickAutoType, _("Auto Type")},
+     {PWSprefs::DoubleClickBrowse, _("Browse")},
+     {PWSprefs::DoubleClickBrowsePlus, _("Browse + Auto Type")},
+     {PWSprefs::DoubleClickCopyNotes, _("Copy Notes")},
+     {PWSprefs::DoubleClickCopyPassword, _("Copy Password")},
+     {PWSprefs::DoubleClickCopyPasswordMinimize, _("Copy Password + Minimize")},
+     {PWSprefs::DoubleClickCopyUsername, _("Copy Username")},
+     {PWSprefs::DoubleClickViewEdit, _("View/Edit Entry")},
+     {PWSprefs::DoubleClickRun, _("Execute Run command")},
+    };
+  short iDCA;
+  m_item.GetDCA(iDCA);
+  m_useDefaultDCA = (iDCA < PWSprefs::minDCA || iDCA > PWSprefs::maxDCA);
+  m_DCAcomboBox->Enable(!m_useDefaultDCA);
+  if (m_useDefaultDCA) {
+    iDCA = short(PWSprefs::GetInstance()->
+                 GetPref(PWSprefs::DoubleClickAction));
+  }
+  for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++)
+    if (iDCA == dcaMapping[i].pv) {
+      m_DCAcomboBox->SetValue(dcaMapping[i].name);
+      break;
+    }
+    
 }
 
 
@@ -662,14 +707,14 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       short iDCA;
       m_item.GetDCA(iDCA);
       // Check if modified
-      bIsModified = (group       != m_item.GetGroup().c_str()      ||
-                     m_title     != m_item.GetTitle().c_str()      ||
-                     m_user      != m_item.GetUser().c_str()       ||
-                     m_notes     != m_item.GetNotes().c_str()      ||
-                     m_url       != m_item.GetURL().c_str()        ||
+      bIsModified = (group        != m_item.GetGroup().c_str()      ||
+                     m_title      != m_item.GetTitle().c_str()      ||
+                     m_user       != m_item.GetUser().c_str()       ||
+                     m_notes      != m_item.GetNotes().c_str()      ||
+                     m_url        != m_item.GetURL().c_str()        ||
+                     m_autotype   != m_item.GetAutoType().c_str()   ||
+                     m_runcmd != m_item.GetRunCommand().c_str() ||
 #ifdef NOTYET
-                     m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
-                     m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
                      m_AEMD.DCA         != iDCA                        ||
                      m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
                      m_AEMD.locXTime    != m_AEMD.oldlocXTime          ||
@@ -692,14 +737,14 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
                        m_core.GetDefUsername().c_str() : m_user.c_str());
         m_item.SetNotes(m_notes.c_str());
         m_item.SetURL(m_url.c_str());
+        m_item.SetAutoType(m_autotype.c_str());
+        m_item.SetRunCommand(m_runcmd.c_str());
 #ifdef NOTYET
-        m_item.SetAutoType(m_AEMD.autotype);
         m_item.SetPWHistory(m_AEMD.PWHistory);
         if (m_AEMD.ipolicy == DEFAULT_POLICY)
           m_item.SetPWPolicy(_T(""));
         else
           m_item.SetPWPolicy(m_AEMD.pwp);
-        m_item.SetRunCommand(m_AEMD.runcommand);
         m_item.SetDCA(m_AEMD.DCA);
 #endif
       } // bIsModified
@@ -743,9 +788,9 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_item.SetNotes(m_notes.c_str());
       m_item.SetURL(m_url.c_str());
       m_item.SetPassword(password);
+      m_item.SetAutoType(m_autotype.c_str());
+      m_item.SetRunCommand(m_runcmd.c_str());
 #ifdef NOTYET
-      m_item.SetAutoType(m_AEMD.autotype);
-      m_item.SetRunCommand(m_AEMD.runcommand);
       m_item.SetDCA(m_AEMD.DCA);
 #endif
       time(&t);
