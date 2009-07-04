@@ -157,6 +157,15 @@ public:
   wxString GetNotes() const { return m_notes ; }
   void SetNotes(wxString value) { m_notes = value ; }
 
+  wxString GetAutotype() const { return m_autotype ; }
+  void SetAutotype(wxString value) { m_autotype = value ; }
+
+  wxString GetRuncmd() const { return m_runcmd ; }
+  void SetRuncmd(wxString value) { m_runcmd = value ; }
+
+  bool GetUseDefaultDCA() const { return m_useDefaultDCA ; }
+  void SetUseDefaultDCA(bool value) { m_useDefaultDCA = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -172,11 +181,15 @@ public:
   wxTextCtrl* m_PasswordCtrl;
   wxButton* m_ShowHideCtrl;
   wxTextCtrl* m_Password2Ctrl;
+  wxComboBox* m_DCAcomboBox;
 private:
   wxString m_title;
   wxString m_user;
   wxString m_url;
   wxString m_notes;
+  wxString m_autotype;
+  wxString m_runcmd;
+  bool m_useDefaultDCA; // Use Default Double Click Action?
   ////@end AddEditPropSheet member variables
   StringX m_password;
   bool m_isPWHidden;
