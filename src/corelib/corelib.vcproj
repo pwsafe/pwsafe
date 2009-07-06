@@ -210,7 +210,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
-        DebugInformationFormat="3"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -516,7 +516,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
-        DebugInformationFormat="3"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -594,7 +594,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
-        DebugInformationFormat="3"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -672,7 +672,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
-        DebugInformationFormat="3"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -794,6 +794,10 @@
 			</File>
 			<File
 				RelativePath=".\PWHistory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PWPolicy.cpp"
 				>
 			</File>
 			<File
@@ -1031,6 +1035,10 @@
 			</File>
 			<File
 				RelativePath=".\PWHistory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWPolicy.h"
 				>
 			</File>
 			<File
