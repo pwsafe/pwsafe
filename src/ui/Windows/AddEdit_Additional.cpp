@@ -179,7 +179,9 @@ BOOL CAddEdit_Additional::OnInitDialog()
     }
   }
 
-  if (M_DCA() < PWSprefs::minDCA || M_DCA() > PWSprefs::maxDCA) {
+  short iDCA;
+  m_item.GetDCA(iDCA);
+  if (iDCA < PWSprefs::minDCA || iDCA > PWSprefs::maxDCA) {
     short iDCA = (short)PWSprefs::GetInstance()->
                       GetPref(PWSprefs::DoubleClickAction);
     m_dblclk_cbox.SetCurSel(m_DCA_to_Index[iDCA]);

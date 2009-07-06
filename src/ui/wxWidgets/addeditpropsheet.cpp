@@ -582,70 +582,9 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& event )
 void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& event )
 {
   PWPolicy pwp;
-  StringX password;
-
   m_item.GetPWPolicy(pwp);
+  StringX password = pwp.MakeRandomPassword();
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  bool pwuselowercase, pwuseuppercase;
-  bool pwusedigits, pwusesymbols, pweasyvision, pwusehexdigits;
-  bool pwmakepronounceable;
-  int pwdefaultlength;
-  int pwdigitminlength, pwlowerminlength, pwsymbolminlength, pwupperminlength;
-
-  if (pwp.flags != 0) {
-    pwuselowercase = (pwp.flags & PWSprefs::PWPolicyUseLowercase) == 
-                      PWSprefs::PWPolicyUseLowercase;
-    pwuseuppercase = (pwp.flags & PWSprefs::PWPolicyUseUppercase) == 
-                      PWSprefs::PWPolicyUseUppercase;
-    pwusedigits = (pwp.flags & PWSprefs::PWPolicyUseDigits) == 
-                   PWSprefs::PWPolicyUseDigits;
-    pwusesymbols = (pwp.flags & PWSprefs::PWPolicyUseSymbols) == 
-                    PWSprefs::PWPolicyUseSymbols;
-    pwusehexdigits = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) == 
-                      PWSprefs::PWPolicyUseHexDigits;
-    pweasyvision = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) == 
-                    PWSprefs::PWPolicyUseEasyVision;
-    pwmakepronounceable = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) == 
-                           PWSprefs::PWPolicyMakePronounceable;
-    pwdefaultlength = pwp.length;
-    pwdigitminlength = pwp.digitminlength;
-    pwlowerminlength = pwp.lowerminlength;
-    pwsymbolminlength = pwp.symbolminlength;
-    pwupperminlength = pwp.upperminlength;
-  } else {
-    pwuselowercase = prefs->GetPref(PWSprefs::PWUseLowercase);
-    pwuseuppercase = prefs->GetPref(PWSprefs::PWUseUppercase);
-    pwusedigits = prefs->GetPref(PWSprefs::PWUseDigits);
-    pwusesymbols = prefs->GetPref(PWSprefs::PWUseSymbols);
-    pwusehexdigits = prefs->GetPref(PWSprefs::PWUseHexDigits);
-    pweasyvision = prefs->GetPref(PWSprefs::PWUseEasyVision);
-    pwmakepronounceable = prefs->GetPref(PWSprefs::PWMakePronounceable);
-    pwdefaultlength = prefs->GetPref(PWSprefs::PWDefaultLength);
-    pwdigitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-    pwlowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-    pwsymbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-    pwupperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-  }
-
-  UINT numlowercase(0), numuppercase(0), numdigits(0), numsymbols(0);
-  if (pwuselowercase)
-    numlowercase = (pwlowerminlength == 0) ? 1 : pwlowerminlength;
-  if (pwuseuppercase)
-    numuppercase = (pwupperminlength == 0) ? 1 : pwupperminlength;
-  if (pwusedigits)
-    numdigits = (pwdigitminlength == 0) ? 1 : pwdigitminlength;
-  if (pwusesymbols)
-    numsymbols = (pwsymbolminlength == 0) ? 1 : pwsymbolminlength;
- 
-  CPasswordCharPool pwchars(pwdefaultlength,
-                            numlowercase, numuppercase, numdigits, numsymbols,
-                            pwusehexdigits == TRUE,
-                            pweasyvision == TRUE,
-                            pwmakepronounceable == TRUE);
-
-  password = pwchars.MakePassword();
 
   PWSclip::SetData(password);
   m_password = password.c_str();
