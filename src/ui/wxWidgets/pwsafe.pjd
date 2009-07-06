@@ -10608,6 +10608,7 @@ Action:"</string>
                     <long name="title-mode">0</long>
                     <long name="locked">0</long>
                     <string name="proxy-type">"wbCheckBoxProxy"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnOverrideDCAClick|NONE||AddEditPropSheet"</string>
                     <string name="proxy-Id name">"ID_CHECKBOX"</string>
                     <long name="proxy-Id value">10100</long>
                     <string name="proxy-Name">""</string>
@@ -10793,6 +10794,7 @@ Action:"</string>
                     <long name="title-mode">0</long>
                     <long name="locked">0</long>
                     <string name="proxy-type">"wbCheckBoxProxy"</string>
+                    <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnKeepHistoryClick|NONE||AddEditPropSheet"</string>
                     <string name="proxy-Id name">"ID_CHECKBOX1"</string>
                     <long name="proxy-Id value">10102</long>
                     <string name="proxy-Name">""</string>

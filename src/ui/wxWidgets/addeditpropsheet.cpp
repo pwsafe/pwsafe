@@ -57,6 +57,10 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_BUTTON( ID_GO_BTN, AddEditPropSheet::OnGoButtonClick )
 
+  EVT_CHECKBOX( ID_CHECKBOX, AddEditPropSheet::OnOverrideDCAClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX1, AddEditPropSheet::OnKeepHistoryClick )
+
 ////@end AddEditPropSheet event table entries
 
 END_EVENT_TABLE()
@@ -108,6 +112,20 @@ AddEditPropSheet::~AddEditPropSheet()
 ////@end AddEditPropSheet destruction
 }
 
+// following based on m_DCAcomboBoxStrings
+// which is generated via DialogBlocks - unify these later
+static struct {short pv; wxString name;}
+  dcaMapping[] =
+    {{PWSprefs::DoubleClickAutoType, _("Auto Type")},
+     {PWSprefs::DoubleClickBrowse, _("Browse")},
+     {PWSprefs::DoubleClickBrowsePlus, _("Browse + Auto Type")},
+     {PWSprefs::DoubleClickCopyNotes, _("Copy Notes")},
+     {PWSprefs::DoubleClickCopyPassword, _("Copy Password")},
+     {PWSprefs::DoubleClickCopyPasswordMinimize, _("Copy Password + Minimize")},
+     {PWSprefs::DoubleClickCopyUsername, _("Copy Username")},
+     {PWSprefs::DoubleClickViewEdit, _("View/Edit Entry")},
+     {PWSprefs::DoubleClickRun, _("Execute Run command")},
+    };
 
 /*!
  * Member initialisation
@@ -530,35 +548,20 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_runcmd = m_item.GetRunCommand().c_str();
 
   // double-click action:
-
-  // following based on m_DCAcomboBoxStrings
-  // which is generated via DialogBlocks - unify these later
-  struct {short pv; wxString name;}
-  dcaMapping[] =
-    {{PWSprefs::DoubleClickAutoType, _("Auto Type")},
-     {PWSprefs::DoubleClickBrowse, _("Browse")},
-     {PWSprefs::DoubleClickBrowsePlus, _("Browse + Auto Type")},
-     {PWSprefs::DoubleClickCopyNotes, _("Copy Notes")},
-     {PWSprefs::DoubleClickCopyPassword, _("Copy Password")},
-     {PWSprefs::DoubleClickCopyPasswordMinimize, _("Copy Password + Minimize")},
-     {PWSprefs::DoubleClickCopyUsername, _("Copy Username")},
-     {PWSprefs::DoubleClickViewEdit, _("View/Edit Entry")},
-     {PWSprefs::DoubleClickRun, _("Execute Run command")},
-    };
-  short iDCA;
-  m_item.GetDCA(iDCA);
-  m_useDefaultDCA = (iDCA < PWSprefs::minDCA || iDCA > PWSprefs::maxDCA);
+  m_item.GetDCA(m_DCA);
+  short iDCA = m_DCA; // save exact value for OnOK
+  m_useDefaultDCA = (m_DCA < PWSprefs::minDCA || m_DCA > PWSprefs::maxDCA);
   m_DCAcomboBox->Enable(!m_useDefaultDCA);
   if (m_useDefaultDCA) {
-    iDCA = short(PWSprefs::GetInstance()->
+    m_DCA = short(PWSprefs::GetInstance()->
                  GetPref(PWSprefs::DoubleClickAction));
   }
   for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++)
-    if (iDCA == dcaMapping[i].pv) {
+    if (m_DCA == dcaMapping[i].pv) {
       m_DCAcomboBox->SetValue(dcaMapping[i].name);
       break;
     }
-    
+  m_DCA = iDCA; // for OnOK
 }
 
 
@@ -652,9 +655,9 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
                      m_notes      != m_item.GetNotes().c_str()      ||
                      m_url        != m_item.GetURL().c_str()        ||
                      m_autotype   != m_item.GetAutoType().c_str()   ||
-                     m_runcmd != m_item.GetRunCommand().c_str() ||
+                     m_runcmd != m_item.GetRunCommand().c_str()     ||
+                     m_DCA        != iDCA                           ||
 #ifdef NOTYET
-                     m_AEMD.DCA         != iDCA                        ||
                      m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
                      m_AEMD.locXTime    != m_AEMD.oldlocXTime          ||
                      m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
@@ -684,8 +687,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
           m_item.SetPWPolicy(_T(""));
         else
           m_item.SetPWPolicy(m_AEMD.pwp);
-        m_item.SetDCA(m_AEMD.DCA);
 #endif
+        m_item.SetDCA(m_DCA);
       } // bIsModified
 
       time(&t);
@@ -729,9 +732,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_item.SetPassword(password);
       m_item.SetAutoType(m_autotype.c_str());
       m_item.SetRunCommand(m_runcmd.c_str());
-#ifdef NOTYET
-      m_item.SetDCA(m_AEMD.DCA);
-#endif
+      m_item.SetDCA(m_DCA);
       time(&t);
       m_item.SetCTime(t);
 #ifdef NOTYET
@@ -785,3 +786,29 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
   }
   EndModal(wxID_OK);
 }
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
+ */
+
+void AddEditPropSheet::OnKeepHistoryClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1 in AddEditPropSheet.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1 in AddEditPropSheet. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX
+ */
+
+void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& event )
+{
+  if (Validate() && TransferDataFromWindow()) {
+    m_DCAcomboBox->Enable(!m_useDefaultDCA);
+  }
+}
+

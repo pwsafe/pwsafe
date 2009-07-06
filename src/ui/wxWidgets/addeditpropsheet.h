@@ -141,6 +141,12 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
   void OnGoButtonClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX
+  void OnOverrideDCAClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
+  void OnKeepHistoryClick( wxCommandEvent& event );
+
 ////@end AddEditPropSheet event handler declarations
   void OnOk(wxCommandEvent& event);
 ////@begin AddEditPropSheet member function declarations
@@ -190,6 +196,7 @@ private:
   wxString m_autotype;
   wxString m_runcmd;
   bool m_useDefaultDCA; // Use Default Double Click Action?
+  short m_DCA;
   ////@end AddEditPropSheet member variables
   StringX m_password;
   bool m_isPWHidden;
