@@ -298,6 +298,7 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_PASSWORD);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
+      break;
     default:
       ASSERT(FALSE);
   }
