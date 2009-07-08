@@ -60,7 +60,10 @@ void CKeySend::NewSendChar(wchar_t c)
 {
   UINT status;
   INPUT input[2];
-  input[0].type = INPUT_KEYBOARD;
+  input[0].ki.time = input[1].ki.time = 0; //probably needed
+  input[0].ki.dwExtraInfo = input[1].ki.dwExtraInfo = 0; //probably not
+  
+  input[0].type = input[1].type = INPUT_KEYBOARD;
   switch (c) {
     case L'\t':
     case L'\r':
@@ -122,9 +125,9 @@ void CKeySend::OldSendChar(wchar_t c)
   }
 
   if (ctrlDown) {
-
     //send a ctrl up
-    keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
+    keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale),
+                KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
     ctrlDown=false;
   } 
 
@@ -134,6 +137,20 @@ void CKeySend::OldSendChar(wchar_t c)
     altDown=false;       
   } 
   ::Sleep(m_delay);
+}
+
+static void newSendVK(WORD vk)
+{
+  UINT status;
+  INPUT input[2];
+  input[0].ki.time = input[1].ki.time = 0; //probably needed
+  input[0].ki.dwExtraInfo = input[1].ki.dwExtraInfo = 0; //probably not
+  input[0].type = input[1].type = INPUT_KEYBOARD;
+  input[0].ki.wVk = input[1].ki.wVk = vk;
+  input[0].ki.dwFlags = 0; input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+  status = ::SendInput(2, input, sizeof(INPUT));
+  if (status != 2)
+    TRACE(L"newSendVK: SendInput failed status=%d\n", status);
 }
 
 void CKeySend::ResetKeyboardState()
@@ -147,14 +164,17 @@ void CKeySend::ResetKeyboardState()
 
   while((keys[VK_CONTROL] & 0x80)!=0){
     // VK_CONTROL is down so send a key down and an key up...
-
-    keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0);
-
-    keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);
+    if (m_isOldOS) {
+      keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale),
+                  KEYEVENTF_EXTENDEDKEY, 0);
+      keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale),
+                  KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);
+    } else {
+      newSendVK(VK_CONTROL); // Send Ctrl keydown/keyup via SendInput
+    }
 
     //now we let the messages be processed by the applications to set the keyboard state
     MSG msg;
-    //BOOL m_bCancel=false;
     while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
       // so there is a message process it.
       if (!AfxGetThread()->PumpMessage())
@@ -164,7 +184,7 @@ void CKeySend::ResetKeyboardState()
     Sleep(10);
     memset((void*)&keys,0,256);
     GetKeyboardState((LPBYTE)&keys);
-  }
+  } // while
 }
 
 // SetAndDelay allows users to put \d500\d10 in autotype and
@@ -188,10 +208,14 @@ void CKeySend::SetCapsLock(const bool bState)
   GetKeyboardState((LPBYTE)&keyState);
   if ((bState && !(keyState[VK_CAPITAL] & 1)) ||
      (!bState && (keyState[VK_CAPITAL] & 1))) {
+    if (m_isOldOS) {
       // Simulate a key press
       keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | 0, 0);
       // Simulate a key release
       keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+    } else {
+      newSendVK(VK_CAPITAL); // Send CapLock keydown/keyup via SendInput
+    }
   }
 
   MSG msg;
