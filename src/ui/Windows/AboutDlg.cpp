@@ -102,6 +102,11 @@ BOOL CAboutDlg::OnInitDialog()
 
   m_RECExWebSite.SetWindowText(CString(MAKEINTRESOURCE(IDS_VISIT_WEBSITE)));
 
+  if (app.PermitTestdump()) {
+    GetDlgItem(IDC_TAKETESTDUMP)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_TAKETESTDUMP)->EnableWindow();
+  }
+
   return TRUE;
 }
 
