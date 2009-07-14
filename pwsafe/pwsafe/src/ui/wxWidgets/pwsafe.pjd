@@ -7,7 +7,7 @@
     <string name="author">""</string>
     <string name="description">""</string>
     <string name="xrc_filename">""</string>
-    <bool name="convert_images_to_xpm">0</bool>
+    <long name="image_mode">0</long>
     <bool name="inline_images">0</bool>
     <bool name="generate_cpp_for_xrc">0</bool>
     <long name="working_mode">1</long>
@@ -142,6 +142,7 @@
         <string name="Modularity">"Modular"</string>
         <string name="GUI mode">"GUI"</string>
         <string name="Toolkit">"wxGTK+2"</string>
+        <string name="Processor type">"32-bit"</string>
         <string name="Runtime linking">"Dynamic"</string>
         <string name="Use exceptions">"Yes"</string>
         <string name="Use ODBC">"No"</string>
@@ -202,6 +203,7 @@
           <string name="Modularity">"Modular"</string>
           <string name="GUI mode">"GUI"</string>
           <string name="Toolkit">"wxGTK+2"</string>
+          <string name="Processor type">"32-bit"</string>
           <string name="Runtime linking">"Dynamic"</string>
           <string name="Use exceptions">"Yes"</string>
           <string name="Use ODBC">"No"</string>
@@ -272,6 +274,7 @@
           <string name="Modularity">"Modular"</string>
           <string name="GUI mode">"GUI"</string>
           <string name="Toolkit">"wxGTK+2"</string>
+          <string name="Processor type">"32-bit"</string>
           <string name="Runtime linking">"Dynamic"</string>
           <string name="Use exceptions">"Yes"</string>
           <string name="Use ODBC">"No"</string>
@@ -342,6 +345,7 @@
           <string name="Modularity">"Modular"</string>
           <string name="GUI mode">"GUI"</string>
           <string name="Toolkit">"wxGTK+2"</string>
+          <string name="Processor type">"32-bit"</string>
           <string name="Runtime linking">"Dynamic"</string>
           <string name="Use exceptions">"Yes"</string>
           <string name="Use ODBC">"No"</string>
@@ -412,6 +416,7 @@
           <string name="Modularity">"Modular"</string>
           <string name="GUI mode">"GUI"</string>
           <string name="Toolkit">"wxGTK+2"</string>
+          <string name="Processor type">"32-bit"</string>
           <string name="Runtime linking">"Dynamic"</string>
           <string name="Use exceptions">"Yes"</string>
           <string name="Use ODBC">"No"</string>
@@ -8331,6 +8336,8 @@ Type the new combination once again to confirm it."</string>
           <string name="variable-4">"m_autotype|wxString|Autotype||2|0|"</string>
           <string name="variable-5">"m_runcmd|wxString|Runcmd||2|0|"</string>
           <string name="variable-6">"m_useDefaultDCA|bool|UseDefaultDCA||2|0|Use Default Double Click Action?"</string>
+          <string name="variable-7">"m_maxPWHist|int|MaxPWHist||2|0|How many passwords to keep"</string>
+          <string name="variable-8">"m_keepPWHist|bool|KeepPWHist||2|0|"</string>
           <string name="proxy-Id name">"ID_ADDEDITPROPSHEET"</string>
           <long name="proxy-Id value">10083</long>
           <string name="proxy-Class">"AddEditPropSheet"</string>
@@ -10809,7 +10816,7 @@ Action:"</string>
                     <bool name="proxy-Initial value">0</bool>
                     <string name="proxy-Help text">""</string>
                     <string name="proxy-Tooltip text">""</string>
-                    <string name="proxy-Data variable">""</string>
+                    <string name="proxy-Data variable">"m_keepPWHist"</string>
                     <string name="proxy-Data validator">""</string>
                     <string name="proxy-Data source">""</string>
                     <string name="proxy-Data class name">""</string>
@@ -10879,8 +10886,8 @@ Action:"</string>
                     <bool name="proxy-Hidden">0</bool>
                     <bool name="proxy-Enabled">1</bool>
                     <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                    <string name="proxy-Data variable">""</string>
-                    <string name="proxy-Data validator">""</string>
+                    <string name="proxy-Data variable">"m_maxPWHist"</string>
+                    <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                     <string name="proxy-Data source">""</string>
                     <string name="proxy-Data class name">""</string>
                     <string name="proxy-Data class implementation filename">""</string>
