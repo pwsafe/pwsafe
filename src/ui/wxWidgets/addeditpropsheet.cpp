@@ -548,20 +548,21 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_runcmd = m_item.GetRunCommand().c_str();
 
   // double-click action:
-  m_item.GetDCA(m_DCA);
-  short iDCA = m_DCA; // save exact value for OnOK
-  m_useDefaultDCA = (m_DCA < PWSprefs::minDCA || m_DCA > PWSprefs::maxDCA);
+  short iDCA;
+  m_item.GetDCA(iDCA);
+  m_useDefaultDCA = (iDCA < PWSprefs::minDCA || iDCA > PWSprefs::maxDCA);
   m_DCAcomboBox->Enable(!m_useDefaultDCA);
   if (m_useDefaultDCA) {
     m_DCA = short(PWSprefs::GetInstance()->
-                 GetPref(PWSprefs::DoubleClickAction));
+                  GetPref(PWSprefs::DoubleClickAction));
+  } else {
+    m_DCA = iDCA;
   }
   for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++)
     if (m_DCA == dcaMapping[i].pv) {
       m_DCAcomboBox->SetValue(dcaMapping[i].name);
       break;
     }
-  m_DCA = iDCA; // for OnOK
 }
 
 
@@ -646,8 +647,20 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
     switch (m_type) {
     case EDIT: {
       bool bIsModified, bIsPSWDModified;
-      short iDCA;
-      m_item.GetDCA(iDCA);
+      short lastDCA;
+      m_item.GetDCA(lastDCA);
+      if (m_useDefaultDCA) { // get value from global pref
+        m_DCA = short(PWSprefs::GetInstance()->
+                      GetPref(PWSprefs::DoubleClickAction));
+      } else { // get value from field
+        const wxString cv = m_DCAcomboBox->GetValue();      
+        for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++)
+          if (cv == dcaMapping[i].name) {
+            m_DCA = dcaMapping[i].pv;
+            break;
+          }
+      }
+      
       // Check if modified
       bIsModified = (group        != m_item.GetGroup().c_str()      ||
                      m_title      != m_item.GetTitle().c_str()      ||
@@ -656,7 +669,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
                      m_url        != m_item.GetURL().c_str()        ||
                      m_autotype   != m_item.GetAutoType().c_str()   ||
                      m_runcmd != m_item.GetRunCommand().c_str()     ||
-                     m_DCA        != iDCA                           ||
+                     m_DCA        != lastDCA                        ||
 #ifdef NOTYET
                      m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
                      m_AEMD.locXTime    != m_AEMD.oldlocXTime          ||
@@ -688,7 +701,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
         else
           m_item.SetPWPolicy(m_AEMD.pwp);
 #endif
-        m_item.SetDCA(m_DCA);
+        m_item.SetDCA(m_useDefaultDCA ? -1 : m_DCA);
       } // bIsModified
 
       time(&t);
@@ -809,6 +822,16 @@ void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& event )
 {
   if (Validate() && TransferDataFromWindow()) {
     m_DCAcomboBox->Enable(!m_useDefaultDCA);
+    if (m_useDefaultDCA) { // restore default
+      short dca = short(PWSprefs::GetInstance()->
+                        GetPref(PWSprefs::DoubleClickAction));
+      for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++)
+        if (dca == dcaMapping[i].pv) {
+          m_DCAcomboBox->SetValue(dcaMapping[i].name);
+          break;
+        }
+      m_DCA = -1; // 'use default' value
+    }
   }
 }
 
