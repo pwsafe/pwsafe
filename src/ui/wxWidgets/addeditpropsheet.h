@@ -172,6 +172,12 @@ public:
   bool GetUseDefaultDCA() const { return m_useDefaultDCA ; }
   void SetUseDefaultDCA(bool value) { m_useDefaultDCA = value ; }
 
+  int GetMaxPWHist() const { return m_maxPWHist ; }
+  void SetMaxPWHist(int value) { m_maxPWHist = value ; }
+
+  bool GetKeepPWHist() const { return m_keepPWHist ; }
+  void SetKeepPWHist(bool value) { m_keepPWHist = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -196,8 +202,10 @@ private:
   wxString m_autotype;
   wxString m_runcmd;
   bool m_useDefaultDCA; // Use Default Double Click Action?
-  short m_DCA;
+  int m_maxPWHist; // How many passwords to keep
+  bool m_keepPWHist;
   ////@end AddEditPropSheet member variables
+  short m_DCA;
   StringX m_password;
   bool m_isPWHidden;
 

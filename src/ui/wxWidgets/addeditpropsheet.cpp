@@ -472,6 +472,7 @@ void AddEditPropSheet::CreateControls()
   itemTextCtrl37->SetValidator( wxGenericValidator(& m_autotype) );
   itemTextCtrl39->SetValidator( wxGenericValidator(& m_runcmd) );
   itemCheckBox42->SetValidator( wxGenericValidator(& m_useDefaultDCA) );
+  itemSpinCtrl47->SetValidator( wxGenericValidator(& m_maxPWHist) );
 ////@end AddEditPropSheet content construction
 }
 
