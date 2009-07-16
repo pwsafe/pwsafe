@@ -44,6 +44,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <set>
 
 using namespace std;
 
@@ -1831,26 +1832,22 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
   return SUCCESS;
 }
 
-// GetUniqueGroups - Creates an array of all group names, with no duplicates.
+// GetUniqueGroups - returns an array of all group names, with no duplicates.
 void PWScore::GetUniqueGroups(vector<stringT> &aryGroups) const
 {
-  aryGroups.clear();
+  // use the fact that set eliminates dups for us
+  set<stringT> setGroups;
 
   ItemListConstIter iter;
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++ ) {
     const CItemData &ci = iter->second;
-    const stringT strThisGroup = ci.GetGroup().c_str();
-    // Is this group already in the list?
-    bool bAlreadyInList=false;
-    for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
-      if (aryGroups[igrp] == strThisGroup) {
-        bAlreadyInList = true;
-        break;
-      }
-    }
-    if (!bAlreadyInList) aryGroups.push_back(strThisGroup);
+    setGroups.insert(ci.GetGroup().c_str());
   }
+
+  aryGroups.clear();
+  // copy unique results from set to caller's vector
+  copy(setGroups.begin(), setGroups.end(), back_inserter(aryGroups));
 }
 
 void PWScore::CopyPWList(const ItemList &in)
