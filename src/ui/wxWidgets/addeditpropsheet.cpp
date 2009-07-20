@@ -26,6 +26,7 @@
 #include <vector>
 #include "corelib/PWSprefs.h"
 #include "corelib/PWCharPool.h"
+#include "corelib/PWHistory.h"
 
 #include "addeditpropsheet.h"
 #include "PWSgrid.h"
@@ -472,6 +473,7 @@ void AddEditPropSheet::CreateControls()
   itemTextCtrl37->SetValidator( wxGenericValidator(& m_autotype) );
   itemTextCtrl39->SetValidator( wxGenericValidator(& m_runcmd) );
   itemCheckBox42->SetValidator( wxGenericValidator(& m_useDefaultDCA) );
+  itemCheckBox46->SetValidator( wxGenericValidator(& m_keepPWHist) );
   itemSpinCtrl47->SetValidator( wxGenericValidator(& m_maxPWHist) );
 ////@end AddEditPropSheet content construction
 }
@@ -564,6 +566,22 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       m_DCAcomboBox->SetValue(dcaMapping[i].name);
       break;
     }
+  // History: If we're adding, use preferences, otherwise,
+  // get values from m_item
+  if (m_type == ADD) {
+    // Get history preferences
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+  } else {
+    PWHistList pwhl;
+    size_t pwh_max, num_err;
+
+    m_keepPWHist = CreatePWHistoryList(m_item.GetPWHistory(),
+                                       pwh_max, num_err,
+                                       pwhl, TMC_LOCALE);
+    m_maxPWHist = int(pwh_max);
+  }
 }
 
 
@@ -671,8 +689,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
                      m_autotype   != m_item.GetAutoType().c_str()   ||
                      m_runcmd != m_item.GetRunCommand().c_str()     ||
                      m_DCA        != lastDCA                        ||
+                     m_PWHistory  != m_item.GetPWHistory().c_str()  ||
 #ifdef NOTYET
-                     m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
                      m_AEMD.locXTime    != m_AEMD.oldlocXTime          ||
                      m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
                      m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
@@ -695,8 +713,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
         m_item.SetURL(m_url.c_str());
         m_item.SetAutoType(m_autotype.c_str());
         m_item.SetRunCommand(m_runcmd.c_str());
+        m_item.SetPWHistory(m_PWHistory.c_str());
 #ifdef NOTYET
-        m_item.SetPWHistory(m_AEMD.PWHistory);
         if (m_AEMD.ipolicy == DEFAULT_POLICY)
           m_item.SetPWPolicy(_T(""));
         else
@@ -749,12 +767,12 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_item.SetDCA(m_DCA);
       time(&t);
       m_item.SetCTime(t);
+      if (m_keepPWHist)
+        m_item.SetPWHistory(MakePWHistoryHeader(TRUE, m_maxPWHist, 0));
+      
 #ifdef NOTYET
       if (m_AEMD.XTimeInt > 0 && m_AEMD.XTimeInt <= 3650)
         m_item.SetXTimeInt(m_AEMD.XTimeInt);
-
-      if (m_AEMD.SavePWHistory == TRUE)
-        m_item.SetPWHistory(MakePWHistoryHeader(TRUE, m_AEMD.MaxPWHistory, 0));
 
       if (m_AEMD.ibasedata > 0) {
         // Password in alias format AND base entry exists

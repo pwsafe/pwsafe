@@ -206,6 +206,7 @@ private:
   bool m_keepPWHist;
   ////@end AddEditPropSheet member variables
   short m_DCA;
+  wxString m_PWHistory; // string as stored in CItemData
   StringX m_password;
   bool m_isPWHidden;
 
