@@ -35,6 +35,7 @@
  */
 
 ////@begin forward declarations
+class wxGrid;
 ////@end forward declarations
 
 /*!
@@ -194,6 +195,7 @@ public:
   wxButton* m_ShowHideCtrl;
   wxTextCtrl* m_Password2Ctrl;
   wxComboBox* m_DCAcomboBox;
+  wxGrid* m_PWHgrid;
 private:
   wxString m_title;
   wxString m_user;
