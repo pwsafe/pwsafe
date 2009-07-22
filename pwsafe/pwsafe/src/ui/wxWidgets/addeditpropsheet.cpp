@@ -140,6 +140,7 @@ void AddEditPropSheet::Init()
   m_ShowHideCtrl = NULL;
   m_Password2Ctrl = NULL;
   m_DCAcomboBox = NULL;
+  m_PWHgrid = NULL;
 ////@end AddEditPropSheet member initialisation
 }
 
@@ -291,13 +292,13 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText48 = new wxStaticText( itemPanel33, wxID_STATIC, _("last passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer45->Add(itemStaticText48, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxGrid* itemGrid49 = new wxGrid( itemPanel33, ID_GRID, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
-  itemGrid49->SetDefaultColSize(150);
-  itemGrid49->SetDefaultRowSize(25);
-  itemGrid49->SetColLabelSize(25);
-  itemGrid49->SetRowLabelSize(0);
-  itemGrid49->CreateGrid(5, 2, wxGrid::wxGridSelectCells);
-  itemStaticBoxSizer44->Add(itemGrid49, 0, wxGROW|wxALL, 5);
+  m_PWHgrid = new wxGrid( itemPanel33, ID_GRID, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_PWHgrid->SetDefaultColSize(150);
+  m_PWHgrid->SetDefaultRowSize(25);
+  m_PWHgrid->SetColLabelSize(25);
+  m_PWHgrid->SetRowLabelSize(0);
+  m_PWHgrid->CreateGrid(5, 2, wxGrid::wxGridSelectRows);
+  itemStaticBoxSizer44->Add(m_PWHgrid, 0, wxGROW|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer50 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer44->Add(itemBoxSizer50, 0, wxGROW|wxALL, 5);
@@ -476,6 +477,8 @@ void AddEditPropSheet::CreateControls()
   itemCheckBox46->SetValidator( wxGenericValidator(& m_keepPWHist) );
   itemSpinCtrl47->SetValidator( wxGenericValidator(& m_maxPWHist) );
 ////@end AddEditPropSheet content construction
+  m_PWHgrid->SetColLabelValue(0, _("Set Date/Time"));
+  m_PWHgrid->SetColLabelValue(1, _("Password"));
 }
 
 
@@ -581,9 +584,14 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
                                        pwh_max, num_err,
                                        pwhl, TMC_LOCALE);
     m_maxPWHist = int(pwh_max);
+    int row = 0;
+    for (PWHistList::iterator iter = pwhl.begin(); iter != pwhl.end(); ++iter) {
+      m_PWHgrid->SetCellValue(row, 0, iter->changedate.c_str());
+      m_PWHgrid->SetCellValue(row, 1, iter->password.c_str());
+      row++;
+    }
   }
 }
-
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
