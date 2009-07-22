@@ -252,9 +252,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   // Populate the combo box
   if (m_ex_group.GetCount() == 0) {
-      std::vector<stringT> aryGroups;
+    std::vector<std::wstring> aryGroups;
       M_pcore()->GetUniqueGroups(aryGroups);
-      for (std::vector<stringT>::iterator iter = aryGroups.begin();
+      for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
            iter != aryGroups.end(); ++iter) {
         m_ex_group.AddString(iter->c_str());
       }
