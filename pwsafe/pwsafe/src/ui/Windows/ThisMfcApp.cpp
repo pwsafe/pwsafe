@@ -57,6 +57,7 @@
 #include "Dbghelp.h"
 void InstallFaultHandler(const int major, const int minor, const int build,
                          const TCHAR * revision, const DWORD dwTimeStamp);
+void LocalizeFaultHandler(HINSTANCE inst);
 void RemoveFaultHandler();
 #endif
 
@@ -98,7 +99,7 @@ ThisMfcApp::ThisMfcApp() :
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
   m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
-  m_bPermitTestdump(false)
+  m_bPermitTestdump(false), m_hInstResDLL(NULL)
 {
   // Get application version information
   GetApplicationVersionData();
@@ -492,11 +493,11 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         // Extended flags must be in full (no abbreviations)
         // If extended flag is not recognised - just ignore
         // If a normal flag is not recognised - show Usage
-        if ((*arg) == "--testdump") {
+        if ((*arg) == L"--testdump") {
           m_bPermitTestdump = true;
-          arg++;
-          continue;
         }
+        arg++;
+        continue;
       }
       if ((*arg)[0] == L'-') {
         switch ((*arg)[1]) {
@@ -647,7 +648,10 @@ BOOL ThisMfcApp::InitInstance()
   bool allDone = false;
 
   LoadLocalizedStuff();
-
+#ifndef _DEBUG
+  if (m_hInstResDLL != NULL)
+    LocalizeFaultHandler(m_hInstResDLL);
+#endif
   bool parseVal = ParseCommandLine(dbox, allDone);
 
   if (allDone)

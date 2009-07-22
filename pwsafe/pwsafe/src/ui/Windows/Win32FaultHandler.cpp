@@ -43,6 +43,13 @@ static wchar_t wcMsg2[MSGSIZE];
 static wchar_t wcMsg3[MSGSIZE];
 static wchar_t wcCaption[MSGSIZE];
 
+void LocalizeFaultHandler(HINSTANCE inst){
+  LoadString(inst, IDS_MD_MSG1, wcMsg1, MSGSIZE);
+  LoadString(inst, IDS_MD_MSG2, wcMsg2, MSGSIZE);
+  LoadString(inst, IDS_MD_MSG3, wcMsg3, MSGSIZE);
+  LoadString(inst, IDS_MD_CAPTION, wcCaption, MSGSIZE);
+}
+
 void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
@@ -52,11 +59,9 @@ void InstallFaultHandler(const int major, const int minor, const int build,
   wcscpy_s(wcRevision, revision);
   dwTimeStamp = timestamp;
 
-  // Set up message now - just in case!
-  LoadString(GetModuleHandle(NULL), IDS_MD_MSG1, wcMsg1, MSGSIZE);
-  LoadString(GetModuleHandle(NULL), IDS_MD_MSG2, wcMsg2, MSGSIZE);
-  LoadString(GetModuleHandle(NULL), IDS_MD_MSG3, wcMsg3, MSGSIZE);
-  LoadString(GetModuleHandle(NULL), IDS_MD_CAPTION, wcCaption, MSGSIZE);
+  // Filling strings with default values, for handling errors while loading localized resources
+  // After loading localized resources LocalizeFaultHandler should be called once more
+  LocalizeFaultHandler(GetModuleHandle(NULL));
 
   SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)Win32FaultHandler);
 }
