@@ -249,15 +249,13 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
         }
 
-        time(&t);
         if (bIsPSWDModified) {
-          m_AEMD.pci->SetPassword(m_AEMD.realpassword);
-          if (m_AEMD.SavePWHistory)
-            UpdateHistory();
-          m_AEMD.pci->SetPMTime(t);
+          m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
         }
-        if (bIsModified || bIsPSWDModified)
+        if (bIsModified && !bIsPSWDModified) {
+          time(&t);
           m_AEMD.pci->SetRMTime(t);
+        }
 
         if (m_AEMD.oldlocXTime != m_AEMD.locXTime)
           m_AEMD.pci->SetXTime(m_AEMD.tttXTime);
@@ -331,59 +329,4 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     return TRUE;
   }
   return CPWPropertySheet::OnCommand(wParam, lParam);
-}
-
-void CAddEdit_PropertySheet::UpdateHistory()
-{
-  size_t num = m_AEMD.pwhistlist.size();
-  PWHistEntry pwh_ent;
-  pwh_ent.password = LPCWSTR(m_AEMD.oldRealPassword);
-  time_t t;
-  m_AEMD.pci->GetPMTime(t);
-  if ((long)t == 0L) // if never set - try creation date
-    m_AEMD.pci->GetCTime(t);
-
-  pwh_ent.changetttdate = t;
-  pwh_ent.changedate =
-             PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
-
-  if (pwh_ent.changedate.empty()) {
-    CString unk;
-    unk.LoadString(IDS_UNKNOWN);
-    pwh_ent.changedate = LPCWSTR(unk);
-  }
-
-  // Now add the latest
-  m_AEMD.pwhistlist.push_back(pwh_ent);
-
-  // Increment count
-  num++;
-
-  // Too many? remove the excess
-  if (num > m_AEMD.MaxPWHistory) {
-    PWHistList hl(m_AEMD.pwhistlist.begin() + (num - m_AEMD.MaxPWHistory),
-                  m_AEMD.pwhistlist.end());
-    ASSERT(hl.size() == m_AEMD.MaxPWHistory);
-    m_AEMD.pwhistlist = hl;
-    num = m_AEMD.MaxPWHistory;
-  }
-
-  // Now create string version!
-  CSecString new_PWHistory;
-  CString buffer;
-
-  buffer.Format(L"1%02x%02x", m_AEMD.MaxPWHistory, num);
-  new_PWHistory = CSecString(buffer);
-
-  PWHistList::iterator iter;
-  for (iter = m_AEMD.pwhistlist.begin(); iter != m_AEMD.pwhistlist.end(); iter++) {
-    const PWHistEntry pwshe = *iter;
-
-    buffer.Format(L"%08x%04x%s",
-                  (long) pwshe.changetttdate, pwshe.password.length(),
-                  pwshe.password.c_str());
-    new_PWHistory += CSecString(buffer);
-    buffer.Empty();
-  }
-  m_AEMD.pci->SetPWHistory(new_PWHistory);
 }

@@ -162,6 +162,7 @@ public:
     void SetTitle(const StringX &title, TCHAR delimiter = 0);
     void SetUser(const StringX &user); // V20
     void SetPassword(const StringX &password);
+    void UpdatePassword(const StringX &password); // use when password changed!
     void SetNotes(const StringX &notes, TCHAR delimiter = 0);
     void SetUUID(const uuid_array_t &UUID); // V20
     void SetGroup(const StringX &group); // V20
@@ -304,6 +305,7 @@ private:
   void SetField(CItemField &field, const StringX &value);
   void SetField(CItemField &field, const unsigned char *value,
                 unsigned int length);
+  void UpdatePasswordHistory(); // used by UpdatePassword()
 };
 
 inline bool CItemData::IsTextField(unsigned char t)

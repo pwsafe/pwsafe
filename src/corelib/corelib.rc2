@@ -200,6 +200,7 @@ BEGIN
   IDSC_FSHORTCUT           "a shortcut entry"
   IDSC_FALIASBASE          "a base entry of an alias"
   IDSC_FSHORTCUTBASE       "a base entry of a shortcut"
+  IDSC_UNKNOWN             "Unknown"
 END
 
 STRINGTABLE

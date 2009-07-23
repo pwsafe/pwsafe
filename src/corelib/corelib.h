@@ -193,3 +193,4 @@
 #define IDSC_EXS_UNMATCHEDQUOTES        3358
 #define IDSC_EXS_INVALIDBRACKETS        3359
 #define IDSC_EXS_MISSINGROUNDBKT        3360
+#define IDSC_UNKNOWN                    3361
