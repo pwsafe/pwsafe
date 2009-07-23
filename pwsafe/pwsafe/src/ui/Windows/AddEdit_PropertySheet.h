@@ -58,8 +58,6 @@ protected:
   st_AE_master_data m_AEMD;
 
 private:
-  void UpdateHistory();
-
   CAddEdit_Basic           *m_pp_basic;
   CAddEdit_Additional      *m_pp_additional;
   CAddEdit_DateTimes       *m_pp_datetimes;

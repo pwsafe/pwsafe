@@ -21,6 +21,7 @@
 #include "PWHistory.h"
 #include "Util.h"
 #include "StringXStream.h"
+#include "corelib.h"
 
 #include <time.h>
 #include <sstream>
@@ -815,6 +816,80 @@ void CItemData::SetUser(const StringX &user)
 {
   SetField(m_User, user);
 }
+
+void CItemData::UpdatePassword(const StringX &password)
+{
+  // use when password changed - manages history, modification times
+  time_t t;
+  time(&t);
+  UpdatePasswordHistory();
+  SetPMTime(t);
+  SetPassword(password);
+}
+
+void CItemData::UpdatePasswordHistory()
+{
+  PWHistList pwhistlist;
+  size_t pwh_max, num_err;
+  // XXX TBD - if GetPWHistory() is empty, use preference values!
+
+  bool saving = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
+                                    pwhistlist, TMC_EXPORT_IMPORT);
+
+  if (!saving)
+    return;
+
+  size_t num = pwhistlist.size();
+
+  time_t t;
+  GetPMTime(t); // get mod time of last password
+
+  if ((long)t == 0L) // if never set - try creation date
+    GetCTime(t);
+
+  PWHistEntry pwh_ent;
+  pwh_ent.password = GetPassword();
+  pwh_ent.changetttdate = t;
+  pwh_ent.changedate =
+    PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
+
+  if (pwh_ent.changedate.empty()) {
+    StringX unk;
+    LoadAString(unk, IDSC_UNKNOWN);
+    pwh_ent.changedate = unk;
+  }
+
+  // Now add the latest
+  pwhistlist.push_back(pwh_ent);
+
+  // Increment count
+  num++;
+
+  // Too many? remove the excess
+  if (num > pwh_max) {
+    PWHistList hl(pwhistlist.begin() + (num - pwh_max),
+                  pwhistlist.end());
+    ASSERT(hl.size() == pwh_max);
+    pwhistlist = hl;
+    num = pwh_max;
+  }
+
+  // Now create string version!
+  StringX new_PWHistory, buffer;
+
+  Format(new_PWHistory, _T("1%02x%02x"), pwh_max, num);
+
+  PWHistList::iterator iter;
+  for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
+    Format(buffer, _T("%08x%04x%s"),
+           (long) iter->changetttdate, iter->password.length(),
+           iter->password.c_str());
+    new_PWHistory += buffer;
+    buffer = _T("");
+  }
+  SetPWHistory(new_PWHistory);
+}
+
 
 void CItemData::SetPassword(const StringX &password)
 {
