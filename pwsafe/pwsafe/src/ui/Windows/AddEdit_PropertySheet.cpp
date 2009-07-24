@@ -241,10 +241,12 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetURL(m_AEMD.URL);
           m_AEMD.pci->SetAutoType(m_AEMD.autotype);
           m_AEMD.pci->SetPWHistory(m_AEMD.PWHistory);
+
           if (m_AEMD.ipolicy == DEFAULT_POLICY)
             m_AEMD.pci->SetPWPolicy(L"");
           else
             m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
         }
@@ -252,6 +254,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         if (bIsPSWDModified) {
           m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
         }
+
         if (bIsModified && !bIsPSWDModified) {
           time(&t);
           m_AEMD.pci->SetRMTime(t);
@@ -259,6 +262,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
         if (m_AEMD.oldlocXTime != m_AEMD.locXTime)
           m_AEMD.pci->SetXTime(m_AEMD.tttXTime);
+
         if (m_AEMD.oldXTimeInt != m_AEMD.XTimeInt)
           m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
         break;

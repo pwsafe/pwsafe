@@ -10,6 +10,9 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2820260] Fix password expiry interval processing during Edit.
+[2818653] Password expiry interval now exported to XML correctly in decimal
+and show current expiry interval during Edit, if present.
 [2813295] 'Browse + Autotype' system tray menu items fixed - thanks to
 Vasily for reporting and sending the patches for this.
 [] Fix crash error using External Editor on Notes field.
