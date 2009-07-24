@@ -127,6 +127,15 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 
   // enable/disable relevant controls, depending on 'how' state
   // RELATIVE_EXP (interval) or ABSOLUTE_EXP
+  if (M_XTimeInt() > 0) {
+    m_how = RELATIVE_EXP;
+    m_numDays = M_XTimeInt();
+    m_ReuseOnPswdChange = TRUE;
+    CString cs_text;
+    cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
+    GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
+  }
+
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(m_how == RELATIVE_EXP ? FALSE : TRUE);
@@ -274,6 +283,7 @@ void CAddEdit_DateTimes::OnClearXTime()
 
 void CAddEdit_DateTimes::OnSetXTime()
 {
+  UpdateData(TRUE);
   CTime XTime, LDate, LDateTime;
 
   if (m_how == ABSOLUTE_EXP) {

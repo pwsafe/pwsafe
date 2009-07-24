@@ -499,7 +499,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
                          bool bforce_normal_entry) const
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
-  oss << "\t<entry id=\"" << id << "\"";
+  oss << "\t<entry id=\"" << dec << id << "\"";
   if (bforce_normal_entry)
     oss << " normal=\"" << "true" << "\"";
 
@@ -574,7 +574,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   GetXTimeInt(i32);
   if (bsExport.test(CItemData::XTIME_INT) && i32 > 0 && i32 <= 3650)
-    oss << "\t\t<xtime_interval>" << i32 << "</xtime_interval>" << endl;
+    oss << "\t\t<xtime_interval>" << dec << i32 << "</xtime_interval>" << endl;
 
   GetPMTime(t);
   if (bsExport.test(CItemData::PMTIME) && (long)t != 0L)
