@@ -830,12 +830,19 @@ void CItemData::UpdatePassword(const StringX &password)
 void CItemData::UpdatePasswordHistory()
 {
   PWHistList pwhistlist;
-  size_t pwh_max, num_err;
-  // XXX TBD - if GetPWHistory() is empty, use preference values!
-
-  bool saving = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                    pwhistlist, TMC_EXPORT_IMPORT);
-
+  size_t pwh_max;
+  bool saving;
+  const StringX pwh_str = GetPWHistory();
+  if (pwh_str.empty()) {
+    // If GetPWHistory() is empty, use preference values!
+    const PWSprefs *prefs = PWSprefs::GetInstance();
+    saving = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    pwh_max = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+  } else {
+    size_t num_err;
+    saving = CreatePWHistoryList(pwh_str, pwh_max, num_err,
+                                 pwhistlist, TMC_EXPORT_IMPORT);
+  }
   if (!saving)
     return;
 
