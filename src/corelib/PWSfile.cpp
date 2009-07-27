@@ -132,6 +132,10 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
 void PWSfile::FOpen()
 {
   const TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
+  if (m_fd != NULL) {
+    fclose(m_fd);
+    m_fd = NULL;
+  }
   m_fd = pws_os::FOpen(m_filename.c_str(), m);
   m_fileLength = pws_os::fileLength(m_fd);
 }

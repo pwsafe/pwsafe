@@ -1221,6 +1221,7 @@ int PWScore::ReadFile(const StringX &a_filename,
     PWSfile::VERSION tmp_version;  // only for getting compatible to "1.x" files
     tmp_version = m_ReadFileVersion;
     m_ReadFileVersion = PWSfile::V17;
+    in->Close();//Closing previously opened file
     in->SetCurVersion(PWSfile::V17);
     status = in->Open(a_passkey);
     if (status != PWSfile::SUCCESS) {
