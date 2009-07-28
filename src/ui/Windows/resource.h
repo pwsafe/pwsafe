@@ -310,6 +310,7 @@
 #define IDB_CHANGEVKBDFONTMENU_CLASSIC  471
 #define IDB_CHANGEVKBDFONTMENU_NEW      472
 #define IDB_CHANGEVKBDFONTMENU_NEW_D    473
+#define IDD_DUMPSELECTOR                474
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -641,14 +642,21 @@
 #define IDC_STATIC_PWH_EDIT             1382
 #define IDC_INFO                        1383
 #define IDC_TAKETESTDUMP                1384
+#define IDC_DUMP_WIN32                  1385
+#define IDC_DUMP_TERMINATE              1386
+#define IDC_DUMP_UNEXPECTED             1387
+#define IDC_DUMP_INVALIDPARAMETER       1388
+#define IDC_DUMP_SIGILL                 1389
+#define IDC_DUMP_SIGTERM                1390
+#define IDC_DUMP_SIGABRT                1391
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        474
+#define _APS_NEXT_RESOURCE_VALUE        475
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1385
+#define _APS_NEXT_CONTROL_VALUE         1392
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif
