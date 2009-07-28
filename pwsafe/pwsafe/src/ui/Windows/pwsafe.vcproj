@@ -1071,6 +1071,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DumpSelect.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\EditShortcutDlg.cpp"
 				>
 			</File>
@@ -1295,6 +1299,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWSFaultHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWSRecentFileList.cpp"
 				>
 			</File>
@@ -1394,10 +1402,6 @@
 				RelativePath=".\VirtualKeyboard\VKeyBoardDlg.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Win32FaultHandler.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1493,6 +1497,10 @@
 			</File>
 			<File
 				RelativePath=".\DropTarget.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DumpSelect.h"
 				>
 			</File>
 			<File

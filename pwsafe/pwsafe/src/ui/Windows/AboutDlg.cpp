@@ -17,6 +17,7 @@
 #include "ThisMfcApp.h"
 #include "RichEditCtrlExtn.h"
 #include "version.h"
+#include "DumpSelect.h"
 
 // for fetching xml file:
 #include <afxinet.h>
@@ -216,23 +217,10 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
   return vh.CheckLatestVersion(LPCWSTR(latest_xml), latest);
 }
 
-// The following is to stop the optimizing compiler removing
-// the 'designed' error.
-#pragma optimize("", off)
-
-// Take Test Dump
+// Take a test dump
 void CAboutDlg::OnTakeTestdump()
 {
-  //Create an error
-  char *p = (char *)0xBADC0DE; // Ummm!!, a dirty bad thing
-
-  // Create a access violation
-  char c = *p;
-
-  // Code TRACE macro just to stop warning local variable is not referenced.
-  // It will never be executed!
-  TRACE(L"Error %c\n", c);
+  CDumpSelect dmpslct;
+  dmpslct.DoModal();
 }
 
-//Put things back!
-#pragma optimize("", on)

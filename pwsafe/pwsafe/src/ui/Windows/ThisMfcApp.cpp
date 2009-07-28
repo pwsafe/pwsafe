@@ -129,13 +129,6 @@ ThisMfcApp::ThisMfcApp() :
     csRevision.Trim();
   }
 
-  // Don't show the standard Application error box - we will handle it
-  // Note, there is no way to 'Add' an error mode. Only way is to
-  // change it twice, first returns previous state, second adds
-  // what we want.
-  DWORD dwMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
-  SetErrorMode(dwMode | SEM_NOGPFAULTERRORBOX);
-
   LPTSTR revision = csRevision.GetBuffer(csRevision.GetLength() + 1);
   InstallFaultHandler(iMajor, iMinor, iBuild, revision, timestamp);
   csRevision.ReleaseBuffer();
