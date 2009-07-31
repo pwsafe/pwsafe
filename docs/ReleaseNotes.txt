@@ -17,6 +17,8 @@ and show current expiry interval during Edit, if present.
 Vasily for reporting and sending the patches for this.
 [2085058] Old (1.x) format databases now closed correctly.
 [] Fix crash error using External Editor on Notes field.
+[] Password Verification field not set when editing/viewing an alias entry
+and the password is hidden.
 
 New Features for 3.18
 =====================
