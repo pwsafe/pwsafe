@@ -231,19 +231,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
   }
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
-    ShowPassword();
-  } else {
-    HidePassword();
-  }
-
-  if (prefs->GetPref(PWSprefs::ShowNotesDefault)) {
-    ShowNotes();
-  } else {
-    HideNotes();
-  }
-
   m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
   m_pex_notes->ShowWindow(m_bWordWrap ? SW_HIDE : SW_SHOW);
 
@@ -294,7 +281,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   } else if (M_original_entrytype() == CItemData::ET_ALIAS) {
     // Update password to alias form
     // Show text stating that it is an alias
-    M_realpassword() = M_oldRealPassword() = m_password = M_base();
+    M_realpassword() = M_oldRealPassword() = m_password = m_password2 = M_base();
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
 
     cs_text.Format(IDS_ISANALIAS, M_base());
@@ -304,6 +291,19 @@ BOOL CAddEdit_Basic::OnInitDialog()
     // Normal - do none of the above
     GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+  }
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
+    ShowPassword();
+  } else {
+    HidePassword();
+  }
+
+  if (prefs->GetPref(PWSprefs::ShowNotesDefault)) {
+    ShowNotes();
+  } else {
+    HideNotes();
   }
 
   UpdateData(FALSE);
@@ -612,6 +612,7 @@ void CAddEdit_Basic::ShowPassword()
 
   m_password = M_realpassword();
   m_ex_password.SetSecure(false);
+
   // Remove password character so that the password is displayed
   m_ex_password.SetPasswordChar(0);
   m_ex_password.Invalidate();
@@ -629,6 +630,7 @@ void CAddEdit_Basic::HidePassword()
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
 
   m_ex_password.SetSecure(true);
+
   // Set password character so that the password is not displayed
   m_ex_password.SetPasswordChar(PSSWDCHAR);
   m_ex_password.Invalidate();
