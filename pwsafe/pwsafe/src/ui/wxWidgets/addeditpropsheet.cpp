@@ -576,21 +576,30 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     PWSprefs *prefs = PWSprefs::GetInstance();
     m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
     m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
-  } else {
+  } else { // EDIT or VIEW
     PWHistList pwhl;
     size_t pwh_max, num_err;
 
-    m_keepPWHist = CreatePWHistoryList(m_item.GetPWHistory(),
-                                       pwh_max, num_err,
-                                       pwhl, TMC_LOCALE);
-    m_maxPWHist = int(pwh_max);
-    int row = 0;
-    for (PWHistList::iterator iter = pwhl.begin(); iter != pwhl.end(); ++iter) {
-      m_PWHgrid->SetCellValue(row, 0, iter->changedate.c_str());
-      m_PWHgrid->SetCellValue(row, 1, iter->password.c_str());
-      row++;
+    const StringX pwh_str = m_item.GetPWHistory();
+    if (!pwh_str.empty()) {
+      m_keepPWHist = CreatePWHistoryList(pwh_str,
+                                         pwh_max, num_err,
+                                         pwhl, TMC_LOCALE);
+      m_maxPWHist = int(pwh_max);
+      int row = 0;
+      for (PWHistList::iterator iter = pwhl.begin(); iter != pwhl.end();
+           ++iter) {
+        m_PWHgrid->SetCellValue(row, 0, iter->changedate.c_str());
+        m_PWHgrid->SetCellValue(row, 1, iter->password.c_str());
+        row++;
+      }
+    } else { // empty history string
+      // Get history preferences
+      PWSprefs *prefs = PWSprefs::GetInstance();
+      m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
+      m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
     }
-  }
+  } // m_type
 }
 
 /*!
@@ -733,11 +742,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
 
       time(&t);
       if (bIsPSWDModified) {
-        m_item.SetPassword(password);
-#ifdef NOTYET
-        if (SavePWHistory)
-          UpdateHistory();
-#endif
+        m_item.UpdatePassword(password);
         m_item.SetPMTime(t);
       }
       if (bIsModified || bIsPSWDModified)
