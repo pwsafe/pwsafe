@@ -50,9 +50,14 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 INT_PTR CPWDialog::DoModal()
 {
-  app.DisableAccelerator();
+  bool bAccEn = app.IsAcceleratorEnabled();
+  if (bAccEn)
+    app.DisableAccelerator();
+
   INT_PTR rc = CDialog::DoModal();
-  app.EnableAccelerator();
+
+  if (bAccEn)
+    app.EnableAccelerator();
 
   return rc;
 }
