@@ -52,6 +52,7 @@ public:
 
   void EnableAccelerator() { m_bUseAccelerator = true; }
   void DisableAccelerator() { m_bUseAccelerator = false; }
+  bool IsAcceleratorEnabled() { return m_bUseAccelerator;}
 
   BOOL SetTooltipText(LPCWSTR ttt) {return m_TrayIcon->SetTooltipText(ttt);}
   BOOL SetMenuDefaultItem(UINT uItem)

@@ -19,6 +19,8 @@ Vasily for reporting and sending the patches for this.
 [] Fix crash error using External Editor on Notes field.
 [] Password Verification field not set when editing/viewing an alias entry
 and the password is hidden.
+[] Enter key again works in initial dialog if user uses browse button to
+select a database to open.
 
 New Features for 3.18
 =====================
