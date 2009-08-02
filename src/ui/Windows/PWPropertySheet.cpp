@@ -46,9 +46,14 @@ LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 INT_PTR CPWPropertySheet::DoModal()
 {
-  app.DisableAccelerator();
+  bool bAccEn = app.IsAcceleratorEnabled();
+  if (bAccEn)
+    app.DisableAccelerator();
+
   INT_PTR rc = CPropertySheet::DoModal();
-  app.EnableAccelerator();
+
+  if (bAccEn)
+    if (bAccEn)app.EnableAccelerator();
 
   return rc;
 }
