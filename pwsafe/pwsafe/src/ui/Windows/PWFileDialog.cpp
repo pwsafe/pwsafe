@@ -46,9 +46,14 @@ LRESULT CPWFileDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 INT_PTR CPWFileDialog::DoModal()
 {
-  app.DisableAccelerator();
+  bool bAccEn = app.IsAcceleratorEnabled();
+  if (bAccEn)
+    app.DisableAccelerator();
+
   INT_PTR rc = CFileDialog::DoModal();
-  app.EnableAccelerator();
+
+  if (bAccEn)
+    app.EnableAccelerator();
 
   return rc;
 }
