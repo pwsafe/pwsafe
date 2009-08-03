@@ -93,7 +93,11 @@ LOGFONT dfltTreeListFont;
 
 void DboxMain::SetLocalStrings()
 {
-  // VdG the local strings are set
+  // Set up static versions of menu items.  Old method was to do a LoadString
+  // but then we needed 2 copies - one in StringTable and one in the Menu definitions
+  // Both would need to be maintained in step and during I18N.
+  // Now get it from the Menu directly
+  // VdG set the local strings to the language dependant values
   CS_SETFILTERS.LoadString(IDS_SETFILTERS);
   CS_CLEARFILTERS.LoadString(IDS_CLEARFILTERS);
 }
@@ -660,13 +664,9 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_STATE);
 
-  if (prefs->GetPref(PWSprefs::ShowNotesAsTooltipsInViews)) {
-    m_ctlItemTree.ActivateND(true);
-    m_ctlItemList.ActivateND(true);
-  } else {
-    m_ctlItemTree.ActivateND(false);
-    m_ctlItemList.ActivateND(false);
-  }
+  bool showNotes = prefs->GetPref(PWSprefs::ShowNotesAsTooltipsInViews);
+  m_ctlItemTree.ActivateND(showNotes);
+  m_ctlItemList.ActivateND(showNotes);
 
   DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
   if (prefs->GetPref(PWSprefs::ListViewGridLines))
@@ -788,14 +788,6 @@ void DboxMain::InitPasswordSafe()
   m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefaultUser));
   m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername));
 
-  // Set up static versions of menu items.  Old method was to do a LoadString
-  // but then we needed 2 copies - one in StringTable and one in the Menu definitions
-  // Both would need to be maintained in step and during I18N.
-  // Now get it from the Menu directly
-  // VdG set the local strings to the language dependant values
-  SetLocalStrings();
-
-  SetMenu(app.m_pMainMenu);  // Now show menu...
 
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
@@ -916,19 +908,22 @@ BOOL DboxMain::OnInitDialog()
   for (int i = 0; i < num_CommandTable_entries; i++)
     m_MapUICommandTable[m_UICommandTable[i].ID] = i;
 
-  // Install menu popups for full path on MRU entries
-  m_menuManager.Install(AfxGetMainWnd());
-  m_menuTipManager.Install(AfxGetMainWnd());
+  // Install managers in window processing chain
+  m_menuManager.Install(this);
+  m_menuTipManager.Install(this);
 
   // Subclass the ListView HeaderCtrl
-  CHeaderCtrl* pHeader;
-  pHeader = m_ctlItemList.GetHeaderCtrl();
+  CHeaderCtrl* pHeader = m_ctlItemList.GetHeaderCtrl();
   if(pHeader && pHeader->GetSafeHwnd()) {
     m_LVHdrCtrl.SubclassWindow(pHeader->GetSafeHwnd());
   }
 
   CMenuShortcut::InitStrings();
+  SetUpInitialMenuStrings();
+  SetLocalStrings();
   ConfigureSystemMenu();
+  SetMenu(app.m_pMainMenu);  // Now show menu...
+
   InitPasswordSafe();
 
   if (m_IsStartSilent) {
@@ -964,8 +959,6 @@ BOOL DboxMain::OnInitDialog()
     AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
 
-  // Set up Menu strings
-  SetUpInitialMenuStrings();
 
   // create tooltip unconditionally
   m_pToolTipCtrl = new CToolTipCtrl;
