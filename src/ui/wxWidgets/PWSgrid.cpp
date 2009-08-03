@@ -200,6 +200,17 @@ void PWSGrid::UpdateItem(const CItemData &item)
   }
 }
 
+void PWSGrid::Remove(const uuid_array_t &uuid)
+{
+  UUIDRowMapT::iterator iter = m_uuid_map.find(CUUIDGen(uuid));
+  if (iter != m_uuid_map.end()) {
+    int row = iter->second;
+    m_row_map.erase(row);
+    m_uuid_map.erase(CUUIDGen(uuid));
+    DeleteRows(row);
+  }  
+}
+
 
 /*!
  * wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX

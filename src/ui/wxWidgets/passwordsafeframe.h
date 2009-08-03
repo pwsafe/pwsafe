@@ -146,8 +146,14 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
   void OnExitClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ADD
+  void OnAddClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
   void OnEditClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
+  void OnDeleteClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
   void OnClearclipboardClick( wxCommandEvent& event );
@@ -208,6 +214,7 @@ public:
   void ShowGrid(bool show = true);
   void ShowTree(bool show = true);
   void ClearData();
+  void Delete(const uuid_array_t &uuid);
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
   const CItemData *GetSelectedEntry() const;
