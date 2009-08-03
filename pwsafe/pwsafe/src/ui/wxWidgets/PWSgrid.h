@@ -80,6 +80,7 @@ public:
   void Clear();
   void AddItem(const CItemData &item, int row);
   void UpdateItem(const CItemData &item);
+  void Remove(const uuid_array_t &uuid);
   
 ////@begin PWSGrid event handler declarations
 

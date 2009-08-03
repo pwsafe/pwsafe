@@ -40,11 +40,67 @@ void PasswordSafeFrame::OnEditClick( wxCommandEvent& event )
   const CItemData *item = GetSelectedEntry();
   if (item != NULL) {
     AddEditPropSheet editDbox(this, m_core, m_grid, m_tree,
-                              AddEditPropSheet::EDIT, *item);
+                              AddEditPropSheet::EDIT, item);
     editDbox.ShowModal(); // update view if returned OK, all the rest done internally
   }
 }
 
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ADD
+ */
+
+void PasswordSafeFrame::OnAddClick( wxCommandEvent& event )
+{
+  AddEditPropSheet addDbox(this, m_core, m_grid, m_tree,
+                           AddEditPropSheet::ADD);
+  if (addDbox.ShowModal() == wxID_OK) {
+    const CItemData &item = addDbox.GetItem();
+    m_core.AddEntry(item);
+    Show(true);
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
+ */
+
+void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& event )
+{
+  bool dontaskquestion = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::DeleteQuestion);
+
+  bool dodelete = true;
+  int num_children = 0; // TBD: != 0 if group selected
+
+  //Confirm whether to delete the item
+  if (!dontaskquestion) {
+#ifdef NOTYET
+    CConfirmDeleteDlg deleteDlg(this, num_children);
+    INT_PTR rc = deleteDlg.DoModal();
+    if (rc == IDCANCEL) {
+      dodelete = false;
+    }
+#endif
+  }
+
+  if (dodelete) {
+    const CItemData *item = GetSelectedEntry();
+    if (item != NULL) {
+      uuid_array_t uuid;
+      item->GetUUID(uuid);
+      Delete(uuid);
+    }
+  }
+}
+
+void PasswordSafeFrame::Delete(const uuid_array_t &uuid)
+{
+  m_grid->Remove(uuid);
+  m_tree->Remove(uuid);
+  m_core.RemoveEntryAt(m_core.Find(uuid));
+}
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD

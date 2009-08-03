@@ -73,12 +73,16 @@ END_EVENT_TABLE()
 
 AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
                                    PWSGrid *grid, PWSTreeCtrl *tree,
-                                   AddOrEdit type, const CItemData &item,
+                                   AddOrEdit type, const CItemData *item,
                                    wxWindowID id, const wxString& caption,
                                    const wxPoint& pos, const wxSize& size,
                                    long style)
-: m_core(core), m_grid(grid), m_tree(tree), m_type(type), m_item(item)
+: m_core(core), m_grid(grid), m_tree(tree), m_type(type)
 {
+  if (item != NULL)
+    m_item = *item; // copy existing item to display values
+  else
+    m_item.CreateUUID(); // We're adding a new entry
   Init();
   Create(parent, id, caption, pos, size, style);
 }
@@ -140,6 +144,7 @@ void AddEditPropSheet::Init()
   m_ShowHideCtrl = NULL;
   m_Password2Ctrl = NULL;
   m_DCAcomboBox = NULL;
+  m_MaxPWHistCtrl = NULL;
   m_PWHgrid = NULL;
 ////@end AddEditPropSheet member initialisation
 }
@@ -286,8 +291,8 @@ void AddEditPropSheet::CreateControls()
   itemCheckBox46->SetValue(false);
   itemBoxSizer45->Add(itemCheckBox46, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl47 = new wxSpinCtrl( itemPanel33, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
-  itemBoxSizer45->Add(itemSpinCtrl47, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_MaxPWHistCtrl = new wxSpinCtrl( itemPanel33, ID_SPINCTRL, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  itemBoxSizer45->Add(m_MaxPWHistCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText48 = new wxStaticText( itemPanel33, wxID_STATIC, _("last passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer45->Add(itemStaticText48, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -475,7 +480,7 @@ void AddEditPropSheet::CreateControls()
   itemTextCtrl39->SetValidator( wxGenericValidator(& m_runcmd) );
   itemCheckBox42->SetValidator( wxGenericValidator(& m_useDefaultDCA) );
   itemCheckBox46->SetValidator( wxGenericValidator(& m_keepPWHist) );
-  itemSpinCtrl47->SetValidator( wxGenericValidator(& m_maxPWHist) );
+  m_MaxPWHistCtrl->SetValidator( wxGenericValidator(& m_maxPWHist) );
 ////@end AddEditPropSheet content construction
   m_PWHgrid->SetColLabelValue(0, _("Set Date/Time"));
   m_PWHgrid->SetColLabelValue(1, _("Password"));
@@ -837,12 +842,12 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
  */
 
-void AddEditPropSheet::OnKeepHistoryClick( wxCommandEvent& event )
+void AddEditPropSheet::OnKeepHistoryClick(wxCommandEvent &)
 {
-////@begin wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1 in AddEditPropSheet.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1 in AddEditPropSheet. 
+   if (Validate() && TransferDataFromWindow()) {
+     // disable spinbox if checkbox is false
+     m_MaxPWHistCtrl->Enable(m_keepPWHist);
+   }
 }
 
 

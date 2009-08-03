@@ -35,6 +35,7 @@
  */
 
 ////@begin forward declarations
+class wxSpinCtrl;
 class wxGrid;
 ////@end forward declarations
 
@@ -109,10 +110,11 @@ class AddEditPropSheet: public wxPropertySheetDialog
 
 public:
   enum AddOrEdit {ADD, EDIT, VIEW}; // to tweak UI, mainly
-  /// Constructors
+  /// Constructor
+  // item is NULL for ADD, otherwise its values are retrieved and displayed
   AddEditPropSheet(wxWindow* parent, PWScore &core,
                    PWSGrid *grid, PWSTreeCtrl *tree,
-                   AddOrEdit type, const CItemData &item,
+                   AddOrEdit type, const CItemData *item = NULL,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE,
                    const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION,
@@ -185,7 +187,7 @@ public:
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 ////@end AddEditPropSheet member function declarations
-
+  const CItemData &GetItem() const {return m_item;} // for ADD mode
   /// Should we show tooltips?
   static bool ShowToolTips();
 
@@ -195,6 +197,7 @@ public:
   wxButton* m_ShowHideCtrl;
   wxTextCtrl* m_Password2Ctrl;
   wxComboBox* m_DCAcomboBox;
+  wxSpinCtrl* m_MaxPWHistCtrl;
   wxGrid* m_PWHgrid;
 private:
   wxString m_title;

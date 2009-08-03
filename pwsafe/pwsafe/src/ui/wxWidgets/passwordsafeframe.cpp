@@ -66,7 +66,11 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
 
+  EVT_MENU( wxID_ADD, PasswordSafeFrame::OnAddClick )
+
   EVT_MENU( ID_EDIT, PasswordSafeFrame::OnEditClick )
+
+  EVT_MENU( wxID_DELETE, PasswordSafeFrame::OnDeleteClick )
 
   EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
 
