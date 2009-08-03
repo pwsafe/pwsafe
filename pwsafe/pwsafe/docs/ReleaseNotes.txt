@@ -22,6 +22,14 @@ and the password is hidden.
 [] Enter key again works in initial dialog if user uses browse button to
 select a database to open.
 
+New Features for 3.18.1
+=======================
+[] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
+adds a delay between sending each subsequent character, '\w' & '\W' introduces
+a single on off delay.  For '\w', the value 'nnn' is in milli-seconds. For
+'\W', this specified seconds. Note: Max. value is 999s (16m 39s) during which
+time PasswordSafe will be unresponsive while it waits the specified time.
+
 New Features for 3.18
 =====================
 [] Add minidump support for release builds so that we can try to solve

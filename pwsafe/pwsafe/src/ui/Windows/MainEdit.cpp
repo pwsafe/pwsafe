@@ -1396,7 +1396,21 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
           break; // case 'o'
         }
         case L'd':
-        {
+        case L'w':
+        case L'W':
+        { /*
+           'd' means value is in milli-seconds, max value = 0.999s
+           and is the delay between sending each character
+
+           'w' means value is in milli-seconds, max value = 0.999s
+           'W' means value is in seconds, max value = 16m 39s
+           and is the wait time before sending the next character.
+           Use of this field does not change any current delay value.
+
+           User needs to understand that PasswordSafe will be unresponsive
+           for the whole of this wait period!
+          */
+
           // Delay is going to change - send what we have with old delay
           ks.SendString(tmp);
           // start collecting new delay
@@ -1412,8 +1426,13 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
           }
     
           n--;
-          ks.SetAndDelay(newdelay);
-          break; // case 'd'
+          // Either set new character delay time or wait specified time
+          if (curChar == L'd')
+            ks.SetAndDelay(newdelay);
+          else
+            ::Sleep(newdelay * (curChar == L'w' ? 1 : 1000));
+
+          break; // case 'd', 'w' & 'W'
         }
         case L'b': // backspace!
           tmp += L'\b';
@@ -1425,7 +1444,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
         case L'e': // escape
         case L'x': // hex digits (\xNN)
         // Ignore any others!
-        // '\cC', '\uXXXX', '\OOO', '\<any other charatcer not recognised above>'
+        // '\cC', '\uXXXX', '\OOO', '\<any other character not recognised above>'
         default:
           break;
       }
