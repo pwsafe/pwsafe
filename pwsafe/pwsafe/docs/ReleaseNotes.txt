@@ -16,7 +16,8 @@ and show current expiry interval during Edit, if present.
 [2813295] 'Browse + Autotype' system tray menu items fixed - thanks to
 Vasily for reporting and sending the patches for this.
 [2085058] Old (1.x) format databases now closed correctly.
-[] Fixed problem with viewing a shortcut in read-only mode.
+[] Fixed problem with viewing a shortcut in read-only mode - thanks to
+gillum for reporting and helping track this down.
 [] Fix crash error using External Editor on Notes field.
 [] Password Verification field not set when editing/viewing an alias entry
 and the password is hidden.
@@ -26,10 +27,11 @@ select a database to open.
 New Features for 3.18.1
 =======================
 [] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
-adds a delay between sending each subsequent character, '\w' & '\W' introduces
-a single on off delay.  For '\w', the value 'nnn' is in milli-seconds. For
-'\W', this specified seconds. Note: Max. value is 999s (16m 39s) during which
-time PasswordSafe will be unresponsive while it waits the specified time.
+sets the delay between sending each subsequent character, '\w' & '\W' introduces
+a one-time delay where they appear.  For '\w', the value 'nnn' is in
+milli-seconds. For '\W', this specified seconds. Note: Max. value is
+999s (16m 39s) during which time PasswordSafe will be unresponsive
+while it waits the specified time.
 
 New Features for 3.18
 =====================
