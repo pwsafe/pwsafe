@@ -29,8 +29,8 @@ New Features for 3.18.1
 [] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
 sets the delay between sending each subsequent character, '\w' & '\W' introduces
 a one-time delay where they appear.  For '\w', the value 'nnn' is in
-milli-seconds. For '\W', this specified seconds. Note: Max. value is
-999s (16m 39s) during which time PasswordSafe will be unresponsive
+milli-seconds. For '\W', this specifies seconds. Note: Max. value is
+999s (16m 39s), during which time PasswordSafe will be unresponsive
 while it waits the specified time.
 
 New Features for 3.18

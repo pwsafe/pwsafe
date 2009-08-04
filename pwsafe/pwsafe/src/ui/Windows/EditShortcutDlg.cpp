@@ -74,12 +74,89 @@ void CEditShortcutDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CEditShortcutDlg, CPWDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_BN_CLICKED(IDOK, OnBnClickedOk)
+  ON_BN_CLICKED(IDOK, OnOK)
 END_MESSAGE_MAP()
+
+BOOL CEditShortcutDlg::OnInitDialog() 
+{
+  CPWDialog::OnInitDialog();
+
+  CString cs_text;
+  CSecString cs_explanation, cs_target(L"\xbb");
+  // Leave \xbb between group/title/user even if group or user is empty
+  // so that the user knows the exact name
+  // Note: the title field is mandatory and never empty.
+  if (!m_tg.IsEmpty())
+    cs_target += m_tg;
+
+  cs_target += L"\xbb" + m_tt + L"\xbb";
+
+  if (!m_tu.IsEmpty())
+    cs_target += m_tu;
+
+  cs_target += L"\xbb";
+
+  if (m_Edit_IsReadOnly) {
+    // Hide OK btton
+    GetDlgItem(IDOK)->EnableWindow(FALSE);
+    GetDlgItem(IDOK)->ShowWindow(SW_HIDE);
+    // Set Cancel button to read 'Close'
+    cs_text.LoadString(IDS_CLOSE);
+    GetDlgItem(IDCANCEL)->SetWindowText(cs_text);
+    // Set Window caption to indicate View rather than Edit
+    cs_text.LoadString(IDS_VIEWSHORTCUTS);
+    SetWindowText(cs_text);
+    // Only add this shortcut's group to combo box
+    if (m_ex_group.GetCount() == 0) {
+      m_ex_group.AddString(m_group);
+    }
+    // Set fields to be read-only
+    GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
+    m_ex_title.EnableWindow(FALSE);
+    m_ex_username.EnableWindow(FALSE);
+    // setup explanatory text
+    cs_explanation.Format(IDS_SHORTCUTROEXPLANATION, cs_target);
+  } else { // !read-only
+    // Populate the groups combo box
+    if (m_ex_group.GetCount() == 0) {
+      std::vector<std::wstring> aryGroups;
+      app.m_core.GetUniqueGroups(aryGroups);
+      for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
+        m_ex_group.AddString(aryGroups[igrp].c_str());
+      }
+    } // group combo-box handling
+    // setup explanatory text
+    cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
+  } // !read-only
+
+  // Show explanatory text
+  GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_explanation);
+
+  UpdateData(FALSE);
+  m_ex_group.ChangeColour();
+  return TRUE;
+}
+
+void CEditShortcutDlg::OnHelp() 
+{
+#if defined(POCKET_PC)
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#editview", 
+                NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
+#else
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+#endif
+}
 
 void CEditShortcutDlg::OnOK() 
 {
   ItemListIter listindex;
+
+  if (m_Edit_IsReadOnly) {
+    CPWDialog::OnOK();
+    return;
+  }
 
   UpdateData(TRUE);
   m_group.EmptyIfOnlyWhiteSpace();
@@ -142,61 +219,9 @@ void CEditShortcutDlg::OnOK()
 
   CPWDialog::OnOK();
   return;
+
   // If we don't close, then update controls, as some of the fields
   // may have been modified (e.g., spaces removed).
 dont_close:
   UpdateData(FALSE);
-}
-
-BOOL CEditShortcutDlg::OnInitDialog() 
-{
-  CPWDialog::OnInitDialog();
-
-  CString cs_text;
-  if (m_Edit_IsReadOnly) {
-    GetDlgItem(IDOK)->EnableWindow(FALSE);
-    cs_text.LoadString(IDS_VIEWSHORTCUTS);
-    SetWindowText(cs_text);
-    cs_text.LoadString(IDS_DATABASEREADONLY);
-    GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_text);
-  } else { // !read-only
-    // Populate the groups combo box
-    if (m_ex_group.GetCount() == 0) {
-      std::vector<std::wstring> aryGroups;
-      app.m_core.GetUniqueGroups(aryGroups);
-      for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
-        m_ex_group.AddString(aryGroups[igrp].c_str());
-      }
-    } // group combo-box handling
-    // setup explanatory text
-    CSecString cs_explanation, cs_target(L"");
-    if (!m_tg.IsEmpty())
-      cs_target = m_tg + L".";
-    cs_target += m_tt;
-    if (!m_tu.IsEmpty())
-      cs_target += L"." + m_tu;
-    cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
-    GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_explanation);
-  } // !read-only
-
-  UpdateData(FALSE);
-  m_ex_group.ChangeColour();
-  return TRUE;
-}
-
-void CEditShortcutDlg::OnHelp() 
-{
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#editview", 
-                NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-#else
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
-}
-
-void CEditShortcutDlg::OnBnClickedOk()
-{
-  OnOK();
 }

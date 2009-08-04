@@ -762,7 +762,7 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
 
   INT_PTR rc = dlg_editshortcut.DoModal();
 
-  if (rc == IDOK) {
+  if (rc == IDOK && dlg_editshortcut.IsEntryModified()) {
     // Out with the old, in with the new
     // User cannot change a shortcut entry to anything else!
     ItemListIter listpos = Find(entry_uuid);
