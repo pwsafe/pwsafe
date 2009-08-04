@@ -26,6 +26,8 @@ public:
     const CSecString &cs_tu = L"");
   virtual ~CEditShortcutDlg();
 
+  bool IsEntryModified() {return m_bIsModified;}
+
   enum { IDD = IDD_EDIT_SHORTCUT };
   CSecString m_defusername, m_username;
   bool m_Edit_IsReadOnly;
@@ -46,14 +48,11 @@ private:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-  virtual void OnOK();
   virtual BOOL OnInitDialog();
   afx_msg void OnHelp();
+  afx_msg void OnOK();
 
   DECLARE_MESSAGE_MAP()
-
-public:
-  afx_msg void OnBnClickedOk();
 };
 //-----------------------------------------------------------------------------
 // Local variables:

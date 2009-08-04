@@ -111,7 +111,7 @@
 #define IDS_UNLOCKSAFE                  5258
 #define IDS_NOSAFE                      5259
 #define IDS_COPYURL                     5260
-#define IDS_DATABASEREADONLY            5262
+#define IDS_SHORTCUTROEXPLANATION       5262
 #define IDS_UNKNOWN                     5263
 #define IDS_VIEWENTRY                   5264
 #define IDS_ON                          5265
@@ -550,3 +550,4 @@
 #define IDS_MD_MSG2                     5713
 #define IDS_MD_MSG3                     5714
 #define IDS_MD_CAPTION                  5715
+#define IDS_CLOSE                       5716
