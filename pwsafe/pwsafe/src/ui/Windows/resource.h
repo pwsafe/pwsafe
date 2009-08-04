@@ -479,7 +479,6 @@
 #define IDC_SAVEDBY                     1195
 #define IDC_SAVEDON                     1196
 #define IDC_SAVEDAPP                    1197
-#define IDC_EDITEXPLANATION             1198
 #define IDC_BACKUPBEFORESAVE            1199
 #define IDC_DFLTBACKUPPREFIX            1200
 #define IDC_USERBACKUPPREFIX            1201

@@ -158,10 +158,8 @@ BOOL CEditShortcutDlg::OnInitDialog()
     cs_text.LoadString(IDS_VIEWSHORTCUTS);
     SetWindowText(cs_text);
     cs_text.LoadString(IDS_DATABASEREADONLY);
-    GetDlgItem(IDC_EDITEXPLANATION)->SetWindowText(cs_text);
-  }
-
-  if (!m_Edit_IsReadOnly) {
+    GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_text);
+  } else { // !read-only
     // Populate the groups combo box
     if (m_ex_group.GetCount() == 0) {
       std::vector<std::wstring> aryGroups;
@@ -169,20 +167,19 @@ BOOL CEditShortcutDlg::OnInitDialog()
       for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
         m_ex_group.AddString(aryGroups[igrp].c_str());
       }
-    }
-  }
-
-  CSecString cs_explanation, cs_target(L"");
-  if (!m_tg.IsEmpty())
-    cs_target = m_tg + L".";
-  cs_target += m_tt;
-  if (!m_tu.IsEmpty())
-    cs_target += L"." + m_tu;
-  cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
-  GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_explanation);
+    } // group combo-box handling
+    // setup explanatory text
+    CSecString cs_explanation, cs_target(L"");
+    if (!m_tg.IsEmpty())
+      cs_target = m_tg + L".";
+    cs_target += m_tt;
+    if (!m_tu.IsEmpty())
+      cs_target += L"." + m_tu;
+    cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
+    GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_explanation);
+  } // !read-only
 
   UpdateData(FALSE);
-
   m_ex_group.ChangeColour();
   return TRUE;
 }
