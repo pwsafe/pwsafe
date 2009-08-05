@@ -1177,36 +1177,53 @@ void DboxMain::OnAutoType()
 
 void DboxMain::AutoType(const CItemData &ci)
 {
-  StringX AutoCmd = ci.GetAutoType();
-  StringX user(ci.GetUser());
-  StringX group, title, pwd, notes;
-
+  StringX group, title, user, pwd, notes, AutoCmd;
+  ItemListIter iter;
   uuid_array_t base_uuid, entry_uuid;
+
   CItemData::EntryType entrytype = ci.GetEntryType();
-  if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
-    // This is an alias
-    ci.GetUUID(entry_uuid);
-    if (entrytype == CItemData::ET_ALIAS)
+
+  // Set up all the data (shortcut entry will change all of them!)
+  group = ci.GetGroup();
+  title = ci.GetTitle();
+  user = ci.GetUser();
+  pwd = ci.GetPassword();
+  notes = ci.GetNotes();
+  AutoCmd = ci.GetAutoType();
+
+  switch (entrytype) {
+    case CItemData::ET_ALIAS:
+      // This is an alias
+      ci.GetUUID(entry_uuid);
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-    else
+
+      iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        pwd = iter->second.GetPassword();
+      }
+      break;
+    case CItemData::ET_SHORTCUT:
+      // This is an shortcut
+      ci.GetUUID(entry_uuid);
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pwd = iter->second.GetPassword();
-      notes = iter->second.GetNotes();
-      if (entrytype == CItemData::ET_SHORTCUT) {
+      iter = m_core.Find(base_uuid);
+      if (iter != End()) {
         group = iter->second.GetGroup();
         title = iter->second.GetTitle();
         user = iter->second.GetUser();
+        pwd = iter->second.GetPassword();
+        notes = iter->second.GetNotes();
         AutoCmd = iter->second.GetAutoType();
+      } else {
+        // Problem - shortccut entry without a base!
+        ASSERT(0);
       }
-    }
-  } else {
-    group = ci.GetGroup();
-    title = ci.GetTitle();
-    pwd = ci.GetPassword();
-    notes = ci.GetNotes();
+      break;
+    default:
+      // This is a normal entry or an alias/shortcut base entry
+      // Everything is already set
+      break;
   }
 
   // If empty, try the database default
@@ -1424,7 +1441,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
             } else
               break; // for loop
           }
-    
+
           n--;
           // Either set new character delay time or wait specified time
           if (curChar == L'd')
@@ -1507,16 +1524,29 @@ void DboxMain::OnRunCommand()
   ASSERT(ci != NULL);
 
   CItemData *ci_original(ci);
+  StringX sx_pswd;
+  uuid_array_t entry_uuid, base_uuid;
 
+  sx_pswd = ci->GetPassword();
   if (ci->IsShortcut()) {
     // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
     ci->GetUUID(entry_uuid);
     m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
       ci = &iter->second;
+      sx_pswd = ci->GetPassword();
+    }
+  }
+  if (ci->IsAlias()) {
+    // This is an alias
+    ci->GetUUID(entry_uuid);
+    m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      sx_pswd = iter->second.GetPassword();
     }
   }
 
@@ -1541,7 +1571,7 @@ void DboxMain::OnRunCommand()
 
   m_AutoType = PWSAuxParse::GetAutoTypeString(m_AutoType, ci->GetGroup(), 
                                  ci->GetTitle(), ci->GetUser(), 
-                                 ci->GetPassword(), ci->GetNotes());
+                                 sx_pswd, ci->GetNotes());
   SetClipboardData(ci->GetPassword());
   bool rc = m_runner.runcmd(sx_Expanded_ES, m_AutoType);
   if (!rc) {

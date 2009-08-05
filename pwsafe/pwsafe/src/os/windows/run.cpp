@@ -143,7 +143,7 @@ bool PWSRun::runcmd(const StringX &run_command, const StringX &sxAutotype)
   TrimLeft(full_string, _T(" "));
   if (full_string.c_str()[0] == _T('"')) {
     end_delim = full_string.find(_T('"'), 1);
-    first_part = full_string.substr(1, end_delim - 2);
+    first_part = full_string.substr(1, end_delim - 1);
     the_rest = full_string.substr(end_delim + 1);
   } else {
     end_delim = full_string.find(_T(' '));
