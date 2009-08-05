@@ -23,6 +23,10 @@ gillum for reporting and helping track this down.
 and the password is hidden.
 [] Enter key again works in initial dialog if user uses browse button to
 select a database to open.
+[] AutoType by an alias now has correct password and its own notes data
+rather than '[ALias]' and its base's notes data, respectively.
+[] Runcommand no longer truncates the first field if it is within double
+quotes.
 
 New Features for 3.18.1
 =======================
