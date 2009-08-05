@@ -14,6 +14,9 @@ public:
   CPWPropertySheet(UINT nID, CWnd* pParent)
   : CPropertySheet(nID, pParent) {}
 
+  CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent)
+  : CPropertySheet(pszCaption, pParent) {}
+
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
   // Following override to stop accelerators interfering

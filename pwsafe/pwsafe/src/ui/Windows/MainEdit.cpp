@@ -549,7 +549,18 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
   ci = NULL; // not strictly needed  - just a reminder to use originalItem
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
-  CAddEdit_PropertySheet edit_entry_psh(uicaller, this, pcore, &editedItem, pcore->GetCurFile()); 
+
+  CString cs_title;
+  StringX sx_group(L""), sx_title, sx_user(L"");
+  if (!originalItem.IsGroupEmpty())
+    sx_group = originalItem.GetGroup();
+  sx_title = originalItem.GetTitle();
+  if (!originalItem.IsUserEmpty())
+    sx_user = originalItem.GetUser();
+
+  // Set up and pass Propertysheet caption showing entry being edited/viewed
+  cs_title.Format(uicaller, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+  CAddEdit_PropertySheet edit_entry_psh(cs_title, uicaller, this, pcore, &editedItem, pcore->GetCurFile()); 
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.

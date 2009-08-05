@@ -21,6 +21,20 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
                                                const StringX currentDB)
   : CPWPropertySheet(nID, pParent)
 {
+  Init(nID, pParent, pcore, pci, currentDB);
+}
+
+CAddEdit_PropertySheet::CAddEdit_PropertySheet(LPCTSTR pszCaption, UINT nID, CWnd* pParent,
+                                               PWScore *pcore, CItemData *pci,
+                                               const StringX currentDB)
+  : CPWPropertySheet(pszCaption, pParent)
+{
+  Init(nID, pParent, pcore, pci, currentDB);
+}
+
+void CAddEdit_PropertySheet::Init(UINT nID, CWnd* pParent, PWScore *pcore, CItemData *pci,
+                                  const StringX &currentDB)
+{
   m_AEMD.uicaller = nID;
 
   ASSERT(pParent != NULL);
