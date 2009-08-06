@@ -21,7 +21,7 @@ class CEditShortcutDlg : public CPWDialog
 
 public:
   // default constructor
-  CEditShortcutDlg(CItemData *ci, CWnd* pParent = NULL,
+  CEditShortcutDlg(CItemData *pci, CWnd* pParent = NULL,
     const CSecString &cs_tg = L"", const CSecString &cs_tt = L"", 
     const CSecString &cs_tu = L"");
   virtual ~CEditShortcutDlg();
@@ -33,7 +33,7 @@ public:
   bool m_Edit_IsReadOnly;
 
 private:
-  CItemData *m_ci; // The shortcut being edited
+  CItemData *m_pci; // The shortcut being edited
   CSecString m_group;
   CSecString m_title;
   // target's group, title, user

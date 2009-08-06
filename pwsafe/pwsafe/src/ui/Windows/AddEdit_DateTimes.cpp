@@ -161,7 +161,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     sSearch += L"s";
     nIndex = sTimeFormat.Find(sSearch);
 
-    if (nIndex != -1 ) {
+    if (nIndex != -1) {
       // Found it!  Remove it from the format picture.
       sTimeFormat.Delete(nIndex, sSearch.GetLength());
     }
@@ -264,7 +264,7 @@ void CAddEdit_DateTimes::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
-                FALSE, 0, NULL, NULL, NULL, NULL );
+                FALSE, 0, NULL, NULL, NULL, NULL);
 #else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";

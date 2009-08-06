@@ -595,7 +595,7 @@ void CAdvancedDlg::OnDeselectAll()
       continue;
     if (m_iIndex == ADV_COMPARE &&
         (dw_data == CItemData::GROUP || dw_data == CItemData::TITLE ||
-         dw_data == CItemData::USER ))
+         dw_data == CItemData::USER))
       continue;
     iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);

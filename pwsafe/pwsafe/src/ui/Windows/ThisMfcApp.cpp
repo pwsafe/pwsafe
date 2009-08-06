@@ -91,9 +91,9 @@ extern wchar_t *wcCaption;
 
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
-  m_bUseAccelerator( false ),
+  m_bUseAccelerator(false),
 #else
-  m_bUseAccelerator( true ),
+  m_bUseAccelerator(true),
 #endif
   m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
@@ -226,7 +226,7 @@ static bool CheckFile(const CString &fn)
 #endif // !POCKET_PC
 int ThisMfcApp::ExitInstance()
 {
-  if(m_hInstResDLL != NULL)
+  if (m_hInstResDLL != NULL)
     FreeLibrary(m_hInstResDLL);
 
   CWinApp::ExitInstance();
@@ -263,7 +263,7 @@ static void GetVersionInfoFromFile(const CString &csFileName,
   dwVerInfoSize = ::GetFileVersionInfoSize((LPWSTR)(LPCWSTR)csFileName, &dwVerHnd);
   if (dwVerInfoSize > 0) {
     char* pVersionInfo = new char[dwVerInfoSize];
-    if(pVersionInfo != NULL) {
+    if (pVersionInfo != NULL) {
       BOOL bRet = ::GetFileVersionInfo((LPWSTR)(LPCWSTR)csFileName,
                     (DWORD)dwVerHnd, (DWORD)dwVerInfoSize, (LPVOID)pVersionInfo);
 
@@ -413,12 +413,12 @@ void ThisMfcApp::LoadLocalizedStuff()
     wchar_t fname[_MAX_FNAME];
     wchar_t ext[_MAX_EXT];
 #if _MSC_VER >= 1400
-    _wsplitpath_s( m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
-      _MAX_FNAME, ext, _MAX_EXT );
+    _wsplitpath_s(m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
+      _MAX_FNAME, ext, _MAX_EXT);
     _wcslwr_s(fname, _MAX_FNAME);
     _wcslwr_s(ext, _MAX_EXT);
 #else
-    _wsplitpath( m_pszHelpFilePath, NULL, NULL, fname, ext );
+    _wsplitpath(m_pszHelpFilePath, NULL, NULL, fname, ext);
     _wcslwr(ext);
     _wcslwr(fname);
 #endif
@@ -781,7 +781,7 @@ BOOL ThisMfcApp::InitInstance()
       ASSERT(irc != 0);
       // Remove Clear MRU menu item.
       irc = pMenu1->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
-      ASSERT( irc != 0);
+      ASSERT(irc != 0);
     }
   }
   // Do File Menu Export submenu

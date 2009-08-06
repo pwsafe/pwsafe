@@ -87,7 +87,7 @@ BOOL COptionsMisc::OnInitDialog()
 
   // For some reason, MFC calls us twice when initializing.
   // Populate the combo box only once.
-  if(m_dblclk_cbox.GetCount() == 0) {
+  if (m_dblclk_cbox.GetCount() == 0) {
     // ComboBox now sorted - no need to add in English alphabetical order
     int nIndex;
     CString cs_text;

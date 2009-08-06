@@ -34,7 +34,7 @@ BOOL CCreateShortcutDlg::OnInitDialog()
   CPWDialog::OnInitDialog();
 
   // Populate the combo box
-  if(m_ex_group.GetCount() == 0) {
+  if (m_ex_group.GetCount() == 0) {
       std::vector<std::wstring> aryGroups;
       app.m_core.GetUniqueGroups(aryGroups);
       for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
@@ -129,7 +129,7 @@ void CCreateShortcutDlg::OnOK()
 void CCreateShortcutDlg::OnHelp() 
 {
 #if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 #else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";

@@ -1045,10 +1045,10 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
       if (pci != NULL) {
         // right-click was on an item (LEAF of some kind: normal, alias, shortcut)
-        DisplayInfo *di = (DisplayInfo *)pci->GetDisplayInfo();
-        ASSERT(di != NULL);
-        ASSERT(di->tree_item == ti);
-        item = di->list_index;
+        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+        ASSERT(pdi != NULL);
+        ASSERT(pdi->tree_item == ti);
+        item = pdi->list_index;
         m_ctlItemTree.SelectItem(ti); // So that OnEdit gets the right one
       } else {
         // right-click was on a group (NODE)

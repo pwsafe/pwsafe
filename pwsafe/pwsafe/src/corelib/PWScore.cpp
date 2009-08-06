@@ -285,7 +285,7 @@ struct PutText {
     if (m_subgroup_name.empty() || 
         item.Matches(m_subgroup_name, m_subgroup_object,
         m_subgroup_function)) {
-      CItemData *cibase(NULL);
+      CItemData *pcibase(NULL);
       if (item.IsAlias()) {
         uuid_array_t base_uuid, item_uuid;
         item.GetUUID(item_uuid);
@@ -293,7 +293,7 @@ struct PutText {
         ItemListIter iter;
         iter = m_core->Find(base_uuid);
         if (iter !=  m_core->GetEntryEndIter())
-          cibase = &iter->second;
+          pcibase = &iter->second;
       }
       if (item.IsShortcut()) {
         uuid_array_t base_uuid, item_uuid;
@@ -302,10 +302,10 @@ struct PutText {
         ItemListIter iter;
         iter = m_core->Find(base_uuid);
         if (iter !=  m_core->GetEntryEndIter())
-          cibase = &iter->second;
+          pcibase = &iter->second;
       }
       const StringX line = item.GetPlaintext(TCHAR('\t'),
-                                             m_bsFields, m_delimiter, cibase);
+                                             m_bsFields, m_delimiter, pcibase);
       if (!line.empty()) {
         CUTF8Conv conv; // can't make a member, as no copy c'tor!
         const unsigned char *utf8;
@@ -482,7 +482,7 @@ struct XMLRecordWriter {
     if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
-      CItemData *cibase(NULL);
+      CItemData *pcibase(NULL);
       bool bforce_normal_entry(false);
       if (item.IsNormal()) {
         //  Check password doesn't incorrectly imply alias or shortcut entry
@@ -502,7 +502,7 @@ struct XMLRecordWriter {
         ItemListIter iter;
         iter = m_core->Find(base_uuid);
         if (iter != m_core->GetEntryEndIter())
-          cibase = &iter->second;
+          pcibase = &iter->second;
       }
       if (item.IsShortcut()) {
         uuid_array_t base_uuid, item_uuid;
@@ -511,9 +511,9 @@ struct XMLRecordWriter {
         ItemListIter iter;
         iter = m_core->Find(base_uuid);
         if (iter != m_core->GetEntryEndIter())
-          cibase = &iter->second;
+          pcibase = &iter->second;
       }
-      string xml = item.GetXML(m_id, m_bsFields, m_delimiter, cibase, bforce_normal_entry);
+      string xml = item.GetXML(m_id, m_bsFields, m_delimiter, pcibase, bforce_normal_entry);
       m_of.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));
     }
@@ -2178,8 +2178,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
       if (iter == m_pwlist.end())
         return num_warnings;
 
-      CItemData *curitem = &iter->second;
-      curitem->GetUUID(entry_uuid);
+      CItemData *pci_curitem = &iter->second;
+      pci_curitem->GetUUID(entry_uuid);
       GetDependentEntryBaseUUID(entry_uuid, base_uuid, type);
 
       // Delete it - we will put it back if it is an alias/shortcut
@@ -2188,7 +2188,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
       if (iVia == CItemData::UUID) {
         iter = m_pwlist.find(base_uuid);
       } else {
-        tmp = curitem->GetPassword();
+        tmp = pci_curitem->GetPassword();
         // Remove leading '[['/'[~' & trailing ']]'/'~]'
         tmp = tmp.substr(2, tmp.length() - 4);
         csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
@@ -2215,8 +2215,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
               stringT cs_type;
               LoadAString(cs_type, IDSC_SHORTCUT);
               Format(strError, IDSC_IMPORTWARNING3, cs_type.c_str(),
-                     curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
-                     curitem->GetUser().c_str(), cs_type.c_str());
+                     pci_curitem->GetGroup().c_str(), pci_curitem->GetTitle().c_str(), 
+                     pci_curitem->GetUser().c_str(), cs_type.c_str());
               rpt->WriteLine(strError);
             }
             // Invalid - delete!
@@ -2237,8 +2237,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
               stringT cs_type;
               LoadAString(cs_type, IDSC_ALIAS);
               Format(strError, IDSC_IMPORTWARNING3, cs_type.c_str(),
-                     curitem->GetGroup().c_str(), curitem->GetTitle().c_str(), 
-                     curitem->GetUser().c_str(), cs_type.c_str());
+                     pci_curitem->GetGroup().c_str(), pci_curitem->GetTitle().c_str(), 
+                     pci_curitem->GetUser().c_str(), cs_type.c_str());
               rpt->WriteLine(strError);
             }
             // Invalid - delete!
@@ -2257,13 +2257,13 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
                 rpt->WriteLine(strError);
               }
-              Format(strError, IDSC_IMPORTWARNING1, curitem->GetGroup().c_str(),
-                     curitem->GetTitle().c_str(), curitem->GetUser().c_str());
+              Format(strError, IDSC_IMPORTWARNING1, pci_curitem->GetGroup().c_str(),
+                     pci_curitem->GetTitle().c_str(), pci_curitem->GetUser().c_str());
               rpt->WriteLine(strError);
               LoadAString(strError, IDSC_IMPORTWARNING1A);
               rpt->WriteLine(strError);
             }
-            curitem->SetAlias();
+            pci_curitem->SetAlias();
             num_warnings++;
           }
         }
@@ -2278,12 +2278,12 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
         pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
         if (type == CItemData::ET_ALIAS) {
-          curitem->SetPassword(_T("[Alias]"));
-          curitem->SetAlias();
+          pci_curitem->SetPassword(_T("[Alias]"));
+          pci_curitem->SetAlias();
         } else
         if (type == CItemData::ET_SHORTCUT) {
-          curitem->SetPassword(_T("[Shortcut]"));
-          curitem->SetShortcut();
+          pci_curitem->SetPassword(_T("[Shortcut]"));
+          pci_curitem->SetShortcut();
         }
       } else {
         // Specified base does not exist!
@@ -2293,8 +2293,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             LoadAString(strError, IDSC_IMPORTWARNINGHDR);
             rpt->WriteLine(strError);
           }
-          Format(strError, IDSC_IMPORTWARNING2, curitem->GetGroup().c_str(),
-                 curitem->GetTitle().c_str(), curitem->GetUser().c_str());
+          Format(strError, IDSC_IMPORTWARNING2, pci_curitem->GetGroup().c_str(),
+                 pci_curitem->GetTitle().c_str(), pci_curitem->GetUser().c_str());
           rpt->WriteLine(strError);
           LoadAString(strError, IDSC_IMPORTWARNING2A);
           rpt->WriteLine(strError);
@@ -2302,7 +2302,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         if (type == CItemData::ET_SHORTCUT)
           RemoveEntryAt(m_pwlist.find(entry_uuid)); // Can't keep invalid shortcut
         else
-          curitem->SetNormal(); // but can make invalid alias a normal entry
+          pci_curitem->SetNormal(); // but can make invalid alias a normal entry
 
         num_warnings++;
       }

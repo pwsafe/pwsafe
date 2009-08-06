@@ -308,7 +308,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 /************************************************************************/
 void CPasskeyEntry::OnPasskeyKillfocus()
 {
-  EnableWordCompletion( m_hWnd );
+  EnableWordCompletion(m_hWnd);
 }
 
 /************************************************************************/
@@ -317,7 +317,7 @@ void CPasskeyEntry::OnPasskeyKillfocus()
 /************************************************************************/
 void CPasskeyEntry::OnPasskeySetfocus()
 {
-  DisableWordCompletion( m_hWnd );
+  DisableWordCompletion(m_hWnd);
 }
 #endif
 

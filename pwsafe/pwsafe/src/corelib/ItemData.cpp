@@ -336,15 +336,6 @@ void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
   GetUnknownField(type, length, pdata, unkrfe);
 }
 
-void CItemData::SetUnknownField(const unsigned char type,
-                                const unsigned int length,
-                                const unsigned char * ufield)
-{
-  CItemField unkrfe(type);
-  SetField(unkrfe, ufield, length);
-  m_URFL.push_back(unkrfe);
-}
-
 StringX CItemData::GetPWHistory() const
 {
   StringX ret = GetField(m_PWHistory);
@@ -356,7 +347,7 @@ StringX CItemData::GetPWHistory() const
 StringX CItemData::GetPlaintext(const TCHAR &separator,
                                 const FieldBits &bsFields,
                                 const TCHAR &delimiter,
-                                const CItemData *cibase) const
+                                const CItemData *pcibase) const
 {
   StringX ret(_T(""));
 
@@ -411,17 +402,17 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
 
   StringX csPassword;
   if (m_entrytype == ET_ALIAS) {
-    ASSERT(cibase != NULL);
+    ASSERT(pcibase != NULL);
     csPassword = _T("[[") + 
-                 cibase->GetGroup() + _T(":") + 
-                 cibase->GetTitle() + _T(":") + 
-                 cibase->GetUser() + _T("]]") ;
+                 pcibase->GetGroup() + _T(":") + 
+                 pcibase->GetTitle() + _T(":") + 
+                 pcibase->GetUser() + _T("]]") ;
   } else if (m_entrytype == ET_SHORTCUT) {
-    ASSERT(cibase != NULL);
+    ASSERT(pcibase != NULL);
     csPassword = _T("[~") + 
-                 cibase->GetGroup() + _T(":") + 
-                 cibase->GetTitle() + _T(":") + 
-                 cibase->GetUser() + _T("~]") ;
+                 pcibase->GetGroup() + _T(":") + 
+                 pcibase->GetTitle() + _T(":") + 
+                 pcibase->GetUser() + _T("~]") ;
   } else
     csPassword = GetPassword();
 
@@ -495,7 +486,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
 }
 
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
-                         TCHAR delimiter, const CItemData *cibase,
+                         TCHAR delimiter, const CItemData *pcibase,
                          bool bforce_normal_entry) const
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
@@ -521,18 +512,18 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   // Password mandatory (see pwsafe.xsd)
   if (m_entrytype == ET_ALIAS) {
-    ASSERT(cibase != NULL);
+    ASSERT(pcibase != NULL);
     tmp = _T("[[") + 
-          cibase->GetGroup() + _T(":") + 
-          cibase->GetTitle() + _T(":") + 
-          cibase->GetUser() + _T("]]") ;
+          pcibase->GetGroup() + _T(":") + 
+          pcibase->GetTitle() + _T(":") + 
+          pcibase->GetUser() + _T("]]") ;
   } else
   if (m_entrytype == ET_SHORTCUT) {
-    ASSERT(cibase != NULL);
+    ASSERT(pcibase != NULL);
     tmp = _T("[~") + 
-          cibase->GetGroup() + _T(":") + 
-          cibase->GetTitle() + _T(":") + 
-          cibase->GetUser() + _T("~]") ;
+          pcibase->GetGroup() + _T(":") + 
+          pcibase->GetTitle() + _T(":") + 
+          pcibase->GetUser() + _T("~]") ;
   } else
     tmp = GetPassword();
   PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
@@ -1036,6 +1027,15 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   return false;
 }
 
+void CItemData::SetUnknownField(const unsigned char type,
+                                const unsigned int length,
+                                const unsigned char * ufield)
+{
+  CItemField unkrfe(type);
+  SetField(unkrfe, ufield, length);
+  m_URFL.push_back(unkrfe);
+}
+
 void CItemData::SetPWHistory(const StringX &PWHistory)
 {
   StringX pwh = PWHistory;
@@ -1144,7 +1144,7 @@ BlowFish *CItemData::MakeBlowFish() const
 
 CItemData& CItemData::operator=(const CItemData &that)
 {
-  //Check for self-assignment
+  // Check for self-assignment
   if (this != &that) {
     m_UUID = that.m_UUID;
     m_Name = that.m_Name;
@@ -1690,7 +1690,7 @@ static void push_int(vector<char> &v, char type, int i)
   }
 }
 
-void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
+void CItemData::SerializePlainText(vector<char> &v, CItemData *pcibase)  const
 {
   StringX tmp;
   uuid_array_t uuid_array;
@@ -1709,13 +1709,13 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
 
   if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
-    ASSERT(cibase != NULL);
-    tmp = _T("[[") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("]]");
+    ASSERT(pcibase != NULL);
+    tmp = _T("[[") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("]]");
   } else
   if (m_entrytype == ET_SHORTCUT) {
     // I am a shortcut entry
-    ASSERT(cibase != NULL);
-    tmp = _T("[~") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("~]");
+    ASSERT(pcibase != NULL);
+    tmp = _T("[~") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("~]");
   } else
     tmp = GetPassword();
 

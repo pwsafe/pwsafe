@@ -54,7 +54,7 @@ public:
   HTREEITEM GetNextTreeItem(HTREEITEM hItem);
   // Drag-n-Drop interface - called indirectly via src/tgt member functions
   // Source methods
-  SCODE GiveFeedback(DROPEFFECT dropEffect );
+  SCODE GiveFeedback(DROPEFFECT dropEffect);
   // target methods
   BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
     DROPEFFECT dropEffect, CPoint point);
@@ -131,7 +131,7 @@ private:
   bool CollectData(BYTE * &out_buffer, long &outLen);
   bool ProcessData(BYTE *in_buffer, const long &inLen, const CSecString &DropGroup);
   void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
-  void GetEntryData(CDDObList &out_oblist, CItemData *ci);
+  void GetEntryData(CDDObList &out_oblist, CItemData *pci);
 
   // Notes Display
   UINT m_nHoverNDTimerID, m_nShowNDTimerID;

@@ -97,7 +97,7 @@ BOOL COptionsBackup::OnInitDialog()
 {
   CPWPropertyPage::OnInitDialog();
 
-  if(m_backupsuffix_cbox.GetCount() == 0) {
+  if (m_backupsuffix_cbox.GetCount() == 0) {
     // add the strings in alphabetical order
     CString cs_text(MAKEINTRESOURCE(IDS_NONE));
     int nIndex;
@@ -374,7 +374,7 @@ void COptionsBackup::OnBrowseForLocation()
   // selected folder.
   LPITEMIDLIST pIDL = ::SHBrowseForFolder(&bi);
 
-  if(pIDL != NULL) {
+  if (pIDL != NULL) {
     // Create a buffer to store the path, then
     // get the path.
     wchar_t buffer[_MAX_PATH] = { 0 };
@@ -395,7 +395,7 @@ void COptionsBackup::OnBrowseForLocation()
 int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData)
 {
   if (uMsg==BFFM_INITIALIZED) {
-    ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, lpData );
+    ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, lpData);
   }
   return 0;
 }

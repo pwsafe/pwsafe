@@ -212,7 +212,7 @@ public:
   void SetLocalStrings();
 
   void UpdateToolBar(bool state);
-  void UpdateToolBarForSelectedItem(CItemData *ci);
+  void UpdateToolBarForSelectedItem(CItemData *pci);
   void SetToolBarPositions();
   void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
   void ResumeOnListNotification() {m_core.ResumeOnListNotification();}
@@ -261,7 +261,7 @@ public:
 
   void RefreshImages();
   bool FieldsNotEqual(StringX a, StringX b);
-  void CreateShortcutEntry(CItemData *ci, const StringX &cs_group,
+  void CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
                            const StringX &cs_title, const StringX &cs_user);
   bool SetNotesWindow(const CPoint point, const bool bVisible = true);
   bool IsFilterActive() {return m_bFilterActive;}
@@ -387,7 +387,7 @@ protected:
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
   void ConfigureSystemMenu();
-  afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
+  afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
   LRESULT OnHdrToCCDragComplete(WPARAM wParam, LPARAM lParam);
@@ -427,7 +427,7 @@ protected:
   int Open(const StringX &pszFilename, const bool bReadOnly);
   int Close(void);
   int Merge(void);
-  int Merge( const StringX &pszFilename );
+  int Merge(const StringX &pszFilename);
   int MergeDependents(PWScore *pothercore, 
                       uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
                       const bool bTitleRenamed, CString &timeStr, 
@@ -439,8 +439,8 @@ protected:
   int Restore(void);
 
   void AutoType(const CItemData &ci);
-  bool EditItem(CItemData *ci, PWScore *pcore = NULL);
-  bool EditShortcut(CItemData *ci, PWScore *pcore = NULL);
+  bool EditItem(CItemData *pci, PWScore *pcore = NULL);
+  bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
   void SortDependents(UUIDList &dlist, StringX &csDependents);
   void ViewReport(const CString &cs_ReportFileName);
   void ViewReport(CReport &rpt);
@@ -565,7 +565,7 @@ protected:
 #if defined(POCKET_PC)
   afx_msg void OnShowPassword();
 #else
-  afx_msg void OnChangeItemFocus( NMHDR * pNotifyStruct, LRESULT * result );
+  afx_msg void OnChangeItemFocus(NMHDR * pNotifyStruct, LRESULT * result);
   afx_msg void OnDropFiles(HDROP hDrop);
 #endif
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
@@ -645,7 +645,7 @@ private:
   int SaveIfChanged();
   void CheckExpiredPasswords();
   void UnMinimize(bool update_windows);
-  void UpdateAccessTime(CItemData *ci);
+  void UpdateAccessTime(CItemData *pci);
   void RestoreDisplayStatus();
   std::vector<bool> GetGroupDisplayStatus(); // get current display state from window
   void SetGroupDisplayStatus(const std::vector<bool> &displaystatus); // changes display

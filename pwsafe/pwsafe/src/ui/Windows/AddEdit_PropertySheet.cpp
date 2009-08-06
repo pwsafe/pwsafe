@@ -314,10 +314,10 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
           if (iter != m_AEMD.pDbx->End()) {
             const CItemData &cibase = iter->second;
-            DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+            DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
             int nImage = m_AEMD.pDbx->GetEntryImage(cibase);
-            m_AEMD.pDbx->SetEntryImage(di->list_index, nImage, true);
-            m_AEMD.pDbx->SetEntryImage(di->tree_item, nImage, true);
+            m_AEMD.pDbx->SetEntryImage(pdi->list_index, nImage, true);
+            m_AEMD.pDbx->SetEntryImage(pdi->tree_item, nImage, true);
           }
         } else {
           m_AEMD.pci->SetPassword(m_AEMD.realpassword);

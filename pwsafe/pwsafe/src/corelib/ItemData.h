@@ -137,9 +137,9 @@ public:
     // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
     // it's used for multi-line notes and to replace '.' within the Title field.
     StringX GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
-                         const TCHAR &delimiter, const CItemData *cibase) const;
+                         const TCHAR &delimiter, const CItemData *pcibase) const;
     std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
-                       const CItemData *cibase, bool bforce_normal_entry) const;
+                       const CItemData *pcibase, bool bforce_normal_entry) const;
     void GetUnknownField(unsigned char &type, unsigned int &length,
                          unsigned char * &pdata,
                          const unsigned int &num) const;
@@ -218,7 +218,7 @@ public:
     BOOL IsNotesEmpty() const {return m_Notes.IsEmpty();}
     BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
     BOOL IsRunCommandEmpty() const {return m_RunCommand.IsEmpty();}
-    void SerializePlainText(std::vector<char> &v, CItemData *cibase = NULL) const;
+    void SerializePlainText(std::vector<char> &v, CItemData *pcibase = NULL) const;
     bool DeserializePlainText(const std::vector<char> &v);
     bool SetField(int type, unsigned char *data, int len);
 

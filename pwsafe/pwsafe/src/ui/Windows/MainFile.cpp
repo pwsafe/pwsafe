@@ -388,7 +388,7 @@ int DboxMain::Close()
   }
 
   // Unlock the current file
-  if( !m_core.GetCurFile().empty() ) {
+  if (!m_core.GetCurFile().empty()) {
     m_core.UnlockFile(m_core.GetCurFile().c_str());
     m_core.SetCurFile(L"");
   }
@@ -546,7 +546,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   // if we were using a different file, unlock it
   // do this before GetAndCheckPassword() as that
   // routine gets a lock on the new file
-  if( !m_core.GetCurFile().empty() ) {
+  if (!m_core.GetCurFile().empty()) {
     m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
@@ -790,7 +790,7 @@ int DboxMain::SaveAs()
     CString defname(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
     cf = LPCWSTR(defname);
   }
-  std::wstring v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX );
+  std::wstring v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
 
   while (1) {
     CPWFileDialog fd(FALSE,
@@ -861,7 +861,7 @@ int DboxMain::SaveAs()
   SetChanged(Clear);
   ChangeOkUpdate();
 
-  app.AddToMRU( newfile.c_str() );
+  app.AddToMRU(newfile.c_str());
 
   if (m_core.IsReadOnly()) {
     // reset read-only status (new file can't be read-only!)
@@ -2353,7 +2353,7 @@ int DboxMain::SaveCore(PWScore *pcore)
     }
   } else { // file version mis-match
     std::wstring NewName = PWSUtil::GetNewFileName(pcore->GetCurFile().c_str(),
-                                              DEFAULT_SUFFIX );
+                                              DEFAULT_SUFFIX);
     cs_msg.Format(IDS_NEWFORMAT,
                   pcore->GetCurFile().c_str(), NewName.c_str());
     cs_title.LoadString(IDS_VERSIONWARNING);
@@ -2423,13 +2423,13 @@ LRESULT DboxMain::ViewCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 {  
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
-  CItemData *ci = &pos->second;
+  CItemData *pci = &pos->second;
 
   // View the correct entry and make sure R/O
   bool bSaveRO = pcore->IsReadOnly();
   pcore->SetReadOnly(true);
 
-  EditItem(ci, pcore);
+  EditItem(pci, pcore);
 
   pcore->SetReadOnly(bSaveRO);
 
@@ -2440,10 +2440,10 @@ LRESULT DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 {
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
-  CItemData *ci = &pos->second;
+  CItemData *pci = &pos->second;
 
   // Edit the correct entry
-  return EditItem(ci, pcore) ? TRUE : FALSE;
+  return EditItem(pci, pcore) ? TRUE : FALSE;
 }
 
 LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
@@ -2757,7 +2757,7 @@ vector<bool> DboxMain::GetGroupDisplayStatus()
   if (m_ctlItemTree.GetSafeHwnd() == NULL)
     return v;
 
-  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+  while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
     if (m_ctlItemTree.ItemHasChildren(hItem)) {
       bool state = (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED)
                     & TVIS_EXPANDED) != 0;

@@ -207,9 +207,9 @@ void CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
 {
   HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
 
-  if(phdn->iButton == 0) {
+  if (phdn->iButton == 0) {
     // User clicked on header using left mouse button
-    if(phdn->iItem == m_iSortedColumn)
+    if (phdn->iItem == m_iSortedColumn)
       m_bSortAscending = !m_bSortAscending;
     else
       m_bSortAscending = true;

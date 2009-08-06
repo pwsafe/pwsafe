@@ -184,7 +184,7 @@ void CPasskeyChangeDlg::OnHelp()
 /************************************************************************/
 void CPasskeyChangeDlg::OnPasskeyKillfocus()
 {
-  EnableWordCompletion( m_hWnd );
+  EnableWordCompletion(m_hWnd);
 }
 #endif
 
@@ -197,7 +197,7 @@ void CPasskeyChangeDlg::OnPasskeySetfocus()
 /* When the password field is activated, pull up the SIP and disable    */
 /* word completion.                                                     */
 /************************************************************************/
-  DisableWordCompletion( m_hWnd );
+  DisableWordCompletion(m_hWnd);
 #endif
 }
 
@@ -210,7 +210,7 @@ void CPasskeyChangeDlg::OnNewPasskeySetfocus()
 /* When the password field is activated, pull up the SIP and disable    */
 /* word completion.                                                     */
 /************************************************************************/
-  DisableWordCompletion( m_hWnd );
+  DisableWordCompletion(m_hWnd);
 #endif
 }
 
@@ -223,7 +223,7 @@ void CPasskeyChangeDlg::OnConfirmNewSetfocus()
 /* When the password field is activated, pull up the SIP and disable    */
 /* word completion.                                                     */
 /************************************************************************/
-  DisableWordCompletion( m_hWnd );
+  DisableWordCompletion(m_hWnd);
 #endif
 }
 

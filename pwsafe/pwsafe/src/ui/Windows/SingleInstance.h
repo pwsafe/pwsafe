@@ -30,6 +30,6 @@ const int SI_SYSTEM_UNIQUE  = 0x0000;  // Allow only one instance at all (on the
 // be combined with SI_DESKTOP_UNIQUE
 
 LPWSTR CreateUniqueName(LPCWSTR pszGUID, LPWSTR pszBuffer, int iBuffLen,
-                        int nMode = SI_DESKTOP_UNIQUE );
+                        int nMode = SI_DESKTOP_UNIQUE);
 
 

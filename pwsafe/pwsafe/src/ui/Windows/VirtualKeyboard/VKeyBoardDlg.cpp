@@ -207,7 +207,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 
   // Try to load DLL
   std::wstring dll_loc = pws_os::getexecdir();
-#if defined( _DEBUG ) || defined( DEBUG )
+#if defined(_DEBUG) || defined(DEBUG)
   dll_loc += L"pws_osk_D.dll";
 #else
   dll_loc += L"pws_osk.dll";
@@ -353,7 +353,7 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   // dll is guaranteed to be loadable, right version and in general 100% kosher
   // by IsOSKAvailable(). Caller is responsible to call that, though...
   std::wstring dll_loc = pws_os::getexecdir();
-#if defined( _DEBUG ) || defined( DEBUG )
+#if defined(_DEBUG) || defined(DEBUG)
   dll_loc += L"pws_osk_D.dll";
 #else
   dll_loc += L"pws_osk.dll";

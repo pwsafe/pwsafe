@@ -315,7 +315,7 @@ void CAddEdit_Basic::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
-                FALSE, 0, NULL, NULL, NULL, NULL );
+                FALSE, 0, NULL, NULL, NULL, NULL);
 #else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
