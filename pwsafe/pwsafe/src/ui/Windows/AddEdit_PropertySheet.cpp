@@ -21,20 +21,6 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
                                                const StringX currentDB)
   : CPWPropertySheet(nID, pParent)
 {
-  Init(nID, pParent, pcore, pci, currentDB);
-}
-
-CAddEdit_PropertySheet::CAddEdit_PropertySheet(LPCTSTR pszCaption, UINT nID, CWnd* pParent,
-                                               PWScore *pcore, CItemData *pci,
-                                               const StringX currentDB)
-  : CPWPropertySheet(pszCaption, pParent)
-{
-  Init(nID, pParent, pcore, pci, currentDB);
-}
-
-void CAddEdit_PropertySheet::Init(UINT nID, CWnd* pParent, PWScore *pcore, CItemData *pci,
-                                  const StringX &currentDB)
-{
   m_AEMD.uicaller = nID;
 
   ASSERT(pParent != NULL);
@@ -203,6 +189,37 @@ CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
   delete m_pp_additional;
   delete m_pp_datetimes;
   delete m_pp_pwpolicy;
+}
+
+BOOL CAddEdit_PropertySheet::OnInitDialog()
+{
+  CPropertySheet::OnInitDialog();
+
+  // Change the Window title for Edit/View
+  switch (m_AEMD.uicaller) {
+    case IDS_ADDENTRY:
+      break;
+    case IDS_VIEWENTRY:
+    case IDS_EDITENTRY:
+      {
+      CString cs_title;
+      StringX sx_group(L""), sx_title, sx_user(L"");
+      if (!m_AEMD.pci->IsGroupEmpty())
+        sx_group = m_AEMD.pci->GetGroup();
+      sx_title = m_AEMD.pci->GetTitle();
+      if (!m_AEMD.pci->IsUserEmpty())
+        sx_user = m_AEMD.pci->GetUser();
+
+      // Set up and pass Propertysheet caption showing entry being edited/viewed
+      cs_title.Format(m_AEMD.uicaller, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+      SetWindowText(cs_title);
+      break;
+      }
+    default:
+      ASSERT(0);
+  }
+
+  return TRUE;
 }
 
 BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)

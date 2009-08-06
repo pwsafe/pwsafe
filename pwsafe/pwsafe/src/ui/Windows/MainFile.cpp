@@ -1646,9 +1646,9 @@ int DboxMain::Merge(const StringX &pszFilename) {
       }
 
       m_core.AddEntry(otherItem);
-      StringX sx_added = StringX(L"\xbb") + 
-                           otherGroup + StringX(L"\xbb") + 
-                           otherTitle + StringX(L"\xbb") +
+      StringX sx_added = StringX(L"\xab") + 
+                           otherGroup + StringX(L"\xbb \xab") + 
+                           otherTitle + StringX(L"\xbb \xab") +
                            otherUser  + StringX(L"\xbb");
       vs_added.push_back(sx_added);
       numAdded++;
@@ -1791,9 +1791,9 @@ int DboxMain::MergeDependents(PWScore *pothercore,
     } else
       ASSERT(0);
 
-    StringX sx_added = StringX(L"\xbb") + 
-                         tempitem.GetGroup() + StringX(L"\xbb") + 
-                         tempitem.GetTitle() + StringX(L"\xbb") +
+    StringX sx_added = StringX(L"\xab") + 
+                         tempitem.GetGroup() + StringX(L"\xbb \xab") + 
+                         tempitem.GetTitle() + StringX(L"\xbb \xab") +
                          tempitem.GetUser()  + StringX(L"\xbb");
     vs_added.push_back(sx_added);
     numadded++;

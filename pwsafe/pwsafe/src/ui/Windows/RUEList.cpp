@@ -74,15 +74,18 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
       StringX user = ci.GetUser();
 
       if (group.empty())
-        group = L"*";
+        group = L" ";
 
       if (title.empty())
-        title = L"*";
+        title = L" ";
 
       if (user.empty())
-        user = L"*";
+        user = L" ";
 
-      ruentrydata.string = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
+      // Looks similar to <g><t><u>
+      ruentrydata.string = L"\xab" + group + L"\xbb " + 
+                           L"\xab" + title + L"\xbb " + 
+                           L"\xab" + user  + L"\xbb";
       ruentrydata.image = m_pDbx->GetEntryImage(ci);
       ruentrydata.pci = (CItemData *)&ci;
     }

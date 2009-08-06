@@ -1106,6 +1106,18 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
   if (pci == NULL)
     return;
 
+  if (pci->IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    pci->GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      pci = &iter->second;
+    }
+  }
+
   short iDCA;
   pci->GetDCA(iDCA);
   if (iDCA < PWSprefs::minDCA || iDCA > PWSprefs::maxDCA)
@@ -2182,23 +2194,34 @@ void DboxMain::UpdateStatusBar()
 #endif
 }
 
-void DboxMain::SetDCAText()
+void DboxMain::SetDCAText(CItemData * pci)
 {
-  const int dca = int(PWSprefs::GetInstance()->
+  const short si_dca_default = short(PWSprefs::GetInstance()->
                        GetPref(PWSprefs::DoubleClickAction));
-  int i_dca_text;
-  switch (dca) {
-    case PWSprefs::DoubleClickAutoType: i_dca_text = IDS_STATAUTOTYPE; break;
-    case PWSprefs::DoubleClickBrowse: i_dca_text = IDS_STATBROWSE; break;
-    case PWSprefs::DoubleClickCopyNotes: i_dca_text = IDS_STATCOPYNOTES; break;
-    case PWSprefs::DoubleClickCopyPassword: i_dca_text = IDS_STATCOPYPASSWORD; break;
-    case PWSprefs::DoubleClickCopyUsername: i_dca_text = IDS_STATCOPYUSERNAME; break;
-    case PWSprefs::DoubleClickViewEdit: i_dca_text = IDS_STATVIEWEDIT; break;
-    case PWSprefs::DoubleClickCopyPasswordMinimize: i_dca_text = IDS_STATCOPYPASSWORDMIN; break;
-    default: i_dca_text = IDS_STATCOMPANY;
+  short si_dca;
+  if (pci == NULL) {
+    si_dca = si_dca_default;
+  } else {
+    pci->GetDCA(si_dca);
+    if (si_dca == -1)
+      si_dca = si_dca_default;
+  }
+
+  UINT ui_dca;
+  switch (si_dca) {
+    case PWSprefs::DoubleClickAutoType:             ui_dca = IDS_STATAUTOTYPE;        break;
+    case PWSprefs::DoubleClickBrowse:               ui_dca = IDS_STATBROWSE;          break;
+    case PWSprefs::DoubleClickCopyNotes:            ui_dca = IDS_STATCOPYNOTES;       break;
+    case PWSprefs::DoubleClickCopyPassword:         ui_dca = IDS_STATCOPYPASSWORD;    break;
+    case PWSprefs::DoubleClickCopyUsername:         ui_dca = IDS_STATCOPYUSERNAME;    break;
+    case PWSprefs::DoubleClickViewEdit:             ui_dca = IDS_STATVIEWEDIT;        break;
+    case PWSprefs::DoubleClickCopyPasswordMinimize: ui_dca = IDS_STATCOPYPASSWORDMIN; break;
+    case PWSprefs::DoubleClickBrowsePlus:           ui_dca = IDS_STATBROWSEPLUS;      break;
+    case PWSprefs::DoubleClickRun:                  ui_dca = IDS_STATRUN;             break;
+    default:                                        ui_dca = IDS_STATCOMPANY;
   }
   CString s;
-  s.LoadString(i_dca_text);
+  s.LoadString(ui_dca);
   m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
 }
 

@@ -76,7 +76,6 @@ protected:
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
-  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnBeginDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnDestroy();
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);

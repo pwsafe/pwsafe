@@ -10,6 +10,9 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2832991] Double-click action display in the Status Bar now reflects the
+value for entries that have overriden the current default and is also
+updated after the entry is edited.
 [2820260] Fix password expiry interval processing during Edit.
 [2818653] Password expiry interval now exported to XML correctly in decimal
 and show current expiry interval during Edit, if present.
@@ -27,9 +30,14 @@ select a database to open.
 rather than '[Alias]' and its base's notes data, respectively.
 [] Runcommand no longer truncates the first field if it is within double
 quotes.
+[] Duplicate entry now duplicates Double-click action of original as well.
+[] Double-click on a shortcut entry now executes the action of its base.
 
 New Features for 3.18.1
 =======================
+[2832983] Add/Edit Autotype field now same width as for the Run Command field.
+Also, the Edit/View dialog now has the details of the entry being edited/viewed
+in its title caption.  This will only get refreshed on saving the entry.
 [] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
 sets the delay between sending each subsequent character, '\w' & '\W' introduces
 a one-time delay where they appear.  For '\w', the value 'nnn' is in

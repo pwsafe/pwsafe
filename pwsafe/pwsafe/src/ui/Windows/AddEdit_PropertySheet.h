@@ -23,14 +23,11 @@ class ItemData;
 class CAddEdit_PropertySheet : public CPWPropertySheet
 {
 public:
-  CAddEdit_PropertySheet(UINT nID, 
-                         CWnd* pDbx, PWScore *pcore, CItemData *pci,
-                         const StringX currentDB = L"");
-  CAddEdit_PropertySheet(LPCTSTR pszCaption, UINT nID, 
-                         CWnd* pDbx, PWScore *pcore, CItemData *pci,
+  CAddEdit_PropertySheet(UINT nID, CWnd* pDbx, PWScore *pcore, CItemData *pci,
                          const StringX currentDB = L"");
   ~CAddEdit_PropertySheet();
 
+  virtual BOOL OnInitDialog();
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 
   DECLARE_DYNAMIC(CAddEdit_PropertySheet)
@@ -63,9 +60,6 @@ protected:
   st_AE_master_data m_AEMD;
 
 private:
-  void Init(UINT nID, CWnd* pParent, PWScore *pcore, CItemData *pci,
-           const StringX &currentDB);
-
   CAddEdit_Basic           *m_pp_basic;
   CAddEdit_Additional      *m_pp_additional;
   CAddEdit_DateTimes       *m_pp_datetimes;

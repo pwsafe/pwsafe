@@ -550,18 +550,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   pci = NULL; // not strictly needed  - just a reminder to use ci_original
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
-
-  CString cs_title;
-  StringX sx_group(L""), sx_title, sx_user(L"");
-  if (!ci_original.IsGroupEmpty())
-    sx_group = ci_original.GetGroup();
-  sx_title = ci_original.GetTitle();
-  if (!ci_original.IsUserEmpty())
-    sx_user = ci_original.GetUser();
-
-  // Set up and pass Propertysheet caption showing entry being edited/viewed
-  cs_title.Format(uicaller, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
-  CAddEdit_PropertySheet edit_entry_psh(cs_title, uicaller, this, pcore, &ci_edit, pcore->GetCurFile()); 
+  CAddEdit_PropertySheet edit_entry_psh(uicaller, this, pcore, &ci_edit, pcore->GetCurFile()); 
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
@@ -740,6 +729,12 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     m_ctlItemTree.SortTree(TVI_ROOT);
     SortListView();
 
+    short sh_odca, sh_ndca;
+    ci_original.GetDCA(sh_odca);
+    ci_edit.GetDCA(sh_ndca);
+    if (sh_odca != sh_ndca)
+      SetDCAText(&ci_edit);
+
     return true;
   } // rc == IDOK
   return false;
@@ -878,6 +873,11 @@ void DboxMain::OnDuplicateEntry()
     StringX tmp = pci->GetPWHistory();
     if (tmp.length() >= 5)
       ci2.SetPWHistory(tmp);
+
+    short sh_dca;
+    pci->GetDCA(sh_dca);
+    if (sh_dca >= 0)
+      ci2.SetDCA(sh_dca);
 
     uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
     CItemData::EntryType entrytype = pci->GetEntryType();

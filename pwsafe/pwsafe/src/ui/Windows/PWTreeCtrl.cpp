@@ -218,7 +218,6 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
-  ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_DESTROY()
   ON_WM_TIMER()
@@ -1373,20 +1372,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
     while (ShowCursor(TRUE) < 0)
       ;
   } 
-}
-
-void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *)
-{
-  HTREEITEM hti = GetDropHilightItem();
-  if (hti != NULL)
-    SetItemState(hti, 0, TVIS_DROPHILITED);
-
-  NMTREEVIEW *ptv = (NMTREEVIEW *)pNotifyStruct;
-  hti = ptv->itemNew.hItem;
-  if (hti != NULL) {
-    CItemData *ci = (CItemData *)GetItemData(hti);
-    m_pDbx->UpdateToolBarForSelectedItem(ci);
-  }
 }
 
 void CPWTreeCtrl::OnTimer(UINT_PTR nIDEvent)
