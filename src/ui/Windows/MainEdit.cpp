@@ -143,11 +143,11 @@ void DboxMain::OnCreateShortcut()
   if (m_core.IsReadOnly() || SelItemOk() != TRUE)
     return;
 
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
 
-  CCreateShortcutDlg dlg_createshortcut(this, ci->GetGroup(), 
-    ci->GetTitle(), ci->GetUser());
+  CCreateShortcutDlg dlg_createshortcut(this, pci->GetGroup(), 
+    pci->GetTitle(), pci->GetUser());
 
   if (m_core.GetUseDefUser()) {
     dlg_createshortcut.m_username = m_core.GetDefUsername();
@@ -174,18 +174,18 @@ void DboxMain::OnCreateShortcut()
     if (dlg_createshortcut.m_username.IsEmpty() && m_core.GetUseDefUser())
       dlg_createshortcut.m_username = m_core.GetDefUsername();
 
-    CreateShortcutEntry(ci, dlg_createshortcut.m_group, 
+    CreateShortcutEntry(pci, dlg_createshortcut.m_group, 
                         dlg_createshortcut.m_title, 
                         dlg_createshortcut.m_username);
   }
 }
-void DboxMain::CreateShortcutEntry(CItemData *ci, const StringX &cs_group,
+void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
                                    const StringX &cs_title, const StringX &cs_user)
 {
   uuid_array_t base_uuid, shortcut_uuid;
 
-  ASSERT(ci != NULL);
-  ci->GetUUID(base_uuid);
+  ASSERT(pci != NULL);
+  pci->GetUUID(base_uuid);
 
   //Finish Check (Does that make any geographical sense?)
   CItemData temp;
@@ -203,10 +203,10 @@ void DboxMain::CreateShortcutEntry(CItemData *ci, const StringX &cs_group,
   ItemListIter iter = m_core.Find(base_uuid);
   if (iter != End()) {
     const CItemData &cibase = iter->second;
-    DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+    DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
     int nImage = GetEntryImage(cibase);
-    SetEntryImage(di->list_index, nImage, true);
-    SetEntryImage(di->tree_item, nImage, true);
+    SetEntryImage(pdi->list_index, nImage, true);
+    SetEntryImage(pdi->tree_item, nImage, true);
   }
 
   time(&t);
@@ -313,15 +313,15 @@ void DboxMain::OnDelete()
 
 void DboxMain::Delete(bool inRecursion)
 {
-  CItemData *ci = getSelectedItem();
+  CItemData *pci = getSelectedItem();
 
-  if (ci != NULL) {
+  if (pci != NULL) {
     uuid_array_t entry_uuid;
-    ci->GetUUID(entry_uuid);
+    pci->GetUUID(entry_uuid);
 
     UUIDList dependentslist;
     int num_dependents(0);
-    CItemData::EntryType entrytype = ci->GetEntryType();
+    CItemData::EntryType entrytype = pci->GetEntryType();
 
     if (entrytype == CItemData::ET_ALIASBASE)
       m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::ET_ALIAS);
@@ -352,11 +352,11 @@ void DboxMain::Delete(bool inRecursion)
       }
     }
 
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
-    int curSel = di->list_index;
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    int curSel = pdi->list_index;
     // Find next in treeview, not always curSel after deletion
-    HTREEITEM curTree_item = di->tree_item;
+    HTREEITEM curTree_item = pdi->tree_item;
     HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item, TVGN_NEXT);
     // Must Find before delete from m_ctlItemList:
     ItemListIter listindex = m_core.Find(entry_uuid);
@@ -365,10 +365,10 @@ void DboxMain::Delete(bool inRecursion)
     UnFindItem();
     m_ctlItemList.DeleteItem(curSel);
     m_ctlItemTree.DeleteWithParents(curTree_item);
-    delete di;
+    delete pdi;
     FixListIndexes();
 
-    if (ci->NumberUnknownFields() > 0)
+    if (pci->NumberUnknownFields() > 0)
       m_core.DecrementNumRecordsWithUnknownFields();
 
     uuid_array_t base_uuid;
@@ -384,10 +384,10 @@ void DboxMain::Delete(bool inRecursion)
         ItemListIter iter = m_core.Find(base_uuid);
         CItemData &cibase = iter->second;
         cibase.SetNormal();
-        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+        DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
         int nImage = GetEntryImage(cibase);
-        SetEntryImage(di->list_index, nImage, true);
-        SetEntryImage(di->tree_item, nImage, true);
+        SetEntryImage(pdi->list_index, nImage, true);
+        SetEntryImage(pdi->tree_item, nImage, true);
       }
     }
     if (entrytype == CItemData::ET_SHORTCUT) {
@@ -402,10 +402,10 @@ void DboxMain::Delete(bool inRecursion)
         ItemListIter iter = m_core.Find(base_uuid);
         CItemData &cibase = iter->second;
         cibase.SetNormal();
-        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+        DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
         int nImage = GetEntryImage(cibase);
-        SetEntryImage(di->list_index, nImage, true);
-        SetEntryImage(di->tree_item, nImage, true);
+        SetEntryImage(pdi->list_index, nImage, true);
+        SetEntryImage(pdi->tree_item, nImage, true);
       }
     }
 
@@ -423,10 +423,10 @@ void DboxMain::Delete(bool inRecursion)
           UUIDiter->GetUUID(auuid);
           iter = m_core.Find(auuid);
           CItemData &cialias = iter->second;
-          DisplayInfo *di = (DisplayInfo *)cialias.GetDisplayInfo();
+          DisplayInfo *pdi = (DisplayInfo *)cialias.GetDisplayInfo();
           int nImage = GetEntryImage(cialias);
-          SetEntryImage(di->list_index, nImage, true);
-          SetEntryImage(di->tree_item, nImage, true);
+          SetEntryImage(pdi->list_index, nImage, true);
+          SetEntryImage(pdi->tree_item, nImage, true);
         }
       } else {
         m_core.RemoveAllDependentEntries(entry_uuid, CItemData::ET_SHORTCUT);
@@ -438,10 +438,10 @@ void DboxMain::Delete(bool inRecursion)
           UUIDiter->GetUUID(suuid);
           iter = m_core.Find(suuid);
           CItemData &cshortcut = iter->second;
-          DisplayInfo *di = (DisplayInfo *)cshortcut.GetDisplayInfo();
-          m_ctlItemList.DeleteItem(di->list_index);
-          m_ctlItemTree.DeleteItem(di->tree_item);
-          delete di;
+          DisplayInfo *pdi = (DisplayInfo *)cshortcut.GetDisplayInfo();
+          m_ctlItemList.DeleteItem(pdi->list_index);
+          m_ctlItemTree.DeleteItem(pdi->tree_item);
+          delete pdi;
           FixListIndexes();
           m_core.RemoveEntryAt(iter);
         }
@@ -470,7 +470,7 @@ void DboxMain::Delete(bool inRecursion)
         if (!m_ctlItemTree.IsLeaf(ti)) {
           HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
 
-          m_ctlItemTree.SetRedraw( FALSE );
+          m_ctlItemTree.SetRedraw(FALSE);
 
           while (cti != NULL) {
             m_ctlItemTree.SelectItem(cti);
@@ -478,7 +478,7 @@ void DboxMain::Delete(bool inRecursion)
             cti = m_ctlItemTree.GetChildItem(ti);
           }
 
-          m_ctlItemTree.SetRedraw( TRUE );
+          m_ctlItemTree.SetRedraw(TRUE);
           m_ctlItemTree.Invalidate();
 
           //  delete an empty group.
@@ -513,12 +513,13 @@ void DboxMain::OnEdit()
   // Note that Edit is also used for just viewing - don't want to disable
   // viewing in read-only mode
   if (SelItemOk() == TRUE) {
-    CItemData *ci = getSelectedItem();
-    ASSERT(ci != NULL);
-    if (ci->IsShortcut())
-      EditShortcut(ci);
+    CItemData *pci = getSelectedItem();
+    ASSERT(pci != NULL);
+
+    if (pci->IsShortcut())
+      EditShortcut(pci);
     else
-      EditItem(ci);
+      EditItem(pci);
   } else {
     // entry item not selected - perhaps here on Enter on tree item?
     // perhaps not the most elegant solution to improving non-mouse use,
@@ -537,30 +538,30 @@ void DboxMain::OnEdit()
   }
 }
 
-bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
+bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 {
   if (pcore == NULL)
     pcore = &m_core;
 
-  CItemData editedItem(*ci);
-  // As ci may be invalidated if database is Locked while in this routine, 
+  CItemData ci_edit(*pci);
+  // As pci may be invalidated if database is Locked while in this routine, 
   // we use a clone
-  CItemData originalItem(*ci);
-  ci = NULL; // not strictly needed  - just a reminder to use originalItem
+  CItemData ci_original(*pci);
+  pci = NULL; // not strictly needed  - just a reminder to use ci_original
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
 
   CString cs_title;
   StringX sx_group(L""), sx_title, sx_user(L"");
-  if (!originalItem.IsGroupEmpty())
-    sx_group = originalItem.GetGroup();
-  sx_title = originalItem.GetTitle();
-  if (!originalItem.IsUserEmpty())
-    sx_user = originalItem.GetUser();
+  if (!ci_original.IsGroupEmpty())
+    sx_group = ci_original.GetGroup();
+  sx_title = ci_original.GetTitle();
+  if (!ci_original.IsUserEmpty())
+    sx_user = ci_original.GetUser();
 
   // Set up and pass Propertysheet caption showing entry being edited/viewed
   cs_title.Format(uicaller, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
-  CAddEdit_PropertySheet edit_entry_psh(cs_title, uicaller, this, pcore, &editedItem, pcore->GetCurFile()); 
+  CAddEdit_PropertySheet edit_entry_psh(cs_title, uicaller, this, pcore, &ci_edit, pcore->GetCurFile()); 
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
@@ -568,9 +569,9 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     edit_entry_psh.SetDefUsername(pcore->GetDefUsername());
 
   uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
-  CItemData::EntryType entrytype = originalItem.GetEntryType();
+  CItemData::EntryType entrytype = ci_original.GetEntryType();
 
-  originalItem.GetUUID(original_uuid);  // Edit doesn't change this!
+  ci_original.GetUUID(original_uuid);  // Edit doesn't change this!
   if (entrytype == CItemData::ET_ALIASBASE || entrytype == CItemData::ET_SHORTCUTBASE) {
     // Base entry
     UUIDList dependentslist;
@@ -615,30 +616,30 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     ItemListIter listpos = Find(original_uuid);
     ASSERT(listpos != pcore->GetEntryEndIter());
     CItemData oldElem = GetEntryAt(listpos);
-    DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
-    ASSERT(di != NULL);
-    // editedItem's displayinfo will have been deleted if
+    DisplayInfo *pdi = (DisplayInfo *)oldElem.GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    // ci_edit's displayinfo will have been deleted if
     // application "locked" (Cleared list)
-    DisplayInfo *ndi = new DisplayInfo;
-    ndi->list_index = -1; // so that insertItem will set new values
-    ndi->tree_item = 0;
-    editedItem.SetDisplayInfo(ndi);
-    StringX newPassword = editedItem.GetPassword();
+    DisplayInfo *pdi_new = new DisplayInfo;
+    pdi_new->list_index = -1; // so that insertItem will set new values
+    pdi_new->tree_item = 0;
+    ci_edit.SetDisplayInfo(pdi_new);
+    StringX newPassword = ci_edit.GetPassword();
     memcpy(new_base_uuid, edit_entry_psh.GetBaseUUID(), sizeof(uuid_array_t));
 
     ItemListIter iter;
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_NORMAL &&
-        originalItem.GetPassword() != newPassword) {
+        ci_original.GetPassword() != newPassword) {
       // Original was a 'normal' entry and the password has changed
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
         pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-        editedItem.SetPassword(L"[Alias]");
-        editedItem.SetAlias();
+        ci_edit.SetPassword(L"[Alias]");
+        ci_edit.SetAlias();
       } else {
         // Still 'normal'
-        editedItem.SetPassword(newPassword);
-        editedItem.SetNormal();
+        ci_edit.SetPassword(newPassword);
+        ci_edit.SetNormal();
       }
     }
 
@@ -655,31 +656,31 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         if (edit_entry_psh.GetIBasedata() > 0) {
           // Still an alias
           pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-          editedItem.SetPassword(L"[Alias]");
-          editedItem.SetAlias();
+          ci_edit.SetPassword(L"[Alias]");
+          ci_edit.SetAlias();
         } else {
           // No longer an alias
-          editedItem.SetPassword(newPassword);
-          editedItem.SetNormal();
+          ci_edit.SetPassword(newPassword);
+          ci_edit.SetNormal();
         }
       }
     }
 
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_ALIASBASE &&
-        originalItem.GetPassword() != newPassword) {
+        ci_original.GetPassword() != newPassword) {
       // Original was a base but might now be an alias of another entry!
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
         // Make this one an alias
         pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
-        editedItem.SetPassword(L"[Alias]");
-        editedItem.SetAlias();
+        ci_edit.SetPassword(L"[Alias]");
+        ci_edit.SetAlias();
         // Move old aliases across
         pcore->MoveDependentEntries(original_uuid, new_base_uuid, CItemData::ET_ALIAS);
       } else {
         // Still a base entry but with a new password
-        editedItem.SetPassword(newPassword);
-        editedItem.SetAliasBase();
+        ci_edit.SetPassword(newPassword);
+        ci_edit.SetAliasBase();
       }
     }
 
@@ -690,10 +691,10 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     iter = pcore->Find(original_base_uuid);
     if (iter != End()) {
       const CItemData &cibase = iter->second;
-      DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+      DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
       int nImage = GetEntryImage(cibase);
-      SetEntryImage(di->list_index, nImage, true);
-      SetEntryImage(di->tree_item, nImage, true);
+      SetEntryImage(pdi->list_index, nImage, true);
+      SetEntryImage(pdi->tree_item, nImage, true);
     }
 
     // Last the new base entry (only if different to the one we have done!
@@ -701,35 +702,35 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       iter = pcore->Find(new_base_uuid);
       if (iter != End()) {
         const CItemData &cibase = iter->second;
-        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+        DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
         int nImage = GetEntryImage(cibase);
-        SetEntryImage(di->list_index, nImage, true);
-        SetEntryImage(di->tree_item, nImage, true);
+        SetEntryImage(pdi->list_index, nImage, true);
+        SetEntryImage(pdi->tree_item, nImage, true);
       }
     }
 
-    if (editedItem.IsAlias() || editedItem.IsShortcut()) {
-      editedItem.SetXTime((time_t)0);
-      editedItem.SetPWPolicy(L"");
+    if (ci_edit.IsAlias() || ci_edit.IsShortcut()) {
+      ci_edit.SetXTime((time_t)0);
+      ci_edit.SetPWPolicy(L"");
     }
 
     pcore->RemoveEntryAt(listpos);
-    pcore->AddEntry(editedItem);
-    m_ctlItemList.DeleteItem(di->list_index);
-    m_ctlItemTree.DeleteWithParents(di->tree_item);
+    pcore->AddEntry(ci_edit);
+    m_ctlItemList.DeleteItem(pdi->list_index);
+    m_ctlItemTree.DeleteWithParents(pdi->tree_item);
 
     // AddEntry copies the entry, and we want to work with the inserted copy
     // Which we'll find by uuid
     insertItem(pcore->GetEntry(pcore->Find(original_uuid)));
     FixListIndexes();
     // Now delete old entry's DisplayInfo
-    delete di;
+    delete pdi;
     if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::SaveImmediately)) {
         Save();
     }
-    if (ndi->list_index >= 0) {
-      rc = SelectEntry(ndi->list_index);
+    if (pdi_new->list_index >= 0) {
+      rc = SelectEntry(pdi_new->list_index);
       if (rc == 0) {
         SelectEntry(m_ctlItemList.GetItemCount() - 1);
       }
@@ -744,17 +745,17 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
   return false;
 }
 
-bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
+bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 {
   if (pcore == NULL)
     pcore = &m_core;
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
-  CItemData editedItem(*ci);
+  CItemData ci_edit(*pci);
 
   uuid_array_t entry_uuid, base_uuid;
-  ci->GetUUID(entry_uuid);  // Edit doesn't change this!
+  pci->GetUUID(entry_uuid);  // Edit doesn't change this!
 
   // Shortcut entry
   // Get corresponding base uuid
@@ -764,7 +765,7 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
   if (iter == End())
     return false;
 
-  CEditShortcutDlg dlg_editshortcut(&editedItem, this, iter->second.GetGroup(),
+  CEditShortcutDlg dlg_editshortcut(&ci_edit, this, iter->second.GetGroup(),
                                     iter->second.GetTitle(), iter->second.GetUser());
 
   if (pcore->GetUseDefUser())
@@ -779,32 +780,32 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
     ItemListIter listpos = Find(entry_uuid);
     ASSERT(listpos != pcore->GetEntryEndIter());
     CItemData oldElem = GetEntryAt(listpos);
-    DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
-    ASSERT(di != NULL);
-    // editedItem's displayinfo will have been deleted if
+    DisplayInfo *pdi = (DisplayInfo *)oldElem.GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    // ci_edit's displayinfo will have been deleted if
     // application "locked" (Cleared list)
-    DisplayInfo *ndi = new DisplayInfo;
-    ndi->list_index = -1; // so that insertItem will set new values
-    ndi->tree_item = 0;
-    editedItem.SetDisplayInfo(ndi);
+    DisplayInfo *pdi_new = new DisplayInfo;
+    pdi_new->list_index = -1; // so that insertItem will set new values
+    pdi_new->tree_item = 0;
+    ci_edit.SetDisplayInfo(pdi_new);
 
-    editedItem.SetXTime((time_t)0);
+    ci_edit.SetXTime((time_t)0);
 
     pcore->RemoveEntryAt(listpos);
-    pcore->AddEntry(editedItem);
-    m_ctlItemList.DeleteItem(di->list_index);
-    m_ctlItemTree.DeleteWithParents(di->tree_item);
+    pcore->AddEntry(ci_edit);
+    m_ctlItemList.DeleteItem(pdi->list_index);
+    m_ctlItemTree.DeleteWithParents(pdi->tree_item);
     // AddEntry copies the entry, and we want to work with the inserted copy
     // Which we'll find by uuid
     insertItem(pcore->GetEntry(pcore->Find(entry_uuid)));
     FixListIndexes();
     // Now delete old entry's DisplayInfo
-    delete di;
+    delete pdi;
     if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::SaveImmediately)) {
         Save();
     }
-    rc = SelectEntry(ndi->list_index);
+    rc = SelectEntry(pdi_new->list_index);
     if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
@@ -821,15 +822,15 @@ void DboxMain::OnDuplicateEntry()
     return;
 
   if (SelItemOk() == TRUE) {
-    CItemData *ci = getSelectedItem();
-    ASSERT(ci != NULL);
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
+    CItemData *pci = getSelectedItem();
+    ASSERT(pci != NULL);
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
 
     // Get information from current selected entry
-    StringX ci2_group = ci->GetGroup();
-    StringX ci2_user = ci->GetUser();
-    StringX ci2_title0 = ci->GetTitle();
+    StringX ci2_group = pci->GetGroup();
+    StringX ci2_user = pci->GetUser();
+    StringX ci2_title0 = pci->GetTitle();
     StringX ci2_title;
 
     // Find a unique "Title"
@@ -849,39 +850,39 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetGroup(ci2_group);
     ci2.SetTitle(ci2_title);
     ci2.SetUser(ci2_user);
-    ci2.SetPassword(ci->GetPassword());
-    ci2.SetURL(ci->GetURL());
-    ci2.SetAutoType(ci->GetAutoType());
-    ci2.SetRunCommand(ci->GetRunCommand());
-    ci2.SetNotes(ci->GetNotes());
+    ci2.SetPassword(pci->GetPassword());
+    ci2.SetURL(pci->GetURL());
+    ci2.SetAutoType(pci->GetAutoType());
+    ci2.SetRunCommand(pci->GetRunCommand());
+    ci2.SetNotes(pci->GetNotes());
     time_t t;
     int xint;
-    ci->GetCTime(t);
+    pci->GetCTime(t);
     if ((long) t != 0L)
       ci2.SetCTime(t);
-    ci->GetATime(t);
+    pci->GetATime(t);
     if ((long) t != 0L)
       ci2.SetATime(t);
-    ci->GetXTime(t);
+    pci->GetXTime(t);
     if ((long) t != 0L)
       ci2.SetXTime(t);
-    ci->GetXTimeInt(xint);
+    pci->GetXTimeInt(xint);
     if (xint != 0)
       ci2.SetXTimeInt(xint);
-    ci->GetPMTime(t);
+    pci->GetPMTime(t);
     if ((long) t != 0L)
       ci2.SetPMTime(t);
-    ci->GetRMTime(t);
+    pci->GetRMTime(t);
     if ((long) t != 0L)
       ci2.SetRMTime(t);
-    StringX tmp = ci->GetPWHistory();
+    StringX tmp = pci->GetPWHistory();
     if (tmp.length() >= 5)
       ci2.SetPWHistory(tmp);
 
     uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
-    CItemData::EntryType entrytype = ci->GetEntryType();
+    CItemData::EntryType entrytype = pci->GetEntryType();
     if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
-      ci->GetUUID(original_entry_uuid);
+      pci->GetUUID(original_entry_uuid);
       ci2.GetUUID(new_entry_uuid);
       if (entrytype == CItemData::ET_ALIAS) {
         m_core.GetAliasBaseUUID(original_entry_uuid, base_uuid);
@@ -907,7 +908,7 @@ void DboxMain::OnDuplicateEntry()
 
     // Add it to the end of the list
     m_core.AddEntry(ci2);
-    di->list_index = -1; // so that insertItem will set new values
+    pdi->list_index = -1; // so that insertItem will set new values
     uuid_array_t uuid;
     ci2.GetUUID(uuid);
     insertItem(m_core.GetEntry(m_core.Find(uuid)));
@@ -916,7 +917,7 @@ void DboxMain::OnDuplicateEntry()
       GetPref(PWSprefs::SaveImmediately)) {
         Save();
     }
-    int rc = SelectEntry(di->list_index);
+    int rc = SelectEntry(pdi->list_index);
     if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
@@ -936,16 +937,16 @@ void DboxMain::OnCopyPassword()
       clearDlg.DoModal() == IDCANCEL)
     return;
 
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
 
-  CItemData *ci_original(ci);
+  CItemData *pci_original(pci);
 
   uuid_array_t base_uuid, entry_uuid;
-  const CItemData::EntryType entrytype = ci->GetEntryType();
+  const CItemData::EntryType entrytype = pci->GetEntryType();
   if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
     // This is an alias/shortcut
-    ci->GetUUID(entry_uuid);
+    pci->GetUUID(entry_uuid);
     if (entrytype == CItemData::ET_ALIAS)
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
     else
@@ -953,13 +954,13 @@ void DboxMain::OnCopyPassword()
 
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
-      ci = &iter->second;
+      pci = &iter->second;
     }
   }
 
-  SetClipboardData(ci->GetPassword());
+  SetClipboardData(pci->GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);
-  UpdateAccessTime(ci_original);
+  UpdateAccessTime(pci_original);
 }
 
 void DboxMain::OnCopyPasswordMinimize()
@@ -976,16 +977,16 @@ void DboxMain::OnDisplayPswdSubset()
   if (!SelItemOk())
     return;
 
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
 
-  CItemData *ci_original(ci);
+  CItemData *pci_original(pci);
 
   uuid_array_t base_uuid, entry_uuid;
-  const CItemData::EntryType entrytype = ci->GetEntryType();
+  const CItemData::EntryType entrytype = pci->GetEntryType();
   if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
     // This is an alias/shortcut
-    ci->GetUUID(entry_uuid);
+    pci->GetUUID(entry_uuid);
     if (entrytype == CItemData::ET_ALIAS)
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
     else
@@ -993,14 +994,14 @@ void DboxMain::OnDisplayPswdSubset()
 
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
-      ci = &iter->second;
+      pci = &iter->second;
     }
   }
 
-  CPasswordSubsetDlg DisplaySubsetDlg(this, ci);
+  CPasswordSubsetDlg DisplaySubsetDlg(this, pci);
 
   if (DisplaySubsetDlg.DoModal() != IDCANCEL)
-    UpdateAccessTime(ci_original);
+    UpdateAccessTime(pci_original);
 }
 
 void DboxMain::OnCopyUsername()
@@ -1008,26 +1009,26 @@ void DboxMain::OnCopyUsername()
   if (SelItemOk() != TRUE)
     return;
 
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
 
-  CItemData *ci_original(ci);
+  CItemData *pci_original(pci);
 
-  if (ci->IsShortcut()) {
+  if (pci->IsShortcut()) {
     // This is an shortcut
     uuid_array_t entry_uuid, base_uuid;
-    ci->GetUUID(entry_uuid);
+    pci->GetUUID(entry_uuid);
     m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
-      ci = &iter->second;
+      pci = &iter->second;
     }
   }
 
-  SetClipboardData(ci->GetUser());
+  SetClipboardData(pci->GetUser());
   UpdateLastClipboardAction(CItemData::USER);
-  UpdateAccessTime(ci_original);
+  UpdateAccessTime(pci_original);
 }
 
 void DboxMain::OnCopyNotes()
@@ -1035,26 +1036,26 @@ void DboxMain::OnCopyNotes()
   if (SelItemOk() != TRUE)
     return;
 
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
 
-  CItemData *ci_original(ci);
+  CItemData *pci_original(pci);
 
-  if (ci->IsShortcut()) {
+  if (pci->IsShortcut()) {
     // This is an shortcut
     uuid_array_t entry_uuid, base_uuid;
-    ci->GetUUID(entry_uuid);
+    pci->GetUUID(entry_uuid);
     m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
-      ci = &iter->second;
+      pci = &iter->second;
     }
   }
 
-  SetClipboardData(ci->GetNotes());
+  SetClipboardData(pci->GetNotes());
   UpdateLastClipboardAction(CItemData::NOTES);
-  UpdateAccessTime(ci_original);
+  UpdateAccessTime(pci_original);
 }
 
 void DboxMain::OnCopyURL()
@@ -1062,24 +1063,24 @@ void DboxMain::OnCopyURL()
   if (SelItemOk() != TRUE)
     return;
 
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
 
-  CItemData *ci_original(ci);
+  CItemData *pci_original(pci);
 
-  if (ci->IsShortcut()) {
+  if (pci->IsShortcut()) {
     // This is an shortcut
     uuid_array_t entry_uuid, base_uuid;
-    ci->GetUUID(entry_uuid);
+    pci->GetUUID(entry_uuid);
     m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
-      ci = &iter->second;
+      pci = &iter->second;
     }
   }
 
-  StringX cs_URL = ci->GetURL();
+  StringX cs_URL = pci->GetURL();
   StringX::size_type ipos;
   ipos = cs_URL.find(L"[alt]");
   if (ipos != StringX::npos)
@@ -1093,7 +1094,7 @@ void DboxMain::OnCopyURL()
 
   SetClipboardData(cs_URL);
   UpdateLastClipboardAction(CItemData::URL);
-  UpdateAccessTime(ci_original);
+  UpdateAccessTime(pci_original);
 }
 
 void DboxMain::UpdateLastClipboardAction(const int iaction)
@@ -1175,14 +1176,14 @@ void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp)
 void DboxMain::OnAutoType()
 {
   if (SelItemOk() == TRUE) {
-    CItemData *ci = getSelectedItem();
-    ASSERT(ci != NULL);
+    CItemData *pci = getSelectedItem();
+    ASSERT(pci != NULL);
 
-    UpdateAccessTime(ci);
+    UpdateAccessTime(pci);
 
     // All code using ci must be before this AutoType since the
-    // latter may trash *ci if lock-on-minimize
-    AutoType(*ci);
+    // latter may trash *pci if lock-on-minimize
+    AutoType(*pci);
   }
 }
 
@@ -1500,14 +1501,14 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
 void DboxMain::OnGotoBaseEntry()
 {
   if (SelItemOk() == TRUE) {
-    CItemData *ci = getSelectedItem();
-    ASSERT(ci != NULL);
+    CItemData *pci = getSelectedItem();
+    ASSERT(pci != NULL);
 
     uuid_array_t base_uuid, entry_uuid;
-    CItemData::EntryType entrytype = ci->GetEntryType();
+    CItemData::EntryType entrytype = pci->GetEntryType();
     if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
       // This is an alias or shortcut
-      ci->GetUUID(entry_uuid);
+      pci->GetUUID(entry_uuid);
       if (entrytype == CItemData::ET_ALIAS)
         m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
       else
@@ -1515,12 +1516,12 @@ void DboxMain::OnGotoBaseEntry()
 
       ItemListIter iter = m_core.Find(base_uuid);
       if (iter != End()) {
-         DisplayInfo *di = (DisplayInfo *)iter->second.GetDisplayInfo();
-         SelectEntry(di->list_index);
+         DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+         SelectEntry(pdi->list_index);
       } else
         return;
 
-      UpdateAccessTime(ci);
+      UpdateAccessTime(pci);
     }
   }
 }
@@ -1531,28 +1532,28 @@ void DboxMain::OnRunCommand()
   if (SelItemOk() != TRUE)
     return;
 
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
+  CItemData *pci = getSelectedItem();
+  ASSERT(pci != NULL);
 
-  CItemData *ci_original(ci);
+  CItemData *pci_original(pci);
   StringX sx_pswd;
   uuid_array_t entry_uuid, base_uuid;
 
-  sx_pswd = ci->GetPassword();
-  if (ci->IsShortcut()) {
+  sx_pswd = pci->GetPassword();
+  if (pci->IsShortcut()) {
     // This is an shortcut
-    ci->GetUUID(entry_uuid);
+    pci->GetUUID(entry_uuid);
     m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
     ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
-      ci = &iter->second;
-      sx_pswd = ci->GetPassword();
+      pci = &iter->second;
+      sx_pswd = pci->GetPassword();
     }
   }
-  if (ci->IsAlias()) {
+  if (pci->IsAlias()) {
     // This is an alias
-    ci->GetUUID(entry_uuid);
+    pci->GetUUID(entry_uuid);
     m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
 
     ItemListIter iter = m_core.Find(base_uuid);
@@ -1562,14 +1563,14 @@ void DboxMain::OnRunCommand()
   }
 
   StringX sx_RunCommand, sx_Expanded_ES;
-  sx_RunCommand = ci->GetRunCommand();
+  sx_RunCommand = pci->GetRunCommand();
   if (sx_RunCommand.empty())
     return;
 
   std::wstring errmsg;
   StringX::size_type st_column;
   sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_RunCommand, 
-                       m_core.GetCurFile(), ci, 
+                       m_core.GetCurFile(), pci, 
                        m_bDoAutoType, m_AutoType, 
                        errmsg, st_column);
   if (!errmsg.empty()) {
@@ -1580,10 +1581,10 @@ void DboxMain::OnRunCommand()
     return;
   }
 
-  m_AutoType = PWSAuxParse::GetAutoTypeString(m_AutoType, ci->GetGroup(), 
-                                 ci->GetTitle(), ci->GetUser(), 
-                                 sx_pswd, ci->GetNotes());
-  SetClipboardData(ci->GetPassword());
+  m_AutoType = PWSAuxParse::GetAutoTypeString(m_AutoType, pci->GetGroup(), 
+                                 pci->GetTitle(), pci->GetUser(), 
+                                 sx_pswd, pci->GetNotes());
+  SetClipboardData(pci->GetPassword());
   bool rc = m_runner.runcmd(sx_Expanded_ES, m_AutoType);
   if (!rc) {
     m_bDoAutoType = false;
@@ -1592,7 +1593,7 @@ void DboxMain::OnRunCommand()
   }
 
   UpdateLastClipboardAction(CItemData::RUNCMD);
-  UpdateAccessTime(ci_original);
+  UpdateAccessTime(pci_original);
 }
 
 void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)

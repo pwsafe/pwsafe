@@ -645,7 +645,7 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
   return true;
 }
 
-void CCompareResultsDlg::OnItemDoubleClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
+void CCompareResultsDlg::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 {
   *pResult = 0;
 
@@ -669,7 +669,7 @@ void CCompareResultsDlg::OnItemDoubleClick( NMHDR* /* pNMHDR */, LRESULT *pResul
   OnCompareViewEdit();
 }
 
-void CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
+void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 {
   *pResult = 0;
 

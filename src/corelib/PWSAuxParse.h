@@ -26,7 +26,7 @@ namespace PWSAuxParse {
   // parse failed, reason in same).
   StringX GetExpandedString(const StringX &sxRun_Command,
                             const StringX &sxCurrentDB,
-                            CItemData *ci, bool &bAutoType,
+                            CItemData *pci, bool &bAutoType,
                             StringX &sxAutotype, stringT &serrmsg,
                             StringX::size_type &st_column);
 

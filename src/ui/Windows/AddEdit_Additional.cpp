@@ -276,7 +276,7 @@ void CAddEdit_Additional::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
-                FALSE, 0, NULL, NULL, NULL, NULL );
+                FALSE, 0, NULL, NULL, NULL, NULL);
 #else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
@@ -576,7 +576,7 @@ void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNMHDR, LRESULT *pResult)
 
   if (phdn->iButton == 0) {
     // User clicked on header using left mouse button
-    if(phdn->iItem == m_iSortedColumn)
+    if (phdn->iItem == m_iSortedColumn)
       m_bSortAscending = !m_bSortAscending;
     else
       m_bSortAscending = true;

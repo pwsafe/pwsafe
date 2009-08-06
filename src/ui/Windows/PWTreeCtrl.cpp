@@ -99,7 +99,7 @@ public:
     return sCode;
   }
 
-  virtual SCODE GiveFeedback(DROPEFFECT dropEffect )
+  virtual SCODE GiveFeedback(DROPEFFECT dropEffect)
   {return m_tree.GiveFeedback(dropEffect);}
 
 private:
@@ -455,8 +455,8 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
   if (IsLeaf(hItem)) {
     DWORD_PTR itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
-    CItemData *ci = (CItemData *)itemData;
-    ci->SetGroup(CSecString(prefix));
+    CItemData *pci = (CItemData *)itemData;
+    pci->SetGroup(CSecString(prefix));
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
       prefix += GROUP_SEP;
@@ -492,20 +492,20 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   if (IsLeaf(ti)) {
     DWORD_PTR itemData = GetItemData(ti);
     ASSERT(itemData != NULL);
-    CItemData *ci = (CItemData *)itemData;
+    CItemData *pci = (CItemData *)itemData;
     CSecString currentTitle, currentUser, currentPassword;
 
     // We cannot allow in-place edit if these fields contain braces!
-    currentTitle = ci->GetTitle();
+    currentTitle = pci->GetTitle();
     if (currentTitle.FindOneOf(L"[]{}") != -1)
       return;
 
-    currentUser = ci->GetUser();
+    currentUser = pci->GetUser();
     if (prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
       currentUser.FindOneOf(L"[]{}") != -1)
       return;
 
-    currentPassword = ci->GetPassword();
+    currentPassword = pci->GetPassword();
     if (prefs->GetPref(PWSprefs::ShowPasswordInTree) &&
       currentPassword.FindOneOf(L"[]{}") != -1)
       return;
@@ -663,7 +663,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     if (IsLeaf(ptvinfo->item.hItem)) {
       DWORD_PTR itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
-      CItemData *ci = (CItemData *)itemData;
+      CItemData *pci = (CItemData *)itemData;
       StringX group, newTitle, newUser, newPassword;
 
       if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
@@ -671,7 +671,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
         goto bad_exit;
       }
 
-      group = ci->GetGroup();
+      group = pci->GetGroup();
       if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
         CSecString temp;
         if (group.empty())
@@ -689,9 +689,9 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       }
 
       if (newUser.empty())
-        newUser = ci->GetUser();
+        newUser = pci->GetUser();
       if (newPassword.empty())
-        newPassword = ci->GetPassword();
+        newPassword = pci->GetPassword();
 
       PWSprefs *prefs = PWSprefs::GetInstance();
       StringX treeDispString;
@@ -721,18 +721,18 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = L'\0';
 
       // update corresponding List mode text
-      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-      ASSERT(di != NULL);
-      int lindex = di->list_index;
+      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      ASSERT(pdi != NULL);
+      int lindex = pdi->list_index;
 
       // update the password database record - but only those items visible!!!
-      ci->SetTitle(newTitle);
+      pci->SetTitle(newTitle);
       m_pDbx->UpdateListItemTitle(lindex, newTitle.c_str());
       if (bShowUsernameInTree) {
-        ci->SetUser(newUser);
+        pci->SetUser(newUser);
         m_pDbx->UpdateListItemUser(lindex, newUser.c_str());
         if (bShowPasswordInTree) {
-          ci->SetPassword(newPassword);
+          pci->SetPassword(newPassword);
           m_pDbx->UpdateListItemPassword(lindex, newPassword.c_str());
         }
       }
@@ -916,11 +916,11 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   tvstruct.item.mask = TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
   HTREEITEM hNewItem = InsertItem(&tvstruct);
   if (itemData != 0) { // Non-NULL itemData implies Leaf
-    CItemData *ci = (CItemData *)itemData;
+    CItemData *pci = (CItemData *)itemData;
 
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
-    ASSERT(di->list_index >= 0);
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    ASSERT(pdi->list_index >= 0);
 
     // Update Group
     CSecString path, elem;
@@ -938,26 +938,26 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     } while (1);
 
     // Get information from current selected entry
-    CSecString ci_user = ci->GetUser();
-    CSecString ci_title0 = ci->GetTitle();
+    CSecString ci_user = pci->GetUser();
+    CSecString ci_title0 = pci->GetTitle();
     CSecString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Update list field with new group
-    ci->SetGroup(path);
-    m_pDbx->UpdateListItemGroup(di->list_index, (CString)path);
+    pci->SetGroup(path);
+    m_pDbx->UpdateListItemGroup(pdi->list_index, (CString)path);
 
     if (ci_title.Compare(ci_title0) != 0) {
-      ci->SetTitle(ci_title);
+      pci->SetTitle(ci_title);
     }
     // Update tree label
-    SetItemText(hNewItem, MakeTreeDisplayString(*ci));
+    SetItemText(hNewItem, MakeTreeDisplayString(*pci));
     // Update list field with new title
-    m_pDbx->UpdateListItemTitle(di->list_index, (CString)ci_title);
+    m_pDbx->UpdateListItemTitle(pdi->list_index, (CString)ci_title);
 
     // Mark database as modified!
     m_pDbx->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
-    di->tree_item = hNewItem;
+    pdi->tree_item = hNewItem;
   } // leaf processing
 
   HTREEITEM hFirstChild;
@@ -986,8 +986,8 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
       hChild = GetNextItem(hChild, TVGN_NEXT);
     }
   } else { // we're dragging a leaf
-    CItemData *ci = (CItemData *)itemData;
-    CItemData temp(*ci); // copy construct a duplicate
+    CItemData *pci = (CItemData *)itemData;
+    CItemData temp(*pci); // copy construct a duplicate
 
     // Update Group: chop away prefix, replace
     CSecString oldPath(temp.GetGroup());
@@ -1019,8 +1019,8 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         newPath += GROUP_SEP + oldPath;
     }
     // Get information from current selected entry
-    CSecString ci_user = ci->GetUser();
-    CSecString ci_title0 = ci->GetTitle();
+    CSecString ci_user = pci->GetUser();
+    CSecString ci_title0 = pci->GetTitle();
     CSecString ci_title = m_pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Needs new UUID as they must be unique and this is a copy operation
@@ -1033,12 +1033,12 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
 
     temp.SetGroup(newPath);
     temp.SetTitle(ci_title);
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
-    DisplayInfo *ndi = new DisplayInfo;
-    ndi->list_index = -1; // so that insertItem will set new values
-    ndi->tree_item = 0;
-    temp.SetDisplayInfo(ndi);
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    DisplayInfo *pdi_new = new DisplayInfo;
+    pdi_new->list_index = -1; // so that insertItem will set new values
+    pdi_new->tree_item = 0;
+    temp.SetDisplayInfo(pdi_new);
 
     CItemData::EntryType temp_et = temp.GetEntryType();
 
@@ -1189,7 +1189,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
         {
           // Shortcut group from drop point, title & user from drag entry
           CSecString cs_group, cs_title, cs_user;
-          CItemData *ci;
+          CItemData *pci;
           DWORD_PTR itemData;
 
           itemData = GetItemData(m_hitemDrop);
@@ -1198,21 +1198,21 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
             cs_group = CSecString(GetGroup(m_hitemDrop));
           } else {
             // Dropping on an entry
-            ci = (CItemData *)itemData;
-            cs_group = ci->GetGroup();
+            pci = (CItemData *)itemData;
+            cs_group = pci->GetGroup();
           }
 
           itemData = GetItemData(m_hitemDrag);
           ASSERT(itemData != NULL);
-          ci = (CItemData *)itemData;
-          cs_title.Format(IDS_SCTARGET, ci->GetTitle().c_str());
-          cs_user = ci->GetUser();
+          pci = (CItemData *)itemData;
+          cs_title.Format(IDS_SCTARGET, pci->GetTitle().c_str());
+          cs_user = pci->GetUser();
 
           // If there is a matching entry in our list, generate unique one
           if (m_pDbx->Find(cs_group, cs_title, cs_user) != m_pDbx->End()) {
             cs_title = m_pDbx->GetUniqueTitle(cs_group, cs_title, cs_user, IDS_DRAGNUMBER);
           }
-          m_pDbx->CreateShortcutEntry(ci, cs_group, cs_title, cs_user);
+          m_pDbx->CreateShortcutEntry(pci, cs_group, cs_title, cs_user);
           retval = TRUE;
           SelectItem(NULL);  // Deselect
           goto exit;
@@ -1314,8 +1314,8 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
   if (m_DDType == FROMTREE_R && IsLeaf(m_hitemDrag)) {
     DWORD_PTR itemData = GetItemData(m_hitemDrag);
-    CItemData *ci = (CItemData *)itemData;
-    if (ci->IsNormal() || ci->IsShortcutBase())
+    CItemData *pci = (CItemData *)itemData;
+    if (pci->IsNormal() || pci->IsShortcutBase())
       m_DDType = FROMTREE_RSC;  // Shortcut creation allowed (if within this instance)
   }
 
@@ -1501,7 +1501,7 @@ void CPWTreeCtrl::OnCollapseAll()
 void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
 {
   // Courtesy of Zafir Anjumfrom www.codeguru.com
-  if(ItemHasChildren(hItem)) {
+  if (ItemHasChildren(hItem)) {
     Expand(hItem, TVE_COLLAPSE);
     hItem = GetChildItem(hItem);
     do {
@@ -1537,7 +1537,7 @@ HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
 bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 {
   DWORD_PTR itemData = GetItemData(m_hitemDrag);
-  CItemData *ci = (CItemData *)itemData;
+  CItemData *pci = (CItemData *)itemData;
 
   CDDObList out_oblist;
 
@@ -1545,7 +1545,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
     ASSERT(itemData != NULL);
     m_nDragPathLen = 0;
     out_oblist.m_bDragNode = false;
-    GetEntryData(out_oblist, ci);
+    GetEntryData(out_oblist, pci);
   } else {
     m_nDragPathLen = GetGroup(GetParentItem(m_hitemDrag)).GetLength();
     out_oblist.m_bDragNode = true;
@@ -1601,8 +1601,8 @@ void CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
   if (IsLeaf(hItem)) {
     DWORD_PTR itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
-    CItemData *ci = (CItemData *)itemData;
-    GetEntryData(out_oblist, ci);
+    CItemData *pci = (CItemData *)itemData;
+    GetEntryData(out_oblist, pci);
   } else {
     HTREEITEM child;
     for (child = GetChildItem(hItem);
@@ -1613,35 +1613,35 @@ void CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
   }
 }
 
-void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
+void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *pci)
 {
-  ASSERT(ci != NULL);
+  ASSERT(pci != NULL);
   CDDObject *pDDObject = new CDDObject;
 
   if (out_oblist.m_bDragNode && m_nDragPathLen > 0) {
-    CItemData ci2(*ci); // we need a copy since to modify the group
-    const CSecString cs_Group = ci->GetGroup();
+    CItemData ci2(*pci); // we need a copy since to modify the group
+    const CSecString cs_Group = pci->GetGroup();
     ci2.SetGroup(cs_Group.Right(cs_Group.GetLength() - m_nDragPathLen - 1));
     pDDObject->FromItem(ci2);
   } else {
-    pDDObject->FromItem(*ci);
+    pDDObject->FromItem(*pci);
   }
 
-  if (ci->IsAlias() || ci->IsShortcut()) {
+  if (pci->IsAlias() || pci->IsShortcut()) {
     // I'm an alias or shortcut; pass on ptr to my base item
     // to retrieve its group/title/user
-    CItemData *cibase(NULL);
+    CItemData *pcibase(NULL);
     uuid_array_t base_uuid, entry_uuid;
-    ci->GetUUID(entry_uuid);
-    if (ci->IsAlias())
+    pci->GetUUID(entry_uuid);
+    if (pci->IsAlias())
       m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
     else
       m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
 
     ItemListIter iter = m_pDbx->Find(base_uuid);
     ASSERT(iter != m_pDbx->End());
-    cibase = &(iter->second);
-    pDDObject->SetBaseItem(cibase);
+    pcibase = &(iter->second);
+    pDDObject->SetBaseItem(pcibase);
   }
 
     out_oblist.AddTail(pDDObject);

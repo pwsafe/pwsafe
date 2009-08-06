@@ -75,7 +75,7 @@ static void ParseNotes(StringX &sxNotes,
 //-----------------------------------------------------------------
 StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
-                                       CItemData *ci, bool &bAutoType,
+                                       CItemData *pci, bool &bAutoType,
                                        StringX &sxAutotype, stringT &serrmsg, 
                                        StringX::size_type &st_column)
 {
@@ -90,7 +90,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                serrmsg, st_column);
 
   // if called with NULL ci, then we just parse to validate
-  if (uierr > 0 || ci == NULL || sxCurrentDB.empty()) {
+  if (uierr > 0 || pci == NULL || sxCurrentDB.empty()) {
     v_rctokens.clear();
     return sxretval;
   }
@@ -124,10 +124,10 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += sextn.c_str();
     } else
     if (st_rctoken.sxname == _T("g") || st_rctoken.sxname == _T("group")) {
-      sxretval += ci->GetGroup();
+      sxretval += pci->GetGroup();
     } else
     if (st_rctoken.sxname == _T("G") || st_rctoken.sxname == _T("GROUP")) {
-      StringX sxg = ci->GetGroup();
+      StringX sxg = pci->GetGroup();
       StringX::size_type st_index;
       st_index = sxg.rfind(_T("."));
       if (st_index != StringX::npos) {
@@ -136,22 +136,22 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       sxretval += sxg;
     } else
     if (st_rctoken.sxname == _T("t") || st_rctoken.sxname == _T("title")) {
-      sxretval += ci->GetTitle();
+      sxretval += pci->GetTitle();
     } else
     if (st_rctoken.sxname == _T("u") || st_rctoken.sxname == _T("user")) {
-      sxretval += ci->GetUser();
+      sxretval += pci->GetUser();
     } else
     if (st_rctoken.sxname == _T("p") || st_rctoken.sxname == _T("password")) {
-      sxretval += ci->GetPassword();
+      sxretval += pci->GetPassword();
     } else
     if (st_rctoken.sxname == _T("a") || st_rctoken.sxname == _T("autotype")) {
       // Do nothing - autotype variable handled elsewhere
     } else
     if (st_rctoken.sxname == _T("url")) {
-      sxretval += ci->GetURL();
+      sxretval += pci->GetURL();
     } else
     if (st_rctoken.sxname == _T("n") || st_rctoken.sxname == _T("notes")) {
-      StringX sxnotes = ci->GetNotes();
+      StringX sxnotes = pci->GetNotes();
 
       if (st_rctoken.index == 0) {
         sxretval += sxnotes;

@@ -321,7 +321,7 @@ void CPWFindToolBar::AddExtraControls()
   GetItemRect(index, &rect);
   rect.top += max((rect.top - rt.top) / 2, 0);
   m_findedit.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
-                          SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS );
+                          SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
 
   m_findedit.SetFont(&m_FindTextFont);
 
@@ -347,7 +347,7 @@ void CPWFindToolBar::AddExtraControls()
   GetItemRect(index, &rect);
   rect.top += max((rect.top - rt.top) / 2, 0);
   m_findresults.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
-                             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS );
+                             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS);
 
   m_findresults.SetFont(&m_FindTextFont);
 

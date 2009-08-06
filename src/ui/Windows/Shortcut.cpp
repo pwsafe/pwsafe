@@ -289,7 +289,7 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
           // Get the path to the link target. 
           hres = psl->GetPath(szGotPath, MAX_PATH,
                               (WIN32_FIND_DATA *)&wfd, 
-                              SLGP_SHORTPATH ); 
+                              SLGP_SHORTPATH); 
 
           LnkPath.ReleaseBuffer();
 

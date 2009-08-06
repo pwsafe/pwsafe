@@ -788,7 +788,6 @@ void DboxMain::InitPasswordSafe()
   m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefaultUser));
   m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername));
 
-
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
     SetColumnWidths(cs_ListColumnsWidths);
@@ -914,7 +913,7 @@ BOOL DboxMain::OnInitDialog()
 
   // Subclass the ListView HeaderCtrl
   CHeaderCtrl* pHeader = m_ctlItemList.GetHeaderCtrl();
-  if(pHeader && pHeader->GetSafeHwnd()) {
+  if (pHeader && pHeader->GetSafeHwnd()) {
     m_LVHdrCtrl.SubclassWindow(pHeader->GetSafeHwnd());
   }
 
@@ -1036,7 +1035,7 @@ void DboxMain::OnDestroy()
   CDialog::OnDestroy();
 }
 
-void DboxMain::OnWindowPosChanging( WINDOWPOS* lpwndpos )
+void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
   if (m_bStartHiddenAndMinimized) {
     lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
@@ -1065,14 +1064,14 @@ void DboxMain::FixListIndexes()
 {
   int N = m_ctlItemList.GetItemCount();
   for (int i = 0; i < N; i++) {
-    CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
-    ASSERT(ci != NULL);
-    if (m_bFilterActive && !PassesFiltering(*ci, m_currentfilter))
+    CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
+    ASSERT(pci != NULL);
+    if (m_bFilterActive && !PassesFiltering(*pci, m_currentfilter))
       continue;
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
-    if (di->list_index != i)
-      di->list_index = i;
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    if (pdi->list_index != i)
+      pdi->list_index = i;
   }
 }
 
@@ -1094,10 +1093,10 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
   // Now set we have processed the event
   *pLResult = 1L;
 
-  // Continue if in ListView  or Leaf in TreeView
+  // Continue if in ListView or Leaf in TreeView
 
 #if defined(POCKET_PC)
-  if ( app.GetProfileInt(PWS_REG_OPTIONS, L"dcshowspassword", FALSE) == FALSE ) {
+  if (app.GetProfileInt(PWS_REG_OPTIONS, L"dcshowspassword", FALSE) == FALSE) {
     OnCopyPassword();
   } else {
     OnShowPassword();
@@ -1159,31 +1158,31 @@ void DboxMain::OnBrowse()
 
 void DboxMain::DoBrowse(const bool bDoAutotype)
 {
-  CItemData *ci = getSelectedItem();
-  CItemData *ci_original(ci);
+  CItemData *pci = getSelectedItem();
+  CItemData *pci_original(pci);
 
-  if(ci != NULL) {
-    if (ci->IsShortcut()) {
+  if (pci != NULL) {
+    if (pci->IsShortcut()) {
       // This is an shortcut
       uuid_array_t entry_uuid, base_uuid;
-      ci->GetUUID(entry_uuid);
+      pci->GetUUID(entry_uuid);
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
       ItemListIter iter = m_core.Find(base_uuid);
       if (iter != End()) {
-        ci = &iter->second;
+        pci = &iter->second;
       }
     }
 
-    if (!ci->IsURLEmpty()) {
-      StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci->GetAutoType(),
-                                    ci->GetGroup(), ci->GetTitle(), 
-                                    ci->GetUser(), ci->GetPassword(), 
-                                    ci->GetNotes());
-      LaunchBrowser(ci->GetURL().c_str(), sxAutotype, bDoAutotype);
-      SetClipboardData(ci->GetPassword());
+    if (!pci->IsURLEmpty()) {
+      StringX sxAutotype = PWSAuxParse::GetAutoTypeString(pci->GetAutoType(),
+                                    pci->GetGroup(), pci->GetTitle(), 
+                                    pci->GetUser(), pci->GetPassword(), 
+                                    pci->GetNotes());
+      LaunchBrowser(pci->GetURL().c_str(), sxAutotype, bDoAutotype);
+      SetClipboardData(pci->GetPassword());
       UpdateLastClipboardAction(CItemData::PASSWORD);
-      UpdateAccessTime(ci_original);
+      UpdateAccessTime(pci_original);
     }
   }
 }
@@ -1634,19 +1633,19 @@ void DboxMain::OnDropFiles(HDROP hDrop)
 void DboxMain::UpdateAlwaysOnTop()
 {
 #if !defined(POCKET_PC)
-  CMenu* sysMenu = GetSystemMenu( FALSE );
+  CMenu* sysMenu = GetSystemMenu(FALSE);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
-    SetWindowPos( &wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
-    sysMenu->CheckMenuItem( ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_CHECKED );
+    SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    sysMenu->CheckMenuItem(ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_CHECKED);
   } else {
-    SetWindowPos( &wndNoTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
-    sysMenu->CheckMenuItem( ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_UNCHECKED );
+    SetWindowPos(&wndNoTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    sysMenu->CheckMenuItem(ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_UNCHECKED);
   }
 #endif
 }
 
-void DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
+void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
 {
 #if !defined(POCKET_PC)
   if (ID_SYSMENU_ALWAYSONTOP == nID) {
@@ -1677,14 +1676,14 @@ void DboxMain::ConfigureSystemMenu()
 {
 #if defined(POCKET_PC)
   m_wndCommandBar = (CCeCommandBar*) m_pWndEmptyCB;
-  m_wndMenu = m_wndCommandBar->InsertMenuBar( IDR_MAINMENU );
+  m_wndMenu = m_wndCommandBar->InsertMenuBar(IDR_MAINMENU);
 
-  ASSERT( m_wndMenu != NULL );
+  ASSERT(m_wndMenu != NULL);
 #else
-  CMenu* sysMenu = GetSystemMenu( FALSE );
+  CMenu* sysMenu = GetSystemMenu(FALSE);
   const CString str(MAKEINTRESOURCE(IDS_ALWAYSONTOP));
 
-  sysMenu->InsertMenu( 5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str );
+  sysMenu->InsertMenu(5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str);
 #endif
 }
 
@@ -1695,12 +1694,12 @@ void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
 
   if (!app.m_mruonfilemenu) {
     if (pCmdUI->m_nIndex == 0) { // Add to popup menu
-      app.GetMRU()->UpdateMenu( pCmdUI );
+      app.GetMRU()->UpdateMenu(pCmdUI);
     } else {
       return;
     }
   } else {
-    app.GetMRU()->UpdateMenu( pCmdUI );
+    app.GetMRU()->UpdateMenu(pCmdUI);
   }
 }
 
@@ -1713,7 +1712,7 @@ void DboxMain::OnShowPassword()
     StringX name;
     StringX title;
     StringX username;
-    CShowPasswordDlg pwDlg( this );
+    CShowPasswordDlg pwDlg(this);
 
     item = m_pwlist.GetAt(Find(getSelectedItem()));
 
@@ -2002,30 +2001,30 @@ void DboxMain::CheckExpiredPasswords()
   }
 }
 
-void DboxMain::UpdateAccessTime(CItemData *ci)
+void DboxMain::UpdateAccessTime(CItemData *pci)
 {
   // Mark access time if so configured
-  ASSERT(ci != NULL);
+  ASSERT(pci != NULL);
 
   // First add to RUE List
   uuid_array_t RUEuuid;
-  ci->GetUUID(RUEuuid);
+  pci->GetUUID(RUEuuid);
   m_RUEList.AddRUEntry(RUEuuid);
 
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
 
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
-    ci->SetATime();
+    pci->SetATime();
     SetChanged(TimeStamp);
     // Need to update view if there
     if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
       // Get index of entry
-      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
       // Get value in correct format
-      CString cs_atime = ci->GetATimeL().c_str();
+      CString cs_atime = pci->GetATimeL().c_str();
       // Update it
-      m_ctlItemList.SetItemText(di->list_index,
+      m_ctlItemList.SetItemText(pdi->list_index,
         m_nColumnIndexByType[CItemData::ATIME], cs_atime);
     }
   }
@@ -2208,11 +2207,11 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &il)
 {
   // Walk the Tree!
   HTREEITEM hItem = NULL;
-  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+  while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
     if (!m_ctlItemTree.ItemHasChildren(hItem)) {
-      CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-      if (ci != NULL) {// NULL if there's an empty group [bug #1633516]
-        il.push_back(*ci);
+      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+      if (pci != NULL) {// NULL if there's an empty group [bug #1633516]
+        il.push_back(*pci);
       }
     }
   }
@@ -2404,20 +2403,20 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
   bool bGroupSelected = false, bAliasOrShortcut(false);
-  CItemData *ci(NULL);
+  CItemData *pci(NULL);
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
     bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
     if (hi != NULL)
-      ci = (CItemData *)m_ctlItemTree.GetItemData(hi);
+      pci = (CItemData *)m_ctlItemTree.GetItemData(hi);
   } else {
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL)
-      ci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+      pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
   }
-  if (ci != NULL)
-    bAliasOrShortcut = ci->GetEntryType() == CItemData::ET_ALIAS ||
-                       ci->GetEntryType() == CItemData::ET_SHORTCUT;
+  if (pci != NULL)
+    bAliasOrShortcut = pci->GetEntryType() == CItemData::ET_ALIAS ||
+                       pci->GetEntryType() == CItemData::ET_SHORTCUT;
 
   // Special processing!
   switch (nID) {
@@ -2450,35 +2449,35 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        CItemData *ci = getSelectedItem();
-        if (ci == NULL) {
+        CItemData *pci = getSelectedItem();
+        if (pci == NULL) {
           iEnable = FALSE;
         } else {
-          if (ci->IsShortcut()) {
+          if (pci->IsShortcut()) {
             // This is an shortcut
             uuid_array_t entry_uuid, base_uuid;
-            ci->GetUUID(entry_uuid);
+            pci->GetUUID(entry_uuid);
             m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
             ItemListIter iter = m_core.Find(base_uuid);
             if (iter != End()) {
-              ci = &iter->second;
+              pci = &iter->second;
             }
           }
 
           switch (nID) {
             case ID_MENUITEM_COPYUSERNAME:
-              if (ci->IsUserEmpty()) {
+              if (pci->IsUserEmpty()) {
                 iEnable = FALSE;
               }
               break;
             case ID_MENUITEM_COPYNOTESFLD:
-              if (ci->IsNotesEmpty()) {
+              if (pci->IsNotesEmpty()) {
                 iEnable = FALSE;
               }
               break;
             default:
-              if (ci->IsURLEmpty()) {
+              if (pci->IsURLEmpty()) {
                 iEnable = FALSE;
               }
               break;
@@ -2487,7 +2486,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       }
       break;
     case ID_MENUITEM_RUNCOMMAND:
-      if (ci == NULL || ci->IsRunCommandEmpty()) {
+      if (pci == NULL || pci->IsRunCommandEmpty()) {
         iEnable = FALSE;
       }
       break;
@@ -2497,13 +2496,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        CItemData *ci = getSelectedItem();
-        if (ci == NULL) {
+        CItemData *pci = getSelectedItem();
+        if (pci == NULL) {
           iEnable = FALSE;
         } else {
           // Can only define a shortcut on a normal entry or
           // one that is already a shortcut base
-          if (!ci->IsNormal() && !ci->IsShortcutBase()) {
+          if (!pci->IsNormal() && !pci->IsShortcutBase()) {
             iEnable = FALSE;
           }
         }
@@ -2554,7 +2553,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     // -VdG- Disable SystemTray-Exit if CPWDialog "open"
     case ID_MENUITEM_EXIT_ST:
     {
-      //if ( m_nDialogOpen != 0 )
+      //if (m_nDialogOpen != 0)
       //  iEnable = false;
       break;
     }

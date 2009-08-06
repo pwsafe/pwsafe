@@ -182,7 +182,7 @@ int DboxMain::Restore()
   }
 
   // unlock the file we're leaving
-  if( !m_core.GetCurFile().empty() ) {
+  if (!m_core.GetCurFile().empty()) {
     m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 

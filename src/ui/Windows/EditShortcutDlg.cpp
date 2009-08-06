@@ -33,22 +33,22 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent,
+CEditShortcutDlg::CEditShortcutDlg(CItemData *pci, CWnd* pParent,
   const CSecString &cs_tg, const CSecString &cs_tt, const CSecString &cs_tu)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
   m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg),
-  m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
+  m_pci(pci), m_bIsModified(false), m_Edit_IsReadOnly(false)
 {
-  ASSERT(ci != NULL);
+  ASSERT(pci != NULL);
 
-  m_group = ci->GetGroup();
-  m_title = ci->GetTitle();
-  m_username = ci->GetUser();
+  m_group = pci->GetGroup();
+  m_title = pci->GetTitle();
+  m_username = pci->GetUser();
 
-  m_locCTime = ci->GetCTimeL();
-  m_locPMTime = ci->GetPMTimeL();
-  m_locATime = ci->GetATimeL();
-  m_locRMTime = ci->GetRMTimeL();
+  m_locCTime = pci->GetCTimeL();
+  m_locPMTime = pci->GetPMTimeL();
+  m_locATime = pci->GetATimeL();
+  m_locRMTime = pci->GetRMTimeL();
 }
 
 CEditShortcutDlg::~CEditShortcutDlg()
@@ -163,9 +163,9 @@ void CEditShortcutDlg::OnOK()
   m_title.EmptyIfOnlyWhiteSpace();
   m_username.EmptyIfOnlyWhiteSpace();
 
-  m_bIsModified |= (m_group != m_ci->GetGroup() ||
-                    m_title != m_ci->GetTitle() ||
-                    m_username != m_ci->GetUser());
+  m_bIsModified |= (m_group != m_pci->GetGroup() ||
+                    m_title != m_pci->GetTitle() ||
+                    m_username != m_pci->GetUser());
 
   //Check that data is valid
   if (m_title.IsEmpty()) {
@@ -193,7 +193,7 @@ void CEditShortcutDlg::OnOK()
     const CItemData &listItem = pDbx->GetEntryAt(listindex);
     uuid_array_t list_uuid, elem_uuid;
     listItem.GetUUID(list_uuid);
-    m_ci->GetUUID(elem_uuid);
+    m_pci->GetUUID(elem_uuid);
     bool notSame = (::memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
     if (notSame) {
       CSecString temp;
@@ -207,15 +207,15 @@ void CEditShortcutDlg::OnOK()
   //End check
 
   // Everything OK, update fields
-  m_ci->SetGroup(m_group);
-  m_ci->SetTitle(m_title);
-  m_ci->SetUser(m_username.IsEmpty() ? m_defusername : m_username);
+  m_pci->SetGroup(m_group);
+  m_pci->SetTitle(m_title);
+  m_pci->SetUser(m_username.IsEmpty() ? m_defusername : m_username);
 
   time_t t;
   time(&t);
 
   if (m_bIsModified)
-    m_ci->SetRMTime(t);
+    m_pci->SetRMTime(t);
 
   CPWDialog::OnOK();
   return;

@@ -59,7 +59,7 @@ BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
             (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
         (nChar == VK_DELETE) ||
         (nChar == VK_SPACE)  ||
-        (nChar == VK_BACK) ) {
+        (nChar == VK_BACK)) {
     if (pMsg->message == WM_KEYUP)
       return TRUE;
 

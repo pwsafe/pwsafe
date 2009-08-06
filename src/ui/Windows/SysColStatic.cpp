@@ -39,10 +39,10 @@ CSysColStatic::~CSysColStatic()
 
 void CSysColStatic::ReloadBitmap(int nImageID)
 {
-  if(nImageID != -1)
+  if (nImageID != -1)
     m_nImageID = nImageID;
 
-  if(m_nImageID == -1)
+  if (m_nImageID == -1)
     return;
 
   HBITMAP hBmpOld;

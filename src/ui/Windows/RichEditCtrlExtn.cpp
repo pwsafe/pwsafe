@@ -614,7 +614,7 @@ next:
 
 COLORREF CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
 {
-  // Vlaue is either a colour name or "#RRGGBB"
+  // Value is either a colour name or "#RRGGBB"
   // Note COLORREF = 0x00bbggrr but HTML = 0x00rrggbb
   // Values for named colours here are in COLORREF format
   long retval(0L);

@@ -214,13 +214,13 @@ void DboxMain::UpdateToolBar(bool state)
   }
 }
 
-void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
+void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
 {
-  // Following test required since this can be called on exit, with a ci
+  // Following test required since this can be called on exit, with a pci
   // from ItemData that's already been deleted. Ugh.
-  CItemData *entry(ci);
+  CItemData *pci_entry(pci);
   if (m_core.GetNumEntries() != 0) {
-    BOOL State = (entry == NULL) ? FALSE : TRUE;
+    BOOL State = (pci_entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
                  ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
                  ID_MENUITEM_RUNCOMMAND, ID_MENUITEM_EDIT,
@@ -232,35 +232,35 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
     }
 
     uuid_array_t entry_uuid, base_uuid;
-    if (entry != NULL && entry->IsShortcut()) {
+    if (pci_entry != NULL && pci_entry->IsShortcut()) {
       // This is an shortcut
-      entry->GetUUID(entry_uuid);
+      pci_entry->GetUUID(entry_uuid);
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
       ItemListIter iter = m_core.Find(base_uuid);
       if (iter != End()) {
-        entry = &iter->second;
+        pci_entry = &iter->second;
       }
     }
 
-    if (entry == NULL || entry->IsURLEmpty()) {
+    if (pci_entry == NULL || pci_entry->IsURLEmpty()) {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, FALSE);
       UpdateBrowseURLSendEmailButton(false);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
-      const bool bIsEmail = entry->IsURLEmail();
+      const bool bIsEmail = pci_entry->IsURLEmail();
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, bIsEmail ? FALSE : TRUE);
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
 
-    if (entry == NULL || entry->IsNotesEmpty()) {
+    if (pci_entry == NULL || pci_entry->IsNotesEmpty()) {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYNOTESFLD, FALSE);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYNOTESFLD, TRUE);
     }
 
-    if (entry == NULL || entry->IsUserEmpty()) {
+    if (pci_entry == NULL || pci_entry->IsUserEmpty()) {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, FALSE);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, TRUE);
@@ -269,7 +269,7 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     if (bDragBarState) {
       // Note: Title & Password are mandatory
-      if (entry == NULL) {
+      if (pci_entry == NULL) {
         m_DDGroup.SetStaticState(m_core.GetNumEntries() != 0);
         m_DDTitle.SetStaticState(false);
         m_DDPassword.SetStaticState(false);
@@ -277,12 +277,12 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
         m_DDNotes.SetStaticState(false);
         m_DDURL.SetStaticState(false);
       } else {
-        m_DDGroup.SetStaticState(!entry->IsGroupEmpty());
+        m_DDGroup.SetStaticState(!pci_entry->IsGroupEmpty());
         m_DDTitle.SetStaticState(true);
         m_DDPassword.SetStaticState(true);
-        m_DDUser.SetStaticState(!entry->IsUserEmpty());
-        m_DDNotes.SetStaticState(!entry->IsNotesEmpty());
-        m_DDURL.SetStaticState(!entry->IsURLEmpty());
+        m_DDUser.SetStaticState(!pci_entry->IsUserEmpty());
+        m_DDNotes.SetStaticState(!pci_entry->IsNotesEmpty());
+        m_DDURL.SetStaticState(!pci_entry->IsURLEmpty());
       }
     }
   }
@@ -332,7 +332,7 @@ void DboxMain::setupBars()
 
     statustext[CPWStatusBar::SB_CLIPBOARDACTION] = IDS_BLANK;
     // Set up Configuration source indicator (debug only)
-#if defined( _DEBUG ) || defined( DEBUG )
+#if defined(_DEBUG) || defined(DEBUG)
     statustext[CPWStatusBar::SB_CONFIG] = PWSprefs::GetInstance()->GetConfigIndicator();
 #endif /* DEBUG */
     // Set up the rest - all but one empty as pane now re-sized according to contents
@@ -450,11 +450,11 @@ void DboxMain::UpdateListItem(const int lindex, const int type, const CString &n
 // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
 ItemListIter DboxMain::Find(int i)
 {
-  CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
-  ASSERT(ci != NULL);
-  const StringX curGroup = ci->GetGroup();
-  const StringX curTitle = ci->GetTitle();
-  const StringX curUser = ci->GetUser();
+  CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
+  ASSERT(pci != NULL);
+  const StringX curGroup = pci->GetGroup();
+  const StringX curTitle = pci->GetTitle();
+  const StringX curUser = pci->GetUser();
   return Find(curGroup, curTitle, curUser);
 }
 
@@ -600,9 +600,9 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
     if (bFoundit) {
       // Find index in displayed list
-      DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
-      ASSERT(di != NULL);
-      int li = di->list_index;
+      DisplayInfo *pdi = (DisplayInfo *)curitem.GetDisplayInfo();
+      ASSERT(pdi != NULL);
+      int li = pdi->list_index;
       ASSERT(m_ctlItemList.GetItemText(li, ititle) == saveTitle.c_str());
       // add to indices, bump retval
       indices.push_back(li);
@@ -629,8 +629,8 @@ nextentry:
 //Checks and sees if everything works and something is selected
 BOOL DboxMain::SelItemOk()
 {
-  CItemData *ci = getSelectedItem();
-  return (ci == NULL) ? FALSE : TRUE;
+  CItemData *pci = getSelectedItem();
+  return (pci == NULL) ? FALSE : TRUE;
 }
 
 BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
@@ -648,11 +648,11 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     }
     m_ctlItemList.Invalidate();
   } else { //Tree view active
-    CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
-    ASSERT(ci != NULL);
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
-    ASSERT(di->list_index == i);
+    CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
+    ASSERT(pci != NULL);
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    ASSERT(pdi->list_index == i);
 
     // Was there anything selected before?
     HTREEITEM hti = m_ctlItemTree.GetSelectedItem();
@@ -663,10 +663,10 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
       m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
     }
 
-    retval = m_ctlItemTree.SelectItem(di->tree_item);
+    retval = m_ctlItemTree.SelectItem(pdi->tree_item);
     if (MakeVisible) {
       // Following needed to show selection when Find dbox has focus. Ugh.
-      m_ctlItemTree.SetItemState(di->tree_item,
+      m_ctlItemTree.SetItemState(pdi->tree_item,
                                  TVIS_DROPHILITED | TVIS_SELECTED,
                                  TVIS_DROPHILITED | TVIS_SELECTED);
     }
@@ -714,18 +714,18 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
     }
     m_ctlItemList.Invalidate();
   } else { //Tree view active
-    CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
-    ASSERT(ci != NULL);
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
-    ASSERT(di->list_index == i);
+    CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
+    ASSERT(pci != NULL);
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    ASSERT(pdi->list_index == i);
 
     UnFindItem();
 
-    retval = m_ctlItemTree.SelectItem(di->tree_item);
+    retval = m_ctlItemTree.SelectItem(pdi->tree_item);
     if (MakeVisible) {
-      m_ctlItemTree.SetItemState(di->tree_item, TVIS_BOLD, TVIS_BOLD);
-      m_LastFoundTreeItem = di->tree_item;
+      m_ctlItemTree.SetItemState(pdi->tree_item, TVIS_BOLD, TVIS_BOLD);
+      m_LastFoundTreeItem = pdi->tree_item;
       m_bBoldItem = true;
     }
     m_ctlItemTree.Invalidate();
@@ -750,11 +750,11 @@ void DboxMain::RefreshViews(const int iView)
   // refresh of Tree/List
   POSITION pSelected = m_ctlItemList.GetFirstSelectedItemPosition();
   HTREEITEM hSelected = m_ctlItemTree.GetSelectedItem();
-  CItemData *ciList(NULL), *ciTree(NULL);
+  CItemData *pci_List(NULL), *pci_Tree(NULL);
   if (pSelected != NULL)
-    ciList = (CItemData *)m_ctlItemList.GetItemData((int)pSelected - 1);
+    pci_List = (CItemData *)m_ctlItemList.GetItemData((int)pSelected - 1);
   if (hSelected != NULL)
-    ciTree = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
+    pci_Tree = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
 
   // Save expand/collapse status of groups
   vector <bool> displaystatus = GetGroupDisplayStatus();
@@ -777,18 +777,18 @@ void DboxMain::RefreshViews(const int iView)
 #endif
     for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
          listPos++) {
-      CItemData &ci = m_core.GetEntry(listPos);
-      DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
-      if (di != NULL)
-        di->list_index = -1; // easier, but less efficient, to delete di
-      insertItem(ci, -1, false, iView);
+      CItemData &pci = m_core.GetEntry(listPos);
+      DisplayInfo *pdi = (DisplayInfo *)pci.GetDisplayInfo();
+      if (pdi != NULL)
+        pdi->list_index = -1; // easier, but less efficient, to delete pdi
+      insertItem(pci, -1, false, iView);
     }
 
     m_ctlItemTree.SortTree(TVI_ROOT);
     SortListView();
 
 #if defined(POCKET_PC)
-    SetCursor( NULL );
+    SetCursor(NULL);
 #endif
   } // we have entries
 
@@ -798,11 +798,11 @@ void DboxMain::RefreshViews(const int iView)
 
   // re-enable and force redraw!
   if (iView & iListOnly) {
-    m_ctlItemList.SetRedraw( TRUE ); 
+    m_ctlItemList.SetRedraw(TRUE); 
     m_ctlItemList.Invalidate();
   }
   if (iView & iTreeOnly) {
-    m_ctlItemTree.SetRedraw( TRUE );
+    m_ctlItemTree.SetRedraw(TRUE);
     m_ctlItemTree.Invalidate();
   }
 
@@ -812,19 +812,19 @@ void DboxMain::RefreshViews(const int iView)
   SetGroupDisplayStatus(displaystatus);
 
   // Select previously selected items and ensure they are visible.
-  // Note: di->list_index and di->tree_item will have been changed by
+  // Note: pdi->list_index and pdi->tree_item will have been changed by
   // "insertItem" and "FixListIndexes" above.
-  if (ciList != NULL) {
-    DisplayInfo *di = (DisplayInfo *)ciList->GetDisplayInfo();
-    m_ctlItemList.SetItemState(di->list_index,
+  if (pci_List != NULL) {
+    DisplayInfo *pdi = (DisplayInfo *)pci_List->GetDisplayInfo();
+    m_ctlItemList.SetItemState(pdi->list_index,
                                LVIS_FOCUSED | LVIS_SELECTED,
                                LVIS_FOCUSED | LVIS_SELECTED);
-    m_ctlItemList.EnsureVisible(di->list_index, FALSE);
+    m_ctlItemList.EnsureVisible(pdi->list_index, FALSE);
   }
-  if (ciTree != NULL) {
-    DisplayInfo *di = (DisplayInfo *)ciTree->GetDisplayInfo();
-    m_ctlItemTree.SelectItem(di->tree_item);
-    m_ctlItemTree.EnsureVisible(di->tree_item);
+  if (pci_Tree != NULL) {
+    DisplayInfo *pdi = (DisplayInfo *)pci_Tree->GetDisplayInfo();
+    m_ctlItemTree.SelectItem(pdi->tree_item);
+    m_ctlItemTree.EnsureVisible(pdi->tree_item);
   }
   if (m_bFilterActive)
     UpdateStatusBar();
@@ -948,16 +948,17 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   NMITEMACTIVATE *plv = (NMITEMACTIVATE *)pNotifyStruct;
 
   int item = plv->iItem;
+  CItemData *pci(NULL);
   if (item != -1) { // -1 if nothing selected, e.g., empty list
-    CItemData *cilist = (CItemData *)m_ctlItemList.GetItemData(item);
-    UpdateToolBarForSelectedItem(cilist);
+    pci = (CItemData *)m_ctlItemList.GetItemData(item);
+    UpdateToolBarForSelectedItem(pci);
   }
 
   m_LastFoundTreeItem = NULL;
   m_LastFoundListItem = -1;
 }
 
-void DboxMain::OnTreeItemSelected(NMHDR * /*pNotifyStruct */, LRESULT *pLResult)
+void DboxMain::OnTreeItemSelected(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
 {
   // Seems that under Vista with Windows Common Controls V6, it is ignoring
   // the single click on the button (+/-) of a node and only processing the 
@@ -1050,13 +1051,13 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
     iResult = m_ctlItemList.GetItemCount();
   }
 
-  DisplayInfo *di = (DisplayInfo *)itemData.GetDisplayInfo();
-  if (di == NULL) {
-    di = new DisplayInfo;
-    itemData.SetDisplayInfo((void *)di);
+  DisplayInfo *pdi = (DisplayInfo *)itemData.GetDisplayInfo();
+  if (pdi == NULL) {
+    pdi = new DisplayInfo;
+    itemData.SetDisplayInfo((void *)pdi);
   }
-  di->list_index = -1;
-  di->tree_item = NULL;
+  pdi->list_index = -1;
+  pdi->tree_item = NULL;
 
   if (m_bFilterActive) {
     if (!PassesFiltering(itemData, m_currentfilter))
@@ -1182,7 +1183,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
       return iResult;
     }
 
-    di->list_index = iResult;
+    pdi->list_index = iResult;
     if (m_bImageInLV)
       SetEntryImage(iResult, nImage);
   }
@@ -1205,7 +1206,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
     SetEntryImage(ti, nImage);
 
     ASSERT(ti != NULL);
-    di->tree_item = ti;
+    pdi->tree_item = ti;
   }
 
   if (iView & iListOnly) {
@@ -1318,8 +1319,8 @@ CItemData *DboxMain::getSelectedItem()
       int i = m_ctlItemList.GetNextSelectedItem(p);
       retval = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(retval != NULL);
-      DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
-      ASSERT(di != NULL && di->list_index == i);
+      DisplayInfo *pdi = (DisplayInfo *)retval->GetDisplayInfo();
+      ASSERT(pdi != NULL && pdi->list_index == i);
     }
   } else {
     // hierarchy tree mode; go from HTREEITEM to index
@@ -1327,8 +1328,8 @@ CItemData *DboxMain::getSelectedItem()
     if (ti != NULL) {
       retval = (CItemData *)m_ctlItemTree.GetItemData(ti);
       if (retval != NULL) {  // leaf node
-        DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
-        ASSERT(di != NULL && di->tree_item == ti);
+        DisplayInfo *pdi = (DisplayInfo *)retval->GetDisplayInfo();
+        ASSERT(pdi != NULL && pdi->tree_item == ti);
       }
     }    
   }
@@ -1680,7 +1681,7 @@ void DboxMain::OnCollapseAll()
   m_ctlItemTree.OnCollapseAll();
 }
 
-void DboxMain::OnTimer(UINT_PTR nIDEvent )
+void DboxMain::OnTimer(UINT_PTR nIDEvent)
 {
   if ((nIDEvent == TIMER_CHECKLOCK && IsWorkstationLocked()) ||
       (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
@@ -1714,7 +1715,7 @@ BOOL DboxMain::IsWorkstationLocked() const
   HDESK hDesktop = OpenDesktop(L"default", 0, false, DESKTOP_SWITCHDESKTOP);
   // Following should be equiv., but isn't :-(
   //  HDESK hDesktop = OpenInputDesktop(0, FALSE, DESKTOP_SWITCHDESKTOP);
-  if( hDesktop != 0 ) {
+  if (hDesktop != 0) {
     // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
     Result = ! SwitchDesktop(hDesktop);
     CloseDesktop(hDesktop);
@@ -2781,9 +2782,9 @@ void DboxMain::ViewReport(const CString &cs_ReportFileName)
   STARTUPINFO si;
   PROCESS_INFORMATION pi;
 
-  ZeroMemory( &si, sizeof(si) );
+  ZeroMemory(&si, sizeof(si));
   si.cb = sizeof(si);
-  ZeroMemory( &pi, sizeof(pi) );
+  ZeroMemory(&pi, sizeof(pi));
 
   DWORD dwCreationFlags(0);
   dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
@@ -2797,7 +2798,7 @@ void DboxMain::ViewReport(const CString &cs_ReportFileName)
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
                      NULL, cs_path, &si, &pi)) {
-    TRACE(L"CreateProcess failed (%d).\n", GetLastError() );
+    TRACE(L"CreateProcess failed (%d).\n", GetLastError());
   }
 
   // Close process and thread handles. 
@@ -3167,9 +3168,9 @@ void DboxMain::OnToolBarFindReport()
     int i, index;
     for (i = 0; i < (int)pindices->size(); i++) {
       index = pindices->at(i);
-      CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(index);
-      buffer.Format(IDS_COMPARESTATS, ci->GetGroup().c_str(),
-                    ci->GetTitle().c_str(), ci->GetUser().c_str());
+      CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(index);
+      buffer.Format(IDS_COMPARESTATS, pci->GetGroup().c_str(),
+                    pci->GetTitle().c_str(), pci->GetUser().c_str());
       rpt.WriteLine((LPCWSTR)buffer, false);
     }
   }
@@ -3419,7 +3420,7 @@ HICON DboxMain::GetEntryIcon(const int nImage) const
 
 bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
 {
-  CItemData *ci(NULL);
+  CItemData *pci(NULL);
   CPoint target(point);
   StringX cs_notes(L"");
   UINT nFlags;
@@ -3440,30 +3441,30 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
     hItem = m_ctlItemTree.HitTest(point, &nFlags);
     if (hItem != NULL &&
         (nFlags & (TVHT_ONITEM | TVHT_ONITEMBUTTON | TVHT_ONITEMINDENT))) {
-      ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+      pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
     }
   } else {
     m_ctlItemList.ClientToScreen(&target);
     nItem = m_ctlItemList.HitTest(point, &nFlags);
     if (nItem >= 0) {
-      ci = (CItemData *)m_ctlItemList.GetItemData(nItem);
+      pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
     }
   }
   target.y += ::GetSystemMetrics(SM_CYCURSOR); // height of cursor
 
-  if (ci != NULL) {
-    if (ci->IsShortcut()) {
+  if (pci != NULL) {
+    if (pci->IsShortcut()) {
       // This is an shortcut
       uuid_array_t entry_uuid, base_uuid;
-      ci->GetUUID(entry_uuid);
+      pci->GetUUID(entry_uuid);
       GetShortcutBaseUUID(entry_uuid, base_uuid);
 
       ItemListIter iter = Find(base_uuid);
       if (iter != End()) {
-        ci = &iter->second;
+        pci = &iter->second;
       }
     }
-    cs_notes = ci->GetNotes();
+    cs_notes = pci->GetNotes();
   }
 
   if (!cs_notes.empty()) {
