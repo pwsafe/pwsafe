@@ -22,9 +22,6 @@
 * CRUEList is a class that contains the recently used entries
 */
 
-// Following is Most Recent Entry field separator for dynamic menu:
-#define MRE_FS L"\xbb"
-
 // Recent Entry structure for m_RUEList
 struct RUEntry {
   RUEntry() {}

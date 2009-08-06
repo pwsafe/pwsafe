@@ -695,6 +695,8 @@ void DboxMain::SelectFirstEntry()
     }
     if (pci != NULL)
       UpdateToolBarForSelectedItem(pci);
+
+    SetDCAText(pci);
   }
 }
 
@@ -954,6 +956,8 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
     UpdateToolBarForSelectedItem(pci);
   }
 
+  SetDCAText(pci);
+
   m_LastFoundTreeItem = NULL;
   m_LastFoundListItem = -1;
 }
@@ -965,15 +969,13 @@ void DboxMain::OnTreeItemSelected(NMHDR * /* pNotifyStruct */, LRESULT *pLResult
   // double click, which generates a copy of whatever the user selected
   // for a double click (except that it invalid for a node!) and then does
   // the expand/collapse as appropriate.
-  // This codes attemts to fix this.  There may be better solutions but I 
-  // don't know them and have very limited testing facilities on Vista.
+  // This codes attemts to fix this.
 
   UnFindItem();
-  m_LastFoundTreeItem = NULL;
-  m_LastFoundListItem = -1;
 
   *pLResult = 0L;
   TVHITTESTINFO htinfo = {0};
+  CItemData *pci(NULL);
 
   CPoint local;
   local = ::GetMessagePos();
@@ -981,12 +983,32 @@ void DboxMain::OnTreeItemSelected(NMHDR * /* pNotifyStruct */, LRESULT *pLResult
   htinfo.pt = local;
   m_ctlItemTree.HitTest(&htinfo);
 
-  if (htinfo.hItem != NULL && 
-      (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) &&
-      !m_ctlItemTree.IsLeaf(htinfo.hItem)) {
-    m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
-    *pLResult = 1L;  // We did it!
+  // Check it was on an item
+  if (htinfo.hItem != NULL) {
+    // If a group
+    if (!m_ctlItemTree.IsLeaf(htinfo.hItem)) {
+      // If on indent or button
+      if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
+        m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+        *pLResult = 1L; // We have toggled the group
+        return;
+      }
+    } else {
+      // On an entry
+      pci = (CItemData *)m_ctlItemTree.GetItemData(htinfo.hItem);
+    }
   }
+
+  HTREEITEM hti = m_ctlItemTree.GetDropHilightItem();
+
+  if (hti != NULL)
+    m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
+
+  UpdateToolBarForSelectedItem(pci);
+  SetDCAText(pci);
+
+  m_LastFoundTreeItem = NULL;
+  m_LastFoundListItem = -1;
 }
 
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)

@@ -82,16 +82,20 @@ BOOL CEditShortcutDlg::OnInitDialog()
   CPWDialog::OnInitDialog();
 
   CString cs_text;
-  CSecString cs_explanation, cs_target(L"\xbb");
-  // Leave \xbb between group/title/user even if group or user is empty
-  // so that the user knows the exact name
+  CSecString cs_explanation, cs_target(L"\xab");
+  // Leave \xab \xbb between group/title/user even if group or user is empty
+  // so that the user knows the exact name. Looks similar to: <g><t><u>
   // Note: the title field is mandatory and never empty.
-  if (!m_tg.IsEmpty())
+  if (m_tg.IsEmpty())
+    cs_target += L" ";
+  else
     cs_target += m_tg;
 
-  cs_target += L"\xbb" + m_tt + L"\xbb";
+  cs_target += L"\xbb \xab" + m_tt + L"\xbb \xab";
 
-  if (!m_tu.IsEmpty())
+  if (m_tu.IsEmpty())
+    cs_target += L" ";
+  else
     cs_target += m_tu;
 
   cs_target += L"\xbb";

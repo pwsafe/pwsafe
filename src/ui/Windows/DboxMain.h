@@ -282,6 +282,7 @@ public:
                   const StringX &pwd = L"", const StringX &notes = L"");
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
+  void SetDCAText(CItemData * pci = NULL);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -415,7 +416,6 @@ protected:
   void SetToolbar(const int menuItem, bool bInit = false);
   void UpdateStatusBar();
   void UpdateMenuAndToolBar(const bool bOpen);
-  void SetDCAText();
   void SortListView();
   void UpdateBrowseURLSendEmailButton(const bool bIsEmail);
 
