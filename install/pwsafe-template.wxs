@@ -49,10 +49,10 @@
 	      Icon='pwsafe.exe' IconIndex='0' Advertise='yes' />
 	    </File>
 	    <File Id='file6' Name='pws_at.dll' DiskId='1'
-	      Source='src\bin\release\pws_at.dll' Vital='yes'> 
+	      Source='src\bin\releasem\pws_at.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file7' Name='pws_osk.dll' DiskId='1'
-	      Source='src\bin\release\pws_osk.dll' Vital='yes'> 
+	      Source='src\bin\releasem\pws_osk.dll' Vital='yes'> 
 	    </File>
 	  </Component>
 	  <Component Id='SupportingFiles'
