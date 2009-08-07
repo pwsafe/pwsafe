@@ -926,52 +926,6 @@ void DboxMain::OnDuplicateEntry()
   }
 }
 
-void DboxMain::OnCopyPassword()
-{
-  if (!SelItemOk())
-    return;
-
-  //Remind the user about clipboard security
-  CClearQuestionDlg clearDlg(this);
-  if (clearDlg.m_dontaskquestion == FALSE &&
-      clearDlg.DoModal() == IDCANCEL)
-    return;
-
-  CItemData *pci = getSelectedItem();
-  ASSERT(pci != NULL);
-
-  CItemData *pci_original(pci);
-
-  uuid_array_t base_uuid, entry_uuid;
-  const CItemData::EntryType entrytype = pci->GetEntryType();
-  if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
-    // This is an alias/shortcut
-    pci->GetUUID(entry_uuid);
-    if (entrytype == CItemData::ET_ALIAS)
-      m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-    else
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pci = &iter->second;
-    }
-  }
-
-  SetClipboardData(pci->GetPassword());
-  UpdateLastClipboardAction(CItemData::PASSWORD);
-  UpdateAccessTime(pci_original);
-}
-
-void DboxMain::OnCopyPasswordMinimize()
-{
-  // Do OnCopyPassword, and minimize afterwards.
-  if (SelItemOk()) {
-    OnCopyPassword();
-    ShowWindow(SW_MINIMIZE);
-  }
-}
-
 void DboxMain::OnDisplayPswdSubset()
 {
   if (!SelItemOk())
@@ -1004,62 +958,42 @@ void DboxMain::OnDisplayPswdSubset()
     UpdateAccessTime(pci_original);
 }
 
+void DboxMain::OnCopyPassword()
+{
+  CopyDataToClipBoard(CItemData::PASSWORD);
+}
+
+void DboxMain::OnCopyPasswordMinimize()
+{
+  // Do OnCopyPassword and minimize afterwards.
+   CopyDataToClipBoard(CItemData::PASSWORD, true);
+}
+
 void DboxMain::OnCopyUsername()
 {
-  if (SelItemOk() != TRUE)
-    return;
-
-  CItemData *pci = getSelectedItem();
-  ASSERT(pci != NULL);
-
-  CItemData *pci_original(pci);
-
-  if (pci->IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    pci->GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pci = &iter->second;
-    }
-  }
-
-  SetClipboardData(pci->GetUser());
-  UpdateLastClipboardAction(CItemData::USER);
-  UpdateAccessTime(pci_original);
+  CopyDataToClipBoard(CItemData::USER);
 }
 
 void DboxMain::OnCopyNotes()
 {
-  if (SelItemOk() != TRUE)
-    return;
-
-  CItemData *pci = getSelectedItem();
-  ASSERT(pci != NULL);
-
-  CItemData *pci_original(pci);
-
-  if (pci->IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    pci->GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pci = &iter->second;
-    }
-  }
-
-  SetClipboardData(pci->GetNotes());
-  UpdateLastClipboardAction(CItemData::NOTES);
-  UpdateAccessTime(pci_original);
+  CopyDataToClipBoard(CItemData::NOTES);
 }
 
 void DboxMain::OnCopyURL()
 {
+  CopyDataToClipBoard(CItemData::URL);
+}
+
+void DboxMain::OnCopyRunCommand()
+{
+  CopyDataToClipBoard(CItemData::RUNCMD);
+}
+
+void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool special)
+{
+  // Boolean 'special' flag is CItemData::FieldType 'ft' dependent
+  // For example:
+  //   For "CItemData::PASSWORD", "special" == true means "minimize after copy"
   if (SelItemOk() != TRUE)
     return;
 
@@ -1080,20 +1014,63 @@ void DboxMain::OnCopyURL()
     }
   }
 
-  StringX cs_URL = pci->GetURL();
-  StringX::size_type ipos;
-  ipos = cs_URL.find(L"[alt]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"[ssh]");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
-  ipos = cs_URL.find(L"{alt}");
-  if (ipos != StringX::npos)
-    cs_URL.replace(ipos, 5, L"");
+  if (pci->IsAlias() && ft == CItemData::PASSWORD) {
+    // This is an alias
+    uuid_array_t base_uuid, entry_uuid;
+    pci->GetUUID(entry_uuid);
+     m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
 
-  SetClipboardData(cs_URL);
-  UpdateLastClipboardAction(CItemData::URL);
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      pci = &iter->second;
+    }
+  }
+
+  StringX cs_data;
+
+  switch (ft) {
+    case CItemData::PASSWORD:
+    {
+      //Remind the user about clipboard security
+      CClearQuestionDlg clearDlg(this);
+      if (clearDlg.m_dontaskquestion == FALSE &&
+          clearDlg.DoModal() == IDCANCEL)
+        return;
+      cs_data = pci->GetPassword();
+      if (special)
+        ShowWindow(SW_MINIMIZE);
+      break;
+    }
+    case CItemData::USER:
+      cs_data = pci->GetUser();
+      break;
+    case CItemData::NOTES:
+      cs_data = pci->GetNotes();
+      break;
+    case CItemData::URL:
+    {
+      StringX::size_type ipos;
+      cs_data = pci->GetURL();
+      ipos = cs_data.find(L"[alt]");
+      if (ipos != StringX::npos)
+        cs_data.replace(ipos, 5, L"");
+      ipos = cs_data.find(L"[ssh]");
+      if (ipos != StringX::npos)
+        cs_data.replace(ipos, 5, L"");
+      ipos = cs_data.find(L"{alt}");
+      if (ipos != StringX::npos)
+        cs_data.replace(ipos, 5, L"");
+      break;
+    }
+    case CItemData::RUNCMD:
+      cs_data = pci->GetRunCommand();
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  SetClipboardData(cs_data);
+  UpdateLastClipboardAction(ft);
   UpdateAccessTime(pci_original);
 }
 

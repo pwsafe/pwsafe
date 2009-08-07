@@ -710,6 +710,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYNOTESFLD, tc_dummy);
 
+      if (!pci->IsRunCommandEmpty())
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_COPYRUNCOMMAND, tc_dummy);
+
       if (!pci->IsURLEmpty()) {
         const bool bIsEmail = pci->IsURLEmail();
         if (bIsEmail) {
@@ -1118,6 +1122,12 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       }
     }
 
+    if (pci->IsUserEmpty())
+      pPopup->RemoveMenu(ID_MENUITEM_COPYUSERNAME, MF_BYCOMMAND);
+
+    if (pci->IsNotesEmpty())
+      pPopup->RemoveMenu(ID_MENUITEM_COPYNOTESFLD, MF_BYCOMMAND);
+
     if (pci->IsURLEmpty()) {
       pPopup->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND);
@@ -1138,6 +1148,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
     if (pci->IsRunCommandEmpty()) {
+      pPopup->RemoveMenu(ID_MENUITEM_COPYRUNCOMMAND, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
     }
 
