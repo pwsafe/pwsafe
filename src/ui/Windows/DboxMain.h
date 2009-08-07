@@ -512,6 +512,7 @@ protected:
   afx_msg void OnDisplayPswdSubset();
   afx_msg void OnCopyNotes();
   afx_msg void OnCopyURL();
+  afx_msg void OnCopyRunCommand();
   afx_msg void OnNew();
   afx_msg void OnOpen();
   afx_msg void OnClose();
@@ -663,6 +664,7 @@ private:
   void SetUpInitialMenuStrings();
   void UpdateAccelTable();
   void DoBrowse(const bool bDoAutotype);
+  void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   
   static const struct UICommandTableEntry {
     UINT ID;

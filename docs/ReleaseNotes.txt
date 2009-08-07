@@ -44,6 +44,7 @@ a one-time delay where they appear.  For '\w', the value 'nnn' is in
 milli-seconds. For '\W', this specifies seconds. Note: Max. value is
 999s (16m 39s), during which time PasswordSafe will be unresponsive
 while it waits the specified time. Also support via the Run Command $a command.
+[] Add menu item to copy the Run Command to the clipboard.
 
 New Features for 3.18
 =====================

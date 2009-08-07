@@ -85,6 +85,8 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_CREATESHORTCUT      32077
 #define ID_MENUITEM_GOTOBASEENTRY       32078
 #define ID_MENUITEM_FINDELLIPSIS        32079
+#define ID_MENUITEM_COPYRUNCOMMAND      32080
+
 // View menu
 #define ID_VIEWMENU                     32101
 #define ID_MENUITEM_LIST_VIEW           32102

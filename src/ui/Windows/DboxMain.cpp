@@ -281,6 +281,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
   ON_COMMAND(ID_MENUITEM_COPYURL, OnCopyURL)
   ON_COMMAND(ID_MENUITEM_COPYEMAIL, OnCopyURL)
+  ON_COMMAND(ID_MENUITEM_COPYRUNCOMMAND, OnCopyRunCommand)
   ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
   ON_COMMAND(ID_MENUITEM_DELETEENTRY, OnDelete)
   ON_COMMAND(ID_MENUITEM_DELETEGROUP, OnDelete)
@@ -481,6 +482,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_RUNCOMMAND, true, true, false, false},
   {ID_MENUITEM_COPYURL, true, true, false, false},
   {ID_MENUITEM_COPYEMAIL, true, true, false, false},
+  {ID_MENUITEM_COPYRUNCOMMAND, true, true, false, false},
   {ID_MENUITEM_GOTOBASEENTRY, true, true, false, false},
   {ID_MENUITEM_CREATESHORTCUT, true, false, false, false},
   // View menu
@@ -2425,7 +2427,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // The previous lookup table is the only mechanism to ENABLE an item
 
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
-  bool bGroupSelected = false, bAliasOrShortcut(false);
+  bool bGroupSelected = false;
   CItemData *pci(NULL);
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
@@ -2437,9 +2439,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     if (pos != NULL)
       pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
   }
-  if (pci != NULL)
-    bAliasOrShortcut = pci->GetEntryType() == CItemData::ET_ALIAS ||
-                       pci->GetEntryType() == CItemData::ET_SHORTCUT;
 
   // Special processing!
   switch (nID) {
@@ -2457,7 +2456,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // Not available if group selected or entry is not an alias/shortcut
     case ID_MENUITEM_GOTOBASEENTRY:
-      if (bGroupSelected || !bAliasOrShortcut)
+      if (bGroupSelected || !(pci->IsShortcut() || pci->IsAlias()))
         iEnable = FALSE;
       break;
     // Not allowed if Group selected or the item selected has an empty field
@@ -2509,6 +2508,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       }
       break;
     case ID_MENUITEM_RUNCOMMAND:
+    case ID_MENUITEM_COPYRUNCOMMAND:
       if (pci == NULL || pci->IsRunCommandEmpty()) {
         iEnable = FALSE;
       }
