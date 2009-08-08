@@ -49,7 +49,6 @@ void CAddEdit_DateTimes::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_CTIME, (CString&)M_locCTime());
   DDX_Text(pDX, IDC_PMTIME, (CString&)M_locPMTime());
   DDX_Text(pDX, IDC_ATIME, (CString&)M_locATime());
-  DDX_Text(pDX, IDC_XTIME, (CString&)M_locXTime());
   DDX_Text(pDX, IDC_RMTIME, (CString&)M_locRMTime());
 
   DDX_Text(pDX, IDC_EXPDAYS, m_numDays);
