@@ -150,6 +150,12 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
   void OnKeepHistoryClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON5
+  void OnSetXTime( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6
+  void OnClearXTime( wxCommandEvent& event );
+
 ////@end AddEditPropSheet event handler declarations
   void OnOk(wxCommandEvent& event);
 ////@begin AddEditPropSheet member function declarations
@@ -181,6 +187,18 @@ public:
   bool GetKeepPWHist() const { return m_keepPWHist ; }
   void SetKeepPWHist(bool value) { m_keepPWHist = value ; }
 
+  wxString GetCTime() const { return m_CTime ; }
+  void SetCTime(wxString value) { m_CTime = value ; }
+
+  wxString GetPMTime() const { return m_PMTime ; }
+  void SetPMTime(wxString value) { m_PMTime = value ; }
+
+  wxString GetATime() const { return m_ATime ; }
+  void SetATime(wxString value) { m_ATime = value ; }
+
+  wxString GetRMTime() const { return m_RMTime ; }
+  void SetRMTime(wxString value) { m_RMTime = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -199,6 +217,7 @@ public:
   wxComboBox* m_DCAcomboBox;
   wxSpinCtrl* m_MaxPWHistCtrl;
   wxGrid* m_PWHgrid;
+  wxString m_RMTime; // Any field modification time
 private:
   wxString m_title;
   wxString m_user;
@@ -209,6 +228,9 @@ private:
   bool m_useDefaultDCA; // Use Default Double Click Action?
   int m_maxPWHist; // How many passwords to keep
   bool m_keepPWHist;
+  wxString m_CTime; // Creation time
+  wxString m_PMTime; // Password Modification time
+  wxString m_ATime; // Access Time
   ////@end AddEditPropSheet member variables
   short m_DCA;
   wxString m_PWHistory; // string as stored in CItemData

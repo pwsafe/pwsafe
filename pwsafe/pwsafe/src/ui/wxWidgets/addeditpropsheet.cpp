@@ -62,6 +62,10 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_CHECKBOX( ID_CHECKBOX1, AddEditPropSheet::OnKeepHistoryClick )
 
+  EVT_BUTTON( ID_BUTTON5, AddEditPropSheet::OnSetXTime )
+
+  EVT_BUTTON( ID_BUTTON6, AddEditPropSheet::OnClearXTime )
+
 ////@end AddEditPropSheet event table entries
 
 END_EVENT_TABLE()
@@ -481,6 +485,10 @@ void AddEditPropSheet::CreateControls()
   itemCheckBox42->SetValidator( wxGenericValidator(& m_useDefaultDCA) );
   itemCheckBox46->SetValidator( wxGenericValidator(& m_keepPWHist) );
   m_MaxPWHistCtrl->SetValidator( wxGenericValidator(& m_maxPWHist) );
+  itemStaticText80->SetValidator( wxGenericValidator(& m_CTime) );
+  itemStaticText82->SetValidator( wxGenericValidator(& m_PMTime) );
+  itemStaticText84->SetValidator( wxGenericValidator(& m_ATime) );
+  itemStaticText86->SetValidator( wxGenericValidator(& m_RMTime) );
 ////@end AddEditPropSheet content construction
   m_PWHgrid->SetColLabelValue(0, _("Set Date/Time"));
   m_PWHgrid->SetColLabelValue(1, _("Password"));
@@ -605,6 +613,12 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
     }
   } // m_type
+
+  // Modification times
+  m_CTime = m_item.GetCTimeL().c_str();
+  m_PMTime = m_item.GetPMTimeL().c_str();
+  m_ATime = m_item.GetATimeL().c_str();
+  m_RMTime = m_item.GetRMTimeL().c_str();
 }
 
 /*!
@@ -870,5 +884,31 @@ void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& event )
       m_DCA = -1; // 'use default' value
     }
   }
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON5
+ */
+
+void AddEditPropSheet::OnSetXTime( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON5 in AddEditPropSheet.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON5 in AddEditPropSheet. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6
+ */
+
+void AddEditPropSheet::OnClearXTime( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6 in AddEditPropSheet.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6 in AddEditPropSheet. 
 }
 

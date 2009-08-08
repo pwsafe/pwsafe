@@ -608,7 +608,6 @@
             <string name="proxy-type">"wbMenuBarProxy"</string>
             <string name="proxy-Id name">"ID_MENUBAR"</string>
             <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-            <long name="proxy-Id value">10010</long>
             <document>
               <string name="title">"File"</string>
               <string name="type">"dialog-control-document"</string>
@@ -8332,6 +8331,10 @@ Type the new combination once again to confirm it."</string>
           <string name="variable-6">"m_useDefaultDCA|bool|UseDefaultDCA||2|0|Use Default Double Click Action?"</string>
           <string name="variable-7">"m_maxPWHist|int|MaxPWHist||2|0|How many passwords to keep"</string>
           <string name="variable-8">"m_keepPWHist|bool|KeepPWHist||2|0|"</string>
+          <string name="variable-9">"m_CTime|wxString|CTime||2|0|Creation time"</string>
+          <string name="variable-10">"m_PMTime|wxString|PMTime||2|0|Password Modification time"</string>
+          <string name="variable-11">"m_ATime|wxString|ATime||2|0|Access Time"</string>
+          <string name="variable-12">"m_RMTime|wxString|RMTime||0|0|Any field modification time"</string>
           <string name="proxy-Id name">"ID_ADDEDITPROPSHEET"</string>
           <long name="proxy-Id value">10083</long>
           <string name="proxy-Class">"AddEditPropSheet"</string>
@@ -12276,6 +12279,7 @@ Action:"</string>
                       <long name="title-mode">0</long>
                       <long name="locked">0</long>
                       <string name="proxy-type">"wbButtonProxy"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnSetXTime|NONE||AddEditPropSheet"</string>
                       <string name="proxy-Id name">"ID_BUTTON5"</string>
                       <long name="proxy-Id value">10113</long>
                       <string name="proxy-Name">""</string>
@@ -12366,6 +12370,7 @@ Action:"</string>
                       <long name="title-mode">0</long>
                       <long name="locked">0</long>
                       <string name="proxy-type">"wbButtonProxy"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnClearXTime|NONE||AddEditPropSheet"</string>
                       <string name="proxy-Id name">"ID_BUTTON6"</string>
                       <long name="proxy-Id value">10114</long>
                       <string name="proxy-Name">""</string>
@@ -12585,8 +12590,8 @@ Action:"</string>
                     <bool name="proxy-Hidden">0</bool>
                     <bool name="proxy-Enabled">1</bool>
                     <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                    <string name="proxy-Data variable">""</string>
-                    <string name="proxy-Data validator">""</string>
+                    <string name="proxy-Data variable">"m_CTime"</string>
+                    <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                     <string name="proxy-Data source">""</string>
                     <string name="proxy-Data class name">""</string>
                     <string name="proxy-Data class implementation filename">""</string>
@@ -12723,8 +12728,8 @@ Action:"</string>
                     <bool name="proxy-Hidden">0</bool>
                     <bool name="proxy-Enabled">1</bool>
                     <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                    <string name="proxy-Data variable">""</string>
-                    <string name="proxy-Data validator">""</string>
+                    <string name="proxy-Data variable">"m_PMTime"</string>
+                    <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                     <string name="proxy-Data source">""</string>
                     <string name="proxy-Data class name">""</string>
                     <string name="proxy-Data class implementation filename">""</string>
@@ -12861,8 +12866,8 @@ Action:"</string>
                     <bool name="proxy-Hidden">0</bool>
                     <bool name="proxy-Enabled">1</bool>
                     <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                    <string name="proxy-Data variable">""</string>
-                    <string name="proxy-Data validator">""</string>
+                    <string name="proxy-Data variable">"m_ATime"</string>
+                    <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                     <string name="proxy-Data source">""</string>
                     <string name="proxy-Data class name">""</string>
                     <string name="proxy-Data class implementation filename">""</string>
@@ -12999,8 +13004,8 @@ Action:"</string>
                     <bool name="proxy-Hidden">0</bool>
                     <bool name="proxy-Enabled">1</bool>
                     <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                    <string name="proxy-Data variable">""</string>
-                    <string name="proxy-Data validator">""</string>
+                    <string name="proxy-Data variable">"m_RMTime"</string>
+                    <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                     <string name="proxy-Data source">""</string>
                     <string name="proxy-Data class name">""</string>
                     <string name="proxy-Data class implementation filename">""</string>
