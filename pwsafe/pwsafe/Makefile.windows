@@ -12,7 +12,7 @@ RELEASENUM = 3.18.1
 RELEASE_SPECIAL = a
 RELEASENAME = $(RELEASENUM)$(RELEASE_SPECIAL)
 
-RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
+RELEASEDIR = /cygdrive/c/local/src/PasswordSafe/Releases
 
 # Shouldn't need to change anything below this line
 
@@ -115,8 +115,9 @@ bin-release: save-map
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
 save-map:
-	gzip -9c  src/bin/releasem/pwsafe.map src/bin/releasem/pwsafe.pdb > \
-		$(RELEASEDIR)/pwsafe-$(RELEASENAME).map+pdb.gz
+	tar cjvf $(RELEASEDIR)/pwsafe-$(RELEASENAME).map+pdb.tbz \
+	 src/bin/releasem/pwsafe.map src/bin/releasem/pwsafe.pdb \
+   src/bin/release/pws_*.pdb		
 
 src-release: ChangeLog $(POT_FILE)
 	$(SVN) export --non-interactive . C:\\TMP\\$(SRCRELNAME)
