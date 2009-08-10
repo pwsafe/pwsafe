@@ -62,6 +62,10 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_CHECKBOX( ID_CHECKBOX1, AddEditPropSheet::OnKeepHistoryClick )
 
+  EVT_RADIOBUTTON( ID_RADIOBUTTON, AddEditPropSheet::OnRadiobuttonSelected )
+
+  EVT_RADIOBUTTON( ID_RADIOBUTTON1, AddEditPropSheet::OnRadiobuttonSelected )
+
   EVT_BUTTON( ID_BUTTON5, AddEditPropSheet::OnSetXTime )
 
   EVT_BUTTON( ID_BUTTON6, AddEditPropSheet::OnClearXTime )
@@ -150,6 +154,12 @@ void AddEditPropSheet::Init()
   m_DCAcomboBox = NULL;
   m_MaxPWHistCtrl = NULL;
   m_PWHgrid = NULL;
+  m_OnRB = NULL;
+  m_ExpDate = NULL;
+  m_ExpTime = NULL;
+  m_InRB = NULL;
+  m_ExpInterval = NULL;
+  m_Recurring = NULL;
 ////@end AddEditPropSheet member initialisation
 }
 
@@ -340,31 +350,31 @@ void AddEditPropSheet::CreateControls()
 
   wxFlexGridSizer* itemFlexGridSizer61 = new wxFlexGridSizer(0, 3, 0, 0);
   itemBoxSizer57->Add(itemFlexGridSizer61, 0, wxGROW|wxALL, 5);
-  wxRadioButton* itemRadioButton62 = new wxRadioButton( itemPanel54, ID_RADIOBUTTON, _("On"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton62->SetValue(false);
-  itemFlexGridSizer61->Add(itemRadioButton62, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_OnRB = new wxRadioButton( itemPanel54, ID_RADIOBUTTON, _("On"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_OnRB->SetValue(false);
+  itemFlexGridSizer61->Add(m_OnRB, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxDatePickerCtrl* itemDatePickerCtrl63 = new wxDatePickerCtrl( itemPanel54, ID_DATECTRL, wxDateTime(), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
-  itemFlexGridSizer61->Add(itemDatePickerCtrl63, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_ExpDate = new wxDatePickerCtrl( itemPanel54, ID_DATECTRL, wxDateTime(10, (wxDateTime::Month) 7, 2009), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+  itemFlexGridSizer61->Add(m_ExpDate, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl64 = new wxSpinCtrl( itemPanel54, ID_SPINCTRL1, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
-  itemFlexGridSizer61->Add(itemSpinCtrl64, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_ExpTime = new wxSpinCtrl( itemPanel54, ID_SPINCTRL1, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
+  itemFlexGridSizer61->Add(m_ExpTime, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxRadioButton* itemRadioButton65 = new wxRadioButton( itemPanel54, ID_RADIOBUTTON1, _("In"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton65->SetValue(false);
-  itemFlexGridSizer61->Add(itemRadioButton65, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_InRB = new wxRadioButton( itemPanel54, ID_RADIOBUTTON1, _("In"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_InRB->SetValue(false);
+  itemFlexGridSizer61->Add(m_InRB, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer66 = new wxBoxSizer(wxHORIZONTAL);
   itemFlexGridSizer61->Add(itemBoxSizer66, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  wxSpinCtrl* itemSpinCtrl67 = new wxSpinCtrl( itemPanel54, ID_SPINCTRL2, _T("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0 );
-  itemBoxSizer66->Add(itemSpinCtrl67, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_ExpInterval = new wxSpinCtrl( itemPanel54, ID_SPINCTRL2, _T("1"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 1 );
+  itemBoxSizer66->Add(m_ExpInterval, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText68 = new wxStaticText( itemPanel54, wxID_STATIC, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer66->Add(itemStaticText68, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxCheckBox* itemCheckBox69 = new wxCheckBox( itemPanel54, ID_CHECKBOX2, _("Recurring"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox69->SetValue(false);
-  itemFlexGridSizer61->Add(itemCheckBox69, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_Recurring = new wxCheckBox( itemPanel54, ID_CHECKBOX2, _("Recurring"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_Recurring->SetValue(false);
+  itemFlexGridSizer61->Add(m_Recurring, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer70 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer57->Add(itemBoxSizer70, 0, wxGROW|wxALL, 5);
@@ -485,6 +495,7 @@ void AddEditPropSheet::CreateControls()
   itemCheckBox42->SetValidator( wxGenericValidator(& m_useDefaultDCA) );
   itemCheckBox46->SetValidator( wxGenericValidator(& m_keepPWHist) );
   m_MaxPWHistCtrl->SetValidator( wxGenericValidator(& m_maxPWHist) );
+  itemStaticText60->SetValidator( wxGenericValidator(& m_XTime) );
   itemStaticText80->SetValidator( wxGenericValidator(& m_CTime) );
   itemStaticText82->SetValidator( wxGenericValidator(& m_PMTime) );
   itemStaticText84->SetValidator( wxGenericValidator(& m_ATime) );
@@ -613,6 +624,24 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
     }
   } // m_type
+
+  // Password Expiration
+  m_XTime = m_item.GetXTimeL().c_str();
+  if (m_XTime.empty())
+    m_XTime = _("Never");
+  int XTimeInt;
+  m_item.GetXTimeInt(XTimeInt);
+  if (XTimeInt == 0) { // expiration specified as date
+    m_OnRB->SetValue(true);
+    m_InRB->SetValue(false);
+    m_ExpInterval->Enable(false);
+    m_Recurring->Enable(false);
+  } else { // exp. specified as interval
+    m_OnRB->SetValue(false);
+    m_InRB->SetValue(true);
+    m_ExpDate->Enable(false);
+    m_ExpTime->Enable(false);
+  }
 
   // Modification times
   m_CTime = m_item.GetCTimeL().c_str();
@@ -910,5 +939,20 @@ void AddEditPropSheet::OnClearXTime( wxCommandEvent& event )
   // Before editing this code, remove the block markers.
   event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6 in AddEditPropSheet. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
+ */
+
+void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& event )
+{
+  bool On = (event.GetEventObject() == m_OnRB);
+  m_ExpDate->Enable(On);
+  m_ExpTime->Enable(On);
+  m_ExpInterval->Enable(!On);
+  m_Recurring->Enable(!On);
+
 }
 
