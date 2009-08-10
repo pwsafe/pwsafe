@@ -32,6 +32,8 @@ rather than '[Alias]' and its base's notes data, respectively.
 quotes.
 [] Duplicate entry now duplicates Double-click action of original as well.
 [] Double-click on a shortcut entry now executes the action of its base.
+[] Drag & Drop of entries, that have individual DCA values, between different
+databases now works.
 
 New Features for 3.18.1
 =======================

@@ -40,7 +40,7 @@ size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
   size_t retval = WideCharToMultiByte(codePage, 0,
                                       src, srclen, dst, maxdstlen,
                                       NULL, NULL);
-  if(retval == 0) {
+  if (retval == 0) {
     pws_os::Trace0(_T("WideCharToMultiByte failed: "));
     switch (GetLastError()) {
     case ERROR_INSUFFICIENT_BUFFER:

@@ -1371,7 +1371,10 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   } else {
     while (ShowCursor(TRUE) < 0)
       ;
-  } 
+  }
+
+  // We did call SetCapture - do we release it here?  If not, where else?
+  ReleaseCapture();
 }
 
 void CPWTreeCtrl::OnTimer(UINT_PTR nIDEvent)
