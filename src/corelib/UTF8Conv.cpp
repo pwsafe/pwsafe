@@ -69,7 +69,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
   wcLen = data.length()+1;
 #endif
   // first get needed utf8 buffer size
-  size_t mbLen = pws_os::wcstombs(NULL, 0, wcPtr, size_t(-1));
+  size_t mbLen = pws_os::wcstombs(NULL, 0, wcPtr, wcLen);
 
   if (mbLen == 0) { // uh-oh
     ASSERT(0);

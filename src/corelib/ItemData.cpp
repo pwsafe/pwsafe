@@ -296,7 +296,11 @@ void CItemData::GetDCA(short &iDCA) const
 
 StringX CItemData::GetDCA() const
 {
-  return GetField(m_DCA);
+  short dca;
+  GetDCA(dca);
+  oStringXStream os;
+  os << dca;
+  return os.str();
 }
 
 StringX CItemData::GetRunCommand() const
@@ -420,22 +424,22 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   if (bsFields.count() == bsFields.size()) {
     // Everything - note can't actually set all bits via dialog!
     // Must be in same order as full header
-    ret = grouptitle + separator + 
-          user + separator +
-          csPassword + separator + 
-          url + separator + 
-          GetAutoType() + separator +
-          GetCTimeExp() + separator +
-          GetPMTimeExp() + separator +
-          GetATimeExp() + separator +
-          GetXTimeExp() + separator +
-          GetXTimeInt() + separator +
-          GetRMTimeExp() + separator +
-          GetPWPolicy() + separator +
-          history + separator +
-          GetRunCommand() + separator +
-          GetDCA() + separator +
-          _T("\"") + notes + _T("\"");
+    ret = (grouptitle + separator + 
+           user + separator +
+           csPassword + separator + 
+           url + separator + 
+           GetAutoType() + separator +
+           GetCTimeExp() + separator +
+           GetPMTimeExp() + separator +
+           GetATimeExp() + separator +
+           GetXTimeExp() + separator +
+           GetXTimeInt() + separator +
+           GetRMTimeExp() + separator +
+           GetPWPolicy() + separator +
+           history + separator +
+           GetRunCommand() + separator +
+           GetDCA() + separator +
+           _T("\"") + notes + _T("\""));
   } else {
     // Not everything
     // Must be in same order as custom header
