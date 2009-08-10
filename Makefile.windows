@@ -9,7 +9,7 @@
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
 RELEASENUM = 3.18.1
-RELEASE_SPECIAL = ""
+RELEASE_SPECIAL = a
 RELEASENAME = $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
@@ -103,9 +103,9 @@ msi:
 	$(RM) pwsafe.wixobj
 	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 
-release:  i18n bin-release save-map src-release
+release:  i18n bin-release src-release
 
-bin-release:
+bin-release: save-map
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
 
 	$(CP) $(BIN_MANIFEST) $(RELEASEDIR)/$(BINRELNAME)
@@ -115,8 +115,8 @@ bin-release:
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
 save-map:
-	gzip -9c  src/bin/releasem/pwsafe.map > \
-		$(RELEASEDIR)/pwsafe-$(RELEASENAME).map.gz
+	gzip -9c  src/bin/releasem/pwsafe.map src/bin/releasem/pwsafe.pdb > \
+		$(RELEASEDIR)/pwsafe-$(RELEASENAME).map+pdb.gz
 
 src-release: ChangeLog $(POT_FILE)
 	$(SVN) export --non-interactive . C:\\TMP\\$(SRCRELNAME)
