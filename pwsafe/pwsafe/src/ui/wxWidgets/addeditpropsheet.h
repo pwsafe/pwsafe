@@ -37,6 +37,7 @@
 ////@begin forward declarations
 class wxSpinCtrl;
 class wxGrid;
+class wxDatePickerCtrl;
 ////@end forward declarations
 
 /*!
@@ -150,6 +151,9 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
   void OnKeepHistoryClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
+  void OnRadiobuttonSelected( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON5
   void OnSetXTime( wxCommandEvent& event );
 
@@ -199,6 +203,9 @@ public:
   wxString GetRMTime() const { return m_RMTime ; }
   void SetRMTime(wxString value) { m_RMTime = value ; }
 
+  wxString GetXTime() const { return m_XTime ; }
+  void SetXTime(wxString value) { m_XTime = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -217,6 +224,12 @@ public:
   wxComboBox* m_DCAcomboBox;
   wxSpinCtrl* m_MaxPWHistCtrl;
   wxGrid* m_PWHgrid;
+  wxRadioButton* m_OnRB;
+  wxDatePickerCtrl* m_ExpDate;
+  wxSpinCtrl* m_ExpTime;
+  wxRadioButton* m_InRB;
+  wxSpinCtrl* m_ExpInterval;
+  wxCheckBox* m_Recurring;
   wxString m_RMTime; // Any field modification time
 private:
   wxString m_title;
@@ -231,6 +244,7 @@ private:
   wxString m_CTime; // Creation time
   wxString m_PMTime; // Password Modification time
   wxString m_ATime; // Access Time
+  wxString m_XTime; // Password eXpiration time
   ////@end AddEditPropSheet member variables
   short m_DCA;
   wxString m_PWHistory; // string as stored in CItemData

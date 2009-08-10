@@ -2151,6 +2151,14 @@
             <string name="proxy-type">"wbBoxSizerProxy"</string>
             <string name="proxy-Orientation">"Horizontal"</string>
             <string name="proxy-Member variable name">""</string>
+            <string name="proxy-AlignH">"Centre"</string>
+            <string name="proxy-AlignV">"Centre"</string>
+            <long name="proxy-Stretch factor">0</long>
+            <long name="proxy-Border">5</long>
+            <bool name="proxy-wxLEFT">1</bool>
+            <bool name="proxy-wxRIGHT">1</bool>
+            <bool name="proxy-wxTOP">1</bool>
+            <bool name="proxy-wxBOTTOM">1</bool>
             <bool name="proxy-wxSHAPED">0</bool>
             <bool name="proxy-wxADJUST_MINSIZE">0</bool>
             <bool name="proxy-wxFIXED_MINSIZE">0</bool>
@@ -8335,6 +8343,7 @@ Type the new combination once again to confirm it."</string>
           <string name="variable-10">"m_PMTime|wxString|PMTime||2|0|Password Modification time"</string>
           <string name="variable-11">"m_ATime|wxString|ATime||2|0|Access Time"</string>
           <string name="variable-12">"m_RMTime|wxString|RMTime||0|0|Any field modification time"</string>
+          <string name="variable-13">"m_XTime|wxString|XTime||2|0|Password eXpiration time"</string>
           <string name="proxy-Id name">"ID_ADDEDITPROPSHEET"</string>
           <long name="proxy-Id value">10083</long>
           <string name="proxy-Class">"AddEditPropSheet"</string>
@@ -11527,8 +11536,8 @@ Action:"</string>
                       <bool name="proxy-Hidden">0</bool>
                       <bool name="proxy-Enabled">1</bool>
                       <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                      <string name="proxy-Data variable">""</string>
-                      <string name="proxy-Data validator">""</string>
+                      <string name="proxy-Data variable">"m_XTime"</string>
+                      <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                       <string name="proxy-Data source">""</string>
                       <string name="proxy-Data class name">""</string>
                       <string name="proxy-Data class implementation filename">""</string>
@@ -11606,6 +11615,7 @@ Action:"</string>
                       <long name="title-mode">0</long>
                       <long name="locked">0</long>
                       <string name="proxy-type">"wbRadioButtonProxy"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnRadiobuttonSelected|NONE||AddEditPropSheet"</string>
                       <string name="proxy-Id name">"ID_RADIOBUTTON"</string>
                       <long name="proxy-Id value">10107</long>
                       <string name="proxy-Name">""</string>
@@ -11615,7 +11625,7 @@ Action:"</string>
                       <bool name="proxy-Separate files">0</bool>
                       <string name="proxy-Implementation filename">""</string>
                       <string name="proxy-Header filename">""</string>
-                      <string name="proxy-Member variable name">""</string>
+                      <string name="proxy-Member variable name">"m_OnRB"</string>
                       <string name="proxy-Label">"On"</string>
                       <bool name="proxy-Initial value">0</bool>
                       <string name="proxy-Help text">""</string>
@@ -11676,8 +11686,8 @@ Action:"</string>
                       <bool name="proxy-Separate files">0</bool>
                       <string name="proxy-Implementation filename">""</string>
                       <string name="proxy-Header filename">""</string>
-                      <string name="proxy-Member variable name">""</string>
-                      <string name="proxy-Default date">""</string>
+                      <string name="proxy-Member variable name">"m_ExpDate"</string>
+                      <string name="proxy-Default date">"08/10/2009"</string>
                       <string name="proxy-Earliest date">""</string>
                       <string name="proxy-Latest date">""</string>
                       <string name="proxy-Help text">""</string>
@@ -11746,7 +11756,7 @@ Action:"</string>
                       <bool name="proxy-Separate files">0</bool>
                       <string name="proxy-Implementation filename">""</string>
                       <string name="proxy-Header filename">""</string>
-                      <string name="proxy-Member variable name">""</string>
+                      <string name="proxy-Member variable name">"m_ExpTime"</string>
                       <long name="proxy-Minimum value">0</long>
                       <long name="proxy-Maximum value">100</long>
                       <long name="proxy-Initial value">0</long>
@@ -11805,6 +11815,7 @@ Action:"</string>
                       <long name="title-mode">0</long>
                       <long name="locked">0</long>
                       <string name="proxy-type">"wbRadioButtonProxy"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnRadiobuttonSelected|NONE||AddEditPropSheet"</string>
                       <string name="proxy-Id name">"ID_RADIOBUTTON1"</string>
                       <long name="proxy-Id value">10110</long>
                       <string name="proxy-Name">""</string>
@@ -11814,7 +11825,7 @@ Action:"</string>
                       <bool name="proxy-Separate files">0</bool>
                       <string name="proxy-Implementation filename">""</string>
                       <string name="proxy-Header filename">""</string>
-                      <string name="proxy-Member variable name">""</string>
+                      <string name="proxy-Member variable name">"m_InRB"</string>
                       <string name="proxy-Label">"In"</string>
                       <bool name="proxy-Initial value">0</bool>
                       <string name="proxy-Help text">""</string>
@@ -11899,10 +11910,10 @@ Action:"</string>
                         <bool name="proxy-Separate files">0</bool>
                         <string name="proxy-Implementation filename">""</string>
                         <string name="proxy-Header filename">""</string>
-                        <string name="proxy-Member variable name">""</string>
-                        <long name="proxy-Minimum value">0</long>
-                        <long name="proxy-Maximum value">100</long>
-                        <long name="proxy-Initial value">0</long>
+                        <string name="proxy-Member variable name">"m_ExpInterval"</string>
+                        <long name="proxy-Minimum value">1</long>
+                        <long name="proxy-Maximum value">3650</long>
+                        <long name="proxy-Initial value">1</long>
                         <string name="proxy-Help text">""</string>
                         <string name="proxy-Tooltip text">""</string>
                         <string name="proxy-Background colour">""</string>
@@ -12037,7 +12048,7 @@ Action:"</string>
                       <bool name="proxy-Separate files">0</bool>
                       <string name="proxy-Implementation filename">""</string>
                       <string name="proxy-Header filename">""</string>
-                      <string name="proxy-Member variable name">""</string>
+                      <string name="proxy-Member variable name">"m_Recurring"</string>
                       <string name="proxy-Label">"Recurring"</string>
                       <bool name="proxy-Initial value">0</bool>
                       <string name="proxy-Help text">""</string>
