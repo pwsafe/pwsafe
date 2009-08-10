@@ -1694,6 +1694,16 @@ static void push_int(vector<char> &v, char type, int i)
   }
 }
 
+static void push_int16(vector<char> &v, char type, short i)
+{
+  if (i != 0) {
+    v.push_back(type);
+    push_length(v, sizeof(short));
+    v.insert(v.end(),
+      (char *)&i, (char *)&i + sizeof(short));
+  }
+}
+
 void CItemData::SerializePlainText(vector<char> &v, CItemData *pcibase)  const
 {
   StringX tmp;
@@ -1740,7 +1750,7 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *pcibase)  const
   push_string(v, PWHIST, GetPWHistory());
 
   push_string(v, RUNCMD, GetRunCommand());
-  GetDCA(i16); push_int(v, DCA, i16);
+  GetDCA(i16);   push_int16(v, DCA, i16);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();
