@@ -13,6 +13,7 @@
 #include <Windows.h>
 #include "../typedefs.h"
 #include "../utf8conv.h"
+#include "../debug.h"
 
 #include <locale.h>
 
@@ -36,9 +37,26 @@ size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
     dst = NULL; maxdstlen = 0; // resolve ambiguity
   }
 
-  return WideCharToMultiByte(codePage, 0,
-                             src, srclen, dst, maxdstlen,
-                             NULL, NULL);
+  size_t retval = WideCharToMultiByte(codePage, 0,
+                                      src, srclen, dst, maxdstlen,
+                                      NULL, NULL);
+  if(retval == 0) {
+    pws_os::Trace0(_T("WideCharToMultiByte failed: "));
+    switch (GetLastError()) {
+    case ERROR_INSUFFICIENT_BUFFER:
+      pws_os::Trace0(_T("ERROR_INSUFFICIENT_BUFFER\n"));
+      break;
+    case ERROR_INVALID_FLAGS:
+      pws_os::Trace0(_T("ERROR_INVALID_FLAGS\n"));
+      break;
+    case ERROR_INVALID_PARAMETER:
+      pws_os::Trace0(_T("ERROR_INVALID_PARAMETER\n"));
+      break;
+    default:
+      pws_os::Trace(_T("Unexpected code %lx\n"), GetLastError());
+    }
+  }
+  return retval;
 }
 
 size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
