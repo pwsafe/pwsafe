@@ -71,6 +71,7 @@ class wxDatePickerCtrl;
 #define ID_RADIOBUTTON 10107
 #define ID_DATECTRL 10108
 #define ID_SPINCTRL1 10109
+#define ID_SPINCTRL4 10010
 #define ID_RADIOBUTTON1 10110
 #define ID_SPINCTRL2 10111
 #define ID_CHECKBOX2 10112
@@ -206,6 +207,15 @@ public:
   wxString GetXTime() const { return m_XTime ; }
   void SetXTime(wxString value) { m_XTime = value ; }
 
+  wxString GetCurXTime() const { return m_CurXTime ; }
+  void SetCurXTime(wxString value) { m_CurXTime = value ; }
+
+  int GetExpInterval() const { return m_XTimeInt ; }
+  void SetExpInterval(int value) { m_XTimeInt = value ; }
+
+  bool GetRecurring() const { return m_Recurring ; }
+  void SetRecurring(bool value) { m_Recurring = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -226,10 +236,11 @@ public:
   wxGrid* m_PWHgrid;
   wxRadioButton* m_OnRB;
   wxDatePickerCtrl* m_ExpDate;
-  wxSpinCtrl* m_ExpTime;
+  wxSpinCtrl* m_ExpTimeH;
+  wxSpinCtrl* m_ExpTimeM;
   wxRadioButton* m_InRB;
-  wxSpinCtrl* m_ExpInterval;
-  wxCheckBox* m_Recurring;
+  wxSpinCtrl* m_ExpTimeCtrl;
+  wxCheckBox* m_RecurringCtrl;
   wxString m_RMTime; // Any field modification time
 private:
   wxString m_title;
@@ -245,8 +256,12 @@ private:
   wxString m_PMTime; // Password Modification time
   wxString m_ATime; // Access Time
   wxString m_XTime; // Password eXpiration time
+  wxString m_CurXTime; // Current Exp. time
+  int m_XTimeInt; // Password Exp. Interval (days)
+  bool m_Recurring;
   ////@end AddEditPropSheet member variables
   short m_DCA;
+  time_t m_tttXTime; // Password Exp.date in time_t
   wxString m_PWHistory; // string as stored in CItemData
   StringX m_password;
   bool m_isPWHidden;
