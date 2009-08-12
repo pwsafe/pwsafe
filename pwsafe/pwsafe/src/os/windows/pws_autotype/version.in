@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2003-2009 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License 2.0 terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license-2.0.php
+ */
+
+#ifndef _VERSION_H_
+#define _VERSION_H_
+
+// version.h is automatically generated from version.in by a custom
+// pre-build step using Tortoise SVN's program SubWCRev.exe, which
+// replaces "(dollar)WCREV(dollar)" with latest subversion revision number.
+
+// Format: Major, Minor, Build, Revision
+//   Build  = 0 for all Formally Released versions
+//   Build != 0 for all Intermediate versions
+// Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
+
+#define FILEVER          1, 1, 0, $WCREV$
+#define PRODUCTVER       1, 1, 0, $WCREV$
+#define STRATFILEVER     "1, 1, 0 , $WCREV$$WCMODS?+:$\0"
+#define STRATPRODUCTVER  "1, 1, 0, $WCREV$$WCMODS?+:$\0"
+
+#endif // _VERSION_H_
