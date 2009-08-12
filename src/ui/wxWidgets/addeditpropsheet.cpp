@@ -644,13 +644,15 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_XTime = m_item.GetXTimeL().c_str();
   if (m_XTime.empty())
     m_XTime = _("Never");
+  m_item.GetXTime(m_tttXTime);
+
   m_item.GetXTimeInt(m_XTimeInt);
 
   if (m_XTimeInt == 0) { // expiration specified as date
     m_OnRB->SetValue(true);
     m_InRB->SetValue(false);
     m_ExpTimeCtrl->Enable(false);
-    m_RecurringCtrl->Enable(false);
+    m_Recurring = false;
   } else { // exp. specified as interval
     m_OnRB->SetValue(false);
     m_InRB->SetValue(true);
@@ -658,7 +660,9 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     m_ExpTimeH->Enable(false);
     m_ExpTimeM->Enable(false);
     m_ExpTimeCtrl->SetValue(m_XTimeInt);
+    m_Recurring = true;
   }
+  m_RecurringCtrl->Enable(m_Recurring);
 
   // Modification times
   m_CTime = m_item.GetCTimeL().c_str();
@@ -765,6 +769,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       // Check if modified
       int lastXTimeInt;
       m_item.GetXTimeInt(lastXTimeInt);
+      time_t lastXtime;
+      m_item.GetXTime(lastXtime);
 
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
                      m_title      != m_item.GetTitle().c_str()       ||
@@ -775,7 +781,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
                      m_runcmd != m_item.GetRunCommand().c_str()      ||
                      m_DCA        != lastDCA                         ||
                      m_PWHistory  != m_item.GetPWHistory().c_str()   ||
-                     m_XTime      != m_item.GetXTimeL().c_str()      ||
+                     m_tttXTime   != lastXtime                       ||
                      m_XTimeInt   != lastXTimeInt                    ||
 #ifdef NOTYET
                      m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
@@ -943,36 +949,32 @@ void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& event )
 void AddEditPropSheet::OnSetXTime( wxCommandEvent& event )
 {
   if (Validate() && TransferDataFromWindow()) {
+    wxDateTime xdt = m_ExpDate->GetValue();
     if (m_OnRB->GetValue()) { // absolute exp time
-      wxDateTime xdt = m_ExpDate->GetValue();
+      xdt = m_ExpDate->GetValue();
       xdt.SetHour(m_ExpTimeH->GetValue());
       xdt.SetMinute(m_ExpTimeM->GetValue());
+      m_XTimeInt = 0;
     } else { // relative, possibly recurring
       // If it's a non-recurring interval, just set XTime to
       // now + interval, XTimeInt should be stored as zero
       // (one-shot semantics)
       // Otherwise, XTime += interval, keep XTimeInt
+      if (!m_Recurring) {
+        xdt = wxDateTime::Now();
+        xdt += wxDateSpan(0, 0, 0, m_XTimeInt);
+        m_XTimeInt = 0;
+      } else { // recurring exp. interval
+        xdt = m_ExpDate->GetValue();
+        xdt.SetHour(m_ExpTimeH->GetValue());
+        xdt.SetMinute(m_ExpTimeM->GetValue());
+        xdt += wxDateSpan(0, 0, 0, m_XTimeInt);
+        m_CurXTime.Printf(_("In %d days"), m_XTimeInt);
+      }
+      m_tttXTime = xdt.GetTicks();
     }
+
 #if 0
-  CTime XTime, LDate, LDateTime;
-
-  if (m_how == ABSOLUTE_EXP) {
-    VERIFY(m_pTimeCtl.GetTime(XTime) == GDT_VALID);
-    VERIFY(m_pDateCtl.GetTime(LDate) == GDT_VALID);
-
-    LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(),
-                      XTime.GetHour(), XTime.GetMinute(), 0, -1);
-    M_XTimeInt() = 0;
-  } else { // m_how == RELATIVE_EXP
-    if (m_ReuseOnPswdChange == FALSE) { // non-recurring
-      LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
-      M_XTimeInt() = 0;
-    } else { // recurring interval
-      LDateTime = CTime(M_tttCPMTime()) + CTimeSpan(m_numDays, 0, 0, 0);
-      M_XTimeInt() = m_numDays;
-    }
-  }
-
   // m_XTimeInt is non-zero iff user specified a relative & recurring exp. date
   M_tttXTime() = (time_t)LDateTime.GetTime();
   M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), TMC_LOCALE);
