@@ -641,9 +641,9 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   } // m_type
 
   // Password Expiration
-  m_XTime = m_item.GetXTimeL().c_str();
+  m_XTime = m_CurXTime = m_item.GetXTimeL().c_str();
   if (m_XTime.empty())
-    m_XTime = _("Never");
+    m_XTime = m_CurXTime = _("Never");
   m_item.GetXTime(m_tttXTime);
 
   m_item.GetXTimeInt(m_XTimeInt);
@@ -825,7 +825,9 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       if (m_AEMD.oldlocXTime != m_AEMD.locXTime)
         m_item.SetXTime(m_AEMD.tttXTime);
 #endif
-      if (m_XTimeInt   != lastXTimeInt)
+      if (m_tttXTime != lastXtime)
+        m_item.SetXTime(m_tttXTime);
+      if (m_XTimeInt != lastXTimeInt)
         m_item.SetXTimeInt(m_XTimeInt);
       // All fields in m_item now reflect user's edits
       // Let's update the core's data
@@ -856,12 +858,13 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_item.SetCTime(t);
       if (m_keepPWHist)
         m_item.SetPWHistory(MakePWHistoryHeader(TRUE, m_maxPWHist, 0));
-      
-#ifdef NOTYET
-      if (m_AEMD.XTimeInt > 0 && m_AEMD.XTimeInt <= 3650)
-        m_item.SetXTimeInt(m_AEMD.XTimeInt);
 
-      if (m_AEMD.ibasedata > 0) {
+      m_item.SetXTime(m_tttXTime);
+      if (m_XTimeInt > 0 && m_XTimeInt <= 3650)
+        m_item.SetXTimeInt(m_XTimeInt);
+
+#ifdef NOTYET
+if (m_AEMD.ibasedata > 0) {
         // Password in alias format AND base entry exists
         // No need to check if base is an alias as already done in
         // call to PWScore::GetBaseEntry
@@ -955,6 +958,7 @@ void AddEditPropSheet::OnSetXTime( wxCommandEvent& event )
       xdt.SetHour(m_ExpTimeH->GetValue());
       xdt.SetMinute(m_ExpTimeM->GetValue());
       m_XTimeInt = 0;
+      m_XTime = xdt.FormatDate();
     } else { // relative, possibly recurring
       // If it's a non-recurring interval, just set XTime to
       // now + interval, XTimeInt should be stored as zero
@@ -964,29 +968,21 @@ void AddEditPropSheet::OnSetXTime( wxCommandEvent& event )
         xdt = wxDateTime::Now();
         xdt += wxDateSpan(0, 0, 0, m_XTimeInt);
         m_XTimeInt = 0;
+        m_XTime = xdt.FormatDate();
       } else { // recurring exp. interval
         xdt = m_ExpDate->GetValue();
         xdt.SetHour(m_ExpTimeH->GetValue());
         xdt.SetMinute(m_ExpTimeM->GetValue());
         xdt += wxDateSpan(0, 0, 0, m_XTimeInt);
-        m_CurXTime.Printf(_("In %d days"), m_XTimeInt);
-      }
-      m_tttXTime = xdt.GetTicks();
-    }
-
-#if 0
-  // m_XTimeInt is non-zero iff user specified a relative & recurring exp. date
-  M_tttXTime() = (time_t)LDateTime.GetTime();
-  M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), TMC_LOCALE);
-
-  CString cs_text(L"");
-  if (M_XTimeInt() != 0) // recurring expiration
-    cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
-
-  GetDlgItem(IDC_XTIME)->SetWindowText(M_locXTime());
-  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
-#endif
-  }
+        m_XTime = xdt.FormatDate();
+        wxString rstr;
+        rstr.Printf(_(" (every %d days)"), m_XTimeInt);
+        m_XTime += rstr;
+      } // recurring
+    } // relative
+    m_tttXTime = xdt.GetTicks();
+    Validate(); TransferDataToWindow();
+  } // Validated & transferred from controls
 }
 
 
