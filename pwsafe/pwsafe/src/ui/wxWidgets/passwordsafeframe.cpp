@@ -266,12 +266,12 @@ void PasswordSafeFrame::CreateControls()
 
   m_grid = new PWSGrid( itemFrame1, m_core, ID_LISTBOX, wxDefaultPosition,
                         itemFrame1->GetClientSize(), wxHSCROLL|wxVSCROLL );
-  itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0));
+  itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
   m_tree = new PWSTreeCtrl( itemFrame1, m_core, ID_TREECTRL, wxDefaultPosition,
                             itemFrame1->GetClientSize(),
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
-  itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0));
+  itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
   if (m_currentView == TREE)
@@ -388,6 +388,9 @@ void PasswordSafeFrame::ShowTree(bool show)
     }
   }
 
+  int w,h;
+  GetClientSize(&w, &h);
+  m_tree->SetSize(w, h);
   m_tree->Show(show);
 }
 
