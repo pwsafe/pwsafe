@@ -1,11 +1,18 @@
 # Toplevel Makefile for Linux build of PasswordSafe
 
-all clean debug release unicodedebug unicoderelease:
+all clean unicodedebug unicoderelease:
 	$(MAKE) -C src/os/linux $@
 	$(MAKE) -C src/corelib $@
 	$(MAKE) -C src/ui/wxWidgets $@
 
-.PHONY:	all clean
+debug release:
+	@echo "'$@' not currently supported, use unicode{debug,release} instead"
+
+reallyclean:
+	$(MAKE) clean CONFIG=unicodebug
+	$(MAKE) clean CONFIG=unicorelease
+
+.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease
 # Local variables:
 # mode: makefile
 # End:
