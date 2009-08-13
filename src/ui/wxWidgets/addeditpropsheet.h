@@ -161,6 +161,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6
   void OnClearXTime( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
+  void OnPWPRBSelected( wxCommandEvent& event );
+
 ////@end AddEditPropSheet event handler declarations
   void OnOk(wxCommandEvent& event);
 ////@begin AddEditPropSheet member function declarations
@@ -241,6 +244,16 @@ public:
   wxRadioButton* m_InRB;
   wxSpinCtrl* m_ExpTimeCtrl;
   wxCheckBox* m_RecurringCtrl;
+  wxRadioButton* m_defPWPRB;
+  wxRadioButton* m_ourPWPRB;
+  wxSpinCtrl* m_pwpLenCtrl;
+  wxCheckBox* m_pwpUseLowerCtrl;
+  wxCheckBox* m_pwpUseUpperCtrl;
+  wxCheckBox* m_pwpUseDigitsCtrl;
+  wxCheckBox* m_pwpSymCtrl;
+  wxCheckBox* m_pwpEasyCtrl;
+  wxCheckBox* m_pwpPronounceCtrl;
+  wxCheckBox* m_pwpHexCtrl;
   wxString m_RMTime; // Any field modification time
 private:
   wxString m_title;
@@ -265,7 +278,8 @@ private:
   wxString m_PWHistory; // string as stored in CItemData
   StringX m_password;
   bool m_isPWHidden;
-
+  bool m_origPWPdefault;
+  PWPolicy m_PWP;
   PWScore &m_core;
   PWSGrid* m_grid; // to update display
   PWSTreeCtrl* m_tree; // to update display
@@ -273,6 +287,7 @@ private:
   AddOrEdit m_type;
   CItemData m_item;
   void ItemFieldsToPropSheet();
+  void UpdatePWPolicyControls(bool useDefault);
   void ShowPassword();
   void HidePassword();
 };

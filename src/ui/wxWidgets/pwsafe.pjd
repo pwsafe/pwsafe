@@ -13340,6 +13340,7 @@ Action:"</string>
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbRadioButtonProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWPRBSelected|NONE||AddEditPropSheet"</string>
                 <string name="proxy-Id name">"ID_RADIOBUTTON2"</string>
                 <long name="proxy-Id value">10115</long>
                 <string name="proxy-Name">""</string>
@@ -13349,7 +13350,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_defPWPRB"</string>
                 <string name="proxy-Label">"Use Database Defaults"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
@@ -13401,6 +13402,7 @@ Action:"</string>
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbRadioButtonProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWPRBSelected|NONE||AddEditPropSheet"</string>
                 <string name="proxy-Id name">"ID_RADIOBUTTON3"</string>
                 <long name="proxy-Id value">10116</long>
                 <string name="proxy-Name">""</string>
@@ -13410,7 +13412,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_ourPWPRB"</string>
                 <string name="proxy-Label">"Use the policy below:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
@@ -13618,7 +13620,7 @@ Action:"</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Member variable name">"m_pwpLenCtrl"</string>
                   <long name="proxy-Minimum value">4</long>
                   <long name="proxy-Maximum value">100</long>
                   <long name="proxy-Initial value">8</long>
@@ -13687,7 +13689,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_pwpUseLowerCtrl"</string>
                 <string name="proxy-Label">"Use lowercase letters"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
@@ -13750,7 +13752,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_pwpUseUpperCtrl"</string>
                 <string name="proxy-Label">"Use UPPERCASE letters"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
@@ -13813,7 +13815,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_pwpUseDigitsCtrl"</string>
                 <string name="proxy-Label">"Use digits"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
@@ -13876,7 +13878,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_pwpSymCtrl"</string>
                 <string name="proxy-Label">"Use symbols (i.e., ., %, $, etc.)"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
@@ -13939,8 +13941,8 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
-                <string name="proxy-Label">"Use only easy-to-read charachters (i.e., no 'l', '1', etc.)"</string>
+                <string name="proxy-Member variable name">"m_pwpEasyCtrl"</string>
+                <string name="proxy-Label">"Use only easy-to-read characters (i.e., no 'l', '1', etc.)"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
@@ -14002,7 +14004,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_pwpPronounceCtrl"</string>
                 <string name="proxy-Label">"Generate pronounceable passwords"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
@@ -14134,7 +14136,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_pwpHexCtrl"</string>
                 <string name="proxy-Label">"Use hexadecimal digits only (0-9, a-f)"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
