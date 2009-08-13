@@ -33,7 +33,7 @@ else ifeq ($(CONFIG),release)
 CXXFLAGS += -O
 else ifeq ($(CONFIG),unicodedebug)
 CXXFLAGS += -O0 -ggdb -DUNICODE
-else ifeq ($(CONFIG),release)
+else ifeq ($(CONFIG),unicoderelease)
 CXXFLAGS += -O -DUNICODE
 endif
 
