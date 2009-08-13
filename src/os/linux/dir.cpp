@@ -11,10 +11,12 @@
  */
 #include "../dir.h"
 #include "../utf8conv.h" // for pws_os::towc
+#include "../env.h"
 #include <unistd.h>
 #include <limits.h>
 #include <cassert>
 #include <cstdlib>
+#include <sys/stat.h>
 
 stringT pws_os::getexecdir()
 {
@@ -101,3 +103,45 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
   }
   return retval;
 }
+
+static stringT createuserprefsdir(void)
+{
+  stringT cfgdir = pws_os::getenv("HOME", true);
+  if (!cfgdir.empty()) {
+    cfgdir += _S("/.pwsafe");
+    struct stat statbuf;
+    switch (::lstat(pws_os::tomb(cfgdir).c_str(), &statbuf)) {
+    case 0:
+      if (!S_ISDIR(statbuf.st_mode))
+        cfgdir.clear();  // not a dir - can't use it.
+      break;
+    case -1:  // dir doesn't exist.  Or should we check errno too?
+      {
+        const mode_t oldmode = umask(0);
+        if (mkdir(pws_os::tomb(cfgdir).c_str(), S_IRUSR|S_IWUSR|S_IXUSR) == -1)
+          cfgdir.clear();
+        umask(oldmode);
+        break;
+      }
+    default:
+      assert(false);
+      cfgdir.clear();
+      break;
+    }
+    if (!cfgdir.empty())
+      cfgdir += _S('/');
+  } // $HOME defined
+  return cfgdir;
+}
+
+stringT pws_os::getuserprefsdir(void)
+{
+  /**
+   * Returns $(HOME)/.pwsafe, creating it if needed.
+   * If creation failed, return empty string, caller
+   * will fallback to something else or fail gracefully
+   */
+  static const stringT cfgdir = createuserprefsdir();
+  return cfgdir;
+}
+

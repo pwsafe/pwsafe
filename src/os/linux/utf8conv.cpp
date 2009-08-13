@@ -61,3 +61,27 @@ wstring pws_os::towc(const char *val)
   };
   return retval;
 }
+
+#ifdef UNICODE
+std::string pws_os::tomb(const stringT& val)
+{
+  if (!val.empty()) {
+    const size_t N = std::wcstombs(NULL, val.c_str(), 0);
+    assert(N > 0);
+    char* szstr = new char[N+1];
+    szstr[N] = 0;
+    std::wcstombs(szstr, val.c_str(), N);
+    std::string retval(szstr);
+    delete[] szstr;
+    return retval;
+  } else
+    return string();
+}
+#else
+std::string pws_os::tomb(const stringT& val)
+{
+  return val;
+}
+#endif
+
+
