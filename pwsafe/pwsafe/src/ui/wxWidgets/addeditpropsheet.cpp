@@ -72,6 +72,10 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_BUTTON( ID_BUTTON6, AddEditPropSheet::OnClearXTime )
 
+  EVT_RADIOBUTTON( ID_RADIOBUTTON2, AddEditPropSheet::OnPWPRBSelected )
+
+  EVT_RADIOBUTTON( ID_RADIOBUTTON3, AddEditPropSheet::OnPWPRBSelected )
+
 ////@end AddEditPropSheet event table entries
 
 END_EVENT_TABLE()
@@ -164,6 +168,16 @@ void AddEditPropSheet::Init()
   m_InRB = NULL;
   m_ExpTimeCtrl = NULL;
   m_RecurringCtrl = NULL;
+  m_defPWPRB = NULL;
+  m_ourPWPRB = NULL;
+  m_pwpLenCtrl = NULL;
+  m_pwpUseLowerCtrl = NULL;
+  m_pwpUseUpperCtrl = NULL;
+  m_pwpUseDigitsCtrl = NULL;
+  m_pwpSymCtrl = NULL;
+  m_pwpEasyCtrl = NULL;
+  m_pwpPronounceCtrl = NULL;
+  m_pwpHexCtrl = NULL;
 ////@end AddEditPropSheet member initialisation
 }
 
@@ -442,13 +456,13 @@ void AddEditPropSheet::CreateControls()
   wxStaticBoxSizer* itemStaticBoxSizer91 = new wxStaticBoxSizer(itemStaticBoxSizer91Static, wxVERTICAL);
   itemPanel90->SetSizer(itemStaticBoxSizer91);
 
-  wxRadioButton* itemRadioButton92 = new wxRadioButton( itemPanel90, ID_RADIOBUTTON2, _("Use Database Defaults"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton92->SetValue(false);
-  itemStaticBoxSizer91->Add(itemRadioButton92, 0, wxALIGN_LEFT|wxALL, 5);
+  m_defPWPRB = new wxRadioButton( itemPanel90, ID_RADIOBUTTON2, _("Use Database Defaults"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_defPWPRB->SetValue(false);
+  itemStaticBoxSizer91->Add(m_defPWPRB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton93 = new wxRadioButton( itemPanel90, ID_RADIOBUTTON3, _("Use the policy below:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton93->SetValue(false);
-  itemStaticBoxSizer91->Add(itemRadioButton93, 0, wxALIGN_LEFT|wxALL, 5);
+  m_ourPWPRB = new wxRadioButton( itemPanel90, ID_RADIOBUTTON3, _("Use the policy below:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_ourPWPRB->SetValue(false);
+  itemStaticBoxSizer91->Add(m_ourPWPRB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticLine* itemStaticLine94 = new wxStaticLine( itemPanel90, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
   itemStaticBoxSizer91->Add(itemStaticLine94, 0, wxGROW|wxALL, 5);
@@ -458,39 +472,39 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText96 = new wxStaticText( itemPanel90, wxID_STATIC, _("Password length: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer95->Add(itemStaticText96, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl97 = new wxSpinCtrl( itemPanel90, ID_SPINCTRL3, _T("8"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 100, 8 );
-  itemBoxSizer95->Add(itemSpinCtrl97, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwpLenCtrl = new wxSpinCtrl( itemPanel90, ID_SPINCTRL3, _T("8"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 100, 8 );
+  itemBoxSizer95->Add(m_pwpLenCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxCheckBox* itemCheckBox98 = new wxCheckBox( itemPanel90, ID_CHECKBOX3, _("Use lowercase letters"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox98->SetValue(false);
-  itemStaticBoxSizer91->Add(itemCheckBox98, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwpUseLowerCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX3, _("Use lowercase letters"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpUseLowerCtrl->SetValue(false);
+  itemStaticBoxSizer91->Add(m_pwpUseLowerCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox99 = new wxCheckBox( itemPanel90, ID_CHECKBOX4, _("Use UPPERCASE letters"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox99->SetValue(false);
-  itemStaticBoxSizer91->Add(itemCheckBox99, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwpUseUpperCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX4, _("Use UPPERCASE letters"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpUseUpperCtrl->SetValue(false);
+  itemStaticBoxSizer91->Add(m_pwpUseUpperCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox100 = new wxCheckBox( itemPanel90, ID_CHECKBOX5, _("Use digits"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox100->SetValue(false);
-  itemStaticBoxSizer91->Add(itemCheckBox100, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwpUseDigitsCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX5, _("Use digits"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpUseDigitsCtrl->SetValue(false);
+  itemStaticBoxSizer91->Add(m_pwpUseDigitsCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox101 = new wxCheckBox( itemPanel90, ID_CHECKBOX6, _("Use symbols (i.e., ., %, $, etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox101->SetValue(false);
-  itemStaticBoxSizer91->Add(itemCheckBox101, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwpSymCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX6, _("Use symbols (i.e., ., %, $, etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpSymCtrl->SetValue(false);
+  itemStaticBoxSizer91->Add(m_pwpSymCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox102 = new wxCheckBox( itemPanel90, ID_CHECKBOX7, _("Use only easy-to-read charachters (i.e., no 'l', '1', etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox102->SetValue(false);
-  itemStaticBoxSizer91->Add(itemCheckBox102, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwpEasyCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX7, _("Use only easy-to-read characters (i.e., no 'l', '1', etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpEasyCtrl->SetValue(false);
+  itemStaticBoxSizer91->Add(m_pwpEasyCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox103 = new wxCheckBox( itemPanel90, ID_CHECKBOX8, _("Generate pronounceable passwords"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox103->SetValue(false);
-  itemStaticBoxSizer91->Add(itemCheckBox103, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwpPronounceCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX8, _("Generate pronounceable passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpPronounceCtrl->SetValue(false);
+  itemStaticBoxSizer91->Add(m_pwpPronounceCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* itemStaticText104 = new wxStaticText( itemPanel90, wxID_STATIC, _("Or"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer91->Add(itemStaticText104, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox105 = new wxCheckBox( itemPanel90, ID_CHECKBOX9, _("Use hexadecimal digits only (0-9, a-f)"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox105->SetValue(false);
-  itemStaticBoxSizer91->Add(itemCheckBox105, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwpHexCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX9, _("Use hexadecimal digits only (0-9, a-f)"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwpHexCtrl->SetValue(false);
+  itemStaticBoxSizer91->Add(m_pwpHexCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxButton* itemButton106 = new wxButton( itemPanel90, ID_BUTTON7, _("Reset to Database Defaults"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer91->Add(itemButton106, 0, wxALIGN_RIGHT|wxALL, 5);
@@ -554,6 +568,29 @@ wxIcon AddEditPropSheet::GetIconResource( const wxString& name )
   wxUnusedVar(name);
   return wxNullIcon;
 ////@end AddEditPropSheet icon retrieval
+}
+
+void AddEditPropSheet::UpdatePWPolicyControls(bool useDefault)
+{
+  m_pwpLenCtrl->Enable(!useDefault);
+  m_pwpUseLowerCtrl->Enable(!useDefault);
+  m_pwpUseUpperCtrl->Enable(!useDefault);
+  m_pwpUseDigitsCtrl->Enable(!useDefault);
+  m_pwpSymCtrl->Enable(!useDefault);
+  m_pwpEasyCtrl->Enable(!useDefault);
+  m_pwpPronounceCtrl->Enable(!useDefault);
+  m_pwpHexCtrl->Enable(!useDefault);
+  if (!useDefault) { // policy override - get values
+    m_item.GetPWPolicy(m_PWP);
+    m_pwpLenCtrl->SetValue(m_PWP.length);
+    m_pwpUseLowerCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseLowercase);
+    m_pwpUseUpperCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseUppercase);
+    m_pwpUseDigitsCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseDigits);
+    m_pwpSymCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseSymbols);
+    m_pwpEasyCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseEasyVision);
+    m_pwpPronounceCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyMakePronounceable);
+    m_pwpHexCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseHexDigits);
+  }
 }
 
 void AddEditPropSheet::ItemFieldsToPropSheet()
@@ -669,6 +706,12 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_PMTime = m_item.GetPMTimeL().c_str();
   m_ATime = m_item.GetATimeL().c_str();
   m_RMTime = m_item.GetRMTimeL().c_str();
+
+  // Password policy
+  bool defPwPolicy = m_item.GetPWPolicy().empty();
+  m_defPWPRB->SetValue(defPwPolicy);
+  m_ourPWPRB->SetValue(!defPwPolicy);
+  UpdatePWPolicyControls(defPwPolicy);
 }
 
 /*!
@@ -771,6 +814,9 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_item.GetXTimeInt(lastXTimeInt);
       time_t lastXtime;
       m_item.GetXTime(lastXtime);
+      bool isPWPDefault = m_defPWPRB->GetValue();
+      PWPolicy oldPWP;
+      m_item.GetPWPolicy(oldPWP);
 
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
                      m_title      != m_item.GetTitle().c_str()       ||
@@ -778,19 +824,13 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
                      m_notes      != m_item.GetNotes().c_str()       ||
                      m_url        != m_item.GetURL().c_str()         ||
                      m_autotype   != m_item.GetAutoType().c_str()    ||
-                     m_runcmd != m_item.GetRunCommand().c_str()      ||
+                     m_runcmd     != m_item.GetRunCommand().c_str()  ||
                      m_DCA        != lastDCA                         ||
                      m_PWHistory  != m_item.GetPWHistory().c_str()   ||
                      m_tttXTime   != lastXtime                       ||
                      m_XTimeInt   != lastXTimeInt                    ||
-#ifdef NOTYET
-                     m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
-                     (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
-                      m_AEMD.pwp         != m_AEMD.oldpwp)
-#else 
-                     0
-#endif
-                     );
+                     m_origPWPdefault != isPWPDefault                ||
+                     (!isPWPDefault && (m_PWP != oldPWP)));
 
       bIsPSWDModified = (password != m_item.GetPassword());
 
@@ -805,12 +845,27 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
         m_item.SetAutoType(m_autotype.c_str());
         m_item.SetRunCommand(m_runcmd.c_str());
         m_item.SetPWHistory(m_PWHistory.c_str());
-#ifdef NOTYET
-        if (m_AEMD.ipolicy == DEFAULT_POLICY)
+        if (m_defPWPRB->GetValue())
           m_item.SetPWPolicy(_T(""));
-        else
-          m_item.SetPWPolicy(m_AEMD.pwp);
-#endif
+        else {
+          m_PWP.length = m_pwpLenCtrl->GetValue();
+          m_PWP.flags = 0;
+          if (m_pwpUseLowerCtrl->GetValue())
+            m_PWP.flags |= PWSprefs::PWPolicyUseLowercase;
+          if (m_pwpUseUpperCtrl->GetValue())
+            m_PWP.flags |= PWSprefs::PWPolicyUseUppercase;
+          if (m_pwpUseDigitsCtrl->GetValue())
+            m_PWP.flags |= PWSprefs::PWPolicyUseDigits;
+          if (m_pwpSymCtrl->GetValue())
+            m_PWP.flags |= PWSprefs::PWPolicyUseSymbols;
+          if (m_pwpEasyCtrl->GetValue())
+            m_PWP.flags |= PWSprefs::PWPolicyUseEasyVision;
+          if (m_pwpPronounceCtrl->GetValue())
+            m_PWP.flags |= PWSprefs::PWPolicyMakePronounceable;
+          if (m_pwpHexCtrl->GetValue())
+            m_PWP.flags |= PWSprefs::PWPolicyUseHexDigits;
+          m_item.SetPWPolicy(m_PWP);
+        }
         m_item.SetDCA(m_useDefaultDCA ? -1 : m_DCA);
       } // bIsModified
 
@@ -1014,5 +1069,15 @@ void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& event )
   m_ExpTimeCtrl->Enable(!On);
   m_RecurringCtrl->Enable(!On);
 
+}
+
+
+/*!
+ * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
+ */
+
+void AddEditPropSheet::OnPWPRBSelected( wxCommandEvent& event )
+{
+  UpdatePWPolicyControls(event.GetEventObject() == m_defPWPRB);
 }
 
