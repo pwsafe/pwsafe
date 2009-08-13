@@ -78,3 +78,15 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
     retval = path;
   return retval;
 }
+
+stringT pws_os::getuserprefsdir(void)
+{
+  // Return an empty string to
+  // have Windows punt to exec dir, which is the historical behaviour
+  // May want to change this in future to
+  // SHGetFolderPath(CSIDL_APPDATA) + "/pwsafe".
+  return stringT();
+}
+
+
+

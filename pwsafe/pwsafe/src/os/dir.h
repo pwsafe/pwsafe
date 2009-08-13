@@ -21,6 +21,7 @@ namespace pws_os {
                         stringT &file, stringT &ext);
   extern stringT makepath(const stringT &drive, const stringT &dir,
                           const stringT &file, const stringT &ext);
+  extern stringT getuserprefsdir(void);
 };
 #endif /* __DIR_H */
 //-----------------------------------------------------------------------------

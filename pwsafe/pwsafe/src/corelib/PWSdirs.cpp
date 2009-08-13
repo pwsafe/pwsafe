@@ -52,10 +52,12 @@ stringT PWSdirs::GetConfigDir()
   // PWS_PREFSDIR overrides all:
   stringT retval(pws_os::getenv("PWS_PREFSDIR", true));
   if (retval.empty()) {
-    // returns directory of executable unless U3 environment detected
     retval = pws_os::getenv("U3_APP_DATA_PATH", true);
-    if (retval.empty())
-      retval = GetOurExecDir();
+    if (retval.empty()) {
+      retval = pws_os::getuserprefsdir(); // "" for Windows, ~/.pwsafe for Linux
+      if (retval.empty())
+        retval = GetOurExecDir();
+    }
   }
   return retval;
 }
