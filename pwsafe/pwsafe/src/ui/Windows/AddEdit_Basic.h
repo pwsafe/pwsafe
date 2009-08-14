@@ -85,6 +85,9 @@ protected:
   afx_msg void OnRandom();
   afx_msg void OnShowPassword();
   afx_msg void OnPasskeySetFocus();
+  afx_msg void OnENSetFocusPassword();
+  afx_msg void OnENSetFocusPassword2();
+  afx_msg void OnENChangePassword();
   afx_msg void OnENSetFocusNotes();
   afx_msg void OnENKillFocusNotes();
   afx_msg void OnSTCExClicked(UINT nId);

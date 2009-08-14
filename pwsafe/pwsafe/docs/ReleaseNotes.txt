@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2836569] Correct password data now copied from Edit dialog using 'Smart
+Labels'
 [2832991] Double-click action display in the Status Bar now reflects the
 value for entries that have overriden the current default and is also
 updated after the entry is edited.
