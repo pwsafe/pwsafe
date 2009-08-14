@@ -140,19 +140,25 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Basic)
   ON_WM_CTLCOLOR()
+
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
+
   ON_EN_CHANGE(IDC_URL, OnChangeURL)
-  ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetFocus)
+  ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
+
+  ON_EN_SETFOCUS(IDC_PASSWORD, OnENSetFocusPassword)
+  ON_EN_SETFOCUS(IDC_PASSWORD2, OnENSetFocusPassword2)
   ON_EN_SETFOCUS(IDC_NOTES, OnENSetFocusNotes)
   ON_EN_SETFOCUS(IDC_NOTESWW, OnENSetFocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnENKillFocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTESWW, OnENKillFocusNotes)
 
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_URL, OnSTCExClicked)
+
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
   ON_MESSAGE(WM_EDIT_WORDWRAP, OnWordWrap)
@@ -600,9 +606,20 @@ void CAddEdit_Basic::OnShowPassword()
   UpdateData(FALSE);
 }
 
-void CAddEdit_Basic::OnPasskeySetFocus()
+void CAddEdit_Basic::OnENSetFocusPassword()
 {
   m_ex_password.SetSel(0, -1);
+}
+
+void CAddEdit_Basic::OnENSetFocusPassword2()
+{
+  m_ex_password2.SetSel(0, -1);
+}
+
+void CAddEdit_Basic::OnENChangePassword()
+{
+  UpdateData(TRUE);
+  M_realpassword() = m_password;
 }
 
 void CAddEdit_Basic::ShowPassword()
