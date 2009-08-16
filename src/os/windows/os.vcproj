@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -46,10 +46,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -67,7 +67,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
 			/>
@@ -89,8 +89,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -121,10 +121,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -141,7 +141,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
 			/>
@@ -163,8 +163,8 @@
 		</Configuration>
 		<Configuration
 			Name="Demo|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -196,10 +196,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -219,7 +219,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -241,8 +241,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugE|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -272,10 +272,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -295,7 +295,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories="$(ExpatDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -317,8 +317,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugM|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -348,10 +348,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -371,7 +371,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -393,8 +393,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugX|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -424,10 +424,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -447,7 +447,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories="$(XercesDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -469,8 +469,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseE|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -502,10 +502,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -525,7 +525,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories="$(ExpatDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -547,8 +547,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseM|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -580,10 +580,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -603,7 +603,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -625,8 +625,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseX|Win32"
-			OutputDirectory="..\..\lib\$(ConfigurationName)"
-			IntermediateDirectory="..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -658,10 +658,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/os.pch"
-				AssemblerListingLocation="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ObjectFile="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\..\obj\$(ConfigurationName)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/os.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -681,7 +681,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\lib\$(ConfigurationName)\os.lib"
+				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
 				AdditionalLibraryDirectories="$(XercesDir)\lib"
 				SuppressStartupBanner="true"
 			/>
