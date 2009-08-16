@@ -15,7 +15,9 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\build\bin\VK_DataGen\Debug\</OutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Debug\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Debug\</IntermediateOutputPath> 
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -23,7 +25,9 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\..\build\bin\VK_DataGen\Release\</OutputPath>
+    <BaseIntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Release\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Release\</IntermediateOutputPath> 
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

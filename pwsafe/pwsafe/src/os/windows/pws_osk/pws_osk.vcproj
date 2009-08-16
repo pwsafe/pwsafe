@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\OSK_UserVariables.vsprops"
 			UseOfMFC="1"
@@ -70,7 +70,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="User32.lib"
-				OutputFile="..\..\..\bin\$(ConfigurationName)\pws_osk_D.dll"
+				OutputFile="..\..\..\..\build\bin\pwsafe\$(ConfigurationName)\pws_osk_D.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
 				DelayLoadDLLs="$(NOINHERIT)"
@@ -106,8 +106,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\bin\$(ConfigurationName)"
-			IntermediateDirectory="..\..\..\obj\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\OSK_UserVariables.vsprops"
 			UseOfMFC="1"
@@ -157,7 +157,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="User32.lib"
-				OutputFile="..\..\..\bin\$(ConfigurationName)\pws_osk.dll"
+				OutputFile="..\..\..\..\build\bin\pwsafe\$(ConfigurationName)\pws_osk.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile=""
 				DelayLoadDLLs="$(NOINHERIT)"

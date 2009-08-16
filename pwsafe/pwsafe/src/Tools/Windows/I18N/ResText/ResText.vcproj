@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\ResText\Debug"
-			IntermediateDirectory="..\obj\ResText\Debug"
+			OutputDirectory="..\..\..\..\..\build\bin\ResText\Debug"
+			IntermediateDirectory="..\..\..\..\..\build\obj\ResText\Debug"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -96,8 +96,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\ResText\Release"
-			IntermediateDirectory="..\obj\ResText\Release"
+			OutputDirectory="..\..\..\..\..\build\bin\ResText\Release"
+			IntermediateDirectory="..\..\..\..\..\build\obj\ResText\Release"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
