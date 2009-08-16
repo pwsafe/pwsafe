@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-07-05 14:19+0300\n"
+"PO-Revision-Date: 2009-08-16 15:47+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1441,6 +1441,14 @@ msgstr "Болгарская (машинопись)"
 msgid "C&lear Clipboard"
 msgstr "&Очистить буфер обмена"
 
+#. Resource IDs: (1386)
+msgid "C++ Terminate"
+msgstr "C++ Terminate"
+
+#. Resource IDs: (1387)
+msgid "C++ Unexpected"
+msgstr "C++ Unexpected"
+
 # Отображается в статус-строке и указывает источник настроек. С - конфигурация, F - файл [RO]/[R/W], None - нет, Reg - реестр.
 #. Resource IDs: (203)
 msgid "C:F[R-O]"
@@ -1673,7 +1681,7 @@ msgstr "Нажмите для переключения Caps Lock"
 msgid "Click to toggle and/or relation to previous row"
 msgstr "Нажмите для переключения отношения и/или относительно предыдущей строки"
 
-#. Resource IDs: (1)
+#. Resource IDs: (1, 358)
 msgid "Close"
 msgstr "Закрыть"
 
@@ -1771,8 +1779,8 @@ msgstr "Подтверждение:"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Conflicting entries for »%s»%s»%s».\r\n  Added merged entry as »%s»%s»%s».\r\n    Differing field(s): %s"
-msgstr "Конфликт элементов для »%s»%s»%s».\r\n  При слиянии элемент был добавлен как »%s»%s»%s».\r\n    Различающиеся поля: %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr "Конфликт элементов для «%s» «%s» «%s».\r\n  При слиянии элемент был добавлен как «%s» «%s» «%s».\r\n    Различающиеся поля: %s"
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -1813,6 +1821,10 @@ msgstr "Копировать E-mail в буфер обмена"
 #. Resource IDs: (32270)
 msgid "Copy Here"
 msgstr "Копировать сюда"
+
+#. Resource IDs: (32080)
+msgid "Copy Run Command to Clipboard"
+msgstr "Копировать команду в буфер обмена"
 
 #. Resource IDs: (329, 32070)
 msgid "Copy URL to Clipboard"
@@ -2072,6 +2084,11 @@ msgstr "Диск назначения заполнен."
 msgid "Destination location does not exist or is not accessible."
 msgstr "Путь назначения не существует или недоступен."
 
+#. Resource IDs: (329)
+#, fuzzy, c-format
+msgid "Details of this shortcut to the base entry '%s':"
+msgstr "Информация о ярлыке для исходного элемента '%s':"
+
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Деванагари (инскрипт)"
@@ -2186,13 +2203,18 @@ msgstr "Вы&ход\tCtrl+Q\\Alt+F4"
 msgid "Easyvision characters"
 msgstr "Легкоотличимые символы"
 
-#. Resource IDs: (357, 32220)
+#. Resource IDs: (32220)
 msgid "Edit Entry"
 msgstr "Редактировать элемент"
 
 #. Resource IDs: (32052)
 msgid "Edit Entry..."
 msgstr "Редактировать элемент..."
+
+#. Resource IDs: (357)
+#, c-format
+msgid "Edit Entry:   «%s» «%s» «%s»"
+msgstr "Редактировать элемент: «%s» «%s» «%s»"
 
 #. Resource IDs: (122)
 msgid "Edit Shortcut"
@@ -2907,6 +2929,10 @@ msgstr "ID:32076:V C +R"
 msgid "ID:32079:V C +F"
 msgstr "ID:32079:V C +F"
 
+#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
+msgid "ID:32080:VAC +R"
+msgstr "ID:32080:VAC +R"
+
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar'
 msgid "ID:32108:V C +F"
 msgstr "ID:32108:V C +F"
@@ -3135,6 +3161,10 @@ msgstr "Внутренняя ошибка: неизвестный номер о�
 #. Resource IDs: (208)
 msgid "Invalid Filter schema."
 msgstr "Неверная схема фильтра."
+
+#. Resource IDs: (1388)
+msgid "Invalid Parameter"
+msgstr "Неверный параметр"
 
 #. Resource IDs: (209)
 msgid "Invalid data in element: "
@@ -4078,7 +4108,7 @@ msgstr "Укажите путь для сохранения резервных �
 
 #. Resource IDs: (345)
 #, c-format
-msgid "Please specify the name && group for the shortcut to '%s':"
+msgid "Please specify the name && group for this shortcut to the base entry '%s':"
 msgstr "Укажите имя и группу для ярлыка на '%s':"
 
 #. Resource IDs: (337)
@@ -4108,6 +4138,10 @@ msgstr "Португальская (бразильская ABNT)"
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
 msgstr "Нажмите для удаления всех набранных символов"
+
+#. Resource IDs: (65535)
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
+msgstr "После нажатия OK пароль для выделенного элемента скопирован в буфер обмена. Буфер обмена будет надежно очищен при закрытии Password Safe\r\n\r\nЕсли Вы нажмете 'Отмена', пароль не будет скопирован в буфер."
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -4489,6 +4523,10 @@ msgstr "Выберите раскладку:"
 msgid "Select Location for Intermediate Backups"
 msgstr "Укажите каталог для промежуточных резервных копий"
 
+#. Resource IDs: (474)
+msgid "Select Test Dump Type"
+msgstr "Выберите тип тестового дампа"
+
 #. Resource IDs: (3858)
 msgid "Select a button."
 msgstr "Выберите кнопку."
@@ -4679,6 +4717,18 @@ msgstr "Отобразить элементы совпадающие по ука
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
 msgstr "Отображать сетку списка"
+
+#. Resource IDs: (1391)
+msgid "Signal Abort"
+msgstr "Signal Abort"
+
+#. Resource IDs: (1389)
+msgid "Signal Illegal Instruction"
+msgstr "Signal Illegal Instruction"
+
+#. Resource IDs: (1390)
+msgid "Signal Terminate"
+msgstr "Signal Terminate"
 
 #. Resource IDs: (334)
 #, c-format
@@ -4976,10 +5026,6 @@ msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is it
 msgstr "Пароль имеет вид алиаса, но исходный элемент '%s:%s:%s' является алиасом.\r\n\r\nПривязать этот элемент к 'настоящему' исходному элементу?"
 
 #. Resource IDs: (65535)
-msgid "The password of the selected item has been copied to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
-msgstr "Пароль для выделенного элемента скопирован в буфер обмена. Буфер обмена будет надежно очищен при закрытии Password Safe\r\n\r\nЕсли Вы нажмете 'Отмена', пароль не будет скопирован в буфер."
-
-#. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
 msgstr "Пароль для контейнера был введен неверно три раза подряд. Если Вы не знаете пароля для контейнера, Вы можете выбрать другой контейнер или создать новый пустой контейнер."
 
@@ -5004,10 +5050,6 @@ msgstr "Целевой элемент [%s:%s:%s] для данного алиа�
 #. Resource IDs: (320)
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "Позволяет хранить резервные копии в отдельном каталоге. Убедитесь, что Вы имеете права на запись в указанном каталоге."
-
-#. Resource IDs: (329)
-msgid "This database is in read-only mode. No changes to this entry will be saved."
-msgstr "Контейнер открыт в режиме \"только чтение\". Изменения для этого элемента не будут сохранены."
 
 #. Resource IDs: (335)
 msgid "This database is the same as the current database!"
@@ -5306,6 +5348,11 @@ msgstr "Британская (расширенная)"
 msgid "United States-International"
 msgstr "США (международная)"
 
+#. Resource IDs: (211)
+#,fuzzy
+msgid "Unknown"
+msgstr "Неопознанный"
+
 #. Resource IDs: (329)
 msgid "Unknown            "
 msgstr "Неопознанный       "
@@ -5471,8 +5518,9 @@ msgid "View Aliases"
 msgstr "Просмотр алиасов"
 
 #. Resource IDs: (330)
-msgid "View Entry"
-msgstr "Просмотр элемента"
+#, c-format
+msgid "View Entry:   «%s» «%s» «%s»"
+msgstr "Просмотр элемента: «%s» «%s» «%s»"
 
 #. Resource IDs: (157, 347)
 msgid "View Report"
@@ -5534,6 +5582,10 @@ msgstr "Слабый пароль:\n\n %s"
 #. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
 msgstr "Whenever"
+
+#. Resource IDs: (1385)
+msgid "Win32 Unhandled Exception"
+msgstr "Win32 Unhandled Exception"
 
 #. Resource IDs: (517)
 msgid "Wolof"
@@ -5666,6 +5718,10 @@ msgstr "\nКопировать заметки в буфер обмена"
 #. Resource IDs: (2005)
 msgid "\nCopy Password to Clipboard"
 msgstr "\nКопировать пароль в буфер обмена"
+
+#. Resource IDs: (2006)
+msgid "\nCopy Run Command to Clipboard"
+msgstr "\nКопировать команду в буфер обмена"
 
 #. Resource IDs: (2005)
 msgid "\nCopy Username to Clipboard"
