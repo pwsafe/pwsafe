@@ -1176,6 +1176,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype)
   CItemData *pci_original(pci);
 
   if (pci != NULL) {
+    StringX sx_pswd = pci->GetPassword();
     if (pci->IsShortcut()) {
       // This is an shortcut
       uuid_array_t entry_uuid, base_uuid;
@@ -1186,15 +1187,28 @@ void DboxMain::DoBrowse(const bool bDoAutotype)
       if (iter != End()) {
         pci = &iter->second;
       }
+      sx_pswd = pci->GetPassword();
+    }
+
+    if (pci->IsAlias()) {
+      // This is an shortcut
+      uuid_array_t entry_uuid, base_uuid;
+      pci->GetUUID(entry_uuid);
+      m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        sx_pswd = iter->second.GetPassword();
+      }
     }
 
     if (!pci->IsURLEmpty()) {
       StringX sxAutotype = PWSAuxParse::GetAutoTypeString(pci->GetAutoType(),
                                     pci->GetGroup(), pci->GetTitle(), 
-                                    pci->GetUser(), pci->GetPassword(), 
+                                    pci->GetUser(), sx_pswd, 
                                     pci->GetNotes());
       LaunchBrowser(pci->GetURL().c_str(), sxAutotype, bDoAutotype);
-      SetClipboardData(pci->GetPassword());
+      SetClipboardData(sx_pswd);
       UpdateLastClipboardAction(CItemData::PASSWORD);
       UpdateAccessTime(pci_original);
     }
