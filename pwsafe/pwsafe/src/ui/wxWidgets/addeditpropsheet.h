@@ -38,6 +38,8 @@
 class wxSpinCtrl;
 class wxGrid;
 class wxDatePickerCtrl;
+class wxGridSizer;
+class wxBoxSizer;
 ////@end forward declarations
 
 /*!
@@ -82,9 +84,13 @@ class wxDatePickerCtrl;
 #define ID_RADIOBUTTON3 10116
 #define ID_SPINCTRL3 10117
 #define ID_CHECKBOX3 10118
+#define ID_SPINCTRL5 10126
 #define ID_CHECKBOX4 10119
+#define ID_SPINCTRL6 10127
 #define ID_CHECKBOX5 10120
+#define ID_SPINCTRL7 10128
 #define ID_CHECKBOX6 10121
+#define ID_SPINCTRL8 10129
 #define ID_CHECKBOX7 10122
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
@@ -163,6 +169,12 @@ public:
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
   void OnPWPRBSelected( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
+  void OnEZreadCBClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
+  void OnPronouceableCBClick( wxCommandEvent& event );
 
 ////@end AddEditPropSheet event handler declarations
   void OnOk(wxCommandEvent& event);
@@ -247,10 +259,15 @@ public:
   wxRadioButton* m_defPWPRB;
   wxRadioButton* m_ourPWPRB;
   wxSpinCtrl* m_pwpLenCtrl;
+  wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
+  wxBoxSizer* m_pwNumLCbox;
   wxCheckBox* m_pwpUseUpperCtrl;
+  wxBoxSizer* m_pwNumUCbox;
   wxCheckBox* m_pwpUseDigitsCtrl;
+  wxBoxSizer* m_pwNumDigbox;
   wxCheckBox* m_pwpSymCtrl;
+  wxBoxSizer* m_pwNumSymbox;
   wxCheckBox* m_pwpEasyCtrl;
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
@@ -288,6 +305,7 @@ private:
   CItemData m_item;
   void ItemFieldsToPropSheet();
   void UpdatePWPolicyControls(bool useDefault);
+  void ShowHidePWPSpinners(bool show);
   void ShowPassword();
   void HidePassword();
 };
