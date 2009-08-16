@@ -36,6 +36,8 @@ quotes.
 [] Double-click on a shortcut entry now executes the action of its base.
 [] Drag & Drop of entries, that have individual DCA values, between different
 databases now works.
+[] Browse to URL from an Alias entry now puts the correct password in the
+clipboard.
 
 New Features for 3.18.1
 =======================
