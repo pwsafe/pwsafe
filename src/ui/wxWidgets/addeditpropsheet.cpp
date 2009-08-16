@@ -80,6 +80,8 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_CHECKBOX( ID_CHECKBOX8, AddEditPropSheet::OnPronouceableCBClick )
 
+  EVT_CHECKBOX( ID_CHECKBOX9, AddEditPropSheet::OnUseHexCBClick )
+
 ////@end AddEditPropSheet event table entries
 
 END_EVENT_TABLE()
@@ -484,7 +486,7 @@ void AddEditPropSheet::CreateControls()
   m_pwpLenCtrl = new wxSpinCtrl( itemPanel90, ID_SPINCTRL3, _T("8"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 8 );
   itemBoxSizer95->Add(m_pwpLenCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwMinsGSzr = new wxGridSizer(4, 2, 0, 0);
+  m_pwMinsGSzr = new wxGridSizer(6, 2, 0, 0);
   itemStaticBoxSizer91->Add(m_pwMinsGSzr, 0, wxGROW|wxALL, 5);
   m_pwpUseLowerCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX3, _("Use lowercase letters"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpUseLowerCtrl->SetValue(false);
@@ -548,21 +550,25 @@ void AddEditPropSheet::CreateControls()
 
   m_pwpEasyCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX7, _("Use only easy-to-read characters (i.e., no 'l', '1', etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpEasyCtrl->SetValue(false);
-  itemStaticBoxSizer91->Add(m_pwpEasyCtrl, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwMinsGSzr->Add(m_pwpEasyCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+
+  m_pwMinsGSzr->Add(10, 10, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   m_pwpPronounceCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX8, _("Generate pronounceable passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpPronounceCtrl->SetValue(false);
-  itemStaticBoxSizer91->Add(m_pwpPronounceCtrl, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwMinsGSzr->Add(m_pwpPronounceCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  wxStaticText* itemStaticText121 = new wxStaticText( itemPanel90, wxID_STATIC, _("Or"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStaticBoxSizer91->Add(itemStaticText121, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwMinsGSzr->Add(10, 10, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+
+  wxStaticText* itemStaticText123 = new wxStaticText( itemPanel90, wxID_STATIC, _("Or"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticBoxSizer91->Add(itemStaticText123, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_pwpHexCtrl = new wxCheckBox( itemPanel90, ID_CHECKBOX9, _("Use hexadecimal digits only (0-9, a-f)"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpHexCtrl->SetValue(false);
   itemStaticBoxSizer91->Add(m_pwpHexCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxButton* itemButton123 = new wxButton( itemPanel90, ID_BUTTON7, _("Reset to Database Defaults"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStaticBoxSizer91->Add(itemButton123, 0, wxALIGN_RIGHT|wxALL, 5);
+  wxButton* itemButton125 = new wxButton( itemPanel90, ID_BUTTON7, _("Reset to Database Defaults"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticBoxSizer91->Add(itemButton125, 0, wxALIGN_RIGHT|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel90, _("Password Policy"));
 
@@ -1132,7 +1138,7 @@ void AddEditPropSheet::OnPWPRBSelected( wxCommandEvent& event )
   UpdatePWPolicyControls(event.GetEventObject() == m_defPWPRB);
 }
 
-void AddEditPropSheet::ShowHidePWPSpinners(bool show)
+void AddEditPropSheet::ShowPWPSpinners(bool show)
 {
   m_pwMinsGSzr->Show(m_pwNumLCbox,  show, true);
   m_pwMinsGSzr->Show(m_pwNumUCbox,  show, true);
@@ -1149,7 +1155,7 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& event )
 {
  if (Validate() && TransferDataFromWindow()) {
    bool wantsPronouceable = m_pwpPronounceCtrl->GetValue();
-   ShowHidePWPSpinners(!wantsPronouceable);
+   ShowPWPSpinners(!wantsPronouceable);
  }
 }
 
@@ -1162,7 +1168,40 @@ void AddEditPropSheet::OnEZreadCBClick( wxCommandEvent& event )
 {
  if (Validate() && TransferDataFromWindow()) {
    bool wantsEZread = m_pwpEasyCtrl->GetValue();
-   ShowHidePWPSpinners(!wantsEZread);
+   ShowPWPSpinners(!wantsEZread);
+ }
+}
+
+static void EnableSizerChildren(wxSizer *sizer, bool enable)
+{
+  wxSizerItemList items = sizer->GetChildren();
+  wxSizerItemList::iterator iter;
+  for (iter = items.begin(); iter != items.end(); iter++) {
+    wxWindow *childW = (*iter)->GetWindow();
+    if (childW != NULL)
+      childW->Enable(enable);
+    else { // if another sizer, recurse!
+      wxSizer *childS = (*iter)->GetSizer();
+      if (childS != NULL)
+        EnableSizerChildren(childS, enable);
+    }
+  }
+}
+
+void AddEditPropSheet::EnableNonHexCBs(bool enable)
+{
+  EnableSizerChildren(m_pwMinsGSzr, enable);
+}
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
+ */
+
+void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& event )
+{
+ if (Validate() && TransferDataFromWindow()) {
+   bool useHex = m_pwpHexCtrl->GetValue();
+   EnableNonHexCBs(!useHex);
  }
 }
 

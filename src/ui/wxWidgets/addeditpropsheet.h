@@ -176,6 +176,9 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
   void OnPronouceableCBClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
+  void OnUseHexCBClick( wxCommandEvent& event );
+
 ////@end AddEditPropSheet event handler declarations
   void OnOk(wxCommandEvent& event);
 ////@begin AddEditPropSheet member function declarations
@@ -305,7 +308,8 @@ private:
   CItemData m_item;
   void ItemFieldsToPropSheet();
   void UpdatePWPolicyControls(bool useDefault);
-  void ShowHidePWPSpinners(bool show);
+  void ShowPWPSpinners(bool show);
+  void EnableNonHexCBs(bool enable);
   void ShowPassword();
   void HidePassword();
 };
