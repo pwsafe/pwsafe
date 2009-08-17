@@ -13872,7 +13872,7 @@ Action:"</string>
                     <bool name="proxy-Separate files">0</bool>
                     <string name="proxy-Implementation filename">""</string>
                     <string name="proxy-Header filename">""</string>
-                    <string name="proxy-Member variable name">""</string>
+                    <string name="proxy-Member variable name">"m_pwpLCSpin"</string>
                     <long name="proxy-Minimum value">0</long>
                     <long name="proxy-Maximum value">100</long>
                     <long name="proxy-Initial value">0</long>
@@ -14166,7 +14166,7 @@ Action:"</string>
                     <bool name="proxy-Separate files">0</bool>
                     <string name="proxy-Implementation filename">""</string>
                     <string name="proxy-Header filename">""</string>
-                    <string name="proxy-Member variable name">""</string>
+                    <string name="proxy-Member variable name">"m_pwpUCSpin"</string>
                     <long name="proxy-Minimum value">0</long>
                     <long name="proxy-Maximum value">100</long>
                     <long name="proxy-Initial value">0</long>
@@ -14460,7 +14460,7 @@ Action:"</string>
                     <bool name="proxy-Separate files">0</bool>
                     <string name="proxy-Implementation filename">""</string>
                     <string name="proxy-Header filename">""</string>
-                    <string name="proxy-Member variable name">""</string>
+                    <string name="proxy-Member variable name">"m_pwpDigSpin"</string>
                     <long name="proxy-Minimum value">0</long>
                     <long name="proxy-Maximum value">100</long>
                     <long name="proxy-Initial value">0</long>
@@ -14754,7 +14754,7 @@ Action:"</string>
                     <bool name="proxy-Separate files">0</bool>
                     <string name="proxy-Implementation filename">""</string>
                     <string name="proxy-Header filename">""</string>
-                    <string name="proxy-Member variable name">""</string>
+                    <string name="proxy-Member variable name">"m_pwpSymSpin"</string>
                     <long name="proxy-Minimum value">0</long>
                     <long name="proxy-Maximum value">100</long>
                     <long name="proxy-Initial value">0</long>
@@ -14894,7 +14894,8 @@ Action:"</string>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
                   <string name="proxy-Member variable name">"m_pwpEasyCtrl"</string>
-                  <string name="proxy-Label">"Use only easy-to-read characters (i.e., no 'l', '1', etc.)"</string>
+                  <string name="proxy-Label">"Use only easy-to-read characters
+(i.e., no 'l', '1', etc.)"</string>
                   <bool name="proxy-Initial value">0</bool>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>

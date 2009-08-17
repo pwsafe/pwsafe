@@ -265,12 +265,16 @@ public:
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
   wxBoxSizer* m_pwNumLCbox;
+  wxSpinCtrl* m_pwpLCSpin;
   wxCheckBox* m_pwpUseUpperCtrl;
   wxBoxSizer* m_pwNumUCbox;
+  wxSpinCtrl* m_pwpUCSpin;
   wxCheckBox* m_pwpUseDigitsCtrl;
   wxBoxSizer* m_pwNumDigbox;
+  wxSpinCtrl* m_pwpDigSpin;
   wxCheckBox* m_pwpSymCtrl;
   wxBoxSizer* m_pwNumSymbox;
+  wxSpinCtrl* m_pwpSymSpin;
   wxCheckBox* m_pwpEasyCtrl;
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
