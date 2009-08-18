@@ -418,10 +418,6 @@ msgstr "Auto&skrift:"
 msgid "&Browse to URL"
 msgstr "&Gå till URL"
 
-#. Resource IDs: (355)
-msgid "&Browse to URL + Autotype"
-msgstr "&Gå till URL + Autoskriv"
-
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
 msgstr "&Byt Safe-kombination..."
@@ -746,6 +742,10 @@ msgstr "'Alt Gr' (höger Alt) tangent"
 msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
 msgstr "'Rensa urklipp vid minimera' och dubbelklick på 'Kopiera lösenordet och minimera' står i konflikt. Ändra en eller båda."
 
+#. Resource IDs: (358)
+msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
 msgstr "(Används också som ersättning för punkter i titelfältet)"
@@ -793,6 +793,10 @@ msgstr "....."
 #. Resource IDs: (1260, 1261)
 msgid "......."
 msgstr "......."
+
+#. Resource IDs: (358)
+msgid ".dmp'\n\nin your temporary directory: \n\n\t'"
+msgstr ""
 
 #. Resource IDs: (8020)
 msgid "0"
@@ -1503,6 +1507,14 @@ msgstr "Bulgarian (Typewriter)"
 msgid "C&lear Clipboard"
 msgstr "R&ensa urklipp"
 
+#. Resource IDs: (1386)
+msgid "C++ Terminate"
+msgstr ""
+
+#. Resource IDs: (1387)
+msgid "C++ Unexpected"
+msgstr ""
+
 #. Resource IDs: (203)
 msgid "C:F[R-O]"
 msgstr "C:F[R-O]"
@@ -1824,8 +1836,8 @@ msgstr "Bekräftelse:"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Conflicting entries for »%s»%s»%s».\r\n  Added merged entry as »%s»%s»%s».\r\n    Differing field(s): %s"
-msgstr "Poster i konflikt för »%s»%s»%s».\r\n  La till sammanslagna posten som »%s»%s»%s».\r\n    Avvikande post(er): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -1866,6 +1878,10 @@ msgstr "Kopiera mail till urklipp"
 #. Resource IDs: (32270)
 msgid "Copy Here"
 msgstr "Kopiera in här"
+
+#. Resource IDs: (32080)
+msgid "Copy Run Command to Clipboard"
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Copy URL to Clipboard"
@@ -2103,6 +2119,11 @@ msgstr "Måldisken är full."
 msgid "Destination location does not exist or is not accessible."
 msgstr "Målet finns inte eller är inte tillgängligt."
 
+#. Resource IDs: (329)
+#, c-format
+msgid "Details of this shortcut to the base entry '%s':"
+msgstr ""
+
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr "Devanagari - INSCRIPT"
@@ -2180,6 +2201,10 @@ msgid "Double-Click on entry to Copy Username"
 msgstr "Dubbelklicka på posten för att kopiera användaren"
 
 #. Resource IDs: (315)
+msgid "Double-Click on entry to Run Command"
+msgstr ""
+
+#. Resource IDs: (315)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Dubbelklicka på posten för att visa/redigera den"
 
@@ -2219,6 +2244,11 @@ msgstr "Ändra post"
 #. Resource IDs: (32052)
 msgid "Edit Entry..."
 msgstr "Ändra post..."
+
+#. Resource IDs: (357)
+#, c-format
+msgid "Edit Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (122)
 msgid "Edit Shortcut"
@@ -2843,6 +2873,10 @@ msgstr "ID:32076:V C +R"
 msgid "ID:32079:V C +F"
 msgstr "ID:32079:V C +F"
 
+#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
+msgid "ID:32080:VAC +R"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
 msgstr "ID:32108:V C +F"
@@ -3062,6 +3096,10 @@ msgstr "Internt fel: oväntat felnummer"
 #. Resource IDs: (208)
 msgid "Invalid Filter schema."
 msgstr "Ogiltigt filterschema."
+
+#. Resource IDs: (1388)
+msgid "Invalid Parameter"
+msgstr ""
 
 #. Resource IDs: (209)
 msgid "Invalid data in element: "
@@ -3841,6 +3879,11 @@ msgstr "Lösenordets minsta längd"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Lösenordet borde bestå av blandade tecken med åtminståne en siffra eller interpunkteringstecken"
 
+#. Resource IDs: (358)
+#, c-format
+msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "Password\t"
 msgstr "Lösenord\t"
@@ -4035,8 +4078,8 @@ msgstr "Ange den enhet som skall lagra alla backuper."
 
 #. Resource IDs: (345)
 #, c-format
-msgid "Please specify the name && group for the shortcut to '%s':"
-msgstr "Ange namn && grupp för genvägen till '%s*:"
+msgid "Please specify the name && group for this shortcut to the base entry '%s':"
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -4065,6 +4108,10 @@ msgstr "Portuguese (Brazilian ABNT)"
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
 msgstr "Tryck för att radera alla tillagda tecken."
+
+#. Resource IDs: (65535)
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -4435,6 +4482,10 @@ msgstr "Välj tangentbord:"
 msgid "Select Location for Intermediate Backups"
 msgstr "Välj plats för mellanlagrande backuper"
 
+#. Resource IDs: (474)
+msgid "Select Test Dump Type"
+msgstr ""
+
 #. Resource IDs: (340)
 msgid "Select all entries"
 msgstr "Välj alla poster"
@@ -4619,6 +4670,18 @@ msgstr "Visa poster med identiska jämförda fält (Notera: Okända fält jämf�
 msgid "Show grid lines in List View"
 msgstr "Visa radlinjer i Listvyn"
 
+#. Resource IDs: (1391)
+msgid "Signal Abort"
+msgstr ""
+
+#. Resource IDs: (1389)
+msgid "Signal Illegal Instruction"
+msgstr ""
+
+#. Resource IDs: (1390)
+msgid "Signal Terminate"
+msgstr ""
+
 #. Resource IDs: (334)
 #, c-format
 msgid "Skipped %d %s"
@@ -4651,6 +4714,10 @@ msgstr "Sorbian Standard (Legacy)"
 #. Resource IDs: (331)
 msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
 msgstr "Beklagar - din önskadevHotKey används redan.\n\nDenna funktion har tillfälligt stängts av.\n\nFör att slå på igen i denna session väljer du en annan nyckel."
+
+#. Resource IDs: (358)
+msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
+msgstr ""
 
 #. Resource IDs: (345)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
@@ -4908,10 +4975,6 @@ msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is it
 msgstr "Lösenordet är i 'alias'-form men posten som avses '%s:%s:%s' är själv en aliasis.\r\n\r\nVill du att denna post skal peka på den 'verkliga' basposten?"
 
 #. Resource IDs: (65535)
-msgid "The password of the selected item has been copied to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
-msgstr "Lösenordet till den valda posten har kopierats till urklipp. Urklipp kommer att rensas säkert när Password Safe stängs.\r\n\r\nTryck på Avbryt för att stoppa kopiering av lösenordet."
-
-#. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
 msgstr "Safe-nyckeln har använts tre gånger utan framgång. Om du inte känner till Safe-nyckeln, kan du antingen försöka öppna en annan lösenordsdatabas, eller skapa en ny tom lösenordsdatabas."
 
@@ -4935,10 +4998,6 @@ msgstr "Detta aliasmål  [%s:%s:%s] är inte en normal post eller redan ett basa
 #. Resource IDs: (320)
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "Detta låter dig ha backuper på en annan plats. Försäkra dig om att du har skrivarrättigheter till den mapp du anger."
-
-#. Resource IDs: (329)
-msgid "This database is in read-only mode. No changes to this entry will be saved."
-msgstr "Databasen är i läs-bara mode. Inga ändringar i denna post kommer att sparas."
 
 #. Resource IDs: (335)
 msgid "This database is the same as the current database!"
@@ -5232,6 +5291,10 @@ msgstr "United Kingdom Utökad"
 msgid "United States-International"
 msgstr "United States-Internationell"
 
+#. Resource IDs: (211)
+msgid "Unknown"
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "Unknown            "
 msgstr "Okänd"
@@ -5387,8 +5450,9 @@ msgid "View Aliases"
 msgstr "Visa alias"
 
 #. Resource IDs: (330)
-msgid "View Entry"
-msgstr "Visa posten"
+#, c-format
+msgid "View Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (157, 347)
 msgid "View Report"
@@ -5448,6 +5512,10 @@ msgstr "Svag nyckelkombination:\n\n %s"
 #. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
 msgstr "När som helst"
+
+#. Resource IDs: (1385)
+msgid "Win32 Unhandled Exception"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Wolof"
@@ -5579,6 +5647,10 @@ msgstr "\nKopiera notat till urklipp"
 #. Resource IDs: (2004)
 msgid "\nCopy Password to Clipboard"
 msgstr "\nKopiera lösenordet till urklipp"
+
+#. Resource IDs: (2006)
+msgid "\nCopy Run Command to Clipboard"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nCopy Username to Clipboard"

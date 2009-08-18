@@ -349,10 +349,6 @@ msgstr ""
 msgid "&Browse to URL"
 msgstr "浏览网址(&B)"
 
-#. Resource IDs: (355)
-msgid "&Browse to URL + Autotype"
-msgstr "浏览网址+自动输入(&B)"
-
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
 msgstr "更改保险箱密码(&C)..."
@@ -677,6 +673,10 @@ msgstr ""
 msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
 msgstr ""
 
+#. Resource IDs: (358)
+msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
 msgstr "(也代替标题字段的句号)"
@@ -724,6 +724,10 @@ msgstr "....."
 #. Resource IDs: (1260, 1261)
 msgid "......."
 msgstr "......."
+
+#. Resource IDs: (358)
+msgid ".dmp'\n\nin your temporary directory: \n\n\t'"
+msgstr ""
 
 #. Resource IDs: (8020)
 msgid "0"
@@ -1425,6 +1429,14 @@ msgstr ""
 msgid "C&lear Clipboard"
 msgstr "清空剪贴板(&L)"
 
+#. Resource IDs: (1386)
+msgid "C++ Terminate"
+msgstr ""
+
+#. Resource IDs: (1387)
+msgid "C++ Unexpected"
+msgstr ""
+
 #. Resource IDs: (203)
 msgid "C:F[R-O]"
 msgstr "C:F[R-O]"
@@ -1745,7 +1757,7 @@ msgstr "确认:"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Conflicting entries for »%s»%s»%s».\r\n  Added merged entry as »%s»%s»%s».\r\n    Differing field(s): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
 msgstr ""
 
 #. Resource IDs: (1, 347)
@@ -1787,6 +1799,10 @@ msgstr "复制邮箱到剪贴板"
 #. Resource IDs: (32270)
 msgid "Copy Here"
 msgstr "复制这里"
+
+#. Resource IDs: (32080)
+msgid "Copy Run Command to Clipboard"
+msgstr ""
 
 #. Resource IDs: (329, 32070)
 msgid "Copy URL to Clipboard"
@@ -2024,6 +2040,11 @@ msgstr "目标磁盘驱动器已满！"
 msgid "Destination location does not exist or is not accessible."
 msgstr "目标位置不存在或不可到达！"
 
+#. Resource IDs: (329)
+#, c-format
+msgid "Details of this shortcut to the base entry '%s':"
+msgstr ""
+
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr ""
@@ -2101,6 +2122,10 @@ msgid "Double-Click on entry to Copy Username"
 msgstr "双击项目复制用户名"
 
 #. Resource IDs: (315)
+msgid "Double-Click on entry to Run Command"
+msgstr ""
+
+#. Resource IDs: (315)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "双击项目查看/编辑"
 
@@ -2140,6 +2165,11 @@ msgstr "编辑项目"
 #. Resource IDs: (32052)
 msgid "Edit Entry..."
 msgstr "编辑项目..."
+
+#. Resource IDs: (357)
+#, c-format
+msgid "Edit Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (122)
 msgid "Edit Shortcut"
@@ -2761,6 +2791,10 @@ msgstr "ID:32076:V C +R"
 msgid "ID:32079:V C +F"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
+msgid "ID:32080:VAC +R"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar'
 msgid "ID:32108:V C +F"
 msgstr ""
@@ -2980,6 +3014,10 @@ msgstr "内部错误: 意外错误数字！"
 #. Resource IDs: (208)
 msgid "Invalid Filter schema."
 msgstr "无效筛选模式！"
+
+#. Resource IDs: (1388)
+msgid "Invalid Parameter"
+msgstr ""
 
 #. Resource IDs: (209)
 msgid "Invalid data in element: "
@@ -3758,6 +3796,11 @@ msgstr "密码最小长度"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "密码应该混合大小写和至少一个数字或标点字符！"
 
+#. Resource IDs: (358)
+#, c-format
+msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "Password\t"
 msgstr "密码\t"
@@ -3952,8 +3995,8 @@ msgstr "请指定包含所有备份文件的目标位置！"
 
 #. Resource IDs: (345)
 #, c-format
-msgid "Please specify the name && group for the shortcut to '%s':"
-msgstr "请指定组名称的快捷方式到 '%s':"
+msgid "Please specify the name && group for this shortcut to the base entry '%s':"
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -3981,6 +4024,10 @@ msgstr ""
 
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
 msgstr ""
 
 #. Resource IDs: (349)
@@ -4352,6 +4399,10 @@ msgstr ""
 msgid "Select Location for Intermediate Backups"
 msgstr "选定中间备份位置"
 
+#. Resource IDs: (474)
+msgid "Select Test Dump Type"
+msgstr ""
+
 #. Resource IDs: (340)
 msgid "Select all entries"
 msgstr "选定所有项目"
@@ -4536,6 +4587,18 @@ msgstr "显示项目使用同一比较字段 (注意: 未知字段不能比较�
 msgid "Show grid lines in List View"
 msgstr "列表视图显示网格线"
 
+#. Resource IDs: (1391)
+msgid "Signal Abort"
+msgstr ""
+
+#. Resource IDs: (1389)
+msgid "Signal Illegal Instruction"
+msgstr ""
+
+#. Resource IDs: (1390)
+msgid "Signal Terminate"
+msgstr ""
+
 #. Resource IDs: (334)
 #, c-format
 msgid "Skipped %d %s"
@@ -4568,6 +4631,10 @@ msgstr ""
 #. Resource IDs: (331)
 msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
 msgstr "抱歉，你所请求的热键已使用在其它地方！\n该功能已被临时禁止，需要重新启用该对话，请选定一个不同的组合键！"
+
+#. Resource IDs: (358)
+msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
+msgstr ""
 
 #. Resource IDs: (345)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
@@ -4825,10 +4892,6 @@ msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is it
 msgstr "密码别名处于良好状态，但已引用项目“%s:%s:%s”是它自己的一个别名。\n\n你是否需要该项目显示“真实”的基础项目位置？"
 
 #. Resource IDs: (65535)
-msgid "The password of the selected item has been copied to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
 msgstr "保险箱数据库密码已被输入三次均未成功，如果你不知道该密码，你可以尝试打开其它密码数据库或创建一个新空白密码数据库两者任选其一！"
 
@@ -4852,10 +4915,6 @@ msgstr "该别名目标 [%s:%s:%s] 不是一个正常项目或已有一个基础
 #. Resource IDs: (320)
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "该选项允许你保存备份在一个单独位置，确保你有权限写入数据到你所指定的目录。"
-
-#. Resource IDs: (329)
-msgid "This database is in read-only mode. No changes to this entry will be saved."
-msgstr "该数据库为只读模式，不改变设置将不能保存更改的数据！"
 
 #. Resource IDs: (335)
 msgid "This database is the same as the current database!"
@@ -5148,6 +5207,10 @@ msgstr ""
 msgid "United States-International"
 msgstr ""
 
+#. Resource IDs: (211)
+msgid "Unknown"
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "Unknown            "
 msgstr "未知的            "
@@ -5303,8 +5366,9 @@ msgid "View Aliases"
 msgstr "查看别名"
 
 #. Resource IDs: (330)
-msgid "View Entry"
-msgstr "查看项目"
+#, c-format
+msgid "View Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (157, 347)
 msgid "View Report"
@@ -5362,6 +5426,10 @@ msgstr "弱密码语句:\n\n %s"
 #. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
 msgstr "Whenever"
+
+#. Resource IDs: (1385)
+msgid "Win32 Unhandled Exception"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Wolof"
@@ -5493,6 +5561,10 @@ msgstr "\n复制备注到剪贴板"
 #. Resource IDs: (2004)
 msgid "\nCopy Password to Clipboard"
 msgstr "\n复制密码到剪贴板"
+
+#. Resource IDs: (2006)
+msgid "\nCopy Run Command to Clipboard"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nCopy Username to Clipboard"
