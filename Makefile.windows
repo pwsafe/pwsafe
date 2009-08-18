@@ -9,7 +9,7 @@
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
 RELEASENUM = 3.18.1
-RELEASE_SPECIAL = a
+RELEASE_SPECIAL = b
 RELEASENAME = $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR = /cygdrive/c/local/src/PasswordSafe/Releases
@@ -39,14 +39,15 @@ CANDLE = $(WIXDIR)/candle.exe
 LIGHT = $(WIXDIR)/light.exe
 
 I18N_DIR =./src/ui/Windows/I18N
-I18N_DLL_DIR = ./src/bin/release
+I18N_DLL_DIR = ./build/bin/pwsafe/I18N
 POT_FILE = $(I18N_DIR)/pwsafe.pot
 HELP_DIR = ./help
+BIN_DIR = ./build/bin/pwsafe/releasem
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
-		docs/ChangeLog.txt src/bin/releasem/pwsafe.exe src/bin/releasem/pws_at.dll \
-		src/bin/releasem/pws_osk.dll help/default/pwsafe.chm
+		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pws_at.dll \
+		$(BIN_DIR)/pws_osk.dll help/default/pwsafe.chm
 I18N_MANIFEST = help/pwsafeDE/pwsafeDE.chm help/pwsafeZH/pwsafeZH.chm \
 								$(I18N_DLL_DIR)/pwsafeDE.dll $(I18N_DLL_DIR)/pwsafeES.dll \
 								$(I18N_DLL_DIR)/pwsafePL.dll $(I18N_DLL_DIR)/pwsafeRU.dll \
@@ -116,8 +117,8 @@ bin-release: save-map
 
 save-map:
 	tar cjvf $(RELEASEDIR)/pwsafe-$(RELEASENAME).map+pdb.tbz \
-	 src/bin/releasem/pwsafe.map src/bin/releasem/pwsafe.pdb \
-   src/bin/release/pws_*.pdb		
+	 $(BIN_DIR)/pwsafe.map $(BIN_DIR)/pwsafe.pdb \
+   $(BIN_DIR)/pws_*.pdb		
 
 src-release: ChangeLog $(POT_FILE)
 	$(SVN) export --non-interactive . C:\\TMP\\$(SRCRELNAME)
@@ -132,7 +133,7 @@ src-release: ChangeLog $(POT_FILE)
 ChangeLog:
 	$(SVN) log -v --xml | $(PYTHON) $(SVN2LOG) -L -H -s -O
 
-$(POT_FILE): $(I18N_DLL_DIR)/pwsafe_base.dll
+$(POT_FILE): $(BIN_DIR)/../release/pwsafe_base.dll
 	$(MAKE) -C $(I18N_DIR) pwsafe.pot
 
 update-pos:

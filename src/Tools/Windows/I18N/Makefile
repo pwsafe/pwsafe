@@ -5,6 +5,10 @@
 
 VCBUILD = /cygdrive/c/local/MSVS8/vc/vcpackages/vcbuild.exe
 
+TOOLS_DIR = ../../../../build/bin
+RESTEXT = $(TOOLS_DIR)/restext/release/ResText.exe
+RESPWSL = $(TOOLS_DIR)/respwsl/release/ResPWSL.exe
+
 .PHONY: all clean
 
 all : $(RESTEXT) $(RESPWSL)

@@ -375,10 +375,6 @@ msgstr ""
 msgid "&Browse to URL"
 msgstr "&Abrir URL"
 
-#. Resource IDs: (355)
-msgid "&Browse to URL + Autotype"
-msgstr ""
-
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
 msgstr ""
@@ -703,6 +699,10 @@ msgstr ""
 msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
 msgstr ""
 
+#. Resource IDs: (358)
+msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
 msgstr ""
@@ -750,6 +750,10 @@ msgstr "....."
 #. Resource IDs: (1260, 1261)
 msgid "......."
 msgstr "......."
+
+#. Resource IDs: (358)
+msgid ".dmp'\n\nin your temporary directory: \n\n\t'"
+msgstr ""
 
 #. Resource IDs: (8020)
 msgid "0"
@@ -1451,6 +1455,14 @@ msgstr ""
 msgid "C&lear Clipboard"
 msgstr ""
 
+#. Resource IDs: (1386)
+msgid "C++ Terminate"
+msgstr ""
+
+#. Resource IDs: (1387)
+msgid "C++ Unexpected"
+msgstr ""
+
 #. Resource IDs: (203)
 msgid "C:F[R-O]"
 msgstr "C:F[R-O]"
@@ -1771,7 +1783,7 @@ msgstr "Confirmación:"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Conflicting entries for »%s»%s»%s».\r\n  Added merged entry as »%s»%s»%s».\r\n    Differing field(s): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
 msgstr ""
 
 #. Resource IDs: (1, 347)
@@ -1812,6 +1824,10 @@ msgstr "Copiar E-Mail al Portapapeles"
 
 #. Resource IDs: (32270)
 msgid "Copy Here"
+msgstr ""
+
+#. Resource IDs: (32080)
+msgid "Copy Run Command to Clipboard"
 msgstr ""
 
 #. Resource IDs: (329)
@@ -2050,6 +2066,11 @@ msgstr "El disco destino está lleno."
 msgid "Destination location does not exist or is not accessible."
 msgstr "El destino no existe o no es accesible."
 
+#. Resource IDs: (329)
+#, c-format
+msgid "Details of this shortcut to the base entry '%s':"
+msgstr ""
+
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
 msgstr ""
@@ -2127,6 +2148,10 @@ msgid "Double-Click on entry to Copy Username"
 msgstr "Doble clic en la entrada para Copiar Usuario"
 
 #. Resource IDs: (315)
+msgid "Double-Click on entry to Run Command"
+msgstr ""
+
+#. Resource IDs: (315)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Doble clic en la entrada para Editar"
 
@@ -2165,6 +2190,11 @@ msgstr "Editar Entrada"
 
 #. Resource IDs: (32052)
 msgid "Edit Entry..."
+msgstr ""
+
+#. Resource IDs: (357)
+#, c-format
+msgid "Edit Entry:   «%s» «%s» «%s»"
 msgstr ""
 
 #. Resource IDs: (122)
@@ -2787,6 +2817,10 @@ msgstr ""
 msgid "ID:32079:V C +F"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
+msgid "ID:32080:VAC +R"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
 msgstr ""
@@ -3005,6 +3039,10 @@ msgstr "Eroor interno: Número de error inesperado"
 
 #. Resource IDs: (208)
 msgid "Invalid Filter schema."
+msgstr ""
+
+#. Resource IDs: (1388)
+msgid "Invalid Parameter"
 msgstr ""
 
 #. Resource IDs: (209)
@@ -3784,6 +3822,11 @@ msgstr ""
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "La contraseña debería tener mayúsculas y minúsculas con al menos un dígito o símbolo"
 
+#. Resource IDs: (358)
+#, c-format
+msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "Password\t"
 msgstr "Contraseña\t"
@@ -3977,9 +4020,9 @@ msgid "Please specify the destination location to contain all backups."
 msgstr "Especifique el destino para guardar todas las copias de respaldo."
 
 #. Resource IDs: (345)
-#, fuzzy, c-format
-msgid "Please specify the name && group for the shortcut to '%s':"
-msgstr "Indique nombre y grupo para el acceso directo a '%s':"
+#, c-format
+msgid "Please specify the name && group for this shortcut to the base entry '%s':"
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -4007,6 +4050,10 @@ msgstr ""
 
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
 msgstr ""
 
 #. Resource IDs: (349)
@@ -4378,6 +4425,10 @@ msgstr ""
 msgid "Select Location for Intermediate Backups"
 msgstr "Seleccionar destino de copias de respaldo intermedias"
 
+#. Resource IDs: (474)
+msgid "Select Test Dump Type"
+msgstr ""
+
 #. Resource IDs: (340)
 msgid "Select all entries"
 msgstr "Seleccionar todas las entradas"
@@ -4562,6 +4613,18 @@ msgstr "Mostrar entradas con campos comparados idénticos (Nota: Los campos desc
 msgid "Show grid lines in List View"
 msgstr ""
 
+#. Resource IDs: (1391)
+msgid "Signal Abort"
+msgstr ""
+
+#. Resource IDs: (1389)
+msgid "Signal Illegal Instruction"
+msgstr ""
+
+#. Resource IDs: (1390)
+msgid "Signal Terminate"
+msgstr ""
+
 #. Resource IDs: (334)
 #, c-format
 msgid "Skipped %d %s"
@@ -4594,6 +4657,10 @@ msgstr ""
 #. Resource IDs: (331)
 msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
 msgstr "Perdón - la tecla de atajo escogida ya está siendo usada.\n\nEsta propiedad ha sido deshabilitada temporalmente.\n\nPara utilizarla en esta sesión, escoja una combinación distinta."
+
+#. Resource IDs: (358)
+msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
+msgstr ""
 
 #. Resource IDs: (345)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
@@ -4851,10 +4918,6 @@ msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is it
 msgstr "La contraseña está en forma de 'alias' pero referencia la entrada '%s:%s:%s' que ya es un alias.\r\n\r\n¿Desea que esta entrada apunte a la entrada 'real'?"
 
 #. Resource IDs: (65535)
-msgid "The password of the selected item has been copied to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
 msgstr "Se ha introducido la contraseña de seguridad tres veces sin éxito. Si no sabe la contraseña de seguridad, puede tratar de abrir otra base de datos de contraseñas o crear una nueva."
 
@@ -4878,10 +4941,6 @@ msgstr "El destino del alias [%s:%s:%s] no es una entrada normal o ya es un alia
 #. Resource IDs: (320)
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "Esto permite mantener copias de respaldo en distintas localizaciones. Asegurese de tener permisos sobre el directorio especificado."
-
-#. Resource IDs: (329)
-msgid "This database is in read-only mode. No changes to this entry will be saved."
-msgstr "esta base de datos está en modo Solo lectura. Los cambios no serán guardados."
 
 #. Resource IDs: (335)
 msgid "This database is the same as the current database!"
@@ -5174,6 +5233,10 @@ msgstr ""
 msgid "United States-International"
 msgstr ""
 
+#. Resource IDs: (211)
+msgid "Unknown"
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "Unknown            "
 msgstr "Desconocido"
@@ -5329,8 +5392,9 @@ msgid "View Aliases"
 msgstr "Ver Alias"
 
 #. Resource IDs: (330)
-msgid "View Entry"
-msgstr "Ver Entrada"
+#, c-format
+msgid "View Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (157, 347)
 msgid "View Report"
@@ -5388,6 +5452,10 @@ msgstr "Contraseña debil:\n\n %s"
 #. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
 msgstr "Siempre que"
+
+#. Resource IDs: (1385)
+msgid "Win32 Unhandled Exception"
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Wolof"
@@ -5519,6 +5587,10 @@ msgstr "\nCopiar Notas al Portapapeles"
 #. Resource IDs: (2004)
 msgid "\nCopy Password to Clipboard"
 msgstr "\nCopiar Contraseña al Portapapeles"
+
+#. Resource IDs: (2006)
+msgid "\nCopy Run Command to Clipboard"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nCopy Username to Clipboard"
