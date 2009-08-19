@@ -237,10 +237,10 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
-  File "..\src\bin\releasem\pwsafe.exe"
-  File "..\src\bin\releasem\pws_at.dll"
-  File "..\src\bin\releasem\pws_osk.dll"
-;"no Win98"  File /oname=p98.exe "..\src\bin\nu-releasem\pwsafe.exe" 
+  File "..\build\bin\pwsafe\releasem\pwsafe.exe"
+  File "..\build\bin\pwsafe\releasem\pws_at.dll"
+  File "..\build\bin\pwsafe\releasem\pws_osk.dll"
+;"no Win98"  File /oname=p98.exe "..\build\bin\pwsafe\nu-releasem\pwsafe.exe" 
   File "..\help\default\pwsafe.chm"
   File "..\LICENSE"
   File "..\README.TXT"
@@ -251,39 +251,39 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\pwsafe_filter.xsd"
   
 !ifdef LANGUAGE_CHINESE
-  File /nonfatal "..\src\bin\release\pwsafeZH.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH.dll"
   File /nonfatal "..\help\pwsafeZH\pwsafeZH.chm"
 !endif
 !ifdef LANGUAGE_GERMAN
-  File /nonfatal "..\src\bin\release\pwsafeDE.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDE.dll"
   File /nonfatal "..\help\pwsafeDE\pwsafeDE.chm"
 !endif
 !ifdef LANGUAGE_SPANISH
-  File /nonfatal "..\src\bin\release\pwsafeES.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeES.dll"
   File /nonfatal "..\help\pwsafeES\pwsafeES.chm"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  File /nonfatal "..\src\bin\release\pwsafeSV.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeSV.dll"
   File /nonfatal "..\help\pwsafeSV\pwsafeSV.chm"
 !endif
 !ifdef LANGUAGE_DUTCH
-  File /nonfatal "..\src\bin\release\pwsafeNL.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeNL.dll"
   File /nonfatal "..\help\pwsafeNL\pwsafeNL.chm"
 !endif
 !ifdef LANGUAGE_FRENCH
-  File /nonfatal "..\src\bin\release\pwsafeFR.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeFR.dll"
   File /nonfatal "..\help\pwsafeFR\pwsafeFR.chm"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  File /nonfatal "..\src\bin\release\pwsafeRU.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeRU.dll"
   File /nonfatal "..\help\pwsafeRU\pwsafeRU.chm"
 !endif
 !ifdef LANGUAGE_POLISH
-  File /nonfatal "..\src\bin\release\pwsafePL.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafePL.dll"
   File /nonfatal "..\help\pwsafePL\pwsafePL.chm"
 !endif
 !ifdef LANGUAGE_ITALIAN
-  File /nonfatal "..\src\bin\release\pwsafeIT.dll"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeIT.dll"
   File /nonfatal "..\help\pwsafePL\pwsafeIT.chm"
 !endif
 
