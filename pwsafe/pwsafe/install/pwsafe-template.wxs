@@ -39,29 +39,60 @@
 	    Source='docs\ReleaseNotes.txt' />
 	    <File Id='file4' Name='pwsafe.chm' DiskId='1'
 	    Source='help\default\pwsafe.chm' /> 
+	    <File Id='file5' Name='pwsafeDE.chm' DiskId='1'
+	    Source='help\pwsafeDE\pwsafeDE.chm' /> 
+	    <File Id='file6' Name='pwsafefr.chm' DiskId='1'
+	    Source='help\pwsafeFR\pwsafefr.chm' /> 
+	    <File Id='file7' Name='pwsafePL.chm' DiskId='1'
+	    Source='help\pwsafePL\pwsafePL.chm' /> 
+	    <File Id='file8' Name='pwsaferu.chm' DiskId='1'
+	    Source='help\pwsafeRU\pwsaferu.chm' /> 
+	    <File Id='file9' Name='pwsafeZH.chm' DiskId='1'
+	    Source='help\pwsafeZH\pwsafeZH.chm' /> 
 	  </Component>
 	  <Component Id='MainProgram'
 	  Guid='25c2da5c-d483-4ca7-84f6-d28e17a59188'>
-	    <File Id='file5' Name='pwsafe.exe' DiskId='1'
-	      Source='src\bin\releasem\pwsafe.exe' Vital='yes'> 
-	      <Shortcut Id='startmenu0' Directory='ProgramMenuFolder'
+	    <File Id='file10' Name='pwsafe.exe' DiskId='1'
+	      Source='build\bin\pwsafe\releasem\pwsafe.exe' Vital='yes'> 
+	      <Shortcut Id='MainProgram' Directory='ProgramMenuFolder'
 	      Name='Password Safe PWSAFE_VERSION' ShortName='pwsafe'
 	      Icon='pwsafe.exe' IconIndex='0' Advertise='yes' />
 	    </File>
-	    <File Id='file6' Name='pws_at.dll' DiskId='1'
-	      Source='src\bin\releasem\pws_at.dll' Vital='yes'> 
+	    <File Id='file11' Name='pws_at.dll' DiskId='1'
+	      Source='build\bin\pwsafe\releasem\pws_at.dll' Vital='yes'> 
 	    </File>
-	    <File Id='file7' Name='pws_osk.dll' DiskId='1'
-	      Source='src\bin\releasem\pws_osk.dll' Vital='yes'> 
+	    <File Id='file12' Name='pws_osk.dll' DiskId='1'
+	      Source='build\bin\pwsafe\releasem\pws_osk.dll' Vital='yes'> 
+	    </File>
+	    <File Id='file13' Name='pwsafeDE.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeDE.dll' Vital='yes'> 
+	    </File>
+	    <File Id='file14' Name='pwsafeES.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeES.dll' Vital='yes'> 
+	    </File>
+	    <File Id='file15' Name='pwsafeIT.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeIT.dll' Vital='yes'> 
+	    </File>
+	    <File Id='file16' Name='pwsafePL.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafePL.dll' Vital='yes'> 
+	    </File>
+	    <File Id='file17' Name='pwsafeRU.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeRU.dll' Vital='yes'> 
+	    </File>
+	    <File Id='file18' Name='pwsafeSV.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeSV.dll' Vital='yes'> 
+	    </File>
+	    <File Id='file19' Name='pwsafeZH.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeZH.dll' Vital='yes'> 
 	    </File>
 	  </Component>
 	  <Component Id='SupportingFiles'
 	    Guid='2cb36029-a029-4f15-9838-4acacb823ce7'> 
-	    <File Id='file8' Name='pwsafe.xsd' DiskId='1'
+	    <File Id='file20' Name='pwsafe.xsd' DiskId='1'
 	    Source='xml\pwsafe.xsd' Vital='yes' />
-	    <File Id='file9' Name='pwsafe.xsl' DiskId='1'
+	    <File Id='file21' Name='pwsafe.xsl' DiskId='1'
 	    Source='xml\pwsafe.xsl' Vital='yes' />
-	    <File Id='file10' Name='pwsafe_filter.xsd' DiskId='1'
+	    <File Id='file22' Name='pwsafe_filter.xsd' DiskId='1'
 	    Source='xml\pwsafe_filter.xsd' Vital='yes' />
 	  </Component>
 	</Directory>
@@ -69,7 +100,7 @@
       <Directory Id='ProgramMenuFolder' Name='Programs' />
     </Directory>
 
-    <Icon Id='pwsafe.exe' SourceFile='src\bin\releasem\pwsafe.exe' />
+    <Icon Id='pwsafe.exe' SourceFile='build\bin\pwsafe\releasem\pwsafe.exe' />
 
     <Feature Id='Complete' Level='1'>
       <ComponentRef Id='Documentation' />
