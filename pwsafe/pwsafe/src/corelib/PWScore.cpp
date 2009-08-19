@@ -1450,30 +1450,31 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 
   // Add on suffix
   switch (backupSuffix) { // case values from order in listbox.
-  case 1: // YYYYMMDD_HHMMSS suffix
-    {
-      time_t now;
-      time(&now);
-      StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now,
-                                                             TMC_EXPORT_IMPORT);
-      cs_temp += _T("_");
-      StringX nf = cs_temp.c_str() + cs_datetime.substr(0, 4) +  // YYYY
-        cs_datetime.substr(5,2) +  // MM
-        cs_datetime.substr(8,2) +  // DD
-        StringX(_T("_")) +
-        cs_datetime.substr(11,2) +  // HH
-        cs_datetime.substr(14,2) +  // MM
-        cs_datetime.substr(17,2);   // SS
-      cs_newfile = nf.c_str();
+    case 1: // YYYYMMDD_HHMMSS suffix
+      {
+        time_t now;
+        time(&now);
+        StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now,
+                                                               TMC_EXPORT_IMPORT);
+        cs_temp += _T("_");
+        StringX nf = cs_temp.c_str() + 
+                     cs_datetime.substr( 0, 4) +  // YYYY
+                     cs_datetime.substr( 5, 2) +  // MM
+                     cs_datetime.substr( 8, 2) +  // DD
+                     StringX(_T("_")) +
+                     cs_datetime.substr(11, 2) +  // HH
+                     cs_datetime.substr(14, 2) +  // MM
+                     cs_datetime.substr(17, 2);   // SS
+        cs_newfile = nf.c_str();
+        break;
+      }
+    case 2: // _nnn suffix
+      ManageIncBackupFiles(cs_temp, maxNumIncBackups, cs_newfile);
       break;
-    }
-  case 2: // _nnn suffix
-    ManageIncBackupFiles(cs_temp, maxNumIncBackups, cs_newfile);
-    break;
-  case 0: // no suffix
-  default:
-    cs_newfile = cs_temp;
-    break;
+    case 0: // no suffix
+    default:
+      cs_newfile = cs_temp;
+      break;
   }
 
   cs_newfile +=  _T(".ibak");
