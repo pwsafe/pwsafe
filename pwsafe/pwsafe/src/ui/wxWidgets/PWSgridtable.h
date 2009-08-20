@@ -20,10 +20,7 @@
 ////@begin includes
 #include <wx/grid.h>
 ////@end includes
-//#include "corelib/ItemData.h"
 #include "../../corelib/PWScore.h"
-//#include "corelib/UUIDGen.h"
-//#include <map>
 
 /*!
  * Forward declarations
@@ -44,10 +41,6 @@ class PWSGrid;
 //#define SYMBOL_PWSGRID_SIZE wxDefaultSize
 //#define SYMBOL_PWSGRID_POSITION wxDefaultPosition
 ////@end control identifiers
-
-//typedef std::map<int, CUUIDGen> RowUUIDMapT;
-//typedef std::map<CUUIDGen, int, CUUIDGen::ltuuid> UUIDRowMapT;
-
 
 /*!
  * PWSGridTable class declaration

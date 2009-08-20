@@ -77,10 +77,9 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
   
-  // Notification from PWSCore when new data is loaded
+  // Notification from PWScore when new data is loaded
   void OnPasswordListModified();
 
-  //void Clear();
   void AddItem(const CItemData &item, int row);
   void UpdateItem(const CItemData &item);
   void Remove(const uuid_array_t &uuid);
