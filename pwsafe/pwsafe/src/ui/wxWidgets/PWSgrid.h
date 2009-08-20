@@ -77,10 +77,16 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
   
-  void Clear();
+  // Notification from PWSCore when new data is loaded
+  void OnPasswordListModified();
+
+  //void Clear();
   void AddItem(const CItemData &item, int row);
   void UpdateItem(const CItemData &item);
   void Remove(const uuid_array_t &uuid);
+  size_t GetNumItems() const;
+  void DeleteItems(int row, size_t numItems);
+  void DeleteAllItems();
   
 ////@begin PWSGrid event handler declarations
 

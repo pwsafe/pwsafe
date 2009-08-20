@@ -32,6 +32,7 @@
 ////@begin forward declarations
 class PWSGrid;
 class PWSTreeCtrl;
+class PWSGridTable;
 ////@end forward declarations
 
 /*!
@@ -218,6 +219,7 @@ public:
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
   const CItemData *GetSelectedEntry() const;
+  PWSGridTable* m_table;
 };
 
 #endif
