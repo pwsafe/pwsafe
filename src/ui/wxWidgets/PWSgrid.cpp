@@ -188,19 +188,6 @@ wxIcon PWSGrid::GetIconResource( const wxString& name )
 ////@end PWSGrid icon retrieval
 }
 
-/*
-//This function should be deleted.  It has been replaced by DeleteAllItems()
-void PWSGrid::Clear()
-{
-  int N = GetNumberRows();
-  if (N > 0)
-    DeleteRows(0, N);
-  m_row_map.clear();
-  m_uuid_map.clear();
-}
-*/
-
-
 void PWSGrid::DisplayItem(const CItemData &item, int row)
 {
   wxString title = item.GetTitle().c_str();

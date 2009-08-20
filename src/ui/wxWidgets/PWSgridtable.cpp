@@ -23,7 +23,6 @@
 ////@begin includes
 ////@end includes
 
-//#include <functional>
 #include <utility> // for make_pair
 #include <limits> //for MAX_INT
 #include "PWSgridtable.h"
@@ -45,42 +44,25 @@
 IMPLEMENT_CLASS(PWSGridTable, wxGridTableBase)
 
 
-wxString towx(const StringX& str)
+static inline wxString towx(const StringX& str)
 {
   return wxString(str.data(), str.size());
 }
 
-//using std::const_mem_fun_ref;
 typedef StringX (CItemData::*ItemDataFuncT)() const;
-//typedef std::const_mem_fun_ref_t<StringX, CItemData> CItemDataMemFunction;
 
 struct PWSGridCellDataType {
   const charT* fieldname;
   ItemDataFuncT func;
-//  CItemDataMemFunction func;
 } PWSGridCellData[] = {
                         {_S("Title"),                     &CItemData::GetTitle},
                         {_S("Username"),                  &CItemData::GetUser},
-  //                      {_S("Notes"),                     &CItemData::GetNotes},
                         {_S("URL"),                       &CItemData::GetURL},
                         {_S("Creation Time"),             &CItemData::GetCTimeL},
                         {_S("Password Modified"),         &CItemData::GetPMTimeL},
                         {_S("Last Accessed"),             &CItemData::GetATimeL},
                         {_S("Password Expiry Date"),      &CItemData::GetXTimeL},
                         {_S("Last Modified"),             &CItemData::GetRMTimeL},
-                        {_S("Password Policy"),           &CItemData::GetPWPolicy},
-/*
-                        {_S("Title"),                     const_mem_fun_ref(&CItemData::GetTitle)},
-                        {_S("Username"),                  const_mem_fun_ref(&CItemData::GetUser)},
-  //                      {_S("Notes"),                     &CItemData::GetNotes},
-                        {_S("URL"),                       const_mem_fun_ref(&CItemData::GetURL)},
-                        {_S("Creation Time"),             const_mem_fun_ref(&CItemData::GetCTime)},
-                        {_S("Password Modified"),         const_mem_fun_ref(&CItemData::GetPMTime)},
-                        {_S("Last Accessed"),             const_mem_fun_ref(&CItemData::GetATime)},
-                        {_S("Password Expiry Date"),      const_mem_fun_ref(&CItemData::GetXTime)},
-                        {_S("Last Modified"),             const_mem_fun_ref(&CItemData::GetRMTime)},
-                        {_S("Password Policy"),           const_mem_fun_ref(&CItemData::GetPWPolicy)},
-*/
                       };
 
 /*!
@@ -97,9 +79,6 @@ PWSGridTable::PWSGridTable(PWScore &core, PWSGrid* pwsgrid) : m_pwsgrid(pwsgrid)
 
 PWSGridTable::~PWSGridTable()
 {
-////@begin PWSGridTable destruction
-  m_pwsgrid = 0;
-////@end PWSGridTable destruction
 }
 
 
@@ -122,31 +101,24 @@ int PWSGridTable::GetNumberCols()
 
 bool PWSGridTable::IsEmptyCell(int row, int col)
 {
-	if (size_t(row) < m_pwsgrid->GetNumItems() && size_t(col) < NumberOf(PWSGridCellData)) 
-	{
-		const CItemData* item = m_pwsgrid->GetItem(row);
-    	if (item)
-		{
-    		const wxString data(towx((item->*PWSGridCellData[col].func)()));
-    		return data.empty() || data.IsSameAs(wxString(_S("Unknown")));
-		}
-	}
-	return true;
+  const wxString val = GetValue(row, col);
+
+  return val.empty() || val.IsSameAs(wxString(_S("Unknown")));
 }
 
 wxString PWSGridTable::GetColLabelValue(int col)
 {    
-  return size_t(col) < NumberOf(PWSGridCellData)? wxString(PWSGridCellData[col].fieldname) : wxString();
+  return (size_t(col) < NumberOf(PWSGridCellData)) ?
+    wxString(PWSGridCellData[col].fieldname) : wxString();
 }
 
 
 wxString PWSGridTable::GetValue(int row, int col)
 {
-	if (size_t(row) < m_pwsgrid->GetNumItems() && size_t(col) < NumberOf(PWSGridCellData))
-	{
+	if (size_t(row) < m_pwsgrid->GetNumItems() &&
+      size_t(col) < NumberOf(PWSGridCellData)) {
 		const CItemData* item = m_pwsgrid->GetItem(row);
-  		if (item)
-		{
+    if (item != NULL) {
 			return towx((item->*PWSGridCellData[col].func)());
 		}
 	}
@@ -166,36 +138,30 @@ void PWSGridTable::Clear()
 bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
 {
 	size_t curNumRows = m_pwsgrid->GetNumItems();
-
-	if (pos >= curNumRows)
-	{
+  
+	if (pos >= curNumRows) {
 		wxFAIL_MSG( wxString::Format 
-					(
-						wxT("Called PWSGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
-						(unsigned int)pos,
-						(unsigned int)numRows,
-						(unsigned int)curNumRows
-					) );
+                (
+                 wxT("Called PWSGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
+                 (unsigned int)pos,
+                 (unsigned int)numRows,
+                 (unsigned int)curNumRows
+                 ) );
 		return false;
 	}
 
 	if (numRows > curNumRows - pos)
-	{
 		numRows = curNumRows - pos;
-	}
 
-	if (numRows >= curNumRows)
-	{
+	if (numRows >= curNumRows) {
     	m_pwsgrid->DeleteAllItems();
-	}
-	else
-	{
+	} else {
 		m_pwsgrid->DeleteItems(pos, numRows);
 		
 		//This will actually remove the item from grid display
 		wxGridTableMessage msg(this,
-								wxGRIDTABLE_NOTIFY_ROWS_DELETED,
-								pos,
+                           wxGRIDTABLE_NOTIFY_ROWS_DELETED,
+                           pos,
 								numRows);
 	}
     
