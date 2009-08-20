@@ -28,6 +28,7 @@
 #include "about.h"
 #include "PWSgrid.h"
 #include "PWStree.h"
+#include "PWSgridtable.h"
 ////@end includes
 
 #include "passwordsafeframe.h"
@@ -100,7 +101,7 @@ END_EVENT_TABLE()
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(GRID)
+: m_core(core), m_currentView(GRID), m_table(0)
 {
     Init();
 }
@@ -109,7 +110,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID)
+  : m_core(core), m_currentView(GRID), m_table(0)
 {
     Init();
     Create( parent, id, caption, pos, size, style );
@@ -358,16 +359,13 @@ void PasswordSafeFrame::OnExitClick( wxCommandEvent& event )
 void PasswordSafeFrame::ShowGrid(bool show)
 {
   if (show) {
-    m_grid->Clear();
+    //m_grid->Clear();
 
-    m_grid->AppendRows(m_core.GetNumEntries());
-    ItemListConstIter iter;
-    int row = 0;
-    for (iter = m_core.GetEntryIter();
-         iter != m_core.GetEntryEndIter();
-         iter++) {
-      m_grid->AddItem(iter->second, row);
-      row++;
+    if (!m_table) {
+      m_table = new PWSGridTable(m_core, m_grid);
+      m_grid->SetTable(m_table, true); // true => auto-delete
+      m_grid->AutoSizeColumns();
+      m_grid->EnableEditing(false);
     }
   }
   int w,h;
@@ -468,7 +466,7 @@ int PasswordSafeFrame::SaveIfChanged()
 
 void PasswordSafeFrame::ClearData()
 {
-  m_core.ClearData();
+  //m_core.ClearData();
   m_core.ReInit();
   m_grid->BeginBatch();
   m_grid->ClearGrid();
