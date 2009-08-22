@@ -2131,7 +2131,7 @@ void PWScore::MoveDependentEntries(const uuid_array_t &from_baseuuid,
     // Remove from entry -> base map
     pmap->erase(from_itr->second);
     // Add to entry -> base map (new base)
-    pmmap->insert(ItemMap_Pair(from_itr->second, to_baseuuid));    
+    pmap->insert(ItemMap_Pair(from_itr->second, to_baseuuid));    
   }
 
   // Now delete all old base entries
