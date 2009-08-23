@@ -101,7 +101,7 @@ END_EVENT_TABLE()
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(GRID), m_table(0)
+: m_core(core), m_currentView(GRID)
 {
     Init();
 }
@@ -110,7 +110,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID), m_table(0)
+  : m_core(core), m_currentView(GRID)
 {
     Init();
     Create( parent, id, caption, pos, size, style );
@@ -359,14 +359,9 @@ void PasswordSafeFrame::OnExitClick( wxCommandEvent& event )
 void PasswordSafeFrame::ShowGrid(bool show)
 {
   if (show) {
-    //m_grid->Clear();
-
-    if (!m_table) {
-      m_table = new PWSGridTable(m_core, m_grid);
-      m_grid->SetTable(m_table, true); // true => auto-delete
-      m_grid->AutoSizeColumns();
-      m_grid->EnableEditing(false);
-    }
+    m_grid->SetTable(new PWSGridTable(m_grid), true); // true => auto-delete
+    m_grid->AutoSizeColumns();
+    m_grid->EnableEditing(false);
   }
   int w,h;
   GetClientSize(&w, &h);
