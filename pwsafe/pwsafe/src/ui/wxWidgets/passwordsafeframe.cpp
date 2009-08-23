@@ -197,7 +197,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu3->Append(wxID_PROPERTIES, _("&Properties"), _T(""), wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_EXIT, _("E&xit"), _T(""), wxITEM_NORMAL);
-  menuBar->Append(itemMenu3, _("File"));
+  menuBar->Append(itemMenu3, _("&File"));
   wxMenu* itemMenu28 = new wxMenu;
   itemMenu28->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), _T(""), wxITEM_NORMAL);
@@ -217,7 +217,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu28->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), _T(""), wxITEM_NORMAL);
-  menuBar->Append(itemMenu28, _("Edit"));
+  menuBar->Append(itemMenu28, _("&Edit"));
   wxMenu* itemMenu47 = new wxMenu;
   itemMenu47->Append(ID_LIST_VIEW, _("Flattened &List"), _T(""), wxITEM_RADIO);
   itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), _T(""), wxITEM_RADIO);
@@ -246,7 +246,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu65->Append(ID_REPORT_MERGE, _("I&Merge"), _T(""), wxITEM_NORMAL);
   itemMenu65->Append(ID_REPORT_VALIDATE, _("&Validate"), _T(""), wxITEM_NORMAL);
   itemMenu47->Append(ID_REPORTSMENU, _("Reports"), itemMenu65);
-  menuBar->Append(itemMenu47, _("View"));
+  menuBar->Append(itemMenu47, _("&View"));
   wxMenu* itemMenu72 = new wxMenu;
   itemMenu72->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
@@ -254,12 +254,12 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
   itemMenu72->Append(ID_OPTIONS, _("&Options..."), _T(""), wxITEM_NORMAL);
-  menuBar->Append(itemMenu72, _("Manage"));
+  menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP, _("Get &Help"), _T(""), wxITEM_NORMAL);
   itemMenu79->Append(ID_MENUITEM, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
   itemMenu79->Append(wxID_ABOUT, _("&About Password Safe..."), _T(""), wxITEM_NORMAL);
-  menuBar->Append(itemMenu79, _("Help"));
+  menuBar->Append(itemMenu79, _("&Help"));
   itemFrame1->SetMenuBar(menuBar);
 
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
