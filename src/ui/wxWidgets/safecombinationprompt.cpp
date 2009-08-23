@@ -168,6 +168,10 @@ void CSafeCombinationPrompt::CreateControls()
   itemStaticText7->SetValidator( wxGenericValidator(& m_filename) );
   itemTextCtrl10->SetValidator( wxGenericValidator(& m_password) );
 ////@end CSafeCombinationPrompt content construction
+
+  wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
+  if (passwdCtrl)
+    passwdCtrl->SetFocus();
 }
 
 
