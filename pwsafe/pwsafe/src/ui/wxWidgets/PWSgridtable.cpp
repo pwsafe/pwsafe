@@ -69,7 +69,7 @@ struct PWSGridCellDataType {
  * PWSGridTable constructor
  */
 
-PWSGridTable::PWSGridTable(PWScore &core, PWSGrid* pwsgrid) : m_pwsgrid(pwsgrid)
+PWSGridTable::PWSGridTable(PWSGrid* pwsgrid) : m_pwsgrid(pwsgrid)
 {
 }
 

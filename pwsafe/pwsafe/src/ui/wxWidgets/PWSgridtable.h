@@ -20,7 +20,6 @@
 ////@begin includes
 #include <wx/grid.h>
 ////@end includes
-#include "../../corelib/PWScore.h"
 
 /*!
  * Forward declarations
@@ -51,10 +50,10 @@ class PWSGridTable: public wxGridTableBase
   DECLARE_CLASS( PWSGrid )
   //DECLARE_EVENT_TABLE()
 
-  //DECLARE_NO_COPY_CLASS(PWSGridTableBase)
+  DECLARE_NO_COPY_CLASS(PWSGridTable)
 public:
   /// Constructors
-  PWSGridTable(PWScore &core, PWSGrid* pwsgrid);
+  PWSGridTable(PWSGrid* pwsgrid);
 
   /// Destructor
   ~PWSGridTable();
