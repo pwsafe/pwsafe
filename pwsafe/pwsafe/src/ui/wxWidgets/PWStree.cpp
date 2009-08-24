@@ -176,6 +176,9 @@ bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,
 wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
 {
   wxTreeItemId ti = GetRootItem();
+  if (!ti.IsOk())
+    ti=AddRoot(wxString());
+
   // Add a group at the end of path
   wxTreeItemId si;
   if (!group.empty()) {
