@@ -28,10 +28,31 @@
 #include <stdio.h>
 #include <sys/timeb.h>
 #include <time.h>
+#include <new.h>
 
 #include "Dbghelp.h"
 #include <eh.h>
 #include <signal.h>
+
+ // Use for size of static arrays, in case heap gets corrupted
+#define MSGSIZE   1024
+#define MSGSIZEx4 4096
+
+// Function call definitions
+LONG TakeMiniDump(struct _EXCEPTION_POINTERS *ExInfo, const int type,
+                  struct st_invp *pinvp = NULL);
+
+LONG Win32FaultHandler(struct _EXCEPTION_POINTERS *ExInfo);
+void RemoveFaultHandler();
+
+static void __cdecl terminate_dumphandler();
+static void __cdecl unexpected_dumphandler();
+static void __cdecl purecall_dumphandler();
+static int  __cdecl new_dumphandler(size_t);
+static void __cdecl bad_parameter_dumphandler(const wchar_t* expression,
+                const wchar_t* function, const wchar_t* file,
+                unsigned int line, uintptr_t pReserved);
+static void signal_dumphandler(int);
 
 // Exception types
 enum {WIN32_STRUCTURED_EXCEPTION, TERMINATE_CALL, UNEXPECTED_CALL,
@@ -39,6 +60,8 @@ enum {WIN32_STRUCTURED_EXCEPTION, TERMINATE_CALL, UNEXPECTED_CALL,
       SIGNAL_ABORT, SIGNAL_ILLEGAL_INST_FAULT, SIGNAL_TERMINATION,
       END_FAULTS};
 
+// Make nearly everything static so that it is available when needed and
+// we do not have to allocate memory
 static wchar_t *wcType[END_FAULTS] = {
                 L"WIN32_STRUCTURED_EXCEPTION",
                 L"TERMINATE_CALL",
@@ -57,24 +80,15 @@ struct st_invp {
   unsigned int line;
 };
 
-LONG TakeMiniDump(struct _EXCEPTION_POINTERS *ExInfo, const int type,
-                  struct st_invp *pinvp = NULL);
+static wchar_t * szNA = L"N/A";
+static st_invp invp;
 
-LONG Win32FaultHandler(struct _EXCEPTION_POINTERS *ExInfo);
-
-void __cdecl terminate_dumphandler();
-void __cdecl unexpected_dumphandler();
-void __cdecl purecall_dumphandler();
-int  __cdecl new_dumphandler(size_t);
-void __cdecl invalid_parameter_dumphandler(const wchar_t* expression,
-                const wchar_t* function, const wchar_t* file,
-                unsigned int line, uintptr_t pReserved);
-
-void sigabrt_dumphandler(int);
-void sigill_dumphandler(int);
-void sigterm_dumphandler(int);
-
-const int MSGSIZE = 1024; // use static arrays, in case heap gets corrupted
+static terminate_handler          old_terminate_handler(NULL);
+static unexpected_handler         old_unexpected_handler(NULL);
+static _purecall_handler          old_purecall_handler(NULL);
+static _PNH                       old_new_handler(NULL);
+static _invalid_parameter_handler old_bad_parameter_handler(NULL);
+static int old_new_mode(0);
 
 static DWORD dwTimeStamp;
 static int iMajor, iMinor, iBuild;
@@ -85,7 +99,7 @@ static wchar_t wcMsg2[MSGSIZE];
 static wchar_t wcMsg3[MSGSIZE];
 static wchar_t wcCaption[MSGSIZE];
 
-void LocalizeFaultHandler(HINSTANCE inst){
+void LocalizeFaultHandler(HINSTANCE inst) {
   LoadString(inst, IDS_MD_MSG1, wcMsg1, MSGSIZE);
   LoadString(inst, IDS_MD_MSG2, wcMsg2, MSGSIZE);
   LoadString(inst, IDS_MD_MSG3, wcMsg3, MSGSIZE);
@@ -117,35 +131,35 @@ void InstallFaultHandler(const int major, const int minor, const int build,
   SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)Win32FaultHandler);
 
   // Catch a program termination
-  set_terminate(terminate_dumphandler);
+  old_terminate_handler = set_terminate(terminate_dumphandler);
 
   // Catch unexpected calls
-  set_unexpected(unexpected_dumphandler);
+  old_unexpected_handler = set_unexpected(unexpected_dumphandler);
 
   // Catch pure virtual function calls
-  _set_purecall_handler(purecall_dumphandler);
+  old_purecall_handler = _set_purecall_handler(purecall_dumphandler);
 
-  // Catch new operator memory allocation exceptions
-  _set_new_mode(1); // Force malloc() to call new handler too
-  _set_new_handler(new_dumphandler);
+  // Catch new operator memory allocation exceptions (CRT)
+  old_new_mode = _set_new_mode(1); // Force malloc() to call new handler too
+  old_new_handler = _set_new_handler(new_dumphandler);
 
   // Catch invalid parameter exceptions
-  _set_invalid_parameter_handler(invalid_parameter_dumphandler);
+  old_bad_parameter_handler = _set_invalid_parameter_handler(bad_parameter_dumphandler);
 
   // Catch an abnormal program termination
   _set_abort_behavior(_CALL_REPORTFAULT, _CALL_REPORTFAULT);
-  signal(SIGABRT, sigabrt_dumphandler);
+  signal(SIGABRT, signal_dumphandler);
 
   // Catch a termination request
-  signal(SIGTERM, sigterm_dumphandler);
+  signal(SIGTERM, signal_dumphandler);
 
   // Catch an illegal instruction
-  signal(SIGILL, sigill_dumphandler);
+  signal(SIGILL, signal_dumphandler);
 }
 
-LONG Win32FaultHandler(struct _EXCEPTION_POINTERS *ExInfo)
+LONG Win32FaultHandler(struct _EXCEPTION_POINTERS *pExInfo)
 {
-  return TakeMiniDump(ExInfo, WIN32_STRUCTURED_EXCEPTION);
+  return TakeMiniDump(pExInfo, WIN32_STRUCTURED_EXCEPTION, NULL);
 }
 
 void __cdecl terminate_dumphandler()
@@ -172,43 +186,50 @@ void __cdecl purecall_dumphandler()
   exit(1); // Terminate program
 }
 
-void __cdecl invalid_parameter_dumphandler(const wchar_t* expression,
+void __cdecl bad_parameter_dumphandler(const wchar_t* expression,
                 const wchar_t* function, const wchar_t* file,
                 unsigned int line, uintptr_t /* pReserved */)
 {
-  st_invp invp;
-  invp.expression = expression;
-  invp.function = function;
-  invp.file = file;
+  invp.expression = (expression == NULL || wcslen(expression) == 0) ? szNA : expression;
+  invp.function = (function == NULL || wcslen(function) == 0) ? szNA : function;
+  invp.file = (file == NULL || wcslen(file) == 0) ? szNA : file;
   invp.line = line;
 
   TakeMiniDump(NULL, INVALID_PARAMETER_ERROR, &invp);
   exit(1); // Terminate program
 }
 
-void sigabrt_dumphandler(int)
+void signal_dumphandler(int isignal)
 {
-  TakeMiniDump(NULL, SIGNAL_ABORT);
+  int itype;
+  switch (isignal) {
+    case SIGABRT:
+      itype = SIGNAL_ABORT;
+      break;
+    case SIGILL:
+      itype = SIGNAL_ILLEGAL_INST_FAULT;
+      break;
+    case SIGTERM:
+      itype = SIGNAL_TERMINATION;
+      break;
+    default:
+      return;
+  }
+  TakeMiniDump(NULL, itype);
   exit(1); // Terminate program
 }
 
-void sigill_dumphandler(int)
-{
-  TakeMiniDump(NULL, SIGNAL_ILLEGAL_INST_FAULT);
-  exit(1); // Terminate program
-}
-
-void sigterm_dumphandler(int)
-{
-  TakeMiniDump(NULL, SIGNAL_TERMINATION);
-  exit(1); // Terminate program
-}
-
-LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int type,
+LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
                   st_invp *pinvp)
 {
   // Use standard functions as much as possible
-  wchar_t sz_TempName[MAX_PATH + 1];
+  // Remove all handlers
+  RemoveFaultHandler();
+
+  // Won't do anything with this - as long in dump if needed
+  UNREFERENCED_PARAMETER(pinvp);
+
+  wchar_t sz_TempName[_MAX_PATH + 1];
 
   wchar_t sz_Drive[_MAX_DRIVE], sz_Dir[_MAX_DIR], sz_FName[_MAX_FNAME];
   wchar_t sz_TempPath[MSGSIZE];
@@ -220,7 +241,8 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int type,
   if (dwrc == 0 || dwrc > dwBufSize)
     goto exit;
 
-  // Create a temporary file.
+  // Create a temporary file
+  // Shouldn't really use system calls in a signal handler!
   struct tm xt;
   struct __timeb32 timebuffer;
   _ftime32_s(&timebuffer);
@@ -237,13 +259,26 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int type,
   _wmakepath_s(sz_TempName, MAX_PATH + 1, sz_Drive, sz_Dir, sz_FName, L"dmp");
 
   wchar_t sz_UserData[MAX_PATH];
-  int numchars;
 
   SecureZeroMemory(sz_UserData, sizeof(sz_UserData));
-  numchars = swprintf_s(sz_UserData, MAX_PATH,
+  swprintf_s(sz_UserData, MAX_PATH,
                         L"PasswordSafe V%d.%d.%d(%s). Module timestamp: %08x; Type: %s",
                         iMajor, iMinor, iBuild, wcRevision, dwTimeStamp,
-                        wcType[type]) + 1;
+                        wcType[itype]);
+
+  wchar_t sz_errormsg[MSGSIZEx4]; // not a good place for malloc, as the heap
+                                    // may be corrupt...should be big enough!
+  SecureZeroMemory(sz_errormsg, sizeof(sz_errormsg));
+
+  wcscpy_s(sz_errormsg, MSGSIZEx4, wcMsg1);       // Max size 'MSGSIZE'
+  wcscat_s(sz_errormsg, MSGSIZEx4, sz_FName);     // Max size '_MAX_FNAME'
+  wcscat_s(sz_errormsg, MSGSIZEx4, wcMsg2);       // Max size 'MSGSIZE'
+  wcscat_s(sz_errormsg, MSGSIZEx4, sz_TempPath);  // Max size '_MAX_PATH'
+  wcscat_s(sz_errormsg, MSGSIZEx4, wcMsg3);       // Max size 'MSGSIZE'
+
+  wchar_t sz_Caption[MAX_PATH];
+  SecureZeroMemory(sz_Caption, sizeof(sz_Caption));
+  swprintf_s(sz_Caption, MAX_PATH, wcCaption, iMajor, iMinor, iBuild, wcRevision);
 
   HANDLE hFile = CreateFile(sz_TempName, GENERIC_READ | GENERIC_WRITE,
                             0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -254,32 +289,14 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int type,
     excpInfo.ExceptionPointers = pExInfo;
     excpInfo.ThreadId = GetCurrentThreadId();
 
-    MINIDUMP_USER_STREAM UserStreams[2];
+    MINIDUMP_USER_STREAM UserStreams[1];
 
     UserStreams[0].Type = LastReservedStream + 1;
-    UserStreams[0].Buffer = (void *)sz_UserData;
-    UserStreams[0].BufferSize = numchars * sizeof(wchar_t);
-
-    wchar_t sz_UserData2[MSGSIZE];
-    SecureZeroMemory(sz_UserData2, sizeof(sz_UserData2));
-    if (pinvp != NULL) {
-      wchar_t sz_line[8] = {L'N', L'/', L'A', L'\0'};
-      if (pinvp->line != 0)
-        _itow_s(pinvp->line, sz_line, 8, 10);
-
-      numchars = swprintf_s(sz_UserData2, MSGSIZE,
-                            L"Expression: %s; Function: %s; File: %s; Line: %s",
-                            wcslen(pinvp->expression) == 0 ? L"N/A" : pinvp->expression,
-                            wcslen(pinvp->function)   == 0 ? L"N/A" : pinvp->function,
-                            wcslen(pinvp->file)       == 0 ? L"N/A" : pinvp->file,
-                            sz_line) + 1;
-      UserStreams[1].Type = LastReservedStream + 2;
-      UserStreams[1].Buffer = (void *)sz_UserData2;
-      UserStreams[1].BufferSize = numchars * sizeof(wchar_t);
-    }
+    UserStreams[0].Buffer = (void *)&sz_UserData[0];
+    UserStreams[0].BufferSize = wcslen(sz_UserData) * sizeof(wchar_t);
 
     MINIDUMP_USER_STREAM_INFORMATION musi;
-    musi.UserStreamCount = (pinvp == NULL) ? 1 : 2;
+    musi.UserStreamCount = 1;
     musi.UserStreamArray = UserStreams;
 
     MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile,
@@ -288,20 +305,7 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int type,
 
     CloseHandle(hFile);
 
-    wchar_t sz_errormsg[MSGSIZE * 4]; // not a good place for malloc, as the heap
-                                      // may be corrupt...should be big enough!
-    SecureZeroMemory(sz_errormsg, sizeof(sz_errormsg));
-
-    wcscpy_s(sz_errormsg, MSGSIZE * 4, wcMsg1);      // Max size 'MSGSIZE'
-    wcscat_s(sz_errormsg, MSGSIZE * 4, sz_FName);     // Max size '_MAX_FNAME'
-    wcscat_s(sz_errormsg, MSGSIZE * 4, wcMsg2);      // Max size 'MSGSIZE'
-    wcscat_s(sz_errormsg, MSGSIZE * 4, sz_TempPath);  // Max size 'MSGSIZE'
-    wcscat_s(sz_errormsg, MSGSIZE * 4, wcMsg3);      // Max size 'MSGSIZE'
-
     // Issue error message
-    wchar_t sz_Caption[MAX_PATH];
-    SecureZeroMemory(sz_Caption, sizeof(sz_Caption));
-    swprintf_s(sz_Caption, MAX_PATH, wcCaption, iMajor, iMinor, iBuild, wcRevision);
     int irc = ::MessageBox(GetForegroundWindow(), sz_errormsg, sz_Caption,
                            MB_YESNO | MB_APPLMODAL | MB_ICONERROR);
 
@@ -316,6 +320,39 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int type,
 
 void RemoveFaultHandler()
 {
+  // Remove our Windows Exception Filter
   SetUnhandledExceptionFilter(NULL);
+
+  // Put back previous handlers
+  if (old_terminate_handler != NULL) {
+    set_terminate(old_terminate_handler);
+    old_terminate_handler = NULL;
+  }
+
+  if (old_unexpected_handler != NULL) {
+    set_unexpected(old_unexpected_handler);
+    old_unexpected_handler = NULL;
+  }
+
+  if (old_purecall_handler != NULL) {
+    _set_purecall_handler(old_purecall_handler);
+    old_purecall_handler = NULL;
+  }
+
+  _set_new_mode(old_new_mode);
+  if (old_new_handler != NULL) {
+    _set_new_handler(old_new_handler);
+    old_new_handler = NULL;
+  }
+
+  if (old_bad_parameter_handler != NULL) {
+    _set_invalid_parameter_handler(old_bad_parameter_handler);
+    old_bad_parameter_handler = NULL;
+  }
+
+  // Reset signal processing to default actions
+  signal(SIGABRT, SIG_DFL);
+  signal(SIGTERM, SIG_DFL);
+  signal(SIGILL, SIG_DFL);
 }
 #endif
