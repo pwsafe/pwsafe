@@ -65,9 +65,7 @@ void OnPasswordListModified(LPARAM lParam)
 
 PWSGrid::PWSGrid(PWScore &core) : m_core(core)
 {
-  const bool bAdded = m_core.RegisterOnListModified(&::OnPasswordListModified, 
-                                             reinterpret_cast<LPARAM>(this));
-  wxCHECK_RET(bAdded, _S("Could not added callback from PWSCore to PWSGrid"));
+  RegisterCoreNotifications();
   Init();
 }
 
@@ -75,9 +73,7 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
                  wxWindowID id, const wxPoint& pos,
                  const wxSize& size, long style) : m_core(core)
 {
-  const bool bAdded = m_core.RegisterOnListModified(&::OnPasswordListModified, 
-                                             reinterpret_cast<LPARAM>(this));
-  wxCHECK_RET(bAdded, _S("Could not added callback from PWSCore to PWSGrid"));
+  RegisterCoreNotifications();
   Init();
   Create(parent, id, pos, size, style);
 }
@@ -222,8 +218,6 @@ void PWSGrid::Remove(const uuid_array_t &uuid)
   UUIDRowMapT::iterator iter = m_uuid_map.find(CUUIDGen(uuid));
   if (iter != m_uuid_map.end()) {
     int row = iter->second;
-    m_row_map.erase(row);
-    m_uuid_map.erase(CUUIDGen(uuid));
     DeleteRows(row);
   }  
 }
@@ -254,13 +248,18 @@ void PWSGrid::DeleteItems(int row, size_t numItems)
         uuid_array_t uuid;
         iter_uuid->first.GetUUID(uuid);
         ItemListIter citer = m_core.Find(uuid);
-        if (citer != m_core.GetEntryEndIter())
+        if (citer != m_core.GetEntryEndIter()){
+          m_core.UnRegisterOnListModified();
           m_core.RemoveEntryAt(citer);
+          RegisterCoreNotifications();
+        }
         m_uuid_map.erase(iter_uuid);
       }
       m_row_map.erase(iter);    
     }
   }
+  if (m_core.IsChanged())
+    OnPasswordListModified();
 }
 
 /*!
@@ -315,3 +314,12 @@ void PWSGrid::OnLeftDClick( wxGridEvent& event )
   if (item != NULL)
     PWSdca::Doit(*item);
 }
+
+void PWSGrid::RegisterCoreNotifications()
+{
+  const bool bAdded = m_core.RegisterOnListModified(&::OnPasswordListModified, 
+                                             reinterpret_cast<LPARAM>(this));
+  wxCHECK_RET(bAdded, _S("Could not added callback from PWSCore to PWSGrid"));
+}
+
+
