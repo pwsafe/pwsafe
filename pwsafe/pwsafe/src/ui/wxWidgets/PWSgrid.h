@@ -116,6 +116,7 @@ public:
 
  private:
   void DisplayItem(const CItemData &item, int row);
+  void RegisterCoreNotifications();
   PWScore &m_core;
   RowUUIDMapT m_row_map;
   UUIDRowMapT m_uuid_map;

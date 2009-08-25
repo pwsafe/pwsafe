@@ -99,7 +99,9 @@ void PasswordSafeFrame::Delete(const uuid_array_t &uuid)
 {
   m_grid->Remove(uuid);
   m_tree->Remove(uuid);
-  m_core.RemoveEntryAt(m_core.Find(uuid));
+  ItemListIter iter = m_core.Find(uuid);
+  if (iter != m_core.GetEntryEndIter())
+    m_core.RemoveEntryAt(iter);
 }
 
 /*!
