@@ -372,7 +372,7 @@ void PasswordSafeFrame::ShowGrid(bool show)
 void PasswordSafeFrame::ShowTree(bool show)
 {
   if (show) {
-    m_tree->DeleteAllItems();
+    m_tree->Clear();
     ItemListConstIter iter;
     for (iter = m_core.GetEntryIter();
          iter != m_core.GetEntryEndIter();
@@ -466,7 +466,7 @@ void PasswordSafeFrame::ClearData()
   m_grid->BeginBatch();
   m_grid->ClearGrid();
   m_grid->EndBatch();
-  m_tree->DeleteAllItems();
+  m_tree->Clear();
 }
 
 const CItemData *PasswordSafeFrame::GetSelectedEntry() const
