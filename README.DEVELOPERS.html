@@ -1,126 +1,216 @@
-<html>
-<title>Readme For Developers or Others wishing to compile Password Safe</title>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Readme For Developers</title>
+
+</head>
+
 <body>
-
-<h1>Developer Notes</h1>
-
-<h3>Additional Software Requirements</h3>
-<p>In order to build the Windows version of Password Safe, you need to install
-the following freely available components:</p>
-
+<h1>Developer Notes</h1><br>This file contains notes, hints and information of interest to people who wish to compile the Windows version of PasswordSafe.<br><br>Contents<br><ol><li><a href="#Software_Requirements">Software Requirements</a></li><li><a href="#XML_Processing">XML Processing</a></li><li><a href="#Minidump_Production">Minidumps</a></li></ol>
+<h3><a name="Software_Requirements"></a>Software Requirements</h3>The
+Windows version of PasswordSafe is currently built using Microsoft
+Visual Studio 2005 and 2008. People have also reported success in
+building PasswordSafe using Visual Studio Express (free edition), but
+that configuration is not described here.
+<p>In order to build the Windows version of Password Safe, you
+need to install
+the following freely available components, in addition to&nbsp;Visual Studio:</p>
 <ul>
-<li><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-c8a6-452f-9aa0-d597d16580cc&DisplayLang=en">Microsoft's HTML Help Workshop</a> (for online help support)</li>
-<li><a href="http://tortoisesvn.net/downloads">Tortoise SVN Client</a> (for updating the revision number within Password Safe's version details)</li>
-<li>For XML Support, one or more of the following is needed:
+<li><a href="http://msdn.microsoft.com/en-us/windows/dd146047.aspx">Microsoft's
+Windows SDK</a>. If you have installed Visual Studio 2008, it
+will have installed a Windows SDK V6.0A and you do not have to install
+another SDK. If you haven't installed VS2008, then please select either
+of the following versions:
 <ul>
-<li><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=993C0BCF-3BCF-4009-BE21-27E85E1857B1&displaylang=en">Microsoft's XML V6.0 SDK [File: "msxml6_SDK.msi" on this page]</a></li>
-<li><a href="http://expat.sourceforge.net/">Expat's V2.0.1 XML Library</a></li>
-<li><a href="http://xerces.apache.org/xerces-c/">Xerces V3.0.0 XML Library</a></li>
+<li>"Windows Vista Update &amp; .NET 3.0 SDK"
+[V6.1.6000.16384.10 dated February 2007] - known as V6.0.</li>
+<li>"Windows Server 2008 and .NET Framework 3.5"
+[V6.0.6001.18000.367 dated February 2008] - known as V6.1.</li>
 </ul>
+All three of these replace the old "Platform SDK" and support Operating
+Systems: Vista and Windows XP; and Development Environments: Visual
+Studio 2005 &amp; 2008. Later versions support Windows 7 but not
+Visual Studio 2005. At this time, Password Safe does not use any
+facilities or functions that are not supported by Windows XP and Visual
+Studio 2005.
+<br>
+By default, the SDKs are installed in directory "C:\Program
+Files\Microsoft SDKs\Windows\NNN", where NNN is '6.0', '6.0A' or '6.1'.
+<u>See note below.</u></li>
+<li><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-c8a6-452f-9aa0-d597d16580cc&amp;DisplayLang=en">Microsoft's
+HTML Help Workshop</a> (for compiling the online help)</li>
+<li><a href="http://tortoisesvn.net/downloads">Tortoise
+SVN Client</a> (for updating the revision number within Password
+Safe's version details)</li>
+<li>For XML Support, one or more of the following is needed (see the <a href="#XML_Processing">XML processing section</a> for more details):
+<ul>
+<li><a target="_blank" href="http://www.microsoft.com/downloads/details.aspx?FamilyID=993C0BCF-3BCF-4009-BE21-27E85E1857B1&amp;displaylang=en">Microsoft's
+XML V6.0 SDK [File: "msxml6_SDK.msi" on this page]</a></li>
+<li><a target="_blank" href="http://expat.sourceforge.net/">Expat's
+V2.0.1 XML Library</a></li>
+<li><a target="_blank" href="http://xerces.apache.org/xerces-c/">Xerces
+V3.0.0 XML Library</a></li>
 </ul>
-
-<p>If you're using Microsoft's Visual Studio, the file "UserVariables.vsprops"
-<b><u><i>must</i></u></b> exist and point to the directories where the above
-components have been installed. <b><u><i>The solution will not open correctly without
-this file being present.</i></u></b></p>
-
-<p>For your convenience, we've included a simple Visual Basic script, 
-"configure.vbs", that you can run to generate the "UserVariables.vsprops" file
-with the correct values.</p>
-
-<h3>XML Processing</h3>
-<p>Originally, PasswordSafe used Microsoft's XML library 
-for XML parsing and validation. For portability, we're now working on support
-for the Expat and Xerces XML libraries, which are available for non-Windows
-platforms.  See their web sites for more information.  Note: Xerces V3.0.0 
-at revision 707374 or greater is needed to correct a memory leak processing 
-password history entries.</p>
-
-<p>To determine which XML library to use while building PasswordSafe,
-we've defined a new preprocessor variable (USE_XML_LIBRARY). If <u>NOT</u>
+</li>
+</ul>
+<p><b>SDK NOTE:</b> In order to compile Password Safe
+using MFC (Microsoft's Foundation
+Classes), the Microsoft Windows SDK's 'include' and 'lib' directories
+must be added
+to the directories supplied by Visual Studio 2005. This is achieved in
+VS2005 via
+Tools &gt; Options &gt; Project and Solutions &gt; VC++
+directories &gt; Include files and Library files. They can be added
+at the end of each appropriate set using the directory you specified
+during installion (the defaults are: "C:\Program Files\Microsoft
+SDKs\Windows\NNN\Include" and
+"C:\Program Files\Microsoft SDKs\Windows\NNN\Lib", where NNN is 6.0,
+6.0A or 6.1
+as noted above). The Microsoft Visual Studio Registration Tool only
+adds the .Net
+libraries and not those needed for Password Safe.</p>
+<p><b>Compiling using Visual Studio:</b> If you're
+using Microsoft's Visual Studio,
+the file "UserVariables.vsprops" <b><u><i>must</i></u></b>
+exist and point to the
+directories where the non-"Windows SDK" components have been installed.
+<b><u><i>
+The solution will not open correctly without this file being present</i></u></b>.
+For your convenience, we've included a simple Visual Basic script,
+"configure.vbs",
+that you can run to generate the "UserVariables.vsprops" file with the
+correct values.
+Be aware that the current version does not read an existing
+"UserVariables.vsprops"
+file to allow you to select previously entered values and so it is best
+to save a
+copy before re-running or at least noting down your previous answers if
+not the
+default.</p>
+<h3><a name="XML_Processing"></a>XML Processing</h3>
+<p>Originally, PasswordSafe used Microsoft's XML library for XML
+parsing and validation. For portability, we're now working on support
+for the <a href="http://expat.sourceforge.net/" target="_blank">Expat</a> and <a href="http://xerces.apache.org/xerces-c/" target="_blank">Xerces</a> XML libraries, which are available for
+non-Windows
+platforms. See their web sites for more information. Note: Xerces
+V3.0.0 at revision 707374 or greater is needed to correct a memory leak
+processing password history entries.</p>
+<p>To determine which XML library to use while building
+PasswordSafe,
+we've defined a&nbsp;preprocessor variable (USE_XML_LIBRARY). If <u>NOT</u>
 defined, the compiled Password Safe <u>will not process XML files</u>
 (databases or filter definitions in XML format). Filters within a
 database will be treated as 'Unknown Fields' and will remain unchanged
 so that other versions of Password Safe that do support XML parsing
 can still use them. Note, however, that the application will be able
 to write XML files.</p>
-
-<p>The three valid values of the USE_XML_LIBRARY variable are "EXPAT", "MSXML"
+<p>The three valid values of the USE_XML_LIBRARY variable are
+"EXPAT", "MSXML"
 and "XERCES" corresponding to the three different implementations.</p>
-
-<p>Password Safe uses SAX2 processing for both Microsoft's and the Xerces'
-XML Parsers, which are full validating parsers and require the presence of
-the appropriate XSD Schema file (included in the distribution and in the "xml"
-sub-directorty, to process either file or filter imports.  This ensures
-that the data eventually hitting the SAX2 content handlers is correct and just
+<p>Password Safe uses SAX2 processing for both Microsoft's and
+the Xerces'
+XML Parsers, which are full validating parsers and require the presence
+of
+the appropriate XSD Schema file (included in the distribution and in
+the "xml"
+sub-directory, to process either file or filter imports. This ensures
+that the data eventually hitting the SAX2 content handlers is correct
+and just
 needs placing in the appropriate fields.</p>
-
-<p>Expat is a non-validating XML Parser and uses its own API rather than SAX2.
-Note: SAX2 is only an official standard for Java XML processing, although many C
-supporting parsers also support this interface.  Because Expat is
+<p>Expat is a non-validating XML Parser and uses its own API
+rather than SAX2.
+Note: SAX2 is only an official standard for Java XML processing,
+although many C
+supporting parsers also support this interface. Because Expat is
 non-validating, code is being added directly into Password Safe to
 perform this validation, so that the program and its databases are
-not corrupted by poorly formed XML or incorrect data within the XML file.</p>
-
-<p>Note: As of 1 December 2008, the additional validation code for Expat and
-non-Unicode versions of all three implementations are in progress.  Work
-is also needed to ensure that error processing is correct and that associated
+not corrupted by poorly formed XML or incorrect data within the XML
+file.</p>
+<p>Note: As of 1 December 2008, the additional validation code
+for Expat and
+non-Unicode versions of all three implementations are in progress. Work
+is also needed to ensure that error processing is correct and that
+associated
 messages are produced correctly.</p>
-
-<h3>Minidump Production</h3>
-
-<p>In order to help debug user problems when Windows justs says "there has
-been an error", a "Windows Unhandled Fault Handler" has been added. This will
-create a minidump, which can then be used to find where the error took place
+<h3><a name="Minidump_Production"></a>Minidump Production</h3>
+<p>In order to help debug user problems when Windows justs says
+"there has
+been an error", a "Windows Unhandled Fault Handler" has been added.
+This will
+create a minidump, which can then be used to find where the error took
+place
 and, hopefully, why.</p>
-
-<p>An extra "extended" Command Line flag of "--testdump" has been introduced
-for two reasons. Firstly, it allows the developer to test the minidump process,
-which is only available in the Release version of the executable and, secondly,
-allows the translators to check that the error screen displays as they wish.
-<u>Note to Translators:</u> the error screen is a basic Windows function and has a
-fixed width. This is the reason why the minidump file name and directory have been
+<p>An extra "extended" Command Line flag of "--testdump" has been
+introduced
+for two reasons. Firstly, it allows the developer to test the minidump
+process,
+which is only available in the Release version of the executable and,
+secondly,
+allows the translators to check that the error screen displays as they
+wish.
+<u>Note to Translators:</u> the error screen is a basic
+Windows function and has a
+fixed width. This is the reason why the minidump file name and
+directory have been
 split onto separate lines.</p>
-
-<p><u>Note: Extended flags start with two minus signs ('--') and must be specified
-in full - i.e. no abbreviations.  They are not displayed in the Usage notes for
-the normal users and no error message or display is shown if they are not
+<p><u>Note: Extended flags start with two minus signs
+('--') and must be specified
+in full - i.e. no abbreviations. They are not displayed in the Usage
+notes for
+the normal users and no error message or display is shown if they are
+not
 recognised.</u></p>
+<p>With this flag set, there will appear an extra button in the
+bottom right
+hand corner of the "About PasswordSafe" dialog. Click it, and a
+minidump should
+be produced.</p>
 
-<p>With this flag set, there will appear an extra button in the bottom right
-hand corner of the "About PasswordSafe" dialog.  Click it, and a minidump should
-be produced.<p>
-
-<p>In order to process the minimdump, either the free Microsoft Windbg program can be
-used (see Microsoft's site for details), or Visual Studio (VS) can be used.  In the
+<p>In order to process the minimdump, either the free Microsoft
+Windbg program can be
+used (see Microsoft's site for details), or Visual Studio (VS) can be
+used. In the
 latter case (and probably the former too!):
+</p>
 <ol>
-<li>You need the source corresponding to the failing release version.  This should be
-available from SourceForge web site either in the normal Download section or based
-on the revision number associated with that release. Without the corresponding source,
-VS can only show Windows source and line numbes in PasswordSafe source.  With the
-corresponding source, VS can show you the exact line in PasswordSafe where the error
-took place and also the other statements within PasswordSafe as you follow the stack
+<li>You need the source corresponding to the failing release
+version. This should be
+available from SourceForge web site either in the normal Download
+section or from the Subversion repository, based
+on the revision number associated with that release. Without the
+corresponding source,
+VS can only show Windows source and line numbes in PasswordSafe source.
+With the
+corresponding source, VS can show you the exact line in PasswordSafe
+where the error
+took place and also the other statements within PasswordSafe as you
+follow the stack
 trace.</li>
-<li>You need the Program Debug Database (pwsafe.pdb) associated with the failing release.
-This is not normally uploaded to the SourceForge web site with the release
-package.  It is large (~11.5MB or ~3MB compressed).  Since this must correspond
-to the PasswordSafe executable that had the error, maybe this and, possibly, the
-associated Link Map can be uploaded to a Developers section on this web site to aid
+<li>You need the Program Debug Database (pwsafe.pdb) associated
+with the failing release.
+This is not normally uploaded to the SourceForge web site with the
+release
+package. It is large (~11.5MB or ~3MB compressed). Since this must
+correspond
+to the PasswordSafe executable that had the error, maybe this and,
+possibly, the
+associated Link Map can be uploaded to a Developers section on this web
+site to aid
 all developers.</li>
-<li>You should probably maintain the directory structure of the project as described
-in the source downloaded from SourceForge and place the Program Debug Database file
+<li>You should probably maintain the directory structure of the
+project as described
+in the source downloaded from SourceForge and place the Program Debug
+Database file
 in the '..\src\bin\releasem' directory.</li>
-<li>Save the user's minidump file on your PC.  Use VS to Open this <u>as a
-Project</u> (e.g. File->Open->Project/Solution).</li>
-<li>In the Debugging Options, specify the directory containing the corresponding PDB file.
-(Go to: Tools->Options->Debugging->Symbols and add this directory in the section
+<li>Save the user's minidump file on your PC. Use VS to Open
+this <u>as a
+Project</u> (e.g. File-&gt;Open-&gt;Project/Solution).</li>
+<li>In the Debugging Options, specify the directory containing
+the corresponding PDB file.
+(Go to: Tools-&gt;Options-&gt;Debugging-&gt;Symbols and add
+this directory in the section
 entitled "Symbol file (.pdb) locations:").</li>
-<li>Press F5 to start debugging and away you go.</li>
+<li>Press F5 to start debugging, and away you go.</li>
 </ol>
-
 <br>
 <br>
 <br>
-</body>
-</html>
+</body></html>
