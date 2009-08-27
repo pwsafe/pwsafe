@@ -83,11 +83,11 @@ LRESULT CCoolMenuManager::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 {
   switch(msg) {
     case WM_MEASUREITEM:
-      if (OnMeasureItem((MEASUREITEMSTRUCT*)lp))
+      if (CMOnMeasureItem((MEASUREITEMSTRUCT*)lp))
         return TRUE; // handled
       break;
     case WM_DRAWITEM:
-      if (OnDrawItem((DRAWITEMSTRUCT*)lp))
+      if (CMOnDrawItem((DRAWITEMSTRUCT*)lp))
         return TRUE; // handled
       break;
     case WM_INITMENUPOPUP:
@@ -96,14 +96,14 @@ LRESULT CCoolMenuManager::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
       // MFT_STRING, so I must change back to MFT_OWNERDRAW.
       //
       CSubclassWnd::WindowProc(msg, wp, lp);
-      OnInitMenuPopup(CMenu::FromHandle((HMENU)wp), (UINT)LOWORD(lp), (BOOL)HIWORD(lp));
-      return 0;
+      CMOnInitMenuPopup(CMenu::FromHandle((HMENU)wp), (UINT)LOWORD(lp), (BOOL)HIWORD(lp));
+      return FALSE;
     case WM_MENUSELECT:
-      OnMenuSelect((UINT)LOWORD(wp), (UINT)HIWORD(wp), (HMENU)lp);
+      CMOnMenuSelect((UINT)LOWORD(wp), (UINT)HIWORD(wp), (HMENU)lp);
       break;
     case WM_MENUCHAR:
-      LRESULT lr = OnMenuChar((wchar_t)LOWORD(wp), (UINT)HIWORD(wp), 
-                              CMenu::FromHandle((HMENU)lp));
+      LRESULT lr = CMOnMenuChar((wchar_t)LOWORD(wp), (UINT)HIWORD(wp), 
+                                CMenu::FromHandle((HMENU)lp));
       if (lr != 0)
         return lr;
       break;
@@ -128,7 +128,7 @@ CFont* CCoolMenuManager::GetMenuFont()
 //////////////////
 // Handle WM_MEASUREITEM on behalf of frame: compute menu item size.
 //
-BOOL CCoolMenuManager::OnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
+BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
 {
   ASSERT(lpmis);
   CMenuItemData* pmd = (CMenuItemData*)lpmis->itemData;
@@ -171,7 +171,7 @@ BOOL CCoolMenuManager::OnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
 // Handle WM_DRAWITEM on behalf of frame. Note: in all that goes
 // below, can't assume rcItem.left=0 because of multi-column menus!
 //
-BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
+BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
 {
   ASSERT(lpdis);
   CMenuItemData* pmd = (CMenuItemData*)lpdis->itemData;
@@ -368,7 +368,7 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
 //////////////////
 // Handle WM_INITMENUPOPUP on behalf of frame.
 //
-void CCoolMenuManager::OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu)
+void CCoolMenuManager::CMOnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu)
 {
   ConvertMenu(pMenu, nIndex, bSysMenu, m_bShowButtons);
 }
@@ -523,7 +523,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
 //////////////////
 // User typed a char into menu. Look for item with & preceeding the char typed.
 //
-LRESULT CCoolMenuManager::OnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMenu)
+LRESULT CCoolMenuManager::CMOnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMenu)
 {
   ASSERT_VALID(pMenu);
 
@@ -575,7 +575,7 @@ LRESULT CCoolMenuManager::OnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMenu
 //////////////////
 // Handle WM_MENUSELECT: check for menu closed
 //
-void CCoolMenuManager::OnMenuSelect(UINT /* nItemID */, UINT nFlags, HMENU hSysMenu)
+void CCoolMenuManager::CMOnMenuSelect(UINT /* nItemID */, UINT nFlags, HMENU hSysMenu)
 {
   if (hSysMenu == NULL && nFlags == 0xFFFF) {
     // Windows has closed the menu: restore all menus to original state

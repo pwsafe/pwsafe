@@ -62,6 +62,7 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
 
 BOOL COptionsShortcuts::OnInitDialog()
 {
+  BOOL brc;
   CPWPropertyPage::OnInitDialog();
 
   m_ShortcutLC.Init(this);
@@ -78,7 +79,7 @@ BOOL COptionsShortcuts::OnInitDialog()
   MapMenuShortcutsIter iter, iter_parent;
   MapKeyNameIDConstIter citer;
   CString str;
-  int iItem(-1);
+  int iItem(0);
 
   for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
     iter++) {
@@ -109,19 +110,26 @@ BOOL COptionsShortcuts::OnInitDialog()
                              CString(L" \xbb ") +
                              CString(iter->second.name.c_str()));
     sMenuItemtext.Remove(L'&');
-    iItem = m_ShortcutLC.InsertItem(++iItem, sMenuItemtext);
-    m_ShortcutLC.SetItemText(iItem, 1, str);
+    iItem = m_ShortcutLC.InsertItem(iItem, sMenuItemtext);
+    ASSERT(iItem != -1);
+    brc = m_ShortcutLC.SetItemText(iItem, 1, str);
+    ASSERT(brc != 0);
     DWORD dwData = MAKELONG(iter->first, iter->second.iMenuPosition);
-    m_ShortcutLC.SetItemData(iItem, dwData);
+    brc = m_ShortcutLC.SetItemData(iItem, dwData);
+    ASSERT(brc != 0);
   } // foreach m_MapMenuShortcuts
 
   // Now sort via Menu item position
-  m_ShortcutLC.SortItems(CompareFunc, NULL);
+  brc = m_ShortcutLC.SortItems(CompareFunc, NULL);
+  ASSERT(brc != 0);
 
-  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);
-  m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
+  brc = m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);
+  ASSERT(brc != 0);
+  brc = m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
+  ASSERT(brc != 0);
 
-  m_ShortcutLC.ModifyStyle(LVS_OWNERDRAWFIXED, 0, 0);
+  brc = m_ShortcutLC.ModifyStyle(LVS_OWNERDRAWFIXED, 0, 0);
+  ASSERT(brc != 0);
 
   CHeaderCtrl* pHCtrl;
   pHCtrl = m_ShortcutLC.GetHeaderCtrl();
@@ -287,8 +295,8 @@ BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
 }
 
 int CALLBACK COptionsShortcuts::CompareFunc(LPARAM lParam1, LPARAM lParam2,
-                                            LPARAM lParamSort)
+                                            LPARAM /* lParamSort */)
 {
-  UNREFERENCED_PARAMETER(lParamSort);
+  // HIWORD is the menu position
   return (int)(HIWORD(lParam1) - HIWORD(lParam2));
 }
