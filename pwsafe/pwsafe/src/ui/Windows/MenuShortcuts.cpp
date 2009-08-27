@@ -24,30 +24,18 @@ void CMenuShortcut::InitStrings()
   CS_SHIFTP.LoadString(IDS_SHIFTP);
 }
 
-CString CMenuShortcut::FormatShortcut(MapMenuShortcutsIter iter, 
-                                      MapKeyNameIDConstIter citer)
+CString CMenuShortcut::FormatShortcut(unsigned char cModifier, MapKeyNameIDConstIter citer)
 {
   CString str(L"");
 
-  str.Format(L"%s%s%s%s",
-      (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? CS_CTRLP  : L"",
-      (iter->second.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? CS_ALTP   : L"",
-      (iter->second.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? CS_SHIFTP : L"",
-      citer->second);
+  if ((cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
+    str += CS_CTRLP;
+  if ((cModifier & HOTKEYF_ALT) == HOTKEYF_ALT)
+    str += CS_ALTP;
+  if ((cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT)
+    str += CS_SHIFTP;
 
-  return str;
-}
-
-CString CMenuShortcut::FormatShortcut(st_MenuShortcut mst, 
-                                      MapKeyNameIDConstIter citer)
-{
-  CString str(L"");
-
-  str.Format(L"%s%s%s%s",
-      (mst.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL  ? CS_CTRLP  : L"",
-      (mst.cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT      ? CS_ALTP   : L"",
-      (mst.cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT    ? CS_SHIFTP : L"",
-      citer->second);
+  str += citer->second;
 
   return str;
 }

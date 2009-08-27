@@ -82,10 +82,7 @@ public:
   void ClearKeyFlags()
   {
     // Only clear Key/flags - not name, parent ID or menu position
-    cdefVirtKey = (unsigned char)0;
-    cdefModifier = (unsigned char)0;
-    cVirtKey = (unsigned char)0;
-    cModifier = (unsigned char)0;
+    cdefVirtKey = cdefModifier = cVirtKey = cModifier = (unsigned char)0;
   }
 
   void SetKeyFlags(const CMenuShortcut &that)
@@ -114,12 +111,16 @@ public:
   static void InitStrings();
 
   static CString FormatShortcut(MapMenuShortcutsIter iter, 
-                                MapKeyNameIDConstIter citer);
+                                MapKeyNameIDConstIter citer)
+  {return FormatShortcut(iter->second.cModifier, citer);}
 
-  static CString FormatShortcut(st_MenuShortcut mst, 
-                                MapKeyNameIDConstIter citer);
+  static CString FormatShortcut(const st_MenuShortcut &mst, 
+                                MapKeyNameIDConstIter citer)
+  {return FormatShortcut(mst.cModifier, citer);}
 
 private:
+  static CString FormatShortcut(unsigned char cModifier,
+                                MapKeyNameIDConstIter citer);
   static CString CS_CTRLP, CS_ALTP, CS_SHIFTP;
 };
 
