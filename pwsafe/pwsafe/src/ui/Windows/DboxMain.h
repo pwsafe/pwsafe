@@ -43,9 +43,22 @@
 #include <map>
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
-#define HDF_SORTUP 0x0400
-#define HDF_SORTDOWN 0x0200
-#endif
+#define HDF_SORTUP             0x0400
+#define HDF_SORTDOWN           0x0200
+
+#define WM_WTSSESSION_CHANGE   0x02B1
+
+#define WTS_CONSOLE_CONNECT                0x1
+#define WTS_CONSOLE_DISCONNECT             0x2
+#define WTS_REMOTE_CONNECT                 0x3
+#define WTS_REMOTE_DISCONNECT              0x4
+#define WTS_SESSION_LOGON                  0x5
+#define WTS_SESSION_LOGOFF                 0x6
+#define WTS_SESSION_LOCK                   0x7
+#define WTS_SESSION_UNLOCK                 0x8
+#define WTS_SESSION_REMOTE_CONTROL         0x9
+
+#endif  /* WINVER < 0x0501 */
 
 class CDDObList;
 
@@ -601,6 +614,8 @@ protected:
   afx_msg void OnOpenMRU(UINT nID);
 #endif
 
+  afx_msg LRESULT OnSessionChange(WPARAM wParam, LPARAM lParam);
+
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const StringX &filename, StringX& passkey,
@@ -638,7 +653,9 @@ private:
 
   PWSclipboard m_clipboard;
 
-  BOOL IsWorkstationLocked() const;
+  bool SetSessionNotification();
+  bool IsWorkstationLocked() const;
+  void LockDataBase(UINT_PTR nIDEvent);
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
@@ -722,6 +739,9 @@ private:
 
   // Used for DragBar Tooltips
   CToolTipCtrl* m_pToolTipCtrl;
+
+  // Workstation Locked
+  bool m_bWSLocked, m_bRegistered;
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)
