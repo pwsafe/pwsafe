@@ -237,7 +237,8 @@ void DboxMain::OnOptions()
   COptionsShortcuts       shortcuts;
 
   PWSprefs               *prefs = PWSprefs::GetInstance();
-  BOOL                    prevLockOIT; // lock on idle timeout set?
+  BOOL                    prevLockOIT; // lock On Idle Iimeout set?
+  BOOL                    prevLockOWL; // lock On Window Lock set?
   BOOL                    brc, save_hotkey_enabled;
   BOOL                    save_preexpirywarn;
   DWORD                   save_hotkey_value;
@@ -312,7 +313,7 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
   security.m_confirmcopy = prefs->
     GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
-  security.m_LockOnWindowLock = prefs->
+  security.m_LockOnWindowLock = prevLockOWL = prefs->
     GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
   security.m_LockOnIdleTimeout = prevLockOIT = prefs->
     GetPref(PWSprefs::LockOnIdleTimeout) ? TRUE : FALSE;
@@ -693,6 +694,15 @@ void DboxMain::OnOptions()
         shortcut.CreateShortCut(exeName, PWSLnkName, CSIDL_STARTUP);
       } else { // remove existing startup shortcut
         shortcut.DeleteShortCut(PWSLnkName, CSIDL_STARTUP);
+      }
+    }
+
+    // Update Lock on Window Lock
+    if (security.m_LockOnWindowLock != prevLockOWL) {
+      if (security.m_LockOnWindowLock == TRUE) {
+        startLockCheckTimer();
+      } else {
+        KillTimer(TIMER_CHECKLOCK);
       }
     }
 

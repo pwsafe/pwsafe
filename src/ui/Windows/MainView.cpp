@@ -49,12 +49,6 @@
 #include <algorithm>
 #include <sys/stat.h>
 
-#if _MSC_VER < 1500
-#include <winable.h>  // For BlockInput
-#else
-#include <winuser.h>  // For BlockInput
-#endif
-
 using namespace std;
 
 #ifdef _DEBUG
@@ -1707,42 +1701,56 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
 {
   if ((nIDEvent == TIMER_CHECKLOCK && IsWorkstationLocked()) ||
       (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
-    /*
-    * Since we clear the data, any unchanged changes will be lost,
-    * so we force a save if database is modified, and fail
-    * to lock if the save fails (unless db is r-o).
-    */
-    // Need to save display status for when we return from minimize
-    SaveDisplayStatus();
-    if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
-        !(m_core.IsChanged() || m_bTSUpdated ||
-        m_core.WasDisplayStatusChanged()) ||
-        Save() == PWScore::SUCCESS) {
-      TRACE(L"locking database\n");
-      if (IsWindowVisible())
-        ShowWindow(SW_MINIMIZE);
-      ClearData(false);
-      if (nIDEvent == TIMER_CHECKLOCK)
-        KillTimer(TIMER_CHECKLOCK);
-    } else {
-      TRACE(L"Timer lock kicked in, but not minimizing.\n");
-    }
+    LockDataBase(nIDEvent);
+    if (nIDEvent == TIMER_CHECKLOCK)
+      KillTimer(TIMER_CHECKLOCK);
+  } else {
+    TRACE(L"Timer lock kicked in (ID=%d), but not minimizing.\n", nIDEvent);
+  }
+}
+
+void DboxMain::LockDataBase(UINT_PTR nIDEvent)
+{
+  if (nIDEvent == TIMER_CHECKLOCK && PWSprefs::GetInstance()->
+        GetPref(PWSprefs::LockOnWindowLock) != TRUE)
+    return;
+
+  /*
+  * Since we clear the data, any unchanged changes will be lost,
+  * so we force a save if database is modified, and fail
+  * to lock if the save fails (unless db is r-o).
+  */
+  // Need to save display status for when we return from minimize
+  SaveDisplayStatus();
+  if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
+      !(m_core.IsChanged() || m_bTSUpdated ||
+      m_core.WasDisplayStatusChanged()) ||
+      Save() == PWScore::SUCCESS) {
+    TRACE(L"Locking database\n");
+    if (IsWindowVisible())
+      ShowWindow(SW_MINIMIZE);
+    ClearData(false);
   }
 }
 
 // This function determines if the workstation is locked.
-BOOL DboxMain::IsWorkstationLocked() const
+bool DboxMain::IsWorkstationLocked() const
 {
-  BOOL Result = false;
+  if (m_bRegistered)
+    return m_bWSLocked;
+
+  // Rather not use this as may have impact with multiple desktops
+  // but if registering for session change messages failed ....
+  bool bResult = false;
   HDESK hDesktop = OpenDesktop(L"default", 0, false, DESKTOP_SWITCHDESKTOP);
   // Following should be equiv., but isn't :-(
   //  HDESK hDesktop = OpenInputDesktop(0, FALSE, DESKTOP_SWITCHDESKTOP);
   if (hDesktop != 0) {
     // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
-    Result = ! SwitchDesktop(hDesktop);
+    bResult = SwitchDesktop(hDesktop) != 0;
     CloseDesktop(hDesktop);
   }
-  return Result;
+  return bResult;
 }
 
 void DboxMain::OnChangeTreeFont() 
@@ -1955,7 +1963,8 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
   // 3. If csURL contains {alt} or [ssh], then the behaviour is the same as in (2),
   //    except that "http://" is NOT prepended to the rest of the text. This allows
   //    one to specify an ssh client (such as Putty) as the alternate browser,
-  //    and user@machine as the URL.
+  //    and user@machine as the URL.  However, this really should be actioned via
+  //    the new Run Command!
 
   theURL.Remove(L'\r');
   theURL.Remove(L'\n');

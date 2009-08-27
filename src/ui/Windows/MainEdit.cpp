@@ -37,16 +37,11 @@
 #include <vector>
 #include <algorithm>
 
-/*
- * Make sure we get the right declaration of BlockInput
- * VS2005 - it is in "winable.h"
- * VS2008 - it is in "winuser.h"
- */
- 
-#if _MSC_VER < 1500
-#include <winable.h>  // For BlockInput
+// Pre-VS2008, BlockInput is in 'winable.h' but VS2008 moved it to 'winuser.h'
+#if _MSC_VER > 1400
+#include <winuser.h>
 #else
-#include <winuser.h>  // For BlockInput
+#include <winable.h>
 #endif
 
 #ifdef _DEBUG
@@ -1329,11 +1324,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
 
   // Stop Keyboard/Mouse Input
   TRACE(L"DboxMain::DoAutoType - BlockInput set\n");
-#if _MSC_VER < 1500
   ::BlockInput(true);
-#else
-  BlockInput(true);
-#endif
 
   // Note that minimizing the window before calling ci.Get*()
   // will cause garbage to be read if "lock on minimize" selected,
@@ -1466,11 +1457,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
 
   // Reset Keyboard/Mouse Input
   TRACE(L"DboxMain::DoAutoType - BlockInput reset\n");
-#if _MSC_VER < 1500
   ::BlockInput(false);
-#else
-  BlockInput(false);
-#endif
 
   vsx_notes_lines.clear();
 }

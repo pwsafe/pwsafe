@@ -59,14 +59,23 @@
 
 #include "psapi.h"    // For EnumProcesses
 #include <afxpriv.h>
-#include <stdlib.h> // for qsort
+#include <stdlib.h>   // for qsort
 #include <bitset>
 #include <algorithm>
 
-#if _MSC_VER < 1500
-#include <winable.h>  // For BlockInput
+// Need to add Windows SDK 6.0 (or later) 'include' and 'lib' libraries to
+// Visual Studio "VC++ directories" in their respective search orders to find
+// 'WtsApi32.h' and 'WtsApi32.lib'
+#include <WtsApi32.h> // For Terminal services to give session changes Lock etc.
+
+// WTS constants
+#include <winuser.h>
+
+// Pre-VS2008, BlockInput is in 'winable.h' but VS2008 moved it to 'winuser.h'
+#if _MSC_VER > 1400
+#include <winuser.h>
 #else
-#include <winuser.h>  // For BlockInput
+#include <winable.h>
 #endif
 
 #ifdef _DEBUG
@@ -120,7 +129,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
-  m_AutoType(L""), m_pToolTipCtrl(NULL)
+  m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false)
 {
   m_eye_catcher = _wcsdup(EYE_CATCHER);
 
@@ -167,6 +176,40 @@ LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
   return (LRESULT)app.m_uiRegMsg;
 }
 
+bool DboxMain::SetSessionNotification()
+{
+  // Make sure that we can get to it!
+  typedef DWORD (WINAPI *PWTS_RSN) (HWND, DWORD);
+
+  PWTS_RSN pWTS_RSN;
+  HINSTANCE hWTSAPI32 = ::LoadLibrary(L"wtsapi32.dll");
+  if (hWTSAPI32 == NULL)
+    goto cant_do;
+
+  pWTS_RSN = (PWTS_RSN)::GetProcAddress(hWTSAPI32, "WTSRegisterSessionNotification"); 
+
+  ::FreeLibrary(hWTSAPI32);
+  if (pWTS_RSN == NULL)
+    goto cant_do;
+
+  int num(5);
+
+  while (num > 0) {
+    if (WTSRegisterSessionNotification(GetSafeHwnd(), NOTIFY_FOR_THIS_SESSION) == TRUE)
+      return true;
+
+    if (GetLastError() == RPC_S_INVALID_BINDING) {
+      // Terminal Services not running!  Wait a very small time and try up to 5 times
+      num--;
+      ::Sleep(10);
+    } else
+      break;
+  }
+
+cant_do:
+  return false;
+}
+
 LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
 {
   // We are only being called for HSHELL_WINDOWACTIVATED
@@ -184,11 +227,7 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
     m_AutoType.clear();
     // Reset Keyboard/Mouse Input
     TRACE(L"DboxMain::OnWH_SHELL_CallBack - BlockInput reset\n");
-#if _MSC_VER < 1500
     ::BlockInput(false);
-#else
-    BlockInput(false);
-#endif
     return FALSE;
   }
 
@@ -399,6 +438,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_BN_CLICKED(IDOK, OnEdit)
 #endif
 
+  ON_MESSAGE(WM_WTSSESSION_CHANGE, OnSessionChange)
   ON_MESSAGE(WM_ICON_NOTIFY, OnTrayNotification)
   ON_MESSAGE(WM_HOTKEY, OnHotKey)
   ON_MESSAGE(WM_CCTOHDR_DD_COMPLETE, OnCCToHdrDragComplete)
@@ -995,6 +1035,13 @@ BOOL DboxMain::OnInitDialog()
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGURL), cs_ToolTip);
   }
 
+  // Set up notification of desktop state
+  m_bRegistered = SetSessionNotification();
+
+  // If successful, no need for Timer
+  if (m_bRegistered)
+    KillTimer(TIMER_CHECKLOCK);
+
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -1024,7 +1071,11 @@ void DboxMain::OnDestroy()
     m_core.UnlockFile(filename);
 
   // Get rid of hotkey
-  UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID);
+  UnregisterHotKey(GetSafeHwnd(), PWS_HOTKEY_ID);
+
+  // Stop being notified about session changes
+  WTSUnRegisterSessionNotification(GetSafeHwnd());
+  m_bRegistered = false;
 
   // Stop subclassing the ListView HeaderCtrl
   if (m_LVHdrCtrl.GetSafeHwnd() != NULL)
@@ -1900,8 +1951,12 @@ void DboxMain::UnMinimize(bool update_windows)
   }
 }
 
-void
-DboxMain::startLockCheckTimer(){
+void DboxMain::startLockCheckTimer()
+{
+  // No need for this timer if we know when desktop locks
+  if (m_bRegistered)
+    return;
+
   const UINT INTERVAL = 5000; // every 5 seconds should suffice
 
   if (PWSprefs::GetInstance()->
@@ -1942,6 +1997,33 @@ bool DboxMain::DecrementAndTestIdleLockCounter()
     return (--m_IdleLockCountDown == 0);
   else
     return false; // so we return true only once if idle
+}
+
+LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
+{
+  // Handle Lock/Unlock, Fast User Switching and Remote access.
+  // Won't be called if the registeration failed (i.e. < Windows XP
+  // or the "Windows Terminal Server" service wasn't active at startup.
+  TRACE(L"OnSessionChange. wParam = %d\n", wParam);
+  switch (wParam) {
+    case WTS_CONSOLE_DISCONNECT:
+    case WTS_REMOTE_DISCONNECT:
+    case WTS_SESSION_LOCK:
+    case WTS_SESSION_LOGOFF:
+      m_bWSLocked = true;
+      LockDataBase(TIMER_CHECKLOCK);
+      break;
+    case WTS_CONSOLE_CONNECT:
+    case WTS_REMOTE_CONNECT:
+    case WTS_SESSION_UNLOCK:
+    case WTS_SESSION_LOGON:
+      m_bWSLocked = false;
+      break;
+    case WTS_SESSION_REMOTE_CONTROL:
+    default:
+      break;
+  }
+  return 0L;
 }
 
 LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
