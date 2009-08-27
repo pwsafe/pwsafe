@@ -86,27 +86,38 @@ static void InsertShortcuts(CMenu *pMenu, unsigned int parentID, MapMenuShortcut
   // if parentID == 0, we're processing a toplevel menu,
   // else, we're passed the menu in which the desired
   // submenu resides.
+  CMenu *pSCTMenu(pMenu);
+  ASSERT_VALID(pSCTMenu);
+
   if (parentID != 0) {
-    int pos1 = app.FindMenuItem(pMenu, parentID);
+    int pos1 = app.FindMenuItem(pSCTMenu, parentID);
     ASSERT(pos1 != -1);
-    pMenu = pMenu->GetSubMenu(pos1);
+    pSCTMenu = pSCTMenu->GetSubMenu(pos1);
+    ASSERT_VALID(pSCTMenu);
   }
+
+  BOOL brc;
   wchar_t tcMenuString[_MAX_PATH + 1];
   CMenuShortcut mst;
   mst.iMenuPosition = 0;
   mst.uiParentID = parentID;
 
-  MENUITEMINFO miinfo;
-  memset(&miinfo, 0x00, sizeof(MENUITEMINFO));
-  miinfo.cbSize = sizeof(MENUITEMINFO);
-  miinfo.fMask = MIIM_ID | MIIM_STRING;
-  miinfo.dwTypeData = tcMenuString;
-  int count = pMenu->GetMenuItemCount();
+  MENUITEMINFO miinfo = {0};
 
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, sizeof(tcMenuString));
+  UINT uiCount = pSCTMenu->GetMenuItemCount();
+  ASSERT((int)uiCount >= 0);
+
+  for (UINT ui = 0; ui < uiCount; ui++) {
+    SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
+    SecureZeroMemory(&miinfo, sizeof(miinfo));
+    miinfo.cbSize = sizeof(MENUITEMINFO);
+    miinfo.fMask = MIIM_ID | MIIM_STRING;
     miinfo.cch = _MAX_PATH;
-    pMenu->GetMenuItemInfo(i, &miinfo, TRUE);
+    miinfo.dwTypeData = tcMenuString;
+
+    brc = pSCTMenu->GetMenuItemInfo(ui, &miinfo, TRUE);
+    ASSERT(brc != 0);
+
     if (miinfo.wID >= 1) {
       mst.name = tcMenuString;
       mms.insert(MapMenuShortcutsPair(miinfo.wID, mst));
@@ -119,13 +130,15 @@ void DboxMain::SetUpInitialMenuStrings()
 {
   CMenu *pMainMenu;
   CMenu *pMenu1;
-  int pos1, count;
+  int pos1;
+  UINT uiCount;
 
   CHotKeyCtrl cHKC;
   CString sKeyName;
   LPCWSTR ptcKeyName;
   wchar_t *pname;
   st_KeyIDExt st_KIDEx;
+  BOOL brc;
 
   // Following are excluded from list of user-configurable
   // shortcuts
@@ -133,7 +146,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // Add user Excluded Menu Items - anything that is a Popup Menu
     ID_FILEMENU, ID_EXPORTMENU, ID_IMPORTMENU, ID_EDITMENU,
     ID_VIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
-    ID_MANAGEMENU, ID_HELPMENU,ID_FINDMENU,
+    ID_MANAGEMENU, ID_HELPMENU, ID_FINDMENU,
 
   // Plus Exit (2 shortcuts Ctrl+Q and Alt+F4) and Help (F1)
     ID_MENUITEM_EXIT, ID_HELP,
@@ -202,32 +215,34 @@ void DboxMain::SetUpInitialMenuStrings()
   }
 
   pMainMenu = new CMenu;
-  pMainMenu->LoadMenu(IDR_MAINMENU);
+  brc = pMainMenu->LoadMenu(IDR_MAINMENU);
+  ASSERT(brc != 0);
 
   wchar_t tcMenuString[_MAX_PATH + 1];
 
-  MENUINFO minfo;
-  memset(&minfo, 0x00, sizeof(minfo));
-  minfo.cbSize = sizeof(MENUINFO);
-  minfo.fMask = MIM_MENUDATA;
+  MENUITEMINFO miinfo = {0};
 
-  MENUITEMINFO miinfo;
-  memset(&miinfo, 0x00, sizeof(MENUITEMINFO));
-  miinfo.cbSize = sizeof(MENUITEMINFO);
-  miinfo.fMask = MIIM_ID | MIIM_STRING;
-  miinfo.dwTypeData = tcMenuString;
+  uiCount = pMainMenu->GetMenuItemCount();
+  ASSERT((int)uiCount >= 0);
 
-  count = pMainMenu->GetMenuItemCount();
   // Add reserved shortcuts = Alt+'x' for main menu e.g. Alt+F, E, V, M, H
   // Maybe different in other languages
   st_MenuShortcut st_mst;
   st_mst.cVirtKey;
   st_mst.cModifier = HOTKEYF_ALT;
 
-  for (int i = 0; i < count; i++) {
-    ZeroMemory(tcMenuString, (_MAX_PATH + 1) * sizeof(wchar_t));
+  for (UINT ui = 0; ui < uiCount; ui++) {
+    SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
+
+    SecureZeroMemory(&miinfo, sizeof(miinfo));
+    miinfo.cbSize = sizeof(MENUITEMINFO);
+    miinfo.fMask = MIIM_ID | MIIM_STRING;
+    miinfo.dwTypeData = tcMenuString;
     miinfo.cch = _MAX_PATH;
-    pMainMenu->GetMenuItemInfo(i, &miinfo, TRUE);
+
+    brc = pMainMenu->GetMenuItemInfo(ui, &miinfo, TRUE);
+    ASSERT(brc != 0);
+
     if (miinfo.wID >= 1) {
       CString csMainMenuItem = tcMenuString;
       int iamp = csMainMenuItem.Find(L'&');
@@ -300,16 +315,21 @@ void DboxMain::SetUpInitialMenuStrings()
   InsertShortcuts(pMainMenu, ID_HELPMENU, m_MapMenuShortcuts);
 
   // Don't need main menu again here
-  pMainMenu->DestroyMenu();
+  brc = pMainMenu->DestroyMenu();
+  ASSERT(brc != 0);
 
   // Do Find toolbar menu items not on a menu!
-  pMainMenu->LoadMenu(IDR_POPFIND);
+  brc = pMainMenu->LoadMenu(IDR_POPFIND);
+  ASSERT(brc != 0);
+
   InsertShortcuts(pMainMenu, 0, m_MapMenuShortcuts);
 
   InsertShortcuts(pMainMenu, ID_FINDMENU, m_MapMenuShortcuts);
 
   // No longer need any menus
-  pMainMenu->DestroyMenu();
+  brc = pMainMenu->DestroyMenu();
+  ASSERT(brc != 0);
+
   delete pMainMenu;
 
   // Now that we have all menu strings - go get current accelerator strings
@@ -461,18 +481,26 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
 {
   // Can't use GetMenuItemID, as it does not understand that with the MENUEX
   // format, Popup menus can have IDs
-  MENUITEMINFO miinfo;
-  memset(&miinfo, 0x00, sizeof(MENUITEMINFO));
-  miinfo.cbSize = sizeof(MENUITEMINFO);
-  miinfo.fMask = MIIM_ID | MIIM_STATE;
+  ASSERT_VALID(pPopupMenu);
+
+  BOOL brc;
+  MENUITEMINFO miinfo = {0};
 
   MapMenuShortcutsIter iter;
   MapKeyNameIDConstIter citer;
   st_KeyIDExt st_KIDEx;
 
-  int count = pPopupMenu->GetMenuItemCount();
-  for (int i = 0; i < count; i++) {
-    pPopupMenu->GetMenuItemInfo(i, &miinfo, TRUE);
+  UINT uiCount = pPopupMenu->GetMenuItemCount();
+  ASSERT((int)uiCount >= 0);
+
+  for (UINT ui = 0; ui < uiCount; ui++) {
+    SecureZeroMemory(&miinfo, sizeof(miinfo));
+    miinfo.cbSize = sizeof(MENUITEMINFO);
+    miinfo.fMask = MIIM_ID | MIIM_STATE;
+
+    brc = pPopupMenu->GetMenuItemInfo(ui, &miinfo, TRUE);
+    ASSERT(brc != 0);
+
     // Exit & Help never changed and their shortcuts are in the menu text
     if (miinfo.wID >= 1 &&
         miinfo.wID != ID_MENUITEM_EXIT && miinfo.wID != ID_HELP) {
@@ -511,6 +539,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   CItemData *pci(NULL);
   CItemData::EntryType etype(CItemData::ET_INVALID);
   const wchar_t *tc_dummy = L" ";
+
+  ASSERT_VALID(pPopupMenu);
 
   // Except for Edit & View menus, we only get here if the Shortcuts have changed and
   // we need to rebuild menu item text
@@ -582,8 +612,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   if (uiMenuID == ID_EDITMENU) {
     // Delete all entries and rebuild depending on group/entry selected
     // and, if entry, if fields are non-empty
-    int count = pPopupMenu->GetMenuItemCount();
-    for (int i = 0; i < count; i++) {
+    UINT uiCount = pPopupMenu->GetMenuItemCount();
+    ASSERT((int)uiCount >= 0);
+
+    for (UINT ui = 0; ui < uiCount; ui++) {
       pPopupMenu->RemoveMenu(0, MF_BYPOSITION);
     }
 
@@ -782,13 +814,16 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   // Don't do the old OnInitMenu processing if the right-click context menu
   // (IDR_POPEDITMENU or IDR_POPEDITGROUP) is being processed. Only for the Main Menu
   // (ID_EDITMENU).
-  ASSERT(pPopupMenu != NULL);
+  ASSERT_VALID(pPopupMenu);
 
-  MENUINFO minfo;
-  memset(&minfo, 0x00, sizeof(minfo));
+  BOOL brc;
+  MENUINFO minfo = {0};
+  SecureZeroMemory(&minfo, sizeof(minfo));
   minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_MENUDATA;
-  pPopupMenu->GetMenuInfo(&minfo);
+
+  brc = pPopupMenu->GetMenuInfo(&minfo);
+  ASSERT(brc != 0);
 
   // Need to update the main menu if the shortcuts have been changed or
   // if the Edit or View menu.  The Edit menu is completely rebuilt each time
@@ -849,6 +884,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   // CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
   CCmdUI state; // Check the enabled state of various menu items
   state.m_pMenu = pPopupMenu;
+
   ASSERT(state.m_pOther == NULL);
   ASSERT(state.m_pParentMenu == NULL);
 
@@ -880,6 +916,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     state.m_nID = pPopupMenu->GetMenuItemID(state.m_nIndex);
     if (state.m_nID == 0)
       continue; // Menu separator or invalid cmd - ignore it.
+
     ASSERT(state.m_pOther == NULL);
     ASSERT(state.m_pMenu != NULL);
     if (state.m_nID == (UINT)-1) {
@@ -916,27 +953,39 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     return;
 
   // System Tray Popup menu processing only
+  SecureZeroMemory(&minfo, sizeof(minfo));
+  minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_STYLE;
   minfo.dwStyle = MNS_CHECKORBMP | MNS_AUTODISMISS;
-  pPopupMenu->SetMenuInfo(&minfo);
 
-  MENUITEMINFO miinfo;
-  memset(&miinfo, 0x00, sizeof(miinfo));
-  miinfo.cbSize = sizeof(miinfo);
+  brc = pPopupMenu->SetMenuInfo(&minfo);
+  ASSERT(brc != 0);
+
+  MENUITEMINFO miinfo = {0};
   CRUEItemData *pmd;
 
-  for (UINT pos = 0; pos < pPopupMenu->GetMenuItemCount(); pos++) {
-    miinfo.fMask = MIIM_FTYPE | MIIM_DATA;
-    pPopupMenu->GetMenuItemInfo(pos, &miinfo, TRUE);
-    pmd = (CRUEItemData *)miinfo.dwItemData;
+  UINT uiCount = pPopupMenu->GetMenuItemCount();
+  ASSERT((int)uiCount >= 0);
 
+  for (UINT pos = 0; pos < uiCount; pos++) {
+    SecureZeroMemory(&miinfo, sizeof(miinfo));
+    miinfo.cbSize = sizeof(MENUITEMINFO);
+    miinfo.fMask = MIIM_FTYPE | MIIM_DATA;
+
+    brc = pPopupMenu->GetMenuItemInfo(pos, &miinfo, TRUE);
+    ASSERT(brc != 0);
+
+    pmd = (CRUEItemData *)miinfo.dwItemData;
     if (pmd && pmd->IsRUEID() && !(miinfo.fType & MFT_OWNERDRAW) &&
         pmd->nImage >= 0) {
+      SecureZeroMemory(&miinfo, sizeof(miinfo));
+      miinfo.cbSize = sizeof(MENUITEMINFO);
       miinfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
       miinfo.hbmpItem = HBMMENU_CALLBACK;
       miinfo.fType = MFT_STRING;
 
-      pPopupMenu->SetMenuItemInfo(pos, &miinfo, TRUE);
+      brc = pPopupMenu->SetMenuItemInfo(pos, &miinfo, TRUE);
+      ASSERT(brc != 0);
     }
   }
 }
@@ -950,13 +999,14 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
 #endif
 
+  BOOL brc;
   CPoint client;
   int item = -1;
   CItemData *pci = NULL;
   CMenu menu;
 
-  MENUINFO minfo;
-  memset(&minfo, 0x00, sizeof(minfo));
+  MENUINFO minfo = {0};
+  SecureZeroMemory(&minfo, sizeof(minfo));
   minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_MENUDATA;
 
@@ -1002,9 +1052,12 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       mp.y > rect.top && mp.y < rect.bottom) {
     if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
       minfo.dwMenuData = IDR_POPCUSTOMIZETOOLBAR;
-      menu.SetMenuInfo(&minfo);
+      brc = menu.SetMenuInfo(&minfo);
+      ASSERT(brc != 0);
+
       CMenu* pPopup = menu.GetSubMenu(0);
-      ASSERT(pPopup != NULL);
+      ASSERT_VALID(pPopup);
+
       pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this); // use this window for commands
     }
     return;
@@ -1043,6 +1096,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       return;
     }
     ASSERT(m_ctlItemTree.IsWindowVisible());
+
     m_ctlItemTree.ScreenToClient(&client);
     HTREEITEM ti = m_ctlItemTree.HitTest(client);
     if (ti != NULL) {
@@ -1062,7 +1116,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
           menu.SetMenuInfo(&minfo);
 
           CMenu* pPopup = menu.GetSubMenu(0);
-          ASSERT(pPopup != NULL);
+          ASSERT_VALID(pPopup);
           m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
           // use this DboxMain for commands
           pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
@@ -1072,9 +1126,10 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       // not over anything
       if (menu.LoadMenu(IDR_POPTREE)) {  // "Add Group"
         minfo.dwMenuData = IDR_POPTREE;
-        menu.SetMenuInfo(&minfo);
+        brc = menu.SetMenuInfo(&minfo);
+        ASSERT(brc != 0);
         CMenu* pPopup = menu.GetSubMenu(0);
-        ASSERT(pPopup != NULL);
+        ASSERT_VALID(pPopup);
         // use this DboxMain for commands
         pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
       }
@@ -1084,13 +1139,17 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
 
   // RClick over an entry
   if (item >= 0) {
-    menu.LoadMenu(IDR_POPEDITMENU);
+    ASSERT(pci != NULL);
+
+    brc = menu.LoadMenu(IDR_POPEDITMENU);
+    ASSERT(brc != 0);
+
     minfo.dwMenuData = IDR_POPEDITMENU;
-    menu.SetMenuInfo(&minfo);
+    brc = menu.SetMenuInfo(&minfo);
+    ASSERT(brc != 0);
 
     CMenu* pPopup = menu.GetSubMenu(0);
-    ASSERT(pPopup != NULL);
-    ASSERT(pci != NULL);
+    ASSERT_VALID(pPopup);
 
     CItemData::EntryType etype = pci->GetEntryType();
     switch (etype) {
