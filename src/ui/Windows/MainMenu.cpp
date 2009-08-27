@@ -81,56 +81,57 @@ static bool IsExtended(int code)
   }
 }
 
-static void InsertShortcuts(CMenu *pMenu, unsigned int parentID, MapMenuShortcuts &mms)
+void InsertShortcuts(CMenu *pMenu, MapMenuShortcuts &mms,
+                     const unsigned int parentID)
 {
   // if parentID == 0, we're processing a toplevel menu,
   // else, we're passed the menu in which the desired
   // submenu resides.
-  CMenu *pSCTMenu(pMenu);
-  ASSERT_VALID(pSCTMenu);
-
-  if (parentID != 0) {
-    int pos1 = app.FindMenuItem(pSCTMenu, parentID);
-    ASSERT(pos1 != -1);
-    pSCTMenu = pSCTMenu->GetSubMenu(pos1);
-    ASSERT_VALID(pSCTMenu);
-  }
-
   BOOL brc;
   wchar_t tcMenuString[_MAX_PATH + 1];
   CMenuShortcut mst;
-  mst.iMenuPosition = 0;
-  mst.uiParentID = parentID;
+  MENUITEMINFO miteminfo;
+ 
+  CMenu *pSCTMenu = pMenu;
+  ASSERT_VALID(pSCTMenu);
+  static int iMenuPos(0);
 
-  MENUITEMINFO miinfo = {0};
+  if (parentID != 0) {
+    int isubmenu_pos = app.FindMenuItem(pSCTMenu, parentID);
+    ASSERT(isubmenu_pos != -1);
+    pSCTMenu = pSCTMenu->GetSubMenu(isubmenu_pos);
+    ASSERT_VALID(pSCTMenu);
+  }
+
+  mst.uiParentID = parentID;
 
   UINT uiCount = pSCTMenu->GetMenuItemCount();
   ASSERT((int)uiCount >= 0);
 
   for (UINT ui = 0; ui < uiCount; ui++) {
     SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
-    SecureZeroMemory(&miinfo, sizeof(miinfo));
-    miinfo.cbSize = sizeof(MENUITEMINFO);
-    miinfo.fMask = MIIM_ID | MIIM_STRING;
-    miinfo.cch = _MAX_PATH;
-    miinfo.dwTypeData = tcMenuString;
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    miteminfo.fMask = MIIM_ID | MIIM_STRING;
+    miteminfo.cch = _MAX_PATH;
+    miteminfo.dwTypeData = tcMenuString;
 
-    brc = pSCTMenu->GetMenuItemInfo(ui, &miinfo, TRUE);
+    brc = pSCTMenu->GetMenuItemInfo(ui, &miteminfo, TRUE);
     ASSERT(brc != 0);
 
-    if (miinfo.wID >= 1) {
+    if (miteminfo.wID >= 1) {
       mst.name = tcMenuString;
-      mms.insert(MapMenuShortcutsPair(miinfo.wID, mst));
-      mst.iMenuPosition++;
+      mst.iMenuPosition = iMenuPos;
+      mms.insert(MapMenuShortcutsPair(miteminfo.wID, mst));
+      iMenuPos++;
     }
   }
 }
 
 void DboxMain::SetUpInitialMenuStrings()
 {
-  CMenu *pMainMenu;
-  CMenu *pMenu1;
-  int pos1;
+  CMenu *pMainMenu, *pSubMenu;
+  int isubmenu_pos;
   UINT uiCount;
 
   CHotKeyCtrl cHKC;
@@ -220,7 +221,7 @@ void DboxMain::SetUpInitialMenuStrings()
 
   wchar_t tcMenuString[_MAX_PATH + 1];
 
-  MENUITEMINFO miinfo = {0};
+  MENUITEMINFO miteminfo = {0};
 
   uiCount = pMainMenu->GetMenuItemCount();
   ASSERT((int)uiCount >= 0);
@@ -234,16 +235,16 @@ void DboxMain::SetUpInitialMenuStrings()
   for (UINT ui = 0; ui < uiCount; ui++) {
     SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
 
-    SecureZeroMemory(&miinfo, sizeof(miinfo));
-    miinfo.cbSize = sizeof(MENUITEMINFO);
-    miinfo.fMask = MIIM_ID | MIIM_STRING;
-    miinfo.dwTypeData = tcMenuString;
-    miinfo.cch = _MAX_PATH;
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    miteminfo.fMask = MIIM_ID | MIIM_STRING;
+    miteminfo.dwTypeData = tcMenuString;
+    miteminfo.cch = _MAX_PATH;
 
-    brc = pMainMenu->GetMenuItemInfo(ui, &miinfo, TRUE);
+    brc = pMainMenu->GetMenuItemInfo(ui, &miteminfo, TRUE);
     ASSERT(brc != 0);
 
-    if (miinfo.wID >= 1) {
+    if (miteminfo.wID >= 1) {
       CString csMainMenuItem = tcMenuString;
       int iamp = csMainMenuItem.Find(L'&');
       if (iamp >= 0 && iamp < csMainMenuItem.GetLength() - 1) {
@@ -269,50 +270,46 @@ void DboxMain::SetUpInitialMenuStrings()
   // Now get all other Menu items
   // (ronys) I think we can do the following properly via recursive descent. Later.
 
-  CMenuShortcut mst;
-  mst.name = tcMenuString;
-  mst.iMenuPosition = 0;
-
   // Do Main Menu (uiParentID == 0)
-  InsertShortcuts(pMainMenu, 0, m_MapMenuShortcuts);
+  InsertShortcuts(pMainMenu, m_MapMenuShortcuts, 0);
 
   // Do File Menu
-  InsertShortcuts(pMainMenu, ID_FILEMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_FILEMENU);
 
-  pos1 = app.FindMenuItem(pMainMenu, ID_FILEMENU);
-  ASSERT(pos1 != -1);
-  pMenu1 = pMainMenu->GetSubMenu(pos1);
+  isubmenu_pos = app.FindMenuItem(pMainMenu, ID_FILEMENU);
+  ASSERT(isubmenu_pos != -1);
+  pSubMenu = pMainMenu->GetSubMenu(isubmenu_pos);
 
   // Do File Menu Export submenu
-  InsertShortcuts(pMenu1, ID_EXPORTMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_EXPORTMENU);
 
   // Do File Menu Import submenu
-  InsertShortcuts(pMenu1, ID_IMPORTMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_IMPORTMENU);
 
   // Do Edit Menu
-  InsertShortcuts(pMainMenu, ID_EDITMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_EDITMENU);
 
   // Do View Menu
-  InsertShortcuts(pMainMenu, ID_VIEWMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_VIEWMENU);
 
-  pos1 = app.FindMenuItem(pMainMenu, ID_VIEWMENU);
-  ASSERT(pos1 != -1);
-  pMenu1 = pMainMenu->GetSubMenu(pos1);
+  isubmenu_pos = app.FindMenuItem(pMainMenu, ID_VIEWMENU);
+  ASSERT(isubmenu_pos != -1);
+  pSubMenu = pMainMenu->GetSubMenu(isubmenu_pos);
 
   // Do View Menu Filter submenu
-  InsertShortcuts(pMenu1, ID_FILTERMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_FILTERMENU);
 
   // Do View Menu ChangeFont submenu
-  InsertShortcuts(pMenu1, ID_CHANGEFONTMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_CHANGEFONTMENU);
 
   // Do View Menu Reports submenu
-  InsertShortcuts(pMenu1, ID_REPORTSMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_REPORTSMENU);
 
   // Do Manage Menu
-  InsertShortcuts(pMainMenu, ID_MANAGEMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_MANAGEMENU);
 
   // Do Help Menu
-  InsertShortcuts(pMainMenu, ID_HELPMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_HELPMENU);
 
   // Don't need main menu again here
   brc = pMainMenu->DestroyMenu();
@@ -322,9 +319,10 @@ void DboxMain::SetUpInitialMenuStrings()
   brc = pMainMenu->LoadMenu(IDR_POPFIND);
   ASSERT(brc != 0);
 
-  InsertShortcuts(pMainMenu, 0, m_MapMenuShortcuts);
+  // Again a parent menu (uiParentID == 0)
+  InsertShortcuts(pMainMenu, m_MapMenuShortcuts, 0);
 
-  InsertShortcuts(pMainMenu, ID_FINDMENU, m_MapMenuShortcuts);
+  InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_FINDMENU);
 
   // No longer need any menus
   brc = pMainMenu->DestroyMenu();
@@ -484,7 +482,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
   ASSERT_VALID(pPopupMenu);
 
   BOOL brc;
-  MENUITEMINFO miinfo = {0};
+  MENUITEMINFO miteminfo = {0};
 
   MapMenuShortcutsIter iter;
   MapKeyNameIDConstIter citer;
@@ -494,17 +492,17 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
   ASSERT((int)uiCount >= 0);
 
   for (UINT ui = 0; ui < uiCount; ui++) {
-    SecureZeroMemory(&miinfo, sizeof(miinfo));
-    miinfo.cbSize = sizeof(MENUITEMINFO);
-    miinfo.fMask = MIIM_ID | MIIM_STATE;
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    miteminfo.fMask = MIIM_ID | MIIM_STATE;
 
-    brc = pPopupMenu->GetMenuItemInfo(ui, &miinfo, TRUE);
+    brc = pPopupMenu->GetMenuItemInfo(ui, &miteminfo, TRUE);
     ASSERT(brc != 0);
 
     // Exit & Help never changed and their shortcuts are in the menu text
-    if (miinfo.wID >= 1 &&
-        miinfo.wID != ID_MENUITEM_EXIT && miinfo.wID != ID_HELP) {
-      iter = m_MapMenuShortcuts.find(miinfo.wID);
+    if (miteminfo.wID >= 1 &&
+        miteminfo.wID != ID_MENUITEM_EXIT && miteminfo.wID != ID_HELP) {
+      iter = m_MapMenuShortcuts.find(miteminfo.wID);
       if (iter != m_MapMenuShortcuts.end()) {
         CString str;
         if (iter->second.cVirtKey != 0) {
@@ -516,7 +514,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
         } else {
           str = iter->second.name.c_str();
         }
-        pPopupMenu->ModifyMenu(miinfo.wID, MF_BYCOMMAND | miinfo.fState, miinfo.wID, str);
+        pPopupMenu->ModifyMenu(miteminfo.wID, MF_BYCOMMAND | miteminfo.fState, miteminfo.wID, str);
       }
     }
   }
@@ -961,30 +959,30 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   brc = pPopupMenu->SetMenuInfo(&minfo);
   ASSERT(brc != 0);
 
-  MENUITEMINFO miinfo = {0};
+  MENUITEMINFO miteminfo = {0};
   CRUEItemData *pmd;
 
   UINT uiCount = pPopupMenu->GetMenuItemCount();
   ASSERT((int)uiCount >= 0);
 
   for (UINT pos = 0; pos < uiCount; pos++) {
-    SecureZeroMemory(&miinfo, sizeof(miinfo));
-    miinfo.cbSize = sizeof(MENUITEMINFO);
-    miinfo.fMask = MIIM_FTYPE | MIIM_DATA;
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    miteminfo.fMask = MIIM_FTYPE | MIIM_DATA;
 
-    brc = pPopupMenu->GetMenuItemInfo(pos, &miinfo, TRUE);
+    brc = pPopupMenu->GetMenuItemInfo(pos, &miteminfo, TRUE);
     ASSERT(brc != 0);
 
-    pmd = (CRUEItemData *)miinfo.dwItemData;
-    if (pmd && pmd->IsRUEID() && !(miinfo.fType & MFT_OWNERDRAW) &&
+    pmd = (CRUEItemData *)miteminfo.dwItemData;
+    if (pmd && pmd->IsRUEID() && !(miteminfo.fType & MFT_OWNERDRAW) &&
         pmd->nImage >= 0) {
-      SecureZeroMemory(&miinfo, sizeof(miinfo));
-      miinfo.cbSize = sizeof(MENUITEMINFO);
-      miinfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
-      miinfo.hbmpItem = HBMMENU_CALLBACK;
-      miinfo.fType = MFT_STRING;
+      SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+      miteminfo.cbSize = sizeof(MENUITEMINFO);
+      miteminfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
+      miteminfo.hbmpItem = HBMMENU_CALLBACK;
+      miteminfo.fType = MFT_STRING;
 
-      brc = pPopupMenu->SetMenuItemInfo(pos, &miinfo, TRUE);
+      brc = pPopupMenu->SetMenuItemInfo(pos, &miteminfo, TRUE);
       ASSERT(brc != 0);
     }
   }
@@ -1005,7 +1003,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   CItemData *pci = NULL;
   CMenu menu;
 
-  MENUINFO minfo = {0};
+  MENUINFO minfo;
   SecureZeroMemory(&minfo, sizeof(minfo));
   minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_MENUDATA;

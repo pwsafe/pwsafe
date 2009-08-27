@@ -104,11 +104,11 @@ protected:
   virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
 
   // CSubclassWnd message handlers
-  virtual void OnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu);
-  virtual BOOL OnMeasureItem(LPMEASUREITEMSTRUCT lpms);
-  virtual BOOL OnDrawItem(LPDRAWITEMSTRUCT lpds);
-  virtual LONG OnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu);
-  virtual void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
+  virtual void CMOnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu);
+  virtual BOOL CMOnMeasureItem(LPMEASUREITEMSTRUCT lpms);
+  virtual BOOL CMOnDrawItem(LPDRAWITEMSTRUCT lpds);
+  virtual LONG CMOnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu);
+  virtual void CMOnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
 };
 
 //////////////////
