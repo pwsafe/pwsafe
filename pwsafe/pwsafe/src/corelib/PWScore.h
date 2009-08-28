@@ -176,7 +176,7 @@ public:
   void AddEntry(const uuid_array_t &entry_uuid, const CItemData &item);
   ItemList::size_type GetNumEntries() const {return m_pwlist.size();}
   void RemoveEntryAt(ItemListIter pos)
-  {m_changed = true; NotifyListModified(); m_pwlist.erase(pos);}
+  {m_changed = true; m_pwlist.erase(pos); NotifyListModified();}
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user);
