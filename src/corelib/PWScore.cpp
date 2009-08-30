@@ -1117,7 +1117,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (i_Offset[RUNCMD] >= 0 && tokens.size() > (size_t)i_Offset[RUNCMD])
       temp.SetRunCommand(tokens[i_Offset[RUNCMD]].c_str());
     if (i_Offset[DCA] >= 0 && tokens.size() > (size_t)i_Offset[DCA])
-      temp.SetRunCommand(tokens[i_Offset[DCA]].c_str());
+      temp.SetDCA(tokens[i_Offset[DCA]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
