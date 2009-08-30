@@ -120,9 +120,11 @@ void InsertShortcuts(CMenu *pMenu, MapMenuShortcuts &mms,
     ASSERT(brc != 0);
 
     if (miteminfo.wID >= 1) {
+      std::pair< MapMenuShortcutsIter, bool > pr;
       mst.name = tcMenuString;
       mst.iMenuPosition = iMenuPos;
-      mms.insert(MapMenuShortcutsPair(miteminfo.wID, mst));
+      pr = mms.insert(MapMenuShortcutsPair(miteminfo.wID, mst));
+      ASSERT(pr.second == true);
       iMenuPos++;
     }
   }
@@ -171,11 +173,14 @@ void DboxMain::SetUpInitialMenuStrings()
   m_ExcludedMenuItems.assign(excludedMenuItems,
                              excludedMenuItems + _countof(excludedMenuItems));
 
+  std::pair< MapKeyNameIDIter, bool > prMKNID;
+
   // Add in the zero/None entry
   pname = _wcsdup(L"");
   st_KIDEx.id = 0;
   st_KIDEx.bExtended = false;
-  m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
+  prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
+  ASSERT(prMKNID.second == true);
 
   // Now add in locale key names (note range 0xE0-0xFF not used)
   for (int i = 1; i < 0xE0; i++) {
@@ -211,7 +216,8 @@ void DboxMain::SetUpInitialMenuStrings()
       ptcKeyName = sKeyName2.GetBuffer(sKeyName2.GetLength());
       pname = _wcsdup(ptcKeyName);
       sKeyName2.ReleaseBuffer();
-      m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
+      prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
+      ASSERT(prMKNID.second == true);
     }
   }
 
@@ -412,13 +418,18 @@ void DboxMain::SetUpInitialMenuStrings()
   // Set up the shortcuts based on the main entry
   // for View, Delete and Rename
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDIT);
+  ASSERT(iter != m_MapMenuShortcuts.end());
   iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEW);
+  ASSERT(iter_entry != m_MapMenuShortcuts.end());
   iter_entry->second.SetKeyFlags(iter->second);
 
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
+  ASSERT(iter != m_MapMenuShortcuts.end());
   iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEENTRY);
+  ASSERT(iter_entry != m_MapMenuShortcuts.end());
   iter_entry->second.SetKeyFlags(iter->second);
   iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
+  ASSERT(iter_group != m_MapMenuShortcuts.end());
   iter_group->second.SetKeyFlags(iter->second);
 
   // Now tell the TreeCtrl the key for Delete
@@ -426,9 +437,12 @@ void DboxMain::SetUpInitialMenuStrings()
   m_ctlItemList.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
 
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_RENAME);
+  ASSERT(iter != m_MapMenuShortcuts.end());
   iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEENTRY);
+  ASSERT(iter_entry != m_MapMenuShortcuts.end());
   iter_entry->second.SetKeyFlags(iter->second);
   iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
+  ASSERT(iter_group != m_MapMenuShortcuts.end());
   iter_group->second.SetKeyFlags(iter->second);
 
   // Now tell the TreeCtrl the key for Rename
@@ -509,6 +523,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
           st_KIDEx.id = iter->second.cVirtKey;
           st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
           citer = m_MapKeyNameID.find(st_KIDEx);
+          ASSERT(citer != m_MapKeyNameID.end());
           str.Format(L"%s\t%s", iter->second.name.c_str(), 
                      CMenuShortcut::FormatShortcut(iter, citer));
         } else {
