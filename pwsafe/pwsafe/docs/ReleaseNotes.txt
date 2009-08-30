@@ -41,6 +41,7 @@ quotes.
 databases now works.
 [] Browse to URL from an Alias entry now puts the correct password in the
 clipboard.
+[] Text import no longer overwrites entry's RunCommand with DCA value.
 
 New Features for 3.18.1
 =======================
