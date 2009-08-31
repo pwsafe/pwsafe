@@ -28,12 +28,13 @@
 #include "about.h"
 #include "PWSgrid.h"
 #include "PWStree.h"
-#include "PWSgridtable.h"
 ////@end includes
+#include "PWSgridtable.h"
 
 #include "passwordsafeframe.h"
 #include "safecombinationprompt.h"
 #include "properties.h"
+#include "optionspropsheet.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSdirs.h"
 
@@ -88,6 +89,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
 
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
+
+  EVT_MENU( ID_OPTIONS, PasswordSafeFrame::OnOptionsClick )
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
@@ -719,11 +722,20 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
 
 void PasswordSafeFrame::OnAboutClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT in PasswordSafeFrame.
-  // Before editing this code, remove the block markers.
   CAbout* window = new CAbout(this);
-  int returnValue = window->ShowModal();
+  window->ShowModal();
   window->Destroy();
-////@end wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT in PasswordSafeFrame. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS
+ */
+
+void PasswordSafeFrame::OnOptionsClick( wxCommandEvent& event )
+{
+  COptions *window = new COptions(this);
+  window->ShowModal();
+  window->Destroy();
 }
 
