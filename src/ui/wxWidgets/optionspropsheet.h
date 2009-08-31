@@ -19,6 +19,8 @@
 
 ////@begin includes
 #include "wx/propdlg.h"
+#include "wx/statline.h"
+#include "wx/spinctrl.h"
 ////@end includes
 
 /*!
@@ -34,6 +36,47 @@
 
 ////@begin control identifiers
 #define ID_COPTIONS 10130
+#define ID_PANEL 10131
+#define ID_CHECKBOX10 10139
+#define ID_CHECKBOX11 10140
+#define ID_RADIOBUTTON4 10141
+#define ID_RADIOBUTTON5 10142
+#define ID_TEXTCTRL9 10143
+#define ID_COMBOBOX2 10144
+#define ID_SPINCTRL9 10145
+#define ID_RADIOBUTTON6 10146
+#define ID_RADIOBUTTON7 10147
+#define ID_TEXTCTRL10 10148
+#define ID_BUTTON 10149
+#define ID_PANEL1 10132
+#define ID_CHECKBOX12 10150
+#define ID_CHECKBOX13 10151
+#define ID_CHECKBOX14 10152
+#define ID_CHECKBOX15 10153
+#define ID_CHECKBOX16 10154
+#define ID_CHECKBOX17 10155
+#define ID_CHECKBOX18 10156
+#define ID_CHECKBOX19 10157
+#define ID_SPINCTRL10 10158
+#define ID_RADIOBOX 10159
+#define ID_PANEL2 10133
+#define ID_CHECKBOX20 10160
+#define ID_CHECKBOX21 10161
+#define ID_CHECKBOX22 10162
+#define ID_COMBOBOX3 10163
+#define ID_CHECKBOX23 10164
+#define ID_TEXTCTRL11 10165
+#define ID_CHECKBOX24 10166
+#define ID_TEXTCTRL12 10167
+#define ID_CHECKBOX25 10168
+#define ID_TEXTCTRL13 10169
+#define ID_BUTTON8 10170
+#define ID_TEXTCTRL14 10171
+#define ID_PANEL3 10134
+#define ID_PANEL4 10135
+#define ID_PANEL5 10136
+#define ID_PANEL6 10137
+#define ID_PANEL7 10138
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
 #define SYMBOL_COPTIONS_TITLE _("Options")
 #define SYMBOL_COPTIONS_IDNAME ID_COPTIONS
@@ -43,7 +86,7 @@
 
 
 /*!
- * COptions class declaration
+ * Options class declaration
  */
 
 class COptions: public wxPropertySheetDialog
@@ -69,9 +112,11 @@ public:
   void CreateControls();
 
 ////@begin COptions event handler declarations
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
