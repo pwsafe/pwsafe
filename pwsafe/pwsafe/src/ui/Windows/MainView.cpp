@@ -1743,11 +1743,9 @@ bool DboxMain::IsWorkstationLocked() const
   // but if registering for session change messages failed ....
   bool bResult = false;
   HDESK hDesktop = OpenDesktop(L"default", 0, false, DESKTOP_SWITCHDESKTOP);
-  // Following should be equiv., but isn't :-(
-  //  HDESK hDesktop = OpenInputDesktop(0, FALSE, DESKTOP_SWITCHDESKTOP);
   if (hDesktop != 0) {
     // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
-    bResult = SwitchDesktop(hDesktop) != 0;
+    bResult = !SwitchDesktop(hDesktop);
     CloseDesktop(hDesktop);
   }
   return bResult;
