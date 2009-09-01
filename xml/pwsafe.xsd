@@ -110,7 +110,7 @@
 <xs:simpleType name="dcaType">
   <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
-    <xs:maxInclusive value="7" />
+    <xs:maxInclusive value="8" />
   </xs:restriction>
 </xs:simpleType>
 <!-- End of Special types -->
