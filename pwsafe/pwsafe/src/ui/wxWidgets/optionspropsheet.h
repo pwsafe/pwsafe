@@ -21,6 +21,7 @@
 #include "wx/propdlg.h"
 #include "wx/statline.h"
 #include "wx/spinctrl.h"
+#include "wx/grid.h"
 ////@end includes
 
 /*!
@@ -28,6 +29,9 @@
  */
 
 ////@begin forward declarations
+class wxSpinCtrl;
+class wxGridSizer;
+class wxBoxSizer;
 ////@end forward declarations
 
 /*!
@@ -35,7 +39,7 @@
  */
 
 ////@begin control identifiers
-#define ID_COPTIONS 10130
+#define ID_OPTIONS_PS 10130
 #define ID_PANEL 10131
 #define ID_CHECKBOX10 10139
 #define ID_CHECKBOX11 10140
@@ -73,13 +77,47 @@
 #define ID_BUTTON8 10170
 #define ID_TEXTCTRL14 10171
 #define ID_PANEL3 10134
+#define ID_SPINCTRL3 10117
+#define ID_CHECKBOX3 10118
+#define ID_SPINCTRL5 10126
+#define ID_CHECKBOX4 10119
+#define ID_SPINCTRL6 10127
+#define ID_CHECKBOX5 10120
+#define ID_SPINCTRL7 10128
+#define ID_CHECKBOX6 10121
+#define ID_SPINCTRL8 10129
+#define ID_CHECKBOX7 10122
+#define ID_CHECKBOX8 10123
+#define ID_CHECKBOX9 10124
 #define ID_PANEL4 10135
+#define ID_CHECKBOX26 10172
+#define ID_SPINCTRL11 10173
+#define ID_RADIOBUTTON8 10174
+#define ID_RADIOBUTTON9 10175
+#define ID_RADIOBUTTON10 10176
+#define ID_RADIOBUTTON11 10177
+#define ID_BUTTON9 10178
 #define ID_PANEL5 10136
+#define ID_CHECKBOX27 10179
+#define ID_CHECKBOX 10000
+#define ID_CHECKBOX1 10001
+#define ID_CHECKBOX2 10002
+#define ID_CHECKBOX28 10003
+#define ID_CHECKBOX29 10180
+#define ID_SPINCTRL12 10181
 #define ID_PANEL6 10137
+#define ID_CHECKBOX30 10182
+#define ID_SPINCTRL13 10183
+#define ID_CHECKBOX31 10184
+#define ID_SPINCTRL 10004
+#define ID_CHECKBOX32 10185
+#define ID_CHECKBOX33 10186
+#define ID_CHECKBOX34 10005
 #define ID_PANEL7 10138
+#define ID_GRID1 10187
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
 #define SYMBOL_COPTIONS_TITLE _("Options")
-#define SYMBOL_COPTIONS_IDNAME ID_COPTIONS
+#define SYMBOL_COPTIONS_IDNAME ID_OPTIONS_PS
 #define SYMBOL_COPTIONS_SIZE wxSize(400, 300)
 #define SYMBOL_COPTIONS_POSITION wxDefaultPosition
 ////@end control identifiers
@@ -128,6 +166,23 @@ public:
   static bool ShowToolTips();
 
 ////@begin COptions member variables
+  wxSpinCtrl* m_pwpLenCtrl;
+  wxGridSizer* m_pwMinsGSzr;
+  wxCheckBox* m_pwpUseLowerCtrl;
+  wxBoxSizer* m_pwNumLCbox;
+  wxSpinCtrl* m_pwpLCSpin;
+  wxCheckBox* m_pwpUseUpperCtrl;
+  wxBoxSizer* m_pwNumUCbox;
+  wxSpinCtrl* m_pwpUCSpin;
+  wxCheckBox* m_pwpUseDigitsCtrl;
+  wxBoxSizer* m_pwNumDigbox;
+  wxSpinCtrl* m_pwpDigSpin;
+  wxCheckBox* m_pwpSymCtrl;
+  wxBoxSizer* m_pwNumSymbox;
+  wxSpinCtrl* m_pwpSymSpin;
+  wxCheckBox* m_pwpEasyCtrl;
+  wxCheckBox* m_pwpPronounceCtrl;
+  wxCheckBox* m_pwpHexCtrl;
 ////@end COptions member variables
 };
 
