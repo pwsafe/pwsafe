@@ -71,13 +71,6 @@
 // WTS constants
 #include <winuser.h>
 
-// Pre-VS2008, BlockInput is in 'winable.h' but VS2008 moved it to 'winuser.h'
-#if _MSC_VER > 1400
-#include <winuser.h>
-#else
-#include <winable.h>
-#endif
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

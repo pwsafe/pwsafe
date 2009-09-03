@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2842700] No longer crashes when using a French keyboard.
 [2192490, 2840534] Multiple desktops now handled correctly for Windows
 XP and later system. When run on prior releases of Windows, the previous
 method using a timer will still be used.
