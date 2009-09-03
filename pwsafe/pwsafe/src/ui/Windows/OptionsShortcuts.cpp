@@ -93,14 +93,14 @@ BOOL COptionsShortcuts::OnInitDialog()
                   iter->first) != m_ExcludedMenuItems.end())
         continue;
 
+    str = L"";
     if (iter->second.cVirtKey != 0) {
        st_KeyIDExt st_KIDEx;
        st_KIDEx.id = iter->second.cVirtKey;
        st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
        citer = m_MapKeyNameID.find(st_KIDEx);
-       str = CMenuShortcut::FormatShortcut(iter, citer);
-    } else {
-      str = L"";
+       if (citer != m_MapKeyNameID.end())
+         str = CMenuShortcut::FormatShortcut(iter, citer);
     }
 
     // Remove the ampersand from the menu item the user sees here

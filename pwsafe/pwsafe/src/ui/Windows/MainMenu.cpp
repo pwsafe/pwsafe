@@ -374,6 +374,7 @@ void DboxMain::SetUpInitialMenuStrings()
       }
       paccel++;
     }
+
     // Don't need copy any more
     LocalFree(pacceltbl);
     pacceltbl = paccel = NULL;
@@ -523,9 +524,12 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
           st_KIDEx.id = iter->second.cVirtKey;
           st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
           citer = m_MapKeyNameID.find(st_KIDEx);
-          ASSERT(citer != m_MapKeyNameID.end());
-          str.Format(L"%s\t%s", iter->second.name.c_str(), 
-                     CMenuShortcut::FormatShortcut(iter, citer));
+          if (citer != m_MapKeyNameID.end()) {
+            str.Format(L"%s\t%s", iter->second.name.c_str(), 
+                       CMenuShortcut::FormatShortcut(iter, citer));
+          } else
+            continue;
+
         } else {
           str = iter->second.name.c_str();
         }

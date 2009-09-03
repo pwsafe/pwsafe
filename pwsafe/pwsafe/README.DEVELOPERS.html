@@ -66,7 +66,11 @@ SDKs\Windows\NNN\Include" and
 6.0A or 6.1
 as noted above). The Microsoft Visual Studio Registration Tool only
 adds the .Net
-libraries and not those needed for Password Safe.</p>
+libraries and not those needed for Password Safe.
+<b>It is recommended that you get SDK V6.1 <u>and</u> you place them above the
+libraries supplied with Visual Studio e.g "$(VCInstallDir)PlatformSDK\include"
+and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
+compiling source members using BlockInput.</b></p>
 <p><b>Compiling using Visual Studio:</b> If you're
 using Microsoft's Visual Studio,
 the file "UserVariables.vsprops" <b><u><i>must</i></u></b>
