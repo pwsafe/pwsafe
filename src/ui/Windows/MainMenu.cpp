@@ -338,7 +338,7 @@ void DboxMain::SetUpInitialMenuStrings()
 
   // Now that we have all menu strings - go get current accelerator strings
   // and update Map
-  MapMenuShortcutsIter iter, iter_entry, iter_group;
+  MapMenuShortcutsIter iter, iter_entry, iter_group, inuse_iter;
   HACCEL curacctbl = app.m_ghAccelTable;
   ACCEL *pacceltbl(NULL), *paccel(NULL);
   int numaccels;
@@ -384,21 +384,9 @@ void DboxMain::SetUpInitialMenuStrings()
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
-  bool bUserShortcutsChanged(false);
   size_t N = vShortcuts.size();
   for (size_t i = 0; i < N; i++) {
     const st_prefShortcut &stxst = vShortcuts[i];
-    iter = m_MapMenuShortcuts.find(stxst.id);
-    if (iter != m_MapMenuShortcuts.end() &&
-        (iter->second.cVirtKey  != stxst.cVirtKey  ||
-         iter->second.cModifier != stxst.cModifier)) {
-      iter->second.cVirtKey  = stxst.cVirtKey;
-      iter->second.cModifier = stxst.cModifier;
-    } else {
-      // Either unknown Control ID or no different from default
-      bUserShortcutsChanged = true;
-      vShortcuts.erase(vShortcuts.begin() + i);
-    }
     // User should not have these sub-entries in their config file
     if (stxst.id == ID_MENUITEM_GROUPENTER ||
         stxst.id == ID_MENUITEM_VIEW ||
@@ -406,15 +394,34 @@ void DboxMain::SetUpInitialMenuStrings()
         stxst.id == ID_MENUITEM_DELETEGROUP ||
         stxst.id == ID_MENUITEM_RENAMEENTRY ||
         stxst.id == ID_MENUITEM_RENAMEGROUP) {
-      bUserShortcutsChanged = true;
-      vShortcuts.erase(vShortcuts.begin() + i);
+      continue;
+    }
+    iter = m_MapMenuShortcuts.find(stxst.id);
+    if (iter == m_MapMenuShortcuts.end()) {
+      // Unknown Control ID - ignore - maybe used by a later version of PWS
+      continue;
+    }
+    // Check not already in use (ignore if deleting current shortcut)
+    if (stxst.cVirtKey != (unsigned char)0) {
+      st_mst.cVirtKey = stxst.cVirtKey;
+      st_mst.cModifier = stxst.cModifier;
+      already_inuse inuse(st_mst);
+      inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
+                                m_MapMenuShortcuts.end(),
+                                inuse);
+      if (inuse_iter != m_MapMenuShortcuts.end() && 
+          inuse_iter->first != iter->first) {
+        // Shortcut in use - ignore entry - duplicates not allowed!
+        continue;
+      }
+    }
+    if ((iter->second.cVirtKey  != stxst.cVirtKey  ||
+         iter->second.cModifier != stxst.cModifier)) {
+      // User changed a added or shortcut
+      iter->second.cVirtKey  = stxst.cVirtKey;
+      iter->second.cModifier = stxst.cModifier;
     }
   }
-
-  // If we had trouble with the shortcut preferences, fix it for next time
-  // XXX (Is this always the Right Thing to do?)
-  if (bUserShortcutsChanged)
-    PWSprefs::GetInstance()->SetPrefShortcuts(vShortcuts);
 
   // Set up the shortcuts based on the main entry
   // for View, Delete and Rename

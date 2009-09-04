@@ -124,3 +124,14 @@ private:
   static CString CS_CTRLP, CS_ALTP, CS_SHIFTP;
 };
 
+// Functor for find_if to see if shortcut is already in use
+struct already_inuse {
+  already_inuse(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
+  bool operator()(MapMenuShortcutsPair const & p) const
+  {
+    return (p.second.cVirtKey  == m_st_mst.cVirtKey &&
+            p.second.cModifier == m_st_mst.cModifier);
+  }
+
+  st_MenuShortcut m_st_mst;
+};

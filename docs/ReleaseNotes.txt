@@ -1,5 +1,5 @@
-Password Safe 3.18.1 Release Notes - August 2009
-================================================
+Password Safe 3.18.1 Release Notes - September 2009
+===================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2850907] Password field no longer cleared after focus change.
 [2842700] No longer crashes when using a French keyboard.
 [2192490, 2840534] Multiple desktops now handled correctly for Windows
 XP and later system. When run on prior releases of Windows, the previous
@@ -61,6 +62,10 @@ Changes to Existing Features in 3.18.1
 ======================================
 [] Changing the Security option to lock Password Safe when the workstation is
 locked, no longer requires a restart of Password Safe to come into effect.
+[] Due to the French keyboard not supporting the key '-' in an accelerator,
+the shortcut for "passwordsuBset' has been changed from "Ctrl + -" to
+"Ctrl + B". Please do not allocate "Ctrl + -" to any shortcut if you will be
+using a French keyboard.
 
 New Features for 3.18
 =====================
