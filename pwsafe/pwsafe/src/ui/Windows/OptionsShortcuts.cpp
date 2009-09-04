@@ -197,18 +197,6 @@ struct reserved {
   st_MenuShortcut m_st_mst;
 };
 
-// Functor for find_if to see if shortcut is already in use
-struct already_inuse {
-  already_inuse(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
-  bool operator()(MapMenuShortcutsPair const & p) const
-  {
-    return (p.second.cVirtKey  == m_st_mst.cVirtKey &&
-            p.second.cModifier == m_st_mst.cModifier);
-  }
-
-  st_MenuShortcut m_st_mst;
-};
-
 // Tortuous route to get here!
 // m_HotKey looses focus and calls parent (CListCtrl) that calls here
 void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
@@ -259,7 +247,7 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
     if (inuse_iter != m_MapMenuShortcuts.end() && 
         inuse_iter->first != iter->first) {
       // Shortcut in use
-      cs_warning.Format(IDS_SHCT_WARNING3, str, inuse_iter->second.name);
+      cs_warning.Format(IDS_SHCT_WARNING3, str, inuse_iter->second.name.c_str());
       goto set_warning;
     }
   }
