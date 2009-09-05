@@ -251,7 +251,7 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
       case WAIT_FAILED:
         // Problem - wait same amount of time as if could not find process
         pws_os::IssueError(L"WaitForInputIdle", false);
-        Sleep(2000);
+        ::Sleep(2000);
         break;
       default:
         break;
@@ -259,12 +259,12 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
     CloseHandle(hProcess);
   } else {
     // Could not find process - so just wait abitrary amount
-    Sleep(2000);
+    ::Sleep(2000);
   }
 
   // Do Autotype!  Note: All fields were substituted before getting here
   // Pure guess to wait 1 second.  Might be more or less but certainly > 0
-  Sleep(1000);
+  ::Sleep(1000);
   DoAutoType(m_AutoType);
 
   // Reset AutoType

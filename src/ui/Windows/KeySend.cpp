@@ -169,7 +169,7 @@ void CKeySend::ResetKeyboardState()
         break;
     }
 
-    Sleep(10);
+    ::Sleep(10);
     memset((void*)&keys,0,256);
     GetKeyboardState((LPBYTE)&keys);
   } // while

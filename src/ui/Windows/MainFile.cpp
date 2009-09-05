@@ -994,7 +994,7 @@ void DboxMain::OnExportText()
       }
     } else {
       AfxMessageBox(IDS_BADPASSKEY);
-      Sleep(3000); // against automatic attacks
+      ::Sleep(3000); // against automatic attacks
     }
   }
 }
@@ -1061,7 +1061,7 @@ void DboxMain::OnExportXML()
       }
     } else {
       AfxMessageBox(IDS_BADPASSKEY);
-      Sleep(3000); // protect against automatic attacks
+      ::Sleep(3000); // protect against automatic attacks
     }
   }
 }
