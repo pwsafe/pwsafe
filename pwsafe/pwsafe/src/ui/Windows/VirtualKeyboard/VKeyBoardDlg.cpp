@@ -335,7 +335,8 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
     m_bAltGr(false), m_bAltNum(false),
     m_bCapsLock(false), m_bRandom(false),
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
-    m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0)
+    m_bDeadKeyActive(false), m_iKeyboard(0), m_Kana(0), m_Hiragana(0), m_Size(0),
+    m_uiMouseDblClkTime(0)
 {
   // Verify all is OK
   ASSERT(_countof(defscancodes101) == NUM_KEYS);
@@ -377,7 +378,9 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
       std::wistringstream iss(s);
       iss >> std::setbase(0) >> m_uiKLID;
     }
-  }    
+  }
+  // Get current SYSTEM-WIDE mouse double click time interval
+  m_uiMouseDblClkTime = GetDoubleClickTime();
 }
 
 CVKeyBoardDlg::~CVKeyBoardDlg()
@@ -399,6 +402,11 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
     delete m_pToolTipCtrl;
 
   FreeLibrary(m_OSK_module);
+
+  // Reset double click mouse interval
+  BOOL brc;
+  brc = SetDoubleClickTime(m_uiMouseDblClkTime);
+  ASSERT(brc != 0);
 }
 
 void CVKeyBoardDlg::OnPostNcDestroy()
@@ -444,6 +452,7 @@ BEGIN_MESSAGE_MAP(CVKeyBoardDlg, CPWDialog)
   //{{AFX_MSG_MAP(CVKeyBoardDlg)
   ON_WM_CTLCOLOR()
   ON_WM_LBUTTONDOWN()
+  ON_WM_ACTIVATE()
   ON_CBN_SELCHANGE(IDC_VKEYBOARDS, OnChangeKeyboard)
   ON_BN_CLICKED(IDC_VK101, OnChangeKeyboardType)
   ON_BN_CLICKED(IDC_VK102, OnChangeKeyboardType)
@@ -468,6 +477,17 @@ BEGIN_MESSAGE_MAP(CVKeyBoardDlg, CPWDialog)
   ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_KBD01, IDC_VKBBTN_KBD51, OnKeys)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CVKeyBoardDlg::OnActivate(UINT nState, CWnd* , BOOL )
+{
+  BOOL brc;
+  if (nState == WA_INACTIVE) {
+    brc = SetDoubleClickTime(m_uiMouseDblClkTime);
+  } else {
+    brc = SetDoubleClickTime(1);
+  }
+  ASSERT(brc != 0);
+}
 
 BOOL CVKeyBoardDlg::OnInitDialog()
 {
@@ -609,7 +629,6 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKBBTN_ALTNUM), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_VKSTATIC_RANDOMIZE);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_VKRANDOMIZE), cs_ToolTip);
-
 
   // If not using the user specified font, show the warning.
   if (m_iFont != USER_FONT && m_bUserSpecifiedFont) {

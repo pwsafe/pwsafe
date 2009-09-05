@@ -100,6 +100,7 @@ protected:
   afx_msg void OnPostNcDestroy();
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd * pWnd, UINT nCtlColor);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+  afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
   afx_msg void OnCancel();
   afx_msg void OnInsert();
   afx_msg void OnRandomize();
@@ -187,6 +188,7 @@ private:
   LP_OSK_ListKeyboards m_pListKBs;
   st_KBImpl m_stKBImpl;
   CWnd * m_pParent;
+  UINT m_uiMouseDblClkTime;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

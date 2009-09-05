@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2851848] Mouse double-click interval removed from Virtual Keyboard
+to allow multiple virtual keys to be entered quickly.
 [2850907] Password field no longer cleared after focus change.
 [2842700] No longer crashes when using a French keyboard.
 [2192490, 2840534] Multiple desktops now handled correctly for Windows
