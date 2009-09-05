@@ -1324,7 +1324,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   // since that will clear the data [Bugs item #1026630]
   // (this is why we read user & pwd before actual use)
 
-  Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
+  ::Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
   int gNumIts;
   for (int n = 0; n < N; n++){
@@ -1446,7 +1446,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   if (bCapsLock)
     ks.SetCapsLock(true);
 
-  Sleep(100);
+  ::Sleep(100);
 
   // Reset Keyboard/Mouse Input
   TRACE(L"DboxMain::DoAutoType - BlockInput reset\n");

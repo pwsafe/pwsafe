@@ -57,7 +57,7 @@ void CStaticExtn::FlashBkgnd(COLORREF cfFlashColour)
   Invalidate();
   UpdateWindow();
   // Sleep to give the impression of a flash
-  Sleep(200);
+  ::Sleep(200);
   // Reset colour
   m_iFlashing = -1;
   // Cause repaint
