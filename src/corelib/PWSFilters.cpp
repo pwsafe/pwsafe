@@ -99,9 +99,9 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
                                               << "</warn>" << szendl;
       break;
     case PWSMatch::MT_INTEGER:
-      oss << sztab5 << "<num1>" << st_fldata.fcase 
+      oss << sztab5 << "<num1>" << st_fldata.fnum1 
                                               << "</num1>" << endl;
-      oss << sztab5 << "<num2>" << st_fldata.fcase 
+      oss << sztab5 << "<num2>" << st_fldata.fnum2 
                                               << "</num2>" << endl;
       break;
     case PWSMatch::MT_DATE:
