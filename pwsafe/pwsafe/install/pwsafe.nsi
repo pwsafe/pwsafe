@@ -284,7 +284,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
 !endif
 !ifdef LANGUAGE_ITALIAN
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeIT.dll"
-  File /nonfatal "..\help\pwsafePL\pwsafeIT.chm"
+  File /nonfatal "..\help\pwsafeIT\pwsafeIT.chm"
 !endif
 
   Goto dont_install_Win98
