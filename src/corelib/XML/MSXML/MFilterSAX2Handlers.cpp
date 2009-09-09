@@ -728,7 +728,7 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("num2")) == 0) {
-    cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
+    cur_filterentry->fnum2 = _ttoi(m_strElemContent.c_str());
   }
 
   else if (_tcscmp(szCurElement, _T("date1")) == 0) {
