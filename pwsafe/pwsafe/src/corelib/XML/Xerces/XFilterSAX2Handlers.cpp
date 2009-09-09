@@ -555,7 +555,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
   }
 
   else if (XMLString::equals(qname, L"num2")) {
-    cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
+    cur_filterentry->fnum2 = _ttoi(m_strElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, L"date1")) {
