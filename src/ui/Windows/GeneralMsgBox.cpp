@@ -19,6 +19,8 @@
 */
 
 #include "stdafx.h"
+
+#include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
 #include <RichEdit.h>
@@ -125,7 +127,18 @@ CGeneralMsgBox::~CGeneralMsgBox()
 INT_PTR CGeneralMsgBox::DoModal()
 {
   InitModalIndirect((LPCDLGTEMPLATE)_dlgData, m_pParentWnd);
-  return CDialog::DoModal();
+  bool bAccEn = app.IsAcceleratorEnabled();
+  if (bAccEn)
+    app.DisableAccelerator();
+
+  app.IncrementOpenDialogs();
+  INT_PTR rc = CDialog::DoModal();
+  app.DecrementOpenDialogs();
+
+  if (bAccEn)
+    app.EnableAccelerator();
+
+  return rc;
 }
 
 /////////////////////////////////////////////////////////////////////////////

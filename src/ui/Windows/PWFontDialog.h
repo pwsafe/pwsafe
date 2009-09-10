@@ -33,6 +33,9 @@ public:
 #endif
   virtual ~CPWFontDialog();
 
+  // Following override to stop accelerators interfering
+  virtual INT_PTR DoModal();
+
   CString m_sampletext, m_title;
   int m_iType;
   LOGFONT m_dfltVKBDFont;

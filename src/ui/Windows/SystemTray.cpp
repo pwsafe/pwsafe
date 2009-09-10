@@ -468,22 +468,28 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     const int i_state = app.GetSystemTrayState();
     switch (i_state) {
-    case ThisMfcApp::UNLOCKED:
-      {
-        const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
-        pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
-                                 ID_MENUITEM_TRAYLOCK, csLock);
+      case ThisMfcApp::UNLOCKED:
+        {
+          const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
+          pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
+                                   ID_MENUITEM_TRAYLOCK, csLock);
+          break;
+        }
+      case ThisMfcApp::LOCKED:
+        {
+          const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
+          pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
+                                   ID_MENUITEM_TRAYUNLOCK, csUnLock);
+          break;
+        }
+      default:
         break;
-      }
-    case ThisMfcApp::LOCKED:
-      {
-        const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
-        pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
-                                 ID_MENUITEM_TRAYUNLOCK, csUnLock);
-        break;
-      }
-    default:
-      break;
+    }
+    if (app.AnyOpenDialogs()) {
+      const UINT num = pContextMenu->GetMenuItemCount() - 2;
+      pContextMenu->RemoveMenu(num, MF_BYPOSITION); // Delete last separator
+      pContextMenu->RemoveMenu(num, MF_BYPOSITION); // Delete Exit
+      pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND); // Delete Close
     }
 
     CMenu *pMainRecentEntriesMenu;

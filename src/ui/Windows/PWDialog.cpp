@@ -54,7 +54,9 @@ INT_PTR CPWDialog::DoModal()
   if (bAccEn)
     app.DisableAccelerator();
 
+  app.IncrementOpenDialogs();
   INT_PTR rc = CDialog::DoModal();
+  app.DecrementOpenDialogs();
 
   if (bAccEn)
     app.EnableAccelerator();

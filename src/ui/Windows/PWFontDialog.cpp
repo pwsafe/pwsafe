@@ -156,4 +156,20 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
   return FALSE; // We didn't process message
 }
 
+INT_PTR CPWFontDialog::DoModal()
+{
+  bool bAccEn = app.IsAcceleratorEnabled();
+  if (bAccEn)
+    app.DisableAccelerator();
+
+  app.IncrementOpenDialogs();
+  INT_PTR rc = CDialog::DoModal();
+  app.DecrementOpenDialogs();
+
+  if (bAccEn)
+    app.EnableAccelerator();
+
+  return rc;
+}
+
 #endif // !_WIN32_WCE

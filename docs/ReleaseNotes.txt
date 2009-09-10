@@ -77,6 +77,10 @@ locked, no longer requires a restart of Password Safe to come into effect.
 the shortcut for "passwordsuBset' has been changed from "Ctrl + -" to
 "Ctrl + B". Please do not allocate "Ctrl + -" to any shortcut if you will be
 using a French keyboard.
+[] If a dialog is open (e.g. Add, Edit, Options etc.) and Password Safe is
+minimized, the Close and Exit options are no longer in the System Tray context
+menu. The user must first Restore the application and close the dialog before
+being able to close the database or exit the program.
 
 New Features for 3.18
 =====================
