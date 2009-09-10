@@ -14,7 +14,7 @@
 #include "corelib/StringX.h"
 #include "corelib/sha256.h"
 #include "corelib/PwsPlatform.h"
-#include "corelib/PWSClipboard.h"
+#include "PWSclipboard.h"
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
 #include "pocketpc/MyListCtrl.h"

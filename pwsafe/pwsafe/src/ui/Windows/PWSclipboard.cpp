@@ -12,7 +12,7 @@
 
 #include <afxole.h>
 #include "PWSclipboard.h"
-#include "util.h"
+#include "corelib/util.h"
 
 static CLIPFORMAT CF_CLIPBOARD_VIEWER_IGNORE;
 
