@@ -32,7 +32,7 @@ XERCES_CPP_NAMESPACE_USE
 #endif
 
 // Elements stack value
-// Xml fiLe Elements = 'XLE' prefix
+// XML fiLe Elements = 'XLE' prefix
 
 enum XLE_PASSWORDSAFE {
   XLE_PASSWORDSAFE            = 0,
@@ -96,6 +96,7 @@ enum XLE_PASSWORDSAFE {
   XLE_PWHISTORY,
   XLE_RUNCOMMAND,
   XLE_DCA,
+  XLE_EMAIL,
   XLE_ENTRY_PASSWORDPOLICY,
   XLE_UNKNOWNRECORDFIELDS,
 

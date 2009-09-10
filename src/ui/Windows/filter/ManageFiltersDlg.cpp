@@ -541,6 +541,11 @@ void CManageFiltersDlg::OnFilterDelete()
   }
 
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_selectedfilter);
+  if ((pflt_idata->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB)
+    m_num_to_copy--;
+  if ((pflt_idata->flt_flags & MFLT_REQUEST_EXPORT) == MFLT_REQUEST_EXPORT)
+    m_num_to_export--;
+
   delete pflt_idata;
   m_FilterLC.DeleteItem(m_selectedfilter);
   m_FilterProperties.DeleteAllItems();
@@ -554,9 +559,14 @@ void CManageFiltersDlg::OnFilterDelete()
   m_selectedfilter = -1;
   m_selectedfilterpool = FPOOL_LAST;
   GetDlgItem(IDC_STATIC_FILTERNAME)->SetWindowText(L"");
+
   // Nothing selected
   GetDlgItem(IDC_FILTEREDIT)->EnableWindow(FALSE);
   GetDlgItem(IDC_FILTERDELETE)->EnableWindow(FALSE);
+
+  // Update buttons
+  GetDlgItem(IDC_FILTERCOPY)->EnableWindow(m_num_to_copy > 0 ? TRUE : FALSE);
+  GetDlgItem(IDC_FILTEREXPORT)->EnableWindow(m_num_to_export > 0 ? TRUE : FALSE);
 }
 
 void CManageFiltersDlg::OnFilterImport()
@@ -1058,11 +1068,20 @@ UINT CManageFiltersDlg::GetFieldTypeName(const FieldType &ft)
     case FT_NOTES:
       nID = IDSC_EXPHDRNOTES;
       break;
+    case FT_AUTOTYPE:
+      nID = IDSC_EXPHDRAUTOTYPE;
+      break;
     case FT_URL:
       nID = IDSC_EXPHDRURL;
       break;
-    case FT_AUTOTYPE:
-      nID = IDSC_EXPHDRAUTOTYPE;
+    case FT_RUNCMD:
+      nID = IDSC_EXPHDRRUNCOMMAND;
+      break;
+    case FT_DCA:
+      nID = IDSC_EXPHDRDCA;
+      break;
+    case FT_EMAIL:
+      nID = IDSC_EXPHDREMAIL;
       break;
     case FT_CTIME:
       nID = IDSC_EXPHDRCTIME;

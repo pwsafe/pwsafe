@@ -96,7 +96,7 @@ static CString GetToken(CString& str, LPCWSTR c)
 void ExtractFont(const CString &str, LOGFONT &logfont)
 {
   CString s(str);
-  memset(&logfont, 0, sizeof(LOGFONT));
+  SecureZeroMemory(&logfont, sizeof(LOGFONT));
   logfont.lfHeight      = _wtol((LPCWSTR)GetToken(s, L","));
   logfont.lfWidth       = _wtol((LPCWSTR)GetToken(s, L","));
   logfont.lfEscapement  = _wtol((LPCWSTR)GetToken(s, L","));

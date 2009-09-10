@@ -65,6 +65,7 @@
 #define IDSC_EXPATPARSEERROR            3062
 #define IDSC_EXPHDRRUNCOMMAND           3063
 #define IDSC_EXPHDRDCA                  3064
+#define IDSC_EXPHDREMAIL                3065
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
@@ -194,3 +195,16 @@
 #define IDSC_EXS_INVALIDBRACKETS        3359
 #define IDSC_EXS_MISSINGROUNDBKT        3360
 #define IDSC_UNKNOWN                    3361
+
+// Keep DCA together
+#define IDSC_CURRENTDEFAULTDCA          4000
+#define IDSC_DCABROWSE                  4001
+#define IDSC_DCAAUTOTYPE                4002
+#define IDSC_DCACOPYNOTES               4003
+#define IDSC_DCACOPYPASSWORD            4004
+#define IDSC_DCACOPYUSERNAME            4005
+#define IDSC_DCAVIEWEDIT                4006
+#define IDSC_DCACOPYPASSWORDMIN         4007
+#define IDSC_DCABROWSEPLUS              4008
+#define IDSC_DCARUN                     4009
+#define IDSC_DCASENDEMAIL               4010

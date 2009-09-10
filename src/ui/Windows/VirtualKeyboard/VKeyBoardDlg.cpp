@@ -290,8 +290,8 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   }
 
   // Next check for Arial Unicode (commercial version of MS font)
-  memset(lf.lfFaceName, 0, LF_FACESIZE * sizeof(wchar_t));
-  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
+  SecureZeroMemory(lf.lfFaceName, sizeof(lf.lfFaceName));
+  memcpy_s(lf.lfFaceName, sizeof(lf.lfFaceName),
            ARIALU, wcslen(ARIALU) * sizeof(wchar_t)); 
   EnumFontFamiliesEx(hDC, &lf,
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
@@ -303,8 +303,8 @@ bool CVKeyBoardDlg::IsOSKAvailable()
   }
 
   // Lastly check for Lucida Sans Unicode
-  memset(lf.lfFaceName, 0, LF_FACESIZE * sizeof(wchar_t));
-  memcpy_s(lf.lfFaceName, LF_FACESIZE * sizeof(wchar_t),
+  SecureZeroMemory(lf.lfFaceName, sizeof(lf.lfFaceName));
+  memcpy_s(lf.lfFaceName, sizeof(lf.lfFaceName),
            LUCIDAUS, wcslen(LUCIDAUS) * sizeof(wchar_t)); 
   EnumFontFamiliesEx(hDC, &lf,
                      (FONTENUMPROC)&EnumFontFamiliesExProc,
@@ -1895,7 +1895,7 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
     // Initialize a CFont object with the characteristics given
     // in a LOGFONT structure.
     LOGFONT lf;
-    memset(&lf, 0, sizeof(LOGFONT));
+    SecureZeroMemory(&lf, sizeof(LOGFONT));
     lf.lfHeight = -16;
     lf.lfWeight = FW_NORMAL;
     lf.lfCharSet = DEFAULT_CHARSET;

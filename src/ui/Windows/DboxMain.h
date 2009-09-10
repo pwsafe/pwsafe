@@ -237,6 +237,7 @@ public:
   void MakeRandomPassword(StringX& password, PWPolicy &pwp);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
                      const bool bDoAutotype);
+  BOOL SendEmail(const CString &cs_email);
   void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
@@ -430,7 +431,6 @@ protected:
   void UpdateStatusBar();
   void UpdateMenuAndToolBar(const bool bOpen);
   void SortListView();
-  void UpdateBrowseURLSendEmailButton(const bool bIsEmail);
 
   //Version of message functions with return values
   int Save(void);
@@ -490,6 +490,10 @@ protected:
   afx_msg void OnUpdateTrayCopyURL(CCmdUI *pCmdUI);
   afx_msg void OnTrayRunCommand(UINT nID);
   afx_msg void OnUpdateTrayRunCommand(CCmdUI *pCmdUI);
+  afx_msg void OnTrayCopyEmail(UINT nID);
+  afx_msg void OnUpdateTrayCopyEmail(CCmdUI *pCmdUI);
+  afx_msg void OnTraySendEmail(UINT nID);
+  afx_msg void OnUpdateTraySendEmail(CCmdUI *pCmdUI);
 #endif
 
   // Generated message map functions
@@ -510,6 +514,7 @@ protected:
   afx_msg void OnPasswordSafeWebsite();
   afx_msg void OnBrowse();
   afx_msg void OnBrowsePlus();
+  afx_msg void OnSendEmail();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
   afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -525,6 +530,7 @@ protected:
   afx_msg void OnDisplayPswdSubset();
   afx_msg void OnCopyNotes();
   afx_msg void OnCopyURL();
+  afx_msg void OnCopyEmail();
   afx_msg void OnCopyRunCommand();
   afx_msg void OnNew();
   afx_msg void OnOpen();
@@ -680,7 +686,7 @@ private:
   void SetUpMenuStrings(CMenu *pPopupMenu);
   void SetUpInitialMenuStrings();
   void UpdateAccelTable();
-  void DoBrowse(const bool bDoAutotype);
+  void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   
   static const struct UICommandTableEntry {

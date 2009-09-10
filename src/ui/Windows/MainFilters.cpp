@@ -230,10 +230,15 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
         case FT_NOTES:
         case FT_URL:
         case FT_AUTOTYPE:
+        case FT_RUNCMD:
+        case FT_EMAIL:
           mt = PWSMatch::MT_STRING;
           break;
         case FT_PASSWORD:
           mt = PWSMatch::MT_PASSWORD;
+          break;
+        case FT_DCA:
+          mt = PWSMatch::MT_DCA;
           break;
         case FT_CTIME:
         case FT_PMTIME:
@@ -342,6 +347,10 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
           break;
         case PWSMatch::MT_ENTRYTYPE:
           thistest_rc = pci->Matches(st_fldata.etype, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_DCA:
+          thistest_rc = pci->Matches(st_fldata.fdca, ifunction);
           tests++;
           break;
         default:

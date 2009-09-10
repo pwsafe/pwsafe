@@ -56,6 +56,8 @@ public:
   int &GetIBasedata() {return m_AEMD.ibasedata;}
   uuid_array_t &GetBaseUUID() {return m_AEMD.base_uuid;}
 
+  bool IsEntryModified() {return m_bIsModified;}
+
 protected:
   st_AE_master_data m_AEMD;
 
@@ -64,6 +66,8 @@ private:
   CAddEdit_Additional      *m_pp_additional;
   CAddEdit_DateTimes       *m_pp_datetimes;
   CAddEdit_PasswordPolicy  *m_pp_pwpolicy;
+
+  bool m_bIsModified;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -36,6 +36,7 @@ struct pw_entry {
   StringX uuid;
   StringX run_command;
   StringX dca;
+  StringX email;
   PWPolicy pwp;
   UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
   int entrytype;

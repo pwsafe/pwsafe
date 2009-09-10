@@ -435,6 +435,10 @@ int PWScore::WritePlaintextFile(const StringX &filename,
       LoadAString(cs_temp, IDSC_EXPHDRDCA);
       hdr += cs_temp;
     }
+    if (bsFields.test(CItemData::EMAIL)) {
+      LoadAString(cs_temp, IDSC_EXPHDREMAIL);
+      hdr += cs_temp;
+    }
     if (bsFields.test(CItemData::NOTES)) {
       LoadAString(cs_temp, IDSC_EXPHDRNOTES);
       hdr += cs_temp;
@@ -794,7 +798,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
-               POLICY, HISTORY, RUNCMD, DCA, NOTES, NUMFIELDS};
+               POLICY, HISTORY, RUNCMD, DCA, EMAIL, NOTES, 
+               NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
   for (int i = 0; i < NUMFIELDS; i++)
@@ -1118,6 +1123,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       temp.SetRunCommand(tokens[i_Offset[RUNCMD]].c_str());
     if (i_Offset[DCA] >= 0 && tokens.size() > (size_t)i_Offset[DCA])
       temp.SetDCA(tokens[i_Offset[DCA]].c_str());
+    if (i_Offset[EMAIL] >= 0 && tokens.size() > (size_t)i_Offset[EMAIL])
+      temp.SetEmail(tokens[i_Offset[EMAIL]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.

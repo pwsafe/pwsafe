@@ -335,6 +335,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     case XLE_DCA:
       cur_entry->dca = Trim(m_strElemContent);
       break;
+    case XLE_EMAIL:
+      cur_entry->email = m_strElemContent;
+      break;
     case XLE_UNKNOWNRECORDFIELDS:
       if (!cur_entry->uhrxl.empty())
         m_nRecordsWithUnknownFields++;
@@ -585,11 +588,12 @@ void XMLFileHandlers::AddEntries()
       tempitem.SetRMTime(cur_entry->rmtime.c_str());
     if (!cur_entry->run_command.empty())
       tempitem.SetRunCommand(cur_entry->run_command);
-    if (cur_entry->pwp.flags != 0) {
+    if (cur_entry->pwp.flags != 0)
       tempitem.SetPWPolicy(cur_entry->pwp);
-    }
     if (!cur_entry->dca.empty())
       tempitem.SetDCA(cur_entry->dca.c_str());
+    if (!cur_entry->email.empty())
+      tempitem.SetEmail(cur_entry->email);
 
     StringX newPWHistory;
     stringT strPWHErrors;

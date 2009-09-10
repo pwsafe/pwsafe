@@ -105,9 +105,8 @@ CPWFindToolBar::CPWFindToolBar()
 
   m_iNum_Bitmaps = _countof(m_FindToolBarClassicBMs);
 
-  LOGFONT lf;
-  memset(&lf, 0, sizeof(lf));
-
+  LOGFONT lf = {0};
+ 
   // Since design guide says toolbars are fixed height so is the font.
   lf.lfHeight = -11;
   lf.lfWeight = FW_LIGHT;
@@ -273,8 +272,7 @@ void CPWFindToolBar::LoadDefaultToolBar(const int toolbarMode)
 
   tbCtrl.AddButtons(m_iMaxNumButtons, &m_pOriginalTBinfo[0]);
 
-  TBBUTTONINFO tbinfo;
-  memset(&tbinfo, 0x00, sizeof(tbinfo));
+  TBBUTTONINFO tbinfo = {0};
   tbinfo.cbSize = sizeof(tbinfo);
   tbinfo.dwMask = TBIF_STYLE;
 
@@ -385,8 +383,7 @@ void CPWFindToolBar::ToggleToolBarFindCase()
   m_bCaseSensitive = !m_bCaseSensitive;
   tbCtrl.CheckButton(ID, m_bCaseSensitive ? TRUE : FALSE);
 
-  TBBUTTONINFO tbinfo;
-  memset(&tbinfo, 0x00, sizeof(tbinfo));
+  TBBUTTONINFO tbinfo = {0};
   tbinfo.cbSize = sizeof(tbinfo);
   tbinfo.dwMask = TBIF_IMAGE;
   tbCtrl.GetButtonInfo(ID, &tbinfo);

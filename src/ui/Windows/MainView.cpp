@@ -136,6 +136,12 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     case CItemData::URL:
       iResult = CompareNoCase(pLHS->GetURL(), pRHS->GetURL());
       break;
+    case CItemData::EMAIL:
+      iResult = CompareNoCase(pLHS->GetEmail(), pRHS->GetEmail());
+      break;
+    case CItemData::RUNCMD:
+      iResult = CompareNoCase(pLHS->GetRunCommand(), pRHS->GetRunCommand());
+      break;
     case CItemData::AUTOTYPE:
       iResult = CompareNoCase(pLHS->GetAutoType(), pRHS->GetAutoType());
       break;
@@ -227,7 +233,7 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
 
     uuid_array_t entry_uuid, base_uuid;
     if (pci_entry != NULL && pci_entry->IsShortcut()) {
-      // This is an shortcut
+      // This is a shortcut
       pci_entry->GetUUID(entry_uuid);
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
@@ -237,15 +243,10 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
       }
     }
 
-    if (pci_entry == NULL || pci_entry->IsURLEmpty()) {
-      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
-      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, FALSE);
-      UpdateBrowseURLSendEmailButton(false);
+    if (pci_entry == NULL || pci_entry->IsUserEmpty()) {
+      mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, FALSE);
     } else {
-      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
-      const bool bIsEmail = pci_entry->IsURLEmail();
-      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, bIsEmail ? FALSE : TRUE);
-      UpdateBrowseURLSendEmailButton(bIsEmail);
+      mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, TRUE);
     }
 
     if (pci_entry == NULL || pci_entry->IsNotesEmpty()) {
@@ -254,10 +255,25 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYNOTESFLD, TRUE);
     }
 
-    if (pci_entry == NULL || pci_entry->IsUserEmpty()) {
-      mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, FALSE);
+    if (pci_entry == NULL || pci_entry->IsRunCommandEmpty()) {
+      mainTBCtrl.EnableButton(ID_MENUITEM_RUNCOMMAND, FALSE);
     } else {
-      mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, TRUE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_RUNCOMMAND, TRUE);
+    }
+
+    if (pci_entry == NULL || 
+        (pci_entry->IsEmailEmpty() && !pci_entry->IsURLEmail())) {
+      mainTBCtrl.EnableButton(ID_MENUITEM_SENDEMAIL, FALSE);
+    } else {
+      mainTBCtrl.EnableButton(ID_MENUITEM_SENDEMAIL, TRUE);
+    }
+
+    if (pci_entry == NULL || pci_entry->IsURLEmpty() || pci_entry->IsURLEmail()) {
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, FALSE);
+    } else {
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, TRUE);
     }
 
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
@@ -319,6 +335,9 @@ void DboxMain::setupBars()
         break;
       case PWSprefs::DoubleClickRun:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATRUN;
+        break;
+      case PWSprefs::DoubleClickSendEmail:
+        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATSENDEMAIL;
         break;
       default:
         statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOMPANY;
@@ -479,7 +498,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   ASSERT(indices.empty());
 
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
-  StringX listTitle, saveTitle;
+  StringX curEmail, curRunCommand, listTitle, saveTitle;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -522,6 +541,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curPassword = curitem.GetPassword();
     curNotes = curitem.GetNotes();
     curURL = curitem.GetURL();
+    curEmail = curitem.GetEmail();
+    curRunCommand = curitem.GetRunCommand();
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
 
@@ -532,6 +553,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       ToLower(curPassword);
       ToLower(curNotes);
       ToLower(curURL);
+      ToLower(curEmail);
+      ToLower(curRunCommand);
       ToLower(curAT);
     }
 
@@ -559,6 +582,14 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         break;
       }
       if (bsFields.test(CItemData::URL) && ::wcsstr(curURL.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::EMAIL) && ::wcsstr(curEmail.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::RUNCMD) && ::wcsstr(curRunCommand.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -1121,6 +1152,12 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
       case CItemData::URL:
         cs_fielddata = itemData.GetURL();
         break;
+      case CItemData::RUNCMD:
+        cs_fielddata = itemData.GetRunCommand();
+        break;
+      case CItemData::EMAIL:
+        cs_fielddata = itemData.GetEmail();
+        break;
       case CItemData::CTIME:
         cs_fielddata = itemData.GetCTimeL();
         break;
@@ -1246,6 +1283,12 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
           break;
         case CItemData::URL:
           cs_fielddata = itemData.GetURL();
+          break;
+        case CItemData::RUNCMD:
+          cs_fielddata = itemData.GetRunCommand();
+          break;
+        case CItemData::EMAIL:
+          cs_fielddata = itemData.GetEmail();
           break;
         case CItemData::CTIME:
           cs_fielddata = itemData.GetCTimeL();
@@ -1469,7 +1512,7 @@ void DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 
   if (menu.LoadMenu(IDR_POPCOLUMNS)) {
     MENUINFO minfo;
-    memset(&minfo, 0x00, sizeof(minfo));
+    SecureZeroMemory(&minfo, sizeof(MENUINFO));
     minfo.cbSize = sizeof(MENUINFO);
     minfo.fMask = MIM_MENUDATA;
     minfo.dwMenuData = IDR_POPCOLUMNS;
@@ -2018,6 +2061,49 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
   return rc ? TRUE : FALSE;
 }
 
+BOOL DboxMain::SendEmail(const CString &cs_Email)
+{
+  /*
+   * Format is the standard 'mailto:' rules as per RFC 2368.
+   * 'mailto:' is prefixed the the string passed to this routine.
+   *
+   * sAddress[sHeaders]
+   *
+   * sAddress
+   *  One or more valid e-mail addresses separated by a semicolon. 
+   *  You must use Internet-safe characters. Use %20 for the space character.
+   *
+   * sHeaders
+   *  Optional. One or more name-value pairs. The first pair should be 
+   *  prefixed by a "?" and any additional pairs should be prefixed by a "&".
+   *
+   *  The name can be one of the following strings:
+   *    subject
+   *       Text to appear in the subject line of the message.
+   *    body
+   *       Text to appear in the body of the message.
+   *    CC
+   *       Addresses to be included in the "cc" (carbon copy) section of the 
+   *       message.
+   *    BCC
+   *       Addresses to be included in the "bcc" (blind carbon copy) section
+   *       of the message.
+   *
+   * Example:
+   *   user@example.com?subject=Message Title&body=Message Content"
+   */
+
+  StringX sx_Email(L"mailto:"), sxParameters(L""), sxAutoType(L"");
+  sx_Email += cs_Email;
+  Trim(sx_Email);
+  bool rc = m_runner.issuecmd(sx_Email, sxParameters, sxAutoType);
+
+  if (!rc) {
+    AfxMessageBox(IDS_CANTEMAIL, MB_ICONSTOP);
+  }
+  return rc ? TRUE : FALSE;
+}
+
 void DboxMain::SetColumns()
 {
   // User hasn't yet saved the columns he/she wants and so gets our order!
@@ -2070,6 +2156,18 @@ void DboxMain::SetColumns()
   cs_header = GetHeaderText(CItemData::URL);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::URL;
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
+
+  cs_header = GetHeaderText(CItemData::EMAIL);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
+  hdi.lParam = CItemData::EMAIL;
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
+
+  cs_header = GetHeaderText(CItemData::RUNCMD);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
+  hdi.lParam = CItemData::RUNCMD;
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
 
@@ -2464,6 +2562,12 @@ CString DboxMain::GetHeaderText(const int iType)
     case CItemData::URL:
       cs_header.LoadString(IDS_URL);
       break;
+    case CItemData::EMAIL:
+      cs_header.LoadString(IDS_EMAIL);
+      break;
+    case CItemData::RUNCMD:
+      cs_header.LoadString(IDS_RUNCOMMAND);
+      break;
     case CItemData::NOTES:
       cs_header.LoadString(IDS_NOTES);
       break;
@@ -2506,6 +2610,8 @@ int DboxMain::GetHeaderWidth(const int iType)
     case CItemData::PASSWORD:
     case CItemData::NOTES:
     case CItemData::URL:
+    case CItemData::EMAIL:
+    case CItemData::RUNCMD:
     case CItemData::POLICY:
     case CItemData::XTIME_INT:
       nWidth = m_nColumnHeaderWidthByType[iType];
@@ -2574,6 +2680,12 @@ void DboxMain::CalcHeaderWidths()
         break;
       case CItemData::URL:
         cs_header.LoadString(IDS_URL);
+        break;
+      case CItemData::EMAIL:
+        cs_header.LoadString(IDS_EMAIL);
+        break;
+      case CItemData::RUNCMD:
+        cs_header.LoadString(IDS_RUNCOMMAND);
         break;
       case CItemData::NOTES:
         cs_header.LoadString(IDS_NOTES);
@@ -3108,6 +3220,12 @@ void DboxMain::OnToolBarFindReport()
         case CItemData::URL:
           uistring = IDS_URL;
           break;
+        case CItemData::EMAIL:
+          uistring = IDS_EMAIL;
+          break;
+        case CItemData::RUNCMD:
+          uistring = IDS_RUNCOMMAND;
+          break;
         case CItemData::NOTES:
           uistring = IDS_NOTES;
           break;
@@ -3180,6 +3298,10 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPNOTES));
     if (bsFFields.test(CItemData::URL))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPURL));
+    if (bsFFields.test(CItemData::EMAIL))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPEMAIL));
+    if (bsFFields.test(CItemData::RUNCMD))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
     if (bsFFields.test(CItemData::AUTOTYPE))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
     if (bsFFields.test(CItemData::PWHIST))
@@ -3210,33 +3332,13 @@ void DboxMain::OnToolBarFindReport()
   gmb.SetTitle(IDS_RPTFIND);
   gmb.SetMsg(IDS_REPORTCREATED);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
-  gmb.AddButton(1, L"OK", TRUE, TRUE);
+  gmb.AddButton(1, IDS_OK, TRUE, TRUE);
   gmb.AddButton(2, IDS_VIEWREPORT);
   INT_PTR msg_rc = gmb.DoModal();
   if (msg_rc == 2)
     ViewReport(rpt);
 
   m_FindToolBar.SetStatus(cs_temp);
-}
-
-void DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
-{
-  CToolBarCtrl &mainTBCtrl =  m_MainToolBar.GetToolBarCtrl();
-  if (mainTBCtrl.IsButtonHidden(ID_MENUITEM_BROWSEURL) == TRUE)
-    return;
-
-  TBBUTTONINFO tbinfo;
-  memset(&tbinfo, 0x00, sizeof(tbinfo));
-  tbinfo.cbSize = sizeof(tbinfo);
-  mainTBCtrl.HideButton(ID_MENUITEM_BROWSEURL, TRUE);
-  if (bIsEmail) {
-    tbinfo.iImage = m_MainToolBar.GetSendEmailImageIndex();
-  } else {
-    tbinfo.iImage = m_MainToolBar.GetBrowseURLImageIndex();
-  }
-  tbinfo.dwMask = TBIF_IMAGE;
-  mainTBCtrl.SetButtonInfo(ID_MENUITEM_BROWSEURL, &tbinfo);
-  mainTBCtrl.HideButton(ID_MENUITEM_BROWSEURL, FALSE);
 }
 
 int DboxMain::GetEntryImage(const CItemData &ci)

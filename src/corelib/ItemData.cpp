@@ -57,7 +57,7 @@ CItemData::CItemData()
   m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
   m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
   m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
-  m_DCA(DCA), m_entrytype(ET_NORMAL), m_display_info(NULL)
+  m_DCA(DCA), m_email(EMAIL), m_entrytype(ET_NORMAL), m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -70,7 +70,7 @@ CItemData::CItemData(const CItemData &that) :
   m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
-  m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA),
+  m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_email(that.m_email),
   m_entrytype(that.m_entrytype), m_display_info(that.m_display_info)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
@@ -308,6 +308,11 @@ StringX CItemData::GetRunCommand() const
   return GetField(m_RunCommand);
 }
 
+StringX CItemData::GetEmail() const
+{
+  return GetField(m_email);
+}
+
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
                                 unsigned char * &pdata,
                                 const CItemField &item) const
@@ -439,6 +444,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
            history + separator +
            GetRunCommand() + separator +
            GetDCA() + separator +
+           GetEmail() + separator +
            _T("\"") + notes + _T("\""));
   } else {
     // Not everything
@@ -477,6 +483,8 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       ret += GetRunCommand() + separator;
     if (bsFields.test(CItemData::DCA))
       ret += GetDCA() + separator;
+    if (bsFields.test(CItemData::EMAIL))
+      ret += GetEmail() + separator;
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
     // remove trailing separator
@@ -668,6 +676,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   if (bsExport.test(CItemData::DCA) && 
       i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     oss << "\t\t<dca>" << i16 << "</dca>" << endl;
+
+  tmp = GetEmail();
+  if (bsExport.test(CItemData::EMAIL) && !tmp.empty())
+    PWSUtil::WriteXMLField(oss, "email", tmp, utf8conv);
 
   if (NumberUnknownFields() > 0) {
     oss << "\t\t<unknownrecordfields>" << endl;
@@ -1111,6 +1123,11 @@ void CItemData::SetRunCommand(const StringX &cs_RunCommand)
   SetField(m_RunCommand, cs_RunCommand);
 }
 
+void CItemData::SetEmail(const StringX &cs_email)
+{
+  SetField(m_email, cs_email);
+}
+
 void CItemData::SetDCA(const short &iDCA)
 {
    
@@ -1161,6 +1178,7 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_AutoType = that.m_AutoType;
     m_RunCommand = that.m_RunCommand;
     m_DCA = that.m_DCA;
+    m_email = that.m_email;
     m_tttCTime = that.m_tttCTime;
     m_tttPMTime = that.m_tttPMTime;
     m_tttATime = that.m_tttATime;
@@ -1192,6 +1210,7 @@ void CItemData::Clear()
   m_AutoType.Empty();
   m_RunCommand.Empty();
   m_DCA.Empty();
+  m_email.Empty();
   m_tttCTime.Empty();
   m_tttPMTime.Empty();
   m_tttATime.Empty();
@@ -1314,6 +1333,12 @@ bool CItemData::Matches(const stringT &string1, int iObject,
     case PASSWORD:
       csObject = GetPassword();
       break;
+    case RUNCMD:
+      csObject = GetRunCommand();
+      break;
+    case EMAIL:
+      csObject = GetEmail();
+      break;
     case AUTOTYPE:
       csObject = GetAutoType();
       break;
@@ -1355,6 +1380,21 @@ bool CItemData::Matches(int num1, int num2, int iObject,
     return false;
   else
     return PWSMatch::Match(num1, num2, iValue, iFunction);
+}
+
+bool CItemData::Matches(short dca, int iFunction) const
+{
+  short iDCA;
+  GetDCA(iDCA);
+  switch (iFunction) {
+    case PWSMatch::MR_IS:
+      return iDCA == dca;
+    case PWSMatch::MR_ISNOT:
+      return iDCA != dca;
+    default:
+      ASSERT(0);
+  }
+  return false;
 }
 
 bool CItemData::Matches(time_t time1, time_t time2, int iObject,
@@ -1638,6 +1678,10 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
       if (!pull_int16(i16, data, len)) return false;
       SetDCA(i16);
       break;
+    case EMAIL:
+      if (!pull_string(str, data, len)) return false;
+      SetEmail(str);
+      break;
     case END:
       break;
     default:
@@ -1751,6 +1795,7 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *pcibase)  const
 
   push_string(v, RUNCMD, GetRunCommand());
   GetDCA(i16);   push_int16(v, DCA, i16);
+  push_string(v, EMAIL, GetEmail());
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();

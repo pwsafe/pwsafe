@@ -464,6 +464,10 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
               iCtrlID <= ID_MENUITEM_TRAYVIEWEDITMAX)
             iCtrlID = ID_MENUITEM_EDIT;
           else
+          if (iCtrlID >= ID_MENUITEM_TRAYSENDEMAIL1 &&
+              iCtrlID <= ID_MENUITEM_TRAYSENDEMAILMAX)
+            iCtrlID = ID_MENUITEM_SENDEMAIL;
+          else
           if (iCtrlID >= ID_FILE_MRU_ENTRY1 &&
               iCtrlID <= ID_FILE_MRU_ENTRYMAX)
             iCtrlID = ID_MENUITEM_MRUENTRY;

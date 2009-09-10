@@ -183,8 +183,7 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
   sSpecialFolder += LnkName + L"." + L"lnk";
 
   // DELETE THE LINK:
-  SHFILEOPSTRUCT FIO;
-  memset(&FIO, 0, sizeof SHFILEOPSTRUCT);
+  SHFILEOPSTRUCT FIO = {0};
   //  FIO.pTo=NULL; // MUST be NULL
   FIO.wFunc = FO_DELETE;
   FIO.fFlags = FOF_NOERRORUI|FOF_NOCONFIRMATION;

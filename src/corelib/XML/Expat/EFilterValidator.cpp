@@ -76,6 +76,16 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_NOTES, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_NOTES}},
   {_T("password"),
     {XTE_PASSWORD, XTR_PASSWORDRULE, 1, DFTYPE_MAIN, PWSMatch::MT_PASSWORD, FT_PASSWORD}},
+  {_T("url"),
+    {XTE_URL, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_URL}},
+  {_T("autotype"),
+    {XTE_AUTOTYPE, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_AUTOTYPE}},
+  {_T("runcommand"),
+    {XTE_RUNCMD, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_RUNCMD}},
+  {_T("DCA"),
+    {XTE_DCA, XTR_DCARULE, 1, DFTYPE_MAIN, PWSMatch::MT_DCA, FT_DCA}},
+  {_T("email"),
+    {XTE_EMAIL, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_EMAIL}},
   {_T("create_time"),
     {XTE_CREATE_TIME, XTR_DATERULE, 1, DFTYPE_MAIN, PWSMatch::MT_DATE, FT_CTIME}},
   {_T("password_modified_time"),
@@ -86,10 +96,6 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_EXPIRY_TIME, XTR_DATERULE, 1, DFTYPE_MAIN, PWSMatch::MT_DATE, FT_XTIME}},
   {_T("record_modified_time"),
     {XTE_RECORD_MODIFIED_TIME, XTR_DATERULE, 1, DFTYPE_MAIN, PWSMatch::MT_DATE, FT_RMTIME}},
-  {_T("url"),
-    {XTE_URL, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_URL}},
-  {_T("autotype"),
-    {XTE_AUTOTYPE, XTR_STRINGPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_STRING, FT_AUTOTYPE}},
   {_T("password_expiry_interval"),
     {XTE_PASSWORD_EXPIRY_INTERVAL, XTR_INTEGERRULE, 1, DFTYPE_MAIN, PWSMatch::MT_INTEGER, FT_XTIME_INT}},
   {_T("password_history"),
@@ -146,6 +152,8 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_NUM1, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("num2"),
     {XTE_NUM2, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
+  {_T("dca"),
+    {XTE_DCA1, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("date1"),
     {XTE_DATE1, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("date2"),
@@ -164,8 +172,8 @@ const EFilterValidator::st_filter_rules EFilterValidator::m_filter_rulecodes[PWS
   {_T("NP"), {PWSMatch::MR_NOTPRESENT, XTR_BOOLEANPRESENTRULE | XTR_DATERULE | XTR_INTEGERRULE | XTR_STRINGPRESENTRULE} },
   {_T("SE"), {PWSMatch::MR_SET, XTR_BOOLEANSETRULE} },
   {_T("NS"), {PWSMatch::MR_NOTSET, XTR_BOOLEANSETRULE} },
-  {_T("IS"), {PWSMatch::MR_IS, XTR_ENTRYRULE} },
-  {_T("NI"), {PWSMatch::MR_ISNOT, XTR_ENTRYRULE} },
+  {_T("IS"), {PWSMatch::MR_IS, XTR_ENTRYRULE | XTR_DCARULE} },
+  {_T("NI"), {PWSMatch::MR_ISNOT, XTR_ENTRYRULE | XTR_DCARULE} },
   {_T("BE"), {PWSMatch::MR_BEGINS, XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
   {_T("NB"), {PWSMatch::MR_NOTBEGIN, XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
   {_T("EN"), {PWSMatch::MR_ENDS, XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
@@ -262,7 +270,7 @@ bool EFilterValidator::startElement(stringT & strStartElement)
       m_group_element_code = XTE_INVALID;
       m_datetime_element_code = XTE_INVALID;
       m_rule_code = XTR_NA;
-      for (int i = XTE_GROUP; i <= XTE_TYPE; i++) {
+      for (int i = XTE_GROUP; i < XTE_LAST_ELEMENT; i++) {
         m_ielement_occurs[i] = 0;
       }
       break;
@@ -291,6 +299,9 @@ bool EFilterValidator::startElement(stringT & strStartElement)
     case XTE_DATE1:
     case XTE_DATE2:
       data_type = XTD_XS_DATE;
+      break;
+    case XTE_DCA1:
+      data_type = XTD_DCATYPE;
       break;
     case XTE_TYPE:
       data_type = XTD_ENTRYTYPE;
@@ -397,6 +408,12 @@ bool EFilterValidator::endElement(stringT &strEndElement,
             cs_missing_element = m_ielement_occurs[XTE_STRING] != 1 ? _T("string") : _T("case");
           }
           break;
+        case XTR_DCARULE:
+          if (m_ielement_occurs[XTE_DCA1] != 1) {
+            m_iErrorCode = XTPEC_MISSING_ELEMENT;
+            cs_missing_element =  _T("dca");
+          }
+          break;
         case XTR_PASSWORDHISTORYRULE:
         case XTR_PASSWORDPOLICYRULE:
         default:
@@ -457,6 +474,8 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
     case XTE_EXPIRY_TIME:
     case XTE_RECORD_MODIFIED_TIME:
     case XTE_URL:
+    case XTE_RUNCMD:
+    case XTE_EMAIL:
     case XTE_AUTOTYPE:
     case XTE_PASSWORD_EXPIRY_INTERVAL:
     case XTE_PASSWORD_HISTORY:
@@ -476,6 +495,7 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
     case XTE_POLICY_EASYVISION:
     case XTE_POLICY_PRONOUNCEABLE:
     case XTE_POLICY_HEXADECIMAL:
+    case XTE_DCA:
     case XTE_ENTRYTYPE:
     case XTE_UNKNOWNFIELDS:
       if (m_bfiltergroup) {
@@ -498,6 +518,7 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
           m_ielement_occurs[XTE_WARN] != 0 ||
           m_ielement_occurs[XTE_NUM1] != 0 ||
           m_ielement_occurs[XTE_NUM2] != 0 ||
+          m_ielement_occurs[XTE_DCA1] != 0 ||
           m_ielement_occurs[XTE_DATE1] != 0 ||
           m_ielement_occurs[XTE_DATE2] != 0 ||
           m_ielement_occurs[XTE_TYPE] != 0) {
@@ -537,6 +558,7 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
           m_ielement_occurs[XTE_WARN] != 0 ||
           m_ielement_occurs[XTE_NUM1] != 0 ||
           m_ielement_occurs[XTE_NUM2] != 0 ||
+          m_ielement_occurs[XTE_DCA1] != 0 ||
           m_ielement_occurs[XTE_DATE1] != 0 ||
           m_ielement_occurs[XTE_DATE2] != 0 ||
           m_ielement_occurs[XTE_TYPE] != 0) {
@@ -606,6 +628,13 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
       if (previous_element_code != XTE_TEST ||
           (m_rule_code & XTR_ENTRYRULE) == 0 ||
           m_ielement_occurs[XTE_TYPE] != 0) {
+        m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
+      }
+      break;
+    case XTE_DCA1:
+      if (previous_element_code != XTE_TEST ||
+          (m_rule_code & XTR_DCARULE) == 0 ||
+          m_ielement_occurs[XTE_DCA1] != 0) {
         m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
       }
       break;

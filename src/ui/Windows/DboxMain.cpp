@@ -306,13 +306,13 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_VIEW, OnEdit)
   ON_COMMAND(ID_MENUITEM_GROUPENTER, OnEdit)
   ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
-  ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnBrowse)
+  ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnSendEmail)
   ON_COMMAND(ID_MENUITEM_BROWSEURLPLUS, OnBrowsePlus)
   ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
   ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
   ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
   ON_COMMAND(ID_MENUITEM_COPYURL, OnCopyURL)
-  ON_COMMAND(ID_MENUITEM_COPYEMAIL, OnCopyURL)
+  ON_COMMAND(ID_MENUITEM_COPYEMAIL, OnCopyEmail)
   ON_COMMAND(ID_MENUITEM_COPYRUNCOMMAND, OnCopyRunCommand)
   ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
   ON_COMMAND(ID_MENUITEM_DELETEENTRY, OnDelete)
@@ -465,6 +465,10 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYRUNCMD1, ID_MENUITEM_TRAYRUNCMDMAX, OnUpdateTrayRunCommand)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYBROWSEPLUS1, ID_MENUITEM_TRAYBROWSEPLUSMAX, OnTrayBrowse)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYBROWSEPLUS1, ID_MENUITEM_TRAYBROWSEPLUSMAX, OnUpdateTrayBrowse)
+  ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYEMAIL1, ID_MENUITEM_TRAYCOPYEMAILMAX, OnTrayCopyEmail)
+  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYEMAIL1, ID_MENUITEM_TRAYCOPYEMAILMAX, OnUpdateTrayCopyEmail)
+  ON_COMMAND_RANGE(ID_MENUITEM_TRAYSENDEMAIL1, ID_MENUITEM_TRAYSENDEMAILMAX, OnTraySendEmail)
+  ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSENDEMAIL1, ID_MENUITEM_TRAYSENDEMAILMAX, OnUpdateTraySendEmail)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 #endif
@@ -787,6 +791,8 @@ void DboxMain::InitPasswordSafe()
     case CItemData::XTIME_INT:
     case CItemData::RMTIME:
     case CItemData::URL:
+    case CItemData::EMAIL:
+    case CItemData::RUNCMD:
     case CItemData::AUTOTYPE:
     case CItemData::POLICY:
     break;
@@ -1203,18 +1209,24 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
 #endif
 }
 
+// Called to send an email.
+void DboxMain::OnSendEmail()
+{
+  DoBrowse(false, true);
+}
+
 void DboxMain::OnBrowsePlus()
 {
-  DoBrowse(true);
+  DoBrowse(true, false);
 }
 
 // Called to open a web browser to the URL associated with an entry.
 void DboxMain::OnBrowse()
 {
-  DoBrowse(false);
+  DoBrowse(false, false);
 }
 
-void DboxMain::DoBrowse(const bool bDoAutotype)
+void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 {
   CItemData *pci = getSelectedItem();
   CItemData *pci_original(pci);
@@ -1222,7 +1234,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype)
   if (pci != NULL) {
     StringX sx_pswd = pci->GetPassword();
     if (pci->IsShortcut()) {
-      // This is an shortcut
+      // This is a shortcut
       uuid_array_t entry_uuid, base_uuid;
       pci->GetUUID(entry_uuid);
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
@@ -1235,7 +1247,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype)
     }
 
     if (pci->IsAlias()) {
-      // This is an shortcut
+      // This is an alias
       uuid_array_t entry_uuid, base_uuid;
       pci->GetUUID(entry_uuid);
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
@@ -1246,12 +1258,19 @@ void DboxMain::DoBrowse(const bool bDoAutotype)
       }
     }
 
-    if (!pci->IsURLEmpty()) {
+    CString cs_command;
+    if (bSendEmail && !pci->IsEmailEmpty()) {
+      cs_command = L"mailto:";
+      cs_command += pci->GetEmail().c_str();
+    } else {
+      cs_command = pci->GetURL().c_str();
+    }
+    if (!cs_command.IsEmpty()) {
       StringX sxAutotype = PWSAuxParse::GetAutoTypeString(pci->GetAutoType(),
                                     pci->GetGroup(), pci->GetTitle(), 
                                     pci->GetUser(), sx_pswd, 
                                     pci->GetNotes());
-      LaunchBrowser(pci->GetURL().c_str(), sxAutotype, bDoAutotype);
+      LaunchBrowser(cs_command, sxAutotype, bDoAutotype);
       SetClipboardData(sx_pswd);
       UpdateLastClipboardAction(CItemData::PASSWORD);
       UpdateAccessTime(pci_original);
@@ -2309,6 +2328,7 @@ void DboxMain::SetDCAText(CItemData * pci)
     case PWSprefs::DoubleClickCopyPasswordMinimize: ui_dca = IDS_STATCOPYPASSWORDMIN; break;
     case PWSprefs::DoubleClickBrowsePlus:           ui_dca = IDS_STATBROWSEPLUS;      break;
     case PWSprefs::DoubleClickRun:                  ui_dca = IDS_STATRUN;             break;
+    case PWSprefs::DoubleClickSendEmail:            ui_dca = IDS_STATSENDEMAIL;       break;
     default:                                        ui_dca = IDS_STATCOMPANY;
   }
   CString s;
@@ -2381,7 +2401,7 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
     CToolBarCtrl &tbCtrl = m_MainToolBar.GetToolBarCtrl();
     nCount = tbCtrl.GetButtonCount();
 
-    memset(&tbinfo, 0x00, sizeof(tbinfo));
+    SecureZeroMemory(&tbinfo, sizeof(TBBUTTONINFO));
     tbinfo.cbSize = sizeof(tbinfo);
     tbinfo.dwMask = TBIF_BYINDEX | TBIF_COMMAND | TBIF_STYLE;
 
@@ -2518,6 +2538,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
   bool bGroupSelected = false;
   CItemData *pci(NULL);
+  CItemData::EntryType etype(CItemData::ET_INVALID);
+
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
     bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
@@ -2527,6 +2549,22 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
     if (pos != NULL)
       pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+  }
+
+  if (pci != NULL) {
+    // Save entry type before changing pci
+    etype = pci->GetEntryType();
+    if (etype == CItemData::ET_SHORTCUT) {
+      // This is a shortcut
+      uuid_array_t entry_uuid, base_uuid;
+      pci->GetUUID(entry_uuid);
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        pci = &iter->second;
+      }
+    }
   }
 
   // Special processing!
@@ -2545,7 +2583,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // Not available if group selected or entry is not an alias/shortcut
     case ID_MENUITEM_GOTOBASEENTRY:
-      if (bGroupSelected || !(pci->IsShortcut() || pci->IsAlias()))
+      if (bGroupSelected ||
+          !(etype == CItemData::ET_SHORTCUT || etype == CItemData::ET_ALIAS))
         iEnable = FALSE;
       break;
     // Not allowed if Group selected or the item selected has an empty field

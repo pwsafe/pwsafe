@@ -116,7 +116,8 @@ protected:
 //
 struct CMenuItemInfo : public MENUITEMINFO {
   CMenuItemInfo()
-  { memset(this, 0, sizeof(MENUITEMINFO));
-  cbSize = sizeof(MENUITEMINFO);
+  {
+    SecureZeroMemory(this, sizeof(MENUITEMINFO));
+    cbSize = sizeof(MENUITEMINFO);
   }
 };

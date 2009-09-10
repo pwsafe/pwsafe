@@ -52,7 +52,7 @@ CPWFontDialog::CPWFontDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrint
       uiID = IDS_VKBDFONT;
       // Set up default font, which is NONE
       memcpy(&m_dfltVKBDFont, lplfInitial, sizeof(LOGFONT));
-      memset(m_dfltVKBDFont.lfFaceName, 0, LF_FACESIZE * sizeof(wchar_t));
+      SecureZeroMemory(m_dfltVKBDFont.lfFaceName, sizeof(m_dfltVKBDFont.lfFaceName));
       break;
     default:
       ASSERT(0);

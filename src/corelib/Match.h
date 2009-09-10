@@ -27,7 +27,7 @@ namespace PWSMatch {
     MR_ACTIVE, MR_INACTIVE,
     MR_PRESENT, MR_NOTPRESENT,
     MR_SET, MR_NOTSET,
-    // For entrytype comparisons/filters
+    // For entrytype & DCA comparisons/filters
     MR_IS, MR_ISNOT,
     // For string comparisons/filters
     MR_BEGINS, MR_NOTBEGIN, 
@@ -46,7 +46,8 @@ namespace PWSMatch {
 
   enum MatchType {MT_INVALID = 0,
                   MT_STRING, MT_PASSWORD, MT_INTEGER, MT_DATE,
-                  MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE};
+                  MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE,
+                  MT_DCA};
 
   // Generalised checking
   bool Match(const StringX &string1, StringX &csValue, int iFunction);
@@ -75,7 +76,7 @@ namespace PWSMatch {
                     int fnum1, int fnum2,
                     time_t fdate1, time_t fdate2,
                     const stringT &fstring, bool fcase,
-                    int etype, bool bBetween,
+                    short fdca, int etype, bool bBetween,
                     stringT &cs1, stringT &cs2);
 };
 #endif /* __MATCH_H */

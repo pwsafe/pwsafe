@@ -24,7 +24,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\tNotes"
+  IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tNotes"
   IDSC_EXPHDRGROUPTITLE   "Group/Title\t"
   IDSC_EXPHDRUSERNAME     "Username\t"
   IDSC_EXPHDRPASSWORD     "Password\t"
@@ -43,6 +43,7 @@ BEGIN
   IDSC_EXPHDRXTIMEINT     "Password Expiry Interval\t"
   IDSC_EXPHDRRUNCOMMAND   "Run Command\t"
   IDSC_EXPHDRDCA          "DCA\t"
+  IDSC_EXPHDREMAIL        "e-mail\t"
 END
 
 STRINGTABLE
@@ -278,4 +279,19 @@ BEGIN
   IDSC_EXS_UNMATCHEDQUOTES "There are unmatched quotes in the run command"
   IDSC_EXS_INVALIDBRACKETS "Characters present between end of index ']' and '}'"
   IDSC_EXS_MISSINGROUNDBKT "Missing ending round bracket for Autotype value"
+END
+
+STRINGTABLE
+BEGIN
+  IDSC_CURRENTDEFAULTDCA   " Current default (%s)"  // NOTE: Leading blank to make first in sort
+  IDSC_DCAAUTOTYPE         "Autotype"
+  IDSC_DCABROWSE           "Browse to URL"
+  IDSC_DCABROWSEPLUS       "Browse to URL + Autotype"
+  IDSC_DCACOPYNOTES        "Copy notes to clipboard"
+  IDSC_DCACOPYPASSWORD     "Copy password to clipboard"
+  IDSC_DCACOPYUSERNAME     "Copy username to clipboard"
+  IDSC_DCAVIEWEDIT         "View/Edit selected entry"
+  IDSC_DCACOPYPASSWORDMIN  "Copy password to clipboard, minimize"
+  IDSC_DCARUN              "Run Command"
+  IDSC_DCASENDEMAIL        "Send email"
 END

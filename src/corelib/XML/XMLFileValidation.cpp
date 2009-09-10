@@ -70,6 +70,7 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("autotype"), {0, XLE_AUTOTYPE}},
   {_T("runcommand"), {0, XLE_RUNCOMMAND}},
   {_T("dca"), {0, XLE_DCA}},
+  {_T("email"), {0, XLE_EMAIL}},
   {_T("notes"), {0, XLE_NOTES}},
   {_T("uuid"), {0, XLE_UUID}},
   {_T("ctime"), {0, XLE_CTIME}},

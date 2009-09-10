@@ -30,7 +30,7 @@ CFilterActionsDlg::~CFilterActionsDlg()
 
 void CFilterActionsDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_FILTERNAMECOMBO, m_combo);
 }
 

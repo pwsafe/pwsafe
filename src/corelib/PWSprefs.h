@@ -101,12 +101,15 @@ public:
     NumStringPrefs};
 
   // for DoubleClickAction
+  // NOTE: When adding items, update the pwsafe.xsd & pwsafe_filter.xsd schemas
+  //       to increase the maximum value in "dcaType"
   enum {minDCA = 0, DoubleClickCopyPassword = 0, DoubleClickViewEdit = 1,
     DoubleClickAutoType = 2, DoubleClickBrowse = 3, 
     DoubleClickCopyNotes = 4, DoubleClickCopyUsername = 5,
     DoubleClickCopyPasswordMinimize = 6,
     DoubleClickBrowsePlus = 7, DoubleClickRun = 8,
-    maxDCA = 8};
+    DoubleClickSendEmail = 9,
+    maxDCA = 9};
 
   // for TreeDisplayStatusAtOpen
   enum {minTDS = 0, AllCollapsed = 0, AllExpanded = 1, AsPerLastSave = 2,

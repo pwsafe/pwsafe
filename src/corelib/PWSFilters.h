@@ -51,6 +51,9 @@ enum FieldType {
   FT_PWHIST        = CItemData::PWHIST,
   FT_POLICY        = CItemData::POLICY,
   FT_XTIME_INT     = CItemData::XTIME_INT,
+  FT_RUNCMD        = CItemData::RUNCMD,
+  FT_DCA           = CItemData::DCA,
+  FT_EMAIL         = CItemData::EMAIL,
   FT_END           = CItemData::END,
 
   // new fields purely for filters
@@ -98,6 +101,7 @@ struct st_FilterRow {
   PWSMatch::MatchRule rule;
   // Following should really be a union or subclassed, since
   // only one is used, and which is defined uniquely by the ftype.
+
   // if filter type is an integer
   int fnum1, fnum2;
   // if filter type is a date
@@ -105,6 +109,8 @@ struct st_FilterRow {
   // if filter type is a string
   StringX fstring;
   bool fcase; // case sensitive?
+  // if filter type is Double-Click Action
+  short fdca;
   // if filter type is a entrytype
   CItemData::EntryType etype;
   
@@ -116,7 +122,8 @@ struct st_FilterRow {
     ftype(FT_INVALID), mtype(PWSMatch::MT_INVALID), rule(PWSMatch::MR_INVALID),
     fnum1(0), fnum2(0),
     fdate1(0), fdate2(0),
-    fstring(_T("")), fcase(false), etype(CItemData::ET_INVALID),
+    fstring(_T("")), fcase(false), fdca(-2),
+    etype(CItemData::ET_INVALID),
     ltype(LC_INVALID)
   {}
 
@@ -125,7 +132,8 @@ struct st_FilterRow {
     ftype(that.ftype), mtype(that.mtype), rule(that.rule),
     fnum1(that.fnum1), fnum2(that.fnum2),
     fdate1(that.fdate1), fdate2(that.fdate2), 
-    fstring(that.fstring), fcase(that.fcase), etype(that.etype),
+    fstring(that.fstring), fcase(that.fcase), fdca(that.fdca),
+    etype(that.etype),
     ltype(that.ltype)
   {}
 
@@ -143,6 +151,7 @@ struct st_FilterRow {
       fdate2 = that.fdate2;
       fstring = that.fstring;
       fcase = that.fcase;
+      fdca = that.fdca;
       etype = that.etype;
       ltype = that.ltype;
     }
@@ -160,6 +169,7 @@ struct st_FilterRow {
     fdate1 = fdate2 = (time_t)0;
     fstring = _T("");
     fcase = false;
+    fdca = -2;
     etype = CItemData::ET_INVALID;
     ltype = LC_INVALID;
   }
