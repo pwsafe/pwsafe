@@ -99,7 +99,8 @@ ThisMfcApp::ThisMfcApp() :
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
   m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
-  m_bPermitTestdump(false), m_hInstResDLL(NULL)
+  m_bPermitTestdump(false), m_hInstResDLL(NULL),
+  m_active_dialogs(0L)
 {
   // Get application version information
   GetApplicationVersionData();

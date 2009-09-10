@@ -50,7 +50,9 @@ INT_PTR CPWFileDialog::DoModal()
   if (bAccEn)
     app.DisableAccelerator();
 
+  app.IncrementOpenDialogs();
   INT_PTR rc = CFileDialog::DoModal();
+  app.DecrementOpenDialogs();
 
   if (bAccEn)
     app.EnableAccelerator();
