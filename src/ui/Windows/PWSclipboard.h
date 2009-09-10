@@ -14,7 +14,7 @@
 * if isSensitive was true when we added it.
 */
 
-#include "sha256.h"
+#include "corelib/sha256.h"
 
 #if defined(UNICODE)
 #define CLIPBOARD_TEXT_FORMAT CF_UNICODETEXT
@@ -22,7 +22,7 @@
 #define CLIPBOARD_TEXT_FORMAT CF_TEXT
 #endif
 
-#include "StringX.h"
+#include "corelib/StringX.h"
 
 class PWSclipboard
 {

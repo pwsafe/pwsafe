@@ -805,10 +805,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PWSclipboard.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\PWScore.cpp"
 				>
 			</File>
@@ -1043,10 +1039,6 @@
 			</File>
 			<File
 				RelativePath=".\PWSAuxParse.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PWSclipboard.h"
 				>
 			</File>
 			<File
