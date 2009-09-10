@@ -1418,7 +1418,8 @@ void DboxMain::OnMerge()
 #define MRG_XTIME_INT  0x0100
 #define MRG_EXECUTE    0x0080
 #define MRG_DCA        0x0040
-#define MRG_UNUSED     0x003f
+#define MRG_EMAIL      0x0020
+#define MRG_UNUSED     0x001f
 
 int DboxMain::Merge(const StringX &pszFilename) {
   /* open file they want to merge */
@@ -1604,6 +1605,11 @@ int DboxMain::Merge(const StringX &pszFilename) {
       if (other_hDCA != cur_hDCA) {
         diff_flags |= MRG_DCA;
         cs_temp.LoadString(IDS_DCA);
+        csDiffs += cs_temp + L", ";
+      }
+      if (otherItem.GetEmail() != curItem.GetEmail()) {
+        diff_flags |= MRG_EMAIL;
+        cs_temp.LoadString(IDS_EMAIL);
         csDiffs += cs_temp + L", ";
       }
       if (diff_flags |= 0) {
@@ -2044,6 +2050,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
          .1.. ....  XTIME_INT [0x11] - not checked by default
          ..1. ....  RUNCMD    [0x12]
          ...1 ....  DCA       [0x13]
+         .... 1...  EMAIL     [0x14]
         */
         bsConflicts.reset();
 
@@ -2097,6 +2104,9 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
         if (m_bsFields.test(CItemData::DCA) &&
             currentItem.GetDCA() != compItem.GetDCA())
           bsConflicts.flip(CItemData::DCA);
+        if (m_bsFields.test(CItemData::EMAIL) &&
+            currentItem.GetEmail() != compItem.GetEmail())
+          bsConflicts.flip(CItemData::EMAIL);
 
         currentPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
@@ -2121,7 +2131,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
         numOnlyInCurrent++;
         currentPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
-        memset(st_data.uuid1, 0x00, sizeof(uuid_array_t));
+        SecureZeroMemory(st_data.uuid1, sizeof(uuid_array_t));
         st_data.bsDiffs.reset();
         st_data.indatabase = CCompareResultsDlg::CURRENT;
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
@@ -2149,7 +2159,7 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
           m_core.GetEntryEndIter()) {
         /* didn't find any match... */
         numOnlyInComp++;
-        memset(st_data.uuid0, 0x00, sizeof(uuid_array_t));
+        SecureZeroMemory(st_data.uuid0, sizeof(uuid_array_t));
         compPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid1, xuuid, sizeof(uuid_array_t));
         st_data.bsDiffs.reset();
@@ -2281,6 +2291,8 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
     if (m_bsFields.test(CItemData::DCA))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPDCA));
+    if (m_bsFields.test(CItemData::EMAIL))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPEMAIL));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
@@ -2452,7 +2464,8 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   // Copy *pfromcore -> *ptocore entry at fromPos
 
   ItemListIter toPos;
-  StringX group, title, user, notes, password, url, autotype, pwhistory, runcmd, dca;
+  StringX group, title, user, notes, password;
+  StringX url, autotype, pwhistory, runcmd, dca, email;
   time_t ct, at, xt, pmt, rmt;
   int xint;
   PWPolicy pwp;
@@ -2473,6 +2486,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   pwhistory = fromEntry->GetPWHistory();
   runcmd = fromEntry->GetRunCommand();
   dca = fromEntry->GetDCA();
+  email = fromEntry->GetEmail();
   fromEntry->GetCTime(ct);
   fromEntry->GetATime(at);
   fromEntry->GetXTime(xt);
@@ -2497,6 +2511,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     toEntry->SetPWHistory(pwhistory);
     toEntry->SetRunCommand(runcmd);
     toEntry->SetDCA(dca.c_str());
+    toEntry->SetEmail(email);
     toEntry->SetCTime(ct);
     toEntry->SetATime(at);
     toEntry->SetXTime(xt);
@@ -2554,6 +2569,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     temp.SetPWHistory(pwhistory);
     temp.SetRunCommand(runcmd);
     temp.SetDCA(dca.c_str());
+    temp.SetEmail(email);
     temp.SetCTime(ct);
     temp.SetATime(at);
     temp.SetXTime(xt);

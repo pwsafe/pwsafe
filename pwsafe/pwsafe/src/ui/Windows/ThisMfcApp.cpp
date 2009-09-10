@@ -719,8 +719,7 @@ BOOL ThisMfcApp::InitInstance()
 
   CMenu new_popupmenu;
 
-  MENUINFO minfo;
-  memset(&minfo, 0x00, sizeof(minfo));
+  MENUINFO minfo = {0};
   minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_MENUDATA;
 
@@ -1127,14 +1126,13 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, UINT MenuID)
 
   // Can't use GetMenuItemID as it does not understand that with the MENUEX
   // format, Popup menus can have IDs
-  MENUITEMINFO miinfo;
-  memset(&miinfo, 0x00, sizeof(MENUITEMINFO));
-  miinfo.cbSize = sizeof(MENUITEMINFO);
-  miinfo.fMask = MIIM_ID;                // only want the wID of the menu item
+  MENUITEMINFO miteminfo = {0};
+  miteminfo.cbSize = sizeof(MENUITEMINFO);
+  miteminfo.fMask = MIIM_ID;                // only want the wID of the menu item
 
   for (int i = 0; i < count; i++) {
-    Menu->GetMenuItemInfo(i, &miinfo, TRUE);
-    if (miinfo.wID >= 1 && miinfo.wID == MenuID)
+    Menu->GetMenuItemInfo(i, &miteminfo, TRUE);
+    if (miteminfo.wID >= 1 && miteminfo.wID == MenuID)
       return i;
   }
 

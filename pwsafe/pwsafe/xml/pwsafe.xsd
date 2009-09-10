@@ -110,7 +110,7 @@
 <xs:simpleType name="dcaType">
   <xs:restriction base="xs:int">
     <xs:minInclusive value="0" />
-    <xs:maxInclusive value="8" />
+    <xs:maxInclusive value="9" />
   </xs:restriction>
 </xs:simpleType>
 <!-- End of Special types -->
@@ -247,6 +247,7 @@
               </xs:element>
               <xs:element name="runcommand" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="dca" type="dcaType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="email" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="unknownrecordfields" minOccurs="0" maxOccurs="1">
               <!-- Start Unknown Record Fields -->
                 <xs:complexType>

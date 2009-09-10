@@ -120,6 +120,10 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       oss << sztab5 << "<type>" << szentry[st_fldata.etype]
                                               << "</type>" << szendl;
       break;
+    case PWSMatch::MT_DCA:
+      oss << sztab5 << "<dca>" << st_fldata.fdca 
+                                              << "</dca>" << szendl;
+      break;
     case PWSMatch::MT_BOOL:
       break;
     default:
@@ -185,15 +189,25 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       case FT_NOTES:
         pszfieldtype = "notes";
         break;
+      case FT_PASSWORD:
+        pszfieldtype = "password";
+        break;
       case FT_URL:
         pszfieldtype = "url";
         break;
       case FT_AUTOTYPE:
         pszfieldtype = "autotype";
         break;
-      case FT_PASSWORD:
-        pszfieldtype = "password";
+      case FT_RUNCMD:
+        pszfieldtype = "runcommand";
         break;
+      case FT_DCA:
+        pszfieldtype = "DCA";
+        break;
+      case FT_EMAIL:
+        pszfieldtype = "email";
+        break;
+      // Time fields
       case FT_CTIME:
         pszfieldtype = "create_time";
         break;
@@ -209,15 +223,17 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       case FT_RMTIME:
         pszfieldtype = "record_modified_time";
         break;
+      case FT_XTIME_INT:
+        pszfieldtype = "password_expiry_interval";
+        break;
+      // History & Policy
       case FT_PWHIST:
         pszfieldtype = "password_history";
         break;
       case FT_POLICY:
         pszfieldtype = "password_policy";
         break;
-      case FT_XTIME_INT:
-        pszfieldtype = "password_expiry_interval";
-        break;
+      // Other!
       case FT_UNKNOWNFIELDS:
         pszfieldtype = "unknownfields";
         break;
@@ -586,7 +602,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
                          st_fldata.fnum1, st_fldata.fnum2,
                          st_fldata.fdate1, st_fldata.fdate2,
                          st_fldata.fstring.c_str(), st_fldata.fcase,
-                         st_fldata.etype,
+                         st_fldata.fdca, st_fldata.etype,
                          st_fldata.rule == PWSMatch::MR_BETWEEN,
                          cs1, cs2);
   switch (st_fldata.mtype) {
@@ -633,6 +649,9 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       break;
     case PWSMatch::MT_BOOL:
       cs_criteria = cs_rule;
+      break;
+    case PWSMatch::MT_DCA:
+      Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
       break;
     case PWSMatch::MT_ENTRYTYPE:
       Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());

@@ -579,7 +579,7 @@ struct CSecEditExtn::Impl {
     unsigned char key[20];
     PWSrand::GetInstance()->GetRandomData(key, sizeof(key));
     m_bf = new BlowFish(key, sizeof(key));
-    memset(key, 0, sizeof(key));
+    SecureZeroMemory(key, sizeof(key));
   }
 
   ~Impl() {delete m_bf;}

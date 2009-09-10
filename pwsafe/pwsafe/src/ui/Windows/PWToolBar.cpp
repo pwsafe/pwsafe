@@ -67,7 +67,7 @@ const CString CPWToolBar::m_csMainButtons[] = {
   L"exporttext", L"exportxml", L"importtext", L"importxml", 
   L"saveas", L"compare", L"merge", L"listtree", L"find", L"viewreports", 
   L"applyfilters", L"setfilters", L"managefilters", L"passwordsubset",
-  L"browse+autotype", L"runcommand"
+  L"browse+autotype", L"runcommand", L"sendemail"
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -112,12 +112,12 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_MENUITEM_MANAGEFILTERS,
   ID_MENUITEM_PASSWORDSUBSET,
   ID_MENUITEM_BROWSEURLPLUS,
-  ID_MENUITEM_RUNCOMMAND
+  ID_MENUITEM_RUNCOMMAND,
+  ID_MENUITEM_SENDEMAIL
 };
 
 // Additional Control IDs not on ToolBar
 const UINT CPWToolBar::m_OtherIDs[] = {
-  ID_MENUITEM_SENDEMAIL,  // MUST be first to allow Browse URL <-> Send Email switching
   ID_MENUITEM_PROPERTIES,
   ID_MENUITEM_GROUPENTER,
   ID_MENUITEM_DUPLICATEENTRY,
@@ -183,12 +183,12 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_MANAGEFILTERS_CLASSIC,
   IDB_PASSWORDCHARS_CLASSIC,
   IDB_BROWSEURLPLUS_CLASSIC,
-  IDB_RUNCMD_CLASSIC
+  IDB_RUNCMD_CLASSIC,
+  IDB_SENDEMAIL_CLASSIC
 };
 
 // Additional bitmaps not on ToolBar
 const UINT CPWToolBar::m_OtherClassicBMs[] = {
-  IDB_SENDEMAIL_CLASSIC,    // MUST be first to allow Browse URL <-> Send Email switching
   IDB_PROPERTIES_CLASSIC,
   IDB_GROUPENTER_CLASSIC,
   IDB_DUPLICATE_CLASSIC,
@@ -254,7 +254,8 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_MANAGEFILTERS_NEW,
   IDB_PASSWORDCHARS_NEW,
   IDB_BROWSEURLPLUS_NEW,
-  IDB_RUNCMD_NEW
+  IDB_RUNCMD_NEW,
+  IDB_SENDEMAIL_NEW
 };
 
 const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
@@ -292,12 +293,12 @@ const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
   IDB_MANAGEFILTERS_NEW_D,
   IDB_PASSWORDCHARS_NEW_D,
   IDB_BROWSEURLPLUS_NEW_D,
-  IDB_RUNCMD_NEW_D
+  IDB_RUNCMD_NEW_D,
+  IDB_SENDEMAIL_NEW_D
 };
 
 // Additional bitmaps not on ToolBar
 const UINT CPWToolBar::m_OtherNewBMs[] = {
-  IDB_SENDEMAIL_NEW,      // MUST be first to allow Browse URL <-> Send Email switching
   IDB_PROPERTIES_NEW,
   IDB_GROUPENTER_NEW,
   IDB_DUPLICATE_NEW,
@@ -330,7 +331,6 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
 
 // Additional bitmaps not on ToolBar
 const UINT CPWToolBar::m_OtherNewDisBMs[] = {
-  IDB_SENDEMAIL_NEW_D,      // MUST be first to allow Browse URL <-> Send Email switching
   IDB_PROPERTIES_NEW_D,
   IDB_GROUPENTER_NEW_D,
   IDB_DUPLICATE_NEW_D,
@@ -605,7 +605,7 @@ CString CPWToolBar::GetButtonString()
     vcsButtonIDArray.push_back(m_MainToolBarIDs[i]);
   }
 
-  memset(&tbinfo, 0x00, sizeof(tbinfo));
+  SecureZeroMemory(&tbinfo, sizeof(TBBUTTONINFO));
   tbinfo.cbSize = sizeof(tbinfo);
   tbinfo.dwMask = TBIF_BYINDEX | TBIF_COMMAND | TBIF_STYLE;
 
@@ -693,7 +693,7 @@ void CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
   const int maxlength = m_iMaxNumButtons * 64;
 
   // By clearing, ensures string ends with a double NULL
-  memset(lpszTBCustomizationStrings, 0x00, maxlength * sizeof(wchar_t));
+  SecureZeroMemory(lpszTBCustomizationStrings, maxlength * sizeof(wchar_t));
 
   j = 0;
   for (i = 0; i < m_iMaxNumButtons; i++) {

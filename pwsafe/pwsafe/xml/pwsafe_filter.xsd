@@ -167,6 +167,13 @@
     </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="dca_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="IS" />
+    <xs:enumeration value="NI" />
+    </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="logicType">
   <xs:restriction base="xs:string">
     <xs:enumeration value="and" />
@@ -181,6 +188,13 @@
     <xs:enumeration value="shortcut" />
     <xs:enumeration value="aliasbase" />
     <xs:enumeration value="shortcutbase" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="dcaType">
+  <xs:restriction base="xs:int">
+    <xs:minInclusive value="0" />
+    <xs:maxInclusive value="9" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -216,6 +230,12 @@
 <xs:complexType name="matchEntry">
   <xs:sequence>
     <xs:element name="type" type="entryType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="matchDCA">
+  <xs:sequence>
+    <xs:element name="dca" type="dcaType" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
@@ -264,6 +284,14 @@
     <xs:element name="rule" type="entry_ruleType" minOccurs="1" maxOccurs="1" />
     <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
     <xs:element name="test" type="matchEntry" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="dcafilterentry" >
+  <xs:sequence>
+    <xs:element name="rule" type="dca_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchDCA" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
@@ -316,6 +344,9 @@
     <xs:element name="record_modified_time" type="datefilterentry" minOccurs="1" maxOccurs="1" />
 
     <xs:element name="url" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="runcommand" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="email" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="DCA" type="dcafilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="autotype" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="password_expiry_interval" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
 

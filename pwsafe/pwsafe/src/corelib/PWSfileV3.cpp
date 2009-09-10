@@ -247,6 +247,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   item.GetDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     WriteCBC(CItemData::DCA, (unsigned char *)&i16, sizeof(short));
+  tmp = item.GetEmail();
+  if (!tmp.empty())
+    WriteCBC(CItemData::EMAIL, tmp);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = item.GetURFIterBegin();
@@ -353,7 +356,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0305;
+const short VersionNum = 0x0306;
 
 int PWSfileV3::WriteHeader()
 {

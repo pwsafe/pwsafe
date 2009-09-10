@@ -19,7 +19,7 @@ IMPLEMENT_DYNAMIC(CAddEdit_PropertySheet, CPWPropertySheet)
 CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
                                                PWScore *pcore, CItemData *pci,
                                                const StringX currentDB)
-  : CPWPropertySheet(nID, pParent)
+  : CPWPropertySheet(nID, pParent), m_bIsModified(false)
 {
   m_AEMD.uicaller = nID;
 
@@ -68,6 +68,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.realpassword = L"";
     m_AEMD.realnotes = L"";
     m_AEMD.URL = L"";
+    m_AEMD.email = L"";
 
     // Entry type initialisation
     m_AEMD.original_entrytype = CItemData::ET_NORMAL;
@@ -102,6 +103,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.pci->GetPassword();
     m_AEMD.realnotes = m_AEMD.pci->GetNotes();
     m_AEMD.URL = m_AEMD.pci->GetURL();
+    m_AEMD.email = m_AEMD.pci->GetEmail();
 
     // Entry type initialisation
     m_AEMD.original_entrytype = m_AEMD.pci->GetEntryType();
@@ -241,28 +243,29 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     time_t t;
     switch (m_AEMD.uicaller) {
       case IDS_EDITENTRY:
-        bool bIsModified, bIsPSWDModified;
+        bool bIsPSWDModified;
         short iDCA;
         m_AEMD.pci->GetDCA(iDCA);
         // Check if modified
-        bIsModified = (m_AEMD.group       != m_AEMD.pci->GetGroup()      ||
-                       m_AEMD.title       != m_AEMD.pci->GetTitle()      ||
-                       m_AEMD.username    != m_AEMD.pci->GetUser()       ||
-                       m_AEMD.realnotes   != m_AEMD.pci->GetNotes()      ||
-                       m_AEMD.URL         != m_AEMD.pci->GetURL()        ||
-                       m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
-                       m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
-                       m_AEMD.DCA         != iDCA                        ||
-                       m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
-                       m_AEMD.locXTime    != m_AEMD.oldlocXTime          ||
-                       m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
-                       m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
-                      (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
-                       m_AEMD.pwp         != m_AEMD.oldpwp));
+        m_bIsModified = (m_AEMD.group       != m_AEMD.pci->GetGroup()      ||
+                         m_AEMD.title       != m_AEMD.pci->GetTitle()      ||
+                         m_AEMD.username    != m_AEMD.pci->GetUser()       ||
+                         m_AEMD.realnotes   != m_AEMD.pci->GetNotes()      ||
+                         m_AEMD.URL         != m_AEMD.pci->GetURL()        ||
+                         m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
+                         m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
+                         m_AEMD.DCA         != iDCA                        ||
+                         m_AEMD.email       != m_AEMD.pci->GetEmail()      ||
+                         m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
+                         m_AEMD.locXTime    != m_AEMD.oldlocXTime          ||
+                         m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
+                         m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
+                        (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
+                         m_AEMD.pwp         != m_AEMD.oldpwp));
 
-        bIsPSWDModified = m_AEMD.realpassword != m_AEMD.oldRealPassword;
+        bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
-        if (bIsModified) {
+        if (m_bIsModified) {
           // Just modify all - even though only 1 may have actually been modified
           m_AEMD.pci->SetGroup(m_AEMD.group);
           m_AEMD.pci->SetTitle(m_AEMD.title);
@@ -280,13 +283,14 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
+          m_AEMD.pci->SetEmail(m_AEMD.email);
         }
 
         if (bIsPSWDModified) {
           m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
         }
 
-        if (bIsModified && !bIsPSWDModified) {
+        if (m_bIsModified && !bIsPSWDModified) {
           time(&t);
           m_AEMD.pci->SetRMTime(t);
         }
@@ -296,9 +300,12 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
         if (m_AEMD.oldXTimeInt != m_AEMD.XTimeInt)
           m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
+
+        m_bIsModified = m_bIsModified || bIsPSWDModified;
         break;
 
       case IDS_ADDENTRY:
+        m_bIsModified = true;
         m_AEMD.pci->SetGroup(m_AEMD.group);
         m_AEMD.pci->SetTitle(m_AEMD.title);
         m_AEMD.pci->SetUser(m_AEMD.username.IsEmpty() ?
@@ -309,6 +316,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         m_AEMD.pci->SetAutoType(m_AEMD.autotype);
         m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
         m_AEMD.pci->SetDCA(m_AEMD.DCA);
+        m_AEMD.pci->SetEmail(m_AEMD.email);
 
         time(&t);
         m_AEMD.pci->SetCTime(t);

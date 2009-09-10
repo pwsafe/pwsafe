@@ -195,7 +195,7 @@ void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
     if (!m_vFormat.empty()) {
       std::sort(m_vFormat.begin(), m_vFormat.end(), iStartCompare);
       std::vector<st_format>::const_iterator format_iter;
-      memset((void *)&cf2, 0x00, sizeof(cf2));
+      SecureZeroMemory(&cf2, sizeof(CHARFORMAT2));
       cf2.cbSize = sizeof(cf2);
 
       for (format_iter = m_vFormat.begin();
@@ -234,7 +234,7 @@ void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
     if (!m_vALink.empty()) {
       SetEventMask(GetEventMask() | ENM_LINK); 
       std::vector<ALink>::const_iterator ALink_iter;
-      memset((void *)&cf2, 0x00, sizeof(cf2));
+      SecureZeroMemory(&cf2, sizeof(CHARFORMAT2));
       cf2.cbSize = sizeof(cf2);
       cf2.dwMask = CFM_LINK;
       cf2.dwEffects = CFE_LINK;
@@ -395,8 +395,7 @@ vnext:
   }
 
   // Now really process the HTML
-  NONCLIENTMETRICS ncm;
-  memset(&ncm, 0, sizeof(NONCLIENTMETRICS));
+  NONCLIENTMETRICS ncm ={0};
   ncm.cbSize = sizeof(NONCLIENTMETRICS);
 
   SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
@@ -480,7 +479,7 @@ vnext:
           cur_format.entrytype = Name;
           cur_format.iStart = iFontChangeStart;
           cur_format.iEnd = iTextPosition;
-          memset(cur_format.tcszFACENAME, 0x00, sizeof(cur_format.tcszFACENAME));
+          SecureZeroMemory(cur_format.tcszFACENAME, sizeof(cur_format.tcszFACENAME));
 #if (_MSC_VER >= 1400)
           wcscpy_s(cur_format.tcszFACENAME, LF_FACESIZE, (LPCWSTR)csLastFaceName);
 #else

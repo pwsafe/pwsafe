@@ -252,6 +252,9 @@ BOOL CAdvancedDlg::OnInitDialog()
   cs_text.LoadString(IDS_RUNCOMMAND);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::RUNCMD);
+  cs_text.LoadString(IDS_EMAIL);
+  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+  m_pLC_Selected->SetItemData(iItem, CItemData::EMAIL);
 
   // Deal with standard text fields
   switch (m_iIndex) {
@@ -309,7 +312,7 @@ BOOL CAdvancedDlg::OnInitDialog()
     int iItem;
     DWORD_PTR dw_data;
 
-    memset(&findinfo, 0, sizeof(findinfo));
+    SecureZeroMemory(&findinfo, sizeof(LVFINDINFO));
 
     findinfo.flags = LVFI_PARAM;
 

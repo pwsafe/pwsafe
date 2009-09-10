@@ -55,6 +55,7 @@
 #define IDD_MANAGEFILTERS               158
 #define IDD_PASSWORDSUBSET              159
 #define IDD_VKEYBOARD                   160
+#define IDD_FILTER_DCA                  161
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
 #define IDR_POPCOPYTOCOMPARISON         171
@@ -406,6 +407,7 @@
 #define IDC_MAXREITEMS                  1099
 #define IDC_URL                         1101
 #define IDC_AUTOTYPE                    1102
+#define IDC_EMAIL                       1102
 #define IDC_EXPIRYDATE                  1103
 #define IDC_EXPIRYTIME                  1104
 #define IDC_STATIC_CURRENT_XTIME        1105
@@ -614,8 +616,9 @@
 #define IDC_STATIC_PASSWORD             1353
 #define IDC_STATIC_NOTES                1354
 #define IDC_STATIC_URL                  1355
-#define IDC_STATIC_AUTO                 1356
-#define IDC_STATIC_RUNCMD               1357
+#define IDC_STATIC_EMAIL                1356
+#define IDC_STATIC_AUTO                 1357
+#define IDC_STATIC_RUNCMD               1358
 #define IDC_SUBSET                      1359
 #define IDC_GETSUBSET                   1360
 #define IDC_SUBSETRESULTS               1361
@@ -637,6 +640,8 @@
 #define IDC_DCA_DEFAULT                 1378
 #define IDC_LAUNCH                      1379
 #define IDC_STATIC_DTSTATS              1380
+#define IDC_LAUNCH2                     1380
+#define IDC_SENDEMAIL                   1380
 #define IDC_STATIC_PWH_ADD              1381
 #define IDC_STATIC_PWH_EDIT             1382
 #define IDC_INFO                        1383
@@ -648,6 +653,8 @@
 #define IDC_DUMP_SIGILL                 1389
 #define IDC_DUMP_SIGTERM                1390
 #define IDC_DUMP_SIGABRT                1391
+#define IDC_DCA1                        1392
+#define IDC_DCARULE                     1393
 
 // Next default values for new objects
 // 
@@ -655,7 +662,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        475
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1392
+#define _APS_NEXT_CONTROL_VALUE         1394
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

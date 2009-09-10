@@ -110,7 +110,7 @@ void InsertShortcuts(CMenu *pMenu, MapMenuShortcuts &mms,
 
   for (UINT ui = 0; ui < uiCount; ui++) {
     SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
-    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
     miteminfo.cbSize = sizeof(MENUITEMINFO);
     miteminfo.fMask = MIIM_ID | MIIM_STRING;
     miteminfo.cch = _MAX_PATH;
@@ -241,7 +241,7 @@ void DboxMain::SetUpInitialMenuStrings()
   for (UINT ui = 0; ui < uiCount; ui++) {
     SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
 
-    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
     miteminfo.cbSize = sizeof(MENUITEMINFO);
     miteminfo.fMask = MIIM_ID | MIIM_STRING;
     miteminfo.dwTypeData = tcMenuString;
@@ -514,7 +514,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
   ASSERT((int)uiCount >= 0);
 
   for (UINT ui = 0; ui < uiCount; ui++) {
-    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
     miteminfo.cbSize = sizeof(MENUITEMINFO);
     miteminfo.fMask = MIIM_ID | MIIM_STATE;
 
@@ -615,7 +615,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     // Save entry type before changing pci
     etype = pci->GetEntryType();
     if (etype == CItemData::ET_SHORTCUT) {
-      // This is an shortcut
+      // This is a shortcut
       uuid_array_t entry_uuid, base_uuid;
       pci->GetUUID(entry_uuid);
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
@@ -766,34 +766,57 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYNOTESFLD, tc_dummy);
 
+      /*
+      *  Rules:
+      *    1. If email field is not empty, add email menuitem.
+      *    2. If URL is not empty and is NOT an email address, add browse menuitem
+      *    3. If URL is not empty and is an email address, add email menuitem
+      *       (if not already added)
+      */
+      bool bAddURL(false);
+      bool bAddEmail = !pci->IsEmailEmpty();
+      if (!pci->IsURLEmpty()) {
+        if (pci->IsURLEmail()) {
+          bAddEmail = true;
+        } else {
+          bAddURL = true;
+        }
+      }
+
+      // Add copies in order
+      if (bAddURL) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_COPYURL, tc_dummy);
+      }
+      if (bAddEmail) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_COPYEMAIL, tc_dummy);
+      }
+
       if (!pci->IsRunCommandEmpty())
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYRUNCOMMAND, tc_dummy);
 
-      if (!pci->IsURLEmpty()) {
-        const bool bIsEmail = pci->IsURLEmail();
-        if (bIsEmail) {
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_COPYEMAIL, tc_dummy);
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_SENDEMAIL, tc_dummy);
-        } else {
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_COPYURL, tc_dummy);
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_BROWSEURL, tc_dummy);
-          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
-        }
-        UpdateBrowseURLSendEmailButton(bIsEmail);
-      }
+      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
 
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_AUTOTYPE, tc_dummy);
+      // Add actions in order
+      if (bAddURL) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_BROWSEURL, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
+      }
+      if (bAddEmail) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_SENDEMAIL, tc_dummy);
+      }
 
       if (!pci->IsRunCommandEmpty())
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_RUNCOMMAND, tc_dummy);
+
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_AUTOTYPE, tc_dummy);
 
       switch (etype) {
         case CItemData::ET_NORMAL:
@@ -842,7 +865,6 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 
   BOOL brc;
   MENUINFO minfo = {0};
-  SecureZeroMemory(&minfo, sizeof(minfo));
   minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_MENUDATA;
 
@@ -977,7 +999,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     return;
 
   // System Tray Popup menu processing only
-  SecureZeroMemory(&minfo, sizeof(minfo));
+  SecureZeroMemory(&minfo, sizeof(MENUINFO));
   minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_STYLE;
   minfo.dwStyle = MNS_CHECKORBMP | MNS_AUTODISMISS;
@@ -992,7 +1014,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   ASSERT((int)uiCount >= 0);
 
   for (UINT pos = 0; pos < uiCount; pos++) {
-    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
     miteminfo.cbSize = sizeof(MENUITEMINFO);
     miteminfo.fMask = MIIM_FTYPE | MIIM_DATA;
 
@@ -1002,7 +1024,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     pmd = (CRUEItemData *)miteminfo.dwItemData;
     if (pmd && pmd->IsRUEID() && !(miteminfo.fType & MFT_OWNERDRAW) &&
         pmd->nImage >= 0) {
-      SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+      SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
       miteminfo.cbSize = sizeof(MENUITEMINFO);
       miteminfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
       miteminfo.hbmpItem = HBMMENU_CALLBACK;
@@ -1029,8 +1051,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   CItemData *pci = NULL;
   CMenu menu;
 
-  MENUINFO minfo;
-  SecureZeroMemory(&minfo, sizeof(minfo));
+  MENUINFO minfo ={0};
   minfo.cbSize = sizeof(MENUINFO);
   minfo.fMask = MIM_MENUDATA;
 
@@ -1082,7 +1103,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       CMenu* pPopup = menu.GetSubMenu(0);
       ASSERT_VALID(pPopup);
 
-      pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this); // use this window for commands
+      // use this window for commands
+      pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
     }
     return;
   }
@@ -1211,25 +1233,17 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     if (pci->IsNotesEmpty())
       pPopup->RemoveMenu(ID_MENUITEM_COPYNOTESFLD, MF_BYCOMMAND);
 
-    if (pci->IsURLEmpty()) {
-      pPopup->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
+    if (pci->IsEmailEmpty() && !pci->IsURLEmail()) {
       pPopup->RemoveMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND);
+    }
+
+    if (pci->IsURLEmpty()) {
+      pPopup->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
-      UpdateBrowseURLSendEmailButton(false);
-    } else {
-      const bool bIsEmail = pci->IsURLEmail();
-      if (bIsEmail) {
-        pPopup->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
-        pPopup->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
-        pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
-      } else {
-        pPopup->RemoveMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND);
-        pPopup->RemoveMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND);
-      }
-      UpdateBrowseURLSendEmailButton(bIsEmail);
     }
+
     if (pci->IsRunCommandEmpty()) {
       pPopup->RemoveMenu(ID_MENUITEM_COPYRUNCOMMAND, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);

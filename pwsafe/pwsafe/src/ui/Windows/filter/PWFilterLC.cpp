@@ -764,8 +764,13 @@ bool CPWFilterLC::SetField(const int iItem)
         case FT_NOTES:
         case FT_URL:
         case FT_AUTOTYPE:
+        case FT_RUNCMD:
+        case FT_EMAIL:
           bAddPresent = true;
           mt = PWSMatch::MT_STRING;
+          break;
+        case FT_DCA:
+          mt = PWSMatch::MT_DCA;
           break;
         case FT_CTIME:
         case FT_PMTIME:
@@ -1266,6 +1271,26 @@ bool CPWFilterLC::GetCriterion()
         b_good = true;
       }
       break;
+    case PWSMatch::MT_DCA:
+      m_fDCA.m_title = cs_selected;
+      if (!vcbxChanged[m_iItem] &&
+          st_fldata.rule != PWSMatch::MR_INVALID) {
+        m_fDCA.m_rule = st_fldata.rule;
+        m_fDCA.m_DCA = st_fldata.fdca;
+      } else {
+        m_fDCA.m_rule = PWSMatch::MR_INVALID;
+      }
+      rc = m_fDCA.DoModal();
+      if (rc == IDOK) {
+        st_fldata.Empty();
+        st_fldata.bFilterActive = true;
+        st_fldata.mtype = PWSMatch::MT_DCA;
+        st_fldata.ftype = ft;
+        st_fldata.rule = m_fDCA.m_rule;
+        st_fldata.fdca = m_fDCA.m_DCA;
+        b_good = true;
+      }
+      break;
     default:
       ASSERT(0);
   }
@@ -1353,6 +1378,21 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.cs_text.LoadString(IDSC_EXPHDRAUTOTYPE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_AUTOTYPE;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDSC_EXPHDRRUNCOMMAND);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = FT_RUNCMD;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDSC_EXPHDRDCA);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = FT_DCA;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDSC_EXPHDREMAIL);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = FT_EMAIL;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRCTIME);
@@ -1591,7 +1631,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     ASSERT(pF);
 
     LOGFONT logFont;
-    memset(&logFont, 0, sizeof(LOGFONT));
+    SecureZeroMemory(&logFont, sizeof(LOGFONT));
 
     pF->GetLogFont(&logFont);
     m_pFont = new CFont;

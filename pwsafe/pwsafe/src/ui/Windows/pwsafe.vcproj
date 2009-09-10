@@ -1107,6 +1107,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\filter\FilterDCADlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\filter\FilterEntryTypeDlg.cpp"
 				>
 			</File>
@@ -1533,6 +1537,10 @@
 			</File>
 			<File
 				RelativePath=".\filter\FilterDateDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\filter\FilterDCADlg.h"
 				>
 			</File>
 			<File

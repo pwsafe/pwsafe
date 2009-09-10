@@ -191,7 +191,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
                             int fnum1, int fnum2,
                             time_t fdate1, time_t fdate2,
                             const stringT &fstring, bool fcase,
-                            int etype, bool bBetween,
+                            short fdca, int etype, bool bBetween,
                             stringT &cs1, stringT &cs2)
 {
   cs1 = cs2 = _T("");
@@ -241,11 +241,30 @@ void PWSMatch::GetMatchType(MatchType mtype,
       break;
     case MT_ENTRYTYPE:
       switch (etype) {
-        case CItemData::ET_NORMAL: id = IDSC_FNORMAL; break;
-        case CItemData::ET_ALIASBASE: id = IDSC_FALIASBASE; break;
-        case CItemData::ET_ALIAS: id = IDSC_FALIAS; break;
+        case CItemData::ET_NORMAL:       id = IDSC_FNORMAL;       break;
+        case CItemData::ET_ALIASBASE:    id = IDSC_FALIASBASE;    break;
+        case CItemData::ET_ALIAS:        id = IDSC_FALIAS;        break;
         case CItemData::ET_SHORTCUTBASE: id = IDSC_FSHORTCUTBASE; break;
-        case CItemData::ET_SHORTCUT: id = IDSC_FSHORTCUT; break;
+        case CItemData::ET_SHORTCUT:     id = IDSC_FSHORTCUT;     break;
+        default:
+          ASSERT(0);
+          id = IDSC_INVALID;
+      }
+      LoadAString(cs1, id);
+      break;
+    case MT_DCA:
+      switch (fdca) {
+        case -1:                                        id = IDSC_CURRENTDEFAULTDCA;  break;
+        case PWSprefs::DoubleClickCopyPassword:         id = IDSC_DCACOPYPASSWORD;    break;
+        case PWSprefs::DoubleClickViewEdit:             id = IDSC_DCAVIEWEDIT;        break;
+        case PWSprefs::DoubleClickAutoType:             id = IDSC_DCAAUTOTYPE;        break;
+        case PWSprefs::DoubleClickBrowse:               id = IDSC_DCABROWSE;          break;
+        case PWSprefs::DoubleClickCopyNotes:            id = IDSC_DCACOPYNOTES;       break;
+        case PWSprefs::DoubleClickCopyUsername:         id = IDSC_DCACOPYUSERNAME;    break;
+        case PWSprefs::DoubleClickCopyPasswordMinimize: id = IDSC_DCACOPYPASSWORDMIN; break;
+        case PWSprefs::DoubleClickBrowsePlus:           id = IDSC_DCABROWSEPLUS;      break;
+        case PWSprefs::DoubleClickRun:                  id = IDSC_DCARUN;             break;
+        case PWSprefs::DoubleClickSendEmail:            id = IDSC_DCASENDEMAIL;       break;
         default:
           ASSERT(0);
           id = IDSC_INVALID;

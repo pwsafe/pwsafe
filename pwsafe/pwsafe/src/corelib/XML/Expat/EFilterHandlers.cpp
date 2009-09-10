@@ -284,6 +284,9 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
         else
           cur_filterentry->fdate2 = (time_t)0;
         break;
+      case XTE_DCA1:
+        cur_filterentry->fdca = (short)_ttoi(m_strElemContent.c_str());
+        break;
       case XTE_TYPE:
         if (m_strElemContent == _T("normal"))
           cur_filterentry->etype = CItemData::ET_NORMAL;

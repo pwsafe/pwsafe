@@ -24,6 +24,7 @@
 #define IDS_BLANK                       5029
 #define IDS_STATBROWSEPLUS              5030
 #define IDS_STATRUN                     5031
+#define IDS_STATSENDEMAIL               5032
 
 // File Dailog filters
 #define IDS_FDF_V3_ALL                  5050
@@ -45,17 +46,6 @@
 #define IDS_USERBACKUPOTHERLOCATION     5106
 #define IDS_MAINTAINDATETIMESTAMPS      5107
 #define IDS_OTHERBROWSERLOCATION        5108
-
-// Keep DCA together
-#define IDS_DCABROWSE                   5191
-#define IDS_DCAAUTOTYPE                 5192
-#define IDS_DCACOPYNOTES                5193
-#define IDS_DCACOPYPASSWORD             5194
-#define IDS_DCACOPYUSERNAME             5195
-#define IDS_DCAVIEWEDIT                 5196
-#define IDS_DCACOPYPASSWORDMIN          5197
-#define IDS_DCABROWSEPLUS               5198
-#define IDS_DCARUN                      5199
 
 // Program strings
 #define IDS_LITTLEENDIAN                5207
@@ -551,3 +541,11 @@
 #define IDS_MD_MSG3                     5714
 #define IDS_MD_CAPTION                  5715
 #define IDS_CLOSE                       5716
+#define IDS_CLICKTOSEND                 5717
+#define IDS_EMAILCOPIED                 5718
+#define IDS_EMAIL                       5719
+#define IDS_COMPEMAIL                   5720
+#define IDS_CLICKTOCOPYPLUS1            5721
+#define IDS_CLICKTOCOPYPLUS2            5722
+#define IDS_TRAYSENDEMAIL               5723
+#define IDS_TRAYCOPYEMAIL               5724

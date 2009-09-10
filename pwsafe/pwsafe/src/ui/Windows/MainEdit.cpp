@@ -46,10 +46,10 @@ static char THIS_FILE[] = __FILE__;
 //Add an item
 void DboxMain::OnAdd()
 {
-  CItemData temp;
-  temp.CreateUUID();
+  CItemData ci;
+  ci.CreateUUID();
 
-  CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, &temp, L""); 
+  CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, &ci, L""); 
 
   if (m_core.GetUseDefUser()) {
     add_entry_psh.SetUsername(m_core.GetDefUsername());
@@ -102,7 +102,10 @@ void DboxMain::OnAdd()
     }
 
     // Add the entry
-    AddEntry(temp);
+    AddEntry(ci);
+
+    // Update Toolbar for this new entry
+    UpdateToolBarForSelectedItem(&ci);
 
     if (m_core.GetNumEntries() == 1) {
       // For some reason, when adding the first entry, it is not visible!
@@ -116,7 +119,7 @@ void DboxMain::OnAdd()
 
     ChangeOkUpdate();
     uuid_array_t uuid;
-    temp.GetUUID(uuid);
+    ci.GetUUID(uuid);
     m_RUEList.AddRUEntry(uuid);
     // May need to update menu/toolbar if database was previously empty
     if (bWasEmpty)
@@ -535,7 +538,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   // As pci may be invalidated if database is Locked while in this routine, 
   // we use a clone
   CItemData ci_original(*pci);
-  pci = NULL; // not strictly needed  - just a reminder to use ci_original
+  pci = NULL; // Set to NULL - should use ci_original
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
   CAddEdit_PropertySheet edit_entry_psh(uicaller, this, pcore, &ci_edit, pcore->GetCurFile()); 
@@ -545,7 +548,9 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   if (pcore->GetUseDefUser())
     edit_entry_psh.SetDefUsername(pcore->GetDefUsername());
 
-  uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
+  uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'}, new_base_uuid = {'\0'};
+
+
   CItemData::EntryType entrytype = ci_original.GetEntryType();
 
   ci_original.GetUUID(original_uuid);  // Edit doesn't change this!
@@ -588,7 +593,8 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
   INT_PTR rc = edit_entry_psh.DoModal();
 
-  if (rc == IDOK && uicaller == IDS_EDITENTRY) {
+  if (rc == IDOK && uicaller == IDS_EDITENTRY && 
+      edit_entry_psh.IsEntryModified()) {
     // Out with the old, in with the new
     ItemListIter listpos = Find(original_uuid);
     ASSERT(listpos != pcore->GetEntryEndIter());
@@ -723,6 +729,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     if (sh_odca != sh_ndca)
       SetDCAText(&ci_edit);
 
+    UpdateToolBarForSelectedItem(&ci_edit);
     return true;
   } // rc == IDOK
   return false;
@@ -736,9 +743,13 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
   CItemData ci_edit(*pci);
+  // As pci may be invalidated if database is Locked while in this routine, 
+  // we use a clone
+  CItemData ci_original(*pci);
+  pci = NULL; // Set to NULL - should use ci_original
 
   uuid_array_t entry_uuid, base_uuid;
-  pci->GetUUID(entry_uuid);  // Edit doesn't change this!
+  ci_original.GetUUID(entry_uuid);  // Edit doesn't change this!
 
   // Shortcut entry
   // Get corresponding base uuid
@@ -793,6 +804,8 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
     ChangeOkUpdate();
+
+    UpdateToolBarForSelectedItem(&ci_edit);
     return true;
   } // rc == IDOK
   return false;
@@ -837,6 +850,7 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetURL(pci->GetURL());
     ci2.SetAutoType(pci->GetAutoType());
     ci2.SetRunCommand(pci->GetRunCommand());
+    ci2.SetEmail(pci->GetEmail());
     ci2.SetNotes(pci->GetNotes());
     time_t t;
     int xint;
@@ -972,6 +986,11 @@ void DboxMain::OnCopyURL()
   CopyDataToClipBoard(CItemData::URL);
 }
 
+void DboxMain::OnCopyEmail()
+{
+  CopyDataToClipBoard(CItemData::EMAIL);
+}
+
 void DboxMain::OnCopyRunCommand()
 {
   CopyDataToClipBoard(CItemData::RUNCMD);
@@ -1053,6 +1072,9 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
     case CItemData::RUNCMD:
       cs_data = pci->GetRunCommand();
       break;
+    case CItemData::EMAIL:
+      cs_data = pci->GetEmail();
+      break;
     default:
       ASSERT(0);
   }
@@ -1094,6 +1116,9 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
       break;
     case CItemData::RUNCMD:
       imsg = IDS_RUNCMDCOPIED;
+      break;
+    case CItemData::EMAIL:
+      imsg = IDS_EMAILCOPIED;
       break;
     default:
       ASSERT(0);

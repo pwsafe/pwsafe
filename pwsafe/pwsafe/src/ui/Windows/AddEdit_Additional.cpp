@@ -19,6 +19,7 @@
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSAuxParse.h"
 
+#include "corelib/corelib.h"
 #include "resource3.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -137,41 +138,45 @@ BOOL CAddEdit_Additional::OnInitDialog()
     int nIndex;
     CString cs_text;
 
-    cs_text.LoadString(IDS_DCAAUTOTYPE);
+    cs_text.LoadString(IDSC_DCAAUTOTYPE);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
 
-    cs_text.LoadString(IDS_DCABROWSE);
+    cs_text.LoadString(IDSC_DCABROWSE);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
 
-    cs_text.LoadString(IDS_DCABROWSEPLUS);
+    cs_text.LoadString(IDSC_DCABROWSEPLUS);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowsePlus);
 
-    cs_text.LoadString(IDS_DCACOPYNOTES);
+    cs_text.LoadString(IDSC_DCACOPYNOTES);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
 
-    cs_text.LoadString(IDS_DCACOPYPASSWORD);
+    cs_text.LoadString(IDSC_DCACOPYPASSWORD);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
 
-    cs_text.LoadString(IDS_DCACOPYPASSWORDMIN);
+    cs_text.LoadString(IDSC_DCACOPYPASSWORDMIN);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPasswordMinimize);
 
-    cs_text.LoadString(IDS_DCACOPYUSERNAME);
+    cs_text.LoadString(IDSC_DCACOPYUSERNAME);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
 
-    cs_text.LoadString(IDS_DCAVIEWEDIT);
+    cs_text.LoadString(IDSC_DCAVIEWEDIT);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
 
-    cs_text.LoadString(IDS_DCARUN);
+    cs_text.LoadString(IDSC_DCARUN);
     nIndex = m_dblclk_cbox.AddString(cs_text);
     m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickRun);
+
+    cs_text.LoadString(IDSC_DCASENDEMAIL);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickSendEmail);
 
     for (int i = 0; i < m_dblclk_cbox.GetCount(); i++) {
       int ival = (int)m_dblclk_cbox.GetItemData(i);
@@ -516,7 +521,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
       break;
     case IDC_STATIC_RUNCMD:
       m_stc_runcommand.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      // If Shift pressed - just copy un-substituted Run Command
+      // If Ctrl pressed - just copy un-substituted Run Command
       if (GetKeyState(VK_CONTROL) != 0 || M_runcommand().IsEmpty()) {
         cs_data = StringX(M_runcommand());
       } else {

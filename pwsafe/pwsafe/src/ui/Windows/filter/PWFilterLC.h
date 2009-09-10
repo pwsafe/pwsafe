@@ -15,6 +15,7 @@
 #include "FilterIntegerDlg.h"
 #include "FilterDateDlg.h"
 #include "FilterBoolDlg.h"
+#include "FilterDCADlg.h"
 #include "FilterEntryTypeDlg.h"
 
 class CSetHistoryFiltersDlg;
@@ -157,6 +158,7 @@ private:
   CFilterIntegerDlg m_finteger;
   CFilterDateDlg m_fdate;
   CFilterBoolDlg m_fbool;
+  CFilterDCADlg m_fDCA;
   CFilterEntryTypeDlg m_fentry;
 
   vFilterRows *m_pvfdata;

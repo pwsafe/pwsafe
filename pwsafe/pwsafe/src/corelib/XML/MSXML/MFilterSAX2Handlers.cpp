@@ -277,10 +277,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
   if (m_bValidation || _tcscmp(szCurElement, _T("filters")) == 0)
     return S_OK;
 
-  bool  bfilter = (_tcscmp(szCurElement, _T("filter")) == 0);
-  bool  bfilter_entry = (_tcscmp(szCurElement, _T("filter_entry")) == 0);
+  bool bfilter = (_tcscmp(szCurElement, _T("filter")) == 0);
+  bool bfilter_entry = (_tcscmp(szCurElement, _T("filter_entry")) == 0);
 
-   if (bfilter) {
+  if (bfilter) {
     cur_filter = new st_filters;
   }
 
@@ -483,6 +483,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_PASSWORD;
   }
 
+  else if (_tcscmp(szCurElement, _T("notes")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_NOTES;
+  }
+
   else if (_tcscmp(szCurElement, _T("url")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
@@ -495,10 +501,22 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_AUTOTYPE;
   }
 
-  else if (_tcscmp(szCurElement, _T("notes")) == 0) {
+  else if (_tcscmp(szCurElement, _T("runcommand")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
-    cur_filterentry->ftype = FT_NOTES;
+    cur_filterentry->ftype = FT_RUNCMD;
+  }
+
+  else if (_tcscmp(szCurElement, _T("DCA")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_DCA;
+    cur_filterentry->ftype = FT_DCA;
+  }
+
+  else if (_tcscmp(szCurElement, _T("email")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_EMAIL;
   }
 
   else if (_tcscmp(szCurElement, _T("create_time")) == 0) {
@@ -747,6 +765,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
       cur_filterentry->fdate2 = t;
     else
       cur_filterentry->fdate1 = (time_t)0;
+  }
+
+  else if (_tcscmp(szCurElement, _T("dca")) == 0) {
+    cur_filterentry->fdca = (short)_ttoi(m_strElemContent.c_str());
   }
 
   else if (_tcscmp(szCurElement, _T("type")) == 0) {

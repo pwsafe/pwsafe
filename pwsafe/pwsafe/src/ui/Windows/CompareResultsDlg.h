@@ -44,8 +44,8 @@ struct st_CompareData {
     id(0), indatabase(0), listindex(0),
     unknflds0(false), unknflds1(false)
   {
-    memset(uuid0, 0x00, sizeof(uuid_array_t));
-    memset(uuid1, 0x00, sizeof(uuid_array_t));
+    SecureZeroMemory(uuid0, sizeof(uuid_array_t));
+    SecureZeroMemory(uuid1, sizeof(uuid_array_t));
   }
 
   st_CompareData(const st_CompareData &that)
@@ -125,7 +125,7 @@ public:
   enum {IDENTICAL = -2, BOTH = -1 , CURRENT = 0, COMPARE, 
     GROUP, TITLE, USER, PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
     CTIME, ATIME, XTIME, XTIME_INT, PMTIME, RMTIME, POLICY, RUNCMD,
-    DCA,
+    DCA, EMAIL,
     LAST};
 
   // Dialog Data

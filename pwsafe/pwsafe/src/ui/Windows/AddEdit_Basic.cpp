@@ -115,6 +115,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_TITLE, (CString&)M_title());
   DDX_Text(pDX, IDC_USERNAME, (CString&)M_username());
   DDX_Text(pDX, IDC_URL, (CString&)M_URL());
+  DDX_Text(pDX, IDC_EMAIL, (CString&)M_email());
 
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
@@ -124,6 +125,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_NOTES, *m_pex_notes);
   DDX_Control(pDX, IDC_NOTESWW, *m_pex_notesww);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
+  DDX_Control(pDX, IDC_EMAIL, m_ex_email);
   DDX_Control(pDX, IDC_VIEWDEPENDENTS, m_ViewDependentsBtn);
 
   if (M_uicaller() != IDS_ADDENTRY) {
@@ -133,6 +135,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_PASSWORD, m_stc_password);
     DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
     DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
+    DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
   }
   //}}AFX_DATA_MAP
 }
@@ -145,9 +148,11 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
+  ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
 
   ON_EN_CHANGE(IDC_URL, OnChangeURL)
+  ON_EN_CHANGE(IDC_EMAIL, OnChangeEmail)
   ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
 
   ON_EN_SETFOCUS(IDC_PASSWORD, OnENSetFocusPassword)
@@ -157,7 +162,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_EN_KILLFOCUS(IDC_NOTES, OnENKillFocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTESWW, OnENKillFocusNotes)
 
-  ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_URL, OnSTCExClicked)
+  ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_EMAIL, OnSTCExClicked)
 
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
@@ -187,7 +192,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
     } else {
       EnableToolTips();
       // Delay initial show & reshow
-      int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+      int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP) / 2;
       m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
       m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
       m_pToolTipCtrl->SetMaxTipWidth(300);
@@ -199,9 +204,14 @@ BOOL CAddEdit_Basic::OnInitDialog()
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
+      cs_ToolTip.LoadString(IDS_CLICKTOCOPYPLUS1);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
+      cs_ToolTip.LoadString(IDS_CLICKTOCOPYPLUS2);
+      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_EMAIL), cs_ToolTip);
       cs_ToolTip.LoadString(IDS_CLICKTOGOPLUS);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LAUNCH), cs_ToolTip);
+      cs_ToolTip.LoadString(IDS_CLICKTOSEND);
+      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_SENDEMAIL), cs_ToolTip);
 
       m_pToolTipCtrl->Activate(TRUE);
     }
@@ -212,10 +222,12 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_stc_password.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_notes.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_URL.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
+    m_stc_email.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   }
 
   m_ex_group.ChangeColour();
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
+  GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 
   if (M_uicaller() == IDS_VIEWENTRY) {
     // Change 'OK' to 'Close' and disable 'Cancel'
@@ -232,6 +244,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
     GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, TRUE, 0);
 
     // Disable Button
     GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
@@ -357,6 +370,9 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
       case IDC_STATIC_URL:
         pcfOld = &m_URL_cfOldColour;
         break;
+      case IDC_STATIC_EMAIL:
+        pcfOld = &m_email_cfOldColour;
+        break;
       default:
         // Not one of ours - get out quick
         return hbr;
@@ -409,6 +425,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               M_username()     != M_pci()->GetUser() ||
               M_realnotes()    != M_pci()->GetNotes() ||
               M_URL()          != M_pci()->GetURL() ||
+              M_email()        != M_pci()->GetEmail() ||
               M_realpassword() != M_oldRealPassword())
             return 1L;
           break;
@@ -418,7 +435,8 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               !M_username().IsEmpty() ||
               !M_realpassword().IsEmpty() ||
               !M_realnotes().IsEmpty() ||
-              !M_URL().IsEmpty())
+              !M_URL().IsEmpty() ||
+              !M_email().IsEmpty())
             return 1L;
           break;
       }
@@ -477,6 +495,7 @@ BOOL CAddEdit_Basic::OnApply()
   M_title().EmptyIfOnlyWhiteSpace();
   M_username().EmptyIfOnlyWhiteSpace();
   M_URL().EmptyIfOnlyWhiteSpace();
+  M_email().EmptyIfOnlyWhiteSpace();
 
   m_notes.EmptyIfOnlyWhiteSpace();
   m_notesww.EmptyIfOnlyWhiteSpace();
@@ -724,12 +743,19 @@ void CAddEdit_Basic::OnChangeURL()
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
 }
 
+void CAddEdit_Basic::OnChangeEmail()
+{
+  UpdateData(TRUE);
+  GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
+}
+
 void CAddEdit_Basic::OnSTCExClicked(UINT nID)
 {
   UpdateData(TRUE);
 
   StringX cs_data;
   int iaction(0);
+  bool bIsMailto;
   // NOTE: These values must be contiguous in "resource.h"
   switch (nID) {
     case IDC_STATIC_GROUP:
@@ -758,9 +784,25 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
       iaction = CItemData::NOTES;
       break;
     case IDC_STATIC_URL:
-      m_stc_URL.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       cs_data = StringX(M_URL());
+      bIsMailto = (cs_data.find(L"mailto:") == 0) && (cs_data.length() > 7);
+      // If Ctrl pressed - also copy to email field without the 'mailto:' prefix
+      if (GetKeyState(VK_CONTROL) != 0 && bIsMailto) {
+        M_email() = cs_data.substr(7, cs_data.length() - 7);
+        UpdateData(FALSE);
+      }
+      m_stc_URL.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       iaction = CItemData::URL;
+      break;
+    case IDC_STATIC_EMAIL:
+      cs_data = StringX(M_email());
+      // If Ctrl pressed - also copy to URL field with the 'mailto:' prefix
+      if (GetKeyState(VK_CONTROL) != 0 && !M_email().IsEmpty()) {
+        M_URL() = L"mailto:" + cs_data;
+        UpdateData(FALSE);
+      }
+      m_stc_email.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
+      iaction = CItemData::EMAIL;
       break;
     default:
       ASSERT(0);
@@ -851,6 +893,15 @@ void CAddEdit_Basic::OnLaunch()
   m_bLaunchPlus = false;
 }
 
+void CAddEdit_Basic::OnSendEmail()
+{
+  UpdateData(TRUE);
+  StringX sx_email = StringX(M_email());
+
+  M_pDbx()->SendEmail(sx_email.c_str());
+  M_pDbx()->UpdateLastClipboardAction((int)CItemData::EMAIL);
+}
+
 LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
 {
   // Warn the user about sensitive data lying around
@@ -932,7 +983,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
     TRACE(L"CreateProcess failed (%d).\n", GetLastError());
     // Delete temporary file
     _wremove(self->m_szTempName);
-    memset(self->m_szTempName, 0, sizeof(self->m_szTempName));
+    SecureZeroMemory(self->m_szTempName, sizeof(self->m_szTempName));
     return 0;
   }
 
@@ -985,7 +1036,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
 
   // Delete temporary file
   _wremove(m_szTempName);
-  memset(m_szTempName, 0, sizeof(m_szTempName));
+  SecureZeroMemory(m_szTempName, sizeof(m_szTempName));
 
   // Restore Sheet buttons
   GetParent()->GetDlgItem(IDOK)->EnableWindow(m_bOKSave == 0 ? TRUE : FALSE);

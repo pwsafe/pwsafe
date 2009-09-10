@@ -310,10 +310,10 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_PASSWORD;
   }
 
-  else if (XMLString::equals(qname, L"url")) {
+  else if (XMLString::equals(qname, L"notes")) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
-    cur_filterentry->ftype = FT_URL;
+    cur_filterentry->ftype = FT_NOTES;
   }
 
   else if (XMLString::equals(qname, L"autotype")) {
@@ -322,10 +322,28 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_AUTOTYPE;
   }
 
-  else if (XMLString::equals(qname, L"notes")) {
+  else if (XMLString::equals(qname, L"url")) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
-    cur_filterentry->ftype = FT_NOTES;
+    cur_filterentry->ftype = FT_URL;
+  }
+
+  else if (XMLString::equals(qname, L"runcommand")) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_RUNCMD;
+  }
+
+  else if (XMLString::equals(qname, L"dca")) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_DCA;
+    cur_filterentry->ftype = FT_DCA;
+  }
+
+  else if (XMLString::equals(qname, L"email")) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_EMAIL;
   }
 
   else if (XMLString::equals(qname, L"create_time")) {
@@ -574,6 +592,10 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       cur_filterentry->fdate2 = t;
     else
       cur_filterentry->fdate1 = (time_t)0;
+  }
+
+  else if (XMLString::equals(qname, L"DCA")) {
+    cur_filterentry->fdca = (short)_ttoi(m_strElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, L"type")) {

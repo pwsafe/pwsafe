@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2856410] "Run Command" menu shortcut no longer greyed out for Shortcuts
+to base entries with a Run Command.
 [2851848] Mouse double-click interval removed from Virtual Keyboard
 to allow multiple virtual keys to be entered quickly.
 [2850907] Password field no longer cleared after focus change.
@@ -46,12 +48,18 @@ databases now works.
 [] Browse to URL from an Alias entry now puts the correct password in the
 clipboard.
 [] Text import no longer overwrites entry's RunCommand with DCA value.
+[] Tidy up item order in menus Edit menu and right-click context menu.
 
 New Features for 3.18.1
 =======================
 [2832983] Add/Edit Autotype field now same width as for the Run Command field.
 Also, the Edit/View dialog now has the details of the entry being edited/viewed
 in its title caption.  This will only get refreshed on saving the entry.
+[2832810] Add new email field supporting email headers 'to', 'subject', 'cc',
+'bcc' and 'body' [see RFC 2368]. If this field is not empty, it is used 
+instead of the URL field even if that contains an email address.
+Note: whereas the URL field had to have the 'mailto:' prefix to denote an 
+email address rather than a URL, the email field must not contain this prefix.
 [] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
 sets the delay between sending each subsequent character, '\w' & '\W' introduces
 a one-time delay where they appear.  For '\w', the value 'nnn' is in
@@ -59,6 +67,7 @@ milli-seconds. For '\W', this specifies seconds. Note: Max. value is
 999s (16m 39s), during which time PasswordSafe will be unresponsive
 while it waits the specified time. Also support via the Run Command $a command.
 [] Add menu item to copy the Run Command to the clipboard.
+[] Support Run Command and Double-Click Action (and email) fields in Filters.
 
 Changes to Existing Features in 3.18.1
 ======================================

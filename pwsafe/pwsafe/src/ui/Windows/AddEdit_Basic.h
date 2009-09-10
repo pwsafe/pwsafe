@@ -45,6 +45,7 @@ public:
   CEditExtn *m_pex_notes;
   CEditExtn *m_pex_notesww;
   CEditExtn m_ex_URL;
+  CEditExtn m_ex_email;
 
   CSecEditExtn m_ex_password, m_ex_password2;
 
@@ -54,6 +55,7 @@ public:
   CStaticExtn m_stc_password;
   CStaticExtn m_stc_notes;
   CStaticExtn m_stc_URL;
+  CStaticExtn m_stc_email;
 
   CButton m_ViewDependentsBtn;
   //}}AFX_DATA
@@ -94,6 +96,8 @@ protected:
   afx_msg void OnViewDependents();
   afx_msg void OnLaunch();
   afx_msg void OnChangeURL();
+  afx_msg void OnSendEmail();
+  afx_msg void OnChangeEmail();
   afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
   afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
@@ -112,6 +116,7 @@ private:
 
   COLORREF m_group_cfOldColour, m_title_cfOldColour, m_user_cfOldColour;
   COLORREF m_pswd_cfOldColour, m_notes_cfOldColour, m_URL_cfOldColour;
+  COLORREF m_email_cfOldColour;
   BOOL m_bOKSave, m_bOKCancel;
 
   CToolTipCtrl *m_pToolTipCtrl;

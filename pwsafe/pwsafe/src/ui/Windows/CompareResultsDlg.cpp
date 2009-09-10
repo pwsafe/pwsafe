@@ -150,6 +150,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
     cs_header.LoadString(IDS_DCA);
     m_LCResults.InsertColumn(DCA, cs_header, LVCFMT_CENTER);
   }
+  if (m_bsFields.test(CItemData::EMAIL)) {
+    cs_header.LoadString(IDS_EMAIL);
+    m_LCResults.InsertColumn(EMAIL, cs_header, LVCFMT_CENTER);
+  }
   m_nCols = m_LCResults.GetHeaderCtrl()->GetItemCount();
 
   m_numOnlyInCurrent = m_OnlyInCurrent.size();
@@ -345,6 +349,8 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::RUNCMD) ? L"X" : L"-");
       if (m_bsFields.test(CItemData::DCA))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::DCA) ? L"X" : L"-");
+      if (m_bsFields.test(CItemData::EMAIL))
+        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::EMAIL) ? L"X" : L"-");
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(BOTH, st_data.id));
@@ -852,6 +858,7 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_policy(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
     const CString csx_runcmd(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
     const CString csx_dca(MAKEINTRESOURCE(IDS_COMPDCA));
+    const CString csx_email(MAKEINTRESOURCE(IDS_COMPEMAIL));
 
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
          cd_iter++) {
@@ -875,6 +882,7 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::POLICY)) buffer += csx_policy;
       if (st_data.bsDiffs.test(CItemData::RUNCMD)) buffer += csx_runcmd;
       if (st_data.bsDiffs.test(CItemData::DCA)) buffer += csx_dca;
+      if (st_data.bsDiffs.test(CItemData::EMAIL)) buffer += csx_email;
       m_prpt->WriteLine((LPCWSTR)buffer);
     }
     m_prpt->WriteLine();

@@ -246,6 +246,75 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   }
 }
 
+
+void DboxMain::OnTrayCopyEmail(UINT nID)
+{
+  ASSERT((nID >= ID_MENUITEM_TRAYCOPYEMAIL1) &&
+    (nID <= ID_MENUITEM_TRAYCOPYEMAILMAX));
+
+  CItemData ci;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYEMAIL1, ci))
+    return;
+
+  if (ci.IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
+
+  const StringX cs_email = ci.GetEmail();
+  SetClipboardData(cs_email);
+  UpdateLastClipboardAction(CItemData::EMAIL);
+  UpdateAccessTime(&ci);
+}
+
+void DboxMain::OnUpdateTrayCopyEmail(CCmdUI *)
+{
+}
+
+void DboxMain::OnTraySendEmail(UINT nID)
+{
+  ASSERT((nID >= ID_MENUITEM_TRAYSENDEMAIL1) && (nID <= ID_MENUITEM_TRAYSENDEMAILMAX));
+
+  CItemData ci;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYSENDEMAIL1, ci))
+      return;
+
+  if (ci.IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
+
+  CString cs_command;
+  if (!ci.IsEmailEmpty()) {
+    cs_command = L"mailto:";
+    cs_command += ci.GetEmail().c_str();
+  } else {
+    cs_command = ci.GetURL().c_str();
+  }
+  if (!cs_command.IsEmpty()) {
+    LaunchBrowser(cs_command, L"", false);
+    UpdateAccessTime(&ci);
+  }
+}
+
+void DboxMain::OnUpdateTraySendEmail(CCmdUI *)
+{
+}
+
 void DboxMain::OnTrayDeleteEntry(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYDELETE1) && (nID <= ID_MENUITEM_TRAYDELETEMAX));
