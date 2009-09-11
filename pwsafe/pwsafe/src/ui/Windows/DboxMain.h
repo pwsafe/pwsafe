@@ -124,6 +124,9 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 // Hotkey value ID
 #define PWS_HOTKEY_ID 5767
 
+// Arbitrary string to mean that the saved DB preferences are empty.
+#define EMPTYSAVEDDBPREFS L"#Empty#"
+
 enum SearchDirection {FIND_UP = -1, FIND_DOWN = 1};
 
 // List of all Popup menus in the Main Menu
@@ -656,6 +659,7 @@ private:
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   bool m_inExit; // help U3ExitNow
   std::vector<bool> m_displaystatus;  // used to save/restore display state over minimize/restore
+  StringX m_savedDBprefs;  // used across minimize/restore events
 
   PWSclipboard m_clipboard;
 
