@@ -898,73 +898,95 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   } else
     return;
 
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
   // {kjp} Only SIZE_RESTORED is supported on Pocket PC.
 #if !defined(POCKET_PC)
-  if (nType == SIZE_MINIMIZED) {
-    // Called when minimize button select on main dialog control box
-    // or by right clicking in the Taskbar (not using System Tray)
-    PWSprefs *prefs = PWSprefs::GetInstance();
+  switch (nType) {
+    case SIZE_MINIMIZED:
+      // Called when minimize button select on main dialog control box
+      // or by right clicking in the Taskbar
 
-    // Suspend notification of changes
-    m_core.SuspendOnListNotification();
+      // Save DB preferences that may not have been saved in the database
+      // over the minimize/restore event.
+      m_savedDBprefs = prefs->Store();
 
-    m_selectedAtMinimize = getSelectedItem();
-    m_ctlItemList.DeleteAllItems();
-    m_ctlItemTree.DeleteAllItems();
-    m_bBoldItem = false;
+      // Suspend notification of changes
+      m_core.SuspendOnListNotification();
 
-    if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
-      OnClearClipboard();
+      m_selectedAtMinimize = getSelectedItem();
+      m_ctlItemList.DeleteAllItems();
+      m_ctlItemTree.DeleteAllItems();
+      m_bBoldItem = false;
 
-    if (prefs->GetPref(PWSprefs::DatabaseClear)) {
-      if (m_core.IsChanged() ||  m_bTSUpdated)
-        if (Save() != PWScore::SUCCESS) {
-          // If we don't warn the user, data may be lost!
-          CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
-            cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
-          MessageBox(cs_text, cs_title, MB_ICONSTOP);
-          ShowWindow(SW_SHOW);
-          return;
+      if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
+        OnClearClipboard();
+
+      if (prefs->GetPref(PWSprefs::DatabaseClear)) {
+        if (m_core.IsChanged() ||  m_bTSUpdated) {
+          if (Save() != PWScore::SUCCESS) {
+            // If we don't warn the user, data may be lost!
+            CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
+              cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
+            MessageBox(cs_text, cs_title, MB_ICONSTOP);
+            ShowWindow(SW_SHOW);
+            return;
+          }
+          ClearData(false);
         }
-        ClearData(false);
-    }
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {      
-      app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
-      ShowWindow(SW_HIDE);
-    }
-  } else if (nType == SIZE_MAXIMIZED) {
-    RefreshViews();
-  } else if (nType == SIZE_RESTORED) {
-    if (!m_bSizing) { // here if actually restored
-#endif
-      app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
-      UnMinimize(false);
-      m_ctlItemTree.SetRestoreMode(true);
-      m_bIsRestoring = true;
-      RefreshViews();
-      if (m_selectedAtMinimize != NULL)
-        SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
-      m_ctlItemTree.SetRestoreMode(false);
-      m_bIsRestoring = false;
-
-      // Resume notification of changes
-      m_core.ResumeOnListNotification();
-      if (m_FindToolBar.IsVisible()) {
-        SetFindToolBar(true);
       }
+
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {      
+        app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
+        ShowWindow(SW_HIDE);
+      }
+      break;
+    case SIZE_MAXIMIZED:
+      RefreshViews();
+      break;
+    case SIZE_RESTORED:
+      if (!m_bSizing) { // here if actually restored
+#endif
+        app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
+        UnMinimize(false);
+        m_ctlItemTree.SetRestoreMode(true);
+        m_bIsRestoring = true;
+        RefreshViews();
+        if (m_selectedAtMinimize != NULL)
+          SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
+        m_ctlItemTree.SetRestoreMode(false);
+        m_bIsRestoring = false;
+
+        // Restore saved DB preferences that may not have been saved in the database
+        // over the minimize/restore event.
+        // Can't use the fact that the string is empty, as that is a valid state!
+        // Use arbitrary value "#Empty#" to indicate nothing here.
+        if (m_savedDBprefs != EMPTYSAVEDDBPREFS) {
+          prefs->Load(m_savedDBprefs);
+          if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs))
+            m_core.SetDBPrefsChanged(true);
+          m_savedDBprefs = EMPTYSAVEDDBPREFS;
+        }
+
+        // Resume notification of changes
+        m_core.ResumeOnListNotification();
+        if (m_FindToolBar.IsVisible()) {
+          SetFindToolBar(true);
+        }
 #if !defined(POCKET_PC)
-    } else { // m_bSizing == true: here if size changed
-      CRect rect;
-      GetWindowRect(&rect);
-      PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
+      } else { // m_bSizing == true: here if size changed
+        CRect rect;
+        GetWindowRect(&rect);
+        PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
                                            rect.left, rect.right);
 
-      // Make sure Find toolbar is above Status bar
-      if (m_FindToolBar.IsVisible()) {
-        SetToolBarPositions();
+        // Make sure Find toolbar is above Status bar
+        if (m_FindToolBar.IsVisible()) {
+          SetToolBarPositions();
+        }
       }
-    }
-  } // nType == SIZE_RESTORED
+      break;
+  } // switch statement
 #endif
   m_bSizing = false;
 }

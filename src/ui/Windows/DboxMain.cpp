@@ -123,7 +123,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
-  m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false)
+  m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false),
+  m_savedDBprefs(EMPTYSAVEDDBPREFS)
 {
   m_eye_catcher = _wcsdup(EYE_CATCHER);
 

@@ -11,6 +11,7 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.18.1
 ====================
 [2856750] Password Policy now correctly displayed in List View.
+[2856051] Changes to Database preferences are no longer lost over minimize.
 [2856410] "Run Command" menu shortcut no longer greyed out for Shortcuts
 to base entries with a Run Command.
 [2851848] Mouse double-click interval removed from Virtual Keyboard
@@ -82,6 +83,9 @@ using a French keyboard.
 minimized, the Close and Exit options are no longer in the System Tray context
 menu. The user must first Restore the application and close the dialog before
 being able to close the database or exit the program.
+[] If preferences stored in the database are changed, the user will be asked if
+they want to save them in the database when closing the database or application
+even if none of the entries have been changed.
 
 New Features for 3.18
 =====================

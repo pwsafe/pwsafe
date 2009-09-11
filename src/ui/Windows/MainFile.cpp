@@ -733,7 +733,7 @@ int DboxMain::SaveIfChanged()
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
 
-  if (m_core.IsChanged()) {
+  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     int rc, rc2;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
@@ -2661,7 +2661,7 @@ void DboxMain::OnOK()
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
 
   bool autoSave = true; // false if user saved or decided not to 
-  if (m_core.IsChanged()) {
+  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
     switch (m_iSessionEndingStatus) {
       case IDIGNORE:
