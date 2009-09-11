@@ -83,9 +83,10 @@ IMPLEMENT_DYNAMIC(DboxMain, CDialog)
 * This is the string to be displayed instead of the actual password, unless
 * the user chooses to see the password:
 */
-
 const wchar_t *HIDDEN_PASSWORD = L"**************";
 
+// Eyecatcher for looking for the parent within child windows based on
+// CPWDialog, CPWFileDialog and CPWPropertySheet
 const wchar_t *EYE_CATCHER = L"DBXM";
 
 CString DboxMain::CS_SETFILTERS;

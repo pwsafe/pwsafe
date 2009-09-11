@@ -136,6 +136,8 @@ public:
     StringX GetDCA() const;
     StringX GetEmail() const;
 
+    StringX GetFieldValue(const FieldType &ft) const;
+
     // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
     // it's used for multi-line notes and to replace '.' within the Title field.
     StringX GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,

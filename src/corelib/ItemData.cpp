@@ -106,6 +106,114 @@ void CItemData::GetField(const CItemField &field, unsigned char *value, unsigned
   delete bf;
 }
 
+StringX CItemData::GetFieldValue(const FieldType &ft) const
+{
+  StringX str(_T(""));
+  int xint(0);
+
+  switch (ft) {
+    case GROUPTITLE:  /* 00 */
+      str = GetGroup() + TCHAR('.') + GetTitle();
+      break;
+    case UUID:        /* 01 */
+    {
+      uuid_array_t uuid_array = {0};
+      GetUUID(uuid_array);
+      const CUUIDGen cuuid(uuid_array, true);
+      str = cuuid.GetHexStr();
+      break;
+    }
+    case GROUP:      /* 02 */
+      return GetGroup();
+    case TITLE:      /* 03 */
+      return GetTitle();
+    case USER:       /* 04 */
+      return GetUser();
+    case NOTES:      /* 05 */
+      return GetNotes();
+    case PASSWORD:   /* 06 */
+      return GetPassword();
+    case CTIME:      /* 07 */
+      return GetCTimeL();
+    case PMTIME:     /* 08 */
+      return GetPMTimeL();
+    case ATIME:      /* 09 */
+      return GetATimeL();
+    case XTIME:      /* 0a */
+      str = GetXTimeL();
+      GetXTimeInt(xint);
+      if (xint != 0)
+        str += _T(" *");
+      return str;
+    case RMTIME:     /* 0c */
+      return GetRMTimeL();
+    case URL:        /* 0d */
+      return GetURL();
+    case AUTOTYPE:   /* 0e */
+      return GetAutoType();
+    case PWHIST:     /* 0f */
+      return GetPWHistory();
+    case POLICY:     /* 10 */
+    {
+      PWPolicy pwp;
+      GetPWPolicy(pwp);
+      if (pwp.flags != 0) {
+        stringT st_pwp(_T("")), st_text;
+        if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
+          st_pwp += _T("L");
+          if (pwp.lowerminlength > 1) {
+            Format(st_text, _T("(%d)"), pwp.lowerminlength);
+            st_pwp += st_text;
+          }
+        }
+        if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
+          st_pwp += _T("U");
+          if (pwp.upperminlength > 1) {
+            Format(st_text, _T("(%d)"), pwp.upperminlength);
+            st_pwp += st_text;
+          }
+        }
+        if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
+          st_pwp += _T("D");
+          if (pwp.digitminlength > 1) {
+            Format(st_text, _T("(%d)"), pwp.digitminlength);
+            st_pwp += st_text;
+          }
+        }
+        if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
+          st_pwp += _T("S");
+            if (pwp.symbolminlength > 1) {
+            Format(st_text, _T("(%d)"), pwp.symbolminlength);
+              st_pwp += st_text;
+          }
+        }
+        if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+          st_pwp += _T("H");
+        if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+          st_pwp += _T("E");
+        if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+          st_pwp += _T("P");
+        oStringXStream osx;
+        osx << st_pwp << _T(":") << pwp.length;
+        return osx.str().c_str();
+      }
+      break;
+    }
+    case XTIME_INT:  /* 11 */
+     return GetXTimeInt();
+    case RUNCMD:     /* 12 */
+      return GetRunCommand();
+    case DCA:        /* 13 */
+      return GetDCA();
+    case EMAIL:      /* 14 */
+      return GetEmail();
+    case RESERVED:
+    default:
+      ASSERT(0);
+  }
+  return str;
+}
+
 StringX CItemData::GetName() const
 {
   return GetField(m_Name);
@@ -697,12 +805,13 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       tmp = PWSUtil::Base64Encode(pdata, length).c_str();
 #else
       tmp.clear();
+      String X sx_tmp;
       unsigned char * pdata2(pdata);
       unsigned char c;
       for (int j = 0; j < (int)length; j++) {
         c = *pdata2++;
-        Format(cs_tmp, _T("%02x"), c);
-        tmp += cs_tmp;
+        Format(sx_tmp, _T("%02x"), c);
+        tmp += sx_tmp;
       }
 #endif
       oss << "\t\t\t<field ftype=\"" << int(type) << "\">"
