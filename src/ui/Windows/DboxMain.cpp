@@ -1201,6 +1201,9 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
     case PWSprefs::DoubleClickRun:
       OnRunCommand();
       break;
+    case PWSprefs::DoubleClickSendEmail:
+      OnSendEmail();
+      break;
     default:
       ASSERT(0);
   }
