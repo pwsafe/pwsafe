@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2856750] Password Policy now correctly displayed in List View.
 [2856410] "Run Command" menu shortcut no longer greyed out for Shortcuts
 to base entries with a Run Command.
 [2851848] Mouse double-click interval removed from Virtual Keyboard
