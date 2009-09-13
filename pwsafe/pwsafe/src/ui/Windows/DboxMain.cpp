@@ -2024,7 +2024,6 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_CONSOLE_DISCONNECT:
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
-    case WTS_SESSION_LOGOFF:
       m_bWSLocked = true;
       LockDataBase(TIMER_CHECKLOCK);
       break;
@@ -2033,6 +2032,11 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_SESSION_UNLOCK:
     case WTS_SESSION_LOGON:
       m_bWSLocked = false;
+      break;
+    case WTS_SESSION_LOGOFF:
+      // Don't think this gets called as OnQuerySession/OnEndSession
+      // handle this event.
+      OnOK();
       break;
     case WTS_SESSION_REMOTE_CONTROL:
     default:
@@ -2162,6 +2166,7 @@ BOOL DboxMain::OnQueryEndSession()
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
   prefs->SaveShortcuts();
@@ -2172,7 +2177,7 @@ BOOL DboxMain::OnQueryEndSession()
   bool autoSave = true; // false if user saved or decided not to 
   BOOL retval = TRUE;
 
-  if (m_core.IsChanged()) {
+  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     CString cs_msg;
     cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile().c_str());
     m_iSessionEndingStatus = AfxMessageBox(cs_msg,
@@ -2197,8 +2202,8 @@ BOOL DboxMain::OnQueryEndSession()
 
   if (autoSave) {
     //Store current filename for next time
-    if ((m_bTSUpdated || m_core.WasDisplayStatusChanged())
-      && m_core.GetNumEntries() > 0) {
+    if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+         m_core.GetNumEntries() > 0) {
         Save();
         return TRUE;
     }
