@@ -204,7 +204,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_USERNAME), cs_ToolTip);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PASSWORD), cs_ToolTip);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
-      cs_ToolTip.LoadString(IDS_CLICKTOCOPYPLUS1);
+      cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
       cs_ToolTip.LoadString(IDS_CLICKTOCOPYPLUS2);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_EMAIL), cs_ToolTip);
@@ -755,7 +755,7 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
 
   StringX cs_data;
   int iaction(0);
-  bool bIsMailto;
+
   // NOTE: These values must be contiguous in "resource.h"
   switch (nID) {
     case IDC_STATIC_GROUP:
@@ -785,12 +785,6 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
       break;
     case IDC_STATIC_URL:
       cs_data = StringX(M_URL());
-      bIsMailto = (cs_data.find(L"mailto:") == 0) && (cs_data.length() > 7);
-      // If Ctrl pressed - also copy to email field without the 'mailto:' prefix
-      if (GetKeyState(VK_CONTROL) != 0 && bIsMailto) {
-        M_email() = cs_data.substr(7, cs_data.length() - 7);
-        UpdateData(FALSE);
-      }
       m_stc_URL.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       iaction = CItemData::URL;
       break;
