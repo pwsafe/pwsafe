@@ -12,10 +12,10 @@
 // Create an action report file
 
 #ifdef _WIN32
-#include "afx.h"
 #endif
 #include "os/typedefs.h"
 #include "StringXStream.h"
+#include "PwsPlatform.h"
 
 class CReport
 {

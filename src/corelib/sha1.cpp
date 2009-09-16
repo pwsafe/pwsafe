@@ -10,13 +10,13 @@
 
 /* based on SHA-1 in C By Steve Reid <steve@edmweb.com> */
 
-#include "PwsPlatform.h"
 //#define SHA1HANDSOFF Copies data before messing with it.
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "sha1.h"
+#include "PwsPlatform.h"
 
 #define rol(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
 

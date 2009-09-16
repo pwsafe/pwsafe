@@ -10,9 +10,9 @@
 
 #include "BlowFish.h"
 #include "sha1.h"
-#include "PwsPlatform.h"
 #include "os/mem.h"
 #include "Util.h" // for trashMemory
+#include "PwsPlatform.h"
 
 #define S(x, i) (bf_S[i][x.w.byte##i])
 #define bf_F(x) (((S(x, 0) + S(x, 1)) ^ S(x, 2)) + S(x, 3))

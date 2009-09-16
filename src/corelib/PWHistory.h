@@ -40,9 +40,6 @@
 #if !defined PWHistory_h
 #define PWHistory_h
 
-#ifdef _WIN32
-#include <afx.h>
-#endif
 #include <time.h> // for time_t
 #include <vector>
 #include "StringX.h"

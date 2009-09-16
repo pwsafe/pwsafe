@@ -27,8 +27,8 @@
 #include "wx/dateevt.h"
 #include "wx/statline.h"
 ////@end includes
-#include "corelib/ItemData.h"
-#include "corelib/PWScore.h"
+#include "../../corelib/ItemData.h"
+#include "../../corelib/PWScore.h"
 
 /*!
  * Forward declarations

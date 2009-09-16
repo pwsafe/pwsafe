@@ -9,10 +9,11 @@
 /**
  * \file Windows-specific implementation of dir.h
  */
-#include <afx.h>
 #include <Windows.h>
 #include "../dir.h"
 #include <direct.h>
+#include "../../corelib/PwsPlatform.h"
+
 stringT pws_os::getexecdir()
 {
   // returns the directory part of ::GetModuleFileName()

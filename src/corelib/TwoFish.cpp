@@ -11,8 +11,8 @@
 //-----------------------------------------------------------------------------
 
 #include "TwoFish.h"
-#include "PwsPlatform.h"
 #include "Util.h"
+#include "PwsPlatform.h"
 
 #define LTC_CLEAN_STACK
 #define TWOFISH_ALL_TABLES

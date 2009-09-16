@@ -13,7 +13,6 @@
 #include "sha256.h"
 #include "StringX.h"
 #include "Fish.h"
-#include "PwsPlatform.h"
 #include "UTF8Conv.h"
 
 #include "os/debug.h"
@@ -21,6 +20,7 @@
 #include "os/mem.h"
 
 #include <sstream>
+#include "PwsPlatform.h"
 
 #define SaltLength 20
 #define StuffSize 10

@@ -53,7 +53,12 @@ typedef unsigned long      ulong32;
 typedef unsigned int uint;
 
 typedef void *HANDLE;
-
+#ifndef TRACE
+#define TRACE pws_os::Trace
+#endif
+#ifndef VERIFY
+#define VERIFY(p) if (!(p)) TRACE(_T("VERIFY Failed"))
+#endif
 #else /* !defined(_WIN32) */
 #include <sys/types.h>
 #include "linux/pws_time.h"

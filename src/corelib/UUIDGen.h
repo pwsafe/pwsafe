@@ -16,6 +16,8 @@
 #define __UUIDGEN_H
 
 #ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN  //prevent inclusion of winsock.h
+#include <rpc.h>
 typedef unsigned char uuid_array_t[16];
 #else
 #include <uuid/uuid.h> // aptitude install uuid-dev
@@ -25,10 +27,10 @@ typedef uuid_t UUID;
 
 #include <memory> // for memcmp
 #include <iostream>
-#include "PwsPlatform.h"
 #include "StringX.h"
 
 #include <vector>
+#include "PwsPlatform.h"
 
 class CUUIDGen
 {

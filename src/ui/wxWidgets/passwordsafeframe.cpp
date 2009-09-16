@@ -494,10 +494,10 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& event )
   //Open-type dialog box
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
                   dir.c_str(), _("pwsafe.psafe3"),
-                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|"
-                    "Password Safe Backups (*.bak)|*.bak|"
-                    "Password Safe Intermediate Backups (*.ibak)|*.ibak|"
-                    "All files (*.*)|*.*"),
+                  wxString(_("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|"))+
+                    _("Password Safe Backups (*.bak)|*.bak|")+
+                    _("Password Safe Intermediate Backups (*.ibak)|*.ibak|")+
+                    _("All files (*.*)|*.*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
   while (1) {

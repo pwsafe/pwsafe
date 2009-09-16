@@ -7,9 +7,6 @@
 */
 // XMLprefs.cpp : implementation file
 //
-#ifdef _WIN32
-#include <afx.h>
-#endif
 
 #include "XMLprefs.h"
 #include "PWSprefs.h"
@@ -20,13 +17,16 @@
 
 #include "os/typedefs.h"
 #include "os/sys.h"
+#include "PwsPlatform.h"
 
 #include <vector>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef _MSC_VER
+  #ifdef _DEBUG
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
+  #endif
 #endif
 
 //#define DEBUG_XMLPREFS

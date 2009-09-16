@@ -10,12 +10,9 @@
 #include <string.h>
 #include <cstdarg>
 #include "StringX.h"
+#include "PwsPlatform.h"
 
 #include "os/pws_tchar.h"
-
-#ifdef _WIN32
-#include <afx.h>
-#endif
 
 // A few convenience functions for StringX & stringT
 
@@ -142,9 +139,10 @@ template<class T> int Remove(T &s, TCHAR c)
 template<class T> void LoadAString(T &s, int id)
 {
 #ifdef _WIN32
-  CString cs;
-  cs.LoadString(id);
-  s = cs;
+	enum {MAX_RES_STRING = 4096};
+	TCHAR szRes[MAX_RES_STRING] = {0};
+	if (::LoadString(NULL, id, szRes, MAX_RES_STRING-1))
+      s = szRes;
 #endif
 }
 

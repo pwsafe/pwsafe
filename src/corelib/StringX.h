@@ -90,7 +90,8 @@ namespace S_Alloc
 
       // Allocate raw memory
       pointer allocate(size_type n, const void* = NULL) {
-        void* p = std::malloc(n * sizeof(T));
+        using std::malloc; //Works only for Release build.  Links with malloc_dbg in the DEBUG build.
+        void* p = malloc(n * sizeof(T));
         // TRACE(_T("Securely Allocated %d bytes at %p\n"), n * sizeof(T), p);
         if(p == NULL)
           throw std::bad_alloc();
@@ -101,6 +102,7 @@ namespace S_Alloc
       // Note that C++ standard defines this function as
       // deallocate(pointer p, size_type n).
       void deallocate(void* p, size_type n){
+        using std::free;  //Works only for Release build.  Links with free_dbg in the DEBUG build.
         // assert(p != NULL);
         // The standard states that p must not be NULL. However, some
         // STL implementations fail this requirement, so the check must
@@ -114,7 +116,7 @@ namespace S_Alloc
           std::memset(p, 0xAA, N);
           std::memset(p, 0x00, N);
         }
-        std::free(p);
+        free(p);
       }
 
     private:

@@ -9,7 +9,6 @@
 /**
  * \file Windows-specific implementation of file.h
  */
-#include <afx.h>
 #include <Windows.h>
 #include <LMCONS.H> // for UNLEN definition
 #include <shellapi.h>
@@ -23,6 +22,7 @@
 #include "../file.h"
 #include "../dir.h"
 #include "../env.h"
+#include "../../corelib/PwsPlatform.h"
 
 const TCHAR *pws_os::PathSeparator = _T("\\");
 
@@ -99,11 +99,14 @@ bool pws_os::DeleteAFile(const stringT &filename)
 
 void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
 {
-  CFileFind finder;
-  BOOL bWorking = finder.FindFile(filter.c_str());
-  while (bWorking) {
-    bWorking = finder.FindNextFile();
-    res.push_back(LPCTSTR(finder.GetFileName()));
+  WIN32_FIND_DATA fd = {0};
+  HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
+  if (INVALID_HANDLE_VALUE != hFind) {
+    do {
+      res.push_back(stringT(fd.cFileName));
+    }
+	while (FindNextFile(hFind, &fd));
+	FindClose(hFind);
   }
 }
 

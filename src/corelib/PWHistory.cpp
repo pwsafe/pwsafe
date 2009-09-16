@@ -7,11 +7,12 @@
 */
 /// \file PWHistory.cpp
 //-----------------------------------------------------------------------------
-#include "PWHistory.h"
 #include "Util.h"
 #include <sstream>
 #include <iomanip>
 #include "StringXStream.h"
+#include "PwsPlatform.h"
+#include "PWHistory.h"
 
 using namespace std;
 

@@ -11,9 +11,9 @@
 #include <math.h>
 
 #include "ItemField.h"
-#include "Util.h"
 #include "BlowFish.h"
 #include "PWSrand.h"
+#include "Util.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

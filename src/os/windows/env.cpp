@@ -11,10 +11,10 @@
  */
 
 #include <sstream>
-#include <afx.h>
 #include <Windows.h> // for GetCurrentProcessId()
 #include <LMCONS.H> // for UNLEN definition
 #include "../env.h"
+#include "../../corelib/PwsPlatform.h"
 
 stringT pws_os::getenv(const char *env, bool is_path)
 {

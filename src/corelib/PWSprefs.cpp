@@ -23,7 +23,6 @@
 #include <algorithm>
 
 #ifdef _WIN32
-#include <AfxWin.h> // for AfxGetApp()
 #include <LMCons.h> // for UNLEN
 #endif
 
@@ -43,6 +42,29 @@ int s_cfgLockCount = 0;
 PWSprefs *PWSprefs::self = NULL;
 stringT PWSprefs::m_configfilename; // may be set before singleton created
 Reporter *PWSprefs::m_Reporter = NULL;
+
+class PWSApp
+{
+  public:
+    TCHAR m_pszRegistryKey[1024];
+    TCHAR m_pszAppName[1024];	
+
+    BOOL WriteProfileInt(LPCTSTR, LPCTSTR, int) {return TRUE;}
+    int  GetProfileInt(LPCTSTR, LPCTSTR, int val) {return val;} 	
+    BOOL WriteProfileString(LPCTSTR, LPCTSTR, LPCTSTR) {return TRUE;}
+    StringX GetProfileString(LPCTSTR, LPCTSTR, LPCTSTR val) {return val;}
+    DWORD DelRegTree(HKEY, LPCTSTR) {return ERROR_SUCCESS;}
+
+    PWSApp() {
+        lstrcpy(m_pszRegistryKey, _T("pwsafe"));
+        lstrcpy(m_pszAppName, _T("Password Safe"));
+    }
+} ;
+
+PWSApp* AfxGetApp(){
+  static PWSApp g_app; 
+  return &g_app;
+}
 
 // 1st parameter = name of preference
 // 2nd parameter = default value

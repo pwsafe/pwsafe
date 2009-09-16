@@ -52,11 +52,29 @@
 #define PwsPlatform_h
 
 #if defined(_WIN32)
-// ONLY place in corelib which refers to parent. Ugh.
-#include "../ui/Windows/stdafx.h"
-#else
 // some globally useful includes for non-Windows
+#ifndef _WINDOWS_
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
+#include <commctrl.h>
+
+#ifndef DEBUG_NEW
+  #ifdef _MSC_VER
+	#ifdef _DEBUG
+		#define _CRTDBG_MAP_ALLOC
+		#include <crtdbg.h>
+		#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__ )
+	#endif
+  #endif
+#endif
+
+#endif
+
+#ifndef ASSERT
 #include <cassert>
+#define ASSERT assert
 #endif
 
 // Following seems needed on Linux/cygwin

@@ -11,7 +11,7 @@
 #ifndef PWCharPool_h
 #define PWCharPool_h
 
-#include "os/typedefs.h"
+#include "../os/typedefs.h"
 #include "StringX.h"
 
 /*

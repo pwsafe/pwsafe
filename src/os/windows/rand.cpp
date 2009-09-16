@@ -9,11 +9,12 @@
 /**
  * \file Windows-specific implementation of rand.h
  */
-#include <afx.h>
 #include <Windows.h>
 #include <stdlib.h>
+#include <time.h>
 #include <process.h>
 #include "../rand.h"
+#include "../../corelib/PwsPlatform.h"
 
 // See the MSDN documentation for RtlGenRandom. We will try to load it
 // and if that fails, use our own random number generator. The function

@@ -33,7 +33,7 @@
 
 // SVN_VERSION should be provided via -D from Makefile
 #ifndef SVN_VERSION
-#define SVN_VERSION 0
+#define SVN_VERSION "0"
 #endif
 
 extern const wxString pwsafeAppName;

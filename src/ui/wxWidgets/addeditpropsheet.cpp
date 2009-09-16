@@ -26,9 +26,9 @@
 #include <wx/datetime.h>
 
 #include <vector>
-#include "corelib/PWSprefs.h"
-#include "corelib/PWCharPool.h"
-#include "corelib/PWHistory.h"
+#include "../../corelib/PWSprefs.h"
+#include "../../corelib/PWCharPool.h"
+#include "../../corelib/PWHistory.h"
 
 #include "addeditpropsheet.h"
 #include "PWSgrid.h"

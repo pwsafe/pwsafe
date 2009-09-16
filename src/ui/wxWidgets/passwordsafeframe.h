@@ -23,7 +23,7 @@
 ////@begin includes
 #include "wx/frame.h"
 ////@end includes
-#include "corelib/PWScore.h"
+#include "../../corelib/PWScore.h"
 
 /*!
  * Forward declarations
