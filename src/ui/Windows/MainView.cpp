@@ -1897,7 +1897,7 @@ BOOL DboxMain::SendEmail(const CString &cs_Email)
    * sAddress[sHeaders]
    *
    * sAddress
-   *  One or more valid e-mail addresses separated by a semicolon. 
+   *  One or more valid email addresses separated by a semicolon. 
    *  You must use Internet-safe characters. Use %20 for the space character.
    *
    * sHeaders
