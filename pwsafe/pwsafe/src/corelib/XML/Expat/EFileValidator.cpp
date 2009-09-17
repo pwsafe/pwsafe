@@ -210,6 +210,8 @@ bool EFileValidator::startElement(stringT & strStartElement)
 
     // Preferences elements - xs:all (any order)
     case XLE_DISPLAYEXPANDEDADDEDITDLG:
+      // Obsoleted in 3.18
+      return true;
     case XLE_MAINTAINDATETIMESTAMPS:
     case XLE_PWUSEDIGITS:
     case XLE_PWUSEEASYVISION:

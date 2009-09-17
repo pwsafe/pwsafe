@@ -201,6 +201,8 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       m_element_datatype.push(XLD_NUMHASHTYPE);
       break;
     case XLE_DISPLAYEXPANDEDADDEDITDLG:
+      // Obsoleted in 3.18
+      break;
     case XLE_MAINTAINDATETIMESTAMPS:
     case XLE_PWMAKEPRONOUNCEABLE:
     case XLE_PWUSEDIGITS:

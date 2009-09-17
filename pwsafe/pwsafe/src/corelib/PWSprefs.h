@@ -61,7 +61,7 @@ public:
   void SaveApplicationPreferences();
   void SaveShortcuts();
 
-  enum  BoolPrefs {AlwaysOnTop, ShowPWDefault,
+  enum BoolPrefs {AlwaysOnTop, ShowPWDefault,
     ShowPasswordInTree,
     SortAscending,
     UseDefaultUser, SaveImmediately, PWUseLowercase, PWUseUppercase,
@@ -73,7 +73,8 @@ public:
     QuerySetDef, UseNewToolbar, UseSystemTray, 
     LockOnWindowLock, LockOnIdleTimeout,
     EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
-    DisplayExpandedAddEditDlg, MaintainDateTimeStamps,
+    DisplayExpandedAddEditDlg, // Obsoleted in 3.18
+    MaintainDateTimeStamps,
     SavePasswordHistory, 
     FindWraps, // Obsoleted in 3.11
     ShowNotesDefault,
@@ -86,14 +87,14 @@ public:
     ClearClipboardOnMinimize, ClearClipboardOnExit,
     ShowFindToolBarOnOpen, NotesWordWrap,
     NumBoolPrefs};
-  enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
+  enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
     DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
     NumPWHistoryDefault, BackupSuffix, BackupMaxIncremented,
     PreExpiryWarnDays, ClosedTrayIconColour, PWDigitMinLength,
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     NumIntPrefs};
-  enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
+  enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
     TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
     ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
     MainToolBarButtons, PasswordFont, TreeListSampleText, PswdSampleText,

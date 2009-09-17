@@ -72,10 +72,10 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("LockOnWindowLock"), true, ptApplication},            // application
   {_T("LockOnIdleTimeout"), true, ptApplication},           // application
   {_T("EscExits"), true, ptApplication},                    // application
-  {_T("IsUTF8"), false, ptDatabase},                        // database
+  {_T("IsUTF8"), false, ptDatabase},                        // database - not used???
   {_T("HotKeyEnabled"), false, ptApplication},              // application
   {_T("MRUOnFileMenu"), true, ptApplication},               // application
-  {_T("DisplayExpandedAddEditDlg"), true, ptDatabase},      // database
+  {_T("DisplayExpandedAddEditDlg"), true, ptObsolete},      // obsolete in 3.18
   {_T("MaintainDateTimeStamps"), false, ptDatabase},        // database
   {_T("SavePasswordHistory"), false, ptDatabase},           // database
   {_T("FindWraps"), false, ptObsolete},                     // obsolete in 3.11
@@ -175,6 +175,7 @@ PWSprefs::PWSprefs() : m_XML_Config(NULL)
 
   m_prefs_changed[DB_PREF] = false;
   m_prefs_changed[APP_PREF] = false;
+  m_prefs_changed[SHC_PREF] = false;
 
   for (i = 0; i < NumBoolPrefs; i++)
     m_boolChanged[i] = false;

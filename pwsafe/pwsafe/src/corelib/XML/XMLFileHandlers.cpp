@@ -173,6 +173,8 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_numEntries++;
       break;
     case XLE_DISPLAYEXPANDEDADDEDITDLG:
+      // Obsoleted in 3.18
+      return;
     case XLE_IDLETIMEOUT:
     case XLE_MAINTAINDATETIMESTAMPS:
     case XLE_NUMPWHISTORYDEFAULT:
@@ -678,8 +680,10 @@ void XMLFileHandlers::AddDBUnknownFieldsPreferences(UnknownFieldList &uhfl)
   PWSprefs *prefs = PWSprefs::GetInstance();
   int ivalue;
   // Integer/Boolean preferences
+  /* Obsolete in 3.18
   if ((ivalue = prefsinXML[XLE_DISPLAYEXPANDEDADDEDITDLG - XLE_PREF_START]) != -1)
     prefs->SetPref(PWSprefs::DisplayExpandedAddEditDlg, ivalue == 1);
+  */
   if ((ivalue = prefsinXML[XLE_IDLETIMEOUT - XLE_PREF_START]) != -1)
     prefs->SetPref(PWSprefs::IdleTimeout, ivalue);
   if ((ivalue = prefsinXML[XLE_MAINTAINDATETIMESTAMPS - XLE_PREF_START]) != -1)

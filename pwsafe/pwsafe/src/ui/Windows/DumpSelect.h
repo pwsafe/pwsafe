@@ -16,22 +16,22 @@
 
 class CDumpSelect : public CPWDialog
 {
-	DECLARE_DYNAMIC(CDumpSelect)
+  DECLARE_DYNAMIC(CDumpSelect)
 
 public:
-	CDumpSelect(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CDumpSelect();
+  CDumpSelect(CWnd* pParent = NULL);   // standard constructor
+  ~CDumpSelect();
 
 // Dialog Data
-	enum { IDD = IDD_DUMPSELECTOR };
+  enum { IDD = IDD_DUMPSELECTOR };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
   afx_msg void OnBnClickedOK();
   afx_msg void OnBnClickedCancel();
 
-	DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 
 private:
   int m_dumptype;
