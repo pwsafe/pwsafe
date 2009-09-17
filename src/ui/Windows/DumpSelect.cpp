@@ -19,7 +19,7 @@
 IMPLEMENT_DYNAMIC(CDumpSelect, CPWDialog)
 
 CDumpSelect::CDumpSelect(CWnd* pParent /*=NULL*/)
-	: CPWDialog(CDumpSelect::IDD, pParent), m_dumptype(0)
+  : CPWDialog(CDumpSelect::IDD, pParent), m_dumptype(0)
 {
 }
 
@@ -29,7 +29,7 @@ CDumpSelect::~CDumpSelect()
 
 void CDumpSelect::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+  CDialog::DoDataExchange(pDX);
 
   DDX_Radio(pDX, IDC_DUMP_WIN32, m_dumptype);
 }

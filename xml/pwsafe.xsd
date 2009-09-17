@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.15">
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
 
 <xs:annotation>
   <xs:documentation xml:lang="en">
@@ -9,6 +9,7 @@
     However, in V3.13 element 'ltime' has been replaced by 'xtime' for the Password Expiry Time.
     Either is currently allowed, although future updates may remove the 'ltime' choice and therefore
     errors will be issued during XML Import if the 'ltime' element is present in the XML file.
+    In V3.18, preference "DisplayExpandedAddEditDlg" was made obsolete and will now be ignored if present.
   </xs:documentation>
 </xs:annotation>
 
