@@ -206,7 +206,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_NOTES), cs_ToolTip);
       cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_URL), cs_ToolTip);
-      cs_ToolTip.LoadString(IDS_CLICKTOCOPYPLUS2);
+      cs_ToolTip.LoadString(IDS_CLICKTOCOPYPLUS1);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_EMAIL), cs_ToolTip);
       cs_ToolTip.LoadString(IDS_CLICKTOGOPLUS);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LAUNCH), cs_ToolTip);

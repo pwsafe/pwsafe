@@ -124,16 +124,27 @@ DboxMain::DboxMain(CWnd* pParent)
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
   m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false),
-  m_savedDBprefs(EMPTYSAVEDDBPREFS)
+  m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
+  m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL)
 {
   m_eye_catcher = _wcsdup(EYE_CATCHER);
+
+  // Need to do this as using the direct calls will fail for Windows versions before Vista
+  HINSTANCE hUser32 = ::LoadLibrary(L"User32.dll");
+  if (hUser32 != NULL) {
+    m_pfcnShutdownBlockReasonCreate = (PSBR_CREATE)::GetProcAddress(hUser32, "ShutdownBlockReasonCreate"); 
+    m_pfcnShutdownBlockReasonDestroy = (PSBR_DESTROY)::GetProcAddress(hUser32, "ShutdownBlockReasonDestroy"); 
+
+    ::FreeLibrary(hUser32);
+  }
 
   // Set menus to be rebuilt with user's shortcuts
   for (int i = 0; i < NUMPOPUPMENUS; i++)
     m_bDoShortcuts[i] = true;
 
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
-  m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+  m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON),
+                                  IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
   ClearData();
 
@@ -146,6 +157,9 @@ DboxMain::DboxMain(CWnd* pParent)
 DboxMain::~DboxMain()
 {
   m_core.UnRegisterOnListModified();
+  // Vista or later
+  if (m_WindowsMajorVersion >= 6)
+    m_core.UnRegisterOnDBModified();
 
   MapKeyNameIDIter iter;
   for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
@@ -590,6 +604,17 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 
 void DboxMain::InitPasswordSafe()
 {
+
+  // Let's get the OS version - won't change while we are running!
+  OSVERSIONINFO os;
+  SecureZeroMemory(&os, sizeof(OSVERSIONINFO));
+  os.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+  if (GetVersionEx(&os) == FALSE) {
+    ASSERT(0);
+  }
+  m_WindowsMajorVersion = os.dwMajorVersion;
+  m_WindowsMinorVersion = os.dwMinorVersion;
+
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
@@ -1310,16 +1335,19 @@ void DboxMain::SetStartSilent(bool state)
 
 void DboxMain::SetChanged(ChangeType changed)
 {
+  if (m_core.IsReadOnly())
+    return;
+
   switch (changed) {
     case Data:
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
         Save();
       } else {
-        m_core.SetChanged(true);
+        m_core.SetDBChanged(true);
       }
       break;
     case Clear:
-      m_core.SetChanged(false);
+      m_core.SetChanged(false, false);
       m_bTSUpdated = false;
       break;
     case TimeStamp:
@@ -2230,10 +2258,16 @@ void DboxMain::OnEndSession(BOOL bEnding)
       default:
         ASSERT(0);
     }
+
+    if (m_pfcnShutdownBlockReasonDestroy != NULL)
+      m_pfcnShutdownBlockReasonDestroy(m_hWnd);
+
+    m_bBlockShutdown = false;
   } else {
     // Reset status since the EndSession was cancelled
     m_iSessionEndingStatus = IDIGNORE;
   }
+  CDialog::OnEndSession(bEnding);
 }
 
 void DboxMain::UpdateStatusBar()

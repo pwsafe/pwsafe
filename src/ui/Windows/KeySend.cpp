@@ -7,19 +7,15 @@
 */
 #include "KeySend.h"
 
-CKeySend::CKeySend(void) : m_delay(10)
+CKeySend::CKeySend(DWORD dwWindowsMajorVersion, DWORD dwWindowsMinorVersion)
+ : m_delay(10)
 {
   // We want to use keybd_event (OldSendChar) for Win2K & older,
   // SendInput (NewSendChar) for newer versions.
-  OSVERSIONINFO os;
-  os.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-  if (GetVersionEx(&os) == FALSE) {
-    ASSERT(0);
-  }
-  m_isOldOS = ((os.dwMajorVersion == 4) ||
-               (os.dwMajorVersion == 5 && os.dwMinorVersion == 0));
+  m_isOldOS = ((dwWindowsMajorVersion <= 4) ||
+               (dwWindowsMajorVersion == 5 && dwWindowsMinorVersion == 0));
 
-               // get the locale of the current thread.
+  // get the locale of the current thread.
   // we are assuming that all window and threading in the 
   // current users desktop have the same locale.
   m_hlocale = GetKeyboardLayout(0);

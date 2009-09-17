@@ -33,8 +33,8 @@ public:
   COptionsShortcuts();   // standard constructor
   ~COptionsShortcuts();
 
-  bool IsChanged() {return m_bChanged;}
-  void SetChanged() {m_bChanged = true;}
+  bool HaveShortcutsChanged() {return m_bShortcutsChanged;}
+  void SetShortcutsChanged() {m_bShortcutsChanged = true;}
 
   void InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const MapKeyNameID MapKeyNameID,
@@ -80,6 +80,6 @@ private:
   std::vector<UINT> m_ExcludedMenuItems;
   std::vector<st_MenuShortcut> m_ReservedShortcuts;
 
-  bool m_bChanged;
+  bool m_bShortcutsChanged;
   UINT m_id;
 };

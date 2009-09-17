@@ -176,7 +176,9 @@ public:
   void AddEntry(const uuid_array_t &entry_uuid, const CItemData &item);
   ItemList::size_type GetNumEntries() const {return m_pwlist.size();}
   void RemoveEntryAt(ItemListIter pos)
-  {m_changed = true; m_pwlist.erase(pos); NotifyListModified();}
+  {m_bDBChanged = true; m_pwlist.erase(pos);
+   NotifyListModified();
+   NotifyDBModified();}
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user);
@@ -229,21 +231,43 @@ public:
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
                              const StringX &titleuser, bool &bMultiple);
 
-  bool IsChanged() const {return m_changed;}
-  void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
-  bool HaveDBPrefsChanged() const {return m_DBPrefsChanged;}
-  void SetDBPrefsChanged(bool changed) {m_DBPrefsChanged = changed;}
+  // Use following calls to 'SetChanged' & 'SetDBChanged' sparingly
+  // outside of corelib
+  void SetChanged(const bool bDBChanged, const bool bDBprefschanged)
+  {m_bDBChanged = bDBChanged; 
+   m_bDBPrefsChanged = bDBprefschanged;
+   NotifyListModified();
+   NotifyDBModified();}
+  void SetDBChanged(const bool bDBChanged)
+  {m_bDBChanged = bDBChanged;
+   NotifyListModified();
+   NotifyDBModified();}
+  void SetDBPrefsChanged(const bool bDBprefschanged)
+  {m_bDBPrefsChanged = bDBprefschanged;
+   NotifyDBModified();}
+  void SuspendOnDBNotification()
+  {m_bNotifyDB = false;}
+  void ResumeOnDBNotification()
+  {m_bNotifyDB = m_pfcnNotifyDBModified != NULL && m_NotifyDBInstance != NULL;}
+
+  bool IsChanged() const {return m_bDBChanged;}
+  bool HaveDBPrefsChanged() const {return m_bDBPrefsChanged;}
   bool HaveHeaderPreferencesChanged(const StringX prefString)
   {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
-  // (Un)Register to be notified if the password list changes
+  // (Un)Register to be notified if the password list changes (used for UI Find)
   bool RegisterOnListModified(void (*pfcn) (LPARAM), LPARAM);
   void UnRegisterOnListModified();
   void NotifyListModified();
   void SuspendOnListNotification()
-  {m_bNotify = false;}
+  {m_bNotifyList = false;}
   void ResumeOnListNotification()
-  {m_bNotify = true;}
+  {m_bNotifyList = m_pfcnNotifyListModified != NULL && m_NotifyListInstance != NULL;}
+
+  // (Un)Register to be notified if the database changes
+  bool RegisterOnDBModified(void (*pfcn) (LPARAM, bool), LPARAM);
+  void UnRegisterOnDBModified();
+  void NotifyDBModified();
 
   void SetPassKey(const StringX &new_passkey);
 
@@ -278,8 +302,8 @@ private:
   StringX m_defusername;
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
-  bool m_changed;
-  bool m_DBPrefsChanged;
+  bool m_bDBChanged;
+  bool m_bDBPrefsChanged;
   bool m_IsReadOnly;
   PWSfile::HeaderRecord m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
@@ -304,8 +328,13 @@ private:
 
   // Callback if password list has been modified
   void (*m_pfcnNotifyListModified) (LPARAM);
-  LPARAM m_NotifyInstance;
-  bool m_bNotify;
+  LPARAM m_NotifyListInstance;
+  bool m_bNotifyList, m_bNotifyDB;
+
+  // Callback if database has been modified
+  void (*m_pfcnNotifyDBModified) (LPARAM, bool);
+  LPARAM m_NotifyDBInstance;
+
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;
 };

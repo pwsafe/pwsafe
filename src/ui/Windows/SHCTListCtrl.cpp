@@ -199,7 +199,7 @@ update:
   UpdateWindow();
 
   if (m_pParent != NULL)
-    m_pParent->SetChanged();
+    m_pParent->SetShortcutsChanged();
 
 exit:
   if (m_pParent != NULL)

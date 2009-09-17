@@ -225,7 +225,7 @@ int DboxMain::New()
 {
   int rc, rc2;
 
-  if (m_core.IsChanged()) {
+  if (!m_core.IsReadOnly() && m_core.IsChanged()) {
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
     rc = MessageBox(cs_temp, AfxGetAppName(),
@@ -733,7 +733,7 @@ int DboxMain::SaveIfChanged()
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
 
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+  if (!m_core.IsReadOnly() && (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) {
     int rc, rc2;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
@@ -750,7 +750,7 @@ int DboxMain::SaveIfChanged()
         else
           return PWScore::CANT_OPEN_FILE;
       case IDNO:
-        // Reset changed flag
+        // Reset changed flag to stop being asked again
         SetChanged(Clear);
         break;
     }
@@ -2389,7 +2389,8 @@ int DboxMain::SaveCore(PWScore *pcore)
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
-  pcore->SetChanged(false);
+
+  pcore->SetChanged(false, false);
   return PWScore::SUCCESS;
 }
 
@@ -2595,7 +2596,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     ptocore->AddEntry(temp);
   }
 
-  ptocore->SetChanged(true);
+  ptocore->SetDBChanged(true);
   return TRUE;
 }
 
@@ -2665,7 +2666,9 @@ void DboxMain::OnOK()
     CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
     switch (m_iSessionEndingStatus) {
       case IDIGNORE:
-        // Session is not ending - user has an option to cancel
+      case IDCANCEL:
+        // IDCANCEL: User already said Cancel last time but could change their minds
+        // IDIGNORE: Session did not end last time - user has an option to cancel
         rc = MessageBox(cs_msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNOCANCEL);
         break;
       case IDOK:
@@ -2678,8 +2681,8 @@ void DboxMain::OnOK()
         // IDNO:  Don't ask - user already said NO during OnQueryEndSession
         rc = m_iSessionEndingStatus;
         break; 
-      default: 
-        ASSERT(0); // should never happen... 
+      default:
+        ASSERT(0);     // should never happen... 
         rc = IDCANCEL; // ...but if it does, behave conservatively. 
     }
     switch (rc) {
