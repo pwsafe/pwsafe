@@ -1285,7 +1285,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   wchar_t curChar;
   StringX sx_autotype(sx_in_autotype);
   const int N = sx_autotype.length();
-  CKeySend ks;
+  CKeySend ks(m_WindowsMajorVersion, m_WindowsMinorVersion);
   bool bCapsLock = false;
   std::vector<StringX> vsx_notes_lines;
   StringX::size_type index;

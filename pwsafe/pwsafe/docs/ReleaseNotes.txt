@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.18.1
 ====================
+[2857641] PasswordSafe handles XP (and later) logoff, shutdown &
+restart, so that the user now has more time to save a modified database.
 [2856750] Password Policy now correctly displayed in List View.
 [2856051] Changes to Database preferences are no longer lost over minimize.
 [2856410] "Run Command" menu shortcut no longer greyed out for Shortcuts

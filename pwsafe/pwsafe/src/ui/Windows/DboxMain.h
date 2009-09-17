@@ -127,6 +127,9 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"
 
+typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
+typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
+
 enum SearchDirection {FIND_UP = -1, FIND_DOWN = 1};
 
 // List of all Popup menus in the Main Menu
@@ -501,16 +504,19 @@ protected:
 
   // Generated message map functions
   //{{AFX_MSG(DboxMain)
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
-  virtual BOOL OnInitDialog();
+  afx_msg LRESULT OnSessionChange(WPARAM wParam, LPARAM lParam);
+
   afx_msg void OnUpdateMenuToolbar(CCmdUI *pCmdUI);
   afx_msg void OnDestroy();
   afx_msg BOOL OnQueryEndSession();
   afx_msg void OnEndSession(BOOL bEnding);
   afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
   afx_msg void OnMove(int x, int y);
-  virtual void OnCancel();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnAbout();
   afx_msg void OnU3ShopWebsite();
@@ -623,8 +629,6 @@ protected:
   afx_msg void OnOpenMRU(UINT nID);
 #endif
 
-  afx_msg LRESULT OnSessionChange(WPARAM wParam, LPARAM lParam);
-
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const StringX &filename, StringX& passkey,
@@ -634,6 +638,8 @@ protected:
 private:
   // static methods and variables
   static void StopFind(LPARAM instance);
+  static void DatabaseModified(LPARAM instance, bool bChanged);
+
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
   // Only need these if not on default menus
@@ -751,7 +757,12 @@ private:
   CToolTipCtrl* m_pToolTipCtrl;
 
   // Workstation Locked
-  bool m_bWSLocked, m_bRegistered;
+  bool m_bWSLocked, m_bRegistered, m_bBlockShutdown;
+  DWORD m_WindowsMajorVersion, m_WindowsMinorVersion;
+
+  // Need this in case not running on Vista or later
+  PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
+  PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)

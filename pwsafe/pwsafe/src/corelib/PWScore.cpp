@@ -79,10 +79,11 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_LockCount(0), m_LockCount2(0),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_changed(false), m_DBPrefsChanged(false),
+                     m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
-                     m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
-                     m_bNotify(false)
+                     m_pfcnNotifyListModified(NULL), m_NotifyListInstance(NULL),
+                     m_bNotifyList(false), m_pfcnNotifyDBModified(NULL),
+                     m_NotifyDBInstance(NULL), m_bNotifyDB(false)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -119,10 +120,10 @@ void PWScore::SetApplicationNameAndVersion(const stringT &appName,
 
 void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
 {
-  m_changed = true;
   ASSERT(m_pwlist.find(uuid) == m_pwlist.end());
   m_pwlist[uuid] = item;
-  NotifyListModified();
+
+  SetDBChanged(true);
 }
 
 void PWScore::ClearData(void)
@@ -146,15 +147,11 @@ void PWScore::ClearData(void)
 
   // Clear out database filters
   m_MapFilters.clear();
-
-  NotifyListModified();
 }
 
 void PWScore::ReInit(bool bNewFile)
 {
   // Now reset all values as if created from new
-  m_changed = false;
-  m_DBPrefsChanged = false;
   m_usedefuser = false;
   m_defusername = _T("");
   if (bNewFile)
@@ -169,6 +166,8 @@ void PWScore::ReInit(bool bNewFile)
   }
   m_nRecordsWithUnknownFields = 0;
   m_UHFL.clear();
+
+  SetChanged(false, false);
   NotifyListModified();
 }
 
@@ -176,8 +175,9 @@ void PWScore::NewFile(const StringX &passkey)
 {
   ClearData();
   SetPassKey(passkey);
-  m_changed = false;
-  m_DBPrefsChanged = false;
+
+  SetChanged(false, false);
+
   // default username is a per-database preference - wipe clean
   // for new database:
   m_usedefuser = false;
@@ -260,8 +260,8 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   out->Close();
   delete out;
 
-  m_changed = false;
-  m_DBPrefsChanged = false;
+  SetChanged(false, false);
+
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
 
   return SUCCESS;
@@ -758,7 +758,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   possible_aliases.clear();
   possible_shortcuts.clear();
 
-  m_changed = true;
+  SetDBChanged(true);
   return SUCCESS;
 }
 #endif
@@ -1169,7 +1169,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_SHORTCUT, CItemData::PASSWORD);
   possible_aliases.clear();
   possible_shortcuts.clear();
-  m_changed = true;
+
+  SetDBChanged(true);
   return SUCCESS;
 }
 
@@ -1264,6 +1265,8 @@ int PWScore::ReadFile(const StringX &a_filename,
   }
 
   ClearData(); //Before overwriting old data, but after opening the file...
+  SetChanged(false, false);
+
   SetPassKey(a_passkey); // so user won't be prompted for saves
 
   CItemData temp;
@@ -1493,7 +1496,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 void PWScore::ChangePassword(const StringX &newPassword)
 {
   SetPassKey(newPassword);
-  m_changed = true;
+  SetDBChanged(true);
 }
 
 // functor object type for find_if:
@@ -1687,7 +1690,7 @@ StringX PWScore::GetPassKey() const
 
 void PWScore::SetDisplayStatus(const vector<bool> &s)
 { 
-  // DON'T set m_changed!
+  // DON'T set m_bDBChanged!
   // Application should use WasDisplayStatusChanged()
   // to determine if state has changed.
   // This allows app to silently save without nagging user
@@ -1837,7 +1840,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
 
   // TODO: maybe return an error if the full end of the file was not reached?
 
-  m_changed = true;
+  SetDBChanged(true);
   return SUCCESS;
 }
 
@@ -1862,7 +1865,7 @@ void PWScore::GetUniqueGroups(vector<stringT> &aryGroups) const
 void PWScore::CopyPWList(const ItemList &in)
 {
   m_pwlist = in;
-  m_changed = true;
+  SetDBChanged(true);
 }
 
 bool
@@ -1950,7 +1953,7 @@ PWScore::Validate(stringT &status)
     Format(status, IDSC_NUMPROCESSED,
            n + 1, num_uuid_fixed, num_PWH_fixed,
            num_alias_warnings, num_shortcuts_warnings);
-    SetChanged(true);
+    SetDBChanged(true);
     return true;
   } else {
     return false;
@@ -2489,25 +2492,57 @@ bool PWScore::RegisterOnListModified(void (*pfcn) (LPARAM), LPARAM instance)
   if (m_pfcnNotifyListModified != NULL)
     return false;
 
+  if (pfcn == NULL || instance == NULL) {
+    UnRegisterOnListModified();
+    return false;
+  }
+  
   m_pfcnNotifyListModified = pfcn;
-  m_NotifyInstance = instance;
-  m_bNotify = true;
+  m_NotifyListInstance = instance;
+  m_bNotifyList = true;
   return true;
 }
 
 void PWScore::UnRegisterOnListModified()
 {
   m_pfcnNotifyListModified = NULL;
-  m_NotifyInstance = NULL;
-  m_bNotify = false;
+  m_NotifyListInstance = NULL;
+  m_bNotifyList = false;
 }
 
 void PWScore::NotifyListModified()
 {
-  if (!m_bNotify || m_pfcnNotifyListModified == NULL)
-    return;
+  if (m_bNotifyList)
+    m_pfcnNotifyListModified(m_NotifyListInstance);
+}
 
-  m_pfcnNotifyListModified(m_NotifyInstance);
+bool PWScore::RegisterOnDBModified(void (*pfcn) (LPARAM, bool), LPARAM instance)
+{
+  if (m_pfcnNotifyDBModified != NULL)
+    return false;
+
+  if (pfcn == NULL || instance == NULL) {
+    UnRegisterOnDBModified();
+    return false;
+  }
+
+  m_pfcnNotifyDBModified = pfcn;
+  m_NotifyDBInstance = instance;
+  m_bNotifyDB = true;
+  return true;
+}
+
+void PWScore::UnRegisterOnDBModified()
+{
+  m_pfcnNotifyDBModified = NULL;
+  m_NotifyDBInstance = NULL;
+  m_bNotifyDB = false;
+}
+
+void PWScore::NotifyDBModified()
+{
+  if (m_bNotifyDB)
+    m_pfcnNotifyDBModified(m_NotifyDBInstance, m_bDBChanged || m_bDBPrefsChanged);
 }
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)

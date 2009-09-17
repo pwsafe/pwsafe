@@ -193,12 +193,12 @@ int DboxMain::Restore()
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENREADING, backup);
     cs_title.LoadString(IDS_FILEREADERROR);
-    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
 
-  m_core.SetCurFile(L""); //Force a Save As...
-  m_core.SetChanged(Data); //So that the restored file will be saved
+  m_core.SetCurFile(L"");    // Force a Save As...
+  m_core.SetDBChanged(true); // So that the restored file will be saved
 #if !defined(POCKET_PC)
   m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
   app.SetTooltipText(L"PasswordSafe");
@@ -634,7 +634,8 @@ void DboxMain::OnOptions()
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (!m_core.IsReadOnly()) {
         const StringX prefString(prefs->Store());
-        SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? DBPrefs : ClearDBPrefs);
+        SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? 
+                        DBPrefs : ClearDBPrefs);
         ChangeOkUpdate();
       }
     }
@@ -741,7 +742,7 @@ void DboxMain::OnOptions()
       // Finally, keep prefs file updated:
       prefs->SaveApplicationPreferences();
 
-    if (shortcuts.IsChanged()) {
+    if (shortcuts.HaveShortcutsChanged()) {
       // Create vector of shortcuts for user's config file
       std::vector<st_prefShortcut> vShortcuts;
       MapMenuShortcutsIter iter, iter_entry, iter_group;

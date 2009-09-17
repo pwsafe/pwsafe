@@ -26,7 +26,7 @@
 IMPLEMENT_DYNAMIC(COptionsShortcuts, CPWPropertyPage)
 
 COptionsShortcuts::COptionsShortcuts(): CPWPropertyPage(COptionsShortcuts::IDD),
-  m_bChanged(false)
+  m_bShortcutsChanged(false)
 {
   //{{AFX_DATA_INIT(COptionsShortcuts)
   //}}AFX_DATA_INIT
@@ -182,7 +182,7 @@ void COptionsShortcuts::OnBnClickedResetAll()
 
   m_ShortcutLC.RedrawItems(0, m_ShortcutLC.GetItemCount());
   m_ShortcutLC.UpdateWindow();
-  m_bChanged = true;
+  m_bShortcutsChanged = true;
 }
 
 // Functor for find_if to see if shortcut is reserved
@@ -261,7 +261,7 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);
   m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
   m_ShortcutLC.UpdateWindow();
-  m_bChanged = true;
+  m_bShortcutsChanged = true;
   return;
 
 set_warning:

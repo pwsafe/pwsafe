@@ -19,7 +19,7 @@
 class CKeySend
 {
 public:
-  CKeySend(void);
+  CKeySend(DWORD dwWindowsMajorVersion = 0, DWORD dwWindowsMinorVersion = 0);
   ~CKeySend(void);
   void SendString(const StringX &data);
   void ResetKeyboardState();

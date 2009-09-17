@@ -68,6 +68,34 @@ void DboxMain::StopFind(LPARAM instance)
   self->OnHideFindToolBar();
 }
 
+void DboxMain::DatabaseModified(LPARAM instance, bool bChanged)
+{
+  // This is to prevent Windows (Vista & later) from shutting down
+  // if the database has been modified (including preferences stored in the DB)
+  static bool bCurrentState(false);
+  DboxMain *self = (DboxMain*)instance;
+
+  // Don't do anything if status unchanged or not at least Vista
+  if (self->m_core.IsReadOnly() || bChanged == bCurrentState)
+    return;
+
+  bCurrentState = bChanged;
+
+  // Callback from PWScore if the database has been changed
+  // entries or preferences stored in the database
+
+  // Only supported on Vista and later
+  if (bCurrentState) {
+    CSecString cs_stopreason;
+    cs_stopreason.Format(IDS_STOPREASON, self->m_core.GetCurFile().c_str());
+    self->m_pfcnShutdownBlockReasonCreate(self->m_hWnd, cs_stopreason);
+    self->m_bBlockShutdown = true;
+  } else {
+    self->m_pfcnShutdownBlockReasonDestroy(self->m_hWnd);
+    self->m_bBlockShutdown = false;
+  }
+}
+
 //-----------------------------------------------------------------------------
 
 /*
@@ -427,6 +455,10 @@ void DboxMain::setupBars()
 
   // Register for update notification
   m_core.RegisterOnListModified(StopFind, (LPARAM)this);
+
+  // Register for database changed notification (Vista or later)
+  if (m_WindowsMajorVersion >= 6)
+    m_core.RegisterOnDBModified(DatabaseModified, (LPARAM)this);
 
   m_DDGroup.EnableWindow(TRUE);
   m_DDGroup.ShowWindow(SW_SHOW);
@@ -913,6 +945,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       // Suspend notification of changes
       m_core.SuspendOnListNotification();
+      m_core.SuspendOnDBNotification();
 
       m_selectedAtMinimize = getSelectedItem();
       m_ctlItemList.DeleteAllItems();
@@ -970,6 +1003,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
         // Resume notification of changes
         m_core.ResumeOnListNotification();
+        m_core.ResumeOnDBNotification();
         if (m_FindToolBar.IsVisible()) {
           SetFindToolBar(true);
         }
@@ -978,7 +1012,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         CRect rect;
         GetWindowRect(&rect);
         PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
-                                           rect.left, rect.right);
+                                             rect.left, rect.right);
 
         // Make sure Find toolbar is above Status bar
         if (m_FindToolBar.IsVisible()) {
@@ -1235,7 +1269,7 @@ void DboxMain::ClearData(bool clearMRE)
   for_each(m_core.GetEntryIter(), m_core.GetEntryEndIter(),
     ddi);
 
-  m_core.ClearData();
+  m_core.ClearData();  // Clears DB & DB Preferences changed flags
 
   UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
 

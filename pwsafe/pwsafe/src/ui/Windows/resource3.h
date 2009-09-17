@@ -545,6 +545,7 @@
 #define IDS_EMAILCOPIED                 5718
 #define IDS_EMAIL                       5719
 #define IDS_COMPEMAIL                   5720
-#define IDS_CLICKTOCOPYPLUS2            5721
+#define IDS_CLICKTOCOPYPLUS1            5721
 #define IDS_TRAYSENDEMAIL               5722
 #define IDS_TRAYCOPYEMAIL               5723
+#define IDS_STOPREASON                  5724
