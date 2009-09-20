@@ -25,16 +25,19 @@
 
 #include "stdafx.h"
 #include "SingleInstance.h"
+
 #include <malloc.h>  // Use the _malloca/_freea functions (changed from original)
+#include <strsafe.h> // String safe replacement of wsprintf by StringCchPrintf
 
 ////////////////////////////////////////////////////////////////////////////////
-// LPWSTR CreateUniqueName(pszGUID, pszBuffer, nMode)
+// LPWSTR CreateUniqueName(pszGUID, pszBuffer, iBuffLen, nMode)
 //
 // Creates a "unique" name, where the meaning of "unique" depends on the nMode 
 // flag values. Returns pszBuffer
 //
 // pszGUID:    Copied to the beginning of pszBuffer, should be an GUID
-// pszBuffer:  Buffer for unique name. Length (in chars) must be >= MAX_PATH
+// pszBuffer:  Buffer for unique name.
+// iBuffLen:   Buffer length (in chararcters) must be >= MAX_PATH
 // nMode:    Information, that should be used to create the unique name.
 //        Can be one of the following values:
 //
@@ -53,8 +56,8 @@
 //                                       on different desktops.
 //        SI_SYSTEM_UNIQUE             - Allow only one instance on the whole system  
 //
-LPWSTR CreateUniqueName(LPCWSTR pszGUID, LPWSTR pszBuffer, int iBuffLen,
-                        int nMode  /* = SI_TRUSTEE_UNIQUE */)
+LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuffLen,
+                        const int nMode  /* = SI_TRUSTEE_UNIQUE */)
 {
   if (pszBuffer == NULL) {
     SetLastError(ERROR_INVALID_PARAMETER);
@@ -103,8 +106,10 @@ LPWSTR CreateUniqueName(LPCWSTR pszGUID, LPWSTR pszBuffer, int iBuffLen,
            GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
         PTOKEN_STATISTICS pTS = (PTOKEN_STATISTICS)_malloca(cbBytes);
         if (GetTokenInformation(hToken, TokenStatistics, (LPVOID) pTS, cbBytes, &cbBytes)) {
-          wsprintf(pszBuffer + wcslen(pszBuffer), L"-%08x%08x", 
-                   pTS->AuthenticationId.HighPart, pTS->AuthenticationId.LowPart);
+          HRESULT hr;
+          hr = StringCchPrintf(pszBuffer + wcslen(pszBuffer), iBuffLen - wcslen(pszBuffer),
+                          L"-%08x%08x", pTS->AuthenticationId.HighPart, pTS->AuthenticationId.LowPart);
+          ASSERT(SUCCEEDED(hr));
         }
         _freea(pTS);
       }
@@ -123,7 +128,10 @@ LPWSTR CreateUniqueName(LPCWSTR pszGUID, LPWSTR pszBuffer, int iBuffLen,
       cchDomain = GetEnvironmentVariable(L"USERDOMAIN", szDomain, cchDomain);
       UINT cchUsed = wcslen(pszBuffer);
       if (MAX_PATH - cchUsed > cchUser + cchDomain + 3) {
-        wsprintf(pszBuffer + cchUsed, L"-%s-%s", szDomain, szUser);
+        HRESULT hr;
+        hr = StringCchPrintf(pszBuffer + cchUsed, iBuffLen - cchUsed,
+                          L"-%s-%s", szDomain, szUser);
+        ASSERT(SUCCEEDED(hr));
       }
     }
   }

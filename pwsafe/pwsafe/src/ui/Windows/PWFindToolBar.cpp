@@ -112,12 +112,17 @@ CPWFindToolBar::CPWFindToolBar()
   lf.lfWeight = FW_LIGHT;
   lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
   CString strDefaultFont = L"MS Sans Serif";
-  lstrcpy(lf.lfFaceName, strDefaultFont);
+#if (_MSC_VER >= 1400)
+  wcscpy_s(lf.lfFaceName, LF_FACESIZE, strDefaultFont);
+#else
+  wcscpy(lf.lfFaceName, strDefaultFont);
+#endif  
   VERIFY(m_FindTextFont.CreateFontIndirect(&lf));
 }
 
 CPWFindToolBar::~CPWFindToolBar()
 {
+  delete [] m_pOriginalTBinfo;
   m_findedit.DestroyWindow();
 }
 
@@ -126,7 +131,6 @@ void CPWFindToolBar::OnDestroy()
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
   m_ImageLists[2].DeleteImageList();
-  delete [] m_pOriginalTBinfo;
   m_FindTextFont.DeleteObject();
 }
 
