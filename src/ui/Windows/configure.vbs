@@ -15,18 +15,78 @@ Dim strFileLocation
 Dim str1, str2, str3,CRLF
 Dim rc
 
+Dim XML_XPATH, strPgmFiles
+Dim strTortoiseSVNDir, strExpatDir, strXercesDir, strWXDir
+Dim strKeyPath, strValueName, strValue
+
 CRLF = Chr(13) & Chr(10)
-const strHTMLWSDir = "C:\Program Files\HTML Help Workshop"
-const strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
-const strExpatDir = "C:\Program Files\Expat 2.0.1"
-const strMSXML60SDKDir = "C:\Program Files\MSXML 6.0"
-const strXercesDir = "C:\Program Files\xerces-c-3.0.0-x86-windows-vc-8.0"
+
+' Check if running 64-bit OS
+' If running a 64-bit Windows OS, as PasswordSafe is a 32-bit application,
+' developers should install the 32-bit version of Xerces XML library.
+' Note: the 8.0 in the Xerces directory corresponds to VS2005; 9.0 to VS2008 etc.
+' Expat & wxWidgets only come in a 32-bit version.
+' Default installation of wxWidgets is in a root directory. Changed here to be
+' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
+
+' The 64-bit version of TortoiseSVN should *always* be installed on a 64-bit OS.
+
+const HLM = &H80000002
+strComputer = "."
+strPgmFiles = ""
+
+Set oReg = GetObject("winmgmts:{impersonationLevel=impersonate}!\\" &_
+                     strComputer & "\root\default:StdRegProv")
+
+strKeyPath = "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
+strValueName = "PROCESSOR_ARCHITECTURE"
+oReg.GetStringValue HLM, strKeyPath, strValueName, strValue
+
+If strValue = "AMD64" Then
+  strPgmFiles = " (x86)"
+End If
+
+Set oReg = Nothing
+
+' Set defaults
+strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
+strExpatDir = "C:\Program Files" & strPgmFiles & "\Expat 2.0.1"
+strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.0.1-x86-windows-vc-8.0"
+strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.10"
 
 str1 = "Please supply fully qualified location, without quotes, where "
 str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF
 str3 = CRLF & CRLF & "See README.DEVELOPERS.txt for more information."
 
 strOutputFile = "UserVariables.vsprops"
+XML_XPATH="VisualStudioPropertySheet/UserMacro"
+
+Set objXMLDoc = CreateObject("Microsoft.XMLDOM")
+objXMLDoc.async = False
+objXMLDoc.load(strOutputFile)
+
+' If already exists, set the defaults to be current value so user doesn't have to
+' remember what they set last time
+Set UserMacros = objXMLDoc.getElementsByTagName(XML_XPATH)
+If UserMacros.length > 0 Then
+  For each CurrentUserMacro in UserMacros
+    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "TortoiseSVNDir" Then
+      strTortoiseSVNDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+    End If
+    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "ExpatDir" Then
+      strExpatDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+    End If
+    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
+      strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+    End If
+    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "WXDIR" Then
+      strWXDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+    End If
+  Next
+End If
+
+Set UserMacros = Nothing
+Set objXMLDoc = Nothing
 
 Set objFileSystem = CreateObject("Scripting.fileSystemObject")
 
@@ -64,13 +124,6 @@ objOutputFile.WriteLine("		Value=""$(OutDir)""")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""HTMLWSDir""")
-strFileLocation = InputBox(str1 & "HTML Help Workshop" & str2 & strHTMLWSDir &str3, "HTML Help Workshop Location", strHTMLWSDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strHTMLWSDir
-objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""TortoiseSVNDir""")
 strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir & str3, "Tortoise SVN Location", strTortoiseSVNDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strTortoiseSVNDir
@@ -85,16 +138,16 @@ objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""MSXML60SDKDir""")
-strFileLocation = InputBox(str1 & "MS XML6 SDK" & str2 & strMSXML60SDKDir &str3, "MS XML6 SDK Location", strMSXML60SDKDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strMSXML60SDKDir
+objOutputFile.WriteLine("		Name=""XercesDir""")
+strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
 objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""XercesDir""")
-strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
+objOutputFile.WriteLine("		Name=""WXDIR""")
+strFileLocation = InputBox(str1 & "wxWidgets" & str2 & strWXDir & str3, "wxWidgets Location", strWXDir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strWXDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
