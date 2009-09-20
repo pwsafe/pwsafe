@@ -379,6 +379,7 @@ CPWToolBar::CPWToolBar()
 
 CPWToolBar::~CPWToolBar()
 {
+  delete [] m_pOriginalTBinfo;
 }
 
 void CPWToolBar::OnDestroy()
@@ -388,7 +389,6 @@ void CPWToolBar::OnDestroy()
   m_ImageLists[2].DeleteImageList();
   m_DisabledImageLists[0].DeleteImageList();
   m_DisabledImageLists[1].DeleteImageList();
-  delete [] m_pOriginalTBinfo;
 }
 
 BEGIN_MESSAGE_MAP(CPWToolBar, CToolBar)

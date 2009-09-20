@@ -2075,7 +2075,12 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
       delete m_pwchTip;
 
       m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-      lstrcpyn(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
+#if _MSC_VER >= 1400
+      wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
+                cs_TipText, _TRUNCATE);
+#else
+      wcsncpy(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
+#endif
       pTTTW->lpszText = (LPWSTR)m_pwchTip;
     }
 #else // Short Tooltips!

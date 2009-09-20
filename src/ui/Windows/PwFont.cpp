@@ -118,6 +118,6 @@ void ExtractFont(const CString &str, LOGFONT &logfont)
 #if (_MSC_VER >= 1400)
   wcscpy_s(logfont.lfFaceName, LF_FACESIZE, s);
 #else
-  wcscpy(logfont.lfFaceName, s;
+  wcscpy(logfont.lfFaceName, s);
 #endif  
 }
