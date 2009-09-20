@@ -361,7 +361,7 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
   if (t != 0) {
     TCHAR datetime_str[80];
     struct tm *st;
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     struct tm st_s;
     errno_t err;
     err = localtime_s(&st_s, &t);  // secure version

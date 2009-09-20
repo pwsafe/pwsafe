@@ -1143,7 +1143,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   int iDDType;
   long lBufLen;
 
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   sscanf_s((char *)pData, OLE_HDR_FMT, &lPid, &iDDType, &lBufLen);
 #else
   sscanf((char *)pData, OLE_HDR_FMT, &lPid, &iDDType, &lBufLen);
@@ -2008,7 +2008,7 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
 
   char header[OLE_HDR_LEN+1];
   // Note: GetDDType will return either FROMTREE or FROMTREE_R
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   sprintf_s(header, sizeof(header),
             OLE_HDR_FMT, GetCurrentProcessId(), GetDDType(), lBufLen);
 #else

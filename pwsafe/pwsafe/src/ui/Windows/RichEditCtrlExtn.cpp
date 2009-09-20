@@ -622,7 +622,7 @@ COLORREF CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
     // Convert HTML to COLORREF
     ASSERT(csValue.GetLength() == 7);
     int icolour;
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     swscanf_s(csValue.Mid(1), L"%06x", &icolour);
 #else
     swscanf(csValue.Mid(1), L("%06x", &retval);

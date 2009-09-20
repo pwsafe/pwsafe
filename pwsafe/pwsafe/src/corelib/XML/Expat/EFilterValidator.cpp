@@ -439,7 +439,7 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
   if (e_iter->second.element_maxoccurs != -1 &&
       m_ielement_occurs[e_iter->second.element_code] >= e_iter->second.element_maxoccurs) {
     TCHAR buffer[10];
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     _itot_s(e_iter->second.element_maxoccurs, buffer, 10, 10);
 #else
     _itot(e_iter->second.element_maxoccurs, buffer, 10);

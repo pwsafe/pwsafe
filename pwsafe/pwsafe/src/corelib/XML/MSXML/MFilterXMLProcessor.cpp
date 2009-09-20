@@ -203,7 +203,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
     if (!strXMLFileName.empty()) {
       wchar_t wcURL[MAX_PATH]={0};
 #ifdef _UNICODE
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
       _tcscpy_s(wcURL, MAX_PATH, strXMLFileName.c_str());
 #else
       _tcscpy(wcURL, strXMLFileName.c_str());

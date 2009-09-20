@@ -235,7 +235,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
         int nscanned = 0;
         TCHAR *lpsz_string = m_strElemContent.GetBuffer(length);
         for (int i = 0; i < m_fieldlen; i++) {
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
           nscanned += _stscanf_s(lpsz_string, _T("%02x"), &m_pfield[i]);
 #else
           nscanned += _stscanf(lpsz_string, _T("%02x"), &m_pfield[i]);
@@ -521,7 +521,7 @@ void XMLFileHandlers::AddEntries()
       int nscanned = 0;
       const TCHAR *lpszuuid = cur_entry->uuid.c_str();
       for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
         nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #else
         nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);

@@ -76,7 +76,7 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   DWORD procID;
   int iDDType, iType;
 
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   swscanf_s(pData, L"%08x%02x%02x", &procID, &iDDType, &iType);
 #else
   swscanf(pData, L"08x%02x%02x", &procID, &iDDType, &iType);

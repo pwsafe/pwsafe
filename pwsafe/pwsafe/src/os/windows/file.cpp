@@ -69,7 +69,7 @@ extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
 
   const TCHAR *lpsz_current = from.c_str();
   const TCHAR *lpsz_new = to.c_str();
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
   _tcscpy_s(szDestination, _MAX_PATH, lpsz_new);
 #else
@@ -329,7 +329,7 @@ bool pws_os::IsLockedFile(const stringT &filename)
 std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 {
   std::FILE *fd = NULL;
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   _tfopen_s(&fd, filename.c_str(), mode);
 #else
   fd = _tfopen(m_filename.c_str(), mode);

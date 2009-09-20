@@ -1536,7 +1536,7 @@ bool CItemData::Matches(time_t time1, time_t time2, int iObject,
     time_t testtime;
     if (tValue != (time_t)0) {
       struct tm st;
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
       errno_t err;
       err = localtime_s(&st, &tValue);  // secure version
       ASSERT(err == 0);
@@ -1593,7 +1593,7 @@ bool CItemData::WillExpire(const int numdays)
     return false;
 
   struct tm st;
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   errno_t err;
   err = localtime_s(&st, &now);  // secure version
   ASSERT(err == 0);

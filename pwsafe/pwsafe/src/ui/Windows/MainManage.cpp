@@ -884,7 +884,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
     if (len >= 5) {
       int status, old_max, num_saved;
       const wchar_t *lpszPWHistory = cs_tmp.c_str();
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
       int iread = swscanf_s(lpszPWHistory, L"%01d%02x%02x", 
                              &status, &old_max, &num_saved);
 #else
