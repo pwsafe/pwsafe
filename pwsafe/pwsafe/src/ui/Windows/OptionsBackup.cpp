@@ -361,7 +361,7 @@ void COptionsBackup::OnBrowseForLocation()
   // The BROWSEINFO struct tells the shell
   // how it should display the dialog.
   BROWSEINFO bi;
-  SecureZeroMemory(&bi, sizeof(BROWSEINFO));
+  SecureZeroMemory(&bi, sizeof(bi));
 
   bi.hwndOwner = this->GetSafeHwnd();
   bi.ulFlags = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_USENEWUI;

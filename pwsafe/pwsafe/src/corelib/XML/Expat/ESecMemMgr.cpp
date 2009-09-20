@@ -85,7 +85,11 @@ void* ESecMemMgr::realloc(void *pold_mem, size_t new_size)
     // Get the smaller of old vs. new size
     size_t copy_size = min(old_size, new_size);
     // Copy only the smallest amount (no overruns)
+#if _MSC_VER >= 1400
+    memcpy_s(pnew_mem, new_size, pold_mem, copy_size);
+#else
     memcpy(pnew_mem, pold_mem, copy_size);
+#endif
     // Now free old memory
     this->free(pold_mem);
     //TRACE(_T("realloc: pold =  %p, preal =   N/A   , size = %08d, new size    = %08d\n"),

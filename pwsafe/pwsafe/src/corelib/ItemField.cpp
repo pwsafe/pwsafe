@@ -33,7 +33,7 @@ CItemField::CItemField(const CItemField &that)
   if (m_Length > 0) {
     int bs = GetBlockSize(m_Length);
     m_Data = new unsigned char[bs];
-    ::memcpy(m_Data, that.m_Data, bs);
+    memcpy(m_Data, that.m_Data, bs);
   } else {
     m_Data = NULL;
   }
@@ -49,7 +49,7 @@ CItemField &CItemField::operator=(const CItemField &that)
     if (m_Length > 0) {
       int bs = GetBlockSize(m_Length);
       m_Data = new unsigned char[bs];
-      ::memcpy(m_Data, that.m_Data, bs);
+      memcpy(m_Data, that.m_Data, bs);
     } else {
       m_Data = NULL;
     }
@@ -87,7 +87,11 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
 
     unsigned char *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
-    ::memcpy((char*)tempmem, (const char*)value, m_Length);
+#if _MSC_VER >= 1400
+    memcpy_s((char*)tempmem, BlockLength, (const char*)value, m_Length);
+#else
+    memcpy((char*)tempmem, (const char*)value, m_Length);
+#endif
 
     //Fill the unused characters in with random stuff
     PWSrand::GetInstance()->GetRandomData(tempmem+m_Length, BlockLength-m_Length );

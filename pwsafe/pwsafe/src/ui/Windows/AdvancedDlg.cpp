@@ -312,7 +312,7 @@ BOOL CAdvancedDlg::OnInitDialog()
     int iItem;
     DWORD_PTR dw_data;
 
-    SecureZeroMemory(&findinfo, sizeof(LVFINDINFO));
+    SecureZeroMemory(&findinfo, sizeof(findinfo));
 
     findinfo.flags = LVFI_PARAM;
 

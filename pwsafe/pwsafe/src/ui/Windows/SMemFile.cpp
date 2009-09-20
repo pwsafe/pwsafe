@@ -51,7 +51,11 @@ BYTE* CSMemFile::Realloc(BYTE* lpOldMem, SIZE_T nBytes)
     return NULL;
   }
 
+#if _MSC_VER >= 1400
+  memcpy_s((void *)lpNewMem, nBytes, (void *)lpOldMem, old_size);
+#else
   memcpy((void *)lpNewMem, (void *)lpOldMem, old_size);
+#endif
   trashMemory(lpOldMem, old_size);
   free(lpOldMem);
 

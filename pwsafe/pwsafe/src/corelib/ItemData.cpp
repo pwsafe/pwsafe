@@ -1301,7 +1301,7 @@ CItemData& CItemData::operator=(const CItemData &that)
       m_URFL = that.m_URFL;
     else
       m_URFL.clear();
-    m_entrytype = that.m_entrytype;      
+    m_entrytype = that.m_entrytype;
     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   }
 

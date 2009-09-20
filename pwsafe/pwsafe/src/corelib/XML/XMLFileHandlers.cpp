@@ -528,7 +528,7 @@ void XMLFileHandlers::AddEntries()
 #endif
         lpszuuid += 2;
       }
-      memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
+      memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array));
       if (nscanned != sizeof(uuid_array_t) ||
         m_xmlcore->Find(uuid_array) != m_xmlcore->GetEntryEndIter())
         tempitem.CreateUUID();

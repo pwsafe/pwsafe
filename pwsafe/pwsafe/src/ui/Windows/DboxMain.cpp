@@ -607,8 +607,8 @@ void DboxMain::InitPasswordSafe()
 
   // Let's get the OS version - won't change while we are running!
   OSVERSIONINFO os;
-  SecureZeroMemory(&os, sizeof(OSVERSIONINFO));
-  os.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+  SecureZeroMemory(&os, sizeof(os));
+  os.dwOSVersionInfoSize = sizeof(os);
   if (GetVersionEx(&os) == FALSE) {
     ASSERT(0);
   }
@@ -2448,7 +2448,7 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
     CToolBarCtrl &tbCtrl = m_MainToolBar.GetToolBarCtrl();
     nCount = tbCtrl.GetButtonCount();
 
-    SecureZeroMemory(&tbinfo, sizeof(TBBUTTONINFO));
+    SecureZeroMemory(&tbinfo, sizeof(tbinfo));
     tbinfo.cbSize = sizeof(tbinfo);
     tbinfo.dwMask = TBIF_BYINDEX | TBIF_COMMAND | TBIF_STYLE;
 

@@ -27,7 +27,7 @@ static char THIS_FILE[] = __FILE__;
 
 RUEntry::RUEntry(const uuid_array_t &aRUEuuid)
 {
-  ::memcpy(RUEuuid, aRUEuuid, sizeof(uuid_array_t));
+  memcpy(RUEuuid, aRUEuuid, sizeof(RUEuuid));
 }
 
 bool RUEntry::operator()(const RUEntry &re)

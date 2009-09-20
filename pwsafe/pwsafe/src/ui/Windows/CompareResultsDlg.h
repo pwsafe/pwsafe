@@ -44,8 +44,8 @@ struct st_CompareData {
     id(0), indatabase(0), listindex(0),
     unknflds0(false), unknflds1(false)
   {
-    SecureZeroMemory(uuid0, sizeof(uuid_array_t));
-    SecureZeroMemory(uuid1, sizeof(uuid_array_t));
+    SecureZeroMemory(uuid0, sizeof(uuid0));
+    SecureZeroMemory(uuid1, sizeof(uuid1));
   }
 
   st_CompareData(const st_CompareData &that)
@@ -53,15 +53,15 @@ struct st_CompareData {
     id(that.id), indatabase(that.indatabase), listindex(that.listindex),
     unknflds0(that.unknflds0), unknflds1(that.unknflds1)
   {
-    memcpy(uuid0, that.uuid0, sizeof(uuid_array_t));
-    memcpy(uuid1, that.uuid1, sizeof(uuid_array_t));
+    memcpy(uuid0, that.uuid0, sizeof(uuid0));
+    memcpy(uuid1, that.uuid1, sizeof(uuid1));
   }
 
   st_CompareData &operator=(const st_CompareData &that)
   {
     if (this != &that) {
-      memcpy(uuid0, that.uuid0, sizeof(uuid_array_t));
-      memcpy(uuid1, that.uuid1, sizeof(uuid_array_t));
+      memcpy(uuid0, that.uuid0, sizeof(uuid0));
+      memcpy(uuid1, that.uuid1, sizeof(uuid1));
       bsDiffs = that.bsDiffs;
       group = that.group;
       title = that.title;

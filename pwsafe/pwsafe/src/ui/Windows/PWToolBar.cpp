@@ -601,7 +601,7 @@ CString CPWToolBar::GetButtonString()
     vcsButtonIDArray.push_back(m_MainToolBarIDs[i]);
   }
 
-  SecureZeroMemory(&tbinfo, sizeof(TBBUTTONINFO));
+  SecureZeroMemory(&tbinfo, sizeof(tbinfo));
   tbinfo.cbSize = sizeof(tbinfo);
   tbinfo.dwMask = TBIF_BYINDEX | TBIF_COMMAND | TBIF_STYLE;
 

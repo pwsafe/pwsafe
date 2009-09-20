@@ -61,7 +61,7 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
     m_whatlastsaved = wls;
 
   uuid_array_t file_uuid_array, ref_uuid_array;
-  SecureZeroMemory(ref_uuid_array, sizeof(uuid_array_t));
+  SecureZeroMemory(ref_uuid_array, sizeof(ref_uuid_array));
   core.GetFileUUID(file_uuid_array);
 
   if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)

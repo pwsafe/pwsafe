@@ -1539,7 +1539,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
     ItemListConstIter foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
 
     otherItem.GetUUID(base_uuid);
-    memcpy(new_base_uuid, base_uuid, sizeof(uuid_array_t));
+    memcpy(new_base_uuid, base_uuid, sizeof(new_base_uuid));
     bTitleRenamed = false;
     if (foundPos != m_core.GetEntryEndIter()) {
       /* found a match, see if other fields also match */
@@ -1764,7 +1764,7 @@ int DboxMain::MergeDependents(PWScore *pothercore,
     CItemData *curitem = &iter->second;
     tempitem = (*curitem);
 
-    memcpy(new_entry_uuid, entry_uuid, sizeof(uuid_array_t));
+    memcpy(new_entry_uuid, entry_uuid, sizeof(new_entry_uuid));
     if (m_core.Find(entry_uuid) != m_core.GetEntryEndIter()) {
       tempitem.CreateUUID();
       tempitem.GetUUID(new_entry_uuid);
@@ -2109,9 +2109,9 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
           bsConflicts.flip(CItemData::EMAIL);
 
         currentPos->first.GetUUID(xuuid);
-        memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
+        memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));
         foundPos->first.GetUUID(xuuid);
-        memcpy(st_data.uuid1, xuuid, sizeof(uuid_array_t));
+        memcpy(st_data.uuid1, xuuid, sizeof(st_data.uuid1));
         st_data.bsDiffs = bsConflicts;
         st_data.indatabase = CCompareResultsDlg::BOTH;
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
@@ -2130,8 +2130,8 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
         /* didn't find any match... */
         numOnlyInCurrent++;
         currentPos->first.GetUUID(xuuid);
-        memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
-        SecureZeroMemory(st_data.uuid1, sizeof(uuid_array_t));
+        memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));
+        SecureZeroMemory(st_data.uuid1, sizeof(st_data.uuid1));
         st_data.bsDiffs.reset();
         st_data.indatabase = CCompareResultsDlg::CURRENT;
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
@@ -2159,9 +2159,9 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
           m_core.GetEntryEndIter()) {
         /* didn't find any match... */
         numOnlyInComp++;
-        SecureZeroMemory(st_data.uuid0, sizeof(uuid_array_t));
+        SecureZeroMemory(st_data.uuid0, sizeof(st_data.uuid0));
         compPos->first.GetUUID(xuuid);
-        memcpy(st_data.uuid1, xuuid, sizeof(uuid_array_t));
+        memcpy(st_data.uuid1, xuuid, sizeof(st_data.uuid1));
         st_data.bsDiffs.reset();
         st_data.indatabase = CCompareResultsDlg::COMPARE;
         st_data.unknflds0 = false;
@@ -2405,10 +2405,10 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
 
   if (st_info->clicked_column == CCompareResultsDlg::CURRENT) {
     pcore = st_info->pcore0;
-    memcpy(entryUUID, st_info->uuid0, sizeof(uuid_array_t));
+    memcpy(entryUUID, st_info->uuid0, sizeof(entryUUID));
   } else {
     pcore = st_info->pcore1;
-    memcpy(entryUUID, st_info->uuid1, sizeof(uuid_array_t));
+    memcpy(entryUUID, st_info->uuid1, sizeof(entryUUID));
   }
 
   switch ((int)lFunction) {

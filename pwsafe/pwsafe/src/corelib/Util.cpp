@@ -177,7 +177,7 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
     // So we store actual data there:
     // (11 = BlockSize - 4 (length) - 1 (type)
     const int len1 = (length > 11) ? 11 : length;
-    memcpy(curblock+5, buffer, len1);
+    memcpy(curblock + 5, buffer, len1);
     length -= len1;
     buffer += len1;
   }
@@ -199,9 +199,9 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
       if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
         //This is for an uneven last block
         PWSrand::GetInstance()->GetRandomData(curblock, BS);
-        memcpy(curblock, buffer+x, length % BS);
+        memcpy(curblock, buffer + x, length % BS);
       } else
-        memcpy(curblock, buffer+x, BS);
+        memcpy(curblock, buffer + x, BS);
       xormem(curblock, cbcbuffer, BS);
       Algorithm->Encrypt(curblock, curblock);
       memcpy(cbcbuffer, curblock, BS);
@@ -300,7 +300,7 @@ size_t _readcbc(FILE *fp,
     // length block contains up to 11 (= 16 - 4 - 1) bytes
     // of data
     const int len1 = (length > 11) ? 11 : length;
-    memcpy(b, lengthblock+5, len1);
+    memcpy(b, lengthblock + 5, len1);
     length -= len1;
     b += len1;
   }

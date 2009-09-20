@@ -100,7 +100,7 @@ CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip
 
 void CSystemTray::Initialise()
 {
-  SecureZeroMemory(&m_tnd, sizeof(NOTIFYICONDATA));
+  SecureZeroMemory(&m_tnd, sizeof(m_tnd));
   m_bEnabled   = FALSE;
   m_bHidden    = FALSE;
   m_uIDTimer   = 0;
@@ -451,8 +451,8 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
   CWnd* pTarget = m_pTarget; // AfxGetMainWnd();
 
   MENUINFO minfo;
-  SecureZeroMemory(&minfo, sizeof(MENUINFO));
-  minfo.cbSize = sizeof(MENUINFO);
+  SecureZeroMemory(&minfo, sizeof(minfo));
+  minfo.cbSize = sizeof(minfo);
   minfo.fMask = MIM_MENUDATA;
 
   // Clicking with right button brings up a context menu
@@ -505,8 +505,8 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     pMainRecentEntriesMenu->SetMenuInfo(&minfo);
 
     MENUITEMINFO miteminfo;
-    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
-    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_DATA;
 
     CRUEItemData* pmd;

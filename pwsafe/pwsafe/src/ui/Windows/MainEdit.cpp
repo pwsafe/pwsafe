@@ -608,7 +608,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     pdi_new->tree_item = 0;
     ci_edit.SetDisplayInfo(pdi_new);
     StringX newPassword = ci_edit.GetPassword();
-    memcpy(new_base_uuid, edit_entry_psh.GetBaseUUID(), sizeof(uuid_array_t));
+    memcpy(new_base_uuid, edit_entry_psh.GetBaseUUID(), sizeof(new_base_uuid));
 
     ItemListIter iter;
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_NORMAL &&
@@ -1848,7 +1848,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
 
   // Copy data back before possibly returning
   ibasedata = pl.ibasedata;
-  memcpy(base_uuid, pl.base_uuid, sizeof(uuid_array_t));
+  memcpy(base_uuid, pl.base_uuid, sizeof(base_uuid));
   if (!brc)    
     return false;
 
