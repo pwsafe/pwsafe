@@ -197,7 +197,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -227,7 +227,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -274,7 +273,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
+				AdditionalIncludeDirectories="..;$(ExpatDir)\Source\lib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -303,7 +302,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(ExpatDir)\lib"
+				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -350,7 +349,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -379,7 +378,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -503,7 +501,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..;$(ExpatDir)\include"
+				AdditionalIncludeDirectories="..;$(ExpatDir)\Source\lib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -533,7 +531,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(ExpatDir)\lib"
+				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -581,7 +579,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..;$(MSXML60SDKDir)\inc"
+				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -611,7 +609,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

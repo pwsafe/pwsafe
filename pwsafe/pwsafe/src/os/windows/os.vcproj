@@ -92,7 +92,7 @@
 			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -166,7 +166,7 @@
 			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -190,7 +190,6 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -220,7 +219,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
-				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -244,7 +242,7 @@
 			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -320,7 +318,7 @@
 			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -343,7 +341,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -372,7 +369,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
-				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -396,7 +392,7 @@
 			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -472,7 +468,7 @@
 			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -550,7 +546,7 @@
 			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -574,7 +570,6 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(MSXML60SDKDir)\inc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=MSXML"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -604,7 +599,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\..\build\lib\pwsafe\$(ConfigurationName)\os.lib"
-				AdditionalLibraryDirectories="$(MSXML60SDKDir)\lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -628,7 +622,7 @@
 			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops;..\..\ui\Windows\UserVariables.vsprops"
+			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
