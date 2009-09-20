@@ -1,5 +1,5 @@
-Password Safe 3.18.1 Release Notes - September 2009
-===================================================
+Password Safe 3.19 Release Notes - September 2009
+=================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,29 +8,30 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.18.1
-====================
-[2857641] PasswordSafe handles XP (and later) logoff, shutdown &
-restart, so that the user now has more time to save a modified database.
-[2856750] Password Policy now correctly displayed in List View.
-[2856051] Changes to Database preferences are no longer lost over minimize.
-[2856410] "Run Command" menu shortcut no longer greyed out for Shortcuts
-to base entries with a Run Command.
+Bugs fixed in 3.19
+==================
+[2857641] PasswordSafe now handles XP (and later) logoff, shutdown &
+restart more gracefully, so that the user now has more time to save a
+modified database.
+[2856750] The Password Policy now correctly displayed in List View,
+when selected.
+[2856051] Changes to Database preferences are no longer lost upon minimize.
+[2856410] The "Run Command" menu shortcut no longer greyed out for
+Shortcuts to base entries with a Run Command.
 [2851848] Mouse double-click interval removed from Virtual Keyboard
 to allow multiple virtual keys to be entered quickly.
 [2850907] Password field no longer cleared after focus change.
 [2842700] No longer crashes when using a French keyboard.
 [2192490, 2840534] Multiple desktops now handled correctly for Windows
-XP and later system. When run on prior releases of Windows, the previous
-method using a timer will still be used.
+XP and later system.
 [2836569] Correct password data now copied from Edit dialog using 'Smart
 Labels'
 [2832991] Double-click action display in the Status Bar now reflects the
 value for entries that have overriden the current default and is also
 updated after the entry is edited.
 [2820260] Fix password expiry interval processing during Edit.
-[2818653] Password expiry interval now exported to XML correctly in decimal
-and show current expiry interval during Edit, if present.
+[2818653] Password expiry interval now correctly exported to XML and
+show displayed during Edit, if present.
 [2813295] 'Browse + Autotype' system tray menu items fixed - thanks to
 Vasily for reporting and sending the patches for this.
 [2085058] Old (1.x) format databases now closed correctly.
@@ -39,29 +40,31 @@ gillum for reporting and helping track this down.
 [] Fix crash error using External Editor on Notes field.
 [] Password Verification field not set when editing/viewing an alias entry
 and the password is hidden.
-[] Enter key again works in initial dialog if user uses browse button to
+[] Enter key works again in initial dialog if user uses browse button to
 select a database to open.
 [] AutoType by an alias now has correct password and its own notes data
 rather than '[Alias]' and its base's notes data, respectively.
-[] Runcommand no longer truncates the first field if it is within double
+[] Run command no longer truncates the first field if it is within double
 quotes.
-[] Duplicate entry now duplicates Double-click action of original as well.
+[] Duplicate entry now duplicates double-click action of original as well.
 [] Double-click on a shortcut entry now executes the action of its base.
-[] Drag & Drop of entries, that have individual DCA values, between different
-databases now works.
+[] Drag & Drop of entries with have individual double-click action
+values, between different databases now works.
 [] Browse to URL from an Alias entry now puts the correct password in the
 clipboard.
-[] Text import no longer overwrites entry's RunCommand with DCA value.
+[] Text import no longer overwrites entry's RunCommand with
+double-click action value.
 [] Tidy up item order in menus Edit menu and right-click context menu.
 
-New Features for 3.18.1
-=======================
-[2832983] Add/Edit Autotype field now same width as for the Run Command field.
-Also, the Edit/View dialog now has the details of the entry being edited/viewed
-in its title caption.  This will only get refreshed on saving the entry.
-[2832810] Add new email field supporting email headers 'to', 'subject', 'cc',
-'bcc' and 'body' [see RFC 2368]. If this field is not empty, it is used 
-instead of the URL field even if that contains an email address.
+New Features for 3.19
+=====================
+[2832983] The Edit/View dialog now has the details of the entry being
+edited/viewed in its title caption (This is refreshed when saving the
+entry).
+[2832810] A new email field has been added, supporting email headers
+'to', 'subject', 'cc', 'bcc' and 'body' [see RFC 2368]. If this field
+is not empty, it is used instead of the URL field even if that
+contains an email address.
 Note: whereas the URL field had to have the 'mailto:' prefix to denote an 
 email address rather than a URL, the email field must not contain this prefix.
 [] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
@@ -69,12 +72,13 @@ sets the delay between sending each subsequent character, '\w' & '\W' introduces
 a one-time delay where they appear.  For '\w', the value 'nnn' is in
 milli-seconds. For '\W', this specifies seconds. Note: Max. value is
 999s (16m 39s), during which time PasswordSafe will be unresponsive
-while it waits the specified time. Also support via the Run Command $a command.
+while it waits the specified time. Also supported via the Run Command
+$a command.
 [] Add menu item to copy the Run Command to the clipboard.
 [] Support Run Command and Double-Click Action (and email) fields in Filters.
 
-Changes to Existing Features in 3.18.1
-======================================
+Changes to Existing Features in 3.19
+====================================
 [] Changing the Security option to lock Password Safe when the workstation is
 locked, no longer requires a restart of Password Safe to come into effect.
 [] Due to the French keyboard not supporting the key '-' in an accelerator,
