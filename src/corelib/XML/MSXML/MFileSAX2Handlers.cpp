@@ -308,7 +308,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::characters(
   _tcsncpy(szData, pwchChars, cchChars);
 #endif
 #else
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   size_t num_converted;
   wcstombs_s(&num_converted, szData, cchChars + 2, pwchChars, cchChars);
 #else

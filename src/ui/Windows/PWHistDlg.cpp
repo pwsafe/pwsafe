@@ -112,7 +112,7 @@ BOOL CPWHistDlg::OnInitDialog()
   m_PWHistListCtrl.SetRedraw(TRUE);
 
   wchar_t buffer[10];
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   swprintf_s(buffer, 10, L"%d", m_NumPWHistory);
 #else
   swprintf(buffer, L"%d", m_NumPWHistory);
@@ -160,13 +160,13 @@ void CPWHistDlg::OnOK()
 
   if (!(m_HistStr.IsEmpty() && m_SavePWHistory == FALSE)) {
     wchar_t buffer[6];
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     swprintf_s
 #else
     swprintf
 #endif
       (buffer,
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
       6,
 #endif
       L"%1x%02x%02x",

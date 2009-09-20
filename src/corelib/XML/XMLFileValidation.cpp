@@ -122,7 +122,7 @@ bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &
 #if   USE_XML_LIBRARY == EXPAT
   const stringT strValue(name);
 #elif USE_XML_LIBRARY == MSXML
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   size_t numchars = wcslen(name);
   char* szData = new char[numchars + 2];
   size_t num_converted;

@@ -413,7 +413,7 @@ void ThisMfcApp::LoadLocalizedStuff()
   if (!helpFileFound) { // last resort
     wchar_t fname[_MAX_FNAME];
     wchar_t ext[_MAX_EXT];
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     _wsplitpath_s(m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
       _MAX_FNAME, ext, _MAX_EXT);
     _wcslwr_s(fname, _MAX_FNAME);

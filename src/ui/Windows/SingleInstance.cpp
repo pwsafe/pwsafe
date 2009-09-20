@@ -66,7 +66,7 @@ LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuff
 
   // First copy GUID to destination buffer
   if (pszGUID)
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     wcscpy_s(pszBuffer, iBuffLen, pszGUID);
 #else
     wcscpy(pszBuffer, pszGUID);
@@ -76,7 +76,7 @@ LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuff
 
   if (nMode & SI_DESKTOP_UNIQUE) {
     // Name should be desktop unique, so add current desktop name
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     wcscat_s(pszBuffer, iBuffLen, L"-");
 #else
     wcscat(pszBuffer, L"-");
@@ -87,7 +87,7 @@ LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuff
     if (!GetUserObjectInformation(hDesk, UOI_NAME, pszBuffer + wcslen(pszBuffer), 
                                   cchDesk, &cchDesk))
       // Call will fail on Win9x
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
       wcsncat_s(pszBuffer, iBuffLen, L"Win9x", cchDesk);
 #else
       wsncat(pszBuffer, L"Win9x", cchDesk);

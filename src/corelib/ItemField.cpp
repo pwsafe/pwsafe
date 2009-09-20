@@ -87,7 +87,7 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
 
     unsigned char *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     memcpy_s((char*)tempmem, BlockLength, (const char*)value, m_Length);
 #else
     memcpy((char*)tempmem, (const char*)value, m_Length);

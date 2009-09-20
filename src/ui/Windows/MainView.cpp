@@ -2095,7 +2095,7 @@ void DboxMain::SetColumns(const CString cs_ListColumns)
   // Duplicate as strtok modifies the string
   pTemp = _wcsdup((LPCWSTR)cs_ListColumns);
 
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   // Capture columns shown:
   wchar_t *next_token;
   wchar_t *token = wcstok_s(pTemp, pSep, &next_token);
@@ -2155,7 +2155,7 @@ void DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
   // Duplicate as strtok modifies the string
   pWidths = _wcsdup((LPCWSTR)cs_ListColumnsWidths);
 
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   // Capture column widths shown:
   wchar_t *next_token;
   wchar_t *token = wcstok_s(pWidths, pSep, &next_token);
@@ -2511,7 +2511,7 @@ void DboxMain::CalcHeaderWidths()
   szBuf[0] = L' ';  // Put a blank between date and time
   VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
   GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   wcscat_s(datetime_str, 80, time_str);
 #else
   wcscat(datetime_str, 80, time_str);
@@ -3217,7 +3217,7 @@ int DboxMain::GetEntryImage(const CItemData &ci)
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
     int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
     struct tm st;
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     errno_t err;
     err = localtime_s(&st, &now);  // secure version
     ASSERT(err == 0);

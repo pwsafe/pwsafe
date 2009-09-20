@@ -2627,7 +2627,7 @@ void DboxMain::OnOK()
 
   for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     int iIndex = m_nColumnIndexByOrder[iOrder];
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     _itow_s(m_nColumnTypeByIndex[iIndex], buffer, 8, 10);
     _itow_s(m_nColumnWidthByIndex[iIndex], widths, 8, 10);
 #else

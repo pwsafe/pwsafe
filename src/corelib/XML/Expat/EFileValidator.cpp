@@ -115,7 +115,7 @@ bool EFileValidator::startElement(stringT & strStartElement)
   if (maxoccurs != -1 && m_ielement_occurs[icurrent_element] >= maxoccurs) {
     m_iErrorCode = XLPEC_EXCEEDED_MAXOCCURS;
     TCHAR buffer[10];
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
     _itot_s(maxoccurs, buffer, 10, 10);
 #else
     _itot(maxoccurs, buffer, 10);

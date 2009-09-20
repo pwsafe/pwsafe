@@ -2075,7 +2075,7 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
       delete m_pwchTip;
 
       m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
       wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
                 cs_TipText, _TRUNCATE);
 #else
@@ -2091,7 +2091,7 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
       if (n > 0)
         pTTTA->szText[n - 1] = 0;
     } else {
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
       wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText),
                cs_TipText, _TRUNCATE);
 #else

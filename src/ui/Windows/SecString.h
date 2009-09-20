@@ -68,7 +68,7 @@ public:
   int Remove(wchar_t ch) {return m_mystring.Remove(ch);}
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   CSecString &Trim() {m_mystring.Trim(); return *this;}
 #else
   CSecString &Trim()

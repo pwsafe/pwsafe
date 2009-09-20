@@ -99,7 +99,7 @@ BOOL CViewReport::OnInitDialog()
   // horizontal scroll bars
   wchar_t pSeps[] = L"\r\n";
   int iMaxWidth(-1);
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   // Capture individual lines:
   wchar_t *next_token;
   wchar_t *token = wcstok_s((LPWSTR)lpszText, pSeps, &next_token);

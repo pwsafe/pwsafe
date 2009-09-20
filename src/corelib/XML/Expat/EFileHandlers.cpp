@@ -283,7 +283,7 @@ void XMLCALL EFileHandlers::characterData(void * /* userdata */, const XML_Char 
                                           int length)
 {
   XML_Char *xmlchData = new XML_Char[length + 1];
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   _tcsncpy_s(xmlchData, length + 1, s, length);
 #else
   _tcsncpy(xmlchData, s, length);

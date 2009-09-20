@@ -126,7 +126,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
 {
   // Open the file
   std::FILE *fd = NULL;
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
   _tfopen_s(&fd, strXMLFileName.c_str(), _T("r"));
 #else
   fd = _tfopen(strXMLFileName.c_str(), _T("r"));

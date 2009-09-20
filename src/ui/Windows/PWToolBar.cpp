@@ -702,7 +702,7 @@ void CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
       cs_buttondesc = cs_buttondesc.Right(cs_buttondesc.GetLength() - iPos - 1);
       int idesclen = cs_buttondesc.GetLength();
       wchar_t *szDescription = cs_buttondesc.GetBuffer(idesclen);
-#if _MSC_VER >= 1400
+#if (_MSC_VER >= 1400)
       memcpy_s(&lpszTBCustomizationStrings[j], maxlength - j, szDescription, 
                idesclen * sizeof(wchar_t));
 #else
