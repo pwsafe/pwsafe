@@ -195,7 +195,7 @@ void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
     if (!m_vFormat.empty()) {
       std::sort(m_vFormat.begin(), m_vFormat.end(), iStartCompare);
       std::vector<st_format>::const_iterator format_iter;
-      SecureZeroMemory(&cf2, sizeof(CHARFORMAT2));
+      SecureZeroMemory(&cf2, sizeof(cf2));
       cf2.cbSize = sizeof(cf2);
 
       for (format_iter = m_vFormat.begin();
@@ -221,10 +221,11 @@ void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
         } else if (format_iter->entrytype == Name) {
           cf2.dwMask = CFM_FACE;
 #if (_MSC_VER >= 1400)
-          memcpy_s(cf2.szFaceName, LF_FACESIZE * sizeof(wchar_t),
-                   format_iter->tcszFACENAME, LF_FACESIZE * sizeof(wchar_t));
+          memcpy_s(cf2.szFaceName, sizeof(cf2.szFaceName),
+                   format_iter->tcszFACENAME, sizeof(format_iter->tcszFACENAME));
 #else
-          memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, LF_FACESIZE * sizeof(wchar_t));
+          memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, 
+                 sizeof(format_iter->tcszFACENAME));
 #endif
         }
         SetSelectionCharFormat(cf2);
@@ -234,7 +235,7 @@ void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
     if (!m_vALink.empty()) {
       SetEventMask(GetEventMask() | ENM_LINK); 
       std::vector<ALink>::const_iterator ALink_iter;
-      SecureZeroMemory(&cf2, sizeof(CHARFORMAT2));
+      SecureZeroMemory(&cf2, sizeof(cf2));
       cf2.cbSize = sizeof(cf2);
       cf2.dwMask = CFM_LINK;
       cf2.dwEffects = CFE_LINK;

@@ -1895,7 +1895,7 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
     // Initialize a CFont object with the characteristics given
     // in a LOGFONT structure.
     LOGFONT lf;
-    SecureZeroMemory(&lf, sizeof(LOGFONT));
+    SecureZeroMemory(&lf, sizeof(lf));
     lf.lfHeight = -16;
     lf.lfWeight = FW_NORMAL;
     lf.lfCharSet = DEFAULT_CHARSET;

@@ -1631,7 +1631,7 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     ASSERT(pF);
 
     LOGFONT logFont;
-    SecureZeroMemory(&logFont, sizeof(LOGFONT));
+    SecureZeroMemory(&logFont, sizeof(logFont));
 
     pF->GetLogFont(&logFont);
     m_pFont = new CFont;

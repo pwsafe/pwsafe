@@ -435,8 +435,8 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
   if (m_column == indatabase || indatabase == BOTH) {
     st_info->pcore0 = m_pcore0;
     st_info->pcore1 = m_pcore1;
-    memcpy(st_info->uuid0, st_data->uuid0, sizeof(uuid_array_t));
-    memcpy(st_info->uuid1, st_data->uuid1, sizeof(uuid_array_t));
+    memcpy(st_info->uuid0, st_data->uuid0, sizeof(st_info->uuid0));
+    memcpy(st_info->uuid1, st_data->uuid1, sizeof(st_info->uuid1));
     st_info->clicked_column = m_column;
 
     LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
@@ -448,7 +448,7 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
       switch (ifunction) {
         case CCompareResultsDlg::COPY_TO_ORIGINALDB:
           // UUID of copied entry returned - now update data
-          memcpy(st_data->uuid0, st_info->uuid0, sizeof(uuid_array_t));
+          memcpy(st_data->uuid0, st_info->uuid0, sizeof(st_info->uuid0));
 
           pos = m_pcore1->Find(st_info->uuid1);
           ASSERT(pos != m_pcore1->GetEntryEndIter());
@@ -461,7 +461,7 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
           break;
         case CCompareResultsDlg::COPY_TO_COMPARISONDB:
           // UUID of copied entry returned - now update data
-          memcpy(st_data->uuid1, st_info->uuid1, sizeof(uuid_array_t));
+          memcpy(st_data->uuid1, st_info->uuid1, sizeof(st_info->uuid1));
 
           pos = m_pcore0->Find(st_info->uuid0);
           ASSERT(pos != m_pcore0->GetEntryEndIter());

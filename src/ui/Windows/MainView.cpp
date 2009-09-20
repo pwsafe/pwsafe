@@ -1373,8 +1373,8 @@ void DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 
   if (menu.LoadMenu(IDR_POPCOLUMNS)) {
     MENUINFO minfo;
-    SecureZeroMemory(&minfo, sizeof(MENUINFO));
-    minfo.cbSize = sizeof(MENUINFO);
+    SecureZeroMemory(&minfo, sizeof(minfo));
+    minfo.cbSize = sizeof(minfo);
     minfo.fMask = MIM_MENUDATA;
     minfo.dwMenuData = IDR_POPCOLUMNS;
     menu.SetMenuInfo(&minfo);

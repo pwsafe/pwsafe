@@ -110,8 +110,8 @@ void InsertShortcuts(CMenu *pMenu, MapMenuShortcuts &mms,
 
   for (UINT ui = 0; ui < uiCount; ui++) {
     SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
-    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
-    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_ID | MIIM_STRING;
     miteminfo.cch = _MAX_PATH;
     miteminfo.dwTypeData = tcMenuString;
@@ -241,8 +241,8 @@ void DboxMain::SetUpInitialMenuStrings()
   for (UINT ui = 0; ui < uiCount; ui++) {
     SecureZeroMemory(tcMenuString, sizeof(tcMenuString));
 
-    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
-    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_ID | MIIM_STRING;
     miteminfo.dwTypeData = tcMenuString;
     miteminfo.cch = _MAX_PATH;
@@ -514,8 +514,8 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
   ASSERT((int)uiCount >= 0);
 
   for (UINT ui = 0; ui < uiCount; ui++) {
-    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
-    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_ID | MIIM_STATE;
 
     brc = pPopupMenu->GetMenuItemInfo(ui, &miteminfo, TRUE);
@@ -999,8 +999,8 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     return;
 
   // System Tray Popup menu processing only
-  SecureZeroMemory(&minfo, sizeof(MENUINFO));
-  minfo.cbSize = sizeof(MENUINFO);
+  SecureZeroMemory(&minfo, sizeof(minfo));
+  minfo.cbSize = sizeof(minfo);
   minfo.fMask = MIM_STYLE;
   minfo.dwStyle = MNS_CHECKORBMP | MNS_AUTODISMISS;
 
@@ -1014,8 +1014,8 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   ASSERT((int)uiCount >= 0);
 
   for (UINT pos = 0; pos < uiCount; pos++) {
-    SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
-    miteminfo.cbSize = sizeof(MENUITEMINFO);
+    SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+    miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_FTYPE | MIIM_DATA;
 
     brc = pPopupMenu->GetMenuItemInfo(pos, &miteminfo, TRUE);
@@ -1024,8 +1024,8 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     pmd = (CRUEItemData *)miteminfo.dwItemData;
     if (pmd && pmd->IsRUEID() && !(miteminfo.fType & MFT_OWNERDRAW) &&
         pmd->nImage >= 0) {
-      SecureZeroMemory(&miteminfo, sizeof(MENUITEMINFO));
-      miteminfo.cbSize = sizeof(MENUITEMINFO);
+      SecureZeroMemory(&miteminfo, sizeof(miteminfo));
+      miteminfo.cbSize = sizeof(miteminfo);
       miteminfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
       miteminfo.hbmpItem = HBMMENU_CALLBACK;
       miteminfo.fType = MFT_STRING;

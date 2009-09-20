@@ -1968,7 +1968,7 @@ void PWScore::ClearFileUUID()
 void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
 {
   memcpy(m_hdr.m_file_uuid_array, file_uuid_array,
-    sizeof(m_hdr.m_file_uuid_array));
+         sizeof(m_hdr.m_file_uuid_array));
 }
 
 void PWScore::GetFileUUID(uuid_array_t &file_uuid_array) const

@@ -106,7 +106,7 @@ PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h)
   m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc)
 {
   memcpy(m_file_uuid_array, h.m_file_uuid_array,
-    sizeof(m_file_uuid_array));
+         sizeof(m_file_uuid_array));
 }
 
 PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
@@ -124,7 +124,7 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
     m_dbname = h.m_dbname;
     m_dbdesc = h.m_dbdesc;
     memcpy(m_file_uuid_array, h.m_file_uuid_array,
-      sizeof(m_file_uuid_array));
+           sizeof(m_file_uuid_array));
   }
   return *this;
 }
