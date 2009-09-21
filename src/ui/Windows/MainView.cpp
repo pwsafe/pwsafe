@@ -228,6 +228,7 @@ void DboxMain::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_STATIC_DRAGPASSWORD, m_DDPassword);
   DDX_Control(pDX, IDC_STATIC_DRAGNOTES, m_DDNotes);
   DDX_Control(pDX, IDC_STATIC_DRAGURL, m_DDURL);
+  DDX_Control(pDX, IDC_STATIC_DRAGEMAIL, m_DDemail);
   //}}AFX_DATA_MAP
 }
 
@@ -314,6 +315,7 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
         m_DDUser.SetStaticState(false);
         m_DDNotes.SetStaticState(false);
         m_DDURL.SetStaticState(false);
+        m_DDemail.SetStaticState(false);
       } else {
         m_DDGroup.SetStaticState(!pci_entry->IsGroupEmpty());
         m_DDTitle.SetStaticState(true);
@@ -321,6 +323,7 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
         m_DDUser.SetStaticState(!pci_entry->IsUserEmpty());
         m_DDNotes.SetStaticState(!pci_entry->IsNotesEmpty());
         m_DDURL.SetStaticState(!pci_entry->IsURLEmpty());
+        m_DDemail.SetStaticState(!pci_entry->IsEmailEmpty());
       }
     }
   }
@@ -472,6 +475,8 @@ void DboxMain::setupBars()
   m_DDNotes.ShowWindow(SW_SHOW);
   m_DDURL.EnableWindow(TRUE);
   m_DDURL.ShowWindow(SW_SHOW);
+  m_DDemail.EnableWindow(TRUE);
+  m_DDemail.ShowWindow(SW_SHOW);
 #endif
 }
 
@@ -908,21 +913,30 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       ScreenToClient(&dragrect);
       const int j = rect.top + i;
       m_DDGroup.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
       m_DDTitle.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
       m_DDTitle.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
       m_DDUser.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
       m_DDUser.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
       m_DDPassword.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
       m_DDPassword.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
       m_DDNotes.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
       m_DDNotes.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
       m_DDURL.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
       m_DDURL.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+      m_DDemail.GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      m_DDemail.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
       rect.top += dragrect.Height() + 2 * i;
     }
     m_ctlItemList.MoveWindow(&rect, TRUE);
@@ -1545,6 +1559,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDPassword.Init(IDB_DRAGPASSWORD_NEW, IDB_DRAGPASSWORDX_NEW);
       m_DDNotes.Init(IDB_DRAGNOTES_NEW, IDB_DRAGNOTESX_NEW);
       m_DDURL.Init(IDB_DRAGURL_NEW, IDB_DRAGURLX_NEW);
+      m_DDemail.Init(IDB_DRAGEMAIL_NEW, IDB_DRAGEMAILX_NEW);
     } else if (menuItem == ID_MENUITEM_OLD_TOOLBAR) {
       m_DDGroup.Init(IDB_DRAGGROUP_CLASSIC, IDB_DRAGGROUPX_CLASSIC);
       m_DDTitle.Init(IDB_DRAGTITLE_CLASSIC, IDB_DRAGTITLEX_CLASSIC);
@@ -1552,6 +1567,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDPassword.Init(IDB_DRAGPASSWORD_CLASSIC, IDB_DRAGPASSWORDX_CLASSIC);
       m_DDNotes.Init(IDB_DRAGNOTES_CLASSIC, IDB_DRAGNOTESX_CLASSIC);
       m_DDURL.Init(IDB_DRAGURL_CLASSIC, IDB_DRAGURLX_CLASSIC);
+      m_DDemail.Init(IDB_DRAGEMAIL_CLASSIC, IDB_DRAGEMAILX_CLASSIC);
     } else {
       ASSERT(0);
     }
@@ -1570,6 +1586,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDPassword.ReInit(IDB_DRAGPASSWORD_NEW, IDB_DRAGPASSWORDX_NEW);
       m_DDNotes.ReInit(IDB_DRAGNOTES_NEW, IDB_DRAGNOTESX_NEW);
       m_DDURL.ReInit(IDB_DRAGURL_NEW, IDB_DRAGURLX_NEW);
+      m_DDemail.ReInit(IDB_DRAGEMAIL_NEW, IDB_DRAGEMAILX_NEW);
     } else if (menuItem == ID_MENUITEM_OLD_TOOLBAR) {
       m_DDGroup.ReInit(IDB_DRAGGROUP_CLASSIC, IDB_DRAGGROUPX_CLASSIC);
       m_DDTitle.ReInit(IDB_DRAGTITLE_CLASSIC, IDB_DRAGTITLEX_CLASSIC);
@@ -1577,11 +1594,13 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDPassword.ReInit(IDB_DRAGPASSWORD_CLASSIC, IDB_DRAGPASSWORDX_CLASSIC);
       m_DDNotes.ReInit(IDB_DRAGNOTES_CLASSIC, IDB_DRAGNOTESX_CLASSIC);
       m_DDURL.ReInit(IDB_DRAGURL_CLASSIC, IDB_DRAGURLX_CLASSIC);
+      m_DDemail.ReInit(IDB_DRAGEMAIL_CLASSIC, IDB_DRAGEMAILX_CLASSIC);
     } else {
       ASSERT(0);
     }
     m_DDGroup.Invalidate(); m_DDTitle.Invalidate(); m_DDUser.Invalidate();
     m_DDPassword.Invalidate(); m_DDNotes.Invalidate(); m_DDURL.Invalidate();
+    m_DDemail.Invalidate();
   }
   m_menuManager.SetImageList(&m_MainToolBar);
 
@@ -2927,6 +2946,7 @@ void DboxMain::SetToolBarPositions()
       m_DDUser.SetStaticState(false);
       m_DDNotes.SetStaticState(false);
       m_DDURL.SetStaticState(false);
+      m_DDemail.SetStaticState(false);
     } else {
       m_DDGroup.SetStaticState(!entry->IsGroupEmpty());
       m_DDTitle.SetStaticState(true);
@@ -2934,6 +2954,7 @@ void DboxMain::SetToolBarPositions()
       m_DDUser.SetStaticState(!entry->IsUserEmpty());
       m_DDNotes.SetStaticState(!entry->IsNotesEmpty());
       m_DDURL.SetStaticState(!entry->IsURLEmpty());
+      m_DDemail.SetStaticState(!entry->IsEmailEmpty());
     }
 
     const int i = GetSystemMetrics(SM_CYBORDER);
@@ -2972,6 +2993,12 @@ void DboxMain::SetToolBarPositions()
     m_DDURL.GetWindowRect(&dragrect);
     ScreenToClient(&dragrect);
     m_DDURL.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+    m_DDemail.ShowWindow(SW_SHOW);
+    m_DDemail.EnableWindow(TRUE);
+    m_DDemail.GetWindowRect(&dragrect);
+    ScreenToClient(&dragrect);
+    m_DDemail.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
     rect.top += dragrect.Height() + 2 * i;
   } else {
     m_DDGroup.ShowWindow(SW_HIDE);
@@ -2986,6 +3013,8 @@ void DboxMain::SetToolBarPositions()
     m_DDNotes.EnableWindow(FALSE);
     m_DDURL.ShowWindow(SW_HIDE);
     m_DDURL.EnableWindow(FALSE);
+    m_DDemail.ShowWindow(SW_HIDE);
+    m_DDemail.EnableWindow(FALSE);
   }
   m_ctlItemList.MoveWindow(&rect, TRUE);
   m_ctlItemTree.MoveWindow(&rect, TRUE);
