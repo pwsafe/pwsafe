@@ -71,7 +71,8 @@ public:
     DatabaseClear,
     DontAskSaveMinimize, // Obsoleted in 3.02
     QuerySetDef, UseNewToolbar, UseSystemTray, 
-    LockOnWindowLock, LockOnIdleTimeout,
+    LockOnWindowLock, 
+    LockOnIdleTimeout, // Obsoleted in 3.19 - replaced by Database equivalent
     EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
     DisplayExpandedAddEditDlg, // Obsoleted in 3.18
     MaintainDateTimeStamps,
@@ -85,7 +86,7 @@ public:
     ShowToolbar, ShowNotesAsTooltipsInViews, DefaultOpenRO,
     MultipleInstances, ShowDragbar,
     ClearClipboardOnMinimize, ClearClipboardOnExit,
-    ShowFindToolBarOnOpen, NotesWordWrap,
+    ShowFindToolBarOnOpen, NotesWordWrap, LockDBOnIdleTimeout,
     NumBoolPrefs};
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,

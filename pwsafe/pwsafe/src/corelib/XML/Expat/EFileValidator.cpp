@@ -212,6 +212,7 @@ bool EFileValidator::startElement(stringT & strStartElement)
     case XLE_DISPLAYEXPANDEDADDEDITDLG:
       // Obsoleted in 3.18
       return true;
+    case XLE_LOCKDBONIDLETIMEOUT:
     case XLE_MAINTAINDATETIMESTAMPS:
     case XLE_PWUSEDIGITS:
     case XLE_PWUSEEASYVISION:

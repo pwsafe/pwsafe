@@ -288,7 +288,7 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
   display.m_wordwrapnotes = prefs->
     GetPref(PWSprefs::NotesWordWrap) ? TRUE : FALSE;
-    display.m_preexpirywarn = prefs->
+  display.m_preexpirywarn = prefs->
     GetPref(PWSprefs::PreExpiryWarn) ? TRUE : FALSE;
   display.m_preexpirywarndays = prefs->
     GetPref(PWSprefs::PreExpiryWarnDays);
@@ -316,7 +316,7 @@ void DboxMain::OnOptions()
   security.m_LockOnWindowLock = prevLockOWL = prefs->
     GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
   security.m_LockOnIdleTimeout = prevLockOIT = prefs->
-    GetPref(PWSprefs::LockOnIdleTimeout) ? TRUE : FALSE;
+    GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
   security.m_IdleTimeOut = prefs->
     GetPref(PWSprefs::IdleTimeout);
 
@@ -503,7 +503,7 @@ void DboxMain::OnOptions()
       security.m_confirmcopy == FALSE);
     prefs->SetPref(PWSprefs::LockOnWindowLock,
       security.m_LockOnWindowLock == TRUE);
-    prefs->SetPref(PWSprefs::LockOnIdleTimeout,
+    prefs->SetPref(PWSprefs::LockDBOnIdleTimeout,
       security.m_LockOnIdleTimeout == TRUE);
     prefs->SetPref(PWSprefs::IdleTimeout,
       security.m_IdleTimeOut);

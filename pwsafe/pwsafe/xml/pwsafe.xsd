@@ -129,6 +129,7 @@
               <!-- Boolean Preferences -->
               <xs:element name="DisplayExpandedAddEditDlg" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="MaintainDateTimeStamps" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="LockDBOnIdleTimeout" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseDigits" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" maxOccurs="1" />

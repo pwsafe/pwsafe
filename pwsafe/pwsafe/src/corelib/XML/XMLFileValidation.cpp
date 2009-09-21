@@ -52,6 +52,7 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("SortAscending"), {XLE_SORTASCENDING, 0}},
   {_T("UseDefaultUser"), {XLE_USEDEFAULTUSER, 0}},
   {_T("PWDefaultLength"), {XLE_PWDEFAULTLENGTH, 0}},
+  {_T("LockDBOnIdleTimeout"), {XLE_LOCKDBONIDLETIMEOUT, 0}},
   {_T("IdleTimeout"), {XLE_IDLETIMEOUT, 0}},
   {_T("TreeDisplayStatusAtOpen"), {XLE_TREEDISPLAYSTATUSATOPEN, 0}},
   {_T("NumPWHistoryDefault"), {XLE_NUMPWHISTORYDEFAULT, 0}},
