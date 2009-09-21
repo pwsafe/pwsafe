@@ -17,10 +17,11 @@
 #Update the following for each language we support
 
 POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po \
-	pos/pwsafe_pl.po pos/pwsafe_zh.po pos/pwsafe_ru.po pos/pwsafe_it.po
+	pos/pwsafe_pl.po pos/pwsafe_zh.po pos/pwsafe_ru.po \
+	pos/pwsafe_it.po pos/pwsafe_fr.po
 
 DLL_LIST = pwsafeSV.dll pwsafeES.dll pwsafeDE.dll \
-	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll
+	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll
 
 DEST_DIR = ../../../../build/bin/pwsafe/I18N
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
@@ -76,6 +77,12 @@ $(DEST_DIR)/pwsafeIT.dll : pos/pwsafe_it.po
 	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
 	$(RESPWSL) apply foo.dll 0x0410; \
 	$(RM) foo.dll; $(MV) pwsafeIT_IT.dll $(DEST_DIR)/pwsafeIT.dll
+	$(CHMOD) 755 $@
+
+$(DEST_DIR)/pwsafeFR.dll : pos/pwsafe_fr.po
+	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
+	$(RESPWSL) apply foo.dll 0x040c; \
+	$(RM) foo.dll; $(MV) pwsafeFR_FR.dll $(DEST_DIR)/pwsafeFR.dll
 	$(CHMOD) 755 $@
 
 # No need to change anything below this line
