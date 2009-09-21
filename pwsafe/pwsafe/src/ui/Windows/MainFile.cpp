@@ -212,6 +212,7 @@ BOOL DboxMain::OpenOnInit(void)
     m_DDUser.SetStaticState(false);
     m_DDNotes.SetStaticState(false);
     m_DDURL.SetStaticState(false);
+    m_DDemail.SetStaticState(false);
   }
   return TRUE;
 }
@@ -290,6 +291,7 @@ int DboxMain::New()
   m_DDUser.SetStaticState(false);
   m_DDNotes.SetStaticState(false);
   m_DDURL.SetStaticState(false);
+  m_DDemail.SetStaticState(false);
 
   UpdateMenuAndToolBar(true);
 
@@ -410,6 +412,7 @@ int DboxMain::Close()
   m_DDUser.SetStaticState(false);
   m_DDNotes.SetStaticState(false);
   m_DDURL.SetStaticState(false);
+  m_DDemail.SetStaticState(false);
 
   app.SetTooltipText(L"PasswordSafe");
   UpdateSystemTray(CLOSED);

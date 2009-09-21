@@ -56,6 +56,7 @@
 #define IDD_PASSWORDSUBSET              159
 #define IDD_VKEYBOARD                   160
 #define IDD_FILTER_DCA                  161
+#define IDD_DUMPSELECTOR                162
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
 #define IDR_POPCOPYTOCOMPARISON         171
@@ -311,7 +312,10 @@
 #define IDB_CHANGEVKBDFONTMENU_CLASSIC  471
 #define IDB_CHANGEVKBDFONTMENU_NEW      472
 #define IDB_CHANGEVKBDFONTMENU_NEW_D    473
-#define IDD_DUMPSELECTOR                474
+#define IDB_DRAGEMAIL_NEW               474
+#define IDB_DRAGEMAILX_NEW              475
+#define IDB_DRAGEMAIL_CLASSIC           476
+#define IDB_DRAGEMAILX_CLASSIC          477
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -655,14 +659,15 @@
 #define IDC_DUMP_SIGABRT                1391
 #define IDC_DCA1                        1392
 #define IDC_DCARULE                     1393
+#define IDC_STATIC_DRAGEMAIL            1394
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        475
+#define _APS_NEXT_RESOURCE_VALUE        478
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1394
+#define _APS_NEXT_CONTROL_VALUE         1395
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

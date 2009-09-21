@@ -317,7 +317,7 @@ public:
   CLVHdrCtrl m_LVHdrCtrl;
   CColumnChooserDlg *m_pCC;
   CPoint m_RCMousePos;
-  CDDStatic m_DDGroup, m_DDTitle, m_DDUser, m_DDPassword, m_DDNotes, m_DDURL;
+  CDDStatic m_DDGroup, m_DDTitle, m_DDUser, m_DDPassword, m_DDNotes, m_DDURL, m_DDemail;
   //}}AFX_DATA
 
   CRUEList m_RUEList;   // recent entry lists

@@ -647,6 +647,9 @@ StringX CDDStatic::GetData(const CItemData *pci)
       if (ipos != StringX::npos)
         cs_dragdata.replace(ipos, 5, L"");
       break;
+    case IDC_STATIC_DRAGEMAIL:
+      cs_dragdata = pci->GetEmail();
+      break;
     default:
       break;
   }
