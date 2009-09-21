@@ -1155,10 +1155,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XMLFileDefs.h"
-				>
-			</File>
-			<File
 				RelativePath=".\XML\XMLFileHandlers.h"
 				>
 			</File>

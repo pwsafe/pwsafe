@@ -44,6 +44,16 @@ PWSprefs *PWSprefs::self = NULL;
 stringT PWSprefs::m_configfilename; // may be set before singleton created
 Reporter *PWSprefs::m_Reporter = NULL;
 
+/*
+ Note: to change a preference between application and database, the way 
+ to do it is to set the current one as obsolete and define a new one.
+
+ Do not change the curren type.
+
+ NOTE: Database preferences are exported & imported via XML. Don't forget
+ updating these routines and the schema.
+*/
+
 // 1st parameter = name of preference
 // 2nd parameter = default value
 // 3rd parameter if stored in database, application or obsolete
@@ -70,7 +80,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("UseNewToolbar"), true, ptApplication},               // application
   {_T("UseSystemTray"), true, ptApplication},               // application
   {_T("LockOnWindowLock"), true, ptApplication},            // application
-  {_T("LockOnIdleTimeout"), true, ptApplication},           // application
+  {_T("LockOnIdleTimeout"), true, ptObsolete},              // obsolete in 3.19 - replaced by Database equivalent
   {_T("EscExits"), true, ptApplication},                    // application
   {_T("IsUTF8"), false, ptDatabase},                        // database - not used???
   {_T("HotKeyEnabled"), false, ptApplication},              // application
@@ -98,6 +108,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ClearClipboardOnExit"), true, ptApplication},        // application
   {_T("ShowFindToolBarOnOpen"), false, ptApplication},      // application
   {_T("NotesWordWrap"), false, ptApplication},              // application
+  {_T("LockDBOnIdleTimeout"), true, ptDatabase},            // database
 };
 
 // Default value = -1 means set at runtime
@@ -976,6 +987,14 @@ bool PWSprefs::LoadProfileFromFile()
     goto exit;
   }
 
+  // LockOnIdleTimeout is now a Database preference - 
+  // Silently delete it from XML file (actually doesn't delete
+  // it here but marks as changed so will be deleted when saved).
+  // Set updated so that the XML file is rewritten without it
+  if (DeletePref(_T("LockOnIdleTimeout"))) {
+    m_prefs_changed[APP_PREF] = true;
+  }
+
   int i;
   // Defensive programming, if not "0", then "TRUE", all other values = FALSE
   for (i = 0; i < NumBoolPrefs; i++) {
@@ -1379,7 +1398,7 @@ void PWSprefs::ImportOldPrefs()
     return;
   }
   // Iterate over app preferences (those not stored
-  // in database, read values and store if exist
+  // in database, read values and store if exist)
   int i;
   LONG rv;
   DWORD dwType;

@@ -628,7 +628,7 @@ void DboxMain::InitPasswordSafe()
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
   // Set timer for user-defined lockout, if selected
-  if (prefs->GetPref(PWSprefs::LockOnIdleTimeout)) {
+  if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     const UINT MINUTE = 60*1000;
     SetTimer(TIMER_USERLOCK, MINUTE, NULL);
     ResetIdleLockCounter();

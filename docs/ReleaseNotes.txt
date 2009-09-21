@@ -92,6 +92,9 @@ being able to close the database or exit the program.
 [] If preferences stored in the database are changed, the user will be asked if
 they want to save them in the database when closing the database or application
 even if none of the entries have been changed.
+[] The preference to Lock the Database after a certain amount of idle time has
+changed from being a global parameter affecting all databases opened by the user
+to be particular to each database.
 
 New Features for 3.18
 =====================

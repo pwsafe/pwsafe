@@ -203,6 +203,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     case XLE_DISPLAYEXPANDEDADDEDITDLG:
       // Obsoleted in 3.18
       break;
+    case XLE_LOCKDBONIDLETIMEOUT:
     case XLE_MAINTAINDATETIMESTAMPS:
     case XLE_PWMAKEPRONOUNCEABLE:
     case XLE_PWUSEDIGITS:
