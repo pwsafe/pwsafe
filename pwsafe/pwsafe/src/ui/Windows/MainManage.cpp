@@ -287,7 +287,7 @@ void DboxMain::OnOptions()
   display.m_notesshowinedit = prefs->
     GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
   display.m_wordwrapnotes = prefs->
-    GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
+    GetPref(PWSprefs::NotesWordWrap) ? TRUE : FALSE;
     display.m_preexpirywarn = prefs->
     GetPref(PWSprefs::PreExpiryWarn) ? TRUE : FALSE;
   display.m_preexpirywarndays = prefs->
