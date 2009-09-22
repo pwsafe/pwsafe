@@ -10,9 +10,6 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.19
 ==================
-[2857641] PasswordSafe now handles XP (and later) logoff, shutdown &
-restart more gracefully, so that the user now has more time to save a
-modified database.
 [2856750] The Password Policy now correctly displayed in List View,
 when selected.
 [2856051] Changes to Database preferences are no longer lost upon minimize.
@@ -67,6 +64,9 @@ is not empty, it is used instead of the URL field even if that
 contains an email address.
 Note: whereas the URL field had to have the 'mailto:' prefix to denote an 
 email address rather than a URL, the email field must not contain this prefix.
+[] PasswordSafe now handles Vista (and later) logoff, shutdown &
+restart more gracefully, so that the user now has more time to save a
+modified database.
 [] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
 sets the delay between sending each subsequent character, '\w' & '\W' introduces
 a one-time delay where they appear.  For '\w', the value 'nnn' is in
