@@ -94,15 +94,15 @@
 ; the installer.  It can be placed, by itself, on a publicly available
 ; location.
 ; 
-; the script is setup for 2 languages now (English + German)
-; It's prepared for using Swedish and Spanish. Remove the comments ";-L-"
-; supplementary languages can be easily brought in
-; following "peaces" have to be provided
+; the script is setup for several languages, and ready for others.
+; Just remove the comments ";-L-" where appropriate.
+; Additional languages can be easily added, the following "pieces"
+; have to be provided:
 ; - all language specific "Langstring", done in file "pwsafe.lng"
 ; - several MUI_LANGUAGE
 ; - several "File" for the language specific DLL
 ; - "Delete ...DLL" for each language (at install time)
-; - 'Delete "$INSTDIR\pwsafeDE.dll"'  for each language (at uninstall time)
+; - 'Delete "$INSTDIR\pwsafeXX.dll"'  for each language (at uninstall time)
 ; - "Push" in the "Language selection dialog"
 
 ;-----------------------------------------
@@ -114,6 +114,12 @@
   !include "MUI2.nsh"
   !include "InstallOptions.nsh"
  
+;--------------------------------
+; process detection support
+; (requires nsProcess plugin, from
+;  http://nsis.sourceforge.net/NsProcess_plugin)
+!include "nsProcess.nsh"
+
 ;--------------------------------
 ; Version Info
 ;
@@ -166,7 +172,7 @@
 
 ;--------------------------------
 ; Languages
-; to enable a language : remove the ";" in front, to disable: put a ";" in front
+; To enable a language, remove the ";" in front, to disable: put a ";" in front
 
 !define LANGUAGE_GERMAN
 !define LANGUAGE_CHINESE
@@ -222,7 +228,8 @@
   ReserveFile "pws-install.ini"
   ;!insertmacro MUI_RESERVEFILE_INSTALLOPTIONS  : VdG for MUI-2 :  !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS is no longer supported as InstallOptions
 
-;--------------------------------
+
+;-----------------------------------------------------------------
 ; The program itself
 
 Section "$(PROGRAM_FILES)" ProgramFiles
@@ -896,7 +903,27 @@ Function .onInit
  StrCmp $R0 '98' is_win98
  StrCmp $R0 'ME' is_winME
  StrCpy $HOST_OS $R0
- 
+
+; Following tests should really be done
+; after .onInit, since language is initialized
+; then. However, there's no easy way to do this,
+; so these error messages will only be in English. Sorry. 
+; Protect against multiple instances
+; of the installer
+
+ System::Call 'kernel32::CreateMutexA(i 0, i 0, t "pwsInstallMutex") i .r1 ?e'
+ Pop $R0 
+ StrCmp $R0 0 +3
+   MessageBox MB_OK|MB_ICONEXCLAMATION "The installer is already running."
+   Abort
+
+; Now protect against running instance of pwsafe
+	${nsProcess::FindProcess} "pwsafe.exe" $R0
+	StrCmp $R0 0 0 +3
+	MessageBox MB_OK "Please exit all running instances of PasswordSafe before installing a new version"
+  Abort
+	${nsProcess::Unload}
+
   ;Language selection dialog
 
 !ifdef LANGUAGE_GERMAN
@@ -934,7 +961,7 @@ extraLanguage:
   Push English
 !ifdef LANGUAGE_GERMAN
   Push ${LANG_GERMAN}
-  Push German
+  Push Deutsch
 !endif
 !ifdef LANGUAGE_CHINESE
   Push ${LANG_SIMPCHINESE}
@@ -942,11 +969,11 @@ extraLanguage:
 !endif
 !ifdef LANGUAGE_SPANISH
   Push ${LANG_SPANISH}
-  Push Spanish
+  Push Espanol
 !endif
 !ifdef LANGUAGE_SWEDISH
   Push ${LANG_SWEDISH}
-  Push Swedish
+  Push Svensk
 !endif
 !ifdef LANGUAGE_DUTCH
   Push ${LANG_DUTCH}
@@ -954,7 +981,7 @@ extraLanguage:
 !endif
 !ifdef LANGUAGE_FRENCH
   Push ${LANG_FRENCH}
-  Push French
+  Push Francais
 !endif
 !ifdef LANGUAGE_RUSSIAN
   Push ${LANG_RUSSIAN}
@@ -962,11 +989,11 @@ extraLanguage:
 !endif
 !ifdef LANGUAGE_POLISH
   Push ${LANG_POLISH}
-  Push Polish
+  Push Polska
 !endif
 !ifdef LANGUAGE_ITALIAN
   Push ${LANG_ITALIAN}
-  Push Italian
+  Push Italiano
 !endif
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
@@ -986,6 +1013,7 @@ is_winME:
   MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
   Quit
 NOextraLanguage:
+
 FunctionEnd
 
 Function GreenOrRegular
