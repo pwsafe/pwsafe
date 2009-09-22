@@ -47,7 +47,7 @@ void DboxMain::OnTrayLockUnLock()
       ClearClipboardData();
       ShowWindow(SW_HIDE);
       m_IdleLockCountDown = 1;          // lock the same way as a timer lock
-      OnTimer(TIMER_USERLOCK);          // save db if needed, etc.
+      OnTimer(TIMER_LOCKDBONIDLETIMEOUT);          // save db if needed, etc.
       break;
     case ThisMfcApp::CLOSED:
     default:

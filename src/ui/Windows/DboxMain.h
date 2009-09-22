@@ -90,21 +90,23 @@ DECLARE_HANDLE(HDROP);
 #define WM_EXECUTE_FILTERS (WM_APP + 60)
 
 /* timer event number used to by PupText.  Here for doc. only
-#define TIMER_PUPTEXT    0x03  */
+#define TIMER_PUPTEXT             0x03  */
 // timer event number used to check if the workstation is locked
-#define TIMER_CHECKLOCK  0x04
-// timer event number used to support lock on user-defined timeout
-#define TIMER_USERLOCK   0x05
+#define TIMER_LOCKONWTSLOCK       0x04
+// timer event number used to support lock on user-defined idle timeout
+#define TIMER_LOCKDBONIDLETIMEOUT 0x05
+// Definition of a minute in milliseconds
+#define MINUTE 60000
 // timer event number used to support Find in PWListCtrl when icons visible
-#define TIMER_FIND       0x06
+#define TIMER_FIND                0x06
 // timer event number used to support display of notes in List & Tree controls
-#define TIMER_ND_HOVER   0x07
-#define TIMER_ND_SHOWING 0x08
+#define TIMER_ND_HOVER            0x07
+#define TIMER_ND_SHOWING          0x08
 // timer event number used to support DragBar
-#define TIMER_DRAGBAR    0x09
+#define TIMER_DRAGBAR             0x09
 /* timer event numbers used to by ControlExtns for ListBox tooltips.  Here for doc. only
-#define TIMER_LB_HOVER   0x0A
-#define TIMER_LB_SHOWING 0x0B */
+#define TIMER_LB_HOVER            0x0A
+#define TIMER_LB_SHOWING          0x0B */
 
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary

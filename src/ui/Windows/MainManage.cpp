@@ -705,17 +705,17 @@ void DboxMain::OnOptions()
       if (security.m_LockOnWindowLock == TRUE) {
         startLockCheckTimer();
       } else {
-        KillTimer(TIMER_CHECKLOCK);
+        KillTimer(TIMER_LOCKONWTSLOCK);
       }
     }
 
     // update idle timeout values, if changed
     if (security.m_LockOnIdleTimeout != prevLockOIT)
       if (security.m_LockOnIdleTimeout == TRUE) {
-        const UINT MINUTE = 60 * 1000;
-        SetTimer(TIMER_USERLOCK, MINUTE, NULL);
+        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+        ResetIdleLockCounter();
       } else {
-        KillTimer(TIMER_USERLOCK);
+        KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       }
       SetIdleLockCounter(security.m_IdleTimeOut);
 

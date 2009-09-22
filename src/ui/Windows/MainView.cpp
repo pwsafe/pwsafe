@@ -1622,11 +1622,11 @@ void DboxMain::OnCollapseAll()
 
 void DboxMain::OnTimer(UINT_PTR nIDEvent)
 {
-  if ((nIDEvent == TIMER_CHECKLOCK && IsWorkstationLocked()) ||
-      (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
+  if ((nIDEvent == TIMER_LOCKONWTSLOCK && IsWorkstationLocked()) ||
+      (nIDEvent == TIMER_LOCKDBONIDLETIMEOUT && DecrementAndTestIdleLockCounter())) {
     LockDataBase(nIDEvent);
-    if (nIDEvent == TIMER_CHECKLOCK)
-      KillTimer(TIMER_CHECKLOCK);
+    if (nIDEvent == TIMER_LOCKONWTSLOCK)
+      KillTimer(TIMER_LOCKONWTSLOCK);
   } else {
     TRACE(L"Timer lock kicked in (ID=%d), but not minimizing.\n", nIDEvent);
   }
@@ -1634,7 +1634,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
 
 void DboxMain::LockDataBase(UINT_PTR nIDEvent)
 {
-  if (nIDEvent == TIMER_CHECKLOCK && PWSprefs::GetInstance()->
+  if (nIDEvent == TIMER_LOCKONWTSLOCK && PWSprefs::GetInstance()->
         GetPref(PWSprefs::LockOnWindowLock) != TRUE)
     return;
 

@@ -627,13 +627,6 @@ void DboxMain::InitPasswordSafe()
 
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
-  // Set timer for user-defined lockout, if selected
-  if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    const UINT MINUTE = 60*1000;
-    SetTimer(TIMER_USERLOCK, MINUTE, NULL);
-    ResetIdleLockCounter();
-  }
-
   // JHF : no hotkeys on WinCE
 #if !defined(POCKET_PC)
   // Set Hotkey, if active
@@ -1065,7 +1058,7 @@ BOOL DboxMain::OnInitDialog()
 
   // If successful, no need for Timer
   if (m_bRegistered)
-    KillTimer(TIMER_CHECKLOCK);
+    KillTimer(TIMER_LOCKONWTSLOCK);
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -2010,7 +2003,7 @@ void DboxMain::startLockCheckTimer()
 
   if (PWSprefs::GetInstance()->
         GetPref(PWSprefs::LockOnWindowLock) == TRUE) {
-    SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
+    SetTimer(TIMER_LOCKONWTSLOCK, INTERVAL, NULL);
   }
 }
 
@@ -2059,7 +2052,7 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
       m_bWSLocked = true;
-      LockDataBase(TIMER_CHECKLOCK);
+      LockDataBase(TIMER_LOCKONWTSLOCK);
       break;
     case WTS_CONSOLE_CONNECT:
     case WTS_REMOTE_CONNECT:
