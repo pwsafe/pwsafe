@@ -35,7 +35,7 @@ LangString RESERVE_TITLE ${LANG_SWEDISH} "Välj installationstyp"
 LangString RESERVE_TITLE ${LANG_DUTCH} "Choose Installation Type [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString RESERVE_TITLE ${LANG_FRENCH} "Choose Installation Type [FR]"
+LangString RESERVE_TITLE ${LANG_FRENCH} "Veuillez choisir le type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString RESERVE_TITLE ${LANG_RUSSIAN} "Choose Installation Type [RU]"
@@ -64,7 +64,7 @@ LangString RESERVE_FIELD1 ${LANG_SWEDISH} "Standard (använder Registret, passar 
 LangString RESERVE_FIELD1 ${LANG_DUTCH} "Regular (uses Registry, suitable for home or single user PC) [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString RESERVE_FIELD1 ${LANG_FRENCH} "Regular (uses Registry, suitable for home or single user PC) [FR]"
+LangString RESERVE_FIELD1 ${LANG_FRENCH} "Régulière (utilise le Registre, adapté pour la maison ou utilisation sur un seul PC)"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString RESERVE_FIELD1 ${LANG_RUSSIAN} "Regular (uses Registry, suitable for home or single user PC) [RU]"
@@ -93,7 +93,7 @@ LangString RESERVE_FIELD2 ${LANG_SWEDISH} "Grön (for Disk-on-Key; använder inte 
 LangString RESERVE_FIELD2 ${LANG_DUTCH} "Green (for Disk-on-Key; does not use host Registry) [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString RESERVE_FIELD2 ${LANG_FRENCH} "Green (for Disk-on-Key; does not use host Registry) [FR]"
+LangString RESERVE_FIELD2 ${LANG_FRENCH} "Verte (pour Disque-sur-Clé; n'utilise pas le Registre)"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString RESERVE_FIELD2 ${LANG_RUSSIAN} "Green (for Disk-on-Key; does not use host Registry) [RU]"
@@ -125,7 +125,7 @@ LangString PROGRAM_FILES ${LANG_SWEDISH} "Programfiler"
 LangString PROGRAM_FILES ${LANG_DUTCH} "Program Files [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString PROGRAM_FILES ${LANG_FRENCH} "Program Files [FR]"
+LangString PROGRAM_FILES ${LANG_FRENCH} "Program Files"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString PROGRAM_FILES ${LANG_RUSSIAN} "Program Files [RU]"
@@ -157,7 +157,7 @@ LangString START_AUTO ${LANG_SWEDISH} "Starta automatiskt"
 LangString START_AUTO ${LANG_DUTCH} "Start automatically [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString START_AUTO ${LANG_FRENCH} "Start automatically [FR]"
+LangString START_AUTO ${LANG_FRENCH} "Démarrer automatiquement"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString START_AUTO ${LANG_RUSSIAN} "Start automatically [RU]"
@@ -189,7 +189,7 @@ LangString START_SHOW ${LANG_SWEDISH} "Visa i startmenyn"
 LangString START_SHOW ${LANG_DUTCH} "Show in start menu [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString START_SHOW ${LANG_FRENCH} "Show in start menu [FR]"
+LangString START_SHOW ${LANG_FRENCH} "Afficher dans le menu Démarrer"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString START_SHOW ${LANG_RUSSIAN} "Show in start menu [RU]"
@@ -221,7 +221,7 @@ LangString START_SHORTCUT ${LANG_SWEDISH} "Installera genväg på skrivbordet"
 LangString START_SHORTCUT ${LANG_DUTCH} "Install desktop shortcut [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString START_SHORTCUT ${LANG_FRENCH} "Install desktop shortcut [FR]"
+LangString START_SHORTCUT ${LANG_FRENCH} "Installer un raccourci sur le Bureau"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString START_SHORTCUT ${LANG_RUSSIAN} "Install desktop shortcut [RU]"
@@ -254,7 +254,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_ProgramFiles ${LANG_DUTCH} "Installs the basic files necessary to run Password Safe. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-  LangString DESC_ProgramFiles ${LANG_FRENCH} "Installs the basic files necessary to run Password Safe. [FR]"
+  LangString DESC_ProgramFiles ${LANG_FRENCH} "Installe les fichiers de base nécessaires à PasswordSafe."
 !endif
 !ifdef LANGUAGE_RUSSIAN
   LangString DESC_ProgramFiles ${LANG_RUSSIAN} "Installs the basic files necessary to run Password Safe. [RU]"
@@ -283,7 +283,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_StartUp ${LANG_DUTCH} "Starts Password Safe as part of Windows boot/login. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-  LangString DESC_StartUp ${LANG_FRENCH} "Starts Password Safe as part of Windows boot/login. [FR]"
+  LangString DESC_StartUp ${LANG_FRENCH} "Démarre PasswordSafe lors du démarrage et connexion de Windows."
 !endif
 !ifdef LANGUAGE_RUSSIAN
   LangString DESC_StartUp ${LANG_RUSSIAN} "Starts Password Safe as part of Windows boot/login. [RU]"
@@ -312,7 +312,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_StartMenu ${LANG_DUTCH} "Creates an entry in the start menu for Password Safe. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-  LangString DESC_StartMenu ${LANG_FRENCH} "Creates an entry in the start menu for Password Safe. [FR]"
+  LangString DESC_StartMenu ${LANG_FRENCH} "Crée une entrée dans le menu Démarrer pour PasswordSafe."
 !endif
 !ifdef LANGUAGE_RUSSIAN
   LangString DESC_StartMenu ${LANG_RUSSIAN} "Creates an entry in the start menu for Password Safe. [RU]"
@@ -341,7 +341,7 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
   LangString DESC_DesktopShortcut ${LANG_DUTCH} "Places a shortcut to Password Safe on your desktop. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-  LangString DESC_DesktopShortcut ${LANG_FRENCH} "Places a shortcut to Password Safe on your desktop. [FR]"
+  LangString DESC_DesktopShortcut ${LANG_FRENCH} "Place un raccourci vers PasswordSafe sur votre Bureau."
 !endif
 !ifdef LANGUAGE_RUSSIAN
   LangString DESC_DesktopShortcut ${LANG_RUSSIAN} "Places a shortcut to Password Safe on your desktop. [RU]"
@@ -373,7 +373,7 @@ LangString TEXT_GC_TITLE ${LANG_SWEDISH} "Installationstyp"
 LangString TEXT_GC_TITLE ${LANG_DUTCH} "Installation Type [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString TEXT_GC_TITLE ${LANG_FRENCH} "Installation Type [FR]"
+LangString TEXT_GC_TITLE ${LANG_FRENCH} "Type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString TEXT_GC_TITLE ${LANG_RUSSIAN} "Installation Type [RU]"
@@ -402,7 +402,7 @@ LangString TEXT_GC_SUBTITLE ${LANG_SWEDISH} "Välj Standard för användning på en 
 LangString TEXT_GC_SUBTITLE ${LANG_DUTCH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString TEXT_GC_SUBTITLE ${LANG_FRENCH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [FR]"
+LangString TEXT_GC_SUBTITLE ${LANG_FRENCH} "Choisissez Régulière pour utilisation sur un seul PC, Verte pour l'installation portable. Si vous êtes incertains, choisissez 'Régulière'."
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString TEXT_GC_SUBTITLE ${LANG_RUSSIAN} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [RU]"
@@ -431,7 +431,7 @@ LangString PSWINI_TITLE ${LANG_SWEDISH} "Välj installationstyp"
 LangString PSWINI_TITLE ${LANG_DUTCH} "Choose Installation Type [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString PSWINI_TITLE ${LANG_FRENCH} "Choose Installation Type [FR]"
+LangString PSWINI_TITLE ${LANG_FRENCH} "Veuillez choisir le type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString PSWINI_TITLE ${LANG_RUSSIAN} "Choose Installation Type [RU]"
@@ -460,7 +460,7 @@ LangString PSWINI_TEXT1 ${LANG_SWEDISH} "Vanlig(använder Registret, passar för h
 LangString PSWINI_TEXT1 ${LANG_DUTCH} "Regular (uses Registry, suitable for home or single user PC) [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString PSWINI_TEXT1 ${LANG_FRENCH} "Regular (uses Registry, suitable for home or single user PC) [FR]"
+LangString PSWINI_TEXT1 ${LANG_FRENCH} "Régulière (utilise le Registre, adapté pour la maison ou utilisation sur un seul PC)"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString PSWINI_TEXT1 ${LANG_RUSSIAN} "Regular (uses Registry, suitable for home or single user PC) [RU]"
@@ -489,7 +489,7 @@ LangString PSWINI_TEXT2 ${LANG_SWEDISH} "Grön (för Disk-on-Key; använder inte vä
 LangString PSWINI_TEXT2 ${LANG_DUTCH} "Green (for Disk-on-Key; does not use host Registry) [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-LangString PSWINI_TEXT2 ${LANG_FRENCH} "Green (for Disk-on-Key; does not use host Registry) [FR]"
+LangString PSWINI_TEXT2 ${LANG_FRENCH} "Verte (pour Disque-sur-Clé; n'utilise pas le Registre)"
 !endif
 !ifdef LANGUAGE_RUSSIAN
 LangString PSWINI_TEXT2 ${LANG_RUSSIAN} "Green (for Disk-on-Key; does not use host Registry) [RU]"
