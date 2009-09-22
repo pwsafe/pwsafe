@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-08-16 15:47+0300\n"
+"PO-Revision-Date: 2009-09-22 21:02+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -173,11 +173,21 @@ msgstr " 'Ссылка'"
 msgid " 'User'"
 msgstr " 'Пользователь'"
 
+#. Resource IDs: (358)
+msgid " 'email'"
+msgstr "E-mail"
+
 # Используется для автоименования элементов при копировании
 #. Resource IDs: (332)
 #, c-format
 msgid " Copy # %d"
 msgstr " (копия № %d)"
+
+# Используется в фильтре для DCA (начинается с пробела для того, чт. было первым в списке)
+#. Resource IDs: (251)
+#, c-format
+msgid " Current default (%s)"
+msgstr " Текущие умолчания (%s)"
 
 # Используется для автоименования элементов при перетаскивании
 #. Resource IDs: (339)
@@ -368,7 +378,7 @@ msgstr "&Применить"
 msgid "&Apply current"
 msgstr "&Применить текущий"
 
-#. Resource IDs: (1356)
+#. Resource IDs: (1357)
 msgid "&Autotype:"
 msgstr "&Автонабор:"
 
@@ -637,6 +647,10 @@ msgstr "&Сохранить"
 msgid "&Save to Disk"
 msgstr "&Сохранить на диск"
 
+#. Resource IDs: (358)
+msgid "&Send email"
+msgstr "&Отправить письмо"
+
 #. Resource IDs: (351)
 msgid "&Set current"
 msgstr "&Сделать текущим"
@@ -697,6 +711,10 @@ msgstr "&XML формат..."
 #. Resource IDs: (1)
 msgid "&Yes"
 msgstr "&Да"
+
+#. Resource IDs: (1356)
+msgid "&email:"
+msgstr "E-mail:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1319,7 +1337,7 @@ msgstr "Автонабор\t"
 msgid "Autoload"
 msgstr "Автозагрузка"
 
-#. Resource IDs: (325, 340, 65535)
+#. Resource IDs: (251, 340, 65535)
 msgid "Autotype"
 msgstr "Автонабор"
 
@@ -1404,7 +1422,7 @@ msgstr "Боснийская (кириллица)"
 msgid "Browse"
 msgstr "Обзор"
 
-#. Resource IDs: (325)
+#. Resource IDs: (251)
 msgid "Browse to URL"
 msgstr "Перейти по ссылке"
 
@@ -1412,7 +1430,7 @@ msgstr "Перейти по ссылке"
 msgid "Browse to URL + &Autotype"
 msgstr "Перейти по ссылке и выполнить &автонабор"
 
-#. Resource IDs: (325, 32073)
+#. Resource IDs: (251, 32073)
 msgid "Browse to URL + Autotype"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
@@ -1604,6 +1622,12 @@ msgstr "Нажмите для изменения регистра"
 msgid "Click to copy to clipboard"
 msgstr "Нажмите чтобы скопировать в буфер обмена"
 
+# хинт на поле e-mail в диалоге добавления/редактирования
+#. Resource IDs: (358)
+#, fuzzy
+msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
+msgstr "Нажмите для копирования в буфер обмена, Ctrl+щелчок - также поместить mailto:значение в поле Ссылка"
+
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
 msgstr "Нажмите для включения/выключения строки"
@@ -1615,12 +1639,12 @@ msgstr "Нажмите для ввода кода символа через эк
 #. Resource IDs: (354)
 #, fuzzy
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
-msgstr "Щелкните для раскрытия и копирования в буфер обмена, Ctrl-щелчок - копировать без открытия"
+msgstr "Нажмите для раскрытия и копирования в буфер обмена, Ctrl-щелчок - копировать без открытия"
 
 #. Resource IDs: (355)
 #, fuzzy
 msgid "Click to go to link, Ctrl+Click to go and Autotype"
-msgstr "Щелкните для перехода по ссылке, Ctrl-щелчок - выполнить автонабор после открытия ссылки"
+msgstr "Нажмите для перехода по ссылке, Ctrl-щелчок - выполнить автонабор после открытия ссылки"
 
 #. Resource IDs: (352)
 msgid "Click to insert a new row below"
@@ -1634,6 +1658,10 @@ msgstr "Нажмите для перемешивания символов на �
 #. Resource IDs: (352)
 msgid "Click to remove this row"
 msgstr "Нажмите для удаления текущей строки"
+
+#. Resource IDs: (358)
+msgid "Click to send email to this address"
+msgstr "Нажмите для отправки письма по этому адресу"
 
 #. Resource IDs: (352)
 msgid "Click to set criteria for matching the field"
@@ -1798,10 +1826,6 @@ msgstr "Копировать &заметки в буфер обмена"
 msgid "Copy &Notes to clipboard"
 msgstr "Копировать &заметки в буфер обмена"
 
-#. Resource IDs: (32070)
-msgid "Copy &URL to Clipboard"
-msgstr "Копировать &ссылку в буфер обмена"
-
 #. Resource IDs: (32068)
 msgid "Copy &Username to Clipboard"
 msgstr "Копировать &имя пользователя в буфер обмена"
@@ -1814,10 +1838,6 @@ msgstr "Копировать &имя пользователя в буфер об
 msgid "Copy All"
 msgstr "Копировать все"
 
-#. Resource IDs: (32071)
-msgid "Copy Email to Clipboard"
-msgstr "Копировать E-mail в буфер обмена"
-
 #. Resource IDs: (32270)
 msgid "Copy Here"
 msgstr "Копировать сюда"
@@ -1825,6 +1845,10 @@ msgstr "Копировать сюда"
 #. Resource IDs: (32080)
 msgid "Copy Run Command to Clipboard"
 msgstr "Копировать команду в буфер обмена"
+
+#. Resource IDs: (32070)
+msgid "Copy UR&L to Clipboard"
+msgstr "Копировать &ссылку в буфер обмена"
 
 #. Resource IDs: (329, 32070)
 msgid "Copy URL to Clipboard"
@@ -1834,15 +1858,23 @@ msgstr "Копировать &ссылку в буфер обмена"
 msgid "Copy URL to clipboard"
 msgstr "Копировать ссылку в буфер обмена"
 
-#. Resource IDs: (325)
+#. Resource IDs: (32071)
+msgid "Copy email to Clipboard"
+msgstr "Копировать E-mail в буфер обмена"
+
+#. Resource IDs: (358)
+msgid "Copy email to clipboard"
+msgstr "Копировать E-mail в буфер обмена"
+
+#. Resource IDs: (251)
 msgid "Copy notes to clipboard"
 msgstr "Копировать заметки в буфер обмена"
 
-#. Resource IDs: (325)
+#. Resource IDs: (251)
 msgid "Copy password to clipboard"
 msgstr "Копировать пароль в буфер обмена"
 
-#. Resource IDs: (325)
+#. Resource IDs: (251)
 msgid "Copy password to clipboard, minimize"
 msgstr "Копировать пароль в буфер и свернуть"
 
@@ -1859,7 +1891,7 @@ msgstr "Копировать в сравниваемый контейнер ->"
 msgid "Copy to DB"
 msgstr "Копировать в контейнер"
 
-#. Resource IDs: (325)
+#. Resource IDs: (251)
 msgid "Copy username to clipboard"
 msgstr "Копировать имя пользователя в буфер"
 
@@ -2107,7 +2139,7 @@ msgstr "Исключение: %1"
 msgid "Display"
 msgstr "Отображение"
 
-#. Resource IDs: (151, 152, 153, 154, 155, 156)
+#. Resource IDs: (151, 152, 153, 154, 155, 156, 161)
 msgid "Display Filter - "
 msgstr "Фильтр отображения - "
 
@@ -2170,6 +2202,10 @@ msgid "Double-Click on entry to Run Command"
 msgstr "Щелкните дважды для копирования выполнения связанной команды"
 
 #. Resource IDs: (315)
+msgid "Double-Click on entry to Send email"
+msgstr "Щелкните дважды для отправки письма по этому адресу"
+
+#. Resource IDs: (315)
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Щелкните дважды для просмотра/редактирования"
 
@@ -2191,7 +2227,7 @@ msgstr "Выбранный элемент '%s:%s:%s' ссылается на э�
 msgid "Dutch"
 msgstr "Голландская"
 
-#. Resource IDs: (32022)
+#. Resource IDs: (32021)
 msgid "E&xit"
 msgstr "Вы&ход"
 
@@ -2782,8 +2818,8 @@ msgid "Group/Title\t"
 msgstr "Группа/заголовок\t"
 
 #. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\tNotes"
-msgstr "Группа/заголовок\tИмя пользователя\tПароль\tСсылка\tАвтонабор\tВремя создания\tВремя изменения пароля\tВремя последнего доступа\tДата истечения пароля\tВремя истечения пароля\tВремя изменения записи\tПолитика создания паролей\tИстория\tКоманда для запуска\tПо двойному кл.\tЗаметки"
+msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tNotes"
+msgstr "Группа/заголовок\tИмя пользователя\tПароль\tСсылка\tАвтонабор\tВремя создания\tВремя изменения пароля\tВремя последнего доступа\tДата истечения пароля\tВремя истечения пароля\tВремя изменения записи\tПолитика создания паролей\tИстория\tКоманда для запуска\tПо двойному кл.\tE-Mail\tЗаметки"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -2877,7 +2913,7 @@ msgstr "ID:32003:V C +N"
 msgid "ID:32005:V C +S"
 msgstr "ID:32005:V C +S"
 
-#. Accelerator Entry for Menu ID:32021; 'E&xit\tCtrl+Q\\Alt+F4'
+#. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
 msgstr "ID:32021:V C +Q"
 
@@ -2893,6 +2929,10 @@ msgstr "ID:32063:V C +D"
 msgid "ID:32066:V C +C"
 msgstr "ID:32066:V C +C"
 
+#. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
+msgid "ID:32067:V C +B"
+msgstr "ID:32067:V C +B"
+
 #. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 msgid "ID:32068:V C +U"
 msgstr "ID:32068:V C +U"
@@ -2901,7 +2941,7 @@ msgstr "ID:32068:V C +U"
 msgid "ID:32069:V C +G"
 msgstr "ID:32069:V C +G"
 
-#. Accelerator Entry for Menu ID:32070; 'Copy &URL to Clipboard'
+#. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 msgid "ID:32070:VAC +L"
 msgstr "ID:32070:VAC +L"
 
@@ -4348,12 +4388,12 @@ msgstr "Правило"
 msgid "Rule:"
 msgstr "Правило:"
 
-#. Resource IDs: (1357)
+#. Resource IDs: (1358)
 # урезано
 msgid "Run Cmd:"
 msgstr "Выполнить:"
 
-#. Resource IDs: (325, 354)
+#. Resource IDs: (251, 354)
 msgid "Run Command"
 msgstr "Выполнить команду"
 
@@ -4523,7 +4563,7 @@ msgstr "Выберите раскладку:"
 msgid "Select Location for Intermediate Backups"
 msgstr "Укажите каталог для промежуточных резервных копий"
 
-#. Resource IDs: (474)
+#. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr "Выберите тип тестового дампа"
 
@@ -4556,6 +4596,10 @@ msgstr "Отобранные поля:"
 msgid "Selected filter details:"
 msgstr "Параметры фильтра:"
 
+#. Resource IDs: (1380)
+msgid "Send"
+msgstr "Отправить"
+
 #. Resource IDs: (32074)
 msgid "Send &email"
 msgstr "Отправить &письмо"
@@ -4563,6 +4607,10 @@ msgstr "Отправить &письмо"
 #. Resource IDs: (3866)
 msgid "Send Mail failed to send message."
 msgstr "Ошибка при отправке сообщения."
+
+#. Resource IDs: (251)
+msgid "Send email"
+msgstr "Отправить письмо"
 
 #. Resource IDs: (518)
 msgid "Serbian (Cyrillic)"
@@ -5216,7 +5264,7 @@ msgid "Turkmen"
 msgstr "Туркменская"
 
 #. Resource IDs: (1355)
-msgid "U&RL"
+msgid "U&RL:"
 msgstr "Сс&ылка"
 
 #. Resource IDs: (327)
@@ -5377,6 +5425,11 @@ msgstr "Разблокировать"
 #. Resource IDs: (329)
 msgid "Unlock Safe"
 msgstr "Разблокировать контейнер"
+
+#. Resource IDs: (358)
+#, c-format
+msgid "Unsaved changes have been made to database:\r\n %s."
+msgstr "Несохраненные изменения:\r\n %s."
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -5543,7 +5596,7 @@ msgid "View report"
 msgstr "Просмотр отчета"
 
 # урезано из-за ограничения длины
-#. Resource IDs: (325, 332)
+#. Resource IDs: (251, 332)
 msgid "View/Edit selected entry"
 msgstr "Просмотр/редактирование элемента"
 
@@ -5672,12 +5725,12 @@ msgid "\nAdvanced Find Options"
 msgstr "\nРасширенные настройки поиска"
 
 #. Resource IDs: (2005)
-msgid "\nBrowse to URL + Autotype"
-msgstr "\nПерейти по ссылке и выполнить автонабор"
+msgid "\nBrowse to URL"
+msgstr "\nПерейти по ссылке"
 
 #. Resource IDs: (2005)
-msgid "\nBrowse to URL/Send Email"
-msgstr "\nПерейти по ссылке/отправить письмо"
+msgid "\nBrowse to URL + Autotype"
+msgstr "\nПерейти по ссылке и выполнить автонабор"
 
 #. Resource IDs: (2020)
 msgid "\nCase insensitive search"
@@ -5840,6 +5893,10 @@ msgstr "\nСохранить контейнер"
 msgid "\nSave Database As..."
 msgstr "\nСохранить контейнер как..."
 
+#. Resource IDs: (2005)
+msgid "\nSend email"
+msgstr "\nОтправить письмо"
+
 #. Resource IDs: (2008)
 msgid "\nSet/Clear Filters"
 msgstr "\nЗадать/очистить фильтры"
@@ -5876,10 +5933,6 @@ msgstr "\n\nСодержимое контейнеров совпадает (ср
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nНеизвестные поля будут скопированы вместе с элементом."
 
-#. Resource IDs: (345)
-msgid "\r\nEmail: "
-msgstr "\r\nE-mail: "
-
 #. Resource IDs: (335)
 #, c-format
 msgid "\r\nMerge completed: %d %s added\r\n(%d %s, %d %s, %d %s)"
@@ -5897,6 +5950,10 @@ msgstr "\r\nПоле будет отредактировано\r\nв редак�
 #. Resource IDs: (342)
 msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
 msgstr "\r\n\r\nВыберите 'Да' для использования этого пароля или 'Нет' для отмены."
+
+#. Resource IDs: (345)
+msgid "\r\nemail: "
+msgstr "\r\nE-mail: "
 
 #. Resource IDs: (346)
 #, c-format
@@ -6055,6 +6112,18 @@ msgstr "не заканчивается на"
 #. Resource IDs: (206)
 msgid "does not equal"
 msgstr "не совпадает с"
+
+#. Resource IDs: (192)
+msgid "e-mail\t"
+msgstr "E-mail\t"
+
+#. Resource IDs: (358)
+msgid "email"
+msgstr "E-mail"
+
+#. Resource IDs: (358)
+msgid "email copied "
+msgstr "E-mail скопирован"
 
 #. Resource IDs: (206)
 msgid "ends with"
