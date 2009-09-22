@@ -95,7 +95,7 @@ BOOL DboxMain::OpenOnInit(void)
       if (m_core.GetCurFile().empty()) {
         // Empty filename. Assume they are starting Password Safe
         // for the first time and don't confuse them.
-        // fallthrough to New()
+        // fall through to New()
       } else {
         // Here if there was a filename saved from last invocation, but it couldn't
         // be opened. It was either removed or renamed, so ask the user what to do
@@ -295,6 +295,12 @@ int DboxMain::New()
 
   UpdateMenuAndToolBar(true);
 
+  // Set timer for user-defined idle lockout, if selected (DB preference)
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+    ResetIdleLockCounter();
+  }
+
   return PWScore::SUCCESS;
 }
 
@@ -422,6 +428,10 @@ int DboxMain::Close()
   SetWindowText(LPCWSTR(m_titlebar));
   m_lastclipboardaction = L"";
   UpdateStatusBar();
+
+  // Kill timer as a database preference
+  KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+
   return PWScore::SUCCESS;
 }
 
@@ -562,7 +572,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
     case PWScore::CANT_OPEN_FILE:
       temp.Format(IDS_SAFENOTEXIST, pszFilename.c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
-      MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
+      MessageBox(temp, cs_title, MB_OK | MB_ICONWARNING);
     case TAR_OPEN:
       return Open();
     case TAR_NEW:
@@ -602,15 +612,12 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
       */
       return PWScore::CANT_OPEN_FILE;
     case PWScore::BAD_DIGEST:
-    {
       temp.Format(IDS_FILECORRUPT, pszFilename.c_str());
-      const int yn = MessageBox(temp, cs_title, MB_YESNO|MB_ICONERROR);
-      if (yn == IDYES) {
+      if (MessageBox(temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES) {
         rc = PWScore::SUCCESS;
         break;
       } else
         return rc;
-    }
 #ifdef DEMO
     case PWScore::LIMIT_REACHED:
     {
@@ -651,6 +658,12 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
                        GetPref(PWSprefs::UseDefaultUser) ? true : false);
   m_needsreading = false;
   SelectFirstEntry();
+
+  // Set timer for user-defined idle lockout, if selected (DB preference)
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+    ResetIdleLockCounter();
+  }
 
   return rc;
 }
