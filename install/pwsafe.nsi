@@ -450,6 +450,10 @@ languageCHINESE:
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
 !endif
+!ifdef LANGUAGE_ITALIAN
+    Delete $INSTDIR\pwsafeIT.dll
+    Delete $INSTDIR\pwsafeIT.chm
+!endif
     goto languageDone
 !endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
@@ -551,6 +555,7 @@ languageDutch:
 !endif
 !ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
+    Delete $INSTDIR\pwsafeSV.chm
 !endif
 !ifdef LANGUAGE_DUTCH
 ;    Delete $INSTDIR\pwsafeNL.dll
@@ -840,8 +845,8 @@ Section "Uninstall"
   Delete "$INSTDIR\pwsafeDE.chm"
 !endif
 !ifdef LANGUAGE_CHINESE
-    Delete $INSTDIR\pwsafeZH.dll
-    Delete $INSTDIR\pwsafeZH.chm
+  Delete "$INSTDIR\pwsafeZH.dll"
+  Delete "$INSTDIR\pwsafeZH.chm"
 !endif
 !ifdef LANGUAGE_SPANISH
   Delete "$INSTDIR\pwsafeES.dll"
