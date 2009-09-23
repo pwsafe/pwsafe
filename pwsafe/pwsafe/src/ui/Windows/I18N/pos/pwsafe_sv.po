@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-09-22 22:55+0100\n"
+"PO-Revision-Date: 2009-09-23 12:58+0100\n"
 "Last-Translator: Björn Nordwall <nordwall.b@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -360,14 +360,10 @@ msgstr ""
 "\n"
 "Kan inte öppna filen. Välj en annan."
 
-# Please, explain the situation.
-# [ronys] This is part of the report file that's created upon import
-# [ronys] of Text or XML format. First %s is either 'Text' or 'XML'
-# [ronys] second is name of file.
 #. Resource IDs: (341)
 #, c-format
 msgid "%s file being imported: %s"
-msgstr "%s filen som importeras: %s"
+msgstr "%s importerad fil: %s"
 
 #. Resource IDs: (326)
 #, c-format
@@ -566,7 +562,7 @@ msgstr "&Duplicera posten"
 
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
-msgstr "&Redigera"
+msgstr "&Ändra"
 
 #. Resource IDs: (1346)
 msgid "&Export"
@@ -662,7 +658,7 @@ msgstr "&Nej"
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
-msgstr "&Anteckningar:"
+msgstr "&Noteringar:"
 
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
@@ -1270,7 +1266,7 @@ msgstr "Lägg till grupp"
 
 #. Resource IDs: (466)
 msgid "Additional"
-msgstr "Ytterligare"
+msgstr "Tillägg"
 
 #. Resource IDs: (340, 1123)
 msgid "Advanced"
@@ -1365,21 +1361,15 @@ msgstr "En alias kan inte referera till sig själv!"
 msgid "An attempt was made to access %1 past its end."
 msgstr "Ett försök gjordes att få tillgång till %1 efter dess avslut."
 
-# Please, explain the situation.
-# [ronys] - odd, but I can't find where this is used. It could have
-# [ronys] bee nremoved from the code.
 #. Resource IDs: (3868)
 #, c-format
 msgid "An attempt was made to read from the writing %1."
-msgstr "Ett försök gjordes att läsa från %1 som skrivs."
+msgstr "Ett försök gjordes att läsa från %1 som skrivits."
 
-# Please, explain the situation.
-# [ronys] - odd, but I can't find where this is used. It could have
-# [ronys] bee nremoved from the code.
 #. Resource IDs: (3868)
 #, c-format
 msgid "An attempt was made to write to the reading %1."
-msgstr "Ett försök gjordes att skriva till %1 som läses."
+msgstr "Ett försök gjordes att skriva till %1 som visas."
 
 #. Resource IDs: (329)
 #, c-format
@@ -1389,7 +1379,7 @@ msgstr "En post med Grupp\"%s\", Titel \"%s\" och Användarnamn \"%s\" finns red
 #. Resource IDs: (356)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
-msgstr "En post med grupp\"%s\", Titel \"%s\" och tomt användarnamn finns redan."
+msgstr "En post med Grupp\"%s\", Titel \"%s\" och tomt Användarnamn finns redan."
 
 #. Resource IDs: (339)
 #, c-format
@@ -1399,7 +1389,7 @@ msgstr "En post med en tom Grupp, Titel \"%s\" och Användarnamn \"%s\" finns re
 #. Resource IDs: (357)
 #, c-format
 msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
-msgstr "En post med en tom grupp, titel \"%s\" och tomt användarnamn finns redan."
+msgstr "En post med en tom Grupp, Titel \"%s\" och tomt Användarnamn finns redan."
 
 #. Resource IDs: (3843)
 msgid "An invalid argument was encountered."
@@ -1471,7 +1461,7 @@ msgstr "Armenian Western"
 
 #. Resource IDs: (330)
 msgid "As the double quotation character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "Då citattecknet används för att avgränsa hela notatfältet, får det inte användas inom notatfältet för att avgränsa ett antal rader. Använd ett annat tecken."
+msgstr "Då citattecknet används för att avgränsa hela noteringsfältet, får det inte användas inom noteringsfältet för att avgränsa ett antal rader. Använd ett annat tecken."
 
 #. Resource IDs: (331)
 msgid ""
@@ -1530,8 +1520,6 @@ msgstr "Säkerhetskopians mapp:"
 msgid "Backups"
 msgstr "Säkerhetskopior"
 
-# Not shore where Base appears and therefore what the translation would be.
-# [ronys] This is from the Manage->Options->Backups dialog box.
 #. Resource IDs: (65535)
 msgid "Base:"
 msgstr "Bas:"
@@ -1539,7 +1527,7 @@ msgstr "Bas:"
 # Nor sure where this one pops up. Basic could be translated different
 #. Resource IDs: (465)
 msgid "Basic"
-msgstr "Enkel"
+msgstr "Bas"
 
 #. Resource IDs: (515)
 msgid "Belarusian"
@@ -1637,7 +1625,6 @@ msgstr "C:F[R/W]"
 msgid "C:None  "
 msgstr "C:Inga"
 
-# [ronys] For debug - you can leave this as-is
 #. Resource IDs: (202)
 msgid "C:Reg   "
 msgstr "C:Reg   "
@@ -1784,11 +1771,11 @@ msgstr "Klicka för att ändra läge"
 
 #. Resource IDs: (353)
 msgid "Click to copy to clipboard"
-msgstr "Klicka kopierar till urklippet"
+msgstr "Klicka kopierar till urklipp"
 
 #. Resource IDs: (358)
 msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
-msgstr "Klicka föratt kopiera till klippbordet, Ctrl+Klick för att också sätta URL-fältet till detta värde"
+msgstr "Klicka föratt kopiera till urklipp, Ctrl+Klick för att också sätta URL-fältet till detta värde"
 
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
@@ -2009,7 +1996,7 @@ msgstr "Kopiera &noteringar till urklipp"
 
 #. Resource IDs: (332)
 msgid "Copy &Notes to clipboard"
-msgstr "Kopiera n&otat till urklipp"
+msgstr "Kopiera n&oteringar till urklipp"
 
 #. Resource IDs: (32059)
 msgid "Copy &Username to Clipboard"
@@ -2017,7 +2004,7 @@ msgstr "Kopiera &användarnamnet till urklipp"
 
 #. Resource IDs: (332)
 msgid "Copy &Username to clipboard"
-msgstr "Kopiera anv&ändare till urklipp"
+msgstr "Kopiera anv&ändarnamnet till urklipp"
 
 #. Resource IDs: (1174)
 msgid "Copy All"
@@ -2029,11 +2016,11 @@ msgstr "Kopiera in här"
 
 #. Resource IDs: (32080)
 msgid "Copy Run Command to Clipboard"
-msgstr "Kopiera körkommandot till klippbordet"
+msgstr "Kopiera körkommandot till urklipp"
 
 #. Resource IDs: (32070)
 msgid "Copy UR&L to Clipboard"
-msgstr "Kopiera UR&L till klippbordet"
+msgstr "Kopiera UR&L till urklipp"
 
 #. Resource IDs: (329)
 msgid "Copy URL to Clipboard"
@@ -2043,15 +2030,13 @@ msgstr "Kopiera URL till urklipp"
 msgid "Copy URL to clipboard"
 msgstr "Kopiera URL till urklipp"
 
-# Is there a difference between Clipbord and clipboard?
 #. Resource IDs: (32071)
 msgid "Copy email to Clipboard"
-msgstr "Kopiera e-post till klippbordet"
+msgstr "Kopiera e-post till urklipp"
 
-# Is there a difference between Clipbord and clipboard?
 #. Resource IDs: (358)
 msgid "Copy email to clipboard"
-msgstr "Kopiera e-post till klippbordet"
+msgstr "Kopiera e-post till urklipp"
 
 #. Resource IDs: (325)
 msgid "Copy notes to clipboard"
@@ -2360,7 +2345,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
-msgstr "Dubbelklickets inverkan:"
+msgstr "Att dubbelklicka:"
 
 #. Resource IDs: (314)
 msgid "Double-Click on entry to Autotype"
@@ -2376,7 +2361,7 @@ msgstr "Dubbelklicka på posten för att gå till URL + autoskriva"
 
 #. Resource IDs: (314)
 msgid "Double-Click on entry to Copy Notes"
-msgstr "Dubbelklicka på posten för att kopiera notat"
+msgstr "Dubbelklicka på posten för att kopiera noteringar"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Copy Password"
@@ -2388,7 +2373,7 @@ msgstr "Dubbelklicka på posten för att kopiera lösenordet och minimera"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Copy Username"
-msgstr "Dubbelklicka på posten för att kopiera användaren"
+msgstr "Dubbelklicka på posten för att kopiera användarnamnet"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Run Command"
@@ -2400,7 +2385,7 @@ msgstr "Dubbelklicka på posten för att skicka e-post"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to View/Edit it"
-msgstr "Dubbelklicka på posten för att visa/redigera den"
+msgstr "Dubbelklicka på posten för att visa/Ändra den"
 
 #. Resource IDs: (65535)
 msgid "Double-click action"
@@ -2408,7 +2393,7 @@ msgstr "Dubbelklicksval"
 
 #. Resource IDs: (357)
 msgid "Dragbar: Hold left mouse button down on selected picture and drag to, say, a field on a web page. On releasing the mouse button, the particular contents (Group, Title, Username, Password, Notes or URL) will be pasted into that field."
-msgstr "Draglist: Håll vänster musknapp nere på vald bild och drag till, exempelvis, ett fält på en websida. Då musknappen släpps kommer motsvarande innehåll ('Grupp, Titel, Användarnamn, Lösenord, Anteckning eller URL) att klistras in i det fältet."
+msgstr "Draglist: Håll vänster musknapp nere på vald bild och drag till, exempelvis, ett fält på en websida. Då musknappen släpps kommer motsvarande innehåll ('Grupp, Titel, Användarnamn, Lösenord, Noteringar eller URL) att klistras in i det fältet."
 
 #. Resource IDs: (342)
 #, c-format
@@ -2984,7 +2969,7 @@ msgstr "Grupp\t"
 
 #. Resource IDs: (328)
 msgid "Group\tTitle\tUsername\tPassword Expiry Date\r\n"
-msgstr "Grupp\tTitel\tAnvändare\tLösenordets utgångsdatum\r\n"
+msgstr "Grupp\tTitel\tAnvändarnamn\tLösenordets utgångsdatum\r\n"
 
 #. Resource IDs: (516)
 msgid "Gujarati"
@@ -3018,12 +3003,9 @@ msgstr "Hjälp (F1)"
 msgid "Hexadecimal characters"
 msgstr "Hexadecimala tecken"
 
-# Please, explain the situation.
-# [ronys] When defining a password generation policy, if you select
-# [ronys] a hex password, the other options are meaningless.
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options!"
-msgstr "Hexadecimalt utesluter ömsesidigt andra valmöjligheter!"
+msgstr "Hexadecimalt utesluter andra valmöjligheter!"
 
 #. Resource IDs: (519)
 msgid "Hindi Traditional"
@@ -3499,7 +3481,7 @@ msgstr "Rad %d: "
 
 #. Resource IDs: (65535)
 msgid "Line delimiter in Notes field:"
-msgstr "Avslutar rad i notatfält:"
+msgstr "Avslutar rad i noteringsfält:"
 
 #. Resource IDs: (1152)
 msgid "List"
@@ -3787,7 +3769,7 @@ msgstr "Inga fält är valda för att filtrera bilden!"
 
 #. Resource IDs: (330)
 msgid "No function selected for basing your restrictions."
-msgstr "Ingen funktion har valts för att stödja dina begränsningar."
+msgstr "Ingen funktion har valts för att stödja dina restriktioner."
 
 #. Resource IDs: (351)
 msgid "No items matched your filter"
@@ -3843,11 +3825,11 @@ msgstr "Notera: Postformatet är»Grupp»Titel»Användarnamn»"
 
 #. Resource IDs: (189, 327)
 msgid "Notes"
-msgstr "Notat"
+msgstr "Noteringar"
 
 #. Resource IDs: (355)
 msgid "Notes copied "
-msgstr "Notat kopierade"
+msgstr "Noteringar kopierade"
 
 #. Resource IDs: (348)
 msgid "Number is set to the maximum value.  'Greater than' is not allowed."
@@ -4013,7 +3995,6 @@ msgstr ""
 "%s\n"
 "\n"
 
-# It's used in the export->Text and export->XML prompts for passphrases
 #. Resource IDs: (334)
 msgid "Passkey incorrect"
 msgstr "Felaktigt lösenord"
@@ -4175,7 +4156,6 @@ msgstr "Lösenordets minsta längd"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Lösenordet borde bestå av blandade tecken med åtminståne en siffra eller interpunkteringstecken"
 
-# Caused an error or the particular version has an error (bugg)?
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
@@ -4416,7 +4396,7 @@ msgid ""
 "\r\n"
 "Pressing Cancel stops the password being copied."
 msgstr ""
-"Tryck på OK så kopieras den valda postens lösenord till klippbordet. The clipboard will be securely cleared when Password Safe is closed.\r\n"
+"Tryck på OK så kopieras den valda postens lösenord till urklipp. Urklipp rensas säkert närPassword Safe stängs.\r\n"
 "\r\n"
 "Tryck på Avsluta så stoppas kopieringen av lösenordet."
 
@@ -4458,7 +4438,7 @@ msgstr "Visa ikon i aktivitetsfältet"
 
 #. Resource IDs: (1030)
 msgid "Query user to set default username"
-msgstr "Be användaren ange en förvald användare"
+msgstr "Be användaren ange ett förvalt användarnamn"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -4548,7 +4528,7 @@ msgstr "Rapport skapad"
 #. Resource IDs: (204)
 #, c-format
 msgid "Report of %s function started at %s"
-msgstr "Rapport på %s åtgärd som startade %s "
+msgstr "Rapport på %s funktion som startade %s "
 
 #. Resource IDs: (65535)
 msgid "Requested Values:"
@@ -4865,7 +4845,7 @@ msgstr "Ange datum/tid"
 
 #. Resource IDs: (144)
 msgid "Set Default Username?"
-msgstr "Ange förvald användare?"
+msgstr "Använda förvalt användarnamn?"
 
 #. Resource IDs: (351)
 msgid "Set Display Filter"
@@ -4957,19 +4937,19 @@ msgstr "Visa &sökverktygslisten\tCtrl+F"
 
 #. Resource IDs: (354)
 msgid "Show Notes"
-msgstr "Visa anteckningar"
+msgstr "Visa noteringar"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr "Visa anteckningar som verktygstips i Träd- && Tabellvyer"
+msgstr "Visa noteringar som verktygstips i Träd- && Tabellvyer"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
-msgstr "Visa anteckningar i Ändra"
+msgstr "Visa noteringar i Ändra post"
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
-msgstr "Visa lösenord i Lägg till && ändra"
+msgstr "Visa lösenord i Lägg till && Ändra post"
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
@@ -4995,19 +4975,17 @@ msgstr "Visa poster med identiska jämförda fält (Notera: Okända fält jämf�
 msgid "Show grid lines in List View"
 msgstr "Visa radlinjer i Listvyn"
 
-# Is this a headline?
-# Is 'Information on abortion' or 'Choose abortion' suitable?
 #. Resource IDs: (1391)
 msgid "Signal Abort"
-msgstr "Meddelande om avbrott"
+msgstr "Simulera avslut"
 
 #. Resource IDs: (1389)
 msgid "Signal Illegal Instruction"
-msgstr "Signalera ogiltig instruktion"
+msgstr "Simulera ogiltig instruktion"
 
 #. Resource IDs: (1390)
 msgid "Signal Terminate"
-msgstr "Signalera avbryt"
+msgstr "Simulera avbryt"
 
 #. Resource IDs: (334)
 #, c-format
@@ -5550,7 +5528,7 @@ msgstr "Titel\t"
 
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
-msgstr "För att lägga till en ny post, fyll i fälten nedan. Åtminstone en titel och ett lösenord krävs. Om du har en förvald användare, kommer den att visas i användarfältet."
+msgstr "För att lägga till en ny post, fyll i fälten nedan. Åtminstone en titel och ett lösenord krävs. Om du har förvalt användarnamn, kommer det att visas i användarfältet."
 
 #. Resource IDs: (32106)
 msgid "Toolbar &visible"
@@ -5677,7 +5655,6 @@ msgstr "Kan inte starta systemstöd för e-post."
 msgid "Unable to read from %1, it is opened by someone else."
 msgstr "Kan inte läsa från %1, den har öppnats av någon annan."
 
-# [ronys] see my previous comment. A locker may be ronys@my-machine, or, in general, user@machine.
 #. Resource IDs: (189)
 msgid "Unable to read locker?"
 msgstr "Kan du inte se vem som låser filen?"
@@ -5840,11 +5817,11 @@ msgstr ""
 "  -s = starta minimerad\n"
 "  -m = starta minimerad & stängd\n"
 "\n"
-"In addition, the following flags may be used:\n"
-" -u user (use user's preferences instead of login name)\n"
-" -h host (use host to look up preferences instead of the machine's name)\n"
-" -g config_file (use config_file instead of pwsafe.cfg)\n"
-" -q (don't complain about missing fonts, dlls, etc.)"
+"Därtill kan följande flaggor användas:\n"
+" -u = användare (använd användarens val i stället för inloggningsnamnet)\n"
+" -h = värd (använd värd för att söka val i stället för maskinnamnet)\n"
+" -g = config_file (use config_filen i stället för pwsafe.cfg)\n"
+" -q = (anmärk inte på saknade fonter, dlls, etc.)"
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -5892,7 +5869,7 @@ msgstr "Använd polycin nedan:"
 
 #. Resource IDs: (327)
 msgid "User Name"
-msgstr "Användare"
+msgstr "Användarnamn"
 
 #. Resource IDs: (339)
 msgid "User [Mandatory Field]"
@@ -5900,11 +5877,11 @@ msgstr "Användare [Obligatorisk]"
 
 #. Resource IDs: (355)
 msgid "User copied "
-msgstr "Användare kopirad"
+msgstr "Användare kopierad"
 
 #. Resource IDs: (188)
 msgid "Username\t"
-msgstr "Användare\t"
+msgstr "Användarnamn\t"
 
 #. Resource IDs: (65535)
 msgid "Using application:"
@@ -6028,8 +6005,6 @@ msgstr "Varning! Denna åtgärd kommer att skapa en oskyddad kopia av ALLA löse
 msgid "Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is NOT sufficient."
 msgstr "Varning! Denna åtgärd kommer att skapa en oskyddad kopia av ALLA lösenord i databasen. Att radera denna kopia efter användning är INTE tillräckligt."
 
-# [ronys] "Passphrase" is another term for the master combination.
-# We show this message if the user sets the passphrase to something too short, such as "1234", etc.
 #. Resource IDs: (331)
 #, c-format
 msgid ""
@@ -6068,7 +6043,7 @@ msgid ""
 "\n"
 "It would then automatically be put in the dialog each time you add a new item."
 msgstr ""
-"Vill du använda \"%s\" som förvald användare?\n"
+"Vill du använda \"%s\" som förvalt användarnamn?\n"
 "\n"
 "Den kommer isåfall att automatiskt läggas i dialogen när du lägger till en ny post."
 
@@ -6128,7 +6103,7 @@ msgstr "[Ingen aktuell databas]"
 
 #. Resource IDs: (328)
 msgid "[Notes hidden - click here to display]"
-msgstr "[Notat är dolda - klicka här för att visa]"
+msgstr "[Noteringar är dolda - klicka här för att visa]"
 
 #. Resource IDs: (2004)
 msgid ""
@@ -6232,7 +6207,7 @@ msgid ""
 "Copy Notes to Clipboard"
 msgstr ""
 "\n"
-"Kopiera notat till urklipp"
+"Kopiera noteringar till urklipp"
 
 #. Resource IDs: (2004)
 msgid ""
@@ -6248,7 +6223,7 @@ msgid ""
 "Copy Run Command to Clipboard"
 msgstr ""
 "\n"
-"Kopiera körkommandot till klippbordet"
+"Kopiera körkommandot till urklipp"
 
 #. Resource IDs: (2004)
 msgid ""
@@ -6256,7 +6231,7 @@ msgid ""
 "Copy Username to Clipboard"
 msgstr ""
 "\n"
-"Kopiera användare till urklipp"
+"Kopiera användarnamn till urklipp"
 
 #. Resource IDs: (2020)
 msgid ""
@@ -6619,7 +6594,7 @@ msgid ""
 "email: "
 msgstr ""
 "\r\n"
-"epost: "
+"e-post: "
 
 #. Resource IDs: (346)
 #, c-format
@@ -6709,7 +6684,7 @@ msgstr "och"
 
 #. Resource IDs: (1352)
 msgid "as default username"
-msgstr "som förvald användare"
+msgstr "som förvalt användarnamn"
 
 #. Resource IDs: (190)
 msgid "autotype:"
@@ -6727,8 +6702,6 @@ msgstr "börjar med"
 msgid "between"
 msgstr "mellan"
 
-# [ronys] This is (almost) debugging code. A regular user should
-# never see this.
 #. Resource IDs: (326)
 msgid "big endian"
 msgstr "big endian"
@@ -6781,14 +6754,13 @@ msgstr "slutar inte med"
 msgid "does not equal"
 msgstr "är inte lika med"
 
-# What is the difference between e-mail and email?
 #. Resource IDs: (192)
 msgid "e-mail\t"
 msgstr "e-post\t"
 
 #. Resource IDs: (358)
 msgid "email"
-msgstr "epost"
+msgstr "e-post"
 
 #. Resource IDs: (358)
 msgid "email copied "
@@ -6890,7 +6862,6 @@ msgstr "mindre än"
 msgid "less than or equal to"
 msgstr "mindre än eller lika med"
 
-# [ronys] see my comment on big endian.
 #. Resource IDs: (326)
 msgid "little endian"
 msgstr "little endian"
@@ -6902,7 +6873,7 @@ msgstr "minuters vila"
 #. Resource IDs: (342)
 #, c-format
 msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "flera poster finns med titel=%s och användare=%s eller med grupp=%s och titel=%s."
+msgstr "flera poster finns med titel=%s och användarnamn=%s eller med grupp=%s och titel=%s."
 
 #. Resource IDs: (342)
 #, c-format
@@ -6912,22 +6883,22 @@ msgstr "fler poster finns med titel=%s."
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "inga poster finns i roten med titel=%s och användare=%s."
+msgstr "inga poster finns i roten med titel=%s och användarnamn=%s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "ingen post finns med grupp=%s, titel=%s och tom användare."
+msgstr "ingen post finns med grupp=%s, titel=%s och tomt användarnamn."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "ingen post finns med grupp=%s, titel=%s och användare=%s."
+msgstr "ingen post finns med grupp=%s, titel=%s och användarnamn=%s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "ingen post finns med titel=%s och användare=%s eller med grupp=%s, titel=%s."
+msgstr "ingen post finns med titel=%s och användarnamn=%s eller med grupp=%s, titel=%s."
 
 #. Resource IDs: (342)
 #, c-format
