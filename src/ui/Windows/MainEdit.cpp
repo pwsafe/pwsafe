@@ -1567,15 +1567,15 @@ void DboxMain::OnRunCommand()
                                  pci->GetTitle(), pci->GetUser(), 
                                  sx_pswd, pci->GetNotes());
   SetClipboardData(pci->GetPassword());
+  UpdateLastClipboardAction(CItemData::PASSWORD);
+  UpdateAccessTime(pci_original);
+
   bool rc = m_runner.runcmd(sx_Expanded_ES, m_AutoType);
   if (!rc) {
     m_bDoAutoType = false;
     m_AutoType.clear();
     return;
   }
-
-  UpdateLastClipboardAction(CItemData::RUNCMD);
-  UpdateAccessTime(pci_original);
 }
 
 void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
