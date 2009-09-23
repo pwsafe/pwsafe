@@ -710,37 +710,36 @@ void DboxMain::OnOptions()
     }
 
     // update idle timeout values, if changed
-    if (security.m_LockOnIdleTimeout != prevLockOIT)
+    if (security.m_LockOnIdleTimeout != prevLockOIT) {
+      KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       if (security.m_LockOnIdleTimeout == TRUE) {
-        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
         ResetIdleLockCounter();
-      } else {
-        KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
       }
-      SetIdleLockCounter(security.m_IdleTimeOut);
+    }
 
-      /*
-      * Here are the old (pre 2.0) semantics:
-      * The username entered in this dialog box will be added to all the entries
-      * in the username-less database that you just opened. Click Ok to add the
-      * username or Cancel to leave them as is.
-      *
-      * You can also set this username to be the default username by clicking the
-      * check box.  In this case, you will not see the username that you just added
-      * in the main dialog (though it is still part of the entries), and it will
-      * automatically be inserted in the Add dialog for new entries.
-      *
-      * To me (ronys), these seem too complicated, and not useful once password files
-      * have been converted to the old (username-less) format to 1.9 (with usernames).
-      * (Not to mention 2.0).
-      * Therefore, the username will now only be a default value to be used in new entries,
-      * and in converting pre-2.0 databases.
-      */
+    /*
+    * Here are the old (pre 2.0) semantics:
+    * The username entered in this dialog box will be added to all the entries
+    * in the username-less database that you just opened. Click Ok to add the
+    * username or Cancel to leave them as is.
+    *
+    * You can also set this username to be the default username by clicking the
+    * check box.  In this case, you will not see the username that you just added
+    * in the main dialog (though it is still part of the entries), and it will
+    * automatically be inserted in the Add dialog for new entries.
+    *
+    * To me (ronys), these seem too complicated, and not useful once password files
+    * have been converted to the old (username-less) format to 1.9 (with usernames).
+    * (Not to mention 2.0).
+    * Therefore, the username will now only be a default value to be used in new entries,
+    * and in converting pre-2.0 databases.
+    */
 
-      m_core.SetDefUsername(misc.m_defusername.GetString());
-      m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
-      // Finally, keep prefs file updated:
-      prefs->SaveApplicationPreferences();
+    m_core.SetDefUsername(misc.m_defusername.GetString());
+    m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
+    // Finally, keep prefs file updated:
+    prefs->SaveApplicationPreferences();
 
     if (shortcuts.HaveShortcutsChanged()) {
       // Create vector of shortcuts for user's config file
@@ -800,8 +799,9 @@ void DboxMain::OnOptions()
       UpdateAccelTable();
 
       // Set menus to be rebuilt with user's changed shortcuts
-      for (int i = 0; i < NUMPOPUPMENUS; i++)
+      for (int i = 0; i < NUMPOPUPMENUS; i++) {
         m_bDoShortcuts[i] = true;
+      }
     }
   }
   // JHF no hotkeys under WinCE
