@@ -1033,6 +1033,12 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           SetToolBarPositions();
         }
       }
+      // Set timer for user-defined idle lockout, if selected (DB preference)
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
+        KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+        ResetIdleLockCounter();
+        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+      }
       break;
   } // switch statement
 #endif

@@ -214,6 +214,12 @@ BOOL DboxMain::OpenOnInit(void)
     m_DDURL.SetStaticState(false);
     m_DDemail.SetStaticState(false);
   }
+
+  // Set timer for user-defined idle lockout, if selected (DB preference)
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
+    ResetIdleLockCounter();
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+  }
   return TRUE;
 }
 
@@ -297,8 +303,9 @@ int DboxMain::New()
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+    KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
     ResetIdleLockCounter();
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
   }
 
   return PWScore::SUCCESS;
@@ -661,8 +668,9 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+    KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
     ResetIdleLockCounter();
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
   }
 
   return rc;
