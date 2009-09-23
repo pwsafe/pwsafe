@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-09-21 20:45+0100\n"
+"PO-Revision-Date: 2009-09-24 00:37+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -4829,7 +4829,7 @@ msgstr "Wählen Sie die Tastatur aus:"
 msgid "Select Location for Intermediate Backups"
 msgstr "Wähle den Speicherort für die Zwischen-Sicherung aus"
 
-#. Resource IDs: (474)
+#. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr ""
 
@@ -4863,7 +4863,7 @@ msgstr "Senden"
 
 #. Resource IDs: (32074)
 msgid "Send &email"
-msgstr "Send &Email"
+msgstr "&Email senden"
 
 #. Resource IDs: (3866)
 msgid "Send Mail failed to send message."
