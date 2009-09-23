@@ -373,8 +373,8 @@ void DboxMain::OnTrayCopyURL(UINT nID)
   ipos = cs_URL.find(L"{alt}");
   if (ipos != StringX::npos)
     cs_URL.replace(ipos, 5, L"");
-  SetClipboardData(cs_URL);
 
+  SetClipboardData(cs_URL);
   UpdateLastClipboardAction(CItemData::URL);
   UpdateAccessTime(&ci);
 }
@@ -414,8 +414,8 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   ipos = cs_URL.find(L"{alt}");
   if (ipos != StringX::npos)
     cs_URL.replace(ipos, 5, L"");
-  SetClipboardData(cs_URL);
 
+  SetClipboardData(cs_URL);
   UpdateLastClipboardAction(CItemData::URL);
   UpdateAccessTime(&ci);
 }

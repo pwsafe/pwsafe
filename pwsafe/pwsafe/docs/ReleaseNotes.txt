@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.19
 ==================
+[2865116] Status-Bar message when doing a "Run Command" now correctly
+states "Password Copied".
 [2856750] The Password Policy now correctly displayed in List View,
 when selected.
 [2856051] Changes to Database preferences are no longer lost upon minimize.

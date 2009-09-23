@@ -893,7 +893,7 @@ void CAddEdit_Basic::OnSendEmail()
   StringX sx_email = StringX(M_email());
 
   M_pDbx()->SendEmail(sx_email.c_str());
-  M_pDbx()->UpdateLastClipboardAction((int)CItemData::EMAIL);
+  M_pDbx()->UpdateLastClipboardAction(CItemData::EMAIL);
 }
 
 LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
