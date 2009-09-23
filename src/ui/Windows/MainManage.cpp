@@ -243,6 +243,7 @@ void DboxMain::OnOptions()
   BOOL                    save_preexpirywarn;
   DWORD                   save_hotkey_value;
   int                     save_preexpirywarndays;
+  UINT                    prevLockInterval;
   CShortcut shortcut;
   BOOL StartupShortcutExists = shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
 
@@ -317,7 +318,7 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
   security.m_LockOnIdleTimeout = prevLockOIT = prefs->
     GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
-  security.m_IdleTimeOut = prefs->
+  security.m_IdleTimeOut = prevLockInterval = prefs->
     GetPref(PWSprefs::IdleTimeout);
 
   passwordpolicy.m_pwuselowercase = prefs->
@@ -710,10 +711,11 @@ void DboxMain::OnOptions()
     }
 
     // update idle timeout values, if changed
-    if (security.m_LockOnIdleTimeout != prevLockOIT) {
+    if (security.m_LockOnIdleTimeout != prevLockOIT ||
+        security.m_IdleTimeOut != prevLockInterval) {
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+      ResetIdleLockCounter();
       if (security.m_LockOnIdleTimeout == TRUE) {
-        ResetIdleLockCounter();
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
       }
     }

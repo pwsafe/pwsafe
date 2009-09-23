@@ -216,6 +216,7 @@ BOOL DboxMain::OpenOnInit(void)
   }
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
+  KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     ResetIdleLockCounter();
     SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
@@ -302,8 +303,8 @@ int DboxMain::New()
   UpdateMenuAndToolBar(true);
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
+  KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
     ResetIdleLockCounter();
     SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
   }
@@ -667,8 +668,8 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   SelectFirstEntry();
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
+  KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
     ResetIdleLockCounter();
     SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
   }
