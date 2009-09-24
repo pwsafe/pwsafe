@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-09-22 21:41-0800\n"
+"PO-Revision-Date: 2009-09-23 20:32-0800\n"
 "Last-Translator: Francois Lamoureux <franklamoureux@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr ""
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
 #. Resource IDs: (315)
 msgid " "
-msgstr ""
+msgstr " "
 
 #. Resource IDs: (204)
 msgid "  All Password History ignored."
@@ -4673,7 +4673,7 @@ msgid "Search"
 msgstr "Rechercher"
 
 #. Resource IDs: (330)
-#, fuzzy, c-format
+#, c-format
 msgid "Search has wrapped, continuing from the %s."
 msgstr "La recherche a atteint la fin du document, recommencé depuis %s."
 
@@ -6540,11 +6540,13 @@ msgid ""
 "\r\n"
 "email: "
 msgstr ""
+"\r\n"
+"courriel :"
 
 #. Resource IDs: (346)
 #, c-format
 msgid "\t%s was restricted to the following fields:"
-msgstr ""
+msgstr "\t%s a été restreint aux champs suivants :"
 
 #. Resource IDs: (336)
 #, c-format
@@ -6552,21 +6554,23 @@ msgid ""
 "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n"
 "\t\thas differences in the following fields:"
 msgstr ""
+"\tEntrée - Groupe : \"%s\"; Titre : \"%s\"; Utilisateur : \"%s\"\r\n"
+"\t\tcontient des différences dans les champs suivants :"
 
 #. Resource IDs: (335)
 #, c-format
 msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr ""
+msgstr "\tGroupe : '%s'; Titre: '%s'; Utilisateur : '%s'"
 
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string : '%s'"
-msgstr ""
+msgstr "\tAucune entrée contenant '%s' n'a été trouvé"
 
 #. Resource IDs: (347)
 #, c-format
 msgid "\tThe following entries were found containing search string : '%s'"
-msgstr ""
+msgstr "\tLes entrées suivantes, contenant le texte recherché '%s', ont été trouvées"
 
 #. Resource IDs: (346)
 #, c-format
@@ -6574,367 +6578,372 @@ msgid ""
 "\tThe following restrictions were selected:\r\n"
 "\t\t %s"
 msgstr ""
+"\tLes restrictions suivantes ont été sélectionnées:\r\n"
+"\t\t %s"
 
 #. Resource IDs: (205)
 msgid "\tThis entry has been made an alias of associated base entry."
-msgstr ""
+msgstr "\tCette entrée a été definie comme un alias de l'entrée de base associée."
 
 #. Resource IDs: (205)
 msgid "\tThis entry remains a normal entry and the password has not be changed."
-msgstr ""
+msgstr "\tCette entrée reste une entrée normale et le mot de passe n'a pas été changé."
 
 #. Resource IDs: (206)
 msgid "a base entry of a shortcut"
-msgstr ""
+msgstr "une entrée de base d'un raccourci"
 
 #. Resource IDs: (206)
 msgid "a base entry of an alias"
-msgstr ""
+msgstr "une entrée de base d'un alias"
 
 #. Resource IDs: (206)
 msgid "a normal entry"
-msgstr ""
+msgstr "une entrée normale"
 
 #. Resource IDs: (206)
 msgid "a shortcut entry"
-msgstr ""
+msgstr "une entrée raccourci"
 
 #. Resource IDs: (207)
 msgid "after"
-msgstr ""
+msgstr "après"
 
 #. Resource IDs: (344)
 msgid "alias"
-msgstr ""
+msgstr "alias"
 
 #. Resource IDs: (344)
 msgid "aliases"
-msgstr ""
+msgstr "alias"
 
 #. Resource IDs: (206)
 msgid "an alias entry"
-msgstr ""
+msgstr "une entréea alias"
 
 #. Resource IDs: (3841)
 msgid "an unnamed file"
-msgstr ""
+msgstr "un fichier sans nom"
 
 #. Resource IDs: (1307)
 msgid "and"
-msgstr ""
+msgstr "et"
 
 #. Resource IDs: (1352)
 msgid "as default username"
-msgstr ""
+msgstr "comme nom d'utilisateur par défaut"
 
 #. Resource IDs: (190)
 msgid "autotype:"
-msgstr ""
+msgstr "auto-entrée :"
 
 #. Resource IDs: (207)
 msgid "before"
-msgstr ""
+msgstr "avant"
 
 #. Resource IDs: (206)
 msgid "begins with"
-msgstr ""
+msgstr "commence avec"
 
 #. Resource IDs: (207)
 msgid "between"
-msgstr ""
+msgstr "entre"
 
 #. Resource IDs: (326)
 msgid "big endian"
-msgstr ""
+msgstr "big endian"
 
 #. Resource IDs: (355)
 msgid "bottom"
-msgstr ""
+msgstr "bas"
 
 #. Resource IDs: (344)
 msgid "conflict"
-msgstr ""
+msgstr "conflit"
 
 #. Resource IDs: (344)
 msgid "conflicts"
-msgstr ""
+msgstr "conflits"
 
 #. Resource IDs: (206)
 msgid "contains"
-msgstr ""
+msgstr "contient"
 
 #. Resource IDs: (1093)
 msgid "databases."
-msgstr ""
+msgstr "bases de données."
 
 #. Resource IDs: (1321)
 msgid "day(s)"
-msgstr ""
+msgstr "jour(s)"
 
 #. Resource IDs: (1298)
 msgid "days"
-msgstr ""
+msgstr "jours"
 
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
-msgstr ""
+msgstr "jour avant l'expiration des mots de passe"
 
 #. Resource IDs: (206)
 msgid "does not begin with"
-msgstr ""
+msgstr "ne commence pas par"
 
 #. Resource IDs: (206)
 msgid "does not contain"
-msgstr ""
+msgstr "ne contient pas"
 
 #. Resource IDs: (206)
 msgid "does not end with"
-msgstr ""
+msgstr "ne se termine pas par"
 
 #. Resource IDs: (206)
 msgid "does not equal"
-msgstr ""
+msgstr "n'égale pas"
 
 #. Resource IDs: (192)
 msgid "e-mail\t"
-msgstr ""
+msgstr "courriel\t"
 
 #. Resource IDs: (358)
 msgid "email"
-msgstr ""
+msgstr "courriel"
 
 #. Resource IDs: (358)
 msgid "email copied "
-msgstr ""
+msgstr "courriel copié"
 
 #. Resource IDs: (206)
 msgid "ends with"
-msgstr ""
+msgstr "se termine par"
 
 #. Resource IDs: (344)
 msgid "entries"
-msgstr ""
+msgstr "entrées"
 
 #. Resource IDs: (344)
 msgid "entry"
-msgstr ""
+msgstr "entré"
 
 #. Resource IDs: (206)
 msgid "equals"
-msgstr ""
+msgstr "égal"
 
 #. Resource IDs: (1191)
 msgid "filename"
-msgstr ""
+msgstr "nom de fichier"
 
 #. Resource IDs: (207)
 msgid "greater than"
-msgstr ""
+msgstr "plus grand que"
 
 #. Resource IDs: (207)
 msgid "greater than or equal to"
-msgstr ""
+msgstr "plus grand ou égal que"
 
 #. Resource IDs: (208)
 msgid "has expired"
-msgstr ""
+msgstr "a expiré"
 
 #. Resource IDs: (65535)
 msgid "has the following entries with expired passwords:"
-msgstr ""
+msgstr "a les entrées suivantes avec des mots de passe expiré :"
 
 #. Resource IDs: (314)
 msgid "http://passwordsafe.sourceforge.net/"
-msgstr ""
+msgstr "http://passwordsafe.sourceforge.net/"
 
 #. Resource IDs: (191)
 msgid "import"
-msgstr ""
+msgstr "importer"
 
 #. Resource IDs: (1320)
 msgid "in"
-msgstr ""
+msgstr "dans"
 
 #. Resource IDs: (207)
 msgid "invalid!"
-msgstr ""
+msgstr "invalide!"
 
 #. Resource IDs: (206)
 msgid "is"
-msgstr ""
+msgstr "est"
 
 #. Resource IDs: (207)
 msgid "is active"
-msgstr ""
+msgstr "est actif"
 
 #. Resource IDs: (207)
 msgid "is inactive"
-msgstr ""
+msgstr "est inactif"
 
 #. Resource IDs: (206)
 msgid "is not"
-msgstr ""
+msgstr "n'est pas"
 
 #. Resource IDs: (207)
 msgid "is not present"
-msgstr ""
+msgstr "n'est pas présent"
 
 #. Resource IDs: (207)
 msgid "is not set"
-msgstr ""
+msgstr "n'est pas défini"
 
 #. Resource IDs: (207)
 msgid "is present"
-msgstr ""
+msgstr "est présent"
 
 #. Resource IDs: (207)
 msgid "is set"
-msgstr ""
+msgstr "est défini"
 
 #. Resource IDs: (1144)
 msgid "last passwords"
-msgstr ""
+msgstr "derniers mots de passe"
 
 #. Resource IDs: (207)
 msgid "less than"
-msgstr ""
+msgstr "moins que"
 
 #. Resource IDs: (207)
 msgid "less than or equal to"
-msgstr ""
+msgstr "moins ou égal à"
 
 #. Resource IDs: (326)
 msgid "little endian"
-msgstr ""
+msgstr "little endian"
 
 #. Resource IDs: (65535)
 msgid "minutes idle"
-msgstr ""
+msgstr "minutes inactif"
 
 #. Resource IDs: (342)
 #, c-format
 msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr ""
+msgstr "plusieurs entrées existent avec titre = %s et nom d'utilisateur = %s ou groupe = %s et titre = %s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "multiple entries exist with title=%s."
-msgstr ""
+msgstr "plusieurs entrées existent avec titre = %s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists in the root with title=%s and username=%s."
-msgstr ""
+msgstr "aucune entrée n'existe à la base avec titre = %s et nom d'utilisateur = %s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr ""
+msgstr "aucune entrée n'existe avec groupe = %s, titre = %s et nom d'utilisateur vide."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr ""
+msgstr "aucune entrée n'existe avec groupe = %s, titre = %s et nom d'utilisateur = %s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr ""
+msgstr "aucune entrée n'existe avec titre = %s et nom d'utilisateur = %s ou avec groupe = %s, titre = %s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with title=%s."
-msgstr ""
+msgstr "aucune entrée n'existe avec titre = %s."
 
 #. Resource IDs: (204)
 #, c-format
 msgid "on database %s"
-msgstr ""
+msgstr "sur la base de données %s"
 
 #. Resource IDs: (3869)
 msgid "pixels"
-msgstr ""
+msgstr "pixels"
 
 #. Resource IDs: (65535)
 msgid "previous passwords per entry"
-msgstr ""
+msgstr "mots de passe précédents par entrée"
 
 #. Resource IDs: (338)
 msgid "pwsafe"
-msgstr ""
+msgstr "pwsafe"
 
 #. Resource IDs: (344)
 msgid "shortcut"
-msgstr ""
+msgstr "raccourci"
 
 #. Resource IDs: (346)
 #, c-format
 msgid "shortcut to %s"
-msgstr ""
+msgstr "raccourci vers %s"
 
 #. Resource IDs: (344)
 msgid "shortcuts"
-msgstr ""
+msgstr "raccourcis"
 
 #. Resource IDs: (1265)
 msgid "static"
-msgstr ""
+msgstr "statique"
 
 #. Resource IDs: (346)
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
-msgstr ""
+msgstr "en partie : '%s' champ '%s' '%s' %s"
 
 #. Resource IDs: (65535)
 msgid "the following text:"
-msgstr ""
+msgstr "le texte suivant :"
 
 #. Resource IDs: (354)
 msgid "top"
-msgstr ""
+msgstr "dessus"
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
-msgstr ""
+msgstr "entrées utilisées dans le menu de la Barre de Notification."
 
 #. Resource IDs: (32011)
 msgid "v&1.x format..."
-msgstr ""
+msgstr "format v&1.x..."
 
 #. Resource IDs: (32012)
 msgid "v&2 format..."
-msgstr ""
+msgstr "format v&2.x..."
 
 #. Resource IDs: (191)
 msgid "validation"
-msgstr ""
+msgstr "validation"
 
 #. Resource IDs: (357)
+#, fuzzy
 msgid "was"
-msgstr ""
+msgstr "a été"
 
 #. Resource IDs: (357)
+#, fuzzy
 msgid "were"
-msgstr ""
+msgstr "a été"
 
 #. Resource IDs: (1209)
 msgid "whatever"
-msgstr ""
+msgstr "peu importe"
 
 #. Resource IDs: (65535)
+#, fuzzy
 msgid "where"
-msgstr ""
+msgstr "où"
 
 #. Resource IDs: (208)
 msgid "will expire"
-msgstr ""
+msgstr "expirera"
 
 #. Resource IDs: (208)
 #, c-format
 msgid "within %d day(s)"
-msgstr ""
+msgstr "dans le(s) prochain(s) %d jours(s)"
 
 #. Resource IDs: (8004)
 msgid "xxxxxx"
-msgstr ""
+msgstr "xxxxxx"
 
