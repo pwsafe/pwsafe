@@ -32,6 +32,7 @@
 ////@begin forward declarations
 class PWSGrid;
 class PWSTreeCtrl;
+class PasswordSafeSearch;
 ////@end forward declarations
 
 /*!
@@ -155,6 +156,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
   void OnDeleteClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxEVT_FIND
+  void OnFindClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
   void OnClearclipboardClick( wxCommandEvent& event );
 
@@ -221,6 +225,9 @@ public:
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
   const CItemData *GetSelectedEntry() const;
+  
+  PasswordSafeSearch* m_search;
+
 };
 
 #endif

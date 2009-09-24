@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PasswordSafeSearch.h"
+				>
+			</File>
+			<File
 				RelativePath=".\properties.h"
 				>
 			</File>
@@ -285,6 +289,10 @@
 			</File>
 			<File
 				RelativePath=".\passwordsafeframe.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PasswordSafeSearch.cpp"
 				>
 			</File>
 			<File
