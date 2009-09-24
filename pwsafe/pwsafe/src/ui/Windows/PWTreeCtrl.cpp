@@ -182,7 +182,8 @@ CPWTreeCtrl::CPWTreeCtrl()
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
   m_bDeleteCtrl(false), m_bDeleteShift(false),
-  m_bRenameCtrl(false), m_bRenameShift(false)
+  m_bRenameCtrl(false), m_bRenameShift(false),
+  m_bDeletingAll(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -218,6 +219,7 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
+  ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelectionChanged)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_DESTROY()
   ON_WM_TIMER()
@@ -467,9 +469,9 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
   }
 }
 
-void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
+void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
 {
-  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
+  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNMHDR;
 
   *pLResult = TRUE; // TRUE cancels label editing
   m_bEditLabelCompleted = false;
@@ -623,7 +625,16 @@ final_check:
   return bRC;
 }
 
-void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
+void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult)
+{
+  *pLResult = 0;
+  if (m_bDeletingAll || GetCount() == 0)
+    return;
+
+  m_pDbx->OnItemSelected(pNMHDR, pLResult);
+}
+
+void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
 {
   if (m_pDbx->IsMcoreReadOnly())
     return; // don't edit in read-only mode
@@ -653,7 +664,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   these fields cannot be empty.
   */
 
-  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
+  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNMHDR;
   HTREEITEM ti = ptvinfo->item.hItem;
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
       ptvinfo->item.pszText[0] != L'\0') { // empty if text deleted - not allowed
@@ -1280,7 +1291,7 @@ exit:
   return retval;
 }
 
-void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
+void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
 {
   // This sets the whole D&D mechanism in motion...
   if (pNMHDR->code == TVN_BEGINDRAG)
@@ -1291,7 +1302,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   CPoint ptAction;
 
   NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
-  *pResult = 0;
+  *pLResult = 0L;
 
   GetCursorPos(&ptAction);
   ScreenToClient(&ptAction);

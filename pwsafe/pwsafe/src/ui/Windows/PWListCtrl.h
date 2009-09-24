@@ -44,6 +44,7 @@ protected:
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+  afx_msg void OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult);
   //}}AFX_MSG
 
   BOOL PreTranslateMessage(MSG* pMsg);
