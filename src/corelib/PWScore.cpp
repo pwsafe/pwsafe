@@ -168,7 +168,6 @@ void PWScore::ReInit(bool bNewFile)
   m_UHFL.clear();
 
   SetChanged(false, false);
-  NotifyListModified();
 }
 
 void PWScore::NewFile(const StringX &passkey)
@@ -182,7 +181,6 @@ void PWScore::NewFile(const StringX &passkey)
   // for new database:
   m_usedefuser = false;
   m_defusername = _T("");
-  NotifyListModified();
 }
 
 // functor object type for for_each:
@@ -1373,7 +1371,7 @@ int PWScore::ReadFile(const StringX &a_filename,
   AddDependentEntries(possible_shortcuts, NULL, CItemData::ET_SHORTCUT, CItemData::UUID);
   possible_aliases.clear();
   possible_shortcuts.clear();
-  NotifyListModified();
+  SetDBChanged(false);
 
   return closeStatus;
 }
