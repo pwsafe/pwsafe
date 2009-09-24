@@ -2345,13 +2345,13 @@ void DboxMain::UpdateStatusBar()
 #endif
 }
 
-void DboxMain::SetDCAText(CItemData * pci)
+void DboxMain::SetDCAText(CItemData *pci)
 {
   const short si_dca_default = short(PWSprefs::GetInstance()->
                        GetPref(PWSprefs::DoubleClickAction));
   short si_dca;
   if (pci == NULL) {
-    si_dca = si_dca_default;
+    si_dca = -1;
   } else {
     pci->GetDCA(si_dca);
     if (si_dca == -1)

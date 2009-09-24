@@ -33,6 +33,7 @@ CPWListCtrl::~CPWListCtrl()
 
 BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CPWListCtrl)
+  ON_NOTIFY_REFLECT(LVN_KEYDOWN, OnSelectionChanged)
   ON_MESSAGE(WM_CHAR, OnCharItemlist)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_MOUSEMOVE()
@@ -289,4 +290,21 @@ BOOL CPWListCtrl::OnEraseBkgnd(CDC* pDC)
   }
 
   return TRUE;
+}
+
+void CPWListCtrl::OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult)
+{
+  if (GetItemCount() == 0)
+    return;
+
+  LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+
+  switch(pLVKeyDown->wVKey) {
+    case VK_UP:
+    case VK_DOWN:
+      m_pDbx->OnItemSelected(pNMHDR, pLResult);
+      break;
+    default:
+      break;
+  }
 }

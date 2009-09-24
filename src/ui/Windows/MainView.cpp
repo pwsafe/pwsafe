@@ -830,7 +830,7 @@ void DboxMain::RefreshViews(const int iView)
   }
   if (iView & iTreeOnly) {
     m_ctlItemTree.SetRedraw(FALSE);
-    m_ctlItemTree.DeleteAllItems();
+    m_ctlItemTree.DeleteAll();
   }
   m_bBoldItem = false;
 
@@ -963,7 +963,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       m_selectedAtMinimize = getSelectedItem();
       m_ctlItemList.DeleteAllItems();
-      m_ctlItemTree.DeleteAllItems();
+      m_ctlItemTree.DeleteAll();
       m_bBoldItem = false;
 
       if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
@@ -1045,65 +1045,100 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   m_bSizing = false;
 }
 
-void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void DboxMain::OnListItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
 {
-  *pLResult = 0L;
-  NMITEMACTIVATE *plv = (NMITEMACTIVATE *)pNotifyStruct;
-
-  int item = plv->iItem;
-  CItemData *pci(NULL);
-  if (item != -1) { // -1 if nothing selected, e.g., empty list
-    pci = (CItemData *)m_ctlItemList.GetItemData(item);
-    UpdateToolBarForSelectedItem(pci);
-  }
-
-  SetDCAText(pci);
-
-  m_LastFoundTreeItem = NULL;
-  m_LastFoundListItem = -1;
+  OnItemSelected(pNMHDR, pLResult);
 }
 
-void DboxMain::OnTreeItemSelected(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
+void DboxMain::OnTreeItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
 {
-  // Seems that under Vista with Windows Common Controls V6, it is ignoring
-  // the single click on the button (+/-) of a node and only processing the 
-  // double click, which generates a copy of whatever the user selected
-  // for a double click (except that it invalid for a node!) and then does
-  // the expand/collapse as appropriate.
-  // This codes attemts to fix this.
+  OnItemSelected(pNMHDR, pLResult);
+}
 
-  UnFindItem();
-
+void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
+{
   *pLResult = 0L;
-  TVHITTESTINFO htinfo = {0};
   CItemData *pci(NULL);
 
-  CPoint local;
-  local = ::GetMessagePos();
-  m_ctlItemTree.ScreenToClient(&local);
-  htinfo.pt = local;
-  m_ctlItemTree.HitTest(&htinfo);
+  if (!m_IsListView) {
+    // Seems that under Vista with Windows Common Controls V6, it is ignoring
+    // the single click on the button (+/-) of a node and only processing the 
+    // double click, which generates a copy of whatever the user selected
+    // for a double click (except that it invalid for a node!) and then does
+    // the expand/collapse as appropriate.
+    // This codes attempts to fix this.
+    HTREEITEM hItem(NULL);
 
-  // Check it was on an item
-  if (htinfo.hItem != NULL) {
-    // If a group
-    if (!m_ctlItemTree.IsLeaf(htinfo.hItem)) {
-      // If on indent or button
-      if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
-        m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
-        *pLResult = 1L; // We have toggled the group
-        return;
+    UnFindItem();
+    switch (pNMHDR->code) {
+      case NM_CLICK:
+      {
+        // Mouseclick - Need to find the item clicked via HitTest
+        TVHITTESTINFO htinfo = {0};
+        CPoint local = ::GetMessagePos();
+        m_ctlItemTree.ScreenToClient(&local);
+        htinfo.pt = local;
+        m_ctlItemTree.HitTest(&htinfo);
+        hItem = htinfo.hItem;
+        if (hItem != NULL) {
+          // If a group
+          if (!m_ctlItemTree.IsLeaf(hItem)) {
+            // If on indent or button
+            if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
+              m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+              *pLResult = 1L; // We have toggled the group
+              return;
+            }
+          }
+        }
+        break;
       }
-    } else {
-      // On an entry
-      pci = (CItemData *)m_ctlItemTree.GetItemData(htinfo.hItem);
+      case TVN_SELCHANGED:
+        // Keyboard - We are given the new selected entry
+        hItem = ((NMTREEVIEW *)pNMHDR)->itemNew.hItem;
+        break;
+      default:
+        // No idea how we got here!
+        return;
+    }    
+
+    // Check it was on an item
+    if (hItem != NULL && m_ctlItemTree.IsLeaf(hItem)) {
+      pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+    }
+
+    HTREEITEM hti = m_ctlItemTree.GetDropHilightItem();
+    if (hti != NULL)
+      m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
+  } else {
+    int iItem(-1);
+    switch (pNMHDR->code) {
+      case NM_CLICK:
+      {
+        LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+        iItem = pLVItemActivate->iItem;
+        break;
+      }
+      case LVN_KEYDOWN:
+      {
+        LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+        iItem = m_ctlItemList.GetNextItem(-1, LVNI_SELECTED);
+        int nCount = m_ctlItemList.GetItemCount();
+        if (pLVKeyDown->wVKey == VK_DOWN)
+          iItem = (iItem + 1) % nCount;
+        if (pLVKeyDown->wVKey == VK_UP)
+          iItem = (iItem - 1 + nCount) % nCount;
+        break;
+      }
+      default:
+        // No idea how we got here!
+        return;
+    }
+    if (iItem != -1) {
+      // -1 if nothing selected, e.g., empty list
+      pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
     }
   }
-
-  HTREEITEM hti = m_ctlItemTree.GetDropHilightItem();
-
-  if (hti != NULL)
-    m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
 
   UpdateToolBarForSelectedItem(pci);
   SetDCAText(pci);
@@ -1114,7 +1149,7 @@ void DboxMain::OnTreeItemSelected(NMHDR * /* pNotifyStruct */, LRESULT *pLResult
 
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
 {
-  LV_KEYDOWN *pLVKeyDown = (LV_KEYDOWN*)pNMHDR;
+  LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
 
   // TRUE = we have processed the key stroke - don't call anyone else
   *pResult = TRUE;
@@ -1309,7 +1344,7 @@ void DboxMain::ClearData(bool clearMRE)
     m_ctlItemList.DeleteAllItems();
     m_ctlItemList.UnlockWindowUpdate();
     m_ctlItemTree.LockWindowUpdate();
-    m_ctlItemTree.DeleteAllItems();
+    m_ctlItemTree.DeleteAll();
     m_ctlItemTree.UnlockWindowUpdate();
     m_bBoldItem = false;
   }
