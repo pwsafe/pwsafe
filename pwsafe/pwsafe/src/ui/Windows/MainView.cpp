@@ -830,7 +830,7 @@ void DboxMain::RefreshViews(const int iView)
   }
   if (iView & iTreeOnly) {
     m_ctlItemTree.SetRedraw(FALSE);
-    m_ctlItemTree.DeleteAll();
+    m_ctlItemTree.DeleteAllItems();
   }
   m_bBoldItem = false;
 
@@ -963,7 +963,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       m_selectedAtMinimize = getSelectedItem();
       m_ctlItemList.DeleteAllItems();
-      m_ctlItemTree.DeleteAll();
+      m_ctlItemTree.DeleteAllItems();
       m_bBoldItem = false;
 
       if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
@@ -1061,6 +1061,8 @@ void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
   CItemData *pci(NULL);
 
   if (!m_IsListView) {
+    // TreeView
+
     // Seems that under Vista with Windows Common Controls V6, it is ignoring
     // the single click on the button (+/-) of a node and only processing the 
     // double click, which generates a copy of whatever the user selected
@@ -1111,6 +1113,8 @@ void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
     if (hti != NULL)
       m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
   } else {
+    // ListView
+
     int iItem(-1);
     switch (pNMHDR->code) {
       case NM_CLICK:
@@ -1344,7 +1348,7 @@ void DboxMain::ClearData(bool clearMRE)
     m_ctlItemList.DeleteAllItems();
     m_ctlItemList.UnlockWindowUpdate();
     m_ctlItemTree.LockWindowUpdate();
-    m_ctlItemTree.DeleteAll();
+    m_ctlItemTree.DeleteAllItems();
     m_ctlItemTree.UnlockWindowUpdate();
     m_bBoldItem = false;
   }
