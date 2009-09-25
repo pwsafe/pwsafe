@@ -70,8 +70,6 @@ public:
   bool WasLabelEdited() {return m_bEditLabelCompleted;};
   void SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier);
   void SetRenameKey(const unsigned char cVirtKey, const unsigned char cModifier);
-  void DeleteAll()
-  {m_bDeletingAll = true; DeleteAllItems(); m_bDeletingAll = false;}
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
@@ -80,6 +78,7 @@ protected:
   afx_msg void OnExpandCollapse(NMHDR *pNMHDR, LRESULT *pLResult);
   afx_msg void OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult);
   afx_msg void OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult);
+  afx_msg void OnDeleteItem(NMHDR *pNMHDR, LRESULT *pLResult);
   afx_msg void OnDestroy();
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
@@ -148,6 +147,4 @@ private:
   WPARAM m_wpRenameMsg, m_wpRenameKey;
   bool m_bDeleteCtrl, m_bDeleteShift;
   bool m_bRenameCtrl, m_bRenameShift;
-
-  bool m_bDeletingAll;
 };

@@ -182,8 +182,7 @@ CPWTreeCtrl::CPWTreeCtrl()
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
   m_bDeleteCtrl(false), m_bDeleteShift(false),
-  m_bRenameCtrl(false), m_bRenameShift(false),
-  m_bDeletingAll(false)
+  m_bRenameCtrl(false), m_bRenameShift(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -220,6 +219,7 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelectionChanged)
+  ON_NOTIFY_REFLECT(TVN_DELETEITEM, OnDeleteItem)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_DESTROY()
   ON_WM_TIMER()
@@ -628,10 +628,23 @@ final_check:
 void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult)
 {
   *pLResult = 0;
-  if (m_bDeletingAll || GetCount() == 0)
+  // Don't bother if no entries or not via the keyboard (check this first
+  // as more likely than no entries).
+  // Note: Selection via mouse handled in DboxMain via NM_CLICK notification.
+  if (((NMTREEVIEW *)pNMHDR)->action != TVC_BYKEYBOARD || GetCount() == 0)
     return;
 
   m_pDbx->OnItemSelected(pNMHDR, pLResult);
+}
+
+void CPWTreeCtrl::OnDeleteItem(NMHDR *pNMHDR, LRESULT *pLResult)
+{
+  *pLResult = 0;
+  // Clear pointer to CItemData of item being deleted so no other
+  // routine has a problem with an invalid value.
+  HTREEITEM hItem = ((NMTREEVIEW *)pNMHDR)->itemOld.hItem;
+  if (hItem != NULL)
+    SetItemData(hItem, 0);
 }
 
 void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
