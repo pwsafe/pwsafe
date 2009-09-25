@@ -144,10 +144,19 @@ msgstr " '网址'"
 msgid " 'User'"
 msgstr " '用户'"
 
+#. Resource IDs: (358)
+msgid " 'email'"
+msgstr ""
+
 #. Resource IDs: (332)
 #, c-format
 msgid " Copy # %d"
 msgstr " 复制 # %d"
+
+#. Resource IDs: (251)
+#, c-format
+msgid " Current default (%s)"
+msgstr ""
 
 #. Resource IDs: (339)
 #, c-format
@@ -605,6 +614,10 @@ msgstr "保存(&S)"
 msgid "&Save to Disk"
 msgstr "保存到磁盘(&S)"
 
+#. Resource IDs: (358)
+msgid "&Send email"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "&Set current"
 msgstr "设定当前(&S)"
@@ -664,6 +677,10 @@ msgstr "XML 格式(&X)..."
 #. Resource IDs: (1)
 msgid "&Yes"
 msgstr "是(&Y)"
+
+#. Resource IDs: (1356)
+msgid "&email:"
+msgstr ""
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1587,6 +1604,10 @@ msgstr ""
 msgid "Click to copy to clipboard"
 msgstr "单击复制到剪贴板"
 
+#. Resource IDs: (358)
+msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
 msgstr "单击启用/禁止该行"
@@ -1614,6 +1635,10 @@ msgstr ""
 #. Resource IDs: (352)
 msgid "Click to remove this row"
 msgstr "单击删除该行"
+
+#. Resource IDs: (358)
+msgid "Click to send email to this address"
+msgstr ""
 
 #. Resource IDs: (352)
 msgid "Click to set criteria for matching the field"
@@ -1776,10 +1801,6 @@ msgstr "复制备注到剪贴板(&N)"
 msgid "Copy &Notes to clipboard"
 msgstr "复制备注到剪贴板(&N)"
 
-#. Resource IDs: (32064)
-msgid "Copy &URL to Clipboard"
-msgstr "复制网址到剪贴板(&U)"
-
 #. Resource IDs: (32059)
 msgid "Copy &Username to Clipboard"
 msgstr "复制用户名到剪贴板(&U)"
@@ -1792,16 +1813,16 @@ msgstr "复制用户名到剪贴板(&U)"
 msgid "Copy All"
 msgstr "全部复制"
 
-#. Resource IDs: (345)
-msgid "Copy Email to Clipboard"
-msgstr "复制邮箱到剪贴板"
-
 #. Resource IDs: (32270)
 msgid "Copy Here"
 msgstr "复制这里"
 
 #. Resource IDs: (32080)
 msgid "Copy Run Command to Clipboard"
+msgstr ""
+
+#. Resource IDs: (32070)
+msgid "Copy UR&L to Clipboard"
 msgstr ""
 
 #. Resource IDs: (329, 32070)
@@ -1811,6 +1832,14 @@ msgstr "复制网址到剪贴板"
 #. Resource IDs: (332)
 msgid "Copy URL to clipboard"
 msgstr "复制网址到剪贴板"
+
+#. Resource IDs: (32071)
+msgid "Copy email to Clipboard"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "Copy email to clipboard"
+msgstr ""
 
 #. Resource IDs: (325)
 msgid "Copy notes to clipboard"
@@ -2123,6 +2152,10 @@ msgstr "双击项目复制用户名"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Run Command"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Double-Click on entry to Send email"
 msgstr ""
 
 #. Resource IDs: (315)
@@ -2648,7 +2681,7 @@ msgid "Group/Title\t"
 msgstr "组/标题\t"
 
 #. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\tNotes"
+msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tNotes"
 msgstr ""
 
 #. Resource IDs: (1350, 65535)
@@ -2754,6 +2787,10 @@ msgstr "ID:32063:V C +D"
 #. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 msgid "ID:32066:V C +C"
 msgstr "ID:32066:V C +C"
+
+#. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
+msgid "ID:32067:V C +B"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 msgid "ID:32068:V C +U"
@@ -4427,6 +4464,10 @@ msgstr "选定字段:"
 msgid "Selected filter details:"
 msgstr "选定筛选细节:"
 
+#. Resource IDs: (1380)
+msgid "Send"
+msgstr ""
+
 #. Resource IDs: (32074)
 msgid "Send &email"
 msgstr "发送邮件(&E)"
@@ -4434,6 +4475,10 @@ msgstr "发送邮件(&E)"
 #. Resource IDs: (3866)
 msgid "Send Mail failed to send message."
 msgstr "未能发送邮件！"
+
+#. Resource IDs: (251)
+msgid "Send email"
+msgstr ""
 
 #. Resource IDs: (518)
 msgid "Serbian (Cyrillic)"
@@ -5076,7 +5121,7 @@ msgid "Turkmen"
 msgstr ""
 
 #. Resource IDs: (1355)
-msgid "U&RL"
+msgid "U&RL:"
 msgstr ""
 
 #. Resource IDs: (327)
@@ -5235,6 +5280,11 @@ msgstr "解锁"
 #. Resource IDs: (329)
 msgid "Unlock Safe"
 msgstr "解除锁定"
+
+#. Resource IDs: (358)
+#, c-format
+msgid "Unsaved changes have been made to database:\r\n %s."
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -5515,12 +5565,12 @@ msgid "\nAdvanced Find Options"
 msgstr "\n高级查找选项"
 
 #. Resource IDs: (2005)
+msgid "\nBrowse to URL"
+msgstr ""
+
+#. Resource IDs: (2005)
 msgid "\nBrowse to URL + Autotype"
 msgstr "\n浏览网址+自动输入"
-
-#. Resource IDs: (2004)
-msgid "\nBrowse to URL/Send Email"
-msgstr "\浏览网址/发送邮件"
 
 #. Resource IDs: (2020)
 msgid "\nCase insensitive search"
@@ -5683,6 +5733,10 @@ msgstr "\n保存数据库"
 msgid "\nSave Database As..."
 msgstr "\n另存数据库为..."
 
+#. Resource IDs: (2005)
+msgid "\nSend email"
+msgstr ""
+
 #. Resource IDs: (2008)
 msgid "\nSet/Clear Filters"
 msgstr "\n设定/清除筛选"
@@ -5719,10 +5773,6 @@ msgstr ""
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\n未知字段将同样被复制在项目中！"
 
-#. Resource IDs: (345)
-msgid "\r\nEmail: "
-msgstr "\r\n邮箱:"
-
 #. Resource IDs: (335)
 #, c-format
 msgid "\r\nMerge completed: %d %s added\r\n(%d %s, %d %s, %d %s)"
@@ -5740,6 +5790,10 @@ msgstr "\r\n该字段正在你的默认文本编辑器中编辑！"
 #. Resource IDs: (342)
 msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
 msgstr "\r\n\r\n选定“是”继续使用该密码或“否”取消？"
+
+#. Resource IDs: (345)
+msgid "\r\nemail: "
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format
@@ -5890,6 +5944,18 @@ msgstr "不结束"
 #. Resource IDs: (206)
 msgid "does not equal"
 msgstr "不等于"
+
+#. Resource IDs: (192)
+msgid "e-mail\t"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "email"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "email copied "
+msgstr ""
 
 #. Resource IDs: (206)
 msgid "ends with"

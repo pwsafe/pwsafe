@@ -177,10 +177,19 @@ msgstr "'URL'"
 msgid " 'User'"
 msgstr "'Użytkownik'"
 
+#. Resource IDs: (358)
+msgid " 'email'"
+msgstr ""
+
 #. Resource IDs: (332)
 #, c-format
 msgid " Copy # %d"
 msgstr " Kopiuj # %d"
+
+#. Resource IDs: (251)
+#, c-format
+msgid " Current default (%s)"
+msgstr ""
 
 #. Resource IDs: (339)
 #, fuzzy, c-format
@@ -640,6 +649,10 @@ msgstr ""
 msgid "&Save to Disk"
 msgstr "&Zapisz na dysku"
 
+#. Resource IDs: (358)
+msgid "&Send email"
+msgstr ""
+
 #. Resource IDs: (351)
 #, fuzzy
 msgid "&Set current"
@@ -700,6 +713,10 @@ msgstr ""
 #. Resource IDs: (1)
 msgid "&Yes"
 msgstr "&Tak"
+
+#. Resource IDs: (1356)
+msgid "&email:"
+msgstr ""
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1638,6 +1655,10 @@ msgstr ""
 msgid "Click to copy to clipboard"
 msgstr "Kliknij żeby skopiować do schowka"
 
+#. Resource IDs: (358)
+msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
+msgstr ""
+
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
 msgstr "Kliknij aktywować/dezaktywować ten wiersz"
@@ -1665,6 +1686,10 @@ msgstr ""
 #. Resource IDs: (352)
 msgid "Click to remove this row"
 msgstr "Kliknij żeby usunąć wiersz"
+
+#. Resource IDs: (358)
+msgid "Click to send email to this address"
+msgstr ""
 
 #. Resource IDs: (352)
 #, fuzzy
@@ -1832,10 +1857,6 @@ msgstr ""
 msgid "Copy &Notes to clipboard"
 msgstr "Kopiuj &Notatki do schowka"
 
-#. Resource IDs: (32064)
-msgid "Copy &URL to Clipboard"
-msgstr ""
-
 #. Resource IDs: (32059)
 msgid "Copy &Username to Clipboard"
 msgstr ""
@@ -1848,16 +1869,16 @@ msgstr "Kopiuj Nazwę Użytkownika do Schowka"
 msgid "Copy All"
 msgstr "Kopiuj wszystko"
 
-#. Resource IDs: (345)
-msgid "Copy Email to Clipboard"
-msgstr "Kopiuj Adres Email do Schowka"
-
 #. Resource IDs: (32270)
 msgid "Copy Here"
 msgstr ""
 
 #. Resource IDs: (32080)
 msgid "Copy Run Command to Clipboard"
+msgstr ""
+
+#. Resource IDs: (32070)
+msgid "Copy UR&L to Clipboard"
 msgstr ""
 
 #. Resource IDs: (329)
@@ -1867,6 +1888,14 @@ msgstr ""
 #. Resource IDs: (332)
 msgid "Copy URL to clipboard"
 msgstr "Kopiuj Adres URL do Schowka"
+
+#. Resource IDs: (32071)
+msgid "Copy email to Clipboard"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "Copy email to clipboard"
+msgstr ""
 
 #. Resource IDs: (325)
 msgid "Copy notes to clipboard"
@@ -2188,6 +2217,10 @@ msgstr "Kliknij dwa razy na wpisie żeby skopiować nazwę użytkownika"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Run Command"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Double-Click on entry to Send email"
 msgstr ""
 
 #. Resource IDs: (315)
@@ -2729,7 +2762,7 @@ msgid "Group/Title\t"
 msgstr "Grupa/Nazwa\t"
 
 #. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\tNotes"
+msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tNotes"
 msgstr ""
 
 #. Resource IDs: (1350, 65535)
@@ -2836,6 +2869,10 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 msgid "ID:32066:V C +C"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
+msgid "ID:32067:V C +B"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
@@ -4546,6 +4583,10 @@ msgstr "Wybrane Pola:"
 msgid "Selected filter details:"
 msgstr "Sczegóły zaznaczonego filtru:"
 
+#. Resource IDs: (1380)
+msgid "Send"
+msgstr ""
+
 #. Resource IDs: (32074)
 msgid "Send &email"
 msgstr ""
@@ -4553,6 +4594,10 @@ msgstr ""
 #. Resource IDs: (3866)
 msgid "Send Mail failed to send message."
 msgstr "Nie udało się wysłać wiadomości."
+
+#. Resource IDs: (251)
+msgid "Send email"
+msgstr ""
 
 #. Resource IDs: (518)
 msgid "Serbian (Cyrillic)"
@@ -5202,7 +5247,7 @@ msgid "Turkmen"
 msgstr ""
 
 #. Resource IDs: (1355)
-msgid "U&RL"
+msgid "U&RL:"
 msgstr ""
 
 #. Resource IDs: (327)
@@ -5362,6 +5407,11 @@ msgstr ""
 #. Resource IDs: (329)
 msgid "Unlock Safe"
 msgstr "Odblokuj"
+
+#. Resource IDs: (358)
+#, c-format
+msgid "Unsaved changes have been made to database:\r\n %s."
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -5648,12 +5698,12 @@ msgid "\nAdvanced Find Options"
 msgstr "\nZaawansowane opcje szukania"
 
 #. Resource IDs: (2005)
-msgid "\nBrowse to URL + Autotype"
+msgid "\nBrowse to URL"
 msgstr ""
 
-#. Resource IDs: (2004)
-msgid "\nBrowse to URL/Send Email"
-msgstr "\nPrzejdź do adresu URL/Wyślij wiadomość"
+#. Resource IDs: (2005)
+msgid "\nBrowse to URL + Autotype"
+msgstr ""
 
 #. Resource IDs: (2020)
 msgid "\nCase insensitive search"
@@ -5820,6 +5870,10 @@ msgstr "\nZapisz bazę danych"
 msgid "\nSave Database As..."
 msgstr "\nZapisz bazę danych jako..."
 
+#. Resource IDs: (2005)
+msgid "\nSend email"
+msgstr ""
+
 #. Resource IDs: (2008)
 #, fuzzy
 msgid "\nSet/Clear Filters"
@@ -5858,10 +5912,6 @@ msgstr ""
 msgid "\n\nUnknown fields will also be copied with the entry."
 msgstr "\n\nNieznane pola zostaną skopiowane razem z wpisem."
 
-#. Resource IDs: (345)
-msgid "\r\nEmail: "
-msgstr "\r\nEmail: "
-
 #. Resource IDs: (335)
 #, c-format
 msgid "\r\nMerge completed: %d %s added\r\n(%d %s, %d %s, %d %s)"
@@ -5879,6 +5929,10 @@ msgstr "\r\nTo pole jest edytowane w\r\ndomyślnym edytorze tekstu."
 #. Resource IDs: (342)
 msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
 msgstr "\r\n\r\nWybierz Tak by kontynuować z tym hasłwm lub Nie by anulować."
+
+#. Resource IDs: (345)
+msgid "\r\nemail: "
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format
@@ -6034,6 +6088,18 @@ msgstr "nie kończy się na"
 #. Resource IDs: (206)
 msgid "does not equal"
 msgstr "nie jest równe"
+
+#. Resource IDs: (192)
+msgid "e-mail\t"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "email"
+msgstr ""
+
+#. Resource IDs: (358)
+msgid "email copied "
+msgstr ""
 
 #. Resource IDs: (206)
 msgid "ends with"
