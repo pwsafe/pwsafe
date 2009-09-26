@@ -4314,7 +4314,7 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Veuillez spécifier le sous-dossier pour toutes les copies de sauvegarde."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe website.</a>"
+msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
 msgstr "Veuillez visiter le <a href=\"http://passwordsafe.sourgeforge.net/\">site web de PasswordSafe.</a>"
 
 #. Resource IDs: (519)
@@ -6750,8 +6750,8 @@ msgid "has the following entries with expired passwords:"
 msgstr "a les entrées suivantes avec des mots de passe expiré :"
 
 #. Resource IDs: (314)
-msgid "http://passwordsafe.sourceforge.net/"
-msgstr "http://passwordsafe.sourceforge.net/"
+msgid "http://pwsafe.org/"
+msgstr "http://pwsafe.org/"
 
 #. Resource IDs: (191)
 msgid "import"

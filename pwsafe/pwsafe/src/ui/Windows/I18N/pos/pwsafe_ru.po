@@ -4156,8 +4156,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Укажите подкаталог для сохранения резервных копий."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe website.</a>"
-msgstr "Посетите <a href=\"http://passwordsafe.sourceforge.net/\">сайт PasswordSafe.</a>"
+msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Посетите <a href=\"http://pwsafe.org/\">сайт PasswordSafe.</a>"
 
 #. Resource IDs: (519)
 msgid "Polish (214)"
@@ -6163,8 +6163,8 @@ msgid "has the following entries with expired passwords:"
 msgstr "имеет следующие элементы с истекшим паролем:"
 
 #. Resource IDs: (314)
-msgid "http://passwordsafe.sourceforge.net/"
-msgstr "http://passwordsafe.sourceforge.net/"
+msgid "http://pwsafe.org/"
+msgstr "http://pwsafe.org/"
 
 #. Resource IDs: (191)
 msgid "import"
