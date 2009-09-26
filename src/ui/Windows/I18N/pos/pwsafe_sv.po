@@ -4367,8 +4367,8 @@ msgid "Please specify the sub-directory to contain all backups."
 msgstr "Ange den undermapp som skall innehålla alla backuper."
 
 #. Resource IDs: (344)
-msgid "Please visit the <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe website.</a>"
-msgstr "Besök <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe's hemsida.</a>"
+msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
+msgstr "Besök <a href=\"http://pwsafe.org/\">PasswordSafe's hemsida.</a>"
 
 #. Resource IDs: (519)
 msgid "Polish (214)"
@@ -6803,8 +6803,8 @@ msgid "has the following entries with expired passwords:"
 msgstr "har följande poster med utgågna lösenord:"
 
 #. Resource IDs: (314)
-msgid "http://passwordsafe.sourceforge.net/"
-msgstr "http://passwordsafe.sourceforge.net/"
+msgid "http://pwsafe.org/"
+msgstr "http://pwsafe.org/"
 
 #. Resource IDs: (191)
 msgid "import"

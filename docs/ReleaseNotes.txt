@@ -16,8 +16,8 @@ when doing a "Run Command".
 to transverse entries in Tree and List views.
 [2856750] The Password Policy now correctly displayed in List View,
 when selected.
-[2856051] Changes to Database preferences are no longer lost upon minimize.
-[2856410] The "Run Command" menu shortcut no longer greyed out for
+[2856051] Changes to database preferences are no longer lost upon minimize.
+[2856410] The "Run Command" menu entry is no longer greyed out for
 Shortcuts to base entries with a Run Command.
 [2851848] Mouse double-click interval removed from Virtual Keyboard
 to allow multiple virtual keys to be entered quickly.
@@ -25,55 +25,54 @@ to allow multiple virtual keys to be entered quickly.
 [2842700] No longer crashes when using a French keyboard.
 [2192490, 2840534] Multiple desktops now handled correctly for Windows
 XP and later system.
-[2836569] Correct password data now copied from Edit dialog using 'Smart
-Labels'
-[2832991] Double-click action display in the Status Bar now reflects the
-value for entries that have overriden the current default and is also
-updated after the entry is edited.
+[2836569] Correct password data now copied from Edit dialog using
+'Smart Labels'
+[2832991] Double-click action display in the Status Bar now shows
+correct value for entries that have overriden the current default.
 [2820260] Fix password expiry interval processing during Edit.
 [2818653] Password expiry interval now correctly exported to XML and
-show displayed during Edit, if present.
+displayed during Edit, if present.
 [2813295] 'Browse + Autotype' system tray menu items fixed - thanks to
 Vasily for reporting and sending the patches for this.
 [2085058] Old (1.x) format databases now closed correctly.
 [] Fixed problem with viewing a shortcut in read-only mode - thanks to
 gillum for reporting and helping track this down.
-[] Fix crash error using External Editor on Notes field.
-[] Password Verification field not set when editing/viewing an alias entry
+[] Fix crash when using External Editor on Notes field.
+[] Password verification field not set when editing/viewing an alias entry
 and the password is hidden.
-[] Enter key works again in initial dialog if user uses browse button to
-select a database to open.
+[] Enter key works again in initial dialog if browse button used to
+select a database. 
 [] AutoType by an alias now has correct password and its own notes data
 rather than '[Alias]' and its base's notes data, respectively.
 [] Run command no longer truncates the first field if it is within double
 quotes.
 [] Duplicate entry now duplicates double-click action of original as well.
 [] Double-click on a shortcut entry now executes the action of its base.
-[] Drag & Drop of entries with have individual double-click action
-values, between different databases now works.
+[] Drag & Drop of entries with explicit double-click action values
+between different databases now works. 
 [] Browse to URL from an Alias entry now puts the correct password in the
 clipboard.
 [] Text import no longer overwrites entry's RunCommand with
 double-click action value.
-[] Tidy up item order in menus Edit menu and right-click context menu.
+[] Tidy up item order in Edit menu and right-click context menu.
 
 New Features for 3.19
 =====================
-[2832983] The Edit/View dialog now has the details of the entry being
-edited/viewed in its title caption (This is refreshed when saving the
-entry).
+[2832983] The Edit/View dialog now shows the details of the entry
+being edited/viewed in its title caption (This is updated when saving
+the entry).
 [2832810] A new email field has been added, supporting email headers
-'to', 'subject', 'cc', 'bcc' and 'body' [see RFC 2368]. If this field
-is not empty, it is used instead of the URL field even if that
-contains an email address.
+'to', 'subject', 'cc', 'bcc' and 'body' (per RFC 2368 - see online
+help for details). If this field is not empty, it is used instead of
+the URL field even if that contains an email address.
 Note: whereas the URL field had to have the 'mailto:' prefix to denote an 
 email address rather than a URL, the email field must not contain this prefix.
 [] PasswordSafe now handles Vista (and later) logoff, shutdown &
-restart more gracefully, so that the user now has more time to save a
+restart more gracefully, giving the user now has more time to save a
 modified database.
 [] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
-sets the delay between sending each subsequent character, '\w' & '\W' introduces
-a one-time delay where they appear.  For '\w', the value 'nnn' is in
+sets the delay between sending each subsequent character, '\w' & '\W'
+introduces a one-time delay where they appear.  For '\w', the value 'nnn' is in
 milli-seconds. For '\W', this specifies seconds. Note: Max. value is
 999s (16m 39s), during which time PasswordSafe will be unresponsive
 while it waits the specified time. Also supported via the Run Command
@@ -86,7 +85,7 @@ Changes to Existing Features in 3.19
 [] Changing the Security option to lock Password Safe when the workstation is
 locked, no longer requires a restart of Password Safe to come into effect.
 [] Due to the French keyboard not supporting the key '-' in an accelerator,
-the shortcut for "passwordsuBset' has been changed from "Ctrl + -" to
+the shortcut for "Password Subset" has been changed from "Ctrl + -" to
 "Ctrl + B". Please do not allocate "Ctrl + -" to any shortcut if you will be
 using a French keyboard.
 [] If a dialog is open (e.g. Add, Edit, Options etc.) and Password Safe is
@@ -98,7 +97,7 @@ they want to save them in the database when closing the database or application
 even if none of the entries have been changed.
 [] The preference to Lock the Database after a certain amount of idle time has
 changed from being a global parameter affecting all databases opened by the user
-to be particular to each database.
+to be specific to each database.
 
 New Features for 3.18
 =====================
