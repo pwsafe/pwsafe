@@ -1,5 +1,5 @@
-Password Safe 3.19 Release Notes - September 2009
-=================================================
+Password Safe 3.19.1 Release Notes - September 2009
+===================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,18 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.19.1
+====================
+[] Change font dialogs now work again.
+
+New Features for 3.19.1
+=======================
+None
+
+Changes to Existing Features in 3.19.1
+======================================
+None
 
 Bugs fixed in 3.19
 ==================
@@ -99,13 +111,13 @@ even if none of the entries have been changed.
 changed from being a global parameter affecting all databases opened by the user
 to be specific to each database.
 
-New Features for 3.18
-=====================
+New Features for 3.18.1
+=======================
 [] Add minidump support for release builds so that we can try to solve
 issues with more information than Windows normally provides.
 
-New Features for 3.18
-=====================
+New Features for 3.18.1
+=======================
 [2793283] Allow entry to override doubleclick setting.
 [2793280] Browse+Autotype added to configurable double click actions.
 [] Implement Virtual Keyboards for multilingual passphrase entry.
@@ -114,8 +126,8 @@ New Features for 3.18
 menu.
 [] Improved Merge reporting.
 
-Changes to Existing Features in 3.18
-====================================
+Changes to Existing Features in 3.18.1
+======================================
 [] New toolbar icon set has been replaced with icons based on famfamfam's
 silk set.
 [] Reworked Add and Edit dialogs into Property Pages.
