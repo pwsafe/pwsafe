@@ -163,7 +163,7 @@ INT_PTR CPWFontDialog::DoModal()
     app.DisableAccelerator();
 
   app.IncrementOpenDialogs();
-  INT_PTR rc = CDialog::DoModal();
+  INT_PTR rc = CFontDialog::DoModal();
   app.DecrementOpenDialogs();
 
   if (bAccEn)
