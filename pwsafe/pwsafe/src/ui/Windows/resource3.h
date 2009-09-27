@@ -549,3 +549,5 @@
 #define IDS_TRAYSENDEMAIL               5722
 #define IDS_TRAYCOPYEMAIL               5723
 #define IDS_STOPREASON                  5724
+#define IDS_FILTER1                     5725
+#define IDS_DATETIMESTRING              5726
