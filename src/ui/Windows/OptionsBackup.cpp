@@ -105,7 +105,8 @@ BOOL COptionsBackup::OnInitDialog()
     m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_None);
     m_BKSFX_to_Index[PWSprefs::BKSFX_None] = nIndex;
 
-    nIndex = m_backupsuffix_cbox.AddString(L"YYYYMMDD_HHMMSS");
+    cs_text.LoadString(IDS_DATETIMESTRING);
+    nIndex = m_backupsuffix_cbox.AddString(cs_text);
     m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_DateTime);
     m_BKSFX_to_Index[PWSprefs::BKSFX_DateTime] = nIndex;
 
