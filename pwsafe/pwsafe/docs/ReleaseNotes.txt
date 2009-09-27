@@ -10,7 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.19.1
 ====================
-[] Change font dialogs now work again.
+[2868244] Change font dialogs now work again.
 
 New Features for 3.19.1
 =======================
