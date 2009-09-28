@@ -40,7 +40,8 @@ void DboxMain::OnTrayLockUnLock()
 {
   switch(app.GetSystemTrayState()) {
     case ThisMfcApp::LOCKED:            // User clicked UnLock
-      UnMinimize(true);
+      // This only unlocks the database - it does not restore the window
+      UnMinimize(false);
       break;
     case ThisMfcApp::UNLOCKED:          // User clicked Lock
       UpdateSystemTray(LOCKED);

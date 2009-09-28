@@ -1777,15 +1777,22 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
     return;
   }
 
-  if ((nID & 0xFFF0) == SC_RESTORE) {
-    UnMinimize(true);
-    if (!m_passphraseOK)  // password bad or cancel pressed
-      return;
-  }
-
-  if ((nID & 0xFFF0) == SC_MINIMIZE || (nID & 0xFFF0) == SC_CLOSE) {
-    // Save expand/collapse status of groups
-    m_displaystatus = GetGroupDisplayStatus();
+  switch (nID & 0xFFF0) {
+    case SC_RESTORE:
+      UnMinimize(true);
+      if (!m_passphraseOK)  // password bad or cancel pressed
+        return;
+      break;
+    case SC_MINIMIZE:
+      // Save expand/collapse status of groups
+      m_displaystatus = GetGroupDisplayStatus();
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear))
+        LockDataBase(TIMER_LOCKDBONIDLETIMEOUT);  // save db if needed, etc.
+      break;
+    case SC_CLOSE:
+      // Save expand/collapse status of groups
+      m_displaystatus = GetGroupDisplayStatus();
+      break;
   }
 
   CDialog::OnSysCommand(nID, lParam);
@@ -1866,6 +1873,8 @@ void DboxMain::OnMinimize()
 
   // Save expand/collapse status of groups
   m_displaystatus = GetGroupDisplayStatus();
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear))
+    LockDataBase(TIMER_LOCKDBONIDLETIMEOUT);  // save db if needed, etc.
 
   ShowWindow(SW_MINIMIZE);
 }
