@@ -508,11 +508,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     pMainRecentEntriesMenu = pContextMenu->GetSubMenu(2);
 
     // No point in doing Recent Entries if database is locked
-    size_t num_recent_entries;
-    if (i_state == ThisMfcApp::LOCKED)
-      num_recent_entries = 0;
-    else
-      num_recent_entries = m_RUEList.GetCount();
+    size_t num_recent_entries = (i_state == ThisMfcApp::LOCKED) ? 0 : m_RUEList.GetCount();
 
     typedef CMenu* CMenuPtr;
     CMenu **pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
