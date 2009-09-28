@@ -1218,7 +1218,7 @@ void DboxMain::AutoType(const CItemData &ci)
         notes = iter->second.GetNotes();
         AutoCmd = iter->second.GetAutoType();
       } else {
-        // Problem - shortccut entry without a base!
+        // Problem - shortcut entry without a base!
         ASSERT(0);
       }
       break;
