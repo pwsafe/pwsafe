@@ -204,7 +204,7 @@ bool DboxMain::SetSessionNotification()
   int num(5);
 
   while (num > 0) {
-    if (WTSRegisterSessionNotification(GetSafeHwnd(), NOTIFY_FOR_THIS_SESSION) == TRUE)
+    if (pWTS_RSN(GetSafeHwnd(), NOTIFY_FOR_THIS_SESSION) == TRUE)
       return true;
 
     if (GetLastError() == RPC_S_INVALID_BINDING) {

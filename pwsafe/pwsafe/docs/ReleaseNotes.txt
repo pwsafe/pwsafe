@@ -16,6 +16,8 @@ items now reflect its contents.
 box button now locks the database if the preference 'Lock on Minimize' is
 set.
 [2868244] Change font dialogs now work again.
+[] Now no longer complains about WTS service in Windows systems earlier
+than Windows XP.
 
 New Features for 3.19.1
 =======================
