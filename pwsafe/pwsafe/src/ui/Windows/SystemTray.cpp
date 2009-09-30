@@ -495,11 +495,10 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       default:
         break;
     }
-
     if (app.AnyOpenDialogs()) {
       const UINT num = pContextMenu->GetMenuItemCount() - 2;
       pContextMenu->RemoveMenu(num, MF_BYPOSITION); // Delete last separator
-      pContextMenu->RemoveMenu(ID_MENUITEM_EXIT, MF_BYCOMMAND); // Delete Exit
+      pContextMenu->RemoveMenu(num, MF_BYPOSITION); // Delete Exit
       pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND); // Delete Close
     }
 
@@ -508,7 +507,8 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     pMainRecentEntriesMenu = pContextMenu->GetSubMenu(2);
 
-    const size_t num_recent_entries = m_RUEList.GetCount();
+    // No point in doing Recent Entries if database is locked
+    size_t num_recent_entries = (i_state == ThisMfcApp::LOCKED) ? 0 : m_RUEList.GetCount();
 
     typedef CMenu* CMenuPtr;
     CMenu **pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
@@ -525,13 +525,10 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     if (num_recent_entries == 0) {
       // Only leave the "Clear Entries" menu item (greyed out in ON_UPDATE_COMMAND_UI function)
-      pMainRecentEntriesMenu->RemoveMenu(ID_TRAYRECENT_ENTRY_HELP1, MF_BYCOMMAND);  // Help entry
-      pMainRecentEntriesMenu->RemoveMenu(ID_TRAYRECENT_ENTRY_HELP2, MF_BYCOMMAND);  // Help entry
-      pMainRecentEntriesMenu->RemoveMenu(1, MF_BYPOSITION);  // Separator
-    }
-
-    if (num_recent_entries != 0 && i_state != ThisMfcApp::LOCKED) {
-      // No point in doing Recent Entries if database is locked
+      pMainRecentEntriesMenu->RemoveMenu(3, MF_BYPOSITION);  // Separator
+      pMainRecentEntriesMenu->RemoveMenu(2, MF_BYPOSITION);  // Help entry
+      pMainRecentEntriesMenu->RemoveMenu(1, MF_BYPOSITION);  // Help entry
+    } else {
       // Build extra popup menus (1 per entry in list)
       m_RUEList.GetAllMenuItemStrings(m_menulist);
 
