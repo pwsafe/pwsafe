@@ -1784,14 +1784,11 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
         return;
       break;
     case SC_MINIMIZE:
+    case SC_CLOSE:
       // Save expand/collapse status of groups
       m_displaystatus = GetGroupDisplayStatus();
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear))
         LockDataBase(TIMER_LOCKDBONIDLETIMEOUT);  // save db if needed, etc.
-      break;
-    case SC_CLOSE:
-      // Save expand/collapse status of groups
-      m_displaystatus = GetGroupDisplayStatus();
       break;
   }
 
