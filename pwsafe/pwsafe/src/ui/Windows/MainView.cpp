@@ -768,6 +768,8 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
   if (m_ctlItemList.GetItemCount() == 0)
     return FALSE;
 
+  CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
+  ASSERT(pci != NULL);
   if (m_ctlItemList.IsWindowVisible()) {
     retval = m_ctlItemList.SetItemState(i,
                                         LVIS_FOCUSED | LVIS_SELECTED,
@@ -778,8 +780,6 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
     }
     m_ctlItemList.Invalidate();
   } else { //Tree view active
-    CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
-    ASSERT(pci != NULL);
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
     ASSERT(pdi->list_index == i);
@@ -794,6 +794,7 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
     }
     m_ctlItemTree.Invalidate();
   }
+  UpdateToolBarForSelectedItem(pci);
   return retval;
 }
 
