@@ -564,5 +564,6 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
 #define byte(x, n) (((x) >> (8 * (n))) & 255)
 #endif   
 
+#define NumberOf(array) ((sizeof array)/sizeof(array[0]))
 
 #endif

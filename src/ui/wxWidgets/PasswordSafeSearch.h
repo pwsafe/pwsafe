@@ -21,6 +21,36 @@
 #include <wx/toolbar.h>
 ////@end includes
 
+////@begin forward declarations
+class PasswordSafeSearchData;
+////@end forward declarations
+
+
+/*!
+ * PasswordSafeSearchContext class declaration
+ */
+
+class PasswordSafeSearchContext
+{
+  DECLARE_NO_COPY_CLASS(PasswordSafeSearchContext);
+
+public:
+  PasswordSafeSearchContext();
+  ~PasswordSafeSearchContext();
+
+  const PasswordSafeSearchData* operator->() const { return m_searchData; }
+  PasswordSafeSearchData* operator->() { m_fDirty = true; return m_searchData; }
+
+  inline bool IsSame(const PasswordSafeSearchData& data) const;
+  inline void Set(const PasswordSafeSearchData& data);
+  inline const PasswordSafeSearchData& Get(void) const;
+
+private:
+  PasswordSafeSearchData* m_searchData;
+  bool                    m_fDirty;
+};
+
+
 /*!
  * PasswordSafeSearch class declaration
  */
@@ -41,6 +71,8 @@ public:
   // wxEVT_COMMAND_TEXT_ENTER event handler for ENTER key press in search text box
   void OnDoSearch( wxCommandEvent& evt );
   void OnSearchClose(wxCommandEvent& evt);
+  void OnAdvancedSearchOptions(wxCommandEvent& evt);
+  void OnToggleCaseSensitivity(wxCommandEvent& evt);
   void Activate(void);
 
 private:
@@ -48,6 +80,8 @@ private:
 
   wxToolBar* m_toolbar;
   wxFrame*   m_parentFrame;
+
+  PasswordSafeSearchContext m_searchContext;
 };
 
 #endif
