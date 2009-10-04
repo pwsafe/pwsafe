@@ -21,7 +21,7 @@ than Windows XP.
 
 New Features for 3.19.1
 =======================
-None
+[2872273] Improve Import Text 'Line skipped' message.
 
 Changes to Existing Features in 3.19.1
 ======================================

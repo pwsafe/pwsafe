@@ -954,7 +954,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // Sanity check
     if (tokens.size() < num_found) {
-      Format(csError, IDSC_IMPORTLINESKIPPED, numlines);
+      Format(csError, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
       rpt.WriteLine(csError);
       numSkipped++;
       continue;

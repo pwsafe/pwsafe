@@ -57,7 +57,7 @@ BEGIN
   IDSC_IMPORTMISSINGCOLS  "Either or both of the Group/Title and Password columns are missing. No records imported."
   IDSC_IMPORTNOCOLS       "Column header row not recognised as first record. No records imported."
   IDSC_IMPORTNOHEADER     "No records in import file!"
-  IDSC_IMPORTLINESKIPPED  "Line %d skipped"
+  IDSC_IMPORTLINESKIPPED  "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
   IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
   IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"", Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
   IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group, Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
