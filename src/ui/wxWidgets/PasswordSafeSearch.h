@@ -44,6 +44,8 @@ public:
   inline bool IsSame(const PasswordSafeSearchData& data) const;
   inline void Set(const PasswordSafeSearchData& data);
   inline const PasswordSafeSearchData& Get(void) const;
+  inline bool IsDirty(void) const { return m_fDirty; }
+  inline void Reset(void) { m_fDirty = false; }
 
 private:
   PasswordSafeSearchData* m_searchData;

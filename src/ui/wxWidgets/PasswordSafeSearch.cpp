@@ -50,6 +50,17 @@ public:
   int                   m_subgroupFunction;
 };
 
+bool operator==(const PasswordSafeSearchData& a, const PasswordSafeSearchData& b)
+{
+  return a.m_bsFields         == b.m_bsFields && 
+         a.m_fCaseSensitive   == b.m_fCaseSensitive &&
+         a.m_fUseSubgroups    == b.m_fUseSubgroups &&
+         a.m_searchText       == b.m_searchText &&
+         a.m_subgroupFunction == b.m_subgroupFunction &&
+         a.m_subgroupName     == b.m_subgroupName &&
+         a.m_subgroupObject   == b.m_subgroupObject; 
+}
+
 
 const charT* subgroupNames[] = { wxT("Group"), wxT("Group/Title"), wxT("Notes"), wxT("Title"), wxT("URL"), wxT("User Name") } ;
 
@@ -83,16 +94,16 @@ class AdvancedSearchOptionsDlg: public wxDialog
 
   PasswordSafeSearchContext& m_context;
 
-  enum {ID_SELECT_SOME = 101, ID_SELECT_ALL, ID_REMOVE_SOME, ID_REMOVE_ALL };
+  enum {ID_SELECT_SOME = 101, ID_SELECT_ALL, ID_REMOVE_SOME, ID_REMOVE_ALL, ID_LB_AVAILABLE_FIELDS, ID_LB_SELECTED_FIELDS };
 
 public:
   AdvancedSearchOptionsDlg(wxWindow* wnd, PasswordSafeSearchContext& context);
-  ~AdvancedSearchOptionsDlg() {
-    if (!m_context.IsSame(m_searchData))
-        m_context.Set(m_searchData);
-  }
 
-  void OnOk( wxCommandEvent& event );
+  void OnOk( wxCommandEvent& evt );
+  void OnSelectSome( wxCommandEvent& evt );
+  void OnSelectAll( wxCommandEvent& evt );
+  void OnRemoveSome( wxCommandEvent& evt );
+  void OnRemoveAll( wxCommandEvent& evt );
 
 private:
   void CreateControls(wxWindow* parentWnd);
@@ -103,14 +114,18 @@ IMPLEMENT_CLASS( AdvancedSearchOptionsDlg, wxDialog )
 
 BEGIN_EVENT_TABLE( AdvancedSearchOptionsDlg, wxDialog )
   EVT_BUTTON( wxID_OK, AdvancedSearchOptionsDlg::OnOk )
+  EVT_BUTTON( ID_SELECT_SOME, AdvancedSearchOptionsDlg::OnSelectSome )
+  EVT_BUTTON( ID_SELECT_ALL, AdvancedSearchOptionsDlg::OnSelectAll )
+  EVT_BUTTON( ID_REMOVE_SOME, AdvancedSearchOptionsDlg::OnRemoveSome )
+  EVT_BUTTON( ID_REMOVE_ALL, AdvancedSearchOptionsDlg::OnRemoveAll )
 END_EVENT_TABLE()
 
 AdvancedSearchOptionsDlg::AdvancedSearchOptionsDlg(wxWindow* parentWnd, 
                                                    PasswordSafeSearchContext& context): m_context(context)
 {
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
-  CreateControls(parentWnd);
   m_searchData = m_context.Get();
+  CreateControls(parentWnd);
 }
 
 void AdvancedSearchOptionsDlg::CreateControls(wxWindow* parentWnd)
@@ -175,10 +190,11 @@ void AdvancedSearchOptionsDlg::CreateControls(wxWindow* parentWnd)
     wxBoxSizer* vbox1 = new wxBoxSizer(wxVERTICAL);
     vbox1->Add(new wxStaticText(panel, wxID_ANY, wxT("&Available Fields:")));
     vbox1->AddSpacer(10);
-    wxListBox* lbFields = new wxListBox(panel, wxID_ANY, wxDefaultPosition, wxSize(-1, 200));
+    wxListBox* lbFields = new wxListBox(panel, ID_LB_AVAILABLE_FIELDS, wxDefaultPosition, 
+              wxSize(100, 200), 0, NULL, wxLB_EXTENDED);
     for (size_t idx = 0; idx < NumberOf(fieldNames); ++idx)
         if (!m_searchData.m_bsFields.test(fieldNames[idx].fieldType))
-            lbFields->AppendString(fieldNames[idx].fieldName);
+            lbFields->Append(fieldNames[idx].fieldName, (void*)(idx));
 
     vbox1->Add(lbFields, wxSizerFlags(1).Expand());
     hbox->Add(vbox1);
@@ -190,8 +206,8 @@ void AdvancedSearchOptionsDlg::CreateControls(wxWindow* parentWnd)
     buttonBox->AddSpacer(5);
     buttonBox->Add( new wxButton(panel, ID_SELECT_ALL, wxT(">>")) );
     buttonBox->AddSpacer(30);
-    buttonBox->Add( new wxButton(panel, wxID_ANY, wxT("<")) );
-    buttonBox->Add( new wxButton(panel, wxID_ANY, wxT("<<")) );
+    buttonBox->Add( new wxButton(panel, ID_REMOVE_SOME, wxT("<")) );
+    buttonBox->Add( new wxButton(panel, ID_REMOVE_ALL, wxT("<<")) );
     buttonBox->AddSpacer(5);
     hbox->Add(buttonBox, wxSizerFlags().Center());
 
@@ -200,10 +216,11 @@ void AdvancedSearchOptionsDlg::CreateControls(wxWindow* parentWnd)
     wxBoxSizer* vbox2 = new wxBoxSizer(wxVERTICAL);
     vbox2->Add(new wxStaticText(panel, wxID_ANY, wxT("&Selected Fields:")));
     vbox2->AddSpacer(10);
-    wxListBox* lbSelectedFields = new wxListBox(panel, wxID_ANY, wxDefaultPosition, wxSize(-1, 200));
+    wxListBox* lbSelectedFields = new wxListBox(panel, ID_LB_SELECTED_FIELDS, wxDefaultPosition, 
+                  wxSize(100, 200), 0, NULL, wxLB_EXTENDED);
     for (size_t idx=0; idx < NumberOf(fieldNames); ++idx)
         if (m_searchData.m_bsFields.test(fieldNames[idx].fieldType))
-            lbSelectedFields->AppendString(fieldNames[idx].fieldName);
+            lbSelectedFields->Append(fieldNames[idx].fieldName, (void*)(idx));
 
     vbox2->Add(lbSelectedFields, wxSizerFlags(1).Expand());
     hbox->Add(vbox2);
@@ -234,12 +251,95 @@ void AdvancedSearchOptionsDlg::CreateControls(wxWindow* parentWnd)
 
 void AdvancedSearchOptionsDlg::OnOk( wxCommandEvent& evt )
 {
+  TransferDataFromWindow();
+
+  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
+  wxASSERT(lbSelected);
+
+  //reset the selected field bits 
+  m_searchData.m_bsFields.reset();
+  const size_t count = lbSelected->GetCount();
+  
+  for (size_t idx = 0; idx < count; ++idx) {
+      const size_t which = (size_t)lbSelected->GetClientData((unsigned int)idx);
+      m_searchData.m_bsFields.set(fieldNames[which].fieldType, true);
+  }
+
   if (!m_context.IsSame(m_searchData))
       m_context.Set(m_searchData);
 
-  //Let wxDialog handle it as well
+  //Let wxDialog handle it as well, to close the window
   evt.Skip(true);
 }
+
+void AdvancedSearchOptionsDlg::OnSelectSome( wxCommandEvent& evt )
+{
+  wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
+  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
+  
+  wxASSERT(lbAvailable);
+  wxASSERT(lbSelected);
+
+  wxArrayInt aSelected;
+  if (lbAvailable->GetSelections(aSelected)) {
+    for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
+      size_t which = (size_t)lbAvailable->GetClientData((unsigned int)(aSelected[idx] - idx));
+      wxASSERT(which < NumberOf(fieldNames));
+      lbAvailable->Delete((unsigned int)(aSelected[idx] - idx));
+      lbSelected->Append(fieldNames[which].fieldName, (void *)which);
+    }
+  }
+}
+
+void AdvancedSearchOptionsDlg::OnSelectAll( wxCommandEvent& evt )
+{
+  wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
+  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
+  
+  wxASSERT(lbAvailable);
+  wxASSERT(lbSelected);
+
+  while (lbAvailable->GetCount()) {
+      size_t which = (size_t)lbAvailable->GetClientData(0);
+      lbAvailable->Delete(0);
+      lbSelected->Append(fieldNames[which].fieldName, (void*)which);
+  }
+}
+
+void AdvancedSearchOptionsDlg::OnRemoveSome( wxCommandEvent& evt )
+{
+  wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
+  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
+  
+  wxASSERT(lbAvailable);
+  wxASSERT(lbSelected);
+
+  wxArrayInt aSelected;
+  if (lbSelected->GetSelections(aSelected)) {
+    for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
+      size_t which = (size_t)lbSelected->GetClientData((unsigned int)(aSelected[idx] - idx));
+      wxASSERT(which < NumberOf(fieldNames));
+      lbSelected->Delete((unsigned int)(aSelected[idx] - idx));
+      lbAvailable->Append(fieldNames[which].fieldName, (void *)which);
+    }
+  }
+}
+
+void AdvancedSearchOptionsDlg::OnRemoveAll( wxCommandEvent& evt )
+{
+  wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
+  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
+  
+  wxASSERT(lbAvailable);
+  wxASSERT(lbSelected);
+
+  while (lbSelected->GetCount()) {
+      size_t which = (size_t)lbSelected->GetClientData(0);
+      lbSelected->Delete(0);
+      lbAvailable->Append(fieldNames[which].fieldName, (void*)which);
+  }
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -255,14 +355,8 @@ PasswordSafeSearchContext::~PasswordSafeSearchContext()
 }
 
 inline bool PasswordSafeSearchContext::IsSame(const PasswordSafeSearchData& data) const 
-{ 
-    return data.m_bsFields == m_searchData->m_bsFields && 
-           data.m_fCaseSensitive == m_searchData->m_fCaseSensitive &&
-           data.m_fUseSubgroups == m_searchData->m_fUseSubgroups &&
-           data.m_searchText == m_searchData->m_searchText &&
-           data.m_subgroupFunction == m_searchData->m_subgroupFunction &&
-           data.m_subgroupName == m_searchData->m_subgroupName &&
-           data.m_subgroupObject == m_searchData->m_subgroupObject; 
+{
+  return *m_searchData == data;
 }
 
 inline void PasswordSafeSearchContext::Set(const PasswordSafeSearchData& data) 
@@ -349,8 +443,11 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& evt)
  */
 void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& evt)
 {
+  m_searchContext.Reset();
   AdvancedSearchOptionsDlg dlg(m_parentFrame, m_searchContext);
   dlg.ShowModal();
+  if (m_searchContext.IsDirty())
+      wxMessageBox(wxT("Search is dirty.  Will search from afresh"), wxT("Password Safe Search"));
 }
 
 /*!
@@ -386,6 +483,9 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->PushEventHandler(this);
 }
 
+/*!
+ * Called when user clicks Find from Edit menu, or presses Ctrl-F
+ */
 void PasswordSafeSearch::Activate(void)
 {
   if (!m_toolbar)
