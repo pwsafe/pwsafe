@@ -841,45 +841,12 @@ void DboxMain::OnDuplicateEntry()
     } while (listpos != m_core.GetEntryEndIter());
 
     // Set up new entry
-    CItemData ci2;
+    CItemData ci2(*pci);
+    ci2.SetDisplayInfo(NULL);
     ci2.CreateUUID();
     ci2.SetGroup(ci2_group);
     ci2.SetTitle(ci2_title);
     ci2.SetUser(ci2_user);
-    ci2.SetPassword(pci->GetPassword());
-    ci2.SetURL(pci->GetURL());
-    ci2.SetAutoType(pci->GetAutoType());
-    ci2.SetRunCommand(pci->GetRunCommand());
-    ci2.SetEmail(pci->GetEmail());
-    ci2.SetNotes(pci->GetNotes());
-    time_t t;
-    int xint;
-    pci->GetCTime(t);
-    if ((long) t != 0L)
-      ci2.SetCTime(t);
-    pci->GetATime(t);
-    if ((long) t != 0L)
-      ci2.SetATime(t);
-    pci->GetXTime(t);
-    if ((long) t != 0L)
-      ci2.SetXTime(t);
-    pci->GetXTimeInt(xint);
-    if (xint != 0)
-      ci2.SetXTimeInt(xint);
-    pci->GetPMTime(t);
-    if ((long) t != 0L)
-      ci2.SetPMTime(t);
-    pci->GetRMTime(t);
-    if ((long) t != 0L)
-      ci2.SetRMTime(t);
-    StringX tmp = pci->GetPWHistory();
-    if (tmp.length() >= 5)
-      ci2.SetPWHistory(tmp);
-
-    short sh_dca;
-    pci->GetDCA(sh_dca);
-    if (sh_dca >= 0)
-      ci2.SetDCA(sh_dca);
 
     uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
     CItemData::EntryType entrytype = pci->GetEntryType();
