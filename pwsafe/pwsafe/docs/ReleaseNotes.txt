@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.19.1
 ====================
+[2872829] Duplicate Entry now copies password policy as well.
 [2870059] When an entry is highlighted during Find, the Toolbar and menu
 items now reflect its contents.
 [2868278] Minimize via the system menu, SystemTray menu and system control
