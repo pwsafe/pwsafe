@@ -873,7 +873,8 @@ void DboxMain::OnDuplicateEntry()
                  iter->second.GetUser()  + L"]";
         ci2.SetPassword(cs_tmp);
       }
-    }
+    } else
+      ci2.SetNormal();
 
     // Add it to the end of the list
     m_core.AddEntry(ci2);
