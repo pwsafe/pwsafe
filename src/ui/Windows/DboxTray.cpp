@@ -39,17 +39,19 @@ static char THIS_FILE[] = __FILE__;
 void DboxMain::OnTrayLockUnLock()
 {
   switch(app.GetSystemTrayState()) {
-    case ThisMfcApp::LOCKED:            // User clicked UnLock
+    case ThisMfcApp::LOCKED:            // User clicked UnLock!
       // This only unlocks the database - it does not restore the window
-      UnMinimize(false);
+      TRACE(L"OnTrayLockUnLock: User clicked Unlock\n");
+      RestoreWindowsData(false, false);
       break;
-    case ThisMfcApp::UNLOCKED:          // User clicked Lock
+    case ThisMfcApp::UNLOCKED:          // User clicked Lock!
       UpdateSystemTray(LOCKED);
       ClearClipboardData();
-      ShowWindow(SW_HIDE);
       LockDataBase(TIMER_LOCKDBONIDLETIMEOUT);  // save db if needed, etc.
+      ShowWindow(SW_HIDE);
       break;
     case ThisMfcApp::CLOSED:
+      break;
     default:
       ASSERT(0);
       break;

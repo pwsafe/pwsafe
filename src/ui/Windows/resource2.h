@@ -118,7 +118,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MANAGEMENU                   32150
 #define ID_MENUITEM_CHANGECOMBO         32151
 #define ID_MENUITEM_BACKUPSAFE          32152
-#define ID_MENUITEM_RESTORE             32153
+#define ID_MENUITEM_RESTORESAFE         32153
 #define ID_MENUITEM_OPTIONS             32154
 #define ID_MENUITEM_CUSTOMIZETOOLBAR    32155
 #define ID_MENUITEM_VALIDATE            32156
@@ -143,7 +143,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_TRAYUNLOCK          32251
 #define ID_MENUITEM_CLEARRECENTENTRIES  32252
 #define ID_MENUITEM_MINIMIZE            32253
-#define ID_MENUITEM_UNMINIMIZE          32254
+#define ID_MENUITEM_RESTORE             32254
 
 // Main Toolbar - only those items not also menu items
 // or only on mouse right-click popup menu

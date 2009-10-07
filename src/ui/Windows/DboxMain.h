@@ -143,7 +143,7 @@ enum PopupMenus {FILEMENU = 0, EXPORTMENU, IMPORTMENU,
 // Index values for which dialog to show during GetAndCheckPassword
 enum {GCP_FIRST      = 0,   // At startup of PWS
       GCP_NORMAL     = 1,   // Only OK, CANCEL & HELP buttons
-      GCP_UNMINIMIZE = 2,   // Only OK, CANCEL & HELP buttons
+      GCP_RESTORE    = 2,   // Only OK, CANCEL & HELP buttons
       GCP_WITHEXIT   = 3,   // OK, CANCEL, EXIT & HELP buttons
       GCP_ADVANCED   = 4};  // OK, CANCEL, HELP buttons & ADVANCED checkbox
 
@@ -365,9 +365,8 @@ protected:
   CString m_lastclipboardaction;
 #endif
 
-  bool m_windowok;
+  bool m_bInitDone;
   bool m_needsreading;
-  bool m_passphraseOK;
 
   bool m_bSortAscending;
   int m_iTypeSortColumn;
@@ -457,8 +456,8 @@ protected:
   int Compare(const StringX &cs_Filename1, const StringX &cs_Filename2);
 
   int BackupSafe(void);
+  int RestoreSafe(void);
   int New(void);
-  int Restore(void);
 
   void AutoType(const CItemData &ci);
   bool EditItem(CItemData *pci, PWScore *pcore = NULL);
@@ -551,7 +550,7 @@ protected:
   afx_msg void OnMerge();
   afx_msg void OnCompare();
   afx_msg void OnProperties();
-  afx_msg void OnRestore();
+  afx_msg void OnRestoreSafe();
   afx_msg void OnSaveAs();
   afx_msg void OnToggleView();
   afx_msg void OnListView();
@@ -587,7 +586,7 @@ protected:
   afx_msg void OnSetFilter();
   afx_msg void OnRefreshWindow();
   afx_msg void OnMinimize();
-  afx_msg void OnUnMinimize();
+  afx_msg void OnRestore();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnAutoType();
   afx_msg void OnGotoBaseEntry();
@@ -674,14 +673,14 @@ private:
 
   bool SetSessionNotification();
   bool IsWorkstationLocked() const;
-  void LockDataBase(UINT_PTR nIDEvent);
+  int LockDataBase(UINT_PTR nIDEvent);
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
   bool DecrementAndTestIdleLockCounter();
   int SaveIfChanged();
   void CheckExpiredPasswords();
-  void UnMinimize(bool update_windows);
+  bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true);
   void UpdateAccessTime(CItemData *pci);
   void RestoreDisplayStatus();
   std::vector<bool> GetGroupDisplayStatus(); // get current display state from window
@@ -701,6 +700,7 @@ private:
   void UpdateAccelTable();
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
+  void UpdateSystemMenu();
   
   static const struct UICommandTableEntry {
     UINT ID;

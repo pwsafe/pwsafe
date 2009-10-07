@@ -1221,6 +1221,8 @@ void DboxMain::AutoType(const CItemData &ci)
   //    "AlwaysOnTop" again, unless minimized!
   // 3. If not "Always on Top" - hide PWS during Autotype and show
   //    it again once finished - but behind other windows.
+  // NOTE: If "Lock on Minimize" is set and "MinimizeOnAutotype" then
+  //       the window will be locked once minimized.
   bool bMinOnAuto = PWSprefs::GetInstance()->
                     GetPref(PWSprefs::MinimizeOnAutotype) == TRUE;
 
@@ -1231,7 +1233,7 @@ void DboxMain::AutoType(const CItemData &ci)
 
   DoAutoType(AutoCmd, group, title, user, pwd, notes);
 
-  // If we hid it, now show it
+  // If we minimized it, exit. If we hid it, now show it
   if (bMinOnAuto)
     return;
 

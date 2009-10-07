@@ -802,7 +802,7 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
 // updates of windows suspended until all data is in.
 void DboxMain::RefreshViews(const int iView)
 {
-  if (!m_windowok)
+  if (!m_bInitDone)
     return;
 
 #if defined(POCKET_PC)
@@ -902,8 +902,12 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   //  To verify IF the function should be done at all, it must be checked in OnSysCommand.
   CDialog::OnSize(nType, cx, cy);
 
-  if (m_windowok) {
-    // Position the control bars
+  // If m_windowok not true, then dialog has not yet been completely initialised
+  if (!m_bInitDone) 
+    return;
+
+  if (nType != SIZE_MINIMIZED) {
+    // Position the control bars - don't bother if just been minimized
     CRect rect, dragrect;
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
@@ -942,8 +946,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     }
     m_ctlItemList.MoveWindow(&rect, TRUE);
     m_ctlItemTree.MoveWindow(&rect, TRUE);
-  } else
-    return;
+  }
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -952,7 +955,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   switch (nType) {
     case SIZE_MINIMIZED:
       // Called when minimize button select on main dialog control box
-      // or by right clicking in the Taskbar
+      // or the system menu or by right clicking in the Taskbar
 
       // Save DB preferences that may not have been saved in the database
       // over the minimize/restore event.
@@ -970,22 +973,17 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
         OnClearClipboard();
 
+      // PWSprefs::DatabaseClear == Locked
       if (prefs->GetPref(PWSprefs::DatabaseClear)) {
-        if (m_core.IsChanged() ||  m_bTSUpdated) {
-          if (Save() != PWScore::SUCCESS) {
-            // If we don't warn the user, data may be lost!
-            CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
-              cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
-            MessageBox(cs_text, cs_title, MB_ICONSTOP);
-            ShowWindow(SW_SHOW);
-            return;
-          }
-          ClearData(false);
+        if (LockDataBase(TIMER_LOCKDBONIDLETIMEOUT) < 0) {
+          // Failed to save - abort minimize and clearing of data
+          ShowWindow(SW_SHOW);
+          return;
         }
       }
 
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {      
-        app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
+        app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
         ShowWindow(SW_HIDE);
       }
       break;
@@ -996,9 +994,10 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       if (!m_bSizing) { // here if actually restored
 #endif
         app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
-        UnMinimize(false);
+        TRACE(L"OnSize:SIZE_RESTORED\n");
+        RestoreWindowsData(false);
         m_ctlItemTree.SetRestoreMode(true);
-        m_bIsRestoring = true;
+        m_bIsRestoring = true; // Stop 'sort of list view' hiding FindToolBar
         RefreshViews();
         if (m_selectedAtMinimize != NULL)
           SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
@@ -1019,9 +1018,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         // Resume notification of changes
         m_core.ResumeOnListNotification();
         m_core.ResumeOnDBNotification();
-        if (m_FindToolBar.IsVisible()) {
+        if (m_FindToolBar.IsVisible())
           SetFindToolBar(true);
-        }
 #if !defined(POCKET_PC)
       } else { // m_bSizing == true: here if size changed
         CRect rect;
@@ -1030,9 +1028,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
                                              rect.left, rect.right);
 
         // Make sure Find toolbar is above Status bar
-        if (m_FindToolBar.IsVisible()) {
+        if (m_FindToolBar.IsVisible())
           SetToolBarPositions();
-        }
       }
       // Set timer for user-defined idle lockout, if selected (DB preference)
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
@@ -1041,7 +1038,10 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
       }
       break;
-  } // switch statement
+    case SIZE_MAXHIDE:
+    case SIZE_MAXSHOW:
+      break;
+  } // nType switch statement
 #endif
   m_bSizing = false;
 }
@@ -1343,7 +1343,7 @@ void DboxMain::ClearData(bool clearMRE)
     m_RUEList.ClearEntries();
 
   //Because GetText returns a copy, we cannot do anything about the names
-  if (m_windowok) {
+  if (m_bInitDone) {
     // For long lists, this is painful, so we disable updates
     m_ctlItemList.LockWindowUpdate();
     m_ctlItemList.DeleteAllItems();
@@ -1671,35 +1671,55 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
   if ((nIDEvent == TIMER_LOCKONWTSLOCK && IsWorkstationLocked()) ||
       (nIDEvent == TIMER_LOCKDBONIDLETIMEOUT && DecrementAndTestIdleLockCounter())) {
     LockDataBase(nIDEvent);
+    bool useSysTray = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
+    ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
   } else {
-    TRACE(L"Timer lock kicked in (ID=%d), but not minimizing.\n", nIDEvent);
+    TRACE(L"Timer lock kicked in (ID=%d), not locking.\n", nIDEvent);
   }
 }
 
-void DboxMain::LockDataBase(UINT_PTR nIDEvent)
+int DboxMain::LockDataBase(UINT_PTR nIDEvent)
 {
+  /*
+  * Return codes:
+  * < 0 : failed to save before clearing data
+  * = 0 : did not lock (probably not required)
+  * > 0 : locked
+  */
+
   if (nIDEvent == TIMER_LOCKONWTSLOCK && PWSprefs::GetInstance()->
         GetPref(PWSprefs::LockOnWindowLock) != TRUE)
-    return;
+    return 0;
 
   /*
+  * Either got here because the workstaion locked and the user wants
+  * to lock the database or because the user wants to lock it after
+  * a period of inactivity or because we want to and use the nIDEvent of
+  * TIMER_LOCKDBONIDLETIMEOUT to force it.
+  *
   * Since we clear the data, any unchanged changes will be lost,
   * so we force a save if database is modified, and fail
   * to lock if the save fails (unless db is r-o).
   */
+
   // Need to save display status for when we return from minimize
   SaveDisplayStatus();
-  if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
-      !(m_core.IsChanged() || m_bTSUpdated ||
-      m_core.WasDisplayStatusChanged()) ||
-      Save() == PWScore::SUCCESS) {
-    TRACE(L"Locking database\n");
-    if (IsWindowVisible())
-      ShowWindow(SW_MINIMIZE);
-    ClearData(false);
+
+  // Now try and save changes
+  if (m_core.IsChanged() ||  m_bTSUpdated) {
+    if (Save() != PWScore::SUCCESS) {
+      // If we don't warn the user, data may be lost!
+      CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
+      cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
+      MessageBox(cs_text, cs_title, MB_ICONSTOP);
+      return -1;
+    }
   }
+
+  ClearData(false);
+  return 1;
 }
 
 // This function determines if the workstation is locked.

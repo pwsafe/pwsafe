@@ -108,7 +108,7 @@ void DboxMain::SetLocalStrings()
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
-  m_bSizing(false), m_needsreading(true), m_windowok(false),
+  m_bSizing(false), m_needsreading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
   m_core(app.m_core), m_pFontTree(NULL),
@@ -364,7 +364,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   // Manage Menu
   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
   ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
-  ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
+  ON_COMMAND(ID_MENUITEM_RESTORESAFE, OnRestoreSafe)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
 
   // Help Menu
@@ -414,7 +414,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 
   ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
   ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
-  ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
+  ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
 
 #if defined(POCKET_PC)
   ON_COMMAND(ID_MENUITEM_SHOWPASSWORD, OnShowPassword)
@@ -564,7 +564,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
-  {ID_MENUITEM_RESTORE, true, false, true, false},
+  {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_VALIDATE, true, false, false, true},
   // Help Menu
@@ -583,7 +583,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_TRAYLOCK, true, true, true, false},
   {ID_MENUITEM_CLEARRECENTENTRIES, true, true, true, false},
   {ID_MENUITEM_MINIMIZE, true, true, true, true},
-  {ID_MENUITEM_UNMINIMIZE, true, true, true, true},
+  {ID_MENUITEM_RESTORE, true, true, true, true},
   // Default Main Toolbar buttons - if not menu items
   //   None
   // Optional Main Toolbar buttons
@@ -604,7 +604,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 
 void DboxMain::InitPasswordSafe()
 {
-
   // Let's get the OS version - won't change while we are running!
   OSVERSIONINFO os;
   SecureZeroMemory(&os, sizeof(os));
@@ -619,6 +618,7 @@ void DboxMain::InitPasswordSafe()
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
   UpdateAlwaysOnTop();
+  UpdateSystemMenu();
 
   // ... same for UseSystemTray
   // StartSilent trumps preference (but StartClosed doesn't)
@@ -650,7 +650,7 @@ void DboxMain::InitPasswordSafe()
   }
 #endif
 
-  m_windowok = true;
+  m_bInitDone = true;
 
   // Set the icon for this dialog.  The framework does this automatically
   //  when the application's main window is not a dialog
@@ -907,7 +907,7 @@ LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)
 
   app.SetHotKeyPressed(true);
   if (IsIconic()) {
-    SendMessage(WM_COMMAND, ID_MENUITEM_UNMINIMIZE);
+    SendMessage(WM_COMMAND, ID_MENUITEM_RESTORE);
   }
   SetActiveWindow();
   SetForegroundWindow();
@@ -1122,7 +1122,7 @@ void DboxMain::OnMove(int x, int y)
   CDialog::OnMove(x, y);
   // turns out that minimizing calls this
   // with x = y = -32000. Oh joy.
-  if (m_windowok && IsWindowVisible() == TRUE &&
+  if (m_bInitDone && IsWindowVisible() == TRUE &&
       x >= 0 && y >= 0) {
     CRect rect;
     GetWindowRect(&rect);
@@ -1323,7 +1323,8 @@ void DboxMain::SetStartSilent(bool state)
   m_IsStartSilent = state;
   if (state) {
     // start silent implies use system tray.
-    PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);  
+    PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);
+    UpdateSystemMenu();
   }
 }
 
@@ -1361,7 +1362,7 @@ void DboxMain::SetChanged(ChangeType changed)
 
 void DboxMain::ChangeOkUpdate()
 {
-  if (!m_windowok)
+  if (!m_bInitDone)
     return;
 
 #if defined(POCKET_PC)
@@ -1429,7 +1430,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   // index:
   //  GCP_FIRST      (0) first
   //  GCP_NORMAL     (1) OK, CANCEL & HELP buttons
-  //  GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
+  //  GCP_RESTORE    (2) OK, CANCEL & HELP buttons
   //  GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
   //  GCP_ADVANCED   (4) OK, CANCEL, HELP & ADVANCED buttons
 
@@ -1526,7 +1527,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         else
           pcore->SetReadOnly(bIsReadOnly);
         break;
-      case GCP_UNMINIMIZE:
+      case GCP_RESTORE:
       case GCP_WITHEXIT:
       default:
         // user can't change R-O status
@@ -1779,24 +1780,26 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
 
   switch (nID & 0xFFF0) {
     case SC_RESTORE:
-      UnMinimize(true);
-      if (!m_passphraseOK)  // password bad or cancel pressed
-        return;
+      TRACE(L"OnSysCommand:SC_RESTORE\n");
+      if (!RestoreWindowsData(true))
+        return; // password bad or cancel pressed
       break;
     case SC_MINIMIZE:
       // Save expand/collapse status of groups
       m_displaystatus = GetGroupDisplayStatus();
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear))
-        LockDataBase(TIMER_LOCKDBONIDLETIMEOUT);  // save db if needed, etc.
       break;
     case SC_CLOSE:
       // Save expand/collapse status of groups
       m_displaystatus = GetGroupDisplayStatus();
+      if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+        Close();
       break;
   }
 
+  // Let standard processing handle CLOSE, MINIMIZE, RESTORE
+  // (and MAXIMIZE) and let it then call our OnSize routine
+  // to do the deed
   CDialog::OnSysCommand(nID, lParam);
-
 #endif
 }
 
@@ -1873,24 +1876,28 @@ void DboxMain::OnMinimize()
 
   // Save expand/collapse status of groups
   m_displaystatus = GetGroupDisplayStatus();
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear))
-    LockDataBase(TIMER_LOCKDBONIDLETIMEOUT);  // save db if needed, etc.
-
+  // Let OnSize handle this
   ShowWindow(SW_MINIMIZE);
 }
 
-void DboxMain::OnUnMinimize()
+void DboxMain::OnRestore()
 {
   // Called when the System Tray Restore menu option is used
-  UnMinimize(true);
+  RestoreWindowsData(true);
 }
 
-void DboxMain::UnMinimize(bool update_windows)
+bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 {
-  m_passphraseOK = false;
+  // This restores the data in the main dialog.
+  // If currently locked, it checks the user knows the correct passphrase first
+  // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
+
+  TRACE(L"RestoreWindowsData:bUpdateWindows = %s\n", bUpdateWindows ? L"true" : L"false");
+  bool brc(false);
+  // First - no database is currently open
   if (!m_bOpen) {
-    // first they may be nothing to do!
-    if (update_windows) {
+    // First they may be nothing to do!
+    if (bUpdateWindows) {
       if (m_IsStartSilent) {
         // Show initial dialog ONCE (if succeeds)
         if (!m_IsStartClosed) {
@@ -1906,50 +1913,52 @@ void DboxMain::UnMinimize(bool update_windows)
           ShowWindow(SW_RESTORE);
           UpdateSystemTray(UNLOCKED);
         }
-        return;
+        return false;
       } // m_IsStartSilent
       ShowWindow(SW_RESTORE);
-    } // update_windows
+    } // bUpdateWindows == true
     UpdateSystemTray(CLOSED);
-    return;
+    return false;
   }
 
   // Case 1 - data available but is currently locked
+  // By definition - data available implies m_bInitDone
   if (!m_needsreading &&
       (app.GetSystemTrayState() == ThisMfcApp::LOCKED) &&
       (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
     StringX passkey;
-    int rc;
-    rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
-    if (rc != PWScore::SUCCESS)
-      return;  // don't even think of restoring window!
+    int rc_passphrase;
+    // Verify passphrase (dialog shows only OK, CANCEL & HELP)
+    rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_RESTORE);
+    if (rc_passphrase != PWScore::SUCCESS)
+      return false;  // don't even think of restoring window!
 
     app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-    m_passphraseOK = true;
-    if (update_windows) {
+    if (bUpdateWindows) {
       RefreshViews();
       ShowWindow(SW_RESTORE);
     }
-    return;
+    return true;
   }
 
   // Case 2 - data unavailable
-  if (m_needsreading && m_windowok) {
+  if (m_bInitDone && m_needsreading) {
     StringX passkey;
-    int rc, rc2;
+    int rc_passphrase(PWScore::USER_CANCEL), rc_readdatabase;
     const bool useSysTray = PWSprefs::GetInstance()->
                             GetPref(PWSprefs::UseSystemTray);
 
-    rc = PWScore::USER_CANCEL;
+    // Hide the Window while asking for the passphrease
+    ShowWindow(SW_HIDE);
     if (m_bOpen)
-      rc = GetAndCheckPassword(m_core.GetCurFile(), passkey,
-                               useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT,
+      rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
+                               useSysTray ? GCP_RESTORE : GCP_WITHEXIT,
                                m_core.IsReadOnly());
     CString cs_temp, cs_title;
-    switch (rc) {
+    switch (rc_passphrase) {
       case PWScore::SUCCESS:
-        rc2 = m_core.ReadCurFile(passkey);
+        rc_readdatabase = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
         m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                            m_core.GetCurFile()).c_str();
@@ -1958,34 +1967,37 @@ void DboxMain::UnMinimize(bool update_windows)
       case PWScore::CANT_OPEN_FILE:
         cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile().c_str());
         cs_title.LoadString(IDS_FILEOPEN);
-        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+        MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        // Drop thorugh to ask for a new database
       case TAR_NEW:
-        rc2 = New();
+        rc_readdatabase = New();
         break;
       case TAR_OPEN:
-        rc2 = Open();
+        rc_readdatabase = Open();
         break;
       case PWScore::WRONG_PASSWORD:
-        rc2 = PWScore::NOT_SUCCESS;
+        rc_readdatabase = PWScore::NOT_SUCCESS;
         break;
       case PWScore::USER_CANCEL:
-        rc2 = PWScore::NOT_SUCCESS;
+        rc_readdatabase = PWScore::NOT_SUCCESS;
         break;
       case PWScore::USER_EXIT:
         m_core.UnlockFile(m_core.GetCurFile().c_str());
         PostQuitMessage(0);
-        return;
+        return false;
       default:
-        rc2 = PWScore::NOT_SUCCESS;
+        rc_readdatabase = PWScore::NOT_SUCCESS;
         break;
     }
 
-    if (rc2 == PWScore::SUCCESS) {
+    if (rc_readdatabase == PWScore::SUCCESS) {
       UpdateSystemTray(UNLOCKED);
       startLockCheckTimer();
-      m_passphraseOK = true;
+      brc = true;
       m_needsreading = false;
-      if (update_windows) {
+      if (bShow)
+        ShowWindow(SW_SHOW);
+      if (bUpdateWindows) {
         ShowWindow(SW_RESTORE);
         SetGroupDisplayStatus(m_displaystatus);
         BringWindowToTop();
@@ -1993,13 +2005,15 @@ void DboxMain::UnMinimize(bool update_windows)
     } else {
       ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
     }
-    return;
+    return brc;
   }
-  if (update_windows) {
+
+  if (bUpdateWindows) {
     ShowWindow(SW_RESTORE);
     SetGroupDisplayStatus(m_displaystatus);
     BringWindowToTop();
   }
+  return brc;
 }
 
 void DboxMain::startLockCheckTimer()
@@ -2061,7 +2075,8 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
       m_bWSLocked = true;
-      LockDataBase(TIMER_LOCKONWTSLOCK);
+      if (LockDataBase(TIMER_LOCKONWTSLOCK))
+        ShowWindow(SW_MINIMIZE);
       break;
     case WTS_CONSOLE_CONNECT:
     case WTS_REMOTE_CONNECT:
@@ -2427,6 +2442,7 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
   // Initial setup of menu items and toolbar buttons
   // First set new open/close status
   m_bOpen = bOpen;
+  UpdateSystemMenu();
 
   // For open/close
   const UINT imenuflags = bOpen ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
@@ -2502,7 +2518,12 @@ void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
         {
           const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
           pCmdUI->SetText(csClosed);
-          iEnable = FALSE;
+          if (pCmdUI->m_pMenu != NULL) {
+            // We want it disabled but not greyed
+            pCmdUI->m_pMenu->ModifyMenu(pCmdUI->m_nID, MF_BYCOMMAND | MF_DISABLED,
+                                pCmdUI->m_nID, csClosed);
+            return;
+          }
           break;
         }
         default:
@@ -2761,7 +2782,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     }
     // Disable Restore if already visible
-    case ID_MENUITEM_UNMINIMIZE:
+    case ID_MENUITEM_RESTORE:
     {
       WINDOWPLACEMENT wndpl;
       GetWindowPlacement(&wndpl);
@@ -2901,4 +2922,25 @@ BOOL CALLBACK DboxMain::EnumScreens(HMONITOR hMonitor, HDC /* hdc */,
   ::DeleteObject(hrgn2);
 
   return TRUE;
+}
+
+void DboxMain::UpdateSystemMenu()
+{
+  /**
+   * Currently we leave the system menu untouched, even if the
+   * last entry ("X Close Alt+F4") is a bit ambiguous:
+   * With UseSystemTray, we minimize to the system tray
+   * Without it, we exit the application.
+   *
+   * Leaving this as a 'placeholder' if we change out mind.
+   */
+  if (IsIconic()) // Shouldn't happen, but let's be safe
+    return;
+#if 0
+  CMenu *pSysMenu = GetSystemMenu(FALSE); // FALSE returns current menu
+
+  CString cs_text;
+  // set cs_text as desired
+  pSysMenu->ModifyMenu(SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, cs_text);
+#endif
 }
