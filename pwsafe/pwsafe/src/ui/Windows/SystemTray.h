@@ -134,4 +134,7 @@ protected:
   //}}AFX_MSG
   LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
   DECLARE_MESSAGE_MAP()
+
+private:
+  CWnd *m_pParent;
 };

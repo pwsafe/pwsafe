@@ -2771,11 +2771,11 @@ void DboxMain::OnOK()
 
 void DboxMain::OnCancel()
 {
-  // If system tray is enabled, cancel (X on title bar) closes
-  // window, else exit application
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+  // If system tray is enabled, cancel (escape) 
+  // minimizes to the system tray, else exit application
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     ShowWindow(SW_MINIMIZE);
-  else
+  } else
     OnOK();
 }
 

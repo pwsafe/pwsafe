@@ -53,7 +53,7 @@ static wchar_t PSSWDCHAR = L'*';
 int CPasskeyEntry::dialog_lookup[5] = {
   IDD_PASSKEYENTRY_FIRST,          // GCP_FIRST
   IDD_PASSKEYENTRY,                // GCP_NORMAL
-  IDD_PASSKEYENTRY,                // GCP_UNMINIMIZE
+  IDD_PASSKEYENTRY,                // GCP_RESTORE
   IDD_PASSKEYENTRY_WITHEXIT,       // GCP_WITHEXIT
   IDD_PASSKEYENTRY_WITHEXIT};      // GCP_ADVANCED
 
@@ -201,9 +201,9 @@ BOOL CPasskeyEntry::OnInitDialog(void)
       GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
       break;
-    case GCP_UNMINIMIZE:
+    case GCP_RESTORE:
     case GCP_WITHEXIT:
-      // on UnMinimize - user can't change status
+      // on Restore - user can't change status
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
       break;
@@ -286,19 +286,15 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   if (app.WasHotKeyPressed()) {
     // Reset it
     app.SetHotKeyPressed(false);
-
-    // Need to get it to the top as a result of a hotkey.
-    // This is "stronger" than BringWindowToTop().
-    SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    SetActiveWindow();
-    SetForegroundWindow();
   }
-
-  if (m_pctlPasskey->IsWindowEnabled() == TRUE) {
-    m_pctlPasskey->SetFocus();
-    return FALSE;
-  } else
-    return TRUE;
+  // Following (1) brings to top when hotkey pressed,
+  // (2) ensures focus is on password entry field, where it belongs.
+  // This is "stronger" than BringWindowToTop().
+  SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+  SetActiveWindow();
+  SetForegroundWindow();
+  m_pctlPasskey->SetFocus();
+  return FALSE; // FALSE means we set the focus ourselves
 }
 
 #if defined(POCKET_PC)

@@ -54,6 +54,8 @@ int PWSfileV3::Open(const StringX &passkey)
 
   ASSERT(m_curversion == V30);
   ASSERT(!passkey.empty());
+  if (passkey.empty()) // Just in case - happens if someone
+    return WRONG_PASSWORD; // manages to save a locked db.
 
   m_passkey = passkey;
 

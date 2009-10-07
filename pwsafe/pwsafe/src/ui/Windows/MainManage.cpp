@@ -111,13 +111,13 @@ int DboxMain::BackupSafe()
   return PWScore::SUCCESS;
 }
 
-void DboxMain::OnRestore()
+void DboxMain::OnRestoreSafe()
 {
   if (!m_core.IsReadOnly()) // disable in read-only mode
-    Restore();
+    RestoreSafe();
 }
 
-int DboxMain::Restore()
+int DboxMain::RestoreSafe()
 {
   int rc;
   StringX backup, passkey, temp;
@@ -475,6 +475,7 @@ void DboxMain::OnOptions()
 
     prefs->SetPref(PWSprefs::UseSystemTray,
       system.m_usesystemtray == TRUE);
+    UpdateSystemMenu();
     prefs->SetPref(PWSprefs::MaxREItems,
       system.m_maxreitems);
     if (system.m_maxreitems == 0) {

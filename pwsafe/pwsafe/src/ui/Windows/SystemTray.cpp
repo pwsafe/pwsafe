@@ -92,7 +92,7 @@ CSystemTray::CSystemTray()
 CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
                          HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
-  : m_RUEList(RUEList)
+  : m_RUEList(RUEList), m_pParent(pParent)
 {
   Initialise();
   Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
@@ -133,7 +133,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip
 
   // load up the NOTIFYICONDATA structure
   m_tnd.cbSize = sizeof(m_tnd);
-  m_tnd.hWnd   = pParent->GetSafeHwnd()? pParent->GetSafeHwnd() : m_hWnd;
+  m_tnd.hWnd   = pParent->GetSafeHwnd() ? pParent->GetSafeHwnd() : m_hWnd;
   m_tnd.uID    = uID;
   m_tnd.hIcon  = icon;
   m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
@@ -476,170 +476,195 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     if (!pContextMenu)
       return 0L;
 
+    int iPopupPos(2);
     const int i_state = app.GetSystemTrayState();
     switch (i_state) {
       case ThisMfcApp::UNLOCKED:
-        {
+      {
+        if (m_pParent != NULL && m_pParent->IsWindowVisible()) {
+          pContextMenu->RemoveMenu(0, MF_BYPOSITION);
+          pContextMenu->RemoveMenu(0, MF_BYPOSITION);
+          iPopupPos = 0;
+        } else {
           const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
           pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
                                    ID_MENUITEM_TRAYLOCK, csLock);
-          break;
         }
+        break;
+      }
       case ThisMfcApp::LOCKED:
-        {
-          const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
-          pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
-                                   ID_MENUITEM_TRAYUNLOCK, csUnLock);
-          break;
-        }
+      {
+        const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
+        pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
+                                 ID_MENUITEM_TRAYUNLOCK, csUnLock);
+        break;
+      }
+      case ThisMfcApp::CLOSED:
+        // Remove separator and then Recent Entries popup menu
+        pContextMenu->RemoveMenu(1, MF_BYPOSITION);
+        pContextMenu->RemoveMenu(1, MF_BYPOSITION);
+        // And then Close
+        pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND);
+        break;
       default:
         break;
     }
     if (app.AnyOpenDialogs()) {
-      const UINT num = pContextMenu->GetMenuItemCount() - 2;
-      pContextMenu->RemoveMenu(num, MF_BYPOSITION); // Delete last separator
-      pContextMenu->RemoveMenu(num, MF_BYPOSITION); // Delete Exit
-      pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND); // Delete Close
+      // Delete Close
+      pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND);
+      // Delete Exit
+      pContextMenu->RemoveMenu(ID_MENUITEM_EXIT, MF_BYCOMMAND);
+      // Now that Exit is gone, delete last separator
+      pContextMenu->RemoveMenu(pContextMenu->GetMenuItemCount() - 1, MF_BYPOSITION);
     }
 
-    CMenu *pMainRecentEntriesMenu;
+    size_t num_recent_entries = m_RUEList.GetCount();
     int irc;
-
-    pMainRecentEntriesMenu = pContextMenu->GetSubMenu(2);
-
-    // No point in doing Recent Entries if database is locked
-    size_t num_recent_entries = (i_state == ThisMfcApp::LOCKED) ? 0 : m_RUEList.GetCount();
-
+    // Process Recent entries.
+    // Allow disabled menu item if open but locked
+    // Allow enabled menu item if open and unlocked
     typedef CMenu* CMenuPtr;
-    CMenu **pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
-
-    minfo.dwMenuData = IDR_POPTRAY;
-    pMainRecentEntriesMenu->SetMenuInfo(&minfo);
+    CMenu *pMainRecentEntriesMenu(NULL);
+    CMenu **pNewRecentEntryMenu = (CMenu **)(NULL);
+    CRUEItemData* pmd;
 
     MENUITEMINFO miteminfo;
     SecureZeroMemory(&miteminfo, sizeof(miteminfo));
     miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_DATA;
 
-    CRUEItemData* pmd;
+    if (i_state != ThisMfcApp::CLOSED) {
+      pMainRecentEntriesMenu = pContextMenu->GetSubMenu(iPopupPos);
 
-    if (num_recent_entries == 0) {
-      // Only leave the "Clear Entries" menu item (greyed out in ON_UPDATE_COMMAND_UI function)
-      pMainRecentEntriesMenu->RemoveMenu(3, MF_BYPOSITION);  // Separator
-      pMainRecentEntriesMenu->RemoveMenu(2, MF_BYPOSITION);  // Help entry
-      pMainRecentEntriesMenu->RemoveMenu(1, MF_BYPOSITION);  // Help entry
-    } else {
-      // Build extra popup menus (1 per entry in list)
-      m_RUEList.GetAllMenuItemStrings(m_menulist);
+      pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
 
-      for (size_t i = 0; i < num_recent_entries; i++) {
-        const StringX cEntry = m_menulist[i].string;
-        CItemData *pci = m_menulist[i].pci;
+      minfo.dwMenuData = IDR_POPTRAY;
+      pMainRecentEntriesMenu->SetMenuInfo(&minfo);
 
-        if (pci == NULL) {
-          TRACE(L"CSystemTray::OnTrayNotification: null m_menulist[%d].pci\n", i);
-          continue;
-        }
+      if (num_recent_entries == 0) {
+        // Only leave the "Clear Entries" menu item (greyed out in ON_UPDATE_COMMAND_UI function)
+        // Delete help entry1
+        pMainRecentEntriesMenu->RemoveMenu(ID_TRAYRECENT_ENTRY_HELP1, MF_BYCOMMAND);
+        // Delete help entry2
+        pMainRecentEntriesMenu->RemoveMenu(ID_TRAYRECENT_ENTRY_HELP2, MF_BYCOMMAND);
+        // Separator - now the one after the Clear
+        pMainRecentEntriesMenu->RemoveMenu(1, MF_BYPOSITION);
+      } 
 
-        pNewRecentEntryMenu[i] = new CMenu;
-        pNewRecentEntryMenu[i]->CreatePopupMenu();
+      // No point in doing Recent Entries if database is locked
+      if (num_recent_entries != 0 && i_state == ThisMfcApp::UNLOCKED) {
+        // Build extra popup menus (1 per entry in list)
+        m_RUEList.GetAllMenuItemStrings(m_menulist);
 
-        CString cs_text;
+        for (size_t i = 0; i < num_recent_entries; i++) {
+          const StringX cEntry = m_menulist[i].string;
+          CItemData *pci = m_menulist[i].pci;
 
-        cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
-        int ipos = 0;
-        pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                           ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
-                                           cs_text);
-        ipos++;
-        if (!pci->IsUserEmpty()) {
-          cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
+          if (pci == NULL) {
+            TRACE(L"CSystemTray::OnTrayNotification: null m_menulist[%d].pci\n", i);
+            continue;
+          }
+
+          pNewRecentEntryMenu[i] = new CMenu;
+          pNewRecentEntryMenu[i]->CreatePopupMenu();
+
+          CString cs_text;
+
+          cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
+          int ipos = 0;
           pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
+                                             ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
                                              cs_text);
           ipos++;
-        }
+          if (!pci->IsUserEmpty()) {
+            cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
+                                               cs_text);
+            ipos++;
+          }
 
-        if (!pci->IsNotesEmpty()) {
-          cs_text.LoadString(IDS_TRAYCOPYNOTES);
+          if (!pci->IsNotesEmpty()) {
+            cs_text.LoadString(IDS_TRAYCOPYNOTES);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYCOPYNOTES1 + i,
+                                               cs_text);
+            ipos++;
+          }
+
+          cs_text.LoadString(IDS_TRAYAUTOTYPE);
           pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYCOPYNOTES1 + i,
+                                             ID_MENUITEM_TRAYAUTOTYPE1 + i,
                                              cs_text);
           ipos++;
-        }
 
-        cs_text.LoadString(IDS_TRAYAUTOTYPE);
-        pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                           ID_MENUITEM_TRAYAUTOTYPE1 + i,
-                                           cs_text);
-        ipos++;
+          if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
+            cs_text.LoadString(IDS_TRAYCOPYURL);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYCOPYURL1 + i,
+                                               cs_text);
+            ipos++;
+          }
 
-        if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
-          cs_text.LoadString(IDS_TRAYCOPYURL);
+          if (!pci->IsEmailEmpty() || 
+              (pci->IsEmailEmpty() && !pci->IsURLEmpty() && pci->IsURLEmail())) {
+            cs_text.LoadString(IDS_TRAYCOPYEMAIL);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYCOPYEMAIL1 + i,
+                                               cs_text);
+            ipos++;
+          }
+
+          if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
+            cs_text.LoadString(IDS_TRAYBROWSE);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYBROWSE1 + i,
+                                               cs_text);
+            ipos++;
+            cs_text.LoadString(IDS_TRAYBROWSEPLUS);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYBROWSEPLUS1 + i,
+                                               cs_text);
+            ipos++;
+          }
+
+          if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail())) {
+            cs_text.LoadString(IDS_TRAYSENDEMAIL);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYSENDEMAIL1 + i,
+                                               cs_text);
+            ipos++;
+          }
+
+          if (!pci->IsRunCommandEmpty()) {
+            cs_text.LoadString(IDS_TRAYRUNCOMMAND);
+            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                                               ID_MENUITEM_TRAYRUNCMD1 + i,
+                                               cs_text);
+            ipos++;
+          }
+
+          cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
           pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYCOPYURL1 + i,
+                                             ID_MENUITEM_TRAYDELETE1 + i,
                                              cs_text);
-          ipos++;
+
+          // Insert new popup menu at the bottom of the list
+          // pos 0  = Clear Entries
+          // pos 1  = Note on entry format
+          // pos 2  = Note on missing fields in entry
+          // pos 3  = Separator
+          // pos 4+ = entries.....
+          irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
+                                                   UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
+                                                   cEntry.c_str());
+          ASSERT(irc != 0);
+          pmd = new CRUEItemData;
+          pmd->nImage = m_menulist[i].image; // Needed by OnInitMenuPopup
+          miteminfo.dwItemData = (ULONG_PTR)pmd;
+          irc = pMainRecentEntriesMenu->SetMenuItemInfo(i + 4, &miteminfo, TRUE);
+          ASSERT(irc != 0);
         }
-
-        if (!pci->IsEmailEmpty() || 
-            (pci->IsEmailEmpty() && !pci->IsURLEmpty() && pci->IsURLEmail())) {
-          cs_text.LoadString(IDS_TRAYCOPYEMAIL);
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYCOPYEMAIL1 + i,
-                                             cs_text);
-          ipos++;
-        }
-
-        if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
-          cs_text.LoadString(IDS_TRAYBROWSE);
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYBROWSE1 + i,
-                                             cs_text);
-          ipos++;
-          cs_text.LoadString(IDS_TRAYBROWSEPLUS);
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYBROWSEPLUS1 + i,
-                                             cs_text);
-          ipos++;
-        }
-
-        if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail())) {
-          cs_text.LoadString(IDS_TRAYSENDEMAIL);
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYSENDEMAIL1 + i,
-                                             cs_text);
-          ipos++;
-        }
-
-        if (!pci->IsRunCommandEmpty()) {
-          cs_text.LoadString(IDS_TRAYRUNCOMMAND);
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYRUNCMD1 + i,
-                                             cs_text);
-          ipos++;
-        }
-
-        cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
-        pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                           ID_MENUITEM_TRAYDELETE1 + i,
-                                           cs_text);
-
-        // Insert new popup menu at the bottom of the list
-        // pos 0  = Clear Entries
-        // pos 1  = Note on entry format
-        // pos 2  = Note on missing fields in entry
-        // pos 3  = Separator
-        // pos 4+ = entries.....
-        irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
-                                                 UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
-                                                 cEntry.c_str());
-        ASSERT(irc != 0);
-        pmd = new CRUEItemData;
-        pmd->nImage = m_menulist[i].image; // Needed by OnInitMenuPopup
-        miteminfo.dwItemData = (ULONG_PTR)pmd;
-        irc = pMainRecentEntriesMenu->SetMenuItemInfo(i + 4, &miteminfo, TRUE);
-        ASSERT(irc != 0);
       }
     }
 
@@ -657,18 +682,20 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
     pTarget->PostMessage(WM_NULL, 0, 0);
 
-    for (size_t i = 0; i < num_recent_entries; i++) {
-      irc = pMainRecentEntriesMenu->GetMenuItemInfo(i + 4, &miteminfo, TRUE);
-      if (irc == 0) {
-        TRACE(L"CSystemTray::OnTrayNotification: GetMenuItemInfo(%d) = 0\n", i + 4);
-        continue;
+    if (i_state != ThisMfcApp::CLOSED) {
+      for (size_t i = 0; i < num_recent_entries; i++) {
+        irc = pMainRecentEntriesMenu->GetMenuItemInfo(i + 4, &miteminfo, TRUE);
+        if (irc == 0) {
+          TRACE(L"CSystemTray::OnTrayNotification: GetMenuItemInfo(%d) = 0\n", i + 4);
+          continue;
+        }
+        pmd = (CRUEItemData *)miteminfo.dwItemData;
+        delete pmd;
+        delete pNewRecentEntryMenu[i];
       }
-      pmd = (CRUEItemData*)miteminfo.dwItemData;
-      delete pmd;
-      delete pNewRecentEntryMenu[i];
+      delete[] pNewRecentEntryMenu;
     }
 
-    delete[] pNewRecentEntryMenu;
     m_menulist.clear();
     menu.DestroyMenu();
   } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) {
