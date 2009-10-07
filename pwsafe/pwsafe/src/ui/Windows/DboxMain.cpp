@@ -2932,15 +2932,33 @@ void DboxMain::UpdateSystemMenu()
    * With UseSystemTray, we minimize to the system tray
    * Without it, we exit the application.
    *
-   * Leaving this as a 'placeholder' if we change out mind.
+   * Leaving this as a 'placeholder' when we change out minds.
    */
   if (IsIconic()) // Shouldn't happen, but let's be safe
     return;
 #if 0
-  CMenu *pSysMenu = GetSystemMenu(FALSE); // FALSE returns current menu
+  CMenu *pSysMenu = GetSystemMenu(FALSE);
+  BYTE flag = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray) == TRUE ? 1 : 0;
+  flag |= m_bOpen ? 2 : 0;
 
   CString cs_text;
-  // set cs_text as desired
-  pSysMenu->ModifyMenu(SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, cs_text);
+  switch (flag) {
+    case 0: // Closed + No System Tray : Exit
+      cs_text.LoadString(IDS_EXIT);
+      break;
+    case 1: // Closed +    System Tray : Minimize to System Tray
+      cs_text.LoadString(IDS_MIN2ST);
+      break;
+    case 2: // Open   + No System Tray : Close DB + Exit
+      cs_text.LoadString(IDS_CLOSE_EXIT);
+      break;
+    case 3: // Open   +    System Tray : Minimize to System Tray & maybe lock
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear) == TRUE)
+        cs_text.LoadString(IDS_MIN2STLOCK);
+      else
+        cs_text.LoadString(IDS_MIN2ST);
+      break;
+   }
+   pSysMenu->ModifyMenu(SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, cs_text);
 #endif
 }

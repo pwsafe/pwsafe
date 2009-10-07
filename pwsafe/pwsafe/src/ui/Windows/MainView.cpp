@@ -902,7 +902,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
   //  To verify IF the function should be done at all, it must be checked in OnSysCommand.
   CDialog::OnSize(nType, cx, cy);
 
-  // If m_windowok not true, then dialog has not yet been completely initialised
+  // If m_bInitDone not true, then dialog has not yet been completely initialised
   if (!m_bInitDone) 
     return;
 
