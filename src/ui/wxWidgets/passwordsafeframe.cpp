@@ -745,3 +745,13 @@ void PasswordSafeFrame::OnOptionsClick( wxCommandEvent& event )
   window->Destroy();
 }
 
+void PasswordSafeFrame::SeletItem(const CUUIDGen& uuid)
+{
+    if (m_currentView == GRID) {
+      m_grid->SelectItem(uuid);
+    }
+    else {
+      m_tree->SelectItem(uuid);
+    }
+
+}

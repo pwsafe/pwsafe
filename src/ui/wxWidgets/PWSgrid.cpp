@@ -323,3 +323,9 @@ void PWSGrid::RegisterCoreNotifications()
 }
 
 
+ void PWSGrid::SelectItem(const CUUIDGen & uuid)
+ {
+     UUIDRowMapT::const_iterator itr = m_uuid_map.find(uuid);
+     if (itr != m_uuid_map.end())
+         wxGrid::SelectRow(itr->second);
+ }
