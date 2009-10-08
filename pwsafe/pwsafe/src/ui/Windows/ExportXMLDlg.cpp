@@ -54,6 +54,19 @@ BOOL CExportXMLDlg::OnInitDialog()
   ApplyPasswordFont(GetDlgItem(IDC_EXPORT_XML_PASSWORD));
   ((CEdit*)GetDlgItem(IDC_EXPORT_XML_PASSWORD))->SetPasswordChar(PSSWDCHAR);
   
+  LOGFONT lf1, lf2;
+  CFont font1, font2;
+
+  GetDlgItem(IDC_EXPWARNING1)->GetFont()->GetLogFont(&lf1);
+  lf1.lfWeight = FW_BOLD;
+  font1.CreateFontIndirect(&lf1);
+  GetDlgItem(IDC_EXPWARNING1)->SetFont(&font1);
+
+  GetDlgItem(IDC_EXPWARNING2)->GetFont()->GetLogFont(&lf2);
+  lf2.lfWeight = FW_BOLD;
+  font2.CreateFontIndirect(&lf2);
+  GetDlgItem(IDC_EXPWARNING2)->SetFont(&font2);
+
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);
