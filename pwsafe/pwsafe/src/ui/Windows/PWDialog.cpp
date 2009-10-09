@@ -10,11 +10,16 @@
 #include "DboxMain.h"
 #include "PWDialog.h"
 
+#include <algorithm>
+#include <functional>
+
 #if defined(POCKET_PC)
 #error "TBD - define proper Dialog base class for PPC"
 #endif
 
 extern const wchar_t *EYE_CATCHER;
+
+CPWDialogTracker *CPWDialog::sm_tracker = NULL; // static member
 
 IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 
@@ -54,12 +59,61 @@ INT_PTR CPWDialog::DoModal()
   if (bAccEn)
     app.DisableAccelerator();
 
-  app.IncrementOpenDialogs();
+  GetDialogTracker()->AddOpenDialog(this);
   INT_PTR rc = CDialog::DoModal();
-  app.DecrementOpenDialogs();
+  GetDialogTracker()->RemoveOpenDialog(this);
 
   if (bAccEn)
     app.EnableAccelerator();
 
   return rc;
+}
+
+CPWDialogTracker *CPWDialog::GetDialogTracker()
+{
+  if (sm_tracker == NULL)
+    sm_tracker = new CPWDialogTracker;
+  return sm_tracker;
+}
+
+CPWDialogTracker::CPWDialogTracker()
+{
+}
+
+CPWDialogTracker::~CPWDialogTracker()
+{
+}
+
+bool CPWDialogTracker::AnyOpenDialogs() const
+{
+  bool retval;
+  m_mutex.Lock();
+  retval = !m_dialogs.empty();
+  m_mutex.Unlock();
+  return retval;
+}
+
+void CPWDialogTracker::AddOpenDialog(CWnd *dlg)
+{
+  m_mutex.Lock();
+  m_dialogs.push_back(dlg);
+  m_mutex.Unlock();
+}
+
+void CPWDialogTracker::RemoveOpenDialog(CWnd *dlg)
+{
+  m_mutex.Lock();
+  m_dialogs.remove(dlg);
+  m_mutex.Unlock();
+}
+
+void CPWDialogTracker::Apply(void (*f)(CWnd *))
+{
+  // we operate on a copy of the list of dialogs,
+  // to avoid deadlocks and other nastiness
+  std::list<CWnd *> dialogs;
+  m_mutex.Lock();
+  dialogs = m_dialogs;
+  m_mutex.Unlock();
+  std::for_each(dialogs.begin(), dialogs.end(), std::ptr_fun(f));
 }

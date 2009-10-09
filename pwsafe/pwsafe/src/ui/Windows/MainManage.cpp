@@ -680,7 +680,7 @@ void DboxMain::OnOptions()
     // which DisplayStatus implicitly depends upon
     if (bOldExplorerTypeTree !=
         prefs->GetPref(PWSprefs::ExplorerTypeTree))
-      SaveDisplayStatus();
+      SaveGroupDisplayState();
 
     if (system.m_usesystemtray == TRUE) {
       if (app.IsIconVisible() == FALSE)

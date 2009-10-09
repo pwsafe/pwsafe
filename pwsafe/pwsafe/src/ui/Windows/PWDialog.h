@@ -17,7 +17,8 @@
 #pragma once
 
 #include <afxwin.h>
-
+#include <afxmt.h> // for CMutex
+#include <list>
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
 #else
@@ -31,6 +32,8 @@
 typedef CPwsPopupDialog CPWDialog;
 #else
 
+class CPWDialogTracker; // forward declaration
+
 class CPWDialog : public CDialog
 {
 public:
@@ -42,6 +45,27 @@ public:
   // Following override to stop accelerators interfering
   virtual INT_PTR DoModal();
 
+  static CPWDialogTracker *GetDialogTracker();
+
   DECLARE_DYNAMIC(CPWDialog)
+private:
+  static CPWDialogTracker *sm_tracker;
 };
+
+class CPWDialogTracker {
+ public:
+  CPWDialogTracker();
+  ~CPWDialogTracker();
+
+  bool AnyOpenDialogs() const;
+  void AddOpenDialog(CWnd *dlg);
+  void RemoveOpenDialog(CWnd *dlg);
+  void Apply(void (*f)(CWnd *)); // applies f to all open dialogs
+
+ private:
+  mutable CMutex m_mutex; // to protect access to our list of open dialogs
+  // CWnd = CDialog & CPropertySheet common ancestor!
+  std::list<CWnd *> m_dialogs;
+};
+
 #endif /* POCKET_PC */

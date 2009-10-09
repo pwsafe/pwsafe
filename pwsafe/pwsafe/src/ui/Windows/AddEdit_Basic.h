@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "resource.h"
 #include "AddEdit_PropertyPage.h"
 #include "ExtThread.h"
 #include "ControlExtns.h"

@@ -2670,7 +2670,7 @@ void DboxMain::OnOK()
   prefs->SetPref(PWSprefs::ListColumns, LPCWSTR(cs_columns));
   prefs->SetPref(PWSprefs::ColumnWidths, LPCWSTR(cs_columnswidths));
 
-  SaveDisplayStatus(); // since it's not always up to date
+  SaveGroupDisplayState(); // since it's not always up to date
   // (CPWTreeCtrl::OnExpandCollapse not always called!)
 
   //Store current filename for next time...
@@ -2779,21 +2779,21 @@ void DboxMain::OnCancel()
     OnOK();
 }
 
-void DboxMain::SaveDisplayStatus()
+void DboxMain::SaveGroupDisplayState()
 {
-  vector <bool> v = GetGroupDisplayStatus(); // update it
+  vector <bool> v = GetGroupDisplayState(); // update it
   m_core.SetDisplayStatus(v); // store it
 }
 
-void DboxMain::RestoreDisplayStatus()
+void DboxMain::RestoreGroupDisplayState()
 {
   const vector<bool> &displaystatus = m_core.GetDisplayStatus();    
 
   if (!displaystatus.empty())
-    SetGroupDisplayStatus(displaystatus);
+    SetGroupDisplayState(displaystatus);
 }
 
-vector<bool> DboxMain::GetGroupDisplayStatus()
+vector<bool> DboxMain::GetGroupDisplayState()
 {
   HTREEITEM hItem = NULL;
   vector<bool> v;
@@ -2811,10 +2811,10 @@ vector<bool> DboxMain::GetGroupDisplayStatus()
   return v;
 }
 
-void DboxMain::SetGroupDisplayStatus(const vector<bool> &displaystatus)
+void DboxMain::SetGroupDisplayState(const vector<bool> &displaystatus)
 {
   // We need to copy displaystatus since Expand may cause
-  // SaveDisplayStatus to be called, updating it
+  // SaveGroupDisplayState to be called, updating it
 
   // Could be called from OnSize before anything set up!
   // Check Tree is valid first

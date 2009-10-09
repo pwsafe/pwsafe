@@ -263,7 +263,7 @@ public:
   {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
   void Delete(bool inRecursion = false);
-  void SaveDisplayStatus(); // call when tree expansion state changes
+  void SaveGroupDisplayState(); // call when tree expansion state changes
   bool CheckNewPassword(const StringX &group, const StringX &title,
                         const StringX &user, const StringX &password,
                         const bool bIsEdit, const CItemData::EntryType &InputType, 
@@ -682,9 +682,9 @@ private:
   void CheckExpiredPasswords();
   bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true);
   void UpdateAccessTime(CItemData *pci);
-  void RestoreDisplayStatus();
-  std::vector<bool> GetGroupDisplayStatus(); // get current display state from window
-  void SetGroupDisplayStatus(const std::vector<bool> &displaystatus); // changes display
+  void RestoreGroupDisplayState();
+  std::vector<bool> GetGroupDisplayState(); // get current display state from window
+  void SetGroupDisplayState(const std::vector<bool> &displaystatus); // changes display
   void MakeOrderedItemList(OrderedItemList &il);
   int CountChildren(HTREEITEM hStartItem);
   void SetColumns();  // default order

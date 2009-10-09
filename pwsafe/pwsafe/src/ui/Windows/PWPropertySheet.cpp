@@ -50,9 +50,9 @@ INT_PTR CPWPropertySheet::DoModal()
   if (bAccEn)
     app.DisableAccelerator();
 
-  app.IncrementOpenDialogs();
+  CPWDialog::GetDialogTracker()->AddOpenDialog(this);
   INT_PTR rc = CPropertySheet::DoModal();
-  app.DecrementOpenDialogs();
+  CPWDialog::GetDialogTracker()->RemoveOpenDialog(this);
 
   if (bAccEn)
     if (bAccEn)app.EnableAccelerator();

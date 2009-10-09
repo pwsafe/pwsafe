@@ -162,9 +162,9 @@ INT_PTR CPWFontDialog::DoModal()
   if (bAccEn)
     app.DisableAccelerator();
 
-  app.IncrementOpenDialogs();
+  CPWDialog::GetDialogTracker()->AddOpenDialog(this);
   INT_PTR rc = CFontDialog::DoModal();
-  app.DecrementOpenDialogs();
+  CPWDialog::GetDialogTracker()->RemoveOpenDialog(this);
 
   if (bAccEn)
     app.EnableAccelerator();
