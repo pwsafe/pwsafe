@@ -131,9 +131,9 @@ INT_PTR CGeneralMsgBox::DoModal()
   if (bAccEn)
     app.DisableAccelerator();
 
-  app.IncrementOpenDialogs();
+  CPWDialog::GetDialogTracker()->AddOpenDialog(this);
   INT_PTR rc = CDialog::DoModal();
-  app.DecrementOpenDialogs();
+  CPWDialog::GetDialogTracker()->RemoveOpenDialog(this);
 
   if (bAccEn)
     app.EnableAccelerator();

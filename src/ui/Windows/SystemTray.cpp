@@ -62,6 +62,7 @@
 #include "stdafx.h"
 #include "SystemTray.h"
 #include "ThisMfcApp.h"
+#include "PWDialog.h" // for access to CPWDialogTracker
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
@@ -509,7 +510,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       default:
         break;
     }
-    if (app.AnyOpenDialogs()) {
+    if (CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
       // Delete Close
       pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND);
       // Delete Exit

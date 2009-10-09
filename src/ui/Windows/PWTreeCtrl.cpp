@@ -1477,7 +1477,7 @@ void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
   // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
-    m_pDbx->SaveDisplayStatus();
+    m_pDbx->SaveGroupDisplayState();
   }
 }
 

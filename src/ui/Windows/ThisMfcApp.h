@@ -79,9 +79,6 @@ public:
   void SetACCELTableCreated() {m_bACCEL_Table_Created = true;}
   bool NoSysEnvWarnings() const {return m_noSysEnvWarnings;}
   bool PermitTestdump() const {return m_bPermitTestdump;}
-  void IncrementOpenDialogs() {InterlockedIncrement(&m_active_dialogs);}
-  void DecrementOpenDialogs() {InterlockedDecrement(&m_active_dialogs);}
-  bool AnyOpenDialogs() {return m_active_dialogs != 0;}
 
   afx_msg void OnHelp();
 
@@ -110,7 +107,6 @@ private:
   CString m_csHelpFile;
   bool m_noSysEnvWarnings; // set by '-q' command line argument
   bool m_bPermitTestdump;
-  LONG m_active_dialogs;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

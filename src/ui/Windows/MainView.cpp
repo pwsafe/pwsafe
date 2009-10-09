@@ -13,6 +13,7 @@
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
+#include "AddEdit_PropertySheet.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -822,7 +823,7 @@ void DboxMain::RefreshViews(const int iView)
     pci_Tree = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
 
   // Save expand/collapse status of groups
-  vector <bool> displaystatus = GetGroupDisplayStatus();
+  vector <bool> displaystatus = GetGroupDisplayState();
 
   // can't use LockWindowUpdate 'cause only one window at a time can be locked
   if (iView & iListOnly) {
@@ -874,7 +875,7 @@ void DboxMain::RefreshViews(const int iView)
   // FixListIndexes(); // No need as just added them all in again!
 
   // Restore expand/collapse status of groups
-  SetGroupDisplayStatus(displaystatus);
+  SetGroupDisplayState(displaystatus);
 
   // Select previously selected items and ensure they are visible.
   // Note: pdi->list_index and pdi->tree_item will have been changed by
@@ -965,14 +966,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       m_core.SuspendOnListNotification();
       m_core.SuspendOnDBNotification();
 
-      m_selectedAtMinimize = getSelectedItem();
-      m_ctlItemList.DeleteAllItems();
-      m_ctlItemTree.DeleteAllItems();
-      m_bBoldItem = false;
-
-      if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
-        OnClearClipboard();
-
       // PWSprefs::DatabaseClear == Locked
       if (prefs->GetPref(PWSprefs::DatabaseClear)) {
         if (LockDataBase(TIMER_LOCKDBONIDLETIMEOUT) < 0) {
@@ -981,6 +974,14 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           return;
         }
       }
+
+      m_selectedAtMinimize = getSelectedItem();
+      m_ctlItemList.DeleteAllItems();
+      m_ctlItemTree.DeleteAllItems();
+      m_bBoldItem = false;
+
+      if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
+        OnClearClipboard();
 
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {      
         app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
@@ -1680,6 +1681,19 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
   }
 }
 
+void Closer(CWnd *dlg)
+{
+  // We want to commit (OK) add/edit dialogs upon lock
+  // Others are unaffected by dbase locking
+  // Later versions will save state for restoring upon unlock
+  if (dynamic_cast<CAddEdit_PropertySheet *>(dlg) != NULL) {
+    TRACE(L"Closer found an Add/Edit Dbox\n");
+    dlg->SendMessage(WM_COMMAND, IDOK);
+  } else {
+    TRACE(L"Closer found a Dbox (not Add/Edit)\n");
+  }
+}
+
 int DboxMain::LockDataBase(UINT_PTR nIDEvent)
 {
   /*
@@ -1694,7 +1708,7 @@ int DboxMain::LockDataBase(UINT_PTR nIDEvent)
     return 0;
 
   /*
-  * Either got here because the workstaion locked and the user wants
+  * Either got here because the workstation locked and the user wants
   * to lock the database or because the user wants to lock it after
   * a period of inactivity or because we want to and use the nIDEvent of
   * TIMER_LOCKDBONIDLETIMEOUT to force it.
@@ -1705,7 +1719,10 @@ int DboxMain::LockDataBase(UINT_PTR nIDEvent)
   */
 
   // Need to save display status for when we return from minimize
-  SaveDisplayStatus();
+  SaveGroupDisplayState();
+
+  // Handle all open Windows
+  CPWDialog::GetDialogTracker()->Apply(Closer);
 
   // Now try and save changes
   if (m_core.IsChanged() ||  m_bTSUpdated) {
