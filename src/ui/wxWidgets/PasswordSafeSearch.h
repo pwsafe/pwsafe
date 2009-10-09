@@ -86,7 +86,8 @@ public:
   }
 
   inline const PasswordSafeSearchData* operator->() const { return m_searchData; }
-  inline PasswordSafeSearchData* operator->() { m_fDirty = true; return m_searchData; }
+  inline void SetSearchText(const wxString& txt) { m_searchData->m_searchText = txt; m_fDirty = true;}
+  inline void SetCaseSensitivity(bool ic) { m_searchData->m_fCaseSensitive = ic; m_fDirty = true; }
   inline bool IsSame(const PasswordSafeSearchData& data) const { return *m_searchData == data; }
   inline void Set(const PasswordSafeSearchData& data) { *m_searchData = data; m_fDirty = true; }
   inline const PasswordSafeSearchData& Get(void) const  { return *m_searchData; }
@@ -129,6 +130,42 @@ private:
   PasswordSafeSearchData m_searchData;
 };
 
+/*!
+ * Encapsulates a search index
+ */
+class SearchPointer
+{
+    typedef std::vector<CUUIDGen> SearchIndices;
+    SearchIndices m_indices;
+
+    SearchIndices::const_iterator m_currentIndex;
+    wxString m_label;
+
+public:
+    SearchPointer() {
+        m_currentIndex = m_indices.end();
+    }
+
+    void Reset() { m_currentIndex = m_indices.end();}
+    void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); }
+    bool IsEmpty() const { return m_indices.empty(); }
+    const CUUIDGen& operator*() const { return *m_currentIndex; }
+    size_t Size() const { return m_indices.size(); }
+
+    void InitIndex(void) { 
+        m_currentIndex = m_indices.begin();
+    }
+
+    void Add(const CUUIDGen& uuid) { m_indices.push_back(uuid); m_label.Printf(wxT("%d matches found"), m_indices.size());}
+
+    SearchPointer& operator++();
+    SearchPointer& operator--();
+
+    const wxString& GetLabel(void) const { return m_label; }
+
+private:
+};
+
 
 /*!
  * PasswordSafeSearch class declaration
@@ -141,7 +178,6 @@ class PasswordSafeSearch : public wxEvtHandler
 
   DECLARE_NO_COPY_CLASS(PasswordSafeSearch);
 
-  typedef std::vector<CUUIDGen> SearchIndices;
 public:
   /// Constructors
   PasswordSafeSearch(PasswordSafeFrame* parent);
@@ -153,11 +189,14 @@ public:
   void OnSearchClose(wxCommandEvent& evt);
   void OnAdvancedSearchOptions(wxCommandEvent& evt);
   void OnToggleCaseSensitivity(wxCommandEvent& evt);
+  void FindNext(void);
+  void FindPrevious(void);
+  void UpdateView();
   
   void Activate(void);
-  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchIndices& indices);
+  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr);
   
-  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchIndices& indices,
+  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
                      const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
                      CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction);
 
@@ -168,7 +207,7 @@ private:
   PasswordSafeFrame*   m_parentFrame;
   bool                 m_fAdvancedSearch;
 
-  SearchIndices        m_indices;
+  SearchPointer        m_searchPointer;
 
   PasswordSafeSearchContext m_searchContext;
 };

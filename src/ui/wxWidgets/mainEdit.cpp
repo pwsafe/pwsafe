@@ -116,6 +116,23 @@ void PasswordSafeFrame::OnFindClick( wxCommandEvent& event )
   m_search->Activate();
 }
 
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EDITMENU_FIND_NEXT
+ */
+
+void PasswordSafeFrame::OnFindNext( wxCommandEvent& event )
+{
+  m_search->FindNext();
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EDITMENU_FIND_PREVIOUS
+ */
+
+void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& event )
+{
+  m_search->FindPrevious();
+}
 
 
 /*!

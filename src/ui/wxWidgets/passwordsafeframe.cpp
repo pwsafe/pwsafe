@@ -77,6 +77,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( wxID_FIND, PasswordSafeFrame::OnFindClick )
 
+  EVT_MENU( ID_EDITMENU_FIND_NEXT, PasswordSafeFrame::OnFindNext)
+
+  EVT_MENU( ID_EDITMENU_FIND_PREVIOUS, PasswordSafeFrame::OnFindPrevious)
+
   EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
 
   EVT_MENU( ID_COPYPASSWORD, PasswordSafeFrame::OnCopypasswordClick )
@@ -406,6 +410,7 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
   ShowTree(false);
   ShowGrid(true);
+  m_currentView = GRID;
 }
 
 
@@ -418,6 +423,7 @@ void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& event )
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
   ShowGrid(false);
   ShowTree(true);
+  m_currentView = TREE;
 }
 
 int PasswordSafeFrame::Save()

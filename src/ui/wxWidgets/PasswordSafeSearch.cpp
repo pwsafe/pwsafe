@@ -27,6 +27,7 @@ static char THIS_FILE[] = __FILE__;
 
 #include <functional>
 
+enum { FIND_MENU_POSITION = 4 } ;
 
 struct {
   const charT* name;
@@ -349,32 +350,66 @@ void PasswordSafeSearch::OnDoSearch(wxCommandEvent& /*evt*/)
 
   wxString searchText = txtCtrl->GetLineText(0);
   if (m_searchContext->m_searchText != searchText)
-      m_searchContext->m_searchText = searchText;
+      m_searchContext.SetSearchText(searchText);
 
-  if (m_searchContext.IsDirty())
-  {
-      m_indices.clear();
+  if (m_searchContext.IsDirty())  {
+      m_searchPointer.Clear();
    
       if (!m_fAdvancedSearch)
-        FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_indices);
+        FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_searchPointer);
       else
-        FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_indices, 
+        FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_searchPointer, 
                       m_searchContext->m_bsFields, m_searchContext->m_fUseSubgroups, m_searchContext->m_subgroupText,
                       subgroups[m_searchContext->m_subgroupObject].type, subgroupFunctions[m_searchContext->m_subgroupFunction].function);
+
+      m_searchContext.Reset();
+      m_searchPointer.InitIndex();
+  }
+  else {
+      ++m_searchPointer;
   }
 
+  UpdateView();
+
+  // Replace the "Find" menu item under Edit menu by "Find Next" and "Find Previous"
+  wxMenu* editMenu = 0;
+  wxMenuItem* findItem = m_parentFrame->GetMenuBar()->FindItem(wxID_FIND, &editMenu);
+  if (findItem && editMenu)  {
+      //Is there a way to do this without hard-coding the insert position?
+      editMenu->Insert(FIND_MENU_POSITION, ID_EDITMENU_FIND_NEXT, _("&Find next...\tF3"), _T(""), wxITEM_NORMAL);
+      editMenu->Insert(FIND_MENU_POSITION+1, ID_EDITMENU_FIND_PREVIOUS, _("&Find previous...\tSHIFT+F3"), _T(""), wxITEM_NORMAL);
+      editMenu->Delete(findItem);
+  }
+}
+
+void PasswordSafeSearch::UpdateView()
+{
   wxStaticText* statusArea = wxDynamicCast(m_toolbar->FindWindow(ID_FIND_STATUS_AREA), wxStaticText);
   wxASSERT(statusArea);
 
-  if (!m_indices.empty()) {
-    m_parentFrame->SeletItem(m_indices[0]);
-    wxString label;
-    label.Printf(wxT("%d matches found"), m_indices.size());
-    statusArea->SetLabel(label);
+  if (!m_searchPointer.IsEmpty()) {
+    m_parentFrame->SeletItem(*m_searchPointer);
+    statusArea->SetLabel(m_searchPointer.GetLabel());
   }
   else {
     statusArea->SetLabel(wxT("No matches found"));
   }
+}
+
+void PasswordSafeSearch::FindNext()
+{
+    if (!m_searchPointer.IsEmpty()) {
+      ++m_searchPointer;
+      UpdateView();
+    }
+}
+
+void PasswordSafeSearch::FindPrevious()
+{
+    if (!m_searchPointer.IsEmpty()) {
+      --m_searchPointer;
+      UpdateView();
+    }
 }
 
 
@@ -386,6 +421,18 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& evt)
 {
   m_parentFrame->SetToolBar(NULL);
   m_toolbar->Show(false);
+
+  wxMenu* editMenu = 0;
+  wxMenuItem* findNextItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_NEXT, &editMenu);
+  wxASSERT(editMenu);
+  if (findNextItem)
+      editMenu->Delete(findNextItem);
+
+  wxMenuItem* findPreviousItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_PREVIOUS, 0);
+  if (findPreviousItem)
+      editMenu->Delete(findPreviousItem);
+
+  editMenu->Insert(FIND_MENU_POSITION, wxID_FIND, _("&Find Entry...\tCtrl+F"), _T(""), wxITEM_NORMAL);
 }
 
 /*!
@@ -405,7 +452,7 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& evt)
  */
 void PasswordSafeSearch::OnToggleCaseSensitivity(wxCommandEvent& evt)
 {
-    m_searchContext->m_fCaseSensitive = !m_searchContext->m_fCaseSensitive;
+    m_searchContext.SetCaseSensitivity(!m_searchContext->m_fCaseSensitive);
 }
 
 
@@ -450,14 +497,14 @@ void PasswordSafeSearch::Activate(void)
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
 }
 
-void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchIndices& indices)
+void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr)
 {
-  indices.clear();
+  searchPtr.Clear();
   //As per original Windows code, default search is for all text fields
   CItemData::FieldBits bsFields;
   bsFields.set();
 
-  return FindMatches(searchText, fCaseSensitive, indices, bsFields, false, wxEmptyString, CItemData::END, PWSMatch::MR_INVALID);
+  return FindMatches(searchText, fCaseSensitive, searchPtr, bsFields, false, wxEmptyString, CItemData::END, PWSMatch::MR_INVALID);
 }
 
 bool FindNoCase( const StringX& src, const StringX& dest)
@@ -471,14 +518,14 @@ bool FindNoCase( const StringX& src, const StringX& dest)
     return destLower.find(srcLower) != StringX::npos;
 }
 
-void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchIndices& indices,
+void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
                                        const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
                                        CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction)
 {
   if (searchText.empty())
       return;
   
-  indices.clear();
+  searchPtr.Clear();
 
   typedef StringX (CItemData::*ItemDataFuncT)() const;
 
@@ -518,7 +565,41 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
     if (found) {
         uuid_array_t uuid;
         itr->second.GetUUID(uuid);
-        indices.push_back(CUUIDGen(uuid));
+        searchPtr.Add(CUUIDGen(uuid));
     }
   }
+}
+
+/////////////////////////////////////////////////
+// SearchPointer class definition
+SearchPointer& SearchPointer::operator++()
+{ //prefix operator, to prevent copying itself
+  if (!m_indices.empty()) {
+    m_currentIndex++;
+    if (m_currentIndex == m_indices.end()) {
+      m_currentIndex = m_indices.begin();
+      m_label = wxT("Search hit bottom, continuing at top");
+    }
+  }
+  else
+    m_currentIndex = m_indices.end();
+
+  return *this;
+}
+
+SearchPointer& SearchPointer::operator--()
+{ //prefix operator, to prevent copying itself
+  if (!m_indices.empty()) {
+    if (m_currentIndex == m_indices.begin()) {
+      m_currentIndex = --m_indices.end();
+      m_label = wxT("Search hit top, continuing at bottom");
+    }
+    else {
+      m_currentIndex--;
+    }
+  }
+  else
+    m_currentIndex = m_indices.end();
+
+  return *this;
 }
