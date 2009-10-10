@@ -531,14 +531,6 @@ void DboxMain::OnEdit()
 
 bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 {
-  bool retval = false;
-#if 0
-  // Create a semaphore, in case we get locked before finishing
-  // This ensures that we can finish updating core
-  if (m_LockableSemaphore != NULL)
-    CloseHandle(m_LockableSemaphore);
-  m_LockableSemaphore = CreateSemaphore(NULL, 0, 1, NULL);
-#endif
   if (pcore == NULL)
     pcore = &m_core;
 
@@ -601,7 +593,8 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
   INT_PTR rc = edit_entry_psh.DoModal();
 
-  if (rc == IDOK && edit_entry_psh.IsEntryModified()) {
+  if (rc == IDOK && uicaller == IDS_EDITENTRY && 
+      edit_entry_psh.IsEntryModified()) {
     // Out with the old, in with the new
     ItemListIter listpos = Find(original_uuid);
     ASSERT(listpos != pcore->GetEntryEndIter());
@@ -737,12 +730,9 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
       SetDCAText(&ci_edit);
 
     UpdateToolBarForSelectedItem(&ci_edit);
-    retval = true;
+    return true;
   } // rc == IDOK
-#if 0
-  ReleaseSemaphore(m_LockableSemaphore, 1, NULL);
-#endif
-  return retval;
+  return false;
 }
 
 bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
