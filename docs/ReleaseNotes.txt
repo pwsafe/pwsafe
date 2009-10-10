@@ -30,6 +30,10 @@ Changes to Existing Features in 3.19.1
 [2868278] The SystemTray Unlock menu item now, if the correct passphrase is
 given, only unlocks the databse. To show the application, use the Restore
 menu item.
+[2874520] To prevent junk showing in the Notes field in List View due to end
+of line characters, now only show the first line but indicate more are there using
+[>>>] at end of line. Setting preference "Show Notes as Tooltips in Tree & List
+View" will show these (up to 250 characters).
 
 Bugs fixed in 3.19
 ==================
