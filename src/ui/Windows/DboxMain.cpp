@@ -125,7 +125,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
   m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
-  m_LockableSemaphore(NULL),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL)
 {
   m_eye_catcher = _wcsdup(EYE_CATCHER);
@@ -179,8 +178,6 @@ DboxMain::~DboxMain()
   delete m_pToolTipCtrl;
 
   free(m_eye_catcher);
-  if (m_LockableSemaphore != NULL)
-    CloseHandle(m_LockableSemaphore);
 }
 
 LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
