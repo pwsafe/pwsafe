@@ -1280,8 +1280,30 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
 
   if (iView & iListOnly) {
     // Set the data in the rest of the columns
+    // First get the 1st line of the Notes field
+    StringX sxnotes, line1(L"");
+    sxnotes = itemData.GetNotes();
+    if (!sxnotes.empty()) {
+      StringX::size_type end;
+      const StringX delim = L"\r\n";
+      end = sxnotes.find(delim, 0);
+      line1 = sxnotes.substr(0, 
+                      (end == StringX::npos) ? StringX::npos : end);
+
+      // If more than one line, add '[>>>]' to end of this line
+      // Note CHeaderStrl adds the normal ellipsis '...' (without square
+      // brackets) if the text doesn't fit in the cell.  Use this to show
+      // more lines rather than more text in the first line.
+      if (end != StringX::npos)
+        line1 += L"[>>>]";
+    }
+
     for (int i = 1; i < m_nColumns; i++) {
-      cs_fielddata = itemData.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[i]);
+      if ((CItemData::FieldType)m_nColumnTypeByIndex[i] == CItemData::NOTES)
+        cs_fielddata = line1;
+      else
+        cs_fielddata = itemData.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[i]);
+
       m_ctlItemList.SetItemText(iResult, i, cs_fielddata.c_str());
     }
 
@@ -3575,8 +3597,8 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
     Replace(cs_notes, StringX(L"\r\n"), StringX(L"\n"));
     Remove(cs_notes, L'\r');
 
-    if (cs_notes.length() > 180)
-      cs_notes = cs_notes.substr(0, 180) + L"[...]";
+    if (cs_notes.length() > 256)
+      cs_notes = cs_notes.substr(0, 250) + L"[...]";
   }
 
   // move window
