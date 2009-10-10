@@ -1710,7 +1710,7 @@ void Closer(CWnd *dlg)
   // Later versions will save state for restoring upon unlock
   if (dynamic_cast<CAddEdit_PropertySheet *>(dlg) != NULL) {
     TRACE(L"Closer found an Add/Edit Dbox\n");
-    dlg->SendMessage(WM_COMMAND, IDOK);
+    //    dlg->SendMessage(WM_COMMAND, IDOK);
   } else {
     TRACE(L"Closer found a Dbox (not Add/Edit)\n");
   }
@@ -1745,6 +1745,13 @@ int DboxMain::LockDataBase(UINT_PTR nIDEvent)
 
   // Handle all open Windows
   CPWDialog::GetDialogTracker()->Apply(Closer);
+
+  // Wait for Add/Edit to finish processing
+  if (m_LockableSemaphore != NULL) {
+    WaitForSingleObject(m_LockableSemaphore, INFINITE);
+    CloseHandle(m_LockableSemaphore);
+    m_LockableSemaphore = NULL;
+  }
 
   // Now try and save changes
   if (m_core.IsChanged() ||  m_bTSUpdated) {

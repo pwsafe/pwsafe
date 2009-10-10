@@ -362,6 +362,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         break;
       case IDS_VIEWENTRY:
         // No Update
+        CPWPropertySheet::EndDialog(IDCANCEL);
+        return TRUE;
         break;
       default:
         ASSERT(0);

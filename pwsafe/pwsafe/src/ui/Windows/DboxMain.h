@@ -761,6 +761,8 @@ private:
 
   // Workstation Locked
   bool m_bWSLocked, m_bRegistered, m_bBlockShutdown;
+  HANDLE m_LockableSemaphore; // sync locking sequence
+  
   DWORD m_WindowsMajorVersion, m_WindowsMinorVersion;
 
   // Need this in case not running on Vista or later
