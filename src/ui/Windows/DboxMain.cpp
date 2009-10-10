@@ -1786,11 +1786,11 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
       break;
     case SC_MINIMIZE:
       // Save expand/collapse status of groups
-      m_displaystatus = GetGroupDisplayState();
+      m_grpdispstate = GetGroupDisplayState();
       break;
     case SC_CLOSE:
       // Save expand/collapse status of groups
-      m_displaystatus = GetGroupDisplayState();
+      m_grpdispstate = GetGroupDisplayState();
       if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
         Close();
       break;
@@ -1875,7 +1875,7 @@ void DboxMain::OnMinimize()
     m_bStartHiddenAndMinimized = false;
 
   // Save expand/collapse status of groups
-  m_displaystatus = GetGroupDisplayState();
+  m_grpdispstate = GetGroupDisplayState();
   // Let OnSize handle this
   ShowWindow(SW_MINIMIZE);
 }
@@ -1999,7 +1999,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         ShowWindow(SW_SHOW);
       if (bUpdateWindows) {
         ShowWindow(SW_RESTORE);
-        SetGroupDisplayState(m_displaystatus);
+        SetGroupDisplayState(m_grpdispstate);
         BringWindowToTop();
       }
     } else {
@@ -2010,7 +2010,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 
   if (bUpdateWindows) {
     ShowWindow(SW_RESTORE);
-    SetGroupDisplayState(m_displaystatus);
+    SetGroupDisplayState(m_grpdispstate);
     BringWindowToTop();
   }
   return brc;
