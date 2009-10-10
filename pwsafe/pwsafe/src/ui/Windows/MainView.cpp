@@ -1692,27 +1692,20 @@ void DboxMain::OnCollapseAll()
 void DboxMain::OnTimer(UINT_PTR nIDEvent)
 {
   if ((nIDEvent == TIMER_LOCKONWTSLOCK && IsWorkstationLocked()) ||
-      (nIDEvent == TIMER_LOCKDBONIDLETIMEOUT && DecrementAndTestIdleLockCounter())) {
-    LockDataBase(nIDEvent);
-    bool useSysTray = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
-    ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
+      (nIDEvent == TIMER_LOCKDBONIDLETIMEOUT &&
+       DecrementAndTestIdleLockCounter())) {
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    // Use existing working code to get desired effect.
+    // Only downside is pref modified bit may be set when it shouldn't.
+    // Fix by adding ClearModified() api to prefs.
+    bool saved_lock_on_min = prefs->GetPref(PWSprefs::DatabaseClear);
+    prefs->SetPref(PWSprefs::DatabaseClear, true);
+    ShowWindow(SW_MINIMIZE);
+    prefs->SetPref(PWSprefs::DatabaseClear, saved_lock_on_min);
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
   } else {
     TRACE(L"Timer lock kicked in (ID=%d), not locking.\n", nIDEvent);
-  }
-}
-
-void Closer(CWnd *dlg)
-{
-  // We want to commit (OK) add/edit dialogs upon lock
-  // Others are unaffected by dbase locking
-  // Later versions will save state for restoring upon unlock
-  if (dynamic_cast<CAddEdit_PropertySheet *>(dlg) != NULL) {
-    TRACE(L"Closer found an Add/Edit Dbox\n");
-    dlg->SendMessage(WM_COMMAND, IDOK);
-  } else {
-    TRACE(L"Closer found a Dbox (not Add/Edit)\n");
   }
 }
 
@@ -1742,9 +1735,6 @@ int DboxMain::LockDataBase(UINT_PTR nIDEvent)
 
   // Need to save display status for when we return from minimize
   SaveGroupDisplayState();
-
-  // Handle all open Windows
-  CPWDialog::GetDialogTracker()->Apply(Closer);
 
   // Now try and save changes
   if (m_core.IsChanged() ||  m_bTSUpdated) {

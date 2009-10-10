@@ -19,7 +19,8 @@
 
 extern const wchar_t *EYE_CATCHER;
 
-CPWDialogTracker *CPWDialog::sm_tracker = NULL; // static member
+static CPWDialogTracker the_tracker;
+CPWDialogTracker *CPWDialog::sm_tracker = &the_tracker; // static member
 
 IMPLEMENT_DYNAMIC(CPWDialog, CDialog)
 
@@ -69,10 +70,9 @@ INT_PTR CPWDialog::DoModal()
   return rc;
 }
 
+
 CPWDialogTracker *CPWDialog::GetDialogTracker()
 {
-  if (sm_tracker == NULL)
-    sm_tracker = new CPWDialogTracker;
   return sm_tracker;
 }
 
