@@ -82,8 +82,8 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
                      m_pfcnNotifyListModified(NULL), m_NotifyListInstance(NULL),
-                     m_bNotifyList(false), m_pfcnNotifyDBModified(NULL),
-                     m_NotifyDBInstance(NULL), m_bNotifyDB(false)
+                     m_bNotifyList(false), m_bNotifyDB(false),
+                     m_pfcnNotifyDBModified(NULL), m_NotifyDBInstance(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -2490,7 +2490,7 @@ bool PWScore::RegisterOnListModified(void (*pfcn) (LPARAM), LPARAM instance)
   if (m_pfcnNotifyListModified != NULL)
     return false;
 
-  if (pfcn == NULL || instance == NULL) {
+  if ((pfcn == NULL) || (instance == NULL)) {
     UnRegisterOnListModified();
     return false;
   }
