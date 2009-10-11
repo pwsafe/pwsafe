@@ -21,7 +21,7 @@ LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   // list of all the events that signify actual user activity, as opposed
   // to Windows internal events...
-  if ((message >= WM_KEYFIRST && message <= WM_KEYLAST)     ||
+  if ((message >= WM_KEYFIRST   && message <= WM_KEYLAST)   ||
       (message >= WM_MOUSEFIRST && message <= WM_MOUSELAST) ||
       message == WM_COMMAND       ||
       message == WM_SYSCOMMAND    ||
