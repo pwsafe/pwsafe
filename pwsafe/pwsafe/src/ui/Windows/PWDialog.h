@@ -52,8 +52,9 @@ private:
   static CPWDialogTracker *sm_tracker;
 };
 
-class CPWDialogTracker {
- public:
+class CPWDialogTracker
+{
+public:
   CPWDialogTracker();
   ~CPWDialogTracker();
 
@@ -62,7 +63,7 @@ class CPWDialogTracker {
   void RemoveOpenDialog(CWnd *dlg);
   void Apply(void (*f)(CWnd *)); // applies f to all open dialogs
 
- private:
+private:
   mutable CMutex m_mutex; // to protect access to our list of open dialogs
   // CWnd = CDialog & CPropertySheet common ancestor!
   std::list<CWnd *> m_dialogs;

@@ -33,6 +33,9 @@ public:
 #endif
   virtual ~CPWFontDialog();
 
+  // Following override to reset idle timeout on any event
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+
   // Following override to stop accelerators interfering
   virtual INT_PTR DoModal();
 
