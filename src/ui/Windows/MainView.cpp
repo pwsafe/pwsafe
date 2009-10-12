@@ -896,6 +896,11 @@ void DboxMain::RefreshViews(const int iView)
     UpdateStatusBar();
 }
 
+static void Shower(CWnd *w)
+{
+  w->ShowWindow(SW_SHOW);
+}
+
 void DboxMain::OnSize(UINT nType, int cx, int cy) 
 {
   // Note that onsize runs before InitDialog (Gee, I love MFC)
@@ -1015,7 +1020,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
             m_core.SetDBPrefsChanged(true);
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }
-
+        CPWDialog::GetDialogTracker()->Apply(Shower);
         // Resume notification of changes
         m_core.ResumeOnListNotification();
         m_core.ResumeOnDBNotification();
@@ -1689,19 +1694,27 @@ void DboxMain::OnCollapseAll()
   m_ctlItemTree.OnCollapseAll();
 }
 
+static void Hider(CWnd *w)
+{
+  w->ShowWindow(SW_HIDE);
+}
+
 void DboxMain::OnTimer(UINT_PTR nIDEvent)
 {
   if ((nIDEvent == TIMER_LOCKONWTSLOCK && IsWorkstationLocked()) ||
       (nIDEvent == TIMER_LOCKDBONIDLETIMEOUT &&
        DecrementAndTestIdleLockCounter())) {
+    // OK, so we need to lock. If we're not using a system tray,
+    // just minimize. If we are, then we need to hide (which
+    // also requires children be hidden explicitly)
     PWSprefs *prefs = PWSprefs::GetInstance();
-    // Use existing working code to get desired effect.
-    // Only downside is pref modified bit may be set when it shouldn't.
-    // Fix by adding ClearModified() api to prefs.
-    bool saved_lock_on_min = prefs->GetPref(PWSprefs::DatabaseClear);
-    prefs->SetPref(PWSprefs::DatabaseClear, true);
-    ShowWindow(SW_MINIMIZE);
-    prefs->SetPref(PWSprefs::DatabaseClear, saved_lock_on_min);
+    bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
+    if (!usingsystray)
+      ShowWindow(SW_MINIMIZE);
+    else {
+      CPWDialog::GetDialogTracker()->Apply(Hider);
+      ShowWindow(SW_HIDE);
+    }
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
   } else {
