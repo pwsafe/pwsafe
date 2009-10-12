@@ -39,9 +39,9 @@ class PasswordSafeSearchData
 
 public:
   PasswordSafeSearchData():  m_fCaseSensitive(false),
-                             m_subgroupObject(CItemData::END),
+                             m_subgroupObject(0),            // index into subgroups array defined in .cpp
                              m_fUseSubgroups(false),
-                             m_subgroupFunction(PWSMatch::MR_INVALID)
+                             m_subgroupFunction(0)           // index into subgroupFunctions array defined in .cpp
   {}
 
   bool                  m_fCaseSensitive;
@@ -144,9 +144,10 @@ class SearchPointer
 public:
     SearchPointer() {
         m_currentIndex = m_indices.end();
+        m_label = wxT("No matches found");
     }
 
-    void Reset() { m_currentIndex = m_indices.end();}
+    void Reset() { m_currentIndex = m_indices.end(); m_label = wxT("No matches found"); }
     void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); }
     bool IsEmpty() const { return m_indices.empty(); }
     const CUUIDGen& operator*() const { return *m_currentIndex; }

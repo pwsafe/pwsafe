@@ -4,6 +4,7 @@
 
 #include "PasswordSafeSearch.h"
 #include "../../corelib/PwsPlatform.h"
+#include "../../corelib/PWHistory.h"
 #include "passwordsafeframe.h"
 
 #ifdef _DEBUG
@@ -389,11 +390,8 @@ void PasswordSafeSearch::UpdateView()
 
   if (!m_searchPointer.IsEmpty()) {
     m_parentFrame->SeletItem(*m_searchPointer);
-    statusArea->SetLabel(m_searchPointer.GetLabel());
   }
-  else {
-    statusArea->SetLabel(wxT("No matches found"));
-  }
+  statusArea->SetLabel(m_searchPointer.GetLabel());
 }
 
 void PasswordSafeSearch::FindNext()
@@ -546,6 +544,10 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
                       };
 
   for ( ItemListConstIter itr = m_parentFrame->GetEntryIter(); itr != m_parentFrame->GetEntryEndIter(); ++itr) {
+    
+    if (fUseSubgroups && !itr->second.Matches((const charT*)subgroupText, subgroupObject, subgroupFunction))
+        continue;
+
     bool found = false;
     for (size_t idx = 0; idx < NumberOf(ItemDataFields) && !found; ++idx) {
       if (bsFields.test(ItemDataFields[idx].type)) {
@@ -560,6 +562,19 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
     }
 
     if (!found && bsFields.test(CItemData::PWHIST)) {
+        size_t pwh_max, err_num;
+        PWHistList pwhistlist;
+        CreatePWHistoryList(itr->second.GetPWHistory(), pwh_max, err_num, pwhistlist, TMC_XML);
+        for (PWHistList::iterator iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
+          PWHistEntry pwshe = *iter;
+          if (!fCaseSensitive)
+            ToLower(pwshe.password);
+          if (::wcsstr(pwshe.password.c_str(), searchText.c_str())) {
+            found = true;
+            break;  // break out of for loop
+          }
+        }
+        pwhistlist.clear();
     }
 
     if (found) {
