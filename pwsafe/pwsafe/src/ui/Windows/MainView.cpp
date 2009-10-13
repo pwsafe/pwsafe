@@ -973,7 +973,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       // PWSprefs::DatabaseClear == Locked
       if (prefs->GetPref(PWSprefs::DatabaseClear)) {
-        if (LockDataBase(TIMER_LOCKDBONIDLETIMEOUT) < 0) {
+        if (!LockDataBase()) {
           // Failed to save - abort minimize and clearing of data
           ShowWindow(SW_SHOW);
           return;
@@ -1707,43 +1707,33 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // OK, so we need to lock. If we're not using a system tray,
     // just minimize. If we are, then we need to hide (which
     // also requires children be hidden explicitly)
+    TRACE(L"Locking due to Timer lock countdown or ws lock\n");
+    if (!LockDataBase())
+      return;
     PWSprefs *prefs = PWSprefs::GetInstance();
     bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
-    if (!usingsystray)
+    if (!usingsystray) {
       ShowWindow(SW_MINIMIZE);
-    else {
+    } else {
       CPWDialog::GetDialogTracker()->Apply(Hider);
       ShowWindow(SW_HIDE);
     }
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
   } else {
-    TRACE(L"Timer lock kicked in (ID=%d), not locking.\n", nIDEvent);
+    TRACE(L"Timer lock kicked in (countdown=%u), not locking.\n",
+          m_IdleLockCountDown);
   }
 }
 
-int DboxMain::LockDataBase(UINT_PTR nIDEvent)
+bool DboxMain::LockDataBase()
 {
   /*
-  * Return codes:
-  * < 0 : failed to save before clearing data
-  * = 0 : did not lock (probably not required)
-  * > 0 : locked
-  */
-
-  if (nIDEvent == TIMER_LOCKONWTSLOCK && PWSprefs::GetInstance()->
-        GetPref(PWSprefs::LockOnWindowLock) != TRUE)
-    return 0;
-
-  /*
-  * Either got here because the workstation locked and the user wants
-  * to lock the database or because the user wants to lock it after
-  * a period of inactivity or because we want to and use the nIDEvent of
-  * TIMER_LOCKDBONIDLETIMEOUT to force it.
-  *
   * Since we clear the data, any unchanged changes will be lost,
   * so we force a save if database is modified, and fail
   * to lock if the save fails (unless db is r-o).
+  *
+  * returns false iff save was required AND failed.
   */
 
   // Need to save display status for when we return from minimize
@@ -1756,12 +1746,12 @@ int DboxMain::LockDataBase(UINT_PTR nIDEvent)
       CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
       cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
       MessageBox(cs_text, cs_title, MB_ICONSTOP);
-      return -1;
+      return false;
     }
   }
 
   ClearData(false);
-  return 1;
+  return true;
 }
 
 // This function determines if the workstation is locked.
