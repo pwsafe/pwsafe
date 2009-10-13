@@ -673,7 +673,7 @@ private:
 
   bool SetSessionNotification();
   bool IsWorkstationLocked() const;
-  int LockDataBase(UINT_PTR nIDEvent);
+  bool LockDataBase();
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}

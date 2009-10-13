@@ -2075,7 +2075,8 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
       m_bWSLocked = true;
-      if (LockDataBase(TIMER_LOCKONWTSLOCK))
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockOnWindowLock) &&
+          LockDataBase())
         ShowWindow(SW_MINIMIZE);
       break;
     case WTS_CONSOLE_CONNECT:
