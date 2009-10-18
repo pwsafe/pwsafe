@@ -1444,7 +1444,9 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   if (userBackupDir.empty()) { // directory same as database's
     // Get directory containing database
     cs_temp = drv + dir;
-    cs_temp += pws_os::PathSeparator;
+    // (in Windows, need to verify for non-Windows)
+    // splitpath directory ends with a '/', therefore do not need:
+    // cs_temp += pws_os::PathSeparator;
   } else {
     cs_temp = userBackupDir;
   }

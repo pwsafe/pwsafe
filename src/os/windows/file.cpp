@@ -64,11 +64,18 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
 {
   // Copy file and create any intervening directories as necessary & automatically
-  TCHAR szSource[_MAX_PATH];
-  TCHAR szDestination[_MAX_PATH];
+  TCHAR szSource[_MAX_PATH + 1];
+  TCHAR szDestination[_MAX_PATH + 1];
+
+  ASSERT(from.length() < _MAX_PATH);
+  ASSERT(to.length() < _MAX_PATH);
+
+  if (from.length() >= _MAX_PATH || to.length() >= _MAX_PATH)
+    return false;
 
   const TCHAR *lpsz_current = from.c_str();
   const TCHAR *lpsz_new = to.c_str();
+
 #if (_MSC_VER >= 1400)
   _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
   _tcscpy_s(szDestination, _MAX_PATH, lpsz_new);

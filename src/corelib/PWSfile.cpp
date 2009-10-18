@@ -145,6 +145,7 @@ int PWSfile::Close()
   delete m_fish;
   m_fish = NULL;
   if (m_fd != NULL) {
+    fflush(m_fd);
     fclose(m_fd);
     m_fd = NULL;
   }
