@@ -51,8 +51,8 @@ typedef std::ofstream ofstreamT;
 typedef std::vector<stringT>::const_iterator vciter;
 typedef std::vector<stringT>::iterator viter;
 
-// These are in the same order as "enum MatchRule" in Match.h
-static const char * szentry[] = {"normal", 
+// These are in the same order as "enum EntryType" in ItemData.h
+static const char * szentry[] = {"normal",
                                  "aliasbase", "alias", 
                                  "shortcutbase", "shortcut"};
 
@@ -117,8 +117,17 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       }
       break;
     case PWSMatch::MT_ENTRYTYPE:
-      oss << sztab5 << "<type>" << szentry[st_fldata.etype]
+      {
+      // First convert value (as a power of 2) into index for string values
+      int index = -1;
+      int ietype = (int)st_fldata.etype;
+      while (ietype >>= 1) {
+        index++;
+      }
+      index++;
+      oss << sztab5 << "<type>" << szentry[index]
                                               << "</type>" << szendl;
+      }
       break;
     case PWSMatch::MT_DCA:
       oss << sztab5 << "<dca>" << st_fldata.fdca 
