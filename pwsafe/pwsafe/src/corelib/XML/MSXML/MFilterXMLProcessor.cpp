@@ -48,7 +48,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
                                   const stringT &strXSDFileName)
 {
   HRESULT hr, hr0, hr60, hr40, hr30;
-  bool b_ok = false;
+  bool b_ok(false);
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
@@ -143,12 +143,12 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
     hr = pSchemaCache->add(L"", cvXSDFileName);
     if (hr != S_OK) {
       LoadAString(m_strResultText, IDSC_INVALID_SCHEMA);
-      return false;
+      goto exit;
     }
     hr = pSchemaCache->validate();
     if (hr != S_OK) {
       LoadAString(m_strResultText, IDSC_INVALID_SCHEMA);
-      return false;
+      goto exit;
     }
 
     // Check that we can get the Schema version
@@ -158,12 +158,12 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
     hr = pSchemaCache->getSchema(bst_schema, &pischema);
     if (hr != S_OK) {
       LoadAString(m_strResultText, IDSC_MISSING_SCHEMA_VER);
-      return false;
+      goto exit;
     }
     hr = pischema->get_version(&bst_schema_version);
     if (hr != S_OK) {
       LoadAString(m_strResultText, IDSC_INVALID_SCHEMA_VER);
-      return false;
+      goto exit;
     }
 
     pCH->SetSchemaVersion(&bst_schema_version);
