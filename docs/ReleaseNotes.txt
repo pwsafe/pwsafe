@@ -25,6 +25,8 @@ correctly.
 
 New Features for 3.19.1
 =======================
+[2881604] Allow edit of base entry of a shortcut via the Edit menu and/or
+by right-clicking on a shortcut entry.
 [2872273] Improve Import Text 'Line skipped' message.
 
 Changes to Existing Features in 3.19.1

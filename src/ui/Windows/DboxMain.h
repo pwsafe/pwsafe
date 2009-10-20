@@ -590,6 +590,7 @@ protected:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnAutoType();
   afx_msg void OnGotoBaseEntry();
+  afx_msg void OnEditBaseEntry();
   afx_msg void OnRunCommand();
   afx_msg void OnColumnPicker();
   afx_msg void OnResetColumns();
