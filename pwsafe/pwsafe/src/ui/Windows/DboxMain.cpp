@@ -339,6 +339,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
   ON_COMMAND(ID_MENUITEM_RUNCOMMAND, OnRunCommand)
+  ON_COMMAND(ID_MENUITEM_EDITBASEENTRY, OnEditBaseEntry)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -537,6 +538,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COPYRUNCOMMAND, true, true, false, false},
   {ID_MENUITEM_GOTOBASEENTRY, true, true, false, false},
   {ID_MENUITEM_CREATESHORTCUT, true, false, false, false},
+  {ID_MENUITEM_EDITBASEENTRY, true, true, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -2652,6 +2654,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // Not available if group selected or entry is not an alias/shortcut
     case ID_MENUITEM_GOTOBASEENTRY:
+    case ID_MENUITEM_EDITBASEENTRY:
       if (bGroupSelected ||
           !(etype == CItemData::ET_SHORTCUT || etype == CItemData::ET_ALIAS))
         iEnable = FALSE;

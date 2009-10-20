@@ -832,10 +832,12 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           break;
         case CItemData::ET_ALIAS:
         case CItemData::ET_SHORTCUT:
-          // Allow going to the appropriate base entry
+          // Allow going to/editing the appropriate base entry
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                                 ID_MENUITEM_GOTOBASEENTRY, tc_dummy);
-          break;
+                                 ID_MENUITEM_GOTOBASEENTRY, tc_dummy); 
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                                 ID_MENUITEM_EDITBASEENTRY, tc_dummy);
+         break;
         default:
           ASSERT(0);
       }
@@ -1202,10 +1204,12 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       case CItemData::ET_NORMAL:
       case CItemData::ET_SHORTCUTBASE:
         pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
         break;
       case CItemData::ET_ALIASBASE:
         pPopup->RemoveMenu(ID_MENUITEM_CREATESHORTCUT, MF_BYCOMMAND);
         pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_EDITBASEENTRY, MF_BYCOMMAND);
         break;
       case CItemData::ET_ALIAS:
       case CItemData::ET_SHORTCUT:

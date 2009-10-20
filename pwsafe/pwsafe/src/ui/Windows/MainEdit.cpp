@@ -1478,9 +1478,34 @@ void DboxMain::OnGotoBaseEntry()
   }
 }
 
+void DboxMain::OnEditBaseEntry()
+{
+  // Only for Shortcuts
+  if (SelItemOk() == TRUE) {
+    CItemData *pci = getSelectedItem();
+    ASSERT(pci != NULL);
+
+    uuid_array_t base_uuid, entry_uuid;
+    if (pci->GetEntryType() == CItemData::ET_SHORTCUT) {
+      // This is an shortcut
+      pci->GetUUID(entry_uuid);
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+         DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+         SelectEntry(pdi->list_index);
+         EditItem(&iter->second);
+      } else
+        return;
+
+      UpdateAccessTime(pci);
+    }
+  }
+}
+
 void DboxMain::OnRunCommand()
 {
-
   if (SelItemOk() != TRUE)
     return;
 
