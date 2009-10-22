@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-10-09 23:13+0100\n"
+"PO-Revision-Date: 2009-10-22 13:31+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -628,6 +628,10 @@ msgstr "Eintrag &duplizieren"
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "&Bearbeiten"
+
+#. Resource IDs: (32081)
+msgid "&Edit Base entry"
+msgstr "Basis&eintrag bearbeiten"
 
 #. Resource IDs: (1346)
 msgid "&Export"
@@ -2326,7 +2330,7 @@ msgstr "Eintrag löschen"
 
 #. Resource IDs: (341)
 msgid "Delete a Base Entry Confirmation?"
-msgstr "Bestätigung für Basis-Eintrag löschen?"
+msgstr "Bestätigung für Basiseintrag löschen?"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -2351,7 +2355,7 @@ msgstr "Ziel besteht nicht oder ist nicht zugreifbar"
 #. Resource IDs: (329)
 #, c-format
 msgid "Details of this shortcut to the base entry '%s':"
-msgstr "Details zur Verknüpfung zum Datenbankeintrag '%s':"
+msgstr "Details dieser Verknüpfung zum Basiseintrag '%s':"
 
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
@@ -2468,7 +2472,7 @@ msgid ""
 msgstr ""
 "Ge'drop'ter Eintrag '%s:%s:%s' Passwort zeigt auf einem Eintrag der auch ein Alias ist.\r\n"
 "\r\n"
-"Dieser Eintrag verweist nun auf dessen Basis-Eintrag."
+"Dieser Eintrag verweist nun auf dessen Basiseintrag."
 
 #. Resource IDs: (514)
 msgid "Dutch"
@@ -2585,12 +2589,12 @@ msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat ein ungültiges
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry does not exist."
-msgstr "Eintrag \"%s, %s, %s\" hat ein Passwort im richtigen Format für ein Alias, aber der Basis-Eintrag besteht nicht."
+msgstr "Eintrag \"%s, %s, %s\" hat ein Passwort im richtigen Format für ein Alias, aber der Basiseintrag besteht nicht."
 
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry is already an alias."
-msgstr "Eintrag \"%s, %s, %s\" hat ein Passwort im richtigen Format für ein Alias, aber der Basis-Eintrag ist bereits ein Alias."
+msgstr "Eintrag \"%s, %s, %s\" hat ein Passwort im richtigen Format für ein Alias, aber der Basiseintrag ist bereits ein Alias."
 
 #. Resource IDs: (205)
 msgid "Entry import warnings"
@@ -4192,7 +4196,7 @@ msgid ""
 "Password implies this is an alias entry, but specifies a base entry with no title.\r\n"
 "A title is mandatory for every entry."
 msgstr ""
-"Laut Passwort ist dies ein Alias-Eintrag. Der zugehörige Basis-Eintrag hat aber keinen Titel.\r\n"
+"Laut Passwort ist dies ein Alias-Eintrag. Der zugehörige Basiseintrag hat aber keinen Titel.\r\n"
 "Ein Titel ist aber für jeden Eintrag erforderlich."
 
 #. Resource IDs: (188)
@@ -4423,7 +4427,7 @@ msgstr "Bitte wählen Sie den Speicherort für alle Sicherungsdateieen aus."
 #. Resource IDs: (345)
 #, c-format
 msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr "Bitte spezifizieren sie Namen && Gruppe für diese Verknüpfung zum Datenbankeintrag '%s':"
+msgstr "Bitte spezifizieren sie Namen && Gruppe für diese Verknüpfung zum Basiseintrag '%s':"
 
 #. Resource IDs: (337)
 msgid "Please specify the sub-directory to contain all backups."
@@ -5284,7 +5288,7 @@ msgstr "Diese Datei ist bereits geöffnet."
 #. Resource IDs: (205)
 #, c-format
 msgid "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base entry. It cannot be imported."
-msgstr "Der %s Eintrag \"%s, %s, %s\" zeigt nicht auf ein normaler oder bestehenden %s Basis-Eintrag. Es kann nicht importiert werden."
+msgstr "Der %s Eintrag \"%s, %s, %s\" zeigt nicht auf ein normaler oder bestehenden %s Basiseintrag. Es kann nicht importiert werden."
 
 #. Resource IDs: (510)
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
@@ -5418,7 +5422,7 @@ msgid ""
 msgstr ""
 "Das Passwort ist im Alias-Format, aber der referenzierte Eintrag '%s:%s:%s' selbst ist ebenfalls im Alias-Format.\r\n"
 "\r\n"
-"Wollen Sie, dass dieser Eintrag auf den 'echten' Basis-Eintrag zeigt?"
+"Wollen Sie, dass dieser Eintrag auf den 'echten' Basiseintrag zeigt?"
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -6331,6 +6335,14 @@ msgstr ""
 "\n"
 "Doppelter Eintrag"
 
+#. Resource IDs: (2006)
+msgid ""
+"\n"
+"Edit Base entry"
+msgstr ""
+"\n"
+"Basiseintrag bearbeiten"
+
 #. Resource IDs: (2007)
 msgid ""
 "\n"
@@ -6702,19 +6714,19 @@ msgstr ""
 
 #. Resource IDs: (205)
 msgid "\tThis entry has been made an alias of associated base entry."
-msgstr "\tDieser Eintrag wurde zum Alias des zugehörigen Basis-Eintrags gemacht."
+msgstr "\tDieser Eintrag wurde zum Alias des zugehörigen Basiseintrags gemacht."
 
 #. Resource IDs: (205)
-msgid "\tThis entry remains a normal entry and the password has not be changed."
+msgid "\tThis entry remains a normal entry and the password has not been changed."
 msgstr "\tDieser Eintrag bleibt ein normaler Eintrag und das Passwort wurde nicht geändert."
 
 #. Resource IDs: (206)
 msgid "a base entry of a shortcut"
-msgstr "Basis-Eintrag einer Verknüpfung"
+msgstr "Basiseintrag einer Verknüpfung"
 
 #. Resource IDs: (206)
 msgid "a base entry of an alias"
-msgstr "Basis-Eintrag eines Alias"
+msgstr "Basiseintrag eines Alias"
 
 #. Resource IDs: (206)
 msgid "a normal entry"
