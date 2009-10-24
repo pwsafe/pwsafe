@@ -50,23 +50,20 @@ bool pws_os::FileExists(const stringT &filename)
 
 bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 {
-  int status;
-  bool retval = false;
+  bool retval;
   bReadOnly = false;
 #ifndef UNICODE
-  status = ::access(filename.c_str(), R_OK);
-  if (status == 0) {
+  retval = (::access(filename.c_str(), R_OK) == 0);
+  if (retval) {
     bReadOnly = (::access(filename.c_str(), W_OK) != 0);
-    retval = true;
   }
 #else
   size_t N = wcstombs(NULL, filename.c_str(), 0) + 1;
   char *fn = new char[N];
   wcstombs(fn, filename.c_str(), N);
-  status = ::access(fn, R_OK);
-  if (status == 0) {
+  retval = (::access(fn, R_OK) == 0);
+  if (retval) {
     bReadOnly = (::access(fn, W_OK) != 0);
-    retval = true;
   }
   delete[] fn;
 #endif /* UNICODE */

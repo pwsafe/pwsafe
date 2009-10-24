@@ -20,6 +20,7 @@
 #include "os/pws_tchar.h"
 #include "os/file.h"
 
+#include <fstream>
 #include <algorithm>
 
 #ifdef _WIN32
@@ -28,6 +29,15 @@
 #endif
 
 using namespace std;
+
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::wifstream ifstreamT;
+typedef std::wofstream ofstreamT;
+#else
+typedef std::ifstream ifstreamT;
+typedef std::ofstream ofstreamT;
+#endif
 
 #if defined(POCKET_PC)
 const LPCTSTR PWS_REG_POSITION = _T("Position");
@@ -710,21 +720,31 @@ void PWSprefs::InitializePreferences()
     m_configfilename = PWSdirs::GetConfigDir().c_str();
     m_configfilename += _T("pwsafe.cfg");
   }
+
   // Start with fallback position: hardcoded defaults
   LoadProfileFromDefaults();
   m_ConfigOptions = CF_NONE;
+  bool isRO(true);
 
   // Actually, "config file exists" means:
   // 1. File exists &&
   // 2. host/user key found.
 
   // 1. Does config file exist (and if, so, can we write to it?)?
-  bool isRO = false;
   bool configFileExists = pws_os::FileExists(m_configfilename.c_str(), isRO);
-  if (configFileExists)
+  if (configFileExists) {
     m_ConfigOptions = (isRO) ? CF_FILE_RO : CF_FILE_RW;
-  else 
-    m_ConfigOptions = CF_FILE_RW_NEW;
+  } else {
+    // Doesn't exist but can we write to the directory?
+    // Try and create the file (and delete afterwards if we succeeded)
+    ofstreamT ofs(m_configfilename.c_str());
+    if (!ofs.bad()) {
+      ofs.close();
+      pws_os::DeleteAFile(m_configfilename.c_str());
+      m_ConfigOptions = CF_FILE_RW_NEW;
+      isRO = false;
+    }
+  }
 
   const SysInfo *si = SysInfo::GetInstance();
   // Set up XML "keys": host/user

@@ -18,6 +18,7 @@
 #include <io.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fstream>
 
 #include "../typedefs.h"
 #include "../file.h"
@@ -37,20 +38,14 @@ bool pws_os::FileExists(const stringT &filename)
 
 bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 {
-  struct _stat statbuf;
-  int status;
+  bool retval;
+  bReadOnly = false;
 
-  status = _tstat(filename.c_str(), &statbuf);
-
-  // As "stat" gives "user permissions" not "file attributes"....
-  if (status == 0) {
-    DWORD dwAttr = GetFileAttributes(filename.c_str());
-    bReadOnly = (FILE_ATTRIBUTE_READONLY & dwAttr) == FILE_ATTRIBUTE_READONLY;
-    return true;
-  } else {
-    bReadOnly = false;
-    return false;
+  retval = (_taccess(filename.c_str(), R_OK) == 0);
+  if (retval) {
+    bReadOnly = (_taccess(filename.c_str(), W_OK) != 0);
   }
+  return retval;
 }
 
 bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
