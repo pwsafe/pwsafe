@@ -54,6 +54,11 @@ typedef unsigned int uint;
 
 typedef void *HANDLE;
 
+// Folllowing not defined by Windows - needed by _access mode
+#define F_OK 00
+#define W_OK 02
+#define R_OK 04
+
 #else /* !defined(_WIN32) */
 #include <sys/types.h>
 #include "linux/pws_time.h"
