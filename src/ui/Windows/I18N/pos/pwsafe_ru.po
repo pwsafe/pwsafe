@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-09-22 21:02+0300\n"
+"PO-Revision-Date: 2009-10-25 15:09+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -473,6 +473,10 @@ msgstr "&Дублировать элемент"
 msgid "&Edit"
 msgstr "&Изменить"
 
+#. Resource IDs: (32081)
+msgid "&Edit Base entry"
+msgstr "&Редактировать исходный элемент"
+
 #. Resource IDs: (1346)
 msgid "&Export"
 msgstr "&Экспорт"
@@ -504,7 +508,7 @@ msgstr "&Шрифт:"
 
 #. Resource IDs: (32078)
 msgid "&Go to Base entry"
-msgstr "&Перейти к исходному элементу"
+msgstr "Перейти &к исходному элементу"
 
 #. Resource IDs: (9, 32200, 57670)
 msgid "&Help"
@@ -2641,6 +2645,10 @@ msgstr "Фильтр %s уже существует в контейнере. З�
 msgid "Filter name:"
 msgstr "Имя фильтра:"
 
+#. Resource IDs: (358)
+msgid "Filter1"
+msgstr "Filter1"
+
 #. Resource IDs: (352)
 msgid "Filters successfully exported"
 msgstr "Файл успешно экспортирован"
@@ -3326,8 +3334,8 @@ msgstr "Длина генерируемого шестнадцатеричног
 
 #. Resource IDs: (204)
 #, c-format
-msgid "Line %d skipped"
-msgstr "Строка %d пропущена"
+msgid "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
+msgstr "Строка %d пропущена: указано лишь %d элементов (согласно заголовку должно быть %d)."
 
 #. Resource IDs: (205)
 #, c-format
@@ -4085,13 +4093,9 @@ msgstr "Подтвердите удаление ВСЕЙ информации, �
 msgid "Please confirm you wish to delete the %s filter %s?"
 msgstr "Подтверждаете удаление %s фильтра %s?"
 
-#. Resource IDs: (65535)
-msgid "Please do not use this option unless you understand and accept the risks."
-msgstr "Используйте эту опцию только в случае, если Вы понимаете и принимаете все возможные риски."
-
 # Урезано из-за ограничений длины
 #. Resource IDs: (1227)
-msgid "Please do not use this option unless you understand and accept the risks.  This option bypasses the security provided by this program."
+msgid "Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
 msgstr "Используйте эту опцию только в случае, если Вы понимаете и принимаете все возможные риски. Это позволяет обойти защиту предоставляемую программой."
 
 #. Resource IDs: (330)
@@ -5482,6 +5486,10 @@ msgstr "Строчные буквы"
 msgid "Use only easy-to-read characters (i.e., no  'l', '1', etc.)"
 msgstr "Только легкоотличимые символы (не исп.  'l', '1' и т.п.)"
 
+#. Resource IDs: (1050)
+msgid "Use symbols (i.e. &&, %, $, etc.)"
+msgstr "Символы (напр.  &&, %, $, etc.)"
+
 # урезано из-за ограничения длины
 #. Resource IDs: (1050)
 msgid "Use symbols (i.e., &, %, $, etc.)"
@@ -5617,11 +5625,6 @@ msgstr "Предупр. за"
 msgid "Warning"
 msgstr "Предупреждение"
 
-# Урезано из-за ограничений длины метки
-#. Resource IDs: (65535)
-msgid "Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is *NOT* sufficient. This bypasses the security of the program."
-msgstr "Предупреждение! Продолжение приведет к созданию незащищенной копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО! Это позволяет обойти защиту предоставляемую программой."
-
 #. Resource IDs: (1226)
 msgid "Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is NOT sufficient."
 msgstr "Предупреждение! Продолжение приведет к созданию незащищенной копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО!"
@@ -5682,6 +5685,10 @@ msgstr "XML-файлы (*.xml)|*.xml|Все файлы (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML-файлы (*.xml)|*.xml||"
+
+#. Resource IDs: (358)
+msgid "YYMMDD_HHMMSS"
+msgstr "YYMMDD_HHMMSS"
 
 #. Resource IDs: (340)
 msgid "Yes"
@@ -5795,6 +5802,10 @@ msgstr "\nПоказать часть пароля"
 #. Resource IDs: (2004)
 msgid "\nDuplicate Entry"
 msgstr "\nДублировать элемент"
+
+#. Resource IDs: (2006)
+msgid "\nEdit Base entry"
+msgstr "\nРедактировать исходный элемент"
 
 #. Resource IDs: (2008)
 msgid "\nEdit Filters"
@@ -5990,8 +6001,8 @@ msgid "\tThis entry has been made an alias of associated base entry."
 msgstr "\tЭтот элемент является алиасом соответствующего исходного элемента."
 
 #. Resource IDs: (205)
-msgid "\tThis entry remains a normal entry and the password has not be changed."
-msgstr "\tЭтот элемент остается обычным элементом. Пароль не будет изменен."
+msgid "\tThis entry remains a normal entry and the password has not been changed."
+msgstr "\tЭтот элемент остается обычным элементом. Пароль не изменен."
 
 #. Resource IDs: (206)
 msgid "a base entry of a shortcut"
