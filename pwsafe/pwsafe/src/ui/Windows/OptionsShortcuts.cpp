@@ -19,7 +19,7 @@
 #include "resource3.h"  // String resources
 #endif
 
-#include "OptionsShortcuts.h"
+#include "OptionsShortcuts.h" // Must be after resource.h
 
 // COptionsShortcuts dialog
 

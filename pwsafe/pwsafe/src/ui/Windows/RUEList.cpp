@@ -14,7 +14,10 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "RUEList.h"
+#include "GeneralMsgBox.h"
+
 #include "corelib/PWScore.h"
+
 #include "resource3.h"  // String resources
 
 using namespace std;
@@ -157,8 +160,9 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
   ItemListConstIter pw_listpos = m_core.Find(re_FoundEntry.RUEuuid);
   if (pw_listpos == m_core.GetEntryEndIter()) {
     // Entry does not exist anymore!
+    CGeneralMsgBox gmb;
     m_RUEList.erase(m_RUEList.begin() + index);
-    AfxMessageBox(IDS_CANTPROCESSENTRY);
+    gmb.AfxMessageBox(IDS_CANTPROCESSENTRY);
   }
   if (pw_listpos == m_core.GetEntryEndIter())
     return false;

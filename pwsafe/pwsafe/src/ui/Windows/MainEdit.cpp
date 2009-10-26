@@ -12,9 +12,8 @@
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
 #include "DDSupport.h"
-
-// dialog boxen
 #include "DboxMain.h"
 #include "AddEdit_PropertySheet.h"
 #include "ConfirmDeleteDlg.h"
@@ -322,6 +321,7 @@ void DboxMain::Delete(bool inRecursion)
 
     num_dependents = dependentslist.size();
     if (num_dependents > 0) {
+      CGeneralMsgBox gmb;
       StringX csDependents;
       SortDependents(dependentslist, csDependents);
 
@@ -337,7 +337,7 @@ void DboxMain::Delete(bool inRecursion)
                       cs_type, csDependents.c_str());
       }
 
-      if (MessageBox(cs_msg, cs_title, MB_ICONQUESTION | MB_YESNO) == IDNO) {
+      if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION) == IDNO) {
         dependentslist.clear();
         return;
       }
@@ -1551,10 +1551,11 @@ void DboxMain::OnRunCommand()
                        m_bDoAutoType, m_AutoType, 
                        errmsg, st_column);
   if (!errmsg.empty()) {
+    CGeneralMsgBox gmb;
     CString cs_title, cs_errmsg;
     cs_title.LoadString(IDS_RUNCOMMAND_ERROR);
     cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
-    MessageBox(cs_errmsg, cs_title, MB_ICONQUESTION | MB_OK);
+    gmb.MessageBox(cs_errmsg, cs_title, MB_OK | MB_ICONQUESTION);
     return;
   }
 
@@ -1638,6 +1639,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
     m_core.GetBaseEntry(cs_tmp, pl);
     if (pl.ibasedata > 0) {
+      CGeneralMsgBox gmb;
       // Password in alias/shortcut format AND base entry exists
       if (pl.InputType == CItemData::ET_ALIAS) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
@@ -1647,13 +1649,13 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           // So dropped entry will point to the 'proper base' and tell the user.
           CString cs_msg;
           cs_msg.Format(IDS_DDBASEISALIAS, Group, Title, User);
-          AfxMessageBox(cs_msg, MB_OK);
+          gmb.AfxMessageBox(cs_msg, MB_OK);
         } else
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
           CString cs_msg;
           cs_msg.Format(IDS_ABASEINVALID, Group, Title, User);
-          AfxMessageBox(cs_msg, MB_OK);
+          gmb.AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
         m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_ALIAS);
@@ -1667,7 +1669,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           // Only normal or shortcut base allowed as target
           CString cs_msg;
           cs_msg.Format(IDS_SBASEINVALID, Group, Title, User);
-          AfxMessageBox(cs_msg, MB_OK);
+          gmb.AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
         m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
@@ -1831,8 +1833,9 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
                                 const bool bIsEdit, const CItemData::EntryType &InputType, 
                                 uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued)
 {
-  // bmsgissued - whether this routine issued a message
+  // b_msg_issued - whether this routine issued a message
   b_msg_issued = false;
+  CGeneralMsgBox gmb;
 
   // Called from Add and Edit entry
   // Returns false if not a special alias or shortcut password
@@ -1855,7 +1858,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
     // In Edit, check user isn't changing entry to point to itself (circular/self reference)
     // Can't happen during Add as already checked entry does not exist so if accepted the
     // password would be treated as an unusal "normal" password
-    AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
+    gmb.AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
     return false;
   }
 
@@ -1870,9 +1873,9 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
     if (InputType == CItemData::ET_SHORTCUT) {
       // Target must exist (unlike for aliases where it could be an unusual password)
       if (pl.bMultipleEntriesFound)
-        AfxMessageBox(IDS_MULTIPLETARGETSFOUND, MB_OK);
+        gmb.AfxMessageBox(IDS_MULTIPLETARGETSFOUND, MB_OK);
       else
-        AfxMessageBox(IDS_TARGETNOTFOUND, MB_OK);
+        gmb.AfxMessageBox(IDS_TARGETNOTFOUND, MB_OK);
       return false;
     }
 
@@ -1888,7 +1891,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
         else
           cs_msg.Format(IDS_ALIASNOTFOUND0B,
                         pl.csPwdTitle.c_str());  // no entry exists with title=x
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
         break;
       case -2: // [g,t], [t:u]
         // In this case the 2 fields from the password are in Group & Title
@@ -1904,7 +1907,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
                         pl.csPwdTitle.c_str(),
                         pl.csPwdGroup.c_str(),
                         pl.csPwdTitle.c_str());
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
+        rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
                            MB_YESNO | MB_DEFBUTTON2);
         break;
       case -3: // [g:t:u], [g:t:], [:t:u], [:t:] (title cannot be empty)
@@ -1914,7 +1917,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
         const bool bUE = pl.csPwdUser.empty();
         if (bTE) {
           // Title is mandatory for all entries!
-          AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
+          gmb.AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
           rc = IDNO;
           break;
         } else if (!bGE && !bUE)  // [x:y:z]
@@ -1934,7 +1937,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
           cs_msg.Format(IDS_ALIASNOTFOUND0B, 
                         pl.csPwdTitle.c_str());
 
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
+        rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
                            MB_YESNO | MB_DEFBUTTON2);
         break;
       }
@@ -1954,7 +1957,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
                     pl.csPwdGroup.c_str(),
                     pl.csPwdTitle.c_str(),
                     pl.csPwdUser.c_str());
-      if (AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
+      if (gmb.AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
         return false;
       }
     } else {
@@ -1965,7 +1968,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
                       pl.csPwdGroup.c_str(),
                       pl.csPwdTitle.c_str(), 
                       pl.csPwdUser.c_str());
-        AfxMessageBox(cs_msg, MB_OK);
+        gmb.AfxMessageBox(cs_msg, MB_OK);
         return false;
       } else {
         return true;

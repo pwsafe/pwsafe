@@ -20,6 +20,7 @@
 
 #include "../PasswordSafe.h" // for app extern declaration
 #include "../ThisMfcApp.h" // for NoSysEnvWarnings()
+#include "../GeneralMsgBox.h"
 
 #include "../../../os/dir.h"
 #include "../../../os/windows/pws_osk/pws_osk.h"
@@ -239,8 +240,9 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     else if (pOSKVersion() == VK_DLL_VERSION) {
       bVKAvailable = true;
     } else if (!warnedAlready && !app.NoSysEnvWarnings()) {
+      CGeneralMsgBox gmb;
       warnedAlready = true;
-      AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
+      gmb.AfxMessageBox(IDS_OSK_VERSION_MISMATCH, MB_ICONERROR);
     }
 
     BOOL brc = FreeLibrary(OSK_module);
@@ -317,8 +319,9 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 
   TRACE(L"CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n");
   if (!warnedAlready && !app.NoSysEnvWarnings()) {
+    CGeneralMsgBox gmb;
     warnedAlready = true;
-    AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
+    gmb.AfxMessageBox(IDS_OSK_NO_UNICODE_FONT, MB_ICONERROR);
   }
 
 exit:

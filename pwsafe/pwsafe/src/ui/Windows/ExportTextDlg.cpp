@@ -14,8 +14,12 @@
 #include "AdvancedDlg.h"
 #include "PwFont.h"
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
+
 #include "corelib/pwsprefs.h"
+
 #include "VirtualKeyboard/VKeyBoardDlg.h"
+
 #include "os/dir.h"
 
 #include <iomanip>  // For setbase and setw
@@ -122,12 +126,14 @@ void AFXAPI CExportTextDlg::DDV_CheckExpDelimiter(CDataExchange* pDX,
 {
   if (pDX->m_bSaveAndValidate) {
     if (delimiter.IsEmpty()) {
-      AfxMessageBox(IDS_NEEDDELIMITER);
+      CGeneralMsgBox gmb;
+      gmb.AfxMessageBox(IDS_NEEDDELIMITER);
       pDX->Fail();
       return;
     }   
     if (delimiter[0] == '"') {
-      AfxMessageBox(IDS_INVALIDDELIMITER);
+      CGeneralMsgBox gmb;
+      gmb.AfxMessageBox(IDS_INVALIDDELIMITER);
       pDX->Fail();
     }
   }

@@ -10,6 +10,7 @@
 //
 
 #include "../stdafx.h"
+#include "../GeneralMsgBox.h"
 #include "FilterPasswordDlg.h"
 #include "corelib/itemdata.h"
 #include "corelib/corelib.h"
@@ -65,11 +66,12 @@ void AFXAPI CFilterPasswordDlg::DDV_CheckMinMax(CDataExchange* pDX,
   if (m_rule != PWSMatch::MR_WILLEXPIRE)
     return;
 
+  CGeneralMsgBox gmb;
   if (pDX->m_bSaveAndValidate) {
     if (min != -1 && num < min) {
       CString cs_text;
       cs_text.Format(IDS_NUMTOOSMALL, min);
-      AfxMessageBox(cs_text);
+      gmb.AfxMessageBox(cs_text);
       pDX->Fail();
       return;
     }
@@ -77,7 +79,7 @@ void AFXAPI CFilterPasswordDlg::DDV_CheckMinMax(CDataExchange* pDX,
     if (max != -1 && num > max) {
       CString cs_text;
       cs_text.Format(IDS_NUMTOOLARGE, max);
-      AfxMessageBox(cs_text);
+      gmb.AfxMessageBox(cs_text);
       pDX->Fail();
       return;
     }
@@ -233,8 +235,9 @@ void CFilterPasswordDlg::OnBnClickedOk()
   if (UpdateData(TRUE) == FALSE)
     return;
 
+  CGeneralMsgBox gmb;
   if (m_rule == PWSMatch::MR_INVALID) {
-    AfxMessageBox(IDS_NORULESELECTED);
+    gmb.AfxMessageBox(IDS_NORULESELECTED);
     return;
   }
 
@@ -243,7 +246,7 @@ void CFilterPasswordDlg::OnBnClickedOk()
       m_rule != PWSMatch::MR_EXPIRED &&
       m_rule != PWSMatch::MR_WILLEXPIRE &&
       m_string.IsEmpty()) {
-    AfxMessageBox(IDS_NOSTRING);
+    gmb.AfxMessageBox(IDS_NOSTRING);
     m_edtString.SetFocus();
     return;
   }

@@ -10,12 +10,18 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+#include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
+#include "PasskeyChangeDlg.h"
+#include "PwFont.h"
+
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWScore.h" // for error statuses from CheckPassword()
 #include "corelib/PWCharPool.h" // for CheckPassword()
 #include "corelib/pwsprefs.h"
-#include "ThisMfcApp.h"
+
 #include "os/dir.h"
+
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #if defined(POCKET_PC)
@@ -25,9 +31,6 @@
 #include "resource.h"
 #include "resource3.h"  // String resources
 #endif
-
-#include "PasskeyChangeDlg.h"
-#include "PwFont.h"
 
 #include <iomanip>  // For setbase and setw
 
@@ -128,15 +131,16 @@ void CPasskeyChangeDlg::OnOK()
   CString cs_msg, cs_text;
 
   UpdateData(TRUE);
+  CGeneralMsgBox gmb;
   int rc = app.m_core.CheckPassword(app.m_core.GetCurFile(), m_oldpasskey);
   if (rc == PWScore::WRONG_PASSWORD)
-    AfxMessageBox(IDS_WRONGOLDPHRASE);
+    gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)
-    AfxMessageBox(IDS_CANTVERIFY);
+    gmb.AfxMessageBox(IDS_CANTVERIFY);
   else if (m_confirmnew != m_newpasskey)
-    AfxMessageBox(IDS_NEWOLDDONOTMATCH);
+    gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   else if (m_newpasskey.IsEmpty())
-    AfxMessageBox(IDS_CANNOTBEBLANK);
+    gmb.AfxMessageBox(IDS_CANNOTBEBLANK);
   // Vox populi vox dei - folks want the ability to use a weak
   // passphrase, best we can do is warn them...
   // If someone want to build a version that insists on proper
@@ -148,13 +152,13 @@ void CPasskeyChangeDlg::OnOK()
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
-    int rc = AfxMessageBox(cs_msg, MB_YESNO | MB_ICONSTOP);
+    int rc = gmb.AfxMessageBox(cs_msg, MB_YESNO | MB_ICONSTOP);
     if (rc == IDYES)
       CPWDialog::OnOK();
 #else
     cs_text.LoadString(IDS_TRYANOTHER);
     cs_msg += cs_text;
-    AfxMessageBox(cs_msg, MB_OK | MB_ICONSTOP);
+    gmb.AfxMessageBox(cs_msg, MB_OK | MB_ICONSTOP);
 #endif // PWS_FORCE_STRONG_PASSPHRASE
   } else {
     CPWDialog::OnOK();

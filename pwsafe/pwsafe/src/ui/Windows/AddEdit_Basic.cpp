@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"    // For Help
+#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "PwFont.h"
 
@@ -486,6 +487,7 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 BOOL CAddEdit_Basic::OnApply()
 {
   CWnd *pFocus(NULL);
+  CGeneralMsgBox gmb;
   ItemListIter listindex;
   bool brc, b_msg_issued;
 
@@ -516,25 +518,25 @@ BOOL CAddEdit_Basic::OnApply()
 
   //Check that data is valid
   if (M_title().IsEmpty()) {
-    AfxMessageBox(IDS_MUSTHAVETITLE);
+    gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
     pFocus = &m_ex_title;
     goto error;
   }
 
   if (M_realpassword().IsEmpty()) {
-    AfxMessageBox(IDS_MUSTHAVEPASSWORD);
+    gmb.AfxMessageBox(IDS_MUSTHAVEPASSWORD);
     pFocus = &m_ex_password;
     goto error;
   }
 
   if (!M_group().IsEmpty() && M_group()[0] == '.') {
-    AfxMessageBox(IDS_DOTINVALID);
+    gmb.AfxMessageBox(IDS_DOTINVALID);
     pFocus = &m_ex_group;
     goto error;
   }
 
   if (m_isPWHidden && (m_password.Compare(m_password2) != 0)) {
-    AfxMessageBox(IDS_PASSWORDSNOTMATCH);
+    gmb.AfxMessageBox(IDS_PASSWORDSNOTMATCH);
     UpdateData(FALSE);
     pFocus = &m_ex_password;
     goto error;
@@ -557,7 +559,7 @@ BOOL CAddEdit_Basic::OnApply()
         else
           temp.Format(IDS_ENTRYEXISTS, M_group(), M_title(), M_username());
 
-      AfxMessageBox(temp);
+      gmb.AfxMessageBox(temp);
       pFocus = &m_ex_title;
       goto error;
     }
@@ -572,7 +574,7 @@ BOOL CAddEdit_Basic::OnApply()
       if (notSame) {
         CSecString temp;
         temp.Format(IDS_ENTRYEXISTS, M_group(), M_title(), M_username());
-        AfxMessageBox(temp);
+        gmb.AfxMessageBox(temp);
         pFocus = &m_ex_title;
         goto error;
       }
@@ -588,7 +590,7 @@ BOOL CAddEdit_Basic::OnApply()
 
   if (!brc && M_ibasedata() != 0) {
     if (!b_msg_issued)
-      AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
+      gmb.AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
 
     UpdateData(FALSE);
     pFocus = &m_ex_password;
@@ -899,7 +901,8 @@ void CAddEdit_Basic::OnSendEmail()
 LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
 {
   // Warn the user about sensitive data lying around
-  int rc = AfxMessageBox(IDS_EXTERNAL_EDITOR_WARNING,
+  CGeneralMsgBox gmb;
+  int rc = gmb.AfxMessageBox(IDS_EXTERNAL_EDITOR_WARNING,
                          MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
   if (rc != IDYES)
     return 0L;
@@ -919,6 +922,7 @@ LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
 UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 {
   CAddEdit_Basic *self = (CAddEdit_Basic *)me;
+  CGeneralMsgBox gmb;
 
   wchar_t szExecName[MAX_PATH + 1];
   wchar_t lpPathBuffer[4096];
@@ -949,7 +953,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
                                     szExecName, &dwSize);
   if (int(stat) != S_OK) {
 #ifdef _DEBUG
-    AfxMessageBox(L"oops");
+    gmb.AfxMessageBox(L"oops");
 #endif
     return 16;
   }
@@ -1042,6 +1046,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
 void CAddEdit_Basic::OnViewDependents()
 {
   CString cs_msg, cs_type;
+  CGeneralMsgBox gmb;
 
   if (M_original_entrytype() == CItemData::ET_ALIASBASE)
     cs_type.LoadString(M_num_dependents() == 1 ? IDS_ALIAS : IDS_ALIASES);
@@ -1049,5 +1054,5 @@ void CAddEdit_Basic::OnViewDependents()
     cs_type.LoadString(M_num_dependents() == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);
 
   cs_msg.Format(IDS_VIEWDEPENDENTS, M_num_dependents(), cs_type, M_dependents());
-  MessageBox(cs_msg, AfxGetAppName(), MB_OK);
+  gmb.MessageBox(cs_msg, AfxGetAppName(), MB_OK);
 }

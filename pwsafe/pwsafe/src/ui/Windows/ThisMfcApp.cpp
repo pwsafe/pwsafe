@@ -16,6 +16,7 @@
 */
 
 #include "PasswordSafe.h"
+#include "GeneralMsgBox.h"
 
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
@@ -149,11 +150,12 @@ ThisMfcApp::ThisMfcApp() :
 #define ENDIANNESS2 0 // Little
 #endif
   if (*(unsigned int*)buf != ii) {
+    CGeneralMsgBox gmb;
     CString cs_msg, cs_e1, cs_e2;
     cs_e1.LoadString(ENDIANNESS1 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
     cs_e2.LoadString(ENDIANNESS2 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
     cs_msg.Format(IDS_ENDIANERROR, cs_e1, cs_e2);
-    AfxMessageBox(cs_msg);
+    gmb.AfxMessageBox(cs_msg);
   }
 #endif
   // Set this process to be one of the first to be shut down:
@@ -200,7 +202,8 @@ ThisMfcApp::~ThisMfcApp()
 #if !defined(POCKET_PC)
 static void Usage()
 {
-  AfxMessageBox(IDS_USAGE);
+  CGeneralMsgBox gmb;
+  gmb.AfxMessageBox(IDS_USAGE);
 }
 
 // tests if file exists, returns true if so, displays error message if not
@@ -218,7 +221,8 @@ static bool CheckFile(const CString &fn)
   if (cs_msg.IsEmpty()) {
     return true;
   } else {
-    AfxMessageBox(cs_msg);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(cs_msg);
     return false;
   }
 }
@@ -354,10 +358,11 @@ void ThisMfcApp::LoadLocalizedStuff()
     GetVersionInfoFromFile(cs_ResPath, MajorMinor, BuildRevision);
 
     if (MajorMinor != GetFileVersionMajorMinor()) { // ignore build for now
+      CGeneralMsgBox gmb;
       CString oops;
       oops.Format(L"Executable/language DLL (%s) version mismatch %d/%d.\n", 
                   cs_ResPath, GetFileVersionMajorMinor(), MajorMinor);
-      AfxMessageBox(oops);
+      gmb.AfxMessageBox(oops);
       FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
@@ -523,14 +528,16 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             std::wstring errstr;
             status = PWSfile::Encrypt(std::wstring(*(arg + 1)), passkey, errstr);
             if (!status) {
-              AfxMessageBox(errstr.c_str(), MB_ICONEXCLAMATION|MB_OK);
+              CGeneralMsgBox gmb;
+              gmb.AfxMessageBox(errstr.c_str(), MB_OK | MB_ICONEXCLAMATION);
             }
             return true;
           } else {
             std::wstring errstr;
             status = PWSfile::Decrypt(std::wstring(*(arg+1)), passkey, errstr);
             if (!status) {
-              AfxMessageBox(errstr.c_str(), MB_ICONEXCLAMATION|MB_OK);
+              CGeneralMsgBox gmb;
+              gmb.AfxMessageBox(errstr.c_str(), MB_OK | MB_ICONEXCLAMATION);
             }
             return true;
           }

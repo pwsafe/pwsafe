@@ -12,16 +12,11 @@
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
 #include "Shortcut.h"
 #include "PWFileDialog.h"
 #include "PWPropertySheet.h"
-#include "corelib/pwsprefs.h"
-#include "corelib/PWSdirs.h"
-#include "corelib/PWSAuxParse.h"
-
-// dialog boxen
 #include "DboxMain.h"
-
 #include "PasskeyChangeDlg.h"
 #include "TryAgainDlg.h"
 #include "Options_PropertySheet.h"
@@ -33,6 +28,10 @@
 #include "OptionsMisc.h"
 #include "OptionsBackup.h"
 #include "OptionsShortcuts.h"
+
+#include "corelib/pwsprefs.h"
+#include "corelib/PWSdirs.h"
+#include "corelib/PWSAuxParse.h"
 
 using namespace std;
 
@@ -101,9 +100,10 @@ int DboxMain::BackupSafe()
 
   rc = m_core.WriteFile(tempname);
   if (rc == PWScore::CANT_OPEN_FILE) {
+    CGeneralMsgBox gmb;
     cs_temp.Format(IDS_CANTOPENWRITING, tempname);
     cs_title.LoadString(IDS_FILEWRITEERROR);
-    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
 
@@ -159,13 +159,14 @@ int DboxMain::RestoreSafe()
   }
 
   rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+  CGeneralMsgBox gmb;
   switch (rc) {
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
       cs_temp.Format(IDS_CANTOPEN, backup);
       cs_title.LoadString(IDS_FILEOPENERROR);
-      MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     case TAR_OPEN:
       ASSERT(0);
       return PWScore::FAILURE; // shouldn't be an option here
@@ -193,7 +194,7 @@ int DboxMain::RestoreSafe()
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENREADING, backup);
     cs_title.LoadString(IDS_FILEREADERROR);
-    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
 
@@ -220,7 +221,8 @@ void DboxMain::OnValidate()
     ChangeOkUpdate();
   }
 
-  AfxMessageBox(cs_msg.c_str(), MB_OK);
+  CGeneralMsgBox gmb;
+  gmb.AfxMessageBox(cs_msg.c_str(), MB_OK);
 }
 
 void DboxMain::OnOptions() 
@@ -823,8 +825,10 @@ void DboxMain::OnOptions()
       wModifiers |= MOD_SHIFT; 
     brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
                          UINT(wModifiers), UINT(wVirtualKeyCode));
-    if (brc == FALSE)
-      AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+    if (brc == FALSE) {
+      CGeneralMsgBox gmb;
+      gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+    }
   }
 #endif
 }
@@ -954,8 +958,9 @@ void DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
         (*updater)(curitem);
     }
 
+    CGeneralMsgBox gmb;
     CString cs_Msg;
     cs_Msg.Format(ids, num_altered);
-    AfxMessageBox(cs_Msg);
+    gmb.AfxMessageBox(cs_Msg);
   }
 }

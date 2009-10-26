@@ -14,15 +14,6 @@
 
 #include "ThisMfcApp.h"
 #include "AddEdit_PropertySheet.h"
-
-#if defined(POCKET_PC)
-#include "pocketpc/resource.h"
-#else
-#include "resource.h"
-#include "resource2.h"  // Menu, Toolbar & Accelerator resources
-#include "resource3.h"  // String resources
-#endif
-
 #include "DboxMain.h"
 #include "TryAgainDlg.h"
 #include "ColumnChooserDlg.h"
@@ -43,6 +34,14 @@
 #include "os/Debug.h"
 #include "os/dir.h"
 #include "os/run.h"
+
+#if defined(POCKET_PC)
+#include "pocketpc/resource.h"
+#else
+#include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
+#endif
 
 #include "commctrl.h"
 #include <shlwapi.h>
@@ -1743,9 +1742,10 @@ bool DboxMain::LockDataBase()
   if (m_core.IsChanged() ||  m_bTSUpdated) {
     if (Save() != PWScore::SUCCESS) {
       // If we don't warn the user, data may be lost!
+      CGeneralMsgBox gmb;
       CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
       cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
-      MessageBox(cs_text, cs_title, MB_ICONSTOP);
+      gmb.MessageBox(cs_text, cs_title, MB_ICONSTOP);
       return false;
     }
   }
@@ -2034,7 +2034,8 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
   bool rc = m_runner.issuecmd(sxFile, sxParameters, m_AutoType);
 
   if (!rc) {
-    AfxMessageBox(errID, MB_ICONSTOP);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(errID, MB_ICONSTOP);
   }
   return rc ? TRUE : FALSE;
 }
@@ -2077,7 +2078,8 @@ BOOL DboxMain::SendEmail(const CString &cs_Email)
   bool rc = m_runner.issuecmd(sx_Email, sxParameters, sxAutoType);
 
   if (!rc) {
-    AfxMessageBox(IDS_CANTEMAIL, MB_ICONSTOP);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_CANTEMAIL, MB_ICONSTOP);
   }
   return rc ? TRUE : FALSE;
 }
@@ -2787,7 +2789,8 @@ void DboxMain::OnViewReports()
   }
 
   if (!bReportExists) {
-    AfxMessageBox(IDS_NOREPORTSEXIST);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_NOREPORTSEXIST);
     return;
   }
 
@@ -2892,7 +2895,8 @@ void DboxMain::ViewReport(const CString &cs_ReportFileName)
                                     szExecName, &dwSize);
   if (int(stat) != S_OK) {  
 #ifdef _DEBUG
-    AfxMessageBox(L"oops");
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(L"oops");
 #endif
     return;
   }

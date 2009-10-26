@@ -10,9 +10,14 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "GeneralMsgBox.h"
 #include "PWFileDialog.h"
+#include "Options_PropertySheet.h"
+
+#include "corelib/corelib.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h" // for DoubleClickAction enums
+
 #include "os/dir.h"
 
 #if defined(POCKET_PC)
@@ -22,10 +27,7 @@
 #include "resource3.h"  // String resources
 #endif
 
-#include "corelib/corelib.h"
-
-#include "OptionsMisc.h"
-#include "Options_PropertySheet.h"
+#include "OptionsMisc.h" // Must be after resource.h
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -258,7 +260,8 @@ BOOL COptionsMisc::OnApply()
 
   if (m_doubleclickaction == PWSprefs::DoubleClickCopyPasswordMinimize &&
       bClearClipboardOnMinimize) {
-    AfxMessageBox(IDS_MINIMIZECONFLICT);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_MINIMIZECONFLICT);
 
     // Are we the current page, if not activate this page
     COptions_PropertySheet *pPS = (COptions_PropertySheet *)GetParent();

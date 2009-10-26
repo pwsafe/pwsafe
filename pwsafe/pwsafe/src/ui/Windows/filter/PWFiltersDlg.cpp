@@ -14,8 +14,9 @@
 
 #include "../stdafx.h"
 #include "../ThisMfcApp.h" // for online help
-#include "PWFiltersDlg.h"
+#include "../GeneralMsgBox.h"
 #include "../PWHdrCtrlNoChng.h"
+#include "PWFiltersDlg.h"
 
 #include "../resource2.h"
 #include "../resource3.h"
@@ -147,8 +148,10 @@ void CPWFiltersDlg::OnOk()
   if (UpdateData(TRUE) == FALSE)
     return;
 
+
   if (m_iType == DFTYPE_MAIN && m_filtername.IsEmpty()) {
-    AfxMessageBox(IDS_FILTERNAMEEMPTY);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_FILTERNAMEEMPTY);
     return;
   }
 
@@ -213,25 +216,27 @@ bool CPWFiltersDlg::VerifyFilters()
       VERIFY(0);
   }
 
+  CGeneralMsgBox gmb;
   CString cs_text;
   int iHistory(-1), iPolicy(-1);
   FilterValidator fv(cs_text, iHistory, iPolicy);
   if (find_if(pvFilterRows->begin(), pvFilterRows->end(), fv) !=
-      pvFilterRows->end()) {
-      AfxMessageBox(cs_text);
-      return false;
-    }
+    pvFilterRows->end()) {
+    gmb.AfxMessageBox(cs_text);
+    return false;
+  }
+
   if (m_iType == DFTYPE_MAIN) {
     // Now check that the filters were correct on
     // History/Policy sub-filter dialogs
     if (m_FilterLC.IsPWHIST_Set() && !m_FilterLC.IsHistoryGood()) {
       cs_text.Format(IDS_FILTERINCOMPLETE, iHistory + 1);
-      AfxMessageBox(cs_text);
+      gmb.AfxMessageBox(cs_text);
       return false;
     }
     if (m_FilterLC.IsPOLICY_Set() && !m_FilterLC.IsPolicyGood()) {
       cs_text.Format(IDS_FILTERINCOMPLETE, iPolicy + 1);
-      AfxMessageBox(cs_text);
+      gmb.AfxMessageBox(cs_text);
       return false;
     }
   }

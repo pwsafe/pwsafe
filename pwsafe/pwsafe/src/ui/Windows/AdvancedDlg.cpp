@@ -10,12 +10,16 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
 #include "AdvancedDlg.h"
+
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
-#include "ThisMfcApp.h"
+
 #include "resource.h"
 #include "resource3.h"
+
 #include <bitset>
 
 #ifdef _DEBUG
@@ -430,6 +434,7 @@ void CAdvancedDlg::OnHelp()
 
 void CAdvancedDlg::OnOK()
 {
+  CGeneralMsgBox gmb;
   CString cs_text;
   DWORD_PTR dw_data;
 
@@ -461,7 +466,7 @@ void CAdvancedDlg::OnOK()
         default:
           ASSERT(FALSE);
       }
-      AfxMessageBox(cs_error_msg);
+      gmb.AfxMessageBox(cs_error_msg);
       m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
       return;
     }
@@ -471,7 +476,7 @@ void CAdvancedDlg::OnOK()
     GetDlgItemText(IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
     int nObject = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetCurSel();
     if (nObject == CB_ERR) {
-      AfxMessageBox(IDS_NOOBJECT);
+      gmb.AfxMessageBox(IDS_NOOBJECT);
       m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
       ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->SetFocus();
       return;
@@ -479,7 +484,7 @@ void CAdvancedDlg::OnOK()
 
     int nFunction = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->GetCurSel();
     if (nFunction == CB_ERR) {
-      AfxMessageBox(IDS_NOFUNCTION);
+      gmb.AfxMessageBox(IDS_NOFUNCTION);
       m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
       ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->SetFocus();
       return;

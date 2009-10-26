@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ThisMfcApp.h"    // For Help
+#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "AddEdit_PasswordPolicy.h"
 #include "AddEdit_PropertySheet.h"
@@ -184,6 +185,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
 bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
 {
+  CGeneralMsgBox gmb;
   pFocus = NULL; // caller should set focus to this if non-null
   // Check that options, as set, are valid.
 
@@ -194,24 +196,24 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
       (GetDlgItem(nonHex[0])->IsWindowEnabled() == TRUE) &&
       (m_pwuselowercase || m_pwuseuppercase || m_pwusedigits ||
        m_pwusesymbols   || m_pweasyvision   || m_pwmakepronounceable)) {
-    AfxMessageBox(IDS_HEXMUTUALLYEXCL);
+    gmb.AfxMessageBox(IDS_HEXMUTUALLYEXCL);
     pFocus = GetDlgItem(IDC_USEHEXDIGITS);
     return false;
   }
   if (m_pwusehexdigits && (m_pwdefaultlength % 2 != 0)) {
-    AfxMessageBox(IDS_HEXMUSTBEEVEN);
+    gmb.AfxMessageBox(IDS_HEXMUSTBEEVEN);
     pFocus = GetDlgItem(IDC_DEFPWLENGTH);
     return false;
   }
 
   if (!m_pwuselowercase && !m_pwuseuppercase &&
       !m_pwusedigits    && !m_pwusesymbols   && !m_pwusehexdigits) {
-    AfxMessageBox(IDS_MUSTHAVEONEOPTION);
+    gmb.AfxMessageBox(IDS_MUSTHAVEONEOPTION);
     return false;
   }
 
   if ((m_pwdefaultlength < 4) || (m_pwdefaultlength > 1024)) {
-    AfxMessageBox(IDS_DEFAULTPWLENGTH);
+    gmb.AfxMessageBox(IDS_DEFAULTPWLENGTH);
     pFocus = GetDlgItem(IDC_DEFPWLENGTH);
     return false;
   }
@@ -219,7 +221,7 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
   if (!(m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable) &&
       (m_pwdigitminlength + m_pwlowerminlength +
        m_pwsymbolminlength + m_pwupperminlength) > m_pwdefaultlength) {
-    AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
+    gmb.AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
     pFocus = GetDlgItem(IDC_DEFPWLENGTH);
     return false;
   }
@@ -229,7 +231,6 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
       m_pwsymbolminlength = m_pwupperminlength = 1;
   return true;
 }
-
 
 BOOL CAddEdit_PasswordPolicy::OnKillActive()
 {
@@ -337,8 +338,10 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
   // Can't have any minimum lengths set!
   if ((m_pweasyvision == TRUE  || m_pwmakepronounceable == TRUE) &&
       (m_pwdigitminlength  > 1 || m_pwlowerminlength > 1 ||
-       m_pwsymbolminlength > 1 || m_pwupperminlength > 1))
-    AfxMessageBox(IDS_CANTSPECIFYMINNUMBER);
+       m_pwsymbolminlength > 1 || m_pwupperminlength > 1)) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_CANTSPECIFYMINNUMBER);
+  }
 
   CString cs_value;
   int i;
@@ -457,10 +460,11 @@ void CAddEdit_PasswordPolicy::OnUseHexdigits()
 
 void CAddEdit_PasswordPolicy::OnEasyVision()
 {
+  CGeneralMsgBox gmb;
   UpdateData(TRUE);
   if (m_pweasyvision && m_pwmakepronounceable) {
     ((CButton*)GetDlgItem(IDC_EASYVISION))->SetCheck(FALSE);
-    AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
+    gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
     m_pweasyvision = FALSE;
   }
 
@@ -470,10 +474,11 @@ void CAddEdit_PasswordPolicy::OnEasyVision()
 
 void CAddEdit_PasswordPolicy::OnMakePronounceable()
 {
+  CGeneralMsgBox gmb;
   UpdateData(TRUE);
   if (m_pweasyvision && m_pwmakepronounceable) {
     ((CButton*)GetDlgItem(IDC_PRONOUNCEABLE))->SetCheck(FALSE);
-    AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
+    gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
     m_pwmakepronounceable = FALSE;
   }
 

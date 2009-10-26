@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"    // For Help
+#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "AddEdit_DateTimes.h"
 #include "AddEdit_PropertySheet.h"
@@ -82,9 +83,10 @@ static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
   if (pDX->m_bSaveAndValidate) {
     CAddEdit_DateTimes::m_bNumDaysFailed = false;
     if (how == CAddEdit_DateTimes::RELATIVE_EXP && numDays > maxDays) {
+      CGeneralMsgBox gmb;
       CString csError;
       csError.Format(IDS_MAXNUMDAYSEXCEEDED, maxDays);
-      AfxMessageBox(csError);
+      gmb.AfxMessageBox(csError);
       CAddEdit_DateTimes::m_bNumDaysFailed = true;
       pDX->Fail();
       return;

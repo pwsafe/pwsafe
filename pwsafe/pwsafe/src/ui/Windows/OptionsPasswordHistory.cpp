@@ -10,6 +10,9 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "GeneralMsgBox.h"
+#include "DboxMain.h"  // needed for DboxMain::UpdatePasswordHistory
+
 #include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
@@ -18,8 +21,8 @@
 #include "resource.h"
 #include "resource3.h"  // String resources
 #endif
-#include "OptionsPasswordHistory.h"
-#include "DboxMain.h"  // needed for DboxMain::UpdatePasswordHistory
+
+#include "OptionsPasswordHistory.h" // Must be after resource.h
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -119,9 +122,10 @@ BOOL COptionsPasswordHistory::OnKillActive()
 {
   CPWPropertyPage::OnKillActive();
 
+  CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if (m_savepwhistory && ((m_pwhistorynumdefault < 1) || (m_pwhistorynumdefault > 255))) {
-    AfxMessageBox(IDS_DEFAULTNUMPWH);
+    gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
     ((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
     return FALSE;
   }

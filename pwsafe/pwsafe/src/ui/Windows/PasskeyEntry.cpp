@@ -15,14 +15,18 @@ down the streetsky.  [Groucho Marx]
 
 #include "PasswordSafe.h"
 #include "PWFileDialog.h"
+#include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
+#include "AdvancedDlg.h"
+
 #include "corelib/PwsPlatform.h"
 #include "corelib/Pwsdirs.h"
+#include "corelib/pwsprefs.h"
+
 #include "os/file.h"
 #include "os/env.h"
 #include "os/dir.h"
-#include "corelib/pwsprefs.h"
-#include "ThisMfcApp.h"
-#include "AdvancedDlg.h"
+
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #if defined(POCKET_PC)
@@ -410,14 +414,15 @@ void CPasskeyEntry::OnOK()
 {
   UpdateData(TRUE);
 
+  CGeneralMsgBox gmb;
   if (m_passkey.IsEmpty()) {
-    AfxMessageBox(IDS_CANNOTBEBLANK);
+    gmb.AfxMessageBox(IDS_CANNOTBEBLANK);
     m_pctlPasskey->SetFocus();
     return;
   }
 
   if (!pws_os::FileExists(m_filespec.GetString())) {
-    AfxMessageBox(IDS_FILEPATHNOTFOUND);
+    gmb.AfxMessageBox(IDS_FILEPATHNOTFOUND);
     if (m_MRU_combo.IsWindowVisible())
       m_MRU_combo.SetFocus();
     return;
@@ -428,6 +433,7 @@ void CPasskeyEntry::OnOK()
 
 void CPasskeyEntry::ProcessPhrase()
 {
+  CGeneralMsgBox gmb;
   if (m_pDbx->CheckPassword(LPCWSTR(m_filespec), LPCWSTR(m_passkey)) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
@@ -447,7 +453,7 @@ void CPasskeyEntry::ProcessPhrase()
       }
     } else {
       m_tries++;
-      AfxMessageBox(IDS_INCORRECTKEY);
+      gmb.AfxMessageBox(IDS_INCORRECTKEY);
       m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
       m_pctlPasskey->SetFocus();
     }

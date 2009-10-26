@@ -11,6 +11,7 @@
 #include "stdafx.h"
 
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "CreateShortcutDlg.h"
 #include "ControlExtns.h"
@@ -87,6 +88,7 @@ void CCreateShortcutDlg::OnOK()
   if (UpdateData(TRUE) == FALSE)
     return;
 
+  CGeneralMsgBox gmb;
   m_group.EmptyIfOnlyWhiteSpace();
   m_title.EmptyIfOnlyWhiteSpace();
   m_username.EmptyIfOnlyWhiteSpace();
@@ -95,13 +97,13 @@ void CCreateShortcutDlg::OnOK()
 
   //Check that data is valid
   if (m_title.IsEmpty()) {
-    AfxMessageBox(IDS_MUSTHAVETITLE);
+    gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     return;
   }
 
   if (!m_group.IsEmpty() && m_group[0] == '.') {
-    AfxMessageBox(IDS_DOTINVALID);
+    gmb.AfxMessageBox(IDS_DOTINVALID);
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
     return;
   }
@@ -116,7 +118,7 @@ void CCreateShortcutDlg::OnOK()
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
     else
       temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
-    AfxMessageBox(temp);
+    gmb.AfxMessageBox(temp);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     return;

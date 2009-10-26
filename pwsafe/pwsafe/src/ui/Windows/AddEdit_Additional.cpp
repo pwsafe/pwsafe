@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"    // For Help
+#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 
 #include "AddEdit_Additional.h"
@@ -382,6 +383,7 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
 BOOL CAddEdit_Additional::OnApply()
 {
   CWnd *pFocus(NULL);
+  CGeneralMsgBox gmb;
 
   UpdateData(TRUE);
   M_autotype().EmptyIfOnlyWhiteSpace();
@@ -401,8 +403,8 @@ BOOL CAddEdit_Additional::OnApply()
       CString cs_errmsg;
       cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
       cs_errmsg += cs_temp;
-      int rc = MessageBox(cs_errmsg, cs_title,
-                          MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2);
+      int rc = gmb.MessageBox(cs_errmsg, cs_title,
+                           MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDNO) {
         UpdateData(FALSE);
         // Are we the current page, if not activate this page
@@ -433,7 +435,7 @@ BOOL CAddEdit_Additional::OnApply()
 
   if (M_SavePWHistory() == TRUE &&
       (M_MaxPWHistory() < 1 || M_MaxPWHistory() > 255)) {
-    AfxMessageBox(IDS_DEFAULTNUMPWH);
+    gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
     pFocus = GetDlgItem(IDC_MAXPWHISTORY);
     goto error;
   }
@@ -534,10 +536,11 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                  M_pDbx()->m_AutoType,
                                                  errmsg, st_column);
         if (errmsg.length() > 0) {
+          CGeneralMsgBox gmb;
           CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
           CString cs_errmsg;
           cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
-          MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
+          gmb.MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
         }
       }
       iaction = CItemData::RUNCMD;

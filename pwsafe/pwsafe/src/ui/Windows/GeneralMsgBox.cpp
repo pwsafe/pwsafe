@@ -25,6 +25,8 @@
 #include "RichEditCtrlExtn.h"
 #include <RichEdit.h>
 
+#include "resource3.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -121,6 +123,116 @@ CGeneralMsgBox::CGeneralMsgBox(CWnd* pParentWnd)
 CGeneralMsgBox::~CGeneralMsgBox()
 {
   ::DestroyIcon(m_hIcon);
+}
+
+INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption, 
+                                   UINT uType)
+{
+  UINT uiType = uType & MB_TYPEMASK;
+  UINT uiIcon = uType & MB_ICONMASK;
+  int iDefB = (int)uType & MB_DEFMASK;
+
+  if (lpText != NULL)
+    SetMsg(lpText);
+
+  if (lpCaption != NULL)
+    SetTitle(lpCaption);
+  else
+    SetTitle(IDS_ERROR);
+
+  SetStandardIcon(uiIcon);
+
+  int num_buttons(0);
+  int ButtonCmdIDs[3];
+  int ButtonCmdTexts[3];
+  
+  switch (uiType) {
+    case MB_OK:
+      num_buttons = 1;
+      ButtonCmdIDs[0] = IDOK;
+      ButtonCmdTexts[0] = IDS_OK;
+      break;
+    case MB_OKCANCEL:
+      num_buttons = 2;
+      ButtonCmdIDs[0] = IDOK;
+      ButtonCmdIDs[1] = IDCANCEL;
+      ButtonCmdTexts[0] = IDS_OK;
+      ButtonCmdTexts[1] = IDS_CANCEL;
+      m_uEscCmdId = IDCANCEL;
+      break;
+    case MB_ABORTRETRYIGNORE:
+      num_buttons = 3;
+      ButtonCmdIDs[0] = IDABORT;
+      ButtonCmdIDs[1] = IDRETRY;
+      ButtonCmdIDs[2] = IDIGNORE;
+      ButtonCmdTexts[0] = IDS_ABORT;
+      ButtonCmdTexts[1] = IDS_RETRY;
+      ButtonCmdTexts[2] = IDS_IGNORE;
+      break;
+    case MB_YESNOCANCEL:
+      num_buttons = 3;
+      ButtonCmdIDs[0] = IDYES;
+      ButtonCmdIDs[1] = IDNO;
+      ButtonCmdIDs[2] = IDCANCEL;
+      ButtonCmdTexts[0] = IDS_YES;
+      ButtonCmdTexts[1] = IDS_NO;
+      ButtonCmdTexts[2] = IDS_CANCEL;
+      m_uEscCmdId = IDCANCEL;
+      break;
+    case MB_YESNO:
+      num_buttons = 2;
+      ButtonCmdIDs[0] = IDYES;
+      ButtonCmdIDs[1] = IDNO;
+      ButtonCmdTexts[0] = IDS_YES;
+      ButtonCmdTexts[1] = IDS_NO;
+      break;
+    case MB_RETRYCANCEL:
+      num_buttons = 2;
+      ButtonCmdIDs[0] = IDRETRY;
+      ButtonCmdIDs[1] = IDCANCEL;
+      ButtonCmdTexts[0] = IDS_RETRY;
+      ButtonCmdTexts[1] = IDS_CANCEL;
+      m_uEscCmdId = IDCANCEL;
+      break;
+    case MB_CANCELTRYCONTINUE:
+      num_buttons = 3;
+      ButtonCmdIDs[0] = IDCANCEL;
+      ButtonCmdIDs[1] = IDTRYAGAIN;
+      ButtonCmdIDs[2] = IDCONTINUE;
+      ButtonCmdTexts[0] = IDS_CANCEL;
+      ButtonCmdTexts[1] = IDS_TRYAGAIN;
+      ButtonCmdTexts[2] = IDS_CONTINUE;
+      m_uEscCmdId = IDCANCEL;
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  if (iDefB > (num_buttons - 1))
+    iDefB = 0;
+
+  CString cs_text;
+  for (int n = 0; n < num_buttons; n++) {
+    cs_text.LoadString(ButtonCmdTexts[n]);
+    AddButton(ButtonCmdIDs[n], cs_text, n == iDefB ? TRUE : FALSE);
+  }
+
+  INT_PTR rc = DoModal();
+  return rc;
+}
+
+INT_PTR CGeneralMsgBox::AfxMessageBox(LPCTSTR lpszText, UINT uType)
+{
+  SetMsg(lpszText);
+  INT_PTR rc = MessageBox(NULL, AfxGetApp()->m_pszAppName, uType);
+  return rc;
+}
+
+INT_PTR CGeneralMsgBox::AfxMessageBox(UINT nIDPrompt, UINT uType)
+{
+  SetMsg(nIDPrompt);
+  INT_PTR rc = MessageBox(NULL, AfxGetApp()->m_pszAppName, uType);
+  return rc;
 }
 
 // Replaces CDialog::DoModal

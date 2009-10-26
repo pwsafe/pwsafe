@@ -306,8 +306,9 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
     CloseHandle(hFile);
 
     // Issue error message
-    int irc = ::MessageBox(GetForegroundWindow(), sz_errormsg, sz_Caption,
-                           MB_YESNO | MB_APPLMODAL | MB_ICONERROR);
+    // Use standard MessageBox - NOT CGeneralMsgBox.
+    int irc = MessageBox(GetForegroundWindow(), sz_errormsg, sz_Caption,
+                         MB_YESNO | MB_APPLMODAL | MB_ICONERROR);
 
     // If user doesn't want to send us the minidump - delete it.
     if (irc == IDNO)

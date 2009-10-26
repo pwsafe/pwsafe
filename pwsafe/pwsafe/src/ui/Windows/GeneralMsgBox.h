@@ -39,16 +39,20 @@ public:
   // Destructor
   virtual ~CGeneralMsgBox();
 
+  // Implement MFC equivalents
+  INT_PTR MessageBox(LPCTSTR lpText, LPCTSTR lpCaption = NULL, 
+                     UINT uType = MB_OK);
+  INT_PTR AfxMessageBox(LPCTSTR lpszText, UINT nType = MB_OK);
+  INT_PTR AfxMessageBox(UINT nIDPrompt, UINT nType = MB_OK);
+
   // Execute
   INT_PTR DoModal();
 
   // Buttons operations
   void AddButton(UINT uIDC, LPCWSTR pszText,
-    BOOL bIsDefault = FALSE,
-    BOOL bIsEscape = FALSE);
+                 BOOL bIsDefault = FALSE, BOOL bIsEscape = FALSE);
   void AddButton(UINT uIDC, UINT uIdText = (UINT)-1,
-    BOOL bIsDefault = FALSE,
-    BOOL bIsEscape = FALSE);
+                 BOOL bIsDefault = FALSE, BOOL bIsEscape = FALSE);
 
   // Title operations
   void SetTitle(LPCWSTR pszTitle);
@@ -66,11 +70,11 @@ public:
 
   // Metric enumerators (see SetMetric and GetMetric)
   enum {CX_LEFT_BORDER, CX_RIGHT_BORDER,
-    CY_TOP_BORDER, CY_BOTTOM_BORDER,
-    CX_ICON_MSG_SPACE, CY_BTNS_MSG_SPACE,
-    CX_BTN_BORDER, CY_BTN_BORDER,
-    CX_BTNS_SPACE, CX_MIN_BTN,
-    NUM_OF_METRICS
+        CY_TOP_BORDER, CY_BOTTOM_BORDER,
+        CX_ICON_MSG_SPACE, CY_BTNS_MSG_SPACE,
+        CX_BTN_BORDER, CY_BTN_BORDER,
+        CX_BTNS_SPACE, CX_MIN_BTN,
+        NUM_OF_METRICS
   };
 
   // Set a metric (in dialog units)
@@ -138,9 +142,9 @@ inline void CGeneralMsgBox::SetTitle(UINT uIdTitle)
 { VERIFY(m_strTitle.LoadString(uIdTitle)); }
 
 inline void CGeneralMsgBox::SetMetric(int iMetric, int nValue)
-{  ASSERT(0 <= iMetric && iMetric < NUM_OF_METRICS);
-m_aMetrics[iMetric] = nValue; }
+{ ASSERT(0 <= iMetric && iMetric < NUM_OF_METRICS);
+  m_aMetrics[iMetric] = nValue; }
 
 inline int CGeneralMsgBox::GetMetric(int iMetric)
-{  ASSERT(0 <= iMetric && iMetric < NUM_OF_METRICS);
-return m_aMetrics[iMetric]; }
+{ ASSERT(0 <= iMetric && iMetric < NUM_OF_METRICS);
+  return m_aMetrics[iMetric]; }

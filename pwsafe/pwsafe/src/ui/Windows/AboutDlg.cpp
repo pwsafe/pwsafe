@@ -15,18 +15,19 @@
 // the current version details
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
 #include "version.h"
 #include "DumpSelect.h"
 
-// for fetching xml file:
-#include <afxinet.h>
 #include "corelib/UTF8Conv.h"
-
 #include "corelib/SysInfo.h"
 
 #include "resource.h"
 #include "resource3.h"
+
+// for fetching xml file:
+#include <afxinet.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -128,12 +129,13 @@ void CAboutDlg::CheckNewVer()
   // First, make sure database is closed: Sensitive data with an
   // open socket makes me uneasy...
   DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
+  CGeneralMsgBox gmb;
 
   if (pDbx->GetNumEntries() != 0) {
     const CString cs_txt(MAKEINTRESOURCE(IDS_CLOSE_B4_CHECK));
     const CString cs_title(MAKEINTRESOURCE(IDS_CONFIRM_CLOSE));
-    int rc = MessageBox(cs_txt, cs_title,
-                        (MB_ICONQUESTION | MB_OKCANCEL));
+    int rc = gmb.MessageBox(cs_txt, cs_title,
+                        (MB_OKCANCEL | MB_ICONQUESTION));
     if (rc == IDCANCEL)
       return; // no hard feelings
     // Close database, prompt for save if changed
@@ -161,7 +163,7 @@ void CAboutDlg::CheckNewVer()
       newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
                    m_appversion, latest.c_str());
       m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
-      MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
+      gmb.MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
       break;
       }
     case CheckVersion::CANT_READ:
