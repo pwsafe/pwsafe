@@ -146,7 +146,7 @@ SOURCES= passwordsafeframe.cpp \
 	PWStree.cpp version.cpp \
 	pwsclip.cpp pwsdca.cpp mainEdit.cpp \
 	addeditpropsheet.cpp PWSgridtable.cpp \
-	optionspropsheet.cpp search.cpp
+	optionspropsheet.cpp search.cpp PasswordSafeSearch.cpp
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
 OBJECTS += $(RESOURCEOBJECT)
