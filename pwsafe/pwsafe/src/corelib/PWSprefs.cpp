@@ -31,15 +31,6 @@
 
 using namespace std;
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wifstream ifstreamT;
-typedef std::wofstream ofstreamT;
-#else
-typedef std::ifstream ifstreamT;
-typedef std::ofstream ofstreamT;
-#endif
-
 #if defined(POCKET_PC)
 const LPCTSTR PWS_REG_POSITION = _T("Position");
 const LPCTSTR PWS_REG_OPTIONS = _T("Options");

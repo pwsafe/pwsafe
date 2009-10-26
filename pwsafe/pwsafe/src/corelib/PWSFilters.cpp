@@ -40,14 +40,6 @@
 
 using namespace std;
 
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wifstream ifstreamT;
-typedef std::wofstream ofstreamT;
-#else
-typedef std::ifstream ifstreamT;
-typedef std::ofstream ofstreamT;
-#endif
 typedef std::vector<stringT>::const_iterator vciter;
 typedef std::vector<stringT>::iterator viter;
 
