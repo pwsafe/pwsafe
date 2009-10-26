@@ -14,6 +14,7 @@
 #include "PWSdirs.h"
 #include "VerifyFormat.h"
 #include "StringXStream.h"
+#include "UTF8Conv.h"
 
 #include "os/typedefs.h"
 #include "os/debug.h"
@@ -737,7 +738,15 @@ void PWSprefs::InitializePreferences()
   } else {
     // Doesn't exist but can we write to the directory?
     // Try and create the file (and delete afterwards if we succeeded)
-    ofstreamT ofs(m_configfilename.c_str());
+#ifdef UNICODE
+    CUTF8Conv conv;
+    int fnamelen;
+    const unsigned char *fname = NULL;
+    conv.ToUTF8(m_configfilename.c_str(), fname, fnamelen); 
+#else
+    const char *fname = m_configfilename.c_str();
+#endif
+    ofstream ofs(reinterpret_cast<const char *>(fname));
     if (!ofs.bad()) {
       ofs.close();
       pws_os::DeleteAFile(m_configfilename.c_str());
