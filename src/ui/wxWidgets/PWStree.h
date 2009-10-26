@@ -93,6 +93,8 @@ public:
   wxTreeItemId Find(const uuid_array_t &uuid) const;
   wxTreeItemId Find(const CItemData &item) const;
   bool Remove(const uuid_array_t &uuid); // only remove from tree, not from m_core
+  void SelectItem(const CUUIDGen& uuid);
+
  private:
   bool ExistsInTree(wxTreeItemId node,
                     const StringX &s, wxTreeItemId &si);

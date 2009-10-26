@@ -111,6 +111,8 @@ public:
 
   const CItemData *GetItem(int row) const;
   
+  void SelectItem(const CUUIDGen& uuid);
+
 ////@begin PWSGrid member variables
 ////@end PWSGrid member variables
 

@@ -337,3 +337,11 @@ void PWSTreeCtrl::OnRightDown( wxMouseEvent& event )
 ////@end wxEVT_RIGHT_DOWN event handler for ID_TREECTRL in PWSTreeCtrl. 
 }
 
+void PWSTreeCtrl::SelectItem(const CUUIDGen & uuid)
+{
+  uuid_array_t uuid_array;
+  uuid.GetUUID(uuid_array);
+  wxTreeItemId id = Find(uuid_array);
+  if (id.IsOk())
+      wxTreeCtrl::SelectItem(id);
+}

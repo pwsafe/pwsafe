@@ -37,6 +37,7 @@
 #include "optionspropsheet.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSdirs.h"
+#include "PasswordSafeSearch.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -74,6 +75,12 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( wxID_DELETE, PasswordSafeFrame::OnDeleteClick )
 
+  EVT_MENU( wxID_FIND, PasswordSafeFrame::OnFindClick )
+
+  EVT_MENU( ID_EDITMENU_FIND_NEXT, PasswordSafeFrame::OnFindNext)
+
+  EVT_MENU( ID_EDITMENU_FIND_PREVIOUS, PasswordSafeFrame::OnFindPrevious)
+
   EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
 
   EVT_MENU( ID_COPYPASSWORD, PasswordSafeFrame::OnCopypasswordClick )
@@ -104,7 +111,7 @@ END_EVENT_TABLE()
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(GRID)
+: m_core(core), m_currentView(GRID), m_search(0)
 {
     Init();
 }
@@ -113,7 +120,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID)
+  : m_core(core), m_currentView(GRID), m_search(0)
 {
     Init();
     Create( parent, id, caption, pos, size, style );
@@ -131,6 +138,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 
   CreateControls();
   Centre();
+  m_search = new PasswordSafeSearch(this);
 ////@end PasswordSafeFrame creation
     return true;
 }
@@ -143,6 +151,8 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 PasswordSafeFrame::~PasswordSafeFrame()
 {
 ////@begin PasswordSafeFrame destruction
+  delete m_search;
+  m_search = 0;
 ////@end PasswordSafeFrame destruction
 }
 
@@ -206,7 +216,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(wxID_DELETE, _("&Delete Entry\tDel"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_RENAME, _("Rename Entry\tF2"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(wxID_FIND, _("&Find Entry..."), _T(""), wxITEM_NORMAL);
+  itemMenu28->Append(wxID_FIND, _("&Find Entry...\tCtrl+F"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_DUPLICATEENTRY, _("&Duplicate Entry\tCtrl+D"), _T(""), wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
   itemMenu28->Append(ID_ADDGROUP, _("Add Group"), _T(""), wxITEM_NORMAL);
@@ -400,6 +410,7 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
   ShowTree(false);
   ShowGrid(true);
+  m_currentView = GRID;
 }
 
 
@@ -412,6 +423,7 @@ void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& event )
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
   ShowGrid(false);
   ShowTree(true);
+  m_currentView = TREE;
 }
 
 int PasswordSafeFrame::Save()
@@ -739,3 +751,13 @@ void PasswordSafeFrame::OnOptionsClick( wxCommandEvent& event )
   window->Destroy();
 }
 
+void PasswordSafeFrame::SeletItem(const CUUIDGen& uuid)
+{
+    if (m_currentView == GRID) {
+      m_grid->SelectItem(uuid);
+    }
+    else {
+      m_tree->SelectItem(uuid);
+    }
+
+}
