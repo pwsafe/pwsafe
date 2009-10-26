@@ -21,6 +21,7 @@
 #include "InfoDisplay.h"
 #include "SecString.h"
 #include "SMemFile.h"
+#include "GeneralMsgBox.h"
 
 #include "corelib/ItemData.h"
 #include "corelib/Util.h"
@@ -696,6 +697,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
 
       group = pci->GetGroup();
       if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
+        CGeneralMsgBox gmb;
         CSecString temp;
         if (group.empty())
           if (newUser.empty())
@@ -707,7 +709,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
             temp.Format(IDS_ENTRYEXISTS1, group.c_str(), newTitle.c_str());
           else
             temp.Format(IDS_ENTRYEXISTS, group.c_str(), newTitle.c_str(), newUser.c_str());
-        AfxMessageBox(temp);
+        gmb.AfxMessageBox(temp);
         goto bad_exit;
       }
 

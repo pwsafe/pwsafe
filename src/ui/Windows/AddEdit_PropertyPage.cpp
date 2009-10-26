@@ -6,6 +6,9 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+#include "stdafx.h"
+#include "passwordsafe.h"
+#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "AddEdit_PropertyPage.h"
 
@@ -29,7 +32,8 @@ BOOL CAddEdit_PropertyPage::OnQueryCancel()
   // QuerySiblings is only sent to loaded PropertyPages (i.e. user has
   // selected to view them as ones not yet loaded cannot have changed fields)
   if (QuerySiblings(PP_DATA_CHANGED, 0L) != 0L) {
-    if (AfxMessageBox(IDS_AREYOUSURE,
+    CGeneralMsgBox gmb;
+    if (gmb.AfxMessageBox(IDS_AREYOUSURE,
                       MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2) == IDNO)
       return FALSE;
   }

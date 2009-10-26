@@ -10,6 +10,8 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "GeneralMsgBox.h"
+
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
 
@@ -20,7 +22,8 @@
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
 #endif
-#include "OptionsSystem.h"
+
+#include "OptionsSystem.h" // Must be after resource.h
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -166,8 +169,9 @@ void COptionsSystem::OnApplyRegistryDeleteNow()
 {
   UpdateData(TRUE);
 
+  CGeneralMsgBox gmb;
   if (m_deleteregistry == TRUE) {
-    if (AfxMessageBox(IDS_CONFIRMDELETEREG, MB_YESNO | MB_ICONSTOP) == IDYES)
+    if (gmb.AfxMessageBox(IDS_CONFIRMDELETEREG, MB_YESNO | MB_ICONSTOP) == IDYES)
       PWSprefs::GetInstance()->DeleteRegistryEntries();
   }
 

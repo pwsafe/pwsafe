@@ -551,3 +551,8 @@
 #define IDS_STOPREASON                  5724
 #define IDS_FILTER1                     5725
 #define IDS_DATETIMESTRING              5726
+#define IDS_ERROR                       5727
+#define IDS_ABORT                       5728
+#define IDS_RETRY                       5729
+#define IDS_IGNORE                      5730
+#define IDS_TRYAGAIN                    5731

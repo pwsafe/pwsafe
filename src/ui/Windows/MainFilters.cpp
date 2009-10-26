@@ -13,6 +13,10 @@
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
+#include "MFCMessages.h"
+#include "GeneralMsgBox.h"
+#include "PWFileDialog.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -22,12 +26,8 @@
 #include "resource3.h"  // String resources
 #endif
 
-#include "DboxMain.h"
 #include "filter/SetFiltersDlg.h"
 #include "filter/ManageFiltersDlg.h"
-#include "GeneralMsgBox.h"
-#include "MFCMessages.h"
-#include "PWFileDialog.h"
 
 #include "corelib/corelib.h"
 #include "corelib/PWSFilters.h"
@@ -711,12 +711,13 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
   StringX currentfile = m_core.GetCurFile();
   rc = Filters.WriteFilterXMLFile(LPCWSTR(cs_newfile), hdr, currentfile);
 
+  CGeneralMsgBox gmb;
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
     cs_title.LoadString(IDS_FILEWRITEERROR);
-    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
   } else {
-    AfxMessageBox(IDS_FILTERSEXPORTEDOK, MB_OK);
+    gmb.AfxMessageBox(IDS_FILTERSEXPORTEDOK, MB_OK);
   }
 }
 
@@ -729,9 +730,10 @@ void DboxMain::ImportFilters()
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   // Expat is a non-validating parser - no use for Schema!
   if (!pws_os::FileExists(XSDFilename)) {
+    CGeneralMsgBox gmb;
     cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
     cs_title.LoadString(IDSC_CANTVALIDATEXML);
-    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
+    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
 #endif
@@ -788,8 +790,9 @@ void DboxMain::ImportFilters()
         ASSERT(0);
     } // switch
 
+    CGeneralMsgBox gmb;
     cs_title.LoadString(IDS_STATUS);
-    MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
+    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONINFORMATION);
   }
 }
 

@@ -10,6 +10,7 @@
 //
 
 #include "../stdafx.h"
+#include "../GeneralMsgBox.h"
 #include "FilterIntegerDlg.h"
 #include "corelib/corelib.h"
 
@@ -57,11 +58,12 @@ void AFXAPI CFilterIntegerDlg::DDV_CheckMinMax(CDataExchange* pDX,
                                             const int num,
                                             const int min, const int max)
 {
+  CGeneralMsgBox gmb;
   if (pDX->m_bSaveAndValidate) {
     if (min != -1 && num < min) {
       CString cs_text;
       cs_text.Format(IDS_NUMTOOSMALL, min);
-      AfxMessageBox(cs_text);
+      gmb.AfxMessageBox(cs_text);
       pDX->Fail();
       return;
     }
@@ -69,7 +71,7 @@ void AFXAPI CFilterIntegerDlg::DDV_CheckMinMax(CDataExchange* pDX,
     if (max != -1 && num > max) {
       CString cs_text;
       cs_text.Format(IDS_NUMTOOLARGE, max);
-      AfxMessageBox(cs_text);
+      gmb.AfxMessageBox(cs_text);
       pDX->Fail();
       return;
     }
@@ -79,33 +81,34 @@ void AFXAPI CFilterIntegerDlg::DDV_CheckMinMax(CDataExchange* pDX,
 void AFXAPI CFilterIntegerDlg::DDV_CheckNumbers(CDataExchange* pDX,
                                              const int num1, const int num2)
 {
+  CGeneralMsgBox gmb;
   if (pDX->m_bSaveAndValidate) {
     if (num1 < 0) {
-      AfxMessageBox(IDS_NUM1NEGATIVE);
+      gmb.AfxMessageBox(IDS_NUM1NEGATIVE);
       pDX->Fail();
       return;
     }
 
     if (m_rule == PWSMatch::MR_BETWEEN && num1 >= num2) {
-      AfxMessageBox(IDS_NUM1NOTLTNUM2);
+      gmb.AfxMessageBox(IDS_NUM1NOTLTNUM2);
       pDX->Fail();
       return;
     }
 
     if (num1 == m_min && m_rule == PWSMatch::MR_LT) {
-      AfxMessageBox(IDS_CANTBELESSTHANMIN);
+      gmb.AfxMessageBox(IDS_CANTBELESSTHANMIN);
       pDX->Fail();
       return;
     }
 
     if (num1 == m_max && m_rule == PWSMatch::MR_GT) {
-      AfxMessageBox(IDS_CANTBEGREATERTHANMAX);
+      gmb.AfxMessageBox(IDS_CANTBEGREATERTHANMAX);
       pDX->Fail();
       return;
     }
 
     if (num1 == m_max && m_rule == PWSMatch::MR_BETWEEN) {
-      AfxMessageBox(IDS_NUM1CANTBEMAX);
+      gmb.AfxMessageBox(IDS_NUM1CANTBEMAX);
       pDX->Fail();
       return;
     }
@@ -240,7 +243,8 @@ void CFilterIntegerDlg::OnBnClickedOk()
     return;
 
   if (m_rule == PWSMatch::MR_INVALID) {
-    AfxMessageBox(IDS_NORULESELECTED);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_NORULESELECTED);
     return;
   }
 

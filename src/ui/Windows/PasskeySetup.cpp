@@ -10,11 +10,15 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "corelib/PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
+
+#include "corelib/PWCharPool.h" // for CheckPassword()
 #include "corelib/PwsPlatform.h"
 #include "corelib/pwsprefs.h"
+
 #include "os/dir.h"
+
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #if defined(POCKET_PC)
@@ -128,14 +132,16 @@ void CPasskeySetup::OnCancel()
 void CPasskeySetup::OnOK()
 {
   UpdateData(TRUE);
+
+  CGeneralMsgBox gmb;
   if (m_passkey != m_verify) {
-    AfxMessageBox(IDS_ENTRIESDONOTMATCH);
+    gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
     return;
   }
 
   if (m_passkey.IsEmpty()) {
-    AfxMessageBox(IDS_ENTERKEYANDVERIFY);
+    gmb.AfxMessageBox(IDS_ENTERKEYANDVERIFY);
     ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
     return;
   }
@@ -151,15 +157,16 @@ void CPasskeySetup::OnOK()
     CString cs_msg, cs_text;
     cs_msg.Format(IDS_WEAKPASSPHRASE, errmess.c_str());
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
+    CGeneralMsgBox gmb;
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
-    int rc = AfxMessageBox(cs_msg, MB_YESNO | MB_ICONSTOP);
+    int rc = gmb.AfxMessageBox(cs_msg, MB_YESNO | MB_ICONSTOP);
     if (rc == IDNO)
       return;
 #else
     cs_text.LoadString(IDS_TRYANOTHER);
     cs_msg += cs_text;
-    AfxMessageBox(cs_msg, MB_OK | MB_ICONSTOP);
+    gmb.AfxMessageBox(cs_msg, MB_OK | MB_ICONSTOP);
     return;
 #endif // PWS_FORCE_STRONG_PASSPHRASE
   }

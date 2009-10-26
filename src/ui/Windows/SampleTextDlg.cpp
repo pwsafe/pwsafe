@@ -10,10 +10,12 @@
 //
 
 #include "stdafx.h"
+#include "GeneralMsgBox.h"
 #include "SampleTextDlg.h"
+#include "ControlExtns.h"
+
 #include "resource.h"
 #include "resource3.h"
-#include "ControlExtns.h"
 
 // SampleTextDlg dialog
 
@@ -51,7 +53,8 @@ void CSampleTextDlg::OnOK()
 {
   UpdateData(TRUE);
   if (m_sampletext.IsEmpty()) {
-    AfxMessageBox(IDS_EMPTYSAMPLETEXT);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_EMPTYSAMPLETEXT);
     ((CEdit*)GetDlgItem(IDC_SAMPLETEXT))->SetFocus();
     return;
   }

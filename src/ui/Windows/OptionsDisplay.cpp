@@ -10,6 +10,10 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "GeneralMsgBox.h"
+#include "ThisMfcApp.h"
+
+#include "corelib\pwsprefs.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -17,9 +21,8 @@
 #include "resource.h"
 #include "resource3.h"
 #endif
-#include "OptionsDisplay.h"
-#include "corelib\pwsprefs.h"
-#include "ThisMfcApp.h"
+
+#include "OptionsDisplay.h" // Must be after resource.h
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -106,9 +109,10 @@ BOOL COptionsDisplay::OnKillActive()
 {
   CPWPropertyPage::OnKillActive();
 
+  CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if ((m_preexpirywarndays < 1) || (m_preexpirywarndays > 30)) {
-    AfxMessageBox(IDS_INVALIDEXPIRYWARNDAYS);
+    gmb.AfxMessageBox(IDS_INVALIDEXPIRYWARNDAYS);
     ((CEdit*)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
     return FALSE;
   }

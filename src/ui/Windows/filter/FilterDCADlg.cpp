@@ -10,6 +10,7 @@
 //
 
 #include "../stdafx.h"
+#include "../GeneralMsgBox.h"
 #include "FilterDCADlg.h"
 #include "corelib/itemdata.h"
 #include "corelib/corelib.h"
@@ -169,7 +170,8 @@ void CFilterDCADlg::OnBnClickedOk()
     return;
 
   if (m_rule == PWSMatch::MR_INVALID) {
-    AfxMessageBox(IDS_NORULESELECTED);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_NORULESELECTED);
     return;
   }
 

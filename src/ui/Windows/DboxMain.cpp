@@ -21,7 +21,7 @@
 #include "PwFont.h"
 #include "MFCMessages.h"
 #include "version.h"
-// dialog boxen
+
 #include "DboxMain.h"
 #include "TryAgainDlg.h"
 #include "PasskeyEntry.h"
@@ -875,11 +875,12 @@ void DboxMain::InitPasswordSafe()
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   // Expat is a non-validating parser - no use for Schema!
   if (!pws_os::FileExists(XSDFilename)) {
+    CGeneralMsgBox gmb;
     CString cs_title, cs_msg;
     cs_temp.Format(IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
     cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, cs_temp);
     cs_title.LoadString(IDSC_CANTVALIDATEXML);
-    MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
+    gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
 #endif
@@ -891,10 +892,11 @@ void DboxMain::InitPasswordSafe()
                                               std::wstring(cs_temp),
                                               XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
-    if (rc != PWScore::SUCCESS){
+    if (rc != PWScore::SUCCESS) {
+      CGeneralMsgBox gmb;
       CString cs_msg;
       cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors.c_str());
-      AfxMessageBox(cs_msg, MB_OK);
+      gmb.AfxMessageBox(cs_msg, MB_OK);
     }
   }
 #endif
@@ -1016,7 +1018,8 @@ BOOL DboxMain::OnInitDialog()
   if (m_runner.isValid()) {
     m_runner.Set(m_hWnd); 
   } else if (!app.NoSysEnvWarnings()) {
-    AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
 
 
@@ -1407,7 +1410,8 @@ void DboxMain::OnPasswordSafeWebsite()
                               NULL, L".", SW_SHOWNORMAL);
   if (int(stat) <= 32) {
 #ifdef _DEBUG
-    AfxMessageBox(L"oops");
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(L"oops");
 #endif
   }
 }
@@ -1594,9 +1598,10 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         rc = pcore->WriteCurFile();
 
         if (rc == PWScore::CANT_OPEN_FILE) {
+          CGeneralMsgBox gmb;
           CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
           cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
-          MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+          gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
           retval = PWScore::USER_CANCEL;
         } else {
           // By definition - new files can't be read-only!
@@ -1957,7 +1962,10 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
                                useSysTray ? GCP_RESTORE : GCP_WITHEXIT,
                                m_core.IsReadOnly());
+
+    CGeneralMsgBox gmb;
     CString cs_temp, cs_title;
+
     switch (rc_passphrase) {
       case PWScore::SUCCESS:
         rc_readdatabase = m_core.ReadCurFile(passkey);
@@ -1969,7 +1977,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       case PWScore::CANT_OPEN_FILE:
         cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile().c_str());
         cs_title.LoadString(IDS_FILEOPEN);
-        MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         // Drop thorugh to ask for a new database
       case TAR_NEW:
         rc_readdatabase = New();
@@ -2229,10 +2237,11 @@ BOOL DboxMain::OnQueryEndSession()
   BOOL retval = TRUE;
 
   if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+    CGeneralMsgBox gmb;
     CString cs_msg;
     cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile().c_str());
-    m_iSessionEndingStatus = AfxMessageBox(cs_msg,
-                             (MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3));
+    m_iSessionEndingStatus = gmb.AfxMessageBox(cs_msg,
+                             (MB_YESNOCANCEL | MB_ICONWARNING | MB_DEFBUTTON3));
     switch (m_iSessionEndingStatus) {
       case IDCANCEL:
         // Cancel shutdown\restart\logoff

@@ -11,6 +11,12 @@
 #include "stdafx.h"
 
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
+
+#include "CryptKeyEntry.h"
+
+#include "corelib/util.h"
+
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
 #include "pocketpc/PocketPC.h"
@@ -18,9 +24,6 @@
 #include "resource.h"
 #include "resource3.h"  // String resources
 #endif
-#include "corelib/util.h"
-
-#include "CryptKeyEntry.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,14 +63,15 @@ void CCryptKeyEntry::OnCancel()
 void CCryptKeyEntry::OnOK()
 {
   UpdateData(TRUE);
+  CGeneralMsgBox gmb;
 
   if (m_cryptkey1 != m_cryptkey2) {
-    AfxMessageBox(IDS_ENTRIESDONOTMATCH);
+    gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_CRYPTKEY2))->SetFocus();
     return;
   }
   if (m_cryptkey1.IsEmpty()) {
-    AfxMessageBox(IDS_ENTERKEYANDVERIFY);
+    gmb.AfxMessageBox(IDS_ENTERKEYANDVERIFY);
     ((CEdit*)GetDlgItem(IDC_CRYPTKEY1))->SetFocus();
     return;
   }

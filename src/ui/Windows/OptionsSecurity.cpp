@@ -10,6 +10,9 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "GeneralMsgBox.h"
+#include "Options_PropertySheet.h"
+
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
 
@@ -19,8 +22,8 @@
 #include "resource.h"
 #include "resource3.h"  // String resources
 #endif
-#include "OptionsSecurity.h"
-#include "Options_PropertySheet.h"
+
+#include "OptionsSecurity.h" // Must be after resource.h
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -115,9 +118,10 @@ BOOL COptionsSecurity::OnKillActive()
 {
   CPWPropertyPage::OnKillActive();
 
+  CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
-    AfxMessageBox(IDS_INVALIDTIMEOUT);
+    gmb.AfxMessageBox(IDS_INVALIDTIMEOUT);
     ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
     return FALSE;
   }
@@ -129,6 +133,7 @@ BOOL COptionsSecurity::OnApply()
 {
   UpdateData(TRUE);
 
+  CGeneralMsgBox gmb;
   // Go ask Misc for DoubleClickAction value
   int iDoubleClickAction;
   if (QuerySiblings(COptions_PropertySheet::PP_GET_DCA,
@@ -140,7 +145,7 @@ BOOL COptionsSecurity::OnApply()
 
   if (m_clearclipboardonminimize &&
       iDoubleClickAction == PWSprefs::DoubleClickCopyPasswordMinimize) {
-    AfxMessageBox(IDS_MINIMIZECONFLICT);
+    gmb.AfxMessageBox(IDS_MINIMIZECONFLICT);
 
     // Are we the current page, if not activate this page
     COptions_PropertySheet *pPS = (COptions_PropertySheet *)GetParent();

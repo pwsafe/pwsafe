@@ -15,7 +15,7 @@
 // abstract base class for asking user a question
 // and getting a yes/no reply
 class Asker {
- public:
+public:
   virtual bool operator()(const stringT &question) = 0;
   virtual ~Asker() {} // keep compiler happy
 };
@@ -23,7 +23,7 @@ class Asker {
 // abstract base class for reporting something of
 // interest to the user
 class Reporter {
- public:
+public:
   virtual void operator()(const stringT &message) = 0;
   virtual ~Reporter() {} // keep compiler happy
 };

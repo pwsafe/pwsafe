@@ -10,11 +10,15 @@
 //
 
 #include "../stdafx.h"
+
 #include "PWFiltersDlg.h"
 #include "SetFiltersDlg.h"
 #include "SetHistoryFiltersDlg.h"
 #include "SetPolicyFiltersDlg.h"
+
+#include "../GeneralMsgBox.h"
 #include "../resource3.h"
+
 #include "corelib/corelib.h"
 
 // CSetFiltersDlg dialog
@@ -58,7 +62,8 @@ void CSetFiltersDlg::OnApply()
     return;
 
   if (m_filtername.IsEmpty()) {
-    AfxMessageBox(IDS_FILTERNAMEEMPTY);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_FILTERNAMEEMPTY);
     return;
   }
 

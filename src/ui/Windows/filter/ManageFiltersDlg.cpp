@@ -11,14 +11,17 @@
 
 #include "../stdafx.h"
 #include "../ThisMfcApp.h" // for online help
-#include "ManageFiltersDlg.h"
+#include "../GeneralMsgBox.h"
 #include "../DboxMain.h"
 #include "../PWResizeDialog.h"
+
+#include "ManageFiltersDlg.h"
+
+#include "corelib/corelib.h"
 #include "corelib/PWSFilters.h"
 #include "corelib/match.h"
 
 #include "../resource3.h"
-#include "corelib/corelib.h"
 
 #include <vector>
 #include <map>
@@ -354,9 +357,10 @@ do_edit:
 
     // Check if already there (i.e. ask user if to replace)
     if (mf_citer != m_MapFilters.end()) {
+      CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
       CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
-      int rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+      int rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       // If NO, go to edit again!  Not best practice to jump out of loop
       // to prior call!
       if (rc == IDNO)
@@ -418,9 +422,10 @@ do_edit:
 
       // Check if already there (i.e. ask user if to replace)
       if (mf_citer != m_MapFilters.end()) {
+        CGeneralMsgBox gmb;
         CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
         CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
-        int rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+        int rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
         // If NO, go to edit again!  Not best practice to jump out of loop
         // to prior call!
         if (rc == IDNO)
@@ -483,9 +488,10 @@ void CManageFiltersDlg::OnFilterCopy()
 
     // Check if already there (i.e. ask user if to replace)
     if (mf_citer != m_MapFilters.end()) {
+      CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
       CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
-      int rc = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+      int rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDNO)
         continue;  // skip this one
 
@@ -529,8 +535,9 @@ void CManageFiltersDlg::OnFilterDelete()
 
   // Now to confirm with user:
   CString cs_msg;
+  CGeneralMsgBox gmb;
   cs_msg.Format(IDS_CONFIRMFILTERDELETE, cs_pool, cs_selected);
-  if (AfxMessageBox(cs_msg, MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2) != IDYES)
+  if (gmb.AfxMessageBox(cs_msg, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
     return;
 
   m_MapFilters.erase(flt_key);

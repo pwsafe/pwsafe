@@ -10,9 +10,12 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "GeneralMsgBox.h"
+
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h" // for DoubleClickAction enums
 #include "corelib/util.h" // for datetime string
+
 #include "os/dir.h"
 
 #if defined(POCKET_PC)
@@ -22,7 +25,7 @@
 #include "resource3.h"  // String resources
 #endif
 
-#include "OptionsBackup.h"
+#include "OptionsBackup.h" // Must be after resource.h
 
 #include <shlwapi.h>
 #include <shlobj.h>
@@ -297,16 +300,17 @@ BOOL COptionsBackup::OnKillActive()
   if (m_backupbeforesave != TRUE)
     return TRUE;
 
+  CGeneralMsgBox gmb;
   // Check that correct fields are non-blank.
   if (m_backupprefix == 1  && m_userbackupprefix.IsEmpty()) {
-    AfxMessageBox(IDS_OPTBACKUPPREF);
+    gmb.AfxMessageBox(IDS_OPTBACKUPPREF);
     ((CEdit*)GetDlgItem(IDC_USERBACKUPPREFIXVALUE))->SetFocus();
     return FALSE;
   }
 
   if (m_backuplocation == 1) {
     if (m_userbackupotherlocation.IsEmpty()) {
-      AfxMessageBox(IDS_OPTBACKUPLOCATION);
+      gmb.AfxMessageBox(IDS_OPTBACKUPLOCATION);
       ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
       return FALSE;
     }
@@ -317,7 +321,7 @@ BOOL COptionsBackup::OnKillActive()
     }
 
     if (PathIsDirectory(m_userbackupotherlocation) == FALSE) {
-      AfxMessageBox(IDS_OPTBACKUPNOLOC);
+      gmb.AfxMessageBox(IDS_OPTBACKUPNOLOC);
       ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
       return FALSE;
     }
@@ -325,7 +329,7 @@ BOOL COptionsBackup::OnKillActive()
 
   if (m_backupsuffix == PWSprefs::BKSFX_IncNumber &&
     ((m_maxnumincbackups < 1) || (m_maxnumincbackups > 999))) {
-      AfxMessageBox(IDS_OPTBACKUPMAXNUM);
+      gmb.AfxMessageBox(IDS_OPTBACKUPMAXNUM);
       ((CEdit*)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
       return FALSE;
   }

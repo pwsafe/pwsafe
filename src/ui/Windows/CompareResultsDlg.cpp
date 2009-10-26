@@ -12,17 +12,21 @@
 #include "stdafx.h"
 
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "CompareResultsDlg.h"
+
 #include "corelib/PWScore.h"
 #include "corelib/Report.h"
 #include "corelib/uuidgen.h"
-#include <vector>
-#include <algorithm>
-#include <functional>
+
 #include "resource.h"
 #include "resource2.h"
 #include "resource3.h"
+
+#include <vector>
+#include <algorithm>
+#include <functional>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -568,6 +572,7 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
   if (cs_text.Compare(L"=") == 0)
     return false;
 
+  CGeneralMsgBox gmb;
   CString cs_msg;
   int ifunction;
 
@@ -580,9 +585,11 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
     cs_msg.Format(IDS_COPYLEFTRIGHT, cs_originaldb, cs_comparisondb);
     ifunction = COPY_TO_COMPARISONDB;
   }
+
   if (cs_text.Right(1) == L"*")
     cs_msg += CString(MAKEINTRESOURCE(IDS_COPYUNKNOWNFIELDS));
-  if (AfxMessageBox(cs_msg, MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2) != IDYES)
+
+  if (gmb.AfxMessageBox(cs_msg, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
     return false;
 
   LRESULT lres(FALSE);

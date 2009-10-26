@@ -12,6 +12,7 @@
 #include "passwordsafe.h"
 #include "ImportDlg.h"
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -66,14 +67,15 @@ END_MESSAGE_MAP()
 void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter)
 {
   if (pDX->m_bSaveAndValidate) {
+    CGeneralMsgBox gmb;
     if (delimiter.IsEmpty()) {
-      AfxMessageBox(IDS_NEEDDELIMITER);
+      gmb.AfxMessageBox(IDS_NEEDDELIMITER);
       pDX->Fail();
       return;
     }
 
     if (delimiter[0] == '"') {
-      AfxMessageBox(IDS_INVALIDDELIMITER);
+      gmb.AfxMessageBox(IDS_INVALIDDELIMITER);
       pDX->Fail();
       return;
     }

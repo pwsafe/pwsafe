@@ -10,6 +10,7 @@
 //
 
 #include "../stdafx.h"
+#include "../GeneralMsgBox.h"
 #include "FilterDateDlg.h"
 #include "corelib/itemdata.h"
 #include "corelib/corelib.h"
@@ -189,7 +190,8 @@ void CFilterDateDlg::OnBnClickedOk()
   UpdateData(TRUE);
 
   if (m_rule == PWSMatch::MR_INVALID) {
-    AfxMessageBox(IDS_NORULESELECTED);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_NORULESELECTED);
     return;
   }
 
@@ -202,7 +204,8 @@ void CFilterDateDlg::OnBnClickedOk()
       m_time_t2 = (time_t)(CTime(m_ctime2.GetYear(), m_ctime2.GetMonth(), m_ctime2.GetDay(),
                                0, 0, 0).GetTime());
       if (m_time_t1 >= m_time_t2) {
-        AfxMessageBox(IDS_DATE1NOTB4DATE2);
+        CGeneralMsgBox gmb;
+        gmb.AfxMessageBox(IDS_DATE1NOTB4DATE2);
         return;
       }
     }

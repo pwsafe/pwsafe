@@ -10,6 +10,7 @@
 //
 
 #include "../stdafx.h"
+#include "../GeneralMsgBox.h"
 #include "FilterStringDlg.h"
 #include "corelib/itemdata.h"
 #include "corelib/corelib.h"
@@ -164,15 +165,16 @@ void CFilterStringDlg::OnBnClickedOk()
   if (UpdateData(TRUE) == FALSE)
     return;
 
+  CGeneralMsgBox gmb;
   if (m_rule == PWSMatch::MR_INVALID) {
-    AfxMessageBox(IDS_NORULESELECTED);
+    gmb.AfxMessageBox(IDS_NORULESELECTED);
     return;
   }
 
   if (m_rule != PWSMatch::MR_PRESENT &&
       m_rule != PWSMatch::MR_NOTPRESENT &&
       m_string.IsEmpty()) {
-    AfxMessageBox(IDS_NOSTRING);
+    gmb.AfxMessageBox(IDS_NOSTRING);
     m_edtString.SetFocus();
     return;
   }

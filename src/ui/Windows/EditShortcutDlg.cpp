@@ -12,11 +12,13 @@
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "EditShortcutDlg.h"
+#include "ControlExtns.h"
+
 #include "corelib/PWSprefs.h"
 #include "corelib/ItemData.h"
-#include "ControlExtns.h"
 
 #include <shlwapi.h>
 #include <fstream>
@@ -173,13 +175,15 @@ void CEditShortcutDlg::OnOK()
 
   //Check that data is valid
   if (m_title.IsEmpty()) {
-    AfxMessageBox(IDS_MUSTHAVETITLE);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     goto dont_close;
   }
 
   if (!m_group.IsEmpty() && m_group[0] == '.') {
-    AfxMessageBox(IDS_DOTINVALID);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_DOTINVALID);
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
     goto dont_close;
   }
@@ -200,9 +204,10 @@ void CEditShortcutDlg::OnOK()
     m_pci->GetUUID(elem_uuid);
     bool notSame = (::memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
     if (notSame) {
+      CGeneralMsgBox gmb;
       CSecString temp;
       temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
-      AfxMessageBox(temp);
+      gmb.AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
       goto dont_close;

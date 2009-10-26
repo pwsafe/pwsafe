@@ -10,6 +10,8 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "GeneralMsgBox.h"
+
 #include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
@@ -18,7 +20,8 @@
 #include "resource.h"
 #include "resource3.h"  // String resources
 #endif
-#include "OptionsPasswordPolicy.h"
+
+#include "OptionsPasswordPolicy.h" // Must be after resource.h
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -195,9 +198,11 @@ void COptionsPasswordPolicy::do_easyorpronounceable(const bool bSet)
 {
   // Can't have minimum lengths!
   if ((m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) &&
-    (m_pwdigitminlength > 1  || m_pwlowerminlength > 1 || 
-    m_pwsymbolminlength > 1 || m_pwupperminlength > 1))
-    AfxMessageBox(IDS_CANTSPECIFYMINNUMBER);
+      (m_pwdigitminlength > 1  || m_pwlowerminlength > 1 || 
+       m_pwsymbolminlength > 1 || m_pwupperminlength > 1)) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_CANTSPECIFYMINNUMBER);
+  }
 
   CString cs_value;
   int i;
@@ -285,9 +290,11 @@ void COptionsPasswordPolicy::OnUsehexdigits()
 void COptionsPasswordPolicy::OnEasyVision() 
 {
   UpdateData(TRUE);
+
   if (m_pweasyvision && m_pwmakepronounceable) {
+    CGeneralMsgBox gmb;
     ((CButton*)GetDlgItem(IDC_EASYVISION))->SetCheck(FALSE);
-    AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
+    gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
     m_pweasyvision = FALSE;
   }
 
@@ -301,9 +308,11 @@ void COptionsPasswordPolicy::OnEasyVision()
 void COptionsPasswordPolicy::OnMakePronounceable() 
 {
   UpdateData(TRUE);
+
   if (m_pweasyvision && m_pwmakepronounceable) {
+    CGeneralMsgBox gmb;
     ((CButton*)GetDlgItem(IDC_PRONOUNCEABLE))->SetCheck(FALSE);
-    AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
+    gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
     m_pwmakepronounceable = FALSE;
   }
 
@@ -318,27 +327,29 @@ BOOL COptionsPasswordPolicy::OnKillActive()
 {
   CPWPropertyPage::OnKillActive();
 
+  CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if (m_pwusehexdigits &&
      (m_pwuselowercase || m_pwuseuppercase || m_pwusedigits ||
       m_pwusesymbols || m_pweasyvision || m_pwmakepronounceable)) {
-    AfxMessageBox(IDS_HEXMUTUALLYEXCL);
+    gmb.AfxMessageBox(IDS_HEXMUTUALLYEXCL);
     return FALSE;
   }
 
   if (m_pwusehexdigits) {
     if (m_pwdefaultlength % 2 != 0) {
-      AfxMessageBox(IDS_HEXMUSTBEEVEN);
+      gmb.AfxMessageBox(IDS_HEXMUSTBEEVEN);
       return FALSE;
     }
-  } else if (!m_pwuselowercase && !m_pwuseuppercase &&
-    !m_pwusedigits && !m_pwusesymbols) {
-      AfxMessageBox(IDS_MUSTHAVEONEOPTION);
-      return FALSE;
+  } else
+  if (!m_pwuselowercase && !m_pwuseuppercase &&
+      !m_pwusedigits && !m_pwusesymbols) {
+    gmb.AfxMessageBox(IDS_MUSTHAVEONEOPTION);
+    return FALSE;
   }
 
   if ((m_pwdefaultlength < 4) || (m_pwdefaultlength > 1024)) {
-    AfxMessageBox(IDS_DEFAULTPWLENGTH);
+    gmb.AfxMessageBox(IDS_DEFAULTPWLENGTH);
     ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
     return FALSE;
   }
@@ -346,7 +357,7 @@ BOOL COptionsPasswordPolicy::OnKillActive()
   if (!(m_pwusehexdigits || m_pweasyvision || m_pwmakepronounceable) &&
       (m_pwdigitminlength + m_pwlowerminlength + 
        m_pwsymbolminlength + m_pwupperminlength) > m_pwdefaultlength) {
-    AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
+    gmb.AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
     ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
     return FALSE;
   }
