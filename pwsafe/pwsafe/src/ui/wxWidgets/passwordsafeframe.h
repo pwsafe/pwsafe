@@ -32,6 +32,7 @@
 ////@begin forward declarations
 class PWSGrid;
 class PWSTreeCtrl;
+class PasswordSafeSearch;
 ////@end forward declarations
 
 /*!
@@ -89,6 +90,8 @@ class PWSTreeCtrl;
 #define ID_BACKUP 10057
 #define ID_RESTORE 10058
 #define ID_OPTIONS 10059
+#define ID_EDITMENU_FIND_NEXT 10060
+#define ID_EDITMENU_FIND_PREVIOUS 10061
 #define ID_MENUITEM 10012
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -155,6 +158,15 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
   void OnDeleteClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxEVT_FIND
+  void OnFindClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITMENU_FIND_NEXT
+  void OnFindNext(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITMENU_FIND_PREVIOUS
+  void OnFindPrevious(wxCommandEvent& evt);
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
   void OnClearclipboardClick( wxCommandEvent& event );
 
@@ -206,6 +218,12 @@ public:
     // PasswordSafe specifics:
     int Load(const wxString &passwd);
     
+    // Hilites the item.  Used for search
+    void SeletItem(const CUUIDGen& uuid);
+
+    ItemListConstIter GetEntryIter() const { return m_core.GetEntryIter(); }
+    ItemListConstIter GetEntryEndIter() const { return m_core.GetEntryEndIter(); }
+
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
@@ -221,6 +239,9 @@ public:
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
   const CItemData *GetSelectedEntry() const;
+  
+  PasswordSafeSearch* m_search;
+
 };
 
 #endif

@@ -31,7 +31,6 @@
 #include "../../corelib/ItemData.h"
 #include "../../corelib/PWScore.h"
 
-#define NumberOf(array) ((sizeof array)/sizeof(array[0]))
 
 ////@begin XPM images
 ////@end XPM images

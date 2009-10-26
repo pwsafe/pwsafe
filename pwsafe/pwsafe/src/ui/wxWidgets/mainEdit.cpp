@@ -29,7 +29,7 @@
 #include "passwordsafeframe.h"
 #include "addeditpropsheet.h"
 #include "pwsclip.h"
-
+#include "PasswordSafeSearch.h"
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
@@ -105,6 +105,35 @@ void PasswordSafeFrame::Delete(const uuid_array_t &uuid)
   if (iter != m_core.GetEntryEndIter())
     m_core.RemoveEntryAt(iter);
 }
+
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_FIND
+ */
+
+void PasswordSafeFrame::OnFindClick( wxCommandEvent& event )
+{
+  m_search->Activate();
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EDITMENU_FIND_NEXT
+ */
+
+void PasswordSafeFrame::OnFindNext( wxCommandEvent& event )
+{
+  m_search->FindNext();
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EDITMENU_FIND_PREVIOUS
+ */
+
+void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& event )
+{
+  m_search->FindPrevious();
+}
+
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
