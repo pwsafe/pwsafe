@@ -1,5 +1,5 @@
 /* XPM */
-static char *findadvanced[] = {
+static const char *findadvanced[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16      113            2",
 /* colors */

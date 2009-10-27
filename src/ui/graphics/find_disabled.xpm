@@ -1,5 +1,5 @@
 /* XPM */
-static char *find_disabled[] = {
+static const char *find_disabled[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16       63            1",
 /* colors */

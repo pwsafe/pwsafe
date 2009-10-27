@@ -24,7 +24,7 @@
 
 enum { FIND_MENU_POSITION = 4 } ;
 
-struct {
+struct _subgroups {
   const charT* name;
   CItemData::FieldType type;
 } subgroups[] = { {wxT("Group"),       CItemData::GROUP},
@@ -34,7 +34,7 @@ struct {
                   {wxT("URL"),         CItemData::URL},
                   {wxT("User Name"),   CItemData::USER} } ;
 
-struct {
+struct _subgroupFunctions {
   const charT* name;
   PWSMatch::MatchRule function;
 } subgroupFunctions[] = { {wxT("equals"),              PWSMatch::MR_EQUALS},
@@ -46,7 +46,7 @@ struct {
                           {wxT("contains"),            PWSMatch::MR_CONTAINS},
                           {wxT("does not contain"),    PWSMatch::MR_NOTCONTAIN} } ;
 
-struct {
+struct _fieldNames {
     const charT* name;
     CItemData::FieldType type;
 } fieldNames[] = {  {wxT("Group"),              CItemData::GROUP},
