@@ -39,8 +39,8 @@ class PasswordSafeSearchData
 
 public:
   PasswordSafeSearchData():  m_fCaseSensitive(false),
-                             m_subgroupObject(0),            // index into subgroups array defined in .cpp
                              m_fUseSubgroups(false),
+                             m_subgroupObject(0),            // index into subgroups array defined in .cpp
                              m_subgroupFunction(0)           // index into subgroupFunctions array defined in .cpp
   {}
 

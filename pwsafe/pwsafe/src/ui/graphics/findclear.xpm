@@ -1,5 +1,5 @@
 /* XPM */
-static char *findclear[] = {
+static const char *findclear[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16      104            2",
 /* colors */

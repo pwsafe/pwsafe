@@ -1,5 +1,5 @@
 /* XPM */
-static char *findcase_s[] = {
+static const char *findcase_s[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16       22            1",
 /* colors */
