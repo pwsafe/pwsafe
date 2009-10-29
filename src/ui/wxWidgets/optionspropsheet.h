@@ -19,6 +19,7 @@
 
 ////@begin includes
 #include "wx/propdlg.h"
+#include "wx/valgen.h"
 #include "wx/statline.h"
 #include "wx/spinctrl.h"
 #include "wx/grid.h"
@@ -39,7 +40,7 @@ class wxBoxSizer;
  */
 
 ////@begin control identifiers
-#define ID_OPTIONS_PS 10130
+#define ID_OPTIONS 10130
 #define ID_PANEL 10131
 #define ID_CHECKBOX10 10139
 #define ID_CHECKBOX11 10140
@@ -117,7 +118,7 @@ class wxBoxSizer;
 #define ID_GRID1 10187
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
 #define SYMBOL_COPTIONS_TITLE _("Options")
-#define SYMBOL_COPTIONS_IDNAME ID_OPTIONS_PS
+#define SYMBOL_COPTIONS_IDNAME ID_OPTIONS
 #define SYMBOL_COPTIONS_SIZE wxSize(400, 300)
 #define SYMBOL_COPTIONS_POSITION wxDefaultPosition
 ////@end control identifiers
@@ -129,7 +130,7 @@ class wxBoxSizer;
 
 class COptions: public wxPropertySheetDialog
 {    
-  DECLARE_DYNAMIC_CLASS( COptions )
+  DECLARE_CLASS( COptions )
   DECLARE_EVENT_TABLE()
 
 public:
@@ -155,13 +156,16 @@ public:
 
 ////@begin COptions member function declarations
 
+  bool GetSaveimmediate() const { return m_saveimmediate ; }
+  void SetSaveimmediate(bool value) { m_saveimmediate = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 ////@end COptions member function declarations
-
+  void OnOk(wxCommandEvent& event);
   /// Should we show tooltips?
   static bool ShowToolTips();
 
@@ -183,7 +187,12 @@ public:
   wxCheckBox* m_pwpEasyCtrl;
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
+private:
+  bool m_saveimmediate;
 ////@end COptions member variables
+ private:
+  void PrefsToPropSheet();
+  void PropSheetToPrefs();
 };
 
 #endif

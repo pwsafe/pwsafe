@@ -25,6 +25,7 @@
 ////@end includes
 
 #include "optionspropsheet.h"
+#include "corelib/PWSprefs.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -42,6 +43,7 @@ IMPLEMENT_DYNAMIC_CLASS( COptions, wxPropertySheetDialog )
  */
 
 BEGIN_EVENT_TABLE( COptions, wxPropertySheetDialog )
+EVT_BUTTON( wxID_OK, COptions::OnOk )
 
 ////@begin COptions event table entries
 ////@end COptions event table entries
@@ -80,6 +82,7 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   LayoutDialog();
   Centre();
 ////@end COptions creation
+  PrefsToPropSheet();
   return true;
 }
 
@@ -583,6 +586,8 @@ void COptions::CreateControls()
 
   GetBookCtrl()->AddPage(itemPanel139, _("Shortcuts"));
 
+  // Set validators
+  itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
 ////@end COptions content construction
 }
 
@@ -620,4 +625,26 @@ wxIcon COptions::GetIconResource( const wxString& name )
   wxUnusedVar(name);
   return wxNullIcon;
 ////@end COptions icon retrieval
+}
+
+void COptions::PrefsToPropSheet()
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  // Backup-related preferences
+  m_saveimmediate = prefs->GetPref(PWSprefs::SaveImmediately);
+}
+
+void COptions::PropSheetToPrefs()
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  // Backup-related preferences
+  prefs->SetPref(PWSprefs::SaveImmediately,m_saveimmediate);
+}
+
+void COptions::OnOk(wxCommandEvent& event)
+{
+  if (Validate() && TransferDataFromWindow()) {
+    PropSheetToPrefs();
+  }
+  EndModal(wxID_OK);
 }
