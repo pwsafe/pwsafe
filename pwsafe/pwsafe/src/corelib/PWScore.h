@@ -248,7 +248,7 @@ public:
   void SuspendOnDBNotification()
   {m_bNotifyDB = false;}
   void ResumeOnDBNotification()
-  {m_bNotifyDB = m_pfcnNotifyDBModified != NULL && m_NotifyDBInstance != NULL;}
+  {m_bNotifyDB = m_pfcnNotifyDBModified != NULL && m_NotifyDBInstance != 0;}
 
   bool IsChanged() const {return m_bDBChanged;}
   bool HaveDBPrefsChanged() const {return m_bDBPrefsChanged;}
@@ -262,7 +262,7 @@ public:
   void SuspendOnListNotification()
   {m_bNotifyList = false;}
   void ResumeOnListNotification()
-  {m_bNotifyList = m_pfcnNotifyListModified != NULL && m_NotifyListInstance != NULL;}
+  {m_bNotifyList = m_pfcnNotifyListModified != NULL && m_NotifyListInstance != 0;}
 
   // (Un)Register to be notified if the database changes
   bool RegisterOnDBModified(void (*pfcn) (LPARAM, bool), LPARAM);
