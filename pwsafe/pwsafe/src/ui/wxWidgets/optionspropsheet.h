@@ -152,12 +152,24 @@ public:
 
 ////@begin COptions event handler declarations
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
+  void OnBackupB4SaveClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4
+  void OnBuPrefix( wxCommandEvent& event );
+
+  /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
+  void OnBuPrefixTxtSetFocus( wxFocusEvent& event );
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
 
   bool GetSaveimmediate() const { return m_saveimmediate ; }
   void SetSaveimmediate(bool value) { m_saveimmediate = value ; }
+
+  bool GetBackupb4save() const { return m_backupb4save ; }
+  void SetBackupb4save(bool value) { m_backupb4save = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -170,6 +182,9 @@ public:
   static bool ShowToolTips();
 
 ////@begin COptions member variables
+  wxRadioButton* m_dfltbuprefixRB;
+  wxRadioButton* m_usrbuprefixRB;
+  wxTextCtrl* m_usrbuprefixTxt;
   wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
@@ -189,6 +204,7 @@ public:
   wxCheckBox* m_pwpHexCtrl;
 private:
   bool m_saveimmediate;
+  bool m_backupb4save;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();
