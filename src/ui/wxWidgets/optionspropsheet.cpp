@@ -46,6 +46,12 @@ BEGIN_EVENT_TABLE( COptions, wxPropertySheetDialog )
 EVT_BUTTON( wxID_OK, COptions::OnOk )
 
 ////@begin COptions event table entries
+  EVT_CHECKBOX( ID_CHECKBOX11, COptions::OnBackupB4SaveClick )
+
+  EVT_RADIOBUTTON( ID_RADIOBUTTON4, COptions::OnBuPrefix )
+
+  EVT_RADIOBUTTON( ID_RADIOBUTTON5, COptions::OnBuPrefix )
+
 ////@end COptions event table entries
 
 END_EVENT_TABLE()
@@ -105,6 +111,9 @@ COptions::~COptions()
 void COptions::Init()
 {
 ////@begin COptions member initialisation
+  m_dfltbuprefixRB = NULL;
+  m_usrbuprefixRB = NULL;
+  m_usrbuprefixTxt = NULL;
   m_pwpLenCtrl = NULL;
   m_pwMinsGSzr = NULL;
   m_pwpUseLowerCtrl = NULL;
@@ -156,18 +165,18 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( itemPanel2, wxID_STATIC, _("Base:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer7->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton9 = new wxRadioButton( itemPanel2, ID_RADIOBUTTON4, _("Database name"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton9->SetValue(false);
-  itemStaticBoxSizer7->Add(itemRadioButton9, 0, wxALIGN_LEFT|wxALL, 5);
+  m_dfltbuprefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON4, _("Database name"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_dfltbuprefixRB->SetValue(false);
+  itemStaticBoxSizer7->Add(m_dfltbuprefixRB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer10, 0, wxGROW|wxALL, 0);
-  wxRadioButton* itemRadioButton11 = new wxRadioButton( itemPanel2, ID_RADIOBUTTON5, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemRadioButton11->SetValue(false);
-  itemBoxSizer10->Add(itemRadioButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_usrbuprefixRB = new wxRadioButton( itemPanel2, ID_RADIOBUTTON5, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_usrbuprefixRB->SetValue(false);
+  itemBoxSizer10->Add(m_usrbuprefixRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl12 = new wxTextCtrl( itemPanel2, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(90, -1)).x, -1), 0 );
-  itemBoxSizer10->Add(itemTextCtrl12, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_usrbuprefixTxt = new wxTextCtrl( itemPanel2, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(90, -1)).x, -1), 0 );
+  itemBoxSizer10->Add(m_usrbuprefixTxt, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticLine* itemStaticLine13 = new wxStaticLine( itemPanel2, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
   itemStaticBoxSizer7->Add(itemStaticLine13, 0, wxGROW|wxALL, 5);
@@ -588,6 +597,9 @@ void COptions::CreateControls()
 
   // Set validators
   itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
+  itemCheckBox6->SetValidator( wxGenericValidator(& m_backupb4save) );
+  // Connect events and objects
+  m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
 }
 
@@ -632,13 +644,24 @@ void COptions::PrefsToPropSheet()
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Backup-related preferences
   m_saveimmediate = prefs->GetPref(PWSprefs::SaveImmediately);
+  m_backupb4save = prefs->GetPref(PWSprefs::BackupBeforeEverySave);
+  wxString buprefixValue = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+  m_dfltbuprefixRB->SetValue(buprefixValue.empty());
+  m_usrbuprefixRB->SetValue(!buprefixValue.empty());
+  m_usrbuprefixTxt->SetValue(buprefixValue);
+    
 }
 
 void COptions::PropSheetToPrefs()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Backup-related preferences
-  prefs->SetPref(PWSprefs::SaveImmediately,m_saveimmediate);
+  prefs->SetPref(PWSprefs::SaveImmediately, m_saveimmediate);
+  prefs->SetPref(PWSprefs::BackupBeforeEverySave, m_backupb4save);
+  wxString buprefixValue;
+  if (m_usrbuprefixRB->GetValue())
+    buprefixValue = m_usrbuprefixTxt->GetValue();
+  prefs->SetPref(PWSprefs::BackupPrefixValue, buprefixValue.c_str());
 }
 
 void COptions::OnOk(wxCommandEvent& event)
@@ -648,3 +671,42 @@ void COptions::OnOk(wxCommandEvent& event)
   }
   EndModal(wxID_OK);
 }
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
+ */
+
+void COptions::OnBackupB4SaveClick( wxCommandEvent& event )
+{
+  if (Validate() && TransferDataFromWindow()) {
+    m_dfltbuprefixRB->Enable(m_backupb4save);
+    m_usrbuprefixRB->Enable(m_backupb4save);
+    m_usrbuprefixTxt->Enable(m_backupb4save);
+  }
+}
+
+
+/*!
+ * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4
+ */
+
+void COptions::OnBuPrefix( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4 in COptions.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4 in COptions. 
+}
+
+
+/*!
+ * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
+ */
+
+void COptions::OnBuPrefixTxtSetFocus( wxFocusEvent& event )
+{
+  m_dfltbuprefixRB->SetValue(false);
+  m_usrbuprefixRB->SetValue(true);
+}
+

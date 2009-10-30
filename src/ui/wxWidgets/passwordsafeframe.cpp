@@ -446,7 +446,7 @@ int PasswordSafeFrame::SaveIfChanged()
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
 
-  if (m_core.IsChanged()) {
+  if (m_core.IsChanged() || PWSprefs::GetInstance()->IsDBprefsChanged()) {
     wxString prompt(_("Do you want to save changes to the password database: "));
     prompt += m_core.GetCurFile().c_str();
     prompt += _T("?");
