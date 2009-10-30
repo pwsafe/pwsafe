@@ -225,23 +225,16 @@ void COptionsBackup::OnBackupDirectory()
 void COptionsBackup::OnBackupBeforeSave()
 {
   UpdateData(TRUE);
-  if (m_backupbeforesave == FALSE) {
-    GetDlgItem(IDC_DFLTBACKUPPREFIX)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USERBACKUPPREFIX)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_BACKUPSUFFIX)->EnableWindow(FALSE);
-    GetDlgItem(IDC_DFLTBACKUPLOCATION)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USERBACKUPOTHERLOCATION)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(FALSE);
-  } else {
-    GetDlgItem(IDC_DFLTBACKUPPREFIX)->EnableWindow(TRUE);
-    GetDlgItem(IDC_USERBACKUPPREFIX)->EnableWindow(TRUE);
-    GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(TRUE);
-    GetDlgItem(IDC_BACKUPSUFFIX)->EnableWindow(TRUE);
-    GetDlgItem(IDC_DFLTBACKUPLOCATION)->EnableWindow(TRUE);
-    GetDlgItem(IDC_USERBACKUPOTHERLOCATION)->EnableWindow(TRUE);
-    GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(TRUE);
 
+  GetDlgItem(IDC_DFLTBACKUPPREFIX)->EnableWindow(m_backupbeforesave);
+  GetDlgItem(IDC_USERBACKUPPREFIX)->EnableWindow(m_backupbeforesave);
+  GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(m_backupbeforesave);
+  GetDlgItem(IDC_BACKUPSUFFIX)->EnableWindow(m_backupbeforesave);
+  GetDlgItem(IDC_DFLTBACKUPLOCATION)->EnableWindow(m_backupbeforesave);
+  GetDlgItem(IDC_USERBACKUPOTHERLOCATION)->EnableWindow(m_backupbeforesave);
+  GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(m_backupbeforesave);
+
+  if (m_backupbeforesave == TRUE) {
     OnBackupPrefix();
     OnBackupDirectory();
     SetExample();
