@@ -9,10 +9,13 @@
 #ifndef __MFCMESSAGES_H
 #define __MFCMESSAGES_H
 
+#include "GeneralMsgBox.h"
+
 class MFCAsker : public Asker
 {
   bool operator()(const std::wstring &question) {
-    int msg_rc = AfxMessageBox(question.c_str(), 
+    CGeneralMsgBox gmb;
+    int msg_rc = gmb.AfxMessageBox(question.c_str(), 
                     MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
     return msg_rc == IDYES;
   }
@@ -21,7 +24,8 @@ class MFCAsker : public Asker
 class MFCReporter : public Reporter
 {
   void operator()(const std::wstring &message) {
-    AfxMessageBox(message.c_str(), MB_OK | MB_ICONEXCLAMATION);
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(message.c_str(), MB_OK | MB_ICONEXCLAMATION);
   }
 };
 

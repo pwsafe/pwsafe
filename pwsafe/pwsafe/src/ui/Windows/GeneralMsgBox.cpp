@@ -140,6 +140,8 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption,
   else
     SetTitle(IDS_ERROR);
 
+  if (uiIcon == 0)
+    uiIcon = MB_ICONEXCLAMATION;
   SetStandardIcon(uiIcon);
 
   int num_buttons(0);
