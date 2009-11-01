@@ -197,6 +197,18 @@ void AddEditPropSheet::Init()
 }
 
 
+const wxChar *DCAs[] = {
+  _("Auto Type"),
+  _("Browse"),
+  _("Browse + Auto Type"),
+  _("Copy Notes"),
+  _("Copy Password"),
+  _("Copy Password + Minimize"),
+  _("Copy Username"),
+  _("View/Edit Entry"),
+  _("Execute Run command"),
+};
+
 /*!
  * Control creation for AddEditPropSheet
  */
@@ -316,16 +328,7 @@ void AddEditPropSheet::CreateControls()
   itemCheckBox42->SetValue(false);
   itemBoxSizer41->Add(itemCheckBox42, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxArrayString m_DCAcomboBoxStrings;
-  m_DCAcomboBoxStrings.Add(_("Auto Type"));
-  m_DCAcomboBoxStrings.Add(_("Browse"));
-  m_DCAcomboBoxStrings.Add(_("Browse + Auto Type"));
-  m_DCAcomboBoxStrings.Add(_("Copy Notes"));
-  m_DCAcomboBoxStrings.Add(_("Copy Password"));
-  m_DCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
-  m_DCAcomboBoxStrings.Add(_("Copy Username"));
-  m_DCAcomboBoxStrings.Add(_("View/Edit Entry"));
-  m_DCAcomboBoxStrings.Add(_("Execute Run command"));
+  wxArrayString m_DCAcomboBoxStrings(sizeof(DCAs)/sizeof(DCAs[0]), DCAs);
   m_DCAcomboBox = new wxComboBox( itemPanel33, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemBoxSizer41->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 

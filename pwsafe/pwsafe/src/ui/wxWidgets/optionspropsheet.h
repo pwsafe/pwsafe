@@ -161,6 +161,15 @@ public:
   /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
   void OnBuPrefixTxtSetFocus( wxFocusEvent& event );
 
+  /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
+  void OnSuffixCBSet( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
+  void OnBuDirRB( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
+  void OnBuDirBrowseClick( wxCommandEvent& event );
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
@@ -185,6 +194,13 @@ public:
   wxRadioButton* m_dfltbuprefixRB;
   wxRadioButton* m_usrbuprefixRB;
   wxTextCtrl* m_usrbuprefixTxt;
+  wxComboBox* m_busuffixCB;
+  wxSpinCtrl* m_bumaxinc;
+  wxStaticText* m_suffixExample;
+  wxRadioButton* m_dfltbudirRB;
+  wxRadioButton* m_usrbudirRB;
+  wxTextCtrl* m_usrbudirTxt;
+  wxButton* m_buDirBN;
   wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
