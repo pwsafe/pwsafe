@@ -14,9 +14,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory dialog
-#include "PWPropertyPage.h"
+#include "Options_PropertyPage.h"
 
-class COptionsPasswordHistory : public CPWPropertyPage
+class COptionsPasswordHistory : public COptions_PropertyPage
 {
   DECLARE_DYNCREATE(COptionsPasswordHistory)
 
@@ -36,31 +36,32 @@ public:
   int  m_pwhaction;
   //}}AFX_DATA
 
+  BOOL m_savesavepwhistory;
+  UINT m_savepwhistorynumdefault;
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsPasswordHistory)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
   //}}AFX_VIRTUAL
 
   // Implementation
 protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsPasswordHistory)
-  virtual BOOL OnInitDialog();
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg BOOL OnKillActive();
   afx_msg void OnSavePWHistory();
   afx_msg void OnApplyPWHChanges();
+  afx_msg void OnPWHistoryNoAction();
+  afx_msg void OnPWHistoryDoAction();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
-  // Implementation
-protected:
-  BOOL PreTranslateMessage(MSG* pMsg);
-
 private:
   CToolTipCtrl* m_ToolTipCtrl;
-  afx_msg void OnPWHistoryNoAction();
-  afx_msg void OnPWHistoryDoAction();
 };

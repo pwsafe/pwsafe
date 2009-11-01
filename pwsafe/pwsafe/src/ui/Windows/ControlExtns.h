@@ -43,6 +43,9 @@ public:
   {m_bUserColour = true; m_cfUser = cfUser;}
   void ResetColour()
   {m_bUserColour = false;}
+  void SetBkColour(COLORREF cfBkUser);
+  void ResetBkColour();
+
   void FlashBkgnd(COLORREF cfFlashColour);
   void SetHighlight(bool bHighlight, COLORREF cfHighlightColour)
   {m_bHighlight = bHighlight; m_cfHighlightColour = cfHighlightColour;}
@@ -58,8 +61,9 @@ public:
   // Attributes
 private:
   int m_iFlashing;
-  COLORREF m_cfUser, m_cfOldColour, m_cfFlashColour, m_cfHighlightColour;
-  bool m_bUserColour, m_bMouseInWindow, m_bHighlight;
+  COLORREF m_cfUser, m_cfOldColour, m_cfFlashColour, m_cfHighlightColour, m_cfBkUser;
+  bool m_bUserColour, m_bMouseInWindow, m_bHighlight, m_bUserBkColour;
+  CBrush m_brBkUser;
 
   // Operations
 public:
@@ -78,6 +82,7 @@ protected:
   //{{AFX_MSG(CStaticExtn)
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
+  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

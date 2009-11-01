@@ -12,6 +12,7 @@
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
 #include "ThisMfcApp.h"
+#include "Options_PropertySheet.h"
 
 #include "corelib\pwsprefs.h"
 
@@ -33,9 +34,10 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay property page
 
-IMPLEMENT_DYNCREATE(COptionsDisplay, CPWPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsDisplay, COptions_PropertyPage)
 
-COptionsDisplay::COptionsDisplay() : CPWPropertyPage(COptionsDisplay::IDD)
+COptionsDisplay::COptionsDisplay()
+  : COptions_PropertyPage(COptionsDisplay::IDD)
 {
   //{{AFX_DATA_INIT(COptionsDisplay)
   //}}AFX_DATA_INIT
@@ -47,7 +49,7 @@ COptionsDisplay::~COptionsDisplay()
 
 void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 {
-  CPWPropertyPage::DoDataExchange(pDX);
+  COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsDisplay)
   DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
@@ -69,10 +71,11 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsDisplay, CPWPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsDisplay, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsDisplay)
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
   ON_BN_CLICKED(IDC_DEFUNSHOWINTREE, OnDisplayUserInTree)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -88,7 +91,7 @@ void COptionsDisplay::OnPreWarn()
 
 BOOL COptionsDisplay::OnInitDialog() 
 {
-  CPWPropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   OnPreWarn();
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
@@ -101,14 +104,27 @@ BOOL COptionsDisplay::OnInitDialog()
     m_showpasswordintree = FALSE;
     GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(FALSE);
   }
+
+  m_savealwaysontop = m_alwaysontop;
+  m_saveshowusernameintree = m_showusernameintree;
+  m_saveshowpasswordintree = m_showpasswordintree;
+  m_saveshownotesastipsinviews = m_shownotesastipsinviews;
+  m_saveexplorertree = m_explorertree;
+  m_saveenablegrid = m_enablegrid;
+  m_savepwshowinedit = m_pwshowinedit;
+  m_savenotesshowinedit = m_notesshowinedit;
+  m_savewordwrapnotes = m_wordwrapnotes;
+  m_savepreexpirywarn = m_preexpirywarn;
+  m_savetreedisplaystatusatopen = m_treedisplaystatusatopen;
+  m_savepreexpirywarndays = m_preexpirywarndays;
+  m_savetrayiconcolour = m_trayiconcolour;
+
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 BOOL COptionsDisplay::OnKillActive()
 {
-  CPWPropertyPage::OnKillActive();
-
   CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if ((m_preexpirywarndays < 1) || (m_preexpirywarndays > 30)) {
@@ -117,7 +133,7 @@ BOOL COptionsDisplay::OnKillActive()
     return FALSE;
   }
 
-  return TRUE;
+  return COptions_PropertyPage::OnKillActive();
 }
 
 void COptionsDisplay::OnDisplayUserInTree()
@@ -128,4 +144,36 @@ void COptionsDisplay::OnDisplayUserInTree()
     ((CButton*)GetDlgItem(IDC_DEFPWSHOWINTREE))->SetCheck(BST_UNCHECKED);
   } else
     GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(TRUE);
+}
+
+LRESULT COptionsDisplay::OnQuerySiblings(WPARAM wParam, LPARAM )
+{
+  UpdateData(TRUE);
+
+  // Have any of my fields been changed?
+  switch (wParam) {
+    case PP_DATA_CHANGED:
+      if (m_savealwaysontop             != m_alwaysontop             ||
+          m_saveshowusernameintree      != m_showusernameintree      ||
+          m_saveshowpasswordintree      != m_showpasswordintree      ||
+          m_saveshownotesastipsinviews  != m_shownotesastipsinviews  ||
+          m_saveexplorertree            != m_explorertree            ||
+          m_saveenablegrid              != m_enablegrid              ||
+          m_savepwshowinedit            != m_pwshowinedit            ||
+          m_savenotesshowinedit         != m_notesshowinedit         ||
+          m_savewordwrapnotes           != m_wordwrapnotes           ||
+          m_savepreexpirywarn           != m_preexpirywarn           ||
+          (m_preexpirywarn              == TRUE &&
+           m_savepreexpirywarndays      != m_preexpirywarndays)     ||
+          m_savetreedisplaystatusatopen != m_treedisplaystatusatopen ||
+          m_savetrayiconcolour          != m_trayiconcolour)
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+  }
+  return 0L;
 }

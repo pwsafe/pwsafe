@@ -13,9 +13,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy dialog
-#include "PWPropertyPage.h"
+#include "Options_PropertyPage.h"
 
-class COptionsPasswordPolicy : public CPWPropertyPage
+class COptionsPasswordPolicy : public COptions_PropertyPage
 {
   DECLARE_DYNCREATE(COptionsPasswordPolicy)
 
@@ -43,18 +43,32 @@ public:
   UINT m_pwupperminlength;
   //}}AFX_DATA
 
+  UINT m_savepwdefaultlength;
+  BOOL m_savepwuselowercase;
+  BOOL m_savepwuseuppercase;
+  BOOL m_savepwusedigits;
+  BOOL m_savepwusesymbols;
+  BOOL m_savepweasyvision;
+  BOOL m_savepwusehexdigits;
+  BOOL m_savepwmakepronounceable;
+  UINT m_savepwdigitminlength;
+  UINT m_savepwlowerminlength;
+  UINT m_savepwsymbolminlength;
+  UINT m_savepwupperminlength;
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsPasswordPolicy)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
 
   // Implementation
 protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsPasswordPolicy)
-  virtual BOOL OnInitDialog();
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg void OnUsehexdigits();
   afx_msg void OnUselowercase();
   afx_msg void OnUseuppercase();
@@ -64,6 +78,7 @@ protected:
   afx_msg void OnMakePronounceable();
   afx_msg BOOL OnKillActive();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 
 private:

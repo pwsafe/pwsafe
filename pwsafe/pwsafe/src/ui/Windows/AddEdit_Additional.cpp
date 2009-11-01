@@ -336,12 +336,10 @@ HBRUSH CAddEdit_Additional::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 BOOL CAddEdit_Additional::OnKillActive()
 {
-  CAddEdit_PropertyPage::OnKillActive();
-
   if (UpdateData(TRUE) == FALSE)
     return FALSE;
 
-  return TRUE;
+  return CAddEdit_PropertyPage::OnKillActive();
 }
 
 LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -351,20 +349,20 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
   // Have any of my fields been changed?
   switch (wParam) {
     case PP_DATA_CHANGED:
-      if (M_SavePWHistory()   != M_oldSavePWHistory() ||
+      if (M_SavePWHistory()   != M_oldSavePWHistory()  ||
           M_NumPWHistory()    != M_pwhistlist().size() ||
           (M_SavePWHistory()  == TRUE &&
            M_MaxPWHistory()   != M_oldMaxPWHistory()))
         return 1L;
       switch (M_uicaller()) {
         case IDS_EDITENTRY:
-          if (M_autotype()     != M_pci()->GetAutoType() ||
-              M_runcommand()   != M_pci()->GetRunCommand() ||
-              M_DCA()          != M_oldDCA())
+          if (M_autotype()    != M_pci()->GetAutoType()   ||
+              M_runcommand()  != M_pci()->GetRunCommand() ||
+              M_DCA()         != M_oldDCA())
             return 1L;
           break;
         case IDS_ADDENTRY:
-          if (!M_autotype().IsEmpty() ||
+          if (!M_autotype().IsEmpty()   ||
               !M_runcommand().IsEmpty() ||
               M_DCA() != M_oldDCA())
             return 1L;

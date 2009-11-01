@@ -78,9 +78,8 @@ class CAddEdit_PropertyPage : public CPWPropertyPage
 public:
   CAddEdit_PropertyPage(CWnd *pParent, UINT nID, st_AE_master_data *pAEMD);
   virtual ~CAddEdit_PropertyPage() {}
-  virtual BOOL OnQueryCancel();
 
-  enum {PP_DATA_CHANGED = 0, PP_UPDATE_VARIABLES};
+  virtual BOOL OnQueryCancel();
 
   static COLORREF crefGreen, crefWhite;
 

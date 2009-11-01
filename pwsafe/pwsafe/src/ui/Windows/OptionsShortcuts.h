@@ -13,7 +13,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsShortcuts dialog
-#include "PWPropertyPage.h"
+#include "Options_PropertyPage.h"
 #include "MenuShortcuts.h"
 #include "SHCTListCtrl.h"
 #include "PWHdrCtrlNoChng.h"
@@ -25,7 +25,7 @@
 
 // COptionsShortcuts dialog
 
-class COptionsShortcuts : public CPWPropertyPage
+class COptionsShortcuts : public COptions_PropertyPage
 {
   DECLARE_DYNAMIC(COptionsShortcuts)
 
@@ -57,17 +57,29 @@ public:
   const wchar_t *GetHelpName() const {return L"menu_shortcuts";}
 
   // Dialog Data
-  //{{AFX_DATA(COptionsBackup)
+  //{{AFX_DATA(COptionsShortcuts)
   enum { IDD = IDD_PS_SHORTCUTS };
   CSHCTListCtrl m_ShortcutLC;
   CStaticExtn m_stc_warning;
+  //}}AFX_DATA
 
+  // Overrides
+  // ClassWizard generate virtual function overrides
+  //{{AFX_VIRTUAL(COptionsShortcuts)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  BOOL OnInitDialog();
+  virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
+  //}}AFX_VIRTUAL
+
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(COptionsShortcuts)
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS);
   afx_msg void OnBnClickedResetAll();
+  //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 

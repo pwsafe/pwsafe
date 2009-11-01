@@ -12,9 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup dialog
-#include "PWPropertyPage.h"
+#include "Options_PropertyPage.h"
 
-class COptionsBackup : public CPWPropertyPage
+class COptionsBackup : public COptions_PropertyPage
 {
   DECLARE_DYNCREATE(COptionsBackup)
 
@@ -41,7 +41,17 @@ public:
   int m_backuplocation;
   int m_maxnumincbackups;
   //}}AFX_DATA
-  DWORD_PTR m_backupsuffix;
+
+  CString m_saveuserbackupprefix;
+  CString m_saveuserbackupotherlocation;
+  BOOL m_savesaveimmediately;
+  BOOL m_savebackupbeforesave;
+  int m_savebackupprefix;
+  int m_savebackuplocation;
+  int m_savemaxnumincbackups;
+  int m_savebackupsuffix;
+
+  int m_backupsuffix;
   int m_BKSFX_to_Index[PWSprefs::maxBKSFX + 1];
   CString m_currentFileDir;
   CString m_currentFileBasename;
@@ -52,12 +62,14 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
   //}}AFX_VIRTUAL
 
   // Implementation
 protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsBackup)
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg BOOL OnKillActive();
   afx_msg void OnBackupPrefix();
   afx_msg void OnBackupDirectory();
@@ -69,10 +81,8 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-  BOOL PreTranslateMessage(MSG* pMsg);
-  void SetExample();
-
 private:
+  void SetExample();
   CToolTipCtrl* m_pToolTipCtrl;
 };
 

@@ -219,12 +219,10 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 
 BOOL CAddEdit_DateTimes::OnKillActive()
 {
-  CAddEdit_PropertyPage::OnKillActive();
-
   if (UpdateData(TRUE) == FALSE)
     return FALSE;
 
-  return TRUE;
+  return CAddEdit_PropertyPage::OnKillActive();
 }
 
 LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )

@@ -12,9 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSecurity dialog
-#include "PWPropertyPage.h"
+#include "Options_PropertyPage.h"
 
-class COptionsSecurity : public CPWPropertyPage
+class COptionsSecurity : public COptions_PropertyPage
 {
   DECLARE_DYNCREATE(COptionsSecurity)
 
@@ -30,12 +30,20 @@ public:
   enum { IDD = IDD_PS_SECURITY };
   BOOL m_clearclipboardonminimize;
   BOOL m_clearclipboardonexit;
-  BOOL m_lockdatabase;
+  BOOL m_LockOnMinimize;
   BOOL m_confirmcopy;
   BOOL m_LockOnWindowLock;
   BOOL m_LockOnIdleTimeout;
   UINT m_IdleTimeOut;
   //}}AFX_DATA
+
+  BOOL m_saveclearclipboardonminimize;
+  BOOL m_saveclearclipboardonexit;
+  BOOL m_saveLockOnMinimize;
+  BOOL m_saveconfirmcopy;
+  BOOL m_saveLockOnWindowLock;
+  BOOL m_saveLockOnIdleTimeout;
+  UINT m_saveIdleTimeOut;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -51,9 +59,10 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsSecurity)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);
-  afx_msg void OnLockbase();
+  afx_msg void OnLockOnIdleTimeout();
+  afx_msg void OnLockOnMinimize();
   afx_msg BOOL OnKillActive();
   //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
 
+  DECLARE_MESSAGE_MAP()
 };

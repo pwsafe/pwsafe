@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
+#include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
@@ -34,9 +35,10 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem property page
 
-IMPLEMENT_DYNCREATE(COptionsSystem, CPWPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsSystem, COptions_PropertyPage)
 
-COptionsSystem::COptionsSystem() : CPWPropertyPage(COptionsSystem::IDD)
+COptionsSystem::COptionsSystem() 
+  : COptions_PropertyPage(COptionsSystem::IDD)
 {
   //{{AFX_DATA_INIT(COptionsSystem)
   //}}AFX_DATA_INIT
@@ -73,6 +75,7 @@ BEGIN_MESSAGE_MAP(COptionsSystem, CPWPropertyPage)
   ON_BN_CLICKED(IDC_STARTUP, OnStartup)
   ON_BN_CLICKED(IDC_REGDEL_CB, OnSetDeleteRegistry)
   ON_BN_CLICKED(IDC_REGDEL_BTN, OnApplyRegistryDeleteNow)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -140,6 +143,15 @@ BOOL COptionsSystem::OnInitDialog()
 
   OnUseSystemTray();
 
+  m_savemaxreitems = m_maxreitems;
+  m_saveusesystemtray = m_usesystemtray;
+  m_savestartup = m_startup;
+  m_savemaxmruitems = m_maxmruitems;
+  m_savemruonfilemenu = m_mruonfilemenu;
+  m_savedeleteregistry = m_deleteregistry;
+  m_savedefaultopenro = m_defaultopenro;
+  m_savemultipleinstances = m_multipleinstances;
+
   // Tooltips on Property Pages
   EnableToolTips();
 
@@ -195,4 +207,31 @@ BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
     m_ToolTipCtrl->RelayEvent(pMsg);
 
   return CPWPropertyPage::PreTranslateMessage(pMsg);
+}
+
+LRESULT COptionsSystem::OnQuerySiblings(WPARAM wParam, LPARAM )
+{
+  UpdateData(TRUE);
+
+  // Have any of my fields been changed?
+  switch (wParam) {
+    case PP_DATA_CHANGED:
+      if (m_saveusesystemtray     != m_usesystemtray  ||
+          (m_usesystemtray        == TRUE &&
+           m_savemaxreitems       != m_maxreitems)    ||
+          m_savestartup           != m_startup        ||
+          m_savemaxmruitems       != m_maxmruitems    ||
+          m_savemruonfilemenu     != m_mruonfilemenu  ||
+          m_savedeleteregistry    != m_deleteregistry ||
+          m_savedefaultopenro     != m_defaultopenro  ||
+          m_savemultipleinstances != m_multipleinstances)
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+  }
+  return 0L;
 }

@@ -234,17 +234,16 @@ bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
 
 BOOL CAddEdit_PasswordPolicy::OnKillActive()
 {
-  CAddEdit_PropertyPage::OnKillActive();
-
   CWnd *pFocus(NULL);
   if (ValidatePolicy(pFocus)) {
     SetPolicyFromVariables();
-    return TRUE;
   } else {
     if (pFocus != NULL)
       pFocus->SetFocus();
     return FALSE;
   }
+ 
+  return CAddEdit_PropertyPage::OnKillActive();
 }
 
 LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )

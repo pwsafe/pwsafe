@@ -32,21 +32,41 @@ const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
 // CStaticExtn
 
 CStaticExtn::CStaticExtn()
-  : m_bUserColour(false), m_bMouseInWindow(false), 
+  : m_bUserColour(false), m_bUserBkColour(false), m_bMouseInWindow(false), 
   m_iFlashing(0), m_bHighlight(false)
 {
 }
 
 CStaticExtn::~CStaticExtn()
 {
+  if (m_bUserBkColour)
+    m_brBkUser.DeleteObject();
 }
 
 BEGIN_MESSAGE_MAP(CStaticExtn, CStatic)
   //{{AFX_MSG_MAP(CStaticExtn)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_MOUSEMOVE()
+  ON_WM_CTLCOLOR_REFLECT()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CStaticExtn::SetBkColour(COLORREF cfBkUser)
+{
+  if (m_bUserBkColour)
+    m_brBkUser.DeleteObject();
+
+  m_cfBkUser = cfBkUser;
+  m_brBkUser.CreateSolidBrush(cfBkUser);
+  m_bUserBkColour = true;
+}
+
+void CStaticExtn::ResetBkColour()
+{
+  if (m_bUserBkColour)
+    m_brBkUser.DeleteObject();
+  m_bUserBkColour = false;
+}
 
 void CStaticExtn::FlashBkgnd(COLORREF cfFlashColour)
 {
@@ -94,6 +114,22 @@ LRESULT CStaticExtn::OnMouseLeave(WPARAM, LPARAM)
   return 0L;
 }
 
+HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
+{
+  if (!this->IsWindowEnabled())
+    return NULL;
+
+  if (m_bUserColour) {
+    pDC->SetTextColor(m_cfUser);
+  }
+  if (m_bUserBkColour) {
+    pDC->SetBkColor(m_cfBkUser);
+    pDC->SetBkMode(TRANSPARENT);
+    return (HBRUSH)(m_brBkUser.GetSafeHandle());
+  }
+  return NULL;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CEditExtn
 
@@ -124,6 +160,8 @@ CEditExtn::CEditExtn(std::vector<st_context_menu> vmenu_items,
 
 CEditExtn::~CEditExtn()
 {
+  m_brInFocus.DeleteObject();
+  m_brNoFocus.DeleteObject();
 }
 
 BEGIN_MESSAGE_MAP(CEditExtn, CEdit)
@@ -326,6 +364,9 @@ CListBoxExtn::CListBoxExtn()
 
 CListBoxExtn::~CListBoxExtn()
 {
+  m_brInFocus.DeleteObject();
+  m_brNoFocus.DeleteObject();
+
   delete m_pLBToolTips;
 }
 

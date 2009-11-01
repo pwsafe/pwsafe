@@ -12,9 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc dialog
-#include "PWPropertyPage.h"
+#include "Options_PropertyPage.h"
 
-class COptionsMisc : public CPWPropertyPage
+class COptionsMisc : public COptions_PropertyPage
 {
   DECLARE_DYNCREATE(COptionsMisc)
 
@@ -42,10 +42,24 @@ public:
   CString m_defusername;
   CString m_otherbrowserlocation;
   //}}AFX_DATA
+
+  BOOL m_saveconfirmdelete;
+  BOOL m_savemaintaindatetimestamps;
+  BOOL m_saveescexits;
+  BOOL m_savehotkey_enabled;
+  BOOL m_saveusedefuser;
+  BOOL m_savequerysetdef;
+  CString m_savedefusername;
+  CString m_saveotherbrowserlocation;
+  DWORD m_savehotkey_value;
+  DWORD_PTR m_savedoubleclickaction;
+  CString m_saveBrowserCmdLineParms;
+  CString m_saveAutotype;
+  BOOL m_saveminauto;
+
   DWORD m_hotkey_value;
   DWORD_PTR m_doubleclickaction;
   DWORD_PTR m_DCA_to_Index[PWSprefs::maxDCA + 1];
-  CString m_csBrowser;
   CString m_csBrowserCmdLineParms;
   CString m_csAutotype;
   BOOL m_minauto;
@@ -56,6 +70,7 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
@@ -67,12 +82,10 @@ protected:
   afx_msg void OnEnableHotKey();
   afx_msg void OnUsedefuser();
   afx_msg void OnBrowseForLocation();
-  //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
-
-public:
   afx_msg void OnComboChanged();
-  BOOL PreTranslateMessage(MSG* pMsg);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
 
 private:
   CToolTipCtrl* m_pToolTipCtrl;

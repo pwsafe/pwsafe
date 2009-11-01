@@ -10,22 +10,27 @@
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
-#include "AddEdit_PropertyPage.h"
+#include "Options_PropertyPage.h"
+#include "Options_PropertySheet.h"
 
-IMPLEMENT_DYNAMIC(CAddEdit_PropertyPage, CPWPropertyPage)
+IMPLEMENT_DYNAMIC(COptions_PropertyPage, CPWPropertyPage)
 
-COLORREF CAddEdit_PropertyPage::crefGreen = (RGB(222, 255, 222));
-COLORREF CAddEdit_PropertyPage::crefWhite = (RGB(255, 255, 255));
-
-CAddEdit_PropertyPage::CAddEdit_PropertyPage(CWnd *pParent, UINT nID,
-                                             st_AE_master_data *pAEMD)
- : CPWPropertyPage(nID), m_AEMD(*pAEMD)
+COptions_PropertyPage::COptions_PropertyPage(UINT nID)
+ : CPWPropertyPage(nID)
 {
-  // Save pointer to my PropertySheet
-  m_ae_psh = (CAddEdit_PropertySheet *)pParent;
 }
 
-BOOL CAddEdit_PropertyPage::OnQueryCancel()
+BOOL COptions_PropertyPage::OnInitDialog()
+{
+  CPWPropertyPage::OnInitDialog();
+
+  // Save pointer to my PropertySheet
+  m_options_psh = (COptions_PropertySheet *)this->GetParent();
+
+  return TRUE;
+}
+
+BOOL COptions_PropertyPage::OnQueryCancel()
 {
   // Check whether there have been any changes in order to ask the user
   // if they really want to cancel
@@ -33,7 +38,7 @@ BOOL CAddEdit_PropertyPage::OnQueryCancel()
   // selected to view them as ones not yet loaded cannot have changed fields)
   if (QuerySiblings(PP_DATA_CHANGED, 0L) != 0L) {
     CGeneralMsgBox gmb;
-    if (gmb.AfxMessageBox(IDS_AREYOUSURE,
+    if (gmb.AfxMessageBox(IDS_AREYOUSURE_OPT,
                           MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2) == IDNO)
       return FALSE;
   }

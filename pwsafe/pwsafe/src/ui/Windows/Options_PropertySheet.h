@@ -9,15 +9,13 @@
 #pragma once
 
 #include "PWPropertySheet.h"
+#include "ControlExtns.h"
 
 class COptions_PropertySheet : public CPWPropertySheet
 {
 public:
   COptions_PropertySheet(UINT nID, CWnd* pDbx);
   ~COptions_PropertySheet();
-
-  // Retrieve DoubleClickAction or ClearClipboardOnMimimize
-  enum {PP_GET_DCA = 0, PP_GET_CCOM};
 
   DECLARE_DYNAMIC(COptions_PropertySheet)
 };

@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
+#include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
 
@@ -32,7 +33,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy property page
 
-IMPLEMENT_DYNCREATE(COptionsPasswordPolicy, CPWPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsPasswordPolicy, COptions_PropertyPage)
 
 const UINT COptionsPasswordPolicy::nonHex[COptionsPasswordPolicy::N_NOHEX] = {
   IDC_USELOWERCASE, IDC_USEUPPERCASE, IDC_USEDIGITS,
@@ -49,7 +50,7 @@ const UINT COptionsPasswordPolicy::nonHexLengthSpins[COptionsPasswordPolicy::N_H
   IDC_SPINLOWERCASE, IDC_SPINUPPERCASE, IDC_SPINDIGITS, IDC_SPINSYMBOLS};
 
 COptionsPasswordPolicy::COptionsPasswordPolicy()
-  : CPWPropertyPage(COptionsPasswordPolicy::IDD)
+  : COptions_PropertyPage(COptionsPasswordPolicy::IDD)
 {
   //{{AFX_DATA_INIT(COptionsPasswordPolicy)
   //}}AFX_DATA_INIT
@@ -61,7 +62,7 @@ COptionsPasswordPolicy::~COptionsPasswordPolicy()
 
 void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
 {
-  CPWPropertyPage::DoDataExchange(pDX);
+  COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsPasswordPolicy)
   DDX_Text(pDX, IDC_DEFPWLENGTH, m_pwdefaultlength);
@@ -79,7 +80,7 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, CPWPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordPolicy)
   ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUsehexdigits)
   ON_BN_CLICKED(IDC_USELOWERCASE, OnUselowercase)
@@ -88,6 +89,7 @@ BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, CPWPropertyPage)
   ON_BN_CLICKED(IDC_USESYMBOLS, OnUsesymbols)
   ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -96,7 +98,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsPasswordPolicy::OnInitDialog() 
 {
-  CPWPropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
   CSpinButtonCtrl* pspinD = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
@@ -147,6 +149,19 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
 
   do_nohex(m_pwusehexdigits == FALSE);
   do_easyorpronounceable(m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE);
+
+  m_savepwdefaultlength = m_pwdefaultlength;
+  m_savepwuselowercase = m_pwuselowercase;
+  m_savepwuseuppercase = m_pwuseuppercase;
+  m_savepwusedigits = m_pwusedigits;
+  m_savepwusesymbols = m_pwusesymbols;
+  m_savepweasyvision = m_pweasyvision;
+  m_savepwusehexdigits = m_pwusehexdigits;
+  m_savepwmakepronounceable = m_pwmakepronounceable;
+  m_savepwdigitminlength = m_pwdigitminlength;
+  m_savepwlowerminlength = m_pwlowerminlength;
+  m_savepwsymbolminlength = m_pwsymbolminlength;
+  m_savepwupperminlength = m_pwupperminlength;
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -325,8 +340,6 @@ void COptionsPasswordPolicy::OnMakePronounceable()
 
 BOOL COptionsPasswordPolicy::OnKillActive()
 {
-  CPWPropertyPage::OnKillActive();
-
   CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if (m_pwusehexdigits &&
@@ -367,5 +380,39 @@ BOOL COptionsPasswordPolicy::OnKillActive()
        m_pwsymbolminlength = m_pwupperminlength = 1;
   //End check
 
-  return TRUE;
+  return COptions_PropertyPage::OnKillActive();
+}
+
+LRESULT COptionsPasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
+{
+  UpdateData(TRUE);
+
+  // Have any of my fields been changed?
+  switch (wParam) {
+    case PP_DATA_CHANGED:
+      if (m_savepwdefaultlength     != m_pwdefaultlength     ||
+          m_savepwuselowercase      != m_pwuselowercase      ||
+          (m_pwuselowercase         == TRUE &&
+           m_savepwlowerminlength   != m_pwlowerminlength)   ||
+          m_savepwuseuppercase      != m_pwuseuppercase      ||
+          (m_pwuseuppercase         == TRUE &&
+           m_savepwupperminlength   != m_pwupperminlength)   ||
+          m_savepwusedigits         != m_pwusedigits         ||
+          (m_pwusedigits            == TRUE &&
+           m_savepwdigitminlength   != m_pwdigitminlength)   ||
+          m_savepwusesymbols        != m_pwusesymbols        ||
+          (m_pwusesymbols           == TRUE &&
+           m_savepwsymbolminlength  != m_pwsymbolminlength)  ||
+          m_savepweasyvision        != m_pweasyvision        ||
+          m_savepwusehexdigits      != m_pwusehexdigits      ||
+          m_savepwmakepronounceable != m_pwmakepronounceable)
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+  }
+  return 0L;
 }

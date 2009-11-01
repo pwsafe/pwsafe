@@ -29,6 +29,8 @@ public:
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+ 
+  enum {PP_DATA_CHANGED = 0, PP_UPDATE_VARIABLES};
 
   DECLARE_DYNAMIC(CPWPropertyPage)
 };
