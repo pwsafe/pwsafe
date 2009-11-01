@@ -12,9 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay dialog
-#include "PWPropertyPage.h"
+#include "Options_PropertyPage.h"
 
-class COptionsDisplay : public CPWPropertyPage
+class COptionsDisplay : public COptions_PropertyPage
 {
   DECLARE_DYNCREATE(COptionsDisplay)
 
@@ -45,22 +45,37 @@ public:
   int m_trayiconcolour;
   //}}AFX_DATA
 
+  BOOL m_savealwaysontop;
+  BOOL m_saveshowusernameintree;
+  BOOL m_saveshowpasswordintree;
+  BOOL m_saveshownotesastipsinviews;
+  BOOL m_saveexplorertree;
+  BOOL m_saveenablegrid;
+  BOOL m_savepwshowinedit;
+  BOOL m_savenotesshowinedit;
+  BOOL m_savewordwrapnotes;
+  BOOL m_savepreexpirywarn;
+  int m_savetreedisplaystatusatopen;
+  int m_savepreexpirywarndays;
+  int m_savetrayiconcolour;
 
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsDisplay)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
 
   // Implementation
 protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsDisplay)
-  virtual BOOL OnInitDialog();
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg void OnPreWarn();
   afx_msg void OnDisplayUserInTree();
   afx_msg BOOL OnKillActive();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 };

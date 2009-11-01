@@ -312,7 +312,7 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
   security.m_clearclipboardonexit = prefs->
     GetPref(PWSprefs::ClearClipboardOnExit) ? TRUE : FALSE;
-  security.m_lockdatabase = prefs->
+  security.m_LockOnMinimize = prefs->
     GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
   security.m_confirmcopy = prefs->
     GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
@@ -379,7 +379,7 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::DefaultUsername).c_str();
   misc.m_querysetdef = prefs->
     GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
-  misc.m_csBrowser = prefs->
+  misc.m_otherbrowserlocation = prefs->
     GetPref(PWSprefs::AltBrowser).c_str();
   misc.m_csBrowserCmdLineParms = prefs->
     GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
@@ -421,9 +421,7 @@ void DboxMain::OnOptions()
   optionsPS.AddPage(&system);
   optionsPS.AddPage(&shortcuts);
 
-  /*
-  **  Remove the "Apply Now" button.
-  */
+  // Remove the "Apply Now" button.
   optionsPS.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
   // Disable Hotkey around this as the user may press the current key when 
@@ -502,7 +500,7 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::ClearClipboardOnExit,
       security.m_clearclipboardonexit == TRUE);
     prefs->SetPref(PWSprefs::DatabaseClear,
-      security.m_lockdatabase == TRUE);
+      security.m_LockOnMinimize == TRUE);
     prefs->SetPref(PWSprefs::DontAskQuestion,
       security.m_confirmcopy == FALSE);
     prefs->SetPref(PWSprefs::LockOnWindowLock,
@@ -572,7 +570,7 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::QuerySetDef,
       misc.m_querysetdef == TRUE);
     prefs->SetPref(PWSprefs::AltBrowser,
-                   LPCWSTR(misc.m_csBrowser));
+                   LPCWSTR(misc.m_otherbrowserlocation));
     prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
                    LPCWSTR(misc.m_csBrowserCmdLineParms));
     if (misc.m_csAutotype.IsEmpty() || misc.m_csAutotype == DEFAULT_AUTOTYPE)

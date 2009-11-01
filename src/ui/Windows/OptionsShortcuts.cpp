@@ -9,7 +9,7 @@
 //
 
 #include "stdafx.h"
-#include <algorithm>
+#include "Options_PropertySheet.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -21,11 +21,14 @@
 
 #include "OptionsShortcuts.h" // Must be after resource.h
 
+#include <algorithm>
+
 // COptionsShortcuts dialog
 
-IMPLEMENT_DYNAMIC(COptionsShortcuts, CPWPropertyPage)
+IMPLEMENT_DYNAMIC(COptionsShortcuts, COptions_PropertyPage)
 
-COptionsShortcuts::COptionsShortcuts(): CPWPropertyPage(COptionsShortcuts::IDD),
+COptionsShortcuts::COptionsShortcuts()
+  : COptions_PropertyPage(COptionsShortcuts::IDD),
   m_bShortcutsChanged(false)
 {
   //{{AFX_DATA_INIT(COptionsShortcuts)
@@ -38,15 +41,16 @@ COptionsShortcuts::~COptionsShortcuts()
 
 void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
 {
-  CPWPropertyPage::DoDataExchange(pDX);
+  COptions_PropertyPage::DoDataExchange(pDX);
 
   DDX_Control(pDX, IDC_SHORTCUTLIST, m_ShortcutLC);
   DDX_Control(pDX, IDC_STATIC_SHCTWARNING, m_stc_warning);
 }
 
-BEGIN_MESSAGE_MAP(COptionsShortcuts, CPWPropertyPage)
-  ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnBnClickedResetAll)
+BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
   ON_WM_MEASUREITEM()
+  ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnBnClickedResetAll)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
 END_MESSAGE_MAP()
 
 void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
@@ -63,7 +67,7 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
 BOOL COptionsShortcuts::OnInitDialog()
 {
   BOOL brc;
-  CPWPropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   m_ShortcutLC.Init(this);
 
@@ -279,7 +283,26 @@ BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
     return TRUE;
   }
 
-  return CPWPropertyPage::PreTranslateMessage(pMsg);
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
+{
+  UpdateData(TRUE);
+
+  // Have any of my fields been changed?
+  switch (wParam) {
+    case PP_DATA_CHANGED:
+      if (m_bShortcutsChanged) 
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+  }
+  return 0L;
 }
 
 int CALLBACK COptionsShortcuts::CompareFunc(LPARAM lParam1, LPARAM lParam2,

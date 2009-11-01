@@ -8,6 +8,7 @@
 
 #include "DboxMain.h"
 #include "PWPropertyPage.h"
+#include "GeneralMsgBox.h"
 
 #if defined(POCKET_PC)
 #error "TBD - define proper PropertyPage base class for PPC"
@@ -46,4 +47,3 @@ LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   }
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
-

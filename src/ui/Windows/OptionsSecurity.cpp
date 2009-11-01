@@ -34,9 +34,10 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSecurity property page
 
-IMPLEMENT_DYNCREATE(COptionsSecurity, CPWPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsSecurity, COptions_PropertyPage)
 
-COptionsSecurity::COptionsSecurity() : CPWPropertyPage(COptionsSecurity::IDD)
+COptionsSecurity::COptionsSecurity()
+  : COptions_PropertyPage(COptionsSecurity::IDD)
 {
   //{{AFX_DATA_INIT(COptionsSecurity)
   //}}AFX_DATA_INIT
@@ -48,12 +49,12 @@ COptionsSecurity::~COptionsSecurity()
 
 void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 {
-  CPWPropertyPage::DoDataExchange(pDX);
+  COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsSecurity)
   DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_clearclipboardonexit);
   DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_clearclipboardonminimize);
-  DDX_Check(pDX, IDC_LOCKBASE, m_lockdatabase);
+  DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
   DDX_Check(pDX, IDC_CONFIRMCOPY, m_confirmcopy);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
   DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
@@ -61,10 +62,9 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsSecurity, CPWPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
-  ON_BN_CLICKED(IDC_LOCKBASE, OnLockbase)
-  ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockbase)
+  ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -72,7 +72,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSecurity message handlers
 
-void COptionsSecurity::OnLockbase() 
+void COptionsSecurity::OnLockOnIdleTimeout() 
 {
   BOOL enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
   GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
@@ -81,9 +81,9 @@ void COptionsSecurity::OnLockbase()
 
 BOOL COptionsSecurity::OnInitDialog() 
 {
-  CPWPropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
-  OnLockbase();
+  OnLockOnIdleTimeout();
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_IDLE_TIMEOUT));
@@ -91,6 +91,14 @@ BOOL COptionsSecurity::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
 
+  m_saveclearclipboardonminimize = m_clearclipboardonminimize;
+  m_saveclearclipboardonexit = m_clearclipboardonexit;
+  m_saveLockOnMinimize = m_LockOnMinimize;
+  m_saveconfirmcopy = m_confirmcopy;
+  m_saveLockOnWindowLock = m_LockOnWindowLock;
+  m_saveLockOnIdleTimeout = m_LockOnIdleTimeout;
+  m_saveIdleTimeOut = m_IdleTimeOut;
+ 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -101,13 +109,29 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
 
   // Misc has asked for ClearClipboardOnMinimize value
   switch (wParam) {
-    case COptions_PropertySheet::PP_GET_CCOM:
+    case PPOPT_GET_CCOM:
       {
       BOOL * pCCOM = (BOOL *)lParam;
       ASSERT(pCCOM != NULL);
       *pCCOM = (BOOL)m_clearclipboardonminimize;
       }
       return 1L;
+    case PP_DATA_CHANGED:
+      if (m_saveclearclipboardonminimize != m_clearclipboardonminimize ||
+          m_saveclearclipboardonexit     != m_clearclipboardonexit     ||
+          m_saveLockOnMinimize           != m_LockOnMinimize           ||
+          m_saveconfirmcopy              != m_confirmcopy              ||
+          m_saveLockOnWindowLock         != m_LockOnWindowLock         ||
+          m_saveLockOnIdleTimeout        != m_LockOnIdleTimeout        ||
+          (m_LockOnIdleTimeout           == TRUE &&
+           m_saveIdleTimeOut              != m_IdleTimeOut))
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
     default:
       break;
   }
@@ -116,8 +140,6 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
 
 BOOL COptionsSecurity::OnKillActive()
 {
-  CPWPropertyPage::OnKillActive();
-
   CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
@@ -126,7 +148,7 @@ BOOL COptionsSecurity::OnKillActive()
     return FALSE;
   }
 
-  return TRUE;
+  return COptions_PropertyPage::OnKillActive();
 }
 
 BOOL COptionsSecurity::OnApply() 
@@ -136,8 +158,7 @@ BOOL COptionsSecurity::OnApply()
   CGeneralMsgBox gmb;
   // Go ask Misc for DoubleClickAction value
   int iDoubleClickAction;
-  if (QuerySiblings(COptions_PropertySheet::PP_GET_DCA,
-                    (LPARAM)&iDoubleClickAction) == 0L) {
+  if (QuerySiblings(PPOPT_GET_DCA, (LPARAM)&iDoubleClickAction) == 0L) {
     // Misc not loaded - get from Prefs
     iDoubleClickAction = 
         PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
@@ -149,12 +170,12 @@ BOOL COptionsSecurity::OnApply()
 
     // Are we the current page, if not activate this page
     COptions_PropertySheet *pPS = (COptions_PropertySheet *)GetParent();
-    if (pPS->GetActivePage() != (CPWPropertyPage *)this)
+    if (pPS->GetActivePage() != (COptions_PropertyPage *)this)
       pPS->SetActivePage(this);
 
     GetDlgItem(IDC_CLEARBOARDONMINIMIZE)->SetFocus();
     return FALSE;
   }
 
-  return CPWPropertyPage::OnApply();
+  return COptions_PropertyPage::OnApply();
 }

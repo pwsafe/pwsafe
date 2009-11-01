@@ -12,6 +12,7 @@
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"  // needed for DboxMain::UpdatePasswordHistory
+#include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
 
@@ -33,10 +34,10 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory property page
 
-IMPLEMENT_DYNCREATE(COptionsPasswordHistory, CPWPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsPasswordHistory, COptions_PropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory()
-  : CPWPropertyPage(COptionsPasswordHistory::IDD)
+  : COptions_PropertyPage(COptionsPasswordHistory::IDD)
 {
   //{{AFX_DATA_INIT(COptionsPasswordHistory)
   //}}AFX_DATA_INIT
@@ -51,7 +52,7 @@ COptionsPasswordHistory::~COptionsPasswordHistory()
 
 void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
 {
-  CPWPropertyPage::DoDataExchange(pDX);
+  COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsPasswordHistory)
   DDX_Check(pDX, IDC_SAVEPWHISTORY, m_savepwhistory);
@@ -60,7 +61,7 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
   DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_pwhaction);
 }
 
-BEGIN_MESSAGE_MAP(COptionsPasswordHistory, CPWPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsPasswordHistory, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordHistory)
   ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
   ON_BN_CLICKED(IDC_APPLYPWHCHANGESNOW, OnApplyPWHChanges)
@@ -69,6 +70,7 @@ BEGIN_MESSAGE_MAP(COptionsPasswordHistory, CPWPropertyPage)
   ON_BN_CLICKED(IDC_RESETPWHISTORYOFF, OnPWHistoryDoAction)
   ON_BN_CLICKED(IDC_RESETPWHISTORYON, OnPWHistoryDoAction)
   ON_BN_CLICKED(IDC_SETMAXPWHISTORY, OnPWHistoryDoAction)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -76,7 +78,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsPasswordHistory::OnInitDialog() 
 {
-  BOOL bResult = CPWPropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
@@ -88,13 +90,16 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   GetDlgItem(IDC_PWHSPIN)->EnableWindow(m_savepwhistory);
   GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(m_savepwhistory);
 
+  m_savesavepwhistory = m_savepwhistory;
+  m_savepwhistorynumdefault = m_pwhistorynumdefault;
+
   // Tooltips on Property Pages
   EnableToolTips();
 
   m_ToolTipCtrl = new CToolTipCtrl;
   if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE(L"Unable To create Property Page ToolTip\n");
-    return bResult;
+    return TRUE;
   }
 
   // Activate the tooltip control.
@@ -120,8 +125,6 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 
 BOOL COptionsPasswordHistory::OnKillActive()
 {
-  CPWPropertyPage::OnKillActive();
-
   CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if (m_savepwhistory && ((m_pwhistorynumdefault < 1) || (m_pwhistorynumdefault > 255))) {
@@ -129,10 +132,9 @@ BOOL COptionsPasswordHistory::OnKillActive()
     ((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
     return FALSE;
   }
-
   //End check
 
-  return TRUE;
+  return COptions_PropertyPage::OnKillActive();;
 }
 
 void COptionsPasswordHistory::OnSavePWHistory() 
@@ -162,7 +164,28 @@ BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
   if (m_ToolTipCtrl != NULL)
     m_ToolTipCtrl->RelayEvent(pMsg);
 
-  return CPWPropertyPage::PreTranslateMessage(pMsg);
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )
+{
+  UpdateData(TRUE);
+
+  // Have any of my fields been changed?
+  switch (wParam) {
+    case PP_DATA_CHANGED:
+      if (m_savesavepwhistory        != m_savepwhistory        ||
+          (m_savepwhistory           == TRUE &&
+           m_savepwhistorynumdefault != m_pwhistorynumdefault))
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+  }
+  return 0L;
 }
 
 void COptionsPasswordHistory::OnPWHistoryNoAction()

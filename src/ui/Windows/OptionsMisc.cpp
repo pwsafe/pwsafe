@@ -13,6 +13,7 @@
 #include "GeneralMsgBox.h"
 #include "PWFileDialog.h"
 #include "Options_PropertySheet.h"
+#include "Options_PropertyPage.h"
 
 #include "corelib/corelib.h"
 #include "corelib/PwsPlatform.h"
@@ -38,10 +39,10 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc property page
 
-IMPLEMENT_DYNCREATE(COptionsMisc, CPWPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsMisc, COptions_PropertyPage)
 
 COptionsMisc::COptionsMisc()
-  : CPWPropertyPage(COptionsMisc::IDD), m_pToolTipCtrl(NULL)
+  : COptions_PropertyPage(COptionsMisc::IDD), m_pToolTipCtrl(NULL)
 {
   //{{AFX_DATA_INIT(COptionsMisc)
   //}}AFX_DATA_INIT
@@ -54,7 +55,7 @@ COptionsMisc::~COptionsMisc()
 
 void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 {
-  CPWPropertyPage::DoDataExchange(pDX);
+  COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsMisc)
   DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
@@ -76,7 +77,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsMisc, CPWPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsMisc, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsMisc)
   ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
   ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
@@ -88,7 +89,7 @@ END_MESSAGE_MAP()
 
 BOOL COptionsMisc::OnInitDialog() 
 {
-  CPWPropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   // For some reason, MFC calls us twice when initializing.
   // Populate the combo box only once.
@@ -156,9 +157,23 @@ BOOL COptionsMisc::OnInitDialog()
     m_hotkey.EnableWindow(FALSE);
 #endif
 
-  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_csBrowser);
+  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_otherbrowserlocation);
 
   OnUsedefuser();
+
+  m_saveconfirmdelete = m_confirmdelete;
+  m_savemaintaindatetimestamps = m_maintaindatetimestamps;
+  m_saveescexits = m_escexits;
+  m_savehotkey_enabled = m_hotkey_enabled;
+  m_saveusedefuser = m_usedefuser;
+  m_savequerysetdef = m_querysetdef;
+  m_savedefusername = m_defusername;
+  m_saveotherbrowserlocation = m_otherbrowserlocation;
+  m_savehotkey_value = m_hotkey_value;
+  m_savedoubleclickaction = m_doubleclickaction;
+  m_saveBrowserCmdLineParms = m_csBrowserCmdLineParms;
+  m_saveAutotype = m_csAutotype;
+  m_saveminauto = m_minauto;
 
   // Tooltips on Property Pages
   EnableToolTips();
@@ -223,13 +238,35 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
 
   // Security asked for DoubleClickAction value
   switch (wParam) {
-    case COptions_PropertySheet::PP_GET_DCA:
+    case PPOPT_GET_DCA:
       {
       int * pDCA = (int *)lParam;
       ASSERT(pDCA != NULL);
       *pDCA = (int)m_doubleclickaction;
       return 1L;
       }
+    case PP_DATA_CHANGED:
+      if (m_saveconfirmdelete          != m_confirmdelete          || 
+          m_savemaintaindatetimestamps != m_maintaindatetimestamps ||
+          m_saveescexits               != m_escexits               ||
+          m_savehotkey_enabled         != m_hotkey_enabled         ||
+          m_saveusedefuser             != m_usedefuser             ||
+          (m_usedefuser                == TRUE &&
+           m_savedefusername           != m_defusername)           ||
+          m_savequerysetdef            != m_querysetdef            ||
+          m_savehotkey_value           != m_hotkey_value           ||
+          m_savedoubleclickaction      != m_doubleclickaction      ||
+          m_saveotherbrowserlocation   != m_otherbrowserlocation   ||
+          m_saveBrowserCmdLineParms    != m_csBrowserCmdLineParms  ||
+          m_saveAutotype               != m_csAutotype             ||
+          m_saveminauto                != m_minauto)
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
     default:
       break;
   }
@@ -247,12 +284,10 @@ BOOL COptionsMisc::OnApply()
   DWORD v = wVirtualKeyCode | (wModifiers << 16);
   m_hotkey_value = v;
 #endif
-  m_csBrowser = m_otherbrowserlocation;
 
   // Go ask Security for ClearClipboardOnMinimize value
   BOOL bClearClipboardOnMinimize;
-  if (QuerySiblings(COptions_PropertySheet::PP_GET_CCOM,
-                    (LPARAM)&bClearClipboardOnMinimize) == 0L) {
+  if (QuerySiblings(PPOPT_GET_CCOM, (LPARAM)&bClearClipboardOnMinimize) == 0L) {
     // Security not loaded - get from Prefs
     bClearClipboardOnMinimize = 
         PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize);
@@ -265,14 +300,14 @@ BOOL COptionsMisc::OnApply()
 
     // Are we the current page, if not activate this page
     COptions_PropertySheet *pPS = (COptions_PropertySheet *)GetParent();
-    if (pPS->GetActivePage() != (CPWPropertyPage *)this)
+    if (pPS->GetActivePage() != (COptions_PropertyPage *)this)
       pPS->SetActivePage(this);
 
     m_dblclk_cbox.SetFocus();
     return FALSE;
   }
 
-  return CPWPropertyPage::OnApply();
+  return COptions_PropertyPage::OnApply();
 }
 
 void COptionsMisc::OnBrowseForLocation()
@@ -280,10 +315,10 @@ void COptionsMisc::OnBrowseForLocation()
   CString cs_initiallocation, cs_title;
   INT_PTR rc;
 
-  if (m_csBrowser.IsEmpty())
+  if (m_otherbrowserlocation.IsEmpty())
     cs_initiallocation = L"C:\\";
   else {
-    std::wstring path = m_csBrowser;
+    std::wstring path = m_otherbrowserlocation;
     std::wstring drive, dir, name, ext;
     pws_os::splitpath(path, drive, dir, name, ext);
     path = pws_os::makepath(drive, dir, L"", L"");
@@ -302,8 +337,8 @@ void COptionsMisc::OnBrowseForLocation()
 
   rc = fd.DoModal();
   if (rc == IDOK) {
-    m_csBrowser = fd.GetPathName();
-    GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_csBrowser);
+    m_otherbrowserlocation = fd.GetPathName();
+    GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_otherbrowserlocation);
   }
 }
 
@@ -315,5 +350,5 @@ BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
-  return CPWPropertyPage::PreTranslateMessage(pMsg);
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
 }

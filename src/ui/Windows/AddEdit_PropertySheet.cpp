@@ -237,7 +237,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     // loaded - i.e. the user has selected to view them, since obviously
     // the user would not have changed their values if not displayed. Duh!
     if (SendMessage(PSM_QUERYSIBLINGS,
-                (WPARAM)CAddEdit_PropertyPage::PP_UPDATE_VARIABLES, 0L) != 0)
+                (WPARAM)CPWPropertyPage::PP_UPDATE_VARIABLES, 0L) != 0)
       return TRUE;
 
     time_t t;

@@ -556,3 +556,4 @@
 #define IDS_RETRY                       5729
 #define IDS_IGNORE                      5730
 #define IDS_TRYAGAIN                    5731
+#define IDS_AREYOUSURE_OPT              5732

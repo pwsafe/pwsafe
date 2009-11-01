@@ -404,12 +404,10 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 BOOL CAddEdit_Basic::OnKillActive()
 {
-  CAddEdit_PropertyPage::OnKillActive();
-
   if (UpdateData(TRUE) == FALSE)
     return FALSE;
 
-  return TRUE;
+  return CAddEdit_PropertyPage::OnKillActive();
 }
 
 LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -423,20 +421,20 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
         case IDS_EDITENTRY:
           if (M_group()        != M_pci()->GetGroup() ||
               M_title()        != M_pci()->GetTitle() ||
-              M_username()     != M_pci()->GetUser() ||
+              M_username()     != M_pci()->GetUser()  ||
               M_realnotes()    != M_pci()->GetNotes() ||
-              M_URL()          != M_pci()->GetURL() ||
+              M_URL()          != M_pci()->GetURL()   ||
               M_email()        != M_pci()->GetEmail() ||
               M_realpassword() != M_oldRealPassword())
             return 1L;
           break;
         case IDS_ADDENTRY:
-          if (!M_group().IsEmpty() ||
-              !M_title().IsEmpty() ||
-              !M_username().IsEmpty() ||
+          if (!M_group().IsEmpty()        ||
+              !M_title().IsEmpty()        ||
+              !M_username().IsEmpty()     ||
               !M_realpassword().IsEmpty() ||
-              !M_realnotes().IsEmpty() ||
-              !M_URL().IsEmpty() ||
+              !M_realnotes().IsEmpty()    ||
+              !M_URL().IsEmpty()          ||
               !M_email().IsEmpty())
             return 1L;
           break;

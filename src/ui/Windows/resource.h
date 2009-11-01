@@ -342,7 +342,7 @@
 #define IDC_QUIT                        1023
 #define IDC_OPEN                        1024
 #define IDC_RANDOM                      1025
-#define IDC_LOCKBASE                    1026
+#define IDC_LOCKONMINIMIZE              1026
 #define IDC_DEFPWSHOW                   1027
 #define IDC_DEFPWSHOWINEDIT             1028
 #define IDC_USEDEFUSER                  1029

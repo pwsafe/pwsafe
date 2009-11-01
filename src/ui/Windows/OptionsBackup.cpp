@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
+#include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h" // for DoubleClickAction enums
@@ -41,9 +42,10 @@ int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup property page
 
-IMPLEMENT_DYNCREATE(COptionsBackup, CPWPropertyPage)
+IMPLEMENT_DYNCREATE(COptionsBackup, COptions_PropertyPage)
 
-COptionsBackup::COptionsBackup(): CPWPropertyPage(COptionsBackup::IDD),
+COptionsBackup::COptionsBackup()
+  : COptions_PropertyPage(COptionsBackup::IDD),
   m_pToolTipCtrl(NULL)
 {
   //{{AFX_DATA_INIT(COptionsBackup)
@@ -69,7 +71,7 @@ void COptionsBackup::SetCurFile(const CString &currentFile)
 
 void COptionsBackup::DoDataExchange(CDataExchange* pDX)
 {
-  CPWPropertyPage::DoDataExchange(pDX);
+  COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsBackup)
   DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
@@ -83,7 +85,7 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(COptionsBackup, CPWPropertyPage)
+BEGIN_MESSAGE_MAP(COptionsBackup, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsBackup)
   ON_BN_CLICKED(IDC_BACKUPBEFORESAVE, OnBackupBeforeSave)
   ON_BN_CLICKED(IDC_DFLTBACKUPPREFIX, OnBackupPrefix)
@@ -93,12 +95,13 @@ BEGIN_MESSAGE_MAP(COptionsBackup, CPWPropertyPage)
   ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
   ON_CBN_SELCHANGE(IDC_BACKUPSUFFIX, OnComboChanged)
   ON_EN_KILLFOCUS(IDC_USERBACKUPPREFIXVALUE, OnUserPrefixKillfocus)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 BOOL COptionsBackup::OnInitDialog()
 {
-  CPWPropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   if (m_backupsuffix_cbox.GetCount() == 0) {
     // add the strings in alphabetical order
@@ -136,6 +139,15 @@ BOOL COptionsBackup::OnInitDialog()
 
   OnComboChanged();
   OnBackupBeforeSave();
+
+  m_saveuserbackupprefix = m_userbackupprefix;
+  m_saveuserbackupotherlocation = m_userbackupotherlocation;
+  m_savesaveimmediately = m_saveimmediately;
+  m_savebackupbeforesave = m_backupbeforesave;
+  m_savebackupprefix = m_backupprefix;
+  m_savebackuplocation = m_backuplocation;
+  m_savemaxnumincbackups = m_maxnumincbackups;
+  m_savebackupsuffix = m_backupsuffix;
 
   // Tooltips on Property Pages
   EnableToolTips();
@@ -288,7 +300,7 @@ void COptionsBackup::SetExample()
 
 BOOL COptionsBackup::OnKillActive()
 {
-  CPWPropertyPage::OnKillActive();
+  COptions_PropertyPage::OnKillActive();
 
   if (m_backupbeforesave != TRUE)
     return TRUE;
@@ -345,7 +357,33 @@ BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
-  return CPWPropertyPage::PreTranslateMessage(pMsg);
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+LRESULT COptionsBackup::OnQuerySiblings(WPARAM wParam, LPARAM )
+{
+  UpdateData(TRUE);
+
+  // Have any of my fields been changed?
+  switch (wParam) {
+    case PP_DATA_CHANGED:
+      if (m_saveuserbackupprefix        != m_userbackupprefix        ||
+          m_saveuserbackupotherlocation != m_userbackupotherlocation ||
+          m_savesaveimmediately         != m_saveimmediately         ||
+          m_savebackupbeforesave        != m_backupbeforesave        ||
+          m_savebackupprefix            != m_backupprefix            ||
+          m_savebackupsuffix            != m_backupsuffix            ||
+          m_savebackuplocation          != m_backuplocation          ||
+          m_savemaxnumincbackups        != m_maxnumincbackups)
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+  }
+  return 0L;
 }
 
 void COptionsBackup::OnBrowseForLocation()
@@ -392,7 +430,7 @@ void COptionsBackup::OnBrowseForLocation()
 //  Callback procedure to set the initial selection of the browser.
 int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData)
 {
-  if (uMsg==BFFM_INITIALIZED) {
+  if (uMsg == BFFM_INITIALIZED) {
     ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, lpData);
   }
   return 0;
