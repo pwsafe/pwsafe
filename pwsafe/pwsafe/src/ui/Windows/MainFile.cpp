@@ -1195,7 +1195,7 @@ void DboxMain::OnImportText()
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_temp);
     gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
-    gmb.AddButton(1, IDOK, TRUE, TRUE);
+    gmb.AddButton(1, IDS_OK, TRUE, TRUE);
     gmb.AddButton(2, IDS_VIEWREPORT);
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
@@ -1385,7 +1385,7 @@ void DboxMain::OnImportXML()
 
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_temp);
-    gmb.AddButton(1, IDOK, TRUE, TRUE);
+    gmb.AddButton(1, IDS_OK, TRUE, TRUE);
     gmb.AddButton(2, IDS_VIEWREPORT);
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
