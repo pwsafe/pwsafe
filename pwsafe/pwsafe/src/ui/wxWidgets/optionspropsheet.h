@@ -170,6 +170,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
   void OnBuDirBrowseClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
+  void OnShowUsernameInTreeCB( wxCommandEvent& event );
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
@@ -179,6 +182,12 @@ public:
 
   bool GetBackupb4save() const { return m_backupb4save ; }
   void SetBackupb4save(bool value) { m_backupb4save = value ; }
+
+  bool GetAlwaysontop() const { return m_alwaysontop ; }
+  void SetAlwaysontop(bool value) { m_alwaysontop = value ; }
+
+  bool GetShowusernameintree() const { return m_showusernameintree ; }
+  void SetShowusernameintree(bool value) { m_showusernameintree = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -201,6 +210,7 @@ public:
   wxRadioButton* m_usrbudirRB;
   wxTextCtrl* m_usrbudirTxt;
   wxButton* m_buDirBN;
+  wxCheckBox* m_showpasswordintreeCB;
   wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
@@ -221,6 +231,8 @@ public:
 private:
   bool m_saveimmediate;
   bool m_backupb4save;
+  bool m_alwaysontop;
+  bool m_showusernameintree;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();

@@ -15436,6 +15436,8 @@ Action:"</string>
           <long name="working-mode">0</long>
           <string name="variable-0">"m_saveimmediate|bool|Saveimmediate||2|0|"</string>
           <string name="variable-1">"m_backupb4save|bool|Backupb4save||2|0|"</string>
+          <string name="variable-2">"m_alwaysontop|bool|Alwaysontop||2|0|"</string>
+          <string name="variable-3">"m_showusernameintree|bool|Showusernameintree||2|0|"</string>
           <string name="proxy-Id name">"ID_OPTIONS"</string>
           <long name="proxy-Id value">10130</long>
           <string name="proxy-Class">"COptions"</string>
@@ -17163,8 +17165,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_alwaysontop"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -17212,6 +17214,7 @@ Action:"</string>
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbCheckBoxProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnShowUsernameInTreeCB|NONE||COptions"</string>
                 <string name="proxy-Id name">"ID_CHECKBOX13"</string>
                 <long name="proxy-Id value">10151</long>
                 <string name="proxy-Name">""</string>
@@ -17226,8 +17229,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_showusernameintree"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -17284,7 +17287,7 @@ Action:"</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_showpasswordintreeCB"</string>
                 <string name="proxy-Label">"Show Password in Tree View"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>

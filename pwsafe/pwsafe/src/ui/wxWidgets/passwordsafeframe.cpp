@@ -123,6 +123,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
   : m_core(core), m_currentView(GRID), m_search(0)
 {
     Init();
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
+      style |= wxSTAY_ON_TOP;
     Create( parent, id, caption, pos, size, style );
 }
 

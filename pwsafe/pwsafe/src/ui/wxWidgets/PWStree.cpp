@@ -27,6 +27,7 @@
 
 #include "PWStree.h"
 #include "pwsdca.h"
+#include "corelib/PWSprefs.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -199,11 +200,22 @@ wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
 
 wxString PWSTreeCtrl::ItemDisplayString(const CItemData &item) const
 {
-  wxString title = item.GetTitle().c_str();
-  wxString user = item.GetUser().c_str();
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  const wxString title = item.GetTitle().c_str();
   wxString disp = title;
-  if (!user.empty())
-    disp += _T(" [") + user + _("]");
+
+  if (prefs->GetPref(PWSprefs::ShowUsernameInTree)) {
+    const wxString user = item.GetUser().c_str();
+    if (!user.empty())
+      disp += _T(" [") + user + _("]");
+  }
+
+  if (prefs->GetPref(PWSprefs::ShowPasswordInTree)) {
+    const wxString passwd = item.GetPassword().c_str();
+    if (!passwd.empty())
+      disp += _T(" {") + passwd + _("}");
+  }
+
   return disp;
 }
 
