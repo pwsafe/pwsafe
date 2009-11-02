@@ -221,9 +221,12 @@ public:
     // Hilites the item.  Used for search
     void SeletItem(const CUUIDGen& uuid);
 
-    ItemListConstIter GetEntryIter() const { return m_core.GetEntryIter(); }
-    ItemListConstIter GetEntryEndIter() const { return m_core.GetEntryEndIter(); }
-
+    ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
+    ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
+    
+    bool IsTreeView() const {return m_currentView == TREE;}
+    void RefreshView() {if (IsTreeView()) ShowTree(); else ShowGrid();}
+    
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;

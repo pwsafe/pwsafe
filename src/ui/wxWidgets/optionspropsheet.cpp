@@ -25,6 +25,9 @@
 ////@end includes
 
 #include "wx/dirdlg.h"
+#include "wx/debug.h"
+
+#include "passwordsafeframe.h"
 #include "optionspropsheet.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/Util.h" // for datetime string
@@ -61,6 +64,8 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
   EVT_RADIOBUTTON( ID_RADIOBUTTON7, COptions::OnBuDirRB )
 
   EVT_BUTTON( ID_BUTTON, COptions::OnBuDirBrowseClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX13, COptions::OnShowUsernameInTreeCB )
 
 ////@end COptions event table entries
 
@@ -145,6 +150,7 @@ void COptions::Init()
   m_usrbudirRB = NULL;
   m_usrbudirTxt = NULL;
   m_buDirBN = NULL;
+  m_showpasswordintreeCB = NULL;
   m_pwpLenCtrl = NULL;
   m_pwMinsGSzr = NULL;
   m_pwpUseLowerCtrl = NULL;
@@ -217,7 +223,6 @@ void COptions::CreateControls()
 
   wxBoxSizer* itemBoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxGROW|wxALL, 0);
-  wxArrayString m_busuffixCBStrings;
   m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1),
                                  BUSuffixArray, wxCB_DROPDOWN );
   itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -272,9 +277,9 @@ void COptions::CreateControls()
   itemCheckBox32->SetValue(false);
   itemBoxSizer30->Add(itemCheckBox32, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox33 = new wxCheckBox( itemPanel29, ID_CHECKBOX14, _("Show Password in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox33->SetValue(false);
-  itemBoxSizer30->Add(itemCheckBox33, 0, wxALIGN_LEFT|wxALL, 5);
+  m_showpasswordintreeCB = new wxCheckBox( itemPanel29, ID_CHECKBOX14, _("Show Password in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_showpasswordintreeCB->SetValue(false);
+  itemBoxSizer30->Add(m_showpasswordintreeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxCheckBox* itemCheckBox34 = new wxCheckBox( itemPanel29, ID_CHECKBOX15, _("Show Notes as ToolTips in Tree && List views"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox34->SetValue(false);
@@ -635,6 +640,8 @@ void COptions::CreateControls()
   // Set validators
   itemCheckBox4->SetValidator( wxGenericValidator(& m_saveimmediate) );
   itemCheckBox6->SetValidator( wxGenericValidator(& m_backupb4save) );
+  itemCheckBox31->SetValidator( wxGenericValidator(& m_alwaysontop) );
+  itemCheckBox32->SetValidator( wxGenericValidator(& m_showusernameintree) );
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
@@ -679,6 +686,7 @@ wxIcon COptions::GetIconResource( const wxString& name )
 void COptions::PrefsToPropSheet()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
+
   // Backup-related preferences
   m_saveimmediate = prefs->GetPref(PWSprefs::SaveImmediately);
   m_backupb4save = prefs->GetPref(PWSprefs::BackupBeforeEverySave);
@@ -693,6 +701,13 @@ void COptions::PrefsToPropSheet()
   m_dfltbudirRB->SetValue(budirValue.empty());
   m_usrbudirRB->SetValue(!budirValue.empty());
   m_usrbudirTxt->SetValue(budirValue);
+
+  // display-related preferences
+  m_alwaysontop = prefs->GetPref(PWSprefs::AlwaysOnTop);
+  m_showusernameintree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+  m_showpasswordintreeCB->SetValue(!m_showusernameintree && prefs->
+                                   GetPref(PWSprefs::ShowPasswordInTree));
+  m_showpasswordintreeCB->Enable(!m_showusernameintree);
 }
 
 void COptions::PropSheetToPrefs()
@@ -713,6 +728,33 @@ void COptions::PropSheetToPrefs()
   if (m_usrbudirRB->GetValue())
     budirValue = m_usrbudirTxt->GetValue();
   prefs->SetPref(PWSprefs::BackupDir, budirValue.c_str());
+
+  // display-related preferences
+  prefs->SetPref(PWSprefs::AlwaysOnTop, m_alwaysontop);
+  // set/clear wxSTAY_ON_TOP flag accrdingly:
+  long flags = GetParent()->GetWindowStyleFlag();
+  if (m_alwaysontop)
+    flags |= wxSTAY_ON_TOP;
+  else
+    flags &= ~wxSTAY_ON_TOP;
+  GetParent()->SetWindowStyleFlag(flags);
+
+  bool oldshowuserpref = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+  bool oldshowpswdpref = prefs->GetPref(PWSprefs::ShowPasswordInTree);
+  prefs->SetPref(PWSprefs::ShowUsernameInTree, m_showusernameintree);
+  prefs->SetPref(PWSprefs::ShowPasswordInTree,
+                 m_showpasswordintreeCB->GetValue());
+
+  bool showprefchanged = (oldshowuserpref != prefs->
+                          GetPref(PWSprefs::ShowUsernameInTree) ||
+                          oldshowpswdpref != prefs->
+                          GetPref(PWSprefs::ShowPasswordInTree));
+  if (showprefchanged) {
+    PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame*>(GetParent());
+    wxASSERT(pwsframe != NULL);
+    if (pwsframe->IsTreeView())
+      pwsframe->RefreshView();
+  }
 }
 
 void COptions::OnOk(wxCommandEvent& event)
@@ -830,4 +872,18 @@ void COptions::OnBuDirRB( wxCommandEvent& event )
     m_buDirBN->Enable(enable);
 }
 
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
+ */
+
+void COptions::OnShowUsernameInTreeCB( wxCommandEvent& event )
+{
+  if (Validate() && TransferDataFromWindow()) {
+    if (m_showusernameintree)
+      m_showpasswordintreeCB->SetValue(false);
+    m_showpasswordintreeCB->Enable(!m_showusernameintree);
+  }
+}
 
