@@ -51,7 +51,7 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_RIGHT_DOWN( PWSTreeCtrl::OnRightDown )
 
 ////@end PWSTreeCtrl event table entries
-
+  EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
 END_EVENT_TABLE()
 
 
@@ -356,4 +356,16 @@ void PWSTreeCtrl::SelectItem(const CUUIDGen & uuid)
   wxTreeItemId id = Find(uuid_array);
   if (id.IsOk())
       wxTreeCtrl::SelectItem(id);
+}
+
+void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& event )
+{ // Added manually
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesAsTooltipsInViews)) {
+    wxTreeItemId id = event.GetItem();
+    const CItemData *ci = GetItem(id);
+    if (ci != NULL) {
+      const wxString note = ci->GetNotes().c_str();
+      event.SetToolTip(note);
+    }
+  }
 }

@@ -82,6 +82,7 @@ public:
   void OnRightDown( wxMouseEvent& event );
 
 ////@end PWSTreeCtrl event handler declarations
+  void OnGetToolTip( wxTreeEvent& event ); // Added manually
 
 ////@begin PWSTreeCtrl member function declarations
 

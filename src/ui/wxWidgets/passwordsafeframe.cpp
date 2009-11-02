@@ -75,12 +75,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( wxID_DELETE, PasswordSafeFrame::OnDeleteClick )
 
-  EVT_MENU( wxID_FIND, PasswordSafeFrame::OnFindClick )
-
-  EVT_MENU( ID_EDITMENU_FIND_NEXT, PasswordSafeFrame::OnFindNext)
-
-  EVT_MENU( ID_EDITMENU_FIND_PREVIOUS, PasswordSafeFrame::OnFindPrevious)
-
   EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
 
   EVT_MENU( ID_COPYPASSWORD, PasswordSafeFrame::OnCopypasswordClick )
@@ -97,7 +91,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
 
-  EVT_MENU( ID_OPTIONS, PasswordSafeFrame::OnOptionsClick )
+  EVT_MENU( ID_OPTIONS_M, PasswordSafeFrame::OnOptionsMClick )
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
@@ -140,7 +134,6 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 
   CreateControls();
   Centre();
-  m_search = new PasswordSafeSearch(this);
 ////@end PasswordSafeFrame creation
     return true;
 }
@@ -153,8 +146,6 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 PasswordSafeFrame::~PasswordSafeFrame()
 {
 ////@begin PasswordSafeFrame destruction
-  delete m_search;
-  m_search = 0;
 ////@end PasswordSafeFrame destruction
 }
 
@@ -746,7 +737,7 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS
  */
 
-void PasswordSafeFrame::OnOptionsClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& event )
 {
   COptions *window = new COptions(this);
   window->ShowModal();

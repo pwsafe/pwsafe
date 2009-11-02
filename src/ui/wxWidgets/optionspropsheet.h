@@ -189,6 +189,9 @@ public:
   bool GetShowusernameintree() const { return m_showusernameintree ; }
   void SetShowusernameintree(bool value) { m_showusernameintree = value ; }
 
+  bool GetShownotesastipsinviews() const { return m_shownotesastipsinviews ; }
+  void SetShownotesastipsinviews(bool value) { m_shownotesastipsinviews = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -233,6 +236,7 @@ private:
   bool m_backupb4save;
   bool m_alwaysontop;
   bool m_showusernameintree;
+  bool m_shownotesastipsinviews;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();
