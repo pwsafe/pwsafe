@@ -164,7 +164,7 @@ template<class T> void Format(T &s, const TCHAR *fmt, ...)
   while (1) {
     buffer = new TCHAR[len];
     len = _vstprintf_s(buffer, len, fmt, args);
-    if (len > 0)
+    if (len++ > 0) 
       break;
     else { // too small, resize & try again
       delete[] buffer;
