@@ -1344,11 +1344,13 @@ void DboxMain::OnImportXML()
           if (!strErrors.empty())
             csErrors = strErrors + L"\n";
           if (bBadUnknownFileFields) {
-            cs_temp.Format(IDS_XMLUNKNFLDIGNORED, L"header");
+            CString cs_type(MAKEINTRESOURCE(IDS_HEADER));
+            cs_temp.Format(IDS_XMLUNKNFLDIGNORED, cs_type);
             csErrors += cs_temp + L"\n";
           }
           if (bBadUnknownRecordFields) {
-            cs_temp.Format(IDS_XMLUNKNFLDIGNORED, L"record");
+            CString cs_type(MAKEINTRESOURCE(IDS_RECORD));
+            cs_temp.Format(IDS_XMLUNKNFLDIGNORED, cs_type);
             csErrors += cs_temp;
           }
 
@@ -1762,7 +1764,7 @@ int DboxMain::Merge(const StringX &pszFilename) {
   gmb.SetTitle(cs_title);
   gmb.SetMsg(resultStr);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
-  gmb.AddButton(1, L"OK", TRUE, TRUE);
+  gmb.AddButton(1, IDS_OK, TRUE, TRUE);
   gmb.AddButton(2, IDS_VIEWREPORT);
   INT_PTR msg_rc = gmb.DoModal();
   if (msg_rc == 2)
