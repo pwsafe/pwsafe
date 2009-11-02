@@ -756,7 +756,9 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   possible_aliases.clear();
   possible_shortcuts.clear();
 
-  SetDBChanged(true);
+  if (numImported > 0)
+    SetDBChanged(true);
+
   return SUCCESS;
 }
 #endif
@@ -830,7 +832,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     rpt.WriteLine(strError);
     return SUCCESS;  // not even a title record! - succeeded but none imported!
   }
-
 
   // Capture individual column titles from s_title:
   // Set i_Offset[field] to column in which field is found in text file,
@@ -1168,7 +1169,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   possible_aliases.clear();
   possible_shortcuts.clear();
 
-  SetDBChanged(true);
+  if (numImported > 0)
+    SetDBChanged(true);
+
   return SUCCESS;
 }
 
