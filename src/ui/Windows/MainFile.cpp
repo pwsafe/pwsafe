@@ -965,11 +965,11 @@ void DboxMain::OnExportText()
 {
   CExportTextDlg et;
   CGeneralMsgBox gmb;
-  CString cs_text, cs_title;
-  StringX cs_temp;
+  CString cs_text, cs_title, cs_temp;
+  StringX sx_temp;
 
-  cs_temp = m_core.GetCurFile();
-  if (cs_temp.empty()) {
+  sx_temp = m_core.GetCurFile();
+  if (sx_temp.empty()) {
     //  Database has not been saved - prompt user to do so first!
     gmb.AfxMessageBox(IDS_SAVEBEFOREEXPORT);
     return;
@@ -979,10 +979,10 @@ void DboxMain::OnExportText()
   if (rc == IDOK) {
     StringX newfile;
     StringX pw(et.GetPasskey());
-    if (m_core.CheckPassword(cs_temp, pw) == PWScore::SUCCESS) {
+    if (m_core.CheckPassword(sx_temp, pw) == PWScore::SUCCESS) {
       // do the export
-      //SaveAs-type dialog box
-      std::wstring TxtFileName = PWSUtil::GetNewFileName(cs_temp.c_str(), L"txt");
+      // SaveAs-type dialog box
+      std::wstring TxtFileName = PWSUtil::GetNewFileName(sx_temp.c_str(), L"txt");
       cs_text.LoadString(IDS_NAMETEXTFILE);
 
       while (1) {
@@ -1024,10 +1024,14 @@ void DboxMain::OnExportText()
       orderedItemList.clear(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE) {
-        CString errmess;
-        errmess.Format(IDS_CANTOPENWRITING, newfile.c_str());
+        cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
         cs_title.LoadString(IDS_FILEWRITEERROR);
-        gmb.MessageBox(errmess, cs_title, MB_OK | MB_ICONWARNING);
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      }
+      if (rc == PWScore::NO_ENTRIES_EXPORTED)        {
+        cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
+        cs_title.LoadString(IDS_TEXTEXPORTFAILED);
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       }
     } else {
       gmb.AfxMessageBox(IDS_BADPASSKEY);
@@ -1095,6 +1099,11 @@ void DboxMain::OnExportXML()
       if (rc == PWScore::CANT_OPEN_FILE)        {
         cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
         cs_title.LoadString(IDS_FILEWRITEERROR);
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      } else
+      if (rc == PWScore::NO_ENTRIES_EXPORTED)        {
+        cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
+        cs_title.LoadString(IDS_XMLEXPORTFAILED);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       }
     } else {
