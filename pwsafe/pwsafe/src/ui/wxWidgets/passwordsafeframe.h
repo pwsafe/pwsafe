@@ -32,8 +32,8 @@
 ////@begin forward declarations
 class PWSGrid;
 class PWSTreeCtrl;
-class PasswordSafeSearch;
 ////@end forward declarations
+class PasswordSafeSearch;
 
 /*!
  * Control identifiers
@@ -89,9 +89,7 @@ class PasswordSafeSearch;
 #define ID_CHANGECOMBO 10056
 #define ID_BACKUP 10057
 #define ID_RESTORE 10058
-#define ID_OPTIONS 10059
-#define ID_EDITMENU_FIND_NEXT 10060
-#define ID_EDITMENU_FIND_PREVIOUS 10061
+#define ID_OPTIONS_M 10059
 #define ID_MENUITEM 10012
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -99,6 +97,8 @@ class PasswordSafeSearch;
 #define SYMBOL_PASSWORDSAFEFRAME_SIZE wxSize(400, 300)
 #define SYMBOL_PASSWORDSAFEFRAME_POSITION wxDefaultPosition
 ////@end control identifiers
+#define ID_EDITMENU_FIND_NEXT 10060
+#define ID_EDITMENU_FIND_PREVIOUS 10061
 
 
 /*!
@@ -158,15 +158,6 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
   void OnDeleteClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxEVT_FIND
-  void OnFindClick( wxCommandEvent& event );
-
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITMENU_FIND_NEXT
-  void OnFindNext(wxCommandEvent& evt);
-
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITMENU_FIND_PREVIOUS
-  void OnFindPrevious(wxCommandEvent& evt);
-
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
   void OnClearclipboardClick( wxCommandEvent& event );
 
@@ -191,13 +182,22 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
   void OnChangePasswdClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS
-  void OnOptionsClick( wxCommandEvent& event );
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
+  void OnOptionsMClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
   void OnAboutClick( wxCommandEvent& event );
 
 ////@end PasswordSafeFrame event handler declarations
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxEVT_FIND
+  void OnFindClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITMENU_FIND_NEXT
+  void OnFindNext(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITMENU_FIND_PREVIOUS
+  void OnFindPrevious(wxCommandEvent& evt);
+
 
 ////@begin PasswordSafeFrame member function declarations
 
