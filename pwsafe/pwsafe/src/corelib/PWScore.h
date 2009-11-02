@@ -66,6 +66,7 @@ public:
     XML_FAILED_IMPORT,                        // 14
     LIMIT_REACHED,                            // 15
     UNIMPLEMENTED,                            // 16
+    NO_ENTRIES_EXPORTED,                      // 17
   };
 
   PWScore();

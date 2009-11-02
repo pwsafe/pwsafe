@@ -265,6 +265,36 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   return SUCCESS;
 }
 
+struct PutTextTester {
+  PutTextTester(const stringT &subgroup_name,
+                const int subgroup_object, const int subgroup_function)
+  :  m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
+  m_subgroup_function(subgroup_function), m_bEntriesMatch(false)
+  {}
+
+  bool DidEntriesMatch() {return m_bEntriesMatch;}
+
+  // operator for ItemList
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {operator()(p.second);}
+
+  // operator for OrderedItemList
+  void operator()(const CItemData &item)
+  {
+    if (!m_bEntriesMatch && 
+        item.Matches(m_subgroup_name,
+                     m_subgroup_object, m_subgroup_function)) {
+      m_bEntriesMatch = true;
+    }
+  }
+
+private:
+  const stringT &m_subgroup_name;
+  const int m_subgroup_object;
+  const int m_subgroup_function;
+  bool m_bEntriesMatch;
+};
+
 struct PutText {
   PutText(const stringT &subgroup_name,
           const int subgroup_object, const int subgroup_function,
@@ -274,9 +304,11 @@ struct PutText {
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_ofs(ofs), m_core(core)
   {}
+
   // operator for ItemList
   void operator()(pair<CUUIDGen, CItemData> p)
   {operator()(p.second);}
+
   // operator for OrderedItemList
   void operator()(const CItemData &item)
   {
@@ -346,6 +378,21 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 #else
   const char *fname = filename.c_str();
 #endif
+
+  // Check if any pass restricting criteria
+  if (!subgroup_name.empty()) {
+    PutTextTester put_text_tester(subgroup_name, subgroup_object, subgroup_function);
+
+    if (il != NULL) {
+      for_each(il->begin(), il->end(), put_text_tester);
+    } else {
+      for_each(m_pwlist.begin(), m_pwlist.end(), put_text_tester);
+    }
+
+    if (!put_text_tester.DidEntriesMatch())
+      return NO_ENTRIES_EXPORTED;
+  }
+
   ofstream ofs(reinterpret_cast<const char *>(fname));
 
   if (!ofs)
@@ -465,6 +512,36 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   return SUCCESS;
 }
 
+struct XMLRecordWriterTester {
+  XMLRecordWriterTester(const stringT &subgroup_name,
+                        const int subgroup_object, const int subgroup_function)
+  :  m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
+  m_subgroup_function(subgroup_function), m_bEntriesMatch(false)
+  {}
+
+  bool DidEntriesMatch() {return m_bEntriesMatch;}
+
+  // operator for ItemList
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {operator()(p.second);}
+
+  // operator for OrderedItemList
+  void operator()(const CItemData &item)
+  {
+    if (!m_bEntriesMatch && 
+        item.Matches(m_subgroup_name,
+                     m_subgroup_object, m_subgroup_function)) {
+      m_bEntriesMatch = true;
+    }
+  }
+
+private:
+  const stringT &m_subgroup_name;
+  const int m_subgroup_object;
+  const int m_subgroup_function;
+  bool m_bEntriesMatch;
+};
+
 struct XMLRecordWriter {
   XMLRecordWriter(const stringT &subgroup_name,
                   const int subgroup_object, const int subgroup_function,
@@ -474,9 +551,11 @@ struct XMLRecordWriter {
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_of(ofs), m_id(0), m_core(core)
   {}
+
   // operator for ItemList
   void operator()(pair<CUUIDGen, CItemData> p)
   {operator()(p.second);}
+
   // operator for OrderedItemList
   void operator()(const CItemData &item)
   {
@@ -546,9 +625,24 @@ int PWScore::WriteXMLFile(const StringX &filename,
 #else
   const char *fname = filename.c_str();
 #endif
-  ofstream of(reinterpret_cast<const char *>(fname));
 
-  if (!of)
+  // Check if any pass restricting criteria
+  if (!subgroup_name.empty()) {
+    XMLRecordWriterTester put_xml_tester(subgroup_name, subgroup_object, subgroup_function);
+
+    if (il != NULL) {
+      for_each(il->begin(), il->end(), put_xml_tester);
+    } else {
+      for_each(m_pwlist.begin(), m_pwlist.end(), put_xml_tester);
+    }
+
+    if (!put_xml_tester.DidEntriesMatch())
+      return NO_ENTRIES_EXPORTED;
+  }
+
+  ofstream ofs(reinterpret_cast<const char *>(fname));
+
+  if (!ofs)
     return CANT_OPEN_FILE;
 
   StringX pwh, tmp;
@@ -558,10 +652,10 @@ int PWScore::WriteXMLFile(const StringX &filename,
   time(&time_now);
   const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
-  of << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
-  of << "<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>" << endl;
-  of << endl;
-  of << "<passwordsafe" << endl;
+  ofs << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
+  ofs << "<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>" << endl;
+  ofs << endl;
+  ofs << "<passwordsafe" << endl;
   tmp = m_currfile;
   Replace(tmp, StringX(_T("&")), StringX(_T("&amp;")));
 
@@ -571,66 +665,66 @@ int PWScore::WriteXMLFile(const StringX &filename,
   StringX delStr;
   delStr += delimiter;
   utf8conv.ToUTF8(delStr, utf8, utf8Len);
-  of << "delimiter=\"";
-  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
-  of << "\"" << endl;
+  ofs << "delimiter=\"";
+  ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  ofs << "\"" << endl;
   utf8conv.ToUTF8(tmp, utf8, utf8Len);
-  of << "Database=\"";
-  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
-  of << "\"" << endl;
+  ofs << "Database=\"";
+  ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  ofs << "\"" << endl;
   utf8conv.ToUTF8(now, utf8, utf8Len);
-  of << "ExportTimeStamp=\"";
-  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
-  of << "\"" << endl;
-  of << "FromDatabaseFormat=\"";
+  ofs << "ExportTimeStamp=\"";
+  ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  ofs << "\"" << endl;
+  ofs << "FromDatabaseFormat=\"";
   ostringstream osv; // take advantage of UTF-8 == ascii for version string
   osv << m_hdr.m_nCurrentMajorVersion
       << "." << setw(2) << setfill('0')
       << m_hdr.m_nCurrentMinorVersion;
-  of.write(osv.str().c_str(), osv.str().length());
-  of << "\"" << endl;
+  ofs.write(osv.str().c_str(), osv.str().length());
+  ofs << "\"" << endl;
   if (!m_hdr.m_lastsavedby.empty() || !m_hdr.m_lastsavedon.empty()) {
     oStringXStream oss;
     oss << m_hdr.m_lastsavedby << _T(" on ") << m_hdr.m_lastsavedon;
     utf8conv.ToUTF8(oss.str(), utf8, utf8Len);
-    of << "WhoSaved=\"";
-    of.write(reinterpret_cast<const char *>(utf8), utf8Len);
-    of << "\"" << endl;
+    ofs << "WhoSaved=\"";
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << "\"" << endl;
   }
   if (!m_hdr.m_whatlastsaved.empty()) {
     utf8conv.ToUTF8(m_hdr.m_whatlastsaved, utf8, utf8Len);
-    of << "WhatSaved=\"";
-    of.write(reinterpret_cast<const char *>(utf8), utf8Len);
-    of << "\"" << endl;
+    ofs << "WhatSaved=\"";
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << "\"" << endl;
   }
   if (m_hdr.m_whenlastsaved != 0) {
     StringX wls = PWSUtil::ConvertToDateTimeString(m_hdr.m_whenlastsaved,
                                                    TMC_XML);
     utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
-    of << "WhenLastSaved=\"";
-    of.write(reinterpret_cast<const char *>(utf8), utf8Len);
-    of << "\"" << endl;
+    ofs << "WhenLastSaved=\"";
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << "\"" << endl;
   }
 
   CUUIDGen huuid(m_hdr.m_file_uuid_array, true); // true to print canoncally
 
-  of << "Database_uuid=\"" << huuid << "\"" << endl;
-  of << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
-  of << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
-  of << endl;
+  ofs << "Database_uuid=\"" << huuid << "\"" << endl;
+  ofs << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
+  ofs << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
+  ofs << endl;
 
   if (m_hdr.m_nITER > MIN_HASH_ITERATIONS) {
-    of << "\t<NumberHashIterations>" << m_hdr.m_nITER << "</NumberHashIterations>";
-    of << endl;
+    ofs << "\t<NumberHashIterations>" << m_hdr.m_nITER << "</NumberHashIterations>";
+    ofs << endl;
   }
 
   // write out preferences stored in database
   stringT prefs = PWSprefs::GetInstance()->GetXMLPreferences();
   utf8conv.ToUTF8(prefs.c_str(), utf8, utf8Len);
-  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
 
   if (m_UHFL.size() > 0) {
-    of << "\t<unknownheaderfields>" << endl;
+    ofs << "\t<unknownheaderfields>" << endl;
     UnknownFieldList::const_iterator vi_IterUHFE;
     for (vi_IterUHFE = m_UHFL.begin();
          vi_IterUHFE != m_UHFL.end();
@@ -656,22 +750,22 @@ int PWScore::WriteXMLFile(const StringX &filename,
       }
 #endif
       utf8conv.ToUTF8(tmp, utf8, utf8Len);
-      of << "\t\t<field ftype=\"" << int(unkhfe.uc_Type) << "\">";
-      of.write(reinterpret_cast<const char *>(utf8), utf8Len);
-      of << "</field>" << endl;
+      ofs << "\t\t<field ftype=\"" << int(unkhfe.uc_Type) << "\">";
+      ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      ofs << "</field>" << endl;
     }
-    of << "\t</unknownheaderfields>" << endl;  
+    ofs << "\t</unknownheaderfields>" << endl;  
   }
 
   if (bsFields.count() != bsFields.size()) {
     // Some restrictions - put in a comment to that effect
-    of << "<!-- Export of data was restricted to certain fields by the user -->"
-      << endl;
-    of << endl;
+    ofs << "<!-- Export of data was restricted to certain fields by the user -->"
+        << endl;
+    ofs << endl;
   }
 
   XMLRecordWriter put_xml(subgroup_name, subgroup_object, subgroup_function,
-                          bsFields, delimiter, of, this);
+                          bsFields, delimiter, ofs, this);
 
   if (il != NULL) {
     for_each(il->begin(), il->end(), put_xml);
@@ -679,10 +773,10 @@ int PWScore::WriteXMLFile(const StringX &filename,
     for_each(m_pwlist.begin(), m_pwlist.end(), put_xml);
   }
 
-  of << "</passwordsafe>" << endl;
-  of.close();
+  ofs << "</passwordsafe>" << endl;
+  ofs.close();
 
-  return SUCCESS;
+ return SUCCESS;
 }
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)

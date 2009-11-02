@@ -559,3 +559,6 @@
 #define IDS_AREYOUSURE_OPT              5732
 #define IDS_HEADER                      5733
 #define IDS_RECORD                      5734
+#define IDS_XMLEXPORTFAILED             5735
+#define IDS_TEXTEXPORTFAILED            5736
+#define IDS_NO_ENTRIES_EXPORTED         5737
