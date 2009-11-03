@@ -160,11 +160,13 @@ void AddEditPropSheet::Init()
 {
 ////@begin AddEditPropSheet member initialisation
   m_XTimeInt = 0;
+  m_isNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
   m_groupCtrl = NULL;
   m_PasswordCtrl = NULL;
   m_Password1HiddenCtrl = NULL;
   m_ShowHideCtrl = NULL;
   m_Password2Ctrl = NULL;
+  m_noteTX = NULL;
   m_DCAcomboBox = NULL;
   m_MaxPWHistCtrl = NULL;
   m_PWHgrid = NULL;
@@ -301,8 +303,8 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText32 = new wxStaticText( itemPanel2, wxID_STATIC, _("Notes:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer31->Add(itemStaticText32, 1, wxALIGN_TOP|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl33 = new wxTextCtrl( itemPanel2, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-  itemBoxSizer31->Add(itemTextCtrl33, 5, wxALIGN_CENTER_VERTICAL|wxALL, 3);
+  m_noteTX = new wxTextCtrl( itemPanel2, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
+  itemBoxSizer31->Add(m_noteTX, 5, wxALIGN_CENTER_VERTICAL|wxALL, 3);
 
   GetBookCtrl()->AddPage(itemPanel2, _("Basic"));
 
@@ -597,7 +599,7 @@ void AddEditPropSheet::CreateControls()
   itemTextCtrl10->SetValidator( wxGenericValidator(& m_title) );
   itemTextCtrl13->SetValidator( wxGenericValidator(& m_user) );
   itemTextCtrl27->SetValidator( wxGenericValidator(& m_url) );
-  itemTextCtrl33->SetValidator( wxGenericValidator(& m_notes) );
+  m_noteTX->SetValidator( wxGenericValidator(& m_notes) );
   itemTextCtrl38->SetValidator( wxGenericValidator(& m_autotype) );
   itemTextCtrl40->SetValidator( wxGenericValidator(& m_runcmd) );
   itemCheckBox43->SetValidator( wxGenericValidator(& m_useDefaultDCA) );
@@ -611,6 +613,8 @@ void AddEditPropSheet::CreateControls()
   itemStaticText86->SetValidator( wxGenericValidator(& m_PMTime) );
   itemStaticText88->SetValidator( wxGenericValidator(& m_ATime) );
   itemStaticText90->SetValidator( wxGenericValidator(& m_RMTime) );
+  // Connect events and objects
+  m_noteTX->Connect(ID_TEXTCTRL7, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), NULL, this);
 ////@end AddEditPropSheet content construction
   m_PWHgrid->SetColLabelValue(0, _("Set Date/Time"));
   m_PWHgrid->SetColLabelValue(1, _("Password"));
@@ -722,7 +726,15 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   // Enable Go button iff m_url isn't empty
   wxWindow *goBtn = FindWindow(ID_GO_BTN);
   goBtn->Enable(!m_url.empty());
-  m_notes = m_item.GetNotes().c_str();
+  m_notes = (m_type != ADD && m_isNotesHidden) ?
+    _("[Notes hidden - click here to display]") : m_item.GetNotes().c_str();
+  // Following has no effect under Linux :-(
+  long style = m_noteTX->GetExtraStyle();
+  if (prefs->GetPref(PWSprefs::NotesWordWrap)) 
+    style |= wxTE_WORDWRAP;
+  else
+    style &= ~wxTE_WORDWRAP;
+  m_noteTX->SetExtraStyle(style);
   m_autotype = m_item.GetAutoType().c_str();
   m_runcmd = m_item.GetRunCommand().c_str();
 
@@ -932,6 +944,14 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       bool isPWPDefault = m_defPWPRB->GetValue();
       PWPolicy oldPWP;
       m_item.GetPWPolicy(oldPWP);
+
+      // Following ensures that untouched & hidden note
+      // isn't marked as modified. Relies on fact that
+      // Note field can't be modified w/o first getting focus
+      // and that we turn off m_isNotesHidden when that happens.
+      if (m_type != ADD && m_isNotesHidden)
+        m_notes = m_item.GetNotes().c_str();
+
 
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
                      m_title      != m_item.GetTitle().c_str()       ||
@@ -1251,5 +1271,19 @@ void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& event )
    bool useHex = m_pwpHexCtrl->GetValue();
    EnableNonHexCBs(!useHex);
  }
+}
+
+
+/*!
+ * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
+ */
+
+void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& event )
+{
+  if (m_type != ADD && m_isNotesHidden) {
+    m_isNotesHidden = false;
+    m_notes = m_item.GetNotes().c_str();
+    m_noteTX->ChangeValue(m_notes);
+  }
 }
 

@@ -67,10 +67,11 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 
   EVT_CHECKBOX( ID_CHECKBOX13, COptions::OnShowUsernameInTreeCB )
 
+  EVT_CHECKBOX( ID_CHECKBOX19, COptions::OnPreExpiryWarnClick )
+
 ////@end COptions event table entries
 
 END_EVENT_TABLE()
-
 
 const wxChar *BUSuffix[] = {
   _("None"),
@@ -78,8 +79,7 @@ const wxChar *BUSuffix[] = {
   _("Incremented Number [001-999]"),
 };
 
-
-enum {NO_SFX, TS_SFX, INC_SFX};
+enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 
 /*!
  * COptions constructors
@@ -149,6 +149,8 @@ void COptions::Init()
   m_usrbudirTxt = NULL;
   m_buDirBN = NULL;
   m_showpasswordintreeCB = NULL;
+  m_preexpirywarnCB = NULL;
+  m_preexpirywarndaysSB = NULL;
   m_pwpLenCtrl = NULL;
   m_pwMinsGSzr = NULL;
   m_pwpUseLowerCtrl = NULL;
@@ -221,9 +223,11 @@ void COptions::CreateControls()
 
   wxBoxSizer* itemBoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxGROW|wxALL, 0);
-  wxArrayString m_busuffixCBString(sizeof(BUSuffix)/sizeof(BUSuffix[0]),
-                                   BUSuffix);
-  m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBString, wxCB_DROPDOWN );
+  wxArrayString m_busuffixCBStrings;
+  m_busuffixCBStrings.Add(_("None"));
+  m_busuffixCBStrings.Add(_("YYYYMMMDD_HHMMSS"));
+  m_busuffixCBStrings.Add(_("Incremented Number [001-999]"));
+  m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_DROPDOWN );
   itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText17 = new wxStaticText( itemPanel2, wxID_STATIC, _("Max."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -301,12 +305,12 @@ void COptions::CreateControls()
 
   wxBoxSizer* itemBoxSizer39 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer30->Add(itemBoxSizer39, 0, wxGROW|wxALL, 0);
-  wxCheckBox* itemCheckBox40 = new wxCheckBox( itemPanel29, ID_CHECKBOX19, _("Warn"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox40->SetValue(false);
-  itemBoxSizer39->Add(itemCheckBox40, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_preexpirywarnCB = new wxCheckBox( itemPanel29, ID_CHECKBOX19, _("Warn"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_preexpirywarnCB->SetValue(false);
+  itemBoxSizer39->Add(m_preexpirywarnCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl41 = new wxSpinCtrl( itemPanel29, ID_SPINCTRL10, _T("0"), wxDefaultPosition, wxSize(itemPanel29->ConvertDialogToPixels(wxSize(25, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
-  itemBoxSizer39->Add(itemSpinCtrl41, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_preexpirywarndaysSB = new wxSpinCtrl( itemPanel29, ID_SPINCTRL10, _T("1"), wxDefaultPosition, wxSize(itemPanel29->ConvertDialogToPixels(wxSize(25, -1)).x, -1), wxSP_ARROW_KEYS, 1, 30, 1 );
+  itemBoxSizer39->Add(m_preexpirywarndaysSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText42 = new wxStaticText( itemPanel29, wxID_STATIC, _("days before passwords expire"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer39->Add(itemStaticText42, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -646,6 +650,10 @@ void COptions::CreateControls()
   itemCheckBox32->SetValidator( wxGenericValidator(& m_showusernameintree) );
   itemCheckBox35->SetValidator( wxGenericValidator(& m_shownotesastipsinviews) );
   itemCheckBox36->SetValidator( wxGenericValidator(& m_pwshowinedit) );
+  itemCheckBox37->SetValidator( wxGenericValidator(& m_notesshowinedit) );
+  itemCheckBox38->SetValidator( wxGenericValidator(& m_wordwrapnotes) );
+  m_preexpirywarnCB->SetValidator( wxGenericValidator(& m_preexpirywarn) );
+  itemRadioBox43->SetValidator( wxGenericValidator(& m_inittreeview) );
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
@@ -715,6 +723,12 @@ void COptions::PrefsToPropSheet()
   m_shownotesastipsinviews = prefs->
     GetPref(PWSprefs::ShowNotesAsTooltipsInViews);
   m_pwshowinedit = prefs->GetPref(PWSprefs::ShowPWDefault);
+  m_notesshowinedit = prefs->GetPref(PWSprefs::ShowNotesDefault);
+  m_wordwrapnotes = prefs->GetPref(PWSprefs::NotesWordWrap);
+  m_preexpirywarn = prefs->GetPref(PWSprefs::PreExpiryWarn);
+  m_preexpirywarndaysSB->SetValue(prefs->GetPref(PWSprefs::PreExpiryWarnDays));
+  m_preexpirywarndaysSB->Enable(m_preexpirywarn);
+  m_inittreeview = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
 }
 
 void COptions::PropSheetToPrefs()
@@ -766,6 +780,13 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::ShowNotesAsTooltipsInViews,
                  m_shownotesastipsinviews);
   prefs->SetPref(PWSprefs::ShowPWDefault, m_pwshowinedit);
+  prefs->SetPref(PWSprefs::ShowNotesDefault, m_notesshowinedit);
+  prefs->SetPref(PWSprefs::NotesWordWrap, m_wordwrapnotes);
+  prefs->SetPref(PWSprefs::PreExpiryWarn, m_preexpirywarn);
+  if (m_preexpirywarn)
+    prefs->SetPref(PWSprefs::PreExpiryWarnDays,
+                   m_preexpirywarndaysSB->GetValue());
+  prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, m_inittreeview);
 }
 
 void COptions::OnOk(wxCommandEvent& event)
@@ -895,6 +916,18 @@ void COptions::OnShowUsernameInTreeCB( wxCommandEvent& event )
     if (m_showusernameintree)
       m_showpasswordintreeCB->SetValue(false);
     m_showpasswordintreeCB->Enable(!m_showusernameintree);
+  }
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
+ */
+
+void COptions::OnPreExpiryWarnClick( wxCommandEvent& event )
+{
+  if (Validate() && TransferDataFromWindow()) {
+    m_preexpirywarndaysSB->Enable(m_preexpirywarn);
   }
 }
 
