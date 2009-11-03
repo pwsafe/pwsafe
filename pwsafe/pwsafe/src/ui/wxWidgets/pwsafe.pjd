@@ -15431,6 +15431,7 @@ Action:"</string>
           <string name="variable-2">"m_alwaysontop|bool|Alwaysontop||2|0|"</string>
           <string name="variable-3">"m_showusernameintree|bool|Showusernameintree||2|0|"</string>
           <string name="variable-4">"m_shownotesastipsinviews|bool|Shownotesastipsinviews||2|0|"</string>
+          <string name="variable-5">"m_pwshowinedit|bool|Pwshowinedit||2|0|"</string>
           <string name="proxy-Id name">"ID_OPTIONS"</string>
           <long name="proxy-Id value">10130</long>
           <string name="proxy-Class">"COptions"</string>
@@ -17481,8 +17482,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_pwshowinedit"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>

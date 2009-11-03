@@ -192,6 +192,9 @@ public:
   bool GetShownotesastipsinviews() const { return m_shownotesastipsinviews ; }
   void SetShownotesastipsinviews(bool value) { m_shownotesastipsinviews = value ; }
 
+  bool GetPwshowinedit() const { return m_pwshowinedit ; }
+  void SetPwshowinedit(bool value) { m_pwshowinedit = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -237,6 +240,7 @@ private:
   bool m_alwaysontop;
   bool m_showusernameintree;
   bool m_shownotesastipsinviews;
+  bool m_pwshowinedit;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();
