@@ -259,7 +259,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_OPTIONS, _("&Options..."), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(ID_OPTIONS_M, _("&Options..."), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP, _("Get &Help"), _T(""), wxITEM_NORMAL);
@@ -734,7 +734,7 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& event )
 
 
 /*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
  */
 
 void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& event )

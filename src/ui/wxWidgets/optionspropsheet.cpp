@@ -78,8 +78,6 @@ const wxChar *BUSuffix[] = {
   _("Incremented Number [001-999]"),
 };
 
-const wxArrayString BUSuffixArray(sizeof(BUSuffix)/sizeof(BUSuffix[0]),
-                                  BUSuffix);
 
 enum {NO_SFX, TS_SFX, INC_SFX};
 
@@ -223,8 +221,9 @@ void COptions::CreateControls()
 
   wxBoxSizer* itemBoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxGROW|wxALL, 0);
-  wxArrayString m_busuffixCBStrings;
-  m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_DROPDOWN );
+  wxArrayString m_busuffixCBString(sizeof(BUSuffix)/sizeof(BUSuffix[0]),
+                                   BUSuffix);
+  m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBString, wxCB_DROPDOWN );
   itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText17 = new wxStaticText( itemPanel2, wxID_STATIC, _("Max."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -646,6 +645,7 @@ void COptions::CreateControls()
   itemCheckBox31->SetValidator( wxGenericValidator(& m_alwaysontop) );
   itemCheckBox32->SetValidator( wxGenericValidator(& m_showusernameintree) );
   itemCheckBox35->SetValidator( wxGenericValidator(& m_shownotesastipsinviews) );
+  itemCheckBox36->SetValidator( wxGenericValidator(& m_pwshowinedit) );
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
@@ -714,6 +714,7 @@ void COptions::PrefsToPropSheet()
   m_showpasswordintreeCB->Enable(!m_showusernameintree);
   m_shownotesastipsinviews = prefs->
     GetPref(PWSprefs::ShowNotesAsTooltipsInViews);
+  m_pwshowinedit = prefs->GetPref(PWSprefs::ShowPWDefault);
 }
 
 void COptions::PropSheetToPrefs()
@@ -764,6 +765,7 @@ void COptions::PropSheetToPrefs()
 
   prefs->SetPref(PWSprefs::ShowNotesAsTooltipsInViews,
                  m_shownotesastipsinviews);
+  prefs->SetPref(PWSprefs::ShowPWDefault, m_pwshowinedit);
 }
 
 void COptions::OnOk(wxCommandEvent& event)
