@@ -173,6 +173,9 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
   void OnShowUsernameInTreeCB( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
+  void OnPreExpiryWarnClick( wxCommandEvent& event );
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
@@ -194,6 +197,18 @@ public:
 
   bool GetPwshowinedit() const { return m_pwshowinedit ; }
   void SetPwshowinedit(bool value) { m_pwshowinedit = value ; }
+
+  bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
+  void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
+
+  int GetInittreeview() const { return m_inittreeview ; }
+  void SetInittreeview(int value) { m_inittreeview = value ; }
+
+  bool GetPreexpirywarn() const { return m_preexpirywarn ; }
+  void SetPreexpirywarn(bool value) { m_preexpirywarn = value ; }
+
+  bool GetNotesshowinedit() const { return m_notesshowinedit ; }
+  void SetNotesshowinedit(bool value) { m_notesshowinedit = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -217,6 +232,8 @@ public:
   wxTextCtrl* m_usrbudirTxt;
   wxButton* m_buDirBN;
   wxCheckBox* m_showpasswordintreeCB;
+  wxCheckBox* m_preexpirywarnCB;
+  wxSpinCtrl* m_preexpirywarndaysSB;
   wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
@@ -241,6 +258,10 @@ private:
   bool m_showusernameintree;
   bool m_shownotesastipsinviews;
   bool m_pwshowinedit;
+  bool m_wordwrapnotes;
+  int m_inittreeview;
+  bool m_preexpirywarn;
+  bool m_notesshowinedit;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();

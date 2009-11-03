@@ -153,6 +153,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
   void OnGoButtonClick( wxCommandEvent& event );
 
+  /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
+  void OnNoteSetFocus( wxFocusEvent& event );
+
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX
   void OnOverrideDCAClick( wxCommandEvent& event );
 
@@ -235,6 +238,9 @@ public:
   bool GetRecurring() const { return m_Recurring ; }
   void SetRecurring(bool value) { m_Recurring = value ; }
 
+  bool GetIsNotesHidden() const { return m_isNotesHidden ; }
+  void SetIsNotesHidden(bool value) { m_isNotesHidden = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -251,6 +257,7 @@ public:
   wxTextCtrl* m_Password1HiddenCtrl;
   wxButton* m_ShowHideCtrl;
   wxTextCtrl* m_Password2Ctrl;
+  wxTextCtrl* m_noteTX;
   wxComboBox* m_DCAcomboBox;
   wxSpinCtrl* m_MaxPWHistCtrl;
   wxGrid* m_PWHgrid;
@@ -298,6 +305,7 @@ private:
   wxString m_CurXTime; // Current Exp. time
   int m_XTimeInt; // Password Exp. Interval (days)
   bool m_Recurring;
+  bool m_isNotesHidden;
   ////@end AddEditPropSheet member variables
   short m_DCA;
   time_t m_tttXTime; // Password Exp.date in time_t
