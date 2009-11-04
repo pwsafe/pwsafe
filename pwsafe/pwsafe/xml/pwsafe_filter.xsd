@@ -160,12 +160,20 @@
     </xs:restriction>
 </xs:simpleType>
 
-<xs:simpleType name="entry_ruleType">
+<xs:simpleType name="entrytype_ruleType">
   <xs:restriction base="xs:string">
     <xs:enumeration value="IS" />
     <xs:enumeration value="NI" />
     </xs:restriction>
 </xs:simpleType>
+
+<xs:simpleType name="entrystatus_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="IS" />
+    <xs:enumeration value="NI" />
+    </xs:restriction>
+</xs:simpleType>
+
 
 <xs:simpleType name="dca_ruleType">
   <xs:restriction base="xs:string">
@@ -181,13 +189,22 @@
   </xs:restriction>
 </xs:simpleType>
 
-<xs:simpleType name="entryType">
+<xs:simpleType name="entrytypeType">
   <xs:restriction base="xs:string">
     <xs:enumeration value="normal" />
     <xs:enumeration value="alias" />
     <xs:enumeration value="shortcut" />
     <xs:enumeration value="aliasbase" />
     <xs:enumeration value="shortcutbase" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="entrystatusType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="clean" />
+    <xs:enumeration value="added" />
+    <xs:enumeration value="modified" />
+    <xs:enumeration value="deleted" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -227,9 +244,15 @@
   </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="matchEntry">
+<xs:complexType name="matchEntrytype">
   <xs:sequence>
-    <xs:element name="type" type="entryType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="type" type="entrytypeType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="matchEntrystatus">
+  <xs:sequence>
+    <xs:element name="status" type="entrystatusType" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
@@ -279,11 +302,19 @@
   </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="entryfilterentry" >
+<xs:complexType name="entrytypefilterentry" >
   <xs:sequence>
-    <xs:element name="rule" type="entry_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="rule" type="entrytype_ruleType" minOccurs="1" maxOccurs="1" />
     <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
-    <xs:element name="test" type="matchEntry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchEntrytype" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="entrystatusfilterentry" >
+  <xs:sequence>
+    <xs:element name="rule" type="entrystatus_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="test" type="matchEntrystatus" minOccurs="1" maxOccurs="1" />
   </xs:sequence>
 </xs:complexType>
 
@@ -369,7 +400,8 @@
     <xs:element name="policy_pronounceable" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="policy_hexadecimal" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
 
-    <xs:element name="entrytype" type="entryfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="entrytype" type="entrytypefilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="entrystatus" type="entrystatusfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="unknownfields" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />
   </xs:choice>
 </xs:group>

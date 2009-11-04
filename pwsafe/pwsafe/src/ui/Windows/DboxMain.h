@@ -585,6 +585,7 @@ protected:
   afx_msg void OnApplyFilter();
   afx_msg void OnSetFilter();
   afx_msg void OnRefreshWindow();
+  afx_msg void OnShowUnsavedEntries();
   afx_msg void OnMinimize();
   afx_msg void OnRestore();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -721,9 +722,11 @@ private:
   CInfoDisplay *m_pNotesDisplay;
 
   // Filters
-  bool m_bFilterActive;
+  bool m_bFilterActive, m_bFilterForDelete, m_bFilterForStatus, m_bUnsavedDisplayed;
   // Current filter
   st_filters m_currentfilter;
+  // Special Show Unsaved Changes filter
+  st_filters m_showunsavedfilter;
 
   // Sorted Groups
   vfiltergroups m_vMflgroups;

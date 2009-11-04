@@ -13,6 +13,7 @@
 
 #include <Afxcmn.h>
 #include "SecString.h"
+#include <vector>
 
 class DboxMain;
 class CItemData;
@@ -70,6 +71,14 @@ public:
   bool WasLabelEdited() {return m_bEditLabelCompleted;};
   void SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier);
   void SetRenameKey(const unsigned char cVirtKey, const unsigned char cModifier);
+  void SetUpFont(CFont *pfont);
+  void SetHighlightChanges(bool bvalue)
+  {m_bUseHighLighting = bvalue;}
+  void ClearChangedNodes()
+  {m_vnodes_modified.clear();}
+  void AddChangedNodes(StringX path);
+  size_t NumberNodeChanged()
+  {return m_vnodes_modified.size();}
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
@@ -84,6 +93,7 @@ protected:
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg void OnTimer(UINT nIDEvent);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+  afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
   //}}AFX_MSG
 
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -132,6 +142,7 @@ private:
   bool ProcessData(BYTE *in_buffer, const long &inLen, const CSecString &DropGroup);
   void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
   void GetEntryData(CDDObList &out_oblist, CItemData *pci);
+  HFONT GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf);
 
   // Notes Display
   UINT m_nHoverNDTimerID, m_nShowNDTimerID;
@@ -147,4 +158,9 @@ private:
   WPARAM m_wpRenameMsg, m_wpRenameKey;
   bool m_bDeleteCtrl, m_bDeleteShift;
   bool m_bRenameCtrl, m_bRenameShift;
+
+  CFont *m_pCurrentFont;  // Do NOT delete - done in DboxMain
+  CFont *m_pModifiedFont, *m_pDeletedFont;
+  bool m_bUseHighLighting;
+  std::vector<StringX> m_vnodes_modified;
 };

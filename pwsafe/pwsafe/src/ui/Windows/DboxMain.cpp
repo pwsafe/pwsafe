@@ -125,7 +125,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
   m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
-  m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL)
+  m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
+  m_bFilterForDelete(false), m_bFilterForStatus(false), m_bUnsavedDisplayed(false)
 {
   m_eye_catcher = _wcsdup(EYE_CATCHER);
 
@@ -361,6 +362,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
   ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
+  ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
 
   // Manage Menu
   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
@@ -563,6 +565,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
   {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
+  {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
@@ -733,6 +736,7 @@ void DboxMain::InitPasswordSafe()
 
   m_ctlItemList.SetExtendedStyle(dw_ExtendedStyle);
   m_ctlItemList.Initialize();
+  m_ctlItemList.SetHighlightChanges(prefs->GetPref(PWSprefs::HighlightChanges));
 
   // Override default HeaderCtrl ID of 0
   m_LVHdrCtrl.SetDlgCtrlID(IDC_LIST_HEADER);
@@ -740,6 +744,7 @@ void DboxMain::InitPasswordSafe()
   // Initialise DropTargets - should be in OnCreate()s, really
   m_LVHdrCtrl.Initialize(&m_LVHdrCtrl);
   m_ctlItemTree.Initialize();
+  m_ctlItemTree.SetHighlightChanges(prefs->GetPref(PWSprefs::HighlightChanges));
 
   // Set up fonts before playing with Tree/List views
   m_pFontTree = new CFont;
@@ -766,9 +771,12 @@ void DboxMain::InitPasswordSafe()
     ExtractFont(szTreeFont, treefont);
     m_pFontTree->CreateFontIndirect(&treefont);
     // transfer the fonts to the tree windows
-    m_ctlItemTree.SetFont(m_pFontTree);
-    m_ctlItemList.SetFont(m_pFontTree);
+    m_ctlItemTree.SetUpFont(m_pFontTree);
+    m_ctlItemList.SetUpFont(m_pFontTree);
     m_LVHdrCtrl.SetFont(m_pFontTree);
+  } else {
+    m_ctlItemTree.SetUpFont(pCurrentFont);
+    m_ctlItemList.SetUpFont(pCurrentFont);
   }
 
   // Set up Password font too.
@@ -885,10 +893,10 @@ void DboxMain::InitPasswordSafe()
   }
 #endif
 
-    CWaitCursor waitCursor;  // This may take a while!
-
     MFCAsker q;
-    int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, L"",
+    int rc;
+    CWaitCursor waitCursor;  // This may take a while!
+    rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, L"",
                                               std::wstring(cs_temp),
                                               XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
@@ -1179,7 +1187,8 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
   }
 #else
   CItemData *pci = getSelectedItem();
-  if (pci == NULL)
+  // Don't do anything if can't get the data or it is a deleted item
+  if (pci == NULL || pci->GetStatus() == CItemData::ES_DELETED)
     return;
 
   if (pci->IsShortcut()) {
@@ -2386,9 +2395,13 @@ void DboxMain::SetDCAText(CItemData *pci)
   if (pci == NULL) {
     si_dca = -1;
   } else {
-    pci->GetDCA(si_dca);
-    if (si_dca == -1)
-      si_dca = si_dca_default;
+    if (pci->GetStatus() == CItemData::ES_DELETED)
+      si_dca = -2;  // Force display web page
+    else {
+      pci->GetDCA(si_dca);
+      if (si_dca == -1)
+        si_dca = si_dca_default;
+    }
   }
 
   UINT ui_dca;
@@ -2808,18 +2821,28 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
                            ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
                            m_FindToolBar.IsFindCaseSet());
       return -1;
+    case ID_FILTERMENU:
+      if (m_bUnsavedDisplayed)
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_SHOWHIDE_UNSAVED:
+      if (!m_core.IsChanged() || (m_core.IsChanged() && m_bFilterActive && !m_bUnsavedDisplayed))
+        iEnable = FALSE;
+      break;
     case ID_MENUITEM_CLEAR_MRU:
       if (app.GetMRU()->IsMRUEmpty())
         iEnable = FALSE;
       break;
     case ID_MENUITEM_APPLYFILTER:
-      if (m_currentfilter.vMfldata.size() == 0 || 
+      if (m_bUnsavedDisplayed || m_currentfilter.vMfldata.size() == 0 || 
           (m_currentfilter.num_Mactive + m_currentfilter.num_Hactive + 
                                          m_currentfilter.num_Pactive) == 0)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_EDITFILTER:
     case ID_MENUITEM_MANAGEFILTERS:
+      if (m_bUnsavedDisplayed)
+        iEnable = FALSE;
       break;
     default:
       break;

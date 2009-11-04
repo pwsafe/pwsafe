@@ -802,6 +802,11 @@ bool CPWFilterLC::SetField(const int iItem)
           //  - no need to add that check
           mt = PWSMatch::MT_ENTRYTYPE;
           break;
+        case FT_ENTRYSTATUS:
+          // Entrystatus is an entry attribute and MUST be present
+          //  - no need to add that check
+          mt = PWSMatch::MT_ENTRYSTATUS;
+          break;
         default:
           ASSERT(0);
       }
@@ -1291,6 +1296,26 @@ bool CPWFilterLC::GetCriterion()
         b_good = true;
       }
       break;
+    case PWSMatch::MT_ENTRYSTATUS:
+      m_fstatus.m_title = cs_selected;
+      if (!vcbxChanged[m_iItem] &&
+          st_fldata.rule != PWSMatch::MR_INVALID) {
+        m_fstatus.m_rule = st_fldata.rule;
+        m_fstatus.m_estatus = st_fldata.estatus;
+      } else {
+        m_fstatus.m_rule = PWSMatch::MR_INVALID;
+      }
+      rc = m_fstatus.DoModal();
+      if (rc == IDOK) {
+        st_fldata.Empty();
+        st_fldata.bFilterActive = true;
+        st_fldata.mtype = PWSMatch::MT_ENTRYSTATUS;
+        st_fldata.ftype = ft;
+        st_fldata.rule = m_fstatus.m_rule;
+        st_fldata.estatus = m_fstatus.m_estatus;
+        b_good = true;
+      }
+      break;
     default:
       ASSERT(0);
   }
@@ -1438,6 +1463,11 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.cs_text.LoadString(IDS_ENTRYTYPE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_ENTRYTYPE;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_ENTRYSTATUS);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = FT_ENTRYSTATUS;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_UNKNOWNFIELDSFILTER);

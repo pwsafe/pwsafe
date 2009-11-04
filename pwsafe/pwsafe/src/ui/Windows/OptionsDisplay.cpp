@@ -63,6 +63,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_DEFENABLEGRIDLINES, m_enablegrid);
   DDX_Check(pDX, IDC_PREWARNEXPIRY, m_preexpirywarn);
   DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_preexpirywarndays);
+  DDX_Check(pDX, IDC_HIGHLIGHTCHANGES, m_highlightchanges);
 #if defined(POCKET_PC)
   DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
 #endif

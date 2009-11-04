@@ -20,6 +20,7 @@
 
 class DboxMain;
 class CInfoDisplay;
+class CItemData;
 
 class CPWListCtrl : public CListCtrl
 {
@@ -36,6 +37,9 @@ public:
 
   void SetFilterState(bool bState);
   void SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier);
+  void SetUpFont(CFont *pfont);
+  void SetHighlightChanges(bool bvalue)
+  {m_bUseHighLighting = bvalue;}
 
 protected:
   //{{AFX_MSG(CPWListCtrl)
@@ -45,6 +49,7 @@ protected:
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg void OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult);
+  afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
   //}}AFX_MSG
 
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -67,4 +72,9 @@ private:
   // Delete/Rename Shortcuts
   WPARAM m_wpDeleteMsg, m_wpDeleteKey;
   bool m_bDeleteCtrl, m_bDeleteShift;
+
+  HFONT GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
+  CFont *m_pCurrentFont;  // Do NOT delete - done in DboxMain
+  CFont *m_pModifiedFont, *m_pDeletedFont;
+  bool m_bUseHighLighting;
 };

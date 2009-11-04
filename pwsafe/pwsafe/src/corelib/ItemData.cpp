@@ -57,7 +57,8 @@ CItemData::CItemData()
   m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
   m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
   m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
-  m_DCA(DCA), m_email(EMAIL), m_entrytype(ET_NORMAL), m_display_info(NULL)
+  m_DCA(DCA), m_email(EMAIL), m_entrytype(ET_NORMAL), m_display_info(NULL),
+  m_entrystatus(ES_CLEAN)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -71,7 +72,8 @@ CItemData::CItemData(const CItemData &that) :
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
   m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_email(that.m_email),
-  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info)
+  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info),
+  m_entrystatus(that.m_entrystatus)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
@@ -1302,6 +1304,7 @@ CItemData& CItemData::operator=(const CItemData &that)
     else
       m_URFL.clear();
     m_entrytype = that.m_entrytype;
+    m_entrystatus = that.m_entrystatus;
     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   }
 
@@ -1330,6 +1333,7 @@ void CItemData::Clear()
   m_XTimeInterval.Empty();
   m_URFL.clear();
   m_entrytype = ET_NORMAL;
+  m_entrystatus = ES_CLEAN;
 }
 
 int CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
@@ -1414,7 +1418,7 @@ bool CItemData::ValidatePWHistory()
   return false;
 }
 
-bool CItemData::Matches(const stringT &string1, int iObject,
+bool CItemData::Matches(const stringT &string, int iObject,
                         int iFunction) const
 {
   ASSERT(iFunction != 0); // must be positive or negative!
@@ -1463,7 +1467,7 @@ bool CItemData::Matches(const stringT &string1, int iObject,
   if (!bValue) // String empty - always return false for other comparisons
     return false;
   else
-    return PWSMatch::Match(string1.c_str(), csObject, iFunction);
+    return PWSMatch::Match(string.c_str(), csObject, iFunction);
 }
 
 bool CItemData::Matches(int num1, int num2, int iObject,
@@ -1553,13 +1557,26 @@ bool CItemData::Matches(time_t time1, time_t time2, int iObject,
   }
 }
   
-bool CItemData::Matches(EntryType etype1, int iFunction) const
+bool CItemData::Matches(EntryType etype, int iFunction) const
 {
   switch (iFunction) {
     case PWSMatch::MR_IS:
-      return GetEntryType() == etype1;
+      return GetEntryType() == etype;
     case PWSMatch::MR_ISNOT:
-      return GetEntryType() != etype1;
+      return GetEntryType() != etype;
+    default:
+      ASSERT(0);
+  }
+  return false;
+}
+
+bool CItemData::Matches(EntryStatus estatus, int iFunction) const
+{
+  switch (iFunction) {
+    case PWSMatch::MR_IS:
+      return GetStatus() == estatus;
+    case PWSMatch::MR_ISNOT:
+      return GetStatus() != estatus;
     default:
       ASSERT(0);
   }

@@ -101,7 +101,9 @@ void DboxMain::OnAdd()
     }
 
     // Add the entry
+    ci.SetStatus(CItemData::ES_ADDED);
     AddEntry(ci);
+    m_ctlItemTree.AddChangedNodes(ci.GetGroup());
 
     // Update Toolbar for this new entry
     UpdateToolBarForSelectedItem(&ci);
@@ -202,8 +204,10 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   time(&t);
   temp.SetCTime(t);
   temp.SetXTime((time_t)0);
+  temp.SetStatus(CItemData::ES_ADDED);
 
   AddEntry(temp);
+  m_ctlItemTree.AddChangedNodes(cs_group);
 
   if (m_core.GetNumEntries() == 1) {
     // For some reason, when adding the first entry, it is not visible!
@@ -356,7 +360,6 @@ void DboxMain::Delete(bool inRecursion)
     UnFindItem();
     m_ctlItemList.DeleteItem(curSel);
     m_ctlItemTree.DeleteWithParents(curTree_item);
-    delete pdi;
     FixListIndexes();
 
     if (pci->NumberUnknownFields() > 0)
@@ -380,7 +383,7 @@ void DboxMain::Delete(bool inRecursion)
         SetEntryImage(pdi->list_index, nImage, true);
         SetEntryImage(pdi->tree_item, nImage, true);
       }
-    }
+    } else
     if (entrytype == CItemData::ET_SHORTCUT) {
       // I'm a shortcut entry
       // Get corresponding base uuid
@@ -398,8 +401,7 @@ void DboxMain::Delete(bool inRecursion)
         SetEntryImage(pdi->list_index, nImage, true);
         SetEntryImage(pdi->tree_item, nImage, true);
       }
-    }
-
+    } else
     if (num_dependents > 0) {
       // I'm a base entry
       if (entrytype == CItemData::ET_ALIASBASE) {
@@ -432,15 +434,15 @@ void DboxMain::Delete(bool inRecursion)
           DisplayInfo *pdi = (DisplayInfo *)cshortcut.GetDisplayInfo();
           m_ctlItemList.DeleteItem(pdi->list_index);
           m_ctlItemTree.DeleteItem(pdi->tree_item);
-          delete pdi;
           FixListIndexes();
-          m_core.RemoveEntryAt(iter);
+          m_core.MarkEntryForRemoval(&cshortcut);
         }
       }
       dependentslist.clear();
     }
 
-    m_core.RemoveEntryAt(listindex);
+    pci->SetDCA(-1);
+    m_core.MarkEntryForRemoval(pci);
     if (m_ctlItemList.IsWindowVisible()) {
       if (m_core.GetNumEntries() > 0) {
         SelectEntry(curSel < (int)m_core.GetNumEntries() ? curSel : (int)(m_core.GetNumEntries() - 1));
@@ -697,6 +699,8 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
       ci_edit.SetPWPolicy(L"");
     }
 
+    ci_edit.SetStatus(CItemData::ES_MODIFIED);
+
     pcore->RemoveEntryAt(listpos);
     pcore->AddEntry(ci_edit);
     m_ctlItemList.DeleteItem(pdi->list_index);
@@ -705,13 +709,16 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     // AddEntry copies the entry, and we want to work with the inserted copy
     // Which we'll find by uuid
     insertItem(pcore->GetEntry(pcore->Find(original_uuid)));
+    m_ctlItemTree.AddChangedNodes(ci_edit.GetGroup());
     FixListIndexes();
+
     // Now delete old entry's DisplayInfo
     delete pdi;
     if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::SaveImmediately)) {
         Save();
     }
+
     if (pdi_new->list_index >= 0) {
       rc = SelectEntry(pdi_new->list_index);
       if (rc == 0) {
@@ -785,21 +792,27 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     ci_edit.SetXTime((time_t)0);
 
+    ci_edit.SetStatus(CItemData::ES_MODIFIED);
+
     pcore->RemoveEntryAt(listpos);
     pcore->AddEntry(ci_edit);
     m_ctlItemList.DeleteItem(pdi->list_index);
     m_ctlItemTree.DeleteWithParents(pdi->tree_item);
+
     // AddEntry copies the entry, and we want to work with the inserted copy
     // Which we'll find by uuid
     insertItem(pcore->GetEntry(pcore->Find(entry_uuid)));
+    m_ctlItemTree.AddChangedNodes(ci_edit.GetGroup());
     FixListIndexes();
     // Now delete old entry's DisplayInfo
     delete pdi;
-    if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::SaveImmediately)) {
+
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
         Save();
     }
+
     rc = SelectEntry(pdi_new->list_index);
+
     if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
@@ -847,6 +860,7 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetGroup(ci2_group);
     ci2.SetTitle(ci2_title);
     ci2.SetUser(ci2_user);
+    ci2.SetStatus(CItemData::ES_ADDED);
 
     uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
     CItemData::EntryType entrytype = pci->GetEntryType();
@@ -879,10 +893,13 @@ void DboxMain::OnDuplicateEntry()
     // Add it to the end of the list
     m_core.AddEntry(ci2);
     pdi->list_index = -1; // so that insertItem will set new values
+
     uuid_array_t uuid;
     ci2.GetUUID(uuid);
     insertItem(m_core.GetEntry(m_core.Find(uuid)));
+    m_ctlItemTree.AddChangedNodes(ci2_group);
     FixListIndexes();
+
     if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::SaveImmediately)) {
         Save();
@@ -1695,6 +1712,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
         bAddToViews = false;
       }
     }
+    tempitem.SetStatus(CItemData::ES_ADDED);
     if (bAddToViews) {
       // Add to pwlist + Tree + List views
       AddEntry(tempitem);
@@ -1704,6 +1722,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
       // in password list and, if so, then add to Tree + List views
       m_core.AddEntry(tempitem);
     }
+    m_ctlItemTree.AddChangedNodes(tempitem.GetGroup());
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing

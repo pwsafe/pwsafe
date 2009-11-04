@@ -64,12 +64,22 @@ public:
     // status returns from "ProcessInputRecordField"
     enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
-    // entry type
-    enum EntryType {ET_INVALID = -1,
-                    ET_NORMAL = 0, 
-                    ET_ALIASBASE = 1, ET_ALIAS = 2, 
-                    ET_SHORTCUTBASE = 4, ET_SHORTCUT = 8,
+    // entry type (note: powers of 2)
+    enum EntryType {ET_INVALID      = -1,
+                    ET_NORMAL       =  0, 
+                    ET_ALIASBASE    =  1, ET_ALIAS    = 2, 
+                    ET_SHORTCUTBASE =  4, ET_SHORTCUT = 8,
                     ET_LAST};
+
+    // entry status (note: powers of 2)
+    // An status can (currently) have values:
+    //  0 (normal), 1 (added), 2 (modified) or 4 (deleted).
+    enum EntryStatus {ES_INVALID      = -1,
+                      ES_CLEAN        =  0,
+                      ES_ADDED        =  1,  // Added    but not yet saved to disk copy
+                      ES_MODIFIED     =  2,  // Modified but not yet saved to disk copy
+                      ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
+                      ES_LAST};
 
     // a bitset for indicating a subset of an item's fields: 
     typedef std::bitset<LAST> FieldBits;
@@ -210,14 +220,15 @@ public:
     bool WillExpire(const int numdays);
 
     // Predicate to determine if item matches given criteria
-    bool Matches(const stringT &string1, int iObject, 
+    bool Matches(const stringT &string, int iObject, 
                  int iFunction) const;  // string values
     bool Matches(int num1, int num2, int iObject,
                  int iFunction) const;  // integer values
     bool Matches(time_t time1, time_t time2, int iObject,
                  int iFunction) const;  // time values
     bool Matches(short dca, int iFunction) const;  // DCA values
-    bool Matches(EntryType etype1, int iFunction) const;  // Entrytype values
+    bool Matches(EntryType etype, int iFunction) const;  // Entrytype values
+    bool Matches(EntryStatus estatus, int iFunction) const;  // Entrystatus values
 
     bool IsGroupEmpty() const {return m_Group.IsEmpty();}
     bool IsUserEmpty() const {return m_User.IsEmpty();}
@@ -254,6 +265,13 @@ public:
     void SetShortcut()
     {m_entrytype = ET_SHORTCUT;}
 
+    EntryStatus GetStatus() const
+    {return m_entrystatus;}
+    void ClearStatus()
+    {m_entrystatus = ES_CLEAN;}
+    void SetStatus(const EntryStatus es)
+    {m_entrystatus = es;}
+
     bool IsURLEmail() const
     {return GetURL().find(_T("mailto:")) != StringX::npos;}
 
@@ -283,6 +301,7 @@ private:
   UnknownFields m_URFL;
 
   enum EntryType m_entrytype;
+  EntryStatus m_entrystatus;
 
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase

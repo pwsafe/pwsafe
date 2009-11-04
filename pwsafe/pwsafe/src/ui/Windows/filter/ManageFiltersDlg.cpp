@@ -1117,6 +1117,9 @@ UINT CManageFiltersDlg::GetFieldTypeName(const FieldType &ft)
     case FT_ENTRYTYPE:
       nID = IDS_ENTRYTYPE;
       break;
+    case FT_ENTRYSTATUS:
+      nID = IDS_ENTRYSTATUS;
+      break;
     case FT_UNKNOWNFIELDS:
       nID = IDS_UNKNOWNFIELDSFILTER;
       break;

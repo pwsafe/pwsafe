@@ -37,6 +37,7 @@ public:
   BOOL m_notesshowinedit;
   BOOL m_wordwrapnotes;
   BOOL m_preexpirywarn;
+  BOOL m_highlightchanges;
 #if defined(POCKET_PC)
   BOOL m_dcshowspassword;
 #endif

@@ -186,9 +186,12 @@ void PWScore::NewFile(const StringX &passkey)
 // functor object type for for_each:
 struct RecordWriter {
   RecordWriter(PWSfile *out, PWScore *core) : m_out(out), m_core(core) {}
-  void operator()(pair<CUUIDGen, CItemData> p)
+  void operator()(pair<CUUIDGen const, CItemData> &p)
   {
     StringX savePassword, uuid_str;
+    if (p.second.GetStatus() == CItemData::ES_DELETED)
+      return;
+
     savePassword = p.second.GetPassword();
     if (p.second.IsAlias()) {
       uuid_array_t item_uuid, base_uuid;
@@ -214,6 +217,7 @@ struct RecordWriter {
  
     m_out->WriteRecord(p.second);
     p.second.SetPassword(savePassword);
+    p.second.ClearStatus();
   }
 
 private:
@@ -259,6 +263,9 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   out->Close();
   delete out;
 
+  // Now really delete the deleted items
+  PurgeDeletedEntries();
+
   SetChanged(false, false);
 
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
@@ -266,6 +273,24 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   return SUCCESS;
 }
 
+void PWScore::PurgeDeletedEntries()
+{
+  std::vector<CUUIDGen>::iterator iter_del;
+  for (iter_del = m_vdeleted.begin(); iter_del != m_vdeleted.end(); iter_del++) {
+    ItemListIter iter = m_pwlist.find(*iter_del);
+    if (iter == m_pwlist.end())
+      continue;
+
+    // We do not know the format of the storage referenced here (hence use of 'void *').
+    // We ASSUME that implementaions initialise it to NULL and
+    // used a 'new' construct to create it!!!
+    void *pdi = (void *)iter->second.GetDisplayInfo();
+    delete pdi;
+    m_pwlist.erase(iter);
+  }
+
+  m_vdeleted.clear();
+}
 
 inline bool bittest(const CItemData::FieldBits &bsFields,
                     const CItemData::FieldType &ft,
@@ -1403,6 +1428,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       }
     }
 
+    temp.SetStatus(CItemData::ES_ADDED);
     AddEntry(temp);
     numImported++;
   } // file processing for (;;) loop
@@ -1750,9 +1776,10 @@ void PWScore::ChangePassword(const StringX &newPassword)
 struct FieldsMatch {
   bool operator()(pair<CUUIDGen, CItemData> p) {
     const CItemData &item = p.second;
-    return (m_group == item.GetGroup() &&
+    return (item.GetStatus() != CItemData::ES_DELETED &&
+            m_group == item.GetGroup() &&
             m_title == item.GetTitle() &&
-            m_user == item.GetUser());
+            m_user  == item.GetUser());
   }
   FieldsMatch(const StringX &a_group, const StringX &a_title,
               const StringX &a_user) :
@@ -2079,6 +2106,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     temp.SetUser(user.empty() ? _T(" ") : user.c_str());
     temp.SetPassword(passwd.empty() ? _T(" ") : passwd.c_str());
     temp.SetNotes(notes.empty() ? _T("") : notes.c_str());
+    temp.SetStatus(CItemData::ES_ADDED);
 
     AddEntry(temp);
   }
@@ -2154,6 +2182,7 @@ bool PWScore::Validate(stringT &status)
       rpt.WriteLine(cs_Error);
 
       m_pwlist.erase(iter); // erasing item in mid-iteration!
+      fixedItem.SetStatus(CItemData::ES_MODIFIED);
       AddEntry(fixedItem);
     }
     if (!ci.ValidatePWHistory()) {
@@ -2817,4 +2846,18 @@ void PWScore::UnlockFile2(const stringT &filename)
 {
   return pws_os::UnlockFile(filename, 
                             m_lockFileHandle2, m_LockCount2);
+}
+
+void PWScore::MarkEntryForRemoval(CItemData *pci)
+{
+  m_bDBChanged = true;
+
+  pci->SetStatus(CItemData::ES_DELETED);
+
+  uuid_array_t uuid_del;
+  pci->GetUUID(uuid_del);
+  m_vdeleted.push_back(uuid_del);
+
+  NotifyListModified();
+  NotifyDBModified();
 }

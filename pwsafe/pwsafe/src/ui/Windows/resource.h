@@ -57,6 +57,7 @@
 #define IDD_VKEYBOARD                   160
 #define IDD_FILTER_DCA                  161
 #define IDD_DUMPSELECTOR                162
+#define IDD_FILTER_ENTRYSTATUS          163
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
 #define IDR_POPCOPYTOCOMPARISON         171
@@ -660,6 +661,9 @@
 #define IDC_DCA1                        1392
 #define IDC_DCARULE                     1393
 #define IDC_STATIC_DRAGEMAIL            1394
+#define IDC_ENTRYSTATUSRULE             1395
+#define IDC_ENTRYSTATUS1                1396
+#define IDC_HIGHLIGHTCHANGES            1397
 
 // Next default values for new objects
 // 
@@ -667,7 +671,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        478
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1395
+#define _APS_NEXT_CONTROL_VALUE         1398
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

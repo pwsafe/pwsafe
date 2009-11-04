@@ -29,6 +29,8 @@
 
 #include "os/debug.h"
 
+#include <algorithm>
+
 using namespace std;
 
 #ifdef _DEBUG
@@ -183,7 +185,9 @@ CPWTreeCtrl::CPWTreeCtrl()
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
   m_bDeleteCtrl(false), m_bDeleteShift(false),
-  m_bRenameCtrl(false), m_bRenameShift(false)
+  m_bRenameCtrl(false), m_bRenameShift(false),
+  m_pCurrentFont(NULL), m_pModifiedFont(NULL), m_pDeletedFont(NULL),
+  m_bUseHighLighting(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -210,6 +214,14 @@ CPWTreeCtrl::~CPWTreeCtrl()
   delete m_DropTarget;
   delete m_DropSource;
   delete m_DataSource;
+
+  if (m_pModifiedFont != NULL)
+    delete m_pModifiedFont;
+
+  if (m_pDeletedFont != NULL)
+    delete m_pDeletedFont;
+
+  m_vnodes_modified.clear();
 }
 
 BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
@@ -221,6 +233,7 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelectionChanged)
   ON_NOTIFY_REFLECT(TVN_DELETEITEM, OnDeleteItem)
+  ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_DESTROY()
   ON_WM_TIMER()
@@ -459,6 +472,8 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
     ASSERT(itemData != NULL);
     CItemData *pci = (CItemData *)itemData;
     pci->SetGroup(CSecString(prefix));
+    pci->SetStatus(CItemData::ES_MODIFIED);
+    AddChangedNodes(CSecString(prefix));
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
       prefix += GROUP_SEP;
@@ -761,6 +776,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
           m_pDbx->UpdateListItemPassword(lindex, newPassword.c_str());
         }
       }
+      pci->SetStatus(CItemData::ES_MODIFIED);
+      AddChangedNodes(group);
     } else { // !IsLeaf
       // PR2407325: If the user edits a group name so that it has
       // a GROUP_SEP, all hell breaks loose.
@@ -979,6 +996,9 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     // Update list field with new title
     m_pDbx->UpdateListItemTitle(pdi->list_index, (CString)ci_title);
 
+    pci->SetStatus(CItemData::ES_MODIFIED);
+    AddChangedNodes(path);
+
     // Mark database as modified!
     m_pDbx->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
@@ -1091,7 +1111,9 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         ASSERT(0);
     }
 
+    temp.SetStatus(CItemData::ES_ADDED);
     m_pDbx->AddEntry(temp);
+    AddChangedNodes(newPath);
 
     // Mark database as modified!
     m_pDbx->SetChanged(DboxMain::Data);
@@ -1710,7 +1732,6 @@ static int CALLBACK ExplorerCompareProc(LPARAM lParam1, LPARAM lParam2,
   } else if (pRHS == NULL) {
     iResult = 1;
   } else {
-
     iResult = CompareNoCase(pLHS->GetGroup(), pRHS->GetGroup());
     if (iResult == 0) {
       iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
@@ -2125,4 +2146,124 @@ bad_return:
     GlobalUnlock(m_hgDataALL);
 
   return retval;
+}
+
+void CPWTreeCtrl::SetUpFont(CFont *pfont)
+{
+  // Set main font
+  m_pCurrentFont = pfont;
+  SetFont(pfont);
+
+  if (m_pModifiedFont != NULL)
+    delete m_pModifiedFont;
+
+  if (m_pDeletedFont != NULL)
+    delete m_pDeletedFont;
+
+  m_pModifiedFont = new CFont;
+  m_pDeletedFont = new CFont;
+
+  // Set up special fonts
+  LOGFONT lf;
+  pfont->GetLogFont(&lf);
+
+  lf.lfItalic = TRUE;
+  m_pModifiedFont->CreateFontIndirect(&lf);
+
+  lf.lfItalic = FALSE;
+  lf.lfStrikeOut = TRUE;
+  m_pDeletedFont->CreateFontIndirect(&lf);
+}
+
+void CPWTreeCtrl::AddChangedNodes(StringX path)
+{
+  StringX nextpath(path);
+  while (!nextpath.empty()) {
+    if (std::find(m_vnodes_modified.begin(), m_vnodes_modified.end(), nextpath) == m_vnodes_modified.end())
+      m_vnodes_modified.push_back(nextpath);
+    size_t i = nextpath.find_last_of(L".");
+    if (i == nextpath.npos)
+      i = 0;
+    nextpath = nextpath.substr(0, i);
+  }
+}
+
+HFONT CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf)
+{
+  if (pci == NULL) {
+    StringX path = GetGroup(hItem);
+    if (std::find(m_vnodes_modified.begin(), m_vnodes_modified.end(), path) != m_vnodes_modified.end()) {
+      cf = RGB(0, 192, 192);
+      return (HFONT)*m_pModifiedFont;
+    } else
+      return NULL;
+  }
+
+  switch (pci->GetStatus()) {
+    case CItemData::ES_ADDED:
+    case CItemData::ES_MODIFIED:
+      cf = RGB(0, 192, 192);
+      return (HFONT)*m_pModifiedFont;
+    case CItemData::ES_DELETED:
+      cf = RGB(255, 0, 0);
+      return (HFONT)*m_pDeletedFont;
+  }
+  return NULL;
+}
+
+void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
+{
+  NMLVCUSTOMDRAW *pNMLVCUSTOMDRAW = (NMLVCUSTOMDRAW *)pNMHDR;
+
+  *pResult = CDRF_DODEFAULT;
+
+  static bool bitem_selected(false), bchanged_item_font(false);
+  HFONT hfont;
+  COLORREF cf;
+  HTREEITEM hItem = (HTREEITEM)pNMLVCUSTOMDRAW->nmcd.dwItemSpec;
+  CItemData *pci = (CItemData *)pNMLVCUSTOMDRAW->nmcd.lItemlParam;
+
+  switch (pNMLVCUSTOMDRAW->nmcd.dwDrawStage) {
+    case CDDS_PREPAINT:
+      // PrePaint
+      bchanged_item_font = false;
+      if (m_bUseHighLighting) {
+        *pResult = CDRF_NOTIFYITEMDRAW;
+      }
+      break;
+
+    case CDDS_ITEMPREPAINT:
+      // Item PrePaint
+      if (m_bUseHighLighting) {
+        bitem_selected = GetItemState(hItem, TVIS_SELECTED) != 0;
+        hfont = GetFontBasedOnStatus(hItem, pci, cf);
+        if (hfont != NULL) {
+          bchanged_item_font = true;
+          SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, hfont);
+          if (pci == NULL || !bitem_selected)
+            pNMLVCUSTOMDRAW->clrText = cf;
+          *pResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+        }
+      }
+      break;
+
+    case CDDS_ITEMPOSTPAINT:
+      // Item PostPaint - restore old font if any
+      if (bchanged_item_font) {
+        bchanged_item_font = false;
+        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_pCurrentFont);
+        *pResult |= CDRF_NEWFONT;
+      }
+      break;
+
+    /*
+    case CDDS_PREERASE:
+    case CDDS_POSTERASE:
+    case CDDS_ITEMPREERASE:
+    case CDDS_ITEMPOSTERASE:
+    case CDDS_POSTPAINT:
+    */
+    default:
+      break;
+  }
 }
