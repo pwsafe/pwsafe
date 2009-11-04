@@ -35,6 +35,7 @@
  */
 
 ////@begin forward declarations
+class wxFlexGridSizer;
 class wxSpinCtrl;
 class wxGrid;
 class wxDatePickerCtrl;
@@ -53,7 +54,6 @@ class wxBoxSizer;
 #define ID_TEXTCTRL5 10096
 #define ID_TEXTCTRL1 10088
 #define ID_TEXTCTRL2 10089
-#define ID_TEXTCTRL16 10199
 #define ID_BUTTON2 10090
 #define ID_BUTTON3 10097
 #define ID_TEXTCTRL3 10091
@@ -252,9 +252,10 @@ public:
   static bool ShowToolTips();
 
 ////@begin AddEditPropSheet member variables
+  wxPanel* m_BasicPanel;
+  wxFlexGridSizer* m_BasicFGSizer;
   wxComboBox* m_groupCtrl;
   wxTextCtrl* m_PasswordCtrl;
-  wxTextCtrl* m_Password1HiddenCtrl;
   wxButton* m_ShowHideCtrl;
   wxTextCtrl* m_Password2Ctrl;
   wxTextCtrl* m_noteTX;
