@@ -108,6 +108,9 @@ public:
   {return WriteFile(filename, PWSfile::V17);}
   int WriteV2File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V20);}
+
+  int TestForExport(const stringT &subgroup_name, const int &subgroup_object,
+                           const int &subgroup_function, const OrderedItemList *il);
   int WritePlaintextFile(const StringX &filename,
                          const CItemData::FieldBits &bsExport,
                          const stringT &subgroup, const int &iObject,
@@ -117,7 +120,8 @@ public:
                    const CItemData::FieldBits &bsExport,
                    const stringT &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR delimiter,
-                   const OrderedItemList *il = NULL);
+                   const OrderedItemList *il = NULL,
+                   const bool bFilterActive = false);
   int ImportPlaintextFile(const StringX &ImportedPrefix,
                           const StringX &filename, stringT &strErrors,
                           TCHAR fieldSeparator, TCHAR delimiter,
@@ -130,6 +134,7 @@ public:
                     stringT &strErrors, int &numValidated, int &numImported,
                     bool &bBadUnknownFileFields,
                     bool &bBadUnknownRecordFields, CReport &rpt);
+
   int ReadCurFile(const StringX &passkey)
   {return ReadFile(m_currfile, passkey);}
   int ReadFile(const StringX &filename, const StringX &passkey);
@@ -335,6 +340,9 @@ private:
   // Callback if database has been modified
   void (*m_pfcnNotifyDBModified) (LPARAM, bool);
   LPARAM m_NotifyDBInstance;
+
+  // Create header for included(Text) and excluded(XML) exports
+  StringX BuildHeader(const CItemData::FieldBits &bsFields, const bool bIncluded);
 
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;

@@ -295,3 +295,14 @@ BEGIN
   IDSC_DCARUN              "Run Command"
   IDSC_DCASENDEMAIL        "Send email"
 END
+
+STRINGTABLE
+BEGIN
+  IDSC_XMLEXP_PREFERENCES  "Note: These preferences are only used when importing into an empty database."
+  IDSC_XMLEXP_FILTERACTIVE "A filter was active. Export of data was restricted to include only those displayed."
+  IDSC_XMLEXP_FLDRESTRICT  "Export of data was restricted to certain fields by the user."
+  IDSC_XMLEXP_SUBSETACTIVE "Subset of entries restricted by the following rule:"
+  IDSC_XMLEXP_SUBSETFIELDS "The user specified that the following fields be excluded from the export:"
+  IDSC_UNKNOWNFUNCTION     "Unknown function"
+  IDSC_UNKNOWNOBJECT       "Unknown object"
+END

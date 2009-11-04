@@ -88,9 +88,9 @@ CPWFindToolBar::CPWFindToolBar()
   m_lastshown(size_t(-1)), m_numFound(size_t(-1)),
   m_last_search_text(L""), m_last_cs_search(false),
   m_subgroup_name(L""), m_subgroup_set(BST_UNCHECKED),
-  m_subgroup_object(0), m_subgroup_function(0),
+  m_subgroup_object(CItemData::GROUP), m_subgroup_function(0),
   m_last_subgroup_name(L""), m_last_subgroup_set(BST_UNCHECKED),
-  m_last_subgroup_object(0), m_last_subgroup_function(0),
+  m_last_subgroup_object(CItemData::GROUP), m_last_subgroup_function(0),
   m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1),
   m_iFindDirection(FIND_DOWN)
 {
