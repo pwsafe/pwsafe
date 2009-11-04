@@ -17,6 +17,7 @@
 #include "FilterBoolDlg.h"
 #include "FilterDCADlg.h"
 #include "FilterEntryTypeDlg.h"
+#include "FilterEntryStatusDlg.h"
 
 class CSetHistoryFiltersDlg;
 class CSetPolicyFiltersDlg;
@@ -160,6 +161,7 @@ private:
   CFilterBoolDlg m_fbool;
   CFilterDCADlg m_fDCA;
   CFilterEntryTypeDlg m_fentry;
+  CFilterEntryStatusDlg m_fstatus;
 
   vFilterRows *m_pvfdata;
   int *m_pnumactive;

@@ -1111,6 +1111,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\filter\FilterEntryStatusDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\filter\FilterEntryTypeDlg.cpp"
 				>
 			</File>
@@ -1545,6 +1549,10 @@
 			</File>
 			<File
 				RelativePath=".\filter\FilterDCADlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\filter\FilterEntryStatusDlg.h"
 				>
 			</File>
 			<File

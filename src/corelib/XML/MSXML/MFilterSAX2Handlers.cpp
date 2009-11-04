@@ -561,6 +561,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_ENTRYTYPE;
   }
 
+  else if (_tcscmp(szCurElement, _T("entrystatus")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_ENTRYSTATUS;
+    cur_filterentry->ftype = FT_ENTRYSTATUS;
+  }
+
   else if (_tcscmp(szCurElement, _T("unknownfields")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->ftype = FT_UNKNOWNFIELDS;
@@ -782,6 +788,21 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
       cur_filterentry->etype = CItemData::ET_ALIASBASE;
     else if (m_strElemContent == _T("shortcutbase"))
       cur_filterentry->etype = CItemData::ET_SHORTCUTBASE;
+    else
+      cur_filterentry->etype = CItemData::ET_INVALID;
+  }
+
+  else if (_tcscmp(szCurElement, _T("status")) == 0) {
+    if (m_strElemContent == _T("clean"))
+      cur_filterentry->estatus = CItemData::ES_CLEAN;
+    else if (m_strElemContent == _T("added"))
+      cur_filterentry->estatus = CItemData::ES_ADDED;
+    else if (m_strElemContent == _T("modified"))
+      cur_filterentry->estatus = CItemData::ES_MODIFIED;
+    else if (m_strElemContent == _T("deleted"))
+      cur_filterentry->estatus = CItemData::ES_DELETED;
+    else
+      cur_filterentry->estatus = CItemData::ES_INVALID;
   } else if (!(_tcscmp(szCurElement, _T("test")) == 0 ||
                _tcscmp(szCurElement, _T("filters")) == 0))
     ASSERT(0);

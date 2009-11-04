@@ -243,6 +243,7 @@ void DboxMain::OnOptions()
   BOOL                    prevLockOWL; // lock On Window Lock set?
   BOOL                    brc, save_hotkey_enabled;
   BOOL                    save_preexpirywarn;
+  BOOL                    save_highlightchanges;
   DWORD                   save_hotkey_value;
   int                     save_preexpirywarndays;
   UINT                    prevLockInterval;
@@ -307,6 +308,9 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::TreeDisplayStatusAtOpen);
   display.m_trayiconcolour = prefs->
     GetPref(PWSprefs::ClosedTrayIconColour);
+  display.m_highlightchanges = prefs->
+    GetPref(PWSprefs::HighlightChanges);
+  save_highlightchanges = display.m_highlightchanges;
 
   security.m_clearclipboardonminimize = prefs->
     GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
@@ -472,6 +476,13 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::ClosedTrayIconColour,
       display.m_trayiconcolour);
     app.SetClosedTrayIcon(display.m_trayiconcolour);
+    if (save_highlightchanges != display.m_highlightchanges) {
+      prefs->SetPref(PWSprefs::HighlightChanges,
+        display.m_highlightchanges == TRUE);
+      m_ctlItemList.SetHighlightChanges(display.m_highlightchanges == TRUE);
+      m_ctlItemTree.SetHighlightChanges(display.m_highlightchanges == TRUE);
+      RefreshViews();
+    }
 
     prefs->SetPref(PWSprefs::UseSystemTray,
       system.m_usesystemtray == TRUE);

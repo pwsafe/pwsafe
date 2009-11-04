@@ -119,31 +119,31 @@ const char *PWSMatch::GetRuleString(MatchRule rule)
 {
   const char *pszrule = "  ";
   switch (rule) {
-    case MR_INVALID: pszrule = "  "; break;
-    case MR_EQUALS: pszrule = "EQ"; break;
-    case MR_NOTEQUAL: pszrule = "NE"; break;
-    case MR_ACTIVE: pszrule = "AC"; break;
-    case MR_INACTIVE: pszrule = "IA"; break;
-    case MR_PRESENT: pszrule = "PR"; break;
+    case MR_INVALID:    pszrule = "  "; break;
+    case MR_EQUALS:     pszrule = "EQ"; break;
+    case MR_NOTEQUAL:   pszrule = "NE"; break;
+    case MR_ACTIVE:     pszrule = "AC"; break;
+    case MR_INACTIVE:   pszrule = "IA"; break;
+    case MR_PRESENT:    pszrule = "PR"; break;
     case MR_NOTPRESENT: pszrule = "NP"; break;
-    case MR_SET: pszrule = "SE"; break;
-    case MR_NOTSET: pszrule = "NS"; break;
-    case MR_IS: pszrule = "IS"; break;
-    case MR_ISNOT: pszrule = "NI"; break;
-    case MR_BEGINS: pszrule = "BE"; break;
-    case MR_NOTBEGIN: pszrule = "NB"; break;
-    case MR_ENDS: pszrule = "EN"; break;
-    case MR_NOTEND: pszrule = "ND"; break;
-    case MR_CONTAINS: pszrule = "CO"; break;
+    case MR_SET:        pszrule = "SE"; break;
+    case MR_NOTSET:     pszrule = "NS"; break;
+    case MR_IS:         pszrule = "IS"; break;
+    case MR_ISNOT:      pszrule = "NI"; break;
+    case MR_BEGINS:     pszrule = "BE"; break;
+    case MR_NOTBEGIN:   pszrule = "NB"; break;
+    case MR_ENDS:       pszrule = "EN"; break;
+    case MR_NOTEND:     pszrule = "ND"; break;
+    case MR_CONTAINS:   pszrule = "CO"; break;
     case MR_NOTCONTAIN: pszrule = "NC"; break;
-    case MR_BETWEEN: pszrule = "BT"; break;
-    case MR_LT: pszrule = "LT"; break;
-    case MR_LE: pszrule = "LE"; break;
-    case MR_GT: pszrule = "GT"; break;
-    case MR_GE: pszrule = "GE"; break;
-    case MR_BEFORE: pszrule = "BF"; break;
-    case MR_AFTER: pszrule = "AF"; break;
-    case MR_EXPIRED: pszrule = "EX"; break;  // Special Password rule
+    case MR_BETWEEN:    pszrule = "BT"; break;
+    case MR_LT:         pszrule = "LT"; break;
+    case MR_LE:         pszrule = "LE"; break;
+    case MR_GT:         pszrule = "GT"; break;
+    case MR_GE:         pszrule = "GE"; break;
+    case MR_BEFORE:     pszrule = "BF"; break;
+    case MR_AFTER:      pszrule = "AF"; break;
+    case MR_EXPIRED:    pszrule = "EX"; break;  // Special Password rule
     case MR_WILLEXPIRE: pszrule = "WX"; break;  // Special Password rule
     default:
       ASSERT(0);
@@ -155,31 +155,31 @@ UINT PWSMatch::GetRule(MatchRule rule)
 {
   UINT id(0);
   switch (rule) {
-    case MR_INVALID: id = IDSC_INVALID; break;
-    case MR_EQUALS: id = IDSC_EQUALS; break;
-    case MR_NOTEQUAL: id = IDSC_DOESNOTEQUAL; break;
-    case MR_ACTIVE: id = IDSC_ISACTIVE; break;
-    case MR_INACTIVE: id = IDSC_ISINACTIVE; break;
-    case MR_PRESENT: id = IDSC_ISPRESENT; break;
+    case MR_INVALID:    id = IDSC_INVALID; break;
+    case MR_EQUALS:     id = IDSC_EQUALS; break;
+    case MR_NOTEQUAL:   id = IDSC_DOESNOTEQUAL; break;
+    case MR_ACTIVE:     id = IDSC_ISACTIVE; break;
+    case MR_INACTIVE:   id = IDSC_ISINACTIVE; break;
+    case MR_PRESENT:    id = IDSC_ISPRESENT; break;
     case MR_NOTPRESENT: id = IDSC_ISNOTPRESENT; break;
-    case MR_SET: id = IDSC_SET; break;
-    case MR_NOTSET: id = IDSC_NOTSET; break;
-    case MR_IS: id = IDSC_IS; break;
-    case MR_ISNOT: id = IDSC_ISNOT; break;
-    case MR_BEGINS: id = IDSC_BEGINSWITH; break;
-    case MR_NOTBEGIN: id = IDSC_DOESNOTBEGINSWITH; break;
-    case MR_ENDS: id = IDSC_ENDSWITH; break;
-    case MR_NOTEND: id = IDSC_DOESNOTENDWITH; break;
-    case MR_CONTAINS: id = IDSC_CONTAINS; break;
+    case MR_SET:        id = IDSC_SET; break;
+    case MR_NOTSET:     id = IDSC_NOTSET; break;
+    case MR_IS:         id = IDSC_IS; break;
+    case MR_ISNOT:      id = IDSC_ISNOT; break;
+    case MR_BEGINS:     id = IDSC_BEGINSWITH; break;
+    case MR_NOTBEGIN:   id = IDSC_DOESNOTBEGINSWITH; break;
+    case MR_ENDS:       id = IDSC_ENDSWITH; break;
+    case MR_NOTEND:     id = IDSC_DOESNOTENDWITH; break;
+    case MR_CONTAINS:   id = IDSC_CONTAINS; break;
     case MR_NOTCONTAIN: id = IDSC_DOESNOTCONTAIN; break;
-    case MR_BETWEEN: id = IDSC_BETWEEN; break;
-    case MR_LT: id = IDSC_LESSTHAN; break;
-    case MR_LE: id = IDSC_LESSTHANEQUAL; break;
-    case MR_GT: id = IDSC_GREATERTHAN; break;
-    case MR_GE: id = IDSC_GREATERTHANEQUAL; break;
-    case MR_BEFORE: id = IDSC_BEFORE; break;
-    case MR_AFTER: id = IDSC_AFTER; break;
-    case MR_EXPIRED: id = IDSC_EXPIRED; break;  // Special Password rule
+    case MR_BETWEEN:    id = IDSC_BETWEEN; break;
+    case MR_LT:         id = IDSC_LESSTHAN; break;
+    case MR_LE:         id = IDSC_LESSTHANEQUAL; break;
+    case MR_GT:         id = IDSC_GREATERTHAN; break;
+    case MR_GE:         id = IDSC_GREATERTHANEQUAL; break;
+    case MR_BEFORE:     id = IDSC_BEFORE; break;
+    case MR_AFTER:      id = IDSC_AFTER; break;
+    case MR_EXPIRED:    id = IDSC_EXPIRED; break;     // Special Password rule
     case MR_WILLEXPIRE: id = IDSC_WILLEXPIRE; break;  // Special Password rule
     default:
       ASSERT(0);
@@ -191,7 +191,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
                             int fnum1, int fnum2,
                             time_t fdate1, time_t fdate2,
                             const stringT &fstring, bool fcase,
-                            short fdca, int etype, bool bBetween,
+                            short fdca, int etype, int estatus, bool bBetween,
                             stringT &cs1, stringT &cs2)
 {
   cs1 = cs2 = _T("");
@@ -265,6 +265,18 @@ void PWSMatch::GetMatchType(MatchType mtype,
         case PWSprefs::DoubleClickBrowsePlus:           id = IDSC_DCABROWSEPLUS;      break;
         case PWSprefs::DoubleClickRun:                  id = IDSC_DCARUN;             break;
         case PWSprefs::DoubleClickSendEmail:            id = IDSC_DCASENDEMAIL;       break;
+        default:
+          ASSERT(0);
+          id = IDSC_INVALID;
+      }
+      LoadAString(cs1, id);
+      break;
+    case MT_ENTRYSTATUS:
+      switch (estatus) {
+        case CItemData::ES_CLEAN:        id = IDSC_FSCLEAN;        break;
+        case CItemData::ES_ADDED :       id = IDSC_FSADDED;        break;
+        case CItemData::ES_MODIFIED:     id = IDSC_FSMODIFIED;     break;
+        case CItemData::ES_DELETED:      id = IDSC_FSDELETED;      break;
         default:
           ASSERT(0);
           id = IDSC_INVALID;

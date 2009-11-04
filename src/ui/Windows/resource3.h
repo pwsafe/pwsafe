@@ -563,3 +563,5 @@
 #define IDS_TEXTEXPORTFAILED            5736
 #define IDS_NO_ENTRIES_EXPORTED         5737
 #define IDS_DCALONG                     5738
+#define IDS_ENTRYSTATUS                 5739
+#define IDS_NONSAVEDCHANGES             5740

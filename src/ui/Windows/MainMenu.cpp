@@ -575,6 +575,23 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   if (uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU)
     return;
 
+   if (bItemSelected) {
+     pci = getSelectedItem();
+     ASSERT(pci != NULL);
+   }
+
+   if (uiMenuID == ID_EDITMENU && 
+       bItemSelected && pci->GetStatus() == CItemData::ES_DELETED) {
+     // Delete all entries
+     UINT uiCount = pPopupMenu->GetMenuItemCount();
+     ASSERT((int)uiCount >= 0);
+
+     for (UINT ui = 0; ui < uiCount; ui++) {
+       pPopupMenu->RemoveMenu(0, MF_BYPOSITION);
+     }
+     return;
+   }
+
   // If View menu selected (contains 'Flattened &List' menu item)
   if (uiMenuID == ID_VIEWMENU) {
     // Delete Show Find Toolbar menu item - don't know if there or previously deleted
@@ -597,6 +614,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_DRAGBAR, MF_BYCOMMAND |
                               bDragBarState ? MF_CHECKED : MF_UNCHECKED);
 
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_UNSAVED, MF_BYCOMMAND |
+                              m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED);
+
     pPopupMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
                            m_bFilterActive ? MF_CHECKED : MF_UNCHECKED,
                            ID_MENUITEM_APPLYFILTER,
@@ -609,9 +629,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   }  // View menu
 
   if (bItemSelected) {
-    pci = getSelectedItem();
-    ASSERT(pci != NULL);
-
     // Save entry type before changing pci
     etype = pci->GetEntryType();
     if (etype == CItemData::ET_SHORTCUT) {
@@ -1188,6 +1205,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   // RClick over an entry
   if (item >= 0) {
     ASSERT(pci != NULL);
+    if (pci->GetStatus() == CItemData::ES_DELETED)
+      return;
 
     brc = menu.LoadMenu(IDR_POPEDITMENU);
     ASSERT(brc != 0);

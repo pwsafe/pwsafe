@@ -137,6 +137,8 @@ void DboxMain::ClearFilter()
 {
   m_currentfilter.Empty();
   m_bFilterActive = false;
+  m_bFilterForDelete = false;
+  m_bFilterForStatus = false;
 
   ApplyFilters();
 }
@@ -202,6 +204,9 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
 
   const CItemData::EntryType entrytype = ci.GetEntryType();
 
+  m_bFilterForDelete = false;
+  m_bFilterForStatus = false;
+
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
   for (Fltgroup_citer = m_vMflgroups.begin();
        Fltgroup_citer != m_vMflgroups.end(); Fltgroup_citer++) {
@@ -221,6 +226,7 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
       const FieldType ft = filters.vMfldata[num].ftype;
+      const int ifunction = (int)st_fldata.rule;
 
       switch (ft) {
         case FT_GROUPTITLE:
@@ -263,8 +269,19 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
         case FT_ENTRYTYPE:
           mt = PWSMatch::MT_ENTRYTYPE;
           break;
+        case FT_ENTRYSTATUS:
+          mt = PWSMatch::MT_ENTRYSTATUS;
+          break;
         default:
           ASSERT(0);
+      }
+
+      if (ft == FT_ENTRYSTATUS) {
+        m_bFilterForStatus = true;
+        if (st_fldata.estatus == CItemData::ES_DELETED && 
+            ifunction == PWSMatch::MR_IS) {
+          m_bFilterForDelete = true;
+        }
       }
 
       pci = &ci;
@@ -281,7 +298,7 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
         }
       }
 
-      if (entrytype == CItemData::ET_SHORTCUT) {
+      if (entrytype == CItemData::ET_SHORTCUT && !m_bFilterForStatus) {
         // Only include shortcuts if the filter is on the group, title or user fields
         // Note: "GROUPTITLE = 0x00", "GROUP = 0x02", "TITLE = 0x03", "USER = 0x04"
         //   "UUID = 0x01" but no filter is implemented against this field
@@ -299,7 +316,6 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
         }
       }
 
-      const int ifunction = (int)st_fldata.rule;
       switch (mt) {
         case PWSMatch::MT_PASSWORD:
           if (ifunction == PWSMatch::MR_EXPIRED) {
@@ -351,6 +367,10 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
           break;
         case PWSMatch::MT_DCA:
           thistest_rc = pci->Matches(st_fldata.fdca, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_ENTRYSTATUS:
+          thistest_rc = pci->Matches(st_fldata.estatus, ifunction);
           tests++;
           break;
         default:

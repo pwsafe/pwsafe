@@ -298,6 +298,20 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
           cur_filterentry->etype = CItemData::ET_ALIASBASE;
         else if (m_strElemContent == _T("shortcutbase"))
           cur_filterentry->etype = CItemData::ET_SHORTCUTBASE;
+        else
+          cur_filterentry->etype = CItemData::ET_INVALID;
+        break;
+      case XTE_STATUS:
+        if (m_strElemContent == _T("clean"))
+          cur_filterentry->estatus = CItemData::ES_CLEAN;
+        else if (m_strElemContent == _T("added"))
+         cur_filterentry->estatus = CItemData::ES_ADDED;
+        else if (m_strElemContent == _T("modified"))
+          cur_filterentry->estatus = CItemData::ES_MODIFIED;
+        else if (m_strElemContent == _T("deleted"))
+          cur_filterentry->estatus = CItemData::ES_DELETED;
+        else
+          cur_filterentry->estatus = CItemData::ES_INVALID;
         break;
       case XTE_TEST:
         break;

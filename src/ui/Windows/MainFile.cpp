@@ -280,6 +280,7 @@ int DboxMain::New()
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::USER_CANCEL;
   }
+  m_ctlItemTree.ClearChangedNodes();
 
 #if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " + cs_newfile).c_str();
@@ -406,6 +407,10 @@ int DboxMain::Close()
       return rc;
   }
 
+  // Turn off special display if on
+  if (m_bUnsavedDisplayed)
+    OnShowUnsavedEntries();
+
   // Unlock the current file
   if (!m_core.GetCurFile().empty()) {
     m_core.UnlockFile(m_core.GetCurFile().c_str());
@@ -414,6 +419,7 @@ int DboxMain::Close()
 
   // Clear all associated data
   ClearData();
+  m_ctlItemTree.ClearChangedNodes();
 
   // Reset core
   m_core.ReInit();
@@ -754,8 +760,20 @@ int DboxMain::Save()
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
+  m_ctlItemTree.ClearChangedNodes();
   SetChanged(Clear);
   ChangeOkUpdate();
+
+  // Added/Modified entries now saved - reverse it & refresh display
+  if (m_bUnsavedDisplayed)
+    OnShowUnsavedEntries();
+
+  if (m_bFilterActive && m_bFilterForStatus) {
+    m_ctlItemList.Invalidate();
+    m_ctlItemTree.Invalidate();
+  }
+  RefreshViews();
+
   return PWScore::SUCCESS;
 }
 
@@ -871,6 +889,7 @@ int DboxMain::SaveAs()
   m_core.ClearFileUUID();
 
   rc = m_core.WriteFile(newfile);
+  m_ctlItemTree.ClearChangedNodes();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     m_core.SetFileUUID(file_uuid_array);
@@ -895,6 +914,16 @@ int DboxMain::SaveAs()
 #endif
   SetChanged(Clear);
   ChangeOkUpdate();
+
+  // Added/Modified entries now saved - reverse it & refresh display
+  if (m_bUnsavedDisplayed)
+    OnShowUnsavedEntries();
+
+  if (m_bFilterActive && m_bFilterForStatus) {
+    m_ctlItemList.Invalidate();
+    m_ctlItemTree.Invalidate();
+  }
+  RefreshViews();
 
   app.AddToMRU(newfile.c_str());
 
@@ -1559,6 +1588,11 @@ int DboxMain::Merge(const StringX &pszFilename) {
 
   othercore.SetCurFile(pszFilename);
 
+  // Silently purge deleted entries before Merge
+  if (m_core.NumUnpurgedDeleted() > 0) {
+    m_core.PurgeDeletedEntries();
+  }
+
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
 
@@ -2043,6 +2077,11 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
   cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2.c_str());
   rpt.WriteLine((LPCWSTR)cs_temp);
   rpt.WriteLine();
+
+  // Silently purge deleted entries before Compare
+  if (m_core.NumUnpurgedDeleted() > 0) {
+    m_core.PurgeDeletedEntries();
+  }
 
   // Put up hourglass...this might take a while
   CWaitCursor waitCursor;
@@ -2638,33 +2677,33 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
       }
     }
   } else {
-    CItemData temp;
+    CItemData tempitem;
 
     // If the UUID is not in use, copy it too otherwise create it
     if (bFromUUIDIsNotInTo)
-      temp.SetUUID(fromUUID);
+      tempitem.SetUUID(fromUUID);
     else
-      temp.CreateUUID();
+      tempitem.CreateUUID();
 
-    temp.GetUUID(toUUID);
-    temp.SetGroup(group);
-    temp.SetTitle(title);
-    temp.SetUser(user);
-    temp.SetPassword(password);
-    temp.SetNotes(notes);
-    temp.SetURL(url);
-    temp.SetAutoType(autotype);
-    temp.SetPWHistory(pwhistory);
-    temp.SetRunCommand(runcmd);
-    temp.SetDCA(dca.c_str());
-    temp.SetEmail(email);
-    temp.SetCTime(ct);
-    temp.SetATime(at);
-    temp.SetXTime(xt);
-    temp.SetPMTime(pmt);
-    temp.SetRMTime(rmt);
-    temp.SetPWPolicy(pwp);
-    temp.SetXTimeInt(xint);
+    tempitem.GetUUID(toUUID);
+    tempitem.SetGroup(group);
+    tempitem.SetTitle(title);
+    tempitem.SetUser(user);
+    tempitem.SetPassword(password);
+    tempitem.SetNotes(notes);
+    tempitem.SetURL(url);
+    tempitem.SetAutoType(autotype);
+    tempitem.SetPWHistory(pwhistory);
+    tempitem.SetRunCommand(runcmd);
+    tempitem.SetDCA(dca.c_str());
+    tempitem.SetEmail(email);
+    tempitem.SetCTime(ct);
+    tempitem.SetATime(at);
+    tempitem.SetXTime(xt);
+    tempitem.SetPMTime(pmt);
+    tempitem.SetRMTime(rmt);
+    tempitem.SetPWPolicy(pwp);
+    tempitem.SetXTimeInt(xint);
     if (nfromUnknownRecordFields != 0) {
       ptocore->IncrementNumRecordsWithUnknownFields();
 
@@ -2675,12 +2714,14 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
         fromEntry->GetUnknownField(type, length, pdata, i);
         if (length == 0)
           continue;
-        temp.SetUnknownField(type, length, pdata);
+        tempitem.SetUnknownField(type, length, pdata);
         trashMemory(pdata, length);
         delete[] pdata;
       }
     }
-    ptocore->AddEntry(temp);
+    tempitem.SetStatus(CItemData::ES_ADDED);
+    ptocore->AddEntry(tempitem);
+    m_ctlItemTree.AddChangedNodes(tempitem.GetGroup());
   }
 
   ptocore->SetDBChanged(true);

@@ -202,6 +202,10 @@
 #define IDSC_XMLEXP_SUBSETFIELDS        3366
 #define IDSC_UNKNOWNFUNCTION            3367
 #define IDSC_UNKNOWNOBJECT              3368
+#define IDSC_FSCLEAN                    3369
+#define IDSC_FSADDED                    3370
+#define IDSC_FSMODIFIED                 3371
+#define IDSC_FSDELETED                  3372
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

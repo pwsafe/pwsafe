@@ -59,6 +59,7 @@ enum FieldType {
   // new fields purely for filters
   FT_ENTRYTYPE     = 0x100,
   FT_UNKNOWNFIELDS = 0x101,
+  FT_ENTRYSTATUS   = 0x102,
 
   // Password History Test fields
   HT_PRESENT       = 0x200,
@@ -113,6 +114,8 @@ struct st_FilterRow {
   short fdca;
   // if filter type is a entrytype
   CItemData::EntryType etype;
+  // if filter type is a entrystatus
+  CItemData::EntryStatus estatus;
   
   // Logical connection with previous filter (if any). Brackets unsupported
   LogicConnect ltype;
@@ -124,6 +127,7 @@ struct st_FilterRow {
     fdate1(0), fdate2(0),
     fstring(_T("")), fcase(false), fdca(-2),
     etype(CItemData::ET_INVALID),
+    estatus(CItemData::ES_INVALID),
     ltype(LC_INVALID)
   {}
 
@@ -133,7 +137,7 @@ struct st_FilterRow {
     fnum1(that.fnum1), fnum2(that.fnum2),
     fdate1(that.fdate1), fdate2(that.fdate2), 
     fstring(that.fstring), fcase(that.fcase), fdca(that.fdca),
-    etype(that.etype),
+    etype(that.etype), estatus(that.estatus),
     ltype(that.ltype)
   {}
 
@@ -153,6 +157,7 @@ struct st_FilterRow {
       fcase = that.fcase;
       fdca = that.fdca;
       etype = that.etype;
+      estatus = that.estatus;
       ltype = that.ltype;
     }
     return *this;
@@ -171,6 +176,7 @@ struct st_FilterRow {
     fcase = false;
     fdca = -2;
     etype = CItemData::ET_INVALID;
+    estatus = CItemData::ES_INVALID;
     ltype = LC_INVALID;
   }
   void SetFilterComplete() {bFilterComplete = true;}

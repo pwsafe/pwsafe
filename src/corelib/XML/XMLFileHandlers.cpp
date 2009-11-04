@@ -660,6 +660,7 @@ void XMLFileHandlers::AddEntries()
       m_possible_shortcuts->push_back(uuid_array);
     }
 
+    tempitem.SetStatus(CItemData::ES_ADDED);
     m_xmlcore->AddEntry(tempitem);
     delete cur_entry;
   }

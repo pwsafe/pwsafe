@@ -48,6 +48,10 @@ static const char * szentry[] = {"normal",
                                  "aliasbase", "alias", 
                                  "shortcutbase", "shortcut"};
 
+// These are in the same order as "enum EntryStatus" in ItemData.h
+static const char * szstatus[] = {"clean", "added", "modified", 
+                                  "deleted"};
+
 static void GetFilterTestXML(const st_FilterRow &st_fldata,
                              ostringstream &oss, bool bFile)
 {
@@ -124,6 +128,19 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
     case PWSMatch::MT_DCA:
       oss << sztab5 << "<dca>" << st_fldata.fdca 
                                               << "</dca>" << szendl;
+      break;
+    case PWSMatch::MT_ENTRYSTATUS:
+      {
+      // First convert value (as a power of 2) into index for string values
+      int index = -1;
+      int iestatus = (int)st_fldata.estatus;
+      while (iestatus >>= 1) {
+        index++;
+      }
+      index++;
+      oss << sztab5 << "<status>" << szstatus[index]
+                                              << "</status>" << szendl;
+      }
       break;
     case PWSMatch::MT_BOOL:
       break;
@@ -240,6 +257,9 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
         break;
       case FT_ENTRYTYPE:
         pszfieldtype = "entrytype";
+        break;
+      case FT_ENTRYSTATUS:
+        pszfieldtype = "entrystatus";
         break;
       default:
         ASSERT(0);
@@ -603,7 +623,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
                          st_fldata.fnum1, st_fldata.fnum2,
                          st_fldata.fdate1, st_fldata.fdate2,
                          st_fldata.fstring.c_str(), st_fldata.fcase,
-                         st_fldata.fdca, st_fldata.etype,
+                         st_fldata.fdca, st_fldata.etype, st_fldata.estatus,
                          st_fldata.rule == PWSMatch::MR_BETWEEN,
                          cs1, cs2);
   switch (st_fldata.mtype) {
@@ -655,6 +675,9 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
       break;
     case PWSMatch::MT_ENTRYTYPE:
+      Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
+      break;
+    case PWSMatch::MT_ENTRYSTATUS:
       Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
       break;
     default:

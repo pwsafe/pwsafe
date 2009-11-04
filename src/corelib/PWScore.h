@@ -122,6 +122,8 @@ public:
                    const int &iFunction, const TCHAR delimiter,
                    const OrderedItemList *il = NULL,
                    const bool bFilterActive = false);
+  size_t NumUnpurgedDeleted() {return m_vdeleted.size();}
+  void PurgeDeletedEntries();
   int ImportPlaintextFile(const StringX &ImportedPrefix,
                           const StringX &filename, stringT &strErrors,
                           TCHAR fieldSeparator, TCHAR delimiter,
@@ -182,9 +184,11 @@ public:
   void AddEntry(const uuid_array_t &entry_uuid, const CItemData &item);
   ItemList::size_type GetNumEntries() const {return m_pwlist.size();}
   void RemoveEntryAt(ItemListIter pos)
-  {m_bDBChanged = true; m_pwlist.erase(pos);
+  {m_bDBChanged = true;
+   m_pwlist.erase(pos);
    NotifyListModified();
    NotifyDBModified();}
+  void MarkEntryForRemoval(CItemData *pci);
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user);
@@ -317,6 +321,7 @@ private:
   // THE password database
   //  Key = entry's uuid; Value = entry's CItemData
   ItemList m_pwlist;
+  std::vector<CUUIDGen> m_vdeleted;
 
   // Alias structures
   // Permanent Multimap: since potentially more than one alias/shortcut per base

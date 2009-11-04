@@ -298,6 +298,14 @@ END
 
 STRINGTABLE
 BEGIN
+  IDSC_FSCLEAN             "in the database"
+  IDSC_FSADDED             "added but not yet saved to database"
+  IDSC_FSMODIFIED          "changed but not yet saved to database"
+  IDSC_FSDELETED           "deleted but not yet removed from database"
+END
+
+STRINGTABLE
+BEGIN
   IDSC_XMLEXP_PREFERENCES  "Note: These preferences are only used when importing into an empty database."
   IDSC_XMLEXP_FILTERACTIVE "A filter was active. Export of data was restricted to include only those displayed."
   IDSC_XMLEXP_FLDRESTRICT  "Export of data was restricted to certain fields by the user."

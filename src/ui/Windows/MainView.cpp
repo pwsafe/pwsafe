@@ -1198,18 +1198,27 @@ void DboxMain::OnChangeItemFocus(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE!
-// itemData must be the actual item in the item list.  if the item is remove
+// itemData must be the actual item in the item list.  if the item is removed
 // from the list, it must be removed from the display as well and vice versa.
-// a pointer is associated with the item in the display that is used for
+// A pointer is associated with the item in the display that is used for
 // sorting.
+// The exception is deleted items (database not saved). They exist in memory
+// but are not displayed unless the user specifically wants them via a filter.
+
 // {kjp} We could use itemData.GetNotes(CString&) to reduce the number of
 // {kjp} temporary objects created and copied.
 //
-int DboxMain::insertItem(CItemData &itemData, int iIndex, 
+int DboxMain::insertItem(CItemData &ci, int iIndex, 
                          const bool bSort, const int iView)
 {
-  if (itemData.GetDisplayInfo() != NULL &&
-      ((DisplayInfo *)itemData.GetDisplayInfo())->list_index != -1) {
+  // We don't show deleted entries in the Tree/List unless the user has
+  // a specific filter to show them.
+  if (ci.GetStatus() == CItemData::ES_DELETED &&
+      (!m_bFilterActive || !m_bFilterForDelete))
+    return -1;
+
+  if (ci.GetDisplayInfo() != NULL &&
+      ((DisplayInfo *)ci.GetDisplayInfo())->list_index != -1) {
     // true iff item already displayed
     return iIndex;
   }
@@ -1219,26 +1228,26 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
     iResult = m_ctlItemList.GetItemCount();
   }
 
-  DisplayInfo *pdi = (DisplayInfo *)itemData.GetDisplayInfo();
+  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
   if (pdi == NULL) {
     pdi = new DisplayInfo;
-    itemData.SetDisplayInfo((void *)pdi);
+    ci.SetDisplayInfo((void *)pdi);
   }
   pdi->list_index = -1;
   pdi->tree_item = NULL;
 
   if (m_bFilterActive) {
-    if (!PassesFiltering(itemData, m_currentfilter))
+    if (!PassesFiltering(ci, m_currentfilter))
       return -1;
     m_bNumPassedFiltering++;
   }
 
-  int nImage = GetEntryImage(itemData);
-  StringX group = itemData.GetGroup();
-  StringX title = itemData.GetTitle();
-  StringX username = itemData.GetUser();
+  int nImage = GetEntryImage(ci);
+  StringX group = ci.GetGroup();
+  StringX title = ci.GetTitle();
+  StringX username = ci.GetUser();
   // get only the first line for display
-  StringX strNotes = itemData.GetNotes();
+  StringX strNotes = ci.GetNotes();
   StringX::size_type iEOL = strNotes.find(L'\r');
   if (iEOL != StringX::npos) {
     StringX strTemp = strNotes.substr(0, iEOL);
@@ -1248,7 +1257,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
 
   if (iView & iListOnly) {
     // Insert the first column data
-    cs_fielddata = itemData.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[0]);
+    cs_fielddata = ci.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[0]);
     iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata.c_str());
 
     if (iResult < 0) {
@@ -1263,15 +1272,15 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
 
   if (iView & iTreeOnly) {
     HTREEITEM ti;
-    StringX treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
+    StringX treeDispString = m_ctlItemTree.MakeTreeDisplayString(ci);
     // get path, create if necessary, add title as last node
-    ti = m_ctlItemTree.AddGroup(itemData.GetGroup().c_str());
+    ti = m_ctlItemTree.AddGroup(ci.GetGroup().c_str());
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
       ti = m_ctlItemTree.InsertItem(treeDispString.c_str(), ti, TVI_SORT);
-      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
+      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&ci);
     } else {
       ti = m_ctlItemTree.InsertItem(treeDispString.c_str(), ti, TVI_LAST);
-      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
+      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&ci);
       if (bSort)
         m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
     }
@@ -1286,7 +1295,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
     // Set the data in the rest of the columns
     // First get the 1st line of the Notes field
     StringX sxnotes, line1(L"");
-    sxnotes = itemData.GetNotes();
+    sxnotes = ci.GetNotes();
     if (!sxnotes.empty()) {
       StringX::size_type end;
       const StringX delim = L"\r\n";
@@ -1306,12 +1315,12 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
       if ((CItemData::FieldType)m_nColumnTypeByIndex[i] == CItemData::NOTES)
         cs_fielddata = line1;
       else
-        cs_fielddata = itemData.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[i]);
+        cs_fielddata = ci.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[i]);
 
       m_ctlItemList.SetItemText(iResult, i, cs_fielddata.c_str());
     }
 
-    m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&itemData);
+    m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&ci);
   }
   return iResult;
 }
@@ -1802,8 +1811,8 @@ void DboxMain::OnChangeTreeFont()
     m_pFontTree->CreateFontIndirect(&lf);
 
     // Transfer the fonts to the tree and list windows
-    m_ctlItemTree.SetFont(m_pFontTree);
-    m_ctlItemList.SetFont(m_pFontTree);
+    m_ctlItemTree.SetUpFont(m_pFontTree);
+    m_ctlItemList.SetUpFont(m_pFontTree);
     m_LVHdrCtrl.SetFont(m_pFontTree);
 
     // Recalculate header widths
@@ -3642,4 +3651,46 @@ StringX DboxMain::GetGroupName()
     }
   }
   return s;
+}
+
+void DboxMain::OnShowUnsavedEntries()
+{
+  m_bUnsavedDisplayed = !m_bUnsavedDisplayed;
+
+  // Check if it needs setting up the first time
+  if (m_showunsavedfilter.num_Mactive < 3) {
+    CString cs_temp(MAKEINTRESOURCE(IDS_NONSAVEDCHANGES));
+    m_showunsavedfilter.fname = cs_temp;
+
+    st_FilterRow fr;
+
+    fr.bFilterComplete = true;
+    fr.ftype = FT_ENTRYSTATUS;
+    fr.mtype = PWSMatch::MT_ENTRYSTATUS;
+    fr.rule = PWSMatch::MR_IS;
+    fr.ltype = LC_OR;
+
+    fr.estatus = CItemData::ES_ADDED;
+    m_showunsavedfilter.vMfldata.push_back(fr);
+    fr.estatus = CItemData::ES_MODIFIED;
+    m_showunsavedfilter.vMfldata.push_back(fr);
+    fr.estatus = CItemData::ES_DELETED;
+    m_showunsavedfilter.vMfldata.push_back(fr);
+    m_showunsavedfilter.num_Mactive = m_showunsavedfilter.vMfldata.size();
+  }
+
+  m_bFilterActive = !m_bFilterActive;
+  if (m_bFilterActive)
+    m_currentfilter = m_showunsavedfilter;
+  else
+    m_currentfilter.Empty();
+
+  ApplyFilters();
+
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER,
+    (m_bUnsavedDisplayed || !m_bFilterActive) ? FALSE : TRUE);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_EDITFILTER,
+    m_bUnsavedDisplayed ? FALSE : TRUE);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MANAGEFILTERS,
+    m_bUnsavedDisplayed ? FALSE : TRUE);
 }
