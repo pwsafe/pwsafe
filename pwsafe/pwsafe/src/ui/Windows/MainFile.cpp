@@ -965,6 +965,7 @@ void DboxMain::OnExportText()
 {
   CExportTextDlg et;
   CGeneralMsgBox gmb;
+  OrderedItemList orderedItemList;
   CString cs_text, cs_title, cs_temp;
   StringX sx_temp;
 
@@ -980,6 +981,29 @@ void DboxMain::OnExportText()
     StringX newfile;
     StringX pw(et.GetPasskey());
     if (m_core.CheckPassword(sx_temp, pw) == PWScore::SUCCESS) {
+      const CItemData::FieldBits bsExport = et.m_bsExport;
+      const std::wstring subgroup_name = et.m_subgroup_name;
+      const int subgroup_object = et.m_subgroup_object;
+      const int subgroup_function = et.m_subgroup_function;
+      wchar_t delimiter = et.m_defexpdelim[0];
+
+      // Note: MakeOrderedItemList gets its members by walking the 
+      // tree therefore, if a filter is active, it will ONLY export
+      // those being displayed.
+      MakeOrderedItemList(orderedItemList);
+
+      rc = m_core.TestForExport(subgroup_name, subgroup_object,
+                               subgroup_function, &orderedItemList);
+      if (rc == PWScore::NO_ENTRIES_EXPORTED) {
+        cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
+        cs_title.LoadString(IDS_TEXTEXPORTFAILED);
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        goto exit;
+      }
+      if (rc != PWScore::SUCCESS) {
+        goto exit;
+      }
+
       // do the export
       // SaveAs-type dialog box
       std::wstring TxtFileName = PWSUtil::GetNewFileName(sx_temp.c_str(), L"txt");
@@ -1006,21 +1030,13 @@ void DboxMain::OnExportText()
           newfile = fd.GetPathName();
           break;
         } else
-          return;
+          goto exit;
       } // while (1)
-
-      const CItemData::FieldBits bsExport = et.m_bsExport;
-      const std::wstring subgroup_name = et.m_subgroup_name;
-      const int subgroup_object = et.m_subgroup_object;
-      const int subgroup_function = et.m_subgroup_function;
-      wchar_t delimiter = et.m_defexpdelim[0];
-
-      OrderedItemList orderedItemList;
-      MakeOrderedItemList(orderedItemList);
 
       rc = m_core.WritePlaintextFile(newfile, bsExport, subgroup_name,
                                      subgroup_object, subgroup_function,
                                      delimiter, &orderedItemList);
+
       orderedItemList.clear(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE) {
@@ -1028,21 +1044,20 @@ void DboxMain::OnExportText()
         cs_title.LoadString(IDS_FILEWRITEERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       }
-      if (rc == PWScore::NO_ENTRIES_EXPORTED)        {
-        cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
-        cs_title.LoadString(IDS_TEXTEXPORTFAILED);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-      }
     } else {
       gmb.AfxMessageBox(IDS_BADPASSKEY);
       ::Sleep(3000); // against automatic attacks
     }
   }
+
+exit:
+  orderedItemList.clear(); // cleanup soonest
 }
 
 void DboxMain::OnExportXML()
 {
   CExportXMLDlg eXML;
+  OrderedItemList orderedItemList;
   CString cs_text, cs_title, cs_temp;
 
   INT_PTR rc = eXML.DoModal();
@@ -1051,6 +1066,31 @@ void DboxMain::OnExportXML()
     StringX newfile;
     StringX pw(eXML.GetPasskey());
     if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
+      const CItemData::FieldBits bsExport = eXML.m_bsExport;
+      const std::wstring subgroup_name = eXML.m_subgroup_name;
+      const int subgroup_object = eXML.m_subgroup_object;
+      const int subgroup_function = eXML.m_subgroup_function;
+      wchar_t delimiter;
+      delimiter = eXML.m_defexpdelim[0];
+
+      // Note: MakeOrderedItemList gets its members by walking the 
+      // tree therefore, if a filter is active, it will ONLY export
+      // those being displayed.
+      MakeOrderedItemList(orderedItemList);
+
+      rc = m_core.TestForExport(subgroup_name, subgroup_object,
+                               subgroup_function, &orderedItemList);
+
+      if (rc == PWScore::NO_ENTRIES_EXPORTED) {
+        cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
+        cs_title.LoadString(IDS_XMLEXPORTFAILED);
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        goto exit;
+      }
+      if (rc != PWScore::SUCCESS) {
+        goto exit;
+      }
+
       // do the export
       //SaveAs-type dialog box
       std::wstring XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
@@ -1078,21 +1118,13 @@ void DboxMain::OnExportXML()
           newfile = fd.GetPathName();
           break;
         } else
-          return;
+          goto exit;
       } // while (1)
 
-      const CItemData::FieldBits bsExport = eXML.m_bsExport;
-      const std::wstring subgroup_name = eXML.m_subgroup_name;
-      const int subgroup_object = eXML.m_subgroup_object;
-      const int subgroup_function = eXML.m_subgroup_function;
-      wchar_t delimiter;
-      delimiter = eXML.m_defexpdelim[0];
-
-      OrderedItemList orderedItemList;
-      MakeOrderedItemList(orderedItemList);
       rc = m_core.WriteXMLFile(newfile, bsExport, subgroup_name,
                                subgroup_object, subgroup_function,
-                               delimiter, &orderedItemList);
+                               delimiter, &orderedItemList,
+                               m_bFilterActive);
 
       orderedItemList.clear(); // cleanup soonest
 
@@ -1100,17 +1132,15 @@ void DboxMain::OnExportXML()
         cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
         cs_title.LoadString(IDS_FILEWRITEERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-      } else
-      if (rc == PWScore::NO_ENTRIES_EXPORTED)        {
-        cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
-        cs_title.LoadString(IDS_XMLEXPORTFAILED);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       }
     } else {
       gmb.AfxMessageBox(IDS_BADPASSKEY);
       ::Sleep(3000); // protect against automatic attacks
     }
   }
+
+exit:
+  orderedItemList.clear(); // cleanup soonest
 }
 
 void DboxMain::OnImportText()

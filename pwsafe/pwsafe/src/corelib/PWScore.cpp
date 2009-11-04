@@ -211,6 +211,7 @@ struct RecordWriter {
       uuid_str += _T("~]");
       p.second.SetPassword(uuid_str);
     }
+ 
     m_out->WriteRecord(p.second);
     p.second.SetPassword(savePassword);
   }
@@ -265,35 +266,154 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   return SUCCESS;
 }
 
-struct PutTextTester {
-  PutTextTester(const stringT &subgroup_name,
-                const int subgroup_object, const int subgroup_function)
+
+inline bool bittest(const CItemData::FieldBits &bsFields,
+                    const CItemData::FieldType &ft,
+                    const bool &bIncluded)
+{
+  return bsFields.test(ft) ? bIncluded : !bIncluded;
+}
+
+StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bIncluded)
+{
+  // User chose fields, build custom header
+  // Header fields MUST be in the same order as actual fields written
+  // See CItemData::GetPlaintext for TextExport
+  StringX hdr(_T("")), cs_temp;
+  if (bittest(bsFields, CItemData::GROUP, bIncluded) && 
+      bittest(bsFields, CItemData::TITLE, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRGROUPTITLE);
+    hdr += cs_temp;
+  } else if (bittest(bsFields, CItemData::GROUP, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRGROUP);
+    hdr += cs_temp;
+  } else if (bittest(bsFields, CItemData::TITLE, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRTITLE);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::USER, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRUSERNAME);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::PASSWORD, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRPASSWORD);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::URL, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRURL);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::AUTOTYPE, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRAUTOTYPE);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::CTIME, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRCTIME);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::PMTIME, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRPMTIME);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::ATIME, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRATIME);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::XTIME, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRXTIME);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::XTIME_INT, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRXTIMEINT);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::RMTIME, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRRMTIME);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::POLICY, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRPWPOLICY);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::PWHIST, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRPWHISTORY);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::RUNCMD, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRRUNCOMMAND);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::DCA, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRDCA);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::EMAIL, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDREMAIL);
+    hdr += cs_temp;
+  }
+  if (bittest(bsFields, CItemData::NOTES, bIncluded)) {
+    LoadAString(cs_temp, IDSC_EXPHDRNOTES);
+    hdr += cs_temp;
+  }
+  int hdr_len = hdr.length();
+  if (hdr[hdr.length() - 1] == _T('\t')) {
+    hdr_len--;
+    hdr = hdr.substr(0, hdr_len);
+  }
+  return hdr;
+}
+
+struct ExportTester {
+  ExportTester(const stringT &subgroup_name,
+                        const int &subgroup_object, const int &subgroup_function)
   :  m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
-  m_subgroup_function(subgroup_function), m_bEntriesMatch(false)
+  m_subgroup_function(subgroup_function)
   {}
 
-  bool DidEntriesMatch() {return m_bEntriesMatch;}
-
   // operator for ItemList
-  void operator()(pair<CUUIDGen, CItemData> p)
-  {operator()(p.second);}
+  bool operator()(pair<CUUIDGen, CItemData> p)
+  {return operator()(p.second);}
 
   // operator for OrderedItemList
-  void operator()(const CItemData &item)
+  bool operator()(const CItemData &item)
   {
-    if (!m_bEntriesMatch && 
-        item.Matches(m_subgroup_name,
-                     m_subgroup_object, m_subgroup_function)) {
-      m_bEntriesMatch = true;
-    }
+    return item.Matches(m_subgroup_name,
+                        m_subgroup_object, m_subgroup_function);
   }
 
 private:
   const stringT &m_subgroup_name;
   const int m_subgroup_object;
   const int m_subgroup_function;
-  bool m_bEntriesMatch;
 };
+
+int PWScore::TestForExport(const stringT &subgroup_name,
+                           const int &subgroup_object,
+                           const int &subgroup_function,
+                           const OrderedItemList *il)
+{
+  // Check if any pass restricting criteria
+  if (!subgroup_name.empty()) {
+    bool bAnyMatch(false);
+    if (il != NULL) {
+      if (find_if(il->begin(), il->end(),
+                  ExportTester(subgroup_name,
+                                        subgroup_object,
+                                        subgroup_function)) != il->end())
+        bAnyMatch = true;
+    } else {
+      if (find_if(m_pwlist.begin(), m_pwlist.end(),
+                  ExportTester(subgroup_name, 
+                                        subgroup_object, 
+                                        subgroup_function)) != m_pwlist.end())
+        bAnyMatch = true;
+    }
+
+    if (!bAnyMatch)
+      return NO_ENTRIES_EXPORTED;
+  }
+  return SUCCESS;
+}
 
 struct PutText {
   PutText(const stringT &subgroup_name,
@@ -368,8 +488,14 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 {
   // Check if anything to do! 
   if (bsFields.count() == 0)
-    return SUCCESS;
+    return NO_ENTRIES_EXPORTED;
 
+  // Although the MFC UI prevents the user selecting export of an
+  // empty database, other UIs might not, so:
+  if ((il != NULL && il->size() == 0) ||
+      (il == NULL && m_pwlist.size() == 0))
+    return NO_ENTRIES_EXPORTED;
+ 
   CUTF8Conv conv;
 #ifdef UNICODE
   int fnamelen;
@@ -378,20 +504,6 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 #else
   const char *fname = filename.c_str();
 #endif
-
-  // Check if any pass restricting criteria
-  if (!subgroup_name.empty()) {
-    PutTextTester put_text_tester(subgroup_name, subgroup_object, subgroup_function);
-
-    if (il != NULL) {
-      for_each(il->begin(), il->end(), put_text_tester);
-    } else {
-      for_each(m_pwlist.begin(), m_pwlist.end(), put_text_tester);
-    }
-
-    if (!put_text_tester.DidEntriesMatch())
-      return NO_ENTRIES_EXPORTED;
-  }
 
   ofstream ofs(reinterpret_cast<const char *>(fname));
 
@@ -410,89 +522,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
     ofs << endl;
   } else {
-    // user chose fields, build custom header
-    // Header fields MUST be in the same order as actual fields written
-    // See CItemData::GetPlaintext
-    StringX cs_temp;
-    if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE)) {
-      LoadAString(cs_temp, IDSC_EXPHDRGROUPTITLE);
-      hdr += cs_temp;
-    } else if (bsFields.test(CItemData::GROUP)) {
-      LoadAString(cs_temp, IDSC_EXPHDRGROUP);
-      hdr += cs_temp;
-    } else if (bsFields.test(CItemData::TITLE)) {
-      LoadAString(cs_temp, IDSC_EXPHDRTITLE);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::USER)) {
-      LoadAString(cs_temp, IDSC_EXPHDRUSERNAME);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::PASSWORD)) {
-      LoadAString(cs_temp, IDSC_EXPHDRPASSWORD);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::URL)) {
-      LoadAString(cs_temp, IDSC_EXPHDRURL);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::AUTOTYPE)) {
-      LoadAString(cs_temp, IDSC_EXPHDRAUTOTYPE);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::CTIME)) {
-      LoadAString(cs_temp, IDSC_EXPHDRCTIME);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::PMTIME)) {
-      LoadAString(cs_temp, IDSC_EXPHDRPMTIME);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::ATIME)) {
-      LoadAString(cs_temp, IDSC_EXPHDRATIME);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::XTIME)) {
-      LoadAString(cs_temp, IDSC_EXPHDRXTIME);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::XTIME_INT)) {
-      LoadAString(cs_temp, IDSC_EXPHDRXTIMEINT);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::RMTIME)) {
-      LoadAString(cs_temp, IDSC_EXPHDRRMTIME);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::POLICY)) {
-      LoadAString(cs_temp, IDSC_EXPHDRPWPOLICY);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::PWHIST)) {
-      LoadAString(cs_temp, IDSC_EXPHDRPWHISTORY);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::RUNCMD)) {
-      LoadAString(cs_temp, IDSC_EXPHDRRUNCOMMAND);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::DCA)) {
-      LoadAString(cs_temp, IDSC_EXPHDRDCA);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::EMAIL)) {
-      LoadAString(cs_temp, IDSC_EXPHDREMAIL);
-      hdr += cs_temp;
-    }
-    if (bsFields.test(CItemData::NOTES)) {
-      LoadAString(cs_temp, IDSC_EXPHDRNOTES);
-      hdr += cs_temp;
-    }
-
-    int hdr_len = hdr.length();
-    if (hdr[hdr.length() - 1] == _T('\t'))
-      hdr_len--;
-    hdr = hdr.substr(0, hdr_len);
+    hdr = BuildHeader(bsFields, true);
     conv.ToUTF8(hdr, utf8, utf8Len);
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
     ofs << endl;
@@ -511,36 +541,6 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 
   return SUCCESS;
 }
-
-struct XMLRecordWriterTester {
-  XMLRecordWriterTester(const stringT &subgroup_name,
-                        const int subgroup_object, const int subgroup_function)
-  :  m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
-  m_subgroup_function(subgroup_function), m_bEntriesMatch(false)
-  {}
-
-  bool DidEntriesMatch() {return m_bEntriesMatch;}
-
-  // operator for ItemList
-  void operator()(pair<CUUIDGen, CItemData> p)
-  {operator()(p.second);}
-
-  // operator for OrderedItemList
-  void operator()(const CItemData &item)
-  {
-    if (!m_bEntriesMatch && 
-        item.Matches(m_subgroup_name,
-                     m_subgroup_object, m_subgroup_function)) {
-      m_bEntriesMatch = true;
-    }
-  }
-
-private:
-  const stringT &m_subgroup_name;
-  const int m_subgroup_object;
-  const int m_subgroup_function;
-  bool m_bEntriesMatch;
-};
 
 struct XMLRecordWriter {
   XMLRecordWriter(const stringT &subgroup_name,
@@ -615,8 +615,15 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          const TCHAR delimiter, const OrderedItemList *il)
+                          const TCHAR delimiter, const OrderedItemList *il,
+                          const bool bFilterActive)
 {
+  // Although the MFC UI prevents the user selecting export of an
+  // empty database, other UIs might not, so:
+  if ((il != NULL && il->size() == 0) ||
+      (il == NULL && m_pwlist.size() == 0))
+    return NO_ENTRIES_EXPORTED;
+
 #ifdef UNICODE
   const unsigned char *fname = NULL;
   CUTF8Conv conv;
@@ -626,27 +633,14 @@ int PWScore::WriteXMLFile(const StringX &filename,
   const char *fname = filename.c_str();
 #endif
 
-  // Check if any pass restricting criteria
-  if (!subgroup_name.empty()) {
-    XMLRecordWriterTester put_xml_tester(subgroup_name, subgroup_object, subgroup_function);
-
-    if (il != NULL) {
-      for_each(il->begin(), il->end(), put_xml_tester);
-    } else {
-      for_each(m_pwlist.begin(), m_pwlist.end(), put_xml_tester);
-    }
-
-    if (!put_xml_tester.DidEntriesMatch())
-      return NO_ENTRIES_EXPORTED;
-  }
-
   ofstream ofs(reinterpret_cast<const char *>(fname));
 
   if (!ofs)
     return CANT_OPEN_FILE;
 
+  oStringXStream oss_xml;
   StringX pwh, tmp;
-  stringT cs_tmp;
+  stringT cs_temp;
   time_t time_now;
 
   time(&time_now);
@@ -719,6 +713,13 @@ int PWScore::WriteXMLFile(const StringX &filename,
   }
 
   // write out preferences stored in database
+  LoadAString(cs_temp, IDSC_XMLEXP_PREFERENCES);
+  oss_xml << _T(" <!-- ") << cs_temp << _T(" --> ");
+  conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
+  ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  ofs << endl;
+  oss_xml.str(_T(""));  // Clear buffer for next user
+
   stringT prefs = PWSprefs::GetInstance()->GetXMLPreferences();
   utf8conv.ToUTF8(prefs.c_str(), utf8, utf8Len);
   ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
@@ -745,8 +746,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
       unsigned char c;
       for (unsigned int i = 0; i < unkhfe.st_length; i++) {
         c = *pmem++;
-        Format(cs_tmp, _T("%02x"), c);
-        tmp += cs_tmp;
+        Format(cs_temp, _T("%02x"), c);
+        tmp += cs_temp;
       }
 #endif
       utf8conv.ToUTF8(tmp, utf8, utf8Len);
@@ -757,12 +758,162 @@ int PWScore::WriteXMLFile(const StringX &filename,
     ofs << "\t</unknownheaderfields>" << endl;  
   }
 
-  if (bsFields.count() != bsFields.size()) {
-    // Some restrictions - put in a comment to that effect
-    ofs << "<!-- Export of data was restricted to certain fields by the user -->"
-        << endl;
+  bool bStartComment(false);
+  if (bFilterActive) {
+    if (!bStartComment) {
+      bStartComment = true;
+      ofs << " <!-- " << endl;
+    }
+    LoadAString(cs_temp, IDSC_XMLEXP_FILTERACTIVE);
+    oss_xml << _T("     ") << cs_temp;
+    conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
     ofs << endl;
+    oss_xml.str(_T(""));  // Clear buffer for next user
   }
+
+  if (!subgroup_name.empty() || bsFields.count() != bsFields.size()) {
+    if (!bStartComment) {
+      bStartComment = true;
+      ofs << " <!-- " << endl;
+    }
+    // Some restrictions - put in a comment to that effect
+    LoadAString(cs_temp, IDSC_XMLEXP_FLDRESTRICT);
+    oss_xml << _T("     ") << cs_temp;
+    conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << endl;
+    oss_xml.str(_T(""));  // Clear buffer for next user
+
+    if (!subgroup_name.empty()) {
+      stringT cs_object, cs_function, cs_case(_T(""));
+      int iObject(IDSC_UNKNOWNOBJECT);
+      switch (subgroup_object) {
+        case CItemData::GROUP:
+          iObject = IDSC_EXPHDRGROUP;
+          break;
+        case CItemData::GROUPTITLE:
+          iObject = IDSC_EXPHDRGROUPTITLE;
+          break;
+        case CItemData::TITLE:
+          iObject = IDSC_EXPHDRTITLE;
+          break;
+        case CItemData::USER:
+          iObject = IDSC_EXPHDRUSERNAME;
+          break;
+        case CItemData::URL:
+          iObject = IDSC_EXPHDRURL;
+          break;
+        case CItemData::NOTES:
+          iObject = IDSC_EXPHDRNOTES;
+          break;
+        default:
+          ASSERT(0);
+      }
+      LoadAString(cs_object, iObject);
+      int object_len = cs_object.length();
+      if (cs_object[object_len - 1] == _T('\t')) {
+        object_len--;
+        cs_object = cs_object.substr(0, object_len);
+      }
+
+      int iCase(IDSC_CASE_INSENSITIVE);
+      if (subgroup_function < 0) {
+        iCase = IDSC_CASE_SENSITIVE;
+      }
+      LoadAString(cs_case, iCase);
+
+      int iFunction(IDSC_UNKNOWNFUNCTION);
+      switch (subgroup_function) {
+        case  PWSMatch::MR_EQUALS:
+        case -PWSMatch::MR_EQUALS:
+          iFunction = IDSC_EQUALS;
+          break;
+        case  PWSMatch::MR_NOTEQUAL:
+        case -PWSMatch::MR_NOTEQUAL:
+          iFunction = IDSC_DOESNOTEQUAL;
+          break;
+        case  PWSMatch::MR_BEGINS:
+        case -PWSMatch::MR_BEGINS:
+          iFunction = IDSC_BEGINSWITH;
+          break;
+        case  PWSMatch::MR_NOTBEGIN:
+        case -PWSMatch::MR_NOTBEGIN:
+          iFunction = IDSC_DOESNOTBEGINSWITH;
+          break;
+        case  PWSMatch::MR_ENDS:
+        case -PWSMatch::MR_ENDS:
+          iFunction = IDSC_ENDSWITH;
+          break;
+        case  PWSMatch::MR_NOTEND:
+        case -PWSMatch::MR_NOTEND:
+          iFunction = IDSC_DOESNOTENDWITH;
+          break;
+        case  PWSMatch::MR_CONTAINS:
+        case -PWSMatch::MR_CONTAINS:
+          iFunction = IDSC_CONTAINS;
+          break;
+        case  PWSMatch::MR_NOTCONTAIN:
+        case -PWSMatch::MR_NOTCONTAIN:
+          iFunction = IDSC_DOESNOTCONTAIN;
+          break;
+        default:
+          ASSERT(0);
+      }
+      LoadAString(cs_function, iFunction);
+
+      LoadAString(cs_temp, IDSC_XMLEXP_SUBSETACTIVE);
+      if (!bStartComment) {
+        bStartComment = true;
+        ofs << " <!-- " << endl;
+      }
+      oss_xml << _T("     ") << cs_temp;
+      conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
+      ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      ofs << endl;
+      oss_xml.str(_T(""));  // Clear buffer for next user
+
+      oss_xml << _T("     ") << _T(" '") << cs_object     << _T("' ")
+                             << _T(" '") << cs_function   << _T("' ")
+                             << _T(" '") << subgroup_name << _T("' ")
+                             << cs_case;
+      utf8conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
+      ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      ofs << endl;
+      oss_xml.str(_T(""));  // Clear buffer for next user
+    }
+    if (bsFields.count() != bsFields.size()) {
+      if (!bStartComment) {
+        bStartComment = true;
+        ofs << " <!-- " << endl;
+      }
+      StringX hdr;
+      LoadAString(cs_temp, IDSC_XMLEXP_SUBSETFIELDS);
+      oss_xml << _T("     ") << cs_temp;
+      conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
+      ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      ofs << endl;
+      oss_xml.str(_T(""));  // Clear buffer for next user
+
+      hdr = BuildHeader(bsFields, false);
+      int found = hdr.find(_T("\t"));
+	    while (found >= 0) {
+		    if (found >= 0) {
+			    hdr.replace(found, 1, _T(", "));
+		    }
+		    found = hdr.find(_T("\t"));
+	    }
+      hdr = _T("     ") + hdr;
+      conv.ToUTF8(hdr, utf8, utf8Len);
+      ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      ofs << endl;
+    }
+  }
+  if (bStartComment) {
+    bStartComment = false;
+    ofs << " --> " << endl;
+  }
+  ofs << endl;
 
   XMLRecordWriter put_xml(subgroup_name, subgroup_object, subgroup_function,
                           bsFields, delimiter, ofs, this);
@@ -912,7 +1063,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                      ((to == stringT::npos) ?
                                       stringT::npos : to - from)));
   } while (to != string::npos);
-
 
   // Following fails if a field was added in enum but not in
   // IDSC_EXPORTHEADER, or vice versa.
@@ -1597,7 +1747,6 @@ void PWScore::ChangePassword(const StringX &newPassword)
 }
 
 // functor object type for find_if:
-
 struct FieldsMatch {
   bool operator()(pair<CUUIDGen, CItemData> p) {
     const CItemData &item = p.second;
@@ -1965,8 +2114,7 @@ void PWScore::CopyPWList(const ItemList &in)
   SetDBChanged(true);
 }
 
-bool
-PWScore::Validate(stringT &status)
+bool PWScore::Validate(stringT &status)
 {
   // Check uuid is valid
   // Check PWH is valid

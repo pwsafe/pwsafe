@@ -73,7 +73,8 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_bForceReadOnly(bForceReadOnly),
   m_adv_type(adv_type), m_bAdvanced(false),
   m_subgroup_set(BST_UNCHECKED),
-  m_subgroup_name(L""), m_subgroup_object(0), m_subgroup_function(0),
+  m_subgroup_name(L""), m_subgroup_object(CItemData::GROUP),
+  m_subgroup_function(0),
   m_treatwhitespaceasempty(BST_CHECKED), m_pVKeyBoardDlg(NULL)
 {
   DBGMSG("CPasskeyEntry()\n");

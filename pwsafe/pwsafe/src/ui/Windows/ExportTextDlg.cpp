@@ -39,8 +39,8 @@ static wchar_t PSSWDCHAR = L'*';
 CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
   : CPWDialog(CExportTextDlg::IDD, pParent),
   m_subgroup_set(BST_UNCHECKED),
-  m_subgroup_name(L""), m_subgroup_object(0), m_subgroup_function(0),
-  m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL)
+  m_subgroup_name(L""), m_subgroup_object(CItemData::GROUP),
+  m_subgroup_function(0), m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL)
 {
   m_passkey = L"";
   m_defexpdelim = L"\xbb";

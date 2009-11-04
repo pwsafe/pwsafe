@@ -132,20 +132,21 @@ BOOL CAdvancedDlg::OnInitDialog()
     }
   }
 
+  // Note: NOT SORTED by design
   CComboBox *cboSubgroupObject = (CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT);
   if (cboSubgroupObject->GetCount () == 0) {
     cs_text.LoadString(IDS_GROUP);
     iItem = cboSubgroupObject->AddString(cs_text);
     cboSubgroupObject->SetItemData(iItem, CItemData::GROUP);
+    cs_text.LoadString(IDS_GROUPTITLE);
+    iItem = cboSubgroupObject->AddString(cs_text);
+    cboSubgroupObject->SetItemData(iItem, CItemData::GROUPTITLE);
     cs_text.LoadString(IDS_TITLE);
     iItem = cboSubgroupObject->AddString(cs_text);
     cboSubgroupObject->SetItemData(iItem, CItemData::TITLE);
     cs_text.LoadString(IDS_USERNAME);
     iItem = cboSubgroupObject->AddString(cs_text);
     cboSubgroupObject->SetItemData(iItem, CItemData::USER);
-    cs_text.LoadString(IDS_GROUPTITLE);
-    iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::GROUPTITLE);
     cs_text.LoadString(IDS_URL);
     iItem = cboSubgroupObject->AddString(cs_text);
     cboSubgroupObject->SetItemData(iItem, CItemData::URL);
@@ -172,8 +173,8 @@ BOOL CAdvancedDlg::OnInitDialog()
 
   // m_pLC_List are those fields that aren't currently selected but could be
   // m_pLC_Selected are those fields already selected
-  m_pLC_List = (CListCtrl*)GetDlgItem(IDC_ADVANCED_LIST);
-  m_pLC_Selected = (CListCtrl*)GetDlgItem(IDC_ADVANCED_SELECTED);
+  m_pLC_List = (CListCtrl *)GetDlgItem(IDC_ADVANCED_LIST);
+  m_pLC_Selected = (CListCtrl *)GetDlgItem(IDC_ADVANCED_SELECTED);
 
   m_pLC_List->InsertColumn(0, L"");
   m_pLC_Selected->InsertColumn(0, L"");
@@ -205,6 +206,9 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_PWPOLICY);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
       m_pLC_List->SetItemData(iItem, CItemData::POLICY);
+      cs_text.LoadString(IDS_DCALONG);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::DCA);
       break;
     case ADV_FIND:
       // Don't add any of these - they are not text fields
@@ -234,6 +238,9 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_PWPOLICY);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::POLICY);
+      cs_text.LoadString(IDS_DCALONG);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::DCA);
       break;
     default:
       ASSERT(FALSE);
@@ -260,7 +267,7 @@ BOOL CAdvancedDlg::OnInitDialog()
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::EMAIL);
 
-  // Deal with standard text fields
+  // Deal with standard text fields - selected by default
   switch (m_iIndex) {
     case ADV_EXPORT_XML:
       cs_text.LoadString(IDS_GROUP);
