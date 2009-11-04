@@ -435,8 +435,6 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& evt)
   m_searchContext.Reset();
   AdvancedSearchOptionsDlg dlg(m_parentFrame, m_searchContext);
   m_fAdvancedSearch = (dlg.ShowModal() == wxID_OK);
-  if (m_searchContext.IsDirty())
-      wxMessageBox(wxT("Search is dirty.  Will search from afresh"), wxT("Password Safe Search"));
 }
 
 /*!
@@ -467,7 +465,7 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY));
 
   if (!m_toolbar->Realize())
-    wxMessageBox(wxT("SearcBar::Realize failed"), wxT("Password Safe"));
+    wxMessageBox(wxT("Could not create Search Bar"), wxT("Password Safe"));
  
   m_toolbar->PushEventHandler(this);
 }
@@ -546,13 +544,13 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
     for (size_t idx = 0; idx < NumberOf(ItemDataFields) && !found; ++idx) {
       if (bsFields.test(ItemDataFields[idx].type)) {
           const StringX str = (itr->second.*ItemDataFields[idx].func)();
-          found = fCaseSensitive? str.find_first_of(searchText) != StringX::npos: FindNoCase(searchText, str);
+          found = fCaseSensitive? str.find(searchText) != StringX::npos: FindNoCase(searchText, str);
       }
     }
 
     if (!found && bsFields.test(CItemData::NOTES)) {
         StringX str = itr->second.GetNotes();
-        found = fCaseSensitive? str.find_first_of(searchText) != StringX::npos: FindNoCase(searchText, str);
+        found = fCaseSensitive? str.find(searchText) != StringX::npos: FindNoCase(searchText, str);
     }
 
     if (!found && bsFields.test(CItemData::PWHIST)) {
@@ -561,12 +559,9 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
         CreatePWHistoryList(itr->second.GetPWHistory(), pwh_max, err_num, pwhistlist, TMC_XML);
         for (PWHistList::iterator iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
           PWHistEntry pwshe = *iter;
-          if (!fCaseSensitive)
-            ToLower(pwshe.password);
-          if (::wcsstr(pwshe.password.c_str(), searchText.c_str())) {
-            found = true;
+          found = fCaseSensitive? pwshe.password.find(searchText) != StringX::npos: FindNoCase(searchText, pwshe.password );
+          if (found)
             break;  // break out of for loop
-          }
         }
         pwhistlist.clear();
     }
@@ -589,9 +584,13 @@ SearchPointer& SearchPointer::operator++()
       m_currentIndex = m_indices.begin();
       m_label = wxT("Search hit bottom, continuing at top");
     }
+    else {
+      m_label.Printf(wxT("%d matches found"), m_indices.size());
+    }
   }
-  else
+  else {
     m_currentIndex = m_indices.end();
+  }
 
   return *this;
 }
@@ -605,6 +604,7 @@ SearchPointer& SearchPointer::operator--()
     }
     else {
       m_currentIndex--;
+      m_label.Printf(wxT("%d matches found"), m_indices.size());
     }
   }
   else

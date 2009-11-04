@@ -147,8 +147,7 @@ public:
         m_label = wxT("No matches found");
     }
 
-    void Reset() { m_currentIndex = m_indices.end(); m_label = wxT("No matches found"); }
-    void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); }
+    void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); m_label = wxT("No matches found"); }
     bool IsEmpty() const { return m_indices.empty(); }
     const CUUIDGen& operator*() const { return *m_currentIndex; }
     size_t Size() const { return m_indices.size(); }
