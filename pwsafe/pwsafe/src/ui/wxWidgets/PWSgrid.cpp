@@ -48,6 +48,7 @@ BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
 ////@begin PWSGrid event table entries
   EVT_GRID_CELL_RIGHT_CLICK( PWSGrid::OnCellRightClick )
   EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
+  EVT_CHAR( PWSGrid::OnChar )
 
 ////@end PWSGrid event table entries
 
@@ -87,7 +88,7 @@ bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
 {
 ////@begin PWSGrid creation
   wxGrid::Create(parent, id, pos, size, style);
-  //CreateControls();
+  CreateControls();
 ////@end PWSGrid creation
   return true;
 }
@@ -195,6 +196,9 @@ void PWSGrid::DisplayItem(const CItemData &item, int row)
 
 void PWSGrid::AddItem(const CItemData &item, int row)
 {
+  int nRows = GetNumberRows();
+  if (row >= nRows) // add rows as needed
+    AppendRows(row - nRows + 1);
   DisplayItem(item, row);
   uuid_array_t uuid;
   item.GetUUID(uuid);
@@ -312,7 +316,7 @@ void PWSGrid::OnLeftDClick( wxGridEvent& event )
 {
   const CItemData *item = GetItem(event.GetRow());
   if (item != NULL)
-    PWSdca::Doit(*item);
+    PWSdca::Doit(GetParent(), *item);
 }
 
 void PWSGrid::RegisterCoreNotifications()
@@ -331,3 +335,18 @@ void PWSGrid::RegisterCoreNotifications()
          wxGrid::SelectRow(itr->second);
      }
  }
+
+
+/*!
+ * wxEVT_CHAR event handler for ID_LISTBOX
+ */
+
+void PWSGrid::OnChar( wxKeyEvent& event )
+{
+  if (event.GetKeyCode() == WXK_ESCAPE &&
+      PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
+    GetParent()->Close();
+  }
+  event.Skip();
+}
+

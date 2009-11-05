@@ -81,6 +81,9 @@ public:
   /// wxEVT_RIGHT_DOWN event handler for ID_TREECTRL
   void OnRightDown( wxMouseEvent& event );
 
+  /// wxEVT_CHAR event handler for ID_TREECTRL
+  void OnChar( wxKeyEvent& event );
+
 ////@end PWSTreeCtrl event handler declarations
   void OnGetToolTip( wxTreeEvent& event ); // Added manually
 

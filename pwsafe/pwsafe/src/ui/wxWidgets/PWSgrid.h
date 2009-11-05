@@ -95,6 +95,9 @@ public:
   /// wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
   void OnLeftDClick( wxGridEvent& event );
 
+  /// wxEVT_CHAR event handler for ID_LISTBOX
+  void OnChar( wxKeyEvent& event );
+
 ////@end PWSGrid event handler declarations
 
 ////@begin PWSGrid member function declarations

@@ -134,9 +134,6 @@ public:
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
   void OnCloseWindow( wxCloseEvent& event );
 
-  /// wxEVT_CHAR event handler for ID_PASSWORDSAFEFRAME
-  void OnChar( wxKeyEvent& event );
-
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
   void OnOpenClick( wxCommandEvent& event );
 

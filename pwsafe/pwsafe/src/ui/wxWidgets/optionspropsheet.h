@@ -219,6 +219,9 @@ public:
   bool GetEscexits() const { return m_escexits ; }
   void SetEscexits(bool value) { m_escexits = value ; }
 
+  int GetDoubleclickaction() const { return m_doubleclickaction ; }
+  void SetDoubleclickaction(int value) { m_doubleclickaction = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -243,6 +246,7 @@ public:
   wxCheckBox* m_showpasswordintreeCB;
   wxCheckBox* m_preexpirywarnCB;
   wxSpinCtrl* m_preexpirywarndaysSB;
+  wxComboBox* m_DCACB;
   wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
@@ -274,6 +278,7 @@ private:
   bool m_confirmdelete;
   bool m_maintaindatetimestamps;
   bool m_escexits;
+  int m_doubleclickaction;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();

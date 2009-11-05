@@ -14,10 +14,12 @@
 #include <wx/msgdlg.h>
 
 #include "corelib/PWSprefs.h"
+#include "passwordsafeframe.h"
 
-void PWSdca::Doit(const CItemData &item)
+void PWSdca::Doit(wxWindow *w, const CItemData &item)
 {
   wxString action;
+
   switch (PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)) {
   case PWSprefs::DoubleClickAutoType:
     action = _("AutoType");
@@ -40,15 +42,29 @@ void PWSdca::Doit(const CItemData &item)
     // OnCopyUsername();
     break;
   case PWSprefs::DoubleClickCopyPasswordMinimize:
+    PWSclip::SetData(item.GetPassword());
     action = _("CopyPasswordMinimize");
     //OnCopyPasswordMinimize();
     break;
-  case PWSprefs::DoubleClickViewEdit:
-    action = _("ViewEdit");
-    wxMessageBox(_("ItemDblClickPlaceholder"));
+  case PWSprefs::DoubleClickViewEdit: {
+    wxCommandEvent event(ID_EDIT, w->GetId());
+    event.SetEventObject(w);
+    w->GetEventHandler()->ProcessEvent(event);
+  }
+    break;
+  case PWSprefs::DoubleClickBrowsePlus:
+    action = _("BrowsePlusAutotype");
+    break;
+  case PWSprefs::DoubleClickRun:
+    action = _("Run Command");
+    break;
+  case PWSprefs::DoubleClickSendEmail:
+    action = _("Send email");
     break;
   default:
-    ASSERT(0);
+    action.Format(_("Unknown code: %d"),
+                  PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
+    break;
   }
   if (!action.empty())
     wxMessageBox(action);
