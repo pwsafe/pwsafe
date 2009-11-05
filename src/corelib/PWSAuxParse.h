@@ -28,7 +28,8 @@ namespace PWSAuxParse {
                             const StringX &sxCurrentDB,
                             CItemData *pci, bool &bAutoType,
                             StringX &sxAutotype, stringT &serrmsg,
-                            StringX::size_type &st_column);
+                            StringX::size_type &st_column,
+                            bool &bURLSpecial);
 
   StringX GetAutoTypeString(const StringX &sxAutoCmd,
                             const StringX &sxgroup, const StringX &sxtitle,

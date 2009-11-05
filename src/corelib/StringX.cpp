@@ -96,12 +96,13 @@ template<class T> int Replace(T &s, TCHAR from, TCHAR to)
   int retval = 0;
   T r;
   r.reserve(s.length());
-  for (typename T::iterator iter = s.begin(); iter != s.end(); iter++)
+  for (typename T::iterator iter = s.begin(); iter != s.end(); iter++) {
     if (*iter == from) {
       r.append(1, to);
       retval++;
     } else
       r.append(1, *iter);
+  }
   s = r;
   return retval;
 }

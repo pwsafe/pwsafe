@@ -1052,6 +1052,12 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
       ipos = cs_data.find(L"{alt}");
       if (ipos != StringX::npos)
         cs_data.replace(ipos, 5, L"");
+      ipos = cs_data.find(L"[autotype]");
+      if (ipos != StringX::npos)
+        cs_data.replace(ipos, 10, L"");
+      ipos = cs_data.find(L"[xa]");
+      if (ipos != StringX::npos)
+        cs_data.replace(ipos, 4, L"");
       break;
     }
     case CItemData::RUNCMD:
@@ -1563,10 +1569,11 @@ void DboxMain::OnRunCommand()
 
   std::wstring errmsg;
   StringX::size_type st_column;
+  bool bURLSpecial;
   sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_RunCommand, 
                        m_core.GetCurFile(), pci, 
                        m_bDoAutoType, m_AutoType, 
-                       errmsg, st_column);
+                       errmsg, st_column, bURLSpecial);
   if (!errmsg.empty()) {
     CGeneralMsgBox gmb;
     CString cs_title, cs_errmsg;
@@ -1582,6 +1589,25 @@ void DboxMain::OnRunCommand()
   SetClipboardData(pci->GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(pci_original);
+
+  // Now honour presence of [alt], {alt} or [ssh] in the url if present
+  // in the RunCommand field.  Note: they are all treated the same (unlike
+  // in 'Browse to'.
+  StringX sxAltBrowser(PWSprefs::GetInstance()->
+                         GetPref(PWSprefs::AltBrowser));
+
+  if (bURLSpecial && !sxAltBrowser.empty()) {
+    StringX sxCmdLineParms(PWSprefs::GetInstance()->
+                           GetPref(PWSprefs::AltBrowserCmdLineParms));
+
+    if (sxAltBrowser[0] != L'\'' && sxAltBrowser[0] != L'"')
+      sxAltBrowser = L"\"" + sxAltBrowser + L"\"";
+    if (!sxCmdLineParms.empty())
+      sx_Expanded_ES = sxAltBrowser + StringX(L" ") + 
+                       sxCmdLineParms + StringX(L" ") + sx_Expanded_ES;
+    else
+      sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
+  }
 
   bool rc = m_runner.runcmd(sx_Expanded_ES, m_AutoType);
   if (!rc) {
