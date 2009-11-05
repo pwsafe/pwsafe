@@ -38,6 +38,7 @@
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSdirs.h"
 #include "PasswordSafeSearch.h"
+#include "pwsclip.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -755,33 +756,78 @@ void PasswordSafeFrame::SeletItem(const CUUIDGen& uuid)
 
 }
 
-void PasswordSafeFrame::UpdateAccessTime(CItemData *pci)
+void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 {
   // Mark access time if so configured
-  ASSERT(pci != NULL);
 #ifdef NOTYET
   // First add to RUE List
   uuid_array_t RUEuuid;
-  pci->GetUUID(RUEuuid);
+  ci.GetUUID(RUEuuid);
   m_RUEList.AddRUEntry(RUEuuid);
 #endif
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
 
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
-    pci->SetATime();
+    ci.SetATime();
 #ifdef NOTYET
     // Need to update view if there
     if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
       // Get index of entry
-      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
       // Get value in correct format
-      CString cs_atime = pci->GetATimeL().c_str();
+      CString cs_atime = ci.GetATimeL().c_str();
       // Update it
       m_ctlItemList.SetItemText(pdi->list_index,
         m_nColumnIndexByType[CItemData::ATIME], cs_atime);
     }
 #endif
+  }
+}
+
+void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
+{
+  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)) {
+  case PWSprefs::DoubleClickAutoType:
+    DoAutotype(item);
+    break;
+  case PWSprefs::DoubleClickBrowse:
+    DoBrowse(item);
+    break;
+  case PWSprefs::DoubleClickCopyNotes:
+    DoCopyNotes(item);
+    break;
+  case PWSprefs::DoubleClickCopyPassword:
+    DoCopyPassword(item);
+    break;
+  case PWSprefs::DoubleClickCopyUsername:
+    DoCopyUsername(item);
+    break;
+  case PWSprefs::DoubleClickCopyPasswordMinimize:
+    DoCopyPassword(item);
+    Iconize(true);
+    break;
+  case PWSprefs::DoubleClickViewEdit:
+    DoEdit(item);
+    break;
+  case PWSprefs::DoubleClickBrowsePlus:
+    DoBrowse(item);
+    // Wait a little?
+    DoAutotype(item);
+    break;
+  case PWSprefs::DoubleClickRun:
+    DoRun(item);
+    break;
+  case PWSprefs::DoubleClickSendEmail:
+    DoEmail(item);
+    break;
+  default: {
+    wxString action;
+    action.Format(_("Unknown code: %d"),
+                  PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
+    wxMessageBox(action);
+    break;
+  }
   }
 }
 

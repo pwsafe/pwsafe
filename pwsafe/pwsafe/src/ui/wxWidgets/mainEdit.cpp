@@ -39,12 +39,16 @@
 void PasswordSafeFrame::OnEditClick( wxCommandEvent& event )
 {
   CItemData *item = GetSelectedEntry();
-  if (item != NULL) {
-    AddEditPropSheet editDbox(this, m_core, m_grid, m_tree,
-                              AddEditPropSheet::EDIT, item);
-    editDbox.ShowModal(); // update view if returned OK, all the rest done internally
-    UpdateAccessTime(item);
-  }
+  if (item != NULL)
+    DoEdit(*item);
+}
+
+void PasswordSafeFrame::DoEdit(CItemData &item)
+{
+  AddEditPropSheet editDbox(this, m_core, m_grid, m_tree,
+                            AddEditPropSheet::EDIT, &item);
+  editDbox.ShowModal(); // update view if returned OK, all the rest done internally
+  UpdateAccessTime(item);
 }
 
 
@@ -152,11 +156,16 @@ void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& event )
 void PasswordSafeFrame::OnCopypasswordClick( wxCommandEvent& event )
 {
   CItemData *item = GetSelectedEntry();
-  if (item != NULL) {
-    PWSclip::SetData(item->GetPassword());
-    UpdateAccessTime(item);
-  }
+  if (item != NULL)
+    DoCopyPassword(*item);
 }
+
+void PasswordSafeFrame::DoCopyPassword(CItemData &item)
+{
+  PWSclip::SetData(item.GetPassword());
+  UpdateAccessTime(item);
+}
+
 
 
 /*!
@@ -166,10 +175,14 @@ void PasswordSafeFrame::OnCopypasswordClick( wxCommandEvent& event )
 void PasswordSafeFrame::OnCopyusernameClick( wxCommandEvent& event )
 {
   CItemData *item = GetSelectedEntry();
-  if (item != NULL) {
-    PWSclip::SetData(item->GetUser());
-    UpdateAccessTime(item);
-  }
+  if (item != NULL)
+    DoCopyUsername(*item);
+}
+
+void PasswordSafeFrame::DoCopyUsername(CItemData &item)
+{
+  PWSclip::SetData(item.GetUser());
+  UpdateAccessTime(item);
 }
 
 
@@ -180,10 +193,14 @@ void PasswordSafeFrame::OnCopyusernameClick( wxCommandEvent& event )
 void PasswordSafeFrame::OnCopynotesfldClick( wxCommandEvent& event )
 {
   CItemData *item = GetSelectedEntry();
-  if (item != NULL) {
-    PWSclip::SetData(item->GetNotes());
-    UpdateAccessTime(item);
-  }
+  if (item != NULL)
+    DoCopyNotes(*item);
+}
+
+void PasswordSafeFrame::DoCopyNotes(CItemData &item)
+{
+  PWSclip::SetData(item.GetNotes());
+  UpdateAccessTime(item);
 }
 
 
@@ -194,9 +211,29 @@ void PasswordSafeFrame::OnCopynotesfldClick( wxCommandEvent& event )
 void PasswordSafeFrame::OnCopyurlClick( wxCommandEvent& event )
 {
   CItemData *item = GetSelectedEntry();
-  if (item != NULL) {
-    PWSclip::SetData(item->GetURL());
-    UpdateAccessTime(item);
-  }
+  if (item != NULL)
+    DoCopyURL(*item);
+}
+
+void PasswordSafeFrame::DoCopyURL(CItemData &item)
+{
+  PWSclip::SetData(item.GetURL());
+  UpdateAccessTime(item);
+}
+
+void PasswordSafeFrame::DoAutotype(CItemData &item)
+{
+}
+
+void PasswordSafeFrame::DoBrowse(CItemData &item)
+{
+}
+
+void PasswordSafeFrame::DoRun(CItemData &item)
+{
+}
+
+void PasswordSafeFrame::DoEmail(CItemData &item)
+{
 }
 

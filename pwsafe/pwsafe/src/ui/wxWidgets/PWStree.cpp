@@ -27,7 +27,7 @@
 #include <vector>
 
 #include "PWStree.h"
-#include "pwsdca.h"
+#include "passwordsafeframe.h" // for DispatchDblClickAction()
 #include "corelib/PWSprefs.h"
 
 ////@begin XPM images
@@ -333,9 +333,10 @@ bool PWSTreeCtrl::Remove(const uuid_array_t &uuid)
 
 void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& event )
 {
-  const CItemData *item = GetItem(event.GetItem());
+  CItemData *item = GetItem(event.GetItem());
   if (item != NULL)
-    PWSdca::Doit(GetParent(), *item);
+    dynamic_cast<PasswordSafeFrame *>(GetParent())->
+      DispatchDblClickAction(*item);
 }
 
 
