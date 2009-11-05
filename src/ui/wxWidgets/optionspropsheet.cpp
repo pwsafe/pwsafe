@@ -81,6 +81,20 @@ const wxChar *BUSuffix[] = {
 
 enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 
+// Following in enum order (see PWSprefs.h)
+const wxChar *DCAStrings[] = {
+  _("Copy password to clipboard"),
+  _("View/Edit selected entry"),
+  _("Autotype"),
+  _("Browse to URL"),
+  _("Copy notes to clipboard"),
+  _("Copy username to clipboard"),
+  _("Copy password to clipboard, minimize"),
+  _("Browse to URL + Autotype"),
+  _("Run Command"),
+  _("Send email"),
+};
+
 /*!
  * COptions constructors
  */
@@ -151,6 +165,7 @@ void COptions::Init()
   m_showpasswordintreeCB = NULL;
   m_preexpirywarnCB = NULL;
   m_preexpirywarndaysSB = NULL;
+  m_DCACB = NULL;
   m_pwpLenCtrl = NULL;
   m_pwMinsGSzr = NULL;
   m_pwpUseLowerCtrl = NULL;
@@ -227,7 +242,7 @@ void COptions::CreateControls()
   m_busuffixCBStrings.Add(_("None"));
   m_busuffixCBStrings.Add(_("YYYYMMMDD_HHMMSS"));
   m_busuffixCBStrings.Add(_("Incremented Number [001-999]"));
-  m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_DROPDOWN );
+  m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_READONLY );
   itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText17 = new wxStaticText( itemPanel2, wxID_STATIC, _("Max."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -346,9 +361,19 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText50 = new wxStaticText( itemPanel44, wxID_STATIC, _("Double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer49->Add(itemStaticText50, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxArrayString itemComboBox51Strings;
-  wxComboBox* itemComboBox51 = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, itemComboBox51Strings, wxCB_DROPDOWN );
-  itemBoxSizer49->Add(itemComboBox51, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxArrayString m_DCACBStrings;
+  m_DCACBStrings.Add(_("Autotype"));
+  m_DCACBStrings.Add(_("Browse to URL"));
+  m_DCACBStrings.Add(_("Browse to URL + Autotype"));
+  m_DCACBStrings.Add(_("Copy notes to clipboard"));
+  m_DCACBStrings.Add(_("Copy password to clipboard"));
+  m_DCACBStrings.Add(_("Copy password to clipboard, minimize"));
+  m_DCACBStrings.Add(_("Copy username to clipboard"));
+  m_DCACBStrings.Add(_("Run Command"));
+  m_DCACBStrings.Add(_("Send email"));
+  m_DCACBStrings.Add(_("View/Edit selected entry"));
+  m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, wxCB_READONLY );
+  itemBoxSizer49->Add(m_DCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer52Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
   wxStaticBoxSizer* itemStaticBoxSizer52 = new wxStaticBoxSizer(itemStaticBoxSizer52Static, wxVERTICAL);
@@ -737,6 +762,13 @@ void COptions::PrefsToPropSheet()
   m_confirmdelete = prefs->GetPref(PWSprefs::DeleteQuestion);
   m_maintaindatetimestamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
   m_escexits = prefs->GetPref(PWSprefs::EscExits);
+  m_doubleclickaction = prefs->GetPref(PWSprefs::DoubleClickAction);
+  wxASSERT(m_doubleclickaction >= 0 &&
+           m_doubleclickaction < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])));
+  if (m_doubleclickaction < 0 ||
+      m_doubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
+    m_doubleclickaction = 0;
+  m_DCACB->SetValue(DCAStrings[m_doubleclickaction]);
 }
 
 void COptions::PropSheetToPrefs()
@@ -800,6 +832,14 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::DeleteQuestion, m_confirmdelete);
   prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_maintaindatetimestamps);
   prefs->SetPref(PWSprefs::EscExits, m_escexits);
+  const wxString dcaStr = m_DCACB->GetValue();
+  for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
+    if (dcaStr == DCAStrings[i]) {
+      m_doubleclickaction = i;
+      break;
+    }
+
+  prefs->SetPref(PWSprefs::DoubleClickAction, m_doubleclickaction);
 }
 
 void COptions::OnOk(wxCommandEvent& event)

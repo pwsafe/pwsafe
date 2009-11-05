@@ -13,10 +13,11 @@
 
 #ifndef _PWSDCA_H_
 #define _PWSDCA_H_
+#include <wx/window.h>
 #include "corelib/ItemData.h"
 
 namespace PWSdca {
-  void Doit(const CItemData &item);
+  void Doit(wxWindow *w, const CItemData &item);
 };
 
 #endif /* _PWSDCA_H_ */

@@ -21,6 +21,7 @@
 #endif
 
 ////@begin includes
+#include "wx/imaglist.h"
 ////@end includes
 #include <utility> // for make_pair
 #include <vector>
@@ -49,6 +50,7 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
 ////@begin PWSTreeCtrl event table entries
   EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
   EVT_RIGHT_DOWN( PWSTreeCtrl::OnRightDown )
+  EVT_CHAR( PWSTreeCtrl::OnChar )
 
 ////@end PWSTreeCtrl event table entries
   EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
@@ -333,7 +335,7 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& event )
 {
   const CItemData *item = GetItem(event.GetItem());
   if (item != NULL)
-    PWSdca::Doit(*item);
+    PWSdca::Doit(GetParent(), *item);
 }
 
 
@@ -369,3 +371,18 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& event )
     }
   }
 }
+
+
+/*!
+ * wxEVT_CHAR event handler for ID_TREECTRL
+ */
+
+void PWSTreeCtrl::OnChar( wxKeyEvent& event )
+{
+  if (event.GetKeyCode() == WXK_ESCAPE &&
+      PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
+    GetParent()->Close();
+  }
+  event.Skip();
+}
+

@@ -58,7 +58,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 ////@begin PasswordSafeFrame event table entries
   EVT_CLOSE( PasswordSafeFrame::OnCloseWindow )
-  EVT_CHAR( PasswordSafeFrame::OnChar )
 
   EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
 
@@ -75,12 +74,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_EDIT, PasswordSafeFrame::OnEditClick )
 
   EVT_MENU( wxID_DELETE, PasswordSafeFrame::OnDeleteClick )
-
-  EVT_MENU( wxID_FIND, PasswordSafeFrame::OnFindClick )
-
-  EVT_MENU( ID_EDITMENU_FIND_NEXT, PasswordSafeFrame::OnFindNext )
-
-  EVT_MENU( ID_EDITMENU_FIND_PREVIOUS, PasswordSafeFrame::OnFindPrevious )
 
   EVT_MENU( ID_CLEARCLIPBOARD, PasswordSafeFrame::OnClearclipboardClick )
 
@@ -141,7 +134,6 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 
   CreateControls();
   Centre();
-  m_search = new PasswordSafeSearch(this);
 ////@end PasswordSafeFrame creation
     return true;
 }
@@ -154,8 +146,6 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 PasswordSafeFrame::~PasswordSafeFrame()
 {
 ////@begin PasswordSafeFrame destruction
-  delete m_search;
-  m_search = 0;
 ////@end PasswordSafeFrame destruction
 }
 
@@ -795,16 +785,8 @@ void PasswordSafeFrame::UpdateAccessTime(CItemData *pci)
   }
 }
 
-
-/*!
- * wxEVT_CHAR event handler for ID_PASSWORDSAFEFRAME
- */
-
-void PasswordSafeFrame::OnChar( wxKeyEvent& event )
-{
-  if (event.GetKeyCode() == WXK_ESCAPE &&
-      PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
-    Close();
-  }
-  event.Skip();
-}
+//-----------------------------------------------------------------
+// Remove all DialogBlock-generated stubs below this line, as we
+// already have them implemented in mainEdit.cpp
+// (how to get DB to stop generating them??)
+//-----------------------------------------------------------------
