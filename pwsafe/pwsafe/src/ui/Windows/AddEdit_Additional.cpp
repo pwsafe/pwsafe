@@ -393,8 +393,10 @@ BOOL CAddEdit_Additional::OnApply()
     size_t st_column;
     bool bAutoType(false);
     StringX sxAutotype(L"");
+    bool bURLSpecial;
     PWSAuxParse::GetExpandedString(M_runcommand(), L"", NULL,
-                                   bAutoType, sxAutotype, errmsg, st_column);
+                                   bAutoType, sxAutotype, errmsg, st_column,
+                                   bURLSpecial);
     if (errmsg.length() > 0) {
       CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
       CString cs_temp(MAKEINTRESOURCE(IDS_RUN_IGNOREORFIX));
@@ -522,17 +524,19 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
     case IDC_STATIC_RUNCMD:
       m_stc_runcommand.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       // If Ctrl pressed - just copy un-substituted Run Command
+      // else substitute
       if (GetKeyState(VK_CONTROL) != 0 || M_runcommand().IsEmpty()) {
         cs_data = StringX(M_runcommand());
       } else {
         std::wstring errmsg;
         size_t st_column;
+        bool bURLSpecial;
         cs_data = PWSAuxParse::GetExpandedString(M_runcommand(),
                                                  M_currentDB(),
                                                  M_pci(),
                                                  M_pDbx()->m_bDoAutoType,
                                                  M_pDbx()->m_AutoType,
-                                                 errmsg, st_column);
+                                                 errmsg, st_column, bURLSpecial);
         if (errmsg.length() > 0) {
           CGeneralMsgBox gmb;
           CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));

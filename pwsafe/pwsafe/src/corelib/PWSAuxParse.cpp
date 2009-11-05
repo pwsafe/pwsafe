@@ -68,7 +68,6 @@ static void ParseNotes(StringX &sxNotes,
     }
   }
 }
-                       
 
 //-----------------------------------------------------------------
 // Externally visible functions
@@ -77,13 +76,15 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
                                        CItemData *pci, bool &bAutoType,
                                        StringX &sxAutotype, stringT &serrmsg, 
-                                       StringX::size_type &st_column)
+                                       StringX::size_type &st_column,
+                                       bool &bURLSpecial)
 {
   std::vector<st_RunCommandTokens> v_rctokens;
   std::vector<st_RunCommandTokens>::iterator rc_iter;
-  StringX sxretval(_T(""));
+  StringX sxretval(_T("")), sxurl;
   stringT spath, sdrive, sdir, sfname, sextn;
   stringT sdbdir;
+  bURLSpecial = false;
 
   UINT uierr = ParseRunCommand(sxRun_Command, v_rctokens, 
                                bAutoType, sxAutotype, 
@@ -148,7 +149,33 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       // Do nothing - autotype variable handled elsewhere
     } else
     if (st_rctoken.sxname == _T("url")) {
-      sxretval += pci->GetURL();
+      sxurl = pci->GetURL();
+      if (sxurl.length() > 0) {
+        // Remove 'Browse to' specifics
+        StringX::size_type ipos;
+        ipos = sxurl.find(L"[alt]");
+        if (ipos != StringX::npos) {
+          bURLSpecial = true;
+          sxurl.replace(ipos, 5, L"");
+        }
+        ipos = sxurl.find(L"[ssh]");
+        if (ipos != StringX::npos) {
+          bURLSpecial = true;
+          sxurl.replace(ipos, 5, L"");
+        }
+        ipos = sxurl.find(L"{alt}");
+        if (ipos != StringX::npos) {
+          bURLSpecial = true;
+          sxurl.replace(ipos, 5, L"");
+        }
+        ipos = sxurl.find(L"[autotype]");
+        if (ipos != StringX::npos)
+          sxurl.replace(ipos, 10, L"");
+        ipos = sxurl.find(L"[xa]");
+        if (ipos != StringX::npos)
+          sxurl.replace(ipos, 4, L"");
+        sxretval += sxurl;
+      }
     } else
     if (st_rctoken.sxname == _T("n") || st_rctoken.sxname == _T("notes")) {
       StringX sxnotes = pci->GetNotes();

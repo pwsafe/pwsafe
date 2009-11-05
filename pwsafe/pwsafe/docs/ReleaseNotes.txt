@@ -33,6 +33,10 @@ only be viewed via a filter or the supplied menu item (under View menu).
 
 Changes to Existing Features in 3.19.1
 ======================================
+[2880663] 'Browse to' special fields (currently: [alt], {alt}, [ssh], [autotype]
+and [xa]) are removed from the URL field when copied to the clipboard or when
+used in the RunCommand (via $url).  If the '[alt]' or {alt} were present, then
+the RunCommand will execute this program.
 [2868278] The SystemTray Unlock menu item now, if the correct passphrase is
 given, only unlocks the databse. To show the application, use the Restore
 menu item.
