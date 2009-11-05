@@ -273,7 +273,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   m_item_map.insert(std::make_pair(CUUIDGen(uuid), titem));
 }
 
-const CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
+CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 {
   if (!id.IsOk())
     return NULL;
@@ -283,10 +283,10 @@ const CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
   if (itemData == NULL)
     return NULL;
 
-  ItemListConstIter citer = m_core.Find(itemData->GetUUID());
-  if (citer == m_core.GetEntryEndIter())
+  ItemListIter itemiter = m_core.Find(itemData->GetUUID());
+  if (itemiter == m_core.GetEntryEndIter())
     return NULL;
-  return &citer->second;
+  return &itemiter->second;
 
 }
 

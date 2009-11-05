@@ -90,7 +90,7 @@ public:
   void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
-  const CItemData *GetItem(const wxTreeItemId &id) const;
+  CItemData *GetItem(const wxTreeItemId &id) const;
   wxTreeItemId Find(const uuid_array_t &uuid) const;
   wxTreeItemId Find(const CItemData &item) const;
   bool Remove(const uuid_array_t &uuid); // only remove from tree, not from m_core

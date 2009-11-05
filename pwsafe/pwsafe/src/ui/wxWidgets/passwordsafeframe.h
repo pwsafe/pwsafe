@@ -134,6 +134,9 @@ public:
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
   void OnCloseWindow( wxCloseEvent& event );
 
+  /// wxEVT_CHAR event handler for ID_PASSWORDSAFEFRAME
+  void OnChar( wxKeyEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
   void OnOpenClick( wxCommandEvent& event );
 
@@ -239,12 +242,12 @@ public:
   void ShowTree(bool show = true);
   void ClearData();
   void Delete(const uuid_array_t &uuid);
+  CItemData *GetSelectedEntry() const;
+  void UpdateAccessTime(CItemData *pci);
+  
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
-  const CItemData *GetSelectedEntry() const;
-  
   PasswordSafeSearch* m_search;
-
 };
 
 #endif

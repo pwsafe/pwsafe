@@ -210,6 +210,15 @@ public:
   bool GetNotesshowinedit() const { return m_notesshowinedit ; }
   void SetNotesshowinedit(bool value) { m_notesshowinedit = value ; }
 
+  bool GetConfirmdelete() const { return m_confirmdelete ; }
+  void SetConfirmdelete(bool value) { m_confirmdelete = value ; }
+
+  bool GetMaintaindatetimestamps() const { return m_maintaindatetimestamps ; }
+  void SetMaintaindatetimestamps(bool value) { m_maintaindatetimestamps = value ; }
+
+  bool GetEscexits() const { return m_escexits ; }
+  void SetEscexits(bool value) { m_escexits = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -262,6 +271,9 @@ private:
   int m_inittreeview;
   bool m_preexpirywarn;
   bool m_notesshowinedit;
+  bool m_confirmdelete;
+  bool m_maintaindatetimestamps;
+  bool m_escexits;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();

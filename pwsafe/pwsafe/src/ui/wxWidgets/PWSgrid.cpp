@@ -287,7 +287,7 @@ void PWSGrid::OnCellRightClick( wxGridEvent& event )
 ////@end wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX in PWSGrid. 
 }
 
-const CItemData *PWSGrid::GetItem(int row) const
+CItemData *PWSGrid::GetItem(int row) const
 {
   if (row < 0 || row > const_cast<PWSGrid *>(this)->GetNumberRows())
     return NULL;
@@ -295,10 +295,10 @@ const CItemData *PWSGrid::GetItem(int row) const
   if (iter != m_row_map.end()) {
     uuid_array_t uuid;
     iter->second.GetUUID(uuid);
-    ItemListConstIter citer = m_core.Find(uuid);
-    if (citer == m_core.GetEntryEndIter())
+    ItemListIter itemiter = m_core.Find(uuid);
+    if (itemiter == m_core.GetEntryEndIter())
       return NULL;
-    return &citer->second;
+    return &itemiter->second;
   }
   return NULL;
 }
