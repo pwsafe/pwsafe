@@ -378,13 +378,13 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
     case CDDS_PREPAINT:
       // PrePaint
       bchanged_item_font = bchanged_subitem_font = false;
-      if (m_bUseHighLighting)
-        *pResult = CDRF_NOTIFYITEMDRAW;
+      *pResult = CDRF_NOTIFYITEMDRAW;
       break;
 
     case CDDS_ITEMPREPAINT:
       // Item PrePaint
-      if (m_bUseHighLighting) {
+      if (m_bUseHighLighting ||
+          (pci != NULL && pci->GetStatus() == CItemData::ES_DELETED)) {
         bitem_selected = GetItemState(nItem, LVIS_SELECTED) != 0;
         hfont = GetFontBasedOnStatus(pci, cf);
         if (hfont != NULL) {
@@ -410,7 +410,8 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       // Sub-item PrePaint
       // int nSubItem = pNMLVCUSTOMDRAW->iSubItem; // Not needed, although valid
-      if (m_bUseHighLighting) {
+      if (m_bUseHighLighting ||
+          (pci != NULL && pci->GetStatus() == CItemData::ES_DELETED)) {
         hfont = GetFontBasedOnStatus(pci, cf);
         if (hfont != NULL) {
           bchanged_subitem_font = true;
