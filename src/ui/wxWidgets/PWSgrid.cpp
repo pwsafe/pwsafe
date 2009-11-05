@@ -25,8 +25,7 @@
 
 #include <utility> // for make_pair
 #include "PWSgrid.h"
-#include "pwsdca.h"
-//#include "../../corelib/PWScore.h"
+#include "passwordsafeframe.h" // for DispatchDblClickAction()
 
 ////@begin XPM images
 ////@end XPM images
@@ -314,9 +313,10 @@ CItemData *PWSGrid::GetItem(int row) const
 
 void PWSGrid::OnLeftDClick( wxGridEvent& event )
 {
-  const CItemData *item = GetItem(event.GetRow());
+  CItemData *item = GetItem(event.GetRow());
   if (item != NULL)
-    PWSdca::Doit(GetParent(), *item);
+    dynamic_cast<PasswordSafeFrame *>(GetParent())->
+      DispatchDblClickAction(*item);
 }
 
 void PWSGrid::RegisterCoreNotifications()

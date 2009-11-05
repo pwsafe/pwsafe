@@ -226,7 +226,9 @@ public:
     
     bool IsTreeView() const {return m_currentView == TREE;}
     void RefreshView() {if (IsTreeView()) ShowTree(); else ShowGrid();}
-    
+
+    void DispatchDblClickAction(CItemData &item); //called by grid/tree
+
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
@@ -240,7 +242,18 @@ public:
   void ClearData();
   void Delete(const uuid_array_t &uuid);
   CItemData *GetSelectedEntry() const;
-  void UpdateAccessTime(CItemData *pci);
+  void UpdateAccessTime(CItemData &ci);
+
+  // Do* member functions for dbl-click and menu-accessible actions
+  void DoCopyPassword(CItemData &item);
+  void DoCopyNotes(CItemData &item);
+  void DoCopyUsername(CItemData &item);
+  void DoCopyURL(CItemData &item);
+  void DoEdit(CItemData &item);
+  void DoAutotype(CItemData &item);
+  void DoBrowse(CItemData &item);
+  void DoRun(CItemData &item);
+  void DoEmail(CItemData &item);
   
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
