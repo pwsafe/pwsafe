@@ -109,7 +109,7 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-  const CItemData *GetItem(int row) const;
+  CItemData *GetItem(int row) const;
   
   void SelectItem(const CUUIDGen& uuid);
 

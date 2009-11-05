@@ -30,6 +30,7 @@
 #include "addeditpropsheet.h"
 #include "pwsclip.h"
 #include "PasswordSafeSearch.h"
+#include "deleteconfirmation.h"
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
@@ -37,11 +38,12 @@
 
 void PasswordSafeFrame::OnEditClick( wxCommandEvent& event )
 {
-  const CItemData *item = GetSelectedEntry();
+  CItemData *item = GetSelectedEntry();
   if (item != NULL) {
     AddEditPropSheet editDbox(this, m_core, m_grid, m_tree,
                               AddEditPropSheet::EDIT, item);
     editDbox.ShowModal(); // update view if returned OK, all the rest done internally
+    UpdateAccessTime(item);
   }
 }
 
@@ -68,7 +70,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& event )
 {
-  bool dontaskquestion = PWSprefs::GetInstance()->
+  bool dontaskquestion = !PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);
 
   bool dodelete = true;
@@ -76,13 +78,11 @@ void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& event )
 
   //Confirm whether to delete the item
   if (!dontaskquestion) {
-#ifdef NOTYET
-    CConfirmDeleteDlg deleteDlg(this, num_children);
-    INT_PTR rc = deleteDlg.DoModal();
-    if (rc == IDCANCEL) {
+    DeleteConfirmation deleteDlg(this, num_children);
+    int rc = deleteDlg.ShowModal();
+    if (rc != wxID_YES) {
       dodelete = false;
     }
-#endif
   }
 
   if (dodelete) {
@@ -151,9 +151,11 @@ void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnCopypasswordClick( wxCommandEvent& event )
 {
-  const CItemData *item = GetSelectedEntry();
-  if (item != NULL)
+  CItemData *item = GetSelectedEntry();
+  if (item != NULL) {
     PWSclip::SetData(item->GetPassword());
+    UpdateAccessTime(item);
+  }
 }
 
 
@@ -163,9 +165,11 @@ void PasswordSafeFrame::OnCopypasswordClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnCopyusernameClick( wxCommandEvent& event )
 {
-  const CItemData *item = GetSelectedEntry();
-  if (item != NULL)
+  CItemData *item = GetSelectedEntry();
+  if (item != NULL) {
     PWSclip::SetData(item->GetUser());
+    UpdateAccessTime(item);
+  }
 }
 
 
@@ -175,9 +179,11 @@ void PasswordSafeFrame::OnCopyusernameClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnCopynotesfldClick( wxCommandEvent& event )
 {
-  const CItemData *item = GetSelectedEntry();
-  if (item != NULL)
+  CItemData *item = GetSelectedEntry();
+  if (item != NULL) {
     PWSclip::SetData(item->GetNotes());
+    UpdateAccessTime(item);
+  }
 }
 
 
@@ -187,8 +193,10 @@ void PasswordSafeFrame::OnCopynotesfldClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnCopyurlClick( wxCommandEvent& event )
 {
-  const CItemData *item = GetSelectedEntry();
-  if (item != NULL)
+  CItemData *item = GetSelectedEntry();
+  if (item != NULL) {
     PWSclip::SetData(item->GetURL());
+    UpdateAccessTime(item);
+  }
 }
 

@@ -58,6 +58,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 ////@begin PasswordSafeFrame event table entries
   EVT_CLOSE( PasswordSafeFrame::OnCloseWindow )
+  EVT_CHAR( PasswordSafeFrame::OnChar )
 
   EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
 
@@ -486,7 +487,7 @@ void PasswordSafeFrame::ClearData()
   m_tree->Clear();
 }
 
-const CItemData *PasswordSafeFrame::GetSelectedEntry() const
+CItemData *PasswordSafeFrame::GetSelectedEntry() const
 {
   if (m_tree->IsShown()) {
     // get selected from tree
@@ -762,4 +763,48 @@ void PasswordSafeFrame::SeletItem(const CUUIDGen& uuid)
       m_tree->SelectItem(uuid);
     }
 
+}
+
+void PasswordSafeFrame::UpdateAccessTime(CItemData *pci)
+{
+  // Mark access time if so configured
+  ASSERT(pci != NULL);
+#ifdef NOTYET
+  // First add to RUE List
+  uuid_array_t RUEuuid;
+  pci->GetUUID(RUEuuid);
+  m_RUEList.AddRUEntry(RUEuuid);
+#endif
+  bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
+              GetPref(PWSprefs::MaintainDateTimeStamps);
+
+  if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
+    pci->SetATime();
+#ifdef NOTYET
+    // Need to update view if there
+    if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
+      // Get index of entry
+      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      // Get value in correct format
+      CString cs_atime = pci->GetATimeL().c_str();
+      // Update it
+      m_ctlItemList.SetItemText(pdi->list_index,
+        m_nColumnIndexByType[CItemData::ATIME], cs_atime);
+    }
+#endif
+  }
+}
+
+
+/*!
+ * wxEVT_CHAR event handler for ID_PASSWORDSAFEFRAME
+ */
+
+void PasswordSafeFrame::OnChar( wxKeyEvent& event )
+{
+  if (event.GetKeyCode() == WXK_ESCAPE &&
+      PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
+    Close();
+  }
+  event.Skip();
 }

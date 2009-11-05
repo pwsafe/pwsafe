@@ -654,6 +654,9 @@ void COptions::CreateControls()
   itemCheckBox38->SetValidator( wxGenericValidator(& m_wordwrapnotes) );
   m_preexpirywarnCB->SetValidator( wxGenericValidator(& m_preexpirywarn) );
   itemRadioBox43->SetValidator( wxGenericValidator(& m_inittreeview) );
+  itemCheckBox46->SetValidator( wxGenericValidator(& m_confirmdelete) );
+  itemCheckBox47->SetValidator( wxGenericValidator(& m_maintaindatetimestamps) );
+  itemCheckBox48->SetValidator( wxGenericValidator(& m_escexits) );
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
@@ -729,6 +732,11 @@ void COptions::PrefsToPropSheet()
   m_preexpirywarndaysSB->SetValue(prefs->GetPref(PWSprefs::PreExpiryWarnDays));
   m_preexpirywarndaysSB->Enable(m_preexpirywarn);
   m_inittreeview = prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
+
+  // Misc. preferences
+  m_confirmdelete = prefs->GetPref(PWSprefs::DeleteQuestion);
+  m_maintaindatetimestamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
+  m_escexits = prefs->GetPref(PWSprefs::EscExits);
 }
 
 void COptions::PropSheetToPrefs()
@@ -787,6 +795,11 @@ void COptions::PropSheetToPrefs()
     prefs->SetPref(PWSprefs::PreExpiryWarnDays,
                    m_preexpirywarndaysSB->GetValue());
   prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, m_inittreeview);
+
+  // Misc. preferences
+  prefs->SetPref(PWSprefs::DeleteQuestion, m_confirmdelete);
+  prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_maintaindatetimestamps);
+  prefs->SetPref(PWSprefs::EscExits, m_escexits);
 }
 
 void COptions::OnOk(wxCommandEvent& event)
