@@ -2217,7 +2217,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
 
   *pResult = CDRF_DODEFAULT;
 
-  static bool bitem_selected(false), bchanged_item_font(false);
+  static bool bchanged_item_font(false);
   HFONT hfont;
   COLORREF cf;
   HTREEITEM hItem = (HTREEITEM)pNMLVCUSTOMDRAW->nmcd.dwItemSpec;
@@ -2227,20 +2227,18 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
     case CDDS_PREPAINT:
       // PrePaint
       bchanged_item_font = false;
-      if (m_bUseHighLighting) {
-        *pResult = CDRF_NOTIFYITEMDRAW;
-      }
+      *pResult = CDRF_NOTIFYITEMDRAW;
       break;
 
     case CDDS_ITEMPREPAINT:
       // Item PrePaint
-      if (m_bUseHighLighting) {
-        bitem_selected = GetItemState(hItem, TVIS_SELECTED) != 0;
+      if (m_bUseHighLighting ||
+          (pci != NULL && pci->GetStatus() == CItemData::ES_DELETED)) {
         hfont = GetFontBasedOnStatus(hItem, pci, cf);
         if (hfont != NULL) {
           bchanged_item_font = true;
           SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, hfont);
-          if (pci == NULL || !bitem_selected)
+          if (pci == NULL || GetItemState(hItem, TVIS_SELECTED) == 0)
             pNMLVCUSTOMDRAW->clrText = cf;
           *pResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
