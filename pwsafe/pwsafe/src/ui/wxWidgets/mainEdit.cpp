@@ -22,6 +22,7 @@
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
+#include "wx/utils.h" // for wxLaunchDefaultBrowser
 
 #include "PWSgrid.h"
 #include "PWStree.h"
@@ -227,6 +228,10 @@ void PasswordSafeFrame::DoAutotype(CItemData &item)
 
 void PasswordSafeFrame::DoBrowse(CItemData &item)
 {
+  const wxString url = item.GetURL().c_str();
+
+  if (!url.empty())
+    ::wxLaunchDefaultBrowser(url, wxBROWSER_NEW_WINDOW);
 }
 
 void PasswordSafeFrame::DoRun(CItemData &item)
