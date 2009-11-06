@@ -49,7 +49,7 @@ bool PWSMatch::Match(const StringX &string1, StringX &csValue,
         return (((iFunction < 0) && (string1 != csValue)) ||
                 ((iFunction > 0) && CompareNoCase(string1, csValue) != 0));
       } else {
-        return false;
+        return true;
       }
     case -MR_ENDS:
     case  MR_ENDS:

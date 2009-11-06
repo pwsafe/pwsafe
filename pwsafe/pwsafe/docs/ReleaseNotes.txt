@@ -22,6 +22,10 @@ set.
 than Windows XP.
 [] Filters containing tests on the entry type now exported to XML
 correctly.
+[] Validate of Password History (-v command line flag) now correctly
+removes history fields with invalid dates or empty old password fields.
+[] Fix match test 'does not begin with' - used in filters and restricting
+entries exported to Text or XML.
 
 New Features for 3.19.1
 =======================
