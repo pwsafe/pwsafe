@@ -381,9 +381,11 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
     hdr += cs_temp;
   }
   int hdr_len = hdr.length();
-  if (hdr[hdr.length() - 1] == _T('\t')) {
-    hdr_len--;
-    hdr = hdr.substr(0, hdr_len);
+  if (hdr_len > 0) {
+    if (hdr[hdr.length() - 1] == _T('\t')) {
+      hdr_len--;
+      hdr = hdr.substr(0, hdr_len);
+    }
   }
   return hdr;
 }
