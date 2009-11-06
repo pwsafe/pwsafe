@@ -61,10 +61,16 @@ bool CreatePWHistoryList(const StringX &pwh_str,
     long t;
     iStringXStream ist(StringX(pwh_s, offset, 8)); // time in 4 byte hex
     ist >> hex >> t;
-    if (!ist) {num_err++; continue;}
+    if (t == (time_t)0) {
+      // Invalid time of password change
+      num_err++;
+      continue;
+    }
+
     offset += 8;
     if (offset >= pwh_s.length())
       break;
+
     pwh_ent.changetttdate = (time_t) t;
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
@@ -72,12 +78,19 @@ bool CreatePWHistoryList(const StringX &pwh_str,
       //                       1234567890123456789
       pwh_ent.changedate = _T("1970-01-01 00:00:00");
     }
+
     iStringXStream ispwlen(StringX(pwh_s, offset, 4)); // pw length 2 byte hex
     int ipwlen;
     ispwlen >> hex >> ipwlen;
     if (offset + 4 + ipwlen > pwh_s.length())
       break;
-    if (!ispwlen) {num_err++; continue;}
+
+    if (ipwlen == 0) {
+      // Invalid password length of zero
+      num_err++; 
+      continue;
+    }
+
     offset += 4;
     const StringX pw(pwh_s, offset, ipwlen);
     pwh_ent.password = pw.c_str();
