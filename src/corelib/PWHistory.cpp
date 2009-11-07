@@ -58,10 +58,10 @@ bool CreatePWHistoryList(const StringX &pwh_str,
 
   for (int i = 0; i < n; i++) {
     PWHistEntry pwh_ent;
-    long t;
+    long t = 0L;
     iStringXStream ist(StringX(pwh_s, offset, 8)); // time in 4 byte hex
     ist >> hex >> t;
-    if (t == (time_t)0) {
+    if (!ist || t == (time_t)0) {
       // Invalid time of password change
       num_err++;
       continue;
@@ -80,12 +80,12 @@ bool CreatePWHistoryList(const StringX &pwh_str,
     }
 
     iStringXStream ispwlen(StringX(pwh_s, offset, 4)); // pw length 2 byte hex
-    int ipwlen;
+    int ipwlen = 0;
     ispwlen >> hex >> ipwlen;
     if (offset + 4 + ipwlen > pwh_s.length())
       break;
 
-    if (ipwlen == 0) {
+    if (!ispwlen || ipwlen == 0) {
       // Invalid password length of zero
       num_err++; 
       continue;
