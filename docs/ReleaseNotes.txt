@@ -12,6 +12,8 @@ Bugs fixed in 3.19.1
 ====================
 [2873106] Export XML warnings now consistent with Export Text's.
 [2872829] Duplicate Entry now copies password policy as well.
+[2872602] Preferences are now correctly deleted from the Windows registry
+if they match the default.
 [2870059] When an entry is highlighted during Find, the Toolbar and menu
 items now reflect its contents.
 [2868278] Minimize via the system menu, SystemTray menu and system control

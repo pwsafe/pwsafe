@@ -452,19 +452,48 @@ bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 
 bool PWSprefs::DeletePref(const StringX &name)
 {
-  bool bRetVal = true;
+  bool bRetVal(false);
   switch (m_ConfigOptions) {
     case CF_REGISTRY:
-    case CF_FILE_RW_NEW:
-      // The following is not correct.  Not important just now.
-      //if (m_bRegistryKeyExists) {
-      //  bRetVal = ::AfxGetApp()->WriteProfileInt(PWS_REG_OPTIONS, name, NULL) == TRUE;
-      //}
+#ifdef _WIN32
+      {
+      HKEY hSubkey;
+      DWORD dwResult, dwType;
+      // Keys in registry are in:
+      // "HKEY_CURRENT_USER\Software\Password Safe\Password Safe\"
+      const stringT csSubkey = _T("Software\\") + 
+                               stringT(::AfxGetApp()->m_pszRegistryKey)
+                               + _T("\\") +
+                               stringT(::AfxGetApp()->m_pszRegistryKey);
+
+      dwResult = RegOpenKeyEx(HKEY_CURRENT_USER,
+                             csSubkey.c_str(),
+                             NULL,
+                             KEY_ALL_ACCESS,
+                             &hSubkey);
+
+      if (dwResult != ERROR_SUCCESS)
+        return false; // may have been called due to OldPrefs
+
+      dwResult = RegQueryValueEx(hSubkey, name.c_str(), NULL, &dwType, NULL, NULL);
+      if (dwResult == ERROR_SUCCESS) {
+        // Was there - now delete it
+        dwResult = RegDeleteValue(hSubkey, name.c_str());
+        ASSERT(dwResult == ERROR_SUCCESS);
+        bRetVal = (dwResult == ERROR_SUCCESS);
+      } else
+        bRetVal = true;
+
+      dwResult = RegCloseKey(hSubkey);
+      ASSERT(dwResult == ERROR_SUCCESS);
+      }
+#endif
       break;
     case CF_FILE_RW:
       bRetVal = (m_XML_Config->DeleteSetting(m_csHKCU_PREF,
                                              name.c_str()) == TRUE);
       break;
+    case CF_FILE_RW_NEW:
     case CF_FILE_RO:
     case CF_NONE:
     default:
@@ -1143,8 +1172,9 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_boolChanged[i] = false;
     }
-    if (m_bool_prefs[i].pt == ptObsolete)
+    if (m_bool_prefs[i].pt == ptObsolete) {
       DeletePref(m_bool_prefs[i].name);
+    }
   }
 
   for (i = 0; i < NumIntPrefs; i++) {
@@ -1156,8 +1186,9 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_intChanged[i] = false;
     }
-    if (m_int_prefs[i].pt == ptObsolete)
+    if (m_int_prefs[i].pt == ptObsolete) {
       DeletePref(m_int_prefs[i].name);
+    }
   }
 
   for (i = 0; i < NumStringPrefs; i++) {
@@ -1169,8 +1200,9 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_stringChanged[i] = false;
     }
-    if (m_string_prefs[i].pt == ptObsolete)
+    if (m_string_prefs[i].pt == ptObsolete) {
       DeletePref(m_string_prefs[i].name);
+    }
   }
 
   if (m_rect.changed) {
