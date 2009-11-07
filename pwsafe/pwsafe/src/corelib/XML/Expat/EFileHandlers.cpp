@@ -142,13 +142,14 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       if (m_bValidation)
         return;
 
-      // Only interested in the normal attribute
       for (int i = 0; attrs[i]; i += 2) {
         if (_tcscmp(attrs[i], _T("normal")) == 0) {
           cur_entry->bforce_normal_entry =
             (_tcscmp(attrs[i + 1], _T("1")) == 0) ||
             (_tcscmp(attrs[i + 1], _T("true")) == 0);
-          break;
+        }
+        if (_tcscmp(attrs[i], _T("id")) == 0) {
+          cur_entry->id = _ttoi(attrs[i + 1]);
         }
       }
       break;

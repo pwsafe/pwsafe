@@ -114,28 +114,33 @@ public:
   int WritePlaintextFile(const StringX &filename,
                          const CItemData::FieldBits &bsExport,
                          const stringT &subgroup, const int &iObject,
-                         const int &iFunction, TCHAR &delimiter,
+                         const int &iFunction, const TCHAR &delimiter,
                          const OrderedItemList *il = NULL);
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
                    const stringT &subgroup, const int &iObject,
-                   const int &iFunction, const TCHAR delimiter,
+                   const int &iFunction, const TCHAR &delimiter,
                    const OrderedItemList *il = NULL,
-                   const bool bFilterActive = false);
-  size_t NumUnpurgedDeleted() {return m_vdeleted.size();}
-  void PurgeDeletedEntries();
+                   const bool &bFilterActive = false);
+
   int ImportPlaintextFile(const StringX &ImportedPrefix,
-                          const StringX &filename, stringT &strErrors,
-                          TCHAR fieldSeparator, TCHAR delimiter,
+                          const StringX &filename,
+                          const TCHAR &fieldSeparator, const TCHAR &delimiter,
+                          const bool &bImportPSWDsOnly,
+                          stringT &strErrors,
                           int &numImported, int &numSkipped,
+                          std::vector<StringX> * pvgroups,
                           CReport &rpt);
-  int ImportKeePassTextFile(const StringX &filename);
   int ImportXMLFile(const stringT &ImportedPrefix,
                     const stringT &strXMLFileName,
                     const stringT &strXSDFileName,
+                    const bool &bImportPSWDsOnly,
                     stringT &strErrors, int &numValidated, int &numImported,
                     bool &bBadUnknownFileFields,
-                    bool &bBadUnknownRecordFields, CReport &rpt);
+                    bool &bBadUnknownRecordFields,
+                    std::vector<StringX> * pvgroups,
+                    CReport &rpt);
+  int ImportKeePassTextFile(const StringX &filename);
 
   int ReadCurFile(const StringX &passkey)
   {return ReadFile(m_currfile, passkey);}
@@ -189,6 +194,9 @@ public:
    NotifyListModified();
    NotifyDBModified();}
   void MarkEntryForRemoval(CItemData *pci);
+  size_t NumUnpurgedDeleted() {return m_vdeleted.size();}
+  void PurgeDeletedEntries();
+
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user);

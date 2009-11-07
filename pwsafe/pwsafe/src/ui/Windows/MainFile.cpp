@@ -18,7 +18,7 @@
 #include "TryAgainDlg.h"
 #include "ExportTextDlg.h"
 #include "ExportXMLDlg.h"
-#include "ImportDlg.h"
+#include "ImportTextDlg.h"
 #include "ImportXMLDlg.h"
 #include "AdvancedDlg.h"
 #include "CompareResultsDlg.h"
@@ -1177,7 +1177,7 @@ void DboxMain::OnImportText()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  CImportDlg dlg;
+  CImportTextDlg dlg;
   INT_PTR status = dlg.DoModal();
 
   if (status == IDCANCEL)
@@ -1195,7 +1195,9 @@ void DboxMain::OnImportText()
                    this);
   cs_text.LoadString(IDS_PICKTEXTFILE);
   fd.m_ofn.lpstrTitle = cs_text;
+
   INT_PTR rc = fd.DoModal();
+
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
@@ -1203,12 +1205,14 @@ void DboxMain::OnImportText()
     PostQuitMessage(0);
     return;
   }
+
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strError;
     StringX TxtFileName = fd.GetPathName();
     int numImported = 0, numSkipped = 0;
     wchar_t delimiter = dlg.m_defimpdelim[0];
+    bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
     /* Create report as we go */
     CReport rpt;
@@ -1219,9 +1223,10 @@ void DboxMain::OnImportText()
     cs_temp.Format(IDS_IMPORTFILE, cs_text.c_str(), TxtFileName.c_str());
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.WriteLine();
+    std::vector<StringX> vgroups;
 
-    rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, strError, fieldSeparator,
-      delimiter, numImported, numSkipped, rpt);
+    rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, fieldSeparator,
+      delimiter, bImportPSWDsOnly, strError, numImported, numSkipped, &vgroups, rpt);
 
     cs_title.LoadString(IDS_FILEREADERROR);
     switch (rc) {
@@ -1240,7 +1245,8 @@ void DboxMain::OnImportText()
         rpt.WriteLine();
         CString cs_type, temp1, temp2 = L"";
         cs_type.LoadString(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES);
-        temp1.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
+        temp1.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED, 
+                     numImported, cs_type);
         rpt.WriteLine((LPCWSTR)temp1);
         if (numSkipped != 0) {
           cs_type.LoadString(numSkipped == 1 ? IDS_ENTRY : IDS_ENTRIES);
@@ -1250,6 +1256,13 @@ void DboxMain::OnImportText()
 
         cs_title.LoadString(IDS_STATUS);
         cs_temp = temp1 + CString("\n") + temp2;
+
+        if (!bWasEmpty) {
+          std::vector<StringX>::iterator group_iter;
+          for (group_iter = vgroups.begin(); group_iter != vgroups.end(); group_iter++) {
+            m_ctlItemTree.AddChangedNodes(*group_iter);
+          }
+        }
 
         ChangeOkUpdate();
         RefreshViews();
@@ -1367,6 +1380,7 @@ void DboxMain::OnImportXML()
   fd.m_ofn.lpstrTitle = cs_text;
 
   INT_PTR rc = fd.DoModal();
+
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
@@ -1374,13 +1388,17 @@ void DboxMain::OnImportXML()
     PostQuitMessage(0);
     return;
   }
+
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strErrors;
     CString XMLFilename = fd.GetPathName();
     int numValidated, numImported;
     bool bBadUnknownFileFields, bBadUnknownRecordFields;
+    bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
+
     CWaitCursor waitCursor;  // This may take a while!
+
     /* Create report as we go */
     CReport rpt;
     CString cs_text;
@@ -1390,11 +1408,13 @@ void DboxMain::OnImportXML()
     cs_temp.Format(IDS_IMPORTFILE, cs_text, XMLFilename);
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.WriteLine();
+    std::vector<StringX> vgroups;
+
     rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
-                              XSDFilename.c_str(), strErrors,
-                              numValidated, numImported,
+                              XSDFilename.c_str(), bImportPSWDsOnly,
+                              strErrors, numValidated, numImported,
                               bBadUnknownFileFields, bBadUnknownRecordFields,
-                              rpt);
+                              &vgroups, rpt);
     waitCursor.Restore();  // Restore normal cursor
 
     cs_title.LoadString(IDS_XMLIMPORTFAILED);
@@ -1435,6 +1455,14 @@ void DboxMain::OnImportXML()
           cs_title.LoadString(IDS_STATUS);
           ChangeOkUpdate();
         }
+
+        if (!bWasEmpty) {
+         std::vector<StringX>::iterator group_iter;
+          for (group_iter = vgroups.begin(); group_iter != vgroups.end(); group_iter++) {
+            m_ctlItemTree.AddChangedNodes(*group_iter);
+          }
+        }
+
         RefreshViews();
         break;
       default:
@@ -1443,8 +1471,6 @@ void DboxMain::OnImportXML()
 
     // Finish Report
     rpt.WriteLine((LPCWSTR)cs_temp);
-    rpt.WriteLine();
-    rpt.WriteLine(csErrors.c_str());
     rpt.EndReport();
 
     CGeneralMsgBox gmb;

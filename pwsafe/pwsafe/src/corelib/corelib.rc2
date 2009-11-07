@@ -54,6 +54,7 @@ BEGIN
   IDSC_IMPORTFAILURE      "Internal error. Import failed. No records imported."
   IDSC_IMPORTHDR          "Found %d known column headers:"
   IDSC_IMPORTKNOWNHDRS    "The following columns will be processed: "
+  IDSC_IMPORTKNOWNHDRS2   "The following columns were recognised but only Group/Title, Username and Password will be processed:"
   IDSC_IMPORTMISSINGCOLS  "Either or both of the Group/Title and Password columns are missing. No records imported."
   IDSC_IMPORTNOCOLS       "Column header row not recognised as first record. No records imported."
   IDSC_IMPORTNOHEADER     "No records in import file!"
@@ -64,6 +65,10 @@ BEGIN
   IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
   IDSC_IMPORTNOPASSWORD   "Line %d skipped. It has an empty mandatory Password field."
   IDSC_IMPORTNOTITLE      "Line %d skipped. It has an empty mandatory Title field."
+  IDSC_IMPORTPSWDNOCOLS   "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
+  IDSC_IMPORTRECNOTFOUND  "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"" not found. Cannot update entry's password."
+  IDSC_IMPORT_ON_LINE     "on line "
+  IDSC_IMPORT_ENTRY_ID    "id="
 END
 
 STRINGTABLE

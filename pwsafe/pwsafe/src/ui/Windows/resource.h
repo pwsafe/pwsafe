@@ -664,6 +664,7 @@
 #define IDC_ENTRYSTATUSRULE             1395
 #define IDC_ENTRYSTATUS1                1396
 #define IDC_HIGHLIGHTCHANGES            1397
+#define IDC_IMPORT_PSWDS_ONLY           1398
 
 // Next default values for new objects
 // 
@@ -671,7 +672,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        478
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1398
+#define _APS_NEXT_CONTROL_VALUE         1399
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

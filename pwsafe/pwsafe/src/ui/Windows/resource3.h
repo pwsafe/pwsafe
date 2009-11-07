@@ -565,3 +565,4 @@
 #define IDS_DCALONG                     5738
 #define IDS_ENTRYSTATUS                 5739
 #define IDS_NONSAVEDCHANGES             5740
+#define IDS_RECORDSUPDATED              5741

@@ -6,7 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #pragma once
-// ImportDlg.h : header file
+// ImportTextDlg.h : header file
 //
 
 #include "PWDialog.h"
@@ -14,27 +14,28 @@
 void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter);
 
 /////////////////////////////////////////////////////////////////////////////
-// CImportDlg dialog
+// CImportTextDlg dialog
 
-class CImportDlg : public CPWDialog
+class CImportTextDlg : public CPWDialog
 {
   // Construction
 public:
-  CImportDlg(CWnd* pParent = NULL);   // standard constructor
+  CImportTextDlg(CWnd* pParent = NULL);   // standard constructor
 
   // Dialog Data
-  //{{AFX_DATA(CImportDlg)
+  //{{AFX_DATA(CImportTextDlg)
   enum { IDD = IDD_IMPORT_TEXT };
   CString m_groupName;
   CString m_Separator;
   CString m_defimpdelim;
   int m_tab;
   int m_group;
+  BOOL m_bImportPSWDsOnly;
   //}}AFX_DATA
 
   // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CImportDlg)
+  //{{AFX_VIRTUAL(CImportTextDlg)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
@@ -43,12 +44,13 @@ protected:
 protected:
 
   // Generated message map functions
-  //{{AFX_MSG(CImportDlg)
+  //{{AFX_MSG(CImportTextDlg)
   afx_msg void OnOther();
   afx_msg void OnComma();
   afx_msg void OnTab();
   afx_msg void OnNoGroup();
   afx_msg void OnYesGroup();
+  afx_msg void OnImportPSWDsOnly();
   afx_msg void OnHelp();
   virtual void OnOK();
   //}}AFX_MSG
