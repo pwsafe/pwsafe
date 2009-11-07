@@ -103,11 +103,14 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
       break;
     case XLE_ENTRY:
       {
-        // Only interested in the normal attribute
-        XMLCh *szValue = (XMLCh *)attrs.getValue(L"normal");
-        if (szValue != NULL) {
+        XMLCh *szValue1 = (XMLCh *)attrs.getValue(L"normal");
+        if (szValue1 != NULL) {
           cur_entry->bforce_normal_entry =
-               XMLString::equals(szValue, L"1") || XMLString::equals(szValue, L"true");
+               XMLString::equals(szValue1, L"1") || XMLString::equals(szValue1, L"true");
+        }
+        XMLCh *szValue2 = (XMLCh *)attrs.getValue(L"id");
+        if (szValue2 != NULL) {
+          cur_entry->id = _wtoi(szValue2);
         }
       }
       break;

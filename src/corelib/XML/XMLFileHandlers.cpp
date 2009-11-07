@@ -79,7 +79,9 @@ XMLFileHandlers::~XMLFileHandlers()
 
 void XMLFileHandlers::SetVariables(PWScore *core, const bool &bValidation,
                                    const stringT &ImportedPrefix, const TCHAR &delimiter,
-                                   UUIDList *possible_aliases, UUIDList *possible_shortcuts)
+                                   const bool &bImportPSWDsOnly,
+                                   UUIDList *possible_aliases, UUIDList *possible_shortcuts,
+                                   std::vector<StringX> * pvgroups)
 {
   m_bValidation = bValidation;
   m_delimiter = delimiter;
@@ -87,6 +89,8 @@ void XMLFileHandlers::SetVariables(PWScore *core, const bool &bValidation,
   m_possible_aliases = possible_aliases;
   m_possible_shortcuts = possible_shortcuts;
   m_ImportedPrefix = ImportedPrefix;
+  m_pvgroups = pvgroups;
+  m_bImportPSWDsOnly = bImportPSWDsOnly;
 }
 
 bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
@@ -107,6 +111,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
 
       cur_entry = new pw_entry;
       // Clear all fields
+      cur_entry->id = 0;
       cur_entry->group = _T("");
       cur_entry->title = _T("");
       cur_entry->username = _T("");
@@ -507,9 +512,34 @@ void XMLFileHandlers::AddEntries()
 {
   vdb_entries::iterator entry_iter;
   CItemData tempitem;
+  bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
+              GetPref(PWSprefs::MaintainDateTimeStamps);
+  bool bIntoEmpty = m_xmlcore->GetNumEntries() == 0;
 
   for (entry_iter = ventries.begin(); entry_iter != ventries.end(); entry_iter++) {
     pw_entry *cur_entry = *entry_iter;
+    if (m_bImportPSWDsOnly) {
+      ItemListIter iter = m_xmlcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
+      if (iter == m_xmlcore->GetEntryEndIter()) {
+        stringT csError, cs_id;
+        LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
+        Format(csError, IDSC_IMPORTRECNOTFOUND, cs_id.c_str(), cur_entry->id, 
+               cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
+        m_strImportErrors += _T("\r\n") + csError;
+        m_numEntries--;
+      } else {
+        CItemData *pci = &iter->second;
+        pci->UpdatePassword(cur_entry->password);
+        if (bMaintainDateTimeStamps) {
+          pci->SetATime();
+        }
+        m_pvgroups->push_back(cur_entry->group);
+        pci->SetStatus(CItemData::ES_MODIFIED);
+      }
+      delete cur_entry;
+      continue;
+    }
+
     uuid_array_t uuid_array;
     tempitem.Clear();
     if (cur_entry->uuid.empty())
@@ -660,7 +690,10 @@ void XMLFileHandlers::AddEntries()
       m_possible_shortcuts->push_back(uuid_array);
     }
 
-    tempitem.SetStatus(CItemData::ES_ADDED);
+    if (!bIntoEmpty) {
+      m_pvgroups->push_back(newgroup);
+      tempitem.SetStatus(CItemData::ES_ADDED);
+    }
     m_xmlcore->AddEntry(tempitem);
     delete cur_entry;
   }

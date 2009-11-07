@@ -63,7 +63,9 @@ public:
 
   bool Process(const bool &bvalidation, const stringT &ImportedPrefix, 
                const stringT &strXMLFileName, const stringT &strXSDFileName,
-               int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl);
+               const bool &bImportPSWDsOnly,
+               int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl,
+               std::vector<StringX> * pvgroups);
 
   stringT getResultText() {return m_strResultText;}
   int getNumEntriesValidated() {return m_numEntriesValidated;}

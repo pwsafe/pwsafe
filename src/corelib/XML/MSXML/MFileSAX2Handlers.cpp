@@ -276,12 +276,16 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
       break;
     case XLE_ENTRY:
       {
-        // Only interested in the normal
-        TCHAR *lpValue = ProcessAttributes(pAttributes, _T("normal"));
-        if (lpValue != NULL) {
+        TCHAR *lpValue1 = ProcessAttributes(pAttributes, _T("normal"));
+        if (lpValue1 != NULL) {
           cur_entry->bforce_normal_entry =
-               _ttoi(lpValue) == 1 || _tcscmp(lpValue, _T("true")) == 0;
-          free(lpValue);
+               _ttoi(lpValue1) == 1 || _tcscmp(lpValue1, _T("true")) == 0;
+          free(lpValue1);
+        }
+        TCHAR *lpValue2 = ProcessAttributes(pAttributes, _T("id"));
+        if (lpValue2 != NULL) {
+          cur_entry->id = _ttoi(lpValue2) ;
+          free(lpValue2);
         }
       }
       break;

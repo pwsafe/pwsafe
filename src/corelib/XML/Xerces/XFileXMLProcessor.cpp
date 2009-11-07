@@ -78,8 +78,9 @@ XFileXMLProcessor::~XFileXMLProcessor()
 // ---------------------------------------------------------------------------
 bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
+                                const bool &bImportPSWDsOnly,
                                 int &nITER, int &nRecordsWithUnknownFields, 
-                                UnknownFieldList &uhfl)
+                                UnknownFieldList &uhfl, std::vector<StringX> * pvgroups)
 {
   bool bEerrorOccurred = false;
   bool b_into_empty = false;
@@ -144,9 +145,10 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
   pSAX2Handler->SetVariables(m_bValidation ? NULL : m_xmlcore, m_bValidation, 
-                             ImportedPrefix, m_delimiter,
+                             ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              m_bValidation ? NULL : m_possible_aliases, 
-                             m_bValidation ? NULL : m_possible_shortcuts);
+                             m_bValidation ? NULL : m_possible_shortcuts,
+                             pvgroups);
   if (!m_bValidation) {
     b_into_empty = m_xmlcore->GetNumEntries() == 0;
   }
@@ -187,10 +189,13 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       m_numEntriesValidated = pSAX2Handler->getNumEntries();
       m_delimiter = pSAX2Handler->getDelimiter();
     } else {
+      pSAX2Handler->AddEntries();
+
+      // Get numbers (may have been modified by AddEntries
       m_numEntriesImported = pSAX2Handler->getNumEntries();
+
       // Maybe import errors (PWHistory field processing)
       m_strResultText = pSAX2Handler->getImportErrors();
-      pSAX2Handler->AddEntries();
 
       m_bRecordHeaderErrors = pSAX2Handler->getRecordHeaderErrors();
       nRecordsWithUnknownFields = pSAX2Handler->getNumRecordsWithUnknownFields();

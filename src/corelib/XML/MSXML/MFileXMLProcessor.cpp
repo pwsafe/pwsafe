@@ -46,7 +46,9 @@ MFileXMLProcessor::~MFileXMLProcessor()
 // ---------------------------------------------------------------------------
 bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
-                                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl)
+                                const bool &bImportPSWDsOnly,
+                                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl,
+                                std::vector<StringX> * pvgroups)
 {
   HRESULT hr, hr0, hr60, hr40, hr30;
   bool b_ok = false;
@@ -112,9 +114,10 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   //  Create ContentHandlerImpl object
   MFileSAX2ContentHandler* pCH = new MFileSAX2ContentHandler();
   pCH->SetVariables(m_bValidation ? NULL : m_xmlcore, m_bValidation, 
-                    ImportedPrefix, m_delimiter,
+                    ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                     m_bValidation ? NULL : m_possible_aliases, 
-                    m_bValidation ? NULL : m_possible_shortcuts);
+                    m_bValidation ? NULL : m_possible_shortcuts,
+                    pvgroups);
 
   //  Create ErrorHandlerImpl object
   MFileSAX2ErrorHandler* pEH = new MFileSAX2ErrorHandler();
@@ -200,10 +203,14 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
           m_numEntriesValidated = pCH->m_numEntries;
           m_delimiter = pCH->m_delimiter;
         } else {
-          m_numEntriesImported = pCH->m_numEntries;
-          m_strResultText = pCH->m_strImportErrors;  // Maybe import errors (PWHistory field processing)
           // Now add entries
           pCH->AddEntries();
+
+          // Get numbers (may have been modified by AddEntries
+          m_numEntriesImported = pCH->m_numEntries;
+
+          // Maybe import errors (PWHistory field processing)
+          m_strResultText = pCH->getImportErrors();
 
           m_bRecordHeaderErrors = pCH->m_bRecordHeaderErrors;
           nRecordsWithUnknownFields = pCH->m_nRecordsWithUnknownFields;

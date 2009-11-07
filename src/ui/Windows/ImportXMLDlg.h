@@ -26,6 +26,7 @@ public:
   enum { IDD = IDD_IMPORT_XML };
   CString m_groupName;
   int m_group;
+  BOOL m_bImportPSWDsOnly;
   //}}AFX_DATA
 
   // Overrides
@@ -42,6 +43,7 @@ protected:
   //{{AFX_MSG(CImportXMLDlg)
   afx_msg void OnNoGroup();
   afx_msg void OnYesGroup();
+  afx_msg void OnImportPSWDsOnly();
   afx_msg void OnHelp();
   virtual void OnOK();
   //}}AFX_MSG

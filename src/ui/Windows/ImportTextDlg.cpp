@@ -5,12 +5,12 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-// ImportDlg.cpp : implementation file
+// ImportTextDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "ImportDlg.h"
+#include "ImportTextDlg.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 
@@ -21,24 +21,25 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CImportDlg dialog
-CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CImportDlg::IDD, pParent)
+// CImportTextDlg dialog
+CImportTextDlg::CImportTextDlg(CWnd* pParent /*=NULL*/)
+  : CPWDialog(CImportTextDlg::IDD, pParent)
 {
-  //{{AFX_DATA_INIT(CImportDlg)
+  //{{AFX_DATA_INIT(CImportTextDlg)
   m_groupName.LoadString(IDS_IMPORTED);
   m_Separator = L"|";
   m_defimpdelim = L"\xbb";
   m_tab = 0;
   m_group = 0;
+  m_bImportPSWDsOnly = FALSE;
   //}}AFX_DATA_INIT
 }
 
-void CImportDlg::DoDataExchange(CDataExchange* pDX)
+void CImportTextDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
 
-  //{{AFX_DATA_MAP(CImportDlg)
+  //{{AFX_DATA_MAP(CImportTextDlg)
   DDX_Text(pDX, IDC_GROUP_NAME, m_groupName);
   DDX_Text(pDX, IDC_OTHER_SEPARATOR, m_Separator);
   DDV_MaxChars(pDX, m_Separator, 1);
@@ -46,17 +47,19 @@ void CImportDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Radio(pDX, IDC_NO_GROUP, m_group);
   DDX_Text(pDX, IDC_DEFIMPDELIM, m_defimpdelim);
   DDV_MaxChars(pDX, m_defimpdelim, 1);
+  DDX_Check(pDX, IDC_IMPORT_PSWDS_ONLY, m_bImportPSWDsOnly);
   //}}AFX_DATA_MAP
   DDV_CheckImpDelimiter(pDX, m_defimpdelim);
 }
 
-BEGIN_MESSAGE_MAP(CImportDlg, CPWDialog)
-  //{{AFX_MSG_MAP(CImportDlg)
+BEGIN_MESSAGE_MAP(CImportTextDlg, CPWDialog)
+  //{{AFX_MSG_MAP(CImportTextDlg)
   ON_BN_CLICKED(IDC_OTHER, OnOther)
   ON_BN_CLICKED(IDC_COMMA, OnComma)
   ON_BN_CLICKED(IDC_TAB, OnTab)
   ON_BN_CLICKED(IDC_NO_GROUP, OnNoGroup)
   ON_BN_CLICKED(IDC_YES_GROUP, OnYesGroup)
+  ON_BN_CLICKED(IDC_IMPORT_PSWDS_ONLY, OnImportPSWDsOnly)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -83,46 +86,60 @@ void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CImportDlg message handlers
+// CImportTextDlg message handlers
 
-void CImportDlg::OnOther() 
+void CImportTextDlg::OnOther() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(TRUE);
   m_tab = 2;
 }
 
-void CImportDlg::OnComma() 
+void CImportTextDlg::OnComma() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(FALSE);
   m_tab = 1;
 }
 
-void CImportDlg::OnTab() 
+void CImportTextDlg::OnTab() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(FALSE);
   m_tab = 0;
 }
 
-void CImportDlg::OnNoGroup() 
+void CImportTextDlg::OnNoGroup() 
 {
   GetDlgItem(IDC_GROUP_NAME)->EnableWindow(FALSE);
   m_group = 0;
 }
 
-void CImportDlg::OnYesGroup() 
+void CImportTextDlg::OnYesGroup() 
 {
   GetDlgItem(IDC_GROUP_NAME)->EnableWindow(TRUE);
   m_group = 1;
 }
 
-void CImportDlg::OnHelp() 
+void CImportTextDlg::OnImportPSWDsOnly()
+{
+  m_bImportPSWDsOnly = ((CButton*)GetDlgItem(IDC_IMPORT_PSWDS_ONLY))->GetCheck();
+
+  BOOL bEnable = (m_bImportPSWDsOnly == BST_CHECKED) ? FALSE : TRUE;
+  GetDlgItem(IDC_NO_GROUP)->EnableWindow(bEnable);
+  GetDlgItem(IDC_YES_GROUP)->EnableWindow(bEnable);
+  if (bEnable == FALSE)
+    GetDlgItem(IDC_GROUP_NAME)->EnableWindow(bEnable);
+  else {
+    GetDlgItem(IDC_GROUP_NAME)->EnableWindow(m_group == 1 ? TRUE : FALSE);
+  }
+}
+
+void CImportTextDlg::OnHelp() 
 {
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/import.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
-void CImportDlg::OnOK() 
+void CImportTextDlg::OnOK() 
 {
   UpdateData(TRUE);
 

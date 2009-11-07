@@ -206,6 +206,11 @@
 #define IDSC_FSADDED                    3370
 #define IDSC_FSMODIFIED                 3371
 #define IDSC_FSDELETED                  3372
+#define IDSC_IMPORTPSWDNOCOLS           3373
+#define IDSC_IMPORTRECNOTFOUND          3374
+#define IDSC_IMPORTKNOWNHDRS2           3375
+#define IDSC_IMPORT_ON_LINE             3376
+#define IDSC_IMPORT_ENTRY_ID            3377
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

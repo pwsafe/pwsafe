@@ -1135,7 +1135,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ImportDlg.cpp"
+				RelativePath=".\ImportTextDlg.cpp"
 				>
 			</File>
 			<File
@@ -1576,7 +1576,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ImportDlg.h"
+				RelativePath=".\ImportTextDlg.h"
 				>
 			</File>
 			<File

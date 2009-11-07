@@ -392,7 +392,7 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
 
 struct ExportTester {
   ExportTester(const stringT &subgroup_name,
-                        const int &subgroup_object, const int &subgroup_function)
+               const int &subgroup_object, const int &subgroup_function)
   :  m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function)
   {}
@@ -410,8 +410,8 @@ struct ExportTester {
 
 private:
   const stringT &m_subgroup_name;
-  const int m_subgroup_object;
-  const int m_subgroup_function;
+  const int &m_subgroup_object;
+  const int &m_subgroup_function;
 };
 
 int PWScore::TestForExport(const stringT &subgroup_name,
@@ -425,14 +425,14 @@ int PWScore::TestForExport(const stringT &subgroup_name,
     if (il != NULL) {
       if (find_if(il->begin(), il->end(),
                   ExportTester(subgroup_name,
-                                        subgroup_object,
-                                        subgroup_function)) != il->end())
+                               subgroup_object,
+                               subgroup_function)) != il->end())
         bAnyMatch = true;
     } else {
       if (find_if(m_pwlist.begin(), m_pwlist.end(),
                   ExportTester(subgroup_name, 
-                                        subgroup_object, 
-                                        subgroup_function)) != m_pwlist.end())
+                               subgroup_object, 
+                               subgroup_function)) != m_pwlist.end())
         bAnyMatch = true;
     }
 
@@ -444,9 +444,9 @@ int PWScore::TestForExport(const stringT &subgroup_name,
 
 struct PutText {
   PutText(const stringT &subgroup_name,
-          const int subgroup_object, const int subgroup_function,
+          const int &subgroup_object, const int &subgroup_function,
           const CItemData::FieldBits &bsFields,
-          TCHAR delimiter, ofstream &ofs, PWScore *core) :
+          const TCHAR &delimiter, ofstream &ofs, PWScore *core) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_ofs(ofs), m_core(core)
@@ -499,10 +499,11 @@ struct PutText {
 
 private:
   const stringT &m_subgroup_name;
-  const int m_subgroup_object;
-  const int m_subgroup_function;
+  const int &m_subgroup_object;
+  const int &m_subgroup_function;
   const CItemData::FieldBits &m_bsFields;
-  TCHAR m_delimiter;  ofstream &m_ofs;
+  const TCHAR &m_delimiter;
+  ofstream &m_ofs;
   PWScore *m_core;
 };
 
@@ -511,7 +512,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
                                 const stringT &subgroup_name,
                                 const int &subgroup_object,
                                 const int &subgroup_function,
-                                TCHAR &delimiter, const OrderedItemList *il)
+                                const TCHAR &delimiter, const OrderedItemList *il)
 {
   // Check if anything to do! 
   if (bsFields.count() == 0)
@@ -541,7 +542,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   const unsigned char *utf8 = NULL;
   int utf8Len = 0;
 
-  if ( bsFields.count() == bsFields.size()) {
+  if (bsFields.count() == bsFields.size()) {
     // all fields to be exported, use pre-built header
     StringX exphdr;
     LoadAString(exphdr, IDSC_EXPORTHEADER);
@@ -642,8 +643,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          const TCHAR delimiter, const OrderedItemList *il,
-                          const bool bFilterActive)
+                          const TCHAR &delimiter, const OrderedItemList *il,
+                          const bool &bFilterActive)
 {
   // Although the MFC UI prevents the user selecting export of an
   // empty database, other UIs might not, so:
@@ -909,6 +910,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
       ofs << endl;
       oss_xml.str(_T(""));  // Clear buffer for next user
     }
+
     if (bsFields.count() != bsFields.size()) {
       if (!bStartComment) {
         bStartComment = true;
@@ -936,6 +938,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
       ofs << endl;
     }
   }
+
   if (bStartComment) {
     bStartComment = false;
     ofs << " --> " << endl;
@@ -959,16 +962,18 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
-int PWScore::ImportXMLFile(const stringT &, const stringT &, const stringT &, stringT &,
-                           int &, int &, bool &, bool &,CReport &)
+int PWScore::ImportXMLFile(const stringT &, const stringT &, const stringT &, const bool &,
+                           stringT &, int &, int &, bool &, bool &, 
+                           std::vector<StringX> &, CReport &)
 {
   return UNIMPLEMENTED;
 }
 #else
 int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
-                           const stringT &strXSDFileName, stringT &strErrors,
-                           int &numValidated, int &numImported,
+                           const stringT &strXSDFileName, const bool &bImportPSWDsOnly,
+                           stringT &strErrors, int &numValidated, int &numImported,
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
+                           std::vector<StringX> * pvgroups,
                            CReport &rpt)
 {
   UUIDList possible_aliases, possible_shortcuts;
@@ -992,7 +997,9 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   // Expat is not a validating parser - but we now do it ourselves!
   validation = true;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
-                        strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
+                        strXSDFileName, bImportPSWDsOnly, 
+                        nITER, nRecordsWithUnknownFields, uhfl,
+                        pvgroups);
   strErrors = iXML.getResultText();
   if (!status) {
     return XML_FAILED_VALIDATION;
@@ -1001,7 +1008,9 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 
   validation = false;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
-                        strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
+                        strXSDFileName, bImportPSWDsOnly,
+                        nITER, nRecordsWithUnknownFields, uhfl,
+                        pvgroups);
   strErrors = iXML.getResultText();
   if (!status) {
     return XML_FAILED_IMPORT;
@@ -1036,9 +1045,12 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 #endif
 
 int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
-                                 const StringX &filename, stringT &strError,
-                                 TCHAR fieldSeparator, TCHAR delimiter,
+                                 const StringX &filename,
+                                 const TCHAR &fieldSeparator, const TCHAR &delimiter,
+                                 const bool &bImportPSWDsOnly,
+                                 stringT &strError,
                                  int &numImported, int &numSkipped,
+                                 std::vector<StringX> * pvgroups,
                                  CReport &rpt)
 {
   stringT csError;
@@ -1134,6 +1146,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   }
 
   // These are "must haves"!
+  if (bImportPSWDsOnly &&
+      (i_Offset[PASSWORD] == -1 || i_Offset[GROUPTITLE] == -1 ||
+       i_Offset[USER] == -1)) {
+    LoadAString(strError, IDSC_IMPORTPSWDNOCOLS);
+    rpt.WriteLine(strError);
+    return FAILURE;
+  } else
   if (i_Offset[PASSWORD] == -1 || i_Offset[GROUPTITLE] == -1) {
     LoadAString(strError, IDSC_IMPORTMISSINGCOLS);
     rpt.WriteLine(strError);
@@ -1143,8 +1162,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (num_found < vs_Header.size()) {
     Format(csError, IDSC_IMPORTHDR, num_found);
     rpt.WriteLine(csError);
-    LoadAString(csError, IDSC_IMPORTKNOWNHDRS);
-    rpt.WriteLine(csError, false);
+    LoadAString(csError, bImportPSWDsOnly ? IDSC_IMPORTKNOWNHDRS2 : IDSC_IMPORTKNOWNHDRS);
+    rpt.WriteLine(csError, bImportPSWDsOnly);
     for (int i = 0; i < NUMFIELDS; i++) {
       if (i_Offset[i] >= 0) {
         const stringT &sHdr = vs_Header.at(i);
@@ -1153,7 +1172,12 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       }
     }
     rpt.WriteLine();
+    rpt.WriteLine();
   }
+
+  bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
+              GetPref(PWSprefs::MaintainDateTimeStamps);
+  bool bIntoEmpty = m_pwlist.size() == 0;
 
   UUIDList possible_aliases, possible_shortcuts;
 
@@ -1262,6 +1286,39 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       Format(csError, IDSC_IMPORTNOPASSWORD, numlines);
       rpt.WriteLine(csError);
       numSkipped++;
+      continue;
+    }
+
+    if (bImportPSWDsOnly) {
+      StringX sxgroup(L""), sxtitle, sxuser;
+      const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
+      stringT entrytitle;
+      size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
+      if (lastdot != string::npos) {
+        sxgroup = grouptitle.substr(0, lastdot).c_str();
+        sxtitle = grouptitle.substr(lastdot + 1).c_str();
+      } else {
+        sxtitle = grouptitle.c_str();
+      }
+      sxuser = tokens[i_Offset[USER]].c_str();
+      ItemListIter iter = Find(sxgroup, sxtitle, sxuser);
+      if (iter == m_pwlist.end()) {
+        stringT cs_online;
+        LoadAString(cs_online, IDSC_IMPORT_ON_LINE);
+        Format(csError, IDSC_IMPORTRECNOTFOUND, cs_online.c_str(), numlines, 
+               sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
+        rpt.WriteLine(csError);
+        numSkipped++;
+      } else {
+        CItemData *pci = &iter->second;
+        pci->UpdatePassword(tokens[i_Offset[PASSWORD]].c_str());
+        if (bMaintainDateTimeStamps) {
+          pci->SetATime();
+        }
+        pvgroups->push_back(sxgroup);
+        pci->SetStatus(CItemData::ES_MODIFIED);
+        numImported++;
+      }
       continue;
     }
 
@@ -1430,7 +1487,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       }
     }
 
-    temp.SetStatus(CItemData::ES_ADDED);
+    if (!bIntoEmpty) {
+      pvgroups->push_back(group);
+      temp.SetStatus(CItemData::ES_ADDED);
+    }
     AddEntry(temp);
     numImported++;
   } // file processing for (;;) loop

@@ -32,6 +32,11 @@ New Features for 3.19.1
 [2881604] Allow edit of base entry of a shortcut via the Edit menu and/or
 by right-clicking on a shortcut entry.
 [2872273] Improve Import Text 'Line skipped' message.
+[2826509] Can now update passwords of existing entries via Import Text or XML.
+For Text import, the 'Group/Title', 'Username' and 'Password' fields are required.
+Fox XML import, the Title and Password elements are required. If the Group and
+Username elements are missing, they are assumed to be empty.  All other fields or 
+elements can be present but will be ignored.
 [] Add highlighting of added/changed and deleted records.  The latter can
 only be viewed via a filter or the supplied menu item (under View menu).
 

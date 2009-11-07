@@ -120,9 +120,11 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
                                 const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName,
                                 const stringT & /* XML Schema File Name */,
+                                const bool &bImportPSWDsOnly,
                                 int &nITER,
                                 int &nRecordsWithUnknownFields,
-                                UnknownFieldList &uhfl)
+                                UnknownFieldList &uhfl,
+                                std::vector<StringX> * pvgroups)
 {
   // Open the file
   std::FILE *fd = NULL;
@@ -143,9 +145,10 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
   m_strResultText = _T("");
 
   pFileHandler->SetVariables(bvalidation ? NULL : m_xmlcore, bvalidation, 
-                             ImportedPrefix, m_delimiter,
+                             ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              bvalidation ? NULL : m_possible_aliases, 
-                             bvalidation ? NULL : m_possible_shortcuts);
+                             bvalidation ? NULL : m_possible_shortcuts,
+                             pvgroups);
 
   // Tell Expat about our memory suites
   XML_Memory_Handling_Suite ms = {WFile_malloc, WFile_realloc, WFile_free};
@@ -201,8 +204,11 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
       // Now add entries
       pFileHandler->AddEntries();
 
+      // Get numbers (may have been modified by AddEntries
+      m_numEntriesImported = pFileHandler->getNumEntries();
+
       // Maybe import errors (PWHistory field processing)
-      m_strResultText = pFileHandler->getErrorMessage();
+      m_strResultText = pFileHandler->getImportErrors();
 
       m_bRecordHeaderErrors = pFileHandler->getRecordHeaderErrors();
       nRecordsWithUnknownFields = pFileHandler->getNumRecordsWithUnknownFields();

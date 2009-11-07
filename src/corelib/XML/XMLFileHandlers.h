@@ -19,6 +19,7 @@ enum {NORMAL = 0, ALIAS, SHORTCUT};
 
 // New imported entry
 struct pw_entry {
+  int id;
   StringX group;
   StringX title;
   StringX username;
@@ -69,7 +70,9 @@ public:
 
   void SetVariables(PWScore *core, const bool &bValidation,
                     const stringT &ImportedPrefix, const TCHAR &delimiter,
-                    UUIDList *possible_aliases, UUIDList *possible_shortcuts);
+                    const bool &bImportPSWDsOnly,
+                    UUIDList *possible_aliases, UUIDList *possible_shortcuts,
+                    std::vector<StringX> * pvgroups);
 
   bool getIfErrors() {return m_bErrors;}
   int getErrorCode() {return m_iErrorCode;}
@@ -107,6 +110,7 @@ protected:
   bool m_bentrybeingprocessed;
   bool m_bValidation;
   bool m_bErrors, m_bRecordHeaderErrors, m_bDatabaseHeaderErrors;
+  bool m_bImportPSWDsOnly;
   unsigned char m_ctype;
 
   UnknownFieldList m_ukhxl;  // For header unknown fields
@@ -116,6 +120,7 @@ private:
   PWScore *m_xmlcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
+  std::vector<StringX> * m_pvgroups;
 
   int m_whichtime, m_ipwh;
   int m_fieldlen;
