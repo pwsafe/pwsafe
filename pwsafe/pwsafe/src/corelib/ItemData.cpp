@@ -37,6 +37,7 @@ static char THIS_FILE[] = __FILE__;
 
 bool CItemData::IsSessionKeySet = false;
 unsigned char CItemData::SessionKey[64];
+void (*CItemData::sm_dideallocator)(void *) = NULL;
 
 void CItemData::SetSessionKey()
 {
@@ -52,13 +53,13 @@ void CItemData::SetSessionKey()
 
 CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
-  m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
-  m_URL(URL), m_AutoType(AUTOTYPE),
-  m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
-  m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-  m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
-  m_DCA(DCA), m_email(EMAIL), m_entrytype(ET_NORMAL), m_display_info(NULL),
-  m_entrystatus(ES_CLEAN)
+    m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
+    m_URL(URL), m_AutoType(AUTOTYPE),
+    m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
+    m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
+    m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
+    m_DCA(DCA), m_email(EMAIL), m_entrytype(ET_NORMAL),
+    m_entrystatus(ES_CLEAN), m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -72,8 +73,8 @@ CItemData::CItemData(const CItemData &that) :
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
   m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_email(that.m_email),
-  m_entrytype(that.m_entrytype), m_display_info(that.m_display_info),
-  m_entrystatus(that.m_entrystatus)
+  m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
+  m_display_info(that.m_display_info)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
