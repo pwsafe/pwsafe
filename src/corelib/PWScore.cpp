@@ -281,11 +281,7 @@ void PWScore::PurgeDeletedEntries()
     if (iter == m_pwlist.end())
       continue;
 
-    // We do not know the format of the storage referenced here (hence use of 'void *').
-    // We ASSUME that implementaions initialise it to NULL and
-    // used a 'new' construct to create it!!!
-    void *pdi = (void *)iter->second.GetDisplayInfo();
-    delete pdi;
+    CItemData::DeallocateDisplayInfo(iter->second.GetDisplayInfo());
     m_pwlist.erase(iter);
   }
 
@@ -962,9 +958,11 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
-int PWScore::ImportXMLFile(const stringT &, const stringT &, const stringT &, const bool &,
-                           stringT &, int &, int &, bool &, bool &, 
-                           std::vector<StringX> &, CReport &)
+int PWScore::ImportXMLFile(const stringT &, const stringT &,
+                           const stringT &, const bool &,
+                           stringT &, int &, int &,
+                           bool &, bool &, 
+                           std::vector<StringX> *, CReport &)
 {
   return UNIMPLEMENTED;
 }
