@@ -105,6 +105,14 @@ void DboxMain::SetLocalStrings()
   CS_CLEARFILTERS.LoadString(IDS_CLEARFILTERS);
 }
 
+// Following allows corelib to properly dispose
+// of DisplayInfo objects (stored as void * in CItemData)
+static void DisplayInfoDeallocator(void *vdi)
+{
+  DisplayInfo *di = static_cast<DisplayInfo *>(vdi);
+  delete di;
+}
+
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
@@ -126,9 +134,11 @@ DboxMain::DboxMain(CWnd* pParent)
   m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
-  m_bFilterForDelete(false), m_bFilterForStatus(false), m_bUnsavedDisplayed(false)
+  m_bFilterForDelete(false), m_bFilterForStatus(false),
+  m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER))
+
 {
-  m_eye_catcher = _wcsdup(EYE_CATCHER);
+  CItemData::RegisterDisplayInfoDeallocator(DisplayInfoDeallocator);
 
   // Need to do this as using the direct calls will fail for Windows versions before Vista
   HINSTANCE hUser32 = ::LoadLibrary(L"User32.dll");
