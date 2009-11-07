@@ -30,6 +30,7 @@ msgstr ""
 
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
+
 # поля msgid/msgstr для горячих клавиш
 # Формат: "ID:xxxxxx:VACS+X" где:
 #    ID:xxxxx = menu ID для соответствующей горячей клавиши
@@ -59,6 +60,7 @@ msgstr ""
 # Virtual keyboard - экранная клавиатура
 # Base entry - исходный элемент
 # Legacy - с раскладках клавиатуры "традиционная"
+
 #. Resource IDs: (315, 8016, 8017)
 msgid " "
 msgstr " "
