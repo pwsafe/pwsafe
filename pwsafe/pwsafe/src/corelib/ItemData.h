@@ -46,6 +46,13 @@ typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
 class BlowFish;
 
+struct DisplayInfoBase
+{
+  // 
+  DisplayInfoBase() {}
+  virtual ~DisplayInfoBase() {}
+};
+
 class CItemData
 {
 public:
@@ -209,14 +216,8 @@ public:
 
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy
-    void *GetDisplayInfo() const {return m_display_info;}
-    void SetDisplayInfo(void *di) {m_display_info = di;}
-  // Following needed as (void *) does not allow the compiler to call the
-  // proper destructor. In other words, workaround a language flaw.
-  // RegisterDisplayInfoDeallocator should be called (once!) from somewhere with
-  // knowledge of the DisplayInfo's implementation, so that its d'tor can be called.
-  static void RegisterDisplayInfoDeallocator(void (*did)(void *)) {sm_dideallocator = did;}
-  static void DeallocateDisplayInfo(void *di) {if (sm_dideallocator) sm_dideallocator(di);}
+    DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
+    void SetDisplayInfo(DisplayInfoBase *di) {m_display_info = di;}
     void Clear();
     // check record for mandatory fields, silently fix if missing
     int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
@@ -316,8 +317,7 @@ private:
   //The salt value
   unsigned char m_salt[SaltLength];
   // Following used by display methods - we just keep it handy
-  void *m_display_info;
-  static void (*sm_dideallocator)(void *); // set by RegisterDisplayInfoDeallocator
+  DisplayInfoBase *m_display_info;
 
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const StringX &name,

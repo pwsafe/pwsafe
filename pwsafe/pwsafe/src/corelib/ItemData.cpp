@@ -37,7 +37,6 @@ static char THIS_FILE[] = __FILE__;
 
 bool CItemData::IsSessionKeySet = false;
 unsigned char CItemData::SessionKey[64];
-void (*CItemData::sm_dideallocator)(void *) = NULL;
 
 void CItemData::SetSessionKey()
 {
