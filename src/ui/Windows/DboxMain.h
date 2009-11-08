@@ -784,12 +784,12 @@ inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)
 // Following used to keep track of display vs data
 // stored as opaque data in CItemData.{Get,Set}DisplayInfo()
 // Exposed here because PWTreeCtrl needs to update it after drag&drop
-struct DisplayInfo {
+struct DisplayInfo : public DisplayInfoBase {
   int list_index;
   HTREEITEM tree_item;
 
-  DisplayInfo()
-  {}
+  DisplayInfo() {}
+  virtual ~DisplayInfo() {}
  
   DisplayInfo(const DisplayInfo &that)
   : list_index(that.list_index), tree_item(that.tree_item)

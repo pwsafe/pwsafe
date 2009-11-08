@@ -281,7 +281,7 @@ void PWScore::PurgeDeletedEntries()
     if (iter == m_pwlist.end())
       continue;
 
-    CItemData::DeallocateDisplayInfo(iter->second.GetDisplayInfo());
+    delete iter->second.GetDisplayInfo();
     m_pwlist.erase(iter);
   }
 

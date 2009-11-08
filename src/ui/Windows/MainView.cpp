@@ -1231,7 +1231,7 @@ int DboxMain::insertItem(CItemData &ci, int iIndex,
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
   if (pdi == NULL) {
     pdi = new DisplayInfo;
-    ci.SetDisplayInfo((void *)pdi);
+    ci.SetDisplayInfo(pdi);
   }
   pdi->list_index = -1;
   pdi->tree_item = NULL;
