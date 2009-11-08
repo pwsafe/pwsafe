@@ -176,6 +176,12 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
   void OnPreExpiryWarnClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
+  void OnUseDefaultUserClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
+  void OnBrowseLocationClick( wxCommandEvent& event );
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
@@ -222,6 +228,24 @@ public:
   int GetDoubleclickaction() const { return m_doubleclickaction ; }
   void SetDoubleclickaction(int value) { m_doubleclickaction = value ; }
 
+  bool GetMinauto() const { return m_minauto ; }
+  void SetMinauto(bool value) { m_minauto = value ; }
+
+  wxString GetAutotypeStr() const { return m_autotypeStr ; }
+  void SetAutotypeStr(wxString value) { m_autotypeStr = value ; }
+
+  bool GetUsedefuser() const { return m_usedefuser ; }
+  void SetUsedefuser(bool value) { m_usedefuser = value ; }
+
+  bool GetQuerysetdef() const { return m_querysetdef ; }
+  void SetQuerysetdef(bool value) { m_querysetdef = value ; }
+
+  wxString GetOtherbrowser() const { return m_otherbrowser ; }
+  void SetOtherbrowser(wxString value) { m_otherbrowser = value ; }
+
+  wxString GetOtherbrowserparams() const { return m_otherbrowserparams ; }
+  void SetOtherbrowserparams(wxString value) { m_otherbrowserparams = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -247,6 +271,8 @@ public:
   wxCheckBox* m_preexpirywarnCB;
   wxSpinCtrl* m_preexpirywarndaysSB;
   wxComboBox* m_DCACB;
+  wxTextCtrl* m_defusernameTXT;
+  wxStaticText* m_defusernameLBL;
   wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
@@ -264,6 +290,7 @@ public:
   wxCheckBox* m_pwpEasyCtrl;
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
+  wxString m_otherbrowserparams;
 private:
   bool m_saveimmediate;
   bool m_backupb4save;
@@ -279,6 +306,11 @@ private:
   bool m_maintaindatetimestamps;
   bool m_escexits;
   int m_doubleclickaction;
+  bool m_minauto;
+  wxString m_autotypeStr;
+  bool m_usedefuser;
+  bool m_querysetdef;
+  wxString m_otherbrowser;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();
