@@ -31,6 +31,7 @@
 #include "optionspropsheet.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/Util.h" // for datetime string
+#include "corelib/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
 
 ////@begin XPM images
 ////@end XPM images
@@ -68,6 +69,10 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
   EVT_CHECKBOX( ID_CHECKBOX13, COptions::OnShowUsernameInTreeCB )
 
   EVT_CHECKBOX( ID_CHECKBOX19, COptions::OnPreExpiryWarnClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX24, COptions::OnUseDefaultUserClick )
+
+  EVT_BUTTON( ID_BUTTON8, COptions::OnBrowseLocationClick )
 
 ////@end COptions event table entries
 
@@ -166,6 +171,8 @@ void COptions::Init()
   m_preexpirywarnCB = NULL;
   m_preexpirywarndaysSB = NULL;
   m_DCACB = NULL;
+  m_defusernameTXT = NULL;
+  m_defusernameLBL = NULL;
   m_pwpLenCtrl = NULL;
   m_pwMinsGSzr = NULL;
   m_pwpUseLowerCtrl = NULL;
@@ -399,11 +406,11 @@ void COptions::CreateControls()
   itemCheckBox59->SetValue(false);
   itemBoxSizer58->Add(itemCheckBox59, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl60 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxSize(itemPanel44->ConvertDialogToPixels(wxSize(90, -1)).x, -1), 0 );
-  itemBoxSizer58->Add(itemTextCtrl60, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_defusernameTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL12, wxEmptyString, wxDefaultPosition, wxSize(itemPanel44->ConvertDialogToPixels(wxSize(90, -1)).x, -1), 0 );
+  itemBoxSizer58->Add(m_defusernameTXT, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText61 = new wxStaticText( itemPanel44, wxID_STATIC, _("as default username"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer58->Add(itemStaticText61, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_defusernameLBL = new wxStaticText( itemPanel44, wxID_STATIC, _("as default username"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer58->Add(m_defusernameLBL, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxCheckBox* itemCheckBox62 = new wxCheckBox( itemPanel44, ID_CHECKBOX25, _("Query user to set default username"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox62->SetValue(false);
@@ -682,6 +689,11 @@ void COptions::CreateControls()
   itemCheckBox46->SetValidator( wxGenericValidator(& m_confirmdelete) );
   itemCheckBox47->SetValidator( wxGenericValidator(& m_maintaindatetimestamps) );
   itemCheckBox48->SetValidator( wxGenericValidator(& m_escexits) );
+  itemCheckBox53->SetValidator( wxGenericValidator(& m_minauto) );
+  itemTextCtrl56->SetValidator( wxGenericValidator(& m_autotypeStr) );
+  itemCheckBox59->SetValidator( wxGenericValidator(& m_usedefuser) );
+  itemCheckBox62->SetValidator( wxGenericValidator(& m_querysetdef) );
+  itemTextCtrl65->SetValidator( wxGenericValidator(& m_otherbrowser) );
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
@@ -769,6 +781,17 @@ void COptions::PrefsToPropSheet()
       m_doubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_doubleclickaction = 0;
   m_DCACB->SetValue(DCAStrings[m_doubleclickaction]);
+  m_minauto = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
+  m_autotypeStr = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
+  if (m_autotypeStr.empty())
+    m_autotypeStr = DEFAULT_AUTOTYPE;
+  m_usedefuser = prefs->GetPref(PWSprefs::UseDefaultUser);
+  m_defusernameTXT->SetValue(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
+  m_defusernameTXT->Enable(m_usedefuser);
+  m_defusernameLBL->Enable(m_usedefuser);
+  m_querysetdef = prefs->GetPref(PWSprefs::QuerySetDef);
+  m_otherbrowser = prefs->GetPref(PWSprefs::AltBrowser).c_str();
+  m_otherbrowserparams = prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
 }
 
 void COptions::PropSheetToPrefs()
@@ -840,6 +863,15 @@ void COptions::PropSheetToPrefs()
     }
 
   prefs->SetPref(PWSprefs::DoubleClickAction, m_doubleclickaction);
+  prefs->SetPref(PWSprefs::MinimizeOnAutotype, m_minauto);
+  if (m_autotypeStr.empty() || m_autotypeStr == DEFAULT_AUTOTYPE)
+      prefs->SetPref(PWSprefs::DefaultAutotypeString, L"");
+  else prefs->SetPref(PWSprefs::DefaultAutotypeString, m_autotypeStr.c_str());
+  prefs->SetPref(PWSprefs::UseDefaultUser, m_usedefuser);
+  prefs->SetPref(PWSprefs::DefaultUsername, m_defusernameTXT->GetValue().c_str());
+  prefs->SetPref(PWSprefs::QuerySetDef, m_querysetdef);
+  prefs->SetPref(PWSprefs::AltBrowser, m_otherbrowser.c_str());
+  prefs->SetPref(PWSprefs::AltBrowserCmdLineParms, m_otherbrowserparams.c_str());
 }
 
 void COptions::OnOk(wxCommandEvent& event)
@@ -981,6 +1013,36 @@ void COptions::OnPreExpiryWarnClick( wxCommandEvent& event )
 {
   if (Validate() && TransferDataFromWindow()) {
     m_preexpirywarndaysSB->Enable(m_preexpirywarn);
+  }
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
+ */
+
+void COptions::OnUseDefaultUserClick( wxCommandEvent& event )
+{
+  if (Validate() && TransferDataFromWindow()) {
+    m_defusernameTXT->Enable(m_usedefuser);
+    m_defusernameLBL->Enable(m_usedefuser);
+  }
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
+ */
+
+void COptions::OnBrowseLocationClick( wxCommandEvent& event )
+{
+  wxFileDialog fd(this, _("Select a Browser"));
+  if (Validate() && TransferDataFromWindow()) {
+    fd.SetPath(m_otherbrowser);
+  }
+  if (fd.ShowModal() == wxID_OK) {
+    m_otherbrowser = fd.GetPath();
+    Validate() && TransferDataToWindow();
   }
 }
 
