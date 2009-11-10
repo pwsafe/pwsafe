@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-10-22 13:31+0100\n"
+"PO-Revision-Date: 2009-11-10 01:17+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,13 +24,10 @@ msgstr ""
 #    S = Shift key   (or blank if not used)
 #    X = upper case character
 # e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-
 # ONLY Accelerator Keys with corresponding alphanumeric characters can be
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
-
 #. Resource IDs: (315)
 msgid " "
 msgstr " "
@@ -394,6 +391,10 @@ msgstr ""
 "\n"
 "Unbekannter Fehler"
 
+#. Resource IDs: (359)
+msgid "&Abort"
+msgstr "&Abbrechen"
+
 #. Resource IDs: (32202)
 msgid "&About Password Safe..."
 msgstr "Über &Password Safe"
@@ -449,6 +450,10 @@ msgstr "&Schließen"
 #. Resource IDs: (32118)
 msgid "&Compare"
 msgstr "&Vergleichen"
+
+#. Resource IDs: (347)
+msgid "&Continue"
+msgstr "&Weiter"
 
 #. Resource IDs: (1343)
 msgid "&Copy"
@@ -545,6 +550,10 @@ msgstr "&Hilfe"
 #. Resource IDs: (328, 3842)
 msgid "&Hide"
 msgstr "&Ausblenden"
+
+#. Resource IDs: (359)
+msgid "&Ignore"
+msgstr "&Ignorieren"
 
 #. Resource IDs: (1345)
 msgid "&Import"
@@ -666,6 +675,10 @@ msgstr "&Rücksetzen"
 msgid "&Restore"
 msgstr "&Wiederherstellen"
 
+#. Resource IDs: (359)
+msgid "&Retry"
+msgstr "Wiede&rholen"
+
 #. Resource IDs: (354, 32064)
 msgid "&Run Command"
 msgstr "&Kommando ausführen"
@@ -677,6 +690,10 @@ msgstr "&Speichern"
 #. Resource IDs: (1)
 msgid "&Save to Disk"
 msgstr "Auf Festplatte &Speichern"
+
+#. Resource IDs: (348)
+msgid "&Search"
+msgstr "&Suchen"
 
 #. Resource IDs: (358)
 msgid "&Send email"
@@ -706,6 +723,10 @@ msgstr "&Baum/Liste Schriftart"
 msgid "&Try Again"
 msgstr "&Wiederholen"
 
+#. Resource IDs: (359)
+msgid "&Try again"
+msgstr "Wiede&rholen"
+
 #. Resource IDs: (2132)
 msgid "&Undo"
 msgstr "&Rückgängig"
@@ -729,6 +750,10 @@ msgstr "&Alias anzeigen"
 #. Resource IDs: (32053)
 msgid "&View Entry..."
 msgstr "Eintrag &anzeigen..."
+
+#. Resource IDs: (347)
+msgid "&View Report"
+msgstr "&Zeige Report"
 
 #. Resource IDs: (32126)
 msgid "&Virtual Keyboard Font"
@@ -1149,6 +1174,10 @@ msgstr "Ein Punkt ist als erstes Zeichen einer Gruppe nicht zulässig."
 #. Resource IDs: (326)
 msgid "A fatal error occured: "
 msgstr "Fataler Fehler aufgetreten: "
+
+#. Resource IDs: (211)
+msgid "A filter was active. Export of data was restricted to include only those displayed."
+msgstr "Ein Filter war aktiv. Der Export wurde beschänkt auf die angezeigten Elemente."
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2284,6 +2313,10 @@ msgstr ""
 "\r\n"
 "oder das Herunterfahren\\Neustart\\Abmelden abbrechen?"
 
+#. Resource IDs: (359)
+msgid "Double Click Action"
+msgstr "Doppelklick Aktion"
+
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
 msgstr "Doppelklick Aktion:"
@@ -2449,6 +2482,11 @@ msgstr "Einträge nur in der Vergleichsdatenbank (%s):"
 msgid "Entries only in current database (%s):"
 msgstr "Einträge nur in der aktuellen Datenbank (%s):"
 
+#. Resource IDs: (211)
+#, c-format
+msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\" not found. Cannot update entry's password."
+msgstr "Eintrag %s%d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" nicht gefunden. Das Passwort des Eintrages kann nicht aktualisiert werden."
+
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
@@ -2487,6 +2525,10 @@ msgstr "Eintrag in zeile %d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" bes
 #, c-format
 msgid "Entry on line %d with no group, Title=\"%s\", User=\"%s\" already exists. Added imported entry with title=\"%s\"."
 msgstr "Eintrag in zeile %d ohne Gruppe, Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingefügt."
+
+#. Resource IDs: (359)
+msgid "Entry status"
+msgstr "Status des Eintrags"
 
 #. Resource IDs: (349)
 msgid "Entry type"
@@ -2583,9 +2625,21 @@ msgstr "Text Exportieren"
 msgid "Export Text Extra"
 msgstr "Text Extra exportieren"
 
+#. Resource IDs: (359)
+msgid "Export Text failed"
+msgstr "Text-Export fehlgeschlagen"
+
 #. Resource IDs: (124)
 msgid "Export XML"
 msgstr "XML Exportieren"
+
+#. Resource IDs: (359)
+msgid "Export XML failed"
+msgstr "XML-Export fehlgeschlagen"
+
+#. Resource IDs: (211)
+msgid "Export of data was restricted to certain fields by the user."
+msgstr "Der Export wurde von Benutzer auf bestimmte Felder eingeschänkt."
 
 #. Resource IDs: (516)
 msgid "Faeroese"
@@ -2951,6 +3005,10 @@ msgstr "Hexadecimale Zeichen"
 msgid "Hexadecimal is mutually exclusive to all other options!"
 msgstr "Hexadecimal schliesst alle andere Optionen aus!"
 
+#. Resource IDs: (1397)
+msgid "Highlight changed entries"
+msgstr "Geänderte Einträge kennzeichnen"
+
 #. Resource IDs: (519)
 msgid "Hindi Traditional"
 msgstr "Hindi (traditionell)"
@@ -3150,12 +3208,12 @@ msgstr "XML-Einstellungen importieren"
 msgid "Import XML failed"
 msgstr "XML-Import fehlgeschlagen"
 
-#. Resource IDs: (65535)
-msgid "Import under Group?"
-msgstr "In Gruppe importieren?"
+#. Resource IDs: (1398)
+msgid "Import to change passwords of existing entries ONLY"
+msgstr "Importieren NUR zum Ändern der Passwörter von bestehenden Einträgen"
 
 #. Resource IDs: (65535)
-msgid "Import under group?"
+msgid "Import under Group?"
 msgstr "In Gruppe importieren?"
 
 #. Resource IDs: (346)
@@ -3683,6 +3741,10 @@ msgstr "Keine Kriteria definiert"
 msgid "No database open with which to compare against another database!"
 msgstr "Keine Datenbank geöffnet um sie mit einer weiteren Datenbank zu vergleichen!"
 
+#. Resource IDs: (359)
+msgid "No entries satisfied your selection criteria and so none were exported!"
+msgstr "Keine der Einträge erfüllte die Auswahlkriterien, und somit wurden keine exportiert!"
+
 #. Resource IDs: (345)
 msgid "No entry exists within this database matching your specifications."
 msgstr "Kein Eintrag in dieser Datenbank passt auf Ihre Beschreibung"
@@ -3743,6 +3805,10 @@ msgstr "Keine Zeile freigegeben"
 msgid "No rule selected"
 msgstr "Keine Regel ausgewählt"
 
+#. Resource IDs: (359)
+msgid "Non-saved changes"
+msgstr "Nicht gesicherte Änderungen"
+
 #. Resource IDs: (337)
 msgid "None"
 msgstr "Keine"
@@ -3766,6 +3832,10 @@ msgstr "Hinweis: leere Felder werden durch »*» gekennzeichnet"
 #. Resource IDs: (33126)
 msgid "Note: Entry format is »Group»Title»Username»"
 msgstr "Hinweis: Format eines Eintrages ist »Gruppe»Titel»Benutzername»"
+
+#. Resource IDs: (211)
+msgid "Note: These preferences are only used when importing into an empty database."
+msgstr "Hinweis: diese Präferenzen werden nur beim Improtieren in einer leeren Datenbank verwendet."
 
 #. Resource IDs: (189, 327)
 msgid "Notes"
@@ -3856,6 +3926,10 @@ msgstr "Altes Master-Passwort:"
 #. Resource IDs: (330, 1179, 1228)
 msgid "On"
 msgstr "An"
+
+#. Resource IDs: (359)
+msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "Ein oder mehrere Präferenzen wurden geändert. Sind sie sicher Abbrechen zu wollen?"
 
 #. Resource IDs: (340)
 #, c-format
@@ -4661,10 +4735,6 @@ msgstr "Sk&ript:"
 msgid "Schema does not have a version number."
 msgstr "Schema hat keine Versionsnummer."
 
-#. Resource IDs: (348)
-msgid "Search"
-msgstr "Suchen"
-
 #. Resource IDs: (330)
 #, c-format
 msgid "Search has wrapped, continuing from the %s."
@@ -4721,7 +4791,7 @@ msgstr "Wähle den Speicherort für die Zwischen-Sicherung aus"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
-msgstr ""
+msgstr "Wählen sie den Test Ausgabe Typ"
 
 #. Resource IDs: (340)
 msgid "Select all entries"
@@ -4874,6 +4944,10 @@ msgstr "Schnelltasten"
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
 msgstr "&Suchleiste einblenden"
+
+#. Resource IDs: (32127)
+msgid "Show &Unsaved Changes"
+msgstr "Zeige &ungesicherte Änderungen"
 
 #. Resource IDs: (354)
 msgid "Show Notes"
@@ -5053,6 +5127,10 @@ msgstr "Beende das Speichern vorheriger Passwörter"
 #. Resource IDs: (1322)
 msgid "String value:"
 msgstr "String Wert:"
+
+#. Resource IDs: (211)
+msgid "Subset of entries restricted by the following rule:"
+msgstr "Untermenge der Einträge, eingeschränkt nach folgender Rege:"
 
 #. Resource IDs: (65535)
 msgid "Suffix:"
@@ -5259,6 +5337,10 @@ msgstr "XML Version (%d) des Filters größer als das aktuelle Schema (%d)."
 msgid "The filter XML version is missing."
 msgstr "Die Filter XML Version fehlt."
 
+#. Resource IDs: (211)
+msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
+msgstr "Folgende Spalten wurden erkannt, aber nur Gruppe/Titel, Benutzername und Passwort werden bearbeitet:"
+
 #. Resource IDs: (204)
 msgid "The following columns will be processed: "
 msgstr "Folgende Spalten werden verarbeitet: "
@@ -5304,6 +5386,10 @@ msgstr "Das Master-Passwort wurde drei mal ohne Erfolg eingegeben. Wenn Sie sie 
 #. Resource IDs: (329)
 msgid "The two entries do not match."
 msgstr "Die beiden Einträge sind verschieden."
+
+#. Resource IDs: (211)
+msgid "The user specified that the following fields be excluded from the export:"
+msgstr "Vom Benutzer wurde festgelegt folgende Felder vom Export auszuschließen:"
 
 #. Resource IDs: (345)
 msgid "There are more than one entry that fits your selection. Please be more specific."
@@ -5469,6 +5555,10 @@ msgstr "Titel\t"
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
 msgstr "Um einen neuen Eintrag einzufügen, füllen Sie einfach die unten stehenden Felder aus. Zumindest der Titel und das Passwort werden benötigt. Der Standard-Benutzername wird als Benutzername benutzt, falls Sie einen gesetzt haben."
+
+#. Resource IDs: (211)
+msgid "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
+msgstr "Um Passwörter von bestehenden Einträge zu ersetzen, müssen folgende Spalten vorhanden sein: Gruppe/Titel, Benutzername und Passwort. Mindestens eines fehlt, und es wurde kein Eintrag aktualisiert."
 
 #. Resource IDs: (32106)
 msgid "Toolbar &visible"
@@ -5695,6 +5785,14 @@ msgstr "Unbekannte Felder"
 msgid "Unknown fields:"
 msgstr "Unbekannte Felder:"
 
+#. Resource IDs: (211)
+msgid "Unknown function"
+msgstr "Unbekannte Funktion"
+
+#. Resource IDs: (211)
+msgid "Unknown object"
+msgstr "Unbekanntes Objekt"
+
 #. Resource IDs: (32251)
 msgid "Unlock"
 msgstr "Entsperren"
@@ -5715,6 +5813,11 @@ msgstr ""
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr "Unbenannt"
+
+#. Resource IDs: (359)
+#, c-format
+msgid "Updated %d %s"
+msgstr "Aktualistiert %d %s"
 
 #. Resource IDs: (515)
 msgid "Urdu"
@@ -6014,10 +6117,6 @@ msgstr "XMLDateien (*.xml)|*.xml||"
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
 msgstr "JJMMTT_HHMMSS"
-
-#. Resource IDs: (340)
-msgid "Yes"
-msgstr "Ja"
 
 #. Resource IDs: (1084)
 msgid "Yes:"
@@ -6433,6 +6532,14 @@ msgstr ""
 "\n"
 "Zeige Suchleiste"
 
+#. Resource IDs: (2008)
+msgid ""
+"\n"
+"Show Unsaved Changes"
+msgstr ""
+"\n"
+"Ungesicherte Änderungen anzeigen"
+
 #. Resource IDs: (192)
 msgid ""
 "\n"
@@ -6609,6 +6716,10 @@ msgstr "Normaler Eintrag"
 msgid "a shortcut entry"
 msgstr "Verknüpfungs-Eintrag"
 
+#. Resource IDs: (211)
+msgid "added but not yet saved to database"
+msgstr "hinzugefügt, aber noch nicht in die Datenbank gesichert"
+
 #. Resource IDs: (207)
 msgid "after"
 msgstr "nach"
@@ -6661,6 +6772,10 @@ msgstr "Big Endian"
 msgid "bottom"
 msgstr "Ende"
 
+#. Resource IDs: (211)
+msgid "changed but not yet saved to database"
+msgstr "geändert, aber noch nicht in die Datenbank gesichert"
+
 #. Resource IDs: (344)
 msgid "conflict"
 msgstr "Konflikt"
@@ -6688,6 +6803,10 @@ msgstr "Tage"
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "Tage bevor Passwörter ablaufen"
+
+#. Resource IDs: (211)
+msgid "deleted but not yet removed from database"
+msgstr "gelöscht, aber noch nicht aus der Datenbank entfernt"
 
 #. Resource IDs: (206)
 msgid "does not begin with"
@@ -6753,8 +6872,16 @@ msgstr "ist abgelaufen"
 msgid "has the following entries with expired passwords:"
 msgstr "hat folgende Einträge mit abgelaufenem Passwort:"
 
+#. Resource IDs: (359)
+msgid "header"
+msgstr "Kopf"
+
 #. Resource IDs: (314)
 msgid "http://pwsafe.org/"
+msgstr ""
+
+#. Resource IDs: (212)
+msgid "id="
 msgstr ""
 
 #. Resource IDs: (191)
@@ -6764,6 +6891,10 @@ msgstr "importiere"
 #. Resource IDs: (1320)
 msgid "in"
 msgstr "in"
+
+#. Resource IDs: (211)
+msgid "in the database"
+msgstr "in der Datenbank"
 
 #. Resource IDs: (207)
 msgid "invalid!"
@@ -6861,6 +6992,10 @@ msgstr "Kein Eintrag mit Titel=%s besteht."
 msgid "on database %s"
 msgstr "auf Datenbank %s"
 
+#. Resource IDs: (212)
+msgid "on line "
+msgstr "in Zeile"
+
 #. Resource IDs: (3869)
 msgid "pixels"
 msgstr "Pixels"
@@ -6872,6 +7007,10 @@ msgstr "bisherige Passwörter pro Eintrag"
 #. Resource IDs: (338)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (359)
+msgid "record"
+msgstr "Satz"
 
 #. Resource IDs: (344)
 msgid "shortcut"
@@ -6948,6 +7087,10 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid "Import under group?"
+#~ msgstr "In Gruppe importieren?"
+#~ msgid "Yes"
+#~ msgstr "Ja"
 #~ msgid "Line %d skipped"
 #~ msgstr "Zeile %d übersprungen"
 #~ msgid ""
