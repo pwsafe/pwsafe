@@ -97,6 +97,12 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
 ////@end PasswordSafeFrame event table entries
+  EVT_MENU( wxID_FIND, PasswordSafeFrame::OnFindClick )
+
+  EVT_MENU( ID_EDITMENU_FIND_NEXT, PasswordSafeFrame::OnFindNext )
+
+  EVT_MENU( ID_EDITMENU_FIND_PREVIOUS, PasswordSafeFrame::OnFindPrevious )
+
 
 END_EVENT_TABLE()
 
@@ -148,6 +154,8 @@ PasswordSafeFrame::~PasswordSafeFrame()
 {
 ////@begin PasswordSafeFrame destruction
 ////@end PasswordSafeFrame destruction
+  delete m_search;
+  m_search = 0;
 }
 
 
@@ -830,6 +838,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
   }
   }
 }
+
 
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we
