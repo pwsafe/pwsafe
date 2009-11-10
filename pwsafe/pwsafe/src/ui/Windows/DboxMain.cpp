@@ -1046,23 +1046,41 @@ BOOL DboxMain::OnInitDialog()
     TTDT_AUTOPOP: Time the tool tip window remains visible, if the pointer
                   is stationary within a tool's bounding rectangle.
     TTDT_RESHOW:  Time it takes for subsequent tool tip windows to appear
-                  as the pointer moves from one tool to another. 
+                  as the pointer moves from one tool to another.
+
+    Defaults are based on the 'DoubleClickTime'. For the default 
+    double-click time of 500 ms, the initial, autopop, and reshow delay times
+    are 500ms, 5000ms, and 100ms respectively.
     */
-    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, 2000);
-    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 5000);
-    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, 4000);
+    m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, 1000);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 8000);
+    m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW,  2000);
 
     // Set maximum width to force Windows to wrap the text.
     m_pToolTipCtrl->SetMaxTipWidth(300);
 
-    CString cs_ToolTip;
-    cs_ToolTip.LoadString(IDS_DRAGTOCOPY);
+    // Set 
+    CString cs_ToolTip, cs_field;
+    cs_field.LoadString(IDS_GROUP);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGGROUP), cs_ToolTip);
+    cs_field.LoadString(IDS_TITLE);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGTITLE), cs_ToolTip);
+    cs_field.LoadString(IDS_USERNAME);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGUSER), cs_ToolTip);
+    cs_field.LoadString(IDS_PASSWORD);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGPASSWORD), cs_ToolTip);
+    cs_field.LoadString(IDS_NOTES);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGNOTES), cs_ToolTip);
+    cs_field.LoadString(IDS_URL);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGURL), cs_ToolTip);
+    cs_field.LoadString(IDS_EMAIL);
+    cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGEMAIL), cs_ToolTip);
   }
 

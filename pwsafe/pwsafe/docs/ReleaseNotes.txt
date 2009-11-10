@@ -31,6 +31,8 @@ entries exported to Text or XML.
 
 New Features for 3.19.1
 =======================
+[2895167] Dragbar tooltips changed to provide tailored information for each
+image and reduce the amount of text.
 [2881604] Allow edit of base entry of a shortcut via the Edit menu and/or
 by right-clicking on a shortcut entry.
 [2872273] Improve Import Text 'Line skipped' message.
