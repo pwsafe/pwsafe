@@ -142,6 +142,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   CreateControls();
   Centre();
 ////@end PasswordSafeFrame creation
+  m_search = new PasswordSafeSearch(this);
     return true;
 }
 
@@ -839,6 +840,24 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
   }
 }
 
+static void FlattenTree(wxTreeItemId id, PWSTreeCtrl* tree, OrderedItemList& olist)
+{
+  wxTreeItemIdValue cookie;
+  for (wxTreeItemId childId = tree->GetFirstChild(id, cookie); childId.IsOk(); 
+                          childId = tree->GetNextChild(id, cookie)) {
+    CItemData* item = tree->GetItem(childId);
+    if (item)
+      olist.push_back(*item);
+
+    if (tree->HasChildren(childId))
+      ::FlattenTree(childId, tree, olist);
+  }
+}
+
+void PasswordSafeFrame::FlattenTree(OrderedItemList& olist)
+{
+  ::FlattenTree(m_tree->GetRootItem(), m_tree, olist);
+}
 
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we

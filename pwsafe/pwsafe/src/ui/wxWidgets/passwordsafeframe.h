@@ -226,6 +226,7 @@ public:
     
     bool IsTreeView() const {return m_currentView == TREE;}
     void RefreshView() {if (IsTreeView()) ShowTree(); else ShowGrid();}
+    void FlattenTree(OrderedItemList& olist);
 
     void DispatchDblClickAction(CItemData &item); //called by grid/tree
 

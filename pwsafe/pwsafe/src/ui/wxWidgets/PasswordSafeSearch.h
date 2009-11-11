@@ -194,14 +194,20 @@ public:
   void UpdateView();
   
   void Activate(void);
-  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr);
-  
-  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
-                     const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                     CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction);
 
 private:
+  template <class Iter, class Accessor>
+  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn);
+  
+  template <class Iter, class Accessor>
+  void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
+                     const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
+                     CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction, Iter begin, Iter end, Accessor afn);
+
   void CreateSearchBar(void);
+
+  template <class Iter, class Accessor>
+  void OnDoSearchT( Iter begin, Iter end, Accessor afn); 
 
   wxToolBar*           m_toolbar;
   PasswordSafeFrame*   m_parentFrame;
