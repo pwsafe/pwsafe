@@ -5,6 +5,7 @@
 #include "PasswordSafeSearch.h"
 #include "../../corelib/PwsPlatform.h"
 #include "../../corelib/PWHistory.h"
+#include "../../corelib/Util.h"
 #include "passwordsafeframe.h"
 
 ////@begin XPM images
@@ -338,6 +339,20 @@ PasswordSafeSearch::~PasswordSafeSearch(void)
 
 void PasswordSafeSearch::OnDoSearch(wxCommandEvent& /*evt*/)
 {
+  if (m_parentFrame->IsTreeView()) {
+    OrderedItemList olist;
+    olist.reserve(m_parentFrame->GetNumEntries());
+    m_parentFrame->FlattenTree(olist);
+
+    OnDoSearchT(olist.begin(), olist.end(), dereference<OrderedItemList>());
+  }
+  else
+    OnDoSearchT(m_parentFrame->GetEntryIter(), m_parentFrame->GetEntryEndIter(), get_second<ItemList>());
+}
+
+template <class Iter, class Accessor>
+void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
+{
   wxASSERT(m_toolbar);
 
   wxTextCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxTextCtrl);
@@ -351,11 +366,11 @@ void PasswordSafeSearch::OnDoSearch(wxCommandEvent& /*evt*/)
       m_searchPointer.Clear();
    
       if (!m_fAdvancedSearch)
-        FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_searchPointer);
+        FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_searchPointer, begin, end, afn);
       else
         FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_searchPointer, 
                       m_searchContext->m_bsFields, m_searchContext->m_fUseSubgroups, m_searchContext->m_subgroupText,
-                      subgroups[m_searchContext->m_subgroupObject].type, subgroupFunctions[m_searchContext->m_subgroupFunction].function);
+                      subgroups[m_searchContext->m_subgroupObject].type, subgroupFunctions[m_searchContext->m_subgroupFunction].function, begin, end, afn);
 
       m_searchContext.Reset();
       m_searchPointer.InitIndex();
@@ -414,17 +429,18 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& evt)
   m_parentFrame->SetToolBar(NULL);
   m_toolbar->Show(false);
 
-  wxMenu* editMenu = 0;
+  wxMenu* editMenu = 0; // will be set by FindItem() below
   wxMenuItem* findNextItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_NEXT, &editMenu);
-  wxASSERT(editMenu);
-  if (findNextItem)
+  if (editMenu) { //the menu might not have been modified if nothing was actually searched for
+    if (findNextItem)
       editMenu->Delete(findNextItem);
 
-  wxMenuItem* findPreviousItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_PREVIOUS, 0);
-  if (findPreviousItem)
+    wxMenuItem* findPreviousItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_PREVIOUS, 0);
+    if (findPreviousItem)
       editMenu->Delete(findPreviousItem);
 
-  editMenu->Insert(FIND_MENU_POSITION, wxID_FIND, _("&Find Entry...\tCtrl+F"), _T(""), wxITEM_NORMAL);
+    editMenu->Insert(FIND_MENU_POSITION, wxID_FIND, _("&Find Entry...\tCtrl+F"), _T(""), wxITEM_NORMAL);
+  }
 }
 
 /*!
@@ -487,14 +503,15 @@ void PasswordSafeSearch::Activate(void)
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
 }
 
-void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr)
+template <class Iter, class Accessor>
+void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn)
 {
   searchPtr.Clear();
   //As per original Windows code, default search is for all text fields
   CItemData::FieldBits bsFields;
   bsFields.set();
 
-  return FindMatches(searchText, fCaseSensitive, searchPtr, bsFields, false, wxEmptyString, CItemData::END, PWSMatch::MR_INVALID);
+  return FindMatches(searchText, fCaseSensitive, searchPtr, bsFields, false, wxEmptyString, CItemData::END, PWSMatch::MR_INVALID, begin, end, afn);
 }
 
 bool FindNoCase( const StringX& src, const StringX& dest)
@@ -508,9 +525,10 @@ bool FindNoCase( const StringX& src, const StringX& dest)
     return destLower.find(srcLower) != StringX::npos;
 }
 
+template <class Iter, class Accessor>
 void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
                                        const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                                       CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction)
+                                       CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction, Iter begin, Iter end, Accessor afn)
 {
   if (searchText.empty())
       return;
@@ -535,28 +553,28 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
  
                       };
 
-  for ( ItemListConstIter itr = m_parentFrame->GetEntryIter(); itr != m_parentFrame->GetEntryEndIter(); ++itr) {
+  for ( Iter itr = begin; itr != end; ++itr) {
     
-    if (fUseSubgroups && !itr->second.Matches((const charT*)subgroupText, subgroupObject, subgroupFunction))
+    if (fUseSubgroups && afn(itr).Matches((const charT*)subgroupText, subgroupObject, subgroupFunction))
         continue;
 
     bool found = false;
     for (size_t idx = 0; idx < NumberOf(ItemDataFields) && !found; ++idx) {
       if (bsFields.test(ItemDataFields[idx].type)) {
-          const StringX str = (itr->second.*ItemDataFields[idx].func)();
+          const StringX str = (afn(itr).*ItemDataFields[idx].func)();
           found = fCaseSensitive? str.find(searchText) != StringX::npos: FindNoCase(searchText, str);
       }
     }
 
     if (!found && bsFields.test(CItemData::NOTES)) {
-        StringX str = itr->second.GetNotes();
+        StringX str = afn(itr).GetNotes();
         found = fCaseSensitive? str.find(searchText) != StringX::npos: FindNoCase(searchText, str);
     }
 
     if (!found && bsFields.test(CItemData::PWHIST)) {
         size_t pwh_max, err_num;
         PWHistList pwhistlist;
-        CreatePWHistoryList(itr->second.GetPWHistory(), pwh_max, err_num, pwhistlist, TMC_XML);
+        CreatePWHistoryList(afn(itr).GetPWHistory(), pwh_max, err_num, pwhistlist, TMC_XML);
         for (PWHistList::iterator iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
           PWHistEntry pwshe = *iter;
           found = fCaseSensitive? pwshe.password.find(searchText) != StringX::npos: FindNoCase(searchText, pwshe.password );
@@ -568,7 +586,7 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
 
     if (found) {
         uuid_array_t uuid;
-        itr->second.GetUUID(uuid);
+        afn(itr).GetUUID(uuid);
         searchPtr.Add(CUUIDGen(uuid));
     }
   }

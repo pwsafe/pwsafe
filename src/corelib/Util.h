@@ -143,6 +143,27 @@ namespace PWSUtil {
   std::string GetXMLTime(int indent, const char *name,
                          time_t t, CUTF8Conv &utf8conv);
 };
+
+///////////////////////////////////////////////////////
+// Following two templates lets us use the two types
+// of iterators in a common (templatized) function when 
+// all we need to do is to access the underlying value
+template <typename PairAssociativeContainer>
+class get_second {
+  public:
+    typedef typename PairAssociativeContainer::mapped_type mapped_type;
+    typedef typename PairAssociativeContainer::const_iterator const_iterator;
+    const mapped_type& operator()(const_iterator val) { return val->second; }
+};
+
+template <typename SequenceContainer>
+class dereference {
+  public:
+    typedef typename SequenceContainer::value_type value_type;
+    typedef typename SequenceContainer::const_iterator const_iterator;
+    const value_type& operator()(const_iterator itr) { return *itr; }
+};
+
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------
 // Local variables:
