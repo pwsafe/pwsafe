@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-11-10 01:17+0100\n"
+"PO-Revision-Date: 2009-11-11 21:44+0100\n"
 "Last-Translator: Karel Van der Gucht <Karel.VanderGucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2366,8 +2366,9 @@ msgid "Double-click action"
 msgstr "Doppelklick-Aktion"
 
 #. Resource IDs: (357)
-msgid "Dragbar: Hold left mouse button down on selected picture and drag to, say, a field on a web page. On releasing the mouse button, the particular contents (Group, Title, Username, Password, Notes or URL) will be pasted into that field."
-msgstr "Dragleiste: Halten Sie die linke Maustaste gedrückt auf das ausgewählte Bild, und ziehen es z.B. zu einem Feld in einer WEB-Seite. Beim Loslassen der Maustaste, wird der jeweilige Inhalt (Gruppe, Titel, Benutzername, Passwort, Notizen, URL oder Email) in dieses Feld ausgefüllt."
+#, c-format
+msgid "Drag this image onto a another window to paste the '%s' field."
+msgstr "Ziehe dieses Bild zu einem anderen Fenster um das Feld '%s' einzufügen."
 
 #. Resource IDs: (342)
 #, c-format
@@ -7087,6 +7088,16 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid ""
+#~ "Dragbar: Hold left mouse button down on selected picture and drag to, "
+#~ "say, a field on a web page. On releasing the mouse button, the particular "
+#~ "contents (Group, Title, Username, Password, Notes or URL) will be pasted "
+#~ "into that field."
+#~ msgstr ""
+#~ "Dragleiste: Halten Sie die linke Maustaste gedrückt auf das ausgewählte "
+#~ "Bild, und ziehen es z.B. zu einem Feld in einer WEB-Seite. Beim Loslassen "
+#~ "der Maustaste, wird der jeweilige Inhalt (Gruppe, Titel, Benutzername, "
+#~ "Passwort, Notizen, URL oder Email) in dieses Feld ausgefüllt."
 #~ msgid "Import under group?"
 #~ msgstr "In Gruppe importieren?"
 #~ msgid "Yes"
