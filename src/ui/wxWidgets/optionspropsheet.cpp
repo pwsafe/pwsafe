@@ -25,6 +25,7 @@
 ////@end includes
 
 #include "wx/dirdlg.h"
+#include "wx/msgdlg.h"
 #include "wx/debug.h"
 
 #include "passwordsafeframe.h"
@@ -73,6 +74,20 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
   EVT_CHECKBOX( ID_CHECKBOX24, COptions::OnUseDefaultUserClick )
 
   EVT_BUTTON( ID_BUTTON8, COptions::OnBrowseLocationClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX3, COptions::OnPwPolUseClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX4, COptions::OnPwPolUseClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX5, COptions::OnPwPolUseClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX6, COptions::OnPwPolUseClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX7, COptions::OnPwPolUseClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX8, COptions::OnPwPolUseClick )
+
+  EVT_CHECKBOX( ID_CHECKBOX9, COptions::OnPwPolUseClick )
 
 ////@end COptions event table entries
 
@@ -135,6 +150,7 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   wxCommandEvent dummyEv;
   OnSuffixCBSet(dummyEv);
   OnBuDirRB(dummyEv);
+  OnPwPolUseClick(dummyEv);
   return true;
 }
 
@@ -173,7 +189,6 @@ void COptions::Init()
   m_DCACB = NULL;
   m_defusernameTXT = NULL;
   m_defusernameLBL = NULL;
-  m_pwpLenCtrl = NULL;
   m_pwMinsGSzr = NULL;
   m_pwpUseLowerCtrl = NULL;
   m_pwNumLCbox = NULL;
@@ -447,8 +462,8 @@ void COptions::CreateControls()
   wxStaticText* itemStaticText73 = new wxStaticText( itemPanel70, wxID_STATIC, _("Password length: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer72->Add(itemStaticText73, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpLenCtrl = new wxSpinCtrl( itemPanel70, ID_SPINCTRL3, _T("8"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 8 );
-  itemBoxSizer72->Add(m_pwpLenCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxSpinCtrl* itemSpinCtrl74 = new wxSpinCtrl( itemPanel70, ID_SPINCTRL3, _T("8"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 8 );
+  itemBoxSizer72->Add(itemSpinCtrl74, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwMinsGSzr = new wxGridSizer(6, 2, 0, 0);
   itemStaticBoxSizer71->Add(m_pwMinsGSzr, 0, wxALIGN_LEFT|wxALL, 5);
@@ -694,6 +709,7 @@ void COptions::CreateControls()
   itemCheckBox59->SetValidator( wxGenericValidator(& m_usedefuser) );
   itemCheckBox62->SetValidator( wxGenericValidator(& m_querysetdef) );
   itemTextCtrl65->SetValidator( wxGenericValidator(& m_otherbrowser) );
+  itemSpinCtrl74->SetValidator( wxGenericValidator(& m_pwdefaultlength) );
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
@@ -792,6 +808,20 @@ void COptions::PrefsToPropSheet()
   m_querysetdef = prefs->GetPref(PWSprefs::QuerySetDef);
   m_otherbrowser = prefs->GetPref(PWSprefs::AltBrowser).c_str();
   m_otherbrowserparams = prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
+
+  // Password Policy preferences
+  m_pwdefaultlength = prefs->GetPref(PWSprefs::PWDefaultLength);
+  m_pwpUseLowerCtrl->SetValue(prefs->GetPref(PWSprefs::PWUseLowercase));
+  m_pwpUseUpperCtrl->SetValue(prefs->GetPref(PWSprefs::PWUseUppercase));
+  m_pwpUseDigitsCtrl->SetValue(prefs->GetPref(PWSprefs::PWUseDigits));
+  m_pwpSymCtrl->SetValue(prefs->GetPref(PWSprefs::PWUseSymbols));
+  m_pwpHexCtrl->SetValue(prefs->GetPref(PWSprefs::PWUseHexDigits));
+  m_pwpEasyCtrl->SetValue(prefs->GetPref(PWSprefs::PWUseEasyVision));
+  m_pwpPronounceCtrl->SetValue(prefs->GetPref(PWSprefs::PWMakePronounceable));
+  m_pwpLCSpin->SetValue(prefs->GetPref(PWSprefs::PWLowercaseMinLength));
+  m_pwpUCSpin->SetValue(prefs->GetPref(PWSprefs::PWUppercaseMinLength));
+  m_pwpDigSpin->SetValue(prefs->GetPref(PWSprefs::PWDigitMinLength));
+  m_pwpSymSpin->SetValue(prefs->GetPref(PWSprefs::PWSymbolMinLength));
 }
 
 void COptions::PropSheetToPrefs()
@@ -868,10 +898,26 @@ void COptions::PropSheetToPrefs()
       prefs->SetPref(PWSprefs::DefaultAutotypeString, L"");
   else prefs->SetPref(PWSprefs::DefaultAutotypeString, m_autotypeStr.c_str());
   prefs->SetPref(PWSprefs::UseDefaultUser, m_usedefuser);
-  prefs->SetPref(PWSprefs::DefaultUsername, m_defusernameTXT->GetValue().c_str());
+  prefs->SetPref(PWSprefs::DefaultUsername,
+                 m_defusernameTXT->GetValue().c_str());
   prefs->SetPref(PWSprefs::QuerySetDef, m_querysetdef);
   prefs->SetPref(PWSprefs::AltBrowser, m_otherbrowser.c_str());
-  prefs->SetPref(PWSprefs::AltBrowserCmdLineParms, m_otherbrowserparams.c_str());
+  prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
+                 m_otherbrowserparams.c_str());
+
+  // Password Policy preferences:
+  prefs->SetPref(PWSprefs::PWDefaultLength, m_pwdefaultlength);
+  prefs->SetPref(PWSprefs::PWUseLowercase, m_pwpUseLowerCtrl->GetValue());
+  prefs->SetPref(PWSprefs::PWUseUppercase, m_pwpUseUpperCtrl->GetValue());
+  prefs->SetPref(PWSprefs::PWUseDigits, m_pwpUseDigitsCtrl->GetValue());
+  prefs->SetPref(PWSprefs::PWUseSymbols, m_pwpSymCtrl->GetValue());
+  prefs->SetPref(PWSprefs::PWUseHexDigits, m_pwpHexCtrl->GetValue());
+  prefs->SetPref(PWSprefs::PWUseEasyVision, m_pwpEasyCtrl->GetValue());
+  prefs->SetPref(PWSprefs::PWMakePronounceable, m_pwpPronounceCtrl->GetValue());
+  prefs->SetPref(PWSprefs::PWLowercaseMinLength, m_pwpLCSpin->GetValue());
+  prefs->SetPref(PWSprefs::PWUppercaseMinLength, m_pwpUCSpin->GetValue());
+  prefs->SetPref(PWSprefs::PWDigitMinLength, m_pwpDigSpin->GetValue());
+  prefs->SetPref(PWSprefs::PWSymbolMinLength, m_pwpSymSpin->GetValue());
 }
 
 void COptions::OnOk(wxCommandEvent& event)
@@ -1046,3 +1092,55 @@ void COptions::OnBrowseLocationClick( wxCommandEvent& event )
   }
 }
 
+static void EnableSizerChildren(wxSizer *sz, bool enable)
+{
+  wxSizerItemList &clist = sz->GetChildren();
+  wxSizerItemList::iterator iter;
+
+  for (iter = clist.begin(); iter != clist.end(); iter++) {
+    wxWindow *w = (*iter)->GetWindow();
+    if (w != NULL)
+      w->Enable(enable);
+  }
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
+ */
+
+void COptions::OnPwPolUseClick( wxCommandEvent& event )
+{
+  bool useHex = m_pwpHexCtrl->GetValue();
+
+  EnableSizerChildren(m_pwNumLCbox, m_pwpUseLowerCtrl->GetValue() && !useHex);
+  EnableSizerChildren(m_pwNumUCbox, m_pwpUseUpperCtrl->GetValue() && !useHex);
+  EnableSizerChildren(m_pwNumDigbox, m_pwpUseDigitsCtrl->GetValue() && !useHex);
+  EnableSizerChildren(m_pwNumSymbox, m_pwpSymCtrl->GetValue() && !useHex);
+
+  bool showAtLeasts = !(m_pwpEasyCtrl->GetValue() ||
+                        m_pwpPronounceCtrl->GetValue());
+  m_pwNumLCbox->Show(showAtLeasts);
+  m_pwNumUCbox->Show(showAtLeasts);
+  m_pwNumDigbox->Show(showAtLeasts);
+  m_pwNumSymbox->Show(showAtLeasts);
+
+  m_pwpUseLowerCtrl->Enable(!useHex);
+  m_pwpUseUpperCtrl->Enable(!useHex);
+  m_pwpUseDigitsCtrl->Enable(!useHex);
+  m_pwpSymCtrl->Enable(!useHex);
+  m_pwpEasyCtrl->Enable(!useHex);
+  m_pwpPronounceCtrl->Enable(!useHex);
+
+  if (m_pwpEasyCtrl->GetValue() && m_pwpPronounceCtrl->GetValue()) {
+    // we don't support both - notify user, reset caller:
+    wxMessageDialog msg(this, _("Sorry, 'pronounceable' and 'easy-to-read'"
+                                " are not supported together"),
+                        _("Password Safe"), wxOK | wxICON_EXCLAMATION);
+    msg.ShowModal();
+    if (event.GetEventObject() == m_pwpPronounceCtrl)
+      m_pwpPronounceCtrl->SetValue(false);
+    else
+      m_pwpEasyCtrl->SetValue(false);
+  }
+}

@@ -182,6 +182,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
   void OnBrowseLocationClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
+  void OnPwPolUseClick( wxCommandEvent& event );
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
@@ -246,6 +249,9 @@ public:
   wxString GetOtherbrowserparams() const { return m_otherbrowserparams ; }
   void SetOtherbrowserparams(wxString value) { m_otherbrowserparams = value ; }
 
+  int GetPwdefaultlength() const { return m_pwdefaultlength ; }
+  void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -273,7 +279,6 @@ public:
   wxComboBox* m_DCACB;
   wxTextCtrl* m_defusernameTXT;
   wxStaticText* m_defusernameLBL;
-  wxSpinCtrl* m_pwpLenCtrl;
   wxGridSizer* m_pwMinsGSzr;
   wxCheckBox* m_pwpUseLowerCtrl;
   wxBoxSizer* m_pwNumLCbox;
@@ -311,6 +316,7 @@ private:
   bool m_usedefuser;
   bool m_querysetdef;
   wxString m_otherbrowser;
+  int m_pwdefaultlength;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();
