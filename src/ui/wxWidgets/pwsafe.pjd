@@ -21351,6 +21351,7 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnPWHistSaveClick|NONE||COptions"</string>
                   <string name="proxy-Id name">"ID_CHECKBOX26"</string>
                   <long name="proxy-Id value">10172</long>
                   <string name="proxy-Name">""</string>
@@ -21360,7 +21361,7 @@ Action:"</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Member variable name">"m_pwhistsaveCB"</string>
                   <string name="proxy-Label">"Save"</string>
                   <bool name="proxy-Initial value">0</bool>
                   <string name="proxy-Help text">""</string>
@@ -21423,7 +21424,7 @@ Action:"</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Member variable name">"m_pwhistnumdfltSB"</string>
                   <long name="proxy-Minimum value">0</long>
                   <long name="proxy-Maximum value">100</long>
                   <long name="proxy-Initial value">0</long>
@@ -21578,7 +21579,7 @@ Action:"</string>
                 <bool name="proxy-wxFIXED_MINSIZE">0</bool>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
                 <document>
-                  <string name="title">"wxRadioButton: ID_RADIOBUTTON8"</string>
+                  <string name="title">"wxRadioButton: ID_PWHISTNOCHANGE"</string>
                   <string name="type">"dialog-control-document"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"radiobutton"</string>
@@ -21587,8 +21588,9 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
-                  <string name="proxy-Id name">"ID_RADIOBUTTON8"</string>
-                  <long name="proxy-Id value">10174</long>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWHistRB|NONE||COptions"</string>
+                  <string name="proxy-Id name">"ID_PWHISTNOCHANGE"</string>
+                  <long name="proxy-Id value">10178</long>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Class">"wxRadioButton"</string>
                   <string name="proxy-Base class">"wxRadioButton"</string>
@@ -21639,7 +21641,7 @@ Action:"</string>
                   <string name="proxy-Custom ctor arguments">""</string>
                 </document>
                 <document>
-                  <string name="title">"wxRadioButton: ID_RADIOBUTTON9"</string>
+                  <string name="title">"wxRadioButton: ID_PWHISTSTOP"</string>
                   <string name="type">"dialog-control-document"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"radiobutton"</string>
@@ -21648,7 +21650,8 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
-                  <string name="proxy-Id name">"ID_RADIOBUTTON9"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWHistRB|NONE||COptions"</string>
+                  <string name="proxy-Id name">"ID_PWHISTSTOP"</string>
                   <long name="proxy-Id value">10175</long>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Class">"wxRadioButton"</string>
@@ -21700,7 +21703,7 @@ Action:"</string>
                   <string name="proxy-Custom ctor arguments">""</string>
                 </document>
                 <document>
-                  <string name="title">"wxRadioButton: ID_RADIOBUTTON10"</string>
+                  <string name="title">"wxRadioButton: ID_PWHISTSTART"</string>
                   <string name="type">"dialog-control-document"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"radiobutton"</string>
@@ -21709,7 +21712,8 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
-                  <string name="proxy-Id name">"ID_RADIOBUTTON10"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWHistRB|NONE||COptions"</string>
+                  <string name="proxy-Id name">"ID_PWHISTSTART"</string>
                   <long name="proxy-Id value">10176</long>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Class">"wxRadioButton"</string>
@@ -21761,7 +21765,7 @@ Action:"</string>
                   <string name="proxy-Custom ctor arguments">""</string>
                 </document>
                 <document>
-                  <string name="title">"wxRadioButton: ID_RADIOBUTTON11"</string>
+                  <string name="title">"wxRadioButton: ID_PWHISTSETMAX"</string>
                   <string name="type">"dialog-control-document"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"radiobutton"</string>
@@ -21770,7 +21774,8 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
-                  <string name="proxy-Id name">"ID_RADIOBUTTON11"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnPWHistRB|NONE||COptions"</string>
+                  <string name="proxy-Id name">"ID_PWHISTSETMAX"</string>
                   <long name="proxy-Id value">10177</long>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Class">"wxRadioButton"</string>
@@ -21822,7 +21827,7 @@ Action:"</string>
                   <string name="proxy-Custom ctor arguments">""</string>
                 </document>
                 <document>
-                  <string name="title">"wxButton: ID_BUTTON9"</string>
+                  <string name="title">"wxButton: ID_PWHISTNOCHANGE"</string>
                   <string name="type">"dialog-control-document"</string>
                   <string name="filename">""</string>
                   <string name="icon-name">"dialogcontrol"</string>
@@ -21831,7 +21836,8 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbButtonProxy"</string>
-                  <string name="proxy-Id name">"ID_BUTTON9"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnPWHistApply|NONE||COptions"</string>
+                  <string name="proxy-Id name">"ID_PWHISTNOCHANGE"</string>
                   <long name="proxy-Id value">10178</long>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Class">"wxButton"</string>
@@ -21840,7 +21846,7 @@ Action:"</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Member variable name">"m_pwhistapplyBN"</string>
                   <string name="proxy-Label">"Apply"</string>
                   <bool name="proxy-Default">0</bool>
                   <string name="proxy-Help text">""</string>
