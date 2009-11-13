@@ -93,11 +93,10 @@ class wxBoxSizer;
 #define ID_PANEL4 10135
 #define ID_CHECKBOX26 10172
 #define ID_SPINCTRL11 10173
-#define ID_RADIOBUTTON8 10174
-#define ID_RADIOBUTTON9 10175
-#define ID_RADIOBUTTON10 10176
-#define ID_RADIOBUTTON11 10177
-#define ID_BUTTON9 10178
+#define ID_PWHISTNOCHANGE 10178
+#define ID_PWHISTSTOP 10175
+#define ID_PWHISTSTART 10176
+#define ID_PWHISTSETMAX 10177
 #define ID_PANEL5 10136
 #define ID_CHECKBOX27 10179
 #define ID_CHECKBOX 10000
@@ -184,6 +183,15 @@ public:
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
   void OnPwPolUseClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
+  void OnPWHistSaveClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_PWHISTNOCHANGE
+  void OnPWHistRB( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
+  void OnPWHistApply( wxCommandEvent& event );
 
 ////@end COptions event handler declarations
 
@@ -295,6 +303,9 @@ public:
   wxCheckBox* m_pwpEasyCtrl;
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
+  wxCheckBox* m_pwhistsaveCB;
+  wxSpinCtrl* m_pwhistnumdfltSB;
+  wxButton* m_pwhistapplyBN;
   wxString m_otherbrowserparams;
 private:
   bool m_saveimmediate;

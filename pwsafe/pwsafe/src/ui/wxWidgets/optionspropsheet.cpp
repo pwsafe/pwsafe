@@ -89,6 +89,18 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 
   EVT_CHECKBOX( ID_CHECKBOX9, COptions::OnPwPolUseClick )
 
+  EVT_CHECKBOX( ID_CHECKBOX26, COptions::OnPWHistSaveClick )
+
+  EVT_RADIOBUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistRB )
+
+  EVT_RADIOBUTTON( ID_PWHISTSTOP, COptions::OnPWHistRB )
+
+  EVT_RADIOBUTTON( ID_PWHISTSTART, COptions::OnPWHistRB )
+
+  EVT_RADIOBUTTON( ID_PWHISTSETMAX, COptions::OnPWHistRB )
+
+  EVT_BUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistApply )
+
 ////@end COptions event table entries
 
 END_EVENT_TABLE()
@@ -151,6 +163,8 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   OnSuffixCBSet(dummyEv);
   OnBuDirRB(dummyEv);
   OnPwPolUseClick(dummyEv);
+  OnPWHistSaveClick(dummyEv);
+  m_pwhistapplyBN->Enable(false);
   return true;
 }
 
@@ -205,6 +219,9 @@ void COptions::Init()
   m_pwpEasyCtrl = NULL;
   m_pwpPronounceCtrl = NULL;
   m_pwpHexCtrl = NULL;
+  m_pwhistsaveCB = NULL;
+  m_pwhistnumdfltSB = NULL;
+  m_pwhistapplyBN = NULL;
 ////@end COptions member initialisation
 }
 
@@ -554,12 +571,12 @@ void COptions::CreateControls()
 
   wxBoxSizer* itemBoxSizer104 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer103->Add(itemBoxSizer104, 0, wxGROW|wxALL, 5);
-  wxCheckBox* itemCheckBox105 = new wxCheckBox( itemPanel102, ID_CHECKBOX26, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox105->SetValue(false);
-  itemBoxSizer104->Add(itemCheckBox105, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwhistsaveCB = new wxCheckBox( itemPanel102, ID_CHECKBOX26, _("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_pwhistsaveCB->SetValue(false);
+  itemBoxSizer104->Add(m_pwhistsaveCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl106 = new wxSpinCtrl( itemPanel102, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxSize(itemPanel102->ConvertDialogToPixels(wxSize(30, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
-  itemBoxSizer104->Add(itemSpinCtrl106, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_pwhistnumdfltSB = new wxSpinCtrl( itemPanel102, ID_SPINCTRL11, _T("0"), wxDefaultPosition, wxSize(itemPanel102->ConvertDialogToPixels(wxSize(30, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  itemBoxSizer104->Add(m_pwhistnumdfltSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText107 = new wxStaticText( itemPanel102, wxID_STATIC, _("previous passwords per entry"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer104->Add(itemStaticText107, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -567,24 +584,24 @@ void COptions::CreateControls()
   wxStaticBox* itemStaticBoxSizer108Static = new wxStaticBox(itemPanel102, wxID_ANY, _("Manage password history of current entries"));
   wxStaticBoxSizer* itemStaticBoxSizer108 = new wxStaticBoxSizer(itemStaticBoxSizer108Static, wxVERTICAL);
   itemBoxSizer103->Add(itemStaticBoxSizer108, 0, wxGROW|wxALL, 5);
-  wxRadioButton* itemRadioButton109 = new wxRadioButton( itemPanel102, ID_RADIOBUTTON8, _("No change"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxRadioButton* itemRadioButton109 = new wxRadioButton( itemPanel102, ID_PWHISTNOCHANGE, _("No change"), wxDefaultPosition, wxDefaultSize, 0 );
   itemRadioButton109->SetValue(false);
   itemStaticBoxSizer108->Add(itemRadioButton109, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton110 = new wxRadioButton( itemPanel102, ID_RADIOBUTTON9, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxRadioButton* itemRadioButton110 = new wxRadioButton( itemPanel102, ID_PWHISTSTOP, _("Stop saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   itemRadioButton110->SetValue(false);
   itemStaticBoxSizer108->Add(itemRadioButton110, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton111 = new wxRadioButton( itemPanel102, ID_RADIOBUTTON10, _("Start saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxRadioButton* itemRadioButton111 = new wxRadioButton( itemPanel102, ID_PWHISTSTART, _("Start saving previous passwords"), wxDefaultPosition, wxDefaultSize, 0 );
   itemRadioButton111->SetValue(false);
   itemStaticBoxSizer108->Add(itemRadioButton111, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxRadioButton* itemRadioButton112 = new wxRadioButton( itemPanel102, ID_RADIOBUTTON11, _("Set maximum number of paswords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxRadioButton* itemRadioButton112 = new wxRadioButton( itemPanel102, ID_PWHISTSETMAX, _("Set maximum number of paswords saved to above value"), wxDefaultPosition, wxDefaultSize, 0 );
   itemRadioButton112->SetValue(false);
   itemStaticBoxSizer108->Add(itemRadioButton112, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxButton* itemButton113 = new wxButton( itemPanel102, ID_BUTTON9, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStaticBoxSizer108->Add(itemButton113, 0, wxALIGN_LEFT|wxALL, 5);
+  m_pwhistapplyBN = new wxButton( itemPanel102, ID_PWHISTNOCHANGE, _("Apply"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticBoxSizer108->Add(m_pwhistapplyBN, 0, wxALIGN_LEFT|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel102, _("Password History"));
 
@@ -822,6 +839,10 @@ void COptions::PrefsToPropSheet()
   m_pwpUCSpin->SetValue(prefs->GetPref(PWSprefs::PWUppercaseMinLength));
   m_pwpDigSpin->SetValue(prefs->GetPref(PWSprefs::PWDigitMinLength));
   m_pwpSymSpin->SetValue(prefs->GetPref(PWSprefs::PWSymbolMinLength));
+
+  // Password History preferences
+  m_pwhistsaveCB->SetValue(prefs->GetPref(PWSprefs::SavePasswordHistory));
+  m_pwhistnumdfltSB->SetValue(prefs->GetPref(PWSprefs::NumPWHistoryDefault));
 }
 
 void COptions::PropSheetToPrefs()
@@ -918,6 +939,12 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::PWUppercaseMinLength, m_pwpUCSpin->GetValue());
   prefs->SetPref(PWSprefs::PWDigitMinLength, m_pwpDigSpin->GetValue());
   prefs->SetPref(PWSprefs::PWSymbolMinLength, m_pwpSymSpin->GetValue());
+
+  // Password History preferences
+  prefs->SetPref(PWSprefs::SavePasswordHistory,
+                 m_pwhistsaveCB->GetValue());
+  prefs->SetPref(PWSprefs::NumPWHistoryDefault,
+                 m_pwhistnumdfltSB->GetValue());
 }
 
 void COptions::OnOk(wxCommandEvent& event)
@@ -1144,3 +1171,40 @@ void COptions::OnPwPolUseClick( wxCommandEvent& event )
       m_pwpEasyCtrl->SetValue(false);
   }
 }
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
+ */
+
+void COptions::OnPWHistSaveClick( wxCommandEvent& event )
+{
+  m_pwhistnumdfltSB->Enable(m_pwhistsaveCB->GetValue());
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
+ */
+
+void COptions::OnPWHistApply( wxCommandEvent& event )
+{
+  // XXX TBD - send this to someone who knows how to deal with it!
+
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE in COptions.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE in COptions. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON8
+ */
+
+void COptions::OnPWHistRB( wxCommandEvent& event )
+{
+  int id = event.GetId();
+  m_pwhistapplyBN->Enable(id != ID_PWHISTNOCHANGE);
+}
+
