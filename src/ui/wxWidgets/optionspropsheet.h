@@ -193,6 +193,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
   void OnPWHistApply( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
+  void OnLockOnIdleClick( wxCommandEvent& event );
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
@@ -260,6 +263,21 @@ public:
   int GetPwdefaultlength() const { return m_pwdefaultlength ; }
   void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
 
+  bool GetSecclrclponmin() const { return m_secclrclponmin ; }
+  void SetSecclrclponmin(bool value) { m_secclrclponmin = value ; }
+
+  bool GetSecclrclponexit() const { return m_secclrclponexit ; }
+  void SetSecclrclponexit(bool value) { m_secclrclponexit = value ; }
+
+  bool GetSeclockonmin() const { return m_seclockonmin ; }
+  void SetSeclockonmin(bool value) { m_seclockonmin = value ; }
+
+  bool GetSecconfrmcpy() const { return m_secconfrmcpy ; }
+  void SetSecconfrmcpy(bool value) { m_secconfrmcpy = value ; }
+
+  bool GetSeclockonwinlock() const { return m_seclockonwinlock ; }
+  void SetSeclockonwinlock(bool value) { m_seclockonwinlock = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -306,6 +324,8 @@ public:
   wxCheckBox* m_pwhistsaveCB;
   wxSpinCtrl* m_pwhistnumdfltSB;
   wxButton* m_pwhistapplyBN;
+  wxCheckBox* m_seclockonidleCB;
+  wxSpinCtrl* m_secidletimeoutSB;
   wxString m_otherbrowserparams;
 private:
   bool m_saveimmediate;
@@ -328,6 +348,11 @@ private:
   bool m_querysetdef;
   wxString m_otherbrowser;
   int m_pwdefaultlength;
+  bool m_secclrclponmin;
+  bool m_secclrclponexit;
+  bool m_seclockonmin;
+  bool m_secconfrmcpy;
+  bool m_seclockonwinlock;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();

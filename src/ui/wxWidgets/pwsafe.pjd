@@ -15459,6 +15459,11 @@ Action:"</string>
           <string name="variable-18">"m_otherbrowser|wxString|Otherbrowser||2|0|"</string>
           <string name="variable-19">"m_otherbrowserparams|wxString|Otherbrowserparams||0|0|"</string>
           <string name="variable-20">"m_pwdefaultlength|int|Pwdefaultlength||2|0|"</string>
+          <string name="variable-21">"m_secclrclponmin|bool|Secclrclponmin||2|0|"</string>
+          <string name="variable-22">"m_secclrclponexit|bool|Secclrclponexit||2|0|"</string>
+          <string name="variable-23">"m_seclockonmin|bool|Seclockonmin||2|0|"</string>
+          <string name="variable-24">"m_secconfrmcpy|bool|Secconfrmcpy||2|0|"</string>
+          <string name="variable-25">"m_seclockonwinlock|bool|Seclockonwinlock||2|0|"</string>
           <string name="proxy-Id name">"ID_OPTIONS"</string>
           <long name="proxy-Id value">10130</long>
           <string name="proxy-Class">"COptions"</string>
@@ -22018,8 +22023,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_secclrclponmin"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -22081,8 +22086,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_secclrclponexit"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -22144,8 +22149,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_secconfrmcpy"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -22207,8 +22212,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_seclockonwinlock"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -22270,8 +22275,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_seclockonwinlock"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -22343,6 +22348,7 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnLockOnIdleClick|NONE||COptions"</string>
                   <string name="proxy-Id name">"ID_CHECKBOX29"</string>
                   <long name="proxy-Id value">10180</long>
                   <string name="proxy-Name">""</string>
@@ -22352,7 +22358,7 @@ Action:"</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Member variable name">"m_seclockonidleCB"</string>
                   <string name="proxy-Label">"Lock password database after"</string>
                   <bool name="proxy-Initial value">0</bool>
                   <string name="proxy-Help text">""</string>
@@ -22415,7 +22421,7 @@ Action:"</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Member variable name">"m_secidletimeoutSB"</string>
                   <long name="proxy-Minimum value">0</long>
                   <long name="proxy-Maximum value">100</long>
                   <long name="proxy-Initial value">0</long>
