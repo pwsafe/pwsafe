@@ -101,6 +101,8 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 
   EVT_BUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistApply )
 
+  EVT_CHECKBOX( ID_CHECKBOX29, COptions::OnLockOnIdleClick )
+
 ////@end COptions event table entries
 
 END_EVENT_TABLE()
@@ -165,6 +167,7 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   OnPwPolUseClick(dummyEv);
   OnPWHistSaveClick(dummyEv);
   m_pwhistapplyBN->Enable(false);
+  OnLockOnIdleClick(dummyEv);
   return true;
 }
 
@@ -222,6 +225,8 @@ void COptions::Init()
   m_pwhistsaveCB = NULL;
   m_pwhistnumdfltSB = NULL;
   m_pwhistapplyBN = NULL;
+  m_seclockonidleCB = NULL;
+  m_secidletimeoutSB = NULL;
 ////@end COptions member initialisation
 }
 
@@ -631,12 +636,12 @@ void COptions::CreateControls()
 
   wxBoxSizer* itemBoxSizer121 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer115->Add(itemBoxSizer121, 0, wxGROW|wxALL, 0);
-  wxCheckBox* itemCheckBox122 = new wxCheckBox( itemPanel114, ID_CHECKBOX29, _("Lock password database after"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox122->SetValue(false);
-  itemBoxSizer121->Add(itemCheckBox122, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_seclockonidleCB = new wxCheckBox( itemPanel114, ID_CHECKBOX29, _("Lock password database after"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_seclockonidleCB->SetValue(false);
+  itemBoxSizer121->Add(m_seclockonidleCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl123 = new wxSpinCtrl( itemPanel114, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxSize(itemPanel114->ConvertDialogToPixels(wxSize(30, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
-  itemBoxSizer121->Add(itemSpinCtrl123, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_secidletimeoutSB = new wxSpinCtrl( itemPanel114, ID_SPINCTRL12, _T("0"), wxDefaultPosition, wxSize(itemPanel114->ConvertDialogToPixels(wxSize(30, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  itemBoxSizer121->Add(m_secidletimeoutSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText124 = new wxStaticText( itemPanel114, wxID_STATIC, _("minutes idle"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer121->Add(itemStaticText124, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -727,6 +732,11 @@ void COptions::CreateControls()
   itemCheckBox62->SetValidator( wxGenericValidator(& m_querysetdef) );
   itemTextCtrl65->SetValidator( wxGenericValidator(& m_otherbrowser) );
   itemSpinCtrl74->SetValidator( wxGenericValidator(& m_pwdefaultlength) );
+  itemCheckBox116->SetValidator( wxGenericValidator(& m_secclrclponmin) );
+  itemCheckBox117->SetValidator( wxGenericValidator(& m_secclrclponexit) );
+  itemCheckBox118->SetValidator( wxGenericValidator(& m_secconfrmcpy) );
+  itemCheckBox119->SetValidator( wxGenericValidator(& m_seclockonwinlock) );
+  itemCheckBox120->SetValidator( wxGenericValidator(& m_seclockonwinlock) );
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
@@ -843,6 +853,15 @@ void COptions::PrefsToPropSheet()
   // Password History preferences
   m_pwhistsaveCB->SetValue(prefs->GetPref(PWSprefs::SavePasswordHistory));
   m_pwhistnumdfltSB->SetValue(prefs->GetPref(PWSprefs::NumPWHistoryDefault));
+
+  // Security preferences
+  m_secclrclponmin = prefs->GetPref(PWSprefs::ClearClipboardOnMinimize);
+  m_secclrclponexit = prefs->GetPref(PWSprefs::ClearClipboardOnExit);
+  m_seclockonmin = prefs->GetPref(PWSprefs::DatabaseClear);
+  m_secconfrmcpy = prefs->GetPref(PWSprefs::DontAskQuestion);
+  m_seclockonwinlock = prefs->GetPref(PWSprefs::LockOnWindowLock);
+  m_seclockonidleCB->SetValue(prefs->GetPref(PWSprefs::LockDBOnIdleTimeout));
+  m_secidletimeoutSB->SetValue(prefs->GetPref(PWSprefs::IdleTimeout));
 }
 
 void COptions::PropSheetToPrefs()
@@ -945,6 +964,15 @@ void COptions::PropSheetToPrefs()
                  m_pwhistsaveCB->GetValue());
   prefs->SetPref(PWSprefs::NumPWHistoryDefault,
                  m_pwhistnumdfltSB->GetValue());
+
+  // Security preferences
+  prefs->SetPref(PWSprefs::ClearClipboardOnMinimize, m_secclrclponmin);
+  prefs->SetPref(PWSprefs::ClearClipboardOnExit, m_secclrclponexit);
+  prefs->SetPref(PWSprefs::DatabaseClear, m_seclockonmin);
+  prefs->SetPref(PWSprefs::DontAskQuestion, m_secconfrmcpy);
+  prefs->SetPref(PWSprefs::LockOnWindowLock, m_seclockonwinlock);
+  prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, m_seclockonidleCB->GetValue());
+  prefs->SetPref(PWSprefs::IdleTimeout, m_secidletimeoutSB->GetValue());
 }
 
 void COptions::OnOk(wxCommandEvent& event)
@@ -1206,5 +1234,15 @@ void COptions::OnPWHistRB( wxCommandEvent& event )
 {
   int id = event.GetId();
   m_pwhistapplyBN->Enable(id != ID_PWHISTNOCHANGE);
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
+ */
+
+void COptions::OnLockOnIdleClick( wxCommandEvent& event )
+{
+  m_secidletimeoutSB->Enable(m_seclockonidleCB->GetValue());
 }
 
