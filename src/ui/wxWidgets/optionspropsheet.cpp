@@ -103,6 +103,8 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 
   EVT_CHECKBOX( ID_CHECKBOX29, COptions::OnLockOnIdleClick )
 
+  EVT_CHECKBOX( ID_CHECKBOX30, COptions::OnUseSystrayClick )
+
 ////@end COptions event table entries
 
 END_EVENT_TABLE()
@@ -168,6 +170,7 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
   OnPWHistSaveClick(dummyEv);
   m_pwhistapplyBN->Enable(false);
   OnLockOnIdleClick(dummyEv);
+  OnUseSystrayClick(dummyEv);
   return true;
 }
 
@@ -227,6 +230,8 @@ void COptions::Init()
   m_pwhistapplyBN = NULL;
   m_seclockonidleCB = NULL;
   m_secidletimeoutSB = NULL;
+  m_sysusesystrayCB = NULL;
+  m_sysmaxREitemsSB = NULL;
 ////@end COptions member initialisation
 }
 
@@ -655,17 +660,17 @@ void COptions::CreateControls()
   wxStaticBox* itemStaticBoxSizer127Static = new wxStaticBox(itemPanel125, wxID_ANY, _("System Tray"));
   wxStaticBoxSizer* itemStaticBoxSizer127 = new wxStaticBoxSizer(itemStaticBoxSizer127Static, wxVERTICAL);
   itemBoxSizer126->Add(itemStaticBoxSizer127, 0, wxGROW|wxALL, 5);
-  wxCheckBox* itemCheckBox128 = new wxCheckBox( itemPanel125, ID_CHECKBOX30, _("Put icon in System Tray"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox128->SetValue(false);
-  itemStaticBoxSizer127->Add(itemCheckBox128, 0, wxALIGN_LEFT|wxALL, 5);
+  m_sysusesystrayCB = new wxCheckBox( itemPanel125, ID_CHECKBOX30, _("Put icon in System Tray"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_sysusesystrayCB->SetValue(false);
+  itemStaticBoxSizer127->Add(m_sysusesystrayCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer129 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer127->Add(itemBoxSizer129, 0, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText130 = new wxStaticText( itemPanel125, wxID_STATIC, _("  Remember last"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer129->Add(itemStaticText130, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl131 = new wxSpinCtrl( itemPanel125, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxSize(itemPanel125->ConvertDialogToPixels(wxSize(30, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
-  itemBoxSizer129->Add(itemSpinCtrl131, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_sysmaxREitemsSB = new wxSpinCtrl( itemPanel125, ID_SPINCTRL13, _T("0"), wxDefaultPosition, wxSize(itemPanel125->ConvertDialogToPixels(wxSize(30, -1)).x, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  itemBoxSizer129->Add(m_sysmaxREitemsSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText132 = new wxStaticText( itemPanel125, wxID_STATIC, _("used entries in System Tray menu"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer129->Add(itemStaticText132, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -737,6 +742,11 @@ void COptions::CreateControls()
   itemCheckBox118->SetValidator( wxGenericValidator(& m_secconfrmcpy) );
   itemCheckBox119->SetValidator( wxGenericValidator(& m_seclockonwinlock) );
   itemCheckBox120->SetValidator( wxGenericValidator(& m_seclockonwinlock) );
+  itemCheckBox133->SetValidator( wxGenericValidator(& m_sysstartup) );
+  itemSpinCtrl137->SetValidator( wxGenericValidator(& m_sysmaxmru) );
+  itemCheckBox139->SetValidator( wxGenericValidator(& m_sysmruonfilemenu) );
+  itemCheckBox140->SetValidator( wxGenericValidator(& m_sysdefopenro) );
+  itemCheckBox141->SetValidator( wxGenericValidator(& m_sysmultinst) );
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
@@ -862,6 +872,15 @@ void COptions::PrefsToPropSheet()
   m_seclockonwinlock = prefs->GetPref(PWSprefs::LockOnWindowLock);
   m_seclockonidleCB->SetValue(prefs->GetPref(PWSprefs::LockDBOnIdleTimeout));
   m_secidletimeoutSB->SetValue(prefs->GetPref(PWSprefs::IdleTimeout));
+
+  // System preferences
+  m_sysmaxREitemsSB->SetValue(prefs->GetPref(PWSprefs::MaxREItems));
+  m_sysusesystrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
+  m_sysstartup = false; // XXX TBD
+  m_sysmaxmru = prefs->GetPref(PWSprefs::MaxMRUItems);
+  m_sysmruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
+  m_sysdefopenro = prefs->GetPref(PWSprefs::DefaultOpenRO);
+  m_sysmultinst = prefs->GetPref(PWSprefs::MultipleInstances);
 }
 
 void COptions::PropSheetToPrefs()
@@ -973,6 +992,15 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::LockOnWindowLock, m_seclockonwinlock);
   prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, m_seclockonidleCB->GetValue());
   prefs->SetPref(PWSprefs::IdleTimeout, m_secidletimeoutSB->GetValue());
+
+  // System preferences
+  prefs->SetPref(PWSprefs::MaxREItems, m_sysmaxREitemsSB->GetValue());
+  prefs->SetPref(PWSprefs::UseSystemTray, m_sysusesystrayCB->GetValue());
+  m_sysstartup = false; // XXX TBD
+  prefs->SetPref(PWSprefs::MaxMRUItems, m_sysmaxmru);
+  prefs->SetPref(PWSprefs::MRUOnFileMenu, m_sysmruonfilemenu);
+  prefs->SetPref(PWSprefs::DefaultOpenRO, m_sysdefopenro);
+  prefs->SetPref(PWSprefs::MultipleInstances, m_sysmultinst);
 }
 
 void COptions::OnOk(wxCommandEvent& event)
@@ -1244,5 +1272,15 @@ void COptions::OnPWHistRB( wxCommandEvent& event )
 void COptions::OnLockOnIdleClick( wxCommandEvent& event )
 {
   m_secidletimeoutSB->Enable(m_seclockonidleCB->GetValue());
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
+ */
+
+void COptions::OnUseSystrayClick( wxCommandEvent& event )
+{
+  m_sysmaxREitemsSB->Enable(m_sysusesystrayCB->GetValue());
 }
 

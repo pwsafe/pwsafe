@@ -15464,6 +15464,11 @@ Action:"</string>
           <string name="variable-23">"m_seclockonmin|bool|Seclockonmin||2|0|"</string>
           <string name="variable-24">"m_secconfrmcpy|bool|Secconfrmcpy||2|0|"</string>
           <string name="variable-25">"m_seclockonwinlock|bool|Seclockonwinlock||2|0|"</string>
+          <string name="variable-26">"m_sysstartup|bool|Sysstartup||2|0|"</string>
+          <string name="variable-27">"m_sysmaxmru|int|Sysmaxmru||2|0|"</string>
+          <string name="variable-28">"m_sysmruonfilemenu|bool|Sysmruonfilemenu||2|0|"</string>
+          <string name="variable-29">"m_sysdefopenro|bool|Sysdefopenro||2|0|"</string>
+          <string name="variable-30">"m_sysmultinst|bool|Sysmultinst||2|0|"</string>
           <string name="proxy-Id name">"ID_OPTIONS"</string>
           <long name="proxy-Id value">10130</long>
           <string name="proxy-Class">"COptions"</string>
@@ -22686,6 +22691,7 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnUseSystrayClick|NONE||COptions"</string>
                   <string name="proxy-Id name">"ID_CHECKBOX30"</string>
                   <long name="proxy-Id value">10182</long>
                   <string name="proxy-Name">""</string>
@@ -22695,7 +22701,7 @@ Action:"</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Member variable name">"m_sysusesystrayCB"</string>
                   <string name="proxy-Label">"Put icon in System Tray"</string>
                   <bool name="proxy-Initial value">0</bool>
                   <string name="proxy-Help text">""</string>
@@ -22852,7 +22858,7 @@ Action:"</string>
                     <bool name="proxy-Separate files">0</bool>
                     <string name="proxy-Implementation filename">""</string>
                     <string name="proxy-Header filename">""</string>
-                    <string name="proxy-Member variable name">""</string>
+                    <string name="proxy-Member variable name">"m_sysmaxREitemsSB"</string>
                     <long name="proxy-Minimum value">0</long>
                     <long name="proxy-Maximum value">100</long>
                     <long name="proxy-Initial value">0</long>
@@ -22997,8 +23003,8 @@ Action:"</string>
                   <bool name="proxy-Initial value">0</bool>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
-                  <string name="proxy-Data variable">""</string>
-                  <string name="proxy-Data validator">""</string>
+                  <string name="proxy-Data variable">"m_sysstartup"</string>
+                  <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                   <string name="proxy-Data source">""</string>
                   <string name="proxy-Data class name">""</string>
                   <string name="proxy-Data class implementation filename">""</string>
@@ -23195,8 +23201,8 @@ Action:"</string>
                     <bool name="proxy-Hidden">0</bool>
                     <bool name="proxy-Enabled">1</bool>
                     <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                    <string name="proxy-Data variable">""</string>
-                    <string name="proxy-Data validator">""</string>
+                    <string name="proxy-Data variable">"m_sysmaxmru"</string>
+                    <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                     <string name="proxy-Data source">""</string>
                     <string name="proxy-Data class name">""</string>
                     <string name="proxy-Data class implementation filename">""</string>
@@ -23328,8 +23334,8 @@ Action:"</string>
                   <bool name="proxy-Initial value">0</bool>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
-                  <string name="proxy-Data variable">""</string>
-                  <string name="proxy-Data validator">""</string>
+                  <string name="proxy-Data variable">"m_sysmruonfilemenu"</string>
+                  <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                   <string name="proxy-Data source">""</string>
                   <string name="proxy-Data class name">""</string>
                   <string name="proxy-Data class implementation filename">""</string>
@@ -23392,8 +23398,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_sysdefopenro"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -23455,8 +23461,8 @@ Action:"</string>
                 <bool name="proxy-Initial value">0</bool>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_sysmultinst"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>

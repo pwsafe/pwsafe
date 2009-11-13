@@ -196,6 +196,9 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
   void OnLockOnIdleClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
+  void OnUseSystrayClick( wxCommandEvent& event );
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
@@ -278,6 +281,21 @@ public:
   bool GetSeclockonwinlock() const { return m_seclockonwinlock ; }
   void SetSeclockonwinlock(bool value) { m_seclockonwinlock = value ; }
 
+  bool GetSysstartup() const { return m_sysstartup ; }
+  void SetSysstartup(bool value) { m_sysstartup = value ; }
+
+  int GetSysmaxmru() const { return m_sysmaxmru ; }
+  void SetSysmaxmru(int value) { m_sysmaxmru = value ; }
+
+  bool GetSysmruonfilemenu() const { return m_sysmruonfilemenu ; }
+  void SetSysmruonfilemenu(bool value) { m_sysmruonfilemenu = value ; }
+
+  bool GetSysdefopenro() const { return m_sysdefopenro ; }
+  void SetSysdefopenro(bool value) { m_sysdefopenro = value ; }
+
+  bool GetSysmultinst() const { return m_sysmultinst ; }
+  void SetSysmultinst(bool value) { m_sysmultinst = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -326,6 +344,8 @@ public:
   wxButton* m_pwhistapplyBN;
   wxCheckBox* m_seclockonidleCB;
   wxSpinCtrl* m_secidletimeoutSB;
+  wxCheckBox* m_sysusesystrayCB;
+  wxSpinCtrl* m_sysmaxREitemsSB;
   wxString m_otherbrowserparams;
 private:
   bool m_saveimmediate;
@@ -353,6 +373,11 @@ private:
   bool m_seclockonmin;
   bool m_secconfrmcpy;
   bool m_seclockonwinlock;
+  bool m_sysstartup;
+  int m_sysmaxmru;
+  bool m_sysmruonfilemenu;
+  bool m_sysdefopenro;
+  bool m_sysmultinst;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();
