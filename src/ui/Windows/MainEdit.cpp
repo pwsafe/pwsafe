@@ -1277,11 +1277,21 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   StringX sxnotes(sx_notes);
   wchar_t curChar;
   StringX sx_autotype(sx_in_autotype);
+  StringX::size_type index;
+  bool bForceOldMethod(false);
+
+  index = sx_autotype.find(L"\\z");
+
+  if (index != StringX::npos) {
+    bForceOldMethod = true;
+    sx_autotype.erase(index, 2);
+  }
+
+  CKeySend ks(m_WindowsMajorVersion, m_WindowsMinorVersion, bForceOldMethod);
+
   const int N = sx_autotype.length();
-  CKeySend ks(m_WindowsMajorVersion, m_WindowsMinorVersion);
   bool bCapsLock = false;
   std::vector<StringX> vsx_notes_lines;
-  StringX::size_type index;
 
   // No recursive substitution (e.g. \p or \u), 
   // although '\t' will be replaced by a tab
