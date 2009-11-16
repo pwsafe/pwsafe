@@ -34,7 +34,7 @@ autotype is too fast for your machine.&nbsp;</p>
 <li>Maximize or open Password Safe</li>
 <li>Select a password entry</li>
 <li><b>Ctrl -T</b> or right-click and select <b>Perform
-Auto Type</b> to or click on the Toolbar button to initiate.</li>
+Auto Type</b> or click on the Toolbar button to initiate.</li>
 </ol>
 <h3><a name="autotype_details"></a>Customizing
 Auto Type</h3>
@@ -101,13 +101,21 @@ all subsequent characters. For example, "fast\d500slow" will result in
 'o', and 'w' typed with a half-second pause before each. if you want to
 put in a one-time delay that does not affect the speed of the following
 characters, use '\w' or '\W', as described below.</li>
-<li><span style="font-weight: bold;">\w</span><span style="font-style: italic; font-weight: bold;">NNN </span><span style="font-weight: bold;">or </span><span style="font-style: italic; font-weight: bold;">\WNNN </span>introduces a delay of <span style="font-style: italic;">NNN </span>milliseconds
+<li><span style="font-weight: bold;">\w</span><span style="font-style: italic; font-weight: bold;">NNN</span>
+<span style="font-weight: bold;"> or </span><span style="font-style: italic; font-weight: bold;">\WNNN</span>
+ introduces a delay of <span style="font-style: italic;">NNN </span>milliseconds
 for \w, or seconds if \W is used. For example, "how\w500now" will cause
 'how' to be typed (at the default rate or that specified by the last
 \d), followed by a half-second pause, followed by 'now' typed at the
 same rate as 'how'). Likewise, "how\W2now" will introduce a two second
-pause between the two words. This is useful for fine-tuning the timing with certain web pages.</li><li>All other text is typed as-is.<br>
-</li>
+pause between the two words. This is useful for fine-tuning the timing with certain web pages.</li>
+<li><span style="font-weight: bold;">\z</span> requests that the older method of performing AutoType
+is used.  This older method (used in V3.10 and before for all Autotype functions and in V3.11 and later,
+if running under Windows 2000 or previous releases of the Windows Operating Systems) may not handle
+non-Latin characters correctly, however it has been shown to make Autotype work on certain problematical web sites.
+If you find that Autotype does not work properly on a particular web site, try this field but, if it does not
+resolve the issue, we recommend removing this field from the Autotype string.</li>
+<li>All other text is typed as-is.</li>
 </ul>
 <p><span style="font-weight: bold;">Example:</span>
 The following can be used where the bank account number (12345) must be
@@ -116,12 +124,7 @@ entered before the user and password:<br>
 <span style="font-style: italic;">12345\t\u\t\p\t\n</span></p>
 <p><span style="font-style: italic;"></span></p>
 </div>
-<hr> <small><b>Notes:</b>&nbsp;<a name="N1">By default, the
-Autotype field is not displayed in the Add or Edit dialog boxes.
-To access the Autotype field, you may have to click on the
-"More&gt;&gt;" button in the dialog box.<br>
-<br>
-If you are having problems with autotype, you might want to disable
+<hr> <small><b>Note:</b>&nbsp;<a name="N1">If you are having problems with autotype, you might want to disable
 3rd-party popup-blockers. Users have reported problems with the
 interaction of popup-blockers with the autotype functionality.</a></small>
 <hr><!-- Added some white space at the bottom for natural scrolling --><a name="N1"><b><br>

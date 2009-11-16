@@ -156,24 +156,26 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
         ipos = sxurl.find(L"[alt]");
         if (ipos != StringX::npos) {
           bURLSpecial = true;
-          sxurl.replace(ipos, 5, L"");
+          sxurl.erase(ipos, 5);
         }
         ipos = sxurl.find(L"[ssh]");
         if (ipos != StringX::npos) {
           bURLSpecial = true;
-          sxurl.replace(ipos, 5, L"");
+          sxurl.erase(ipos, 5);
         }
         ipos = sxurl.find(L"{alt}");
         if (ipos != StringX::npos) {
           bURLSpecial = true;
-          sxurl.replace(ipos, 5, L"");
+          sxurl.erase(ipos, 5);
         }
         ipos = sxurl.find(L"[autotype]");
-        if (ipos != StringX::npos)
-          sxurl.replace(ipos, 10, L"");
+        if (ipos != StringX::npos) {
+          sxurl.erase(ipos, 10);
+        }
         ipos = sxurl.find(L"[xa]");
-        if (ipos != StringX::npos)
-          sxurl.replace(ipos, 4, L"");
+        if (ipos != StringX::npos) {
+          sxurl.erase(ipos, 4);
+        }
         sxretval += sxurl;
       }
     } else
@@ -345,10 +347,11 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
         case TCHAR('d'):
         case TCHAR('w'):
         case TCHAR('W'):
-          // Ignore delay & wait - treat it as just a string!
+        case TCHAR('z'):
+          // Ignore delay, wait & force old method - treat it as just a string!
           sxtmp += _T("\\");
           sxtmp += curChar;
-          break; // case 'd', 'w' & 'W'
+          break; // case 'd', 'w', 'W' & 'z'
         case TCHAR('b'): // backspace!
           sxtmp += TCHAR('\b');
           break;
