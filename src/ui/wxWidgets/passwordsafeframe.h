@@ -208,6 +208,20 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITMENU_FIND_PREVIOUS
   void OnFindPrevious(wxCommandEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURL
+  void OnBrowseURL(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SENDEMAIL
+  void OnSendEmail(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_RUNCOMMAND
+  void OnRunCommand(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
+  void OnAutoType(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
+  void OnBrowseUrlAndAutotype(wxCommandEvent& evt);
 
 ////@begin PasswordSafeFrame member function declarations
 

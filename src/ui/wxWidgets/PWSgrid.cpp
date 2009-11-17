@@ -284,6 +284,7 @@ void PWSGrid::DeleteAllItems()
 
 void PWSGrid::OnCellRightClick( wxGridEvent& event )
 {
+  SetGridCursor(event.GetRow(), event.GetCol());
   SelectRow(event.GetRow());
   dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(event.GetRow()));
 }

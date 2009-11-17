@@ -103,6 +103,15 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_EDITMENU_FIND_PREVIOUS, PasswordSafeFrame::OnFindPrevious )
 
+  EVT_MENU( ID_BROWSEURL, PasswordSafeFrame::OnBrowseURL )
+
+  EVT_MENU( ID_BROWSEURLPLUS, PasswordSafeFrame::OnBrowseUrlAndAutotype )
+
+  EVT_MENU( ID_SENDEMAIL, PasswordSafeFrame::OnSendEmail )
+
+  EVT_MENU( ID_RUNCOMMAND, PasswordSafeFrame::OnRunCommand )
+
+  EVT_MENU( ID_AUTOTYPE, PasswordSafeFrame::OnAutoType )
 
 END_EVENT_TABLE()
 
@@ -754,6 +763,65 @@ void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& event )
   window->Destroy();
 }
 
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURL
+ */
+
+void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item)
+    DoBrowse(*item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURLPLUS
+ */
+
+void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item) {
+    DoBrowse(*item);
+    //wait a little?
+    DoAutotype(*item);
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SENDEMAIL
+ */
+
+void PasswordSafeFrame::OnSendEmail(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item)
+    DoEmail(*item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_RUNCOMMAND
+ */
+
+void PasswordSafeFrame::OnRunCommand(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item)
+    DoRun(*item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
+ */
+
+void PasswordSafeFrame::OnAutoType(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item)
+    DoAutotype(*item);
+}
+
 void PasswordSafeFrame::SeletItem(const CUUIDGen& uuid)
 {
     if (m_currentView == GRID) {
@@ -885,7 +953,7 @@ void PasswordSafeFrame::OnContextMenu(CItemData* item)
     itemEditMenu.AppendSeparator();
     itemEditMenu.Append(ID_BROWSEURL,      wxT("&Browse to URL"));
     itemEditMenu.Append(ID_BROWSEURLPLUS,  wxT("Browse to URL + &Autotype"));
-    itemEditMenu.Append(ID_SENDEMAIL,       wxT("Send &email"));
+    itemEditMenu.Append(ID_SENDEMAIL,      wxT("Send &email"));
     itemEditMenu.Append(ID_RUNCOMMAND,     wxT("&Run Command"));
     itemEditMenu.Append(ID_AUTOTYPE,       wxT("Perform Auto &Type"));
     itemEditMenu.AppendSeparator();
