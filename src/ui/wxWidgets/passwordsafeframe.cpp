@@ -859,6 +859,105 @@ void PasswordSafeFrame::FlattenTree(OrderedItemList& olist)
   ::FlattenTree(m_tree->GetRootItem(), m_tree, olist);
 }
 
+///////////////////////////////////////////
+// Handles right-click event forwarded by the tree and list views
+// The logic is the same as DboxMain::OnContextMenu in src/ui/Windows/MainMenu.cpp
+void PasswordSafeFrame::OnContextMenu(CItemData* item)
+{
+  if (TREE == m_currentView && !item) {
+    wxMenu groupEditMenu;
+    groupEditMenu.Append(wxID_ADD, wxT("Add &Entry"));
+    groupEditMenu.Append(ID_ADDGROUP, wxT("Add &Group"));
+    groupEditMenu.Append(ID_RENAME, wxT("&Rename Group"));
+    groupEditMenu.Append(wxID_DELETE, wxT("&Delete Group"));
+
+    m_tree->PopupMenu(&groupEditMenu);
+  }
+  else {
+    wxMenu itemEditMenu;
+    itemEditMenu.Append(ID_COPYUSERNAME,   wxT("Copy &Username to Clipboard"));
+    itemEditMenu.Append(ID_COPYPASSWORD,   wxT("&Copy Password to Clipboard"));
+    itemEditMenu.Append(ID_PASSWORDSUBSET, wxT("Display subset of Password"));
+    itemEditMenu.Append(ID_COPYNOTESFLD,   wxT("Copy &Notes to Clipboard"));
+    itemEditMenu.Append(ID_COPYURL,        wxT("Copy UR&L to Clipboard"));
+    itemEditMenu.Append(ID_COPYEMAIL,      wxT("Copy email to Clipboard"));
+    itemEditMenu.Append(ID_COPYRUNCOMMAND, wxT("Copy Run Command to Clipboard"));
+    itemEditMenu.AppendSeparator();
+    itemEditMenu.Append(ID_BROWSEURL,      wxT("&Browse to URL"));
+    itemEditMenu.Append(ID_BROWSEURLPLUS,  wxT("Browse to URL + &Autotype"));
+    itemEditMenu.Append(ID_SENDEMAIL,       wxT("Send &email"));
+    itemEditMenu.Append(ID_RUNCOMMAND,     wxT("&Run Command"));
+    itemEditMenu.Append(ID_AUTOTYPE,       wxT("Perform Auto &Type"));
+    itemEditMenu.AppendSeparator();
+    itemEditMenu.Append(ID_EDIT,           wxT("Edit/&View Entry..."));
+    itemEditMenu.Append(ID_RENAME,         wxT("Rename Entry"));
+    itemEditMenu.Append(ID_DUPLICATEENTRY, wxT("&Duplicate Entry"));
+    itemEditMenu.Append(wxID_DELETE,       wxT("Delete Entry"));
+    itemEditMenu.Append(ID_CREATESHORTCUT, wxT("Create &Shortcut"));
+    itemEditMenu.Append(ID_GOTOBASEENTRY,  wxT("&Go to Base entry"));
+    itemEditMenu.Append(ID_EDITBASEENTRY,  wxT("&Edit Base entry"));
+
+    switch (item->GetEntryType()) {
+      case CItemData::ET_NORMAL:
+      case CItemData::ET_SHORTCUTBASE:
+        itemEditMenu.Delete(ID_GOTOBASEENTRY);
+        itemEditMenu.Delete(ID_EDITBASEENTRY);
+        break;
+
+      case CItemData::ET_ALIASBASE:
+        itemEditMenu.Delete(ID_CREATESHORTCUT);
+        itemEditMenu.Delete(ID_GOTOBASEENTRY);
+        itemEditMenu.Delete(ID_EDITBASEENTRY);
+        break;
+
+      case CItemData::ET_ALIAS:
+      case CItemData::ET_SHORTCUT:
+        itemEditMenu.Delete(ID_CREATESHORTCUT);
+        break;
+      
+      default:
+        wxASSERT_MSG(false, wxT("Unexpected CItemData type"));
+        break;
+    }
+    
+    uuid_array_t entry_uuid, base_uuid;
+    if (item->IsShortcut()) {
+      item->GetUUID(entry_uuid);
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != m_core.GetEntryEndIter())
+        item = &iter->second;
+    }
+
+    if (item->IsUserEmpty())
+      itemEditMenu.Delete(ID_COPYUSERNAME);
+
+    if (item->IsNotesEmpty())
+      itemEditMenu.Delete(ID_COPYNOTESFLD);
+
+    if (item->IsEmailEmpty() && !item->IsURLEmail()) {
+      itemEditMenu.Delete(ID_COPYEMAIL);
+      itemEditMenu.Delete(ID_SENDEMAIL);
+    }
+
+    if ( item->IsURLEmpty()) {
+      itemEditMenu.Delete(ID_COPYURL);
+      itemEditMenu.Delete(ID_BROWSEURL);
+      itemEditMenu.Delete(ID_BROWSEURLPLUS);
+    }
+
+    if (item->IsRunCommandEmpty()) {
+      itemEditMenu.Delete(ID_COPYRUNCOMMAND);
+      itemEditMenu.Delete(ID_RUNCOMMAND);
+    }
+
+    if ( m_currentView == TREE )
+      m_tree->PopupMenu(&itemEditMenu);
+    else
+      m_grid->PopupMenu(&itemEditMenu);
+  }
+}
+
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we
 // already have them implemented in mainEdit.cpp

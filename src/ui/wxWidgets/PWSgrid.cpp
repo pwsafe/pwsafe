@@ -284,10 +284,8 @@ void PWSGrid::DeleteAllItems()
 
 void PWSGrid::OnCellRightClick( wxGridEvent& event )
 {
-////@begin wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX in PWSGrid.
-  // Before editing this code, remove the block markers.
-  wxMessageBox(_("I'm right-clicked!"));
-////@end wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX in PWSGrid. 
+  SelectRow(event.GetRow());
+  dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(event.GetRow()));
 }
 
 CItemData *PWSGrid::GetItem(int row) const

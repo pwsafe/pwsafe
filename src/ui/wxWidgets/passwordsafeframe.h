@@ -97,8 +97,18 @@ class PasswordSafeSearch;
 #define SYMBOL_PASSWORDSAFEFRAME_SIZE wxSize(400, 300)
 #define SYMBOL_PASSWORDSAFEFRAME_POSITION wxDefaultPosition
 ////@end control identifiers
-#define ID_EDITMENU_FIND_NEXT 10060
-#define ID_EDITMENU_FIND_PREVIOUS 10061
+enum {
+  ID_EDITMENU_FIND_NEXT  = 10200,
+  ID_EDITMENU_FIND_PREVIOUS,
+  ID_PASSWORDSUBSET,
+  ID_COPYEMAIL,
+  ID_RUNCOMMAND,
+  ID_COPYRUNCOMMAND,
+  ID_BROWSEURLPLUS,
+  ID_SENDEMAIL,
+  ID_CREATESHORTCUT,
+  ID_EDITBASEENTRY,
+};
 
 
 /*!
@@ -229,6 +239,9 @@ public:
     void FlattenTree(OrderedItemList& olist);
 
     void DispatchDblClickAction(CItemData &item); //called by grid/tree
+
+    /// Centralized handling of right click in the grid or the tree view
+    void OnContextMenu(CItemData* item);
 
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;

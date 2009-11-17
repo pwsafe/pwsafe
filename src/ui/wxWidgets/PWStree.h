@@ -79,7 +79,7 @@ public:
   void OnTreectrlItemActivated( wxTreeEvent& event );
 
   /// wxEVT_RIGHT_DOWN event handler for ID_TREECTRL
-  void OnRightDown( wxMouseEvent& event );
+  void OnRightClick( wxTreeEvent& event );
 
   /// wxEVT_CHAR event handler for ID_TREECTRL
   void OnChar( wxKeyEvent& event );
