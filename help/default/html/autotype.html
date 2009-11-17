@@ -109,12 +109,9 @@ for \w, or seconds if \W is used. For example, "how\w500now" will cause
 \d), followed by a half-second pause, followed by 'now' typed at the
 same rate as 'how'). Likewise, "how\W2now" will introduce a two second
 pause between the two words. This is useful for fine-tuning the timing with certain web pages.</li>
-<li><span style="font-weight: bold;">\z</span> requests that the older method of performing AutoType
-is used.  This older method (used in V3.10 and before for all Autotype functions and in V3.11 and later,
-if running under Windows 2000 or previous releases of the Windows Operating Systems) may not handle
-non-Latin characters correctly, however it has been shown to make Autotype work on certain problematical web sites.
-If you find that Autotype does not work properly on a particular web site, try this field but, if it does not
-resolve the issue, we recommend removing this field from the Autotype string.</li>
+<li><span style="font-weight: bold;">\z</span> invokes the old AutoType mechanism.  This mechanism may handle
+non-Latin characters incorrectly, but can make Autotype work on certain problematical web sites.
+If you find that Autotype does not work properly on a particular web site, try this code in the autotype command field.</li>
 <li>All other text is typed as-is.</li>
 </ul>
 <p><span style="font-weight: bold;">Example:</span>
