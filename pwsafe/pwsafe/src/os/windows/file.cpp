@@ -48,28 +48,19 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
   return retval;
 }
 
-bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
+static bool FileOP(const stringT &src, const stringT &dst,
+                   UINT wFunc)
 {
-  _tremove(newname.c_str()); // otherwise rename will fail if newname exists
-  int status = _trename(oldname.c_str(), newname.c_str());
-
-  return (status == 0);
-}
-
-extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
-{
-  // Copy file and create any intervening directories as necessary & automatically
+  // wrapper for SHFileOperation() for moving or copying from src to dst
+  // create any intervening directories as necessary & automatically
   TCHAR szSource[_MAX_PATH + 1];
   TCHAR szDestination[_MAX_PATH + 1];
 
-  ASSERT(from.length() < _MAX_PATH);
-  ASSERT(to.length() < _MAX_PATH);
-
-  if (from.length() >= _MAX_PATH || to.length() >= _MAX_PATH)
+  if (src.length() >= _MAX_PATH || dst.length() >= _MAX_PATH)
     return false;
 
-  const TCHAR *lpsz_current = from.c_str();
-  const TCHAR *lpsz_new = to.c_str();
+  const TCHAR *lpsz_current = src.c_str();
+  const TCHAR *lpsz_new = dst.c_str();
 
 #if (_MSC_VER >= 1400)
   _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
@@ -80,18 +71,29 @@ extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
 #endif
 
   // Must end with double NULL
-  szSource[from.length() + 1] = TCHAR('\0');
-  szDestination[to.length() + 1] = TCHAR('\0');
+  szSource[src.length() + 1] = TCHAR('\0');
+  szDestination[dst.length() + 1] = TCHAR('\0');
 
   SHFILEOPSTRUCT sfop;
   memset(&sfop, 0, sizeof(sfop));
   sfop.hwnd = GetActiveWindow();
-  sfop.wFunc = FO_COPY;
+  sfop.wFunc = wFunc;
   sfop.pFrom = szSource;
   sfop.pTo = szDestination;
   sfop.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR | FOF_SILENT;
 
   return (SHFileOperation(&sfop) == 0);
+}
+
+bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
+{
+  _tremove(newname.c_str()); // otherwise rename may fail if newname exists
+  return FileOP(oldname, newname, FO_MOVE);
+}
+
+extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
+{
+  return FileOP(from, to, FO_COPY);
 }
 
 bool pws_os::DeleteAFile(const stringT &filename)

@@ -1826,8 +1826,9 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 
   cs_newfile +=  _T(".ibak");
 
-  // Now copy file and create any intervening directories as necessary & automatically
-  return pws_os::CopyAFile(m_currfile.c_str(), cs_newfile);
+  // Current file becomes backup
+  // Directories along the specified backup path are created as needed
+  return pws_os::RenameFile(m_currfile.c_str(), cs_newfile);
 }
 
 void PWScore::ChangePassword(const StringX &newPassword)
