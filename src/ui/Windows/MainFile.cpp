@@ -711,8 +711,8 @@ int DboxMain::Save()
   if (m_core.GetCurFile().empty())
     return SaveAs();
 
-  int iver = (int)m_core.GetReadFileVersion();
-  if (iver == PWSfile::VCURRENT) {
+  switch (m_core.GetReadFileVersion()) {
+  case PWSfile::VCURRENT:
     if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
       int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
       int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
@@ -724,33 +724,38 @@ int DboxMain::Save()
         gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
       }
     }
-  } 
-  else if (iver != PWSfile::NEWFILE) {
-    // file version mis-match
-    std::wstring NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                              DEFAULT_SUFFIX);
+    break;
+  case PWSfile::NEWFILE:
+    { // file version mis-match
+      std::wstring NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                     DEFAULT_SUFFIX);
 
-    cs_msg.Format(IDS_NEWFORMAT,
-                  m_core.GetCurFile().c_str(), NewName.c_str());
-    cs_title.LoadString(IDS_VERSIONWARNING);
+      cs_msg.Format(IDS_NEWFORMAT,
+                    m_core.GetCurFile().c_str(), NewName.c_str());
+      cs_title.LoadString(IDS_VERSIONWARNING);
 
-    CGeneralMsgBox gmb;
-    gmb.SetTitle(cs_title);
-    gmb.SetMsg(cs_msg);
-    gmb.SetStandardIcon(MB_ICONWARNING);
-    gmb.AddButton(1, IDS_CONTINUE);
-    gmb.AddButton(2, IDS_CANCEL, TRUE, TRUE);
-    INT_PTR rc = gmb.DoModal();
-    if (rc == 2)
-      return PWScore::USER_CANCEL;
-    m_core.SetCurFile(NewName.c_str());
+      CGeneralMsgBox gmb;
+      gmb.SetTitle(cs_title);
+      gmb.SetMsg(cs_msg);
+      gmb.SetStandardIcon(MB_ICONWARNING);
+      gmb.AddButton(1, IDS_CONTINUE);
+      gmb.AddButton(2, IDS_CANCEL, TRUE, TRUE);
+      INT_PTR rc = gmb.DoModal();
+      if (rc == 2)
+        return PWScore::USER_CANCEL;
+      m_core.SetCurFile(NewName.c_str());
 #if !defined(POCKET_PC)
-    m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
-                                       m_core.GetCurFile()).c_str();
-    SetWindowText(LPCWSTR(m_titlebar));
-    app.SetTooltipText(m_core.GetCurFile().c_str());
+      m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
+                                         m_core.GetCurFile()).c_str();
+      SetWindowText(LPCWSTR(m_titlebar));
+      app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
+    }
+    break;
+  default:
+    ASSERT(0);
   }
+
   rc = m_core.WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
