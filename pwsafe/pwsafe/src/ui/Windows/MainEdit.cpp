@@ -360,6 +360,7 @@ void DboxMain::Delete(bool inRecursion)
     UnFindItem();
     m_ctlItemList.DeleteItem(curSel);
     m_ctlItemTree.DeleteWithParents(curTree_item);
+    delete pdi;
     FixListIndexes();
 
     if (pci->NumberUnknownFields() > 0)
@@ -434,15 +435,18 @@ void DboxMain::Delete(bool inRecursion)
           DisplayInfo *pdi = (DisplayInfo *)cshortcut.GetDisplayInfo();
           m_ctlItemList.DeleteItem(pdi->list_index);
           m_ctlItemTree.DeleteItem(pdi->tree_item);
+          delete pdi;
           FixListIndexes();
-          m_core.MarkEntryForRemoval(&cshortcut);
+          m_core.RemoveEntryAt(iter);
+          //m_core.MarkEntryForRemoval(&cshortcut);
         }
       }
       dependentslist.clear();
     }
 
     pci->SetDCA(-1);
-    m_core.MarkEntryForRemoval(pci);
+    m_core.RemoveEntryAt(listindex);
+    //m_core.MarkEntryForRemoval(pci);
     if (m_ctlItemList.IsWindowVisible()) {
       if (m_core.GetNumEntries() > 0) {
         SelectEntry(curSel < (int)m_core.GetNumEntries() ? curSel : (int)(m_core.GetNumEntries() - 1));

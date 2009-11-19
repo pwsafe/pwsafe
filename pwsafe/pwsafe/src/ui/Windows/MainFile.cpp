@@ -1614,10 +1614,12 @@ int DboxMain::Merge(const StringX &pszFilename) {
 
   othercore.SetCurFile(pszFilename);
 
+  /*
   // Silently purge deleted entries before Merge
   if (m_core.NumUnpurgedDeleted() > 0) {
     m_core.PurgeDeletedEntries();
   }
+  */
 
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
@@ -2104,10 +2106,12 @@ int DboxMain::Compare(const StringX &cs_Filename1, const StringX &cs_Filename2)
   rpt.WriteLine((LPCWSTR)cs_temp);
   rpt.WriteLine();
 
+  /*
   // Silently purge deleted entries before Compare
   if (m_core.NumUnpurgedDeleted() > 0) {
     m_core.PurgeDeletedEntries();
   }
+  */
 
   // Put up hourglass...this might take a while
   CWaitCursor waitCursor;

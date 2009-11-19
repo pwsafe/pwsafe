@@ -263,8 +263,10 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   out->Close();
   delete out;
 
+  /*
   // Now really delete the deleted items
   PurgeDeletedEntries();
+  */
 
   SetChanged(false, false);
 
@@ -273,6 +275,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   return SUCCESS;
 }
 
+/*
 void PWScore::PurgeDeletedEntries()
 {
   std::vector<CUUIDGen>::iterator iter_del;
@@ -287,6 +290,7 @@ void PWScore::PurgeDeletedEntries()
 
   m_vdeleted.clear();
 }
+*/
 
 inline bool bittest(const CItemData::FieldBits &bsFields,
                     const CItemData::FieldType &ft,
@@ -2908,6 +2912,7 @@ void PWScore::UnlockFile2(const stringT &filename)
                             m_lockFileHandle2, m_LockCount2);
 }
 
+/*
 void PWScore::MarkEntryForRemoval(CItemData *pci)
 {
   m_bDBChanged = true;
@@ -2921,3 +2926,4 @@ void PWScore::MarkEntryForRemoval(CItemData *pci)
   NotifyListModified();
   NotifyDBModified();
 }
+*/
