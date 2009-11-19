@@ -193,9 +193,12 @@ public:
    m_pwlist.erase(pos);
    NotifyListModified();
    NotifyDBModified();}
+
+  /*
   void MarkEntryForRemoval(CItemData *pci);
   size_t NumUnpurgedDeleted() {return m_vdeleted.size();}
   void PurgeDeletedEntries();
+  */
 
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
@@ -329,7 +332,9 @@ private:
   // THE password database
   //  Key = entry's uuid; Value = entry's CItemData
   ItemList m_pwlist;
+  /*
   std::vector<CUUIDGen> m_vdeleted;
+  */
 
   // Alias structures
   // Permanent Multimap: since potentially more than one alias/shortcut per base

@@ -74,16 +74,16 @@ BOOL CFilterDCADlg::OnInitDialog()
 
     const short si_DCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
     switch (si_DCA) {
-      case PWSprefs::DoubleClickAutoType:             ui_dca = IDS_STATAUTOTYPE;        break;
-      case PWSprefs::DoubleClickBrowse:               ui_dca = IDS_STATBROWSE;          break;
-      case PWSprefs::DoubleClickCopyNotes:            ui_dca = IDS_STATCOPYNOTES;       break;
-      case PWSprefs::DoubleClickCopyPassword:         ui_dca = IDS_STATCOPYPASSWORD;    break;
-      case PWSprefs::DoubleClickCopyUsername:         ui_dca = IDS_STATCOPYUSERNAME;    break;
-      case PWSprefs::DoubleClickViewEdit:             ui_dca = IDS_STATVIEWEDIT;        break;
-      case PWSprefs::DoubleClickCopyPasswordMinimize: ui_dca = IDS_STATCOPYPASSWORDMIN; break;
-      case PWSprefs::DoubleClickBrowsePlus:           ui_dca = IDS_STATBROWSEPLUS;      break;
-      case PWSprefs::DoubleClickRun:                  ui_dca = IDS_STATRUN;             break;
-      case PWSprefs::DoubleClickSendEmail:            ui_dca = IDS_STATSENDEMAIL;       break;
+      case PWSprefs::DoubleClickAutoType:             ui_dca = IDSC_DCAAUTOTYPE;        break;
+      case PWSprefs::DoubleClickBrowse:               ui_dca = IDSC_DCABROWSE;          break;
+      case PWSprefs::DoubleClickCopyNotes:            ui_dca = IDSC_DCACOPYNOTES;       break;
+      case PWSprefs::DoubleClickCopyPassword:         ui_dca = IDSC_DCACOPYPASSWORD;    break;
+      case PWSprefs::DoubleClickCopyUsername:         ui_dca = IDSC_DCACOPYUSERNAME;    break;
+      case PWSprefs::DoubleClickViewEdit:             ui_dca = IDSC_DCAVIEWEDIT;        break;
+      case PWSprefs::DoubleClickCopyPasswordMinimize: ui_dca = IDSC_DCACOPYPASSWORDMIN; break;
+      case PWSprefs::DoubleClickBrowsePlus:           ui_dca = IDSC_DCABROWSEPLUS;      break;
+      case PWSprefs::DoubleClickRun:                  ui_dca = IDSC_DCARUN;             break;
+      case PWSprefs::DoubleClickSendEmail:            ui_dca = IDSC_DCASENDEMAIL;       break;
       default:                                        ui_dca = IDS_STATCOMPANY;
     }
 

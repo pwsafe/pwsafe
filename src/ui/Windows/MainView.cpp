@@ -3674,8 +3674,8 @@ void DboxMain::OnShowUnsavedEntries()
     m_showunsavedfilter.vMfldata.push_back(fr);
     fr.estatus = CItemData::ES_MODIFIED;
     m_showunsavedfilter.vMfldata.push_back(fr);
-    fr.estatus = CItemData::ES_DELETED;
-    m_showunsavedfilter.vMfldata.push_back(fr);
+/*  fr.estatus = CItemData::ES_DELETED;
+    m_showunsavedfilter.vMfldata.push_back(fr); */
     m_showunsavedfilter.num_Mactive = m_showunsavedfilter.vMfldata.size();
   }
 
