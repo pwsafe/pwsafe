@@ -78,8 +78,8 @@ public:
   /// wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
   void OnTreectrlItemActivated( wxTreeEvent& event );
 
-  /// wxEVT_RIGHT_DOWN event handler for ID_TREECTRL
-  void OnRightClick( wxTreeEvent& event );
+  /// wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
+  void OnContextMenu( wxTreeEvent& event );
 
   /// wxEVT_CHAR event handler for ID_TREECTRL
   void OnChar( wxKeyEvent& event );

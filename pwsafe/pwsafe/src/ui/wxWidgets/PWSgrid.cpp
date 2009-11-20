@@ -48,6 +48,7 @@ BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
   EVT_GRID_CELL_RIGHT_CLICK( PWSGrid::OnCellRightClick )
   EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
   EVT_CHAR( PWSGrid::OnChar )
+  EVT_CONTEXT_MENU(PWSGrid::OnContextMenu)
 
 ////@end PWSGrid event table entries
 
@@ -284,9 +285,38 @@ void PWSGrid::DeleteAllItems()
 
 void PWSGrid::OnCellRightClick( wxGridEvent& event )
 {
+  // We need this function because wxGrid doesn't convert unprocessed 
+  // right-mouse-down events to contextmenu events, so we need to do
+  // handle it ourselves
+  //
+  // This is what we should ideally do, but in the ContextMenu handler below, 
+  // I can't convert the mouse position to logical(x,y) to grid's row, column.  
+  // The row is always 1 more than where I click
+  //
+  // wxContextMenuEvent cme(wxEVT_CONTEXT_MENU, GetId(), event.GetPosition());
+  // cme.SetEventObject(event.GetEventObject());
+  // ProcessEvent(cme);
+  //
   SetGridCursor(event.GetRow(), event.GetCol());
   SelectRow(event.GetRow());
   dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(event.GetRow()));
+}
+
+/*!
+ * wxEVT_GRID_CELL_ITEM_MENU event handler for ID_LISTBOX
+ */
+
+void PWSGrid::OnContextMenu( wxContextMenuEvent& event )
+{
+  wxPoint pos = event.GetPosition();
+  if ( pos == wxDefaultPosition ) { //sent from keyboard?
+    const int row = GetGridCursorRow();
+    SelectRow(row);
+    dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(row));
+  }
+  else { //sent from mouse.  I don't know how to convert the mouse coords to grid's row,column
+    wxASSERT_MSG(false, wxT("Unexpected wxContextMenuEvent from mouse click"));
+  }
 }
 
 CItemData *PWSGrid::GetItem(int row) const
