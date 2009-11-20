@@ -40,6 +40,44 @@
 #include "PasswordSafeSearch.h"
 #include "pwsclip.h"
 
+// main toolbar images
+#include "../graphics/new.xpm"
+#include "../graphics/new_disabled.xpm"
+#include "../graphics/open.xpm"
+#include "../graphics/open_disabled.xpm"
+#include "../graphics/close.xpm"
+#include "../graphics/close_disabled.xpm"
+#include "../graphics/save.xpm"
+#include "../graphics/save_disabled.xpm"
+#include "../graphics/copypassword.xpm"
+#include "../graphics/copypassword_disabled.xpm"
+#include "../graphics/copyuser.xpm"
+#include "../graphics/copyuser_disabled.xpm"
+#include "../graphics/copynotes.xpm"
+#include "../graphics/copynotes_disabled.xpm"
+#include "../graphics/clearclipboard.xpm"
+#include "../graphics/clearclipboard_disabled.xpm"
+#include "../graphics/autotype.xpm"
+#include "../graphics/autotype_disabled.xpm"
+#include "../graphics/browseurl.xpm"
+#include "../graphics/browseurl_disabled.xpm"
+#include "../graphics/sendemail.xpm"
+#include "../graphics/sendemail_disabled.xpm"
+#include "../graphics/add.xpm"
+#include "../graphics/add_disabled.xpm"
+#include "../graphics/viewedit.xpm"
+#include "../graphics/viewedit_disabled.xpm"
+#include "../graphics/delete.xpm"
+#include "../graphics/delete_disabled.xpm"
+#include "../graphics/expandall.xpm"
+#include "../graphics/expandall_disabled.xpm"
+#include "../graphics/collapseall.xpm"
+#include "../graphics/collapseall_disabled.xpm"
+#include "../graphics/options.xpm"
+#include "../graphics/options_disabled.xpm"
+#include "../graphics/help.xpm"
+#include "../graphics/help_disabled.xpm"
+
 ////@begin XPM images
 ////@end XPM images
 
@@ -152,6 +190,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
+  CreateMainToolbar();
     return true;
 }
 
@@ -302,6 +341,44 @@ void PasswordSafeFrame::CreateControls()
 
   if (m_currentView == TREE)
     itemMenu47->Check(ID_TREE_VIEW, true);
+}
+
+/*
+ * Creates the main toolbar
+ */
+
+void PasswordSafeFrame::CreateMainToolbar()
+{
+  wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL, wxID_ANY, wxT("Main Toolbar"));
+
+  toolbar->AddTool(wxID_NEW, wxEmptyString, wxBitmap(new_xpm), wxBitmap(new_disabled_xpm), wxITEM_NORMAL, wxT("Make New Database"));
+  toolbar->AddTool(wxID_OPEN, wxEmptyString, wxBitmap(open_xpm), wxBitmap(open_disabled_xpm), wxITEM_NORMAL, wxT("Open Another Database"));
+  toolbar->AddTool(wxID_CLOSE, wxEmptyString, wxBitmap(close_xpm), wxBitmap(close_disabled_xpm), wxITEM_NORMAL, wxT("Close Database"));
+  toolbar->AddTool(wxID_SAVE, wxEmptyString, wxBitmap(save_xpm), wxBitmap(save_disabled_xpm), wxITEM_NORMAL, wxT("Save Database"));
+  toolbar->AddSeparator();
+  toolbar->AddTool(ID_COPYPASSWORD, wxEmptyString, wxBitmap(copypassword_xpm), wxBitmap(copypassword_disabled_xpm), wxITEM_NORMAL, wxT("Copy Password to Clipboard"));
+  toolbar->AddTool(ID_COPYUSERNAME, wxEmptyString, wxBitmap(copyuser_xpm), wxBitmap(copyuser_disabled_xpm), wxITEM_NORMAL, wxT("Copy Username to Clipboard"));
+  toolbar->AddTool(ID_COPYNOTESFLD, wxEmptyString, wxBitmap(copynotes_xpm), wxBitmap(copynotes_disabled_xpm), wxITEM_NORMAL, wxT("Copy Notes to Clipboard"));
+  toolbar->AddTool(ID_CLEARCLIPBOARD, wxEmptyString, wxBitmap(clearclipboard_xpm), wxBitmap(clearclipboard_disabled_xpm), wxITEM_NORMAL, wxT("Clear the clipboard contents"));
+  toolbar->AddSeparator();
+  toolbar->AddTool(ID_AUTOTYPE, wxEmptyString, wxBitmap(autotype_xpm), wxBitmap(autotype_disabled_xpm), wxITEM_NORMAL, wxT("Perform Autotype"));
+  toolbar->AddTool(ID_BROWSEURL, wxEmptyString, wxBitmap(browseurl_xpm), wxBitmap(browseurl_disabled_xpm), wxITEM_NORMAL, wxT("Browse to URL/Send Email"));
+  toolbar->AddTool(ID_SENDEMAIL, wxEmptyString, wxBitmap(sendemail_xpm), wxBitmap(sendemail_disabled_xpm), wxITEM_NORMAL, wxT("Browse to URL/Send Email"));
+  toolbar->AddSeparator();
+  toolbar->AddTool(wxID_ADD, wxEmptyString, wxBitmap(add_xpm), wxBitmap(add_disabled_xpm), wxITEM_NORMAL, wxT("Add New Entry"));
+  toolbar->AddTool(ID_EDIT, wxEmptyString, wxBitmap(viewedit_xpm), wxBitmap(viewedit_disabled_xpm), wxITEM_NORMAL, wxT("Edit an Entry"));
+  toolbar->AddSeparator();
+  toolbar->AddTool(wxID_DELETE, wxEmptyString, wxBitmap(delete_xpm), wxBitmap(delete_disabled_xpm), wxITEM_NORMAL, wxT("Delete an Entry"));
+  toolbar->AddSeparator();
+  toolbar->AddTool(ID_EXPANDALL, wxEmptyString, wxBitmap(expandall_xpm), wxBitmap(expandall_disabled_xpm), wxITEM_NORMAL, wxT("Expand All"));
+  toolbar->AddTool(ID_COLLAPESALL, wxEmptyString, wxBitmap(collapseall_xpm), wxBitmap(collapseall_disabled_xpm), wxITEM_NORMAL, wxT("Collapse All"));
+  toolbar->AddSeparator();
+  toolbar->AddTool(ID_OPTIONS_M, wxEmptyString, wxBitmap(options_xpm), wxBitmap(options_disabled_xpm), wxITEM_NORMAL, wxT("Options"));
+  toolbar->AddSeparator();
+  toolbar->AddTool(wxID_HELP, wxEmptyString, wxBitmap(help_xpm), wxBitmap(help_disabled_xpm), wxITEM_NORMAL, wxT("Help"));
+
+  if (!toolbar->Realize())
+    wxMessageBox(wxT("Could not create main toolbar"));
 }
 
 
