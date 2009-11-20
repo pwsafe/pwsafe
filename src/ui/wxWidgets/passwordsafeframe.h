@@ -271,6 +271,7 @@ public:
   void Delete(const uuid_array_t &uuid);
   CItemData *GetSelectedEntry() const;
   void UpdateAccessTime(CItemData &ci);
+  void CreateMainToolbar();
 
   // Do* member functions for dbl-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
