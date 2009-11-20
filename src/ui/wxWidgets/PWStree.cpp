@@ -49,7 +49,7 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
 
 ////@begin PWSTreeCtrl event table entries
   EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
-  EVT_TREE_ITEM_RIGHT_CLICK( ID_TREECTRL, PWSTreeCtrl::OnRightClick )
+  EVT_TREE_ITEM_MENU( ID_TREECTRL, PWSTreeCtrl::OnContextMenu )
   EVT_CHAR( PWSTreeCtrl::OnChar )
 
 ////@end PWSTreeCtrl event table entries
@@ -341,10 +341,10 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& event )
 
 
 /*!
- * wxEVT_TREE_ITEM_RIGHT_CLICK event handler for ID_TREECTRL
+ * wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
  */
 
-void PWSTreeCtrl::OnRightClick( wxTreeEvent& event )
+void PWSTreeCtrl::OnContextMenu( wxTreeEvent& event )
 {
   dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(event.GetItem()));
 }
