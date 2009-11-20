@@ -64,6 +64,7 @@ upload: upload-latest
 	 $(UPLOAD_CMD) pwsafe-$(RELEASENAME).exe \
 	 $(BINRELNAME).zip $(SRCRELNAME).zip \
 	 pwsafe-$(RELEASENAME).msi \
+	 pwsafe-$(RELEASENAME)-map+pdb.zip \
 	 pwsafe-$(RELEASENAME).msi.sig \
 	 pwsafe-$(RELEASENAME).exe.sig \
 	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig $(UPLOAD_DST))
@@ -117,7 +118,7 @@ bin-release: save-map
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
 save-map:
-	tar cjvf $(RELEASEDIR)/pwsafe-$(RELEASENAME).map+pdb.tbz \
+	$(ZIP) -9 $(RELEASEDIR)/pwsafe-$(RELEASENAME)-map+pdb.zip \
 	 $(BIN_DIR)/pwsafe.map $(BIN_DIR)/pwsafe.pdb \
    $(BIN_DIR)/pws_*.pdb		
 
