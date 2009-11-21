@@ -17,6 +17,7 @@
 #pragma once
 
 #include "SecString.h"
+#include "PwFont.h"
 
 class DboxMain;
 class CInfoDisplay;
@@ -37,7 +38,7 @@ public:
 
   void SetFilterState(bool bState);
   void SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier);
-  void SetUpFont(CFont *pfont);
+  void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
 
@@ -74,7 +75,6 @@ private:
   bool m_bDeleteCtrl, m_bDeleteShift;
 
   HFONT GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
-  CFont *m_pCurrentFont;  // Do NOT delete - done in DboxMain
-  CFont *m_pModifiedFont, *m_pDeletedFont;
+  PWFonts m_fonts;
   bool m_bUseHighLighting;
 };

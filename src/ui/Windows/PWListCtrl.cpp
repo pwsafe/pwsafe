@@ -24,18 +24,12 @@ CPWListCtrl::CPWListCtrl()
   m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bFilterActive(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
   m_bDeleteCtrl(false), m_bDeleteShift(false),
-  m_pCurrentFont(NULL), m_pModifiedFont(NULL), m_pDeletedFont(NULL),
   m_bUseHighLighting(false)
 {
 }
 
 CPWListCtrl::~CPWListCtrl()
 {
-  if (m_pModifiedFont != NULL)
-    delete m_pModifiedFont;
-
-  if (m_pDeletedFont != NULL)
-    delete m_pDeletedFont;
 }
 
 BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
@@ -317,33 +311,6 @@ void CPWListCtrl::OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult)
   }
 }
 
-void CPWListCtrl::SetUpFont(CFont *pfont)
-{
-  // Set main font
-  m_pCurrentFont = pfont;
-  SetFont(pfont);
-
-  if (m_pModifiedFont != NULL)
-    delete m_pModifiedFont;
-
-  if (m_pDeletedFont != NULL)
-    delete m_pDeletedFont;
-
-  m_pModifiedFont = new CFont;
-  m_pDeletedFont = new CFont;
-
-  // Set up special fonts
-  LOGFONT lf;
-  pfont->GetLogFont(&lf);
-
-  lf.lfItalic = TRUE;
-  m_pModifiedFont->CreateFontIndirect(&lf);
-
-  lf.lfItalic = FALSE;
-  lf.lfStrikeOut = TRUE;
-  m_pDeletedFont->CreateFontIndirect(&lf);
-}
-
 HFONT CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
 {
   if (pci == NULL)
@@ -352,11 +319,11 @@ HFONT CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
   switch (pci->GetStatus()) {
     case CItemData::ES_ADDED:
     case CItemData::ES_MODIFIED:
-      cf = RGB(0, 0, 128);
-      return (HFONT)*m_pModifiedFont;
+      cf = PWFonts::MODIFIED_COLOR;
+     return (HFONT)*m_fonts.m_pModifiedFont;
     case CItemData::ES_DELETED:
-      cf = RGB(128, 0, 0);
-      return (HFONT)*m_pDeletedFont;
+      cf = PWFonts::DELETED_COLOR;
+      return (HFONT)*m_fonts.m_pDeletedFont;
   }
   return NULL;
 }
@@ -402,7 +369,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
         bchanged_item_font = false;
-        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_pCurrentFont);
+        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
         *pResult |= CDRF_NEWFONT;
       }
       break;
@@ -429,7 +396,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
       // Restore old font if any
       if (bchanged_subitem_font) {
         bchanged_subitem_font = false;
-        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_pCurrentFont);
+        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
         *pResult |= CDRF_NEWFONT;
       }
       break;

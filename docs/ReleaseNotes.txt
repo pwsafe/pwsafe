@@ -1,5 +1,5 @@
-Password Safe 3.19.1 Release Notes - September 2009
-===================================================
+Password Safe 3.20 Release Notes - November 2009
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.19.1
-====================
+Bugs fixed in 3.20
+==================
 [2873106] Export XML warnings now consistent with Export Text's.
 [2872829] Duplicate Entry now copies password policy as well.
 [2872602] Preferences are now correctly deleted from the Windows registry
@@ -20,8 +20,7 @@ items now reflect its contents.
 box button now locks the database if the preference 'Lock on Minimize' is
 set.
 [2868244] Change font dialogs now work again.
-[] Now no longer complains about WTS service in Windows systems earlier
-than Windows XP.
+[] Now no longer complains about WTS service in pre-XP versions of Windows.
 [] Filters containing tests on the entry type now exported to XML
 correctly.
 [] Validate of Password History (-v command line flag) now correctly
@@ -29,9 +28,9 @@ removes history fields with invalid dates or empty old password fields.
 [] Fix match test 'does not begin with' - used in filters and restricting
 entries exported to Text or XML.
 
-New Features for 3.19.1
-=======================
-[2895167] Dragbar tooltips changed to provide tailored information for each
+New Features for 3.20
+=====================
+[2895167] Dragbar tooltips changed to provide relevant information for each
 image and reduce the amount of text.
 [2881604] Allow edit of base entry of a shortcut via the Edit menu and/or
 by right-clicking on a shortcut entry.
@@ -44,8 +43,8 @@ elements can be present but will be ignored.
 [] Add highlighting of added/changed and deleted records.  The latter can
 only be viewed via a filter or the supplied menu item (under View menu).
 
-Changes to Existing Features in 3.19.1
-======================================
+Changes to Existing Features in 3.20
+====================================
 [2880663] 'Browse to' special fields (currently: [alt], {alt}, [ssh], [autotype]
 and [xa]) are removed from the URL field when copied to the clipboard or when
 used in the RunCommand (via $url).  If the '[alt]' or {alt} were present, then
