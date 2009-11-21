@@ -186,7 +186,6 @@ CPWTreeCtrl::CPWTreeCtrl()
   m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
-  m_pCurrentFont(NULL), m_pModifiedFont(NULL), m_pDeletedFont(NULL),
   m_bUseHighLighting(false)
 {
   // Register a clipboard format for column drag & drop.
@@ -214,12 +213,6 @@ CPWTreeCtrl::~CPWTreeCtrl()
   delete m_DropTarget;
   delete m_DropSource;
   delete m_DataSource;
-
-  if (m_pModifiedFont != NULL)
-    delete m_pModifiedFont;
-
-  if (m_pDeletedFont != NULL)
-    delete m_pDeletedFont;
 
   m_vnodes_modified.clear();
 }
@@ -2148,33 +2141,6 @@ bad_return:
   return retval;
 }
 
-void CPWTreeCtrl::SetUpFont(CFont *pfont)
-{
-  // Set main font
-  m_pCurrentFont = pfont;
-  SetFont(pfont);
-
-  if (m_pModifiedFont != NULL)
-    delete m_pModifiedFont;
-
-  if (m_pDeletedFont != NULL)
-    delete m_pDeletedFont;
-
-  m_pModifiedFont = new CFont;
-  m_pDeletedFont = new CFont;
-
-  // Set up special fonts
-  LOGFONT lf;
-  pfont->GetLogFont(&lf);
-
-  lf.lfItalic = TRUE;
-  m_pModifiedFont->CreateFontIndirect(&lf);
-
-  lf.lfItalic = FALSE;
-  lf.lfStrikeOut = TRUE;
-  m_pDeletedFont->CreateFontIndirect(&lf);
-}
-
 void CPWTreeCtrl::AddChangedNodes(StringX path)
 {
   StringX nextpath(path);
@@ -2193,8 +2159,8 @@ HFONT CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORR
   if (pci == NULL) {
     StringX path = GetGroup(hItem);
     if (std::find(m_vnodes_modified.begin(), m_vnodes_modified.end(), path) != m_vnodes_modified.end()) {
-      cf = RGB(0, 192, 192);
-      return (HFONT)*m_pModifiedFont;
+      cf = PWFonts::MODIFIED_COLOR;
+      return (HFONT)*m_fonts.m_pModifiedFont;
     } else
       return NULL;
   }
@@ -2202,11 +2168,11 @@ HFONT CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORR
   switch (pci->GetStatus()) {
     case CItemData::ES_ADDED:
     case CItemData::ES_MODIFIED:
-      cf = RGB(0, 192, 192);
-      return (HFONT)*m_pModifiedFont;
+      cf = PWFonts::MODIFIED_COLOR;
+      return (HFONT)*m_fonts.m_pModifiedFont;
     case CItemData::ES_DELETED:
-      cf = RGB(255, 0, 0);
-      return (HFONT)*m_pDeletedFont;
+      cf = PWFonts::DELETED_COLOR;
+      return (HFONT)*m_fonts.m_pDeletedFont;
   }
   return NULL;
 }
@@ -2249,7 +2215,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
         bchanged_item_font = false;
-        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_pCurrentFont);
+        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
         *pResult |= CDRF_NEWFONT;
       }
       break;

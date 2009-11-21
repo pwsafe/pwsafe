@@ -121,3 +121,33 @@ void ExtractFont(const CString &str, LOGFONT &logfont)
   wcscpy(logfont.lfFaceName, s);
 #endif  
 }
+
+const COLORREF PWFonts::MODIFIED_COLOR = RGB(0, 0, 128);
+const COLORREF PWFonts::DELETED_COLOR = RGB(128, 0, 0);
+
+void PWFonts::SetUpFont(CWnd *w, CFont *pfont)
+{
+  // Set main font
+  m_pCurrentFont = pfont;
+  w->SetFont(pfont);
+
+  if (m_pModifiedFont != NULL)
+    delete m_pModifiedFont;
+
+  if (m_pDeletedFont != NULL)
+    delete m_pDeletedFont;
+
+  m_pModifiedFont = new CFont;
+  m_pDeletedFont = new CFont;
+
+  // Set up special fonts
+  LOGFONT lf;
+  pfont->GetLogFont(&lf);
+
+  lf.lfItalic = TRUE;
+  m_pModifiedFont->CreateFontIndirect(&lf);
+
+  lf.lfItalic = FALSE;
+  lf.lfStrikeOut = TRUE;
+  m_pDeletedFont->CreateFontIndirect(&lf);
+}

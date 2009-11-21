@@ -14,6 +14,7 @@
 #include <Afxcmn.h>
 #include "SecString.h"
 #include <vector>
+#include "PwFont.h"
 
 class DboxMain;
 class CItemData;
@@ -71,7 +72,7 @@ public:
   bool WasLabelEdited() {return m_bEditLabelCompleted;};
   void SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier);
   void SetRenameKey(const unsigned char cVirtKey, const unsigned char cModifier);
-  void SetUpFont(CFont *pfont);
+  void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
   void ClearChangedNodes()
@@ -158,9 +159,7 @@ private:
   WPARAM m_wpRenameMsg, m_wpRenameKey;
   bool m_bDeleteCtrl, m_bDeleteShift;
   bool m_bRenameCtrl, m_bRenameShift;
-
-  CFont *m_pCurrentFont;  // Do NOT delete - done in DboxMain
-  CFont *m_pModifiedFont, *m_pDeletedFont;
+  PWFonts m_fonts;
   bool m_bUseHighLighting;
   std::vector<StringX> m_vnodes_modified;
 };
