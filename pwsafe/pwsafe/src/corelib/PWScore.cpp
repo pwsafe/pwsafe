@@ -2280,7 +2280,7 @@ bool PWScore::Validate(stringT &status)
   } // iteration over m_pwlist
 
   num_alias_warnings = AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::UUID);
-  num_shortcuts_warnings = AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_ALIAS, CItemData::UUID);
+  num_shortcuts_warnings = AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_SHORTCUT, CItemData::UUID);
   possible_aliases.clear();
   possible_shortcuts.clear();
 
