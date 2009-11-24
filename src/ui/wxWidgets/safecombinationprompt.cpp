@@ -27,7 +27,7 @@
 #include "os/file.h"
 
 ////@begin XPM images
-#include "../graphics/cpane.xpm"
+#include "../graphics/wxWidgets/cpane.xpm"
 ////@end XPM images
 
 
@@ -128,7 +128,7 @@ void CSafeCombinationPrompt::CreateControls()
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/wxWidgets/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer3->Add(itemStaticBitmap4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
@@ -193,7 +193,7 @@ wxBitmap CSafeCombinationPrompt::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CSafeCombinationPrompt bitmap retrieval
   wxUnusedVar(name);
-  if (name == _T("../graphics/cpane.xpm"))
+  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;

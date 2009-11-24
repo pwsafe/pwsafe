@@ -9,14 +9,14 @@
 #include "passwordsafeframe.h"
 
 ////@begin XPM images
-#include "../graphics/find.xpm"
-#include "../graphics/findreport.xpm"
-#include "../graphics/find_disabled.xpm"
-#include "../graphics/findadvanced.xpm"
-#include "../graphics/findcase_i.xpm"
-#include "../graphics/findcase_s.xpm"
-#include "../graphics/findclear.xpm"
-#include "../graphics/findclose.xpm"
+#include "../graphics/wxWidgets/find.xpm"
+#include "../graphics/wxWidgets/findreport.xpm"
+#include "../graphics/wxWidgets/find_disabled.xpm"
+#include "../graphics/wxWidgets/findadvanced.xpm"
+#include "../graphics/wxWidgets/findcase_i.xpm"
+#include "../graphics/wxWidgets/findcase_s.xpm"
+#include "../graphics/wxWidgets/findclear.xpm"
+#include "../graphics/wxWidgets/findclose.xpm"
 ////@end XPM images
 #include <wx/statline.h> 
 #include <wx/valgen.h>

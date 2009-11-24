@@ -32,8 +32,8 @@
 #include "os/file.h"
 ////@begin XPM images
 ////@end XPM images
-#include "../graphics/cpane.xpm"
-#include "../graphics/psafetxt.xpm"
+#include "../graphics/wxWidgets/cpane.xpm"
+#include "../graphics/wxWidgets/psafetxt.xpm"
 
 
 /*!
