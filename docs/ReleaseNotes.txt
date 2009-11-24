@@ -41,7 +41,7 @@ Fox XML import, the Title and Password elements are required. If the Group and
 Username elements are missing, they are assumed to be empty.  All other fields or 
 elements can be present but will be ignored.
 [] Add highlighting of added/changed and deleted records.  The latter can
-only be viewed via a filter or the supplied menu item (under View menu).
+seen via View->Show Changed Entries.
 
 Changes to Existing Features in 3.20
 ====================================
