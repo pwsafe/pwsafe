@@ -326,8 +326,10 @@ void PasswordSafeFrame::CreateControls()
   menuBar->Append(itemMenu79, _("&Help"));
   itemFrame1->SetMenuBar(menuBar);
 
+  wxBoxSizer* mainsizer = new wxBoxSizer(wxVERTICAL); //to add the search bar later to the bottom
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
-  itemFrame1->SetSizer(itemBoxSizer83);
+  mainsizer->Add(itemBoxSizer83, 1, wxEXPAND | wxALIGN_CENTER); 
+  itemFrame1->SetSizer(mainsizer);
 
   m_grid = new PWSGrid( itemFrame1, m_core, ID_LISTBOX, wxDefaultPosition,
                         itemFrame1->GetClientSize(), wxHSCROLL|wxVSCROLL );
