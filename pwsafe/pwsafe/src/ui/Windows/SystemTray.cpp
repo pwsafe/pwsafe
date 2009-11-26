@@ -483,10 +483,11 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       case ThisMfcApp::UNLOCKED:
       {
         if (m_pParent != NULL && m_pParent->IsWindowVisible()) {
-          pContextMenu->RemoveMenu(0, MF_BYPOSITION);
-          pContextMenu->RemoveMenu(0, MF_BYPOSITION);
+          // unlocked & visible, remove "Unlock" menu item
+          pContextMenu->RemoveMenu(0, MF_BYPOSITION); // Unlock
+          pContextMenu->RemoveMenu(0, MF_BYPOSITION); // Separator
           iPopupPos = 0;
-        } else {
+        } else {  // Unlocked & invisible, change 1st item to "Lock"
           const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
           pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
                                    ID_MENUITEM_TRAYLOCK, csLock);
@@ -494,7 +495,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         break;
       }
       case ThisMfcApp::LOCKED:
-      {
+        { // ensure 1st item's "Unlock"
         const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
         pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
                                  ID_MENUITEM_TRAYUNLOCK, csUnLock);
