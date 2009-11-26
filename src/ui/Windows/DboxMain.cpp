@@ -1983,8 +1983,8 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     const bool useSysTray = PWSprefs::GetInstance()->
                             GetPref(PWSprefs::UseSystemTray);
 
-    // Hide the Window while asking for the passphrease
-    ShowWindow(SW_HIDE);
+    // Hide the Window while asking for the passphrase
+    if (IsWindowVisible()) ShowWindow(SW_HIDE);
     if (m_bOpen)
       rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
                                useSysTray ? GCP_RESTORE : GCP_WITHEXIT,
@@ -2032,11 +2032,12 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       startLockCheckTimer();
       brc = true;
       m_needsreading = false;
-      if (bShow)
+      if (bShow && !bUpdateWindows)
         ShowWindow(SW_SHOW);
       if (bUpdateWindows) {
         ShowWindow(SW_RESTORE);
         SetGroupDisplayState(m_grpdispstate);
+        RefreshViews();
         BringWindowToTop();
       }
     } else {
@@ -2827,7 +2828,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     {
       WINDOWPLACEMENT wndpl;
       GetWindowPlacement(&wndpl);
-      if (wndpl.showCmd != SW_SHOWMINIMIZED)
+      if (wndpl.showCmd != SW_SHOWMINIMIZED && app.GetSystemTrayState() != ThisMfcApp::LOCKED )
         iEnable = FALSE;
       break;
     }

@@ -1725,6 +1725,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     } else {
       CPWDialog::GetDialogTracker()->Apply(Hider);
       ShowWindow(SW_HIDE);
+      app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
     }
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
