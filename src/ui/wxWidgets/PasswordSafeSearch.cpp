@@ -7,6 +7,7 @@
 #include "../../corelib/PWHistory.h"
 #include "../../corelib/Util.h"
 #include "passwordsafeframe.h"
+#include "wxutils.h"
 
 ////@begin XPM images
 #include "../graphics/wxWidgets/find.xpm"
@@ -426,8 +427,8 @@ void PasswordSafeSearch::FindPrevious()
 
 void PasswordSafeSearch::OnSearchClose(wxCommandEvent& evt)
 {
-  m_parentFrame->SetToolBar(NULL);
   m_toolbar->Show(false);
+  m_parentFrame->GetSizer()->Layout();
 
   wxMenu* editMenu = 0; // will be set by FindItem() below
   wxMenuItem* findNextItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_NEXT, &editMenu);
@@ -469,7 +470,7 @@ void PasswordSafeSearch::CreateSearchBar()
 {
   wxASSERT(m_toolbar == 0);
 
-  m_toolbar = m_parentFrame->CreateToolBar(wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL, wxID_ANY, wxT("SearchBar"));
+  m_toolbar = new wxToolBar(m_parentFrame, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
 
   m_toolbar->AddTool(ID_FIND_CLOSE, wxT(""), wxBitmap(findclose), wxNullBitmap, wxITEM_NORMAL, wxT("Close Find Bar"));
   m_toolbar->AddControl(new wxTextCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER));
@@ -482,6 +483,15 @@ void PasswordSafeSearch::CreateSearchBar()
 
   if (!m_toolbar->Realize())
     wxMessageBox(wxT("Could not create Search Bar"), wxT("Password Safe"));
+
+  wxSizer* origSizer = m_parentFrame->GetSizer();
+  wxASSERT(origSizer);
+  wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
+  wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
+  origSizer->Add(m_toolbar, 0, wxEXPAND | wxALIGN_CENTER);
+  origSizer->Layout();
+  if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
+    wxMessageBox(wxT("Could not display searchbar"));
  
   m_toolbar->PushEventHandler(this);
 }
@@ -494,8 +504,15 @@ void PasswordSafeSearch::Activate(void)
   if (!m_toolbar)
     CreateSearchBar();
   else {
-    m_parentFrame->SetToolBar(m_toolbar);
-    m_toolbar->Show(true);
+    if (m_toolbar->Show(true)) {
+      m_parentFrame->GetSizer()->Layout();
+    }
+    else {
+      const wxPoint pt = m_toolbar->GetPosition();
+      const wxSize sz = m_toolbar->GetSize();
+      wxMessageBox(wxString() << wxT("Could not re-display searchbar at ") << pt << wxT(" of size ") << sz
+                              << wxT(" because ") << (m_toolbar->IsShownOnScreen()? wxT("its already visible"): wxT(" of an error")));
+    }
   }
 
   wxASSERT(m_toolbar);
