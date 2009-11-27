@@ -1046,6 +1046,16 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 }
 #endif
 
+static void ReportInvalidField(CReport &rpt, const string &value, int numlines)
+{
+  CUTF8Conv conv;
+  StringX vx;
+  conv.FromUTF8((const unsigned char *)value.c_str(), value.length(), vx);
+  stringT csError;
+  Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, vx);
+  rpt.WriteLine(csError);
+}
+
 int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  const StringX &filename,
                                  const TCHAR &fieldSeparator, const TCHAR &delimiter,
@@ -1064,7 +1074,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 #else
   const char *fname = filename.c_str();
 #endif
-  ifstreamT ifs(reinterpret_cast<const char *>(fname));
+  // following's a stream of chars, as the header row's straight ASCII, and
+  // we need to handle rest as utf-8
+  ifstream ifs(reinterpret_cast<const char *>(fname));
 
   if (!ifs)
     return CANT_OPEN_FILE;
@@ -1074,12 +1086,15 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   int numlines = 0;
 
   CItemData temp;
-  vector<stringT> vs_Header;
+  vector<string> vs_Header;
   stringT cs_hdr;
   LoadAString(cs_hdr, IDSC_EXPORTHEADER);
-  const stringT s_hdr(cs_hdr);
-  const TCHAR pTab[] = _T("\t");
-  TCHAR pSeps[] = _T(" ");
+  const unsigned char *hdr;
+  int hdrlen;
+  conv.ToUTF8(cs_hdr.c_str(), hdr, hdrlen);
+  const string s_hdr((const char *)hdr);
+  const char pTab[] = "\t";
+  char pSeps[] = " ";
 
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
@@ -1091,28 +1106,28 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   for (int i = 0; i < NUMFIELDS; i++)
     i_Offset[i] = -1;
 
-  pSeps[0] = fieldSeparator;
+  pSeps[0] = (const char)fieldSeparator;
 
   // Capture individual column titles:
-  stringT::size_type to = 0, from;
+  string::size_type to = 0, from;
   do {
     from = s_hdr.find_first_not_of(pTab, to);
-    if (from == stringT::npos)
+    if (from == string::npos)
       break;
     to = s_hdr.find_first_of(pTab, from);
     vs_Header.push_back(s_hdr.substr(from,
-                                     ((to == stringT::npos) ?
-                                      stringT::npos : to - from)));
+                                     ((to == string::npos) ?
+                                      string::npos : to - from)));
   } while (to != string::npos);
 
   // Following fails if a field was added in enum but not in
   // IDSC_EXPORTHEADER, or vice versa.
   ASSERT(vs_Header.size() == NUMFIELDS);
 
-  stringT s_title, linebuf;
+  string s_title, linebuf;
 
   // Get title record
-  if (!getline(ifs, s_title, TCHAR('\n'))) {
+  if (!getline(ifs, s_title, '\n')) {
     LoadAString(strError, IDSC_IMPORTNOHEADER);
     rpt.WriteLine(strError);
     return SUCCESS;  // not even a title record! - succeeded but none imported!
@@ -1127,13 +1142,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   to = 0;
   do {
     from = s_title.find_first_not_of(pSeps, to);
-    if (from == stringT::npos)
+    if (from == string::npos)
       break;
     to = s_title.find_first_of(pSeps, from);
-    stringT token = s_title.substr(from,
-                                   ((to == stringT::npos) ?
-                                    stringT::npos : to - from));
-    vciter it(std::find(vs_Header.begin(), vs_Header.end(), token));
+    string token = s_title.substr(from,
+                                  ((to == string::npos) ?
+                                   string::npos : to - from));
+    vector<string>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), token));
     if (it != vs_Header.end()) {
       i_Offset[it - vs_Header.begin()] = itoken;
       num_found++;
@@ -1168,8 +1183,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     rpt.WriteLine(csError, bImportPSWDsOnly);
     for (int i = 0; i < NUMFIELDS; i++) {
       if (i_Offset[i] >= 0) {
-        const stringT &sHdr = vs_Header.at(i);
-        Format(csError, _T(" %s,"), sHdr.c_str());
+        const string &sHdr = vs_Header.at(i);
+        StringX sh2;
+        conv.FromUTF8((const unsigned char *)sHdr.c_str(), sHdr.length(), sh2);
+        Format(csError, _T(" %s,"), sh2.c_str());
         rpt.WriteLine(csError, false);
       }
     }
@@ -1186,11 +1203,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Finished parsing header, go get the data!
   for (;;) {
     // read a single line.
-    if (!getline(ifs, linebuf, TCHAR('\n'))) break;
+    if (!getline(ifs, linebuf, '\n')) break;
     numlines++;
 
     // remove MS-DOS linebreaks, if needed.
-    if (!linebuf.empty() && *(linebuf.end() - 1) == TCHAR('\r')) {
+    if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
       linebuf.resize(linebuf.size() - 1);
     }
 
@@ -1202,29 +1219,38 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       continue;
     }
 
+    // convert linebuf from UTF-8 to stringX
+    StringX slinebuf;
+    if (!conv.FromUTF8((const unsigned char *)linebuf.c_str(), linebuf.length(), slinebuf)) {
+      // XXX add an appropriate error message
+      numSkipped++;
+      continue;
+    }
+
     // tokenize into separate elements
     itoken = 0;
     vector<stringT> tokens;
     for (size_t startpos = 0;
-         startpos < linebuf.size(); 
+         startpos < slinebuf.size(); 
          /* startpos advanced in body */) {
-      size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
-      if (nextchar == string::npos)
-        nextchar = linebuf.size();
+      size_t nextchar = slinebuf.find_first_of(fieldSeparator, startpos);
+      if (nextchar == stringT::npos)
+        nextchar = slinebuf.size();
       if (nextchar > 0) {
         if (itoken != i_Offset[NOTES]) {
-          tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
+          const StringX tsx(slinebuf.substr(startpos, nextchar - startpos));
+          tokens.push_back(tsx.c_str());
         } else { // Notes field
           // Notes may be double-quoted, and
           // if they are, they may span more than one line.
-          stringT note(linebuf.substr(startpos));
+          stringT note(slinebuf.substr(startpos).c_str());
           size_t first_quote = note.find_first_of('\"');
           size_t last_quote = note.find_last_of('\"');
           if (first_quote == last_quote && first_quote != string::npos) {
             //there was exactly one quote, meaning that we've a multi-line Note
             bool noteClosed = false;
             do {
-              if (!getline(ifs, linebuf, TCHAR('\n'))) {
+              if (!getline(ifs, linebuf, '\n')) {
                 Format(csError, IDSC_IMPMISSINGQUOTE, numlines);
                 rpt.WriteLine(csError);
                 ifs.close(); // file ends before note closes
@@ -1236,9 +1262,15 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                 linebuf.resize(linebuf.size() - 1);
               }
               note += _T("\r\n");
-              note += linebuf;
-              size_t fq = linebuf.find_first_of(TCHAR('\"'));
-              size_t lq = linebuf.find_last_of(TCHAR('\"'));
+              if (!conv.FromUTF8((const unsigned char *)linebuf.c_str(), linebuf.length(),
+                                 slinebuf)) {
+                // XXX add an appropriate error message
+                numSkipped++;
+                continue;
+              }
+              note += slinebuf.c_str();
+              size_t fq = linebuf.find_first_of('\"');
+              size_t lq = linebuf.find_last_of('\"');
               noteClosed = (fq == lq && fq != string::npos);
             } while (!noteClosed);
           } // multiline note processed
@@ -1380,47 +1412,26 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > (size_t)i_Offset[AUTOTYPE])
       temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
     if (i_Offset[CTIME] >= 0 && tokens.size() > (size_t)i_Offset[CTIME])
-      if (!temp.SetCTime(tokens[i_Offset[CTIME]].c_str())) {
-        const stringT &time_value = vs_Header.at(CTIME);
-        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
-        rpt.WriteLine(csError);
-      }
+      if (!temp.SetCTime(tokens[i_Offset[CTIME]].c_str()))
+        ReportInvalidField(rpt, vs_Header.at(CTIME), numlines);
     if (i_Offset[PMTIME] >= 0 && tokens.size() > (size_t)i_Offset[PMTIME])
-      if (!temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str())) {
-        const stringT &time_value = vs_Header.at(PMTIME);
-        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
-        rpt.WriteLine(csError);
-      }
+      if (!temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str()))
+        ReportInvalidField(rpt, vs_Header.at(PMTIME), numlines);
     if (i_Offset[ATIME] >= 0 && tokens.size() > (size_t)i_Offset[ATIME])
-      if (!temp.SetATime(tokens[i_Offset[ATIME]].c_str())) {
-        const stringT &time_value = vs_Header.at(ATIME);
-        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
-        rpt.WriteLine(csError);
-      }
+      if (!temp.SetATime(tokens[i_Offset[ATIME]].c_str()))
+        ReportInvalidField(rpt, vs_Header.at(ATIME), numlines);
     if (i_Offset[XTIME] >= 0 && tokens.size() > (size_t)i_Offset[XTIME])
-      if (!temp.SetXTime(tokens[i_Offset[XTIME]].c_str())) {
-        const stringT &time_value = vs_Header.at(XTIME);
-        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
-        rpt.WriteLine(csError);
-      }
+      if (!temp.SetXTime(tokens[i_Offset[XTIME]].c_str()))
+        ReportInvalidField(rpt, vs_Header.at(XTIME), numlines);
     if (i_Offset[XTIME_INT] >= 0 && tokens.size() > (size_t)i_Offset[XTIME_INT])
-      if (!temp.SetXTimeInt(tokens[i_Offset[XTIME_INT]].c_str())) {
-        const stringT &int_value = vs_Header.at(XTIME_INT);
-        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, int_value.c_str());
-        rpt.WriteLine(csError);
-      }
+      if (!temp.SetXTimeInt(tokens[i_Offset[XTIME_INT]].c_str()))
+        ReportInvalidField(rpt, vs_Header.at(XTIME_INT), numlines);
     if (i_Offset[RMTIME] >= 0 && tokens.size() > (size_t)i_Offset[RMTIME])
-      if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str())) {
-        const stringT &time_value = vs_Header.at(RMTIME);
-        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
-        rpt.WriteLine(csError);
-      }
+      if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str()))
+        ReportInvalidField(rpt, vs_Header.at(RMTIME), numlines);
     if (i_Offset[POLICY] >= 0 && tokens.size() > (size_t)i_Offset[POLICY])
-      if (!temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str())) {
-        const stringT &dword_value = vs_Header.at(POLICY);
-        Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, dword_value.c_str());
-        rpt.WriteLine(csError);
-      }
+      if (!temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str()))
+        ReportInvalidField(rpt, vs_Header.at(POLICY), numlines);
     if (i_Offset[HISTORY] >= 0 && tokens.size() > (size_t)i_Offset[HISTORY]) {
       StringX newPWHistory;
       stringT strPWHErrors;
