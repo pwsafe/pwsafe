@@ -1292,7 +1292,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
 
     if (bImportPSWDsOnly) {
-      StringX sxgroup(L""), sxtitle, sxuser;
+      StringX sxgroup(_T("")), sxtitle, sxuser;
       const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
       stringT entrytitle;
       size_t lastdot = grouptitle.find_last_of(TCHAR('.'));

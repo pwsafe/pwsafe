@@ -153,26 +153,26 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       if (sxurl.length() > 0) {
         // Remove 'Browse to' specifics
         StringX::size_type ipos;
-        ipos = sxurl.find(L"[alt]");
+        ipos = sxurl.find(_T("[alt]"));
         if (ipos != StringX::npos) {
           bURLSpecial = true;
           sxurl.erase(ipos, 5);
         }
-        ipos = sxurl.find(L"[ssh]");
+        ipos = sxurl.find(_T("[ssh]"));
         if (ipos != StringX::npos) {
           bURLSpecial = true;
           sxurl.erase(ipos, 5);
         }
-        ipos = sxurl.find(L"{alt}");
+        ipos = sxurl.find(_T("{alt}"));
         if (ipos != StringX::npos) {
           bURLSpecial = true;
           sxurl.erase(ipos, 5);
         }
-        ipos = sxurl.find(L"[autotype]");
+        ipos = sxurl.find(_T("[autotype]"));
         if (ipos != StringX::npos) {
           sxurl.erase(ipos, 10);
         }
-        ipos = sxurl.find(L"[xa]");
+        ipos = sxurl.find(_T("[xa]"));
         if (ipos != StringX::npos) {
           sxurl.erase(ipos, 4);
         }
