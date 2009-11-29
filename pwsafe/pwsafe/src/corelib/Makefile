@@ -16,7 +16,7 @@ NOTSRC          = PWSclipboard.cpp \
 
 LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
                   ItemData.cpp ItemField.cpp  PWPolicy.cpp \
-                  Match.cpp PWCharPool.cpp \
+                  Match.cpp PWCharPool.cpp CoreImpExp.cpp \
                   PWHistory.cpp PWSAuxParse.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp \
                   PWSfileV1V2.cpp PWSfileV3.cpp \

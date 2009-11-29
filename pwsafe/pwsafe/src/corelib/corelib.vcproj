@@ -722,6 +722,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CoreImpExp.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XML\EXPAT\EFileHandlers.cpp"
 				>
 			</File>
