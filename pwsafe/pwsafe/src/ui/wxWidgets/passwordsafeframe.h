@@ -223,6 +223,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
   void OnBrowseUrlAndAutotype(wxCommandEvent& evt);
 
+  /// wxEVT_UPDATE_UI event handler for all command ids
+  void OnUpdateUI(wxUpdateUIEvent& evt);
+
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
@@ -270,6 +273,7 @@ public:
   void ClearData();
   void Delete(const uuid_array_t &uuid);
   CItemData *GetSelectedEntry() const;
+  CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut 
   void UpdateAccessTime(CItemData &ci);
   void CreateMainToolbar();
 
