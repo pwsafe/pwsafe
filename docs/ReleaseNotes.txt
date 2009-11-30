@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.20
 ==================
+[2906249] Columns order remembered after user changes it in List view.
 [2905961] ESC key now works in View when in RO mode.
 [2873106] Export XML warnings now consistent with Export Text's.
 [2872829] Duplicate Entry now copies password policy as well.
@@ -29,6 +30,7 @@ correctly.
 removes history fields with invalid dates or empty old password fields.
 [] Fix match test 'does not begin with' - used in filters and restricting
 entries exported to Text or XML.
+[] Icons now displayed correctly in List view.
 
 New Features for 3.20
 =====================
