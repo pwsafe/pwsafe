@@ -151,6 +151,28 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_AUTOTYPE, PasswordSafeFrame::OnAutoType )
 
+  EVT_UPDATE_UI(wxID_SAVE,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_ADDGROUP,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_RENAME,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_COLLAPESALL,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_EXPANDALL,       PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_GOTOBASEENTRY,   PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_EDITBASEENTRY,   PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_BROWSEURL,       PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_BROWSEURLPLUS,   PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_COPYURL,         PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_SENDEMAIL,       PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_COPYEMAIL,       PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_COPYUSERNAME,    PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_COPYNOTESFLD,    PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_RUNCOMMAND,      PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_COPYRUNCOMMAND,  PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_CREATESHORTCUT,  PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_DUPLICATEENTRY,  PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_COPYPASSWORD,    PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_AUTOTYPE,        PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_EDIT,            PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_PASSWORDSUBSET,  PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 
@@ -364,8 +386,8 @@ void PasswordSafeFrame::CreateMainToolbar()
   toolbar->AddTool(ID_CLEARCLIPBOARD, wxEmptyString, wxBitmap(clearclipboard_xpm), wxBitmap(clearclipboard_disabled_xpm), wxITEM_NORMAL, wxT("Clear the clipboard contents"));
   toolbar->AddSeparator();
   toolbar->AddTool(ID_AUTOTYPE, wxEmptyString, wxBitmap(autotype_xpm), wxBitmap(autotype_disabled_xpm), wxITEM_NORMAL, wxT("Perform Autotype"));
-  toolbar->AddTool(ID_BROWSEURL, wxEmptyString, wxBitmap(browseurl_xpm), wxBitmap(browseurl_disabled_xpm), wxITEM_NORMAL, wxT("Browse to URL/Send Email"));
-  toolbar->AddTool(ID_SENDEMAIL, wxEmptyString, wxBitmap(sendemail_xpm), wxBitmap(sendemail_disabled_xpm), wxITEM_NORMAL, wxT("Browse to URL/Send Email"));
+  toolbar->AddTool(ID_BROWSEURL, wxEmptyString, wxBitmap(browseurl_xpm), wxBitmap(browseurl_disabled_xpm), wxITEM_NORMAL, wxT("Browse to URL"));
+  toolbar->AddTool(ID_SENDEMAIL, wxEmptyString, wxBitmap(sendemail_xpm), wxBitmap(sendemail_disabled_xpm), wxITEM_NORMAL, wxT("Send Email"));
   toolbar->AddSeparator();
   toolbar->AddTool(wxID_ADD, wxEmptyString, wxBitmap(add_xpm), wxBitmap(add_disabled_xpm), wxITEM_NORMAL, wxT("Add New Entry"));
   toolbar->AddTool(ID_EDIT, wxEmptyString, wxBitmap(viewedit_xpm), wxBitmap(viewedit_disabled_xpm), wxITEM_NORMAL, wxT("Edit an Entry"));
@@ -1102,6 +1124,107 @@ void PasswordSafeFrame::OnContextMenu(CItemData* item)
       m_tree->PopupMenu(&itemEditMenu);
     else
       m_grid->PopupMenu(&itemEditMenu);
+  }
+}
+
+CItemData* PasswordSafeFrame::GetBaseOfSelectedEntry()
+{
+  CItemData* item = GetSelectedEntry();
+  if (item && item->IsShortcut()) {
+    uuid_array_t entry_uuid, base_uuid;
+    item->GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != m_core.GetEntryEndIter())
+      item = &iter->second;
+  }
+  return item;
+}
+////////////////////////////////////////////////////////
+// This function is used for wxCommandUIEvent handling
+// of all commands, to avoid scattering this stuff all
+// over the place.  It is just a copy of the logic from 
+// DboxMain::OnUpdateMenuToolbar() function defined in
+// src/ui/Windows/Dboxmain.cpp
+//
+void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
+{
+  switch (evt.GetId()) {
+    case wxID_SAVE:
+      evt.Enable(m_core.IsChanged());
+      break;
+   
+    case ID_ADDGROUP:
+    case ID_EXPANDALL:
+    case ID_COLLAPESALL:
+      evt.Enable(m_currentView == TREE);
+      break;
+    
+    case ID_RENAME:
+      // only allowed if an item is selected in tree view
+      evt.Enable(m_currentView == TREE && GetSelectedEntry() != NULL );
+      break;
+
+    case ID_BROWSEURL:
+    case ID_BROWSEURLPLUS:
+    case ID_COPYURL:
+    {
+      CItemData* item = GetBaseOfSelectedEntry();
+      evt.Enable( item && !item->IsURLEmpty() && !item->IsURLEmail() );
+      break;
+    }
+    case ID_SENDEMAIL:
+    case ID_COPYEMAIL:
+    {
+      CItemData* item = GetBaseOfSelectedEntry();
+      evt.Enable( item && !item->IsURLEmpty()  && item->IsURLEmail() );
+      break;
+    }
+    case ID_COPYUSERNAME:
+    {
+      CItemData* item = GetBaseOfSelectedEntry();
+      evt.Enable(item && !item->IsUserEmpty());
+      break;
+    }
+    case ID_COPYNOTESFLD:
+    {
+      CItemData* item = GetBaseOfSelectedEntry();
+      evt.Enable(item && !item->IsNotesEmpty());
+      break;
+    }
+    case ID_RUNCOMMAND:
+    case ID_COPYRUNCOMMAND:
+    {
+      CItemData* item = GetBaseOfSelectedEntry();
+      evt.Enable(item && item->IsRunCommandEmpty());
+      break;
+    }
+    case ID_CREATESHORTCUT:
+    {
+      CItemData* item = GetSelectedEntry();
+      evt.Enable(item && !item->IsNormal() && !item->IsShortcutBase());
+      break;
+    }
+    case ID_DUPLICATEENTRY:
+    case ID_COPYPASSWORD:
+    case ID_AUTOTYPE:
+    case ID_EDIT:
+    case ID_PASSWORDSUBSET:
+      // not allowed if a group is selected in tree view
+      evt.Enable(m_currentView == GRID || GetSelectedEntry() != NULL );
+      break;
+
+    case ID_GOTOBASEENTRY:
+    case ID_EDITBASEENTRY:
+    {
+      const CItemData* item = GetSelectedEntry();
+      evt.Enable( item != NULL && (item->GetEntryType() == CItemData::ET_SHORTCUT 
+                        || item->GetEntryType() == CItemData::ET_ALIAS) );
+      break;
+    }
+ 
+    default:
+      break;
   }
 }
 
