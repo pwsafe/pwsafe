@@ -373,3 +373,15 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
   }
   return CPWPropertySheet::OnCommand(wParam, lParam);
 }
+
+BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg) 
+{
+  // In View mode, there is no 'Cancel' button and 'OK' is renamed 'Close'
+  // Make Escape key still work as designed
+  if (m_AEMD.uicaller == IDS_VIEWENTRY && pMsg->message == WM_KEYDOWN &&
+    pMsg->wParam == VK_ESCAPE) {
+    CPWPropertySheet::EndDialog(IDCANCEL);
+    return TRUE;
+  }
+  return CPWPropertySheet::PreTranslateMessage(pMsg);
+}

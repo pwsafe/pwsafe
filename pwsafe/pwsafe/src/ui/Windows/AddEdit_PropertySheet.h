@@ -29,6 +29,7 @@ public:
 
   virtual BOOL OnInitDialog();
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  virtual BOOL PreTranslateMessage(MSG* pMsg);
 
   DECLARE_DYNAMIC(CAddEdit_PropertySheet)
 

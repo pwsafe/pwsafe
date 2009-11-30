@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.20
 ==================
+[2905961] ESC key now works in View when in RO mode.
 [2873106] Export XML warnings now consistent with Export Text's.
 [2872829] Duplicate Entry now copies password policy as well.
 [2872602] Preferences are now correctly deleted from the Windows registry
@@ -20,6 +21,7 @@ items now reflect its contents.
 box button now locks the database if the preference 'Lock on Minimize' is
 set.
 [2868244] Change font dialogs now work again.
+[] Now correclty imports non-Latin text during the Import of a text file.
 [] Now no longer complains about WTS service in pre-XP versions of Windows.
 [] Filters containing tests on the entry type now exported to XML
 correctly.
