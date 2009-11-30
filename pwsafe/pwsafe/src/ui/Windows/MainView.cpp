@@ -1257,7 +1257,10 @@ int DboxMain::insertItem(CItemData &ci, int iIndex,
 
   if (iView & iListOnly) {
     // Insert the first column data
-    cs_fielddata = ci.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[0]);
+    if (m_bImageInLV)
+      cs_fielddata = L"";
+    else
+      cs_fielddata = ci.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[0]);
     iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata.c_str());
 
     if (iResult < 0) {
@@ -1507,17 +1510,15 @@ void DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
   // hence the PostMessage to get the information later
 
   // Get control after operation is really complete
+  NMHEADER *phdn = (NMHEADER *) pNMHDR;
 
   // Stop drag of first column (image)
-  if (!m_bImageInLV)
+  if (m_bImageInLV && 
+      (phdn->iItem == 0 || 
+       (((phdn->pitem->mask & HDI_ORDER) == HDI_ORDER) && 
+        phdn->pitem->iOrder == 0))) {
+    *pResult = TRUE;
     return;
-
-  NMHEADER *phdn = (NMHEADER *) pNMHDR;
-  if (phdn->iItem == 0 || 
-    (((phdn->pitem->mask & HDI_ORDER) == HDI_ORDER) && 
-    phdn->pitem->iOrder == 0)) {
-      *pResult = TRUE;
-      return;
   }
 
   // Otherwise allow
