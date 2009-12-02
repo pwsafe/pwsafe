@@ -76,7 +76,7 @@ void DboxMain::DatabaseModified(LPARAM instance, bool bChanged)
   DboxMain *self = (DboxMain*)instance;
 
   // Don't do anything if status unchanged or not at least Vista
-  if (self->m_core.IsReadOnly() || bChanged == bCurrentState)
+  if (self->m_WindowsMajorVersion < 6 || self->m_core.IsReadOnly() || bChanged == bCurrentState)
     return;
 
   bCurrentState = bChanged;
@@ -86,13 +86,17 @@ void DboxMain::DatabaseModified(LPARAM instance, bool bChanged)
 
   // Only supported on Vista and later
   if (bCurrentState) {
-    CSecString cs_stopreason;
-    cs_stopreason.Format(IDS_STOPREASON, self->m_core.GetCurFile().c_str());
-    self->m_pfcnShutdownBlockReasonCreate(self->m_hWnd, cs_stopreason);
-    self->m_bBlockShutdown = true;
+    if (self->m_pfcnShutdownBlockReasonCreate != NULL) {
+      CSecString cs_stopreason;
+      cs_stopreason.Format(IDS_STOPREASON, self->m_core.GetCurFile().c_str());
+      self->m_pfcnShutdownBlockReasonCreate(self->m_hWnd, cs_stopreason);
+      self->m_bBlockShutdown = true;
+    }
   } else {
-    self->m_pfcnShutdownBlockReasonDestroy(self->m_hWnd);
-    self->m_bBlockShutdown = false;
+    if (self->m_pfcnShutdownBlockReasonDestroy != NULL) {
+      self->m_pfcnShutdownBlockReasonDestroy(self->m_hWnd);
+      self->m_bBlockShutdown = false;
+    }
   }
 }
 
