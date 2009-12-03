@@ -1,4 +1,4 @@
-Password Safe 3.20 Release Notes - November 2009
+Password Safe 3.20 Release Notes - December 2009
 ================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -10,27 +10,27 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.20
 ==================
-[2906249] Columns order remembered after user changes it in List view.
-[2905961] ESC key now works in View when in RO mode.
+[2906249] User changes to List view's column order are now persistent.
+[2905961] ESC key now works correctly in View Entry when in RO mode.
 [2873106] Export XML warnings now consistent with Export Text's.
-[2872829] Duplicate Entry now copies password policy as well.
+[2872829] Duplicating an entry now copies the password policy as well.
 [2872602] Preferences are now correctly deleted from the Windows registry
-if they match the default.
+if they match the default (when registry is enabled).
 [2870059] When an entry is highlighted during Find, the Toolbar and menu
 items now reflect its contents.
 [2868278] Minimize via the system menu, SystemTray menu and system control
 box button now locks the database if the preference 'Lock on Minimize' is
 set.
 [2868244] Change font dialogs now work again.
-[] Now correclty imports non-Latin text during the Import of a text file.
-[] Now no longer complains about WTS service in pre-XP versions of Windows.
-[] Filters containing tests on the entry type now exported to XML
-correctly.
-[] Validate of Password History (-v command line flag) now correctly
-removes history fields with invalid dates or empty old password fields.
+[] Import from a text file with non-Latin text now works correctly.
+[] No longer complains about WTS service in pre-XP versions of Windows.
+[] Filters containing tests on the entry type are now correctly
+exported to XML.
+[] Validate of Password History (-v command line flag) now removes
+history fields with invalid dates or empty old password fields.
 [] Fix match test 'does not begin with' - used in filters and restricting
 entries exported to Text or XML.
-[] Icons now displayed correctly in List view.
+[] Fixed icons display in List view.
 
 New Features for 3.20
 =====================
@@ -39,11 +39,12 @@ image and reduce the amount of text.
 [2881604] Allow edit of base entry of a shortcut via the Edit menu and/or
 by right-clicking on a shortcut entry.
 [2872273] Improve Import Text 'Line skipped' message.
-[2826509] Can now update passwords of existing entries via Import Text or XML.
-For Text import, the 'Group/Title', 'Username' and 'Password' fields are required.
-Fox XML import, the Title and Password elements are required. If the Group and
-Username elements are missing, they are assumed to be empty.  All other fields or 
-elements can be present but will be ignored.
+[2826509] Can now update passwords of existing entries via Import Text or XML:
+  For Text import, the 'Group/Title', 'Username' and 'Password' fields
+  are required. 
+  For XML import, the Title and Password elements are required. If the
+  Group and Username elements are missing, they are assumed to be
+  empty.  All other fields or elements can be present but will be ignored.
 [] Add highlighting of added/changed and deleted records.  The latter can
 seen via View->Show Changed Entries.
 
@@ -53,13 +54,13 @@ Changes to Existing Features in 3.20
 and [xa]) are removed from the URL field when copied to the clipboard or when
 used in the RunCommand (via $url).  If the '[alt]' or {alt} were present, then
 the RunCommand will execute this program.
-[2868278] The SystemTray Unlock menu item now, if the correct passphrase is
-given, only unlocks the databse. To show the application, use the Restore
-menu item.
-[2874520] To prevent junk showing in the Notes field in List View due to end
-of line characters, now only show the first line but indicate more are there using
-[>>>] at end of line. Setting preference "Show Notes as Tooltips in Tree & List
-View" will show these (up to 250 characters).
+[2868278] The SystemTray Unlock menu item now only unlocks the
+database (when correct passphrase is provided). To show the
+application's main window, use the Restore menu item.
+[2874520] To prevent junk showing in the Notes field in List View due
+to end of line characters, now only show the first line but indicate
+more are there using [>>>] at end of line. Setting preference "Show
+Notes as Tooltips in Tree & List View" will show these (up to 250 characters).
 
 Bugs fixed in 3.19
 ==================
