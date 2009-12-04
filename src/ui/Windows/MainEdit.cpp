@@ -1260,7 +1260,7 @@ void DboxMain::AutoType(const CItemData &ci)
 
   DoAutoType(AutoCmd, group, title, user, pwd, notes);
 
-  // If we minimized it, exit. If we hid it, now show it
+  // If we minimized it, exit. If we only hid it, now show it
   if (bMinOnAuto)
     return;
 
@@ -1268,8 +1268,7 @@ void DboxMain::AutoType(const CItemData &ci)
     SetWindowPos(&wndTopMost, 0, 0, 0, 0,
                  SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
   } else {
-    SetWindowPos(&wndBottom, 0, 0, 0, 0,
-                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+    ShowWindow(SW_SHOW);
   }
 }
 

@@ -190,30 +190,30 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
   switch(m_index) {
-    case GCP_FIRST:
-      // At start up - give the user the option unless file is R/O
-      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
+  case GCP_FIRST:
+    // At start up - give the user the option unless file is R/O
+    GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+    GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
 #ifdef DEMO
-      GetDlgItem(IDC_SPCL_TXT)->
-          SetWindowText(CString(MAKEINTRESOURCE(IDS_DEMO)));
+    GetDlgItem(IDC_SPCL_TXT)->
+      SetWindowText(CString(MAKEINTRESOURCE(IDS_DEMO)));
 #endif
-      break;
-    case GCP_NORMAL:
-    case GCP_ADVANCED:
-      // otherwise during open - user can - again unless file is R/O
-      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      break;
-    case GCP_RESTORE:
-    case GCP_WITHEXIT:
-      // on Restore - user can't change status
-      GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-      break;
-    default:
-      ASSERT(FALSE);
+    break;
+  case GCP_NORMAL:
+  case GCP_ADVANCED:
+    // otherwise during open - user can - again unless file is R/O
+    GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+    GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+    break;
+  case GCP_RESTORE:
+  case GCP_WITHEXIT:
+    // on Restore - user can't change status
+    GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
+    break;
+  default:
+    ASSERT(FALSE);
   }
 
   // Only show virtual Keyboard menu if we can load DLL
@@ -269,9 +269,9 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   }
 
   /*
-  * this bit makes the background come out right on
-  * the bitmaps
-  */
+   * this bit makes the background come out right on
+   * the bitmaps
+   */
 
 #if !defined(POCKET_PC)
   if (m_index == GCP_FIRST) {
@@ -291,15 +291,18 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   if (app.WasHotKeyPressed()) {
     // Reset it
     app.SetHotKeyPressed(false);
+    // Following (1) brings to top when hotkey pressed,
+    // (2) ensures focus is on password entry field, where it belongs.
+    // This is "stronger" than BringWindowToTop().
+    SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    SetActiveWindow();
+    SetForegroundWindow();
+    m_pctlPasskey->SetFocus();
+    return FALSE;
   }
-  // Following (1) brings to top when hotkey pressed,
-  // (2) ensures focus is on password entry field, where it belongs.
-  // This is "stronger" than BringWindowToTop().
-  SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-  SetActiveWindow();
+  // Following works fine for other (non-hotkey) cases:
   SetForegroundWindow();
-  m_pctlPasskey->SetFocus();
-  return FALSE; // FALSE means we set the focus ourselves
+  return TRUE;
 }
 
 #if defined(POCKET_PC)
