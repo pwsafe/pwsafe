@@ -1801,9 +1801,9 @@ bool GTUCompare(const StringX &elem1, const StringX &elem2)
 {
   StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
 
-  StringX::size_type i1 = g1.find(L':');
+  StringX::size_type i1 = elem1.find(L':');
   g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
-  StringX::size_type i2 = g2.find(L':');
+  StringX::size_type i2 = elem2.find(L':');
   g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
   if (g1 != g2)
     return g1.compare(g2) < 0;
