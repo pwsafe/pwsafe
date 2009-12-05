@@ -703,6 +703,7 @@ private:
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   void UpdateSystemMenu();
+  void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   
   static const struct UICommandTableEntry {
     UINT ID;

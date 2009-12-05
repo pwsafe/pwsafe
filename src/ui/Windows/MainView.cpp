@@ -904,6 +904,15 @@ static void Shower(CWnd *w)
   w->ShowWindow(SW_SHOW);
 }
 
+void DboxMain::RestoreWindows()
+{
+  ShowWindow(SW_RESTORE);
+  SetGroupDisplayState(m_grpdispstate);
+  RefreshViews();
+  BringWindowToTop();
+  CPWDialog::GetDialogTracker()->Apply(Shower);
+}
+
 void DboxMain::OnSize(UINT nType, int cx, int cy) 
 {
   // Note that onsize runs before InitDialog (Gee, I love MFC)

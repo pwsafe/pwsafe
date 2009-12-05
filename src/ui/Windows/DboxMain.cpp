@@ -2034,23 +2034,16 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       m_needsreading = false;
       if (bShow && !bUpdateWindows)
         ShowWindow(SW_SHOW);
-      if (bUpdateWindows) {
-        ShowWindow(SW_RESTORE);
-        SetGroupDisplayState(m_grpdispstate);
-        RefreshViews();
-        BringWindowToTop();
-      }
+      if (bUpdateWindows)
+        RestoreWindows();
     } else {
       ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
     }
     return brc;
   }
 
-  if (bUpdateWindows) {
-    ShowWindow(SW_RESTORE);
-    SetGroupDisplayState(m_grpdispstate);
-    BringWindowToTop();
-  }
+  if (bUpdateWindows)
+    RestoreWindows();
   return brc;
 }
 
