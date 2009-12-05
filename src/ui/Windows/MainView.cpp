@@ -1793,6 +1793,8 @@ bool DboxMain::IsWorkstationLocked() const
     bResult = !SwitchDesktop(hDesktop);
     CloseDesktop(hDesktop);
   }
+  if (bResult)
+    TRACE(L"IsWorkstationLocked() returning true");
   return bResult;
 }
 

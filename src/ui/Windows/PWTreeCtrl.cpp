@@ -1446,6 +1446,7 @@ void CPWTreeCtrl::OnTimer(UINT_PTR nIDEvent)
 
 void CPWTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
+  m_pDbx->ResetIdleLockCounter();
   if (!m_bShowNotes)
     return;
 

@@ -2081,18 +2081,38 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-void DboxMain::ResetIdleLockCounter()
+void DboxMain::ResetIdleLockCounter(UINT event)
 {
-  m_IdleLockCountDown = PWSprefs::GetInstance()->
-                          GetPref(PWSprefs::IdleTimeout);
+  // List of all the events that signify actual user activity, as opposed
+  // to Windows internal events...
+  // This is usually called from a windows event handler hook.
+  // When called from elsewhere, use default argument.
+
+  if ((event >= WM_KEYFIRST   && event <= WM_KEYLAST)   || // all kbd events
+      (event >= WM_MOUSEFIRST && event <= WM_MOUSELAST) || // all mouse events
+      event == WM_COMMAND       ||
+      event == WM_ENABLE        ||
+      event == WM_SYSCOMMAND    ||
+      event == WM_VSCROLL       ||
+      event == WM_HSCROLL       ||
+      event == WM_MOVE          ||
+      event == WM_SIZE          ||
+      event == WM_CONTEXTMENU   ||
+      event == WM_SETFOCUS      ||
+      event == WM_MENUSELECT)
+    SetIdleLockCounter(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout));
 }
 
 bool DboxMain::DecrementAndTestIdleLockCounter()
 {
+  bool retval;
+  m_ILCDMutex.Lock();
   if (m_IdleLockCountDown > 0)
-    return (--m_IdleLockCountDown == 0);
+    retval= (--m_IdleLockCountDown == 0);
   else
-    return false; // so we return true only once if idle
+    retval = false; // so we return true only once if idle
+  m_ILCDMutex.Unlock();
+  return retval;
 }
 
 LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
@@ -2136,20 +2156,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     PWSrand::GetInstance()->AddEntropy((unsigned char *)&t, sizeof(t));
     last_t = t;
   }
-  // list of all the events that signify actual user activity, as opposed
-  // to Windows internal events...
-  if ((message >= WM_KEYFIRST   && message <= WM_KEYLAST)   ||
-      (message >= WM_MOUSEFIRST && message <= WM_MOUSELAST) ||
-      message == WM_COMMAND       ||
-      message == WM_SYSCOMMAND    ||
-      message == WM_VSCROLL       ||
-      message == WM_HSCROLL       ||
-      message == WM_MOVE          ||
-      message == WM_SIZE          ||
-      message == WM_CONTEXTMENU   ||
-      message == WM_MENUSELECT) {
-    ResetIdleLockCounter();
-  }
+  ResetIdleLockCounter(message);
 
   if (message == WM_SYSCOLORCHANGE ||
       message == WM_SETTINGCHANGE)
