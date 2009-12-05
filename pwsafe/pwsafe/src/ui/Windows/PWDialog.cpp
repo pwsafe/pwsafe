@@ -31,12 +31,19 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   if ((message >= WM_KEYFIRST   && message <= WM_KEYLAST)   ||
       (message >= WM_MOUSEFIRST && message <= WM_MOUSELAST) ||
       message == WM_COMMAND       ||
+      message == WM_ENABLE        ||
       message == WM_SYSCOMMAND    ||
       message == WM_VSCROLL       ||
       message == WM_HSCROLL       ||
       message == WM_MOVE          ||
       message == WM_SIZE          ||
       message == WM_CONTEXTMENU   ||
+      message == WM_KEYUP || message == WM_KEYDOWN   ||
+      message == WM_LBUTTONDOWN   ||
+      message == WM_MBUTTONDOWN   ||
+      message == WM_RBUTTONDOWN   ||
+      message == WM_MOUSEMOVE     ||
+      message == WM_SETFOCUS      ||
       message == WM_MENUSELECT) {
     CWnd *p = GetParent();
     while (p != NULL) {
