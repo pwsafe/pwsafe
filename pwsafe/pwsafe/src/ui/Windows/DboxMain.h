@@ -252,7 +252,7 @@ public:
   bool ExitRequested() const {return m_inExit;}
   void SetCapsLock(const bool bState);
   void AutoResizeColumns();
-  void ResetIdleLockCounter();
+  void ResetIdleLockCounter(UINT event = WM_SIZE); // default arg always resets
   bool ClearClipboardData() {return m_clipboard.ClearData();}
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
@@ -678,7 +678,9 @@ private:
   bool LockDataBase();
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
-  void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
+  CMutex m_ILCDMutex; // mutex for m_IdleLockCountDown
+  void SetIdleLockCounter(UINT i)
+  {m_ILCDMutex.Lock(); m_IdleLockCountDown = i; m_ILCDMutex.Unlock();}
   bool DecrementAndTestIdleLockCounter();
   int SaveIfChanged();
   void CheckExpiredPasswords();

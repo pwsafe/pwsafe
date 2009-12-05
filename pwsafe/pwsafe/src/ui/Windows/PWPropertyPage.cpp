@@ -20,30 +20,17 @@ IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)
 
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  // list of all the events that signify actual user activity, as opposed
-  // to Windows internal events...
-  if ((message >= WM_KEYFIRST   && message <= WM_KEYLAST)   ||
-      (message >= WM_MOUSEFIRST && message <= WM_MOUSELAST) ||
-      message == WM_COMMAND       ||
-      message == WM_SYSCOMMAND    ||
-      message == WM_VSCROLL       ||
-      message == WM_HSCROLL       ||
-      message == WM_MOVE          ||
-      message == WM_SIZE          ||
-      message == WM_CONTEXTMENU   ||
-      message == WM_MENUSELECT) {
-    CWnd *p = GetParent();
-    while (p != NULL) {
-      DboxMain *pDbx = dynamic_cast<DboxMain *>(p);
-      if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
-          wcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
-        pDbx->ResetIdleLockCounter();
-        break;
-      } else
-        p = p->GetParent();
-    }
-    if (p == NULL)
-      TRACE(L"CPWPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
+  CWnd *p = GetParent();
+  while (p != NULL) {
+    DboxMain *pDbx = dynamic_cast<DboxMain *>(p);
+    if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
+        wcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
+      pDbx->ResetIdleLockCounter(message);
+      break;
+    } else
+      p = p->GetParent();
   }
+  if (p == NULL)
+    TRACE(L"CPWPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }

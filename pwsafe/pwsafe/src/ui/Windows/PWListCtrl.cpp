@@ -146,6 +146,7 @@ void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
 
 void CPWListCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
+  m_pDbx->ResetIdleLockCounter();
   if (!m_bShowNotes)
     return;
 
