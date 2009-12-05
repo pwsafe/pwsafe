@@ -302,6 +302,12 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   }
   // Following works fine for other (non-hotkey) cases:
   SetForegroundWindow();
+  // If the dbase field's !empty, the user most likely will want to enter
+  // a password:
+  if (m_index == 0 && !m_filespec.IsEmpty()) {
+    m_pctlPasskey->SetFocus();
+    return FALSE;
+  }
   return TRUE;
 }
 
