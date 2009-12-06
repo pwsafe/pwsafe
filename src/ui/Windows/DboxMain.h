@@ -97,6 +97,9 @@ DECLARE_HANDLE(HDROP);
 #define TIMER_LOCKDBONIDLETIMEOUT 0x05
 // Definition of a minute in milliseconds
 #define MINUTE 60000
+// How ofter should idle timeout timer check:
+#define IDLE_CHECK_RATE 2
+#define IDLE_CHECK_INTERVAL (MINUTE/IDLE_CHECK_RATE)
 // timer event number used to support Find in PWListCtrl when icons visible
 #define TIMER_FIND                0x06
 // timer event number used to support display of notes in List & Tree controls
@@ -678,9 +681,7 @@ private:
   bool LockDataBase();
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
-  CMutex m_ILCDMutex; // mutex for m_IdleLockCountDown
-  void SetIdleLockCounter(UINT i)
-  {m_ILCDMutex.Lock(); m_IdleLockCountDown = i; m_ILCDMutex.Unlock();}
+  void SetIdleLockCounter(UINT i); // i in minutes, set to timer counts
   bool DecrementAndTestIdleLockCounter();
   int SaveIfChanged();
   void CheckExpiredPasswords();

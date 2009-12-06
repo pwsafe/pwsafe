@@ -220,7 +220,7 @@ BOOL DboxMain::OpenOnInit(void)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     ResetIdleLockCounter();
-    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
   }
   return TRUE;
 }
@@ -310,7 +310,7 @@ int DboxMain::New()
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     ResetIdleLockCounter();
-    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
   }
 
   return PWScore::SUCCESS;
@@ -682,7 +682,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     ResetIdleLockCounter();
-    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
   }
 
   return rc;

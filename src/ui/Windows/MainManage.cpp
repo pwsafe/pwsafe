@@ -728,7 +728,7 @@ void DboxMain::OnOptions()
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       ResetIdleLockCounter();
       if (security.m_LockOnIdleTimeout == TRUE) {
-        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
     }
 
