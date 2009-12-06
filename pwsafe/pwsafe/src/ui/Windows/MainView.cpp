@@ -1053,7 +1053,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
         ResetIdleLockCounter();
-        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, MINUTE, NULL);
+        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
       break;
     case SIZE_MAXHIDE:

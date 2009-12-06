@@ -2103,15 +2103,21 @@ void DboxMain::ResetIdleLockCounter(UINT event)
     SetIdleLockCounter(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout));
 }
 
+void DboxMain::SetIdleLockCounter(UINT i)
+{
+  // i is in minutes, but we set the value to i * timer ticks per minute
+  // (If IDLE_CHECK_RATE is 1, then we would always lock when i == 1 and
+  // DecrementAndTestIdleLockCounter would be called.)
+ m_IdleLockCountDown = i * IDLE_CHECK_RATE;
+}
+
 bool DboxMain::DecrementAndTestIdleLockCounter()
 {
   bool retval;
-  m_ILCDMutex.Lock();
   if (m_IdleLockCountDown > 0)
     retval= (--m_IdleLockCountDown == 0);
   else
     retval = false; // so we return true only once if idle
-  m_ILCDMutex.Unlock();
   return retval;
 }
 
