@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-12-05 23:51+0100\n"
+"PO-Revision-Date: 2009-12-06 23:48+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -4041,7 +4041,7 @@ msgstr "Passwort"
 
 #. Resource IDs: (1114)
 msgid "Password Expires on:"
-msgstr "Passwort gültig bis:"
+msgstr "Passwort läuft ab am:"
 
 #. Resource IDs: (1123)
 msgid "Password Expiry"
