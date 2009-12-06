@@ -669,6 +669,7 @@ void CManageFiltersDlg::DisplayFilterProperties(st_filters *pfilters)
     cs_ftype.TrimRight(L'\t');
     cs_criteria = PWSFilters::GetFilterDescription(st_fldata).c_str();
     cs_act.LoadString(st_fldata.bFilterActive ? IDS_YES : IDS_NO);
+    cs_act = cs_act.Mid(1);  // Remove leading ampersand from Yes/No
     if (Flt_iter != pfilters->vMfldata.begin())
       cs_ltype.LoadString(st_fldata.ltype == LC_AND ? IDSC_AND : IDSC_OR);
     else
