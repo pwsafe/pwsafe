@@ -1101,15 +1101,21 @@ void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
         htinfo.pt = local;
         m_ctlItemTree.HitTest(&htinfo);
         hItem = htinfo.hItem;
-        if (hItem != NULL) {
-          // If a group
-          if (!m_ctlItemTree.IsLeaf(hItem)) {
-            // If on indent or button
-            if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
-              m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
-              *pLResult = 1L; // We have toggled the group
-              return;
-            }
+
+        // Ignore any clicks not on an item (group or entry)
+        if (hItem == NULL ||
+            htinfo.flags & (TVHT_NOWHERE | TVHT_ONITEMRIGHT | 
+                            TVHT_ABOVE | TVHT_BELOW | 
+                            TVHT_TORIGHT | TVHT_TOLEFT))
+            return;
+
+        // If a group
+        if (!m_ctlItemTree.IsLeaf(hItem)) {
+          // If on indent or button
+          if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
+            m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+            *pLResult = 1L; // We have toggled the group
+            return;
           }
         }
         break;
