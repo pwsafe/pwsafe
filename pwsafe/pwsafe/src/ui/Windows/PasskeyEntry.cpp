@@ -87,13 +87,12 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_message = a_filespec;
   m_bsFields.set();
 
-  if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
-    m_pctlPasskey->SetSecure(false);
-
-  m_pDbx = static_cast<DboxMain *>(pParent);
+  m_pDbx = dynamic_cast<DboxMain *>(pParent);
   ASSERT(m_pDbx != NULL);
 
   m_pctlPasskey = new CSecEditExtn;
+  if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
+    m_pctlPasskey->SetSecure(false);
 }
 
 CPasskeyEntry::~CPasskeyEntry()
