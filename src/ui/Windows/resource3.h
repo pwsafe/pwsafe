@@ -566,3 +566,11 @@
 #define IDS_ENTRYSTATUS                 5739
 #define IDS_NONSAVEDCHANGES             5740
 #define IDS_RECORDSUPDATED              5741
+#define IDS_SYNCHWARNING                5742
+#define IDS_SYNCHRONIZEX                5743
+#define IDS_NOFIELDSFORSYNCH            5744
+#define IDS_RPTSYNCH                    5745
+#define IDS_SYNCHINGDATABASE            5746
+#define IDS_SYNCHUPDATED                5747
+#define IDS_SYNCHCOMPLETED              5748
+#define IDS_PICKSYNCHRONIZEEFILE        5749

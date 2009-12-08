@@ -733,7 +733,7 @@ int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            const stringT &, const bool &,
                            stringT &, int &, int &,
                            bool &, bool &, 
-                           std::vector<StringX> *, CReport &)
+                           CReport &)
 {
   return UNIMPLEMENTED;
 }
@@ -742,17 +742,17 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            const stringT &strXSDFileName, const bool &bImportPSWDsOnly,
                            stringT &strErrors, int &numValidated, int &numImported,
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
-                           std::vector<StringX> * pvgroups,
                            CReport &rpt)
 {
   UUIDList possible_aliases, possible_shortcuts;
+  MultiCommands *pmulticmds = new MultiCommands(this);
 
 #if   USE_XML_LIBRARY == EXPAT
-  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
 #elif USE_XML_LIBRARY == MSXML
-  MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+  MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
 #elif USE_XML_LIBRARY == XERCES
-  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
 #endif
 
   bool status, validation;
@@ -767,8 +767,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   validation = true;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly, 
-                        nITER, nRecordsWithUnknownFields, uhfl,
-                        pvgroups);
+                        nITER, nRecordsWithUnknownFields, uhfl);
   strErrors = iXML.getResultText();
   if (!status) {
     return XML_FAILED_VALIDATION;
@@ -778,10 +777,10 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   validation = false;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly,
-                        nITER, nRecordsWithUnknownFields, uhfl,
-                        pvgroups);
+                        nITER, nRecordsWithUnknownFields, uhfl);
   strErrors = iXML.getResultText();
   if (!status) {
+    delete pmulticmds;
     return XML_FAILED_IMPORT;
   }
 
@@ -801,8 +800,16 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   }
   uhfl.clear();
 
-  AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::PASSWORD);
-  AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_SHORTCUT, CItemData::PASSWORD);
+  Command *pcmdA = new AddDependentEntriesCommand(this, possible_aliases, &rpt, 
+                                                   CItemData::ET_ALIAS,
+                                                   CItemData::PASSWORD);
+  pmulticmds->Add(pcmdA);
+  Command * pcmdS = new AddDependentEntriesCommand(this, possible_shortcuts, &rpt, 
+                                                    CItemData::ET_SHORTCUT,
+                                                    CItemData::PASSWORD);
+  pmulticmds->Add(pcmdS);
+  Execute((Command *)pmulticmds);
+
   possible_aliases.clear();
   possible_shortcuts.clear();
 
@@ -829,7 +836,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  const bool &bImportPSWDsOnly,
                                  stringT &strError,
                                  int &numImported, int &numSkipped,
-                                 std::vector<StringX> * pvgroups,
                                  CReport &rpt)
 {
   stringT csError;
@@ -966,6 +972,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   bool bIntoEmpty = m_pwlist.size() == 0;
 
   UUIDList possible_aliases, possible_shortcuts;
+
+  MultiCommands *pmulticmds = new MultiCommands(this);
+  Command *pcmd1 = new UpdateGUICommand(this, Command::WN_UNDO, Command::GUI_UNDO_IMPORT);
+  pmulticmds->Add((Command *)pcmd1);
 
   // Finished parsing header, go get the data!
   for (;;) {
@@ -1112,12 +1122,12 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         numSkipped++;
       } else {
         CItemData *pci = &iter->second;
-        pci->UpdatePassword(tokens[i_Offset[PASSWORD]].c_str());
+        Command *pcmd = new UpdatePasswordCommand(this, *pci, tokens[i_Offset[PASSWORD]].c_str());
+        pcmd->SetNoNotify();
+        pmulticmds->Add((Command *)pcmd);
         if (bMaintainDateTimeStamps) {
           pci->SetATime();
         }
-        pvgroups->push_back(sxgroup);
-        pci->SetStatus(CItemData::ES_MODIFIED);
         numImported++;
       }
       continue;
@@ -1268,16 +1278,36 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
 
     if (!bIntoEmpty) {
-      pvgroups->push_back(group);
       temp.SetStatus(CItemData::ES_ADDED);
     }
-    AddEntry(temp);
+
+    // Get GUI to populate its field
+    if (m_pfcnGUIUpdateEntry != NULL) {
+      m_pfcnGUIUpdateEntry(temp);
+    }
+
+    // Add to commands to execute
+    Command *pcmd = new AddEntryCommand(this, temp);
+    pcmd->SetNoNotify();
+    pmulticmds->Add(pcmd);
     numImported++;
   } // file processing for (;;) loop
   ifs.close();
 
-  AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::PASSWORD);
-  AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_SHORTCUT, CItemData::PASSWORD);
+  Command *pcmdA = new AddDependentEntriesCommand(this, possible_aliases, &rpt, 
+                                                   CItemData::ET_ALIAS,
+                                                   CItemData::PASSWORD);
+  pcmdA->SetNoNotify();
+  pmulticmds->Add(pcmdA);
+  Command * pcmdS = new AddDependentEntriesCommand(this, possible_shortcuts, &rpt, 
+                                                    CItemData::ET_SHORTCUT,
+                                                    CItemData::PASSWORD);
+  pcmdS->SetNoNotify();
+  pmulticmds->Add(pcmdS);
+  Command *pcmd2 = new UpdateGUICommand(this, Command::WN_REDO, Command::GUI_REDO_IMPORT);
+  pmulticmds->Add((Command *)pcmd2);
+  Execute((Command *)pmulticmds);
+
   possible_aliases.clear();
   possible_shortcuts.clear();
 
@@ -1327,6 +1357,8 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
   if (!getline(ifs, linebuf, TCHAR('\n')) || linebuf.empty()) {
     return INVALID_FORMAT;
   }
+
+  MultiCommands *pmulticmds = new MultiCommands(this);
 
   // the first line of the keepass text file contains a few garbage characters
   linebuf = linebuf.erase(0, linebuf.find(_T("[")));
@@ -1413,9 +1445,15 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     temp.SetNotes(notes.empty() ? _T("") : notes.c_str());
     temp.SetStatus(CItemData::ES_ADDED);
 
-    AddEntry(temp);
+    if (m_pfcnGUIUpdateEntry != NULL) {
+      m_pfcnGUIUpdateEntry(temp);
+    }
+    Command *pcmd = new AddEntryCommand(this, temp);
+    pmulticmds->Add(pcmd);
   }
   ifs.close();
+
+  Execute((Command *)pmulticmds);
 
   // TODO: maybe return an error if the full end of the file was not reached?
 

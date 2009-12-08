@@ -96,6 +96,7 @@ CGeneralMsgBox::CGeneralMsgBox(CWnd* pParentWnd)
   m_hIcon(NULL), m_strTitle(AfxGetApp()->m_pszAppName)
 {
   m_pParentWnd = pParentWnd;
+
   // default metric values
   const int _aDefMetrics[NUM_OF_METRICS] =
   {

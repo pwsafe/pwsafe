@@ -722,6 +722,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Command.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CoreImpExp.cpp"
 				>
 			</File>
@@ -940,6 +944,10 @@
 			</File>
 			<File
 				RelativePath=".\CheckVersion.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Command.h"
 				>
 			</File>
 			<File

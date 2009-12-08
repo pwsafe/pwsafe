@@ -19,6 +19,7 @@
 class DboxMain;
 class CItemData;
 class CInfoDisplay;
+class MultiCommands;
 
 // classes for implementing D&D
 class CDDObList;
@@ -75,11 +76,6 @@ public:
   void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
-  void ClearChangedNodes()
-  {m_vnodes_modified.clear();}
-  void AddChangedNodes(StringX path);
-  size_t NumberNodeChanged()
-  {return m_vnodes_modified.size();}
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
@@ -133,10 +129,10 @@ private:
 
   CSecString m_eLabel; // label at start of edit, if we need to revert
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
-  bool MoveItem(HTREEITEM hitem, HTREEITEM hNewParent);
+  bool MoveItem(MultiCommands *pmulticmds, HTREEITEM hitem, HTREEITEM hNewParent);
   bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CSecString &prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
-  void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
+  void UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix);
   void CollapseBranch(HTREEITEM hItem);
   CSecString GetPrefix(HTREEITEM hItem) const;
   bool CollectData(BYTE * &out_buffer, long &outLen);

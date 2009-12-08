@@ -696,6 +696,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         }
       }
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_UNDO, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_REDO, tc_dummy);
+      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
     }
@@ -718,6 +723,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_ADDGROUP, tc_dummy);
       }
+      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_UNDO, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_REDO, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
@@ -766,6 +776,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                  ID_MENUITEM_ADDGROUP, tc_dummy);
         }
       }
+      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_UNDO, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_REDO, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
@@ -860,6 +875,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       }
     } else {
       // Must be List view with no entry selected
+      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_UNDO, tc_dummy);
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_REDO, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);

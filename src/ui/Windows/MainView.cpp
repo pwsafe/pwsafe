@@ -57,32 +57,28 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void DboxMain::StopFind(LPARAM instance)
-{
-  // Callback from PWScore if the password list has been changed invalidating the 
-  // indices vector
-  DboxMain *self = (DboxMain*)instance;
-
-  self->m_core.SuspendOnListNotification();
-  self->InvalidateSearch();
-  self->OnHideFindToolBar();
-}
-
 void DboxMain::DatabaseModified(LPARAM instance, bool bChanged)
 {
+  // Callback from PWScore if the database has been changed
+  // entries or preferences stored in the database
+  DboxMain *self = (DboxMain*)instance;
+
+  // Callback from PWScore if the password list has been changed invalidating the 
+  // indices vector in Find
+  self->m_core.SuspendOnDBNotification();
+  self->InvalidateSearch();
+  self->OnHideFindToolBar();
+
   // This is to prevent Windows (Vista & later) from shutting down
   // if the database has been modified (including preferences stored in the DB)
   static bool bCurrentState(false);
-  DboxMain *self = (DboxMain*)instance;
 
   // Don't do anything if status unchanged or not at least Vista
-  if (self->m_WindowsMajorVersion < 6 || self->m_core.IsReadOnly() || bChanged == bCurrentState)
+  if (self->m_WindowsMajorVersion < 6 || 
+      self->m_core.IsReadOnly() || bChanged == bCurrentState)
     return;
 
   bCurrentState = bChanged;
-
-  // Callback from PWScore if the database has been changed
-  // entries or preferences stored in the database
 
   // Only supported on Vista and later
   if (bCurrentState) {
@@ -98,6 +94,55 @@ void DboxMain::DatabaseModified(LPARAM instance, bool bChanged)
       self->m_bBlockShutdown = false;
     }
   }
+}
+
+void DboxMain::UpdateGUI(LPARAM instance, const Command::GUI_Action &ga, uuid_array_t &entry_uuid, LPARAM lparam)
+{
+  // Callback from PWScore if GUI needs updating
+  // Note: For some values of 'ga', 'ci' is invalid
+  DboxMain *self = (DboxMain*)instance;
+  CItemData::FieldType ft;
+  CItemData *pci(NULL);
+
+  ItemListIter pos = self->Find(entry_uuid);
+  if (pos != self->End()) {
+    pci = &pos->second;
+  }
+
+  switch (ga) {
+    case Command::GUI_UPDATE_STATUSBAR:
+      self->UpdateToolBarDoUndo();
+      self->UpdateStatusBar();
+      break;
+    case Command::GUI_ADD_ENTRY:
+      self->AddToGUI(*pci);
+      break;
+    case Command::GUI_DELETE_ENTRY:
+      self->RemoveFromGUI(*pci);
+      break;
+    case Command::GUI_REFRESH_ENTRYFIELD:
+      ft = (CItemData::FieldType)lparam;
+      self->RefreshEntryFieldInGUI(*pci, ft);
+      break;
+    case Command::GUI_REFRESH_ENTRYPASSWORD:
+      self->RefreshEntryPasswordInGUI(*pci);
+      break;
+    case Command::GUI_REDO_IMPORT:
+    case Command::GUI_UNDO_IMPORT:
+    case Command::GUI_REDO_MERGESYNC:
+    case Command::GUI_UNDO_MERGESYNC:
+      self->RebuildGUI();
+      break;
+    default:
+      break;
+  }
+}
+
+void DboxMain::GUIUpdateEntry(CItemData &ci)
+{
+  // Callback from PWScore to get GUI to update its reserved field
+  DisplayInfo *pdi = new DisplayInfo;
+  ci.SetDisplayInfo(pdi);
 }
 
 //-----------------------------------------------------------------------------
@@ -236,7 +281,7 @@ void DboxMain::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-void DboxMain::UpdateToolBar(bool state)
+void DboxMain::UpdateToolBarROStatus(bool state)
 {
   if (m_toolbarsSetup == TRUE) {
     BOOL State = (state) ? FALSE : TRUE;
@@ -263,6 +308,9 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
     for (int i = 0; i < _countof(IDs); i++) {
       mainTBCtrl.EnableButton(IDs[i], State);
     }
+
+    mainTBCtrl.EnableButton(ID_MENUITEM_UNDO, m_core.AnyToUndo() ? TRUE : FALSE);
+    mainTBCtrl.EnableButton(ID_MENUITEM_REDO, m_core.AnyToRedo() ? TRUE : FALSE);
 
     uuid_array_t entry_uuid, base_uuid;
     if (pci_entry != NULL && pci_entry->IsShortcut()) {
@@ -456,16 +504,18 @@ void DboxMain::setupBars()
   m_toolbarsSetup = TRUE;
   m_MainToolBar.ShowWindow(PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar) ?
                            SW_SHOW : SW_HIDE);
-  UpdateToolBar(m_core.IsReadOnly());
+  UpdateToolBarROStatus(m_core.IsReadOnly());
   m_menuManager.SetImageList(&m_MainToolBar);
   m_menuManager.SetMapping(&m_MainToolBar);
 
-  // Register for update notification
-  m_core.RegisterOnListModified(StopFind, (LPARAM)this);
-
   // Register for database changed notification (Vista or later)
-  if (m_WindowsMajorVersion >= 6)
-    m_core.RegisterOnDBModified(DatabaseModified, (LPARAM)this);
+  m_core.RegisterOnDBModified(DatabaseModified, (LPARAM)this);
+
+  // Register for GUI Updates
+  m_core.RegisterGUINotify(UpdateGUI, (LPARAM)this);
+
+  // Register for GUI to populate its reserved field
+  m_core.RegisterGUIUpdateEntry(GUIUpdateEntry);
 
   m_DDGroup.EnableWindow(TRUE);
   m_DDGroup.ShowWindow(SW_SHOW);
@@ -484,7 +534,7 @@ void DboxMain::setupBars()
 #endif
 }
 
-void DboxMain::UpdateListItem(const int lindex, const int type, const CString &newText)
+void DboxMain::UpdateListItem(const int lindex, const int type, const StringX &newText)
 {
   int iSubItem = m_nColumnIndexByType[type];
 
@@ -492,13 +542,22 @@ void DboxMain::UpdateListItem(const int lindex, const int type, const CString &n
   if (iSubItem < 0)
     return;
 
-  BOOL brc = m_ctlItemList.SetItemText(lindex, iSubItem, newText);
+  BOOL brc = m_ctlItemList.SetItemText(lindex, iSubItem, newText.c_str());
   ASSERT(brc == TRUE);
   if (m_iTypeSortColumn == type) { // resort if necessary
     m_bSortAscending = PWSprefs::GetInstance()->GetPref(PWSprefs::SortAscending);
     m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
     FixListIndexes();
   }
+}
+
+void DboxMain::UpdateTreeItem(const HTREEITEM hItem, const StringX &newText)
+{
+  CRect rect;
+  m_ctlItemTree.SetItemText(hItem, newText.c_str());
+
+  m_ctlItemTree.GetItemRect(hItem, &rect, FALSE);
+  m_ctlItemTree.InvalidateRect(&rect);
 }
 
 // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
@@ -813,6 +872,18 @@ void DboxMain::RefreshViews(const int iView)
   HCURSOR waitCursor = app.LoadStandardCursor(IDC_WAIT);
 #endif
 
+  if (m_core.GetNumEntries() == 0) {
+    if (iView & iListOnly) {
+      m_ctlItemList.SetRedraw(TRUE); 
+      m_ctlItemList.Invalidate();
+    }
+    if (iView & iTreeOnly) {
+      m_ctlItemTree.SetRedraw(TRUE);
+      m_ctlItemTree.Invalidate();
+    }
+    return;
+  }
+
   m_bNumPassedFiltering = 0;
 
   // Get current selected items and save ptr to the entries (unchanged over 
@@ -850,7 +921,7 @@ void DboxMain::RefreshViews(const int iView)
       DisplayInfo *pdi = (DisplayInfo *)pci.GetDisplayInfo();
       if (pdi != NULL)
         pdi->list_index = -1; // easier, but less efficient, to delete pdi
-      insertItem(pci, -1, false, iView);
+      InsertItemIntoGUITreeList(pci, -1, false, iView);
     }
 
     m_ctlItemTree.SortTree(TVI_ROOT);
@@ -882,7 +953,7 @@ void DboxMain::RefreshViews(const int iView)
 
   // Select previously selected items and ensure they are visible.
   // Note: pdi->list_index and pdi->tree_item will have been changed by
-  // "insertItem" and "FixListIndexes" above.
+  // "InsertItemIntoGUITreeList" and "FixListIndexes" above.
   if (pci_List != NULL) {
     DisplayInfo *pdi = (DisplayInfo *)pci_List->GetDisplayInfo();
     m_ctlItemList.SetItemState(pdi->list_index,
@@ -980,7 +1051,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       m_savedDBprefs = prefs->Store();
 
       // Suspend notification of changes
-      m_core.SuspendOnListNotification();
       m_core.SuspendOnDBNotification();
 
       // PWSprefs::DatabaseClear == Locked
@@ -1033,8 +1103,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }
         CPWDialog::GetDialogTracker()->Apply(Shower);
+
         // Resume notification of changes
-        m_core.ResumeOnListNotification();
         m_core.ResumeOnDBNotification();
         if (m_FindToolBar.IsVisible())
           SetFindToolBar(true);
@@ -1227,8 +1297,8 @@ void DboxMain::OnChangeItemFocus(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
 // {kjp} We could use itemData.GetNotes(CString&) to reduce the number of
 // {kjp} temporary objects created and copied.
 //
-int DboxMain::insertItem(CItemData &ci, int iIndex, 
-                         const bool bSort, const int iView)
+int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex, 
+                                const bool bSort, const int iView)
 {
   // We don't show deleted entries in the Tree/List unless the user has
   // a specific filter to show them.
@@ -1377,7 +1447,8 @@ CItemData *DboxMain::getSelectedItem()
 // functor for ClearData
 struct deleteDisplayInfo {
   void operator()(pair<CUUIDGen, CItemData> p)
-  {delete p.second.GetDisplayInfo();} // no need to set to NULL
+  {delete p.second.GetDisplayInfo();
+   p.second.SetDisplayInfo(NULL);}
 };
 
 void DboxMain::ClearData(bool clearMRE)
@@ -1622,7 +1693,7 @@ void DboxMain::OnShowHideToolbar()
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowToolbar, !bState);
   m_MainToolBar.ShowWindow(bState ? SW_HIDE : SW_SHOW);
   SetToolBarPositions();
-  UpdateToolBar(m_core.IsReadOnly());
+  UpdateToolBarROStatus(m_core.IsReadOnly());
 }
 
 void DboxMain::OnShowHideDragbar() 
@@ -1637,14 +1708,14 @@ void DboxMain::OnOldToolbar()
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, false);
   SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
-  UpdateToolBar(m_core.IsReadOnly());
+  UpdateToolBarROStatus(m_core.IsReadOnly());
 }
 
 void DboxMain::OnNewToolbar() 
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, true);
   SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
-  UpdateToolBar(m_core.IsReadOnly());
+  UpdateToolBarROStatus(m_core.IsReadOnly());
 }
 
 void DboxMain::SetToolbar(const int menuItem, bool bInit)
@@ -2786,37 +2857,43 @@ void DboxMain::OnViewReports()
   csAction.LoadString(IDS_RPTCOMPARE);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(1, csAction);
+    gmb.AddButton(IDS_RPTCOMPARE, csAction);
     bReportExists = true;
   }
   csAction.LoadString(IDS_RPTFIND);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(2, csAction);
+    gmb.AddButton(IDS_RPTFIND, csAction);
     bReportExists = true;
   }
   csAction.LoadString(IDS_RPTIMPORTTEXT);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(3, csAction);
+    gmb.AddButton(IDS_RPTIMPORTTEXT, csAction);
     bReportExists = true;
   }
   csAction.LoadString(IDS_RPTIMPORTXML);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(4, csAction);
+    gmb.AddButton(IDS_RPTIMPORTXML, csAction);
     bReportExists = true;
   }
   csAction.LoadString(IDS_RPTMERGE);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(5, csAction);
+    gmb.AddButton(IDS_RPTMERGE, csAction);
+    bReportExists = true;
+  }
+  csAction.LoadString(IDS_RPTSYNCH);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
+  if (::_tstat(cs_filename, &statbuf) == 0) {
+    gmb.AddButton(IDS_RPTSYNCH, csAction);
     bReportExists = true;
   }
   csAction.LoadString(IDS_RPTVALIDATE);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(6, csAction);
+    gmb.AddButton(IDS_RPTVALIDATE, csAction);
     bReportExists = true;
   }
 
@@ -2826,29 +2903,20 @@ void DboxMain::OnViewReports()
     return;
   }
 
-  gmb.AddButton(6, IDS_CANCEL, TRUE, TRUE);
+  gmb.AddButton(IDCANCEL, IDS_CANCEL, TRUE, TRUE);
   gmb.SetStandardIcon(MB_ICONQUESTION);
 
   INT_PTR rc = gmb.DoModal();
   UINT uistring(0);
   switch (rc) {
-    case 1:
-      uistring = IDS_RPTCOMPARE;
-      break;
-    case 2:
-      uistring = IDS_RPTFIND;
-      break;
-    case 3:
-      uistring = IDS_RPTIMPORTTEXT;
-      break;
-    case 4:
-      uistring = IDS_RPTIMPORTXML;
-      break;
-    case 5:
-      uistring = IDS_RPTMERGE;
-      break;
-    case 6:
-      uistring = IDS_RPTVALIDATE;
+    case IDS_RPTCOMPARE:
+    case IDS_RPTFIND:
+    case IDS_RPTIMPORTTEXT:
+    case IDS_RPTIMPORTXML:
+    case IDS_RPTMERGE:
+    case IDS_RPTSYNCH:
+    case IDS_RPTVALIDATE:
+      uistring = rc;
       break;
     default:
       return;
@@ -2863,7 +2931,7 @@ void DboxMain::OnViewReports()
 void DboxMain::OnViewReports(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_REPORT_COMPARE) &&
-    (nID <= ID_MENUITEM_REPORT_VALIDATE));
+    (nID <= ID_MENUITEM_REPORT_VALIDATE || nID == ID_MENUITEM_REPORT_SYNCHRONIZE));
 
   CString cs_filename, cs_path, csAction;
   CString cs_drive, cs_directory;
@@ -2887,6 +2955,9 @@ void DboxMain::OnViewReports(UINT nID)
       break;
     case ID_MENUITEM_REPORT_MERGE:
       uistring = IDS_RPTMERGE;
+      break;
+    case ID_MENUITEM_REPORT_SYNCHRONIZE:
+      uistring = IDS_RPTSYNCH;
       break;
     case ID_MENUITEM_REPORT_VALIDATE:
       uistring = IDS_RPTVALIDATE;
@@ -2995,6 +3066,9 @@ int DboxMain::OnUpdateViewReports(const int nID)
     case ID_MENUITEM_REPORT_MERGE:
       uistring = IDS_RPTMERGE;
       break;
+    case ID_MENUITEM_REPORT_SYNCHRONIZE:
+      uistring = IDS_RPTSYNCH;
+      break;
     case ID_MENUITEM_REPORT_VALIDATE:
       uistring = IDS_RPTVALIDATE;
       break;
@@ -3053,7 +3127,7 @@ void DboxMain::SetFindToolBar(bool bShow)
     return;
 
   if (bShow)
-    m_core.ResumeOnListNotification();
+    m_core.ResumeOnDBNotification();
 
   m_FindToolBar.ShowFindToolBar(bShow);
 
@@ -3310,6 +3384,7 @@ void DboxMain::OnToolBarFindReport()
     rpt.WriteLine((LPCWSTR)buffer);
 
     buffer = L"\t";
+    // Non-time fields
     if (bsFFields.test(CItemData::GROUP))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_FINDGROUP));
     if (bsFFields.test(CItemData::TITLE))
@@ -3716,4 +3791,85 @@ void DboxMain::OnShowUnsavedEntries()
     m_bUnsavedDisplayed ? FALSE : TRUE);
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MANAGEFILTERS,
     m_bUnsavedDisplayed ? FALSE : TRUE);
+}
+
+void DboxMain::UpdateToolBarDoUndo()
+{
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_UNDO,
+      (m_core.AnyToUndo()) ? TRUE : FALSE);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_REDO,
+      (m_core.AnyToRedo()) ? TRUE : FALSE);
+}
+
+void DboxMain::AddToGUI(CItemData &ci)
+{
+  uuid_array_t uuid;
+  ci.GetUUID(uuid);
+  int newpos = InsertItemIntoGUITreeList(m_core.GetEntry(m_core.Find(uuid)));
+  if (newpos >= 0) {
+    SelectEntry(newpos);
+    FixListIndexes();
+  }
+  RefreshViews();
+}
+
+void DboxMain::RemoveFromGUI(CItemData &ci)
+{
+  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+
+  if (pdi != NULL) {
+    HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
+                           TVGN_PREVIOUSVISIBLE);
+    m_ctlItemTree.SelectItem(hItem);
+
+    m_ctlItemList.DeleteItem(pdi->list_index);
+    m_ctlItemTree.DeleteWithParents(pdi->tree_item);
+    FixListIndexes();
+
+    // Make controls redraw
+    m_ctlItemList.Invalidate();
+    m_ctlItemTree.Invalidate();
+  }
+}
+
+void DboxMain::RefreshEntryPasswordInGUI(CItemData &ci)
+{
+  // For when Entry's password + PW history has been updated
+  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+
+  UpdateListItem(pdi->list_index, CItemData::PWHIST, ci.GetPWHistory());
+
+  RefreshEntryFieldInGUI(ci, CItemData::PASSWORD);
+}
+
+void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
+{
+  // For when any field is updated
+  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+
+  UpdateListItem(pdi->list_index, ft, ci.GetFieldValue(ft));
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+  bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
+
+  if (ft == CItemData::TITLE ||
+      (ft == CItemData::USER && bShowUsernameInTree) ||
+      (ft == CItemData::PASSWORD && bShowPasswordInTree)) {
+    StringX treeDispString = ci.GetTitle();
+
+    if (bShowUsernameInTree)
+      treeDispString += L" [" + ci.GetUser() + L"]";
+    if (bShowPasswordInTree)
+      treeDispString += L" {" + ci.GetPassword() + L"}";
+
+    UpdateTreeItem(pdi->tree_item, treeDispString);
+  }
+}
+
+void DboxMain::RebuildGUI()
+{
+  m_ctlItemList.DeleteAllItems();
+  m_ctlItemTree.DeleteAllItems();
+  RefreshViews();
 }

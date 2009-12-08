@@ -13,6 +13,7 @@
 #include "../ItemData.h"
 #include "../UUIDGen.h"
 #include "../UnknownField.h"
+#include "../Command.h"
 
 // Entry types
 enum {NORMAL = 0, ALIAS, SHORTCUT};
@@ -72,14 +73,14 @@ public:
                     const stringT &ImportedPrefix, const TCHAR &delimiter,
                     const bool &bImportPSWDsOnly,
                     UUIDList *possible_aliases, UUIDList *possible_shortcuts,
-                    std::vector<StringX> * pvgroups);
+                    MultiCommands *pmulticmds);
 
   bool getIfErrors() {return m_bErrors;}
   int getErrorCode() {return m_iErrorCode;}
   stringT getErrorMessage() {return m_strErrorMessage;}
   stringT getImportErrors() {return m_strImportErrors;}
 
-  vdb_entries & getVDB_Entries() {return ventries;}
+  vdb_entries & getVDB_Entries() {return m_ventries;}
   stringT getDefaultAutotypeString() {return m_sDefaultAutotypeString;}
   stringT getDefaultUsername() {return m_sDefaultUsername;}
   TCHAR getDelimiter() {return m_delimiter;}
@@ -95,7 +96,7 @@ protected:
   void AddEntries();
   void AddDBUnknownFieldsPreferences(UnknownFieldList &uhfl);
 
-  vdb_entries ventries;
+  vdb_entries m_ventries;
   pw_entry *cur_entry;
   pwhistory_entry *cur_pwhistory_entry;
 
@@ -117,10 +118,10 @@ protected:
 
 private:
   // Local variables
-  PWScore *m_xmlcore;
+  PWScore *m_pxmlcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
-  std::vector<StringX> * m_pvgroups;
+  MultiCommands *m_pmulticmds;
 
   int m_whichtime, m_ipwh;
   int m_fieldlen;

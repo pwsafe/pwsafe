@@ -267,12 +267,12 @@ start_errors:
   // Non validating parser, so we have to tidy up now
   vdb_entries::iterator entry_iter;
 
-  for (entry_iter = ventries.begin(); entry_iter != ventries.end(); entry_iter++) {
+  for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
     pw_entry *cur_entry = *entry_iter;
     delete cur_entry;
   }
 
-  ventries.clear();
+  m_ventries.clear();
   if (cur_entry) {
     cur_entry->uhrxl.clear();
     delete cur_entry;
@@ -332,12 +332,12 @@ end_errors:
   // Non validating parser, so we have to tidy up now
   vdb_entries::iterator entry_iter;
 
-  for (entry_iter = ventries.begin(); entry_iter != ventries.end(); entry_iter++) {
+  for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
     pw_entry *cur_entry = *entry_iter;
     delete cur_entry;
   }
 
-  ventries.clear();
+  m_ventries.clear();
   if (cur_entry) {
     cur_entry->uhrxl.clear();
     delete cur_entry;

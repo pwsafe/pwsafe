@@ -114,10 +114,10 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
   int xint(0);
 
   switch (ft) {
-    case GROUPTITLE:  /* 00 */
+    case GROUPTITLE: /* 00 */
       str = GetGroup() + TCHAR('.') + GetTitle();
       break;
-    case UUID:        /* 01 */
+    case UUID:       /* 01 */
     {
       uuid_array_t uuid_array = {0};
       GetUUID(uuid_array);
@@ -1265,6 +1265,71 @@ bool CItemData::SetDCA(const stringT &cs_DCA)
     }
   }
   return false;
+}
+
+void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
+{
+  switch (ft) {
+    case GROUP:      /* 02 */
+      SetGroup(value);
+      break;
+    case TITLE:      /* 03 */
+      SetTitle(value);
+      break;
+    case USER:       /* 04 */
+      SetUser(value);
+      break;
+    case NOTES:      /* 05 */
+      SetNotes(value);
+      break;
+    case PASSWORD:   /* 06 */
+      SetPassword(value);
+      break;
+    case CTIME:      /* 07 */
+      SetCTime(value.c_str());
+      break;
+    case PMTIME:     /* 08 */
+      SetPMTime(value.c_str());
+      break;
+    case ATIME:      /* 09 */
+      SetATime(value.c_str());
+      break;
+    case XTIME:      /* 0a */
+      SetXTime(value.c_str());
+      break;
+    case RMTIME:     /* 0c */
+      SetRMTime(value.c_str());
+      break;
+    case URL:        /* 0d */
+      SetURL(value);
+      break;
+    case AUTOTYPE:   /* 0e */
+      SetAutoType(value);
+      break;
+    case PWHIST:     /* 0f */
+      SetPWHistory(value);
+      break;
+    case POLICY:     /* 10 */
+      SetPWPolicy(value.c_str());
+      break;
+    case XTIME_INT:  /* 11 */
+      SetXTimeInt(value.c_str());
+      break;
+    case RUNCMD:     /* 12 */
+      SetRunCommand(value);
+      break;
+    case DCA:        /* 13 */
+      SetDCA(value.c_str());
+      break;
+    case EMAIL:      /* 14 */
+      SetEmail(value);
+      break;
+    case GROUPTITLE: /* 00 */
+    case UUID:       /* 01 */
+    case RESERVED:   /* 0b */
+    default:
+      ASSERT(0);     /* Not supported */
+  }
 }
 
 BlowFish *CItemData::MakeBlowFish() const

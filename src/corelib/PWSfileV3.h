@@ -35,10 +35,10 @@ public:
     HDR_LAST,                          // Start of unknown fields!
     HDR_END = 0xff};                   // header field types, per formatV{2,3}.txt
 
-  static int CheckPassword(const StringX &filename,
-                           const StringX &passkey,
-                           FILE *a_fd = NULL,
-                           unsigned char *aPtag = NULL, int *nIter = NULL);
+  static int CheckPasskey(const StringX &filename,
+                          const StringX &passkey,
+                          FILE *a_fd = NULL,
+                          unsigned char *aPtag = NULL, int *nIter = NULL);
   static bool IsV3x(const StringX &filename, VERSION &v);
 
   PWSfileV3(const StringX &filename, RWmode mode, VERSION version);

@@ -12,6 +12,7 @@
 
 #include "DboxMain.h"
 
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory dialog
 #include "Options_PropertyPage.h"
@@ -24,7 +25,6 @@ class COptionsPasswordHistory : public COptions_PropertyPage
 public:
   COptionsPasswordHistory();
   ~COptionsPasswordHistory();
-  DboxMain *m_pDboxMain;
 
   const wchar_t *GetHelpName() const {return L"password_history_tab";}
 
@@ -55,7 +55,6 @@ protected:
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg BOOL OnKillActive();
   afx_msg void OnSavePWHistory();
-  afx_msg void OnApplyPWHChanges();
   afx_msg void OnPWHistoryNoAction();
   afx_msg void OnPWHistoryDoAction();
   //}}AFX_MSG

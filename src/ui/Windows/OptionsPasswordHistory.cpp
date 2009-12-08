@@ -64,7 +64,6 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(COptionsPasswordHistory, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordHistory)
   ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
-  ON_BN_CLICKED(IDC_APPLYPWHCHANGESNOW, OnApplyPWHChanges)
   //}}AFX_MSG_MAP
   ON_BN_CLICKED(IDC_PWHISTORYNOACTION, OnPWHistoryNoAction)
   ON_BN_CLICKED(IDC_RESETPWHISTORYOFF, OnPWHistoryDoAction)
@@ -92,6 +91,9 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 
   m_savesavepwhistory = m_savepwhistory;
   m_savepwhistorynumdefault = m_pwhistorynumdefault;
+
+  // Disable text re: PWHistory changes on existing entries to start
+  GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
 
   // Tooltips on Property Pages
   EnableToolTips();
@@ -144,18 +146,6 @@ void COptionsPasswordHistory::OnSavePWHistory()
   GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(enable);
 }
 
-void COptionsPasswordHistory::OnApplyPWHChanges()
-{
-  ASSERT(m_pDboxMain != NULL);
-
-  UpdateData(TRUE);
-  m_pDboxMain->UpdatePasswordHistory(m_pwhaction, m_pwhistorynumdefault);
-
-  m_pwhaction = 0;
-  GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
-  UpdateData(FALSE);
-}
-
 // Override PreTranslateMessage() so RelayEvent() can be 
 // called to pass a mouse message to CPWSOptions's 
 // tooltip control for processing.
@@ -190,10 +180,10 @@ LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )
 
 void COptionsPasswordHistory::OnPWHistoryNoAction()
 {
-  GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
+  GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
 }
 
 void COptionsPasswordHistory::OnPWHistoryDoAction() 
 {
-  GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(TRUE);
+  GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(TRUE);
 }

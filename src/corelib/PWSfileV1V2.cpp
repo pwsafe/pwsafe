@@ -150,7 +150,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
       status = WriteV2Header();
     }
   } else { // open for read
-    status = CheckPassword(m_filename, m_passkey, m_fd);
+    status = CheckPasskey(m_filename, m_passkey, m_fd);
     if (status != SUCCESS) {
 #ifdef UNICODE
       trashMemory(pstr, 3*passLen);
@@ -179,8 +179,8 @@ int PWSfileV1V2::Close()
   return PWSfile::Close();
 }
 
-int PWSfileV1V2::CheckPassword(const StringX &filename,
-                               const StringX &passkey, FILE *a_fd)
+int PWSfileV1V2::CheckPasskey(const StringX &filename,
+                              const StringX &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
   if (fd == NULL) {

@@ -16,7 +16,7 @@
 #include "PwFont.h"
 
 #include "corelib/PwsPlatform.h"
-#include "corelib/PWScore.h" // for error statuses from CheckPassword()
+#include "corelib/PWScore.h"    // for error statuses from CheckPasskey()
 #include "corelib/PWCharPool.h" // for CheckPassword()
 #include "corelib/pwsprefs.h"
 
@@ -132,7 +132,7 @@ void CPasskeyChangeDlg::OnOK()
 
   UpdateData(TRUE);
   CGeneralMsgBox gmb;
-  int rc = app.m_core.CheckPassword(app.m_core.GetCurFile(), m_oldpasskey);
+  int rc = app.m_core.CheckPasskey(app.m_core.GetCurFile(), m_oldpasskey);
   if (rc == PWScore::WRONG_PASSWORD)
     gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)

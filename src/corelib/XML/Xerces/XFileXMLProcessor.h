@@ -58,14 +58,14 @@ class PWScore;
 class XFileXMLProcessor
 {
 public:
-  XFileXMLProcessor(PWScore *core, UUIDList *possible_aliases, UUIDList *possible_shortcuts);
+  XFileXMLProcessor(PWScore *core, UUIDList *possible_aliases,
+                    UUIDList *possible_shortcuts, MultiCommands *p_multicmds);
   ~XFileXMLProcessor();
 
   bool Process(const bool &bvalidation, const stringT &ImportedPrefix, 
                const stringT &strXMLFileName, const stringT &strXSDFileName,
                const bool &bImportPSWDsOnly,
-               int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl,
-               std::vector<StringX> * pvgroups);
+               int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl);
 
   stringT getResultText() {return m_strResultText;}
   int getNumEntriesValidated() {return m_numEntriesValidated;}
@@ -74,9 +74,11 @@ public:
   bool getIfRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
 private:
-  PWScore *m_xmlcore;
+  PWScore *m_pxmlcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
+  MultiCommands *m_pmulticmds;
+
   stringT m_strResultText;
   int m_numEntriesValidated, m_numEntriesImported;
   TCHAR m_delimiter;

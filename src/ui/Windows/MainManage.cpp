@@ -51,7 +51,7 @@ void DboxMain::OnPasswordChange()
   INT_PTR rc = changeDlg.DoModal();
 
   if (rc == IDOK) {
-    m_core.ChangePassword(changeDlg.m_newpasskey);
+    m_core.ChangePasskey(changeDlg.m_newpasskey);
   }
 }
 
@@ -228,6 +228,7 @@ void DboxMain::OnValidate()
 void DboxMain::OnOptions() 
 {
   const CString PWSLnkName(L"Password Safe"); // for startup shortcut
+
   COptions_PropertySheet  optionsPS(IDS_OPTIONS, this);
   COptionsDisplay         display;
   COptionsSecurity        security;
@@ -435,14 +436,16 @@ void DboxMain::OnOptions()
   brc = UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
 #endif
 
-  passwordhistory.m_pDboxMain = this;
-
   INT_PTR rc = optionsPS.DoModal();
 
   if (rc == IDOK) {
     /*
     **  Now save all the options.
     */
+    // But save database preferences first!
+    const bool bOldDBPrefChangedState = prefs->IsDBprefsChanged();
+    const StringX oldprefString(prefs->Store());
+
     prefs->SetPref(PWSprefs::AlwaysOnTop,
       display.m_alwaysontop == TRUE);
     prefs->SetPref(PWSprefs::ShowPWDefault,
@@ -640,18 +643,39 @@ void DboxMain::OnOptions()
                             SBPS_STRETCH, NULL);
 #endif
 
+    // Maybe needed if this causes changes to database
+    // (currently only DB preferences + updating PWHistory in exisiting entries)
+    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+
     /*
     ** Update string in database, if necessary & possible (i.e. ignore if R-O)
     */
-    if (prefs->IsDBprefsChanged() && !m_core.GetCurFile().empty() &&
+    if (prefs->IsDBprefsChanged() != bOldDBPrefChangedState &&
+        !m_core.GetCurFile().empty() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (!m_core.IsReadOnly()) {
-        const StringX prefString(prefs->Store());
-        SetChanged(m_core.HaveHeaderPreferencesChanged(prefString) ? 
-                        DBPrefs : ClearDBPrefs);
+        StringX newprefString(prefs->Store());
+        if (oldprefString != newprefString) {
+          // Now put things back so that it can be done via Execute and so
+          // eligible for Undo/Redo
+          prefs->Load(oldprefString);
+          Command *pcmd = new DBPrefsCommand(&m_core, newprefString);
+          pmulticmds->Add(pcmd);
+        }
         ChangeOkUpdate();
       }
     }
+
+    const int iAction = passwordhistory.m_pwhaction;
+    const int new_default_max = passwordhistory.m_pwhistorynumdefault;
+    size_t ipwh_exec(0);
+
+    if (iAction != 0) {
+      Command *pcmd = new UpdatePasswordHistoryCommand(&m_core, iAction, new_default_max);
+      pmulticmds->Add(pcmd);
+      ipwh_exec = pmulticmds->GetSize();
+    }
+
     /*
     **  Now update the application according to the options.
     */
@@ -817,7 +841,41 @@ void DboxMain::OnOptions()
         m_bDoShortcuts[i] = true;
       }
     }
-  }
+
+    // If DB preferences changed and/or password history options
+    if (pmulticmds != NULL && pmulticmds->GetSize() > 0) {
+      pmulticmds->Execute();
+      if (ipwh_exec > 0) {
+        // We did do PWHistory update
+        int num_altered(0);
+        if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
+          UINT uimsg_id(0);
+          switch (iAction) {
+            case 1:   // reset off
+              uimsg_id = IDS_ENTRIESCHANGEDSTOP;
+              break;
+            case 2:   // reset on
+              uimsg_id = IDS_ENTRIESCHANGEDSAVE;
+              break;
+            case 3:   // setmax
+              uimsg_id = IDS_ENTRIESRESETMAX;
+              break;
+            default:
+              ASSERT(0);
+              break;
+          } // switch (iAction)
+
+          if (uimsg_id > 0) {
+            CGeneralMsgBox gmb;
+            CString cs_Msg;
+            cs_Msg.Format(uimsg_id, num_altered);
+            gmb.AfxMessageBox(cs_Msg);
+          }
+        }
+      } else
+        delete pmulticmds;
+  }  // rc == IDOK
+
   // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
   // Restore hotkey as it was or as user changed it - if he/she pressed OK
@@ -841,135 +899,4 @@ void DboxMain::OnOptions()
   }
 #endif
 }
-
-// functor objects for updating password history for each entry
-
-struct HistoryUpdater {
-  HistoryUpdater(int &num_altered) : m_num_altered(num_altered)
-  {}
-  virtual void operator() (CItemData &ci) = 0;
-protected:
-  int &m_num_altered;
-};
-
-struct HistoryUpdateResetOff : public HistoryUpdater {
-  HistoryUpdateResetOff(int &num_altered) : HistoryUpdater(num_altered) {}
-  void operator()(CItemData &ci)
-  {
-    StringX cs_tmp = ci.GetPWHistory();
-    if (cs_tmp.length() >= 5 && cs_tmp[0] == L'1') {
-      cs_tmp[0] = L'0';
-      ci.SetPWHistory(cs_tmp);
-      m_num_altered++;
-    }
-  }
-};
-
-struct HistoryUpdateResetOn : public HistoryUpdater {
-  HistoryUpdateResetOn(int &num_altered,
-    int new_default_max) : HistoryUpdater(num_altered)
-  {m_text.Format(L"1%02x00", new_default_max);}
-  void operator()(CItemData &ci)
-  {
-    StringX cs_tmp = ci.GetPWHistory();
-    if (cs_tmp.length() < 5) {
-      ci.SetPWHistory(LPCWSTR(m_text));
-      m_num_altered++;
-    } else {
-      if (cs_tmp[0] == L'0') {
-        cs_tmp[0] = L'1';
-        ci.SetPWHistory(cs_tmp);
-        m_num_altered++;
-      }
-    }
-  }
-private:
-  CString m_text;
-};
-
-struct HistoryUpdateSetMax : public HistoryUpdater {
-  HistoryUpdateSetMax(int &num_altered,
-    int new_default_max) : HistoryUpdater(num_altered),
-    m_new_default_max(new_default_max)
-  {m_text.Format(L"1%02x", new_default_max);}
-  void operator()(CItemData &ci)
-  {
-    StringX cs_tmp = ci.GetPWHistory();
-
-    int len = cs_tmp.length();
-    if (len >= 5) {
-      int status, old_max, num_saved;
-      const wchar_t *lpszPWHistory = cs_tmp.c_str();
-#if (_MSC_VER >= 1400)
-      int iread = swscanf_s(lpszPWHistory, L"%01d%02x%02x", 
-                             &status, &old_max, &num_saved);
-#else
-      int iread = swscanf(lpszPWHistory, L"%01d%02x%02x",
-                           &status, &old_max, &num_saved);
-#endif
-      if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
-        cs_tmp = LPCWSTR(m_text) + cs_tmp.substr(3);
-        ci.SetPWHistory(cs_tmp);
-        m_num_altered++;
-      }
-    }
-  }
-private:
-  int m_new_default_max;
-  CString m_text;
-};
-
-void DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
-{
-  int ids = 0;
-  int num_altered = 0;
-  HistoryUpdater *updater = NULL;
-
-  HistoryUpdateResetOff reset_off(num_altered);
-  HistoryUpdateResetOn reset_on(num_altered, new_default_max);
-  HistoryUpdateSetMax set_max(num_altered, new_default_max);
-
-  switch (iAction) {
-    case 1:   // reset off
-      updater = &reset_off;
-      ids = IDS_ENTRIESCHANGEDSTOP;
-      break;
-    case 2:   // reset on
-      updater = &reset_on;
-      ids = IDS_ENTRIESCHANGEDSAVE;
-      break;
-    case 3:   // setmax
-      updater = &set_max;
-      ids = IDS_ENTRIESRESETMAX;
-      break;
-    default:
-      ASSERT(0);
-      break;
-  } // switch (iAction)
-
-  /**
-  * Interesting problem - a for_each iterator
-  * cause a copy c'tor of the pair to be invoked, resulting
-  * in a temporary copy of the CItemDatum being modified.
-  * Couldn't find a handy way to workaround this (e.g.,
-  * operator()(pair<...> &p) failed to compile
-  * so reverted to slightly less elegant for loop
-  * using polymorphism for the history updater
-  * is an unrelated tweak.
-  */
-
-  if (updater != NULL) {
-    ItemListIter listPos;
-    for (listPos = m_core.GetEntryIter();
-      listPos != m_core.GetEntryEndIter();
-      listPos++) {
-        CItemData &curitem = m_core.GetEntry(listPos);
-        (*updater)(curitem);
-    }
-
-    CGeneralMsgBox gmb;
-    CString cs_Msg;
-    cs_Msg.Format(ids, num_altered);
-    gmb.AfxMessageBox(cs_Msg);
-  }
 }

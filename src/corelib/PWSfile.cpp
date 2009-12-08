@@ -189,8 +189,8 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
   return retval;
 }
 
-int PWSfile::CheckPassword(const StringX &filename,
-                           const StringX &passkey, VERSION &version)
+int PWSfile::CheckPasskey(const StringX &filename,
+                          const StringX &passkey, VERSION &version)
 {
 
   if (passkey.empty())
@@ -198,11 +198,11 @@ int PWSfile::CheckPassword(const StringX &filename,
 
   int status;
   version = UNKNOWN_VERSION;
-  status = PWSfileV3::CheckPassword(filename, passkey);
+  status = PWSfileV3::CheckPasskey(filename, passkey);
   if (status == SUCCESS)
     version = V30;
   if (status == NOT_PWS3_FILE) {
-    status = PWSfileV1V2::CheckPassword(filename, passkey);
+    status = PWSfileV1V2::CheckPasskey(filename, passkey);
     if (status == SUCCESS)
       version = V20; // or V17?
   }

@@ -37,6 +37,7 @@
 #include "../PWScore.h"
 #include "../PWSfileV3.h"
 #include "../VerifyFormat.h"
+#include "../Command.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -81,16 +82,16 @@ void XMLFileHandlers::SetVariables(PWScore *core, const bool &bValidation,
                                    const stringT &ImportedPrefix, const TCHAR &delimiter,
                                    const bool &bImportPSWDsOnly,
                                    UUIDList *possible_aliases, UUIDList *possible_shortcuts,
-                                   std::vector<StringX> * pvgroups)
+                                   MultiCommands *pmulticmds)
 {
   m_bValidation = bValidation;
   m_delimiter = delimiter;
-  m_xmlcore = core;
+  m_pxmlcore = core;
   m_possible_aliases = possible_aliases;
   m_possible_shortcuts = possible_shortcuts;
   m_ImportedPrefix = ImportedPrefix;
-  m_pvgroups = pvgroups;
   m_bImportPSWDsOnly = bImportPSWDsOnly;
+  m_pmulticmds = pmulticmds;
 }
 
 bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
@@ -174,7 +175,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_bheader = false;
       break;
     case XLE_ENTRY:
-      ventries.push_back(cur_entry);
+      m_ventries.push_back(cur_entry);
       m_numEntries++;
       break;
     case XLE_DISPLAYEXPANDEDADDEDITDLG:
@@ -514,13 +515,16 @@ void XMLFileHandlers::AddEntries()
   CItemData tempitem;
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
-  bool bIntoEmpty = m_xmlcore->GetNumEntries() == 0;
+  bool bIntoEmpty = m_pxmlcore->GetNumEntries() == 0;
 
-  for (entry_iter = ventries.begin(); entry_iter != ventries.end(); entry_iter++) {
+  Command *pcmd1 = new UpdateGUICommand(m_pxmlcore, Command::WN_UNDO, Command::GUI_UNDO_IMPORT);
+  m_pmulticmds->Add((Command *)pcmd1);
+
+  for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
     pw_entry *cur_entry = *entry_iter;
     if (m_bImportPSWDsOnly) {
-      ItemListIter iter = m_xmlcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
-      if (iter == m_xmlcore->GetEntryEndIter()) {
+      ItemListIter iter = m_pxmlcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
+      if (iter == m_pxmlcore->GetEntryEndIter()) {
         stringT csError, cs_id;
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
         Format(csError, IDSC_IMPORTRECNOTFOUND, cs_id.c_str(), cur_entry->id, 
@@ -529,12 +533,12 @@ void XMLFileHandlers::AddEntries()
         m_numEntries--;
       } else {
         CItemData *pci = &iter->second;
-        pci->UpdatePassword(cur_entry->password);
+        Command *pcmd = new UpdatePasswordCommand(m_pxmlcore, *pci, cur_entry->password);
+        pcmd->SetNoNotify();
+        m_pmulticmds->Add((Command *)pcmd);
         if (bMaintainDateTimeStamps) {
           pci->SetATime();
         }
-        m_pvgroups->push_back(cur_entry->group);
-        pci->SetStatus(CItemData::ES_MODIFIED);
       }
       delete cur_entry;
       continue;
@@ -561,7 +565,7 @@ void XMLFileHandlers::AddEntries()
       }
       memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array));
       if (nscanned != sizeof(uuid_array_t) ||
-        m_xmlcore->Find(uuid_array) != m_xmlcore->GetEntryEndIter())
+        m_pxmlcore->Find(uuid_array) != m_pxmlcore->GetEntryEndIter())
         tempitem.CreateUUID();
       else {
         tempitem.SetUUID(uuid_array);
@@ -573,8 +577,8 @@ void XMLFileHandlers::AddEntries()
     }
     EmptyIfOnlyWhiteSpace(cur_entry->group);
     newgroup += cur_entry->group;
-    if (m_xmlcore->Find(newgroup, cur_entry->title,
-                        cur_entry->username) != m_xmlcore->GetEntryEndIter()) {
+    if (m_pxmlcore->Find(newgroup, cur_entry->title,
+                        cur_entry->username) != m_pxmlcore->GetEntryEndIter()) {
         // Find a unique "Title"
         StringX Unique_Title;
         ItemListConstIter iter;
@@ -584,9 +588,9 @@ void XMLFileHandlers::AddEntries()
           i++;
           Format(s_import, IDSC_IMPORTNUMBER, i);
           Unique_Title = cur_entry->title + s_import.c_str();
-          iter = m_xmlcore->Find(newgroup, Unique_Title,
+          iter = m_pxmlcore->Find(newgroup, Unique_Title,
                                  cur_entry->username);
-        } while (iter != m_xmlcore->GetEntryEndIter());
+        } while (iter != m_pxmlcore->GetEntryEndIter());
         cur_entry->title = Unique_Title;
     }
     tempitem.SetGroup(newgroup);
@@ -691,13 +695,19 @@ void XMLFileHandlers::AddEntries()
     }
 
     if (!bIntoEmpty) {
-      m_pvgroups->push_back(newgroup);
       tempitem.SetStatus(CItemData::ES_ADDED);
     }
-    m_xmlcore->AddEntry(tempitem);
+
+    if (m_pxmlcore->m_pfcnGUIUpdateEntry != NULL) {
+      m_pxmlcore->m_pfcnGUIUpdateEntry(tempitem);
+    }
+    Command *pcmd = new AddEntryCommand(m_pxmlcore, tempitem);
+    pcmd->SetNoNotify();
+    m_pmulticmds->Add(pcmd);
     delete cur_entry;
   }
-  ventries.clear();
+  Command *pcmd2 = new UpdateGUICommand(m_pxmlcore, Command::WN_REDO, Command::GUI_REDO_IMPORT);
+  m_pmulticmds->Add((Command *)pcmd2);
 }
 
 void XMLFileHandlers::AddDBUnknownFieldsPreferences(UnknownFieldList &uhfl)

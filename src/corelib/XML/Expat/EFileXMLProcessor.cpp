@@ -94,9 +94,11 @@ static void WFile_free(void *p)
 
 EFileXMLProcessor::EFileXMLProcessor(PWScore *core,
                                      UUIDList *possible_aliases,
-                                     UUIDList *possible_shortcuts)
-  : m_xmlcore(core), m_delimiter(TCHAR('^')),
-    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
+                                     UUIDList *possible_shortcuts,
+                                     MultiCommands *p_multicmds)
+  : m_pxmlcore(core), m_delimiter(TCHAR('^')),
+    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
+    m_pmulticmds(p_multicmds)
 {
   pSecMM = new ESecMemMgr;
   pFileHandler = new EFileHandlers;
@@ -123,8 +125,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
                                 const bool &bImportPSWDsOnly,
                                 int &nITER,
                                 int &nRecordsWithUnknownFields,
-                                UnknownFieldList &uhfl,
-                                std::vector<StringX> * pvgroups)
+                                UnknownFieldList &uhfl)
 {
   // Open the file
   std::FILE *fd = NULL;
@@ -137,18 +138,18 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
     return false;
 
   bool bEerrorOccurred = false;
-  bool b_into_empty = m_xmlcore->GetNumEntries() == 0;
+  bool b_into_empty = m_pxmlcore->GetNumEntries() == 0;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
   LoadAString(cs_import, IDSC_XMLIMPORT);
   m_strResultText = _T("");
 
-  pFileHandler->SetVariables(bvalidation ? NULL : m_xmlcore, bvalidation, 
+  pFileHandler->SetVariables(bvalidation ? NULL : m_pxmlcore, bvalidation, 
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              bvalidation ? NULL : m_possible_aliases, 
                              bvalidation ? NULL : m_possible_shortcuts,
-                             pvgroups);
+                             m_pmulticmds);
 
   // Tell Expat about our memory suites
   XML_Memory_Handling_Suite ms = {WFile_malloc, WFile_realloc, WFile_free};

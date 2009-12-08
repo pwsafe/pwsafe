@@ -52,6 +52,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_COMPARE             32019
 #define ID_MENUITEM_PROPERTIES          32020
 #define ID_MENUITEM_EXIT                32021
+#define ID_MENUITEM_SYNCHRONIZE         32022
 
 // Edit menu
 #define ID_EDITMENU                     32050
@@ -86,6 +87,8 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_FINDELLIPSIS        32079
 #define ID_MENUITEM_COPYRUNCOMMAND      32080
 #define ID_MENUITEM_EDITBASEENTRY       32081
+#define ID_MENUITEM_UNDO                32082
+#define ID_MENUITEM_REDO                32083
 
 // View menu
 #define ID_VIEWMENU                     32101
@@ -115,6 +118,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_REPORT_VALIDATE     32125
 #define ID_MENUITEM_VKEYBOARDFONT       32126
 #define ID_MENUITEM_SHOWHIDE_UNSAVED    32127
+#define ID_MENUITEM_REPORT_SYNCHRONIZE  32128
 
 // Manage menu
 #define ID_MANAGEMENU                   32150

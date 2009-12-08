@@ -65,9 +65,11 @@ static char THIS_FILE[] = __FILE__;
 
 XFileXMLProcessor::XFileXMLProcessor(PWScore *core, 
                                      UUIDList *possible_aliases,
-                                     UUIDList *possible_shortcuts)
-  : m_xmlcore(core), m_delimiter(TCHAR('^')),
-    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
+                                     UUIDList *possible_shortcuts,
+                                     MultiCommands *p_multicmds)
+  : m_pxmlcore(core), m_delimiter(TCHAR('^')),
+    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
+    m_pmulticmds(p_multicmds)
 {
 }
 
@@ -80,7 +82,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
                                 const bool &bImportPSWDsOnly,
                                 int &nITER, int &nRecordsWithUnknownFields, 
-                                UnknownFieldList &uhfl, std::vector<StringX> * pvgroups)
+                                UnknownFieldList &uhfl)
 {
   bool bEerrorOccurred = false;
   bool b_into_empty = false;
@@ -144,13 +146,13 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
-  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_xmlcore, m_bValidation, 
+  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_pxmlcore, m_bValidation, 
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              m_bValidation ? NULL : m_possible_aliases, 
                              m_bValidation ? NULL : m_possible_shortcuts,
-                             pvgroups);
+                             m_pmulticmds);
   if (!m_bValidation) {
-    b_into_empty = m_xmlcore->GetNumEntries() == 0;
+    b_into_empty = m_pxmlcore->GetNumEntries() == 0;
   }
 
   try {

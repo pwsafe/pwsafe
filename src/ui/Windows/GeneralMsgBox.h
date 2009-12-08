@@ -32,7 +32,6 @@ class CGeneralMsgBox : private CDialog
 {
   // Basic
 public:
-
   // Constructor
   CGeneralMsgBox(CWnd* pParentWnd = NULL);
 

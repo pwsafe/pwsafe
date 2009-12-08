@@ -26,6 +26,7 @@
 
 #include "corelib/pwsprefs.h"
 #include "corelib/PWSAuxParse.h"
+#include "corelib/Command.h"
 
 #include "os/dir.h"
 #include "os/run.h"
@@ -84,6 +85,7 @@ void DboxMain::OnAdd()
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     CSecString &sxUsername = add_entry_psh.GetUsername();
+
     //Check if they wish to set a default username
     PWSprefs *prefs = PWSprefs::GetInstance();
     if (!m_core.GetUseDefUser() &&
@@ -100,12 +102,30 @@ void DboxMain::OnAdd()
       }
     }
 
+    DisplayInfo *pdi = new DisplayInfo;
+    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
+    pdi->tree_item = 0;
+    ci.SetDisplayInfo(pdi);
+
     // Add the entry
     ci.SetStatus(CItemData::ES_ADDED);
-    AddEntry(ci);
-    m_ctlItemTree.AddChangedNodes(ci.GetGroup());
+    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+    AddEntry(pmulticmds, ci);
+
+    if (add_entry_psh.GetIBasedata() > 0) {
+      uuid_array_t alias_uuid, base_uuid;
+      memcpy(base_uuid, add_entry_psh.GetBaseUUID(), sizeof(base_uuid));
+      ci.GetUUID(alias_uuid);
+      Command *pcmd2 = new AddDependentEntryCommand(&m_core,
+                     base_uuid, alias_uuid, CItemData::ET_ALIAS);
+      pmulticmds->Add(pcmd2);
+    }
+    m_core.Execute((Command *)pmulticmds);
+    UpdateToolBarDoUndo();
 
     // Update Toolbar for this new entry
+    m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
+    m_ctlItemTree.SelectItem(pdi->tree_item);
     UpdateToolBarForSelectedItem(&ci);
 
     if (m_core.GetNumEntries() == 1) {
@@ -189,7 +209,10 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   temp.SetTitle(cs_title);
   temp.SetUser(cs_user);
 
-  m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
+  MultiCommands *pmulticmds = new MultiCommands(&m_core);
+  Command *pcmd1 = new AddDependentEntryCommand(&m_core, base_uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
+  pmulticmds->Add(pcmd1);
+
   temp.SetPassword(L"[Shortcut]");
   temp.SetShortcut();
   ItemListIter iter = m_core.Find(base_uuid);
@@ -206,8 +229,10 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   temp.SetXTime((time_t)0);
   temp.SetStatus(CItemData::ES_ADDED);
 
-  AddEntry(temp);
-  m_ctlItemTree.AddChangedNodes(cs_group);
+  Command *pcmd2 = new AddEntryCommand(&m_core, temp);
+  pmulticmds->Add(pcmd2);
+  m_core.Execute((Command *)pmulticmds);
+  UpdateToolBarDoUndo();
 
   if (m_core.GetNumEntries() == 1) {
     // For some reason, when adding the first entry, it is not visible!
@@ -220,24 +245,6 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
 
   ChangeOkUpdate();
   m_RUEList.AddRUEntry(shortcut_uuid);
-}
-
-int DboxMain::AddEntry(const CItemData &cinew)
-{
-  // This routine is used by Add and also Drag & Drop
-
-  m_core.AddEntry(cinew);
-
-  // AddEntry copies the entry, and we want to work with the inserted copy
-  // Which we'll find by uuid
-  uuid_array_t uuid;
-  cinew.GetUUID(uuid);
-  int newpos = insertItem(m_core.GetEntry(m_core.Find(uuid)));
-  if (m_bFilterActive && newpos >= 0) {
-    SelectEntry(newpos);
-    FixListIndexes();
-  }
-  return newpos;
 }
 
 //Add a group (tree view only)
@@ -298,14 +305,18 @@ void DboxMain::OnDelete()
     }
   }
 
+  MultiCommands *pmulticmds = new MultiCommands(&m_core);
+
   if (dodelete) {
-    Delete();
+    Delete(pmulticmds);
     if (m_bFilterActive)
       RefreshViews();
   }
+  m_core.Execute((Command *)pmulticmds);
+  UpdateToolBarDoUndo();
 }
 
-void DboxMain::Delete(bool inRecursion)
+void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
 {
   CItemData *pci = getSelectedItem();
 
@@ -350,21 +361,20 @@ void DboxMain::Delete(bool inRecursion)
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
     int curSel = pdi->list_index;
+
     // Find next in treeview, not always curSel after deletion
     HTREEITEM curTree_item = pdi->tree_item;
     HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item, TVGN_NEXT);
+
     // Must Find before delete from m_ctlItemList:
     ItemListIter listindex = m_core.Find(entry_uuid);
     ASSERT(listindex !=  m_core.GetEntryEndIter());
 
     UnFindItem();
-    m_ctlItemList.DeleteItem(curSel);
-    m_ctlItemTree.DeleteWithParents(curTree_item);
-    delete pdi;
-    FixListIndexes();
-
-    if (pci->NumberUnknownFields() > 0)
-      m_core.DecrementNumRecordsWithUnknownFields();
+    //m_ctlItemList.DeleteItem(curSel);
+    //m_ctlItemTree.DeleteWithParents(curTree_item);
+    //delete pdi;
+    //FixListIndexes();
 
     uuid_array_t base_uuid;
     if (entrytype == CItemData::ET_ALIAS) {
@@ -372,7 +382,9 @@ void DboxMain::Delete(bool inRecursion)
       // Get corresponding base uuid
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
       // Delete from both map and multimap
-      m_core.RemoveDependentEntry(base_uuid, entry_uuid, CItemData::ET_ALIAS);
+      Command *pcmd = new RemoveDependentEntryCommand(&m_core, base_uuid, entry_uuid, 
+                                                      CItemData::ET_ALIAS);
+      pmulticmds->Add(pcmd);
 
       // Does my base now become a normal entry?
       if (m_core.NumAliases(base_uuid) == 0) {
@@ -390,7 +402,9 @@ void DboxMain::Delete(bool inRecursion)
       // Get corresponding base uuid
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
       // Delete from both map and multimap
-      m_core.RemoveDependentEntry(base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
+      Command *pcmd = new RemoveDependentEntryCommand(&m_core, base_uuid, entry_uuid, 
+                                                       CItemData::ET_SHORTCUT);
+      pmulticmds->Add(pcmd);
 
       // Does my base now become a normal entry?
       if (m_core.NumShortcuts(base_uuid) == 0) {
@@ -406,8 +420,10 @@ void DboxMain::Delete(bool inRecursion)
     if (num_dependents > 0) {
       // I'm a base entry
       if (entrytype == CItemData::ET_ALIASBASE) {
-        m_core.ResetAllAliasPasswords(entry_uuid);
-        m_core.RemoveAllDependentEntries(entry_uuid, CItemData::ET_ALIAS);
+        Command *pcmd1 = new ResetAllAliasPasswordsCommand(&m_core, entry_uuid);
+        pmulticmds->Add(pcmd1);
+        Command *pcmd2 = new RemoveAllDependentEntriesCommand(&m_core, entry_uuid, CItemData::ET_ALIAS);
+        pmulticmds->Add(pcmd2);
 
         // Now make all my aliases Normal
         ItemListIter iter;
@@ -423,7 +439,8 @@ void DboxMain::Delete(bool inRecursion)
           SetEntryImage(pdi->tree_item, nImage, true);
         }
       } else {
-        m_core.RemoveAllDependentEntries(entry_uuid, CItemData::ET_SHORTCUT);
+        Command *pcmd = new RemoveAllDependentEntriesCommand(&m_core, entry_uuid, CItemData::ET_SHORTCUT);
+        pmulticmds->Add(pcmd);
         // Now delete all my shortcuts
         ItemListIter iter;
         UUIDListIter UUIDiter;
@@ -435,18 +452,19 @@ void DboxMain::Delete(bool inRecursion)
           DisplayInfo *pdi = (DisplayInfo *)cshortcut.GetDisplayInfo();
           m_ctlItemList.DeleteItem(pdi->list_index);
           m_ctlItemTree.DeleteItem(pdi->tree_item);
-          delete pdi;
+          //delete pdi;
           FixListIndexes();
-          m_core.RemoveEntryAt(iter);
-          //m_core.MarkEntryForRemoval(&cshortcut);
+          Command *pcmd = new DeleteEntryCommand(&m_core, cshortcut);
+          pmulticmds->Add(pcmd);
         }
       }
       dependentslist.clear();
     }
 
     pci->SetDCA(-1);
-    m_core.RemoveEntryAt(listindex);
-    //m_core.MarkEntryForRemoval(pci);
+    Command *pcmd = new DeleteEntryCommand(&m_core, *pci);
+    pmulticmds->Add(pcmd);
+
     if (m_ctlItemList.IsWindowVisible()) {
       if (m_core.GetNumEntries() > 0) {
         SelectEntry(curSel < (int)m_core.GetNumEntries() ? curSel : (int)(m_core.GetNumEntries() - 1));
@@ -471,7 +489,7 @@ void DboxMain::Delete(bool inRecursion)
 
           while (cti != NULL) {
             m_ctlItemTree.SelectItem(cti);
-            Delete(true); // recursion - I'm so lazy!
+            Delete(pmulticmds, true); // recursion - I'm so lazy!
             cti = m_ctlItemTree.GetChildItem(ti);
           }
 
@@ -541,6 +559,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     pcore = &m_core;
 
   CItemData ci_edit(*pci);
+
   // As pci may be invalidated if database is Locked while in this routine, 
   // we use a clone
   CItemData ci_original(*pci);
@@ -555,8 +574,6 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     edit_entry_psh.SetDefUsername(pcore->GetDefUsername());
 
   uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'}, new_base_uuid = {'\0'};
-
-
   CItemData::EntryType entrytype = ci_original.GetEntryType();
 
   ci_original.GetUUID(original_uuid);  // Edit doesn't change this!
@@ -601,6 +618,9 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
   if (rc == IDOK && uicaller == IDS_EDITENTRY && 
       edit_entry_psh.IsEntryModified()) {
+
+    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+
     // Out with the old, in with the new
     ItemListIter listpos = Find(original_uuid);
     ASSERT(listpos != pcore->GetEntryEndIter());
@@ -610,7 +630,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     // ci_edit's displayinfo will have been deleted if
     // application "locked" (Cleared list)
     DisplayInfo *pdi_new = new DisplayInfo;
-    pdi_new->list_index = -1; // so that insertItem will set new values
+    pdi_new->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
     pdi_new->tree_item = 0;
     ci_edit.SetDisplayInfo(pdi_new);
     StringX newPassword = ci_edit.GetPassword();
@@ -622,7 +642,9 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
       // Original was a 'normal' entry and the password has changed
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
-        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = new AddDependentEntryCommand(pcore, new_base_uuid, 
+                                                      original_uuid, CItemData::ET_ALIAS);
+        pmulticmds->Add(pcmd);
         ci_edit.SetPassword(L"[Alias]");
         ci_edit.SetAlias();
       } else {
@@ -635,16 +657,21 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_ALIAS) {
       // Original was an alias - delete it from multimap
       // RemoveDependentEntry also resets base to normal if the last alias is delete
-      pcore->RemoveDependentEntry(original_base_uuid, original_uuid, CItemData::ET_ALIAS);
+      Command *pcmd = new RemoveDependentEntryCommand(pcore, original_base_uuid, original_uuid, CItemData::ET_ALIAS);
+      pmulticmds->Add(pcmd);
       if (newPassword == edit_entry_psh.GetBase()) {
         // Password (i.e. base) unchanged - put it back
-        pcore->AddDependentEntry(original_base_uuid, original_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = new AddDependentEntryCommand(pcore, original_base_uuid, 
+                                                     original_uuid, CItemData::ET_ALIAS);
+        pmulticmds->Add(pcmd);
       } else {
         // Password changed so might be an alias of another entry!
         // Could also be the same entry i.e. [:t:] == [t] !
         if (edit_entry_psh.GetIBasedata() > 0) {
           // Still an alias
-          pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
+          Command *pcmd = new AddDependentEntryCommand(pcore, new_base_uuid, 
+                                                        original_uuid, CItemData::ET_ALIAS);
+          pmulticmds->Add(pcmd);
           ci_edit.SetPassword(L"[Alias]");
           ci_edit.SetAlias();
         } else {
@@ -661,11 +688,15 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
         // Make this one an alias
-        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::ET_ALIAS);
+        Command *pcmd1 = new AddDependentEntryCommand(pcore, new_base_uuid, 
+                                                       original_uuid, CItemData::ET_ALIAS);
+        pmulticmds->Add(pcmd1);
         ci_edit.SetPassword(L"[Alias]");
         ci_edit.SetAlias();
         // Move old aliases across
-        pcore->MoveDependentEntries(original_uuid, new_base_uuid, CItemData::ET_ALIAS);
+        Command *pcmd2 = new MoveDependentEntriesCommand(pcore, original_uuid, 
+                                                          new_base_uuid, CItemData::ET_ALIAS);
+        pmulticmds->Add(pcmd2);
       } else {
         // Still a base entry but with a new password
         ci_edit.SetPassword(newPassword);
@@ -674,7 +705,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     }
 
     // Reset all images!
-    // This entry's image will be set by DboxMain::insertItem
+    // This entry's image will be set by DboxMain::InsertItemIntoGUITreeList
 
     // Next the original base entry
     iter = pcore->Find(original_base_uuid);
@@ -705,19 +736,18 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
-    pcore->RemoveEntryAt(listpos);
-    pcore->AddEntry(ci_edit);
-    m_ctlItemList.DeleteItem(pdi->list_index);
-    m_ctlItemTree.DeleteWithParents(pdi->tree_item);
+    Command *pcmd = new EditEntryCommand(pcore, ci_original, ci_edit);
+    pmulticmds->Add(pcmd);
+    pcore->Execute((Command *)pmulticmds);
+    UpdateToolBarDoUndo();
 
-    // AddEntry copies the entry, and we want to work with the inserted copy
-    // Which we'll find by uuid
-    insertItem(pcore->GetEntry(pcore->Find(original_uuid)));
-    m_ctlItemTree.AddChangedNodes(ci_edit.GetGroup());
-    FixListIndexes();
+    //// AddEntry copies the entry, and we want to work with the inserted copy
+    //// Which we'll find by uuid
+    //InsertItemIntoGUITreeList(pcore->GetEntry(pcore->Find(original_uuid)));
+    //FixListIndexes();
 
     // Now delete old entry's DisplayInfo
-    delete pdi;
+    //delete pdi;
     if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::SaveImmediately)) {
         Save();
@@ -790,7 +820,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     // ci_edit's displayinfo will have been deleted if
     // application "locked" (Cleared list)
     DisplayInfo *pdi_new = new DisplayInfo;
-    pdi_new->list_index = -1; // so that insertItem will set new values
+    pdi_new->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
     pdi_new->tree_item = 0;
     ci_edit.SetDisplayInfo(pdi_new);
 
@@ -798,18 +828,17 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
-    pcore->RemoveEntryAt(listpos);
-    pcore->AddEntry(ci_edit);
-    m_ctlItemList.DeleteItem(pdi->list_index);
-    m_ctlItemTree.DeleteWithParents(pdi->tree_item);
+    Command *pcmd = new EditEntryCommand(pcore, ci_original, ci_edit);
+    pcore->Execute(pcmd);
+    UpdateToolBarDoUndo();
 
-    // AddEntry copies the entry, and we want to work with the inserted copy
-    // Which we'll find by uuid
-    insertItem(pcore->GetEntry(pcore->Find(entry_uuid)));
-    m_ctlItemTree.AddChangedNodes(ci_edit.GetGroup());
-    FixListIndexes();
+    //// AddEntry copies the entry, and we want to work with the inserted copy
+    //// Which we'll find by uuid
+    //InsertItemIntoGUITreeList(pcore->GetEntry(pcore->Find(entry_uuid)));
+    //FixListIndexes();
+
     // Now delete old entry's DisplayInfo
-    delete pdi;
+    //delete pdi;
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
         Save();
@@ -857,6 +886,8 @@ void DboxMain::OnDuplicateEntry()
       listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
     } while (listpos != m_core.GetEntryEndIter());
 
+    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+
     // Set up new entry
     CItemData ci2(*pci);
     ci2.SetDisplayInfo(NULL);
@@ -874,11 +905,13 @@ void DboxMain::OnDuplicateEntry()
       if (entrytype == CItemData::ET_ALIAS) {
         m_core.GetAliasBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetAlias();
-        m_core.AddDependentEntry(base_uuid, new_entry_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = new AddDependentEntryCommand(&m_core, base_uuid, new_entry_uuid, CItemData::ET_ALIAS);
+        pmulticmds->Add(pcmd);
       } else {
         m_core.GetShortcutBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetShortcut();
-        m_core.AddDependentEntry(base_uuid, new_entry_uuid, CItemData::ET_SHORTCUT);
+        Command *pcmd = new AddDependentEntryCommand(&m_core, base_uuid, new_entry_uuid, CItemData::ET_SHORTCUT);
+        pmulticmds->Add(pcmd);
       }
 
       ItemListIter iter;
@@ -895,13 +928,16 @@ void DboxMain::OnDuplicateEntry()
       ci2.SetNormal();
 
     // Add it to the end of the list
-    m_core.AddEntry(ci2);
-    pdi->list_index = -1; // so that insertItem will set new values
+    Command *pcmd = new AddEntryCommand(&m_core, ci2);
+    pmulticmds->Add(pcmd);
+    m_core.Execute((Command *)pmulticmds);
+    UpdateToolBarDoUndo();
+
+    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 
     uuid_array_t uuid;
     ci2.GetUUID(uuid);
-    insertItem(m_core.GetEntry(m_core.Find(uuid)));
-    m_ctlItemTree.AddChangedNodes(ci2_group);
+    InsertItemIntoGUITreeList(m_core.GetEntry(m_core.Find(uuid)));
     FixListIndexes();
 
     if (PWSprefs::GetInstance()->
@@ -1641,6 +1677,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   uuid_array_t entry_uuid;
   bool bAddToViews;
 
+  MultiCommands *pmulticmds = new MultiCommands(&m_core);
+
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
 #ifdef DEMO
@@ -1714,7 +1752,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           gmb.AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
-        m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = new AddDependentEntryCommand(&m_core, pl.base_uuid, entry_uuid, CItemData::ET_ALIAS);
+        pmulticmds->Add(pcmd);
         tempitem.SetPassword(L"[Alias]");
         tempitem.SetAlias();
       } else
@@ -1728,7 +1767,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           gmb.AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
-        m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
+        Command *pcmd = new AddDependentEntryCommand(&m_core, pl.base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
+        pmulticmds->Add(pcmd);
         tempitem.SetPassword(L"[Shortcut]");
         tempitem.SetShortcut();
       }
@@ -1752,23 +1792,29 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
       }
     }
     tempitem.SetStatus(CItemData::ES_ADDED);
-    if (bAddToViews) {
-      // Add to pwlist + Tree + List views
-      AddEntry(tempitem);
-    } else {
+    // Add to pwlist
+    Command *pcmd = new AddEntryCommand(&m_core, tempitem);
+    if (!bAddToViews) {
       // ONLY Add to pwlist and NOT to Tree or List views
       // After the call to AddDependentEntries for shortcuts, check if still
       // in password list and, if so, then add to Tree + List views
-      m_core.AddEntry(tempitem);
+      pcmd->SetNoNotify();
     }
-    m_ctlItemTree.AddChangedNodes(tempitem.GetGroup());
+    pmulticmds->Add(pcmd);
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
-  m_core.AddDependentEntries(possible_aliases, NULL, CItemData::ET_ALIAS, 
-                             CItemData::PASSWORD);
-  m_core.AddDependentEntries(possible_shortcuts, NULL, CItemData::ET_SHORTCUT, 
-                             CItemData::PASSWORD);
+  Command *pcmdA = new AddDependentEntriesCommand(&m_core, possible_aliases, NULL, 
+                                                  CItemData::ET_ALIAS,
+                                                  CItemData::PASSWORD);
+  pmulticmds->Add(pcmdA);
+  Command *pcmdS = new AddDependentEntriesCommand(&m_core, possible_shortcuts, NULL, 
+                                                  CItemData::ET_SHORTCUT,
+                                                  CItemData::PASSWORD);
+  pmulticmds->Add(pcmdS);
+  m_core.Execute((Command *)pmulticmds);
+  UpdateToolBarDoUndo();
+
   possible_aliases.clear();
 
   // Some shortcuts may have been deleted from the database as base does not exist
@@ -1781,7 +1827,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
     iter = m_core.Find(entry_uuid);
     if (iter != End()) {
       // Still in pwlist - NOW add to Tree and List views
-      insertItem(m_core.GetEntry(iter));
+      InsertItemIntoGUITreeList(m_core.GetEntry(iter));
     }
   }
   possible_shortcuts.clear();

@@ -102,7 +102,6 @@ bool CreatePWHistoryList(const StringX &pwh_str,
   return retval;
 }
 
-
 StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)
 {
   const size_t MAX_PWHISTORY = 255;

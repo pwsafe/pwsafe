@@ -128,7 +128,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForDelete(false), m_bFilterForStatus(false),
   m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER))
-
 {
   // Need to do this as using the direct calls will fail for Windows versions before Vista
   HINSTANCE hUser32 = ::LoadLibrary(L"User32.dll");
@@ -157,10 +156,9 @@ DboxMain::DboxMain(CWnd* pParent)
 
 DboxMain::~DboxMain()
 {
-  m_core.UnRegisterOnListModified();
-  // Vista or later
-  if (m_WindowsMajorVersion >= 6)
-    m_core.UnRegisterOnDBModified();
+  m_core.UnRegisterOnDBModified();
+  m_core.UnRegisterGUINotify();
+  m_core.UnRegisterGUIUpdateEntry();
 
   MapKeyNameIDIter iter;
   for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
@@ -313,6 +311,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_IMPORT_XML, OnImportXML)
   ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
   ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
+  ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnSynchronize)
   ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
 
   // Edit Menu
@@ -341,6 +340,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
   ON_COMMAND(ID_MENUITEM_RUNCOMMAND, OnRunCommand)
   ON_COMMAND(ID_MENUITEM_EDITBASEENTRY, OnEditBaseEntry)
+  ON_COMMAND(ID_MENUITEM_UNDO, OnUndo)
+  ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -357,6 +358,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_CHANGEPSWDFONT, OnChangePswdFont)
   ON_COMMAND(ID_MENUITEM_VKEYBOARDFONT, OnChangeVKFont)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReports)
+  ON_COMMAND_RANGE(ID_MENUITEM_REPORT_SYNCHRONIZE, ID_MENUITEM_REPORT_SYNCHRONIZE, OnViewReports)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
   ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
@@ -424,10 +426,12 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 #else
   ON_WM_DROPFILES()
   ON_WM_SIZING()
+  /*
   ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnChangeItemFocus)
   ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnChangeItemFocus)
   ON_NOTIFY(NM_SETFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
   ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
+  */
   ON_COMMAND(ID_MENUITEM_TRAYLOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_TRAYUNLOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_CLEARRECENTENTRIES, OnTrayClearRecentEntries)
@@ -510,6 +514,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_IMPORT_KEEPASS, true, false, true, false},
   {ID_MENUITEM_MERGE, true, false, true, false},
   {ID_MENUITEM_COMPARE, true, true, false, false},
+  {ID_MENUITEM_SYNCHRONIZE, true, false, false, false},
   {ID_MENUITEM_PROPERTIES, true, true, true, false},
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu
@@ -541,6 +546,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_GOTOBASEENTRY, true, true, false, false},
   {ID_MENUITEM_CREATESHORTCUT, true, false, false, false},
   {ID_MENUITEM_EDITBASEENTRY, true, true, false, false},
+  {ID_MENUITEM_UNDO, true, false, true, false},
+  {ID_MENUITEM_REDO, true, false, true, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -560,6 +567,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, true},
   {ID_MENUITEM_REPORT_MERGE, true, true, true, true},
   {ID_MENUITEM_REPORT_VALIDATE, true, true, true, true},
+  {ID_MENUITEM_REPORT_SYNCHRONIZE, true, true, true, true},
   {ID_MENUITEM_EDITFILTER, true, true, false, false},
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
@@ -1162,6 +1170,18 @@ void DboxMain::OnMove(int x, int y)
   }
 }
 
+void DboxMain::OnUndo()
+{
+  m_core.Undo();
+  UpdateToolBarDoUndo();
+}
+
+void DboxMain::OnRedo()
+{
+  m_core.Redo();
+  UpdateToolBarDoUndo();
+}
+  
 void DboxMain::FixListIndexes()
 {
   int N = m_ctlItemList.GetItemCount();
@@ -1566,7 +1586,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         // user can't change R-O status
         break;
     }
-    UpdateToolBar(bIsReadOnly);
+    UpdateToolBarROStatus(bIsReadOnly);
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
     if (!locker.empty()) {
@@ -1603,12 +1623,12 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       switch (user_choice) {
         case 1:
           pcore->SetReadOnly(true);
-          UpdateToolBar(true);
+          UpdateToolBarROStatus(true);
           retval = PWScore::SUCCESS;
           break;
         case 2:
           pcore->SetReadOnly(false); // Caveat Emptor!
-          UpdateToolBar(false);
+          UpdateToolBarROStatus(false);
           retval = PWScore::SUCCESS;
           break;
         case 3:
@@ -2268,7 +2288,6 @@ BOOL DboxMain::OnQueryEndSession()
     return TRUE;
 
   bool autoSave = true; // false if user saved or decided not to 
-  BOOL retval = TRUE;
 
   if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     CGeneralMsgBox gmb;
@@ -2284,12 +2303,10 @@ BOOL DboxMain::OnQueryEndSession()
         // Save the changes and say OK to shutdown\restart\logoff
         Save();
         autoSave = false;
-        retval = TRUE;
         break;
       case IDNO:
         // Don't save the changes but say OK to shutdown\restart\logoff
         autoSave = false;
-        retval = TRUE;
         break;
     }
   } // database was changed
@@ -2299,11 +2316,10 @@ BOOL DboxMain::OnQueryEndSession()
     if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
          m_core.GetNumEntries() > 0) {
         Save();
-        return TRUE;
     }
   }
 
-  return retval;
+  return TRUE;
 }
 
 void DboxMain::OnEndSession(BOOL bEnding)
@@ -2781,6 +2797,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       if (ID_MENUITEM_RCREATESHORTCUT && !m_ctlItemTree.IsDropOnMe())
         iEnable = FALSE;      
       break;
+    // Undo/Redo
+    case ID_MENUITEM_UNDO:
+      iEnable = m_core.AnyToUndo() ? TRUE : FALSE;
+      break;
+    case ID_MENUITEM_REDO:
+      iEnable = m_core.AnyToRedo() ? TRUE : FALSE;
+      break;
     // Items not allowed in List View
     case ID_MENUITEM_ADDGROUP:
     case ID_MENUITEM_RENAMEENTRY:
@@ -2801,6 +2824,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_REPORT_IMPORTTEXT:
     case ID_MENUITEM_REPORT_IMPORTXML:
     case ID_MENUITEM_REPORT_MERGE:
+    case ID_MENUITEM_REPORT_SYNCHRONIZE:
     case ID_MENUITEM_REPORT_VALIDATE:
       iEnable = OnUpdateViewReports(nID);
       break;
@@ -3019,4 +3043,46 @@ void DboxMain::UpdateSystemMenu()
    }
    pSysMenu->ModifyMenu(SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, cs_text);
 #endif
+}
+
+MultiCommands * DboxMain::CreateMultiCommands(PWScore *pcore)
+{
+  if (pcore == NULL)
+    pcore = &m_core;
+
+  MultiCommands *pmulticmds = new MultiCommands(pcore);
+  return pmulticmds;
+}
+
+void DboxMain::ExecuteMultiCommands(MultiCommands *pmulticmds)
+{
+  PWScore *pcore = pmulticmds->GetCore();
+  pcore->Execute((Command *)pmulticmds);
+  UpdateToolBarDoUndo();
+}
+
+void DboxMain::UpdateField(MultiCommands *pmulticmds,
+                           CItemData &ci, CItemData::FieldType ftype,
+                           StringX value)
+{
+  PWScore *pcore = pmulticmds->GetCore();
+  Command *pcmd = new UpdateEntryCommand(pcore, ci, ftype, value);
+  pmulticmds->Add(pcmd);
+}
+
+void DboxMain::AddEntry(MultiCommands *pmulticmds, CItemData &ci)
+{
+  PWScore *pcore = pmulticmds->GetCore();
+  Command *pcmd = new AddEntryCommand(pcore, ci);
+  pmulticmds->Add(pcmd);
+}
+
+void DboxMain::AddDependentEntry(MultiCommands *pmulticmds, 
+                                 const uuid_array_t &base_uuid, 
+                                 const uuid_array_t &entry_uuid,
+                                 const CItemData::EntryType type)
+{
+  PWScore *pcore = pmulticmds->GetCore();
+  Command *pcmd = new AddDependentEntryCommand(pcore, base_uuid, entry_uuid, type);
+  pmulticmds->Add(pcmd);
 }

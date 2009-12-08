@@ -48,7 +48,7 @@ class BlowFish;
 
 struct DisplayInfoBase
 {
-  // 
+  // Following used by display methods of the GUI
   DisplayInfoBase() {}
   virtual ~DisplayInfoBase() {}
 };
@@ -214,6 +214,8 @@ public:
     bool SetDCA(const stringT &cs_DCA);
     void SetEmail(const StringX &cs_email);
 
+    void SetFieldValue(const FieldType &ft, const StringX &value);
+
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy
     DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
@@ -261,6 +263,8 @@ public:
     bool IsShortcut() const
     {return (m_entrytype == ET_SHORTCUT);}
 
+    void SetEntryType(CItemData::EntryType et)
+    {m_entrytype = et;}
     void SetNormal()
     {m_entrytype = ET_NORMAL;}
     void SetAliasBase()

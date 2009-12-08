@@ -44,7 +44,7 @@ down the streetsky.  [Groucho Marx]
 #include "PasskeyEntry.h"
 #include "PwFont.h"
 #include "TryAgainDlg.h"
-#include "DboxMain.h" // for CheckPassword()
+#include "DboxMain.h" // for CheckPasskey()
 #include "PasskeySetup.h"
 
 #include "corelib/Util.h"
@@ -299,14 +299,22 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     m_pctlPasskey->SetFocus();
     return FALSE;
   }
+
+  // Do not enable the OK button until the user has accessed the Advanced
+  // dialog when Synchronizing databases
+  if (m_adv_type == ADV_SYNCHRONIZE)
+    GetDlgItem(IDOK)->EnableWindow(FALSE);
+
   // Following works fine for other (non-hotkey) cases:
   SetForegroundWindow();
+
   // If the dbase field's !empty, the user most likely will want to enter
   // a password:
   if (m_index == 0 && !m_filespec.IsEmpty()) {
     m_pctlPasskey->SetFocus();
     return FALSE;
   }
+
   return TRUE;
 }
 
@@ -417,6 +425,9 @@ void CPasskeyEntry::OnExitAdvanced()
   } else {
     m_bAdvanced = false;
   }
+
+  // Now that they have accessed the Advanced dialog - allow them to press OK
+  GetDlgItem(IDOK)->EnableWindow(TRUE);
 }
 
 void CPasskeyEntry::OnOK()
@@ -443,7 +454,7 @@ void CPasskeyEntry::OnOK()
 void CPasskeyEntry::ProcessPhrase()
 {
   CGeneralMsgBox gmb;
-  if (m_pDbx->CheckPassword(LPCWSTR(m_filespec), LPCWSTR(m_passkey)) != PWScore::SUCCESS) {
+  if (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey)) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
 

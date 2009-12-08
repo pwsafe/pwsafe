@@ -33,9 +33,11 @@ static char THIS_FILE[] = __FILE__;
 
 MFileXMLProcessor::MFileXMLProcessor(PWScore *core,
                                      UUIDList *possible_aliases,
-                                     UUIDList *possible_shortcuts)
-  : m_xmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
-  m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
+                                     UUIDList *possible_shortcuts,
+                                     MultiCommands *p_multicmds)
+  : m_pxmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
+  m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
+  m_pmulticmds(p_multicmds)
 {
 }
 
@@ -47,8 +49,7 @@ MFileXMLProcessor::~MFileXMLProcessor()
 bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
                                 const bool &bImportPSWDsOnly,
-                                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl,
-                                std::vector<StringX> * pvgroups)
+                                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl)
 {
   HRESULT hr, hr0, hr60, hr40, hr30;
   bool b_ok = false;
@@ -91,7 +92,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       m_MSXML_Version = 60;
     }
   } else {  // XMLImport
-    b_into_empty = m_xmlcore->GetNumEntries() == 0;
+    b_into_empty = m_pxmlcore->GetNumEntries() == 0;
     switch (m_MSXML_Version) {
       case 60:
         hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
@@ -113,11 +114,11 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
   //  Create ContentHandlerImpl object
   MFileSAX2ContentHandler* pCH = new MFileSAX2ContentHandler();
-  pCH->SetVariables(m_bValidation ? NULL : m_xmlcore, m_bValidation, 
+  pCH->SetVariables(m_bValidation ? NULL : m_pxmlcore, m_bValidation, 
                     ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                     m_bValidation ? NULL : m_possible_aliases, 
                     m_bValidation ? NULL : m_possible_shortcuts,
-                    pvgroups);
+                    m_pmulticmds);
 
   //  Create ErrorHandlerImpl object
   MFileSAX2ErrorHandler* pEH = new MFileSAX2ErrorHandler();
