@@ -38,6 +38,13 @@
 #define MSGSIZE   1024
 #define MSGSIZEx4 4096
 
+typedef BOOL (WINAPI *PMDWD) (HANDLE, DWORD, HANDLE, MINIDUMP_TYPE,
+                              PMINIDUMP_EXCEPTION_INFORMATION,
+                              PMINIDUMP_USER_STREAM_INFORMATION,
+                              PMINIDUMP_CALLBACK_INFORMATION);
+
+static PMDWD pfcnMiniDumpWriteDump(NULL);
+
 // Function call definitions
 LONG TakeMiniDump(struct _EXCEPTION_POINTERS *ExInfo, const int type,
                   struct st_invp *pinvp = NULL);
@@ -109,6 +116,17 @@ void LocalizeFaultHandler(HINSTANCE inst) {
 void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
+  HMODULE hDbgHelp = ::LoadLibrary(L"DbgHelp.dll");
+  if (hDbgHelp == NULL)
+    return;
+
+  pfcnMiniDumpWriteDump = (PMDWD)::GetProcAddress(hDbgHelp, "MiniDumpWriteDump");
+
+  if (pfcnMiniDumpWriteDump == NULL) {
+    ::FreeLibrary(hDbgHelp);
+    return;
+  }
+
   iMajor = major;
   iMinor = minor;
   iBuild = build;
@@ -299,9 +317,9 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
     musi.UserStreamCount = 1;
     musi.UserStreamArray = UserStreams;
 
-    MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile,
-                      MiniDumpNormal, (pExInfo != NULL) ? &excpInfo : NULL,
-                      &musi, NULL);
+    pfcnMiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile,
+                          MiniDumpNormal, (pExInfo != NULL) ? &excpInfo : NULL,
+                          &musi, NULL);
 
     CloseHandle(hFile);
 
@@ -321,6 +339,9 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
 
 void RemoveFaultHandler()
 {
+  if (pfcnMiniDumpWriteDump == NULL)
+    return;
+
   // Remove our Windows Exception Filter
   SetUnhandledExceptionFilter(NULL);
 
