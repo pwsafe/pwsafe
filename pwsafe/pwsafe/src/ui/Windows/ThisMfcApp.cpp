@@ -354,14 +354,16 @@ void ThisMfcApp::LoadLocalizedStuff()
     TRACE(L"%s Could not load language DLLs - using embedded resources.\n",
           PWSUtil::GetTimeStamp());
   } else { // successfully loaded a resource dll, check version
-    DWORD MajorMinor, BuildRevision;
-    GetVersionInfoFromFile(cs_ResPath, MajorMinor, BuildRevision);
+    DWORD dw_fileMajorMinor, dw_fileBuildRevision;
+    GetVersionInfoFromFile(cs_ResPath, dw_fileMajorMinor, dw_fileBuildRevision);
 
-    if (MajorMinor != GetFileVersionMajorMinor()) { // ignore build for now
+    if (dw_fileMajorMinor != m_dwMajorMinor) { // ignore build for now
       CGeneralMsgBox gmb;
       CString oops;
-      oops.Format(L"Executable/language DLL (%s) version mismatch %d/%d.\n", 
-                  cs_ResPath, GetFileVersionMajorMinor(), MajorMinor);
+      oops.Format(L"Executable/language DLL (%s) version mismatch %d.%d.%d/%d.%d.%d.\n", 
+                  cs_ResPath,
+                  HIWORD(dw_fileMajorMinor), LOWORD(dw_fileMajorMinor), HIWORD(dw_fileBuildRevision),
+                  HIWORD(m_dwMajorMinor), LOWORD(m_dwMajorMinor), HIWORD(m_dwBuildRevision));
       gmb.AfxMessageBox(oops);
       FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;

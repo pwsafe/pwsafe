@@ -127,16 +127,25 @@ DboxMain::DboxMain(CWnd* pParent)
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForDelete(false), m_bFilterForStatus(false),
-  m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER))
-
+  m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER)),
+  m_hUser32(NULL)
 {
   // Need to do this as using the direct calls will fail for Windows versions before Vista
-  HINSTANCE hUser32 = ::LoadLibrary(L"User32.dll");
-  if (hUser32 != NULL) {
-    m_pfcnShutdownBlockReasonCreate = (PSBR_CREATE)::GetProcAddress(hUser32, "ShutdownBlockReasonCreate"); 
-    m_pfcnShutdownBlockReasonDestroy = (PSBR_DESTROY)::GetProcAddress(hUser32, "ShutdownBlockReasonDestroy"); 
+  m_hUser32 = ::LoadLibrary(L"User32.dll");
+  if (m_hUser32 != NULL) {
+    m_pfcnShutdownBlockReasonCreate = (PSBR_CREATE)::GetProcAddress(m_hUser32, "ShutdownBlockReasonCreate"); 
+    m_pfcnShutdownBlockReasonDestroy = (PSBR_DESTROY)::GetProcAddress(m_hUser32, "ShutdownBlockReasonDestroy");
 
-    ::FreeLibrary(hUser32);
+    // Do not free library until the end or the addresses may become invalid
+    // On the other hand - if either of these addresses are NULL, why keep it?
+    if (m_pfcnShutdownBlockReasonCreate == NULL || 
+        m_pfcnShutdownBlockReasonDestroy == NULL) {
+      // Make both NULL in case only one was
+      m_pfcnShutdownBlockReasonCreate = NULL;
+      m_pfcnShutdownBlockReasonDestroy = NULL;
+      ::FreeLibrary(m_hUser32);
+      m_hUser32 = NULL;
+    }
   }
 
   // Set menus to be rebuilt with user's shortcuts
@@ -158,6 +167,7 @@ DboxMain::DboxMain(CWnd* pParent)
 DboxMain::~DboxMain()
 {
   m_core.UnRegisterOnListModified();
+
   // Vista or later
   if (m_WindowsMajorVersion >= 6)
     m_core.UnRegisterOnDBModified();
@@ -178,6 +188,9 @@ DboxMain::~DboxMain()
 
   delete m_pToolTipCtrl;
 
+  if (m_hUser32 != NULL)
+    ::FreeLibrary(m_hUser32);
+
   free(m_eye_catcher);
 }
 
@@ -186,38 +199,59 @@ LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
   return (LRESULT)app.m_uiRegMsg;
 }
 
-bool DboxMain::SetSessionNotification()
+void DboxMain::SessionNotification(const bool bRegister)
 {
-  // Make sure that we can get to it!
-  typedef DWORD (WINAPI *PWTS_RSN) (HWND, DWORD);
+  // Need this if running OS prior to Windows XP as the application will not run
+  // if it cannot resolve the entry points in the DLL if using hard coded calls using
+  // the procedure names
 
-  PWTS_RSN pWTS_RSN;
+  // For WTSRegisterSessionNotification & WTSUnRegisterSessionNotification
+  typedef DWORD (WINAPI *PWTS_RegSN) (HWND, DWORD);
+  typedef DWORD (WINAPI *PWTS_UnRegSN) (HWND);
+
+  m_bRegistered = false;
   HINSTANCE hWTSAPI32 = ::LoadLibrary(L"wtsapi32.dll");
   if (hWTSAPI32 == NULL)
-    goto cant_do;
+    return;
 
-  pWTS_RSN = (PWTS_RSN)::GetProcAddress(hWTSAPI32, "WTSRegisterSessionNotification"); 
+  if (bRegister) {
+    // Register for notifications
+    PWTS_RegSN pfcnWTSRegSN = 
+               (PWTS_RegSN)::GetProcAddress(hWTSAPI32,
+                                            "WTSRegisterSessionNotification");
 
-  ::FreeLibrary(hWTSAPI32);
-  if (pWTS_RSN == NULL)
-    goto cant_do;
+    if (pfcnWTSRegSN == NULL)
+      goto exit;
 
-  int num(5);
+    int num(5);
+    while (num > 0) {
+      if (pfcnWTSRegSN(GetSafeHwnd(), NOTIFY_FOR_THIS_SESSION) == TRUE) {
+        m_bRegistered = true;
+        goto exit;
+      }
 
-  while (num > 0) {
-    if (pWTS_RSN(GetSafeHwnd(), NOTIFY_FOR_THIS_SESSION) == TRUE)
-      return true;
+      if (GetLastError() == RPC_S_INVALID_BINDING) {
+        // Terminal Services not running!  Wait a very small time and try up to 5 times
+        num--;
+        ::Sleep(10);
+      } else
+        break;
+    }
+  } else {
+    // UnRegister for notifications
+    PWTS_UnRegSN pfcnWTSUnRegSN =
+                 (PWTS_UnRegSN)::GetProcAddress(hWTSAPI32, 
+                                                "WTSUnRegisterSessionNotification"); 
 
-    if (GetLastError() == RPC_S_INVALID_BINDING) {
-      // Terminal Services not running!  Wait a very small time and try up to 5 times
-      num--;
-      ::Sleep(10);
-    } else
-      break;
+    if (pfcnWTSUnRegSN != NULL)
+      pfcnWTSUnRegSN(GetSafeHwnd());
   }
 
-cant_do:
-  return false;
+exit:
+  if (hWTSAPI32 != NULL)
+    ::FreeLibrary(hWTSAPI32);
+
+  return;
 }
 
 LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
@@ -1085,7 +1119,7 @@ BOOL DboxMain::OnInitDialog()
   }
 
   // Set up notification of desktop state
-  m_bRegistered = SetSessionNotification();
+  SessionNotification(true);
 
   // If successful, no need for Timer
   if (m_bRegistered)
@@ -1115,6 +1149,7 @@ void DboxMain::SetInitialDatabaseDisplay()
 void DboxMain::OnDestroy()
 {
   const std::wstring filename(m_core.GetCurFile().c_str());
+
   // The only way we're the locker is if it's locked & we're !readonly
   if (!filename.empty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
@@ -1123,8 +1158,11 @@ void DboxMain::OnDestroy()
   UnregisterHotKey(GetSafeHwnd(), PWS_HOTKEY_ID);
 
   // Stop being notified about session changes
-  WTSUnRegisterSessionNotification(GetSafeHwnd());
-  m_bRegistered = false;
+  typedef DWORD (WINAPI *PWTS_URSN) (HWND);
+
+  if (m_bRegistered) {
+    SessionNotification(false);
+  }
 
   // Stop subclassing the ListView HeaderCtrl
   if (m_LVHdrCtrl.GetSafeHwnd() != NULL)
