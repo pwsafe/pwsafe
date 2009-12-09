@@ -3057,7 +3057,7 @@ MultiCommands * DboxMain::CreateMultiCommands(PWScore *pcore)
 void DboxMain::ExecuteMultiCommands(MultiCommands *pmulticmds)
 {
   PWScore *pcore = pmulticmds->GetCore();
-  pcore->Execute((Command *)pmulticmds);
+  pcore->Execute(pmulticmds);
   UpdateToolBarDoUndo();
 }
 

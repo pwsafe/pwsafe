@@ -803,12 +803,14 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   Command *pcmdA = new AddDependentEntriesCommand(this, possible_aliases, &rpt, 
                                                    CItemData::ET_ALIAS,
                                                    CItemData::PASSWORD);
+  pcmdA->SetNoNotify();
   pmulticmds->Add(pcmdA);
   Command * pcmdS = new AddDependentEntriesCommand(this, possible_shortcuts, &rpt, 
                                                     CItemData::ET_SHORTCUT,
                                                     CItemData::PASSWORD);
+  pcmdS->SetNoNotify();
   pmulticmds->Add(pcmdS);
-  Execute((Command *)pmulticmds);
+  Execute(pmulticmds);
 
   possible_aliases.clear();
   possible_shortcuts.clear();
@@ -975,7 +977,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   MultiCommands *pmulticmds = new MultiCommands(this);
   Command *pcmd1 = new UpdateGUICommand(this, Command::WN_UNDO, Command::GUI_UNDO_IMPORT);
-  pmulticmds->Add((Command *)pcmd1);
+  pmulticmds->Add(pcmd1);
 
   // Finished parsing header, go get the data!
   for (;;) {
@@ -1124,7 +1126,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         CItemData *pci = &iter->second;
         Command *pcmd = new UpdatePasswordCommand(this, *pci, tokens[i_Offset[PASSWORD]].c_str());
         pcmd->SetNoNotify();
-        pmulticmds->Add((Command *)pcmd);
+        pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
           pci->SetATime();
         }
@@ -1305,8 +1307,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   pcmdS->SetNoNotify();
   pmulticmds->Add(pcmdS);
   Command *pcmd2 = new UpdateGUICommand(this, Command::WN_REDO, Command::GUI_REDO_IMPORT);
-  pmulticmds->Add((Command *)pcmd2);
-  Execute((Command *)pmulticmds);
+  pmulticmds->Add(pcmd2);
+  Execute(pmulticmds);
 
   possible_aliases.clear();
   possible_shortcuts.clear();
@@ -1449,11 +1451,12 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
       m_pfcnGUIUpdateEntry(temp);
     }
     Command *pcmd = new AddEntryCommand(this, temp);
+    pcmd->SetNoNotify();
     pmulticmds->Add(pcmd);
   }
   ifs.close();
 
-  Execute((Command *)pmulticmds);
+  Execute(pmulticmds);
 
   // TODO: maybe return an error if the full end of the file was not reached?
 

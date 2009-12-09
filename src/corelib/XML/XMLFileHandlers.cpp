@@ -518,7 +518,7 @@ void XMLFileHandlers::AddEntries()
   bool bIntoEmpty = m_pxmlcore->GetNumEntries() == 0;
 
   Command *pcmd1 = new UpdateGUICommand(m_pxmlcore, Command::WN_UNDO, Command::GUI_UNDO_IMPORT);
-  m_pmulticmds->Add((Command *)pcmd1);
+  m_pmulticmds->Add(pcmd1);
 
   for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
     pw_entry *cur_entry = *entry_iter;
@@ -535,7 +535,7 @@ void XMLFileHandlers::AddEntries()
         CItemData *pci = &iter->second;
         Command *pcmd = new UpdatePasswordCommand(m_pxmlcore, *pci, cur_entry->password);
         pcmd->SetNoNotify();
-        m_pmulticmds->Add((Command *)pcmd);
+        m_pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
           pci->SetATime();
         }
@@ -707,7 +707,7 @@ void XMLFileHandlers::AddEntries()
     delete cur_entry;
   }
   Command *pcmd2 = new UpdateGUICommand(m_pxmlcore, Command::WN_REDO, Command::GUI_REDO_IMPORT);
-  m_pmulticmds->Add((Command *)pcmd2);
+  m_pmulticmds->Add(pcmd2);
 }
 
 void XMLFileHandlers::AddDBUnknownFieldsPreferences(UnknownFieldList &uhfl)

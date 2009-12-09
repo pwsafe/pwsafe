@@ -120,7 +120,7 @@ void DboxMain::OnAdd()
                      base_uuid, alias_uuid, CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd2);
     }
-    m_core.Execute((Command *)pmulticmds);
+    m_core.Execute(pmulticmds);
     UpdateToolBarDoUndo();
 
     // Update Toolbar for this new entry
@@ -231,7 +231,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
 
   Command *pcmd2 = new AddEntryCommand(&m_core, temp);
   pmulticmds->Add(pcmd2);
-  m_core.Execute((Command *)pmulticmds);
+  m_core.Execute(pmulticmds);
   UpdateToolBarDoUndo();
 
   if (m_core.GetNumEntries() == 1) {
@@ -312,7 +312,7 @@ void DboxMain::OnDelete()
     if (m_bFilterActive)
       RefreshViews();
   }
-  m_core.Execute((Command *)pmulticmds);
+  m_core.Execute(pmulticmds);
   UpdateToolBarDoUndo();
 }
 
@@ -738,7 +738,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
     Command *pcmd = new EditEntryCommand(pcore, ci_original, ci_edit);
     pmulticmds->Add(pcmd);
-    pcore->Execute((Command *)pmulticmds);
+    pcore->Execute(pmulticmds);
     UpdateToolBarDoUndo();
 
     //// AddEntry copies the entry, and we want to work with the inserted copy
@@ -930,7 +930,7 @@ void DboxMain::OnDuplicateEntry()
     // Add it to the end of the list
     Command *pcmd = new AddEntryCommand(&m_core, ci2);
     pmulticmds->Add(pcmd);
-    m_core.Execute((Command *)pmulticmds);
+    m_core.Execute(pmulticmds);
     UpdateToolBarDoUndo();
 
     pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
@@ -1812,7 +1812,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
                                                   CItemData::ET_SHORTCUT,
                                                   CItemData::PASSWORD);
   pmulticmds->Add(pcmdS);
-  m_core.Execute((Command *)pmulticmds);
+  m_core.Execute(pmulticmds);
   UpdateToolBarDoUndo();
 
   possible_aliases.clear();

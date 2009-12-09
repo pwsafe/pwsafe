@@ -1746,7 +1746,7 @@ int DboxMain::Merge(const StringX &sx_Filename2)
 
   MultiCommands *pmulticmds = new MultiCommands(&m_core);
   Command *pcmd1 = new UpdateGUICommand(&m_core, Command::WN_UNDO, Command::GUI_UNDO_MERGESYNC);
-  pmulticmds->Add((Command *)pcmd1);
+  pmulticmds->Add(pcmd1);
 
   ItemListConstIter otherPos;
   for (otherPos = othercore.GetEntryIter();
@@ -1946,8 +1946,8 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   }
 
   Command *pcmd2 = new UpdateGUICommand(&m_core, Command::WN_REDO, Command::GUI_REDO_MERGESYNC);
-  pmulticmds->Add((Command *)pcmd2);
-  m_core.Execute((Command *)pmulticmds);
+  pmulticmds->Add(pcmd2);
+  m_core.Execute(pmulticmds);
   UpdateToolBarDoUndo();
       
   waitCursor.Restore(); /* restore normal cursor */
@@ -2542,7 +2542,7 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
 
   MultiCommands *pmulticmds = new MultiCommands(&m_core);
   Command *pcmd1 = new UpdateGUICommand(&m_core, Command::WN_UNDO, Command::GUI_UNDO_MERGESYNC);
-  pmulticmds->Add((Command *)pcmd1);
+  pmulticmds->Add(pcmd1);
 
   ItemListConstIter otherPos;
   for (otherPos = othercore.GetEntryIter();
@@ -2629,8 +2629,8 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
   }
 
   Command *pcmd2 = new UpdateGUICommand(&m_core, Command::WN_REDO, Command::GUI_REDO_MERGESYNC);
-  pmulticmds->Add((Command *)pcmd2);
-  m_core.Execute((Command *)pmulticmds);
+  pmulticmds->Add(pcmd2);
+  m_core.Execute(pmulticmds);
   UpdateToolBarDoUndo();
       
   waitCursor.Restore(); /* restore normal cursor */
@@ -2910,7 +2910,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     }
     tempitem.SetStatus(CItemData::ES_ADDED);
     Command *pcmd = new AddEntryCommand(ptocore, tempitem);
-    ptocore->Execute((Command *)pcmd);
+    ptocore->Execute(pcmd);
     UpdateToolBarDoUndo();
   }
 

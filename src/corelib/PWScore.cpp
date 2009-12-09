@@ -1045,7 +1045,7 @@ bool PWScore::Validate(stringT &status)
                                                    CItemData::ET_SHORTCUT,
                                                    CItemData::UUID);
   pmulticmds->Add(pcmdS);
-  Execute((Command *)pmulticmds);
+  Execute(pmulticmds);
   pmulticmds->GetRC(pcmdA, num_alias_warnings);
   pmulticmds->GetRC(pcmdS, num_shortcuts_warnings);
 
