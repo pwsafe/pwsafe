@@ -1158,8 +1158,6 @@ void DboxMain::OnDestroy()
   UnregisterHotKey(GetSafeHwnd(), PWS_HOTKEY_ID);
 
   // Stop being notified about session changes
-  typedef DWORD (WINAPI *PWTS_URSN) (HWND);
-
   if (m_bRegistered) {
     SessionNotification(false);
   }
