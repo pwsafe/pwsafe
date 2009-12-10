@@ -137,6 +137,7 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"
 
+// For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
 typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
 
@@ -620,7 +621,6 @@ protected:
 #if defined(POCKET_PC)
   afx_msg void OnShowPassword();
 #else
-  afx_msg void OnChangeItemFocus(NMHDR * pNotifyStruct, LRESULT * result);
   afx_msg void OnDropFiles(HDROP hDrop);
 #endif
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
@@ -696,7 +696,7 @@ private:
 
   PWSclipboard m_clipboard;
 
-  bool SetSessionNotification();
+  void SessionNotification(const bool bRegister);
   bool IsWorkstationLocked() const;
   bool LockDataBase();
   void startLockCheckTimer();
@@ -797,6 +797,7 @@ private:
   DWORD m_WindowsMajorVersion, m_WindowsMinorVersion;
 
   // Need this in case not running on Vista or later
+  HMODULE m_hUser32;
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
 };

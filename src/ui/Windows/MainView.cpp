@@ -1274,17 +1274,6 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
   *pResult = FALSE;
 }
 
-#if !defined(POCKET_PC)
-void DboxMain::OnChangeItemFocus(NMHDR* /* pNMHDR */, LRESULT* /* pResult */) 
-{
-  // Called on NM_{SET,KILL}FOCUS for IDC_ITEM{LIST,TREE}
-  // Seems excessive to do this all the time
-  // Should be done only on Open and on Change (Add, Delete, Modify)
-  if (m_toolbarsSetup == TRUE)
-    UpdateStatusBar();
-}
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE!
 // itemData must be the actual item in the item list.  if the item is removed
