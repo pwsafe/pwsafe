@@ -44,13 +44,14 @@ typedef BOOL (WINAPI *PMDWD) (HANDLE, DWORD, HANDLE, MINIDUMP_TYPE,
                               PMINIDUMP_CALLBACK_INFORMATION);
 
 static PMDWD pfcnMiniDumpWriteDump(NULL);
+static HMODULE hDbgHelp(NULL);
 
 // Function call definitions
 LONG TakeMiniDump(struct _EXCEPTION_POINTERS *ExInfo, const int type,
                   struct st_invp *pinvp = NULL);
 
 LONG Win32FaultHandler(struct _EXCEPTION_POINTERS *ExInfo);
-void RemoveFaultHandler();
+void RemoveFaultHandler(bool bFreeLibrary = true);
 
 static void __cdecl terminate_dumphandler();
 static void __cdecl unexpected_dumphandler();
@@ -116,7 +117,7 @@ void LocalizeFaultHandler(HINSTANCE inst) {
 void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
-  HMODULE hDbgHelp = ::LoadLibrary(L"DbgHelp.dll");
+  hDbgHelp = ::LoadLibrary(L"DbgHelp.dll");
   if (hDbgHelp == NULL)
     return;
 
@@ -124,6 +125,7 @@ void InstallFaultHandler(const int major, const int minor, const int build,
 
   if (pfcnMiniDumpWriteDump == NULL) {
     ::FreeLibrary(hDbgHelp);
+    hDbgHelp = NULL;
     return;
   }
 
@@ -241,8 +243,8 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
                   st_invp *pinvp)
 {
   // Use standard functions as much as possible
-  // Remove all handlers
-  RemoveFaultHandler();
+  // Remove all handlers - but don't free the library just yet
+  RemoveFaultHandler(false);
 
   // Won't do anything with this - as long in dump if needed
   UNREFERENCED_PARAMETER(pinvp);
@@ -334,13 +336,25 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
   } // valid file handle
 
  exit:
+  // Now we can free the library
+  ::FreeLibrary(hDbgHelp);
+  hDbgHelp = NULL;
+  pfcnMiniDumpWriteDump = NULL;
+
   return EXCEPTION_CONTINUE_SEARCH;
 }
 
-void RemoveFaultHandler()
+void RemoveFaultHandler(bool bFreeLibrary)
 {
+  // If we don't have the function pointer - we never set anything up
   if (pfcnMiniDumpWriteDump == NULL)
     return;
+
+  // Free library if called during application normal termination
+  if (bFreeLibrary && hDbgHelp != NULL) {
+    ::FreeLibrary(hDbgHelp);
+    hDbgHelp = NULL;
+  }
 
   // Remove our Windows Exception Filter
   SetUnhandledExceptionFilter(NULL);
