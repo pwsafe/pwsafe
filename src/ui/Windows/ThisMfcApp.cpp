@@ -59,7 +59,7 @@
 void InstallFaultHandler(const int major, const int minor, const int build,
                          const TCHAR * revision, const DWORD dwTimeStamp);
 void LocalizeFaultHandler(HINSTANCE inst);
-void RemoveFaultHandler();
+void RemoveFaultHandler(bool bFreeLibrary = true);
 #endif
 
 using namespace std;
