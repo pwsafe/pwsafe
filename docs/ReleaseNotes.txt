@@ -1,5 +1,5 @@
-Password Safe 3.20 Release Notes - December 2009
-================================================
+Password Safe 3.20.1 Release Notes - xxxxxxxx 20xx
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,20 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.20.1
+====================
+[2912177] Restore 'Add Group' menu item to context menu when clicking
+on an entry.
+[] Finally fix issues running under pre-XP versions of Windows.
+
+New Features for 3.20.1
+=======================
+
+
+Changes to Existing Features in 3.20.1
+======================================
+
 
 Bugs fixed in 3.20
 ==================
