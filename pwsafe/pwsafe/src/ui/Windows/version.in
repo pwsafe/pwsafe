@@ -18,8 +18,8 @@
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define PRODUCTVER     3, 20, 0, $WCREV$
-#define STRPRODUCTVER  "3, 20, 0, $WCREV$$WCMODS?+:$\0"
+#define PRODUCTVER     3, 20, 1, $WCREV$
+#define STRPRODUCTVER  "3, 20, 1, $WCREV$$WCMODS?+:$\0"
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 
