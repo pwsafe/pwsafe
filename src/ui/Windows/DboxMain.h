@@ -310,6 +310,7 @@ public:
   void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
   void SetDCAText(CItemData * pci = NULL);
   void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  bool m_bInAddGroup;
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };

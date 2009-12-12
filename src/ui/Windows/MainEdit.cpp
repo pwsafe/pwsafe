@@ -252,13 +252,35 @@ void DboxMain::OnAddGroup()
     // If the former, add a child node to the current one
     // If the latter, add to root.
     CString cmys_text(MAKEINTRESOURCE(IDS_NEWGROUP));
+    CItemData *pci = getSelectedItem();
+    if (pci != NULL) {
+      m_TreeViewGroup = pci->GetGroup();
+    }
+
     if (m_TreeViewGroup.empty())
       m_TreeViewGroup = cmys_text;
     else
       m_TreeViewGroup += L"." + cmys_text;
-    HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup.c_str());
+
+    // If group is there - make unique
+    StringX s_copy(m_TreeViewGroup);
+    bool bAlreadyExists(true);
+    HTREEITEM newGroup;
+
+    int i = 1;
+    do {
+      newGroup = m_ctlItemTree.AddGroup(s_copy.c_str(), bAlreadyExists);
+      i++;
+      // Format as per Windows Exlorer "New Folder"/"New Folder (n)"
+      // where if 'n' present, it starts from 2
+      Format(s_copy, L"%s (%d)", m_TreeViewGroup.c_str(), i);
+    } while (bAlreadyExists);
+
     m_ctlItemTree.SelectItem(newGroup);
     m_TreeViewGroup = L""; // for next time
+
+    // Needed by PWTreeCtrl::OnEndLabelEdit in case user doesn't change the group name
+    m_bInAddGroup = true;
     m_ctlItemTree.EditLabel(newGroup);
   }
 }
