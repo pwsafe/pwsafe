@@ -128,7 +128,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForDelete(false), m_bFilterForStatus(false),
   m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER)),
-  m_hUser32(NULL)
+  m_hUser32(NULL), m_bInAddGroup(false)
 {
   // Need to do this as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = ::LoadLibrary(L"User32.dll");

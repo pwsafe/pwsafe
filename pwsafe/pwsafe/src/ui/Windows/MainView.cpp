@@ -1296,7 +1296,8 @@ int DboxMain::insertItem(CItemData &ci, int iIndex,
     HTREEITEM ti;
     StringX treeDispString = m_ctlItemTree.MakeTreeDisplayString(ci);
     // get path, create if necessary, add title as last node
-    ti = m_ctlItemTree.AddGroup(ci.GetGroup().c_str());
+    bool bAlreadyExists;
+    ti = m_ctlItemTree.AddGroup(ci.GetGroup().c_str(), bAlreadyExists);
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
       ti = m_ctlItemTree.InsertItem(treeDispString.c_str(), ti, TVI_SORT);
       m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&ci);
