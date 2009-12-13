@@ -2743,10 +2743,38 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       break;
     // Not allowed if Group selected or the item selected has an empty field
-    case ID_MENUITEM_BROWSEURL:
     case ID_MENUITEM_SENDEMAIL:
-    case ID_MENUITEM_COPYURL:
     case ID_MENUITEM_COPYEMAIL:
+      if (bGroupSelected) {
+        // Not allowed if a Group is selected
+        iEnable = FALSE;
+      } else {
+        CItemData *pci = getSelectedItem();
+        if (pci == NULL) {
+          iEnable = FALSE;
+        } else {
+          if (pci->IsShortcut()) {
+            // This is an shortcut
+            uuid_array_t entry_uuid, base_uuid;
+            pci->GetUUID(entry_uuid);
+            m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+            ItemListIter iter = m_core.Find(base_uuid);
+            if (iter != End()) {
+              pci = &iter->second;
+            }
+          }
+
+          if (pci->IsEmailEmpty() && 
+              (pci->IsURLEmpty() || 
+              (!pci->IsURLEmpty() && !pci->IsURLEmail()))) {
+            iEnable = FALSE;
+          }
+        }
+      }
+      break;
+    case ID_MENUITEM_BROWSEURL:
+    case ID_MENUITEM_COPYURL:
     case ID_MENUITEM_BROWSEURLPLUS:
     case ID_MENUITEM_COPYUSERNAME:
     case ID_MENUITEM_COPYNOTESFLD:
