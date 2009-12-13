@@ -790,22 +790,16 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       *    3. If URL is not empty and is an email address, add email menuitem
       *       (if not already added)
       */
-      bool bAddURL(false);
-      bool bAddEmail = !pci->IsEmailEmpty();
-      if (!pci->IsURLEmpty()) {
-        if (pci->IsURLEmail()) {
-          bAddEmail = true;
-        } else {
-          bAddURL = true;
-        }
-      }
+      bool bAddCopyEmail = !pci->IsEmailEmpty();
+      bool bAddSendEmail = bAddCopyEmail || (!pci->IsURLEmpty() && pci->IsURLEmail());
+      bool bAddURL = !pci->IsURLEmpty();
 
       // Add copies in order
       if (bAddURL) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYURL, tc_dummy);
       }
-      if (bAddEmail) {
+      if (bAddCopyEmail) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPYEMAIL, tc_dummy);
       }
@@ -817,13 +811,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
 
       // Add actions in order
-      if (bAddURL) {
+      if (bAddURL && !pci->IsURLEmail()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_BROWSEURL, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
       }
-      if (bAddEmail) {
+      if (bAddSendEmail) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_SENDEMAIL, tc_dummy);
       }
@@ -1250,19 +1244,26 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       }
     }
 
+    bool bCopyEmail = !pci->IsEmailEmpty();
+    bool bSendEmail = bCopyEmail || (!pci->IsURLEmpty() && pci->IsURLEmail());
+    bool bUseURL = !pci->IsURLEmpty() && !pci->IsURLEmail();
+
     if (pci->IsUserEmpty())
       pPopup->RemoveMenu(ID_MENUITEM_COPYUSERNAME, MF_BYCOMMAND);
 
     if (pci->IsNotesEmpty())
       pPopup->RemoveMenu(ID_MENUITEM_COPYNOTESFLD, MF_BYCOMMAND);
 
-    if (pci->IsEmailEmpty() && !pci->IsURLEmail()) {
+    if (!bCopyEmail)
       pPopup->RemoveMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND);
-      pPopup->RemoveMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND);
-    }
 
-    if (pci->IsURLEmpty()) {
+    if (!bSendEmail)
+      pPopup->RemoveMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND);
+
+    if (pci->IsURLEmpty())
       pPopup->RemoveMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND);
+
+    if (!bUseURL) {
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
     }
