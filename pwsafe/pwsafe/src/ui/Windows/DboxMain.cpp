@@ -2744,7 +2744,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // Not allowed if Group selected or the item selected has an empty field
     case ID_MENUITEM_SENDEMAIL:
-    case ID_MENUITEM_COPYEMAIL:
       if (bGroupSelected) {
         // Not allowed if a Group is selected
         iEnable = FALSE;
@@ -2773,11 +2772,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         }
       }
       break;
+    // Not allowed if Group selected or the item selected has an empty field
     case ID_MENUITEM_BROWSEURL:
-    case ID_MENUITEM_COPYURL:
     case ID_MENUITEM_BROWSEURLPLUS:
     case ID_MENUITEM_COPYUSERNAME:
     case ID_MENUITEM_COPYNOTESFLD:
+    case ID_MENUITEM_COPYURL:
+    case ID_MENUITEM_COPYEMAIL:
       if (bGroupSelected) {
         // Not allowed if a Group is selected
         iEnable = FALSE;
@@ -2809,7 +2810,15 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
                 iEnable = FALSE;
               }
               break;
-            default:
+            case ID_MENUITEM_COPYEMAIL:
+              if (pci->IsEmailEmpty() ||
+                  (!pci->IsURLEmpty() && pci->IsURLEmail())) {
+                iEnable = FALSE;
+              }
+              break;
+            case ID_MENUITEM_BROWSEURL:
+            case ID_MENUITEM_BROWSEURLPLUS:
+            case ID_MENUITEM_COPYURL:
               if (pci->IsURLEmpty()) {
                 iEnable = FALSE;
               }
