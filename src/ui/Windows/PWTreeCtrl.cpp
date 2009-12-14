@@ -815,6 +815,14 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
     return;
   }
 
+  // If called from AddGroup, user cancels EditLabel - save it
+  // (Still called "New Group")
+  if (m_pDbx->m_bInAddGroup) {
+    m_pDbx->m_bInAddGroup = false;
+    *pLResult = TRUE;
+    return;
+  }
+
 bad_exit:
   // Refresh display to show old text - if we don't no one else will
   m_pDbx->RefreshViews();
@@ -891,7 +899,7 @@ static CSecString GetPathElem(CSecString &path)
   return retval;
 }
 
-static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
+static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM &node,
                          const CSecString &s, HTREEITEM &si)
 {
   // returns true iff s is a direct descendant of node
@@ -908,21 +916,30 @@ static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
   return false;
 }
 
-HTREEITEM CPWTreeCtrl::AddGroup(const CString &group)
+HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
 {
   // Add a group at the end of path
   HTREEITEM ti = TVI_ROOT;
   HTREEITEM si;
+  bAlreadyExists = true;
   if (!group.IsEmpty()) {
     CSecString path = group;
     CSecString s;
+    StringX path2root(L""), sxDot(L".");
     do {
       s = GetPathElem(path);
+      if (path2root.empty())
+        path2root = (LPCWSTR)s;
+      else
+        path2root += sxDot + StringX(s);
+
       if (!ExistsInTree(*this, ti, s, si)) {
         ti = InsertItem(s, ti, TVI_SORT);
         SetItemImage(ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
+        bAlreadyExists = false;
       } else
         ti = si;
+        m_pDbx->m_mapGroupToTreeItem[path2root] = ti;
     } while (!path.IsEmpty());
   }
   return ti;

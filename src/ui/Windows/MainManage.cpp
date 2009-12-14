@@ -844,7 +844,7 @@ void DboxMain::OnOptions()
 
     // If DB preferences changed and/or password history options
     if (pmulticmds != NULL && pmulticmds->GetSize() > 0) {
-      pmulticmds->Execute();
+      Execute(pmulticmds);
       if (ipwh_exec > 0) {
         // We did do PWHistory update
         int num_altered(0);

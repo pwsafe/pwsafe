@@ -47,7 +47,7 @@ public:
 
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
-  HTREEITEM AddGroup(const CString &path);
+  HTREEITEM AddGroup(const CString &path, bool &bAlreadyExists);
   void SortTree(const HTREEITEM htreeitem);
   bool IsLeaf(HTREEITEM hItem);
   CSecString MakeTreeDisplayString(const CItemData &ci) const;

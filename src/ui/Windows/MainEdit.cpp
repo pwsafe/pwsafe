@@ -120,8 +120,7 @@ void DboxMain::OnAdd()
                      base_uuid, alias_uuid, CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd2);
     }
-    m_core.Execute(pmulticmds);
-    UpdateToolBarDoUndo();
+    Execute(pmulticmds);
 
     // Update Toolbar for this new entry
     m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
@@ -231,8 +230,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
 
   Command *pcmd2 = new AddEntryCommand(&m_core, temp);
   pmulticmds->Add(pcmd2);
-  m_core.Execute(pmulticmds);
-  UpdateToolBarDoUndo();
+  Execute(pmulticmds);
 
   if (m_core.GetNumEntries() == 1) {
     // For some reason, when adding the first entry, it is not visible!
@@ -259,13 +257,35 @@ void DboxMain::OnAddGroup()
     // If the former, add a child node to the current one
     // If the latter, add to root.
     CString cmys_text(MAKEINTRESOURCE(IDS_NEWGROUP));
+    CItemData *pci = getSelectedItem();
+    if (pci != NULL) {
+      m_TreeViewGroup = pci->GetGroup();
+    }
+
     if (m_TreeViewGroup.empty())
       m_TreeViewGroup = cmys_text;
     else
       m_TreeViewGroup += L"." + cmys_text;
-    HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup.c_str());
+
+    // If group is there - make unique
+    StringX s_copy(m_TreeViewGroup);
+    bool bAlreadyExists(true);
+    HTREEITEM newGroup;
+
+    int i = 1;
+    do {
+      newGroup = m_ctlItemTree.AddGroup(s_copy.c_str(), bAlreadyExists);
+      i++;
+      // Format as per Windows Exlorer "New Folder"/"New Folder (n)"
+      // where if 'n' present, it starts from 2
+      Format(s_copy, L"%s (%d)", m_TreeViewGroup.c_str(), i);
+    } while (bAlreadyExists);
+
     m_ctlItemTree.SelectItem(newGroup);
     m_TreeViewGroup = L""; // for next time
+
+    // Needed by PWTreeCtrl::OnEndLabelEdit in case user doesn't change the group name
+    m_bInAddGroup = true;
     m_ctlItemTree.EditLabel(newGroup);
   }
 }
@@ -305,15 +325,15 @@ void DboxMain::OnDelete()
     }
   }
 
-  MultiCommands *pmulticmds = new MultiCommands(&m_core);
-
   if (dodelete) {
+    MultiCommands *pmulticmds = new MultiCommands(&m_core);
     Delete(pmulticmds);
+
     if (m_bFilterActive)
       RefreshViews();
+
+    Execute(pmulticmds);
   }
-  m_core.Execute(pmulticmds);
-  UpdateToolBarDoUndo();
 }
 
 void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
@@ -371,6 +391,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
     ASSERT(listindex !=  m_core.GetEntryEndIter());
 
     UnFindItem();
+
     //m_ctlItemList.DeleteItem(curSel);
     //m_ctlItemTree.DeleteWithParents(curTree_item);
     //delete pdi;
@@ -461,7 +482,6 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
       dependentslist.clear();
     }
 
-    pci->SetDCA(-1);
     Command *pcmd = new DeleteEntryCommand(&m_core, *pci);
     pmulticmds->Add(pcmd);
 
@@ -481,26 +501,28 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
   } else { // !SelItemOk()
     if (m_ctlItemTree.IsWindowVisible()) {
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-      if (ti != NULL) {
-        if (!m_ctlItemTree.IsLeaf(ti)) {
-          HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
+      if (ti != NULL && !m_ctlItemTree.IsLeaf(ti)) {
+        // Deleting a Group
+        HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
 
-          m_ctlItemTree.SetRedraw(FALSE);
+        m_ctlItemTree.SetRedraw(FALSE);
 
-          while (cti != NULL) {
-            m_ctlItemTree.SelectItem(cti);
-            Delete(pmulticmds, true); // recursion - I'm so lazy!
-            cti = m_ctlItemTree.GetChildItem(ti);
-          }
-
-          m_ctlItemTree.SetRedraw(TRUE);
-          m_ctlItemTree.Invalidate();
-
-          //  delete an empty group.
-          HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
-          m_ctlItemTree.DeleteItem(ti);
-          m_ctlItemTree.SelectItem(parent);
+        while (cti != NULL) {
+          m_ctlItemTree.SelectItem(cti);
+          // Major problem here yet to be resolved!!!
+          // Without the ASSERT - infinite loop.
+          ASSERT(0);
+          Delete(pmulticmds, true); // recursion - I'm so lazy!
+          cti = m_ctlItemTree.GetChildItem(ti);
         }
+
+        m_ctlItemTree.SetRedraw(TRUE);
+        m_ctlItemTree.Invalidate();
+
+        //  delete an empty group.
+        HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
+        m_ctlItemTree.DeleteItem(ti);
+        m_ctlItemTree.SelectItem(parent);
       }
     }
   }
@@ -738,8 +760,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
     Command *pcmd = new EditEntryCommand(pcore, ci_original, ci_edit);
     pmulticmds->Add(pcmd);
-    pcore->Execute(pmulticmds);
-    UpdateToolBarDoUndo();
+    Execute(pmulticmds, pcore);
 
     //// AddEntry copies the entry, and we want to work with the inserted copy
     //// Which we'll find by uuid
@@ -829,8 +850,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
     Command *pcmd = new EditEntryCommand(pcore, ci_original, ci_edit);
-    pcore->Execute(pcmd);
-    UpdateToolBarDoUndo();
+    Execute(pcmd, pcore);
 
     //// AddEntry copies the entry, and we want to work with the inserted copy
     //// Which we'll find by uuid
@@ -930,8 +950,7 @@ void DboxMain::OnDuplicateEntry()
     // Add it to the end of the list
     Command *pcmd = new AddEntryCommand(&m_core, ci2);
     pmulticmds->Add(pcmd);
-    m_core.Execute(pmulticmds);
-    UpdateToolBarDoUndo();
+    Execute(pmulticmds);
 
     pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 
@@ -1812,8 +1831,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
                                                   CItemData::ET_SHORTCUT,
                                                   CItemData::PASSWORD);
   pmulticmds->Add(pcmdS);
-  m_core.Execute(pmulticmds);
-  UpdateToolBarDoUndo();
+  Execute(pmulticmds);
 
   possible_aliases.clear();
 

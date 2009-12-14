@@ -438,12 +438,18 @@ int DboxMain::Close()
 
   app.SetTooltipText(L"PasswordSafe");
   UpdateSystemTray(CLOSED);
+
   // Call UpdateMenuAndToolBar before UpdateStatusBar, as it sets m_bOpen
   UpdateMenuAndToolBar(false);
   m_titlebar = L"Password Safe";
   SetWindowText(LPCWSTR(m_titlebar));
   m_lastclipboardaction = L"";
   UpdateStatusBar();
+
+  // Delete any saved status information
+  for (size_t i = 0; i < m_stkSaveGUIInfo.size(); i++) {
+    m_stkSaveGUIInfo.pop();
+  }
 
   // Kill timer as a database preference
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
@@ -1947,8 +1953,7 @@ int DboxMain::Merge(const StringX &sx_Filename2)
 
   Command *pcmd2 = new UpdateGUICommand(&m_core, Command::WN_REDO, Command::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
-  m_core.Execute(pmulticmds);
-  UpdateToolBarDoUndo();
+  Execute(pmulticmds);
       
   waitCursor.Restore(); /* restore normal cursor */
 
@@ -2630,8 +2635,7 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
 
   Command *pcmd2 = new UpdateGUICommand(&m_core, Command::WN_REDO, Command::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
-  m_core.Execute(pmulticmds);
-  UpdateToolBarDoUndo();
+  Execute(pmulticmds);
       
   waitCursor.Restore(); /* restore normal cursor */
 
@@ -2910,8 +2914,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     }
     tempitem.SetStatus(CItemData::ES_ADDED);
     Command *pcmd = new AddEntryCommand(ptocore, tempitem);
-    ptocore->Execute(pcmd);
-    UpdateToolBarDoUndo();
+    Execute(pcmd, ptocore);
   }
 
   ptocore->SetDBChanged(true);

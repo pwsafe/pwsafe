@@ -145,15 +145,20 @@ void Command::DoEditEntry(CItemData &old_ci, CItemData &new_ci)
   if (m_pcore->IsReadOnly())
     return;
 
-  m_pcore->DoDeleteEntry(old_ci);
-  m_pcore->DoAddEntry(new_ci);
-  m_pcore->AddChangedNodes(old_ci.GetGroup());
-  m_pcore->AddChangedNodes(new_ci.GetGroup());
-
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     old_ci.GetUUID(entry_uuid);
-    m_pcore->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid);
+    // Set last parameter != 0 to prevent updating GUI until after the Add
+    m_pcore->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid, (LPARAM)-1);
+  }
+  m_pcore->DoDeleteEntry(old_ci);
+
+  m_pcore->DoAddEntry(new_ci);
+  m_pcore->AddChangedNodes(old_ci.GetGroup());
+  m_pcore->AddChangedNodes(new_ci.GetGroup());
+  if (m_bNotifyGUI) {
+    uuid_array_t entry_uuid;
+    old_ci.GetUUID(entry_uuid);
     m_pcore->NotifyGUINeedsUpdating(Command::GUI_ADD_ENTRY, entry_uuid);
   }
 }
@@ -164,13 +169,18 @@ void Command::UndoEditEntry(CItemData &old_ci, CItemData &new_ci)
   if (m_pcore->IsReadOnly())
     return;
 
+  if (m_bNotifyGUI) {
+    uuid_array_t entry_uuid;
+    new_ci.GetUUID(entry_uuid);
+    // Set last parameter != 0 to prevent updating GUI until after the Add
+    m_pcore->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid, (LPARAM)-1);
+  }
   m_pcore->DoDeleteEntry(new_ci);
-  m_pcore->DoAddEntry(old_ci);
 
+  m_pcore->DoAddEntry(old_ci);
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     old_ci.GetUUID(entry_uuid);
-    m_pcore->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid);
     m_pcore->NotifyGUINeedsUpdating(Command::GUI_ADD_ENTRY, entry_uuid);
   }
 }

@@ -128,7 +128,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForDelete(false), m_bFilterForStatus(false),
   m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER)),
-  m_hUser32(NULL)
+  m_hUser32(NULL), m_bInAddGroup(false)
 {
   // Need to do this as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = ::LoadLibrary(L"User32.dll");
@@ -1200,18 +1200,109 @@ void DboxMain::OnMove(int x, int y)
   }
 }
 
+void DboxMain::Execute(Command *pcmd, PWScore *pcore)
+{
+  SaveGUIStatus();
+  if (pcore == NULL)
+    m_core.Execute(pcmd);
+  else
+    pcore->Execute(pcmd);
+
+  UpdateToolBarDoUndo();
+}
+
 void DboxMain::OnUndo()
 {
   m_core.Undo();
+  RestoreGUIStatus();
+
   UpdateToolBarDoUndo();
 }
 
 void DboxMain::OnRedo()
 {
+  SaveGUIStatus();
   m_core.Redo();
+
   UpdateToolBarDoUndo();
 }
-  
+
+void DboxMain::SaveGUIStatus()
+{
+  st_SaveGUIInfo SaveGUIInfo;
+  CItemData *pci_list(NULL), *pci_tree(NULL);
+
+  // Note: we try and keep the same entry selected when the users
+  // switches between List & Tree views.
+  // But we can't if the user has selected a Group in the Tree view
+
+  // Note: Must do this using the entry's UUID as the POSITION & 
+  // HTREEITEM values may be different when we come to use it.
+  POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+  if (pos != NULL) {
+    pci_list = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+    if (pci_list != NULL) {
+      pci_list->GetUUID(SaveGUIInfo.lSelected);
+      SaveGUIInfo.blSelectedValid = true;
+    }
+  }
+
+  HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+  if (hi != NULL) {
+    pci_tree = (CItemData *)m_ctlItemTree.GetItemData(hi);
+    if (pci_tree != pci_list) {
+      if (pci_tree != NULL) {
+        pci_tree->GetUUID(SaveGUIInfo.tSelected);
+        SaveGUIInfo.btSelectedValid = true;
+      } else {
+        StringX s(L"");
+        if (hi != NULL)
+          s = m_ctlItemTree.GetItemText(hi);
+
+        while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
+          s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(L".") + s;
+        }
+        SaveGUIInfo.sxGroupName = s;
+      }
+    }
+  }
+  SaveGUIInfo.vGroupDisplayState = GetGroupDisplayState();
+
+  m_stkSaveGUIInfo.push(SaveGUIInfo);
+}
+
+void DboxMain::RestoreGUIStatus()
+{
+  ItemListIter iter;
+  DisplayInfo *pdi;
+  st_SaveGUIInfo &SaveGUIInfo = m_stkSaveGUIInfo.top();
+
+  if (SaveGUIInfo.blSelectedValid) {
+    iter = Find(SaveGUIInfo.lSelected);
+    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+    m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
+    m_ctlItemTree.SelectItem(pdi->tree_item);
+  }
+
+  if (SaveGUIInfo.btSelectedValid) {
+    iter = Find(SaveGUIInfo.tSelected);
+    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+    m_ctlItemTree.SelectItem(pdi->tree_item);
+  }
+
+  if (SaveGUIInfo.btGroupValid) {
+    std::map<StringX, HTREEITEM>::iterator iter;
+    iter = m_mapGroupToTreeItem.find(SaveGUIInfo.sxGroupName);
+    if (iter != m_mapGroupToTreeItem.end()) {
+      m_ctlItemTree.SelectItem(iter->second);
+    }
+  }
+
+  SetGroupDisplayState(SaveGUIInfo.vGroupDisplayState);
+
+  m_stkSaveGUIInfo.pop();
+}
+
 void DboxMain::FixListIndexes()
 {
   int N = m_ctlItemList.GetItemCount();
@@ -2753,13 +2844,42 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       break;
     // Not allowed if Group selected or the item selected has an empty field
-    case ID_MENUITEM_BROWSEURL:
     case ID_MENUITEM_SENDEMAIL:
-    case ID_MENUITEM_COPYURL:
-    case ID_MENUITEM_COPYEMAIL:
+      if (bGroupSelected) {
+        // Not allowed if a Group is selected
+        iEnable = FALSE;
+      } else {
+        CItemData *pci = getSelectedItem();
+        if (pci == NULL) {
+          iEnable = FALSE;
+        } else {
+          if (pci->IsShortcut()) {
+            // This is an shortcut
+            uuid_array_t entry_uuid, base_uuid;
+            pci->GetUUID(entry_uuid);
+            m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+            ItemListIter iter = m_core.Find(base_uuid);
+            if (iter != End()) {
+              pci = &iter->second;
+            }
+          }
+
+          if (pci->IsEmailEmpty() && 
+              (pci->IsURLEmpty() || 
+              (!pci->IsURLEmpty() && !pci->IsURLEmail()))) {
+            iEnable = FALSE;
+          }
+        }
+      }
+      break;
+    // Not allowed if Group selected or the item selected has an empty field
+    case ID_MENUITEM_BROWSEURL:
     case ID_MENUITEM_BROWSEURLPLUS:
     case ID_MENUITEM_COPYUSERNAME:
     case ID_MENUITEM_COPYNOTESFLD:
+    case ID_MENUITEM_COPYURL:
+    case ID_MENUITEM_COPYEMAIL:
       if (bGroupSelected) {
         // Not allowed if a Group is selected
         iEnable = FALSE;
@@ -2791,7 +2911,15 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
                 iEnable = FALSE;
               }
               break;
-            default:
+            case ID_MENUITEM_COPYEMAIL:
+              if (pci->IsEmailEmpty() ||
+                  (!pci->IsURLEmpty() && pci->IsURLEmail())) {
+                iEnable = FALSE;
+              }
+              break;
+            case ID_MENUITEM_BROWSEURL:
+            case ID_MENUITEM_BROWSEURLPLUS:
+            case ID_MENUITEM_COPYURL:
               if (pci->IsURLEmpty()) {
                 iEnable = FALSE;
               }
@@ -3087,8 +3215,7 @@ MultiCommands * DboxMain::CreateMultiCommands(PWScore *pcore)
 void DboxMain::ExecuteMultiCommands(MultiCommands *pmulticmds)
 {
   PWScore *pcore = pmulticmds->GetCore();
-  pcore->Execute(pmulticmds);
-  UpdateToolBarDoUndo();
+  Execute(pmulticmds, pcore);
 }
 
 void DboxMain::UpdateField(MultiCommands *pmulticmds,

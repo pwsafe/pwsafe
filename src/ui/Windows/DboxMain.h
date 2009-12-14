@@ -46,6 +46,8 @@
 
 #include <vector>
 #include <map>
+#include <list>
+#include <stack>
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
 #define HDF_SORTUP             0x0400
@@ -343,12 +345,16 @@ public:
   CRUEList m_RUEList;   // recent entry lists
 
   wchar_t *m_eye_catcher;
+  bool m_bInAddGroup;
 
   bool m_bDoAutoType;
   StringX m_AutoType;
 
   // Used in Add & Edit & OptionsPasswordPolicy
   PWPolicy m_pwp;
+
+  // Mapping Group to Tree Item to save searching all the time!
+  std::map<StringX, HTREEITEM> m_mapGroupToTreeItem;
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -497,6 +503,10 @@ protected:
   bool PassesFiltering(CItemData &ci, const st_filters &filters);
   bool PassesPWHFiltering(CItemData *pci, const st_filters &filters);
   bool PassesPWPFiltering(CItemData *pci, const st_filters &filters);
+
+  void Execute(Command *c, PWScore *pcore = NULL);
+  void SaveGUIStatus();
+  void RestoreGUIStatus();
 
 #if !defined(POCKET_PC)
   afx_msg void OnTrayLockUnLock();
@@ -727,7 +737,7 @@ private:
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
-  void RemoveFromGUI(CItemData &ci);
+  void RemoveFromGUI(CItemData &ci, LPARAM lparam = NULL);
   void AddToGUI(CItemData &ci);
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
@@ -800,6 +810,48 @@ private:
   HMODULE m_hUser32;
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
+
+  // The following is for saving information over an execute/undo/redo
+  // Might need to add more e.g. if filter is active and which one?
+  struct st_SaveGUIInfo {
+    bool blSelectedValid, btSelectedValid, btGroupValid;
+    uuid_array_t lSelected; // List selected item
+    uuid_array_t tSelected; // Tree selected item
+    StringX sxGroupName;
+    std::vector<bool> vGroupDisplayState;
+
+    st_SaveGUIInfo()
+    : blSelectedValid(false), btSelectedValid(false), btGroupValid(false)
+    {
+      memset((void *)lSelected, 0, sizeof(uuid_array_t));
+      memset((void *)tSelected, 0, sizeof(uuid_array_t));
+    }
+
+    st_SaveGUIInfo(const st_SaveGUIInfo &that)
+    : blSelectedValid(that.blSelectedValid), btSelectedValid(that.btSelectedValid),
+      btGroupValid(that.btGroupValid), vGroupDisplayState(that.vGroupDisplayState),
+      sxGroupName(that.sxGroupName)
+    {
+      memcpy((void *)lSelected, (void *)that.lSelected, sizeof(uuid_array_t));
+      memcpy((void *)tSelected, (void *)that.tSelected, sizeof(uuid_array_t));
+    }
+
+    st_SaveGUIInfo &operator=(const st_SaveGUIInfo &that)
+    {
+      if (this != &that) {
+        blSelectedValid = that.blSelectedValid;
+        btSelectedValid = that.blSelectedValid;
+        btGroupValid = that.btGroupValid;
+        memcpy((void *)lSelected, (void *)that.lSelected, sizeof(uuid_array_t));
+        memcpy((void *)tSelected, (void *)that.tSelected, sizeof(uuid_array_t));
+        sxGroupName = that.sxGroupName;
+        vGroupDisplayState = that.vGroupDisplayState;
+      }
+      return *this;
+    }
+  };
+
+  std::stack<st_SaveGUIInfo> m_stkSaveGUIInfo;
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)
@@ -827,7 +879,11 @@ struct DisplayInfo : public DisplayInfoBase {
 
   DisplayInfo &operator=(const DisplayInfo &that)
   {
-    list_index = that.list_index;
-    tree_item = that.tree_item;
+    if (this != &that) {
+      list_index = that.list_index;
+      tree_item = that.tree_item;
+    }
+    return *this;
   }
 };
+

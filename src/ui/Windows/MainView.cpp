@@ -118,7 +118,7 @@ void DboxMain::UpdateGUI(LPARAM instance, const Command::GUI_Action &ga, uuid_ar
       self->AddToGUI(*pci);
       break;
     case Command::GUI_DELETE_ENTRY:
-      self->RemoveFromGUI(*pci);
+      self->RemoveFromGUI(*pci, lparam);
       break;
     case Command::GUI_REFRESH_ENTRYFIELD:
       ft = (CItemData::FieldType)lparam;
@@ -906,6 +906,7 @@ void DboxMain::RefreshViews(const int iView)
   }
   if (iView & iTreeOnly) {
     m_ctlItemTree.SetRedraw(FALSE);
+    m_mapGroupToTreeItem.clear();
     m_ctlItemTree.DeleteAllItems();
   }
   m_bBoldItem = false;
@@ -1064,6 +1065,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       m_selectedAtMinimize = getSelectedItem();
       m_ctlItemList.DeleteAllItems();
+      m_mapGroupToTreeItem.clear();
       m_ctlItemTree.DeleteAllItems();
       m_bBoldItem = false;
 
@@ -1295,8 +1297,8 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
       (!m_bFilterActive || !m_bFilterForDelete))
     return -1;
 
-  if (ci.GetDisplayInfo() != NULL &&
-      ((DisplayInfo *)ci.GetDisplayInfo())->list_index != -1) {
+  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  if (pdi != NULL && pdi->list_index != -1) {
     // true iff item already displayed
     return iIndex;
   }
@@ -1306,7 +1308,6 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     iResult = m_ctlItemList.GetItemCount();
   }
 
-  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
   if (pdi == NULL) {
     pdi = new DisplayInfo;
     ci.SetDisplayInfo(pdi);
@@ -1355,7 +1356,8 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     HTREEITEM ti;
     StringX treeDispString = m_ctlItemTree.MakeTreeDisplayString(ci);
     // get path, create if necessary, add title as last node
-    ti = m_ctlItemTree.AddGroup(ci.GetGroup().c_str());
+    bool bAlreadyExists;
+    ti = m_ctlItemTree.AddGroup(ci.GetGroup().c_str(), bAlreadyExists);
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
       ti = m_ctlItemTree.InsertItem(treeDispString.c_str(), ti, TVI_SORT);
       m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&ci);
@@ -1467,6 +1469,7 @@ void DboxMain::ClearData(bool clearMRE)
     m_ctlItemList.DeleteAllItems();
     m_ctlItemList.UnlockWindowUpdate();
     m_ctlItemTree.LockWindowUpdate();
+    m_mapGroupToTreeItem.clear();
     m_ctlItemTree.DeleteAllItems();
     m_ctlItemTree.UnlockWindowUpdate();
     m_bBoldItem = false;
@@ -3802,22 +3805,27 @@ void DboxMain::AddToGUI(CItemData &ci)
   RefreshViews();
 }
 
-void DboxMain::RemoveFromGUI(CItemData &ci)
+void DboxMain::RemoveFromGUI(CItemData &ci, LPARAM lparam)
 {
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
 
   if (pdi != NULL) {
-    HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
-                           TVGN_PREVIOUSVISIBLE);
-    m_ctlItemTree.SelectItem(hItem);
+    if (lparam != NULL) {
+      HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
+                             TVGN_PREVIOUSVISIBLE);
+      m_ctlItemTree.SelectItem(hItem);
+    }
 
     m_ctlItemList.DeleteItem(pdi->list_index);
     m_ctlItemTree.DeleteWithParents(pdi->tree_item);
-    FixListIndexes();
 
-    // Make controls redraw
-    m_ctlItemList.Invalidate();
-    m_ctlItemTree.Invalidate();
+    if (lparam != NULL) {
+      FixListIndexes();
+
+      // Make controls redraw
+      m_ctlItemList.Invalidate();
+      m_ctlItemTree.Invalidate();
+    }
   }
 }
 
@@ -3859,6 +3867,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
 void DboxMain::RebuildGUI()
 {
   m_ctlItemList.DeleteAllItems();
+  m_mapGroupToTreeItem.clear();
   m_ctlItemTree.DeleteAllItems();
   RefreshViews();
 }
