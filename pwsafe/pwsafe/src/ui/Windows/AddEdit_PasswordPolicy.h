@@ -78,6 +78,7 @@ private:
   void SetPolicyControls();
   void SetPolicyFromVariables();
   void SetVariablesFromPolicy();
+  void DisablePolicy();
   bool ValidatePolicy(CWnd *&pFocus); // is policy self-consistent?
 
   void do_hex(const bool bHex);                 // bHex == true enable hex

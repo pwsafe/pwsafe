@@ -273,6 +273,14 @@ BOOL CAddEdit_Additional::OnInitDialog()
   swprintf(buffer, L"%d", M_NumPWHistory());
 #endif
 
+  if (M_original_entrytype() == CItemData::ET_ALIAS) {
+    GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_OLDPW1)->EnableWindow(FALSE);
+  }
+
   UpdateData(FALSE);
 
   return TRUE;
