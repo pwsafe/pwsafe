@@ -1403,7 +1403,8 @@ void DboxMain::SetChanged(ChangeType changed)
 
   switch (changed) {
     case Data:
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately) &&
+          !m_bInAddGroup) {
         Save();
       } else {
         m_core.SetDBChanged(true);
