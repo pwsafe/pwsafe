@@ -17,6 +17,7 @@ class PWScore;
 #include "ItemData.h"
 #include "StringX.h"
 #include "UUIDGen.h"
+#include "GUICommandInterface.h"
 
 #include "coredefs.h"
 
@@ -32,17 +33,20 @@ public:
   Command(PWScore *pcore);
   virtual ~Command();
   virtual int Execute() = 0;
+  virtual int Redo() = 0;
   virtual void Undo() = 0;
 
-  void SetNoNotify() {m_bNotifyGUI = false;}
+  void SetNoGUINotify() {m_bNotifyGUI = false;}
   void ResetSavedState(const bool bNewDBState) {m_bSaveDBChanged = bNewDBState;}
 
   enum ExecuteFn {
     WN_INVALID = -1,
-    WN_EXECUTE = 0,
-    WN_REDO = WN_EXECUTE,
-    WN_UNDO,
-    WN_ALL};
+    WN_ALL = 0,
+    WN_EXECUTE = 1,
+    WN_REDO = 2,
+    WN_EXECUTE_REDO = 3,
+    WN_UNDO = 4
+  };
 
   enum GUI_Action {
     GUI_UPDATE_STATUSBAR = 0,
@@ -70,7 +74,8 @@ protected:
   void SaveDependentsState(const Command::DependentsType itype);
   void RestoreDependentsState(const Command::DependentsType itype);
 
-  void DoUpdateGUI(const Command::ExecuteFn When, const Command::GUI_Action ga);
+  void DoUpdateGUI(const Command::GUI_Action ga);
+  void DoGUICmd(const Command::ExecuteFn &When, PWSGUICmdIF *pGUICmdIF);
 
   void DoUpdateDBPrefs(const StringX &sxNewDBPrefs);
   void UndoUpdateDBPrefs(const StringX &sxOldDBPrefs, const bool m_bOldState);
@@ -150,6 +155,7 @@ public:
   MultiCommands(PWScore *pcore);
   ~MultiCommands();
   int Execute();
+  int Redo();
   void Undo();
 
   void Add(Command *c);
@@ -167,7 +173,7 @@ private:
   std::vector<int> m_RCs;
 };
 
-// GUI related commands (NULL)
+// GUI related commands
 
 // Used mainly in MultiCommands to delay the GUI update until all the
 // Commands have been executed e.g. Import.
@@ -180,10 +186,24 @@ public:
   UpdateGUICommand(PWScore *pcore, const Command::ExecuteFn When,
                    const Command::GUI_Action ga);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
   Command::GUI_Action m_ga;
+};
+
+class GUICommand : public Command
+{
+public:
+  GUICommand(PWScore *pcore, PWSGUICmdIF *pGUICmdIF);
+  ~GUICommand();
+  int Execute();
+  int Redo();
+  void Undo();
+
+private:
+  PWSGUICmdIF *m_pGUICmdIF;
 };
 
 // PWS related commands
@@ -193,6 +213,7 @@ class DBPrefsCommand : public Command
 public:
   DBPrefsCommand(PWScore *pcore, StringX &sxNewDBPrefs);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -207,6 +228,7 @@ public:
   AddEntryCommand(PWScore *pcore, CItemData &ci);
   ~AddEntryCommand();
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -219,6 +241,7 @@ public:
   DeleteEntryCommand(PWScore *pcore, CItemData &ci);
   ~DeleteEntryCommand();
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -231,6 +254,7 @@ public:
   EditEntryCommand(PWScore *pcore, CItemData &old_ci, CItemData &new_ci);
   ~EditEntryCommand();
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -244,6 +268,7 @@ public:
   UpdateEntryCommand(PWScore *pcore, CItemData &ci, const CItemData::FieldType &ftype,
                      const StringX &value);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -258,6 +283,7 @@ class UpdatePasswordCommand : public Command
 public:
   UpdatePasswordCommand(PWScore *pcore, CItemData &ci, const StringX sxNewPassword);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -273,6 +299,7 @@ public:
                            const uuid_array_t &entry_uuid,
                            const CItemData::EntryType type);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -289,6 +316,7 @@ public:
                              const int &iVia);
   ~AddDependentEntriesCommand();
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -308,6 +336,7 @@ public:
                               const uuid_array_t &entry_uuid,
                               const CItemData::EntryType type);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -324,6 +353,7 @@ public:
                                 const uuid_array_t &entry_uuid,
                                 const CItemData::EntryType type);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -338,6 +368,7 @@ public:
   RemoveAllDependentEntriesCommand(PWScore *pcore, const uuid_array_t &base_uuid,
                                    const CItemData::EntryType type);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -353,6 +384,7 @@ public:
                               const uuid_array_t &to_baseuuid,
                               const CItemData::EntryType type);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -366,6 +398,7 @@ class ResetAllAliasPasswordsCommand : public Command
 public:
   ResetAllAliasPasswordsCommand(PWScore *pcore, const uuid_array_t &base_uuid);
   int Execute();
+  int Redo();
   void Undo();
 
 private:
@@ -379,6 +412,7 @@ public:
   UpdatePasswordHistoryCommand(PWScore *pcore, const int iAction,
                                const int new_default_max);
   int Execute();
+  int Redo();
   void Undo();
 
 private:

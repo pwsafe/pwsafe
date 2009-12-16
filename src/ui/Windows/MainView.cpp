@@ -51,6 +51,8 @@
 
 using namespace std;
 
+extern const wchar_t *GROUP_SEP2;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -61,7 +63,8 @@ void DboxMain::DatabaseModified(LPARAM instance, bool bChanged)
 {
   // Callback from PWScore if the database has been changed
   // entries or preferences stored in the database
-  DboxMain *self = (DboxMain*)instance;
+  DboxMain *self = (DboxMain *)instance;
+  ASSERT(self != NULL);
 
   // Callback from PWScore if the password list has been changed invalidating the 
   // indices vector in Find
@@ -96,11 +99,139 @@ void DboxMain::DatabaseModified(LPARAM instance, bool bChanged)
   }
 }
 
-void DboxMain::UpdateGUI(LPARAM instance, const Command::GUI_Action &ga, uuid_array_t &entry_uuid, LPARAM lparam)
+void DboxMain::GUICommandInterface(LPARAM instance, const Command::ExecuteFn &when, 
+                                   PWSGUICmdIF *pGUICmdIF)
+{
+  // Currently only needed during Redo of delete of an entry/Tree group which 
+  // may have an additional impact on the GUI (e.g. deleting the last entry in a Group).
+  // Not needed during Execute as the Delete command does the work up front
+  // Not needed during Undo as adding back the deleted entries automatically
+  // re-Adds the groups previously deleted
+
+  DboxMain *self = (DboxMain *)instance;
+  ASSERT(self != NULL && pGUICmdIF != NULL);
+
+  WinGUICmdIF *pWinGUICmdIF = dynamic_cast<WinGUICmdIF *>(pGUICmdIF);
+
+  switch (pWinGUICmdIF->GetType()) {
+    case WinGUICmdIF::GCT_DELETE:
+      switch (when) {
+        case Command::WN_REDO:
+          self->RedoDelete(pWinGUICmdIF);
+          break;
+        case Command::WN_EXECUTE:
+        case Command::WN_UNDO:
+        default:
+          // Do nothing - handled elsewhere
+          break;
+      }
+      break;
+    default:
+      // Currently only GCT_DELETE needed
+      break;
+  }
+}
+
+void DboxMain::RedoDelete(WinGUICmdIF *pGUICmdIF)
+{
+  // Do all the deletes in the GUI on Redo
+  // This code is taken from DboxMain::Delete and just performs
+  // the acctions on the Tree GUI.
+
+  std::vector<StringX>::iterator group_iter;
+  std::vector<CUUIDGen>::iterator uuid_iter;
+  std::map<StringX, HTREEITEM>::iterator gIter;
+  ItemListIter iter;
+  uuid_array_t entry_uuid;
+
+  // Delete entry from List GUI
+  for (uuid_iter = pGUICmdIF->m_vDeleteListItems.begin();
+       uuid_iter != pGUICmdIF->m_vDeleteListItems.end();
+       uuid_iter++) {
+    uuid_iter->GetUUID(entry_uuid);
+    iter = Find(entry_uuid);
+    ASSERT(iter != End());
+
+    const CItemData &ci = GetEntryAt(iter);
+    DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+    m_ctlItemList.DeleteItem(pdi->list_index);
+  }
+
+  // Delete entry from Tree GUI
+  for (uuid_iter = pGUICmdIF->m_vDeleteTreeItemsWithParents.begin();
+       uuid_iter != pGUICmdIF->m_vDeleteTreeItemsWithParents.end();
+       uuid_iter++) {
+    uuid_iter->GetUUID(entry_uuid);
+    iter = Find(entry_uuid);
+    ASSERT(iter !=  End());
+
+    const CItemData &ci = GetEntryAt(iter);
+    DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+    m_ctlItemTree.DeleteWithParents(pdi->tree_item);
+  }
+
+  // Does my alias base now become a normal entry?
+  for (uuid_iter = pGUICmdIF->m_vVerifyAliasBase.begin();
+       uuid_iter != pGUICmdIF->m_vVerifyAliasBase.end();
+       uuid_iter++) {
+    uuid_iter->GetUUID(entry_uuid);
+    iter = Find(entry_uuid);
+    CItemData &cibase = iter->second;
+    cibase.SetNormal();
+    DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
+    int nImage = GetEntryImage(cibase);
+    SetEntryImage(pdi->list_index, nImage, true);
+    SetEntryImage(pdi->tree_item, nImage, true);
+  }
+
+  // Does my shortcut base now become a normal entry?
+  for (uuid_iter = pGUICmdIF->m_vVerifyShortcutBase.begin();
+       uuid_iter != pGUICmdIF->m_vVerifyShortcutBase.end();
+       uuid_iter++) {
+    uuid_iter->GetUUID(entry_uuid);
+    iter = Find(entry_uuid);
+    CItemData &cibase = iter->second;
+    cibase.SetNormal();
+    DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
+    int nImage = GetEntryImage(cibase);
+    SetEntryImage(pdi->list_index, nImage, true);
+    SetEntryImage(pdi->tree_item, nImage, true);
+  }
+
+  // Now make all my aliases Normal
+  for (uuid_iter = pGUICmdIF->m_vAliasDependents.begin();
+       uuid_iter != pGUICmdIF->m_vAliasDependents.end();
+       uuid_iter++) {
+    uuid_iter->GetUUID(entry_uuid);
+    iter = Find(entry_uuid);
+    CItemData &cialias = iter->second;
+    DisplayInfo *pdi = (DisplayInfo *)cialias.GetDisplayInfo();
+    int nImage = GetEntryImage(cialias);
+    SetEntryImage(pdi->list_index, nImage, true);
+    SetEntryImage(pdi->tree_item, nImage, true);
+  }
+
+  // Remove emtpty groups
+  for (group_iter = pGUICmdIF->m_vDeleteGroup.begin();
+       group_iter != pGUICmdIF->m_vDeleteGroup.end();
+       group_iter++) {
+    gIter = m_mapGroupToTreeItem.find(*group_iter);
+    if (gIter != m_mapGroupToTreeItem.end()) {
+      m_ctlItemTree.DeleteItem(gIter->second);
+    }
+  }
+
+  RefreshViews();
+}
+
+void DboxMain::UpdateGUI(LPARAM instance, const Command::GUI_Action &ga, 
+                         uuid_array_t &entry_uuid, LPARAM lparam)
 {
   // Callback from PWScore if GUI needs updating
-  // Note: For some values of 'ga', 'ci' is invalid
-  DboxMain *self = (DboxMain*)instance;
+  // Note: For some values of 'ga', 'ci' is invalid and not used
+  DboxMain *self = (DboxMain *)instance;
+  ASSERT(self != NULL);
+
   CItemData::FieldType ft;
   CItemData *pci(NULL);
 
@@ -164,7 +295,9 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   // which is by column data TYPE and NOT by column index!
   // m_bSortAscending to determine the direction of the sort (duh)
 
-  DboxMain *self = (DboxMain*)closure;
+  DboxMain *self = (DboxMain *)closure;
+  ASSERT(self != NULL);
+
   const int nTypeSortColumn = self->m_iTypeSortColumn;
   CItemData* pLHS = (CItemData *)lParam1;
   CItemData* pRHS = (CItemData *)lParam2;
@@ -513,6 +646,7 @@ void DboxMain::setupBars()
 
   // Register for GUI Updates
   m_core.RegisterGUINotify(UpdateGUI, (LPARAM)this);
+  m_core.RegisterGUICommandInterface(GUICommandInterface, (LPARAM)this);
 
   // Register for GUI to populate its reserved field
   m_core.RegisterGUIUpdateEntry(GUIUpdateEntry);
@@ -3743,6 +3877,36 @@ StringX DboxMain::GetGroupName()
   return s;
 }
 
+void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath)
+{
+  // When a group node is renamed, need to update the group to HTREEITEM map
+  // Can't use for_each as need to update map
+  size_t len = sxOldPath.length();
+  std::map<StringX, HTREEITEM>::iterator iter;
+
+  for (iter = m_mapGroupToTreeItem.begin(); 
+       iter != m_mapGroupToTreeItem.end(); iter++) {
+    // Only change if path to root is the same
+    if (iter->first.length() == len) {
+      if (wcsncmp(sxOldPath.c_str(), iter->first.c_str(), len) == 0) {
+        HTREEITEM ti = iter->second;
+        m_mapGroupToTreeItem.erase(iter);
+        m_mapGroupToTreeItem[sxNewPath] = ti;
+      }
+    } else
+    if (iter->first.length() > len) {
+      // Need to add group seperator to ensure not affecting another group
+      StringX path = sxOldPath + StringX(GROUP_SEP2);
+      if (wcsncmp(path.c_str(), iter->first.c_str(), len + 1) == 0) {
+        HTREEITEM ti = iter->second;
+        StringX sxNewGroup = sxNewPath + iter->first.substr(len);
+        m_mapGroupToTreeItem.erase(iter);
+        m_mapGroupToTreeItem[sxNewGroup] = ti;
+      }
+    }
+  }
+}
+
 void DboxMain::OnShowUnsavedEntries()
 {
   m_bUnsavedDisplayed = !m_bUnsavedDisplayed;
@@ -3798,19 +3962,35 @@ void DboxMain::AddToGUI(CItemData &ci)
   uuid_array_t uuid;
   ci.GetUUID(uuid);
   int newpos = InsertItemIntoGUITreeList(m_core.GetEntry(m_core.Find(uuid)));
+
   if (newpos >= 0) {
     SelectEntry(newpos);
     FixListIndexes();
   }
+
   RefreshViews();
 }
 
 void DboxMain::RemoveFromGUI(CItemData &ci, LPARAM lparam)
 {
+  // RemoveFromGUI should always occur BEFORE the entry is deleted!
+  uuid_array_t entry_uuid;
+  ItemListIter iter = m_core.Find(entry_uuid);
+  if (iter == End()) {
+    ASSERT(0);
+    return;
+  }
+
+  CItemData *pci2 = &iter->second;
+  DisplayInfo *pdi2 = (DisplayInfo *)pci2->GetDisplayInfo();
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+
+  ASSERT(pdi2->list_index == pdi->list_index &&
+         pdi2->tree_item == pdi->tree_item);
 
   if (pdi != NULL) {
     if (lparam != NULL) {
+      // Last parameter != 0 to prevent updating GUI until after the Add
       HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
                              TVGN_PREVIOUSVISIBLE);
       m_ctlItemTree.SelectItem(hItem);

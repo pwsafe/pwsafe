@@ -22,6 +22,7 @@
 #include "SecString.h"
 #include "SMemFile.h"
 #include "GeneralMsgBox.h"
+#include "WinGUICmdIF.h"
 
 #include "corelib/ItemData.h"
 #include "corelib/Util.h"
@@ -42,7 +43,8 @@ static char THIS_FILE[] = __FILE__;
 // Hover time of 1.5 seconds before expanding a group during D&D
 #define HOVERTIME 1500
 
-static const wchar_t GROUP_SEP = L'.';
+const wchar_t GROUP_SEP = L'.';
+const wchar_t *GROUP_SEP2 = L".";
 
 // following header for D&D data passed over OLE:
 // Process ID of sender (to determine if src == tgt)
@@ -459,9 +461,8 @@ void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, C
   // Starting with hItem, update the Group field of all of hItem's
   // children. Called after a label has been edited.
   if (IsLeaf(hItem)) {
-    DWORD_PTR itemData = GetItemData(hItem);
-    ASSERT(itemData != NULL);
-    CItemData *pci = (CItemData *)itemData;
+    CItemData *pci = (CItemData *)GetItemData(hItem);
+    ASSERT(pci != NULL);
     m_pDbx->UpdateField(pmulticmds, *pci, CItemData::GROUP, (LPCWSTR)prefix);
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
@@ -794,6 +795,15 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
             prefix = GROUP_SEP + prefix;
           prefix = GetItemText(current) + prefix;
         } while (1);
+        StringX sxOldPath, sxNewPath;
+        if (prefix.IsEmpty()) {
+          sxOldPath = (LPCWSTR)m_eLabel;
+          sxNewPath = ptvinfo->item.pszText;
+        } else {
+          sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(m_eLabel);
+          sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(ptvinfo->item.pszText);
+        }
+        m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
         MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
         UpdateLeafsGroup(pmulticmds, ti, prefix);
         m_pDbx->ExecuteMultiCommands(pmulticmds);
@@ -854,14 +864,16 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem)
 void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 {
   // We don't want nodes that have no children to remain
-  HTREEITEM p;
+  HTREEITEM parent;
   do {
-    p = GetParentItem(hItem);
+    StringX sxPath = (LPCWSTR)GetGroup(hItem);
+    parent = GetParentItem(hItem);
     DeleteItem(hItem);
-    if (ItemHasChildren(p))
+    if (ItemHasChildren(parent))
       break;
-    hItem = p;
-  } while (p != TVI_ROOT && p != NULL);
+    m_pDbx->m_mapGroupToTreeItem.erase(sxPath);
+    hItem = parent;
+  } while (parent != TVI_ROOT && parent != NULL);
 }
 
 // Return the full path leading up to a given item, but
@@ -1383,7 +1395,16 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
       !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
     MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
-    m_pDbx->Delete(pmulticmds);
+    WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
+
+    m_pDbx->Delete(pmulticmds, pGUICmdIF);
+
+    if (pGUICmdIF->IsValid()) {
+      Command *pcmd = m_pDbx->CreateGUICommand(pGUICmdIF);
+      pmulticmds->Add(pcmd);
+    } else
+      delete pGUICmdIF;
+
     m_pDbx->ExecuteMultiCommands(pmulticmds);
   }
 

@@ -803,12 +803,12 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   Command *pcmdA = new AddDependentEntriesCommand(this, possible_aliases, &rpt, 
                                                    CItemData::ET_ALIAS,
                                                    CItemData::PASSWORD);
-  pcmdA->SetNoNotify();
+  pcmdA->SetNoGUINotify();
   pmulticmds->Add(pcmdA);
   Command * pcmdS = new AddDependentEntriesCommand(this, possible_shortcuts, &rpt, 
                                                     CItemData::ET_SHORTCUT,
                                                     CItemData::PASSWORD);
-  pcmdS->SetNoNotify();
+  pcmdS->SetNoGUINotify();
   pmulticmds->Add(pcmdS);
   Execute(pmulticmds);
 
@@ -1125,7 +1125,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       } else {
         CItemData *pci = &iter->second;
         Command *pcmd = new UpdatePasswordCommand(this, *pci, tokens[i_Offset[PASSWORD]].c_str());
-        pcmd->SetNoNotify();
+        pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
           pci->SetATime();
@@ -1290,7 +1290,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // Add to commands to execute
     Command *pcmd = new AddEntryCommand(this, temp);
-    pcmd->SetNoNotify();
+    pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
     numImported++;
   } // file processing for (;;) loop
@@ -1299,12 +1299,12 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   Command *pcmdA = new AddDependentEntriesCommand(this, possible_aliases, &rpt, 
                                                    CItemData::ET_ALIAS,
                                                    CItemData::PASSWORD);
-  pcmdA->SetNoNotify();
+  pcmdA->SetNoGUINotify();
   pmulticmds->Add(pcmdA);
   Command * pcmdS = new AddDependentEntriesCommand(this, possible_shortcuts, &rpt, 
                                                     CItemData::ET_SHORTCUT,
                                                     CItemData::PASSWORD);
-  pcmdS->SetNoNotify();
+  pcmdS->SetNoGUINotify();
   pmulticmds->Add(pcmdS);
   Command *pcmd2 = new UpdateGUICommand(this, Command::WN_REDO, Command::GUI_REDO_IMPORT);
   pmulticmds->Add(pcmd2);
@@ -1451,7 +1451,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
       m_pfcnGUIUpdateEntry(temp);
     }
     Command *pcmd = new AddEntryCommand(this, temp);
-    pcmd->SetNoNotify();
+    pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
   }
   ifs.close();

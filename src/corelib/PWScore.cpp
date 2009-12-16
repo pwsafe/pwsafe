@@ -55,7 +55,8 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_bNotifyDB(false),
                      m_pfcnNotifyDBModified(NULL), m_NotifyDBInstance(NULL),
                      m_pfcnNotifyUpdateGUI(NULL), m_NotifyUpdateGUIInstance(NULL),
-                     m_pfcnGUIUpdateEntry(NULL)
+                     m_pfcnGUIUpdateEntry(NULL),
+                     m_pfcnGUICommandInterface(NULL), m_GUICommandInterfaceInstance(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -368,7 +369,7 @@ void PWScore::Redo()
 
   ASSERT(m_redo_iter != m_vpcommands.end());
   m_undo_iter = m_redo_iter;
-  (*m_redo_iter)->Execute();
+  (*m_redo_iter)->Redo();
   if (m_redo_iter != m_vpcommands.end())
     m_redo_iter++;
 
@@ -1759,6 +1760,37 @@ void PWScore::NotifyGUINeedsUpdating(const Command::GUI_Action &ga,
 {
   if (m_pfcnNotifyUpdateGUI != NULL)
     m_pfcnNotifyUpdateGUI(m_NotifyUpdateGUIInstance, ga, entry_uuid, lparam);
+}
+
+// OnGUICommand
+bool PWScore::RegisterGUICommandInterface(void (*pfcn) (LPARAM, 
+                                          const Command::ExecuteFn &,
+                                          PWSGUICmdIF *), LPARAM instance)
+{
+  if (m_pfcnGUICommandInterface != NULL)
+    return false;
+
+  if ((pfcn == NULL) || (instance == NULL)) {
+    UnRegisterGUICommandInterface();
+    return false;
+  }
+  
+  m_pfcnGUICommandInterface = pfcn;
+  m_GUICommandInterfaceInstance = instance;
+  return true;
+}
+
+void PWScore::UnRegisterGUICommandInterface()
+{
+  m_pfcnGUICommandInterface = NULL;
+  m_GUICommandInterfaceInstance = NULL;
+}
+
+void PWScore::CallGUICommandInterface(const Command::ExecuteFn &When,
+                                      PWSGUICmdIF *pGUICmdIF)
+{
+  if (m_pfcnGUICommandInterface != NULL)
+    m_pfcnGUICommandInterface(m_GUICommandInterfaceInstance, When, pGUICmdIF);
 }
 
 // GUIUpdateEntry - used by get the GUI to update the entry with any

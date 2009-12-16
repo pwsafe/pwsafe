@@ -534,7 +534,7 @@ void XMLFileHandlers::AddEntries()
       } else {
         CItemData *pci = &iter->second;
         Command *pcmd = new UpdatePasswordCommand(m_pxmlcore, *pci, cur_entry->password);
-        pcmd->SetNoNotify();
+        pcmd->SetNoGUINotify();
         m_pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
           pci->SetATime();
@@ -702,7 +702,7 @@ void XMLFileHandlers::AddEntries()
       m_pxmlcore->m_pfcnGUIUpdateEntry(tempitem);
     }
     Command *pcmd = new AddEntryCommand(m_pxmlcore, tempitem);
-    pcmd->SetNoNotify();
+    pcmd->SetNoGUINotify();
     m_pmulticmds->Add(pcmd);
     delete cur_entry;
   }

@@ -34,6 +34,7 @@
 #include "ControlExtns.h"
 #include "DDStatic.h"
 #include "MenuShortcuts.h"
+#include "WinGUICmdIF.h"
 
 #include "corelib/PWScore.h"
 #include "corelib/StringX.h"
@@ -272,7 +273,7 @@ public:
                            const StringX &user, const int IDS_MESSAGE)
   {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
-  void Delete(MultiCommands *pmulticmds, bool inRecursion = false);
+  void Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF, bool inRecursion = false);
   void SaveGroupDisplayState(); // call when tree expansion state changes
   bool CheckNewPassword(const StringX &group, const StringX &title,
                         const StringX &user, const StringX &password,
@@ -297,6 +298,7 @@ public:
   int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected();
   StringX GetGroupName();
+  void UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath);
 
   void SetFilter(FilterPool selectedpool, CString selectedfiltername)
   {m_currentfilterpool = selectedpool; m_selectedfiltername = selectedfiltername;}
@@ -316,6 +318,7 @@ public:
   bool IsNodeModified(StringX &path)
   {return m_core.IsNodeModified(path);}
 
+  GUICommand * CreateGUICommand(WinGUICmdIF *pGUICmdIF, PWScore *pcore = NULL);
   MultiCommands * CreateMultiCommands(PWScore *pcore = NULL);
   void ExecuteMultiCommands(MultiCommands *pmulticmds);
   void UpdateField(MultiCommands *pmulticmds, CItemData &ci, CItemData::FieldType ftype, StringX value);
@@ -676,6 +679,8 @@ private:
   static void DatabaseModified(LPARAM instance, bool bChanged);
   static void UpdateGUI(LPARAM instance, const Command::GUI_Action &ga, uuid_array_t &entry_uuid, LPARAM lparam);
   static void GUIUpdateEntry(CItemData &ci);
+  static void GUICommandInterface(LPARAM instance, const Command::ExecuteFn &when, PWSGUICmdIF *pGUICmdIF);
+  void RedoDelete(WinGUICmdIF *pGUICmdIF);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 

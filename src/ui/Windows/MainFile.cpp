@@ -1880,7 +1880,7 @@ int DboxMain::Merge(const StringX &sx_Filename2)
         bTitleRenamed = true;
         otherItem.SetTitle(newTitle);
         Command *pcmd = new AddEntryCommand(&m_core, otherItem);
-        pcmd->SetNoNotify();
+        pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
 
         numConflicts++;
@@ -1894,7 +1894,7 @@ int DboxMain::Merge(const StringX &sx_Filename2)
       }
 
       Command *pcmd = new AddEntryCommand(&m_core, otherItem);
-      pcmd->SetNoNotify();
+      pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
 
       StringX sx_added = StringX(L"\xab") + 
@@ -2037,11 +2037,11 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
       continue;
 
     Command *pcmd1 = new AddEntryCommand(&m_core, tempitem);
-    pcmd1->SetNoNotify();
+    pcmd1->SetNoGUINotify();
     pmulticmds->Add(pcmd1);
 
     Command *pcmd2 = new AddDependentEntryCommand(&m_core, new_base_uuid, new_entry_uuid, et);
-    pcmd2->SetNoNotify();
+    pcmd2->SetNoGUINotify();
     pmulticmds->Add(pcmd2);
 
     if (et == CItemData::ET_ALIAS) {
@@ -2611,7 +2611,7 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
       vs_updated.push_back(sx_updated);
 
       Command *pcmd = new EditEntryCommand(&m_core, curItem, updItem);
-      pcmd->SetNoNotify();
+      pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
 
       numUpdated++;

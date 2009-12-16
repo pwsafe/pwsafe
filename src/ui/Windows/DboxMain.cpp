@@ -169,6 +169,7 @@ DboxMain::~DboxMain()
   m_core.UnRegisterOnDBModified();
   m_core.UnRegisterGUINotify();
   m_core.UnRegisterGUIUpdateEntry();
+  m_core.UnRegisterGUICommandInterface();
 
   MapKeyNameIDIter iter;
   for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
@@ -1508,7 +1509,9 @@ void DboxMain::SetChanged(ChangeType changed)
 
   switch (changed) {
     case Data:
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately) &&
+          !m_bInAddGroup) {
+        // Don't save if just adding group as it will just 'disappear'!
         Save();
       } else {
         m_core.SetDBChanged(true);
@@ -3201,6 +3204,15 @@ void DboxMain::UpdateSystemMenu()
    }
    pSysMenu->ModifyMenu(SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, cs_text);
 #endif
+}
+
+GUICommand * DboxMain::CreateGUICommand(WinGUICmdIF *pGUICmdIF, PWScore *pcore)
+{
+  if (pcore == NULL)
+    pcore = &m_core;
+
+  GUICommand *pGUICmd = new GUICommand(pcore, pGUICmdIF);
+  return pGUICmd;
 }
 
 MultiCommands * DboxMain::CreateMultiCommands(PWScore *pcore)

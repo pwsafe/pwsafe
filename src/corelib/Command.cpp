@@ -16,6 +16,34 @@
 // Base class: Command
 // ------------------------------------------------
 
+/*
+
+ONLY this base class has access to PWScore's private data.  All derived classes
+must call one of the base class routines in order to effwect a change to the core.
+
+The base class provides Save/restore state functions to enable Undo/Redo to be
+correctly performed.
+
+All GUI functions should ONLY use this Command structure to update any values in
+the core.  None should be updated directly.
+
+The MultiCommands derived class allows multiple commands to be lumped together
+as one unit of work (in terms of Execute, Undo & Redo)
+
+All other derived classes are aptly named to indicate their function.
+
+There are 2 special derived classes:
+1. UpdateGUICommand - which calls the GUI to allow it to update what the user sees
+after any change.  For MultiCommands, it is normal to turn off GUI notification
+during the execution of the individual commands and only notify the GUI at the 
+end (e.g. after importing a lot of entries or after undoing the importing of these
+entries).  Flags can be set on when to do this notification.
+
+2. GUICommand - which allows the GUI to add GUI related commands to a MultiCommand
+unit of work.
+
+*/
+
 Command::Command(PWScore *pcore)
 :  m_pcore(pcore), m_bNotifyGUI(true), m_RC(0), m_When(WN_INVALID),
    m_bState(false)
@@ -79,12 +107,15 @@ void Command::RestoreDependentsState(const Command::DependentsType itype)
   }
 }
 
-void Command::DoUpdateGUI(const Command::ExecuteFn When, const Command::GUI_Action ga)
+void Command::DoUpdateGUI(const Command::GUI_Action ga)
 {
-  if (m_When == When || When == Command::WN_ALL) {
-    uuid_array_t entry_uuid = {'0'}; // Not needed but NotifyGUINeedsUpdating needs it!
-    m_pcore->NotifyGUINeedsUpdating(ga, entry_uuid);
-  }
+  uuid_array_t entry_uuid = {'0'}; // Not needed but NotifyGUINeedsUpdating needs it!
+  m_pcore->NotifyGUINeedsUpdating(ga, entry_uuid);
+}
+
+void Command::DoGUICmd(const Command::ExecuteFn &When, PWSGUICmdIF *pGUICmdIF)
+{
+  m_pcore->CallGUICommandInterface(When, pGUICmdIF);
 }
 
 void Command::DoUpdateDBPrefs(const StringX &sxNewDBPrefs)
@@ -389,6 +420,12 @@ int MultiCommands::Execute()
   return 0;
 }
 
+int MultiCommands::Redo()
+{
+  TRACE(L"Multicommands Redo\n");
+  return Execute();
+}
+
 void MultiCommands::Undo()
 {
   std::vector<Command *>::reverse_iterator cmd_rIter;
@@ -413,6 +450,7 @@ bool MultiCommands::Remove(Command *c)
   TRACE(L"Multicommands Remove\n");
   cmd_Iter = find(m_pcmds->begin(), m_pcmds->end(), c);
   if (cmd_Iter != m_pcmds->end()) {
+    delete (*cmd_Iter);
     m_pcmds->erase(cmd_Iter);
     return true;
   } else
@@ -423,6 +461,7 @@ bool MultiCommands::Remove()
 {
   TRACE(L"Multicommands Remove\n");
   if (m_pcmds->size() > 0) {
+    delete m_pcmds->back();
     m_pcmds->pop_back();
     return true;
   } else
@@ -468,15 +507,58 @@ UpdateGUICommand::UpdateGUICommand(PWScore *pcore, const Command::ExecuteFn When
 
 int UpdateGUICommand::Execute()
 {
-  if (m_When == WN_EXECUTE)
-    Command::DoUpdateGUI(m_When, m_ga);
+  TRACE(L"UpdateGUICommand Execute\n");
+  if (m_When == Command::WN_EXECUTE || m_When == Command::WN_EXECUTE_REDO || 
+      m_When == Command::WN_ALL)
+    Command::DoUpdateGUI(m_ga);
+  return 0;
+}
+
+int UpdateGUICommand::Redo()
+{
+  TRACE(L"UpdateGUICommand Redo\n");
+  if (m_When == Command::WN_REDO || m_When == Command::WN_EXECUTE_REDO || 
+      m_When == Command::WN_ALL)
+    Command::DoUpdateGUI(m_ga);
   return 0;
 }
 
 void UpdateGUICommand::Undo()
 {
-  if (m_When == WN_UNDO)
-    Command::DoUpdateGUI(m_When, m_ga);
+  TRACE(L"UpdateGUICommand Undo\n");
+  if (m_When == Command::WN_UNDO || m_When == Command::WN_ALL)
+    Command::DoUpdateGUI(m_ga);
+}
+
+// ------------------------------------------------
+// GUICommand
+// ------------------------------------------------
+
+GUICommand::GUICommand(PWScore *pcore, PWSGUICmdIF *pGUICmdIF)
+  : Command(pcore), m_pGUICmdIF(pGUICmdIF)
+{
+}
+
+GUICommand::~GUICommand()
+{
+  delete m_pGUICmdIF;
+}
+
+int GUICommand::Execute()
+{
+  Command::DoGUICmd(WN_EXECUTE, m_pGUICmdIF);
+  return 0;
+}
+
+int GUICommand::Redo()
+{
+  Command::DoGUICmd(WN_REDO, m_pGUICmdIF);
+  return 0;
+}
+
+void GUICommand::Undo()
+{
+  Command::DoGUICmd(WN_UNDO, m_pGUICmdIF);
 }
 
 // ------------------------------------------------
@@ -495,6 +577,11 @@ int DBPrefsCommand::Execute()
   Command::DoUpdateDBPrefs(m_sxNewDBPrefs);
   m_bState = true;
   return 0;
+}
+
+int DBPrefsCommand::Redo()
+{
+  return Execute();
 }
 
 void DBPrefsCommand::Undo()
@@ -526,6 +613,11 @@ int AddEntryCommand::Execute()
   return 0;
 }
 
+int AddEntryCommand::Redo()
+{
+  return Execute();
+}
+
 void AddEntryCommand::Undo()
 {
   Command::DoDeleteEntry(m_ci);
@@ -554,6 +646,11 @@ int DeleteEntryCommand::Execute()
   Command::DoDeleteEntry(m_ci);
   m_bState = true;
   return 0;
+}
+
+int DeleteEntryCommand::Redo()
+{
+  return Execute();
 }
 
 void DeleteEntryCommand::Undo()
@@ -593,6 +690,11 @@ int EditEntryCommand::Execute()
   return 0;
 }
 
+int EditEntryCommand::Redo()
+{
+  return Execute();
+}
+
 void EditEntryCommand::Undo()
 {
   Command::UndoEditEntry(m_old_ci, m_new_ci);
@@ -629,6 +731,11 @@ int UpdateEntryCommand::Execute()
 
   m_bState = true;
   return 0;
+}
+
+int UpdateEntryCommand::Redo()
+{
+  return Execute();
 }
 
 void UpdateEntryCommand::Undo()
@@ -674,6 +781,11 @@ int UpdatePasswordCommand::Execute()
   return 0;
 }
 
+int UpdatePasswordCommand::Redo()
+{
+  return Execute();
+}
+
 void UpdatePasswordCommand::Undo()
 {
   Command::UndoUpdatePassword(m_entry_uuid, m_sxOldPassword,
@@ -707,6 +819,11 @@ int AddDependentEntryCommand::Execute()
   Command::DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
   m_bState = true;
   return 0;
+}
+
+int AddDependentEntryCommand::Redo()
+{
+  return Execute();
 }
 
 void AddDependentEntryCommand::Undo()
@@ -750,6 +867,11 @@ int AddDependentEntriesCommand::Execute()
   return rc;
 }
 
+int AddDependentEntriesCommand::Redo()
+{
+  return Execute();
+}
+
 void AddDependentEntriesCommand::Undo()
 {
   Command::UndoAddDependentEntries(m_pmapDeletedItems, m_pmapSaveStatus);
@@ -783,6 +905,11 @@ int RemoveDependentEntryCommand::Execute()
   return 0;
 }
 
+int RemoveDependentEntryCommand::Redo()
+{
+  return Execute();
+}
+
 void RemoveDependentEntryCommand::Undo()
 {
   Command::DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
@@ -812,6 +939,11 @@ int RemoveAllDependentEntriesCommand::Execute()
   Command::DoRemoveAllDependentEntries(m_base_uuid, m_type);
   m_bState = true;
   return 0;
+}
+
+int RemoveAllDependentEntriesCommand::Redo()
+{
+  return Execute();
 }
 
 void RemoveAllDependentEntriesCommand::Undo()
@@ -847,6 +979,11 @@ int MoveDependentEntriesCommand::Execute()
   return 0;
 }
 
+int MoveDependentEntriesCommand::Redo()
+{
+  return Execute();
+}
+
 void MoveDependentEntriesCommand::Undo()
 {
   Command::DoMoveDependentEntries(m_to_baseuuid, m_from_baseuuid, m_type);
@@ -874,6 +1011,11 @@ int ResetAllAliasPasswordsCommand::Execute()
   return 0;
 }
 
+int ResetAllAliasPasswordsCommand::Redo()
+{
+  return Execute();
+}
+
 void ResetAllAliasPasswordsCommand::Undo()
 {
   Command::UndoResetAllAliasPasswords(m_base_uuid, m_vSavedAliases);
@@ -899,6 +1041,11 @@ int UpdatePasswordHistoryCommand::Execute()
                                             m_mapSavedHistory);
   m_bState = true;
   return rc;
+}
+
+int UpdatePasswordHistoryCommand::Redo()
+{
+  return Execute();
 }
 
 void UpdatePasswordHistoryCommand::Undo()

@@ -270,10 +270,16 @@ public:
   void NotifyGUINeedsUpdating(const Command::GUI_Action &, uuid_array_t &,
                               LPARAM lparam = NULL);
 
-  // (Un)Register callback to let GUI ;populate its field in an entry
+  // (Un)Register callback to let GUI populate its field in an entry
   bool RegisterGUIUpdateEntry(void (*pfcn) (CItemData &));
   void UnRegisterGUIUpdateEntry();
   void GUIUpdateEntry(CItemData &ci);
+
+  // (Un)Register callback to perform a GUI command
+  bool RegisterGUICommandInterface(void (*pfcn) (LPARAM, const Command::ExecuteFn &,
+                                   PWSGUICmdIF *), LPARAM instance);
+  void UnRegisterGUICommandInterface();
+  void CallGUICommandInterface(const Command::ExecuteFn &, PWSGUICmdIF *);
 
   // Get/Set Display information from/to database
   void SetDisplayStatus(const std::vector<bool> &s);
@@ -403,9 +409,15 @@ private:
   std::vector<Command *> m_vpcommands;
   std::vector<Command *>::iterator m_undo_iter;
   std::vector<Command *>::iterator m_redo_iter;
+
+  // To notify GUI of an update
   void (*m_pfcnNotifyUpdateGUI) (LPARAM , const Command::GUI_Action &, 
                                  uuid_array_t &, LPARAM );
   LPARAM m_NotifyUpdateGUIInstance;
+
+  // To perform a GUI dependent Command
+  void (*m_pfcnGUICommandInterface) (LPARAM , const Command::ExecuteFn &, PWSGUICmdIF *);
+  LPARAM m_GUICommandInterfaceInstance;
 
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;

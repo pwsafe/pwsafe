@@ -327,16 +327,36 @@ void DboxMain::OnDelete()
 
   if (dodelete) {
     MultiCommands *pmulticmds = new MultiCommands(&m_core);
-    Delete(pmulticmds);
+    WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
+
+    Delete(pmulticmds, pGUICmdIF);
 
     if (m_bFilterActive)
       RefreshViews();
+
+    if (pGUICmdIF->IsValid()) {
+      Command *pcmd = new GUICommand(&m_core, pGUICmdIF);
+      pmulticmds->Add(pcmd);
+    } else
+      delete pGUICmdIF;
 
     Execute(pmulticmds);
   }
 }
 
-void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
+// Functor for find_if to find the group name associated with a HTREEITEM
+struct FindGroupFromHTREEITEM {
+  FindGroupFromHTREEITEM(HTREEITEM& ti) : m_ti(ti) {}
+  bool operator()(std::pair<StringX, HTREEITEM> const & p) const
+  {
+    return (p.second  == m_ti);
+  }
+
+  HTREEITEM m_ti;
+};
+
+void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
+                      bool inRecursion)
 {
   CItemData *pci = getSelectedItem();
 
@@ -392,10 +412,12 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
 
     UnFindItem();
 
-    //m_ctlItemList.DeleteItem(curSel);
-    //m_ctlItemTree.DeleteWithParents(curTree_item);
-    //delete pdi;
-    //FixListIndexes();
+    // Delete entry from GUI and save for Redo
+    m_ctlItemList.DeleteItem(curSel);
+    m_ctlItemTree.DeleteWithParents(curTree_item);
+
+    pGUICmdIF->m_vDeleteListItems.push_back(entry_uuid);
+    pGUICmdIF->m_vDeleteTreeItemsWithParents.push_back(entry_uuid);
 
     uuid_array_t base_uuid;
     if (entrytype == CItemData::ET_ALIAS) {
@@ -407,7 +429,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
                                                       CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
 
-      // Does my base now become a normal entry?
+      // Does my base now become a normal entry - and save for Redo
       if (m_core.NumAliases(base_uuid) == 0) {
         ItemListIter iter = m_core.Find(base_uuid);
         CItemData &cibase = iter->second;
@@ -416,6 +438,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
         int nImage = GetEntryImage(cibase);
         SetEntryImage(pdi->list_index, nImage, true);
         SetEntryImage(pdi->tree_item, nImage, true);
+        pGUICmdIF->m_vVerifyAliasBase.push_back(base_uuid);
       }
     } else
     if (entrytype == CItemData::ET_SHORTCUT) {
@@ -427,7 +450,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
                                                        CItemData::ET_SHORTCUT);
       pmulticmds->Add(pcmd);
 
-      // Does my base now become a normal entry?
+      // Does my base now become a normal entry - and save for Redo
       if (m_core.NumShortcuts(base_uuid) == 0) {
         ItemListIter iter = m_core.Find(base_uuid);
         CItemData &cibase = iter->second;
@@ -436,6 +459,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
         int nImage = GetEntryImage(cibase);
         SetEntryImage(pdi->list_index, nImage, true);
         SetEntryImage(pdi->tree_item, nImage, true);
+        pGUICmdIF->m_vVerifyShortcutBase.push_back(base_uuid);
       }
     } else
     if (num_dependents > 0) {
@@ -443,13 +467,15 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
       if (entrytype == CItemData::ET_ALIASBASE) {
         Command *pcmd1 = new ResetAllAliasPasswordsCommand(&m_core, entry_uuid);
         pmulticmds->Add(pcmd1);
-        Command *pcmd2 = new RemoveAllDependentEntriesCommand(&m_core, entry_uuid, CItemData::ET_ALIAS);
+        Command *pcmd2 = new RemoveAllDependentEntriesCommand(&m_core, entry_uuid,
+                                                              CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd2);
 
-        // Now make all my aliases Normal
+        // Now make all my aliases Normal - and save for Redo
         ItemListIter iter;
         UUIDListIter UUIDiter;
-        for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); UUIDiter++) {
+        for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); 
+             UUIDiter++) {
           uuid_array_t auuid;
           UUIDiter->GetUUID(auuid);
           iter = m_core.Find(auuid);
@@ -458,14 +484,19 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
           int nImage = GetEntryImage(cialias);
           SetEntryImage(pdi->list_index, nImage, true);
           SetEntryImage(pdi->tree_item, nImage, true);
+          pGUICmdIF->m_vAliasDependents.push_back(auuid);
         }
       } else {
-        Command *pcmd = new RemoveAllDependentEntriesCommand(&m_core, entry_uuid, CItemData::ET_SHORTCUT);
+        Command *pcmd = new RemoveAllDependentEntriesCommand(&m_core, entry_uuid, 
+                                                             CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
-        // Now delete all my shortcuts
+
+        // Now delete all my shortcuts - no need to save for Redo
+        // as we are deleting the entries
         ItemListIter iter;
         UUIDListIter UUIDiter;
-        for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); UUIDiter++) {
+        for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); 
+             UUIDiter++) {
           uuid_array_t suuid;
           UUIDiter->GetUUID(suuid);
           iter = m_core.Find(suuid);
@@ -473,7 +504,6 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
           DisplayInfo *pdi = (DisplayInfo *)cshortcut.GetDisplayInfo();
           m_ctlItemList.DeleteItem(pdi->list_index);
           m_ctlItemTree.DeleteItem(pdi->tree_item);
-          //delete pdi;
           FixListIndexes();
           Command *pcmd = new DeleteEntryCommand(&m_core, cshortcut);
           pmulticmds->Add(pcmd);
@@ -509,10 +539,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
 
         while (cti != NULL) {
           m_ctlItemTree.SelectItem(cti);
-          // Major problem here yet to be resolved!!!
-          // Without the ASSERT - infinite loop.
-          ASSERT(0);
-          Delete(pmulticmds, true); // recursion - I'm so lazy!
+          Delete(pmulticmds, pGUICmdIF, true); // recursion
           cti = m_ctlItemTree.GetChildItem(ti);
         }
 
@@ -520,6 +547,15 @@ void DboxMain::Delete(MultiCommands *pmulticmds, bool inRecursion)
         m_ctlItemTree.Invalidate();
 
         //  delete an empty group.
+        std::map<StringX, HTREEITEM>::iterator gIter;
+        FindGroupFromHTREEITEM groupfromti(ti);
+        gIter = std::find_if(m_mapGroupToTreeItem.begin(), 
+                             m_mapGroupToTreeItem.end(), 
+                             groupfromti);
+        if (gIter != m_mapGroupToTreeItem.end()) {
+          pGUICmdIF->m_vDeleteGroup.push_back(gIter->first);
+        }
+
         HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
         m_ctlItemTree.DeleteItem(ti);
         m_ctlItemTree.SelectItem(parent);
@@ -762,13 +798,6 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     pmulticmds->Add(pcmd);
     Execute(pmulticmds, pcore);
 
-    //// AddEntry copies the entry, and we want to work with the inserted copy
-    //// Which we'll find by uuid
-    //InsertItemIntoGUITreeList(pcore->GetEntry(pcore->Find(original_uuid)));
-    //FixListIndexes();
-
-    // Now delete old entry's DisplayInfo
-    //delete pdi;
     if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::SaveImmediately)) {
         Save();
@@ -1817,7 +1846,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
       // ONLY Add to pwlist and NOT to Tree or List views
       // After the call to AddDependentEntries for shortcuts, check if still
       // in password list and, if so, then add to Tree + List views
-      pcmd->SetNoNotify();
+      pcmd->SetNoGUINotify();
     }
     pmulticmds->Add(pcmd);
   } // iteration over in_oblist
