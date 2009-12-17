@@ -1538,27 +1538,29 @@ void DboxMain::OnGotoBaseEntry()
 
 void DboxMain::OnEditBaseEntry()
 {
-  // Only for Shortcuts
+  // Only for Shortcuts & Aliases
   if (SelItemOk() == TRUE) {
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
 
     uuid_array_t base_uuid, entry_uuid;
-    if (pci->GetEntryType() == CItemData::ET_SHORTCUT) {
-      // This is an shortcut
-      pci->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+    pci->GetUUID(entry_uuid);
+    if (pci->GetEntryType() == CItemData::ET_SHORTCUT)
+       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+    else
+    if (pci->GetEntryType() == CItemData::ET_ALIAS)
+       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+    else
+      return;
 
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-         DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-         SelectEntry(pdi->list_index);
-         EditItem(&iter->second);
-      } else
-        return;
-
-      UpdateAccessTime(pci);
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+       DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+       SelectEntry(pdi->list_index);
+       EditItem(&iter->second);
     }
+
+    UpdateAccessTime(pci);
   }
 }
 
