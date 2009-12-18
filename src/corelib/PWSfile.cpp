@@ -251,16 +251,26 @@ ErrorMessages()
   case ENOENT:
     LoadAString(cs_text, IDSC_FILEPATHNOTFOUND);
     break;
+  case EIO: // synthesized upon fwrite failure
+    LoadAString(cs_text, IDSC_FILEWRITEERROR);
   default:
     break;
   }
   return cs_text;
 }
 
+// Following specific for PWSfile::Encrypt
+#define SAFE_FWRITE(p, sz, cnt, stream) do { \
+    size_t _ret = fwrite(p, sz, cnt, stream); \
+    if (_ret != cnt) { status = false; goto exit;} \
+  } while (0)
+
 bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
   unsigned int len;
-  unsigned char* buf;
+  unsigned char* buf = NULL;
+  bool status = true;
+  stringT out_fn;
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));;
   if (in != NULL) {
@@ -268,88 +278,105 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     buf = new unsigned char[len];
 
     fread(buf, 1, len, in);
-    fclose(in);
+    if (ferror(in)) { // this is how to detect fread errors
+      status = false;
+      int save_error = errno;
+      fclose(in);
+      errno = save_error;
+      goto exit;
+    }
+    if (fclose(in) != 0) {
+      status = false;
+      goto exit;
+    }
   } else {
-    errmess = ErrorMessages();
-    return false;
+    status = false; goto exit;
   }
 
-  stringT out_fn = fn;
+  out_fn = fn;
   out_fn += CIPHERTEXT_SUFFIX;
 
   FILE *out = pws_os::FOpen(out_fn, _T("wb"));
-  if (out != NULL) {
+  if (out == NULL) {
+    status = false; goto exit;
+  }
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
-    fwrite( &len, 1, sizeof(len), out);
+  SAFE_FWRITE( &len, 1, sizeof(len), out);
 #else
-    unsigned char randstuff[StuffSize];
-    unsigned char randhash[SHA1::HASHLEN];   // HashSize
-    PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
-    // miserable bug - have to fix this way to avoid breaking existing files
-    randstuff[8] = randstuff[9] = TCHAR('\0');
-    GenRandhash(passwd, randstuff, randhash);
-    fwrite(randstuff, 1,  8, out);
-    fwrite(randhash,  1, sizeof(randhash), out);
+  unsigned char randstuff[StuffSize];
+  unsigned char randhash[SHA1::HASHLEN];   // HashSize
+  PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
+  // miserable bug - have to fix this way to avoid breaking existing files
+  randstuff[8] = randstuff[9] = TCHAR('\0');
+  GenRandhash(passwd, randstuff, randhash);
+  SAFE_FWRITE(randstuff, 1,  8, out);
+  SAFE_FWRITE(randhash,  1, sizeof(randhash), out);
 #endif // KEEP_FILE_MODE_BWD_COMPAT
 
-    unsigned char thesalt[SaltLength];
-    PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
-    fwrite(thesalt, 1, SaltLength, out);
+  unsigned char thesalt[SaltLength];
+  PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
+  SAFE_FWRITE(thesalt, 1, SaltLength, out);
 
-    unsigned char ipthing[8];
-    PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
-    fwrite(ipthing, 1, 8, out);
+  unsigned char ipthing[8];
+  PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
+  SAFE_FWRITE(ipthing, 1, 8, out);
 
-    unsigned char *pwd = NULL;
-    int passlen = 0;
-    ConvertString(passwd, pwd, passlen);
-    Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, thesalt, SaltLength);
-    trashMemory(pwd, passlen);
+  unsigned char *pwd = NULL;
+  int passlen = 0;
+  ConvertString(passwd, pwd, passlen);
+  Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, thesalt, SaltLength);
+  trashMemory(pwd, passlen);
 #ifdef UNICODE
-    delete[] pwd; // gross - ConvertString allocates only if UNICODE.
+  delete[] pwd; // gross - ConvertString allocates only if UNICODE.
 #endif
-    _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
-    delete fish;
+  size_t nwritten = _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
+  delete fish;
+  if (nwritten != size_t(len)) {
     fclose(out);
-
-  } else {
+    errno = EIO;
+    status = false;
+  } else
+    status = (fclose(out) == 0);
+ exit:
+  if (!status)
     errmess = ErrorMessages();
-    delete [] buf;
-    return false;
-  }
   delete[] buf;
-  return true;
+  return status;
 }
 
 bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
   unsigned int len;
-  unsigned char* buf;
+  unsigned char* buf = NULL;
+  bool status = true;
+  unsigned char salt[SaltLength];
+  unsigned char ipthing[8];
+  unsigned char randstuff[StuffSize];
+  unsigned char randhash[SHA1::HASHLEN];
+  unsigned char temphash[SHA1::HASHLEN];
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));
-  if (in != NULL) {
-    unsigned char salt[SaltLength];
-    unsigned char ipthing[8];
-    unsigned char randstuff[StuffSize];
-    unsigned char randhash[SHA1::HASHLEN];
+  if (in == NULL) {
+    status = false;
+    goto exit;
+  }
 
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
-    fread(&len, 1, sizeof(len), in); // XXX portability issue
+  fread(&len, 1, sizeof(len), in); // XXX portability issue
 #else
-    fread(randstuff, 1, 8, in);
-    randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
-    fread(randhash, 1, sizeof(randhash), in);
+  fread(randstuff, 1, 8, in);
+  randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
+  fread(randhash, 1, sizeof(randhash), in);
 
-    unsigned char temphash[SHA1::HASHLEN];
-    GenRandhash(passwd, randstuff, temphash);
-    if (memcmp((char*)randhash, (char*)temphash, SHA1::HASHLEN != 0)) {
-      fclose(in);
-      LoadAString(errmess, IDSC_BADPASSWORD);
-      return false;
-    }
+  GenRandhash(passwd, randstuff, temphash);
+  if (memcmp((char*)randhash, (char*)temphash, SHA1::HASHLEN != 0)) {
+    fclose(in);
+    LoadAString(errmess, IDSC_BADPASSWORD);
+    return false;
+  }
 #endif // KEEP_FILE_MODE_BWD_COMPAT
-    buf = NULL; // allocated by _readcbc - see there for apologia
 
+  { // decryption in a block, since we use goto
     fread(salt,    1, SaltLength, in);
     fread(ipthing, 1, 8,          in);
 
@@ -370,26 +397,36 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     }
     delete fish;
     fclose(in);
-  } else {
+  } // decrypt
+
+  { // write decrypted data
+    size_t suffix_len = CIPHERTEXT_SUFFIX.length();
+    size_t filepath_len = fn.length();
+
+    stringT out_fn = fn;
+    out_fn = out_fn.substr(0,filepath_len - suffix_len);
+
+    FILE *out = pws_os::FOpen(out_fn, _T("wb"));
+    if (out != NULL) {
+      size_t fret = fwrite(buf, 1, len, out);
+      if (fret != len) {
+        int save_errno = errno;
+        fclose(out);
+        errno = save_errno;
+        goto exit;
+      }
+      if (fclose(out) != 0) {
+        status = false;
+        goto exit;
+      }
+    } else { // open failed
+      status = false;
+      goto exit;
+    }
+  } // write decrypted
+ exit:
+  if (!status)
     errmess = ErrorMessages();
-    return false;
-  }
-
-  size_t suffix_len = CIPHERTEXT_SUFFIX.length();
-  size_t filepath_len = fn.length();
-
-  stringT out_fn = fn;
-  out_fn = out_fn.substr(0,filepath_len - suffix_len);
-
-  FILE *out = pws_os::FOpen(out_fn, _T("wb"));
-  if (out != NULL) {
-    fwrite(buf, 1, len, out);
-    delete[] buf; // allocated by _readcbc
-    fclose(out);
-  } else {
-    delete[] buf; // allocated by _readcbc
-    errmess = ErrorMessages();
-    return false;
-  }
-  return true;
+  delete[] buf; // allocated by _readcbc
+  return status;
 }
