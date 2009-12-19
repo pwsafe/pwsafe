@@ -269,6 +269,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 {
   unsigned int len;
   unsigned char* buf = NULL;
+  Fish *fish = NULL;
   bool status = true;
   stringT out_fn;
 
@@ -324,22 +325,24 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   unsigned char *pwd = NULL;
   int passlen = 0;
   ConvertString(passwd, pwd, passlen);
-  Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, thesalt, SaltLength);
+  fish = BlowFish::MakeBlowFish(pwd, passlen, thesalt, SaltLength);
   trashMemory(pwd, passlen);
 #ifdef UNICODE
   delete[] pwd; // gross - ConvertString allocates only if UNICODE.
 #endif
-  size_t nwritten = _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
-  delete fish;
-  if (nwritten != size_t(len)) {
+  try {
+    _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
+  } catch (...) { // _writecbc throws an exception if it fails to write
     fclose(out);
     errno = EIO;
     status = false;
-  } else
-    status = (fclose(out) == 0);
+    goto exit;
+  }
+  status = (fclose(out) == 0);
  exit:
   if (!status)
     errmess = ErrorMessages();
+  delete fish;
   delete[] buf;
   return status;
 }
