@@ -189,7 +189,7 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
   numWritten = fwrite(curblock, 1, BS, fp);
   if (numWritten != BS) {
     trashMemory(curblock, BS);
-    throw(1);
+    throw(EIO);
   }
   if (length > 0 ||
       (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
@@ -211,7 +211,7 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
       size_t nw =  fwrite(curblock, 1, BS, fp);
       if (nw != BS) {
         trashMemory(curblock, BS);
-        throw(1);
+        throw(EIO);
       }
       numWritten += nw;
     }

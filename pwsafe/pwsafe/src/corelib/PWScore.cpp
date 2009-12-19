@@ -227,18 +227,23 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
     out3->SetUnknownHeaderFields(m_UHFL);
     out3->SetFilters(m_MapFilters); // Give it the filters to write out
   }
-  status = out->Open(GetPassKey());
+  try { // exception thrown on write error
+    status = out->Open(GetPassKey());
 
-  if (status != PWSfile::SUCCESS) {
+    if (status != PWSfile::SUCCESS) {
+      delete out;
+      return CANT_OPEN_FILE;
+    }
+
+    RecordWriter write_record(out, this);
+    for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
+
+    m_hdr = out->GetHeader(); // update time saved, etc.
+  } catch (...) {
+    out->Close();
     delete out;
-    return CANT_OPEN_FILE;
+    return FAILURE;
   }
-
-  RecordWriter write_record(out, this);
-  for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
-
-  m_hdr = out->GetHeader(); // update time saved, etc.
-
   out->Close();
   delete out;
 
