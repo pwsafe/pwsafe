@@ -53,6 +53,26 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static void DisplayFileWriteError(int rc, const StringX &cs_newfile)
+{
+  ASSERT(rc != PWScore::SUCCESS);
+
+  CGeneralMsgBox gmb;
+  CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
+  switch (rc) {
+  case PWScore::CANT_OPEN_FILE:
+    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile.c_str());
+    break;
+  case PWScore::FAILURE:
+    cs_temp.Format(IDS_FILEWRITEFAILURE);
+    break;
+  default:
+    cs_temp.Format(IDS_UNKNOWNERROR);
+    break;
+  }
+  gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
+}
+
 BOOL DboxMain::OpenOnInit(void)
 {
   /*
@@ -273,11 +293,8 @@ int DboxMain::New()
   m_core.ClearFileUUID();
 
   rc = m_core.WriteCurFile();
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
-    CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile.c_str());
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, cs_newfile);
     return PWScore::USER_CANCEL;
   }
   m_ctlItemTree.ClearChangedNodes();
@@ -758,11 +775,8 @@ int DboxMain::Save()
 
   rc = m_core.WriteCurFile();
 
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
-    cs_title.LoadString(IDS_FILEWRITEERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, m_core.GetCurFile());
     return PWScore::CANT_OPEN_FILE;
   }
   m_ctlItemTree.ClearChangedNodes();
@@ -894,16 +908,14 @@ int DboxMain::SaveAs()
   m_core.ClearFileUUID();
 
   rc = m_core.WriteFile(newfile);
-  m_ctlItemTree.ClearChangedNodes();
 
-  if (rc == PWScore::CANT_OPEN_FILE) {
+  if (rc != PWScore::SUCCESS) {
     m_core.SetFileUUID(file_uuid_array);
     m_core.UnlockFile2(newfile.c_str());
-    cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
-    cs_title.LoadString(IDS_FILEWRITEERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    DisplayFileWriteError(rc, newfile);
     return PWScore::CANT_OPEN_FILE;
   }
+  m_ctlItemTree.ClearChangedNodes();
   if (!m_core.GetCurFile().empty())
     m_core.UnlockFile(m_core.GetCurFile().c_str());
 
@@ -987,11 +999,8 @@ void DboxMain::OnExportVx(UINT nID)
       rc = PWScore::FAILURE;
       break;
   }
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
-    cs_title.LoadString(IDS_FILEWRITEERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, newfile);
   }
 }
 
@@ -1073,10 +1082,8 @@ void DboxMain::OnExportText()
 
       orderedItemList.clear(); // cleanup soonest
 
-      if (rc == PWScore::CANT_OPEN_FILE) {
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
-        cs_title.LoadString(IDS_FILEWRITEERROR);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      if (rc != PWScore::SUCCESS) {
+        DisplayFileWriteError(rc, newfile);
       }
     } else {
       gmb.AfxMessageBox(IDS_BADPASSKEY);
@@ -1162,10 +1169,8 @@ void DboxMain::OnExportXML()
 
       orderedItemList.clear(); // cleanup soonest
 
-      if (rc == PWScore::CANT_OPEN_FILE)        {
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
-        cs_title.LoadString(IDS_FILEWRITEERROR);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      if (rc != PWScore::SUCCESS) {
+        DisplayFileWriteError(rc, newfile);
       }
     } else {
       gmb.AfxMessageBox(IDS_BADPASSKEY);
@@ -2543,11 +2548,8 @@ int DboxMain::SaveCore(PWScore *pcore)
   }
   rc = pcore->WriteCurFile();
 
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
-    cs_title.LoadString(IDS_FILEWRITEERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, pcore->GetCurFile());
     return PWScore::CANT_OPEN_FILE;
   }
 

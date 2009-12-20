@@ -566,3 +566,4 @@
 #define IDS_ENTRYSTATUS                 5739
 #define IDS_NONSAVEDCHANGES             5740
 #define IDS_RECORDSUPDATED              5741
+#define IDS_FILEWRITEFAILURE            5742
