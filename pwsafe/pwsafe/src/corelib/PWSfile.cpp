@@ -267,11 +267,14 @@ ErrorMessages()
 
 bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
-  unsigned int len;
+  unsigned int len = 0;
   unsigned char* buf = NULL;
   Fish *fish = NULL;
   bool status = true;
   stringT out_fn;
+  unsigned char *pwd = NULL;
+  int passlen = 0;
+  FILE *out = NULL;
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));;
   if (in != NULL) {
@@ -297,7 +300,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   out_fn = fn;
   out_fn += CIPHERTEXT_SUFFIX;
 
-  FILE *out = pws_os::FOpen(out_fn, _T("wb"));
+  out = pws_os::FOpen(out_fn, _T("wb"));
   if (out == NULL) {
     status = false; goto exit;
   }
@@ -322,8 +325,6 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
   SAFE_FWRITE(ipthing, 1, 8, out);
 
-  unsigned char *pwd = NULL;
-  int passlen = 0;
   ConvertString(passwd, pwd, passlen);
   fish = BlowFish::MakeBlowFish(pwd, passlen, thesalt, SaltLength);
   trashMemory(pwd, passlen);

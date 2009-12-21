@@ -25,6 +25,7 @@
 #include <time.h>
 #include <sstream>
 #include <iomanip>
+#include <errno.h>
 
 using namespace std;
 

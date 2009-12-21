@@ -381,6 +381,7 @@ int PWSfileV3::WriteHeader()
   // prevent "uninitialized" compile errors, as we use
   // goto for error handling
   int status = SUCCESS;
+  size_t numWritten;
   unsigned char salt[SaltLengthV3];
 
   // See formatV3.txt for explanation of what's written here and why
@@ -454,7 +455,7 @@ int PWSfileV3::WriteHeader()
   m_fish = new TwoFish(m_key, sizeof(m_key));
 
   // write some actual data (at last!)
-  size_t numWritten = 0;
+  numWritten = 0;
   // Write version number
   unsigned char vnb[sizeof(VersionNum)];
   vnb[0] = (unsigned char) (VersionNum & 0xff);
