@@ -67,7 +67,7 @@ static void DisplayFileWriteError(int rc, const StringX &cs_newfile)
     cs_temp.Format(IDS_FILEWRITEFAILURE);
     break;
   default:
-    cs_temp.Format(IDS_UNKNOWNERROR);
+    cs_temp.Format(IDS_UNKNOWNERROR, cs_newfile.c_str());
     break;
   }
   gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
@@ -777,7 +777,7 @@ int DboxMain::Save()
 
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, m_core.GetCurFile());
-    return PWScore::CANT_OPEN_FILE;
+    return rc;
   }
   m_ctlItemTree.ClearChangedNodes();
   SetChanged(Clear);

@@ -80,7 +80,7 @@ static bool FileOP(const stringT &src, const stringT &dst,
   sfop.wFunc = wFunc;
   sfop.pFrom = szSource;
   sfop.pTo = szDestination;
-  sfop.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR | FOF_SILENT;
+  sfop.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR | FOF_SILENT | FOF_NOERRORUI;
 
   return (SHFileOperation(&sfop) == 0);
 }
