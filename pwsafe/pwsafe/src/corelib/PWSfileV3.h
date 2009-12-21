@@ -44,10 +44,10 @@ public:
   PWSfileV3(const StringX &filename, RWmode mode, VERSION version);
   ~PWSfileV3();
 
-  virtual int Open(const StringX &passkey) throw(...);
+  virtual int Open(const StringX &passkey);
   virtual int Close();
 
-  virtual int WriteRecord(const CItemData &item) throw(...);
+  virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
   void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
   const PWSFilters &GetFilters() const {return m_MapFilters;}
@@ -57,13 +57,13 @@ private:
   unsigned char m_key[32];
   HMAC_SHA256 m_hmac;
   CUTF8Conv m_utf8conv;
-  virtual size_t WriteCBC(unsigned char type, const StringX &data) throw(...);
+  virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
-                          unsigned int length) throw(...);
+                          unsigned int length);
 
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
     unsigned int &length);
-  int WriteHeader() throw(...);
+  int WriteHeader();
   int ReadHeader();
   PWSFilters m_MapFilters;
 
