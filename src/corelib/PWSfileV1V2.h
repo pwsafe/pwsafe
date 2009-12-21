@@ -27,11 +27,11 @@ public:
   virtual int Open(const StringX &passkey);
   virtual int Close();
 
-  virtual int WriteRecord(const CItemData &item) throw(...);
+  virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
 
 protected:
-  virtual size_t WriteCBC(unsigned char type, const StringX &data) throw(...);
+  virtual size_t WriteCBC(unsigned char type, const StringX &data);
 
 private:
   size_t ReadCBC(unsigned char &type, StringX &data);

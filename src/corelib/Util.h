@@ -58,7 +58,7 @@ extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
 // _writecbc will throw(1) iff a write fail occurs!
 extern size_t _writecbc(FILE *fp, const unsigned char* buffer, int length,
                         unsigned char type, Fish *Algorithm,
-                        unsigned char* cbcbuffer) throw(...);
+                        unsigned char* cbcbuffer);
 
 /*
 * Get an integer that is stored in little-endian format

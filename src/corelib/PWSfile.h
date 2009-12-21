@@ -80,10 +80,10 @@ public:
 
   virtual ~PWSfile();
 
-  virtual int Open(const StringX &passkey)  throw(...) = 0;
+  virtual int Open(const StringX &passkey) = 0;
   virtual int Close();
 
-  virtual int WriteRecord(const CItemData &item)  throw(...) = 0;
+  virtual int WriteRecord(const CItemData &item) = 0;
   virtual int ReadRecord(CItemData &item) = 0;
 
   const HeaderRecord &GetHeader() const {return m_hdr;}
@@ -99,9 +99,9 @@ public:
 protected:
   PWSfile(const StringX &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
-  virtual size_t WriteCBC(unsigned char type, const StringX &data) throw(...) = 0;
+  virtual size_t WriteCBC(unsigned char type, const StringX &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
-                          unsigned int length) throw(...);
+                          unsigned int length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          unsigned int &length);
   const StringX m_filename;
