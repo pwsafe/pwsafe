@@ -232,7 +232,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 
     if (status != PWSfile::SUCCESS) {
       delete out;
-      return CANT_OPEN_FILE;
+      return status;
     }
 
     RecordWriter write_record(out, this);

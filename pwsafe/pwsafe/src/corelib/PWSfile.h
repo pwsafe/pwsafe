@@ -33,13 +33,13 @@ public:
     UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
   enum RWmode {Read, Write};
   enum {SUCCESS = 0, FAILURE = 1, 
-    CANT_OPEN_FILE,                          //  2
-    UNSUPPORTED_VERSION,                     //  3
-    WRONG_VERSION,                           //  4
-    NOT_PWS3_FILE,                           //  5
-    WRONG_PASSWORD,                          //  6 - see PWScore.h
-    BAD_DIGEST,                              //  7 - see PWScore.h
-    END_OF_FILE                              //  8
+    UNSUPPORTED_VERSION,                     //  2
+    WRONG_VERSION,                           //  3
+    NOT_PWS3_FILE,                           //  4
+    WRONG_PASSWORD,                          //  5 - see PWScore.h
+    BAD_DIGEST,                              //  6 - see PWScore.h
+    END_OF_FILE,                             //  7
+    CANT_OPEN_FILE,                          //  -10 - see PWScore.h
   };
 
   /**
