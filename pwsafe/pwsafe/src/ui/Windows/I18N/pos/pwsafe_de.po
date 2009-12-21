@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-12-06 23:48+0100\n"
+"PO-Revision-Date: 2009-12-18 18:13+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2591,6 +2591,10 @@ msgstr "Fehler im Unterfeld der Passworthistorie beginnend bei Position %d (im F
 msgid "Error parsing Run Command"
 msgstr "Fehler beim Parsen des auszuführenden Kommandos"
 
+#. Resource IDs: (212, 333)
+msgid "Error while writing file! Try saving in a different location"
+msgstr "Fehler während des Sxhreibens einer Datei! Versuchen Sie abzuspeichern an einer anderen Stelle"
+
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
 msgstr "Fehler: ein Datei mit diesem Namen besteht bereits"
@@ -2710,10 +2714,6 @@ msgstr "Datei in Verwendung"
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "Dateilesefehler"
-
-#. Resource IDs: (333)
-msgid "File Write Error"
-msgstr "Dateischreibfehler"
 
 #. Resource IDs: (189)
 #, c-format
@@ -7100,4 +7100,7 @@ msgstr "binnen %d Tag(en)"
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
+
+#~ msgid "File Write Error"
+#~ msgstr "Dateischreibfehler"
 
