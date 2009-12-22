@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-12-18 18:13+0100\n"
+"PO-Revision-Date: 2009-12-22 10:45+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2464,7 +2464,7 @@ msgstr "Verschlüsselung gescheitert"
 
 #. Resource IDs: (204)
 msgid "End Report"
-msgstr "Bericht beenden"
+msgstr "Bericht Ende"
 
 #. Resource IDs: (65535)
 msgid "Enter Key:"
@@ -6103,6 +6103,20 @@ msgstr ""
 "\n"
 "Er wird dann automatisch beim Anlegen neuer Einträge als Benutzername eingetragen."
 
+#. Resource IDs: (333)
+msgid "Write Error"
+msgstr "Schreibfehler"
+
+#. Resource IDs: (359)
+msgid ""
+"Write operation failed!\n"
+"File may have been corrupted.\n"
+"Try saving in a different location"
+msgstr ""
+"Fehler während des Schreibens einer Datei!\n"
+"Die Datei könnte zerstört sein.\n"
+"Versuchen Sie zu speichernan einer anderen Stelle"
+
 #. Resource IDs: (320)
 msgid "Write when an entry was accessed in the database. Ignored in read-only mode."
 msgstr "Schreibe, wenn auf einen Eintrag in der Datenbank zugegriffen wurde. Wird im Nur-Lese-Modus ignoriert."
@@ -7100,7 +7114,4 @@ msgstr "binnen %d Tag(en)"
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
-
-#~ msgid "File Write Error"
-#~ msgstr "Dateischreibfehler"
 
