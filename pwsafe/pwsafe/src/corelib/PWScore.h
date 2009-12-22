@@ -364,5 +364,6 @@ private:
 
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;
+  PWSFileSig *m_fileSig;
 };
 #endif /* __PWSCORE_H */
