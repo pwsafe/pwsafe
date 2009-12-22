@@ -19,6 +19,7 @@
 #include "UnknownField.h"
 #include "StringX.h"
 #include "Proxy.h"
+#include "sha256.h"
 
 #define MIN_HASH_ITERATIONS 2048
 
@@ -120,5 +121,22 @@ protected:
   size_t m_fileLength;
   Asker *m_pAsker;
   Reporter *m_pReporter;
+};
+
+// A quick way to determine if two files are equal,
+// or if a given file has been modified. For large files,
+// this may miss changes made to the middle. This is due
+// to a performance trade-off.
+class PWSFileSig
+{
+ public:
+  PWSFileSig(const stringT &fname);
+  PWSFileSig(const PWSFileSig &pfs);
+  PWSFileSig &operator=(const PWSFileSig &that);
+  bool operator==(const PWSFileSig &other);
+  bool operator!=(const PWSFileSig &other) {return !(*this == other);}
+ private:
+  long m_length; // 0 if file doesn't exist
+  unsigned char m_digest[SHA256::HASHLEN];
 };
 #endif /* __PWSFILE_H */

@@ -434,3 +434,58 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   delete[] buf; // allocated by _readcbc
   return status;
 }
+
+//-----------------------------------------------------------------
+// A quick way to determine if two files are equal, or if a given
+// file has been modified. For large files, this may miss changes
+//  made to the middle. This is due to a performance trade-off.
+
+PWSFileSig::PWSFileSig(const stringT &fname)
+{
+  const long THRESHOLD = 2048; // if file's longer than this, hash only head & tail
+
+  memset(m_digest, 0, sizeof(m_digest));
+  FILE *fp = pws_os::FOpen(fname, _T("rb"));
+  if (fp == NULL) {
+    m_length = 0;
+  } else {
+    SHA256 hash;
+    unsigned char buf[THRESHOLD];
+    m_length = pws_os::fileLength(fp);
+    if (m_length <= THRESHOLD) {
+      if (fread(buf, m_length, 1, fp) == 1) {
+        hash.Update(buf, m_length);
+        hash.Final(m_digest);
+      }
+    } else { // m_length > THRESHOLD
+      if (fread(buf, THRESHOLD/2, 1, fp) == 1 &&
+          fseek(fp, -THRESHOLD/2, SEEK_END) == 0 &&
+          fread(buf + THRESHOLD/2, THRESHOLD/2, 1, fp) == 1) {
+        hash.Update(buf, THRESHOLD);
+        hash.Final(m_digest);
+      }      
+    }
+    fclose(fp);
+  }
+}
+
+PWSFileSig::PWSFileSig(const PWSFileSig &pfs)
+{
+  m_length = pfs.m_length;
+  memcpy(m_digest, pfs.m_digest, sizeof(m_digest));
+}
+
+PWSFileSig &PWSFileSig::operator=(const PWSFileSig &that)
+{
+  if (this != &that) {
+    m_length = that.m_length;
+    memcpy(m_digest, that.m_digest, sizeof(m_digest));
+  }
+  return *this;
+}
+
+bool PWSFileSig::operator==(const PWSFileSig &other)
+{
+  return (m_length == other.m_length &&
+          memcmp(m_digest, other.m_digest, sizeof(m_digest)) == 0);
+}
