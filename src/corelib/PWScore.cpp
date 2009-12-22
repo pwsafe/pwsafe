@@ -62,7 +62,8 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
                      m_pfcnNotifyListModified(NULL), m_NotifyListInstance(NULL),
                      m_bNotifyList(false), m_bNotifyDB(false),
-                     m_pfcnNotifyDBModified(NULL), m_NotifyDBInstance(NULL)
+                     m_pfcnNotifyDBModified(NULL), m_NotifyDBInstance(NULL),
+                     m_fileSig(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -86,6 +87,7 @@ PWScore::~PWScore()
   if (!m_UHFL.empty()) {
     m_UHFL.clear();
   }
+  delete m_fileSig;
 }
 
 void PWScore::SetApplicationNameAndVersion(const stringT &appName,
@@ -213,6 +215,13 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   if (status != PWSfile::SUCCESS) {
     delete out;
     return status;
+  }
+
+  if (m_fileSig != NULL) {
+    // since we're writing a new file, the previous sig's
+    // about to be invalidated
+    delete m_fileSig;
+    m_fileSig = NULL;
   }
 
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
@@ -478,6 +487,14 @@ int PWScore::ReadFile(const StringX &a_filename,
   possible_shortcuts.clear();
   SetDBChanged(false);
 
+  // Setup file signature for checking file integrity upon backup.
+  // Goal is to prevent overwriting a good backup with a corrupt file.
+  if (a_filename == m_currfile) {
+    if (m_fileSig != NULL)
+      delete m_fileSig;
+    m_fileSig = new PWSFileSig(a_filename.c_str());
+  }
+
   return closeStatus;
 }
 
@@ -543,6 +560,15 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   stringT cs_temp, cs_newfile;
   const stringT path(m_currfile.c_str());
   stringT drv, dir, name, ext;
+
+  // Check if the file we're about to backup is unchanged since
+  // we opened it, to avoid overwriting a good file with a bad one
+  if (m_fileSig != NULL) {
+    PWSFileSig curSig(m_currfile.c_str());
+    bool passed = (curSig == *m_fileSig);
+    if (!passed) // XXX yell scream & shout
+      return false;
+  }
 
   pws_os::splitpath(path, drv, dir, name, ext);
   // Get location for intermediate backup
