@@ -43,7 +43,8 @@ unsigned char PWScore::m_session_initialized = false;
 Asker *PWScore::m_pAsker = NULL;
 Reporter *PWScore::m_pReporter = NULL;
 
-PWScore::PWScore() : m_currfile(_T("")),
+PWScore::PWScore() : 
+                     m_pfcnGUIUpdateEntry(NULL), m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
@@ -52,10 +53,9 @@ PWScore::PWScore() : m_currfile(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
-                     m_bNotifyDB(false),
                      m_pfcnNotifyDBModified(NULL), m_NotifyDBInstance(NULL),
+                     m_bNotifyDB(false),
                      m_pfcnNotifyUpdateGUI(NULL), m_NotifyUpdateGUIInstance(NULL),
-                     m_pfcnGUIUpdateEntry(NULL),
                      m_pfcnGUICommandInterface(NULL), m_GUICommandInterfaceInstance(NULL)
 {
   // following should ideally be wrapped in a mutex
