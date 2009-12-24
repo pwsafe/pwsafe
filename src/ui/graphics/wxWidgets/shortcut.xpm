@@ -1,5 +1,5 @@
 /* XPM */
-static char *shortcut_xpm[] = {
+static const char *shortcut_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "9 9 35 1",
 "* c Black",

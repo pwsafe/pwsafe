@@ -1,5 +1,5 @@
 /* XPM */
-static char *abase_warn_xpm[] = {
+static const char *abase_warn_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "9 9 31 1",
 "X c Black",

@@ -32,7 +32,18 @@
 
 ////@begin XPM images
 ////@end XPM images
-
+#include "../graphics/wxWidgets/abase_exp.xpm"
+#include "../graphics/wxWidgets/abase_warn.xpm"
+#include "../graphics/wxWidgets/abase.xpm"
+#include "../graphics/wxWidgets/alias.xpm"
+#include "../graphics/wxWidgets/node.xpm"
+#include "../graphics/wxWidgets/normal_exp.xpm"
+#include "../graphics/wxWidgets/normal_warn.xpm"
+#include "../graphics/wxWidgets/normal.xpm"
+#include "../graphics/wxWidgets/sbase_exp.xpm"
+#include "../graphics/wxWidgets/sbase_warn.xpm"
+#include "../graphics/wxWidgets/sbase.xpm"
+#include "../graphics/wxWidgets/shortcut.xpm"
 
 /*!
  * PWSTreeCtrl type definition
@@ -40,6 +51,22 @@
 
 IMPLEMENT_CLASS( PWSTreeCtrl, wxTreeCtrl )
 
+// Image Indices - these match the order images are added
+//                 in PWSTreeCtrl::CreateControls()
+enum {
+  ABASE_EXP_II,    // 0
+  ABASE_WARN_II,   // 1
+  ABASE_II,        // 2
+  ALIAS_II,        // 3
+  NODE_II,         // 4
+  NORMAL_EXP_II,   // 5
+  NORMAL_WARN_II,  // 6
+  NORMAL_II,       // 7
+  SBASE_EXP_II,    // 8
+  SBASE_WARN_II,   // 9
+  SBASE_II,        // 10
+  SHORTCUT_II,     // 11
+};
 
 /*!
  * PWSTreeCtrl event table definition
@@ -132,6 +159,26 @@ void PWSTreeCtrl::CreateControls()
 {    
 ////@begin PWSTreeCtrl content construction
 ////@end PWSTreeCtrl content construction
+  const char **xpmList[] = {
+    abase_exp_xpm,    // 0
+    abase_warn_xpm,   // 1
+    abase_xpm,        // 2
+    alias_xpm,        // 3
+    node_xpm,         // 4
+    normal_exp_xpm,   // 5
+    normal_warn_xpm,  // 6
+    normal_xpm,       // 7
+    sbase_exp_xpm,    // 8
+    sbase_warn_xpm,   // 9
+    sbase_xpm,        // 10
+    shortcut_xpm,     // 11
+  };
+  const int Nimages = sizeof(xpmList)/sizeof(xpmList[0]);
+
+  wxImageList *iList = new wxImageList(9, 9, true, Nimages);
+  for (int i = 0; i < Nimages; i++)
+    iList->Add(wxIcon(xpmList[i]));
+  AssignImageList(iList);
 }
 
 // XXX taken from Windows PWSTreeCtrl.cpp
@@ -191,7 +238,7 @@ wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
       s = GetPathElem(path);
       if (!ExistsInTree(ti, s, si)) {
         ti = AppendItem(ti, s.c_str());
-        // SetItemImage(ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
+        SetItemImage(ti, NODE_II);
       } else
         ti = si;
     } while (!path.empty());
@@ -250,6 +297,7 @@ void PWSTreeCtrl::UpdateItem(const CItemData &item)
     if (oldGroup == newGroup) {
       const wxString disp = ItemDisplayString(item);
       SetItemText(node, disp);
+      // XXX SetItemImage based on type
     } else { // uh-oh - group's changed
       uuid_array_t uuid;
       item.GetUUID(uuid);
@@ -270,6 +318,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   wxTreeItemId gnode = AddGroup(item.GetGroup());
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
+  SetItemImage(titem, NORMAL_II); // XXX set II based on type
   uuid_array_t uuid;
   item.GetUUID(uuid);
   m_item_map.insert(std::make_pair(CUUIDGen(uuid), titem));
