@@ -14,6 +14,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy dialog
 #include "Options_PropertyPage.h"
+#include "corelib/PWPolicy.h"
+
+class DboxMain;
 
 class COptionsPasswordPolicy : public COptions_PropertyPage
 {
@@ -21,8 +24,9 @@ class COptionsPasswordPolicy : public COptions_PropertyPage
 
   // Construction
 public:
-  COptionsPasswordPolicy();
+  COptionsPasswordPolicy(bool bFromOptions = true);
   ~COptionsPasswordPolicy();
+  DboxMain *m_pDbx;
 
   const wchar_t *GetHelpName() const {return L"password_policies";}
 
@@ -56,6 +60,8 @@ public:
   UINT m_savepwsymbolminlength;
   UINT m_savepwupperminlength;
 
+  PWPolicy m_default_pwp;
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsPasswordPolicy)
@@ -77,6 +83,7 @@ protected:
   afx_msg void OnEasyVision();
   afx_msg void OnMakePronounceable();
   afx_msg BOOL OnKillActive();
+  afx_msg void OnRandom();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -92,4 +99,7 @@ private:
   static const UINT nonHexLengthSpins[N_HEX_LENGTHS]; // IDs of said lengths' spinboxes
   int m_save[N_NOHEX]; // save cb's state when disabling hex
   UINT m_savelen[N_HEX_LENGTHS];
+
+  CSecString m_NewPassword;
+  bool m_bFromOptions;  // True if called by Options, false if called from GeneratePassword
 };

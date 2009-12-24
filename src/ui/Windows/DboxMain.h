@@ -246,7 +246,8 @@ public:
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) {m_bValidate = state;}
-  void MakeRandomPassword(StringX& password, PWPolicy &pwp);
+  void MakeRandomPassword(StringX& password, PWPolicy &pwp, 
+                          bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
                      const bool bDoAutotype);
   BOOL SendEmail(const CString &cs_email);
@@ -569,6 +570,7 @@ protected:
   afx_msg void OnDuplicateEntry();
   afx_msg void OnOptions();
   afx_msg void OnValidate();
+  afx_msg void OnGeneratePassword();
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
