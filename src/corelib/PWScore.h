@@ -50,20 +50,20 @@ public:
   enum {
     SUCCESS = 0,
     FAILURE = 1,
-    CANT_OPEN_FILE = -10,
+    CANT_OPEN_FILE = PWSfile::CANT_OPEN_FILE, // -10 - ensure the same value
     USER_CANCEL,                              // -9
-    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  6 - ensure the same value
-    BAD_DIGEST = PWSfile::BAD_DIGEST,         //  7 - ensure the same value
-    UNKNOWN_VERSION,                          //  8
-    NOT_SUCCESS,                              //  9
-    ALREADY_OPEN,                             // 10
-    INVALID_FORMAT,                           // 11
-    USER_EXIT,                                // 12
-    XML_FAILED_VALIDATION,                    // 13
-    XML_FAILED_IMPORT,                        // 14
-    LIMIT_REACHED,                            // 15
-    UNIMPLEMENTED,                            // 16
-    NO_ENTRIES_EXPORTED,                      // 17
+    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  5 - ensure the same value
+    BAD_DIGEST = PWSfile::BAD_DIGEST,         //  6 - ensure the same value
+    UNKNOWN_VERSION,                          //  7
+    NOT_SUCCESS,                              //  8
+    ALREADY_OPEN,                             //  9
+    INVALID_FORMAT,                           // 10
+    USER_EXIT,                                // 11
+    XML_FAILED_VALIDATION,                    // 12
+    XML_FAILED_IMPORT,                        // 13
+    LIMIT_REACHED,                            // 14
+    UNIMPLEMENTED,                            // 15
+    NO_ENTRIES_EXPORTED,                      // 16
   };
 
   PWScore();
@@ -421,6 +421,7 @@ private:
 
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;
+  PWSFileSig *m_fileSig;
 };
 
 #endif /* __PWSCORE_H */

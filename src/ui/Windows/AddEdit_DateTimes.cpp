@@ -176,8 +176,12 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   pDateCtl->SetFormat(sDateFormat);
 
   CTime ct, xt;
-  CTime now(CTime::GetCurrentTime());
-  ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
+  if (M_tttXTime() == (time_t)0) {
+    CTime now(CTime::GetCurrentTime());
+    ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
+  } else {
+    ct = CTime(M_tttXTime());
+  }
 
   const CTime sMinDate(ct);
   const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
@@ -210,6 +214,23 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_PMTIME)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_RMTIME)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RMTIME)->ShowWindow(SW_HIDE);
+  }
+
+  if (M_original_entrytype() == CItemData::ET_ALIAS) {
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_SET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_XTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_CURRENTVALUE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_CURRENT_XTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_RECUR)->EnableWindow(FALSE);
   }
 
   UpdateData(FALSE);

@@ -25,6 +25,7 @@ class COptionsPasswordHistory : public COptions_PropertyPage
 public:
   COptionsPasswordHistory();
   ~COptionsPasswordHistory();
+  DboxMain *m_pDboxMain;
 
   const wchar_t *GetHelpName() const {return L"password_history_tab";}
 

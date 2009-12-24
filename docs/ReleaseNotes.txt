@@ -10,6 +10,9 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.20.1
 ====================
+[2918849] Fixed icon no longer appearing in taskbar when locking due to
+workstation lock and terminal services running.
+[2916338] "Edit Base entry" now works for Alias entries as well as for Shortcuts.
 [2913440] Copy/Send Email menu items now correctly activated if email field
 is set or 'mailto:' used in URL field.
 [2912177] Restore 'Add Group' menu item to context menu when clicking
@@ -18,7 +21,8 @@ on an entry and allow new group to remain unchanged.
 
 New Features for 3.20.1
 =======================
-
+[2919319] Now able to use PasswordSafe to generator passwords as per user defind
+policy from the Manage menu.
 
 Changes to Existing Features in 3.20.1
 ======================================

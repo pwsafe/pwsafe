@@ -1235,11 +1235,20 @@ void DboxMain::OnClearClipboard()
 // be avoided by putting the password into the clipboard when the entry is saved
 // but that would be annoying when generating a new entry.
 
-void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp)
+void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, 
+                                  bool bIssueMsg)
 {
   password = pwp.MakeRandomPassword();
   SetClipboardData(password);
   UpdateLastClipboardAction(CItemData::PASSWORD);
+
+  if (bIssueMsg) {
+    CGeneralMsgBox gmb;
+    CString cs_title, cs_msg;
+    cs_title.LoadString(IDS_PASSWORDGENERATED1);
+    cs_msg.Format(IDS_PASSWORDGENERATED2, password.c_str());
+    gmb.MessageBox(cs_msg, cs_title, MB_OK);
+  }
 }
 
 void DboxMain::OnAutoType()
@@ -1600,29 +1609,32 @@ void DboxMain::OnGotoBaseEntry()
 
 void DboxMain::OnEditBaseEntry()
 {
-  // Only for Shortcuts
+  // Only for Shortcuts & Aliases
   if (SelItemOk() == TRUE) {
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
 
     uuid_array_t base_uuid, entry_uuid;
-    if (pci->GetEntryType() == CItemData::ET_SHORTCUT) {
-      // This is an shortcut
-      pci->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+    pci->GetUUID(entry_uuid);
+    if (pci->GetEntryType() == CItemData::ET_SHORTCUT)
+       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+    else
+    if (pci->GetEntryType() == CItemData::ET_ALIAS)
+       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+    else
+      return;
 
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-         DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-         SelectEntry(pdi->list_index);
-         EditItem(&iter->second);
-      } else
-        return;
-
-      UpdateAccessTime(pci);
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+       DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+       SelectEntry(pdi->list_index);
+       EditItem(&iter->second);
     }
+
+    UpdateAccessTime(pci);
   }
 }
+
 
 void DboxMain::OnRunCommand()
 {

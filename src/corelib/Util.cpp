@@ -25,6 +25,7 @@
 #include <time.h>
 #include <sstream>
 #include <iomanip>
+#include <errno.h>
 
 using namespace std;
 
@@ -187,7 +188,10 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
   memcpy(cbcbuffer, curblock, BS); // update CBC for next round
 
   numWritten = fwrite(curblock, 1, BS, fp);
-
+  if (numWritten != BS) {
+    trashMemory(curblock, BS);
+    throw(EIO);
+  }
   if (length > 0 ||
       (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
     unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
@@ -205,7 +209,12 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
       xormem(curblock, cbcbuffer, BS);
       Algorithm->Encrypt(curblock, curblock);
       memcpy(cbcbuffer, curblock, BS);
-      numWritten += fwrite(curblock, 1, BS, fp);
+      size_t nw =  fwrite(curblock, 1, BS, fp);
+      if (nw != BS) {
+        trashMemory(curblock, BS);
+        throw(EIO);
+      }
+      numWritten += nw;
     }
   }
   trashMemory(curblock, BS);

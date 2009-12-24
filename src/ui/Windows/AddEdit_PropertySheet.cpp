@@ -108,6 +108,16 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     // Entry type initialisation
     m_AEMD.original_entrytype = m_AEMD.pci->GetEntryType();
 
+    CItemData *pciA(pci);
+    if (m_AEMD.original_entrytype == CItemData::ET_ALIAS) {
+      uuid_array_t entry_uuid, base_uuid;
+      m_AEMD.pci->GetUUID(entry_uuid);
+      m_AEMD.pcore->GetAliasBaseUUID(entry_uuid, base_uuid);
+      ItemListIter iter = m_AEMD.pcore->Find(base_uuid);
+      ASSERT(iter != m_AEMD.pcore->GetEntryEndIter());
+      pciA = &(iter->second);
+    }
+
     // Additional data
     m_AEMD.autotype = m_AEMD.pci->GetAutoType();
     m_AEMD.runcommand = m_AEMD.pci->GetRunCommand();
@@ -137,20 +147,24 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     if ((long)m_AEMD.tttCPMTime == 0L) // if never changed - try creation date
       m_AEMD.pci->GetCTime(m_AEMD.tttCPMTime);
 
-    m_AEMD.locXTime = m_AEMD.pci->GetXTimeL();
+    // Note different pci dfepending on if Alias
+    m_AEMD.locXTime = pciA->GetXTimeL();
     if (m_AEMD.locXTime.IsEmpty()) {
       m_AEMD.locXTime.LoadString(IDS_NEVER);
       m_AEMD.tttXTime = 0;
-    } else
-      m_AEMD.pci->GetXTime(m_AEMD.tttXTime);
-
+    } else {
+      pciA->GetXTime(m_AEMD.tttXTime);
+    }
     m_AEMD.oldlocXTime = m_AEMD.locXTime;
 
-    m_AEMD.pci->GetXTimeInt(m_AEMD.XTimeInt);
+    // Note different pci dfepending on if Alias
+    pciA->GetXTimeInt(m_AEMD.XTimeInt);
     m_AEMD.oldXTimeInt = m_AEMD.XTimeInt;
 
     // PWHistory fields
-    m_AEMD.PWHistory = m_AEMD.pci->GetPWHistory();
+    // Note different pci dfepending on if Alias
+    m_AEMD.PWHistory = pciA->GetPWHistory();
+
     BOOL HasHistory = CreatePWHistoryList(m_AEMD.PWHistory,
                                           m_AEMD.MaxPWHistory,
                                           num_err,
@@ -160,8 +174,10 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = HasHistory;
 
     // PWPolicy fields
-    m_AEMD.pci->GetPWPolicy(m_AEMD.pwp);
-    m_AEMD.ipolicy = (m_AEMD.pci->GetPWPolicy().empty()) ?
+    // Note different pci dfepending on if Alias
+    pciA->GetPWPolicy(m_AEMD.pwp);
+
+    m_AEMD.ipolicy = (pciA->GetPWPolicy().empty()) ?
                                DEFAULT_POLICY : SPECIFIC_POLICY;
     m_AEMD.oldipolicy = m_AEMD.ipolicy;
 
@@ -333,14 +349,14 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           // call to PWScore::GetBaseEntry
           m_AEMD.pci->SetPassword(L"[Alias]");
           m_AEMD.pci->SetAlias();
-          ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
+           ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
           if (iter != m_AEMD.pDbx->End()) {
             const CItemData &cibase = iter->second;
             DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
             int nImage = m_AEMD.pDbx->GetEntryImage(cibase);
             m_AEMD.pDbx->SetEntryImage(pdi->list_index, nImage, true);
             m_AEMD.pDbx->SetEntryImage(pdi->tree_item, nImage, true);
-          }
+           }
         } else {
           m_AEMD.pci->SetPassword(m_AEMD.realpassword);
           m_AEMD.pci->SetNormal();

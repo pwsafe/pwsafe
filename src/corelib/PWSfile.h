@@ -19,6 +19,7 @@
 #include "UnknownField.h"
 #include "StringX.h"
 #include "Proxy.h"
+#include "sha256.h"
 
 #define MIN_HASH_ITERATIONS 2048
 
@@ -33,13 +34,13 @@ public:
     UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
   enum RWmode {Read, Write};
   enum {SUCCESS = 0, FAILURE = 1, 
-    CANT_OPEN_FILE,                          //  2
-    UNSUPPORTED_VERSION,                     //  3
-    WRONG_VERSION,                           //  4
-    NOT_PWS3_FILE,                           //  5
-    WRONG_PASSWORD,                          //  6 - see PWScore.h
-    BAD_DIGEST,                              //  7 - see PWScore.h
-    END_OF_FILE                              //  8
+    UNSUPPORTED_VERSION,                     //  2
+    WRONG_VERSION,                           //  3
+    NOT_PWS3_FILE,                           //  4
+    WRONG_PASSWORD,                          //  5 - see PWScore.h
+    BAD_DIGEST,                              //  6 - see PWScore.h
+    END_OF_FILE,                             //  7
+    CANT_OPEN_FILE,                          //  -10 - see PWScore.h
   };
 
   /**
@@ -120,5 +121,22 @@ protected:
   size_t m_fileLength;
   Asker *m_pAsker;
   Reporter *m_pReporter;
+};
+
+// A quick way to determine if two files are equal,
+// or if a given file has been modified. For large files,
+// this may miss changes made to the middle. This is due
+// to a performance trade-off.
+class PWSFileSig
+{
+ public:
+  PWSFileSig(const stringT &fname);
+  PWSFileSig(const PWSFileSig &pfs);
+  PWSFileSig &operator=(const PWSFileSig &that);
+  bool operator==(const PWSFileSig &other);
+  bool operator!=(const PWSFileSig &other) {return !(*this == other);}
+ private:
+  long m_length; // 0 if file doesn't exist
+  unsigned char m_digest[SHA256::HASHLEN];
 };
 #endif /* __PWSFILE_H */

@@ -37,12 +37,11 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(COptionsPasswordHistory, COptions_PropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory()
-  : COptions_PropertyPage(COptionsPasswordHistory::IDD)
+  : COptions_PropertyPage(COptionsPasswordHistory::IDD),
+  m_ToolTipCtrl(NULL), m_pDboxMain(NULL), m_pwhaction(0)
 {
   //{{AFX_DATA_INIT(COptionsPasswordHistory)
   //}}AFX_DATA_INIT
-  m_ToolTipCtrl = NULL;
-  m_pwhaction = 0;
 }
 
 COptionsPasswordHistory::~COptionsPasswordHistory()

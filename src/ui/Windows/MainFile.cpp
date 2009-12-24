@@ -53,6 +53,26 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static void DisplayFileWriteError(int rc, const StringX &cs_newfile)
+{
+  ASSERT(rc != PWScore::SUCCESS);
+
+  CGeneralMsgBox gmb;
+  CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
+  switch (rc) {
+  case PWScore::CANT_OPEN_FILE:
+    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile.c_str());
+    break;
+  case PWScore::FAILURE:
+    cs_temp.Format(IDS_FILEWRITEFAILURE);
+    break;
+  default:
+    cs_temp.Format(IDS_UNKNOWNERROR, cs_newfile.c_str());
+    break;
+  }
+  gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
+}
+
 BOOL DboxMain::OpenOnInit(void)
 {
   /*
@@ -273,11 +293,8 @@ int DboxMain::New()
   m_core.ClearFileUUID();
 
   rc = m_core.WriteCurFile();
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
-    CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile.c_str());
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, cs_newfile);
     return PWScore::USER_CANCEL;
   }
   m_core.ClearChangedNodes();
@@ -636,15 +653,12 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
       */
       return PWScore::CANT_OPEN_FILE;
     case PWScore::BAD_DIGEST:
-    {
-      CGeneralMsgBox gmb;
       temp.Format(IDS_FILECORRUPT, pszFilename.c_str());
       if (gmb.MessageBox(temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES) {
         rc = PWScore::SUCCESS;
         break;
       } else
         return rc;
-    }
 #ifdef DEMO
     case PWScore::LIMIT_REACHED:
     {
@@ -766,12 +780,9 @@ int DboxMain::Save()
 
   rc = m_core.WriteCurFile();
 
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
-    cs_title.LoadString(IDS_FILEWRITEERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    return PWScore::CANT_OPEN_FILE;
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, m_core.GetCurFile());
+    return rc;
   }
   m_core.ClearChangedNodes();
   SetChanged(Clear);
@@ -830,6 +841,7 @@ void DboxMain::OnSaveAs()
 
 int DboxMain::SaveAs()
 {
+  CGeneralMsgBox gmb;
   INT_PTR rc;
   StringX newfile;
   CString cs_msg, cs_title, cs_text, cs_temp;
@@ -890,7 +902,6 @@ int DboxMain::SaveAs()
   std::wstring locker(L""); // null init is important here
   // Note: We have to lock the new file before releasing the old (on success)
   if (!m_core.LockFile2(newfile.c_str(), locker)) {
-    CGeneralMsgBox gmb;
     cs_temp.Format(IDS_FILEISLOCKED, newfile.c_str(), locker.c_str());
     cs_title.LoadString(IDS_FILELOCKERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
@@ -905,13 +916,10 @@ int DboxMain::SaveAs()
   m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
 
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
+  if (rc != PWScore::SUCCESS) {
     m_core.SetFileUUID(file_uuid_array);
     m_core.UnlockFile2(newfile.c_str());
-    cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
-    cs_title.LoadString(IDS_FILEWRITEERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    DisplayFileWriteError(rc, newfile);
     return PWScore::CANT_OPEN_FILE;
   }
   if (!m_core.GetCurFile().empty())
@@ -997,17 +1005,15 @@ void DboxMain::OnExportVx(UINT nID)
       rc = PWScore::FAILURE;
       break;
   }
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
-    cs_title.LoadString(IDS_FILEWRITEERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, newfile);
   }
 }
 
 void DboxMain::OnExportText()
 {
   CExportTextDlg et;
+  CGeneralMsgBox gmb;
   OrderedItemList orderedItemList;
   CString cs_text, cs_title, cs_temp;
   StringX sx_temp;
@@ -1015,7 +1021,6 @@ void DboxMain::OnExportText()
   sx_temp = m_core.GetCurFile();
   if (sx_temp.empty()) {
     //  Database has not been saved - prompt user to do so first!
-    CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_SAVEBEFOREEXPORT);
     return;
   }
@@ -1041,7 +1046,6 @@ void DboxMain::OnExportText()
       if (rc == PWScore::NO_ENTRIES_EXPORTED) {
         cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
         cs_title.LoadString(IDS_TEXTEXPORTFAILED);
-        CGeneralMsgBox gmb;
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         goto exit;
       }
@@ -1084,14 +1088,10 @@ void DboxMain::OnExportText()
 
       orderedItemList.clear(); // cleanup soonest
 
-      if (rc == PWScore::CANT_OPEN_FILE) {
-        CGeneralMsgBox gmb;
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
-        cs_title.LoadString(IDS_FILEWRITEERROR);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      if (rc != PWScore::SUCCESS) {
+        DisplayFileWriteError(rc, newfile);
       }
     } else {
-      CGeneralMsgBox gmb;
       gmb.AfxMessageBox(IDS_BADPASSKEY);
       ::Sleep(3000); // against automatic attacks
     }
@@ -1175,10 +1175,8 @@ void DboxMain::OnExportXML()
 
       orderedItemList.clear(); // cleanup soonest
 
-      if (rc == PWScore::CANT_OPEN_FILE)        {
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile.c_str());
-        cs_title.LoadString(IDS_FILEWRITEERROR);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      if (rc != PWScore::SUCCESS) {
+        DisplayFileWriteError(rc, newfile);
       }
     } else {
       gmb.AfxMessageBox(IDS_BADPASSKEY);
@@ -1653,12 +1651,12 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 int DboxMain::Merge(const StringX &sx_Filename2)
 {
   /* open file they want to merge */
+  CGeneralMsgBox gmb;
   StringX passkey, temp;
 
   //Check that this file isn't already open
   if (sx_Filename2 == m_core.GetCurFile()) {
     //It is the same damn file
-    CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_ALREADYOPEN, MB_OK | MB_ICONWARNING);
     return PWScore::ALREADY_OPEN;
   }
@@ -1677,12 +1675,9 @@ int DboxMain::Merge(const StringX &sx_Filename2)
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-    {
-      CGeneralMsgBox gmb;
       cs_temp.Format(IDS_CANTOPEN, othercore.GetCurFile().c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    }
     case TAR_OPEN:
     case TAR_NEW:
     case PWScore::WRONG_PASSWORD:
@@ -1700,7 +1695,6 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
     cs_title.LoadString(IDS_FILEREADERROR);
-    CGeneralMsgBox gmb;
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     /*
     Everything stays as is... Worst case,
@@ -1970,7 +1964,6 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   rpt.WriteLine((LPCWSTR)resultStr);
   rpt.EndReport();
 
-  CGeneralMsgBox gmb;
   gmb.SetTitle(cs_title);
   gmb.SetMsg(resultStr);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
@@ -2086,17 +2079,14 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
                            true,         // user cannot change readonly status
                            &othercore,   // Use other core
                            ADV_COMPARE); // Advanced type
-
+  CGeneralMsgBox gmb;
   switch (rc) {
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-    {
-      CGeneralMsgBox gmb;
       cs_temp.Format(IDS_CANTOPEN, sx_Filename2.c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    }
     case TAR_OPEN:
       return Open();
     case TAR_NEW:
@@ -2119,15 +2109,11 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-    {
-      CGeneralMsgBox gmb;
       cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       break;
-    }
     case PWScore::BAD_DIGEST:
     {
-      CGeneralMsgBox gmb;
       cs_temp.Format(IDS_FILECORRUPT, sx_Filename2.c_str());
       const int yn = gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR);
       if (yn == IDYES)
@@ -2137,7 +2123,6 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
 #ifdef DEMO
     case PWScore::LIMIT_REACHED:
     {
-      CGeneralMsgBox gmb;
       CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG2, MAXDEMO);
       CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
       gmb.MessageBox(cs_msg, cs_title, MB_ICONWARNING);
@@ -2145,12 +2130,9 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
     }
 #endif
     default:
-    {
-      CGeneralMsgBox gmb;
       cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename2.c_str());
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
       break;
-    }
   }
 
   if (rc != PWScore::SUCCESS) {
@@ -2701,11 +2683,8 @@ int DboxMain::SaveCore(PWScore *pcore)
   }
   rc = pcore->WriteCurFile();
 
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CGeneralMsgBox gmb;
-    cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
-    cs_title.LoadString(IDS_FILEWRITEERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, pcore->GetCurFile());
     return PWScore::CANT_OPEN_FILE;
   }
 

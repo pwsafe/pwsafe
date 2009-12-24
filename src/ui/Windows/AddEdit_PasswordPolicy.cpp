@@ -180,6 +180,14 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
     GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
   }
 
+  if (M_original_entrytype() == CItemData::ET_ALIAS) {
+    DisablePolicy();
+    GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_OR)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(FALSE);
+  }
+
   return TRUE;
 }
 
@@ -536,23 +544,21 @@ void CAddEdit_PasswordPolicy::OnSetSpecificPWPolicy()
 
 void CAddEdit_PasswordPolicy::SetPolicyControls()
 {
-  BOOL bEnable;
-  bool bEnableLengths;
-  int iShowLengths;
-  if (M_uicaller() == IDS_VIEWENTRY) {
-    bEnable = bEnableLengths = FALSE;
-    iShowLengths = SW_SHOW;
-  } else {
-    bEnable = (M_ipolicy() == CAddEdit_PropertySheet::DEFAULT_POLICY) ? FALSE : TRUE;
-    bEnableLengths = ((bEnable == TRUE) &&
+  BOOL bEnableSpecificPolicy(FALSE);
+  bool bEnableLengths(false);
+  int iShowLengths(SW_SHOW);
+
+  if (M_uicaller() != IDS_VIEWENTRY) {
+    bEnableSpecificPolicy = (M_ipolicy() == CAddEdit_PropertySheet::DEFAULT_POLICY) ? FALSE : TRUE;
+    bEnableLengths = ((bEnableSpecificPolicy == TRUE) &&
                       (m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE &&
                        m_pwusehexdigits == FALSE));
     iShowLengths = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? 
                        SW_HIDE : SW_SHOW;
   }
 
-  GetDlgItem(IDC_DEFPWLENGTH)->EnableWindow(bEnable);
-  GetDlgItem(IDC_PWLENSPIN)->EnableWindow(bEnable);
+  GetDlgItem(IDC_DEFPWLENGTH)->EnableWindow(bEnableSpecificPolicy);
+  GetDlgItem(IDC_PWLENSPIN)->EnableWindow(bEnableSpecificPolicy);
 
   // Deal with lengths
   for (int i = 0; i < N_HEX_LENGTHS; i++) {
@@ -585,12 +591,12 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
 
   // Deal with non-hex checkboxes
   for (int i = 0; i < N_NOHEX; i++) {
-    GetDlgItem(nonHex[i])->EnableWindow(bEnable);
+    GetDlgItem(nonHex[i])->EnableWindow(bEnableSpecificPolicy);
   }
   // Deal with hex checkbox
-  GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(bEnable);
+  GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(bEnableSpecificPolicy);
 
-  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(bEnable);
+  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(bEnableSpecificPolicy);
   UpdateData(FALSE);
 }
 
@@ -645,4 +651,34 @@ void CAddEdit_PasswordPolicy::SetVariablesFromPolicy()
     m_pwdigitminlength = 1;
   if (m_pwusesymbols == TRUE && m_pwsymbolminlength == 0)
     m_pwsymbolminlength = 1;
+}
+
+void CAddEdit_PasswordPolicy::DisablePolicy()
+{
+  int iShowLengths = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? 
+                       SW_HIDE : SW_SHOW;
+
+  GetDlgItem(IDC_DEFPWLENGTH)->EnableWindow(FALSE);
+  GetDlgItem(IDC_PWLENSPIN)->EnableWindow(FALSE);
+
+  // Deal with lengths
+  for (int i = 0; i < N_HEX_LENGTHS; i++) {
+    GetDlgItem(nonHexLengths[i])->EnableWindow(FALSE);
+    GetDlgItem(nonHexLengths[i])->ShowWindow(iShowLengths);
+    GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
+    GetDlgItem(nonHexLengthSpins[i])->ShowWindow(iShowLengths);
+    GetDlgItem(LenTxts[i * 2])->EnableWindow(FALSE);
+    GetDlgItem(LenTxts[i * 2])->ShowWindow(iShowLengths);
+    GetDlgItem(LenTxts[i * 2 + 1])->EnableWindow(FALSE);
+    GetDlgItem(LenTxts[i * 2 + 1])->ShowWindow(iShowLengths);
+  }
+
+  // Deal with non-hex checkboxes
+  for (int i = 0; i < N_NOHEX; i++) {
+    GetDlgItem(nonHex[i])->EnableWindow(FALSE);
+  }
+  // Deal with hex checkbox
+  GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(FALSE);
+
+  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(FALSE);
 }

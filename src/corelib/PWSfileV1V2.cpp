@@ -101,6 +101,12 @@ int PWSfileV1V2::ReadV2Header()
   return status;
 }
 
+// Following specific for PWSfileV1V2::Open
+#define SAFE_FWRITE(p, sz, cnt, stream) do { \
+    size_t _ret = fwrite(p, sz, cnt, stream); \
+    if (_ret != cnt) { status = FAILURE; goto exit;} \
+  } while (0)
+
 int PWSfileV1V2::Open(const StringX &passkey)
 {
   int status = SUCCESS;
@@ -134,15 +140,15 @@ int PWSfileV1V2::Open(const StringX &passkey)
     randstuff[8] = randstuff[9] = TCHAR('\0');
     GenRandhash(m_passkey, randstuff, randhash);
 
-    fwrite(randstuff, 1, 8, m_fd);
-    fwrite(randhash, 1, 20, m_fd);
+    SAFE_FWRITE(randstuff, 1, 8, m_fd);
+    SAFE_FWRITE(randhash, 1, 20, m_fd);
 
     PWSrand::GetInstance()->GetRandomData(m_salt, SaltLength);
 
-    fwrite(m_salt, 1, SaltLength, m_fd);
+    SAFE_FWRITE(m_salt, 1, SaltLength, m_fd);
 
     PWSrand::GetInstance()->GetRandomData( m_ipthing, 8);
-    fwrite(m_ipthing, 1, 8, m_fd);
+    SAFE_FWRITE(m_ipthing, 1, 8, m_fd);
 
     m_fish = BlowFish::MakeBlowFish(pstr, passLen,
                                     m_salt, SaltLength);
@@ -167,6 +173,9 @@ int PWSfileV1V2::Open(const StringX &passkey)
     if (m_curversion == V20)
       status = ReadV2Header();
   } // read mode
+ exit:
+  if (status != SUCCESS)
+    Close();
 #ifdef UNICODE
   trashMemory(pstr, 3*passLen);
   delete[] pstr;

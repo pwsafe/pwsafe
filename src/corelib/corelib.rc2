@@ -151,6 +151,7 @@ BEGIN
   IDSC_INVALIDFLAG        "Internal error: An invalid flag was specified"
   IDSC_NOMOREHANDLES      "Internal error: Out of file handles"
   IDSC_BADPASSWORD        "Incorrect password"
+  IDSC_FILEWRITEERROR     "Error while writing file! Try saving in a different location"
 END
 
 // Status Bar

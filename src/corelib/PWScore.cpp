@@ -56,7 +56,8 @@ PWScore::PWScore() :
                      m_pfcnNotifyDBModified(NULL), m_NotifyDBInstance(NULL),
                      m_bNotifyDB(false),
                      m_pfcnNotifyUpdateGUI(NULL), m_NotifyUpdateGUIInstance(NULL),
-                     m_pfcnGUICommandInterface(NULL), m_GUICommandInterfaceInstance(NULL)
+                     m_pfcnGUICommandInterface(NULL), m_GUICommandInterfaceInstance(NULL),
+                     m_fileSig(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -82,6 +83,8 @@ PWScore::~PWScore()
 
   m_UHFL.clear();
   m_vnodes_modified.clear();
+
+  delete m_fileSig;
 }
 
 void PWScore::SetApplicationNameAndVersion(const stringT &appName,
@@ -239,6 +242,13 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
     return status;
   }
 
+  if (m_fileSig != NULL) {
+    // since we're writing a new file, the previous sig's
+    // about to be invalidated
+    delete m_fileSig;
+    m_fileSig = NULL;
+  }
+
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
 
@@ -251,18 +261,24 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
     out3->SetUnknownHeaderFields(m_UHFL);
     out3->SetFilters(m_MapFilters); // Give it the filters to write out
   }
-  status = out->Open(GetPassKey());
 
-  if (status != PWSfile::SUCCESS) {
+  try { // exception thrown on write error
+    status = out->Open(GetPassKey());
+
+    if (status != PWSfile::SUCCESS) {
+      delete out;
+      return status;
+    }
+
+    RecordWriter write_record(out, this);
+    for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
+
+    m_hdr = out->GetHeader(); // update time saved, etc.
+  } catch (...) {
+    out->Close();
     delete out;
-    return CANT_OPEN_FILE;
+    return FAILURE;
   }
-
-  RecordWriter write_record(out, this);
-  for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
-
-  m_hdr = out->GetHeader(); // update time saved, etc.
-
   out->Close();
   delete out;
 
@@ -593,6 +609,14 @@ int PWScore::ReadFile(const StringX &a_filename,
   possible_shortcuts.clear();
   SetDBChanged(false);
 
+  // Setup file signature for checking file integrity upon backup.
+  // Goal is to prevent overwriting a good backup with a corrupt file.
+  if (a_filename == m_currfile) {
+    if (m_fileSig != NULL)
+      delete m_fileSig;
+    m_fileSig = new PWSFileSig(a_filename.c_str());
+  }
+
   return closeStatus;
 }
 
@@ -658,6 +682,15 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
   stringT cs_temp, cs_newfile;
   const stringT path(m_currfile.c_str());
   stringT drv, dir, name, ext;
+
+  // Check if the file we're about to backup is unchanged since
+  // we opened it, to avoid overwriting a good file with a bad one
+  if (m_fileSig != NULL) {
+    PWSFileSig curSig(m_currfile.c_str());
+    bool passed = (curSig == *m_fileSig);
+    if (!passed) // XXX yell scream & shout
+      return false;
+  }
 
   pws_os::splitpath(path, drv, dir, name, ext);
   // Get location for intermediate backup
@@ -1331,10 +1364,9 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
       }
 
       if (iter != m_pwlist.end()) {
-        const CItemData::EntryType type2 = iter->second.GetEntryType();
         if (type == CItemData::ET_SHORTCUT) {
           // Adding shortcuts -> Base must be normal or already a shortcut base
-          if (type2 != CItemData::ET_NORMAL && type2 != CItemData::ET_SHORTCUTBASE) {
+          if (!iter->second.IsNormal() && !iter->second.IsShortcutBase()) {
             // Bad news!
             if (rpt != NULL) {
               if (!bwarnings) {
@@ -1358,7 +1390,7 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         }
         if (type == CItemData::ET_ALIAS) {
           // Adding Aliases -> Base must be normal or already a alias base
-          if (type2 != CItemData::ET_NORMAL && type2 != CItemData::ET_ALIASBASE) {
+          if (!iter->second.IsNormal() && !iter->second.IsAliasBase()) {
             // Bad news!
             if (rpt != NULL) {
               if (!bwarnings) {
@@ -1379,7 +1411,7 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             m_pwlist.erase(iter);
             continue;
           }
-          if (type2 == CItemData::ET_ALIAS) {
+          if (iter->second.IsAlias()) {
             // This is an alias too!  Not allowed!  Make new one point to original base
             // Note: this may be random as who knows the order of reading records?
             uuid_array_t temp_uuid;
@@ -1398,7 +1430,7 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
               rpt->WriteLine(strError);
             }
             if (pmapSaveTypePW != NULL) {
-              st_typepw.et = type2;
+              st_typepw.et = iter->second.GetEntryType();
               st_typepw.sxpw = _T("");
               pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
             }
@@ -1409,7 +1441,7 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         iter->second.GetUUID(base_uuid);
         if (type == CItemData::ET_ALIAS) {
           if (pmapSaveTypePW != NULL) {
-            st_typepw.et = type2;
+            st_typepw.et = iter->second.GetEntryType();
             st_typepw.sxpw = _T("");
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
           }
@@ -1417,7 +1449,7 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         } else
         if (type == CItemData::ET_SHORTCUT) {
           if (pmapSaveTypePW != NULL) {
-            st_typepw.et = type2;
+            st_typepw.et = iter->second.GetEntryType();
             st_typepw.sxpw = _T("");
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
           }
@@ -1428,7 +1460,7 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
         if (type == CItemData::ET_ALIAS) {
           if (pmapSaveTypePW != NULL) {
-            st_typepw.et = type2;
+            st_typepw.et = iter->second.GetEntryType();
             st_typepw.sxpw = pci_curitem->GetPassword();
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
           }
@@ -1437,7 +1469,7 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         } else
         if (type == CItemData::ET_SHORTCUT) {
           if (pmapSaveTypePW != NULL) {
-            st_typepw.et = type2;
+            st_typepw.et = iter->second.GetEntryType();
             st_typepw.sxpw = pci_curitem->GetPassword();
             pmapSaveTypePW->insert(SaveTypePWMap_Pair(*paiter, st_typepw));
           }

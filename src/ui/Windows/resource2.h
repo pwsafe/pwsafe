@@ -25,7 +25,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
   BUT THE VALUE FOR A PARTICULAR FUNCTION MUST NOT CHANGE
     e.g. ID_MENUITEM_OPEN must remain 32002
   (Otherwise, a user may be unpleasantly surprised, when his shortcut for, say,
-   copying a password ends of deleting the current entry...)
+   copying a password ends up deleting the current entry...)
 */
 
 #define ID_MENUTOOLBAR_START            32000
@@ -128,6 +128,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_OPTIONS             32154
 #define ID_MENUITEM_CUSTOMIZETOOLBAR    32155
 #define ID_MENUITEM_VALIDATE            32156
+#define ID_MENUITEM_GENERATEPASSWORD    32157
 
 // Help menu
 #define ID_HELPMENU                     32200

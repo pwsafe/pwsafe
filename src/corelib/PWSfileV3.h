@@ -59,7 +59,7 @@ private:
   CUTF8Conv m_utf8conv;
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
-    unsigned int length);
+                          unsigned int length);
 
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
     unsigned int &length);

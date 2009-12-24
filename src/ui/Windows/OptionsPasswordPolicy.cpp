@@ -11,9 +11,11 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
+#include "DboxMain.h"
 #include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
+#include "corelib/PWSprefs.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -49,8 +51,9 @@ const UINT COptionsPasswordPolicy::nonHexLengths[COptionsPasswordPolicy::N_HEX_L
 const UINT COptionsPasswordPolicy::nonHexLengthSpins[COptionsPasswordPolicy::N_HEX_LENGTHS] = {
   IDC_SPINLOWERCASE, IDC_SPINUPPERCASE, IDC_SPINDIGITS, IDC_SPINSYMBOLS};
 
-COptionsPasswordPolicy::COptionsPasswordPolicy()
-  : COptions_PropertyPage(COptionsPasswordPolicy::IDD)
+COptionsPasswordPolicy::COptionsPasswordPolicy(bool bFromOptions)
+  : COptions_PropertyPage(COptionsPasswordPolicy::IDD), m_bFromOptions(bFromOptions),
+  m_pDbx(NULL)
 {
   //{{AFX_DATA_INIT(COptionsPasswordPolicy)
   //}}AFX_DATA_INIT
@@ -90,6 +93,7 @@ BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
+  ON_BN_CLICKED(IDC_RANDOM, OnRandom)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -99,6 +103,30 @@ END_MESSAGE_MAP()
 BOOL COptionsPasswordPolicy::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  if (m_bFromOptions) {
+    GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RANDOM)->ShowWindow(SW_HIDE);
+  } else {
+    // Centre the OK button & change its text
+    RECT rc, rcOK;
+    CWnd *pOK = m_options_psh->GetDlgItem(IDOK);
+
+    m_options_psh->GetClientRect(&rc);
+    pOK->GetWindowRect(&rcOK);
+    m_options_psh->ScreenToClient(&rcOK);
+    int top = rcOK.top;
+    pOK->GetClientRect(&rcOK);
+    int left = (rc.right - rcOK.right) / 2;
+    pOK->MoveWindow(left, top, rcOK.right, rcOK.bottom);
+
+    CString cs_close(MAKEINTRESOURCE(IDS_CLOSE));
+    pOK->SetWindowText(cs_close);
+
+    // Hide the Cancel button
+    m_options_psh->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+    m_options_psh->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+  }
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
   CSpinButtonCtrl* pspinD = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
@@ -340,6 +368,9 @@ void COptionsPasswordPolicy::OnMakePronounceable()
 
 BOOL COptionsPasswordPolicy::OnKillActive()
 {
+  if (!m_bFromOptions)
+    return COptions_PropertyPage::OnKillActive();
+
   CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if (m_pwusehexdigits &&
@@ -415,4 +446,35 @@ LRESULT COptionsPasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
         return 1L;
   }
   return 0L;
+}
+
+void COptionsPasswordPolicy::OnRandom()
+{
+  UpdateData(TRUE);
+  PWPolicy pwp;
+
+  pwp.Empty();
+  if (m_pwuselowercase == TRUE)
+    pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+  if (m_pwuseuppercase == TRUE)
+    pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+  if (m_pwusedigits == TRUE)
+    pwp.flags |= PWSprefs::PWPolicyUseDigits;
+  if (m_pwusesymbols == TRUE)
+    pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+  if (m_pwusehexdigits == TRUE)
+    pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+  if (m_pweasyvision == TRUE)
+    pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+  if (m_pwmakepronounceable == TRUE)
+    pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+  pwp.length = m_pwdefaultlength;
+  pwp.digitminlength = m_pwdigitminlength;
+  pwp.lowerminlength = m_pwlowerminlength;
+  pwp.symbolminlength = m_pwsymbolminlength;
+  pwp.upperminlength = m_pwupperminlength;
+  
+  StringX passwd;
+  m_pDbx->MakeRandomPassword(passwd, pwp, true);
+  UpdateData(FALSE);
 }

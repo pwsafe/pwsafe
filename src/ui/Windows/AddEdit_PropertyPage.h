@@ -111,7 +111,7 @@ public:
   inline uuid_array_t &M_base_uuid() {return m_AEMD.base_uuid;}
   inline int &M_num_dependents() {return m_AEMD.num_dependents;}
   inline int &M_ibasedata() {return m_AEMD.ibasedata;}
-  inline enum CItemData::EntryType &M_original_entrytype() {return m_AEMD.original_entrytype;}
+  inline CItemData::EntryType &M_original_entrytype() {return m_AEMD.original_entrytype;}
 
   // Addtitional related stuff
   inline CSecString &M_autotype() {return m_AEMD.autotype;}

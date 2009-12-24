@@ -436,6 +436,8 @@ void DboxMain::OnOptions()
   brc = UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
 #endif
 
+  passwordhistory.m_pDboxMain = this;
+
   INT_PTR rc = optionsPS.DoModal();
 
   if (rc == IDOK) {
@@ -815,6 +817,7 @@ void DboxMain::OnOptions()
       iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEW);
       iter_entry->second.SetKeyFlags(iter->second);
 
+      // Find Delete Shortcut
       iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
       iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEENTRY);
       iter_entry->second.SetKeyFlags(iter->second);
@@ -825,6 +828,7 @@ void DboxMain::OnOptions()
       m_ctlItemTree.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
       m_ctlItemList.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
 
+      // Find Rename Shortcut
       iter = m_MapMenuShortcuts.find(ID_MENUITEM_RENAME);
       iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEENTRY);
       iter_entry->second.SetKeyFlags(iter->second);
@@ -874,29 +878,58 @@ void DboxMain::OnOptions()
         }
       } else
         delete pmulticmds;
-  }  // rc == IDOK
-
-  // JHF no hotkeys under WinCE
-#if !defined(POCKET_PC)
-  // Restore hotkey as it was or as user changed it - if he/she pressed OK
-  if (save_hotkey_enabled == TRUE) {
-    WORD wVirtualKeyCode = WORD(save_hotkey_value & 0xffff);
-    WORD mod = WORD(save_hotkey_value >> 16);
-    WORD wModifiers = 0;
-    // Translate between CWnd & CHotKeyCtrl modifiers
-    if (mod & HOTKEYF_ALT) 
-      wModifiers |= MOD_ALT; 
-    if (mod & HOTKEYF_CONTROL) 
-      wModifiers |= MOD_CONTROL; 
-    if (mod & HOTKEYF_SHIFT) 
-      wModifiers |= MOD_SHIFT; 
-    brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
-                         UINT(wModifiers), UINT(wVirtualKeyCode));
-    if (brc == FALSE) {
-      CGeneralMsgBox gmb;
-      gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
     }
-  }
+
+    // JHF no hotkeys under WinCE
+#if !defined(POCKET_PC)
+    // Restore hotkey as it was or as user changed it - if he/she pressed OK
+    if (save_hotkey_enabled == TRUE) {
+      WORD wVirtualKeyCode = WORD(save_hotkey_value & 0xffff);
+      WORD mod = WORD(save_hotkey_value >> 16);
+      WORD wModifiers = 0;
+      // Translate between CWnd & CHotKeyCtrl modifiers
+      if (mod & HOTKEYF_ALT) 
+        wModifiers |= MOD_ALT; 
+      if (mod & HOTKEYF_CONTROL) 
+        wModifiers |= MOD_CONTROL; 
+      if (mod & HOTKEYF_SHIFT) 
+        wModifiers |= MOD_SHIFT; 
+      brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
+                           UINT(wModifiers), UINT(wVirtualKeyCode));
+      if (brc == FALSE) {
+        CGeneralMsgBox gmb;
+        gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+      }
+    }
 #endif
+  }  // rc == IDOK
 }
+
+void DboxMain::OnGeneratePassword()
+{
+  COptions_PropertySheet GenPswdPS(IDS_OPTIONS, this);
+  COptionsPasswordPolicy pp(false);
+  pp.m_pDbx = this;
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  pp.m_pwuselowercase = prefs->GetPref(PWSprefs::PWUseLowercase);
+  pp.m_pwuseuppercase = prefs->GetPref(PWSprefs::PWUseUppercase);
+  pp.m_pwusedigits = prefs->GetPref(PWSprefs::PWUseDigits);
+  pp.m_pwusesymbols = prefs->GetPref(PWSprefs::PWUseSymbols);
+  pp.m_pwusehexdigits = prefs->GetPref(PWSprefs::PWUseHexDigits);
+  pp.m_pweasyvision = prefs->GetPref(PWSprefs::PWUseEasyVision);
+  pp.m_pwmakepronounceable = prefs->GetPref(PWSprefs::PWMakePronounceable);
+  pp.m_pwdefaultlength = prefs->GetPref(PWSprefs::PWDefaultLength);
+  pp.m_pwdigitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
+  pp.m_pwlowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
+  pp.m_pwsymbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
+  pp.m_pwupperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+
+  CString cs_caption(MAKEINTRESOURCE(IDS_GENERATEPASSWORD));
+  GenPswdPS.AddPage(&pp);
+  GenPswdPS.m_psh.dwFlags |= PSH_NOAPPLYNOW;
+  GenPswdPS.m_psh.pszCaption = cs_caption;
+
+  GenPswdPS.DoModal();
 }

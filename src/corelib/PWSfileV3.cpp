@@ -85,8 +85,17 @@ int PWSfileV3::Close()
 
   // Write or verify HMAC, depending on RWmode.
   if (m_rw == Write) {
-    fwrite(TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK), 1, m_fd);
-    fwrite(digest, sizeof(digest), 1, m_fd);
+    size_t fret;
+    fret = fwrite(TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK), 1, m_fd);
+    if (fret != 1) {
+      PWSfile::Close();
+      return FAILURE;
+    }
+    fret = fwrite(digest, sizeof(digest), 1, m_fd);
+    if (fret != 1) {
+      PWSfile::Close();
+      return FAILURE;
+    }
     return PWSfile::Close();
   } else { // Read
     // We're here *after* TERMINAL_BLOCK has been read
@@ -360,9 +369,20 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
 
 const short VersionNum = 0x0306;
 
+// Following specific for PWSfileV3::WriteHeader
+#define SAFE_FWRITE(p, sz, cnt, stream) do { \
+    size_t _ret = fwrite(p, sz, cnt, stream); \
+    if (_ret != cnt) { status = FAILURE; goto end;} \
+  } while (0)
+
 int PWSfileV3::WriteHeader()
 {
+  // Following code is divided into {} blocks to
+  // prevent "uninitialized" compile errors, as we use
+  // goto for error handling
   int status = SUCCESS;
+  size_t numWritten;
+  unsigned char salt[SaltLengthV3];
 
   // See formatV3.txt for explanation of what's written here and why
   unsigned int NumHashIters;
@@ -371,7 +391,7 @@ int PWSfileV3::WriteHeader()
   else
     NumHashIters = m_hdr.m_nITER;
 
-  fwrite(V3TAG, 1, sizeof(V3TAG), m_fd);
+  SAFE_FWRITE(V3TAG, 1, sizeof(V3TAG), m_fd);
 
   // According to the spec, salt is just random data. I don't think though,
   // that it's good practice to directly expose the generated randomness
@@ -379,62 +399,63 @@ int PWSfileV3::WriteHeader()
   // The following takes shameless advantage of the fact that
   // SaltLengthV3 == SHA256::HASHLEN
   ASSERT(SaltLengthV3 == SHA256::HASHLEN); // if false, have to recode
-  unsigned char salt[SaltLengthV3];
-  PWSrand::GetInstance()->GetRandomData(salt, sizeof(salt));
-  SHA256 salter;
-  salter.Update(salt, sizeof(salt));
-  salter.Final(salt);
-  fwrite(salt, 1, sizeof(salt), m_fd);
+  { // in a block to protect against goto
+    PWSrand::GetInstance()->GetRandomData(salt, sizeof(salt));
+    SHA256 salter;
+    salter.Update(salt, sizeof(salt));
+    salter.Final(salt);
+    SAFE_FWRITE(salt, 1, sizeof(salt), m_fd);
+  }
 
   unsigned char Nb[sizeof(NumHashIters)];
-
   putInt32(Nb, NumHashIters);
-  fwrite(Nb, 1, sizeof(Nb), m_fd);
+  SAFE_FWRITE(Nb, 1, sizeof(Nb), m_fd);
 
   unsigned char Ptag[SHA256::HASHLEN];
 
   StretchKey(salt, sizeof(salt), m_passkey, NumHashIters, Ptag);
 
-  unsigned char HPtag[SHA256::HASHLEN];
-  SHA256 H;
-  H.Update(Ptag, sizeof(Ptag));
-  H.Final(HPtag);
-  fwrite(HPtag, 1, sizeof(HPtag), m_fd);
-
-  PWSrand::GetInstance()->GetRandomData(m_key, sizeof(m_key));
-  unsigned char B1B2[sizeof(m_key)];
-  ASSERT(sizeof(B1B2) == 32); // Generalize later
-  TwoFish TF(Ptag, sizeof(Ptag));
-  TF.Encrypt(m_key, B1B2);
-  TF.Encrypt(m_key + 16, B1B2 + 16);
-  fwrite(B1B2, 1, sizeof(B1B2), m_fd);
-
-  unsigned char L[32]; // for HMAC
-  PWSrand::GetInstance()->GetRandomData(L, sizeof(L));
-  unsigned char B3B4[sizeof(L)];
-  ASSERT(sizeof(B3B4) == 32); // Generalize later
-  TF.Encrypt(L, B3B4);
-  TF.Encrypt(L + 16, B3B4 + 16);
-  fwrite(B3B4, 1, sizeof(B3B4), m_fd);
-
-  m_hmac.Init(L, sizeof(L));
-
-  // See discussion on Salt to understand why we hash
-  // random data instead of writing it directly
-  unsigned char ip_rand[SHA256::HASHLEN];
-  PWSrand::GetInstance()->GetRandomData(ip_rand, sizeof(ip_rand));
-  SHA256 ipHash;
-  ipHash.Update(ip_rand, sizeof(ip_rand));
-  ipHash.Final(ip_rand);
-  ASSERT(sizeof(ip_rand) >= sizeof(m_ipthing)); // compilation assumption
-  memcpy(m_ipthing, ip_rand, sizeof(m_ipthing));
-
-  fwrite(m_ipthing, 1, sizeof(m_ipthing), m_fd);
+  { 
+    unsigned char HPtag[SHA256::HASHLEN];
+    SHA256 H;
+    H.Update(Ptag, sizeof(Ptag));
+    H.Final(HPtag);
+    SAFE_FWRITE(HPtag, 1, sizeof(HPtag), m_fd);
+  }
+  { 
+    PWSrand::GetInstance()->GetRandomData(m_key, sizeof(m_key));
+    unsigned char B1B2[sizeof(m_key)];
+    unsigned char L[32]; // for HMAC
+    ASSERT(sizeof(B1B2) == 32); // Generalize later
+    TwoFish TF(Ptag, sizeof(Ptag));
+    TF.Encrypt(m_key, B1B2);
+    TF.Encrypt(m_key + 16, B1B2 + 16);
+    SAFE_FWRITE(B1B2, 1, sizeof(B1B2), m_fd);
+    PWSrand::GetInstance()->GetRandomData(L, sizeof(L));
+    unsigned char B3B4[sizeof(L)];
+    ASSERT(sizeof(B3B4) == 32); // Generalize later
+    TF.Encrypt(L, B3B4);
+    TF.Encrypt(L + 16, B3B4 + 16);
+    SAFE_FWRITE(B3B4, 1, sizeof(B3B4), m_fd);
+    m_hmac.Init(L, sizeof(L));
+  }
+  { 
+    // See discussion on Salt to understand why we hash
+    // random data instead of writing it directly
+    unsigned char ip_rand[SHA256::HASHLEN];
+    PWSrand::GetInstance()->GetRandomData(ip_rand, sizeof(ip_rand));
+    SHA256 ipHash;
+    ipHash.Update(ip_rand, sizeof(ip_rand));
+    ipHash.Final(ip_rand);
+    ASSERT(sizeof(ip_rand) >= sizeof(m_ipthing)); // compilation assumption
+    memcpy(m_ipthing, ip_rand, sizeof(m_ipthing));
+  }
+  SAFE_FWRITE(m_ipthing, 1, sizeof(m_ipthing), m_fd);
 
   m_fish = new TwoFish(m_key, sizeof(m_key));
 
   // write some actual data (at last!)
-  size_t numWritten = 0;
+  numWritten = 0;
   // Write version number
   unsigned char vnb[sizeof(VersionNum)];
   vnb[0] = (unsigned char) (VersionNum & 0xff);
@@ -451,13 +472,13 @@ int PWSfileV3::WriteHeader()
   memset(file_uuid_array, 0x00, sizeof(file_uuid_array));
   // If not there or zeroed, create new
   if (memcmp(m_hdr.m_file_uuid_array,
-    file_uuid_array, sizeof(file_uuid_array)) == 0) {
-      CUUIDGen uuid;
-      uuid.GetUUID(m_hdr.m_file_uuid_array);
+             file_uuid_array, sizeof(file_uuid_array)) == 0) {
+    CUUIDGen uuid;
+    uuid.GetUUID(m_hdr.m_file_uuid_array);
   }
 
   numWritten = WriteCBC(HDR_UUID, m_hdr.m_file_uuid_array,
-    sizeof(m_hdr.m_file_uuid_array));
+                        sizeof(m_hdr.m_file_uuid_array));
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
   // Write (non default) user preferences
@@ -469,7 +490,7 @@ int PWSfileV3::WriteHeader()
     StringX ds(_T(""));
     vector<bool>::const_iterator iter;
     for (iter = m_hdr.m_displaystatus.begin();
-      iter != m_hdr.m_displaystatus.end(); iter++)
+         iter != m_hdr.m_displaystatus.end(); iter++)
       ds += (*iter) ? _T("1") : _T("0");
     numWritten = WriteCBC(HDR_DISPSTAT, ds);
     if (numWritten <= 0) { status = FAILURE; goto end; }
@@ -478,13 +499,8 @@ int PWSfileV3::WriteHeader()
   // Write out time of this update
   time_t time_now;
   time(&time_now);
-#if 0  // BUGBUGBUG
-  stringT cs_update_time;
-  cs_update_time.Format(_T("%08x"), time_now);
-  numWritten = WriteCBC(HDR_LASTUPDATETIME, cs_update_time);
-#endif
   numWritten = WriteCBC(HDR_LASTUPDATETIME,
-    (unsigned char *)&time_now, sizeof(time_now));
+                        (unsigned char *)&time_now, sizeof(time_now));
   if (numWritten <= 0) { status = FAILURE; goto end; }
   m_hdr.m_whenlastsaved = time_now;
 
@@ -526,18 +542,18 @@ int PWSfileV3::WriteHeader()
   if (!m_UHFL.empty()) {
     UnknownFieldList::iterator vi_IterUHFE;
     for (vi_IterUHFE = m_UHFL.begin();
-      vi_IterUHFE != m_UHFL.end();
-      vi_IterUHFE++) {
-        UnknownFieldEntry &unkhfe = *vi_IterUHFE;
-        numWritten = WriteCBC(unkhfe.uc_Type,
-          unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
-        if (numWritten <= 0) { status = FAILURE; goto end; }
+         vi_IterUHFE != m_UHFL.end();
+         vi_IterUHFE++) {
+      UnknownFieldEntry &unkhfe = *vi_IterUHFE;
+      numWritten = WriteCBC(unkhfe.uc_Type,
+                            unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
+      if (numWritten <= 0) { status = FAILURE; goto end; }
     }
   }
 
   // Write zero-length end-of-record type item
   WriteCBC(HDR_END, NULL, 0);
-end:
+ end:
   if (status != SUCCESS)
     Close();
   return status;

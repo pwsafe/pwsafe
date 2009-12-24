@@ -211,6 +211,7 @@
 #define IDSC_IMPORTKNOWNHDRS2           3375
 #define IDSC_IMPORT_ON_LINE             3376
 #define IDSC_IMPORT_ENTRY_ID            3377
+#define IDSC_FILEWRITEERROR             3378
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
