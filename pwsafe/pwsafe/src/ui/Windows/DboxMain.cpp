@@ -403,6 +403,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
   ON_COMMAND(ID_MENUITEM_RESTORESAFE, OnRestoreSafe)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
+  ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
 
   // Help Menu
   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
@@ -606,6 +607,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_VALIDATE, true, false, false, true},
+  {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
   {ID_MENUITEM_ABOUT, true, true, true, true},

@@ -21,7 +21,7 @@ public:
   CAboutDlg(CWnd* pParent = NULL);
 
   // Dialog Data
-  //{{AFX_DATA(CAddDlg)
+  //{{AFX_DATA(CAboutDlg)
   enum { IDD = IDD_ABOUTBOX };
   //}}AFX_DATA
 

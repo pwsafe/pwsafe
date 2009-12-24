@@ -21,7 +21,8 @@ on an entry and allow new group to remain unchanged.
 
 New Features for 3.20.1
 =======================
-
+[2919319] Now able to use PasswordSafe to generator passwords as per user defined
+policy from the Manage menu.
 
 Changes to Existing Features in 3.20.1
 ======================================

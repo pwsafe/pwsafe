@@ -431,6 +431,7 @@ void DboxMain::SetUpInitialMenuStrings()
   ASSERT(iter_entry != m_MapMenuShortcuts.end());
   iter_entry->second.SetKeyFlags(iter->second);
 
+  // Find Delete Shortcut
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
   ASSERT(iter != m_MapMenuShortcuts.end());
   iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEENTRY);
@@ -444,6 +445,7 @@ void DboxMain::SetUpInitialMenuStrings()
   m_ctlItemTree.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
   m_ctlItemList.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
 
+  // Find Rename Shortcut
   iter = m_MapMenuShortcuts.find(ID_MENUITEM_RENAME);
   ASSERT(iter != m_MapMenuShortcuts.end());
   iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEENTRY);

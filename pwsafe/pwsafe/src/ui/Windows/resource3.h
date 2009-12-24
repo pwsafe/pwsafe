@@ -567,3 +567,6 @@
 #define IDS_NONSAVEDCHANGES             5740
 #define IDS_RECORDSUPDATED              5741
 #define IDS_FILEWRITEFAILURE            5742
+#define IDS_GENERATEPASSWORD            5743
+#define IDS_PASSWORDGENERATED1          5744
+#define IDS_PASSWORDGENERATED2          5745
