@@ -1210,10 +1210,9 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
       }
 
       if (iter != m_pwlist.end()) {
-        const CItemData::EntryType type2 = iter->second.GetEntryType();
         if (type == CItemData::ET_SHORTCUT) {
           // Adding shortcuts -> Base must be normal or already a shortcut base
-          if (type2 != CItemData::ET_NORMAL && type2 != CItemData::ET_SHORTCUTBASE) {
+          if (!iter->second.IsNormal() && !iter->second.IsShortcutBase()) {
             // Bad news!
             if (rpt != NULL) {
               if (!bwarnings) {
@@ -1235,7 +1234,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         }
         if (type == CItemData::ET_ALIAS) {
           // Adding Aliases -> Base must be normal or already a alias base
-          if (type2 != CItemData::ET_NORMAL && type2 != CItemData::ET_ALIASBASE) {
+          if (!iter->second.IsNormal() && !iter->second.IsAliasBase()) {
             // Bad news!
             if (rpt != NULL) {
               if (!bwarnings) {
@@ -1254,7 +1253,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             RemoveEntryAt(m_pwlist.find(entry_uuid));
             continue;
           }
-          if (type2 == CItemData::ET_ALIAS) {
+          if (iter->second.IsAlias()) {
             // This is an alias too!  Not allowed!  Make new one point to original base
             // Note: this may be random as who knows the order of reading records?
             uuid_array_t temp_uuid;

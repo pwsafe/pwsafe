@@ -307,7 +307,7 @@ private:
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
 
-  enum EntryType m_entrytype;
+  EntryType m_entrytype;
   EntryStatus m_entrystatus;
 
   // random key for storing stuff in memory, just to remove dependence

@@ -47,7 +47,7 @@ public:
   void SetNumDependents(int &num_dependents) {m_AEMD.num_dependents = num_dependents;}
   void SetDependents(StringX dependents) {m_AEMD.dependents = CSecString(dependents);}
 
-  enum CItemData::EntryType &GetOriginalEntrytype() {return m_AEMD.original_entrytype;}
+  CItemData::EntryType &GetOriginalEntrytype() {return m_AEMD.original_entrytype;}
   void SetOriginalEntrytype(enum CItemData::EntryType original_entrytype)
   {m_AEMD.original_entrytype = original_entrytype;}
 
