@@ -1,5 +1,5 @@
 /* XPM */
-static char *normal_warn_xpm[] = {
+static const char *normal_warn_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "9 9 20 1",
 "  c Black",
