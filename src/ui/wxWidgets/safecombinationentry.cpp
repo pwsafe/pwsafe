@@ -293,8 +293,8 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       err.ShowModal();
       return;
     }
-    if (m_core.CheckPassword(m_filename.c_str(),
-                             m_password.c_str()) != PWScore::SUCCESS) {
+    if (m_core.CheckPasskey(m_filename.c_str(),
+                            m_password.c_str()) != PWScore::SUCCESS) {
       wxString errmess;
       if (m_tries >= 2) {
         errmess = _("Three strikes - yer out!");

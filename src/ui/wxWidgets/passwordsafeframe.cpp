@@ -808,7 +808,7 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& event )
   CSafeCombinationChange* window = new CSafeCombinationChange(this, m_core);
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
-    m_core.ChangePassword(window->GetNewpasswd().c_str());
+    m_core.ChangePasskey(window->GetNewpasswd().c_str());
   }
   window->Destroy();
 }

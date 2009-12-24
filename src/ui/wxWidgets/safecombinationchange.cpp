@@ -216,7 +216,7 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& event )
 {
   if (Validate() && TransferDataFromWindow()) {
     StringX errmess;
-    int rc = m_core.CheckPassword(m_core.GetCurFile(), m_oldpasswd.c_str());
+    int rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldpasswd.c_str());
     if (rc == PWScore::WRONG_PASSWORD) {
       wxMessageDialog err(this, _("The old safe combination is not correct"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
