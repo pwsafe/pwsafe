@@ -2161,7 +2161,7 @@ bool DboxMain::DecrementAndTestIdleLockCounter()
 LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
 {
   // Handle Lock/Unlock, Fast User Switching and Remote access.
-  // Won't be called if the registeration failed (i.e. < Windows XP
+  // Won't be called if the registration failed (i.e. < Windows XP
   // or the "Windows Terminal Server" service wasn't active at startup.
   TRACE(L"OnSessionChange. wParam = %d\n", wParam);
   switch (wParam) {
@@ -2171,7 +2171,7 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
       m_bWSLocked = true;
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockOnWindowLock) &&
           LockDataBase())
-        ShowWindow(SW_MINIMIZE);
+        ShowWindow(SW_HIDE);
       break;
     case WTS_CONSOLE_CONNECT:
     case WTS_REMOTE_CONNECT:
