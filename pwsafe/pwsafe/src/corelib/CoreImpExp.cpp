@@ -819,7 +819,7 @@ static void ReportInvalidField(CReport &rpt, const string &value, int numlines)
   StringX vx;
   conv.FromUTF8((const unsigned char *)value.c_str(), value.length(), vx);
   stringT csError;
-  Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, vx);
+  Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, vx.c_str());
   rpt.WriteLine(csError);
 }
 
