@@ -1,0 +1,20 @@
+/* XPM */
+static char *normal_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"9 9 5 1",
+"  c Black",
+". c #009800",
+"o c #00C500",
+"O c #00FF00",
+"X c #00C400",
+/* pixels */
+"         ",
+" .XXXXXX.",
+" oOOOOOOo",
+" oOOOOOOo",
+" oOOOOOOo",
+" oOOOOOOo",
+" oOOOOOOo",
+" oOOOOOOo",
+" .XXXXXX."
+};
