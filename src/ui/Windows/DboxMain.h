@@ -322,12 +322,6 @@ public:
   GUICommand * CreateGUICommand(WinGUICmdIF *pGUICmdIF, PWScore *pcore = NULL);
   MultiCommands * CreateMultiCommands(PWScore *pcore = NULL);
   void ExecuteMultiCommands(MultiCommands *pmulticmds);
-  void UpdateField(MultiCommands *pmulticmds, CItemData &ci, CItemData::FieldType ftype, StringX value);
-  void AddEntry(MultiCommands *pmulticmds, CItemData &ci);
-  void AddDependentEntry(MultiCommands *pmulticmds, 
-                         const uuid_array_t &base_uuid, 
-                         const uuid_array_t &entry_uuid,
-                         const CItemData::EntryType type);
   void UpdateToolBarDoUndo();
 
   //{{AFX_DATA(DboxMain)

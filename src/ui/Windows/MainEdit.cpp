@@ -110,7 +110,7 @@ void DboxMain::OnAdd()
     // Add the entry
     ci.SetStatus(CItemData::ES_ADDED);
     MultiCommands *pmulticmds = new MultiCommands(&m_core);
-    AddEntry(pmulticmds, ci);
+    pmulticmds->AddEntry(ci);
 
     if (add_entry_psh.GetIBasedata() > 0) {
       uuid_array_t alias_uuid, base_uuid;

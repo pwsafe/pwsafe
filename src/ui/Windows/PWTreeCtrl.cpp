@@ -463,7 +463,7 @@ void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, C
   if (IsLeaf(hItem)) {
     CItemData *pci = (CItemData *)GetItemData(hItem);
     ASSERT(pci != NULL);
-    m_pDbx->UpdateField(pmulticmds, *pci, CItemData::GROUP, (LPCWSTR)prefix);
+    pmulticmds->UpdateField(*pci, CItemData::GROUP, (LPCWSTR)prefix);
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
       prefix += GROUP_SEP;
@@ -758,14 +758,14 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       // update the password database record - but only those items visible!!!
       MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
       if (newTitle != pci->GetTitle()) {
-        m_pDbx->UpdateField(pmulticmds, *pci, CItemData::TITLE, newTitle);
+        pmulticmds->UpdateField(*pci, CItemData::TITLE, newTitle);
         m_pDbx->UpdateListItemTitle(lindex, newTitle);
       }
       if (bShowUsernameInTree && newUser != pci->GetUser()) {
-        m_pDbx->UpdateField(pmulticmds, *pci, CItemData::USER, newUser);
+        pmulticmds->UpdateField(*pci, CItemData::USER, newUser);
         m_pDbx->UpdateListItemUser(lindex, newUser);
         if (bShowPasswordInTree && newPassword != pci->GetPassword()) {
-          m_pDbx->UpdateField(pmulticmds, *pci, CItemData::PASSWORD, newPassword);
+          pmulticmds->UpdateField(*pci, CItemData::PASSWORD, newPassword);
           m_pDbx->UpdateListItemPassword(lindex, newPassword);
         }
       }
@@ -1007,11 +1007,11 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
     CSecString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Update list field with new group
-    m_pDbx->UpdateField(pmulticmds, *pci, CItemData::GROUP, path);
+    pmulticmds->UpdateField(*pci, CItemData::GROUP, path);
     m_pDbx->UpdateListItemGroup(pdi->list_index, (LPCWSTR)path);
 
     if (ci_title.Compare(ci_title0) != 0) {
-      m_pDbx->UpdateField(pmulticmds, *pci, CItemData::TITLE, ci_title);
+      pmulticmds->UpdateField(*pci, CItemData::TITLE, ci_title);
     }
     // Update tree label
     SetItemText(hNewItem, MakeTreeDisplayString(*pci));
@@ -1118,19 +1118,21 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
       case CItemData::ET_ALIAS:
         // Get base of original alias and make this copy point to it
         m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
-        m_pDbx->AddDependentEntry(pmulticmds, base_uuid, temp_uuid, CItemData::ET_ALIAS);
+        pmulticmds->AddDependentEntry(base_uuid, temp_uuid,
+                                      CItemData::ET_ALIAS);
         temp.SetPassword(CSecString(L"[Alias]"));
         break;
       case CItemData::ET_SHORTCUT:
         // Get base of original shortcut and make this copy point to it
         m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
-        m_pDbx->AddDependentEntry(pmulticmds, base_uuid, temp_uuid, CItemData::ET_SHORTCUT);
+        pmulticmds->AddDependentEntry(base_uuid, temp_uuid,
+                                      CItemData::ET_SHORTCUT);
         temp.SetPassword(CSecString(L"[Shortcut]"));
         break;
       default:
         ASSERT(0);
     }
-    m_pDbx->AddEntry(pmulticmds, temp);
+    pmulticmds->AddEntry(temp);
     m_pDbx->ExecuteMultiCommands(pmulticmds);
 
     // Mark database as modified!

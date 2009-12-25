@@ -3221,39 +3221,11 @@ MultiCommands * DboxMain::CreateMultiCommands(PWScore *pcore)
 {
   if (pcore == NULL)
     pcore = &m_core;
-
-  MultiCommands *pmulticmds = new MultiCommands(pcore);
-  return pmulticmds;
+  return new MultiCommands(pcore);
 }
 
 void DboxMain::ExecuteMultiCommands(MultiCommands *pmulticmds)
 {
   PWScore *pcore = pmulticmds->GetCore();
   Execute(pmulticmds, pcore);
-}
-
-void DboxMain::UpdateField(MultiCommands *pmulticmds,
-                           CItemData &ci, CItemData::FieldType ftype,
-                           StringX value)
-{
-  PWScore *pcore = pmulticmds->GetCore();
-  Command *pcmd = new UpdateEntryCommand(pcore, ci, ftype, value);
-  pmulticmds->Add(pcmd);
-}
-
-void DboxMain::AddEntry(MultiCommands *pmulticmds, CItemData &ci)
-{
-  PWScore *pcore = pmulticmds->GetCore();
-  Command *pcmd = new AddEntryCommand(pcore, ci);
-  pmulticmds->Add(pcmd);
-}
-
-void DboxMain::AddDependentEntry(MultiCommands *pmulticmds, 
-                                 const uuid_array_t &base_uuid, 
-                                 const uuid_array_t &entry_uuid,
-                                 const CItemData::EntryType type)
-{
-  PWScore *pcore = pmulticmds->GetCore();
-  Command *pcmd = new AddDependentEntryCommand(pcore, base_uuid, entry_uuid, type);
-  pmulticmds->Add(pcmd);
 }

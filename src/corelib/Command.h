@@ -167,6 +167,11 @@ public:
   {return m_pcore;}
   std::size_t GetSize()
   {return m_pcmds == NULL ? (std::size_t)(-1) : m_pcmds->size();}
+  void UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value);
+  void AddEntry(CItemData &ci);
+  void AddDependentEntry(const uuid_array_t &base_uuid, 
+                         const uuid_array_t &entry_uuid,
+                         const CItemData::EntryType type);
 
 private:
   std::vector<Command *> *m_pcmds;

@@ -1054,3 +1054,23 @@ void UpdatePasswordHistoryCommand::Undo()
   RestoreState();
   m_bState = false;
 }
+
+void MultiCommands::AddEntry(CItemData &ci)
+{
+  Add(new AddEntryCommand(GetCore(), ci));
+}
+
+void MultiCommands::AddDependentEntry(const uuid_array_t &base_uuid, 
+                                      const uuid_array_t &entry_uuid,
+                                      const CItemData::EntryType type)
+{
+  Add(new AddDependentEntryCommand(GetCore(),
+                                   base_uuid, entry_uuid, type));
+}
+
+void MultiCommands::UpdateField(CItemData &ci, CItemData::FieldType ftype,
+                                StringX value)
+{
+  Add(new UpdateEntryCommand(GetCore(), ci, ftype, value));
+}
+
