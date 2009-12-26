@@ -3223,9 +3223,3 @@ MultiCommands * DboxMain::CreateMultiCommands(PWScore *pcore)
     pcore = &m_core;
   return new MultiCommands(pcore);
 }
-
-void DboxMain::ExecuteMultiCommands(MultiCommands *pmulticmds)
-{
-  PWScore *pcore = pmulticmds->GetCore();
-  Execute(pmulticmds, pcore);
-}

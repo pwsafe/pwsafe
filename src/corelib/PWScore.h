@@ -20,6 +20,7 @@
 #include "Report.h"
 #include "Proxy.h"
 #include "Command.h"
+#include "CommandInterface.h"
 
 #include "coredefs.h"
 
@@ -38,14 +39,8 @@ struct GetBaseEntryPL {
   bool bMultipleEntriesFound;
 };
 
-class PWScore
+class PWScore : public CommandInterface
 {
-  // Only class Command member functions can update the database.
-  // Even within PWScore, changes should be via the Command class.
-  // All public PWScore members only return information or entries
-  // in PWScore structures
-  friend class Command;
-
 public:
   enum {
     SUCCESS = 0,
@@ -242,16 +237,16 @@ public:
   {m_bDBChanged = bDBChanged; 
    m_bDBPrefsChanged = bDBprefschanged;
    NotifyDBModified();}
-  void SetDBChanged(const bool bDBChanged)
+  void SetDBChanged(bool bDBChanged, bool bNotify = true)
   {m_bDBChanged = bDBChanged;
-   NotifyDBModified();}
-  void SetDBPrefsChanged(const bool bDBprefschanged)
+    if (bNotify) NotifyDBModified();}
+  void SetDBPrefsChanged(bool bDBprefschanged)
   {m_bDBPrefsChanged = bDBprefschanged;
    NotifyDBModified();}
 
   bool IsChanged() const {return m_bDBChanged;}
   bool HaveDBPrefsChanged() const {return m_bDBPrefsChanged;}
-  bool HaveHeaderPreferencesChanged(const StringX prefString)
+  bool HaveHeaderPreferencesChanged(const StringX &prefString)
   {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
   // (Un)Register callback to be notified if the database changes
@@ -267,8 +262,6 @@ public:
   bool RegisterGUINotify(void (*pfcn) (LPARAM , const Command::GUI_Action &,
                                        uuid_array_t &, LPARAM ), LPARAM);
   void UnRegisterGUINotify();
-  void NotifyGUINeedsUpdating(const Command::GUI_Action &, uuid_array_t &,
-                              LPARAM lparam = NULL);
 
   // (Un)Register callback to let GUI populate its field in an entry
   bool RegisterGUIUpdateEntry(void (*pfcn) (CItemData &));
@@ -279,7 +272,6 @@ public:
   bool RegisterGUICommandInterface(void (*pfcn) (LPARAM, const Command::ExecuteFn &,
                                    PWSGUICmdIF *), LPARAM instance);
   void UnRegisterGUICommandInterface();
-  void CallGUICommandInterface(const Command::ExecuteFn &, PWSGUICmdIF *);
 
   // Get/Set Display information from/to database
   void SetDisplayStatus(const std::vector<bool> &s);
@@ -298,7 +290,6 @@ public:
   // Changed nodes
   void ClearChangedNodes()
   {m_vnodes_modified.clear();}
-  void AddChangedNodes(StringX path);
   bool IsNodeModified(StringX &path)
   {return std::find(m_vnodes_modified.begin(), m_vnodes_modified.end(), path) != 
                     m_vnodes_modified.end();}
@@ -309,41 +300,44 @@ public:
 private:
   // Database update routines
 
-  // NOTE: Member functions startig with 'Do' or 'Undo' are meant to
-  // be executed via the Command process ONLY
-  void DoAddEntry(const CItemData &item);
-  void DoDeleteEntry(const CItemData &item);
+  // NOTE: Member functions starting with 'Do' or 'Undo' are meant to
+  // be executed ONLY via Command subclasses. These are implementations of
+  // the CommandInterface mixin, where they're declared public.
+  virtual void DoAddEntry(const CItemData &item);
+  virtual void DoDeleteEntry(const CItemData &item);
 
   // General routines for aliases and shortcuts
-  void DoAddDependentEntry(const uuid_array_t &base_uuid,
-                           const uuid_array_t &entry_uuid,
-                           const CItemData::EntryType type);
-  void DoRemoveDependentEntry(const uuid_array_t &base_uuid,
-                              const uuid_array_t &entry_uuid, 
-                              const CItemData::EntryType type);
-  void DoRemoveAllDependentEntries(const uuid_array_t &base_uuid, 
+  virtual void DoAddDependentEntry(const uuid_array_t &base_uuid,
+                                   const uuid_array_t &entry_uuid,
                                    const CItemData::EntryType type);
-  int DoAddDependentEntries(UUIDList &dependentslist, CReport *rpt, 
-                            const CItemData::EntryType type, 
-                            const int &iVia,
-                            ItemList *pmapDeletedItems = NULL,
-                            SaveTypePWMap *pmapSaveTypePW = NULL);
-  void UndoAddDependentEntries(ItemList *pmapDeletedItems,
-                               SaveTypePWMap *pmapSaveTypePW);
-  void DoMoveDependentEntries(const uuid_array_t &from_baseuuid, 
-                              const uuid_array_t &to_baseuuid, 
-                              const CItemData::EntryType type);
+  virtual void DoRemoveDependentEntry(const uuid_array_t &base_uuid,
+                                      const uuid_array_t &entry_uuid, 
+                                      const CItemData::EntryType type);
+  virtual void DoRemoveAllDependentEntries(const uuid_array_t &base_uuid, 
+                                           const CItemData::EntryType type);
+  virtual int DoAddDependentEntries(UUIDList &dependentslist, CReport *rpt, 
+                                    const CItemData::EntryType type, 
+                                    const int &iVia,
+                                    ItemList *pmapDeletedItems = NULL,
+                                    SaveTypePWMap *pmapSaveTypePW = NULL);
+  virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
+                                       SaveTypePWMap *pmapSaveTypePW);
+  virtual void DoMoveDependentEntries(const uuid_array_t &from_baseuuid, 
+                                      const uuid_array_t &to_baseuuid, 
+                                      const CItemData::EntryType type);
 
   // Actions for Aliases only
-  void DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                std::vector<CUUIDGen> &vSavedAliases);
-  void UndoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                  std::vector<CUUIDGen> &vSavedAliases);
+  virtual void DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
+                                        std::vector<CUUIDGen> &vSavedAliases);
+  virtual void UndoResetAllAliasPasswords(const uuid_array_t &base_uuid,
+                                          std::vector<CUUIDGen> &vSavedAliases);
 
-  int DoUpdatePasswordHistory(int iAction, int new_default_max,
-                              SavePWHistoryMap &mapSavedHistory);
-  void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
+  virtual int DoUpdatePasswordHistory(int iAction, int new_default_max,
+                                      SavePWHistoryMap &mapSavedHistory);
+  virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
 
+  // End of Command Interface implementations
+  
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, int len,
@@ -390,9 +384,25 @@ private:
   //  Key = alias/shortcut uuid; Value = base uuid
   ItemMap m_alias2base_map;
   ItemMap m_shortcut2base_map;
+  // Following are private in PWScore, public in CommandInterface:
+  const ItemMMap &GetBase2AliasesMmap() const {return m_base2aliases_mmap;}
+  void SetBase2AliasesMmap(ItemMMap &b2amm) {m_base2aliases_mmap = b2amm;}
+  const ItemMMap &GetBase2ShortcutsMmap() const {return m_base2shortcuts_mmap;}
+  void SetBase2ShortcutsMmap(ItemMMap &b2smm) {m_base2shortcuts_mmap = b2smm;}
+  const ItemMap &GetAlias2BaseMap() const {return m_alias2base_map;}
+  void SetAlias2BaseMap(const ItemMap &a2bm) {m_alias2base_map = a2bm;}
+  const ItemMap &GetShortcuts2BaseMap() const {return m_shortcut2base_map;}
+  void SetShortcuts2BaseMap(const ItemMap &s2bm) {m_shortcut2base_map = s2bm;}
 
+  
   // Changed groups
   std::vector<StringX> m_vnodes_modified;
+  // Following are private in PWScore, public in CommandInterface:
+  virtual const std::vector<StringX> &GetVnodesModified() const
+  {return m_vnodes_modified;}
+  virtual void SetVnodesModified(const std::vector<StringX> &mvm)
+  {m_vnodes_modified = mvm;}
+  void AddChangedNodes(StringX path);
   
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
@@ -401,6 +411,10 @@ private:
   void (*m_pfcnNotifyDBModified) (LPARAM, bool);
   LPARAM m_NotifyDBInstance;
   bool m_bNotifyDB;
+
+  void NotifyGUINeedsUpdating(const Command::GUI_Action &, uuid_array_t &,
+                              LPARAM lparam = NULL);
+  void CallGUICommandInterface(const Command::ExecuteFn &, PWSGUICmdIF *);
 
   // Create header for included(Text) and excluded(XML) exports
   StringX BuildHeader(const CItemData::FieldBits &bsFields, const bool bIncluded);

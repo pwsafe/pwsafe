@@ -11,6 +11,8 @@
 #include <map>
 #include <vector>
 
+#include "ItemData.h"
+
 struct st_SaveTypePW {
   CItemData::EntryType et;
   StringX sxpw;

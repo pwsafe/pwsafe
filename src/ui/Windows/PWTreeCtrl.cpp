@@ -769,7 +769,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
           m_pDbx->UpdateListItemPassword(lindex, newPassword);
         }
       }
-      m_pDbx->ExecuteMultiCommands(pmulticmds);
+      m_pDbx->Execute(pmulticmds);
     } else { // !IsLeaf
       // PR2407325: If the user edits a group name so that it has
       // a GROUP_SEP, all hell breaks loose.
@@ -806,7 +806,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
         m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
         MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
         UpdateLeafsGroup(pmulticmds, ti, prefix);
-        m_pDbx->ExecuteMultiCommands(pmulticmds);
+        m_pDbx->Execute(pmulticmds);
       } // good group name (no GROUP_SEP)
     } // !IsLeaf
     // Mark database as modified
@@ -1133,7 +1133,7 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         ASSERT(0);
     }
     pmulticmds->AddEntry(temp);
-    m_pDbx->ExecuteMultiCommands(pmulticmds);
+    m_pDbx->Execute(pmulticmds);
 
     // Mark database as modified!
     m_pDbx->SetChanged(DboxMain::Data);
@@ -1314,7 +1314,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
       if (dropEffect == DROPEFFECT_MOVE) {
         MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
         MoveItem(pmulticmds, m_hitemDrag, hitemDrop);
-        m_pDbx->ExecuteMultiCommands(pmulticmds);
+        m_pDbx->Execute(pmulticmds);
       } else
       if (dropEffect == DROPEFFECT_COPY) {
         CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
@@ -1407,7 +1407,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
     } else
       delete pGUICmdIF;
 
-    m_pDbx->ExecuteMultiCommands(pmulticmds);
+    m_pDbx->Execute(pmulticmds);
   }
 
   // wrong place to clean up imagelist?

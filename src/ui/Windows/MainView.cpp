@@ -3975,6 +3975,7 @@ void DboxMain::RemoveFromGUI(CItemData &ci, LPARAM lparam)
 {
   // RemoveFromGUI should always occur BEFORE the entry is deleted!
   uuid_array_t entry_uuid;
+  ci.GetUUID(entry_uuid);
   ItemListIter iter = m_core.Find(entry_uuid);
   if (iter == End()) {
     ASSERT(0);

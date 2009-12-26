@@ -321,7 +321,7 @@ public:
 
   GUICommand * CreateGUICommand(WinGUICmdIF *pGUICmdIF, PWScore *pcore = NULL);
   MultiCommands * CreateMultiCommands(PWScore *pcore = NULL);
-  void ExecuteMultiCommands(MultiCommands *pmulticmds);
+  void Execute(Command *c, PWScore *pcore = NULL);
   void UpdateToolBarDoUndo();
 
   //{{AFX_DATA(DboxMain)
@@ -502,7 +502,6 @@ protected:
   bool PassesPWHFiltering(CItemData *pci, const st_filters &filters);
   bool PassesPWPFiltering(CItemData *pci, const st_filters &filters);
 
-  void Execute(Command *c, PWScore *pcore = NULL);
   void SaveGUIStatus();
   void RestoreGUIStatus();
 

@@ -12,7 +12,7 @@
 #define __COMMAND_H
 
 class CReport;
-class PWScore;
+class CommandInterface;
 
 #include "ItemData.h"
 #include "StringX.h"
@@ -30,14 +30,14 @@ class PWScore;
 class Command
 {
 public:
-  Command(PWScore *pcore);
+  Command(CommandInterface *pcomInt);
   virtual ~Command();
   virtual int Execute() = 0;
   virtual int Redo() = 0;
   virtual void Undo() = 0;
 
   void SetNoGUINotify() {m_bNotifyGUI = false;}
-  void ResetSavedState(const bool bNewDBState) {m_bSaveDBChanged = bNewDBState;}
+  void ResetSavedState(bool bNewDBState) {m_bSaveDBChanged = bNewDBState;}
 
   enum ExecuteFn {
     WN_INVALID = -1,
@@ -74,58 +74,8 @@ protected:
   void SaveDependentsState(const Command::DependentsType itype);
   void RestoreDependentsState(const Command::DependentsType itype);
 
-  void DoUpdateGUI(const Command::GUI_Action ga);
-  void DoGUICmd(const Command::ExecuteFn &When, PWSGUICmdIF *pGUICmdIF);
-
-  void DoUpdateDBPrefs(const StringX &sxNewDBPrefs);
-  void UndoUpdateDBPrefs(const StringX &sxOldDBPrefs, const bool m_bOldState);
- 
-  void DoAddEntry(CItemData &ci);
-  void DoDeleteEntry(CItemData &ci);
-  void DoEditEntry(CItemData &old_ci, CItemData &new_ci);
-  void UndoEditEntry(CItemData &old_ci, CItemData &new_ci);
-
-  void DoUpdateEntry(const uuid_array_t &entry_uuid,
-                     const CItemData::FieldType &ftype,
-                     const StringX &value,
-                     const CItemData::EntryStatus es);
-
-  void DoUpdatePassword(const uuid_array_t &entry_uuid,
-                        const StringX sxNewPassword);
-  void UndoUpdatePassword(const uuid_array_t &entry_uuid,
-                          const StringX &sxOldPassword, const StringX &sxOldPWHistory,
-                          const CItemData::EntryStatus es);
-
-  void DoAddDependentEntry(const uuid_array_t &base_uuid,
-                           const uuid_array_t &entry_uuid,
-                           const CItemData::EntryType type);
-  int DoAddDependentEntries(UUIDList &dependentslist, CReport *rpt,
-                            const CItemData::EntryType type,
-                            const int &iVia,
-                            ItemList *pmapDeletedItems,
-                            SaveTypePWMap *pmapSaveTypePW);
-  void UndoAddDependentEntries(ItemList *pmapDeletedItems,
-                               SaveTypePWMap *pmapSaveTypePW);
-  void DoRemoveDependentEntry(const uuid_array_t &base_uuid,
-                              const uuid_array_t &entry_uuid,
-                              const CItemData::EntryType type);
-  void DoRemoveAllDependentEntries(const uuid_array_t &base_uuid,
-                                   const CItemData::EntryType type);
-  void UndoRemoveAllDependentEntries(const uuid_array_t &base_uuid,
-                                     const CItemData::EntryType type);
-  void DoMoveDependentEntries(const uuid_array_t &from_baseuuid,
-                              const uuid_array_t &to_baseuuid,
-                              const CItemData::EntryType type);
-  void DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                std::vector<CUUIDGen> &vSavedAliases);
-  void UndoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                  std::vector<CUUIDGen> &vSavedAliases);
-  int DoUpdatePasswordHistory(const int iAction, const int new_default_max,
-                              SavePWHistoryMap &mapSavedHistory);
-  void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
-
 protected:
-  PWScore *m_pcore;
+  CommandInterface *m_pcomInt;
   bool m_bSaveDBChanged;
   bool m_bNotifyGUI;
   int m_RC;
@@ -152,7 +102,7 @@ protected:
 class MultiCommands : public Command
 {
 public:
-  MultiCommands(PWScore *pcore);
+  MultiCommands(CommandInterface *pcomInt);
   ~MultiCommands();
   int Execute();
   int Redo();
@@ -163,18 +113,14 @@ public:
   bool Remove();
   bool GetRC(Command *c, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
-  PWScore *GetCore()
-  {return m_pcore;}
-  std::size_t GetSize()
-  {return m_pcmds == NULL ? (std::size_t)(-1) : m_pcmds->size();}
+  std::size_t GetSize() const {return m_cmds.size();}
   void UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value);
   void AddEntry(CItemData &ci);
   void AddDependentEntry(const uuid_array_t &base_uuid, 
                          const uuid_array_t &entry_uuid,
                          const CItemData::EntryType type);
-
-private:
-  std::vector<Command *> *m_pcmds;
+ private:
+  std::vector<Command *> m_cmds;
   std::vector<int> m_RCs;
 };
 
@@ -188,7 +134,7 @@ private:
 class UpdateGUICommand : public Command
 {
 public:
-  UpdateGUICommand(PWScore *pcore, const Command::ExecuteFn When,
+  UpdateGUICommand(CommandInterface *pcomInt, const Command::ExecuteFn When,
                    const Command::GUI_Action ga);
   int Execute();
   int Redo();
@@ -201,7 +147,7 @@ private:
 class GUICommand : public Command
 {
 public:
-  GUICommand(PWScore *pcore, PWSGUICmdIF *pGUICmdIF);
+  GUICommand(CommandInterface *pcomInt, PWSGUICmdIF *pGUICmdIF);
   ~GUICommand();
   int Execute();
   int Redo();
@@ -216,7 +162,7 @@ private:
 class DBPrefsCommand : public Command
 {
 public:
-  DBPrefsCommand(PWScore *pcore, StringX &sxNewDBPrefs);
+  DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
   int Execute();
   int Redo();
   void Undo();
@@ -230,7 +176,7 @@ private:
 class AddEntryCommand : public Command
 {
 public:
-  AddEntryCommand(PWScore *pcore, CItemData &ci);
+  AddEntryCommand(CommandInterface *pcomInt, CItemData &ci);
   ~AddEntryCommand();
   int Execute();
   int Redo();
@@ -243,7 +189,7 @@ private:
 class DeleteEntryCommand : public Command
 {
 public:
-  DeleteEntryCommand(PWScore *pcore, CItemData &ci);
+  DeleteEntryCommand(CommandInterface *pcomInt, CItemData &ci);
   ~DeleteEntryCommand();
   int Execute();
   int Redo();
@@ -256,7 +202,7 @@ private:
 class EditEntryCommand : public Command
 {
 public:
-  EditEntryCommand(PWScore *pcore, CItemData &old_ci, CItemData &new_ci);
+  EditEntryCommand(CommandInterface *pcomInt, CItemData &old_ci, CItemData &new_ci);
   ~EditEntryCommand();
   int Execute();
   int Redo();
@@ -270,13 +216,19 @@ private:
 class UpdateEntryCommand : public Command
 {
 public:
-  UpdateEntryCommand(PWScore *pcore, CItemData &ci, const CItemData::FieldType &ftype,
+  UpdateEntryCommand(CommandInterface *pcomInt, CItemData &ci,
+                     const CItemData::FieldType &ftype,
                      const StringX &value);
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  void Doit(const uuid_array_t &entry_uuid,
+            const CItemData::FieldType &ftype,
+            const StringX &value,
+            const CItemData::EntryStatus es);
+
   uuid_array_t m_entry_uuid;
   CItemData::FieldType m_ftype;
   StringX m_value, m_old_value;
@@ -286,7 +238,7 @@ private:
 class UpdatePasswordCommand : public Command
 {
 public:
-  UpdatePasswordCommand(PWScore *pcore, CItemData &ci, const StringX sxNewPassword);
+  UpdatePasswordCommand(CommandInterface *pcomInt, CItemData &ci, const StringX sxNewPassword);
   int Execute();
   int Redo();
   void Undo();
@@ -300,7 +252,7 @@ private:
 class AddDependentEntryCommand : public Command
 {
 public:
-  AddDependentEntryCommand(PWScore *pcore, const uuid_array_t &base_uuid,
+  AddDependentEntryCommand(CommandInterface *pcomInt, const uuid_array_t &base_uuid,
                            const uuid_array_t &entry_uuid,
                            const CItemData::EntryType type);
   int Execute();
@@ -316,7 +268,7 @@ private:
 class AddDependentEntriesCommand : public Command
 {
 public:
-  AddDependentEntriesCommand(PWScore *pcore, UUIDList &dependentslist, CReport *rpt,
+  AddDependentEntriesCommand(CommandInterface *pcomInt, UUIDList &dependentslist, CReport *rpt,
                              const CItemData::EntryType type,
                              const int &iVia);
   ~AddDependentEntriesCommand();
@@ -336,7 +288,7 @@ private:
 class RemoveDependentEntryCommand : public Command
 {
 public:
-  RemoveDependentEntryCommand(PWScore *pcore,
+  RemoveDependentEntryCommand(CommandInterface *pcomInt,
                               const uuid_array_t &base_uuid,
                               const uuid_array_t &entry_uuid,
                               const CItemData::EntryType type);
@@ -353,7 +305,7 @@ private:
 class RemoveDependentEntriesCommand : public Command
 {
 public:
-  RemoveDependentEntriesCommand(PWScore *pcore,
+  RemoveDependentEntriesCommand(CommandInterface *pcomInt,
                                 const uuid_array_t &base_uuid,
                                 const uuid_array_t &entry_uuid,
                                 const CItemData::EntryType type);
@@ -370,7 +322,7 @@ private:
 class RemoveAllDependentEntriesCommand : public Command
 {
 public:
-  RemoveAllDependentEntriesCommand(PWScore *pcore, const uuid_array_t &base_uuid,
+  RemoveAllDependentEntriesCommand(CommandInterface *pcomInt, const uuid_array_t &base_uuid,
                                    const CItemData::EntryType type);
   int Execute();
   int Redo();
@@ -385,7 +337,7 @@ private:
 class MoveDependentEntriesCommand : public Command
 {
 public:
-  MoveDependentEntriesCommand(PWScore *pcore, const uuid_array_t &from_baseuuid,
+  MoveDependentEntriesCommand(CommandInterface *pcomInt, const uuid_array_t &from_baseuuid,
                               const uuid_array_t &to_baseuuid,
                               const CItemData::EntryType type);
   int Execute();
@@ -401,7 +353,7 @@ private:
 class ResetAllAliasPasswordsCommand : public Command
 {
 public:
-  ResetAllAliasPasswordsCommand(PWScore *pcore, const uuid_array_t &base_uuid);
+  ResetAllAliasPasswordsCommand(CommandInterface *pcomInt, const uuid_array_t &base_uuid);
   int Execute();
   int Redo();
   void Undo();
@@ -414,7 +366,7 @@ private:
 class UpdatePasswordHistoryCommand : public Command
 {
 public:
-  UpdatePasswordHistoryCommand(PWScore *pcore, const int iAction,
+  UpdatePasswordHistoryCommand(CommandInterface *pcomInt, const int iAction,
                                const int new_default_max);
   int Execute();
   int Redo();
