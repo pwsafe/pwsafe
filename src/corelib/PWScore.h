@@ -19,6 +19,7 @@
 #include "UUIDGen.h"
 #include "Report.h"
 #include "Proxy.h"
+#include "UIinterface.h"
 #include "Command.h"
 #include "CommandInterface.h"
 
@@ -64,6 +65,7 @@ public:
   PWScore();
   ~PWScore();
 
+  void SetUIinterface(UIinterface *uii) {m_uii = uii;}
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
@@ -250,13 +252,11 @@ public:
   {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
   // (Un)Register callback to be notified if the database changes
-  bool RegisterOnDBModified(void (*pfcn) (LPARAM, bool), LPARAM);
-  void UnRegisterOnDBModified();
   void NotifyDBModified();
   void SuspendOnDBNotification()
   {m_bNotifyDB = false;}
   void ResumeOnDBNotification()
-  {m_bNotifyDB = m_pfcnNotifyDBModified != NULL && m_NotifyDBInstance != 0;}
+  {m_bNotifyDB = true;}
 
   // (Un)Register callback to let GUI know that DB has changed
   bool RegisterGUINotify(void (*pfcn) (LPARAM , const Command::GUI_Action &,
@@ -407,11 +407,10 @@ private:
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
 
-  // Callback if database has been modified
-  void (*m_pfcnNotifyDBModified) (LPARAM, bool);
-  LPARAM m_NotifyDBInstance;
   bool m_bNotifyDB;
 
+  UIinterface *m_uii; // pointer to UI interface abtraction
+  
   void NotifyGUINeedsUpdating(const Command::GUI_Action &, uuid_array_t &,
                               LPARAM lparam = NULL);
   void CallGUICommandInterface(const Command::ExecuteFn &, PWSGUICmdIF *);

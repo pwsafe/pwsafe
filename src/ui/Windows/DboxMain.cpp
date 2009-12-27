@@ -166,7 +166,7 @@ DboxMain::DboxMain(CWnd* pParent)
 
 DboxMain::~DboxMain()
 {
-  m_core.UnRegisterOnDBModified();
+  m_core.SetUIinterface(NULL);
   m_core.UnRegisterGUINotify();
   m_core.UnRegisterGUIUpdateEntry();
   m_core.UnRegisterGUICommandInterface();

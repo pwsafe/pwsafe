@@ -59,42 +59,40 @@ extern const wchar_t *GROUP_SEP2;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void DboxMain::DatabaseModified(LPARAM instance, bool bChanged)
+void DboxMain::DatabaseModified(bool bChanged)
 {
   // Callback from PWScore if the database has been changed
   // entries or preferences stored in the database
-  DboxMain *self = (DboxMain *)instance;
-  ASSERT(self != NULL);
 
-  // Callback from PWScore if the password list has been changed invalidating the 
-  // indices vector in Find
-  self->m_core.SuspendOnDBNotification();
-  self->InvalidateSearch();
-  self->OnHideFindToolBar();
+  // Callback from PWScore if the password list has been changed,
+  // invalidating the indices vector in Find
+  m_core.SuspendOnDBNotification();
+  InvalidateSearch();
+  OnHideFindToolBar();
 
   // This is to prevent Windows (Vista & later) from shutting down
   // if the database has been modified (including preferences stored in the DB)
   static bool bCurrentState(false);
 
   // Don't do anything if status unchanged or not at least Vista
-  if (self->m_WindowsMajorVersion < 6 || 
-      self->m_core.IsReadOnly() || bChanged == bCurrentState)
+  if (m_WindowsMajorVersion < 6 || 
+      m_core.IsReadOnly() || bChanged == bCurrentState)
     return;
 
   bCurrentState = bChanged;
 
   // Only supported on Vista and later
   if (bCurrentState) {
-    if (self->m_pfcnShutdownBlockReasonCreate != NULL) {
+    if (m_pfcnShutdownBlockReasonCreate != NULL) {
       CSecString cs_stopreason;
-      cs_stopreason.Format(IDS_STOPREASON, self->m_core.GetCurFile().c_str());
-      self->m_pfcnShutdownBlockReasonCreate(self->m_hWnd, cs_stopreason);
-      self->m_bBlockShutdown = true;
+      cs_stopreason.Format(IDS_STOPREASON, m_core.GetCurFile().c_str());
+      m_pfcnShutdownBlockReasonCreate(m_hWnd, cs_stopreason);
+      m_bBlockShutdown = true;
     }
   } else {
-    if (self->m_pfcnShutdownBlockReasonDestroy != NULL) {
-      self->m_pfcnShutdownBlockReasonDestroy(self->m_hWnd);
-      self->m_bBlockShutdown = false;
+    if (m_pfcnShutdownBlockReasonDestroy != NULL) {
+      m_pfcnShutdownBlockReasonDestroy(m_hWnd);
+      m_bBlockShutdown = false;
     }
   }
 }
@@ -640,9 +638,6 @@ void DboxMain::setupBars()
   UpdateToolBarROStatus(m_core.IsReadOnly());
   m_menuManager.SetImageList(&m_MainToolBar);
   m_menuManager.SetMapping(&m_MainToolBar);
-
-  // Register for database changed notification (Vista or later)
-  m_core.RegisterOnDBModified(DatabaseModified, (LPARAM)this);
 
   // Register for GUI Updates
   m_core.RegisterGUINotify(UpdateGUI, (LPARAM)this);

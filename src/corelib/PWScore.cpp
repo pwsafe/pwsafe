@@ -53,8 +53,7 @@ PWScore::PWScore() :
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
-                     m_pfcnNotifyDBModified(NULL), m_NotifyDBInstance(NULL),
-                     m_bNotifyDB(false),
+                     m_bNotifyDB(false), m_uii(NULL),
                      m_pfcnNotifyUpdateGUI(NULL), m_NotifyUpdateGUIInstance(NULL),
                      m_pfcnGUICommandInterface(NULL), m_GUICommandInterfaceInstance(NULL),
                      m_fileSig(NULL)
@@ -1731,36 +1730,14 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
   }
 }
 
-// OnDBModified - used by GUI if the Database has changed
+// NotifyDBModified - used by GUI if the Database has changed
 // particularly to invalidate any current Find results and to populate
 // message during Vista and later shutdowns
-bool PWScore::RegisterOnDBModified(void (*pfcn) (LPARAM, bool), LPARAM instance)
-{
-  if (m_pfcnNotifyDBModified != NULL)
-    return false;
-
-  if (pfcn == NULL || instance == NULL) {
-    UnRegisterOnDBModified();
-    return false;
-  }
-
-  m_pfcnNotifyDBModified = pfcn;
-  m_NotifyDBInstance = instance;
-  m_bNotifyDB = true;
-  return true;
-}
-
-void PWScore::UnRegisterOnDBModified()
-{
-  m_pfcnNotifyDBModified = NULL;
-  m_NotifyDBInstance = NULL;
-  m_bNotifyDB = false;
-}
 
 void PWScore::NotifyDBModified()
 {
-  if (m_bNotifyDB)
-    m_pfcnNotifyDBModified(m_NotifyDBInstance, m_bDBChanged || m_bDBPrefsChanged);
+  if (m_bNotifyDB && m_uii != NULL)
+    m_uii->DatabaseModified(m_bDBChanged || m_bDBPrefsChanged);
 }
 
 // OnGUIModified - used by GUI if one or more entries have changed

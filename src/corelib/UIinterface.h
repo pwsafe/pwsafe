@@ -19,14 +19,7 @@
 class UIinterface {
  public:
   UIinterface() {}
-// abstract method for asking user a question
-// and getting a yes/no reply:
-  virtual bool Ask(const stringT &question) = 0;
-
-// abstract method for reporting something of
-// interest to the user
-  virtual void Report(const stringT &message) = 0;
-
+  virtual void DatabaseModified(bool bChanged) = 0;
   virtual ~UIinterface() {}
 };
 

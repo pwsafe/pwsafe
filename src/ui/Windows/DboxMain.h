@@ -36,6 +36,7 @@
 #include "MenuShortcuts.h"
 #include "WinGUICmdIF.h"
 
+#include "corelib/UIinterface.h"
 #include "corelib/PWScore.h"
 #include "corelib/StringX.h"
 #include "corelib/sha256.h"
@@ -160,7 +161,7 @@ enum {GCP_FIRST      = 0,   // At startup of PWS
       GCP_ADVANCED   = 4};  // OK, CANCEL, HELP buttons & ADVANCED checkbox
 
 //-----------------------------------------------------------------------------
-class DboxMain : public CDialog
+class DboxMain : public CDialog, public UIinterface
 {
 #if defined(POCKET_PC)
   friend class CMyListCtrl;
@@ -670,8 +671,14 @@ protected:
                           PWScore *pcore = 0, int adv_type = -1);
 
 private:
+  // UIinterface implementations:
+  void DatabaseModified(bool bChanged); /* bChanged false if the database
+                                         * has been modified, (e.g. the
+                                         * last find results may no longer
+                                         * be valid) but is now unchanged
+                                         * from the last saved version. */
+  
   // static methods and variables
-  static void DatabaseModified(LPARAM instance, bool bChanged);
   static void UpdateGUI(LPARAM instance, const Command::GUI_Action &ga, uuid_array_t &entry_uuid, LPARAM lparam);
   static void GUIUpdateEntry(CItemData &ci);
   static void GUICommandInterface(LPARAM instance, const Command::ExecuteFn &when, PWSGUICmdIF *pGUICmdIF);
