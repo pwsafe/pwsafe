@@ -64,46 +64,6 @@ void Command::RestoreState()
   m_pcomInt->SetVnodesModified(m_saved_vnodes_modified);
 }
 
-void Command::SaveDependentsState(const Command::DependentsType itype)
-{
-  switch (itype) {
-    case DT_BASE2ALIASES_MMAP:
-      m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
-      break;
-    case DT_BASE2SHORTCUTS_MMAP:
-      m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
-      break;
-    case DT_ALIAS2BASE_MAP:
-      m_saved_alias2base_map = m_pcomInt->GetAlias2BaseMap();
-      break;
-    case DT_SHORTCUT2BASE_MAP:
-      m_saved_shortcut2base_map = m_pcomInt->GetShortcuts2BaseMap();
-      break;
-    default:
-      ASSERT(0);
-  }
-}
-
-void Command::RestoreDependentsState(const Command::DependentsType itype)
-{
-  switch (itype) {
-    case DT_BASE2ALIASES_MMAP:
-      m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
-      break;
-    case DT_BASE2SHORTCUTS_MMAP:
-      m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
-      break;
-    case DT_ALIAS2BASE_MAP:
-      m_pcomInt->SetAlias2BaseMap(m_saved_alias2base_map);
-      break;
-    case DT_SHORTCUT2BASE_MAP:
-      m_pcomInt->SetShortcuts2BaseMap(m_saved_shortcut2base_map);
-      break;
-    default:
-      ASSERT(0);
-  }
-}
-
 // ------------------------------------------------
 // MultiCommands
 // ------------------------------------------------
@@ -690,10 +650,13 @@ int AddDependentEntriesCommand::Execute()
 {
   TRACE(L"AddDependentEntriesCommand::Execute\n");
   SaveState();
-  SaveDependentsState(m_type == CItemData::ET_ALIAS ?
-                                     DT_BASE2ALIASES_MMAP : DT_BASE2SHORTCUTS_MMAP);
-  SaveDependentsState(m_type == CItemData::ET_ALIAS ?
-                                     DT_ALIAS2BASE_MAP : DT_SHORTCUT2BASE_MAP);
+  if (m_type == CItemData::ET_ALIAS) {
+    m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
+    m_saved_alias2base_map = m_pcomInt->GetAlias2BaseMap();
+  } else { // if !alias, assume shortcut
+    m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
+    m_saved_shortcut2base_map = m_pcomInt->GetShortcuts2BaseMap();
+  }
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -716,10 +679,13 @@ void AddDependentEntriesCommand::Undo()
     return;
 
   m_pcomInt->UndoAddDependentEntries(m_pmapDeletedItems, m_pmapSaveStatus);
-  RestoreDependentsState(m_type == CItemData::ET_ALIAS ?
-                                        DT_BASE2ALIASES_MMAP : DT_BASE2SHORTCUTS_MMAP);
-  RestoreDependentsState(m_type == CItemData::ET_ALIAS ?
-                                        DT_ALIAS2BASE_MAP : DT_SHORTCUT2BASE_MAP);
+  if (m_type == CItemData::ET_ALIAS) {
+    m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
+    m_pcomInt->SetAlias2BaseMap(m_saved_alias2base_map);
+  } else { // if !alias, assume shortcut
+    m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
+    m_pcomInt->SetShortcuts2BaseMap(m_saved_shortcut2base_map);
+  }
   RestoreState();
   m_bState = false;
 }
@@ -782,10 +748,13 @@ int RemoveAllDependentEntriesCommand::Execute()
 {
   TRACE(L"RemoveAllDependentEntriesCommand::Execute\n");
   SaveState();
-  SaveDependentsState(m_type == CItemData::ET_ALIAS ?
-                                     DT_BASE2ALIASES_MMAP : DT_BASE2SHORTCUTS_MMAP);
-  SaveDependentsState(m_type == CItemData::ET_ALIAS ?
-                                     DT_ALIAS2BASE_MAP : DT_SHORTCUT2BASE_MAP);
+  if (m_type == CItemData::ET_ALIAS) {
+    m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
+    m_saved_alias2base_map = m_pcomInt->GetAlias2BaseMap();
+  } else { // if !alias, assume shortcut
+    m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
+    m_saved_shortcut2base_map = m_pcomInt->GetShortcuts2BaseMap();
+  }
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -810,10 +779,13 @@ void RemoveAllDependentEntriesCommand::Undo()
     iter->second.SetEntryType(m_type == CItemData::ET_ALIAS ?
                               CItemData::ET_ALIASBASE : CItemData::ET_SHORTCUTBASE);
   }
-  RestoreDependentsState(m_type == CItemData::ET_ALIAS ?
-                         DT_BASE2ALIASES_MMAP : DT_BASE2SHORTCUTS_MMAP);
-  RestoreDependentsState(m_type == CItemData::ET_ALIAS ?
-                                        DT_ALIAS2BASE_MAP : DT_SHORTCUT2BASE_MAP);
+  if (m_type ==  CItemData::ET_ALIAS) {
+    m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
+    m_pcomInt->SetAlias2BaseMap(m_saved_alias2base_map);
+  } else { // if !alias, assume shortcut
+    m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
+    m_pcomInt->SetShortcuts2BaseMap(m_saved_shortcut2base_map);
+  }
   RestoreState();
   m_bState = false;
 }
@@ -875,7 +847,7 @@ int ResetAllAliasPasswordsCommand::Execute()
 {
   TRACE(L"ResetAllAliasPasswordsCommand::Execute\n");
   SaveState();
-  SaveDependentsState(DT_BASE2ALIASES_MMAP);
+  m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -896,7 +868,7 @@ void ResetAllAliasPasswordsCommand::Undo()
     return;
 
   m_pcomInt->UndoResetAllAliasPasswords(m_base_uuid, m_vSavedAliases);
-  RestoreDependentsState(DT_BASE2ALIASES_MMAP);
+  m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
   RestoreState();
   m_bState = false;
 }

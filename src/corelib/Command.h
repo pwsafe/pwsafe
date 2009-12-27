@@ -60,19 +60,9 @@ public:
     GUI_UNDO_MERGESYNC,
   };
 
-  enum DependentsType {
-    DT_BASE2ALIASES_MMAP = 0,
-    DT_BASE2SHORTCUTS_MMAP,
-    DT_ALIAS2BASE_MAP,
-    DT_SHORTCUT2BASE_MAP
-  };
-
 protected:
   void SaveState();
   void RestoreState();
-
-  void SaveDependentsState(const Command::DependentsType itype);
-  void RestoreDependentsState(const Command::DependentsType itype);
 
 protected:
   CommandInterface *m_pcomInt;
