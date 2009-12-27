@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-12-22 10:45+0100\n"
+"PO-Revision-Date: 2009-12-25 23:47+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2875,6 +2875,14 @@ msgstr "Gälisch"
 msgid "Generate"
 msgstr "Generierung"
 
+#. Resource IDs: (32157)
+msgid "Generate &Password"
+msgstr "Generiere &Passwort"
+
+#. Resource IDs: (359)
+msgid "Generate Password"
+msgstr "Generiere Passwort"
+
 #. Resource IDs: (1052)
 msgid "Generate pronounceable passwords"
 msgstr "Generiere aussprechbare Passwörter"
@@ -3130,6 +3138,10 @@ msgstr "ID:32108:V C +F"
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
 msgstr "ID:32154:V C +M"
+
+#. Accelerator Entry for Menu ID:32157; 'Generate &Password'
+msgid "ID:32157:V C +P"
+msgstr "ID:32157:V C +P"
 
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
 msgid "ID:32302:VAC +C"
@@ -3857,7 +3869,7 @@ msgstr "Notizen"
 
 #. Resource IDs: (355)
 msgid "Notes copied "
-msgstr "Notizen kopiert"
+msgstr "Notizen kopiert "
 
 #. Resource IDs: (348)
 msgid "Number is set to the maximum value.  'Greater than' is not allowed."
@@ -4062,6 +4074,10 @@ msgstr "Passwortablauf-Intervall"
 #. Resource IDs: (192)
 msgid "Password Expiry Interval\t"
 msgstr "Passwortablauf-Intervall\t"
+
+#. Resource IDs: (360)
+msgid "Password Generated based on displayed policy"
+msgstr "Passwort generiert nach der dargestellten Passwortrichtlinie"
 
 #. Resource IDs: (120, 140, 340, 350)
 msgid "Password History"
@@ -4446,7 +4462,7 @@ msgstr "Eigenschaften"
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
-msgstr "Passwort kopiert"
+msgstr "Passwort kopiert "
 
 #. Resource IDs: (516)
 msgid "Punjabi"
@@ -5382,6 +5398,11 @@ msgstr ""
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr "Die Originaldatenbank \"%s\" ist in einem alten Dateiformat (vor Version 3.0) gespeichert. Die Daten werden nun im neuen Dateiformat gespeichert, welches von alten PasswordSafe-Versionen nicht benutzbar ist. Um Ihre Daten im alten Dateiformat zu speichern, benutzen Sie \"Datei -> Export -> Altes (1.x oder 2) Format\"."
 
+#. Resource IDs: (360)
+#, c-format
+msgid "The password \"%s\" has been copied to the clipboard."
+msgstr "Das Passwort \"%s\" wurde in die Zwischenablage kopiert."
+
 #. Resource IDs: (342)
 #, c-format
 msgid ""
@@ -5937,7 +5958,7 @@ msgstr "Benutzer [Pflichtfeld]"
 
 #. Resource IDs: (355)
 msgid "User copied "
-msgstr "Benutzer kopiert"
+msgstr "Benutzer kopiert "
 
 #. Resource IDs: (188)
 msgid "Username\t"
@@ -6407,6 +6428,14 @@ msgid ""
 msgstr ""
 "\n"
 "Suche vorherige"
+
+#. Resource IDs: (2010)
+msgid ""
+"\n"
+"Generate Password"
+msgstr ""
+"\n"
+"Generiere Passwort"
 
 #. Resource IDs: (2005)
 msgid ""
