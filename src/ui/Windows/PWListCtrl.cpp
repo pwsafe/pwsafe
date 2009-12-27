@@ -62,6 +62,7 @@ LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
 {
   const int iSubItem = m_pDbx->IsImageVisible() ? 1 : 0;
   bool bFirst;
+
   if (m_FindTimerID != 0) {
     KillTimer(TIMER_FIND);
     m_csFind += (wchar_t)wParam;
@@ -234,6 +235,8 @@ bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
     SetItemState(iItem, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
     EnsureVisible(iItem, FALSE);
     Invalidate();
+    CItemData *pci = (CItemData *)GetItemData(iItem);
+    m_pDbx->UpdateToolBarForSelectedItem(pci);
   }
 
   return bFound;
