@@ -877,6 +877,8 @@ struct DisplayInfo : public DisplayInfoBase {
 
   DisplayInfo() {}
   virtual ~DisplayInfo() {}
+  virtual DisplayInfo *clone() const // virtual c'tor idiom
+  { return new DisplayInfo(*this); }
  
   DisplayInfo(const DisplayInfo &that)
   : list_index(that.list_index), tree_item(that.tree_item)

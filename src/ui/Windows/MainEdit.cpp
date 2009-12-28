@@ -919,9 +919,9 @@ void DboxMain::OnDuplicateEntry()
     ASSERT(pdi != NULL);
 
     // Get information from current selected entry
-    StringX ci2_group = pci->GetGroup();
-    StringX ci2_user = pci->GetUser();
-    StringX ci2_title0 = pci->GetTitle();
+    const StringX ci2_group = pci->GetGroup();
+    const StringX ci2_user = pci->GetUser();
+    const StringX ci2_title0 = pci->GetTitle();
     StringX ci2_title;
 
     // Find a unique "Title"
@@ -946,25 +946,29 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetUser(ci2_user);
     ci2.SetStatus(CItemData::ES_ADDED);
 
-    uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
     CItemData::EntryType entrytype = pci->GetEntryType();
-    if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
+    if (entrytype == CItemData::ET_ALIAS ||
+        entrytype == CItemData::ET_SHORTCUT) {
+      uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
       pci->GetUUID(original_entry_uuid);
       ci2.GetUUID(new_entry_uuid);
       if (entrytype == CItemData::ET_ALIAS) {
         m_core.GetAliasBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetAlias();
-        Command *pcmd = new AddDependentEntryCommand(&m_core, base_uuid, new_entry_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = new AddDependentEntryCommand(&m_core, base_uuid,
+                                                     new_entry_uuid,
+                                                     CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
-      } else {
+      } else { // shortcut
         m_core.GetShortcutBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetShortcut();
-        Command *pcmd = new AddDependentEntryCommand(&m_core, base_uuid, new_entry_uuid, CItemData::ET_SHORTCUT);
+        Command *pcmd = new AddDependentEntryCommand(&m_core, base_uuid,
+                                                     new_entry_uuid,
+                                                     CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
       }
 
-      ItemListIter iter;
-      iter = m_core.Find(base_uuid);
+      ItemListIter iter = m_core.Find(base_uuid);
       if (iter != m_core.GetEntryEndIter()) {
         StringX cs_tmp;
         cs_tmp = L"[" +
@@ -973,7 +977,7 @@ void DboxMain::OnDuplicateEntry()
                  iter->second.GetUser()  + L"]";
         ci2.SetPassword(cs_tmp);
       }
-    } else
+    } else // not alias or shortcut
       ci2.SetNormal();
 
     // Add it to the end of the list
@@ -985,7 +989,10 @@ void DboxMain::OnDuplicateEntry()
 
     uuid_array_t uuid;
     ci2.GetUUID(uuid);
-    InsertItemIntoGUITreeList(m_core.GetEntry(m_core.Find(uuid)));
+    ItemListIter iter = m_core.Find(uuid);
+    ASSERT(iter != m_core.GetEntryEndIter());
+
+    InsertItemIntoGUITreeList(m_core.GetEntry(iter));
     FixListIndexes();
 
     if (PWSprefs::GetInstance()->

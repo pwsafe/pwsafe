@@ -51,6 +51,7 @@ struct DisplayInfoBase
   // Following used by display methods of the GUI
   DisplayInfoBase() {}
   virtual ~DisplayInfoBase() {}
+  virtual DisplayInfoBase *clone() const = 0; // virtual c'tor idiom
 };
 
 class CItemData
