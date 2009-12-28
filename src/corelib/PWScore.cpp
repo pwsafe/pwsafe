@@ -44,7 +44,7 @@ Asker *PWScore::m_pAsker = NULL;
 Reporter *PWScore::m_pReporter = NULL;
 
 PWScore::PWScore() : 
-                     m_pfcnGUIUpdateEntry(NULL), m_currfile(_T("")),
+                     m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
@@ -1779,31 +1779,11 @@ void PWScore::CallGUICommandInterface(const Command::ExecuteFn &When,
     m_pfcnGUICommandInterface(m_GUICommandInterfaceInstance, When, pGUICmdIF);
 }
 
-// GUIUpdateEntry - used by get the GUI to update the entry with any
-// GUI realted information before the entry is added to the database
-bool PWScore::RegisterGUIUpdateEntry(void (*pfcn) (CItemData &))
-{
-  if (m_pfcnGUIUpdateEntry != NULL)
-    return false;
-
-  if (pfcn == NULL) {
-    UnRegisterGUIUpdateEntry();
-    return false;
-  }
-  
-  m_pfcnGUIUpdateEntry = pfcn;
-  return true;
-}
-
-void PWScore::UnRegisterGUIUpdateEntry()
-{
-  m_pfcnGUIUpdateEntry = NULL;
-}
 
 void PWScore::GUIUpdateEntry(CItemData &ci)
 {
-  if (m_pfcnGUIUpdateEntry != NULL)
-    m_pfcnGUIUpdateEntry(ci);
+  if (m_uii != NULL)
+    m_uii->GUIUpdateEntry(ci);
 }
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)

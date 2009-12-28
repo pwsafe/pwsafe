@@ -167,7 +167,6 @@ DboxMain::DboxMain(CWnd* pParent)
 DboxMain::~DboxMain()
 {
   m_core.SetUIinterface(NULL);
-  m_core.UnRegisterGUIUpdateEntry();
   m_core.UnRegisterGUICommandInterface();
 
   MapKeyNameIDIter iter;

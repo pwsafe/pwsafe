@@ -262,11 +262,13 @@ void DboxMain::UpdateGUI(const Command::GUI_Action &ga,
   }
 }
 
+// Called from PWScore to get GUI to update its reserved field
 void DboxMain::GUIUpdateEntry(CItemData &ci)
 {
-  // Callback from PWScore to get GUI to update its reserved field
-  DisplayInfo *pdi = new DisplayInfo;
-  ci.SetDisplayInfo(pdi);
+  DisplayInfoBase *dib = ci.GetDisplayInfo();
+  if (dib != NULL)
+    delete dib;
+  ci.SetDisplayInfo(new DisplayInfo);
 }
 
 //-----------------------------------------------------------------------------
@@ -636,9 +638,6 @@ void DboxMain::setupBars()
 
   // Register for GUI Updates
   m_core.RegisterGUICommandInterface(GUICommandInterface, (LPARAM)this);
-
-  // Register for GUI to populate its reserved field
-  m_core.RegisterGUIUpdateEntry(GUIUpdateEntry);
 
   m_DDGroup.EnableWindow(TRUE);
   m_DDGroup.ShowWindow(SW_SHOW);

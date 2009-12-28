@@ -675,9 +675,9 @@ private:
   void DatabaseModified(bool bChanged);
   void UpdateGUI(const Command::GUI_Action &ga, uuid_array_t &entry_uuid,
                  CItemData::FieldType ft);
+  void GUIUpdateEntry(CItemData &ci);
   
   // static methods and variables
-  static void GUIUpdateEntry(CItemData &ci);
   static void GUICommandInterface(LPARAM instance, const Command::ExecuteFn &when, PWSGUICmdIF *pGUICmdIF);
   void RedoDelete(WinGUICmdIF *pGUICmdIF);
 

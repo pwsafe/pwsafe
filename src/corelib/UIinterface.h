@@ -33,6 +33,8 @@ class UIinterface {
   virtual void UpdateGUI(const Command::GUI_Action &ga,
                          uuid_array_t &entry_uuid,
                          CItemData::FieldType ft) = 0;
+  // GUIUpdateEntry: let GUI populate DisplayInfo field in an entry
+  virtual void GUIUpdateEntry(CItemData &ci) = 0;
   virtual ~UIinterface() {}
 };
 

@@ -258,9 +258,6 @@ public:
   void ResumeOnDBNotification()
   {m_bNotifyDB = true;}
 
-  // (Un)Register callback to let GUI populate its field in an entry
-  bool RegisterGUIUpdateEntry(void (*pfcn) (CItemData &));
-  void UnRegisterGUIUpdateEntry();
   void GUIUpdateEntry(CItemData &ci);
 
   // (Un)Register callback to perform a GUI command
