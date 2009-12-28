@@ -289,15 +289,11 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 
 void PWScore::ClearCommands()
 {
-  std::vector<Command *>::iterator cmd_Iter;
-
-  for (cmd_Iter = m_vpcommands.begin(); cmd_Iter != m_vpcommands.end(); cmd_Iter++) {
-    delete (*cmd_Iter);
+  while (!m_vpcommands.empty()) {
+    delete m_vpcommands.back();
+    m_vpcommands.pop_back();
   }
-
-  m_vpcommands.clear();
-  m_undo_iter = m_vpcommands.end();
-  m_redo_iter = m_vpcommands.end();
+  m_undo_iter = m_redo_iter = m_vpcommands.end();
 }
 
 void PWScore::ResetStateAfterSave()
