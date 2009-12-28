@@ -222,45 +222,40 @@ void DboxMain::RedoDelete(WinGUICmdIF *pGUICmdIF)
   RefreshViews();
 }
 
-void DboxMain::UpdateGUI(LPARAM instance, const Command::GUI_Action &ga, 
-                         uuid_array_t &entry_uuid, LPARAM lparam)
+void DboxMain::UpdateGUI(const Command::GUI_Action &ga, 
+                         uuid_array_t &entry_uuid, CItemData::FieldType ft)
 {
   // Callback from PWScore if GUI needs updating
   // Note: For some values of 'ga', 'ci' is invalid and not used
-  DboxMain *self = (DboxMain *)instance;
-  ASSERT(self != NULL);
-
-  CItemData::FieldType ft;
   CItemData *pci(NULL);
 
-  ItemListIter pos = self->Find(entry_uuid);
-  if (pos != self->End()) {
+  ItemListIter pos = Find(entry_uuid);
+  if (pos != End()) {
     pci = &pos->second;
   }
 
   switch (ga) {
     case Command::GUI_UPDATE_STATUSBAR:
-      self->UpdateToolBarDoUndo();
-      self->UpdateStatusBar();
+      UpdateToolBarDoUndo();
+      UpdateStatusBar();
       break;
     case Command::GUI_ADD_ENTRY:
-      self->AddToGUI(*pci);
+      AddToGUI(*pci);
       break;
     case Command::GUI_DELETE_ENTRY:
-      self->RemoveFromGUI(*pci, lparam);
+      RemoveFromGUI(*pci, LPARAM(ft)); // XXX WTF ?!?!
       break;
     case Command::GUI_REFRESH_ENTRYFIELD:
-      ft = (CItemData::FieldType)lparam;
-      self->RefreshEntryFieldInGUI(*pci, ft);
+      RefreshEntryFieldInGUI(*pci, ft);
       break;
     case Command::GUI_REFRESH_ENTRYPASSWORD:
-      self->RefreshEntryPasswordInGUI(*pci);
+      RefreshEntryPasswordInGUI(*pci);
       break;
     case Command::GUI_REDO_IMPORT:
     case Command::GUI_UNDO_IMPORT:
     case Command::GUI_REDO_MERGESYNC:
     case Command::GUI_UNDO_MERGESYNC:
-      self->RebuildGUI();
+      RebuildGUI();
       break;
     default:
       break;
@@ -640,7 +635,6 @@ void DboxMain::setupBars()
   m_menuManager.SetMapping(&m_MainToolBar);
 
   // Register for GUI Updates
-  m_core.RegisterGUINotify(UpdateGUI, (LPARAM)this);
   m_core.RegisterGUICommandInterface(GUICommandInterface, (LPARAM)this);
 
   // Register for GUI to populate its reserved field

@@ -258,11 +258,6 @@ public:
   void ResumeOnDBNotification()
   {m_bNotifyDB = true;}
 
-  // (Un)Register callback to let GUI know that DB has changed
-  bool RegisterGUINotify(void (*pfcn) (LPARAM , const Command::GUI_Action &,
-                                       uuid_array_t &, LPARAM ), LPARAM);
-  void UnRegisterGUINotify();
-
   // (Un)Register callback to let GUI populate its field in an entry
   bool RegisterGUIUpdateEntry(void (*pfcn) (CItemData &));
   void UnRegisterGUIUpdateEntry();
@@ -412,7 +407,7 @@ private:
   UIinterface *m_uii; // pointer to UI interface abtraction
   
   void NotifyGUINeedsUpdating(const Command::GUI_Action &, uuid_array_t &,
-                              LPARAM lparam = NULL);
+                              CItemData::FieldType ft = CItemData::FieldType(0));
   void CallGUICommandInterface(const Command::ExecuteFn &, PWSGUICmdIF *);
 
   // Create header for included(Text) and excluded(XML) exports
@@ -422,11 +417,6 @@ private:
   std::vector<Command *> m_vpcommands;
   std::vector<Command *>::iterator m_undo_iter;
   std::vector<Command *>::iterator m_redo_iter;
-
-  // To notify GUI of an update
-  void (*m_pfcnNotifyUpdateGUI) (LPARAM , const Command::GUI_Action &, 
-                                 uuid_array_t &, LPARAM );
-  LPARAM m_NotifyUpdateGUIInstance;
 
   // To perform a GUI dependent Command
   void (*m_pfcnGUICommandInterface) (LPARAM , const Command::ExecuteFn &, PWSGUICmdIF *);

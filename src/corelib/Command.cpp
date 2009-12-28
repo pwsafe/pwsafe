@@ -406,7 +406,9 @@ int EditEntryCommand::Execute()
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
     // Set last parameter != 0 to prevent updating GUI until after the Add
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid, (LPARAM)-1);
+    // XXX WTF ?!?!
+    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid,
+                                      (CItemData::FieldType)-1);
   }
   m_pcomInt->DoDeleteEntry(m_old_ci);
 
@@ -437,7 +439,9 @@ void EditEntryCommand::Undo()
     uuid_array_t entry_uuid;
     m_new_ci.GetUUID(entry_uuid);
     // Set last parameter != 0 to prevent updating GUI until after the Add
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid, (LPARAM)-1);
+    // XXX WTF ?!?
+    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid,
+                                      (CItemData::FieldType)-1);
   }
   m_pcomInt->DoDeleteEntry(m_new_ci);
 
@@ -494,7 +498,7 @@ int UpdateEntryCommand::Execute()
 
   if (m_bNotifyGUI)
     m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYFIELD,
-                                      m_entry_uuid, (LPARAM)m_ftype);
+                                      m_entry_uuid, m_ftype);
 
   m_bState = true;
   return 0;
@@ -515,7 +519,7 @@ void UpdateEntryCommand::Undo()
 
   if (m_bNotifyGUI)
     m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYFIELD,
-                                      m_entry_uuid, (LPARAM)m_ftype);
+                                      m_entry_uuid, m_ftype);
   m_bState = false;
 }
 

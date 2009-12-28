@@ -672,14 +672,11 @@ protected:
 
 private:
   // UIinterface implementations:
-  void DatabaseModified(bool bChanged); /* bChanged false if the database
-                                         * has been modified, (e.g. the
-                                         * last find results may no longer
-                                         * be valid) but is now unchanged
-                                         * from the last saved version. */
+  void DatabaseModified(bool bChanged);
+  void UpdateGUI(const Command::GUI_Action &ga, uuid_array_t &entry_uuid,
+                 CItemData::FieldType ft);
   
   // static methods and variables
-  static void UpdateGUI(LPARAM instance, const Command::GUI_Action &ga, uuid_array_t &entry_uuid, LPARAM lparam);
   static void GUIUpdateEntry(CItemData &ci);
   static void GUICommandInterface(LPARAM instance, const Command::ExecuteFn &when, PWSGUICmdIF *pGUICmdIF);
   void RedoDelete(WinGUICmdIF *pGUICmdIF);

@@ -54,7 +54,6 @@ PWScore::PWScore() :
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_uii(NULL),
-                     m_pfcnNotifyUpdateGUI(NULL), m_NotifyUpdateGUIInstance(NULL),
                      m_pfcnGUICommandInterface(NULL), m_GUICommandInterfaceInstance(NULL),
                      m_fileSig(NULL)
 {
@@ -1740,35 +1739,13 @@ void PWScore::NotifyDBModified()
     m_uii->DatabaseModified(m_bDBChanged || m_bDBPrefsChanged);
 }
 
-// OnGUIModified - used by GUI if one or more entries have changed
-// and the entry/entries needs refreshing in GUI
-bool PWScore::RegisterGUINotify(void (*pfcn) (LPARAM, const Command::GUI_Action &, 
-                                uuid_array_t &, LPARAM ), LPARAM instance)
-{
-  if (m_pfcnNotifyUpdateGUI != NULL)
-    return false;
-
-  if ((pfcn == NULL) || (instance == NULL)) {
-    UnRegisterGUINotify();
-    return false;
-  }
-  
-  m_pfcnNotifyUpdateGUI = pfcn;
-  m_NotifyUpdateGUIInstance = instance;
-  return true;
-}
-
-void PWScore::UnRegisterGUINotify()
-{
-  m_pfcnNotifyUpdateGUI = NULL;
-  m_NotifyUpdateGUIInstance = NULL;
-}
 
 void PWScore::NotifyGUINeedsUpdating(const Command::GUI_Action &ga, 
-                                     uuid_array_t &entry_uuid, LPARAM lparam)
+                                     uuid_array_t &entry_uuid,
+                                     CItemData::FieldType ft)
 {
-  if (m_pfcnNotifyUpdateGUI != NULL)
-    m_pfcnNotifyUpdateGUI(m_NotifyUpdateGUIInstance, ga, entry_uuid, lparam);
+  if (m_uii != NULL)
+    m_uii->UpdateGUI(ga, entry_uuid, ft);
 }
 
 // OnGUICommand

@@ -7,6 +7,9 @@
 */
 #ifndef __UIINTERFACE_H
 #define __UIINTERFACE_H
+#include "Command.h"
+#include "ItemData.h"
+
 /**
  * An abstract base class representing all of the UI functionality
  * that corelib needs to know about.
@@ -19,7 +22,17 @@
 class UIinterface {
  public:
   UIinterface() {}
+  /**
+   * UpdateGUI(bChanged):
+   * bChanged = false if the database has been modified, (e.g. the
+   * last find results may no longer be valid) but is now unchanged
+   * from the last saved version. */
   virtual void DatabaseModified(bool bChanged) = 0;
+  // UpdateGUI - used by GUI if one or more entries have changed
+  // and the entry/entries needs refreshing in GUI:
+  virtual void UpdateGUI(const Command::GUI_Action &ga,
+                         uuid_array_t &entry_uuid,
+                         CItemData::FieldType ft) = 0;
   virtual ~UIinterface() {}
 };
 
