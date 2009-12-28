@@ -23,7 +23,6 @@ class CommandInterface;
 
 #include <map>
 #include <vector>
-#include <algorithm>
 
 // Base Command class
 
@@ -39,15 +38,6 @@ public:
   void SetNoGUINotify() {m_bNotifyGUI = false;}
   void ResetSavedState(bool bNewDBState) {m_bSaveDBChanged = bNewDBState;}
 
-  enum ExecuteFn {
-    WN_INVALID = -1,
-    WN_ALL = 0,
-    WN_EXECUTE = 1,
-    WN_REDO = 2,
-    WN_EXECUTE_REDO = 3,
-    WN_UNDO = 4
-  };
-
   enum GUI_Action {
     GUI_UPDATE_STATUSBAR = 0,
     GUI_ADD_ENTRY,
@@ -58,6 +48,15 @@ public:
     GUI_UNDO_IMPORT,
     GUI_REDO_MERGESYNC,
     GUI_UNDO_MERGESYNC,
+  };
+
+  enum ExecuteFn {
+    WN_INVALID = -1,
+    WN_ALL = 0,
+    WN_EXECUTE = 1,
+    WN_REDO = 2,
+    WN_EXECUTE_REDO = 3,
+    WN_UNDO = 4
   };
 
 protected:
@@ -125,13 +124,13 @@ class UpdateGUICommand : public Command
 {
 public:
   UpdateGUICommand(CommandInterface *pcomInt, const Command::ExecuteFn When,
-                   const Command::GUI_Action ga);
+                   GUI_Action ga);
   int Execute();
   int Redo();
   void Undo();
 
 private:
-  Command::GUI_Action m_ga;
+  GUI_Action m_ga;
 };
 
 class GUICommand : public Command

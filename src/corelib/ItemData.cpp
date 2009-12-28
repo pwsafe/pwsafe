@@ -84,9 +84,7 @@ CItemData::CItemData(const CItemData &that) :
 
 CItemData::~CItemData()
 {
-  if (!m_URFL.empty()) {
-    m_URFL.clear();
-  }
+  delete m_display_info;
 }
 
 //-----------------------------------------------------------------------------

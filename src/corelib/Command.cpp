@@ -12,6 +12,8 @@
 #include "Command.h"
 #include "PWSprefs.h"
 
+#include <algorithm>
+
 // ------------------------------------------------
 // Base class: Command
 // ------------------------------------------------
@@ -135,7 +137,7 @@ bool MultiCommands::Remove(Command *c)
 bool MultiCommands::Remove()
 {
   TRACE(L"Multicommands Remove\n");
-  if (m_cmds.size() > 0) {
+  if (!m_cmds.empty()) {
     delete m_cmds.back();
     m_cmds.pop_back();
     return true;

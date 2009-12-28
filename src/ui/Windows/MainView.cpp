@@ -222,7 +222,7 @@ void DboxMain::RedoDelete(WinGUICmdIF *pGUICmdIF)
   RefreshViews();
 }
 
-void DboxMain::UpdateGUI(const Command::GUI_Action &ga, 
+void DboxMain::UpdateGUI(Command::GUI_Action ga, 
                          uuid_array_t &entry_uuid, CItemData::FieldType ft)
 {
   // Callback from PWScore if GUI needs updating
@@ -1557,19 +1557,16 @@ CItemData *DboxMain::getSelectedItem()
   return retval;
 }
 
-// functor for ClearData
-struct deleteDisplayInfo {
-  void operator()(pair<CUUIDGen, CItemData> p)
-  {delete p.second.GetDisplayInfo();
-   p.second.SetDisplayInfo(NULL);}
-};
-
 void DboxMain::ClearData(bool clearMRE)
 {
   // Iterate over item list, delete DisplayInfo
-  deleteDisplayInfo ddi;
-  for_each(m_core.GetEntryIter(), m_core.GetEntryEndIter(),
-    ddi);
+  // *** Don't use for_each, as it invokes the CItemData copy c'tor
+  // *** (indirectly, via pair<CUUIDGen, CItemData>
+  ItemListIter iter;
+  for(iter = m_core.GetEntryIter(); iter != m_core.GetEntryEndIter(); iter++) {
+    delete iter->second.GetDisplayInfo();
+    iter->second.SetDisplayInfo(NULL);
+  }
 
   m_core.ClearData();  // Clears DB & DB Preferences changed flags
 

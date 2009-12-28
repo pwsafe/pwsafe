@@ -340,7 +340,7 @@ int PWScore::Execute(Command *pcmd)
   int rc = pcmd->Execute();
 
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
-  NotifyGUINeedsUpdating(Command::GUI_UPDATE_STATUSBAR, entry_uuid);
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
   TRACE(L"PWScore Execute-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
     m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
@@ -364,7 +364,7 @@ void PWScore::Undo()
     m_undo_iter--;
 
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
-  NotifyGUINeedsUpdating(Command::GUI_UPDATE_STATUSBAR, entry_uuid);
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
   TRACE(L"PWScore Undo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
     m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
@@ -384,7 +384,7 @@ void PWScore::Redo()
     m_redo_iter++;
 
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
-  NotifyGUINeedsUpdating(Command::GUI_UPDATE_STATUSBAR, entry_uuid);
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
   TRACE(L"PWScore Redo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
     m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
@@ -1736,7 +1736,7 @@ void PWScore::NotifyDBModified()
 }
 
 
-void PWScore::NotifyGUINeedsUpdating(const Command::GUI_Action &ga, 
+void PWScore::NotifyGUINeedsUpdating(Command::GUI_Action ga, 
                                      uuid_array_t &entry_uuid,
                                      CItemData::FieldType ft)
 {
@@ -1809,6 +1809,12 @@ void PWScore::UnlockFile2(const stringT &filename)
 {
   return pws_os::UnlockFile(filename, 
                             m_lockFileHandle2, m_LockCount2);
+}
+
+bool PWScore::IsNodeModified(StringX &path) const
+{
+  return std::find(m_vnodes_modified.begin(),
+                   m_vnodes_modified.end(), path) != m_vnodes_modified.end();
 }
 
 void PWScore::AddChangedNodes(StringX path)

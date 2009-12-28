@@ -282,9 +282,7 @@ public:
   // Changed nodes
   void ClearChangedNodes()
   {m_vnodes_modified.clear();}
-  bool IsNodeModified(StringX &path)
-  {return std::find(m_vnodes_modified.begin(), m_vnodes_modified.end(), path) != 
-                    m_vnodes_modified.end();}
+  bool IsNodeModified(StringX &path) const;
 
   // Should be private but XML Import can't then reach it
   void (*m_pfcnGUIUpdateEntry) (CItemData &);
@@ -403,7 +401,7 @@ private:
 
   UIinterface *m_uii; // pointer to UI interface abtraction
   
-  void NotifyGUINeedsUpdating(const Command::GUI_Action &, uuid_array_t &,
+  void NotifyGUINeedsUpdating(Command::GUI_Action, uuid_array_t &,
                               CItemData::FieldType ft = CItemData::FieldType(0));
   void CallGUICommandInterface(const Command::ExecuteFn &, PWSGUICmdIF *);
 

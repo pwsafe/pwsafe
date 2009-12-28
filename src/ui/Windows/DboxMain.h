@@ -673,7 +673,8 @@ protected:
 private:
   // UIinterface implementations:
   void DatabaseModified(bool bChanged);
-  void UpdateGUI(const Command::GUI_Action &ga, uuid_array_t &entry_uuid,
+  void UpdateGUI(Command::GUI_Action ga,
+                 uuid_array_t &entry_uuid,
                  CItemData::FieldType ft);
   void GUIUpdateEntry(CItemData &ci);
   
