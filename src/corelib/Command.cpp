@@ -292,8 +292,6 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, CItemData &ci)
 
 AddEntryCommand::~AddEntryCommand()
 {
-  if (!m_bState && m_ci.GetDisplayInfo() != NULL)
-    delete m_ci.GetDisplayInfo();
 }
 
 int AddEntryCommand::Execute()
@@ -339,8 +337,6 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt, CItemData &ci)
 
 DeleteEntryCommand::~DeleteEntryCommand()
 {
-  if (m_bState && m_ci.GetDisplayInfo() != NULL)
-    delete m_ci.GetDisplayInfo();
 }
 
 int DeleteEntryCommand::Execute()
@@ -388,13 +384,6 @@ EditEntryCommand::EditEntryCommand(CommandInterface *pcomInt,
 
 EditEntryCommand::~EditEntryCommand()
 {
-  if (m_bState) {
-    if (m_old_ci.GetDisplayInfo() != NULL)
-      delete m_old_ci.GetDisplayInfo();
-  } else {
-    if (m_new_ci.GetDisplayInfo() != NULL)
-      delete m_new_ci.GetDisplayInfo();
-  }
 }
 
 int EditEntryCommand::Execute()
