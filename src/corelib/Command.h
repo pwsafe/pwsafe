@@ -73,13 +73,13 @@ protected:
   // Alias/Shortcut structures
   // Permanent Multimap: since potentially more than one alias/shortcut per base
   //  Key = base uuid; Value = multiple alias/shortcut uuids
-  std::multimap<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> m_saved_base2aliases_mmap;
-  std::multimap<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> m_saved_base2shortcuts_mmap;
+  ItemMMap m_saved_base2aliases_mmap;
+  ItemMMap m_saved_base2shortcuts_mmap;
 
   // Permanent Map: since an alias only has one base
   //  Key = alias/shortcut uuid; Value = base uuid
-  std::map<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> m_saved_alias2base_map;
-  std::map<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> m_saved_shortcut2base_map;
+  ItemMap m_saved_alias2base_map;
+  ItemMap m_saved_shortcut2base_map;
 
   // Changed groups
   std::vector<StringX> m_saved_vnodes_modified;

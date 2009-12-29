@@ -847,37 +847,41 @@ void DboxMain::OnOptions()
     }
 
     // If DB preferences changed and/or password history options
-    if (pmulticmds != NULL && pmulticmds->GetSize() > 0) {
-      Execute(pmulticmds);
-      if (ipwh_exec > 0) {
-        // We did do PWHistory update
-        int num_altered(0);
-        if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
-          UINT uimsg_id(0);
-          switch (iAction) {
-            case 1:   // reset off
-              uimsg_id = IDS_ENTRIESCHANGEDSTOP;
-              break;
-            case 2:   // reset on
-              uimsg_id = IDS_ENTRIESCHANGEDSAVE;
-              break;
-            case 3:   // setmax
-              uimsg_id = IDS_ENTRIESRESETMAX;
-              break;
-            default:
-              ASSERT(0);
-              break;
-          } // switch (iAction)
+    if (pmulticmds != NULL) {
+      if (pmulticmds->GetSize() > 0) {
+        Execute(pmulticmds);
+        if (ipwh_exec > 0) {
+          // We did do PWHistory update
+          int num_altered(0);
+          if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
+            UINT uimsg_id(0);
+            switch (iAction) {
+              case 1:   // reset off
+                uimsg_id = IDS_ENTRIESCHANGEDSTOP;
+                break;
+              case 2:   // reset on
+                uimsg_id = IDS_ENTRIESCHANGEDSAVE;
+                break;
+              case 3:   // setmax
+                uimsg_id = IDS_ENTRIESRESETMAX;
+                break;
+              default:
+                ASSERT(0);
+                break;
+            } // switch (iAction)
 
-          if (uimsg_id > 0) {
-            CGeneralMsgBox gmb;
-            CString cs_Msg;
-            cs_Msg.Format(uimsg_id, num_altered);
-            gmb.AfxMessageBox(cs_Msg);
+            if (uimsg_id > 0) {
+              CGeneralMsgBox gmb;
+              CString cs_Msg;
+              cs_Msg.Format(uimsg_id, num_altered);
+              gmb.AfxMessageBox(cs_Msg);
+            }
           }
-        }
-      } else
+        } 
+      } else {
+        // Was created but no commands added in the end.
         delete pmulticmds;
+      }
     }
 
     // JHF no hotkeys under WinCE
