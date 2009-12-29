@@ -975,8 +975,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   UUIDList possible_aliases, possible_shortcuts;
 
-  MultiCommands *pmulticmds = new MultiCommands(this);
-  Command *pcmd1 = new UpdateGUICommand(this, Command::WN_UNDO, Command::GUI_UNDO_IMPORT);
+  MultiCommands *pmulticmds = MultiCommands::Create(this);
+  Command *pcmd1 = UpdateGUICommand::Create(this, Command::WN_UNDO,
+                                            Command::GUI_UNDO_IMPORT);
   pmulticmds->Add(pcmd1);
 
   // Finished parsing header, go get the data!
@@ -1124,7 +1125,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         numSkipped++;
       } else {
         CItemData *pci = &iter->second;
-        Command *pcmd = new UpdatePasswordCommand(this, *pci, tokens[i_Offset[PASSWORD]].c_str());
+        Command *pcmd = UpdatePasswordCommand::Create(this, *pci,
+                                                      tokens[i_Offset[PASSWORD]].c_str());
         pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
@@ -1289,24 +1291,27 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
 
     // Add to commands to execute
-    Command *pcmd = new AddEntryCommand(this, temp);
+    Command *pcmd = AddEntryCommand::Create(this, temp);
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
     numImported++;
   } // file processing for (;;) loop
   ifs.close();
 
-  Command *pcmdA = new AddDependentEntriesCommand(this, possible_aliases, &rpt, 
-                                                   CItemData::ET_ALIAS,
-                                                   CItemData::PASSWORD);
+  Command *pcmdA = AddDependentEntriesCommand::Create(this,
+                                                      possible_aliases, &rpt, 
+                                                      CItemData::ET_ALIAS,
+                                                      CItemData::PASSWORD);
   pcmdA->SetNoGUINotify();
   pmulticmds->Add(pcmdA);
-  Command * pcmdS = new AddDependentEntriesCommand(this, possible_shortcuts, &rpt, 
-                                                    CItemData::ET_SHORTCUT,
-                                                    CItemData::PASSWORD);
+  Command * pcmdS = AddDependentEntriesCommand::Create(this,
+                                                       possible_shortcuts, &rpt, 
+                                                       CItemData::ET_SHORTCUT,
+                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
   pmulticmds->Add(pcmdS);
-  Command *pcmd2 = new UpdateGUICommand(this, Command::WN_REDO, Command::GUI_REDO_IMPORT);
+  Command *pcmd2 = UpdateGUICommand::Create(this, Command::WN_REDO,
+                                            Command::GUI_REDO_IMPORT);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
 
@@ -1360,7 +1365,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     return INVALID_FORMAT;
   }
 
-  MultiCommands *pmulticmds = new MultiCommands(this);
+  MultiCommands *pmulticmds = MultiCommands::Create(this);
 
   // the first line of the keepass text file contains a few garbage characters
   linebuf = linebuf.erase(0, linebuf.find(_T("[")));
@@ -1450,7 +1455,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     if (m_pfcnGUIUpdateEntry != NULL) {
       m_pfcnGUIUpdateEntry(temp);
     }
-    Command *pcmd = new AddEntryCommand(this, temp);
+    Command *pcmd = AddEntryCommand::Create(this, temp);
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
   }

@@ -284,7 +284,7 @@ void DBPrefsCommand::Undo()
 // AddEntryCommand
 // ------------------------------------------------
 
-AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, CItemData &ci)
+AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci)
   : Command(pcomInt), m_ci(ci)
 {
 }
@@ -329,7 +329,8 @@ void AddEntryCommand::Undo()
 // DeleteEntryCommand
 // ------------------------------------------------
 
-DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt, CItemData &ci)
+DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
+                                       const CItemData &ci)
   : Command(pcomInt), m_ci(ci)
 {
 }
@@ -375,8 +376,8 @@ void DeleteEntryCommand::Undo()
 // ------------------------------------------------
 
 EditEntryCommand::EditEntryCommand(CommandInterface *pcomInt,
-                                   CItemData &old_ci,
-                                   CItemData &new_ci)
+                                   const CItemData &old_ci,
+                                   const CItemData &new_ci)
   : Command(pcomInt), m_old_ci(old_ci), m_new_ci(new_ci)
 {
 }
@@ -449,8 +450,9 @@ void EditEntryCommand::Undo()
 // UpdateEntryCommand
 // ------------------------------------------------
 
-UpdateEntryCommand::UpdateEntryCommand(CommandInterface *pcomInt, CItemData &ci,
-                                       const CItemData::FieldType &ftype,
+UpdateEntryCommand::UpdateEntryCommand(CommandInterface *pcomInt,
+                                       const CItemData &ci,
+                                       CItemData::FieldType ftype,
                                        const StringX &value)
   : Command(pcomInt), m_ftype(ftype), m_value(value)
 {
@@ -460,9 +462,9 @@ UpdateEntryCommand::UpdateEntryCommand(CommandInterface *pcomInt, CItemData &ci,
 }
 
 void UpdateEntryCommand::Doit(const uuid_array_t &entry_uuid,
-                              const CItemData::FieldType &ftype,
+                              CItemData::FieldType ftype,
                               const StringX &value,
-                              const CItemData::EntryStatus es)
+                              CItemData::EntryStatus es)
 {
   TRACE(L"UpdateEntryCommand::Doit\n");
   if (m_pcomInt->IsReadOnly())
@@ -624,9 +626,10 @@ void AddDependentEntryCommand::Undo()
 // ------------------------------------------------
 
 AddDependentEntriesCommand::AddDependentEntriesCommand(CommandInterface *pcomInt,
-                                                       UUIDList &dependentslist, CReport *rpt,
-                                                       const CItemData::EntryType type,
-                                                       const int &iVia)
+                                                       UUIDList &dependentslist,
+                                                       CReport *rpt,
+                                                       CItemData::EntryType type,
+                                                       int iVia)
   : Command(pcomInt), m_dependentslist(dependentslist), m_rpt(rpt),
     m_type(type), m_iVia(iVia)
 {
@@ -906,22 +909,22 @@ void UpdatePasswordHistoryCommand::Undo()
   m_bState = false;
 }
 
-void MultiCommands::AddEntry(CItemData &ci)
+void MultiCommands::AddEntry(const CItemData &ci)
 {
-  Add(new AddEntryCommand(m_pcomInt, ci));
+  Add(AddEntryCommand::Create(m_pcomInt, ci));
 }
 
 void MultiCommands::AddDependentEntry(const uuid_array_t &base_uuid, 
                                       const uuid_array_t &entry_uuid,
                                       const CItemData::EntryType type)
 {
-  Add(new AddDependentEntryCommand(m_pcomInt,
-                                   base_uuid, entry_uuid, type));
+  Add(AddDependentEntryCommand::Create(m_pcomInt,
+                                       base_uuid, entry_uuid, type));
 }
 
 void MultiCommands::UpdateField(CItemData &ci, CItemData::FieldType ftype,
                                 StringX value)
 {
-  Add(new UpdateEntryCommand(m_pcomInt, ci, ftype, value));
+  Add(UpdateEntryCommand::Create(m_pcomInt, ci, ftype, value));
 }
 

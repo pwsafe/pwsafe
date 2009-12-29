@@ -997,7 +997,7 @@ bool PWScore::Validate(stringT &status)
   unsigned int num_uuid_fixed = 0;
   int num_alias_warnings, num_shortcuts_warnings;
 
-  MultiCommands *pmulticmds = new MultiCommands(this);
+  MultiCommands *pmulticmds = MultiCommands::Create(this);
 
   CReport rpt;
   stringT cs_Error, cs_temp;
@@ -1059,18 +1059,20 @@ bool PWScore::Validate(stringT &status)
     }
     if (bFixed) {
       fixedItem.SetStatus(CItemData::ES_MODIFIED);
-      Command *pcmd = new EditEntryCommand(this, ci, fixedItem);
+      Command *pcmd = EditEntryCommand::Create(this, ci, fixedItem);
       pmulticmds->Add(pcmd);
     }
   } // iteration over m_pwlist
 
-  Command *pcmdA = new AddDependentEntriesCommand(this, possible_aliases, &rpt, 
-                                                   CItemData::ET_ALIAS,
-                                                   CItemData::UUID);
+  Command *pcmdA = AddDependentEntriesCommand::Create(this,
+                                                      possible_aliases, &rpt, 
+                                                      CItemData::ET_ALIAS,
+                                                      CItemData::UUID);
   pmulticmds->Add(pcmdA);
-  Command *pcmdS = new AddDependentEntriesCommand(this, possible_shortcuts, &rpt, 
-                                                   CItemData::ET_SHORTCUT,
-                                                   CItemData::UUID);
+  Command *pcmdS = AddDependentEntriesCommand::Create(this,
+                                                      possible_shortcuts, &rpt, 
+                                                      CItemData::ET_SHORTCUT,
+                                                      CItemData::UUID);
   pmulticmds->Add(pcmdS);
   Execute(pmulticmds);
   pmulticmds->GetRC(pcmdA, num_alias_warnings);

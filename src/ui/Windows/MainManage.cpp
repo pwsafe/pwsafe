@@ -647,7 +647,7 @@ void DboxMain::OnOptions()
 
     // Maybe needed if this causes changes to database
     // (currently only DB preferences + updating PWHistory in exisiting entries)
-    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
     /*
     ** Update string in database, if necessary & possible (i.e. ignore if R-O)
@@ -661,7 +661,7 @@ void DboxMain::OnOptions()
           // Now put things back so that it can be done via Execute and so
           // eligible for Undo/Redo
           prefs->Load(oldprefString);
-          Command *pcmd = new DBPrefsCommand(&m_core, newprefString);
+          Command *pcmd = DBPrefsCommand::Create(&m_core, newprefString);
           pmulticmds->Add(pcmd);
         }
         ChangeOkUpdate();
@@ -673,7 +673,9 @@ void DboxMain::OnOptions()
     size_t ipwh_exec(0);
 
     if (iAction != 0) {
-      Command *pcmd = new UpdatePasswordHistoryCommand(&m_core, iAction, new_default_max);
+      Command *pcmd = UpdatePasswordHistoryCommand::Create(&m_core,
+                                                           iAction,
+                                                           new_default_max);
       pmulticmds->Add(pcmd);
       ipwh_exec = pmulticmds->GetSize();
     }

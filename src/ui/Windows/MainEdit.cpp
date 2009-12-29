@@ -109,15 +109,16 @@ void DboxMain::OnAdd()
 
     // Add the entry
     ci.SetStatus(CItemData::ES_ADDED);
-    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
     pmulticmds->AddEntry(ci);
 
     if (add_entry_psh.GetIBasedata() > 0) {
       uuid_array_t alias_uuid, base_uuid;
       memcpy(base_uuid, add_entry_psh.GetBaseUUID(), sizeof(base_uuid));
       ci.GetUUID(alias_uuid);
-      Command *pcmd2 = new AddDependentEntryCommand(&m_core,
-                     base_uuid, alias_uuid, CItemData::ET_ALIAS);
+      Command *pcmd2 = AddDependentEntryCommand::Create(&m_core,
+                                                        base_uuid, alias_uuid,
+                                                        CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd2);
     }
     Execute(pmulticmds);
@@ -208,8 +209,10 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   temp.SetTitle(cs_title);
   temp.SetUser(cs_user);
 
-  MultiCommands *pmulticmds = new MultiCommands(&m_core);
-  Command *pcmd1 = new AddDependentEntryCommand(&m_core, base_uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+  Command *pcmd1 = AddDependentEntryCommand::Create(&m_core, base_uuid,
+                                                    shortcut_uuid,
+                                                    CItemData::ET_SHORTCUT);
   pmulticmds->Add(pcmd1);
 
   temp.SetPassword(L"[Shortcut]");
@@ -228,7 +231,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   temp.SetXTime((time_t)0);
   temp.SetStatus(CItemData::ES_ADDED);
 
-  Command *pcmd2 = new AddEntryCommand(&m_core, temp);
+  Command *pcmd2 = AddEntryCommand::Create(&m_core, temp);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
 
@@ -326,7 +329,7 @@ void DboxMain::OnDelete()
   }
 
   if (dodelete) {
-    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
     WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
 
     Delete(pmulticmds, pGUICmdIF);
@@ -335,8 +338,7 @@ void DboxMain::OnDelete()
       RefreshViews();
 
     if (pGUICmdIF->IsValid()) {
-      Command *pcmd = new GUICommand(&m_core, pGUICmdIF);
-      pmulticmds->Add(pcmd);
+      pmulticmds->Add(GUICommand::Create(&m_core, pGUICmdIF));
     } else
       delete pGUICmdIF;
 
@@ -425,8 +427,9 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
       // Get corresponding base uuid
       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
       // Delete from both map and multimap
-      Command *pcmd = new RemoveDependentEntryCommand(&m_core, base_uuid, entry_uuid, 
-                                                      CItemData::ET_ALIAS);
+      Command *pcmd = RemoveDependentEntryCommand::Create(&m_core, base_uuid,
+                                                          entry_uuid, 
+                                                          CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
 
       // Does my base now become a normal entry - and save for Redo
@@ -446,8 +449,9 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
       // Get corresponding base uuid
       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
       // Delete from both map and multimap
-      Command *pcmd = new RemoveDependentEntryCommand(&m_core, base_uuid, entry_uuid, 
-                                                       CItemData::ET_SHORTCUT);
+      Command *pcmd = RemoveDependentEntryCommand::Create(&m_core, base_uuid,
+                                                          entry_uuid, 
+                                                          CItemData::ET_SHORTCUT);
       pmulticmds->Add(pcmd);
 
       // Does my base now become a normal entry - and save for Redo
@@ -465,10 +469,12 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
     if (num_dependents > 0) {
       // I'm a base entry
       if (entrytype == CItemData::ET_ALIASBASE) {
-        Command *pcmd1 = new ResetAllAliasPasswordsCommand(&m_core, entry_uuid);
+        Command *pcmd1 = ResetAllAliasPasswordsCommand::Create(&m_core,
+                                                               entry_uuid);
         pmulticmds->Add(pcmd1);
-        Command *pcmd2 = new RemoveAllDependentEntriesCommand(&m_core, entry_uuid,
-                                                              CItemData::ET_ALIAS);
+        Command *pcmd2 = RemoveAllDependentEntriesCommand::Create(&m_core,
+                                                                  entry_uuid,
+                                                                  CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd2);
 
         // Now make all my aliases Normal - and save for Redo
@@ -487,8 +493,9 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
           pGUICmdIF->m_vAliasDependents.push_back(auuid);
         }
       } else {
-        Command *pcmd = new RemoveAllDependentEntriesCommand(&m_core, entry_uuid, 
-                                                             CItemData::ET_SHORTCUT);
+        Command *pcmd = RemoveAllDependentEntriesCommand::Create(&m_core,
+                                                                 entry_uuid, 
+                                                                 CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
 
         // Now delete all my shortcuts - no need to save for Redo
@@ -505,14 +512,14 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
           m_ctlItemList.DeleteItem(pdi->list_index);
           m_ctlItemTree.DeleteItem(pdi->tree_item);
           FixListIndexes();
-          Command *pcmd = new DeleteEntryCommand(&m_core, cshortcut);
+          Command *pcmd = DeleteEntryCommand::Create(&m_core, cshortcut);
           pmulticmds->Add(pcmd);
         }
       }
       dependentslist.clear();
     }
 
-    Command *pcmd = new DeleteEntryCommand(&m_core, *pci);
+    Command *pcmd = DeleteEntryCommand::Create(&m_core, *pci);
     pmulticmds->Add(pcmd);
 
     if (m_ctlItemList.IsWindowVisible()) {
@@ -677,7 +684,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   if (rc == IDOK && uicaller == IDS_EDITENTRY && 
       edit_entry_psh.IsEntryModified()) {
 
-    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
     // Out with the old, in with the new
     ItemListIter listpos = Find(original_uuid);
@@ -700,8 +707,9 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
       // Original was a 'normal' entry and the password has changed
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
-        Command *pcmd = new AddDependentEntryCommand(pcore, new_base_uuid, 
-                                                      original_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid, 
+                                                         original_uuid,
+                                                         CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
         ci_edit.SetPassword(L"[Alias]");
         ci_edit.SetAlias();
@@ -715,20 +723,26 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_ALIAS) {
       // Original was an alias - delete it from multimap
       // RemoveDependentEntry also resets base to normal if the last alias is delete
-      Command *pcmd = new RemoveDependentEntryCommand(pcore, original_base_uuid, original_uuid, CItemData::ET_ALIAS);
+      Command *pcmd = RemoveDependentEntryCommand::Create(pcore,
+                                                          original_base_uuid,
+                                                          original_uuid,
+                                                          CItemData::ET_ALIAS);
       pmulticmds->Add(pcmd);
       if (newPassword == edit_entry_psh.GetBase()) {
         // Password (i.e. base) unchanged - put it back
-        Command *pcmd = new AddDependentEntryCommand(pcore, original_base_uuid, 
-                                                     original_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = AddDependentEntryCommand::Create(pcore,
+                                                         original_base_uuid, 
+                                                         original_uuid,
+                                                         CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
       } else {
         // Password changed so might be an alias of another entry!
         // Could also be the same entry i.e. [:t:] == [t] !
         if (edit_entry_psh.GetIBasedata() > 0) {
           // Still an alias
-          Command *pcmd = new AddDependentEntryCommand(pcore, new_base_uuid, 
-                                                        original_uuid, CItemData::ET_ALIAS);
+          Command *pcmd = AddDependentEntryCommand::Create(pcore, new_base_uuid, 
+                                                           original_uuid,
+                                                           CItemData::ET_ALIAS);
           pmulticmds->Add(pcmd);
           ci_edit.SetPassword(L"[Alias]");
           ci_edit.SetAlias();
@@ -746,14 +760,17 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
       if (edit_entry_psh.GetIBasedata() > 0) {
         // Now an alias
         // Make this one an alias
-        Command *pcmd1 = new AddDependentEntryCommand(pcore, new_base_uuid, 
-                                                       original_uuid, CItemData::ET_ALIAS);
+        Command *pcmd1 = AddDependentEntryCommand::Create(pcore, new_base_uuid, 
+                                                          original_uuid,
+                                                          CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd1);
         ci_edit.SetPassword(L"[Alias]");
         ci_edit.SetAlias();
         // Move old aliases across
-        Command *pcmd2 = new MoveDependentEntriesCommand(pcore, original_uuid, 
-                                                          new_base_uuid, CItemData::ET_ALIAS);
+        Command *pcmd2 = MoveDependentEntriesCommand::Create(pcore,
+                                                             original_uuid, 
+                                                             new_base_uuid,
+                                                             CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd2);
       } else {
         // Still a base entry but with a new password
@@ -794,7 +811,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
-    Command *pcmd = new EditEntryCommand(pcore, ci_original, ci_edit);
+    Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
     pmulticmds->Add(pcmd);
     Execute(pmulticmds, pcore);
 
@@ -878,7 +895,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
-    Command *pcmd = new EditEntryCommand(pcore, ci_original, ci_edit);
+    Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
     Execute(pcmd, pcore);
 
     //// AddEntry copies the entry, and we want to work with the inserted copy
@@ -935,7 +952,7 @@ void DboxMain::OnDuplicateEntry()
       listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
     } while (listpos != m_core.GetEntryEndIter());
 
-    MultiCommands *pmulticmds = new MultiCommands(&m_core);
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
     // Set up new entry
     CItemData ci2(*pci);
@@ -955,16 +972,16 @@ void DboxMain::OnDuplicateEntry()
       if (entrytype == CItemData::ET_ALIAS) {
         m_core.GetAliasBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetAlias();
-        Command *pcmd = new AddDependentEntryCommand(&m_core, base_uuid,
-                                                     new_entry_uuid,
-                                                     CItemData::ET_ALIAS);
+        Command *pcmd = AddDependentEntryCommand::Create(&m_core, base_uuid,
+                                                         new_entry_uuid,
+                                                         CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
       } else { // shortcut
         m_core.GetShortcutBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetShortcut();
-        Command *pcmd = new AddDependentEntryCommand(&m_core, base_uuid,
-                                                     new_entry_uuid,
-                                                     CItemData::ET_SHORTCUT);
+        Command *pcmd = AddDependentEntryCommand::Create(&m_core, base_uuid,
+                                                         new_entry_uuid,
+                                                         CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
       }
 
@@ -981,7 +998,7 @@ void DboxMain::OnDuplicateEntry()
       ci2.SetNormal();
 
     // Add it to the end of the list
-    Command *pcmd = new AddEntryCommand(&m_core, ci2);
+    Command *pcmd = AddEntryCommand::Create(&m_core, ci2);
     pmulticmds->Add(pcmd);
     Execute(pmulticmds);
 
@@ -1744,7 +1761,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   uuid_array_t entry_uuid;
   bool bAddToViews;
 
-  MultiCommands *pmulticmds = new MultiCommands(&m_core);
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
@@ -1819,7 +1836,9 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           gmb.AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
-        Command *pcmd = new AddDependentEntryCommand(&m_core, pl.base_uuid, entry_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = AddDependentEntryCommand::Create(&m_core, pl.base_uuid,
+                                                         entry_uuid,
+                                                         CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
         tempitem.SetPassword(L"[Alias]");
         tempitem.SetAlias();
@@ -1834,7 +1853,10 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           gmb.AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
-        Command *pcmd = new AddDependentEntryCommand(&m_core, pl.base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
+        Command *pcmd = AddDependentEntryCommand::Create(&m_core,
+                                                         pl.base_uuid,
+                                                         entry_uuid,
+                                                         CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
         tempitem.SetPassword(L"[Shortcut]");
         tempitem.SetShortcut();
@@ -1860,7 +1882,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
     }
     tempitem.SetStatus(CItemData::ES_ADDED);
     // Add to pwlist
-    Command *pcmd = new AddEntryCommand(&m_core, tempitem);
+    Command *pcmd = AddEntryCommand::Create(&m_core, tempitem);
     if (!bAddToViews) {
       // ONLY Add to pwlist and NOT to Tree or List views
       // After the call to AddDependentEntries for shortcuts, check if still
@@ -1871,13 +1893,14 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
-  Command *pcmdA = new AddDependentEntriesCommand(&m_core, possible_aliases, NULL, 
-                                                  CItemData::ET_ALIAS,
-                                                  CItemData::PASSWORD);
+  Command *pcmdA = AddDependentEntriesCommand::Create(&m_core, possible_aliases,
+                                                      NULL, CItemData::ET_ALIAS,
+                                                      CItemData::PASSWORD);
   pmulticmds->Add(pcmdA);
-  Command *pcmdS = new AddDependentEntriesCommand(&m_core, possible_shortcuts, NULL, 
-                                                  CItemData::ET_SHORTCUT,
-                                                  CItemData::PASSWORD);
+  Command *pcmdS = AddDependentEntriesCommand::Create(&m_core,
+                                                      possible_shortcuts, NULL, 
+                                                      CItemData::ET_SHORTCUT,
+                                                      CItemData::PASSWORD);
   pmulticmds->Add(pcmdS);
   Execute(pmulticmds);
 

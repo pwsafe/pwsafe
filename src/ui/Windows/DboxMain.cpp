@@ -3210,13 +3210,12 @@ GUICommand * DboxMain::CreateGUICommand(WinGUICmdIF *pGUICmdIF, PWScore *pcore)
   if (pcore == NULL)
     pcore = &m_core;
 
-  GUICommand *pGUICmd = new GUICommand(pcore, pGUICmdIF);
-  return pGUICmd;
+  return GUICommand::Create(pcore, pGUICmdIF);
 }
 
 MultiCommands * DboxMain::CreateMultiCommands(PWScore *pcore)
 {
   if (pcore == NULL)
     pcore = &m_core;
-  return new MultiCommands(pcore);
+  return MultiCommands::Create(pcore);
 }

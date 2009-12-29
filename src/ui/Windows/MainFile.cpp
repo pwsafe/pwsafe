@@ -1744,8 +1744,9 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   uuid_array_t base_uuid, new_base_uuid;
   bool bTitleRenamed(false);
 
-  MultiCommands *pmulticmds = new MultiCommands(&m_core);
-  Command *pcmd1 = new UpdateGUICommand(&m_core, Command::WN_UNDO, Command::GUI_UNDO_MERGESYNC);
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+  Command *pcmd1 = UpdateGUICommand::Create(&m_core, Command::WN_UNDO,
+                                            Command::GUI_UNDO_MERGESYNC);
   pmulticmds->Add(pcmd1);
 
   ItemListConstIter otherPos;
@@ -1873,7 +1874,7 @@ int DboxMain::Merge(const StringX &sx_Filename2)
         /* do it */
         bTitleRenamed = true;
         otherItem.SetTitle(newTitle);
-        Command *pcmd = new AddEntryCommand(&m_core, otherItem);
+        Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
         pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
 
@@ -1887,7 +1888,7 @@ int DboxMain::Merge(const StringX &sx_Filename2)
         otherItem.GetUUID(new_base_uuid);
       }
 
-      Command *pcmd = new AddEntryCommand(&m_core, otherItem);
+      Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
       pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
 
@@ -1945,7 +1946,8 @@ int DboxMain::Merge(const StringX &sx_Filename2)
     }
   }
 
-  Command *pcmd2 = new UpdateGUICommand(&m_core, Command::WN_REDO, Command::GUI_REDO_MERGESYNC);
+  Command *pcmd2 = UpdateGUICommand::Create(&m_core, Command::WN_REDO,
+                                            Command::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
       
@@ -2029,11 +2031,13 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     if (foundPos != m_core.GetEntryEndIter()) 
       continue;
 
-    Command *pcmd1 = new AddEntryCommand(&m_core, tempitem);
+    Command *pcmd1 = AddEntryCommand::Create(&m_core, tempitem);
     pcmd1->SetNoGUINotify();
     pmulticmds->Add(pcmd1);
 
-    Command *pcmd2 = new AddDependentEntryCommand(&m_core, new_base_uuid, new_entry_uuid, et);
+    Command *pcmd2 = AddDependentEntryCommand::Create(&m_core,
+                                                      new_base_uuid,
+                                                      new_entry_uuid, et);
     pcmd2->SetNoGUINotify();
     pmulticmds->Add(pcmd2);
 
@@ -2527,8 +2531,9 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
   m_bsFields.reset(CItemData::USER);
   m_bsFields.reset(CItemData::RESERVED);
 
-  MultiCommands *pmulticmds = new MultiCommands(&m_core);
-  Command *pcmd1 = new UpdateGUICommand(&m_core, Command::WN_UNDO, Command::GUI_UNDO_MERGESYNC);
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+  Command *pcmd1 = UpdateGUICommand::Create(&m_core, Command::WN_UNDO,
+                                            Command::GUI_UNDO_MERGESYNC);
   pmulticmds->Add(pcmd1);
 
   ItemListConstIter otherPos;
@@ -2592,7 +2597,7 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
                              otherUser  + StringX(L"\xbb");
       vs_updated.push_back(sx_updated);
 
-      Command *pcmd = new EditEntryCommand(&m_core, curItem, updItem);
+      Command *pcmd = EditEntryCommand::Create(&m_core, curItem, updItem);
       pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
 
@@ -2615,7 +2620,8 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
     }
   }
 
-  Command *pcmd2 = new UpdateGUICommand(&m_core, Command::WN_REDO, Command::GUI_REDO_MERGESYNC);
+  Command *pcmd2 = UpdateGUICommand::Create(&m_core, Command::WN_REDO,
+                                            Command::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
       
@@ -2892,7 +2898,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
       }
     }
     tempitem.SetStatus(CItemData::ES_ADDED);
-    Command *pcmd = new AddEntryCommand(ptocore, tempitem);
+    Command *pcmd = AddEntryCommand::Create(ptocore, tempitem);
     Execute(pcmd, ptocore);
   }
 

@@ -24,12 +24,19 @@ class CommandInterface;
 #include <map>
 #include <vector>
 
+/**
+ * Command-derived classes are used to support undo/redo.
+ * All Command based objects are created via their static Create()
+ * member function, and deleted by the CommandInterface implementation
+ * when appropriate. All constructors are non-public, to ensure that
+ * no Command object can be created on the stack.
+ */
+
 // Base Command class
 
 class Command
 {
 public:
-  Command(CommandInterface *pcomInt);
   virtual ~Command();
   virtual int Execute() = 0;
   virtual int Redo() = 0;
@@ -60,6 +67,7 @@ public:
   };
 
 protected:
+  Command(CommandInterface *pcomInt); // protected constructor!
   void SaveState();
   void RestoreState();
 
@@ -90,7 +98,8 @@ protected:
 class MultiCommands : public Command
 {
 public:
-  MultiCommands(CommandInterface *pcomInt);
+  static MultiCommands *Create(CommandInterface *pcomInt)
+  { return new MultiCommands(pcomInt); }
   ~MultiCommands();
   int Execute();
   int Redo();
@@ -103,11 +112,12 @@ public:
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_cmds.size();}
   void UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value);
-  void AddEntry(CItemData &ci);
+  void AddEntry(const CItemData &ci);
   void AddDependentEntry(const uuid_array_t &base_uuid, 
                          const uuid_array_t &entry_uuid,
                          const CItemData::EntryType type);
  private:
+  MultiCommands(CommandInterface *pcomInt);
   std::vector<Command *> m_cmds;
   std::vector<int> m_RCs;
 };
@@ -122,13 +132,17 @@ public:
 class UpdateGUICommand : public Command
 {
 public:
-  UpdateGUICommand(CommandInterface *pcomInt, Command::ExecuteFn When,
-                   GUI_Action ga);
+  static UpdateGUICommand *Create(CommandInterface *pcomInt,
+                                  Command::ExecuteFn When,
+                                  GUI_Action ga)
+  { return new UpdateGUICommand(pcomInt, When, ga); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  UpdateGUICommand(CommandInterface *pcomInt, Command::ExecuteFn When,
+                   GUI_Action ga);
   ExecuteFn m_When;
   GUI_Action m_ga;
 };
@@ -136,13 +150,15 @@ private:
 class GUICommand : public Command
 {
 public:
-  GUICommand(CommandInterface *pcomInt, PWSGUICmdIF *pGUICmdIF);
+  static GUICommand *Create(CommandInterface *pcomInt, PWSGUICmdIF *pGUICmdIF)
+  { return new GUICommand(pcomInt, pGUICmdIF); }
   ~GUICommand();
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  GUICommand(CommandInterface *pcomInt, PWSGUICmdIF *pGUICmdIF);
   PWSGUICmdIF *m_pGUICmdIF;
 };
 
@@ -151,53 +167,69 @@ private:
 class DBPrefsCommand : public Command
 {
 public:
-  DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
+  static DBPrefsCommand *Create(CommandInterface *pcomInt,
+                                StringX &sxNewDBPrefs)
+  { return new DBPrefsCommand(pcomInt, sxNewDBPrefs); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs);
   StringX m_sxOldDBPrefs;
   StringX m_sxNewDBPrefs;
   bool m_bOldState;
 };
 
+class DeleteEntryCommand;
+
 class AddEntryCommand : public Command
 {
 public:
-  AddEntryCommand(CommandInterface *pcomInt, CItemData &ci);
+  static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci)
+  { return new AddEntryCommand(pcomInt, ci); }
   ~AddEntryCommand();
   int Execute();
   int Redo();
   void Undo();
-
+  friend class DeleteEntryCommand; // allow access to c'tor
 private:
-  CItemData m_ci;
+  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
+  const CItemData m_ci;
 };
 
 class DeleteEntryCommand : public Command
 {
 public:
-  DeleteEntryCommand(CommandInterface *pcomInt, CItemData &ci);
+  static DeleteEntryCommand *Create(CommandInterface *pcomInt,
+                                    const CItemData &ci)
+  { return new DeleteEntryCommand(pcomInt, ci); }
   ~DeleteEntryCommand();
   int Execute();
   int Redo();
   void Undo();
+  friend class AddEntryCommand; // allow access to c'tor
 
 private:
-  CItemData m_ci;
+  DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
+  const CItemData m_ci;
 };
 
 class EditEntryCommand : public Command
 {
 public:
-  EditEntryCommand(CommandInterface *pcomInt, CItemData &old_ci, CItemData &new_ci);
+  static EditEntryCommand *Create(CommandInterface *pcomInt,
+                                  const CItemData &old_ci,
+                                  const CItemData &new_ci)
+  { return new EditEntryCommand(pcomInt, old_ci, new_ci); }
   ~EditEntryCommand();
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  EditEntryCommand(CommandInterface *pcomInt, const CItemData &old_ci,
+                   const CItemData &new_ci);
   CItemData m_old_ci;
   CItemData m_new_ci;
 };
@@ -205,18 +237,23 @@ private:
 class UpdateEntryCommand : public Command
 {
 public:
-  UpdateEntryCommand(CommandInterface *pcomInt, CItemData &ci,
-                     const CItemData::FieldType &ftype,
-                     const StringX &value);
+  static UpdateEntryCommand *Create(CommandInterface *pcomInt,
+                                    const CItemData &ci,
+                                    CItemData::FieldType ftype,
+                                    const StringX &value)
+  { return new UpdateEntryCommand(pcomInt, ci, ftype, value); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  UpdateEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
+                     const CItemData::FieldType ftype,
+                     const StringX &value);
   void Doit(const uuid_array_t &entry_uuid,
-            const CItemData::FieldType &ftype,
+            CItemData::FieldType ftype,
             const StringX &value,
-            const CItemData::EntryStatus es);
+            CItemData::EntryStatus es);
 
   uuid_array_t m_entry_uuid;
   CItemData::FieldType m_ftype;
@@ -227,12 +264,17 @@ private:
 class UpdatePasswordCommand : public Command
 {
 public:
-  UpdatePasswordCommand(CommandInterface *pcomInt, CItemData &ci, const StringX sxNewPassword);
+  static UpdatePasswordCommand *Create(CommandInterface *pcomInt,
+                                       CItemData &ci,
+                                       const StringX sxNewPassword)
+  { return new UpdatePasswordCommand(pcomInt, ci, sxNewPassword); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  UpdatePasswordCommand(CommandInterface *pcomInt,
+                        CItemData &ci, const StringX sxNewPassword);
   uuid_array_t m_entry_uuid;
   StringX m_sxNewPassword, m_sxOldPassword, m_sxOldPWHistory;
   CItemData::EntryStatus m_old_status;
@@ -241,14 +283,20 @@ private:
 class AddDependentEntryCommand : public Command
 {
 public:
-  AddDependentEntryCommand(CommandInterface *pcomInt, const uuid_array_t &base_uuid,
-                           const uuid_array_t &entry_uuid,
-                           const CItemData::EntryType type);
+  static AddDependentEntryCommand *Create(CommandInterface *pcomInt,
+                                          const uuid_array_t &base_uuid,
+                                          const uuid_array_t &entry_uuid,
+                                          const CItemData::EntryType type)
+  { return new AddDependentEntryCommand(pcomInt, base_uuid, entry_uuid, type); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  AddDependentEntryCommand(CommandInterface *pcomInt,
+                           const uuid_array_t &base_uuid,
+                           const uuid_array_t &entry_uuid,
+                           const CItemData::EntryType type);
   uuid_array_t m_base_uuid;
   uuid_array_t m_entry_uuid;
   CItemData::EntryType m_type;
@@ -257,15 +305,22 @@ private:
 class AddDependentEntriesCommand : public Command
 {
 public:
-  AddDependentEntriesCommand(CommandInterface *pcomInt, UUIDList &dependentslist, CReport *rpt,
-                             const CItemData::EntryType type,
-                             const int &iVia);
+  static AddDependentEntriesCommand *Create(CommandInterface *pcomInt,
+                                            UUIDList &dependentslist,
+                                            CReport *rpt,
+                                            CItemData::EntryType type,
+                                            int iVia)
+  { return new AddDependentEntriesCommand(pcomInt, dependentslist, rpt,
+                                          type, iVia); }
   ~AddDependentEntriesCommand();
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  AddDependentEntriesCommand(CommandInterface *pcomInt,
+                             UUIDList &dependentslist, CReport *rpt,
+                             CItemData::EntryType type, int iVia);
   UUIDList m_dependentslist;
   ItemList *m_pmapDeletedItems;
   SaveTypePWMap *m_pmapSaveStatus;
@@ -277,15 +332,21 @@ private:
 class RemoveDependentEntryCommand : public Command
 {
 public:
-  RemoveDependentEntryCommand(CommandInterface *pcomInt,
-                              const uuid_array_t &base_uuid,
-                              const uuid_array_t &entry_uuid,
-                              const CItemData::EntryType type);
+  static RemoveDependentEntryCommand *Create(CommandInterface *pcomInt,
+                                             const uuid_array_t &base_uuid,
+                                             const uuid_array_t &entry_uuid,
+                                             CItemData::EntryType type)
+  { return new RemoveDependentEntryCommand(pcomInt, base_uuid, entry_uuid,
+                                           type); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  RemoveDependentEntryCommand(CommandInterface *pcomInt,
+                              const uuid_array_t &base_uuid,
+                              const uuid_array_t &entry_uuid,
+                              CItemData::EntryType type);
   uuid_array_t m_base_uuid;
   uuid_array_t m_entry_uuid;
   CItemData::EntryType m_type;
@@ -294,15 +355,21 @@ private:
 class RemoveDependentEntriesCommand : public Command
 {
 public:
-  RemoveDependentEntriesCommand(CommandInterface *pcomInt,
-                                const uuid_array_t &base_uuid,
-                                const uuid_array_t &entry_uuid,
-                                const CItemData::EntryType type);
+  static RemoveDependentEntriesCommand *Create(CommandInterface *pcomInt,
+                                               const uuid_array_t &base_uuid,
+                                               const uuid_array_t &entry_uuid,
+                                               CItemData::EntryType type)
+  { return new RemoveDependentEntriesCommand(pcomInt, base_uuid, entry_uuid,
+                                             type); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  RemoveDependentEntriesCommand(CommandInterface *pcomInt,
+                                const uuid_array_t &base_uuid,
+                                const uuid_array_t &entry_uuid,
+                                CItemData::EntryType type);
   uuid_array_t m_base_uuid;
   uuid_array_t m_entry_uuid;
   CItemData::EntryType m_type;
@@ -311,13 +378,18 @@ private:
 class RemoveAllDependentEntriesCommand : public Command
 {
 public:
-  RemoveAllDependentEntriesCommand(CommandInterface *pcomInt, const uuid_array_t &base_uuid,
-                                   const CItemData::EntryType type);
+  static RemoveAllDependentEntriesCommand *Create(CommandInterface *pcomInt,
+                                                  const uuid_array_t &base_uuid,
+                                                  CItemData::EntryType type)
+  { return new RemoveAllDependentEntriesCommand(pcomInt, base_uuid, type); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  RemoveAllDependentEntriesCommand(CommandInterface *pcomInt,
+                                   const uuid_array_t &base_uuid,
+                                   CItemData::EntryType type);
   uuid_array_t m_base_uuid;
   uuid_array_t m_entry_uuid;
   CItemData::EntryType m_type;
@@ -326,14 +398,21 @@ private:
 class MoveDependentEntriesCommand : public Command
 {
 public:
-  MoveDependentEntriesCommand(CommandInterface *pcomInt, const uuid_array_t &from_baseuuid,
-                              const uuid_array_t &to_baseuuid,
-                              const CItemData::EntryType type);
+  static MoveDependentEntriesCommand *Create(CommandInterface *pcomInt,
+                                             const uuid_array_t &from_baseuuid,
+                                             const uuid_array_t &to_baseuuid,
+                                             CItemData::EntryType type)
+  { return new MoveDependentEntriesCommand(pcomInt, from_baseuuid, to_baseuuid,
+                                           type); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  MoveDependentEntriesCommand(CommandInterface *pcomInt,
+                              const uuid_array_t &from_baseuuid,
+                              const uuid_array_t &to_baseuuid,
+                              CItemData::EntryType type);
   uuid_array_t m_from_baseuuid;
   uuid_array_t m_to_baseuuid;
   CItemData::EntryType m_type;
@@ -342,12 +421,16 @@ private:
 class ResetAllAliasPasswordsCommand : public Command
 {
 public:
-  ResetAllAliasPasswordsCommand(CommandInterface *pcomInt, const uuid_array_t &base_uuid);
+  static ResetAllAliasPasswordsCommand *Create(CommandInterface *pcomInt,
+                                               const uuid_array_t &base_uuid)
+  { return new ResetAllAliasPasswordsCommand(pcomInt, base_uuid); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  ResetAllAliasPasswordsCommand(CommandInterface *pcomInt,
+                                const uuid_array_t &base_uuid);
   uuid_array_t m_base_uuid;
   std::vector<CUUIDGen> m_vSavedAliases;
 };
@@ -355,13 +438,18 @@ private:
 class UpdatePasswordHistoryCommand : public Command
 {
 public:
-  UpdatePasswordHistoryCommand(CommandInterface *pcomInt, const int iAction,
-                               const int new_default_max);
+  static UpdatePasswordHistoryCommand *Create(CommandInterface *pcomInt,
+                                              int iAction,
+                                              int new_default_max)
+  { return new UpdatePasswordHistoryCommand(pcomInt, iAction,
+                                            new_default_max); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  UpdatePasswordHistoryCommand(CommandInterface *pcomInt, int iAction,
+                               int new_default_max);
   int m_iAction;
   int m_new_default_max;
   SavePWHistoryMap m_mapSavedHistory;
