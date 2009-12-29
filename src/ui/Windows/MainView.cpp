@@ -97,7 +97,7 @@ void DboxMain::DatabaseModified(bool bChanged)
   }
 }
 
-void DboxMain::GUICommandInterface(LPARAM instance, const Command::ExecuteFn &when, 
+void DboxMain::GUICommandInterface(Command::ExecuteFn when, 
                                    PWSGUICmdIF *pGUICmdIF)
 {
   // Currently only needed during Redo of delete of an entry/Tree group which 
@@ -106,16 +106,13 @@ void DboxMain::GUICommandInterface(LPARAM instance, const Command::ExecuteFn &wh
   // Not needed during Undo as adding back the deleted entries automatically
   // re-Adds the groups previously deleted
 
-  DboxMain *self = (DboxMain *)instance;
-  ASSERT(self != NULL && pGUICmdIF != NULL);
-
   WinGUICmdIF *pWinGUICmdIF = dynamic_cast<WinGUICmdIF *>(pGUICmdIF);
 
   switch (pWinGUICmdIF->GetType()) {
     case WinGUICmdIF::GCT_DELETE:
       switch (when) {
         case Command::WN_REDO:
-          self->RedoDelete(pWinGUICmdIF);
+          RedoDelete(pWinGUICmdIF);
           break;
         case Command::WN_EXECUTE:
         case Command::WN_UNDO:
@@ -635,9 +632,6 @@ void DboxMain::setupBars()
   UpdateToolBarROStatus(m_core.IsReadOnly());
   m_menuManager.SetImageList(&m_MainToolBar);
   m_menuManager.SetMapping(&m_MainToolBar);
-
-  // Register for GUI Updates
-  m_core.RegisterGUICommandInterface(GUICommandInterface, (LPARAM)this);
 
   m_DDGroup.EnableWindow(TRUE);
   m_DDGroup.ShowWindow(SW_SHOW);

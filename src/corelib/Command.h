@@ -68,7 +68,6 @@ protected:
   bool m_bSaveDBChanged;
   bool m_bNotifyGUI;
   int m_RC;
-  ExecuteFn m_When;
   bool m_bState;
 
   // Alias/Shortcut structures
@@ -123,13 +122,14 @@ public:
 class UpdateGUICommand : public Command
 {
 public:
-  UpdateGUICommand(CommandInterface *pcomInt, const Command::ExecuteFn When,
+  UpdateGUICommand(CommandInterface *pcomInt, Command::ExecuteFn When,
                    GUI_Action ga);
   int Execute();
   int Redo();
   void Undo();
 
 private:
+  ExecuteFn m_When;
   GUI_Action m_ga;
 };
 

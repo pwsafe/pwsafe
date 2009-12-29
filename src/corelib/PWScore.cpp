@@ -54,7 +54,6 @@ PWScore::PWScore() :
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_uii(NULL),
-                     m_pfcnGUICommandInterface(NULL), m_GUICommandInterfaceInstance(NULL),
                      m_fileSig(NULL)
 {
   // following should ideally be wrapped in a mutex
@@ -1744,35 +1743,11 @@ void PWScore::NotifyGUINeedsUpdating(Command::GUI_Action ga,
     m_uii->UpdateGUI(ga, entry_uuid, ft);
 }
 
-// OnGUICommand
-bool PWScore::RegisterGUICommandInterface(void (*pfcn) (LPARAM, 
-                                          const Command::ExecuteFn &,
-                                          PWSGUICmdIF *), LPARAM instance)
-{
-  if (m_pfcnGUICommandInterface != NULL)
-    return false;
-
-  if ((pfcn == NULL) || (instance == NULL)) {
-    UnRegisterGUICommandInterface();
-    return false;
-  }
-  
-  m_pfcnGUICommandInterface = pfcn;
-  m_GUICommandInterfaceInstance = instance;
-  return true;
-}
-
-void PWScore::UnRegisterGUICommandInterface()
-{
-  m_pfcnGUICommandInterface = NULL;
-  m_GUICommandInterfaceInstance = NULL;
-}
-
-void PWScore::CallGUICommandInterface(const Command::ExecuteFn &When,
+void PWScore::CallGUICommandInterface(Command::ExecuteFn When,
                                       PWSGUICmdIF *pGUICmdIF)
 {
-  if (m_pfcnGUICommandInterface != NULL)
-    m_pfcnGUICommandInterface(m_GUICommandInterfaceInstance, When, pGUICmdIF);
+  if (m_uii != NULL)
+    m_uii->GUICommandInterface(When, pGUICmdIF);
 }
 
 

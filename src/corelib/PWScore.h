@@ -251,7 +251,7 @@ public:
   bool HaveHeaderPreferencesChanged(const StringX &prefString)
   {return _tcscmp(prefString.c_str(), m_hdr.m_prefString.c_str()) != 0;}
 
-  // (Un)Register callback to be notified if the database changes
+  // Callback to be notified if the database changes
   void NotifyDBModified();
   void SuspendOnDBNotification()
   {m_bNotifyDB = false;}
@@ -259,11 +259,6 @@ public:
   {m_bNotifyDB = true;}
 
   void GUIUpdateEntry(CItemData &ci);
-
-  // (Un)Register callback to perform a GUI command
-  bool RegisterGUICommandInterface(void (*pfcn) (LPARAM, const Command::ExecuteFn &,
-                                   PWSGUICmdIF *), LPARAM instance);
-  void UnRegisterGUICommandInterface();
 
   // Get/Set Display information from/to database
   void SetDisplayStatus(const std::vector<bool> &s);
@@ -403,7 +398,7 @@ private:
   
   void NotifyGUINeedsUpdating(Command::GUI_Action, uuid_array_t &,
                               CItemData::FieldType ft = CItemData::FieldType(0));
-  void CallGUICommandInterface(const Command::ExecuteFn &, PWSGUICmdIF *);
+  void CallGUICommandInterface(Command::ExecuteFn, PWSGUICmdIF *);
 
   // Create header for included(Text) and excluded(XML) exports
   StringX BuildHeader(const CItemData::FieldBits &bsFields, const bool bIncluded);

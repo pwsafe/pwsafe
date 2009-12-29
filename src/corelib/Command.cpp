@@ -44,8 +44,7 @@ unit of work.
 */
 
 Command::Command(CommandInterface *pcomInt)
-:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_When(WN_INVALID),
-   m_bState(false)
+:  m_pcomInt(pcomInt), m_bNotifyGUI(true), m_RC(0), m_bState(false)
 {
 }
 
@@ -175,11 +174,11 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
 // UpdateGUICommand
 // ------------------------------------------------
 
-UpdateGUICommand::UpdateGUICommand(CommandInterface *pcomInt, const Command::ExecuteFn When,
-                                   const Command::GUI_Action ga)
-  : Command(pcomInt), m_ga(ga)
+UpdateGUICommand::UpdateGUICommand(CommandInterface *pcomInt,
+                                   Command::ExecuteFn When,
+                                   Command::GUI_Action ga)
+  : Command(pcomInt), m_When(When), m_ga(ga)
 {
-  m_When = When;
 }
 
 int UpdateGUICommand::Execute()

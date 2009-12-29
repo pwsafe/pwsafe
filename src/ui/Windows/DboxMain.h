@@ -677,9 +677,8 @@ private:
                  uuid_array_t &entry_uuid,
                  CItemData::FieldType ft);
   void GUIUpdateEntry(CItemData &ci);
-  
-  // static methods and variables
-  static void GUICommandInterface(LPARAM instance, const Command::ExecuteFn &when, PWSGUICmdIF *pGUICmdIF);
+  void GUICommandInterface(Command::ExecuteFn when, PWSGUICmdIF *pGUICmdIF);
+
   void RedoDelete(WinGUICmdIF *pGUICmdIF);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
