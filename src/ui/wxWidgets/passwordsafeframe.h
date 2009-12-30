@@ -24,7 +24,7 @@
 #include "wx/frame.h"
 ////@end includes
 #include "corelib/PWScore.h"
-
+#include "corelib/UIinterface.h"
 /*!
  * Forward declarations
  */
@@ -115,7 +115,7 @@ enum {
  * PasswordSafeFrame class declaration
  */
 
-class PasswordSafeFrame: public wxFrame
+class PasswordSafeFrame: public wxFrame, public UIinterface
 {    
     DECLARE_CLASS( PasswordSafeFrame )
     DECLARE_EVENT_TABLE()
@@ -138,8 +138,17 @@ public:
     void CreateControls();
 
     ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
-    
-////@begin PasswordSafeFrame event handler declarations
+
+    // UIinterface concrete methods:
+    virtual void DatabaseModified(bool bChanged);
+    virtual void UpdateGUI(Command::GUI_Action ga,
+                           uuid_array_t &entry_uuid,
+                           CItemData::FieldType ft);
+    virtual void GUIUpdateEntry(CItemData &ci);
+    virtual void GUICommandInterface(Command::ExecuteFn When,
+                                     PWSGUICmdIF *pGUICmdIF);
+
+  ////@begin PasswordSafeFrame event handler declarations
 
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
   void OnCloseWindow( wxCloseEvent& event );

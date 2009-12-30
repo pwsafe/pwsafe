@@ -1036,8 +1036,9 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_item.GetUUID(uuid);
       ItemListIter listpos = m_core.Find(uuid);
       ASSERT(listpos != m_core.GetEntryEndIter());
-      m_core.RemoveEntryAt(listpos);
-      m_core.AddEntry(m_item);
+      m_core.Execute(EditEntryCommand::Create(&m_core,
+                                              m_core.GetEntry(listpos),
+                                              m_item));
       // refresh tree view
       m_tree->UpdateItem(m_item);
       m_grid->UpdateItem(m_item);
