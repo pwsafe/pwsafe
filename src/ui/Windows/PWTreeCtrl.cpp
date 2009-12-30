@@ -237,7 +237,8 @@ END_MESSAGE_MAP()
 
 void CPWTreeCtrl::Initialize()
 {
-  m_pDbx = static_cast<DboxMain *>(GetParent());
+  m_pDbx = dynamic_cast<DboxMain *>(GetParent());
+  ASSERT(m_pDbx != NULL);
 
   // This should really be in OnCreate(), but for some reason,
   // it was never called.
@@ -756,7 +757,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       int lindex = pdi->list_index;
 
       // update the password database record - but only those items visible!!!
-      MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
+      MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
       if (newTitle != pci->GetTitle()) {
         pmulticmds->UpdateField(*pci, CItemData::TITLE, newTitle);
         m_pDbx->UpdateListItemTitle(lindex, newTitle);
@@ -804,7 +805,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
           sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(ptvinfo->item.pszText);
         }
         m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
-        MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
+        MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
         UpdateLeafsGroup(pmulticmds, ti, prefix);
         m_pDbx->Execute(pmulticmds);
       } // good group name (no GROUP_SEP)
@@ -1104,36 +1105,42 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     pdi_new->tree_item = 0;
     temp.SetDisplayInfo(pdi_new);
 
-    CItemData::EntryType temp_et = temp.GetEntryType();
 
-    MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
+    Command *cmd = AddEntryCommand::Create(m_pDbx->GetCore(), temp);
+
+    CItemData::EntryType temp_et = temp.GetEntryType();
     switch (temp_et) {
-      case CItemData::ET_NORMAL:
-        break;
-      case CItemData::ET_ALIASBASE:
-      case CItemData::ET_SHORTCUTBASE:
-        // An alias or shortcut can only have one base
-        temp.SetNormal();
-        break;
-      case CItemData::ET_ALIAS:
-        // Get base of original alias and make this copy point to it
-        m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
-        pmulticmds->AddDependentEntry(base_uuid, temp_uuid,
-                                      CItemData::ET_ALIAS);
-        temp.SetPassword(CSecString(L"[Alias]"));
-        break;
-      case CItemData::ET_SHORTCUT:
-        // Get base of original shortcut and make this copy point to it
-        m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
-        pmulticmds->AddDependentEntry(base_uuid, temp_uuid,
-                                      CItemData::ET_SHORTCUT);
-        temp.SetPassword(CSecString(L"[Shortcut]"));
-        break;
-      default:
-        ASSERT(0);
+    case CItemData::ET_NORMAL:
+      break;
+    case CItemData::ET_ALIASBASE:
+    case CItemData::ET_SHORTCUTBASE:
+      // An alias or shortcut can only have one base
+      temp.SetNormal();
+      break;
+    case CItemData::ET_ALIAS:
+      // Get base of original alias and make this copy point to it
+      m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
+      // replace AddEntry command with multicommand containing
+      // AddEntry and AddDependentEntryCommand
+      cmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), cmd,
+                                                   base_uuid, temp_uuid,
+                                                   CItemData::ET_ALIAS);
+      temp.SetPassword(CSecString(L"[Alias]"));
+      break;
+    case CItemData::ET_SHORTCUT:
+      // Get base of original shortcut and make this copy point to it
+      m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
+      // replace AddEntry command with multicommand containing
+      // AddEntry and AddDependentEntryCommand
+      cmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), cmd,
+                                                   base_uuid, temp_uuid,
+                                                   CItemData::ET_SHORTCUT);
+      temp.SetPassword(CSecString(L"[Shortcut]"));
+      break;
+    default:
+      ASSERT(0);
     }
-    pmulticmds->AddEntry(temp);
-    m_pDbx->Execute(pmulticmds);
+    m_pDbx->Execute(cmd);
 
     // Mark database as modified!
     m_pDbx->SetChanged(DboxMain::Data);
@@ -1312,7 +1319,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
         parent != hitemDrop) {
       // drag operation allowed
       if (dropEffect == DROPEFFECT_MOVE) {
-        MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
+        MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
         MoveItem(pmulticmds, m_hitemDrag, hitemDrop);
         m_pDbx->Execute(pmulticmds);
       } else
@@ -1396,13 +1403,13 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
   if (m_cfdropped == m_tcddCPFID &&
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
       !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
-    MultiCommands *pmulticmds = m_pDbx->CreateMultiCommands();
+    MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
     WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
 
     m_pDbx->Delete(pmulticmds, pGUICmdIF);
 
     if (pGUICmdIF->IsValid()) {
-      Command *pcmd = m_pDbx->CreateGUICommand(pGUICmdIF);
+      Command *pcmd = GUICommand::Create(m_pDbx->GetCore(), pGUICmdIF);
       pmulticmds->Add(pcmd);
     } else
       delete pGUICmdIF;

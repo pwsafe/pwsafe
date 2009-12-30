@@ -1202,12 +1202,10 @@ void DboxMain::OnMove(int x, int y)
 
 void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 {
-  SaveGUIStatus();
   if (pcore == NULL)
-    m_core.Execute(pcmd);
-  else
-    pcore->Execute(pcmd);
-
+    pcore = &m_core;
+  SaveGUIStatus();
+  pcore->Execute(pcmd);
   UpdateToolBarDoUndo();
 }
 
@@ -3205,17 +3203,3 @@ void DboxMain::UpdateSystemMenu()
 #endif
 }
 
-GUICommand * DboxMain::CreateGUICommand(WinGUICmdIF *pGUICmdIF, PWScore *pcore)
-{
-  if (pcore == NULL)
-    pcore = &m_core;
-
-  return GUICommand::Create(pcore, pGUICmdIF);
-}
-
-MultiCommands * DboxMain::CreateMultiCommands(PWScore *pcore)
-{
-  if (pcore == NULL)
-    pcore = &m_core;
-  return MultiCommands::Create(pcore);
-}

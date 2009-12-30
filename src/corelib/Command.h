@@ -94,6 +94,7 @@ protected:
 };
 
 // Derived MultiCommands class
+class AddEntryCommand; // silly fwd decl - move  MultiCommands to last?
 
 class MultiCommands : public Command
 {
@@ -111,11 +112,17 @@ public:
   bool GetRC(Command *c, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_cmds.size();}
-  void UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value);
+
+  // Some convenience routines:
   void AddEntry(const CItemData &ci);
-  void AddDependentEntry(const uuid_array_t &base_uuid, 
-                         const uuid_array_t &entry_uuid,
-                         const CItemData::EntryType type);
+  void UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value);
+  // Following is used to change a simple AddEntryCommand command into
+  // AddEntryCommand + AddDependentEntryCommand
+  static MultiCommands *MakeAddDependentCommand(CommandInterface *pcomInt,
+                                                Command *aec,
+                                                const uuid_array_t &base_uuid, 
+                                                const uuid_array_t &entry_uuid,
+                                                const CItemData::EntryType type);
  private:
   MultiCommands(CommandInterface *pcomInt);
   std::vector<Command *> m_cmds;

@@ -170,6 +170,29 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
   }
 }
 
+void MultiCommands::AddEntry(const CItemData &ci)
+{
+  Add(AddEntryCommand::Create(m_pcomInt, ci));
+}
+
+void MultiCommands::UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value)
+{
+  Add(UpdateEntryCommand::Create(m_pcomInt, ci, ftype, value));
+}
+
+MultiCommands *MultiCommands::MakeAddDependentCommand(CommandInterface *pcomInt,
+                                                      Command *aec,
+                                                      const uuid_array_t &base_uuid, 
+                                                      const uuid_array_t &entry_uuid,
+                                                      const CItemData::EntryType type)
+{
+  MultiCommands *mc = new MultiCommands(pcomInt);
+  mc->Add(aec);
+  mc->Add(AddDependentEntryCommand::Create(mc->m_pcomInt, base_uuid,
+                                           entry_uuid, type));
+  return mc;
+}
+
 // ------------------------------------------------
 // UpdateGUICommand
 // ------------------------------------------------
@@ -908,23 +931,3 @@ void UpdatePasswordHistoryCommand::Undo()
   RestoreState();
   m_bState = false;
 }
-
-void MultiCommands::AddEntry(const CItemData &ci)
-{
-  Add(AddEntryCommand::Create(m_pcomInt, ci));
-}
-
-void MultiCommands::AddDependentEntry(const uuid_array_t &base_uuid, 
-                                      const uuid_array_t &entry_uuid,
-                                      const CItemData::EntryType type)
-{
-  Add(AddDependentEntryCommand::Create(m_pcomInt,
-                                       base_uuid, entry_uuid, type));
-}
-
-void MultiCommands::UpdateField(CItemData &ci, CItemData::FieldType ftype,
-                                StringX value)
-{
-  Add(UpdateEntryCommand::Create(m_pcomInt, ci, ftype, value));
-}
-

@@ -109,19 +109,19 @@ void DboxMain::OnAdd()
 
     // Add the entry
     ci.SetStatus(CItemData::ES_ADDED);
-    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-    pmulticmds->AddEntry(ci);
+    Command *cmd = AddEntryCommand::Create(&m_core, ci);
 
-    if (add_entry_psh.GetIBasedata() > 0) {
+    if (add_entry_psh.GetIBasedata() > 0) { // creating an alias
       uuid_array_t alias_uuid, base_uuid;
       memcpy(base_uuid, add_entry_psh.GetBaseUUID(), sizeof(base_uuid));
       ci.GetUUID(alias_uuid);
-      Command *pcmd2 = AddDependentEntryCommand::Create(&m_core,
-                                                        base_uuid, alias_uuid,
-                                                        CItemData::ET_ALIAS);
-      pmulticmds->Add(pcmd2);
+      // replace AddEntry command with multicommand containing
+      // AddEntry and AddDependentEntryCommand
+      cmd = MultiCommands::MakeAddDependentCommand(&m_core, cmd,
+                                                   base_uuid, alias_uuid,
+                                                   CItemData::ET_ALIAS);
     }
-    Execute(pmulticmds);
+    Execute(cmd); // Either AddEntry or MultiCommands
 
     // Update Toolbar for this new entry
     m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);

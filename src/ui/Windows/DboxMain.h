@@ -320,9 +320,10 @@ public:
   bool IsNodeModified(StringX &path)
   {return m_core.IsNodeModified(path);}
 
-  GUICommand * CreateGUICommand(WinGUICmdIF *pGUICmdIF, PWScore *pcore = NULL);
-  MultiCommands * CreateMultiCommands(PWScore *pcore = NULL);
-  void Execute(Command *c, PWScore *pcore = NULL);
+  // Following to simplify Command creation in child dialogs:
+  CommandInterface *GetCore() {return &m_core;}
+  
+  void Execute(Command *c, PWScore *core = NULL);
   void UpdateToolBarDoUndo();
 
   //{{AFX_DATA(DboxMain)
