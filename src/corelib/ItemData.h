@@ -220,7 +220,7 @@ public:
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy
     DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
-    void SetDisplayInfo(DisplayInfoBase *di) {m_display_info = di;}
+    void SetDisplayInfo(DisplayInfoBase *di) {delete m_display_info; m_display_info = di;}
     void Clear();
     // check record for mandatory fields, silently fix if missing
     int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,

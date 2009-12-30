@@ -122,7 +122,7 @@ public:
                                                 Command *aec,
                                                 const uuid_array_t &base_uuid, 
                                                 const uuid_array_t &entry_uuid,
-                                                const CItemData::EntryType type);
+                                                CItemData::EntryType type);
  private:
   MultiCommands(CommandInterface *pcomInt);
   std::vector<Command *> m_cmds;

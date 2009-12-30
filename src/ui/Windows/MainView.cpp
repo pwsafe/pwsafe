@@ -877,6 +877,7 @@ BOOL DboxMain::SelItemOk()
 BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 {
   BOOL retval;
+  ASSERT(i >=0);
   if (m_ctlItemList.GetItemCount() == 0)
     return false;
 
@@ -1553,15 +1554,6 @@ CItemData *DboxMain::getSelectedItem()
 
 void DboxMain::ClearData(bool clearMRE)
 {
-  // Iterate over item list, delete DisplayInfo
-  // *** Don't use for_each, as it invokes the CItemData copy c'tor
-  // *** (indirectly, via pair<CUUIDGen, CItemData>
-  ItemListIter iter;
-  for(iter = m_core.GetEntryIter(); iter != m_core.GetEntryEndIter(); iter++) {
-    delete iter->second.GetDisplayInfo();
-    iter->second.SetDisplayInfo(NULL);
-  }
-
   m_core.ClearData();  // Clears DB & DB Preferences changed flags
 
   UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);

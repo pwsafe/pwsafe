@@ -184,7 +184,7 @@ MultiCommands *MultiCommands::MakeAddDependentCommand(CommandInterface *pcomInt,
                                                       Command *aec,
                                                       const uuid_array_t &base_uuid, 
                                                       const uuid_array_t &entry_uuid,
-                                                      const CItemData::EntryType type)
+                                                      CItemData::EntryType type)
 {
   MultiCommands *mc = new MultiCommands(pcomInt);
   mc->Add(aec);

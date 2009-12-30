@@ -199,22 +199,12 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   ASSERT(pci != NULL);
   pci->GetUUID(base_uuid);
 
-  //Finish Check (Does that make any geographical sense?)
   CItemData temp;
-  time_t t;
-
   temp.CreateUUID();
   temp.GetUUID(shortcut_uuid);
   temp.SetGroup(cs_group);
   temp.SetTitle(cs_title);
   temp.SetUser(cs_user);
-
-  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-  Command *pcmd1 = AddDependentEntryCommand::Create(&m_core, base_uuid,
-                                                    shortcut_uuid,
-                                                    CItemData::ET_SHORTCUT);
-  pmulticmds->Add(pcmd1);
-
   temp.SetPassword(L"[Shortcut]");
   temp.SetShortcut();
   ItemListIter iter = m_core.Find(base_uuid);
@@ -226,14 +216,18 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
     SetEntryImage(pdi->tree_item, nImage, true);
   }
 
+  time_t t;
   time(&t);
   temp.SetCTime(t);
   temp.SetXTime((time_t)0);
   temp.SetStatus(CItemData::ES_ADDED);
 
-  Command *pcmd2 = AddEntryCommand::Create(&m_core, temp);
-  pmulticmds->Add(pcmd2);
-  Execute(pmulticmds);
+  Command *cmd = MultiCommands::MakeAddDependentCommand(&m_core,
+                                                        AddEntryCommand::Create(&m_core,
+                                                                                temp),
+                                                        base_uuid, shortcut_uuid,
+                                                        CItemData::ET_SHORTCUT);
+  Execute(cmd);
 
   if (m_core.GetNumEntries() == 1) {
     // For some reason, when adding the first entry, it is not visible!
@@ -882,8 +876,6 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     ItemListIter listpos = Find(entry_uuid);
     ASSERT(listpos != pcore->GetEntryEndIter());
     CItemData oldElem = GetEntryAt(listpos);
-    DisplayInfo *pdi = (DisplayInfo *)oldElem.GetDisplayInfo();
-    ASSERT(pdi != NULL);
     // ci_edit's displayinfo will have been deleted if
     // application "locked" (Cleared list)
     DisplayInfo *pdi_new = new DisplayInfo;
@@ -898,18 +890,12 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
     Execute(pcmd, pcore);
 
-    //// AddEntry copies the entry, and we want to work with the inserted copy
-    //// Which we'll find by uuid
-    //InsertItemIntoGUITreeList(pcore->GetEntry(pcore->Find(entry_uuid)));
-    //FixListIndexes();
-
-    // Now delete old entry's DisplayInfo
-    //delete pdi;
-
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
         Save();
     }
 
+    // DisplayInfo's copied and changed, get up-to-date version
+    pdi_new = dynamic_cast<DisplayInfo *>(pcore->GetEntry(pcore->Find(entry_uuid)).GetDisplayInfo());
     rc = SelectEntry(pdi_new->list_index);
 
     if (rc == 0) {
@@ -1932,7 +1918,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
 // Return whether first [g:t:u] is greater than the second [g:t:u]
 // used in std::sort in SortDependents below.
-bool GTUCompare(const StringX &elem1, const StringX &elem2)
+static bool GTUCompare(const StringX &elem1, const StringX &elem2)
 {
   StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
 
