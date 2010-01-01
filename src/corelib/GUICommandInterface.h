@@ -17,7 +17,7 @@ class PWSGUICmdIF
 {
 public:
   PWSGUICmdIF() {}
-  ~PWSGUICmdIF() {}
+  virtual ~PWSGUICmdIF() {}
 
   virtual bool IsValid() const = 0;
 };
