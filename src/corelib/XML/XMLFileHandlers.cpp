@@ -517,7 +517,8 @@ void XMLFileHandlers::AddEntries()
               GetPref(PWSprefs::MaintainDateTimeStamps);
   bool bIntoEmpty = m_pxmlcore->GetNumEntries() == 0;
 
-  Command *pcmd1 = new UpdateGUICommand(m_pxmlcore, Command::WN_UNDO, Command::GUI_UNDO_IMPORT);
+  Command *pcmd1 = UpdateGUICommand::Create(m_pxmlcore, Command::WN_UNDO,
+                                            Command::GUI_UNDO_IMPORT);
   m_pmulticmds->Add(pcmd1);
 
   for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
@@ -533,7 +534,8 @@ void XMLFileHandlers::AddEntries()
         m_numEntries--;
       } else {
         CItemData *pci = &iter->second;
-        Command *pcmd = new UpdatePasswordCommand(m_pxmlcore, *pci, cur_entry->password);
+        Command *pcmd = UpdatePasswordCommand::Create(m_pxmlcore, *pci,
+                                                      cur_entry->password);
         pcmd->SetNoGUINotify();
         m_pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
@@ -701,12 +703,13 @@ void XMLFileHandlers::AddEntries()
     if (m_pxmlcore->m_pfcnGUIUpdateEntry != NULL) {
       m_pxmlcore->m_pfcnGUIUpdateEntry(tempitem);
     }
-    Command *pcmd = new AddEntryCommand(m_pxmlcore, tempitem);
+    Command *pcmd = AddEntryCommand::Create(m_pxmlcore, tempitem);
     pcmd->SetNoGUINotify();
     m_pmulticmds->Add(pcmd);
     delete cur_entry;
   }
-  Command *pcmd2 = new UpdateGUICommand(m_pxmlcore, Command::WN_REDO, Command::GUI_REDO_IMPORT);
+    Command *pcmd2 = UpdateGUICommand::Create(m_pxmlcore, Command::WN_REDO,
+                                              Command::GUI_REDO_IMPORT);
   m_pmulticmds->Add(pcmd2);
 }
 

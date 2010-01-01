@@ -745,7 +745,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            CReport &rpt)
 {
   UUIDList possible_aliases, possible_shortcuts;
-  MultiCommands *pmulticmds = new MultiCommands(this);
+  MultiCommands *pmulticmds = MultiCommands::Create(this);
 
 #if   USE_XML_LIBRARY == EXPAT
   EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
@@ -800,14 +800,14 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   }
   uhfl.clear();
 
-  Command *pcmdA = new AddDependentEntriesCommand(this, possible_aliases, &rpt, 
-                                                   CItemData::ET_ALIAS,
-                                                   CItemData::PASSWORD);
+  Command *pcmdA = AddDependentEntriesCommand::Create(this, possible_aliases, &rpt, 
+                                                      CItemData::ET_ALIAS,
+                                                      CItemData::PASSWORD);
   pcmdA->SetNoGUINotify();
   pmulticmds->Add(pcmdA);
-  Command * pcmdS = new AddDependentEntriesCommand(this, possible_shortcuts, &rpt, 
-                                                    CItemData::ET_SHORTCUT,
-                                                    CItemData::PASSWORD);
+  Command * pcmdS = AddDependentEntriesCommand::Create(this, possible_shortcuts, &rpt, 
+                                                       CItemData::ET_SHORTCUT,
+                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
   pmulticmds->Add(pcmdS);
   Execute(pmulticmds);
