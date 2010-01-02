@@ -4002,9 +4002,11 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
   bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
   bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
 
-  if (ft == CItemData::TITLE ||
-      (ft == CItemData::USER && bShowUsernameInTree) ||
-      (ft == CItemData::PASSWORD && bShowPasswordInTree)) {
+  if (ft == CItemData::GROUP) {
+    RefreshViews();
+  } else if (ft == CItemData::TITLE || 
+             (ft == CItemData::USER && bShowUsernameInTree) ||
+             (ft == CItemData::PASSWORD && bShowPasswordInTree)) {
     StringX treeDispString = ci.GetTitle();
 
     if (bShowUsernameInTree)
