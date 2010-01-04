@@ -128,7 +128,14 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForDelete(false), m_bFilterForStatus(false),
   m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER)),
-  m_hUser32(NULL), m_bInAddGroup(false)
+  m_hUser32(NULL), m_bInAddGroup(false),
+  m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
+  m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
+  m_wpAutotypeUPMsg(WM_KEYUP), m_wpAutotypeDNMsg(WM_KEYDOWN), m_wpAutotypeKey('T'),
+  m_bDeleteCtrl(false), m_bDeleteShift(false),
+  m_bRenameCtrl(false), m_bRenameShift(false),
+  m_bAutotypeCtrl(false), m_bAutotypeShift(false),
+  m_bInAT(false)
 {
   // Need to do this as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = ::LoadLibrary(L"User32.dll");
@@ -162,6 +169,9 @@ DboxMain::DboxMain(CWnd* pParent)
   m_titlebar = L"";
   m_toolbarsSetup = FALSE;
 #endif
+
+  // Zero Autotype bits
+  m_btAT.reset();
 }
 
 DboxMain::~DboxMain()
@@ -2102,6 +2112,10 @@ void DboxMain::startLockCheckTimer()
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 {
+  // Don't do anything if in AutoType
+  if (m_bInAT)
+    return TRUE;
+
   // Do Dragbar tooltips
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
@@ -3095,4 +3109,88 @@ void DboxMain::UpdateSystemMenu()
    }
    pSysMenu->ModifyMenu(SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, cs_text);
 #endif
+}
+
+bool DboxMain::CheckPreTranslateDelete(MSG* pMsg)
+{
+  // Both TreeCtrl and ListCtrl
+  if (pMsg->message == m_wpDeleteMsg && pMsg->wParam == m_wpDeleteKey) {
+    if (m_bDeleteCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+        m_bDeleteShift == (GetKeyState(VK_SHIFT)   < 0)) {
+      if (!m_core.IsReadOnly())
+        OnDelete();
+      return true;
+    }
+  }
+  return false;
+}
+
+bool DboxMain::CheckPreTranslateRename(MSG* pMsg)
+{
+  // Only TreeCtrl but not ListCtrl!
+  if (pMsg->message == m_wpRenameMsg && pMsg->wParam == m_wpRenameKey) {
+    if (m_bRenameCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+        m_bRenameShift == (GetKeyState(VK_SHIFT)   < 0)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
+{
+  // Need to handle the keyboard shortcut for AutoType ourselves in order
+  // to remove any interaction of the keyboard and AutoTyped characters
+  if (m_wpAutotypeKey != 0) {
+    // Process user's Autotype shortcut - (Sys)KeyDown
+    if (pMsg->message == m_wpAutotypeDNMsg && pMsg->wParam == m_wpAutotypeKey) {
+      if (m_bAutotypeCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+          m_bAutotypeShift == (GetKeyState(VK_SHIFT)   < 0)) {
+        m_btAT.set(0);   // Virtual Key
+        if (m_bAutotypeCtrl)
+          m_btAT.set(1); // Ctrl Key
+        if (m_bAutotypeShift)
+          m_btAT.set(2); // Shift Key
+        m_bInAT = true;
+        return true;
+      }
+    }
+
+    // Process user's Autotype shortcut - (Sys)KeyUp
+    if (m_bInAT &&
+        pMsg->message == m_wpAutotypeUPMsg && pMsg->wParam == m_wpAutotypeKey) {
+      m_btAT.reset(0);   // Virtual Key
+      if (m_btAT.none()) {
+        // All keys are now up - send the message
+        PerformAutoType();
+        m_bInAT = false;
+      }
+      return true;
+    }
+
+    // Process user's Autotype shortcut - KeyUp Ctrl key
+    if (m_bInAT && m_bAutotypeCtrl &&
+        pMsg->message == WM_KEYUP && pMsg->wParam == VK_CONTROL) {
+      m_btAT.reset(1);   // Ctrl Key
+      if (m_btAT.none()) {
+        // All keys are now up - send the message
+        PerformAutoType();
+        m_bInAT = false;
+      }
+      return true;
+    }
+
+    // Process user's Autotype shortcut - KeyUp Shift key
+    if (m_bInAT && m_bAutotypeShift &&
+        pMsg->message == WM_KEYUP && pMsg->wParam == VK_SHIFT) {
+      m_btAT.reset(2);   // Shift Key
+      if (m_btAT.none()) {
+        // All keys are now up - send the message
+        PerformAutoType();
+        m_bInAT = false;
+      }
+      return true;
+    }
+  }
+  return false;
 }

@@ -13,8 +13,10 @@
 
 #include <Afxcmn.h>
 #include "SecString.h"
-#include <vector>
 #include "PwFont.h"
+
+#include <vector>
+#include <bitset>
 
 class DboxMain;
 class CItemData;
@@ -70,8 +72,6 @@ public:
   void EndDrop() {m_bDropped = true;}
   void SetFilterState(bool bState);
   bool WasLabelEdited() {return m_bEditLabelCompleted;};
-  void SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier);
-  void SetRenameKey(const unsigned char cVirtKey, const unsigned char cModifier);
   void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
@@ -154,11 +154,6 @@ private:
   bool m_bFilterActive;
   bool m_bEditLabelCompleted;
 
-  // Delete/Rename Shortcuts
-  WPARAM m_wpDeleteMsg, m_wpDeleteKey;
-  WPARAM m_wpRenameMsg, m_wpRenameKey;
-  bool m_bDeleteCtrl, m_bDeleteShift;
-  bool m_bRenameCtrl, m_bRenameShift;
   PWFonts m_fonts;
   bool m_bUseHighLighting;
   std::vector<StringX> m_vnodes_modified;

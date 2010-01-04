@@ -1189,22 +1189,39 @@ void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp,
   }
 }
 
+void DboxMain::PerformAutoType()
+{
+  OnAutoType();
+}
+
 void DboxMain::OnAutoType()
 {
-  if (SelItemOk() == TRUE) {
-    CItemData *pci = getSelectedItem();
-    ASSERT(pci != NULL);
-
-    UpdateAccessTime(pci);
-
-    // All code using ci must be before this AutoType since the
-    // latter may trash *pci if lock-on-minimize
-    AutoType(*pci);
+  CItemData *pci(NULL);
+  if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
+    pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
+    TRACE("OnAutoType: Using Tree found item\n");
+  } else
+  if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem >= 0) {
+    pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
+    TRACE("OnAutoType: Using List found item\n");
+  } else {
+    pci = getSelectedItem();
+    TRACE("OnAutoType: Using Selected item\n");
   }
+
+  if (pci == NULL)
+    return;
+
+  UpdateAccessTime(pci);
+
+  // All code using ci must be before this AutoType since the
+  // latter may trash *pci if lock-on-minimize
+  AutoType(*pci);
 }
 
 void DboxMain::AutoType(const CItemData &ci)
 {
+  // Called from OnAutoType and OnTrayAutoType
   StringX group, title, user, pwd, notes, AutoCmd;
   ItemListIter iter;
   uuid_array_t base_uuid, entry_uuid;
@@ -1379,7 +1396,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
 
   // Stop Keyboard/Mouse Input
   TRACE(L"DboxMain::DoAutoType - BlockInput set\n");
-  ::BlockInput(true);
+  ::BlockInput(TRUE);
 
   // Note that minimizing the window before calling ci.Get*()
   // will cause garbage to be read if "lock on minimize" selected,
@@ -1512,7 +1529,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
 
   // Reset Keyboard/Mouse Input
   TRACE(L"DboxMain::DoAutoType - BlockInput reset\n");
-  ::BlockInput(false);
+  ::BlockInput(FALSE);
 
   vsx_notes_lines.clear();
 }

@@ -13,6 +13,8 @@
 #include "ControlExtns.h"
 #include <vector>
 
+class DboxMain;
+
 class CPWFindToolBar : public CToolBar
 {
   DECLARE_DYNAMIC(CPWFindToolBar)
@@ -71,7 +73,7 @@ private:
 
   CImageList m_ImageLists[3];  // 1st = Classic; 2nd = New 8; 3rd = New 32;
   TBBUTTON *m_pOriginalTBinfo;
-  CWnd *m_pDbx;
+  DboxMain *m_pDbx;
   CFont m_FindTextFont;
   int m_iMaxNumButtons, m_iNum_Bitmaps, m_NumBits;
   int m_iWMSGID;
