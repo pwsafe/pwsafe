@@ -128,11 +128,11 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
     m_options_psh->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
   }
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
-  CSpinButtonCtrl* pspinD = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
-  CSpinButtonCtrl* pspinL = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINLOWERCASE);
-  CSpinButtonCtrl* pspinS = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINSYMBOLS);
-  CSpinButtonCtrl* pspinU = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINUPPERCASE);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
+  CSpinButtonCtrl *pspinD = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
+  CSpinButtonCtrl *pspinL = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINLOWERCASE);
+  CSpinButtonCtrl *pspinS = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINSYMBOLS);
+  CSpinButtonCtrl *pspinU = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINUPPERCASE);
 
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWLENGTH));
   pspin->SetRange(4, 1024);

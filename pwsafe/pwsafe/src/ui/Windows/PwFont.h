@@ -20,7 +20,7 @@ void ExtractFont(const CString& str, LOGFONT &logfont);
 struct PWFonts {
   PWFonts() : m_pCurrentFont(NULL), m_pModifiedFont(NULL), m_pDeletedFont(NULL) {}
   ~PWFonts() {delete m_pModifiedFont; delete m_pDeletedFont;}
-  void SetUpFont(CWnd *w, CFont *pfont);
+  void SetUpFont(CWnd *pWnd, CFont *pfont);
   CFont *m_pCurrentFont;  // Do NOT delete - done in DboxMain
   CFont *m_pModifiedFont, *m_pDeletedFont;
   static const COLORREF MODIFIED_COLOR;

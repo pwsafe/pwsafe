@@ -1417,6 +1417,7 @@ void DboxMain::SetChanged(ChangeType changed)
     case Data:
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately) &&
           !m_bInAddGroup) {
+        // Don't save if just adding group as it will just 'disappear'!
         Save();
       } else {
         m_core.SetDBChanged(true);
@@ -1447,13 +1448,13 @@ void DboxMain::ChangeOkUpdate()
     return;
 
 #if defined(POCKET_PC)
-  CMenu *menu = m_wndMenu;
+  CMenu *pmenu = m_pwndMenu;
 #else
-  CMenu *menu = GetMenu();
+  CMenu *pmenu = GetMenu();
 #endif
 
   // Don't need to worry about R-O, as IsChanged can't be true in this case
-  menu->EnableMenuItem(ID_MENUITEM_SAVE,
+  pmenu->EnableMenuItem(ID_MENUITEM_SAVE,
     (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) ? MF_ENABLED : MF_GRAYED);
   if (m_toolbarsSetup == TRUE) {
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_SAVE,
@@ -1890,14 +1891,14 @@ void DboxMain::ConfigureSystemMenu()
 {
 #if defined(POCKET_PC)
   m_wndCommandBar = (CCeCommandBar*) m_pWndEmptyCB;
-  m_wndMenu = m_wndCommandBar->InsertMenuBar(IDR_MAINMENU);
+  m_pwndMenu = m_wndCommandBar->InsertMenuBar(IDR_MAINMENU);
 
-  ASSERT(m_wndMenu != NULL);
+  ASSERT(m_pwndMenu != NULL);
 #else
-  CMenu* sysMenu = GetSystemMenu(FALSE);
+  CMenu *pSysMenu = GetSystemMenu(FALSE);
   const CString str(MAKEINTRESOURCE(IDS_ALWAYSONTOP));
 
-  sysMenu->InsertMenu(5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str);
+  pSysMenu->InsertMenu(5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str);
 #endif
 }
 
@@ -2986,15 +2987,15 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   return iEnable;
 }
 
-void DboxMain::PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd)
+void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
 {
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
   HRGN hrgnWork = GetWorkAreaRegion();
 
-  pwnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
+  pWnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
   wp.flags = 0;
-  wp.showCmd = showCmd;
-  wp.rcNormalPosition = *prect;
+  wp.showCmd = uiShowCmd;
+  wp.rcNormalPosition = *pRect;
 
   if (!RectInRegion(hrgnWork, &wp.rcNormalPosition)) {
     if (GetSystemMetrics(SM_CMONITORS) > 1)
@@ -3003,7 +3004,7 @@ void DboxMain::PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd)
       ClipRectToMonitor(NULL, &wp.rcNormalPosition, FALSE);
   }
 
-  pwnd->SetWindowPlacement(&wp);
+  pWnd->SetWindowPlacement(&wp);
   ::DeleteObject(hrgnWork);
 }
 

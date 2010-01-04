@@ -58,7 +58,7 @@ class PWScore;
 class XFileXMLProcessor
 {
 public:
-  XFileXMLProcessor(PWScore *core, UUIDList *possible_aliases, UUIDList *possible_shortcuts);
+  XFileXMLProcessor(PWScore *pcore, UUIDList *possible_aliases, UUIDList *possible_shortcuts);
   ~XFileXMLProcessor();
 
   bool Process(const bool &bvalidation, const stringT &ImportedPrefix, 
@@ -74,7 +74,7 @@ public:
   bool getIfRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
 private:
-  PWScore *m_xmlcore;
+  PWScore *m_pXMLcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
   stringT m_strResultText;

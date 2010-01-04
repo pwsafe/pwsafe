@@ -18,17 +18,17 @@ struct st_run_impl {
 
 PWSRun::PWSRun()
 {
-  impl = new st_run_impl;
+  pImpl = new st_run_impl;
 }
 
 PWSRun::~PWSRun()
 {
-  delete impl;
+  delete pImpl;
 }
 
 bool PWSRun::isValid() const
 {
-  return (impl != NULL);
+  return (pImpl != NULL);
 }
 
 void PWSRun::Set(void *)

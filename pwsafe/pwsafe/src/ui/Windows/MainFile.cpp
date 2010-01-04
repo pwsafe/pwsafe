@@ -1901,7 +1901,7 @@ int DboxMain::MergeDependents(PWScore *pothercore,
   ItemListIter iter;
   uuid_array_t entry_uuid, new_entry_uuid;
   ItemListConstIter foundPos;
-  CItemData tempitem;
+  CItemData ci_temp;
   int numadded(0);
 
   // Get all the dependents
@@ -1914,46 +1914,46 @@ int DboxMain::MergeDependents(PWScore *pothercore,
     if (iter == pothercore->GetEntryEndIter())
       continue;
 
-    CItemData *curitem = &iter->second;
-    tempitem = (*curitem);
+    CItemData *pci = &iter->second;
+    ci_temp = (*pci);
 
     memcpy(new_entry_uuid, entry_uuid, sizeof(new_entry_uuid));
     if (m_core.Find(entry_uuid) != m_core.GetEntryEndIter()) {
-      tempitem.CreateUUID();
-      tempitem.GetUUID(new_entry_uuid);
+      ci_temp.CreateUUID();
+      ci_temp.GetUUID(new_entry_uuid);
     }
 
     // If the base title was renamed - we should automatically rename any dependent.
     // If we didn't, we still need to check uniqueness!
-    StringX newTitle = tempitem.GetTitle();
+    StringX newTitle = ci_temp.GetTitle();
     if (bTitleRenamed) {
       newTitle += L"-merged-";
       newTitle += timeStr;
-      tempitem.SetTitle(newTitle);
+      ci_temp.SetTitle(newTitle);
     }
     // Check this is unique - if not - don't add this one! - its only an alias/shortcut!
-    // We can't keep trying for uniqueness after adding a timestanp!
-    foundPos = m_core.Find(tempitem.GetGroup(), newTitle, tempitem.GetUser());
+    // We can't keep trying for uniqueness after adding a timestamp!
+    foundPos = m_core.Find(ci_temp.GetGroup(), newTitle, ci_temp.GetUser());
     if (foundPos != m_core.GetEntryEndIter()) 
       continue;
 
-    m_core.AddEntry(tempitem);
+    m_core.AddEntry(ci_temp);
     m_core.AddDependentEntry(new_base_uuid, new_entry_uuid, et);
 
     if (et == CItemData::ET_ALIAS) {
-      tempitem.SetPassword(L"[Alias]");
-      tempitem.SetAlias();
+      ci_temp.SetPassword(L"[Alias]");
+      ci_temp.SetAlias();
     } else
     if (et == CItemData::ET_SHORTCUT) {
-      tempitem.SetPassword(L"[Shortcut]");
-      tempitem.SetShortcut();
+      ci_temp.SetPassword(L"[Shortcut]");
+      ci_temp.SetShortcut();
     } else
       ASSERT(0);
 
     StringX sx_added = StringX(L"\xab") + 
-                         tempitem.GetGroup() + StringX(L"\xbb \xab") + 
-                         tempitem.GetTitle() + StringX(L"\xbb \xab") +
-                         tempitem.GetUser()  + StringX(L"\xbb");
+                         ci_temp.GetGroup() + StringX(L"\xbb \xab") + 
+                         ci_temp.GetTitle() + StringX(L"\xbb \xab") +
+                         ci_temp.GetUser()  + StringX(L"\xbb");
     vs_added.push_back(sx_added);
     numadded++;
   }
@@ -2714,33 +2714,33 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
       }
     }
   } else {
-    CItemData tempitem;
+    CItemData ci_temp;
 
     // If the UUID is not in use, copy it too otherwise create it
     if (bFromUUIDIsNotInTo)
-      tempitem.SetUUID(fromUUID);
+      ci_temp.SetUUID(fromUUID);
     else
-      tempitem.CreateUUID();
+      ci_temp.CreateUUID();
 
-    tempitem.GetUUID(toUUID);
-    tempitem.SetGroup(group);
-    tempitem.SetTitle(title);
-    tempitem.SetUser(user);
-    tempitem.SetPassword(password);
-    tempitem.SetNotes(notes);
-    tempitem.SetURL(url);
-    tempitem.SetAutoType(autotype);
-    tempitem.SetPWHistory(pwhistory);
-    tempitem.SetRunCommand(runcmd);
-    tempitem.SetDCA(dca.c_str());
-    tempitem.SetEmail(email);
-    tempitem.SetCTime(ct);
-    tempitem.SetATime(at);
-    tempitem.SetXTime(xt);
-    tempitem.SetPMTime(pmt);
-    tempitem.SetRMTime(rmt);
-    tempitem.SetPWPolicy(pwp);
-    tempitem.SetXTimeInt(xint);
+    ci_temp.GetUUID(toUUID);
+    ci_temp.SetGroup(group);
+    ci_temp.SetTitle(title);
+    ci_temp.SetUser(user);
+    ci_temp.SetPassword(password);
+    ci_temp.SetNotes(notes);
+    ci_temp.SetURL(url);
+    ci_temp.SetAutoType(autotype);
+    ci_temp.SetPWHistory(pwhistory);
+    ci_temp.SetRunCommand(runcmd);
+    ci_temp.SetDCA(dca.c_str());
+    ci_temp.SetEmail(email);
+    ci_temp.SetCTime(ct);
+    ci_temp.SetATime(at);
+    ci_temp.SetXTime(xt);
+    ci_temp.SetPMTime(pmt);
+    ci_temp.SetRMTime(rmt);
+    ci_temp.SetPWPolicy(pwp);
+    ci_temp.SetXTimeInt(xint);
     if (nfromUnknownRecordFields != 0) {
       ptocore->IncrementNumRecordsWithUnknownFields();
 
@@ -2751,14 +2751,14 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
         fromEntry->GetUnknownField(type, length, pdata, i);
         if (length == 0)
           continue;
-        tempitem.SetUnknownField(type, length, pdata);
+        ci_temp.SetUnknownField(type, length, pdata);
         trashMemory(pdata, length);
         delete[] pdata;
       }
     }
-    tempitem.SetStatus(CItemData::ES_ADDED);
-    ptocore->AddEntry(tempitem);
-    m_ctlItemTree.AddChangedNodes(tempitem.GetGroup());
+    ci_temp.SetStatus(CItemData::ES_ADDED);
+    ptocore->AddEntry(ci_temp);
+    m_ctlItemTree.AddChangedNodes(ci_temp.GetGroup());
   }
 
   ptocore->SetDBChanged(true);

@@ -309,10 +309,10 @@ public:
                   const StringX &title = L"", const StringX &user = L"", 
                   const StringX &pwd = L"", const StringX &notes = L"");
   void UpdateLastClipboardAction(const int iaction);
-  void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
+  void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData * pci = NULL);
   void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  bool m_bInAddGroup;
+
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -333,6 +333,7 @@ public:
   CRUEList m_RUEList;   // recent entry lists
 
   wchar_t *m_eye_catcher;
+  bool m_bInAddGroup;
 
   bool m_bDoAutoType;
   StringX m_AutoType;
@@ -366,7 +367,7 @@ protected:
 
 #if defined(POCKET_PC)
   CCeCommandBar *m_wndCommandBar;
-  CMenu *m_wndMenu;
+  CMenu *m_pwndMenu;
 #else
   CPWToolBar m_MainToolBar;   // main toolbar
   CPWFindToolBar m_FindToolBar;  // Find toolbar

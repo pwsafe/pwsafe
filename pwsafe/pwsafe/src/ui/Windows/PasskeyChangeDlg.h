@@ -62,9 +62,9 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CSecEditExtn * m_pctlOldPasskey;
-  CSecEditExtn * m_pctlNewPasskey;
-  CSecEditExtn * m_pctlConfirmNew;
+  CSecEditExtn *m_pctlOldPasskey;
+  CSecEditExtn *m_pctlNewPasskey;
+  CSecEditExtn *m_pctlConfirmNew;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   UINT m_CtrlID;
   UINT m_LastFocus;

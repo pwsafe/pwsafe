@@ -16,7 +16,6 @@
 #include "PwFont.h"
 
 #include <vector>
-#include <bitset>
 
 class DboxMain;
 class CItemData;

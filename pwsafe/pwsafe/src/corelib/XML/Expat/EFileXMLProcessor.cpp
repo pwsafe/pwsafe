@@ -92,10 +92,10 @@ static void WFile_free(void *p)
   pSecMM->free(p);
 }
 
-EFileXMLProcessor::EFileXMLProcessor(PWScore *core,
+EFileXMLProcessor::EFileXMLProcessor(PWScore *pcore,
                                      UUIDList *possible_aliases,
                                      UUIDList *possible_shortcuts)
-  : m_xmlcore(core), m_delimiter(TCHAR('^')),
+  : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
     m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
 {
   pSecMM = new ESecMemMgr;
@@ -137,14 +137,14 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
     return false;
 
   bool bEerrorOccurred = false;
-  bool b_into_empty = m_xmlcore->GetNumEntries() == 0;
+  bool b_into_empty = m_pXMLcore->GetNumEntries() == 0;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
   LoadAString(cs_import, IDSC_XMLIMPORT);
   m_strResultText = _T("");
 
-  pFileHandler->SetVariables(bvalidation ? NULL : m_xmlcore, bvalidation, 
+  pFileHandler->SetVariables(bvalidation ? NULL : m_pXMLcore, bvalidation, 
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              bvalidation ? NULL : m_possible_aliases, 
                              bvalidation ? NULL : m_possible_shortcuts,

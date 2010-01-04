@@ -88,7 +88,7 @@ struct st_invp {
   unsigned int line;
 };
 
-static wchar_t * szNA = L"N/A";
+static wchar_t *szNA = L"N/A";
 static st_invp invp;
 
 static terminate_handler          old_terminate_handler(NULL);

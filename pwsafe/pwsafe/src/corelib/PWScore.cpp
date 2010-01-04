@@ -166,7 +166,7 @@ void PWScore::NewFile(const StringX &passkey)
 
 // functor object type for for_each:
 struct RecordWriter {
-  RecordWriter(PWSfile *out, PWScore *core) : m_out(out), m_core(core) {}
+  RecordWriter(PWSfile *pout, PWScore *pcore) : m_pout(pout), m_pcore(pcore) {}
   void operator()(pair<CUUIDGen const, CItemData> &p)
   {
     StringX savePassword, uuid_str;
@@ -177,7 +177,7 @@ struct RecordWriter {
     if (p.second.IsAlias()) {
       uuid_array_t item_uuid, base_uuid;
       p.second.GetUUID(item_uuid);
-      m_core->GetAliasBaseUUID(item_uuid, base_uuid);
+      m_pcore->GetAliasBaseUUID(item_uuid, base_uuid);
 
       const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[["));
@@ -187,7 +187,7 @@ struct RecordWriter {
     } else if (p.second.IsShortcut()) {
       uuid_array_t item_uuid, base_uuid;
       p.second.GetUUID(item_uuid);
-      m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
+      m_pcore->GetShortcutBaseUUID(item_uuid, base_uuid);
 
       const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[~"));
@@ -196,14 +196,14 @@ struct RecordWriter {
       p.second.SetPassword(uuid_str);
     }
  
-    m_out->WriteRecord(p.second);
+    m_pout->WriteRecord(p.second);
     p.second.SetPassword(savePassword);
     p.second.ClearStatus();
   }
 
 private:
-  PWSfile *m_out;
-  PWScore *m_core;
+  PWSfile *m_pout;
+  PWScore *m_pcore;
 };
 
 int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
@@ -1146,12 +1146,12 @@ void PWScore::MoveDependentEntries(const uuid_array_t &from_baseuuid,
   pmmap->erase(from_baseuuid);
 }
 
-int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
+int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *pRpt,
                                  const CItemData::EntryType type, const int &iVia)
 {
-  // When called during validation of a database  - *rpt is valid
+  // When called during validation of a database  - *pRpt is valid
   // When called during the opening of a database or during drag & drop
-  //   - *rpt is NULL and no report generated
+  //   - *pRpt is NULL and no report generated
 
   // type is either CItemData::ET_ALIAS or CItemData::ET_SHORTCUT
 
@@ -1214,18 +1214,18 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
           // Adding shortcuts -> Base must be normal or already a shortcut base
           if (!iter->second.IsNormal() && !iter->second.IsShortcutBase()) {
             // Bad news!
-            if (rpt != NULL) {
+            if (pRpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
-                rpt->WriteLine(strError);
+                pRpt->WriteLine(strError);
               }
               stringT cs_type;
               LoadAString(cs_type, IDSC_SHORTCUT);
               Format(strError, IDSC_IMPORTWARNING3, cs_type.c_str(),
                      pci_curitem->GetGroup().c_str(), pci_curitem->GetTitle().c_str(), 
                      pci_curitem->GetUser().c_str(), cs_type.c_str());
-              rpt->WriteLine(strError);
+              pRpt->WriteLine(strError);
             }
             // Invalid - delete!
             RemoveEntryAt(m_pwlist.find(entry_uuid));
@@ -1236,18 +1236,18 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
           // Adding Aliases -> Base must be normal or already a alias base
           if (!iter->second.IsNormal() && !iter->second.IsAliasBase()) {
             // Bad news!
-            if (rpt != NULL) {
+            if (pRpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
-                rpt->WriteLine(strError);
+                pRpt->WriteLine(strError);
               }
               stringT cs_type;
               LoadAString(cs_type, IDSC_ALIAS);
               Format(strError, IDSC_IMPORTWARNING3, cs_type.c_str(),
                      pci_curitem->GetGroup().c_str(), pci_curitem->GetTitle().c_str(), 
                      pci_curitem->GetUser().c_str(), cs_type.c_str());
-              rpt->WriteLine(strError);
+              pRpt->WriteLine(strError);
             }
             // Invalid - delete!
             RemoveEntryAt(m_pwlist.find(entry_uuid));
@@ -1259,17 +1259,17 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             uuid_array_t temp_uuid;
             iter->second.GetUUID(temp_uuid);
             GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
-            if (rpt != NULL) {
+            if (pRpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
-                rpt->WriteLine(strError);
+                pRpt->WriteLine(strError);
               }
               Format(strError, IDSC_IMPORTWARNING1, pci_curitem->GetGroup().c_str(),
                      pci_curitem->GetTitle().c_str(), pci_curitem->GetUser().c_str());
-              rpt->WriteLine(strError);
+              pRpt->WriteLine(strError);
               LoadAString(strError, IDSC_IMPORTWARNING1A);
-              rpt->WriteLine(strError);
+              pRpt->WriteLine(strError);
             }
             pci_curitem->SetAlias();
             num_warnings++;
@@ -1295,17 +1295,17 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         }
       } else {
         // Specified base does not exist!
-        if (rpt != NULL) {
+        if (pRpt != NULL) {
           if (!bwarnings) {
             bwarnings = true;
             LoadAString(strError, IDSC_IMPORTWARNINGHDR);
-            rpt->WriteLine(strError);
+            pRpt->WriteLine(strError);
           }
           Format(strError, IDSC_IMPORTWARNING2, pci_curitem->GetGroup().c_str(),
                  pci_curitem->GetTitle().c_str(), pci_curitem->GetUser().c_str());
-          rpt->WriteLine(strError);
+          pRpt->WriteLine(strError);
           LoadAString(strError, IDSC_IMPORTWARNING2A);
-          rpt->WriteLine(strError);
+          pRpt->WriteLine(strError);
         }
         if (type == CItemData::ET_SHORTCUT)
           RemoveEntryAt(m_pwlist.find(entry_uuid)); // Can't keep invalid shortcut
