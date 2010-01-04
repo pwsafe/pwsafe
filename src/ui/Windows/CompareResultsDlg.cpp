@@ -41,12 +41,12 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
                                        CompareData &OnlyInCurrent, CompareData &OnlyInComp,
                                        CompareData &Conflicts, CompareData &Identical,
                                        CItemData::FieldBits &bsFields, PWScore *pcore0, PWScore *pcore1,
-                                       CReport *prpt)
+                                       CReport *pRpt)
   : CPWResizeDialog(CCompareResultsDlg::IDD, pParent),
   m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
   m_Conflicts(Conflicts), m_Identical(Identical),
   m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
-  m_prpt(prpt), m_bSortAscending(true), m_iSortedColumn(0),
+  m_pRpt(pRpt), m_bSortAscending(true), m_iSortedColumn(0),
   m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
   m_ShowIdenticalEntries(BST_UNCHECKED)
 {
@@ -462,7 +462,7 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
           title = pos->second.GetTitle();
           user = pos->second.GetUser();
           buffer.Format(IDS_COPYENTRY, L"original", group, title, user);
-          m_prpt->WriteLine((LPCWSTR)buffer);
+          m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
         case CCompareResultsDlg::COPY_TO_COMPARISONDB:
           // UUID of copied entry returned - now update data
@@ -475,7 +475,7 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
           title = pos->second.GetTitle();
           user = pos->second.GetUser();
           buffer.Format(IDS_COPYENTRY, L"comparison", group, title, user);
-          m_prpt->WriteLine((LPCWSTR)buffer);
+          m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
         case CCompareResultsDlg::EDIT:
         case CCompareResultsDlg::VIEW:
@@ -824,33 +824,33 @@ void CCompareResultsDlg::WriteReportData()
 
   if (m_OnlyInCurrent.size() > 0) {
     buffer.Format(IDS_COMPAREENTRIES1, m_scFilename1);
-    m_prpt->WriteLine((LPCWSTR)buffer);
+    m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInCurrent.begin(); cd_iter != m_OnlyInCurrent.end();
          cd_iter++) {
       const st_CompareData &st_data = *cd_iter;
 
       buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
-      m_prpt->WriteLine((LPCWSTR)buffer);
+      m_pRpt->WriteLine((LPCWSTR)buffer);
     }
-    m_prpt->WriteLine();
+    m_pRpt->WriteLine();
   }
 
   if (m_OnlyInComp.size() > 0) {
     buffer.Format(IDS_COMPAREENTRIES2, m_scFilename2);
-    m_prpt->WriteLine((LPCWSTR)buffer);
+    m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInComp.begin(); cd_iter != m_OnlyInComp.end();
          cd_iter++) {
       const st_CompareData &st_data = *cd_iter;
 
       buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
-      m_prpt->WriteLine((LPCWSTR)buffer);
+      m_pRpt->WriteLine((LPCWSTR)buffer);
     }
-    m_prpt->WriteLine();
+    m_pRpt->WriteLine();
   }
 
   if (m_Conflicts.size() > 0) {
     buffer.Format(IDS_COMPAREBOTHDIFF);
-    m_prpt->WriteLine((LPCWSTR)buffer);
+    m_pRpt->WriteLine((LPCWSTR)buffer);
 
     const CString csx_password(MAKEINTRESOURCE(IDS_COMPPASSWORD));
     const CString csx_notes(MAKEINTRESOURCE(IDS_COMPNOTES));
@@ -873,7 +873,7 @@ void CCompareResultsDlg::WriteReportData()
       const st_CompareData &st_data = *cd_iter;
 
       buffer.Format(IDS_COMPARESTATS2, st_data.group, st_data.title, st_data.user);
-      m_prpt->WriteLine(std::wstring(buffer));
+      m_pRpt->WriteLine(std::wstring(buffer));
       buffer.Empty();
 
       // Non-time fields
@@ -895,9 +895,9 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::RMTIME)) buffer += csx_rmtime;
       if (st_data.bsDiffs.test(CItemData::XTIME_INT)) buffer += csx_xtimeint;
 
-      m_prpt->WriteLine((LPCWSTR)buffer);
+      m_pRpt->WriteLine((LPCWSTR)buffer);
     }
-    m_prpt->WriteLine();
+    m_pRpt->WriteLine();
   }
 }
 

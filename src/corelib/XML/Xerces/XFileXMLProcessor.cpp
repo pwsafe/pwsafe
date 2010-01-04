@@ -63,11 +63,11 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-XFileXMLProcessor::XFileXMLProcessor(PWScore *core, 
+XFileXMLProcessor::XFileXMLProcessor(PWScore *pcore, 
                                      UUIDList *possible_aliases,
                                      UUIDList *possible_shortcuts,
                                      MultiCommands *p_multicmds)
-  : m_pxmlcore(core), m_delimiter(TCHAR('^')),
+  : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
     m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
     m_pmulticmds(p_multicmds)
 {
@@ -146,13 +146,13 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
-  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_pxmlcore, m_bValidation, 
+  pSAX2Handler->SetVariables(m_bValidation ? NULL : m_pXMLcore, m_bValidation, 
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              m_bValidation ? NULL : m_possible_aliases, 
                              m_bValidation ? NULL : m_possible_shortcuts,
                              m_pmulticmds);
   if (!m_bValidation) {
-    b_into_empty = m_pxmlcore->GetNumEntries() == 0;
+    b_into_empty = m_pXMLcore->GetNumEntries() == 0;
   }
 
   try {

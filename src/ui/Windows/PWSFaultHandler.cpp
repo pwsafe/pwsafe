@@ -82,13 +82,13 @@ static wchar_t *wcType[END_FAULTS] = {
                 L"SIGNAL_TERMINATION"};
 
 struct st_invp {
-  const wchar_t* expression;
-  const wchar_t* function;
-  const wchar_t* file;
+  const wchar_t *expression;
+  const wchar_t *function;
+  const wchar_t *file;
   unsigned int line;
 };
 
-static wchar_t * szNA = L"N/A";
+static wchar_t *szNA = L"N/A";
 static st_invp invp;
 
 static terminate_handler          old_terminate_handler(NULL);

@@ -44,7 +44,7 @@ public:
   bool issuecmd(const StringX &sxFile, const StringX &sxParameters, 
                 const StringX &sxAutotype);
 private:
-  st_run_impl *impl;
+  st_run_impl *pImpl;
 };
 
 #endif /* __RUN_H */

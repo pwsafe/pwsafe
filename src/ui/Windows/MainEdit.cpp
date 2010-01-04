@@ -57,13 +57,13 @@ void DboxMain::OnAdd()
 
   // m_TreeViewGroup may be set by OnContextMenu, if not, try to grok it
   if (m_TreeViewGroup.empty()) {
-    CItemData *itemData = NULL;
+    CItemData *pci = NULL;
     if (m_ctlItemTree.IsWindowVisible()) { // tree view
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
       if (ti != NULL) { // if anything selected
-        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-        if (itemData != NULL) { // leaf selected
-          m_TreeViewGroup = itemData->GetGroup();
+        pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+        if (pci != NULL) { // leaf selected
+          m_TreeViewGroup = pci->GetGroup();
         } else { // node selected
           m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
         }
@@ -109,7 +109,7 @@ void DboxMain::OnAdd()
 
     // Add the entry
     ci.SetStatus(CItemData::ES_ADDED);
-    Command *cmd = AddEntryCommand::Create(&m_core, ci);
+    Command *pcmd = AddEntryCommand::Create(&m_core, ci);
 
     if (add_entry_psh.GetIBasedata() > 0) { // creating an alias
       uuid_array_t alias_uuid, base_uuid;
@@ -117,11 +117,11 @@ void DboxMain::OnAdd()
       ci.GetUUID(alias_uuid);
       // replace AddEntry command with multicommand containing
       // AddEntry and AddDependentEntryCommand
-      cmd = MultiCommands::MakeAddDependentCommand(&m_core, cmd,
-                                                   base_uuid, alias_uuid,
-                                                   CItemData::ET_ALIAS);
+      pcmd = MultiCommands::MakeAddDependentCommand(&m_core, pcmd,
+                                                    base_uuid, alias_uuid,
+                                                    CItemData::ET_ALIAS);
     }
-    Execute(cmd); // Either AddEntry or MultiCommands
+    Execute(pcmd); // Either AddEntry or MultiCommands
 
     // Update Toolbar for this new entry
     m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
@@ -199,14 +199,14 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   ASSERT(pci != NULL);
   pci->GetUUID(base_uuid);
 
-  CItemData temp;
-  temp.CreateUUID();
-  temp.GetUUID(shortcut_uuid);
-  temp.SetGroup(cs_group);
-  temp.SetTitle(cs_title);
-  temp.SetUser(cs_user);
-  temp.SetPassword(L"[Shortcut]");
-  temp.SetShortcut();
+  CItemData ci_temp;
+  ci_temp.CreateUUID();
+  ci_temp.GetUUID(shortcut_uuid);
+  ci_temp.SetGroup(cs_group);
+  ci_temp.SetTitle(cs_title);
+  ci_temp.SetUser(cs_user);
+  ci_temp.SetPassword(L"[Shortcut]");
+  ci_temp.SetShortcut();
   ItemListIter iter = m_core.Find(base_uuid);
   if (iter != End()) {
     const CItemData &cibase = iter->second;
@@ -218,16 +218,16 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
 
   time_t t;
   time(&t);
-  temp.SetCTime(t);
-  temp.SetXTime((time_t)0);
-  temp.SetStatus(CItemData::ES_ADDED);
+  ci_temp.SetCTime(t);
+  ci_temp.SetXTime((time_t)0);
+  ci_temp.SetStatus(CItemData::ES_ADDED);
 
-  Command *cmd = MultiCommands::MakeAddDependentCommand(&m_core,
-                                                        AddEntryCommand::Create(&m_core,
-                                                                                temp),
-                                                        base_uuid, shortcut_uuid,
-                                                        CItemData::ET_SHORTCUT);
-  Execute(cmd);
+  Command *pcmd = MultiCommands::MakeAddDependentCommand(&m_core,
+                                                         AddEntryCommand::Create(&m_core,
+                                                                                 ci_temp),
+                                                         base_uuid, shortcut_uuid,
+                                                         CItemData::ET_SHORTCUT);
+  Execute(pcmd);
 
   if (m_core.GetNumEntries() == 1) {
     // For some reason, when adding the first entry, it is not visible!
@@ -599,12 +599,12 @@ void DboxMain::OnEdit()
     // perhaps not the most elegant solution to improving non-mouse use,
     // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
     // let me know...
-    CItemData *itemData = NULL;
+    CItemData *pci_node(NULL);
     if (m_ctlItemTree.IsWindowVisible()) { // tree view
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
       if (ti != NULL) { // if anything selected
-        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-        if (itemData == NULL) { // node selected
+        pci_node = (CItemData *)m_ctlItemTree.GetItemData(ti);
+        if (pci_node == NULL) { // node selected
           m_ctlItemTree.Expand(ti, TVE_TOGGLE);
         }
       }
@@ -1261,22 +1261,39 @@ void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp,
   }
 }
 
+void DboxMain::PerformAutoType()
+{
+  OnAutoType();
+}
+
 void DboxMain::OnAutoType()
 {
-  if (SelItemOk() == TRUE) {
-    CItemData *pci = getSelectedItem();
-    ASSERT(pci != NULL);
-
-    UpdateAccessTime(pci);
-
-    // All code using ci must be before this AutoType since the
-    // latter may trash *pci if lock-on-minimize
-    AutoType(*pci);
+  CItemData *pci(NULL);
+  if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
+    pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
+    TRACE("OnAutoType: Using Tree found item\n");
+  } else
+  if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem >= 0) {
+    pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
+    TRACE("OnAutoType: Using List found item\n");
+  } else {
+    pci = getSelectedItem();
+    TRACE("OnAutoType: Using Selected item\n");
   }
+
+  if (pci == NULL)
+    return;
+
+  UpdateAccessTime(pci);
+
+  // All code using ci must be before this AutoType since the
+  // latter may trash *pci if lock-on-minimize
+  AutoType(*pci);
 }
 
 void DboxMain::AutoType(const CItemData &ci)
 {
+  // Called from OnAutoType and OnTrayAutoType
   StringX group, title, user, pwd, notes, AutoCmd;
   ItemListIter iter;
   uuid_array_t base_uuid, entry_uuid;
@@ -1451,7 +1468,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
 
   // Stop Keyboard/Mouse Input
   TRACE(L"DboxMain::DoAutoType - BlockInput set\n");
-  ::BlockInput(true);
+  ::BlockInput(TRUE);
 
   // Note that minimizing the window before calling ci.Get*()
   // will cause garbage to be read if "lock on minimize" selected,
@@ -1584,7 +1601,7 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
 
   // Reset Keyboard/Mouse Input
   TRACE(L"DboxMain::DoAutoType - BlockInput reset\n");
-  ::BlockInput(false);
+  ::BlockInput(FALSE);
 
   vsx_notes_lines.clear();
 }
@@ -1644,7 +1661,6 @@ void DboxMain::OnEditBaseEntry()
     UpdateAccessTime(pci);
   }
 }
-
 
 void DboxMain::OnRunCommand()
 {
@@ -1739,7 +1755,7 @@ void DboxMain::OnRunCommand()
 void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 {
   // Add Drop entries
-  CItemData tempitem;
+  CItemData ci_temp;
   UUIDList possible_aliases, possible_shortcuts;
   StringX Group, Title, User;
   POSITION pos;
@@ -1755,32 +1771,32 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
     if (m_core.GetNumEntries() >= MAXDEMO)
       break;
 #endif /* DEMO */
-    tempitem.Clear();
+    ci_temp.Clear();
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bAddToViews = true;
-    pDDObject->ToItem(tempitem);
+    pDDObject->ToItem(ci_temp);
 
     if (in_oblist.m_bDragNode) {
-      dot = (!DropGroup.empty() && !tempitem.GetGroup().empty()) ? L"." : L"";
-      Group = DropGroup + dot + tempitem.GetGroup();
+      dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
+      Group = DropGroup + dot + ci_temp.GetGroup();
     } else {
       Group = DropGroup;
     }
 
-    User = tempitem.GetUser();
-    Title = GetUniqueTitle(Group, tempitem.GetTitle(), User, IDS_DRAGNUMBER);
+    User = ci_temp.GetUser();
+    Title = GetUniqueTitle(Group, ci_temp.GetTitle(), User, IDS_DRAGNUMBER);
 
-    tempitem.GetUUID(entry_uuid);
+    ci_temp.GetUUID(entry_uuid);
     if (m_core.Find(entry_uuid) != End()) {
       // Already in use - get a new one!
-      tempitem.CreateUUID();
-      tempitem.GetUUID(entry_uuid);
+      ci_temp.CreateUUID();
+      ci_temp.GetUUID(entry_uuid);
     }
 
-    tempitem.SetGroup(Group);
-    tempitem.SetTitle(Title);
+    ci_temp.SetGroup(Group);
+    ci_temp.SetTitle(Title);
 
-    StringX cs_tmp = tempitem.GetPassword();
+    StringX cs_tmp = ci_temp.GetPassword();
 
     GetBaseEntryPL pl;
     pl.InputType = CItemData::ET_NORMAL;
@@ -1826,8 +1842,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
                                                          entry_uuid,
                                                          CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
-        tempitem.SetPassword(L"[Alias]");
-        tempitem.SetAlias();
+        ci_temp.SetPassword(L"[Alias]");
+        ci_temp.SetAlias();
       } else
       if (pl.InputType == CItemData::ET_SHORTCUT) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
@@ -1844,13 +1860,13 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
                                                          entry_uuid,
                                                          CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
-        tempitem.SetPassword(L"[Shortcut]");
-        tempitem.SetShortcut();
+        ci_temp.SetPassword(L"[Shortcut]");
+        ci_temp.SetShortcut();
       }
     } else
     if (pl.ibasedata == 0) {
       // Password NOT in alias/shortcut format
-      tempitem.SetNormal();
+      ci_temp.SetNormal();
     } else
     if (pl.ibasedata < 0) {
       // Password in alias/shortcut format AND base entry does not exist or multiple possible
@@ -1866,9 +1882,9 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
         bAddToViews = false;
       }
     }
-    tempitem.SetStatus(CItemData::ES_ADDED);
+    ci_temp.SetStatus(CItemData::ES_ADDED);
     // Add to pwlist
-    Command *pcmd = AddEntryCommand::Create(&m_core, tempitem);
+    Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
     if (!bAddToViews) {
       // ONLY Add to pwlist and NOT to Tree or List views
       // After the call to AddDependentEntries for shortcuts, check if still

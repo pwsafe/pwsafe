@@ -1135,6 +1135,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\UIinterface.h"
+				>
+			</File>
+			<File
 				RelativePath=".\UnknownField.h"
 				>
 			</File>

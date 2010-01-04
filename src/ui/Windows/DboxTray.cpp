@@ -336,8 +336,10 @@ void DboxMain::OnTrayAutoType(UINT nID)
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci))
     return;
 
+  m_bInAT = true;
   AutoType(ci);
   UpdateAccessTime(&ci);
+  m_bInAT = false;
 }
 
 void DboxMain::OnUpdateTrayAutoType(CCmdUI *)

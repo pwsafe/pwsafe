@@ -1,4 +1,4 @@
-Password Safe 3.20.1 Release Notes - xxxxxxxx 20xx
+Password Safe 3.20.1 Release Notes - xxxxxxxx 2010
 ==================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -10,6 +10,9 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.20.1
 ====================
+[2918306, 2816066, 2798788, 2446052, 2837591, 2917066, ...] Re-instate
+AutoType via shortcut and when an entry has been selected via the 
+Find Toolbar.
 [2921935] Dragbar now works in List view without needing the mouse to activate.
 [2918849] Fixed icon no longer appearing in taskbar when locking due to
 workstation lock and terminal services running.
@@ -22,12 +25,24 @@ on an entry and allow new group to remain unchanged.
 
 New Features for 3.20.1
 =======================
-[2919319] Now able to use PasswordSafe to generator passwords as per user defind
+[2919319] Now able to use PasswordSafe to generator passwords as per user defined
 policy from the Manage menu.
+[] Implemented support for new functions: Undo/Redo of changes to the currently open
+database.  These functions are on the Edit menu and can also be configured to be on
+the Toolbar.  These are database specific and changes can even be undone after the
+database has been saved, although the datbase will need to be resaved to retain the
+new state.
+[] New Synchronize option (subset of the current Merge fucntion) to allow fields in
+of entries 2 databases to be synchronised.  Entries are eligible to be selected for
+synchronisation if they have identical Group names, Titles and User names. The
+database selected to be synchronised with the current open database is now always in
+read-only mode i.e. Synchronisation is uni-directional and only entries in the
+currently open database can be modified.
 
 Changes to Existing Features in 3.20.1
 ======================================
-
+During database Compare, the database selected to be compared with the currently open
+database is now always in read-only mode.
 
 Bugs fixed in 3.20
 ==================

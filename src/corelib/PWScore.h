@@ -65,7 +65,7 @@ public:
   PWScore();
   ~PWScore();
 
-  void SetUIinterface(UIinterface *uii) {m_uii = uii;}
+  void SetUIInterFace(UIInterFace *pUIIF) {m_pUIIF = pUIIF;}
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
@@ -300,7 +300,7 @@ private:
                                       const CItemData::EntryType type);
   virtual void DoRemoveAllDependentEntries(const uuid_array_t &base_uuid, 
                                            const CItemData::EntryType type);
-  virtual int DoAddDependentEntries(UUIDList &dependentslist, CReport *rpt, 
+  virtual int DoAddDependentEntries(UUIDList &dependentslist, CReport *pRpt, 
                                     const CItemData::EntryType type, 
                                     const int &iVia,
                                     ItemList *pmapDeletedItems = NULL,
@@ -394,7 +394,7 @@ private:
 
   bool m_bNotifyDB;
 
-  UIinterface *m_uii; // pointer to UI interface abtraction
+  UIInterFace *m_pUIIF; // pointer to UI interface abtraction
   
   void NotifyGUINeedsUpdating(Command::GUI_Action, uuid_array_t &,
                               CItemData::FieldType ft = CItemData::FieldType(0));

@@ -38,10 +38,11 @@ struct CountShortcuts {
 
 // Functor for for_each
 struct CreateAccelTable {
-  CreateAccelTable(ACCEL *pacceltbl) : m_pacceltbl(pacceltbl) {}
+  CreateAccelTable(ACCEL *pacceltbl, unsigned char ucAutotypeKey) 
+    : m_pacceltbl(pacceltbl), m_ucAutotypeKey(ucAutotypeKey) {}
   void operator()(const std::pair<UINT, CMenuShortcut> &p)
   {
-    if (p.second.cVirtKey != 0) {
+    if (p.second.cVirtKey != 0 && p.second.cVirtKey != m_ucAutotypeKey) {
       m_pacceltbl->fVirt = FVIRTKEY |
                            ((p.second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? FCONTROL : 0) |
                            ((p.second.cModifier & HOTKEYF_ALT)    == HOTKEYF_ALT      ? FALT     : 0) |
@@ -54,6 +55,7 @@ struct CreateAccelTable {
 
 private:
   ACCEL *m_pacceltbl;
+  unsigned char m_ucAutotypeKey; // AutoType shortcut key
 };
 
 static bool IsExtended(int code)
@@ -431,33 +433,8 @@ void DboxMain::SetUpInitialMenuStrings()
   ASSERT(iter_entry != m_MapMenuShortcuts.end());
   iter_entry->second.SetKeyFlags(iter->second);
 
-  // Find Delete Shortcut
-  iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
-  ASSERT(iter != m_MapMenuShortcuts.end());
-  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEENTRY);
-  ASSERT(iter_entry != m_MapMenuShortcuts.end());
-  iter_entry->second.SetKeyFlags(iter->second);
-  iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
-  ASSERT(iter_group != m_MapMenuShortcuts.end());
-  iter_group->second.SetKeyFlags(iter->second);
+  SetupSpecialShortcuts();
 
-  // Now tell the TreeCtrl the key for Delete
-  m_ctlItemTree.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
-  m_ctlItemList.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
-
-  // Find Rename Shortcut
-  iter = m_MapMenuShortcuts.find(ID_MENUITEM_RENAME);
-  ASSERT(iter != m_MapMenuShortcuts.end());
-  iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEENTRY);
-  ASSERT(iter_entry != m_MapMenuShortcuts.end());
-  iter_entry->second.SetKeyFlags(iter->second);
-  iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
-  ASSERT(iter_group != m_MapMenuShortcuts.end());
-  iter_group->second.SetKeyFlags(iter->second);
-
-  // Now tell the TreeCtrl the key for Rename
-  m_ctlItemTree.SetRenameKey(iter->second.cVirtKey, iter->second.cModifier);
-  
   UpdateAccelTable();
 }
 
@@ -470,13 +447,16 @@ void DboxMain::UpdateAccelTable()
   // Add on space of 3 reserved shortcuts (Ctrl-Q, F4, F1)
   numscs = std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
                          cntscs) + 3;
+  // But take off 1 if there is a shprtcut for AutoType
+  if (m_wpAutotypeKey != 0)
+    numscs--;
 
   // Get new table space
   pacceltbl = (LPACCEL)LocalAlloc(LPTR, numscs * sizeof(ACCEL));
   ASSERT(pacceltbl != NULL);
 
   // Populate it
-  CreateAccelTable create_accel_table(pacceltbl);
+  CreateAccelTable create_accel_table(pacceltbl, (unsigned char)m_wpAutotypeKey);
   for_each(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), create_accel_table);
 
   // Add back in the 3 reserved
@@ -1293,4 +1273,59 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     // use this DboxMain for commands
     pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
   } // if (item >= 0)
+}
+
+void DboxMain::SetupSpecialShortcuts()
+{
+  MapMenuShortcutsIter iter, iter_entry, iter_group;
+
+  // Find Delete Shortcut
+  iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
+
+  // Save for CTreeCtrl & CListCtrl PreTranslateMessage
+  if (iter != m_MapMenuShortcuts.end()) {
+    iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEENTRY);
+    iter_entry->second.SetKeyFlags(iter->second);
+    iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
+    iter_group->second.SetKeyFlags(iter->second);
+
+    m_wpDeleteMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpDeleteKey = iter->second.cVirtKey;
+    m_bDeleteCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+    m_bDeleteShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+  } else {
+    m_wpDeleteKey = 0;
+  }
+
+  // Find Rename Shortcut
+  iter = m_MapMenuShortcuts.find(ID_MENUITEM_RENAME);
+  
+  // Save for CTreeCtrl::PreTranslateMessage (not CListCtrl)
+  if (iter != m_MapMenuShortcuts.end()) {
+    iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEENTRY);
+    iter_entry->second.SetKeyFlags(iter->second);
+    iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
+    iter_group->second.SetKeyFlags(iter->second);
+
+    m_wpRenameMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpRenameKey = iter->second.cVirtKey;
+    m_bRenameCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+    m_bRenameShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+  } else {
+    m_wpRenameKey = 0;
+  }
+
+  // Find Autotype Shortcut
+  iter = m_MapMenuShortcuts.find(ID_MENUITEM_AUTOTYPE);
+  
+  // Save for CTreeCtrl & CListCtrl PreTranslateMessage
+  if (iter != m_MapMenuShortcuts.end()) {
+    m_wpAutotypeDNMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpAutotypeUPMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYUP : WM_KEYUP;
+    m_wpAutotypeKey = iter->second.cVirtKey;
+    m_bAutotypeCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+    m_bAutotypeShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
+  } else {
+    m_wpAutotypeKey = 0;
+  }
 }

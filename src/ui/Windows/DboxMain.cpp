@@ -128,7 +128,14 @@ DboxMain::DboxMain(CWnd* pParent)
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForDelete(false), m_bFilterForStatus(false),
   m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER)),
-  m_hUser32(NULL), m_bInAddGroup(false)
+  m_hUser32(NULL), m_bInAddGroup(false),
+  m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
+  m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
+  m_wpAutotypeUPMsg(WM_KEYUP), m_wpAutotypeDNMsg(WM_KEYDOWN), m_wpAutotypeKey('T'),
+  m_bDeleteCtrl(false), m_bDeleteShift(false),
+  m_bRenameCtrl(false), m_bRenameShift(false),
+  m_bAutotypeCtrl(false), m_bAutotypeShift(false),
+  m_bInAT(false)
 {
   // Need to do this as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = ::LoadLibrary(L"User32.dll");
@@ -162,11 +169,14 @@ DboxMain::DboxMain(CWnd* pParent)
   m_titlebar = L"";
   m_toolbarsSetup = FALSE;
 #endif
+
+  // Zero Autotype bits
+  m_btAT.reset();
 }
 
 DboxMain::~DboxMain()
 {
-  m_core.SetUIinterface(NULL);
+  m_core.SetUIInterFace(NULL);
 
   MapKeyNameIDIter iter;
   for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
@@ -1539,13 +1549,13 @@ void DboxMain::ChangeOkUpdate()
     return;
 
 #if defined(POCKET_PC)
-  CMenu *menu = m_wndMenu;
+  CMenu *pmenu = m_wndMenu;
 #else
-  CMenu *menu = GetMenu();
+  CMenu *pmenu = GetMenu();
 #endif
 
   // Don't need to worry about R-O, as IsChanged can't be true in this case
-  menu->EnableMenuItem(ID_MENUITEM_SAVE,
+  pmenu->EnableMenuItem(ID_MENUITEM_SAVE,
     (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) ? MF_ENABLED : MF_GRAYED);
   if (m_toolbarsSetup == TRUE) {
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_SAVE,
@@ -1982,14 +1992,14 @@ void DboxMain::ConfigureSystemMenu()
 {
 #if defined(POCKET_PC)
   m_wndCommandBar = (CCeCommandBar*) m_pWndEmptyCB;
-  m_wndMenu = m_wndCommandBar->InsertMenuBar(IDR_MAINMENU);
+  m_pwndMenu = m_wndCommandBar->InsertMenuBar(IDR_MAINMENU);
 
-  ASSERT(m_wndMenu != NULL);
+  ASSERT(m_pwndMenu != NULL);
 #else
-  CMenu* sysMenu = GetSystemMenu(FALSE);
+  CMenu *pSysMenu = GetSystemMenu(FALSE);
   const CString str(MAKEINTRESOURCE(IDS_ALWAYSONTOP));
 
-  sysMenu->InsertMenu(5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str);
+  pSysMenu->InsertMenu(5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str);
 #endif
 }
 
@@ -2204,6 +2214,10 @@ void DboxMain::startLockCheckTimer()
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 {
+  // Don't do anything if in AutoType
+  if (m_bInAT)
+    return TRUE;
+
   // Do Dragbar tooltips
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
@@ -2265,7 +2279,7 @@ bool DboxMain::DecrementAndTestIdleLockCounter()
 LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
 {
   // Handle Lock/Unlock, Fast User Switching and Remote access.
-  // Won't be called if the registeration failed (i.e. < Windows XP
+  // Won't be called if the registration failed (i.e. < Windows XP
   // or the "Windows Terminal Server" service wasn't active at startup.
   TRACE(L"OnSessionChange. wParam = %d\n", wParam);
   switch (wParam) {
@@ -3078,15 +3092,15 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   return iEnable;
 }
 
-void DboxMain::PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd)
+void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
 {
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
   HRGN hrgnWork = GetWorkAreaRegion();
 
-  pwnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
+  pWnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
   wp.flags = 0;
-  wp.showCmd = showCmd;
-  wp.rcNormalPosition = *prect;
+  wp.showCmd = uiShowCmd;
+  wp.rcNormalPosition = *pRect;
 
   if (!RectInRegion(hrgnWork, &wp.rcNormalPosition)) {
     if (GetSystemMetrics(SM_CMONITORS) > 1)
@@ -3095,7 +3109,7 @@ void DboxMain::PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd)
       ClipRectToMonitor(NULL, &wp.rcNormalPosition, FALSE);
   }
 
-  pwnd->SetWindowPlacement(&wp);
+  pWnd->SetWindowPlacement(&wp);
   ::DeleteObject(hrgnWork);
 }
 
@@ -3203,3 +3217,86 @@ void DboxMain::UpdateSystemMenu()
 #endif
 }
 
+bool DboxMain::CheckPreTranslateDelete(MSG* pMsg)
+{
+  // Both TreeCtrl and ListCtrl
+  if (pMsg->message == m_wpDeleteMsg && pMsg->wParam == m_wpDeleteKey) {
+    if (m_bDeleteCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+        m_bDeleteShift == (GetKeyState(VK_SHIFT)   < 0)) {
+      if (!m_core.IsReadOnly())
+        OnDelete();
+      return true;
+    }
+  }
+  return false;
+}
+
+bool DboxMain::CheckPreTranslateRename(MSG* pMsg)
+{
+  // Only TreeCtrl but not ListCtrl!
+  if (pMsg->message == m_wpRenameMsg && pMsg->wParam == m_wpRenameKey) {
+    if (m_bRenameCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+        m_bRenameShift == (GetKeyState(VK_SHIFT)   < 0)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
+{
+  // Need to handle the keyboard shortcut for AutoType ourselves in order
+  // to remove any interaction of the keyboard and AutoTyped characters
+  if (m_wpAutotypeKey != 0) {
+    // Process user's Autotype shortcut - (Sys)KeyDown
+    if (pMsg->message == m_wpAutotypeDNMsg && pMsg->wParam == m_wpAutotypeKey) {
+      if (m_bAutotypeCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
+          m_bAutotypeShift == (GetKeyState(VK_SHIFT)   < 0)) {
+        m_btAT.set(0);   // Virtual Key
+        if (m_bAutotypeCtrl)
+          m_btAT.set(1); // Ctrl Key
+        if (m_bAutotypeShift)
+          m_btAT.set(2); // Shift Key
+        m_bInAT = true;
+        return true;
+      }
+    }
+
+    // Process user's Autotype shortcut - (Sys)KeyUp
+    if (m_bInAT &&
+        pMsg->message == m_wpAutotypeUPMsg && pMsg->wParam == m_wpAutotypeKey) {
+      m_btAT.reset(0);   // Virtual Key
+      if (m_btAT.none()) {
+        // All keys are now up - send the message
+        PerformAutoType();
+        m_bInAT = false;
+      }
+      return true;
+    }
+
+    // Process user's Autotype shortcut - KeyUp Ctrl key
+    if (m_bInAT && m_bAutotypeCtrl &&
+        pMsg->message == WM_KEYUP && pMsg->wParam == VK_CONTROL) {
+      m_btAT.reset(1);   // Ctrl Key
+      if (m_btAT.none()) {
+        // All keys are now up - send the message
+        PerformAutoType();
+        m_bInAT = false;
+      }
+      return true;
+    }
+
+    // Process user's Autotype shortcut - KeyUp Shift key
+    if (m_bInAT && m_bAutotypeShift &&
+        pMsg->message == WM_KEYUP && pMsg->wParam == VK_SHIFT) {
+      m_btAT.reset(2);   // Shift Key
+      if (m_btAT.none()) {
+        // All keys are now up - send the message
+        PerformAutoType();
+        m_bInAT = false;
+      }
+      return true;
+    }
+  }
+  return false;
+}

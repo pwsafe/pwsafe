@@ -161,7 +161,7 @@ enum {GCP_FIRST      = 0,   // At startup of PWS
       GCP_ADVANCED   = 4};  // OK, CANCEL, HELP buttons & ADVANCED checkbox
 
 //-----------------------------------------------------------------------------
-class DboxMain : public CDialog, public UIinterface
+class DboxMain : public CDialog, public UIInterFace
 {
 #if defined(POCKET_PC)
   friend class CMyListCtrl;
@@ -245,6 +245,7 @@ public:
   void CalcHeaderWidths();
   void UnFindItem();
   void SetLocalStrings();
+  void PerformAutoType(); // 'public' version called by Tree/List
 
   void UpdateToolBarROStatus(bool state);
   void UpdateToolBarForSelectedItem(CItemData *pci);
@@ -314,7 +315,7 @@ public:
                   const StringX &title = L"", const StringX &user = L"", 
                   const StringX &pwd = L"", const StringX &notes = L"");
   void UpdateLastClipboardAction(const int iaction);
-  void PlaceWindow(CWnd *pwnd, CRect *prect, UINT showCmd);
+  void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData * pci = NULL);
   void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   bool IsNodeModified(StringX &path)
@@ -323,7 +324,7 @@ public:
   // Following to simplify Command creation in child dialogs:
   CommandInterface *GetCore() {return &m_core;}
   
-  void Execute(Command *c, PWScore *core = NULL);
+  void Execute(Command *pcmd, PWScore *pcore = NULL);
   void UpdateToolBarDoUndo();
 
   //{{AFX_DATA(DboxMain)
@@ -355,6 +356,11 @@ public:
 
   // Mapping Group to Tree Item to save searching all the time!
   std::map<StringX, HTREEITEM> m_mapGroupToTreeItem;
+
+  // Process Special Shortcuts for Tree & List controls
+  bool CheckPreTranslateDelete(MSG* pMsg);
+  bool CheckPreTranslateRename(MSG* pMsg);
+  bool CheckPreTranslateAutoType(MSG* pMsg);
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -377,7 +383,7 @@ protected:
 
 #if defined(POCKET_PC)
   CCeCommandBar *m_wndCommandBar;
-  CMenu *m_wndMenu;
+  CMenu *m_pwndMenu;
 #else
   CPWToolBar m_MainToolBar;   // main toolbar
   CPWFindToolBar m_FindToolBar;  // Find toolbar
@@ -672,7 +678,7 @@ protected:
                           PWScore *pcore = 0, int adv_type = -1);
 
 private:
-  // UIinterface implementations:
+  // UIInterFace implementations:
   void DatabaseModified(bool bChanged);
   void UpdateGUI(Command::GUI_Action ga,
                  uuid_array_t &entry_uuid,
@@ -738,10 +744,12 @@ private:
   void SetUpMenuStrings(CMenu *pPopupMenu);
   void SetUpInitialMenuStrings();
   void UpdateAccelTable();
+  void SetupSpecialShortcuts();
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
+
   void RemoveFromGUI(CItemData &ci, LPARAM lparam = NULL);
   void AddToGUI(CItemData &ci);
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
@@ -815,6 +823,18 @@ private:
   HMODULE m_hUser32;
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
+
+  // Delete/Rename/AutoType Shortcuts
+  WPARAM m_wpDeleteMsg, m_wpDeleteKey;
+  WPARAM m_wpRenameMsg, m_wpRenameKey;
+  WPARAM m_wpAutotypeUPMsg, m_wpAutotypeDNMsg, m_wpAutotypeKey;
+  bool m_bDeleteCtrl, m_bDeleteShift;
+  bool m_bRenameCtrl, m_bRenameShift;
+  bool m_bAutotypeCtrl, m_bAutotypeShift;
+
+  // Do Autotype
+  bool m_bInAT;
+  std::bitset<3> m_btAT;  // Representing the Key, Ctrl Key and Shift key
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?
@@ -893,4 +913,3 @@ struct DisplayInfo : public DisplayInfoBase {
     return *this;
   }
 };
-

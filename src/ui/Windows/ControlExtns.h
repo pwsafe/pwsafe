@@ -170,7 +170,7 @@ class CSecEditExtn : public CEditExtn
  private:
   void OnSecureUpdate();
   struct Impl;
-  Impl *m_impl;
+  Impl *m_pImpl;
   bool m_secure;
   bool m_in_recursion;
 };

@@ -26,7 +26,7 @@ class PWScore;
 class MFileXMLProcessor
 {
 public:
-  MFileXMLProcessor(PWScore *core, UUIDList *possible_aliases, 
+  MFileXMLProcessor(PWScore *pcore, UUIDList *possible_aliases, 
                     UUIDList *possible_shortcuts, MultiCommands *p_multicmds);
   ~MFileXMLProcessor();
 
@@ -42,7 +42,7 @@ public:
   bool getIfRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
 private:
-  PWScore *m_pxmlcore;
+  PWScore *m_pXMLcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
   MultiCommands *m_pmulticmds;

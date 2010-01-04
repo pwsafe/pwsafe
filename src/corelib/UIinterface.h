@@ -7,6 +7,7 @@
 */
 #ifndef __UIINTERFACE_H
 #define __UIINTERFACE_H
+
 #include "Command.h"
 #include "ItemData.h"
 
@@ -19,9 +20,9 @@
  * This is the classic 'mixin' design pattern.
  */
 
-class UIinterface {
+class UIInterFace {
  public:
-  UIinterface() {}
+  UIInterFace() {}
   /**
    * UpdateGUI(bChanged):
    * bChanged = false if the database has been modified, (e.g. the
@@ -37,7 +38,7 @@ class UIinterface {
   virtual void GUIUpdateEntry(CItemData &ci) = 0;
   virtual void GUICommandInterface(Command::ExecuteFn When,
                                    PWSGUICmdIF *pGUICmdIF) = 0;
-  virtual ~UIinterface() {}
+  virtual ~UIInterFace() {}
 };
 
 #endif /* __UIINTERFACE_H */

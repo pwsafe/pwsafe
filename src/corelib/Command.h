@@ -106,12 +106,12 @@ public:
   int Redo();
   void Undo();
 
-  void Add(Command *c);
-  bool Remove(Command *c);
+  void Add(Command *pcmd);
+  bool Remove(Command *pcmd);
   bool Remove();
-  bool GetRC(Command *c, int &rc);
+  bool GetRC(Command *pcmd, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
-  std::size_t GetSize() const {return m_cmds.size();}
+  std::size_t GetSize() const {return m_vpcmds.size();}
 
   // Some convenience routines:
   void AddEntry(const CItemData &ci);
@@ -119,14 +119,14 @@ public:
   // Following is used to change a simple AddEntryCommand command into
   // AddEntryCommand + AddDependentEntryCommand
   static MultiCommands *MakeAddDependentCommand(CommandInterface *pcomInt,
-                                                Command *aec,
+                                                Command *paec,
                                                 const uuid_array_t &base_uuid, 
                                                 const uuid_array_t &entry_uuid,
                                                 CItemData::EntryType type);
  private:
   MultiCommands(CommandInterface *pcomInt);
-  std::vector<Command *> m_cmds;
-  std::vector<int> m_RCs;
+  std::vector<Command *> m_vpcmds;
+  std::vector<int> m_vRCs;
 };
 
 // GUI related commands
@@ -314,10 +314,10 @@ class AddDependentEntriesCommand : public Command
 public:
   static AddDependentEntriesCommand *Create(CommandInterface *pcomInt,
                                             UUIDList &dependentslist,
-                                            CReport *rpt,
+                                            CReport *pRpt,
                                             CItemData::EntryType type,
                                             int iVia)
-  { return new AddDependentEntriesCommand(pcomInt, dependentslist, rpt,
+  { return new AddDependentEntriesCommand(pcomInt, dependentslist, pRpt,
                                           type, iVia); }
   ~AddDependentEntriesCommand();
   int Execute();
@@ -326,12 +326,12 @@ public:
 
 private:
   AddDependentEntriesCommand(CommandInterface *pcomInt,
-                             UUIDList &dependentslist, CReport *rpt,
+                             UUIDList &dependentslist, CReport *pRpt,
                              CItemData::EntryType type, int iVia);
   UUIDList m_dependentslist;
   ItemList *m_pmapDeletedItems;
   SaveTypePWMap *m_pmapSaveStatus;
-  CReport *m_rpt;
+  CReport *m_pRpt;
   CItemData::EntryType m_type;
   int m_iVia;
 };

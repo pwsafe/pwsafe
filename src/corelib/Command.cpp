@@ -78,7 +78,7 @@ MultiCommands::~MultiCommands()
 {
   std::vector<Command *>::iterator cmd_Iter;
 
-  for (cmd_Iter = m_cmds.begin(); cmd_Iter != m_cmds.end(); cmd_Iter++) {
+  for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     delete (*cmd_Iter);
   }
 }
@@ -88,9 +88,9 @@ int MultiCommands::Execute()
   std::vector<Command *>::iterator cmd_Iter;
 
   TRACE(L"Multicommands Execute\n");
-  for (cmd_Iter = m_cmds.begin(); cmd_Iter != m_cmds.end(); cmd_Iter++) {
+  for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     int rc = (*cmd_Iter)->Execute();
-    m_RCs.push_back(rc);
+    m_vRCs.push_back(rc);
   }
   m_bState = true;
   return 0;
@@ -107,27 +107,27 @@ void MultiCommands::Undo()
   std::vector<Command *>::reverse_iterator cmd_rIter;
 
   TRACE(L"Multicommands Undo\n");
-  for (cmd_rIter = m_cmds.rbegin(); cmd_rIter != m_cmds.rend(); cmd_rIter++) {
+  for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
     (*cmd_rIter)->Undo();
   }
   m_bState = false;
 }
 
-void MultiCommands::Add(Command *c)
+void MultiCommands::Add(Command *pcmd)
 {
   TRACE(L"Multicommands Add\n");
-  m_cmds.push_back(c);
+  m_vpcmds.push_back(pcmd);
 }
 
-bool MultiCommands::Remove(Command *c)
+bool MultiCommands::Remove(Command *pcmd)
 {
   std::vector<Command *>::iterator cmd_Iter;
 
   TRACE(L"Multicommands Remove\n");
-  cmd_Iter = find(m_cmds.begin(), m_cmds.end(), c);
-  if (cmd_Iter != m_cmds.end()) {
+  cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
+  if (cmd_Iter != m_vpcmds.end()) {
     delete (*cmd_Iter);
-    m_cmds.erase(cmd_Iter);
+    m_vpcmds.erase(cmd_Iter);
     return true;
   } else
     return false;
@@ -136,22 +136,22 @@ bool MultiCommands::Remove(Command *c)
 bool MultiCommands::Remove()
 {
   TRACE(L"Multicommands Remove\n");
-  if (!m_cmds.empty()) {
-    delete m_cmds.back();
-    m_cmds.pop_back();
+  if (!m_vpcmds.empty()) {
+    delete m_vpcmds.back();
+    m_vpcmds.pop_back();
     return true;
   } else
     return false;
 }
 
-bool MultiCommands::GetRC(Command *c, int &rc)
+bool MultiCommands::GetRC(Command *pcmd, int &rc)
 {
   std::vector<Command *>::iterator cmd_Iter;
 
   TRACE(L"Multicommands GetRC\n");
-  cmd_Iter = find(m_cmds.begin(), m_cmds.end(), c);
-  if (cmd_Iter != m_cmds.end()) {
-    rc = m_RCs[cmd_Iter - m_cmds.begin()];
+  cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
+  if (cmd_Iter != m_vpcmds.end()) {
+    rc = m_vRCs[cmd_Iter - m_vpcmds.begin()];
     return true;
   } else {
     rc = 0;
@@ -161,11 +161,11 @@ bool MultiCommands::GetRC(Command *c, int &rc)
 
 bool MultiCommands::GetRC(const size_t ncmd, int &rc)
 {
-  if (ncmd <= 0 || ncmd > m_RCs.size()) {
+  if (ncmd <= 0 || ncmd > m_vRCs.size()) {
     rc = 0;
     return false;
   } else {
-    rc = m_RCs[ncmd - 1];
+    rc = m_vRCs[ncmd - 1];
     return true;
   }
 }
@@ -181,16 +181,16 @@ void MultiCommands::UpdateField(CItemData &ci, CItemData::FieldType ftype, Strin
 }
 
 MultiCommands *MultiCommands::MakeAddDependentCommand(CommandInterface *pcomInt,
-                                                      Command *aec,
+                                                      Command *paec,
                                                       const uuid_array_t &base_uuid, 
                                                       const uuid_array_t &entry_uuid,
                                                       CItemData::EntryType type)
 {
-  MultiCommands *mc = new MultiCommands(pcomInt);
-  mc->Add(aec);
-  mc->Add(AddDependentEntryCommand::Create(mc->m_pcomInt, base_uuid,
-                                           entry_uuid, type));
-  return mc;
+  MultiCommands *pmc = new MultiCommands(pcomInt);
+  pmc->Add(paec);
+  pmc->Add(AddDependentEntryCommand::Create(pmc->m_pcomInt, base_uuid,
+                                            entry_uuid, type));
+  return pmc;
 }
 
 // ------------------------------------------------
@@ -650,10 +650,10 @@ void AddDependentEntryCommand::Undo()
 
 AddDependentEntriesCommand::AddDependentEntriesCommand(CommandInterface *pcomInt,
                                                        UUIDList &dependentslist,
-                                                       CReport *rpt,
+                                                       CReport *pRpt,
                                                        CItemData::EntryType type,
                                                        int iVia)
-  : Command(pcomInt), m_dependentslist(dependentslist), m_rpt(rpt),
+  : Command(pcomInt), m_dependentslist(dependentslist), m_pRpt(pRpt),
     m_type(type), m_iVia(iVia)
 {
   m_pmapDeletedItems = new ItemList;
@@ -680,7 +680,7 @@ int AddDependentEntriesCommand::Execute()
   if (m_pcomInt->IsReadOnly())
     return 0;
 
-  int rc =  m_pcomInt->DoAddDependentEntries(m_dependentslist, m_rpt,
+  int rc =  m_pcomInt->DoAddDependentEntries(m_dependentslist, m_pRpt,
                                              m_type, m_iVia,
                                              m_pmapDeletedItems, m_pmapSaveStatus);
   m_bState = true;

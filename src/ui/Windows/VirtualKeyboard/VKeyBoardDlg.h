@@ -73,11 +73,11 @@ class CVKeyBoardDlg : public CPWDialog
 public:
   static bool IsOSKAvailable(); // true iff dll available, right version, etc.
 
-  static wchar_t * ARIALUMS;
-  static wchar_t * ARIALU;
-  static wchar_t * LUCIDAUS;
+  static wchar_t *ARIALUMS;
+  static wchar_t *ARIALU;
+  static wchar_t *LUCIDAUS;
 
-  CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID = NULL);
+  CVKeyBoardDlg(CWnd *pParent, LPCWSTR wcKLID = NULL);
   ~CVKeyBoardDlg();
 
   enum { IDD = IDD_VKEYBOARD };
@@ -98,9 +98,9 @@ protected:
 
   //{{AFX_MSG(CVKeyBoardDlg)
   afx_msg void OnPostNcDestroy();
-  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd * pWnd, UINT nCtlColor);
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-  afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
+  afx_msg void OnActivate(UINT nState, CWnd *pWndOther, BOOL bMinimized);
   afx_msg void OnCancel();
   afx_msg void OnInsert();
   afx_msg void OnRandomize();
@@ -140,7 +140,7 @@ private:
   void ApplyUnicodeFont(CWnd* pDlgItem);
   void DoRCtrl(const bool bDoFull);
 
-  CToolTipCtrl* m_pToolTipCtrl;
+  CToolTipCtrl *m_pToolTipCtrl;
   CFont *m_pPassphraseFont;
 
   CVKBButton m_vkbb_Alt, m_vkbb_AltGr, m_vkbb_CapsLock, m_vkbb_AltNum, m_vkbb_BackSpace;
@@ -156,12 +156,12 @@ private:
   CVKBButton m_vkbb_SmallSpaceBar, m_vkbb_Size, m_vkbb_Hiragana;
 
   wchar_t m_wcDeadKey;
-  wchar_t * m_pnumbers[NUM_DIGITS];
+  wchar_t *m_pnumbers[NUM_DIGITS];
   BYTE m_scancodes[NUM_KEYS];
 
   CString m_selectedkb;
 
-  st_VKBD * m_pstvkbd;
+  st_VKBD *m_pstvkbd;
   Map_st_SC2Char m_map_stSC2Char;
   std::vector<BYTE> m_vsc;
 
@@ -187,7 +187,7 @@ private:
   LP_OSK_GetKeyboardData m_pGetKBData;
   LP_OSK_ListKeyboards m_pListKBs;
   st_KBImpl m_stKBImpl;
-  CWnd * m_pParent;
+  CWnd *m_pParent;
   UINT m_uiMouseDblClkTime;
 };
 //-----------------------------------------------------------------------------

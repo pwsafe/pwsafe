@@ -258,10 +258,10 @@ BOOL CSystemTray::SetIconList(UINT uFirstIconID, UINT uLastIconID)
     for (UINT i = uFirstIconID; i <= uLastIconID; i++)
       m_IconList.Add(pApp->LoadIcon(i));
   }
-  catch (CMemoryException *e)
+  catch (CMemoryException *pe)
   {
-    e->ReportError();
-    e->Delete();
+    pe->ReportError();
+    pe->Delete();
     m_IconList.RemoveAll();
     return FALSE;
   }
@@ -282,10 +282,10 @@ BOOL CSystemTray::SetIconList(HICON* pHIconList, UINT nNumIcons)
     for (UINT i = 0; i <= nNumIcons; i++)
       m_IconList.Add(pHIconList[i]);
   }
-  catch (CMemoryException *e)
+  catch (CMemoryException *pe)
   {
-    e->ReportError();
-    e->Delete();
+    pe->ReportError();
+    pe->Delete();
     m_IconList.RemoveAll();
     return FALSE;
   }

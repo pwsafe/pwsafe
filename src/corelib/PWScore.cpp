@@ -53,7 +53,7 @@ PWScore::PWScore() :
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
-                     m_bNotifyDB(false), m_uii(NULL),
+                     m_bNotifyDB(false), m_pUIIF(NULL),
                      m_fileSig(NULL)
 {
   // following should ideally be wrapped in a mutex
@@ -188,7 +188,7 @@ void PWScore::NewFile(const StringX &passkey)
 
 // functor object type for for_each:
 struct RecordWriter {
-  RecordWriter(PWSfile *out, PWScore *core) : m_out(out), m_core(core) {}
+  RecordWriter(PWSfile *pout, PWScore *pcore) : m_pout(pout), m_pcore(pcore) {}
   void operator()(pair<CUUIDGen const, CItemData> &p)
   {
     StringX savePassword, uuid_str;
@@ -199,7 +199,7 @@ struct RecordWriter {
     if (p.second.IsAlias()) {
       uuid_array_t item_uuid, base_uuid;
       p.second.GetUUID(item_uuid);
-      m_core->GetAliasBaseUUID(item_uuid, base_uuid);
+      m_pcore->GetAliasBaseUUID(item_uuid, base_uuid);
 
       const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[["));
@@ -209,7 +209,7 @@ struct RecordWriter {
     } else if (p.second.IsShortcut()) {
       uuid_array_t item_uuid, base_uuid;
       p.second.GetUUID(item_uuid);
-      m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
+      m_pcore->GetShortcutBaseUUID(item_uuid, base_uuid);
 
       const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[~"));
@@ -218,14 +218,14 @@ struct RecordWriter {
       p.second.SetPassword(uuid_str);
     }
  
-    m_out->WriteRecord(p.second);
+    m_pout->WriteRecord(p.second);
     p.second.SetPassword(savePassword);
     p.second.ClearStatus();
   }
 
 private:
-  PWSfile *m_out;
-  PWScore *m_core;
+  PWSfile *m_pout;
+  PWScore *m_pcore;
 };
 
 int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
@@ -495,7 +495,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 
   SetPassKey(a_passkey); // so user won't be prompted for saves
 
-  CItemData temp;
+  CItemData ci_temp;
   uuid_array_t base_uuid, temp_uuid;
   StringX csMyPassword, cs_possibleUUID;
   bool go = true;
@@ -509,8 +509,8 @@ int PWScore::ReadFile(const StringX &a_filename,
 
   UUIDList possible_aliases, possible_shortcuts;
   do {
-    temp.Clear(); // Rather than creating a new one each time.
-    status = in->ReadRecord(temp);
+    ci_temp.Clear(); // Rather than creating a new one each time.
+    status = in->ReadRecord(ci_temp);
     switch (status) {
       case PWSfile::FAILURE:
       {
@@ -521,7 +521,7 @@ int PWScore::ReadFile(const StringX &a_filename,
         stringT cs_msg;
         stringT cs_caption;
         LoadAString(cs_caption, IDSC_READ_ERROR);
-        Format(cs_msg, IDSC_ENCODING_PROBLEM, temp.GetTitle().c_str());
+        Format(cs_msg, IDSC_ENCODING_PROBLEM, ci_temp.GetTitle().c_str());
         cs_msg = cs_caption + _S(": ") + cs_caption;
         if (m_pReporter != NULL)
           (*m_pReporter)(cs_msg);
@@ -529,7 +529,7 @@ int PWScore::ReadFile(const StringX &a_filename,
       // deliberate fall-through
       case PWSfile::SUCCESS:
         uuid_array_t uuid;
-        temp.GetUUID(uuid);
+        ci_temp.GetUUID(uuid);
         /*
          * If, for some reason, we're reading in a uuid that we already have
          * we will change the uuid, rather than overwrite an entry.
@@ -541,14 +541,14 @@ int PWScore::ReadFile(const StringX &a_filename,
            pws_os::Trace0(_T("Non-Unique uuid detected:\n"));
            CItemData::FieldBits bf;
            bf.flip();
-           StringX dump = temp.GetPlaintext(TCHAR(':'), bf, TCHAR('-'), NULL);
+           StringX dump = ci_temp.GetPlaintext(TCHAR(':'), bf, TCHAR('-'), NULL);
            pws_os::Trace(_T("%s\n"), dump);
 #endif
-           temp.CreateUUID(); // replace duplicated uuid
-           temp.GetUUID(uuid); // refresh uuid_array
+           ci_temp.CreateUUID(); // replace duplicated uuid
+           ci_temp.GetUUID(uuid); // refresh uuid_array
          }
          // following is duplicated in Validate() - need to refactor
-         csMyPassword = temp.GetPassword();
+         csMyPassword = ci_temp.GetPassword();
          if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
            cs_possibleUUID = csMyPassword.substr(2, 32);  // try to extract uuid
            ToLower(cs_possibleUUID);
@@ -560,7 +560,7 @@ int PWScore::ReadFile(const StringX &a_filename,
                StringX::npos) {
              CUUIDGen uuid(cs_possibleUUID.c_str());
              uuid.GetUUID(base_uuid);
-             temp.GetUUID(temp_uuid);
+             ci_temp.GetUUID(temp_uuid);
              if (csMyPassword.substr(1, 1) == _T("[")) {
                m_alias2base_map[temp_uuid] = base_uuid;
                possible_aliases.push_back(temp_uuid);
@@ -572,12 +572,12 @@ int PWScore::ReadFile(const StringX &a_filename,
          } // uuid matching
 #ifdef DEMO
          if (m_pwlist.size() < MAXDEMO) {
-           m_pwlist[uuid] = temp;
+           m_pwlist[uuid] = ci_temp;
          } else {
            limited = true;
          }
 #else
-         m_pwlist[uuid] = temp;
+         m_pwlist[uuid] = ci_temp;
 #endif
          break;
       case PWSfile::END_OF_FILE:
@@ -1286,14 +1286,14 @@ void PWScore::DoMoveDependentEntries(const uuid_array_t &from_baseuuid,
   pmmap->erase(from_baseuuid);
 }
 
-int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
+int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *pRpt,
                                    const CItemData::EntryType type, const int &iVia,
                                    ItemList *pmapDeletedItems,
                                    SaveTypePWMap *pmapSaveTypePW)
 {
-  // When called during validation of a database  - *rpt is valid
+  // When called during validation of a database  - *pRpt is valid
   // When called during the opening of a database or during drag & drop
-  //   - *rpt is NULL and no report generated
+  //   - *pRpt is NULL and no report generated
 
   // type is either CItemData::ET_ALIAS or CItemData::ET_SHORTCUT
 
@@ -1363,18 +1363,18 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
           // Adding shortcuts -> Base must be normal or already a shortcut base
           if (!iter->second.IsNormal() && !iter->second.IsShortcutBase()) {
             // Bad news!
-            if (rpt != NULL) {
+            if (pRpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
-                rpt->WriteLine(strError);
+                pRpt->WriteLine(strError);
               }
               stringT cs_type;
               LoadAString(cs_type, IDSC_SHORTCUT);
               Format(strError, IDSC_IMPORTWARNING3, cs_type.c_str(),
                      pci_curitem->GetGroup().c_str(), pci_curitem->GetTitle().c_str(), 
                      pci_curitem->GetUser().c_str(), cs_type.c_str());
-              rpt->WriteLine(strError);
+              pRpt->WriteLine(strError);
             }
             // Invalid - delete!
             if (pmapDeletedItems != NULL)
@@ -1387,18 +1387,18 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
           // Adding Aliases -> Base must be normal or already a alias base
           if (!iter->second.IsNormal() && !iter->second.IsAliasBase()) {
             // Bad news!
-            if (rpt != NULL) {
+            if (pRpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
-                rpt->WriteLine(strError);
+                pRpt->WriteLine(strError);
               }
               stringT cs_type;
               LoadAString(cs_type, IDSC_ALIAS);
               Format(strError, IDSC_IMPORTWARNING3, cs_type.c_str(),
                      pci_curitem->GetGroup().c_str(), pci_curitem->GetTitle().c_str(), 
                      pci_curitem->GetUser().c_str(), cs_type.c_str());
-              rpt->WriteLine(strError);
+              pRpt->WriteLine(strError);
             }
             // Invalid - delete!
             if (pmapDeletedItems != NULL)
@@ -1412,17 +1412,17 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
             uuid_array_t temp_uuid;
             iter->second.GetUUID(temp_uuid);
             GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
-            if (rpt != NULL) {
+            if (pRpt != NULL) {
               if (!bwarnings) {
                 bwarnings = true;
                 LoadAString(strError, IDSC_IMPORTWARNINGHDR);
-                rpt->WriteLine(strError);
+                pRpt->WriteLine(strError);
               }
               Format(strError, IDSC_IMPORTWARNING1, pci_curitem->GetGroup().c_str(),
                      pci_curitem->GetTitle().c_str(), pci_curitem->GetUser().c_str());
-              rpt->WriteLine(strError);
+              pRpt->WriteLine(strError);
               LoadAString(strError, IDSC_IMPORTWARNING1A);
-              rpt->WriteLine(strError);
+              pRpt->WriteLine(strError);
             }
             if (pmapSaveTypePW != NULL) {
               st_typepw.et = iter->second.GetEntryType();
@@ -1473,17 +1473,17 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         }
       } else {
         // Specified base does not exist!
-        if (rpt != NULL) {
+        if (pRpt != NULL) {
           if (!bwarnings) {
             bwarnings = true;
             LoadAString(strError, IDSC_IMPORTWARNINGHDR);
-            rpt->WriteLine(strError);
+            pRpt->WriteLine(strError);
           }
           Format(strError, IDSC_IMPORTWARNING2, pci_curitem->GetGroup().c_str(),
                  pci_curitem->GetTitle().c_str(), pci_curitem->GetUser().c_str());
-          rpt->WriteLine(strError);
+          pRpt->WriteLine(strError);
           LoadAString(strError, IDSC_IMPORTWARNING2A);
-          rpt->WriteLine(strError);
+          pRpt->WriteLine(strError);
         }
         if (type == CItemData::ET_SHORTCUT) {
           if (pmapDeletedItems != NULL)
@@ -1732,8 +1732,8 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
 
 void PWScore::NotifyDBModified()
 {
-  if (m_bNotifyDB && m_uii != NULL)
-    m_uii->DatabaseModified(m_bDBChanged || m_bDBPrefsChanged);
+  if (m_bNotifyDB && m_pUIIF != NULL)
+    m_pUIIF->DatabaseModified(m_bDBChanged || m_bDBPrefsChanged);
 }
 
 
@@ -1741,22 +1741,22 @@ void PWScore::NotifyGUINeedsUpdating(Command::GUI_Action ga,
                                      uuid_array_t &entry_uuid,
                                      CItemData::FieldType ft)
 {
-  if (m_uii != NULL)
-    m_uii->UpdateGUI(ga, entry_uuid, ft);
+  if (m_pUIIF != NULL)
+    m_pUIIF->UpdateGUI(ga, entry_uuid, ft);
 }
 
 void PWScore::CallGUICommandInterface(Command::ExecuteFn When,
                                       PWSGUICmdIF *pGUICmdIF)
 {
-  if (m_uii != NULL)
-    m_uii->GUICommandInterface(When, pGUICmdIF);
+  if (m_pUIIF != NULL)
+    m_pUIIF->GUICommandInterface(When, pGUICmdIF);
 }
 
 
 void PWScore::GUIUpdateEntry(CItemData &ci)
 {
-  if (m_uii != NULL)
-    m_uii->GUIUpdateEntry(ci);
+  if (m_pUIIF != NULL)
+    m_pUIIF->GUIUpdateEntry(ci);
 }
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)

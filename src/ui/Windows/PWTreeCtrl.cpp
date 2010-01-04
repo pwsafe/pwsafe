@@ -183,12 +183,7 @@ CPWTreeCtrl::CPWTreeCtrl()
   : m_isRestoring(false), m_bWithinThisInstance(true),
   m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
   m_hgDataALL(NULL), m_hgDataTXT(NULL), m_hgDataUTXT(NULL),
-  m_bFilterActive(false),
-  m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
-  m_wpRenameMsg(WM_KEYDOWN), m_wpRenameKey(VK_F2),
-  m_bDeleteCtrl(false), m_bDeleteShift(false),
-  m_bRenameCtrl(false), m_bRenameShift(false),
-  m_bUseHighLighting(false)
+  m_bFilterActive(false), m_bUseHighLighting(false)
 {
   // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
@@ -263,22 +258,6 @@ void CPWTreeCtrl::OnDestroy()
   m_DropTarget->Revoke();
 }
 
-void CPWTreeCtrl::SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier)
-{
-  m_wpDeleteMsg = ((cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
-  m_wpDeleteKey = cVirtKey;
-  m_bDeleteCtrl = (cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
-  m_bDeleteShift = (cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
-}
-
-void CPWTreeCtrl::SetRenameKey(const unsigned char cVirtKey, const unsigned char cModifier)
-{
-  m_wpRenameMsg = ((cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
-  m_wpRenameKey = cVirtKey;
-  m_bRenameCtrl = (cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
-  m_bRenameShift = (cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
-}
-
 BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
 {
   // When an item is being edited make sure the edit control
@@ -289,25 +268,20 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
     return TRUE; // DO NOT process further
   }
 
+  // Process User's AutoType shortcut
+  if (m_pDbx != NULL && m_pDbx->CheckPreTranslateAutoType(pMsg))
+    return TRUE;
+
   // Process User's Delete shortcut
-  if (pMsg->message == m_wpDeleteMsg && pMsg->wParam == m_wpDeleteKey) {
-    if (m_bDeleteCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
-        m_bDeleteShift == (GetKeyState(VK_SHIFT)   < 0)) {
-      if (m_pDbx != NULL)
-        m_pDbx->SendMessage(WM_COMMAND, MAKEWPARAM(ID_MENUITEM_DELETEENTRY, 1), 0);
-      return TRUE;
-    }
-  }
+  if (m_pDbx != NULL && m_pDbx->CheckPreTranslateDelete(pMsg))
+    return TRUE;
   
   // Process user's Rename shortcut
-  if (pMsg->message == m_wpRenameMsg && pMsg->wParam == m_wpRenameKey) {
-    if (m_bRenameCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
-        m_bRenameShift == (GetKeyState(VK_SHIFT)   < 0)) {
-      HTREEITEM hItem = GetSelectedItem();
-      if (hItem != NULL && !m_pDbx->IsMcoreReadOnly())
-        EditLabel(hItem);
-      return TRUE;
-    }
+  if (m_pDbx != NULL && m_pDbx->CheckPreTranslateRename(pMsg)) {
+    HTREEITEM hItem = GetSelectedItem();
+    if (hItem != NULL && !m_pDbx->IsMcoreReadOnly())
+      EditLabel(hItem);
+    return TRUE;
   }
 
   // Let the parent class do its thing
@@ -1052,10 +1026,10 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     }
   } else { // we're dragging a leaf
     CItemData *pci = (CItemData *)itemData;
-    CItemData temp(*pci); // copy construct a duplicate
+    CItemData ci_temp(*pci); // copy construct a duplicate
 
     // Update Group: chop away prefix, replace
-    CSecString oldPath(temp.GetGroup());
+    CSecString oldPath(ci_temp.GetGroup());
     if (!prefix.IsEmpty()) {
       oldPath = oldPath.Right(oldPath.GetLength() - prefix.GetLength() - 1);
     }
@@ -1091,56 +1065,55 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     // Needs new UUID as they must be unique and this is a copy operation
     // but before we do, save the original
     uuid_array_t original_uuid, temp_uuid, base_uuid;
-    temp.GetUUID(original_uuid);
-    temp.CreateUUID();
+    ci_temp.GetUUID(original_uuid);
+    ci_temp.CreateUUID();
     // May need it later...
-    temp.GetUUID(temp_uuid);
+    ci_temp.GetUUID(temp_uuid);
 
-    temp.SetGroup(newPath);
-    temp.SetTitle(ci_title);
+    ci_temp.SetGroup(newPath);
+    ci_temp.SetTitle(ci_title);
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
     DisplayInfo *pdi_new = new DisplayInfo;
     pdi_new->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
     pdi_new->tree_item = 0;
-    temp.SetDisplayInfo(pdi_new);
+    ci_temp.SetDisplayInfo(pdi_new);
 
+    Command *pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp);
 
-    Command *cmd = AddEntryCommand::Create(m_pDbx->GetCore(), temp);
-
-    CItemData::EntryType temp_et = temp.GetEntryType();
+    CItemData::EntryType temp_et = ci_temp.GetEntryType();
     switch (temp_et) {
     case CItemData::ET_NORMAL:
       break;
     case CItemData::ET_ALIASBASE:
     case CItemData::ET_SHORTCUTBASE:
       // An alias or shortcut can only have one base
-      temp.SetNormal();
+      ci_temp.SetNormal();
       break;
     case CItemData::ET_ALIAS:
       // Get base of original alias and make this copy point to it
       m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
       // replace AddEntry command with multicommand containing
       // AddEntry and AddDependentEntryCommand
-      cmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), cmd,
-                                                   base_uuid, temp_uuid,
-                                                   CItemData::ET_ALIAS);
-      temp.SetPassword(CSecString(L"[Alias]"));
+      pcmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), pcmd,
+                                                    base_uuid, temp_uuid,
+                                                    CItemData::ET_ALIAS);
+      ci_temp.SetPassword(CSecString(L"[Alias]"));
       break;
     case CItemData::ET_SHORTCUT:
       // Get base of original shortcut and make this copy point to it
       m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
       // replace AddEntry command with multicommand containing
       // AddEntry and AddDependentEntryCommand
-      cmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), cmd,
-                                                   base_uuid, temp_uuid,
-                                                   CItemData::ET_SHORTCUT);
-      temp.SetPassword(CSecString(L"[Shortcut]"));
+      pcmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), pcmd,
+                                                    base_uuid, temp_uuid,
+                                                    CItemData::ET_SHORTCUT);
+      ci_temp.SetPassword(CSecString(L"[Shortcut]"));
       break;
     default:
       ASSERT(0);
     }
-    m_pDbx->Execute(cmd);
+    m_pDbx->Execute(pcmd);
 
     // Mark database as modified!
     m_pDbx->SetChanged(DboxMain::Data);
@@ -1148,7 +1121,7 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
   return true;
 }
 
-BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
+BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
   // Is it ours?

@@ -170,6 +170,11 @@ void CPWFindToolBar::RefreshImages()
 BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
 {
   CWnd *pWnd = FromHandle(pMsg->hwnd);
+
+  // Process User's AutoType shortcut
+  if (m_pDbx != NULL && m_pDbx->CheckPreTranslateAutoType(pMsg))
+    return TRUE;
+
   if (pWnd->GetDlgCtrlID() == ID_TOOLBUTTON_FINDEDITCTRL) {
     if (pMsg->message == WM_KEYDOWN) {
       if (pMsg->wParam == VK_RETURN) {
@@ -263,7 +268,7 @@ void CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
       j++;
   }
 
-  m_pDbx = pDbx;
+  m_pDbx = m_pDbx = static_cast<DboxMain *>(pDbx);
   m_iWMSGID = iWMSGID;
 }
 

@@ -258,8 +258,8 @@ LRESULT CPasskeySetup::OnInsertBuffer(WPARAM, LPARAM)
   // Get the buffer
   CSecString vkbuffer = m_pVKeyBoardDlg->GetPassphrase();
 
-  CSecEditExtn * m_pSecCtl(NULL);
-  CSecString * m_pSecString;
+  CSecEditExtn *m_pSecCtl(NULL);
+  CSecString *m_pSecString;
 
   switch (m_LastFocus) {
     case IDC_PASSKEY:

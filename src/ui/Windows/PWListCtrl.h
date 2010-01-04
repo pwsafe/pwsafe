@@ -37,7 +37,6 @@ public:
   void SetInfoWindow(CPoint point, const CSecString &cs_ToolTip, bool bVisible);
 
   void SetFilterState(bool bState);
-  void SetDeleteKey(const unsigned char cVirtKey, const unsigned char cModifier);
   void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
@@ -69,10 +68,6 @@ private:
 
   // Filter
   bool m_bFilterActive;
-
-  // Delete/Rename Shortcuts
-  WPARAM m_wpDeleteMsg, m_wpDeleteKey;
-  bool m_bDeleteCtrl, m_bDeleteShift;
 
   HFONT GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
   PWFonts m_fonts;

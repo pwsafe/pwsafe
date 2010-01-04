@@ -262,9 +262,10 @@ void DboxMain::UpdateGUI(Command::GUI_Action ga,
 // Called from PWScore to get GUI to update its reserved field
 void DboxMain::GUIUpdateEntry(CItemData &ci)
 {
-  DisplayInfoBase *dib = ci.GetDisplayInfo();
-  if (dib != NULL)
-    delete dib;
+  DisplayInfoBase *pdib = ci.GetDisplayInfo();
+  if (pdib != NULL)
+    delete pdib;
+
   ci.SetDisplayInfo(new DisplayInfo);
 }
 
@@ -1088,9 +1089,9 @@ void DboxMain::RefreshViews(const int iView)
     UpdateStatusBar();
 }
 
-static void Shower(CWnd *w)
+static void Shower(CWnd *pWnd)
 {
-  w->ShowWindow(SW_SHOW);
+  pWnd->ShowWindow(SW_SHOW);
 }
 
 void DboxMain::RestoreWindows()
@@ -1185,6 +1186,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       m_mapGroupToTreeItem.clear();
       m_ctlItemTree.DeleteAllItems();
       m_bBoldItem = false;
+      m_LastFoundTreeItem = NULL;
+      m_LastFoundListItem = -1;
 
       if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
         OnClearClipboard();
@@ -1890,9 +1893,9 @@ void DboxMain::OnCollapseAll()
   m_ctlItemTree.OnCollapseAll();
 }
 
-static void Hider(CWnd *w)
+static void Hider(CWnd *pWnd)
 {
-  w->ShowWindow(SW_HIDE);
+  pWnd->ShowWindow(SW_HIDE);
 }
 
 void DboxMain::OnTimer(UINT_PTR nIDEvent)

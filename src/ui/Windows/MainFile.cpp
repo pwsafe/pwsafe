@@ -1995,7 +1995,7 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
   ItemListIter iter;
   uuid_array_t entry_uuid, new_entry_uuid;
   ItemListConstIter foundPos;
-  CItemData tempitem;
+  CItemData ci_temp;
   int numadded(0);
 
   // Get all the dependents
@@ -2008,30 +2008,30 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     if (iter == pothercore->GetEntryEndIter())
       continue;
 
-    CItemData *curitem = &iter->second;
-    tempitem = (*curitem);
+    CItemData *pci = &iter->second;
+    ci_temp = (*pci);
 
     memcpy(new_entry_uuid, entry_uuid, sizeof(new_entry_uuid));
     if (m_core.Find(entry_uuid) != m_core.GetEntryEndIter()) {
-      tempitem.CreateUUID();
-      tempitem.GetUUID(new_entry_uuid);
+      ci_temp.CreateUUID();
+      ci_temp.GetUUID(new_entry_uuid);
     }
 
     // If the base title was renamed - we should automatically rename any dependent.
     // If we didn't, we still need to check uniqueness!
-    StringX newTitle = tempitem.GetTitle();
+    StringX newTitle = ci_temp.GetTitle();
     if (bTitleRenamed) {
       newTitle += L"-merged-";
       newTitle += timeStr;
-      tempitem.SetTitle(newTitle);
+      ci_temp.SetTitle(newTitle);
     }
     // Check this is unique - if not - don't add this one! - its only an alias/shortcut!
-    // We can't keep trying for uniqueness after adding a timestanp!
-    foundPos = m_core.Find(tempitem.GetGroup(), newTitle, tempitem.GetUser());
+    // We can't keep trying for uniqueness after adding a timestamp!
+    foundPos = m_core.Find(ci_temp.GetGroup(), newTitle, ci_temp.GetUser());
     if (foundPos != m_core.GetEntryEndIter()) 
       continue;
 
-    Command *pcmd1 = AddEntryCommand::Create(&m_core, tempitem);
+    Command *pcmd1 = AddEntryCommand::Create(&m_core, ci_temp);
     pcmd1->SetNoGUINotify();
     pmulticmds->Add(pcmd1);
 
@@ -2042,19 +2042,19 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     pmulticmds->Add(pcmd2);
 
     if (et == CItemData::ET_ALIAS) {
-      tempitem.SetPassword(L"[Alias]");
-      tempitem.SetAlias();
+      ci_temp.SetPassword(L"[Alias]");
+      ci_temp.SetAlias();
     } else
     if (et == CItemData::ET_SHORTCUT) {
-      tempitem.SetPassword(L"[Shortcut]");
-      tempitem.SetShortcut();
+      ci_temp.SetPassword(L"[Shortcut]");
+      ci_temp.SetShortcut();
     } else
       ASSERT(0);
 
     StringX sx_added = StringX(L"\xab") + 
-                         tempitem.GetGroup() + StringX(L"\xbb \xab") + 
-                         tempitem.GetTitle() + StringX(L"\xbb \xab") +
-                         tempitem.GetUser()  + StringX(L"\xbb");
+                         ci_temp.GetGroup() + StringX(L"\xbb \xab") + 
+                         ci_temp.GetTitle() + StringX(L"\xbb \xab") +
+                         ci_temp.GetUser()  + StringX(L"\xbb");
     vs_added.push_back(sx_added);
     numadded++;
   }
@@ -2855,33 +2855,33 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
       }
     }
   } else {
-    CItemData tempitem;
+    CItemData ci_temp;
 
     // If the UUID is not in use, copy it too otherwise create it
     if (bFromUUIDIsNotInTo)
-      tempitem.SetUUID(fromUUID);
+      ci_temp.SetUUID(fromUUID);
     else
-      tempitem.CreateUUID();
+      ci_temp.CreateUUID();
 
-    tempitem.GetUUID(toUUID);
-    tempitem.SetGroup(group);
-    tempitem.SetTitle(title);
-    tempitem.SetUser(user);
-    tempitem.SetPassword(password);
-    tempitem.SetNotes(notes);
-    tempitem.SetURL(url);
-    tempitem.SetAutoType(autotype);
-    tempitem.SetPWHistory(pwhistory);
-    tempitem.SetRunCommand(runcmd);
-    tempitem.SetDCA(dca.c_str());
-    tempitem.SetEmail(email);
-    tempitem.SetCTime(ct);
-    tempitem.SetATime(at);
-    tempitem.SetXTime(xt);
-    tempitem.SetPMTime(pmt);
-    tempitem.SetRMTime(rmt);
-    tempitem.SetPWPolicy(pwp);
-    tempitem.SetXTimeInt(xint);
+    ci_temp.GetUUID(toUUID);
+    ci_temp.SetGroup(group);
+    ci_temp.SetTitle(title);
+    ci_temp.SetUser(user);
+    ci_temp.SetPassword(password);
+    ci_temp.SetNotes(notes);
+    ci_temp.SetURL(url);
+    ci_temp.SetAutoType(autotype);
+    ci_temp.SetPWHistory(pwhistory);
+    ci_temp.SetRunCommand(runcmd);
+    ci_temp.SetDCA(dca.c_str());
+    ci_temp.SetEmail(email);
+    ci_temp.SetCTime(ct);
+    ci_temp.SetATime(at);
+    ci_temp.SetXTime(xt);
+    ci_temp.SetPMTime(pmt);
+    ci_temp.SetRMTime(rmt);
+    ci_temp.SetPWPolicy(pwp);
+    ci_temp.SetXTimeInt(xint);
     if (nfromUnknownRecordFields != 0) {
       ptocore->IncrementNumRecordsWithUnknownFields();
 
@@ -2892,13 +2892,13 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
         fromEntry->GetUnknownField(type, length, pdata, i);
         if (length == 0)
           continue;
-        tempitem.SetUnknownField(type, length, pdata);
+        ci_temp.SetUnknownField(type, length, pdata);
         trashMemory(pdata, length);
         delete[] pdata;
       }
     }
-    tempitem.SetStatus(CItemData::ES_ADDED);
-    Command *pcmd = AddEntryCommand::Create(ptocore, tempitem);
+    ci_temp.SetStatus(CItemData::ES_ADDED);
+    Command *pcmd = AddEntryCommand::Create(ptocore, ci_temp);
     Execute(pcmd, ptocore);
   }
 
@@ -3199,15 +3199,15 @@ void DboxMain::RegistryAnonymity()
   return;
 }
 
-void DboxMain::ReportAdvancedOptions(CReport *prpt, const UINT uimsgftn)
+void DboxMain::ReportAdvancedOptions(CReport *pRpt, const UINT uimsgftn)
 {
   CString cs_buffer, cs_temp, cs_text;
   // tell the user we're done & provide short Compare report
   if (!m_bAdvanced) {
     cs_temp.LoadString(IDS_NONE);
     cs_buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    prpt->WriteLine((LPCWSTR)cs_buffer);
-    prpt->WriteLine();
+    pRpt->WriteLine((LPCWSTR)cs_buffer);
+    pRpt->WriteLine();
   } else {
     if (m_subgroup_set == BST_UNCHECKED) {
       cs_temp.LoadString(IDS_NONE);
@@ -3282,12 +3282,12 @@ void DboxMain::ReportAdvancedOptions(CReport *prpt, const UINT uimsgftn)
                      cs_case);
     }
     cs_buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
-    prpt->WriteLine((LPCWSTR)cs_buffer);
-    prpt->WriteLine();
+    pRpt->WriteLine((LPCWSTR)cs_buffer);
+    pRpt->WriteLine();
 
     cs_temp.LoadString(uimsgftn);
     cs_buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
-    prpt->WriteLine((LPCWSTR)cs_buffer);
+    pRpt->WriteLine((LPCWSTR)cs_buffer);
 
     cs_buffer = L"\t";
     // Non-time fields
@@ -3326,7 +3326,7 @@ void DboxMain::ReportAdvancedOptions(CReport *prpt, const UINT uimsgftn)
       }
     }
 
-    prpt->WriteLine((LPCWSTR)cs_buffer);
-    prpt->WriteLine();
+    pRpt->WriteLine((LPCWSTR)cs_buffer);
+    pRpt->WriteLine();
   }
 }

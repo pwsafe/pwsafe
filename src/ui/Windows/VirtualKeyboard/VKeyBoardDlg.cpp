@@ -80,7 +80,7 @@ const BYTE defscancodes106[] = {
            0x00, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28,
            0x00, 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x00};
 
-const wchar_t * pdefnumbers[] = {
+const wchar_t *pdefnumbers[] = {
            L"0", L"1", L"2", L"3", L"4", L"5", L"6", L"7", L"8", L"9"};
 
 // Keyboards with 101 keys by default (user can change)
@@ -191,9 +191,9 @@ static int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *,
 
 int  CVKeyBoardDlg::m_iFont = -1;
 bool CVKeyBoardDlg::m_bUserSpecifiedFont = false;
-wchar_t * CVKeyBoardDlg::ARIALUMS = L"Arial Unicode MS";
-wchar_t * CVKeyBoardDlg::ARIALU   = L"Arial Unicode";
-wchar_t * CVKeyBoardDlg::LUCIDAUS = L"Lucida Sans Unicode";
+wchar_t *CVKeyBoardDlg::ARIALUMS = L"Arial Unicode MS";
+wchar_t *CVKeyBoardDlg::ARIALU   = L"Arial Unicode";
+wchar_t *CVKeyBoardDlg::LUCIDAUS = L"Lucida Sans Unicode";
 
 bool CVKeyBoardDlg::IsOSKAvailable()
 {
@@ -1182,7 +1182,7 @@ void CVKeyBoardDlg::OnRandomize()
     PWSrand *pwsr = PWSrand::GetInstance();
     int ir;
     BYTE itemp;
-    wchar_t * pwctemp;
+    wchar_t *pwctemp;
 
     for (int i = 0; i < NUM_KEYS; i++) {
       ir = pwsr->RangeRand(NUM_KEYS - 1);
