@@ -791,26 +791,7 @@ void DboxMain::OnOptions()
       iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEW);
       iter_entry->second.SetKeyFlags(iter->second);
 
-      // Find Delete Shortcut
-      iter = m_MapMenuShortcuts.find(ID_MENUITEM_DELETE);
-      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEENTRY);
-      iter_entry->second.SetKeyFlags(iter->second);
-      iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
-      iter_group->second.SetKeyFlags(iter->second);
-
-      // Now tell the CTreeCtrl & CListCtrl the key for Delete
-      m_ctlItemTree.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
-      m_ctlItemList.SetDeleteKey(iter->second.cVirtKey, iter->second.cModifier);
-
-      // Find Rename Shortcut
-      iter = m_MapMenuShortcuts.find(ID_MENUITEM_RENAME);
-      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEENTRY);
-      iter_entry->second.SetKeyFlags(iter->second);
-      iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
-      iter_group->second.SetKeyFlags(iter->second);
-
-      // Now tell the CTreeCtrl the key for Rename (not CListCtrl)
-      m_ctlItemTree.SetRenameKey(iter->second.cVirtKey, iter->second.cModifier);
+      SetupSpecialShortcuts();
 
       UpdateAccelTable();
 

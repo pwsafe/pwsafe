@@ -235,6 +235,7 @@ public:
   void CalcHeaderWidths();
   void UnFindItem();
   void SetLocalStrings();
+  void PerformAutoType(); // 'public' version called by Tree/List
 
   void UpdateToolBar(bool state);
   void UpdateToolBarForSelectedItem(CItemData *pci);
@@ -338,6 +339,11 @@ public:
 
   // Used in Add & Edit & OptionsPasswordPolicy
   PWPolicy m_pwp;
+
+  // Process Special Shortcuts for Tree & List controls
+  bool CheckPreTranslateDelete(MSG* pMsg);
+  bool CheckPreTranslateRename(MSG* pMsg);
+  bool CheckPreTranslateAutoType(MSG* pMsg);
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -707,6 +713,7 @@ private:
   void SetUpMenuStrings(CMenu *pPopupMenu);
   void SetUpInitialMenuStrings();
   void UpdateAccelTable();
+  void SetupSpecialShortcuts();
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   void UpdateSystemMenu();
@@ -779,6 +786,18 @@ private:
   HMODULE m_hUser32;
   PSBR_CREATE m_pfcnShutdownBlockReasonCreate;
   PSBR_DESTROY m_pfcnShutdownBlockReasonDestroy;
+
+  // Delete/Rename/AutoType Shortcuts
+  WPARAM m_wpDeleteMsg, m_wpDeleteKey;
+  WPARAM m_wpRenameMsg, m_wpRenameKey;
+  WPARAM m_wpAutotypeUPMsg, m_wpAutotypeDNMsg, m_wpAutotypeKey;
+  bool m_bDeleteCtrl, m_bDeleteShift;
+  bool m_bRenameCtrl, m_bRenameShift;
+  bool m_bAutotypeCtrl, m_bAutotypeShift;
+
+  // Do Autotype
+  bool m_bInAT;
+  std::bitset<3> m_btAT;  // Representing the Key, Ctrl Key and Shift key
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)
