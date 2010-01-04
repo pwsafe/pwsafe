@@ -899,9 +899,9 @@ void DboxMain::RefreshViews(const int iView)
     UpdateStatusBar();
 }
 
-static void Shower(CWnd *w)
+static void Shower(CWnd *pWnd)
 {
-  w->ShowWindow(SW_SHOW);
+  pWnd->ShowWindow(SW_SHOW);
 }
 
 void DboxMain::RestoreWindows()
@@ -1725,9 +1725,9 @@ void DboxMain::OnCollapseAll()
   m_ctlItemTree.OnCollapseAll();
 }
 
-static void Hider(CWnd *w)
+static void Hider(CWnd *pWnd)
 {
-  w->ShowWindow(SW_HIDE);
+  pWnd->ShowWindow(SW_HIDE);
 }
 
 void DboxMain::OnTimer(UINT_PTR nIDEvent)
@@ -3313,6 +3313,7 @@ void DboxMain::OnToolBarFindReport()
     rpt.WriteLine((LPCWSTR)buffer);
 
     buffer = L"\t";
+    // Non-time fields
     if (bsFFields.test(CItemData::GROUP))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_FINDGROUP));
     if (bsFFields.test(CItemData::TITLE))

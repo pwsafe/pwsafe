@@ -127,7 +127,7 @@ BOOL COptionsSystem::OnInitDialog()
   }
   GetDlgItem(IDC_REGDEL_BTN)->EnableWindow(FALSE);
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXREITEMS));
   pspin->SetRange(0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);

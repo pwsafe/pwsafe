@@ -232,7 +232,8 @@ END_MESSAGE_MAP()
 
 void CPWTreeCtrl::Initialize()
 {
-  m_pDbx = static_cast<DboxMain *>(GetParent());
+  m_pDbx = dynamic_cast<DboxMain *>(GetParent());
+  ASSERT(m_pDbx != NULL);
 
   // This should really be in OnCreate(), but for some reason,
   // it was never called.
@@ -790,7 +791,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   }
 
   // If called from AddGroup, user cancels EditLabel - save it
-  // (Still called !New Group")
+  // (Still called "New Group")
   if (m_pDbx->m_bInAddGroup) {
     m_pDbx->m_bInAddGroup = false;
     *pLResult = TRUE;
@@ -1009,10 +1010,10 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     }
   } else { // we're dragging a leaf
     CItemData *pci = (CItemData *)itemData;
-    CItemData temp(*pci); // copy construct a duplicate
+    CItemData ci_temp(*pci); // copy construct a duplicate
 
     // Update Group: chop away prefix, replace
-    CSecString oldPath(temp.GetGroup());
+    CSecString oldPath(ci_temp.GetGroup());
     if (!prefix.IsEmpty()) {
       oldPath = oldPath.Right(oldPath.GetLength() - prefix.GetLength() - 1);
     }
@@ -1048,21 +1049,21 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     // Needs new UUID as they must be unique and this is a copy operation
     // but before we do, save the original
     uuid_array_t original_uuid, temp_uuid, base_uuid;
-    temp.GetUUID(original_uuid);
-    temp.CreateUUID();
+    ci_temp.GetUUID(original_uuid);
+    ci_temp.CreateUUID();
     // May need it later...
-    temp.GetUUID(temp_uuid);
+    ci_temp.GetUUID(temp_uuid);
 
-    temp.SetGroup(newPath);
-    temp.SetTitle(ci_title);
+    ci_temp.SetGroup(newPath);
+    ci_temp.SetTitle(ci_title);
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
     DisplayInfo *pdi_new = new DisplayInfo;
     pdi_new->list_index = -1; // so that insertItem will set new values
     pdi_new->tree_item = 0;
-    temp.SetDisplayInfo(pdi_new);
+    ci_temp.SetDisplayInfo(pdi_new);
 
-    CItemData::EntryType temp_et = temp.GetEntryType();
+    CItemData::EntryType temp_et = ci_temp.GetEntryType();
 
     switch (temp_et) {
       case CItemData::ET_NORMAL:
@@ -1070,26 +1071,26 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
       case CItemData::ET_ALIASBASE:
       case CItemData::ET_SHORTCUTBASE:
         // An alias or shortcut can only have one base
-        temp.SetNormal();
+        ci_temp.SetNormal();
         break;
       case CItemData::ET_ALIAS:
         // Get base of original alias and make this copy point to it
         m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
         m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_ALIAS);
-        temp.SetPassword(CSecString(L"[Alias]"));
+        ci_temp.SetPassword(CSecString(L"[Alias]"));
         break;
       case CItemData::ET_SHORTCUT:
         // Get base of original shortcut and make this copy point to it
         m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
         m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_SHORTCUT);
-        temp.SetPassword(CSecString(L"[Shortcut]"));
+        ci_temp.SetPassword(CSecString(L"[Shortcut]"));
         break;
       default:
         ASSERT(0);
     }
 
-    temp.SetStatus(CItemData::ES_ADDED);
-    m_pDbx->AddEntry(temp);
+    ci_temp.SetStatus(CItemData::ES_ADDED);
+    m_pDbx->AddEntry(ci_temp);
     AddChangedNodes(newPath);
 
     // Mark database as modified!

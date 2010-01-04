@@ -114,7 +114,7 @@ public:
     CompareData &Identical,
     CItemData::FieldBits &bsFields,
     PWScore *pcore0, PWScore *pcore1,
-    CReport *rpt);
+    CReport *pRpt);
 
   // st_CompareInfo Functions
   enum {EDIT = 0, VIEW, COPY_TO_ORIGINALDB, COPY_TO_COMPARISONDB};
@@ -187,7 +187,7 @@ private:
   CItemData::FieldBits m_bsFields;
 
   PWScore *m_pcore0, *m_pcore1;
-  CReport *m_prpt;
+  CReport *m_pRpt;
 
   size_t m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
   int m_row, m_column;

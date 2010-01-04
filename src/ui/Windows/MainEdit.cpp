@@ -56,13 +56,13 @@ void DboxMain::OnAdd()
 
   // m_TreeViewGroup may be set by OnContextMenu, if not, try to grok it
   if (m_TreeViewGroup.empty()) {
-    CItemData *itemData = NULL;
+    CItemData *pci = NULL;
     if (m_ctlItemTree.IsWindowVisible()) { // tree view
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
       if (ti != NULL) { // if anything selected
-        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-        if (itemData != NULL) { // leaf selected
-          m_TreeViewGroup = itemData->GetGroup();
+        pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+        if (pci != NULL) { // leaf selected
+          m_TreeViewGroup = pci->GetGroup();
         } else { // node selected
           m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
         }
@@ -180,18 +180,18 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   pci->GetUUID(base_uuid);
 
   //Finish Check (Does that make any geographical sense?)
-  CItemData temp;
+  CItemData ci_temp;
   time_t t;
 
-  temp.CreateUUID();
-  temp.GetUUID(shortcut_uuid);
-  temp.SetGroup(cs_group);
-  temp.SetTitle(cs_title);
-  temp.SetUser(cs_user);
+  ci_temp.CreateUUID();
+  ci_temp.GetUUID(shortcut_uuid);
+  ci_temp.SetGroup(cs_group);
+  ci_temp.SetTitle(cs_title);
+  ci_temp.SetUser(cs_user);
 
   m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
-  temp.SetPassword(L"[Shortcut]");
-  temp.SetShortcut();
+  ci_temp.SetPassword(L"[Shortcut]");
+  ci_temp.SetShortcut();
   ItemListIter iter = m_core.Find(base_uuid);
   if (iter != End()) {
     const CItemData &cibase = iter->second;
@@ -202,11 +202,11 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   }
 
   time(&t);
-  temp.SetCTime(t);
-  temp.SetXTime((time_t)0);
-  temp.SetStatus(CItemData::ES_ADDED);
+  ci_temp.SetCTime(t);
+  ci_temp.SetXTime((time_t)0);
+  ci_temp.SetStatus(CItemData::ES_ADDED);
 
-  AddEntry(temp);
+  AddEntry(ci_temp);
   m_ctlItemTree.AddChangedNodes(cs_group);
 
   if (m_core.GetNumEntries() == 1) {
@@ -544,12 +544,12 @@ void DboxMain::OnEdit()
     // perhaps not the most elegant solution to improving non-mouse use,
     // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
     // let me know...
-    CItemData *itemData = NULL;
+    CItemData *pci_node(NULL);
     if (m_ctlItemTree.IsWindowVisible()) { // tree view
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
       if (ti != NULL) { // if anything selected
-        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-        if (itemData == NULL) { // node selected
+        pci_node = (CItemData *)m_ctlItemTree.GetItemData(ti);
+        if (pci_node == NULL) { // node selected
           m_ctlItemTree.Expand(ti, TVE_TOGGLE);
         }
       }
@@ -1683,7 +1683,7 @@ void DboxMain::OnRunCommand()
 void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 {
   // Add Drop entries
-  CItemData tempitem;
+  CItemData ci_temp;
   UUIDList possible_aliases, possible_shortcuts;
   StringX Group, Title, User;
   POSITION pos;
@@ -1697,32 +1697,32 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
     if (m_core.GetNumEntries() >= MAXDEMO)
       break;
 #endif /* DEMO */
-    tempitem.Clear();
+    ci_temp.Clear();
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bAddToViews = true;
-    pDDObject->ToItem(tempitem);
+    pDDObject->ToItem(ci_temp);
 
     if (in_oblist.m_bDragNode) {
-      dot = (!DropGroup.empty() && !tempitem.GetGroup().empty()) ? L"." : L"";
-      Group = DropGroup + dot + tempitem.GetGroup();
+      dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
+      Group = DropGroup + dot + ci_temp.GetGroup();
     } else {
       Group = DropGroup;
     }
 
-    User = tempitem.GetUser();
-    Title = GetUniqueTitle(Group, tempitem.GetTitle(), User, IDS_DRAGNUMBER);
+    User = ci_temp.GetUser();
+    Title = GetUniqueTitle(Group, ci_temp.GetTitle(), User, IDS_DRAGNUMBER);
 
-    tempitem.GetUUID(entry_uuid);
+    ci_temp.GetUUID(entry_uuid);
     if (m_core.Find(entry_uuid) != End()) {
       // Already in use - get a new one!
-      tempitem.CreateUUID();
-      tempitem.GetUUID(entry_uuid);
+      ci_temp.CreateUUID();
+      ci_temp.GetUUID(entry_uuid);
     }
 
-    tempitem.SetGroup(Group);
-    tempitem.SetTitle(Title);
+    ci_temp.SetGroup(Group);
+    ci_temp.SetTitle(Title);
 
-    StringX cs_tmp = tempitem.GetPassword();
+    StringX cs_tmp = ci_temp.GetPassword();
 
     GetBaseEntryPL pl;
     pl.InputType = CItemData::ET_NORMAL;
@@ -1765,8 +1765,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           continue;
         }
         m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_ALIAS);
-        tempitem.SetPassword(L"[Alias]");
-        tempitem.SetAlias();
+        ci_temp.SetPassword(L"[Alias]");
+        ci_temp.SetAlias();
       } else
       if (pl.InputType == CItemData::ET_SHORTCUT) {
         ItemListIter iter = m_core.Find(pl.base_uuid);
@@ -1779,13 +1779,13 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           continue;
         }
         m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::ET_SHORTCUT);
-        tempitem.SetPassword(L"[Shortcut]");
-        tempitem.SetShortcut();
+        ci_temp.SetPassword(L"[Shortcut]");
+        ci_temp.SetShortcut();
       }
     } else
     if (pl.ibasedata == 0) {
       // Password NOT in alias/shortcut format
-      tempitem.SetNormal();
+      ci_temp.SetNormal();
     } else
     if (pl.ibasedata < 0) {
       // Password in alias/shortcut format AND base entry does not exist or multiple possible
@@ -1801,17 +1801,17 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
         bAddToViews = false;
       }
     }
-    tempitem.SetStatus(CItemData::ES_ADDED);
+    ci_temp.SetStatus(CItemData::ES_ADDED);
     if (bAddToViews) {
       // Add to pwlist + Tree + List views
-      AddEntry(tempitem);
+      AddEntry(ci_temp);
     } else {
       // ONLY Add to pwlist and NOT to Tree or List views
       // After the call to AddDependentEntries for shortcuts, check if still
       // in password list and, if so, then add to Tree + List views
-      m_core.AddEntry(tempitem);
+      m_core.AddEntry(ci_temp);
     }
-    m_ctlItemTree.AddChangedNodes(tempitem.GetGroup());
+    m_ctlItemTree.AddChangedNodes(ci_temp.GetGroup());
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing

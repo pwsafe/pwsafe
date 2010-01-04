@@ -68,7 +68,7 @@ public:
   XMLFileHandlers();
   virtual ~XMLFileHandlers();
 
-  void SetVariables(PWScore *core, const bool &bValidation,
+  void SetVariables(PWScore *pcore, const bool &bValidation,
                     const stringT &ImportedPrefix, const TCHAR &delimiter,
                     const bool &bImportPSWDsOnly,
                     UUIDList *possible_aliases, UUIDList *possible_shortcuts,
@@ -117,7 +117,7 @@ protected:
 
 private:
   // Local variables
-  PWScore *m_xmlcore;
+  PWScore *m_pXMLcore;
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
   std::vector<StringX> * m_pvgroups;

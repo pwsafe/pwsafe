@@ -125,11 +125,11 @@ void ExtractFont(const CString &str, LOGFONT &logfont)
 const COLORREF PWFonts::MODIFIED_COLOR = RGB(0, 0, 128);
 const COLORREF PWFonts::DELETED_COLOR = RGB(128, 0, 0);
 
-void PWFonts::SetUpFont(CWnd *w, CFont *pfont)
+void PWFonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 {
   // Set main font
   m_pCurrentFont = pfont;
-  w->SetFont(pfont);
+  pWnd->SetFont(pfont);
 
   if (m_pModifiedFont != NULL)
     delete m_pModifiedFont;

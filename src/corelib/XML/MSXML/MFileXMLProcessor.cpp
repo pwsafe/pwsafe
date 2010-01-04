@@ -31,10 +31,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-MFileXMLProcessor::MFileXMLProcessor(PWScore *core,
+MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,
                                      UUIDList *possible_aliases,
                                      UUIDList *possible_shortcuts)
-  : m_xmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
+  : m_pXMLcore(pcore), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
   m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
 {
 }
@@ -91,7 +91,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       m_MSXML_Version = 60;
     }
   } else {  // XMLImport
-    b_into_empty = m_xmlcore->GetNumEntries() == 0;
+    b_into_empty = m_pXMLcore->GetNumEntries() == 0;
     switch (m_MSXML_Version) {
       case 60:
         hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
@@ -113,7 +113,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
   //  Create ContentHandlerImpl object
   MFileSAX2ContentHandler* pCH = new MFileSAX2ContentHandler();
-  pCH->SetVariables(m_bValidation ? NULL : m_xmlcore, m_bValidation, 
+  pCH->SetVariables(m_bValidation ? NULL : m_pXMLcore, m_bValidation, 
                     ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                     m_bValidation ? NULL : m_possible_aliases, 
                     m_bValidation ? NULL : m_possible_shortcuts,

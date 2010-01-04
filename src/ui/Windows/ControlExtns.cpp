@@ -630,13 +630,13 @@ struct CSecEditExtn::Impl {
 
 CSecEditExtn::CSecEditExtn()
   : CEditExtn((RGB(255, 222, 222))), // light red
-    m_impl(new Impl), m_secure(true), m_in_recursion(false)
+    m_pImpl(new Impl), m_secure(true), m_in_recursion(false)
 {
 }
 
 CSecEditExtn::CSecEditExtn(std::vector<st_context_menu> vmenu_items)
   : CEditExtn(vmenu_items, (RGB(255, 222, 222))),
-    m_impl(new Impl), m_secure(true), m_in_recursion(false)
+    m_pImpl(new Impl), m_secure(true), m_in_recursion(false)
 {
 }
 
@@ -648,7 +648,7 @@ END_MESSAGE_MAP()
 
 CSecEditExtn::~CSecEditExtn()
 {
-  delete m_impl;
+  delete m_pImpl;
 }
 
 void CSecEditExtn::SetSecure(bool on_off)
@@ -660,14 +660,14 @@ CSecString CSecEditExtn::GetSecureText() const
 {
   CSecString retval;
   StringX sval;
-  m_impl->m_field.Get(sval, m_impl->m_bf);
+  m_pImpl->m_field.Get(sval, m_pImpl->m_bf);
   retval = sval.c_str();
   return retval;
 }
 
 void CSecEditExtn::SetSecureText(const CSecString &str)
 {
-  m_impl->m_field.Set(str, m_impl->m_bf);
+  m_pImpl->m_field.Set(str, m_pImpl->m_bf);
   if (::IsWindow(m_hWnd)) {
     if (!m_secure)
       SetWindowText(str);
@@ -702,7 +702,7 @@ afx_msg void CSecEditExtn::OnUpdate()
   } else {
     CSecString str;
     GetWindowText(str);
-    m_impl->m_field.Set(str, m_impl->m_bf);
+    m_pImpl->m_field.Set(str, m_pImpl->m_bf);
   }
   m_in_recursion = false;
 }

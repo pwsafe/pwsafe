@@ -213,10 +213,10 @@ struct PutText {
   PutText(const stringT &subgroup_name,
           const int &subgroup_object, const int &subgroup_function,
           const CItemData::FieldBits &bsFields,
-          const TCHAR &delimiter, ofstream &ofs, PWScore *core) :
+          const TCHAR &delimiter, ofstream &ofs, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
-  m_delimiter(delimiter), m_ofs(ofs), m_core(core)
+  m_delimiter(delimiter), m_ofs(ofs), m_pcore(pcore)
   {}
 
   // operator for ItemList
@@ -233,19 +233,19 @@ struct PutText {
       if (item.IsAlias()) {
         uuid_array_t base_uuid, item_uuid;
         item.GetUUID(item_uuid);
-        m_core->GetAliasBaseUUID(item_uuid, base_uuid);
+        m_pcore->GetAliasBaseUUID(item_uuid, base_uuid);
         ItemListIter iter;
-        iter = m_core->Find(base_uuid);
-        if (iter !=  m_core->GetEntryEndIter())
+        iter = m_pcore->Find(base_uuid);
+        if (iter !=  m_pcore->GetEntryEndIter())
           pcibase = &iter->second;
       }
       if (item.IsShortcut()) {
         uuid_array_t base_uuid, item_uuid;
         item.GetUUID(item_uuid);
-        m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
+        m_pcore->GetShortcutBaseUUID(item_uuid, base_uuid);
         ItemListIter iter;
-        iter = m_core->Find(base_uuid);
-        if (iter !=  m_core->GetEntryEndIter())
+        iter = m_pcore->Find(base_uuid);
+        if (iter !=  m_pcore->GetEntryEndIter())
           pcibase = &iter->second;
       }
       const StringX line = item.GetPlaintext(TCHAR('\t'),
@@ -271,7 +271,7 @@ private:
   const CItemData::FieldBits &m_bsFields;
   const TCHAR &m_delimiter;
   ofstream &m_ofs;
-  PWScore *m_core;
+  PWScore *m_pcore;
 };
 
 int PWScore::WritePlaintextFile(const StringX &filename,
@@ -341,10 +341,10 @@ struct XMLRecordWriter {
   XMLRecordWriter(const stringT &subgroup_name,
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,
-                  TCHAR delimiter, ofstream &ofs, PWScore *core) :
+                  TCHAR delimiter, ofstream &ofs, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
-  m_delimiter(delimiter), m_of(ofs), m_id(0), m_core(core)
+  m_delimiter(delimiter), m_of(ofs), m_id(0), m_pcore(pcore)
   {}
 
   // operator for ItemList
@@ -374,19 +374,19 @@ struct XMLRecordWriter {
       if (item.IsAlias()) {
         uuid_array_t base_uuid, item_uuid;
         item.GetUUID(item_uuid);
-        m_core->GetAliasBaseUUID(item_uuid, base_uuid);
+        m_pcore->GetAliasBaseUUID(item_uuid, base_uuid);
         ItemListIter iter;
-        iter = m_core->Find(base_uuid);
-        if (iter != m_core->GetEntryEndIter())
+        iter = m_pcore->Find(base_uuid);
+        if (iter != m_pcore->GetEntryEndIter())
           pcibase = &iter->second;
       }
       if (item.IsShortcut()) {
         uuid_array_t base_uuid, item_uuid;
         item.GetUUID(item_uuid);
-        m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
+        m_pcore->GetShortcutBaseUUID(item_uuid, base_uuid);
         ItemListIter iter;
-        iter = m_core->Find(base_uuid);
-        if (iter != m_core->GetEntryEndIter())
+        iter = m_pcore->Find(base_uuid);
+        if (iter != m_pcore->GetEntryEndIter())
           pcibase = &iter->second;
       }
       string xml = item.GetXML(m_id, m_bsFields, m_delimiter, pcibase, bforce_normal_entry);
@@ -403,7 +403,7 @@ private:
   TCHAR m_delimiter;
   ofstream &m_of;
   unsigned m_id;
-  PWScore *m_core;
+  PWScore *m_pcore;
 };
 
 int PWScore::WriteXMLFile(const StringX &filename,

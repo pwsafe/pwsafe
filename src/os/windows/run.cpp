@@ -105,29 +105,29 @@ struct st_run_impl {
 
 PWSRun::PWSRun()
 {
-  impl = new st_run_impl;
+  pImpl = new st_run_impl;
 }
 
 PWSRun::~PWSRun()
 {
-  delete impl;
+  delete pImpl;
 }
 
 bool PWSRun::isValid() const
 {
-  return ((impl != NULL) && impl->isValid());
+  return ((pImpl != NULL) && pImpl->isValid());
 }
 
 void PWSRun::Set(void *data)
 {
-  if (impl != NULL)
-    impl->hCBWnd = reinterpret_cast<HWND>(data);
+  if (pImpl != NULL)
+    pImpl->hCBWnd = reinterpret_cast<HWND>(data);
 }
 
 bool PWSRun::UnInit()
 {
-  if (impl != NULL) {
-    return impl->pUnInit(impl->hCBWnd) == TRUE;
+  if (pImpl != NULL) {
+    return pImpl->pUnInit(pImpl->hCBWnd) == TRUE;
   } else
     return false;
 }
@@ -217,11 +217,11 @@ bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters,
   BOOL bAT_init(FALSE);
 
   if (!sxAutotype.empty() && isValid()) {
-    if (impl->pInit != NULL && impl->pUnInit != NULL &&
-        impl->hCBWnd != NULL) {
+    if (pImpl->pInit != NULL && pImpl->pUnInit != NULL &&
+        pImpl->hCBWnd != NULL) {
       // OK - try and make it tell us!  Won't if another instance of
       // PWS is doing this at exactly the same time - silly user!
-      bAT_init = impl->pInit(impl->hCBWnd);
+      bAT_init = pImpl->pInit(pImpl->hCBWnd);
       pws_os::Trace(_T("PWSRun::issuecmd - AT_HK_Initialise: %s\n"),
                     bAT_init == TRUE ? _T("OK") : _T("FAILED"));
     }
@@ -231,7 +231,7 @@ bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters,
   if (shellExecStatus != TRUE) {
     // ShellExecute writes its own message on failure!
     if (bAT_init) {
-      bAT_init = impl->pUnInit(impl->hCBWnd);
+      bAT_init = pImpl->pUnInit(pImpl->hCBWnd);
       pws_os::Trace(_T("PWSRun::issuecmd - AT_HK_UnInitialise: %s\n"),
                     bAT_init == TRUE ? _T("OK") : _T("FAILED"));
     }

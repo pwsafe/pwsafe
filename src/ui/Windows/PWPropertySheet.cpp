@@ -16,17 +16,17 @@ IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  CWnd *p = GetParent();
-  while (p != NULL) {
-    DboxMain *pDbx = dynamic_cast<DboxMain *>(p);
+  CWnd *pParent = GetParent();
+  while (pParent != NULL) {
+    DboxMain *pDbx = dynamic_cast<DboxMain *>(pParent);
     if (pDbx != NULL && pDbx->m_eye_catcher != NULL &&
         wcscmp(pDbx->m_eye_catcher, EYE_CATCHER) == 0) {
       pDbx->ResetIdleLockCounter(message);
       break;
     } else
-      p = p->GetParent();
+      pParent = pParent->GetParent();
   }
-  if (p == NULL)
+  if (pParent == NULL)
     TRACE(L"CPWPropertySheet::WindowProc - couldn't find DboxMain ancestor\n");
   return CPropertySheet::WindowProc(message, wParam, lParam);
 }

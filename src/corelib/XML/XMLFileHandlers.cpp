@@ -77,7 +77,7 @@ XMLFileHandlers::~XMLFileHandlers()
   m_ukhxl.clear();
 }
 
-void XMLFileHandlers::SetVariables(PWScore *core, const bool &bValidation,
+void XMLFileHandlers::SetVariables(PWScore *pcore, const bool &bValidation,
                                    const stringT &ImportedPrefix, const TCHAR &delimiter,
                                    const bool &bImportPSWDsOnly,
                                    UUIDList *possible_aliases, UUIDList *possible_shortcuts,
@@ -85,7 +85,7 @@ void XMLFileHandlers::SetVariables(PWScore *core, const bool &bValidation,
 {
   m_bValidation = bValidation;
   m_delimiter = delimiter;
-  m_xmlcore = core;
+  m_pXMLcore = pcore;
   m_possible_aliases = possible_aliases;
   m_possible_shortcuts = possible_shortcuts;
   m_ImportedPrefix = ImportedPrefix;
@@ -511,16 +511,16 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
 void XMLFileHandlers::AddEntries()
 {
   vdb_entries::iterator entry_iter;
-  CItemData tempitem;
+  CItemData ci_temp;
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
-  bool bIntoEmpty = m_xmlcore->GetNumEntries() == 0;
+  bool bIntoEmpty = m_pXMLcore->GetNumEntries() == 0;
 
   for (entry_iter = ventries.begin(); entry_iter != ventries.end(); entry_iter++) {
     pw_entry *cur_entry = *entry_iter;
     if (m_bImportPSWDsOnly) {
-      ItemListIter iter = m_xmlcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
-      if (iter == m_xmlcore->GetEntryEndIter()) {
+      ItemListIter iter = m_pXMLcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
+      if (iter == m_pXMLcore->GetEntryEndIter()) {
         stringT csError, cs_id;
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
         Format(csError, IDSC_IMPORTRECNOTFOUND, cs_id.c_str(), cur_entry->id, 
@@ -541,9 +541,9 @@ void XMLFileHandlers::AddEntries()
     }
 
     uuid_array_t uuid_array;
-    tempitem.Clear();
+    ci_temp.Clear();
     if (cur_entry->uuid.empty())
-      tempitem.CreateUUID();
+      ci_temp.CreateUUID();
     else {
       // _stscanf_s always outputs to an "int" using %x even though
       // target is only 1.  Read into larger buffer to prevent data being
@@ -561,10 +561,10 @@ void XMLFileHandlers::AddEntries()
       }
       memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array));
       if (nscanned != sizeof(uuid_array_t) ||
-        m_xmlcore->Find(uuid_array) != m_xmlcore->GetEntryEndIter())
-        tempitem.CreateUUID();
+        m_pXMLcore->Find(uuid_array) != m_pXMLcore->GetEntryEndIter())
+        ci_temp.CreateUUID();
       else {
-        tempitem.SetUUID(uuid_array);
+        ci_temp.SetUUID(uuid_array);
       }
     }
     StringX newgroup;
@@ -573,8 +573,8 @@ void XMLFileHandlers::AddEntries()
     }
     EmptyIfOnlyWhiteSpace(cur_entry->group);
     newgroup += cur_entry->group;
-    if (m_xmlcore->Find(newgroup, cur_entry->title,
-                        cur_entry->username) != m_xmlcore->GetEntryEndIter()) {
+    if (m_pXMLcore->Find(newgroup, cur_entry->title,
+                        cur_entry->username) != m_pXMLcore->GetEntryEndIter()) {
         // Find a unique "Title"
         StringX Unique_Title;
         ItemListConstIter iter;
@@ -584,56 +584,56 @@ void XMLFileHandlers::AddEntries()
           i++;
           Format(s_import, IDSC_IMPORTNUMBER, i);
           Unique_Title = cur_entry->title + s_import.c_str();
-          iter = m_xmlcore->Find(newgroup, Unique_Title,
+          iter = m_pXMLcore->Find(newgroup, Unique_Title,
                                  cur_entry->username);
-        } while (iter != m_xmlcore->GetEntryEndIter());
+        } while (iter != m_pXMLcore->GetEntryEndIter());
         cur_entry->title = Unique_Title;
     }
-    tempitem.SetGroup(newgroup);
+    ci_temp.SetGroup(newgroup);
     EmptyIfOnlyWhiteSpace(cur_entry->title);
     if (!cur_entry->title.empty())
-      tempitem.SetTitle(cur_entry->title, m_delimiter);
+      ci_temp.SetTitle(cur_entry->title, m_delimiter);
     EmptyIfOnlyWhiteSpace(cur_entry->username);
     if (!cur_entry->username.empty())
-      tempitem.SetUser(cur_entry->username);
+      ci_temp.SetUser(cur_entry->username);
     if (!cur_entry->password.empty())
-      tempitem.SetPassword(cur_entry->password);
+      ci_temp.SetPassword(cur_entry->password);
     EmptyIfOnlyWhiteSpace(cur_entry->url);
     if (!cur_entry->url.empty())
-      tempitem.SetURL(cur_entry->url);
+      ci_temp.SetURL(cur_entry->url);
     EmptyIfOnlyWhiteSpace(cur_entry->autotype);
     if (!cur_entry->autotype.empty())
-      tempitem.SetAutoType(cur_entry->autotype);
+      ci_temp.SetAutoType(cur_entry->autotype);
     if (!cur_entry->ctime.empty())
-      tempitem.SetCTime(cur_entry->ctime.c_str());
+      ci_temp.SetCTime(cur_entry->ctime.c_str());
     if (!cur_entry->pmtime.empty())
-      tempitem.SetPMTime(cur_entry->pmtime.c_str());
+      ci_temp.SetPMTime(cur_entry->pmtime.c_str());
     if (!cur_entry->atime.empty())
-      tempitem.SetATime(cur_entry->atime.c_str());
+      ci_temp.SetATime(cur_entry->atime.c_str());
     if (!cur_entry->xtime.empty())
-      tempitem.SetXTime(cur_entry->xtime.c_str());
+      ci_temp.SetXTime(cur_entry->xtime.c_str());
     if (!cur_entry->xtime_interval.empty()) {
       int numdays = _ttoi(cur_entry->xtime_interval.c_str());
       if (numdays > 0 && numdays <= 3650)
-        tempitem.SetXTimeInt(numdays);
+        ci_temp.SetXTimeInt(numdays);
     }
     if (!cur_entry->rmtime.empty())
-      tempitem.SetRMTime(cur_entry->rmtime.c_str());
+      ci_temp.SetRMTime(cur_entry->rmtime.c_str());
     if (!cur_entry->run_command.empty())
-      tempitem.SetRunCommand(cur_entry->run_command);
+      ci_temp.SetRunCommand(cur_entry->run_command);
     if (cur_entry->pwp.flags != 0)
-      tempitem.SetPWPolicy(cur_entry->pwp);
+      ci_temp.SetPWPolicy(cur_entry->pwp);
     if (!cur_entry->dca.empty())
-      tempitem.SetDCA(cur_entry->dca.c_str());
+      ci_temp.SetDCA(cur_entry->dca.c_str());
     if (!cur_entry->email.empty())
-      tempitem.SetEmail(cur_entry->email);
+      ci_temp.SetEmail(cur_entry->email);
 
     StringX newPWHistory;
     stringT strPWHErrors;
     switch (VerifyImportPWHistoryString(cur_entry->pwhistory,
                                         newPWHistory, strPWHErrors)) {
       case PWH_OK:
-        tempitem.SetPWHistory(newPWHistory.c_str());
+        ci_temp.SetPWHistory(newPWHistory.c_str());
         break;
       case PWH_IGNORE:
         break;
@@ -660,7 +660,7 @@ void XMLFileHandlers::AddEntries()
 
     EmptyIfOnlyWhiteSpace(cur_entry->notes);
     if (!cur_entry->notes.empty())
-      tempitem.SetNotes(cur_entry->notes, m_delimiter);
+      ci_temp.SetNotes(cur_entry->notes, m_delimiter);
 
     if (!cur_entry->uhrxl.empty()) {
       UnknownFieldList::const_iterator vi_IterUXRFE;
@@ -676,25 +676,25 @@ void XMLFileHandlers::AddEntries()
           unkrfe.uc_Type, (int)unkrfe.st_length, (int)unkrfe.st_length);
           pws_os::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
 #endif /* _DEBUG */
-          tempitem.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
+          ci_temp.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
       }
     }
 
     // If a potential alias, add to the vector for later verification and processing
     if (cur_entry->entrytype == ALIAS && !cur_entry->bforce_normal_entry) {
-      tempitem.GetUUID(uuid_array);
+      ci_temp.GetUUID(uuid_array);
       m_possible_aliases->push_back(uuid_array);
     }
     if (cur_entry->entrytype == SHORTCUT && !cur_entry->bforce_normal_entry) {
-      tempitem.GetUUID(uuid_array);
+      ci_temp.GetUUID(uuid_array);
       m_possible_shortcuts->push_back(uuid_array);
     }
 
     if (!bIntoEmpty) {
       m_pvgroups->push_back(newgroup);
-      tempitem.SetStatus(CItemData::ES_ADDED);
+      ci_temp.SetStatus(CItemData::ES_ADDED);
     }
-    m_xmlcore->AddEntry(tempitem);
+    m_pXMLcore->AddEntry(ci_temp);
     delete cur_entry;
   }
   ventries.clear();
