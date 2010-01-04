@@ -955,6 +955,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\coredefs.h"
+				>
+			</File>
+			<File
 				RelativePath=".\corelib.h"
 				>
 			</File>
