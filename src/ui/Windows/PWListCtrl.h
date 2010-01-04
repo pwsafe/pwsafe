@@ -19,8 +19,6 @@
 #include "SecString.h"
 #include "PwFont.h"
 
-#include <bitset>
-
 class DboxMain;
 class CInfoDisplay;
 class CItemData;
