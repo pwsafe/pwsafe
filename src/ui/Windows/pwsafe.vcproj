@@ -1986,10 +1986,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\browseurl.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\classic\browseurl.bmp"
 				>
 			</File>
@@ -2230,10 +2226,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\exit.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\classic\exit.bmp"
 				>
 			</File>
@@ -2362,10 +2354,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\Group.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\classic\groupenter.bmp"
 				>
 			</File>
@@ -2462,10 +2450,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\managefilters.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\classic\managefilters.bmp"
 				>
 			</File>
@@ -2558,15 +2542,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\NotesX.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\dragbar\classic\NotesX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\open.bmp"
+				RelativePath="..\graphics\dragbar\new\NotesX.bmp"
 				>
 			</File>
 			<File
@@ -2594,7 +2574,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\Password.bmp"
+				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
 				>
 			</File>
 			<File
@@ -2702,7 +2682,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\properties.bmp"
+				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
 				>
 			</File>
 			<File
@@ -2731,10 +2711,6 @@
 			</File>
 			<File
 				RelativePath="..\graphics\toolbar\new\redo_disabled.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\toolbar\new\restore.bmp"
 				>
 			</File>
 			<File
@@ -2922,15 +2898,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\URLX.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\dragbar\classic\URLX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\User.bmp"
+				RelativePath="..\graphics\dragbar\new\URLX.bmp"
 				>
 			</File>
 			<File
@@ -2938,7 +2910,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\UserX.bmp"
+				RelativePath="..\graphics\dragbar\new\User.bmp"
 				>
 			</File>
 			<File
@@ -2946,7 +2918,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\validate.bmp"
+				RelativePath="..\graphics\toolbar\new\validate.bmp"
 				>
 			</File>
 			<File

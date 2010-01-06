@@ -78,7 +78,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWHNUM));
   pspin->SetRange(1, 255);
