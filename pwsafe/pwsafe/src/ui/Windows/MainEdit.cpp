@@ -337,6 +337,7 @@ void DboxMain::OnDelete()
       delete pGUICmdIF;
 
     Execute(pmulticmds);
+    FixListIndexes();
   }
 }
 
@@ -505,7 +506,6 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
           DisplayInfo *pdi = (DisplayInfo *)cshortcut.GetDisplayInfo();
           m_ctlItemList.DeleteItem(pdi->list_index);
           m_ctlItemTree.DeleteItem(pdi->tree_item);
-          FixListIndexes();
           Command *pcmd = DeleteEntryCommand::Create(&m_core, cshortcut);
           pmulticmds->Add(pcmd);
         }
