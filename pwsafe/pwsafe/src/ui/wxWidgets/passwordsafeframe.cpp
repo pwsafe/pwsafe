@@ -236,7 +236,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
 void PasswordSafeFrame::Init()
 {
-  m_core.SetUIinterface(this);
+  m_core.SetUIInterFace(this);
 ////@begin PasswordSafeFrame member initialisation
   m_grid = NULL;
   m_tree = NULL;

@@ -115,7 +115,7 @@ enum {
  * PasswordSafeFrame class declaration
  */
 
-class PasswordSafeFrame: public wxFrame, public UIinterface
+class PasswordSafeFrame: public wxFrame, public UIInterFace
 {    
     DECLARE_CLASS( PasswordSafeFrame )
     DECLARE_EVENT_TABLE()
