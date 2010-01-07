@@ -16,7 +16,7 @@
     <bool name="make_unicode_strings">1</bool>
     <bool name="extract_strings">0</bool>
     <string name="user_name">"Rony Shapiro"</string>
-    <string name="copyright_string">"Copyright (c) 2003-2009 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;"</string>
+    <string name="copyright_string">"Copyright (c) 2003-2010 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;"</string>
     <string name="resource_prefix">""</string>
     <bool name="use_two_step_construction">0</bool>
     <bool name="use_enums">0</bool>
@@ -26,7 +26,7 @@
     <string name="target_wx_version">"2.6.4"</string>
     <string name="app_kind">"Standard"</string>
     <string name="cpp_header_comment">"/*
- * Copyright (c) 2003-2009 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;.
+ * Copyright (c) 2003-2010 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -42,7 +42,7 @@
 
 "</string>
     <string name="cpp_implementation_comment">"/*
- * Copyright (c) 2003-2009 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;.
+ * Copyright (c) 2003-2010 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -54,7 +54,7 @@
 */
 "</string>
     <string name="cpp_symbols_file_comment">"*
- * Copyright (c) 2003-2009 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;.
+ * Copyright (c) 2003-2010 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -8206,7 +8206,7 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
                 <string name="proxy-Member variable name">""</string>
-                <string name="proxy-Label">"Copyright (c) 2003-2009 by Rony Shapiro"</string>
+                <string name="proxy-Label">"Copyright (c) 2003-2010 by Rony Shapiro"</string>
                 <long name="proxy-Wrapping width">-1</long>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
