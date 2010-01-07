@@ -73,7 +73,7 @@ static void DisplayFileWriteError(int rc, const StringX &cs_newfile)
   gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
 }
 
-BOOL DboxMain::OpenOnInit(void)
+BOOL DboxMain::OpenOnInit()
 {
   /*
     Routine to account for the differences between opening PSafe for
@@ -123,18 +123,21 @@ BOOL DboxMain::OpenOnInit(void)
         CGeneralMsgBox gmb;
         gmb.SetMsg(cs_msg);
         gmb.SetStandardIcon(MB_ICONQUESTION);
-        gmb.AddButton(1, IDS_SEARCH);
-        gmb.AddButton(2, IDS_NEW);
-        gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
+        gmb.AddButton(IDS_SEARCH, IDS_SEARCH);
+        gmb.AddButton(IDS_RETRY, IDS_RETRY);
+        gmb.AddButton(IDS_NEW, IDS_NEW);
+        gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
         INT_PTR rc3 = gmb.DoModal();
         switch (rc3) {
-          case 1:
+          case IDS_SEARCH:
             rc2 = Open();
             break;
-          case 2:
+          case IDS_RETRY:
+            return OpenOnInit();  // Recursive!
+          case IDS_NEW:
             rc2 = New();
             break;
-          case 3:
+          case IDS_EXIT:
             rc2 = PWScore::USER_CANCEL;
             break;
         }
@@ -167,8 +170,7 @@ BOOL DboxMain::OpenOnInit(void)
     CGeneralMsgBox gmb;
     CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
-    const int yn = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR);
-    if (yn == IDNO) {
+    if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR) == IDNO) {
       CDialog::OnCancel();
       return FALSE;
     }
@@ -579,9 +581,10 @@ int DboxMain::Open()
 int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
 {
   CGeneralMsgBox gmb;
+  INT_PTR rc1;
   int rc;
   StringX passkey;
-  CString temp, cs_title, cs_text;
+  CString cs_temp, cs_title, cs_text;
 
   //Check that this file isn't already open
   if (pszFilename == m_core.GetCurFile() && !m_needsreading) {
@@ -610,9 +613,20 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
       m_bAlreadyToldUserNoSave = false;
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      temp.Format(IDS_SAFENOTEXIST, pszFilename.c_str());
-      cs_title.LoadString(IDS_FILEOPENERROR);
-      gmb.MessageBox(temp, cs_title, MB_OK | MB_ICONWARNING);
+      cs_temp.Format(IDS_SAFENOTEXIST, pszFilename.c_str());
+      gmb.SetTitle(IDS_FILEOPENERROR);
+      gmb.SetMsg(cs_temp);
+      gmb.SetStandardIcon(MB_ICONQUESTION);
+      gmb.AddButton(IDS_OPEN, IDS_OPEN);
+      gmb.AddButton(IDS_NEW, IDS_NEW);
+      gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
+      rc1 = gmb.DoModal();
+      if (rc1 == IDS_OPEN)
+        return Open();
+      else if (rc1 == IDS_NEW)
+        return New();
+      else
+        return PWScore::USER_CANCEL;
     case TAR_OPEN:
       return Open();
     case TAR_NEW:
@@ -645,16 +659,16 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-      temp.Format(IDS_CANTOPENREADING, pszFilename.c_str());
-      gmb.MessageBox(temp, cs_title, MB_OK | MB_ICONWARNING);
+      cs_temp.Format(IDS_CANTOPENREADING, pszFilename.c_str());
+      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       /*
       Everything stays as is... Worst case,
       they saved their file....
       */
       return PWScore::CANT_OPEN_FILE;
     case PWScore::BAD_DIGEST:
-      temp.Format(IDS_FILECORRUPT, pszFilename.c_str());
-      if (gmb.MessageBox(temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES) {
+      cs_temp.Format(IDS_FILECORRUPT, pszFilename.c_str());
+      if (gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES) {
         rc = PWScore::SUCCESS;
         break;
       } else
@@ -674,8 +688,8 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
     }
 #endif
     default:
-      temp.Format(IDS_UNKNOWNERROR, pszFilename.c_str());
-      gmb.MessageBox(temp, cs_title, MB_OK | MB_ICONERROR);
+      cs_temp.Format(IDS_UNKNOWNERROR, pszFilename.c_str());
+      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
       return rc;
   }
   m_core.SetCurFile(pszFilename);
@@ -760,10 +774,10 @@ int DboxMain::Save()
       gmb.SetTitle(cs_title);
       gmb.SetMsg(cs_msg);
       gmb.SetStandardIcon(MB_ICONWARNING);
-      gmb.AddButton(1, IDS_CONTINUE);
-      gmb.AddButton(2, IDS_CANCEL, TRUE, TRUE);
+      gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
+      gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
       INT_PTR rc = gmb.DoModal();
-      if (rc == 2)
+      if (rc == IDS_CANCEL)
         return PWScore::USER_CANCEL;
       m_core.SetCurFile(NewName.c_str());
 #if !defined(POCKET_PC)
@@ -854,10 +868,10 @@ int DboxMain::SaveAs()
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_msg);
     gmb.SetStandardIcon(MB_ICONEXCLAMATION);
-    gmb.AddButton(1, IDS_CONTINUE);
-    gmb.AddButton(2, IDS_CANCEL, TRUE, TRUE);
+    gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
+    gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
     INT_PTR rc = gmb.DoModal();
-    if (rc == 2)
+    if (rc == IDS_CANCEL)
       return PWScore::USER_CANCEL;
   }
 
@@ -1284,10 +1298,10 @@ void DboxMain::OnImportText()
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_temp);
     gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
-    gmb.AddButton(1, IDS_OK, TRUE, TRUE);
-    gmb.AddButton(2, IDS_VIEWREPORT);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
     INT_PTR rc = gmb.DoModal();
-    if (rc == 2)
+    if (rc == IDS_VIEWREPORT)
       ViewReport(rpt);
 
     // May need to update menu/toolbar if original database was empty
@@ -1482,10 +1496,10 @@ void DboxMain::OnImportXML()
 
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_temp);
-    gmb.AddButton(1, IDS_OK, TRUE, TRUE);
-    gmb.AddButton(2, IDS_VIEWREPORT);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
     INT_PTR rc = gmb.DoModal();
-    if (rc == 2)
+    if (rc == IDS_VIEWREPORT)
       ViewReport(rpt);
 
     // May need to update menu/toolbar if original database was empty
@@ -1969,10 +1983,10 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   gmb.SetTitle(cs_title);
   gmb.SetMsg(resultStr);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
-  gmb.AddButton(1, IDS_OK, TRUE, TRUE);
-  gmb.AddButton(2, IDS_VIEWREPORT);
+  gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+  gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
   INT_PTR msg_rc = gmb.DoModal();
-  if (msg_rc == 2)
+  if (msg_rc == IDS_VIEWREPORT)
     ViewReport(rpt);
 
   ChangeOkUpdate();
@@ -2637,10 +2651,10 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
   gmb.SetTitle(cs_title);
   gmb.SetMsg(resultStr);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
-  gmb.AddButton(1, IDS_OK, TRUE, TRUE);
-  gmb.AddButton(2, IDS_VIEWREPORT);
+  gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+  gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
   INT_PTR msg_rc = gmb.DoModal();
-  if (msg_rc == 2)
+  if (msg_rc == IDS_VIEWREPORT)
     ViewReport(rpt);
 
   ChangeOkUpdate();
@@ -2680,10 +2694,10 @@ int DboxMain::SaveCore(PWScore *pcore)
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_msg);
     gmb.SetStandardIcon(MB_ICONWARNING);
-    gmb.AddButton(1, IDS_CONTINUE);
-    gmb.AddButton(2, IDS_CANCEL, FALSE, TRUE);
+    gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
+    gmb.AddButton(IDS_CANCEL, IDS_CANCEL, FALSE, TRUE);
     INT_PTR rc = gmb.DoModal();
-    if (rc == 2)
+    if (rc == IDS_CANCEL)
       return PWScore::USER_CANCEL;
     pcore->SetCurFile(NewName.c_str());
   }
