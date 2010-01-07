@@ -2,6 +2,272 @@ This file lists the changes made to older versions of
 PasswordSafe. The changes for the current version and those
 immediately preceding it are noted in ReleaseNotes.txt.
 
+Bugs fixed in 3.19
+==================
+[2865116] Status-Bar message now correctly states "Password Copied"
+when doing a "Run Command".
+[2865116] Status-Bar message now updated when using the keyboard arrows
+to transverse entries in Tree and List views.
+[2856750] The Password Policy now correctly displayed in List View,
+when selected.
+[2856051] Changes to database preferences are no longer lost upon minimize.
+[2856410] The "Run Command" menu entry is no longer greyed out for
+Shortcuts to base entries with a Run Command.
+[2851848] Mouse double-click interval removed from Virtual Keyboard
+to allow multiple virtual keys to be entered quickly.
+[2850907] Password field no longer cleared after focus change.
+[2842700] No longer crashes when using a French keyboard.
+[2192490, 2840534] Multiple desktops now handled correctly for Windows
+XP and later system.
+[2836569] Correct password data now copied from Edit dialog using
+'Smart Labels'
+[2832991] Double-click action display in the Status Bar now shows
+correct value for entries that have overriden the current default.
+[2820260] Fix password expiry interval processing during Edit.
+[2818653] Password expiry interval now correctly exported to XML and
+displayed during Edit, if present.
+[2813295] 'Browse + Autotype' system tray menu items fixed - thanks to
+Vasily for reporting and sending the patches for this.
+[2085058] Old (1.x) format databases now closed correctly.
+[] Fixed problem with viewing a shortcut in read-only mode - thanks to
+gillum for reporting and helping track this down.
+[] Fix crash when using External Editor on Notes field.
+[] Password verification field not set when editing/viewing an alias entry
+and the password is hidden.
+[] Enter key works again in initial dialog if browse button used to
+select a database. 
+[] AutoType by an alias now has correct password and its own notes data
+rather than '[Alias]' and its base's notes data, respectively.
+[] Run command no longer truncates the first field if it is within double
+quotes.
+[] Duplicate entry now duplicates double-click action of original as well.
+[] Double-click on a shortcut entry now executes the action of its base.
+[] Drag & Drop of entries with explicit double-click action values
+between different databases now works. 
+[] Browse to URL from an Alias entry now puts the correct password in the
+clipboard.
+[] Text import no longer overwrites entry's RunCommand with
+double-click action value.
+[] Tidy up item order in Edit menu and right-click context menu.
+
+New Features for 3.19
+=====================
+[2832983] The Edit/View dialog now shows the details of the entry
+being edited/viewed in its title caption (This is updated when saving
+the entry).
+[2832810] A new email field has been added, supporting email headers
+'to', 'subject', 'cc', 'bcc' and 'body' (per RFC 2368 - see online
+help for details). If this field is not empty, it is used instead of
+the URL field even if that contains an email address.
+Note: whereas the URL field had to have the 'mailto:' prefix to denote an 
+email address rather than a URL, the email field must not contain this prefix.
+[] PasswordSafe now handles Vista (and later) logoff, shutdown &
+restart more gracefully, giving the user now has more time to save a
+modified database.
+[] Add new AutoType special fields '\wnnn' and '\Wnnn'. Unlike '\d', which
+sets the delay between sending each subsequent character, '\w' & '\W'
+introduces a one-time delay where they appear.  For '\w', the value 'nnn' is in
+milli-seconds. For '\W', this specifies seconds. Note: Max. value is
+999s (16m 39s), during which time PasswordSafe will be unresponsive
+while it waits the specified time. Also supported via the Run Command
+$a command.
+[] Add menu item to copy the Run Command to the clipboard.
+[] Support Run Command and Double-Click Action (and email) fields in Filters.
+
+Changes to Existing Features in 3.19
+====================================
+[] Changing the Security option to lock Password Safe when the workstation is
+locked, no longer requires a restart of Password Safe to come into effect.
+[] Due to the French keyboard not supporting the key '-' in an accelerator,
+the shortcut for "Password Subset" has been changed from "Ctrl + -" to
+"Ctrl + B". Please do not allocate "Ctrl + -" to any shortcut if you will be
+using a French keyboard.
+[] If a dialog is open (e.g. Add, Edit, Options etc.) and Password Safe is
+minimized, the Close and Exit options are no longer in the System Tray context
+menu. The user must first Restore the application and close the dialog before
+being able to close the database or exit the program.
+[] If preferences stored in the database are changed, the user will be asked if
+they want to save them in the database when closing the database or application
+even if none of the entries have been changed.
+[] The preference to Lock the Database after a certain amount of idle time has
+changed from being a global parameter affecting all databases opened by the user
+to be specific to each database.
+
+New Features for 3.18.1
+=======================
+[] Add minidump support for release builds so that we can try to solve
+issues with more information than Windows normally provides.
+
+New Features for 3.18.1
+=======================
+[2793283] Allow entry to override doubleclick setting.
+[2793280] Browse+Autotype added to configurable double click actions.
+[] Implement Virtual Keyboards for multilingual passphrase entry.
+[] DragBar now has ToolTips to inform user of its use.
+[] User can close the currently open database via the System Tray
+menu.
+[] Improved Merge reporting.
+
+Changes to Existing Features in 3.18.1
+======================================
+[] New toolbar icon set has been replaced with icons based on famfamfam's
+silk set.
+[] Reworked Add and Edit dialogs into Property Pages.
+
+Bugs fixed in 3.18
+==================
+[2795428] Browse+ on Toolbar now inactive if no URL present
+[2795427] Duplicate of "Display Subset of Password" removed from Context
+Menu (right-click on entry).
+[2789873] Status bar now updated properly after Browse to URL and other
+actions that copied data to the clipboard.
+[2782413] No longer crashes when loading 0302 formatted headers (from
+~v3.08).
+[2779705] Reserved shortcuts (Ctrl+Q, Alt+F4 and F1) now work.
+[] Run Command now correctly copied via Drag & Drop.
+[] Allow all fields to be selected for Compare function.
+[] Fixed crash if renaming an entry to one that already exists.
+
+Bugs fixed in 3.17
+==================
+[2750090] Using SaveAs now unlocks original database on successful
+completion of the save.
+[2689144] PWS no longer goes into a loop if the main menu has not yet
+been displayed when accessing the recent entries via the system tray icon.
+[2664657] Installer now prompts for elevation to administrator rights
+on Windows Vista.
+[2664703] Load base locale DLL if can't find a specific sub-locale version.
+[2657132] View Reports no longer causes application crash.
+[] Correct DragBar bitmaps for a new database.
+
+Changes to Existing Features in 3.17
+====================================
+[] When doing a Browse to URL, the password of the current entry is
+copied to the clipboard. This is action is not performed if the Browse
+is invoked from the Edit dialog box.
+[] Shortcut 'Ctrl+B' (Manage Menu->Backup) has been removed. Shortcut
+'Ctrl+R' (Manage Menu->Restore) has been re-assigned to the new "Run
+Command" function.
+
+New Features for 3.17
+=====================
+[1954166] New preference to control word wrap in the Notes field in
+Add & Edit. This can be overridden for a specific entry by
+right-clicking in the Notes field.
+[1533621, 1722481] There's a new, "Browse+" action that combines
+browsing to an entry's URL and entering the username, password,
+etc. in a single operation. Note that this does not work (yet) for all
+browsers and all sites. See help for details.
+[1405326] Add new field 'Run Command' to allow arbitrary commands,
+such as terminal emulators, etc. to be executed via Ctrl+R or from the
+Edit menu. See help for details. 
+[] Implement "Find Up" via clicking Find toolbar button with Shift key down
+or pressing 'Shift+F3' for repeat find up.
+[] Allow users to set their own shortcut keys for menu items. Select via
+Manage->Options->Shortcuts.
+
+Bugs fixed in 3.16.1
+====================
+[2599930] All fields, buttons, checkboxes that could change an entry's
+data are disabled if the database is in read-only mode.
+[] Lock on Windows Lock works again.
+[] Ctrl+F sets focus to the find string edit box.
+[] No longers asks for confirmation of Cancel during Edit in read only
+mode as that is the only option available to the user.
+[] Right-click context menu now correct when user hides toolbars.
+
+Bugs fixed in 3.16
+==================
+[2529736] Validate now corrects all Password History errors.
+[2509817] Control characters no longer sent via Autotype.
+[2481370] Can now create shortcut by right-mouse down dragging.
+[2423397] Sorting direction database preference was not being saved in
+the database.  See "Changes to Existing Features" below.
+[] Can now process filters (within the database or imported) based on
+'username' field ("user" in the XML file).
+
+Changes to Existing Features in 3.16
+=======================================
+[2423397] Changes to preferences stored in the database are no longer
+silently saved in the database (including any changes to any entries).
+A new flag is shown in the Status Bar to indicate the preferences have
+been changed and the user can decide to save these, or not, when closing
+the database, directly or when ending the application.
+[Open Discussion] Ctrl+F no longer toggles the Find Toolbar but shows
+it if not currently visible.
+[] Support interoperability with tools that access edit control text
+by setting PWS_PW_MODE environment variable to "NORMAL".
+
+New Features for 3.16
+========================
+[2509821] Support Group (\g), Title (\i) and Notes (\o, \onnn) fields
+via Autotype.
+[2450841] The user can use the DragBar to drag and drop the group name
+when a group is selected. Pressing the Ctrl key while dragging the group,
+when a group or entry is selected, will only copy the immediate parent group.
+Standard behaviour is to copy all groups up to the root of the database with
+dots between successive group names.
+[2450827] Add a new menu item (on Edit Menu or right-click context
+menu) to go to the corresponding base entry of an Alias or Shortcut. As
+part of this change, only relevant items are shown on the Edit menu depending
+on the current selected item (group or normal, shortcut base, alias base,
+alias or shortcut entry).
+[2425045] During Edit, if the entry has been changed and the user presses
+the Cancel button, they are asked to confirm losing their changes.
+[2415952] The currrent display status of the Find Toolbar is remembered at
+application close and, if visible, it is will be shown the next time the
+application is started.
+[] Installation program now offers German as well as English
+installation instructions, as well as installing German language
+support. The framework is easily extended to other languages. Thanks
+to Karlo Van der Gucht for his work on this.
+
+Bugs fixed in 3.15
+==================
+[2407346] "Open Another" and "Create New" actions in "Incorrect
+Passkey" dialog box working again.
+[2407325] Prevent creation of a group name with '.', which confuses
+PasswordSafe.
+[2407072] Can now tab to read-only checkbox in password entry form via
+File->Open or recently used list.
+[2269930] Track write permission of file in opening dialog: If the
+user chooses a file with different permission than the original, then
+the r-o status is updated accordingly.
+[2142691] Better support for Japanese text.
+[2113261] No longer crashes when opening write-protected database.
+[2102624] Can now change a normal entry into an alias or an alias'
+base entry into an alias of another entry taking its aliases with it.
+[2101656] Incorrect Notes field behaviour when using scroll bars 
+corrected.
+[2100916] Correct colouring of the Dragbar icons after changing
+selected entry.
+[2100429] Handle invalid time field in database gracefully. Thanks to
+David B. Martin for his help in tracking this down.
+[1958728] More graceful handling of corrupt databases - avoid "out of
+memory" failures. Thanks to Serkan Kenar for his help on this.
+[] Correct display of tree items on restore from minimize when 'X'
+button used to minimize.
+[] Ensure XML Import correctly processes normal entries with a 
+password field that is in alias or shortcut form.
+
+Changes to Existing Features in 3.15
+====================================
+None.
+
+New Features for 3.15
+=====================
+[2203438] Remove "[alt]", "[ssh]" and "{alt}" special keywords from URL
+when copying to the clipboard.
+[2144489] Click on the text next to edit fields to copy the field to
+the clipboard. Ctrl+Click on the URL will launch the browser. Text will
+flash to show what it has done (green - copy, pink - launch).
+[1871364] Add feature to display a subset of the password. This is useful
+for websites that need different particular characters from a password at
+each login. To access this, select an item, right-click and choose
+Display Subset of Password.  This can also be added to the user's toolbar.
+[] Implement the CF_CLIPBOARD_VIEWER_IGNORE feature supported by some
+Clipboard Viewers.
+
 Bugs fixed in 3.14.01
 =====================
 [2096504] All user set fields are now checked when merging databases.
