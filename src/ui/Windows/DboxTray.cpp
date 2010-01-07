@@ -186,11 +186,13 @@ void DboxMain::OnTrayBrowse(UINT nID)
   }
 
   if (!ci.IsURLEmpty()) {
+    std::vector<size_t> vactionverboffsets;
     StringX sxAutotype = PWSAuxParse::GetAutoTypeString(ci.GetAutoType(),
                                   ci.GetGroup(), ci.GetTitle(), 
                                   ci.GetUser(), ci.GetPassword(), 
-                                  ci.GetNotes());
-    LaunchBrowser(ci.GetURL().c_str(), sxAutotype, bDoAutotype);
+                                  ci.GetNotes(),
+                                  vactionverboffsets);
+    LaunchBrowser(ci.GetURL().c_str(), sxAutotype, vactionverboffsets, bDoAutotype);
     SetClipboardData(ci.GetPassword());
     UpdateLastClipboardAction(CItemData::PASSWORD);
   }
@@ -308,7 +310,8 @@ void DboxMain::OnTraySendEmail(UINT nID)
     cs_command = ci.GetURL().c_str();
   }
   if (!cs_command.IsEmpty()) {
-    LaunchBrowser(cs_command, L"", false);
+    std::vector<size_t> vactionverboffsets;
+    LaunchBrowser(cs_command, L"", vactionverboffsets, false);
     UpdateAccessTime(&ci);
   }
 }

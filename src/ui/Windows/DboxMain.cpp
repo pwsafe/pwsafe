@@ -277,7 +277,7 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
     m_AutoType.clear();
     // Reset Keyboard/Mouse Input
     TRACE(L"DboxMain::OnWH_SHELL_CallBack - BlockInput reset\n");
-    ::BlockInput(false);
+    ::BlockInput(FALSE);
     return FALSE;
   }
 
@@ -322,7 +322,7 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   // Do Autotype!  Note: All fields were substituted before getting here
   // Pure guess to wait 1 second.  Might be more or less but certainly > 0
   ::Sleep(1000);
-  DoAutoType(m_AutoType);
+  DoAutoType(m_AutoType, m_vactionverboffsets);
 
   // Reset AutoType
   m_bDoAutoType = false;
@@ -1469,11 +1469,13 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
       cs_command = pci->GetURL().c_str();
     }
     if (!cs_command.IsEmpty()) {
-      StringX sxAutotype = PWSAuxParse::GetAutoTypeString(pci->GetAutoType(),
+      std::vector<size_t> vactionverboffsets;
+      StringX sxautotype = PWSAuxParse::GetAutoTypeString(pci->GetAutoType(),
                                     pci->GetGroup(), pci->GetTitle(), 
                                     pci->GetUser(), sx_pswd, 
-                                    pci->GetNotes());
-      LaunchBrowser(cs_command, sxAutotype, bDoAutotype);
+                                    pci->GetNotes(),
+                                    vactionverboffsets);
+      LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bDoAutotype);
       SetClipboardData(sx_pswd);
       UpdateLastClipboardAction(CItemData::PASSWORD);
       UpdateAccessTime(pci_original);
@@ -1741,28 +1743,28 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       cs_msg.Format(IDS_STRICT_LOCKED, curFile.c_str(),
                     cs_user_and_host, cs_PID);
       gmb.SetMsg(cs_msg);
-      gmb.AddButton(1, IDS_READONLY);
-      gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
+      gmb.AddButton(IDS_READONLY, IDS_READONLY);
+      gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
 #else
       cs_msg.Format(IDS_LOCKED, curFile.c_str(), cs_user_and_host, cs_PID);
       gmb.SetMsg(cs_msg);
-      gmb.AddButton(1, IDS_READONLY);
-      gmb.AddButton(2, IDS_READWRITE);
-      gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
+      gmb.AddButton(IDS_READONLY, IDS_READONLY);
+      gmb.AddButton(IDS_READWRITE, IDS_READWRITE);
+      gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
 #endif
       INT_PTR user_choice = gmb.DoModal();
       switch (user_choice) {
-        case 1:
+        case IDS_READONLY:
           pcore->SetReadOnly(true);
           UpdateToolBarROStatus(true);
           retval = PWScore::SUCCESS;
           break;
-        case 2:
+        case IDS_READWRITE:
           pcore->SetReadOnly(false); // Caveat Emptor!
           UpdateToolBarROStatus(false);
           retval = PWScore::SUCCESS;
           break;
-        case 3:
+        case IDS_EXIT:
           retval = PWScore::USER_CANCEL;
           break;
         default:

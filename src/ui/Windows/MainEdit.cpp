@@ -1294,19 +1294,19 @@ void DboxMain::OnAutoType()
 void DboxMain::AutoType(const CItemData &ci)
 {
   // Called from OnAutoType and OnTrayAutoType
-  StringX group, title, user, pwd, notes, AutoCmd;
+  StringX sxgroup, sxtitle, sxuser, sxpwd, sxnotes, sxautotype;
   ItemListIter iter;
   uuid_array_t base_uuid, entry_uuid;
 
   CItemData::EntryType entrytype = ci.GetEntryType();
 
   // Set up all the data (shortcut entry will change all of them!)
-  group = ci.GetGroup();
-  title = ci.GetTitle();
-  user = ci.GetUser();
-  pwd = ci.GetPassword();
-  notes = ci.GetNotes();
-  AutoCmd = ci.GetAutoType();
+  sxgroup = ci.GetGroup();
+  sxtitle = ci.GetTitle();
+  sxuser = ci.GetUser();
+  sxpwd = ci.GetPassword();
+  sxnotes = ci.GetNotes();
+  sxautotype = ci.GetAutoType();
 
   switch (entrytype) {
     case CItemData::ET_ALIAS:
@@ -1316,7 +1316,7 @@ void DboxMain::AutoType(const CItemData &ci)
 
       iter = m_core.Find(base_uuid);
       if (iter != End()) {
-        pwd = iter->second.GetPassword();
+        sxpwd = iter->second.GetPassword();
       }
       break;
     case CItemData::ET_SHORTCUT:
@@ -1326,12 +1326,12 @@ void DboxMain::AutoType(const CItemData &ci)
 
       iter = m_core.Find(base_uuid);
       if (iter != End()) {
-        group = iter->second.GetGroup();
-        title = iter->second.GetTitle();
-        user = iter->second.GetUser();
-        pwd = iter->second.GetPassword();
-        notes = iter->second.GetNotes();
-        AutoCmd = iter->second.GetAutoType();
+        sxgroup = iter->second.GetGroup();
+        sxtitle = iter->second.GetTitle();
+        sxuser = iter->second.GetUser();
+        sxpwd = iter->second.GetPassword();
+        sxnotes = iter->second.GetNotes();
+        sxautotype = iter->second.GetAutoType();
       } else {
         // Problem - shortcut entry without a base!
         ASSERT(0);
@@ -1344,18 +1344,18 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 
   // If empty, try the database default
-  if (AutoCmd.empty()) {
-    AutoCmd = PWSprefs::GetInstance()->
+  if (sxautotype.empty()) {
+    sxautotype = PWSprefs::GetInstance()->
               GetPref(PWSprefs::DefaultAutotypeString);
 
     // If still empty, take this default
-    if (AutoCmd.empty()) {
+    if (sxautotype.empty()) {
       // checking for user and password for default settings
-      if (!pwd.empty()){
-        if (!user.empty())
-          AutoCmd = DEFAULT_AUTOTYPE;
+      if (!sxpwd.empty()){
+        if (!sxuser.empty())
+          sxautotype = DEFAULT_AUTOTYPE;
         else
-          AutoCmd = L"\\p\\n";
+          sxautotype = L"\\p\\n";
       }
     }
   }
@@ -1378,7 +1378,11 @@ void DboxMain::AutoType(const CItemData &ci)
   else
     ShowWindow(SW_HIDE);
 
-  DoAutoType(AutoCmd, group, title, user, pwd, notes);
+  std::vector<size_t> vactionverboffsets;
+  sxautotype = PWSAuxParse::GetAutoTypeString(sxautotype,
+                sxgroup, sxtitle, sxuser, sxpwd, sxnotes,
+                vactionverboffsets);
+  DoAutoType(sxautotype, vactionverboffsets);
 
   // If we minimized it, exit. If we only hid it, now show it
   if (bMinOnAuto)
@@ -1392,71 +1396,29 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 }
 
-void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group, 
-                          const StringX &sx_title, const StringX &sx_user,
-                          const StringX &sx_pwd, const StringX &sx_notes)
+void DboxMain::DoAutoType(const StringX &sx_autotype, const std::vector<size_t> &vactionverboffsets)
 {
-  StringX tmp(L"");
-  StringX sxnotes(sx_notes);
+  // All parsing of AutoType command done in one place: PWSAuxParse::GetAutoTypeString
+  // Except for anything involving time (\d, \w, \W) or use older method (\z)
+  StringX sxtmp(L"");
+  StringX sxautotype(sx_autotype);
   wchar_t curChar;
-  StringX sx_autotype(sx_in_autotype);
-  StringX::size_type index;
-  bool bForceOldMethod(false);
+ 
+  bool bForceOldMethod(false), bCapsLock(false);
+ 
+  StringX::size_type st_index = sxautotype.find(L"\\z");
 
-  index = sx_autotype.find(L"\\z");
-
-  if (index != StringX::npos) {
-    bForceOldMethod = true;
-    sx_autotype.erase(index, 2);
+  while (st_index != StringX::npos) {
+    if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), st_index) !=
+        vactionverboffsets.end()) {
+      bForceOldMethod = true;
+      break;
+    }
+    st_index = sxautotype.find(L"\\z", st_index + 1);
   }
 
+  const int N = sxautotype.length();
   CKeySend ks(m_WindowsMajorVersion, m_WindowsMinorVersion, bForceOldMethod);
-
-  const int N = sx_autotype.length();
-  bool bCapsLock = false;
-  std::vector<StringX> vsx_notes_lines;
-
-  // No recursive substitution (e.g. \p or \u), 
-  // although '\t' will be replaced by a tab
-  if (!sxnotes.empty()) {
-    // Use \n and \r to tokenise this line
-    StringX::size_type start(0), end(0);
-    const StringX delim = L"\r\n";
-    StringX line;
-    while (end != StringX::npos) {
-      end = sxnotes.find(delim, start);
-      line = (sxnotes.substr(start, 
-                    (end == StringX::npos) ? StringX::npos : end - start));
-      index = 0;
-      for (;;) {
-        index = line.find(L"\\t", index);
-        if (index == line.npos)
-          break;
-        line.replace(index, 2, L"\t");
-        index += 1;
-      }
-      vsx_notes_lines.push_back(line);
-      start = ((end > (StringX::npos - delim.size()))
-                          ? StringX::npos : end + delim.size());
-    }
-    // Now change '\n' to '\r' in the complete notes field
-    index = 0;
-    for (;;) {
-      index = sxnotes.find(L"\r\n", index);
-      if (index == StringX::npos)
-        break;
-      sxnotes.replace(index, 2, L"\r");
-      index += 1;
-    }
-    index = 0;
-    for (;;) {
-      index = sxnotes.find(L"\\t", index);
-      if (index == StringX::npos)
-        break;
-      sxnotes.replace(index, 2, L"\t");
-      index += 1;
-    }
-  }
 
   // Turn off CAPSLOCK
   if (GetKeyState(VK_CAPITAL)) {
@@ -1470,76 +1432,32 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   TRACE(L"DboxMain::DoAutoType - BlockInput set\n");
   ::BlockInput(TRUE);
 
-  // Note that minimizing the window before calling ci.Get*()
-  // will cause garbage to be read if "lock on minimize" selected,
-  // since that will clear the data [Bugs item #1026630]
-  // (this is why we read user & pwd before actual use)
-
   ::Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
   int gNumIts;
   for (int n = 0; n < N; n++){
-    curChar = sx_autotype[n];
+    curChar = sxautotype[n];
     if (curChar == L'\\') {
       n++;
       if (n < N)
-        curChar = sx_autotype[n];
+        curChar = sxautotype[n];
 
-      switch (curChar){
-        case L'\\':
-          tmp += L'\\';
-          break;
-        case L'n':
-        case L'r':
-          tmp += L'\r';
-          break;
-        case L't':
-          tmp += L'\t';
-          break;
-        case L'g':
-          tmp += sx_group;
-          break;
-        case L'i':
-          tmp += sx_title;
-          break;
-        case L'u':
-          tmp += sx_user;
-          break;
-        case L'p':
-          tmp += sx_pwd;
-          break;
-        case L'o':
-        {
-          if (n == (N - 1)) {
-            // This was the last character - send the lot!
-            tmp += sxnotes;
-            break;
-          }
-          int line_number(0);
-          gNumIts = 0;
-          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(sx_autotype[n])) {
-              line_number *= 10;
-              line_number += (sx_autotype[n] - L'0');
-            } else
-              break; // for loop
-          }
-          if (line_number == 0) {
-            // Send the lot
-            tmp += sxnotes;
-          } else if (line_number <= (int)vsx_notes_lines.size()) {
-            // User specifies a too big a line number - ignore the lot
-            tmp += vsx_notes_lines[line_number - 1];
-          }
-    
-          // Backup the extra character that delimited the \oNNN string
-          n--;
-          break; // case 'o'
-        }
+      // Only need to process fields left in there by PWSAuxParse::GetAutoTypeString
+      // for later processing
+      switch (curChar) {
         case L'd':
         case L'w':
         case L'W':
-        { /*
+        { 
+           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
+               vactionverboffsets.end()) {
+             // Not in the list of found action verbs - treat as-is
+             sxtmp += L'\\';
+             sxtmp += curChar;
+             break;
+           }
+
+          /*
            'd' means value is in milli-seconds, max value = 0.999s
            and is the delay between sending each character
 
@@ -1553,15 +1471,15 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
           */
 
           // Delay is going to change - send what we have with old delay
-          ks.SendString(tmp);
+          ks.SendString(sxtmp);
           // start collecting new delay
-          tmp = L"";
+          sxtmp = L"";
           int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(sx_autotype[n])) {
+            if (_istdigit(sxautotype[n])) {
               newdelay *= 10;
-              newdelay += (sx_autotype[n] - L'0');
+              newdelay += (sxautotype[n] - L'0');
             } else
               break; // for loop
           }
@@ -1575,24 +1493,33 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
 
           break; // case 'd', 'w' & 'W'
         }
-        case L'b': // backspace!
-          tmp += L'\b';
+        case L'z':
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
+              vactionverboffsets.end()) {
+            // Not in the list of found action verbs - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          }
           break;
-        // Ignore explicit control characters
-        case L'a': // bell (can't hear it during testing!)
-        case L'v': // vertical tab
-        case L'f': // form feed
-        case L'e': // escape
-        case L'x': // hex digits (\xNN)
-        // Ignore any others!
-        // '\cC', '\uXXXX', '\OOO', '\<any other character not recognised above>'
+        case L'b':
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
+              vactionverboffsets.end()) {
+            // Not in the list of found action verbs - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          } else {
+            sxtmp += L'\b';
+          }
+          break;
         default:
+          sxtmp += L'\\';
+          sxtmp += curChar;
           break;
       }
     } else
-      tmp += curChar;
+      sxtmp += curChar;
   }
-  ks.SendString(tmp);
+  ks.SendString(sxtmp);
   // If we turned off CAPSLOCK, put it back
   if (bCapsLock)
     ks.SetCapsLock(true);
@@ -1602,8 +1529,6 @@ void DboxMain::DoAutoType(const StringX &sx_in_autotype, const StringX &sx_group
   // Reset Keyboard/Mouse Input
   TRACE(L"DboxMain::DoAutoType - BlockInput reset\n");
   ::BlockInput(FALSE);
-
-  vsx_notes_lines.clear();
 }
 
 void DboxMain::OnGotoBaseEntry()
@@ -1720,7 +1645,8 @@ void DboxMain::OnRunCommand()
 
   m_AutoType = PWSAuxParse::GetAutoTypeString(m_AutoType, pci->GetGroup(), 
                                  pci->GetTitle(), pci->GetUser(), 
-                                 sx_pswd, pci->GetNotes());
+                                 sx_pswd, pci->GetNotes(),
+                                 m_vactionverboffsets);
   SetClipboardData(pci->GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(pci_original);
@@ -1744,7 +1670,7 @@ void DboxMain::OnRunCommand()
       sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
   }
 
-  bool rc = m_runner.runcmd(sx_Expanded_ES, m_AutoType);
+  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_AutoType.empty());
   if (!rc) {
     m_bDoAutoType = false;
     m_AutoType.clear();

@@ -260,7 +260,8 @@ public:
   void MakeRandomPassword(StringX& password, PWPolicy &pwp, 
                           bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
-                     const bool bDoAutotype);
+                     const std::vector<size_t> &vactionverboffsets,
+                     const bool &bDoAutotype);
   BOOL SendEmail(const CString &cs_email);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
@@ -311,9 +312,7 @@ public:
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
-  void DoAutoType(const StringX &sxAutotype, const StringX &group = L"", 
-                  const StringX &title = L"", const StringX &user = L"", 
-                  const StringX &pwd = L"", const StringX &notes = L"");
+  void DoAutoType(const StringX &sx_autotype, const std::vector<size_t> &vactionverboffsets);
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData * pci = NULL);
@@ -350,6 +349,7 @@ public:
 
   bool m_bDoAutoType;
   StringX m_AutoType;
+  std::vector<size_t> m_vactionverboffsets;
 
   // Used in Add & Edit & OptionsPasswordPolicy
   PWPolicy m_pwp;

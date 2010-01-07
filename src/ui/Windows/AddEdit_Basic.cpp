@@ -863,16 +863,18 @@ void CAddEdit_Basic::OnLaunch()
 {
   UpdateData(TRUE);
   StringX sx_url = StringX(M_URL());
+  std::vector<size_t> vactionverboffsets;
   StringX sx_autotype = PWSAuxParse::GetAutoTypeString(M_autotype(),
                                                        M_group(),
                                                        M_title(),
                                                        M_username(),
                                                        M_realpassword(),
-                                                       M_realnotes());
+                                                       M_realnotes(),
+                                                       vactionverboffsets);
   int iaction = CItemData::URL;
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 
-  M_pDbx()->LaunchBrowser(sx_url.c_str(), sx_autotype, bDoAutoType);
+  M_pDbx()->LaunchBrowser(sx_url.c_str(), sx_autotype, vactionverboffsets, bDoAutoType);
   M_pDbx()->UpdateLastClipboardAction(iaction);
 
   if (bDoAutoType) {

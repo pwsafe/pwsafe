@@ -517,6 +517,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
   UpdateData(TRUE);
   StringX cs_data;
   int iaction(0);
+  std::vector<size_t> vactionverboffsets;
+
   // NOTE: These values must be contiguous in "resource.h"
   switch (nID) {
     case IDC_STATIC_AUTO:
@@ -526,7 +528,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                StringX(M_title()),
                                                StringX(M_username()),
                                                StringX(M_realpassword()),
-                                               StringX(M_realnotes()));
+                                               StringX(M_realnotes()),
+                                               vactionverboffsets);
       iaction = CItemData::AUTOTYPE;
       break;
     case IDC_STATIC_RUNCMD:

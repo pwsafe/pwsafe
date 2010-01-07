@@ -20,6 +20,8 @@
 #include "typedefs.h"
 #include "../corelib/StringX.h"
 
+#include <vector>
+
 struct st_run_impl; // helper structure, platform-dependant
 
 class PWSRun {
@@ -40,9 +42,9 @@ public:
    */
   StringX getruncmd(const StringX &sxFile, bool &bfound);
 
-  bool runcmd(const StringX &run_command, const StringX &sxAutotype);
+  bool runcmd(const StringX &run_command, const bool &bAutotype);
   bool issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                const StringX &sxAutotype);
+                const bool &bAutotype);
 private:
   st_run_impl *pImpl;
 };

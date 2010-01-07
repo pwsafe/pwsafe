@@ -132,7 +132,7 @@ bool PWSRun::UnInit()
     return false;
 }
 
-bool PWSRun::runcmd(const StringX &run_command, const StringX &sxAutotype)
+bool PWSRun::runcmd(const StringX &run_command, const bool &bAutotype)
 {
   // Get first parameter either enclosed by quotes or delimited by a space
   StringX full_string(run_command), first_part(_T("")), the_rest(_T(""));
@@ -193,15 +193,15 @@ bool PWSRun::runcmd(const StringX &run_command, const StringX &sxAutotype)
 
   bool rc;
   if (bfound)
-    rc = issuecmd(first_part, the_rest, sxAutotype);
+    rc = issuecmd(first_part, the_rest, bAutotype);
   else
-    rc = issuecmd(full_string, _T(""), sxAutotype);
+    rc = issuecmd(full_string, _T(""), bAutotype);
 
   return rc;
 }
 
 bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                      const StringX &sxAutotype)
+                      const bool &bAutotype)
 {
   SHELLEXECUTEINFO si;
   ZeroMemory(&si, sizeof(si));
@@ -216,7 +216,7 @@ bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters,
 
   BOOL bAT_init(FALSE);
 
-  if (!sxAutotype.empty() && isValid()) {
+  if (bAutotype && isValid()) {
     if (pImpl->pInit != NULL && pImpl->pUnInit != NULL &&
         pImpl->hCBWnd != NULL) {
       // OK - try and make it tell us!  Won't if another instance of
