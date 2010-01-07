@@ -733,7 +733,7 @@ int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            const stringT &, const bool &,
                            stringT &, int &, int &,
                            bool &, bool &, 
-                           std::vector<StringX> *, CReport &)
+                           CReport &)
 {
   return UNIMPLEMENTED;
 }
@@ -742,17 +742,17 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            const stringT &strXSDFileName, const bool &bImportPSWDsOnly,
                            stringT &strErrors, int &numValidated, int &numImported,
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
-                           std::vector<StringX> * pvgroups,
                            CReport &rpt)
 {
   UUIDList possible_aliases, possible_shortcuts;
+  MultiCommands *pmulticmds = MultiCommands::Create(this);
 
 #if   USE_XML_LIBRARY == EXPAT
-  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
 #elif USE_XML_LIBRARY == MSXML
-  MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+  MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
 #elif USE_XML_LIBRARY == XERCES
-  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts);
+  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
 #endif
 
   bool status, validation;
@@ -767,8 +767,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   validation = true;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly, 
-                        nITER, nRecordsWithUnknownFields, uhfl,
-                        pvgroups);
+                        nITER, nRecordsWithUnknownFields, uhfl);
   strErrors = iXML.getResultText();
   if (!status) {
     return XML_FAILED_VALIDATION;
@@ -778,10 +777,10 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   validation = false;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly,
-                        nITER, nRecordsWithUnknownFields, uhfl,
-                        pvgroups);
+                        nITER, nRecordsWithUnknownFields, uhfl);
   strErrors = iXML.getResultText();
   if (!status) {
+    delete pmulticmds;
     return XML_FAILED_IMPORT;
   }
 
@@ -801,8 +800,18 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   }
   uhfl.clear();
 
-  AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::PASSWORD);
-  AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_SHORTCUT, CItemData::PASSWORD);
+  Command *pcmdA = AddDependentEntriesCommand::Create(this, possible_aliases, &rpt, 
+                                                      CItemData::ET_ALIAS,
+                                                      CItemData::PASSWORD);
+  pcmdA->SetNoGUINotify();
+  pmulticmds->Add(pcmdA);
+  Command *pcmdS = AddDependentEntriesCommand::Create(this, possible_shortcuts, &rpt, 
+                                                      CItemData::ET_SHORTCUT,
+                                                      CItemData::PASSWORD);
+  pcmdS->SetNoGUINotify();
+  pmulticmds->Add(pcmdS);
+  Execute(pmulticmds);
+
   possible_aliases.clear();
   possible_shortcuts.clear();
 
@@ -829,7 +838,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  const bool &bImportPSWDsOnly,
                                  stringT &strError,
                                  int &numImported, int &numSkipped,
-                                 std::vector<StringX> * pvgroups,
                                  CReport &rpt)
 {
   stringT csError;
@@ -852,7 +860,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   int numlines = 0;
 
-  CItemData temp;
+  CItemData ci_temp;
   vector<string> vs_Header;
   stringT cs_hdr;
   LoadAString(cs_hdr, IDSC_EXPORTHEADER);
@@ -966,6 +974,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   bool bIntoEmpty = m_pwlist.size() == 0;
 
   UUIDList possible_aliases, possible_shortcuts;
+
+  MultiCommands *pmulticmds = MultiCommands::Create(this);
+  Command *pcmd1 = UpdateGUICommand::Create(this, Command::WN_UNDO,
+                                            Command::GUI_UNDO_IMPORT);
+  pmulticmds->Add(pcmd1);
 
   // Finished parsing header, go get the data!
   for (;;) {
@@ -1112,25 +1125,26 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         numSkipped++;
       } else {
         CItemData *pci = &iter->second;
-        pci->UpdatePassword(tokens[i_Offset[PASSWORD]].c_str());
+        Command *pcmd = UpdatePasswordCommand::Create(this, *pci,
+                                                      tokens[i_Offset[PASSWORD]].c_str());
+        pcmd->SetNoGUINotify();
+        pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
           pci->SetATime();
         }
-        pvgroups->push_back(sxgroup);
-        pci->SetStatus(CItemData::ES_MODIFIED);
         numImported++;
       }
       continue;
     }
 
     // Start initializing the new record.
-    temp.Clear();
-    temp.CreateUUID();
+    ci_temp.Clear();
+    ci_temp.CreateUUID();
     if (i_Offset[USER] >= 0 && tokens.size() > (size_t)i_Offset[USER])
-      temp.SetUser(tokens[i_Offset[USER]].c_str());
+      ci_temp.SetUser(tokens[i_Offset[USER]].c_str());
     StringX csPassword = tokens[i_Offset[PASSWORD]].c_str();
     if (i_Offset[PASSWORD] >= 0)
-      temp.SetPassword(csPassword);
+      ci_temp.SetPassword(csPassword);
 
     // The group and title field are concatenated.
     // If the title field has periods, then they have been changed to the delimiter
@@ -1141,10 +1155,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       StringX newgroup(ImportedPrefix.empty() ?
                          _T("") : ImportedPrefix + _T("."));
       newgroup += grouptitle.substr(0, lastdot).c_str();
-      temp.SetGroup(newgroup);
+      ci_temp.SetGroup(newgroup);
       entrytitle = grouptitle.substr(lastdot + 1);
     } else {
-      temp.SetGroup(ImportedPrefix);
+      ci_temp.SetGroup(ImportedPrefix);
       entrytitle = grouptitle;
     }
 
@@ -1156,14 +1170,14 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       continue;
     }
 
-    temp.SetTitle(entrytitle.c_str());
+    ci_temp.SetTitle(entrytitle.c_str());
 
     // Now make sure it is unique
-    const StringX group = temp.GetGroup();
-    const StringX title = temp.GetTitle();
-    const StringX user = temp.GetUser();
+    const StringX group = ci_temp.GetGroup();
+    const StringX title = ci_temp.GetTitle();
+    const StringX user = ci_temp.GetUser();
     StringX newtitle = GetUniqueTitle(group, title, user, IDSC_IMPORTNUMBER);
-    temp.SetTitle(newtitle);
+    ci_temp.SetTitle(newtitle);
     if (newtitle != title) {
       if (group.empty())
         Format(csError, IDSC_IMPORTCONFLICTS2, numlines,
@@ -1175,29 +1189,29 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
 
     if (i_Offset[URL] >= 0 && tokens.size() > (size_t)i_Offset[URL])
-      temp.SetURL(tokens[i_Offset[URL]].c_str());
+      ci_temp.SetURL(tokens[i_Offset[URL]].c_str());
     if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > (size_t)i_Offset[AUTOTYPE])
-      temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
+      ci_temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
     if (i_Offset[CTIME] >= 0 && tokens.size() > (size_t)i_Offset[CTIME])
-      if (!temp.SetCTime(tokens[i_Offset[CTIME]].c_str()))
+      if (!ci_temp.SetCTime(tokens[i_Offset[CTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(CTIME), numlines);
     if (i_Offset[PMTIME] >= 0 && tokens.size() > (size_t)i_Offset[PMTIME])
-      if (!temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str()))
+      if (!ci_temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(PMTIME), numlines);
     if (i_Offset[ATIME] >= 0 && tokens.size() > (size_t)i_Offset[ATIME])
-      if (!temp.SetATime(tokens[i_Offset[ATIME]].c_str()))
+      if (!ci_temp.SetATime(tokens[i_Offset[ATIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(ATIME), numlines);
     if (i_Offset[XTIME] >= 0 && tokens.size() > (size_t)i_Offset[XTIME])
-      if (!temp.SetXTime(tokens[i_Offset[XTIME]].c_str()))
+      if (!ci_temp.SetXTime(tokens[i_Offset[XTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(XTIME), numlines);
     if (i_Offset[XTIME_INT] >= 0 && tokens.size() > (size_t)i_Offset[XTIME_INT])
-      if (!temp.SetXTimeInt(tokens[i_Offset[XTIME_INT]].c_str()))
+      if (!ci_temp.SetXTimeInt(tokens[i_Offset[XTIME_INT]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(XTIME_INT), numlines);
     if (i_Offset[RMTIME] >= 0 && tokens.size() > (size_t)i_Offset[RMTIME])
-      if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str()))
+      if (!ci_temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(RMTIME), numlines);
     if (i_Offset[POLICY] >= 0 && tokens.size() > (size_t)i_Offset[POLICY])
-      if (!temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str()))
+      if (!ci_temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(POLICY), numlines);
     if (i_Offset[HISTORY] >= 0 && tokens.size() > (size_t)i_Offset[HISTORY]) {
       StringX newPWHistory;
@@ -1206,7 +1220,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       switch (VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
                                           newPWHistory, strPWHErrors)) {
         case PWH_OK:
-          temp.SetPWHistory(newPWHistory.c_str());
+          ci_temp.SetPWHistory(newPWHistory.c_str());
           break;
         case PWH_IGNORE:
           break;
@@ -1227,11 +1241,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       }
     }
     if (i_Offset[RUNCMD] >= 0 && tokens.size() > (size_t)i_Offset[RUNCMD])
-      temp.SetRunCommand(tokens[i_Offset[RUNCMD]].c_str());
+      ci_temp.SetRunCommand(tokens[i_Offset[RUNCMD]].c_str());
     if (i_Offset[DCA] >= 0 && tokens.size() > (size_t)i_Offset[DCA])
-      temp.SetDCA(tokens[i_Offset[DCA]].c_str());
+      ci_temp.SetDCA(tokens[i_Offset[DCA]].c_str());
     if (i_Offset[EMAIL] >= 0 && tokens.size() > (size_t)i_Offset[EMAIL])
-      temp.SetEmail(tokens[i_Offset[EMAIL]].c_str());
+      ci_temp.SetEmail(tokens[i_Offset[EMAIL]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
@@ -1250,13 +1264,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
           from = pos + 1;
         }
         fixedNotes += quotedNotes.substr(from);
-        temp.SetNotes(fixedNotes.c_str());
+        ci_temp.SetNotes(fixedNotes.c_str());
       }
     }
 
     if (Replace(csPassword, _T(':'), _T(';')) <= 2) {
       uuid_array_t temp_uuid;
-      temp.GetUUID(temp_uuid);
+      ci_temp.GetUUID(temp_uuid);
       if (csPassword.substr(0, 2) == _T("[[") &&
           csPassword.substr(csPassword.length() - 2) == _T("]]")) {
         possible_aliases.push_back(temp_uuid);
@@ -1268,16 +1282,39 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
 
     if (!bIntoEmpty) {
-      pvgroups->push_back(group);
-      temp.SetStatus(CItemData::ES_ADDED);
+      ci_temp.SetStatus(CItemData::ES_ADDED);
     }
-    AddEntry(temp);
+
+    // Get GUI to populate its field
+    if (m_pfcnGUIUpdateEntry != NULL) {
+      m_pfcnGUIUpdateEntry(ci_temp);
+    }
+
+    // Add to commands to execute
+    Command *pcmd = AddEntryCommand::Create(this, ci_temp);
+    pcmd->SetNoGUINotify();
+    pmulticmds->Add(pcmd);
     numImported++;
   } // file processing for (;;) loop
   ifs.close();
 
-  AddDependentEntries(possible_aliases, &rpt, CItemData::ET_ALIAS, CItemData::PASSWORD);
-  AddDependentEntries(possible_shortcuts, &rpt, CItemData::ET_SHORTCUT, CItemData::PASSWORD);
+  Command *pcmdA = AddDependentEntriesCommand::Create(this,
+                                                      possible_aliases, &rpt, 
+                                                      CItemData::ET_ALIAS,
+                                                      CItemData::PASSWORD);
+  pcmdA->SetNoGUINotify();
+  pmulticmds->Add(pcmdA);
+  Command *pcmdS = AddDependentEntriesCommand::Create(this,
+                                                      possible_shortcuts, &rpt, 
+                                                      CItemData::ET_SHORTCUT,
+                                                      CItemData::PASSWORD);
+  pcmdS->SetNoGUINotify();
+  pmulticmds->Add(pcmdS);
+  Command *pcmd2 = UpdateGUICommand::Create(this, Command::WN_REDO,
+                                            Command::GUI_REDO_IMPORT);
+  pmulticmds->Add(pcmd2);
+  Execute(pmulticmds);
+
   possible_aliases.clear();
   possible_shortcuts.clear();
 
@@ -1327,6 +1364,8 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
   if (!getline(ifs, linebuf, TCHAR('\n')) || linebuf.empty()) {
     return INVALID_FORMAT;
   }
+
+  MultiCommands *pmulticmds = MultiCommands::Create(this);
 
   // the first line of the keepass text file contains a few garbage characters
   linebuf = linebuf.erase(0, linebuf.find(_T("[")));
@@ -1404,18 +1443,25 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     }
 
     // Create & append the new record.
-    CItemData temp;
-    temp.CreateUUID();
-    temp.SetTitle(title.empty() ? group.c_str() : title.c_str());
-    temp.SetGroup(group.c_str());
-    temp.SetUser(user.empty() ? _T(" ") : user.c_str());
-    temp.SetPassword(passwd.empty() ? _T(" ") : passwd.c_str());
-    temp.SetNotes(notes.empty() ? _T("") : notes.c_str());
-    temp.SetStatus(CItemData::ES_ADDED);
+    CItemData ci_temp;
+    ci_temp.CreateUUID();
+    ci_temp.SetTitle(title.empty() ? group.c_str() : title.c_str());
+    ci_temp.SetGroup(group.c_str());
+    ci_temp.SetUser(user.empty() ? _T(" ") : user.c_str());
+    ci_temp.SetPassword(passwd.empty() ? _T(" ") : passwd.c_str());
+    ci_temp.SetNotes(notes.empty() ? _T("") : notes.c_str());
+    ci_temp.SetStatus(CItemData::ES_ADDED);
 
-    AddEntry(temp);
+    if (m_pfcnGUIUpdateEntry != NULL) {
+      m_pfcnGUIUpdateEntry(ci_temp);
+    }
+    Command *pcmd = AddEntryCommand::Create(this, ci_temp);
+    pcmd->SetNoGUINotify();
+    pmulticmds->Add(pcmd);
   }
   ifs.close();
+
+  Execute(pmulticmds);
 
   // TODO: maybe return an error if the full end of the file was not reached?
 

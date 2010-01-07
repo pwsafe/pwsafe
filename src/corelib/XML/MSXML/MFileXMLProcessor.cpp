@@ -33,9 +33,11 @@ static char THIS_FILE[] = __FILE__;
 
 MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,
                                      UUIDList *possible_aliases,
-                                     UUIDList *possible_shortcuts)
+                                     UUIDList *possible_shortcuts,
+                                     MultiCommands *p_multicmds)
   : m_pXMLcore(pcore), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
-  m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
+  m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
+  m_pmulticmds(p_multicmds)
 {
 }
 
@@ -47,8 +49,7 @@ MFileXMLProcessor::~MFileXMLProcessor()
 bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
                                 const bool &bImportPSWDsOnly,
-                                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl,
-                                std::vector<StringX> * pvgroups)
+                                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl)
 {
   HRESULT hr, hr0, hr60, hr40, hr30;
   bool b_ok = false;
@@ -117,7 +118,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                     ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                     m_bValidation ? NULL : m_possible_aliases, 
                     m_bValidation ? NULL : m_possible_shortcuts,
-                    pvgroups);
+                    m_pmulticmds);
 
   //  Create ErrorHandlerImpl object
   MFileSAX2ErrorHandler* pEH = new MFileSAX2ErrorHandler();

@@ -202,8 +202,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
   int iMaxHeight = 1024;
   SetMaxHeightWidth(iMaxHeight, iMaxWidth);
 
-  GetDlgItem(IDC_COMPAREORIGINALDB)->SetWindowText(m_cs_Filename1);
-  GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
+  GetDlgItem(IDC_COMPAREORIGINALDB)->SetWindowText(m_scFilename1);
+  GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_scFilename2);
 
   WriteReportData();
   UpdateStatusBar();
@@ -444,7 +444,8 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
     st_info->clicked_column = m_column;
 
     LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-      WM_COMPARE_RESULT_FUNCTION, (WPARAM)st_info, (LPARAM)ifunction);
+                                     WM_COMPARE_RESULT_FUNCTION,
+                                     (WPARAM)st_info, (LPARAM)ifunction);
     if (lres == TRUE) {
       CSecString group, title, user, buffer;
       ItemListIter pos;
@@ -822,7 +823,7 @@ void CCompareResultsDlg::WriteReportData()
   CString buffer;
 
   if (m_OnlyInCurrent.size() > 0) {
-    buffer.Format(IDS_COMPAREENTRIES1, m_cs_Filename1);
+    buffer.Format(IDS_COMPAREENTRIES1, m_scFilename1);
     m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInCurrent.begin(); cd_iter != m_OnlyInCurrent.end();
          cd_iter++) {
@@ -835,7 +836,7 @@ void CCompareResultsDlg::WriteReportData()
   }
 
   if (m_OnlyInComp.size() > 0) {
-    buffer.Format(IDS_COMPAREENTRIES2, m_cs_Filename2);
+    buffer.Format(IDS_COMPAREENTRIES2, m_scFilename2);
     m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInComp.begin(); cd_iter != m_OnlyInComp.end();
          cd_iter++) {
@@ -875,21 +876,25 @@ void CCompareResultsDlg::WriteReportData()
       m_pRpt->WriteLine(std::wstring(buffer));
       buffer.Empty();
 
+      // Non-time fields
       if (st_data.bsDiffs.test(CItemData::PASSWORD)) buffer += csx_password;
       if (st_data.bsDiffs.test(CItemData::NOTES)) buffer += csx_notes;
       if (st_data.bsDiffs.test(CItemData::URL)) buffer += csx_url;
       if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) buffer += csx_autotype;
-      if (st_data.bsDiffs.test(CItemData::CTIME)) buffer += csx_ctime;
-      if (st_data.bsDiffs.test(CItemData::PMTIME)) buffer += csx_pmtime;
-      if (st_data.bsDiffs.test(CItemData::ATIME)) buffer += csx_atime;
-      if (st_data.bsDiffs.test(CItemData::XTIME)) buffer += csx_xtime;
-      if (st_data.bsDiffs.test(CItemData::XTIME_INT)) buffer += csx_xtimeint;
-      if (st_data.bsDiffs.test(CItemData::RMTIME)) buffer += csx_rmtime;
       if (st_data.bsDiffs.test(CItemData::PWHIST)) buffer += csx_pwhistory;
       if (st_data.bsDiffs.test(CItemData::POLICY)) buffer += csx_policy;
       if (st_data.bsDiffs.test(CItemData::RUNCMD)) buffer += csx_runcmd;
       if (st_data.bsDiffs.test(CItemData::DCA)) buffer += csx_dca;
       if (st_data.bsDiffs.test(CItemData::EMAIL)) buffer += csx_email;
+
+      // Time fields
+      if (st_data.bsDiffs.test(CItemData::CTIME)) buffer += csx_ctime;
+      if (st_data.bsDiffs.test(CItemData::PMTIME)) buffer += csx_pmtime;
+      if (st_data.bsDiffs.test(CItemData::ATIME)) buffer += csx_atime;
+      if (st_data.bsDiffs.test(CItemData::XTIME)) buffer += csx_xtime;
+      if (st_data.bsDiffs.test(CItemData::RMTIME)) buffer += csx_rmtime;
+      if (st_data.bsDiffs.test(CItemData::XTIME_INT)) buffer += csx_xtimeint;
+
       m_pRpt->WriteLine((LPCWSTR)buffer);
     }
     m_pRpt->WriteLine();
@@ -925,7 +930,7 @@ void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
                           cx - pt_top.x - 5,
                           ctrlRect.Height(), TRUE);
 
-  GetDlgItem(IDC_COMPAREORIGINALDB)->SetWindowText(m_cs_Filename1);
+  GetDlgItem(IDC_COMPAREORIGINALDB)->SetWindowText(m_scFilename1);
 
   pwndCDBText->GetWindowRect(&ctrlRect);
   pt_top.x = ctrlRect.left;
@@ -935,5 +940,5 @@ void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
                           cx - pt_top.x - 5,
                           ctrlRect.Height(), TRUE);
 
-  GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
+  GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_scFilename2);
 }

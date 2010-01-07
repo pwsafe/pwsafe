@@ -31,6 +31,7 @@ static char THIS_FILE[] = __FILE__;
 int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
   IDD_ADVANCED,      // ADV_COMPARE
   IDD_ADVANCEDMERGE, // ADV_MERGE (significantly reduced dialog)
+  IDD_ADVANCED,      // ADV_SYNCHRONIZE
   IDD_ADVANCED,      // ADV_EXPORT_TEXT
   IDD_ADVANCED,      // ADV_EXPORT_XML
   IDD_ADVANCED       // ADV_FIND
@@ -82,6 +83,9 @@ BOOL CAdvancedDlg::OnInitDialog()
       break;
     case ADV_MERGE:
       cs_text.LoadString(IDS_MERGEX);
+      break;
+    case ADV_SYNCHRONIZE:
+      cs_text.LoadString(IDS_SYNCHRONIZEX);
       break;
     case ADV_EXPORT_TEXT:
       cs_text.LoadString(IDS_EXPORT_TEXTX);
@@ -182,27 +186,33 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_pLC_Selected->SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
 
   // Deal with non-text fields
+  // Time fields - use Compare text and remove the quotes and leading blank
   switch (m_iIndex) {
     case ADV_COMPARE:
       // All these are potential comparison fields
-      cs_text.LoadString(IDS_CREATED);
+      cs_text.LoadString(IDS_COMPCTIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::CTIME);
-      cs_text.LoadString(IDS_PASSWORDMODIFIED);
+      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::CTIME, 1));
+      cs_text.LoadString(IDS_COMPPMTIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::PMTIME);
-      cs_text.LoadString(IDS_LASTACCESSED);
+      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::PMTIME, 1));
+      cs_text.LoadString(IDS_COMPATIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::ATIME);
-      cs_text.LoadString(IDS_LASTMODIFIED);
+      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::ATIME, 1));
+      cs_text.LoadString(IDS_COMPRMTIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::RMTIME);
-      cs_text.LoadString(IDS_PASSWORDEXPIRYDATE);
+      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::RMTIME, 1));
+      cs_text.LoadString(IDS_COMPXTIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::XTIME);
+      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::XTIME, 1));
       cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::XTIME_INT);
+      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::XTIME_INT, 1));
       cs_text.LoadString(IDS_PWPOLICY);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
       m_pLC_List->SetItemData(iItem, CItemData::POLICY);
@@ -214,27 +224,33 @@ BOOL CAdvancedDlg::OnInitDialog()
       // Don't add any of these - they are not text fields
       break;
     case ADV_MERGE:
+    case ADV_SYNCHRONIZE:
     case ADV_EXPORT_TEXT:
     case ADV_EXPORT_XML:
       // All these are already selected fields
-      cs_text.LoadString(IDS_CREATED);
+      cs_text.LoadString(IDS_COMPCTIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::CTIME);
-      cs_text.LoadString(IDS_PASSWORDMODIFIED);
+      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::CTIME, 1));
+      cs_text.LoadString(IDS_COMPPMTIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::PMTIME);
-      cs_text.LoadString(IDS_LASTACCESSED);
+      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::PMTIME, 1));
+      cs_text.LoadString(IDS_COMPATIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::ATIME);
-      cs_text.LoadString(IDS_PASSWORDEXPIRYDATE);
+      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::ATIME, 1));
+      cs_text.LoadString(IDS_COMPRMTIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::XTIME);
+      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::RMTIME, 1));
+      cs_text.LoadString(IDS_COMPXTIME);
+      cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::XTIME, 1));
       cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::XTIME_INT);
-      cs_text.LoadString(IDS_LASTMODIFIED);
-      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME);
+      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::XTIME_INT, 1));
       cs_text.LoadString(IDS_PWPOLICY);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::POLICY);
@@ -293,6 +309,11 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_ADVANCED_USERTEXT); // <-- Special
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::USER);
+      cs_text.LoadString(IDS_PASSWORD);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
+      break;
+    case ADV_SYNCHRONIZE:
       cs_text.LoadString(IDS_PASSWORD);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
@@ -424,6 +445,9 @@ void CAdvancedDlg::OnHelp()
     case ADV_MERGE:
       cs_HelpTopic += L"::/html/mergex.html";
       break;
+    case ADV_SYNCHRONIZE:
+      cs_HelpTopic += L"::/html/synchronizex.html";
+      break;
     case ADV_EXPORT_TEXT:
       cs_HelpTopic += L"::/html/exporttextx.html";
       break;
@@ -454,7 +478,7 @@ void CAdvancedDlg::OnOK()
 
     for (int i = 0; i < num_selected; i++) {
       nItem = m_pLC_Selected->GetNextItem(nItem, LVNI_ALL);
-      dw_data = m_pLC_Selected->GetItemData(nItem);
+      dw_data = LOWORD(m_pLC_Selected->GetItemData(nItem));
       m_bsFields.set(dw_data, true);
     }
 
@@ -463,6 +487,9 @@ void CAdvancedDlg::OnOK()
       switch (m_iIndex) {
         case ADV_COMPARE:
           cs_error_msg.LoadString(IDS_NOFIELDSFORCOMPARE);
+          break;
+        case ADV_SYNCHRONIZE:
+          cs_error_msg.LoadString(IDS_NOFIELDSFORSYNCH);
           break;
         case ADV_EXPORT_TEXT:
           cs_error_msg.LoadString(IDS_NOFIELDSFOREXPORT);
@@ -648,6 +675,7 @@ void CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
       break;
     case ADV_FIND:
     case ADV_MERGE:
+    case ADV_SYNCHRONIZE:
     case ADV_EXPORT_TEXT:
       break;
     default:

@@ -54,19 +54,12 @@ BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
 
 END_EVENT_TABLE()
 
-//Notification from PWSCore when the password list is modified
-void OnPasswordListModified(LPARAM lParam)
-{
-  reinterpret_cast<PWSGrid*>(lParam)->OnPasswordListModified();
-}
-
 /*!
  * PWSGrid constructors
  */
 
 PWSGrid::PWSGrid(PWScore &core) : m_core(core)
 {
-  RegisterCoreNotifications();
   Init();
 }
 
@@ -74,7 +67,6 @@ PWSGrid::PWSGrid(wxWindow* parent, PWScore &core,
                  wxWindowID id, const wxPoint& pos,
                  const wxSize& size, long style) : m_core(core)
 {
-  RegisterCoreNotifications();
   Init();
   Create(parent, id, pos, size, style);
 }
@@ -253,9 +245,10 @@ void PWSGrid::DeleteItems(int row, size_t numItems)
         iter_uuid->first.GetUUID(uuid);
         ItemListIter citer = m_core.Find(uuid);
         if (citer != m_core.GetEntryEndIter()){
-          m_core.UnRegisterOnListModified();
-          m_core.RemoveEntryAt(citer);
-          RegisterCoreNotifications();
+          m_core.SuspendOnDBNotification();
+          m_core.Execute(DeleteEntryCommand::Create(&m_core,
+                                                    m_core.GetEntry(citer)));
+          m_core.ResumeOnDBNotification();
         }
         m_uuid_map.erase(iter_uuid);
       }
@@ -347,14 +340,6 @@ void PWSGrid::OnLeftDClick( wxGridEvent& event )
     dynamic_cast<PasswordSafeFrame *>(GetParent())->
       DispatchDblClickAction(*item);
 }
-
-void PWSGrid::RegisterCoreNotifications()
-{
-  const bool bAdded = m_core.RegisterOnListModified(&::OnPasswordListModified, 
-                                             reinterpret_cast<LPARAM>(this));
-  wxCHECK_RET(bAdded, _S("Could not added callback from PWSCore to PWSGrid"));
-}
-
 
  void PWSGrid::SelectItem(const CUUIDGen & uuid)
  {

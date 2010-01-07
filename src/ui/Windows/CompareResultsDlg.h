@@ -134,24 +134,24 @@ public:
   CListCtrl m_LCResults;
   int m_iSortedColumn;
   bool m_bSortAscending;
-  CSecString m_cs_Filename1, m_cs_Filename2;
+  CSecString m_scFilename1, m_scFilename2;
   int m_ShowIdenticalEntries;
   //}}AFX_DATA
 
   bool m_bOriginalDBReadOnly, m_bComparisonDBReadOnly;
   bool m_OriginalDBChanged, m_ComparisonDBChanged;
+
+protected:
+  static int CALLBACK CRCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CCompareResultsDlg)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
   //}}AFX_VIRTUAL
 
-private:
-  static int CALLBACK CRCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-
   // Implementation
-protected:
   bool CopyLeftOrRight(const bool bCopyLeft);
   void UpdateStatusBar();
   bool ProcessFunction(const int ifunction, st_CompareData *st_data);
@@ -160,7 +160,6 @@ protected:
   static st_CompareData * GetCompareData(const DWORD dwItemData, CCompareResultsDlg *self);
   void AddCompareEntries(const bool bAddIdentical);
 
-  virtual BOOL OnInitDialog();
   // Generated message map functions
   //{{AFX_MSG(CCompareResultsDlg)
   virtual void OnCancel();

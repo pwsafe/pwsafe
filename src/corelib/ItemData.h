@@ -48,9 +48,10 @@ class BlowFish;
 
 struct DisplayInfoBase
 {
-  // 
+  // Following used by display methods of the GUI
   DisplayInfoBase() {}
   virtual ~DisplayInfoBase() {}
+  virtual DisplayInfoBase *clone() const = 0; // virtual c'tor idiom
 };
 
 class CItemData
@@ -214,10 +215,12 @@ public:
     bool SetDCA(const stringT &cs_DCA);
     void SetEmail(const StringX &cs_email);
 
+    void SetFieldValue(const FieldType &ft, const StringX &value);
+
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy
     DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
-    void SetDisplayInfo(DisplayInfoBase *di) {m_display_info = di;}
+    void SetDisplayInfo(DisplayInfoBase *di) {delete m_display_info; m_display_info = di;}
     void Clear();
     // check record for mandatory fields, silently fix if missing
     int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
@@ -261,6 +264,8 @@ public:
     bool IsShortcut() const
     {return (m_entrytype == ET_SHORTCUT);}
 
+    void SetEntryType(CItemData::EntryType et)
+    {m_entrytype = et;}
     void SetNormal()
     {m_entrytype = ET_NORMAL;}
     void SetAliasBase()

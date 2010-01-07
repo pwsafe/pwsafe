@@ -35,7 +35,7 @@ void PWSRun::Set(void *)
 {
 }
 
-bool UnInit() // currently only needed in Windows impl.
+bool UnInit() // currently only needed in Windows pImpl.
 {
   return true;
 }

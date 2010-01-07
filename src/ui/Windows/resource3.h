@@ -570,3 +570,11 @@
 #define IDS_GENERATEPASSWORD            5743
 #define IDS_PASSWORDGENERATED1          5744
 #define IDS_PASSWORDGENERATED2          5745
+#define IDS_SYNCHWARNING                5746
+#define IDS_SYNCHRONIZEX                5747
+#define IDS_NOFIELDSFORSYNCH            5748
+#define IDS_RPTSYNCH                    5749
+#define IDS_SYNCHINGDATABASE            5750
+#define IDS_SYNCHUPDATED                5751
+#define IDS_SYNCHCOMPLETED              5752
+#define IDS_PICKSYNCHRONIZEEFILE        5753

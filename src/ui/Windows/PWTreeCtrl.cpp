@@ -22,6 +22,7 @@
 #include "SecString.h"
 #include "SMemFile.h"
 #include "GeneralMsgBox.h"
+#include "WinGUICmdIF.h"
 
 #include "corelib/ItemData.h"
 #include "corelib/Util.h"
@@ -42,7 +43,8 @@ static char THIS_FILE[] = __FILE__;
 // Hover time of 1.5 seconds before expanding a group during D&D
 #define HOVERTIME 1500
 
-static const wchar_t GROUP_SEP = L'.';
+const wchar_t GROUP_SEP = L'.';
+const wchar_t *GROUP_SEP2 = L".";
 
 // following header for D&D data passed over OLE:
 // Process ID of sender (to determine if src == tgt)
@@ -208,8 +210,6 @@ CPWTreeCtrl::~CPWTreeCtrl()
   delete m_DropTarget;
   delete m_DropSource;
   delete m_DataSource;
-
-  m_vnodes_modified.clear();
 }
 
 BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
@@ -431,24 +431,21 @@ void CPWTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
   SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
 }
 
-void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
+void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix)
 {
   // Starting with hItem, update the Group field of all of hItem's
   // children. Called after a label has been edited.
   if (IsLeaf(hItem)) {
-    DWORD_PTR itemData = GetItemData(hItem);
-    ASSERT(itemData != NULL);
-    CItemData *pci = (CItemData *)itemData;
-    pci->SetGroup(CSecString(prefix));
-    pci->SetStatus(CItemData::ES_MODIFIED);
-    AddChangedNodes(CSecString(prefix));
+    CItemData *pci = (CItemData *)GetItemData(hItem);
+    ASSERT(pci != NULL);
+    pmulticmds->UpdateField(*pci, CItemData::GROUP, (LPCWSTR)prefix);
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
       prefix += GROUP_SEP;
     prefix += GetItemText(hItem);
     HTREEITEM child;
     for (child = GetChildItem(hItem); child != NULL; child = GetNextSiblingItem(child)) {
-      UpdateLeafsGroup(child, prefix);
+      UpdateLeafsGroup(pmulticmds, child, prefix);
     }
   }
 }
@@ -670,8 +667,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
     if (IsLeaf(ptvinfo->item.hItem)) {
       DWORD_PTR itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
-      CItemData *pci = (CItemData *)itemData;
       StringX group, newTitle, newUser, newPassword;
+      CItemData *pci = (CItemData *)itemData;
 
       if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
         // errors in user's input - restore text and refresh display
@@ -734,18 +731,20 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       int lindex = pdi->list_index;
 
       // update the password database record - but only those items visible!!!
-      pci->SetTitle(newTitle);
-      m_pDbx->UpdateListItemTitle(lindex, newTitle.c_str());
-      if (bShowUsernameInTree) {
-        pci->SetUser(newUser);
-        m_pDbx->UpdateListItemUser(lindex, newUser.c_str());
-        if (bShowPasswordInTree) {
-          pci->SetPassword(newPassword);
-          m_pDbx->UpdateListItemPassword(lindex, newPassword.c_str());
+      MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
+      if (newTitle != pci->GetTitle()) {
+        pmulticmds->UpdateField(*pci, CItemData::TITLE, newTitle);
+        m_pDbx->UpdateListItemTitle(lindex, newTitle);
+      }
+      if (bShowUsernameInTree && newUser != pci->GetUser()) {
+        pmulticmds->UpdateField(*pci, CItemData::USER, newUser);
+        m_pDbx->UpdateListItemUser(lindex, newUser);
+        if (bShowPasswordInTree && newPassword != pci->GetPassword()) {
+          pmulticmds->UpdateField(*pci, CItemData::PASSWORD, newPassword);
+          m_pDbx->UpdateListItemPassword(lindex, newPassword);
         }
       }
-      pci->SetStatus(CItemData::ES_MODIFIED);
-      AddChangedNodes(group);
+      m_pDbx->Execute(pmulticmds);
     } else { // !IsLeaf
       // PR2407325: If the user edits a group name so that it has
       // a GROUP_SEP, all hell breaks loose.
@@ -771,7 +770,18 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
             prefix = GROUP_SEP + prefix;
           prefix = GetItemText(current) + prefix;
         } while (1);
-      UpdateLeafsGroup(ti, prefix);
+        StringX sxOldPath, sxNewPath;
+        if (prefix.IsEmpty()) {
+          sxOldPath = (LPCWSTR)m_eLabel;
+          sxNewPath = ptvinfo->item.pszText;
+        } else {
+          sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(m_eLabel);
+          sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(ptvinfo->item.pszText);
+        }
+        m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+        MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
+        UpdateLeafsGroup(pmulticmds, ti, prefix);
+        m_pDbx->Execute(pmulticmds);
       } // good group name (no GROUP_SEP)
     } // !IsLeaf
     // Mark database as modified
@@ -829,14 +839,16 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem)
 void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 {
   // We don't want nodes that have no children to remain
-  HTREEITEM p;
+  HTREEITEM parent;
   do {
-    p = GetParentItem(hItem);
+    StringX sxPath = (LPCWSTR)GetGroup(hItem);
+    parent = GetParentItem(hItem);
     DeleteItem(hItem);
-    if (ItemHasChildren(p))
+    if (ItemHasChildren(parent))
       break;
-    hItem = p;
-  } while (p != TVI_ROOT && p != NULL);
+    m_pDbx->m_mapGroupToTreeItem.erase(sxPath);
+    hItem = parent;
+  } while (parent != TVI_ROOT && parent != NULL);
 }
 
 // Return the full path leading up to a given item, but
@@ -900,20 +912,27 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
   if (!group.IsEmpty()) {
     CSecString path = group;
     CSecString s;
+    StringX path2root(L""), sxDot(L".");
     do {
       s = GetPathElem(path);
+      if (path2root.empty())
+        path2root = (LPCWSTR)s;
+      else
+        path2root += sxDot + StringX(s);
+
       if (!ExistsInTree(*this, ti, s, si)) {
         ti = InsertItem(s, ti, TVI_SORT);
         SetItemImage(ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
         bAlreadyExists = false;
       } else
         ti = si;
+        m_pDbx->m_mapGroupToTreeItem[path2root] = ti;
     } while (!path.IsEmpty());
   }
   return ti;
 }
 
-bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
+bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
   TV_INSERTSTRUCT  tvstruct;
   wchar_t sztBuffer[260];  // max visible
@@ -963,19 +982,16 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     CSecString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Update list field with new group
-    pci->SetGroup(path);
-    m_pDbx->UpdateListItemGroup(pdi->list_index, (CString)path);
+    pmulticmds->UpdateField(*pci, CItemData::GROUP, path);
+    m_pDbx->UpdateListItemGroup(pdi->list_index, (LPCWSTR)path);
 
     if (ci_title.Compare(ci_title0) != 0) {
-      pci->SetTitle(ci_title);
+      pmulticmds->UpdateField(*pci, CItemData::TITLE, ci_title);
     }
     // Update tree label
     SetItemText(hNewItem, MakeTreeDisplayString(*pci));
     // Update list field with new title
-    m_pDbx->UpdateListItemTitle(pdi->list_index, (CString)ci_title);
-
-    pci->SetStatus(CItemData::ES_MODIFIED);
-    AddChangedNodes(path);
+    m_pDbx->UpdateListItemTitle(pdi->list_index, (LPCWSTR)ci_title);
 
     // Mark database as modified!
     m_pDbx->SetChanged(DboxMain::Data);
@@ -985,7 +1001,7 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 
   HTREEITEM hFirstChild;
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
-    MoveItem(hFirstChild, hNewItem);  // recursively move all the items
+    MoveItem(pmulticmds, hFirstChild, hNewItem);  // recursively move all the items
   }
 
   // We are moving it - so now delete original from TreeCtrl
@@ -1059,39 +1075,45 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
     DisplayInfo *pdi_new = new DisplayInfo;
-    pdi_new->list_index = -1; // so that insertItem will set new values
+    pdi_new->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
     pdi_new->tree_item = 0;
     ci_temp.SetDisplayInfo(pdi_new);
 
+    Command *pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp);
+
     CItemData::EntryType temp_et = ci_temp.GetEntryType();
-
     switch (temp_et) {
-      case CItemData::ET_NORMAL:
-        break;
-      case CItemData::ET_ALIASBASE:
-      case CItemData::ET_SHORTCUTBASE:
-        // An alias or shortcut can only have one base
-        ci_temp.SetNormal();
-        break;
-      case CItemData::ET_ALIAS:
-        // Get base of original alias and make this copy point to it
-        m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
-        m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_ALIAS);
-        ci_temp.SetPassword(CSecString(L"[Alias]"));
-        break;
-      case CItemData::ET_SHORTCUT:
-        // Get base of original shortcut and make this copy point to it
-        m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
-        m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::ET_SHORTCUT);
-        ci_temp.SetPassword(CSecString(L"[Shortcut]"));
-        break;
-      default:
-        ASSERT(0);
+    case CItemData::ET_NORMAL:
+      break;
+    case CItemData::ET_ALIASBASE:
+    case CItemData::ET_SHORTCUTBASE:
+      // An alias or shortcut can only have one base
+      ci_temp.SetNormal();
+      break;
+    case CItemData::ET_ALIAS:
+      // Get base of original alias and make this copy point to it
+      m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
+      // replace AddEntry command with multicommand containing
+      // AddEntry and AddDependentEntryCommand
+      pcmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), pcmd,
+                                                    base_uuid, temp_uuid,
+                                                    CItemData::ET_ALIAS);
+      ci_temp.SetPassword(CSecString(L"[Alias]"));
+      break;
+    case CItemData::ET_SHORTCUT:
+      // Get base of original shortcut and make this copy point to it
+      m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
+      // replace AddEntry command with multicommand containing
+      // AddEntry and AddDependentEntryCommand
+      pcmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), pcmd,
+                                                    base_uuid, temp_uuid,
+                                                    CItemData::ET_SHORTCUT);
+      ci_temp.SetPassword(CSecString(L"[Shortcut]"));
+      break;
+    default:
+      ASSERT(0);
     }
-
-    ci_temp.SetStatus(CItemData::ES_ADDED);
-    m_pDbx->AddEntry(ci_temp);
-    AddChangedNodes(newPath);
+    m_pDbx->Execute(pcmd);
 
     // Mark database as modified!
     m_pDbx->SetChanged(DboxMain::Data);
@@ -1099,7 +1121,7 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
   return true;
 }
 
-BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
+BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
   // Is it ours?
@@ -1270,7 +1292,9 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
         parent != hitemDrop) {
       // drag operation allowed
       if (dropEffect == DROPEFFECT_MOVE) {
-        MoveItem(m_hitemDrag, hitemDrop);
+        MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
+        MoveItem(pmulticmds, m_hitemDrag, hitemDrop);
+        m_pDbx->Execute(pmulticmds);
       } else
       if (dropEffect == DROPEFFECT_COPY) {
         CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
@@ -1352,7 +1376,18 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
   if (m_cfdropped == m_tcddCPFID &&
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
       !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
-    m_pDbx->Delete();
+    MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
+    WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
+
+    m_pDbx->Delete(pmulticmds, pGUICmdIF);
+
+    if (pGUICmdIF->IsValid()) {
+      Command *pcmd = GUICommand::Create(m_pDbx->GetCore(), pGUICmdIF);
+      pmulticmds->Add(pcmd);
+    } else
+      delete pGUICmdIF;
+
+    m_pDbx->Execute(pmulticmds);
   }
 
   // wrong place to clean up imagelist?
@@ -2127,24 +2162,11 @@ bad_return:
   return retval;
 }
 
-void CPWTreeCtrl::AddChangedNodes(StringX path)
-{
-  StringX nextpath(path);
-  while (!nextpath.empty()) {
-    if (std::find(m_vnodes_modified.begin(), m_vnodes_modified.end(), nextpath) == m_vnodes_modified.end())
-      m_vnodes_modified.push_back(nextpath);
-    size_t i = nextpath.find_last_of(L".");
-    if (i == nextpath.npos)
-      i = 0;
-    nextpath = nextpath.substr(0, i);
-  }
-}
-
 HFONT CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf)
 {
   if (pci == NULL) {
     StringX path = GetGroup(hItem);
-    if (std::find(m_vnodes_modified.begin(), m_vnodes_modified.end(), path) != m_vnodes_modified.end()) {
+    if (m_pDbx->IsNodeModified(path)) {
       cf = PWFonts::MODIFIED_COLOR;
       return (HFONT)*m_fonts.m_pModifiedFont;
     } else

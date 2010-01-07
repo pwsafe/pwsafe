@@ -644,6 +644,7 @@ BOOL ThisMfcApp::InitInstance()
   SetRegistryKey(L"Password Safe");
 
   DboxMain dbox(NULL);
+  m_core.SetUIInterFace(&dbox);
   m_core.SetReadOnly(false);
   // Command line parsing MUST be done before the first PWSprefs lookup!
   // (since user/host/config file may be overriden!)

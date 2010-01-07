@@ -65,9 +65,11 @@ static char THIS_FILE[] = __FILE__;
 
 XFileXMLProcessor::XFileXMLProcessor(PWScore *pcore, 
                                      UUIDList *possible_aliases,
-                                     UUIDList *possible_shortcuts)
+                                     UUIDList *possible_shortcuts,
+                                     MultiCommands *p_multicmds)
   : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
-    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
+    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
+    m_pmulticmds(p_multicmds)
 {
 }
 
@@ -80,7 +82,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
                                 const bool &bImportPSWDsOnly,
                                 int &nITER, int &nRecordsWithUnknownFields, 
-                                UnknownFieldList &uhfl, std::vector<StringX> * pvgroups)
+                                UnknownFieldList &uhfl)
 {
   bool bEerrorOccurred = false;
   bool b_into_empty = false;
@@ -148,7 +150,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              m_bValidation ? NULL : m_possible_aliases, 
                              m_bValidation ? NULL : m_possible_shortcuts,
-                             pvgroups);
+                             m_pmulticmds);
   if (!m_bValidation) {
     b_into_empty = m_pXMLcore->GetNumEntries() == 0;
   }

@@ -37,6 +37,7 @@
 #include "../PWScore.h"
 #include "../PWSfileV3.h"
 #include "../VerifyFormat.h"
+#include "../Command.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -81,7 +82,7 @@ void XMLFileHandlers::SetVariables(PWScore *pcore, const bool &bValidation,
                                    const stringT &ImportedPrefix, const TCHAR &delimiter,
                                    const bool &bImportPSWDsOnly,
                                    UUIDList *possible_aliases, UUIDList *possible_shortcuts,
-                                   std::vector<StringX> * pvgroups)
+                                   MultiCommands *pmulticmds)
 {
   m_bValidation = bValidation;
   m_delimiter = delimiter;
@@ -89,8 +90,8 @@ void XMLFileHandlers::SetVariables(PWScore *pcore, const bool &bValidation,
   m_possible_aliases = possible_aliases;
   m_possible_shortcuts = possible_shortcuts;
   m_ImportedPrefix = ImportedPrefix;
-  m_pvgroups = pvgroups;
   m_bImportPSWDsOnly = bImportPSWDsOnly;
+  m_pmulticmds = pmulticmds;
 }
 
 bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
@@ -174,7 +175,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_bheader = false;
       break;
     case XLE_ENTRY:
-      ventries.push_back(cur_entry);
+      m_ventries.push_back(cur_entry);
       m_numEntries++;
       break;
     case XLE_DISPLAYEXPANDEDADDEDITDLG:
@@ -516,7 +517,11 @@ void XMLFileHandlers::AddEntries()
               GetPref(PWSprefs::MaintainDateTimeStamps);
   bool bIntoEmpty = m_pXMLcore->GetNumEntries() == 0;
 
-  for (entry_iter = ventries.begin(); entry_iter != ventries.end(); entry_iter++) {
+  Command *pcmd1 = UpdateGUICommand::Create(m_pXMLcore, Command::WN_UNDO,
+                                            Command::GUI_UNDO_IMPORT);
+  m_pmulticmds->Add(pcmd1);
+
+  for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
     pw_entry *cur_entry = *entry_iter;
     if (m_bImportPSWDsOnly) {
       ItemListIter iter = m_pXMLcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
@@ -529,12 +534,13 @@ void XMLFileHandlers::AddEntries()
         m_numEntries--;
       } else {
         CItemData *pci = &iter->second;
-        pci->UpdatePassword(cur_entry->password);
+        Command *pcmd = UpdatePasswordCommand::Create(m_pXMLcore, *pci,
+                                                      cur_entry->password);
+        pcmd->SetNoGUINotify();
+        m_pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
           pci->SetATime();
         }
-        m_pvgroups->push_back(cur_entry->group);
-        pci->SetStatus(CItemData::ES_MODIFIED);
       }
       delete cur_entry;
       continue;
@@ -691,13 +697,20 @@ void XMLFileHandlers::AddEntries()
     }
 
     if (!bIntoEmpty) {
-      m_pvgroups->push_back(newgroup);
       ci_temp.SetStatus(CItemData::ES_ADDED);
     }
-    m_pXMLcore->AddEntry(ci_temp);
+
+    if (m_pXMLcore->m_pfcnGUIUpdateEntry != NULL) {
+      m_pXMLcore->m_pfcnGUIUpdateEntry(ci_temp);
+    }
+    Command *pcmd = AddEntryCommand::Create(m_pXMLcore, ci_temp);
+    pcmd->SetNoGUINotify();
+    m_pmulticmds->Add(pcmd);
     delete cur_entry;
   }
-  ventries.clear();
+    Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore, Command::WN_REDO,
+                                              Command::GUI_REDO_IMPORT);
+  m_pmulticmds->Add(pcmd2);
 }
 
 void XMLFileHandlers::AddDBUnknownFieldsPreferences(UnknownFieldList &uhfl)

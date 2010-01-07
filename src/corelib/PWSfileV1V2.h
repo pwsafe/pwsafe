@@ -18,8 +18,8 @@
 class PWSfileV1V2 : public PWSfile
 {
 public:
-  static int CheckPassword(const StringX &filename,
-                           const StringX &passkey, FILE *a_fd = NULL);
+  static int CheckPasskey(const StringX &filename,
+                          const StringX &passkey, FILE *a_fd = NULL);
 
   PWSfileV1V2(const StringX &filename, RWmode mode, VERSION version);
   ~PWSfileV1V2();
