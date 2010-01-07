@@ -722,6 +722,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Command.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CoreImpExp.cpp"
 				>
 			</File>
@@ -943,6 +947,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Command.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CommandInterface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\coredefs.h"
+				>
+			</File>
+			<File
 				RelativePath=".\corelib.h"
 				>
 			</File>
@@ -984,6 +1000,10 @@
 			</File>
 			<File
 				RelativePath=".\Fish.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GUICommandInterface.h"
 				>
 			</File>
 			<File
@@ -1116,6 +1136,10 @@
 			</File>
 			<File
 				RelativePath=".\TwoFish.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UIinterface.h"
 				>
 			</File>
 			<File

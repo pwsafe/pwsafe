@@ -347,19 +347,16 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           // Password in alias format AND base entry exists
           // No need to check if base is an alias as already done in
           // call to PWScore::GetBaseEntry
-          uuid_array_t alias_uuid;
-          m_AEMD.pci->GetUUID(alias_uuid);
-          m_AEMD.pcore->AddDependentEntry(m_AEMD.base_uuid, alias_uuid, CItemData::ET_ALIAS);
           m_AEMD.pci->SetPassword(L"[Alias]");
           m_AEMD.pci->SetAlias();
-          ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
+           ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
           if (iter != m_AEMD.pDbx->End()) {
             const CItemData &cibase = iter->second;
             DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
             int nImage = m_AEMD.pDbx->GetEntryImage(cibase);
             m_AEMD.pDbx->SetEntryImage(pdi->list_index, nImage, true);
             m_AEMD.pDbx->SetEntryImage(pdi->tree_item, nImage, true);
-          }
+           }
         } else {
           m_AEMD.pci->SetPassword(m_AEMD.realpassword);
           m_AEMD.pci->SetNormal();

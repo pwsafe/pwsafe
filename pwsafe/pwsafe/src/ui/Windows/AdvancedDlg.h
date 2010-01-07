@@ -16,7 +16,13 @@
 #include "corelib/ItemData.h"
 #include <bitset>
 
-enum {ADV_COMPARE = 0, ADV_MERGE, ADV_EXPORT_TEXT, ADV_EXPORT_XML, ADV_FIND, ADV_LAST};
+enum {ADV_COMPARE = 0,
+      ADV_MERGE,
+      ADV_SYNCHRONIZE,
+      ADV_EXPORT_TEXT,
+      ADV_EXPORT_XML,
+      ADV_FIND,
+      ADV_LAST};
 
 class CAdvancedDlg : public CPWDialog
 {

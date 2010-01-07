@@ -64,7 +64,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& event )
                            AddEditPropSheet::ADD);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
-    m_core.AddEntry(item);
+    m_core.Execute(AddEntryCommand::Create(&m_core, item));
     Show(true);
   }
 }
@@ -108,7 +108,8 @@ void PasswordSafeFrame::Delete(const uuid_array_t &uuid)
     m_tree->Remove(uuid);
   ItemListIter iter = m_core.Find(uuid);
   if (iter != m_core.GetEntryEndIter())
-    m_core.RemoveEntryAt(iter);
+    m_core.Execute(DeleteEntryCommand::Create(&m_core,
+                                              m_core.GetEntry(iter)));
 }
 
 

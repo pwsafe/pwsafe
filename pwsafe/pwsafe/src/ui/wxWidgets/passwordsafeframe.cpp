@@ -236,6 +236,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
 void PasswordSafeFrame::Init()
 {
+  m_core.SetUIinterface(this);
 ////@begin PasswordSafeFrame member initialisation
   m_grid = NULL;
   m_tree = NULL;
@@ -808,7 +809,7 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& event )
   CSafeCombinationChange* window = new CSafeCombinationChange(this, m_core);
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
-    m_core.ChangePassword(window->GetNewpasswd().c_str());
+    m_core.ChangePasskey(window->GetNewpasswd().c_str());
   }
   window->Destroy();
 }
@@ -1227,6 +1228,37 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
   }
 }
+
+// Implementation of UIinterface methods
+
+void PasswordSafeFrame::DatabaseModified(bool)
+{
+  if (m_currentView == TREE) {
+    if (m_grid != NULL)
+      m_grid->OnPasswordListModified();
+  } else {
+#if 0
+    if (m_tree != NULL)
+      m_tree->???
+#endif
+  }
+}
+
+void PasswordSafeFrame::UpdateGUI(Command::GUI_Action ga,
+                                  uuid_array_t &entry_uuid,
+                                  CItemData::FieldType ft)
+{
+}
+
+void PasswordSafeFrame::GUIUpdateEntry(CItemData &ci)
+{
+}
+
+void PasswordSafeFrame::GUICommandInterface(Command::ExecuteFn When,
+                         PWSGUICmdIF *pGUICmdIF)
+{
+}
+
 
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we

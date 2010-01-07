@@ -21,7 +21,7 @@ LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp \
                   PWSfileV1V2.cpp PWSfileV3.cpp \
                   PWSFilters.cpp PWSprefs.cpp \
-                  PWSrand.cpp Report.cpp \
+                  Command.cpp PWSrand.cpp Report.cpp \
                   sha1.cpp sha256.cpp \
                   StringX.cpp SysInfo.cpp \
                   TwoFish.cpp UnknownField.cpp  \

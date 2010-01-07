@@ -10,11 +10,8 @@
 // DboxMain.h
 //-----------------------------------------------------------------------------
 
-#include "corelib/PWScore.h"
-#include "corelib/StringX.h"
-#include "corelib/sha256.h"
-#include "corelib/PwsPlatform.h"
 #include "PWSclipboard.h"
+
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
 #include "pocketpc/MyListCtrl.h"
@@ -23,6 +20,7 @@
 #include "resource2.h"  // Version, Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
 #endif
+
 #include "PWTreeCtrl.h"
 #include "PWListCtrl.h"
 #include "RUEList.h"
@@ -34,13 +32,24 @@
 #include "PWToolBar.h"
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
-#include "corelib/PWSFilters.h"
 #include "DDStatic.h"
 #include "MenuShortcuts.h"
+#include "WinGUICmdIF.h"
+
+#include "corelib/UIinterface.h"
+#include "corelib/PWScore.h"
+#include "corelib/StringX.h"
+#include "corelib/sha256.h"
+#include "corelib/PwsPlatform.h"
+#include "corelib/PWSFilters.h"
+#include "corelib/Command.h"
+
 #include "os/run.h"
 
 #include <vector>
 #include <map>
+#include <list>
+#include <stack>
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
 #define HDF_SORTUP             0x0400
@@ -152,7 +161,7 @@ enum {GCP_FIRST      = 0,   // At startup of PWS
       GCP_ADVANCED   = 4};  // OK, CANCEL, HELP buttons & ADVANCED checkbox
 
 //-----------------------------------------------------------------------------
-class DboxMain : public CDialog
+class DboxMain : public CDialog, public UIInterFace
 {
 #if defined(POCKET_PC)
   friend class CMyListCtrl;
@@ -208,26 +217,27 @@ public:
   BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
   void SelectFirstEntry();
 
-  // For insertItem and RefreshViews (mainly when refreshing views)
+  // For InsertItemIntoGUITreeList and RefreshViews (mainly when refreshing views)
   // Note: iBothViews = iListOnly + iTreeOnly
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
   void RefreshViews(const int iView = iBothViews);
 
-  int CheckPassword(const StringX &filename, const StringX &passkey)
-  {return m_core.CheckPassword(filename, passkey);}
+  int CheckPasskey(const StringX &filename, const StringX &passkey)
+  {return m_core.CheckPasskey(filename, passkey);}
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
   void SetChanged(ChangeType changed);
   void ChangeOkUpdate();
 
   // when Group, Title or User edited in tree
-  void UpdateListItem(const int lindex, const int type, const CString &newText);
-  void UpdateListItemGroup(const int lindex, const CString &newGroup)
+  void UpdateListItem(const int lindex, const int type, const StringX &newText);
+  void UpdateTreeItem(const HTREEITEM hItem, const StringX &newText);
+  void UpdateListItemGroup(const int lindex, const StringX &newGroup)
   {UpdateListItem(lindex, CItemData::GROUP, newGroup);}
-  void UpdateListItemTitle(const int lindex, const CString &newTitle)
+  void UpdateListItemTitle(const int lindex, const StringX &newTitle)
   {UpdateListItem(lindex, CItemData::TITLE, newTitle);}
-  void UpdateListItemUser(const int lindex, const CString &newUser)
+  void UpdateListItemUser(const int lindex, const StringX &newUser)
   {UpdateListItem(lindex, CItemData::USER, newUser);}
-  void UpdateListItemPassword(const int lindex, const CString &newPassword)
+  void UpdateListItemPassword(const int lindex, const StringX &newPassword)
   {UpdateListItem(lindex, CItemData::PASSWORD, newPassword);}
   void SetHeaderInfo();
   CString GetHeaderText(const int iType);
@@ -237,12 +247,12 @@ public:
   void SetLocalStrings();
   void PerformAutoType(); // 'public' version called by Tree/List
 
-  void UpdateToolBar(bool state);
+  void UpdateToolBarROStatus(bool state);
   void UpdateToolBarForSelectedItem(CItemData *pci);
   void SetToolBarPositions();
   void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
-  void ResumeOnListNotification() {m_core.ResumeOnListNotification();}
-  void SuspendOnListNotification() {m_core.SuspendOnListNotification();}
+  void ResumeOnDBNotification() {m_core.ResumeOnDBNotification();}
+  void SuspendOnDBNotification() {m_core.SuspendOnDBNotification();}
   bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
@@ -252,7 +262,6 @@ public:
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
                      const bool bDoAutotype);
   BOOL SendEmail(const CString &cs_email);
-  void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
   bool ExitRequested() const {return m_inExit;}
@@ -263,12 +272,11 @@ public:
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
   void AddEntries(CDDObList &in_oblist, const StringX &DropGroup);
-  int AddEntry(const CItemData &cinew);
   StringX GetUniqueTitle(const StringX &path, const StringX &title,
                            const StringX &user, const int IDS_MESSAGE)
   {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
-  void Delete(bool inRecursion = false);
+  void Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF, bool inRecursion = false);
   void SaveGroupDisplayState(); // call when tree expansion state changes
   bool CheckNewPassword(const StringX &group, const StringX &title,
                         const StringX &user, const StringX &password,
@@ -278,9 +286,6 @@ public:
   {m_core.GetAliasBaseUUID(entry_uuid, base_uuid);}
   void GetShortcutBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
   {m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);}
-  void AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid,
-                         const CItemData::EntryType type)
-  {m_core.AddDependentEntry(base_uuid, entry_uuid, type);}
 
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
@@ -296,6 +301,7 @@ public:
   int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected();
   StringX GetGroupName();
+  void UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath);
 
   void SetFilter(FilterPool selectedpool, CString selectedfiltername)
   {m_currentfilterpool = selectedpool; m_selectedfiltername = selectedfiltername;}
@@ -312,7 +318,14 @@ public:
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData * pci = NULL);
   void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  bool IsNodeModified(StringX &path)
+  {return m_core.IsNodeModified(path);}
 
+  // Following to simplify Command creation in child dialogs:
+  CommandInterface *GetCore() {return &m_core;}
+  
+  void Execute(Command *pcmd, PWScore *pcore = NULL);
+  void UpdateToolBarDoUndo();
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -340,6 +353,9 @@ public:
 
   // Used in Add & Edit & OptionsPasswordPolicy
   PWPolicy m_pwp;
+
+  // Mapping Group to Tree Item to save searching all the time!
+  std::map<StringX, HTREEITEM> m_mapGroupToTreeItem;
 
   // Process Special Shortcuts for Tree & List controls
   bool CheckPreTranslateDelete(MSG* pMsg);
@@ -405,7 +421,7 @@ protected:
   CCoolMenuManager m_menuManager;
   CMenuTipManager m_menuTipManager;
 
-  int insertItem(CItemData &itemData, int iIndex = -1, 
+  int InsertItemIntoGUITreeList(CItemData &itemData, int iIndex = -1, 
                  const bool bSort = true, const int iView = iBothViews);
   CItemData *getSelectedItem();
 
@@ -460,13 +476,16 @@ protected:
   int Open(void);
   int Open(const StringX &pszFilename, const bool bReadOnly);
   int Close(void);
-  int Merge(void);
-  int Merge(const StringX &pszFilename);
-  int MergeDependents(PWScore *pothercore, 
+
+  void DoOtherDBProcessing(UINT uiftn);
+  int Merge(const StringX &sx_Filename2);
+  int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
                       uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
                       const bool bTitleRenamed, CString &timeStr, 
                       const CItemData::EntryType et, std::vector<StringX> &vs_added);
-  int Compare(const StringX &cs_Filename1, const StringX &cs_Filename2);
+  int Compare(const StringX &sx_Filename1, const StringX &sx_Filename2);
+  int Synchronize(const StringX &sx_Filename2);
+  void ReportAdvancedOptions(CReport *prpt, const UINT uimsgftn);
 
   int BackupSafe(void);
   int RestoreSafe(void);
@@ -490,6 +509,9 @@ protected:
   bool PassesFiltering(CItemData &ci, const st_filters &filters);
   bool PassesPWHFiltering(CItemData *pci, const st_filters &filters);
   bool PassesPWPFiltering(CItemData *pci, const st_filters &filters);
+
+  void SaveGUIStatus();
+  void RestoreGUIStatus();
 
 #if !defined(POCKET_PC)
   afx_msg void OnTrayLockUnLock();
@@ -562,6 +584,7 @@ protected:
   afx_msg void OnClearMRU();
   afx_msg void OnMerge();
   afx_msg void OnCompare();
+  afx_msg void OnSynchronize();
   afx_msg void OnProperties();
   afx_msg void OnRestoreSafe();
   afx_msg void OnSaveAs();
@@ -606,13 +629,14 @@ protected:
   afx_msg void OnAutoType();
   afx_msg void OnGotoBaseEntry();
   afx_msg void OnEditBaseEntry();
+  afx_msg void OnUndo();
+  afx_msg void OnRedo();
   afx_msg void OnRunCommand();
   afx_msg void OnColumnPicker();
   afx_msg void OnResetColumns();
 #if defined(POCKET_PC)
   afx_msg void OnShowPassword();
 #else
-  afx_msg void OnChangeItemFocus(NMHDR * pNotifyStruct, LRESULT * result);
   afx_msg void OnDropFiles(HDROP hDrop);
 #endif
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
@@ -654,9 +678,15 @@ protected:
                           PWScore *pcore = 0, int adv_type = -1);
 
 private:
-  // static methods and variables
-  static void StopFind(LPARAM instance);
-  static void DatabaseModified(LPARAM instance, bool bChanged);
+  // UIInterFace implementations:
+  void DatabaseModified(bool bChanged);
+  void UpdateGUI(Command::GUI_Action ga,
+                 uuid_array_t &entry_uuid,
+                 CItemData::FieldType ft);
+  void GUIUpdateEntry(CItemData &ci);
+  void GUICommandInterface(Command::ExecuteFn when, PWSGUICmdIF *pGUICmdIF);
+
+  void RedoDelete(WinGUICmdIF *pGUICmdIF);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
@@ -719,6 +749,12 @@ private:
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
+
+  void RemoveFromGUI(CItemData &ci, LPARAM lparam = NULL);
+  void AddToGUI(CItemData &ci);
+  void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
+  void RefreshEntryPasswordInGUI(CItemData &ci);
+  void RebuildGUI();
   
   static const struct UICommandTableEntry {
     UINT ID;
@@ -799,6 +835,48 @@ private:
   // Do Autotype
   bool m_bInAT;
   std::bitset<3> m_btAT;  // Representing the Key, Ctrl Key and Shift key
+
+  // The following is for saving information over an execute/undo/redo
+  // Might need to add more e.g. if filter is active and which one?
+  struct st_SaveGUIInfo {
+    bool blSelectedValid, btSelectedValid, btGroupValid;
+    uuid_array_t lSelected; // List selected item
+    uuid_array_t tSelected; // Tree selected item
+    StringX sxGroupName;
+    std::vector<bool> vGroupDisplayState;
+
+    st_SaveGUIInfo()
+    : blSelectedValid(false), btSelectedValid(false), btGroupValid(false)
+    {
+      memset((void *)lSelected, 0, sizeof(uuid_array_t));
+      memset((void *)tSelected, 0, sizeof(uuid_array_t));
+    }
+
+    st_SaveGUIInfo(const st_SaveGUIInfo &that)
+    : blSelectedValid(that.blSelectedValid), btSelectedValid(that.btSelectedValid),
+      btGroupValid(that.btGroupValid), vGroupDisplayState(that.vGroupDisplayState),
+      sxGroupName(that.sxGroupName)
+    {
+      memcpy((void *)lSelected, (void *)that.lSelected, sizeof(uuid_array_t));
+      memcpy((void *)tSelected, (void *)that.tSelected, sizeof(uuid_array_t));
+    }
+
+    st_SaveGUIInfo &operator=(const st_SaveGUIInfo &that)
+    {
+      if (this != &that) {
+        blSelectedValid = that.blSelectedValid;
+        btSelectedValid = that.blSelectedValid;
+        btGroupValid = that.btGroupValid;
+        memcpy((void *)lSelected, (void *)that.lSelected, sizeof(uuid_array_t));
+        memcpy((void *)tSelected, (void *)that.tSelected, sizeof(uuid_array_t));
+        sxGroupName = that.sxGroupName;
+        vGroupDisplayState = that.vGroupDisplayState;
+      }
+      return *this;
+    }
+  };
+
+  std::stack<st_SaveGUIInfo> m_stkSaveGUIInfo;
 };
 
 inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)
@@ -819,6 +897,8 @@ struct DisplayInfo : public DisplayInfoBase {
 
   DisplayInfo() {}
   virtual ~DisplayInfo() {}
+  virtual DisplayInfo *clone() const // virtual c'tor idiom
+  { return new DisplayInfo(*this); }
  
   DisplayInfo(const DisplayInfo &that)
   : list_index(that.list_index), tree_item(that.tree_item)
@@ -826,7 +906,10 @@ struct DisplayInfo : public DisplayInfoBase {
 
   DisplayInfo &operator=(const DisplayInfo &that)
   {
-    list_index = that.list_index;
-    tree_item = that.tree_item;
+    if (this != &that) {
+      list_index = that.list_index;
+      tree_item = that.tree_item;
+    }
+    return *this;
   }
 };

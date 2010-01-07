@@ -82,9 +82,9 @@ static wchar_t *wcType[END_FAULTS] = {
                 L"SIGNAL_TERMINATION"};
 
 struct st_invp {
-  const wchar_t* expression;
-  const wchar_t* function;
-  const wchar_t* file;
+  const wchar_t *expression;
+  const wchar_t *function;
+  const wchar_t *file;
   unsigned int line;
 };
 

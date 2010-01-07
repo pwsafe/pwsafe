@@ -94,9 +94,11 @@ static void WFile_free(void *p)
 
 EFileXMLProcessor::EFileXMLProcessor(PWScore *pcore,
                                      UUIDList *possible_aliases,
-                                     UUIDList *possible_shortcuts)
+                                     UUIDList *possible_shortcuts,
+                                     MultiCommands *p_multicmds)
   : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
-    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
+    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
+    m_pmulticmds(p_multicmds)
 {
   pSecMM = new ESecMemMgr;
   pFileHandler = new EFileHandlers;
@@ -123,8 +125,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
                                 const bool &bImportPSWDsOnly,
                                 int &nITER,
                                 int &nRecordsWithUnknownFields,
-                                UnknownFieldList &uhfl,
-                                std::vector<StringX> * pvgroups)
+                                UnknownFieldList &uhfl)
 {
   // Open the file
   std::FILE *fd = NULL;
@@ -148,7 +149,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              bvalidation ? NULL : m_possible_aliases, 
                              bvalidation ? NULL : m_possible_shortcuts,
-                             pvgroups);
+                             m_pmulticmds);
 
   // Tell Expat about our memory suites
   XML_Memory_Handling_Suite ms = {WFile_malloc, WFile_realloc, WFile_free};

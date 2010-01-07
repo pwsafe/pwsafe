@@ -63,11 +63,13 @@ const CString CPWToolBar::m_csMainButtons[] = {
   L"expandall", L"collapseall", L"~",
   L"options", L"~",
   L"help",
-  // Optional (non-default) buttons next
+  // Optional (non-default) buttons next - MUST be in the same order
+  // as the optional IDs in m_MainToolBarIDs
   L"exporttext", L"exportxml", L"importtext", L"importxml", 
-  L"saveas", L"compare", L"merge", L"listtree", L"find", L"viewreports", 
-  L"applyfilters", L"setfilters", L"managefilters", L"passwordsubset",
-  L"browse+autotype", L"runcommand", L"sendemail"
+  L"saveas", L"compare", L"merge", L"synchronize", L"undo", L"redo",
+  L"passwordsubset", L"browse+autotype", L"runcommand", L"sendemail",
+  L"listtree", L"find", L"viewreports", 
+  L"applyfilters", L"setfilters", L"managefilters"
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -104,16 +106,19 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_MENUITEM_SAVEAS,
   ID_MENUITEM_COMPARE,
   ID_MENUITEM_MERGE,
+  ID_MENUITEM_SYNCHRONIZE,
+  ID_MENUITEM_UNDO,
+  ID_MENUITEM_REDO,
+  ID_MENUITEM_PASSWORDSUBSET,
+  ID_MENUITEM_BROWSEURLPLUS,
+  ID_MENUITEM_RUNCOMMAND,
+  ID_MENUITEM_SENDEMAIL,
   ID_TOOLBUTTON_LISTTREE,
   ID_MENUITEM_SHOWFINDTOOLBAR,
   ID_TOOLBUTTON_VIEWREPORTS,
   ID_MENUITEM_APPLYFILTER,
   ID_MENUITEM_EDITFILTER,
-  ID_MENUITEM_MANAGEFILTERS,
-  ID_MENUITEM_PASSWORDSUBSET,
-  ID_MENUITEM_BROWSEURLPLUS,
-  ID_MENUITEM_RUNCOMMAND,
-  ID_MENUITEM_SENDEMAIL
+  ID_MENUITEM_MANAGEFILTERS
 };
 
 // Additional Control IDs not on ToolBar
@@ -129,6 +134,7 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_REPORT_IMPORTTEXT,
   ID_MENUITEM_REPORT_IMPORTXML,
   ID_MENUITEM_REPORT_MERGE,
+  ID_MENUITEM_REPORT_SYNCHRONIZE,
   ID_MENUITEM_REPORT_VALIDATE,
   ID_MENUITEM_CHANGECOMBO,
   ID_MENUITEM_BACKUPSAFE,
@@ -174,16 +180,19 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_SAVEAS_CLASSIC,
   IDB_COMPARE_CLASSIC,
   IDB_MERGE_CLASSIC,
+  IDB_SYNCHRONIZE_CLASSIC,
+  IDB_UNDO_CLASSIC,
+  IDB_REDO_CLASSIC,
+  IDB_PASSWORDCHARS_CLASSIC,
+  IDB_BROWSEURLPLUS_CLASSIC,
+  IDB_RUNCMD_CLASSIC,
+  IDB_SENDEMAIL_CLASSIC,
   IDB_LISTTREE_CLASSIC,
   IDB_FIND_CLASSIC,
   IDB_VIEWREPORTS_CLASSIC,
   IDB_APPLYFILTERS_CLASSIC,
   IDB_SETFILTERS_CLASSIC,
-  IDB_MANAGEFILTERS_CLASSIC,
-  IDB_PASSWORDCHARS_CLASSIC,
-  IDB_BROWSEURLPLUS_CLASSIC,
-  IDB_RUNCMD_CLASSIC,
-  IDB_SENDEMAIL_CLASSIC
+  IDB_MANAGEFILTERS_CLASSIC
 };
 
 // Additional bitmaps not on ToolBar
@@ -199,6 +208,7 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_IMPORTTEXT_CLASSIC,   // For report of the same name
   IDB_IMPORTXML_CLASSIC,    // For report of the same name
   IDB_MERGE_CLASSIC,        // For report of the same name
+  IDB_SYNCHRONIZE_CLASSIC,  // For report of the same name
   IDB_VALIDATE_CLASSIC,     // For report of the same name
   IDB_CHANGECOMBO_CLASSIC,
   IDB_BACKUPSAFE_CLASSIC,
@@ -244,16 +254,19 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_SAVEAS_NEW,
   IDB_COMPARE_NEW,
   IDB_MERGE_NEW,
+  IDB_SYNCHRONIZE_NEW,
+  IDB_UNDO_NEW,
+  IDB_REDO_NEW,
+  IDB_PASSWORDCHARS_NEW,
+  IDB_BROWSEURLPLUS_NEW,
+  IDB_RUNCMD_NEW,
+  IDB_SENDEMAIL_NEW,
   IDB_LISTTREE_NEW,
   IDB_FIND_NEW,
   IDB_VIEWREPORTS_NEW,
   IDB_APPLYFILTERS_NEW,
   IDB_SETFILTERS_NEW,
-  IDB_MANAGEFILTERS_NEW,
-  IDB_PASSWORDCHARS_NEW,
-  IDB_BROWSEURLPLUS_NEW,
-  IDB_RUNCMD_NEW,
-  IDB_SENDEMAIL_NEW
+  IDB_MANAGEFILTERS_NEW
 };
 
 const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
@@ -283,16 +296,19 @@ const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
   IDB_SAVEAS_NEW_D,
   IDB_COMPARE_NEW_D,
   IDB_MERGE_NEW_D,
+  IDB_SYNCHRONIZE_NEW_D,
+  IDB_UNDO_NEW_D,
+  IDB_REDO_NEW_D,
+  IDB_PASSWORDCHARS_NEW_D,
+  IDB_BROWSEURLPLUS_NEW_D,
+  IDB_RUNCMD_NEW_D,
+  IDB_SENDEMAIL_NEW_D,
   IDB_LISTTREE_NEW_D,
   IDB_FIND_NEW_D,
   IDB_VIEWREPORTS_NEW_D,
   IDB_APPLYFILTERS_NEW_D,
   IDB_SETFILTERS_NEW_D,
-  IDB_MANAGEFILTERS_NEW_D,
-  IDB_PASSWORDCHARS_NEW_D,
-  IDB_BROWSEURLPLUS_NEW_D,
-  IDB_RUNCMD_NEW_D,
-  IDB_SENDEMAIL_NEW_D
+  IDB_MANAGEFILTERS_NEW_D
 };
 
 // Additional bitmaps not on ToolBar
@@ -308,6 +324,7 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_IMPORTTEXT_NEW,     // For report of the same name
   IDB_IMPORTXML_NEW,      // For report of the same name
   IDB_MERGE_NEW,          // For report of the same name
+  IDB_SYNCHRONIZE_NEW,    // For report of the same name
   IDB_VALIDATE_NEW,       // For report of the same name
   IDB_CHANGECOMBO_NEW,
   IDB_BACKUPSAFE_NEW,
@@ -339,6 +356,7 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_IMPORTTEXT_NEW_D,    // For report of the same name
   IDB_IMPORTXML_NEW_D,     // For report of the same name
   IDB_MERGE_NEW_D,         // For report of the same name
+  IDB_SYNCHRONIZE_NEW_D,   // For report of the same name
   IDB_VALIDATE_NEW_D,      // For report of the same name
   IDB_CHANGECOMBO_NEW_D,
   IDB_BACKUPSAFE_NEW_D,

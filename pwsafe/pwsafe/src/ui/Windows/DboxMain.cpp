@@ -176,11 +176,7 @@ DboxMain::DboxMain(CWnd* pParent)
 
 DboxMain::~DboxMain()
 {
-  m_core.UnRegisterOnListModified();
-
-  // Vista or later
-  if (m_WindowsMajorVersion >= 6)
-    m_core.UnRegisterOnDBModified();
+  m_core.SetUIInterFace(NULL);
 
   MapKeyNameIDIter iter;
   for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
@@ -357,6 +353,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_IMPORT_XML, OnImportXML)
   ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
   ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
+  ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnSynchronize)
   ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
 
   // Edit Menu
@@ -385,6 +382,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_GOTOBASEENTRY, OnGotoBaseEntry)
   ON_COMMAND(ID_MENUITEM_RUNCOMMAND, OnRunCommand)
   ON_COMMAND(ID_MENUITEM_EDITBASEENTRY, OnEditBaseEntry)
+  ON_COMMAND(ID_MENUITEM_UNDO, OnUndo)
+  ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -401,6 +400,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_CHANGEPSWDFONT, OnChangePswdFont)
   ON_COMMAND(ID_MENUITEM_VKEYBOARDFONT, OnChangeVKFont)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReports)
+  ON_COMMAND_RANGE(ID_MENUITEM_REPORT_SYNCHRONIZE, ID_MENUITEM_REPORT_SYNCHRONIZE, OnViewReports)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
   ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
@@ -469,10 +469,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 #else
   ON_WM_DROPFILES()
   ON_WM_SIZING()
-  ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnChangeItemFocus)
-  ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnChangeItemFocus)
-  ON_NOTIFY(NM_SETFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
-  ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
   ON_COMMAND(ID_MENUITEM_TRAYLOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_TRAYUNLOCK, OnTrayLockUnLock)
   ON_COMMAND(ID_MENUITEM_CLEARRECENTENTRIES, OnTrayClearRecentEntries)
@@ -555,6 +551,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_IMPORT_KEEPASS, true, false, true, false},
   {ID_MENUITEM_MERGE, true, false, true, false},
   {ID_MENUITEM_COMPARE, true, true, false, false},
+  {ID_MENUITEM_SYNCHRONIZE, true, false, false, false},
   {ID_MENUITEM_PROPERTIES, true, true, true, false},
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu
@@ -586,6 +583,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_GOTOBASEENTRY, true, true, false, false},
   {ID_MENUITEM_CREATESHORTCUT, true, false, false, false},
   {ID_MENUITEM_EDITBASEENTRY, true, true, false, false},
+  {ID_MENUITEM_UNDO, true, false, true, false},
+  {ID_MENUITEM_REDO, true, false, true, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -605,6 +604,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, true},
   {ID_MENUITEM_REPORT_MERGE, true, true, true, true},
   {ID_MENUITEM_REPORT_VALIDATE, true, true, true, true},
+  {ID_MENUITEM_REPORT_SYNCHRONIZE, true, true, true, true},
   {ID_MENUITEM_EDITFILTER, true, true, false, false},
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
@@ -1210,6 +1210,107 @@ void DboxMain::OnMove(int x, int y)
   }
 }
 
+void DboxMain::Execute(Command *pcmd, PWScore *pcore)
+{
+  if (pcore == NULL)
+    pcore = &m_core;
+  SaveGUIStatus();
+  pcore->Execute(pcmd);
+  UpdateToolBarDoUndo();
+}
+
+void DboxMain::OnUndo()
+{
+  m_core.Undo();
+  RestoreGUIStatus();
+
+  UpdateToolBarDoUndo();
+}
+
+void DboxMain::OnRedo()
+{
+  SaveGUIStatus();
+  m_core.Redo();
+
+  UpdateToolBarDoUndo();
+}
+
+void DboxMain::SaveGUIStatus()
+{
+  st_SaveGUIInfo SaveGUIInfo;
+  CItemData *pci_list(NULL), *pci_tree(NULL);
+
+  // Note: we try and keep the same entry selected when the users
+  // switches between List & Tree views.
+  // But we can't if the user has selected a Group in the Tree view
+
+  // Note: Must do this using the entry's UUID as the POSITION & 
+  // HTREEITEM values may be different when we come to use it.
+  POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+  if (pos != NULL) {
+    pci_list = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+    if (pci_list != NULL) {
+      pci_list->GetUUID(SaveGUIInfo.lSelected);
+      SaveGUIInfo.blSelectedValid = true;
+    }
+  }
+
+  HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+  if (hi != NULL) {
+    pci_tree = (CItemData *)m_ctlItemTree.GetItemData(hi);
+    if (pci_tree != pci_list) {
+      if (pci_tree != NULL) {
+        pci_tree->GetUUID(SaveGUIInfo.tSelected);
+        SaveGUIInfo.btSelectedValid = true;
+      } else {
+        StringX s(L"");
+        if (hi != NULL)
+          s = m_ctlItemTree.GetItemText(hi);
+
+        while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
+          s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(L".") + s;
+        }
+        SaveGUIInfo.sxGroupName = s;
+      }
+    }
+  }
+  SaveGUIInfo.vGroupDisplayState = GetGroupDisplayState();
+
+  m_stkSaveGUIInfo.push(SaveGUIInfo);
+}
+
+void DboxMain::RestoreGUIStatus()
+{
+  ItemListIter iter;
+  DisplayInfo *pdi;
+  st_SaveGUIInfo &SaveGUIInfo = m_stkSaveGUIInfo.top();
+
+  if (SaveGUIInfo.blSelectedValid) {
+    iter = Find(SaveGUIInfo.lSelected);
+    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+    m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
+    m_ctlItemTree.SelectItem(pdi->tree_item);
+  }
+
+  if (SaveGUIInfo.btSelectedValid) {
+    iter = Find(SaveGUIInfo.tSelected);
+    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+    m_ctlItemTree.SelectItem(pdi->tree_item);
+  }
+
+  if (SaveGUIInfo.btGroupValid) {
+    std::map<StringX, HTREEITEM>::iterator iter;
+    iter = m_mapGroupToTreeItem.find(SaveGUIInfo.sxGroupName);
+    if (iter != m_mapGroupToTreeItem.end()) {
+      m_ctlItemTree.SelectItem(iter->second);
+    }
+  }
+
+  SetGroupDisplayState(SaveGUIInfo.vGroupDisplayState);
+
+  m_stkSaveGUIInfo.pop();
+}
+
 void DboxMain::FixListIndexes()
 {
   int N = m_ctlItemList.GetItemCount();
@@ -1448,7 +1549,7 @@ void DboxMain::ChangeOkUpdate()
     return;
 
 #if defined(POCKET_PC)
-  CMenu *pmenu = m_pwndMenu;
+  CMenu *pmenu = m_wndMenu;
 #else
   CMenu *pmenu = GetMenu();
 #endif
@@ -1616,7 +1717,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         // user can't change R-O status
         break;
     }
-    UpdateToolBar(bIsReadOnly);
+    UpdateToolBarROStatus(bIsReadOnly);
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
     if (!locker.empty()) {
@@ -1653,12 +1754,12 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       switch (user_choice) {
         case 1:
           pcore->SetReadOnly(true);
-          UpdateToolBar(true);
+          UpdateToolBarROStatus(true);
           retval = PWScore::SUCCESS;
           break;
         case 2:
           pcore->SetReadOnly(false); // Caveat Emptor!
-          UpdateToolBar(false);
+          UpdateToolBarROStatus(false);
           retval = PWScore::SUCCESS;
           break;
         case 3:
@@ -2322,7 +2423,6 @@ BOOL DboxMain::OnQueryEndSession()
     return TRUE;
 
   bool autoSave = true; // false if user saved or decided not to 
-  BOOL retval = TRUE;
 
   if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     CGeneralMsgBox gmb;
@@ -2338,12 +2438,10 @@ BOOL DboxMain::OnQueryEndSession()
         // Save the changes and say OK to shutdown\restart\logoff
         Save();
         autoSave = false;
-        retval = TRUE;
         break;
       case IDNO:
         // Don't save the changes but say OK to shutdown\restart\logoff
         autoSave = false;
-        retval = TRUE;
         break;
     }
   } // database was changed
@@ -2353,11 +2451,10 @@ BOOL DboxMain::OnQueryEndSession()
     if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
          m_core.GetNumEntries() > 0) {
         Save();
-        return TRUE;
     }
   }
 
-  return retval;
+  return TRUE;
 }
 
 void DboxMain::OnEndSession(BOOL bEnding)
@@ -2872,6 +2969,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       if (ID_MENUITEM_RCREATESHORTCUT && !m_ctlItemTree.IsDropOnMe())
         iEnable = FALSE;      
       break;
+    // Undo/Redo
+    case ID_MENUITEM_UNDO:
+      iEnable = m_core.AnyToUndo() ? TRUE : FALSE;
+      break;
+    case ID_MENUITEM_REDO:
+      iEnable = m_core.AnyToRedo() ? TRUE : FALSE;
+      break;
     // Items not allowed in List View
     case ID_MENUITEM_ADDGROUP:
     case ID_MENUITEM_RENAMEENTRY:
@@ -2892,6 +2996,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_REPORT_IMPORTTEXT:
     case ID_MENUITEM_REPORT_IMPORTXML:
     case ID_MENUITEM_REPORT_MERGE:
+    case ID_MENUITEM_REPORT_SYNCHRONIZE:
     case ID_MENUITEM_REPORT_VALIDATE:
       iEnable = OnUpdateViewReports(nID);
       break;

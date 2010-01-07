@@ -317,6 +317,15 @@
 #define IDB_DRAGEMAILX_NEW              475
 #define IDB_DRAGEMAIL_CLASSIC           476
 #define IDB_DRAGEMAILX_CLASSIC          477
+#define IDB_UNDO_CLASSIC                478
+#define IDB_REDO_CLASSIC                479
+#define IDB_UNDO_NEW                    480
+#define IDB_REDO_NEW                    481
+#define IDB_UNDO_NEW_D                  482
+#define IDB_REDO_NEW_D                  483
+#define IDB_SYNCHRONIZE_CLASSIC         484
+#define IDB_SYNCHRONIZE_NEW             485
+#define IDB_SYNCHRONIZE_NEW_D           486
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -475,7 +484,7 @@
 #define IDC_RESETPWHISTORYOFF           1184
 #define IDC_RESETPWHISTORYON            1185
 #define IDC_SETMAXPWHISTORY             1186
-#define IDC_APPLYPWHCHANGESNOW          1187
+#define IDC_STATIC_UPDATEPWHISTORY      1187
 #define IDC_REGDEL_CB                   1188
 #define IDC_SHOWNOTES                   1189
 #define IDC_DEFNOTESSHOWINEDIT          1190
