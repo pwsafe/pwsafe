@@ -21,6 +21,8 @@ workstation lock and terminal services running.
 is set or 'mailto:' used in URL field.
 [2912177] Restore 'Add Group' menu item to context menu when clicking
 on an entry and allow new group to remain unchanged.
+[2818401] AutoType backspace field ('\b') now honoured in both "AutoType" and
+"Browse To + AutoType" consistently.
 [2431438] When unable to find a previous database via the recently opened databases
 on the File menu and the user is given the option to open a different database or
 create a new one.

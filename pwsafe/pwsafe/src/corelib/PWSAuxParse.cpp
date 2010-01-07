@@ -180,13 +180,13 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
       }
     } else
     if (st_rctoken.sxname == _T("n") || st_rctoken.sxname == _T("notes")) {
-      StringX sxnotes = pci->GetNotes();
+      StringX sx_notes = pci->GetNotes();
 
       if (st_rctoken.index == 0) {
-        sxretval += sxnotes;
+        sxretval += sx_notes;
       } else {
         std::vector<StringX> vsxnotes_lines;
-        ParseNotes(sxnotes, vsxnotes_lines);
+        ParseNotes(sx_notes, vsxnotes_lines);
         // If line there - use it; otherwise ignore it
         if (st_rctoken.index > 0 && st_rctoken.index <= (int)vsxnotes_lines.size()) {
           sxretval += vsxnotes_lines[st_rctoken.index - 1];
@@ -212,37 +212,42 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   return sxretval;
 }
 
-StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
-                                       const StringX &sxgroup,
-                                       const StringX &sxtitle,
-                                       const StringX &sxuser,
-                                       const StringX &sxpwd,
-                                       const StringX &sxnotes)
+StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
+                                       const StringX &sx_group,
+                                       const StringX &sx_title,
+                                       const StringX &sx_user,
+                                       const StringX &sx_pwd,
+                                       const StringX &sx_notes,
+                                       std::vector<size_t> &vactionverboffsets)
 {
+  StringX sxtmp(_T(""));
+  StringX sxNotes(sx_notes);
+  TCHAR curChar;
+  StringX sx_autotype(sx_in_autotype);
+  StringX::size_type st_index;
+  std::vector<StringX> vsxnotes_lines;
+
+  vactionverboffsets.clear();
+
   // If empty, try the database default
-  StringX sxAutoCmd(sxInAutoCmd);
-  if (sxAutoCmd.empty()) {
-    sxAutoCmd = PWSprefs::GetInstance()->
+  if (sx_autotype.empty()) {
+    sx_autotype = PWSprefs::GetInstance()->
               GetPref(PWSprefs::DefaultAutotypeString);
 
     // If still empty, take this default
-    if (sxAutoCmd.empty()) {
+    if (sx_autotype.empty()) {
       // checking for user and password for default settings
-      if (!sxpwd.empty()){
-        if (!sxuser.empty())
-          sxAutoCmd = DEFAULT_AUTOTYPE;
+      if (!sx_pwd.empty()){
+        if (!sx_user.empty())
+          sx_autotype = DEFAULT_AUTOTYPE;
         else
-          sxAutoCmd = _T("\\p\\n");
+          sx_autotype = _T("\\p\\n");
       }
     }
   }
 
-  StringX sxNotes(sxnotes);
-  std::vector<StringX> vsxnotes_lines;
-  StringX::size_type st_index;
-
-    // No recursive substitution (e.g. \p or \u), although '\t' will be replaced by a tab
-  if (!sxnotes.empty()) {
+  // No recursive substitution (e.g. \p or \u), although '\t' will be replaced by a tab
+  if (!sx_notes.empty()) {
     // Use \n and \r to tokenise this line
     StringX::size_type st_start(0), st_end(0);
     const StringX sxdelim = _T("\r\n");
@@ -282,16 +287,14 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
     }
   }
 
-  StringX sxtmp(_T(""));
-  TCHAR curChar;
-  const int N = sxAutoCmd.length();
+  const int N = sx_autotype.length();
 
   for (int n = 0; n < N; n++){
-    curChar = sxAutoCmd[n];
+    curChar = sx_autotype[n];
     if (curChar == TCHAR('\\')) {
       n++;
       if (n < N)
-        curChar = sxAutoCmd[n];
+        curChar = sx_autotype[n];
 
       switch (curChar){
         case TCHAR('\\'):
@@ -305,16 +308,16 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
           sxtmp += TCHAR('\t');
           break;
         case TCHAR('g'):
-          sxtmp += sxgroup;
+          sxtmp += sx_group;
           break;
         case TCHAR('i'):
-          sxtmp += sxtitle;
+          sxtmp += sx_title;
           break;
         case TCHAR('u'):
-          sxtmp += sxuser;
+          sxtmp += sx_user;
           break;
         case TCHAR('p'):
-          sxtmp += sxpwd;
+          sxtmp += sx_pwd;
           break;
         case TCHAR('o'):
         {
@@ -326,16 +329,17 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
           int line_number(0);
           int gNumIts(0);
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(sxAutoCmd[n])) {
+            if (_istdigit(sx_autotype[n])) {
               line_number *= 10;
-              line_number += (sxAutoCmd[n] - TCHAR('0'));
+              line_number += (sx_autotype[n] - TCHAR('0'));
             } else
               break; // for loop
           }
           if (line_number == 0) {
             // Send the lot
-            sxtmp += sxnotes;
-          } else if (line_number <= (int)vsxnotes_lines.size()) {
+            sxtmp += sx_notes;
+          } else
+          if (line_number <= (int)vsxnotes_lines.size()) {
             // User specifies a too big a line number - ignore the lot
             sxtmp += vsxnotes_lines[line_number - 1];
           }
@@ -344,27 +348,32 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sxInAutoCmd,
           n--;
           break; // case 'o'
         }
-        case TCHAR('d'):
-        case TCHAR('w'):
-        case TCHAR('W'):
-        case TCHAR('z'):
-          // Ignore delay, wait & force old method - treat it as just a string!
+
+        // Action Verbs:
+        // These are the only ones processed specially by the UI as they involve
+        // actions it performs whilst doing the key sending.
+        // Copy them to output string unchanged.
+        case TCHAR('b'):  // backspace!
+        case TCHAR('d'):  // Delay
+        case TCHAR('w'):  // Wait milli-seconds
+        case TCHAR('W'):  // Wait seconds
+        case TCHAR('z'):  // Use older method
+          vactionverboffsets.push_back(sxtmp.length());
           sxtmp += _T("\\");
           sxtmp += curChar;
-          break; // case 'd', 'w', 'W' & 'z'
-        case TCHAR('b'): // backspace!
-          sxtmp += TCHAR('\b');
-          break;
-        // Ignore explicit control characters
+          break; // case 'b', 'd', 'w', 'W' & 'z'
+
+        // Also copy explicit control characters to output string unchanged.
         case TCHAR('a'): // bell (can't hear it during testing!)
         case TCHAR('v'): // vertical tab
         case TCHAR('f'): // form feed
         case TCHAR('e'): // escape
         case TCHAR('x'): // hex digits (\xNN)
-          break;
-        // Ignore any others!
+        // and any others we have forgotten!
         // '\cC', '\uXXXX', '\OOO', '\<any other charatcer not recognised above>'
         default:
+          sxtmp += L'\\';
+          sxtmp += curChar;
           break;
       }
     } else

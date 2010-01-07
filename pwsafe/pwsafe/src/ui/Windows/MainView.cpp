@@ -2160,7 +2160,8 @@ void DboxMain::UpdateSystemTray(const STATE s)
 }
 
 BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
-                             const bool bDoAutotype)
+                             const std::vector<size_t> &vactionverboffsets,
+                             const bool &bDoAutotype)
 {
   CString theURL(csURL);
 
@@ -2228,13 +2229,16 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
   if (no_autotype > 0) {
     m_bDoAutoType = false;
     m_AutoType.clear();
+    m_vactionverboffsets.clear();
   } else {
     // Either do it because they pressed the right menu/shortcut
     // or they had specified Do Auotype flag [autotype]
     m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
     m_AutoType = m_bDoAutoType ? sxAutotype : L"";
+    if (m_bDoAutoType)
+      m_vactionverboffsets = vactionverboffsets;
   }
-  bool rc = m_runner.issuecmd(sxFile, sxParameters, m_AutoType);
+  bool rc = m_runner.issuecmd(sxFile, sxParameters, !m_AutoType.empty());
 
   if (!rc) {
     CGeneralMsgBox gmb;
@@ -2275,10 +2279,10 @@ BOOL DboxMain::SendEmail(const CString &cs_Email)
    *   user@example.com?subject=Message Title&body=Message Content"
    */
 
-  StringX sx_Email(L"mailto:"), sxParameters(L""), sxAutoType(L"");
+  StringX sx_Email(L"mailto:"), sxParameters(L"");
   sx_Email += cs_Email;
   Trim(sx_Email);
-  bool rc = m_runner.issuecmd(sx_Email, sxParameters, sxAutoType);
+  bool rc = m_runner.issuecmd(sx_Email, sxParameters, false);
 
   if (!rc) {
     CGeneralMsgBox gmb;
@@ -3531,10 +3535,10 @@ void DboxMain::OnToolBarFindReport()
   gmb.SetTitle(IDS_RPTFIND);
   gmb.SetMsg(IDS_REPORTCREATED);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
-  gmb.AddButton(1, IDS_OK, TRUE, TRUE);
-  gmb.AddButton(2, IDS_VIEWREPORT);
+  gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+  gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
   INT_PTR msg_rc = gmb.DoModal();
-  if (msg_rc == 2)
+  if (msg_rc == IDS_VIEWREPORT)
     ViewReport(rpt);
 
   m_FindToolBar.SetStatus(cs_temp);
