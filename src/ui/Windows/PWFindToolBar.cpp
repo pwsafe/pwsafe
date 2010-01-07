@@ -531,6 +531,12 @@ void CPWFindToolBar::Find()
 
 void CPWFindToolBar::ShowFindAdvanced()
 {
+  const CItemData::FieldBits old_bsFields(m_bsFields);
+  const CString old_subgroup_name(m_subgroup_name);
+  const int old_subgroup_set(m_subgroup_set);
+  const int old_subgroup_object(m_subgroup_object);
+  const int old_subgroup_function(m_subgroup_function);
+
   CAdvancedDlg Adv(this, ADV_FIND, m_bsFields, m_subgroup_name, m_subgroup_set,
     m_subgroup_object, m_subgroup_function);
 
@@ -544,6 +550,21 @@ void CPWFindToolBar::ShowFindAdvanced()
       m_subgroup_name = Adv.m_subgroup_name;
       m_subgroup_object = Adv.m_subgroup_object;
       m_subgroup_function = Adv.m_subgroup_function;
+    }
+ 
+    // Check if anything changed
+    if (old_bsFields != m_bsFields ||
+        old_subgroup_set != m_subgroup_set ||
+        (old_subgroup_set == m_subgroup_set && old_subgroup_set == BST_CHECKED &&
+         (old_subgroup_name != m_subgroup_name ||
+          old_subgroup_object != m_subgroup_object ||
+          old_subgroup_function != m_subgroup_function))) {
+      m_findresults.ResetColour();
+      m_findresults.SetWindowText(L"");
+
+      m_numFound = size_t(-1);
+      m_lastshown = size_t(-1);
+      m_indices.clear();
     }
   } else {
     m_bAdvanced = false;

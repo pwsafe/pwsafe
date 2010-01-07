@@ -21,12 +21,19 @@ workstation lock and terminal services running.
 is set or 'mailto:' used in URL field.
 [2912177] Restore 'Add Group' menu item to context menu when clicking
 on an entry and allow new group to remain unchanged.
+[2431438] When unable to find a previous database via the recently opened databases
+on the File menu and the user is given the option to open a different database or
+create a new one.
+[1751462] After Find Toolbar Advanced dialog is used, the previous Find results
+are now reset.
 [] Finally fix issues running under pre-XP versions of Windows.
 
 New Features for 3.20.1
 =======================
 [2919319] Now able to use PasswordSafe to generator passwords as per user defined
 policy from the Manage menu.
+[2616175] Allows user to retry finding the original database if not successfully
+found the first time.
 [] Implemented support for new functions: Undo/Redo of changes to the currently open
 database.  These functions are on the Edit menu and can also be configured to be on
 the Toolbar.  These are database specific and changes can even be undone after the

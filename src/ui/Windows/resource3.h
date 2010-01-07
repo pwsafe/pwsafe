@@ -578,3 +578,4 @@
 #define IDS_SYNCHUPDATED                5751
 #define IDS_SYNCHCOMPLETED              5752
 #define IDS_PICKSYNCHRONIZEEFILE        5753
+#define IDS_OPEN                        5754
