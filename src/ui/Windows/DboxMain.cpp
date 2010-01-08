@@ -997,6 +997,12 @@ LRESULT DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
 
   AddColumn((int)wType, (int)afterIndex);
 
+  // Reset values
+  SetHeaderInfo();
+
+  // Now show the user
+  RefreshViews(iListOnly);
+
   return 0L;
 }
 
@@ -1010,6 +1016,10 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 
   DeleteColumn((int)wType);
 
+  // Reset values
+  SetHeaderInfo();
+
+  // Now show the user
   RefreshViews(iListOnly);
 
   return 0L;
