@@ -1432,8 +1432,11 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     pdi = new DisplayInfo;
     ci.SetDisplayInfo(pdi);
   }
-  pdi->list_index = -1;
-  pdi->tree_item = NULL;
+
+  if (iView & iListOnly)
+    pdi->list_index = -1;
+  if (iView & iTreeOnly)
+    pdi->tree_item = NULL;
 
   if (m_bFilterActive) {
     if (!PassesFiltering(ci, m_currentfilter))
@@ -2541,21 +2544,12 @@ void DboxMain::AddColumn(const int iType, const int iIndex)
   hdi.lParam = iType;
   hdi.cxy = GetHeaderWidth(iType);
   m_LVHdrCtrl.SetItem(iNewIndex, &hdi);
-
-  // Reset values
-  SetHeaderInfo();
-
-  // Now show the user
-  RefreshViews(iListOnly);
 }
 
 void DboxMain::DeleteColumn(const int iType)
 {
   // Delete column
   m_ctlItemList.DeleteColumn(m_nColumnIndexByType[iType]);
-
-  // Reset values
-  SetHeaderInfo();
 }
 
 void DboxMain::SetHeaderInfo()

@@ -29,6 +29,8 @@ create a new one.
 [1751462] After Find Toolbar Advanced dialog is used, the previous Find results
 are now reset.
 [] Finally fix issues running under pre-XP versions of Windows.
+[] Fix issue when changing the displayed columns in List View and then switching
+to Tree View.
 
 New Features for 3.20.1
 =======================
