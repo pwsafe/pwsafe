@@ -25,8 +25,6 @@ public:
   CAddEdit_PasswordPolicy(CWnd *pParent, st_AE_master_data *pAEMD);
   ~CAddEdit_PasswordPolicy();
 
-  const wchar_t *GetHelpName() const {return L"TO_DO!";}
-
   // Dialog Data
   //{{AFX_DATA(CAddEdit_PasswordPolicy)
   enum { IDD = IDD_ADDEDIT_PASSWORDPOLICY };
@@ -51,6 +49,7 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnApply();
+  BOOL PreTranslateMessage(MSG* pMsg);
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -58,6 +57,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_PasswordPolicy)
   virtual BOOL OnInitDialog();
+  afx_msg void OnHelp();
   afx_msg void OnUseHexdigits();
   afx_msg void OnUseLowerCase();
   afx_msg void OnUseUpperCase();

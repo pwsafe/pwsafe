@@ -66,7 +66,9 @@ void CAddEdit_DateTimes::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAddEdit_DateTimes, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_DateTimes)
+  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_XTIME_CLEAR, OnClearXTime)
   ON_BN_CLICKED(IDC_XTIME_SET, OnSetXTime)
   ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnDateTime)
@@ -92,6 +94,16 @@ static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
       return;
     }
   }
+}
+
+BOOL CAddEdit_DateTimes::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return CAddEdit_PropertyPage::PreTranslateMessage(pMsg);
 }
 
 BOOL CAddEdit_DateTimes::OnInitDialog()
@@ -282,14 +294,9 @@ BOOL CAddEdit_DateTimes::OnApply()
 
 void CAddEdit_DateTimes::OnHelp()
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
-                FALSE, 0, NULL, NULL, NULL, NULL);
-#else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
 }
 
 void CAddEdit_DateTimes::OnClearXTime()

@@ -12,6 +12,7 @@
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"  // needed for DboxMain::UpdatePasswordHistory
+#include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
@@ -62,17 +63,40 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsPasswordHistory, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordHistory)
+  ON_COMMAND(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
-  //}}AFX_MSG_MAP
   ON_BN_CLICKED(IDC_PWHISTORYNOACTION, OnPWHistoryNoAction)
   ON_BN_CLICKED(IDC_RESETPWHISTORYOFF, OnPWHistoryDoAction)
   ON_BN_CLICKED(IDC_RESETPWHISTORYON, OnPWHistoryDoAction)
   ON_BN_CLICKED(IDC_SETMAXPWHISTORY, OnPWHistoryDoAction)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory message handlers
+
+BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
+{
+  if (m_ToolTipCtrl != NULL)
+    m_ToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsPasswordHistory::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/password_history_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
 
 BOOL COptionsPasswordHistory::OnInitDialog() 
 {
@@ -143,17 +167,6 @@ void COptionsPasswordHistory::OnSavePWHistory()
   BOOL enable = (((CButton*)GetDlgItem(IDC_SAVEPWHISTORY))->GetCheck() == 1) ? TRUE : FALSE;
   GetDlgItem(IDC_PWHSPIN)->EnableWindow(enable);
   GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(enable);
-}
-
-// Override PreTranslateMessage() so RelayEvent() can be 
-// called to pass a mouse message to CPWSOptions's 
-// tooltip control for processing.
-BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg) 
-{
-  if (m_ToolTipCtrl != NULL)
-    m_ToolTipCtrl->RelayEvent(pMsg);
-
-  return COptions_PropertyPage::PreTranslateMessage(pMsg);
 }
 
 LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )

@@ -68,6 +68,7 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
   BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
 
   //{{AFX_MSG(CManageFiltersDlg)
   afx_msg void OnFilterNew();

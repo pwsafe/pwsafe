@@ -9,6 +9,7 @@
 //
 
 #include "stdafx.h"
+#include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
 #if defined(POCKET_PC)
@@ -48,10 +49,18 @@ void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
+  //{{AFX_MSG_MAP(COptionsShortcuts)
   ON_WM_MEASUREITEM()
+  ON_COMMAND(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnBnClickedResetAll)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// COptionsShortcuts message handlers
 
 void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const MapKeyNameID MapKeyNameID,
@@ -62,6 +71,31 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
   m_MapKeyNameID = MapKeyNameID;
   m_ExcludedMenuItems = ExcludedMenuItems;
   m_ReservedShortcuts = ReservedShortcuts;
+}
+
+BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
+{
+  // If HotKey active, allow Enter key to set instead of close
+  // Property Page (OK button)
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN &&
+      m_ShortcutLC.IsHotKeyActive()) {
+    m_ShortcutLC.SaveHotKey();
+    return TRUE;
+  }
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsShortcuts::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/shortcuts_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 BOOL COptionsShortcuts::OnInitDialog()
@@ -271,19 +305,6 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
 set_warning:
   m_stc_warning.SetWindowText(cs_warning);
   m_stc_warning.ShowWindow(SW_SHOW);
-}
-
-BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
-{
-  // If HotKey active, allow Enter key to set instead of close
-  // Property Page (OK button)
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN &&
-      m_ShortcutLC.IsHotKeyActive()) {
-    m_ShortcutLC.SaveHotKey();
-    return TRUE;
-  }
-
-  return COptions_PropertyPage::PreTranslateMessage(pMsg);
 }
 
 LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )

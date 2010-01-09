@@ -23,8 +23,6 @@ public:
   COptionsSystem();
   ~COptionsSystem();
 
-  const wchar_t *GetHelpName() const {return L"system_tab";}
-
   // Dialog Data
   //{{AFX_DATA(COptionsSystem)
   enum { IDD = IDD_PS_SYSTEM };
@@ -61,6 +59,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsSystem)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnHelp();
   afx_msg void OnUseSystemTray();
   afx_msg void OnStartup();
   afx_msg void OnSetDeleteRegistry();

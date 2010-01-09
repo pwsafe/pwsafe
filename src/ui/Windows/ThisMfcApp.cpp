@@ -43,7 +43,6 @@
 #include "PWSRecentFileList.h"
 #include "corelib/PWSprefs.h"
 
-#include "PWPropertyPage.h"  // for finding current propertysheet:
 #include "MFCMessages.h"
 
 #include "os/windows/pws_autotype/pws_at.h"
@@ -76,8 +75,7 @@ const UINT ThisMfcApp::m_uiRegMsg   = RegisterWindowMessage(UNIQUE_PWS_GUID);
 const UINT ThisMfcApp::m_uiWH_SHELL = RegisterWindowMessage(UNIQUE_PWS_SHELL);
 
 BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
-  //  ON_COMMAND(ID_HELP, CWinApp::OnHelp)
-  ON_COMMAND(ID_HELP, OnHelp)
+  //ON_COMMAND(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
 static MFCReporter aReporter;
@@ -1066,44 +1064,6 @@ BOOL ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
   return CWinApp::ProcessMessageFilter(code, lpMsg);
 }
 #endif
-
-void ThisMfcApp::OnHelp()
-{
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#mainhelp", NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
-#else
-  /*
-  * Following mess because CPropertySheet is too smart for its own
-  * good. The "Help" button there is mapped to the App framework,
-  * and that's that...
-  */
-  CString cs_title;
-  CWnd *wnd = CWnd::GetCapture();
-  if (wnd == NULL)
-    wnd = CWnd::GetFocus();
-  if (wnd != NULL)
-    wnd = wnd->GetParent();
-  if (wnd != NULL) {
-    wnd->GetWindowText(cs_title);
-  }
-  const CString cs_option_text(MAKEINTRESOURCE(IDS_OPTIONS));
-  if (cs_title != cs_option_text) {
-    ::HtmlHelp(wnd != NULL ? wnd->m_hWnd : NULL,
-               (LPCWSTR)m_csHelpFile, HH_DISPLAY_TOPIC, 0);
-  } else { // Options propertysheet - find out active page
-    CString helptab;
-    CPropertySheet *ps = dynamic_cast<CPropertySheet *>(wnd);
-    ASSERT(ps != NULL);
-    CPWPropertyPage *pp = dynamic_cast<CPWPropertyPage *>(ps->GetActivePage());
-    if (pp != NULL)
-      helptab = pp->GetHelpName();
-    CString cs_HelpTopic;
-    cs_HelpTopic = m_csHelpFile + L"::/html/" + helptab + L".html";
-    ::HtmlHelp(NULL, (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
-  }
-
-#endif
-}
 
 // FindMenuItem() will find a menu item string from the specified
 // popup menu and returns its position (0-based) in the specified

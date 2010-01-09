@@ -27,8 +27,6 @@ public:
   CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD);
   ~CAddEdit_Basic();
 
-  const wchar_t *GetHelpName() const {return L"TO_DO!";}
-
   static CString CS_SHOW, CS_HIDE;
   static CSecString HIDDEN_NOTES;
 

@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
+#include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
@@ -57,6 +58,26 @@ COptionsBackup::~COptionsBackup()
   delete m_pToolTipCtrl;
 }
 
+BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsBackup::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/backups_tab.html";
+  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+}
+
 void COptionsBackup::SetCurFile(const CString &currentFile)
 {
   // derive current db's directory and basename:
@@ -87,6 +108,9 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsBackup, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsBackup)
+  ON_COMMAND(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_BACKUPBEFORESAVE, OnBackupBeforeSave)
   ON_BN_CLICKED(IDC_DFLTBACKUPPREFIX, OnBackupPrefix)
   ON_BN_CLICKED(IDC_USERBACKUPPREFIX, OnBackupPrefix)
@@ -347,17 +371,6 @@ BOOL COptionsBackup::OnKillActive()
 void COptionsBackup::OnUserPrefixKillfocus()
 {
   SetExample();
-}
-
-// Override PreTranslateMessage() so RelayEvent() can be
-// called to pass a mouse message to CPWSOptions's
-// tooltip control for processing.
-BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
-{
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
-
-  return COptions_PropertyPage::PreTranslateMessage(pMsg);
 }
 
 LRESULT COptionsBackup::OnQuerySiblings(WPARAM wParam, LPARAM )

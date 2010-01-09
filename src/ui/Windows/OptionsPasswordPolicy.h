@@ -28,8 +28,6 @@ public:
   ~COptionsPasswordPolicy();
   DboxMain *m_pDbx;
 
-  const wchar_t *GetHelpName() const {return L"password_policies";}
-
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordPolicy)
   enum { IDD = IDD_PS_PASSWORDPOLICY };
@@ -68,6 +66,7 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -75,6 +74,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsPasswordPolicy)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnHelp();
   afx_msg void OnUsehexdigits();
   afx_msg void OnUselowercase();
   afx_msg void OnUseuppercase();

@@ -23,8 +23,6 @@ public:
   COptionsSecurity();
   ~COptionsSecurity();
 
-  const wchar_t *GetHelpName() const {return L"security_tab";}
-
   // Dialog Data
   //{{AFX_DATA(COptionsSecurity)
   enum { IDD = IDD_PS_SECURITY };
@@ -51,6 +49,7 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
@@ -59,6 +58,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsSecurity)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);
+  afx_msg void OnHelp();
   afx_msg void OnLockOnIdleTimeout();
   afx_msg void OnLockOnMinimize();
   afx_msg BOOL OnKillActive();

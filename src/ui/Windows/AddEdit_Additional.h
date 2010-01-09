@@ -23,9 +23,7 @@ public:
   CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEMD);
   ~CAddEdit_Additional();
 
-  const wchar_t *GetHelpName() const {return L"TO_DO!";}
-
-    // Dialog Data
+  // Dialog Data
   //{{AFX_DATA(CAddEdit_Additional)
   enum { IDD = IDD_ADDEDIT_ADDITIONAL };
 

@@ -74,6 +74,9 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsDisplay, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsDisplay)
+  ON_COMMAND(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
   ON_BN_CLICKED(IDC_DEFUNSHOWINTREE, OnDisplayUserInTree)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -83,11 +86,28 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay message handlers
 
+BOOL COptionsDisplay::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
 void COptionsDisplay::OnPreWarn() 
 {
   BOOL enable = (((CButton*)GetDlgItem(IDC_PREWARNEXPIRY))->GetCheck() == 1) ? TRUE : FALSE;
   GetDlgItem(IDC_PREWARNEXPIRYSPIN)->EnableWindow(enable);
   GetDlgItem(IDC_PREEXPIRYWARNDAYS)->EnableWindow(enable);
+}
+
+void COptionsDisplay::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/display_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 BOOL COptionsDisplay::OnInitDialog() 

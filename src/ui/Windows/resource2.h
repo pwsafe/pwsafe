@@ -135,6 +135,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_PWSAFE_WEBSITE      32201
 #define ID_MENUITEM_ABOUT               32202
 #define ID_MENUITEM_U3SHOP_WEBSITE      32203
+#define ID_MENUITEM_HELP                32204
 
 // Listview Header menu
 #define ID_MENUITEM_COLUMNPICKER        32210

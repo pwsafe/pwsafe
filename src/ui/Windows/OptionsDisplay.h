@@ -23,7 +23,6 @@ public:
   COptionsDisplay();
   ~COptionsDisplay();
 
-  const wchar_t *GetHelpName() const {return L"display_tab";}
   // Dialog Data
   //{{AFX_DATA(COptionsDisplay)
   enum { IDD = IDD_PS_DISPLAY };
@@ -66,6 +65,7 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+  BOOL PreTranslateMessage(MSG* pMsg);
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -73,6 +73,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsDisplay)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnHelp();
   afx_msg void OnPreWarn();
   afx_msg void OnDisplayUserInTree();
   afx_msg BOOL OnKillActive();

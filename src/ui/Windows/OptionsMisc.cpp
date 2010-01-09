@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
+#include "ThisMfcApp.h"    // For Help
 #include "PWFileDialog.h"
 #include "Options_PropertySheet.h"
 #include "Options_PropertyPage.h"
@@ -79,6 +80,9 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsMisc, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsMisc)
+  ON_COMMAND(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
   ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
   ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
@@ -86,6 +90,26 @@ BEGIN_MESSAGE_MAP(COptionsMisc, COptions_PropertyPage)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsMisc::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/misc_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
 
 BOOL COptionsMisc::OnInitDialog() 
 {
@@ -342,13 +366,3 @@ void COptionsMisc::OnBrowseForLocation()
   }
 }
 
-// Override PreTranslateMessage() so RelayEvent() can be
-// called to pass a mouse message to CPWSOptions's
-// tooltip control for processing.
-BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
-{
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
-
-  return COptions_PropertyPage::PreTranslateMessage(pMsg);
-}

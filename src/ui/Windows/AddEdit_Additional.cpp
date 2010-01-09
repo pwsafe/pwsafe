@@ -72,7 +72,9 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Additional)
   ON_WM_CTLCOLOR()
+  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_DCA_DEFAULT, OnSetDCACheck)
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_AUTO, IDC_STATIC_RUNCMD, OnSTCExClicked)
   ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnDCAComboChanged)
@@ -90,6 +92,20 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_Additional message handlers
+
+BOOL CAddEdit_Additional::PreTranslateMessage(MSG* pMsg)
+{
+  // Do tooltips
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return CAddEdit_PropertyPage::PreTranslateMessage(pMsg);
+}
 
 BOOL CAddEdit_Additional::OnInitDialog()
 {
@@ -288,14 +304,9 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
 void CAddEdit_Additional::OnHelp()
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
-                FALSE, 0, NULL, NULL, NULL, NULL);
-#else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
 }
 
 HBRUSH CAddEdit_Additional::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
@@ -482,15 +493,6 @@ error:
     ((CEdit *)pFocus)->SetSel(MAKEWORD(-1, 0));
 
   return FALSE;
-}
-
-BOOL CAddEdit_Additional::PreTranslateMessage(MSG* pMsg)
-{
-  // Do tooltips
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
-
-  return CAddEdit_PropertyPage::PreTranslateMessage(pMsg);
 }
 
 void CAddEdit_Additional::OnSetDCACheck()
