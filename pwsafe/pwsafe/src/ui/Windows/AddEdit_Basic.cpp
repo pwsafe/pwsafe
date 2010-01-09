@@ -144,8 +144,9 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Basic)
   ON_WM_CTLCOLOR()
-
+  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
@@ -333,14 +334,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
 void CAddEdit_Basic::OnHelp()
 {
-#if defined(POCKET_PC)
-  CreateProcess(L"PegHelp.exe", L"pws_ce_help.html#adddata", NULL, NULL,
-                FALSE, 0, NULL, NULL, NULL, NULL);
-#else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-#endif
 }
 
 HBRUSH CAddEdit_Basic::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
@@ -451,6 +447,11 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
 
 BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 {
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
   // Do tooltips
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);

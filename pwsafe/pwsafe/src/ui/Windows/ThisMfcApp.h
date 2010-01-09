@@ -24,8 +24,7 @@
 
 class DboxMain;
 
-class ThisMfcApp
-  : public CWinApp
+class ThisMfcApp : public CWinApp
 {
 public:
   ThisMfcApp();
@@ -79,8 +78,6 @@ public:
   void SetACCELTableCreated() {m_bACCEL_Table_Created = true;}
   bool NoSysEnvWarnings() const {return m_noSysEnvWarnings;}
   bool PermitTestdump() const {return m_bPermitTestdump;}
-
-  afx_msg void OnHelp();
 
   DECLARE_MESSAGE_MAP()
 

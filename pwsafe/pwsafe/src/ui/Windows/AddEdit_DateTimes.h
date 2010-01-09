@@ -30,8 +30,6 @@ public:
   CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD);
   ~CAddEdit_DateTimes();
 
-  const wchar_t *GetHelpName() const {return L"TO_DO!";}
-
   static bool m_bNumDaysFailed;
 
   // Dialog Data
@@ -55,6 +53,7 @@ protected:
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnApply();
+  BOOL PreTranslateMessage(MSG* pMsg);
   //}}AFX_VIRTUAL
 
   // Implementation

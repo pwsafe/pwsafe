@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
+#include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
@@ -64,6 +65,9 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
+  ON_COMMAND(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -72,11 +76,28 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSecurity message handlers
 
+BOOL COptionsSecurity::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
 void COptionsSecurity::OnLockOnIdleTimeout() 
 {
   BOOL enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
   GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
   GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(enable);
+}
+
+void COptionsSecurity::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/security_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 BOOL COptionsSecurity::OnInitDialog() 

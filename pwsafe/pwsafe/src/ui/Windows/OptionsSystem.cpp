@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
+#include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
@@ -71,6 +72,9 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsSystem, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsSystem)
+  ON_COMMAND(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_DEFPWUSESYSTRAY, OnUseSystemTray)
   ON_BN_CLICKED(IDC_STARTUP, OnStartup)
   ON_BN_CLICKED(IDC_REGDEL_CB, OnSetDeleteRegistry)
@@ -81,6 +85,26 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem message handlers
+
+BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
+{
+  if (m_ToolTipCtrl != NULL)
+    m_ToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsSystem::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/system_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
 
 void COptionsSystem::OnUseSystemTray() 
 {
@@ -196,17 +220,6 @@ BOOL COptionsSystem::OnKillActive()
   // Needed as we have DDV routines.
 
   return CPWPropertyPage::OnKillActive();
-}
-
-// Override PreTranslateMessage() so RelayEvent() can be 
-// called to pass a mouse message to CPWSOptions's 
-// tooltip control for processing.
-BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg) 
-{
-  if (m_ToolTipCtrl != NULL)
-    m_ToolTipCtrl->RelayEvent(pMsg);
-
-  return CPWPropertyPage::PreTranslateMessage(pMsg);
 }
 
 LRESULT COptionsSystem::OnQuerySiblings(WPARAM wParam, LPARAM )

@@ -12,6 +12,7 @@
 #include "passwordsafe.h"
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
+#include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
 #include "corelib/PwsPlatform.h"
@@ -85,6 +86,9 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordPolicy)
+  ON_COMMAND(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+
   ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUsehexdigits)
   ON_BN_CLICKED(IDC_USELOWERCASE, OnUselowercase)
   ON_BN_CLICKED(IDC_USEUPPERCASE, OnUseuppercase)
@@ -99,6 +103,23 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy message handlers
+
+BOOL COptionsPasswordPolicy::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsPasswordPolicy::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/password_policies.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
 
 BOOL COptionsPasswordPolicy::OnInitDialog() 
 {

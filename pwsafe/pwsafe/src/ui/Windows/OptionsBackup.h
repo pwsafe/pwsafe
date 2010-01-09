@@ -23,8 +23,6 @@ public:
   COptionsBackup();
   ~COptionsBackup();
 
-  const wchar_t *GetHelpName() const {return L"backups_tab";}
-
   // Should be part of ctor, but MFC doesn't requires
   // default ctor. Grrr.
   void SetCurFile(const CString &currentFile);
@@ -70,6 +68,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsBackup)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnHelp();
   afx_msg BOOL OnKillActive();
   afx_msg void OnBackupPrefix();
   afx_msg void OnBackupDirectory();

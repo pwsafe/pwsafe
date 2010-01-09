@@ -548,6 +548,7 @@ protected:
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnSessionChange(WPARAM wParam, LPARAM lParam);
 
+  afx_msg void OnHelp();
   afx_msg void OnUpdateMenuToolbar(CCmdUI *pCmdUI);
   afx_msg void OnDestroy();
   afx_msg BOOL OnQueryEndSession();

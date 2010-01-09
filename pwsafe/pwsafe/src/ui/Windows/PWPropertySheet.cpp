@@ -14,6 +14,18 @@ extern const wchar_t *EYE_CATCHER;
 
 IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 
+CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd* pParent)
+  : CPropertySheet(nID, pParent)
+{
+  m_psh.dwFlags |= PSH_HASHELP;
+}
+
+CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent)
+  : CPropertySheet(pszCaption, pParent)
+{
+  m_psh.dwFlags |= PSH_HASHELP;
+}
+
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   CWnd *pParent = GetParent();
@@ -28,6 +40,7 @@ LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   }
   if (pParent == NULL)
     TRACE(L"CPWPropertySheet::WindowProc - couldn't find DboxMain ancestor\n");
+
   return CPropertySheet::WindowProc(message, wParam, lParam);
 }
 

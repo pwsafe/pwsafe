@@ -23,8 +23,6 @@ public:
   COptionsMisc();
   ~COptionsMisc();
 
-  const wchar_t *GetHelpName() const {return L"misc_tab";}
-
   // Dialog Data
   //{{AFX_DATA(COptionsMisc)
   enum { IDD = IDD_PS_MISC };
@@ -79,6 +77,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsMisc)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);
+  afx_msg void OnHelp();
   afx_msg void OnEnableHotKey();
   afx_msg void OnUsedefuser();
   afx_msg void OnBrowseForLocation();

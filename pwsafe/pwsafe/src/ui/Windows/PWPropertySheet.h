@@ -11,11 +11,9 @@
 class CPWPropertySheet : public CPropertySheet
 {
 public:
-  CPWPropertySheet(UINT nID, CWnd* pParent)
-  : CPropertySheet(nID, pParent) {}
+  CPWPropertySheet(UINT nID, CWnd* pParent);
 
-  CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent)
-  : CPropertySheet(pszCaption, pParent) {}
+  CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent);
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);

@@ -54,8 +54,6 @@ public:
 
   void ClearWarning() {m_stc_warning.ShowWindow(SW_HIDE);}
 
-  const wchar_t *GetHelpName() const {return L"menu_shortcuts";}
-
   // Dialog Data
   //{{AFX_DATA(COptionsShortcuts)
   enum { IDD = IDD_PS_SHORTCUTS };
@@ -77,6 +75,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsShortcuts)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnHelp();
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS);
   afx_msg void OnBnClickedResetAll();
   //}}AFX_MSG

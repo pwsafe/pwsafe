@@ -1316,6 +1316,17 @@ void CManageFiltersDlg::SortFilterView()
   phctrl->SetItem(m_iSortColumn, &hdi);
 }
 
+
+BOOL CManageFiltersDlg::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    OnHelp();
+    return TRUE;
+  }
+
+  return CPWDialog::PreTranslateMessage(pMsg);
+}
+
 void CManageFiltersDlg::OnHelp()
 {
   CString cs_HelpTopic;

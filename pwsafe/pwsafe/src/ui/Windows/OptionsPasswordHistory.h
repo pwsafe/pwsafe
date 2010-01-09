@@ -27,8 +27,6 @@ public:
   ~COptionsPasswordHistory();
   DboxMain *m_pDboxMain;
 
-  const wchar_t *GetHelpName() const {return L"password_history_tab";}
-
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordHistory)
   enum { IDD = IDD_PS_PASSWORDHISTORY };
@@ -54,6 +52,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsPasswordHistory)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnHelp();
   afx_msg BOOL OnKillActive();
   afx_msg void OnSavePWHistory();
   afx_msg void OnPWHistoryNoAction();

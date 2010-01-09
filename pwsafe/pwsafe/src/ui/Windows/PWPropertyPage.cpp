@@ -18,6 +18,12 @@ extern const wchar_t *EYE_CATCHER;
 
 IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)
 
+CPWPropertyPage::CPWPropertyPage(UINT nID)
+  : CPropertyPage(nID)
+{
+  m_psp.dwFlags |= PSP_HASHELP;
+}
+
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   CWnd *pParent = GetParent();
@@ -32,5 +38,7 @@ LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   }
   if (pParent == NULL)
     TRACE(L"CPWPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
+
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
+
