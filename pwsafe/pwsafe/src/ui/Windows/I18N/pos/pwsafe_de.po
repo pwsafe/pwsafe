@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2009-12-25 23:47+0100\n"
+"PO-Revision-Date: 2010-01-09 00:42+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -624,6 +624,10 @@ msgstr "&Nein"
 msgid "&Notes:"
 msgstr "&Notizen:"
 
+#. Resource IDs: (360)
+msgid "&Open"
+msgstr "&Öffnen"
+
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
 msgstr "&Andere Datenbank öffnen"
@@ -723,6 +727,10 @@ msgstr "&Anzeigen"
 #. Resource IDs: (1090)
 msgid "&Size:"
 msgstr "&Größe"
+
+#. Resource IDs: (32128)
+msgid "&Synchronize"
+msgstr "&Synchronisieren"
 
 #. Resource IDs: (1351, 65535)
 msgid "&Title:"
@@ -1172,6 +1180,16 @@ msgstr "<b><font color=\"red\">Konnte Versionsinformation nicht vom Server holen
 msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
 msgstr "<b><font color=\"red\">Konnte Server nicht erreichen.</font></b>"
 
+#. Resource IDs: (360)
+msgid ""
+"<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.\r\n"
+"\r\n"
+"The OK button on the password entry dialog for your input database will not be enabled <b> until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
+msgstr ""
+"<b><font color=\"red\">ACHTUNG</font></b> Wenn sie fortfahren, werden die Felder in der bestehenden Datenbank aus der ausgewählten Datenbank aktualisiert.\r\n"
+"\r\n"
+"Die OK Taste im Passwordeingabedialog für die ausgewählte Datenbank wird nicht freigegeben <b> bis sie im Erweiterten Dialog bestätigt haben daß sie aktualisieren wollen.</b>"
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1271,6 +1289,10 @@ msgstr "Erweiterte Zusammenführen Extra"
 #. Resource IDs: (339)
 msgid "Advanced Merge Options"
 msgstr "Erweiterte Zusammenführen Optionen"
+
+#. Resource IDs: (360)
+msgid "Advanced Synchronize Options"
+msgstr "Erweiterte Synchronisieren Optionen"
 
 #. Resource IDs: (339)
 msgid "Advanced Text Export Options"
@@ -1514,7 +1536,7 @@ msgstr "Basis"
 
 #. Resource IDs: (515)
 msgid "Belarusian"
-msgstr ""
+msgstr "Weißrussisch"
 
 #. Resource IDs: (519)
 msgid "Belgian (Comma)"
@@ -1526,19 +1548,19 @@ msgstr "Belgisch (Punkt)"
 
 #. Resource IDs: (517)
 msgid "Belgian French"
-msgstr "Belgisch Französich"
+msgstr "Belgisch Französisch"
 
 #. Resource IDs: (516)
 msgid "Bengali"
-msgstr ""
+msgstr "Bengalisch"
 
 #. Resource IDs: (520)
 msgid "Bengali - INSCRIPT"
-msgstr ""
+msgstr "Bengalisch - INSCRIPT"
 
 #. Resource IDs: (519)
 msgid "Bengali - INSCRIPT (Legacy)"
-msgstr ""
+msgstr "Bengalisch - INSCRIPT (Legacy)"
 
 #. Resource IDs: (8006)
 msgid "BkSpc"
@@ -1582,7 +1604,7 @@ msgstr "Bulgarisch (Phonetisch Traditionell)"
 
 #. Resource IDs: (513)
 msgid "Bulgarian (Typewriter)"
-msgstr ""
+msgstr "Bulgarisch (Schreibmaschine)"
 
 #. Resource IDs: (32061)
 msgid "C&lear Clipboard"
@@ -1631,11 +1653,11 @@ msgstr "Kann die Version des Schema nicht ermitteln."
 
 #. Resource IDs: (518)
 msgid "Canadian French"
-msgstr "Kanadisch Französich"
+msgstr "Kanadisch Französisch"
 
 #. Resource IDs: (518)
 msgid "Canadian French (Legacy)"
-msgstr "Kanadisch Französich (Legacy)"
+msgstr "Kanadisch Französisch (Legacy)"
 
 #. Resource IDs: (520)
 msgid "Canadian Multilingual Standard"
@@ -1703,6 +1725,10 @@ msgstr ""
 "Änderen Sie die maximale Anzahl gespeicherte Passwörter für Eingaben die zur Zeit die Passworthistorie mit weniger als die neue maximale Anzahl speichern.\n"
 "\n"
 "Eingaben mit mehr als die neue maximale Anzahl bleiben hiervon unberührt."
+
+#. Resource IDs: (1187)
+msgid "Changes to existing entries will be applied on pressing OK"
+msgstr "Änderungen zu bestehenden Einträge werden angewendet nach Drücken von OK"
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -2274,7 +2300,7 @@ msgstr "Details dieser Verknüpfung zum Basiseintrag '%s':"
 
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
-msgstr ""
+msgstr "Dewanagari - INSCRIPT"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -3131,6 +3157,14 @@ msgstr "ID:32079:V C +F"
 msgid "ID:32080:VAC +R"
 msgstr "ID:32080:VAC +R"
 
+#. Accelerator Entry for Menu ID:32082; 'Undo'
+msgid "ID:32082:V C +Z"
+msgstr "ID:32082:V C +Z"
+
+#. Accelerator Entry for Menu ID:32083; 'Redo'
+msgid "ID:32083:V C +Y"
+msgstr "ID:32083:V C +Y"
+
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
 msgstr "ID:32108:V C +F"
@@ -3424,7 +3458,7 @@ msgstr "Koreanisch"
 
 #. Resource IDs: (516)
 msgid "Kyrgyz Cyrillic"
-msgstr ""
+msgstr "Kirgisisch (Kyrillisch)"
 
 #. Resource IDs: (8009)
 msgid "L Ctrl"
@@ -3798,6 +3832,10 @@ msgstr "Keine Felder zum Vergleich markiert!"
 #. Resource IDs: (348)
 msgid "No fields selected to filter the display!"
 msgstr "Keine Felder ausgewählt um die Anzeige zu filtern!"
+
+#. Resource IDs: (360)
+msgid "No fields selected to synchornize!"
+msgstr "Keine Felder zum Synchronisieren markiert!"
 
 #. Resource IDs: (330)
 msgid "No function selected for basing your restrictions."
@@ -4242,12 +4280,16 @@ msgid "Please Choose a Database to Compare with current open database"
 msgstr "Bitte wählen Sie eine Datenbank zum Vergleich mit der aktuell geöffneten aus"
 
 #. Resource IDs: (335)
-msgid "Please Choose a Database to Merge"
-msgstr "Bitte wählen Sie eine Datenbank zum Zusammenführen aus"
+msgid "Please Choose a Database to Merge into current database"
+msgstr "Bitte wählen Sie eine Datenbank zur Zusammenführung mit der aktuel geöffneten aus"
 
 #. Resource IDs: (333)
 msgid "Please Choose a Database to Open:"
 msgstr "Bitte wählen Sie eine Datenbank zum Öffnen aus:"
+
+#. Resource IDs: (360)
+msgid "Please Choose a Database to Synchonize with current database"
+msgstr "Bitte wählen Sie eine Datenbank zum Synchronisieren mit der aktuel geöffneten aus"
 
 #. Resource IDs: (334)
 msgid "Please Choose a KeePass Text File to Import"
@@ -4466,7 +4508,7 @@ msgstr "Passwort kopiert "
 
 #. Resource IDs: (516)
 msgid "Punjabi"
-msgstr ""
+msgstr "Pandschabi"
 
 #. Resource IDs: (339)
 msgid "Purchase unlimited &U3 version..."
@@ -4540,6 +4582,10 @@ msgstr "Periodisch"
 #, c-format
 msgid "Recurring (%d days)"
 msgstr "Periodisch (%d Tage)"
+
+#. Resource IDs: (32083)
+msgid "Redo"
+msgstr "Wiederholen"
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
@@ -4681,6 +4727,10 @@ msgstr "S"
 #. Resource IDs: (1119)
 msgid "S&et"
 msgstr "S&etzen"
+
+#. Resource IDs: (32022)
+msgid "S&ynchronize..."
+msgstr "S&ynchronisieren..."
 
 #. Resource IDs: (192)
 #, c-format
@@ -5054,11 +5104,11 @@ msgstr "Einige Zeichen sind nicht da oder werden nicht dargestellt, weil der Fon
 
 #. Resource IDs: (520)
 msgid "Sorbian Standard"
-msgstr ""
+msgstr "Sorbisch Standard"
 
 #. Resource IDs: (515)
 msgid "Sorbian Standard (Legacy)"
-msgstr ""
+msgstr "Sorbisch Standard (Legacy)"
 
 #. Resource IDs: (331)
 msgid ""
@@ -5176,11 +5226,20 @@ msgstr "Schwedisch mit Sami"
 
 #. Resource IDs: (518)
 msgid "Swiss French"
-msgstr "Schweizerisch Französich"
+msgstr "Schweizerisch Französisch"
 
 #. Resource IDs: (517)
 msgid "Swiss German"
 msgstr "Schweizerisch Deutsch"
+
+#. Resource IDs: (360)
+msgid "Synchronize"
+msgstr "Synchronisieren"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "Synchronizing from database: %s\r\n"
+msgstr "Synchronisieren mit Datenbank: %s\r\n"
 
 #. Resource IDs: (143)
 msgid "System"
@@ -5634,11 +5693,11 @@ msgstr "Türkisch Q"
 
 #. Resource IDs: (516)
 msgid "Turkmen"
-msgstr ""
+msgstr "Turkmenisch"
 
 #. Resource IDs: (1355)
 msgid "U&RL:"
-msgstr ""
+msgstr "U&RL:"
 
 #. Resource IDs: (327)
 msgid "URL"
@@ -5773,6 +5832,10 @@ msgstr "Kann nicht in %1 schreiben. Sie wird schon von jemand anderem benutzt."
 #. Resource IDs: (3887)
 msgid "Uncheck"
 msgstr "Deaktiviere"
+
+#. Resource IDs: (32082)
+msgid "Undo"
+msgstr "Rückgängig"
 
 #. Resource IDs: (209)
 msgid "Unexpected element: Only one field allowed per filter entry."
@@ -6541,6 +6604,14 @@ msgstr ""
 "\n"
 "Programm wird beendet."
 
+#. Resource IDs: (2006)
+msgid ""
+"\n"
+"Redo"
+msgstr ""
+"\n"
+"Wiederholen"
+
 #. Resource IDs: (2005)
 msgid ""
 "\n"
@@ -6597,6 +6668,22 @@ msgstr ""
 "\n"
 "Ungesicherte Änderungen anzeigen"
 
+#. Resource IDs: (2002)
+msgid ""
+"\n"
+"Synchronize databases"
+msgstr ""
+"\n"
+"Datenbanken synchronisieren"
+
+#. Resource IDs: (2006)
+msgid ""
+"\n"
+"Undo"
+msgstr ""
+"\n"
+"Rückgängig"
+
 #. Resource IDs: (192)
 msgid ""
 "\n"
@@ -6626,12 +6713,12 @@ msgid ""
 "\n"
 "\n"
 "Cannot open database. It probably does not exist.\n"
-"A new database will be created."
+"Please select to Open another database, create a New database or Cancel."
 msgstr ""
 "\n"
 "\n"
 "Kann Datenbank nicht öffnen. Sie existiert wahrscheinlich nicht.\n"
-"Eine neue Datenbank wird angelegt."
+"Bitte wählen sie Öffnen einer anderen Datenbank, Erstellen einer neuen Datenbank oder Abbrechen."
 
 #. Resource IDs: (354)
 msgid ""
@@ -6673,6 +6760,24 @@ msgstr ""
 "\r\n"
 "Zusammenführen komplett: %d %s hizugefügt\r\n"
 "(%d %s, %d %s, %d %s)"
+
+#. Resource IDs: (360)
+#, c-format
+msgid ""
+"\r\n"
+"Synchronize completed: %d %s updated"
+msgstr ""
+"\r\n"
+"Synchronisieren abgeschlossen: %d %s aktualisiert"
+
+#. Resource IDs: (360)
+#, c-format
+msgid ""
+"\r\n"
+"The following %s %s updated:"
+msgstr ""
+"\r\n"
+"Folgender %s %s aktualisiert:"
 
 #. Resource IDs: (357)
 #, c-format
@@ -6935,11 +7040,11 @@ msgstr "Kopf"
 
 #. Resource IDs: (314)
 msgid "http://pwsafe.org/"
-msgstr ""
+msgstr "http://pwsafe.org/"
 
 #. Resource IDs: (212)
 msgid "id="
-msgstr ""
+msgstr "id="
 
 #. Resource IDs: (191)
 msgid "import"
@@ -7143,4 +7248,7 @@ msgstr "binnen %d Tag(en)"
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
+
+#~ msgid "Please Choose a Database to Merge"
+#~ msgstr "Bitte wählen Sie eine Datenbank zum Zusammenführen aus"
 
