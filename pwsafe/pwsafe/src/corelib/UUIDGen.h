@@ -50,6 +50,7 @@ public:
 
   friend std::ostream &operator<<(std::ostream &os, const CUUIDGen &uuid);
   friend std::wostream &operator<<(std::wostream &os, const CUUIDGen &uuid);
+
 private:
   UUID uuid;
   mutable bool m_canonic;

@@ -51,8 +51,9 @@ void DboxMain::OnAdd()
 
   CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, &ci, L""); 
 
-  if (m_core.GetUseDefUser()) {
-    add_entry_psh.SetUsername(m_core.GetDefUsername());
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (prefs->GetPref(PWSprefs::UseDefaultUser) == TRUE) {
+    add_entry_psh.SetUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
   }
 
   // m_TreeViewGroup may be set by OnContextMenu, if not, try to grok it
@@ -87,18 +88,19 @@ void DboxMain::OnAdd()
     CSecString &sxUsername = add_entry_psh.GetUsername();
 
     //Check if they wish to set a default username
-    PWSprefs *prefs = PWSprefs::GetInstance();
-    if (!m_core.GetUseDefUser() &&
+    if (prefs->GetPref(PWSprefs::UseDefaultUser) == FALSE &&
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!sxUsername.IsEmpty())) {
       CQuerySetDef defDlg(this);
       defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)sxUsername);
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
+        /*
+        Need to change this to MultiCommand with
+        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefs);
+        */
         prefs->SetPref(PWSprefs::UseDefaultUser, true);
         prefs->SetPref(PWSprefs::DefaultUsername, sxUsername);
-        m_core.SetUseDefUser(true);
-        m_core.SetDefUsername(sxUsername);
       }
     }
 
@@ -161,30 +163,33 @@ void DboxMain::OnCreateShortcut()
   CCreateShortcutDlg dlg_createshortcut(this, pci->GetGroup(), 
     pci->GetTitle(), pci->GetUser());
 
-  if (m_core.GetUseDefUser()) {
-    dlg_createshortcut.m_username = m_core.GetDefUsername();
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (prefs->GetPref(PWSprefs::UseDefaultUser) == TRUE) {
+    dlg_createshortcut.m_username = prefs->GetPref(PWSprefs::DefaultUsername).c_str();
   }
 
   INT_PTR rc = dlg_createshortcut.DoModal();
 
   if (rc == IDOK) {
-    PWSprefs *prefs = PWSprefs::GetInstance();
     //Check if they wish to set a default username
-    if (!m_core.GetUseDefUser() &&
+    if (prefs->GetPref(PWSprefs::UseDefaultUser) == FALSE &&
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!dlg_createshortcut.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
       defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
+        /*
+        Need to change this to MultiCommand with
+        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefs);
+        */
         prefs->SetPref(PWSprefs::UseDefaultUser, true);
         prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username);
-        m_core.SetUseDefUser(true);
-        m_core.SetDefUsername(dlg_createshortcut.m_username);
       }
     }
-    if (dlg_createshortcut.m_username.IsEmpty() && m_core.GetUseDefUser())
-      dlg_createshortcut.m_username = m_core.GetDefUsername();
+    if (dlg_createshortcut.m_username.IsEmpty() && 
+        prefs->GetPref(PWSprefs::UseDefaultUser) == TRUE)
+      dlg_createshortcut.m_username = prefs->GetPref(PWSprefs::DefaultUsername).c_str();
 
     CreateShortcutEntry(pci, dlg_createshortcut.m_group, 
                         dlg_createshortcut.m_title, 
@@ -629,8 +634,15 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
-  if (pcore->GetUseDefUser())
-    edit_entry_psh.SetDefUsername(pcore->GetDefUsername());
+
+  // Need to get Default User value from this core's preferences stored in its header, 
+  // which are not necessarily in our PWSprefs::GetInstance !
+  bool bIsDefUserSet;
+  StringX sxDefUserValue, sxDBPreferences;
+  sxDBPreferences = pcore->GetDBPreferences();
+  PWSprefs::GetInstance()->GetDefaultUserInfo(sxDBPreferences, bIsDefUserSet, sxDefUserValue);
+  if (bIsDefUserSet)
+    edit_entry_psh.SetDefUsername(sxDefUserValue.c_str());
 
   uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'}, new_base_uuid = {'\0'};
   CItemData::EntryType entrytype = ci_original.GetEntryType();
@@ -864,8 +876,15 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   CEditShortcutDlg dlg_editshortcut(&ci_edit, this, iter->second.GetGroup(),
                                     iter->second.GetTitle(), iter->second.GetUser());
 
-  if (pcore->GetUseDefUser())
-    dlg_editshortcut.m_defusername = pcore->GetDefUsername();
+  // Need to get Default User value from this core's preferences stored in its header, 
+  // which are not necessarily in our PWSprefs::GetInstance !
+  bool bIsDefUserSet;
+  StringX sxDefUserValue, sxDBPreferences;
+  sxDBPreferences = pcore->GetDBPreferences();
+  PWSprefs::GetInstance()->GetDefaultUserInfo(sxDBPreferences, bIsDefUserSet, sxDefUserValue);
+  if (bIsDefUserSet)
+    dlg_editshortcut.m_defusername = sxDefUserValue.c_str();
+
   dlg_editshortcut.m_Edit_IsReadOnly = pcore->IsReadOnly();
 
   INT_PTR rc = dlg_editshortcut.DoModal();

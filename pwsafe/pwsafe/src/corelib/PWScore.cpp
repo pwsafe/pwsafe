@@ -49,7 +49,6 @@ PWScore::PWScore() :
                      m_lockFileHandle(INVALID_HANDLE_VALUE),
                      m_lockFileHandle2(INVALID_HANDLE_VALUE),
                      m_LockCount(0), m_LockCount2(0),
-                     m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
@@ -154,8 +153,6 @@ void PWScore::ClearData(void)
 void PWScore::ReInit(bool bNewFile)
 {
   // Now reset all values as if created from new
-  m_usedefuser = false;
-  m_defusername = _T("");
   if (bNewFile)
     m_ReadFileVersion = PWSfile::NEWFILE;
   else
@@ -179,11 +176,6 @@ void PWScore::NewFile(const StringX &passkey)
   SetPassKey(passkey);
 
   SetChanged(false, false);
-
-  // default username is a per-database preference - wipe clean
-  // for new database:
-  m_usedefuser = false;
-  m_defusername = _T("");
 }
 
 // functor object type for for_each:
@@ -477,17 +469,17 @@ int PWScore::ReadFile(const StringX &a_filename,
 
   // Get pref string and tree display status & who saved when
   // all possibly empty!
-  PWSprefs::GetInstance()->Load(m_hdr.m_prefString);
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  prefs->Load(m_hdr.m_prefString);
 
   // prepare handling of pre-2.0 DEFUSERCHR conversion
   if (m_ReadFileVersion == PWSfile::V17) {
-    in->SetDefUsername(m_defusername);
+    in->SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
     m_hdr.m_nCurrentMajorVersion = PWSfile::V17;
     m_hdr.m_nCurrentMinorVersion = 0;
   } else {
     // for 2.0 & later...
-    in->SetDefUsername(PWSprefs::GetInstance()->
-      GetPref(PWSprefs::DefaultUsername));
+    in->SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
   }
 
   ClearData(); //Before overwriting old data, but after opening the file...
@@ -1739,10 +1731,11 @@ void PWScore::NotifyDBModified()
 
 void PWScore::NotifyGUINeedsUpdating(Command::GUI_Action ga, 
                                      uuid_array_t &entry_uuid,
-                                     CItemData::FieldType ft)
+                                     CItemData::FieldType ft,
+                                     bool bUpdateGUI)
 {
   if (m_pUIIF != NULL)
-    m_pUIIF->UpdateGUI(ga, entry_uuid, ft);
+    m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
 }
 
 void PWScore::CallGUICommandInterface(Command::ExecuteFn When,

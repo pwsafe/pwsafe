@@ -902,9 +902,6 @@ void DboxMain::InitPasswordSafe()
   }
 #endif
 
-  m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefaultUser));
-  m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername));
-
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
     SetColumnWidths(cs_ListColumnsWidths);

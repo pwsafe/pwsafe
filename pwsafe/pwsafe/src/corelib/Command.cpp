@@ -284,6 +284,12 @@ int DBPrefsCommand::Execute()
 
   PWSprefs::GetInstance()->Load(m_sxNewDBPrefs);
   m_pcomInt->SetDBPrefsChanged(m_pcomInt->HaveHeaderPreferencesChanged(m_sxNewDBPrefs));
+
+  if (m_bNotifyGUI) {
+    uuid_array_t entry_uuid = {'0'}; // dummy
+    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DB_PREFERENCES_CHANGED, entry_uuid);
+  }
+
   m_bState = true;
   return 0;
 }
@@ -300,6 +306,12 @@ void DBPrefsCommand::Undo()
 
   PWSprefs::GetInstance()->Load(m_sxOldDBPrefs);
   m_pcomInt->SetDBPrefsChanged(m_bOldState);
+
+  if (m_bNotifyGUI) {
+    uuid_array_t entry_uuid = {'0'}; // dummy
+    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DB_PREFERENCES_CHANGED, entry_uuid);
+  }
+
   m_bState = false;
 }
 
@@ -419,10 +431,8 @@ int EditEntryCommand::Execute()
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
-    // Set last parameter != 0 to prevent updating GUI until after the Add
-    // XXX WTF ?!?!
     m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid,
-                                      (CItemData::FieldType)-1);
+                                      CItemData::END, false);
   }
   m_pcomInt->DoDeleteEntry(m_old_ci);
 
@@ -452,10 +462,8 @@ void EditEntryCommand::Undo()
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_new_ci.GetUUID(entry_uuid);
-    // Set last parameter != 0 to prevent updating GUI until after the Add
-    // XXX WTF ?!?
     m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid,
-                                      (CItemData::FieldType)-1);
+                                      CItemData::END, false);
   }
   m_pcomInt->DoDeleteEntry(m_new_ci);
 

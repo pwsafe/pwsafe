@@ -683,7 +683,7 @@ private:
   void DatabaseModified(bool bChanged);
   void UpdateGUI(Command::GUI_Action ga,
                  uuid_array_t &entry_uuid,
-                 CItemData::FieldType ft);
+                 CItemData::FieldType ft, bool bUpdateGUI);
   void GUIUpdateEntry(CItemData &ci);
   void GUICommandInterface(Command::ExecuteFn when, PWSGUICmdIF *pGUICmdIF);
 
@@ -751,11 +751,11 @@ private:
   void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
 
-  void RemoveFromGUI(CItemData &ci, LPARAM lparam = NULL);
+  void RemoveFromGUI(CItemData &ci, bool bUpdateGUI);
   void AddToGUI(CItemData &ci);
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
-  void RebuildGUI();
+  void RebuildGUI(const int iView = iBothViews);
   
   static const struct UICommandTableEntry {
     UINT ID;

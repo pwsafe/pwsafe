@@ -55,8 +55,8 @@ public:
   static void SetReporter(Reporter *reporter) {m_Reporter = reporter;}
   
   // prefString is stored in database file, format described in PWSprefs.cpp
-  void Load(const StringX &prefString);
-  StringX Store(); // returns string for saving in file
+  void Load(const StringX &prefString, bool bUseCopy = false);
+  StringX Store(bool bUseCopy = false); // returns string for saving in file
 
   void SaveApplicationPreferences();
   void SaveShortcuts();
@@ -157,9 +157,10 @@ public:
   int GetMRUList(stringT *MRUFiles);
   int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
 
-  void SetPref(BoolPrefs pref_enum, bool value);
-  void SetPref(IntPrefs pref_enum, unsigned int value);
-  void SetPref(StringPrefs pref_enum, const StringX &value);
+  void SetUpCopyDBprefs();
+  void SetPref(BoolPrefs pref_enum, bool value, bool bUseCopy = false);
+  void SetPref(IntPrefs pref_enum, unsigned int value, bool bUseCopy = false);
+  void SetPref(StringPrefs pref_enum, const StringX &value, bool bUseCopy = false);
 
   void ResetPref(BoolPrefs pref_enum);
   void ResetPref(IntPrefs pref_enum);
@@ -180,7 +181,11 @@ public:
 
   // for OptionSystem property sheet - support removing registry traces
   bool OfferDeleteRegistry() const;
-  void DeleteRegistryEntries();  
+  void DeleteRegistryEntries();
+
+  // Default User information from supplied DB preference string
+  void GetDefaultUserInfo(const StringX &sxDBPreferences,
+                          bool &bIsDefUserSet, StringX &sxDefUserValue);
 
   static bool LockCFGFile(const stringT &filename, stringT &locker);
   static void UnlockCFGFile(const stringT &filename);
@@ -237,6 +242,12 @@ private:
   bool m_boolChanged[NumBoolPrefs];
   bool m_intChanged[NumIntPrefs];
   bool m_stringChanged[NumStringPrefs];
+
+  // COPIES of current values - used to generate DB preference string for database
+  // without actually updating the preferences
+  bool m_boolCopyValues[NumBoolPrefs];
+  unsigned int m_intCopyValues[NumIntPrefs];
+  StringX m_stringCopyValues[NumStringPrefs];
 
   stringT *m_MRUitems;
   std::vector<st_prefShortcut> m_vShortcuts;
