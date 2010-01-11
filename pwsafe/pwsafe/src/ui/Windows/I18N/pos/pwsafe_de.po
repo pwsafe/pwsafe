@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-01-09 00:42+0100\n"
+"PO-Revision-Date: 2010-01-11 11:09+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "  Feld ist zu kurz."
 
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
-msgstr "  Datum bzw. Uhreit ungültig."
+msgstr "  Datum bzw. Uhrzeit ungültig."
 
 #. Resource IDs: (191)
 msgid "  Invalid field separator character found - only a single blank is allowed between fields."
@@ -73,7 +73,7 @@ msgstr "  Ungültiger Header: \"%s\"."
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
-msgstr "  Ungültige Anzahl alter gespeicherter Passworter %d."
+msgstr "  Ungültige Anzahl alter gespeicherter Passwörter %d."
 
 #. Resource IDs: (190)
 msgid "  Invalid password length found."
@@ -778,7 +778,7 @@ msgstr "&Zeige Report"
 
 #. Resource IDs: (32126)
 msgid "&Virtual Keyboard Font"
-msgstr "&Virtuelle Tastatur Schrifart"
+msgstr "&Virtuelle Tastatur Schriftart"
 
 #. Resource IDs: (32013, 32015)
 msgid "&XML format..."
@@ -798,7 +798,7 @@ msgstr "'Alt Gr' (rechte Alt) Taste"
 
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "'Zwischenablage nach Minimieren löschen' und Doppelklick von 'Passwort in die Zwischenablage kopieren, minimieren' widersprechen sich. Bitte ändern sie eines oder beide."
+msgstr "'Zwischenablage nach Minimieren löschen' und Doppelklick von 'Passwort in Zwischenablage kopieren, minimieren' widersprechen sich. Bitte ändern sie eines oder beide."
 
 #. Resource IDs: (358)
 msgid ""
@@ -1208,7 +1208,7 @@ msgstr "Fataler Fehler aufgetreten: "
 
 #. Resource IDs: (211)
 msgid "A filter was active. Export of data was restricted to include only those displayed."
-msgstr "Ein Filter war aktiv. Der Export wurde beschänkt auf die angezeigten Elemente."
+msgstr "Ein Filter war aktiv. Der Export wurde beschränkt auf die angezeigten Elemente."
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1360,7 +1360,7 @@ msgstr "Immer im Vordergrund"
 
 #. Resource IDs: (342)
 msgid "An alias cannot refer to itself!"
-msgstr "Ein Alias kann nicht auf sichselbst verweisen!"
+msgstr "Ein Alias kann nicht auf sich selbst verweisen!"
 
 #. Resource IDs: (3867, 3868)
 #, c-format
@@ -1455,7 +1455,7 @@ msgstr "Sind Sie sicher dass Sie den ausgewählten Eintrag löschen möchten?"
 
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
-msgstr "Sind Sie sicher dass Sie die ausgewählten Gruppe löschen möchten?"
+msgstr "Sind Sie sicher dass Sie die ausgewählte Gruppe löschen möchten?"
 
 #. Resource IDs: (515)
 msgid "Armenian Eastern"
@@ -1682,7 +1682,7 @@ msgstr "Kann keine lock-Datei erzeugen - keine Rechte im Verzeichnis?"
 
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
-msgstr "Bearbeitung nciht möglich, weil der Eintrag aus der aktuellen Datenbank gelöscht wurde."
+msgstr "Bearbeitung nicht möglich, weil der Eintrag aus der aktuellen Datenbank gelöscht wurde."
 
 #. Resource IDs: (331)
 msgid "Cannot verify old safe combination - file gone?"
@@ -1963,7 +1963,7 @@ msgstr "Löschen von Elementen bestätigen"
 
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
-msgstr "Kopieren von Elementen in Zwischenablage bestätigen"
+msgstr "Kopieren von Elementen in die Zwischenablage bestätigen"
 
 #. Resource IDs: (340)
 #, c-format
@@ -2013,7 +2013,7 @@ msgstr "Ben&utzername in Zwischenablage kopieren"
 
 #. Resource IDs: (332)
 msgid "Copy &Username to clipboard"
-msgstr "Kopiere Ben&utzername in Zwischenablage"
+msgstr "Ben&utzername in Zwischenablage kopieren"
 
 #. Resource IDs: (1174)
 msgid "Copy All"
@@ -2025,7 +2025,7 @@ msgstr "Hierher kopieren"
 
 #. Resource IDs: (32080)
 msgid "Copy Run Command to Clipboard"
-msgstr "Kommando Ausführen in Zwischenablage kopieren"
+msgstr "Auszuführendes Kommando in Zwischenablage kopieren"
 
 #. Resource IDs: (32070)
 msgid "Copy UR&L to Clipboard"
@@ -2037,7 +2037,7 @@ msgstr "URL in Zwischenablage kopieren"
 
 #. Resource IDs: (332)
 msgid "Copy URL to clipboard"
-msgstr "Kopiere URL in Zwischenablage"
+msgstr "URL in Zwischenablage kopieren"
 
 #. Resource IDs: (32071)
 msgid "Copy email to Clipboard"
@@ -2049,19 +2049,19 @@ msgstr "Email in Zwischenablage kopieren"
 
 #. Resource IDs: (325)
 msgid "Copy notes to clipboard"
-msgstr "Notizen in die Zwischenablage kopieren"
+msgstr "Notizen in Zwischenablage kopieren"
 
 #. Resource IDs: (325)
 msgid "Copy password to clipboard"
-msgstr "Passwort in die Zwischenablage kopieren"
+msgstr "Passwort in Zwischenablage kopieren"
 
 #. Resource IDs: (325)
 msgid "Copy password to clipboard, minimize"
-msgstr "Passwort in die Zwischenablage kopieren, minimieren"
+msgstr "Passwort in Zwischenablage kopieren, minimieren"
 
 #. Resource IDs: (1150)
 msgid "Copy to Clipboard"
-msgstr "In die Zwischenablage kopieren"
+msgstr "In Zwischenablage kopieren"
 
 #. Resource IDs: (32222)
 msgid "Copy to Comparison DB ->"
@@ -2073,7 +2073,7 @@ msgstr "Zur DB kopieren"
 
 #. Resource IDs: (325)
 msgid "Copy username to clipboard"
-msgstr "Benutzername in die Zwischenablage kopieren"
+msgstr "Benutzername in Zwischenablage kopieren"
 
 #. Resource IDs: (1218)
 msgid "Copyright Notice"
@@ -2082,7 +2082,7 @@ msgstr "Copyright-Hinweis"
 #. Resource IDs: (326)
 #, c-format
 msgid "Could not access file: %s"
-msgstr "Kein Zugriif auf Datei: %s"
+msgstr "Kein Zugriff auf Datei: %s"
 
 #. Resource IDs: (3857)
 msgid "Could not start print job."
@@ -2219,7 +2219,7 @@ msgstr "Datenbank Unique ID:"
 
 #. Resource IDs: (65535)
 msgid "Database format:"
-msgstr "Databankformat:"
+msgstr "Datenbankformat:"
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -2287,7 +2287,7 @@ msgstr "Einige Einträge abwählen"
 
 #. Resource IDs: (3859)
 msgid "Destination disk drive is full."
-msgstr "Zeilfestplatte ist voll."
+msgstr "Zielfestplatte ist voll."
 
 #. Resource IDs: (337)
 msgid "Destination location does not exist or is not accessible."
@@ -2390,7 +2390,7 @@ msgstr "Eintrag doppelklicken um Benutzername zu kopieren"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Run Command"
-msgstr "Eintrag doppelklicken um Befehl auszuführen"
+msgstr "Eintrag doppelklicken um Kommando auszuführen"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to Send email"
@@ -2559,12 +2559,12 @@ msgstr "Eintrag der Zeile %d enthält ein ungültiges Feld \"%s \". Es wurde ign
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry on line %d with Group=\"%s\", Title=\"%s\", User=\"%s\" already exists. Added imported entry with title=\"%s\"."
-msgstr "Eintrag in zeile %d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingefügt."
+msgstr "Eintrag in Zeile %d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingefügt."
 
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry on line %d with no group, Title=\"%s\", User=\"%s\" already exists. Added imported entry with title=\"%s\"."
-msgstr "Eintrag in zeile %d ohne Gruppe, Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingefügt."
+msgstr "Eintrag in Zeile %d ohne Gruppe, Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingefügt."
 
 #. Resource IDs: (359)
 msgid "Entry status"
@@ -2619,7 +2619,7 @@ msgstr "Fehler beim Parsen des auszuführenden Kommandos"
 
 #. Resource IDs: (212, 333)
 msgid "Error while writing file! Try saving in a different location"
-msgstr "Fehler während des Sxhreibens einer Datei! Versuchen Sie abzuspeichern an einer anderen Stelle"
+msgstr "Fehler während des Schreibens einer Datei! Versuchen Sie an einer anderen Stelle abzuspeichern"
 
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
@@ -2695,7 +2695,7 @@ msgstr "Erstellen eines leeren Dokuments fehlgeschlagen."
 
 #. Resource IDs: (3857)
 msgid "Failed to launch help."
-msgstr "Start der Hilfe gehlgeschlagen."
+msgstr "Start der Hilfe fehlgeschlagen."
 
 #. Resource IDs: (208)
 msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
@@ -2850,7 +2850,7 @@ msgstr "Finnisch mit Samisch"
 
 #. Resource IDs: (210)
 msgid "First character of variable name must be alphabetic"
-msgstr "Erstes Zeichen einer Variablen muss alfabetisch sein"
+msgstr "Erstes Zeichen einer Variablen muss alphabetisch sein"
 
 #. Resource IDs: (32102)
 msgid "Flattened &List"
@@ -3047,11 +3047,11 @@ msgstr "Hilfe (F1)"
 
 #. Resource IDs: (350)
 msgid "Hexadecimal characters"
-msgstr "Hexadecimale Zeichen"
+msgstr "Hexadezimale Zeichen"
 
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options!"
-msgstr "Hexadecimal schliesst alle andere Optionen aus!"
+msgstr "Hexadezimal schließt alle anderen Optionen aus!"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
@@ -3312,7 +3312,7 @@ msgstr "Falsches Master-Passwort"
 
 #. Resource IDs: (331)
 msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"
-msgstr "Falsches Master-Passwort, keine Password Safe-Datenbank oder Datenbank korrupt. (Die Zwischen-Sicherung der Datenbank hat den selben Namen wie das Original, mit angehängten '~')"
+msgstr "Falsches Master-Passwort, keine Password Safe-Datenbank oder Datenbank korrupt. (Die Zwischen-Sicherung der Datenbank hat denselben Namen wie das Original, mit angehängten '~')"
 
 #. Resource IDs: (204)
 msgid "Incorrect password"
@@ -3325,7 +3325,7 @@ msgstr "Hochgezählte Nummer [001-999]"
 #. Resource IDs: (354)
 #, c-format
 msgid "Index is bigger than password length (%d)."
-msgstr "Index ist grösser als die Passwortlänge (%d)."
+msgstr "Index ist größer als die Passwortlänge (%d)."
 
 #. Resource IDs: (210)
 msgid "Index is invalid or missing"
@@ -3450,7 +3450,7 @@ msgstr "die"
 
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
-msgstr "Tastatur type:"
+msgstr "Tastatur Typ:"
 
 #. Resource IDs: (521)
 msgid "Korean"
@@ -3551,7 +3551,7 @@ msgstr "Liste"
 
 #. Resource IDs: (119)
 msgid "List of Expired Passwords"
-msgstr "Liste der abgelaufenene Passwörter"
+msgstr "Liste der abgelaufenen Passwörter"
 
 #. Resource IDs: (1012, 1257, 1303, 1347)
 msgid "List1"
@@ -3587,11 +3587,11 @@ msgstr "Passwortdatenbank sperren wenn Computer gesperrt"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
-msgstr "Mail system DLL ist ungültig."
+msgstr "Mailsystem DLL ist ungültig."
 
 #. Resource IDs: (32152)
 msgid "Make Backup"
-msgstr "Sicherung erstelllen"
+msgstr "Sicherung erstellen"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -3648,7 +3648,7 @@ msgstr "Max. gespeicherte Nummer"
 
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
-msgstr "Maximaler Wert für die erste Zahl und 'Zwsischen'-Regel"
+msgstr "Maximaler Wert für die erste Zahl und 'Zwischen'-Regel"
 
 #. Resource IDs: (356)
 msgid "Menu Item"
@@ -3677,15 +3677,15 @@ msgstr "Minimales Zählzeichen"
 
 #. Resource IDs: (349)
 msgid "Minimum lowercase characters"
-msgstr "Minumum Anzahl Kleinbuchstaben"
+msgstr "Minimum Anzahl Kleinbuchstaben"
 
 #. Resource IDs: (350)
 msgid "Minimum symbol characters"
-msgstr "Minumum Anzahl Symbole"
+msgstr "Minimum Anzahl Symbole"
 
 #. Resource IDs: (349)
 msgid "Minimum uppercase characters"
-msgstr "Minumum Anzahl Grossbuchstaben"
+msgstr "Minimum Anzahl Grossbuchstaben"
 
 #. Resource IDs: (139)
 msgid "Misc."
@@ -3775,7 +3775,7 @@ msgstr "Neues Master-Passwort:"
 
 #. Resource IDs: (343)
 msgid "New Version Found!"
-msgstr "Neue Version verfübgar!"
+msgstr "Neue Version verfügbar!"
 
 #. Resource IDs: (331)
 msgid "New safe combination and confirmation do not match"
@@ -3795,7 +3795,7 @@ msgstr "Keine Änderung"
 
 #. Resource IDs: (351)
 msgid "No criteria defined"
-msgstr "Keine Kriteria definiert"
+msgstr "Keine Kriterien definiert"
 
 #. Resource IDs: (335)
 msgid "No database open with which to compare against another database!"
@@ -3899,7 +3899,7 @@ msgstr "Hinweis: Format eines Eintrages ist »Gruppe»Titel»Benutzername»"
 
 #. Resource IDs: (211)
 msgid "Note: These preferences are only used when importing into an empty database."
-msgstr "Hinweis: diese Präferenzen werden nur beim Improtieren in einer leeren Datenbank verwendet."
+msgstr "Hinweis: diese Präferenzen werden nur beim Importieren in einer leeren Datenbank verwendet."
 
 #. Resource IDs: (189, 327)
 msgid "Notes"
@@ -4273,7 +4273,7 @@ msgstr "Physische Tastatur:"
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
-msgstr "Wählen Sie eine Sicherungdatei zum Wiederherstellen aus:"
+msgstr "Wählen Sie eine Sicherungsdatei zum Wiederherstellen aus:"
 
 #. Resource IDs: (335)
 msgid "Please Choose a Database to Compare with current open database"
@@ -4281,7 +4281,7 @@ msgstr "Bitte wählen Sie eine Datenbank zum Vergleich mit der aktuell geöffnet
 
 #. Resource IDs: (335)
 msgid "Please Choose a Database to Merge into current database"
-msgstr "Bitte wählen Sie eine Datenbank zur Zusammenführung mit der aktuel geöffneten aus"
+msgstr "Bitte wählen Sie eine Datenbank zur Zusammenführung mit der aktuell geöffneten aus"
 
 #. Resource IDs: (333)
 msgid "Please Choose a Database to Open:"
@@ -4289,7 +4289,7 @@ msgstr "Bitte wählen Sie eine Datenbank zum Öffnen aus:"
 
 #. Resource IDs: (360)
 msgid "Please Choose a Database to Synchonize with current database"
-msgstr "Bitte wählen Sie eine Datenbank zum Synchronisieren mit der aktuel geöffneten aus"
+msgstr "Bitte wählen Sie eine Datenbank zum Synchronisieren mit der aktuell geöffneten aus"
 
 #. Resource IDs: (334)
 msgid "Please Choose a KeePass Text File to Import"
@@ -4305,7 +4305,7 @@ msgstr "Bitte wählen sie eine Textdatei zum Importieren aus"
 
 #. Resource IDs: (334)
 msgid "Please Choose a XML File to Import"
-msgstr "Bitte wählen sie eine XML-datei zum Importieren aus"
+msgstr "Bitte wählen sie eine XML-Datei zum Importieren aus"
 
 #. Resource IDs: (333)
 msgid "Please choose a name for the current (Untitled) database:"
@@ -4346,7 +4346,7 @@ msgstr "Bitte Währung eingeben."
 
 #. Resource IDs: (3858)
 msgid "Please enter a date and/or time."
-msgstr "Bitte Datum und/oder Uhreit eingeben."
+msgstr "Bitte Datum und/oder Uhrzeit eingeben."
 
 #. Resource IDs: (3858)
 msgid "Please enter a date."
@@ -4441,7 +4441,7 @@ msgstr "Bitte Text angeben"
 
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
-msgstr "Bitte wählen Sie den Speicherort für alle Sicherungsdateieen aus."
+msgstr "Bitte wählen Sie den Speicherort für alle Sicherungsdateien aus."
 
 #. Resource IDs: (345)
 #, c-format
@@ -4482,7 +4482,7 @@ msgid ""
 "\r\n"
 "Pressing Cancel stops the password being copied."
 msgstr ""
-"Mit Drücken von OK wird das Passwort des ausgewählten Eintrages in die Zwischenablage kopiert. Die Zwischenablage wird sicher gelöscht, falls Password Safe schliest.\r\n"
+"Mit Drücken von OK wird das Passwort des ausgewählten Eintrages in die Zwischenablage kopiert. Die Zwischenablage wird sicher gelöscht, falls Password Safe schließt.\r\n"
 "\r\n"
 "Mit Drücken von Abbrechen wird das Kopieren des Passwortes angehalten."
 
@@ -4669,20 +4669,20 @@ msgstr "Rechte Strg Taste"
 
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
-msgstr "Rumenisch (Legacy)"
+msgstr "Rumänisch (Legacy)"
 
 #. Resource IDs: (520)
 msgid "Romanian (Programmers)"
-msgstr "Rumenisch (Programmierer)"
+msgstr "Rumänisch (Programmierer)"
 
 #. Resource IDs: (519)
 msgid "Romanian (Standard)"
-msgstr "Rumenisch (Standard)"
+msgstr "Rumänisch (Standard)"
 
 #. Resource IDs: (348)
 #, c-format
 msgid "Row %d is incomplete. Please ensure both Field and Criteria are set."
-msgstr "Zeile %d ist unvollständig. Stellen sie sicher das Feld und Kriteria gesetzt sind."
+msgstr "Zeile %d ist unvollständig. Stellen sie sicher das Feld und Kriterien gesetzt sind."
 
 #. Resource IDs: (351)
 msgid "Row number"
@@ -4710,7 +4710,7 @@ msgstr "Kommando ausführen\t"
 
 #. Resource IDs: (355)
 msgid "RunCmd copied "
-msgstr "Auszuführender Befehl kopiert"
+msgstr "Auszuführendes Kommando kopiert"
 
 #. Resource IDs: (514)
 msgid "Russian"
@@ -4887,7 +4887,7 @@ msgstr "Einige Einträge auswählen"
 
 #. Resource IDs: (1153)
 msgid "Selected"
-msgstr "Ausgewält"
+msgstr "Ausgewählt"
 
 #. Resource IDs: (65535)
 msgid "Selected Fields:"
@@ -4982,7 +4982,7 @@ msgstr "Schriftart setzen von Baum/Liste"
 
 #. Resource IDs: (357)
 msgid "Set Virtual Keyboard font"
-msgstr "Schrifart der virtuellen Tastatur setzen"
+msgstr "Schriftart der virtuellen Tastatur setzen"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
@@ -5079,7 +5079,7 @@ msgstr "Ungültiger Befehl Signal"
 
 #. Resource IDs: (1390)
 msgid "Signal Terminate"
-msgstr "Beenden signal"
+msgstr "Beenden Signal"
 
 #. Resource IDs: (334)
 #, c-format
@@ -5088,15 +5088,15 @@ msgstr "%d %s übersprungen"
 
 #. Resource IDs: (514)
 msgid "Slovak"
-msgstr "Slovakisch"
+msgstr "Slowakisch"
 
 #. Resource IDs: (519)
 msgid "Slovak (QWERTY)"
-msgstr "Slovakisch (QWERTY)"
+msgstr "Slowakisch (QWERTY)"
 
 #. Resource IDs: (515)
 msgid "Slovenian"
-msgstr "Slovenisch"
+msgstr "Slowenisch"
 
 #. Resource IDs: (1383)
 msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
@@ -5475,7 +5475,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
-msgstr "Das Master-Passwort wurde drei mal ohne Erfolg eingegeben. Wenn Sie sie nicht wissen, können Sie entweder eine andere Passwortdatenbank probieren zu öffnen oder eine neue, leere Passwortdatenbank anlegen."
+msgstr "Das Master-Passwort wurde dreimal ohne Erfolg eingegeben. Wenn Sie sie nicht wissen, können Sie entweder eine andere Passwortdatenbank probieren zu öffnen oder eine neue, leere Passwortdatenbank anlegen."
 
 #. Resource IDs: (329)
 msgid "The two entries do not match."
@@ -5660,7 +5660,7 @@ msgstr "Toolleiste &sichtbar"
 
 #. Resource IDs: (1284)
 msgid "Treat fields that only contain 'whitespace' as empty"
-msgstr "Behandele Felder die nur 'whitespace' enhalten als seien sie leer."
+msgstr "Behandele Felder die nur 'whitespace' enthalten als seien sie leer."
 
 #. Resource IDs: (1013)
 msgid "Tree1"
@@ -5772,7 +5772,7 @@ msgstr "Kann die Konfigurationsdatei nicht öffnen"
 
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
-msgstr "Kann die email-Unterstützung nicht starten."
+msgstr "Kann die Email-Unterstützung nicht starten."
 
 #. Resource IDs: (3859)
 #, c-format
@@ -5915,7 +5915,7 @@ msgstr "Unbenannt"
 #. Resource IDs: (359)
 #, c-format
 msgid "Updated %d %s"
-msgstr "Aktualistiert %d %s"
+msgstr "Aktualisiert %d %s"
 
 #. Resource IDs: (515)
 msgid "Urdu"
@@ -6009,7 +6009,7 @@ msgstr "Benutze die hier eingestellte Anwendung um die URL eines Eintrags aufzur
 
 #. Resource IDs: (1376)
 msgid "Use the policy below:"
-msgstr "Verwende die Richlinie unten:"
+msgstr "Verwende die Richtlinie unten:"
 
 #. Resource IDs: (327)
 msgid "User Name"
@@ -6064,7 +6064,7 @@ msgstr "Variablenname ist leer"
 
 #. Resource IDs: (210)
 msgid "Variable name must be alphanumeric"
-msgstr "Variablenname muss alfabetisch sein"
+msgstr "Variablenname muss alphabetisch sein"
 
 #. Resource IDs: (65535)
 msgid "Verify Key:"
@@ -6158,7 +6158,7 @@ msgstr ""
 
 #. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
-msgstr "Wannimmer"
+msgstr "Wann immer"
 
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
@@ -6249,7 +6249,7 @@ msgstr "Datenbank muss vor dem Exportieren zuerst gespeichert werden."
 #. Resource IDs: (357)
 #, c-format
 msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
-msgstr "Die erforderliche Schrifart '%s' ist in diesem System nicht installiert. Es wird '%s' verwendet."
+msgstr "Die erforderliche Schriftart '%s' ist in diesem System nicht installiert. Es wird '%s' verwendet."
 
 #. Resource IDs: (330)
 msgid "[No current database]"
@@ -6377,7 +6377,7 @@ msgid ""
 "Copy Run Command to Clipboard"
 msgstr ""
 "\n"
-"Kopiere auszuführendes Kommando in die Zwischenablage"
+"Auszuführendes Kommando in Zwischenablage kopieren"
 
 #. Resource IDs: (2004)
 msgid ""
