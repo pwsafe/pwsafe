@@ -220,16 +220,23 @@ void DboxMain::RedoDelete(WinGUICmdIF *pGUICmdIF)
 }
 
 void DboxMain::UpdateGUI(Command::GUI_Action ga, 
-                         uuid_array_t &entry_uuid, CItemData::FieldType ft)
+                         uuid_array_t &entry_uuid, CItemData::FieldType ft,
+                         bool bUpdateGUI)
 {
   // Callback from PWScore if GUI needs updating
-  // Note: For some values of 'ga', 'ci' is invalid and not used
+  // Note: For some values of 'ga', 'ci' & ft are invalid and not used.
+ 
+  // "bUpdateGUI" is only used by GUI_DELETE_ENTRY when called as part
+  // of the Edit Entry Command where the entry is deleted and then added and
+  // the GUI should not be updated until after the Add.
   CItemData *pci(NULL);
 
   ItemListIter pos = Find(entry_uuid);
   if (pos != End()) {
     pci = &pos->second;
   }
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
 
   switch (ga) {
     case Command::GUI_UPDATE_STATUSBAR:
@@ -240,7 +247,7 @@ void DboxMain::UpdateGUI(Command::GUI_Action ga,
       AddToGUI(*pci);
       break;
     case Command::GUI_DELETE_ENTRY:
-      RemoveFromGUI(*pci, LPARAM(ft)); // XXX WTF ?!?!
+      RemoveFromGUI(*pci, bUpdateGUI);
       break;
     case Command::GUI_REFRESH_ENTRYFIELD:
       RefreshEntryFieldInGUI(*pci, ft);
@@ -252,7 +259,24 @@ void DboxMain::UpdateGUI(Command::GUI_Action ga,
     case Command::GUI_UNDO_IMPORT:
     case Command::GUI_REDO_MERGESYNC:
     case Command::GUI_UNDO_MERGESYNC:
+      // During these processes, many entries may be added/removed
+      // To stop the UI going nuts, updates to the UI are suspended until
+      // the action is complete - when these calls are then sent
       RebuildGUI();
+      break;
+    case Command::GUI_REFRESH_TREE:
+      // Caused by Database preference changed about showing username and/or
+      // passwords in the Tree View
+      RebuildGUI(iTreeOnly);
+      break;
+    case Command::GUI_DB_PREFERENCES_CHANGED:
+      // Change any impact on the application due to a database preference change
+      // Currently - only Idle Timeout values
+      KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+      ResetIdleLockCounter();
+      if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout) == TRUE) {
+        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
+      }
       break;
     default:
       break;
@@ -3199,6 +3223,9 @@ void DboxMain::OnCustomizeToolbar()
 
   StringX cs_temp = LPCWSTR(m_MainToolBar.GetButtonString());
   PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
+
+  CItemData *pci = getSelectedItem();
+  UpdateToolBarForSelectedItem(pci);
 }
 
 void DboxMain::OnHideFindToolBar()
@@ -3943,7 +3970,7 @@ void DboxMain::AddToGUI(CItemData &ci)
   RefreshViews();
 }
 
-void DboxMain::RemoveFromGUI(CItemData &ci, LPARAM lparam)
+void DboxMain::RemoveFromGUI(CItemData &ci, bool bUpdateGUI)
 {
   // RemoveFromGUI should always occur BEFORE the entry is deleted!
   uuid_array_t entry_uuid;
@@ -3962,8 +3989,7 @@ void DboxMain::RemoveFromGUI(CItemData &ci, LPARAM lparam)
          pdi2->tree_item == pdi->tree_item);
 
   if (pdi != NULL) {
-    if (lparam != NULL) {
-      // Last parameter != 0 to prevent updating GUI until after the Add
+    if (bUpdateGUI) {
       HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
                              TVGN_PREVIOUSVISIBLE);
       m_ctlItemTree.SelectItem(hItem);
@@ -3972,7 +3998,7 @@ void DboxMain::RemoveFromGUI(CItemData &ci, LPARAM lparam)
     m_ctlItemList.DeleteItem(pdi->list_index);
     m_ctlItemTree.DeleteWithParents(pdi->tree_item);
 
-    if (lparam != NULL) {
+    if (bUpdateGUI) {
       FixListIndexes();
 
       // Make controls redraw
@@ -4019,10 +4045,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
   }
 }
 
-void DboxMain::RebuildGUI()
+void DboxMain::RebuildGUI(const int iView)
 {
-  m_ctlItemList.DeleteAllItems();
-  m_mapGroupToTreeItem.clear();
-  m_ctlItemTree.DeleteAllItems();
-  RefreshViews();
+  RefreshViews(iView);
 }

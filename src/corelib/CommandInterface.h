@@ -83,7 +83,8 @@ class CommandInterface {
 
   virtual void NotifyGUINeedsUpdating(Command::GUI_Action,
                                       uuid_array_t &,
-                                      CItemData::FieldType ft = CItemData::FieldType(0)) = 0;
+                                      CItemData::FieldType ft = CItemData::START,
+                                      bool bUpdateGUI = true) = 0;
   virtual void CallGUICommandInterface(Command::ExecuteFn,
                                        PWSGUICmdIF *) = 0;
 

@@ -71,12 +71,6 @@ public:
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
   static void SetAsker(Asker *pAsker) {m_pAsker = pAsker;}
 
-  // Get/Set Default User use/value
-  bool GetUseDefUser() const {return m_usedefuser;}
-  void SetUseDefUser(bool bUseDefUser) {m_usedefuser = bUseDefUser;}
-  StringX GetDefUsername() const {return m_defusername;}
-  void SetDefUsername(const StringX &sxdefuser) {m_defusername = sxdefuser;}
-
   // Get/Set File UUIDs
   void ClearFileUUID();
   void SetFileUUID(uuid_array_t &file_uuid_array);
@@ -270,7 +264,8 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
-  
+  StringX &GetDBPreferences() {return m_hdr.m_prefString;}
+
   // Filters
   PWSFilters m_MapFilters;
 
@@ -342,9 +337,6 @@ private:
   int m_LockCount;
   int m_LockCount2;
 
-  bool m_usedefuser;
-  StringX m_defusername;
-
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
 
@@ -397,7 +389,8 @@ private:
   UIInterFace *m_pUIIF; // pointer to UI interface abtraction
   
   void NotifyGUINeedsUpdating(Command::GUI_Action, uuid_array_t &,
-                              CItemData::FieldType ft = CItemData::FieldType(0));
+                              CItemData::FieldType ft = CItemData::START,
+                              bool bUpdateGUI = true);
   void CallGUICommandInterface(Command::ExecuteFn, PWSGUICmdIF *);
 
   // Create header for included(Text) and excluded(XML) exports

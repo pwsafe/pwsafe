@@ -55,6 +55,8 @@ public:
     GUI_UNDO_IMPORT,
     GUI_REDO_MERGESYNC,
     GUI_UNDO_MERGESYNC,
+    GUI_REFRESH_TREE,
+    GUI_DB_PREFERENCES_CHANGED,
   };
 
   enum ExecuteFn {

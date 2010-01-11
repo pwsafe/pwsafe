@@ -229,25 +229,25 @@ void DboxMain::OnOptions()
 {
   const CString PWSLnkName(L"Password Safe"); // for startup shortcut
 
-  COptions_PropertySheet  optionsPS(IDS_OPTIONS, this);
-  COptionsDisplay         display;
-  COptionsSecurity        security;
-  COptionsPasswordPolicy  passwordpolicy;
+  COptions_PropertySheet optionsPS(IDS_OPTIONS, this);
+  COptionsBackup backup;
+  COptionsDisplay display;
+  COptionsMisc misc;
   COptionsPasswordHistory passwordhistory;
-  COptionsSystem          system;
-  COptionsMisc            misc;
-  COptionsBackup          backup;
-  COptionsShortcuts       shortcuts;
+  COptionsPasswordPolicy passwordpolicy;
+  COptionsSecurity security;
+  COptionsShortcuts shortcuts;
+  COptionsSystem system;
 
-  PWSprefs               *prefs = PWSprefs::GetInstance();
-  BOOL                    prevLockOIT; // lock On Idle Iimeout set?
-  BOOL                    prevLockOWL; // lock On Window Lock set?
-  BOOL                    brc, save_hotkey_enabled;
-  BOOL                    save_preexpirywarn;
-  BOOL                    save_highlightchanges;
-  DWORD                   save_hotkey_value;
-  int                     save_preexpirywarndays;
-  UINT                    prevLockInterval;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  BOOL prevLockOIT; // lock On Idle Iimeout set?
+  BOOL prevLockOWL; // lock On Window Lock set?
+  BOOL brc, save_hotkey_enabled;
+  BOOL save_preexpirywarn;
+  BOOL save_highlightchanges;
+  DWORD save_hotkey_value;
+  int save_preexpirywarndays;
+  UINT prevLockInterval;
   CShortcut shortcut;
   BOOL StartupShortcutExists = shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
 
@@ -259,21 +259,25 @@ void DboxMain::OnOptions()
   const bool bOldExplorerTypeTree = 
                prefs->GetPref(PWSprefs::ExplorerTypeTree);
   /*
-  **  Initialize the property pages values.
+  ** Initialize the property pages values.
+  ** In PropertyPage alphabetic order
   */
-  system.m_maxreitems = prefs->
-    GetPref(PWSprefs::MaxREItems);
-  system.m_usesystemtray = prefs->
-    GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
-  system.m_maxmruitems = prefs->
-    GetPref(PWSprefs::MaxMRUItems);
-  system.m_mruonfilemenu = prefs->
-    GetPref(PWSprefs::MRUOnFileMenu);
-  system.m_startup = StartupShortcutExists;
-  system.m_defaultopenro = prefs->
-    GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
-  system.m_multipleinstances = prefs->
-    GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
+  backup.SetCurFile(m_core.GetCurFile().c_str());
+  backup.m_saveimmediately = prefs->
+    GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
+  backup.m_backupbeforesave = prefs->
+    GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
+  CString backupPrefix(prefs->
+                       GetPref(PWSprefs::BackupPrefixValue).c_str());
+  backup.m_backupprefix = backupPrefix.IsEmpty() ? 0 : 1;
+  backup.m_userbackupprefix = backupPrefix;
+  backup.m_backupsuffix = prefs->
+    GetPref(PWSprefs::BackupSuffix);
+  backup.m_maxnumincbackups = prefs->
+    GetPref(PWSprefs::BackupMaxIncremented);
+  CString backupDir(prefs->GetPref(PWSprefs::BackupDir).c_str());
+  backup.m_backuplocation = backupDir.IsEmpty() ? 0 : 1;
+  backup.m_userbackupotherlocation = backupDir;
 
   display.m_alwaysontop = prefs->
     GetPref(PWSprefs::AlwaysOnTop) ? TRUE : FALSE;
@@ -303,8 +307,6 @@ void DboxMain::OnOptions()
   display.m_dcshowspassword = prefs->
     GetPref(PWSprefs::DCShowsPassword) ? TRUE : FALSE;
 #endif
-  // by strange coincidence, the values of the enums match the indices
-  // of the radio buttons in the following :-)
   display.m_treedisplaystatusatopen = prefs->
     GetPref(PWSprefs::TreeDisplayStatusAtOpen);
   display.m_trayiconcolour = prefs->
@@ -313,59 +315,12 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::HighlightChanges);
   save_highlightchanges = display.m_highlightchanges;
 
-  security.m_clearclipboardonminimize = prefs->
-    GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
-  security.m_clearclipboardonexit = prefs->
-    GetPref(PWSprefs::ClearClipboardOnExit) ? TRUE : FALSE;
-  security.m_LockOnMinimize = prefs->
-    GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
-  security.m_confirmcopy = prefs->
-    GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
-  security.m_LockOnWindowLock = prevLockOWL = prefs->
-    GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
-  security.m_LockOnIdleTimeout = prevLockOIT = prefs->
-    GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
-  security.m_IdleTimeOut = prevLockInterval = prefs->
-    GetPref(PWSprefs::IdleTimeout);
-
-  passwordpolicy.m_pwuselowercase = prefs->
-    GetPref(PWSprefs::PWUseLowercase);
-  passwordpolicy.m_pwuseuppercase = prefs->
-    GetPref(PWSprefs::PWUseUppercase);
-  passwordpolicy.m_pwusedigits = prefs->
-    GetPref(PWSprefs::PWUseDigits);
-  passwordpolicy.m_pwusesymbols = prefs->
-    GetPref(PWSprefs::PWUseSymbols);
-  passwordpolicy.m_pwusehexdigits = prefs->
-    GetPref(PWSprefs::PWUseHexDigits);
-  passwordpolicy.m_pweasyvision = prefs->
-    GetPref(PWSprefs::PWUseEasyVision);
-  passwordpolicy.m_pwmakepronounceable = prefs->
-    GetPref(PWSprefs::PWMakePronounceable);
-  passwordpolicy.m_pwdefaultlength = prefs->
-    GetPref(PWSprefs::PWDefaultLength);
-  passwordpolicy.m_pwdigitminlength = prefs->
-    GetPref(PWSprefs::PWDigitMinLength);
-  passwordpolicy.m_pwlowerminlength = prefs->
-    GetPref(PWSprefs::PWLowercaseMinLength);
-  passwordpolicy.m_pwsymbolminlength = prefs->
-    GetPref(PWSprefs::PWSymbolMinLength);
-  passwordpolicy.m_pwupperminlength = prefs->
-    GetPref(PWSprefs::PWUppercaseMinLength);
-
-  passwordhistory.m_savepwhistory = prefs->
-    GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
-  passwordhistory.m_pwhistorynumdefault = prefs->
-    GetPref(PWSprefs::NumPWHistoryDefault);
-
   misc.m_confirmdelete = prefs->
     GetPref(PWSprefs::DeleteQuestion) ? FALSE : TRUE;
   misc.m_maintaindatetimestamps = prefs->
     GetPref(PWSprefs::MaintainDateTimeStamps) ? TRUE : FALSE;
   misc.m_escexits = prefs->
     GetPref(PWSprefs::EscExits) ? TRUE : FALSE;
-  // by strange coincidence, the values of the enums match the indices
-  // of the radio buttons in the following :-)
   misc.m_doubleclickaction = prefs->
     GetPref(PWSprefs::DoubleClickAction);
 
@@ -394,25 +349,67 @@ void DboxMain::OnOptions()
     dats = DEFAULT_AUTOTYPE;
   misc.m_csAutotype = CString(dats);
   misc.m_minauto = prefs->
-    GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;                               
+    GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;  
 
-  backup.SetCurFile(m_core.GetCurFile().c_str());
-  backup.m_saveimmediately = prefs->
-    GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
-  backup.m_backupbeforesave = prefs->
-    GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
-  CString backupPrefix(prefs->
-                       GetPref(PWSprefs::BackupPrefixValue).c_str());
-  backup.m_backupprefix = backupPrefix.IsEmpty() ? 0 : 1;
-  backup.m_userbackupprefix = backupPrefix;
-  backup.m_backupsuffix = prefs->
-    GetPref(PWSprefs::BackupSuffix);
-  backup.m_maxnumincbackups = prefs->
-    GetPref(PWSprefs::BackupMaxIncremented);
-  CString backupDir(prefs->GetPref(PWSprefs::BackupDir).c_str());
-  backup.m_backuplocation = backupDir.IsEmpty() ? 0 : 1;
-  backup.m_userbackupotherlocation = backupDir;
+  passwordhistory.m_savepwhistory = prefs->
+    GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
+  passwordhistory.m_pwhistorynumdefault = prefs->
+    GetPref(PWSprefs::NumPWHistoryDefault);
 
+  passwordpolicy.m_pwuselowercase = prefs->
+    GetPref(PWSprefs::PWUseLowercase);
+  passwordpolicy.m_pwuseuppercase = prefs->
+    GetPref(PWSprefs::PWUseUppercase);
+  passwordpolicy.m_pwusedigits = prefs->
+    GetPref(PWSprefs::PWUseDigits);
+  passwordpolicy.m_pwusesymbols = prefs->
+    GetPref(PWSprefs::PWUseSymbols);
+  passwordpolicy.m_pwusehexdigits = prefs->
+    GetPref(PWSprefs::PWUseHexDigits);
+  passwordpolicy.m_pweasyvision = prefs->
+    GetPref(PWSprefs::PWUseEasyVision);
+  passwordpolicy.m_pwmakepronounceable = prefs->
+    GetPref(PWSprefs::PWMakePronounceable);
+  passwordpolicy.m_pwdefaultlength = prefs->
+    GetPref(PWSprefs::PWDefaultLength);
+  passwordpolicy.m_pwdigitminlength = prefs->
+    GetPref(PWSprefs::PWDigitMinLength);
+  passwordpolicy.m_pwlowerminlength = prefs->
+    GetPref(PWSprefs::PWLowercaseMinLength);
+  passwordpolicy.m_pwsymbolminlength = prefs->
+    GetPref(PWSprefs::PWSymbolMinLength);
+  passwordpolicy.m_pwupperminlength = prefs->
+    GetPref(PWSprefs::PWUppercaseMinLength);
+
+  security.m_clearclipboardonminimize = prefs->
+    GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
+  security.m_clearclipboardonexit = prefs->
+    GetPref(PWSprefs::ClearClipboardOnExit) ? TRUE : FALSE;
+  security.m_LockOnMinimize = prefs->
+    GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
+  security.m_confirmcopy = prefs->
+    GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
+  security.m_LockOnWindowLock = prevLockOWL = prefs->
+    GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
+  security.m_LockOnIdleTimeout = prevLockOIT = prefs->
+    GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
+  security.m_IdleTimeOut = prevLockInterval = prefs->
+    GetPref(PWSprefs::IdleTimeout);
+
+  system.m_maxreitems = prefs->
+    GetPref(PWSprefs::MaxREItems);
+  system.m_usesystemtray = prefs->
+    GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
+  system.m_maxmruitems = prefs->
+    GetPref(PWSprefs::MaxMRUItems);
+  system.m_mruonfilemenu = prefs->
+    GetPref(PWSprefs::MRUOnFileMenu);
+  system.m_startup = StartupShortcutExists;
+  system.m_defaultopenro = prefs->
+    GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
+  system.m_multipleinstances = prefs->
+    GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
+                            
   shortcuts.InitialSetup(m_MapMenuShortcuts, m_MapKeyNameID,
                          m_ExcludedMenuItems,
                          m_ReservedShortcuts);
@@ -442,201 +439,110 @@ void DboxMain::OnOptions()
 
   if (rc == IDOK) {
     /*
-    **  Now save all the options.
+    **  Now save all the  Application preferences.
+    ** Do not update Database preferences - Command will do that later
     */
-    // But save database preferences first!
-    const bool bOldDBPrefChangedState = prefs->IsDBprefsChanged();
-    const StringX oldprefString(prefs->Store());
+
+    // Now update Application preferences
+    // In PropertyPage alphabetic order
+    prefs->SetPref(PWSprefs::BackupBeforeEverySave,
+                   backup.m_backupbeforesave == TRUE);
+    prefs->SetPref(PWSprefs::BackupPrefixValue,
+                   LPCWSTR(backup.m_userbackupprefix));
+    prefs->SetPref(PWSprefs::BackupSuffix,
+                   (unsigned int)backup.m_backupsuffix);
+    prefs->SetPref(PWSprefs::BackupMaxIncremented,
+                   backup.m_maxnumincbackups);
+    prefs->SetPref(PWSprefs::BackupDir,
+                   LPCWSTR(backup.m_userbackupotherlocation));
 
     prefs->SetPref(PWSprefs::AlwaysOnTop,
-      display.m_alwaysontop == TRUE);
-    prefs->SetPref(PWSprefs::ShowPWDefault,
-      display.m_pwshowinedit == TRUE);
-    prefs->SetPref(PWSprefs::ShowUsernameInTree,
-      display.m_showusernameintree == TRUE);
-    prefs->SetPref(PWSprefs::ShowPasswordInTree,
-      display.m_showpasswordintree == TRUE);
+                   display.m_alwaysontop == TRUE);
     prefs->SetPref(PWSprefs::ShowNotesAsTooltipsInViews,
-      display.m_shownotesastipsinviews == TRUE);
+                   display.m_shownotesastipsinviews == TRUE);
     prefs->SetPref(PWSprefs::ExplorerTypeTree,
-      display.m_explorertree == TRUE);
+                   display.m_explorertree == TRUE);
     prefs->SetPref(PWSprefs::ListViewGridLines,
-      display.m_enablegrid == TRUE);
-    prefs->SetPref(PWSprefs::ShowNotesDefault,
-      display.m_notesshowinedit == TRUE);
+                   display.m_enablegrid == TRUE);
     prefs->SetPref(PWSprefs::NotesWordWrap,
-      display.m_wordwrapnotes == TRUE);
+                   display.m_wordwrapnotes == TRUE);
     prefs->SetPref(PWSprefs::PreExpiryWarn,
-      display.m_preexpirywarn == TRUE);
+                   display.m_preexpirywarn == TRUE);
     prefs->SetPref(PWSprefs::PreExpiryWarnDays,
-      display.m_preexpirywarndays);
+                   display.m_preexpirywarndays);
 #if defined(POCKET_PC)
     prefs->SetPref(PWSprefs::DCShowsPassword,
-      display.m_dcshowspassword == TRUE);
+                   display.m_dcshowspassword == TRUE);
 #endif
-    // by strange coincidence, the values of the enums match the indices
-    // of the radio buttons in the following :-)
-    prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen,
-      display.m_treedisplaystatusatopen);
     prefs->SetPref(PWSprefs::ClosedTrayIconColour,
-      display.m_trayiconcolour);
+                   display.m_trayiconcolour);
     app.SetClosedTrayIcon(display.m_trayiconcolour);
     if (save_highlightchanges != display.m_highlightchanges) {
       prefs->SetPref(PWSprefs::HighlightChanges,
-        display.m_highlightchanges == TRUE);
+                     display.m_highlightchanges == TRUE);
       m_ctlItemList.SetHighlightChanges(display.m_highlightchanges == TRUE);
       m_ctlItemTree.SetHighlightChanges(display.m_highlightchanges == TRUE);
       RefreshViews();
     }
 
-    prefs->SetPref(PWSprefs::UseSystemTray,
-      system.m_usesystemtray == TRUE);
-    UpdateSystemMenu();
-    prefs->SetPref(PWSprefs::MaxREItems,
-      system.m_maxreitems);
-    if (system.m_maxreitems == 0) {
-      // Put them on File menu where they don't take up any room
-      prefs->SetPref(PWSprefs::MRUOnFileMenu, true);
-      // Clear any currently saved
-      app.ClearMRU();
-    } else {
-      // Otherwise use what the user wanted.
-      prefs->SetPref(PWSprefs::MaxMRUItems,
-        system.m_maxmruitems);
-      prefs->SetPref(PWSprefs::MRUOnFileMenu,
-        system.m_mruonfilemenu == TRUE);
-    }
-    prefs->SetPref(PWSprefs::DefaultOpenRO,
-      system.m_defaultopenro == TRUE);
-    prefs->SetPref(PWSprefs::MultipleInstances,
-      system.m_multipleinstances == TRUE);
-
-    prefs->SetPref(PWSprefs::ClearClipboardOnMinimize,
-      security.m_clearclipboardonminimize == TRUE);
-    prefs->SetPref(PWSprefs::ClearClipboardOnExit,
-      security.m_clearclipboardonexit == TRUE);
-    prefs->SetPref(PWSprefs::DatabaseClear,
-      security.m_LockOnMinimize == TRUE);
-    prefs->SetPref(PWSprefs::DontAskQuestion,
-      security.m_confirmcopy == FALSE);
-    prefs->SetPref(PWSprefs::LockOnWindowLock,
-      security.m_LockOnWindowLock == TRUE);
-    prefs->SetPref(PWSprefs::LockDBOnIdleTimeout,
-      security.m_LockOnIdleTimeout == TRUE);
-    prefs->SetPref(PWSprefs::IdleTimeout,
-      security.m_IdleTimeOut);
-
-    prefs->SetPref(PWSprefs::PWUseLowercase,
-      passwordpolicy.m_pwuselowercase == TRUE);
-    prefs->SetPref(PWSprefs::PWUseUppercase,
-      passwordpolicy.m_pwuseuppercase == TRUE);
-    prefs->SetPref(PWSprefs::PWUseDigits,
-      passwordpolicy.m_pwusedigits == TRUE);
-    prefs->SetPref(PWSprefs::PWUseSymbols,
-      passwordpolicy.m_pwusesymbols == TRUE);
-    prefs->SetPref(PWSprefs::PWUseHexDigits,
-      passwordpolicy.m_pwusehexdigits == TRUE);
-    prefs->SetPref(PWSprefs::PWUseEasyVision,
-      passwordpolicy.m_pweasyvision == TRUE);
-    prefs->SetPref(PWSprefs::PWMakePronounceable,
-      passwordpolicy.m_pwmakepronounceable == TRUE);
-    prefs->SetPref(PWSprefs::PWDefaultLength,
-      passwordpolicy.m_pwdefaultlength);
-    prefs->SetPref(PWSprefs::PWDigitMinLength,
-      passwordpolicy.m_pwdigitminlength);
-    prefs->SetPref(PWSprefs::PWLowercaseMinLength,
-      passwordpolicy.m_pwlowerminlength);
-    prefs->SetPref(PWSprefs::PWSymbolMinLength,
-      passwordpolicy.m_pwsymbolminlength);
-    prefs->SetPref(PWSprefs::PWUppercaseMinLength,
-      passwordpolicy.m_pwupperminlength);
-
-    prefs->SetPref(PWSprefs::SavePasswordHistory,
-      passwordhistory.m_savepwhistory == TRUE);
-    if (passwordhistory.m_savepwhistory == TRUE)
-      prefs->SetPref(PWSprefs::NumPWHistoryDefault,
-      passwordhistory.m_pwhistorynumdefault);
-
     prefs->SetPref(PWSprefs::DeleteQuestion,
-      misc.m_confirmdelete == FALSE);
-    prefs->SetPref(PWSprefs::MaintainDateTimeStamps,
-      misc.m_maintaindatetimestamps == TRUE);
+                   misc.m_confirmdelete == FALSE);
     prefs->SetPref(PWSprefs::EscExits,
-      misc.m_escexits == TRUE);
+                   misc.m_escexits == TRUE);
     // by strange coincidence, the values of the enums match the indices
     // of the radio buttons in the following :-)
     prefs->SetPref(PWSprefs::DoubleClickAction,
-      (unsigned int)misc.m_doubleclickaction);
+                   (unsigned int)misc.m_doubleclickaction);
 
     // Need to update previous values as we use these variables to re-instate
     // the hotkey environment at the end whether the user changed it or not.
     prefs->SetPref(PWSprefs::HotKey,
-      misc.m_hotkey_value);
+                   misc.m_hotkey_value);
     save_hotkey_value = misc.m_hotkey_value;
     // Can't be enabled if not set!
     if (misc.m_hotkey_value == 0)
       save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
 
     prefs->SetPref(PWSprefs::HotKeyEnabled,
-      misc.m_hotkey_enabled == TRUE);
-    prefs->SetPref(PWSprefs::UseDefaultUser,
-      misc.m_usedefuser == TRUE);
-    prefs->SetPref(PWSprefs::DefaultUsername,
-                   LPCWSTR(misc.m_defusername));
+                   misc.m_hotkey_enabled == TRUE);
     prefs->SetPref(PWSprefs::QuerySetDef,
-      misc.m_querysetdef == TRUE);
+                   misc.m_querysetdef == TRUE);
     prefs->SetPref(PWSprefs::AltBrowser,
                    LPCWSTR(misc.m_otherbrowserlocation));
     prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
                    LPCWSTR(misc.m_csBrowserCmdLineParms));
-    if (misc.m_csAutotype.IsEmpty() || misc.m_csAutotype == DEFAULT_AUTOTYPE)
-      prefs->SetPref(PWSprefs::DefaultAutotypeString, L"");
-    else if (misc.m_csAutotype != DEFAULT_AUTOTYPE)
-      prefs->SetPref(PWSprefs::DefaultAutotypeString,
-                     LPCWSTR(misc.m_csAutotype));
     prefs->SetPref(PWSprefs::MinimizeOnAutotype,
-      misc.m_minauto == TRUE);
-
-    prefs->SetPref(PWSprefs::SaveImmediately,
-      backup.m_saveimmediately == TRUE);
-    prefs->SetPref(PWSprefs::BackupBeforeEverySave,
-      backup.m_backupbeforesave == TRUE);
-    prefs->SetPref(PWSprefs::BackupPrefixValue,
-                   LPCWSTR(backup.m_userbackupprefix));
-    prefs->SetPref(PWSprefs::BackupSuffix,
-      (unsigned int)backup.m_backupsuffix);
-    prefs->SetPref(PWSprefs::BackupMaxIncremented,
-      backup.m_maxnumincbackups);
-    prefs->SetPref(PWSprefs::BackupDir,
-                   LPCWSTR(backup.m_userbackupotherlocation));
+                   misc.m_minauto == TRUE);
 
     // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
     /* Update status bar */
+    UINT uiMessage(IDS_STATCOMPANY);
     switch (misc.m_doubleclickaction) {
       case PWSprefs::DoubleClickAutoType:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
+        uiMessage = IDS_STATAUTOTYPE; break;
       case PWSprefs::DoubleClickBrowse:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSE; break;
+        uiMessage = IDS_STATBROWSE; break;
       case PWSprefs::DoubleClickCopyNotes:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
+        uiMessage = IDS_STATCOPYNOTES; break;
       case PWSprefs::DoubleClickCopyPassword:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
+        uiMessage = IDS_STATCOPYPASSWORD; break;
       case PWSprefs::DoubleClickCopyUsername:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
+        uiMessage = IDS_STATCOPYUSERNAME; break;
       case PWSprefs::DoubleClickViewEdit:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
+        uiMessage = IDS_STATVIEWEDIT; break;
       case PWSprefs::DoubleClickCopyPasswordMinimize:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOPYPASSWORDMIN; break;
+        uiMessage = IDS_STATCOPYPASSWORDMIN; break;
       case PWSprefs::DoubleClickBrowsePlus:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATBROWSEPLUS; break;
+        uiMessage = IDS_STATBROWSEPLUS; break;
       case PWSprefs::DoubleClickRun:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATRUN; break;
+        uiMessage = IDS_STATRUN; break;
       case PWSprefs::DoubleClickSendEmail:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATSENDEMAIL; break;
+        uiMessage = IDS_STATSENDEMAIL; break;
       default:
-        statustext[CPWStatusBar::SB_DBLCLICK] = IDS_STATCOMPANY;
+        uiMessage = IDS_STATCOMPANY;
     }
+    statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
     m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
     UpdateStatusBar();
     // Make a sunken or recessed border around the first pane
@@ -645,27 +551,152 @@ void DboxMain::OnOptions()
                             SBPS_STRETCH, NULL);
 #endif
 
+    prefs->SetPref(PWSprefs::ClearClipboardOnMinimize,
+                   security.m_clearclipboardonminimize == TRUE);
+    prefs->SetPref(PWSprefs::ClearClipboardOnExit,
+                   security.m_clearclipboardonexit == TRUE);
+    prefs->SetPref(PWSprefs::DatabaseClear,
+                   security.m_LockOnMinimize == TRUE);
+    prefs->SetPref(PWSprefs::DontAskQuestion,
+                   security.m_confirmcopy == FALSE);
+    prefs->SetPref(PWSprefs::LockOnWindowLock,
+                   security.m_LockOnWindowLock == TRUE);
+
+    prefs->SetPref(PWSprefs::UseSystemTray,
+                   system.m_usesystemtray == TRUE);
+    UpdateSystemMenu();
+    prefs->SetPref(PWSprefs::MaxREItems,
+                   system.m_maxreitems);
+    if (system.m_maxreitems == 0) {
+      // Put them on File menu where they don't take up any room
+      prefs->SetPref(PWSprefs::MRUOnFileMenu, true);
+      // Clear any currently saved
+      app.ClearMRU();
+    } else {
+      // Otherwise use what the user wanted.
+      prefs->SetPref(PWSprefs::MaxMRUItems,
+                     system.m_maxmruitems);
+      prefs->SetPref(PWSprefs::MRUOnFileMenu,
+                     system.m_mruonfilemenu == TRUE);
+    }
+    prefs->SetPref(PWSprefs::DefaultOpenRO,
+                   system.m_defaultopenro == TRUE);
+    prefs->SetPref(PWSprefs::MultipleInstances,
+                   system.m_multipleinstances == TRUE);
+
+    // Now do a bit of trickery to find the new preferences to be stored in
+    // the database as a string but without updating the actual preferences
+    // which needs to be done via a Command so that it can be Undone & Redone
+
+    // Initialise a copy of the DB preferences
+    prefs->SetUpCopyDBprefs();
+
+    // Update them - last parameter of SetPref and Store is: "bUseCopy = true"
+    // In PropertyPage alphabetic order
+    prefs->SetPref(PWSprefs::SaveImmediately,
+                   backup.m_saveimmediately == TRUE, true);
+
+    prefs->SetPref(PWSprefs::ShowPWDefault,
+                   display.m_pwshowinedit == TRUE, true);
+    prefs->SetPref(PWSprefs::ShowUsernameInTree,
+                   display.m_showusernameintree == TRUE, true);
+    prefs->SetPref(PWSprefs::ShowPasswordInTree,
+                   display.m_showpasswordintree == TRUE, true);
+    prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen,
+                   display.m_treedisplaystatusatopen, true);
+    prefs->SetPref(PWSprefs::ShowNotesDefault,
+                   display.m_notesshowinedit == TRUE, true);
+
+    prefs->SetPref(PWSprefs::MaintainDateTimeStamps,
+                   misc.m_maintaindatetimestamps == TRUE, true);
+
+    prefs->SetPref(PWSprefs::UseDefaultUser,
+                   misc.m_usedefuser == TRUE, true);
+    prefs->SetPref(PWSprefs::DefaultUsername,
+                   LPCWSTR(misc.m_defusername), true);
+
+    if (misc.m_csAutotype.IsEmpty() || misc.m_csAutotype == DEFAULT_AUTOTYPE)
+      prefs->SetPref(PWSprefs::DefaultAutotypeString, L"", true);
+    else
+    if (misc.m_csAutotype != DEFAULT_AUTOTYPE)
+      prefs->SetPref(PWSprefs::DefaultAutotypeString,
+                     LPCWSTR(misc.m_csAutotype), true);
+
+    prefs->SetPref(PWSprefs::SavePasswordHistory,
+                   passwordhistory.m_savepwhistory == TRUE, true);
+    if (passwordhistory.m_savepwhistory == TRUE)
+      prefs->SetPref(PWSprefs::NumPWHistoryDefault,
+                     passwordhistory.m_pwhistorynumdefault, true);
+
+    prefs->SetPref(PWSprefs::PWUseLowercase,
+                   passwordpolicy.m_pwuselowercase == TRUE, true);
+    prefs->SetPref(PWSprefs::PWUseUppercase,
+                   passwordpolicy.m_pwuseuppercase == TRUE, true);
+    prefs->SetPref(PWSprefs::PWUseDigits,
+                   passwordpolicy.m_pwusedigits == TRUE, true);
+    prefs->SetPref(PWSprefs::PWUseSymbols,
+                   passwordpolicy.m_pwusesymbols == TRUE, true);
+    prefs->SetPref(PWSprefs::PWUseHexDigits,
+                   passwordpolicy.m_pwusehexdigits == TRUE, true);
+    prefs->SetPref(PWSprefs::PWUseEasyVision,
+                   passwordpolicy.m_pweasyvision == TRUE, true);
+    prefs->SetPref(PWSprefs::PWMakePronounceable,
+                   passwordpolicy.m_pwmakepronounceable == TRUE, true);
+
+    prefs->SetPref(PWSprefs::PWDefaultLength,
+                   passwordpolicy.m_pwdefaultlength, true);
+    prefs->SetPref(PWSprefs::PWDigitMinLength,
+                   passwordpolicy.m_pwdigitminlength, true);
+    prefs->SetPref(PWSprefs::PWLowercaseMinLength,
+                   passwordpolicy.m_pwlowerminlength, true);
+    prefs->SetPref(PWSprefs::PWSymbolMinLength,
+                   passwordpolicy.m_pwsymbolminlength, true);
+    prefs->SetPref(PWSprefs::PWUppercaseMinLength,
+                   passwordpolicy.m_pwupperminlength, true);
+
+    prefs->SetPref(PWSprefs::LockDBOnIdleTimeout,
+                   security.m_LockOnIdleTimeout == TRUE, true);
+    prefs->SetPref(PWSprefs::IdleTimeout,
+                   security.m_IdleTimeOut, true);
+
+    // Get new and old DB preferences String value
+    const StringX sxOldDBPrefsString(prefs->Store());
+    StringX sxNewDBPrefsString(prefs->Store(true));
+
     // Maybe needed if this causes changes to database
     // (currently only DB preferences + updating PWHistory in exisiting entries)
     MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
     /*
-    ** Update string in database, if necessary & possible (i.e. ignore if R-O)
+    ** Set up Command to update string in database, if necessary & possible
+    ** (i.e. ignore if R-O)
     */
-    if (prefs->IsDBprefsChanged() != bOldDBPrefChangedState &&
-        !m_core.GetCurFile().empty() &&
+    if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-      if (!m_core.IsReadOnly()) {
-        StringX newprefString(prefs->Store());
-        if (oldprefString != newprefString) {
-          // Now put things back so that it can be done via Execute and so
-          // eligible for Undo/Redo
-          prefs->Load(oldprefString);
-          Command *pcmd = DBPrefsCommand::Create(&m_core, newprefString);
+      if (sxOldDBPrefsString != sxNewDBPrefsString) {
+        // Determine whether Tree needs redisplayng due to change
+        // in what is shown (e.g. usernames/passwords)
+        bool bUserDisplayChanged = (bOldShowUsernameInTree != 
+                                    (display.m_showusernameintree == TRUE));
+        // Note: passwords are only shown in the Tree is usernames are also shown
+        bool bPswdDisplayChanged = (bOldShowPasswordInTree != 
+                                    (display.m_showpasswordintree == TRUE));
+        bool bNeedGUITreeUpdate = bUserDisplayChanged || 
+            ((display.m_showusernameintree == TRUE) && bPswdDisplayChanged);
+        if (bNeedGUITreeUpdate) {
+          Command *pcmd = UpdateGUICommand::Create(&m_core, Command::WN_UNDO,
+                                          Command::GUI_REFRESH_TREE);
           pmulticmds->Add(pcmd);
         }
-        ChangeOkUpdate();
+        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        pmulticmds->Add(pcmd);
+        if (bNeedGUITreeUpdate) {
+          Command *pcmd = UpdateGUICommand::Create(&m_core, Command::WN_EXECUTE_REDO,
+                                          Command::GUI_REFRESH_TREE);
+          pmulticmds->Add(pcmd);
+        }
       }
+      ChangeOkUpdate();
     }
 
     const int iAction = passwordhistory.m_pwhaction;
@@ -681,7 +712,8 @@ void DboxMain::OnOptions()
     }
 
     /*
-    **  Now update the application according to the options.
+    ** Now update the application according to the options.
+    ** Any changes via Database preferences done via call to UpdateGUI from Command
     */
     UpdateAlwaysOnTop();
 
@@ -696,16 +728,6 @@ void DboxMain::OnOptions()
       }
       m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
     }
-
-    if ((bOldShowUsernameInTree !=
-           prefs->GetPref(PWSprefs::ShowUsernameInTree) ||
-         bOldShowPasswordInTree !=
-           prefs->GetPref(PWSprefs::ShowPasswordInTree)) ||
-        (bOldExplorerTypeTree !=
-           prefs->GetPref(PWSprefs::ExplorerTypeTree)) ||
-        (save_preexpirywarn != display.m_preexpirywarn) ||
-        (save_preexpirywarndays != display.m_preexpirywarndays))
-      RefreshViews();
 
     if (display.m_shownotesastipsinviews == TRUE) {
       m_ctlItemTree.ActivateND(true);
@@ -750,36 +772,6 @@ void DboxMain::OnOptions()
       }
     }
 
-    // update idle timeout values, if changed
-    if (security.m_LockOnIdleTimeout != prevLockOIT ||
-        security.m_IdleTimeOut != prevLockInterval) {
-      KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
-      ResetIdleLockCounter();
-      if (security.m_LockOnIdleTimeout == TRUE) {
-        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
-      }
-    }
-
-    /*
-    * Here are the old (pre 2.0) semantics:
-    * The username entered in this dialog box will be added to all the entries
-    * in the username-less database that you just opened. Click Ok to add the
-    * username or Cancel to leave them as is.
-    *
-    * You can also set this username to be the default username by clicking the
-    * check box.  In this case, you will not see the username that you just added
-    * in the main dialog (though it is still part of the entries), and it will
-    * automatically be inserted in the Add dialog for new entries.
-    *
-    * To me (ronys), these seem too complicated, and not useful once password files
-    * have been converted to the old (username-less) format to 1.9 (with usernames).
-    * (Not to mention 2.0).
-    * Therefore, the username will now only be a default value to be used in new entries,
-    * and in converting pre-2.0 databases.
-    */
-
-    m_core.SetDefUsername(misc.m_defusername.GetString());
-    m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
     // Finally, keep prefs file updated:
     prefs->SaveApplicationPreferences();
 
@@ -865,6 +857,13 @@ void DboxMain::OnOptions()
         // Was created but no commands added in the end.
         delete pmulticmds;
       }
+    }
+
+    if ((bOldExplorerTypeTree !=
+           prefs->GetPref(PWSprefs::ExplorerTypeTree)) ||
+        (save_preexpirywarn != display.m_preexpirywarn) ||
+        (save_preexpirywarndays != display.m_preexpirywarndays)) {
+      RefreshViews();
     }
 
     // JHF no hotkeys under WinCE

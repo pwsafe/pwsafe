@@ -33,7 +33,8 @@ class UIInterFace {
   // and the entry/entries needs refreshing in GUI:
   virtual void UpdateGUI(Command::GUI_Action ga,
                          uuid_array_t &entry_uuid,
-                         CItemData::FieldType ft) = 0;
+                         CItemData::FieldType ft = CItemData::START,
+                         bool bUpdateGUI = true) = 0;
   // GUIUpdateEntry: let GUI populate DisplayInfo field in an entry
   virtual void GUIUpdateEntry(CItemData &ci) = 0;
   virtual void GUICommandInterface(Command::ExecuteFn When,

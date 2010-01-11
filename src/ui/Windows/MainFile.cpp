@@ -209,16 +209,13 @@ BOOL DboxMain::OpenOnInit()
   UpdateMenuAndToolBar(true); // sets m_bOpen too...
   UpdateStatusBar();
 
-  m_core.SetDefUsername(PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DefaultUsername));
-  m_core.SetUseDefUser(PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::UseDefaultUser) ? true : false);
 #if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
+
   SelectFirstEntry();
   // Validation does integrity check & repair on database
   // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
@@ -707,10 +704,6 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
 
   RefreshViews();
   SetInitialDatabaseDisplay();
-  m_core.SetDefUsername(PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DefaultUsername));
-  m_core.SetUseDefUser(PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::UseDefaultUser) ? true : false);
   m_needsreading = false;
   SelectFirstEntry();
 
