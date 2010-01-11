@@ -110,9 +110,9 @@ BOOL COptionsShortcuts::OnInitDialog()
 
   CString cs_colname;
   cs_colname.LoadString(IDS_COL_MENUITEM);
-  m_ShortcutLC.InsertColumn(0, cs_colname);
+  m_ShortcutLC.InsertColumn(0, cs_colname);     // vdg:1
   cs_colname.LoadString(IDS_COL_SHORTCUT);
-  m_ShortcutLC.InsertColumn(1, cs_colname);
+  m_ShortcutLC.InsertColumn(1, cs_colname);     // vdg:0
 
   MapMenuShortcutsIter iter, iter_parent;
   MapKeyNameIDConstIter citer;
@@ -141,16 +141,24 @@ BOOL COptionsShortcuts::OnInitDialog()
          str = CMenuShortcut::FormatShortcut(iter, citer);
     }
 
-    // Remove the ampersand from the menu item the user sees here
     iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
     ASSERT(iter_parent != m_MapMenuShortcuts.end());
     CString sMenuItemtext = (CString(iter_parent->second.name.c_str()) + 
                              CString(L" \xbb ") +
                              CString(iter->second.name.c_str()));
+    // Remove the ampersand from the menu item the user sees here
     sMenuItemtext.Remove(L'&');
-    iItem = m_ShortcutLC.InsertItem(iItem, sMenuItemtext);
+	
+	// Cut the length of very long "Menu >> MenuItem" to 'maxItemTextLen'
+#define maxItemTextLen 50
+#define sItemTextEnd CString(L" +++")
+	if (sMenuItemtext.GetLength() > maxItemTextLen) {
+      sMenuItemtext = CString(sMenuItemtext.Left(maxItemTextLen-sItemTextEnd.GetLength())) + sItemTextEnd;
+	}
+    
+	iItem = m_ShortcutLC.InsertItem(iItem, sMenuItemtext); // vdg: str
     ASSERT(iItem != -1);
-    brc = m_ShortcutLC.SetItemText(iItem, 1, str);
+    brc = m_ShortcutLC.SetItemText(iItem, 1, str);         // vdg: sMenuItemtext
     ASSERT(brc != 0);
     DWORD dwData = MAKELONG(iter->first, iter->second.iMenuPosition);
     brc = m_ShortcutLC.SetItemData(iItem, dwData);
@@ -161,9 +169,9 @@ BOOL COptionsShortcuts::OnInitDialog()
   brc = m_ShortcutLC.SortItems(CompareFunc, NULL);
   ASSERT(brc != 0);
 
-  brc = m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);
+  brc = m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);             // vdg: LVSCW_AUTOSIZE_USEHEADER
   ASSERT(brc != 0);
-  brc = m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
+  brc = m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);   // vdg: LVSCW_AUTOSIZE
   ASSERT(brc != 0);
 
   brc = m_ShortcutLC.ModifyStyle(LVS_OWNERDRAWFIXED, 0, 0);
@@ -213,7 +221,7 @@ void COptionsShortcuts::OnBnClickedResetAll()
     } else {
       str = L"";
     }
-    m_ShortcutLC.SetItemText(i, 1, str);
+    m_ShortcutLC.SetItemText(i, 1, str); // vdg: 0
   }
 
   ClearWarning();
@@ -294,10 +302,10 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   iter->second.cVirtKey = st_mst.cVirtKey;
   iter->second.cModifier = st_mst.cModifier;
 
-  m_ShortcutLC.SetItemText(item, 1, str);
+  m_ShortcutLC.SetItemText(item, 1, str);	// vdg: 0
   m_ShortcutLC.RedrawItems(item, item);
-  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);
-  m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
+  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);           // vdg: LVSCW_AUTOSIZE_USEHEADER
+  m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // vdg: LVSCW_AUTOSIZE
   m_ShortcutLC.UpdateWindow();
   m_bShortcutsChanged = true;
   return;
