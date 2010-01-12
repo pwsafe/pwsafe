@@ -287,8 +287,6 @@
 #define IDS_RECORDUNKNOWNFIELDS         5450
 #define IDS_IMPORTFILE                  5451
 #define IDS_VIEWDEPENDENTS              5452
-#define IDS_DELETEABASE                 5453
-#define IDS_DELETEBASET                 5454
 #define IDS_ALIASNOTFOUNDA              5455
 #define IDS_ALIASNOTFOUND0A             5456
 #define IDS_ALIASNOTFOUND0B             5457
@@ -325,13 +323,9 @@
 #define IDS_VISIT_WEBSITE               5489
 #define IDS_ENTRY                       5490
 #define IDS_ENTRIES                     5491
-#define IDS_ALIAS                       5492
-#define IDS_ALIASES                     5493
 #define IDS_CONFLICT                    5494
 #define IDS_CONFLICTS                   5495
 #define IDS_ICON                        5496
-#define IDS_SHORTCUT                    5497
-#define IDS_SHORTCUTS                   5498
 #define IDS_ABASEINVALID                5499
 #define IDS_SBASEINVALID                5500
 #define IDS_MUSTHAVETARGET              5501
@@ -350,7 +344,6 @@
 #define IDS_EMPTYSAMPLETEXT             5514
 #define IDS_MENUCOPYEMAIL               5516
 #define IDS_COPYEMAIL                   5517
-#define IDS_DELETESBASE                 5518
 #define IDS_SHORTCUTEXPLANATION         5519
 #define IDS_SCTARGET                    5520
 #define IDS_SAVEBEFOREEXPORT            5521

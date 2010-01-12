@@ -537,7 +537,7 @@ void CManageFiltersDlg::OnFilterDelete()
   CString cs_msg;
   CGeneralMsgBox gmb;
   cs_msg.Format(IDS_CONFIRMFILTERDELETE, cs_pool, cs_selected);
-  if (gmb.AfxMessageBox(cs_msg, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
+  if (gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
     return;
 
   m_MapFilters.erase(flt_key);

@@ -41,7 +41,7 @@ public:
   // Implement MFC equivalents
   INT_PTR MessageBox(LPCTSTR lpText, LPCTSTR lpCaption = NULL, 
                      UINT uType = MB_OK);
-  INT_PTR AfxMessageBox(LPCTSTR lpszText, UINT nType = MB_OK);
+  INT_PTR AfxMessageBox(LPCTSTR lpszText, LPCTSTR lpCaption = NULL, UINT nType = MB_OK);
   INT_PTR AfxMessageBox(UINT nIDPrompt, UINT nType = MB_OK);
 
   // Execute

@@ -17,6 +17,7 @@
 class Asker {
 public:
   virtual bool operator()(const stringT &question) = 0;
+  virtual bool operator()(const stringT &title, const stringT &question) = 0;
   virtual ~Asker() {} // keep compiler happy
 };
 

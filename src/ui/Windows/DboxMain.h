@@ -277,7 +277,10 @@ public:
                            const StringX &user, const int IDS_MESSAGE)
   {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
-  void Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF, bool inRecursion = false);
+  void Delete(); // "Top level" delete, calls the following 2 and Execute()
+  Command *Delete(const CItemData *pci); // create command for deleting a single item
+  Command *Delete(HTREEITEM ti); // For deleting a group
+
   void SaveGroupDisplayState(); // call when tree expansion state changes
   bool CheckNewPassword(const StringX &group, const StringX &title,
                         const StringX &user, const StringX &password,
@@ -494,7 +497,6 @@ protected:
   void AutoType(const CItemData &ci);
   bool EditItem(CItemData *pci, PWScore *pcore = NULL);
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
-  void SortDependents(UUIDList &dlist, StringX &csDependents);
   void ViewReport(const CString &cs_ReportFileName);
   void ViewReport(CReport &rpt);
   bool GetDriveAndDirectory(const StringX &cs_infile, CString &cs_directory,

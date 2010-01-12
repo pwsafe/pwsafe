@@ -218,6 +218,7 @@ public:
   bool GetShortcutBaseUUID(const uuid_array_t &shortcut_uuid, uuid_array_t &base_uuid)
   {return GetDependentEntryBaseUUID(shortcut_uuid, base_uuid, CItemData::ET_SHORTCUT);}
 
+  void SortDependents(UUIDList &dlist, StringX &csDependents);
   int NumAliases(const uuid_array_t &base_uuid)
   {return m_base2aliases_mmap.count(base_uuid);}
   int NumShortcuts(const uuid_array_t &base_uuid)

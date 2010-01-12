@@ -529,7 +529,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             status = PWSfile::Encrypt(std::wstring(*(arg + 1)), passkey, errstr);
             if (!status) {
               CGeneralMsgBox gmb;
-              gmb.AfxMessageBox(errstr.c_str(), MB_OK | MB_ICONEXCLAMATION);
+              gmb.AfxMessageBox(errstr.c_str(), NULL, MB_OK | MB_ICONEXCLAMATION);
             }
             return true;
           } else {
@@ -537,7 +537,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             status = PWSfile::Decrypt(std::wstring(*(arg+1)), passkey, errstr);
             if (!status) {
               CGeneralMsgBox gmb;
-              gmb.AfxMessageBox(errstr.c_str(), MB_OK | MB_ICONEXCLAMATION);
+              gmb.AfxMessageBox(errstr.c_str(), NULL, MB_OK | MB_ICONEXCLAMATION);
             }
             return true;
           }

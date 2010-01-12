@@ -590,7 +590,8 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
   if (cs_text.Right(1) == L"*")
     cs_msg += CString(MAKEINTRESOURCE(IDS_COPYUNKNOWNFIELDS));
 
-  if (gmb.AfxMessageBox(cs_msg, MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
+  if (gmb.AfxMessageBox(cs_msg, NULL,
+                        MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
     return false;
 
   LRESULT lres(FALSE);
