@@ -691,7 +691,7 @@ private:
   void UpdateGUI(Command::GUI_Action ga,
                  uuid_array_t &entry_uuid,
                  CItemData::FieldType ft, bool bUpdateGUI);
-  void GUIUpdateEntry(CItemData &ci);
+  void GUISetupDisplayInfo(CItemData &ci);
   void GUICommandInterface(Command::ExecuteFn when, PWSGUICmdIF *pGUICmdIF);
 
   void RedoDelete(WinGUICmdIF *pGUICmdIF);

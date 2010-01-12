@@ -700,9 +700,7 @@ void XMLFileHandlers::AddEntries()
       ci_temp.SetStatus(CItemData::ES_ADDED);
     }
 
-    if (m_pXMLcore->m_pfcnGUIUpdateEntry != NULL) {
-      m_pXMLcore->m_pfcnGUIUpdateEntry(ci_temp);
-    }
+    m_pXMLcore->GUISetupDisplayInfo(ci_temp);
     Command *pcmd = AddEntryCommand::Create(m_pXMLcore, ci_temp);
     pcmd->SetNoGUINotify();
     m_pmulticmds->Add(pcmd);

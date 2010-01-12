@@ -1286,9 +1286,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
 
     // Get GUI to populate its field
-    if (m_pfcnGUIUpdateEntry != NULL) {
-      m_pfcnGUIUpdateEntry(ci_temp);
-    }
+    GUISetupDisplayInfo(ci_temp);
 
     // Add to commands to execute
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);
@@ -1452,9 +1450,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     ci_temp.SetNotes(notes.empty() ? _T("") : notes.c_str());
     ci_temp.SetStatus(CItemData::ES_ADDED);
 
-    if (m_pfcnGUIUpdateEntry != NULL) {
-      m_pfcnGUIUpdateEntry(ci_temp);
-    }
+    GUISetupDisplayInfo(ci_temp);
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);

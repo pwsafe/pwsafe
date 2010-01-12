@@ -275,7 +275,7 @@ void DboxMain::UpdateGUI(Command::GUI_Action ga,
 }
 
 // Called from PWScore to get GUI to update its reserved field
-void DboxMain::GUIUpdateEntry(CItemData &ci)
+void DboxMain::GUISetupDisplayInfo(CItemData &ci)
 {
   DisplayInfoBase *pdib = ci.GetDisplayInfo();
   if (pdib != NULL)

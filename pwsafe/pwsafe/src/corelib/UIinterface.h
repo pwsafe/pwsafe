@@ -35,8 +35,8 @@ class UIInterFace {
                          uuid_array_t &entry_uuid,
                          CItemData::FieldType ft = CItemData::START,
                          bool bUpdateGUI = true) = 0;
-  // GUIUpdateEntry: let GUI populate DisplayInfo field in an entry
-  virtual void GUIUpdateEntry(CItemData &ci) = 0;
+  // GUISetupDisplayInfo: let GUI populate DisplayInfo field in an entry
+  virtual void GUISetupDisplayInfo(CItemData &ci) = 0;
   virtual void GUICommandInterface(Command::ExecuteFn When,
                                    PWSGUICmdIF *pGUICmdIF) = 0;
   virtual ~UIInterFace() {}
