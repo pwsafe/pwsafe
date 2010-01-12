@@ -1932,8 +1932,10 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   }
   if (numAliasesAdded > 0) {
     std::sort(vs_AliasesAdded.begin(), vs_AliasesAdded.end(), MergeSyncGTUCompare);
-    CString cs_singular_plural_type(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_ALIAS : IDS_ALIASES));
-    CString cs_singular_plural_verb(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_WAS : IDS_WERE));
+    CString cs_singular_plural_type(MAKEINTRESOURCE(numAliasesAdded == 1 ?
+                                                    IDSC_ALIAS : IDSC_ALIASES));
+    CString cs_singular_plural_verb(MAKEINTRESOURCE(numAliasesAdded == 1 ?
+                                                    IDS_WAS : IDS_WERE));
     resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
     rpt.WriteLine((LPCWSTR)resultStr);
     for (size_t i = 0; i < vs_AliasesAdded.size(); i++) {
@@ -1943,8 +1945,10 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   }
   if (numShortcutsAdded > 0) {
     std::sort(vs_ShortcutsAdded.begin(), vs_ShortcutsAdded.end(), MergeSyncGTUCompare);
-    CString cs_singular_plural_type(MAKEINTRESOURCE(numShortcutsAdded == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS));
-    CString cs_singular_plural_verb(MAKEINTRESOURCE(numShortcutsAdded == 1 ? IDS_WAS : IDS_WERE));
+    CString cs_singular_plural_type(MAKEINTRESOURCE(numShortcutsAdded == 1 ?
+                                                    IDSC_SHORTCUT : IDSC_SHORTCUTS));
+    CString cs_singular_plural_verb(MAKEINTRESOURCE(numShortcutsAdded == 1 ?
+                                                    IDS_WAS : IDS_WERE));
     resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
     rpt.WriteLine((LPCWSTR)resultStr);
     for (size_t i = 0; i < vs_ShortcutsAdded.size(); i++) {
@@ -1963,9 +1967,12 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   /* tell the user we're done & provide short merge report */
   int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
   const CString cs_entries(MAKEINTRESOURCE(totalAdded == 1 ? IDS_ENTRY : IDS_ENTRIES));
-  const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ? IDS_CONFLICT : IDS_CONFLICTS));
-  const CString cs_aliases(MAKEINTRESOURCE(numAliasesAdded == 1 ? IDS_ALIAS : IDS_ALIASES));
-  const CString cs_shortcuts(MAKEINTRESOURCE(numShortcutsAdded == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS));
+  const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ?
+                                             IDS_CONFLICT : IDS_CONFLICTS));
+  const CString cs_aliases(MAKEINTRESOURCE(numAliasesAdded == 1 ?
+                                           IDSC_ALIAS : IDSC_ALIASES));
+  const CString cs_shortcuts(MAKEINTRESOURCE(numShortcutsAdded == 1 ?
+                                             IDSC_SHORTCUT : IDSC_SHORTCUTS));
   resultStr.Format(IDS_MERGECOMPLETED,
                    totalAdded, cs_entries, numConflicts, cs_conflicts,
                    numAliasesAdded, cs_aliases,

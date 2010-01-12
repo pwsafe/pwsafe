@@ -292,9 +292,10 @@ void DboxMain::OnAddGroup()
   }
 }
 
-// Delete key was pressed (in list view or tree view) to delete an entry.
 void DboxMain::OnDelete()
 {
+  // Check preconditions, possibly prompt user for confirmation, then call Delete()
+  // to do the heavy lifting.
   if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
     return;
 
@@ -328,22 +329,253 @@ void DboxMain::OnDelete()
   }
 
   if (dodelete) {
-    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-    WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
+    Delete();
+  }
+}
 
-    Delete(pmulticmds, pGUICmdIF);
+/**
+ * Delete works as follows:
+ * Delete a single entry:
+ * Normal entry - DeleteEntryCommand
+ * Alias - RemoveDependentEntryCommand + DeleteEntryCommand
+ * Shortcut - RemoveDependentEntryCommand + DeleteEntryCommand
+ * Shortcut Base - n x  DeleteEntryCommand (for each of the Shortcuts) +
+ *  update vector m_vVerifyShortcutBase + DeleteEntryCommand for the entry
+ * Alias Base - ResetAllAliasPasswordsCommand +
+ *  update vector m_vAliasDependents + DeleteEntryCommand for the entry
+ * Delete a Group:
+ *  Find the path of the group being deleted and then use the corelib
+ *    Match process to find all entries that have a group beginning with
+ *    this group - probably need to maintain vector m_vDeleteGroup for Undo/Redo.
+ *  For each found entry - delete as above
+ *    (but not if already deleted - e.g. deleting an Shortcut in a subgroup that
+ *    would have been deleted as part of deleting its base in a higher group
+ *    that is also being deleted - also no point in resetting the password of
+ *    an Alias when its base is deleted if the Alias is also going to be deleted.
+ *  Finally, when the MultiCommand is complete - call the UI I/F to remove and update
+ *  (mainly image) entries from the Tree & List controls.
+ */
 
+void
+DboxMain::Delete()
+{
+  // "Top level" element delete:
+  // 1. Sets up Command mechanism
+  // 2. Calls group or element Delete method, as appropriate
+  // 3. Executes, updates UI.
+
+  CItemData *pci = getSelectedItem();
+  Command *pcmd = NULL;
+
+  if (pci != NULL)
+    pcmd = Delete(pci); // single entry
+  else if (m_ctlItemTree.IsWindowVisible()) {
+    HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+    // Deleting a Group
+    pcmd = Delete(ti);
+  }
+#if 0
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+  WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
+
+  Delete(pmulticmds, pGUICmdIF);
+  if (pGUICmdIF->IsValid()) {
+    pmulticmds->Add(GUICommand::Create(&m_core, pGUICmdIF));
+  } else
+    delete pGUICmdIF;
+#endif
+  if (pcmd != NULL) {
+    Execute(pcmd);
     if (m_bFilterActive)
       RefreshViews();
-
-    if (pGUICmdIF->IsValid()) {
-      pmulticmds->Add(GUICommand::Create(&m_core, pGUICmdIF));
-    } else
-      delete pGUICmdIF;
-
-    Execute(pmulticmds);
-    FixListIndexes();
+    ChangeOkUpdate();
   }
+}
+
+Command *DboxMain::Delete(const CItemData *pci)
+{
+  // Delete a single item of any type:
+  // Normal, base, alias, shortcut...
+  // The DeleteCommand factory method may return a
+  // MultiCommand if a number of elements end up being
+  // deleted, e.g., an alias base and its dependents.
+  
+  ASSERT(pci != NULL);
+
+  return DeleteEntryCommand::Create(&m_core, *pci);
+#if 0
+  uuid_array_t entry_uuid;
+  pci->GetUUID(entry_uuid);
+
+  UUIDList dependentslist;
+  CItemData::EntryType entrytype = pci->GetEntryType();
+
+  // If we're deleting a base (entry with aliases or shortcuts
+  // referencing it), notify user and give her a chance to bail out:
+  if (entrytype == CItemData::ET_ALIASBASE)
+    m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::ET_ALIAS);
+  else if (entrytype == CItemData::ET_SHORTCUTBASE)
+    m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::ET_SHORTCUT);
+
+  int num_dependents = dependentslist.size();
+  if (num_dependents > 0) {
+    CGeneralMsgBox gmb;
+    StringX csDependents;
+    m_core.SortDependents(dependentslist, csDependents);
+
+    CString cs_msg, cs_type;
+    const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
+    if (entrytype == CItemData::ET_ALIASBASE) {
+      cs_type.LoadString(num_dependents == 1 ? IDS_ALIAS : IDS_ALIASES);
+      cs_msg.Format(IDS_DELETEABASE, dependentslist.size(),
+                    cs_type, csDependents.c_str());
+    } else {
+      cs_type.LoadString(num_dependents == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);
+      cs_msg.Format(IDS_DELETESBASE, dependentslist.size(),
+                    cs_type, csDependents.c_str());
+    }
+
+    if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION) == IDNO) {
+      return;
+    }
+  }
+
+  // OK, down to business:
+  // XXX following display-related delete actions should be done AFTER
+  // Delete Command execution
+  DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+  ASSERT(pdi != NULL);
+  int curSel = pdi->list_index;
+
+  // Find next in treeview, not always curSel after deletion
+  HTREEITEM curTree_item = pdi->tree_item;
+  HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item, TVGN_NEXT);
+
+  // Must Find before delete from m_ctlItemList:
+  ItemListIter listindex = m_core.Find(entry_uuid);
+  ASSERT(listindex !=  m_core.GetEntryEndIter());
+
+  UnFindItem();
+
+  // Delete entry from GUI and save for Redo
+  m_ctlItemList.DeleteItem(curSel);
+  m_ctlItemTree.DeleteWithParents(curTree_item);
+
+  pGUICmdIF->m_vDeleteListItems.push_back(entry_uuid);
+  pGUICmdIF->m_vDeleteTreeItemsWithParents.push_back(entry_uuid);
+  // XXX end of UI delete actions
+
+  uuid_array_t base_uuid;
+  if (entrytype == CItemData::ET_ALIAS) {
+    // I'm an alias entry
+    // Get corresponding base uuid
+    m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+    // Delete from both map and multimap
+    Command *pcmd = RemoveDependentEntryCommand::Create(&m_core, base_uuid,
+                                                        entry_uuid, 
+                                                        CItemData::ET_ALIAS);
+    pmulticmds->Add(pcmd);
+
+    if (m_core.NumAliases(base_uuid) == 0) {
+      // Base has no more aliases: change to a normal entry
+      ItemListIter iter = m_core.Find(base_uuid);
+      CItemData &cibase = iter->second;
+      cibase.SetNormal();
+      DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
+      int nImage = GetEntryImage(cibase);
+      SetEntryImage(pdi->list_index, nImage, true);
+      SetEntryImage(pdi->tree_item, nImage, true);
+      pGUICmdIF->m_vVerifyAliasBase.push_back(base_uuid); // save for redo
+    }
+  } else if (entrytype == CItemData::ET_SHORTCUT) {
+    // I'm a shortcut entry
+    // Get corresponding base uuid
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+    // Delete from both map and multimap
+    Command *pcmd = RemoveDependentEntryCommand::Create(&m_core, base_uuid,
+                                                        entry_uuid, 
+                                                        CItemData::ET_SHORTCUT);
+    pmulticmds->Add(pcmd);
+
+    if (m_core.NumShortcuts(base_uuid) == 0) {
+      // Base has no more shortcuts: change to a normal entry
+      ItemListIter iter = m_core.Find(base_uuid);
+      CItemData &cibase = iter->second;
+      cibase.SetNormal();
+      DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
+      int nImage = GetEntryImage(cibase);
+      SetEntryImage(pdi->list_index, nImage, true);
+      SetEntryImage(pdi->tree_item, nImage, true);
+      pGUICmdIF->m_vVerifyShortcutBase.push_back(base_uuid); // save for redo
+    }
+  } else // neither an alias nor a shortcut
+    if (num_dependents > 0) { // I'm a base entry of some kind
+      if (entrytype == CItemData::ET_ALIASBASE) { // ah, an alias base!
+        Command *pcmd1 = ResetAllAliasPasswordsCommand::Create(&m_core,
+                                                               entry_uuid);
+        pmulticmds->Add(pcmd1);
+        Command *pcmd2 = RemoveAllDependentEntriesCommand::Create(&m_core,
+                                                                  entry_uuid,
+                                                                  CItemData::ET_ALIAS);
+        pmulticmds->Add(pcmd2);
+
+        // Now make all my aliases Normal - and save for Redo
+        ItemListIter iter;
+        UUIDListIter UUIDiter;
+        for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); 
+             UUIDiter++) {
+          uuid_array_t auuid;
+          UUIDiter->GetUUID(auuid);
+          iter = m_core.Find(auuid);
+          CItemData &cialias = iter->second;
+          DisplayInfo *pdi = (DisplayInfo *)cialias.GetDisplayInfo();
+          int nImage = GetEntryImage(cialias);
+          SetEntryImage(pdi->list_index, nImage, true);
+          SetEntryImage(pdi->tree_item, nImage, true);
+          pGUICmdIF->m_vAliasDependents.push_back(auuid);
+        } // dependents list handling
+      } else { // ah, a shortcut base!
+        Command *pcmd = RemoveAllDependentEntriesCommand::Create(&m_core,
+                                                                 entry_uuid, 
+                                                                 CItemData::ET_SHORTCUT);
+        pmulticmds->Add(pcmd);
+
+        // Now delete all my shortcuts - no need to save for Redo
+        // as we are deleting the entries
+        ItemListIter iter;
+        UUIDListIter UUIDiter;
+        for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); 
+             UUIDiter++) {
+          uuid_array_t suuid;
+          UUIDiter->GetUUID(suuid);
+          iter = m_core.Find(suuid);
+          CItemData &cshortcut = iter->second;
+          DisplayInfo *pdi = (DisplayInfo *)cshortcut.GetDisplayInfo();
+          m_ctlItemList.DeleteItem(pdi->list_index);
+          m_ctlItemTree.DeleteItem(pdi->tree_item);
+          Command *pcmd = DeleteEntryCommand::Create(&m_core, cshortcut);
+          pmulticmds->Add(pcmd);
+        } // dependents list handling
+      } // what kind of base
+    } // num_dependents > 0
+
+  Command *pcmd = DeleteEntryCommand::Create(&m_core, *pci);
+  pmulticmds->Add(pcmd);
+
+  if (m_ctlItemList.IsWindowVisible()) {
+    if (m_core.GetNumEntries() > 0) {
+      SelectEntry(curSel < (int)m_core.GetNumEntries() ? curSel : (int)(m_core.GetNumEntries() - 1));
+    }
+    m_ctlItemList.SetFocus();
+  } else {// tree view visible
+    if (!inRecursion && nextTree_item != NULL) {
+      m_ctlItemTree.SelectItem(nextTree_item);
+    }
+    m_ctlItemTree.SetFocus();
+  }
+  ChangeOkUpdate();
+  m_RUEList.DeleteRUEntry(entry_uuid);
+#endif
 }
 
 // Functor for find_if to find the group name associated with a HTREEITEM
@@ -357,11 +589,61 @@ struct FindGroupFromHTREEITEM {
   HTREEITEM m_ti;
 };
 
+Command *DboxMain::Delete(HTREEITEM ti)
+{
+  // Delete a group
+  // Create a multicommand, iterate over tree's children,
+  // throw everything into multicommand and be done with it.
+  // Of course, this may recurse...
+
+  if (ti == NULL)
+    return NULL; // bad bottoming out of recursion?
+  if (m_ctlItemTree.IsLeaf(ti)) {
+    CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+    return Delete(pci); // normal bottom out of recursion
+  }
+
+  // Here if we have a bona fida group
+  ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
+  MultiCommands *pmulti_cmd = MultiCommands::Create(&m_core);
+  
+  m_ctlItemTree.SetRedraw(FALSE); // XXX not here
+  HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
+
+  while (cti != NULL) {
+    CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(cti);
+    if (pci != NULL)
+      pmulti_cmd->Add(Delete(pci));
+    else
+      pmulti_cmd->Add(Delete(cti)); // subgroup!
+
+    cti = m_ctlItemTree.GetNextItem(cti, TVGN_NEXT);
+  }
+  m_ctlItemTree.SetRedraw(TRUE); // XXX not here (after Execute)
+  m_ctlItemTree.Invalidate(); // XXX not here (after Execute)
+
+  //  delete an empty group. XXX not here (after Execute)
+#ifdef NOTYET
+  std::map<StringX, HTREEITEM>::iterator gIter;
+  FindGroupFromHTREEITEM groupfromti(ti);
+  gIter = std::find_if(m_mapGroupToTreeItem.begin(), 
+                       m_mapGroupToTreeItem.end(), 
+                       groupfromti);
+  if (gIter != m_mapGroupToTreeItem.end()) {
+    pGUICmdIF->m_vDeleteGroup.push_back(gIter->first);
+  }
+#endif
+  HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
+  m_ctlItemTree.DeleteItem(ti);
+  m_ctlItemTree.SelectItem(parent);
+  m_TreeViewGroup = L"";
+  return pmulti_cmd;
+}
+
+#if 0
 void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
                       bool inRecursion)
 {
-  CItemData *pci = getSelectedItem();
-
   if (pci != NULL) {
     uuid_array_t entry_uuid;
     pci->GetUUID(entry_uuid);
@@ -380,7 +662,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
     if (num_dependents > 0) {
       CGeneralMsgBox gmb;
       StringX csDependents;
-      SortDependents(dependentslist, csDependents);
+      m_core.SortDependents(dependentslist, csDependents);
 
       CString cs_msg, cs_type;
       const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
@@ -570,6 +852,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
   }
   m_TreeViewGroup = L"";
 }
+#endif
 
 void DboxMain::OnRename()
 {
@@ -657,7 +940,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
              entrytype == CItemData::ET_ALIASBASE ? CItemData::ET_ALIAS : CItemData::ET_SHORTCUT);
     int num_dependents = dependentslist.size();
     if (num_dependents > 0) {
-      SortDependents(dependentslist, csDependents);
+      m_core.SortDependents(dependentslist, csDependents);
     }
 
     edit_entry_psh.SetNumDependents(num_dependents);
@@ -1774,13 +2057,13 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           // So dropped entry will point to the 'proper base' and tell the user.
           CString cs_msg;
           cs_msg.Format(IDS_DDBASEISALIAS, Group, Title, User);
-          gmb.AfxMessageBox(cs_msg, MB_OK);
+          gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
         } else
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
           CString cs_msg;
           cs_msg.Format(IDS_ABASEINVALID, Group, Title, User);
-          gmb.AfxMessageBox(cs_msg, MB_OK);
+          gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
           continue;
         }
         Command *pcmd = AddDependentEntryCommand::Create(&m_core, pl.base_uuid,
@@ -1797,7 +2080,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           // Only normal or shortcut base allowed as target
           CString cs_msg;
           cs_msg.Format(IDS_SBASEINVALID, Group, Title, User);
-          gmb.AfxMessageBox(cs_msg, MB_OK);
+          gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
           continue;
         }
         Command *pcmd = AddDependentEntryCommand::Create(&m_core,
@@ -1875,66 +2158,6 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
   FixListIndexes();
   RefreshViews();
-}
-
-// Return whether first [g:t:u] is greater than the second [g:t:u]
-// used in std::sort in SortDependents below.
-static bool GTUCompare(const StringX &elem1, const StringX &elem2)
-{
-  StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
-
-  StringX::size_type i1 = elem1.find(L':');
-  g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
-  StringX::size_type i2 = elem2.find(L':');
-  g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
-  if (g1 != g2)
-    return g1.compare(g2) < 0;
-
-  tmp1 = elem1.substr(g1.length() + 1);
-  tmp2 = elem2.substr(g2.length() + 1);
-  i1 = tmp1.find(L':');
-  t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
-  i2 = tmp2.find(L':');
-  t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
-  if (t1 != t2)
-    return t1.compare(t2) < 0;
-
-  tmp1 = tmp1.substr(t1.length() + 1);
-  tmp2 = tmp2.substr(t2.length() + 1);
-  i1 = tmp1.find(L':');
-  u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
-  i2 = tmp2.find(L':');
-  u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
-  return u1.compare(u2) < 0;
-}
-
-void DboxMain::SortDependents(UUIDList &dlist, StringX &csDependents)
-{
-  std::vector<StringX> sorted_dependents;
-  std::vector<StringX>::iterator sd_iter;
-
-  ItemListIter iter;
-  UUIDListIter diter;
-  StringX cs_dependent;
-
-  for (diter = dlist.begin(); diter != dlist.end(); diter++) {
-    uuid_array_t dependent_uuid;
-    diter->GetUUID(dependent_uuid);
-    iter = m_core.Find(dependent_uuid);
-    if (iter != m_core.GetEntryEndIter()) {
-      cs_dependent = iter->second.GetGroup() + L":" +
-                     iter->second.GetTitle() + L":" +
-                     iter->second.GetUser();
-      sorted_dependents.push_back(cs_dependent);
-    }
-  }
-
-  std::sort(sorted_dependents.begin(), sorted_dependents.end(), GTUCompare);
-  csDependents.clear();
-
-  for (sd_iter = sorted_dependents.begin(); sd_iter != sorted_dependents.end(); sd_iter++) {
-    csDependents += L"\t[" +  *sd_iter + L"]\r\n";
-  }
 }
 
 LRESULT DboxMain::OnToolBarFindMessage(WPARAM /* wParam */, LPARAM /* lParam */)
@@ -2031,7 +2254,8 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
         else
           cs_msg.Format(IDS_ALIASNOTFOUND0B,
                         pl.csPwdTitle.c_str());  // no entry exists with title=x
-        rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ,
+                               NULL, MB_YESNO | MB_DEFBUTTON2);
         break;
       case -2: // [g,t], [t:u]
         // In this case the 2 fields from the password are in Group & Title
@@ -2048,7 +2272,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
                         pl.csPwdGroup.c_str(),
                         pl.csPwdTitle.c_str());
         rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
-                           MB_YESNO | MB_DEFBUTTON2);
+                               NULL, MB_YESNO | MB_DEFBUTTON2);
         break;
       case -3: // [g:t:u], [g:t:], [:t:u], [:t:] (title cannot be empty)
       {
@@ -2078,7 +2302,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
                         pl.csPwdTitle.c_str());
 
         rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
-                           MB_YESNO | MB_DEFBUTTON2);
+                               NULL, MB_YESNO | MB_DEFBUTTON2);
         break;
       }
       default:
@@ -2097,7 +2321,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
                     pl.csPwdGroup.c_str(),
                     pl.csPwdTitle.c_str(),
                     pl.csPwdUser.c_str());
-      if (gmb.AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
+      if (gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
         return false;
       }
     } else {
@@ -2108,7 +2332,7 @@ bool DboxMain::CheckNewPassword(const StringX &group, const StringX &title,
                       pl.csPwdGroup.c_str(),
                       pl.csPwdTitle.c_str(), 
                       pl.csPwdUser.c_str());
-        gmb.AfxMessageBox(cs_msg, MB_OK);
+        gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
         return false;
       } else {
         return true;

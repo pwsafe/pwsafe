@@ -3879,7 +3879,9 @@ StringX DboxMain::GetGroupName()
 void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath)
 {
   // When a group node is renamed, need to update the group to HTREEITEM map
-  // Can't use for_each as need to update map
+  // We need to build a new map, as we can't erase&add while iterating.
+  std::map<StringX, HTREEITEM> new_map;
+
   size_t len = sxOldPath.length();
   std::map<StringX, HTREEITEM>::iterator iter;
 
@@ -3889,21 +3891,23 @@ void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNe
     if (iter->first.length() == len) {
       if (wcsncmp(sxOldPath.c_str(), iter->first.c_str(), len) == 0) {
         HTREEITEM ti = iter->second;
-        m_mapGroupToTreeItem.erase(iter);
-        m_mapGroupToTreeItem[sxNewPath] = ti;
+        new_map.insert(make_pair(sxNewPath, ti));
+        continue;
       }
-    } else
-    if (iter->first.length() > len) {
+    } else if (iter->first.length() > len) {
       // Need to add group seperator to ensure not affecting another group
       StringX path = sxOldPath + StringX(GROUP_SEP2);
       if (wcsncmp(path.c_str(), iter->first.c_str(), len + 1) == 0) {
         HTREEITEM ti = iter->second;
         StringX sxNewGroup = sxNewPath + iter->first.substr(len);
-        m_mapGroupToTreeItem.erase(iter);
-        m_mapGroupToTreeItem[sxNewGroup] = ti;
+        new_map.insert(make_pair(sxNewGroup, ti));
+        continue;
       }
     }
-  }
+    new_map.insert(*iter);
+  } // for
+  ASSERT(new_map.size() == m_mapGroupToTreeItem.size());
+  m_mapGroupToTreeItem = new_map;
 }
 
 void DboxMain::OnShowUnsavedEntries()
@@ -3998,10 +4002,8 @@ void DboxMain::RemoveFromGUI(CItemData &ci, bool bUpdateGUI)
     m_ctlItemList.DeleteItem(pdi->list_index);
     m_ctlItemTree.DeleteWithParents(pdi->tree_item);
 
-    if (bUpdateGUI) {
-      FixListIndexes();
-
-      // Make controls redraw
+    FixListIndexes(); // sucks, as make m deletions an NxM operation
+    if (bUpdateGUI) { // Make controls redraw
       m_ctlItemList.Invalidate();
       m_ctlItemTree.Invalidate();
     }

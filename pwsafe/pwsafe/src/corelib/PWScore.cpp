@@ -92,6 +92,65 @@ void PWScore::SetApplicationNameAndVersion(const stringT &appName,
          nMajor, nMinor);
 }
 
+// Return whether first [g:t:u] is greater than the second [g:t:u]
+// used in std::sort in SortDependents below.
+static bool GTUCompare(const StringX &elem1, const StringX &elem2)
+{
+  StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
+
+  StringX::size_type i1 = elem1.find(L':');
+  g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
+  StringX::size_type i2 = elem2.find(L':');
+  g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
+  if (g1 != g2)
+    return g1.compare(g2) < 0;
+
+  tmp1 = elem1.substr(g1.length() + 1);
+  tmp2 = elem2.substr(g2.length() + 1);
+  i1 = tmp1.find(L':');
+  t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
+  i2 = tmp2.find(L':');
+  t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
+  if (t1 != t2)
+    return t1.compare(t2) < 0;
+
+  tmp1 = tmp1.substr(t1.length() + 1);
+  tmp2 = tmp2.substr(t2.length() + 1);
+  i1 = tmp1.find(L':');
+  u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
+  i2 = tmp2.find(L':');
+  u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
+  return u1.compare(u2) < 0;
+}
+
+void PWScore::SortDependents(UUIDList &dlist, StringX &csDependents)
+{
+  std::vector<StringX> sorted_dependents;
+  std::vector<StringX>::iterator sd_iter;
+
+  ItemListIter iter;
+  UUIDListIter diter;
+  StringX cs_dependent;
+
+  for (diter = dlist.begin(); diter != dlist.end(); diter++) {
+    uuid_array_t dependent_uuid;
+    diter->GetUUID(dependent_uuid);
+    iter = Find(dependent_uuid);
+    if (iter != GetEntryEndIter()) {
+      cs_dependent = iter->second.GetGroup() + L":" +
+                     iter->second.GetTitle() + L":" +
+                     iter->second.GetUser();
+      sorted_dependents.push_back(cs_dependent);
+    }
+  }
+
+  std::sort(sorted_dependents.begin(), sorted_dependents.end(), GTUCompare);
+  csDependents.clear();
+
+  for (sd_iter = sorted_dependents.begin(); sd_iter != sorted_dependents.end(); sd_iter++)
+    csDependents += L"\t[" +  *sd_iter + L"]\r\n";
+}
+
 void PWScore::DoAddEntry(const CItemData &item)
 {
   // Also "UndoDeleteEntry" !
@@ -109,18 +168,193 @@ void PWScore::DoAddEntry(const CItemData &item)
 void PWScore::DoDeleteEntry(const CItemData &item)
 {
   // Also "UndoAddEntry" !
+
+  // Added handling of alias/shortcut/base entry types
+  // Most of this will go away once the entry types
+  // are implemented as subclasses.
+
   uuid_array_t entry_uuid;
   item.GetUUID(entry_uuid);
   ItemListIter pos = m_pwlist.find(entry_uuid);
   if (pos != m_pwlist.end()) {
     m_bDBChanged = true;
     m_pwlist.erase(pos);
-
     if (item.NumberUnknownFields() > 0)
       DecrementNumRecordsWithUnknownFields();
 
+    // code from MainEdit
+    UUIDList dependentslist;
+    CItemData::EntryType entrytype = item.GetEntryType();
+
+    // If we're deleting a base (entry with aliases or shortcuts
+    // referencing it), notify user and give her a chance to bail out:
+    if (entrytype == CItemData::ET_ALIASBASE)
+      GetAllDependentEntries(entry_uuid, dependentslist, CItemData::ET_ALIAS);
+    else if (entrytype == CItemData::ET_SHORTCUTBASE)
+      GetAllDependentEntries(entry_uuid, dependentslist, CItemData::ET_SHORTCUT);
+
+    int num_dependents = dependentslist.size();
+    if (num_dependents > 0) {
+      StringX csDependents;
+      SortDependents(dependentslist, csDependents);
+
+      stringT cs_msg, cs_type;
+      stringT cs_title;
+      LoadAString(cs_title, IDSC_DELETEBASET);
+      if (entrytype == CItemData::ET_ALIASBASE) {
+        LoadAString(cs_type, num_dependents == 1 ? IDSC_ALIAS : IDSC_ALIASES);
+        Format(cs_msg, IDSC_DELETEABASE, dependentslist.size(),
+               cs_type, csDependents.c_str());
+      } else {
+        LoadAString(cs_type, num_dependents == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
+        Format(cs_msg, IDSC_DELETESBASE, dependentslist.size(),
+               cs_type, csDependents.c_str());
+      }
+
+      if (!(*m_pAsker)(cs_title, cs_msg))
+        return; // user realized consequences, declines.
+    } // num_dependents > 0
+
+    // OK, down to business:
+    // XXX following display-related delete actions should be done AFTER
+    // Delete Command execution
+#if 0
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    int curSel = pdi->list_index;
+
+    // Find next in treeview, not always curSel after deletion
+    HTREEITEM curTree_item = pdi->tree_item;
+    HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item, TVGN_NEXT);
+
+    // Must Find before delete from m_ctlItemList:
+    ItemListIter listindex = Find(entry_uuid);
+    ASSERT(listindex !=  GetEntryEndIter());
+
+    UnFindItem();
+
+    // Delete entry from GUI and save for Redo
+    m_ctlItemList.DeleteItem(curSel);
+    m_ctlItemTree.DeleteWithParents(curTree_item);
+
+    pGUICmdIF->m_vDeleteListItems.push_back(entry_uuid);
+    pGUICmdIF->m_vDeleteTreeItemsWithParents.push_back(entry_uuid);
+    // XXX end of UI delete actions
+
+    uuid_array_t base_uuid;
+    if (entrytype == CItemData::ET_ALIAS) {
+      // I'm an alias entry
+      // Get corresponding base uuid
+      GetAliasBaseUUID(entry_uuid, base_uuid);
+      // Delete from both map and multimap
+      Command *pcmd = RemoveDependentEntryCommand::Create(this, base_uuid,
+                                                          entry_uuid, 
+                                                          CItemData::ET_ALIAS);
+      pmulticmds->Add(pcmd);
+
+      if (NumAliases(base_uuid) == 0) {
+        // Base has no more aliases: change to a normal entry
+        ItemListIter iter = Find(base_uuid);
+        CItemData &cibase = iter->second;
+        cibase.SetNormal();
+        /* XXX more UI stuff */
+        DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
+        int nImage = GetEntryImage(cibase);
+        SetEntryImage(pdi->list_index, nImage, true);
+        SetEntryImage(pdi->tree_item, nImage, true);
+        pGUICmdIF->m_vVerifyAliasBase.push_back(base_uuid); // save for redo
+      }
+    } else if (entrytype == CItemData::ET_SHORTCUT) {
+      // I'm a shortcut entry
+      // Get corresponding base uuid
+      GetShortcutBaseUUID(entry_uuid, base_uuid);
+      // Delete from both map and multimap
+      Command *pcmd = RemoveDependentEntryCommand::Create(this, base_uuid,
+                                                          entry_uuid, 
+                                                          CItemData::ET_SHORTCUT);
+      pmulticmds->Add(pcmd);
+      if (NumShortcuts(base_uuid) == 0) {
+        // Base has no more shortcuts: change to a normal entry
+        ItemListIter iter = Find(base_uuid);
+        CItemData &cibase = iter->second;
+        cibase.SetNormal();
+        /* XXX More UI stuff */
+        DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
+        int nImage = GetEntryImage(cibase);
+        SetEntryImage(pdi->list_index, nImage, true);
+        SetEntryImage(pdi->tree_item, nImage, true);
+        pGUICmdIF->m_vVerifyShortcutBase.push_back(base_uuid); // save for redo
+      }
+    } else // neither an alias nor a shortcut
+      if (num_dependents > 0) { // I'm a base entry of some kind
+        if (entrytype == CItemData::ET_ALIASBASE) { // ah, an alias base!
+          Command *pcmd1 = ResetAllAliasPasswordsCommand::Create(this, entry_uuid);
+          pmulticmds->Add(pcmd1);
+          Command *pcmd2 = RemoveAllDependentEntriesCommand::Create(this, entry_uuid,
+                                                                    CItemData::ET_ALIAS);
+          pmulticmds->Add(pcmd2);
+
+          // Now make all my aliases Normal - and save for Redo
+          ItemListIter iter;
+          UUIDListIter UUIDiter;
+          for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); 
+               UUIDiter++) {
+            uuid_array_t auuid;
+            UUIDiter->GetUUID(auuid);
+            iter = Find(auuid);
+            /* XXX More UI stuff */
+            CItemData &cialias = iter->second;
+            DisplayInfo *pdi = (DisplayInfo *)cialias.GetDisplayInfo();
+            int nImage = GetEntryImage(cialias);
+            SetEntryImage(pdi->list_index, nImage, true);
+            SetEntryImage(pdi->tree_item, nImage, true);
+            pGUICmdIF->m_vAliasDependents.push_back(auuid);
+          } // dependents list handling
+        } else { // ah, a shortcut base!
+          Command *pcmd = RemoveAllDependentEntriesCommand::Create(this, entry_uuid, 
+                                                                   CItemData::ET_SHORTCUT);
+          pmulticmds->Add(pcmd);
+
+          // Now delete all my shortcuts - no need to save for Redo
+          // as we are deleting the entries
+          ItemListIter iter;
+          UUIDListIter UUIDiter;
+          for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); 
+               UUIDiter++) {
+            uuid_array_t suuid;
+            UUIDiter->GetUUID(suuid);
+            iter = Find(suuid);
+            /* XXX More UI stuff */
+            CItemData &cshortcut = iter->second;
+            DisplayInfo *pdi = (DisplayInfo *)cshortcut.GetDisplayInfo();
+            m_ctlItemList.DeleteItem(pdi->list_index);
+            m_ctlItemTree.DeleteItem(pdi->tree_item);
+            Command *pcmd = DeleteEntryCommand::Create(this, cshortcut);
+            pmulticmds->Add(pcmd);
+          } // dependents list handling
+        } // what kind of base
+      } // num_dependents > 0
+
+    Command *pcmd = DeleteEntryCommand::Create(this, *pci);
+    pmulticmds->Add(pcmd);
+    /* XXX More UI stuff */
+    if (m_ctlItemList.IsWindowVisible()) {
+      if (GetNumEntries() > 0) {
+        SelectEntry(curSel < (int)GetNumEntries() ? curSel : (int)(GetNumEntries() - 1));
+      }
+      m_ctlItemList.SetFocus();
+    } else {// tree view visible
+      if (!inRecursion && nextTree_item != NULL) {
+        m_ctlItemTree.SelectItem(nextTree_item);
+      }
+      m_ctlItemTree.SetFocus();
+    }
+    ChangeOkUpdate();
+    m_RUEList.DeleteRUEntry(entry_uuid);
+    // end of code from MainEdit
+#endif
     NotifyDBModified();
-  }
+  } // pos != m_pwlist.end()
 }
 
 void PWScore::ClearData(void)
@@ -564,12 +798,12 @@ int PWScore::ReadFile(const StringX &a_filename,
          } // uuid matching
 #ifdef DEMO
          if (m_pwlist.size() < MAXDEMO) {
-           m_pwlist[uuid] = ci_temp;
+           m_pwlist.insert(make_pair(CUUIDGen(uuid), ci_temp));
          } else {
            limited = true;
          }
 #else
-         m_pwlist[uuid] = ci_temp;
+         m_pwlist.insert(make_pair(CUUIDGen(uuid), ci_temp));
 #endif
          break;
       case PWSfile::END_OF_FILE:

@@ -21,6 +21,7 @@
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSAuxParse.h"
+#include "corelib/corelib.h"
 
 #include <shlwapi.h>
 #include <fstream>
@@ -1050,9 +1051,9 @@ void CAddEdit_Basic::OnViewDependents()
   CGeneralMsgBox gmb;
 
   if (M_original_entrytype() == CItemData::ET_ALIASBASE)
-    cs_type.LoadString(M_num_dependents() == 1 ? IDS_ALIAS : IDS_ALIASES);
+    cs_type.LoadString(M_num_dependents() == 1 ? IDSC_ALIAS : IDSC_ALIASES);
   else
-    cs_type.LoadString(M_num_dependents() == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);
+    cs_type.LoadString(M_num_dependents() == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
 
   cs_msg.Format(IDS_VIEWDEPENDENTS, M_num_dependents(), cs_type, M_dependents());
   gmb.MessageBox(cs_msg, AfxGetAppName(), MB_OK);

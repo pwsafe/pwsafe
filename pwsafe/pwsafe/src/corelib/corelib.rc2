@@ -200,8 +200,10 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_ALIAS               "Alias"
-  IDSC_SHORTCUT            "Shortcut"
+  IDSC_ALIAS               "alias"
+  IDSC_SHORTCUT            "shortcut"
+  IDSC_ALIASES             "aliases"
+  IDSC_SHORTCUTS           "shortcuts"
   IDSC_FNORMAL             "a normal entry"
   IDSC_FALIAS              "an alias entry"
   IDSC_FSHORTCUT           "a shortcut entry"
@@ -319,4 +321,11 @@ BEGIN
   IDSC_XMLEXP_SUBSETFIELDS "The user specified that the following fields be excluded from the export:"
   IDSC_UNKNOWNFUNCTION     "Unknown function"
   IDSC_UNKNOWNOBJECT       "Unknown object"
+END
+
+STRINGTABLE
+BEGIN
+  IDSC_DELETEBASET         "Delete a Base Entry Confirmation?"
+  IDSC_DELETEABASE         "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
+  IDSC_DELETESBASE         "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (All shortcuts to this entry will be deleted)?"
 END

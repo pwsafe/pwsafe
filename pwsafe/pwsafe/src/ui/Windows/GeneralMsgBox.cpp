@@ -224,10 +224,12 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption,
   return rc;
 }
 
-INT_PTR CGeneralMsgBox::AfxMessageBox(LPCTSTR lpszText, UINT uType)
+INT_PTR CGeneralMsgBox::AfxMessageBox(LPCTSTR lpszText, LPCTSTR lpCaption, UINT nType)
 {
   SetMsg(lpszText);
-  INT_PTR rc = MessageBox(NULL, AfxGetApp()->m_pszAppName, uType);
+  if (lpCaption == NULL)
+    lpCaption = AfxGetApp()->m_pszAppName;
+  INT_PTR rc = MessageBox(NULL, lpCaption, nType);
   return rc;
 }
 

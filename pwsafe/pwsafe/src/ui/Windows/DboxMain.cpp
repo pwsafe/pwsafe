@@ -1330,8 +1330,7 @@ void DboxMain::FixListIndexes()
       continue;
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
     ASSERT(pdi != NULL);
-    if (pdi->list_index != i)
-      pdi->list_index = i;
+    pdi->list_index = i;
   }
 }
 
@@ -2451,7 +2450,7 @@ BOOL DboxMain::OnQueryEndSession()
     CGeneralMsgBox gmb;
     CString cs_msg;
     cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile().c_str());
-    m_iSessionEndingStatus = gmb.AfxMessageBox(cs_msg,
+    m_iSessionEndingStatus = gmb.AfxMessageBox(cs_msg, NULL,
                              (MB_YESNOCANCEL | MB_ICONWARNING | MB_DEFBUTTON3));
     switch (m_iSessionEndingStatus) {
       case IDCANCEL:

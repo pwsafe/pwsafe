@@ -1376,6 +1376,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
   if (m_cfdropped == m_tcddCPFID &&
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
       !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
+#if 0
     MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
     WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
 
@@ -1388,6 +1389,8 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
       delete pGUICmdIF;
 
     m_pDbx->Execute(pmulticmds);
+#endif
+    m_pDbx->Delete(); // XXX assume we've a selected item here!
   }
 
   // wrong place to clean up imagelist?
