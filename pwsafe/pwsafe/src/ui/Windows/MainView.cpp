@@ -173,10 +173,7 @@ void DboxMain::RedoDelete(WinGUICmdIF *pGUICmdIF)
     iter = Find(entry_uuid);
     CItemData &cibase = iter->second;
     cibase.SetNormal();
-    DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-    int nImage = GetEntryImage(cibase);
-    SetEntryImage(pdi->list_index, nImage, true);
-    SetEntryImage(pdi->tree_item, nImage, true);
+    UpdateEntryImages(cibase);
   }
 
   // Does my shortcut base now become a normal entry?
@@ -187,10 +184,7 @@ void DboxMain::RedoDelete(WinGUICmdIF *pGUICmdIF)
     iter = Find(entry_uuid);
     CItemData &cibase = iter->second;
     cibase.SetNormal();
-    DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-    int nImage = GetEntryImage(cibase);
-    SetEntryImage(pdi->list_index, nImage, true);
-    SetEntryImage(pdi->tree_item, nImage, true);
+    UpdateEntryImages(cibase);
   }
 
   // Now make all my aliases Normal
@@ -199,11 +193,8 @@ void DboxMain::RedoDelete(WinGUICmdIF *pGUICmdIF)
        uuid_iter++) {
     uuid_iter->GetUUID(entry_uuid);
     iter = Find(entry_uuid);
-    CItemData &cialias = iter->second;
-    DisplayInfo *pdi = (DisplayInfo *)cialias.GetDisplayInfo();
-    int nImage = GetEntryImage(cialias);
-    SetEntryImage(pdi->list_index, nImage, true);
-    SetEntryImage(pdi->tree_item, nImage, true);
+    const CItemData &cialias = iter->second;
+    UpdateEntryImages(cialias);
   }
 
   // Remove emtpty groups
@@ -3653,6 +3644,15 @@ void DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEnt
     m_ctlItemTree.InvalidateRect(&rect);
   }
 }
+
+void DboxMain::UpdateEntryImages(const CItemData &ci)
+{
+  int nImage = GetEntryImage(ci);
+  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  SetEntryImage(pdi->list_index, nImage, true);
+  SetEntryImage(pdi->tree_item, nImage, true);
+}
+
 
 void DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
 {
