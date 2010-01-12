@@ -144,7 +144,7 @@ public:
     virtual void UpdateGUI(Command::GUI_Action ga,
                            uuid_array_t &entry_uuid,
                            CItemData::FieldType ft);
-    virtual void GUIUpdateEntry(CItemData &ci);
+    virtual void GUISetupDisplayInfo(CItemData &ci);
     virtual void GUICommandInterface(Command::ExecuteFn When,
                                      PWSGUICmdIF *pGUICmdIF);
 

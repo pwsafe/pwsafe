@@ -1250,7 +1250,7 @@ void PasswordSafeFrame::UpdateGUI(Command::GUI_Action ga,
 {
 }
 
-void PasswordSafeFrame::GUIUpdateEntry(CItemData &ci)
+void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
 {
 }
 

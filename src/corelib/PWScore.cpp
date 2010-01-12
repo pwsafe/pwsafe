@@ -216,7 +216,8 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     } // num_dependents > 0
 
     // OK, down to business:
-    // XXX following display-related delete actions should be done AFTER
+
+   // XXX following display-related delete actions should be done AFTER
     // Delete Command execution
 #if 0
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
@@ -1980,10 +1981,10 @@ void PWScore::CallGUICommandInterface(Command::ExecuteFn When,
 }
 
 
-void PWScore::GUIUpdateEntry(CItemData &ci)
+void PWScore::GUISetupDisplayInfo(CItemData &ci)
 {
   if (m_pUIIF != NULL)
-    m_pUIIF->GUIUpdateEntry(ci);
+    m_pUIIF->GUISetupDisplayInfo(ci);
 }
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)

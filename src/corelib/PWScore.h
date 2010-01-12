@@ -253,7 +253,7 @@ public:
   void ResumeOnDBNotification()
   {m_bNotifyDB = true;}
 
-  void GUIUpdateEntry(CItemData &ci);
+  void GUISetupDisplayInfo(CItemData &ci);
 
   // Get/Set Display information from/to database
   void SetDisplayStatus(const std::vector<bool> &s);
@@ -274,9 +274,6 @@ public:
   void ClearChangedNodes()
   {m_vnodes_modified.clear();}
   bool IsNodeModified(StringX &path) const;
-
-  // Should be private but XML Import can't then reach it
-  void (*m_pfcnGUIUpdateEntry) (CItemData &);
 
 private:
   // Database update routines
