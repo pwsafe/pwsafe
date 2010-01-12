@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
 
   ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnBnClickedResetAll)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
+  ON_NOTIFY(HDN_ENDTRACK, IDC_LIST_HEADER, OnHeaderNotify)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -105,14 +106,18 @@ BOOL COptionsShortcuts::OnInitDialog()
 
   m_ShortcutLC.Init(this);
 
+  // Override default HeaderCtrl ID of 0
+  CHeaderCtrl *pLCHdrCtrl = m_ShortcutLC.GetHeaderCtrl();
+  pLCHdrCtrl->SetDlgCtrlID(IDC_LIST_HEADER);
+
   DWORD dwExtendedStyle = m_ShortcutLC.GetExtendedStyle() | LVS_EX_GRIDLINES;
   m_ShortcutLC.SetExtendedStyle(dwExtendedStyle);
 
   CString cs_colname;
-  cs_colname.LoadString(IDS_COL_MENUITEM);
-  m_ShortcutLC.InsertColumn(0, cs_colname);     // vdg:1
   cs_colname.LoadString(IDS_COL_SHORTCUT);
-  m_ShortcutLC.InsertColumn(1, cs_colname);     // vdg:0
+  m_ShortcutLC.InsertColumn(0, cs_colname);  // SHCT_SHORTCUTKEYS
+  cs_colname.LoadString(IDS_COL_MENUITEM);
+  m_ShortcutLC.InsertColumn(1, cs_colname);  // SHCT_MENUITEMTEXT
 
   MapMenuShortcutsIter iter, iter_parent;
   MapKeyNameIDConstIter citer;
@@ -120,7 +125,7 @@ BOOL COptionsShortcuts::OnInitDialog()
   int iItem(0);
 
   for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
-    iter++) {
+       iter++) {
     // We don't allow change of certain menu items
     // Just don't put in the list that the user sees.
     if (iter->second.uiParentID == 0)
@@ -146,19 +151,13 @@ BOOL COptionsShortcuts::OnInitDialog()
     CString sMenuItemtext = (CString(iter_parent->second.name.c_str()) + 
                              CString(L" \xbb ") +
                              CString(iter->second.name.c_str()));
+
     // Remove the ampersand from the menu item the user sees here
     sMenuItemtext.Remove(L'&');
-	
-	// Cut the length of very long "Menu >> MenuItem" to 'maxItemTextLen'
-#define maxItemTextLen 50
-#define sItemTextEnd CString(L" +++")
-	if (sMenuItemtext.GetLength() > maxItemTextLen) {
-      sMenuItemtext = CString(sMenuItemtext.Left(maxItemTextLen-sItemTextEnd.GetLength())) + sItemTextEnd;
-	}
-    
-	iItem = m_ShortcutLC.InsertItem(iItem, sMenuItemtext); // vdg: str
+
+	  iItem = m_ShortcutLC.InsertItem(iItem, str);  // SHCT_SHORTCUTKEYS
     ASSERT(iItem != -1);
-    brc = m_ShortcutLC.SetItemText(iItem, 1, str);         // vdg: sMenuItemtext
+    brc = m_ShortcutLC.SetItemText(iItem, 1, sMenuItemtext); // SHCT_MENUITEMTEXT
     ASSERT(brc != 0);
     DWORD dwData = MAKELONG(iter->first, iter->second.iMenuPosition);
     brc = m_ShortcutLC.SetItemData(iItem, dwData);
@@ -169,20 +168,13 @@ BOOL COptionsShortcuts::OnInitDialog()
   brc = m_ShortcutLC.SortItems(CompareFunc, NULL);
   ASSERT(brc != 0);
 
-  brc = m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);             // vdg: LVSCW_AUTOSIZE_USEHEADER
+  brc = m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE); // SHCT_SHORTCUTKEYS
   ASSERT(brc != 0);
-  brc = m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);   // vdg: LVSCW_AUTOSIZE
+  brc = m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
   ASSERT(brc != 0);
 
   brc = m_ShortcutLC.ModifyStyle(LVS_OWNERDRAWFIXED, 0, 0);
   ASSERT(brc != 0);
-
-  CHeaderCtrl* pHCtrl;
-  pHCtrl = m_ShortcutLC.GetHeaderCtrl();
-  ASSERT(pHCtrl != NULL);
-  pHCtrl->SetDlgCtrlID(IDC_SHORTCUTLC_HEADER);
-  m_SHCTHeader.SubclassWindow(pHCtrl->GetSafeHwnd());
-  m_SHCTHeader.SetStopChangeFlag(true);
 
   m_stc_warning.SetColour(RGB(255, 0, 0));
   m_stc_warning.ShowWindow(SW_HIDE);
@@ -221,7 +213,7 @@ void COptionsShortcuts::OnBnClickedResetAll()
     } else {
       str = L"";
     }
-    m_ShortcutLC.SetItemText(i, 1, str); // vdg: 0
+    m_ShortcutLC.SetItemText(i, 0, str);  // SHCT_SHORTCUTKEYS
   }
 
   ClearWarning();
@@ -229,6 +221,29 @@ void COptionsShortcuts::OnBnClickedResetAll()
   m_ShortcutLC.RedrawItems(0, m_ShortcutLC.GetItemCount());
   m_ShortcutLC.UpdateWindow();
   m_bShortcutsChanged = true;
+}
+
+void COptionsShortcuts::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
+{
+  NMHEADER *phdn = (NMHEADER *) pNMHDR;
+  *pResult = FALSE;
+
+  if (phdn->pitem == NULL)
+    return;
+
+  UINT mask = phdn->pitem->mask;
+  if ((mask & HDI_WIDTH) != HDI_WIDTH)
+    return;
+
+  // column width changed
+  switch (phdn->hdr.code) {
+    case HDN_ENDTRACK:
+      // Deal with last column
+      m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
+      break;
+    default:
+      break;
+  }
 }
 
 // Functor for find_if to see if shortcut is reserved
@@ -302,10 +317,10 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   iter->second.cVirtKey = st_mst.cVirtKey;
   iter->second.cModifier = st_mst.cModifier;
 
-  m_ShortcutLC.SetItemText(item, 1, str);	// vdg: 0
-  m_ShortcutLC.RedrawItems(item, item);
-  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);           // vdg: LVSCW_AUTOSIZE_USEHEADER
-  m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // vdg: LVSCW_AUTOSIZE
+  m_ShortcutLC.SetItemText(item, 0, str);  // SHCT_SHORTCUTKEYS
+  m_ShortcutLC.RedrawItems(item, item);    // SHCT_MENUITEMTEXT
+  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);           // SHCT_SHORTCUTKEYS
+  m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
   m_ShortcutLC.UpdateWindow();
   m_bShortcutsChanged = true;
   return;

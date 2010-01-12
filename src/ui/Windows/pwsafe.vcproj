@@ -2574,11 +2574,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\passwordchars.bmp"
+				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
+				RelativePath="..\graphics\toolbar\classic\passwordchars.bmp"
 				>
 			</File>
 			<File
@@ -2674,15 +2674,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\dragbar\new\PasswordX.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
 				>
 			</File>
 			<File

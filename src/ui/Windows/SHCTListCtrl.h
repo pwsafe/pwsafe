@@ -14,8 +14,8 @@
 class COptionsShortcuts;
 
 // Subitem indices
-#define SHCT_MENUITEMTEXT  0
-#define SHCT_SHORTCUTKEYS  1
+#define SHCT_SHORTCUTKEYS  0
+#define SHCT_MENUITEMTEXT  1
 #define SHCT_NUM_COLUMNS   2
 
 class CSHCTListCtrl : public CListCtrl
