@@ -78,6 +78,7 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS);
   afx_msg void OnBnClickedResetAll();
+  afx_msg void OnHeaderNotify(NMHDR* pNotifyStruct, LRESULT* result);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

@@ -60,12 +60,12 @@ void CSHCTListCtrl::Init(COptionsShortcuts *pParent)
   EnableToolTips(TRUE);
 }
 
-void CSHCTListCtrl::OnLButtonDown(UINT nFlags , CPoint point)
+void CSHCTListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 {
   UNREFERENCED_PARAMETER(nFlags);
   MapMenuShortcutsIter iter;
   MapKeyNameIDConstIter citer;
-  CRect subitemrect;
+  CRect itemrect, subitemrect;
   int iSubItem = -1;
 
   SaveHotKey();
@@ -81,20 +81,23 @@ void CSHCTListCtrl::OnLButtonDown(UINT nFlags , CPoint point)
     iSubItem = lvhti.iSubItem;
   }
 
-  if (m_item < 0 || iSubItem < 1) {
+  if (m_item < 0 || iSubItem != SHCT_SHORTCUTKEYS) {
     return; //CListCtrl::OnLButtonDown(nFlags, point);
   } else {
     if (m_pParent != NULL)
       m_pParent->ClearWarning();
 
-    GetSubItemRect(m_item, 1, LVIR_BOUNDS, subitemrect);
-    subitemrect.top -= 1;
-    subitemrect.left += 1;
+    GetSubItemRect(m_item, SHCT_SHORTCUTKEYS, LVIR_BOUNDS, itemrect);
+    GetSubItemRect(m_item, SHCT_MENUITEMTEXT, LVIR_BOUNDS, subitemrect);
+    itemrect.right = subitemrect.left;
+    itemrect.top -= 1;
+    itemrect.left += 1;
     if (m_pHotKey->GetSafeHwnd() == NULL) {
-      m_pHotKey->Create(0, subitemrect, this, IDC_SHORTCUTHOTKEY);
+      m_pHotKey->Create(0, itemrect, this, IDC_SHORTCUTHOTKEY);
       m_pHotKey->ModifyStyle(WS_BORDER, 0, 0);
+      // Would like to change the default font (e.g. smaller and not bold) but it gets ignored
     } else {
-      m_pHotKey->MoveWindow(&subitemrect);
+      m_pHotKey->MoveWindow(&itemrect);
     }
 
     m_id = (UINT)LOWORD(GetItemData(m_item));
@@ -194,7 +197,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
   }
 
 update:
-  SetItemText(m_item, 1, str);
+  SetItemText(m_item, SHCT_MENUITEMTEXT, str);
   RedrawItems(m_item, m_item);
   UpdateWindow();
 
@@ -206,7 +209,7 @@ exit:
     m_pParent->ClearWarning();
 
   if (m_item >= 0)
-    SetItemState(m_item, 0, LVIS_SELECTED | LVIS_DROPHILITED);
+    SetItemState(m_item, SHCT_SHORTCUTKEYS, LVIS_SELECTED | LVIS_DROPHILITED);
 }
 
 void CSHCTListCtrl::SaveHotKey()
