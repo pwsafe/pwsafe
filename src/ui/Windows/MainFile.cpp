@@ -1538,26 +1538,47 @@ void DboxMain::OnSynchronize()
 
 void DboxMain::DoOtherDBProcessing(const UINT uiftn)
 {
+  // common 'other' file processing for Compare, Merge & Synchronize
   UINT uimsgid;
+  CAdvancedDlg::Type iadv_type;
   switch (uiftn) {
     case ID_MENUITEM_COMPARE:
       uimsgid = IDS_PICKCOMPAREFILE;
+      iadv_type = CAdvancedDlg::ADV_COMPARE;
       break;
     case ID_MENUITEM_MERGE:
       uimsgid = IDS_PICKMERGEFILE;
+      iadv_type = CAdvancedDlg::ADV_MERGE;
       break;
     case ID_MENUITEM_SYNCHRONIZE:
       uimsgid = IDS_PICKSYNCHRONIZEEFILE;
+      iadv_type = CAdvancedDlg::ADV_SYNCHRONIZE;
       break;
     default:
       uimsgid = 0;
+      iadv_type = CAdvancedDlg::ADV_INVALID;
       ASSERT(0);
   }
 
   if (uimsgid == 0)
     return;
 
-  StringX cs_file2;
+  if (uiftn == ID_MENUITEM_SYNCHRONIZE) {
+    // Warn user about mass updates.  Give them a chance to cancel.
+    // Because CGeneralMsgBox uses "CDialog::InitModalIndirect", it can only
+    // be used ONCE. So either each use has its own instance, or there is only
+    // one instance but care must be taken to ensure that it is not re-used.
+    CGeneralMsgBox gmb;
+    gmb.SetTitle(IDS_RPTSYNCH);
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.SetMsg(IDS_SYNCHWARNING);
+    gmb.AddButton(IDCONTINUE, IDS_CONTINUE);
+    gmb.AddButton(IDCANCEL, IDS_CANCEL, TRUE, TRUE);
+    if (gmb.DoModal() != IDCONTINUE)
+      return;
+  }
+
+  StringX sx_Filename2;
   CString cs_text;
   cs_text.LoadString(uimsgid);
 
@@ -1583,27 +1604,113 @@ void DboxMain::DoOtherDBProcessing(const UINT uiftn)
     return;
   }
 
-  if (rc == IDOK) {
-    cs_file2 = fd.GetPathName();
+  if (rc != IDOK)
+    return;
+
+  CGeneralMsgBox gmb;
+  sx_Filename2 = fd.GetPathName();
+
+  //Check that this file isn't already open
+  const StringX sx_Filename1(m_core.GetCurFile());
+  if (sx_Filename2 == sx_Filename1) {
+    // It is the same damn file
+    gmb.AfxMessageBox(uiftn == ID_MENUITEM_COMPARE ? IDS_COMPARESAME :IDS_ALREADYOPEN,
+                      MB_OK | MB_ICONWARNING);
+    return;
+  }
+
+  StringX passkey;
+  CString cs_temp, cs_title, cs_buffer;
+  PWScore othercore;
+
+  // OK, CANCEL, HELP, ADVANCED + force R/O + use othercore
+  // MAJOR change - in order to handle Undo/Redo, don't allow updates to the
+  // comparison database.
+  rc = GetAndCheckPassword(sx_Filename2, passkey,
+                           GCP_ADVANCED, // OK, CANCEL, HELP
+                           true,         // readonly
+                           true,         // user cannot change readonly status
+                           &othercore,   // Use other core
+                           iadv_type);   // Advanced type
+
+  switch (rc) {
+    case PWScore::SUCCESS:
+      break; // Keep going...
+    case PWScore::CANT_OPEN_FILE:
+      cs_temp.Format(IDS_CANTOPEN, sx_Filename2.c_str());
+      cs_title.LoadString(IDS_FILEOPENERROR);
+      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    case TAR_OPEN:
+    case TAR_NEW:
+    case PWScore::WRONG_PASSWORD:
+    case PWScore::USER_CANCEL:
+    default:
+      /*
+      If the user just cancelled out of the password dialog,
+      assume they want to return to where they were before...
+      */
+      return;
+  }
+
+  // Not really needed but...
+  othercore.ClearData();
+
+  // Reading a new file changes the preferences!
+  const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
+  const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
+
+  rc = othercore.ReadFile(sx_Filename2, passkey);
+
+  // Reset database preferences - first to defaults then add saved changes!
+  PWSprefs::GetInstance()->Load(sxSavePrefString);
+  PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
+
+  switch (rc) {
+    case PWScore::SUCCESS:
+      break;
+    case PWScore::CANT_OPEN_FILE:
+      cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
+      cs_title.LoadString(IDS_FILEREADERROR);
+      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      break;
+    case PWScore::BAD_DIGEST:
+      cs_temp.Format(IDS_FILECORRUPT, sx_Filename2.c_str());
+      cs_title.LoadString(IDS_FILEREADERROR);
+      if (gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES)
+        rc = PWScore::SUCCESS;
+      break;
+#ifdef DEMO
+    case PWScore::LIMIT_REACHED:
+      cs_temp.Format(IDS_LIMIT_MSG2, MAXDEMO);
+      cs_title.LoadString(IDS_LIMIT_TITLE);
+      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      break;
+#endif
+    default:
+      cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename2.c_str());
+      cs_title.LoadString(IDS_FILEREADERROR);
+      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
+      break;
+  }
+
+  if (rc == PWScore::SUCCESS) {
+    othercore.SetCurFile(sx_Filename2);
+
     switch (uiftn) {
       case ID_MENUITEM_COMPARE:
-        if (cs_file2 == m_core.GetCurFile()) {
-          //It is the same damn file!
-          CGeneralMsgBox gmb;
-          gmb.AfxMessageBox(IDS_COMPARESAME, MB_OK | MB_ICONWARNING);
-        } else {
-          const StringX cs_file1(m_core.GetCurFile());
-          rc = Compare(cs_file1, cs_file2);
-        }
+        Compare(sx_Filename2, &othercore);
         break;
       case ID_MENUITEM_MERGE:
-        rc = Merge(cs_file2);
+        Merge(sx_Filename2, &othercore);
         break;
       case ID_MENUITEM_SYNCHRONIZE:
-        rc = Synchronize(cs_file2);
+        Synchronize(sx_Filename2, &othercore);
         break;
     }
   }
+
+  othercore.ClearData();
+  othercore.SetCurFile(L"");
 }
 
 // Return whether first '«g» «t» «u»' is greater than the second '«g» «t» «u»'
@@ -1655,63 +1762,10 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 #define MRG_EMAIL      0x0020
 #define MRG_UNUSED     0x001f
 
-int DboxMain::Merge(const StringX &sx_Filename2)
+void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
 {
-  /* open file they want to merge */
   CGeneralMsgBox gmb;
-  StringX passkey, temp;
-
-  //Check that this file isn't already open
-  if (sx_Filename2 == m_core.GetCurFile()) {
-    //It is the same damn file
-    gmb.AfxMessageBox(IDS_ALREADYOPEN, MB_OK | MB_ICONWARNING);
-    return PWScore::ALREADY_OPEN;
-  }
-
-  // Force input database into read-only status
-  PWScore othercore;
-  int rc = GetAndCheckPassword(sx_Filename2, passkey,
-                               GCP_ADVANCED, // OK, CANCEL, HELP
-                               true,         // readonly
-                               true,         // user cannot change readonly status
-                               &othercore,   // Use other core
-                               ADV_MERGE);   // Advanced type
-
-  CString cs_temp, cs_title;
-  switch (rc) {
-    case PWScore::SUCCESS:
-      break; // Keep going...
-    case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, othercore.GetCurFile().c_str());
-      cs_title.LoadString(IDS_FILEOPENERROR);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    case TAR_OPEN:
-    case TAR_NEW:
-    case PWScore::WRONG_PASSWORD:
-    case PWScore::USER_CANCEL:
-      /*
-      If the user just cancelled out of the password dialog,
-      assume they want to return to where they were before...
-      */
-      othercore.ClearData();
-      return PWScore::USER_CANCEL;
-  }
-
-  othercore.ReadFile(sx_Filename2, passkey);
-
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
-    cs_title.LoadString(IDS_FILEREADERROR);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    /*
-    Everything stays as is... Worst case,
-    they saved their file....
-    */
-    othercore.ClearData();
-    return PWScore::CANT_OPEN_FILE;
-  }
-
-  othercore.SetCurFile(sx_Filename2);
+  const StringX &sx_Filename1 = m_core.GetCurFile();
 
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
@@ -1720,9 +1774,9 @@ int DboxMain::Merge(const StringX &sx_Filename2)
 
   /* Create report as we go */
   CReport rpt;
-  CString cs_text;
+  CString cs_text, cs_temp;
   cs_text.LoadString(IDS_RPTMERGE);
-  rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
+  rpt.StartReport(cs_text, sx_Filename1.c_str());
   cs_temp.Format(IDS_MERGINGDATABASE, sx_Filename2.c_str());
   rpt.WriteLine((LPCWSTR)cs_temp);
   std::vector<StringX> vs_added;
@@ -1757,10 +1811,10 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   pmulticmds->Add(pcmd1);
 
   ItemListConstIter otherPos;
-  for (otherPos = othercore.GetEntryIter();
-       otherPos != othercore.GetEntryEndIter();
+  for (otherPos = pothercore->GetEntryIter();
+       otherPos != pothercore->GetEntryEndIter();
        otherPos++) {
-    CItemData otherItem = othercore.GetEntry(otherPos);
+    CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
 
     // Handle Aliases and Shortcuts when processing their base entries
@@ -1907,16 +1961,14 @@ int DboxMain::Merge(const StringX &sx_Filename2)
       numAdded++;
     }
     if (et == CItemData::ET_ALIASBASE)
-      numAliasesAdded += MergeDependents(&othercore, pmulticmds,
+      numAliasesAdded += MergeDependents(pothercore, pmulticmds,
                       base_uuid, new_base_uuid,
                       bTitleRenamed, timeStr, CItemData::ET_ALIAS, vs_AliasesAdded);
     if (et == CItemData::ET_SHORTCUTBASE)
-      numShortcutsAdded += MergeDependents(&othercore, pmulticmds,
+      numShortcutsAdded += MergeDependents(pothercore, pmulticmds,
                       base_uuid, new_base_uuid, 
                       bTitleRenamed, timeStr, CItemData::ET_SHORTCUT, vs_ShortcutsAdded); 
   } // iteration over other core's entries
-
-  othercore.ClearData();
 
   CString resultStr;
   if (numAdded > 0) {
@@ -1980,7 +2032,7 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   rpt.WriteLine((LPCWSTR)resultStr);
   rpt.EndReport();
 
-  gmb.SetTitle(cs_title);
+  gmb.SetTitle(IDS_RPTMERGE);
   gmb.SetMsg(resultStr);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
   gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
@@ -1995,7 +2047,7 @@ int DboxMain::Merge(const StringX &sx_Filename2)
   if (bWasEmpty)
     UpdateMenuAndToolBar(m_bOpen);
 
-  return rc;
+  return;
 }
 
 int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
@@ -2076,90 +2128,11 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
   return numadded;
 }
 
-int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
+void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
 {
-  // open file they want to Compare
-  int rc = PWScore::SUCCESS;
+  const StringX &sx_Filename1 = m_core.GetCurFile();
 
-  StringX passkey;
   CString cs_temp, cs_title, cs_text, cs_buffer;
-  PWScore othercore;
-
-  // Reading a new file changes the preferences!
-  const StringX cs_SavePrefString(PWSprefs::GetInstance()->Store());
-
-  // OK, CANCEL, HELP, ADVANCED + (nolonger force R/O) + use othercore
-  // MAJOR change - in order to handle Undo/Redo, don't allow updates to the
-  // comparison database.
-  rc = GetAndCheckPassword(sx_Filename2, passkey,
-                           GCP_ADVANCED, // OK, CANCEL, HELP
-                           true,         // readonly
-                           true,         // user cannot change readonly status
-                           &othercore,   // Use other core
-                           ADV_COMPARE); // Advanced type
-  CGeneralMsgBox gmb;
-  switch (rc) {
-    case PWScore::SUCCESS:
-      break; // Keep going...
-    case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, sx_Filename2.c_str());
-      cs_title.LoadString(IDS_FILEOPENERROR);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    case TAR_OPEN:
-      return Open();
-    case TAR_NEW:
-      return New();
-    case PWScore::WRONG_PASSWORD:
-    case PWScore::USER_CANCEL:
-      /*
-      If the user just cancelled out of the password dialog,
-      assume they want to return to where they were before...
-      */
-      return PWScore::USER_CANCEL;
-  }
-
-  // Not really needed but...
-  othercore.ClearData();
-
-  rc = othercore.ReadFile(sx_Filename2, passkey);
-
-  switch (rc) {
-    case PWScore::SUCCESS:
-      break;
-    case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-      break;
-    case PWScore::BAD_DIGEST:
-    {
-      cs_temp.Format(IDS_FILECORRUPT, sx_Filename2.c_str());
-      const int yn = gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR);
-      if (yn == IDYES)
-        rc = PWScore::SUCCESS;
-      break;
-    }
-#ifdef DEMO
-    case PWScore::LIMIT_REACHED:
-    {
-      CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG2, MAXDEMO);
-      CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
-      gmb.MessageBox(cs_msg, cs_title, MB_ICONWARNING);
-      break;
-    }
-#endif
-    default:
-      cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename2.c_str());
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
-      break;
-  }
-
-  if (rc != PWScore::SUCCESS) {
-    othercore.ClearData();
-    othercore.SetCurFile(L"");
-    return rc;
-  }
-
-  othercore.SetCurFile(sx_Filename2);
 
   CompareData list_OnlyInCurrent;
   CompareData list_OnlyInComp;
@@ -2169,7 +2142,7 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
   /* Create report as we go */
   CReport rpt;
   cs_text.LoadString(IDS_RPTCOMPARE);
-  rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
+  rpt.StartReport(cs_text, sx_Filename1.c_str());
   cs_temp.Format(IDS_COMPARINGDATABASE, sx_Filename2.c_str());
   rpt.WriteLine((LPCWSTR)cs_temp);
   rpt.WriteLine();
@@ -2233,9 +2206,9 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
       st_data.title = currentItem.GetTitle();
       st_data.user = currentItem.GetUser();
 
-      ItemListIter foundPos = othercore.Find(st_data.group,
-                                             st_data.title, st_data.user);
-      if (foundPos != othercore.GetEntryEndIter()) {
+      ItemListIter foundPos = pothercore->Find(st_data.group,
+                                               st_data.title, st_data.user);
+      if (foundPos != pothercore->GetEntryEndIter()) {
         // found a match, see if all other fields also match
         // Difference flags:
         /*
@@ -2268,7 +2241,7 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
         */
         bsConflicts.reset();
 
-        CItemData compItem = othercore.GetEntry(foundPos);
+        CItemData compItem = pothercore->GetEntry(foundPos);
         if (m_bsFields.test(CItemData::NOTES) &&
             FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes()))
           bsConflicts.flip(CItemData::NOTES);
@@ -2357,10 +2330,10 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
   } // iteration over our entries
 
   ItemListIter compPos;
-  for (compPos = othercore.GetEntryIter();
-       compPos != othercore.GetEntryEndIter();
+  for (compPos = pothercore->GetEntryIter();
+       compPos != pothercore->GetEntryEndIter();
        compPos++) {
-    CItemData compItem = othercore.GetEntry(compPos);
+    CItemData compItem = pothercore->GetEntry(compPos);
 
     if (m_subgroup_set == BST_UNCHECKED ||
         compItem.Matches(std::wstring(m_subgroup_name), m_subgroup_object,
@@ -2404,12 +2377,12 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
   } else {
     CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 
                               list_Conflicts, list_Identical, 
-                              m_bsFields, &m_core, &othercore, &rpt);
+                              m_bsFields, &m_core, pothercore, &rpt);
 
     CmpRes.m_scFilename1 = sx_Filename1;
     CmpRes.m_scFilename2 = sx_Filename2;
     CmpRes.m_bOriginalDBReadOnly = m_core.IsReadOnly();
-    CmpRes.m_bComparisonDBReadOnly = othercore.IsReadOnly();
+    CmpRes.m_bComparisonDBReadOnly = pothercore->IsReadOnly();
 
     INT_PTR rc = CmpRes.DoModal();
     if (CmpRes.m_OriginalDBChanged) {
@@ -2418,7 +2391,8 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
     }
 
     if (CmpRes.m_ComparisonDBChanged) {
-      SaveCore(&othercore);
+      // SHouldn't happen as it is R-O - need to clean this up later
+      SaveCore(pothercore);
     }
 
     rpt.EndReport();
@@ -2427,96 +2401,20 @@ int DboxMain::Compare(const StringX &sx_Filename1, const StringX &sx_Filename2)
       ViewReport(rpt);
   }
 
-  if (othercore.IsLockedFile(othercore.GetCurFile().c_str()))
-    othercore.UnlockFile(othercore.GetCurFile().c_str());
+  if (pothercore->IsLockedFile(pothercore->GetCurFile().c_str()))
+    pothercore->UnlockFile(pothercore->GetCurFile().c_str());
 
-  othercore.ClearData();
-  othercore.SetCurFile(L"");
-
-  // Reset database preferences - first to defaults then add saved changes!
-  PWSprefs::GetInstance()->Load(cs_SavePrefString);
-
-  return rc;
+  return;
 }
 
-int DboxMain::Synchronize(const StringX &sx_Filename2)
+void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
 {
-  /* open file they want to merge */
-  StringX passkey, temp;
-
-  //Check that this file isn't already open
-  if (sx_Filename2 == m_core.GetCurFile()) {
-    //It is the same damn file
-    CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_ALREADYOPEN, MB_OK | MB_ICONWARNING);
-    return PWScore::ALREADY_OPEN;
-  }
-
-  // Warn user about mass updates.  Give them a chance to cancel.
-  CString cs_temp, cs_title;
-  CGeneralMsgBox gmb0;
-  gmb0.SetTitle(cs_title);
-  gmb0.SetStandardIcon(MB_ICONEXCLAMATION);
-  gmb0.SetMsg(IDS_SYNCHWARNING);
-  gmb0.AddButton(IDCONTINUE, IDS_CONTINUE);
-  gmb0.AddButton(IDCANCEL, IDS_CANCEL, TRUE, TRUE);
-  if (gmb0.DoModal() != IDCONTINUE)
-    return PWScore::USER_CANCEL;
-
-  // Force input database into read-only status
-  PWScore othercore;
-  int rc = GetAndCheckPassword(sx_Filename2, passkey,
-                               GCP_ADVANCED, // OK, CANCEL, HELP
-                               true,         // readonly
-                               true,         // user cannot change readonly status
-                               &othercore,   // Use other core
-                               ADV_SYNCHRONIZE);   // Advanced type
-
-  switch (rc) {
-    case PWScore::SUCCESS:
-      break; // Keep going...
-    case PWScore::CANT_OPEN_FILE:
-    {
-      CGeneralMsgBox gmb;
-      cs_temp.Format(IDS_CANTOPEN, othercore.GetCurFile().c_str());
-      cs_title.LoadString(IDS_FILEOPENERROR);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    }
-    case TAR_OPEN:
-    case TAR_NEW:
-    case PWScore::WRONG_PASSWORD:
-    case PWScore::USER_CANCEL:
-      /*
-      If the user just cancelled out of the password dialog,
-      assume they want to return to where they were before...
-      */
-      othercore.ClearData();
-      return PWScore::USER_CANCEL;
-  }
-
-  othercore.ReadFile(sx_Filename2, passkey);
-
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
-    cs_title.LoadString(IDS_FILEREADERROR);
-    CGeneralMsgBox gmb;
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    /*
-    Everything stays as is... Worst case,
-    they saved their file....
-    */
-    othercore.ClearData();
-    return PWScore::CANT_OPEN_FILE;
-  }
-
-  othercore.SetCurFile(sx_Filename2);
-
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
 
   /* Create report as we go */
   CReport rpt;
-  CString cs_text, cs_buffer;
+  CString cs_temp, cs_text, cs_buffer;
   cs_text.LoadString(IDS_RPTSYNCH);
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_SYNCHINGDATABASE, sx_Filename2.c_str());
@@ -2551,10 +2449,10 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
   pmulticmds->Add(pcmd1);
 
   ItemListConstIter otherPos;
-  for (otherPos = othercore.GetEntryIter();
-       otherPos != othercore.GetEntryEndIter();
+  for (otherPos = pothercore->GetEntryIter();
+       otherPos != pothercore->GetEntryEndIter();
        otherPos++) {
-    CItemData otherItem = othercore.GetEntry(otherPos);
+    CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
 
     // Do not process Aliases and Shortcuts
@@ -2619,8 +2517,6 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
     }  // Found match via [g:t:u]
   } // iteration over other core's entries
 
-  othercore.ClearData();
-
   CString resultStr;
   if (numUpdated > 0) {
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
@@ -2648,7 +2544,7 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
   rpt.EndReport();
 
   CGeneralMsgBox gmb;
-  gmb.SetTitle(cs_title);
+  gmb.SetTitle(IDS_RPTSYNCH);
   gmb.SetMsg(resultStr);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
   gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
@@ -2660,7 +2556,7 @@ int DboxMain::Synchronize(const StringX &sx_Filename2)
   ChangeOkUpdate();
   RefreshViews();
 
-  return rc;
+  return;
 }
 
 int DboxMain::SaveCore(PWScore *pcore)

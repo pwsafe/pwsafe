@@ -95,12 +95,20 @@ void DboxMain::OnAdd()
       defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)sxUsername);
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
-        /*
-        Need to change this to MultiCommand with
-        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefs);
-        */
+        // Initialise a copy of the DB preferences
+        prefs->SetUpCopyDBprefs();
+        // Update Copy with new values
         prefs->SetPref(PWSprefs::UseDefaultUser, true);
-        prefs->SetPref(PWSprefs::DefaultUsername, sxUsername);
+        prefs->SetPref(PWSprefs::DefaultUsername, sxUsername, true);
+        // Get old DB preferences String value (from current preferences) & 
+        // new DB preferences String value (from Copy)
+        const StringX sxOldDBPrefsString(prefs->Store());
+        StringX sxNewDBPrefsString(prefs->Store(true));
+        if (sxOldDBPrefsString != sxNewDBPrefsString) {
+          // Need to integrate the following Command into others in this routine
+          // Left for Rony !!! :-)
+          // Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefs);
+        }
       }
     }
 
@@ -179,12 +187,20 @@ void DboxMain::OnCreateShortcut()
       defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
-        /*
-        Need to change this to MultiCommand with
-        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefs);
-        */
+        // Initialise a copy of the DB preferences
+        prefs->SetUpCopyDBprefs();
+        // Update Copy with new values
         prefs->SetPref(PWSprefs::UseDefaultUser, true);
-        prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username);
+        prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username, true);
+        // Get old DB preferences String value (from current preferences) & 
+        // new DB preferences String value (from Copy)
+        const StringX sxOldDBPrefsString(prefs->Store());
+        StringX sxNewDBPrefsString(prefs->Store(true));
+        if (sxOldDBPrefsString != sxNewDBPrefsString) {
+          // Need to integrate the following Command into others in this routine
+          // Left for Rony !!! :-)
+          // Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefs);
+        }
       }
     }
     if (dlg_createshortcut.m_username.IsEmpty() && 
@@ -877,6 +893,14 @@ void DboxMain::OnEdit()
 
 bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 {
+  // Note: In all but one circumstance, pcore == NULL, implying edit of an entry
+  // in the current database.
+  // The one except is when the user wishes to View an entry from the comparison
+  // database via "CompareResultsDlg" (the Compare Database results dialog).
+  // Note: In this instance, the comparison database is R/O and hence the user may
+  // only View these entries and any database preferences can be obtain from the
+  // copy of the header within that instance of PWScore - see below when changing the
+  // default username.
   if (pcore == NULL)
     pcore = &m_core;
 
@@ -892,13 +916,19 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
-
-  // Need to get Default User value from this core's preferences stored in its header, 
-  // which are not necessarily in our PWSprefs::GetInstance !
   bool bIsDefUserSet;
-  StringX sxDefUserValue, sxDBPreferences;
-  sxDBPreferences = pcore->GetDBPreferences();
-  PWSprefs::GetInstance()->GetDefaultUserInfo(sxDBPreferences, bIsDefUserSet, sxDefUserValue);
+  StringX sxDefUserValue;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (pcore == &m_core) {
+    // As it is us, get values from actually current 
+    bIsDefUserSet = prefs->GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
+    sxDefUserValue = prefs->GetPref(PWSprefs::DefaultUsername);
+  } else {
+    // Need to get Default User value from this core's preferences stored in its header.
+    // Since this core is R-O, the values in the header will not have been changed
+    StringX sxDBPreferences(pcore->GetDBPreferences());
+    prefs->GetDefaultUserInfo(sxDBPreferences, bIsDefUserSet, sxDefUserValue);
+  }
   if (bIsDefUserSet)
     edit_entry_psh.SetDefUsername(sxDefUserValue.c_str());
 

@@ -15,6 +15,7 @@
 #include "SecString.h"
 #include "corelib/PwsPlatform.h"
 #include "PWDialog.h"
+#include "AdvancedDlg.h"
 
 //-----------------------------------------------------------------------------
 /**
@@ -35,7 +36,8 @@ class CPasskeyEntry
 public:
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index, /* GCP_NORMAL */
-    bool bReadOnly, bool bForceReadOnly, int adv_type);
+                bool bReadOnly, bool bForceReadOnly, 
+                CAdvancedDlg::Type adv_type);
 
   ~CPasskeyEntry();
 
@@ -84,7 +86,7 @@ protected:
   int m_tries;
   int m_status;
   int m_index;
-  int m_adv_type;
+  CAdvancedDlg::Type m_adv_type;
 
   static int dialog_lookup[5];
 

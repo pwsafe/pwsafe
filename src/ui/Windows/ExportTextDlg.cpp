@@ -160,7 +160,7 @@ void CExportTextDlg::OnOK()
 
 void CExportTextDlg::OnAdvanced()
 {
-  CAdvancedDlg Adv(this, ADV_EXPORT_TEXT, m_bsExport, m_subgroup_name, 
+  CAdvancedDlg Adv(this, CAdvancedDlg::ADV_EXPORT_TEXT, m_bsExport, m_subgroup_name, 
                    m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
   INT_PTR rc = Adv.DoModal();

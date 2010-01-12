@@ -40,7 +40,7 @@ int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
 /////////////////////////////////////////////////////////////////////////////
 // CAdvancedDlg dialog
 
-CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
+CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, Type iIndex,
                            CItemData::FieldBits bsFields, CString subgroup_name,
                            int subgroup_set, int subgroup_object, int subgroup_function)
   : CPWDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
