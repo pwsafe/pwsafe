@@ -212,14 +212,6 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   ci_temp.SetUser(cs_user);
   ci_temp.SetPassword(L"[Shortcut]");
   ci_temp.SetShortcut();
-  ItemListIter iter = m_core.Find(base_uuid);
-  if (iter != End()) {
-    const CItemData &cibase = iter->second;
-    DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-    int nImage = GetEntryImage(cibase);
-    SetEntryImage(pdi->list_index, nImage, true);
-    SetEntryImage(pdi->tree_item, nImage, true);
-  }
 
   time_t t;
   time(&t);
@@ -234,10 +226,16 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
                                                          CItemData::ET_SHORTCUT);
   Execute(pcmd);
 
-  if (m_core.GetNumEntries() == 1) {
-    // For some reason, when adding the first entry, it is not visible!
-    m_ctlItemTree.SetRedraw(TRUE);
+  // Update base item's graphic
+  ItemListIter iter = m_core.Find(base_uuid);
+  if (iter != End()) {
+    const CItemData &cibase = iter->second;
+    DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
+    int nImage = GetEntryImage(cibase);
+    SetEntryImage(pdi->list_index, nImage, true);
+    SetEntryImage(pdi->tree_item, nImage, true);
   }
+
   m_ctlItemList.SetFocus();
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
