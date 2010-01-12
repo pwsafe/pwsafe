@@ -737,7 +737,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
       break;
     switch (type) {
       case TCHAR('B'):
-        // Need to get value - even of not understood or wanted
+        // Need to get value - even if not understood or wanted
         is >> ival;
         // forward compatibility and check whether still in DB
         if (index < NumBoolPrefs && m_bool_prefs[index].pt == ptDatabase) {
@@ -747,7 +747,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         }
         break;
       case TCHAR('I'):
-        // Need to get value - even of not understood or wanted
+        // Need to get value - even if not understood or wanted
         is >> iuval;
         // forward compatibility and check whether still in DB
         if (index < NumIntPrefs && m_int_prefs[index].pt == ptDatabase) {
@@ -756,7 +756,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         }
         break;
       case TCHAR('S'):
-        // Need to get value - even of not understood or wanted
+        // Need to get value - even if not understood or wanted
         is.ignore(1, TCHAR(' ')); // skip over space
         is.get(delim[0]);         // get string delimiter
         is.get(buf, N, delim[0]); // get string value
@@ -773,6 +773,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
     } // switch
     is.ignore(1, TCHAR(' ')); // skip over space after each entry
   } // while
+
   delete[] buf;
 }
 
@@ -783,7 +784,8 @@ void PWSprefs::GetDefaultUserInfo(const StringX &sxDBPreferences,
     bIsDefUserSet = m_bool_prefs[UseDefaultUser].defVal != 0;
     sxDefUserValue = m_string_prefs[DefaultUsername].defVal;
   } else {
-    Load(sxDBPreferences, false);
+    // Use Copy
+    Load(sxDBPreferences, true);
     bIsDefUserSet = m_boolCopyValues[UseDefaultUser] != 0;
     sxDefUserValue = m_stringCopyValues[DefaultUsername];
   }

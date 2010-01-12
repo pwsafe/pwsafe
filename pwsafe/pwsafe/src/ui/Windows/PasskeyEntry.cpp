@@ -63,7 +63,8 @@ int CPasskeyEntry::dialog_lookup[5] = {
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
-                             bool bReadOnly, bool bForceReadOnly, int adv_type)
+                             bool bReadOnly, bool bForceReadOnly, 
+                             CAdvancedDlg::Type adv_type)
   : CPWDialog(dialog_lookup[index], pParent),
   m_index(index),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
@@ -302,7 +303,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   // Do not enable the OK button until the user has accessed the Advanced
   // dialog when Synchronizing databases
-  if (m_adv_type == ADV_SYNCHRONIZE)
+  if (m_adv_type == CAdvancedDlg::ADV_SYNCHRONIZE)
     GetDlgItem(IDOK)->EnableWindow(FALSE);
 
   // Following works fine for other (non-hotkey) cases:

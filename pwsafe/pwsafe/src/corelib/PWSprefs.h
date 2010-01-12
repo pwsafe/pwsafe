@@ -140,6 +140,7 @@ public:
   bool IsAPPprefsChanged() const {return m_prefs_changed[APP_PREF];}
   void ClearDBprefsChanged() {m_prefs_changed[DB_PREF] = false;}
   void ClearAPPprefsChanged() {m_prefs_changed[APP_PREF] = false;}
+  void SetDBprefsChanged(const bool bChanged) {m_prefs_changed[DB_PREF] = bChanged;}
   void SetDatabasePrefsToDefaults();
   void ForceWriteApplicationPreferences() {m_prefs_changed[APP_PREF] = true;}
 

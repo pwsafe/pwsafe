@@ -16,19 +16,19 @@
 #include "corelib/ItemData.h"
 #include <bitset>
 
-enum {ADV_COMPARE = 0,
-      ADV_MERGE,
-      ADV_SYNCHRONIZE,
-      ADV_EXPORT_TEXT,
-      ADV_EXPORT_XML,
-      ADV_FIND,
-      ADV_LAST};
-
 class CAdvancedDlg : public CPWDialog
 {
-  // Construction
 public:
-  CAdvancedDlg(CWnd* pParent = NULL, int iIndex = -1,
+  enum Type {ADV_INVALID = -1,
+             ADV_COMPARE = 0,
+             ADV_MERGE,
+             ADV_SYNCHRONIZE,
+             ADV_EXPORT_TEXT,
+             ADV_EXPORT_XML,
+             ADV_FIND,
+             ADV_LAST};
+
+  CAdvancedDlg(CWnd* pParent = NULL, Type iIndex = ADV_INVALID,
     CItemData::FieldBits bsFields = 0, CString subgroup_name = L"",
     int subgroup_set = BST_UNCHECKED, 
     int subgroup_object = 0, int subgroup_function = 0);   // standard constructor
@@ -55,7 +55,7 @@ protected:
 
   // Implementation
 protected:
-  int m_iIndex;
+  Type m_iIndex;
   static int dialog_lookup[ADV_LAST];
 
 protected:

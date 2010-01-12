@@ -537,8 +537,8 @@ void CPWFindToolBar::ShowFindAdvanced()
   const int old_subgroup_object(m_subgroup_object);
   const int old_subgroup_function(m_subgroup_function);
 
-  CAdvancedDlg Adv(this, ADV_FIND, m_bsFields, m_subgroup_name, m_subgroup_set,
-    m_subgroup_object, m_subgroup_function);
+  CAdvancedDlg Adv(this, CAdvancedDlg::ADV_FIND, m_bsFields, m_subgroup_name, 
+    m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
   INT_PTR rc = Adv.DoModal();
 

@@ -1619,7 +1619,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   bool bReadOnly,
                                   bool bForceReadOnly,
                                   PWScore *pcore,
-                                  int adv_type)
+                                  CAdvancedDlg::Type adv_type)
 {
   // index:
   //  GCP_FIRST      (0) first

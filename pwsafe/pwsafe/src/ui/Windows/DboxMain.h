@@ -35,6 +35,7 @@
 #include "DDStatic.h"
 #include "MenuShortcuts.h"
 #include "WinGUICmdIF.h"
+#include "AdvancedDlg.h"
 
 #include "corelib/UIinterface.h"
 #include "corelib/PWScore.h"
@@ -482,13 +483,15 @@ protected:
   int Close(void);
 
   void DoOtherDBProcessing(UINT uiftn);
-  int Merge(const StringX &sx_Filename2);
+  void Merge(const StringX &sx_Filename2, PWScore *pothercore);
+  void Compare(const StringX &sx_Filename2, PWScore *pothercore);
+  void Synchronize(const StringX &sx_Filename2, PWScore *pothercore);
+
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
                       uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
                       const bool bTitleRenamed, CString &timeStr, 
                       const CItemData::EntryType et, std::vector<StringX> &vs_added);
-  int Compare(const StringX &sx_Filename1, const StringX &sx_Filename2);
-  int Synchronize(const StringX &sx_Filename2);
+
   void ReportAdvancedOptions(CReport *prpt, const UINT uimsgftn);
 
   int BackupSafe(void);
@@ -679,7 +682,8 @@ protected:
 
   int GetAndCheckPassword(const StringX &filename, StringX& passkey,
                           int index, bool bReadOnly = false, bool bForceReadOnly = false,
-                          PWScore *pcore = 0, int adv_type = -1);
+                          PWScore *pcore = 0, 
+                          CAdvancedDlg::Type adv_type = CAdvancedDlg::ADV_INVALID);
 
 private:
   // UIInterFace implementations:
