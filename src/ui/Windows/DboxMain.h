@@ -295,6 +295,7 @@ public:
   HICON GetEntryIcon(const int nImage) const;
   void SetEntryImage(const int &index, const int nImage, const bool bOneEntry = false);
   void SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry = false);
+  void UpdateEntryImages(const CItemData &ci);
 
   void RefreshImages();
   bool FieldsNotEqual(StringX a, StringX b);

@@ -228,13 +228,8 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
 
   // Update base item's graphic
   ItemListIter iter = m_core.Find(base_uuid);
-  if (iter != End()) {
-    const CItemData &cibase = iter->second;
-    DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-    int nImage = GetEntryImage(cibase);
-    SetEntryImage(pdi->list_index, nImage, true);
-    SetEntryImage(pdi->tree_item, nImage, true);
-  }
+  if (iter != End())
+    UpdateEntryImages(iter->second);
 
   m_ctlItemList.SetFocus();
 
@@ -479,10 +474,7 @@ Command *DboxMain::Delete(const CItemData *pci)
       ItemListIter iter = m_core.Find(base_uuid);
       CItemData &cibase = iter->second;
       cibase.SetNormal();
-      DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-      int nImage = GetEntryImage(cibase);
-      SetEntryImage(pdi->list_index, nImage, true);
-      SetEntryImage(pdi->tree_item, nImage, true);
+      UpdateEntryImages(cibase);
       pGUICmdIF->m_vVerifyAliasBase.push_back(base_uuid); // save for redo
     }
   } else if (entrytype == CItemData::ET_SHORTCUT) {
@@ -500,10 +492,7 @@ Command *DboxMain::Delete(const CItemData *pci)
       ItemListIter iter = m_core.Find(base_uuid);
       CItemData &cibase = iter->second;
       cibase.SetNormal();
-      DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-      int nImage = GetEntryImage(cibase);
-      SetEntryImage(pdi->list_index, nImage, true);
-      SetEntryImage(pdi->tree_item, nImage, true);
+      UpdateEntryImages(cibase);
       pGUICmdIF->m_vVerifyShortcutBase.push_back(base_uuid); // save for redo
     }
   } else // neither an alias nor a shortcut
@@ -526,10 +515,7 @@ Command *DboxMain::Delete(const CItemData *pci)
           UUIDiter->GetUUID(auuid);
           iter = m_core.Find(auuid);
           CItemData &cialias = iter->second;
-          DisplayInfo *pdi = (DisplayInfo *)cialias.GetDisplayInfo();
-          int nImage = GetEntryImage(cialias);
-          SetEntryImage(pdi->list_index, nImage, true);
-          SetEntryImage(pdi->tree_item, nImage, true);
+          UpdateEntryImages(cialias);
           pGUICmdIF->m_vAliasDependents.push_back(auuid);
         } // dependents list handling
       } else { // ah, a shortcut base!
@@ -717,10 +703,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
         ItemListIter iter = m_core.Find(base_uuid);
         CItemData &cibase = iter->second;
         cibase.SetNormal();
-        DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-        int nImage = GetEntryImage(cibase);
-        SetEntryImage(pdi->list_index, nImage, true);
-        SetEntryImage(pdi->tree_item, nImage, true);
+        UpdateEntryImages(cibase);
         pGUICmdIF->m_vVerifyAliasBase.push_back(base_uuid);
       }
     } else
@@ -739,10 +722,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
         ItemListIter iter = m_core.Find(base_uuid);
         CItemData &cibase = iter->second;
         cibase.SetNormal();
-        DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-        int nImage = GetEntryImage(cibase);
-        SetEntryImage(pdi->list_index, nImage, true);
-        SetEntryImage(pdi->tree_item, nImage, true);
+        UpdateEntryImages(cibase);
         pGUICmdIF->m_vVerifyShortcutBase.push_back(base_uuid);
       }
     } else
@@ -766,10 +746,7 @@ void DboxMain::Delete(MultiCommands *pmulticmds, WinGUICmdIF *pGUICmdIF,
           UUIDiter->GetUUID(auuid);
           iter = m_core.Find(auuid);
           CItemData &cialias = iter->second;
-          DisplayInfo *pdi = (DisplayInfo *)cialias.GetDisplayInfo();
-          int nImage = GetEntryImage(cialias);
-          SetEntryImage(pdi->list_index, nImage, true);
-          SetEntryImage(pdi->tree_item, nImage, true);
+          UpdateEntryImages(cialias);
           pGUICmdIF->m_vAliasDependents.push_back(auuid);
         }
       } else {
@@ -1073,22 +1050,14 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     iter = pcore->Find(original_base_uuid);
     if (iter != End()) {
       const CItemData &cibase = iter->second;
-      DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-      int nImage = GetEntryImage(cibase);
-      SetEntryImage(pdi->list_index, nImage, true);
-      SetEntryImage(pdi->tree_item, nImage, true);
+      UpdateEntryImages(cibase);
     }
 
     // Last the new base entry (only if different to the one we have done!
     if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
       iter = pcore->Find(new_base_uuid);
-      if (iter != End()) {
-        const CItemData &cibase = iter->second;
-        DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-        int nImage = GetEntryImage(cibase);
-        SetEntryImage(pdi->list_index, nImage, true);
-        SetEntryImage(pdi->tree_item, nImage, true);
-      }
+      if (iter != End())
+        UpdateEntryImages(iter->second);
     }
 
     if (ci_edit.IsAlias() || ci_edit.IsShortcut()) {

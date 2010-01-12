@@ -349,14 +349,9 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           // call to PWScore::GetBaseEntry
           m_AEMD.pci->SetPassword(L"[Alias]");
           m_AEMD.pci->SetAlias();
-           ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
-          if (iter != m_AEMD.pDbx->End()) {
-            const CItemData &cibase = iter->second;
-            DisplayInfo *pdi = (DisplayInfo *)cibase.GetDisplayInfo();
-            int nImage = m_AEMD.pDbx->GetEntryImage(cibase);
-            m_AEMD.pDbx->SetEntryImage(pdi->list_index, nImage, true);
-            m_AEMD.pDbx->SetEntryImage(pdi->tree_item, nImage, true);
-           }
+          ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
+          if (iter != m_AEMD.pDbx->End())
+            m_AEMD.pDbx->UpdateEntryImages(iter->second);
         } else {
           m_AEMD.pci->SetPassword(m_AEMD.realpassword);
           m_AEMD.pci->SetNormal();
