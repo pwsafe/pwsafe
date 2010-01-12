@@ -692,6 +692,7 @@ private:
                  uuid_array_t &entry_uuid,
                  CItemData::FieldType ft, bool bUpdateGUI);
   void GUISetupDisplayInfo(CItemData &ci);
+  void GUIRefreshEntry(const CItemData &ci);
   void GUICommandInterface(Command::ExecuteFn when, PWSGUICmdIF *pGUICmdIF);
 
   void RedoDelete(WinGUICmdIF *pGUICmdIF);

@@ -254,6 +254,7 @@ public:
   {m_bNotifyDB = true;}
 
   void GUISetupDisplayInfo(CItemData &ci);
+  void GUIRefreshEntry(const CItemData &ci);
 
   // Get/Set Display information from/to database
   void SetDisplayStatus(const std::vector<bool> &s);

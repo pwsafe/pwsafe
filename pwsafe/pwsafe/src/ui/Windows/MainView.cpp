@@ -284,6 +284,11 @@ void DboxMain::GUISetupDisplayInfo(CItemData &ci)
   ci.SetDisplayInfo(new DisplayInfo);
 }
 
+void DboxMain::GUIRefreshEntry(const CItemData &ci)
+{
+  UpdateEntryImages(ci);
+}
+
 //-----------------------------------------------------------------------------
 
 /*
