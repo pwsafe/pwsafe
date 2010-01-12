@@ -177,12 +177,6 @@ void PWScore::DoDeleteEntry(const CItemData &item)
   item.GetUUID(entry_uuid);
   ItemListIter pos = m_pwlist.find(entry_uuid);
   if (pos != m_pwlist.end()) {
-    m_bDBChanged = true;
-    m_pwlist.erase(pos);
-    if (item.NumberUnknownFields() > 0)
-      DecrementNumRecordsWithUnknownFields();
-
-    // code from MainEdit
     UUIDList dependentslist;
     CItemData::EntryType entrytype = item.GetEntryType();
 
@@ -216,8 +210,35 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     } // num_dependents > 0
 
     // OK, down to business:
+    m_bDBChanged = true;
+    m_pwlist.erase(pos);
+    if (item.NumberUnknownFields() > 0)
+      DecrementNumRecordsWithUnknownFields();
 
-   // XXX following display-related delete actions should be done AFTER
+    // Simple cases first: Aliases or shortcuts, update maps
+    // and refresh base's display, if changed
+    uuid_array_t base_uuid;
+    if (item.IsAlias()) {
+      GetAliasBaseUUID(entry_uuid, base_uuid);
+      DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
+      if (NumAliases(base_uuid) == 0) {
+        ItemListIter biter = Find(base_uuid);
+        CItemData &bitem = biter->second;
+        bitem.SetNormal();
+        GUIRefreshEntry(bitem);
+      }
+    } else if (item.IsShortcut()) {
+      GetShortcutBaseUUID(entry_uuid, base_uuid);
+      DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
+      if (NumShortcuts(base_uuid) == 0) {
+        ItemListIter biter = Find(base_uuid);
+        CItemData &bitem = biter->second;
+        bitem.SetNormal();
+        GUIRefreshEntry(bitem);
+      }
+    }
+
+    // XXX following display-related delete actions should be done AFTER
     // Delete Command execution
 #if 0
     DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
@@ -1985,6 +2006,12 @@ void PWScore::GUISetupDisplayInfo(CItemData &ci)
 {
   if (m_pUIIF != NULL)
     m_pUIIF->GUISetupDisplayInfo(ci);
+}
+
+void PWScore::GUIRefreshEntry(const CItemData &ci)
+{
+  if (m_pUIIF != NULL)
+    m_pUIIF->GUIRefreshEntry(ci);
 }
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)
