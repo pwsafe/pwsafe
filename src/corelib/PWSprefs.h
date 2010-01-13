@@ -95,6 +95,7 @@ public:
     NumPWHistoryDefault, BackupSuffix, BackupMaxIncremented,
     PreExpiryWarnDays, ClosedTrayIconColour, PWDigitMinLength,
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
+    OptShortcutColumnWidth,
     NumIntPrefs};
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
     TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
@@ -149,6 +150,10 @@ public:
   // Following for case where default value is determined @ runtime
   unsigned int GetPref(IntPrefs pref_enum, unsigned int defVal) const;
   StringX GetPref(StringPrefs pref_enum) const;
+
+  bool GetPrefDefVal(BoolPrefs pref_enum) const;
+  unsigned int GetPrefDefVal(IntPrefs pref_enum) const;
+  StringX GetPrefDefVal(StringPrefs pref_enum) const;
 
   // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;

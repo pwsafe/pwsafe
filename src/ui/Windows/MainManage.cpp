@@ -396,6 +396,14 @@ void DboxMain::OnOptions()
   security.m_IdleTimeOut = prevLockInterval = prefs->
     GetPref(PWSprefs::IdleTimeout);
 
+  shortcuts.m_iColWidth = prefs->
+    GetPref(PWSprefs::OptShortcutColumnWidth);
+  shortcuts.m_iDefColWidth = prefs->
+    GetPrefDefVal(PWSprefs::OptShortcutColumnWidth);
+  shortcuts.InitialSetup(m_MapMenuShortcuts, m_MapKeyNameID,
+                         m_ExcludedMenuItems,
+                         m_ReservedShortcuts);
+
   system.m_maxreitems = prefs->
     GetPref(PWSprefs::MaxREItems);
   system.m_usesystemtray = prefs->
@@ -409,10 +417,6 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
   system.m_multipleinstances = prefs->
     GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
-                            
-  shortcuts.InitialSetup(m_MapMenuShortcuts, m_MapKeyNameID,
-                         m_ExcludedMenuItems,
-                         m_ReservedShortcuts);
 
   optionsPS.AddPage(&backup);
   optionsPS.AddPage(&display);
@@ -436,6 +440,9 @@ void DboxMain::OnOptions()
   passwordhistory.m_pDboxMain = this;
 
   INT_PTR rc = optionsPS.DoModal();
+
+  prefs->SetPref(PWSprefs::OptShortcutColumnWidth,
+                 shortcuts.m_iColWidth);
 
   if (rc == IDOK) {
     /*

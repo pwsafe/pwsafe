@@ -144,6 +144,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("PWLowercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
   {_T("PWSymbolMinLength"), 0, ptDatabase, 0, 1024},                // database
   {_T("PWUppercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
+  {_T("OptShortcutColumnWidth"), 92, ptApplication, 10, 512},       // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -245,6 +246,21 @@ unsigned int PWSprefs::GetPref(IntPrefs pref_enum) const
 StringX PWSprefs::GetPref(StringPrefs pref_enum) const
 {
   return m_stringValues[pref_enum];
+}
+
+bool PWSprefs::GetPrefDefVal(BoolPrefs pref_enum) const
+{
+  return m_bool_prefs[pref_enum].defVal;
+}
+
+unsigned int PWSprefs::GetPrefDefVal(IntPrefs pref_enum) const
+{
+  return m_int_prefs[pref_enum].defVal;
+}
+
+StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
+{
+  return m_string_prefs[pref_enum].defVal;
 }
 
 // Following for case where default value is determined at runtime

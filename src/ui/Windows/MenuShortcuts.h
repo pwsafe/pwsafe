@@ -32,6 +32,10 @@ struct st_KeyIDExt {
   bool operator == (const st_KeyIDExt & rhs) const {
     return (id == rhs.id && bExtended == rhs.bExtended) ;
   }
+
+  bool operator != (const st_KeyIDExt & rhs) const {
+    return (id != rhs.id || bExtended != rhs.bExtended) ;
+  }
 };
 
 class CMenuShortcut;
