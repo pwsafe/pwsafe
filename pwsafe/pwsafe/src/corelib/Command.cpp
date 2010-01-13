@@ -366,8 +366,15 @@ void AddEntryCommand::Undo()
 
 DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
                                        const CItemData &ci)
-  : Command(pcomInt), m_ci(ci)
+  : Command(pcomInt), m_ci(ci), m_related(0)
 {
+  if (ci.IsAlias() || ci.IsShortcut()) {
+    uuid_array_t uuid;
+    ci.GetUUID(uuid);
+    const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
+                           pcomInt->GetShortcuts2BaseMap());
+    m_related.push_back(imap.find(CUUIDGen(uuid))->second);
+  }
 }
 
 DeleteEntryCommand::~DeleteEntryCommand()
@@ -400,8 +407,21 @@ int DeleteEntryCommand::Redo()
 
 void DeleteEntryCommand::Undo()
 {
-  AddEntryCommand undo(m_pcomInt, m_ci);
-  undo.Execute();
+  if (m_ci.IsShortcut() || m_ci.IsAlias()) {
+    ASSERT(m_related.size() == 1); // m_related contains the base uuid
+    uuid_array_t uuid, base_uuid;
+    m_ci.GetUUID(uuid);
+    m_related[0].GetUUID(base_uuid);
+
+    Command *pcmd = 
+      MultiCommands::MakeAddDependentCommand(m_pcomInt, AddEntryCommand::Create(m_pcomInt, m_ci),
+                                             base_uuid, uuid, m_ci.GetEntryType());
+    pcmd->Execute();
+    delete pcmd;
+  } else { // XXX TBD - add support for alias/shortcut base undelete
+    AddEntryCommand undo(m_pcomInt, m_ci);
+    undo.Execute();
+  }
   RestoreState();
   m_bState = false;
 }
