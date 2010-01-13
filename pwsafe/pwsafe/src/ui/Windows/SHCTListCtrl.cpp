@@ -55,63 +55,59 @@ END_MESSAGE_MAP()
 
 void CSHCTListCtrl::Init(COptionsShortcuts *pParent)
 {
+  if (m_pHotKey->GetSafeHwnd() == NULL) {
+    CRect itemrect(0, 0, 0, 0);
+    m_pHotKey->Create(0, itemrect, this, IDC_SHORTCUTHOTKEY);
+    m_pHotKey->ModifyStyle(WS_BORDER, 0, 0);
+    // Would like to change the default font (e.g. smaller and not bold) but it gets ignored
+  }
   m_pHotKey->SetMyParent(this);
   m_pParent = pParent;
   EnableToolTips(TRUE);
 }
 
-void CSHCTListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
+void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
 {
-  UNREFERENCED_PARAMETER(nFlags);
   MapMenuShortcutsIter iter;
   MapKeyNameIDConstIter citer;
-  CRect itemrect, subitemrect;
+  CRect subitemrect;
   int iSubItem = -1;
 
   SaveHotKey();
-
-  m_item = -1;
 
   LVHITTESTINFO lvhti;
   lvhti.pt = point;
   SubItemHitTest(&lvhti);
 
-  if (lvhti.flags & LVHT_ONITEM) {
-    m_item = lvhti.iItem;
-    iSubItem = lvhti.iSubItem;
-  }
+  m_item = lvhti.iItem;
+  iSubItem = lvhti.iSubItem;
+  if (m_item < 0 || iSubItem != SHCT_SHORTCUTKEYS)
+    return;
 
-  if (m_item < 0 || iSubItem != SHCT_SHORTCUTKEYS) {
-    return; //CListCtrl::OnLButtonDown(nFlags, point);
-  } else {
-    if (m_pParent != NULL)
-      m_pParent->ClearWarning();
+  if (m_pParent != NULL)
+    m_pParent->ClearWarning();
 
-    GetSubItemRect(m_item, SHCT_SHORTCUTKEYS, LVIR_BOUNDS, itemrect);
-    GetSubItemRect(m_item, SHCT_MENUITEMTEXT, LVIR_BOUNDS, subitemrect);
-    itemrect.right = subitemrect.left;
-    itemrect.top -= 1;
-    itemrect.left += 1;
-    if (m_pHotKey->GetSafeHwnd() == NULL) {
-      m_pHotKey->Create(0, itemrect, this, IDC_SHORTCUTHOTKEY);
-      m_pHotKey->ModifyStyle(WS_BORDER, 0, 0);
-      // Would like to change the default font (e.g. smaller and not bold) but it gets ignored
-    } else {
-      m_pHotKey->MoveWindow(&itemrect);
-    }
+  // GetSubItemRect for the first column gives the total width
+  // Therefore need to get it from GetColmnWidth
+  const int iColWidth = GetColumnWidth(0);
+  GetSubItemRect(m_item, SHCT_SHORTCUTKEYS, LVIR_BOUNDS, subitemrect);
+  subitemrect.left += 2;
+  subitemrect.right = iColWidth - (iColWidth < 4 ? 0 : 2);
+  subitemrect.top += 2;
+  subitemrect.bottom -= 2;
+  m_pHotKey->MoveWindow(&subitemrect);
 
-    m_id = (UINT)LOWORD(GetItemData(m_item));
-    iter = m_pParent->GetMapMenuShortcutsIter(m_id);
+  m_id = (UINT)LOWORD(GetItemData(m_item));
+  iter = m_pParent->GetMapMenuShortcutsIter(m_id);
 
-    WORD vModifiers = iter->second.cModifier;
-    m_pHotKey->SetHotKey(iter->second.cVirtKey, vModifiers);
+  WORD vModifiers = iter->second.cModifier;
+  m_pHotKey->SetHotKey(iter->second.cVirtKey, vModifiers);
 
-    m_pHotKey->EnableWindow(TRUE);
-    m_pHotKey->ShowWindow(SW_SHOW);
-    m_pHotKey->BringWindowToTop();
-    m_pHotKey->SetFocus();
-    m_bHotKeyActive = true;
-  }
+  m_pHotKey->EnableWindow(TRUE);
+  m_pHotKey->ShowWindow(SW_SHOW);
+  m_pHotKey->BringWindowToTop();
+  m_pHotKey->SetFocus();
+  m_bHotKeyActive = true;
 
   if (m_item >= 0)
     SetItemState(m_item, 0, LVIS_SELECTED | LVIS_DROPHILITED);
@@ -119,7 +115,7 @@ void CSHCTListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   UpdateWindow();
 }
 
-void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
+void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
 {
   CMenu PopupMenu;
   MapMenuShortcutsIter iter;
@@ -130,19 +126,15 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 
   SaveHotKey();
 
-  m_item = -1;
-
   LVHITTESTINFO lvhti;
   lvhti.pt = point;
   SubItemHitTest(&lvhti);
 
-  if (lvhti.flags & LVHT_ONITEM) {
-    m_item = lvhti.iItem;
-    iSubItem = lvhti.iSubItem;
-  }
+  m_item = lvhti.iItem;
+  iSubItem = lvhti.iSubItem;
 
   if (m_item < 0 || iSubItem < 0) {
-    CListCtrl::OnRButtonDown(nFlags, point);
+    // CListCtrl::OnRButtonDown(nFlags, point);
     goto exit;
   }
 
@@ -197,12 +189,9 @@ void CSHCTListCtrl::OnRButtonDown(UINT nFlags, CPoint point)
   }
 
 update:
-  SetItemText(m_item, SHCT_MENUITEMTEXT, str);
+  SetItemText(m_item, SHCT_SHORTCUTKEYS, str);
   RedrawItems(m_item, m_item);
   UpdateWindow();
-
-  if (m_pParent != NULL)
-    m_pParent->SetShortcutsChanged();
 
 exit:
   if (m_pParent != NULL)

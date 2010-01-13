@@ -141,6 +141,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_COLUMNPICKER        32210
 #define ID_MENUITEM_RESETCOLUMNS        32211
 
+// OptionsShortcuts ListView header menu
+#define ID_MENUITEM_RESETCOLUMNWIDTH    32215
+
 // Compare Entry menu
 #define ID_MENUITEM_COMPVIEWEDIT        32220
 #define ID_MENUITEM_COPY_TO_ORIGINAL    32221

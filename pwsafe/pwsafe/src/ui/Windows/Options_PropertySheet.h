@@ -17,6 +17,8 @@ public:
   COptions_PropertySheet(UINT nID, CWnd* pDbx);
   ~COptions_PropertySheet();
 
+  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+
   DECLARE_DYNAMIC(COptions_PropertySheet)
 };
 //-----------------------------------------------------------------------------

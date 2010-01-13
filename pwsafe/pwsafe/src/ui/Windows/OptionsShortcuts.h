@@ -34,7 +34,6 @@ public:
   ~COptionsShortcuts();
 
   bool HaveShortcutsChanged() {return m_bShortcutsChanged;}
-  void SetShortcutsChanged() {m_bShortcutsChanged = true;}
 
   void InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const MapKeyNameID MapKeyNameID,
@@ -61,17 +60,19 @@ public:
   CStaticExtn m_stc_warning;
   //}}AFX_DATA
 
+  int m_iColWidth, m_iDefColWidth;
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsShortcuts)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+  virtual BOOL OnApply();
   BOOL PreTranslateMessage(MSG* pMsg);
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsShortcuts)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
@@ -79,15 +80,16 @@ protected:
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS);
   afx_msg void OnBnClickedResetAll();
   afx_msg void OnHeaderNotify(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnResetColumnWidth();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-  CPWHdrCtrlNoChng m_SHCTHeader;
 
-  MapMenuShortcuts m_MapMenuShortcuts;
+  MapMenuShortcuts m_MapMenuShortcuts, m_MapSaveMenuShortcuts;
   MapKeyNameID m_MapKeyNameID;
   std::vector<UINT> m_ExcludedMenuItems;
   std::vector<st_MenuShortcut> m_ReservedShortcuts;

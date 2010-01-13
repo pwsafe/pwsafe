@@ -57,6 +57,8 @@ BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnBnClickedResetAll)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   ON_NOTIFY(HDN_ENDTRACK, IDC_LIST_HEADER, OnHeaderNotify)
+  ON_NOTIFY(NM_RCLICK, IDC_LIST_HEADER, OnHeaderRClick)
+  ON_COMMAND(ID_MENUITEM_RESETCOLUMNWIDTH, OnResetColumnWidth)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -68,7 +70,7 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const std::vector<UINT> ExcludedMenuItems,
                     const std::vector<st_MenuShortcut> ReservedShortcuts)
 {
-  m_MapMenuShortcuts = MapMenuShortcuts;
+  m_MapMenuShortcuts = m_MapSaveMenuShortcuts = MapMenuShortcuts;
   m_MapKeyNameID = MapKeyNameID;
   m_ExcludedMenuItems = ExcludedMenuItems;
   m_ReservedShortcuts = ReservedShortcuts;
@@ -168,7 +170,7 @@ BOOL COptionsShortcuts::OnInitDialog()
   brc = m_ShortcutLC.SortItems(CompareFunc, NULL);
   ASSERT(brc != 0);
 
-  brc = m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE); // SHCT_SHORTCUTKEYS
+  brc = m_ShortcutLC.SetColumnWidth(0, m_iColWidth); // SHCT_SHORTCUTKEYS
   ASSERT(brc != 0);
   brc = m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
   ASSERT(brc != 0);
@@ -220,7 +222,6 @@ void COptionsShortcuts::OnBnClickedResetAll()
 
   m_ShortcutLC.RedrawItems(0, m_ShortcutLC.GetItemCount());
   m_ShortcutLC.UpdateWindow();
-  m_bShortcutsChanged = true;
 }
 
 void COptionsShortcuts::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
@@ -239,11 +240,44 @@ void COptionsShortcuts::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
   switch (phdn->hdr.code) {
     case HDN_ENDTRACK:
       // Deal with last column
+      m_iColWidth = m_ShortcutLC.GetColumnWidth(0);             // SHCT_SHORTCUTKEYS
       m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
       break;
     default:
       break;
   }
+}
+
+void COptionsShortcuts::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+{
+  if (m_iColWidth == m_iDefColWidth)
+    return;
+
+  const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
+
+  CMenu menu;
+  CPoint ptMousePos;
+  GetCursorPos(&ptMousePos);
+
+  if (menu.LoadMenu(IDR_POPRESETCOLUMNWIDTH)) {
+    MENUINFO minfo;
+    SecureZeroMemory(&minfo, sizeof(minfo));
+    minfo.cbSize = sizeof(minfo);
+    minfo.fMask = MIM_MENUDATA;
+    minfo.dwMenuData = IDR_POPRESETCOLUMNWIDTH;
+    menu.SetMenuInfo(&minfo);
+    CMenu* pPopup = menu.GetSubMenu(0);
+
+    pPopup->TrackPopupMenu(dwTrackPopupFlags, ptMousePos.x, ptMousePos.y, this);
+  }
+  *pResult = TRUE;
+}
+
+void COptionsShortcuts::OnResetColumnWidth()
+{
+  m_ShortcutLC.SetColumnWidth(0, m_iDefColWidth);           // SHCT_SHORTCUTKEYS
+  m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
+  m_iColWidth = m_iDefColWidth;
 }
 
 // Functor for find_if to see if shortcut is reserved
@@ -319,15 +353,33 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
 
   m_ShortcutLC.SetItemText(item, 0, str);  // SHCT_SHORTCUTKEYS
   m_ShortcutLC.RedrawItems(item, item);    // SHCT_MENUITEMTEXT
-  m_ShortcutLC.SetColumnWidth(0, LVSCW_AUTOSIZE);           // SHCT_SHORTCUTKEYS
+  m_ShortcutLC.SetColumnWidth(0, m_iColWidth);              // SHCT_SHORTCUTKEYS
   m_ShortcutLC.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER); // SHCT_MENUITEMTEXT
   m_ShortcutLC.UpdateWindow();
-  m_bShortcutsChanged = true;
   return;
 
 set_warning:
   m_stc_warning.SetWindowText(cs_warning);
   m_stc_warning.ShowWindow(SW_SHOW);
+}
+
+bool shortcutmaps_equal (MapMenuShortcutsPair p1, MapMenuShortcutsPair p2 )
+{
+  return (p1.first == p2.first && 
+          p1.second.cModifier == p2.second.cModifier &&
+          p1.second.cVirtKey == p2.second.cVirtKey);
+}
+
+BOOL COptionsShortcuts::OnApply()
+{
+  if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
+      !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
+                  shortcutmaps_equal))
+     m_bShortcutsChanged = true;
+   else
+     m_bShortcutsChanged = false;
+
+  return COptions_PropertyPage::OnApply();
 }
 
 LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -337,8 +389,13 @@ LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
   // Have any of my fields been changed?
   switch (wParam) {
     case PP_DATA_CHANGED:
-      if (m_bShortcutsChanged) 
+      if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
+          !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
+                   shortcutmaps_equal)) {
+        m_bShortcutsChanged = true;
         return 1L;
+      } else
+        m_bShortcutsChanged = false;
       break;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or

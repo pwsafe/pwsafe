@@ -245,8 +245,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
   // There is no OnOK for classes derived from CPropertySheet,
   // so we make our own!
   if (LOWORD(wParam) == IDOK) {
-    // First send a message to all loaded pages using base class
-    // function.
+    // First send a message to all loaded pages using base class function.
     // We want them all to update their variables in the Master Data area.
     // And call OnApply() rather than the default OnOK processing
     // Note: This message is only sent to PropertyPages that have been
