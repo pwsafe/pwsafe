@@ -198,14 +198,14 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       if (entrytype == CItemData::ET_ALIASBASE) {
         LoadAString(cs_type, num_dependents == 1 ? IDSC_ALIAS : IDSC_ALIASES);
         Format(cs_msg, IDSC_DELETEABASE, dependentslist.size(),
-               cs_type, csDependents.c_str());
+               cs_type.c_str(), csDependents.c_str());
       } else {
         LoadAString(cs_type, num_dependents == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
         Format(cs_msg, IDSC_DELETESBASE, dependentslist.size(),
-               cs_type, csDependents.c_str());
+               cs_type.c_str(), csDependents.c_str());
       }
 
-      if (!(*m_pAsker)(cs_title, cs_msg))
+      if (m_pAsker != NULL && !(*m_pAsker)(cs_title, cs_msg))
         return; // user realized consequences, declines.
     } // num_dependents > 0
 
