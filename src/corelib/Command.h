@@ -222,6 +222,7 @@ public:
 private:
   DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
   const CItemData m_ci;
+  std::vector<CUUIDGen> m_related; // base or dependents
 };
 
 class EditEntryCommand : public Command
