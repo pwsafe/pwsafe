@@ -222,7 +222,8 @@ public:
 private:
   DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
   const CItemData m_ci;
-  std::vector<CUUIDGen> m_related; // base or dependents
+  uuid_array_t m_base_uuid; // for undo of shortcut or alias deletion
+  std::vector<CItemData> m_dependents; // for undo of base deletion
 };
 
 class EditEntryCommand : public Command

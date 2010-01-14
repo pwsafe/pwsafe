@@ -219,12 +219,6 @@ void PWScore::DoDeleteEntry(const CItemData &item)
   item.GetUUID(entry_uuid);
   ItemListIter pos = m_pwlist.find(entry_uuid);
   if (pos != m_pwlist.end()) {
-    // OK, down to business:
-    m_bDBChanged = true;
-    m_pwlist.erase(pos);
-    if (item.NumberUnknownFields() > 0)
-      DecrementNumRecordsWithUnknownFields();
-
     // Simple cases first: Aliases or shortcuts, update maps
     // and refresh base's display, if changed
     CItemData::EntryType entrytype = item.GetEntryType();
@@ -247,7 +241,28 @@ void PWScore::DoDeleteEntry(const CItemData &item)
         bitem.SetNormal();
         GUIRefreshEntry(bitem);
       }
+    } else if (item.IsAliasBase()) {
+      // XXX TBD
+    } else if (item.IsShortcutBase()) {
+      // DoRemoveAllDependentEntries(entry_uuid, CItemData::ET_SHORTCUT);
+      // Recurse on all dependents
+      ItemMMap deps(m_base2shortcuts_mmap.lower_bound(entry_uuid),
+                    m_base2shortcuts_mmap.upper_bound(entry_uuid));
+      for (ItemMMapIter iter = deps.begin(); iter != deps.end(); iter++) {
+        uuid_array_t dep_uuid;
+        iter->second.GetUUID(dep_uuid);
+        CItemData depItem = Find(dep_uuid)->second;
+        DoDeleteEntry(depItem);
+        depItem.SetStatus(CItemData::ES_DELETED); // for GUIRefreshEntry()
+        GUIRefreshEntry(depItem); // will remove from display
+      }
     }
+
+    // OK, down to business:
+    m_bDBChanged = true;
+    m_pwlist.erase(pos);
+    if (item.NumberUnknownFields() > 0)
+      DecrementNumRecordsWithUnknownFields();
 
     // XXX following display-related delete actions should be done AFTER
     // Delete Command execution
@@ -1747,7 +1762,6 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *pRpt,
         if (type == CItemData::ET_SHORTCUT) {
           if (pmapDeletedItems != NULL)
             pmapDeletedItems->insert(ItemList_Pair(*paiter, *pci_curitem));
-          m_pwlist.erase(iter);
         } else {
           if (pmapSaveTypePW != NULL) {
             st_typepw.et = CItemData::ET_ALIAS;
