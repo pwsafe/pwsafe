@@ -366,24 +366,40 @@ void AddEntryCommand::Undo()
 
 DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
                                        const CItemData &ci)
-  : Command(pcomInt), m_ci(ci), m_related(0)
+  : Command(pcomInt), m_ci(ci), m_dependents(0)
 {
-  // If ci is not a normal entry, gather the related entry
-  // info for undo
-  if (ci.IsAlias() || ci.IsShortcut()) {
-    // For aliases or shortcuts, we just need the uuid of the base entry
+  if (ci.IsNormal())
+    memset(m_base_uuid, 0, sizeof(m_base_uuid));
+  else {
     uuid_array_t uuid;
     ci.GetUUID(uuid);
-    const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
-                           pcomInt->GetShortcuts2BaseMap());
-    m_related.push_back(imap.find(CUUIDGen(uuid))->second);
-  } else if (ci.IsAliasBase()) {
-    // When an alias base is deleted, we need the uuids of all its
-    // dependents, to change their passwords back upon undo
-  } else if (ci.IsShortcutBase()) {
-    // When a shortcut base is deleted, we need to save all
-    // the shortcuts referencing it, as they too are deleted.
-  }
+    // If ci is not a normal entry, gather the related entry
+    // info for undo
+    if (ci.IsAlias() || ci.IsShortcut()) {
+      // For aliases or shortcuts, we just need the uuid of the base entry
+      const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
+                             pcomInt->GetShortcuts2BaseMap());
+      imap.find(CUUIDGen(uuid))->second.GetUUID(m_base_uuid);
+    } else if (ci.IsAliasBase()) {
+      // When an alias base is deleted, we need the uuids of all its
+      // dependents, to change their passwords back upon undo
+      // XXX TBD
+    } else if (ci.IsShortcutBase()) {
+      // When a shortcut base is deleted, we need to save all
+      // the shortcuts referencing it, as they too are deleted.
+      const ItemMMap &immap = pcomInt->GetBase2ShortcutsMmap();
+      ItemMMapConstIter iter;
+      for (iter = immap.lower_bound(CUUIDGen(uuid));
+           iter != immap.upper_bound(CUUIDGen(uuid)); iter++) {
+        uuid_array_t dep_uuid;
+        iter->second.GetUUID(dep_uuid);
+        ItemListIter itemIter = pcomInt->Find(dep_uuid);
+        ASSERT(itemIter != pcomInt->GetEntryEndIter());
+        if (itemIter != pcomInt->GetEntryEndIter())
+          m_dependents.push_back(itemIter->second);
+      } // for all dependents
+    } // IsShortcutBase
+  } // !IsNormal
 }
 
 DeleteEntryCommand::~DeleteEntryCommand()
@@ -416,20 +432,32 @@ int DeleteEntryCommand::Redo()
 
 void DeleteEntryCommand::Undo()
 {
+  uuid_array_t uuid;
+  m_ci.GetUUID(uuid);
   if (m_ci.IsShortcut() || m_ci.IsAlias()) {
-    ASSERT(m_related.size() == 1); // m_related contains the base uuid
-    uuid_array_t uuid, base_uuid;
-    m_ci.GetUUID(uuid);
-    m_related[0].GetUUID(base_uuid);
-
     Command *pcmd = 
       MultiCommands::MakeAddDependentCommand(m_pcomInt, AddEntryCommand::Create(m_pcomInt, m_ci),
-                                             base_uuid, uuid, m_ci.GetEntryType());
+                                             m_base_uuid, uuid, m_ci.GetEntryType());
     pcmd->Execute();
     delete pcmd;
-  } else { // XXX TBD - add support for alias/shortcut base undelete
+  } else {
     AddEntryCommand undo(m_pcomInt, m_ci);
     undo.Execute();
+    if (m_ci.IsShortcutBase()) { // restore dependents
+      for (std::vector<CItemData>::iterator iter = m_dependents.begin();
+           iter != m_dependents.end(); iter++) {
+        uuid_array_t shortcut_uuid;
+        iter->GetUUID(shortcut_uuid);
+        Command *pcmd =
+          MultiCommands::MakeAddDependentCommand(m_pcomInt,
+                                                 AddEntryCommand::Create(m_pcomInt, *iter),
+                                                 uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
+        pcmd->Execute();
+        delete pcmd;
+      }
+    } else if (m_ci.IsAliasBase()) {
+      // XXX TBD - add support for alias base undelete
+    }
   }
   RestoreState();
   m_bState = false;

@@ -3654,10 +3654,15 @@ void DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEnt
 
 void DboxMain::UpdateEntryImages(const CItemData &ci)
 {
-  int nImage = GetEntryImage(ci);
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-  SetEntryImage(pdi->list_index, nImage, true);
-  SetEntryImage(pdi->tree_item, nImage, true);
+  if (ci.GetStatus() != CItemData::ES_DELETED) {
+    int nImage = GetEntryImage(ci);
+    SetEntryImage(pdi->list_index, nImage, true);
+    SetEntryImage(pdi->tree_item, nImage, true);
+  } else { // deleted item, remove from display
+    m_ctlItemList.DeleteItem(pdi->list_index);
+    m_ctlItemTree.DeleteItem(pdi->tree_item);
+  }
 }
 
 
