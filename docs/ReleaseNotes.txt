@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.20.1
 ====================
+[2931428] Password history now displayed correctly in View/Edit.
 [2918306, 2816066, 2798788, 2446052, 2837591, 2917066, ...] Re-instate
 AutoType via shortcut and when an entry has been selected via the 
 Find Toolbar.

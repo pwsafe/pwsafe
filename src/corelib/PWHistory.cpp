@@ -61,7 +61,9 @@ bool CreatePWHistoryList(const StringX &pwh_str,
     long t = 0L;
     iStringXStream ist(StringX(pwh_s, offset, 8)); // time in 4 byte hex
     ist >> hex >> t;
-    if (!ist || t == (time_t)0) {
+    // Note: t == 0 - means time is unknown - quite possible for the
+    // oldest saved ppassword
+    if (!ist) {
       // Invalid time of password change
       num_err++;
       continue;
