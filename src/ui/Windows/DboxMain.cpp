@@ -420,6 +420,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
   ON_COMMAND(ID_MENUITEM_U3SHOP_WEBSITE, OnU3ShopWebsite)
   ON_COMMAND(ID_MENUITEM_HELP, OnHelp)
+  ON_COMMAND(ID_HELP, OnHelp)
 
   // List view Column Picker
   ON_COMMAND(ID_MENUITEM_COLUMNPICKER, OnColumnPicker)
@@ -624,6 +625,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_ABOUT, true, true, true, true},
   {ID_MENUITEM_U3SHOP_WEBSITE, true, true, true, true},
   {ID_MENUITEM_HELP, true, true, true, true},
+  {ID_HELP, true, true, true, true},
   // Column popup menu
   {ID_MENUITEM_COLUMNPICKER, true, true, true, false},
   {ID_MENUITEM_RESETCOLUMNS, true, true, true, false},
