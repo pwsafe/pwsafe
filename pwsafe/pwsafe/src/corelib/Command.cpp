@@ -368,12 +368,21 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
                                        const CItemData &ci)
   : Command(pcomInt), m_ci(ci), m_related(0)
 {
+  // If ci is not a normal entry, gather the related entry
+  // info for undo
   if (ci.IsAlias() || ci.IsShortcut()) {
+    // For aliases or shortcuts, we just need the uuid of the base entry
     uuid_array_t uuid;
     ci.GetUUID(uuid);
     const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
                            pcomInt->GetShortcuts2BaseMap());
     m_related.push_back(imap.find(CUUIDGen(uuid))->second);
+  } else if (ci.IsAliasBase()) {
+    // When an alias base is deleted, we need the uuids of all its
+    // dependents, to change their passwords back upon undo
+  } else if (ci.IsShortcutBase()) {
+    // When a shortcut base is deleted, we need to save all
+    // the shortcuts referencing it, as they too are deleted.
   }
 }
 

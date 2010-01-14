@@ -165,20 +165,15 @@ void PWScore::DoAddEntry(const CItemData &item)
   m_bDBChanged = true;
 }
 
-void PWScore::DoDeleteEntry(const CItemData &item)
+bool PWScore::ConfirmDelete(const CItemData *pci)
 {
-  // Also "UndoAddEntry" !
-
-  // Added handling of alias/shortcut/base entry types
-  // Most of this will go away once the entry types
-  // are implemented as subclasses.
-
-  uuid_array_t entry_uuid;
-  item.GetUUID(entry_uuid);
-  ItemListIter pos = m_pwlist.find(entry_uuid);
-  if (pos != m_pwlist.end()) {
+  ASSERT(pci != NULL);
+  if ((pci->IsAliasBase() || pci->IsShortcutBase()) &&
+      m_pAsker != NULL) {
     UUIDList dependentslist;
-    CItemData::EntryType entrytype = item.GetEntryType();
+    uuid_array_t entry_uuid;
+    pci->GetUUID(entry_uuid);
+    CItemData::EntryType entrytype = pci->GetEntryType();
 
     // If we're deleting a base (entry with aliases or shortcuts
     // referencing it), notify user and give her a chance to bail out:
@@ -188,6 +183,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       GetAllDependentEntries(entry_uuid, dependentslist, CItemData::ET_SHORTCUT);
 
     int num_dependents = dependentslist.size();
+    ASSERT(num_dependents > 0); // otherwise pci shouldn't be a base!
     if (num_dependents > 0) {
       StringX csDependents;
       SortDependents(dependentslist, csDependents);
@@ -204,11 +200,25 @@ void PWScore::DoDeleteEntry(const CItemData &item)
         Format(cs_msg, IDSC_DELETESBASE, dependentslist.size(),
                cs_type.c_str(), csDependents.c_str());
       }
-
-      if (m_pAsker != NULL && !(*m_pAsker)(cs_title, cs_msg))
-        return; // user realized consequences, declines.
+        return (*m_pAsker)(cs_title, cs_msg);
     } // num_dependents > 0
+  } 
+  return true;
+}
 
+
+void PWScore::DoDeleteEntry(const CItemData &item)
+{
+  // Also "UndoAddEntry" !
+
+  // Added handling of alias/shortcut/base entry types
+  // Most of this will go away once the entry types
+  // are implemented as subclasses.
+
+  uuid_array_t entry_uuid;
+  item.GetUUID(entry_uuid);
+  ItemListIter pos = m_pwlist.find(entry_uuid);
+  if (pos != m_pwlist.end()) {
     // OK, down to business:
     m_bDBChanged = true;
     m_pwlist.erase(pos);
@@ -217,6 +227,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
 
     // Simple cases first: Aliases or shortcuts, update maps
     // and refresh base's display, if changed
+    CItemData::EntryType entrytype = item.GetEntryType();
     uuid_array_t base_uuid;
     if (item.IsAlias()) {
       GetAliasBaseUUID(entry_uuid, base_uuid);

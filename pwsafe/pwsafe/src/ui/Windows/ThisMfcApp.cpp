@@ -79,7 +79,7 @@ BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
 END_MESSAGE_MAP()
 
 static MFCReporter aReporter;
-
+static MFCAsker    anAsker;
 #ifndef _DEBUG
 extern wchar_t *wcRevision;
 extern wchar_t *wcMsg1;
@@ -160,6 +160,7 @@ ThisMfcApp::ThisMfcApp() :
   SetProcessShutdownParameters(0x3ff, 0);
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
+  PWScore::SetAsker(&anAsker);
   EnableHtmlHelp();
   CoInitialize(NULL); // Initializes the COM library (for XML processing)
   AfxOleInit();

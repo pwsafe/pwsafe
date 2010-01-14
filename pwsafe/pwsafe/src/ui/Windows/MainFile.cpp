@@ -95,13 +95,7 @@ BOOL DboxMain::OpenOnInit()
   switch (rc) {
     case PWScore::SUCCESS:
     {
-      MFCAsker q;
-      MFCReporter r;
-      m_core.SetAsker(&q);
-      m_core.SetReporter(&r);
       rc2 = m_core.ReadCurFile(passkey);
-      m_core.SetAsker(NULL);
-      m_core.SetReporter(NULL);
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                          m_core.GetCurFile()).c_str();

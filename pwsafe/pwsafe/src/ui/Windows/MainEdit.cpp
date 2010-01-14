@@ -342,29 +342,6 @@ void DboxMain::OnDelete()
   }
 }
 
-/**
- * Delete works as follows:
- * Delete a single entry:
- * Normal entry - DeleteEntryCommand
- * Alias - RemoveDependentEntryCommand + DeleteEntryCommand
- * Shortcut - RemoveDependentEntryCommand + DeleteEntryCommand
- * Shortcut Base - n x  DeleteEntryCommand (for each of the Shortcuts) +
- *  update vector m_vVerifyShortcutBase + DeleteEntryCommand for the entry
- * Alias Base - ResetAllAliasPasswordsCommand +
- *  update vector m_vAliasDependents + DeleteEntryCommand for the entry
- * Delete a Group:
- *  Find the path of the group being deleted and then use the corelib
- *    Match process to find all entries that have a group beginning with
- *    this group - probably need to maintain vector m_vDeleteGroup for Undo/Redo.
- *  For each found entry - delete as above
- *    (but not if already deleted - e.g. deleting an Shortcut in a subgroup that
- *    would have been deleted as part of deleting its base in a higher group
- *    that is also being deleted - also no point in resetting the password of
- *    an Alias when its base is deleted if the Alias is also going to be deleted.
- *  Finally, when the MultiCommand is complete - call the UI I/F to remove and update
- *  (mainly image) entries from the Tree & List controls.
- */
-
 void
 DboxMain::Delete()
 {
@@ -405,13 +382,15 @@ Command *DboxMain::Delete(const CItemData *pci)
 {
   // Delete a single item of any type:
   // Normal, base, alias, shortcut...
-  // The DeleteCommand factory method may return a
-  // MultiCommand if a number of elements end up being
-  // deleted, e.g., an alias base and its dependents.
-  
   ASSERT(pci != NULL);
 
-  return DeleteEntryCommand::Create(&m_core, *pci);
+  // ConfirmDelete asks for user confirmation
+  // when deleting a shortcut or alias base.
+  // Otherwise it just return true
+  if (m_core.ConfirmDelete(pci))
+    return DeleteEntryCommand::Create(&m_core, *pci);
+  else
+    return NULL;
 #if 0
   uuid_array_t entry_uuid;
   pci->GetUUID(entry_uuid);

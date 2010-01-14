@@ -205,6 +205,9 @@ public:
   ItemListConstIter Find(const uuid_array_t &entry_uuid) const
   {return m_pwlist.find(entry_uuid);}
 
+  bool ConfirmDelete(const CItemData *pci); // ask user when about to delete a base,
+  //                                           otherwise just return true
+
   // General routines for aliases and shortcuts
   void GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &dependentslist, 
                               const CItemData::EntryType type);
