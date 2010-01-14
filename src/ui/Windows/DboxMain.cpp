@@ -1212,10 +1212,12 @@ void DboxMain::OnMove(int x, int y)
   // with x = y = -32000. Oh joy.
   if (m_bInitDone && IsWindowVisible() == TRUE &&
       x >= 0 && y >= 0) {
-    CRect rect;
-    GetWindowRect(&rect);
-    PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
-                                         rect.left, rect.right);
+    WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
+    GetWindowPlacement(&wp);
+    PWSprefs::GetInstance()->SetPrefRect(wp.rcNormalPosition.top,
+                                         wp.rcNormalPosition.bottom,
+                                         wp.rcNormalPosition.left,
+                                         wp.rcNormalPosition.right);
   }
 }
 

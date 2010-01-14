@@ -1252,10 +1252,12 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           SetFindToolBar(true);
 #if !defined(POCKET_PC)
       } else { // m_bSizing == true: here if size changed
-        CRect rect;
-        GetWindowRect(&rect);
-        PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
-                                             rect.left, rect.right);
+        WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
+        GetWindowPlacement(&wp);
+        PWSprefs::GetInstance()->SetPrefRect(wp.rcNormalPosition.top,
+                                             wp.rcNormalPosition.bottom,
+                                             wp.rcNormalPosition.left,
+                                             wp.rcNormalPosition.right);
 
         // Make sure Find toolbar is above Status bar
         if (m_FindToolBar.IsVisible())

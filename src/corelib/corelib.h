@@ -213,11 +213,11 @@
 #define IDSC_IMPORT_ENTRY_ID            3377
 #define IDSC_FILEWRITEERROR             3378
 
-#define IDSC_DELETEBASET                 3400
-#define IDSC_DELETEABASE                 3401
-#define IDSC_DELETESBASE                 3402
-#define IDSC_ALIASES                     3403
-#define IDSC_SHORTCUTS                   3404
+#define IDSC_DELETEBASET                3400
+#define IDSC_DELETEABASE                3401
+#define IDSC_DELETESBASE                3402
+#define IDSC_ALIASES                    3403
+#define IDSC_SHORTCUTS                  3404
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
