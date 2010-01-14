@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XML_DIZ_INFO>
+	<MASTER_PAD_VERSION_INFO>
+		<MASTER_PAD_VERSION>3.10</MASTER_PAD_VERSION>
+		<MASTER_PAD_EDITOR>PADGen 3.1.0.41 http://www.padgen.org</MASTER_PAD_EDITOR>
+		<MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to disseminate information to anyone interested in their software products. To find out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
+	</MASTER_PAD_VERSION_INFO>
+	<Company_Info>
+		<Company_Name>Password Safe</Company_Name>
+		<Address_1 />
+		<Address_2 />
+		<City_Town />
+		<State_Province />
+		<Zip_Postal_Code />
+		<Country />
+		<Company_WebSite_URL>http://pwsafe.org</Company_WebSite_URL>
+		<Contact_Info>
+			<Author_First_Name>Rony</Author_First_Name>
+			<Author_Last_Name>Shapiro</Author_Last_Name>
+			<Author_Email>ronys@users.sourceforge.net</Author_Email>
+			<Contact_First_Name>Rony</Contact_First_Name>
+			<Contact_Last_Name>Shapiro</Contact_Last_Name>
+			<Contact_Email>ronys@users.sourceforge.net</Contact_Email>
+		</Contact_Info>
+		<Support_Info>
+			<Sales_Email />
+			<Support_Email />
+			<General_Email />
+			<Sales_Phone />
+			<Support_Phone />
+			<General_Phone />
+			<Fax_Phone />
+		</Support_Info>
+	</Company_Info>
+	<Program_Info>
+		<Program_Name>PasswordSafe</Program_Name>
+		<Program_Version>3.20</Program_Version>
+		<Program_Release_Month>12</Program_Release_Month>
+		<Program_Release_Day>07</Program_Release_Day>
+		<Program_Release_Year>2009</Program_Release_Year>
+		<Program_Cost_Dollars>0</Program_Cost_Dollars>
+		<Program_Cost_Other_Code />
+		<Program_Cost_Other />
+		<Program_Type>Freeware</Program_Type>
+		<Program_Release_Status>Minor Update</Program_Release_Status>
+		<Program_Install_Support>Install and Uninstall</Program_Install_Support>
+		<Program_OS_Support>Win7 x32,Win7 x64,WinVista,WinVista x64,WinXP</Program_OS_Support>
+		<Program_Language>English,ChineseSimplified,French,German,Polish,Russian,Spanish,Swedish</Program_Language>
+		<Program_Change_Info>Minor bug fixes and features</Program_Change_Info>
+		<Program_Specific_Category>Utilities</Program_Specific_Category>
+		<Program_Category_Class>Security &amp; Privacy::Password Managers</Program_Category_Class>
+		<Program_System_Requirements />
+		<File_Info>
+			<File_Size_Bytes>4869351</File_Size_Bytes>
+			<File_Size_K>4755</File_Size_K>
+			<File_Size_MB>4.64</File_Size_MB>
+		</File_Info>
+		<Expire_Info>
+			<Has_Expire_Info>N</Has_Expire_Info>
+			<Expire_Count />
+			<Expire_Based_On>Days</Expire_Based_On>
+			<Expire_Other_Info />
+			<Expire_Month />
+			<Expire_Day />
+			<Expire_Year />
+		</Expire_Info>
+	</Program_Info>
+	<Program_Descriptions>
+		<English>
+			<Keywords>password manager, security, cryptography</Keywords>
+			<Char_Desc_45>Simple &amp; secure password management utility</Char_Desc_45>
+			<Char_Desc_80>A popular password manager for Windows, emphasizing ease-of-use and security</Char_Desc_80>
+			<Char_Desc_250>Password Safe allows you to easily and securely manage your passwords. Instead of using a single password for all your accounts, you can have a different password for each site, yet only have to remember a single master password.</Char_Desc_250>
+			<Char_Desc_450>Password Safe allows you to manage your old passwords and to easily and quickly generate, store, organize, retrieve, and use complex new passwords, using password policies that you control. Once stored, your user names and passwords are just a few clicks away. Using Password Safe you can organize your passwords using your own customizable references—for example, by user ID, category, web site, or location.</Char_Desc_450>
+			<Char_Desc_2000>How many passwords and user names do you have to keep track of?
+Whether the answer is one or hundreds, Password Safe allows you to safely and easily create a secured and encrypted user name/password list. With Password Safe all you have to do is create and remember a single "Master Password" of your choice in order to unlock and access your entire user name/password list.
+Security starts with you, the user. Keeping written lists of passwords on scraps of paper, or in a text document on your desktop is unsafe and is easily viewed by prying eyes (both cyber-based and human). Using the same password over and over again across a wide spectrum of systems and web sites creates the nightmare scenario where once someone has figured out one password, they have figured out all your passwords and now have access to every part of your life (system, e-mail, retail, financial, work).
+Password Safe allows you to manage your old passwords and to easily and quickly generate, store, organize, retrieve, and use complex new passwords, using password policies that you control. Once stored, your user names and passwords are just a few clicks away.
+Using Password Safe you can organize your passwords using your own customizable references—for example, by user ID, category, web site, or location. You can choose to store all your passwords in a single encrypted master password list (an encrypted password database), or use multiple databases to further organize your passwords (work and home, for example). And with its intuitive interface you will be up and running in minutes.
+Oh, and the desktop version of Password Safe is freely available under an Open Source approved license. A U3 disk-on-key version is also available. For customization and commercial support, please contact me.</Char_Desc_2000>
+		</English>
+	</Program_Descriptions>
+	<Web_Info>
+		<Application_URLs>
+			<Application_Info_URL>http://pwsafe.org</Application_Info_URL>
+			<Application_Order_URL />
+			<Application_Screenshot_URL>http://pwsafe.org/images/main_window.jpg</Application_Screenshot_URL>
+			<Application_Icon_URL>http://pwsafe.org/images/pwsafe_logo.gif</Application_Icon_URL>
+			<Application_XML_File_URL>http://pwsafe.org/padfiles/pwsafe.xml</Application_XML_File_URL>
+		</Application_URLs>
+		<Download_URLs>
+			<Primary_Download_URL>https://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.20/pwsafe-3.20.exe/download</Primary_Download_URL>
+			<Secondary_Download_URL />
+			<Additional_Download_URL_1 />
+			<Additional_Download_URL_2 />
+		</Download_URLs>
+	</Web_Info>
+	<Permissions>
+		<Distribution_Permissions>Password Safe is distributed under the Artistic License 2.0, as described in http://www.opensource.org/licenses/artistic-license-2.0.php
+
+</Distribution_Permissions>
+		<EULA>Password Safe is distributed under the Artistic License 2.0, as described in http://www.opensource.org/licenses/artistic-license-2.0.php
+</EULA>
+	</Permissions>
+</XML_DIZ_INFO>
