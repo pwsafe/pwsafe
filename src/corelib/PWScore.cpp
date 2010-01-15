@@ -226,23 +226,12 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     if (item.IsAlias()) {
       GetAliasBaseUUID(entry_uuid, base_uuid);
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
-      if (NumAliases(base_uuid) == 0) {
-        ItemListIter biter = Find(base_uuid);
-        CItemData &bitem = biter->second;
-        bitem.SetNormal();
-        GUIRefreshEntry(bitem);
-      }
     } else if (item.IsShortcut()) {
       GetShortcutBaseUUID(entry_uuid, base_uuid);
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
-      if (NumShortcuts(base_uuid) == 0) {
-        ItemListIter biter = Find(base_uuid);
-        CItemData &bitem = biter->second;
-        bitem.SetNormal();
-        GUIRefreshEntry(bitem);
-      }
     } else if (item.IsAliasBase()) {
-      // XXX TBD
+      vector<CUUIDGen> dummy; // no longer needed
+      DoResetAllAliasPasswords(entry_uuid, dummy);
     } else if (item.IsShortcutBase()) {
       // DoRemoveAllDependentEntries(entry_uuid, CItemData::ET_SHORTCUT);
       // Recurse on all dependents
@@ -1423,14 +1412,19 @@ void PWScore::DoAddDependentEntry(const uuid_array_t &base_uuid,
   ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
 
+  bool baseWasNormal = iter->second.IsNormal();
   if (type == CItemData::ET_ALIAS) {
     // Mark base entry as a base entry - must be a normal entry or already an alias base
     ASSERT(iter->second.IsNormal() || iter->second.IsAliasBase());
     iter->second.SetAliasBase();
+    if (baseWasNormal)
+      GUIRefreshEntry(iter->second);
   } else if (type == CItemData::ET_SHORTCUT) {
     // Mark base entry as a base entry - must be a normal entry or already a shortcut base
     ASSERT(iter->second.IsNormal() || iter->second.IsShortcutBase());
     iter->second.SetShortcutBase();
+    if (baseWasNormal)
+      GUIRefreshEntry(iter->second);
   }
 
   // Add to both the base->type multimap and the type->base map
@@ -1478,8 +1472,10 @@ void PWScore::DoRemoveDependentEntry(const uuid_array_t &base_uuid,
   // Reset base entry to normal if it has no more aliases
   if (pmmap->find(base_uuid) == pmmap->end()) {
     ItemListIter iter = m_pwlist.find(base_uuid);
-    if (iter != m_pwlist.end())
+    if (iter != m_pwlist.end()) {
       iter->second.SetNormal();
+      GUIRefreshEntry(iter->second);
+    }
   }
 }
 
@@ -1838,6 +1834,7 @@ void PWScore::DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
     if (alias_itr != m_pwlist.end()) {
       alias_itr->second.SetPassword(csBasePassword);
       alias_itr->second.SetNormal();
+      GUIRefreshEntry(alias_itr->second);
       vSavedAliases.push_back(alias_uuid);
     }
   }
