@@ -380,14 +380,16 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
       const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
                              pcomInt->GetShortcuts2BaseMap());
       imap.find(CUUIDGen(uuid))->second.GetUUID(m_base_uuid);
-    } else if (ci.IsAliasBase()) {
-      // When an alias base is deleted, we need the uuids of all its
-      // dependents, to change their passwords back upon undo
-      // XXX TBD
-    } else if (ci.IsShortcutBase()) {
-      // When a shortcut base is deleted, we need to save all
-      // the shortcuts referencing it, as they too are deleted.
-      const ItemMMap &immap = pcomInt->GetBase2ShortcutsMmap();
+    } else if (ci.IsAliasBase() || ci.IsShortcutBase()) {
+      /**
+       * When a shortcut base is deleted, we need to save all
+       * the shortcuts referencing it, as they too are deleted.
+       * When an alias base is deleted, we need the uuids of all its
+       * dependents, to change their passwords back upon undo
+       * To save code, we just keep the entire entry, same as shortcuts
+      */
+      const ItemMMap &immap = 
+        ci.IsShortcutBase() ? pcomInt->GetBase2ShortcutsMmap() : pcomInt->GetBase2AliasesMmap();
       ItemMMapConstIter iter;
       for (iter = immap.lower_bound(CUUIDGen(uuid));
            iter != immap.upper_bound(CUUIDGen(uuid)); iter++) {
@@ -398,7 +400,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
         if (itemIter != pcomInt->GetEntryEndIter())
           m_dependents.push_back(itemIter->second);
       } // for all dependents
-    } // IsShortcutBase
+    } // IsAliasBase || IsShortcutBase
   } // !IsNormal
 }
 
@@ -456,7 +458,22 @@ void DeleteEntryCommand::Undo()
         delete pcmd;
       }
     } else if (m_ci.IsAliasBase()) {
-      // XXX TBD - add support for alias base undelete
+      // Undeleting an alias base means making all the dependents refer to the alias
+      // again. Perhaps the easiest approach is to delete the existing entries
+      // and create new aliases.
+      for (std::vector<CItemData>::iterator iter = m_dependents.begin();
+           iter != m_dependents.end(); iter++) {
+        DeleteEntryCommand delExAlias(m_pcomInt, *iter);
+        delExAlias.Execute(); // out with the old...
+        uuid_array_t alias_uuid;
+        iter->GetUUID(alias_uuid);
+        Command *pcmd =
+          MultiCommands::MakeAddDependentCommand(m_pcomInt,
+                                                 AddEntryCommand::Create(m_pcomInt, *iter),
+                                                 uuid, alias_uuid, CItemData::ET_ALIAS);
+        pcmd->Execute(); // in with the new!
+        delete pcmd;
+      }
     }
   }
   RestoreState();
