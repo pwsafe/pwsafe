@@ -429,23 +429,6 @@ private:
   CItemData::EntryType m_type;
 };
 
-class ResetAllAliasPasswordsCommand : public Command
-{
-public:
-  static ResetAllAliasPasswordsCommand *Create(CommandInterface *pcomInt,
-                                               const uuid_array_t &base_uuid)
-  { return new ResetAllAliasPasswordsCommand(pcomInt, base_uuid); }
-  int Execute();
-  int Redo();
-  void Undo();
-
-private:
-  ResetAllAliasPasswordsCommand(CommandInterface *pcomInt,
-                                const uuid_array_t &base_uuid);
-  uuid_array_t m_base_uuid;
-  std::vector<CUUIDGen> m_vSavedAliases;
-};
-
 class UpdatePasswordHistoryCommand : public Command
 {
 public:

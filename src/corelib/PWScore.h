@@ -308,17 +308,12 @@ private:
                                       const uuid_array_t &to_baseuuid, 
                                       const CItemData::EntryType type);
 
-  // Actions for Aliases only
-  virtual void DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                        std::vector<CUUIDGen> &vSavedAliases);
-  virtual void UndoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                          std::vector<CUUIDGen> &vSavedAliases);
-
   virtual int DoUpdatePasswordHistory(int iAction, int new_default_max,
                                       SavePWHistoryMap &mapSavedHistory);
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
 
   // End of Command Interface implementations
+  void ResetAllAliasPasswords(const uuid_array_t &base_uuid);
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
