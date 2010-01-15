@@ -935,47 +935,6 @@ void MoveDependentEntriesCommand::Undo()
 }
 
 // ------------------------------------------------
-// ResetAllAliasPasswordsCommand
-// ------------------------------------------------
-
-ResetAllAliasPasswordsCommand::ResetAllAliasPasswordsCommand(CommandInterface *pcomInt,
-                                                             const uuid_array_t &base_uuid)
-  : Command(pcomInt)
-{
-  memcpy((void *)m_base_uuid, (void *)base_uuid, sizeof(uuid_array_t));
-}
-
-int ResetAllAliasPasswordsCommand::Execute()
-{
-  TRACE(L"ResetAllAliasPasswordsCommand::Execute\n");
-  SaveState();
-  m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  m_pcomInt->DoResetAllAliasPasswords(m_base_uuid, m_vSavedAliases);
-  m_bState = true;
-  return 0;
-}
-
-int ResetAllAliasPasswordsCommand::Redo()
-{
-  return Execute();
-}
-
-void ResetAllAliasPasswordsCommand::Undo()
-{
-  TRACE(L"ResetAllAliasPasswordsCommand::Undo\n");
-  if (m_pcomInt->IsReadOnly())
-    return;
-
-  m_pcomInt->UndoResetAllAliasPasswords(m_base_uuid, m_vSavedAliases);
-  m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
-  RestoreState();
-  m_bState = false;
-}
-
-// ------------------------------------------------
 // UpdatePasswordHistoryCommand
 // ------------------------------------------------
 

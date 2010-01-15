@@ -230,8 +230,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       GetShortcutBaseUUID(entry_uuid, base_uuid);
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
     } else if (item.IsAliasBase()) {
-      vector<CUUIDGen> dummy; // no longer needed
-      DoResetAllAliasPasswords(entry_uuid, dummy);
+      ResetAllAliasPasswords(entry_uuid);
     } else if (item.IsShortcutBase()) {
       // DoRemoveAllDependentEntries(entry_uuid, CItemData::ET_SHORTCUT);
       // Recurse on all dependents
@@ -1663,8 +1662,7 @@ void PWScore::UndoAddDependentEntries(ItemList *pmapDeletedItems,
   }
 }
 
-void PWScore::DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                       std::vector<CUUIDGen> &vSavedAliases)
+void PWScore::ResetAllAliasPasswords(const uuid_array_t &base_uuid)
 {
   // Alias ONLY - no shortcut version needed
   ItemMMapIter itr;
@@ -1672,9 +1670,6 @@ void PWScore::DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
   ItemListIter base_itr, alias_itr;
   uuid_array_t alias_uuid;
   StringX csBasePassword;
-
-  // Clear saved aliases (for Undo)
-  vSavedAliases.clear();
 
   itr = m_base2aliases_mmap.find(base_uuid);
   if (itr == m_base2aliases_mmap.end())
@@ -1697,37 +1692,13 @@ void PWScore::DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
       alias_itr->second.SetPassword(csBasePassword);
       alias_itr->second.SetNormal();
       GUIRefreshEntry(alias_itr->second);
-      vSavedAliases.push_back(alias_uuid);
     }
   }
   m_base2aliases_mmap.erase(base_uuid);
 }
 
-void PWScore::UndoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                         std::vector<CUUIDGen> &vSavedAliases)
-{
-  std::vector<CUUIDGen>::iterator itr;
-  ItemListIter base_itr, alias_itr;
-  StringX csAliasPassword;
-  
-  base_itr = m_pwlist.find(base_uuid);
-  if (base_itr != m_pwlist.end()) {
-    csAliasPassword = _T("[") + base_itr->second.GetGroup() + _T(":") +
-                             base_itr->second.GetTitle() + _T(":") +
-                             base_itr->second.GetUser() + _T("]");
-  } else
-    return;
-
-  for (itr = vSavedAliases.begin() ; itr != vSavedAliases.end(); itr++) {
-    alias_itr = m_pwlist.find(*itr);
-    if (alias_itr != m_pwlist.end()) {
-      alias_itr->second.SetPassword(csAliasPassword);
-      alias_itr->second.SetAlias();
-    }
-  }
-}
-
-void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &tlist, const CItemData::EntryType type)
+void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &tlist,
+                                     const CItemData::EntryType type)
 {
   ItemMMapIter itr;
   ItemMMapIter lastElement;

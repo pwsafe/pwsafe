@@ -58,12 +58,6 @@ class CommandInterface {
                                       const uuid_array_t &to_baseuuid, 
                                       const CItemData::EntryType type) = 0;
 
-  // Actions for Aliases only
-  virtual void DoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                        std::vector<CUUIDGen> &vSavedAliases) = 0;
-  virtual void UndoResetAllAliasPasswords(const uuid_array_t &base_uuid,
-                                          std::vector<CUUIDGen> &vSavedAliases) = 0;
-
   virtual int DoUpdatePasswordHistory(int iAction, int new_default_max,
                                       SavePWHistoryMap &mapSavedHistory) = 0;
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory) = 0;
