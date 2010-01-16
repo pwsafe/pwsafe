@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-01-12 20:06+0100\n"
+"PO-Revision-Date: 2010-01-14 17:55+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1309,10 +1309,6 @@ msgstr "Erweitert..."
 #. Resource IDs: (514)
 msgid "Albanian"
 msgstr "Albanisch"
-
-#. Resource IDs: (205)
-msgid "Alias"
-msgstr "Alias"
 
 #. Resource IDs: (3841)
 msgid "All Files (*.*)"
@@ -4643,6 +4639,10 @@ msgstr "Reservierte Verknüpfung '%s' ignoriert."
 msgid "Reset All"
 msgstr "Alles rücksetzen"
 
+#. Resource IDs: (32215)
+msgid "Reset Column Width"
+msgstr "Spaltenbreite rücksetzen"
+
 #. Resource IDs: (32211)
 msgid "Reset Columns"
 msgstr "Spalten rücksetzen"
@@ -5003,10 +5003,6 @@ msgstr "Umsch+"
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
 msgstr "Umschalt+Klick um die aktuelle Richtlinie anzuzeigen"
-
-#. Resource IDs: (205)
-msgid "Shortcut"
-msgstr "Verknüpfung"
 
 #. Resource IDs: (356)
 #, c-format
@@ -7249,6 +7245,10 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid "Alias"
+#~ msgstr "Alias"
+#~ msgid "Shortcut"
+#~ msgstr "Verknüpfung"
 #~ msgid "Please Choose a Database to Merge"
 #~ msgstr "Bitte wählen Sie eine Datenbank zum Zusammenführen aus"
 
