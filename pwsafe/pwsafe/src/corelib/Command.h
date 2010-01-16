@@ -106,13 +106,6 @@ public:
   // Some convenience routines:
   void AddEntry(const CItemData &ci);
   void UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value);
-  // Following is used to change a simple AddEntryCommand command into
-  // AddEntryCommand + AddDependentEntryCommand
-  static MultiCommands *MakeAddDependentCommand(CommandInterface *pcomInt,
-                                                Command *paec,
-                                                const uuid_array_t &base_uuid, 
-                                                const uuid_array_t &entry_uuid,
-                                                CItemData::EntryType type);
  private:
   MultiCommands(CommandInterface *pcomInt);
   std::vector<Command *> m_vpcmds;
@@ -170,6 +163,10 @@ class AddEntryCommand : public Command
 public:
   static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci)
   { return new AddEntryCommand(pcomInt, ci); }
+  // Following for adding an alias or shortcut
+  static AddEntryCommand *Create(CommandInterface *pcomInt,
+                                 const CItemData &ci, const uuid_array_t base_uuid)
+  { return new AddEntryCommand(pcomInt, ci, base_uuid); }
   ~AddEntryCommand();
   int Execute();
   int Redo();
@@ -177,7 +174,10 @@ public:
   friend class DeleteEntryCommand; // allow access to c'tor
 private:
   AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
+  AddEntryCommand(CommandInterface *pcomInt,
+                  const CItemData &ci, const uuid_array_t base_uuid);
   const CItemData m_ci;
+  uuid_array_t m_base_uuid;
 };
 
 class DeleteEntryCommand : public Command

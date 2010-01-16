@@ -1071,43 +1071,30 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
 
     ci_temp.SetGroup(newPath);
     ci_temp.SetTitle(ci_title);
-    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-    ASSERT(pdi != NULL);
-    DisplayInfo *pdi_new = new DisplayInfo;
-    pdi_new->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
-    pdi_new->tree_item = 0;
-    ci_temp.SetDisplayInfo(pdi_new);
+    ci_temp.SetDisplayInfo(new DisplayInfo);
 
-    Command *pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp);
-
+    Command *pcmd;
     CItemData::EntryType temp_et = ci_temp.GetEntryType();
     switch (temp_et) {
-    case CItemData::ET_NORMAL:
-      break;
     case CItemData::ET_ALIASBASE:
     case CItemData::ET_SHORTCUTBASE:
       // An alias or shortcut can only have one base
       ci_temp.SetNormal();
+      // Deliberate fall-thru
+    case CItemData::ET_NORMAL:
+      pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp);
       break;
     case CItemData::ET_ALIAS:
+      ci_temp.SetPassword(CSecString(L"[Alias]"));
       // Get base of original alias and make this copy point to it
       m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
-      // replace AddEntry command with multicommand containing
-      // AddEntry and AddDependentEntryCommand
-      pcmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), pcmd,
-                                                    base_uuid, temp_uuid,
-                                                    CItemData::ET_ALIAS);
-      ci_temp.SetPassword(CSecString(L"[Alias]"));
+      pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp, base_uuid);
       break;
     case CItemData::ET_SHORTCUT:
+      ci_temp.SetPassword(CSecString(L"[Shortcut]"));
       // Get base of original shortcut and make this copy point to it
       m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
-      // replace AddEntry command with multicommand containing
-      // AddEntry and AddDependentEntryCommand
-      pcmd = MultiCommands::MakeAddDependentCommand(m_pDbx->GetCore(), pcmd,
-                                                    base_uuid, temp_uuid,
-                                                    CItemData::ET_SHORTCUT);
-      ci_temp.SetPassword(CSecString(L"[Shortcut]"));
+      pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp, base_uuid);
       break;
     default:
       ASSERT(0);

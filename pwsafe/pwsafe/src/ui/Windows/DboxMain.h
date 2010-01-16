@@ -900,7 +900,7 @@ struct DisplayInfo : public DisplayInfoBase {
   int list_index;
   HTREEITEM tree_item;
 
-  DisplayInfo() {}
+ DisplayInfo() :list_index(-1), tree_item(0) {}
   virtual ~DisplayInfo() {}
   virtual DisplayInfo *clone() const // virtual c'tor idiom
   { return new DisplayInfo(*this); }
