@@ -17,7 +17,6 @@ class CommandInterface;
 #include "ItemData.h"
 #include "StringX.h"
 #include "UUIDGen.h"
-#include "GUICommandInterface.h"
 
 #include "coredefs.h"
 
@@ -143,21 +142,6 @@ private:
                    GUI_Action ga);
   ExecuteFn m_When;
   GUI_Action m_ga;
-};
-
-class GUICommand : public Command
-{
-public:
-  static GUICommand *Create(CommandInterface *pcomInt, PWSGUICmdIF *pGUICmdIF)
-  { return new GUICommand(pcomInt, pGUICmdIF); }
-  ~GUICommand();
-  int Execute();
-  int Redo();
-  void Undo();
-
-private:
-  GUICommand(CommandInterface *pcomInt, PWSGUICmdIF *pGUICmdIF);
-  PWSGUICmdIF *m_pGUICmdIF;
 };
 
 // PWS related commands

@@ -79,8 +79,6 @@ class CommandInterface {
                                       uuid_array_t &,
                                       CItemData::FieldType ft = CItemData::START,
                                       bool bUpdateGUI = true) = 0;
-  virtual void CallGUICommandInterface(Command::ExecuteFn,
-                                       PWSGUICmdIF *) = 0;
 
   virtual ~CommandInterface() {}
 };

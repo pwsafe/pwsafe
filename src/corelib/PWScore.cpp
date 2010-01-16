@@ -1849,14 +1849,6 @@ void PWScore::NotifyGUINeedsUpdating(Command::GUI_Action ga,
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
 }
 
-void PWScore::CallGUICommandInterface(Command::ExecuteFn When,
-                                      PWSGUICmdIF *pGUICmdIF)
-{
-  if (m_pUIIF != NULL)
-    m_pUIIF->GUICommandInterface(When, pGUICmdIF);
-}
-
-
 void PWScore::GUISetupDisplayInfo(CItemData &ci)
 {
   if (m_pUIIF != NULL)

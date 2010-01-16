@@ -34,7 +34,6 @@
 #include "ControlExtns.h"
 #include "DDStatic.h"
 #include "MenuShortcuts.h"
-#include "WinGUICmdIF.h"
 #include "AdvancedDlg.h"
 
 #include "corelib/UIinterface.h"
@@ -693,9 +692,6 @@ private:
                  CItemData::FieldType ft, bool bUpdateGUI);
   void GUISetupDisplayInfo(CItemData &ci);
   void GUIRefreshEntry(const CItemData &ci);
-  void GUICommandInterface(Command::ExecuteFn when, PWSGUICmdIF *pGUICmdIF);
-
-  void RedoDelete(WinGUICmdIF *pGUICmdIF);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 

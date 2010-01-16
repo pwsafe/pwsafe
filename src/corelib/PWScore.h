@@ -388,7 +388,6 @@ private:
   void NotifyGUINeedsUpdating(Command::GUI_Action, uuid_array_t &,
                               CItemData::FieldType ft = CItemData::START,
                               bool bUpdateGUI = true);
-  void CallGUICommandInterface(Command::ExecuteFn, PWSGUICmdIF *);
 
   // Create header for included(Text) and excluded(XML) exports
   StringX BuildHeader(const CItemData::FieldBits &bsFields, const bool bIncluded);
@@ -397,10 +396,6 @@ private:
   std::vector<Command *> m_vpcommands;
   std::vector<Command *>::iterator m_undo_iter;
   std::vector<Command *>::iterator m_redo_iter;
-
-  // To perform a GUI dependent Command
-  void (*m_pfcnGUICommandInterface) (LPARAM , const Command::ExecuteFn &, PWSGUICmdIF *);
-  LPARAM m_GUICommandInterfaceInstance;
 
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;
