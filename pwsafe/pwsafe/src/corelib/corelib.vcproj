@@ -1003,10 +1003,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\GUICommandInterface.h"
-				>
-			</File>
-			<File
 				RelativePath=".\hmac.h"
 				>
 			</File>

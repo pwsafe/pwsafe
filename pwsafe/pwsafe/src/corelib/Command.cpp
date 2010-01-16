@@ -236,37 +236,6 @@ void UpdateGUICommand::Undo()
 }
 
 // ------------------------------------------------
-// GUICommand
-// ------------------------------------------------
-
-GUICommand::GUICommand(CommandInterface *pcomInt, PWSGUICmdIF *pGUICmdIF)
-  : Command(pcomInt), m_pGUICmdIF(pGUICmdIF)
-{
-}
-
-GUICommand::~GUICommand()
-{
-  delete m_pGUICmdIF;
-}
-
-int GUICommand::Execute()
-{
-  m_pcomInt->CallGUICommandInterface(WN_EXECUTE, m_pGUICmdIF);
-  return 0;
-}
-
-int GUICommand::Redo()
-{
-  m_pcomInt->CallGUICommandInterface(WN_REDO, m_pGUICmdIF);
-  return 0;
-}
-
-void GUICommand::Undo()
-{
-  m_pcomInt->CallGUICommandInterface(WN_UNDO, m_pGUICmdIF);
-}
-
-// ------------------------------------------------
 // DBPrefsCommand
 // ------------------------------------------------
 

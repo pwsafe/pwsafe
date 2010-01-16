@@ -22,7 +22,6 @@
 #include "SecString.h"
 #include "SMemFile.h"
 #include "GeneralMsgBox.h"
-#include "WinGUICmdIF.h"
 
 #include "corelib/ItemData.h"
 #include "corelib/Util.h"

@@ -40,8 +40,6 @@ class UIInterFace {
   // GUIRefreshEntry: called when the entry's graphic representation
   // may have changed - GUI should update and invalidate its display.
   virtual void GUIRefreshEntry(const CItemData &ci) = 0;
-  virtual void GUICommandInterface(Command::ExecuteFn When,
-                                   PWSGUICmdIF *pGUICmdIF) = 0;
   virtual ~UIInterFace() {}
 };
 
