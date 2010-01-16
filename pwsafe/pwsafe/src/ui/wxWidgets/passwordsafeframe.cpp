@@ -1248,17 +1248,26 @@ void PasswordSafeFrame::UpdateGUI(Command::GUI_Action ga,
                                   uuid_array_t &entry_uuid,
                                   CItemData::FieldType ft)
 {
+  // XXX TBD
 }
 
 void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
 {
+  // XXX TBD
 }
 
-void PasswordSafeFrame::GUICommandInterface(Command::ExecuteFn When,
-                         PWSGUICmdIF *pGUICmdIF)
+void PasswordSafeFrame::UpdateGUI(Command::GUI_Action ga,
+                                  uuid_array_t &entry_uuid,
+                                  CItemData::FieldType ft,
+                                  bool bUpdateGUI)
 {
+  // XXX TBD
 }
-
+    
+void PasswordSafeFrame::GUIRefreshEntry(const CItemData&)
+{
+  // XXX TBD
+}
 
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we

@@ -979,7 +979,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
         m_item.SetGroup(group.c_str());
         m_item.SetTitle(m_title.c_str());
         m_item.SetUser(m_user.empty() ?
-                       m_core.GetDefUsername().c_str() : m_user.c_str());
+                       PWSprefs::GetInstance()->
+                       GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
         m_item.SetNotes(m_notes.c_str());
         m_item.SetURL(m_url.c_str());
         m_item.SetAutoType(m_autotype.c_str());
@@ -1049,7 +1050,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_item.SetGroup(group.c_str());
       m_item.SetTitle(m_title.c_str());
       m_item.SetUser(m_user.empty() ?
-                     m_core.GetDefUsername().c_str() : m_user.c_str());
+                     PWSprefs::GetInstance()->
+                      GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
       m_item.SetNotes(m_notes.c_str());
       m_item.SetURL(m_url.c_str());
       m_item.SetPassword(password);
