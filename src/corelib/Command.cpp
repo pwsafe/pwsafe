@@ -835,64 +835,6 @@ void RemoveDependentEntryCommand::Undo()
 }
 
 // ------------------------------------------------
-// RemoveAllDependentEntriesCommand
-// ------------------------------------------------
-
-RemoveAllDependentEntriesCommand::RemoveAllDependentEntriesCommand(CommandInterface *pcomInt,
-                                                                   const uuid_array_t &base_uuid,
-                                                                   const CItemData::EntryType type)
-  : Command(pcomInt), m_type(type)
-{
-  memcpy((void *)m_base_uuid, (void *)base_uuid, sizeof(uuid_array_t));
-}
-
-int RemoveAllDependentEntriesCommand::Execute()
-{
-  TRACE(L"RemoveAllDependentEntriesCommand::Execute\n");
-  SaveState();
-  if (m_type == CItemData::ET_ALIAS) {
-    m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
-    m_saved_alias2base_map = m_pcomInt->GetAlias2BaseMap();
-  } else { // if !alias, assume shortcut
-    m_saved_base2shortcuts_mmap = m_pcomInt->GetBase2ShortcutsMmap();
-    m_saved_shortcut2base_map = m_pcomInt->GetShortcuts2BaseMap();
-  }
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
-  m_pcomInt->DoRemoveAllDependentEntries(m_base_uuid, m_type);
-  m_bState = true;
-  return 0;
-}
-
-int RemoveAllDependentEntriesCommand::Redo()
-{
-  return Execute();
-}
-
-void RemoveAllDependentEntriesCommand::Undo()
-{
-  TRACE(L"RemoveAllDependentEntriesCommand::Undo\n");
-  if (m_pcomInt->IsReadOnly())
-    return;
-
-  ItemListIter iter = m_pcomInt->Find(m_base_uuid);
-  if (iter != m_pcomInt->GetEntryEndIter()) {
-    iter->second.SetEntryType(m_type == CItemData::ET_ALIAS ?
-                              CItemData::ET_ALIASBASE : CItemData::ET_SHORTCUTBASE);
-  }
-  if (m_type ==  CItemData::ET_ALIAS) {
-    m_pcomInt->SetBase2AliasesMmap(m_saved_base2aliases_mmap);
-    m_pcomInt->SetAlias2BaseMap(m_saved_alias2base_map);
-  } else { // if !alias, assume shortcut
-    m_pcomInt->SetBase2ShortcutsMmap(m_saved_base2shortcuts_mmap);
-    m_pcomInt->SetShortcuts2BaseMap(m_saved_shortcut2base_map);
-  }
-  RestoreState();
-  m_bState = false;
-}
-
-// ------------------------------------------------
 // MoveDependentEntriesCommand
 // ------------------------------------------------
 

@@ -386,26 +386,6 @@ private:
   CItemData::EntryType m_type;
 };
 
-class RemoveAllDependentEntriesCommand : public Command
-{
-public:
-  static RemoveAllDependentEntriesCommand *Create(CommandInterface *pcomInt,
-                                                  const uuid_array_t &base_uuid,
-                                                  CItemData::EntryType type)
-  { return new RemoveAllDependentEntriesCommand(pcomInt, base_uuid, type); }
-  int Execute();
-  int Redo();
-  void Undo();
-
-private:
-  RemoveAllDependentEntriesCommand(CommandInterface *pcomInt,
-                                   const uuid_array_t &base_uuid,
-                                   CItemData::EntryType type);
-  uuid_array_t m_base_uuid;
-  uuid_array_t m_entry_uuid;
-  CItemData::EntryType m_type;
-};
-
 class MoveDependentEntriesCommand : public Command
 {
 public:
