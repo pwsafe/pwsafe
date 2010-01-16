@@ -145,9 +145,14 @@ public:
                            uuid_array_t &entry_uuid,
                            CItemData::FieldType ft);
     virtual void GUISetupDisplayInfo(CItemData &ci);
-    virtual void GUICommandInterface(Command::ExecuteFn When,
-                                     PWSGUICmdIF *pGUICmdIF);
 
+    virtual void UpdateGUI(Command::GUI_Action ga,
+                           uuid_array_t &entry_uuid,
+                           CItemData::FieldType ft = CItemData::START,
+                           bool bUpdateGUI = true);
+    
+    virtual void GUIRefreshEntry(const CItemData&);
+    
   ////@begin PasswordSafeFrame event handler declarations
 
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
