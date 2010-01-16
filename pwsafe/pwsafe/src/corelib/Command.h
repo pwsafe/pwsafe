@@ -80,17 +80,6 @@ protected:
   int m_RC;
   bool m_bState;
 
-  // Alias/Shortcut structures
-  // Permanent Multimap: since potentially more than one alias/shortcut per base
-  //  Key = base uuid; Value = multiple alias/shortcut uuids
-  ItemMMap m_saved_base2aliases_mmap;
-  ItemMMap m_saved_base2shortcuts_mmap;
-
-  // Permanent Map: since an alias only has one base
-  //  Key = alias/shortcut uuid; Value = base uuid
-  ItemMap m_saved_alias2base_map;
-  ItemMap m_saved_shortcut2base_map;
-
   // Changed groups
   std::vector<StringX> m_saved_vnodes_modified;
 };
@@ -338,6 +327,16 @@ private:
   CReport *m_pRpt;
   CItemData::EntryType m_type;
   int m_iVia;
+  // Alias/Shortcut structures
+  // Permanent Multimap: since potentially more than one alias/shortcut per base
+  //  Key = base uuid; Value = multiple alias/shortcut uuids
+  ItemMMap m_saved_base2aliases_mmap;
+  ItemMMap m_saved_base2shortcuts_mmap;
+
+  // Permanent Map: since an alias only has one base
+  //  Key = alias/shortcut uuid; Value = base uuid
+  ItemMap m_saved_alias2base_map;
+  ItemMap m_saved_shortcut2base_map;
 };
 
 class RemoveDependentEntryCommand : public Command
@@ -358,29 +357,6 @@ private:
                               const uuid_array_t &base_uuid,
                               const uuid_array_t &entry_uuid,
                               CItemData::EntryType type);
-  uuid_array_t m_base_uuid;
-  uuid_array_t m_entry_uuid;
-  CItemData::EntryType m_type;
-};
-
-class RemoveDependentEntriesCommand : public Command
-{
-public:
-  static RemoveDependentEntriesCommand *Create(CommandInterface *pcomInt,
-                                               const uuid_array_t &base_uuid,
-                                               const uuid_array_t &entry_uuid,
-                                               CItemData::EntryType type)
-  { return new RemoveDependentEntriesCommand(pcomInt, base_uuid, entry_uuid,
-                                             type); }
-  int Execute();
-  int Redo();
-  void Undo();
-
-private:
-  RemoveDependentEntriesCommand(CommandInterface *pcomInt,
-                                const uuid_array_t &base_uuid,
-                                const uuid_array_t &entry_uuid,
-                                CItemData::EntryType type);
   uuid_array_t m_base_uuid;
   uuid_array_t m_entry_uuid;
   CItemData::EntryType m_type;

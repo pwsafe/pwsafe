@@ -1376,20 +1376,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
   if (m_cfdropped == m_tcddCPFID &&
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
       !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
-#if 0
-    MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
-    WinGUICmdIF *pGUICmdIF = new WinGUICmdIF(WinGUICmdIF::GCT_DELETE);
-
-    m_pDbx->Delete(pmulticmds, pGUICmdIF);
-
-    if (pGUICmdIF->IsValid()) {
-      Command *pcmd = GUICommand::Create(m_pDbx->GetCore(), pGUICmdIF);
-      pmulticmds->Add(pcmd);
-    } else
-      delete pGUICmdIF;
-
-    m_pDbx->Execute(pmulticmds);
-#endif
     m_pDbx->Delete(); // XXX assume we've a selected item here!
   }
 
