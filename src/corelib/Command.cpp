@@ -180,19 +180,6 @@ void MultiCommands::UpdateField(CItemData &ci, CItemData::FieldType ftype, Strin
   Add(UpdateEntryCommand::Create(m_pcomInt, ci, ftype, value));
 }
 
-MultiCommands *MultiCommands::MakeAddDependentCommand(CommandInterface *pcomInt,
-                                                      Command *paec,
-                                                      const uuid_array_t &base_uuid, 
-                                                      const uuid_array_t &entry_uuid,
-                                                      CItemData::EntryType type)
-{
-  MultiCommands *pmc = new MultiCommands(pcomInt);
-  pmc->Add(paec);
-  pmc->Add(AddDependentEntryCommand::Create(pmc->m_pcomInt, base_uuid,
-                                            entry_uuid, type));
-  return pmc;
-}
-
 // ------------------------------------------------
 // UpdateGUICommand
 // ------------------------------------------------
@@ -293,6 +280,13 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci)
 {
 }
 
+AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci
+                                 , const uuid_array_t base_uuid)
+  : Command(pcomInt), m_ci(ci)
+{
+  memcpy(m_base_uuid, base_uuid, sizeof(uuid_array_t));
+}
+
 AddEntryCommand::~AddEntryCommand()
 {
 }
@@ -307,6 +301,11 @@ int AddEntryCommand::Execute()
   m_pcomInt->DoAddEntry(m_ci);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
+  if (m_ci.IsAlias() || m_ci.IsShortcut()) {
+    uuid_array_t entry_uuid;
+    m_ci.GetUUID(entry_uuid);
+    m_pcomInt->DoAddDependentEntry(m_base_uuid, entry_uuid, m_ci.GetEntryType());
+  }
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_ci.GetUUID(entry_uuid);
@@ -325,6 +324,11 @@ void AddEntryCommand::Undo()
 {
   DeleteEntryCommand dec(m_pcomInt, m_ci);
   dec.Execute();
+  if (m_ci.IsAlias() || m_ci.IsShortcut()) {
+    uuid_array_t entry_uuid;
+    m_ci.GetUUID(entry_uuid);
+    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, entry_uuid, m_ci.GetEntryType());
+  }
   RestoreState();
   m_bState = false;
 }
@@ -406,9 +410,7 @@ void DeleteEntryCommand::Undo()
   uuid_array_t uuid;
   m_ci.GetUUID(uuid);
   if (m_ci.IsShortcut() || m_ci.IsAlias()) {
-    Command *pcmd = 
-      MultiCommands::MakeAddDependentCommand(m_pcomInt, AddEntryCommand::Create(m_pcomInt, m_ci),
-                                             m_base_uuid, uuid, m_ci.GetEntryType());
+    Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid);
     pcmd->Execute();
     delete pcmd;
   } else {
@@ -417,12 +419,7 @@ void DeleteEntryCommand::Undo()
     if (m_ci.IsShortcutBase()) { // restore dependents
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
-        uuid_array_t shortcut_uuid;
-        iter->GetUUID(shortcut_uuid);
-        Command *pcmd =
-          MultiCommands::MakeAddDependentCommand(m_pcomInt,
-                                                 AddEntryCommand::Create(m_pcomInt, *iter),
-                                                 uuid, shortcut_uuid, CItemData::ET_SHORTCUT);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid);
         pcmd->Execute();
         delete pcmd;
       }
@@ -436,10 +433,7 @@ void DeleteEntryCommand::Undo()
         delExAlias.Execute(); // out with the old...
         uuid_array_t alias_uuid;
         iter->GetUUID(alias_uuid);
-        Command *pcmd =
-          MultiCommands::MakeAddDependentCommand(m_pcomInt,
-                                                 AddEntryCommand::Create(m_pcomInt, *iter),
-                                                 uuid, alias_uuid, CItemData::ET_ALIAS);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid);
         pcmd->Execute(); // in with the new!
         delete pcmd;
       }

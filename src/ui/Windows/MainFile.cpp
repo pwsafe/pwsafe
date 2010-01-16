@@ -2493,8 +2493,6 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
         continue;
 
       DisplayInfo *pdi_new = new DisplayInfo;
-      pdi_new->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
-      pdi_new->tree_item = 0;
       updItem.SetDisplayInfo(pdi_new);
 
       StringX sx_updated = StringX(L"\xab") + 
