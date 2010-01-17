@@ -103,9 +103,6 @@ public:
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
 
-  // Some convenience routines:
-  void AddEntry(const CItemData &ci);
-  void UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value);
  private:
   MultiCommands(CommandInterface *pcomInt);
   std::vector<Command *> m_vpcmds;
