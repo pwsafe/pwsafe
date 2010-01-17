@@ -22,6 +22,7 @@
 #include "sha256.h"
 
 #define MIN_HASH_ITERATIONS 2048
+#define DEFAULT_SUFFIX  _T("psafe3")
 
 class Fish;
 class Asker;
