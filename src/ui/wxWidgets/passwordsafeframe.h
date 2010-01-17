@@ -158,6 +158,9 @@ public:
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
   void OnCloseWindow( wxCloseEvent& event );
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
+  void OnNewClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
   void OnOpenClick( wxCommandEvent& event );
 
@@ -279,6 +282,8 @@ public:
   PWSTreeCtrl* m_tree;
 ////@end PasswordSafeFrame member variables
  private:
+  int New();
+  int NewFile(StringX &fname);
   int Open(const wxString &fname); // prompt for password, try to Load.
   int SaveIfChanged();
   int Save();
