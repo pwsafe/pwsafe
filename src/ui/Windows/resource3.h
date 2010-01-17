@@ -1,7 +1,6 @@
 //{{NO_DEPENDENCIES}}
 
 // Strings
-#define DEFAULT_SUFFIX  L"psafe3"
 #define SUFFIX_FILTERS  L"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|"
 #define SUFFIX3_FILTERS L"Password Safe Databases (*.psafe3)|*.psafe3|"
 
