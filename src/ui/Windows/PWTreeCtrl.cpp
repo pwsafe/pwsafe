@@ -437,7 +437,8 @@ void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, C
   if (IsLeaf(hItem)) {
     CItemData *pci = (CItemData *)GetItemData(hItem);
     ASSERT(pci != NULL);
-    pmulticmds->UpdateField(*pci, CItemData::GROUP, (LPCWSTR)prefix);
+    pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                               CItemData::GROUP, (LPCWSTR)prefix));
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
       prefix += GROUP_SEP;
@@ -732,14 +733,17 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       // update the password database record - but only those items visible!!!
       MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
       if (newTitle != pci->GetTitle()) {
-        pmulticmds->UpdateField(*pci, CItemData::TITLE, newTitle);
+        pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                                   CItemData::TITLE, newTitle));
         m_pDbx->UpdateListItemTitle(lindex, newTitle);
       }
       if (bShowUsernameInTree && newUser != pci->GetUser()) {
-        pmulticmds->UpdateField(*pci, CItemData::USER, newUser);
+        pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                                   CItemData::USER, newUser));
         m_pDbx->UpdateListItemUser(lindex, newUser);
         if (bShowPasswordInTree && newPassword != pci->GetPassword()) {
-          pmulticmds->UpdateField(*pci, CItemData::PASSWORD, newPassword);
+          pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                                     CItemData::PASSWORD, newPassword));
           m_pDbx->UpdateListItemPassword(lindex, newPassword);
         }
       }
@@ -981,11 +985,13 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
     CSecString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Update list field with new group
-    pmulticmds->UpdateField(*pci, CItemData::GROUP, path);
+    pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                               CItemData::GROUP, path));
     m_pDbx->UpdateListItemGroup(pdi->list_index, (LPCWSTR)path);
 
     if (ci_title.Compare(ci_title0) != 0) {
-      pmulticmds->UpdateField(*pci, CItemData::TITLE, ci_title);
+      pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                                 CItemData::TITLE, ci_title));
     }
     // Update tree label
     SetItemText(hNewItem, MakeTreeDisplayString(*pci));

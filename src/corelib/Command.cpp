@@ -170,16 +170,6 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
   }
 }
 
-void MultiCommands::AddEntry(const CItemData &ci)
-{
-  Add(AddEntryCommand::Create(m_pcomInt, ci));
-}
-
-void MultiCommands::UpdateField(CItemData &ci, CItemData::FieldType ftype, StringX value)
-{
-  Add(UpdateEntryCommand::Create(m_pcomInt, ci, ftype, value));
-}
-
 // ------------------------------------------------
 // UpdateGUICommand
 // ------------------------------------------------
