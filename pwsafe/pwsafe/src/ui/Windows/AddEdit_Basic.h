@@ -112,6 +112,10 @@ private:
   void HidePassword();
   void ShowNotes();
   void HideNotes();
+  bool CheckNewPassword(const StringX &group, const StringX &title,
+                        const StringX &user, const StringX &password,
+                        const bool bIsEdit, const CItemData::EntryType InputType, 
+                        uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued);
 
   COLORREF m_group_cfOldColour, m_title_cfOldColour, m_user_cfOldColour;
   COLORREF m_pswd_cfOldColour, m_notes_cfOldColour, m_URL_cfOldColour;
