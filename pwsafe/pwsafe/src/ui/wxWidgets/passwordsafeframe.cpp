@@ -22,6 +22,7 @@
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
+#include "wx/filename.h"
 
 ////@begin includes
 #include "safecombinationchange.h"
@@ -30,6 +31,7 @@
 #include "PWStree.h"
 ////@end includes
 #include "PWSgridtable.h"
+#include "safecombinationsetup.h"
 
 #include "passwordsafeframe.h"
 #include "safecombinationprompt.h"
@@ -97,6 +99,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 ////@begin PasswordSafeFrame event table entries
   EVT_CLOSE( PasswordSafeFrame::OnCloseWindow )
+
+  EVT_MENU( wxID_NEW, PasswordSafeFrame::OnNewClick )
 
   EVT_MENU( wxID_OPEN, PasswordSafeFrame::OnOpenClick )
 
@@ -1269,8 +1273,180 @@ void PasswordSafeFrame::GUIRefreshEntry(const CItemData&)
   // XXX TBD
 }
 
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
+ */
+
+void PasswordSafeFrame::OnNewClick( wxCommandEvent& event )
+{
+  New();
+}
+
+static void DisplayFileWriteError(int rc, const StringX &fname)
+{
+  ASSERT(rc != PWScore::SUCCESS);
+
+  wxString cs_temp, cs_title(_("Write Error"));
+  switch (rc) {
+  case PWScore::CANT_OPEN_FILE:
+    cs_temp = fname.c_str();
+    cs_temp += _("\n\nCoud not open file for writing!");
+    break;
+  case PWScore::FAILURE:
+    cs_temp =_("Write operation failed!\nFile may have been corrupted.\nTry saving in a different location");
+    break;
+  default:
+    cs_temp = fname.c_str();
+    cs_temp += _("\n\nUnknown error");
+    break;
+  }
+  wxMessageDialog(NULL, cs_temp, cs_title, wxOK | wxICON_ERROR);
+}
+
+int PasswordSafeFrame::New()
+{
+  int rc, rc2;
+
+  if (!m_core.IsReadOnly() && m_core.IsChanged()) {
+    wxString msg(_("Do you want to save changes to the password database: "));
+    msg += m_core.GetCurFile().c_str();
+    wxMessageDialog mbox(this, msg, GetTitle(), wxCANCEL | wxYES_NO | wxICON_QUESTION);
+    rc = mbox.ShowModal();
+    switch (rc) {
+    case wxID_CANCEL:
+      return PWScore::USER_CANCEL;
+    case wxID_YES:
+      rc2 = Save();
+        /*
+        Make sure that writing the file was successful
+        */
+        if (rc2 == PWScore::SUCCESS)
+          break;
+        else
+          return PWScore::CANT_OPEN_FILE;
+    case wxID_NO:
+      // Reset changed flag
+      // SetChanged(Clear);
+      break;
+    }
+  }
+
+  StringX cs_newfile;
+  rc = NewFile(cs_newfile);
+  if (rc == PWScore::USER_CANCEL) {
+    /*
+    Everything stays as is...
+    Worst case, they saved their file....
+    */
+    return PWScore::USER_CANCEL;
+  }
+
+  m_core.SetCurFile(cs_newfile);
+  m_core.ClearFileUUID();
+
+  rc = m_core.WriteCurFile();
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, cs_newfile);
+    return PWScore::USER_CANCEL;
+  }
+  m_core.ClearChangedNodes();
+
+  SetLabel(PWSUtil::NormalizeTTT(L"Password Safe - " + cs_newfile).c_str());
+
+#ifdef notyet
+  UpdateSystemTray(UNLOCKED);
+  m_RUEList.ClearEntries();
+  if (!m_bOpen) {
+    // Previous state was closed - reset DCA in status bar
+    SetDCAText();
+  }
+
+  // Set Dragbar images correctly
+  m_DDGroup.SetStaticState(false);
+  m_DDTitle.SetStaticState(false);
+  m_DDPassword.SetStaticState(false);
+  m_DDUser.SetStaticState(false);
+  m_DDNotes.SetStaticState(false);
+  m_DDURL.SetStaticState(false);
+  m_DDemail.SetStaticState(false);
+
+  UpdateMenuAndToolBar(true);
+
+  // Set timer for user-defined idle lockout, if selected (DB preference)
+  KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
+    ResetIdleLockCounter();
+    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
+  }
+#endif
+  return PWScore::SUCCESS;
+}
+
+int PasswordSafeFrame::NewFile(StringX &fname)
+{
+  wxString cs_msg, cs_title, cs_temp;
+  wxString cs_text(_("Please choose a name for the new database"));
+
+  wxString cf(_("pwsafe")); // reasonable default for first time user
+  std::wstring v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
+  std::wstring dir = PWSdirs::GetSafeDir();
+  int rc;
+
+  while (1) {
+    wxFileDialog fd(this, cs_text, dir, v3FileName,
+                    _("psafe3 files (*.psafe3)|*.psafe3|All files(*.*)|*.*"),
+                    wxFD_OPEN | wxFD_CHANGE_DIR);
+    rc = fd.ShowModal();
+
+    if (rc == wxID_OK) {
+      fname = fd.GetPath();
+      wxFileName wxfn(fname.c_str());
+      if (wxfn.GetExt().empty()) {
+        wxfn.SetExt(DEFAULT_SUFFIX);
+        fname = wxfn.GetFullPath().c_str();
+      }
+      break;
+    } else
+      return PWScore::USER_CANCEL;
+  }
+
+  CSafeCombinationSetup dbox_pksetup(this);
+  rc = dbox_pksetup.ShowModal();
+
+  if (rc == wxID_CANCEL)
+    return PWScore::USER_CANCEL;  //User cancelled password entry
+
+  // Reset core
+  m_core.ReInit(true);
+
+  ClearData();
+  PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
+  const StringX &oldfilename = m_core.GetCurFile();
+  // The only way we're the locker is if it's locked & we're !readonly
+  if (!oldfilename.empty() &&
+      !m_core.IsReadOnly() &&
+      m_core.IsLockedFile(oldfilename.c_str()))
+    m_core.UnlockFile(oldfilename.c_str());
+
+  m_core.SetCurFile(fname);
+
+  // Now lock the new file
+  std::wstring locker(L""); // null init is important here
+  m_core.LockFile(fname.c_str(), locker);
+
+  m_core.SetReadOnly(false); // new file can't be read-only...
+  m_core.NewFile(dbox_pksetup.GetPassword().c_str());
+#ifdef notyet
+  startLockCheckTimer();
+#endif
+  return PWScore::SUCCESS;
+}
+
+
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we
 // already have them implemented in mainEdit.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
+
+
