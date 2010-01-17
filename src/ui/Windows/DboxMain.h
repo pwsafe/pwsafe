@@ -282,10 +282,6 @@ public:
   Command *Delete(HTREEITEM ti); // For deleting a group
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
-  bool CheckNewPassword(const StringX &group, const StringX &title,
-                        const StringX &user, const StringX &password,
-                        const bool bIsEdit, const CItemData::EntryType &InputType, 
-                        uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued);
   void GetAliasBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
   {m_core.GetAliasBaseUUID(entry_uuid, base_uuid);}
   void GetShortcutBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
