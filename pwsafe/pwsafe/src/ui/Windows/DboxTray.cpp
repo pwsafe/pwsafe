@@ -73,15 +73,7 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
+    ci = *GetBaseEntry(&ci);
   }
 
   const StringX cs_username = ci.GetUser();
@@ -102,21 +94,8 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
     return;
 
-  const CItemData::EntryType entrytype = ci.GetEntryType();
-  if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
-    // This is an alias/shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    if (entrytype == CItemData::ET_ALIAS)
-      m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-    else
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
-  }
+  if (ci.IsAlias() || ci.IsShortcut())
+    ci = *GetBaseEntry(&ci);
 
   const StringX cs_password = ci.GetPassword();
   SetClipboardData(cs_password);
@@ -137,15 +116,7 @@ void DboxMain::OnTrayCopyNotes(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
+    ci = *GetBaseEntry(&ci);
   }
 
   SetClipboardData(ci.GetNotes());
@@ -174,15 +145,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
   }
 
   if (ci.IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
+    ci = *GetBaseEntry(&ci);
   }
 
   if (!ci.IsURLEmpty()) {
@@ -218,15 +181,7 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   }
 
   if (ci.IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
+    ci = *GetBaseEntry(&ci);
   }
 
   // Has it an embedded URL
@@ -261,15 +216,7 @@ void DboxMain::OnTrayCopyEmail(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
+    ci = *GetBaseEntry(&ci);
   }
 
   const StringX cs_email = ci.GetEmail();
@@ -291,15 +238,7 @@ void DboxMain::OnTraySendEmail(UINT nID)
       return;
 
   if (ci.IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
+    ci = *GetBaseEntry(&ci);
   }
 
   CString cs_command;
@@ -358,15 +297,7 @@ void DboxMain::OnTrayCopyURL(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
+    ci = *GetBaseEntry(&ci);
   }
 
   StringX cs_URL = ci.GetURL();
@@ -399,15 +330,7 @@ void DboxMain::OnTrayRunCommand(UINT nID)
     return;
 
   if (ci.IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    ci.GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      ci = iter->second;
-    }
+    ci = *GetBaseEntry(&ci);
   }
 
   StringX cs_URL = ci.GetURL();

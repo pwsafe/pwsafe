@@ -223,16 +223,12 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     // and refresh base's display, if changed
     CItemData::EntryType entrytype = item.GetEntryType();
     uuid_array_t base_uuid;
-    if (item.IsAlias()) {
-      GetAliasBaseUUID(entry_uuid, base_uuid);
-      DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
-    } else if (item.IsShortcut()) {
-      GetShortcutBaseUUID(entry_uuid, base_uuid);
+    if (item.IsAlias() || item.IsShortcut()) {
+      GetDependentEntryBaseUUID(entry_uuid, base_uuid, entrytype);
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
     } else if (item.IsAliasBase()) {
       ResetAllAliasPasswords(entry_uuid);
     } else if (item.IsShortcutBase()) {
-      // DoRemoveAllDependentEntries(entry_uuid, CItemData::ET_SHORTCUT);
       // Recurse on all dependents
       ItemMMap deps(m_base2shortcuts_mmap.lower_bound(entry_uuid),
                     m_base2shortcuts_mmap.upper_bound(entry_uuid));
@@ -323,7 +319,7 @@ struct RecordWriter {
     if (p.second.IsAlias()) {
       uuid_array_t item_uuid, base_uuid;
       p.second.GetUUID(item_uuid);
-      m_pcore->GetAliasBaseUUID(item_uuid, base_uuid);
+      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
 
       const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[["));
@@ -333,7 +329,7 @@ struct RecordWriter {
     } else if (p.second.IsShortcut()) {
       uuid_array_t item_uuid, base_uuid;
       p.second.GetUUID(item_uuid);
-      m_pcore->GetShortcutBaseUUID(item_uuid, base_uuid);
+      m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
 
       const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[~"));
@@ -1724,7 +1720,7 @@ void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &tl
   }
 }
 
-bool PWScore::GetBaseEntry(const StringX &Password, GetBaseEntryPL &pl)
+bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
 {
   // pl.ibasedata is:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
@@ -1788,7 +1784,7 @@ bool PWScore::GetBaseEntry(const StringX &Password, GetBaseEntryPL &pl)
         // Check if base is already an alias, if so, set this entry -> real base entry
         uuid_array_t temp_uuid;
         iter->second.GetUUID(temp_uuid);
-        GetAliasBaseUUID(temp_uuid, pl.base_uuid);
+        GetDependentEntryBaseUUID(temp_uuid, pl.base_uuid, CItemData::ET_ALIAS);
       } else {
         // This may not be a valid combination of source+target entries - sorted out by caller
         iter->second.GetUUID(pl.base_uuid);
@@ -1804,6 +1800,28 @@ bool PWScore::GetBaseEntry(const StringX &Password, GetBaseEntryPL &pl)
   }
   pl.ibasedata = 0; // invalid password format for an alias
   return false;
+}
+
+CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
+{
+  ASSERT(pAliasOrSC != NULL);
+  CItemData::EntryType et = pAliasOrSC->GetEntryType();
+  if (et != CItemData::ET_ALIAS && et != CItemData::ET_SHORTCUT) {
+    TRACE(_T("PWScore::GetBaseEntry called with non-dependent element!\n"));
+    return NULL;
+  }
+  uuid_array_t dep_uuid, base_uuid;
+  pAliasOrSC->GetUUID(dep_uuid);
+  if (!GetDependentEntryBaseUUID(dep_uuid, base_uuid, et)) {
+    TRACE(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
+    return NULL;
+  }
+  ItemListIter iter = Find(base_uuid);
+  if (iter == GetEntryEndIter()) {
+    TRACE(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
+    return NULL;
+  }
+  return &iter->second;
 }
 
 bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, 

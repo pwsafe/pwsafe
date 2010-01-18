@@ -1071,7 +1071,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
 if (m_AEMD.ibasedata > 0) {
         // Password in alias format AND base entry exists
         // No need to check if base is an alias as already done in
-        // call to PWScore::GetBaseEntry
+        // call to PWScore::ParseBaseEntryPWD
         uuid_array_t alias_uuid;
         m_item.GetUUID(alias_uuid);
         m_AEMD.pcore->AddDependentEntry(m_AEMD.base_uuid, alias_uuid, CItemData::ET_ALIAS);

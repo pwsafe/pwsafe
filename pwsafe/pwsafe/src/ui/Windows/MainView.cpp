@@ -345,16 +345,8 @@ void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
     mainTBCtrl.EnableButton(ID_MENUITEM_UNDO, m_core.AnyToUndo() ? TRUE : FALSE);
     mainTBCtrl.EnableButton(ID_MENUITEM_REDO, m_core.AnyToRedo() ? TRUE : FALSE);
 
-    uuid_array_t entry_uuid, base_uuid;
     if (pci_entry != NULL && pci_entry->IsShortcut()) {
-      // This is a shortcut
-      pci_entry->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        pci_entry = &iter->second;
-      }
+      pci_entry = GetBaseEntry(pci_entry);
     }
 
     if (pci_entry == NULL || pci_entry->IsUserEmpty()) {
@@ -3707,17 +3699,8 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
   target.y += ::GetSystemMetrics(SM_CYCURSOR); // height of cursor
 
   if (pci != NULL) {
-    if (pci->IsShortcut()) {
-      // This is an shortcut
-      uuid_array_t entry_uuid, base_uuid;
-      pci->GetUUID(entry_uuid);
-      GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = Find(base_uuid);
-      if (iter != End()) {
-        pci = &iter->second;
-      }
-    }
+    if (pci->IsShortcut())
+      pci = GetBaseEntry(pci);
     cs_notes = pci->GetNotes();
   }
 
