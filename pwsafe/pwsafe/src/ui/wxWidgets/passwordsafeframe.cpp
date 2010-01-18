@@ -81,6 +81,7 @@
 #include "../graphics/toolbar/wxWidgets/help_disabled.xpm"
 
 ////@begin XPM images
+#include "../graphics/wxWidgets/cpane.xpm"
 ////@end XPM images
 
 
@@ -213,6 +214,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   wxFrame::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
+  SetIcon(GetIconResource(wxT("../graphics/wxWidgets/cpane.xpm")));
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
@@ -442,6 +444,11 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
   wxUnusedVar(name);
+  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
+  {
+    wxIcon icon(cpane_xpm);
+    return icon;
+  }
   return wxNullIcon;
 ////@end PasswordSafeFrame icon retrieval
 }
@@ -493,6 +500,14 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->SetTable(new PWSGridTable(m_grid), true); // true => auto-delete
     m_grid->AutoSizeColumns();
     m_grid->EnableEditing(false);
+    m_grid->ClearGrid();
+    ItemListConstIter iter;
+    int i;
+    for (iter = m_core.GetEntryIter(), i = 0;
+         iter != m_core.GetEntryEndIter();
+         iter++) {
+      m_grid->AddItem(iter->second, i++);
+    }
   }
   int w,h;
   GetClientSize(&w, &h);
@@ -1448,5 +1463,4 @@ int PasswordSafeFrame::NewFile(StringX &fname)
 // already have them implemented in mainEdit.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
-
 

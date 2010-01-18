@@ -238,7 +238,7 @@ wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
       s = GetPathElem(path);
       if (!ExistsInTree(ti, s, si)) {
         ti = AppendItem(ti, s.c_str());
-        SetItemImage(ti, NODE_II);
+        wxTreeCtrl::SetItemImage(ti, NODE_II);
       } else
         ti = si;
     } while (!path.empty());
@@ -297,7 +297,7 @@ void PWSTreeCtrl::UpdateItem(const CItemData &item)
     if (oldGroup == newGroup) {
       const wxString disp = ItemDisplayString(item);
       SetItemText(node, disp);
-      // XXX SetItemImage based on type
+      SetItemImage(node, item);
     } else { // uh-oh - group's changed
       uuid_array_t uuid;
       item.GetUUID(uuid);
@@ -318,7 +318,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   wxTreeItemId gnode = AddGroup(item.GetGroup());
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
-  SetItemImage(titem, NORMAL_II); // XXX set II based on type
+  SetItemImage(titem, item);
   uuid_array_t uuid;
   item.GetUUID(uuid);
   m_item_map.insert(std::make_pair(CUUIDGen(uuid), titem));
@@ -375,6 +375,23 @@ bool PWSTreeCtrl::Remove(const uuid_array_t &uuid)
   }
 }
 
+
+void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
+                               const CItemData &item)
+{
+  // XXX TBD: modify to display warning and expired states
+  int i = NORMAL_II;
+  switch (item.GetEntryType()) {
+  case CItemData::ET_NORMAL:       i = NORMAL_II;   break;
+  case CItemData::ET_ALIASBASE:    i = ABASE_II;    break;
+  case CItemData::ET_ALIAS:        i = ALIAS_II;    break;
+  case CItemData::ET_SHORTCUTBASE: i = SBASE_II;    break;
+  case CItemData::ET_SHORTCUT:     i = SHORTCUT_II; break;
+  case CItemData::ET_INVALID:      ASSERT(0); break;
+  default: ASSERT(0);
+  }
+  wxTreeCtrl::SetItemImage(node, i);
+}
 
 /*!
  * wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
