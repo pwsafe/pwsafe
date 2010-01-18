@@ -105,6 +105,7 @@ public:
   wxTreeItemId AddGroup(const StringX &group);
   wxString ItemDisplayString(const CItemData &item) const;
   wxString GetPath(const wxTreeItemId &node) const;
+  void SetItemImage(const wxTreeItemId &node, const CItemData &item);
 ////@begin PWSTreeCtrl member variables
 ////@end PWSTreeCtrl member variables
   PWScore &m_core;

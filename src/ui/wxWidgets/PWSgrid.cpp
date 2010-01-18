@@ -223,9 +223,8 @@ void PWSGrid::Remove(const uuid_array_t &uuid)
  */
 size_t PWSGrid::GetNumItems() const
 {
-	wxASSERT(m_uuid_map.size() == m_core.GetNumEntries());
-    wxASSERT(m_row_map.size() == m_core.GetNumEntries());
-	//return m_uuid_map.size();
+	wxASSERT(m_uuid_map.empty() || m_uuid_map.size() == m_core.GetNumEntries());
+  wxASSERT(m_row_map.empty() || m_row_map.size() == m_core.GetNumEntries());
 	return m_core.GetNumEntries();
 }
 
@@ -269,7 +268,6 @@ void PWSGrid::DeleteAllItems()
 {
   m_uuid_map.clear();
   m_row_map.clear();
-  m_core.ClearData();
 }
 
 /*!
