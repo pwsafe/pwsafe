@@ -156,6 +156,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_AUTOTYPE, PasswordSafeFrame::OnAutoType )
 
+  EVT_MENU( ID_GOTOBASEENTRY, PasswordSafeFrame::OnGotoBase )
+
   EVT_UPDATE_UI(wxID_SAVE,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_ADDGROUP,        PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_RENAME,          PasswordSafeFrame::OnUpdateUI )
@@ -943,7 +945,18 @@ void PasswordSafeFrame::OnAutoType(wxCommandEvent& /*evt*/)
     DoAutotype(*item);
 }
 
-void PasswordSafeFrame::SeletItem(const CUUIDGen& uuid)
+void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item && (item->IsAlias() || item->IsShortcut())) {
+    item = m_core.GetBaseEntry(item);
+    uuid_array_t base_uuid;
+    item->GetUUID(base_uuid);
+    SelectItem(CUUIDGen(base_uuid));
+  }
+}
+
+void PasswordSafeFrame::SelectItem(const CUUIDGen& uuid)
 {
     if (m_currentView == GRID) {
       m_grid->SelectItem(uuid);
@@ -1109,13 +1122,8 @@ void PasswordSafeFrame::OnContextMenu(CItemData* item)
         break;
     }
     
-    uuid_array_t entry_uuid, base_uuid;
     if (item->IsShortcut()) {
-      item->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != m_core.GetEntryEndIter())
-        item = &iter->second;
+      item = m_core.GetBaseEntry(item);
     }
 
     if (item->IsUserEmpty())
@@ -1150,16 +1158,12 @@ void PasswordSafeFrame::OnContextMenu(CItemData* item)
 CItemData* PasswordSafeFrame::GetBaseOfSelectedEntry()
 {
   CItemData* item = GetSelectedEntry();
-  if (item && item->IsShortcut()) {
-    uuid_array_t entry_uuid, base_uuid;
-    item->GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != m_core.GetEntryEndIter())
-      item = &iter->second;
+  if (item && (item->IsShortcut() || item->IsAlias())) {
+      item = m_core.GetBaseEntry(item);
   }
   return item;
 }
+
 ////////////////////////////////////////////////////////
 // This function is used for wxCommandUIEvent handling
 // of all commands, to avoid scattering this stuff all
