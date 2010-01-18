@@ -109,13 +109,8 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.original_entrytype = m_AEMD.pci->GetEntryType();
 
     CItemData *pciA(pci);
-    if (m_AEMD.original_entrytype == CItemData::ET_ALIAS) {
-      uuid_array_t entry_uuid, base_uuid;
-      m_AEMD.pci->GetUUID(entry_uuid);
-      m_AEMD.pcore->GetAliasBaseUUID(entry_uuid, base_uuid);
-      ItemListIter iter = m_AEMD.pcore->Find(base_uuid);
-      ASSERT(iter != m_AEMD.pcore->GetEntryEndIter());
-      pciA = &(iter->second);
+    if (m_AEMD.pci->IsAlias()) {
+      pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
     }
 
     // Additional data
@@ -345,7 +340,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         if (m_AEMD.ibasedata > 0) {
           // Password in alias format AND base entry exists
           // No need to check if base is an alias as already done in
-          // call to PWScore::GetBaseEntry
+          // call to PWScore::ParseBaseEntryPWD
           m_AEMD.pci->SetPassword(L"[Alias]");
           m_AEMD.pci->SetAlias();
           ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);

@@ -229,25 +229,7 @@ struct PutText {
     if (m_subgroup_name.empty() || 
         item.Matches(m_subgroup_name, m_subgroup_object,
         m_subgroup_function)) {
-      CItemData *pcibase(NULL);
-      if (item.IsAlias()) {
-        uuid_array_t base_uuid, item_uuid;
-        item.GetUUID(item_uuid);
-        m_pcore->GetAliasBaseUUID(item_uuid, base_uuid);
-        ItemListIter iter;
-        iter = m_pcore->Find(base_uuid);
-        if (iter !=  m_pcore->GetEntryEndIter())
-          pcibase = &iter->second;
-      }
-      if (item.IsShortcut()) {
-        uuid_array_t base_uuid, item_uuid;
-        item.GetUUID(item_uuid);
-        m_pcore->GetShortcutBaseUUID(item_uuid, base_uuid);
-        ItemListIter iter;
-        iter = m_pcore->Find(base_uuid);
-        if (iter !=  m_pcore->GetEntryEndIter())
-          pcibase = &iter->second;
-      }
+      CItemData *pcibase = m_pcore->GetBaseEntry(&item);
       const StringX line = item.GetPlaintext(TCHAR('\t'),
                                              m_bsFields, m_delimiter, pcibase);
       if (!line.empty()) {
@@ -358,7 +340,6 @@ struct XMLRecordWriter {
     if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
-      CItemData *pcibase(NULL);
       bool bforce_normal_entry(false);
       if (item.IsNormal()) {
         //  Check password doesn't incorrectly imply alias or shortcut entry
@@ -371,24 +352,7 @@ struct XMLRecordWriter {
           bforce_normal_entry = true;
         }
       }
-      if (item.IsAlias()) {
-        uuid_array_t base_uuid, item_uuid;
-        item.GetUUID(item_uuid);
-        m_pcore->GetAliasBaseUUID(item_uuid, base_uuid);
-        ItemListIter iter;
-        iter = m_pcore->Find(base_uuid);
-        if (iter != m_pcore->GetEntryEndIter())
-          pcibase = &iter->second;
-      }
-      if (item.IsShortcut()) {
-        uuid_array_t base_uuid, item_uuid;
-        item.GetUUID(item_uuid);
-        m_pcore->GetShortcutBaseUUID(item_uuid, base_uuid);
-        ItemListIter iter;
-        iter = m_pcore->Find(base_uuid);
-        if (iter != m_pcore->GetEntryEndIter())
-          pcibase = &iter->second;
-      }
+      CItemData *pcibase = m_pcore->GetBaseEntry(&item);
       string xml = item.GetXML(m_id, m_bsFields, m_delimiter, pcibase, bforce_normal_entry);
       m_of.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));

@@ -532,16 +532,13 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
   if (entrytype == CItemData::ET_ALIAS) {
     // Alias entry
-    // Get corresponding base uuid
-    pcore->GetAliasBaseUUID(original_uuid, original_base_uuid);
-
-    ItemListIter iter = pcore->Find(original_base_uuid);
-    if (iter != End()) {
-      const CItemData &cibase = iter->second;
+    // Get corresponding base entry
+    CItemData *pbci = GetBaseEntry(&ci_original);
+    if (pbci != NULL) {
       CSecString cs_base = L"[" +
-                           cibase.GetGroup() + L":" +
-                           cibase.GetTitle() + L":" +
-                           cibase.GetUser()  + L"]";
+                           pbci->GetGroup() + L":" +
+                           pbci->GetTitle() + L":" +
+                           pbci->GetUser()  + L"]";
       edit_entry_psh.SetBase(cs_base);
       edit_entry_psh.SetOriginalEntrytype(CItemData::ET_ALIAS);
     }
@@ -713,26 +710,21 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   CItemData ci_original(*pci);
   pci = NULL; // Set to NULL - should use ci_original
 
-  uuid_array_t entry_uuid, base_uuid;
-  ci_original.GetUUID(entry_uuid);  // Edit doesn't change this!
+  uuid_array_t entry_uuid;
+  ci_original.GetUUID(entry_uuid); // for later use
 
-  // Shortcut entry
-  // Get corresponding base uuid
-  pcore->GetShortcutBaseUUID(entry_uuid, base_uuid);
+  CItemData *pbci = GetBaseEntry(&ci_original);
 
-  ItemListIter iter = pcore->Find(base_uuid);
-  if (iter == End())
-    return false;
-
-  CEditShortcutDlg dlg_editshortcut(&ci_edit, this, iter->second.GetGroup(),
-                                    iter->second.GetTitle(), iter->second.GetUser());
+  CEditShortcutDlg dlg_editshortcut(&ci_edit, this, pbci->GetGroup(),
+                                    pbci->GetTitle(), pbci->GetUser());
 
   // Need to get Default User value from this core's preferences stored in its header, 
   // which are not necessarily in our PWSprefs::GetInstance !
   bool bIsDefUserSet;
   StringX sxDefUserValue, sxDBPreferences;
   sxDBPreferences = pcore->GetDBPreferences();
-  PWSprefs::GetInstance()->GetDefaultUserInfo(sxDBPreferences, bIsDefUserSet, sxDefUserValue);
+  PWSprefs::GetInstance()->GetDefaultUserInfo(sxDBPreferences, bIsDefUserSet,
+                                              sxDefUserValue);
   if (bIsDefUserSet)
     dlg_editshortcut.m_defusername = sxDefUserValue.c_str();
 
@@ -750,9 +742,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     // application "locked" (Cleared list)
     DisplayInfo *pdi_new = new DisplayInfo;
     ci_edit.SetDisplayInfo(pdi_new);
-
     ci_edit.SetXTime((time_t)0);
-
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
     Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
@@ -763,7 +753,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     }
 
     // DisplayInfo's copied and changed, get up-to-date version
-    pdi_new = dynamic_cast<DisplayInfo *>(pcore->GetEntry(pcore->Find(entry_uuid)).GetDisplayInfo());
+    pdi_new = static_cast<DisplayInfo *>(pcore->GetEntry(pcore->Find(entry_uuid)).GetDisplayInfo());
     rc = SelectEntry(pdi_new->list_index);
 
     if (rc == 0) {
@@ -816,29 +806,24 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetStatus(CItemData::ES_ADDED);
 
     Command *pcmd = NULL;
-    CItemData::EntryType entrytype = pci->GetEntryType();
-    if (entrytype == CItemData::ET_ALIAS ||
-        entrytype == CItemData::ET_SHORTCUT) {
-      uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
-      pci->GetUUID(original_entry_uuid);
-      ci2.GetUUID(new_entry_uuid);
-      if (entrytype == CItemData::ET_ALIAS) {
-        m_core.GetAliasBaseUUID(original_entry_uuid, base_uuid);
+    if (pci->IsAlias() || pci->IsShortcut()) {
+      if (pci->IsAlias()) {
         ci2.SetAlias();
       } else { // shortcut
-        m_core.GetShortcutBaseUUID(original_entry_uuid, base_uuid);
         ci2.SetShortcut();
       }
 
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != m_core.GetEntryEndIter()) {
+      CItemData *pbci = GetBaseEntry(pci);
+      if (pbci != NULL) {
+        uuid_array_t base_uuid;
+        pbci->GetUUID(base_uuid);
         StringX cs_tmp;
         cs_tmp = L"[" +
-                 iter->second.GetGroup() + L":" +
-                 iter->second.GetTitle() + L":" +
-                 iter->second.GetUser()  + L"]";
+          pbci->GetGroup() + L":" +
+          pbci->GetTitle() + L":" +
+          pbci->GetUser()  + L"]";
         ci2.SetPassword(cs_tmp);
-      pcmd = AddEntryCommand::Create(&m_core, ci2, base_uuid);
+        pcmd = AddEntryCommand::Create(&m_core, ci2, base_uuid);
       }
     } else { // not alias or shortcut
       ci2.SetNormal();
@@ -880,21 +865,8 @@ void DboxMain::OnDisplayPswdSubset()
 
   CItemData *pci_original(pci);
 
-  uuid_array_t base_uuid, entry_uuid;
-  const CItemData::EntryType entrytype = pci->GetEntryType();
-  if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
-    // This is an alias/shortcut
-    pci->GetUUID(entry_uuid);
-    if (entrytype == CItemData::ET_ALIAS)
-      m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-    else
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pci = &iter->second;
-    }
-  }
+  if (pci->IsAlias() || pci->IsShortcut())
+    pci = GetBaseEntry(pci);
 
   CPasswordSubsetDlg DisplaySubsetDlg(this, pci);
 
@@ -951,28 +923,9 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
 
   CItemData *pci_original(pci);
 
-  if (pci->IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    pci->GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pci = &iter->second;
-    }
-  }
-
-  if (pci->IsAlias() && ft == CItemData::PASSWORD) {
-    // This is an alias
-    uuid_array_t base_uuid, entry_uuid;
-    pci->GetUUID(entry_uuid);
-     m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pci = &iter->second;
-    }
+  if (pci->IsShortcut() ||
+      (pci->IsAlias() && ft == CItemData::PASSWORD)) {
+    pci = GetBaseEntry(pci);
   }
 
   StringX cs_data;
@@ -1154,10 +1107,6 @@ void DboxMain::AutoType(const CItemData &ci)
 {
   // Called from OnAutoType and OnTrayAutoType
   StringX sxgroup, sxtitle, sxuser, sxpwd, sxnotes, sxautotype;
-  ItemListIter iter;
-  uuid_array_t base_uuid, entry_uuid;
-
-  CItemData::EntryType entrytype = ci.GetEntryType();
 
   // Set up all the data (shortcut entry will change all of them!)
   sxgroup = ci.GetGroup();
@@ -1167,40 +1116,28 @@ void DboxMain::AutoType(const CItemData &ci)
   sxnotes = ci.GetNotes();
   sxautotype = ci.GetAutoType();
 
-  switch (entrytype) {
-    case CItemData::ET_ALIAS:
-      // This is an alias
-      ci.GetUUID(entry_uuid);
-      m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-
-      iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        sxpwd = iter->second.GetPassword();
-      }
-      break;
-    case CItemData::ET_SHORTCUT:
-      // This is an shortcut
-      ci.GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        sxgroup = iter->second.GetGroup();
-        sxtitle = iter->second.GetTitle();
-        sxuser = iter->second.GetUser();
-        sxpwd = iter->second.GetPassword();
-        sxnotes = iter->second.GetNotes();
-        sxautotype = iter->second.GetAutoType();
-      } else {
-        // Problem - shortcut entry without a base!
-        ASSERT(0);
-      }
-      break;
-    default:
-      // This is a normal entry or an alias/shortcut base entry
-      // Everything is already set
-      break;
-  }
+  if (ci.IsAlias()) {
+    CItemData *pbci = GetBaseEntry(&ci);
+    if (pbci != NULL) {
+      sxpwd = pbci->GetPassword();
+    } else {
+      // Problem - alias entry without a base!
+      ASSERT(0);
+    }
+  } else if (ci.IsShortcut()) {
+    CItemData *pbci = GetBaseEntry(&ci);
+    if (pbci != NULL) {
+      sxgroup = pbci->GetGroup();
+      sxtitle = pbci->GetTitle();
+      sxuser = pbci->GetUser();
+      sxpwd = pbci->GetPassword();
+      sxnotes = pbci->GetNotes();
+      sxautotype = pbci->GetAutoType();
+    } else {
+      // Problem - shortcut entry without a base!
+      ASSERT(0);
+    }
+  } // ci.IsShortcut()
 
   // If empty, try the database default
   if (sxautotype.empty()) {
@@ -1396,23 +1333,10 @@ void DboxMain::OnGotoBaseEntry()
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
 
-    uuid_array_t base_uuid, entry_uuid;
-    CItemData::EntryType entrytype = pci->GetEntryType();
-    if (entrytype == CItemData::ET_ALIAS || entrytype == CItemData::ET_SHORTCUT) {
-      // This is an alias or shortcut
-      pci->GetUUID(entry_uuid);
-      if (entrytype == CItemData::ET_ALIAS)
-        m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-      else
-        m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-         DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-         SelectEntry(pdi->list_index);
-      } else
-        return;
-
+    CItemData *pbci = GetBaseEntry(pci);
+    if (pbci != NULL) {
+      DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
+      SelectEntry(pdi->list_index);
       UpdateAccessTime(pci);
     }
   }
@@ -1425,24 +1349,13 @@ void DboxMain::OnEditBaseEntry()
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
 
-    uuid_array_t base_uuid, entry_uuid;
-    pci->GetUUID(entry_uuid);
-    if (pci->GetEntryType() == CItemData::ET_SHORTCUT)
-       m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-    else
-    if (pci->GetEntryType() == CItemData::ET_ALIAS)
-       m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-    else
-      return;
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-       DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+    CItemData *pbci = GetBaseEntry(pci);
+    if (pbci != NULL) {
+       DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
        SelectEntry(pdi->list_index);
-       EditItem(&iter->second);
+       EditItem(pbci);
+       UpdateAccessTime(pci);
     }
-
-    UpdateAccessTime(pci);
   }
 }
 
@@ -1456,30 +1369,11 @@ void DboxMain::OnRunCommand()
 
   CItemData *pci_original(pci);
   StringX sx_pswd;
-  uuid_array_t entry_uuid, base_uuid;
 
-  sx_pswd = pci->GetPassword();
-  if (pci->IsShortcut()) {
-    // This is an shortcut
-    pci->GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pci = &iter->second;
-      sx_pswd = pci->GetPassword();
-    }
-  }
-  if (pci->IsAlias()) {
-    // This is an alias
-    pci->GetUUID(entry_uuid);
-    m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      sx_pswd = iter->second.GetPassword();
-    }
-  }
+  if (pci->IsAlias() || pci->IsShortcut())
+    sx_pswd = GetBaseEntry(pci)->GetPassword();
+  else
+    sx_pswd = pci->GetPassword();
 
   StringX sx_RunCommand, sx_Expanded_ES;
   sx_RunCommand = pci->GetRunCommand();
@@ -1583,10 +1477,10 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
     StringX cs_tmp = ci_temp.GetPassword();
 
-    GetBaseEntryPL pl;
+    BaseEntryParms pl;
     pl.InputType = CItemData::ET_NORMAL;
 
-    // Potentially remove outer single square brackets as GetBaseEntry expects only
+    // Potentially remove outer single square brackets as ParseBaseEntryPWD expects only
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.substr(0, 2) == L"[[" &&
         cs_tmp.substr(cs_tmp.length() - 2) == L"]]") {
@@ -1594,7 +1488,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
       pl.InputType = CItemData::ET_ALIAS;
     }
 
-    // Potentially remove tilde as GetBaseEntry expects only
+    // Potentially remove tilde as ParseBaseEntryPWD expects only
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.substr(0, 2) == L"[~" &&
         cs_tmp.substr(cs_tmp.length() - 2) == L"~]") {
@@ -1602,7 +1496,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
       pl.InputType = CItemData::ET_SHORTCUT;
     }
 
-    m_core.GetBaseEntry(cs_tmp, pl);
+    m_core.ParseBaseEntryPWD(cs_tmp, pl);
     if (pl.ibasedata > 0) {
       CGeneralMsgBox gmb;
       // Password in alias/shortcut format AND base entry exists
@@ -1610,7 +1504,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
         ItemListIter iter = m_core.Find(pl.base_uuid);
         ASSERT(iter != End());
         if (pl.TargetType == CItemData::ET_ALIAS) {
-          // This base is in fact an alias. GetBaseEntry already found 'proper base'
+          // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
           CString cs_msg;
           cs_msg.Format(IDS_DDBASEISALIAS, Group, Title, User);
@@ -1747,4 +1641,3 @@ void DboxMain::OnToolBarFindUp()
   m_FindToolBar.SetSearchDirection(FIND_UP);
   m_FindToolBar.Find();
 }
-

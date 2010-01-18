@@ -1065,21 +1065,16 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     // Get information from current selected entry
     CSecString ci_user = pci->GetUser();
     CSecString ci_title0 = pci->GetTitle();
-    CSecString ci_title = m_pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CSecString ci_title = m_pDbx->GetUniqueTitle(newPath, ci_title0,
+                                                 ci_user, IDS_DRAGNUMBER);
 
-    // Needs new UUID as they must be unique and this is a copy operation
-    // but before we do, save the original
-    uuid_array_t original_uuid, temp_uuid, base_uuid;
-    ci_temp.GetUUID(original_uuid);
-    ci_temp.CreateUUID();
-    // May need it later...
-    ci_temp.GetUUID(temp_uuid);
-
+    ci_temp.CreateUUID(); // Copy needs its own UUID
     ci_temp.SetGroup(newPath);
     ci_temp.SetTitle(ci_title);
     ci_temp.SetDisplayInfo(new DisplayInfo);
 
-    Command *pcmd;
+    Command *pcmd(NULL);
+    uuid_array_t base_uuid;
     CItemData::EntryType temp_et = ci_temp.GetEntryType();
     switch (temp_et) {
     case CItemData::ET_ALIASBASE:
@@ -1093,13 +1088,13 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     case CItemData::ET_ALIAS:
       ci_temp.SetPassword(CSecString(L"[Alias]"));
       // Get base of original alias and make this copy point to it
-      m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
+      m_pDbx->GetBaseEntry(pci)->GetUUID(base_uuid);
       pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp, base_uuid);
       break;
     case CItemData::ET_SHORTCUT:
       ci_temp.SetPassword(CSecString(L"[Shortcut]"));
       // Get base of original shortcut and make this copy point to it
-      m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
+      m_pDbx->GetBaseEntry(pci)->GetUUID(base_uuid);
       pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp, base_uuid);
       break;
     default:
@@ -1661,18 +1656,7 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *pci)
   if (pci->IsAlias() || pci->IsShortcut()) {
     // I'm an alias or shortcut; pass on ptr to my base item
     // to retrieve its group/title/user
-    CItemData *pcibase(NULL);
-    uuid_array_t base_uuid, entry_uuid;
-    pci->GetUUID(entry_uuid);
-    if (pci->IsAlias())
-      m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
-    else
-      m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_pDbx->Find(base_uuid);
-    ASSERT(iter != m_pDbx->End());
-    pcibase = &(iter->second);
-    pDDObject->SetBaseItem(pcibase);
+    pDDObject->SetBaseItem(m_pDbx->GetBaseEntry(pci));
   }
 
     out_oblist.AddTail(pDDObject);
@@ -1886,30 +1870,8 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
   DWORD_PTR itemData = GetItemData(m_hitemDrag);
   CItemData *pci = (CItemData *)itemData;
 
-  const CItemData::EntryType entrytype = pci->GetEntryType();
-  if (entrytype == CItemData::ET_ALIAS) {
-    // This is an alias
-    uuid_array_t entry_uuid, base_uuid;
-    pci->GetUUID(entry_uuid);
-    m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_pDbx->Find(base_uuid);
-    if (iter != m_pDbx->End()) {
-      pci = &(iter->second);
-    }
-  }
-
-  if (entrytype == CItemData::ET_SHORTCUT) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    pci->GetUUID(entry_uuid);
-    m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_pDbx->Find(base_uuid);
-    if (iter != m_pDbx->End()) {
-      pci = &(iter->second);
-    }
-  }
+  if (pci->IsAlias() || pci->IsShortcut())
+    pci = m_pDbx->GetBaseEntry(pci);
  
   CSecString cs_dragdata;
   cs_dragdata = pci->GetPassword();

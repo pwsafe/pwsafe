@@ -27,8 +27,8 @@
 
 #define MAXDEMO 10
 
-// Parameter list for GetBaseEntry
-struct GetBaseEntryPL {
+// Parameter list for ParseBaseEntryPWD
+struct BaseEntryParms {
   // All fields except "InputType" are 'output'.
   StringX csPwdGroup;
   StringX csPwdTitle;
@@ -213,18 +213,16 @@ public:
                               const CItemData::EntryType type);
   bool GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid, 
                                  const CItemData::EntryType type);
-  bool GetBaseEntry(const StringX &passwd, GetBaseEntryPL &pl);
+  // Takes apart a 'special' password into its components:
+  bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
 
-  // Actions relating to alias/base and shortcut/base maps
-  bool GetAliasBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
-  {return GetDependentEntryBaseUUID(alias_uuid, base_uuid, CItemData::ET_ALIAS);}
-  bool GetShortcutBaseUUID(const uuid_array_t &shortcut_uuid, uuid_array_t &base_uuid)
-  {return GetDependentEntryBaseUUID(shortcut_uuid, base_uuid, CItemData::ET_SHORTCUT);}
+  CItemData *GetBaseEntry(const CItemData *pAliasOrSC);
 
+  // alias/base and shortcut/base handling
   void SortDependents(UUIDList &dlist, StringX &csDependents);
-  int NumAliases(const uuid_array_t &base_uuid)
+  int NumAliases(const uuid_array_t &base_uuid) const
   {return m_base2aliases_mmap.count(base_uuid);}
-  int NumShortcuts(const uuid_array_t &base_uuid)
+  int NumShortcuts(const uuid_array_t &base_uuid) const
   {return m_base2shortcuts_mmap.count(base_uuid);}
 
   ItemListIter GetUniqueBase(const StringX &title, bool &bMultiple);

@@ -387,40 +387,17 @@ void CDDStatic::SendToClipboard()
     return;
   }
 
-  StringX cs_dragdata;
   CItemData *pci(m_pci);
 
-  const CItemData::EntryType entrytype = pci->GetEntryType();
-  if (m_nID == IDC_STATIC_DRAGPASSWORD && entrytype == CItemData::ET_ALIAS) {
-    // This is an alias
-    uuid_array_t entry_uuid, base_uuid;
-    pci->GetUUID(entry_uuid);
-    m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_pDbx->Find(base_uuid);
-    if (iter != m_pDbx->End()) {
-      pci = &(iter->second);
-    }
+  // Handle shortcut or alias
+  if ((m_nID == IDC_STATIC_DRAGPASSWORD && pci->IsAlias()) ||
+      (pci->IsShortcut() && (m_nID != IDC_STATIC_DRAGGROUP &&
+                             m_nID != IDC_STATIC_DRAGTITLE &&
+                             m_nID != IDC_STATIC_DRAGUSER))) {
+    pci = m_pDbx->GetBaseEntry(pci);
   }
 
-  if (entrytype == CItemData::ET_SHORTCUT) {
-    // This is an shortcut
-    if (m_nID != IDC_STATIC_DRAGGROUP &&
-        m_nID != IDC_STATIC_DRAGTITLE &&
-        m_nID != IDC_STATIC_DRAGUSER) {
-      uuid_array_t entry_uuid, base_uuid;
-      pci->GetUUID(entry_uuid);
-      m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_pDbx->Find(base_uuid);
-      if (iter != m_pDbx->End()) {
-        pci = &(iter->second);
-      }
-    }
-  }
-
-  cs_dragdata = GetData(pci);
-
+  StringX cs_dragdata = GetData(pci);
   m_pDbx->SetClipboardData(cs_dragdata);
 }
 
@@ -455,38 +432,16 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     } else {
       cs_dragdata = m_groupname;
     }
-  } else {
+  } else { // m_pci != NULL
     CItemData *pci(m_pci);
 
-    const CItemData::EntryType entrytype = pci->GetEntryType();
-    if (m_nID == IDC_STATIC_DRAGPASSWORD && entrytype == CItemData::ET_ALIAS) {
-      // This is an alias
-      uuid_array_t entry_uuid, base_uuid;
-      pci->GetUUID(entry_uuid);
-      m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_pDbx->Find(base_uuid);
-      if (iter != m_pDbx->End()) {
-        pci = &(iter->second);
-      }
+    // Handle shortcut or alias
+    if ((m_nID == IDC_STATIC_DRAGPASSWORD && pci->IsAlias()) ||
+        (pci->IsShortcut() && (m_nID != IDC_STATIC_DRAGGROUP &&
+                               m_nID != IDC_STATIC_DRAGTITLE &&
+                               m_nID != IDC_STATIC_DRAGUSER))) {
+      pci = m_pDbx->GetBaseEntry(pci);
     }
-
-    if (entrytype == CItemData::ET_SHORTCUT) {
-      // This is an shortcut
-      if (m_nID != IDC_STATIC_DRAGGROUP &&
-          m_nID != IDC_STATIC_DRAGTITLE &&
-          m_nID != IDC_STATIC_DRAGUSER) {
-        uuid_array_t entry_uuid, base_uuid;
-        pci->GetUUID(entry_uuid);
-        m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-        ItemListIter iter = m_pDbx->Find(base_uuid);
-        if (iter != m_pDbx->End()) {
-          pci = &(iter->second);
-        }
-      }
-    }
-
     cs_dragdata = GetData(pci);
     if (cs_dragdata.empty())
       return FALSE;

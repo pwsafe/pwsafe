@@ -1371,15 +1371,7 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
     return;
 
   if (pci->IsShortcut()) {
-    // This is an shortcut
-    uuid_array_t entry_uuid, base_uuid;
-    pci->GetUUID(entry_uuid);
-    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      pci = &iter->second;
-    }
+    pci = GetBaseEntry(pci);
   }
 
   short iDCA;
@@ -1448,29 +1440,8 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 
   if (pci != NULL) {
     StringX sx_pswd = pci->GetPassword();
-    if (pci->IsShortcut()) {
-      // This is a shortcut
-      uuid_array_t entry_uuid, base_uuid;
-      pci->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        pci = &iter->second;
-      }
-      sx_pswd = pci->GetPassword();
-    }
-
-    if (pci->IsAlias()) {
-      // This is an alias
-      uuid_array_t entry_uuid, base_uuid;
-      pci->GetUUID(entry_uuid);
-      m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        sx_pswd = iter->second.GetPassword();
-      }
+    if (pci->IsShortcut() || pci->IsAlias()) {
+      sx_pswd = GetBaseEntry(pci)->GetPassword();
     }
 
     CString cs_command;
@@ -2847,18 +2818,9 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   }
 
   if (pci != NULL) {
-    // Save entry type before changing pci
-    etype = pci->GetEntryType();
-    if (etype == CItemData::ET_SHORTCUT) {
-      // This is a shortcut
-      uuid_array_t entry_uuid, base_uuid;
-      pci->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        pci = &iter->second;
-      }
+    etype = pci->GetEntryType(); // Save entry type before changing pci
+    if (pci->IsShortcut()) {
+      pci = GetBaseEntry(pci);
     }
   }
 
@@ -2894,15 +2856,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
           iEnable = FALSE;
         } else {
           if (pci->IsShortcut()) {
-            // This is an shortcut
-            uuid_array_t entry_uuid, base_uuid;
-            pci->GetUUID(entry_uuid);
-            m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-            ItemListIter iter = m_core.Find(base_uuid);
-            if (iter != End()) {
-              pci = &iter->second;
-            }
+            pci = GetBaseEntry(pci);
           }
 
           if (pci->IsEmailEmpty() && 
@@ -2929,15 +2883,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
           iEnable = FALSE;
         } else {
           if (pci->IsShortcut()) {
-            // This is an shortcut
-            uuid_array_t entry_uuid, base_uuid;
-            pci->GetUUID(entry_uuid);
-            m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-            ItemListIter iter = m_core.Find(base_uuid);
-            if (iter != End()) {
-              pci = &iter->second;
-            }
+            pci = GetBaseEntry(pci);
           }
 
           switch (nID) {

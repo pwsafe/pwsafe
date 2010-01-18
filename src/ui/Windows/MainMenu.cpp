@@ -543,7 +543,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   const bool bItemSelected = (SelItemOk() == TRUE);
   const bool bReadOnly = m_core.IsReadOnly();
   CItemData *pci(NULL);
-  CItemData::EntryType etype(CItemData::ET_INVALID);
   const wchar_t *tc_dummy = L" ";
 
   ASSERT_VALID(pPopupMenu);
@@ -561,6 +560,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
      pci = getSelectedItem();
      ASSERT(pci != NULL);
    }
+
+   CItemData::EntryType etype = pci->GetEntryType();
 
    if (uiMenuID == ID_EDITMENU && 
        bItemSelected && pci->GetStatus() == CItemData::ES_DELETED) {
@@ -610,21 +611,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     goto exit;
   }  // View menu
 
-  if (bItemSelected) {
-    // Save entry type before changing pci
-    etype = pci->GetEntryType();
-    if (etype == CItemData::ET_SHORTCUT) {
-      // This is a shortcut
-      uuid_array_t entry_uuid, base_uuid;
-      pci->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        pci = &iter->second;
-      }
-    }
-  }
+  if (bItemSelected)
+    if (pci->IsShortcut())
+      pci = m_core.GetBaseEntry(pci);
 
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
@@ -1229,16 +1218,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
         ASSERT(0);
     }
 
-    uuid_array_t entry_uuid, base_uuid;
     if (pci->IsShortcut()) {
-      // This is an shortcut
-      pci->GetUUID(entry_uuid);
-      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-      ItemListIter iter = m_core.Find(base_uuid);
-      if (iter != End()) {
-        pci = &iter->second;
-      }
+      pci = m_core.GetBaseEntry(pci);
     }
 
     bool bCopyEmail = !pci->IsEmailEmpty();

@@ -287,15 +287,7 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
       pci = &ci;
 
       if (ft == FT_PASSWORD && entrytype == CItemData::ET_ALIAS) {
-        // This is an alias
-        uuid_array_t entry_uuid, base_uuid;
-        ci.GetUUID(entry_uuid);
-        m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
-
-        ItemListIter iter = m_core.Find(base_uuid);
-        if (iter != End()) {
-          pci = &(iter->second);
-        }
+        pci = GetBaseEntry(pci); // This is an alias
       }
 
       if (entrytype == CItemData::ET_SHORTCUT && !m_bFilterForStatus) {
@@ -304,15 +296,7 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
         //   "UUID = 0x01" but no filter is implemented against this field
         // The following is a simple single test rather than testing against every value
         if (ft > FT_USER) {
-          // This is an shortcut
-          uuid_array_t entry_uuid, base_uuid;
-          ci.GetUUID(entry_uuid);
-          m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
-
-          ItemListIter iter = m_core.Find(base_uuid);
-          if (iter != End()) {
-            pci = &(iter->second);
-          }
+          pci = GetBaseEntry(pci); // This is an shortcut
         }
       }
 

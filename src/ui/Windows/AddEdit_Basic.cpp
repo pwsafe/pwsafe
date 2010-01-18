@@ -1067,10 +1067,10 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
 
   // Called from Add and Edit entry
   // Returns false if not a special alias or shortcut password
-  GetBaseEntryPL pl;
+  BaseEntryParms pl;
   pl.InputType = InputType;
 
-  bool brc = M_pcore()->GetBaseEntry(password, pl);
+  bool brc = M_pcore()->ParseBaseEntryPWD(password, pl);
 
   // Copy data back before possibly returning
   ibasedata = pl.ibasedata;

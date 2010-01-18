@@ -282,10 +282,8 @@ public:
   Command *Delete(HTREEITEM ti); // For deleting a group
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
-  void GetAliasBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
-  {m_core.GetAliasBaseUUID(entry_uuid, base_uuid);}
-  void GetShortcutBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
-  {m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);}
+  CItemData *GetBaseEntry(const CItemData *pAliasOrSC)
+  {return m_core.GetBaseEntry(pAliasOrSC);}
 
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
