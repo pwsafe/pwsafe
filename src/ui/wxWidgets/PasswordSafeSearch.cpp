@@ -399,7 +399,7 @@ void PasswordSafeSearch::UpdateView()
   wxASSERT(statusArea);
 
   if (!m_searchPointer.IsEmpty()) {
-    m_parentFrame->SeletItem(*m_searchPointer);
+    m_parentFrame->SelectItem(*m_searchPointer);
   }
   statusArea->SetLabel(m_searchPointer.GetLabel());
 }

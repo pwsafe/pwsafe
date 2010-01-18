@@ -237,8 +237,11 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
   void OnAutoType(wxCommandEvent& evt);
 
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURLPLUS
   void OnBrowseUrlAndAutotype(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_GOTOBASEENTRY
+  void OnGotoBase(wxCommandEvent& evt);
 
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
@@ -263,7 +266,7 @@ public:
     int Load(const wxString &passwd);
     
     // Hilites the item.  Used for search
-    void SeletItem(const CUUIDGen& uuid);
+    void SelectItem(const CUUIDGen& uuid);
 
     ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
     ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
