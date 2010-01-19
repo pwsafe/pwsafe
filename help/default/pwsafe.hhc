@@ -47,8 +47,25 @@
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="User Names, Passwords, and Groups">
-			<param name="Local" value="html\entering_pwd.html">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Basic">
+				<param name="Local" value="html\entering_pwd.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Additional">
+				<param name="Local" value="html\entering_pwd_add.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Dates and Times">
+				<param name="Local" value="html\entering_pwd_date.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Password Policy">
+				<param name="Local" value="html\entering_pwd_pp.html">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Setting a Password Policy">
 			<param name="Local" value="html\password_policies.html">

@@ -13,9 +13,9 @@
 <p>Username, passwords and groups together with the additional parameters are managed in 4 tabs:
 </p><ul>
   <li><b><i>Basic</i>:</b> all necesarry elements for password management</li>
-  <li><b><i>Additional</i>:</b> additional specifications, including history</li>
-  <li><b><i>Dates and Times</i>:</b> expiry and statistics</li>
-  <li><b><i>Password Policy</i>:</b> specific differences to the default</li>
+  <li><b><i><a href="entering_pwd_add.html">Additional</a></i>:</b> additional specifications, including history</li>
+  <li><b><i><a href="entering_pwd_date.html">Dates and Times</a></i>:</b> expiry and statistics</li>
+  <li><b><i><a href="entering_pwd_pp.html">Password Policy</a></i>:</b> specific differences to the default</li>
 </ul>
 <h3><i>Basic</i> Tab</h3>
 <p>In this tab the most inportant elements are combined.</p>
@@ -72,66 +72,6 @@ any additional pairs should be prefixed by an ampersand (&amp;). The
 name can be one of the following strings:</small></li></ul><ul><ul><li><small>subject - followed by text to appear in the subject line of the message.</small></li><li><small>body - followed by text to appear in the body of the message.</small></li><li><small>CC - followed by addresses to be included in the "cc" (carbon copy) section of the&nbsp;message.</small></li><li><small>BCC - followed by addresses to be included in the "bcc" (blind carbon copy) section of the message.</small></li></ul></ul><small>Example:&nbsp; user@example.com?subject=Message Title&amp;body=Message Content"<br></small>
 <hr style="width: 100%; height: 2px;">
 
-
-<h3><i>Additional</i> Tab</h3>
-<img alt="Edit/View Additional" src="images/edit_view_entry_add.jpg"><br>
-<ul>
-  <li><b>Autotype:</b>
-If this field
-is not empty, the its content replaces the default value for the
-autotype function. For more information, see the
-"<a href="autotype.html">Auto Type</a>" help topic.</li>
-  <li><b>Run Cmd:</b> This field can
-be used to specify a command or program to be run via the 'Run Command'
-action (via the Edit menu, right-click popup menu or Ctrl-R). <span style="font-weight: bold;">Password Safe</span> is able to pass arguments to the command
-such as the entry's username, password, etc., as described <a href="run_command.html">here</a>.</li>
-
-<li><b>Double click on entry:</b>
-This allows you to define what action PasswordSafe will take when
-you double-click on an entry. The default is to copy the entry's
-password to the clipboard. The default action is set in <a href="misc_tab.html">Manage-&gt;Options-&gt;Misc.</a>.</li>
-<li><b>Password History:</b>
-It is possible to configure <b>Password Safe</b> to save the last few passwords of an entry. This can be done either when the entry is created,
-or when viewing an existing entry. To view the recent passwords associated with the entry, or to change the number of
-recent passwords that are kept, click on the "Password History..." button. This will invoke the <a href="password_history.html">Password History</a>
-dialog box. The Edit dialog box indicates if previous passwords are kept for the entry, and if so, how many.</li>
-</ul>
-
-<h3><i>Dates and Times</i> Tab</h3>
-<img alt="Edit/View Dates and Times" src="images/edit_view_entry_date.jpg">
-<ul>
-  <li><span style="font-weight: bold;">Password
-Expires on:</span>To
-set a password expiration date, click on the "Set..." button and
-specify the desired expiration date, either as an absolute date (e.g.,
-"March 17th 2007"), or relative from today (e.g., "30 days from now").
-When the exiration date approaches, <span style="font-weight: bold;">Password Safe</span>
-will notify you upon startup that the password should be changed,
-as well as marking the entry in a distinct color.<br>
-If you choose "In <span style="font-style: italic;">N </span>days",
-then you may specify a "Recurring" expiration. This will cause a
-    <span style="font-weight: bold;">new </span>expiration
-date to be calculated based on the specified number of days and when
-you change the entry's password. For example, if you create an entry on
-January 1st and specify a 5 day recurring expiration. You will get an
-expiration notice starting on January 6th. If you change the password
-on January 7th, then the new expiration will be on January 12th (5 days
-after the password has been set). </li>
-  <li>&nbsp;To cancel the expiration, click on "Clear".</li>
-  <li><span style="font-weight: bold;">Date/Time
-Information</span>:
-These read-only fields help keep track of when the selected entry was
-created, last accessed, etc.</li>
-</ul>
-<div style="margin-left: 40px;"><span style="font-weight: bold;"></span>
-<hr style="width: 100%; height: 2px;">
-<small><span style="font-weight: bold;">Note: Password Safe </span>will
-<span style="font-style: italic;">only </span>warn the user when passwords
-have expired. It is the user's responsibility to change the password.</small>
-<hr style="width: 100%; height: 2px;"></div>
-<h3><i>Password Policy</i> Tab</h3>
-<img alt="Edit/View Password Policy" src="images/edit_view_entry_policy.jpg"><br>
-<p>If you don't want to use the default password policy (see <a href="password_policies.html">Setting a Password Policy</a><a>), you can define in this tab a different password policy, marking "Use the policy below" and setting the apropriate elements.</a></p>
 
 
 <div class="instr">
@@ -210,5 +150,6 @@ can be "nested," placing a group name within/under another group name.<br>
   <param name="Keyword" value="Alternate Browser">
   <param name="Keyword" value="ssh">
   <param name="Keyword" value="URL">
+  <param name="Keyword" value="Email">
 </object>
 </body></html>
