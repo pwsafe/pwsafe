@@ -207,7 +207,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 void CAddEdit_PasswordPolicy::OnHelp()
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd_pp.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 

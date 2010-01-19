@@ -305,7 +305,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 void CAddEdit_Additional::OnHelp()
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd.html";
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/entering_pwd_add.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
