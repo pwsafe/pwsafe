@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>Benutzernamen, Passw&ouml;rter und Gruppen</title>
+  <title>Benutzernamen, Passw&ouml;rter und Gruppen: Basis</title>
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><!-- VdG 3.15 DE 31/01/2009 -->
   <script language="javascript" src="html/popups.js">
   </script>
@@ -10,13 +10,13 @@
 <body>
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
-<h2>Benutzernamen, Passw&ouml;rter und Gruppen</h2>
+<h2>Benutzernamen, Passw&ouml;rter und Gruppen: Basis</h2>
 <p>Die Verwaltung von Benutzernamen, Passw&ouml;rter und Gruppen, zusammen mit den dazugeh&ouml;rigen Parametern, erfolgt &uuml;ber mehrere Reiter:
 <ul>
   <li><b><i>Basis</i>:</b> alle notwendigen Angaben f&uuml;r die Passwordverwaltung</li>
-  <li><b><i>Zus&auml;tzlich</i>:</b> weitere Angaben, inklusive Historie</li>
-  <li><b><i>Datum und Uhrzeit</i>:</b> Ablaufzeiten und Statistiken</li>
-  <li><b><i>Passwortrichtlinie</i>:</b> Abweichungen vom Standard</li>
+  <li><b><i><a href="entering_pwd_add.html">Zus&auml;tzlich</a></i>:</b> weitere Angaben, inklusive Historie</li>
+  <li><b><i><a href="entering_pwd_date.html">Datum und Uhrzeit</a></i>:</b> Ablaufzeiten und Statistiken</li>
+  <li><b><i><a href="entering_pwd_pp.html">Passwortrichtlinie</a></i>:</b> Abweichungen vom Standard</li>
 </ul>
 Die wichtigsten Elemente sind im <b>Reiter <i>Basis</i></b> zusammengefasst.</p>
 <img alt="Eintrag bearbeiten: Basis" src="images/edit_view_entry_base.jpg">
@@ -55,29 +55,6 @@ Wenn kein Protokoll angegeben ist, wird "http://" angenommen (z.B. "www.foo.net"
   Beispiel: benutzer@beispiel.com?subject=Hinweis Titel&body=Inhalt&CC=empfaenger@ziel.de
   </li>
 </small></ul><hr>
-<h3>Reiter <i>Zus&auml;tzlich</i></h3>
-<img alt="Eintrag bearbeiten: Zus&auml;tzlich" src="images/edit_view_entry_add.jpg">
-<ul>
-  <li><b>Autom. Eingabe:</b> Wenn dieses Feld nicht leer ist, wird dessen Inhalt den standardm&auml;&szlig;igen Inhalt f&uuml;r das 'automatische Eingeben' ersetzen. F&uuml;r mehr Information, siehe Hilfe zu "<a href="autotype.html">Autom. Eingabe</a>".</li>
-  <li><b>Ausf&uuml;hren:</b> Wenn dieses Feld nicht leer ist, wird dessen Inhalt bei der Aktion 'Ausf&uuml;hren' als Kommando dem Betriebssystem &uuml;bergeben. Es k&ouml;nnen Variablen mit &uuml;bergeben werden. F&uuml;r mehr Information, siehe Hilfe zu "<a href="execute_string.html">Ausf&uuml;hren</a>".</li>
-  <li><b>Doppelklick-Aktion:</b></li> Dies erlaubt es festzulegen welche Aktion <b>Password Safe</b> ausf&uuml;hrt, wenn Sie ein Doppelklick auf diesem Eintrag ausf&uuml;hren. Standardm&auml;&szlig;ig wird die im Dialog <a href="misc_tab.html">Verwalten-&gt;Optionen-&gt;Verschiedenes</a> festgelegte Aktion ausgef&uuml;hrt.</li>
-  <li><b>Passworthistorie:</b> Es ist m&ouml;glich <b>Password Safe</b> so zu konfigurieren, dass es sich die letzten paar Passw&ouml;rter eines Eintrages merkt. Dies kann eingestellt werden beim Erstellen des Eintrages, oder sp&auml;ter wenn Sie diesen Eintrag bearbeiten. Um die j&uuml;ngsten Passw&ouml;rter eines Eintrages zu sehen, oder die Anzahl der Passw&ouml;rter die sich <b>Password Safe</b> merkt zu &auml;ndern, dr&uuml;cken Sie auf die Taste "Passworthistorie". Dies ruft das Dialogfenster <a href="password_history.html">Passworthistorie</a> auf. Dieser Dialog zeigt die fr&uuml;heren Passw&ouml;rter und die Anzahl, wenn vorhanden, an.</li>
-</ul>
-<h3>Reiter <i>Datum und Uhrzeit</i></h3>
-<img alt="Eintrag bearbeiten: Datum und Uhrzeit" src="images/edit_view_entry_date.jpg">
-<ul>
-  <li><b>Passwortablaufdatum:</b> Um das Ablaufdatum eines Passworteintrages zu setzen, geben Sie das gew&uuml;nschte Ablaufdatum an, entweder als absoluter Tag (z.B. "25.01.2009") oder als relativer Tag zu Heute (z.B. "30 Tage") und klicken Sie auf die Taste <i>Setzen</i>. Wenn das Ablaufdatum sich n&auml;hert, wird <b>Password Safe</b> sowohl beim Start melden, dass das Passwort ge&auml;ndert werden soll, als auch den Eintrag mit einer anderen Farbe hinterlegen.<br>
-Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer" Ablauf bestimmen. Dies bewirkt, dass ein <b>neues</b> Ablaufdatum berechnet wird basierend auf der Anzahl festgelegten Tagen, wenn das Passwort abge&auml;ndert wird. Zum Beispiel: Sie erstellen einen Eintrag am 11ten Januar, und legen periodisch 5 Tage fest. Sie bekommen dann am 16ten Januar eine Ablaufmeldung. Wenn Sie das Passwort am 17ten Januar &auml;ndern, wird das neue Ablaufdatum am 22ten Januar sein (5 Tage nachdem das Passwort gesetzt wurde).</li>
-  <li>Um das Ablaufdatum abzustellen, klicken Sie auf <i>L&ouml;schen</i>.</li>
-  <li><b>Datum/Zeit Information:</b> Dieses NUR-Lesen Feld h&auml;lt die Information des gew&auml;hlten Eintrages zum Erstellzeitpunkt, zuletzt zugegriffen, usw. auf dem Laufenden. Diese Information wird im Dialog Eintrag Einf&uuml;gen nicht angezeigt.
-</li>
-</ul>
-<div style="margin-left: 40px;">
-<hr><small><b>Hinweis: Password Safe</b> wird <b>nur</b> dann den Benutzer warnen, wenn eine der Passw&ouml;rter abgelaufen ist. Es liegt in der Verantwortung des Benutzers das Passwort zu &auml;ndern.</small>
-<hr></div>
-<h3>Reiter <i>Passwortrichtlinie</i></h3>
-<img alt="Eintrag bearbeiten: Passwortrichtlinie" src="images/edit_view_entry_policy.jpg">
-<p>Wenn Sie f&uuml;r einen Eintrag nicht die standardm&auml;&szlig;ig festgelegte Passwortrichtlinie (siehe hierzu <a href="password_policies.html">Verwalten-&gt;Optionen-&gt;Passwortrichtlinie</a>) benutzen wollen, k&ouml;nnen Sie nach Ausw&auml;hlen von "Verwende die Richtlinie unten:" eine eigens f&uuml;r diesen Eintrag festgelegte Passwortrichtlinie zusammenstellen.</p>
 <div class="instr">
 <h3>Erstellen eines neuen Eintrag mit Benutzername und Passwort</h3>
 <ol>
@@ -85,7 +62,7 @@ Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer"
   <li>W&auml;hlen Sie im Men&uuml; <b>Bearbeiten &gt; Eintrag einf&uuml;gen</b> aus</li>
   <li>Geben Sie die notwendige Information im Dialogfenster <b>Eintrag Einf&uuml;gen</b> ein</li>
 </ol>
-<hr> <small><b>Hinweis:</b> Wenn ein Gruppenname ausgew&auml;hlt ist, und dann eine neuer Eintrag eingef&uuml;gt wird, wird f&uuml;r diesen Eintrag der Gruppenname im Dialogfenster <b>F&uuml;ge Eintrag ein</b> vorbelegt. Wenn ein neuer Name im Gruppenfeld eingegeben wird, wird diese Gruppe neu erstellt.<br>
+<small><b>Hinweis:</b> Wenn ein Gruppenname ausgew&auml;hlt ist, und dann eine neuer Eintrag eingef&uuml;gt wird, wird f&uuml;r diesen Eintrag der Gruppenname im Dialogfenster <b>F&uuml;ge Eintrag ein</b> vorbelegt. Wenn ein neuer Name im Gruppenfeld eingegeben wird, wird diese Gruppe neu erstellt.<br>
 </small>
 <hr>
 <h3>Passw&ouml;rter generieren und bearbeiten</h3>
@@ -94,10 +71,10 @@ Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer"
   <li>Im Dialogfenster <b>Eintrag Einf&uuml;gen</b> die Taste <b>Generierung</b> klicken</li>
   <li>Wenn Sie nicht zufrieden sind mit dem Ergebnis, klicken Sie erneut <b>Generierung</b>, oder geben Sie das Passwort h&auml;ndisch ein.</li>
 </ol>
-<hr> <small><b>Hinweis:</b>
-<ul>
-  <li>Wenn Sie ein "single sign-on" System einsetzen das erlaubt dasselbe Passwort f&uuml;r verschiedene Maschinen/Server/Anwendungen usw. gleichzeitig einzusetzen, kann mit <b>Password Safe</b> so ein Eintrag entsprechend verwaltet werden. Wenn Sie ein Passwort &auml;ndern, werden alle anderen gleichverwandte Passw&ouml;rter mit ge&auml;ndert. Diese werden "Alias" Eintr&auml;ge genannt, und wird im Detail <a href="aliases.html">hier</a> beschrieben.</li>
-</ul>
+<small><b>Hinweis:</b>
+Wenn Sie ein "single sign-on" System einsetzen das erlaubt dasselbe Passwort f&uuml;r verschiedene Maschinen/Server/Anwendungen usw. gleichzeitig einzusetzen, 
+kann mit <b>Password Safe</b> so ein Eintrag entsprechend verwaltet werden. Wenn Sie ein Passwort &auml;ndern, werden alle anderen gleichverwandte 
+Passw&ouml;rter mit ge&auml;ndert. Diese werden "Alias" Eintr&auml;ge genannt, und wird im Detail <a href="aliases.html">hier</a> beschrieben.
 </small>
 <hr>
 <h3>Bestehende Eintr&auml;ge bearbeiten</h3>
@@ -105,7 +82,7 @@ Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer"
   <li>W&auml;hlen Sie den Passworteintrag zum Bearbeiten in der Liste aus</li>
   <li>W&auml;hlen Sie <b>Eintrag bearbeiten</b> im <b>Bearbeiten</b> Men&uuml; aus</li>
 </ol>
-<hr> <small><b>Hinweis:</b> Standardm&auml;&szlig;ig werden Passw&ouml;rter ausgeblendet. Um das Passwort zum Eintrag zu sehen, dr&uuml;cken Sie <b>Anzeigen</b>.<br>
+<small><b>Hinweis:</b> Standardm&auml;&szlig;ig werden Passw&ouml;rter ausgeblendet. Um das Passwort zum Eintrag zu sehen, dr&uuml;cken Sie <b>Anzeigen</b>.<br>
 </small>
 <hr>
 <h3>Neue Gruppe einf&uuml;gen</h3>
@@ -113,13 +90,14 @@ Wenn "In <i>N</i> Tage" gew&auml;hlt wurde, k&ouml;nnen Sie einen "periodischer"
   <li>W&auml;hlen Sie <b>Gruppe einf&uuml;gen</b> im Men&uuml; <b>Bearbeiten</b> aus</li>
   <li>Geben Sie den Gruppenname ein</li>
 </ol>
+<hr>
 <h3>Gruppenname bearbeiten</h3>
 <ul>
   <li>Rechtsklick auf die Gruppe und w&auml;hlen Sie <b>Gruppe umbenennen</b> aus der Liste aus</li>
 </ul>
-<hr> <small><b>Hinweis:</b> Gruppennamen k&ouml;nnen verschachtelt werden, durch Setzen eines Gruppennamens in einer anderen Gruppe.<br>
+<small><b>Hinweis:</b> Gruppennamen k&ouml;nnen verschachtelt werden, durch Setzen eines Gruppennamens in einer anderen Gruppe.<br>
 </small>
-<hr><br>
+<br>
  </div>
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>

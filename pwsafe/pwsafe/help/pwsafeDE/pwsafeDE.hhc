@@ -25,7 +25,7 @@
 			<param name="Local" value="html\create_new_db.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Arbeiten mit gespeicherte Passwörter">
+			<param name="Name" value="Arbeiten mit gespeicherte Passw&ouml;rter">
 			<param name="Local" value="html\retrieve_pwd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -47,8 +47,25 @@
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Benutzernamen, Passw&ouml;rter und Gruppen">
-			<param name="Local" value="html\entering_pwd.html">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Basis">
+				<param name="Local" value="html\entering_pwd.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Zus&auml;tzlich">
+				<param name="Local" value="html\entering_pwd_add.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Datum und Uhrzeit">
+				<param name="Local" value="html\entering_pwd_date.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Passwortrichtlinie">
+				<param name="Local" value="html\entering_pwd_pp.html">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Setzen der Passwortrichtlinie">
 			<param name="Local" value="html\password_policies.html">
@@ -157,11 +174,11 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Anhänge">
+		<param name="Name" value="Anh&auml;nge">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Alias für Passw&ouml;rter">
+			<param name="Name" value="Alias f&uuml;r Passw&ouml;rter">
 			<param name="Local" value="html\aliases.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -173,7 +190,7 @@
 			<param name="Local" value="html\preferences.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Kommando ausführen">
+			<param name="Name" value="Kommando ausf&uuml;hren">
 			<param name="Local" value="html\run_command.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
