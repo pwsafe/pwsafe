@@ -8,7 +8,7 @@ Display compile progress=Yes
 Error log file=pwsafe.log
 Full-text search=Yes
 Index file=pwsafe.hhk
-Language=0x409 English (United States)
+Language=0x409 Englisch (USA)
 Title=HTML Help for Password Safe
 
 
@@ -50,5 +50,9 @@ html\view_menu.html
 html\Welcome.html
 html\aliases.html
 html\Shortcut_Keys.html
+html\entering_pwd_add.html
+html\entering_pwd_date.html
+html\entering_pwd_pp.html
+
 [INFOTYPES]
 
