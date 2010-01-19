@@ -158,6 +158,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_GOTOBASEENTRY, PasswordSafeFrame::OnGotoBase )
 
+  EVT_MENU( ID_EDITBASEENTRY, PasswordSafeFrame::OnEditBase )
+
   EVT_UPDATE_UI(wxID_SAVE,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_ADDGROUP,        PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_RENAME,          PasswordSafeFrame::OnUpdateUI )
@@ -956,6 +958,16 @@ void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
   }
 }
 
+void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item && (item->IsAlias() || item->IsShortcut())) {
+    item = m_core.GetBaseEntry(item);
+    ASSERT(item != NULL);
+    DoEdit(*item);
+  }
+}
+
 void PasswordSafeFrame::SelectItem(const CUUIDGen& uuid)
 {
     if (m_currentView == GRID) {
@@ -1242,8 +1254,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_EDITBASEENTRY:
     {
       const CItemData* item = GetSelectedEntry();
-      evt.Enable( item != NULL && (item->GetEntryType() == CItemData::ET_SHORTCUT 
-                        || item->GetEntryType() == CItemData::ET_ALIAS) );
+      evt.Enable(item != NULL && (item->IsShortcut() || item->IsAlias()));
       break;
     }
  
