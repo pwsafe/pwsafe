@@ -243,6 +243,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_GOTOBASEENTRY
   void OnGotoBase(wxCommandEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITBASEENTRY
+  void OnEditBase(wxCommandEvent& evt);
+
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
 

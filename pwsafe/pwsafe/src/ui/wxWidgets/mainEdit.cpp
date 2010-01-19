@@ -32,6 +32,7 @@
 #include "pwsclip.h"
 #include "PasswordSafeSearch.h"
 #include "deleteconfirmation.h"
+#include "editshortcut.h"
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
@@ -46,10 +47,17 @@ void PasswordSafeFrame::OnEditClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::DoEdit(CItemData &item)
 {
-  AddEditPropSheet editDbox(this, m_core, m_grid, m_tree,
-                            AddEditPropSheet::EDIT, &item);
-  editDbox.ShowModal(); // update view if returned OK, all the rest done internally
-  UpdateAccessTime(item);
+  int rc = 0;
+  if (!item.IsShortcut()) {
+    AddEditPropSheet editDbox(this, m_core, m_grid, m_tree,
+                              AddEditPropSheet::EDIT, &item);
+    rc = editDbox.ShowModal();
+  } else {
+    EditShortcut editDbox(this);
+    rc = editDbox.ShowModal();
+  }
+  if (rc != 0)
+    UpdateAccessTime(item);
 }
 
 
