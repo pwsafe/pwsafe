@@ -461,9 +461,21 @@ int EditEntryCommand::Execute()
     m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid,
                                       CItemData::END, false);
   }
-  m_pcomInt->DoDeleteEntry(m_old_ci);
 
+  CItemData *pbase = NULL;
+  if (m_old_ci.IsShortcut() || m_old_ci.IsAlias())
+    pbase = m_pcomInt->GetBaseEntry(&m_old_ci);
+
+  m_pcomInt->DoDeleteEntry(m_old_ci);
   m_pcomInt->DoAddEntry(m_new_ci);
+
+  if (pbase != NULL) {
+    uuid_array_t entry_uuid, base_uuid;
+    pbase->GetUUID(base_uuid);
+    m_new_ci.GetUUID(entry_uuid);
+    m_pcomInt->DoAddDependentEntry(base_uuid, entry_uuid, m_new_ci.GetEntryType());
+  }
+
   m_pcomInt->AddChangedNodes(m_old_ci.GetGroup());
   m_pcomInt->AddChangedNodes(m_new_ci.GetGroup());
   if (m_bNotifyGUI) {
@@ -492,9 +504,21 @@ void EditEntryCommand::Undo()
     m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid,
                                       CItemData::END, false);
   }
-  m_pcomInt->DoDeleteEntry(m_new_ci);
 
+  CItemData *pbase = NULL;
+  if (m_new_ci.IsShortcut() || m_new_ci.IsAlias())
+    pbase = m_pcomInt->GetBaseEntry(&m_new_ci);
+
+  m_pcomInt->DoDeleteEntry(m_new_ci);
   m_pcomInt->DoAddEntry(m_old_ci);
+
+  if (pbase != NULL) {
+    uuid_array_t entry_uuid, base_uuid;
+    pbase->GetUUID(base_uuid);
+    m_old_ci.GetUUID(entry_uuid);
+    m_pcomInt->DoAddDependentEntry(base_uuid, entry_uuid, m_old_ci.GetEntryType());
+  }
+
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
