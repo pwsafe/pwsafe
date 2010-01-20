@@ -29,10 +29,9 @@
 #include "corelib/PWSprefs.h"
 #include "corelib/PWCharPool.h"
 #include "corelib/PWHistory.h"
+#include "corelib/UIinterface.h"
 
 #include "addeditpropsheet.h"
-#include "PWSgrid.h"
-#include "PWStree.h"
 #include "pwsclip.h"
 
 ////@begin XPM images
@@ -92,12 +91,11 @@ END_EVENT_TABLE()
  */
 
 AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
-                                   PWSGrid *grid, PWSTreeCtrl *tree,
                                    AddOrEdit type, const CItemData *item,
                                    wxWindowID id, const wxString& caption,
                                    const wxPoint& pos, const wxSize& size,
                                    long style)
-: m_core(core), m_grid(grid), m_tree(tree), m_type(type)
+: m_core(core), m_ui(dynamic_cast<UIInterFace *>(parent)), m_type(type)
 {
   if (item != NULL)
     m_item = *item; // copy existing item to display values
@@ -1040,9 +1038,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& event)
       m_core.Execute(EditEntryCommand::Create(&m_core,
                                               m_core.GetEntry(listpos),
                                               m_item));
-      // refresh tree view
-      m_tree->UpdateItem(m_item);
-      m_grid->UpdateItem(m_item);
+      m_ui->GUIRefreshEntry(m_item);
     }
       break;
 

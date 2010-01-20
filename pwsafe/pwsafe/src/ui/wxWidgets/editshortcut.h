@@ -18,16 +18,18 @@
  */
 
 ////@begin includes
-#include "wx/combo.h"
+#include "wx/valgen.h"
 ////@end includes
+#include "corelib/PWScore.h"
+#include "corelib/ItemData.h"
 
 /*!
  * Forward declarations
  */
 
 ////@begin forward declarations
-class wxComboCtrl;
 ////@end forward declarations
+class UIInterFace;
 
 /*!
  * Control identifiers
@@ -53,13 +55,17 @@ class wxComboCtrl;
 
 class EditShortcut: public wxDialog
 {    
-  DECLARE_DYNAMIC_CLASS( EditShortcut )
+  DECLARE_CLASS( EditShortcut )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  EditShortcut();
-  EditShortcut( wxWindow* parent, wxWindowID id = SYMBOL_EDITSHORTCUT_IDNAME, const wxString& caption = SYMBOL_EDITSHORTCUT_TITLE, const wxPoint& pos = SYMBOL_EDITSHORTCUT_POSITION, const wxSize& size = SYMBOL_EDITSHORTCUT_SIZE, long style = SYMBOL_EDITSHORTCUT_STYLE );
+  EditShortcut(wxWindow* parent, PWScore &core, CItemData *item,
+               wxWindowID id = SYMBOL_EDITSHORTCUT_IDNAME,
+               const wxString& caption = SYMBOL_EDITSHORTCUT_TITLE,
+               const wxPoint& pos = SYMBOL_EDITSHORTCUT_POSITION,
+               const wxSize& size = SYMBOL_EDITSHORTCUT_SIZE,
+               long style = SYMBOL_EDITSHORTCUT_STYLE);
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_EDITSHORTCUT_IDNAME, const wxString& caption = SYMBOL_EDITSHORTCUT_TITLE, const wxPoint& pos = SYMBOL_EDITSHORTCUT_POSITION, const wxSize& size = SYMBOL_EDITSHORTCUT_SIZE, long style = SYMBOL_EDITSHORTCUT_STYLE );
@@ -75,9 +81,30 @@ public:
 
 ////@begin EditShortcut event handler declarations
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
+  void OnOkClick( wxCommandEvent& event );
+
 ////@end EditShortcut event handler declarations
 
 ////@begin EditShortcut member function declarations
+
+  wxString GetCreated() const { return m_created ; }
+  void SetCreated(wxString value) { m_created = value ; }
+
+  wxString GetLastChanged() const { return m_lastChanged ; }
+  void SetLastChanged(wxString value) { m_lastChanged = value ; }
+
+  wxString GetLastAccess() const { return m_lastAccess ; }
+  void SetLastAccess(wxString value) { m_lastAccess = value ; }
+
+  wxString GetLastAny() const { return m_lastAny ; }
+  void SetLastAny(wxString value) { m_lastAny = value ; }
+
+  wxString GetTitle() const { return m_title ; }
+  void SetTitle(wxString value) { m_title = value ; }
+
+  wxString GetUser() const { return m_user ; }
+  void SetUser(wxString value) { m_user = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -90,14 +117,19 @@ public:
   static bool ShowToolTips();
 
 ////@begin EditShortcut member variables
-  wxComboCtrl* m_group;
-  wxTextCtrl* m_title;
-  wxTextCtrl* m_user;
-  wxStaticText* m_created;
-  wxStaticText* m_lastChanged;
-  wxStaticText* m_lastAccess;
-  wxStaticText* m_lastAny;
+  wxComboBox* m_groupCtrl;
+private:
+  wxString m_created;
+  wxString m_lastChanged;
+  wxString m_lastAccess;
+  wxString m_lastAny;
+  wxString m_title;
+  wxString m_user;
 ////@end EditShortcut member variables
+  void ItemFieldsToDialog();
+  PWScore &m_core;
+  CItemData *m_item;
+  UIInterFace *m_ui;
 };
 
 #endif

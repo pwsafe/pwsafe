@@ -42,6 +42,7 @@ class wxDatePickerCtrl;
 class wxGridSizer;
 class wxBoxSizer;
 ////@end forward declarations
+class UIInterFace;
 
 /*!
  * Control identifiers
@@ -104,9 +105,6 @@ class wxBoxSizer;
 ////@end control identifiers
 
 
-class PWSGrid;
-class PWSTreeCtrl;
-
 
 /*!
  * AddEditPropSheet class declaration
@@ -122,7 +120,6 @@ public:
   /// Constructor
   // item is NULL for ADD, otherwise its values are retrieved and displayed
   AddEditPropSheet(wxWindow* parent, PWScore &core,
-                   PWSGrid *grid, PWSTreeCtrl *tree,
                    AddOrEdit type, const CItemData *item = NULL,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE,
@@ -316,8 +313,7 @@ private:
   bool m_origPWPdefault;
   PWPolicy m_PWP;
   PWScore &m_core;
-  PWSGrid* m_grid; // to update display
-  PWSTreeCtrl* m_tree; // to update display
+  UIInterFace *m_ui;
 
   AddOrEdit m_type;
   CItemData m_item;
