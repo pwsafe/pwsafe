@@ -72,7 +72,6 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsSystem, CPWPropertyPage)
   //{{AFX_MSG_MAP(COptionsSystem)
-  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_DEFPWUSESYSTRAY, OnUseSystemTray)
@@ -92,7 +91,7 @@ BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
     m_ToolTipCtrl->RelayEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    OnHelp();
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
   }
 

@@ -385,5 +385,12 @@ BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
     CPWPropertySheet::EndDialog(IDCANCEL);
     return TRUE;
   }
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    CAddEdit_PropertyPage *pp = (CAddEdit_PropertyPage *)GetActivePage();
+    pp->PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
   return CPWPropertySheet::PreTranslateMessage(pMsg);
 }
