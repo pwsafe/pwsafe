@@ -66,7 +66,6 @@ void CAddEdit_DateTimes::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAddEdit_DateTimes, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_DateTimes)
-  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_XTIME_CLEAR, OnClearXTime)
@@ -99,7 +98,7 @@ static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
 BOOL CAddEdit_DateTimes::PreTranslateMessage(MSG* pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    OnHelp();
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
   }
 

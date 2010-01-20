@@ -65,7 +65,6 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
-  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
@@ -79,7 +78,7 @@ END_MESSAGE_MAP()
 BOOL COptionsSecurity::PreTranslateMessage(MSG* pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    OnHelp();
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
   }
 

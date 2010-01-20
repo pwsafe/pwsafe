@@ -112,7 +112,6 @@ void CAddEdit_PasswordPolicy::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_PasswordPolicy)
-  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUseHexdigits)
@@ -136,7 +135,7 @@ END_MESSAGE_MAP()
 BOOL CAddEdit_PasswordPolicy::PreTranslateMessage(MSG* pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    OnHelp();
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
   }
 

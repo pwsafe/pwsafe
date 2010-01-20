@@ -18,6 +18,7 @@ public:
   ~COptions_PropertySheet();
 
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  BOOL PreTranslateMessage(MSG* pMsg);
 
   DECLARE_DYNAMIC(COptions_PropertySheet)
 };

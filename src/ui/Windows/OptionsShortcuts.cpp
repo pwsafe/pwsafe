@@ -51,7 +51,6 @@ void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsShortcuts)
   ON_WM_MEASUREITEM()
-  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnBnClickedResetAll)
@@ -87,7 +86,7 @@ BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
   }
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    OnHelp();
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
   }
 

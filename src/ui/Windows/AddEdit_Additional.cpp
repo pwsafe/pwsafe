@@ -72,7 +72,6 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Additional)
   ON_WM_CTLCOLOR()
-  ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_DCA_DEFAULT, OnSetDCACheck)
@@ -100,7 +99,7 @@ BOOL CAddEdit_Additional::PreTranslateMessage(MSG* pMsg)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    OnHelp();
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;
   }
 
