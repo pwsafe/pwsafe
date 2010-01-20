@@ -66,6 +66,7 @@ class CommandInterface {
   virtual void SetVnodesModified(const std::vector<StringX> &) = 0;
   virtual void AddChangedNodes(StringX path) = 0;
   
+  virtual CItemData *GetBaseEntry(const CItemData *pAliasOrSC) = 0;
   virtual const ItemMMap &GetBase2AliasesMmap() const = 0;
   virtual void SetBase2AliasesMmap(ItemMMap &) = 0;
   virtual const ItemMMap &GetBase2ShortcutsMmap() const = 0;
