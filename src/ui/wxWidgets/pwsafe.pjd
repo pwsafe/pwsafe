@@ -25655,6 +25655,12 @@ Action:"</string>
           <string name="app-kind">"Standard"</string>
           <long name="use-xrc">0</long>
           <long name="working-mode">0</long>
+          <string name="variable-0">"m_created|wxString|Created||2|0|"</string>
+          <string name="variable-1">"m_lastChanged|wxString|LastChanged||2|0|"</string>
+          <string name="variable-2">"m_lastAccess|wxString|LastAccess||2|0|"</string>
+          <string name="variable-3">"m_lastAny|wxString|LastAny||2|0|"</string>
+          <string name="variable-4">"m_title|wxString|Title||2|0|"</string>
+          <string name="variable-5">"m_user|wxString|User||2|0|"</string>
           <string name="proxy-Id name">"ID_EDITSHORTCUT"</string>
           <long name="proxy-Id value">10174</long>
           <string name="proxy-Class">"EditShortcut"</string>
@@ -25901,7 +25907,7 @@ to the base entry "</string>
                 <string name="proxy-Custom ctor arguments">""</string>
               </document>
               <document>
-                <string name="title">"wxComboCtrl: ID_SC_GROUP"</string>
+                <string name="title">"wxComboBox: ID_SC_GROUP"</string>
                 <string name="type">"dialog-control-document"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"combobox"</string>
@@ -25909,17 +25915,18 @@ to the base entry "</string>
                 <long name="owns-file">1</long>
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
-                <string name="proxy-type">"wbComboCtrlProxy"</string>
+                <string name="proxy-type">"wbComboBoxProxy"</string>
                 <string name="proxy-Id name">"ID_SC_GROUP"</string>
                 <long name="proxy-Id value">10202</long>
                 <string name="proxy-Name">""</string>
-                <string name="proxy-Class">"wxComboCtrl"</string>
-                <string name="proxy-Base class">"wxComboCtrl"</string>
+                <string name="proxy-Class">"wxComboBox"</string>
+                <string name="proxy-Base class">"wxComboBox"</string>
                 <bool name="proxy-External implementation">1</bool>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">"m_group"</string>
+                <string name="proxy-Member variable name">"m_groupCtrl"</string>
+                <string name="proxy-Strings">""</string>
                 <string name="proxy-Initial value">""</string>
                 <string name="proxy-Help text">""</string>
                 <string name="proxy-Tooltip text">""</string>
@@ -25936,11 +25943,10 @@ to the base entry "</string>
                 <string name="proxy-Data class implementation filename">""</string>
                 <string name="proxy-Data class header filename">""</string>
                 <string name="proxy-Data class manager window">""</string>
+                <bool name="proxy-wxCB_SIMPLE">0</bool>
+                <bool name="proxy-wxCB_DROPDOWN">1</bool>
                 <bool name="proxy-wxCB_READONLY">0</bool>
                 <bool name="proxy-wxCB_SORT">0</bool>
-                <bool name="proxy-wxTE_PROCESS_ENTER">0</bool>
-                <bool name="proxy-wxCC_SPECIAL_DCLICK">0</bool>
-                <bool name="proxy-wxCC_STD_BUTTON">0</bool>
                 <bool name="proxy-wxWANTS_CHARS">0</bool>
                 <bool name="proxy-wxNO_FULL_REPAINT_ON_RESIZE">0</bool>
                 <bool name="proxy-wxFULL_REPAINT_ON_RESIZE">0</bool>
@@ -25962,7 +25968,6 @@ to the base entry "</string>
                 <bool name="proxy-wxFIXED_MINSIZE">0</bool>
                 <string name="proxy-Custom arguments">""</string>
                 <string name="proxy-Custom ctor arguments">""</string>
-                <string name="proxy-Event sources">""</string>
               </document>
               <document>
                 <string name="title">"wxStaticText: wxID_STATIC"</string>
@@ -26053,7 +26058,7 @@ to the base entry "</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">"m_title"</string>
+                <string name="proxy-Member variable name">""</string>
                 <string name="proxy-Initial value">""</string>
                 <long name="proxy-Max length">0</long>
                 <string name="proxy-Help text">""</string>
@@ -26064,8 +26069,8 @@ to the base entry "</string>
                 <bool name="proxy-Hidden">0</bool>
                 <bool name="proxy-Enabled">1</bool>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_title"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -26205,7 +26210,7 @@ to the base entry "</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">"m_user"</string>
+                <string name="proxy-Member variable name">""</string>
                 <string name="proxy-Initial value">""</string>
                 <long name="proxy-Max length">0</long>
                 <string name="proxy-Help text">""</string>
@@ -26216,8 +26221,8 @@ to the base entry "</string>
                 <bool name="proxy-Hidden">0</bool>
                 <bool name="proxy-Enabled">1</bool>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                <string name="proxy-Data variable">""</string>
-                <string name="proxy-Data validator">""</string>
+                <string name="proxy-Data variable">"m_user"</string>
+                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -26418,8 +26423,8 @@ to the base entry "</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">"m_created"</string>
-                  <string name="proxy-Label">"Static text"</string>
+                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Label">"DDD DD MMM YYYY HH:MM:SS XM ZZZ"</string>
                   <long name="proxy-Wrapping width">-1</long>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
@@ -26429,8 +26434,8 @@ to the base entry "</string>
                   <bool name="proxy-Hidden">0</bool>
                   <bool name="proxy-Enabled">1</bool>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                  <string name="proxy-Data variable">""</string>
-                  <string name="proxy-Data validator">""</string>
+                  <string name="proxy-Data variable">"m_created"</string>
+                  <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                   <string name="proxy-Data source">""</string>
                   <string name="proxy-Data class name">""</string>
                   <string name="proxy-Data class implementation filename">""</string>
@@ -26558,8 +26563,8 @@ to the base entry "</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">"m_lastChanged"</string>
-                  <string name="proxy-Label">"Static text"</string>
+                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Label">"DDD DD MMM YYYY HH:MM:SS XM ZZZ"</string>
                   <long name="proxy-Wrapping width">-1</long>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
@@ -26569,8 +26574,8 @@ to the base entry "</string>
                   <bool name="proxy-Hidden">0</bool>
                   <bool name="proxy-Enabled">1</bool>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                  <string name="proxy-Data variable">""</string>
-                  <string name="proxy-Data validator">""</string>
+                  <string name="proxy-Data variable">"m_lastChanged"</string>
+                  <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                   <string name="proxy-Data source">""</string>
                   <string name="proxy-Data class name">""</string>
                   <string name="proxy-Data class implementation filename">""</string>
@@ -26698,8 +26703,8 @@ to the base entry "</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">"m_lastAccess"</string>
-                  <string name="proxy-Label">"Static text"</string>
+                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Label">"DDD DD MMM YYYY HH:MM:SS XM ZZZ"</string>
                   <long name="proxy-Wrapping width">-1</long>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
@@ -26709,8 +26714,8 @@ to the base entry "</string>
                   <bool name="proxy-Hidden">0</bool>
                   <bool name="proxy-Enabled">1</bool>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                  <string name="proxy-Data variable">""</string>
-                  <string name="proxy-Data validator">""</string>
+                  <string name="proxy-Data variable">"m_lastAccess"</string>
+                  <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                   <string name="proxy-Data source">""</string>
                   <string name="proxy-Data class name">""</string>
                   <string name="proxy-Data class implementation filename">""</string>
@@ -26838,8 +26843,8 @@ to the base entry "</string>
                   <bool name="proxy-Separate files">0</bool>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
-                  <string name="proxy-Member variable name">"m_lastAny"</string>
-                  <string name="proxy-Label">"Static text"</string>
+                  <string name="proxy-Member variable name">""</string>
+                  <string name="proxy-Label">"DDD DD MMM YYYY HH:MM:SS XM ZZZ"</string>
                   <long name="proxy-Wrapping width">-1</long>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
@@ -26849,8 +26854,8 @@ to the base entry "</string>
                   <bool name="proxy-Hidden">0</bool>
                   <bool name="proxy-Enabled">1</bool>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                  <string name="proxy-Data variable">""</string>
-                  <string name="proxy-Data validator">""</string>
+                  <string name="proxy-Data variable">"m_lastAny"</string>
+                  <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
                   <string name="proxy-Data source">""</string>
                   <string name="proxy-Data class name">""</string>
                   <string name="proxy-Data class implementation filename">""</string>
@@ -26932,6 +26937,7 @@ to the base entry "</string>
                 <long name="title-mode">0</long>
                 <long name="locked">1</long>
                 <string name="proxy-type">"wbButtonProxy"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnOkClick|NONE||EditShortcut"</string>
                 <string name="proxy-Id name">"wxID_OK"</string>
                 <long name="proxy-Id value">5100</long>
                 <string name="proxy-Name">""</string>

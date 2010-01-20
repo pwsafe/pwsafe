@@ -1078,16 +1078,15 @@ void PasswordSafeFrame::FlattenTree(OrderedItemList& olist)
 // The logic is the same as DboxMain::OnContextMenu in src/ui/Windows/MainMenu.cpp
 void PasswordSafeFrame::OnContextMenu(CItemData* item)
 {
-  if (TREE == m_currentView && !item) {
+  if (item == NULL) {
     wxMenu groupEditMenu;
     groupEditMenu.Append(wxID_ADD, wxT("Add &Entry"));
     groupEditMenu.Append(ID_ADDGROUP, wxT("Add &Group"));
     groupEditMenu.Append(ID_RENAME, wxT("&Rename Group"));
     groupEditMenu.Append(wxID_DELETE, wxT("&Delete Group"));
-
-    m_tree->PopupMenu(&groupEditMenu);
-  }
-  else {
+    if (m_currentView == TREE)
+      m_tree->PopupMenu(&groupEditMenu);
+  } else {
     wxMenu itemEditMenu;
     itemEditMenu.Append(ID_COPYUSERNAME,   wxT("Copy &Username to Clipboard"));
     itemEditMenu.Append(ID_COPYPASSWORD,   wxT("&Copy Password to Clipboard"));
@@ -1298,9 +1297,10 @@ void PasswordSafeFrame::UpdateGUI(Command::GUI_Action ga,
   // XXX TBD
 }
     
-void PasswordSafeFrame::GUIRefreshEntry(const CItemData&)
+void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
 {
-  // XXX TBD
+  m_tree->UpdateItem(item);
+  m_grid->UpdateItem(item);
 }
 
 /*!

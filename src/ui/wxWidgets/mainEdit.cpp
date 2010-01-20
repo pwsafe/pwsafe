@@ -49,11 +49,10 @@ void PasswordSafeFrame::DoEdit(CItemData &item)
 {
   int rc = 0;
   if (!item.IsShortcut()) {
-    AddEditPropSheet editDbox(this, m_core, m_grid, m_tree,
-                              AddEditPropSheet::EDIT, &item);
+    AddEditPropSheet editDbox(this, m_core, AddEditPropSheet::EDIT, &item);
     rc = editDbox.ShowModal();
   } else {
-    EditShortcut editDbox(this);
+    EditShortcut editDbox(this, m_core, &item);
     rc = editDbox.ShowModal();
   }
   if (rc != 0)
@@ -68,8 +67,7 @@ void PasswordSafeFrame::DoEdit(CItemData &item)
 
 void PasswordSafeFrame::OnAddClick( wxCommandEvent& event )
 {
-  AddEditPropSheet addDbox(this, m_core, m_grid, m_tree,
-                           AddEditPropSheet::ADD);
+  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
     m_core.Execute(AddEntryCommand::Create(&m_core, item));
