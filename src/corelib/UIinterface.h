@@ -31,7 +31,7 @@ class UIInterFace {
   virtual void DatabaseModified(bool bChanged) = 0;
   // UpdateGUI - used by GUI if one or more entries have changed
   // and the entry/entries needs refreshing in GUI:
-  virtual void UpdateGUI(Command::GUI_Action ga,
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          uuid_array_t &entry_uuid,
                          CItemData::FieldType ft = CItemData::START,
                          bool bUpdateGUI = true) = 0;

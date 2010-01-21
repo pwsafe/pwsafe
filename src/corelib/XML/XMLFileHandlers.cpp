@@ -517,8 +517,9 @@ void XMLFileHandlers::AddEntries()
               GetPref(PWSprefs::MaintainDateTimeStamps);
   bool bIntoEmpty = m_pXMLcore->GetNumEntries() == 0;
 
-  Command *pcmd1 = UpdateGUICommand::Create(m_pXMLcore, Command::WN_UNDO,
-                                            Command::GUI_UNDO_IMPORT);
+  Command *pcmd1 = UpdateGUICommand::Create(m_pXMLcore,
+                                            UpdateGUICommand::WN_UNDO,
+                                            UpdateGUICommand::GUI_UNDO_IMPORT);
   m_pmulticmds->Add(pcmd1);
 
   for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
@@ -706,8 +707,9 @@ void XMLFileHandlers::AddEntries()
     m_pmulticmds->Add(pcmd);
     delete cur_entry;
   }
-    Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore, Command::WN_REDO,
-                                              Command::GUI_REDO_IMPORT);
+    Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore,
+                                              UpdateGUICommand::WN_REDO,
+                                              UpdateGUICommand::GUI_REDO_IMPORT);
   m_pmulticmds->Add(pcmd2);
 }
 

@@ -384,7 +384,7 @@ private:
 
   UIInterFace *m_pUIIF; // pointer to UI interface abtraction
   
-  void NotifyGUINeedsUpdating(Command::GUI_Action, uuid_array_t &,
+  void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, uuid_array_t &,
                               CItemData::FieldType ft = CItemData::START,
                               bool bUpdateGUI = true);
 

@@ -97,7 +97,7 @@ void DboxMain::DatabaseModified(bool bChanged)
   }
 }
 
-void DboxMain::UpdateGUI(Command::GUI_Action ga, 
+void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga, 
                          uuid_array_t &entry_uuid, CItemData::FieldType ft,
                          bool bUpdateGUI)
 {
@@ -117,37 +117,37 @@ void DboxMain::UpdateGUI(Command::GUI_Action ga,
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   switch (ga) {
-    case Command::GUI_UPDATE_STATUSBAR:
+    case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
       UpdateToolBarDoUndo();
       UpdateStatusBar();
       break;
-    case Command::GUI_ADD_ENTRY:
+    case UpdateGUICommand::GUI_ADD_ENTRY:
       AddToGUI(*pci);
       break;
-    case Command::GUI_DELETE_ENTRY:
+    case UpdateGUICommand::GUI_DELETE_ENTRY:
       RemoveFromGUI(*pci, bUpdateGUI);
       break;
-    case Command::GUI_REFRESH_ENTRYFIELD:
+    case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
       RefreshEntryFieldInGUI(*pci, ft);
       break;
-    case Command::GUI_REFRESH_ENTRYPASSWORD:
+    case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
       RefreshEntryPasswordInGUI(*pci);
       break;
-    case Command::GUI_REDO_IMPORT:
-    case Command::GUI_UNDO_IMPORT:
-    case Command::GUI_REDO_MERGESYNC:
-    case Command::GUI_UNDO_MERGESYNC:
+    case UpdateGUICommand::GUI_REDO_IMPORT:
+    case UpdateGUICommand::GUI_UNDO_IMPORT:
+    case UpdateGUICommand::GUI_REDO_MERGESYNC:
+    case UpdateGUICommand::GUI_UNDO_MERGESYNC:
       // During these processes, many entries may be added/removed
       // To stop the UI going nuts, updates to the UI are suspended until
       // the action is complete - when these calls are then sent
       RebuildGUI();
       break;
-    case Command::GUI_REFRESH_TREE:
+    case UpdateGUICommand::GUI_REFRESH_TREE:
       // Caused by Database preference changed about showing username and/or
       // passwords in the Tree View
       RebuildGUI(iTreeOnly);
       break;
-    case Command::GUI_DB_PREFERENCES_CHANGED:
+    case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
       // Change any impact on the application due to a database preference change
       // Currently - only Idle Timeout values
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);

@@ -940,8 +940,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   UUIDList possible_aliases, possible_shortcuts;
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
-  Command *pcmd1 = UpdateGUICommand::Create(this, Command::WN_UNDO,
-                                            Command::GUI_UNDO_IMPORT);
+  Command *pcmd1 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_UNDO,
+                                            UpdateGUICommand::GUI_UNDO_IMPORT);
   pmulticmds->Add(pcmd1);
 
   // Finished parsing header, go get the data!
@@ -1272,8 +1272,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
   pmulticmds->Add(pcmdS);
-  Command *pcmd2 = UpdateGUICommand::Create(this, Command::WN_REDO,
-                                            Command::GUI_REDO_IMPORT);
+  Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
+                                            UpdateGUICommand::GUI_REDO_IMPORT);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
 

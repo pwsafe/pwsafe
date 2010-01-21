@@ -1869,7 +1869,7 @@ void PWScore::NotifyDBModified()
 }
 
 
-void PWScore::NotifyGUINeedsUpdating(Command::GUI_Action ga, 
+void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga, 
                                      uuid_array_t &entry_uuid,
                                      CItemData::FieldType ft,
                                      bool bUpdateGUI)

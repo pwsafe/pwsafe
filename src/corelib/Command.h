@@ -44,29 +44,6 @@ public:
   void SetNoGUINotify() {m_bNotifyGUI = false;}
   void ResetSavedState(bool bNewDBState) {m_bSaveDBChanged = bNewDBState;}
 
-  enum GUI_Action {
-    GUI_UPDATE_STATUSBAR = 0,
-    GUI_ADD_ENTRY,
-    GUI_DELETE_ENTRY,
-    GUI_REFRESH_ENTRYFIELD,
-    GUI_REFRESH_ENTRYPASSWORD,
-    GUI_REDO_IMPORT,
-    GUI_UNDO_IMPORT,
-    GUI_REDO_MERGESYNC,
-    GUI_UNDO_MERGESYNC,
-    GUI_REFRESH_TREE,
-    GUI_DB_PREFERENCES_CHANGED,
-  };
-
-  enum ExecuteFn {
-    WN_INVALID = -1,
-    WN_ALL = 0,
-    WN_EXECUTE = 1,
-    WN_REDO = 2,
-    WN_EXECUTE_REDO = 3,
-    WN_UNDO = 4
-  };
-
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
   void SaveState();
@@ -83,32 +60,6 @@ protected:
   std::vector<StringX> m_saved_vnodes_modified;
 };
 
-// Derived MultiCommands class
-class AddEntryCommand; // silly fwd decl - move  MultiCommands to last?
-
-class MultiCommands : public Command
-{
-public:
-  static MultiCommands *Create(CommandInterface *pcomInt)
-  { return new MultiCommands(pcomInt); }
-  ~MultiCommands();
-  int Execute();
-  int Redo();
-  void Undo();
-
-  void Add(Command *pcmd);
-  bool Remove(Command *pcmd);
-  bool Remove();
-  bool GetRC(Command *pcmd, int &rc);
-  bool GetRC(const size_t ncmd, int &rc);
-  std::size_t GetSize() const {return m_vpcmds.size();}
-
- private:
-  MultiCommands(CommandInterface *pcomInt);
-  std::vector<Command *> m_vpcmds;
-  std::vector<int> m_vRCs;
-};
-
 // GUI related commands
 
 // Used mainly in MultiCommands to delay the GUI update until all the
@@ -119,19 +70,41 @@ public:
 class UpdateGUICommand : public Command
 {
 public:
+  enum ExecuteFn {
+    WN_INVALID = -1,
+    WN_ALL = 0,
+    WN_EXECUTE = 1,
+    WN_REDO = 2,
+    WN_EXECUTE_REDO = 3,
+    WN_UNDO = 4
+  };
+
+  enum GUI_Action {
+    GUI_UPDATE_STATUSBAR = 0,
+    GUI_ADD_ENTRY,
+    GUI_DELETE_ENTRY,
+    GUI_REFRESH_ENTRYFIELD,
+    GUI_REFRESH_ENTRYPASSWORD,
+    GUI_REDO_IMPORT,
+    GUI_UNDO_IMPORT,
+    GUI_REDO_MERGESYNC,
+    GUI_UNDO_MERGESYNC,
+    GUI_REFRESH_TREE,
+    GUI_DB_PREFERENCES_CHANGED,
+  };
+
   static UpdateGUICommand *Create(CommandInterface *pcomInt,
-                                  Command::ExecuteFn When,
-                                  GUI_Action ga)
+                                  ExecuteFn When, GUI_Action ga)
   { return new UpdateGUICommand(pcomInt, When, ga); }
   int Execute();
   int Redo();
   void Undo();
 
 private:
-  UpdateGUICommand(CommandInterface *pcomInt, Command::ExecuteFn When,
+  UpdateGUICommand(CommandInterface *pcomInt, ExecuteFn When,
                    GUI_Action ga);
-  ExecuteFn m_When;
-  GUI_Action m_ga;
+  const ExecuteFn m_When;
+  const GUI_Action m_ga;
 };
 
 // PWS related commands
@@ -384,6 +357,30 @@ private:
   int m_iAction;
   int m_new_default_max;
   SavePWHistoryMap m_mapSavedHistory;
+};
+
+// Derived MultiCommands class
+class MultiCommands : public Command
+{
+public:
+  static MultiCommands *Create(CommandInterface *pcomInt)
+  { return new MultiCommands(pcomInt); }
+  ~MultiCommands();
+  int Execute();
+  int Redo();
+  void Undo();
+
+  void Add(Command *pcmd);
+  bool Remove(Command *pcmd);
+  bool Remove();
+  bool GetRC(Command *pcmd, int &rc);
+  bool GetRC(const size_t ncmd, int &rc);
+  std::size_t GetSize() const {return m_vpcmds.size();}
+
+ private:
+  MultiCommands(CommandInterface *pcomInt);
+  std::vector<Command *> m_vpcmds;
+  std::vector<int> m_vRCs;
 };
 
 #endif
