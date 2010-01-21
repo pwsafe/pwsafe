@@ -250,32 +250,22 @@ public:
     bool DeserializePlainText(const std::vector<char> &v);
     bool SetField(int type, unsigned char *data, int len);
 
-    EntryType GetEntryType() const
-    {return m_entrytype;}
+    EntryType GetEntryType() const {return m_entrytype;}
 
-    bool IsNormal() const
-    {return (m_entrytype == ET_NORMAL);}
-    bool IsAliasBase() const
-    {return (m_entrytype == ET_ALIASBASE);}
-    bool IsShortcutBase() const
-    {return (m_entrytype == ET_SHORTCUTBASE);}
-    bool IsAlias() const
-    {return (m_entrytype == ET_ALIAS);}
-    bool IsShortcut() const
-    {return (m_entrytype == ET_SHORTCUT);}
+    bool IsNormal() const {return (m_entrytype == ET_NORMAL);}
+    bool IsAliasBase() const {return (m_entrytype == ET_ALIASBASE);}
+    bool IsShortcutBase() const {return (m_entrytype == ET_SHORTCUTBASE);}
+    bool IsAlias() const {return (m_entrytype == ET_ALIAS);}
+    bool IsShortcut() const {return (m_entrytype == ET_SHORTCUT);}
+    bool IsBase() const {return IsAliasBase() || IsShortcutBase();}
+    bool IsDependent() const {return IsAlias() || IsShortcut();}
 
-    void SetEntryType(CItemData::EntryType et)
-    {m_entrytype = et;}
-    void SetNormal()
-    {m_entrytype = ET_NORMAL;}
-    void SetAliasBase()
-    {m_entrytype = ET_ALIASBASE;}
-    void SetShortcutBase()
-    {m_entrytype = ET_SHORTCUTBASE;}
-    void SetAlias()
-    {m_entrytype = ET_ALIAS;}
-    void SetShortcut()
-    {m_entrytype = ET_SHORTCUT;}
+    void SetEntryType(EntryType et) {m_entrytype = et;}
+    void SetNormal() {m_entrytype = ET_NORMAL;}
+    void SetAliasBase() {m_entrytype = ET_ALIASBASE;}
+    void SetShortcutBase() {m_entrytype = ET_SHORTCUTBASE;}
+    void SetAlias() {m_entrytype = ET_ALIAS;}
+    void SetShortcut() {m_entrytype = ET_SHORTCUT;}
 
     EntryStatus GetStatus() const
     {return m_entrystatus;}

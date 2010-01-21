@@ -442,6 +442,12 @@ EditEntryCommand::EditEntryCommand(CommandInterface *pcomInt,
                                    const CItemData &new_ci)
   : Command(pcomInt), m_old_ci(old_ci), m_new_ci(new_ci)
 {
+  // We're only supposed to operate on entries
+  // with same uuids, and possibly different fields
+  uuid_array_t old_uuid, new_uuid;
+  m_old_ci.GetUUID(old_uuid);
+  m_new_ci.GetUUID(new_uuid);
+  ASSERT(CUUIDGen(old_uuid) == CUUIDGen(new_uuid));
 }
 
 EditEntryCommand::~EditEntryCommand()
@@ -455,33 +461,14 @@ int EditEntryCommand::Execute()
   if (m_pcomInt->IsReadOnly())
     return 0;
 
-  if (m_bNotifyGUI) {
-    uuid_array_t entry_uuid;
-    m_old_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid,
-                                      CItemData::END, false);
-  }
-
-  CItemData *pbase = NULL;
-  if (m_old_ci.IsShortcut() || m_old_ci.IsAlias())
-    pbase = m_pcomInt->GetBaseEntry(&m_old_ci);
-
-  m_pcomInt->DoDeleteEntry(m_old_ci);
-  m_pcomInt->DoAddEntry(m_new_ci);
-
-  if (pbase != NULL) {
-    uuid_array_t entry_uuid, base_uuid;
-    pbase->GetUUID(base_uuid);
-    m_new_ci.GetUUID(entry_uuid);
-    m_pcomInt->DoAddDependentEntry(base_uuid, entry_uuid, m_new_ci.GetEntryType());
-  }
+  m_pcomInt->DoReplaceEntry(m_old_ci, m_new_ci);
 
   m_pcomInt->AddChangedNodes(m_old_ci.GetGroup());
   m_pcomInt->AddChangedNodes(m_new_ci.GetGroup());
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_ADD_ENTRY, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYFIELD, entry_uuid);
   }
   m_bState = true;
   return 0;
@@ -498,31 +485,12 @@ void EditEntryCommand::Undo()
   if (m_pcomInt->IsReadOnly())
     return;
 
-  if (m_bNotifyGUI) {
-    uuid_array_t entry_uuid;
-    m_new_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid,
-                                      CItemData::END, false);
-  }
-
-  CItemData *pbase = NULL;
-  if (m_new_ci.IsShortcut() || m_new_ci.IsAlias())
-    pbase = m_pcomInt->GetBaseEntry(&m_new_ci);
-
-  m_pcomInt->DoDeleteEntry(m_new_ci);
-  m_pcomInt->DoAddEntry(m_old_ci);
-
-  if (pbase != NULL) {
-    uuid_array_t entry_uuid, base_uuid;
-    pbase->GetUUID(base_uuid);
-    m_old_ci.GetUUID(entry_uuid);
-    m_pcomInt->DoAddDependentEntry(base_uuid, entry_uuid, m_old_ci.GetEntryType());
-  }
+  m_pcomInt->DoReplaceEntry(m_new_ci, m_old_ci);
 
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_ADD_ENTRY, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYFIELD, entry_uuid);
   }
   RestoreState();
   m_bState = false;

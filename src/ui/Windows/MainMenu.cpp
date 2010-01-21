@@ -559,7 +559,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
    if (bItemSelected) {
      pci = getSelectedItem();
      ASSERT(pci != NULL);
-   }
+   } else
+     return; // pci == NULL
 
    CItemData::EntryType etype = pci->GetEntryType();
 

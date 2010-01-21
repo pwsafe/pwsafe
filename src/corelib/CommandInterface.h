@@ -37,6 +37,7 @@ class CommandInterface {
   // Command-specific methods
   virtual void DoAddEntry(const CItemData &item) = 0;
   virtual void DoDeleteEntry(const CItemData &item) = 0;
+  virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci) = 0;
 
   // General routines for aliases and shortcuts
   virtual void DoAddDependentEntry(const uuid_array_t &base_uuid,

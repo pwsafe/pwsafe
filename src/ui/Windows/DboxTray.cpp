@@ -94,7 +94,7 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
     return;
 
-  if (ci.IsAlias() || ci.IsShortcut())
+  if (ci.IsDependent())
     ci = *GetBaseEntry(&ci);
 
   const StringX cs_password = ci.GetPassword();

@@ -1653,7 +1653,7 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *pci)
     pDDObject->FromItem(*pci);
   }
 
-  if (pci->IsAlias() || pci->IsShortcut()) {
+  if (pci->IsDependent()) {
     // I'm an alias or shortcut; pass on ptr to my base item
     // to retrieve its group/title/user
     pDDObject->SetBaseItem(m_pDbx->GetBaseEntry(pci));
@@ -1870,7 +1870,7 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
   DWORD_PTR itemData = GetItemData(m_hitemDrag);
   CItemData *pci = (CItemData *)itemData;
 
-  if (pci->IsAlias() || pci->IsShortcut())
+  if (pci->IsDependent())
     pci = m_pDbx->GetBaseEntry(pci);
  
   CSecString cs_dragdata;

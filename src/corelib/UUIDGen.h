@@ -38,7 +38,10 @@ public:
   CUUIDGen(const StringX &s); // s is a hex string as returned by GetHexStr()
   ~CUUIDGen();
   void GetUUID(uuid_array_t &uuid_array) const;
-  StringX GetHexStr() const ; // e.g., "204012e6600f4e01a5eb515267cb0d50"
+  StringX GetHexStr() const; // e.g., "204012e6600f4e01a5eb515267cb0d50"
+  bool operator==(const CUUIDGen &that) const
+  { return std::memcmp(&this->uuid, &that.uuid, sizeof(uuid)) == 0; }
+  bool operator!=(const CUUIDGen &that) const { return !(*this == that); }
   // Following is for map<> compare function
   struct ltuuid {
     bool operator()(const CUUIDGen &u1, const CUUIDGen &u2) const

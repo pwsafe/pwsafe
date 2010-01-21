@@ -206,7 +206,6 @@ bool PWScore::ConfirmDelete(const CItemData *pci)
   return true;
 }
 
-
 void PWScore::DoDeleteEntry(const CItemData &item)
 {
   // Also "UndoAddEntry" !
@@ -250,6 +249,18 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     NotifyDBModified();
   } // pos != m_pwlist.end()
 }
+
+void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
+{
+  // Not sure if old_ci is actually needed - perhaps for
+  // edge cases where type changes?
+  // Assumes that old_uuid == new_uuid
+  uuid_array_t uuid;
+  old_ci.GetUUID(uuid);
+  m_pwlist[uuid] = new_ci;
+}
+
+
 
 void PWScore::ClearData(void)
 {
