@@ -1801,8 +1801,8 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
   bool bTitleRenamed(false);
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-  Command *pcmd1 = UpdateGUICommand::Create(&m_core, Command::WN_UNDO,
-                                            Command::GUI_UNDO_MERGESYNC);
+  Command *pcmd1 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
+                                            UpdateGUICommand::GUI_UNDO_MERGESYNC);
   pmulticmds->Add(pcmd1);
 
   ItemListConstIter otherPos;
@@ -2004,8 +2004,8 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     }
   }
 
-  Command *pcmd2 = UpdateGUICommand::Create(&m_core, Command::WN_REDO,
-                                            Command::GUI_REDO_MERGESYNC);
+  Command *pcmd2 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_REDO,
+                                            UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
       
@@ -2439,8 +2439,8 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   m_bsFields.reset(CItemData::RESERVED);
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-  Command *pcmd1 = UpdateGUICommand::Create(&m_core, Command::WN_UNDO,
-                                            Command::GUI_UNDO_MERGESYNC);
+  Command *pcmd1 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
+                                            UpdateGUICommand::GUI_UNDO_MERGESYNC);
   pmulticmds->Add(pcmd1);
 
   ItemListConstIter otherPos;
@@ -2523,8 +2523,8 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
     }
   }
 
-  Command *pcmd2 = UpdateGUICommand::Create(&m_core, Command::WN_REDO,
-                                            Command::GUI_REDO_MERGESYNC);
+  Command *pcmd2 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_REDO,
+                                            UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
       

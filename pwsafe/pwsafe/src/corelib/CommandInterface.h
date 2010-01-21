@@ -77,7 +77,7 @@ class CommandInterface {
   virtual const ItemMap &GetShortcuts2BaseMap() const = 0;
   virtual void SetShortcuts2BaseMap(const ItemMap &) = 0;
 
-  virtual void NotifyGUINeedsUpdating(Command::GUI_Action,
+  virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action,
                                       uuid_array_t &,
                                       CItemData::FieldType ft = CItemData::START,
                                       bool bUpdateGUI = true) = 0;

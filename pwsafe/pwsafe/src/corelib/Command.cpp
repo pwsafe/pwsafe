@@ -175,8 +175,7 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
 // ------------------------------------------------
 
 UpdateGUICommand::UpdateGUICommand(CommandInterface *pcomInt,
-                                   Command::ExecuteFn When,
-                                   Command::GUI_Action ga)
+                                   ExecuteFn When, GUI_Action ga)
   : Command(pcomInt), m_When(When), m_ga(ga)
 {
 }
@@ -184,8 +183,8 @@ UpdateGUICommand::UpdateGUICommand(CommandInterface *pcomInt,
 int UpdateGUICommand::Execute()
 {
   TRACE(L"UpdateGUICommand Execute\n");
-  if (m_When == Command::WN_EXECUTE || m_When == Command::WN_EXECUTE_REDO || 
-      m_When == Command::WN_ALL) {
+  if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
+      m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
   }
@@ -195,8 +194,8 @@ int UpdateGUICommand::Execute()
 int UpdateGUICommand::Redo()
 {
   TRACE(L"UpdateGUICommand Redo\n");
-  if (m_When == Command::WN_REDO || m_When == Command::WN_EXECUTE_REDO || 
-      m_When == Command::WN_ALL) {
+  if (m_When == WN_REDO || m_When == WN_EXECUTE_REDO || 
+      m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
   }
@@ -206,7 +205,7 @@ int UpdateGUICommand::Redo()
 void UpdateGUICommand::Undo()
 {
   TRACE(L"UpdateGUICommand Undo\n");
-  if (m_When == Command::WN_UNDO || m_When == Command::WN_ALL) {
+  if (m_When == WN_UNDO || m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
   }
@@ -233,7 +232,8 @@ int DBPrefsCommand::Execute()
 
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid = {'0'}; // dummy
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DB_PREFERENCES_CHANGED, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
+                                      entry_uuid);
   }
 
   m_bState = true;
@@ -255,7 +255,8 @@ void DBPrefsCommand::Undo()
 
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid = {'0'}; // dummy
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DB_PREFERENCES_CHANGED, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
+                                      entry_uuid);
   }
 
   m_bState = false;
@@ -291,7 +292,7 @@ int AddEntryCommand::Execute()
   m_pcomInt->DoAddEntry(m_ci);
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
-  if (m_ci.IsAlias() || m_ci.IsShortcut()) {
+  if (m_ci.IsDependent()) {
     uuid_array_t entry_uuid;
     m_ci.GetUUID(entry_uuid);
     m_pcomInt->DoAddDependentEntry(m_base_uuid, entry_uuid, m_ci.GetEntryType());
@@ -299,7 +300,8 @@ int AddEntryCommand::Execute()
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_ADD_ENTRY, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_ADD_ENTRY,
+                                      entry_uuid);
   }
   m_bState = true;
   return 0;
@@ -314,7 +316,7 @@ void AddEntryCommand::Undo()
 {
   DeleteEntryCommand dec(m_pcomInt, m_ci);
   dec.Execute();
-  if (m_ci.IsAlias() || m_ci.IsShortcut()) {
+  if (m_ci.IsDependent()) {
     uuid_array_t entry_uuid;
     m_ci.GetUUID(entry_uuid);
     m_pcomInt->DoRemoveDependentEntry(m_base_uuid, entry_uuid, m_ci.GetEntryType());
@@ -338,12 +340,12 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
     ci.GetUUID(uuid);
     // If ci is not a normal entry, gather the related entry
     // info for undo
-    if (ci.IsAlias() || ci.IsShortcut()) {
+    if (ci.IsDependent()) {
       // For aliases or shortcuts, we just need the uuid of the base entry
       const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
                              pcomInt->GetShortcuts2BaseMap());
       imap.find(CUUIDGen(uuid))->second.GetUUID(m_base_uuid);
-    } else if (ci.IsAliasBase() || ci.IsShortcutBase()) {
+    } else if (ci.IsBase()) {
       /**
        * When a shortcut base is deleted, we need to save all
        * the shortcuts referencing it, as they too are deleted.
@@ -363,7 +365,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
         if (itemIter != pcomInt->GetEntryEndIter())
           m_dependents.push_back(itemIter->second);
       } // for all dependents
-    } // IsAliasBase || IsShortcutBase
+    } // IsBase
   } // !IsNormal
 }
 
@@ -381,7 +383,8 @@ int DeleteEntryCommand::Execute()
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_DELETE_ENTRY, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
+                                      entry_uuid);
   }
 
   m_pcomInt->DoDeleteEntry(m_ci);
@@ -399,7 +402,7 @@ void DeleteEntryCommand::Undo()
 {
   uuid_array_t uuid;
   m_ci.GetUUID(uuid);
-  if (m_ci.IsShortcut() || m_ci.IsAlias()) {
+  if (m_ci.IsDependent()) {
     Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid);
     pcmd->Execute();
     delete pcmd;
@@ -468,7 +471,7 @@ int EditEntryCommand::Execute()
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYFIELD, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD, entry_uuid);
   }
   m_bState = true;
   return 0;
@@ -490,7 +493,7 @@ void EditEntryCommand::Undo()
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYFIELD, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD, entry_uuid);
   }
   RestoreState();
   m_bState = false;
@@ -539,7 +542,7 @@ int UpdateEntryCommand::Execute()
   Doit(m_entry_uuid, m_ftype, m_value, CItemData::ES_MODIFIED);
 
   if (m_bNotifyGUI)
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYFIELD,
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
                                       m_entry_uuid, m_ftype);
 
   m_bState = true;
@@ -560,7 +563,7 @@ void UpdateEntryCommand::Undo()
   RestoreState();
 
   if (m_bNotifyGUI)
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYFIELD,
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
                                       m_entry_uuid, m_ftype);
   m_bState = false;
 }
@@ -597,7 +600,7 @@ int UpdatePasswordCommand::Execute()
   }
 
   if (m_bNotifyGUI)
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYPASSWORD,
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
                                       m_entry_uuid);
 
   m_bState = true;
@@ -624,7 +627,7 @@ void UpdatePasswordCommand::Undo()
   RestoreState();
 
   if (m_bNotifyGUI)
-    m_pcomInt->NotifyGUINeedsUpdating(Command::GUI_REFRESH_ENTRYPASSWORD,
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD,
                                       m_entry_uuid);
   m_bState = false;
 }

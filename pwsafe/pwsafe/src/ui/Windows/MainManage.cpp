@@ -691,15 +691,17 @@ void DboxMain::OnOptions()
         bool bNeedGUITreeUpdate = bUserDisplayChanged || 
             ((display.m_showusernameintree == TRUE) && bPswdDisplayChanged);
         if (bNeedGUITreeUpdate) {
-          Command *pcmd = UpdateGUICommand::Create(&m_core, Command::WN_UNDO,
-                                          Command::GUI_REFRESH_TREE);
+          Command *pcmd = UpdateGUICommand::Create(&m_core,
+                                                   UpdateGUICommand::WN_UNDO,
+                                                   UpdateGUICommand::GUI_REFRESH_TREE);
           pmulticmds->Add(pcmd);
         }
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
         pmulticmds->Add(pcmd);
         if (bNeedGUITreeUpdate) {
-          Command *pcmd = UpdateGUICommand::Create(&m_core, Command::WN_EXECUTE_REDO,
-                                          Command::GUI_REFRESH_TREE);
+          Command *pcmd = UpdateGUICommand::Create(&m_core,
+                                                   UpdateGUICommand::WN_EXECUTE_REDO,
+                                          UpdateGUICommand::GUI_REFRESH_TREE);
           pmulticmds->Add(pcmd);
         }
       }
