@@ -50,7 +50,7 @@ CProperties::CProperties(const PWScore &core, CWnd* pParent /*=NULL*/)
       L"?" : core.GetHeader().m_lastsavedby.c_str();
     CString host = core.GetHeader().m_lastsavedon.empty() ?
       L"?" : core.GetHeader().m_lastsavedon.c_str();
-    m_wholastsaved.Format(L"%s on %s", user, host);
+    m_wholastsaved.Format(IDS_USERONHOST, user, host);
   }
 
   CString wls = core.GetHeader().m_whatlastsaved.c_str();
