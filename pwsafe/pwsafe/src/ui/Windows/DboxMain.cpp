@@ -1440,7 +1440,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 
   if (pci != NULL) {
     StringX sx_pswd = pci->GetPassword();
-    if (pci->IsShortcut() || pci->IsAlias()) {
+    if (pci->IsDependent()) {
       sx_pswd = GetBaseEntry(pci)->GetPassword();
     }
 

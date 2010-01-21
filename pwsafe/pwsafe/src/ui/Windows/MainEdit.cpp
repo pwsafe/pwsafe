@@ -140,8 +140,7 @@ void DboxMain::OnAdd()
 
     SortListView();
     m_ctlItemList.SetFocus();
-    if (prefs->GetPref(PWSprefs::SaveImmediately))
-      Save();
+    SetChanged(Data);
 
     ChangeOkUpdate();
     uuid_array_t uuid;
@@ -238,10 +237,7 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
     UpdateEntryImages(iter->second);
 
   m_ctlItemList.SetFocus();
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
-    Save();
-
+  SetChanged(Data);
   ChangeOkUpdate();
   m_RUEList.AddRUEntry(shortcut_uuid);
 }
@@ -512,13 +508,13 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   CItemData::EntryType entrytype = ci_original.GetEntryType();
 
   ci_original.GetUUID(original_uuid);  // Edit doesn't change this!
-  if (entrytype == CItemData::ET_ALIASBASE || entrytype == CItemData::ET_SHORTCUTBASE) {
-    // Base entry
+  if (ci_original.IsBase()) {
     UUIDList dependentslist;
     StringX csDependents(L"");
 
-    pcore->GetAllDependentEntries(original_uuid, dependentslist, 
-             entrytype == CItemData::ET_ALIASBASE ? CItemData::ET_ALIAS : CItemData::ET_SHORTCUT);
+    pcore->GetAllDependentEntries(original_uuid, dependentslist,
+                                  ci_original.IsAliasBase() ?
+                                  CItemData::ET_ALIAS : CItemData::ET_SHORTCUT);
     int num_dependents = dependentslist.size();
     if (num_dependents > 0) {
       m_core.SortDependents(dependentslist, csDependents);
@@ -528,13 +524,12 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     edit_entry_psh.SetOriginalEntrytype(entrytype);
     edit_entry_psh.SetDependents(csDependents);
     dependentslist.clear();
-  }
-
-  if (entrytype == CItemData::ET_ALIAS) {
-    // Alias entry
+  } else if (ci_original.IsAlias()) {
     // Get corresponding base entry
     CItemData *pbci = GetBaseEntry(&ci_original);
+    ASSERT(pbci != NULL);
     if (pbci != NULL) {
+      pbci->GetUUID(original_base_uuid);
       CSecString cs_base = L"[" +
                            pbci->GetGroup() + L":" +
                            pbci->GetTitle() + L":" +
@@ -542,27 +537,19 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
       edit_entry_psh.SetBase(cs_base);
       edit_entry_psh.SetOriginalEntrytype(CItemData::ET_ALIAS);
     }
-  }
+  } // IsAlias
 
   edit_entry_psh.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
   INT_PTR rc = edit_entry_psh.DoModal();
 
-  if (rc == IDOK && uicaller == IDS_EDITENTRY && 
-      edit_entry_psh.IsEntryModified()) {
+  if (rc == IDOK && uicaller == IDS_EDITENTRY && edit_entry_psh.IsEntryModified()) {
+    // Process user's chages.
+    // Most of the following code handles special cases of alias/shortcut/base
+    // But the common case is simply to replace the original entry
+    // with a new one having the edited values and the same uuid.
 
     MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-
-    // Out with the old, in with the new
-    ItemListIter listpos = Find(original_uuid);
-    ASSERT(listpos != pcore->GetEntryEndIter());
-    CItemData oldElem = GetEntryAt(listpos);
-    DisplayInfo *pdi = (DisplayInfo *)oldElem.GetDisplayInfo();
-    ASSERT(pdi != NULL);
-    // ci_edit's displayinfo will have been deleted if
-    // application "locked" (Cleared list)
-    DisplayInfo *pdi_new = new DisplayInfo;
-    ci_edit.SetDisplayInfo(pdi_new);
     StringX newPassword = ci_edit.GetPassword();
     memcpy(new_base_uuid, edit_entry_psh.GetBaseUUID(), sizeof(new_base_uuid));
 
@@ -581,11 +568,11 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
         ci_edit.SetPassword(newPassword);
         ci_edit.SetNormal();
       }
-    }
+    } // Normal entry, password changed
 
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_ALIAS) {
       // Original was an alias - delete it from multimap
-      // RemoveDependentEntry also resets base to normal if the last alias is delete
+      // RemoveDependentEntry also resets base to normal if no more dependents
       Command *pcmd = RemoveDependentEntryCommand::Create(pcore,
                                                           original_base_uuid,
                                                           original_uuid,
@@ -598,7 +585,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
                                                          original_uuid,
                                                          CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
-      } else {
+      } else { // Password changed
         // Password changed so might be an alias of another entry!
         // Could also be the same entry i.e. [:t:] == [t] !
         if (edit_entry_psh.GetIBasedata() > 0) { // Still an alias
@@ -608,13 +595,12 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
           pmulticmds->Add(pcmd);
           ci_edit.SetPassword(L"[Alias]");
           ci_edit.SetAlias();
-        } else {
-          // No longer an alias
+        } else { // No longer an alias
           ci_edit.SetPassword(newPassword);
           ci_edit.SetNormal();
         }
-      }
-    }
+      } // Password changed
+    } // Alias
 
     if (edit_entry_psh.GetOriginalEntrytype() == CItemData::ET_ALIASBASE &&
         ci_original.GetPassword() != newPassword) {
@@ -634,31 +620,25 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
                                                              new_base_uuid,
                                                              CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd2);
-      } else {
-        // Still a base entry but with a new password
+      } else { // Still a base entry but with a new password
         ci_edit.SetPassword(newPassword);
         ci_edit.SetAliasBase();
       }
-    }
+    } // AliasBase with password changed
 
-    // Reset all images!
-    // This entry's image will be set by DboxMain::InsertItemIntoGUITreeList
-
-    // Next the original base entry
+    // Update old base...
     iter = pcore->Find(original_base_uuid);
-    if (iter != End()) {
-      const CItemData &cibase = iter->second;
-      UpdateEntryImages(cibase);
-    }
+    if (iter != End())
+      UpdateEntryImages(iter->second);
 
-    // Last the new base entry (only if different to the one we have done!
-    if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
+    // ... and the new base entry (only if different from the old one)
+    if (CUUIDGen(new_base_uuid) != CUUIDGen(original_base_uuid)) {
       iter = pcore->Find(new_base_uuid);
       if (iter != End())
         UpdateEntryImages(iter->second);
     }
 
-    if (ci_edit.IsAlias() || ci_edit.IsShortcut()) {
+    if (ci_edit.IsDependent()) {
       ci_edit.SetXTime((time_t)0);
       ci_edit.SetPWPolicy(L"");
     }
@@ -668,23 +648,19 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
     Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
     pmulticmds->Add(pcmd);
     Execute(pmulticmds, pcore);
+    SetChanged(Data);
 
-    if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::SaveImmediately)) {
-        Save();
-    }
-
-    if (pdi_new->list_index >= 0) {
-      rc = SelectEntry(pdi_new->list_index);
-      if (rc == 0) {
-        SelectEntry(m_ctlItemList.GetItemCount() - 1);
-      }
-    }
     ChangeOkUpdate();
     // Order may have changed as a result of edit
     m_ctlItemTree.SortTree(TVI_ROOT);
     SortListView();
 
+    // reselect entry, wherever it may be
+    iter = m_core.Find(original_uuid);
+    if (iter != End()) {
+      DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+      SelectEntry(pdi->list_index);
+    }
     short sh_odca, sh_ndca;
     ci_original.GetDCA(sh_odca);
     ci_edit.GetDCA(sh_ndca);
@@ -747,10 +723,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
 
     Command *pcmd = EditEntryCommand::Create(pcore, ci_original, ci_edit);
     Execute(pcmd, pcore);
-
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-        Save();
-    }
+    SetChanged(Data);
 
     // DisplayInfo's copied and changed, get up-to-date version
     pdi_new = static_cast<DisplayInfo *>(pcore->GetEntry(pcore->Find(entry_uuid)).GetDisplayInfo());
@@ -806,7 +779,7 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetStatus(CItemData::ES_ADDED);
 
     Command *pcmd = NULL;
-    if (pci->IsAlias() || pci->IsShortcut()) {
+    if (pci->IsDependent()) {
       if (pci->IsAlias()) {
         ci2.SetAlias();
       } else { // shortcut
@@ -841,11 +814,8 @@ void DboxMain::OnDuplicateEntry()
 
     InsertItemIntoGUITreeList(m_core.GetEntry(iter));
     FixListIndexes();
+    SetChanged(Data);
 
-    if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::SaveImmediately)) {
-        Save();
-    }
     int rc = SelectEntry(pdi->list_index);
     if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
@@ -865,7 +835,7 @@ void DboxMain::OnDisplayPswdSubset()
 
   CItemData *pci_original(pci);
 
-  if (pci->IsAlias() || pci->IsShortcut())
+  if (pci->IsDependent())
     pci = GetBaseEntry(pci);
 
   CPasswordSubsetDlg DisplaySubsetDlg(this, pci);
@@ -1353,8 +1323,8 @@ void DboxMain::OnEditBaseEntry()
     if (pbci != NULL) {
        DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
        SelectEntry(pdi->list_index);
-       EditItem(pbci);
-       UpdateAccessTime(pci);
+       EditItem(pbci); // pbci may be invalid upon return!
+       UpdateAccessTime(GetBaseEntry(pci));
     }
   }
 }
@@ -1370,7 +1340,7 @@ void DboxMain::OnRunCommand()
   CItemData *pci_original(pci);
   StringX sx_pswd;
 
-  if (pci->IsAlias() || pci->IsShortcut())
+  if (pci->IsDependent())
     sx_pswd = GetBaseEntry(pci)->GetPassword();
   else
     sx_pswd = pci->GetPassword();
@@ -1602,11 +1572,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   }
   possible_shortcuts.clear();
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-    Save();
-    ChangeOkUpdate();
-  }
-
+  SetChanged(Data);
   FixListIndexes();
   RefreshViews();
 }

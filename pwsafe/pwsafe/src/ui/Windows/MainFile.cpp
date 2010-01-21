@@ -1758,6 +1758,7 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 
 void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
 {
+  // XXX Move to corelib
   CGeneralMsgBox gmb;
   const StringX &sx_Filename1 = m_core.GetCurFile();
 
@@ -1812,7 +1813,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     CItemData::EntryType et = otherItem.GetEntryType();
 
     // Handle Aliases and Shortcuts when processing their base entries
-    if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
+    if (otherItem.IsDependent())
       continue;
 
     if (m_subgroup_set == BST_CHECKED &&
