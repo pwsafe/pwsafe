@@ -269,7 +269,6 @@
 #define IDS_ADVANCED_DESELECTALL        5433
 #define IDS_NOFIELDSFORCOMPARE          5434
 #define IDS_ADVANCED                    5435
-#define IDS_UNKNOWNFIELDS               5436
 #define IDS_YES                         5437
 #define IDS_NO                          5438
 #define IDS_XMLUNKNFLDIGNORED           5439

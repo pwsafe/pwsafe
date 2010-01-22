@@ -186,14 +186,16 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
   SHFILEOPSTRUCT FIO = {0};
   //  FIO.pTo=NULL; // MUST be NULL
   FIO.wFunc = FO_DELETE;
-  FIO.fFlags = FOF_NOERRORUI|FOF_NOCONFIRMATION;
+  FIO.fFlags = FOF_NOERRORUI | FOF_NOCONFIRMATION;
 
   if (sSpecialFolder.Find(L'\0') != sSpecialFolder.GetLength()) {
     FIO.fFlags |= FOF_MULTIDESTFILES;
   }
+
   if (sSpecialFolder.Right(1)) {
     sSpecialFolder += L'\0';
   }
+
   FIO.pFrom = &*sSpecialFolder;
 
   int bD = SHFileOperation(&FIO);

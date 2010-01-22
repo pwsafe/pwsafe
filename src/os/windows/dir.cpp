@@ -9,16 +9,18 @@
 /**
  * \file Windows-specific implementation of dir.h
  */
+
 #include <afx.h>
 #include <Windows.h>
 #include "../dir.h"
 #include <direct.h>
+
 stringT pws_os::getexecdir()
 {
   // returns the directory part of ::GetModuleFileName()
   TCHAR acPath[MAX_PATH + 1];
 
-  if (GetModuleFileName( NULL, acPath, MAX_PATH + 1) != 0) {
+  if (GetModuleFileName(NULL, acPath, MAX_PATH + 1) != 0) {
     // guaranteed file name of at least one character after path '\'
     *(_tcsrchr(acPath, _T('\\')) + 1) = _T('\0');
   } else {
