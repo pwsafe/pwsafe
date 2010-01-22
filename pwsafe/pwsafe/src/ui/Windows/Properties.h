@@ -17,13 +17,22 @@ class CProperties : public CPWDialog
   DECLARE_DYNAMIC(CProperties)
 
 public:
-  CProperties(const PWScore &core,
+  CProperties(const st_DBProperties &st_dbp,
               CWnd* pParent = NULL);
   virtual ~CProperties();
 
+  afx_msg void OnOK();
+  virtual BOOL OnInitDialog();
+
   // Dialog Data
   enum { IDD = IDD_PROPERTIES };
- private:
+
+protected:
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+
+  DECLARE_MESSAGE_MAP()
+
+private:
   CString m_database;
   CString m_databaseformat;
   CString m_numgroups;
@@ -33,12 +42,4 @@ public:
   CString m_whatlastsaved;
   CString m_file_uuid;
   CString m_unknownfields;
-
-protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-  DECLARE_MESSAGE_MAP()
-public:
-  afx_msg void OnOK();
-  virtual BOOL OnInitDialog();
 };

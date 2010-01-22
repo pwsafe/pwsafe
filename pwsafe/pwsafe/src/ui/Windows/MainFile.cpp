@@ -1497,7 +1497,10 @@ void DboxMain::OnImportXML()
 
 void DboxMain::OnProperties()
 {
-  CProperties dlg(m_core);
+  st_DBProperties st_dbp;
+  m_core.GetDBProperties(st_dbp);
+
+  CProperties dlg(st_dbp);
 
   dlg.DoModal();
 }

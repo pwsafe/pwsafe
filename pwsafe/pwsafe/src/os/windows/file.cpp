@@ -111,7 +111,6 @@ void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
   }
 }
 
-
 /*
 * The file lock/unlock functions were first implemented (in 2.08)
 * with Posix semantics (using open(_O_CREATE|_O_EXCL) to detect

@@ -5,9 +5,11 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
 #include "os/env.h"
 #include "os/dir.h"
 #include "PWSdirs.h"
+
 /**
 * Provide directories used by application
 * The functions here return values that cause the application

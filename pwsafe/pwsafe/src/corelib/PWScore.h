@@ -40,6 +40,19 @@ struct BaseEntryParms {
   bool bMultipleEntriesFound;
 };
 
+// Formatted Database properties
+struct st_DBProperties {
+  StringX database;
+  StringX databaseformat;
+  StringX numgroups;
+  StringX numentries;
+  StringX whenlastsaved;
+  StringX wholastsaved;
+  StringX whatlastsaved;
+  StringX file_uuid;
+  StringX unknownfields;
+};
+
 class PWScore : public CommandInterface
 {
 public:
@@ -267,6 +280,7 @@ public:
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
+  void GetDBProperties(st_DBProperties &st_dbp);
   StringX &GetDBPreferences() {return m_hdr.m_prefString;}
 
   // Filters

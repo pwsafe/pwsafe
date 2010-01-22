@@ -212,6 +212,11 @@
 #define IDSC_IMPORT_ON_LINE             3376
 #define IDSC_IMPORT_ENTRY_ID            3377
 #define IDSC_FILEWRITEERROR             3378
+#define IDSC_YES                        3379
+#define IDSC_NO                         3380
+#define IDSC_NONE                       3381
+#define IDSC_USERONHOST                 3382
+#define IDSC_UNKNOWNFIELDS              3383
 
 #define IDSC_DELETEBASET                3400
 #define IDSC_DELETEABASE                3401

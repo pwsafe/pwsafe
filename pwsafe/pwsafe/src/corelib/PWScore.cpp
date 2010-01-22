@@ -541,7 +541,7 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
     unsigned int t_passkey_len = passkey.length();
     if (t_passkey_len != m_passkey_len) // trivial test
       return WRONG_PASSWORD;
-    int BlockLength = ((m_passkey_len + 7)/8)*8;
+    int BlockLength = ((m_passkey_len + 7) / 8) * 8;
     unsigned char *t_passkey = new unsigned char[BlockLength];
     LPCTSTR plaintext = LPCTSTR(passkey.c_str());
     EncryptPassword((const unsigned char *)plaintext, t_passkey_len, t_passkey);
@@ -586,7 +586,9 @@ int PWScore::ReadFile(const StringX &a_filename,
     PWSfile::VERSION tmp_version;  // only for getting compatible to "1.x" files
     tmp_version = m_ReadFileVersion;
     m_ReadFileVersion = PWSfile::V17;
-    in->Close();//Closing previously opened file
+
+    //Closing previously opened file
+    in->Close();
     in->SetCurVersion(PWSfile::V17);
     status = in->Open(a_passkey);
     if (status != PWSfile::SUCCESS) {
@@ -598,6 +600,7 @@ int PWScore::ReadFile(const StringX &a_filename,
     delete in;
     return CANT_OPEN_FILE;
   }
+
   if (m_ReadFileVersion == PWSfile::UNKNOWN_VERSION) {
     delete in;
     return UNKNOWN_VERSION;
@@ -722,7 +725,7 @@ int PWScore::ReadFile(const StringX &a_filename,
   int closeStatus = in->Close(); // in V3 this checks integrity
 #ifdef DEMO
   if (closeStatus == PWSfile::SUCCESS && limited)
-    closeStatus = PWScore::LIMIT_REACHED; // if integrity OK but LIMIT_REACHED, return latter
+    closeStatus = LIMIT_REACHED; // if integrity OK but LIMIT_REACHED, return latter
 #endif
   delete in;
 
@@ -2093,5 +2096,75 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
     if (listPos != m_pwlist.end()) {
       listPos->second.SetPWHistory(itr->second);
     }
+  }
+}
+
+void PWScore::GetDBProperties(st_DBProperties &st_dbp)
+{
+  st_dbp.database = GetCurFile();
+
+  Format(st_dbp.databaseformat, _T("%d.%02d"),
+                          m_hdr.m_nCurrentMajorVersion,
+                          m_hdr.m_nCurrentMinorVersion);
+
+  std::vector<std::wstring> aryGroups;
+  GetUniqueGroups(aryGroups);
+  Format(st_dbp.numgroups, _T("%d"), aryGroups.size());
+  Format(st_dbp.numentries, _T("%d"), GetNumEntries());
+
+  time_t twls = m_hdr.m_whenlastsaved;
+  if (twls == 0) {
+    LoadAString(st_dbp.whenlastsaved, IDSC_UNKNOWN);
+  } else {
+    st_dbp.whenlastsaved = PWSUtil::ConvertToDateTimeString(twls, TMC_EXPORT_IMPORT);
+  }
+
+  if (m_hdr.m_lastsavedby.empty() && m_hdr.m_lastsavedon.empty()) {
+    LoadAString(st_dbp.wholastsaved, IDSC_UNKNOWN);
+  } else {
+    stringT user = m_hdr.m_lastsavedby.empty() ?
+      L"?" : m_hdr.m_lastsavedby.c_str();
+    stringT host = m_hdr.m_lastsavedon.empty() ?
+      L"?" : m_hdr.m_lastsavedon.c_str();
+    Format(st_dbp.wholastsaved, IDSC_USERONHOST, user.c_str(), host.c_str());
+  }
+
+  if (m_hdr.m_whatlastsaved.empty()) {
+    LoadAString(st_dbp.whatlastsaved, IDSC_UNKNOWN);
+  } else
+    st_dbp.whatlastsaved = m_hdr.m_whatlastsaved;
+
+  uuid_array_t file_uuid_array, ref_uuid_array;
+  SecureZeroMemory(ref_uuid_array, sizeof(ref_uuid_array));
+  GetFileUUID(file_uuid_array);
+
+  if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
+    st_dbp.file_uuid = _T("N/A");
+  else {
+    ostringstreamT os;
+    CUUIDGen huuid(file_uuid_array, true); // true for canonical format
+    os << huuid;
+    st_dbp.file_uuid = os.str().c_str();
+  }
+
+  int num = GetNumRecordsWithUnknownFields();
+  if (num != 0 || HasHeaderUnknownFields()) {
+    StringX cs_Yes, cs_No, cs_HdrYesNo;
+    LoadAString(cs_Yes, IDSC_YES);
+    LoadAString(cs_No, IDSC_NO);
+    cs_HdrYesNo = HasHeaderUnknownFields() ? cs_Yes : cs_No;
+
+    Format(st_dbp.unknownfields, IDSC_UNKNOWNFIELDS, cs_HdrYesNo);
+    if (num == 0) {
+      st_dbp.unknownfields += cs_No;
+      st_dbp.unknownfields += _T(")");
+    } else {
+      StringX wls;
+      Format(wls, L"%d", num);
+      st_dbp.unknownfields += wls;
+      st_dbp.unknownfields += _T(")");
+    }
+  } else {
+    LoadAString(st_dbp.unknownfields, IDSC_NONE);
   }
 }

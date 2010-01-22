@@ -449,6 +449,7 @@ const TCHAR *PWSUtil::GetTimeStamp()
   ostringstreamT os;
   os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
      << (unsigned int)timebuffer.millitm;
+
   static stringT retval = os.str();
   return retval.c_str();
 }
