@@ -570,4 +570,3 @@
 #define IDS_SYNCHCOMPLETED              5752
 #define IDS_PICKSYNCHRONIZEEFILE        5753
 #define IDS_OPEN                        5754
-#define IDS_USERONHOST                  5755
