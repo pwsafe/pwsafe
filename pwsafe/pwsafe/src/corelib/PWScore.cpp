@@ -296,8 +296,9 @@ void PWScore::ReInit(bool bNewFile)
     m_ReadFileVersion = PWSfile::NEWFILE;
   else
     m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
+
   if (m_passkey_len > 0) {
-    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    trashMemory(m_passkey, ((m_passkey_len + 7) / 8) * 8);
     delete[] m_passkey;
     m_passkey = NULL;
     m_passkey_len = 0;
@@ -564,6 +565,7 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
       return status; // should never happen
   }
 }
+
 #define MRE_FS _T("\xbb")
 
 int PWScore::ReadFile(const StringX &a_filename,
@@ -2101,7 +2103,7 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
 
 void PWScore::GetDBProperties(st_DBProperties &st_dbp)
 {
-  st_dbp.database = GetCurFile();
+  st_dbp.database = m_currfile;
 
   Format(st_dbp.databaseformat, _T("%d.%02d"),
                           m_hdr.m_nCurrentMajorVersion,
@@ -2110,7 +2112,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   std::vector<std::wstring> aryGroups;
   GetUniqueGroups(aryGroups);
   Format(st_dbp.numgroups, _T("%d"), aryGroups.size());
-  Format(st_dbp.numentries, _T("%d"), GetNumEntries());
+  Format(st_dbp.numentries, _T("%d"), m_pwlist.size());
 
   time_t twls = m_hdr.m_whenlastsaved;
   if (twls == 0) {
@@ -2122,10 +2124,10 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   if (m_hdr.m_lastsavedby.empty() && m_hdr.m_lastsavedon.empty()) {
     LoadAString(st_dbp.wholastsaved, IDSC_UNKNOWN);
   } else {
-    stringT user = m_hdr.m_lastsavedby.empty() ?
-      L"?" : m_hdr.m_lastsavedby.c_str();
-    stringT host = m_hdr.m_lastsavedon.empty() ?
-      L"?" : m_hdr.m_lastsavedon.c_str();
+    StringX user = m_hdr.m_lastsavedby.empty() ?
+                          _T("?") : m_hdr.m_lastsavedby.c_str();
+    StringX host = m_hdr.m_lastsavedon.empty() ?
+                          _T("?") : m_hdr.m_lastsavedon.c_str();
     Format(st_dbp.wholastsaved, IDSC_USERONHOST, user.c_str(), host.c_str());
   }
 
@@ -2135,8 +2137,8 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
     st_dbp.whatlastsaved = m_hdr.m_whatlastsaved;
 
   uuid_array_t file_uuid_array, ref_uuid_array;
-  SecureZeroMemory(ref_uuid_array, sizeof(ref_uuid_array));
-  GetFileUUID(file_uuid_array);
+  memset(ref_uuid_array, 0, sizeof(ref_uuid_array));
+  memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(file_uuid_array));
 
   if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
     st_dbp.file_uuid = _T("N/A");
@@ -2147,12 +2149,12 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
     st_dbp.file_uuid = os.str().c_str();
   }
 
-  int num = GetNumRecordsWithUnknownFields();
-  if (num != 0 || HasHeaderUnknownFields()) {
+  int num = m_nRecordsWithUnknownFields;
+  if (num != 0 || !m_UHFL.empty()) {
     StringX cs_Yes, cs_No, cs_HdrYesNo;
     LoadAString(cs_Yes, IDSC_YES);
     LoadAString(cs_No, IDSC_NO);
-    cs_HdrYesNo = HasHeaderUnknownFields() ? cs_Yes : cs_No;
+    cs_HdrYesNo = m_UHFL.empty() ? cs_No : cs_Yes;
 
     Format(st_dbp.unknownfields, IDSC_UNKNOWNFIELDS, cs_HdrYesNo);
     if (num == 0) {
@@ -2160,7 +2162,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
       st_dbp.unknownfields += _T(")");
     } else {
       StringX wls;
-      Format(wls, L"%d", num);
+      Format(wls, _T("%d"), num);
       st_dbp.unknownfields += wls;
       st_dbp.unknownfields += _T(")");
     }
