@@ -294,6 +294,11 @@ msgstr "%s 文件输入: %s"
 msgid "%s is a directory"
 msgstr "%s 是一个目录！"
 
+#. Resource IDs: (212)
+#, c-format
+msgid "%s on %s"
+msgstr ""
+
 #. Resource IDs: (204)
 #, c-format
 msgid "%s%s%s_Report.txt"
@@ -554,6 +559,10 @@ msgstr "否(&N)"
 msgid "&Notes:"
 msgstr "备注(&N):"
 
+#. Resource IDs: (360)
+msgid "&Open"
+msgstr ""
+
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
 msgstr "打开其它数据库(&O)..."
@@ -653,6 +662,10 @@ msgstr "显示(&S)"
 #. Resource IDs: (1090)
 msgid "&Size:"
 msgstr "大小(&S):"
+
+#. Resource IDs: (32128)
+msgid "&Synchronize"
+msgstr ""
 
 #. Resource IDs: (1351, 65535)
 msgid "&Title:"
@@ -1070,6 +1083,10 @@ msgstr "<b><font color=\"red\">不能读取服务器版本数据！</font></b>"
 msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
 msgstr "<b><font color=\"red\">未能连接服务器！</font></b>"
 
+#. Resource IDs: (360)
+msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.\r\n\r\nThe OK button on the password entry dialog for your input database will not be enabled <b> until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
+msgstr ""
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1170,6 +1187,10 @@ msgstr "高级附加合并"
 msgid "Advanced Merge Options"
 msgstr "高级合并选项"
 
+#. Resource IDs: (360)
+msgid "Advanced Synchronize Options"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "Advanced Text Export Options"
 msgstr "高级文本输出选项"
@@ -1185,10 +1206,6 @@ msgstr "高级..."
 #. Resource IDs: (514)
 msgid "Albanian"
 msgstr ""
-
-#. Resource IDs: (205)
-msgid "Alias"
-msgstr "别名"
 
 #. Resource IDs: (3841)
 msgid "All Files (*.*)"
@@ -1587,6 +1604,10 @@ msgstr "更改保险箱密码"
 #. Resource IDs: (319)
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
 msgstr "如果当前存储数量较少，更改当前项目保存历史密码数量到新的最大值；对于已经保存大于该新建值的项目历史密码将保留不更改！"
+
+#. Resource IDs: (1187)
+msgid "Changes to existing entries will be applied on pressing OK"
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -2392,6 +2413,10 @@ msgstr "在一个历史密码子字段起始位置错误 %d (在历史密码字�
 msgid "Error parsing Run Command"
 msgstr "错误分析运行命令"
 
+#. Resource IDs: (212)
+msgid "Error while writing file! Try saving in a different location"
+msgstr ""
+
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
 msgstr "错误: 该文件名称已经存在！"
@@ -2511,10 +2536,6 @@ msgstr "文件正在使用！"
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "文件读取错误！"
-
-#. Resource IDs: (333)
-msgid "File Write Error"
-msgstr "文件写入错误！"
 
 #. Resource IDs: (189)
 #, c-format
@@ -2652,6 +2673,14 @@ msgstr ""
 
 #. Resource IDs: (1025)
 msgid "Generate"
+msgstr ""
+
+#. Resource IDs: (32157)
+msgid "Generate &Password"
+msgstr ""
+
+#. Resource IDs: (359)
+msgid "Generate Password"
 msgstr ""
 
 #. Resource IDs: (1052)
@@ -2902,12 +2931,24 @@ msgstr ""
 msgid "ID:32080:VAC +R"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32082; 'Undo'
+msgid "ID:32082:V C +Z"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32083; 'Redo'
+msgid "ID:32083:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar'
 msgid "ID:32108:V C +F"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32157; 'Generate &Password'
+msgid "ID:32157:V C +P"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
@@ -3552,6 +3593,10 @@ msgstr "未选定需要比较的字段！"
 msgid "No fields selected to filter the display!"
 msgstr "未选定需要显示的筛选字段！"
 
+#. Resource IDs: (360)
+msgid "No fields selected to synchornize!"
+msgstr ""
+
 #. Resource IDs: (330)
 msgid "No function selected for basing your restrictions."
 msgstr "未选定基于你需要限定的函数！"
@@ -3802,6 +3847,10 @@ msgstr "密码失效间隔"
 msgid "Password Expiry Interval\t"
 msgstr "密码失效间隔\t"
 
+#. Resource IDs: (360)
+msgid "Password Generated based on displayed policy"
+msgstr ""
+
 #. Resource IDs: (120, 140, 340, 350)
 msgid "Password History"
 msgstr "历史密码"
@@ -3957,12 +4006,16 @@ msgid "Please Choose a Database to Compare with current open database"
 msgstr "请选定一个数据库和当前打开数据库相比较"
 
 #. Resource IDs: (335)
-msgid "Please Choose a Database to Merge"
-msgstr "请选定一个数据库合并"
+msgid "Please Choose a Database to Merge into current database"
+msgstr ""
 
 #. Resource IDs: (333)
 msgid "Please Choose a Database to Open:"
 msgstr "请选定打开一个数据库"
+
+#. Resource IDs: (360)
+msgid "Please Choose a Database to Synchonize with current database"
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please Choose a KeePass Text File to Import"
@@ -4246,6 +4299,10 @@ msgstr "重复"
 msgid "Recurring (%d days)"
 msgstr "重复 (%d 天)"
 
+#. Resource IDs: (32083)
+msgid "Redo"
+msgstr ""
+
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "记住最后"
@@ -4295,6 +4352,10 @@ msgstr "忽略保留快捷方式 '%s' 。"
 #. Resource IDs: (1368)
 msgid "Reset All"
 msgstr "全部重置"
+
+#. Resource IDs: (32215)
+msgid "Reset Column Width"
+msgstr ""
 
 #. Resource IDs: (32211)
 msgid "Reset Columns"
@@ -4379,6 +4440,10 @@ msgstr "S"
 
 #. Resource IDs: (1119)
 msgid "S&et"
+msgstr ""
+
+#. Resource IDs: (32022)
+msgid "S&ynchronize..."
 msgstr ""
 
 #. Resource IDs: (192)
@@ -4649,10 +4714,6 @@ msgstr ""
 msgid "Shift+click to view current policy"
 msgstr "Shift+单击查看当前策略"
 
-#. Resource IDs: (205)
-msgid "Shortcut"
-msgstr "快捷方式"
-
 #. Resource IDs: (356)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
@@ -4851,6 +4912,15 @@ msgstr ""
 msgid "Swiss German"
 msgstr ""
 
+#. Resource IDs: (360)
+msgid "Synchronize"
+msgstr ""
+
+#. Resource IDs: (360)
+#, c-format
+msgid "Synchronizing from database: %s\r\n"
+msgstr ""
+
 #. Resource IDs: (143)
 msgid "System"
 msgstr "系统"
@@ -5020,6 +5090,11 @@ msgstr "原始数据库 “%s” 为 3.0 版本之前的旧格式，它将不被
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr "原始数据库 “%s” 为 3.0 版本之前的旧格式，该数据库将立刻被写入更改成新格式；该数据库将不可再用于旧版本的本应用程序。需要保存你的更改为旧格式，请使用“文件->输出->旧版本(v1.x 或 v2)格式”命令。"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "The password \"%s\" has been copied to the clipboard."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format
@@ -5325,6 +5400,10 @@ msgstr "不能写入到 %1，它为只读属性或已打开在其它地方！"
 msgid "Uncheck"
 msgstr "不校验"
 
+#. Resource IDs: (32082)
+msgid "Undo"
+msgstr ""
+
 #. Resource IDs: (209)
 msgid "Unexpected element: Only one field allowed per filter entry."
 msgstr "意外元素: 只有一个字段允许通过项目筛选！"
@@ -5609,6 +5688,14 @@ msgstr "添加与编辑备注时自动换行"
 msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
 msgstr "你是否愿意设定“%s”为你的默认用户名？\n\n它将在每次你添加一个新项目时自动插入在对话中！"
 
+#. Resource IDs: (333)
+msgid "Write Error"
+msgstr ""
+
+#. Resource IDs: (359)
+msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
+msgstr ""
+
 #. Resource IDs: (320)
 msgid "Write when an entry was accessed in the database. Ignored in read-only mode."
 msgstr "记录访问数据库项目的最后时间，只读模式将被忽略"
@@ -5636,6 +5723,10 @@ msgstr "XML 文件 (*.xml)|*.xml||"
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
+msgstr ""
+
+#. Resource IDs: (212)
+msgid "Yes"
 msgstr ""
 
 #. Resource IDs: (1084)
@@ -5784,6 +5875,10 @@ msgstr "\n查找下一个"
 msgid "\nFind Previous"
 msgstr "\n查找上一个"
 
+#. Resource IDs: (2010)
+msgid "\nGenerate Password"
+msgstr ""
+
 #. Resource IDs: (2005)
 msgid "\nGo to Base entry"
 msgstr "\n转到基础项目"
@@ -5836,6 +5931,10 @@ msgstr "\n请尝试其它"
 msgid "\nProgram will terminate."
 msgstr "\n程序将终止"
 
+#. Resource IDs: (2006)
+msgid "\nRedo"
+msgstr ""
+
 #. Resource IDs: (2005)
 msgid "\nRun Command"
 msgstr "\n运行命令"
@@ -5864,6 +5963,14 @@ msgstr "\n显示查找工具栏"
 msgid "\nShow Unsaved Changes"
 msgstr ""
 
+#. Resource IDs: (2002)
+msgid "\nSynchronize databases"
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nUndo"
+msgstr ""
+
 #. Resource IDs: (192)
 msgid "\nUnexpected exception during parsing."
 msgstr "\n分析期间意外事故！"
@@ -5877,8 +5984,8 @@ msgid "\nView Reports"
 msgstr "\n查看报告"
 
 #. Resource IDs: (328)
-msgid "\n\nCannot open database. It probably does not exist.\nA new database will be created."
-msgstr "\n\n不能打开数据库，它可能不存在，一个新数据库将被创建！"
+msgid "\n\nCannot open database. It probably does not exist.\nPlease select to Open another database, create a New database or Cancel."
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "\n\nIgnore this and save anyway - Yes/no?"
@@ -5895,6 +6002,16 @@ msgstr "\n\n未知字段将同样被复制在项目中！"
 #. Resource IDs: (335)
 #, c-format
 msgid "\r\nMerge completed: %d %s added\r\n(%d %s, %d %s, %d %s)"
+msgstr ""
+
+#. Resource IDs: (360)
+#, c-format
+msgid "\r\nSynchronize completed: %d %s updated"
+msgstr ""
+
+#. Resource IDs: (360)
+#, c-format
+msgid "\r\nThe following %s %s updated:"
 msgstr ""
 
 #. Resource IDs: (357)

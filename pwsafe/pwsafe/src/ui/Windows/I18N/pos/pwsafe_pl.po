@@ -302,6 +302,11 @@ msgstr "Zaimportowano plik %s: %s"
 msgid "%s is a directory"
 msgstr "%s jest katalogiem"
 
+#. Resource IDs: (212)
+#, c-format
+msgid "%s on %s"
+msgstr ""
+
 #. Resource IDs: (204)
 #, c-format
 msgid "%s%s%s_Report.txt"
@@ -563,6 +568,10 @@ msgstr "&Nie"
 msgid "&Notes:"
 msgstr "&Notatki:"
 
+#. Resource IDs: (360)
+msgid "&Open"
+msgstr ""
+
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
 msgstr "&Otwórz Inną Bazę Danych"
@@ -663,6 +672,10 @@ msgstr "&Pokaż"
 #. Resource IDs: (1090)
 msgid "&Size:"
 msgstr "&Wielkość"
+
+#. Resource IDs: (32128)
+msgid "&Synchronize"
+msgstr ""
 
 #. Resource IDs: (1351, 65535)
 msgid "&Title:"
@@ -1082,6 +1095,10 @@ msgstr "<b><font color=\"red\">Nie można odczytać danych o wersji z serwera</f
 msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
 msgstr "<b><font color=\"red\">Nie można połączyć się z serwerem.</font></b>"
 
+#. Resource IDs: (360)
+msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.\r\n\r\nThe OK button on the password entry dialog for your input database will not be enabled <b> until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
+msgstr ""
+
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1185,6 +1202,10 @@ msgstr "Zaawansowane Scalanie"
 msgid "Advanced Merge Options"
 msgstr "Zaawansowane Opcje Scalania"
 
+#. Resource IDs: (360)
+msgid "Advanced Synchronize Options"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "Advanced Text Export Options"
 msgstr "Opcje zaawansowanego eksportu tekstowego"
@@ -1200,10 +1221,6 @@ msgstr "Zaawansowane..."
 #. Resource IDs: (514)
 msgid "Albanian"
 msgstr ""
-
-#. Resource IDs: (205)
-msgid "Alias"
-msgstr "Alias"
 
 #. Resource IDs: (3841)
 msgid "All Files (*.*)"
@@ -1611,6 +1628,10 @@ msgstr "Zmień Hasło"
 #. Resource IDs: (319)
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
 msgstr "Zmień maksymalną liczbę zapisanych haseł dla wpisów aktualnie zapisujących historię haseł do nowego maksimum jeśli aktualnie zapisują mniej.\n\nWpisy z większą liczbą niż nowe maksimum pozostaną niezmienione."
+
+#. Resource IDs: (1187)
+msgid "Changes to existing entries will be applied on pressing OK"
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -2436,6 +2457,10 @@ msgstr "Błąd w pod-polu Historii Haseł na pozycji %d (w polu Historii):"
 msgid "Error parsing Run Command"
 msgstr ""
 
+#. Resource IDs: (212)
+msgid "Error while writing file! Try saving in a different location"
+msgstr ""
+
 #. Resource IDs: (204)
 msgid "Error: A file with this name already exists"
 msgstr "Błąd: Plik o tej samej nazwie już istnieje"
@@ -2559,10 +2584,6 @@ msgstr "Plik jest używany"
 #. Resource IDs: (333)
 msgid "File Read Error"
 msgstr "Błąd odczytu pliku"
-
-#. Resource IDs: (333)
-msgid "File Write Error"
-msgstr "Błąd zapisu pliku"
 
 #. Resource IDs: (189)
 #, c-format
@@ -2705,6 +2726,14 @@ msgstr ""
 
 #. Resource IDs: (1025)
 msgid "Generate"
+msgstr ""
+
+#. Resource IDs: (32157)
+msgid "Generate &Password"
+msgstr ""
+
+#. Resource IDs: (359)
+msgid "Generate Password"
 msgstr ""
 
 #. Resource IDs: (1052)
@@ -2959,12 +2988,24 @@ msgstr ""
 msgid "ID:32080:VAC +R"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32082; 'Undo'
+msgid "ID:32082:V C +Z"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32083; 'Redo'
+msgid "ID:32083:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32157; 'Generate &Password'
+msgid "ID:32157:V C +P"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
@@ -3622,6 +3663,10 @@ msgstr "Nie zaznaczono pól do porównania!"
 msgid "No fields selected to filter the display!"
 msgstr "Nie zaznaczono pól do filtrowania"
 
+#. Resource IDs: (360)
+msgid "No fields selected to synchornize!"
+msgstr ""
+
 #. Resource IDs: (330)
 #, fuzzy
 msgid "No function selected for basing your restrictions."
@@ -3883,6 +3928,10 @@ msgstr "Przedział wygasania Haseł"
 msgid "Password Expiry Interval\t"
 msgstr "Przedział wygasania Haseł\t"
 
+#. Resource IDs: (360)
+msgid "Password Generated based on displayed policy"
+msgstr ""
+
 #. Resource IDs: (120, 140, 340, 350)
 msgid "Password History"
 msgstr "Historia Haseł"
@@ -4040,12 +4089,16 @@ msgid "Please Choose a Database to Compare with current open database"
 msgstr "Wybierz Bazę danych do porównania z bieżącą bazą danych"
 
 #. Resource IDs: (335)
-msgid "Please Choose a Database to Merge"
-msgstr "Wybierz bazę danych do połączenia"
+msgid "Please Choose a Database to Merge into current database"
+msgstr ""
 
 #. Resource IDs: (333)
 msgid "Please Choose a Database to Open:"
 msgstr "Wybierz bazę danych do otwarcia:"
+
+#. Resource IDs: (360)
+msgid "Please Choose a Database to Synchonize with current database"
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please Choose a KeePass Text File to Import"
@@ -4335,6 +4388,10 @@ msgstr "Okresowy"
 msgid "Recurring (%d days)"
 msgstr "Okresowy (%d dni)"
 
+#. Resource IDs: (32083)
+msgid "Redo"
+msgstr ""
+
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "Pamiętaj ostatnie"
@@ -4383,6 +4440,10 @@ msgstr ""
 
 #. Resource IDs: (1368)
 msgid "Reset All"
+msgstr ""
+
+#. Resource IDs: (32215)
+msgid "Reset Column Width"
 msgstr ""
 
 #. Resource IDs: (32211)
@@ -4468,6 +4529,10 @@ msgstr "S"
 
 #. Resource IDs: (1119)
 msgid "S&et"
+msgstr ""
+
+#. Resource IDs: (32022)
+msgid "S&ynchronize..."
 msgstr ""
 
 #. Resource IDs: (192)
@@ -4743,10 +4808,6 @@ msgstr ""
 msgid "Shift+click to view current policy"
 msgstr "Shift+klik żeby zobaczyć bieżące ustawienia"
 
-#. Resource IDs: (205)
-msgid "Shortcut"
-msgstr "Skrót"
-
 #. Resource IDs: (356)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
@@ -4947,6 +5008,15 @@ msgstr ""
 msgid "Swiss German"
 msgstr ""
 
+#. Resource IDs: (360)
+msgid "Synchronize"
+msgstr ""
+
+#. Resource IDs: (360)
+#, c-format
+msgid "Synchronizing from database: %s\r\n"
+msgstr ""
+
 #. Resource IDs: (143)
 msgid "System"
 msgstr "System"
@@ -5118,6 +5188,11 @@ msgstr "Oryginalna baza danych, \"%s\", jest w formacie przed-3.0. Pozostanie ni
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr "Oryginalna baza danych, \"%s\", jest w formacie przed-3.0. Dane zostaną zapisane w nowym formacie, którego nie używają starsze wersje PasswordSafe. Żeby zapisać dane w starym formacie użyj menu \"Plik->Eksportuj do-> Stary (1.x or 2) format\"."
+
+#. Resource IDs: (360)
+#, c-format
+msgid "The password \"%s\" has been copied to the clipboard."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format
@@ -5426,6 +5501,10 @@ msgstr "Niemożliwy zapis do %1, plik tylko do odczytu lub otwarty przez kogoś 
 msgid "Uncheck"
 msgstr "Odznacz"
 
+#. Resource IDs: (32082)
+msgid "Undo"
+msgstr ""
+
 #. Resource IDs: (209)
 msgid "Unexpected element: Only one field allowed per filter entry."
 msgstr ""
@@ -5713,6 +5792,14 @@ msgstr ""
 msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
 msgstr "Czy chcesz ustawić \"%s\" jako domyślną nazwę użytkownika?\n\nNazwa użytkownika byłaby automatycznie uzupełniana przy dodawaniu nowego wpisu."
 
+#. Resource IDs: (333)
+msgid "Write Error"
+msgstr ""
+
+#. Resource IDs: (359)
+msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
+msgstr ""
+
 #. Resource IDs: (320)
 #, fuzzy
 msgid "Write when an entry was accessed in the database. Ignored in read-only mode."
@@ -5741,6 +5828,10 @@ msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
+msgstr ""
+
+#. Resource IDs: (212)
+msgid "Yes"
 msgstr ""
 
 #. Resource IDs: (1084)
@@ -5893,6 +5984,10 @@ msgstr ""
 msgid "\nFind Previous"
 msgstr ""
 
+#. Resource IDs: (2010)
+msgid "\nGenerate Password"
+msgstr ""
+
 #. Resource IDs: (2005)
 msgid "\nGo to Base entry"
 msgstr ""
@@ -5946,6 +6041,10 @@ msgstr "\nWybierz inny"
 msgid "\nProgram will terminate."
 msgstr "\nProgram zakończy działanie."
 
+#. Resource IDs: (2006)
+msgid "\nRedo"
+msgstr ""
+
 #. Resource IDs: (2005)
 msgid "\nRun Command"
 msgstr ""
@@ -5975,6 +6074,14 @@ msgstr ""
 msgid "\nShow Unsaved Changes"
 msgstr ""
 
+#. Resource IDs: (2002)
+msgid "\nSynchronize databases"
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nUndo"
+msgstr ""
+
 #. Resource IDs: (192)
 msgid "\nUnexpected exception during parsing."
 msgstr "\nNieoczekiwany wyjątek podczas parsowania."
@@ -5989,8 +6096,8 @@ msgid "\nView Reports"
 msgstr "\nPokaż Raporty"
 
 #. Resource IDs: (328)
-msgid "\n\nCannot open database. It probably does not exist.\nA new database will be created."
-msgstr "\n\nNie można otworzyć bazy danych. Prawdopodobnie nie istnieje.\nNowa baza danych zostanie utworzona."
+msgid "\n\nCannot open database. It probably does not exist.\nPlease select to Open another database, create a New database or Cancel."
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "\n\nIgnore this and save anyway - Yes/no?"
@@ -6007,6 +6114,16 @@ msgstr "\n\nNieznane pola zostaną skopiowane razem z wpisem."
 #. Resource IDs: (335)
 #, c-format
 msgid "\r\nMerge completed: %d %s added\r\n(%d %s, %d %s, %d %s)"
+msgstr ""
+
+#. Resource IDs: (360)
+#, c-format
+msgid "\r\nSynchronize completed: %d %s updated"
+msgstr ""
+
+#. Resource IDs: (360)
+#, c-format
+msgid "\r\nThe following %s %s updated:"
 msgstr ""
 
 #. Resource IDs: (357)
