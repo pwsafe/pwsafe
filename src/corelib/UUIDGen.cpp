@@ -120,7 +120,7 @@ ostream &operator<<(ostream &os, const CUUIDGen &uuid)
 
 wostream &operator<<(wostream &os, const CUUIDGen &uuid)
 {
- uuid_array_t uuid_a;
+  uuid_array_t uuid_a;
   uuid.GetUUID(uuid_a);
   for (size_t i = 0; i < sizeof(uuid_a); i++) {
     os << setw(2) << setfill(wchar_t('0')) << hex << int(uuid_a[i]);

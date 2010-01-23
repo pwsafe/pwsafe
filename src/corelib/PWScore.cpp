@@ -137,8 +137,8 @@ void PWScore::SortDependents(UUIDList &dlist, StringX &csDependents)
     diter->GetUUID(dependent_uuid);
     iter = Find(dependent_uuid);
     if (iter != GetEntryEndIter()) {
-      cs_dependent = iter->second.GetGroup() + L":" +
-                     iter->second.GetTitle() + L":" +
+      cs_dependent = iter->second.GetGroup() + _T(":") +
+                     iter->second.GetTitle() + _T(":") +
                      iter->second.GetUser();
       sorted_dependents.push_back(cs_dependent);
     }
@@ -148,7 +148,7 @@ void PWScore::SortDependents(UUIDList &dlist, StringX &csDependents)
   csDependents.clear();
 
   for (sd_iter = sorted_dependents.begin(); sd_iter != sorted_dependents.end(); sd_iter++)
-    csDependents += L"\t[" +  *sd_iter + L"]\r\n";
+    csDependents += _T("\t[") +  *sd_iter + _T("]\r\n");
 }
 
 void PWScore::DoAddEntry(const CItemData &item)
@@ -452,7 +452,7 @@ void PWScore::ResetStateAfterSave()
 
 int PWScore::Execute(Command *pcmd)
 {
-  TRACE(L"PWScore Execute-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
+  TRACE(_T("PWScore Execute-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -474,7 +474,7 @@ int PWScore::Execute(Command *pcmd)
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
-  TRACE(L"PWScore Execute-End: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
+  TRACE(_T("PWScore Execute-End: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -484,7 +484,7 @@ int PWScore::Execute(Command *pcmd)
 
 void PWScore::Undo()
 {
-  TRACE(L"PWScore Undo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
+  TRACE(_T("PWScore Undo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -500,7 +500,7 @@ void PWScore::Undo()
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
-  TRACE(L"PWScore Undo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
+  TRACE(_T("PWScore Undo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -508,7 +508,7 @@ void PWScore::Undo()
 
 void PWScore::Redo()
 {
-  TRACE(L"PWScore Redo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
+  TRACE(_T("PWScore Redo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -522,7 +522,7 @@ void PWScore::Redo()
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
-  TRACE(L"PWScore Redo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
+  TRACE(_T("PWScore Redo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
