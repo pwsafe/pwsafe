@@ -1277,7 +1277,7 @@ void PasswordSafeFrame::DatabaseModified(bool)
   }
 }
 
-void PasswordSafeFrame::UpdateGUI(Command::GUI_Action ga,
+void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                                   uuid_array_t &entry_uuid,
                                   CItemData::FieldType ft)
 {
@@ -1289,7 +1289,7 @@ void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
   // XXX TBD
 }
 
-void PasswordSafeFrame::UpdateGUI(Command::GUI_Action ga,
+void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                                   uuid_array_t &entry_uuid,
                                   CItemData::FieldType ft,
                                   bool bUpdateGUI)
