@@ -453,8 +453,9 @@ void PWScore::ResetStateAfterSave()
 int PWScore::Execute(Command *pcmd)
 {
   TRACE(L"PWScore Execute-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
-    m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
-    (m_redo_iter != m_vpcommands.end()) ? m_redo_iter - m_vpcommands.begin() : -1);
+        m_vpcommands.size(),
+        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
+        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 
   if (m_redo_iter != m_vpcommands.end()) {
     std::vector<Command *>::iterator cmd_Iter;
@@ -473,9 +474,10 @@ int PWScore::Execute(Command *pcmd)
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
-  TRACE(L"PWScore Execute-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
-    m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
-    (m_redo_iter != m_vpcommands.end()) ? m_redo_iter - m_vpcommands.begin() : -1);
+  TRACE(L"PWScore Execute-End: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
+        m_vpcommands.size(),
+        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
+        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 
   return rc;
 }
@@ -483,8 +485,9 @@ int PWScore::Execute(Command *pcmd)
 void PWScore::Undo()
 {
   TRACE(L"PWScore Undo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
-    m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
-    (m_redo_iter != m_vpcommands.end()) ? m_redo_iter - m_vpcommands.begin() : -1);
+        m_vpcommands.size(),
+        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
+        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 
   ASSERT(m_undo_iter != m_vpcommands.end());
   m_redo_iter = m_undo_iter;
@@ -498,15 +501,17 @@ void PWScore::Undo()
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
   TRACE(L"PWScore Undo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
-    m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
-    (m_redo_iter != m_vpcommands.end()) ? m_redo_iter - m_vpcommands.begin() : -1);
+        m_vpcommands.size(),
+        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
+        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 }
 
 void PWScore::Redo()
 {
   TRACE(L"PWScore Redo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
-    m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
-    (m_redo_iter != m_vpcommands.end()) ? m_redo_iter - m_vpcommands.begin() : -1);
+        m_vpcommands.size(),
+        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
+        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 
   ASSERT(m_redo_iter != m_vpcommands.end());
   m_undo_iter = m_redo_iter;
@@ -518,8 +523,9 @@ void PWScore::Redo()
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
   TRACE(L"PWScore Redo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n",
-    m_vpcommands.size(), (m_undo_iter != m_vpcommands.end()) ? m_undo_iter - m_vpcommands.begin() : -1,
-    (m_redo_iter != m_vpcommands.end()) ? m_redo_iter - m_vpcommands.begin() : -1);
+        m_vpcommands.size(),
+        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
+        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 }
 
 bool PWScore::AnyToUndo()
@@ -2156,7 +2162,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
     LoadAString(cs_No, IDSC_NO);
     cs_HdrYesNo = m_UHFL.empty() ? cs_No : cs_Yes;
 
-    Format(st_dbp.unknownfields, IDSC_UNKNOWNFIELDS, cs_HdrYesNo);
+    Format(st_dbp.unknownfields, IDSC_UNKNOWNFIELDS, cs_HdrYesNo.c_str());
     if (num == 0) {
       st_dbp.unknownfields += cs_No;
       st_dbp.unknownfields += _T(")");
