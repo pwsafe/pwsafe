@@ -556,25 +556,22 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   if (uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU)
     return;
 
-   if (bItemSelected) {
-     pci = getSelectedItem();
-     ASSERT(pci != NULL);
-   } else
-     return; // pci == NULL
+  if (bItemSelected) {
+    pci = getSelectedItem();
+    ASSERT(pci != NULL);
+  }
 
-   CItemData::EntryType etype = pci->GetEntryType();
+  if (uiMenuID == ID_EDITMENU && 
+    bItemSelected && pci->GetStatus() == CItemData::ES_DELETED) {
+    // Delete all entries
+    UINT uiCount = pPopupMenu->GetMenuItemCount();
+    ASSERT((int)uiCount >= 0);
 
-   if (uiMenuID == ID_EDITMENU && 
-       bItemSelected && pci->GetStatus() == CItemData::ES_DELETED) {
-     // Delete all entries
-     UINT uiCount = pPopupMenu->GetMenuItemCount();
-     ASSERT((int)uiCount >= 0);
-
-     for (UINT ui = 0; ui < uiCount; ui++) {
-       pPopupMenu->RemoveMenu(0, MF_BYPOSITION);
-     }
-     return;
-   }
+    for (UINT ui = 0; ui < uiCount; ui++) {
+      pPopupMenu->RemoveMenu(0, MF_BYPOSITION);
+    }
+    return;
+  }
 
   // If View menu selected (contains 'Flattened &List' menu item)
   if (uiMenuID == ID_VIEWMENU) {
@@ -612,9 +609,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     goto exit;
   }  // View menu
 
-  if (bItemSelected)
-    if (pci->IsShortcut())
-      pci = m_core.GetBaseEntry(pci);
+  if (bItemSelected && pci->IsShortcut())
+    pci = m_core.GetBaseEntry(pci);
 
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
@@ -816,6 +812,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_AUTOTYPE, tc_dummy);
 
+      CItemData::EntryType etype = pci->GetEntryType();
       switch (etype) {
         case CItemData::ET_NORMAL:
         case CItemData::ET_SHORTCUTBASE:
