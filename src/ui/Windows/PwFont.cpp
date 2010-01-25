@@ -123,7 +123,6 @@ void ExtractFont(const CString &str, LOGFONT &logfont)
 }
 
 const COLORREF PWFonts::MODIFIED_COLOR = RGB(0, 0, 128);
-const COLORREF PWFonts::DELETED_COLOR = RGB(128, 0, 0);
 
 void PWFonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 {
@@ -134,11 +133,7 @@ void PWFonts::SetUpFont(CWnd *pWnd, CFont *pfont)
   if (m_pModifiedFont != NULL)
     delete m_pModifiedFont;
 
-  if (m_pDeletedFont != NULL)
-    delete m_pDeletedFont;
-
   m_pModifiedFont = new CFont;
-  m_pDeletedFont = new CFont;
 
   // Set up special fonts
   LOGFONT lf;
@@ -146,8 +141,4 @@ void PWFonts::SetUpFont(CWnd *pWnd, CFont *pfont)
 
   lf.lfItalic = TRUE;
   m_pModifiedFont->CreateFontIndirect(&lf);
-
-  lf.lfItalic = FALSE;
-  lf.lfStrikeOut = TRUE;
-  m_pDeletedFont->CreateFontIndirect(&lf);
 }

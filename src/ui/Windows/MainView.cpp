@@ -1312,12 +1312,6 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
 int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex, 
                                 const bool bSort, const int iView)
 {
-  // We don't show deleted entries in the Tree/List unless the user has
-  // a specific filter to show them.
-  if (ci.GetStatus() == CItemData::ES_DELETED &&
-      (!m_bFilterActive || !m_bFilterForDelete))
-    return -1;
-
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
   if (pdi != NULL && pdi->list_index != -1) {
     // true iff item already displayed
@@ -3813,8 +3807,6 @@ void DboxMain::OnShowUnsavedEntries()
     m_showunsavedfilter.vMfldata.push_back(fr);
     fr.estatus = CItemData::ES_MODIFIED;
     m_showunsavedfilter.vMfldata.push_back(fr);
-/*  fr.estatus = CItemData::ES_DELETED;
-    m_showunsavedfilter.vMfldata.push_back(fr); */
     m_showunsavedfilter.num_Mactive = m_showunsavedfilter.vMfldata.size();
   }
 

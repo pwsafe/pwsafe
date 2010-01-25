@@ -236,8 +236,9 @@ void PWScore::DoDeleteEntry(const CItemData &item)
         iter->second.GetUUID(dep_uuid);
         CItemData depItem = Find(dep_uuid)->second;
         DoDeleteEntry(depItem);
-        depItem.SetStatus(CItemData::ES_DELETED); // for GUIRefreshEntry()
-        GUIRefreshEntry(depItem); // will remove from display
+        // Set deleted for GUIRefreshEntry() which will remove from display
+        depItem.SetStatus(CItemData::ES_DELETED);
+        GUIRefreshEntry(depItem);
       }
     }
 
@@ -324,8 +325,6 @@ struct RecordWriter {
   void operator()(pair<CUUIDGen const, CItemData> &p)
   {
     StringX savePassword, uuid_str;
-    if (p.second.GetStatus() == CItemData::ES_DELETED)
-      return;
 
     savePassword = p.second.GetPassword();
     if (p.second.IsAlias()) {
@@ -892,8 +891,7 @@ void PWScore::ChangePasskey(const StringX &newPasskey)
 struct FieldsMatch {
   bool operator()(pair<CUUIDGen, CItemData> p) {
     const CItemData &item = p.second;
-    return (item.GetStatus() != CItemData::ES_DELETED &&
-            m_group == item.GetGroup() &&
+    return (m_group == item.GetGroup() &&
             m_title == item.GetTitle() &&
             m_user  == item.GetUser());
   }

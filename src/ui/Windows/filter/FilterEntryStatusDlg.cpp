@@ -87,11 +87,6 @@ BOOL CFilterEntryStatusDlg::OnInitDialog()
     iItem = m_cbxEStatus.AddString(cs_text);
     m_cbxEStatus.SetItemData(iItem, CItemData::ES_MODIFIED);
     m_estatus2selection[CItemData::ES_MODIFIED] = iItem;
-
-/*  cs_text.LoadString(IDSC_FSDELETED);
-    iItem = m_cbxEStatus.AddString(cs_text);
-    m_cbxEStatus.SetItemData(iItem, CItemData::ES_DELETED);
-    m_estatus2selection[CItemData::ES_DELETED] = iItem; */
   }
 
   int irsel = m_rule2selection[(int)m_rule];

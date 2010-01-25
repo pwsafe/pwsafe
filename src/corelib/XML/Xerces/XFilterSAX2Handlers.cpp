@@ -626,8 +626,6 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       cur_filterentry->estatus = CItemData::ES_ADDED;
     else if (m_strElemContent == _T("modified"))
       cur_filterentry->estatus = CItemData::ES_MODIFIED;
-/*  else if (m_strElemContent == _T("deleted"))
-      cur_filterentry->estatus = CItemData::ES_DELETED; */
     else
       cur_filterentry->estatus = CItemData::ES_INVALID;
   } else if (!(XMLString::equals(qname, L"test") ||

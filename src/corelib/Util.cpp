@@ -423,8 +423,7 @@ stringT PWSUtil::GetNewFileName(const stringT &oldfilename,
   stringT outpath;
 
   if (pws_os::splitpath(inpath, drive, dir, fname, ext)) {
-    ext = newExtn;
-    outpath = pws_os::makepath(drive, dir, fname, ext);
+    outpath = pws_os::makepath(drive, dir, fname, newExtn);
   } else
     ASSERT(0);
   return outpath;

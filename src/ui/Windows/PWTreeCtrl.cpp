@@ -2121,9 +2121,8 @@ HFONT CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORR
     case CItemData::ES_MODIFIED:
       cf = PWFonts::MODIFIED_COLOR;
       return (HFONT)*m_fonts.m_pModifiedFont;
-    case CItemData::ES_DELETED:
-      cf = PWFonts::DELETED_COLOR;
-      return (HFONT)*m_fonts.m_pDeletedFont;
+    default:
+      break;
   }
   return NULL;
 }
@@ -2149,8 +2148,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
 
     case CDDS_ITEMPREPAINT:
       // Item PrePaint
-      if (m_bUseHighLighting ||
-          (pci != NULL && pci->GetStatus() == CItemData::ES_DELETED)) {
+      if (m_bUseHighLighting) {
         hfont = GetFontBasedOnStatus(hItem, pci, cf);
         if (hfont != NULL) {
           bchanged_item_font = true;

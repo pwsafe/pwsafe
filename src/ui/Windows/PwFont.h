@@ -18,13 +18,12 @@ void DeletePasswordFont();
 void ExtractFont(const CString& str, LOGFONT &logfont);
 
 struct PWFonts {
-  PWFonts() : m_pCurrentFont(NULL), m_pModifiedFont(NULL), m_pDeletedFont(NULL) {}
-  ~PWFonts() {delete m_pModifiedFont; delete m_pDeletedFont;}
+  PWFonts() : m_pCurrentFont(NULL), m_pModifiedFont(NULL) {}
+  ~PWFonts() {delete m_pModifiedFont;}
   void SetUpFont(CWnd *pWnd, CFont *pfont);
   CFont *m_pCurrentFont;  // Do NOT delete - done in DboxMain
-  CFont *m_pModifiedFont, *m_pDeletedFont;
+  CFont *m_pModifiedFont;
   static const COLORREF MODIFIED_COLOR;
-  static const COLORREF DELETED_COLOR;
 };
 
 //-----------------------------------------------------------------------------

@@ -561,18 +561,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     ASSERT(pci != NULL);
   }
 
-  if (uiMenuID == ID_EDITMENU && 
-    bItemSelected && pci->GetStatus() == CItemData::ES_DELETED) {
-    // Delete all entries
-    UINT uiCount = pPopupMenu->GetMenuItemCount();
-    ASSERT((int)uiCount >= 0);
-
-    for (UINT ui = 0; ui < uiCount; ui++) {
-      pPopupMenu->RemoveMenu(0, MF_BYPOSITION);
-    }
-    return;
-  }
-
   // If View menu selected (contains 'Flattened &List' menu item)
   if (uiMenuID == ID_VIEWMENU) {
     // Delete Show Find Toolbar menu item - don't know if there or previously deleted
@@ -1183,9 +1171,6 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   // RClick over an entry
   if (item >= 0) {
     ASSERT(pci != NULL);
-    if (pci->GetStatus() == CItemData::ES_DELETED)
-      return;
-
     brc = menu.LoadMenu(IDR_POPEDITMENU);
     ASSERT(brc != 0);
 

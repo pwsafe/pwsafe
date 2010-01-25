@@ -137,7 +137,6 @@ void DboxMain::ClearFilter()
 {
   m_currentfilter.Empty();
   m_bFilterActive = false;
-  m_bFilterForDelete = false;
   m_bFilterForStatus = false;
 
   ApplyFilters();
@@ -204,7 +203,6 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
 
   const CItemData::EntryType entrytype = ci.GetEntryType();
 
-  m_bFilterForDelete = false;
   m_bFilterForStatus = false;
 
   std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
@@ -278,10 +276,6 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
 
       if (ft == FT_ENTRYSTATUS) {
         m_bFilterForStatus = true;
-        if (st_fldata.estatus == CItemData::ES_DELETED && 
-            ifunction == PWSMatch::MR_IS) {
-          m_bFilterForDelete = true;
-        }
       }
 
       pci = &ci;
