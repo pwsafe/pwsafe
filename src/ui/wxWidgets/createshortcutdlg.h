@@ -22,6 +22,7 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
+#include "corelib/PWScore.h"
 
 /*!
  * Forward declarations
@@ -53,13 +54,17 @@
 
 class CreateShortcutDlg: public wxDialog
 {    
-  DECLARE_DYNAMIC_CLASS( CreateShortcutDlg )
+  DECLARE_CLASS( CreateShortcutDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  CreateShortcutDlg();
-  CreateShortcutDlg( wxWindow* parent, wxWindowID id = SYMBOL_CREATESHORTCUTDLG_IDNAME, const wxString& caption = SYMBOL_CREATESHORTCUTDLG_TITLE, const wxPoint& pos = SYMBOL_CREATESHORTCUTDLG_POSITION, const wxSize& size = SYMBOL_CREATESHORTCUTDLG_SIZE, long style = SYMBOL_CREATESHORTCUTDLG_STYLE );
+  CreateShortcutDlg(wxWindow* parent, PWScore &core, CItemData *base,
+                    wxWindowID id = SYMBOL_CREATESHORTCUTDLG_IDNAME,
+                    const wxString& caption = SYMBOL_CREATESHORTCUTDLG_TITLE,
+                    const wxPoint& pos = SYMBOL_CREATESHORTCUTDLG_POSITION,
+                    const wxSize& size = SYMBOL_CREATESHORTCUTDLG_SIZE,
+                    long style = SYMBOL_CREATESHORTCUTDLG_STYLE);
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CREATESHORTCUTDLG_IDNAME, const wxString& caption = SYMBOL_CREATESHORTCUTDLG_TITLE, const wxPoint& pos = SYMBOL_CREATESHORTCUTDLG_POSITION, const wxSize& size = SYMBOL_CREATESHORTCUTDLG_SIZE, long style = SYMBOL_CREATESHORTCUTDLG_STYLE );
@@ -74,6 +79,9 @@ public:
   void CreateControls();
 
 ////@begin CreateShortcutDlg event handler declarations
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
+  void OnOkClick( wxCommandEvent& event );
 
 ////@end CreateShortcutDlg event handler declarations
 
@@ -105,6 +113,9 @@ private:
   wxString m_heading;
   wxString m_title;
 ////@end CreateShortcutDlg member variables
+  void ItemFieldsToDialog();
+  PWScore &m_core;
+  CItemData *m_base;
 };
 
 #endif

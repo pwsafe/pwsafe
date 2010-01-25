@@ -33,6 +33,7 @@
 #include "PasswordSafeSearch.h"
 #include "deleteconfirmation.h"
 #include "editshortcut.h"
+#include "createshortcutdlg.h"
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
@@ -221,6 +222,21 @@ void PasswordSafeFrame::OnCopyurlClick( wxCommandEvent& event )
   CItemData *item = GetSelectedEntry();
   if (item != NULL)
     DoCopyURL(*item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CREATESHORTCUT
+ */
+
+void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& /*evt*/)
+{
+  CItemData* item = GetSelectedEntry();
+  if (item && !item->IsDependent()) {
+    CreateShortcutDlg dlg(this, m_core, item);
+    int rc = dlg.ShowModal();
+    if (rc != 0)
+      UpdateAccessTime(*item);
+  }
 }
 
 void PasswordSafeFrame::DoCopyURL(CItemData &item)
