@@ -204,7 +204,6 @@
     <xs:enumeration value="clean" />
     <xs:enumeration value="added" />
     <xs:enumeration value="modified" />
-    <xs:enumeration value="deleted" />
   </xs:restriction>
 </xs:simpleType>
 

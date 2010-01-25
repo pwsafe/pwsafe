@@ -328,6 +328,7 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound)
     st_startpos = st_next + 1; // too complex for for statement
   } // tokenization for loop
 
+  // Just need drive, directory and file extension
   path = full_pgm.c_str();
   pws_os::splitpath(path, drive, dir, fname, extn);
 

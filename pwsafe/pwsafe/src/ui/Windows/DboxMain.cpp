@@ -126,7 +126,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
-  m_bFilterForDelete(false), m_bFilterForStatus(false),
+  m_bFilterForStatus(false),
   m_bUnsavedDisplayed(false), m_eye_catcher(_wcsdup(EYE_CATCHER)),
   m_hUser32(NULL), m_bInAddGroup(false),
   m_wpDeleteMsg(WM_KEYDOWN), m_wpDeleteKey(VK_DELETE),
@@ -1366,8 +1366,8 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
   }
 #else
   CItemData *pci = getSelectedItem();
-  // Don't do anything if can't get the data or it is a deleted item
-  if (pci == NULL || pci->GetStatus() == CItemData::ES_DELETED)
+  // Don't do anything if can't get the data
+  if (pci == NULL)
     return;
 
   if (pci->IsShortcut()) {
@@ -1702,6 +1702,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         // user can't change R-O status
         break;
     }
+
     UpdateToolBarROStatus(bIsReadOnly);
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
@@ -2568,13 +2569,9 @@ void DboxMain::SetDCAText(CItemData *pci)
   if (pci == NULL) {
     si_dca = -1;
   } else {
-    if (pci->GetStatus() == CItemData::ES_DELETED)
-      si_dca = -2;  // Force display web page
-    else {
-      pci->GetDCA(si_dca);
-      if (si_dca == -1)
-        si_dca = si_dca_default;
-    }
+    pci->GetDCA(si_dca);
+    if (si_dca == -1)
+      si_dca = si_dca_default;
   }
 
   UINT ui_dca;

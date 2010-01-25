@@ -178,11 +178,6 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   const stringT host = pws_os::gethostname();
   const stringT pid = pws_os::getprocessid();
 
-  const stringT path(lock_filename);
-  stringT drv, dir, fname, ext;
-
-  pws_os::splitpath(path, drv, dir, fname, ext);
-
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
   if (lockFileHandle != INVALID_HANDLE_VALUE) {
@@ -276,11 +271,6 @@ void pws_os::UnlockFile(const stringT &filename,
     const stringT lock_filename = GetLockFileName(filename);
     const stringT cs_me = user + _T("@") + host + _T(":") + pid;
     GetLocker(lock_filename, locker);
-
-    const stringT path(lock_filename);
-    stringT drv, dir, fname, ext;
-    
-    pws_os::splitpath(path, drv, dir, fname, ext);
 
     if (cs_me == locker && LockCount > 1) {
       LockCount--;

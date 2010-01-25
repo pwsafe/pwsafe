@@ -276,7 +276,6 @@ void PWSMatch::GetMatchType(MatchType mtype,
         case CItemData::ES_CLEAN:        id = IDSC_FSCLEAN;        break;
         case CItemData::ES_ADDED :       id = IDSC_FSADDED;        break;
         case CItemData::ES_MODIFIED:     id = IDSC_FSMODIFIED;     break;
-        case CItemData::ES_DELETED:      id = IDSC_FSDELETED;      break;
         default:
           ASSERT(0);
           id = IDSC_INVALID;

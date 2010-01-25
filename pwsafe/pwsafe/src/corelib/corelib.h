@@ -205,7 +205,6 @@
 #define IDSC_FSCLEAN                    3369
 #define IDSC_FSADDED                    3370
 #define IDSC_FSMODIFIED                 3371
-#define IDSC_FSDELETED                  3372
 #define IDSC_IMPORTPSWDNOCOLS           3373
 #define IDSC_IMPORTRECNOTFOUND          3374
 #define IDSC_IMPORTKNOWNHDRS2           3375
