@@ -160,6 +160,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_EDITBASEENTRY, PasswordSafeFrame::OnEditBase )
 
+  EVT_MENU( ID_CREATESHORTCUT, PasswordSafeFrame::OnCreateShortcut )
+
   EVT_UPDATE_UI(wxID_SAVE,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_ADDGROUP,        PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_RENAME,          PasswordSafeFrame::OnUpdateUI )
@@ -961,7 +963,7 @@ void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
 void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
 {
   CItemData* item = GetSelectedEntry();
-  if (item && (item->IsAlias() || item->IsShortcut())) {
+  if (item && item->IsDependent()) {
     item = m_core.GetBaseEntry(item);
     ASSERT(item != NULL);
     DoEdit(*item);
@@ -1237,7 +1239,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_CREATESHORTCUT:
     {
       CItemData* item = GetSelectedEntry();
-      evt.Enable(item && !item->IsNormal() && !item->IsShortcutBase());
+      evt.Enable(item && (item->IsNormal() || item->IsShortcutBase()));
       break;
     }
     case ID_DUPLICATEENTRY:

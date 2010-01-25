@@ -24,6 +24,7 @@
 ////@end includes
 
 #include "createshortcutdlg.h"
+#include "corelib/ItemData.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -33,7 +34,7 @@
  * CreateShortcutDlg type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( CreateShortcutDlg, wxDialog )
+IMPLEMENT_CLASS( CreateShortcutDlg, wxDialog )
 
 
 /*!
@@ -43,6 +44,8 @@ IMPLEMENT_DYNAMIC_CLASS( CreateShortcutDlg, wxDialog )
 BEGIN_EVENT_TABLE( CreateShortcutDlg, wxDialog )
 
 ////@begin CreateShortcutDlg event table entries
+  EVT_BUTTON( wxID_OK, CreateShortcutDlg::OnOkClick )
+
 ////@end CreateShortcutDlg event table entries
 
 END_EVENT_TABLE()
@@ -52,12 +55,12 @@ END_EVENT_TABLE()
  * CreateShortcutDlg constructors
  */
 
-CreateShortcutDlg::CreateShortcutDlg()
-{
-  Init();
-}
-
-CreateShortcutDlg::CreateShortcutDlg( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core,
+                                     CItemData *base,
+                                     wxWindowID id, const wxString& caption,
+                                     const wxPoint& pos, const wxSize& size,
+                                     long style)
+: m_core(core), m_base(base)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -81,7 +84,21 @@ bool CreateShortcutDlg::Create( wxWindow* parent, wxWindowID id, const wxString&
   }
   Centre();
 ////@end CreateShortcutDlg creation
+  ItemFieldsToDialog();
   return true;
+}
+
+void CreateShortcutDlg::ItemFieldsToDialog()
+{
+  // Populate the combo box
+  std::vector<stringT> aryGroups;
+  m_core.GetUniqueGroups(aryGroups);
+  for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
+    m_groupCtrl->Append(aryGroups[igrp].c_str());
+  }
+  // XXX TBD: Determine if there's a current
+  // group that we can pre-select for user, e.g.,
+  // we're invoked via right-click n a node
 }
 
 
@@ -201,3 +218,38 @@ wxIcon CreateShortcutDlg::GetIconResource( const wxString& name )
   return wxNullIcon;
 ////@end CreateShortcutDlg icon retrieval
 }
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
+ */
+
+void CreateShortcutDlg::OnOkClick( wxCommandEvent& event )
+{
+  if (Validate() && TransferDataFromWindow()) {
+    bool valid = !m_title.empty();
+
+    if (!valid)
+      return;
+    
+    CItemData shortcut;    
+    uuid_array_t base_uuid;
+    m_base->GetUUID(base_uuid);
+    const wxString group = m_groupCtrl->GetValue();
+
+    if (!group.empty())
+      shortcut.SetGroup(group.c_str());
+    shortcut.SetTitle(m_title.c_str());
+    if (!m_user.empty())
+      shortcut.SetUser(m_user.c_str());
+    time_t t;
+    time(&t);
+    shortcut.SetCTime(t);
+    shortcut.SetXTime((time_t)0);
+    shortcut.SetStatus(CItemData::ES_ADDED);
+
+    m_core.Execute(AddEntryCommand::Create(&m_core, shortcut, base_uuid));
+  }
+  EndModal(wxID_OK);
+}
+
