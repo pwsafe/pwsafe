@@ -66,7 +66,6 @@ void DboxMain::DatabaseModified(bool bChanged)
 
   // Callback from PWScore if the password list has been changed,
   // invalidating the indices vector in Find
-  m_core.SuspendOnDBNotification();
   InvalidateSearch();
   OnHideFindToolBar();
 
