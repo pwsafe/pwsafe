@@ -570,3 +570,16 @@
 #define IDS_SYNCHCOMPLETED              5752
 #define IDS_PICKSYNCHRONIZEEFILE        5753
 #define IDS_OPEN                        5754
+#define IDS_ENDSESSION                  5755
+#define IDS_DBNAME                      5756
+#define IDS_PASSPHRASE                  5757
+#define IDS_DBFORMAT                    5758
+#define IDS_NUMGROUPS                   5759
+#define IDS_NUMENTRIES                  5760
+#define IDS_WHENSAVED                   5761
+#define IDS_WHOSAVED                    5762
+#define IDS_WHATSAVED                   5763
+#define IDS_FILEUUID                    5764
+#define IDS_UNKNFLDS                    5765
+#define IDS_NORECYCLEBINTITLE           5766
+#define IDS_NORECYCLEBINMSG             5767

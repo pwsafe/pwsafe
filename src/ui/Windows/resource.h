@@ -58,6 +58,7 @@
 #define IDD_FILTER_DCA                  161
 #define IDD_DUMPSELECTOR                162
 #define IDD_FILTER_ENTRYSTATUS          163
+#define IDD_DISPLAYEMERBKUPFILES        164
 #define IDR_POPRESETCOLUMNWIDTH         168
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
@@ -678,6 +679,11 @@
 #define IDC_STATIC_OR                   1399
 #define IDC_STATIC_PWLEN                1400
 #define IDC_STATIC_CURRENTVALUE         1401
+#define IDC_RECFILELIST                 1402
+#define IDC_IGNORE                      1403
+#define IDC_SELECT                      1404
+#define IDC_DELETE                      1405
+#define IDC_BUTTON1                     1406
 
 // Next default values for new objects
 // 
@@ -685,7 +691,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        478
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1402
+#define _APS_NEXT_CONTROL_VALUE         1407
 #define _APS_NEXT_SYMED_VALUE           160
 #endif
 #endif

@@ -20,17 +20,38 @@
 * See www.codeproject.com for the original code
 */
 
+/*
+* Timed messagebox taken (and significantly modified to fit this class) from article
+* "MessageBox With Timeout" by Alexandr Shcherbakov in 1999 on CodeGuru
+* See: http://www.codeguru.com/cpp/misc/misc/messageboxhandling/article.php/c249/
+*
+* Note: There is an undocumented API in User32.dll thatt does this too. In fact,
+* the standard MS MessageBox calls this version with a timeout of 0xFFFFFFFF
+* (around 47 days 17 hours).  However, as it is undocumented and requires Windows XP
+* or later - have used the information in the above article to implement here.
+*
+* Note: Microsoft also give a method of doing this on their site - but it doesn't
+* work in MFC applications (despite what they say!) due to message processing in MFC
+* See: http://support.microsoft.com/?scid=181934
+*/
+
 #pragma once
 
 #include "RichEditCtrlExtn.h"
 #include "PWDialog.h"
+
+// If not compiled for Windows XP or later
+#if (WINVER < 0x0501)
+#ifndef IDTIMEOUT
+#define IDTIMEOUT 32000
+#endif
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralMsgBox
 
 class CGeneralMsgBox : private CDialog
 {
-  // Basic
 public:
   // Constructor
   CGeneralMsgBox(CWnd* pParentWnd = NULL);
@@ -38,34 +59,35 @@ public:
   // Destructor
   virtual ~CGeneralMsgBox();
 
-  // Implement MFC equivalents
-  INT_PTR MessageBox(LPCTSTR lpText, LPCTSTR lpCaption = NULL, 
-                     UINT uType = MB_OK);
-  INT_PTR AfxMessageBox(LPCTSTR lpszText, LPCTSTR lpCaption = NULL, UINT nType = MB_OK);
-  INT_PTR AfxMessageBox(UINT nIDPrompt, UINT nType = MB_OK);
+  // For Timed MessageBox & Implement MFC equivalents
+  INT_PTR MessageBoxTimeOut(LPCWSTR lpText, LPCWSTR lpCaption = NULL, 
+                     UINT uiFlags = MB_OK, DWORD dwMilliseconds = 0);
+  INT_PTR MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, UINT uiFlags);
+  INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption = NULL, UINT uiFlags = MB_OK);
+  INT_PTR AfxMessageBox(UINT uiIDPrompt, UINT uiFlags = MB_OK);
 
   // Execute
   INT_PTR DoModal();
 
   // Buttons operations
-  void AddButton(UINT uIDC, LPCWSTR pszText,
+  void AddButton(UINT uiIDC, LPCWSTR pszText,
                  BOOL bIsDefault = FALSE, BOOL bIsEscape = FALSE);
-  void AddButton(UINT uIDC, UINT uIdText = (UINT)-1,
+  void AddButton(UINT uiIDC, UINT uiIDText = (UINT)-1,
                  BOOL bIsDefault = FALSE, BOOL bIsEscape = FALSE);
 
   // Title operations
   void SetTitle(LPCWSTR pszTitle);
-  void SetTitle(UINT uIdTitle);
+  void SetTitle(UINT uiIDTitle);
 
   // Message operations
-  BOOL SetMsg(UINT uMsgId);
+  BOOL SetMsg(UINT uiMsgId);
   BOOL SetMsg(LPCWSTR pszMsg);
 
   // Icon operations
   void SetIcon(HICON hIcon);
-  void SetIcon(UINT uIcon);
+  void SetIcon(UINT uiIcon);
   void SetStandardIcon(LPCWSTR pszIconName);
-  void SetStandardIcon(UINT uIcon);
+  void SetStandardIcon(UINT uiIcon);
 
   // Metric enumerators (see SetMetric and GetMetric)
   enum {CX_LEFT_BORDER, CX_RIGHT_BORDER,
@@ -96,14 +118,14 @@ private:
   CSize m_dimDlgUnit;
 
   // Controls' attributes
-  UINT m_uDefCmdId;            // default command ID: <Return>
-  UINT m_uEscCmdId;            // escape command ID: <ESC> or box close
+  UINT m_uiDefCmdId;           // default command ID: <Return>
+  UINT m_uiEscCmdId;           // escape command ID: <ESC> or box close
   CStatic m_stIconCtrl;        // the icon control
   CRichEditCtrlExtn m_edCtrl;  // the RTF control
 
   // Button's attributes
   struct BTNDATA {
-    UINT uIDC;                    // button ID
+    UINT uiIDC;                   // button ID
     CString strBtn;               // button Text
   };
 
@@ -117,7 +139,7 @@ private:
   // Overrides
   virtual BOOL OnInitDialog();
   virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-  virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+  virtual BOOL OnCmdMsg(UINT uiID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
   virtual BOOL PreTranslateMessage(MSG* pMsg);
 
   // Utility - creating the nested controls
@@ -129,6 +151,13 @@ private:
 
   int FromDlgX(int x);
   int FromDlgY(int y);
+
+  // For timed out message
+  static DWORD WINAPI ThreadFunction(LPVOID lpParameter);
+
+  DWORD  m_dwTimeOut;
+  bool  m_bTimedOut;
+  INT_PTR m_nResult;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -137,8 +166,8 @@ private:
 inline void CGeneralMsgBox::SetTitle(LPCWSTR pszTitle)
 { m_strTitle = pszTitle; }
 
-inline void CGeneralMsgBox::SetTitle(UINT uIdTitle)
-{ VERIFY(m_strTitle.LoadString(uIdTitle)); }
+inline void CGeneralMsgBox::SetTitle(UINT uiIdTitle)
+{ VERIFY(m_strTitle.LoadString(uiIdTitle)); }
 
 inline void CGeneralMsgBox::SetMetric(int iMetric, int nValue)
 { ASSERT(0 <= iMetric && iMetric < NUM_OF_METRICS);
