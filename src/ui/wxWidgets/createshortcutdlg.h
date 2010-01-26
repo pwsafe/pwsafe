@@ -30,6 +30,7 @@
 
 ////@begin forward declarations
 ////@end forward declarations
+class UIInterFace;
 
 /*!
  * Control identifiers
@@ -116,6 +117,7 @@ private:
   void ItemFieldsToDialog();
   PWScore &m_core;
   CItemData *m_base;
+  UIInterFace *m_ui;
 };
 
 #endif
