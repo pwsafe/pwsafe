@@ -278,7 +278,6 @@
 #define IDS_NOFIELDSFORSEARCH           5443
 #define IDS_NUMCHILD                    5444
 #define IDS_NUMCHILDREN                 5445
-#define IDS_DELENT                      5446
 #define IDS_EXTERNAL_EDITOR_WARNING     5447
 #define IDS_NOTES_IN_EXTERNAL_EDITOR    5448
 #define IDS_CPF_TVDD                    5449
@@ -486,7 +485,6 @@
 #define IDS_LAUNCH                      5667
 #define IDS_LAUNCHPLUS                  5668
 #define IDS_CLICKTOGOPLUS               5669
-#define IDS_DELGRP                      5670
 #define IDS_GROUPCOPIED                 5671
 #define IDS_TITLECOPIED                 5672
 #define IDS_USERCOPIED                  5673
