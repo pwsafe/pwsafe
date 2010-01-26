@@ -97,25 +97,31 @@ void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& event )
   }
 
   if (dodelete) {
-    const CItemData *item = GetSelectedEntry();
+    CItemData *item = GetSelectedEntry();
     if (item != NULL) {
-      uuid_array_t uuid;
-      item->GetUUID(uuid);
-      Delete(uuid);
+      Delete(item);
+    } else {
+      // XXX TBD group delete
     }
   }
 }
 
-void PasswordSafeFrame::Delete(const uuid_array_t &uuid)
+void PasswordSafeFrame::Delete(CItemData *pci)
 {
+  ASSERT(pci != NULL);
+  // ConfirmDelete asks for user confirmation
+  // when deleting a shortcut or alias base.
+  // Otherwise it just return true
+  if (!m_core.ConfirmDelete(pci))
+    return;
+
+  uuid_array_t uuid;
+  pci->GetUUID(uuid);
   if (m_grid->IsShown())
     m_grid->Remove(uuid);
   else
     m_tree->Remove(uuid);
-  ItemListIter iter = m_core.Find(uuid);
-  if (iter != m_core.GetEntryEndIter())
-    m_core.Execute(DeleteEntryCommand::Create(&m_core,
-                                              m_core.GetEntry(iter)));
+  m_core.Execute(DeleteEntryCommand::Create(&m_core, *pci));
 }
 
 

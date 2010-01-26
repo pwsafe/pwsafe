@@ -168,8 +168,7 @@ void PWScore::DoAddEntry(const CItemData &item)
 bool PWScore::ConfirmDelete(const CItemData *pci)
 {
   ASSERT(pci != NULL);
-  if ((pci->IsAliasBase() || pci->IsShortcutBase()) &&
-      m_pAsker != NULL) {
+  if (pci->IsBase() && m_pAsker != NULL) {
     UUIDList dependentslist;
     uuid_array_t entry_uuid;
     pci->GetUUID(entry_uuid);
