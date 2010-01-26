@@ -182,7 +182,7 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCWSTR lpText, LPCWSTR lpCaption,
   // Private member
   UINT uiType = uiFlags & MB_TYPEMASK;
   UINT uiIcon = uiFlags & MB_ICONMASK;
-  int iDefB = (int)uiFlags & MB_DEFMASK;
+  int iDefB = ((int)uiFlags & MB_DEFMASK) / 256;
 
   if (lpText != NULL)
     SetMsg(lpText);
