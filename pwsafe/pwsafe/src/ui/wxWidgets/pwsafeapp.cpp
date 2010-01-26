@@ -32,6 +32,7 @@ using namespace std;
 #include "pwsafeapp.h"
 #include "passwordsafeframe.h"
 #include "version.h"
+#include "wxMessages.h"
 #include "corelib/SysInfo.h"
 #include "corelib/PWSprefs.h"
 
@@ -77,6 +78,10 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
    (wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE)},
   {wxCMD_LINE_NONE}
 };
+
+
+static wxReporter aReporter;
+static wxAsker    anAsker;
 
 /*!
  * Application instance implementation
@@ -135,6 +140,10 @@ bool PwsafeApp::OnInit()
   SetAppName(pwsafeAppName);
   m_core.SetApplicationNameAndVersion(pwsafeAppName.c_str(),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
+  PWSprefs::SetReporter(&aReporter);
+  PWScore::SetReporter(&aReporter);
+  PWScore::SetAsker(&anAsker);
+
 #if wxUSE_XPM
   wxImage::AddHandler(new wxXPMHandler);
 #endif
