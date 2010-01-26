@@ -299,7 +299,7 @@ public:
   void ShowGrid(bool show = true);
   void ShowTree(bool show = true);
   void ClearData();
-  void Delete(const uuid_array_t &uuid);
+  void Delete(CItemData *pci);
   CItemData *GetSelectedEntry() const;
   CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut 
   void UpdateAccessTime(CItemData &ci);
