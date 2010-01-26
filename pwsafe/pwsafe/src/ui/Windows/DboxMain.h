@@ -324,6 +324,9 @@ public:
   void Execute(Command *pcmd, PWScore *pcore = NULL);
   void UpdateToolBarDoUndo();
 
+#ifdef _DEBUG
+  void WriteLog(LPCWSTR pszString);
+#endif
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -472,8 +475,10 @@ protected:
   int SaveAs(void);
   int SaveCore(PWScore *pcore);
   int Open(void);
-  int Open(const StringX &pszFilename, const bool bReadOnly);
-  int Close(void);
+  int Open(const StringX &sx_Filename, const bool bReadOnly);
+  int CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey);
+  void PostOpenProcessing();
+  int Close(const bool bTrySave = true);
 
   void DoOtherDBProcessing(UINT uiftn);
   void Merge(const StringX &sx_Filename2, PWScore *pothercore);
@@ -546,12 +551,12 @@ protected:
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnSessionChange(WPARAM wParam, LPARAM lParam);
-
+  afx_msg LRESULT OnQueryEndSession(WPARAM wParam, LPARAM lParam);
+  afx_msg LRESULT OnEndSession(WPARAM wParam, LPARAM lParam);
+ 
   afx_msg void OnHelp();
   afx_msg void OnUpdateMenuToolbar(CCmdUI *pCmdUI);
   afx_msg void OnDestroy();
-  afx_msg BOOL OnQueryEndSession();
-  afx_msg void OnEndSession(BOOL bEnding);
   afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
   afx_msg void OnMove(int x, int y);
   afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -715,6 +720,12 @@ private:
   StringX m_savedDBprefs;  // used across minimize/restore events
 
   PWSclipboard m_clipboard;
+
+  // Split up OnOK to support various ways to exit
+  enum SaveType {NORMALEXIT = 0, ENDSESSIONEXIT, WTSLOGOFFEXIT, EMERGENCYSAVE};
+  int SaveDatabaseOnExit(const SaveType saveType);
+  void SavePreferencesOnExit();
+  void CleanUpAndExit(const bool bNormalExit = true);
 
   void SessionNotification(const bool bRegister);
   bool IsWorkstationLocked() const;

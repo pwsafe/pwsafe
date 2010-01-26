@@ -437,10 +437,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 
   // Windows Messages
   ON_WM_DESTROY()
-  ON_WM_ENDSESSION()
   ON_WM_INITMENU()
   ON_WM_INITMENUPOPUP()
-  ON_WM_QUERYENDSESSION()
   ON_WM_MOVE()
   ON_WM_SIZE()
   ON_WM_SYSCOMMAND()
@@ -501,6 +499,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(WM_COMPARE_RESULT_FUNCTION, OnProcessCompareResultFunction)
   ON_MESSAGE(WM_TOOLBAR_FIND, OnToolBarFindMessage)
   ON_MESSAGE(WM_EXECUTE_FILTERS, OnExecuteFilters)
+  ON_MESSAGE(WM_QUERYENDSESSION, OnQueryEndSession)
+  ON_MESSAGE(WM_ENDSESSION, OnEndSession)
 
   ON_COMMAND(ID_MENUITEM_CUSTOMIZETOOLBAR, OnCustomizeToolbar)
 
@@ -2276,9 +2276,10 @@ bool DboxMain::DecrementAndTestIdleLockCounter()
 
 LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
 {
+  // Windows XP and later only
   // Handle Lock/Unlock, Fast User Switching and Remote access.
   // Won't be called if the registration failed (i.e. < Windows XP
-  // or the "Windows Terminal Server" service wasn't active at startup.
+  // or the "Windows Terminal Server" service wasn't active at startup).
   TRACE(L"OnSessionChange. wParam = %d\n", wParam);
   switch (wParam) {
     case WTS_CONSOLE_DISCONNECT:
@@ -2296,9 +2297,14 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
       m_bWSLocked = false;
       break;
     case WTS_SESSION_LOGOFF:
-      // Don't think this gets called as OnQuerySession/OnEndSession
-      // handle this event.
-      OnOK();
+      // This does NOT get called as OnQueryEndSession/OnEndSession
+      // handle this event - but just in case!
+#ifdef _DEBUG
+      WriteLog(L"In OnSessionChange - WTS_SESSION_LOGOFF");
+#endif
+      SavePreferencesOnExit();
+      SaveDatabaseOnExit(WTSLOGOFFEXIT);
+      CleanUpAndExit(false);
       break;
     case WTS_SESSION_REMOTE_CONTROL:
     default:
@@ -2405,84 +2411,189 @@ void DboxMain::UpdateAccessTime(CItemData *pci)
   }
 }
 
-BOOL DboxMain::OnQueryEndSession()
+LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
 {
+  /*
+    ********************************************************************************
+    NOTE: If the Windows API ExitWindowsEx is called with the EWX_FORCE flag,
+    then this routine will NOT be called.  Data may be lost!!!
+
+    If the EWX_FORCEIFHUNG flag is used, Windows forces processes to terminate
+    if they do not respond to the WM_QUERYENDSESSION or WM_ENDSESSION message
+    within the timeout interval. Again, data may be lost!!!
+    ********************************************************************************
+
+    Timeouts are in the Registry at:
+      HKCU\Control Panel\Desktop\HungAppTimeout       - default  5000 msecs (5s)
+      HKCU\Control Panel\Desktop\WaitToKillAppTimeout - default 20000 msecs (20s)
+
+    If the registry key "HKCU\Control Panel\Desktop\AutoEndTask" is changed to 1
+    (enabled), Windows will automatically end tasks even if we are in the middle
+    of saving the user's data.
+
+    lParam values:
+    ENDSESSION_CLOSEAPP
+      The application is using a file that must be replaced, the system is being
+      serviced, or system resources are exhausted.
+    ENDSESSION_CRITICAL
+      The application is forced to shut down.
+    ENDSESSION_LOGOFF
+      The user is logging off.
+
+    Extract from MSDN:
+      Applications can display a user interface prompting the user for information
+      at shutdown, HOWEVER IT IS NOT RECOMMENDED. After five seconds, the system
+      displays information about the applications that are preventing shutdown and
+      allows the user to terminate them.
+
+      For example, Windows XP displays a dialog box, while Windows Vista displays a
+      full screen with additional information about the applications blocking shutdown.
+      If your application must block or postpone system shutdown, use the 
+      ShutdownBlockReasonCreate function (Vista & later).
+  */
+
+#ifdef _DEBUG
+  std::wstring st_logmsg, st_EndStatus(L"");
+  // Note: Test under mask not equality
+  if (lParam & ENDSESSION_CRITICAL)
+    st_EndStatus += L" ENDSESSION_CRITICAL";
+  if (lParam & ENDSESSION_LOGOFF)
+    st_EndStatus += L" ENDSESSION_LOGOFF";
+  if (lParam & ENDSESSION_CLOSEAPP)
+    st_EndStatus += L" ENDSESSION_CLOSEAPP";
+
+  Format(st_logmsg, L"In OnQueryEndSession. lParam=%s", st_EndStatus.c_str());
+  WriteLog(st_logmsg.c_str());
+#endif
+
+  // Set to a return code value that is not available to the user if asked
   m_iSessionEndingStatus = IDOK;
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  if (!m_core.GetCurFile().empty())
-    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+  // Save Application related preferences anyway - does no harm!
+  SavePreferencesOnExit();
 
-  // Save Application related preferences
-  prefs->SaveApplicationPreferences();
-  prefs->SaveShortcuts();
-
-  if (m_core.IsReadOnly())
+  // No point if database is read-only. Get out fast!
+  if (m_core.IsReadOnly()) {
+#ifdef _DEBUG
+    Format(st_logmsg, L"Leaving OnQueryEndSession: Status:%s, RC=TRUE - database is R-O", st_EndStatus.c_str());
+    WriteLog(st_logmsg.c_str());
+#endif
     return TRUE;
+  }
 
-  bool autoSave = true; // false if user saved or decided not to 
+  // Don't stand in the way of a "Get Off" command! Get out fast!
+  if ((lParam & (ENDSESSION_CRITICAL | ENDSESSION_CLOSEAPP)) != 0) {
+#ifdef _DEBUG
+    Format(st_logmsg, L"Leaving OnQueryEndSession: Status:%s, RC=TRUE", st_EndStatus.c_str());
+    WriteLog(st_logmsg.c_str());
+#endif
+    return TRUE;
+  }
 
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
-    CGeneralMsgBox gmb;
-    CString cs_msg;
-    cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile().c_str());
-    m_iSessionEndingStatus = gmb.AfxMessageBox(cs_msg, NULL,
-                             (MB_YESNOCANCEL | MB_ICONWARNING | MB_DEFBUTTON3));
-    switch (m_iSessionEndingStatus) {
-      case IDCANCEL:
-        // Cancel shutdown\restart\logoff
-        return FALSE;
-      case IDYES:
-        // Save the changes and say OK to shutdown\restart\logoff
-        Save();
-        autoSave = false;
-        break;
-      case IDNO:
-        // Don't save the changes but say OK to shutdown\restart\logoff
-        autoSave = false;
-        break;
-    }
-  } // database was changed
-
-  if (autoSave) {
-    //Store current filename for next time
-    if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-         m_core.GetNumEntries() > 0) {
-        Save();
+  // Musn't block if Vista or later and there is no reason to block it.
+  // Get out fast!
+  if (m_WindowsMajorVersion >= 6) {
+    if (m_bBlockShutdown) {
+      m_iSessionEndingStatus = IDCANCEL;
+    } else {
+#ifdef _DEBUG
+      Format(st_logmsg, L"Leaving OnQueryEndSession: Status:%s, RC=TRUE", st_EndStatus.c_str());
+      WriteLog(st_logmsg.c_str());
+#endif
+      return TRUE;
     }
   }
 
-  return TRUE;
+  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+    // Windows XP or earlier - we ask user, Vista and later - we don't as we have
+    // already set ShutdownBlockReasonCreate
+    if (m_WindowsMajorVersion < 6) {
+      CGeneralMsgBox gmb;
+      CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_ENDSESSION));
+      cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile().c_str());
+
+      // Now issue dialog with 3 second timeout!
+      m_iSessionEndingStatus = gmb.MessageBoxTimeOut(cs_msg, cs_title,
+                    (MB_YESNOCANCEL | MB_ICONWARNING | MB_DEFBUTTON3), 3000);
+    } // Windows XP or earlier
+  } // database was changed
+
+#ifdef _DEBUG
+  switch (m_iSessionEndingStatus) {
+    case IDCANCEL:       st_EndStatus = L"IDCANCEL";    break;
+    case IDIGNORE:       st_EndStatus = L"IDIGNORE";    break;
+    case IDOK:           st_EndStatus = L"IDOK";        break;
+    case IDNO:           st_EndStatus = L"IDNO";        break;
+    case IDYES:          st_EndStatus = L"IDYES";       break;
+    case IDTIMEOUT:      st_EndStatus = L"IDTIMEOUT";   break;
+    default:             st_EndStatus = L"**Unknown**"; break;
+  }
+  Format(st_logmsg, L"Leaving OnQueryEndSession: Status:%s, RC=%s", st_EndStatus.c_str(),
+    m_iSessionEndingStatus == IDCANCEL ? L"FALSE" : L"TRUE");
+  WriteLog(st_logmsg.c_str());
+#endif
+
+  //  Say OK to shutdown\restart\logoff (unless Windows XP or earlier said CANCEL)
+  return m_iSessionEndingStatus == IDCANCEL ? FALSE : TRUE;
 }
 
-void DboxMain::OnEndSession(BOOL bEnding)
+LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
 {
-  if (bEnding == TRUE) {
-    switch (m_iSessionEndingStatus) {
-      case IDOK:
-        // Either not changed, R/O or already saved timestamps
-      case IDCANCEL:
-        // Shouldn't happen as the user said NO to shutdown\restart\logoff
-      case IDNO:
-        // User said NO to saving - so don't!
-        break;
-      case IDYES:
-        // User said YES they wanted to save - so do!
-        OnOK();
-        break;
-      default:
-        ASSERT(0);
-    }
+  /*
+    See comments in OnQueryEndSession above.
+  */
+#ifdef _DEBUG
+  std::wstring st_logmsg;
+  Format(st_logmsg, L"In OnEndSession wParam: %s", wParam == TRUE ? L"TRUE" : L"FALSE");
+  WriteLog(st_logmsg.c_str());
+#endif
 
+  if (wParam == TRUE) {
     if (m_pfcnShutdownBlockReasonDestroy != NULL)
       m_pfcnShutdownBlockReasonDestroy(m_hWnd);
 
+    switch (m_iSessionEndingStatus) {
+      case IDIGNORE:
+      case IDCANCEL:
+        // How did we get here - IDIGNORE means we are not ending and IDCANCEL
+        // means the user said to cancel the shutdown\restart\logoff!!!
+#ifdef _DEBUG
+        Format(st_logmsg, L"In OnEndSession Status:%s  - shouldn't happen!", 
+          m_iSessionEndingStatus == IDCANCEL ? L"IDCANCEL" : L"IDIGNORE");
+        WriteLog(st_logmsg.c_str());
+#endif
+        break;
+      case IDOK:
+        // User never asked a question (Vista or later)
+        // Let them decide via the full screen display presented by the OS
+        // However, be nice - take a special emergency save
+        SaveDatabaseOnExit(EMERGENCYSAVE);
+        break;
+      case IDYES:
+        // User said Yes - save the changes (Windows XP or earlier)
+        SaveDatabaseOnExit(ENDSESSIONEXIT);
+        break;
+      case IDNO:
+        // User said No - don't save the changes (Windows XP or earlier)
+        break;
+      case IDTIMEOUT:
+        // Windows XP or earlier, the question to the user Timed out.
+        // It is now up to the user to use the OS dialog to either 'End Now'
+        // PasswordSafe and take the consequences or cancel the EndSession.
+        // However, be nice - take a special emergency save
+        SaveDatabaseOnExit(EMERGENCYSAVE);
+        break;
+    }
+
     m_bBlockShutdown = false;
+    CleanUpAndExit(false);
   } else {
     // Reset status since the EndSession was cancelled
     m_iSessionEndingStatus = IDIGNORE;
   }
-  CDialog::OnEndSession(bEnding);
+
+  CDialog::OnEndSession(wParam);
+  return 0L;
 }
 
 void DboxMain::UpdateStatusBar()
@@ -2686,7 +2797,7 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 void DboxMain::U3ExitNow()
 {
   // Here upon "soft eject" from U3 device
-  if (OnQueryEndSession()) {
+  if (OnQueryEndSession(0, ENDSESSION_CLOSEAPP) == TRUE) {
     m_inExit = true;
     PostQuitMessage(0);
   }
@@ -3269,3 +3380,30 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
   }
   return false;
 }
+
+#ifdef _DEBUG
+void DboxMain::WriteLog(LPCWSTR pszString)
+{
+  const unsigned int iBOM = 0xFEFF;
+  std::FILE *fd = NULL;
+  std::wstring logfile = PWSdirs::GetExeDir() + L"trace.log";
+  bool bWriteBOM = !pws_os::FileExists(logfile);
+
+  errno_t err = _wfopen_s(&fd, logfile.c_str(), L"a+b");
+
+  if (err != 0 || fd == NULL) {
+    ASSERT(0);
+    return;
+  }
+
+  if (bWriteBOM)
+    putwc(iBOM, fd);
+
+  std::wstring st_logmsg;
+  Format(st_logmsg, L"%s: %s\r\n", PWSUtil::GetTimeStamp(), pszString);
+  fwrite((void *)st_logmsg.c_str(), sizeof(wchar_t), st_logmsg.length(), fd);
+  fflush(fd);
+  fclose(fd);
+  fd = NULL;
+}
+#endif

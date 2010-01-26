@@ -190,30 +190,30 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
   switch(m_index) {
-  case GCP_FIRST:
-    // At start up - give the user the option unless file is R/O
-    GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-    GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
+    case GCP_FIRST:
+      // At start up - give the user the option unless file is R/O
+      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
 #ifdef DEMO
-    GetDlgItem(IDC_SPCL_TXT)->
+      GetDlgItem(IDC_SPCL_TXT)->
       SetWindowText(CString(MAKEINTRESOURCE(IDS_DEMO)));
 #endif
-    break;
-  case GCP_NORMAL:
-  case GCP_ADVANCED:
-    // otherwise during open - user can - again unless file is R/O
-    GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-    GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-    break;
-  case GCP_RESTORE:
-  case GCP_WITHEXIT:
-    // on Restore - user can't change status
-    GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-    GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
-    break;
-  default:
-    ASSERT(FALSE);
+      break;
+    case GCP_NORMAL:
+    case GCP_ADVANCED:
+      // otherwise during open - user can - again unless file is R/O
+      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      break;
+    case GCP_RESTORE:
+    case GCP_WITHEXIT:
+      // on Restore - user can't change status
+      GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+      GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
+      break;
+    default:
+      ASSERT(FALSE);
   }
 
   // Only show virtual Keyboard menu if we can load DLL

@@ -26,6 +26,7 @@
 #include "GeneralMsgBox.h"
 #include "MFCMessages.h"
 #include "PWFileDialog.h"
+#include "DisplayEmerBkupFiles.h"
 
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
@@ -36,6 +37,7 @@
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #include "os/file.h"
+#include "os/dir.h"
 
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
@@ -86,10 +88,46 @@ BOOL DboxMain::OpenOnInit()
     // Command line not set - use config for first open
     bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO) == TRUE;
   }
+
   int rc = GetAndCheckPassword(m_core.GetCurFile(),
                                passkey, GCP_FIRST,
                                bReadOnly,
                                m_core.IsReadOnly());  // First
+
+  CString cs_title;
+  cs_title.LoadString(IDS_FILEREADERROR);
+  bool bAskerSet = m_core.IsAskerSet();
+  bool bReporterSet = m_core.IsReporterSet();
+  MFCAsker q;
+  MFCReporter r;
+
+  if (!bAskerSet)
+    m_core.SetAsker(&q);
+
+  if (!bReporterSet)
+    m_core.SetReporter(&r);
+
+  if (rc == PWScore::SUCCESS) {
+    // Verify if any recovery databases exist
+    INT_PTR chkrc = CheckEmergencyBackupFiles(m_core.GetCurFile(), passkey);
+
+    if (!bAskerSet)
+      m_core.SetAsker(NULL);
+    if (!bReporterSet)
+      m_core.SetReporter(NULL);
+    
+    if (chkrc == IDOK) {
+      // Carry on with current file
+      return PWScore::SUCCESS;
+    } else 
+    if (chkrc == IDCANCEL) {
+      // Cancel "Open on Init
+      Close(false);
+      CDialog::OnCancel();
+      return FALSE;
+    }
+  }
+
   int rc2 = PWScore::NOT_SUCCESS;
 
   switch (rc) {
@@ -101,9 +139,8 @@ BOOL DboxMain::OpenOnInit()
                                          m_core.GetCurFile()).c_str();
       UpdateSystemTray(UNLOCKED);
 #endif
-      CheckExpiredPasswords();
-    }
       break;
+    }
     case PWScore::CANT_OPEN_FILE:
       if (m_core.GetCurFile().empty()) {
         // Empty filename. Assume they are starting Password Safe
@@ -192,25 +229,15 @@ BOOL DboxMain::OpenOnInit()
   }
 
   // Status OK or user chose to forge ahead...
-  m_needsreading = false;
   startLockCheckTimer();
-  UpdateSystemTray(UNLOCKED);
+
   if (!m_bOpen) {
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
   }
-  app.AddToMRU(m_core.GetCurFile().c_str());
-  UpdateMenuAndToolBar(true); // sets m_bOpen too...
-  UpdateStatusBar();
 
-#if !defined(POCKET_PC)
-  m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
-                                     m_core.GetCurFile()).c_str();
-  SetWindowText(LPCWSTR(m_titlebar));
-  app.SetTooltipText(m_core.GetCurFile().c_str());
-#endif
+  PostOpenProcessing();
 
-  SelectFirstEntry();
   // Validation does integrity check & repair on database
   // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
   if (m_bValidate) {
@@ -218,23 +245,6 @@ BOOL DboxMain::OpenOnInit()
     m_bValidate = false;
   }
 
-  // Set Dragbar images correctly
-  if (m_core.GetNumEntries() == 0) {
-    m_DDGroup.SetStaticState(false);
-    m_DDTitle.SetStaticState(false);
-    m_DDPassword.SetStaticState(false);
-    m_DDUser.SetStaticState(false);
-    m_DDNotes.SetStaticState(false);
-    m_DDURL.SetStaticState(false);
-    m_DDemail.SetStaticState(false);
-  }
-
-  // Set timer for user-defined idle lockout, if selected (DB preference)
-  KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    ResetIdleLockCounter();
-    SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
-  }
   return TRUE;
 }
 
@@ -402,19 +412,21 @@ void DboxMain::OnClose()
   Close();
 }
 
-int DboxMain::Close()
+int DboxMain::Close(const bool bTrySave)
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  // Save Application related preferences
-  prefs->SaveApplicationPreferences();
-  prefs->SaveShortcuts();
+  if (bTrySave) {
+    // Save Application related preferences
+    prefs->SaveApplicationPreferences();
+    prefs->SaveShortcuts();
 
-  if (m_bOpen) {
-    // try and save it first
-    int rc = SaveIfChanged();
-    if (rc != PWScore::SUCCESS)
-      return rc;
+    if (m_bOpen) {
+      // try and save it first
+      int rc = SaveIfChanged();
+      if (rc != PWScore::SUCCESS)
+        return rc;
+    }
   }
 
   // Turn off special display if on
@@ -457,7 +469,7 @@ int DboxMain::Close()
   UpdateStatusBar();
 
   // Delete any saved status information
-  for (size_t i = 0; i < m_stkSaveGUIInfo.size(); i++) {
+  while (!m_stkSaveGUIInfo.empty()) {
     m_stkSaveGUIInfo.pop();
   }
 
@@ -520,11 +532,11 @@ void DboxMain::OnOpenMRU(UINT nID)
 int DboxMain::Open()
 {
   int rc = PWScore::SUCCESS;
-  StringX newfile;
+  StringX sx_Filename;
   CString cs_text(MAKEINTRESOURCE(IDS_CHOOSEDATABASE));
   std::wstring dir = PWSdirs::GetSafeDir();
 
-  //Open-type dialog box
+  // Open-type dialog box
   while (1) {
     CPWFileDialog fd(TRUE,
                      DEFAULT_SUFFIX,
@@ -547,12 +559,13 @@ int DboxMain::Open()
       PostQuitMessage(0);
       return PWScore::USER_CANCEL;
     }
+
     const bool last_ro = m_core.IsReadOnly(); // restore if user cancels
     m_core.SetReadOnly(fd.GetReadOnlyPref() == TRUE);
     if (rc2 == IDOK) {
-      newfile = LPCWSTR(fd.GetPathName());
+      sx_Filename = LPCWSTR(fd.GetPathName());
 
-      rc = Open(newfile, fd.GetReadOnlyPref() == TRUE);
+      rc = Open(sx_Filename, fd.GetReadOnlyPref() == TRUE);
       if (rc == PWScore::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
@@ -566,10 +579,11 @@ int DboxMain::Open()
       return PWScore::USER_CANCEL;
     }
   }
+
   return rc;
 }
 
-int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
+int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly)
 {
   CGeneralMsgBox gmb;
   INT_PTR rc1;
@@ -578,7 +592,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   CString cs_temp, cs_title, cs_text;
 
   //Check that this file isn't already open
-  if (pszFilename == m_core.GetCurFile() && !m_needsreading) {
+  if (sx_Filename == m_core.GetCurFile() && !m_needsreading) {
     //It is the same damn file
     cs_text.LoadString(IDS_ALREADYOPEN);
     cs_title.LoadString(IDS_OPENDATABASE);
@@ -590,21 +604,27 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   if (rc != PWScore::SUCCESS)
     return rc;
 
-  // if we were using a different file, unlock it
-  // do this before GetAndCheckPassword() as that
-  // routine gets a lock on the new file
+  // If we were using a different file, unlock it do this before 
+  // GetAndCheckPassword() as that routine gets a lock on the new file
   if (!m_core.GetCurFile().empty()) {
     m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
-  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
+  rc = GetAndCheckPassword(sx_Filename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
+
+  // Just need file extension
+  std::wstring drive, dir, name, ext;
+  pws_os::splitpath(sx_Filename.c_str(), drive, dir, name, ext);
+
   switch (rc) {
     case PWScore::SUCCESS:
-      app.AddToMRU(pszFilename.c_str());
+      // Do not add recovery files to the MRU
+      if (ext != L".ebak")
+        app.AddToMRU(sx_Filename.c_str());
       m_bAlreadyToldUserNoSave = false;
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_SAFENOTEXIST, pszFilename.c_str());
+      cs_temp.Format(IDS_SAFENOTEXIST, sx_Filename.c_str());
       gmb.SetTitle(IDS_FILEOPENERROR);
       gmb.SetMsg(cs_temp);
       gmb.SetStandardIcon(MB_ICONQUESTION);
@@ -638,19 +658,44 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   ClearData();
 
   cs_title.LoadString(IDS_FILEREADERROR);
+  bool bAskerSet = m_core.IsAskerSet();
+  bool bReporterSet = m_core.IsReporterSet();
   MFCAsker q;
   MFCReporter r;
-  m_core.SetAsker(&q);
-  m_core.SetReporter(&r);
-  rc = m_core.ReadFile(pszFilename, passkey);
-  m_core.SetAsker(NULL);
-  m_core.SetReporter(NULL);
+
+  if (!bAskerSet)
+    m_core.SetAsker(&q);
+
+  if (!bReporterSet)
+    m_core.SetReporter(&r);
+
+  if (rc == PWScore::SUCCESS) {
+    // Verify if any recovery databases exist
+    INT_PTR chkrc = CheckEmergencyBackupFiles(sx_Filename, passkey);
+    
+    if (chkrc == IDCANCEL) {
+      // Cancel Open
+      if (!bAskerSet)
+        m_core.SetAsker(NULL);
+      if (!bReporterSet)
+        m_core.SetReporter(NULL);
+      return PWScore::USER_CANCEL;
+    }
+  }
+
+  // Now read the file
+  rc = m_core.ReadFile(sx_Filename, passkey);
+
+  if (!bAskerSet)
+    m_core.SetAsker(NULL);
+  if (!bReporterSet)
+    m_core.SetReporter(NULL);
 
   switch (rc) {
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPENREADING, pszFilename.c_str());
+      cs_temp.Format(IDS_CANTOPENREADING, sx_Filename.c_str());
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       /*
       Everything stays as is... Worst case,
@@ -658,7 +703,7 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
       */
       return PWScore::CANT_OPEN_FILE;
     case PWScore::BAD_DIGEST:
-      cs_temp.Format(IDS_FILECORRUPT, pszFilename.c_str());
+      cs_temp.Format(IDS_FILECORRUPT, sx_Filename.c_str());
       if (gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES) {
         rc = PWScore::SUCCESS;
         break;
@@ -679,16 +724,30 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
     }
 #endif
     default:
-      cs_temp.Format(IDS_UNKNOWNERROR, pszFilename.c_str());
+      cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename.c_str());
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
       return rc;
   }
-  m_core.SetCurFile(pszFilename);
+
+  m_core.SetCurFile(sx_Filename);
+  PostOpenProcessing();
+  return rc;
+}
+
+void DboxMain::PostOpenProcessing()
+{
 #if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
 #endif
+
+  std::wstring drive, dir, name, ext;
+  pws_os::splitpath(m_core.GetCurFile().c_str(), drive, dir, name, ext);
+  // Do not add recovery files to the MRU
+  if (ext != L".ebak")
+    app.AddToMRU(m_core.GetCurFile().c_str());
+
   CheckExpiredPasswords();
   ChangeOkUpdate();
 
@@ -701,14 +760,114 @@ int DboxMain::Open(const StringX &pszFilename, const bool bReadOnly)
   m_needsreading = false;
   SelectFirstEntry();
 
+  UpdateSystemTray(UNLOCKED);
+  UpdateMenuAndToolBar(true); // sets m_bOpen too...
+  UpdateToolBarROStatus(m_core.IsReadOnly());
+  UpdateStatusBar();
+
   // Set timer for user-defined idle lockout, if selected (DB preference)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     ResetIdleLockCounter();
     SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
   }
+}
 
-  return rc;
+int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
+{
+  StringX sx_fullfilename;
+  std::wstring wsTemp, wsDrive, wsDir, wsName, wsExt;
+  const std::wstring wsPath(sx_Filename.c_str());
+  int rc;
+
+  pws_os::splitpath(wsPath, wsDrive, wsDir, wsName, wsExt);
+  wsTemp = wsDrive + wsDir + wsName + L"_????????_??????.ebak";
+  std::wstring wsDBPath = wsDrive + wsDir;
+  std::wstring wsDBName = wsName + wsExt;
+
+  // Find all associated recovery files
+  std::vector<StringX> vrecoveryfiles;
+  CFileFind finder;
+  BOOL bWorking = finder.FindFile(wsTemp.c_str());
+  while (bWorking) {
+    bWorking = finder.FindNextFile();
+    vrecoveryfiles.push_back(StringX((LPCWSTR)finder.GetFileName()));
+  }
+  finder.Close();
+
+  if (vrecoveryfiles.empty())
+    return IDOK;
+
+  std::vector<st_recfile> vValidEBackupfiles;
+  PWScore othercore;
+
+  // Get currently selected database's information
+  st_DBProperties st_dbpcore;
+  othercore.ReadFile(sx_Filename, passkey);
+  othercore.GetDBProperties(st_dbpcore);
+  st_dbpcore.database = wsDBName.c_str();
+
+  // Reading a new file changes the preferences!
+  const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
+  const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
+
+  for (size_t i = 0; i < vrecoveryfiles.size(); i++) {
+    st_recfile st_rf;
+    st_DBProperties st_dbp;
+    othercore.ReInit();
+    st_rf.filename = vrecoveryfiles[i];
+
+    // First check passphrase the same.
+    sx_fullfilename = StringX(wsDBPath.c_str()) + vrecoveryfiles[i];
+    rc = othercore.CheckPasskey(sx_fullfilename, passkey);
+
+    // If it is, try to open database (i.e. same passphrase) and get
+    // the header record but not change anything in m_core related to
+    // current open database (hence saving the database preferences for later)
+    if (rc == PWScore::SUCCESS) {
+      rc = othercore.ReadFile(sx_fullfilename, passkey);
+      if (rc == PWScore::SUCCESS) {
+        othercore.GetDBProperties(st_dbp);
+        st_dbp.database = sx_fullfilename;
+        st_rf.dbp = st_dbp;
+      }
+    }
+    st_rf.rc = rc;
+    vValidEBackupfiles.push_back(st_rf);
+  }
+  othercore.ReInit();
+
+  // Reset database preferences - first to defaults then add saved changes!
+  PWSprefs::GetInstance()->Load(sxSavePrefString);
+  PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
+
+  vrecoveryfiles.clear();
+  if (vValidEBackupfiles.empty())
+    return IDOK;
+
+  // Now tell user we have some recovery files and ask for guidance!
+  CDisplayEmerBkupFiles dsprfiles(this, wsDrive, wsDBPath, st_dbpcore, vValidEBackupfiles);
+
+  INT_PTR dsprc = dsprfiles.DoModal();
+
+  if (dsprc > 0)
+    return dsprc;
+
+  // User specified to open a recovery file instead
+  // Close original - don't save anything
+  Close(false);
+
+  // Now open the one selected by the user in R/O mode
+  sx_fullfilename = vValidEBackupfiles[-dsprc].dbp.database;
+  rc = m_core.ReadFile(sx_fullfilename, passkey);
+  ASSERT(rc == PWScore::SUCCESS);
+
+  m_core.SetCurFile(sx_fullfilename);
+  m_core.SetReadOnly(true);
+
+  PostOpenProcessing();
+
+  return IDOK;
 }
 
 void DboxMain::OnClearMRU()
@@ -724,7 +883,10 @@ void DboxMain::OnSave()
 int DboxMain::Save()
 {
   int rc;
-  CString cs_title, cs_msg, cs_temp;
+  CString cs_msg, cs_temp;
+  CGeneralMsgBox gmb;
+  std::wstring NewName;
+
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   // Save Application related preferences
@@ -735,37 +897,33 @@ int DboxMain::Save()
     return SaveAs();
 
   switch (m_core.GetReadFileVersion()) {
-  case PWSfile::VCURRENT:
-    if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
-      int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
-      int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-      std::wstring userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
-      std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
-      if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
-                                userBackupPrefix, userBackupDir)) {
-        CGeneralMsgBox gmb;
-        gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+    case PWSfile::VCURRENT:
+      if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
+        int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
+        int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
+        std::wstring userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+        std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
+        if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
+                                  userBackupPrefix, userBackupDir)) {
+          gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+        }
       }
-    }
-    break;
-  case PWSfile::NEWFILE:
-    { // file version mis-match
-      std::wstring NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                                     DEFAULT_SUFFIX);
+      break;
+    case PWSfile::NEWFILE:
+      // file version mis-match
+      NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                        DEFAULT_SUFFIX);
 
       cs_msg.Format(IDS_NEWFORMAT,
                     m_core.GetCurFile().c_str(), NewName.c_str());
-      cs_title.LoadString(IDS_VERSIONWARNING);
-
-      CGeneralMsgBox gmb;
-      gmb.SetTitle(cs_title);
+      gmb.SetTitle(IDS_VERSIONWARNING);
       gmb.SetMsg(cs_msg);
       gmb.SetStandardIcon(MB_ICONWARNING);
       gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
       gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
-      INT_PTR rc = gmb.DoModal();
-      if (rc == IDS_CANCEL)
+      if (gmb.DoModal() == IDS_CANCEL)
         return PWScore::USER_CANCEL;
+
       m_core.SetCurFile(NewName.c_str());
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
@@ -773,10 +931,9 @@ int DboxMain::Save()
       SetWindowText(LPCWSTR(m_titlebar));
       app.SetTooltipText(m_core.GetCurFile().c_str());
 #endif
-    }
-    break;
-  default:
-    ASSERT(0);
+      break;
+    default:
+      ASSERT(0);
   }
 
   rc = m_core.WriteCurFile();
@@ -785,6 +942,7 @@ int DboxMain::Save()
     DisplayFileWriteError(rc, m_core.GetCurFile());
     return rc;
   }
+
   m_core.ClearChangedNodes();
   SetChanged(Clear);
   ChangeOkUpdate();
@@ -900,6 +1058,7 @@ int DboxMain::SaveAs()
     } else
       return PWScore::USER_CANCEL;
   }
+
   std::wstring locker(L""); // null init is important here
   // Note: We have to lock the new file before releasing the old (on success)
   if (!m_core.LockFile2(newfile.c_str(), locker)) {
@@ -908,6 +1067,7 @@ int DboxMain::SaveAs()
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
+
   // Save file UUID, clear it to generate new one, restore if necessary
   uuid_array_t file_uuid_array;
   m_core.GetFileUUID(file_uuid_array);
@@ -2814,8 +2974,16 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
 void DboxMain::OnOK() 
 {
-  int rc, rc2;
+  SavePreferencesOnExit();
 
+  int rc = SaveDatabaseOnExit(NORMALEXIT);
+  if (rc == PWScore::SUCCESS) {
+    CleanUpAndExit();
+  }
+}
+
+void DboxMain::SavePreferencesOnExit()
+{
   PWSprefs::IntPrefs WidthPrefs[] = {
     PWSprefs::Column1Width,
     PWSprefs::Column2Width,
@@ -2873,88 +3041,155 @@ void DboxMain::OnOK()
   if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
 
-  bool autoSave = true; // false if user saved or decided not to 
-  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
-    CGeneralMsgBox gmb;
-    CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
-    switch (m_iSessionEndingStatus) {
-      case IDIGNORE:
-      case IDCANCEL:
-        // IDCANCEL: User already said Cancel last time but could change their minds
-        // IDIGNORE: Session did not end last time - user has an option to cancel
-        rc = gmb.MessageBox(cs_msg, AfxGetAppName(), MB_YESNOCANCEL | MB_ICONQUESTION);
-        break;
-      case IDOK:
-        // Session is ending - user does not have an option to cancel
-        rc = gmb.MessageBox(cs_msg, AfxGetAppName(),  MB_YESNO | MB_ICONQUESTION);
-        break;
-      case IDNO:
-      case IDYES:
-        // IDYES: Don't ask - user already said YES during OnQueryEndSession
-        // IDNO:  Don't ask - user already said NO during OnQueryEndSession
-        rc = m_iSessionEndingStatus;
-        break; 
-      default:
-        ASSERT(0);     // should never happen... 
-        rc = IDCANCEL; // ...but if it does, behave conservatively. 
+  // Now save the Find Toolbar display status
+  prefs->SetPref(PWSprefs::ShowFindToolBarOnOpen, m_FindToolBar.IsVisible() == TRUE);
+
+  prefs->SaveApplicationPreferences();
+  prefs->SaveShortcuts();
+}
+
+int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
+{
+  int rc;
+
+#ifdef _DEBUG
+  std::wstring st_logmsg, st_saveType, st_EndStatus;
+  switch (saveType) {
+    case NORMALEXIT:     st_saveType = L"NORMALEXIT";     break;
+    case ENDSESSIONEXIT: st_saveType = L"ENDSESSIONEXIT"; break;
+    case WTSLOGOFFEXIT:  st_saveType = L"WTSLOGOFFEXIT";  break;
+    case EMERGENCYSAVE:  st_saveType = L"EMERGENCYSAVE";  break;
+    default:             st_saveType = L"**UNKNOWN**";    break;
+  }
+  switch (m_iSessionEndingStatus) {
+    case IDCANCEL:       st_EndStatus = L"IDCANCEL";    break;
+    case IDIGNORE:       st_EndStatus = L"IDIGNORE";    break;
+    case IDOK:           st_EndStatus = L"IDOK";        break;
+    case IDNO:           st_EndStatus = L"IDNO";        break;
+    case IDYES:          st_EndStatus = L"IDYES";       break;
+    case IDTIMEOUT:      st_EndStatus = L"IDTIMEOUT";   break;
+    default:             st_EndStatus = L"**Unknown**"; break;
+  }
+  Format(st_logmsg, L"In SaveDatabaseOnExit. Type=%s; m_iSessionEndingStatus:%s", 
+                     st_saveType.c_str(), st_EndStatus.c_str());
+  WriteLog(st_logmsg.c_str());
+#endif
+
+  if (saveType == EMERGENCYSAVE) {
+    // Save database as "<dbname>_YYYYMMDD_HHMMSS.ebak"
+    std::wstring cs_newfile, cs_temp;
+    std::wstring drv, dir, name, ext;
+    const std::wstring path = m_core.GetCurFile().c_str();
+    pws_os::splitpath(path.c_str(), drv, dir, name, ext);
+    cs_temp = drv + dir + name;
+    cs_temp += L"_";
+    time_t now;
+    time(&now);
+    StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now, TMC_EXPORT_IMPORT);
+    StringX nf = cs_temp.c_str() + 
+                     cs_datetime.substr( 0, 4) +  // YYYY
+                     cs_datetime.substr( 5, 2) +  // MM
+                     cs_datetime.substr( 8, 2) +  // DD
+                     StringX(_T("_")) +
+                     cs_datetime.substr(11, 2) +  // HH
+                     cs_datetime.substr(14, 2) +  // MM
+                     cs_datetime.substr(17, 2);   // SS
+    cs_newfile = nf.c_str();
+    cs_newfile += L".ebak";
+    rc = m_core.WriteFile(cs_newfile.c_str());
+    return rc;
+  }
+
+  if (saveType == NORMALEXIT) {
+    bool bAutoSave = true; // false if user saved or decided not to 
+    if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
+      CGeneralMsgBox gmb;
+      CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
+      rc = gmb.MessageBox(cs_msg, AfxGetAppName(), 
+                        MB_YESNOCANCEL | MB_ICONQUESTION);
+
+      switch (rc) {
+        case IDCANCEL:
+          return PWScore::USER_CANCEL;
+        case IDYES:
+          rc = Save();
+          if (rc != PWScore::SUCCESS)
+            return PWScore::USER_CANCEL;
+          // Drop through to reset bAutoSave to prevent multiple saves
+        case IDNO:
+          bAutoSave = false;
+          break;
+      }
+    } // core.IsChanged()
+
+    /*
+    * Save silently (without asking user) iff:
+    * 0. User didn't explicitly save OR say that she doesn't want to AND
+    * 1. NOT read-only AND
+    * 2. (timestamp updates OR tree view display vector changed) AND
+    * 3. Database NOT empty
+    *
+    * Less formally:
+    *
+    * If MaintainDateTimeStamps set and not read-only, save without asking
+    * user: "they get what it says on the tin".
+    * Note: that if database was cleared (e.g., locked), it might be possible
+    * to save an empty list :-(
+    * Protect against this both here and in OnSize (where we minimize & possibly
+    * ClearData).
+    */
+
+    if (bAutoSave && !m_core.IsReadOnly() &&
+        (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+        m_core.GetNumEntries() > 0) {
+      rc = Save();
+      if (rc != PWScore::SUCCESS)
+        return PWScore::USER_CANCEL;
     }
-    switch (rc) {
-      case IDCANCEL:
-        return;
-      case IDYES:
-        autoSave = false;
-        rc2 = Save();
-        if (rc2 != PWScore::SUCCESS)
-          return;
-      case IDNO:
-        autoSave = false;
-        break;
+    return PWScore::SUCCESS;
+  } // NORMALEXIT
+  
+  if (saveType == ENDSESSIONEXIT || saveType == WTSLOGOFFEXIT) {
+    // ENDSESSIONEXIT: Windows XP or earlier
+    // WTSLOGOFFEXIT:  Windows XP or later (if OnQueryEndSession not called)
+    if (!m_core.IsReadOnly() && m_core.GetNumEntries() > 0) {
+      rc = Save();
+      if (rc != PWScore::SUCCESS)
+        return PWScore::USER_CANCEL;
     }
-  } // core.IsChanged()
+  } // ENDSESSIONEXIT || WTSLOGOFFEXIT
 
-  // Save silently (without asking user) iff:
-  // 0. User didn't explicitly save OR say that she doesn't want to AND
-  // 1. NOT read-only AND
-  // 2. (timestamp updates OR tree view display vector changed) AND
-  // 3. database NOT empty
-  // Less formally:
-  //
-  // If MaintainDateTimeStamps set and not read-only,
-  // save without asking user: "they get what it says on the tin"
-  // Note that if database was cleared (e.g., locked), it might be
-  // possible to save an empty list :-(
-  // Protect against this both here and in OnSize (where we minimize
-  // & possibly ClearData).
+  return PWScore::SUCCESS;
+}
 
-  if (autoSave && !m_core.IsReadOnly() &&
-      (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-      m_core.GetNumEntries() > 0)
-    Save();
-
+void DboxMain::CleanUpAndExit(const bool bNormalExit)
+{
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
   // b. the user has set the "ClearClipboardOnExit" pref
   // c. the system is shutting down, restarting or the user is logging off
+  PWSprefs *prefs = PWSprefs::GetInstance();
   if ((!IsWindowVisible() && prefs->GetPref(PWSprefs::UseSystemTray)) ||
-      prefs->GetPref(PWSprefs::ClearClipboardOnExit) ||
-      (m_iSessionEndingStatus == IDYES)) {
+      prefs->GetPref(PWSprefs::ClearClipboardOnExit)) {
     ClearClipboardData();
   }
 
-  // Now save the Find Toolbar display status
-  prefs->SetPref(PWSprefs::ShowFindToolBarOnOpen, m_FindToolBar.IsVisible() == TRUE);
-
   // wipe data, save prefs, go home.
   ClearData();
-  prefs->SaveApplicationPreferences();
-  prefs->SaveShortcuts();
+
   // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
   m_menuManager.Cleanup();
 
   // Clear out filters
   m_MapFilters.clear();
 
-  CDialog::OnOK();
+  // If we are called normally, then exit gracefully. If not, force the issue
+  // after the caller has processed the current message by posting another message
+  // for later (PostQuitMessage).
+  if (bNormalExit)
+    CDialog::OnOK();
+  else
+    PostQuitMessage(0);
 }
 
 void DboxMain::OnCancel()
@@ -2963,8 +3198,13 @@ void DboxMain::OnCancel()
   // minimizes to the system tray, else exit application
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     ShowWindow(SW_MINIMIZE);
-  } else
-    OnOK();
+  } else {
+    SavePreferencesOnExit();
+    int rc = SaveDatabaseOnExit(NORMALEXIT);
+    if (rc == PWScore::SUCCESS) {
+      CleanUpAndExit();
+    }
+  }
 }
 
 void DboxMain::SaveGroupDisplayState()

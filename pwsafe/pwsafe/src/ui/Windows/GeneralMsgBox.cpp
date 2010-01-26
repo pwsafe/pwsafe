@@ -91,8 +91,8 @@ static const BYTE _dlgData[] =
 // CGeneralMsgBox
 
 // Constructor
-CGeneralMsgBox::CGeneralMsgBox(CWnd* pParentWnd)
-  : m_uDefCmdId((UINT)IDC_STATIC), m_uEscCmdId((UINT)IDC_STATIC),
+CGeneralMsgBox::CGeneralMsgBox(CWnd *pParentWnd)
+  : m_uiDefCmdId((UINT)IDC_STATIC), m_uiEscCmdId((UINT)IDC_STATIC),
   m_hIcon(NULL), m_strTitle(AfxGetApp()->m_pszAppName)
 {
   m_pParentWnd = pParentWnd;
@@ -126,12 +126,63 @@ CGeneralMsgBox::~CGeneralMsgBox()
   ::DestroyIcon(m_hIcon);
 }
 
-INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption, 
-                                   UINT uType)
+INT_PTR CGeneralMsgBox::MessageBoxTimeOut(LPCWSTR lpText, LPCWSTR lpCaption,
+                                          UINT uiFlags, DWORD dwMilliseconds)
 {
-  UINT uiType = uType & MB_TYPEMASK;
-  UINT uiIcon = uType & MB_ICONMASK;
-  int iDefB = (int)uType & MB_DEFMASK;
+  if (dwMilliseconds == 0)
+    return MessageBox(lpText, lpCaption, uiFlags);
+
+  m_dwTimeOut = dwMilliseconds;
+  m_bTimedOut = false;
+  m_nResult = 0;
+
+  DWORD dwThreadId;
+  HANDLE hThread = CreateThread(NULL, 0, ThreadFunction, (LPVOID)this, 0, &dwThreadId);
+  if (hThread == NULL)
+    return -1;
+
+  m_nResult = MessageBox(lpText, lpCaption, uiFlags);
+
+  WaitForSingleObject(hThread, INFINITE);
+
+  CloseHandle(hThread);
+
+  if (m_bTimedOut)
+    return IDTIMEOUT;
+
+  return m_nResult;
+}
+
+DWORD WINAPI CGeneralMsgBox::ThreadFunction(LPVOID lpParameter)
+{
+  if (lpParameter) {
+    CGeneralMsgBox *pObject = static_cast<CGeneralMsgBox *>(lpParameter);
+    DWORD dwInitTime = GetTickCount();
+    DWORD dwStartTime = dwInitTime;
+    while (pObject->m_nResult != 0) {
+      DWORD dwCurrentTime = GetTickCount();
+      DWORD dwDeltaTime = dwCurrentTime - dwStartTime;
+      if (dwDeltaTime >= 1000) {
+        if ((dwCurrentTime - dwInitTime) >= pObject->m_dwTimeOut) {
+          pObject->m_bTimedOut = true;
+          pObject->PostMessage(WM_COMMAND, IDTIMEOUT, 0);
+          return WAIT_OBJECT_0;
+        }
+        dwStartTime = GetTickCount();
+      }
+      Sleep(50);
+    }
+  }
+  return WAIT_OBJECT_0;
+}
+
+INT_PTR CGeneralMsgBox::MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, 
+                                   UINT uiFlags)
+{
+  // Private member
+  UINT uiType = uiFlags & MB_TYPEMASK;
+  UINT uiIcon = uiFlags & MB_ICONMASK;
+  int iDefB = (int)uiFlags & MB_DEFMASK;
 
   if (lpText != NULL)
     SetMsg(lpText);
@@ -161,7 +212,7 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption,
       ButtonCmdIDs[1] = IDCANCEL;
       ButtonCmdTexts[0] = IDS_OK;
       ButtonCmdTexts[1] = IDS_CANCEL;
-      m_uEscCmdId = IDCANCEL;
+      m_uiEscCmdId = IDCANCEL;
       break;
     case MB_ABORTRETRYIGNORE:
       num_buttons = 3;
@@ -180,7 +231,7 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption,
       ButtonCmdTexts[0] = IDS_YES;
       ButtonCmdTexts[1] = IDS_NO;
       ButtonCmdTexts[2] = IDS_CANCEL;
-      m_uEscCmdId = IDCANCEL;
+      m_uiEscCmdId = IDCANCEL;
       break;
     case MB_YESNO:
       num_buttons = 2;
@@ -195,7 +246,7 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption,
       ButtonCmdIDs[1] = IDCANCEL;
       ButtonCmdTexts[0] = IDS_RETRY;
       ButtonCmdTexts[1] = IDS_CANCEL;
-      m_uEscCmdId = IDCANCEL;
+      m_uiEscCmdId = IDCANCEL;
       break;
     case MB_CANCELTRYCONTINUE:
       num_buttons = 3;
@@ -205,7 +256,7 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption,
       ButtonCmdTexts[0] = IDS_CANCEL;
       ButtonCmdTexts[1] = IDS_TRYAGAIN;
       ButtonCmdTexts[2] = IDS_CONTINUE;
-      m_uEscCmdId = IDCANCEL;
+      m_uiEscCmdId = IDCANCEL;
       break;
     default:
       ASSERT(0);
@@ -224,19 +275,19 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCTSTR lpText, LPCTSTR lpCaption,
   return rc;
 }
 
-INT_PTR CGeneralMsgBox::AfxMessageBox(LPCTSTR lpszText, LPCTSTR lpCaption, UINT nType)
+INT_PTR CGeneralMsgBox::AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption, UINT uiFlags)
 {
   SetMsg(lpszText);
   if (lpCaption == NULL)
     lpCaption = AfxGetApp()->m_pszAppName;
-  INT_PTR rc = MessageBox(NULL, lpCaption, nType);
+  INT_PTR rc = MessageBox(NULL, lpCaption, uiFlags);
   return rc;
 }
 
-INT_PTR CGeneralMsgBox::AfxMessageBox(UINT nIDPrompt, UINT uType)
+INT_PTR CGeneralMsgBox::AfxMessageBox(UINT uiIDPrompt, UINT uiFlags)
 {
-  SetMsg(nIDPrompt);
-  INT_PTR rc = MessageBox(NULL, AfxGetApp()->m_pszAppName, uType);
+  SetMsg(uiIDPrompt);
+  INT_PTR rc = MessageBox(NULL, AfxGetApp()->m_pszAppName, uiFlags);
   return rc;
 }
 
@@ -262,48 +313,48 @@ INT_PTR CGeneralMsgBox::DoModal()
 // CGeneralMsgBox - Button operations
 
 // Add a button
-void CGeneralMsgBox::AddButton(UINT uIDC,           // button command ID
+void CGeneralMsgBox::AddButton(UINT uiIDC,          // button command ID
                                LPCWSTR pszText,     // button text
                                BOOL bIsDefault,     // set the button as default
                                BOOL bIsEscape)      // return this command if user press escape
 {
-  ASSERT(uIDC != (UINT)IDC_STATIC);
+  ASSERT(uiIDC != (UINT)IDC_STATIC);
 
   BTNDATA btndata;
-  btndata.uIDC = uIDC;
+  btndata.uiIDC = uiIDC;
   btndata.strBtn = pszText;
 
   m_aBtns.Add(btndata);
 
   if (bIsEscape)
-    m_uEscCmdId = uIDC;
+    m_uiEscCmdId = uiIDC;
 
   if (bIsDefault)
-    m_uDefCmdId = uIDC;
+    m_uiDefCmdId = uiIDC;
 }
 
 // Add a button
-void CGeneralMsgBox::AddButton(UINT uIDC,           // button command ID
-                               UINT uIdText,        // string ID of button's text
+void CGeneralMsgBox::AddButton(UINT uiIDC,          // button command ID
+                               UINT uiIDText,       // string ID of button's text
                                BOOL bIsDefault,     // set the button as default
                                BOOL bIsEscape)      // return this command if user press escape
 {
   CString str;
 
-  if (uIdText == (UINT)-1)
-    uIdText = uIDC;
+  if (uiIDText == (UINT)-1)
+    uiIDText = uiIDC;
 
-  VERIFY(str.LoadString(uIdText));
+  VERIFY(str.LoadString(uiIDText));
 
-  AddButton(uIDC, str, bIsDefault, bIsEscape);
+  AddButton(uiIDC, str, bIsDefault, bIsEscape);
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralMsgBox - Plain text operations
 
-BOOL CGeneralMsgBox::SetMsg(UINT uMsgId)
+BOOL CGeneralMsgBox::SetMsg(UINT uiMsgId)
 {
-  return m_strMsg.LoadString(uMsgId);
+  return m_strMsg.LoadString(uiMsgId);
 }
 
 BOOL CGeneralMsgBox::SetMsg(LPCWSTR pszMsg)
@@ -337,9 +388,9 @@ void CGeneralMsgBox::SetIcon(HICON hIcon)
   }
 }
 
-void CGeneralMsgBox::SetIcon(UINT uIcon)
+void CGeneralMsgBox::SetIcon(UINT uiIcon)
 {
-  SetIcon(AfxGetApp()->LoadIcon(uIcon));
+  SetIcon(AfxGetApp()->LoadIcon(uiIcon));
 }
 
 void CGeneralMsgBox::SetStandardIcon(LPCWSTR pszIconName)
@@ -347,10 +398,10 @@ void CGeneralMsgBox::SetStandardIcon(LPCWSTR pszIconName)
   SetIcon(AfxGetApp()->LoadStandardIcon(pszIconName));
 }
 
-void CGeneralMsgBox::SetStandardIcon(UINT uIcon)
+void CGeneralMsgBox::SetStandardIcon(UINT uiIcon)
 {
   LPCWSTR pszIconName;
-  switch (uIcon) {
+  switch (uiIcon) {
     case MB_ICONEXCLAMATION:   // Also: MB_ICONWARNING
       pszIconName = IDI_WARNING;
       break;
@@ -381,31 +432,27 @@ BOOL CGeneralMsgBox::OnInitDialog()
   SetWindowText(m_strTitle);
 
   // Getting the base dialog unit used in pixel <-> d.u. conversion
-
   CRect rc(0, 0, CX_DLGUNIT_BASE, CY_DLGUNIT_BASE);
   MapDialogRect(rc);
 
   m_dimDlgUnit = rc.Size();
 
   // Creating the nested controls
-
   CreateRtfCtrl();
   CreateIcon();
   CreateBtns();
 
   // Updating the layout - preparing to show
-
   UpdateLayout();
 
   // Disabling the ESC key
-
-  if (m_uEscCmdId == (UINT)IDC_STATIC)
+  if (m_uiEscCmdId == (UINT)IDC_STATIC)
     ModifyStyle(WS_SYSMENU, NULL);
 
   // Focusing and setting the defaul button
-  if (m_uDefCmdId != (UINT)IDC_STATIC) {
-    GetDlgItem(m_uDefCmdId)->SetFocus();
-    SetDefID(m_uDefCmdId);
+  if (m_uiDefCmdId != (UINT)IDC_STATIC) {
+    GetDlgItem(m_uiDefCmdId)->SetFocus();
+    SetDefID(m_uiDefCmdId);
 
     return FALSE;
   }
@@ -413,10 +460,11 @@ BOOL CGeneralMsgBox::OnInitDialog()
   return TRUE;
 }
 
-BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, 
+                              LRESULT* pResult)
 {
   if (message == WM_NOTIFY) {
-    REQRESIZE* prr = (REQRESIZE*)lParam;
+    REQRESIZE *prr = (REQRESIZE *)lParam;
     if (prr->nmhdr.code == EN_REQUESTRESIZE) {
       // (1)
       // The rich edit control requested a resize.
@@ -428,8 +476,8 @@ BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESUL
       return TRUE;
     }
   } else if (message == WM_CLOSE) {
-    if (m_uEscCmdId != (UINT)IDC_STATIC)
-      EndDialog(m_uEscCmdId);
+    if (m_uiEscCmdId != (UINT)IDC_STATIC)
+      EndDialog(m_uiEscCmdId);
 
     return TRUE;
   }
@@ -437,41 +485,49 @@ BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESUL
   return CDialog::OnWndMsg(message, wParam, lParam, pResult);
 }
 
-BOOL CGeneralMsgBox::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
+BOOL CGeneralMsgBox::OnCmdMsg(UINT uiID, int nCode, void* pExtra, 
+                              AFX_CMDHANDLERINFO* pHandlerInfo)
 {
   if (nCode == CN_COMMAND) {
-    if (pHandlerInfo == NULL && nID != (WORD)IDC_STATIC) {
-      EndDialog(nID);
+    if (pHandlerInfo == NULL && uiID != (WORD)IDC_STATIC) {
+      EndDialog(uiID);
       return TRUE;
     }
   }
 
-  return CDialog::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+  if (nCode == CN_COMMAND) {
+    if (pHandlerInfo == NULL && uiID == IDTIMEOUT) {
+      EndDialog(IDTIMEOUT);
+      return TRUE;
+    }
+  }
+
+  return CDialog::OnCmdMsg(uiID, nCode, pExtra, pHandlerInfo);
 }
 
-BOOL CGeneralMsgBox::PreTranslateMessage(MSG* pMsg)
+BOOL CGeneralMsgBox::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN) {
     if (pMsg->wParam == VK_RETURN) {
-      CWnd* pWnd = GetFocus();
+      CWnd *pWnd = GetFocus();
 
       if (pWnd != NULL) {
-        UINT uIDC = (UINT)pWnd->GetDlgCtrlID();
+        UINT uiIDC = (UINT)pWnd->GetDlgCtrlID();
 
         for (int i = 0; i < m_aBtns.GetSize(); ++i)
-          if (m_aBtns[i].uIDC == uIDC) {
-            m_uDefCmdId = uIDC;
+          if (m_aBtns[i].uiIDC == uiIDC) {
+            m_uiDefCmdId = uiIDC;
             break;
           }
       }
 
-      EndDialog(m_uDefCmdId);
+      EndDialog(m_uiDefCmdId);
 
       return TRUE;
     }
     else if (pMsg->wParam == VK_ESCAPE || pMsg->wParam == VK_CANCEL) {
-      if (m_uEscCmdId != (UINT)IDC_STATIC)
-        EndDialog(m_uEscCmdId);
+      if (m_uiEscCmdId != (UINT)IDC_STATIC)
+        EndDialog(m_uiEscCmdId);
 
       return TRUE;
     }
@@ -486,7 +542,6 @@ BOOL CGeneralMsgBox::PreTranslateMessage(MSG* pMsg)
 void CGeneralMsgBox::CreateRtfCtrl()
 {
   // Creating the Rich Edit control
-
   CRect rcDummy; // dimension doesn't matter here
 
   m_edCtrl.Create(WS_CHILD | WS_VISIBLE | ES_LEFT | ES_MULTILINE | ES_READONLY,
@@ -516,7 +571,6 @@ void CGeneralMsgBox::CreateRtfCtrl()
   m_dimMsg.cy = 0;
 
   // Performing a binary search for the best dimension
-
   int cxFirst = 0;
   int cxLast = ::GetSystemMetrics(SM_CXFULLSCREEN);
   int cyMax = 0;
@@ -541,7 +595,7 @@ void CGeneralMsgBox::CreateRtfCtrl()
     else
       cxLast = cx - 1;
   }
-  while(cxFirst < cxLast);
+  while (cxFirst < cxLast);
 }
 
 void CGeneralMsgBox::CreateBtns()
@@ -552,7 +606,7 @@ void CGeneralMsgBox::CreateBtns()
   // DC and Font for use in some dimension calculations
   CClientDC dc(this);
 
-  CFont* pWndFont = GetFont();
+  CFont *pWndFont = GetFont();
   CFont *poldFont = dc.SelectObject(pWndFont);
 
   CRect rcDummy; // dimesion doesn't matter here
@@ -560,26 +614,21 @@ void CGeneralMsgBox::CreateBtns()
   int cBtns = m_aBtns.GetSize();
 
   for (int i = 0; i < cBtns; ++i) {
-    BTNDATA& btndata = m_aBtns[i];
+    BTNDATA &btndata = m_aBtns[i];
 
-    // Finding the minimum dimension needed to
-    // properly show any button
-
+    // Finding the minimum dimension needed to properly show any button
     CSize dimBtn = dc.GetTextExtent(btndata.strBtn);
 
     m_dimBtn.cx = max(m_dimBtn.cx, dimBtn.cx);
     m_dimBtn.cy = max(m_dimBtn.cy, dimBtn.cy);
 
     // Creating the button with MFC's CButton help.
-
     CButton btnCtrl;
 
     btnCtrl.Create(btndata.strBtn,
                    WS_CHILD|WS_VISIBLE|WS_TABSTOP,
-                   rcDummy, this, btndata.uIDC);
-
+                   rcDummy, this, btndata.uiIDC);
     btnCtrl.SetFont(pWndFont);
-
     btnCtrl.UnsubclassWindow();
   }
 
@@ -596,7 +645,8 @@ void CGeneralMsgBox::CreateIcon()
     CRect rcDummy; // dimesion doesn't matter here
 
     // Creating the icon control
-    m_stIconCtrl.Create(NULL, WS_CHILD|WS_VISIBLE|WS_DISABLED|SS_ICON, rcDummy, this);
+    m_stIconCtrl.Create(NULL, WS_CHILD | WS_VISIBLE | WS_DISABLED | SS_ICON, 
+                        rcDummy, this);
     m_stIconCtrl.SetIcon(m_hIcon);
   }
 }
@@ -613,9 +663,9 @@ int CGeneralMsgBox::FromDlgY(int y)
 void CGeneralMsgBox::UpdateLayout()
 {
   // Caching the borders
-  int cxLeft = FromDlgX(m_aMetrics[CX_LEFT_BORDER]);
-  int cxRight = FromDlgX(m_aMetrics[CX_RIGHT_BORDER]);
-  int cyTop = FromDlgY(m_aMetrics[CY_TOP_BORDER]);
+  int cxLeft   = FromDlgX(m_aMetrics[CX_LEFT_BORDER]);
+  int cxRight  = FromDlgX(m_aMetrics[CX_RIGHT_BORDER]);
+  int cyTop    = FromDlgY(m_aMetrics[CY_TOP_BORDER]);
   int cyBottom = FromDlgY(m_aMetrics[CY_BOTTOM_BORDER]);
 
   // Caching the space between buttons
@@ -639,20 +689,19 @@ void CGeneralMsgBox::UpdateLayout()
   xMsg += cxLeft;
 
   // Caching the minimum width needed for all buttons
-
   int cBtns = m_aBtns.GetSize();
 
   int cxBtns = (cBtns - 1) * FromDlgX(m_aMetrics[CX_BTNS_SPACE]) +
-    cBtns * m_dimBtn.cx;
+                   cBtns * m_dimBtn.cx;
 
   if (dimClient.cx < cxBtns)
     dimClient.cx = cxBtns;
 
   dimClient.cx += cxLeft + cxRight;
-  dimClient.cy += cyTop + cyBottom + m_dimBtn.cy + FromDlgY(m_aMetrics[CY_BTNS_MSG_SPACE]);
+  dimClient.cy += cyTop + cyBottom + m_dimBtn.cy + 
+                        FromDlgY(m_aMetrics[CY_BTNS_MSG_SPACE]);
 
   // Set client dimensions
-
   CRect rc(0, 0, dimClient.cx, dimClient.cy);
 
   CalcWindowRect(rc);
@@ -660,23 +709,20 @@ void CGeneralMsgBox::UpdateLayout()
   CenterWindow();
 
   // Icon layout
-
   if (m_hIcon != NULL)
     m_stIconCtrl.MoveWindow(cxLeft, cyTop, m_dimIcon.cx, m_dimIcon.cy);
 
   // Message layout
-
   m_dimMsg.cx += 2;
   xMsg = (xMsg + dimClient.cx - cxRight - m_dimMsg.cx) / 2;
   m_edCtrl.MoveWindow(xMsg, cyTop, m_dimMsg.cx, m_dimMsg.cy);
 
   // Buttons layout
-
   int x = (dimClient.cx - cxBtns) / 2;
   int y = dimClient.cy - cyBottom - m_dimBtn.cy;
 
   for (int i = 0; i < cBtns; ++i) {
-    CWnd* pWndCtrl = GetDlgItem(m_aBtns[i].uIDC);
+    CWnd* pWndCtrl = GetDlgItem(m_aBtns[i].uiIDC);
     pWndCtrl->MoveWindow(x, y, m_dimBtn.cx, m_dimBtn.cy);
     x += m_dimBtn.cx + cxBtnsSpace;
   }

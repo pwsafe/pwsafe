@@ -83,7 +83,7 @@ void DboxMain::DatabaseModified(bool bChanged)
   // Only supported on Vista and later
   if (bCurrentState) {
     if (m_pfcnShutdownBlockReasonCreate != NULL) {
-      CSecString cs_stopreason;
+      CString cs_stopreason;
       cs_stopreason.Format(IDS_STOPREASON, m_core.GetCurFile().c_str());
       m_pfcnShutdownBlockReasonCreate(m_hWnd, cs_stopreason);
       m_bBlockShutdown = true;

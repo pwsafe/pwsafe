@@ -83,6 +83,8 @@ public:
   // so that we can inform user of events of interest
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
   static void SetAsker(Asker *pAsker) {m_pAsker = pAsker;}
+  static bool IsAskerSet() {return m_pAsker != NULL;}
+  static bool IsReporterSet() {return m_pReporter != NULL;}
 
   // Get/Set File UUIDs
   void ClearFileUUID();
