@@ -30,17 +30,11 @@ CConfirmDeleteDlg::CConfirmDeleteDlg(CWnd* pParent, int numchildren)
   : CPWDialog(CConfirmDeleteDlg::IDD, pParent),
   m_numchildren(numchildren)
 {
-  m_dontaskquestion = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::DeleteQuestion);
 }
 
 void CConfirmDeleteDlg::DoDataExchange(CDataExchange* pDX)
 {
-  BOOL B_dontaskquestion = m_dontaskquestion ? TRUE : FALSE;
-
   CPWDialog::DoDataExchange(pDX);
-  DDX_Check(pDX, IDC_CLEARCHECK, B_dontaskquestion);
-  m_dontaskquestion = B_dontaskquestion == TRUE;
 }
 
 BEGIN_MESSAGE_MAP(CConfirmDeleteDlg, CPWDialog)
@@ -54,17 +48,13 @@ BOOL CConfirmDeleteDlg::OnInitDialog(void)
       cs_text.LoadString(IDS_NUMCHILD);
     else
       cs_text.Format(IDS_NUMCHILDREN, m_numchildren);
+
     GetDlgItem(IDC_DELETECHILDREN)->EnableWindow(TRUE);
     GetDlgItem(IDC_DELETECHILDREN)->SetWindowText(cs_text);
-    GetDlgItem(IDC_CLEARCHECK)->EnableWindow(FALSE);
-    GetDlgItem(IDC_CLEARCHECK)->ShowWindow(SW_HIDE);
   } else {
     GetDlgItem(IDC_DELETECHILDREN)->EnableWindow(FALSE);
     GetDlgItem(IDC_DELETECHILDREN)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_CLEARCHECK)->EnableWindow(TRUE);
   }
-  cs_text.LoadString((m_numchildren > 0) ? IDS_DELGRP : IDS_DELENT);
-  GetDlgItem(IDC_DELITEM)->SetWindowText(cs_text);
   return TRUE;
 }
 
@@ -75,12 +65,5 @@ void CConfirmDeleteDlg::OnCancel()
 
 void CConfirmDeleteDlg::OnOK() 
 {
-  if (m_numchildren == 0) {
-    UpdateData(TRUE);
-    PWSprefs::GetInstance()->
-      SetPref(PWSprefs::DeleteQuestion, m_dontaskquestion);
-  }
   CPWDialog::OnOK();
 }
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------

@@ -326,8 +326,7 @@ void DboxMain::OnDelete()
     Delete();
 }
 
-void
-DboxMain::Delete()
+void DboxMain::Delete()
 {
   // "Top level" element delete:
   // 1. Sets up Command mechanism

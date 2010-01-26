@@ -315,8 +315,6 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::HighlightChanges);
   save_highlightchanges = display.m_highlightchanges;
 
-  misc.m_confirmdelete = prefs->
-    GetPref(PWSprefs::DeleteQuestion) ? FALSE : TRUE;
   misc.m_maintaindatetimestamps = prefs->
     GetPref(PWSprefs::MaintainDateTimeStamps) ? TRUE : FALSE;
   misc.m_escexits = prefs->
@@ -492,8 +490,6 @@ void DboxMain::OnOptions()
       RefreshViews();
     }
 
-    prefs->SetPref(PWSprefs::DeleteQuestion,
-                   misc.m_confirmdelete == FALSE);
     prefs->SetPref(PWSprefs::EscExits,
                    misc.m_escexits == TRUE);
     // by strange coincidence, the values of the enums match the indices
