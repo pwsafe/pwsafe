@@ -189,6 +189,8 @@ void PWSGrid::DisplayItem(const CItemData &item, int row)
 void PWSGrid::AddItem(const CItemData &item, int row)
 {
   int nRows = GetNumberRows();
+  if (row == -1)
+    row = nRows;
   if (row >= nRows) // add rows as needed
     AppendRows(row - nRows + 1);
   DisplayItem(item, row);

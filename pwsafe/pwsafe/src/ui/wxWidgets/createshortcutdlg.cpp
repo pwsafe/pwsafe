@@ -60,8 +60,10 @@ CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-: m_core(core), m_base(base)
+: m_core(core), m_base(base), m_ui(dynamic_cast<UIInterFace *>(parent))
 {
+  ASSERT(m_base != NULL);
+  ASSERT(m_ui != NULL);
   Init();
   Create(parent, id, caption, pos, size, style);
 }
@@ -232,9 +234,10 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& event )
     if (!valid)
       return;
     
-    CItemData shortcut;    
-    uuid_array_t base_uuid;
-    m_base->GetUUID(base_uuid);
+    CItemData shortcut;
+    shortcut.CreateUUID();
+    shortcut.SetShortcut();
+    shortcut.SetPassword(L"[Shortcut]");
     const wxString group = m_groupCtrl->GetValue();
 
     if (!group.empty())
@@ -248,6 +251,8 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& event )
     shortcut.SetXTime((time_t)0);
     shortcut.SetStatus(CItemData::ES_ADDED);
 
+    uuid_array_t base_uuid;
+    m_base->GetUUID(base_uuid);
     m_core.Execute(AddEntryCommand::Create(&m_core, shortcut, base_uuid));
   }
   EndModal(wxID_OK);

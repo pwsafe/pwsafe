@@ -80,7 +80,7 @@ public:
   // Notification from PWScore when new data is loaded
   void OnPasswordListModified();
 
-  void AddItem(const CItemData &item, int row);
+  void AddItem(const CItemData &item, int row = -1);
   void UpdateItem(const CItemData &item);
   void Remove(const uuid_array_t &uuid);
   size_t GetNumItems() const;

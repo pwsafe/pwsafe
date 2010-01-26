@@ -1296,7 +1296,67 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                                   CItemData::FieldType ft,
                                   bool bUpdateGUI)
 {
-  // XXX TBD
+  // Callback from PWScore if GUI needs updating
+  // Note: For some values of 'ga', 'ci' & ft are invalid and not used.
+ 
+  // "bUpdateGUI" is only used by GUI_DELETE_ENTRY when called as part
+  // of the Edit Entry Command where the entry is deleted and then added and
+  // the GUI should not be updated until after the Add.
+  CItemData *pci(NULL);
+
+  ItemListIter pos = m_core.Find(entry_uuid);
+  if (pos != m_core.GetEntryEndIter()) {
+    pci = &pos->second;
+  }
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  switch (ga) {
+    case UpdateGUICommand::GUI_ADD_ENTRY:
+      m_tree->AddItem(*pci);
+      m_grid->AddItem(*pci);
+      break;
+    case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
+#ifdef NOTYET
+      UpdateToolBarDoUndo();
+      UpdateStatusBar();
+      break;
+    case UpdateGUICommand::GUI_DELETE_ENTRY:
+      RemoveFromGUI(*pci, bUpdateGUI);
+      break;
+    case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
+      RefreshEntryFieldInGUI(*pci, ft);
+      break;
+    case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
+      RefreshEntryPasswordInGUI(*pci);
+      break;
+    case UpdateGUICommand::GUI_REDO_IMPORT:
+    case UpdateGUICommand::GUI_UNDO_IMPORT:
+    case UpdateGUICommand::GUI_REDO_MERGESYNC:
+    case UpdateGUICommand::GUI_UNDO_MERGESYNC:
+      // During these processes, many entries may be added/removed
+      // To stop the UI going nuts, updates to the UI are suspended until
+      // the action is complete - when these calls are then sent
+      RebuildGUI();
+      break;
+    case UpdateGUICommand::GUI_REFRESH_TREE:
+      // Caused by Database preference changed about showing username and/or
+      // passwords in the Tree View
+      RebuildGUI(iTreeOnly);
+      break;
+    case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
+      // Change any impact on the application due to a database preference change
+      // Currently - only Idle Timeout values
+      KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+      ResetIdleLockCounter();
+      if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout) == TRUE) {
+        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
+      }
+      break;
+#endif
+    default:
+      break;
+  }
 }
     
 void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
