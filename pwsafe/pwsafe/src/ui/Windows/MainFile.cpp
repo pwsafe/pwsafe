@@ -116,10 +116,6 @@ BOOL DboxMain::OpenOnInit()
     if (!bReporterSet)
       m_core.SetReporter(NULL);
     
-    if (chkrc == IDOK) {
-      // Carry on with current file
-      return PWScore::SUCCESS;
-    } else 
     if (chkrc == IDCANCEL) {
       // Cancel "Open on Init
       Close(false);
