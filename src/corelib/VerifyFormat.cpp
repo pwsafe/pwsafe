@@ -40,7 +40,6 @@ bool verifyDTvalues(int yyyy, int mon, int dd,
   return true;
 }
 
-
 bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
 {
   //  String format must be "yyyy/mm/dd hh:mm:ss"

@@ -35,6 +35,7 @@
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include "corelib/VerifyFormat.h"
 
 #include "os/file.h"
 #include "os/dir.h"
@@ -83,6 +84,7 @@ BOOL DboxMain::OpenOnInit()
     un-minimizing the application
   */
   StringX passkey;
+  BOOL retval(FALSE);
   bool bReadOnly = m_core.IsReadOnly();  // Can only be from -r command line parameter
   if (!bReadOnly) {
     // Command line not set - use config for first open
@@ -111,16 +113,11 @@ BOOL DboxMain::OpenOnInit()
     // Verify if any recovery databases exist
     INT_PTR chkrc = CheckEmergencyBackupFiles(m_core.GetCurFile(), passkey);
 
-    if (!bAskerSet)
-      m_core.SetAsker(NULL);
-    if (!bReporterSet)
-      m_core.SetReporter(NULL);
-    
     if (chkrc == IDCANCEL) {
-      // Cancel "Open on Init
+      // Cancel "Open on Init"
       Close(false);
       CDialog::OnCancel();
-      return FALSE;
+      goto exit;
     }
   }
 
@@ -128,7 +125,6 @@ BOOL DboxMain::OpenOnInit()
 
   switch (rc) {
     case PWScore::SUCCESS:
-    {
       rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
@@ -136,7 +132,6 @@ BOOL DboxMain::OpenOnInit()
       UpdateSystemTray(UNLOCKED);
 #endif
       break;
-    }
     case PWScore::CANT_OPEN_FILE:
       if (m_core.GetCurFile().empty()) {
         // Empty filename. Assume they are starting Password Safe
@@ -199,7 +194,7 @@ BOOL DboxMain::OpenOnInit()
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
     if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR) == IDNO) {
       CDialog::OnCancel();
-      return FALSE;
+      goto exit;
     }
     go_ahead = true;
   } // BAD_DIGEST
@@ -211,7 +206,7 @@ BOOL DboxMain::OpenOnInit()
     CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
     if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONWARNING) == IDNO) {
       CDialog::OnCancel();
-      return FALSE;
+      goto exit;
     }
     go_ahead = true;
   } // LIMIT_REACHED
@@ -221,7 +216,7 @@ BOOL DboxMain::OpenOnInit()
     // not a good return status, fold.
     if (!m_IsStartSilent)
       CDialog::OnCancel();
-    return FALSE;
+    goto exit;
   }
 
   // Status OK or user chose to forge ahead...
@@ -241,7 +236,15 @@ BOOL DboxMain::OpenOnInit()
     m_bValidate = false;
   }
 
-  return TRUE;
+  retval = TRUE;
+
+exit:
+  if (!bAskerSet)
+    m_core.SetAsker(NULL);
+  if (!bReporterSet)
+    m_core.SetReporter(NULL);
+
+  return retval;
 }
 
 void DboxMain::OnNew()
@@ -671,21 +674,13 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly)
     
     if (chkrc == IDCANCEL) {
       // Cancel Open
-      if (!bAskerSet)
-        m_core.SetAsker(NULL);
-      if (!bReporterSet)
-        m_core.SetReporter(NULL);
-      return PWScore::USER_CANCEL;
+      rc = PWScore::USER_CANCEL;
+      goto exit;
     }
   }
 
   // Now read the file
   rc = m_core.ReadFile(sx_Filename, passkey);
-
-  if (!bAskerSet)
-    m_core.SetAsker(NULL);
-  if (!bReporterSet)
-    m_core.SetReporter(NULL);
 
   switch (rc) {
     case PWScore::SUCCESS:
@@ -697,14 +692,15 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly)
       Everything stays as is... Worst case,
       they saved their file....
       */
-      return PWScore::CANT_OPEN_FILE;
+      rc = PWScore::CANT_OPEN_FILE;
+      goto exit;
     case PWScore::BAD_DIGEST:
       cs_temp.Format(IDS_FILECORRUPT, sx_Filename.c_str());
       if (gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES) {
         rc = PWScore::SUCCESS;
         break;
       } else
-        return rc;
+        goto exit;
 #ifdef DEMO
     case PWScore::LIMIT_REACHED:
     {
@@ -712,7 +708,8 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly)
       CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
       const int yn = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONWARNING);
       if (yn == IDNO) {
-        return PWScore::USER_CANCEL;
+        rc = PWScore::USER_CANCEL;
+        goto exit;
       }
       rc = PWScore::SUCCESS;
       m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, FALSE);
@@ -722,11 +719,18 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly)
     default:
       cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename.c_str());
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
-      return rc;
+      goto exit;
   }
 
   m_core.SetCurFile(sx_Filename);
   PostOpenProcessing();
+
+exit:
+  if (!bAskerSet)
+    m_core.SetAsker(NULL);
+  if (!bReporterSet)
+    m_core.SetReporter(NULL);
+
   return rc;
 }
 
@@ -773,10 +777,9 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
 {
   StringX sx_fullfilename;
   std::wstring wsTemp, wsDrive, wsDir, wsName, wsExt;
-  const std::wstring wsPath(sx_Filename.c_str());
   int rc;
 
-  pws_os::splitpath(wsPath, wsDrive, wsDir, wsName, wsExt);
+  pws_os::splitpath(sx_Filename.c_str(), wsDrive, wsDir, wsName, wsExt);
   wsTemp = wsDrive + wsDir + wsName + L"_????????_??????.ebak";
   std::wstring wsDBPath = wsDrive + wsDir;
   std::wstring wsDBName = wsName + wsExt;
@@ -785,9 +788,26 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   std::vector<StringX> vrecoveryfiles;
   CFileFind finder;
   BOOL bWorking = finder.FindFile(wsTemp.c_str());
+  const std::wstring ws_dash(L"-"), ws_colon(L":"), ws_T(L"T");
   while (bWorking) {
     bWorking = finder.FindNextFile();
-    vrecoveryfiles.push_back(StringX((LPCWSTR)finder.GetFileName()));
+    StringX sx_FoundFilename = StringX(finder.GetFileName());
+
+    // Verify datetime portion of name before adding to vector
+    // Convert dat time string so that we can use existing verification function
+    // "yyyymmdd_hhmmss" -> "yyyy-mm-ddThh:mm:ss"
+    time_t t;
+    std::wstring ws_datetime, ws_dt;
+    // Go back "yyyymmdd_hhmmss.ebak", take only the date/time
+    ws_dt = sx_FoundFilename.substr(sx_FoundFilename.length() - 20, 15).c_str();
+    ws_datetime = ws_dt.substr( 0, 4) + ws_dash  + ws_dt.substr( 4, 2) + ws_dash  +
+                  ws_dt.substr( 6, 2) + ws_T     + ws_dt.substr( 9, 2) + ws_colon +
+                  ws_dt.substr(11, 2) + ws_colon + ws_dt.substr(13, 2);
+
+    if (!VerifyXMLDateTimeString(ws_datetime, t))
+      continue;
+
+    vrecoveryfiles.push_back(sx_FoundFilename);
   }
   finder.Close();
 
@@ -846,6 +866,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
 
   INT_PTR dsprc = dsprfiles.DoModal();
 
+  // Check if IDIGNORE > 0 (if < 0, then select nth entry of vValidEBackupfiles)
   if (dsprc > 0)
     return dsprc;
 
