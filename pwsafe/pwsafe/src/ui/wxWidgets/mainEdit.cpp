@@ -85,7 +85,14 @@ void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& event )
     GetPref(PWSprefs::DeleteQuestion);
 
   bool dodelete = true;
-  int num_children = 0; // TBD: != 0 if group selected
+  int num_children = 0;
+  // If tree view, check if group selected
+  if (m_tree->IsShown()) {
+    wxTreeItemId sel = m_tree->GetSelection();
+    num_children = m_tree->GetChildrenCount(sel);
+    if (num_children > 0) // ALWAYS confirm group delete
+      dontaskquestion = false;
+  }
 
   //Confirm whether to delete the item
   if (!dontaskquestion) {
@@ -97,27 +104,70 @@ void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& event )
   }
 
   if (dodelete) {
+    Command *doit = NULL;
     CItemData *item = GetSelectedEntry();
     if (item != NULL) {
-      Delete(item);
-    } else {
-      // XXX TBD group delete
+      doit = Delete(item);
+    } else if (num_children > 0) {
+      doit = Delete(m_tree->GetSelection());
     }
-  }
+    if (doit != NULL)
+      m_core.Execute(doit);
+  } // dodelete
 }
 
-void PasswordSafeFrame::Delete(CItemData *pci)
+Command *PasswordSafeFrame::Delete(CItemData *pci)
 {
   ASSERT(pci != NULL);
   // ConfirmDelete asks for user confirmation
   // when deleting a shortcut or alias base.
-  // Otherwise it just return true
-  if (!m_core.ConfirmDelete(pci))
-    return;
-
-  m_core.Execute(DeleteEntryCommand::Create(&m_core, *pci));
+  // Otherwise it just returns true
+  if (m_core.ConfirmDelete(pci))
+    return DeleteEntryCommand::Create(&m_core, *pci);
+  else
+    return NULL;
 }
 
+Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
+{
+  // Called for deleting a group
+  // Recursively build the appropriate multi-command
+
+  MultiCommands *retval = MultiCommands::Create(&m_core);
+  ASSERT(tid.IsOk());
+  if (m_tree->GetChildrenCount(tid) > 0) {
+    wxTreeItemIdValue cookie;
+    wxTreeItemId ti = m_tree->GetFirstChild(tid, cookie);
+    
+    while (ti) {
+      Command *delCmd = Delete(ti);
+      if (delCmd != NULL)
+        retval->Add(delCmd);
+      // go through all siblings too
+      wxTreeItemId sibling = m_tree->GetNextSibling(ti);
+      while (sibling.IsOk()) {
+        Command *delSibCmd = Delete(sibling);
+        if (delSibCmd != NULL)
+          retval->Add(delSibCmd);
+        sibling = m_tree->GetNextSibling(sibling);
+      } // while siblings
+      ti = m_tree->GetNextChild(ti, cookie);
+    } // while children
+  } else { // leaf
+    CItemData *leaf = m_tree->GetItem(tid);
+    ASSERT(leaf != NULL);
+    Command *delLeafCmd = Delete(leaf); // gets user conf. if needed
+    if (delLeafCmd != NULL)
+      retval->Add(delLeafCmd);
+  }
+
+  // If MultiCommands is empty, delete and return NULL
+  if (retval->GetSize() == 0) {
+    delete retval;
+    retval = NULL;
+  }
+  return retval;
+}
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_FIND

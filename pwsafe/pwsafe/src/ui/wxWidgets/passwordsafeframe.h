@@ -23,6 +23,7 @@
 ////@begin includes
 #include "wx/frame.h"
 ////@end includes
+#include "wx/treebase.h" // for wxTreeItemId
 #include "corelib/PWScore.h"
 #include "corelib/UIinterface.h"
 /*!
@@ -299,7 +300,8 @@ public:
   void ShowGrid(bool show = true);
   void ShowTree(bool show = true);
   void ClearData();
-  void Delete(CItemData *pci);
+  Command *Delete(CItemData *pci);
+  Command *Delete(wxTreeItemId tid); // for group delete
   CItemData *GetSelectedEntry() const;
   CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut 
   void UpdateAccessTime(CItemData &ci);

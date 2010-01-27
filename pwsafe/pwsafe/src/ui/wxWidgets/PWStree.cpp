@@ -366,7 +366,18 @@ bool PWSTreeCtrl::Remove(const uuid_array_t &uuid)
   wxTreeItemId id = Find(uuid);
   if (id.IsOk()) {
     m_item_map.erase(CUUIDGen(uuid));
+    // if item's the only leaf of  group, delete parent
+    // group as well. repeat up the tree...
+    wxTreeItemId parentId = GetItemParent(id);
     Delete(id);
+    while (parentId != GetRootItem()) {
+      wxTreeItemId grandparentId = GetItemParent(parentId);
+      if (GetChildrenCount(parentId) == 0) {
+        Delete(parentId);
+        parentId = grandparentId;
+      } else
+        break;
+    } // while
     Refresh();
     Update();
     return true;
