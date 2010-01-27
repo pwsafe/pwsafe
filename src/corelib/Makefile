@@ -22,7 +22,7 @@ LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
                   PWSfileV1V2.cpp PWSfileV3.cpp \
                   PWSFilters.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
-                  sha1.cpp sha256.cpp \
+                  sha1.cpp sha256.cpp corelib_st.cpp\
                   StringX.cpp SysInfo.cpp \
                   TwoFish.cpp UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp UUIDGen.cpp \
@@ -77,9 +77,13 @@ debug release unicodedebug unicoderelease:
 $(LIB): $(LIBOBJ)
 	ar rvus $@ $(filter %.o,$^)
 
+corelib_st.cpp corelib_st.h : corelib.rc2
+	../../Misc/rc2cpp.pl $^
+
 clean:
 	@rm -f *~ $(OBJ) $(TEST) $(LIB)
 	@rm -rf $(DEPDIR)
+	@rm corelib_st.cpp corelib_st.h
 
 setup:
 	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(OBJPATH)/XML/Expat $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)

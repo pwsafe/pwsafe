@@ -15,6 +15,8 @@
 
 #ifdef _WIN32
 #include <afx.h>
+#else
+#include "corelib_st.h"
 #endif
 
 // A few convenience functions for StringX & stringT
@@ -146,6 +148,8 @@ template<class T> void LoadAString(T &s, int id)
   CString cs;
   cs.LoadString(id);
   s = cs;
+#else
+  s = corelib_st[id];
 #endif
 }
 
