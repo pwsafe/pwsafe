@@ -1316,13 +1316,16 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       m_tree->AddItem(*pci);
       m_grid->AddItem(*pci);
       break;
-    case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
+    case UpdateGUICommand::GUI_DELETE_ENTRY:
+      if (m_grid->IsShown())
+        m_grid->Remove(entry_uuid);
+      else
+        m_tree->Remove(entry_uuid);
+      break;
 #ifdef NOTYET
+    case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
       UpdateToolBarDoUndo();
       UpdateStatusBar();
-      break;
-    case UpdateGUICommand::GUI_DELETE_ENTRY:
-      RemoveFromGUI(*pci, bUpdateGUI);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
       RefreshEntryFieldInGUI(*pci, ft);
@@ -1361,8 +1364,15 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
     
 void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
 {
-  m_tree->UpdateItem(item);
-  m_grid->UpdateItem(item);
+  if (item.GetStatus() ==CItemData::ES_DELETED) {
+    uuid_array_t uuid;
+    item.GetUUID(uuid);
+    m_tree->Remove(uuid);
+    m_grid->Remove(uuid);
+  } else {
+    m_tree->UpdateItem(item);
+    m_grid->UpdateItem(item);
+  }
 }
 
 /*!

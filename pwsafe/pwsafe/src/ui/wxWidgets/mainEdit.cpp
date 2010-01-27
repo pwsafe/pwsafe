@@ -115,12 +115,6 @@ void PasswordSafeFrame::Delete(CItemData *pci)
   if (!m_core.ConfirmDelete(pci))
     return;
 
-  uuid_array_t uuid;
-  pci->GetUUID(uuid);
-  if (m_grid->IsShown())
-    m_grid->Remove(uuid);
-  else
-    m_tree->Remove(uuid);
   m_core.Execute(DeleteEntryCommand::Create(&m_core, *pci));
 }
 

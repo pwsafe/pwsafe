@@ -221,7 +221,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
     // and refresh base's display, if changed
     CItemData::EntryType entrytype = item.GetEntryType();
     uuid_array_t base_uuid;
-    if (item.IsAlias() || item.IsShortcut()) {
+    if (item.IsDependent()) {
       GetDependentEntryBaseUUID(entry_uuid, base_uuid, entrytype);
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
     } else if (item.IsAliasBase()) {
