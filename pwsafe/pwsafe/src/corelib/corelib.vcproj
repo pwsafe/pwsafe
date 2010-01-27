@@ -1155,6 +1155,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\VerifyFormat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\XML\XERCES\XFileSAX2Handlers.h"
 				>
 			</File>
