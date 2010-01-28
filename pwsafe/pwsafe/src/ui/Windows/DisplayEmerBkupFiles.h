@@ -8,9 +8,10 @@
 #pragma once
 
 #include "corelib/StringX.h"
-#include "PWDialog.h"
-
 #include "corelib/PWScore.h"  // for st_DBProperties
+
+#include "EBListCtrl.h"
+#include "resource.h"
 
 #include <vector>
 
@@ -33,11 +34,12 @@ public:
 
   // Dialog Data
   enum { IDD = IDD_DISPLAYEMERBKUPFILES };
-  CListCtrl m_RFListCtrl;
+  CEBListCtrl m_RFListCtrl;
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG* pMsg);
 
   afx_msg void OnIgnore();
   afx_msg void OnSelect();
@@ -47,6 +49,8 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
+  CToolTipCtrl *m_pToolTipCtrl;
+
   int m_iSelectedItem;
   UINT m_DriveType;
   std::wstring m_wsDBPath;

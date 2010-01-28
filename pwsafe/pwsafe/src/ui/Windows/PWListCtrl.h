@@ -34,7 +34,6 @@ public:
 
   LRESULT OnCharItemlist(WPARAM wParam, LPARAM lParam);
   bool FindNext(const CString &cs_find, const int iSubItem);
-  void SetInfoWindow(CPoint point, const CSecString &cs_ToolTip, bool bVisible);
 
   void SetFilterState(bool bState);
   void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
