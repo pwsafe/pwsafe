@@ -5,11 +5,13 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
 // ExpPWListDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "DisplayEmerBkupFiles.h"
+#include "DboxMain.h"   // For timer values
 #include "GeneralMsgBox.h"
 
 #include "resource3.h"  // String resources
@@ -24,13 +26,14 @@ CDisplayEmerBkupFiles::CDisplayEmerBkupFiles(CWnd* pParent,
                                      std::vector<st_recfile> &vValidEBackupfiles)
   : CDialog(CDisplayEmerBkupFiles::IDD, pParent), m_wsDBPath(wsDBPath),
   m_st_dbpcore(st_dbpcore), m_vValidEBackupfiles(vValidEBackupfiles),
-  m_iSelectedItem(-1)
+  m_pToolTipCtrl(NULL), m_iSelectedItem(-1)
 {
   m_DriveType = GetDriveType(wsDBDrive.c_str());
 }
 
 CDisplayEmerBkupFiles::~CDisplayEmerBkupFiles()
 {
+  delete m_pToolTipCtrl;
 }
 
 void CDisplayEmerBkupFiles::DoDataExchange(CDataExchange* pDX)
@@ -51,6 +54,29 @@ END_MESSAGE_MAP()
 BOOL CDisplayEmerBkupFiles::OnInitDialog()
 {
   CDialog::OnInitDialog();
+
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
+    TRACE(L"Unable To create CDisplayEmerBkupFiles Dialog ToolTip\n");
+  } else {
+    EnableToolTips(TRUE);
+    // Delay initial show & reshow
+    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * 4);
+    m_pToolTipCtrl->SetMaxTipWidth(250);
+
+    CString cs_ToolTip;
+    cs_ToolTip.LoadString(IDS_EBIGNORE);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_IGNORE), cs_ToolTip);
+    cs_ToolTip.LoadString(IDC_EBDELETE);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_DELETE), cs_ToolTip);
+    cs_ToolTip.LoadString(IDC_EBSELECT);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_SELECT), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_EBCANCEL);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDCANCEL), cs_ToolTip);
+
+    m_pToolTipCtrl->Activate(TRUE);
+  }
 
   DWORD dwStyle = m_RFListCtrl.GetExtendedStyle();
   dwStyle |= (LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
@@ -147,6 +173,15 @@ BOOL CDisplayEmerBkupFiles::OnInitDialog()
   return TRUE;
 }
 
+BOOL CDisplayEmerBkupFiles::PreTranslateMessage(MSG* pMsg)
+{
+  // Do tooltips
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
+  return CDialog::PreTranslateMessage(pMsg);
+}
+
 void CDisplayEmerBkupFiles::OnIgnore()
 {
   CDialog::EndDialog(IDIGNORE);  // rc = 5 > 0
@@ -230,7 +265,14 @@ void CDisplayEmerBkupFiles::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
     case NM_CLICK:
     {
       LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-      m_iSelectedItem = pLVItemActivate->iItem;
+      int iItem = pLVItemActivate->iItem;
+      if (iItem < 0) {
+        m_RFListCtrl.SetItemState(m_iSelectedItem, 0, LVIS_SELECTED | LVIS_DROPHILITED);
+        // Disable buttons 
+        GetDlgItem(IDC_SELECT)->EnableWindow(FALSE);
+        GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
+      }
+      m_iSelectedItem = iItem;
       break;
     }
     case LVN_KEYDOWN:
