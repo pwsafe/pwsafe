@@ -739,39 +739,19 @@ void DboxMain::InitPasswordSafe()
   //bitmap.LoadBitmap(IDB_NODE); - already loaded above to get width
   m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_NORMAL);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_NORMAL_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_NORMAL_EXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_ABASE);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_ABASE_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_ABASE_EXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_ALIAS);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_SBASE);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_SBASE_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_SBASE_EXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_SHORTCUT);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
+  UINT bitmapResIDs[] = {
+    IDB_NORMAL, IDB_NORMAL_WARNEXPIRED, IDB_NORMAL_EXPIRED,
+    IDB_ABASE, IDB_ABASE_WARNEXPIRED, IDB_ABASE_EXPIRED,
+    IDB_ALIAS,
+    IDB_SBASE, IDB_SBASE_WARNEXPIRED, IDB_SBASE_EXPIRED,
+    IDB_SHORTCUT,
+  };
+
+  for (int i = 0; i < sizeof(bitmapResIDs)/sizeof(bitmapResIDs[0]); i++) {
+    bitmap.LoadBitmap(bitmapResIDs[i]);
+    m_pImageList->Add(&bitmap, crTransparent);
+    bitmap.DeleteObject();
+  }
 
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_STATE);
