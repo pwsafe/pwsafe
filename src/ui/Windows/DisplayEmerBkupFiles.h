@@ -41,7 +41,7 @@ protected:
   virtual BOOL OnInitDialog();
   virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-  afx_msg void OnIgnore();
+  afx_msg void OnContinue();
   afx_msg void OnSelect();
   afx_msg void OnDelete();
   afx_msg void OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult);

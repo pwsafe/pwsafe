@@ -45,7 +45,7 @@ void CEBListCtrl::PreSubclassWindow()
 
   // Enable our own tooltip-ctrl and make it show tooltip even if not having focus
   m_pToolTipCtrl = new CToolTipCtrl;
-  if (m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX | TTS_ALWAYSTIP)) {
+  if (m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
     EnableToolTips(TRUE);
     int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
     m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, iTime * 4);

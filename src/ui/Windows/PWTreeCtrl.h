@@ -19,7 +19,6 @@
 
 class DboxMain;
 class CItemData;
-class CInfoDisplay;
 class MultiCommands;
 
 // classes for implementing D&D

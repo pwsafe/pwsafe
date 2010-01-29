@@ -680,7 +680,7 @@
 #define IDC_STATIC_PWLEN                1400
 #define IDC_STATIC_CURRENTVALUE         1401
 #define IDC_RECFILELIST                 1402
-#define IDC_IGNORE                      1403
+#define IDC_CONTINUE                    1403
 #define IDC_SELECT                      1404
 #define IDC_DELETE                      1405
 
