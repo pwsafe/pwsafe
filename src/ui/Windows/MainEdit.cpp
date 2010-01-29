@@ -294,8 +294,7 @@ void DboxMain::OnDelete()
   if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
     return;
 
-  bool dontaskquestion = PWSprefs::GetInstance()->
-                         GetPref(PWSprefs::DeleteQuestion);
+  bool dontaskquestion = true;
 
   bool dodelete = true;
   int num_children = 0;
