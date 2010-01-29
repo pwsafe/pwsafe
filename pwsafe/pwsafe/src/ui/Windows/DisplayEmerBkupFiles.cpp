@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 #include "DisplayEmerBkupFiles.h"
-#include "DboxMain.h"   // For timer values
 #include "GeneralMsgBox.h"
 
 #include "resource3.h"  // String resources
@@ -43,7 +42,7 @@ void CDisplayEmerBkupFiles::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CDisplayEmerBkupFiles, CDialog)
-  ON_BN_CLICKED(IDC_IGNORE, OnIgnore)
+  ON_BN_CLICKED(IDC_CONTINUE, OnContinue)
   ON_BN_CLICKED(IDC_DELETE, OnDelete)
   ON_BN_CLICKED(IDC_SELECT, OnSelect)
   ON_NOTIFY(NM_CLICK, IDC_RECFILELIST, OnItemSelected)
@@ -67,7 +66,7 @@ BOOL CDisplayEmerBkupFiles::OnInitDialog()
 
     CString cs_ToolTip;
     cs_ToolTip.LoadString(IDS_EBIGNORE);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_IGNORE), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_CONTINUE), cs_ToolTip);
     cs_ToolTip.LoadString(IDC_EBDELETE);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_DELETE), cs_ToolTip);
     cs_ToolTip.LoadString(IDC_EBSELECT);
@@ -182,9 +181,9 @@ BOOL CDisplayEmerBkupFiles::PreTranslateMessage(MSG* pMsg)
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CDisplayEmerBkupFiles::OnIgnore()
+void CDisplayEmerBkupFiles::OnContinue()
 {
-  CDialog::EndDialog(IDIGNORE);  // rc = 5 > 0
+  CDialog::EndDialog(IDCONTINUE);  // rc = 11 > 0
 }
 
 void CDisplayEmerBkupFiles::OnSelect()
@@ -242,15 +241,11 @@ void CDisplayEmerBkupFiles::OnDelete()
   int rc = SHFileOperation(&sfop);
 
   if (rc == 0) {
+    m_RFListCtrl.SetItemState(m_iSelectedItem, 0, LVIS_SELECTED);
     m_RFListCtrl.DeleteItem(m_iSelectedItem);
-    // Select previous item (safe as can not delete first item == current database)
-    m_iSelectedItem--;
-    m_RFListCtrl.SetItemState(m_iSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-  }
+    m_iSelectedItem = -1;
 
-  if (m_RFListCtrl.GetItemCount() == 1) {
-    // Only the current database left
-    // Disable buttons appropriately
+    // Nothing selected now - disable buttons
     GetDlgItem(IDC_SELECT)->EnableWindow(FALSE);
     GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
   }

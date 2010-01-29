@@ -20,7 +20,6 @@
 #include "PwFont.h"
 
 class DboxMain;
-class CInfoDisplay;
 class CItemData;
 
 class CPWListCtrl : public CListCtrl
