@@ -581,10 +581,10 @@
 #define IDS_UNKNFLDS                    5765
 #define IDS_NORECYCLEBINTITLE           5766
 #define IDS_NORECYCLEBINMSG             5767
-#define IDS_EBIGNORE                    5768
+#define IDS_EBCONTINUE                  5768
 #define IDC_EBDELETE                    5769
 #define IDC_EBSELECT                    5770
-#define IDS_EBCANCEL                    5771
+#define IDS_EBEXIT                      5771
 #define IDS_EBLISTCTRL                  5772
 #define IDS_EBLISTCTRLROW1              5773
 #define IDS_EBLISTCTRLROWN              5774
