@@ -10,7 +10,7 @@
 //
 
 #include "stdafx.h"
-#include "DisplayEmerBkupFiles.h"
+#include "DisplayFSBkupFiles.h"
 #include "GeneralMsgBox.h"
 #include "ThisMfcApp.h" // for online help
 
@@ -18,31 +18,31 @@
 
 using namespace std;
 
-// CDisplayEmerBkupFiles dialog
-CDisplayEmerBkupFiles::CDisplayEmerBkupFiles(CWnd* pParent,
+// CDisplayFSBkupFiles dialog
+CDisplayFSBkupFiles::CDisplayFSBkupFiles(CWnd* pParent,
                                      std::wstring &wsDBDrive,
                                      std::wstring &wsDBPath,
                                      st_DBProperties &st_dbpcore,
                                      std::vector<st_recfile> &vValidEBackupfiles)
-  : CDialog(CDisplayEmerBkupFiles::IDD, pParent), m_wsDBPath(wsDBPath),
+  : CDialog(CDisplayFSBkupFiles::IDD, pParent), m_wsDBPath(wsDBPath),
   m_st_dbpcore(st_dbpcore), m_vValidEBackupfiles(vValidEBackupfiles),
   m_pToolTipCtrl(NULL), m_iSelectedItem(-1)
 {
   m_DriveType = GetDriveType(wsDBDrive.c_str());
 }
 
-CDisplayEmerBkupFiles::~CDisplayEmerBkupFiles()
+CDisplayFSBkupFiles::~CDisplayFSBkupFiles()
 {
   delete m_pToolTipCtrl;
 }
 
-void CDisplayEmerBkupFiles::DoDataExchange(CDataExchange* pDX)
+void CDisplayFSBkupFiles::DoDataExchange(CDataExchange* pDX)
 {
   CDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_RECFILELIST, m_RFListCtrl);
 }
 
-BEGIN_MESSAGE_MAP(CDisplayEmerBkupFiles, CDialog)
+BEGIN_MESSAGE_MAP(CDisplayFSBkupFiles, CDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CONTINUE, OnContinue)
   ON_BN_CLICKED(IDC_DELETE, OnDelete)
@@ -50,15 +50,15 @@ BEGIN_MESSAGE_MAP(CDisplayEmerBkupFiles, CDialog)
   ON_NOTIFY(NM_CLICK, IDC_RECFILELIST, OnItemSelected)
 END_MESSAGE_MAP()
 
-// CDisplayEmerBkupFiles message handlers
+// CDisplayFSBkupFiles message handlers
 
-BOOL CDisplayEmerBkupFiles::OnInitDialog()
+BOOL CDisplayFSBkupFiles::OnInitDialog()
 {
   CDialog::OnInitDialog();
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE(L"Unable To create CDisplayEmerBkupFiles Dialog ToolTip\n");
+    TRACE(L"Unable To create CDisplayFSBkupFiles Dialog ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
   } else {
@@ -176,7 +176,7 @@ BOOL CDisplayEmerBkupFiles::OnInitDialog()
   return TRUE;
 }
 
-BOOL CDisplayEmerBkupFiles::PreTranslateMessage(MSG* pMsg)
+BOOL CDisplayFSBkupFiles::PreTranslateMessage(MSG* pMsg)
 {
   // Do tooltips
   if (pMsg->message == WM_MOUSEMOVE) {
@@ -199,26 +199,26 @@ BOOL CDisplayEmerBkupFiles::PreTranslateMessage(MSG* pMsg)
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CDisplayEmerBkupFiles::OnHelp()
+void CDisplayFSBkupFiles::OnHelp()
 {
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/emerbackups.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
-void CDisplayEmerBkupFiles::OnContinue()
+void CDisplayFSBkupFiles::OnContinue()
 {
   CDialog::EndDialog(IDCONTINUE);  // rc = 11 > 0
 }
 
-void CDisplayEmerBkupFiles::OnSelect()
+void CDisplayFSBkupFiles::OnSelect()
 {
   // Set rc = - (original recovery file index in vector)
   int ioriginal = (int)m_RFListCtrl.GetItemData(m_iSelectedItem);
   CDialog::EndDialog(-ioriginal);
 }
 
-void CDisplayEmerBkupFiles::OnDelete()
+void CDisplayFSBkupFiles::OnDelete()
 {
   // Delete selected item - but allow undo via Recycle Bin
   // NOTE: There are no Recycle Bins on network drives, or
@@ -276,7 +276,7 @@ void CDisplayEmerBkupFiles::OnDelete()
   }
 }
 
-void CDisplayEmerBkupFiles::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
+void CDisplayFSBkupFiles::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
 {
   *pLResult = 0L;
 

@@ -26,7 +26,7 @@
 #include "GeneralMsgBox.h"
 #include "MFCMessages.h"
 #include "PWFileDialog.h"
-#include "DisplayEmerBkupFiles.h"
+#include "DisplayFSBkupFiles.h"
 
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
@@ -862,7 +862,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
     return IDOK;
 
   // Now tell user we have some recovery files and ask for guidance!
-  CDisplayEmerBkupFiles dsprfiles(this, wsDrive, wsDBPath, st_dbpcore, vValidEBackupfiles);
+  CDisplayFSBkupFiles dsprfiles(this, wsDrive, wsDBPath, st_dbpcore, vValidEBackupfiles);
 
   INT_PTR dsprc = dsprfiles.DoModal();
 

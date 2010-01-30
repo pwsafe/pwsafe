@@ -58,7 +58,7 @@
 #define IDD_FILTER_DCA                  161
 #define IDD_DUMPSELECTOR                162
 #define IDD_FILTER_ENTRYSTATUS          163
-#define IDD_DISPLAYEMERBKUPFILES        164
+#define IDD_DISPLAYFSBKUPFILES          164
 #define IDR_POPRESETCOLUMNWIDTH         168
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
