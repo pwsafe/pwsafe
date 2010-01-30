@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><title>Emergency Backups</title><!-- pwsafe version: 3.18.1--><!-- Modified: 4/08/2009 --><!--Popup control -->
+<html><head><title>Emergency Backups</title><!-- pwsafe version: 3.21--><!-- Modified: 1/28/2010 --><!--Popup control -->
 
 <script language="javascript" src="html/popups.js">
 </script>
@@ -16,12 +16,12 @@ of Windows they are running, it may not be possible to ask the user their wishes
 
 <p>In this case, if possible, PasswordSafe will make an "Emergency Backup" (file extension 'ebak'
 rather than the normal "intermediate backup" extension 'ibak'). This will be created in the same
-directory as the currelty open database rather than any alternaive backup directory that may have
+directory as the currently open database rather than any alternative backup directory that may have
 been specified in the user's preferences.  The current database and its last intermediate backup
 will not be touched.</p>
 
 <p>When the original database is opened again, PasswordSafe will check for the existence of any
-Emergency Backup file and, if ny found, will display a dialog similar to that below.</p>
+Emergency Backup file and, if any found, will display a dialog similar to that below.</p>
 
 <img alt="Emergency Backup Display during Open" src="images/emerbackup.jpg">
 
@@ -42,7 +42,7 @@ be opened instead of selected database.</li>
 <br>
 <li>Delete<br>
 <u>Only active if an Emergency Backup is selected</u>. This will delete the selected Emergency
-Backup file. If this level of Windows supports a Recycle Bin on this media (usually only local
+Backup file. If Windows supports a Recycle Bin on this media (usually only local
 disks), it will be moved there. If not, it will be permanently deleted.</li>
 <br>
 <li>Exit<br>
@@ -63,7 +63,7 @@ displayed its own dialog and the user could close any 'stuck' applicatons by cli
 button.  The user could still respond to the application's own dialog.</p>
 
 <p>PasswordSafe will display its own dialog if there are any unsaved changes to the currently open
-database.  If there are none (e.g. the user hasn't made any, the user has but has already saved the
+database.  If there are none (e.g., the user hasn't made any, the user has but has already saved the
 database or the database is open in read-only mode), PasswordSafe will close when Windows instructs
 it to do so.</p>
 
