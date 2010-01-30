@@ -1,6 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><title>Auto Type</title><!-- pwsafe version: 3.18.1--><!-- Modified: 4/08/2009 --><!--Popup control -->
-
+<html><head><title>Emergency Backups</title><!-- pwsafe version: 3.18.1--><!-- Modified: 4/08/2009 --><!--Popup control -->
 
 <script language="javascript" src="html/popups.js">
 </script>
@@ -9,9 +8,94 @@
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Emergency Backups</h2>
-<p><b>To be completed</b></p>
+
+<p>During the normal exit from PasswordSafe, if the open database has any changes that have not
+yet been saved, the user is prompted whether to save these or just exit. However, if the user
+just logs off their Windows session or shutdowns or restarts their PC, depending on the version
+of Windows they are running, it may not be possible to ask the user their wishes - see below.</p>
+
+<p>In this case, if possible, PasswordSafe will make an "Emergency Backup" (file extension 'ebak'
+rather than the normal "intermediate backup" extension 'ibak'). This will be created in the same
+directory as the currelty open database rather than any alternaive backup directory that may have
+been specified in the user's preferences.  The current database and its last intermediate backup
+will not be touched.</p>
+
+<p>When the original database is opened again, PasswordSafe will check for the existence of any
+Emergency Backup file and, if ny found, will display a dialog similar to that below.</p>
 
 <img alt="Emergency Backup Display during Open" src="images/emerbackup.jpg">
+
+<p>The first row is the currently open database followed by the information from the database
+(as shown in the File->Properties dialog). This is followed by the Emergency Backup files.
+If they can be opened with the same passphrase as the currently open database, then there
+properties are also displayed. If they have a different passphrase or are not a valid database,
+then a 'No' is displayed in the Passphrase column and no properties can be displayed.</p.>
+
+<p>There are 5 buttons on the dialog and they are:
+<ul>
+<li>Continue<br>
+Ignore all Emergency backup files and continue with the currently selected database.</li>
+<br>
+<li>Select<br>
+<u>Only active if an Emergency Backup is selected</u>. The selected Emergency Backup file will
+be opened instead of selected database.</li>
+<br>
+<li>Delete<br>
+<u>Only active if an Emergency Backup is selected</u>. This will delete the selected Emergency
+Backup file. If this level of Windows supports a Recycle Bin on this media (usually only local
+disks), it will be moved there. If not, it will be permanently deleted.</li>
+<br>
+<li>Exit<br>
+If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit. If not,
+the new open will be cancelled and the existing opened database, if any, will remain open.</li>
+<br>
+<li>Help<br>
+Displays this Help topic.</li>
+</ul>
+</p>
+
+<h3>Impact of the Windows Version</h3>
+
+<p>The end of session (logoff, shutdown and restart) processing changed from Vista.  Prior to that
+(Windows 2000 and Windows XP), the application could display a dialog to ask the user what they wished
+to do, e.g. save changes or discard them.  If the user did not respond within 5 seconds, Windows
+displayed its own dialog and the user could close any 'stuck' applicatons by clicking the 'End Now'
+button.  The user could still respond to the application's own dialog.</p>
+
+<p>PasswordSafe will display its own dialog if there are any unsaved changes to the currently open
+database.  If there are none (e.g. the user hasn't made any, the user has but has already saved the
+database or the database is open in read-only mode), PasswordSafe will close when Windows instructs
+it to do so.</p>
+
+<p>Vista and Windows 7 provide a different mechanism. The application notifies Windows that it wants
+to block the end of session and gives the reason.  At the end of session, if any application has
+notified Windows of this requirement, Windows will display a full screen dialog displaying all the
+reasons given to it. The user can then decide to cancel the end of session or force it.</p>
+
+<p>PasswordSafe will inform Windows that it wants to block the end of session whenever the user makes
+a change to the currently open database. It will remove this reason as soon as the user saves the
+database or undoes all the changes. PasswordSafe will close when Windows instructs it to do so.</p>
+
+<p>Under Windows XP and earlier, PasswordSafe will save the database if the user responds to its
+own dialog with 'Yes'. It will attempt to take the Emergency Backup if the user was not able to
+respond to the dialog in the 5 second window provided by Windows.<p>
+
+<p>Under Vista and later editions of Windows, PasswordSafe will attempt to take the Emergency Backup
+if the user forces a change of session via Windows' own full screen dialog despite PasswordSafe
+informing the user that there are unsaved changes.</p>
+
+<p>Note: In some circumstances, Windows will inform all applications that it must close immediately,
+for example when Windows' updates are being applied.  In these cases, applications may not be able
+to ask the user their wishes and PasswordSafe may not be able even perform an emergency backup.</p>
+
+<p><b>NOTE: There is nothing that <u>ANY</u> application can do to save information if the PC is just
+switched off, looses power or the processor,the hard disk or any other component fails!!!<b></p>
+
+<p><b>As with all data important to you, you should backup your data to another media <u>regularly</u>.
+This could be to USB pen drives, external hard disks, network drives, CDs or DVDs etc.
+
+<p><b>Again, like any other data that is important to you (for example: passports, title to your house,
+other legal documents etc.), these backups should be stored somewhere safe!<b></p>
 
 <hr><!-- Added some white space at the bottom for natural scrolling --><a name="N1"><b><br>
 <br>
