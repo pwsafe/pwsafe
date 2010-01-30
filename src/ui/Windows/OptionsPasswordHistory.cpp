@@ -39,7 +39,7 @@ IMPLEMENT_DYNCREATE(COptionsPasswordHistory, COptions_PropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory()
   : COptions_PropertyPage(COptionsPasswordHistory::IDD),
-  m_ToolTipCtrl(NULL), m_pDboxMain(NULL), m_pwhaction(0)
+  m_pToolTipCtrl(NULL), m_pDboxMain(NULL), m_pwhaction(0)
 {
   //{{AFX_DATA_INIT(COptionsPasswordHistory)
   //}}AFX_DATA_INIT
@@ -47,7 +47,7 @@ COptionsPasswordHistory::COptionsPasswordHistory()
 
 COptionsPasswordHistory::~COptionsPasswordHistory()
 {
-  delete m_ToolTipCtrl;
+  delete m_pToolTipCtrl;
 }
 
 void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
@@ -79,8 +79,8 @@ END_MESSAGE_MAP()
 
 BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_ToolTipCtrl != NULL)
-    m_ToolTipCtrl->RelayEvent(pMsg);
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -117,31 +117,33 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   // Disable text re: PWHistory changes on existing entries to start
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
 
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  m_ToolTipCtrl = new CToolTipCtrl;
-  if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE(L"Unable To create Property Page ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
     return TRUE;
   }
 
+  // Tooltips on Property Pages
+  EnableToolTips();
+
   // Activate the tooltip control.
-  m_ToolTipCtrl->Activate(TRUE);
-  m_ToolTipCtrl->SetMaxTipWidth(300);
+  m_pToolTipCtrl->Activate(TRUE);
+  m_pToolTipCtrl->SetMaxTipWidth(300);
   // Quadruple the time to allow reading by user - there is a lot there!
-  int iTime = m_ToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_ToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
+  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
   // Set the tooltip
   // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
   CString cs_ToolTip;
   cs_ToolTip.LoadString(IDS_RESETPWHISTORYOFF);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_RESETPWHISTORYOFF), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_RESETPWHISTORYOFF), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_RESETPWHISTORYON);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_RESETPWHISTORYON), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_RESETPWHISTORYON), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_SETMAXPWHISTORY);
-  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_SETMAXPWHISTORY), cs_ToolTip);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_SETMAXPWHISTORY), cs_ToolTip);
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE

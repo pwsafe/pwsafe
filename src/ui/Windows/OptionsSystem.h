@@ -71,5 +71,5 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CToolTipCtrl* m_ToolTipCtrl;
+  CToolTipCtrl* m_pToolTipCtrl;
 };
