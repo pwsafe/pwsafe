@@ -39,17 +39,14 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(COptionsSystem, COptions_PropertyPage)
 
 COptionsSystem::COptionsSystem() 
-  : COptions_PropertyPage(COptionsSystem::IDD)
+  : COptions_PropertyPage(COptionsSystem::IDD), m_pToolTipCtrl(NULL),
+  m_deleteregistry(FALSE)
 {
-  //{{AFX_DATA_INIT(COptionsSystem)
-  //}}AFX_DATA_INIT
-  m_ToolTipCtrl = NULL;
-  m_deleteregistry = FALSE;
 }
 
 COptionsSystem::~COptionsSystem()
 {
-  delete m_ToolTipCtrl;
+  delete m_pToolTipCtrl;
 }
 
 void COptionsSystem::DoDataExchange(CDataExchange* pDX)
@@ -87,8 +84,8 @@ END_MESSAGE_MAP()
 
 BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
 {
-  if (m_ToolTipCtrl != NULL)
-    m_ToolTipCtrl->RelayEvent(pMsg);
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
@@ -137,7 +134,7 @@ void COptionsSystem::OnSetDeleteRegistry()
 
 BOOL COptionsSystem::OnInitDialog() 
 {
-  BOOL bResult = CPWPropertyPage::OnInitDialog();
+  BOOL bResult = COptions_PropertyPage::OnInitDialog();
 
   bool bofferdeleteregistry = 
     PWSprefs::GetInstance()->OfferDeleteRegistry();
@@ -175,25 +172,27 @@ BOOL COptionsSystem::OnInitDialog()
   m_savedefaultopenro = m_defaultopenro;
   m_savemultipleinstances = m_multipleinstances;
 
-  // Tooltips on Property Pages
-  EnableToolTips();
-
-  m_ToolTipCtrl = new CToolTipCtrl;
-  if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+  m_pToolTipCtrl = new CToolTipCtrl;
+  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE(L"Unable To create Property Page ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
     return bResult;
   }
 
-  // Activate the tooltip control.
-  m_ToolTipCtrl->Activate(TRUE);
-  m_ToolTipCtrl->SetMaxTipWidth(300);
-  // Double time to allow reading by user - there is a lot there!
-  int iTime = m_ToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-  m_ToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 2 * iTime);
+  // Tooltips on Property Pages
+  EnableToolTips();
 
-  if (m_ToolTipCtrl != NULL) {
+  // Activate the tooltip control.
+  m_pToolTipCtrl->Activate(TRUE);
+  m_pToolTipCtrl->SetMaxTipWidth(300);
+  // Double time to allow reading by user - there is a lot there!
+  int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+  m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 2 * iTime);
+
+  if (m_pToolTipCtrl != NULL) {
     CString cs_ToolTip(MAKEINTRESOURCE(IDS_REGDEL_CB));
-    m_ToolTipCtrl->AddTool(GetDlgItem(IDC_REGDEL_CB), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_REGDEL_CB), cs_ToolTip);
   }
 
   return TRUE;  // return TRUE unless you set the focus to a control

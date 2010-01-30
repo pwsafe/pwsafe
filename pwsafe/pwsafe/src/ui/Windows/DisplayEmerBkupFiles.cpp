@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "DisplayEmerBkupFiles.h"
 #include "GeneralMsgBox.h"
+#include "ThisMfcApp.h" // for online help
 
 #include "resource3.h"  // String resources
 
@@ -42,6 +43,7 @@ void CDisplayEmerBkupFiles::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CDisplayEmerBkupFiles, CDialog)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CONTINUE, OnContinue)
   ON_BN_CLICKED(IDC_DELETE, OnDelete)
   ON_BN_CLICKED(IDC_SELECT, OnSelect)
@@ -57,6 +59,8 @@ BOOL CDisplayEmerBkupFiles::OnInitDialog()
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE(L"Unable To create CDisplayEmerBkupFiles Dialog ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
   } else {
     EnableToolTips(TRUE);
     // Delay initial show & reshow
@@ -175,10 +179,31 @@ BOOL CDisplayEmerBkupFiles::OnInitDialog()
 BOOL CDisplayEmerBkupFiles::PreTranslateMessage(MSG* pMsg)
 {
   // Do tooltips
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
+  if (pMsg->message == WM_MOUSEMOVE) {
+    if (m_pToolTipCtrl != NULL) {
+      // Change to allow tooltip on disabled controls
+      MSG msg = *pMsg;
+      msg.hwnd = (HWND)m_pToolTipCtrl->SendMessage(TTM_WINDOWFROMPOINT, 0,
+                                                  (LPARAM)&msg.pt);
+      CPoint pt = pMsg->pt;
+      ::ScreenToClient(msg.hwnd, &pt);
+
+      msg.lParam = MAKELONG(pt.x, pt.y);
+
+      // Let the ToolTip process this message.
+      m_pToolTipCtrl->Activate(TRUE);
+      m_pToolTipCtrl->RelayEvent(&msg);
+    }
+  }
 
   return CDialog::PreTranslateMessage(pMsg);
+}
+
+void CDisplayEmerBkupFiles::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/emerbackups.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CDisplayEmerBkupFiles::OnContinue()

@@ -1357,6 +1357,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
       cs_fielddata = L"";
     else
       cs_fielddata = ci.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[0]);
+
     iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata.c_str());
 
     if (iResult < 0) {
@@ -3906,17 +3907,19 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
 
   if (ft == CItemData::GROUP) {
     RefreshViews();
-  } else if (ft == CItemData::TITLE || 
-             (ft == CItemData::USER && bShowUsernameInTree) ||
-             (ft == CItemData::PASSWORD && bShowPasswordInTree)) {
-    StringX treeDispString = ci.GetTitle();
+  } else {
+    if (ft == CItemData::TITLE || 
+        (ft == CItemData::USER && bShowUsernameInTree) ||
+        (ft == CItemData::PASSWORD && bShowPasswordInTree)) {
+      StringX treeDispString = ci.GetTitle();
 
-    if (bShowUsernameInTree)
-      treeDispString += L" [" + ci.GetUser() + L"]";
-    if (bShowPasswordInTree)
-      treeDispString += L" {" + ci.GetPassword() + L"}";
+      if (bShowUsernameInTree)
+        treeDispString += L" [" + ci.GetUser() + L"]";
+      if (bShowPasswordInTree)
+        treeDispString += L" {" + ci.GetPassword() + L"}";
 
-    UpdateTreeItem(pdi->tree_item, treeDispString);
+      UpdateTreeItem(pdi->tree_item, treeDispString);
+    }
   }
 }
 

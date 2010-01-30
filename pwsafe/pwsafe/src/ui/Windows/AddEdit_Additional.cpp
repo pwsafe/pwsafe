@@ -116,6 +116,8 @@ BOOL CAddEdit_Additional::OnInitDialog()
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
       TRACE(L"Unable To create CAddEdit_Additional Dialog ToolTip\n");
+      delete m_pToolTipCtrl;
+      m_pToolTipCtrl = NULL;
     } else {
       EnableToolTips();
       // Delay initial show & reshow

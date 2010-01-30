@@ -1072,6 +1072,8 @@ BOOL DboxMain::OnInitDialog()
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE(L"Unable To create mainf DboxMain Dialog ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
   } else {
     EnableToolTips();
     m_pToolTipCtrl->Activate(TRUE);

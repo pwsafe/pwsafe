@@ -145,7 +145,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Basic)
   ON_WM_CTLCOLOR()
-  //ON_COMMAND(ID_HELP, OnHelp)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
@@ -192,6 +191,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
       TRACE(L"Unable To create CAddEdit_Basic Dialog ToolTip\n");
+      delete m_pToolTipCtrl;
+      m_pToolTipCtrl = NULL;
     } else {
       EnableToolTips();
       // Delay initial show & reshow

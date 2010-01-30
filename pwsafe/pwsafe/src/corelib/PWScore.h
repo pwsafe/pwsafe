@@ -212,7 +212,7 @@ public:
   bool AnyToUndo();
   bool AnyToRedo();
 
-  // Find in m_pwlist by title and user name, exact match
+  // Find in m_pwlist by group, title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user);
   ItemListIter Find(const uuid_array_t &entry_uuid)
@@ -382,7 +382,6 @@ private:
   void SetAlias2BaseMap(const ItemMap &a2bm) {m_alias2base_map = a2bm;}
   const ItemMap &GetShortcuts2BaseMap() const {return m_shortcut2base_map;}
   void SetShortcuts2BaseMap(const ItemMap &s2bm) {m_shortcut2base_map = s2bm;}
-
   
   // Changed groups
   std::vector<StringX> m_vnodes_modified;

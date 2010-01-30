@@ -172,14 +172,16 @@ BOOL COptionsBackup::OnInitDialog()
   m_savemaxnumincbackups = m_maxnumincbackups;
   m_savebackupsuffix = m_backupsuffix;
 
-  // Tooltips on Property Pages
-  EnableToolTips();
-
   m_pToolTipCtrl = new CToolTipCtrl;
-  if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+  if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
     TRACE(L"Unable To create Property Page ToolTip\n");
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
     return TRUE;
   }
+
+  // Tooltips on Property Pages
+  EnableToolTips();
 
   // Activate the tooltip control.
   m_pToolTipCtrl->Activate(TRUE);

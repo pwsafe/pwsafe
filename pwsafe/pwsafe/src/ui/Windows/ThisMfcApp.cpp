@@ -75,7 +75,6 @@ const UINT ThisMfcApp::m_uiRegMsg   = RegisterWindowMessage(UNIQUE_PWS_GUID);
 const UINT ThisMfcApp::m_uiWH_SHELL = RegisterWindowMessage(UNIQUE_PWS_SHELL);
 
 BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
-  //ON_COMMAND(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
 static MFCReporter aReporter;

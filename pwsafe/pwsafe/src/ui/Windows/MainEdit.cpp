@@ -294,8 +294,7 @@ void DboxMain::OnDelete()
   if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
     return;
 
-  bool dontaskquestion = true;
-
+  bool bAskForDeleteGroupConfirmation = false;
   bool dodelete = true;
   int num_children = 0;
 
@@ -304,7 +303,7 @@ void DboxMain::OnDelete()
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
-        dontaskquestion = false; // ALWAYS ask if deleting a group
+        bAskForDeleteGroupConfirmation = true; // ALWAYS ask if deleting a group
         if (m_ctlItemTree.ItemHasChildren(hStartItem)) {
           num_children = CountChildren(hStartItem);
         }  // if has children
@@ -313,7 +312,7 @@ void DboxMain::OnDelete()
   }
 
   // Confirm whether to delete the item
-  if (!dontaskquestion) {
+  if (bAskForDeleteGroupConfirmation) {
     CConfirmDeleteDlg deleteDlg(this, num_children);
     INT_PTR rc = deleteDlg.DoModal();
     if (rc == IDCANCEL) {

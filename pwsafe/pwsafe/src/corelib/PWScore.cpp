@@ -98,27 +98,27 @@ static bool GTUCompare(const StringX &elem1, const StringX &elem2)
 {
   StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
 
-  StringX::size_type i1 = elem1.find(L':');
+  StringX::size_type i1 = elem1.find(_T(':'));
   g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
-  StringX::size_type i2 = elem2.find(L':');
+  StringX::size_type i2 = elem2.find(_T(':'));
   g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
   if (g1 != g2)
     return g1.compare(g2) < 0;
 
   tmp1 = elem1.substr(g1.length() + 1);
   tmp2 = elem2.substr(g2.length() + 1);
-  i1 = tmp1.find(L':');
+  i1 = tmp1.find(_T(':'));
   t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
-  i2 = tmp2.find(L':');
+  i2 = tmp2.find(_T(':'));
   t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
   if (t1 != t2)
     return t1.compare(t2) < 0;
 
   tmp1 = tmp1.substr(t1.length() + 1);
   tmp2 = tmp2.substr(t2.length() + 1);
-  i1 = tmp1.find(L':');
+  i1 = tmp1.find(_T(':'));
   u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
-  i2 = tmp2.find(L':');
+  i2 = tmp2.find(_T(':'));
   u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
   return u1.compare(u2) < 0;
 }
@@ -904,7 +904,7 @@ private:
   const StringX &m_user;
 };
 
-// Finds stuff based on title, group & user fields only
+// Finds stuff based on group, title & user fields only
 ItemListIter PWScore::Find(const StringX &a_group,const StringX &a_title,
                            const StringX &a_user)
 {
@@ -920,6 +920,7 @@ struct TitleMatch {
     const CItemData &item = p.second;
     return (m_title == item.GetTitle());
   }
+
   TitleMatch(const StringX &a_title) :
     m_title(a_title) {}
 
@@ -962,6 +963,7 @@ struct GroupTitle_TitleUserMatch {
     return ((m_gt == item.GetGroup() && m_tu == item.GetTitle()) ||
             (m_gt == item.GetTitle() && m_tu == item.GetUser()));
   }
+
   GroupTitle_TitleUserMatch(const StringX &a_grouptitle,
                             const StringX &a_titleuser) :
                             m_gt(a_grouptitle),  m_tu(a_titleuser) {}
