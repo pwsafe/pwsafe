@@ -21,19 +21,19 @@ struct st_recfile {
   st_DBProperties dbp;
 };
 
-// CDisplayEmerBkupFiles dialog
+// CDisplayFSBkupFiles dialog
 
-class CDisplayEmerBkupFiles : public CDialog
+class CDisplayFSBkupFiles : public CDialog
 {
 public:
-  CDisplayEmerBkupFiles(CWnd* pParent, std::wstring &wsDBDrive,
+  CDisplayFSBkupFiles(CWnd* pParent, std::wstring &wsDBDrive,
                     std::wstring &wsDBPath, 
                     st_DBProperties &st_dbpcore,
                     std::vector<st_recfile> &vValidEBackupfiles);
-  virtual ~CDisplayEmerBkupFiles();
+  virtual ~CDisplayFSBkupFiles();
 
   // Dialog Data
-  enum { IDD = IDD_DISPLAYEMERBKUPFILES };
+  enum { IDD = IDD_DISPLAYFSBKUPFILES };
   CEBListCtrl m_RFListCtrl;
 
 protected:
