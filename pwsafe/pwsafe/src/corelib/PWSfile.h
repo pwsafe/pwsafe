@@ -23,7 +23,6 @@
 
 #define MIN_HASH_ITERATIONS 2048
 #define DEFAULT_SUFFIX      _T("psafe3")
-#define DEFAULTEBAK_SUFFIX  _T("ebak")
 
 class Fish;
 class Asker;

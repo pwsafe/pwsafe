@@ -617,8 +617,8 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly)
 
   switch (rc) {
     case PWScore::SUCCESS:
-      // Do not add recovery files to the MRU
-      if (ext != L".ebak")
+      // Do not add Failsafe Backup files to the MRU
+      if (ext != L".fbak")
         app.AddToMRU(sx_Filename.c_str());
       m_bAlreadyToldUserNoSave = false;
       break; // Keep going...
@@ -745,7 +745,7 @@ void DboxMain::PostOpenProcessing()
   std::wstring drive, dir, name, ext;
   pws_os::splitpath(m_core.GetCurFile().c_str(), drive, dir, name, ext);
   // Do not add recovery files to the MRU
-  if (ext != L".ebak")
+  if (ext != L".fbak")
     app.AddToMRU(m_core.GetCurFile().c_str());
 
   CheckExpiredPasswords();
@@ -780,7 +780,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   int rc;
 
   pws_os::splitpath(sx_Filename.c_str(), wsDrive, wsDir, wsName, wsExt);
-  wsTemp = wsDrive + wsDir + wsName + L"_????????_??????.ebak";
+  wsTemp = wsDrive + wsDir + wsName + L"_????????_??????.fbak";
   std::wstring wsDBPath = wsDrive + wsDir;
   std::wstring wsDBName = wsName + wsExt;
 
@@ -798,7 +798,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
     // "yyyymmdd_hhmmss" -> "yyyy-mm-ddThh:mm:ss"
     time_t t;
     std::wstring ws_datetime, ws_dt;
-    // Go back "yyyymmdd_hhmmss.ebak", take only the date/time
+    // Go back "yyyymmdd_hhmmss.fbak", take only the date/time
     ws_dt = sx_FoundFilename.substr(sx_FoundFilename.length() - 20, 15).c_str();
     ws_datetime = ws_dt.substr( 0, 4) + ws_dash  + ws_dt.substr( 4, 2) + ws_dash  +
                   ws_dt.substr( 6, 2) + ws_T     + ws_dt.substr( 9, 2) + ws_colon +
@@ -3093,7 +3093,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 #endif
 
   if (saveType == EMERGENCYSAVE) {
-    // Save database as "<dbname>_YYYYMMDD_HHMMSS.ebak"
+    // Save database as "<dbname>_YYYYMMDD_HHMMSS.fbak"
     std::wstring cs_newfile, cs_temp;
     std::wstring drv, dir, name, ext;
     const std::wstring path = m_core.GetCurFile().c_str();
@@ -3112,7 +3112,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
                      cs_datetime.substr(14, 2) +  // MM
                      cs_datetime.substr(17, 2);   // SS
     cs_newfile = nf.c_str();
-    cs_newfile += L".ebak";
+    cs_newfile += L".fbak";
     rc = m_core.WriteFile(cs_newfile.c_str());
     return rc;
   }
