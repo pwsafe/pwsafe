@@ -46,7 +46,7 @@ IMPLEMENT_DYNAMIC(CAddEdit_Basic, CAddEdit_PropertyPage)
 
 CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, CAddEdit_Basic::IDD, pAEMD),
-  m_pToolTipCtrl(NULL)
+  m_pToolTipCtrl(NULL), m_bInitdone(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
@@ -153,8 +153,16 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
 
-  ON_EN_CHANGE(IDC_URL, OnChangeURL)
-  ON_EN_CHANGE(IDC_EMAIL, OnChangeEmail)
+  ON_CBN_SELCHANGE(IDC_GROUP, OnGroupComboChanged)
+  ON_CBN_EDITCHANGE(IDC_GROUP, OnGroupComboChanged)
+  ON_EN_CHANGE(IDC_TITLE, OnChanged)
+  ON_EN_CHANGE(IDC_USERNAME, OnChanged)
+  ON_EN_CHANGE(IDC_PASSWORD2, OnChanged)
+  ON_EN_CHANGE(IDC_NOTES, OnChanged)
+  ON_EN_CHANGE(IDC_NOTESWW, OnChanged)
+
+  ON_EN_CHANGE(IDC_URL, OnENChangeURL)
+  ON_EN_CHANGE(IDC_EMAIL, OnENChangeEmail)
   ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
 
   ON_EN_SETFOCUS(IDC_PASSWORD, OnENSetFocusPassword)
@@ -170,6 +178,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
   ON_MESSAGE(WM_EDIT_WORDWRAP, OnWordWrap)
   ON_MESSAGE(WM_EDIT_SHOWNOTES, OnShowNotes)
+
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -237,8 +246,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
     // Change 'OK' to 'Close' and disable 'Cancel'
     CancelToClose();
 
-    // Disable Edit control in the Group Combo [always ID=1001]
-    GetDlgItem(IDC_GROUP)->GetDlgItem(1001)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    // Disable Group Combo
+    GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
 
     // Disable normal Edit controls
     GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, TRUE, 0);
@@ -330,7 +339,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   }
 
   UpdateData(FALSE);
-
+  m_bInitdone = true;
   return TRUE;
 }
 
@@ -487,6 +496,9 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 
 BOOL CAddEdit_Basic::OnApply()
 {
+  if (M_uicaller() == IDS_VIEWENTRY)
+    return CAddEdit_PropertyPage::OnApply();
+
   CWnd *pFocus(NULL);
   CGeneralMsgBox gmb;
   ItemListIter listindex;
@@ -638,6 +650,7 @@ void CAddEdit_Basic::OnENSetFocusPassword2()
 void CAddEdit_Basic::OnENChangePassword()
 {
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
   M_realpassword() = m_password;
 }
 
@@ -737,15 +750,32 @@ void CAddEdit_Basic::OnRandom()
   UpdateData(FALSE);
 }
 
-void CAddEdit_Basic::OnChangeURL()
+void CAddEdit_Basic::OnGroupComboChanged()
 {
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+}
+
+void CAddEdit_Basic::OnChanged()
+{
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+    return;
+
+  UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+}
+
+void CAddEdit_Basic::OnENChangeURL()
+{
+  UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
 }
 
-void CAddEdit_Basic::OnChangeEmail()
+void CAddEdit_Basic::OnENChangeEmail()
 {
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
   GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 }
 

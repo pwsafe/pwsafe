@@ -54,7 +54,7 @@ const UINT CAddEdit_PasswordPolicy::nonHexLengthSpins[CAddEdit_PasswordPolicy::N
 
 
 CAddEdit_PasswordPolicy::CAddEdit_PasswordPolicy(CWnd *pParent, st_AE_master_data *pAEMD)
-  : CAddEdit_PropertyPage(pParent,CAddEdit_PasswordPolicy::IDD, pAEMD)
+  : CAddEdit_PropertyPage(pParent,CAddEdit_PasswordPolicy::IDD, pAEMD), m_bInitdone(false)
 {
   // We are given the Policy - set Dialog variables
   SetVariablesFromPolicy();
@@ -124,6 +124,13 @@ BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_USEDEFAULTPWPOLICY, OnSetDefaultPWPolicy)
   ON_BN_CLICKED(IDC_ENTRYPWPOLICY, OnSetSpecificPWPolicy)
   ON_BN_CLICKED(IDC_RESETPWPOLICY, OnResetPolicy)
+
+  ON_EN_CHANGE(IDC_DEFPWLENGTH, OnChanged)
+  ON_EN_CHANGE(IDC_MINDIGITLENGTH, OnChanged)
+  ON_EN_CHANGE(IDC_MINLOWERLENGTH, OnChanged)
+  ON_EN_CHANGE(IDC_MINSYMBOLLENGTH, OnChanged)
+  ON_EN_CHANGE(IDC_MINUPPERLENGTH, OnChanged)
+
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -190,6 +197,8 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
     // Disable Buttons not already disabled in SetPolicyControls
     GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(FALSE);
     GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_OR)->EnableWindow(FALSE);
   }
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
@@ -199,8 +208,17 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
     GetDlgItem(IDC_STATIC_OR)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(FALSE);
   }
-
+  m_bInitdone = true;
   return TRUE;
+}
+
+void CAddEdit_PasswordPolicy::OnChanged()
+{
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+    return;
+
+  UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_PasswordPolicy::OnHelp()
@@ -298,6 +316,9 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
 
 BOOL CAddEdit_PasswordPolicy::OnApply()
 {
+  if (M_uicaller() == IDS_VIEWENTRY)
+    return CAddEdit_PropertyPage::OnApply();
+
   UpdateData(TRUE);
   CWnd *pFocus(NULL);
 
@@ -404,6 +425,8 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
 void CAddEdit_PasswordPolicy::OnUseLowerCase()
 {
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+
   BOOL bEnable = (IsDlgButtonChecked(IDC_USELOWERCASE) == BST_CHECKED &&
                    m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
   int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
@@ -423,6 +446,8 @@ void CAddEdit_PasswordPolicy::OnUseLowerCase()
 void CAddEdit_PasswordPolicy::OnUseUpperCase()
 {
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+
   BOOL bEnable = (IsDlgButtonChecked(IDC_USEUPPERCASE) == BST_CHECKED &&
                    m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
   int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
@@ -442,6 +467,8 @@ void CAddEdit_PasswordPolicy::OnUseUpperCase()
 void CAddEdit_PasswordPolicy::OnUseDigits()
 {
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+
   BOOL bEnable = (IsDlgButtonChecked(IDC_USEDIGITS) == BST_CHECKED &&
                    m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
   int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
@@ -461,6 +488,8 @@ void CAddEdit_PasswordPolicy::OnUseDigits()
 void CAddEdit_PasswordPolicy::OnUseSymbols()
 {
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+
   BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED &&
                    m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
   int iShow = (m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) ? SW_HIDE : SW_SHOW;
@@ -480,6 +509,8 @@ void CAddEdit_PasswordPolicy::OnUseSymbols()
 void CAddEdit_PasswordPolicy::OnUseHexdigits()
 {
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+
   do_hex(IsDlgButtonChecked(IDC_USEHEXDIGITS) == BST_CHECKED);
   UpdateData(FALSE);
 }
@@ -488,6 +519,8 @@ void CAddEdit_PasswordPolicy::OnEasyVision()
 {
   CGeneralMsgBox gmb;
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+
   if (m_pweasyvision && m_pwmakepronounceable) {
     ((CButton*)GetDlgItem(IDC_EASYVISION))->SetCheck(FALSE);
     gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
@@ -502,6 +535,8 @@ void CAddEdit_PasswordPolicy::OnMakePronounceable()
 {
   CGeneralMsgBox gmb;
   UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
+
   if (m_pweasyvision && m_pwmakepronounceable) {
     ((CButton*)GetDlgItem(IDC_PRONOUNCEABLE))->SetCheck(FALSE);
     gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
@@ -514,6 +549,7 @@ void CAddEdit_PasswordPolicy::OnMakePronounceable()
 
 void CAddEdit_PasswordPolicy::OnResetPolicy()
 {
+  m_ae_psh->SetChanged(true);
   M_pwp() = M_default_pwp();
 
   SetVariablesFromPolicy();
@@ -549,6 +585,7 @@ void CAddEdit_PasswordPolicy::OnResetPolicy()
 
 void CAddEdit_PasswordPolicy::OnSetDefaultPWPolicy()
 {
+  m_ae_psh->SetChanged(true);
   M_ipolicy() = CAddEdit_PropertySheet::DEFAULT_POLICY;
 
   SetPolicyControls();
@@ -556,6 +593,7 @@ void CAddEdit_PasswordPolicy::OnSetDefaultPWPolicy()
 
 void CAddEdit_PasswordPolicy::OnSetSpecificPWPolicy()
 {
+  m_ae_psh->SetChanged(true);
   M_ipolicy() = CAddEdit_PropertySheet::SPECIFIC_POLICY;
 
   SetPolicyControls();

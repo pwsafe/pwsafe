@@ -38,6 +38,8 @@ to Tree View.
 
 New Features for 3.21
 =====================
+[2940756] Add "Apply" button to Edit property pages so that intermediate changes
+can be saved without closing the Edit property pages.
 [2919319] Now able to use PasswordSafe to generator passwords as per user defined
 policy from the Manage menu.
 [2616175] Allows user to retry finding the original database if not successfully

@@ -23,7 +23,8 @@ class ItemData;
 class CAddEdit_PropertySheet : public CPWPropertySheet
 {
 public:
-  CAddEdit_PropertySheet(UINT nID, CWnd* pDbx, PWScore *pcore, CItemData *pci,
+  CAddEdit_PropertySheet(UINT nID, CWnd* pDbx, PWScore *pcore, 
+                         CItemData *pci_original, CItemData *pci,
                          const StringX currentDB = L"");
   ~CAddEdit_PropertySheet();
 
@@ -44,31 +45,36 @@ public:
   void SetUsername(StringX username) {m_AEMD.username = CSecString(username);}
   void SetDefUsername(StringX defusername) {m_AEMD.defusername = CSecString(defusername);}
 
-  void SetNumDependents(int &num_dependents) {m_AEMD.num_dependents = num_dependents;}
-  void SetDependents(StringX dependents) {m_AEMD.dependents = CSecString(dependents);}
-
   CItemData::EntryType &GetOriginalEntrytype() {return m_AEMD.original_entrytype;}
   void SetOriginalEntrytype(enum CItemData::EntryType original_entrytype)
   {m_AEMD.original_entrytype = original_entrytype;}
 
   CSecString &GetBase() {return m_AEMD.base;}
-  void SetBase(CSecString base) {m_AEMD.base = base;}
 
   int &GetIBasedata() {return m_AEMD.ibasedata;}
   uuid_array_t &GetBaseUUID() {return m_AEMD.base_uuid;}
 
+  CItemData *GetOriginalCI() {return m_AEMD.pci_original;}
+  CItemData *GetNewCI() {return m_AEMD.pci;}
+  PWScore *GetCore() {return m_AEMD.pcore;}
+
   bool IsEntryModified() {return m_bIsModified;}
+
+  void SetChanged(const bool bChanged);
+  bool IsChanged() {return m_bChanged;}
 
 protected:
   st_AE_master_data m_AEMD;
 
 private:
+  void SetupInitialValues();
+
   CAddEdit_Basic           *m_pp_basic;
   CAddEdit_Additional      *m_pp_additional;
   CAddEdit_DateTimes       *m_pp_datetimes;
   CAddEdit_PasswordPolicy  *m_pp_pwpolicy;
 
-  bool m_bIsModified;
+  bool m_bIsModified, m_bChanged;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

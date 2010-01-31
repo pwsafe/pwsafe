@@ -82,26 +82,31 @@ protected:
   //{{AFX_MSG(CAddEdit_Basic)
   afx_msg void OnHelp();
   afx_msg BOOL OnKillActive();
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-  afx_msg void OnRandom();
-  afx_msg void OnShowPassword();
+
   afx_msg void OnPasskeySetFocus();
   afx_msg void OnENSetFocusPassword();
   afx_msg void OnENSetFocusPassword2();
   afx_msg void OnENChangePassword();
   afx_msg void OnENSetFocusNotes();
   afx_msg void OnENKillFocusNotes();
+  afx_msg void OnChanged();
+  afx_msg void OnENChangeURL();
+  afx_msg void OnENChangeEmail();
+  afx_msg void OnGroupComboChanged();
+
+  afx_msg void OnRandom();
+  afx_msg void OnShowPassword();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnViewDependents();
   afx_msg void OnLaunch();
-  afx_msg void OnChangeURL();
   afx_msg void OnSendEmail();
-  afx_msg void OnChangeEmail();
+
   afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
   afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
   afx_msg LRESULT OnShowNotes(WPARAM, LPARAM);
-  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -123,6 +128,7 @@ private:
   BOOL m_bOKSave, m_bOKCancel;
 
   CToolTipCtrl *m_pToolTipCtrl;
+  bool m_bInitdone;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

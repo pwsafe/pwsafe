@@ -31,7 +31,7 @@ IMPLEMENT_DYNAMIC(CAddEdit_Additional, CAddEdit_PropertyPage)
 CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, CAddEdit_Additional::IDD, pAEMD),
   m_UseDefaultDCA(TRUE), m_ClearPWHistory(false), m_bSortAscending(true),
-  m_pToolTipCtrl(NULL)
+  m_pToolTipCtrl(NULL), m_bInitdone(false)
 {
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->
@@ -74,16 +74,23 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
+  ON_EN_CHANGE(IDC_AUTOTYPE, OnChanged)
+  ON_EN_CHANGE(IDC_MAXPWHISTORY, OnChanged)
+  ON_EN_CHANGE(IDC_RUNCMD, OnChanged)
+
   ON_BN_CLICKED(IDC_DCA_DEFAULT, OnSetDCACheck)
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_AUTO, IDC_STATIC_RUNCMD, OnSTCExClicked)
   ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnDCAComboChanged)
+
   // Password History
   ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnClearPWHist)
   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
   ON_BN_CLICKED(IDC_PWH_COPY_ALL, OnPWHCopyAll)
+
   ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
   ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
   ON_NOTIFY(NM_CLICK, IDC_PWHISTORY_LIST, OnHistListClick)
+
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -232,6 +239,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
     GetDlgItem(IDC_PWH_COPY_ALL)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_PWH_EDIT)->ShowWindow(SW_HIDE);
     UpdateData(FALSE);
+    m_bInitdone = true;
     return TRUE;
   }
 
@@ -299,8 +307,17 @@ BOOL CAddEdit_Additional::OnInitDialog()
   }
 
   UpdateData(FALSE);
-
+  m_bInitdone = true;
   return TRUE;
+}
+
+void CAddEdit_Additional::OnChanged()
+{
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+    return;
+
+  UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_Additional::OnHelp()
@@ -400,6 +417,9 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
 
 BOOL CAddEdit_Additional::OnApply()
 {
+  if (M_uicaller() == IDS_VIEWENTRY)
+    return CAddEdit_PropertyPage::OnApply();
+
   CWnd *pFocus(NULL);
   CGeneralMsgBox gmb;
 
@@ -498,8 +518,11 @@ error:
 
 void CAddEdit_Additional::OnSetDCACheck()
 {
+  m_ae_psh->SetChanged(true);
+
   BOOL bEnable = ((CButton *)GetDlgItem(IDC_DCA_DEFAULT))->GetCheck() == BST_CHECKED ?
                    FALSE : TRUE;
+
   // Assuming FALSE = 0 & TRUE = 1
   m_UseDefaultDCA = 1 - bEnable;
   m_dblclk_cbox.EnableWindow(bEnable);
@@ -511,6 +534,8 @@ void CAddEdit_Additional::OnSetDCACheck()
 
 void CAddEdit_Additional::OnDCAComboChanged()
 {
+  m_ae_psh->SetChanged(true);
+
   int nIndex = m_dblclk_cbox.GetCurSel();
   M_DCA() = (short)m_dblclk_cbox.GetItemData(nIndex);
 }

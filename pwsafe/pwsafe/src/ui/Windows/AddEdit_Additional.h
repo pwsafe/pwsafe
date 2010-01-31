@@ -60,7 +60,10 @@ protected:
   afx_msg BOOL OnKillActive();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+
   afx_msg void OnDCAComboChanged();
+  afx_msg void OnChanged();
+
   afx_msg void OnSetDCACheck();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnCheckedSavePasswordHistory();
@@ -78,6 +81,7 @@ private:
   CToolTipCtrl *m_pToolTipCtrl;
 
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;
+  bool m_bInitdone;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
