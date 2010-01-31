@@ -683,7 +683,7 @@
 #define IDC_CONTINUE                    1403
 #define IDC_SELECT                      1404
 #define IDC_DELETE                      1405
-#define IDC_BUTTON1                     1406
+#define IDC_AEAPPLY                     1406
 
 // Next default values for new objects
 // 

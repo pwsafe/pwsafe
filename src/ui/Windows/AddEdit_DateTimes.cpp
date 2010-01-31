@@ -33,7 +33,7 @@ IMPLEMENT_DYNAMIC(CAddEdit_DateTimes, CAddEdit_PropertyPage)
 
 CAddEdit_DateTimes::CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, CAddEdit_DateTimes::IDD, pAEMD),
-  m_how(ABSOLUTE_EXP), m_numDays(1), m_ReuseOnPswdChange(FALSE)
+  m_how(ABSOLUTE_EXP), m_numDays(1), m_ReuseOnPswdChange(FALSE), m_bInitdone(false)
 {
 }
 
@@ -73,6 +73,11 @@ BEGIN_MESSAGE_MAP(CAddEdit_DateTimes, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnDateTime)
   ON_BN_CLICKED(IDC_SELECTBYDAYS, OnDays)
   ON_BN_CLICKED(IDC_REUSE_ON_CHANGE, OnReuseOnPswdChange)
+
+  ON_EN_CHANGE(IDC_EXPDAYS, OnChanged)
+  ON_NOTIFY(DTN_DATETIMECHANGE, IDC_EXPIRYDATE, OnNotifyChanged)
+  ON_NOTIFY(DTN_DATETIMECHANGE, IDC_EXPIRYDATE, OnNotifyChanged)
+
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -109,7 +114,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
 
-  ModifyStyleEx (0, WS_EX_CONTROLPARENT);
+  ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
   // Time fields
   time(&M_tttCPMTime());
@@ -212,6 +217,9 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
   }
 
   if (M_uicaller() == IDS_ADDENTRY) {
@@ -236,7 +244,6 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_XTIME)->EnableWindow(FALSE);
-    GetDlgItem(IDC_XTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_CURRENTVALUE)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_CURRENT_XTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
@@ -245,7 +252,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   }
 
   UpdateData(FALSE);
-
+  m_bInitdone = true;
   return TRUE;
 }
 
@@ -279,6 +286,9 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
 
 BOOL CAddEdit_DateTimes::OnApply()
 {
+  if (M_uicaller() == IDS_VIEWENTRY)
+    return CAddEdit_PropertyPage::OnApply();
+
   if (UpdateData(TRUE) == FALSE) {
     if (m_bNumDaysFailed) {
       // Set to max.
@@ -289,6 +299,20 @@ BOOL CAddEdit_DateTimes::OnApply()
   }
 
   return CAddEdit_PropertyPage::OnApply();
+}
+
+void CAddEdit_DateTimes::OnNotifyChanged(NMHDR *, LRESULT *)
+{
+  OnChanged();
+}
+
+void CAddEdit_DateTimes::OnChanged()
+{
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+    return;
+
+  UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_DateTimes::OnHelp()
@@ -343,6 +367,8 @@ void CAddEdit_DateTimes::OnSetXTime()
 
 void CAddEdit_DateTimes::OnDays()
 {
+  m_ae_psh->SetChanged(true);
+
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
@@ -352,6 +378,8 @@ void CAddEdit_DateTimes::OnDays()
 
 void CAddEdit_DateTimes::OnDateTime()
 {
+  m_ae_psh->SetChanged(true);
+
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
@@ -363,6 +391,8 @@ void CAddEdit_DateTimes::OnReuseOnPswdChange()
 {
   ASSERT(m_how == RELATIVE_EXP); // meaningless when absolute date given
   UpdateData(TRUE);
+
+  m_ae_psh->SetChanged(true);
 
   // If user chose "recurring", then set the max interval to ~10 years
   // (should suffice for most purposes). For non-recurring, limit is

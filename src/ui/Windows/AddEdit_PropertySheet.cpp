@@ -17,9 +17,10 @@
 IMPLEMENT_DYNAMIC(CAddEdit_PropertySheet, CPWPropertySheet)
 
 CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
-                                               PWScore *pcore, CItemData *pci,
+                                               PWScore *pcore, 
+                                               CItemData *pci_original, CItemData *pci,
                                                const StringX currentDB)
-  : CPWPropertySheet(nID, pParent), m_bIsModified(false)
+  : CPWPropertySheet(nID, pParent), m_bIsModified(false), m_bChanged(false)
 {
   m_AEMD.uicaller = nID;
 
@@ -29,11 +30,10 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
   m_AEMD.pDbx = static_cast<DboxMain *>(pParent);
   m_AEMD.pcore = pcore;
+  m_AEMD.pci_original = pci_original;
   m_AEMD.pci = pci;
 
   m_AEMD.currentDB = currentDB;
-
-  size_t num_err;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -96,93 +96,8 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.pwp = m_AEMD.oldpwp = m_AEMD.default_pwp;
     m_AEMD.ipolicy = m_AEMD.oldipolicy = DEFAULT_POLICY;
   } else {
-    // Basic Data
-    m_AEMD.group = m_AEMD.pci->GetGroup();
-    m_AEMD.title = m_AEMD.pci->GetTitle();
-    m_AEMD.username = m_AEMD.pci->GetUser();
-    m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.pci->GetPassword();
-    m_AEMD.realnotes = m_AEMD.pci->GetNotes();
-    m_AEMD.URL = m_AEMD.pci->GetURL();
-    m_AEMD.email = m_AEMD.pci->GetEmail();
-
-    // Entry type initialisation
-    m_AEMD.original_entrytype = m_AEMD.pci->GetEntryType();
-
-    CItemData *pciA(pci);
-    if (m_AEMD.pci->IsAlias()) {
-      pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
-    }
-
-    // Additional data
-    m_AEMD.autotype = m_AEMD.pci->GetAutoType();
-    m_AEMD.runcommand = m_AEMD.pci->GetRunCommand();
-    m_AEMD.pci->GetDCA(m_AEMD.DCA);
-    m_AEMD.oldDCA = m_AEMD.DCA;
-
-    // Date Time fields
-    m_AEMD.locCTime = m_AEMD.pci->GetCTimeL();
-    if (m_AEMD.locCTime.IsEmpty())
-      m_AEMD.locCTime.LoadString(IDS_NA);
-
-    m_AEMD.locATime = m_AEMD.pci->GetATimeL();
-    if (m_AEMD.locATime.IsEmpty())
-      m_AEMD.locATime.LoadString(IDS_NA);
-
-    m_AEMD.locRMTime = m_AEMD.pci->GetRMTimeL();
-    if (m_AEMD.locRMTime.IsEmpty())
-      m_AEMD.locRMTime.LoadString(IDS_NA);
-
-    m_AEMD.locPMTime = m_AEMD.pci->GetPMTimeL();
-    if (m_AEMD.locPMTime.IsEmpty())
-      m_AEMD.locPMTime.LoadString(IDS_NA);
-
-    if (!m_AEMD.locPMTime.IsEmpty())
-      m_AEMD.pci->GetPMTime(m_AEMD.tttCPMTime);
-
-    if ((long)m_AEMD.tttCPMTime == 0L) // if never changed - try creation date
-      m_AEMD.pci->GetCTime(m_AEMD.tttCPMTime);
-
-    // Note different pci dfepending on if Alias
-    m_AEMD.locXTime = pciA->GetXTimeL();
-    if (m_AEMD.locXTime.IsEmpty()) {
-      m_AEMD.locXTime.LoadString(IDS_NEVER);
-      m_AEMD.tttXTime = 0;
-    } else {
-      pciA->GetXTime(m_AEMD.tttXTime);
-    }
-    m_AEMD.oldlocXTime = m_AEMD.locXTime;
-
-    // Note different pci dfepending on if Alias
-    pciA->GetXTimeInt(m_AEMD.XTimeInt);
-    m_AEMD.oldXTimeInt = m_AEMD.XTimeInt;
-
-    // PWHistory fields
-    // Note different pci dfepending on if Alias
-    m_AEMD.PWHistory = pciA->GetPWHistory();
-
-    BOOL HasHistory = CreatePWHistoryList(m_AEMD.PWHistory,
-                                          m_AEMD.MaxPWHistory,
-                                          num_err,
-                                          m_AEMD.pwhistlist,
-                                          TMC_EXPORT_IMPORT) ? TRUE : FALSE;
-    m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory = m_AEMD.pwhistlist.size();
-    m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = HasHistory;
-
-    // PWPolicy fields
-    // Note different pci dfepending on if Alias
-    pciA->GetPWPolicy(m_AEMD.pwp);
-
-    m_AEMD.ipolicy = (pciA->GetPWPolicy().empty()) ?
-                               DEFAULT_POLICY : SPECIFIC_POLICY;
-    m_AEMD.oldipolicy = m_AEMD.ipolicy;
-
-    if (m_AEMD.ipolicy == DEFAULT_POLICY) {
-      m_AEMD.pwp = m_AEMD.default_pwp;
-    }
-
-    m_AEMD.oldpwp = m_AEMD.pwp;
+    SetupInitialValues();
   }
-
   // Only now allocate the PropertyPages - after all data there
   // to be used by their c'tors
   m_pp_basic      = new CAddEdit_Basic(this, &m_AEMD);
@@ -232,14 +147,39 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       ASSERT(0);
   }
 
+  // Change the Control ID for the Apply button so that we get it
+  switch (m_AEMD.uicaller) {
+    case IDS_ADDENTRY:
+      break;
+    case IDS_VIEWENTRY:
+      GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+      GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+      break;
+    case IDS_EDITENTRY:
+      GetDlgItem(ID_APPLY_NOW)->SetDlgCtrlID(IDC_AEAPPLY);
+      GetDlgItem(IDOK)->EnableWindow(m_bChanged ? TRUE : FALSE);
+      GetDlgItem(IDC_AEAPPLY)->EnableWindow(m_bChanged ? TRUE : FALSE);
+      break;
+  }
   return TRUE;
+}
+
+void CAddEdit_PropertySheet::SetChanged(const bool bChanged)
+{
+  if (m_bChanged != bChanged) {
+    GetDlgItem(IDOK)->EnableWindow(bChanged ? TRUE : FALSE);
+    if (m_AEMD.uicaller == IDS_EDITENTRY)
+      GetDlgItem(IDC_AEAPPLY)->EnableWindow(bChanged ? TRUE : FALSE);
+  }
+  m_bChanged = bChanged;
 }
 
 BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 {
   // There is no OnOK for classes derived from CPropertySheet,
   // so we make our own!
-  if (LOWORD(wParam) == IDOK) {
+  const int iCID = LOWORD(wParam);
+  if (iCID == IDOK || iCID == IDC_AEAPPLY) {
     // First send a message to all loaded pages using base class function.
     // We want them all to update their variables in the Master Data area.
     // And call OnApply() rather than the default OnOK processing
@@ -370,7 +310,20 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         break;
     }
     // Now end it all so that OnApply isn't called again
-    CPWPropertySheet::EndDialog(IDOK);
+    if (iCID == IDOK) {
+      // Just end it
+      CPWPropertySheet::EndDialog(IDOK);
+    } else {
+      // Send message to DboxMain to update entry
+      m_AEMD.pDbx->SendMessage(WM_EDIT_APPLY, (WPARAM)this, NULL);
+
+      // Now make the original equal to new intermediate state
+      *(m_AEMD.pci_original) = *(m_AEMD.pci);
+
+      // Now Reset starting values
+      SetupInitialValues();
+      SetChanged(false);
+    }
     return TRUE;
   }
   return CPWPropertySheet::OnCommand(wParam, lParam);
@@ -380,10 +333,19 @@ BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
 {
   // In View mode, there is no 'Cancel' button and 'OK' is renamed 'Close'
   // Make Escape key still work as designed
-  if (m_AEMD.uicaller == IDS_VIEWENTRY && pMsg->message == WM_KEYDOWN &&
-    pMsg->wParam == VK_ESCAPE) {
-    CPWPropertySheet::EndDialog(IDCANCEL);
-    return TRUE;
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
+    if (m_AEMD.uicaller == IDS_VIEWENTRY) {
+      CPWPropertySheet::EndDialog(IDCANCEL);
+      return TRUE;
+    } else {
+      // Ask user whether to allow Escape to cancel
+      CPWPropertyPage *pp = (CPWPropertyPage *)GetActivePage();
+      BOOL brc = pp->OnQueryCancel();
+      if (brc == TRUE)
+        CPWPropertySheet::EndDialog(IDCANCEL);
+      
+      return TRUE;
+    }
   }
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
@@ -393,4 +355,131 @@ BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
   }
 
   return CPWPropertySheet::PreTranslateMessage(pMsg);
+}
+
+void CAddEdit_PropertySheet::SetupInitialValues()
+{
+  // Basic Data
+  m_AEMD.group = m_AEMD.pci->GetGroup();
+  m_AEMD.title = m_AEMD.pci->GetTitle();
+  m_AEMD.username = m_AEMD.pci->GetUser();
+  m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.pci->GetPassword();
+  m_AEMD.realnotes = m_AEMD.pci->GetNotes();
+  m_AEMD.URL = m_AEMD.pci->GetURL();
+  m_AEMD.email = m_AEMD.pci->GetEmail();
+
+  // Entry type initialisation
+  m_AEMD.original_entrytype = m_AEMD.pci->GetEntryType();
+
+  CItemData *pciA(m_AEMD.pci);
+  if (m_AEMD.pci->IsAlias()) {
+    pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
+  }
+
+  // Additional data
+  m_AEMD.autotype = m_AEMD.pci->GetAutoType();
+  m_AEMD.runcommand = m_AEMD.pci->GetRunCommand();
+  m_AEMD.pci->GetDCA(m_AEMD.DCA);
+  m_AEMD.oldDCA = m_AEMD.DCA;
+
+  // Date Time fields
+  m_AEMD.locCTime = m_AEMD.pci->GetCTimeL();
+  if (m_AEMD.locCTime.IsEmpty())
+    m_AEMD.locCTime.LoadString(IDS_NA);
+
+  m_AEMD.locATime = m_AEMD.pci->GetATimeL();
+  if (m_AEMD.locATime.IsEmpty())
+    m_AEMD.locATime.LoadString(IDS_NA);
+
+  m_AEMD.locRMTime = m_AEMD.pci->GetRMTimeL();
+  if (m_AEMD.locRMTime.IsEmpty())
+    m_AEMD.locRMTime.LoadString(IDS_NA);
+
+  m_AEMD.locPMTime = m_AEMD.pci->GetPMTimeL();
+  if (m_AEMD.locPMTime.IsEmpty())
+    m_AEMD.locPMTime.LoadString(IDS_NA);
+
+  if (!m_AEMD.locPMTime.IsEmpty())
+    m_AEMD.pci->GetPMTime(m_AEMD.tttCPMTime);
+
+  if ((long)m_AEMD.tttCPMTime == 0L) // if never changed - try creation date
+    m_AEMD.pci->GetCTime(m_AEMD.tttCPMTime);
+
+  // Note different pci dfepending on if Alias
+  m_AEMD.locXTime = pciA->GetXTimeL();
+  if (m_AEMD.locXTime.IsEmpty()) {
+    m_AEMD.locXTime.LoadString(IDS_NEVER);
+    m_AEMD.tttXTime = 0;
+  } else {
+    pciA->GetXTime(m_AEMD.tttXTime);
+  }
+  m_AEMD.oldlocXTime = m_AEMD.locXTime;
+
+  // Note different pci dfepending on if Alias
+  pciA->GetXTimeInt(m_AEMD.XTimeInt);
+  m_AEMD.oldXTimeInt = m_AEMD.XTimeInt;
+
+  // PWHistory fields
+  // Note different pci dfepending on if Alias
+  size_t num_err;
+  m_AEMD.PWHistory = pciA->GetPWHistory();
+
+  BOOL HasHistory = CreatePWHistoryList(m_AEMD.PWHistory,
+                                        m_AEMD.MaxPWHistory,
+                                        num_err,
+                                        m_AEMD.pwhistlist,
+                                        TMC_EXPORT_IMPORT) ? TRUE : FALSE;
+  m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory = m_AEMD.pwhistlist.size();
+  m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = HasHistory;
+
+  // PWPolicy fields
+  // Note different pci dfepending on if Alias
+  pciA->GetPWPolicy(m_AEMD.pwp);
+
+  m_AEMD.ipolicy = (pciA->GetPWPolicy().empty()) ?
+                             DEFAULT_POLICY : SPECIFIC_POLICY;
+  m_AEMD.oldipolicy = m_AEMD.ipolicy;
+
+  if (m_AEMD.ipolicy == DEFAULT_POLICY) {
+    m_AEMD.pwp = m_AEMD.default_pwp;
+  }
+
+  m_AEMD.oldpwp = m_AEMD.pwp;
+
+  // Set up dependents
+  uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'};
+  CItemData::EntryType entrytype = m_AEMD.pci_original->GetEntryType();
+
+  m_AEMD.pci_original->GetUUID(original_uuid);  // Edit doesn't change this!
+  if (m_AEMD.pci_original->IsBase()) {
+    UUIDList dependentslist;
+    StringX csDependents(L"");
+
+    m_AEMD.pcore->GetAllDependentEntries(original_uuid, dependentslist,
+                                  m_AEMD.pci_original->IsAliasBase() ?
+                                  CItemData::ET_ALIAS : CItemData::ET_SHORTCUT);
+    int num_dependents = dependentslist.size();
+    if (num_dependents > 0) {
+      m_AEMD.pcore->SortDependents(dependentslist, csDependents);
+    }
+
+    m_AEMD.num_dependents = num_dependents;
+    m_AEMD.original_entrytype = entrytype;
+    m_AEMD.dependents = CSecString(csDependents);
+    dependentslist.clear();
+  } else
+  if (m_AEMD.pci_original->IsAlias()) {
+    // Get corresponding base entry
+    CItemData *pbci = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci_original);
+    ASSERT(pbci != NULL);
+    if (pbci != NULL) {
+      pbci->GetUUID(original_base_uuid);
+      CSecString cs_base = L"[" +
+                           pbci->GetGroup() + L":" +
+                           pbci->GetTitle() + L":" +
+                           pbci->GetUser()  + L"]";
+      m_AEMD.base = cs_base;
+      m_AEMD.original_entrytype = CItemData::ET_ALIAS;
+    }
+  } // IsAlias
 }

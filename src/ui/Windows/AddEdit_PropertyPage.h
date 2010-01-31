@@ -26,6 +26,7 @@ struct st_AE_master_data {
 
   PWScore *pcore;
   DboxMain *pDbx;
+  CItemData *pci_original;
   CItemData *pci;  // The entry being edited
 
   StringX currentDB;
@@ -84,7 +85,6 @@ public:
   static COLORREF crefGreen, crefWhite;
 
   DECLARE_DYNAMIC(CAddEdit_PropertyPage)
-
 
   // inline functions to make code look 'nicer'
   inline UINT &M_uicaller() {return m_AEMD.uicaller;}

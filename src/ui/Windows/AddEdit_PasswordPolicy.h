@@ -58,6 +58,10 @@ protected:
   //{{AFX_MSG(CAddEdit_PasswordPolicy)
   virtual BOOL OnInitDialog();
   afx_msg void OnHelp();
+  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM );
+
+  afx_msg void OnChanged();
+
   afx_msg void OnUseHexdigits();
   afx_msg void OnUseLowerCase();
   afx_msg void OnUseUpperCase();
@@ -69,7 +73,6 @@ protected:
   afx_msg void OnSetDefaultPWPolicy();
   afx_msg void OnSetSpecificPWPolicy();
   afx_msg void OnResetPolicy();
-  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM );
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -93,6 +96,7 @@ private:
   // 2nd idex: 0 = pronounceable; 1 = hex
   BOOL m_save_enabled[N_HEX_LENGTHS][2];   // Save when disabling hex/pronounceable
   BOOL m_save_visible[N_HEX_LENGTHS];   // Save when disabling hex/pronounceable
+  bool m_bInitdone;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

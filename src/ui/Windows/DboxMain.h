@@ -35,6 +35,7 @@
 #include "DDStatic.h"
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
+#include "AddEdit_PropertySheet.h"
 
 #include "corelib/UIinterface.h"
 #include "corelib/PWScore.h"
@@ -91,6 +92,7 @@ DECLARE_HANDLE(HDROP);
 #define WM_EXTERNAL_EDITOR_ENDED (WM_APP + 41)
 #define WM_EDIT_WORDWRAP         (WM_APP + 42)
 #define WM_EDIT_SHOWNOTES        (WM_APP + 43)
+#define WM_EDIT_APPLY            (WM_APP + 44)
 
 // Simulate Ctrl+F from Find Toolbar "enter"
 #define WM_TOOLBAR_FIND (WM_APP + 50)
@@ -456,6 +458,7 @@ protected:
                             uuid_array_t &fromuuid, uuid_array_t &touuid);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
+  LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -498,6 +501,7 @@ protected:
 
   void AutoType(const CItemData &ci);
   bool EditItem(CItemData *pci, PWScore *pcore = NULL);
+  void UpdateEntry(CAddEdit_PropertySheet *pentry_psh);
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
   void ViewReport(const CString &cs_ReportFileName);
   void ViewReport(CReport &rpt);
