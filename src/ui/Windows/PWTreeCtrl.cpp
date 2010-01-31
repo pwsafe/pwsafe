@@ -998,8 +998,6 @@ bool CPWTreeCtrl::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTREE
     // Update list field with new title
     m_pDbx->UpdateListItemTitle(pdi->list_index, (LPCWSTR)ci_title);
 
-    // Mark database as modified!
-    m_pDbx->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
     pdi->tree_item = hNewItem;
   } // leaf processing
@@ -1101,9 +1099,6 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
       ASSERT(0);
     }
     m_pDbx->Execute(pcmd);
-
-    // Mark database as modified!
-    m_pDbx->SetChanged(DboxMain::Data);
   } // leaf handling
   return true;
 }
