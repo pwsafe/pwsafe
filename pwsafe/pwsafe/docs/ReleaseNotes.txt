@@ -1,5 +1,5 @@
-Password Safe 3.20.1 Release Notes - xxxxxxxx 2010
-==================================================
+Password Safe 3.21 Release Notes - February 2010
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,9 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.20.1
-====================
+Bugs fixed in 3.21
+==================
+[2940712] Dragging a group now drags along all its descendants.
 [2931428] Password history now displayed correctly in View/Edit.
 [2918306, 2816066, 2798788, 2446052, 2837591, 2917066, ...] Re-instate
 AutoType via shortcut and when an entry has been selected via the 
@@ -35,8 +36,8 @@ are now reset.
 [] Fix issue when changing the displayed columns in List View and then switching
 to Tree View.
 
-New Features for 3.20.1
-=======================
+New Features for 3.21
+=====================
 [2919319] Now able to use PasswordSafe to generator passwords as per user defined
 policy from the Manage menu.
 [2616175] Allows user to retry finding the original database if not successfully
@@ -53,8 +54,8 @@ database selected to be synchronised with the current open database is now alway
 read-only mode i.e. Synchronisation is uni-directional and only entries in the
 currently open database can be modified.
 
-Changes to Existing Features in 3.20.1
-======================================
+Changes to Existing Features in 3.21
+====================================
 During database Compare, the database selected to be compared with the currently open
 database is now always in read-only mode.
 
