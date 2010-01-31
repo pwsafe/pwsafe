@@ -747,6 +747,7 @@ void CAddEdit_Basic::OnRandom()
   if (m_isPWHidden) {
     m_password2 = m_password;
   }
+  m_ae_psh->SetChanged(true);
   UpdateData(FALSE);
 }
 
