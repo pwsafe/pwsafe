@@ -2549,7 +2549,7 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
         // User never asked a question (Vista or later)
         // Let them decide via the full screen display presented by the OS
         // However, be nice - take a special emergency save
-        SaveDatabaseOnExit(EMERGENCYSAVE);
+        SaveDatabaseOnExit(FAILSAFESAVE);
         break;
       case IDYES:
         // User said Yes - save the changes (Windows XP or earlier)
@@ -2563,7 +2563,7 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
         // It is now up to the user to use the OS dialog to either 'End Now'
         // PasswordSafe and take the consequences or cancel the EndSession.
         // However, be nice - take a special emergency save
-        SaveDatabaseOnExit(EMERGENCYSAVE);
+        SaveDatabaseOnExit(FAILSAFESAVE);
         break;
     }
 

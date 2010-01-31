@@ -722,7 +722,7 @@ private:
   PWSclipboard m_clipboard;
 
   // Split up OnOK to support various ways to exit
-  enum SaveType {NORMALEXIT = 0, ENDSESSIONEXIT, WTSLOGOFFEXIT, EMERGENCYSAVE};
+  enum SaveType {NORMALEXIT = 0, ENDSESSIONEXIT, WTSLOGOFFEXIT, FAILSAFESAVE};
   int SaveDatabaseOnExit(const SaveType saveType);
   void SavePreferencesOnExit();
   void CleanUpAndExit(const bool bNormalExit = true);

@@ -9,39 +9,37 @@
 <!-- Popup Source File -->
 <h2>Failsafe Backups</h2>
 
-<p>During the normal exit from PasswordSafe, if the open database has any changes that have not
-yet been saved, the user is prompted whether to save these or just exit. However, if the user
-just logs off their Windows session or shutdowns or restarts their PC, depending on the version
-of Windows they are running, it may not be possible to ask the user their wishes - see below.</p>
+<p>When PasswordSafe exits normally, you are prompted&nbsp;if there are
+unsaved changes to the database. However, if you&nbsp;log off your
+Windows session, shutdown or restart your PC, then PasswordSafe may not
+have the opportunity to prompt you.</p>
 
-<p>In this case, if possible, PasswordSafe will make an "Failsafe Backup" (file extension 'fbak'
-rather than the normal "intermediate backup" extension 'ibak'). This will be created in the same
-directory as the currently open database rather than any alternative backup directory that may have
-been specified in the user's preferences.  The current database and its last intermediate backup
+<p>In this case, PasswordSafe will attempt to make a "Failsafe Backup" (file extension 'fbak'). This will be created in the same
+directory as the currently open database.  The current database and its "regular" backups
 will not be touched.</p>
 
 <p>When the original database is opened again, PasswordSafe will check for the existence of any
-Failsafe Backup file and, if any found, will display a dialog similar to that below.</p>
+Failsafe Backup file and, if&nbsp;found, will display a dialog similar to that below.</p>
 
 <img alt="Failsafe Backup Display during Open" src="images/failsafebackup.jpg">
 
-<p>The first row is the currently open database followed by the information from the database
-(as shown in the File->Properties dialog). This is followed by the Failsafe Backup files.
-If they can be opened with the same passphrase as the currently open database, then there
+<p>The first row is the specified database followed by general information about it
+(the same as shown in the File-&gt;Properties dialog). This is followed by the Failsafe Backup file(s).
+If they can be opened with the same passphrase as the currently open database, then their
 properties are also displayed. If they have a different passphrase or are not a valid database,
-then a 'No' is displayed in the Passphrase column and no properties can be displayed.</p.>
+then a 'No' is displayed in the Passphrase column and no properties are displayed.
 
-<p>There are 5 buttons on the dialog and they are:
-<ul>
+</p><p>Your choices are as follows:
+</p><ul>
 <li>Continue<br>
-Ignore all Failsafe backup files and continue with the currently selected database.</li>
+Clicking on this causes PasswordSafe to ignore all Failsafe backup files and continue with the currently selected database.</li>
 <br>
 <li>Select<br>
-<u>Only active if an Failsafe Backup is selected</u>. The selected Failsafe Backup file will
+The selected Failsafe Backup file will
 be opened instead of selected database.</li>
 <br>
 <li>Delete<br>
-<u>Only active if an Failsafe Backup is selected</u>. This will delete the selected Failsafe
+This will delete the selected Failsafe
 Backup file. If Windows supports a Recycle Bin on this media (usually only local
 disks), it will be moved there. If not, it will be permanently deleted.</li>
 <br>
@@ -53,67 +51,28 @@ the new open will be cancelled and the existing opened database, if any, will re
 Displays this Help topic.</li>
 </ul>
 
+
 <p><i>Suggestions:</i></p>
 <ul>
-<li>If you are unable to chose, continue with the current database and use the database Compare
-function from the File menu to show the exact differences between the versions.</li>
+<li>If you are unable to choose, continue with the current database and use the database Compare
+function from the File menu to show the exact differences between the current and the Failsafe backup(s).</li>
 <li>If you do open a Failsafe Backup and have decided that it is the version you wish to keep,
-you should save it as a normal database. When you do, you should not overwrite the original without
-due consideration. It may be best to rename the the original first or save the Faulsafe Backup
+you should save it as a normal database. When you do, consider renaming&nbsp;the original first or save the Failsafe Backup
 with a completely new name.</li>
 <li>Once you are satisfied that you have recovered the correct database, either the original or a
 Failsafe Backup, you should delete any old Failsafe Backups so that you will not be prompted to
 decide at a later date.  Note: If you use this dialog to delete these files, they will be sent to the
-Recycle Bin, but only if your version of Windows supports it on the media containing the them.</li>
+Recycle Bin, if your version of Windows supports it on the media containing&nbsp;them.</li>
 </ul>
-</p>
+<p></p>
 
-<h3>Impact of the Windows Version</h3>
+<p><b>Note: There is nothing that <u>ANY</u> application can do to save information if the PC is just
+switched off, loses power or the processor, the hard disk or any other component fails. </b><b><b><b>As with all data important to you, you should backup your data to another media <u>regularly</u>.
+This could be to USB pen drives, external hard disks, network drives, CDs or DVDs etc.<b> These backups should be stored somewhere safe.</b></b></b></b></p>
 
-<p>The end of session (logoff, shutdown and restart) processing changed from Vista.  Prior to that
-(Windows 2000 and Windows XP), the application could display a dialog to ask the user what they wished
-to do, e.g. save changes or discard them.  If the user did not respond within 5 seconds, Windows
-displayed its own dialog and the user could close any 'stuck' applicatons by clicking the 'End Now'
-button.  The user could still respond to the application's own dialog.</p>
-
-<p>PasswordSafe will display its own dialog if there are any unsaved changes to the currently open
-database.  If there are none (e.g., the user hasn't made any, the user has but has already saved the
-database or the database is open in read-only mode), PasswordSafe will close when Windows instructs
-it to do so.</p>
-
-<p>Vista and Windows 7 provide a different mechanism. The application notifies Windows that it wants
-to block the end of session and gives the reason.  At the end of session, if any application has
-notified Windows of this requirement, Windows will display a full screen dialog displaying all the
-reasons given to it. The user can then decide to cancel the end of session or force it.</p>
-
-<p>PasswordSafe will inform Windows that it wants to block the end of session whenever the user makes
-a change to the currently open database. It will remove this reason as soon as the user saves the
-database or undoes all the changes. PasswordSafe will close when Windows instructs it to do so.</p>
-
-<p>Under Windows XP and earlier, PasswordSafe will save the database if the user responds to its
-own dialog with 'Yes'. It will attempt to take the Failsafe Backup if the user was not able to
-respond to the dialog in the 5 second window provided by Windows.<p>
-
-<p>Under Vista and later editions of Windows, PasswordSafe will attempt to take the Failsafe Backup
-if the user forces a change of session via Windows' own full screen dialog despite PasswordSafe
-informing the user that there are unsaved changes.</p>
-
-<p>Note: In some circumstances, Windows will inform all applications that it must close immediately,
-for example when Windows' updates are being applied.  In these cases, applications may not be able
-to ask the user their wishes and PasswordSafe may not be able even perform an Failsafe backup.</p>
-
-<p><b>NOTE: There is nothing that <u>ANY</u> application can do to save information if the PC is just
-switched off, looses power or the processor,the hard disk or any other component fails!!!<b></p>
-
-<p><b>As with all data important to you, you should backup your data to another media <u>regularly</u>.
-This could be to USB pen drives, external hard disks, network drives, CDs or DVDs etc.
-
-<p><b>Again, like any other data that is important to you (for example: passports, title to your house,
-other legal documents etc.), these backups should be stored somewhere safe!<b></p>
-
-<hr><!-- Added some white space at the bottom for natural scrolling --><a name="N1"><b><br>
+<hr><!-- Added some white space at the bottom for natural scrolling --><b><b><b><b><b><a name="N1"><b><br>
 <br>
 <br>
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Session" value="Logoff"> <param name="Session" value="Shutdown"> <param name="Session" value="Restart"></object>
 </b></a>
-</body></html>
+</b></b></b></b></b></body></html>
