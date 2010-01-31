@@ -3075,7 +3075,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     case NORMALEXIT:     st_saveType = L"NORMALEXIT";     break;
     case ENDSESSIONEXIT: st_saveType = L"ENDSESSIONEXIT"; break;
     case WTSLOGOFFEXIT:  st_saveType = L"WTSLOGOFFEXIT";  break;
-    case EMERGENCYSAVE:  st_saveType = L"EMERGENCYSAVE";  break;
+    case FAILSAFESAVE:  st_saveType = L"FAILSAFESAVE";  break;
     default:             st_saveType = L"**UNKNOWN**";    break;
   }
   switch (m_iSessionEndingStatus) {
@@ -3092,7 +3092,8 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
   WriteLog(st_logmsg.c_str());
 #endif
 
-  if (saveType == EMERGENCYSAVE) {
+  if (saveType == FAILSAFESAVE &&
+      (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) {
     // Save database as "<dbname>_YYYYMMDD_HHMMSS.fbak"
     std::wstring cs_newfile, cs_temp;
     std::wstring drv, dir, name, ext;
