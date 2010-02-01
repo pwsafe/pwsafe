@@ -12,7 +12,6 @@
 
 #include "DboxMain.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory dialog
 #include "Options_PropertyPage.h"

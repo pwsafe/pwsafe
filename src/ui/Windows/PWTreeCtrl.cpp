@@ -660,156 +660,216 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
 
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNMHDR;
   HTREEITEM ti = ptvinfo->item.hItem;
-  if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
-      ptvinfo->item.pszText[0] != L'\0') { // empty if text deleted - not allowed
-    ptvinfo->item.mask = TVIF_TEXT;
-    SetItem(&ptvinfo->item);
-    if (IsLeaf(ptvinfo->item.hItem)) {
-      DWORD_PTR itemData = GetItemData(ti);
-      ASSERT(itemData != NULL);
-      StringX group, newTitle, newUser, newPassword;
-      CItemData *pci = (CItemData *)itemData;
+  if (ptvinfo->item.pszText == NULL ||     // NULL if edit cancelled,
+      ptvinfo->item.pszText[0] == L'\0') { // empty if text deleted - not allowed
+    // If called from AddGroup, user cancels EditLabel - save it
+    // (Still called "New Group")
+    if (m_pDbx->m_bInAddGroup) {
+      m_pDbx->m_bInAddGroup = false;
+      *pLResult = TRUE;
+    }
+    return;
+  }
 
-      if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
-        // errors in user's input - restore text and refresh display
-        goto bad_exit;
-      }
+  // Now do the rename
+  ptvinfo->item.mask = TVIF_TEXT;
+  SetItem(&ptvinfo->item);
 
-      group = pci->GetGroup();
-      if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
-        CGeneralMsgBox gmb;
-        CSecString temp;
-        if (group.empty())
-          if (newUser.empty())
-            temp.Format(IDS_ENTRYEXISTS3, newTitle.c_str());
-          else
-            temp.Format(IDS_ENTRYEXISTS2, newTitle.c_str(), newUser.c_str());
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+  bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
+
+  if (IsLeaf(ptvinfo->item.hItem)) {
+    // Leaf
+    StringX group, newTitle, newUser, newPassword;
+    CItemData *pci = (CItemData *)GetItemData(ti);
+    ASSERT(pci != NULL);
+
+    if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
+      // errors in user's input - restore text and refresh display
+      goto bad_exit;
+    }
+
+    group = pci->GetGroup();
+    if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
+      CGeneralMsgBox gmb;
+      CSecString temp;
+      if (group.empty()) {
+        if (newUser.empty())
+          temp.Format(IDS_ENTRYEXISTS3, newTitle.c_str());
         else
-          if (newUser.empty())
-            temp.Format(IDS_ENTRYEXISTS1, group.c_str(), newTitle.c_str());
-          else
-            temp.Format(IDS_ENTRYEXISTS, group.c_str(), newTitle.c_str(), newUser.c_str());
-        gmb.AfxMessageBox(temp);
-        goto bad_exit;
-      }
-
-      if (newUser.empty())
-        newUser = pci->GetUser();
-      if (newPassword.empty())
-        newPassword = pci->GetPassword();
-
-      PWSprefs *prefs = PWSprefs::GetInstance();
-      StringX treeDispString;
-      bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-      bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-
-      treeDispString = newTitle;
-      if (bShowUsernameInTree) {
-        treeDispString += L" [";
-        treeDispString += newUser;
-        treeDispString += L"]";
-
-        if (bShowPasswordInTree) {
-          treeDispString += L" {";
-          treeDispString += newPassword;
-          treeDispString += L"}";
-        }
-      }
-
-      // Update corresponding Tree mode text with the new display text (ie: in case 
-      // the username was removed and had to be normalized back in).  Note that
-      // we cannot do "SetItemText(ti, treeDispString)" here since Windows will
-      // automatically overwrite and update the item text with the contents from 
-      // the "ptvinfo->item.pszText" buffer.
-      PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
-                       treeDispString.c_str(), ptvinfo->item.cchTextMax);
-      ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = L'\0';
-
-      // update corresponding List mode text
-      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-      ASSERT(pdi != NULL);
-      int lindex = pdi->list_index;
-
-      // update the password database record - but only those items visible!!!
-      MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
-      if (newTitle != pci->GetTitle()) {
-        pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
-                                                   CItemData::TITLE, newTitle));
-        m_pDbx->UpdateListItemTitle(lindex, newTitle);
-      }
-      if (bShowUsernameInTree && newUser != pci->GetUser()) {
-        pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
-                                                   CItemData::USER, newUser));
-        m_pDbx->UpdateListItemUser(lindex, newUser);
-        if (bShowPasswordInTree && newPassword != pci->GetPassword()) {
-          pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
-                                                     CItemData::PASSWORD, newPassword));
-          m_pDbx->UpdateListItemPassword(lindex, newPassword);
-        }
-      }
-      m_pDbx->Execute(pmulticmds);
-    } else { // !IsLeaf
-      // PR2407325: If the user edits a group name so that it has
-      // a GROUP_SEP, all hell breaks loose.
-      // Right Thing (tm) would be to parse and create subgroups as
-      // needed, but this is too hard (for now), so we'll just reject
-      // any group name that has one or more GROUP_SEP.
-      StringX hasSep(ptvinfo->item.pszText);
-      if (hasSep.find(GROUP_SEP) != StringX::npos) {
-        SetItemText(ti, m_eLabel);
-        goto bad_exit;
+          temp.Format(IDS_ENTRYEXISTS2, newTitle.c_str(), newUser.c_str());
       } else {
-        // Update all leaf children with new path element
-        // prefix is path up to and NOT including renamed node
-        CString prefix;
-        HTREEITEM parent, current = ti;
-        do {
-          parent = GetParentItem(current);
-          if (parent == NULL)
-            break;
+        if (newUser.empty())
+          temp.Format(IDS_ENTRYEXISTS1, group.c_str(), newTitle.c_str());
+        else
+          temp.Format(IDS_ENTRYEXISTS, group.c_str(), newTitle.c_str(), newUser.c_str());
+      }
+      gmb.AfxMessageBox(temp);
+      goto bad_exit;
+    }
 
-          current = parent;
-          if (!prefix.IsEmpty())
-            prefix = GROUP_SEP + prefix;
-          prefix = GetItemText(current) + prefix;
-        } while (1);
-        StringX sxOldPath, sxNewPath;
-        if (prefix.IsEmpty()) {
-          sxOldPath = (LPCWSTR)m_eLabel;
-          sxNewPath = ptvinfo->item.pszText;
-        } else {
-          sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(m_eLabel);
-          sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(ptvinfo->item.pszText);
-        }
-        m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
-        MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
-        UpdateLeafsGroup(pmulticmds, ti, prefix);
-        m_pDbx->Execute(pmulticmds);
-      } // good group name (no GROUP_SEP)
-    } // !IsLeaf
-    // Mark database as modified
-    m_pDbx->SetChanged(DboxMain::Data);
-    m_pDbx->ChangeOkUpdate();
+    if (newUser.empty())
+      newUser = pci->GetUser();
+    if (newPassword.empty())
+      newPassword = pci->GetPassword();
 
-    // put edited text in right order by sorting
-    SortTree(GetParentItem(ti));
+    MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
 
-    // OK
-    *pLResult = TRUE;
-    m_bEditLabelCompleted = true;
-    if (m_pDbx->IsFilterActive())
-      m_pDbx->RefreshViews();
+    StringX treeDispString;
 
-    return;
-  }
+    // Initialise a copy of the DB preferences
+    prefs->SetUpCopyDBprefs();
+    // Get old DB preferences String value (from current preferences)
+    const StringX sxOldDBPrefsString(prefs->Store());
 
-  // If called from AddGroup, user cancels EditLabel - save it
-  // (Still called "New Group")
-  if (m_pDbx->m_bInAddGroup) {
-    m_pDbx->m_bInAddGroup = false;
-    *pLResult = TRUE;
-    return;
-  }
+    // We can't have "no usernames displayed" in Tree if this new entry has a
+    // title the same as a group in this group as they look the same.
+    StringX sxGTUs;  // Not used in a single call
+
+    PWScore *pcore = (PWScore *)m_pDbx->GetCore();
+
+    if (!bShowUsernameInTree && 
+        pcore->CheckTitleSameAsGroup(group, newTitle, newUser, sxGTUs) > 0) {
+      CGeneralMsgBox gmb;
+      CString cs_title, cs_msg;
+      cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
+      CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+      cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
+      gmb.MessageBox(cs_msg, cs_title, MB_OK);
+      // Update Copy with new values
+      prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
+    }
+
+    // Set new DB preferences String value (from Copy)
+    StringX sxNewDBPrefsString(prefs->Store(true));
+
+    if (sxOldDBPrefsString != sxNewDBPrefsString) {
+      Command *pcmd1 = UpdateGUICommand::Create(pcore,
+                                                UpdateGUICommand::WN_UNDO,
+                                                UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd1);
+
+      Command *pcmd2 = DBPrefsCommand::Create(pcore, sxNewDBPrefsString);
+      pmulticmds->Add(pcmd2);
+    }
+
+    treeDispString = newTitle;
+    if (bShowUsernameInTree) {
+      treeDispString += L" [";
+      treeDispString += newUser;
+      treeDispString += L"]";
+
+      if (bShowPasswordInTree) {
+        treeDispString += L" {";
+        treeDispString += newPassword;
+        treeDispString += L"}";
+      }
+    }
+
+    // Update corresponding Tree mode text with the new display text (ie: in case 
+    // the username was removed and had to be normalized back in).  Note that
+    // we cannot do "SetItemText(ti, treeDispString)" here since Windows will
+    // automatically overwrite and update the item text with the contents from 
+    // the "ptvinfo->item.pszText" buffer.
+    PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
+                     treeDispString.c_str(), ptvinfo->item.cchTextMax);
+    ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = L'\0';
+
+    // update corresponding List mode text
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL);
+    int lindex = pdi->list_index;
+
+    // update the password database record - but only those items visible!!!
+    if (newTitle != pci->GetTitle()) {
+      pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                                 CItemData::TITLE, newTitle));
+      m_pDbx->UpdateListItemTitle(lindex, newTitle);
+    }
+
+    if (bShowUsernameInTree && newUser != pci->GetUser()) {
+      pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                                 CItemData::USER, newUser));
+      m_pDbx->UpdateListItemUser(lindex, newUser);
+      if (bShowPasswordInTree && newPassword != pci->GetPassword()) {
+        pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                                   CItemData::PASSWORD, newPassword));
+        m_pDbx->UpdateListItemPassword(lindex, newPassword);
+      }
+    }
+
+    if (sxOldDBPrefsString != sxNewDBPrefsString) {
+      Command *pcmd3 = UpdateGUICommand::Create(pcore,
+                                                UpdateGUICommand::WN_EXECUTE_REDO,
+                                                UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd3);
+    }
+
+    m_pDbx->Execute(pmulticmds);
+  } else {
+    // Node
+
+    /*
+        TO DO - Deal with username in display when group renamed!
+    */
+
+    // PR2407325: If the user edits a group name so that it has
+    // a GROUP_SEP, all hell breaks loose.
+    // Right Thing (tm) would be to parse and create subgroups as
+    // needed, but this is too hard (for now), so we'll just reject
+    // any group name that has one or more GROUP_SEP.
+    StringX hasSep(ptvinfo->item.pszText);
+    if (hasSep.find(GROUP_SEP) != StringX::npos) {
+      SetItemText(ti, m_eLabel);
+      goto bad_exit;
+    } else {
+      // Update all leaf children with new path element
+      // prefix is path up to and NOT including renamed node
+      CString prefix;
+      HTREEITEM parent, current = ti;
+      do {
+        parent = GetParentItem(current);
+        if (parent == NULL)
+          break;
+
+        current = parent;
+        if (!prefix.IsEmpty())
+          prefix = GROUP_SEP + prefix;
+
+        prefix = GetItemText(current) + prefix;
+      } while (1);
+
+      StringX sxOldPath, sxNewPath;
+      if (prefix.IsEmpty()) {
+        sxOldPath = (LPCWSTR)m_eLabel;
+        sxNewPath = ptvinfo->item.pszText;
+      } else {
+        sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(m_eLabel);
+        sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(ptvinfo->item.pszText);
+      }
+
+      m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+      MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
+      UpdateLeafsGroup(pmulticmds, ti, prefix);
+      m_pDbx->Execute(pmulticmds);
+    } // good group name (no GROUP_SEP)
+  } // !IsLeaf
+
+  // Mark database as modified
+  m_pDbx->SetChanged(DboxMain::Data);
+  m_pDbx->ChangeOkUpdate();
+
+  // put edited text in right order by sorting
+  SortTree(GetParentItem(ti));
+
+  // OK
+  *pLResult = TRUE;
+  m_bEditLabelCompleted = true;
+  if (m_pDbx->IsFilterActive())
+    m_pDbx->RefreshViews();
+
+  return;
 
 bad_exit:
   // Refresh display to show old text - if we don't no one else will

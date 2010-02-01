@@ -315,6 +315,17 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::HighlightChanges);
   save_highlightchanges = display.m_highlightchanges;
 
+  StringX sxGTUs;
+  int inum = m_core.CheckTitleSameAsGroup(NULL, sxGTUs);
+  display.m_MustHaveUsernames = inum != 0 ? TRUE : FALSE;
+  if (display.m_MustHaveUsernames == TRUE) {
+    CString cs1(MAKEINTRESOURCE(inum == 1 ? IDS_ENTRY : IDS_ENTRIES));
+    CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+    CSecString cs_ToolTip;
+    cs_ToolTip.Format(IDS_MUSTHAVEUSERNAMES2, cs1, sxGTUs.c_str(), cs2);
+    display.m_csUserDisplayToolTip = cs_ToolTip;
+  }
+
   misc.m_maintaindatetimestamps = prefs->
     GetPref(PWSprefs::MaintainDateTimeStamps) ? TRUE : FALSE;
   misc.m_escexits = prefs->
@@ -697,7 +708,7 @@ void DboxMain::OnOptions()
         if (bNeedGUITreeUpdate) {
           Command *pcmd = UpdateGUICommand::Create(&m_core,
                                                    UpdateGUICommand::WN_EXECUTE_REDO,
-                                          UpdateGUICommand::GUI_REFRESH_TREE);
+                                                   UpdateGUICommand::GUI_REFRESH_TREE);
           pmulticmds->Add(pcmd);
         }
       }

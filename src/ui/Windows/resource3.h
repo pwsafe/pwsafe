@@ -588,5 +588,7 @@
 #define IDS_EBLISTCTRL                  5772
 #define IDS_EBLISTCTRLROW1              5773
 #define IDS_EBLISTCTRLROWN              5774
-
-
+#define IDS_MUSTHAVEUSERNAMES0          5775
+#define IDS_MUSTHAVEUSERNAMES1          5776
+#define IDS_MUSTHAVEUSERNAMES2          5777
+#define IDS_MUSTHAVEUSERNAMES3          5778

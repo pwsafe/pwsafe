@@ -59,6 +59,9 @@ public:
   int m_savepreexpirywarndays;
   int m_savetrayiconcolour;
 
+  BOOL m_MustHaveUsernames;
+  CSecString m_csUserDisplayToolTip;
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsDisplay)
@@ -80,4 +83,7 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  CToolTipCtrl* m_pToolTipCtrl;
 };
