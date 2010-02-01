@@ -85,6 +85,11 @@ void DboxMain::OnAdd()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     CSecString &sxUsername = add_entry_psh.GetUsername();
 
+    // Initialise a copy of the DB preferences
+    prefs->SetUpCopyDBprefs();
+    // Get old DB preferences String value (from current preferences)
+    const StringX sxOldDBPrefsString(prefs->Store());
+
     //Check if they wish to set a default username
     if (prefs->GetPref(PWSprefs::UseDefaultUser) == FALSE &&
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
@@ -93,21 +98,40 @@ void DboxMain::OnAdd()
       defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)sxUsername);
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
-        // Initialise a copy of the DB preferences
-        prefs->SetUpCopyDBprefs();
         // Update Copy with new values
-        prefs->SetPref(PWSprefs::UseDefaultUser, true);
+        prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
         prefs->SetPref(PWSprefs::DefaultUsername, sxUsername, true);
-        // Get old DB preferences String value (from current preferences) & 
-        // new DB preferences String value (from Copy)
-        const StringX sxOldDBPrefsString(prefs->Store());
-        StringX sxNewDBPrefsString(prefs->Store(true));
-        if (sxOldDBPrefsString != sxNewDBPrefsString) {
-          // Need to integrate the following Command into others in this routine
-          // Left for Rony !!! :-)
-          // Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefs);
-        }
       }
+    }
+
+    // We can't have "no usernames displayed" in Tree if this new entry has a
+    // title the same as a group in this group as they look the same.
+    StringX sxGTUs;  // Not used in a single call
+
+    if (prefs->GetPref(PWSprefs::ShowUsernameInTree) == FALSE &&
+        m_core.CheckTitleSameAsGroup(&ci, sxGTUs) > 0) {
+      CGeneralMsgBox gmb;
+      CString cs_title, cs_msg;
+      cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
+      CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+      cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
+      gmb.MessageBox(cs_msg, cs_title, MB_OK);
+      // Update Copy with new values
+      prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
+    }
+
+    // Set new DB preferences String value (from Copy)
+    StringX sxNewDBPrefsString(prefs->Store(true));
+
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+    if (sxOldDBPrefsString != sxNewDBPrefsString) {
+      Command *pcmd1 = UpdateGUICommand::Create(&m_core,
+                                                UpdateGUICommand::WN_UNDO,
+                                                UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd1);
+
+      Command *pcmd2 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+      pmulticmds->Add(pcmd2);
     }
 
     DisplayInfo *pdi = new DisplayInfo;
@@ -124,7 +148,15 @@ void DboxMain::OnAdd()
       memcpy(base_uuid, add_entry_psh.GetBaseUUID(), sizeof(base_uuid));
       pcmd = AddEntryCommand::Create(&m_core, ci, base_uuid);
     }
-    Execute(pcmd); // Either AddEntry or MultiCommands
+    pmulticmds->Add(pcmd);
+
+    if (sxOldDBPrefsString != sxNewDBPrefsString) {
+      Command *pcmd3 = UpdateGUICommand::Create(&m_core,
+                                                UpdateGUICommand::WN_EXECUTE_REDO,
+                                                UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd3);
+    }
+    Execute(pmulticmds); // Either AddEntry or MultiCommands
 
     // Update Toolbar for this new entry
     m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
@@ -537,7 +569,45 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // Most of the following code handles special cases of alias/shortcut/base
   // But the common case is simply to replace the original entry
   // with a new one having the edited values and the same uuid.
-  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+  MultiCommands *pmulticmds = MultiCommands::Create(pcore);
+
+
+  // We can't have "no usernames displayed" in Tree View if this new entry has a
+  // title the same as a group in this group - they look the same!
+  // Initialise a copy of the DB preferences
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  prefs->SetUpCopyDBprefs();
+
+  // Get old DB preferences String value (from current preferences)
+  const StringX sxOldDBPrefsString(prefs->Store());
+  StringX sxGTUs;  // Not used in a single call
+
+  if (prefs->GetPref(PWSprefs::ShowUsernameInTree) == FALSE &&
+     (pci_original->GetGroup() != pci_new->GetGroup() ||
+      pci_original->GetTitle() != pci_new->GetTitle()) &&
+      m_core.CheckTitleSameAsGroup(pci_new, sxGTUs) > 0) {
+    CGeneralMsgBox gmb;
+    CString cs_title, cs_msg;
+    cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
+    CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+    cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
+    gmb.MessageBox(cs_msg, cs_title, MB_OK);
+    // Update Copy with new values
+    prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
+  }
+  
+  // Set new DB preferences String value (from Copy)
+  StringX sxNewDBPrefsString(prefs->Store(true));
+  if (sxOldDBPrefsString != sxNewDBPrefsString) {
+    Command *pcmd1 = UpdateGUICommand::Create(pcore,
+                                              UpdateGUICommand::WN_UNDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
+    pmulticmds->Add(pcmd1);
+
+    Command *pcmd2 = DBPrefsCommand::Create(pcore, sxNewDBPrefsString);
+    pmulticmds->Add(pcmd2);
+  }
+
   StringX newPassword = pci_new->GetPassword();
   uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'}, new_base_uuid = {'\0'};
   memcpy(new_base_uuid, pentry_psh->GetBaseUUID(), sizeof(new_base_uuid));
@@ -637,6 +707,14 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   Command *pcmd = EditEntryCommand::Create(pcore, *(pci_original), 
                                                   *(pci_new));
   pmulticmds->Add(pcmd);
+
+  if (sxOldDBPrefsString != sxNewDBPrefsString) {
+    Command *pcmd3 = UpdateGUICommand::Create(&m_core,
+                                              UpdateGUICommand::WN_EXECUTE_REDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
+    pmulticmds->Add(pcmd3);
+  }
+
   Execute(pmulticmds, pcore);
   SetChanged(Data);
 

@@ -1003,6 +1003,158 @@ ItemListIter PWScore::GetUniqueBase(const StringX &grouptitle,
   return retval;
 }
 
+static StringX GetPathElem(StringX &path)
+{
+  // Get first path element and chop it off, i.e., if
+  // path = "a.b.c.d"
+  // will return "a" and path will be "b.c.d"
+  // (assuming GROUP_SEP is '.')
+
+  StringX retval;
+  int N = path.find(_T('.'));
+  if (N == -1) {
+    retval = path;
+    path = L"";
+  } else {
+    //const int Len = path.length();
+    retval = path.substr(0, N);
+    path = path.substr(N + 1);
+  }
+  return retval;
+}
+
+// Return whether first group is greater than the second group
+// used in std::sort in CheckTitleSameAsGroup below.
+static bool GroupCompare(const StringX &elem1, const StringX &elem2)
+{
+  return elem1.compare(elem2) < 0;
+}
+
+// User by CheckTitleSameAsGroup
+struct st_GroupTitleUser {
+  StringX group;
+  StringX title;
+  StringX user;
+};
+
+// Return whether first "g.t.u" is greater than the second "g.t.u"
+// used in std::sort in CheckTitleSameAsGroup below.
+static bool GTUCompare2(const st_GroupTitleUser &elem1, const st_GroupTitleUser &elem2)
+{
+  if (elem1.group != elem2.group)
+    return elem1.group.compare(elem2.group) < 0;
+
+  if (elem1.title != elem2.title)
+    return elem1.title.compare(elem2.title) < 0;
+
+  return elem1.user.compare(elem2.user) < 0;
+}
+
+// Get if any entry's title is the same as a group in its parent group
+int PWScore::CheckTitleSameAsGroup(CItemData *pci, StringX &sxGTUs)
+{
+  StringX ogroup(L""), otitle(L""), ouser(L"");
+
+  if (pci != NULL) {
+    ogroup = pci->GetGroup();
+    otitle = pci->GetTitle();
+    ouser = pci->GetUser();
+  }
+
+  return CheckTitleSameAsGroup(ogroup, otitle, ouser, sxGTUs);
+}
+
+int PWScore::CheckTitleSameAsGroup(StringX &ogroup, StringX &otitle, StringX &ouser, StringX &sxGTUs)
+{
+  sxGTUs.clear();
+  if (m_pwlist.empty())
+    return false;
+
+  int inum(0);
+  std::vector<StringX> vgroups;
+  StringX sxDot(_T("."));
+  ItemListIter iter;
+
+  // First get all groups into a vector (entries may be in any order in the pwlist)
+  for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
+    StringX group = iter->second.GetGroup();
+    if (!group.empty()) {
+      StringX s, path(group);
+      StringX path2root(_T(""));
+      do {
+        s = GetPathElem(path);
+        if (path2root.empty())
+          path2root = s;
+        else
+          path2root += sxDot + s;
+
+        if (find(vgroups.begin(), vgroups.end(), path2root) == vgroups.end())
+          vgroups.push_back(path2root);
+      } while (!path.empty());
+    }
+  }
+
+  if (vgroups.size() == 0)
+    return false;
+
+  std::sort(vgroups.begin(), vgroups.end(), GroupCompare);
+
+  // Do it for all or just the supplied entry?
+  if (ogroup.empty() && otitle.empty() && ouser.empty()) {
+    // ALL entries - normally for Manage->Options->OptionsDisplay
+    // Now construct a pseudo group by adding an entry's title to its group
+    // If in the list of groups, then there is such an entry
+    std::vector<st_GroupTitleUser> vGroupTitleUser;
+    for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
+      StringX group, xgroup = iter->second.GetGroup();
+      StringX xtitle = iter->second.GetTitle();
+
+      if (xgroup.empty())
+        group = xtitle;
+      else
+        group = xgroup + sxDot + xtitle;
+
+      if (find(vgroups.begin(), vgroups.end(), group) != vgroups.end()) {
+        st_GroupTitleUser st_gtu;
+        st_gtu.group = xgroup;
+        st_gtu.title = xtitle;
+        st_gtu.user = iter->second.GetUser();
+        vGroupTitleUser.push_back(st_gtu);
+      }
+    }
+
+    inum = (int)vGroupTitleUser.size();
+    if (inum > 0) {
+      std::sort(vGroupTitleUser.begin(), vGroupTitleUser.end(), GTUCompare2);
+      std::vector<st_GroupTitleUser>::iterator gtu_iter;
+
+      for (gtu_iter = vGroupTitleUser.begin(); gtu_iter != vGroupTitleUser.end();
+           gtu_iter++) {
+        st_GroupTitleUser &st_gtu = *gtu_iter;
+        sxGTUs += _T("\t[") +
+                        st_gtu.group + _T(":") +
+                        st_gtu.title + _T(":") +
+                        st_gtu.user +
+                  _T("]\r\n");
+      }
+    }
+    vGroupTitleUser.clear();
+  } else {
+    // Single entry - normally for Add/Edit
+    StringX group;
+    if (ogroup.empty())
+      group = otitle;
+    else
+      group = ogroup + sxDot + otitle;
+
+    if (find(vgroups.begin(), vgroups.end(), group) != vgroups.end())
+      inum = 1;
+  }
+
+  vgroups.clear();
+  return inum;
+}
+
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
                               unsigned char *ciphertext) const
 {

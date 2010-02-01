@@ -741,9 +741,26 @@ void DboxMain::PostOpenProcessing()
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
 #endif
+  // We can't have "no usernames displayed" in Tree if this new entry has a
+  // title the same as a group in this group as they look the same.
+  StringX sxGTUs;
+  int inum = m_core.CheckTitleSameAsGroup(NULL, sxGTUs);
+  if (inum > 0) {
+    CGeneralMsgBox gmb;
+    CString cs_title, cs_msg;
+    cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
+    CString cs1(MAKEINTRESOURCE(inum == 1 ? IDS_ENTRY : IDS_ENTRIES));
+    CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+    cs_msg.Format(IDS_MUSTHAVEUSERNAMES2, cs1, sxGTUs.c_str(), cs2);
+    gmb.MessageBox(cs_msg, cs_title, MB_OK);
+
+    // Update real preferences with new values
+    PWSprefs::GetInstance()->SetPref(PWSprefs::ShowUsernameInTree, true);
+  }
 
   std::wstring drive, dir, name, ext;
   pws_os::splitpath(m_core.GetCurFile().c_str(), drive, dir, name, ext);
+
   // Do not add recovery files to the MRU
   if (ext != L".fbak")
     app.AddToMRU(m_core.GetCurFile().c_str());
