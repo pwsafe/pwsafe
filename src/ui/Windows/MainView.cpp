@@ -1856,7 +1856,7 @@ bool DboxMain::LockDataBase()
 // This function determines if the workstation is locked.
 bool DboxMain::IsWorkstationLocked() const
 {
-  if (m_bRegistered)
+  if (m_bWTSRegistered)
     return m_bWSLocked;
 
   // Rather not use this as may have impact with multiple desktops
