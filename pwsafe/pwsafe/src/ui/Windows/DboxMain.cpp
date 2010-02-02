@@ -123,7 +123,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
-  m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bRegistered(false),
+  m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForStatus(false),
@@ -215,7 +215,7 @@ void DboxMain::SessionNotification(const bool bRegister)
   typedef DWORD (WINAPI *PWTS_RegSN) (HWND, DWORD);
   typedef DWORD (WINAPI *PWTS_UnRegSN) (HWND);
 
-  m_bRegistered = false;
+  m_bWTSRegistered = false;
   HINSTANCE hWTSAPI32 = ::LoadLibrary(L"wtsapi32.dll");
   if (hWTSAPI32 == NULL)
     return;
@@ -232,7 +232,7 @@ void DboxMain::SessionNotification(const bool bRegister)
     int num(5);
     while (num > 0) {
       if (pfcnWTSRegSN(GetSafeHwnd(), NOTIFY_FOR_THIS_SESSION) == TRUE) {
-        m_bRegistered = true;
+        m_bWTSRegistered = true;
         goto exit;
       }
 
@@ -1128,7 +1128,7 @@ BOOL DboxMain::OnInitDialog()
   SessionNotification(true);
 
   // If successful, no need for Timer
-  if (m_bRegistered)
+  if (m_bWTSRegistered)
     KillTimer(TIMER_LOCKONWTSLOCK);
 
   return TRUE;  // return TRUE unless you set the focus to a control
@@ -1164,7 +1164,7 @@ void DboxMain::OnDestroy()
   UnregisterHotKey(GetSafeHwnd(), PWS_HOTKEY_ID);
 
   // Stop being notified about session changes
-  if (m_bRegistered) {
+  if (m_bWTSRegistered) {
     SessionNotification(false);
   }
 
@@ -2170,7 +2170,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 void DboxMain::startLockCheckTimer()
 {
   // No need for this timer if we know when desktop locks
-  if (m_bRegistered)
+  if (m_bWTSRegistered)
     return;
 
   const UINT INTERVAL = 5000; // every 5 seconds should suffice

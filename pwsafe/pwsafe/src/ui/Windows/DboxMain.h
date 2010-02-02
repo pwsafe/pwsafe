@@ -830,7 +830,7 @@ private:
   CToolTipCtrl* m_pToolTipCtrl;
 
   // Workstation Locked
-  bool m_bWSLocked, m_bRegistered, m_bBlockShutdown;
+  bool m_bWSLocked, m_bWTSRegistered, m_bBlockShutdown;
   DWORD m_WindowsMajorVersion, m_WindowsMinorVersion;
 
   // Need this in case not running on Vista or later
