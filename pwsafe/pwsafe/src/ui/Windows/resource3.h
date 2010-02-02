@@ -320,6 +320,7 @@
 #define IDS_VISIT_WEBSITE               5489
 #define IDS_ENTRY                       5490
 #define IDS_ENTRIES                     5491
+#define IDS_GROUP2                      5492
 #define IDS_CONFLICT                    5494
 #define IDS_CONFLICTS                   5495
 #define IDS_ICON                        5496
