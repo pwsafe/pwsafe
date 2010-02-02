@@ -675,9 +675,23 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   ptvinfo->item.mask = TVIF_TEXT;
   SetItem(&ptvinfo->item);
 
+  // Set up what we need
+  PWScore *pcore = (PWScore *)m_pDbx->GetCore();
+  
   PWSprefs *prefs = PWSprefs::GetInstance();
   bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
   bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
+  bool bDisplayProblem(false);
+
+  StringX sxOldDBPrefsString, sxNewDBPrefsString;
+
+  if (!bShowUsernameInTree) {
+    // Initialise a copy of the DB preferences
+    prefs->SetUpCopyDBprefs();
+
+    // Get old DB preferences String value (from current preferences)
+    sxOldDBPrefsString = prefs->Store();
+  }
 
   if (IsLeaf(ptvinfo->item.hItem)) {
     // Leaf
@@ -714,20 +728,13 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
     if (newPassword.empty())
       newPassword = pci->GetPassword();
 
-    MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
+    MultiCommands *pmulticmds = MultiCommands::Create(pcore);
 
     StringX treeDispString;
-
-    // Initialise a copy of the DB preferences
-    prefs->SetUpCopyDBprefs();
-    // Get old DB preferences String value (from current preferences)
-    const StringX sxOldDBPrefsString(prefs->Store());
 
     // We can't have "no usernames displayed" in Tree if this new entry has a
     // title the same as a group in this group as they look the same.
     StringX sxGTUs;  // Not used in a single call
-
-    PWScore *pcore = (PWScore *)m_pDbx->GetCore();
 
     if (!bShowUsernameInTree && 
         pcore->CheckTitleSameAsGroup(group, newTitle, newUser, sxGTUs) > 0) {
@@ -735,16 +742,17 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       CString cs_title, cs_msg;
       cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
       CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
-      cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
+      CString cse(MAKEINTRESOURCE(IDS_ENTRY));
+      CString csg(MAKEINTRESOURCE(IDS_GROUP2));
+      cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cse, csg, cs2);
       gmb.MessageBox(cs_msg, cs_title, MB_OK);
       // Update Copy with new values
       prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
-    }
+  
+      // Set new DB preferences String value (from Copy)
+      sxNewDBPrefsString = prefs->Store(true);
+      bDisplayProblem = true;
 
-    // Set new DB preferences String value (from Copy)
-    StringX sxNewDBPrefsString(prefs->Store(true));
-
-    if (sxOldDBPrefsString != sxNewDBPrefsString) {
       Command *pcmd1 = UpdateGUICommand::Create(pcore,
                                                 UpdateGUICommand::WN_UNDO,
                                                 UpdateGUICommand::GUI_REFRESH_TREE);
@@ -783,23 +791,23 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
 
     // update the password database record - but only those items visible!!!
     if (newTitle != pci->GetTitle()) {
-      pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+      pmulticmds->Add(UpdateEntryCommand::Create(pcore, *pci,
                                                  CItemData::TITLE, newTitle));
       m_pDbx->UpdateListItemTitle(lindex, newTitle);
     }
 
     if (bShowUsernameInTree && newUser != pci->GetUser()) {
-      pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+      pmulticmds->Add(UpdateEntryCommand::Create(pcore, *pci,
                                                  CItemData::USER, newUser));
       m_pDbx->UpdateListItemUser(lindex, newUser);
       if (bShowPasswordInTree && newPassword != pci->GetPassword()) {
-        pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+        pmulticmds->Add(UpdateEntryCommand::Create(pcore, *pci,
                                                    CItemData::PASSWORD, newPassword));
         m_pDbx->UpdateListItemPassword(lindex, newPassword);
       }
     }
 
-    if (sxOldDBPrefsString != sxNewDBPrefsString) {
+    if (bDisplayProblem) {
       Command *pcmd3 = UpdateGUICommand::Create(pcore,
                                                 UpdateGUICommand::WN_EXECUTE_REDO,
                                                 UpdateGUICommand::GUI_REFRESH_TREE);
@@ -828,6 +836,32 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       // prefix is path up to and NOT including renamed node
       CString prefix;
       HTREEITEM parent, current = ti;
+      StringX sxNewText = ptvinfo->item.pszText;
+
+      // First see if the TreeCtrl is going to have problem
+      if (!bShowUsernameInTree) {
+        // Since we are a node - we must have a parent and
+        // obviously the parent must have children - at least me!
+        parent = GetParentItem(current);
+        
+        // Now check no entries in nodes parent group with same
+        // name as this node will become
+        HTREEITEM hNextItem;
+        HTREEITEM hChildItem = GetChildItem(parent);
+        while (hChildItem != NULL) {
+          hNextItem = GetNextItem(hChildItem, TVGN_NEXT);
+          CItemData *pci = (CItemData *)GetItemData(hChildItem);
+          if (pci != NULL) {
+            // Leaf - as no Username in Tree, item text == title
+            if (sxNewText == pci->GetTitle()) {
+              bDisplayProblem = true;
+              break;
+            }
+          }
+          hChildItem = hNextItem;
+        }
+      }
+
       do {
         parent = GetParentItem(current);
         if (parent == NULL)
@@ -843,15 +877,48 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       StringX sxOldPath, sxNewPath;
       if (prefix.IsEmpty()) {
         sxOldPath = (LPCWSTR)m_eLabel;
-        sxNewPath = ptvinfo->item.pszText;
+        sxNewPath = sxNewText;
       } else {
         sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(m_eLabel);
-        sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(ptvinfo->item.pszText);
+        sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + sxNewText;
       }
 
       m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
-      MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
+      MultiCommands *pmulticmds = MultiCommands::Create(pcore);
+
+      if (bDisplayProblem) {
+        CGeneralMsgBox gmb;
+        CString cs_title, cs_msg;
+        cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
+        CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+        CString cse(MAKEINTRESOURCE(IDS_ENTRY));
+        CString csg(MAKEINTRESOURCE(IDS_GROUP2));
+        cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, csg, cse, cs2);
+        gmb.MessageBox(cs_msg, cs_title, MB_OK);
+
+        // Update Copy with new values
+        prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
+
+        // Set new DB preferences String value (from Copy)
+        sxNewDBPrefsString = prefs->Store(true);
+
+        Command *pcmd1 = UpdateGUICommand::Create(pcore,
+                                                  UpdateGUICommand::WN_UNDO,
+                                                  UpdateGUICommand::GUI_REFRESH_TREE);
+        pmulticmds->Add(pcmd1);
+
+        Command *pcmd2 = DBPrefsCommand::Create(pcore, sxNewDBPrefsString);
+        pmulticmds->Add(pcmd2);
+      }
+
       UpdateLeafsGroup(pmulticmds, ti, prefix);
+
+      if (bDisplayProblem) {
+        Command *pcmd3 = UpdateGUICommand::Create(pcore,
+                                                  UpdateGUICommand::WN_EXECUTE_REDO,
+                                                  UpdateGUICommand::GUI_REFRESH_TREE);
+        pmulticmds->Add(pcmd3);
+      }
       m_pDbx->Execute(pmulticmds);
     } // good group name (no GROUP_SEP)
   } // !IsLeaf
