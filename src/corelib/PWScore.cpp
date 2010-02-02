@@ -1003,18 +1003,22 @@ ItemListIter PWScore::GetUniqueBase(const StringX &grouptitle,
   return retval;
 }
 
-static StringX GetPathElem(StringX &path)
+static StringX GetPathHead(StringX &path)
 {
-  // Get first path element and chop it off, i.e., if
-  // path = "a.b.c.d"
-  // will return "a" and path will be "b.c.d"
-  // (assuming GROUP_SEP is '.')
+  /**
+   * Get first path element and chop it off, i.e., if
+   * path = "a.b.c.d"
+   * will return "a" and path will be "b.c.d"
+   * (assuming GROUP_SEP is '.')
+   * If path is empty or only one element, the current
+   * value of path is returned, and path is cleared.
+   */
 
   StringX retval;
-  int N = path.find(_T('.'));
-  if (N == -1) {
+  StringX::size_type N = path.find(_T('.'));
+  if (N == StringX::npos) {
     retval = path;
-    path = L"";
+    path.clear();
   } else {
     //const int Len = path.length();
     retval = path.substr(0, N);
@@ -1051,29 +1055,28 @@ static bool GTUCompare2(const st_GroupTitleUser &elem1, const st_GroupTitleUser 
 }
 
 // Get if any entry's title is the same as a group in its parent group
-int PWScore::CheckTitleSameAsGroup(CItemData *pci, StringX &sxGTUs)
+int PWScore::CheckTitleSameAsGroup(CItemData *pci, StringX &sxGTUs) const
 {
-  StringX ogroup(L""), otitle(L""), ouser(L"");
-
+  StringX ogroup(_T("")), otitle(_T("")), ouser(_T(""));
   if (pci != NULL) {
     ogroup = pci->GetGroup();
     otitle = pci->GetTitle();
     ouser = pci->GetUser();
   }
-
   return CheckTitleSameAsGroup(ogroup, otitle, ouser, sxGTUs);
 }
 
-int PWScore::CheckTitleSameAsGroup(StringX &ogroup, StringX &otitle, StringX &ouser, StringX &sxGTUs)
+int PWScore::CheckTitleSameAsGroup(const StringX &ogroup, const StringX &otitle,
+                                   const StringX &ouser, StringX &sxGTUs) const
 {
   sxGTUs.clear();
   if (m_pwlist.empty())
-    return false;
+    return 0;
 
-  int inum(0);
+  int retval = 0;
   std::vector<StringX> vgroups;
-  StringX sxDot(_T("."));
-  ItemListIter iter;
+  const StringX sxDot(_T("."));
+  ItemListConstIter iter;
 
   // First get all groups into a vector (entries may be in any order in the pwlist)
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
@@ -1082,7 +1085,7 @@ int PWScore::CheckTitleSameAsGroup(StringX &ogroup, StringX &otitle, StringX &ou
       StringX s, path(group);
       StringX path2root(_T(""));
       do {
-        s = GetPathElem(path);
+        s = GetPathHead(path);
         if (path2root.empty())
           path2root = s;
         else
@@ -1123,8 +1126,8 @@ int PWScore::CheckTitleSameAsGroup(StringX &ogroup, StringX &otitle, StringX &ou
       }
     }
 
-    inum = (int)vGroupTitleUser.size();
-    if (inum > 0) {
+    retval = vGroupTitleUser.size();
+    if (retval > 0) {
       std::sort(vGroupTitleUser.begin(), vGroupTitleUser.end(), GTUCompare2);
       std::vector<st_GroupTitleUser>::iterator gtu_iter;
 
@@ -1148,11 +1151,9 @@ int PWScore::CheckTitleSameAsGroup(StringX &ogroup, StringX &otitle, StringX &ou
       group = ogroup + sxDot + otitle;
 
     if (find(vgroups.begin(), vgroups.end(), group) != vgroups.end())
-      inum = 1;
+      retval = 1;
   }
-
-  vgroups.clear();
-  return inum;
+  return retval;
 }
 
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
