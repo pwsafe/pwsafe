@@ -660,6 +660,10 @@ msgstr "&Spara till disk"
 msgid "&Search"
 msgstr "&Sök"
 
+#. Resource IDs: (1404)
+msgid "&Select"
+msgstr ""
+
 #. Resource IDs: (358)
 msgid "&Send email"
 msgstr "&Skicka e-post"
@@ -787,10 +791,6 @@ msgstr "------------------------------------------------------------------------
 #. Resource IDs: (1223)
 msgid "..."
 msgstr "..."
-
-#. Resource IDs: (1017)
-msgid "...."
-msgstr "...."
 
 #. Resource IDs: (1293, 1294)
 msgid "....."
@@ -1354,10 +1354,6 @@ msgstr "Verkställ"
 #. Resource IDs: (513)
 msgid "Arabic (101)"
 msgstr "Arabic (101)"
-
-#. Resource IDs: (341)
-msgid "Are you sure you want to delete the selected entry?"
-msgstr "Är du säker på att du vill radera vald post?"
 
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
@@ -2044,6 +2040,10 @@ msgstr "Czech (QWERTY)"
 msgid "Czech Programmers"
 msgstr "Czech Programmers"
 
+#. Resource IDs: (360)
+msgid "DB Format"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "DCA"
 msgstr "DCA"
@@ -2059,6 +2059,10 @@ msgstr "Danish"
 #. Resource IDs: (353)
 msgid "Database"
 msgstr "Databas"
+
+#. Resource IDs: (361)
+msgid "Database Unique ID"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Database Unique ID:"
@@ -2522,6 +2526,14 @@ msgstr "Kunde inte spara ändrade preferenser."
 #. Resource IDs: (3857)
 msgid "Failed to save document."
 msgstr "Kunde inte spara dokumentet."
+
+#. Resource IDs: (361)
+msgid "Failsafe Backup Deletion"
+msgstr ""
+
+#. Resource IDs: (164)
+msgid "Failsafe Backup Files"
+msgstr ""
 
 #. Resource IDs: (209)
 msgid "Fatal Error"
@@ -3013,6 +3025,14 @@ msgstr "Om vald, kommer en 'snapshot' att tas innan varje fil sparas. Filen namn
 msgid "If requested, then a delimiter character must be entered!"
 msgstr "Om så begärs, måste ett avgränsande tecken anges!"
 
+#. Resource IDs: (361)
+msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
+msgstr ""
+
+#. Resource IDs: (361)
+msgid "If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit.  If not, the new open will be cancelled and the existing opened database, if any, will remain open."
+msgstr ""
+
 #. Resource IDs: (510)
 #, c-format
 msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
@@ -3021,6 +3041,10 @@ msgstr "Om detta tangentbord stödjer tecken via %s, så kommer denna tangent at
 #. Resource IDs: (517)
 msgid "Igbo"
 msgstr "Igbo"
+
+#. Resource IDs: (361)
+msgid "Ignore all Failsafe Backup files and continue with the currently selected database."
+msgstr ""
 
 #. Resource IDs: (32014)
 msgid "Import &From"
@@ -3691,13 +3715,25 @@ msgstr "Talet har satts till högsta värde. 'Större än' är inte tillåtet."
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "Talet är satt till minsta värde. 'Mindre än' är inte tillåtet."
 
+#. Resource IDs: (361)
+msgid "Number of Entries"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Number of Entries:"
 msgstr "Antal poster:"
 
+#. Resource IDs: (360)
+msgid "Number of Groups"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Number of Groups:"
 msgstr "Antal grupper:"
+
+#. Resource IDs: (361)
+msgid "Number of Unknownfields"
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
@@ -3828,6 +3864,10 @@ msgstr "Parsefel vid rad %d, kolumn %d:\nFel: %s\n%s\n\n"
 #. Resource IDs: (334)
 msgid "Passkey incorrect"
 msgstr "Felaktigt lösenord"
+
+#. Resource IDs: (360)
+msgid "Passphrase"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Passphrase character count:"
@@ -4231,6 +4271,10 @@ msgstr "Uttalbara lösenord"
 #. Resource IDs: (136)
 msgid "Properties"
 msgstr "Egenskaper"
+
+#. Resource IDs: (361)
+msgid "Properties of the currently selected database."
+msgstr ""
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4789,6 +4833,10 @@ msgstr "Visa poster med identiska jämförda fält (Notera: Okända fält jämf�
 msgid "Show grid lines in List View"
 msgstr "Visa radlinjer i Listvyn"
 
+#. Resource IDs: (360)
+msgid "Shutdown, Restart or Logoff in progress"
+msgstr ""
+
 #. Resource IDs: (1391)
 msgid "Signal Abort"
 msgstr "Simulera avslut"
@@ -5119,6 +5167,10 @@ msgstr "Lösenordet är i 'alias'-form men posten som avses '%s:%s:%s' är själ
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
 msgstr "Safe-nyckeln har använts tre gånger utan framgång. Om du inte känner till Safe-nyckeln, kan du antingen försöka öppna en annan lösenordsdatabas, eller skapa en ny tom lösenordsdatabas."
 
+#. Resource IDs: (361)
+msgid "The selected Failsafe Backup file will be opened instead of selected database."
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "The two entries do not match."
 msgstr "De två posterna matchar inte."
@@ -5135,6 +5187,10 @@ msgstr "Det finns mer än en post som motsvarar ditt val. Var mer exakt."
 msgid "There are unmatched quotes in the run command"
 msgstr "Det finns omatchade förslag i körkommandot"
 
+#. Resource IDs: (361)
+msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. If you delete it, it will be permanent. Do you wish to continue?"
+msgstr ""
+
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -5144,9 +5200,19 @@ msgstr "Detta aliasmål  [%s:%s:%s] är inte en normal post eller redan ett basa
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "Detta låter dig ha backuper på en annan plats. Försäkra dig om att du har skrivarrättigheter till den mapp du anger."
 
+#. Resource IDs: (362)
+#, c-format
+msgid "This database has the following %s with a title that is the same as a subgroup within its group.\r\n%s\r\n%s"
+msgstr ""
+
 #. Resource IDs: (335)
 msgid "This database is the same as the current database!"
 msgstr "Denna databas är samma som den aktuella databasen!"
+
+#. Resource IDs: (362)
+#, c-format
+msgid "This entry has a title that is the same as a subgroup within its group. %s\r\n"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "This entry has been changed. Are you sure you wish to cancel?"
@@ -5237,6 +5303,10 @@ msgstr "Detta tar bort%d poster som finns i denna grupp och dess undergrupper."
 #. Resource IDs: (341)
 msgid "This will delete an entry which is within this group and/or its subgroups."
 msgstr "Detta tar bort en post som finns i denna grupp och/eller dess undergrupper."
+
+#. Resource IDs: (361)
+msgid "This will delete the selected Failsafe Backup file.  If Windows supports a Recycle Bin on this media (usually only local disks), it will be moved there.  If not, it will be permanently deleted."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Time out period must be between 1 and 120 minutes."
@@ -5566,6 +5636,14 @@ msgstr "Användare kopierad"
 msgid "Username\t"
 msgstr "Användarnamn\t"
 
+#. Resource IDs: (361)
+msgid "Usernames must be displayed in the Tree View"
+msgstr ""
+
+#. Resource IDs: (362)
+msgid "Usernames will be displayed to handle this correctly."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Using application:"
 msgstr "Använt program:"
@@ -5677,9 +5755,21 @@ msgstr "Varning! Denna åtgärd kommer att skapa en oskyddad kopia av ALLA löse
 msgid "Weak passphrase:\n\n %s"
 msgstr "Svag nyckelkombination:\n\n %s"
 
+#. Resource IDs: (361)
+msgid "What saved"
+msgstr ""
+
+#. Resource IDs: (361)
+msgid "When saved"
+msgstr ""
+
 #. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
 msgstr "När som helst"
+
+#. Resource IDs: (361)
+msgid "Who saved"
+msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
@@ -5758,6 +5848,10 @@ msgstr "Du kan använda Kopiera-knappen nedan för att placera listan på urklip
 #. Resource IDs: (346)
 msgid "You must save this database before it can be exported."
 msgstr "Du måste spara denna databas innan den kan exporteras."
+
+#. Resource IDs: (361)
+msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
+msgstr ""
 
 #. Resource IDs: (357)
 #, c-format
@@ -6186,10 +6280,6 @@ msgstr "dagar"
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "dagar innan lösenordet utgår"
-
-#. Resource IDs: (211)
-msgid "deleted but not yet removed from database"
-msgstr "raderad men ännu inte borttagen från databasen"
 
 #. Resource IDs: (206)
 msgid "does not begin with"

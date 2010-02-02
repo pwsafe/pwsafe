@@ -656,6 +656,10 @@ msgstr "&Zapisz na dysku"
 msgid "&Search"
 msgstr ""
 
+#. Resource IDs: (1404)
+msgid "&Select"
+msgstr ""
+
 #. Resource IDs: (358)
 msgid "&Send email"
 msgstr ""
@@ -784,10 +788,6 @@ msgstr "------------------------------------------------------------------------
 #. Resource IDs: (1223)
 msgid "..."
 msgstr "..."
-
-#. Resource IDs: (1017)
-msgid "...."
-msgstr "...."
 
 #. Resource IDs: (1293, 1294)
 msgid "....."
@@ -1357,10 +1357,6 @@ msgstr "Zastosuj"
 
 #. Resource IDs: (513)
 msgid "Arabic (101)"
-msgstr ""
-
-#. Resource IDs: (341)
-msgid "Are you sure you want to delete the selected entry?"
 msgstr ""
 
 #. Resource IDs: (355)
@@ -2064,6 +2060,10 @@ msgstr ""
 msgid "Czech Programmers"
 msgstr ""
 
+#. Resource IDs: (360)
+msgid "DB Format"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "DCA"
 msgstr ""
@@ -2079,6 +2079,10 @@ msgstr ""
 #. Resource IDs: (353)
 msgid "Database"
 msgstr "Baza Danych"
+
+#. Resource IDs: (361)
+msgid "Database Unique ID"
+msgstr ""
 
 #. Resource IDs: (65535)
 #, fuzzy
@@ -2555,6 +2559,14 @@ msgstr "Nie udało się zapisać zmienionych preferencji."
 #. Resource IDs: (3857)
 msgid "Failed to save document."
 msgstr "Nie udało się zapisać dokumentu."
+
+#. Resource IDs: (361)
+msgid "Failsafe Backup Deletion"
+msgstr ""
+
+#. Resource IDs: (164)
+msgid "Failsafe Backup Files"
+msgstr ""
 
 #. Resource IDs: (209)
 msgid "Fatal Error"
@@ -3057,6 +3069,14 @@ msgstr "Jeśli zaznaczone, przed każdym zapisem zostanie wykonany 'zrzut' oraz 
 msgid "If requested, then a delimiter character must be entered!"
 msgstr "Znak określający ogranicznik musi zostać wprowadzony!"
 
+#. Resource IDs: (361)
+msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
+msgstr ""
+
+#. Resource IDs: (361)
+msgid "If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit.  If not, the new open will be cancelled and the existing opened database, if any, will remain open."
+msgstr ""
+
 #. Resource IDs: (510)
 #, c-format
 msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
@@ -3064,6 +3084,10 @@ msgstr ""
 
 #. Resource IDs: (517)
 msgid "Igbo"
+msgstr ""
+
+#. Resource IDs: (361)
+msgid "Ignore all Failsafe Backup files and continue with the currently selected database."
 msgstr ""
 
 #. Resource IDs: (32014)
@@ -3752,13 +3776,25 @@ msgstr "Liczba ma maksymalną wartość. 'Większa niż' jest niedostępna."
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
 msgstr "Liczba ma minimalną wartość. 'Mniejsza niż' jest niedostępna."
 
+#. Resource IDs: (361)
+msgid "Number of Entries"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Number of Entries:"
 msgstr "Liczba wpisów:"
 
+#. Resource IDs: (360)
+msgid "Number of Groups"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Number of Groups:"
 msgstr "Liczba grup:"
+
+#. Resource IDs: (361)
+msgid "Number of Unknownfields"
+msgstr ""
 
 #. Resource IDs: (190)
 #, fuzzy, c-format
@@ -3894,6 +3930,10 @@ msgstr "Błąd parsowania na linii %d, kolumna %d:\nBłąd: %s\n%s\n\n"
 #, fuzzy
 msgid "Passkey incorrect"
 msgstr "Nieprawidłowe hasło"
+
+#. Resource IDs: (360)
+msgid "Passphrase"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Passphrase character count:"
@@ -4303,6 +4343,10 @@ msgstr "Hasła łatwe do wymówienia"
 #. Resource IDs: (136)
 msgid "Properties"
 msgstr "Właściwości"
+
+#. Resource IDs: (361)
+msgid "Properties of the currently selected database."
+msgstr ""
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4869,6 +4913,10 @@ msgstr "Pokaż wpisy z identycznymi polami (Nieznane pola nie zostały porównan
 msgid "Show grid lines in List View"
 msgstr ""
 
+#. Resource IDs: (360)
+msgid "Shutdown, Restart or Logoff in progress"
+msgstr ""
+
 #. Resource IDs: (1391)
 msgid "Signal Abort"
 msgstr ""
@@ -5203,6 +5251,10 @@ msgstr "Hasło ma formę 'aliasu' ale odpowiadający mu wpis '%s:%s:%s' sam jest
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
 msgstr "Hasło zostało wprowadzone niepoprawnie trzy razy. Jeśli nie znasz hasła możesz otworzyć inną bazę danych lub utworzyć nową bazę danych."
 
+#. Resource IDs: (361)
+msgid "The selected Failsafe Backup file will be opened instead of selected database."
+msgstr ""
+
 #. Resource IDs: (329)
 msgid "The two entries do not match."
 msgstr "Wpisy nie są identyczne."
@@ -5219,6 +5271,10 @@ msgstr "Więcej niż jeden wpis odpowiada zaznaczeniu. Doprecyzuj."
 msgid "There are unmatched quotes in the run command"
 msgstr ""
 
+#. Resource IDs: (361)
+msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. If you delete it, it will be permanent. Do you wish to continue?"
+msgstr ""
+
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -5228,9 +5284,19 @@ msgstr "Element docelowy aliasu [%s:%s:%s] nie jest normalnym wpisem lub jest ju
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "Pozwala na zachowanie kopii zapasowych w osobnym katalogu. Upewnij się, że masz uprawnienia zapisu do wybranego katalogu."
 
+#. Resource IDs: (362)
+#, c-format
+msgid "This database has the following %s with a title that is the same as a subgroup within its group.\r\n%s\r\n%s"
+msgstr ""
+
 #. Resource IDs: (335)
 msgid "This database is the same as the current database!"
 msgstr "Baza danych jest taka sama jak bieżąca baza danych!"
+
+#. Resource IDs: (362)
+#, c-format
+msgid "This entry has a title that is the same as a subgroup within its group. %s\r\n"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "This entry has been changed. Are you sure you wish to cancel?"
@@ -5321,6 +5387,10 @@ msgstr "Zostaną usunięte %d wpisy znajdujące się w tej grupie i jej podgrupa
 #. Resource IDs: (341)
 msgid "This will delete an entry which is within this group and/or its subgroups."
 msgstr "Zostanie usunięty wpis znajdujący się w tej grupie i/lub jej podgrupach."
+
+#. Resource IDs: (361)
+msgid "This will delete the selected Failsafe Backup file.  If Windows supports a Recycle Bin on this media (usually only local disks), it will be moved there.  If not, it will be permanently deleted."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Time out period must be between 1 and 120 minutes."
@@ -5655,6 +5725,14 @@ msgstr ""
 msgid "Username\t"
 msgstr "Nazwa użytkownika\t"
 
+#. Resource IDs: (361)
+msgid "Usernames must be displayed in the Tree View"
+msgstr ""
+
+#. Resource IDs: (362)
+msgid "Usernames will be displayed to handle this correctly."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Using application:"
 msgstr "Wersja programu:"
@@ -5767,9 +5845,21 @@ msgstr "Ostrzeżenie! Zostanie utworzona niechroniona kopia wszystkich haseł z 
 msgid "Weak passphrase:\n\n %s"
 msgstr "Słabe hasło:\n\n %s"
 
+#. Resource IDs: (361)
+msgid "What saved"
+msgstr ""
+
+#. Resource IDs: (361)
+msgid "When saved"
+msgstr ""
+
 #. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
 msgstr "Kiedykolwiek"
+
+#. Resource IDs: (361)
+msgid "Who saved"
+msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
@@ -5849,6 +5939,10 @@ msgstr "Możesz umieścić tę listę w schowku klikając przycisk 'Kopiuj'."
 #. Resource IDs: (346)
 msgid "You must save this database before it can be exported."
 msgstr "Musisz zapisać bazę danych przed jej eksportowaniem."
+
+#. Resource IDs: (361)
+msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
+msgstr ""
 
 #. Resource IDs: (357)
 #, c-format
@@ -6289,10 +6383,6 @@ msgstr "dni"
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "dni zanim hasło wygaśnie"
-
-#. Resource IDs: (211)
-msgid "deleted but not yet removed from database"
-msgstr ""
 
 #. Resource IDs: (206)
 msgid "does not begin with"
