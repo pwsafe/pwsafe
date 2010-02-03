@@ -848,9 +848,13 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
     CString cs_title, cs_msg;
     cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
     CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+#ifdef NOTYET
     CString cse(MAKEINTRESOURCE(IDS_ENTRY));
     CString csg(MAKEINTRESOURCE(IDS_GROUP2));
     cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, bIsLeaf ? cse : csg, bIsLeaf ? csg : cse, cs2);
+#else /* Since texts have already been released to xltation, change this after 3.21 formal release */
+    cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
+#endif NOTYET
     gmb.MessageBox(cs_msg, cs_title, MB_OK);
 
     Command *pcmd1 = UpdateGUICommand::Create(pcore,

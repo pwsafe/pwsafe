@@ -114,7 +114,11 @@ void DboxMain::OnAdd()
       CString cs_title, cs_msg;
       cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
       CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+#ifdef NOTYET
+      // XXX Update this for changed IDS_MUSTHAVEUSERNAMES3 format after Formal 3.21 release
+#else /* Use this for 3.21 */
       cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
+#endif /* NOTYET */
       gmb.MessageBox(cs_msg, cs_title, MB_OK);
       // Update Copy with new values
       prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
@@ -590,7 +594,11 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
     CString cs_title, cs_msg;
     cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
     CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
+#ifdef NOTYET
+      // XXX Update this for changed IDS_MUSTHAVEUSERNAMES3 format after Formal 3.21 release
+#else /* Use this for 3.21 */
     cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
+#endif /* NOTYET */
     gmb.MessageBox(cs_msg, cs_title, MB_OK);
     // Update Copy with new values
     prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
