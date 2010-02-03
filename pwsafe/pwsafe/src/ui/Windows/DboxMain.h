@@ -731,7 +731,7 @@ private:
   void SavePreferencesOnExit();
   void CleanUpAndExit(const bool bNormalExit = true);
 
-  void SessionNotification(const bool bRegister);
+  void RegisterSessionNotification(const bool bRegister);
   bool IsWorkstationLocked() const;
   bool LockDataBase();
   void startLockCheckTimer();

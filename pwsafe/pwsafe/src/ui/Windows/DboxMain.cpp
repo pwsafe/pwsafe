@@ -205,7 +205,7 @@ LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
   return (LRESULT)app.m_uiRegMsg;
 }
 
-void DboxMain::SessionNotification(const bool bRegister)
+void DboxMain::RegisterSessionNotification(const bool bRegister)
 {
   // Need this if running OS prior to Windows XP as the application will not run
   // if it cannot resolve the entry points in the DLL if using hard coded calls using
@@ -1125,7 +1125,7 @@ BOOL DboxMain::OnInitDialog()
   }
 
   // Set up notification of desktop state
-  SessionNotification(true);
+  RegisterSessionNotification(true);
 
   // If successful, no need for Timer
   if (m_bWTSRegistered)
@@ -1165,7 +1165,7 @@ void DboxMain::OnDestroy()
 
   // Stop being notified about session changes
   if (m_bWTSRegistered) {
-    SessionNotification(false);
+    RegisterSessionNotification(false);
   }
 
   // Stop subclassing the ListView HeaderCtrl
@@ -2270,8 +2270,10 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_SESSION_LOCK:
       m_bWSLocked = true;
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockOnWindowLock) &&
-          LockDataBase())
-        ShowWindow(SW_HIDE);
+          LockDataBase()) {
+        bool useSysTray = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
+        ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
+      }
       break;
     case WTS_CONSOLE_CONNECT:
     case WTS_REMOTE_CONNECT:
