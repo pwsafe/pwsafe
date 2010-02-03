@@ -741,6 +741,10 @@ void CAddEdit_Basic::OnRandom()
 {
   UpdateData(TRUE);
 
+  if (QuerySiblings(PP_UPDATE_PWPOLICY, 0L) != 0L) {
+    return;
+  }
+
   StringX passwd;
   M_pDbx()->MakeRandomPassword(passwd, M_pwp());
   M_realpassword() = m_password = passwd.c_str();
