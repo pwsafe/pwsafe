@@ -93,8 +93,6 @@ void CCreateShortcutDlg::OnOK()
   m_title.EmptyIfOnlyWhiteSpace();
   m_username.EmptyIfOnlyWhiteSpace();
 
-  UpdateData(FALSE);
-
   //Check that data is valid
   if (m_title.IsEmpty()) {
     gmb.AfxMessageBox(IDS_MUSTHAVETITLE);

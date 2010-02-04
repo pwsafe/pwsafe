@@ -794,10 +794,6 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     ItemListIter listpos = Find(entry_uuid);
     ASSERT(listpos != pcore->GetEntryEndIter());
     CItemData oldElem = GetEntryAt(listpos);
-    // ci_edit's displayinfo will have been deleted if
-    // application "locked" (Cleared list)
-    DisplayInfo *pdi_new = new DisplayInfo;
-    ci_edit.SetDisplayInfo(pdi_new);
     ci_edit.SetXTime((time_t)0);
     ci_edit.SetStatus(CItemData::ES_MODIFIED);
 
@@ -806,8 +802,8 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
     SetChanged(Data);
 
     // DisplayInfo's copied and changed, get up-to-date version
-    pdi_new = static_cast<DisplayInfo *>(pcore->GetEntry(pcore->Find(entry_uuid)).GetDisplayInfo());
-    rc = SelectEntry(pdi_new->list_index);
+    DisplayInfo *pdi = static_cast<DisplayInfo *>(pcore->GetEntry(pcore->Find(entry_uuid)).GetDisplayInfo());
+    rc = SelectEntry(pdi->list_index);
 
     if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
