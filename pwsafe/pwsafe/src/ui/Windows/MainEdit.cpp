@@ -619,6 +619,12 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   StringX newPassword = pci_new->GetPassword();
   uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'}, new_base_uuid = {'\0'};
   memcpy(new_base_uuid, pentry_psh->GetBaseUUID(), sizeof(new_base_uuid));
+  pci_original->GetUUID(original_uuid);
+  if (pci_original->IsDependent()) {
+    CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
+    ASSERT(pci_orig_base != NULL);
+    pci_orig_base->GetUUID(original_base_uuid);
+  }
 
   ItemListIter iter;
   if (pentry_psh->GetOriginalEntrytype() == CItemData::ET_NORMAL &&
