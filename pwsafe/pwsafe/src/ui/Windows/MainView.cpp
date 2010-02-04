@@ -142,8 +142,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       RebuildGUI();
       break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
-      // Caused by Database preference changed about showing username and/or
-      // passwords in the Tree View
+      // Rebuid the entire tree view
       RebuildGUI(iTreeOnly);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
@@ -163,10 +162,6 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 // Called from PWScore to get GUI to update its reserved field
 void DboxMain::GUISetupDisplayInfo(CItemData &ci)
 {
-  DisplayInfoBase *pdib = ci.GetDisplayInfo();
-  if (pdib != NULL)
-    delete pdib;
-
   ci.SetDisplayInfo(new DisplayInfo);
 }
 
@@ -1587,10 +1582,7 @@ void DboxMain::OnHeaderBeginDrag(NMHDR* pNMHDR, LRESULT *pResult)
 
   NMHEADER *phdn = (NMHEADER *) pNMHDR;
 
-  if (m_bImageInLV && phdn->iItem == 0)
-    *pResult = TRUE;
-  else
-    *pResult = FALSE;
+  *pResult = (m_bImageInLV && phdn->iItem == 0) ? TRUE : FALSE;
 }
 
 void DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
@@ -1613,7 +1605,6 @@ void DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
 
   // Otherwise allow
   PostMessage(WM_HDR_DRAG_COMPLETE);
-
   *pResult = FALSE;
 }
 
@@ -3788,7 +3779,6 @@ void DboxMain::RefreshEntryPasswordInGUI(CItemData &ci)
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
 
   UpdateListItem(pdi->list_index, CItemData::PWHIST, ci.GetPWHistory());
-
   RefreshEntryFieldInGUI(ci, CItemData::PASSWORD);
 }
 
@@ -3799,13 +3789,12 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
 
   UpdateListItem(pdi->list_index, ft, ci.GetFieldValue(ft));
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-  bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-
   if (ft == CItemData::GROUP) {
     RefreshViews();
   } else {
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+    bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
     if (ft == CItemData::TITLE || 
         (ft == CItemData::USER && bShowUsernameInTree) ||
         (ft == CItemData::PASSWORD && bShowPasswordInTree)) {
