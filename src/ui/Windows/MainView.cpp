@@ -1429,8 +1429,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
 CItemData *DboxMain::getSelectedItem()
 {
   CItemData *retval = NULL;
-  if (m_ctlItemList.IsWindowVisible()) {
-    // flattened list mode.
+  if (m_ctlItemList.IsWindowVisible()) { // list view
     POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
     if (p) {
       int i = m_ctlItemList.GetNextSelectedItem(p);
@@ -1439,17 +1438,20 @@ CItemData *DboxMain::getSelectedItem()
       DisplayInfo *pdi = (DisplayInfo *)retval->GetDisplayInfo();
       ASSERT(pdi != NULL && pdi->list_index == i);
     }
-  } else {
-    // hierarchy tree mode; go from HTREEITEM to index
+  } else { // tree view; go from HTREEITEM to index
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     if (ti != NULL) {
       retval = (CItemData *)m_ctlItemTree.GetItemData(ti);
-      if (retval != NULL) {  // leaf node
+      if (retval != NULL) {  // leaf node: do some sanity tests
         DisplayInfo *pdi = (DisplayInfo *)retval->GetDisplayInfo();
-        ASSERT(pdi != NULL && pdi->tree_item == ti);
-      }
-    }    
-  }
+        ASSERT(pdi != NULL);
+        if (pdi->tree_item != ti) {
+          TRACE(L"DboxMain::getSelectedItem: fixing pdi->tree_item!");
+          pdi->tree_item = ti;
+        }
+      } // leaf node
+    } // ti != NULL
+  } // tree view
   return retval;
 }
 

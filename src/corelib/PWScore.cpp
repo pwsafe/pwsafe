@@ -252,12 +252,12 @@ void PWScore::DoDeleteEntry(const CItemData &item)
 
 void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
 {
-  // Not sure if old_ci is actually needed - perhaps for
-  // edge cases where type changes?
   // Assumes that old_uuid == new_uuid
   uuid_array_t uuid;
   old_ci.GetUUID(uuid);
   m_pwlist[uuid] = new_ci;
+  if (old_ci.GetEntryType() != new_ci.GetEntryType())
+    GUIRefreshEntry(new_ci);
 }
 
 
