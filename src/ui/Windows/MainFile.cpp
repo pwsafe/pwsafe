@@ -2289,21 +2289,14 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     if (foundPos != m_core.GetEntryEndIter()) 
       continue;
 
-    Command *pcmd1 = AddEntryCommand::Create(&m_core, ci_temp);
+    Command *pcmd1 = AddEntryCommand::Create(&m_core, ci_temp, new_base_uuid);
     pcmd1->SetNoGUINotify();
     pmulticmds->Add(pcmd1);
-
-    Command *pcmd2 = AddDependentEntryCommand::Create(&m_core,
-                                                      new_base_uuid,
-                                                      new_entry_uuid, et);
-    pcmd2->SetNoGUINotify();
-    pmulticmds->Add(pcmd2);
 
     if (et == CItemData::ET_ALIAS) {
       ci_temp.SetPassword(L"[Alias]");
       ci_temp.SetAlias();
-    } else
-    if (et == CItemData::ET_SHORTCUT) {
+    } else if (et == CItemData::ET_SHORTCUT) {
       ci_temp.SetPassword(L"[Shortcut]");
       ci_temp.SetShortcut();
     } else

@@ -269,6 +269,7 @@ void DBPrefsCommand::Undo()
 AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci)
   : Command(pcomInt), m_ci(ci)
 {
+  ASSERT(!ci.IsDependent()); // use other c'tor for dependent entries!
 }
 
 AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci
