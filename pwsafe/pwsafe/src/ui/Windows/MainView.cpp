@@ -3795,7 +3795,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
     PWSprefs *prefs = PWSprefs::GetInstance();
     bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
     bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-    if (ft == CItemData::TITLE || 
+    if (ft == CItemData::START || ft == CItemData::TITLE || 
         (ft == CItemData::USER && bShowUsernameInTree) ||
         (ft == CItemData::PASSWORD && bShowPasswordInTree)) {
       StringX treeDispString = ci.GetTitle();
