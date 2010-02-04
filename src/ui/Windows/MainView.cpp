@@ -1826,13 +1826,13 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
 
 bool DboxMain::LockDataBase()
 {
-  /*
-  * Since we clear the data, any unchanged changes will be lost,
-  * so we force a save if database is modified, and fail
-  * to lock if the save fails (unless db is r-o).
-  *
-  * returns false iff save was required AND failed.
-  */
+  /**
+   * Since we clear the data, any unchanged changes will be lost,
+   * so we force a save if database is modified, and fail
+   * to lock if the save fails (unless db is r-o).
+   *
+   * returns false iff save was required AND failed.
+   */
 
   // Need to save display status for when we return from minimize
   SaveGroupDisplayState();
@@ -1856,17 +1856,18 @@ bool DboxMain::LockDataBase()
 // This function determines if the workstation is locked.
 bool DboxMain::IsWorkstationLocked() const
 {
-  if (m_bWTSRegistered)
-    return m_bWSLocked;
-
-  // Rather not use this as may have impact with multiple desktops
-  // but if registering for session change messages failed ....
   bool bResult = false;
-  HDESK hDesktop = OpenDesktop(L"default", 0, false, DESKTOP_SWITCHDESKTOP);
-  if (hDesktop != 0) {
-    // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
-    bResult = !SwitchDesktop(hDesktop);
-    CloseDesktop(hDesktop);
+  if (m_bWTSRegistered)
+    bResult = m_bWSLocked;
+  else {
+    // Rather not use this as may have impact with multiple desktops
+    // but if registering for session change messages failed ...
+    HDESK hDesktop = OpenDesktop(L"default", 0, false, DESKTOP_SWITCHDESKTOP);
+    if (hDesktop != 0) {
+      // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
+      bResult = !SwitchDesktop(hDesktop);
+      CloseDesktop(hDesktop);
+    }
   }
   if (bResult)
     TRACE(L"IsWorkstationLocked() returning true");
@@ -1892,13 +1893,6 @@ void DboxMain::OnChangeTreeFont()
   fontdlg.m_sampletext = cs_TreeListSampleText.c_str();
 
   if (fontdlg.DoModal() == IDOK) {
-    CString treefont_str;
-    treefont_str.Format(L"%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
-                        lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
-                        lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
-                        lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
-                        lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
-
     m_pFontTree->DeleteObject();
     m_pFontTree->CreateFontIndirect(&lf);
 
@@ -1920,15 +1914,19 @@ void DboxMain::OnChangeTreeFont()
         csfn == csdfltfn) {
       // Delete config Tree/List font
       prefs->ResetPref(PWSprefs::TreeFont);
-    } else {
-      // Save user's choice of Tree/List font
+    } else { // Save user's choice of Tree/List font
+      CString treefont_str;
+      treefont_str.Format(L"%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
+                          lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
+                          lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
+                          lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
+                          lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
       prefs->SetPref(PWSprefs::TreeFont, LPCWSTR(treefont_str));
     }
-
     // Save user's sample text
     prefs->SetPref(PWSprefs::TreeListSampleText,
                    LPCWSTR(fontdlg.m_sampletext));
-  }
+  } // DoModal
 }
 
 void DboxMain::OnChangePswdFont() 
@@ -1947,13 +1945,6 @@ void DboxMain::OnChangePswdFont()
   fontdlg.m_sampletext = cs_PswdSampleText.c_str();
 
   if (fontdlg.DoModal() == IDOK) {
-    CString pswdfont_str;
-    pswdfont_str.Format(L"%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
-                        lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
-                        lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
-                        lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
-                        lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
-
     // Transfer the new font to the passwords
     SetPasswordFont(&lf);
 
@@ -1968,14 +1959,18 @@ void DboxMain::OnChangePswdFont()
         csfn == csdfltfn) {
       // Delete config password font
       prefs->ResetPref(PWSprefs::PasswordFont);
-    } else {
-      // Save user's choice of password font
+    } else { // Save user's choice of password font
+      CString pswdfont_str;
+      pswdfont_str.Format(L"%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
+                          lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
+                          lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
+                          lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
+                          lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
       prefs->SetPref(PWSprefs::PasswordFont, LPCWSTR(pswdfont_str));
     }
-
     // Save user's sample text
     prefs->SetPref(PWSprefs::PswdSampleText, LPCWSTR(fontdlg.m_sampletext));
-  }
+  } // DoModal
 }
 
 void DboxMain::OnChangeVKFont() 
@@ -2238,59 +2233,19 @@ void DboxMain::SetColumns()
   }
 
   int ioff = 3;
-  cs_header = GetHeaderText(CItemData::URL);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::URL;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
-
-  cs_header = GetHeaderText(CItemData::EMAIL);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::EMAIL;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
-
-  cs_header = GetHeaderText(CItemData::RUNCMD);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::RUNCMD;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
-
-  cs_header = GetHeaderText(CItemData::CTIME);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::CTIME;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
-
-  cs_header = GetHeaderText(CItemData::PMTIME);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::PMTIME;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
-
-  cs_header = GetHeaderText(CItemData::ATIME);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::ATIME;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
-
-  cs_header = GetHeaderText(CItemData::XTIME);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::XTIME;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
-
-  cs_header = GetHeaderText(CItemData::RMTIME);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::RMTIME;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
-
-  cs_header = GetHeaderText(CItemData::POLICY);
-  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::POLICY;
-  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
-  ioff++;
+  CItemData::FieldType defCols[] = {CItemData::URL, CItemData::EMAIL,
+                                    CItemData::RUNCMD, CItemData::CTIME,
+                                    CItemData::PMTIME, CItemData::ATIME,
+                                    CItemData::XTIME, CItemData::RMTIME,
+                                    CItemData::POLICY,
+  };
+  for (int i = 0; i < sizeof(defCols)/sizeof(defCols[0]); i++) {
+    cs_header = GetHeaderText(defCols[i]);
+    m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
+    hdi.lParam = defCols[i];
+    m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+    ioff++;
+  }
 
   m_ctlItemList.SetRedraw(FALSE);
 
@@ -2299,8 +2254,6 @@ void DboxMain::SetColumns()
   }
 
   SetHeaderInfo();
-
-  return;
 }
 
 void DboxMain::SetColumns(const CString cs_ListColumns)
@@ -2364,8 +2317,6 @@ void DboxMain::SetColumns(const CString cs_ListColumns)
   }
 
   SetHeaderInfo();
-
-  return;
 }
 
 void DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
@@ -2479,7 +2430,6 @@ void DboxMain::SetHeaderInfo()
     m_iTypeSortColumn = CItemData::TITLE;
 
   SortListView();
-
   AutoResizeColumns();
 }
 
@@ -2616,7 +2566,7 @@ void DboxMain::SetupColumnChooser(const bool bShowHide)
     m_pCC->ShowWindow(m_pCC->IsWindowVisible() ? SW_HIDE : SW_SHOW);
 }
 
-CString DboxMain::GetHeaderText(const int iType)
+CString DboxMain::GetHeaderText(int iType) const
 {
   CString cs_header;
   switch (iType) {
@@ -2674,7 +2624,7 @@ CString DboxMain::GetHeaderText(const int iType)
   return cs_header;
 }
 
-int DboxMain::GetHeaderWidth(const int iType)
+int DboxMain::GetHeaderWidth(int iType) const
 {
   int nWidth(0);
 
@@ -2702,7 +2652,6 @@ int DboxMain::GetHeaderWidth(const int iType)
     default:
       break;
   }
-
   return nWidth;
 }
 
@@ -2738,66 +2687,13 @@ void DboxMain::CalcHeaderWidths()
   CString cs_header;
 
   for (int iType = 0; iType < CItemData::LAST; iType++) {
-    switch (iType) {
-      case CItemData::UUID:
-        cs_header.LoadString(IDS_ICON);
-        break;
-      case CItemData::GROUP:
-        cs_header.LoadString(IDS_GROUP);
-        break;
-      case CItemData::TITLE:
-        cs_header.LoadString(IDS_TITLE);
-        break;
-      case CItemData::USER:
-        cs_header.LoadString(IDS_USERNAME);
-        break;
-      case CItemData::PASSWORD:
-        cs_header.LoadString(IDS_PASSWORD);
-        break;
-      case CItemData::URL:
-        cs_header.LoadString(IDS_URL);
-        break;
-      case CItemData::EMAIL:
-        cs_header.LoadString(IDS_EMAIL);
-        break;
-      case CItemData::RUNCMD:
-        cs_header.LoadString(IDS_RUNCOMMAND);
-        break;
-      case CItemData::NOTES:
-        cs_header.LoadString(IDS_NOTES);
-        break;
-      case CItemData::CTIME:        
-        cs_header.LoadString(IDS_CREATED);
-        break;
-      case CItemData::PMTIME:
-        cs_header.LoadString(IDS_PASSWORDMODIFIED);
-        break;
-      case CItemData::ATIME:
-        cs_header.LoadString(IDS_LASTACCESSED);
-        break;
-      case CItemData::XTIME:
-        cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
-        break;
-      case CItemData::XTIME_INT:
-        cs_header.LoadString(IDS_PASSWORDEXPIRYDATEINT);
-        break;
-      case CItemData::RMTIME:
-        cs_header.LoadString(IDS_LASTMODIFIED);
-        break;
-      case CItemData::POLICY:        
-        cs_header.LoadString(IDS_PWPOLICY);
-        break;
-      default:
-        cs_header.Empty();
-          }
-
+    cs_header = GetHeaderText(iType);
     if (!cs_header.IsEmpty())
       m_nColumnHeaderWidthByType[iType] = m_ctlItemList.GetStringWidth(cs_header) + 20;
     else
       m_nColumnHeaderWidthByType[iType] = -4;
-
     m_iheadermaxwidth = max(m_iheadermaxwidth, m_nColumnHeaderWidthByType[iType]);
-  }
+  } // for
 }
 
 void DboxMain::UnFindItem()
@@ -3082,7 +2978,7 @@ int DboxMain::OnUpdateViewReports(const int nID)
 
 void DboxMain::OnRefreshWindow()
 {
-  // Useful for users if the are using a filter and have edited an entry
+  // Useful for users if they are using a filter and have edited an entry
   // so it no longer passes
   RefreshViews();
 }

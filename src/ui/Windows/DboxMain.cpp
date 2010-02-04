@@ -2169,14 +2169,14 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 
 void DboxMain::startLockCheckTimer()
 {
-  // No need for this timer if we know when desktop locks
-  if (m_bWTSRegistered)
-    return;
+  // If we sucessfully registered for WTS events,
+  // then we don't need this timer. Otherwise, we start it
+  // if user wishes to lock us on Windows lock.
 
   const UINT INTERVAL = 5000; // every 5 seconds should suffice
 
-  if (PWSprefs::GetInstance()->
-        GetPref(PWSprefs::LockOnWindowLock) == TRUE) {
+  if (!m_bWTSRegistered && PWSprefs::GetInstance()->
+      GetPref(PWSprefs::LockOnWindowLock) == TRUE) {
     SetTimer(TIMER_LOCKONWTSLOCK, INTERVAL, NULL);
   }
 }
