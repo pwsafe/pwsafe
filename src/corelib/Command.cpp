@@ -471,7 +471,10 @@ int EditEntryCommand::Execute()
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD, entry_uuid);
+    // if the group's changed, refresh the entire tree, otherwise, just the field
+    UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
+      UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRYFIELD;
+    m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
   }
   m_bState = true;
   return 0;
@@ -493,7 +496,10 @@ void EditEntryCommand::Undo()
   if (m_bNotifyGUI) {
     uuid_array_t entry_uuid;
     m_old_ci.GetUUID(entry_uuid);
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD, entry_uuid);
+    // if the group's changed, refresh the entire tree, otherwise, just the field
+    UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
+      UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRYFIELD;
+    m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
   }
   RestoreState();
   m_bState = false;
