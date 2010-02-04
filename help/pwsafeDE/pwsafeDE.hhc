@@ -91,6 +91,10 @@
 			<param name="Local" value="html\backups_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Automatische Notsicherung">
+			<param name="Local" value="html\failsafebackups.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Eintr&auml;ge importieren">
 			<param name="Local" value="html\import.html">
 			</OBJECT>

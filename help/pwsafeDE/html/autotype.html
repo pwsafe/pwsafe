@@ -11,62 +11,62 @@
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Automatische Eingabe</h2>
-<p>Die <b>Automatische Eingabe</b> ist eine einfache und schnelle Methode, um Benutzernamen und Passw&ouml;rter einzugeben. Mit einem einzigen Klick werden Benutzername und Passwort angegeben und die Daten werden zur Freigabe dem System &uuml;bergeben. Standardm&auml;&szlig;ig ist die Formel f&uuml;r den automatisierten Tastenanschlag wie folgt: <a name="defautotext"></a>Benutzername, gefolgt vom TAB Zeichen, gefolgt vom Passwort, noch ein TAB Zeichen und dann die Eingabe-Taste (<i>Benutzername</i>
-<b>TAB</b> <i>Passwort</i> <b>TAB</b> <b>ENTER</b>). Dies funktioniert f&uuml;r die meisten WEB Seiten, die eine Authentifikation mit Benutzername/Passwort ben&ouml;tigen.</p>
-<p>F&uuml;r WEB Seiten oder Anwendungen die andere Daten erfordern, ist es m&ouml;glich das Verhalten der 'Automatischen Eingabe', wie weiter unten im Absatz <a href="#autotype_details">Automatische Eingabe anpassen</a> beschrieben, anzupassen . Bemerkung: Man kann auch den Text f&uuml;r die <i><a href="#defautotext">standardm&auml;&szlig;ige</a>&nbsp;</i>Automatische&nbsp;Eingabe im Men&uuml; <b>Verwalten-&gt;Optionen-&gt;<i><a href="misc_tab.html">Verschiedenes</a></i></b> anpassen. Dies kann z.B. dann n&uuml;tzlich sein, wenn die Automatische Eingabe f&uuml;r Ihre Maschine zu schnell ist.</p>
+<p>Die <b>Automatische Eingabe</b> ist eine einfache und schnelle Methode, um Benutzernamen und Passwörter einzugeben. Mit einem einzigen Klick werden Benutzername und Passwort angegeben und die Daten werden zur Freigabe dem System übergeben. Standardmäßig ist die Formel für den automatisierten Tastenanschlag wie folgt: <a name="defautotext"></a>Benutzername, gefolgt vom TAB Zeichen, gefolgt vom Passwort, noch ein TAB Zeichen und dann die Eingabe-Taste (<i>Benutzername</i>
+<b>TAB</b> <i>Passwort</i> <b>TAB</b> <b>ENTER</b>). Dies funktioniert für die meisten WEB Seiten, die eine Authentifikation mit Benutzername/Passwort benötigen.</p>
+<p>Für WEB Seiten oder Anwendungen die andere Daten erfordern, ist es möglich das Verhalten der 'Automatischen Eingabe', wie weiter unten im Absatz <a href="#autotype_details">Automatische Eingabe anpassen</a> beschrieben, anzupassen . Bemerkung: Man kann auch den Text für die <i><a href="#defautotext">standardmäßige</a>&nbsp;</i>Automatische&nbsp;Eingabe im Menü <b>Verwalten-&gt;Optionen-&gt;<i><a href="misc_tab.html">Verschiedenes</a></i></b> anpassen. Dies kann z.B. dann nützlich sein, wenn die Automatische Eingabe für Ihre Maschine zu schnell ist.</p>
 <div class="instr">
 <h3>Automatische Eingabe anwenden</h3>
 <ol>
   <li>Setzen Sie den Kursor im Feld Benutzername des Formblattes</li>
-  <li>Maximieren Sie oder &ouml;ffne Password Safe</li>
-  <li>W&auml;hlen Sie den Passworteintrag aus</li>
-  <li><b>Strg -T</b> oder rechter Mausklick und w&auml;hlen Sie <b>Autom. Eingabe ausf&uuml;hren</b> aus oder klicken Sie in der Toolleiste den entsprechenden Knopf zum Beginnen.</li>
+  <li>Maximieren Sie oder öffne Password Safe</li>
+  <li>Wählen Sie den Passworteintrag aus</li>
+  <li><b>Strg -T</b> oder rechter Mausklick und wählen Sie <b>Autom. Eingabe ausführen</b> aus oder klicken Sie in der Toolleiste den entsprechenden Knopf zum Beginnen.</li>
 </ol>
 <h3><a name="autotype_details"></a>Automatische Eingabe anpassen</h3>
-<p>F&uuml;r WEB Seiten oder Anwendungen, bei denen das Feld 'Benutzername' nicht vom Feld 'Passwort' und vom Feld 'Anmelden' gefolgt wird, k&ouml;nnen Sie das Verhalten ab&auml;ndern, indem Sie im Feld <a href="#N1">"Automatische Eingabe"</a> den Text ausf&uuml;llen, der f&uuml;r das erhoffte Verhalten spezifiziert ist. Dies geht wie folgt:</p>
+<p>Für WEB Seiten oder Anwendungen, bei denen das Feld 'Benutzername' nicht vom Feld 'Passwort' und vom Feld 'Anmelden' gefolgt wird, können Sie das Verhalten abändern, indem Sie im Feld <a href="#N1">"Automatische Eingabe"</a> den Text ausfüllen, der für das erhoffte Verhalten spezifiziert ist. Dies geht wie folgt:</p>
 <ul>
   <li><b>\u</b> wird ersetzt durch den Benutzernamen vom Eintrag.</li>
   <li><b>\p</b> wird ersetzt durch das Passwort vom Eintrag.</li>
 <!-- ab hier: neu ab >3.15 -->
-  <li><b>\g</b> wird ersetzt durch die Gruppe, die mit dem  Eintrag verkn&uuml;pft ist.</li>
-  <li><b>\i</b> wird ersetzt durch den Titel, die mit dem Eintrag verkn&uuml;pft ist.</li>
-  <li><b>\o</b> wird ersetzt durch den Inhalt des Feldes Notizen (m&ouml;glicherweise mehrzeilig).</li>
+  <li><b>\g</b> wird ersetzt durch die Gruppe, die mit dem  Eintrag verknüpft ist.</li>
+  <li><b>\i</b> wird ersetzt durch den Titel, die mit dem Eintrag verknüpft ist.</li>
+  <li><b>\o</b> wird ersetzt durch den Inhalt des Feldes Notizen (möglicherweise mehrzeilig).</li>
   <ul>
     <li>Alle Zeilenende Zeichen "\n", "\r" oder "\r\n" werden umgeformt zu "\r" (carriage return).</li>
-    <li>Es erfolgt keine Ersetzung f&uuml;r Escape Sequenzen im Feld Notizen (z.B. "\u", "\p" usw.) au&szlig;er f&uuml;r die "\t" Sequenz, die ersetzt wird durch das TAB Zeichen.</li>
+    <li>Es erfolgt keine Ersetzung für Escape Sequenzen im Feld Notizen (z.B. "\u", "\p" usw.) außer für die "\t" Sequenz, die ersetzt wird durch das TAB Zeichen.</li>
   </ul>
   <li><b>\o<i>NNN</i></b> wird ersetzt durch den Inhalt von der n<sup>ten</sup> Zeile im Feld Notizen.</li>
   <ul>
-    <li><i>NNN</i> kann aus 1 bis 3 Ziffern bestehen (z.B., \o5 f&uuml;r die 5<sup>te</sup> Zeile, \o45 f&uuml;r die 45<sup>ste</sup>, usw.</li>
+    <li><i>NNN</i> kann aus 1 bis 3 Ziffern bestehen (z.B., \o5 für die 5<sup>te</sup> Zeile, \o45 für die 45<sup>ste</sup>, usw.</li>
     <li>Zeilenende Zeichen sind <i>nicht</i> eingeschlossen.</li>
-    <li>wenn <i>NNN</i> gr&ouml;&szlig;er ist als die Anzahl Zeilen im Feld Notizen, dann hat dies keine Auswirkung.<br>
+    <li>wenn <i>NNN</i> größer ist als die Anzahl Zeilen im Feld Notizen, dann hat dies keine Auswirkung.<br>
  </li>
   </ul>
-  <hr><small><b>Hinweis:</b> F&uuml;r Anwendungen, die ein zweites Passwort verlangen oder einen beliebigen Text als Teil des Autorisierungsprozesses ben&ouml;tigen, ist dies eine bequeme M&ouml;glichkeit <i>Autom. Eingabe</i> zu unterst&uuml;tzen.</small>
+  <hr><small><b>Hinweis:</b> Für Anwendungen, die ein zweites Passwort verlangen oder einen beliebigen Text als Teil des Autorisierungsprozesses benötigen, ist dies eine bequeme Möglichkeit <i>Autom. Eingabe</i> zu unterstützen.</small>
   <hr> <li><b>\b</b> wird ersetzt durch die Backspace-Taste.</li>
 <!-- bis hier: neu ab >3.15 -->
-  <li><b>\t</b> wird ersetzt durch die TAB Taste, um das Feld zu &uuml;berspringen.</li>
-  <li><b>\n</b> wird ersetzt durch die ENTER Taste, um die Taste zu 'Dr&uuml;cken'.</li>
-  <li><b>\\</b> wird ersetzt durch die Gegenschr&auml;gstrich (\) Taste.</li>
-  <li><b>\d<i>NNN</i></b> setzt die Verz&ouml;gerung zwischen Zeichen auf <i>NNN</i> Millisekunden, anstelle von 10 (Standard).<br>
-    <hr> <small><b>Anmerkung: </b> Man kann mehrere \d Kommandos an einander ketten. Z.B. \d999\d999\d999\d010 ergibt 3 Sekunden Verz&ouml;gerung (3.007, um exakt zu sein). Das \d Kommando setzt sowohl die Verz&ouml;gerung zwischen den Zeichen als auch die anf&auml;ngliche Verz&ouml;gerung.</small>
+  <li><b>\t</b> wird ersetzt durch die TAB Taste, um das Feld zu überspringen.</li>
+  <li><b>\n</b> wird ersetzt durch die ENTER Taste, um die Taste zu 'Drücken'.</li>
+  <li><b>\\</b> wird ersetzt durch die Gegenschrägstrich (\) Taste.</li>
+  <li><b>\d<i>NNN</i></b> setzt die Verzögerung zwischen Zeichen auf <i>NNN</i> Millisekunden, anstelle von 10 (Standard).<br>
+    <hr> <small><b>Anmerkung: </b> Man kann mehrere \d Kommandos an einander ketten. Z.B. \d999\d999\d999\d010 ergibt 3 Sekunden Verzögerung (3.007, um exakt zu sein). Das \d Kommando setzt sowohl die Verzögerung zwischen den Zeichen als auch die anfängliche Verzögerung.</small>
     <hr>
   </li>
-  <li><b>\WNNN</b> macht eine einmalige Verz&ouml;gerung an der Stelle wo es erscheint. Die Verz&ouml;gerung  betr&auml;gt <i>NNN</i> Sekunden.</li>
-  <li><b>\wNNN</b> macht eine einmalige Verz&ouml;gerung an der Stelle wo es erscheint. Die Verz&ouml;gerung  betr&auml;gt <i>NNN</i> Millisekunden.</li>
-  <li>S&auml;mtliche andere Text wird so wie er ist eingegeben.</li>
+  <li><b>\WNNN</b> macht eine einmalige Verzögerung an der Stelle wo es erscheint. Die Verzögerung  beträgt <i>NNN</i> Sekunden.</li>
+  <li><b>\wNNN</b> macht eine einmalige Verzögerung an der Stelle wo es erscheint. Die Verzögerung  beträgt <i>NNN</i> Millisekunden.</li>
+  <li><b>\z</b> ruft den alten Mechanismus für Automatische Eingabe auf. Dieser Mechanismus behandelt nicht-Latein Buchstaben eventuell nicht ganz richtig, 
+    aber bringt Automatische Eingabe an problematische WEB-Seiten zum "Spielen". Wenn Sie feststellen das Automatische Eingabe auf bestimmte WEB-seiten nicht funktioniert,
+    versuchen Sie es mit diesem Kode.</li>
+  <li>Sämtliche andere Text wird so wie er ist eingegeben.</li>
 </ul>
 <p><b>Beispiel:</b>
 Folgendes kann verwendet werden wo das Bankkonto (12345) vor dem Benutzernamen und das Passwort kommen muss:<br>
 <br>
 <b><i>12345\t\u\t\p\t\n</i></b></p>
 </div>
-<hr> <small><b>Anmerkung:</b>&nbsp;<a name="N1">Standardm&auml;&szlig;ig wird das Feld 'Automatische Eingabe' in den Men&uuml;punkten Einf&uuml;gen und Bearbeiten nicht angezeigt.
-Um auf das Feld 'Automatische Eingabe' zuzugreifen, sollten Sie das Feld "Mehr&gt;&gt;" im jeweiligen Dialogfeld anklicken.<br>
-<br>
-Wenn Sie ein Problem mit der 'Automatischen Eingabe' haben, w&auml;re es empfehlenswert Popup-Blocker von Dritthersteller abzuschalten. Einige Benutzer haben &uuml;ber Probleme berichtet wegen der gegenseitigen Beeinflussung von Popup-Blocker und der Funktion 'Automatischen Eingabe'.</a></small>
+<hr> <small><b>Anmerkung:</b> Wenn Sie ein Problem mit der 'Automatischen Eingabe' haben, wäre es empfehlenswert Popup-Blocker von Dritthersteller abzuschalten. Einige Benutzer haben über Probleme berichtet wegen der gegenseitigen Beeinflussung von Popup-Blocker und der Funktion 'Automatischen Eingabe'.</a></small>
 <hr><!-- Added some white space at the bottom for natural scrolling -->
-<a name="N1"><b><br>
+<a name="N1"><br>
 <br>
 <br>
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
