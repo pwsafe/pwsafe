@@ -242,8 +242,8 @@ public:
   void UpdateListItemPassword(const int lindex, const StringX &newPassword)
   {UpdateListItem(lindex, CItemData::PASSWORD, newPassword);}
   void SetHeaderInfo();
-  CString GetHeaderText(const int iType);
-  int GetHeaderWidth(const int iType);
+  CString GetHeaderText(int iType) const;
+  int GetHeaderWidth(int iType) const;
   void CalcHeaderWidths();
   void UnFindItem();
   void SetLocalStrings();
