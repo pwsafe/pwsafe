@@ -2257,47 +2257,6 @@ bool DboxMain::DecrementAndTestIdleLockCounter()
   return retval;
 }
 
-LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
-{
-  // Windows XP and later only
-  // Handle Lock/Unlock, Fast User Switching and Remote access.
-  // Won't be called if the registration failed (i.e. < Windows XP
-  // or the "Windows Terminal Server" service wasn't active at startup).
-  TRACE(L"OnSessionChange. wParam = %d\n", wParam);
-  switch (wParam) {
-    case WTS_CONSOLE_DISCONNECT:
-    case WTS_REMOTE_DISCONNECT:
-    case WTS_SESSION_LOCK:
-      m_bWSLocked = true;
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockOnWindowLock) &&
-          LockDataBase()) {
-        bool useSysTray = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
-        ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
-      }
-      break;
-    case WTS_CONSOLE_CONNECT:
-    case WTS_REMOTE_CONNECT:
-    case WTS_SESSION_UNLOCK:
-    case WTS_SESSION_LOGON:
-      m_bWSLocked = false;
-      break;
-    case WTS_SESSION_LOGOFF:
-      // This does NOT get called as OnQueryEndSession/OnEndSession
-      // handle this event - but just in case!
-#ifdef _DEBUG
-      WriteLog(L"In OnSessionChange - WTS_SESSION_LOGOFF");
-#endif
-      SavePreferencesOnExit();
-      SaveDatabaseOnExit(WTSLOGOFFEXIT);
-      CleanUpAndExit(false);
-      break;
-    case WTS_SESSION_REMOTE_CONTROL:
-    default:
-      break;
-  }
-  return 0L;
-}
-
 LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   static DWORD last_t = 0;

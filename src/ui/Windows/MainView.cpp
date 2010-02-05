@@ -1817,6 +1817,54 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
   }
 }
 
+LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
+{
+  // Windows XP and later only
+  // Handle Lock/Unlock, Fast User Switching and Remote access.
+  // Won't be called if the registration failed (i.e. < Windows XP
+  // or the "Windows Terminal Server" service wasn't active at startup).
+  TRACE(L"OnSessionChange. wParam = %d\n", wParam);
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  switch (wParam) {
+    case WTS_CONSOLE_DISCONNECT:
+    case WTS_REMOTE_DISCONNECT:
+    case WTS_SESSION_LOCK:
+      m_bWSLocked = true;
+      if (prefs->GetPref(PWSprefs::LockOnWindowLock) &&
+          LockDataBase()) {
+        bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
+        if (!usingsystray) {
+          ShowWindow(SW_MINIMIZE);
+        } else {
+          CPWDialog::GetDialogTracker()->Apply(Hider);
+          ShowWindow(SW_HIDE);
+          app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
+        }
+      }
+      break;
+    case WTS_CONSOLE_CONNECT:
+    case WTS_REMOTE_CONNECT:
+    case WTS_SESSION_UNLOCK:
+    case WTS_SESSION_LOGON:
+      m_bWSLocked = false;
+      break;
+    case WTS_SESSION_LOGOFF:
+      // This does NOT get called as OnQueryEndSession/OnEndSession
+      // handle this event - but just in case!
+#ifdef _DEBUG
+      WriteLog(L"In OnSessionChange - WTS_SESSION_LOGOFF");
+#endif
+      SavePreferencesOnExit();
+      SaveDatabaseOnExit(WTSLOGOFFEXIT);
+      CleanUpAndExit(false);
+      break;
+    case WTS_SESSION_REMOTE_CONTROL:
+    default:
+      break;
+  }
+  return 0L;
+}
+
 bool DboxMain::LockDataBase()
 {
   /**
