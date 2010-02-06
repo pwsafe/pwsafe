@@ -2746,8 +2746,8 @@ void DboxMain::UnFindItem()
   }
 }
 
-bool DboxMain::GetDriveAndDirectory(const StringX &cs_infile, CString &cs_drive,
-                                    CString &cs_directory)
+static bool GetDriveAndDirectory(const StringX &cs_infile, CString &cs_drive,
+                                 CString &cs_directory)
 {
   std::wstring applicationpath = pws_os::getexecdir();
   std::wstring inpath = cs_infile.c_str();
@@ -2784,47 +2784,18 @@ void DboxMain::OnViewReports()
   struct _stat statbuf;
   bool bReportExists(false);
 
-  csAction.LoadString(IDS_RPTCOMPARE);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
-  if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(IDS_RPTCOMPARE, csAction);
-    bReportExists = true;
-  }
-  csAction.LoadString(IDS_RPTFIND);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
-  if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(IDS_RPTFIND, csAction);
-    bReportExists = true;
-  }
-  csAction.LoadString(IDS_RPTIMPORTTEXT);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
-  if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(IDS_RPTIMPORTTEXT, csAction);
-    bReportExists = true;
-  }
-  csAction.LoadString(IDS_RPTIMPORTXML);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
-  if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(IDS_RPTIMPORTXML, csAction);
-    bReportExists = true;
-  }
-  csAction.LoadString(IDS_RPTMERGE);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
-  if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(IDS_RPTMERGE, csAction);
-    bReportExists = true;
-  }
-  csAction.LoadString(IDS_RPTSYNCH);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
-  if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(IDS_RPTSYNCH, csAction);
-    bReportExists = true;
-  }
-  csAction.LoadString(IDS_RPTVALIDATE);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
-  if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(IDS_RPTVALIDATE, csAction);
-    bReportExists = true;
+  int Reports[] = {
+    IDS_RPTCOMPARE, IDS_RPTFIND, IDS_RPTIMPORTTEXT, IDS_RPTIMPORTXML,
+    IDS_RPTMERGE, IDS_RPTSYNCH, IDS_RPTVALIDATE,
+  };
+
+  for (int i = 0; i < sizeof(Reports)/sizeof(Reports[0]); i++) {
+    csAction.LoadString(Reports[i]);
+    cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
+    if (::_tstat(cs_filename, &statbuf) == 0) {
+      gmb.AddButton(Reports[i], csAction);
+      bReportExists = true;
+    }
   }
 
   if (!bReportExists) {
@@ -2899,8 +2870,6 @@ void DboxMain::OnViewReports(UINT nID)
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   ViewReport(cs_filename);
-
-  return;
 }
 
 void DboxMain::ViewReport(CReport &rpt)
@@ -2912,14 +2881,12 @@ void DboxMain::ViewReport(CReport &rpt)
 
 void DboxMain::ViewReport(const CString &cs_ReportFileName)
 {
-  CString cs_path, csAction;
   CString cs_drive, cs_directory;
 
   if (!GetDriveAndDirectory(LPCWSTR(cs_ReportFileName), cs_drive, cs_directory))
     return;
 
-  cs_path.Format(L"%s%s", cs_drive, cs_directory);
-
+  CString cs_path = cs_drive + cs_directory;
   wchar_t szExecName[MAX_PATH + 1];
 
   // Find out the users default editor for "txt" files
@@ -2961,8 +2928,6 @@ void DboxMain::ViewReport(const CString &cs_ReportFileName)
   CloseHandle(pi.hProcess);
   CloseHandle(pi.hThread);
   cs_CommandLine.ReleaseBuffer();
-
-  return;
 }
 
 int DboxMain::OnUpdateViewReports(const int nID)
@@ -3063,7 +3028,6 @@ void DboxMain::SetFindToolBar(bool bShow)
     m_core.ResumeOnDBNotification();
 
   m_FindToolBar.ShowFindToolBar(bShow);
-
   SetToolBarPositions();
 }
 
@@ -3076,6 +3040,8 @@ void DboxMain::SetToolBarPositions()
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
   bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
+  CDDStatic *DDs[] = { &m_DDGroup, &m_DDTitle, &m_DDUser,
+                       &m_DDPassword, &m_DDNotes, &m_DDURL, &m_DDemail, };
   if (bDragBarState) {
     // Get the image states just incase another entry selected
     // since last shown
@@ -3099,63 +3065,20 @@ void DboxMain::SetToolBarPositions()
     }
 
     const int i = GetSystemMetrics(SM_CYBORDER);
-    m_DDGroup.ShowWindow(SW_SHOW);
-    m_DDGroup.EnableWindow(TRUE);
-    m_DDGroup.GetWindowRect(&dragrect);
-    ScreenToClient(&dragrect);
-    m_DDGroup.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 
-    m_DDTitle.ShowWindow(SW_SHOW);
-    m_DDTitle.EnableWindow(TRUE);
-    m_DDTitle.GetWindowRect(&dragrect);
-    ScreenToClient(&dragrect);
-    m_DDTitle.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-
-    m_DDUser.ShowWindow(SW_SHOW);
-    m_DDUser.EnableWindow(TRUE);
-    m_DDUser.GetWindowRect(&dragrect);
-    ScreenToClient(&dragrect);
-    m_DDUser.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-
-    m_DDPassword.ShowWindow(SW_SHOW);
-    m_DDPassword.EnableWindow(TRUE);
-    m_DDPassword.GetWindowRect(&dragrect);
-    ScreenToClient(&dragrect);
-    m_DDPassword.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-
-    m_DDNotes.ShowWindow(SW_SHOW);
-    m_DDNotes.EnableWindow(TRUE);
-    m_DDNotes.GetWindowRect(&dragrect);
-    ScreenToClient(&dragrect);
-    m_DDNotes.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-
-    m_DDURL.ShowWindow(SW_SHOW);
-    m_DDURL.EnableWindow(TRUE);
-    m_DDURL.GetWindowRect(&dragrect);
-    ScreenToClient(&dragrect);
-    m_DDURL.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-
-    m_DDemail.ShowWindow(SW_SHOW);
-    m_DDemail.EnableWindow(TRUE);
-    m_DDemail.GetWindowRect(&dragrect);
-    ScreenToClient(&dragrect);
-    m_DDemail.SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+    for (int j = 0; j < sizeof(DDs)/sizeof(DDs[0]); j++) {
+      DDs[j]->ShowWindow(SW_SHOW);
+      DDs[j]->EnableWindow(TRUE);
+      DDs[j]->GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      DDs[j]->SetWindowPos(NULL, dragrect.left, rect.top + i, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+    }
     rect.top += dragrect.Height() + 2 * i;
-  } else {
-    m_DDGroup.ShowWindow(SW_HIDE);
-    m_DDGroup.EnableWindow(FALSE);
-    m_DDTitle.ShowWindow(SW_HIDE);
-    m_DDTitle.EnableWindow(FALSE);
-    m_DDUser.ShowWindow(SW_HIDE);
-    m_DDUser.EnableWindow(FALSE);
-    m_DDPassword.ShowWindow(SW_HIDE);
-    m_DDPassword.EnableWindow(FALSE);
-    m_DDNotes.ShowWindow(SW_HIDE);
-    m_DDNotes.EnableWindow(FALSE);
-    m_DDURL.ShowWindow(SW_HIDE);
-    m_DDURL.EnableWindow(FALSE);
-    m_DDemail.ShowWindow(SW_HIDE);
-    m_DDemail.EnableWindow(FALSE);
+  } else { // !bDragBarState
+    for (int j = 0; j < sizeof(DDs)/sizeof(DDs[0]); j++) {
+      DDs[j]->ShowWindow(SW_HIDE);
+      DDs[j]->EnableWindow(FALSE);
+    }
   }
   m_ctlItemList.MoveWindow(&rect, TRUE);
   m_ctlItemTree.MoveWindow(&rect, TRUE);
