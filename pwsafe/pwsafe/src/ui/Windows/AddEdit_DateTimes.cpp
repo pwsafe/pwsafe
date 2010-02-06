@@ -327,6 +327,8 @@ void CAddEdit_DateTimes::OnClearXTime()
   M_locXTime().LoadString(IDS_NEVER);
   GetDlgItem(IDC_XTIME)->SetWindowText((CString)M_locXTime());
   GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(L"");
+  if (M_tttXTime() != (time_t)0 || M_XTimeInt() != 0)
+    m_ae_psh->SetChanged(true);
   M_tttXTime() = (time_t)0;
   M_XTimeInt() = 0;
 }
@@ -363,6 +365,7 @@ void CAddEdit_DateTimes::OnSetXTime()
 
   GetDlgItem(IDC_XTIME)->SetWindowText(M_locXTime());
   GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
+  m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_DateTimes::OnDays()
