@@ -505,8 +505,6 @@ protected:
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
   void ViewReport(const CString &cs_ReportFileName);
   void ViewReport(CReport &rpt);
-  bool GetDriveAndDirectory(const StringX &cs_infile, CString &cs_directory,
-                            CString &cs_drive);
   void SetFindToolBar(bool bShow);
   void ApplyFilters();
 
