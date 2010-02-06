@@ -3383,41 +3383,22 @@ int DboxMain::GetEntryImage(const CItemData &ci)
     return CPWTreeCtrl::SHORTCUT;
   }
 
-  time_t tXTime, now, warnexptime((time_t)0);
-  time(&now);
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
-    int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
-    struct tm st;
-#if (_MSC_VER >= 1400)
-    errno_t err;
-    err = localtime_s(&st, &now);  // secure version
-    ASSERT(err == 0);
-#else
-    st = *localtime(&now);
-    ASSERT(st != NULL); // null means invalid time
-#endif
-    st.tm_mday += idays;
-    warnexptime = mktime(&st);
-
-    if (warnexptime == (time_t)-1)
-      warnexptime = (time_t)0;
-  }
-
   int nImage;
   switch (entrytype) {
-    case CItemData::ET_NORMAL:
-      nImage = CPWTreeCtrl::NORMAL;
-      break;
-    case CItemData::ET_ALIASBASE:
-      nImage = CPWTreeCtrl::ALIASBASE;
-      break;
-    case CItemData::ET_SHORTCUTBASE:
-      nImage = CPWTreeCtrl::SHORTCUTBASE;
-      break;
-    default:
-      nImage = CPWTreeCtrl::NORMAL;
+  case CItemData::ET_NORMAL:
+    nImage = CPWTreeCtrl::NORMAL;
+    break;
+  case CItemData::ET_ALIASBASE:
+    nImage = CPWTreeCtrl::ALIASBASE;
+    break;
+  case CItemData::ET_SHORTCUTBASE:
+    nImage = CPWTreeCtrl::SHORTCUTBASE;
+    break;
+  default:
+    nImage = CPWTreeCtrl::NORMAL;
   }
 
+  time_t tXTime;
   ci.GetXTime(tXTime);
   if ((long)tXTime > 0L && (long)tXTime <= 3650L) {
     time_t tCPMTime;
@@ -3428,6 +3409,25 @@ int DboxMain::GetEntryImage(const CItemData &ci)
   }
 
   if (tXTime != 0) {
+    time_t now, warnexptime((time_t)0);
+    time(&now);
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
+      int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+      struct tm st;
+#if (_MSC_VER >= 1400)
+      errno_t err;
+      err = localtime_s(&st, &now);  // secure version
+      ASSERT(err == 0);
+#else
+      st = *localtime(&now);
+      ASSERT(st != NULL); // null means invalid time
+#endif
+      st.tm_mday += idays;
+      warnexptime = mktime(&st);
+
+      if (warnexptime == (time_t)-1)
+        warnexptime = (time_t)0;
+    }
     if (tXTime <= now) {
       nImage += 2;  // Expired
     } else if (tXTime < warnexptime) {
@@ -3590,8 +3590,8 @@ HICON DboxMain::GetEntryIcon(const int nImage) const
       nID = IDI_NORMAL;
   }
   HICON hIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(nID), 
-    IMAGE_ICON, 0, 0, 
-    LR_LOADMAP3DCOLORS | LR_SHARED);
+                                   IMAGE_ICON, 0, 0, 
+                                   LR_LOADMAP3DCOLORS | LR_SHARED);
   return hIcon;
 }
 
@@ -3800,10 +3800,9 @@ void DboxMain::RemoveFromGUI(CItemData &ci, bool bUpdateGUI)
   DisplayInfo *pdi2 = (DisplayInfo *)pci2->GetDisplayInfo();
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
 
-  ASSERT(pdi2->list_index == pdi->list_index &&
-         pdi2->tree_item == pdi->tree_item);
-
   if (pdi != NULL) {
+    ASSERT(pdi2->list_index == pdi->list_index &&
+           pdi2->tree_item == pdi->tree_item);
     if (bUpdateGUI) {
       HTREEITEM hItem = m_ctlItemTree.GetNextItem(pdi->tree_item,
                              TVGN_PREVIOUSVISIBLE);
