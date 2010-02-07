@@ -111,14 +111,9 @@ void DboxMain::OnSetFilter()
                                                    m_currentfilter.num_Pactive) > 0;
 
     if (m_bFilterActive) {
-      if (bFilters)
-        m_bFilterActive = true;
-      else
-        m_bFilterActive = false;
-
+      m_bFilterActive = bFilters;
       ApplyFilters();
-    }
-    else if (bFilters) {
+    } else if (bFilters) {
       m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER, 
                                                   bFilters ? TRUE : FALSE);
     }
@@ -205,14 +200,14 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
 
   m_bFilterForStatus = false;
 
-  std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
+  vfiltergroups::const_iterator Fltgroup_citer;
   for (Fltgroup_citer = m_vMflgroups.begin();
        Fltgroup_citer != m_vMflgroups.end(); Fltgroup_citer++) {
-    const std::vector<int> &group = *Fltgroup_citer;
+    const vfiltergroup &group = *Fltgroup_citer;
 
     int tests(0);
     thisgroup_rc = false;
-    std::vector<int>::const_iterator Fltnum_citer;
+    vfiltergroup::const_iterator Fltnum_citer;
     for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {
       const int &num = *Fltnum_citer;
@@ -389,14 +384,14 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
   bPresent = pwh_max > 0 || !pwhistlist.empty();
 
   vFilterRows::const_iterator Flt_citer;
-  std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
+  vfiltergroups::const_iterator Fltgroup_citer;
   for (Fltgroup_citer = m_vHflgroups.begin();
        Fltgroup_citer != m_vHflgroups.end(); Fltgroup_citer++) {
-    const std::vector<int> &group = *Fltgroup_citer;
+    const vfiltergroup &group = *Fltgroup_citer;
 
     int tests(0);
     thisgroup_rc = false;
-    std::vector<int>::const_iterator Fltnum_citer;
+    vfiltergroup::const_iterator Fltnum_citer;
     for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {
       const int &num = *Fltnum_citer;
@@ -505,14 +500,14 @@ bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
   bPresent = pwp.flags != 0;
 
   vFilterRows::const_iterator Flt_citer;
-  std::vector<std::vector<int> >::const_iterator Fltgroup_citer;
+  vfiltergroups::const_iterator Fltgroup_citer;
   for (Fltgroup_citer = m_vPflgroups.begin();
        Fltgroup_citer != m_vPflgroups.end(); Fltgroup_citer++) {
-    const std::vector<int> &group = *Fltgroup_citer;
+    const vfiltergroup &group = *Fltgroup_citer;
 
     int tests(0);
     thisgroup_rc = false;
-    std::vector<int>::const_iterator Fltnum_citer;
+    vfiltergroup::const_iterator Fltnum_citer;
     for (Fltnum_citer = group.begin();
          Fltnum_citer != group.end(); Fltnum_citer++) {
       const int &num = *Fltnum_citer;
@@ -794,7 +789,7 @@ void DboxMain::ImportFilters()
   }
 }
 
-bool group_pred (const std::vector<int>& v1, const std::vector<int>& v2)
+bool group_pred (const vfiltergroup& v1, const vfiltergroup& v2)
 {
   return v1.size() < v2.size();
 }
@@ -826,22 +821,20 @@ void DboxMain::CreateGroups()
         for (int j = 0; j < m_currentfilter.num_Hactive - 1; j++) {
           group.push_back(-1);
          }
-      }
-
-      if (st_fldata.ftype == FT_POLICY) {
+      } else if (st_fldata.ftype == FT_POLICY) {
         // Add a number of 'dummy' entries to increase the length of this group
         // Reduce by one as we have already included main FT_POLICY entry
         for (int j = 0; j < m_currentfilter.num_Pactive - 1; j++) {
           group.push_back(-1);
         }
       }
-    }
+    } // st_fldata.bFilterActive
     i++;
-  }
-  if (group.size() > 0)
+  } // iterate over m_currentfilter.vMfldata
+  if (!group.empty())
     groups.push_back(group);
 
-  if (groups.size() > 0) {
+  if (!groups.empty()) {
     // Sort them so the smallest group is first
     std::sort(groups.begin(), groups.end(), group_pred);
 
@@ -868,10 +861,10 @@ void DboxMain::CreateGroups()
     }
     i++;
   }
-  if (group.size() > 0)
+  if (!group.empty())
     groups.push_back(group);
 
-  if (groups.size() > 0) {
+  if (!groups.empty()) {
     // Sort them so the smallest group is first
     std::sort(groups.begin(), groups.end(), group_pred);
 
@@ -898,10 +891,10 @@ void DboxMain::CreateGroups()
     }
     i++;
   }
-  if (group.size() > 0)
+  if (!group.empty())
     groups.push_back(group);
 
-  if (groups.size() > 0) {
+  if (!groups.empty()) {
     // Sort them so the smallest group is first
     std::sort(groups.begin(), groups.end(), group_pred);
 
