@@ -1435,8 +1435,10 @@ void DboxMain::OnImportText()
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.WriteLine();
 
+    Command *pcmd = NULL;
     rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, fieldSeparator,
-      delimiter, bImportPSWDsOnly, strError, numImported, numSkipped, rpt);
+                                    delimiter, bImportPSWDsOnly, strError, numImported,
+                                    numSkipped, rpt, pcmd);
 
     cs_title.LoadString(IDS_FILEREADERROR);
     switch (rc) {
@@ -1450,8 +1452,11 @@ void DboxMain::OnImportText()
         cs_title.LoadString(IDS_TEXTIMPORTFAILED);
         break;
       case PWScore::SUCCESS:
+        // deliberate fallthru
       default:
       {
+        if (pcmd != NULL)
+          Execute(pcmd);
         rpt.WriteLine();
         CString cs_type, temp1, temp2 = L"";
         cs_type.LoadString(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES);
@@ -1516,8 +1521,9 @@ void DboxMain::OnImportKeePass()
   if (rc == IDOK) {
     CGeneralMsgBox gmb;
     bool bWasEmpty = m_core.GetNumEntries() == 0;
+    Command *pcmd = NULL;
     StringX KPsFileName = fd.GetPathName();
-    rc = m_core.ImportKeePassTextFile(KPsFileName);
+    rc = m_core.ImportKeePassTextFile(KPsFileName, pcmd);
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
       {
@@ -1534,7 +1540,9 @@ void DboxMain::OnImportKeePass()
         break;
       }
       case PWScore::SUCCESS:
-      default:
+      default: // deliberate fallthru
+        if (pcmd != NULL)
+          Execute(pcmd);
         RefreshViews();
         ChangeOkUpdate();
         // May need to update menu/toolbar if original database was empty
@@ -1612,12 +1620,13 @@ void DboxMain::OnImportXML()
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.WriteLine();
     std::vector<StringX> vgroups;
+    Command *pcmd = NULL;
 
     rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
                               XSDFilename.c_str(), bImportPSWDsOnly,
                               strErrors, numValidated, numImported,
                               bBadUnknownFileFields, bBadUnknownRecordFields,
-                              rpt);
+                              rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
     cs_title.LoadString(IDS_XMLIMPORTFAILED);
@@ -1630,6 +1639,8 @@ void DboxMain::OnImportXML()
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
       case PWScore::SUCCESS:
+        if (pcmd != NULL)
+          Execute(pcmd);
         if (!strErrors.empty() ||
             bBadUnknownFileFields || bBadUnknownRecordFields) {
           if (!strErrors.empty())
