@@ -697,7 +697,7 @@ int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            const stringT &, const bool &,
                            stringT &, int &, int &,
                            bool &, bool &, 
-                           CReport &)
+                           CReport &, Command *&)
 {
   return UNIMPLEMENTED;
 }
@@ -706,10 +706,11 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            const stringT &strXSDFileName, const bool &bImportPSWDsOnly,
                            stringT &strErrors, int &numValidated, int &numImported,
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
-                           CReport &rpt)
+                           CReport &rpt, Command *&pcommand)
 {
   UUIDList possible_aliases, possible_shortcuts;
   MultiCommands *pmulticmds = MultiCommands::Create(this);
+  pcommand = pmulticmds;
 
 #if   USE_XML_LIBRARY == EXPAT
   EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
@@ -744,7 +745,8 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                         nITER, nRecordsWithUnknownFields, uhfl);
   strErrors = iXML.getResultText();
   if (!status) {
-    delete pmulticmds;
+    delete pcommand;
+    pcommand = NULL;
     return XML_FAILED_IMPORT;
   }
 
@@ -774,14 +776,9 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
   pmulticmds->Add(pcmdS);
-  Execute(pmulticmds);
-
-  possible_aliases.clear();
-  possible_shortcuts.clear();
 
   if (numImported > 0)
     SetDBChanged(true);
-
   return SUCCESS;
 }
 #endif
@@ -802,7 +799,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  const bool &bImportPSWDsOnly,
                                  stringT &strError,
                                  int &numImported, int &numSkipped,
-                                 CReport &rpt)
+                                 CReport &rpt, Command *&pcommand)
 {
   stringT csError;
 #ifdef UNICODE
@@ -813,6 +810,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 #else
   const char *fname = filename.c_str();
 #endif
+  pcommand = NULL;
   // following's a stream of chars, as the header row's straight ASCII, and
   // we need to handle rest as utf-8
   ifstream ifs(reinterpret_cast<const char *>(fname));
@@ -940,6 +938,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   UUIDList possible_aliases, possible_shortcuts;
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
+  pcommand = pmulticmds;
   Command *pcmd1 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_UNDO,
                                             UpdateGUICommand::GUI_UNDO_IMPORT);
   pmulticmds->Add(pcmd1);
@@ -1275,10 +1274,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
   pmulticmds->Add(pcmd2);
-  Execute(pmulticmds);
-
-  possible_aliases.clear();
-  possible_shortcuts.clear();
 
   if (numImported > 0)
     SetDBChanged(true);
@@ -1302,7 +1297,7 @@ that is imports.  Both are pretty easy things to live with.
 */
 
 int
-PWScore::ImportKeePassTextFile(const StringX &filename)
+PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
 {
   static const TCHAR *ImportedPrefix = { _T("ImportedKeePass") };
 #ifdef UNICODE
@@ -1313,11 +1308,11 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
 #else
   const char *fname = filename.c_str();
 #endif
+  pcommand = NULL;
   ifstreamT ifs(reinterpret_cast<const char *>(fname));
 
-  if (!ifs) {
+  if (!ifs)
     return CANT_OPEN_FILE;
-  }
 
   stringT linebuf;
   stringT group, title, user, passwd, notes;
@@ -1328,6 +1323,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
   }
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
+  pcommand = pmulticmds;
 
   // the first line of the keepass text file contains a few garbage characters
   linebuf = linebuf.erase(0, linebuf.find(_T("[")));
@@ -1420,8 +1416,6 @@ PWScore::ImportKeePassTextFile(const StringX &filename)
     pmulticmds->Add(pcmd);
   }
   ifs.close();
-
-  Execute(pmulticmds);
 
   // TODO: maybe return an error if the full end of the file was not reached?
 

@@ -1277,10 +1277,13 @@ void DboxMain::SaveGUIStatus()
 
 void DboxMain::RestoreGUIStatus()
 {
-  ItemListIter iter;
-  DisplayInfo *pdi;
+  ASSERT(!m_stkSaveGUIInfo.empty());
+  if (m_stkSaveGUIInfo.empty())
+    return; // better safe than sorry...
   st_SaveGUIInfo &SaveGUIInfo = m_stkSaveGUIInfo.top();
 
+  ItemListIter iter;
+  DisplayInfo *pdi;
   if (SaveGUIInfo.blSelectedValid) {
     iter = Find(SaveGUIInfo.lSelected);
     pdi = (DisplayInfo *)iter->second.GetDisplayInfo();

@@ -150,13 +150,14 @@ public:
                    const bool &bFilterActive = false);
 
   // Import databases
+  // If returned status is SUCCESS, then returned Command * can be executed.
   int ImportPlaintextFile(const StringX &ImportedPrefix,
                           const StringX &filename,
                           const TCHAR &fieldSeparator, const TCHAR &delimiter,
                           const bool &bImportPSWDsOnly,
                           stringT &strErrors,
                           int &numImported, int &numSkipped,
-                          CReport &rpt);
+                          CReport &rpt, Command *&pcommand);
   int ImportXMLFile(const stringT &ImportedPrefix,
                     const stringT &strXMLFileName,
                     const stringT &strXSDFileName,
@@ -164,8 +165,8 @@ public:
                     stringT &strErrors, int &numValidated, int &numImported,
                     bool &bBadUnknownFileFields,
                     bool &bBadUnknownRecordFields,
-                    CReport &rpt);
-  int ImportKeePassTextFile(const StringX &filename);
+                    CReport &rpt, Command *&pcommand);
+  int ImportKeePassTextFile(const StringX &filename, Command *&pcommand);
 
   // Locking files open in R/W mode
   bool LockFile(const stringT &filename, stringT &locker);
