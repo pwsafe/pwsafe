@@ -1360,7 +1360,8 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
           if (m_pDbx->Find(cs_group, cs_title, cs_user) != m_pDbx->End()) {
             cs_title = m_pDbx->GetUniqueTitle(cs_group, cs_title, cs_user, IDS_DRAGNUMBER);
           }
-          m_pDbx->CreateShortcutEntry(pci, cs_group, cs_title, cs_user);
+          StringX sxNewDBPrefsString(L"");
+          m_pDbx->CreateShortcutEntry(pci, cs_group, cs_title, cs_user, sxNewDBPrefsString);
           retval = TRUE;
           SelectItem(NULL);  // Deselect
           goto exit;
