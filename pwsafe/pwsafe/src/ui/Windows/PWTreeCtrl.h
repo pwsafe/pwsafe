@@ -49,7 +49,7 @@ public:
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path, bool &bAlreadyExists);
   void SortTree(const HTREEITEM htreeitem);
-  bool IsLeaf(HTREEITEM hItem);
+  bool IsLeaf(HTREEITEM hItem) const;
   CSecString MakeTreeDisplayString(const CItemData &ci) const;
   void SetRestoreMode(bool flag) {m_isRestoring = flag;}
   void OnCollapseAll();
@@ -129,7 +129,8 @@ private:
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool MoveItem(MultiCommands *pmulticmds, HTREEITEM hitem, HTREEITEM hNewParent);
   bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CSecString &prefix);
-  bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
+  bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const;
+  bool ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const; 
   void UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix);
   void CollapseBranch(HTREEITEM hItem);
   CSecString GetPrefix(HTREEITEM hItem) const;
