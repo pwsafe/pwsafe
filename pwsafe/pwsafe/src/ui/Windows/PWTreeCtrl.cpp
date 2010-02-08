@@ -674,7 +674,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   // Now do the rename
   ptvinfo->item.mask = TVIF_TEXT;
   SetItem(&ptvinfo->item);
-  StringX sxNewText = ptvinfo->item.pszText;
+  const StringX sxNewText = ptvinfo->item.pszText;
 
   // Set up what we need
   StringX sxNewTitle, sxNewUser, sxNewPassword;  // For Leaf
@@ -689,8 +689,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   bool bIsLeaf = IsLeaf(ptvinfo->item.hItem);
   CItemData *pci(NULL);
 
-  if (bIsLeaf) {
-    // Leaf
+  if (bIsLeaf) { // Leaf
     pci = (CItemData *)GetItemData(ti);
     ASSERT(pci != NULL);
 
@@ -772,12 +771,25 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
         m_pDbx->UpdateListItemPassword(lindex, sxNewPassword);
       }
     }
-  } else {
-    // Node
+  } else { // Node
+    /* TO DO - Deal with username in display when group renamed! */
 
-    /*
-        TO DO - Deal with username in display when group renamed!
-    */
+    // Check that pathname with node name doesn't already exist.
+    // (We could do fancy merging if so, but for now we'll reject the rename)
+    // Check is simple - just see if there's a sibling NODE name sxNewText
+
+    HTREEITEM parent = GetParentItem(ti);
+    HTREEITEM sibling = GetChildItem(parent);
+    do {
+      if (sibling != ti && !IsLeaf(sibling)) {
+        const CString siblingText = GetItemText(sibling);
+        if (siblingText == sxNewText.c_str())
+          goto bad_exit;
+      }
+      sibling = GetNextSiblingItem(sibling);
+    } while (sibling != NULL);
+    // If we made it here, then name's unique.
+
 
     // PR2407325: If the user edits a group name so that it has
     // a GROUP_SEP, all hell breaks loose.
@@ -1005,8 +1017,14 @@ static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM &node,
   while (ti != NULL) {
     const CSecString itemText = Tree.GetItemText(ti);
     if (itemText == s) {
-      si = ti;
-      return true;
+      // A non-node doesn't count
+      int i, dummy;
+      BOOL status = Tree.GetItemImage(ti, i, dummy);
+      ASSERT(status);
+      if (i == CPWTreeCtrl::NODE) {
+        si = ti;
+        return true;
+      }
     }
     ti = Tree.GetNextItem(ti, TVGN_NEXT);
   }
