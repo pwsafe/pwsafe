@@ -939,7 +939,7 @@ bad_exit:
   *pLResult = FALSE;
 }
 
-bool CPWTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent)
+bool CPWTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const
 {
   do {
     if (hitemChild == hitemSuspectedParent)
@@ -949,7 +949,7 @@ bool CPWTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedPa
   return (hitemChild != NULL);
 }
 
-bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem)
+bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
 {
   // ItemHasChildren() won't work in the general case
   int i, dummy;
@@ -1008,25 +1008,19 @@ static CSecString GetPathElem(CSecString &path)
   return retval;
 }
 
-static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM &node,
-                         const CSecString &s, HTREEITEM &si)
+bool CPWTreeCtrl::ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const
 {
   // returns true iff s is a direct descendant of node
-  HTREEITEM ti = Tree.GetChildItem(node);
+  HTREEITEM ti = GetChildItem(node);
 
   while (ti != NULL) {
-    const CSecString itemText = Tree.GetItemText(ti);
-    if (itemText == s) {
-      // A non-node doesn't count
-      int i, dummy;
-      BOOL status = Tree.GetItemImage(ti, i, dummy);
-      ASSERT(status);
-      if (i == CPWTreeCtrl::NODE) {
+    const CSecString itemText = GetItemText(ti);
+    if (itemText == s)
+      if (!IsLeaf(ti)) { // A non-node doesn't count
         si = ti;
         return true;
       }
-    }
-    ti = Tree.GetNextItem(ti, TVGN_NEXT);
+    ti = GetNextItem(ti, TVGN_NEXT);
   }
   return false;
 }
@@ -1048,7 +1042,7 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
       else
         path2root += sxDot + StringX(s);
 
-      if (!ExistsInTree(*this, ti, s, si)) {
+      if (!ExistsInTree(ti, s, si)) {
         ti = InsertItem(s, ti, TVI_SORT);
         SetItemImage(ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
         bAlreadyExists = false;
