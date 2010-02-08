@@ -296,7 +296,8 @@ public:
   void RefreshImages();
   bool FieldsNotEqual(StringX a, StringX b);
   void CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
-                           const StringX &cs_title, const StringX &cs_user);
+                           const StringX &cs_title, const StringX &cs_user,
+                           StringX &sxNewDBPrefsString);
   bool SetNotesWindow(const CPoint point, const bool bVisible = true);
   bool IsFilterActive() {return m_bFilterActive;}
   int GetNumPassedFiltering() {return m_bNumPassedFiltering;}

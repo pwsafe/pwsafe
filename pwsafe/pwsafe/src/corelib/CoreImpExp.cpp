@@ -754,6 +754,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   bBadUnknownFileFields = iXML.getIfDatabaseHeaderErrors();
   bBadUnknownRecordFields = iXML.getIfRecordHeaderErrors();
   m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
+
   // Only add header unknown fields or change number of iterations
   // if the database was empty to start with
   if (bEmptyDB) {
@@ -779,6 +780,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 
   if (numImported > 0)
     SetDBChanged(true);
+
   return SUCCESS;
 }
 #endif

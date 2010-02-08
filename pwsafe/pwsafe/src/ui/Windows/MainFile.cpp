@@ -88,7 +88,7 @@ BOOL DboxMain::OpenOnInit()
   bool bReadOnly = m_core.IsReadOnly();  // Can only be from -r command line parameter
   if (!bReadOnly) {
     // Command line not set - use config for first open
-    bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO) == TRUE;
+    bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   }
 
   int rc = GetAndCheckPassword(m_core.GetCurFile(),
@@ -507,7 +507,7 @@ void DboxMain::OnOpenMRU(UINT nID)
   m_core.SetReadOnly(false);
   // Read-only status can be overriden by GetAndCheckPassword
   int rc = Open(LPCWSTR(mruItem), 
-                PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO) == TRUE);
+                PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO));
   if (rc == PWScore::SUCCESS) {
     UpdateSystemTray(UNLOCKED);
     m_RUEList.ClearEntries();

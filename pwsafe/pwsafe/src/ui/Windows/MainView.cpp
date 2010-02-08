@@ -150,7 +150,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       // Currently - only Idle Timeout values
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       ResetIdleLockCounter();
-      if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout) == TRUE) {
+      if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
       break;
@@ -3308,17 +3308,17 @@ int DboxMain::GetEntryImage(const CItemData &ci)
 
   int nImage;
   switch (entrytype) {
-  case CItemData::ET_NORMAL:
-    nImage = CPWTreeCtrl::NORMAL;
-    break;
-  case CItemData::ET_ALIASBASE:
-    nImage = CPWTreeCtrl::ALIASBASE;
-    break;
-  case CItemData::ET_SHORTCUTBASE:
-    nImage = CPWTreeCtrl::SHORTCUTBASE;
-    break;
-  default:
-    nImage = CPWTreeCtrl::NORMAL;
+    case CItemData::ET_NORMAL:
+      nImage = CPWTreeCtrl::NORMAL;
+      break;
+    case CItemData::ET_ALIASBASE:
+      nImage = CPWTreeCtrl::ALIASBASE;
+      break;
+    case CItemData::ET_SHORTCUTBASE:
+      nImage = CPWTreeCtrl::SHORTCUTBASE;
+      break;
+    default:
+      nImage = CPWTreeCtrl::NORMAL;
   }
 
   time_t tXTime;

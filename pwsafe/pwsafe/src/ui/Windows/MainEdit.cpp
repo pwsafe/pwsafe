@@ -52,7 +52,7 @@ void DboxMain::OnAdd()
   CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, NULL, &ci, L""); 
 
   PWSprefs *prefs = PWSprefs::GetInstance();
-  if (prefs->GetPref(PWSprefs::UseDefaultUser) == TRUE) {
+  if (prefs->GetPref(PWSprefs::UseDefaultUser)) {
     add_entry_psh.SetUsername(prefs->GetPref(PWSprefs::DefaultUsername).c_str());
   }
 
@@ -91,7 +91,7 @@ void DboxMain::OnAdd()
     const StringX sxOldDBPrefsString(prefs->Store());
 
     //Check if they wish to set a default username
-    if (prefs->GetPref(PWSprefs::UseDefaultUser) == FALSE &&
+    if (!prefs->GetPref(PWSprefs::UseDefaultUser) &&
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!sxUsername.IsEmpty())) {
       CQuerySetDef defDlg(this);
@@ -108,7 +108,7 @@ void DboxMain::OnAdd()
     // title the same as a group in this group as they look the same.
     StringX sxGTUs;  // Not used in a single call
 
-    if (prefs->GetPref(PWSprefs::ShowUsernameInTree) == FALSE &&
+    if (!prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
         m_core.CheckTitleSameAsGroup(&ci, sxGTUs) > 0) {
       CGeneralMsgBox gmb;
       CString cs_title, cs_msg;
@@ -193,6 +193,7 @@ void DboxMain::OnCreateShortcut()
   if (m_core.IsReadOnly() || SelItemOk() != TRUE)
     return;
 
+  StringX sxNewDBPrefsString;
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
@@ -200,7 +201,7 @@ void DboxMain::OnCreateShortcut()
     pci->GetTitle(), pci->GetUser());
 
   PWSprefs *prefs = PWSprefs::GetInstance();
-  if (prefs->GetPref(PWSprefs::UseDefaultUser) == TRUE) {
+  if (prefs->GetPref(PWSprefs::UseDefaultUser)) {
     dlg_createshortcut.m_username = prefs->GetPref(PWSprefs::DefaultUsername).c_str();
   }
 
@@ -208,7 +209,7 @@ void DboxMain::OnCreateShortcut()
 
   if (rc == IDOK) {
     //Check if they wish to set a default username
-    if (prefs->GetPref(PWSprefs::UseDefaultUser) == FALSE &&
+    if (!prefs->GetPref(PWSprefs::UseDefaultUser) &&
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
         (!dlg_createshortcut.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
@@ -218,30 +219,29 @@ void DboxMain::OnCreateShortcut()
         // Initialise a copy of the DB preferences
         prefs->SetUpCopyDBprefs();
         // Update Copy with new values
-        prefs->SetPref(PWSprefs::UseDefaultUser, true);
+        prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
         prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username, true);
         // Get old DB preferences String value (from current preferences) & 
         // new DB preferences String value (from Copy)
         const StringX sxOldDBPrefsString(prefs->Store());
-        StringX sxNewDBPrefsString(prefs->Store(true));
-        if (sxOldDBPrefsString != sxNewDBPrefsString) {
-          // Need to integrate the following Command into others in this routine
-          // Left for Rony !!! :-)
-          // Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefs);
+        sxNewDBPrefsString = prefs->Store(true);
+        if (sxOldDBPrefsString == sxNewDBPrefsString) {
+          sxNewDBPrefsString.clear();
         }
       }
     }
     if (dlg_createshortcut.m_username.IsEmpty() && 
-        prefs->GetPref(PWSprefs::UseDefaultUser) == TRUE)
+        prefs->GetPref(PWSprefs::UseDefaultUser))
       dlg_createshortcut.m_username = prefs->GetPref(PWSprefs::DefaultUsername).c_str();
 
     CreateShortcutEntry(pci, dlg_createshortcut.m_group, 
                         dlg_createshortcut.m_title, 
-                        dlg_createshortcut.m_username);
+                        dlg_createshortcut.m_username, sxNewDBPrefsString);
   }
 }
 void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
-                                   const StringX &cs_title, const StringX &cs_user)
+                                   const StringX &cs_title, const StringX &cs_user,
+                                   StringX &sxNewDBPrefsString)
 {
   uuid_array_t base_uuid, shortcut_uuid;
 
@@ -263,7 +263,27 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
   ci_temp.SetXTime((time_t)0);
   ci_temp.SetStatus(CItemData::ES_ADDED);
 
-  Execute(AddEntryCommand::Create(&m_core, ci_temp, base_uuid));
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+  if (!sxNewDBPrefsString.empty()) {
+    Command *pcmd1 = UpdateGUICommand::Create(&m_core,
+                                              UpdateGUICommand::WN_UNDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
+    pmulticmds->Add(pcmd1);
+
+    Command *pcmd2 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+    pmulticmds->Add(pcmd2);
+  }
+
+  Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp, base_uuid);
+  pmulticmds->Add(pcmd);
+
+  if (!sxNewDBPrefsString.empty()) {
+   Command *pcmd3 = UpdateGUICommand::Create(&m_core,
+                                              UpdateGUICommand::WN_EXECUTE_REDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
+    pmulticmds->Add(pcmd3);
+  }
+  Execute(pmulticmds);
 
   // Update base item's graphic
   ItemListIter iter = m_core.Find(base_uuid);
@@ -586,7 +606,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   const StringX sxOldDBPrefsString(prefs->Store());
   StringX sxGTUs;  // Not used in a single call
 
-  if (prefs->GetPref(PWSprefs::ShowUsernameInTree) == FALSE &&
+  if (!prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
      (pci_original->GetGroup() != pci_new->GetGroup() ||
       pci_original->GetTitle() != pci_new->GetTitle()) &&
       m_core.CheckTitleSameAsGroup(pci_new, sxGTUs) > 0) {
@@ -1213,7 +1233,7 @@ void DboxMain::AutoType(const CItemData &ci)
   // NOTE: If "Lock on Minimize" is set and "MinimizeOnAutotype" then
   //       the window will be locked once minimized.
   bool bMinOnAuto = PWSprefs::GetInstance()->
-                    GetPref(PWSprefs::MinimizeOnAutotype) == TRUE;
+                    GetPref(PWSprefs::MinimizeOnAutotype);
 
   if (bMinOnAuto)
     ShowWindow(SW_MINIMIZE);

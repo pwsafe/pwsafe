@@ -1052,7 +1052,7 @@ BOOL DboxMain::OnInitDialog()
   }
 
   SetInitialDatabaseDisplay();
-  if (m_bOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen) == TRUE)
+  if (m_bOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen))
     SetFindToolBar(true);
   else
     OnHideFindToolBar();
@@ -3219,7 +3219,7 @@ void DboxMain::UpdateSystemMenu()
     return;
 #if 0
   CMenu *pSysMenu = GetSystemMenu(FALSE);
-  BYTE flag = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray) == TRUE ? 1 : 0;
+  BYTE flag = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray) ? 1 : 0;
   flag |= m_bOpen ? 2 : 0;
 
   CString cs_text;
@@ -3234,7 +3234,7 @@ void DboxMain::UpdateSystemMenu()
       cs_text.LoadString(IDS_CLOSE_EXIT);
       break;
     case 3: // Open   +    System Tray : Minimize to System Tray & maybe lock
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear) == TRUE)
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear))
         cs_text.LoadString(IDS_MIN2STLOCK);
       else
         cs_text.LoadString(IDS_MIN2ST);

@@ -39,6 +39,8 @@ class CStaticExtn : public CStatic
   // Construction
 public:
   CStaticExtn();
+  virtual ~CStaticExtn();
+
   void SetColour(COLORREF cfUser)
   {m_bUserColour = true; m_cfUser = cfUser;}
   void ResetColour()
@@ -58,26 +60,6 @@ public:
   inline COLORREF GetHighlightColour() {return m_cfHighlightColour;}
   inline COLORREF GetUserColour() {return m_cfUser;}
 
-  // Attributes
-private:
-  int m_iFlashing;
-  COLORREF m_cfUser, m_cfOldColour, m_cfFlashColour, m_cfHighlightColour, m_cfBkUser;
-  bool m_bUserColour, m_bMouseInWindow, m_bHighlight, m_bUserBkColour;
-  CBrush m_brBkUser;
-
-  // Operations
-public:
-
-  // Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CStaticExtn)
-  //}}AFX_VIRTUAL
-
-  // Implementation
-public:
-  virtual ~CStaticExtn();
-
-  // Generated message map functions
 protected:
   //{{AFX_MSG(CStaticExtn)
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
@@ -86,6 +68,12 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  int m_iFlashing;
+  COLORREF m_cfUser, m_cfOldColour, m_cfFlashColour, m_cfHighlightColour, m_cfBkUser;
+  bool m_bUserColour, m_bMouseInWindow, m_bHighlight, m_bUserBkColour;
+  CBrush m_brBkUser;
 };
 
 struct st_context_menu {
@@ -101,8 +89,20 @@ public:
   CEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
   CEditExtn(std::vector<st_context_menu> vmenu_items, 
             COLORREF focusColor = (RGB(222, 255, 222))); //light green
+  virtual ~CEditExtn();
+
   void ChangeColour() {m_bIsFocused = TRUE;}
   void UpdateState(const int message_number, const BOOL new_state);
+
+protected:
+  //{{AFX_MSG(CEditExtn)
+  afx_msg void OnSetFocus(CWnd* pOldWnd);
+  afx_msg void OnKillFocus(CWnd* pNewWnd);
+  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
   // Attributes
 private:
@@ -114,30 +114,6 @@ private:
 
   int m_lastposition, m_nStartChar, m_nEndChar;
   std::vector<st_context_menu> m_vmenu_items;
-
-  // Operations
-public:
-
-  // Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CEditExtn)
-  //}}AFX_VIRTUAL
-
-  // Implementation
-public:
-  virtual ~CEditExtn();
-
-  // Generated message map functions
-protected:
-  //{{AFX_MSG(CEditExtn)
-  afx_msg void OnSetFocus(CWnd* pOldWnd);
-  afx_msg void OnKillFocus(CWnd* pNewWnd);
-  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-  afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-  //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
-
 };
 
 // Following is meant for sensitive information that you really don't
@@ -148,7 +124,7 @@ protected:
 
 class CSecEditExtn : public CEditExtn
 {
- public:
+public:
   CSecEditExtn();
   CSecEditExtn(std::vector<st_context_menu> vmenu_items);
   virtual ~CSecEditExtn();
@@ -161,13 +137,13 @@ class CSecEditExtn : public CEditExtn
   CSecString GetSecureText() const;
   void SetSecureText(const CSecString &str);
 
- protected:
+protected:
   //{{AFX_MSG(CSecEditExtn)
   afx_msg void OnUpdate();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP();
 
- private:
+private:
   void OnSecureUpdate();
   struct Impl;
   Impl *m_pImpl;
@@ -182,9 +158,24 @@ class CListBoxExtn : public CListBox
   // Construction
 public:
   CListBoxExtn();
+  virtual ~CListBoxExtn();
+
   void ChangeColour() {m_bIsFocused = TRUE;}
   void ActivateToolTips();
   void SetCombo(CComboBoxExtn *pCombo) {m_pCombo = pCombo;}
+
+  // Generated message map functions
+protected:
+  //{{AFX_MSG(CListBoxExtn)
+  afx_msg void OnSetFocus(CWnd* pOldWnd);
+  afx_msg void OnKillFocus(CWnd* pNewWnd);
+  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+  afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
 
   // Attributes
 private:
@@ -201,30 +192,6 @@ private:
   CPoint m_HoverLBPoint;
   int m_HoverLBnItem;
   bool m_bUseToolTips, m_bMouseInWindow;
-
-  // Operations
-public:
-
-  // Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CListBoxExtn)
-  //}}AFX_VIRTUAL
-
-  // Implementation
-public:
-  virtual ~CListBoxExtn();
-
-  // Generated message map functions
-protected:
-  //{{AFX_MSG(CListBoxExtn)
-  afx_msg void OnSetFocus(CWnd* pOldWnd);
-  afx_msg void OnKillFocus(CWnd* pNewWnd);
-  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-  afx_msg void OnTimer(UINT_PTR nIDEvent);
-  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-  afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
-  //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
 };
 
 class CComboBoxExtn : public CComboBox
@@ -232,35 +199,25 @@ class CComboBoxExtn : public CComboBox
   // Construction
 public:
   CComboBoxExtn();
+  virtual ~CComboBoxExtn();
+
   void SetToolTipStrings(std::vector<CSecString> vtooltips);
   CSecString GetToolTip(int nItem)
   {return m_vtooltips[nItem];}
 
-private:
-  bool m_bUseToolTips;
-  std::vector<CSecString> m_vtooltips;
-
-public:
   CEditExtn m_edit;
   CListBoxExtn m_listbox;
-
-  // Operations
-public:
   void ChangeColour();
-
-  // Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CComboBoxExtn)
-  //}}AFX_VIRTUAL
-
-  // Implementation
-public:
-  virtual ~CComboBoxExtn();
 
 protected:
   //{{AFX_MSG(CComboBoxExtn)
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
   afx_msg void OnDestroy();
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
+
+private:
+  bool m_bUseToolTips;
+  std::vector<CSecString> m_vtooltips;
 };
