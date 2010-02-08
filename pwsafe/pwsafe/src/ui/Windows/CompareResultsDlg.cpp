@@ -86,78 +86,41 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_LCResults.SetExtendedStyle(dwExtendedStyle);
 
   CString cs_header;
-  cs_header.LoadString(IDS_ORIGINALDB);
-  m_LCResults.InsertColumn(CURRENT, cs_header);
-  cs_header.LoadString(IDS_COMPARISONDB);
-  m_LCResults.InsertColumn(COMPARE, cs_header);
+  int i;
+  const struct {
+    UINT ids; int ncol;
+  } FixedCols[] = {{IDS_ORIGINALDB, CURRENT}, {IDS_COMPARISONDB, COMPARE},
+                   {IDS_GROUP, GROUP}, {IDS_TITLE, TITLE}, {IDS_USERNAME, USER},
+  };
+  for (i = 0; i < sizeof(FixedCols)/sizeof(FixedCols[0]); i++) {
+    cs_header.LoadString(FixedCols[i].ids);
+    m_LCResults.InsertColumn(FixedCols[i].ncol, cs_header);
+  }
 
-  cs_header.LoadString(IDS_GROUP);
-  m_LCResults.InsertColumn(GROUP, cs_header);
-  cs_header.LoadString(IDS_TITLE);
-  m_LCResults.InsertColumn(TITLE, cs_header);
-  cs_header.LoadString(IDS_USERNAME);
-  m_LCResults.InsertColumn(USER, cs_header);
+  const struct {
+    CItemData::FieldType ft; UINT ids; int ncol;
+  } OptCols[] = {{CItemData::PASSWORD, IDS_PASSWORD, PASSWORD},
+                 {CItemData::NOTES, IDS_NOTES, NOTES},
+                 {CItemData::URL, IDS_URL, URL},
+                 {CItemData::AUTOTYPE, IDS_AUTOTYPE, AUTOTYPE},
+                 {CItemData::PWHIST, IDS_PWHISTORY, PWHIST},
+                 {CItemData::CTIME, IDS_CREATED, CTIME},
+                 {CItemData::ATIME, IDS_LASTACCESSED, ATIME},
+                 {CItemData::XTIME, IDS_PASSWORDEXPIRYDATE, XTIME},
+                 {CItemData::XTIME_INT, IDS_PASSWORDEXPIRYDATEINT, XTIME_INT},
+                 {CItemData::PMTIME, IDS_PASSWORDMODIFIED, PMTIME},
+                 {CItemData::RMTIME, IDS_LASTMODIFIED, RMTIME},
+                 {CItemData::POLICY, IDS_PWPOLICY, POLICY},
+                 {CItemData::RUNCMD, IDS_RUNCOMMAND, RUNCMD},
+                 {CItemData::DCA, IDS_DCA, DCA},
+                 {CItemData::EMAIL, IDS_EMAIL, EMAIL},
+  };
 
-  if (m_bsFields.test(CItemData::PASSWORD)) {
-    cs_header.LoadString(IDS_PASSWORD);
-    m_LCResults.InsertColumn(PASSWORD, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::NOTES)) {
-    cs_header.LoadString(IDS_NOTES);
-    m_LCResults.InsertColumn(NOTES, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::URL)) {
-    cs_header.LoadString(IDS_URL);
-    m_LCResults.InsertColumn(URL, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::AUTOTYPE)) {
-    cs_header.LoadString(IDS_AUTOTYPE);
-    m_LCResults.InsertColumn(AUTOTYPE, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::PWHIST)) {
-    cs_header.LoadString(IDS_PWHISTORY);
-    m_LCResults.InsertColumn(PWHIST, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::CTIME)) {
-    cs_header.LoadString(IDS_CREATED);
-    m_LCResults.InsertColumn(CTIME, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::ATIME)) {
-    cs_header.LoadString(IDS_LASTACCESSED);
-    m_LCResults.InsertColumn(ATIME, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::XTIME)) {
-    cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
-    m_LCResults.InsertColumn(XTIME, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::XTIME_INT)) {
-    cs_header.LoadString(IDS_PASSWORDEXPIRYDATEINT);
-    m_LCResults.InsertColumn(XTIME_INT, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::PMTIME)) {
-    cs_header.LoadString(IDS_PASSWORDMODIFIED);
-    m_LCResults.InsertColumn(PMTIME, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::RMTIME)) {
-    cs_header.LoadString(IDS_LASTMODIFIED);
-    m_LCResults.InsertColumn(RMTIME, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::POLICY)) {
-    cs_header.LoadString(IDS_PWPOLICY);
-    m_LCResults.InsertColumn(POLICY, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::RUNCMD)) {
-    cs_header.LoadString(IDS_RUNCOMMAND);
-    m_LCResults.InsertColumn(RUNCMD, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::DCA)) {
-    cs_header.LoadString(IDS_DCA);
-    m_LCResults.InsertColumn(DCA, cs_header, LVCFMT_CENTER);
-  }
-  if (m_bsFields.test(CItemData::EMAIL)) {
-    cs_header.LoadString(IDS_EMAIL);
-    m_LCResults.InsertColumn(EMAIL, cs_header, LVCFMT_CENTER);
-  }
+  for (i = 0; i < sizeof(OptCols)/sizeof(OptCols[0]); i++)
+    if (m_bsFields.test(OptCols[i].ft)) {
+      cs_header.LoadString(OptCols[i].ids);
+      m_LCResults.InsertColumn(OptCols[i].ncol, cs_header, LVCFMT_CENTER);
+    }
   m_nCols = m_LCResults.GetHeaderCtrl()->GetItemCount();
 
   m_numOnlyInCurrent = m_OnlyInCurrent.size();
@@ -178,9 +141,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
     std::sort(m_Identical.begin(), m_Identical.end(), GTUCompare2);
 
   AddCompareEntries(false);
-
   m_LCResults.SetRedraw(FALSE);
-  int i;
+
   for (i = 0; i < m_nCols - 1; i++) {
     m_LCResults.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
     int header_width = m_LCResults.GetColumnWidth(i);
