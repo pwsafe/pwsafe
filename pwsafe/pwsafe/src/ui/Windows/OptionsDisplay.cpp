@@ -37,13 +37,12 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(COptionsDisplay, COptions_PropertyPage)
 
 COptionsDisplay::COptionsDisplay()
-  : COptions_PropertyPage(COptionsDisplay::IDD), m_pToolTipCtrl(NULL)
+  : COptions_PropertyPage(COptionsDisplay::IDD)
 {
 }
 
 COptionsDisplay::~COptionsDisplay()
 {
-  delete m_pToolTipCtrl;
 }
 
 void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
@@ -86,23 +85,6 @@ END_MESSAGE_MAP()
 
 BOOL COptionsDisplay::PreTranslateMessage(MSG* pMsg)
 {
-  if (pMsg->message == WM_MOUSEMOVE) {
-    if (m_pToolTipCtrl != NULL) {
-      // Change to allow tooltip on disabled controls
-      MSG msg = *pMsg;
-      msg.hwnd = (HWND)m_pToolTipCtrl->SendMessage(TTM_WINDOWFROMPOINT, 0,
-                                                  (LPARAM)&msg.pt);
-      CPoint pt = pMsg->pt;
-      ::ScreenToClient(msg.hwnd, &pt);
-
-      msg.lParam = MAKELONG(pt.x, pt.y);
-
-      // Let the ToolTip process this message.
-      m_pToolTipCtrl->Activate(TRUE);
-      m_pToolTipCtrl->RelayEvent(&msg);
-    }
-  }
-
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
     PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
     return TRUE;

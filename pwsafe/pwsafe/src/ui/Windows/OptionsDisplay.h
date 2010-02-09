@@ -80,7 +80,4 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-private:
-  CToolTipCtrl* m_pToolTipCtrl;
 };
