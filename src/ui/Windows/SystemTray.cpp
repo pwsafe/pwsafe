@@ -95,6 +95,7 @@ CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip
                          UINT uID, UINT menuID)
   : m_RUEList(RUEList), m_pParent(pParent)
 {
+  ASSERT(m_pParent != NULL);
   Initialise();
   Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
 }
@@ -452,28 +453,109 @@ void CSystemTray::OnTimer(UINT_PTR )
   StepAnimation();
 }
 
+// Helper function to set up recent entry submenu based on entry's attributes
+static void SetupRecentEntryMenu(CMenu *&pMenu, int i, const CItemData *pci)
+{
+  pMenu = new CMenu;
+  pMenu->CreatePopupMenu();
+
+  CString cs_text;
+  cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
+  int ipos = 0;
+  pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                    ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
+                    cs_text);
+  ipos++;
+  if (!pci->IsUserEmpty()) {
+    cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
+    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                      ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
+                      cs_text);
+    ipos++;
+  }
+
+  if (!pci->IsNotesEmpty()) {
+    cs_text.LoadString(IDS_TRAYCOPYNOTES);
+    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                      ID_MENUITEM_TRAYCOPYNOTES1 + i,
+                      cs_text);
+    ipos++;
+  }
+
+  cs_text.LoadString(IDS_TRAYAUTOTYPE);
+  pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                    ID_MENUITEM_TRAYAUTOTYPE1 + i,
+                    cs_text);
+  ipos++;
+
+  if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
+    cs_text.LoadString(IDS_TRAYCOPYURL);
+    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                      ID_MENUITEM_TRAYCOPYURL1 + i,
+                      cs_text);
+    ipos++;
+  }
+
+  if (!pci->IsEmailEmpty() || 
+      (pci->IsEmailEmpty() && !pci->IsURLEmpty() && pci->IsURLEmail())) {
+    cs_text.LoadString(IDS_TRAYCOPYEMAIL);
+    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                      ID_MENUITEM_TRAYCOPYEMAIL1 + i,
+                      cs_text);
+    ipos++;
+  }
+
+  if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
+    cs_text.LoadString(IDS_TRAYBROWSE);
+    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                      ID_MENUITEM_TRAYBROWSE1 + i,
+                      cs_text);
+    ipos++;
+    cs_text.LoadString(IDS_TRAYBROWSEPLUS);
+    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                      ID_MENUITEM_TRAYBROWSEPLUS1 + i,
+                      cs_text);
+    ipos++;
+  }
+
+  if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail())) {
+    cs_text.LoadString(IDS_TRAYSENDEMAIL);
+    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                      ID_MENUITEM_TRAYSENDEMAIL1 + i,
+                      cs_text);
+    ipos++;
+  }
+
+  if (!pci->IsRunCommandEmpty()) {
+    cs_text.LoadString(IDS_TRAYRUNCOMMAND);
+    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                      ID_MENUITEM_TRAYRUNCMD1 + i,
+                      cs_text);
+    ipos++;
+  }
+
+  cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
+  pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                    ID_MENUITEM_TRAYDELETE1 + i,
+                    cs_text);
+}
+
 LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam) 
 {
   //Return quickly if its not for this tray icon
   if (wParam != m_tnd.uID)
     return 0L;
 
-  CMenu menu, *pContextMenu;
-  CWnd* pTarget = m_pTarget; // AfxGetMainWnd();
-
-  MENUINFO minfo;
-  SecureZeroMemory(&minfo, sizeof(minfo));
-  minfo.cbSize = sizeof(minfo);
-  minfo.fMask = MIM_MENUDATA;
+  CMenu menu;
 
   // Clicking with right button brings up a context menu
   if (LOWORD(lParam) == WM_RBUTTONUP) {    
-    ASSERT(pTarget != NULL);
+    ASSERT(m_pTarget != NULL);
     if (!menu.LoadMenu(m_menuID))
       return 0L;
 
     // Get pointer to the real menu (must be POPUP for TrackPopupMenu)
-    pContextMenu = menu.GetSubMenu(0);
+    CMenu *pContextMenu = menu.GetSubMenu(0);
     if (!pContextMenu)
       return 0L;
 
@@ -482,7 +564,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     switch (i_state) {
       case ThisMfcApp::UNLOCKED:
       {
-        if (m_pParent != NULL && m_pParent->IsWindowVisible()) {
+        if (m_pParent->IsWindowVisible()) {
           // unlocked & visible, remove "Unlock" menu item
           pContextMenu->RemoveMenu(0, MF_BYPOSITION); // Unlock
           pContextMenu->RemoveMenu(0, MF_BYPOSITION); // Separator
@@ -520,12 +602,11 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       pContextMenu->RemoveMenu(pContextMenu->GetMenuItemCount() - 1, MF_BYPOSITION);
     }
 
-    size_t num_recent_entries = m_RUEList.GetCount();
-    int irc;
     // Process Recent entries.
     // Allow disabled menu item if open but locked
     // Allow enabled menu item if open and unlocked
-    typedef CMenu* CMenuPtr;
+    size_t num_recent_entries = m_RUEList.GetCount();
+    int irc;
     CMenu *pMainRecentEntriesMenu(NULL);
     CMenu **pNewRecentEntryMenu = (CMenu **)(NULL);
     CRUEItemData* pmd;
@@ -538,7 +619,10 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     if (i_state != ThisMfcApp::CLOSED) {
       pMainRecentEntriesMenu = pContextMenu->GetSubMenu(iPopupPos);
 
-      pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
+      MENUINFO minfo;
+      SecureZeroMemory(&minfo, sizeof(minfo));
+      minfo.cbSize = sizeof(minfo);
+      minfo.fMask = MIM_MENUDATA;
 
       minfo.dwMenuData = IDR_POPTRAY;
       pMainRecentEntriesMenu->SetMenuInfo(&minfo);
@@ -556,6 +640,8 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       // No point in doing Recent Entries if database is locked
       if (num_recent_entries != 0 && i_state == ThisMfcApp::UNLOCKED) {
         // Build extra popup menus (1 per entry in list)
+        typedef CMenu* CMenuPtr;
+        pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
         m_RUEList.GetAllMenuItemStrings(m_menulist);
 
         for (size_t i = 0; i < num_recent_entries; i++) {
@@ -567,89 +653,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
             continue;
           }
 
-          pNewRecentEntryMenu[i] = new CMenu;
-          pNewRecentEntryMenu[i]->CreatePopupMenu();
-
-          CString cs_text;
-
-          cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
-          int ipos = 0;
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
-                                             cs_text);
-          ipos++;
-          if (!pci->IsUserEmpty()) {
-            cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
-            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                               ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
-                                               cs_text);
-            ipos++;
-          }
-
-          if (!pci->IsNotesEmpty()) {
-            cs_text.LoadString(IDS_TRAYCOPYNOTES);
-            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                               ID_MENUITEM_TRAYCOPYNOTES1 + i,
-                                               cs_text);
-            ipos++;
-          }
-
-          cs_text.LoadString(IDS_TRAYAUTOTYPE);
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYAUTOTYPE1 + i,
-                                             cs_text);
-          ipos++;
-
-          if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
-            cs_text.LoadString(IDS_TRAYCOPYURL);
-            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                               ID_MENUITEM_TRAYCOPYURL1 + i,
-                                               cs_text);
-            ipos++;
-          }
-
-          if (!pci->IsEmailEmpty() || 
-              (pci->IsEmailEmpty() && !pci->IsURLEmpty() && pci->IsURLEmail())) {
-            cs_text.LoadString(IDS_TRAYCOPYEMAIL);
-            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                               ID_MENUITEM_TRAYCOPYEMAIL1 + i,
-                                               cs_text);
-            ipos++;
-          }
-
-          if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
-            cs_text.LoadString(IDS_TRAYBROWSE);
-            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                               ID_MENUITEM_TRAYBROWSE1 + i,
-                                               cs_text);
-            ipos++;
-            cs_text.LoadString(IDS_TRAYBROWSEPLUS);
-            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                               ID_MENUITEM_TRAYBROWSEPLUS1 + i,
-                                               cs_text);
-            ipos++;
-          }
-
-          if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail())) {
-            cs_text.LoadString(IDS_TRAYSENDEMAIL);
-            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                               ID_MENUITEM_TRAYSENDEMAIL1 + i,
-                                               cs_text);
-            ipos++;
-          }
-
-          if (!pci->IsRunCommandEmpty()) {
-            cs_text.LoadString(IDS_TRAYRUNCOMMAND);
-            pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                               ID_MENUITEM_TRAYRUNCMD1 + i,
-                                               cs_text);
-            ipos++;
-          }
-
-          cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
-          pNewRecentEntryMenu[i]->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYDELETE1 + i,
-                                             cs_text);
+          SetupRecentEntryMenu(pNewRecentEntryMenu[i], i, pci);
 
           // Insert new popup menu at the bottom of the list
           // pos 0  = Clear Entries
@@ -666,9 +670,9 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           miteminfo.dwItemData = (ULONG_PTR)pmd;
           irc = pMainRecentEntriesMenu->SetMenuItemInfo(i + 4, &miteminfo, TRUE);
           ASSERT(irc != 0);
-        }
-      }
-    }
+        } // for num_recent_entries
+      } // num_recent_entries != 0 && unlocked
+    } // !closed
 
     // Make chosen menu item the default (bold font)
     ::SetMenuDefaultItem(pContextMenu->m_hMenu, m_DefaultMenuItemID, m_DefaultMenuItemByPos);
@@ -677,12 +681,12 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     CPoint pos;
     GetCursorPos(&pos);
 
-    pTarget->SetForegroundWindow();
+    m_pTarget->SetForegroundWindow();
     ::TrackPopupMenu(pContextMenu->m_hMenu, TPM_LEFTBUTTON, pos.x, pos.y, 0,
-                     pTarget->GetSafeHwnd(), NULL);
+                     m_pTarget->GetSafeHwnd(), NULL);
 
     // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
-    pTarget->PostMessage(WM_NULL, 0, 0);
+    m_pTarget->PostMessage(WM_NULL, 0, 0);
 
     if (i_state != ThisMfcApp::CLOSED) {
       for (size_t i = 0; i < num_recent_entries; i++) {
@@ -697,30 +701,27 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       }
       delete[] pNewRecentEntryMenu;
     }
-
     m_menulist.clear();
     menu.DestroyMenu();
   } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) {
-    ASSERT(pTarget != NULL);
+    ASSERT(m_pTarget != NULL);
     // double click received, the default action is to execute default menu item
-    pTarget->SetForegroundWindow();  
+    m_pTarget->SetForegroundWindow();  
 
     UINT uItem;
     if (m_DefaultMenuItemByPos) {
       if (!menu.LoadMenu(m_menuID))
         return 0L;
-      pContextMenu = menu.GetSubMenu(0);
+      CMenu *pContextMenu = menu.GetSubMenu(0);
       if (!pContextMenu)
         return 0L;
       uItem = pContextMenu->GetMenuItemID(m_DefaultMenuItemID);
     } else
       uItem = m_DefaultMenuItemID;
 
-    pTarget->SendMessage(WM_COMMAND, uItem, 0);
-
+    m_pTarget->SendMessage(WM_COMMAND, uItem, 0);
     menu.DestroyMenu();
-  }
-
+  } // WM_LBUTTONDBLCLK
   return 1L;
 }
 
