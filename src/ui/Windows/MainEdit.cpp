@@ -83,12 +83,10 @@ void DboxMain::OnAdd()
 
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
+    bool bSetDefaultUser(false);
     CSecString &sxUsername = add_entry_psh.GetUsername();
 
-    // Initialise a copy of the DB preferences
-    prefs->SetUpCopyDBprefs();
-    // Get old DB preferences String value (from current preferences)
-    const StringX sxOldDBPrefsString(prefs->Store());
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
     //Check if they wish to set a default username
     if (!prefs->GetPref(PWSprefs::UseDefaultUser) &&
@@ -96,26 +94,30 @@ void DboxMain::OnAdd()
         (!sxUsername.IsEmpty())) {
       CQuerySetDef defDlg(this);
       defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)sxUsername);
+
       INT_PTR rc2 = defDlg.DoModal();
+
       if (rc2 == IDOK) {
+        bSetDefaultUser = true;
+
+        // Initialise a copy of the DB preferences
+        prefs->SetUpCopyDBprefs();
+
         // Update Copy with new values
         prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
         prefs->SetPref(PWSprefs::DefaultUsername, sxUsername, true);
+
+        // Set new DB preferences String value (from Copy)
+        StringX sxNewDBPrefsString(prefs->Store(true));
+
+        Command *pcmd1 = UpdateGUICommand::Create(&m_core,
+                                                  UpdateGUICommand::WN_UNDO,
+                                                  UpdateGUICommand::GUI_REFRESH_TREE);
+        pmulticmds->Add(pcmd1);
+
+        Command *pcmd2 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        pmulticmds->Add(pcmd2);
       }
-    }
-
-    // Set new DB preferences String value (from Copy)
-    StringX sxNewDBPrefsString(prefs->Store(true));
-
-    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-    if (sxOldDBPrefsString != sxNewDBPrefsString) {
-      Command *pcmd1 = UpdateGUICommand::Create(&m_core,
-                                                UpdateGUICommand::WN_UNDO,
-                                                UpdateGUICommand::GUI_REFRESH_TREE);
-      pmulticmds->Add(pcmd1);
-
-      Command *pcmd2 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
-      pmulticmds->Add(pcmd2);
     }
 
     DisplayInfo *pdi = new DisplayInfo;
@@ -134,14 +136,13 @@ void DboxMain::OnAdd()
     }
     pmulticmds->Add(pcmd);
 
-    if (sxOldDBPrefsString != sxNewDBPrefsString) {
+    if (bSetDefaultUser) {
       Command *pcmd3 = UpdateGUICommand::Create(&m_core,
                                                 UpdateGUICommand::WN_EXECUTE_REDO,
                                                 UpdateGUICommand::GUI_REFRESH_TREE);
       pmulticmds->Add(pcmd3);
     }
-    Execute(pmulticmds); // Either AddEntry or MultiCommands
-
+    Execute(pmulticmds);
     // Update Toolbar for this new entry
     m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
     m_ctlItemTree.SelectItem(pdi->tree_item);
@@ -160,6 +161,7 @@ void DboxMain::OnAdd()
     uuid_array_t uuid;
     ci.GetUUID(uuid);
     m_RUEList.AddRUEntry(uuid);
+
     // May need to update menu/toolbar if database was previously empty
     if (bWasEmpty)
       UpdateMenuAndToolBar(m_bOpen);
@@ -682,6 +684,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   pmulticmds->Add(pcmd);
 
   Execute(pmulticmds, pcore);
+
   SetChanged(Data);
 
   ChangeOkUpdate();

@@ -320,6 +320,7 @@
 #define IDS_VISIT_WEBSITE               5489
 #define IDS_ENTRY                       5490
 #define IDS_ENTRIES                     5491
+// Next line to be removed post V3.21
 #define IDS_GROUP2                      5492
 #define IDS_CONFLICT                    5494
 #define IDS_CONFLICTS                   5495
@@ -589,6 +590,7 @@
 #define IDS_EBLISTCTRL                  5772
 #define IDS_EBLISTCTRLROW1              5773
 #define IDS_EBLISTCTRLROWN              5774
+// Next 4 lines to be removed post V3.21
 #define IDS_MUSTHAVEUSERNAMES0          5775
 #define IDS_MUSTHAVEUSERNAMES1          5776
 #define IDS_MUSTHAVEUSERNAMES2          5777
