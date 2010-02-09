@@ -270,10 +270,6 @@ public:
   void ResumeOnDBNotification()
   {m_bNotifyDB = true;}
 
-  int CheckTitleSameAsGroup(CItemData *pci, StringX &sxGTUs) const;
-  int CheckTitleSameAsGroup(const StringX &ogroup, const StringX &otitle,
-                            const StringX &ouser, StringX &sxGTUs) const;
-
   void GUISetupDisplayInfo(CItemData &ci);
   void GUIRefreshEntry(const CItemData &ci);
 
