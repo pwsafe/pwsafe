@@ -8,11 +8,38 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
+New Features for 3.21
+=====================
+[2940756] Add "Apply" button to Edit property pages so that
+intermediate changes can be saved without closing the Edit property pages.
+[2919319] PasswordSafe can now be used as a password generator via the
+Manage menu.
+[2616175] Allows user to retry finding the original database if not
+successfully found the first time.
+[] Undo/Redo of changes to the currently open database. Any change to
+the database can now be undone and redone, as long as the database is
+open. This is similar to the undo/redo feature available in most word
+processors, and is activated the same way (Ctrl-Z for undo, Ctrl-Y for
+redo, or via the Edit menu).
+[] New Synchronize feature (subset of the current Merge function) to
+allow changes in the fields of entries of two databases to be
+synchronised.  Entries with identical Group names, Titles and User
+names are compared when syncing. The database selected to be
+synchronised with the current open database is now always in read-only
+mode i.e. Synchronisation is uni-directional and only entries in the
+currently open database can be modified.
+
+Changes to Existing Features in 3.21
+====================================
+[] When comparing databases, the "other" selected database is now always
+opened in read-only mode.
+
 Bugs fixed in 3.21
 ==================
-[2941828] In Add & Edit, a new Password Policy takes effect immediately and is
-therefore used when pressing the Generate button without having to save the entry
-first.
+[2941828] In Add & Edit, changes to the Password Policy take effect
+immediately; pressing the Generate button will create a password
+according to the new policy, without having to save and re-open the
+entry.
 [2940712] Dragging a group now drags along all its descendants.
 [2931428] Password history now displayed correctly in View/Edit.
 [2918306, 2816066, 2798788, 2446052, 2837591, 2917066, ...] Re-instate
@@ -24,8 +51,8 @@ workstation lock and terminal services running.
 [2916338] "Edit Base entry" now works for Alias entries as well as for Shortcuts.
 [2913440] Copy/Send Email menu items now correctly activated if email field
 is set or 'mailto:' used in URL field.
-[2912177] Restore 'Add Group' menu item to context menu when clicking
-on an entry and allow new group to remain unchanged.
+[2912177] Adding Groups via right-click menu now works again under
+default configuration.
 [2894100] PasswordSafe window no longer creeps down the screen if the Windows 
 taskbar is at the top of the screen.
 [2818401] AutoType backspace field ('\b') now honoured in both "AutoType" and
@@ -38,31 +65,6 @@ are now reset.
 [] Finally fix issues running under pre-XP versions of Windows.
 [] Fix issue when changing the displayed columns in List View and then switching
 to Tree View.
-
-New Features for 3.21
-=====================
-[2940756] Add "Apply" button to Edit property pages so that intermediate changes
-can be saved without closing the Edit property pages.
-[2919319] Now able to use PasswordSafe to generator passwords as per user defined
-policy from the Manage menu.
-[2616175] Allows user to retry finding the original database if not successfully
-found the first time.
-[] Implemented support for new functions: Undo/Redo of changes to the currently open
-database.  These functions are on the Edit menu and can also be configured to be on
-the Toolbar.  These are database specific and changes can even be undone after the
-database has been saved, although the datbase will need to be resaved to retain the
-new state.
-[] New Synchronize option (subset of the current Merge fucntion) to allow fields in
-of entries 2 databases to be synchronised.  Entries are eligible to be selected for
-synchronisation if they have identical Group names, Titles and User names. The
-database selected to be synchronised with the current open database is now always in
-read-only mode i.e. Synchronisation is uni-directional and only entries in the
-currently open database can be modified.
-
-Changes to Existing Features in 3.21
-====================================
-During database Compare, the database selected to be compared with the currently open
-database is now always in read-only mode.
 
 Bugs fixed in 3.20
 ==================
