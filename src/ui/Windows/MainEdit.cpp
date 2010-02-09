@@ -104,26 +104,6 @@ void DboxMain::OnAdd()
       }
     }
 
-    // We can't have "no usernames displayed" in Tree if this new entry has a
-    // title the same as a group in this group as they look the same.
-    StringX sxGTUs;  // Not used in a single call
-
-    if (!prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
-        m_core.CheckTitleSameAsGroup(&ci, sxGTUs) > 0) {
-      CGeneralMsgBox gmb;
-      CString cs_title, cs_msg;
-      cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
-      CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
-#ifdef NOTYET
-      // XXX Update this for changed IDS_MUSTHAVEUSERNAMES3 format after Formal 3.21 release
-#else /* Use this for 3.21 */
-      cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
-#endif /* NOTYET */
-      gmb.MessageBox(cs_msg, cs_title, MB_OK);
-      // Update Copy with new values
-      prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
-    }
-
     // Set new DB preferences String value (from Copy)
     StringX sxNewDBPrefsString(prefs->Store(true));
 
@@ -595,47 +575,6 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   // with a new one having the edited values and the same uuid.
   MultiCommands *pmulticmds = MultiCommands::Create(pcore);
 
-
-  // We can't have "no usernames displayed" in Tree View if this new entry has a
-  // title the same as a group in this group - they look the same!
-  // Initialise a copy of the DB preferences
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  prefs->SetUpCopyDBprefs();
-
-  // Get old DB preferences String value (from current preferences)
-  const StringX sxOldDBPrefsString(prefs->Store());
-  StringX sxGTUs;  // Not used in a single call
-
-  if (!prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
-     (pci_original->GetGroup() != pci_new->GetGroup() ||
-      pci_original->GetTitle() != pci_new->GetTitle()) &&
-      m_core.CheckTitleSameAsGroup(pci_new, sxGTUs) > 0) {
-    CGeneralMsgBox gmb;
-    CString cs_title, cs_msg;
-    cs_title.LoadString(IDS_MUSTHAVEUSERNAMES0);
-    CString cs2(MAKEINTRESOURCE(IDS_MUSTHAVEUSERNAMES1));
-#ifdef NOTYET
-      // XXX Update this for changed IDS_MUSTHAVEUSERNAMES3 format after Formal 3.21 release
-#else /* Use this for 3.21 */
-    cs_msg.Format(IDS_MUSTHAVEUSERNAMES3, cs2);
-#endif /* NOTYET */
-    gmb.MessageBox(cs_msg, cs_title, MB_OK);
-    // Update Copy with new values
-    prefs->SetPref(PWSprefs::ShowUsernameInTree, true, true);
-  }
-  
-  // Set new DB preferences String value (from Copy)
-  StringX sxNewDBPrefsString(prefs->Store(true));
-  if (sxOldDBPrefsString != sxNewDBPrefsString) {
-    Command *pcmd1 = UpdateGUICommand::Create(pcore,
-                                              UpdateGUICommand::WN_UNDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
-    pmulticmds->Add(pcmd1);
-
-    Command *pcmd2 = DBPrefsCommand::Create(pcore, sxNewDBPrefsString);
-    pmulticmds->Add(pcmd2);
-  }
-
   StringX newPassword = pci_new->GetPassword();
   uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'}, new_base_uuid = {'\0'};
   memcpy(new_base_uuid, pentry_psh->GetBaseUUID(), sizeof(new_base_uuid));
@@ -741,13 +680,6 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   Command *pcmd = EditEntryCommand::Create(pcore, *(pci_original), 
                                                   *(pci_new));
   pmulticmds->Add(pcmd);
-
-  if (sxOldDBPrefsString != sxNewDBPrefsString) {
-    Command *pcmd3 = UpdateGUICommand::Create(&m_core,
-                                              UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
-    pmulticmds->Add(pcmd3);
-  }
 
   Execute(pmulticmds, pcore);
   SetChanged(Data);

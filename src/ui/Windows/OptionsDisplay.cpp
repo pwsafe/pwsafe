@@ -127,7 +127,7 @@ void COptionsDisplay::OnHelp()
 
 BOOL COptionsDisplay::OnInitDialog() 
 {
-  BOOL bResult = COptions_PropertyPage::OnInitDialog();
+  COptions_PropertyPage::OnInitDialog();
 
   OnPreWarn();
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
@@ -155,30 +155,6 @@ BOOL COptionsDisplay::OnInitDialog()
   m_savepreexpirywarndays = m_preexpirywarndays;
   m_savetrayiconcolour = m_trayiconcolour;
 
-  if (m_MustHaveUsernames == TRUE) {
-    GetDlgItem(IDC_DEFUNSHOWINTREE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(FALSE);
-
-    EnableToolTips();
-
-    m_pToolTipCtrl = new CToolTipCtrl;
-    if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-      TRACE(L"Unable To create Property Page ToolTip\n");
-      delete m_pToolTipCtrl;
-      m_pToolTipCtrl = NULL;
-      return bResult;
-    }
-
-    // Activate the tooltip control.
-    m_pToolTipCtrl->Activate(TRUE);
-    m_pToolTipCtrl->SetMaxTipWidth(300);
-    // Double time to allow reading by user - there is a lot there!
-    int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-    m_pToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 2 * iTime);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_DEFUNSHOWINTREE), 
-              (CString)m_csUserDisplayToolTip);
-  }
-  
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
