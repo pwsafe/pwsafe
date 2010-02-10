@@ -3192,12 +3192,12 @@ void DboxMain::UpdateSystemMenu()
    * With UseSystemTray, we minimize to the system tray
    * Without it, we exit the application.
    *
-   * Leaving this as a 'placeholder' when we change out minds.
+   * Leaving this as a 'placeholder' if/when we change out minds.
    */
-  if (IsIconic()) // Shouldn't happen, but let's be safe
-    return;
 #if 0
   CMenu *pSysMenu = GetSystemMenu(FALSE);
+  if (pSysMenu == NULL) // docs don't say when this can occur,
+    return;             // but MS's example check this as well!
   BYTE flag = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray) ? 1 : 0;
   flag |= m_bOpen ? 2 : 0;
 
