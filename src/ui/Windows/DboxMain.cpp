@@ -3025,9 +3025,9 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     // Disable Minimize if already minimized
     case ID_MENUITEM_MINIMIZE:
     {
-      WINDOWPLACEMENT wndpl;
-      GetWindowPlacement(&wndpl);
-      if (wndpl.showCmd == SW_SHOWMINIMIZED)
+      WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
+      GetWindowPlacement(&wp);
+      if (wp.showCmd == SW_SHOWMINIMIZED)
         iEnable = FALSE;
       break;
     }
