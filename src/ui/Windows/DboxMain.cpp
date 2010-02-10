@@ -3033,13 +3033,9 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     }
     // Disable Restore if already visible
     case ID_MENUITEM_RESTORE:
-    {
-      WINDOWPLACEMENT wndpl;
-      GetWindowPlacement(&wndpl);
-      if (wndpl.showCmd != SW_SHOWMINIMIZED && app.GetSystemTrayState() != ThisMfcApp::LOCKED )
+      if (IsWindowVisible())
         iEnable = FALSE;
       break;
-    }
     // Set the state of the "Case Sensitivity" button
     case ID_TOOLBUTTON_FINDCASE:
     case ID_TOOLBUTTON_FINDCASE_I:
