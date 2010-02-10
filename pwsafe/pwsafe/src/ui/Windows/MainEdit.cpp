@@ -340,9 +340,7 @@ void DboxMain::OnDelete()
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
         bAskForDeleteGroupConfirmation = true; // ALWAYS ask if deleting a group
-        if (m_ctlItemTree.ItemHasChildren(hStartItem)) {
-          num_children = CountChildren(hStartItem);
-        }  // if has children
+        num_children = m_ctlItemTree.CountChildren(hStartItem);
       }
     }
   }
