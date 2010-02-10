@@ -745,7 +745,6 @@ private:
   std::vector<bool> GetGroupDisplayState(); // get current display state from window
   void SetGroupDisplayState(const std::vector<bool> &displaystatus); // changes display
   void MakeOrderedItemList(OrderedItemList &il);
-  int CountChildren(HTREEITEM hStartItem);
   void SetColumns();  // default order
   void SetColumns(const CString cs_ListColumns);
   void SetColumnWidths(const CString cs_ListColumnsWidths);

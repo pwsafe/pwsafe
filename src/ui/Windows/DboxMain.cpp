@@ -2666,27 +2666,6 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &il)
   }
 }
 
-// Returns the number of children of this group
-int DboxMain::CountChildren(HTREEITEM hStartItem)
-{
-  // Walk the Tree!
-  int num = 0;
-  if (hStartItem != NULL && m_ctlItemTree.ItemHasChildren(hStartItem)) {
-    HTREEITEM hChildItem = m_ctlItemTree.GetChildItem(hStartItem);
-
-    while (hChildItem != NULL) {
-      if (m_ctlItemTree.ItemHasChildren(hChildItem)) {
-        num += CountChildren(hChildItem);
-        hChildItem = m_ctlItemTree.GetNextSiblingItem(hChildItem);
-      } else {
-        hChildItem = m_ctlItemTree.GetNextSiblingItem(hChildItem);
-        num++;
-      }
-    }
-  }
-  return num;
-}
-
 void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 {
   // Initial setup of menu items and toolbar buttons

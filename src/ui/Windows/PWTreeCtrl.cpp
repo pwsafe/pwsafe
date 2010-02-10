@@ -884,6 +884,25 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
   return (i != NODE);
 }
 
+// Returns the number of children of this group
+int CPWTreeCtrl::CountChildren(HTREEITEM hStartItem) const
+{
+  // Walk the Tree!
+  int num = 0;
+  if (hStartItem != NULL && ItemHasChildren(hStartItem)) {
+    HTREEITEM hChildItem = GetChildItem(hStartItem);
+    while (hChildItem != NULL) {
+      if (ItemHasChildren(hChildItem)) {
+        num += CountChildren(hChildItem);
+      } else {
+        num++;
+      }
+      hChildItem = GetNextSiblingItem(hChildItem);
+    }
+  }
+  return num;
+}
+
 void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 {
   // We don't want nodes that have no children to remain
