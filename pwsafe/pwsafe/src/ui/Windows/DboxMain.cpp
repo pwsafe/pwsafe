@@ -1591,6 +1591,13 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   // prevent multiple r/w access.
   int retval;
   bool bFileIsReadOnly = false;
+  static CPasskeyEntry *dbox_pkentry = NULL;
+
+  if (dbox_pkentry != NULL) { // can happen via systray unlock
+    dbox_pkentry->BringWindowToTop();
+    return PWScore::USER_CANCEL; // multi-thread,
+    // original thread will continue processing
+  }
 
   if (pcore == 0) pcore = &m_core;
 
@@ -1612,47 +1619,40 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   // (not possible if the user selects some or all available options)
   m_bsFields.set();
 
-  static CPasskeyEntry *dbox_pkentry = NULL;
-  INT_PTR rc = 0;
-  if (dbox_pkentry == NULL) {
-    dbox_pkentry = new CPasskeyEntry(this, filename.c_str(),
-                                     index, bReadOnly || bFileIsReadOnly,
-                                     bFileIsReadOnly || bForceReadOnly,
-                                     adv_type);
+  ASSERT(dbox_pkentry == NULL); // should have been taken care of above
+  dbox_pkentry = new CPasskeyEntry(this, filename.c_str(),
+                                   index, bReadOnly || bFileIsReadOnly,
+                                   bFileIsReadOnly || bForceReadOnly,
+                                   adv_type);
 
-    int nMajor(0), nMinor(0), nBuild(0);
-    DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
-    DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
+  int nMajor(0), nMinor(0), nBuild(0);
+  DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
+  DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
 
-    if (dwMajorMinor > 0) {
-      nMajor = HIWORD(dwMajorMinor);
-      nMinor = LOWORD(dwMajorMinor);
-      nBuild = HIWORD(dwBuildRevision);
+  if (dwMajorMinor > 0) {
+    nMajor = HIWORD(dwMajorMinor);
+    nMinor = LOWORD(dwMajorMinor);
+    nBuild = HIWORD(dwBuildRevision);
+  }
+  if (nBuild == 0)
+    dbox_pkentry->m_appversion.Format(L"Version %d.%02d%s",
+                                      nMajor, nMinor, SPECIAL_BUILD);
+  else
+    dbox_pkentry->m_appversion.Format(L"Version %d.%02d.%02d%s",
+                                      nMajor, nMinor, nBuild, SPECIAL_BUILD);
+
+  INT_PTR rc = dbox_pkentry->DoModal();
+
+  if (rc == IDOK && index == GCP_ADVANCED) {
+    m_bAdvanced = dbox_pkentry->m_bAdvanced;
+    m_bsFields = dbox_pkentry->m_bsFields;
+    m_subgroup_set = dbox_pkentry->m_subgroup_set;
+    m_treatwhitespaceasempty = dbox_pkentry->m_treatwhitespaceasempty;
+    if (m_subgroup_set == BST_CHECKED) {
+      m_subgroup_name = dbox_pkentry->m_subgroup_name;
+      m_subgroup_object = dbox_pkentry->m_subgroup_object;
+      m_subgroup_function = dbox_pkentry->m_subgroup_function;
     }
-    if (nBuild == 0)
-      dbox_pkentry->m_appversion.Format(L"Version %d.%02d%s",
-                                        nMajor, nMinor, SPECIAL_BUILD);
-    else
-      dbox_pkentry->m_appversion.Format(L"Version %d.%02d.%02d%s",
-                                        nMajor, nMinor, nBuild, SPECIAL_BUILD);
-
-    rc = dbox_pkentry->DoModal();
-
-    if (rc == IDOK && index == GCP_ADVANCED) {
-      m_bAdvanced = dbox_pkentry->m_bAdvanced;
-      m_bsFields = dbox_pkentry->m_bsFields;
-      m_subgroup_set = dbox_pkentry->m_subgroup_set;
-      m_treatwhitespaceasempty = dbox_pkentry->m_treatwhitespaceasempty;
-      if (m_subgroup_set == BST_CHECKED) {
-        m_subgroup_name = dbox_pkentry->m_subgroup_name;
-        m_subgroup_object = dbox_pkentry->m_subgroup_object;
-        m_subgroup_function = dbox_pkentry->m_subgroup_function;
-      }
-    }
-  } else { // already present - bring to front
-    dbox_pkentry->BringWindowToTop(); // can happen with systray lock
-    return PWScore::USER_CANCEL; // multi-thread,
-    // original thread will continue processing
   }
 
   if (rc == IDOK) {
@@ -1667,21 +1667,21 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     // Set read-only mode if user explicitly requested it OR
     // we could not create a lock file.
     switch (index) {
-      case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-        pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
-        break;
-      case GCP_NORMAL:
-      case GCP_ADVANCED:
-        if (!bIsReadOnly) // !first, lock if !bIsReadOnly
-          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
-        else
-          pcore->SetReadOnly(bIsReadOnly);
-        break;
-      case GCP_RESTORE:
-      case GCP_WITHEXIT:
-      default:
-        // user can't change R-O status
-        break;
+    case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
+      pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
+      break;
+    case GCP_NORMAL:
+    case GCP_ADVANCED:
+      if (!bIsReadOnly) // !first, lock if !bIsReadOnly
+        pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
+      else
+        pcore->SetReadOnly(bIsReadOnly);
+      break;
+    case GCP_RESTORE:
+    case GCP_WITHEXIT:
+    default:
+      // user can't change R-O status
+      break;
     }
 
     UpdateToolBarROStatus(bIsReadOnly);
@@ -1719,22 +1719,22 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 #endif
       INT_PTR user_choice = gmb.DoModal();
       switch (user_choice) {
-        case IDS_READONLY:
-          pcore->SetReadOnly(true);
-          UpdateToolBarROStatus(true);
-          retval = PWScore::SUCCESS;
-          break;
-        case IDS_READWRITE:
-          pcore->SetReadOnly(false); // Caveat Emptor!
-          UpdateToolBarROStatus(false);
-          retval = PWScore::SUCCESS;
-          break;
-        case IDS_EXIT:
-          retval = PWScore::USER_CANCEL;
-          break;
-        default:
-          ASSERT(false);
-          retval = PWScore::USER_CANCEL;
+      case IDS_READONLY:
+        pcore->SetReadOnly(true);
+        UpdateToolBarROStatus(true);
+        retval = PWScore::SUCCESS;
+        break;
+      case IDS_READWRITE:
+        pcore->SetReadOnly(false); // Caveat Emptor!
+        UpdateToolBarROStatus(false);
+        retval = PWScore::SUCCESS;
+        break;
+      case IDS_EXIT:
+        retval = PWScore::USER_CANCEL;
+        break;
+      default:
+        ASSERT(false);
+        retval = PWScore::USER_CANCEL;
       }
     } else { // locker.IsEmpty() means no lock needed or lock was successful
       if (dbox_pkentry->GetStatus() == TAR_NEW) {
@@ -1759,19 +1759,19 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
     int cancelreturn = dbox_pkentry->GetStatus();
     switch (cancelreturn) {
-      case TAR_OPEN:
-        ASSERT(0); // now handled entirely in CPasskeyEntry
-      case TAR_CANCEL:
-      case TAR_NEW:
-        retval = PWScore::USER_CANCEL;
-        break;
-      case TAR_EXIT:
-        retval = PWScore::USER_EXIT;
-        break;
-      default:
-        DBGMSG("Default to WRONG_PASSWORD\n");
-        retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
-        break;
+    case TAR_OPEN:
+      ASSERT(0); // now handled entirely in CPasskeyEntry
+    case TAR_CANCEL:
+    case TAR_NEW:
+      retval = PWScore::USER_CANCEL;
+      break;
+    case TAR_EXIT:
+      retval = PWScore::USER_EXIT;
+      break;
+    default:
+      DBGMSG("Default to WRONG_PASSWORD\n");
+      retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
+      break;
     }
   }
   delete dbox_pkentry;
