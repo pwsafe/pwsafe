@@ -219,9 +219,6 @@ BOOL DboxMain::OpenOnInit()
     goto exit;
   }
 
-  // Status OK or user chose to forge ahead...
-  startLockCheckTimer();
-
   if (!m_bOpen) {
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
@@ -331,6 +328,9 @@ int DboxMain::New()
     ResetIdleLockCounter();
     SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
   }
+  // re-activate logout detection
+  startLockCheckTimer();
+  RegisterSessionNotification(true);
 
   return PWScore::SUCCESS;
 }
@@ -402,7 +402,6 @@ int DboxMain::NewFile(StringX &newfilename)
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
   m_needsreading = false;
-  startLockCheckTimer();
   return PWScore::SUCCESS;
 }
 
@@ -472,8 +471,10 @@ int DboxMain::Close(const bool bTrySave)
     m_stkSaveGUIInfo.pop();
   }
 
-  // Kill timer as a database preference
+  // Nothing to hide, don't lock on idle
+  // or logout
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+  RegisterSessionNotification(false);
 
   return PWScore::SUCCESS;
 }
@@ -771,6 +772,9 @@ void DboxMain::PostOpenProcessing()
     ResetIdleLockCounter();
     SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
   }
+  // Set up notification of desktop state, one way or another
+  startLockCheckTimer();
+  RegisterSessionNotification(true);
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)

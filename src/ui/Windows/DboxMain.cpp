@@ -207,9 +207,10 @@ LRESULT DboxMain::OnAreYouMe(WPARAM, LPARAM)
 
 void DboxMain::RegisterSessionNotification(const bool bRegister)
 {
-  // Need this if running OS prior to Windows XP as the application will not run
-  // if it cannot resolve the entry points in the DLL if using hard coded calls using
-  // the procedure names
+  /**
+   * As OS's prior to XP don't support this, we try to resolve entry
+   * point manually.
+   */
 
   // For WTSRegisterSessionNotification & WTSUnRegisterSessionNotification
   typedef DWORD (WINAPI *PWTS_RegSN) (HWND, DWORD);
@@ -256,8 +257,9 @@ void DboxMain::RegisterSessionNotification(const bool bRegister)
 exit:
   if (hWTSAPI32 != NULL)
     ::FreeLibrary(hWTSAPI32);
-
-  return;
+  // If successful, no need for Timer
+  if (m_bWTSRegistered)
+    KillTimer(TIMER_LOCKONWTSLOCK);
 }
 
 LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
@@ -1123,13 +1125,6 @@ BOOL DboxMain::OnInitDialog()
     cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGEMAIL), cs_ToolTip);
   }
-
-  // Set up notification of desktop state
-  RegisterSessionNotification(true);
-
-  // If successful, no need for Timer
-  if (m_bWTSRegistered)
-    KillTimer(TIMER_LOCKONWTSLOCK);
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }
