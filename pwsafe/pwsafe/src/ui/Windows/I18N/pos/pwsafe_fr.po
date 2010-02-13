@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-02-10 05:04-0800\n"
+"PO-Revision-Date: 2010-02-12 15:46-0800\n"
 "Last-Translator: Francois Lamoureux <franklamoureux@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -74,7 +74,7 @@ msgstr "  Entête invalide: \"%s\"."
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
-msgstr "Nombre invalide d'anciens mots de passe enregistrés : %d."
+msgstr "Nombre invalide d'anciens mot de passe enregistrés : %d."
 
 #. Resource IDs: (190)
 msgid "  Invalid password length found."
@@ -275,7 +275,7 @@ msgid ""
 "Please verify that the correct path and file name are given."
 msgstr ""
 "%1\n"
-"Ne peut trouver ce fichier.\n"
+"Impossible de trouver ce fichier.\n"
 "Vérifiez SVP que le chemin correct et le nom du fichier sont donnés."
 
 #. Resource IDs: (341)
@@ -307,7 +307,7 @@ msgid ""
 msgstr ""
 "%s \n"
 "\n"
-"Ne peut ouvrir le fichier. SVP choisissez-en un autre."
+"Impossible d'ouvrir le fichier. SVP choisissez-en un autre."
 
 #. Resource IDs: (341)
 #, c-format
@@ -416,7 +416,7 @@ msgstr "&Annuler"
 
 #. Resource IDs: (32202)
 msgid "&About Password Safe..."
-msgstr "&A propos de PasswordSafe..."
+msgstr "À &propos de PasswordSafe..."
 
 #. Resource IDs: (32051)
 msgid "&Add Entry..."
@@ -428,7 +428,7 @@ msgstr "&Appliquer"
 
 #. Resource IDs: (32112)
 msgid "&Apply current"
-msgstr "&Appliquer le courant"
+msgstr "&Appliquer le filtre courant"
 
 #. Resource IDs: (1356)
 msgid "&Autotype:"
@@ -444,7 +444,7 @@ msgstr "&Changer la combinaison du coffre..."
 
 #. Resource IDs: (32105)
 msgid "&Classic Toolbar"
-msgstr "Barre de tâ&Ches classique"
+msgstr "Barre de tâ&ches classique"
 
 #. Resource IDs: (1118)
 msgid "&Clear"
@@ -516,7 +516,7 @@ msgstr "&Ne pas me le re&Dire"
 
 #. Resource IDs: (32107)
 msgid "&Dragbar visible"
-msgstr "Barre de glisser/&Déposer visible"
+msgstr "Barre de &glisser/déposer visible"
 
 #. Resource IDs: (32056)
 msgid "&Duplicate Entry"
@@ -544,7 +544,7 @@ msgstr "&Filtres"
 
 #. Resource IDs: (32119)
 msgid "&Find"
-msgstr "Chercher"
+msgstr "&Rechercher"
 
 #. Resource IDs: (32079)
 msgid "&Find..."
@@ -588,11 +588,11 @@ msgstr "Gérer"
 
 #. Resource IDs: (32113)
 msgid "&Manage..."
-msgstr "&Gérer..."
+msgstr "&Outils..."
 
 #. Resource IDs: (32122)
 msgid "&Merge"
-msgstr "Intégrer"
+msgstr "&Fusionner"
 
 #. Resource IDs: (32253)
 msgid "&Minimize"
@@ -612,7 +612,7 @@ msgstr "&Nouveau"
 
 #. Resource IDs: (32104)
 msgid "&New Toolbar"
-msgstr "Nouvelle barre de tâches"
+msgstr "&Nouvelle barre de tâches"
 
 #. Resource IDs: (32003)
 msgid "&New..."
@@ -620,7 +620,7 @@ msgstr "&Nouveau..."
 
 #. Resource IDs: (32111)
 msgid "&New/Edit Filter"
-msgstr "&Filtre &Nouveau/Modifier"
+msgstr "&Nouveau/Modifier Filtre "
 
 #. Resource IDs: (2)
 msgid "&No"
@@ -676,7 +676,7 @@ msgstr "&Quitter"
 
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
-msgstr "Historique des entrées &Récentes"
+msgstr "&Historique des entrées récentes"
 
 #. Resource IDs: (327)
 msgid "&Recent Safes"
@@ -696,7 +696,7 @@ msgstr "&Reinitialiser"
 
 #. Resource IDs: (32254)
 msgid "&Restore"
-msgstr "&Restorer"
+msgstr "&Agra&ndir"
 
 #. Resource IDs: (359)
 msgid "&Retry"
@@ -772,7 +772,7 @@ msgstr "&Valider"
 
 #. Resource IDs: (32101)
 msgid "&View"
-msgstr "&Voir"
+msgstr "&Affichage"
 
 #. Resource IDs: (1268)
 msgid "&View Aliases"
@@ -838,7 +838,7 @@ msgstr "(Utilisé aussi pour remplacer les points dans le champ Titre)"
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
-msgstr "(Requiert un redémarrage de PasswordSafe pour prendre effet.)"
+msgstr "(Requiert un redémarrage de PasswordSafe afin de prendre effet.)"
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
@@ -1245,7 +1245,7 @@ msgstr "AaBbYyZz 0O1lIL"
 
 #. Resource IDs: (110)
 msgid "About Password Safe"
-msgstr "A"
+msgstr "À propos de PasswordSafe"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1270,7 +1270,7 @@ msgstr "Ajouter une entrée"
 
 #. Resource IDs: (32057)
 msgid "Add Group"
-msgstr "Ajouter un groupe"
+msgstr "Ajouter un &groupe"
 
 #. Resource IDs: (466)
 msgid "Additional"
@@ -1290,7 +1290,7 @@ msgstr "Options de recherche avancées"
 
 #. Resource IDs: (113)
 msgid "Advanced Merge Extra"
-msgstr "Fusionavancée supplémentaire"
+msgstr "Fusion avancée - Extras"
 
 #. Resource IDs: (339)
 msgid "Advanced Merge Options"
@@ -1326,7 +1326,7 @@ msgstr "Toutes les colonnes disponibles sont affichées."
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
-msgstr "Permet plusieurs instances (requiert de toutes les instances qu'elles soient redémarrrées)"
+msgstr "Multiples instances permises (Redémarrage de toutes les instances requis)"
 
 #. Resource IDs: (65535)
 msgid "Also used to replace periods in the Title field."
@@ -1350,7 +1350,7 @@ msgstr "Alt+"
 
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
-msgstr "Alterner le navigateur "
+msgstr "Navigateur alternatif"
 
 #. Resource IDs: (1043)
 msgid "Always keep Password Safe on top"
@@ -1358,7 +1358,7 @@ msgstr "Garder PasswordSafe au-dessus"
 
 #. Resource IDs: (314)
 msgid "Always on top"
-msgstr "Toujours garder au-dessus"
+msgstr "Toujours devant"
 
 #. Resource IDs: (342)
 msgid "An alias cannot refer to itself!"
@@ -1453,7 +1453,7 @@ msgstr "Arabe (101)"
 
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
-msgstr "Etes-vous sûr de vouloir effacer le groupe sélectionné?"
+msgstr "Etes-vous sûr de vouloir supprimer le groupe sélectionné?"
 
 #. Resource IDs: (515)
 msgid "Armenian Eastern"
@@ -1518,7 +1518,7 @@ msgstr "Nom de la copie de sauvegarde"
 
 #. Resource IDs: (65535)
 msgid "Backup directory:"
-msgstr "Répertoire de copies de sauvegarde:"
+msgstr "Dossier de copies de sauvegarde:"
 
 #. Resource IDs: (137)
 msgid "Backups"
@@ -1570,7 +1570,7 @@ msgstr "Bosnien (Cyrillique)"
 
 #. Resource IDs: (1213)
 msgid "Browse"
-msgstr "Naviguer"
+msgstr "Choisir..."
 
 #. Resource IDs: (325)
 msgid "Browse to URL"
@@ -1586,7 +1586,7 @@ msgstr "Aller à l'URL + Autofrappe"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters"
-msgstr "Naviguer dans les paramètres des lignes de commande"
+msgstr "Paramètres de ligne de commande"
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -1642,12 +1642,12 @@ msgid ""
 "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\n"
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Ne peut trouver le fichier de définition de schéma XML (%s) dans le répertoire de votre application PasswordSafe.\r\n"
-"Le copier depuis votre fichier d'installation ou réinstaller PasswordSafe."
+"Impossible de trouver le fichier de définition de schéma XML (%s) dans le dossier de votre application PasswordSafe.\r\n"
+"Veuillez le copier depuis votre fichier d'installation ou réinstaller PasswordSafe."
 
 #. Resource IDs: (208)
 msgid "Can't obtain the schema version."
-msgstr "Ne peut obtenir la version du schéma."
+msgstr "Impossible d'obtenir la version du schéma."
 
 #. Resource IDs: (518)
 msgid "Canadian French"
@@ -1663,7 +1663,7 @@ msgstr "Canadien Multilingue Standard"
 
 #. Resource IDs: (2, 347, 32273)
 msgid "Cancel"
-msgstr "Annuler"
+msgstr "&Annuler"
 
 #. Resource IDs: (348)
 msgid "Cannot be less than zero."
@@ -1676,15 +1676,15 @@ msgstr "Ne peut être plus que %d"
 
 #. Resource IDs: (189)
 msgid "Cannot create lock file - no permission in directory?"
-msgstr "Ne peut créer un ficheir de verrouillage - aucune permission dans le répertoire?"
+msgstr "Impossible de créer un fichier de verrouillage - aucune permission dans le dossier?"
 
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
-msgstr "Ne peut traiter car cette entrée a été effacée de la base ouverte."
+msgstr "Impossible de traiter car cette entrée a été effacée de la base ouverte."
 
 #. Resource IDs: (331)
 msgid "Cannot verify old safe combination - file gone?"
-msgstr "Ne peut pas vérifier l'ancienne combinaison du coffre - fichier parti?"
+msgstr "Impossible de vérifier l'ancienne combinaison du coffre - fichier parti?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
@@ -1722,7 +1722,7 @@ msgid ""
 msgstr ""
 "Changer le nombre maximum de mots de passe enregistré pour des entrées sauvant régulièrement l'historique, pour un nouveau maximum, si elles en enregistrent moins.\n"
 "\n"
-"Les entrées qui dépassent ce nouveau maximum déjà sauvé resteront inchangées."
+"Les entrées qui dépassent ce nouveau maximum déjà enregistrés resteront inchangées."
 
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK"
@@ -1766,7 +1766,7 @@ msgstr "Effacer le presse-papier en quittant"
 
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
-msgstr "Effacer le presse-papier au cours de la réduction"
+msgstr "Effacer le presse-papier lors de la réduction"
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -1794,7 +1794,7 @@ msgstr "Cliquez pour entrer un code de caractère via le clavier numérique. Le 
 
 #. Resource IDs: (354)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
-msgstr "Cliquez pour développer et copier au presse-papier, Ctrl+Clique pour copier le non-développé"
+msgstr "Cliquez pour développer et copier au presse-papier, Ctrl+Clique pour copier le non-regroupé"
 
 #. Resource IDs: (355)
 msgid "Click to go to link, Ctrl+Click to go and Autotype"
@@ -1870,7 +1870,7 @@ msgstr "Fermer la barre de recherche"
 
 #. Resource IDs: (32110)
 msgid "Collapse All"
-msgstr "Tout ramasser"
+msgstr "Tout regrouper"
 
 #. Resource IDs: (114, 32210)
 msgid "Column Picker"
@@ -2177,11 +2177,11 @@ msgstr ""
 
 #. Resource IDs: (32320)
 msgid "Customize &Main Toolbar"
-msgstr "Personnaliser la barre d'outils &principale"
+msgstr "&Personnaliser la barre d'outils principale"
 
 #. Resource IDs: (32320)
 msgid "Customize Main Toolbar"
-msgstr "Personnifier la barre d'outils principale"
+msgstr "Personnaliser la barre d'outils principale"
 
 #. Resource IDs: (513)
 msgid "Czech"
@@ -2229,7 +2229,7 @@ msgstr "Format de base de données:"
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
-msgstr "La base est en lecture seule. Désolé, aucune préférence de base de données modifiée ne peut être sauvée."
+msgstr "La base est en lecture seule. Désolé, aucune préférence de base de données modifiée ne peut être enregistré."
 
 #. Resource IDs: (1200)
 msgid "Database name"
@@ -2257,23 +2257,23 @@ msgstr "Expression autofrappée par défaut:"
 
 #. Resource IDs: (65535)
 msgid "Default Username"
-msgstr "Identfiant par défaut"
+msgstr "Nom d'utilisateur par défaut"
 
 #. Resource IDs: (331)
 msgid "Default number of saved password history entries must be between 1 and 255."
-msgstr "Le nombre par défaut des entrées de  l'historique sauvé doit être entre 1 et 255."
+msgstr "Le nombre par défaut des entrées de  l'historique doit être entre 1 et 255."
 
 #. Resource IDs: (352)
 msgid "Delete"
-msgstr "Effacer"
+msgstr "Supprimer"
 
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
-msgstr "Effacer la confirmation"
+msgstr "Confirmation de suppression"
 
 #. Resource IDs: (32053)
 msgid "Delete Entry"
-msgstr "Effacer l'entrée"
+msgstr "Supprimer l'entrée"
 
 #. Resource IDs: (341)
 msgid "Delete a Base Entry Confirmation?"
@@ -2281,7 +2281,7 @@ msgstr "Confirmation de suppression d'une entrée de la base?"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
-msgstr "Effacer un filtre"
+msgstr "Supprimer un filtre"
 
 #. Resource IDs: (340)
 msgid "Deselect all entries"
@@ -2600,7 +2600,7 @@ msgid ""
 msgstr ""
 "Erreur - incapable de déterminer les réglages de configuration!\n"
 "\n"
-"Aucun réglage de l'application ne seront sauvés.\n"
+"Aucun réglage de l'application ne seront enregistrés.\n"
 "\n"
 "Les réglages en relation avec la base seront stockés dans la base ouverte quand elle sera fermée, à condition qu'elle ne soit pas en lecture seule ni verrouillée par un autre usager."
 
@@ -2658,7 +2658,7 @@ msgstr "Tout développer"
 
 #. Resource IDs: (32054)
 msgid "Expand/Collapse Group"
-msgstr "Développer/réduire le groupe"
+msgstr "&Développer/regrouper le groupe"
 
 #. Resource IDs: (353)
 msgid "Export"
@@ -2884,8 +2884,8 @@ msgid ""
 "For security, the database must be closed before connecting to the Internet.\r\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
-"Par sécurité, la base doit être fermée avant de se connecter à l'internet.\r\n"
-"Presser OK pour fermer la base et continuer (Les changements seront sauvés)"
+"Par sécurité, la base doit être fermée avant de se connecter à Internet.\r\n"
+"Clicuez OK pour fermer la base et continuer (Les changements seront enregistrés)"
 
 #. Resource IDs: (203)
 #, c-format
@@ -2902,11 +2902,11 @@ msgstr "Français"
 
 #. Resource IDs: (1176)
 msgid "Fully collapsed"
-msgstr "Entièrement ramassé"
+msgstr "Entièrement regroupé"
 
 #. Resource IDs: (1177)
 msgid "Fully expanded"
-msgstr "Entièrement déployé"
+msgstr "Entièrement développé"
 
 #. Resource IDs: (520)
 msgid "Gaelic"
@@ -2918,11 +2918,11 @@ msgstr "Générer"
 
 #. Resource IDs: (32157)
 msgid "Generate &Password"
-msgstr "Générer &Mot-de-passe"
+msgstr "&Générer un mot de passe"
 
 #. Resource IDs: (359)
 msgid "Generate Password"
-msgstr "Générer Mot-de-passe"
+msgstr "Générer un mot de passe"
 
 #. Resource IDs: (1052)
 msgid "Generate pronounceable passwords"
@@ -2954,7 +2954,7 @@ msgstr "Obtenir de l'&aide?\tF1"
 
 #. Resource IDs: (326)
 msgid "Given path is a directory or file is read-only"
-msgstr "Le chemin donné est un répertoire ou un fichier en lecture seule"
+msgstr "Le chemin donné est un dossier ou un fichier en lecture seule"
 
 #. Resource IDs: (1357)
 msgid "Go"
@@ -3538,7 +3538,7 @@ msgstr "Touche Ctrl Gauche"
 
 #. Resource IDs: (356)
 msgid "Left click here to change. Right click here to reset or remove it. After selecting the shortcut key combination, press Enter to set it."
-msgstr "Faites ici un clic gauche pour changer. Faites ici un clic droit pour le réinitialiser ou l'effacer. Après avoir sélectionné la combinaison de touches de raccourci, pressez Entrer pour le valider."
+msgstr "Faites ici un clic gauche pour changer. Faites ici un clic droit pour le réinitialiser ou l'effacer. Après avoir sélectionné la combinaison de touches de raccourci, Appuyez Entrer pour le valider."
 
 #. Resource IDs: (331)
 msgid ""
@@ -3598,19 +3598,19 @@ msgstr "Lithuanien Standard"
 
 #. Resource IDs: (329)
 msgid "Lock Safe"
-msgstr "Verrouiller le coffre"
+msgstr "&Verrouiller le coffre"
 
 #. Resource IDs: (1077)
 msgid "Lock password database after "
-msgstr "Verrouiller la base de données des mots de passe après "
+msgstr "Verrouiller après "
 
 #. Resource IDs: (1026)
 msgid "Lock password database on minimize"
-msgstr "Verrouiller la base de données des mots de passe lors de la réduction"
+msgstr "Verrouiller lors de la réduction"
 
 #. Resource IDs: (1073)
 msgid "Lock password database on workstation lock"
-msgstr "Verrouiller la base de données des mots de passe au moment du verrouillage de la station de travail"
+msgstr "Verrouiller au moment du verrouillage de la station de travail"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
@@ -3618,7 +3618,7 @@ msgstr "DLL de courriel system is invalid."
 
 #. Resource IDs: (32152)
 msgid "Make Backup"
-msgstr "Faire une copie de sauvegarde"
+msgstr "&Créer une copie de sauvegarde"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -3716,7 +3716,7 @@ msgstr "Caractères majuscules minimum"
 
 #. Resource IDs: (139)
 msgid "Misc."
-msgstr "Div."
+msgstr "Divers"
 
 #. Resource IDs: (209)
 msgid "Missing STATUS, MAX or NUM element in PWHISTORY."
@@ -3818,7 +3818,7 @@ msgstr "Aucun coffre ouvert"
 
 #. Resource IDs: (1183)
 msgid "No change"
-msgstr "Pas de changement"
+msgstr "Aucun changement"
 
 #. Resource IDs: (351)
 msgid "No criteria defined"
@@ -3886,7 +3886,7 @@ msgstr "Aucun enregistrement dans le fichier importé!"
 
 #. Resource IDs: (344)
 msgid "No reports exist in the same directory as the current database."
-msgstr "Aucun rapport n'existe dans le même répertoire que la base courante."
+msgstr "Aucun rapport n'existe dans le même dossier que la base courante."
 
 #. Resource IDs: (349)
 msgid "No rows are enabled"
@@ -3990,7 +3990,7 @@ msgstr ""
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
-msgstr "Le nombre d'entrées qui ont eu leurs 'mots de passe sauvé maximum' changé en le nouveau nombre par défaut a été de %d"
+msgstr "Le nombre d'entrées qui ont eu leurs 'mots de passe enregistré maximum' changé en le nouveau nombre par défaut a été de %d"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4016,7 +4016,7 @@ msgstr "Clavier numérique"
 
 #. Resource IDs: (1, 351)
 msgid "OK"
-msgstr "OK"
+msgstr "&OK"
 
 #. Resource IDs: (330)
 msgid "Off"
@@ -4057,9 +4057,7 @@ msgstr "Ouvrir la base de données"
 
 #. Resource IDs: (1300)
 msgid "Open database read-only by default"
-msgstr ""
-"Ouvrir la base en lecture seule\n"
-" par défaut"
+msgstr "Ouvrir la base en lecture seule par défaut"
 
 #. Resource IDs: (327)
 msgid "Options"
@@ -4233,7 +4231,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Password Safe has been minimized. Would you like to clear the clipboard as a security precaution?"
-msgstr "PasswordSafe a été réduit. Voulez-vous effacer le contenu du presse-papier en tant que précaution de sécurité?"
+msgstr "PasswordSafe a été réduit. Voulez-vous effacer le contenu du presse-papier par mesure de sécurité?"
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -4369,13 +4367,13 @@ msgid ""
 "Please confirm that you wish to delete ALL PasswordSafe related information for the current user from the Windows registry\n"
 "\n"
 msgstr ""
-"SVP, Confirmez que vous désirez effacer TOUTE l'information reliée à PasswordSafe pour l'utilisateur courant du registre de Windows\n"
+"SVP, Confirmez que vous désirez supprimer TOUTE l'information reliée à PasswordSafe du registre de Windows pour l'utilisateur courant \n"
 "\n"
 
 #. Resource IDs: (353)
 #, c-format
 msgid "Please confirm you wish to delete the %s filter %s?"
-msgstr "Veuillez confirmer que vous désirez effacer le  filtre %s %s?"
+msgstr "Veuillez confirmer que vous désirez supprimer le filtre %s %s?"
 
 #. Resource IDs: (1227)
 msgid "Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
@@ -4585,7 +4583,7 @@ msgstr "R/O"
 
 #. Resource IDs: (65535)
 msgid "Random password generation rules"
-msgstr "Règles de génération de mots de passe aléatoires"
+msgstr "Règles de génération de mot de passe aléatoire"
 
 #. Resource IDs: (8002)
 msgid "Randomize"
@@ -4601,7 +4599,7 @@ msgstr "Lecture seule"
 
 #. Resource IDs: (347)
 msgid "Read-Write"
-msgstr "Lecture-Ecriture"
+msgstr "Lecture-Écriture"
 
 #. Resource IDs: (327)
 msgid "Recent"
@@ -4609,11 +4607,11 @@ msgstr "Récent"
 
 #. Resource IDs: (1096)
 msgid "Recent Databases on File Menu rather than as a sub-menu."
-msgstr "Bases récentes dans le menu 'Fichier' plutôt que comme sous-menu"
+msgstr "Fichers récents dans le menu 'Fichier' plutôt que dans un sous-menu."
 
 #. Resource IDs: (1095)
 msgid "Recent PasswordSafe Databases"
-msgstr "Bases récentes de PasswordSafe"
+msgstr "Récents fichiers de PasswordSafe"
 
 #. Resource IDs: (189)
 msgid "Record Modified Time\t"
@@ -4634,19 +4632,19 @@ msgstr "Récurrence (%d jours)"
 
 #. Resource IDs: (32083)
 msgid "Redo"
-msgstr "Refaire"
+msgstr "&Rétablir"
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
-msgstr "Se rappeler le dernier"
+msgstr "Garder les"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe data from Registry"
-msgstr "Effacer les données de PasswordSafe du registre"
+msgstr "Supprimer les données de PasswordSafe du registre"
 
 #. Resource IDs: (32291)
 msgid "Remove this shortcut"
-msgstr "Effacer ce raccourci"
+msgstr "Supprimer ce raccourci"
 
 #. Resource IDs: (32058)
 msgid "Rename"
@@ -4658,7 +4656,7 @@ msgstr "Renommer l'entrée"
 
 #. Resource IDs: (32054)
 msgid "Rename Group"
-msgstr "Renommer le groupe"
+msgstr "&Renommer le groupe"
 
 #. Resource IDs: (347)
 msgid "Report created"
@@ -4710,7 +4708,7 @@ msgstr "Réinitialiser aux valeur par défauts"
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
-msgstr "Restorer depuis la sauvegarde..."
+msgstr "&Récupérer depuis la sauvegarde..."
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
@@ -4887,7 +4885,7 @@ msgstr "Sécurité"
 
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
-msgstr "Voir la LICENCE pour les détails de l'open source."
+msgstr "Voir la LICENCE pour les détails de d'OpenSource"
 
 #. Resource IDs: (208)
 msgid "See Password History filters"
@@ -4920,7 +4918,7 @@ msgstr "Sélectionnez un clavier :"
 
 #. Resource IDs: (338)
 msgid "Select Location for Intermediate Backups"
-msgstr "Sélectionner le répertoire pour les sauvegardes intermédiaires"
+msgstr "Sélectionner le dossier pour les sauvegardes intermédiaires"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
@@ -5039,7 +5037,7 @@ msgstr "Définir la police du clavier virtuel"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
-msgstr "Mettre le nombre maximum de mots de passe sauvés à la valeur ci-dessus"
+msgstr "Définir le nombre maximum de mots de passe enregistrés à la valeur ci-dessus"
 
 #. Resource IDs: (516)
 msgid "Setswana"
@@ -5116,7 +5114,7 @@ msgstr "Afficher les entrées avec des champs comparés identiques (Note: Les ch
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
-msgstr "Afficher la grille dans la Vue sous forme de liste"
+msgstr "Afficher la grille dans la vue sous forme de liste"
 
 #. Resource IDs: (360)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -5213,7 +5211,7 @@ msgstr "Espagnol Variation"
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
-msgstr "Lancer PasswordSafe au Login"
+msgstr "Lancer PasswordSafe lors du démarrage"
 
 #. Resource IDs: (204)
 msgid "Start Report"
@@ -5221,11 +5219,11 @@ msgstr "Commencer le rapport"
 
 #. Resource IDs: (319)
 msgid "Start saving password history for all entries, to the above number of entries."
-msgstr "Commencer à enregistrer l'historique pour toutes les entrées, au nombre d'entrées ci-dessus."
+msgstr "Débuter l'enregistrement de l'historique pour toutes les entrées, au nombre d'entrées ci-dessus."
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
-msgstr "Commencer à enregistrer les mots de passe précédents"
+msgstr "Débuter l'enregistrement des mots de passe précédents"
 
 #. Resource IDs: (1264)
 msgid "Static"
@@ -5389,7 +5387,7 @@ msgstr "La touche ALT n'est utilisée sur aucun clavier pour sélectionner du te
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
-msgstr "La combinaison ne peut être vierge."
+msgstr "La combinaison ne peut être vide."
 
 #. Resource IDs: (210)
 #, c-format
@@ -5442,16 +5440,16 @@ msgid ""
 "Note: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\n"
 "including another copy of Password Safe running on your machine."
 msgstr ""
-"La base:\n"
+"Le fichier:\n"
 "%s\n"
 "\n"
-"est apparemment en train d'être utilisée par:\n"
+"est apparemment en train d'être utilisé par:\n"
 "%s%s.\n"
 "\n"
-"Ouvir la base en lecture seule, lecture/écriture ou quitter?\r\n"
+"Ouvir la base en lecture seule, lecture-écriture ou quitter?\r\n"
 "\r\n"
-"Note: Choisir \"lecture/écriture\" qui si vous êtes sûr que le fichier est de fait pas utilisé par quiconque.\n"
-"incluant le fait qu'une autre instance de PasswordSafe tourne sur votre machine."
+"Note: Choisir \"lecture-écriture\" que si vous êtes certain que le fichier est n'est actuellement pas utilisé par un\n"
+"autre utilisateur ou qu'une autre instance de PasswordSafe ne soit en cours d'exécution."
 
 #. Resource IDs: (329)
 msgid "The entered passwords do not match.  Please re-enter them."
@@ -5561,7 +5559,7 @@ msgstr "La cible de cet alias [%s:%s:%s] n'est pas une entrée normale ou est d�
 
 #. Resource IDs: (320)
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
-msgstr "Ceci vous permet de garder les sauvegardes dans un endroit séparé. Soyez sûr que vous avez la permission d'écriture dans le répertoire que vous spécifiez."
+msgstr "Ceci vous permet de garder les sauvegardes dans un endroit séparé. Soyez sûr que vous avez la permission d'écriture dans le dossier que vous spécifiez."
 
 #. Resource IDs: (362)
 #, c-format
@@ -5692,16 +5690,16 @@ msgstr ""
 
 #. Resource IDs: (319)
 msgid "This will clear all traces of Password Safe from the machine's registry. It may also cause previous versions of Password Safe to revert to default values for some settings."
-msgstr "Cela effacera toute trace de PasswordSafe du registre de la machine. Cela peut aussi remettre les versions précédentes de Password Safe aux valeurs par défaut pour certains réglages."
+msgstr "Ceci effacera toute trace de PasswordSafe du registre. Ceci peut aussi remettre les versions précédentes de PasswordSafe aux valeurs par défaut pour certains réglages."
 
 #. Resource IDs: (341)
 #, c-format
 msgid "This will delete %d entries which are within this group and its subgroups."
-msgstr "Cela effacera %d entrées qui appartiennent à ce groupe et à ses sous-groupes."
+msgstr "Ceci supprimera %d entrées qui appartiennent à ce groupe et à ses sous-groupes."
 
 #. Resource IDs: (341)
 msgid "This will delete an entry which is within this group and/or its subgroups."
-msgstr "Cela effacera une entrée qui est dans ce groupe et/ou ses sous-groupes."
+msgstr "Ceci supprimera une entrée qui est dans ce groupe et/ou ses sous-groupes."
 
 #. Resource IDs: (361)
 msgid "This will delete the selected Failsafe Backup file.  If Windows supports a Recycle Bin on this media (usually only local disks), it will be moved there.  If not, it will be permanently deleted."
@@ -5737,7 +5735,7 @@ msgstr "Pour remplacer les mots de passe d'entrées existantes, les colonnes sui
 
 #. Resource IDs: (32106)
 msgid "Toolbar &visible"
-msgstr "Barre d'outils  &visible"
+msgstr "Barre d'outils &visible"
 
 #. Resource IDs: (1284)
 msgid "Treat fields that only contain 'whitespace' as empty"
@@ -5812,9 +5810,9 @@ msgid ""
 "\n"
 "Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
-"Incapable de créer un nouveau fichier XML de configuration ou d'ajouter vos réglages à un fichier XML existant de  configuration.\n"
+"Incapable de créer un nouveau fichier XML de configuration ou d'ajouter vos réglages à un fichier XML existant de configuration.\n"
 "\n"
-"Tous les réglages de configuration de l'application seront sauvegardés dans votre entrée de registre sur cet ordinateur.\n"
+"Tous les réglages de configuration de l'application seront sauvegardés dans le registre sur cet ordinateur.\n"
 "\n"
 "Les réglages de la base de données seront stockés dans la base de données ouverte quand elle sera fermée, présumant qu'elle n'est pas ouverte uniquement en lecture ou verrouillée par un autre utilisateur."
 
@@ -5917,7 +5915,7 @@ msgstr "Décocher"
 
 #. Resource IDs: (32082)
 msgid "Undo"
-msgstr "Annuler"
+msgstr "&Annuler"
 
 #. Resource IDs: (209)
 msgid "Unexpected element: Only one field allowed per filter entry."
@@ -5979,7 +5977,7 @@ msgstr "Déverrouiller"
 
 #. Resource IDs: (329)
 msgid "Unlock Safe"
-msgstr "Déverrouiller le coffre"
+msgstr "&Déverrouiller le coffre"
 
 #. Resource IDs: (358)
 #, c-format
@@ -6430,7 +6428,7 @@ msgid ""
 "Clear the clipboard contents"
 msgstr ""
 "\n"
-"Effacer le contenu du presse-papier"
+"Supprimer le contenu du presse-papier"
 
 #. Resource IDs: (2001)
 msgid ""
@@ -6454,7 +6452,7 @@ msgid ""
 "Collapse All"
 msgstr ""
 "\n"
-"Tout ramasser"
+"Regrouper tout"
 
 #. Resource IDs: (2002)
 msgid ""
@@ -6510,7 +6508,7 @@ msgid ""
 "Delete an Entry"
 msgstr ""
 "\n"
-"Effacer une entrée"
+"Supprimer une entrée"
 
 #. Resource IDs: (2017)
 msgid ""
@@ -6567,7 +6565,7 @@ msgid ""
 "Expand All"
 msgstr ""
 "\n"
-"Tout répandre"
+"Développer tout"
 
 #. Resource IDs: (2001)
 msgid ""
@@ -6671,7 +6669,7 @@ msgid ""
 "Merge into Database"
 msgstr ""
 "\n"
-"Intégrer à la base"
+"Fusionner à la base"
 
 #. Resource IDs: (2001)
 msgid ""
@@ -6719,7 +6717,7 @@ msgid ""
 "Redo"
 msgstr ""
 "\n"
-"Répéter"
+"Rétablir"
 
 #. Resource IDs: (2005)
 msgid ""
@@ -7061,7 +7059,7 @@ msgstr "contient"
 
 #. Resource IDs: (1093)
 msgid "databases."
-msgstr "bases de données."
+msgstr "derniers fichiers ouverts."
 
 #. Resource IDs: (1321)
 msgid "day(s)"
@@ -7073,7 +7071,7 @@ msgstr "jours"
 
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
-msgstr "jours avant que les mots de passe n'expirent"
+msgstr "jours avant expiration"
 
 #. Resource IDs: (206)
 msgid "does not begin with"
@@ -7217,7 +7215,7 @@ msgstr "little endian"
 
 #. Resource IDs: (65535)
 msgid "minutes idle"
-msgstr "minutes inoccupées"
+msgstr "minutes d'inactivité"
 
 #. Resource IDs: (342)
 #, c-format
@@ -7311,7 +7309,7 @@ msgstr "haut"
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
-msgstr "entrées utilisées dans le menu de la barre système."
+msgstr "dernières entrées utilisées"
 
 #. Resource IDs: (32011)
 msgid "v&1.x format..."
