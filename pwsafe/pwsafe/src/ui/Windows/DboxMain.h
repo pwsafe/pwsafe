@@ -761,6 +761,7 @@ private:
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
+  void CancelPendingPasswordDialog();
 
   void RemoveFromGUI(CItemData &ci, bool bUpdateGUI);
   void AddToGUI(CItemData &ci);

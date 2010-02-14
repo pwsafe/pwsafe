@@ -1569,6 +1569,8 @@ void DboxMain::OnU3ShopWebsite()
 #endif
 }
 
+static CPasskeyEntry *dbox_pkentry = NULL;
+
 int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   StringX &passkey,
                                   int index,
@@ -1591,7 +1593,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   // prevent multiple r/w access.
   int retval;
   bool bFileIsReadOnly = false;
-  static CPasskeyEntry *dbox_pkentry = NULL;
 
   if (dbox_pkentry != NULL) { // can happen via systray unlock
     dbox_pkentry->BringWindowToTop();
@@ -1777,6 +1778,19 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   delete dbox_pkentry;
   dbox_pkentry = NULL;
   return retval;
+}
+
+void DboxMain::CancelPendingPasswordDialog()
+{
+  /**
+   * Called from LockDataBase(), closes any pending
+   * password dialog box when locking.
+   * The ensures a sane sate upon restore.
+   */
+  if (dbox_pkentry == NULL)
+    return; // all is well, nothing to do
+  else
+    dbox_pkentry->SendMessage(WM_CLOSE);
 }
 
 BOOL
