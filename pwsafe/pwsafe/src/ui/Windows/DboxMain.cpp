@@ -1131,7 +1131,8 @@ BOOL DboxMain::OnInitDialog()
 
 void DboxMain::SetInitialDatabaseDisplay()
 {
-  if (m_ctlItemTree.GetCount() > 0)
+  if (m_ctlItemTree.GetCount() > 0) {
+    m_ctlItemTree.SetRestoreMode(true);
     switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
       case PWSprefs::AllCollapsed:
         m_ctlItemTree.OnCollapseAll();
@@ -1145,6 +1146,9 @@ void DboxMain::SetInitialDatabaseDisplay()
       default:
         ASSERT(0);
     }
+    m_ctlItemTree.SetRestoreMode(false);
+    SaveGroupDisplayState();
+  }
 }
 
 void DboxMain::OnDestroy()
@@ -2047,8 +2051,16 @@ void DboxMain::OnMinimize()
 
 void DboxMain::OnRestore()
 {
+  m_ctlItemTree.SetRestoreMode(true);
   // Called when the System Tray Restore menu option is used
   RestoreWindowsData(true);
+
+  // Restore display
+  if (!m_vDisplayStatus.empty())
+    SetGroupDisplayState(m_vDisplayStatus);
+  else
+    m_vDisplayStatus.clear();
+  m_ctlItemTree.SetRestoreMode(false);
 }
 
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
