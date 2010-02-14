@@ -577,10 +577,12 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         break;
       }
       case ThisMfcApp::LOCKED:
-        { // ensure 1st item's "Unlock"
+      { // ensure 1st item is "Unlock"
         const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
         pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
                                  ID_MENUITEM_TRAYUNLOCK, csUnLock);
+        // Can't do Minimize if locked
+        pContextMenu->RemoveMenu(ID_MENUITEM_MINIMIZE, MF_BYCOMMAND);
         break;
       }
       case ThisMfcApp::CLOSED:
@@ -593,6 +595,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       default:
         break;
     }
+
     if (CPWDialog::GetDialogTracker()->AnyOpenDialogs()) {
       // Delete Close
       pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND);
@@ -712,9 +715,11 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     if (m_DefaultMenuItemByPos) {
       if (!menu.LoadMenu(m_menuID))
         return 0L;
+
       CMenu *pContextMenu = menu.GetSubMenu(0);
       if (!pContextMenu)
         return 0L;
+
       uItem = pContextMenu->GetMenuItemID(m_DefaultMenuItemID);
     } else
       uItem = m_DefaultMenuItemID;
