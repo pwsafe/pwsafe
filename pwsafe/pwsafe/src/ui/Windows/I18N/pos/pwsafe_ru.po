@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -65,6 +66,7 @@ msgstr ""
 # Undo - вернуть
 # Redo - повторить
 # Failsafe Backup - Аварийная резервная копия
+
 #. Resource IDs: (315, 8016, 8017)
 msgid " "
 msgstr " "

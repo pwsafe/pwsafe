@@ -1785,7 +1785,7 @@ void DboxMain::CancelPendingPasswordDialog()
   /**
    * Called from LockDataBase(), closes any pending
    * password dialog box when locking.
-   * The ensures a sane sate upon restore.
+   * The ensures a sane state upon restore.
    */
   if (dbox_pkentry == NULL)
     return; // all is well, nothing to do
@@ -1793,13 +1793,12 @@ void DboxMain::CancelPendingPasswordDialog()
     dbox_pkentry->SendMessage(WM_CLOSE);
 }
 
-BOOL
-DboxMain::OnToolTipText(UINT,
-                        NMHDR* pNMHDR,
-                        LRESULT* pResult)
-                        // This code is copied from the DLGCBR32 example that comes with MFC
-                        // Updated by MS on 25/09/2005
+BOOL DboxMain::OnToolTipText(UINT,
+                             NMHDR *pNMHDR,
+                             LRESULT *pResult)
 {
+  // This code is copied from the DLGCBR32 example that comes with MFC
+  // Updated by MS on 25/09/2005
 #if !defined(POCKET_PC)
   ASSERT(pNMHDR->code == TTN_NEEDTEXTA || pNMHDR->code == TTN_NEEDTEXTW);
 
