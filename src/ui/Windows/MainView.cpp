@@ -1889,7 +1889,11 @@ bool DboxMain::LockDataBase()
       return false;
     }
   }
-
+  // If there's a pending dialog box prompting for a
+  // password, we need to kill it, since we will prompt
+  // for the existing dbase's password upon restore.
+  // Avoid lots of edge cases this way.
+  CancelPendingPasswordDialog();
   ClearData(false);
   return true;
 }
