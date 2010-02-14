@@ -1876,7 +1876,7 @@ bool DboxMain::LockDataBase()
    */
 
   // Need to save display status for when we return from minimize
-  SaveGroupDisplayState();
+  m_vDisplayStatus = GetGroupDisplayState();
 
   // Now try and save changes
   if (m_core.IsChanged() ||  m_bTSUpdated) {
