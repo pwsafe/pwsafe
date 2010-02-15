@@ -18,11 +18,13 @@ using namespace std;
 void CDDObject::DDSerialize(CSMemFile &outDDmemfile)
 {
   vector<char> v;
-  CItemData *pci_base(NULL);
+  CItemData *pbci(NULL);
   if (m_item.IsDependent()) {
-    pci_base = GetBaseItem();
+    pbci = GetBaseItem();
+    ASSERT(pbci != NULL);
   }
-  m_item.SerializePlainText(v, pci_base);
+ 
+  m_item.SerializePlainText(v, pbci);
   size_t len = v.size();
   outDDmemfile.Write(&len, sizeof(len));
   outDDmemfile.Write(&(*v.begin()), (UINT)v.size());

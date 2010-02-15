@@ -811,7 +811,7 @@ void DboxMain::OnDuplicateEntry()
     if (pci->IsDependent()) {
       if (pci->IsAlias()) {
         ci2.SetAlias();
-      } else { // shortcut
+      } else {
         ci2.SetShortcut();
       }
 
@@ -864,8 +864,10 @@ void DboxMain::OnDisplayPswdSubset()
 
   CItemData *pci_original(pci);
 
-  if (pci->IsDependent())
+  if (pci->IsDependent()) {
     pci = GetBaseEntry(pci);
+    ASSERT(pci != NULL);
+  }
 
   CPasswordSubsetDlg DisplaySubsetDlg(this, pci);
 
@@ -924,7 +926,9 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
 
   if (pci->IsShortcut() ||
       (pci->IsAlias() && ft == CItemData::PASSWORD)) {
-    pci = GetBaseEntry(pci);
+    CItemData *pbci = GetBaseEntry(pci);
+    ASSERT(pbci != NULL);
+    pci = pbci;
   }
 
   StringX cs_data;
@@ -1369,9 +1373,13 @@ void DboxMain::OnRunCommand()
   CItemData *pci_original(pci);
   StringX sx_pswd;
 
-  if (pci->IsDependent())
-    sx_pswd = GetBaseEntry(pci)->GetPassword();
-  else
+  if (pci->IsDependent()) {
+    CItemData *pbci = GetBaseEntry(pci);
+    ASSERT(pbci != NULL);
+    sx_pswd = pbci->GetPassword();
+    if (pci->IsShortcut())
+      pci = pbci;
+  } else
     sx_pswd = pci->GetPassword();
 
   StringX sx_RunCommand, sx_Expanded_ES;
