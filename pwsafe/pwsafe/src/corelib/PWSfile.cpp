@@ -93,7 +93,7 @@ PWSfile::HeaderRecord::HeaderRecord()
   m_whatlastsaved(_T("")),
   m_dbname(_T("")), m_dbdesc(_T(""))
 {
-  memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
+  memset(m_file_uuid_array, 0, sizeof(m_file_uuid_array));
 }
 
 PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h) 

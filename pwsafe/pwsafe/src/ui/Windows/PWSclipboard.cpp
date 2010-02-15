@@ -87,7 +87,7 @@ bool PWSclipboard::ClearData()
         trashMemory((void *)pData, dwlength);
         StringX blank(_T(""));
         SetData(blank, false);
-        memset(m_digest, '\0', SHA256::HASHLEN);
+        memset(m_digest, 0, SHA256::HASHLEN);
       }
       ::GlobalUnlock(hData);
       ::GlobalFree(hData);

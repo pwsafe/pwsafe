@@ -112,9 +112,9 @@ void ESecMemMgr::free(void * puser_mem)
     size_t size = (size_t)*preal_mem;
     // Trash it!
     if (size > 0) {
-      memset(puser_mem, 0x55, size);
-      memset(puser_mem, 0xAA, size);
-      memset(puser_mem, 0x00, size);
+      std::memset(puser_mem,  85, size);   // Dec  85 = 0x55
+      std::memset(puser_mem, 170, size);   // Dec 170 = 0xAA
+      std::memset(puser_mem,   0, size);
     }
     // Free it
     //TRACE(_T("free:    preal = %p, puser = %p, size = %08d\n"),
