@@ -21,6 +21,8 @@ Bugs fixed in 3.21.1
 [2951871] Shortcut related menu items now returned to the Edit menu and
 the "Run Command", "Browse to URL", "Browse to URL + Autotype" and 
 "Send email" functions now work again, when a Shortcut entry is selected.
+[2897661, 2779654] Group expand/collapse state restored after the database
+is Locked, Minimized or "AutoType with Minimize" and then Restored.
 
 New Features for 3.21
 =====================

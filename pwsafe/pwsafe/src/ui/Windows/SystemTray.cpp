@@ -83,37 +83,19 @@ const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(L"Taskbar
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray construction/creation/destruction
 
-#if 0 // XXX cleanup 
-CSystemTray::CSystemTray()
-{
-  Initialise();
-}
-#endif
-
 CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
                          HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
-  : m_RUEList(RUEList), m_pParent(pParent)
+  : m_RUEList(RUEList), m_pParent(pParent), m_bEnabled(FALSE),
+  m_bHidden(FALSE), m_uIDTimer(0), m_hSavedIcon(NULL), m_DefaultMenuItemID(0),
+  m_DefaultMenuItemByPos(TRUE), m_pTarget(NULL), m_menuID(0)
 {
   ASSERT(m_pParent != NULL);
-  Initialise();
+  SecureZeroMemory(&m_tnd, sizeof(m_tnd));
   Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
 }
 
-void CSystemTray::Initialise()
-{
-  SecureZeroMemory(&m_tnd, sizeof(m_tnd));
-  m_bEnabled   = FALSE;
-  m_bHidden    = FALSE;
-  m_uIDTimer   = 0;
-  m_hSavedIcon = NULL;
-  m_DefaultMenuItemID = 0;
-  m_DefaultMenuItemByPos = TRUE;
-  m_pTarget = NULL; // ronys
-  m_menuID = 0;
-}
-
-BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
+BOOL CSystemTray::Create(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
                          HICON icon, UINT uID, UINT menuID)
 {
   // this is only for Windows 95 (or higher)
@@ -558,7 +540,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     CMenu *pContextMenu = menu.GetSubMenu(0);
     if (!pContextMenu)
       return 0L;
-
+ 
     int iPopupPos(2);
     const int i_state = app.GetSystemTrayState();
     switch (i_state) {

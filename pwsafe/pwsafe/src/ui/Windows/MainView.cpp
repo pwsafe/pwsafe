@@ -645,7 +645,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       goto nextentry;
 
     bFoundit = false;
-    saveTitle = curTitle = curitem.GetTitle(); // savetitle keeps orig case
+    saveTitle = curTitle = curitem.GetTitle(); // saveTitle keeps orig case
     curGroup = curitem.GetGroup();
     curUser =  curitem.GetUser();
     curPassword = curitem.GetPassword();
@@ -990,7 +990,7 @@ static void Shower(CWnd *pWnd)
 void DboxMain::RestoreWindows()
 {
   ShowWindow(SW_RESTORE);
-  SetGroupDisplayState(m_grpdispstate);
+
   RefreshViews();
   BringWindowToTop();
   CPWDialog::GetDialogTracker()->Apply(Shower);
@@ -1099,11 +1099,17 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
         TRACE(L"OnSize:SIZE_RESTORED\n");
         RestoreWindowsData(false);
-        m_ctlItemTree.SetRestoreMode(true);
+
         m_bIsRestoring = true; // Stop 'sort of list view' hiding FindToolBar
+        m_ctlItemTree.SetRestoreMode(true);
         RefreshViews();
         if (m_selectedAtMinimize != NULL)
           SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
+
+        if (!m_vGroupDisplayState.empty()) {
+          SetGroupDisplayState(m_vGroupDisplayState);
+          m_vGroupDisplayState.clear();
+        }
         m_ctlItemTree.SetRestoreMode(false);
         m_bIsRestoring = false;
 
@@ -1876,7 +1882,7 @@ bool DboxMain::LockDataBase()
    */
 
   // Need to save display status for when we return from minimize
-  m_vDisplayStatus = GetGroupDisplayState();
+  m_vGroupDisplayState = GetGroupDisplayState();
 
   // Now try and save changes
   if (m_core.IsChanged() ||  m_bTSUpdated) {

@@ -45,7 +45,7 @@ class CSystemTray : public CWnd
   // Construction/destruction
 public:
   //    CSystemTray();
-  CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCWSTR szTip, HICON icon,
+  CSystemTray(CWnd *pWnd, UINT uCallbackMessage, LPCWSTR szTip, HICON icon,
               CRUEList &RUEList, UINT uID, UINT menuID);
   virtual ~CSystemTray();
 
@@ -53,12 +53,12 @@ public:
 
   // Operations
 public:
-  void SetTarget(CWnd *ptgt) { m_pTarget = ptgt;} // ronys
-  BOOL Enabled() const { return m_bEnabled; }
-  BOOL Visible() const { return !m_bHidden; }
+  void SetTarget(CWnd *ptgt) {m_pTarget = ptgt;} // ronys
+  BOOL Enabled() const {return m_bEnabled;}
+  BOOL Visible() const {return !m_bHidden;}
 
   // Create the tray icon
-  BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szTip, HICON icon,
+  BOOL Create(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szTip, HICON icon,
               UINT uID, UINT menuID);
 
   // Change or retrieve the Tooltip text
@@ -80,32 +80,24 @@ public:
 
   // For icon animation
   BOOL SetIconList(UINT uFirstIconID, UINT uLastIconID); 
-  BOOL SetIconList(HICON* pHIconList, UINT nNumIcons); 
+  BOOL SetIconList(HICON *pHIconList, UINT nNumIcons); 
   BOOL Animate(UINT nDelayMilliSeconds, int nNumSeconds = -1);
   BOOL StepAnimation();
   BOOL StopAnimation();
 
   // Change menu default item
-  void GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) const;
+  void GetMenuDefaultItem(UINT &uItem, BOOL &bByPos) const;
   BOOL SetMenuDefaultItem(UINT uItem, BOOL bByPos);
 
   // Change or retrieve the window to send notification messages to
-  BOOL SetNotificationWnd(CWnd* pNotifyWnd);
+  BOOL SetNotificationWnd(CWnd *NotifyWnd);
   CWnd* GetNotificationWnd() const;
 
   // Default handler for tray notification message
   virtual LRESULT OnTrayNotification(WPARAM uID, LPARAM lEvent);
 
-  // Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CSystemTray)
 protected:
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-  //}}AFX_VIRTUAL
-
-  // Implementation
-protected:
-  void Initialise();
 
   BOOL m_bEnabled;   // does O/S support tray icon?
   BOOL m_bHidden;    // Has the icon been hidden?
@@ -126,13 +118,11 @@ protected:
   const CRUEList &m_RUEList; // reference set to dboxmain's
   std::vector<RUEntryData> m_menulist;
 
-  // Generated message map functions
-protected:
   //{{AFX_MSG(CSystemTray)
   afx_msg void OnTimer(UINT_PTR nIDEvent);
-
   //}}AFX_MSG
   LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
+
   DECLARE_MESSAGE_MAP()
 
 private:
