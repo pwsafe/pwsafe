@@ -2056,10 +2056,10 @@ void DboxMain::OnRestore()
   RestoreWindowsData(true);
 
   // Restore display
-  if (!m_vDisplayStatus.empty())
+  if (!m_vDisplayStatus.empty()) {
     SetGroupDisplayState(m_vDisplayStatus);
-  else
     m_vDisplayStatus.clear();
+  }
   m_ctlItemTree.SetRestoreMode(false);
 }
 
