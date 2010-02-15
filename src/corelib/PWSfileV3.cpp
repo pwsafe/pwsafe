@@ -469,7 +469,7 @@ int PWSfileV3::WriteHeader()
 
   // Write UUID
   uuid_array_t file_uuid_array;
-  memset(file_uuid_array, 0x00, sizeof(file_uuid_array));
+  memset(file_uuid_array, 0, sizeof(file_uuid_array));
   // If not there or zeroed, create new
   if (memcmp(m_hdr.m_file_uuid_array,
              file_uuid_array, sizeof(file_uuid_array)) == 0) {

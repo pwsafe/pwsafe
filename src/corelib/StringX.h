@@ -110,9 +110,9 @@ namespace S_Alloc
 
         if (n > 0) {
           const size_type N = n * sizeof(T);
-          std::memset(p, 0x55, N);
-          std::memset(p, 0xAA, N);
-          std::memset(p, 0x00, N);
+          std::memset(p,  85, N);   // Dec  85 = 0x55
+          std::memset(p, 170, N);   // Dec 170 = 0xAA
+          std::memset(p,   0, N);
         }
         std::free(p);
       }

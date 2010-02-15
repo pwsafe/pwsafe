@@ -1239,7 +1239,7 @@ bool PWScore::Validate(stringT &status)
 
 void PWScore::ClearFileUUID()
 {
-  memset(m_hdr.m_file_uuid_array, 0x00, sizeof(m_hdr.m_file_uuid_array));
+  memset(m_hdr.m_file_uuid_array, 0, sizeof(m_hdr.m_file_uuid_array));
 }
 
 void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
@@ -1751,7 +1751,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
   // "bMultipleEntriesFound" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
 
   pl.bMultipleEntriesFound = false;
-  memset(pl.base_uuid, 0x00, sizeof(uuid_array_t));
+  memset(pl.base_uuid, 0, sizeof(uuid_array_t));
 
   // Take a copy of the Password field to do the counting!
   StringX passwd(Password);
@@ -1849,7 +1849,7 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
                                         uuid_array_t &base_uuid, 
                                         const CItemData::EntryType type)
 {
-  memset(base_uuid, 0x00, sizeof(uuid_array_t));
+  memset(base_uuid, 0, sizeof(uuid_array_t));
 
   ItemMap *pmap;
   if (type == CItemData::ET_ALIAS)

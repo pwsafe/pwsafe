@@ -51,9 +51,9 @@ void trashMemory(void* buffer, size_t length)
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
   if (length > 0) {
-    memset(buffer, 0x55, length);
-    memset(buffer, 0xAA, length);
-    memset(buffer, 0x00, length);
+    std::memset(buffer,  85, length);   // Dec  85 = 0x55
+    std::memset(buffer, 170, length);   // Dec 170 = 0xAA
+    std::memset(buffer,   0, length);
   }
 }
 #ifdef _WIN32
@@ -88,15 +88,15 @@ void ConvertString(const StringX &text,
   txt = (unsigned char *)txtstr; // don't delete[] (ugh)!!!
 #else
 #ifdef _WIN32
-  txt = new unsigned char[3*txtlen]; // safe upper limit
+  txt = new unsigned char[3 * txtlen]; // safe upper limit
   int len = WideCharToMultiByte(CP_ACP, 0, txtstr, txtlen,
-    LPSTR(txt), 3*txtlen, NULL, NULL);
+                                LPSTR(txt), 3 * txtlen, NULL, NULL);
   ASSERT(len != 0);
 #else
   mbstate_t mbs;
-  memset(&mbs, '\0', sizeof(mbs));
+  memset(&mbs, 0, sizeof(mbs));
   size_t len = wcsrtombs(NULL, &txtstr, 0, &mbs);
-  txt = new unsigned char[len+1];
+  txt = new unsigned char[len + 1];
   len = wcsrtombs((char *)txt, &txtstr, len, &mbs);
   ASSERT(len != (size_t)-1);
 #endif
@@ -303,7 +303,7 @@ size_t _readcbc(FILE *fp,
   unsigned char *b = buffer;
 
   // Initialize memory.  (Lockheed Martin) Secure Coding  11-14-2007
-  memset(b, 0, (length/BS)*BS +2*BS);
+  memset(b, 0, (length / BS) * BS + 2 * BS);
 
   if (BS == 16) {
     // length block contains up to 11 (= 16 - 4 - 1) bytes
