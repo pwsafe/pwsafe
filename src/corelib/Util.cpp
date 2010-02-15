@@ -51,9 +51,9 @@ void trashMemory(void* buffer, size_t length)
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
   if (length > 0) {
-    std::memset(buffer,  85, length);   // Dec  85 = 0x55
-    std::memset(buffer, 170, length);   // Dec 170 = 0xAA
-    std::memset(buffer,   0, length);
+    std::memset(buffer, 0x55, length);
+    std::memset(buffer, 0xAA, length);
+    std::memset(buffer,    0, length);
   }
 }
 #ifdef _WIN32
