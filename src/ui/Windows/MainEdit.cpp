@@ -1172,9 +1172,11 @@ void DboxMain::AutoType(const CItemData &ci)
   bool bMinOnAuto = PWSprefs::GetInstance()->
                     GetPref(PWSprefs::MinimizeOnAutotype);
 
-  if (bMinOnAuto)
+  if (bMinOnAuto) {
+    // Need to save display status for when we return from minimize
+    m_vGroupDisplayState = GetGroupDisplayState();
     ShowWindow(SW_MINIMIZE);
-  else
+  } else
     ShowWindow(SW_HIDE);
 
   std::vector<size_t> vactionverboffsets;

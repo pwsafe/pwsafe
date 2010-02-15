@@ -1961,13 +1961,15 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
       break;
     case SC_MINIMIZE:
       // Save expand/collapse status of groups
-      m_grpdispstate = GetGroupDisplayState();
+      m_vGroupDisplayState = GetGroupDisplayState();
       break;
     case SC_CLOSE:
-      // Save expand/collapse status of groups
-      m_grpdispstate = GetGroupDisplayState();
-      if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+      if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
         Close();
+      } else {
+        // Save expand/collapse status of groups
+        m_vGroupDisplayState = GetGroupDisplayState();
+      }
       break;
   }
 
@@ -2050,7 +2052,8 @@ void DboxMain::OnMinimize()
     m_bStartHiddenAndMinimized = false;
 
   // Save expand/collapse status of groups
-  m_grpdispstate = GetGroupDisplayState();
+  m_vGroupDisplayState = GetGroupDisplayState();
+
   // Let OnSize handle this
   ShowWindow(SW_MINIMIZE);
 }
@@ -2061,11 +2064,6 @@ void DboxMain::OnRestore()
   // Called when the System Tray Restore menu option is used
   RestoreWindowsData(true);
 
-  // Restore display
-  if (!m_vDisplayStatus.empty()) {
-    SetGroupDisplayState(m_vDisplayStatus);
-    m_vDisplayStatus.clear();
-  }
   m_ctlItemTree.SetRestoreMode(false);
 }
 

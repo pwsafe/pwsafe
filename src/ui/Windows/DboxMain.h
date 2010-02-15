@@ -719,7 +719,7 @@ private:
   CFont *m_pFontTree;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   bool m_inExit; // help U3ExitNow
-  std::vector<bool> m_grpdispstate;  // used to save/restore display state over minimize/restore
+  std::vector<bool> m_vGroupDisplayState; // used to save/restore display state over minimize/restore
   StringX m_savedDBprefs;  // used across minimize/restore events
 
   PWSclipboard m_clipboard;
@@ -831,7 +831,6 @@ private:
   // Workstation Locked
   bool m_bWSLocked, m_bWTSRegistered, m_bBlockShutdown;
   DWORD m_WindowsMajorVersion, m_WindowsMinorVersion;
-  std::vector<bool> m_vDisplayStatus; // Only used over Lock/Restore
 
   // Need this in case not running on Vista or later
   HMODULE m_hUser32;
