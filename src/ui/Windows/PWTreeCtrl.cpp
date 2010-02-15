@@ -1716,10 +1716,12 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *pci)
   if (pci->IsDependent()) {
     // I'm an alias or shortcut; pass on ptr to my base item
     // to retrieve its group/title/user
-    pDDObject->SetBaseItem(m_pDbx->GetBaseEntry(pci));
+    CItemData *pbci = m_pDbx->GetBaseEntry(pci);
+    ASSERT(pbci != NULL);
+    pDDObject->SetBaseItem(pbci);
   }
 
-    out_oblist.AddTail(pDDObject);
+  out_oblist.AddTail(pDDObject);
 }
 
 CSecString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
@@ -1881,6 +1883,7 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     GlobalFree(m_hgDataALL);
     m_hgDataALL = NULL;
   }
+
   if (m_hgDataTXT != NULL) {
     TRACE(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataTXT);
@@ -1892,6 +1895,7 @@ BOOL CPWTreeCtrl::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     GlobalFree(m_hgDataTXT);
     m_hgDataTXT = NULL;
   }
+
   if (m_hgDataUTXT != NULL) {
     TRACE(L"CPWTreeCtrl::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     LPVOID lpData = GlobalLock(m_hgDataUTXT);
@@ -1930,8 +1934,11 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
   DWORD_PTR itemData = GetItemData(m_hitemDrag);
   CItemData *pci = (CItemData *)itemData;
 
-  if (pci->IsDependent())
-    pci = m_pDbx->GetBaseEntry(pci);
+  if (pci->IsDependent()) {
+    CItemData *pbci = m_pDbx->GetBaseEntry(pci);
+    ASSERT(pbci != NULL);
+    pci = pbci;
+  }
  
   CSecString cs_dragdata;
   cs_dragdata = pci->GetPassword();

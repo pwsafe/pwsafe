@@ -597,6 +597,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     goto exit;
   }  // View menu
 
+  // Save original entry type before possibly changing pci
+  const CItemData::EntryType etype_original = pci->GetEntryType();
   if (bItemSelected && pci->IsShortcut())
     pci = m_core.GetBaseEntry(pci);
 
@@ -800,8 +802,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_AUTOTYPE, tc_dummy);
 
-      CItemData::EntryType etype = pci->GetEntryType();
-      switch (etype) {
+      switch (etype_original) {
         case CItemData::ET_NORMAL:
         case CItemData::ET_SHORTCUTBASE:
           // Allow creation of a shortcut
@@ -1181,8 +1182,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     CMenu* pPopup = menu.GetSubMenu(0);
     ASSERT_VALID(pPopup);
 
-    CItemData::EntryType etype = pci->GetEntryType();
-    switch (etype) {
+    const CItemData::EntryType etype_original = pci->GetEntryType();
+    switch (etype_original) {
       case CItemData::ET_NORMAL:
       case CItemData::ET_SHORTCUTBASE:
         pPopup->RemoveMenu(ID_MENUITEM_GOTOBASEENTRY, MF_BYCOMMAND);

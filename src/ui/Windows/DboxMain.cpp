@@ -1424,10 +1424,15 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
   CItemData *pci_original(pci);
 
   if (pci != NULL) {
-    StringX sx_pswd = pci->GetPassword();
+    StringX sx_pswd;
     if (pci->IsDependent()) {
-      sx_pswd = GetBaseEntry(pci)->GetPassword();
-    }
+      CItemData *pbci = GetBaseEntry(pci);
+      ASSERT(pbci != NULL);
+      sx_pswd = pbci->GetPassword();
+      if (pci->IsShortcut())
+        pci = pbci;
+    } else
+      sx_pswd = pci->GetPassword();
 
     CString cs_command;
     if (bSendEmail && !pci->IsEmailEmpty()) {
@@ -1436,6 +1441,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
     } else {
       cs_command = pci->GetURL().c_str();
     }
+
     if (!cs_command.IsEmpty()) {
       std::vector<size_t> vactionverboffsets;
       StringX sxautotype = PWSAuxParse::GetAutoTypeString(pci->GetAutoType(),

@@ -1,5 +1,5 @@
-Password Safe 3.21 Release Notes - February 2010
-================================================
+Password Safe 3.21.1 Release Notes - February 2010
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,20 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+New Features for 3.21.1
+=======================
+None
+
+Changes to Existing Features in 3.21.1
+======================================
+None
+
+Bugs fixed in 3.21.1
+====================
+[2951871] Shortcut related menu items now returned to the Edit menu and
+the "Run Command", "Browse to URL", "Browse to URL + Autotype" and 
+"Send email" functions now work again, when a Shortcut entry is selected.
 
 New Features for 3.21
 =====================
