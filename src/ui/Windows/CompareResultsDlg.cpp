@@ -665,7 +665,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 
   if (client_pt.x <= colwidth0) {
     m_column = CURRENT;
-    ipopup = IDR_POPCOPYTOCOMPARISON;
+    ipopup = IDR_POPEDITVIEWORIGINAL;
     bTargetRO = m_bComparisonDBReadOnly;
     bSourceRO = m_bOriginalDBReadOnly;
   } else if  (client_pt.x <= (colwidth0 + m_LCResults.GetColumnWidth(1))) {
@@ -695,8 +695,8 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
       pPopup->EnableMenuItem(1, MF_BYPOSITION | MF_GRAYED);
 
     // Disable edit if source read-only OR if Comparison DB
-    if (bSourceRO || m_column == COMPARE) {
-      const CString cs_View_Entry(MAKEINTRESOURCE(IDS_VIEWENTRY));
+    if (bSourceRO) {
+      const CString cs_View_Entry(MAKEINTRESOURCE(IDS_VIEWENTRY2));
       pPopup->ModifyMenu(ID_MENUITEM_COMPVIEWEDIT, MF_BYCOMMAND,
                          ID_MENUITEM_COMPVIEWEDIT, cs_View_Entry);
     }
