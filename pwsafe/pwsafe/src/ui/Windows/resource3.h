@@ -100,6 +100,7 @@
 #define IDS_UNLOCKSAFE                  5258
 #define IDS_NOSAFE                      5259
 #define IDS_COPYURL                     5260
+#define IDS_VIEWENTRY2                  5261
 #define IDS_SHORTCUTROEXPLANATION       5262
 #define IDS_UNKNOWN                     5263
 #define IDS_VIEWENTRY                   5264

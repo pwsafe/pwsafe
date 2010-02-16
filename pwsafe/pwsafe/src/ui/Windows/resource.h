@@ -62,7 +62,7 @@
 #define IDR_POPRESETCOLUMNWIDTH         168
 #define IDR_POPFIND                     169
 #define IDR_POPCOLUMNS                  170
-#define IDR_POPCOPYTOCOMPARISON         171
+#define IDR_POPEDITVIEWORIGINAL         171
 #define IDR_POPCOPYTOORIGINAL           172
 #define IDR_POPCUSTOMIZETOOLBAR         173
 #define IDR_POPEDITGROUP                174
