@@ -1276,9 +1276,9 @@ void DboxMain::SaveGUIStatus()
 
 void DboxMain::RestoreGUIStatus()
 {
-  ASSERT(!m_stkSaveGUIInfo.empty());
   if (m_stkSaveGUIInfo.empty())
     return; // better safe than sorry...
+
   st_SaveGUIInfo &SaveGUIInfo = m_stkSaveGUIInfo.top();
 
   ItemListIter iter;
