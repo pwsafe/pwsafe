@@ -373,7 +373,10 @@ void DboxMain::Delete()
   else if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     // Deleting a Group
+    HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
     pcmd = Delete(ti);
+    m_ctlItemTree.SelectItem(parent);
+    m_TreeViewGroup = L"";
   }
   if (pcmd != NULL) {
     Execute(pcmd);
@@ -388,6 +391,8 @@ Command *DboxMain::Delete(const CItemData *pci)
   // Delete a single item of any type:
   // Normal, base, alias, shortcut...
   ASSERT(pci != NULL);
+  TRACE(L"DboxMain::Delete(%s.%s)\n", pci->GetGroup().c_str(),
+        pci->GetTitle().c_str());
 
   // ConfirmDelete asks for user confirmation
   // when deleting a shortcut or alias base.
@@ -425,6 +430,7 @@ Command *DboxMain::Delete(HTREEITEM ti)
 
   // Here if we have a bona fida group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
+  TRACE(L"DboxMain::Delete(HTREEITEM %s)", m_ctlItemTree.GetItemText(ti));
   MultiCommands *pmulti_cmd = MultiCommands::Create(&m_core);
   
   HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
@@ -439,12 +445,6 @@ Command *DboxMain::Delete(HTREEITEM ti)
     cti = m_ctlItemTree.GetNextItem(cti, TVGN_NEXT);
   }
 
-  m_ctlItemTree.Invalidate(); // so whole view will be refereshed
-
-  HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
-  m_ctlItemTree.DeleteItem(ti);
-  m_ctlItemTree.SelectItem(parent);
-  m_TreeViewGroup = L"";
   return pmulti_cmd;
 }
 
