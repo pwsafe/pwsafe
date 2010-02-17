@@ -73,6 +73,8 @@ public:
     LIMIT_REACHED,                            // 14
     UNIMPLEMENTED,                            // 15
     NO_ENTRIES_EXPORTED,                      // 16
+    DB_HAS_DUPLICATES,                        // 17
+    OK_WITH_ERRORS,                           // 18
   };
 
   PWScore();
@@ -156,13 +158,14 @@ public:
                           const TCHAR &fieldSeparator, const TCHAR &delimiter,
                           const bool &bImportPSWDsOnly,
                           stringT &strErrors,
-                          int &numImported, int &numSkipped,
+                          int &numImported, int &numSkipped, int &numFixed,
                           CReport &rpt, Command *&pcommand);
   int ImportXMLFile(const stringT &ImportedPrefix,
                     const stringT &strXMLFileName,
                     const stringT &strXSDFileName,
                     const bool &bImportPSWDsOnly,
-                    stringT &strErrors, int &numValidated, int &numImported,
+                    stringT &strErrors,
+                    int &numValidated, int &numImported, int &numFixed,
                     bool &bBadUnknownFileFields,
                     bool &bBadUnknownRecordFields,
                     CReport &rpt, Command *&pcommand);
@@ -186,8 +189,16 @@ public:
 
   // Return list of unique groups
   void GetUniqueGroups(std::vector<stringT> &ary) const;
-  StringX GetUniqueTitle(const StringX &path, const StringX &title,
+  StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE);
+
+  bool InitialiseGTU(GTUSet &setGTU);
+  void MakeEntryUnique(GTUSet &setGTU, const StringX &group, StringX &title,
+                       const StringX &user, const int IDS_MESSAGE);
+  void SetUniqueGTUValidated(const bool bState)
+  {m_bUniqueGTUValidated = bState;}
+  bool GetUniqueGTUValidated()
+  {return m_bUniqueGTUValidated;}
 
   // Access to individual entries in database
   ItemListIter GetEntryIter()
@@ -281,7 +292,7 @@ public:
   void CopyPWList(const ItemList &in);
 
   // Validate() returns true if data modified, false if all OK
-  bool Validate(stringT &status);
+  bool Validate(stringT &status, CReport &rpt);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
   void GetDBProperties(st_DBProperties &st_dbp);
   StringX &GetDBPreferences() {return m_hdr.m_prefString;}
@@ -356,6 +367,7 @@ private:
   bool m_bDBChanged;
   bool m_bDBPrefsChanged;
   bool m_IsReadOnly;
+  bool m_bUniqueGTUValidated;
 
   PWSfile::HeaderRecord m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
@@ -392,7 +404,7 @@ private:
   virtual void SetVnodesModified(const std::vector<StringX> &mvm)
   {m_vnodes_modified = mvm;}
   void AddChangedNodes(StringX path);
-  
+
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
 

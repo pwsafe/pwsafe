@@ -56,12 +56,14 @@ Command::~Command()
 void Command::SaveState()
 {
   m_bSaveDBChanged = m_pcomInt->IsChanged();
+  m_bUniqueGTUValidated = m_pcomInt->GetUniqueGTUValidated();
   m_saved_vnodes_modified = m_pcomInt->GetVnodesModified();
 }
 
 void Command::RestoreState()
 {
   m_pcomInt->SetDBChanged(m_bSaveDBChanged);
+  m_pcomInt->SetUniqueGTUValidated(m_bUniqueGTUValidated);
   m_pcomInt->SetVnodesModified(m_saved_vnodes_modified);
 }
 

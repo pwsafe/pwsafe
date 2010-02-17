@@ -115,7 +115,6 @@
 #define IDSC_IMPORTWARNING3             3277
 #define IDSC_ALIAS                      3278
 #define IDSC_SHORTCUT                   3279
-#define IDSC_RPTVALIDATE                3280
 #define IDSC_FNORMAL                    3281
 #define IDSC_FALIAS                     3282
 #define IDSC_FSHORTCUT                  3283
@@ -216,6 +215,11 @@
 #define IDSC_NONE                       3381
 #define IDSC_USERONHOST                 3382
 #define IDSC_UNKNOWNFIELDS              3383
+#define IDSC_IMPORTCONFLICTS0           3384
+#define IDSC_IMPORTCONFLICTSX1          3385
+#define IDSC_IMPORTCONFLICTSX2          3386
+#define IDSC_DUPLICATENUMBER            3387
+#define IDSC_VALIDATEDUPLICATES         3388
 
 #define IDSC_DELETEBASET                3400
 #define IDSC_DELETEABASE                3401

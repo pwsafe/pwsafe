@@ -517,6 +517,10 @@ void XMLFileHandlers::AddEntries()
               GetPref(PWSprefs::MaintainDateTimeStamps);
   bool bIntoEmpty = m_pXMLcore->GetNumEntries() == 0;
 
+  // Initialize set
+  GTUSet setGTU;
+  m_pXMLcore->InitialiseGTU(setGTU);
+
   Command *pcmd1 = UpdateGUICommand::Create(m_pXMLcore,
                                             UpdateGUICommand::WN_UNDO,
                                             UpdateGUICommand::GUI_UNDO_IMPORT);
@@ -574,32 +578,35 @@ void XMLFileHandlers::AddEntries()
         ci_temp.SetUUID(uuid_array);
       }
     }
-    StringX newgroup;
+
+    StringX sxnewgroup, sxnewtitle(cur_entry->title);
     if (!m_ImportedPrefix.empty()) {
-      newgroup = m_ImportedPrefix.c_str(); newgroup += _T(".");
+      sxnewgroup = m_ImportedPrefix.c_str();
+      sxnewgroup += _T(".");
     }
-    EmptyIfOnlyWhiteSpace(cur_entry->group);
-    newgroup += cur_entry->group;
-    if (m_pXMLcore->Find(newgroup, cur_entry->title,
-                        cur_entry->username) != m_pXMLcore->GetEntryEndIter()) {
-        // Find a unique "Title"
-        StringX Unique_Title;
-        ItemListConstIter iter;
-        int i = 0;
-        stringT s_import;
-        do {
-          i++;
-          Format(s_import, IDSC_IMPORTNUMBER, i);
-          Unique_Title = cur_entry->title + s_import.c_str();
-          iter = m_pXMLcore->Find(newgroup, Unique_Title,
-                                 cur_entry->username);
-        } while (iter != m_pXMLcore->GetEntryEndIter());
-        cur_entry->title = Unique_Title;
+    sxnewgroup += cur_entry->group;
+    EmptyIfOnlyWhiteSpace(sxnewgroup);
+    EmptyIfOnlyWhiteSpace(sxnewtitle);
+
+    m_pXMLcore->MakeEntryUnique(setGTU, sxnewgroup, sxnewtitle, cur_entry->username, IDSC_IMPORTNUMBER);
+
+    if (sxnewtitle != cur_entry->title) {
+      stringT cs_header, csError;
+      if (cur_entry->group.empty())
+        LoadAString(cs_header, IDSC_IMPORTCONFLICTSX2);
+      else
+        Format(cs_header, IDSC_IMPORTCONFLICTSX1, cur_entry->group.c_str());
+      
+      Format(csError, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
+               cur_entry->title.c_str(), cur_entry->username.c_str(), sxnewtitle.c_str());
+      csError += _T("\r\n");
+      m_strImportErrors += csError;
+      m_numEntriesFixed++;
     }
-    ci_temp.SetGroup(newgroup);
-    EmptyIfOnlyWhiteSpace(cur_entry->title);
-    if (!cur_entry->title.empty())
-      ci_temp.SetTitle(cur_entry->title, m_delimiter);
+
+    ci_temp.SetGroup(sxnewgroup);
+    if (!sxnewtitle.empty())
+      ci_temp.SetTitle(sxnewtitle, m_delimiter);
     EmptyIfOnlyWhiteSpace(cur_entry->username);
     if (!cur_entry->username.empty())
       ci_temp.SetUser(cur_entry->username);
@@ -707,9 +714,13 @@ void XMLFileHandlers::AddEntries()
     m_pmulticmds->Add(pcmd);
     delete cur_entry;
   }
-    Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore,
-                                              UpdateGUICommand::WN_REDO,
-                                              UpdateGUICommand::GUI_REDO_IMPORT);
+
+  // Clear set
+  setGTU.clear();
+
+  Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore,
+                                            UpdateGUICommand::WN_REDO,
+                                            UpdateGUICommand::GUI_REDO_IMPORT);
   m_pmulticmds->Add(pcmd2);
 }
 

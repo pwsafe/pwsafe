@@ -209,6 +209,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
           // Get numbers (may have been modified by AddEntries
           m_numEntriesImported = pCH->m_numEntries;
+          m_numEntriesFixed = pCH->getNumFixed();
 
           // Maybe import errors (PWHistory field processing)
           m_strResultText = pCH->getImportErrors();

@@ -231,16 +231,16 @@ public:
   void ChangeOkUpdate();
 
   // when Group, Title or User edited in tree
-  void UpdateListItem(const int lindex, const int type, const StringX &newText);
-  void UpdateTreeItem(const HTREEITEM hItem, const StringX &newText);
-  void UpdateListItemGroup(const int lindex, const StringX &newGroup)
-  {UpdateListItem(lindex, CItemData::GROUP, newGroup);}
-  void UpdateListItemTitle(const int lindex, const StringX &newTitle)
-  {UpdateListItem(lindex, CItemData::TITLE, newTitle);}
-  void UpdateListItemUser(const int lindex, const StringX &newUser)
-  {UpdateListItem(lindex, CItemData::USER, newUser);}
-  void UpdateListItemPassword(const int lindex, const StringX &newPassword)
-  {UpdateListItem(lindex, CItemData::PASSWORD, newPassword);}
+  void UpdateListItem(const int lindex, const int type, const StringX &sxnewText);
+  void UpdateTreeItem(const HTREEITEM hItem, const StringX &sxnewText);
+  void UpdateListItemGroup(const int lindex, const StringX &sxnewGroup)
+  {UpdateListItem(lindex, CItemData::GROUP, sxnewGroup);}
+  void UpdateListItemTitle(const int lindex, const StringX &sxnewTitle)
+  {UpdateListItem(lindex, CItemData::TITLE, sxnewTitle);}
+  void UpdateListItemUser(const int lindex, const StringX &sxnewUser)
+  {UpdateListItem(lindex, CItemData::USER, sxnewUser);}
+  void UpdateListItemPassword(const int lindex, const StringX &sxnewPassword)
+  {UpdateListItem(lindex, CItemData::PASSWORD, sxnewPassword);}
   void SetHeaderInfo();
   CString GetHeaderText(int iType) const;
   int GetHeaderWidth(int iType) const;
@@ -275,9 +275,9 @@ public:
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
   void AddEntries(CDDObList &in_oblist, const StringX &DropGroup);
-  StringX GetUniqueTitle(const StringX &path, const StringX &title,
-                           const StringX &user, const int IDS_MESSAGE)
-  {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
+  StringX GetUniqueTitle(const StringX &group, const StringX &title,
+                         const StringX &user, const int IDS_MESSAGE)
+  {return m_core.GetUniqueTitle(group, title, user, IDS_MESSAGE);}
   void FixListIndexes();
   void Delete(); // "Top level" delete, calls the following 2 and Execute()
   Command *Delete(const CItemData *pci); // create command for deleting a single item

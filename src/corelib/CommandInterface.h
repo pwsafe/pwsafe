@@ -27,6 +27,10 @@ class CommandInterface {
   virtual void SetDBChanged(bool bDBChanged, bool bNotify = true) = 0;
   virtual void SetDBPrefsChanged(bool bDBprefschanged) = 0;
   virtual bool HaveHeaderPreferencesChanged(const StringX &prefString) = 0;
+
+  virtual void SetUniqueGTUValidated(const bool bState) = 0;
+  virtual bool GetUniqueGTUValidated() = 0;
+
   virtual ItemListIter Find(const uuid_array_t &entry_uuid) = 0;
   virtual ItemListConstIter Find(const uuid_array_t &entry_uuid) const = 0;
   virtual ItemListIter GetEntryIter() = 0;

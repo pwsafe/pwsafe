@@ -212,8 +212,13 @@ int DboxMain::RestoreSafe()
 
 void DboxMain::OnValidate() 
 {
+  CReport rpt;
+  std::wstring cs_title;
+  LoadAString(cs_title, IDS_RPTVALIDATE);
+  rpt.StartReport(cs_title.c_str(), m_core.GetCurFile().c_str());
+
   std::wstring cs_msg;
-  bool bchanged = m_core.Validate(cs_msg);
+  bool bchanged = m_core.Validate(cs_msg, rpt);
   if (!bchanged)
     LoadAString(cs_msg, IDS_VALIDATEOK);
   else {
@@ -221,8 +226,19 @@ void DboxMain::OnValidate()
     ChangeOkUpdate();
   }
 
+  rpt.EndReport();
+
   CGeneralMsgBox gmb;
-  gmb.AfxMessageBox(cs_msg.c_str(), MB_OK);
+  gmb.SetTitle(cs_title.c_str());
+  gmb.SetMsg(cs_msg.c_str());
+  gmb.SetStandardIcon(bchanged ? MB_ICONEXCLAMATION : MB_ICONINFORMATION);
+  gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+  if (bchanged)
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
+
+  INT_PTR rc = gmb.DoModal();
+  if (rc == IDS_VIEWREPORT)
+    ViewReport(rpt);
 }
 
 void DboxMain::OnOptions() 

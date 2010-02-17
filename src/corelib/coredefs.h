@@ -10,6 +10,7 @@
 
 #include <map>
 #include <vector>
+#include <set>
 
 #include "ItemData.h"
 
@@ -35,6 +36,24 @@ struct st_SaveTypePW {
   }  
 };
 
+// Used to verify uniqueness of GTU using std::set
+struct st_GroupTitleUser {
+  StringX group;
+  StringX title;
+  StringX user;
+
+  friend bool operator< (const st_GroupTitleUser &elem1,
+                         const st_GroupTitleUser &elem2)
+  {
+    if (elem1.group != elem2.group)
+      return elem1.group.compare(elem2.group) < 0;
+    else if (elem1.title != elem2.title)
+      return elem1.title.compare(elem2.title) < 0;
+    else
+    return elem1.user.compare(elem2.user) < 0;
+  }
+};
+
 typedef std::map<CUUIDGen, CItemData, CUUIDGen::ltuuid> ItemList;
 typedef ItemList::iterator ItemListIter;
 typedef ItemList::const_iterator ItemListConstIter;
@@ -56,5 +75,8 @@ typedef std::map<CUUIDGen, st_SaveTypePW, CUUIDGen::ltuuid> SaveTypePWMap;
 typedef std::pair<CUUIDGen, st_SaveTypePW> SaveTypePWMap_Pair;
 
 typedef std::map<CUUIDGen, StringX, CUUIDGen::ltuuid> SavePWHistoryMap;
+
+typedef std::set<st_GroupTitleUser> GTUSet;
+typedef std::pair< std::set<st_GroupTitleUser>::iterator, bool > GTUSetPair;
 
 #endif

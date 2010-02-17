@@ -589,3 +589,9 @@
 #define IDS_EBLISTCTRL                  5772
 #define IDS_EBLISTCTRLROW1              5773
 #define IDS_EBLISTCTRLROWN              5774
+#define IDS_DBHASDUPLICATES             5775
+#define IDS_MERGEFAILED                 5776
+#define IDS_SYNCHFAILED                 5777
+#define IDS_OKWITHERRORS                5778
+#define IDS_COMPLETE                    5779
+

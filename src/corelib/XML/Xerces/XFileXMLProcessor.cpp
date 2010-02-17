@@ -195,6 +195,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
       // Get numbers (may have been modified by AddEntries
       m_numEntriesImported = pSAX2Handler->getNumEntries();
+      m_numEntriesFixed = pSAX2Handler->getNumFixed();
 
       // Maybe import errors (PWHistory field processing)
       m_strResultText = pSAX2Handler->getImportErrors();
