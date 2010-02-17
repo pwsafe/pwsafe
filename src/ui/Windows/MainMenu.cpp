@@ -598,7 +598,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   }  // View menu
 
   // Save original entry type before possibly changing pci
-  const CItemData::EntryType etype_original = pci->GetEntryType();
+  const CItemData::EntryType etype_original = 
+          pci == NULL ? CItemData::ET_INVALID : pci->GetEntryType();
+
   if (bItemSelected && pci->IsShortcut())
     pci = m_core.GetBaseEntry(pci);
 
