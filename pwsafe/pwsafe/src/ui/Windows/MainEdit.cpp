@@ -1445,11 +1445,15 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   // Add Drop entries
   CItemData ci_temp;
   UUIDList possible_aliases, possible_shortcuts;
-  StringX Group, Title, User;
+  StringX sxgroup, sxtitle, sxuser;
   POSITION pos;
   wchar_t *dot;
   uuid_array_t entry_uuid;
   bool bAddToViews;
+
+  // Initialize set
+  GTUSet setGTU;
+  m_core.InitialiseGTU(setGTU);
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
@@ -1466,13 +1470,14 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
     if (in_oblist.m_bDragNode) {
       dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
-      Group = DropGroup + dot + ci_temp.GetGroup();
+      sxgroup = DropGroup + dot + ci_temp.GetGroup();
     } else {
-      Group = DropGroup;
+      sxgroup = DropGroup;
     }
 
-    User = ci_temp.GetUser();
-    Title = GetUniqueTitle(Group, ci_temp.GetTitle(), User, IDS_DRAGNUMBER);
+    sxuser = ci_temp.GetUser();
+    StringX sxnewtitle(ci_temp.GetTitle());
+    m_core.MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDS_DRAGNUMBER);
 
     ci_temp.GetUUID(entry_uuid);
     if (m_core.Find(entry_uuid) != End()) {
@@ -1481,8 +1486,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
       ci_temp.GetUUID(entry_uuid);
     }
 
-    ci_temp.SetGroup(Group);
-    ci_temp.SetTitle(Title);
+    ci_temp.SetGroup(sxgroup);
+    ci_temp.SetTitle(sxnewtitle);
 
     StringX cs_tmp = ci_temp.GetPassword();
 
@@ -1516,13 +1521,13 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
           // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
           CString cs_msg;
-          cs_msg.Format(IDS_DDBASEISALIAS, Group, Title, User);
+          cs_msg.Format(IDS_DDBASEISALIAS, sxgroup, sxtitle, sxuser);
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
         } else
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
           CString cs_msg;
-          cs_msg.Format(IDS_ABASEINVALID, Group, Title, User);
+          cs_msg.Format(IDS_ABASEINVALID, sxgroup, sxtitle, sxuser);
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
           continue;
         }
@@ -1539,7 +1544,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
           // Only normal or shortcut base allowed as target
           CString cs_msg;
-          cs_msg.Format(IDS_SBASEINVALID, Group, Title, User);
+          cs_msg.Format(IDS_SBASEINVALID, sxgroup, sxtitle, sxuser);
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
           continue;
         }
@@ -1610,6 +1615,9 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
     }
   }
   possible_shortcuts.clear();
+
+  // Clear set
+  setGTU.clear();
 
   SetChanged(Data);
   FixListIndexes();

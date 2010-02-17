@@ -695,7 +695,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
 int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            const stringT &, const bool &,
-                           stringT &, int &, int &,
+                           stringT &, int &, int &, int &,
                            bool &, bool &, 
                            CReport &, Command *&)
 {
@@ -704,7 +704,8 @@ int PWScore::ImportXMLFile(const stringT &, const stringT &,
 #else
 int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
                            const stringT &strXSDFileName, const bool &bImportPSWDsOnly,
-                           stringT &strErrors, int &numValidated, int &numImported,
+                           stringT &strErrors,
+                           int &numValidated, int &numImported, int &numFixed,
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
                            CReport &rpt, Command *&pcommand)
 {
@@ -750,7 +751,8 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
     return XML_FAILED_IMPORT;
   }
 
-  numImported = iXML.getNnumEntriesImported();
+  numImported = iXML.getNumEntriesImported();
+  numFixed = iXML.getNumEntriesFixed();
   bBadUnknownFileFields = iXML.getIfDatabaseHeaderErrors();
   bBadUnknownRecordFields = iXML.getIfRecordHeaderErrors();
   m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
@@ -781,7 +783,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   if (numImported > 0)
     SetDBChanged(true);
 
-  return SUCCESS;
+  return numFixed == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
 #endif
 
@@ -800,7 +802,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  const TCHAR &fieldSeparator, const TCHAR &delimiter,
                                  const bool &bImportPSWDsOnly,
                                  stringT &strError,
-                                 int &numImported, int &numSkipped,
+                                 int &numImported, int &numSkipped, int &numFixed,
                                  CReport &rpt, Command *&pcommand)
 {
   stringT csError;
@@ -813,6 +815,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   const char *fname = filename.c_str();
 #endif
   pcommand = NULL;
+
   // following's a stream of chars, as the header row's straight ASCII, and
   // we need to handle rest as utf-8
   ifstream ifs(reinterpret_cast<const char *>(fname));
@@ -820,8 +823,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (!ifs)
     return CANT_OPEN_FILE;
 
-  numImported = numSkipped = 0;
-
+  numImported = numSkipped = numFixed = 0;
   int numlines = 0;
 
   CItemData ci_temp;
@@ -946,6 +948,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   pmulticmds->Add(pcmd1);
 
   // Finished parsing header, go get the data!
+  // Initialize set
+  GTUSet setGTU;
+  InitialiseGTU(setGTU);
+
   for (;;) {
     // read a single line.
     if (!getline(ifs, linebuf, '\n')) break;
@@ -1138,19 +1144,23 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     ci_temp.SetTitle(entrytitle.c_str());
 
     // Now make sure it is unique
-    const StringX group = ci_temp.GetGroup();
-    const StringX title = ci_temp.GetTitle();
-    const StringX user = ci_temp.GetUser();
-    StringX newtitle = GetUniqueTitle(group, title, user, IDSC_IMPORTNUMBER);
-    ci_temp.SetTitle(newtitle);
-    if (newtitle != title) {
-      if (group.empty())
-        Format(csError, IDSC_IMPORTCONFLICTS2, numlines,
-               title.c_str(), user.c_str(), newtitle.c_str());
+    const StringX sxgroup = ci_temp.GetGroup();
+    const StringX sxtitle = ci_temp.GetTitle();
+    const StringX sxuser = ci_temp.GetUser();
+    StringX sxnewtitle(sxtitle);
+    MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDSC_IMPORTNUMBER);
+    ci_temp.SetTitle(sxnewtitle);
+    if (sxnewtitle != sxtitle) {
+      stringT cs_header;
+      if (sxgroup.empty())
+        Format(cs_header, IDSC_IMPORTCONFLICTS2, numlines);
       else
-        Format(csError, IDSC_IMPORTCONFLICTS1, numlines,
-               group.c_str(), title.c_str(), user.c_str(), newtitle.c_str());
+        Format(cs_header, IDSC_IMPORTCONFLICTS1, numlines, sxgroup.c_str());
+
+      Format(csError, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
+               sxtitle.c_str(), sxuser.c_str(), sxnewtitle.c_str());
       rpt.WriteLine(csError);
+      numFixed++;
     }
 
     if (i_Offset[URL] >= 0 && tokens.size() > (size_t)i_Offset[URL])
@@ -1259,6 +1269,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     pmulticmds->Add(pcmd);
     numImported++;
   } // file processing for (;;) loop
+
+  // Clear set
+  setGTU.clear();
+
+  // Close file
   ifs.close();
 
   Command *pcmdA = AddDependentEntriesCommand::Create(this,
@@ -1280,7 +1295,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (numImported > 0)
     SetDBChanged(true);
 
-  return SUCCESS;
+  return (numSkipped + numFixed) == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
 
 /*

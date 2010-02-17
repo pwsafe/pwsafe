@@ -1375,6 +1375,19 @@ void DboxMain::OnImportText()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
+  CString cs_title, cs_temp;
+
+  CGeneralMsgBox gmb;
+  // Initialize set
+  GTUSet setGTU;
+  if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    cs_title.LoadString(IDS_TEXTIMPORTFAILED);
+    cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    return;
+  }
+
   CImportTextDlg dlg;
   INT_PTR status = dlg.DoModal();
 
@@ -1382,7 +1395,7 @@ void DboxMain::OnImportText()
     return;
 
   StringX ImportedPrefix(dlg.m_groupName);
-  CString cs_text, cs_title, cs_temp;
+  CString cs_text;
   wchar_t fieldSeparator(dlg.m_Separator[0]);
 
   CPWFileDialog fd(TRUE,
@@ -1408,7 +1421,7 @@ void DboxMain::OnImportText()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strError;
     StringX TxtFileName = fd.GetPathName();
-    int numImported = 0, numSkipped = 0;
+    int numImported = 0, numSkipped = 0, numFixed = 0;
     wchar_t delimiter = dlg.m_defimpdelim[0];
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
@@ -1425,7 +1438,7 @@ void DboxMain::OnImportText()
     Command *pcmd = NULL;
     rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, fieldSeparator,
                                     delimiter, bImportPSWDsOnly, strError, numImported,
-                                    numSkipped, rpt, pcmd);
+                                    numSkipped, numFixed, rpt, pcmd);
 
     cs_title.LoadString(IDS_FILEREADERROR);
     switch (rc) {
@@ -1439,6 +1452,7 @@ void DboxMain::OnImportText()
         cs_title.LoadString(IDS_TEXTIMPORTFAILED);
         break;
       case PWScore::SUCCESS:
+      case PWScore::OK_WITH_ERRORS:
         // deliberate fallthru
       default:
       {
@@ -1456,7 +1470,7 @@ void DboxMain::OnImportText()
           rpt.WriteLine((LPCWSTR)temp2);
         }
 
-        cs_title.LoadString(IDS_STATUS);
+        cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
         cs_temp = temp1 + CString("\n") + temp2;
 
         ChangeOkUpdate();
@@ -1467,7 +1481,6 @@ void DboxMain::OnImportText()
     // Finish Report
     rpt.EndReport();
 
-    CGeneralMsgBox gmb;
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_temp);
     gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
@@ -1546,6 +1559,18 @@ void DboxMain::OnImportXML()
     return;
 
   CString cs_title, cs_temp, cs_text;
+  cs_title.LoadString(IDS_XMLIMPORTFAILED);
+
+  CGeneralMsgBox gmb;
+  // Initialize set
+  GTUSet setGTU;
+  if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    return;
+  }
+
   std::wstring csErrors(L"");
   const std::wstring XSDfn(L"pwsafe.xsd");
   std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
@@ -1591,7 +1616,7 @@ void DboxMain::OnImportXML()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strErrors;
     CString XMLFilename = fd.GetPathName();
-    int numValidated, numImported;
+    int numValidated, numImported, numFixed;
     bool bBadUnknownFileFields, bBadUnknownRecordFields;
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
@@ -1611,12 +1636,11 @@ void DboxMain::OnImportXML()
 
     rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
                               XSDFilename.c_str(), bImportPSWDsOnly,
-                              strErrors, numValidated, numImported,
+                              strErrors, numValidated, numImported, numFixed,
                               bBadUnknownFileFields, bBadUnknownRecordFields,
                               rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
-    cs_title.LoadString(IDS_XMLIMPORTFAILED);
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
@@ -1626,6 +1650,8 @@ void DboxMain::OnImportXML()
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
       case PWScore::SUCCESS:
+      case PWScore::OK_WITH_ERRORS:
+        cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
         if (pcmd != NULL)
           Execute(pcmd);
         if (!strErrors.empty() ||
@@ -1653,7 +1679,6 @@ void DboxMain::OnImportXML()
           const CString cs_imported(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
           cs_temp.Format(IDS_XMLIMPORTOK,
                          numValidated, cs_validate, numImported, cs_imported);
-          cs_title.LoadString(IDS_STATUS);
           ChangeOkUpdate();
         }
 
@@ -1667,7 +1692,6 @@ void DboxMain::OnImportXML()
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.EndReport();
 
-    CGeneralMsgBox gmb;
     if (rc != PWScore::SUCCESS || !strErrors.empty())
       gmb.SetStandardIcon(MB_ICONEXCLAMATION);
     else
@@ -1954,8 +1978,30 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
 {
   // XXX Move to corelib
-  CGeneralMsgBox gmb;
   const StringX &sx_Filename1 = m_core.GetCurFile();
+
+  CGeneralMsgBox gmb;
+  CString cs_title, cs_temp,cs_text;
+  // Initialize set
+  GTUSet setGTU;
+
+  // First check other database
+  if (!pothercore->GetUniqueGTUValidated() && !pothercore->InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    cs_title.LoadString(IDS_SYNCHFAILED);
+    cs_temp.Format(IDS_DBHASDUPLICATES, pothercore->GetCurFile().c_str());
+    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    return;
+  }
+
+  // Next check us - we need the setGTU later
+  if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    cs_title.LoadString(IDS_SYNCHFAILED);
+    cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    return;
+  }
 
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
@@ -1964,7 +2010,6 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
 
   /* Create report as we go */
   CReport rpt;
-  CString cs_text, cs_temp;
   cs_text.LoadString(IDS_RPTMERGE);
   rpt.StartReport(cs_text, sx_Filename1.c_str());
   cs_temp.Format(IDS_MERGINGDATABASE, sx_Filename2.c_str());
@@ -2595,9 +2640,33 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
 
+  CGeneralMsgBox gmb;
+  CString cs_temp, cs_title;
+  // Initialize set
+  GTUSet setGTU;
+
+  // First check other database
+  if (!pothercore->GetUniqueGTUValidated() && !pothercore->InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    cs_title.LoadString(IDS_SYNCHFAILED);
+    cs_temp.Format(IDS_DBHASDUPLICATES, pothercore->GetCurFile().c_str());
+    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    return;
+  }
+
+  // Next check us
+  if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    cs_title.LoadString(IDS_SYNCHFAILED);
+    cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    return;
+  }
+  setGTU.clear();
+
   /* Create report as we go */
   CReport rpt;
-  CString cs_temp, cs_text, cs_buffer;
+  CString cs_text, cs_buffer;
   cs_text.LoadString(IDS_RPTSYNCH);
   rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_SYNCHINGDATABASE, sx_Filename2.c_str());
@@ -2724,7 +2793,6 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   rpt.WriteLine((LPCWSTR)resultStr);
   rpt.EndReport();
 
-  CGeneralMsgBox gmb;
   gmb.SetTitle(IDS_RPTSYNCH);
   gmb.SetMsg(resultStr);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
@@ -2736,8 +2804,6 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
 
   ChangeOkUpdate();
   RefreshViews();
-
-  return;
 }
 
 int DboxMain::SaveCore(PWScore *pcore)

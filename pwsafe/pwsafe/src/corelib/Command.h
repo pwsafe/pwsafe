@@ -52,6 +52,7 @@ protected:
 protected:
   CommandInterface *m_pcomInt;
   bool m_bSaveDBChanged;
+  bool m_bUniqueGTUValidated;
   bool m_bNotifyGUI;
   int m_RC;
   bool m_bState;

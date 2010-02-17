@@ -53,7 +53,7 @@ PWScore::PWScore() :
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
                      m_bNotifyDB(false), m_pUIIF(NULL),
-                     m_fileSig(NULL)
+                     m_fileSig(NULL), m_bUniqueGTUValidated(false)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -1121,7 +1121,7 @@ void PWScore::CopyPWList(const ItemList &in)
   SetDBChanged(true);
 }
 
-bool PWScore::Validate(stringT &status)
+bool PWScore::Validate(stringT &status, CReport &rpt)
 {
   // Check uuid is valid
   // Check PWH is valid
@@ -1131,30 +1131,62 @@ bool PWScore::Validate(stringT &status)
   // on uuids, each entry is guaranteed to have
   // a unique uuid. The uniqueness invariant
   // should be enforced elsewhere (upon read/import).
+  // Also group/title/user must be unique.
 
   uuid_array_t uuid_array, base_uuid, temp_uuid;
   int n = -1;
   unsigned int num_PWH_fixed = 0;
   unsigned int num_uuid_fixed = 0;
+  unsigned int num_duplicates_fixed = 0;
   int num_alias_warnings, num_shortcuts_warnings;
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
 
-  CReport rpt;
-  stringT cs_Error, cs_temp;
-  LoadAString(cs_temp, IDSC_RPTVALIDATE);
-  rpt.StartReport(cs_temp.c_str(), GetCurFile().c_str());
+  stringT cs_Error;
 
   pws_os::Trace(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 
+  st_GroupTitleUser st_gtu;
+  GTUSet setGTU;
+  GTUSetPair pr_gtu;
+
   UUIDList possible_aliases, possible_shortcuts;
   ItemListIter iter;
+
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     CItemData &ci = iter->second;
     CItemData fixedItem(ci);
     bool bFixed(false);
+
     ci.GetUUID(uuid_array);
     n++;
+
+    // Fix GTU uniqueness
+    StringX sxgroup(ci.GetGroup()), sxtitle(ci.GetTitle()), sxuser(ci.GetUser());
+    st_gtu.group = sxgroup;
+    st_gtu.title = sxtitle;
+    st_gtu.user = sxuser;
+    pr_gtu = setGTU.insert(st_gtu);
+    if (!pr_gtu.second) {
+      int i = 0;
+      StringX s_copy, sxnewtitle(sxtitle);
+      do {
+        i++;
+        Format(s_copy, IDSC_DUPLICATENUMBER, i);
+        sxnewtitle = sxtitle + s_copy;
+        st_gtu.title = sxnewtitle;
+        pr_gtu =  setGTU.insert(st_gtu);
+      } while (!pr_gtu.second);
+
+      bFixed = true;
+      Format(cs_Error, IDSC_VALIDATEDUPLICATES,
+             sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str(), sxnewtitle.c_str());
+
+      rpt.WriteLine(cs_Error);
+      fixedItem.SetTitle(sxnewtitle);
+      sxtitle = sxnewtitle;
+      num_duplicates_fixed++;
+    }
 
     // Fix bad UUID
     if (uuid_array[0] == 0x00) {
@@ -1163,7 +1195,7 @@ bool PWScore::Validate(stringT &status)
                                                m_hdr.m_nCurrentMinorVersion,
                                                uuid_array);
       Format(cs_Error, IDSC_VALIDATEUUID,
-             ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
+             sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
       rpt.WriteLine(cs_Error);
     }
 
@@ -1171,7 +1203,7 @@ bool PWScore::Validate(stringT &status)
     if (!fixedItem.ValidatePWHistory()) {
       bFixed = true;
       Format(cs_Error, IDSC_VALIDATEPWH,
-             ci.GetGroup().c_str(), ci.GetTitle().c_str(), ci.GetUser().c_str());
+             sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
       rpt.WriteLine(cs_Error);
       num_PWH_fixed++;
     }
@@ -1224,11 +1256,12 @@ bool PWScore::Validate(stringT &status)
 
   pws_os::Trace(_T("%s : End validation. %d entries processed\n"), 
         PWSUtil::GetTimeStamp(), n + 1);
-  rpt.EndReport();
 
-  if ((num_uuid_fixed + num_PWH_fixed + num_alias_warnings + num_shortcuts_warnings) > 0) {
+  m_bUniqueGTUValidated = true;
+  if ((num_uuid_fixed + num_PWH_fixed + num_duplicates_fixed + 
+       num_alias_warnings + num_shortcuts_warnings) > 0) {
     Format(status, IDSC_NUMPROCESSED,
-           n + 1, num_uuid_fixed, num_PWH_fixed,
+           n + 1, num_uuid_fixed, num_PWH_fixed, num_duplicates_fixed,
            num_alias_warnings, num_shortcuts_warnings);
     SetDBChanged(true);
     return true;
@@ -1253,11 +1286,11 @@ void PWScore::GetFileUUID(uuid_array_t &file_uuid_array) const
   memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(file_uuid_array));
 }
 
-StringX PWScore::GetUniqueTitle(const StringX &path, const StringX &title,
+StringX PWScore::GetUniqueTitle(const StringX &group, const StringX &title,
                                 const StringX &user, const int IDS_MESSAGE)
 {
   StringX new_title(title);
-  if (Find(path, title, user) != m_pwlist.end()) {
+  if (Find(group, title, user) != m_pwlist.end()) {
     // Find a unique "Title"
     ItemListConstIter listpos;
     int i = 0;
@@ -1266,10 +1299,62 @@ StringX PWScore::GetUniqueTitle(const StringX &path, const StringX &title,
       i++;
       Format(s_copy, IDS_MESSAGE, i);
       new_title = title + s_copy;
-      listpos = Find(path, new_title, user);
+      listpos = Find(group, new_title, user);
     } while (listpos != m_pwlist.end());
   }
   return new_title;
+}
+
+bool PWScore::InitialiseGTU(GTUSet &setGTU)
+{
+  // Populate the set of all group/title/user entries
+  st_GroupTitleUser st_gtu;
+  GTUSetPair pr_gtu;
+  ItemListConstIter citer;
+
+  setGTU.clear();
+  for (citer = m_pwlist.begin(); citer != m_pwlist.end(); citer++) {
+    const CItemData &ci = citer->second;
+    st_gtu.group = ci.GetGroup();
+    st_gtu.title = ci.GetTitle();
+    st_gtu.user = ci.GetUser();
+    pr_gtu = setGTU.insert(st_gtu);
+    if (!pr_gtu.second) {
+      // Could happen if merging or synching a bad database!
+      setGTU.clear();
+      return false;
+    }
+  }
+  m_bUniqueGTUValidated = true;
+  return true;
+}
+
+void PWScore::MakeEntryUnique(GTUSet &setGTU,
+                              const StringX &sxgroup, StringX &sxtitle,
+                              const StringX &sxuser, const int IDS_MESSAGE)
+{
+  StringX sxnewtitle(_T(""));
+  st_GroupTitleUser st_gtu;
+  GTUSetPair pr_gtu;
+
+  // Add supp;ied GTU - if already present, change title until a 
+  // unique combination is found.
+  st_gtu.group = sxgroup;
+  st_gtu.title = sxtitle;
+  st_gtu.user = sxuser;
+  pr_gtu =  setGTU.insert(st_gtu);
+  if (!pr_gtu.second) {
+    int i = 0;
+    StringX s_copy;
+    do {
+      i++;
+      Format(s_copy, IDS_MESSAGE, i);
+      sxnewtitle = sxtitle + s_copy;
+      st_gtu.title = sxnewtitle;
+      pr_gtu =  setGTU.insert(st_gtu);
+    } while (!pr_gtu.second);
+    sxtitle = sxnewtitle;
+  }
 }
 
 void PWScore::DoAddDependentEntry(const uuid_array_t &base_uuid, 

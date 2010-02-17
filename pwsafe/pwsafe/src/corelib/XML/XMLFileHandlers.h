@@ -86,6 +86,7 @@ public:
   TCHAR getDelimiter() {return m_delimiter;}
   int getNumEntries() {return m_numEntries;}
   int getNumIterations() {return m_nITER;}
+  int getNumFixed() {return m_numEntriesFixed;}
   int getNumRecordsWithUnknownFields() {return m_nRecordsWithUnknownFields;}
   bool getDatabaseHeaderErrors() {return m_bDatabaseHeaderErrors;}
   bool getRecordHeaderErrors() {return m_bRecordHeaderErrors;}
@@ -105,6 +106,7 @@ protected:
   stringT m_strErrorMessage;
   int m_nITER;
   int m_numEntries;
+  int m_numEntriesFixed;
   int m_nRecordsWithUnknownFields;
   int m_iErrorCode;
   TCHAR m_delimiter;

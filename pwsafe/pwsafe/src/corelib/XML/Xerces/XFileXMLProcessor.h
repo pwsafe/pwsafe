@@ -69,7 +69,8 @@ public:
 
   stringT getResultText() {return m_strResultText;}
   int getNumEntriesValidated() {return m_numEntriesValidated;}
-  int getNnumEntriesImported() {return m_numEntriesImported;}
+  int getNumEntriesImported() {return m_numEntriesImported;}
+  int getNumEntriesFixed() {return m_numEntriesFixed;}
   bool getIfDatabaseHeaderErrors() {return m_bDatabaseHeaderErrors;}
   bool getIfRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
@@ -80,7 +81,7 @@ private:
   MultiCommands *m_pmulticmds;
 
   stringT m_strResultText;
-  int m_numEntriesValidated, m_numEntriesImported;
+  int m_numEntriesValidated, m_numEntriesImported, m_numEntriesFixed;
   TCHAR m_delimiter;
   bool m_bValidation;
   bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;

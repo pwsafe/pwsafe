@@ -185,8 +185,10 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
 
   if (bvalidation)
     m_numEntriesValidated = pFileHandler->getNumEntries();
-  else
+  else {
     m_numEntriesImported = pFileHandler->getNumEntries();
+    m_numEntriesFixed = pFileHandler->getNumFixed();
+  }
 
   if (pFileHandler->getIfErrors() || bEerrorOccurred) {
     bEerrorOccurred = true;
@@ -207,6 +209,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
 
       // Get numbers (may have been modified by AddEntries
       m_numEntriesImported = pFileHandler->getNumEntries();
+      m_numEntriesFixed = pFileHandler->getNumFixed();
 
       // Maybe import errors (PWHistory field processing)
       m_strResultText = pFileHandler->getImportErrors();
