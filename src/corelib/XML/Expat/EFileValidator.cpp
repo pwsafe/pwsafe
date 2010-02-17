@@ -412,7 +412,7 @@ bool EFileValidator::startElement(stringT & strStartElement)
 }
 
 
-bool EFileValidator::endElement(stringT & endElement, StringX &strValue, int &datatype)
+bool EFileValidator::endElement(stringT &endElement, StringX &strValue, int &datatype)
 {
   if (endElement == _T("entry")) {
     if (m_ielement_occurs[XLE_TITLE] == 0 || m_ielement_occurs[XLE_PASSWORD] == 0) {
@@ -424,7 +424,7 @@ bool EFileValidator::endElement(stringT & endElement, StringX &strValue, int &da
     m_b_inentry = false;
   }
 
-  if (!VerifyXMLDataType(strValue, datatype)) {
+  if (datatype != XLD_NA && !VerifyXMLDataType(strValue, datatype)) {
     m_iErrorCode = XLPEC_INVALID_DATA;
     Format(m_sErrorMsg, IDSC_EXPATINVALIDDATA, endElement.c_str());
     return false;
