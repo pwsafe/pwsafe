@@ -41,7 +41,15 @@ struct st_GroupTitleUser {
   StringX group;
   StringX title;
   StringX user;
-
+  st_GroupTitleUser() {}
+  st_GroupTitleUser(const StringX &g, const StringX &t, const StringX &u)
+  : group(g), title(t), user(u) {}
+  st_GroupTitleUser &operator=(const st_GroupTitleUser &that) {
+    if (this != &that) {
+      group = that.group; title = that.title; user = that.user;
+    }
+    return *this;
+  }
   friend bool operator< (const st_GroupTitleUser &elem1,
                          const st_GroupTitleUser &elem2)
   {

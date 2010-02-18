@@ -1148,9 +1148,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     const StringX sxtitle = ci_temp.GetTitle();
     const StringX sxuser = ci_temp.GetUser();
     StringX sxnewtitle(sxtitle);
-    MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDSC_IMPORTNUMBER);
-    ci_temp.SetTitle(sxnewtitle);
-    if (sxnewtitle != sxtitle) {
+    bool conflict = !MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDSC_IMPORTNUMBER);
+    if (conflict) {
+      ci_temp.SetTitle(sxnewtitle);
       stringT cs_header;
       if (sxgroup.empty())
         Format(cs_header, IDSC_IMPORTCONFLICTS2, numlines);
@@ -1269,9 +1269,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     pmulticmds->Add(pcmd);
     numImported++;
   } // file processing for (;;) loop
-
-  // Clear set
-  setGTU.clear();
 
   // Close file
   ifs.close();
