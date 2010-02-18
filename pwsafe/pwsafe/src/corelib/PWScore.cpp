@@ -1308,17 +1308,13 @@ StringX PWScore::GetUniqueTitle(const StringX &group, const StringX &title,
 bool PWScore::InitialiseGTU(GTUSet &setGTU)
 {
   // Populate the set of all group/title/user entries
-  st_GroupTitleUser st_gtu;
   GTUSetPair pr_gtu;
   ItemListConstIter citer;
 
   setGTU.clear();
   for (citer = m_pwlist.begin(); citer != m_pwlist.end(); citer++) {
     const CItemData &ci = citer->second;
-    st_gtu.group = ci.GetGroup();
-    st_gtu.title = ci.GetTitle();
-    st_gtu.user = ci.GetUser();
-    pr_gtu = setGTU.insert(st_gtu);
+    pr_gtu = setGTU.insert(st_GroupTitleUser(ci.GetGroup(), ci.GetTitle(), ci.GetUser()));
     if (!pr_gtu.second) {
       // Could happen if merging or synching a bad database!
       setGTU.clear();
@@ -1329,32 +1325,30 @@ bool PWScore::InitialiseGTU(GTUSet &setGTU)
   return true;
 }
 
-void PWScore::MakeEntryUnique(GTUSet &setGTU,
+bool PWScore::MakeEntryUnique(GTUSet &setGTU,
                               const StringX &sxgroup, StringX &sxtitle,
                               const StringX &sxuser, const int IDS_MESSAGE)
 {
   StringX sxnewtitle(_T(""));
-  st_GroupTitleUser st_gtu;
   GTUSetPair pr_gtu;
+  bool retval = true;
 
-  // Add supp;ied GTU - if already present, change title until a 
+  // Add supplied GTU - if already present, change title until a 
   // unique combination is found.
-  st_gtu.group = sxgroup;
-  st_gtu.title = sxtitle;
-  st_gtu.user = sxuser;
-  pr_gtu =  setGTU.insert(st_gtu);
-  if (!pr_gtu.second) {
+  pr_gtu =  setGTU.insert(st_GroupTitleUser(sxgroup, sxtitle, sxuser));
+  if (!pr_gtu.second) { // insert failed => already in set!
+    retval = false;
     int i = 0;
     StringX s_copy;
     do {
       i++;
       Format(s_copy, IDS_MESSAGE, i);
       sxnewtitle = sxtitle + s_copy;
-      st_gtu.title = sxnewtitle;
-      pr_gtu =  setGTU.insert(st_gtu);
+      pr_gtu =  setGTU.insert(st_GroupTitleUser(sxgroup, sxnewtitle, sxuser));
     } while (!pr_gtu.second);
     sxtitle = sxnewtitle;
   }
+  return retval; // false iff we had to modify sxtitle
 }
 
 void PWScore::DoAddDependentEntry(const uuid_array_t &base_uuid, 

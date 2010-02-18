@@ -192,12 +192,16 @@ public:
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE);
 
+  // Populate setGTU from m_pwlist. Returns false & empty setGTU if
+  // m_pwlist had one or more entries with same GTU.
   bool InitialiseGTU(GTUSet &setGTU);
-  void MakeEntryUnique(GTUSet &setGTU, const StringX &group, StringX &title,
+  // Adds an st_GroupTitleUser to setGTU, possible modifying title
+  // to ensure uniqueness. Returns false if title was modified.
+  bool MakeEntryUnique(GTUSet &setGTU, const StringX &group, StringX &title,
                        const StringX &user, const int IDS_MESSAGE);
-  void SetUniqueGTUValidated(const bool bState)
+  void SetUniqueGTUValidated(bool bState)
   {m_bUniqueGTUValidated = bState;}
-  bool GetUniqueGTUValidated()
+  bool GetUniqueGTUValidated() const
   {return m_bUniqueGTUValidated;}
 
   // Access to individual entries in database

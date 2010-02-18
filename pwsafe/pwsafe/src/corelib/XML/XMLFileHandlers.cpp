@@ -588,9 +588,11 @@ void XMLFileHandlers::AddEntries()
     EmptyIfOnlyWhiteSpace(sxnewgroup);
     EmptyIfOnlyWhiteSpace(sxnewtitle);
 
-    m_pXMLcore->MakeEntryUnique(setGTU, sxnewgroup, sxnewtitle, cur_entry->username, IDSC_IMPORTNUMBER);
+    bool conflict = !m_pXMLcore->MakeEntryUnique(setGTU,
+                                                 sxnewgroup, sxnewtitle, cur_entry->username,
+                                                 IDSC_IMPORTNUMBER);
 
-    if (sxnewtitle != cur_entry->title) {
+    if (conflict) {
       stringT cs_header, csError;
       if (cur_entry->group.empty())
         LoadAString(cs_header, IDSC_IMPORTCONFLICTSX2);
@@ -714,9 +716,6 @@ void XMLFileHandlers::AddEntries()
     m_pmulticmds->Add(pcmd);
     delete cur_entry;
   }
-
-  // Clear set
-  setGTU.clear();
 
   Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore,
                                             UpdateGUICommand::WN_REDO,
