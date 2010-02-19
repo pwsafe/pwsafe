@@ -27,14 +27,18 @@ public:
                const stringT &strXMLFileName,
                const stringT &strXSDFileName);
 
-  stringT getResultText() {return m_strResultText;}
+  stringT getXMLErrors() {return m_strXMLErrors;}
+  stringT getPWHErrorList() {return m_strPWHErrorList;}
+  stringT getRenameList() {return m_strRenameList;}
   int m_MSXML_Version;
 
 private:
   Asker *m_pAsker;
   PWSFilters &m_MapFilters;
   FilterPool m_FPool;
-  stringT m_strResultText;
+  stringT m_strXMLErrors;
+  stringT m_strRenameList;
+  stringT m_strPWHErrorList;
   bool m_bValidation;
 };
 

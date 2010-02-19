@@ -57,7 +57,7 @@ XFileSAX2Handlers::~XFileSAX2Handlers()
 
 void XFileSAX2Handlers::startDocument( )
 {
-  m_strImportErrors = _T("");
+  m_strXMLErrors = _T("");
   m_bentrybeingprocessed = false;
 }
 
@@ -209,7 +209,7 @@ void XFileSAX2Handlers::FormatError(const SAXParseException& e, const int type)
   Format(FormatString, cs_format.c_str(),
          cs_errortype.c_str(), iLineNumber, iCharacter, szErrorMessage);
 
-  m_strValidationResult += FormatString;
+  m_strValidationResult += FormatString + _T("\r\n");
 #ifndef UNICODE
   XMLString::release(&szErrorMessage);
 #endif

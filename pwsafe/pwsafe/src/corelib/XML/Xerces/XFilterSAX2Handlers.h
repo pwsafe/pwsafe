@@ -80,7 +80,7 @@ public:
   void fatalError(const SAXParseException& exc);
   void resetErrors() {m_bErrors = false;}
   stringT getValidationResult() {return m_strValidationResult;}
-  stringT getImportErrors() {return m_strImportErrors;}
+  stringT getXMLErrors() {return m_strXMLErrors;}
 
 private:
   void FormatError(const SAXParseException& e, const int type);
@@ -94,7 +94,8 @@ private:
 
   StringX m_strElemContent;
   stringT m_strValidationResult;
-  stringT m_strImportErrors;
+  stringT m_strXMLErrors;
+
   int m_fieldlen;
   int m_iXMLVersion, m_iSchemaVersion;
   int m_iSchema_Version;

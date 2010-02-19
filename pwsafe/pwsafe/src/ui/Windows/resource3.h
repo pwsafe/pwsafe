@@ -178,7 +178,7 @@
 #define IDS_INVALIDFORMAT               5336
 #define IDS_STATUS                      5337
 #define IDS_RECORDSIMPORTED             5338
-#define IDS_RECORDSNOTREAD              5339
+#define IDS_RECORDSSKIPPED              5339
 #define IDS_PICKKEEPASSFILE             5340
 #define IDS_PICKXMLFILE                 5343
 #define IDS_FAILEDXMLVALIDATE           5344
@@ -594,4 +594,11 @@
 #define IDS_SYNCHFAILED                 5777
 #define IDS_OKWITHERRORS                5778
 #define IDS_COMPLETE                    5779
-
+#define IDS_RECORDSRENAMED              5780 
+#define IDS_XMLIMPORTRENAMED            5781
+#define IDS_XMLIMPORTSKIPPED            5782
+#define IDS_XMLIMPORTPWHERRORS          5783
+#define IDS_RECORDSPWHERRRORS           5784
+#define IDS_TITLESKIPPED                5785
+#define IDS_TITLERENAMED                5786
+#define IDS_TITLEPWHERRORS              5787

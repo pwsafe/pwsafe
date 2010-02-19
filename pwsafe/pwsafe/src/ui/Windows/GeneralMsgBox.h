@@ -155,8 +155,8 @@ private:
   // For timed out message
   static DWORD WINAPI ThreadFunction(LPVOID lpParameter);
 
-  DWORD  m_dwTimeOut;
-  bool  m_bTimedOut;
+  DWORD m_dwTimeOut;
+  bool m_bTimedOut;
   INT_PTR m_nResult;
 };
 

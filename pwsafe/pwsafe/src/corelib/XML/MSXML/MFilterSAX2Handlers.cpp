@@ -192,7 +192,7 @@ unsigned long __stdcall MFilterSAX2ContentHandler::Release()
 //  -----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startDocument ( )
 {
-  m_strImportErrors = _T("");
+  m_strXMLErrors = _T("");
   m_bentrybeingprocessed = false;
   return S_OK;
 }
@@ -232,13 +232,13 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::startElement(
   if (m_bValidation && _tcscmp(szCurElement, _T("filters")) == 0) {
     int iAttribs = 0;
     if (m_pSchema_Version == NULL) {
-      LoadAString(m_strImportErrors, IDSC_MISSING_SCHEMA_VER);
+      LoadAString(m_strXMLErrors, IDSC_MISSING_SCHEMA_VER);
       return E_FAIL;
     }
 
     m_iSchemaVersion = _wtoi(*m_pSchema_Version);
     if (m_iSchemaVersion <= 0) {
-      LoadAString(m_strImportErrors, IDSC_INVALID_SCHEMA_VER);
+      LoadAString(m_strXMLErrors, IDSC_INVALID_SCHEMA_VER);
       return E_FAIL;
     }
 
@@ -401,16 +401,16 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     // a. it is less than or equal to the Filter schema version
     // b. it is less than or equal to the version supported by this PWS
     if (m_iXMLVersion < 0) {
-      LoadAString(m_strImportErrors, IDSC_MISSING_XML_VER);
+      LoadAString(m_strXMLErrors, IDSC_MISSING_XML_VER);
       return E_FAIL;
     }
     if (m_iXMLVersion > m_iSchemaVersion) {
-      Format(m_strImportErrors,
+      Format(m_strXMLErrors,
              IDSC_INVALID_XML_VER1, m_iXMLVersion, m_iSchemaVersion);
       return E_FAIL;
     }
     if (m_iXMLVersion > PWS_XML_FILTER_VERSION) {
-      Format(m_strImportErrors,
+      Format(m_strXMLErrors,
              IDSC_INVALID_XML_VER2, m_iXMLVersion, PWS_XML_FILTER_VERSION);
       return E_FAIL;
     }

@@ -182,12 +182,12 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   if (pSAX2Handler->getIfErrors() || bEerrorOccurred) {
     bEerrorOccurred = true;
     strResultText = pSAX2Handler->getValidationResult();
-    Format(m_strResultText, IDSC_XERCESPARSEERROR, 
+    Format(m_strXMLErrors, IDSC_XERCESPARSEERROR, 
            m_bValidation ? cs_validation.c_str() : cs_import.c_str(), 
            strResultText.c_str());
   } else {
     if (m_bValidation) {
-      m_strResultText = pSAX2Handler->getValidationResult();
+      m_strXMLErrors = pSAX2Handler->getValidationResult();
       m_numEntriesValidated = pSAX2Handler->getNumEntries();
       m_delimiter = pSAX2Handler->getDelimiter();
     } else {
@@ -195,10 +195,15 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
       // Get numbers (may have been modified by AddEntries
       m_numEntriesImported = pSAX2Handler->getNumEntries();
-      m_numEntriesFixed = pSAX2Handler->getNumFixed();
+      m_numEntriesSkipped = pSAX2Handler->getNumSkipped();
+      m_numEntriesRenamed = pSAX2Handler->getNumRenamed();
+      m_numEntriesPWHErrors = pSAX2Handler->getNumPWHErrors();
 
-      // Maybe import errors (PWHistory field processing)
-      m_strResultText = pSAX2Handler->getImportErrors();
+      // Get lists
+      m_strXMLErrors = pSAX2Handler->getXMLErrors();
+      m_strSkippedList = pSAX2Handler->getSkippedList();
+      m_strPWHErrorList = pSAX2Handler->getPWHErrorList();
+      m_strRenameList = pSAX2Handler->getRenameList();
 
       m_bRecordHeaderErrors = pSAX2Handler->getRecordHeaderErrors();
       nRecordsWithUnknownFields = pSAX2Handler->getNumRecordsWithUnknownFields();

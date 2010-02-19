@@ -54,10 +54,17 @@ public:
                const bool &bImportPSWDsOnly,
                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl);
 
-  stringT getResultText() {return m_strResultText;}
+  stringT getXMLErrors() {return m_strXMLErrors;}
+  stringT getPWHErrorList() {return m_strPWHErrorList;}
+  stringT getRenameList() {return m_strRenameList;}
+  stringT getSkippedList() {return m_strSkippedList;}
+
   int getNumEntriesValidated() {return m_numEntriesValidated;}
   int getNumEntriesImported() {return m_numEntriesImported;}
-  int getNumEntriesFixed() {return m_numEntriesFixed;}
+  int getNumEntriesSkipped() {return m_numEntriesSkipped;}
+  int getNumEntriesRenamed() {return m_numEntriesRenamed;}
+  int getNumEntriesPWHErrors() {return m_numEntriesPWHErrors;}
+
   bool getIfDatabaseHeaderErrors() {return m_bDatabaseHeaderErrors;}
   bool getIfRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
@@ -67,8 +74,10 @@ private:
   UUIDList *m_possible_shortcuts;
   MultiCommands *m_pmulticmds;
 
-  stringT m_strResultText;
-  int m_numEntriesValidated, m_numEntriesImported, m_numEntriesFixed;
+  stringT m_strXMLErrors;
+  stringT m_strRenameList, m_strSkippedList, m_strPWHErrorList;
+  int m_numEntriesValidated, m_numEntriesImported, m_numEntriesSkipped;
+  int m_numEntriesPWHErrors, m_numEntriesRenamed;
   TCHAR m_delimiter;
   bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;
 };

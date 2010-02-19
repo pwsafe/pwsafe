@@ -67,7 +67,7 @@ XFilterSAX2Handlers::~XFilterSAX2Handlers()
 
 void XFilterSAX2Handlers::startDocument()
 {
-  m_strImportErrors.clear();
+  m_strXMLErrors.clear();
   m_bentrybeingprocessed = false;
 }
 
@@ -78,11 +78,11 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
 {
   if (m_bValidation && XMLString::equals(qname, L"filters")) {
     if (m_pSchema_Version == NULL) {
-      LoadAString(m_strImportErrors, IDSC_MISSING_SCHEMA_VER);
+      LoadAString(m_strXMLErrors, IDSC_MISSING_SCHEMA_VER);
 #ifdef UNICODE
-      const XMLCh *message = m_strImportErrors.c_str();
+      const XMLCh *message = m_strXMLErrors.c_str();
 #else
-      const XMLCh *message = XMLString::transcode(m_strImportErrors.c_str());
+      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
       SAXParseException(message, *m_pLocator);
 #ifndef UNICODE
@@ -92,11 +92,11 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     }
 
     if (m_iSchemaVersion <= 0) {
-      LoadAString(m_strImportErrors, IDSC_INVALID_SCHEMA_VER);
+      LoadAString(m_strXMLErrors, IDSC_INVALID_SCHEMA_VER);
 #ifdef UNICODE
-      const XMLCh *message = m_strImportErrors.c_str();
+      const XMLCh *message = m_strXMLErrors.c_str();
 #else
-      const XMLCh *message = XMLString::transcode(m_strImportErrors.c_str());
+      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
       SAXParseException(message, *m_pLocator);
 #ifndef UNICODE
@@ -201,11 +201,11 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     // a. it is less than or equal to the Filter schema version
     // b. it is less than or equal to the version supported by this PWS
     if (m_iXMLVersion < 0) {
-      LoadAString(m_strImportErrors, IDSC_MISSING_XML_VER);
+      LoadAString(m_strXMLErrors, IDSC_MISSING_XML_VER);
 #ifdef UNICODE
-      const XMLCh *message = m_strImportErrors.c_str();
+      const XMLCh *message = m_strXMLErrors.c_str();
 #else
-      const XMLCh *message = XMLString::transcode(m_strImportErrors.c_str());
+      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
       SAXParseException(message, *m_pLocator);
 #ifndef UNICODE
@@ -214,12 +214,12 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       return ;
     }
     if (m_iXMLVersion > m_iSchemaVersion) {
-      Format(m_strImportErrors,
+      Format(m_strXMLErrors,
              IDSC_INVALID_XML_VER1, m_iXMLVersion, m_iSchemaVersion);
 #ifdef UNICODE
-      const XMLCh *message = m_strImportErrors.c_str();
+      const XMLCh *message = m_strXMLErrors.c_str();
 #else
-      const XMLCh *message = XMLString::transcode(m_strImportErrors.c_str());
+      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
       SAXParseException(message, *m_pLocator);
 #ifndef UNICODE
@@ -228,12 +228,12 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       return ;
     }
     if (m_iXMLVersion > PWS_XML_FILTER_VERSION) {
-      Format(m_strImportErrors, 
+      Format(m_strXMLErrors, 
              IDSC_INVALID_XML_VER2, m_iXMLVersion, PWS_XML_FILTER_VERSION);
 #ifdef UNICODE
-      const XMLCh *message = m_strImportErrors.c_str();
+      const XMLCh *message = m_strXMLErrors.c_str();
 #else
-      const XMLCh *message = XMLString::transcode(m_strImportErrors.c_str());
+      const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
       SAXParseException(message, *m_pLocator);
 #ifndef UNICODE

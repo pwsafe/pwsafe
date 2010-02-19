@@ -39,6 +39,8 @@
 #include "../VerifyFormat.h"
 #include "../Command.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -57,6 +59,7 @@ XMLFileHandlers::XMLFileHandlers()
   m_sDefaultUsername = _T("");
   m_delimiter = _T('\0');
   m_strErrorMessage = _T("");
+
   m_iErrorCode = 0;
 
   m_bheader = false;
@@ -99,6 +102,10 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
   switch (icurrent_element) {
     case XLE_PASSWORDSAFE:
       m_numEntries = 0;
+      m_numEntriesSkipped = 0;
+      m_numEntriesRenamed = 0;
+      m_numEntriesPWHErrors = 0;
+      m_nRecordsWithUnknownFields = 0;
       m_bentrybeingprocessed = false;
       break;
     case XLE_UNKNOWNHEADERFIELDS:
@@ -528,6 +535,32 @@ void XMLFileHandlers::AddEntries()
 
   for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
     pw_entry *cur_entry = *entry_iter;
+    StringX sxtitle(cur_entry->title);
+    EmptyIfOnlyWhiteSpace(sxtitle);
+    if (sxtitle.empty() || cur_entry->password.empty()) {
+      stringT csError, cs_id, cs_tp, cs_t(_T("")), cs_p(_T(""));
+      int num = 0;
+      if (sxtitle.empty()) {
+        num++;
+        LoadAString(cs_t, IDSC_EXPHDRTITLE);
+      }
+      if (cur_entry->password.empty()) {
+        num++;
+        LoadAString(cs_p, IDSC_EXPHDRPASSWORD);
+      }
+
+      Format(cs_tp, _T("%s%s%s"), cs_t.c_str(), num == 2 ? _T(" & ") : _T(""), cs_p.c_str());
+      std::remove(cs_tp.begin(), cs_tp.end(), TCHAR('\t'));
+      LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
+      Format(csError, IDSC_IMPORTRECSKIPPED, cs_id.c_str(), cur_entry->id, 
+             cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str(), cs_tp.c_str());
+      m_strSkippedList += _T("\r\n") + csError;
+      m_numEntriesSkipped++;
+      m_numEntries--;
+      delete cur_entry;
+      continue;
+    }
+ 
     if (m_bImportPSWDsOnly) {
       ItemListIter iter = m_pXMLcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
       if (iter == m_pXMLcore->GetEntryEndIter()) {
@@ -535,7 +568,8 @@ void XMLFileHandlers::AddEntries()
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
         Format(csError, IDSC_IMPORTRECNOTFOUND, cs_id.c_str(), cur_entry->id, 
                cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
-        m_strImportErrors += _T("\r\n") + csError;
+        m_strSkippedList += _T("\r\n") + csError;
+        m_numEntriesSkipped++;
         m_numEntries--;
       } else {
         CItemData *pci = &iter->second;
@@ -602,8 +636,8 @@ void XMLFileHandlers::AddEntries()
       Format(csError, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
                cur_entry->title.c_str(), cur_entry->username.c_str(), sxnewtitle.c_str());
       csError += _T("\r\n");
-      m_strImportErrors += csError;
-      m_numEntriesFixed++;
+      m_strRenameList += csError;
+      m_numEntriesRenamed++;
     }
 
     ci_temp.SetGroup(sxnewgroup);
@@ -645,9 +679,9 @@ void XMLFileHandlers::AddEntries()
       ci_temp.SetEmail(cur_entry->email);
 
     StringX newPWHistory;
-    stringT strPWHErrors;
+    stringT strPWHErrorList;
     switch (VerifyImportPWHistoryString(cur_entry->pwhistory,
-                                        newPWHistory, strPWHErrors)) {
+                                        newPWHistory, strPWHErrorList)) {
       case PWH_OK:
         ci_temp.SetPWHistory(newPWHistory.c_str());
         break;
@@ -666,8 +700,9 @@ void XMLFileHandlers::AddEntries()
         Format(buffer, IDSC_SAXERRORPWH, cur_entry->group.c_str(),
                cur_entry->title.c_str(),
                cur_entry->username.c_str());
-        m_strImportErrors += buffer;
-        m_strImportErrors += strPWHErrors;
+        m_strPWHErrorList += buffer;
+        m_strPWHErrorList += strPWHErrorList;
+        m_numEntriesPWHErrors++;
         break;
       }
       default:

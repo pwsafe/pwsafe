@@ -54,7 +54,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   stringT cs_import;
   LoadAString(cs_import, IDSC_XMLIMPORT);
 
-  m_strResultText = _T("");
+  m_strXMLErrors = _T("");
   m_bValidation = bvalidation;  // Validate or Import
 
   //  Create SAXReader object
@@ -75,7 +75,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
         hr30 = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
                                 __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
         if (FAILED(hr30)) {
-          LoadAString(m_strResultText, IDSC_NOMSXMLREADER);
+          LoadAString(m_strXMLErrors, IDSC_NOMSXMLREADER);
           goto exit;
         } else {
           m_MSXML_Version = 30;
@@ -133,7 +133,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
                             __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
       break;
     default:
-      LoadAString(m_strResultText, IDSC_CANTXMLVALIDATE);
+      LoadAString(m_strXMLErrors, IDSC_CANTXMLVALIDATE);
       goto exit;
   }
 
@@ -142,12 +142,12 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
     CComVariant cvXSDFileName = strXSDFileName.c_str();
     hr = pSchemaCache->add(L"", cvXSDFileName);
     if (hr != S_OK) {
-      LoadAString(m_strResultText, IDSC_INVALID_SCHEMA);
+      LoadAString(m_strXMLErrors, IDSC_INVALID_SCHEMA);
       goto exit;
     }
     hr = pSchemaCache->validate();
     if (hr != S_OK) {
-      LoadAString(m_strResultText, IDSC_INVALID_SCHEMA);
+      LoadAString(m_strXMLErrors, IDSC_INVALID_SCHEMA);
       goto exit;
     }
 
@@ -157,12 +157,12 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
     ISchema *pischema;
     hr = pSchemaCache->getSchema(bst_schema, &pischema);
     if (hr != S_OK) {
-      LoadAString(m_strResultText, IDSC_MISSING_SCHEMA_VER);
+      LoadAString(m_strXMLErrors, IDSC_MISSING_SCHEMA_VER);
       goto exit;
     }
     hr = pischema->get_version(&bst_schema_version);
     if (hr != S_OK) {
-      LoadAString(m_strResultText, IDSC_INVALID_SCHEMA_VER);
+      LoadAString(m_strXMLErrors, IDSC_INVALID_SCHEMA_VER);
       goto exit;
     }
 
@@ -219,21 +219,21 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
 
     if(!FAILED(hr)) {  // Check for parsing errors
       if(pEH->bErrorsFound == TRUE) {
-        m_strResultText = pEH->m_strValidationResult;
+        m_strXMLErrors = pEH->m_strValidationResult;
       } else {
         b_ok = true;
       }
     } else {
       if(pEH->bErrorsFound == TRUE) {
-        m_strResultText = pEH->m_strValidationResult;
+        m_strXMLErrors = pEH->m_strValidationResult;
       } else {
-        Format(m_strResultText, IDSC_MSXMLPARSEERROR, m_MSXML_Version, hr,
+        Format(m_strXMLErrors, IDSC_MSXMLPARSEERROR, m_MSXML_Version, hr,
                m_bValidation ? cs_validation.c_str() : cs_import.c_str());
       }
     }  // End Check for parsing errors
 
   } else {
-    Format(m_strResultText, IDSC_MSXMLBADCREATESCHEMA, m_MSXML_Version, hr,
+    Format(m_strXMLErrors, IDSC_MSXMLBADCREATESCHEMA, m_MSXML_Version, hr,
            m_bValidation ? cs_validation.c_str() : cs_import.c_str());
   }  // End Create Schema Cache
 

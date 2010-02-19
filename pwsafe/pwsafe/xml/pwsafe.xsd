@@ -32,6 +32,13 @@
   </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="stringTypeReqd">
+  <xs:restriction base="xs:string">
+    <xs:minLength value="1" />
+    <xs:whiteSpace value="preserve" />
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:complexType name="datetimestampType">
   <xs:sequence>
     <xs:element name="date" type="xs:date" minOccurs="1" maxOccurs="1"/>
@@ -185,9 +192,9 @@
           <xs:complexType>
             <xs:all>
               <xs:element name="group" type="stringType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="title" type="stringType" minOccurs="1" />
+              <xs:element name="title" type="stringTypeReqd" minOccurs="1" />
               <xs:element name="username" type="stringType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="password" type="stringType" minOccurs="1" />
+              <xs:element name="password" type="stringTypeReqd" minOccurs="1" />
               <xs:element name="url" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="autotype" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="notes" type="stringType" minOccurs="0" maxOccurs="1" />
