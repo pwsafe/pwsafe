@@ -61,7 +61,7 @@ class MFilterSAX2ContentHandler: public ISAXContentHandler
 {
 public:
   // Local variables & function
-  stringT m_strImportErrors;
+  stringT m_strXMLErrors;
   PWSFilters *m_MapFilters;
   FilterPool m_FPool;
   int m_type;

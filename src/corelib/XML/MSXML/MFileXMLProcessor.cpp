@@ -59,7 +59,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   stringT cs_import;
   LoadAString(cs_import, IDSC_XMLIMPORT);
 
-  m_strResultText = _T("");
+  m_strXMLErrors = _T("");
   m_bValidation = bvalidation;  // Validate or Import
 
   //  Create SAXReader object
@@ -80,7 +80,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
         hr30 = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
                                 __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
         if (FAILED(hr30)) {
-          LoadAString(m_strResultText, IDSC_NOMSXMLREADER);
+          LoadAString(m_strXMLErrors, IDSC_NOMSXMLREADER);
           goto exit;
         } else {
           m_MSXML_Version = 30;
@@ -143,7 +143,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                             __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
       break;
     default:
-      LoadAString(m_strResultText, IDSC_CANTXMLVALIDATE);
+      LoadAString(m_strXMLErrors, IDSC_CANTXMLVALIDATE);
       goto exit;
   }
 
@@ -198,7 +198,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
     if(!FAILED(hr)) {  // Check for parsing errors
       if(pEH->bErrorsFound == TRUE) {
-        m_strResultText = pEH->m_strValidationResult;
+        m_strXMLErrors = pEH->m_strValidationResult;
       } else {
         if (m_bValidation) {
           m_numEntriesValidated = pCH->m_numEntries;
@@ -209,10 +209,15 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
           // Get numbers (may have been modified by AddEntries
           m_numEntriesImported = pCH->m_numEntries;
-          m_numEntriesFixed = pCH->getNumFixed();
+          m_numEntriesSkipped = pCH->getNumSkipped();
+          m_numEntriesRenamed = pCH->getNumRenamed();
+          m_numEntriesPWHErrors = pCH->getNumPWHErrors();
 
-          // Maybe import errors (PWHistory field processing)
-          m_strResultText = pCH->getImportErrors();
+          // Get lists
+          m_strXMLErrors = pCH->getXMLErrors();
+          m_strSkippedList = pCH->getSkippedList();
+          m_strPWHErrorList = pCH->getPWHErrorList();
+          m_strRenameList = pCH->getRenameList();
 
           m_bRecordHeaderErrors = pCH->m_bRecordHeaderErrors;
           nRecordsWithUnknownFields = pCH->m_nRecordsWithUnknownFields;
@@ -229,15 +234,15 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       }
     } else {
       if(pEH->bErrorsFound == TRUE) {
-        m_strResultText = pEH->m_strValidationResult;
+        m_strXMLErrors = pEH->m_strValidationResult;
       } else {
-        Format(m_strResultText, IDSC_MSXMLPARSEERROR, m_MSXML_Version, hr,
+        Format(m_strXMLErrors, IDSC_MSXMLPARSEERROR, m_MSXML_Version, hr,
                m_bValidation ? cs_validation.c_str() : cs_import.c_str());
       }
     }  // End Check for parsing errors
 
   } else {
-    Format(m_strResultText, IDSC_MSXMLBADCREATESCHEMA, m_MSXML_Version, hr,
+    Format(m_strXMLErrors, IDSC_MSXMLBADCREATESCHEMA, m_MSXML_Version, hr,
            m_bValidation ? cs_validation.c_str() : cs_import.c_str());
   }  // End Create Schema Cache
 

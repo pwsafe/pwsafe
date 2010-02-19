@@ -1421,7 +1421,7 @@ void DboxMain::OnImportText()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strError;
     StringX TxtFileName = fd.GetPathName();
-    int numImported = 0, numSkipped = 0, numFixed = 0;
+    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0);
     wchar_t delimiter = dlg.m_defimpdelim[0];
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
@@ -1437,8 +1437,10 @@ void DboxMain::OnImportText()
 
     Command *pcmd = NULL;
     rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, fieldSeparator,
-                                    delimiter, bImportPSWDsOnly, strError, numImported,
-                                    numSkipped, numFixed, rpt, pcmd);
+                                    delimiter, bImportPSWDsOnly,
+                                    strError,
+                                    numImported, numSkipped, numPWHErrors, numRenamed,
+                                    rpt, pcmd);
 
     cs_title.LoadString(IDS_FILEREADERROR);
     switch (rc) {
@@ -1450,6 +1452,7 @@ void DboxMain::OnImportText()
         break;
       case PWScore::FAILURE:
         cs_title.LoadString(IDS_TEXTIMPORTFAILED);
+        cs_temp = strError.c_str();
         break;
       case PWScore::SUCCESS:
       case PWScore::OK_WITH_ERRORS:
@@ -1458,20 +1461,39 @@ void DboxMain::OnImportText()
       {
         if (pcmd != NULL)
           Execute(pcmd);
+
         rpt.WriteLine();
-        CString cs_type, temp1, temp2 = L"";
+        CString cs_type;
         cs_type.LoadString(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES);
-        temp1.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED, 
-                     numImported, cs_type);
-        rpt.WriteLine((LPCWSTR)temp1);
+        cs_temp.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED, 
+                       numImported, cs_type);
+        rpt.WriteLine((LPCWSTR)cs_temp);
+
         if (numSkipped != 0) {
+          CString cs_tmp;
           cs_type.LoadString(numSkipped == 1 ? IDS_ENTRY : IDS_ENTRIES);
-          temp2.Format(IDS_RECORDSNOTREAD, numSkipped, cs_type);
-          rpt.WriteLine((LPCWSTR)temp2);
+          cs_tmp.Format(IDS_RECORDSSKIPPED, numSkipped, cs_type);
+          rpt.WriteLine((LPCWSTR)cs_tmp);
+          cs_temp += cs_tmp;
+        }
+
+        if (numPWHErrors != 0) {
+          CString cs_tmp;
+          cs_type.LoadString(numPWHErrors == 1 ? IDS_ENTRY : IDS_ENTRIES);
+          cs_tmp.Format(IDS_RECORDSPWHERRRORS, numPWHErrors, cs_type);
+          rpt.WriteLine((LPCWSTR)cs_tmp);
+          cs_temp += cs_tmp;
+        }
+
+        if (numRenamed != 0) {
+          CString cs_tmp;
+          cs_type.LoadString(numRenamed == 1 ? IDS_ENTRY : IDS_ENTRIES);
+          cs_tmp.Format(IDS_RECORDSRENAMED, numRenamed, cs_type);
+          rpt.WriteLine((LPCWSTR)cs_tmp);
+          cs_temp += cs_tmp;
         }
 
         cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
-        cs_temp = temp1 + CString("\n") + temp2;
 
         ChangeOkUpdate();
         RefreshViews();
@@ -1571,7 +1593,6 @@ void DboxMain::OnImportXML()
     return;
   }
 
-  std::wstring csErrors(L"");
   const std::wstring XSDfn(L"pwsafe.xsd");
   std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
@@ -1614,9 +1635,9 @@ void DboxMain::OnImportXML()
 
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
-    std::wstring strErrors;
+    std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
     CString XMLFilename = fd.GetPathName();
-    int numValidated, numImported, numFixed;
+    int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
     bool bBadUnknownFileFields, bBadUnknownRecordFields;
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
@@ -1636,49 +1657,84 @@ void DboxMain::OnImportXML()
 
     rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
                               XSDFilename.c_str(), bImportPSWDsOnly,
-                              strErrors, numValidated, numImported, numFixed,
+                              strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
+                              numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
                               bBadUnknownFileFields, bBadUnknownRecordFields,
                               rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
+    std::wstring csErrors(L"");
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
-        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
-                       strErrors.c_str());
+        rpt.WriteLine(strXMLErrors.c_str());
+        cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), L"");
+        delete pcmd;
         break;
       case PWScore::XML_FAILED_IMPORT:
-        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
+        rpt.WriteLine(strXMLErrors.c_str());
+        cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), L"");
+        delete pcmd;
         break;
       case PWScore::SUCCESS:
       case PWScore::OK_WITH_ERRORS:
         cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
         if (pcmd != NULL)
           Execute(pcmd);
-        if (!strErrors.empty() ||
-            bBadUnknownFileFields || bBadUnknownRecordFields) {
-          if (!strErrors.empty())
-            csErrors = strErrors + L"\n";
+
+        if (!strXMLErrors.empty() ||
+            bBadUnknownFileFields || bBadUnknownRecordFields ||
+            numRenamed > 0 || numPWHErrors > 0) {
+          if (!strXMLErrors.empty())
+            csErrors = strXMLErrors + L"\n";
+
           if (bBadUnknownFileFields) {
             CString cs_type(MAKEINTRESOURCE(IDS_HEADER));
             cs_temp.Format(IDS_XMLUNKNFLDIGNORED, cs_type);
             csErrors += cs_temp + L"\n";
           }
+
           if (bBadUnknownRecordFields) {
             CString cs_type(MAKEINTRESOURCE(IDS_RECORD));
             cs_temp.Format(IDS_XMLUNKNFLDIGNORED, cs_type);
-            csErrors += cs_temp;
+            csErrors += cs_temp + L"\n";
+          }
+
+          if (!csErrors.empty()) {
+            rpt.WriteLine(csErrors.c_str());
+          }
+
+          CString cs_renamed(L""), cs_PWHErrors(L""), cs_skipped(L"");
+          if (numSkipped > 0) {
+            cs_skipped.LoadString(IDS_TITLESKIPPED);
+            rpt.WriteLine((LPCWSTR)cs_skipped);
+            cs_skipped.Format(IDS_XMLIMPORTSKIPPED, numSkipped);
+            rpt.WriteLine(strSkippedList.c_str());
+            rpt.WriteLine();
+          }
+          if (numPWHErrors > 0) {
+            cs_PWHErrors.LoadString(IDS_TITLEPWHERRORS);
+            rpt.WriteLine((LPCWSTR)cs_PWHErrors);
+            cs_PWHErrors.Format(IDS_XMLIMPORTPWHERRORS, numPWHErrors);
+            rpt.WriteLine(strPWHErrorList.c_str());
+            rpt.WriteLine();
+          }
+          if (numRenamed > 0) {
+            cs_renamed.LoadString(IDS_TITLERENAMED);
+            rpt.WriteLine((LPCWSTR)cs_renamed);
+            cs_renamed.Format(IDS_XMLIMPORTRENAMED, numRenamed);
+            rpt.WriteLine(strRenameList.c_str());
+            rpt.WriteLine();
           }
 
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                         fd.GetFileName(), numValidated,
-                         numImported, csErrors.c_str());
+                         fd.GetFileName(), numValidated, numImported,
+                         cs_skipped, cs_renamed, cs_PWHErrors);
 
           ChangeOkUpdate();
         } else {
           const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
-          const CString cs_imported(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
-          cs_temp.Format(IDS_XMLIMPORTOK,
-                         numValidated, cs_validate, numImported, cs_imported);
+          const CString cs_imported(MAKEINTRESOURCE(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES));
+          cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
           ChangeOkUpdate();
         }
 
@@ -1692,7 +1748,7 @@ void DboxMain::OnImportXML()
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.EndReport();
 
-    if (rc != PWScore::SUCCESS || !strErrors.empty())
+    if (rc != PWScore::SUCCESS || !strXMLErrors.empty())
       gmb.SetStandardIcon(MB_ICONEXCLAMATION);
     else
       gmb.SetStandardIcon(MB_ICONINFORMATION);

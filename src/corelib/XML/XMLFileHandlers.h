@@ -78,16 +78,24 @@ public:
   bool getIfErrors() {return m_bErrors;}
   int getErrorCode() {return m_iErrorCode;}
   stringT getErrorMessage() {return m_strErrorMessage;}
-  stringT getImportErrors() {return m_strImportErrors;}
+  stringT getXMLErrors() {return m_strXMLErrors;}
+  stringT getSkippedList() {return m_strSkippedList;}
+  stringT getPWHErrorList() {return m_strPWHErrorList;}
+  stringT getRenameList() {return m_strRenameList;}
 
   vdb_entries & getVDB_Entries() {return m_ventries;}
   stringT getDefaultAutotypeString() {return m_sDefaultAutotypeString;}
   stringT getDefaultUsername() {return m_sDefaultUsername;}
+ 
   TCHAR getDelimiter() {return m_delimiter;}
-  int getNumEntries() {return m_numEntries;}
+ 
   int getNumIterations() {return m_nITER;}
-  int getNumFixed() {return m_numEntriesFixed;}
+  int getNumEntries() {return m_numEntries;}
+  int getNumSkipped() {return m_numEntriesSkipped;}
+  int getNumRenamed() {return m_numEntriesRenamed;}
+  int getNumPWHErrors() {return m_numEntriesPWHErrors;}
   int getNumRecordsWithUnknownFields() {return m_nRecordsWithUnknownFields;}
+ 
   bool getDatabaseHeaderErrors() {return m_bDatabaseHeaderErrors;}
   bool getRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
@@ -102,14 +110,21 @@ protected:
   pwhistory_entry *cur_pwhistory_entry;
 
   StringX m_strElemContent;
-  stringT m_strImportErrors;
   stringT m_strErrorMessage;
+  stringT m_strXMLErrors;
+  stringT m_strPWHErrorList;
+  stringT m_strRenameList;
+  stringT m_strSkippedList;
+
   int m_nITER;
   int m_numEntries;
-  int m_numEntriesFixed;
+  int m_numEntriesSkipped;
+  int m_numEntriesRenamed;
+  int m_numEntriesPWHErrors;
   int m_nRecordsWithUnknownFields;
   int m_iErrorCode;
   TCHAR m_delimiter;
+
   bool m_bentrybeingprocessed;
   bool m_bValidation;
   bool m_bErrors, m_bRecordHeaderErrors, m_bDatabaseHeaderErrors;

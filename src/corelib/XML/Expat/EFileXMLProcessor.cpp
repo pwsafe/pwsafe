@@ -143,7 +143,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
   LoadAString(cs_import, IDSC_XMLIMPORT);
-  m_strResultText = _T("");
+  m_strXMLErrors = _T("");
 
   pFileHandler->SetVariables(bvalidation ? NULL : m_pXMLcore, bvalidation, 
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
@@ -187,12 +187,20 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
     m_numEntriesValidated = pFileHandler->getNumEntries();
   else {
     m_numEntriesImported = pFileHandler->getNumEntries();
-    m_numEntriesFixed = pFileHandler->getNumFixed();
+    m_numEntriesSkipped = pFileHandler->getNumSkipped();
+    m_numEntriesRenamed = pFileHandler->getNumRenamed();
+    m_numEntriesPWHErrors = pFileHandler->getNumPWHErrors();
+
+    // Get lists
+    m_strXMLErrors = pFileHandler->getXMLErrors();
+    m_strSkippedList = pFileHandler->getSkippedList();
+    m_strPWHErrorList = pFileHandler->getPWHErrorList();
+    m_strRenameList = pFileHandler->getRenameList();
   }
 
   if (pFileHandler->getIfErrors() || bEerrorOccurred) {
     bEerrorOccurred = true;
-    Format(m_strResultText, IDSC_EXPATPARSEERROR,
+    Format(m_strXMLErrors, IDSC_EXPATPARSEERROR,
            XML_GetCurrentLineNumber(pParser),
            XML_GetCurrentColumnNumber(pParser),
         /* pFileHandler->getErrorCode(), */
@@ -209,10 +217,16 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
 
       // Get numbers (may have been modified by AddEntries
       m_numEntriesImported = pFileHandler->getNumEntries();
-      m_numEntriesFixed = pFileHandler->getNumFixed();
+      m_numEntriesSkipped = pFileHandler->getNumSkipped();
+      m_numEntriesRenamed = pFileHandler->getNumRenamed();
+      m_numEntriesPWHErrors = pFileHandler->getNumPWHErrors();
 
+      // Maybe import errors
+      m_strXMLErrors = pFileHandler->getXMLErrors();
       // Maybe import errors (PWHistory field processing)
-      m_strResultText = pFileHandler->getImportErrors();
+      m_strPWHErrorList = pFileHandler->getPWHErrorList();
+      // Maybe import errors (renamed entries)
+      m_strRenameList = pFileHandler->getRenameList();
 
       m_bRecordHeaderErrors = pFileHandler->getRecordHeaderErrors();
       nRecordsWithUnknownFields = pFileHandler->getNumRecordsWithUnknownFields();

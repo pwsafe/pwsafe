@@ -695,7 +695,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
 int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            const stringT &, const bool &,
-                           stringT &, int &, int &, int &,
+                           stringT &, stringT &, stringT &, sringT &,
+                           int &, int &, int &, int &, int &,
                            bool &, bool &, 
                            CReport &, Command *&)
 {
@@ -704,8 +705,10 @@ int PWScore::ImportXMLFile(const stringT &, const stringT &,
 #else
 int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
                            const stringT &strXSDFileName, const bool &bImportPSWDsOnly,
-                           stringT &strErrors,
-                           int &numValidated, int &numImported, int &numFixed,
+                           stringT &strXMLErrors, stringT &strSkippedList,
+                           stringT &strPWHErrorList, stringT &strRenameList, 
+                           int &numValidated, int &numImported, int &numSkipped,
+                           int &numPWHErrors, int &numRenamed, 
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
                            CReport &rpt, Command *&pcommand)
 {
@@ -727,14 +730,14 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   UnknownFieldList uhfl;
   bool bEmptyDB = (GetNumEntries() == 0);
 
-  strErrors = _T("");
+  strXMLErrors = strPWHErrorList = strRenameList = _T("");
 
   // Expat is not a validating parser - but we now do it ourselves!
   validation = true;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly, 
                         nITER, nRecordsWithUnknownFields, uhfl);
-  strErrors = iXML.getResultText();
+  strXMLErrors = iXML.getXMLErrors();
   if (!status) {
     return XML_FAILED_VALIDATION;
   }
@@ -744,15 +747,23 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly,
                         nITER, nRecordsWithUnknownFields, uhfl);
-  strErrors = iXML.getResultText();
+
+  numImported = iXML.getNumEntriesImported();
+  numSkipped = iXML.getNumEntriesSkipped();
+  numRenamed = iXML.getNumEntriesRenamed();
+  numPWHErrors = iXML.getNumEntriesPWHErrors();
+
+  strXMLErrors = iXML.getXMLErrors();
+  strSkippedList = iXML.getSkippedList();
+  strRenameList = iXML.getRenameList();
+  strPWHErrorList = iXML.getPWHErrorList();
+
   if (!status) {
     delete pcommand;
     pcommand = NULL;
     return XML_FAILED_IMPORT;
   }
-
-  numImported = iXML.getNumEntriesImported();
-  numFixed = iXML.getNumEntriesFixed();
+ 
   bBadUnknownFileFields = iXML.getIfDatabaseHeaderErrors();
   bBadUnknownRecordFields = iXML.getIfRecordHeaderErrors();
   m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
@@ -783,7 +794,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   if (numImported > 0)
     SetDBChanged(true);
 
-  return numFixed == 0 ? SUCCESS : OK_WITH_ERRORS;
+  return ((numRenamed + numPWHErrors) == 0) ? SUCCESS : OK_WITH_ERRORS;
 }
 #endif
 
@@ -802,7 +813,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  const TCHAR &fieldSeparator, const TCHAR &delimiter,
                                  const bool &bImportPSWDsOnly,
                                  stringT &strError,
-                                 int &numImported, int &numSkipped, int &numFixed,
+                                 int &numImported, int &numSkipped,
+                                 int &numPWHErrors, int &numRenamed,
                                  CReport &rpt, Command *&pcommand)
 {
   stringT csError;
@@ -823,7 +835,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (!ifs)
     return CANT_OPEN_FILE;
 
-  numImported = numSkipped = numFixed = 0;
+  numImported = numSkipped = numRenamed = numPWHErrors = 0;
   int numlines = 0;
 
   CItemData ci_temp;
@@ -865,16 +877,16 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // IDSC_EXPORTHEADER, or vice versa.
   ASSERT(vs_Header.size() == NUMFIELDS);
 
-  string s_title, linebuf;
+  string s_header, linebuf;
 
-  // Get title record
-  if (!getline(ifs, s_title, '\n')) {
+  // Get header record
+  if (!getline(ifs, s_header, '\n')) {
     LoadAString(strError, IDSC_IMPORTNOHEADER);
     rpt.WriteLine(strError);
-    return SUCCESS;  // not even a title record! - succeeded but none imported!
+    return FAILURE;  // not even a title record!
   }
 
-  // Capture individual column titles from s_title:
+  // Capture individual column titles from s_header:
   // Set i_Offset[field] to column in which field is found in text file,
   // or leave at -1 if absent from text.
   unsigned num_found = 0;
@@ -882,13 +894,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   to = 0;
   do {
-    from = s_title.find_first_not_of(pSeps, to);
+    from = s_header.find_first_not_of(pSeps, to);
     if (from == string::npos)
       break;
-    to = s_title.find_first_of(pSeps, from);
-    string token = s_title.substr(from,
-                                  ((to == string::npos) ?
-                                   string::npos : to - from));
+    to = s_header.find_first_of(pSeps, from);
+    string token = s_header.substr(from,
+                                   ((to == string::npos) ?
+                                    string::npos : to - from));
     vector<string>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), token));
     if (it != vs_Header.end()) {
       i_Offset[it - vs_Header.begin()] = itoken;
@@ -1085,6 +1097,21 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       } else {
         sxtitle = grouptitle.c_str();
       }
+
+      if (sxtitle.empty()) {
+        Format(csError, IDSC_IMPORTNOTITLE, numlines);
+        rpt.WriteLine(csError);
+        numSkipped++;
+        continue;
+      }
+
+      if (tokens[i_Offset[PASSWORD]].empty()) {
+        Format(csError, IDSC_IMPORTNOPASSWORD, numlines);
+        rpt.WriteLine(csError);
+        numSkipped++;
+        continue;
+      }
+ 
       sxuser = tokens[i_Offset[USER]].c_str();
       ItemListIter iter = Find(sxgroup, sxtitle, sxuser);
       if (iter == m_pwlist.end()) {
@@ -1160,7 +1187,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       Format(csError, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
                sxtitle.c_str(), sxuser.c_str(), sxnewtitle.c_str());
       rpt.WriteLine(csError);
-      numFixed++;
+      numRenamed++;
     }
 
     if (i_Offset[URL] >= 0 && tokens.size() > (size_t)i_Offset[URL])
@@ -1190,10 +1217,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         ReportInvalidField(rpt, vs_Header.at(POLICY), numlines);
     if (i_Offset[HISTORY] >= 0 && tokens.size() > (size_t)i_Offset[HISTORY]) {
       StringX newPWHistory;
-      stringT strPWHErrors;
+      stringT strPWHErrorList;
       Format(csError, IDSC_IMPINVALIDPWH, numlines);
       switch (VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
-                                          newPWHistory, strPWHErrors)) {
+                                          newPWHistory, strPWHErrorList)) {
         case PWH_OK:
           ci_temp.SetPWHistory(newPWHistory.c_str());
           break;
@@ -1209,9 +1236,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         case PWH_INVALID_CHARACTER:
         default:
           rpt.WriteLine(csError, false);
-          rpt.WriteLine(strPWHErrors, false);
+          rpt.WriteLine(strPWHErrorList, false);
           LoadAString(csError, IDSC_PWHISTORYSKIPPED);
           rpt.WriteLine(csError);
+          numPWHErrors++;
           break;
       }
     }
@@ -1292,7 +1320,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (numImported > 0)
     SetDBChanged(true);
 
-  return (numSkipped + numFixed) == 0 ? SUCCESS : OK_WITH_ERRORS;
+  return ((numSkipped + numRenamed + numPWHErrors)) == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
 
 /*

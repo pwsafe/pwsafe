@@ -172,7 +172,7 @@ unsigned long __stdcall MFileSAX2ContentHandler::Release()
 //  -----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  MFileSAX2ContentHandler::startDocument()
 {
-  m_strImportErrors = _T("");
+  m_strXMLErrors = _T("");
   m_bentrybeingprocessed = false;
   return S_OK;
 }

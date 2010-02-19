@@ -220,6 +220,7 @@
 #define IDSC_IMPORTCONFLICTSX2          3386
 #define IDSC_DUPLICATENUMBER            3387
 #define IDSC_VALIDATEDUPLICATES         3388
+#define IDSC_IMPORTRECSKIPPED           3389
 
 #define IDSC_DELETEBASET                3400
 #define IDSC_DELETEABASE                3401

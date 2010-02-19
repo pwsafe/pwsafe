@@ -120,7 +120,7 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
   LoadAString(cs_import, IDSC_XMLIMPORT);
-  m_strResultText = _T("");
+  m_strXMLErrors = _T("");
   m_bValidation = bvalidation;  // Validate or Import
 
   XML_Memory_Handling_Suite ms = {WFilter_malloc, WFilter_realloc, WFilter_free};
@@ -182,7 +182,7 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
 
   if (pFilterHandler->getIfErrors() || bEerrorOccurred) {
     bEerrorOccurred = true;
-    Format(m_strResultText, IDSC_EXPATPARSEERROR,
+    Format(m_strXMLErrors, IDSC_EXPATPARSEERROR,
            XML_GetCurrentLineNumber(pParser),
            XML_GetCurrentColumnNumber(pParser),
         /* pFileHandler->getErrorCode(), */

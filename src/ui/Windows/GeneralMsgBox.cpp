@@ -671,7 +671,7 @@ void CGeneralMsgBox::UpdateLayout()
   // Caching the space between buttons
   int cxBtnsSpace = FromDlgX(m_aMetrics[CX_BTNS_SPACE]);
 
-  // The minimum dimensios of the client area
+  // The minimum dimensions of the client area
   // (starting with the message)
   CSize dimClient = m_dimMsg;
   int xMsg = 0;

@@ -95,7 +95,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   catch (const XMLException& toCatch)
   {
 #ifdef UNICODE
-    m_strResultText = stringT(toCatch.getMessage());
+    m_strXMLErrors = stringT(toCatch.getMessage());
 #else
     char *szData = XMLString::transcode(toCatch.getMessage());
     strResultText = stringT(szData);
@@ -183,11 +183,11 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   if (pSAX2Handler->getIfErrors() || bEerrorOccurred) {
     bEerrorOccurred = true;
     strResultText = pSAX2Handler->getValidationResult();
-    Format(m_strResultText, IDSC_XERCESPARSEERROR, 
+    Format(m_strXMLErrors, IDSC_XERCESPARSEERROR, 
            m_bValidation ? cs_validation.c_str() : cs_import.c_str(), 
            strResultText.c_str());
   } else {
-    m_strResultText = strResultText;
+    m_strXMLErrors = strResultText;
   }
 
   //  Delete the pSAX2Parser itself.  Must be done prior to calling Terminate, below.

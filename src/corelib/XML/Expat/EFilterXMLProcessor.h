@@ -46,13 +46,13 @@ public:
                const stringT &strXMLFileName,
                const stringT &strXSDFileName);
 
-  stringT getResultText() {return m_strResultText;}
+  stringT getXMLErrors() {return m_strXMLErrors;}
 
 private:
   Asker *m_pAsker;
   PWSFilters &m_MapFilters;
   FilterPool m_FPool;
-  stringT m_strResultText;
+  stringT m_strXMLErrors;
   bool m_bValidation;
 };
 
