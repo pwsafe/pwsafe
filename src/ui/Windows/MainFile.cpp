@@ -1442,17 +1442,21 @@ void DboxMain::OnImportText()
                                     numImported, numSkipped, numPWHErrors, numRenamed,
                                     rpt, pcmd);
 
-    cs_title.LoadString(IDS_FILEREADERROR);
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
+        cs_title.LoadString(IDS_FILEREADERROR);
         cs_temp.Format(IDS_CANTOPENREADING, TxtFileName.c_str());
+        delete pcmd;
         break;
       case PWScore::INVALID_FORMAT:
+        cs_title.LoadString(IDS_FILEREADERROR);
         cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName.c_str());
+        delete pcmd;
         break;
       case PWScore::FAILURE:
         cs_title.LoadString(IDS_TEXTIMPORTFAILED);
         cs_temp = strError.c_str();
+        delete pcmd;
         break;
       case PWScore::SUCCESS:
       case PWScore::OK_WITH_ERRORS:
