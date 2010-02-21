@@ -10,7 +10,10 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.21.1
 =======================
-None
+[] Validation of databases can now be performed via the Manage menu as
+well as via the command line flag '-v'. When executed via the menu, it
+is very similar to opening a new database in that the current open database
+is closed and the selected database is validated during the open process.
 
 Changes to Existing Features in 3.21.1
 ======================================
