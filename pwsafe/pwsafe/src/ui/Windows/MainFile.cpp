@@ -91,7 +91,9 @@ BOOL DboxMain::OpenOnInit()
     bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   }
 
-  const int flags = (bReadOnly ? GCP_READONLY : 0) | (m_core.IsReadOnly() ? GCP_FORCEREADONLY : 0);
+  const StringX sxOriginalFileName = m_core.GetCurFile();
+  const int flags = (bReadOnly ? GCP_READONLY : 0) | 
+                    (m_core.IsReadOnly() ? GCP_FORCEREADONLY : 0);
   int rc = GetAndCheckPassword(m_core.GetCurFile(),
                                passkey, GCP_FIRST,
                                flags);  // First
@@ -120,6 +122,11 @@ BOOL DboxMain::OpenOnInit()
       goto exit;
     }
   }
+
+  // If the user has changed the file at OpenOnInit time but had specified
+  // validation, turn off validate of the new file.
+  if (m_bValidate && sxOriginalFileName.compare(m_core.GetCurFile()) != 0)
+    m_bValidate = false;
 
   int rc2 = PWScore::NOT_SUCCESS;
 
