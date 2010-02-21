@@ -36,7 +36,7 @@ class CPasskeyEntry
 public:
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index, /* GCP_NORMAL */
-                bool bReadOnly, bool bForceReadOnly, 
+                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
                 CAdvancedDlg::Type adv_type);
 
   ~CPasskeyEntry();
@@ -53,7 +53,7 @@ public:
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
   int m_treatwhitespaceasempty;
 
-private:
+protected:
   // Dialog Data
   enum { IDD_BASIC = IDD_PASSKEYENTRY };
   enum { IDD_WEXIT = IDD_PASSKEYENTRY_WITHEXIT };
@@ -69,6 +69,7 @@ private:
   CSecString m_passkey;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;
+  bool m_bHideReadOnly;
   //}}AFX_DATA
   CString m_message;
   CComboBoxExtn m_MRU_combo;
@@ -77,12 +78,9 @@ private:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CPasskeyEntry)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);
   //}}AFX_VIRTUAL
 
-  // Implementation
-protected:
   int m_tries;
   int m_status;
   int m_index;

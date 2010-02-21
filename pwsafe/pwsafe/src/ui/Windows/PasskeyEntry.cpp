@@ -63,7 +63,7 @@ int CPasskeyEntry::dialog_lookup[5] = {
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
-                             bool bReadOnly, bool bForceReadOnly, 
+                             bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
                              CAdvancedDlg::Type adv_type)
   : CPWDialog(dialog_lookup[index], pParent),
   m_index(index),
@@ -72,6 +72,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_status(TAR_INVALID),
   m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
   m_bForceReadOnly(bForceReadOnly),
+  m_bHideReadOnly(bHideReadOnly),
   m_adv_type(adv_type), m_bAdvanced(false),
   m_subgroup_set(BST_UNCHECKED),
   m_subgroup_name(L""), m_subgroup_object(CItemData::GROUP),
@@ -203,8 +204,13 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     case GCP_NORMAL:
     case GCP_ADVANCED:
       // otherwise during open - user can - again unless file is R/O
-      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
-      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      if (m_bHideReadOnly) {
+        GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+        GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
+      } else {
+        GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+        GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      }
       break;
     case GCP_RESTORE:
     case GCP_WITHEXIT:

@@ -162,6 +162,11 @@ enum {GCP_FIRST      = 0,   // At startup of PWS
       GCP_WITHEXIT   = 3,   // OK, CANCEL, EXIT & HELP buttons
       GCP_ADVANCED   = 4};  // OK, CANCEL, HELP buttons & ADVANCED checkbox
 
+// GCP read only flags - tested via AND, set via OR, must be power of 2.
+enum {GCP_READONLY = 1,
+      GCP_FORCEREADONLY = 2,
+      GCP_HIDEREADONLY = 4};
+
 //-----------------------------------------------------------------------------
 class DboxMain : public CDialog, public UIInterFace
 {
@@ -478,8 +483,8 @@ protected:
   int Save(void);
   int SaveAs(void);
   int SaveCore(PWScore *pcore);
-  int Open(void);
-  int Open(const StringX &sx_Filename, const bool bReadOnly);
+  int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
+  int Open(const StringX &sx_Filename, const bool bReadOnly, const bool bHideReadOnly = false);
   int CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey);
   void PostOpenProcessing();
   int Close(const bool bTrySave = true);
@@ -682,7 +687,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const StringX &filename, StringX& passkey,
-                          int index, bool bReadOnly = false, bool bForceReadOnly = false,
+                          int index, int flags = 0,
                           PWScore *pcore = 0, 
                           CAdvancedDlg::Type adv_type = CAdvancedDlg::ADV_INVALID);
 
