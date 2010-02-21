@@ -91,10 +91,10 @@ BOOL DboxMain::OpenOnInit()
     bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   }
 
+  const int flags = (bReadOnly ? GCP_READONLY : 0) | (m_core.IsReadOnly() ? GCP_FORCEREADONLY : 0);
   int rc = GetAndCheckPassword(m_core.GetCurFile(),
                                passkey, GCP_FIRST,
-                               bReadOnly,
-                               m_core.IsReadOnly());  // First
+                               flags);  // First
 
   CString cs_title;
   cs_title.LoadString(IDS_FILEREADERROR);
@@ -229,7 +229,7 @@ BOOL DboxMain::OpenOnInit()
   // Validation does integrity check & repair on database
   // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
   if (m_bValidate) {
-    PostMessage(WM_COMMAND, ID_MENUITEM_VALIDATE);
+    OnValidate();
     m_bValidate = false;
   }
 
@@ -529,11 +529,11 @@ void DboxMain::OnOpenMRU(UINT nID)
 #endif
 }
 
-int DboxMain::Open()
+int DboxMain::Open(const UINT uiTitle)
 {
   int rc = PWScore::SUCCESS;
   StringX sx_Filename;
-  CString cs_text(MAKEINTRESOURCE(IDS_CHOOSEDATABASE));
+  CString cs_text(MAKEINTRESOURCE(uiTitle));
   std::wstring dir = PWSdirs::GetSafeDir();
 
   // Open-type dialog box
@@ -545,13 +545,22 @@ int DboxMain::Open()
                      CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
                      this);
     fd.m_ofn.lpstrTitle = cs_text;
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
-      fd.m_ofn.Flags |= OFN_READONLY;
-    else
-      fd.m_ofn.Flags &= ~OFN_READONLY;
+    if (uiTitle == IDS_CHOOSEDATABASE) {
+      // Normal Open
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
+        fd.m_ofn.Flags |= OFN_READONLY;
+      else
+        fd.m_ofn.Flags &= ~OFN_READONLY;
+    } else {
+      // Validate
+      fd.m_ofn.Flags |= (OFN_HIDEREADONLY | OFN_NOREADONLYRETURN);
+    }
+
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
+
     INT_PTR rc2 = fd.DoModal();
+
     if (m_inExit) {
       // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
@@ -565,7 +574,7 @@ int DboxMain::Open()
     if (rc2 == IDOK) {
       sx_Filename = LPCWSTR(fd.GetPathName());
 
-      rc = Open(sx_Filename, fd.GetReadOnlyPref() == TRUE);
+      rc = Open(sx_Filename, fd.GetReadOnlyPref() == TRUE, uiTitle == IDS_CHOOSEDATABASEV);
       if (rc == PWScore::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
@@ -583,7 +592,7 @@ int DboxMain::Open()
   return rc;
 }
 
-int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly)
+int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool bHideReadOnly)
 {
   CGeneralMsgBox gmb;
   INT_PTR rc1;
@@ -610,7 +619,8 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly)
     m_core.UnlockFile(m_core.GetCurFile().c_str());
   }
 
-  rc = GetAndCheckPassword(sx_Filename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
+  const int flags = (bReadOnly ? GCP_READONLY : 0) | (bHideReadOnly ? GCP_HIDEREADONLY :0);
+  rc = GetAndCheckPassword(sx_Filename, passkey, GCP_NORMAL, flags);  // OK, CANCEL, HELP
 
   // Just need file extension
   std::wstring drive, dir, name, ext;
@@ -1203,7 +1213,9 @@ void DboxMain::OnExportText()
   sx_temp = m_core.GetCurFile();
   if (sx_temp.empty()) {
     //  Database has not been saved - prompt user to do so first!
-    gmb.AfxMessageBox(IDS_SAVEBEFOREEXPORT);
+    cs_temp.LoadString(IDS_SAVEBEFOREEXPORT);
+    cs_text.Format(IDS_SAVEBEFOREPROCESS, L"", cs_temp);
+    gmb.AfxMessageBox(cs_text);
     return;
   }
 
@@ -1901,8 +1913,7 @@ void DboxMain::DoOtherDBProcessing(const UINT uiftn)
   // comparison database.
   rc = GetAndCheckPassword(sx_Filename2, passkey,
                            GCP_ADVANCED, // OK, CANCEL, HELP
-                           true,         // readonly
-                           true,         // user cannot change readonly status
+                           GCP_READONLY | GCP_FORCEREADONLY, 
                            &othercore,   // Use other core
                            iadv_type);   // Advanced type
 

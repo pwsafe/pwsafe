@@ -212,6 +212,14 @@ int DboxMain::RestoreSafe()
 
 void DboxMain::OnValidate() 
 {
+  CGeneralMsgBox gmb;
+  if (!m_bValidate) {
+    // We didn't get here via command line flag - so must be via the menu
+    int rc = Open(IDS_CHOOSEDATABASEV);
+    if (rc != PWScore::SUCCESS)
+      return;
+  }
+
   CReport rpt;
   std::wstring cs_title;
   LoadAString(cs_title, IDS_RPTVALIDATE);
@@ -228,7 +236,6 @@ void DboxMain::OnValidate()
 
   rpt.EndReport();
 
-  CGeneralMsgBox gmb;
   gmb.SetTitle(cs_title.c_str());
   gmb.SetMsg(cs_msg.c_str());
   gmb.SetStandardIcon(bchanged ? MB_ICONEXCLAMATION : MB_ICONINFORMATION);

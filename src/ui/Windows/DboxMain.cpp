@@ -621,7 +621,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
   {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
-  {ID_MENUITEM_VALIDATE, true, false, false, true},
+  {ID_MENUITEM_VALIDATE, true, true, true, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
@@ -1584,8 +1584,7 @@ static CPasskeyEntry *dbox_pkentry = NULL;
 int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   StringX &passkey,
                                   int index,
-                                  bool bReadOnly,
-                                  bool bForceReadOnly,
+                                  int flags,
                                   PWScore *pcore,
                                   CAdvancedDlg::Type adv_type)
 {
@@ -1603,6 +1602,11 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   // prevent multiple r/w access.
   int retval;
   bool bFileIsReadOnly = false;
+
+  /// Get all read-only values from flags
+  bool bReadOnly = (flags & GCP_READONLY) == GCP_READONLY;
+  bool bForceReadOnly = (flags & GCP_FORCEREADONLY) == GCP_FORCEREADONLY;
+  bool bHideReadOnly = (flags & GCP_HIDEREADONLY) == GCP_HIDEREADONLY;
 
   if (dbox_pkentry != NULL) { // can happen via systray unlock
     dbox_pkentry->BringWindowToTop();
@@ -1634,6 +1638,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   dbox_pkentry = new CPasskeyEntry(this, filename.c_str(),
                                    index, bReadOnly || bFileIsReadOnly,
                                    bFileIsReadOnly || bForceReadOnly,
+                                   bHideReadOnly,
                                    adv_type);
 
   int nMajor(0), nMinor(0), nBuild(0);
@@ -2135,7 +2140,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     if (m_bOpen)
       rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
                                useSysTray ? GCP_RESTORE : GCP_WITHEXIT,
-                               m_core.IsReadOnly());
+                               m_core.IsReadOnly() ? GCP_READONLY : 0);
 
     CGeneralMsgBox gmb;
     CString cs_temp, cs_title;

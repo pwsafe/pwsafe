@@ -602,3 +602,7 @@
 #define IDS_TITLESKIPPED                5785
 #define IDS_TITLERENAMED                5786
 #define IDS_TITLEPWHERRORS              5787
+#define IDS_SAVEBEFOREPROCESS           5788
+#define IDS_SAVEBEFOREPROCESS2          5789
+#define IDS_SAVEBEFOREVALIDATE          5790
+#define IDS_CHOOSEDATABASEV             5791
