@@ -124,8 +124,11 @@ BOOL DboxMain::OpenOnInit()
   }
 
   // If the user has changed the file at OpenOnInit time but had specified
-  // validation, turn off validate of the new file.
-  if (m_bValidate && sxOriginalFileName.compare(m_core.GetCurFile()) != 0)
+  // validation, turn off validation of the new file.  However, allow user to
+  // specify just the -v command flag with no filename on the command line and
+  // then validate the database selected via the initial Open dialog.
+  if (m_bValidate && !sxOriginalFileName.empty() &&
+      sxOriginalFileName.compare(m_core.GetCurFile()) != 0)
     m_bValidate = false;
 
   int rc2 = PWScore::NOT_SUCCESS;
