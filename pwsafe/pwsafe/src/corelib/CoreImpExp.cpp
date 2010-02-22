@@ -695,7 +695,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
 int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            const stringT &, const bool &,
-                           stringT &, stringT &, stringT &, sringT &,
+                           stringT &, stringT &, stringT &, stringT &,
                            int &, int &, int &, int &, int &,
                            bool &, bool &, 
                            CReport &, Command *&)
