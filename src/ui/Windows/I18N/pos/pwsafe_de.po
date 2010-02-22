@@ -3,19 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-02-04 03:04+0100\n"
+"PO-Revision-Date: 2010-02-22 12:04+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -26,13 +24,10 @@ msgstr ""
 #    S = Shift key   (or blank if not used)
 #    X = upper case character
 # e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-
 # ONLY Accelerator Keys with corresponding alphanumeric characters can be
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
-
 #. Resource IDs: (315)
 msgid " "
 msgstr " "
@@ -148,6 +143,21 @@ msgstr " 'Benutzer'"
 msgid " 'email'"
 msgstr " 'Email'"
 
+#. Resource IDs: (362)
+#, c-format
+msgid " / renamed %d"
+msgstr " / umbenannt %d"
+
+#. Resource IDs: (362)
+#, c-format
+msgid " / skipped %d"
+msgstr "/ %d übersprungen"
+
+#. Resource IDs: (362)
+#, c-format
+msgid " / with Password History errors %d"
+msgstr "  / mit Passworthistorie Fehler %d"
+
 #. Resource IDs: (332)
 #, c-format
 msgid " Copy # %d"
@@ -163,6 +173,11 @@ msgstr "Aktueller Standard (%s)"
 msgid " Drag # %d"
 msgstr " Drag # %d"
 
+#. Resource IDs: (212)
+#, c-format
+msgid " Duplicate # %d"
+msgstr "Doppelter Nr. %d"
+
 #. Resource IDs: (203)
 #, c-format
 msgid " Import # %d"
@@ -172,6 +187,10 @@ msgstr " Importieren # %d"
 #, c-format
 msgid " [Process ID=%s]"
 msgstr " [Prozess ID=%s]"
+
+#. Resource IDs: (362)
+msgid " or undo all changes"
+msgstr " oder alle Änderungen rückgängig machen"
 
 #. Resource IDs: (354)
 msgid "! &Edit externally"
@@ -319,6 +338,11 @@ msgstr "%s auf %s"
 #, c-format
 msgid "%s%s%s_Report.txt"
 msgstr "%s%s%s_Report.txt"
+
+#. Resource IDs: (212)
+#, c-format
+msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\"."
+msgstr "%s, Titel=\"%s\", Benutzer=\"%s\" besteht bereits in der Datenbank bzw. importierte Datei. Importierter Eintrag mit Titel=\"%s\" eingefügt."
 
 #. Resource IDs: (333)
 #, c-format
@@ -548,6 +572,10 @@ msgstr "&Beenden"
 #. Resource IDs: (1088)
 msgid "&Font:"
 msgstr "&Schriftart:"
+
+#. Resource IDs: (1025)
+msgid "&Generate"
+msgstr "&Generieren"
 
 #. Resource IDs: (32069)
 msgid "&Go to Base entry"
@@ -1921,6 +1949,14 @@ msgstr "Vergleich"
 msgid "Comparison Database:"
 msgstr "Vergleichsdatenbank:"
 
+#. Resource IDs: (362)
+msgid "Completed but ...."
+msgstr "Fertig aber ...."
+
+#. Resource IDs: (362)
+msgid "Completed successfully"
+msgstr "Erfolgreich beendet"
+
 #. Resource IDs: (65535)
 msgid "Con&firm Password:"
 msgstr "Bestätige Passwort:"
@@ -2051,10 +2087,6 @@ msgstr "Passwort in Zwischenablage kopieren, minimieren"
 #. Resource IDs: (1150)
 msgid "Copy to Clipboard"
 msgstr "In Zwischenablage kopieren"
-
-#. Resource IDs: (32222)
-msgid "Copy to Comparison DB ->"
-msgstr "Zur VergleichsDB kopieren ->"
 
 #. Resource IDs: (353)
 msgid "Copy to DB"
@@ -2519,6 +2551,11 @@ msgstr "Einträge nur in der Vergleichsdatenbank (%s):"
 msgid "Entries only in current database (%s):"
 msgstr "Einträge nur in der aktuellen Datenbank (%s):"
 
+#. Resource IDs: (212)
+#, c-format
+msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\" has an empty %s. Entry skipped."
+msgstr "Eintrag %s%d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat ein leeres %s. Eintrag übersprungen."
+
 #. Resource IDs: (211)
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\" not found. Cannot update entry's password."
@@ -2533,6 +2570,11 @@ msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat eine ungültige
 #, c-format
 msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" had an invalid UUID field.  This has been corrected."
 msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat ein ungültiges Feld UUID. Es wurde korrigiert."
+
+#. Resource IDs: (212)
+#, c-format
+msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" was a duplicate of an existing entry.  Its title has been changed to:\"%s\"."
+msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" war das Duplikat eines bestehenden Eintrages. Der Titel wurde abgeändert in:\"%s\"."
 
 #. Resource IDs: (205)
 #, c-format
@@ -2555,13 +2597,13 @@ msgstr "Eintrag der Zeile %d enthält ein ungültiges Feld \"%s \". Es wurde ign
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry on line %d with Group=\"%s\", Title=\"%s\", User=\"%s\" already exists. Added imported entry with title=\"%s\"."
-msgstr "Eintrag in Zeile %d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingefügt."
+msgid "Entry on line %d with Group=\"%s\""
+msgstr "Eintrag in Zeile %d mit Gruppe=\"%s\""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Entry on line %d with no group, Title=\"%s\", User=\"%s\" already exists. Added imported entry with title=\"%s\"."
-msgstr "Eintrag in Zeile %d ohne Gruppe, Titel=\"%s\", Benutzer=\"%s\" besteht bereits. Importierter Eintrag mit Titel=\"%s\" eingefügt."
+msgid "Entry on line %d with no group"
+msgstr "Eintrag in Zeile %d ohne Gruppe"
 
 #. Resource IDs: (359)
 msgid "Entry status"
@@ -2570,6 +2612,15 @@ msgstr "Status des Eintrags"
 #. Resource IDs: (349)
 msgid "Entry type"
 msgstr "Typ des Eintrags"
+
+#. Resource IDs: (212)
+#, c-format
+msgid "Entry with Group=\"%s\""
+msgstr "Eintrag mit Gruppe=\"%s\""
+
+#. Resource IDs: (212)
+msgid "Entry with no group"
+msgstr "Eintrag ohne Gruppe"
 
 #. Resource IDs: (209)
 msgid "Error"
@@ -2782,7 +2833,7 @@ msgid ""
 "\r\n"
 "%s"
 msgstr ""
-"Datei: %s Validierung mit XML Schema fehlgeschlagen:\r\n"
+"Datei: %s Überprüfung mit XML Schema fehlgeschlagen:\r\n"
 "\r\n"
 "%s"
 
@@ -2793,20 +2844,14 @@ msgid ""
 "\r\n"
 "%s"
 msgstr ""
-"Datei: %s bestand Validierung aber mit folgende Fehler während des Importierens:\r\n"
+"Datei: %s bestand Überprüfung aber mit folgende Fehler während des Importierens:\r\n"
 "\r\n"
 "%s"
 
 #. Resource IDs: (335)
 #, c-format
-msgid ""
-"File: %s was imported (entries validated %d / imported %d) but had the following errors:\r\n"
-"\r\n"
-"%s"
-msgstr ""
-"Datei: %s wurde importiert (Validierte Einträge %d / importiert %d) aber mit folgende Fehler:\r\n"
-"\r\n"
-"%s"
+msgid "File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."
+msgstr "Datei: %s wurde importiert (Überprüfte Einträge %d / importiert %d%s%s%s). Siehe Bericht für Details."
 
 #. Resource IDs: (209)
 #, c-format
@@ -2902,21 +2947,17 @@ msgstr "Alles ausgeklappt"
 msgid "Gaelic"
 msgstr "Gälisch"
 
-#. Resource IDs: (1025)
-msgid "Generate"
-msgstr "Generierung"
-
 #. Resource IDs: (32157)
 msgid "Generate &Password"
 msgstr "Generiere &Passwort"
 
+#. Resource IDs: (1052)
+msgid "Generate &Pronounceable passwords"
+msgstr "Generiere aussprechbare &Passwörter"
+
 #. Resource IDs: (359)
 msgid "Generate Password"
 msgstr "Generiere Passwort"
-
-#. Resource IDs: (1052)
-msgid "Generate pronounceable passwords"
-msgstr "Generiere aussprechbare Passwörter"
 
 #. Resource IDs: (516)
 msgid "Georgian"
@@ -3675,6 +3716,10 @@ msgstr "Menüeintrag"
 msgid "Merge"
 msgstr "Zusammenführen"
 
+#. Resource IDs: (362)
+msgid "Merge failed"
+msgstr "Zusammenführen fehlgeschlagen"
+
 #. Resource IDs: (32018)
 msgid "Merge..."
 msgstr "&Zusammenführen..."
@@ -3963,19 +4008,22 @@ msgid ""
 "\n"
 "Number of Password Histories fixed: %d\n"
 "\n"
+"Number of non-unique Group/Title/User fixed: %d\n"
+"\n"
 "Number of Alias warnings issued: %d\n"
 "\n"
 "Number of Shortcut warnings issued: %d"
 msgstr ""
-"%d Einträge wurden bearbeitet.\n"
+"Anzahl der bearbeiteten Einträge:%d\n"
 "\n"
-"%d UUIDs wurden korrigiert.\n"
+"Anzahl ausgebesserte UUIDs: %d\n"
 "\n"
-"%d Passworthistorien wurden korrigiert.\n"
+"Anzahl ausgebesserte Passworthistorien: %d\n"
 "\n"
-"%d Aliaswarnungen wurden ausgegeben.\n"
+"Anzahl ausgebesserte nicht eindeutige Gruppe/Titel/Benutzer: %d\n"
+"/nAnzahl ausgegeben Aliaswarnungen: %d\n"
 "\n"
-"%d Verknüpfungslwarnungen wurden ausgegeben."
+"Anzahl ausgegebene Verknüpfungswarnungen: %d"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4324,6 +4372,10 @@ msgstr "Bitte wählen Sie eine Datenbank zum Öffnen aus:"
 msgid "Please Choose a Database to Synchonize with current database"
 msgstr "Bitte wählen Sie eine Datenbank zum Synchronisieren mit der aktuell geöffneten aus"
 
+#. Resource IDs: (362)
+msgid "Please Choose a Database to Validate:"
+msgstr "Bitte wählen Sie eine Datenbank zum Überprüfen aus:"
+
 #. Resource IDs: (334)
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "Bitte wählen Sie eine KeePass-Textdatei zum Import aus"
@@ -4671,6 +4723,10 @@ msgstr ""
 "\n"
 "Die virtuelle Tastatur kann nicht bereitgestellt werden."
 
+#. Resource IDs: (1377)
+msgid "Rese&t to Database Defaults"
+msgstr "Rückse&tzen auf Datenbank Standard"
+
 #. Resource IDs: (356)
 #, c-format
 msgid "Reserved shortcut '%s' ignored."
@@ -4691,10 +4747,6 @@ msgstr "Spalten rücksetzen"
 #. Resource IDs: (32290)
 msgid "Reset this shortcut"
 msgstr "Diese Verknüpfung rücksetzen"
-
-#. Resource IDs: (1377)
-msgid "Reset to Database Defaults"
-msgstr "Rücksetzen auf Datenbank Standard"
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
@@ -4776,10 +4828,10 @@ msgstr "S&ynchronisieren..."
 #. Resource IDs: (192)
 #, c-format
 msgid ""
-"SAX Parse Error during %s\n"
+"SAX Parse Error during %s\r\n"
 "%s."
 msgstr ""
-"SAX Parse Fehler während %s\n"
+"SAX Parse Fehler während %s\r\n"
 "%s."
 
 #. Resource IDs: (191)
@@ -5122,11 +5174,6 @@ msgstr "Ungültiger Befehl Signal"
 msgid "Signal Terminate"
 msgstr "Beenden Signal"
 
-#. Resource IDs: (334)
-#, c-format
-msgid "Skipped %d %s"
-msgstr "%d %s übersprungen"
-
 #. Resource IDs: (514)
 msgid "Slovak"
 msgstr "Slowakisch"
@@ -5272,6 +5319,10 @@ msgstr "Schweizerisch Französisch"
 #. Resource IDs: (517)
 msgid "Swiss German"
 msgstr "Schweizerisch Deutsch"
+
+#. Resource IDs: (362)
+msgid "Synchronization failed"
+msgstr "Synchronisation fehlgeschlagen"
 
 #. Resource IDs: (360)
 msgid "Synchronize"
@@ -5441,6 +5492,21 @@ msgstr ""
 "Hinweis: Wählen Sie \"Lesen/Schreiben\" nur wenn Sie sich sicher sind, dass diese Datei wirklich nicht benutzt wird,\n"
 "auch nicht von einer anderen Instanz von PasswordSafe."
 
+#. Resource IDs: (361)
+#, c-format
+msgid ""
+"The database:\n"
+"\n"
+"%s\n"
+"\n"
+"has duplicate entries with the same group/title/user combination. Please fix by running PasswordSafe with '-v' flag on this database."
+msgstr ""
+"Die Datenbank:\n"
+"\n"
+"%s\n"
+"\n"
+"hat doppelte Einträge mit derselben Gruppe/Titel/Benutzer Kombination. Bitte bereinigen Sie das durch Aufruf von PasswordSafe für diese Datenbank mit dem Parameter '-v'."
+
 #. Resource IDs: (329)
 msgid "The entered passwords do not match.  Please re-enter them."
 msgstr "Die eingegebenen Passwörter sind unterschiedlich.  Bitte erneut eingeben."
@@ -5479,6 +5545,18 @@ msgstr "Folgende Spalten werden verarbeitet: "
 #, c-format
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
 msgstr "Folgender Eintrag wurde in die %s Datenbank kopiert: '%s:%s:%s'"
+
+#. Resource IDs: (362)
+msgid "The following records had errors in their Password History:"
+msgstr "Folgende Datensätze hatten Fehler in die Passworthistorie:"
+
+#. Resource IDs: (362)
+msgid "The following records were renamed:"
+msgstr "Folgende Datensätze wurden umbenannt:"
+
+#. Resource IDs: (362)
+msgid "The following records were skipped:"
+msgstr "Folgende Datensätze wurden übersprungen:"
 
 #. Resource IDs: (331)
 msgid "The old safe combination is not correct"
@@ -5551,25 +5629,9 @@ msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag oder schon eine Alia
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "Dies erlaubt Ihnen, Sicherungsdateien an einem anderen Ort zu verwahren. Stellen Sie bitte sicher, dass Sie Schreibberechtigung in diesem Verzeichnis haben."
 
-#. Resource IDs: (362)
-#, c-format
-msgid ""
-"This database has the following %s with a title that is the same as a subgroup within its group.\r\n"
-"%s\r\n"
-"%s"
-msgstr ""
-"Diese Datenbank hat folgendes %s mit einem Titel der gleich einer Untergruppe dieser Gruppe ist.\r\n"
-"%s\r\n"
-"%s"
-
 #. Resource IDs: (335)
 msgid "This database is the same as the current database!"
 msgstr "Das ist die gleiche Datenbank, wie die aktuell geöffnete!"
-
-#. Resource IDs: (362)
-#, c-format
-msgid "This entry has a title that is the same as a subgroup within its group. %s\r\n"
-msgstr "Dieser Eintrag hat ein Titel der gleich ist mit dem einer Untergruppe innerhalb dieser Gruppe. %s\r\n"
 
 #. Resource IDs: (354)
 msgid "This entry has been changed. Are you sure you wish to cancel?"
@@ -5887,7 +5949,7 @@ msgstr "Kann die MS XML-Unterstützung nicht benutzen. Keine der Versionen 3, 4 
 
 #. Resource IDs: (191)
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
-msgstr "Kann auf Ihrem Rechner die XML-Datei nicht mittels XML-Schema-Datei (XSD) validieren."
+msgstr "Kann auf Ihrem Rechner die XML-Datei nicht mittels XML-Schema-Datei (XSD) überprüfen."
 
 #. Resource IDs: (3865)
 msgid "Unable to write read-only property."
@@ -6036,49 +6098,49 @@ msgstr ""
 msgid "Use"
 msgstr "Nutze"
 
+#. Resource IDs: (1049)
+msgid "Use &Digits"
+msgstr "Benutze &Zahlen"
+
+#. Resource IDs: (1070)
+msgid "Use &Hexadecimal digits only (0-9,a-f)"
+msgstr "Benutze nur &Hexadezimalzahlen (0-9,a-f)"
+
+#. Resource IDs: (1047)
+msgid "Use &Lowercase letters"
+msgstr "Benutze &Kleinbuchstaben"
+
+#. Resource IDs: (1050)
+msgid "Use &Symbols (i.e. &&, %, $, etc.)"
+msgstr "Benutze &Symbole (z.B. &&, %, $, usw.)"
+
+#. Resource IDs: (1050)
+msgid "Use &Symbols (i.e., &, %, $, etc.)"
+msgstr "Benutze &Symbole (z.B. &, %, $, usw.)"
+
+#. Resource IDs: (1048)
+msgid "Use &UPPERCASE letters"
+msgstr "Benutze &Großbuchstaben"
+
 #. Resource IDs: (1375)
-msgid "Use Database Defaults"
-msgstr "Datenbank Standard anwenden"
+msgid "Use Database De&faults"
+msgstr "Datenbank &Standard anwenden"
 
 #. Resource IDs: (1378)
 msgid "Use Default"
 msgstr "Standard anwenden"
 
-#. Resource IDs: (1048)
-msgid "Use UPPERCASE letters"
-msgstr "Benutze Großbuchstaben"
-
-#. Resource IDs: (1049)
-msgid "Use digits"
-msgstr "Benutze Zahlen"
-
-#. Resource IDs: (1070)
-msgid "Use hexadecimal digits only (0-9,a-f)"
-msgstr "Benutze nur Hexadezimalzahlen (0-9,a-f)"
-
-#. Resource IDs: (1047)
-msgid "Use lowercase letters"
-msgstr "Benutze Kleinbuchstaben"
-
 #. Resource IDs: (1051)
-msgid "Use only easy-to-read characters (i.e., no  'l', '1', etc.)"
-msgstr "Benutze leicht zu lesende Zeichen (z.B. kein  'l', '1', usw.)"
+msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
+msgstr "Benutze l&eicht zu lesende Zeichen (z.B. kein  'l', '1', usw.)"
 
-#. Resource IDs: (1050)
-msgid "Use symbols (i.e. &&, %, $, etc.)"
-msgstr "Benutze Symbole (z.B. &, %, $, usw.)"
-
-#. Resource IDs: (1050)
-msgid "Use symbols (i.e., &, %, $, etc.)"
-msgstr "Benutze Symbole (z.B. &, %, $, usw.)"
+#. Resource IDs: (1376)
+msgid "Use the P&olicy below:"
+msgstr "Verwende die &Richtlinie unten:"
 
 #. Resource IDs: (320)
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
 msgstr "Benutze die hier eingestellte Anwendung um die URL eines Eintrags aufzurufen wenn diese mit [alt] beginnt. z.B. '[alt]http://foo.com'"
-
-#. Resource IDs: (1376)
-msgid "Use the policy below:"
-msgstr "Verwende die Richtlinie unten:"
 
 #. Resource IDs: (327)
 msgid "User Name"
@@ -6096,14 +6158,6 @@ msgstr "Benutzer kopiert "
 msgid "Username\t"
 msgstr "Benutzername\t"
 
-#. Resource IDs: (361)
-msgid "Usernames must be displayed in the Tree View"
-msgstr "Benutzernamen müssen in der Baumansicht angezeigt werden"
-
-#. Resource IDs: (362)
-msgid "Usernames will be displayed to handle this correctly."
-msgstr "Der Benutzername wird angezeigt um dies korrekt zu bearbeiten"
-
 #. Resource IDs: (65535)
 msgid "Using application:"
 msgstr "Benutztes Programm:"
@@ -6118,7 +6172,7 @@ msgstr "Usbekisches Kyrillisch"
 
 #. Resource IDs: (206, 347)
 msgid "Validate"
-msgstr "Bestätigen"
+msgstr "Überprüfen"
 
 #. Resource IDs: (335)
 #, c-format
@@ -6166,6 +6220,10 @@ msgstr "Ansicht"
 #. Resource IDs: (344)
 msgid "View Aliases"
 msgstr "Aliase ansehen"
+
+#. Resource IDs: (329, 32220)
+msgid "View Entry"
+msgstr "Eintrag anzeigen"
 
 #. Resource IDs: (330)
 #, c-format
@@ -6335,9 +6393,10 @@ msgstr ""
 msgid "You can use the Copy button below to place this list into the Clipboard."
 msgstr "Sie können den Kopieren-Knopf unten benutzen um diese Liste in die Zwischenablage abzulegen."
 
-#. Resource IDs: (346)
-msgid "You must save this database before it can be exported."
-msgstr "Datenbank muss vor dem Exportieren zuerst gespeichert werden."
+#. Resource IDs: (362)
+#, c-format
+msgid "You must save this database%s before it can be %s."
+msgstr "Datenbank %s muss vor dem %s zuerst gespeichert werden."
 
 #. Resource IDs: (361)
 msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
@@ -6709,6 +6768,15 @@ msgstr ""
 "\n"
 "Wiederholen"
 
+#. Resource IDs: (362)
+#, c-format
+msgid ""
+"\n"
+"Renamed %d %s"
+msgstr ""
+"\n"
+"%d %s Umbennant"
+
 #. Resource IDs: (2005)
 msgid ""
 "\n"
@@ -6765,6 +6833,15 @@ msgstr ""
 "\n"
 "Ungesicherte Änderungen anzeigen"
 
+#. Resource IDs: (334)
+#, c-format
+msgid ""
+"\n"
+"Skipped %d %s"
+msgstr ""
+"\n"
+"%d %s übersprungen"
+
 #. Resource IDs: (2002)
 msgid ""
 "\n"
@@ -6814,8 +6891,8 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Kann Datenbank nicht öffnen. Sie existiert wahrscheinlich nicht.\n"
-"Bitte wählen sie Öffnen einer anderen Datenbank, Erstellen einer neuen Datenbank oder Abbrechen."
+"Kann die Datenbank nicht öffnen. Sie existiert wahrscheinlich nicht.\n"
+"Bitte wählen sie Öffnen für eine andere Datenbank, Neu für eine neue Datenbank oder Abbrechen."
 
 #. Resource IDs: (354)
 msgid ""
@@ -6846,6 +6923,15 @@ msgstr ""
 "\n"
 "\n"
 "Unbekannte Felder eines Eintrags werden auch mitkopiert."
+
+#. Resource IDs: (362)
+#, c-format
+msgid ""
+"\n"
+"with Password History errors %d"
+msgstr ""
+"\n"
+"mit Passworthistoriefehler %d"
 
 #. Resource IDs: (335)
 #, c-format
@@ -7107,6 +7193,10 @@ msgstr "Eintrag"
 msgid "equals"
 msgstr "gleicht"
 
+#. Resource IDs: (346)
+msgid "exported"
+msgstr "Exportieren"
+
 #. Resource IDs: (1191)
 msgid "filename"
 msgstr "Dateiname"
@@ -7118,10 +7208,6 @@ msgstr "größer als"
 #. Resource IDs: (207)
 msgid "greater than or equal to"
 msgstr "größer als oder gleich mit"
-
-#. Resource IDs: (344)
-msgid "group"
-msgstr "Gruppe"
 
 #. Resource IDs: (208)
 msgid "has expired"
@@ -7313,9 +7399,13 @@ msgstr "v&1.x Format..."
 msgid "v&2 format..."
 msgstr "v&2 Format..."
 
+#. Resource IDs: (362)
+msgid "validated"
+msgstr "Überprüfen"
+
 #. Resource IDs: (191)
 msgid "validation"
-msgstr "Validierung"
+msgstr "Überprüfung"
 
 #. Resource IDs: (357)
 msgid "was"
@@ -7346,6 +7436,36 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid "Copy to Comparison DB ->"
+#~ msgstr "Zur VergleichsDB kopieren ->"
+#~ msgid ""
+#~ "Entry on line %d with no group, Title=\"%s\", User=\"%s\" already exists. "
+#~ "Added imported entry with title=\"%s\"."
+#~ msgstr ""
+#~ "Eintrag in Zeile %d ohne Gruppe, Titel=\"%s\", Benutzer=\"%s\" besteht "
+#~ "bereits. Importierter Eintrag mit Titel=\"%s\" eingefügt."
+#~ msgid ""
+#~ "This database has the following %s with a title that is the same as a "
+#~ "subgroup within its group.\r\n"
+#~ "%s\r\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Diese Datenbank hat folgendes %s mit einem Titel der gleich einer "
+#~ "Untergruppe dieser Gruppe ist.\r\n"
+#~ "%s\r\n"
+#~ "%s"
+#~ msgid ""
+#~ "This entry has a title that is the same as a subgroup within its group. %s"
+#~ "\r\n"
+#~ msgstr ""
+#~ "Dieser Eintrag hat ein Titel der gleich ist mit dem einer Untergruppe "
+#~ "innerhalb dieser Gruppe. %s\r\n"
+#~ msgid "Usernames must be displayed in the Tree View"
+#~ msgstr "Benutzernamen müssen in der Baumansicht angezeigt werden"
+#~ msgid "Usernames will be displayed to handle this correctly."
+#~ msgstr "Der Benutzername wird angezeigt um dies korrekt zu bearbeiten"
+#~ msgid "group"
+#~ msgstr "Gruppe"
 #~ msgid "This %s now has a title that is the same as a sibling %s. %s\r\n"
 #~ msgstr ""
 #~ "Diese %s hat nun ein Titel der derselbe ist wie die Geschwister %s. %s\r\n"
