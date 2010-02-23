@@ -41,24 +41,28 @@ struct st_GroupTitleUser {
   StringX group;
   StringX title;
   StringX user;
+
   st_GroupTitleUser() {}
+
   st_GroupTitleUser(const StringX &g, const StringX &t, const StringX &u)
   : group(g), title(t), user(u) {}
+
   st_GroupTitleUser &operator=(const st_GroupTitleUser &that) {
     if (this != &that) {
       group = that.group; title = that.title; user = that.user;
     }
     return *this;
   }
-  friend bool operator< (const st_GroupTitleUser &elem1,
-                         const st_GroupTitleUser &elem2)
+
+  friend bool operator< (const st_GroupTitleUser &gtu1,
+                         const st_GroupTitleUser &gtu2)
   {
-    if (elem1.group != elem2.group)
-      return elem1.group.compare(elem2.group) < 0;
-    else if (elem1.title != elem2.title)
-      return elem1.title.compare(elem2.title) < 0;
+    if (gtu1.group != gtu2.group)
+      return gtu1.group.compare(gtu2.group) < 0;
+    else if (gtu1.title != gtu2.title)
+      return gtu1.title.compare(gtu2.title) < 0;
     else
-    return elem1.user.compare(elem2.user) < 0;
+      return gtu1.user.compare(gtu2.user) < 0;
   }
 };
 

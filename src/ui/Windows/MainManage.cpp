@@ -226,7 +226,7 @@ void DboxMain::OnValidate()
   rpt.StartReport(cs_title.c_str(), m_core.GetCurFile().c_str());
 
   std::wstring cs_msg;
-  bool bchanged = m_core.Validate(cs_msg, rpt);
+  bool bchanged = m_core.Validate(cs_msg, rpt, MAXTEXTCHARS);
   if (!bchanged)
     LoadAString(cs_msg, IDS_VALIDATEOK);
   else {

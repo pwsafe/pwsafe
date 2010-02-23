@@ -483,7 +483,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   utf8conv.ToUTF8(prefs.c_str(), utf8, utf8Len);
   ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
 
-  if (m_UHFL.size() > 0) {
+  if (!m_UHFL.empty()) {
     ofs << "\t<unknownheaderfields>" << endl;
     UnknownFieldList::const_iterator vi_IterUHFE;
     for (vi_IterUHFE = m_UHFL.begin();

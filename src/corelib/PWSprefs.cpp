@@ -1458,7 +1458,7 @@ void PWSprefs::SaveShortcuts()
     // Delete ALL shortcut entries
     m_XML_Config->DeleteSetting(m_csHKCU_SHCT, _T(""));
     // Now put back the ones we want
-    if (m_vShortcuts.size() > 0)
+    if (!m_vShortcuts.empty())
       m_XML_Config->SetShortcuts(m_csHKCU_SHCT, m_vShortcuts);
   }
 

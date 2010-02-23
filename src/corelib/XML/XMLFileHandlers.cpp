@@ -550,11 +550,13 @@ void XMLFileHandlers::AddEntries()
       }
 
       Format(cs_tp, _T("%s%s%s"), cs_t.c_str(), num == 2 ? _T(" & ") : _T(""), cs_p.c_str());
-      std::remove(cs_tp.begin(), cs_tp.end(), TCHAR('\t'));
+      stringT::iterator new_end = std::remove(cs_tp.begin(), cs_tp.end(), TCHAR('\t'));
+      cs_tp.erase(new_end, cs_tp.end());
+
       LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
       Format(csError, IDSC_IMPORTRECSKIPPED, cs_id.c_str(), cur_entry->id, 
              cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str(), cs_tp.c_str());
-      m_strSkippedList += _T("\r\n") + csError;
+      m_strSkippedList += csError;
       m_numEntriesSkipped++;
       m_numEntries--;
       delete cur_entry;
@@ -568,7 +570,7 @@ void XMLFileHandlers::AddEntries()
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
         Format(csError, IDSC_IMPORTRECNOTFOUND, cs_id.c_str(), cur_entry->id, 
                cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
-        m_strSkippedList += _T("\r\n") + csError;
+        m_strSkippedList += csError;
         m_numEntriesSkipped++;
         m_numEntries--;
       } else {
@@ -635,7 +637,6 @@ void XMLFileHandlers::AddEntries()
       
       Format(csError, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
                cur_entry->title.c_str(), cur_entry->username.c_str(), sxnewtitle.c_str());
-      csError += _T("\r\n");
       m_strRenameList += csError;
       m_numEntriesRenamed++;
     }
