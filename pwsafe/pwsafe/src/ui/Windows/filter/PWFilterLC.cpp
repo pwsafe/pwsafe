@@ -585,7 +585,7 @@ void CPWFilterLC::ResetAndOr()
 
 void CPWFilterLC::DeleteFilters()
 {
-  if (vlast_ft.size() == 0)
+  if (vlast_ft.empty())
     return;
 
   // Clear the other vectors
@@ -1350,7 +1350,7 @@ void CPWFilterLC::SetUpComboBoxData()
   // Set up the Field selction Combobox
 
   // NOTE: The ComboBox strings are NOT sorted by design !
-  if (vLcbx_data.size() == 0) {
+  if (vLcbx_data.empty()) {
     st_Lcbxdata stl;
     stl.cs_text.LoadString(IDSC_AND);
     stl.ltype = LC_AND;
@@ -1361,7 +1361,7 @@ void CPWFilterLC::SetUpComboBoxData()
     vLcbx_data.push_back(stl);
   }
 
-  if (vFcbx_data.size() == 0) {
+  if (vFcbx_data.empty()) {
     st_Fcbxdata stf;
     switch (m_iType) {
       case DFTYPE_MAIN:

@@ -341,6 +341,7 @@ inline bool CItemData::IsTextField(unsigned char t)
 {
   return !(t == UUID || t == CTIME || t == PMTIME ||
     t == ATIME || t == XTIME || t == RMTIME || t == XTIME_INT ||
+    t == RESERVED || t == DCA ||
     t >= LAST);
 }
 #endif

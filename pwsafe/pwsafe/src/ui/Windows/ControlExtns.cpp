@@ -151,7 +151,7 @@ CEditExtn::CEditExtn(std::vector<st_context_menu> vmenu_items,
   m_brInFocus.CreateSolidBrush(focusColor);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
   // Don't allow if menu string is empty.
-  if (vmenu_items.size() == 0) {
+  if (vmenu_items.empty()) {
     m_vmenu_items.clear();
   } else {
     m_vmenu_items = vmenu_items;
@@ -248,7 +248,7 @@ private:
 
 void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-  if (m_vmenu_items.size() == 0) {
+  if (m_vmenu_items.empty()) {
     CEdit::OnContextMenu(pWnd, point);
     return;
   }

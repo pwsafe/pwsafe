@@ -785,7 +785,7 @@ void CCompareResultsDlg::WriteReportData()
   CompareData::iterator cd_iter;
   CString buffer;
 
-  if (m_OnlyInCurrent.size() > 0) {
+  if (!m_OnlyInCurrent.empty()) {
     buffer.Format(IDS_COMPAREENTRIES1, m_scFilename1);
     m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInCurrent.begin(); cd_iter != m_OnlyInCurrent.end();
@@ -798,7 +798,7 @@ void CCompareResultsDlg::WriteReportData()
     m_pRpt->WriteLine();
   }
 
-  if (m_OnlyInComp.size() > 0) {
+  if (!m_OnlyInComp.empty()) {
     buffer.Format(IDS_COMPAREENTRIES2, m_scFilename2);
     m_pRpt->WriteLine((LPCWSTR)buffer);
     for (cd_iter = m_OnlyInComp.begin(); cd_iter != m_OnlyInComp.end();
@@ -811,7 +811,7 @@ void CCompareResultsDlg::WriteReportData()
     m_pRpt->WriteLine();
   }
 
-  if (m_Conflicts.size() > 0) {
+  if (!m_Conflicts.empty()) {
     buffer.Format(IDS_COMPAREBOTHDIFF);
     m_pRpt->WriteLine((LPCWSTR)buffer);
 

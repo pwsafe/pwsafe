@@ -600,7 +600,7 @@ void CManageFiltersDlg::OnFilterExport()
 
     Filters.insert(PWSFilters::Pair(pflt_idata->flt_key, mf_iter->second));
   }
-  if (Filters.size() > 0) {
+  if (!Filters.empty()) {
     m_pDbx->ExportFilters(Filters);
     Filters.clear();
   }

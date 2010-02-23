@@ -618,7 +618,7 @@ void DboxMain::OnManageFilters()
   fkl.fpool = FPOOL_DATABASE;
   fkl.cs_filtername = L"";
 
-  if (m_MapFilters.size() != 0) {
+  if (!m_MapFilters.empty()) {
     mf_lower_iter = m_MapFilters.lower_bound(fkl);
 
     // Check that there are some first!
@@ -649,7 +649,7 @@ void DboxMain::OnManageFilters()
 
   m_core.m_MapFilters.clear();
 
-  if (m_MapFilters.size() != 0) {
+  if (!m_MapFilters.empty()) {
     mf_lower_iter = m_MapFilters.lower_bound(fkl);
 
     // Check that there are some first!
