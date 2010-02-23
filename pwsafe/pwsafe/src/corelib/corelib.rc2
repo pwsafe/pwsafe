@@ -64,11 +64,12 @@ BEGIN
   IDSC_IMPORTNOPASSWORD   "Line %d skipped. It has an empty mandatory Password field."
   IDSC_IMPORTNOTITLE      "Line %d skipped. It has an empty mandatory Title field."
   IDSC_IMPORTPSWDNOCOLS   "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
-  IDSC_IMPORTRECNOTFOUND  "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"" not found. Cannot update entry's password."
-  IDSC_IMPORTRECSKIPPED   "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"" has an empty %s. Entry skipped."
+  IDSC_IMPORTENTRY        "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"""
+  IDSC_IMPORTRECNOTFOUND  "%s not found. Cannot update entry's password.\r\n"
+  IDSC_IMPORTRECSKIPPED   "%s has an empty %s.\r\n"
   IDSC_IMPORT_ON_LINE     "on line "
   IDSC_IMPORT_ENTRY_ID    "id="
-  IDSC_IMPORTCONFLICTS0   "%s, Title=""%s"", User=""%s"" already exists in your database or in the Import file. Added imported entry with title=""%s""."
+  IDSC_IMPORTCONFLICTS0   "%s, Title=""%s"", User=""%s"" already exists in your database or in the Import file. Added imported entry with title=""%s"".\r\n"
   IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"""
   IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group"
   IDSC_IMPORTCONFLICTSX1  "Entry with Group=""%s"""
@@ -87,7 +88,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d"
+  IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d"
   IDSC_AUTOTYPE           "autotype:"
   IDSC_NOCONFIGLOCK       "Unable to get configuration file lock.\n\nWill use registry."
   IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -178,9 +179,12 @@ STRINGTABLE
 BEGIN
   IDSC_READ_ERROR          "Read Error"
   IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
-  IDSC_VALIDATEUUID        "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid UUID field.  This has been corrected."
-  IDSC_VALIDATEPWH         "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-  IDSC_VALIDATEDUPLICATES  "Entry Group=""%s"", Title=""%s"", User=""%s"" was a duplicate of an existing entry.  Its title has been changed to:""%s""."
+  IDSC_VALIDATEENTRY       "\tGroup='%s', Title='%s', User='%s' %s"
+  IDSC_VALIDATEENTRY2      "- Its title has been changed to:'%s'"
+  IDSC_VALIDATEUUID        "The following entries had an invalid UUID field.  This has been corrected."
+  IDSC_VALIDATEPWH         "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
+  IDSC_VALIDATEDUPLICATES  "The following entries were duplicates of an existing entry."
+  IDSC_VALIDATETEXT        "The following entries has one or more text fields so long that they cannot be displayed (longer than %d characters)."
 END
 
 STRINGTABLE

@@ -299,7 +299,7 @@ public:
   void CopyPWList(const ItemList &in);
 
   // Validate() returns true if data modified, false if all OK
-  bool Validate(stringT &status, CReport &rpt);
+  bool Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS = 0);
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
   void GetDBProperties(st_DBProperties &st_dbp);
   StringX &GetDBPreferences() {return m_hdr.m_prefString;}

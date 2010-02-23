@@ -606,3 +606,5 @@
 #define IDS_SAVEBEFOREPROCESS2          5789
 #define IDS_SAVEBEFOREVALIDATE          5790
 #define IDS_CHOOSEDATABASEV             5791
+#define IDS_TRUNCATETEXT                5792
+#define IDS_WARNINGTEXTLENGTH           5793

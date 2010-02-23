@@ -92,6 +92,7 @@ protected:
   afx_msg void OnENSetFocusNotes();
   afx_msg void OnENKillFocusNotes();
   afx_msg void OnChanged();
+  afx_msg void OnENChangeNotes();
   afx_msg void OnENChangeURL();
   afx_msg void OnENChangeEmail();
   afx_msg void OnGroupComboChanged();

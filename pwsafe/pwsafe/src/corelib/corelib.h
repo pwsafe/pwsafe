@@ -204,6 +204,7 @@
 #define IDSC_FSCLEAN                    3369
 #define IDSC_FSADDED                    3370
 #define IDSC_FSMODIFIED                 3371
+#define IDSC_IMPORTENTRY                3372
 #define IDSC_IMPORTPSWDNOCOLS           3373
 #define IDSC_IMPORTRECNOTFOUND          3374
 #define IDSC_IMPORTKNOWNHDRS2           3375
@@ -221,6 +222,9 @@
 #define IDSC_DUPLICATENUMBER            3387
 #define IDSC_VALIDATEDUPLICATES         3388
 #define IDSC_IMPORTRECSKIPPED           3389
+#define IDSC_VALIDATETEXT               3390
+#define IDSC_VALIDATEENTRY              3391
+#define IDSC_VALIDATEENTRY2             3392
 
 #define IDSC_DELETEBASET                3400
 #define IDSC_DELETEABASE                3401

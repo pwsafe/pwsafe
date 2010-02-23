@@ -62,6 +62,8 @@ public:
 
   void SetChanged(const bool bChanged);
   bool IsChanged() {return m_bChanged;}
+  void SetNotesChanged(const bool bChanged) {m_bNotesChanged = bChanged;}
+  bool IsNotesChanged() {return m_bNotesChanged;}
 
 protected:
   st_AE_master_data m_AEMD;
@@ -74,7 +76,7 @@ private:
   CAddEdit_DateTimes       *m_pp_datetimes;
   CAddEdit_PasswordPolicy  *m_pp_pwpolicy;
 
-  bool m_bIsModified, m_bChanged;
+  bool m_bIsModified, m_bChanged, m_bNotesChanged;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
