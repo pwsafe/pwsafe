@@ -538,7 +538,7 @@ void XMLFileHandlers::AddEntries()
     StringX sxtitle(cur_entry->title);
     EmptyIfOnlyWhiteSpace(sxtitle);
     if (sxtitle.empty() || cur_entry->password.empty()) {
-      stringT csError, cs_id, cs_tp, cs_t(_T("")), cs_p(_T(""));
+      stringT cs_error, cs_temp, cs_id, cs_tp, cs_t(_T("")), cs_p(_T(""));
       int num = 0;
       if (sxtitle.empty()) {
         num++;
@@ -554,9 +554,10 @@ void XMLFileHandlers::AddEntries()
       cs_tp.erase(new_end, cs_tp.end());
 
       LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
-      Format(csError, IDSC_IMPORTRECSKIPPED, cs_id.c_str(), cur_entry->id, 
-             cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str(), cs_tp.c_str());
-      m_strSkippedList += csError;
+      Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id, 
+             cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
+      Format(cs_error, IDSC_IMPORTRECSKIPPED, cs_temp, cs_tp.c_str());
+      m_strSkippedList += cs_error;
       m_numEntriesSkipped++;
       m_numEntries--;
       delete cur_entry;
@@ -566,11 +567,13 @@ void XMLFileHandlers::AddEntries()
     if (m_bImportPSWDsOnly) {
       ItemListIter iter = m_pXMLcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
       if (iter == m_pXMLcore->GetEntryEndIter()) {
-        stringT csError, cs_id;
+        stringT cs_error, cs_id, cs_temp;
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
-        Format(csError, IDSC_IMPORTRECNOTFOUND, cs_id.c_str(), cur_entry->id, 
+        Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id, 
                cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
-        m_strSkippedList += csError;
+        Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp);
+
+        m_strSkippedList += cs_error;
         m_numEntriesSkipped++;
         m_numEntries--;
       } else {
@@ -629,15 +632,15 @@ void XMLFileHandlers::AddEntries()
                                                  IDSC_IMPORTNUMBER);
 
     if (conflict) {
-      stringT cs_header, csError;
+      stringT cs_header, cs_error;
       if (cur_entry->group.empty())
         LoadAString(cs_header, IDSC_IMPORTCONFLICTSX2);
       else
         Format(cs_header, IDSC_IMPORTCONFLICTSX1, cur_entry->group.c_str());
       
-      Format(csError, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
+      Format(cs_error, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
                cur_entry->title.c_str(), cur_entry->username.c_str(), sxnewtitle.c_str());
-      m_strRenameList += csError;
+      m_strRenameList += cs_error;
       m_numEntriesRenamed++;
     }
 

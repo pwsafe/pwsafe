@@ -65,7 +65,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   m_bWordWrap = prefs->GetPref(PWSprefs::NotesWordWrap);
 
   m_password = m_password2 = M_realpassword();
-  m_notes = m_notesww = M_realnotes();
+  m_notes = m_notesww = M_realnotes().Left(MAXTEXTCHARS);
 
   // Set up right-click Notes context menu additions
   std::vector<st_context_menu> vmenu_items(3);
@@ -158,8 +158,8 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_EN_CHANGE(IDC_TITLE, OnChanged)
   ON_EN_CHANGE(IDC_USERNAME, OnChanged)
   ON_EN_CHANGE(IDC_PASSWORD2, OnChanged)
-  ON_EN_CHANGE(IDC_NOTES, OnChanged)
-  ON_EN_CHANGE(IDC_NOTESWW, OnChanged)
+  ON_EN_CHANGE(IDC_NOTES, OnENChangeNotes)
+  ON_EN_CHANGE(IDC_NOTESWW, OnENChangeNotes)
 
   ON_EN_CHANGE(IDC_URL, OnENChangeURL)
   ON_EN_CHANGE(IDC_EMAIL, OnENChangeEmail)
@@ -426,12 +426,12 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
     case PP_DATA_CHANGED:
       switch (M_uicaller()) {
         case IDS_EDITENTRY:
-          if (M_group()        != M_pci()->GetGroup() ||
-              M_title()        != M_pci()->GetTitle() ||
-              M_username()     != M_pci()->GetUser()  ||
-              M_realnotes()    != M_pci()->GetNotes() ||
-              M_URL()          != M_pci()->GetURL()   ||
-              M_email()        != M_pci()->GetEmail() ||
+          if (M_group()        != M_pci()->GetGroup()      ||
+              M_title()        != M_pci()->GetTitle()      ||
+              M_username()     != M_pci()->GetUser()       ||
+              M_realnotes()    != M_originalrealnotesTRC() ||
+              M_URL()          != M_pci()->GetURL()        ||
+              M_email()        != M_pci()->GetEmail()      ||
               M_realpassword() != M_oldRealPassword())
             return 1L;
           break;
@@ -770,6 +770,16 @@ void CAddEdit_Basic::OnChanged()
   m_ae_psh->SetChanged(true);
 }
 
+void CAddEdit_Basic::OnENChangeNotes()
+{
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+    return;
+
+  m_ae_psh->SetChanged(true);
+  m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
+  UpdateData(TRUE);
+}
+
 void CAddEdit_Basic::OnENChangeURL()
 {
   UpdateData(TRUE);
@@ -1058,6 +1068,15 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   }
 
   ifs.close();
+
+  if (note.length() > MAXTEXTCHARS) {
+    note = note.substr(0, MAXTEXTCHARS);
+
+    CGeneralMsgBox gmb;
+    CString cs_text, cs_title(MAKEINTRESOURCE(IDS_WARNINGTEXTLENGTH));
+    cs_text.Format(IDS_TRUNCATETEXT, MAXTEXTCHARS);
+    gmb.MessageBox(cs_text, cs_title, MB_OK | MB_ICONEXCLAMATION);
+  }
 
   // Set real notes field, and
   // we are still displaying the old text, so replace that too

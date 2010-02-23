@@ -10,6 +10,7 @@
 #include "DboxMain.h"
 #include "ThisMfcApp.h"
 #include "AddEdit_PropertySheet.h"
+#include "GeneralMsgBox.h"
 
 #include "corelib/ItemData.h"
 #include "corelib/PWSprefs.h"
@@ -20,7 +21,8 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
                                                PWScore *pcore, 
                                                CItemData *pci_original, CItemData *pci,
                                                const StringX currentDB)
-  : CPWPropertySheet(nID, pParent), m_bIsModified(false), m_bChanged(false)
+  : CPWPropertySheet(nID, pParent), m_bIsModified(false), m_bChanged(false),
+  m_bNotesChanged(false)
 {
   m_AEMD.uicaller = nID;
 
@@ -66,7 +68,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.title = L"";
     m_AEMD.username = L"";
     m_AEMD.realpassword = L"";
-    m_AEMD.realnotes = L"";
+    m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = L"";
     m_AEMD.URL = L"";
     m_AEMD.email = L"";
 
@@ -200,7 +202,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         m_bIsModified = (m_AEMD.group       != m_AEMD.pci->GetGroup()      ||
                          m_AEMD.title       != m_AEMD.pci->GetTitle()      ||
                          m_AEMD.username    != m_AEMD.pci->GetUser()       ||
-                         m_AEMD.realnotes   != m_AEMD.pci->GetNotes()      ||
+                         m_AEMD.realnotes   != m_AEMD.originalrealnotesTRC ||
                          m_AEMD.URL         != m_AEMD.pci->GetURL()        ||
                          m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
                          m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
@@ -221,7 +223,9 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetTitle(m_AEMD.title);
           m_AEMD.pci->SetUser(m_AEMD.username.IsEmpty() ?
                                    m_AEMD.defusername : m_AEMD.username);
-          m_AEMD.pci->SetNotes(m_AEMD.realnotes);
+          if (m_bNotesChanged)
+            m_AEMD.pci->SetNotes(m_AEMD.realnotes);
+
           m_AEMD.pci->SetURL(m_AEMD.URL);
           m_AEMD.pci->SetAutoType(m_AEMD.autotype);
           m_AEMD.pci->SetPWHistory(m_AEMD.PWHistory);
@@ -364,9 +368,19 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.title = m_AEMD.pci->GetTitle();
   m_AEMD.username = m_AEMD.pci->GetUser();
   m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.pci->GetPassword();
-  m_AEMD.realnotes = m_AEMD.pci->GetNotes();
+  m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = m_AEMD.pci->GetNotes();
   m_AEMD.URL = m_AEMD.pci->GetURL();
   m_AEMD.email = m_AEMD.pci->GetEmail();
+
+  if (m_AEMD.realnotes.GetLength() > MAXTEXTCHARS) {
+    // Limit the Notes field to what can be displayed
+    m_AEMD.realnotes =  m_AEMD.realnotes.Left(MAXTEXTCHARS);
+    m_AEMD.originalrealnotesTRC = m_AEMD.realnotes;
+    CGeneralMsgBox gmb;
+    CString cs_text, cs_title(MAKEINTRESOURCE(IDS_WARNINGTEXTLENGTH));
+    cs_text.Format(IDS_TRUNCATETEXT, MAXTEXTCHARS);
+    gmb.MessageBox(cs_text, cs_title, MB_OK | MB_ICONEXCLAMATION);
+  }
 
   // Entry type initialisation
   m_AEMD.original_entrytype = m_AEMD.pci->GetEntryType();

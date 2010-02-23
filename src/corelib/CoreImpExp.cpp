@@ -803,9 +803,9 @@ static void ReportInvalidField(CReport &rpt, const string &value, int numlines)
   CUTF8Conv conv;
   StringX vx;
   conv.FromUTF8((const unsigned char *)value.c_str(), value.length(), vx);
-  stringT csError;
-  Format(csError, IDSC_IMPORTINVALIDFIELD, numlines, vx.c_str());
-  rpt.WriteLine(csError);
+  stringT cs_error;
+  Format(cs_error, IDSC_IMPORTINVALIDFIELD, numlines, vx.c_str());
+  rpt.WriteLine(cs_error);
 }
 
 int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
@@ -817,7 +817,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  int &numPWHErrors, int &numRenamed,
                                  CReport &rpt, Command *&pcommand)
 {
-  stringT csError;
+  stringT cs_error;
 #ifdef UNICODE
   const unsigned char *fname = NULL;
   CUTF8Conv conv;
@@ -930,17 +930,17 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   }
 
   if (num_found < vs_Header.size()) {
-    Format(csError, IDSC_IMPORTHDR, num_found);
-    rpt.WriteLine(csError);
-    LoadAString(csError, bImportPSWDsOnly ? IDSC_IMPORTKNOWNHDRS2 : IDSC_IMPORTKNOWNHDRS);
-    rpt.WriteLine(csError, bImportPSWDsOnly);
+    Format(cs_error, IDSC_IMPORTHDR, num_found);
+    rpt.WriteLine(cs_error);
+    LoadAString(cs_error, bImportPSWDsOnly ? IDSC_IMPORTKNOWNHDRS2 : IDSC_IMPORTKNOWNHDRS);
+    rpt.WriteLine(cs_error, bImportPSWDsOnly);
     for (int i = 0; i < NUMFIELDS; i++) {
       if (i_Offset[i] >= 0) {
         const string &sHdr = vs_Header.at(i);
         StringX sh2;
         conv.FromUTF8((const unsigned char *)sHdr.c_str(), sHdr.length(), sh2);
-        Format(csError, _T(" %s,"), sh2.c_str());
-        rpt.WriteLine(csError, false);
+        Format(cs_error, _T(" %s,"), sh2.c_str());
+        rpt.WriteLine(cs_error, false);
       }
     }
     rpt.WriteLine();
@@ -976,8 +976,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // skip blank lines
     if (linebuf.empty()) {
-      Format(csError, IDSC_IMPORTEMPTYLINESKIPPED, numlines);
-      rpt.WriteLine(csError);
+      Format(cs_error, IDSC_IMPORTEMPTYLINESKIPPED, numlines);
+      rpt.WriteLine(cs_error);
       numSkipped++;
       continue;
     }
@@ -1014,8 +1014,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
             bool noteClosed = false;
             do {
               if (!getline(ifs, linebuf, '\n')) {
-                Format(csError, IDSC_IMPMISSINGQUOTE, numlines);
-                rpt.WriteLine(csError);
+                Format(cs_error, IDSC_IMPMISSINGQUOTE, numlines);
+                rpt.WriteLine(cs_error);
                 ifs.close(); // file ends before note closes
                 return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
               }
@@ -1047,8 +1047,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // Sanity check
     if (tokens.size() < num_found) {
-      Format(csError, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
-      rpt.WriteLine(csError);
+      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
+      rpt.WriteLine(cs_error);
       numSkipped++;
       continue;
     }
@@ -1080,8 +1080,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     if ((size_t)i_Offset[PASSWORD] >= tokens.size() ||
         tokens[i_Offset[PASSWORD]].empty()) {
-      Format(csError, IDSC_IMPORTNOPASSWORD, numlines);
-      rpt.WriteLine(csError);
+      Format(cs_error, IDSC_IMPORTNOPASSWORD, numlines);
+      rpt.WriteLine(cs_error);
       numSkipped++;
       continue;
     }
@@ -1099,15 +1099,15 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       }
 
       if (sxtitle.empty()) {
-        Format(csError, IDSC_IMPORTNOTITLE, numlines);
-        rpt.WriteLine(csError);
+        Format(cs_error, IDSC_IMPORTNOTITLE, numlines);
+        rpt.WriteLine(cs_error);
         numSkipped++;
         continue;
       }
 
       if (tokens[i_Offset[PASSWORD]].empty()) {
-        Format(csError, IDSC_IMPORTNOPASSWORD, numlines);
-        rpt.WriteLine(csError);
+        Format(cs_error, IDSC_IMPORTNOPASSWORD, numlines);
+        rpt.WriteLine(cs_error);
         numSkipped++;
         continue;
       }
@@ -1115,11 +1115,12 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       sxuser = tokens[i_Offset[USER]].c_str();
       ItemListIter iter = Find(sxgroup, sxtitle, sxuser);
       if (iter == m_pwlist.end()) {
-        stringT cs_online;
+        stringT cs_online, cs_temp;
         LoadAString(cs_online, IDSC_IMPORT_ON_LINE);
-        Format(csError, IDSC_IMPORTRECNOTFOUND, cs_online.c_str(), numlines, 
+        Format(cs_temp, IDSC_IMPORTENTRY, cs_online.c_str(), numlines, 
                sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
-        rpt.WriteLine(csError);
+        Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp);
+        rpt.WriteLine(cs_error);
         numSkipped++;
       } else {
         CItemData *pci = &iter->second;
@@ -1162,8 +1163,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     std::replace(entrytitle.begin(), entrytitle.end(), delimiter, TCHAR('.'));
     if (entrytitle.empty()) {
-      Format(csError, IDSC_IMPORTNOTITLE, numlines);
-      rpt.WriteLine(csError);
+      Format(cs_error, IDSC_IMPORTNOTITLE, numlines);
+      rpt.WriteLine(cs_error);
       numSkipped++;
       continue;
     }
@@ -1184,9 +1185,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       else
         Format(cs_header, IDSC_IMPORTCONFLICTS1, numlines, sxgroup.c_str());
 
-      Format(csError, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
+      Format(cs_error, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
                sxtitle.c_str(), sxuser.c_str(), sxnewtitle.c_str());
-      rpt.WriteLine(csError);
+      rpt.WriteLine(cs_error);
       numRenamed++;
     }
 
@@ -1218,7 +1219,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (i_Offset[HISTORY] >= 0 && tokens.size() > (size_t)i_Offset[HISTORY]) {
       StringX newPWHistory;
       stringT strPWHErrorList;
-      Format(csError, IDSC_IMPINVALIDPWH, numlines);
+      Format(cs_error, IDSC_IMPINVALIDPWH, numlines);
       switch (VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
                                           newPWHistory, strPWHErrorList)) {
         case PWH_OK:
@@ -1235,10 +1236,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         case PWH_TOO_LONG:
         case PWH_INVALID_CHARACTER:
         default:
-          rpt.WriteLine(csError, false);
+          rpt.WriteLine(cs_error, false);
           rpt.WriteLine(strPWHErrorList, false);
-          LoadAString(csError, IDSC_PWHISTORYSKIPPED);
-          rpt.WriteLine(csError);
+          LoadAString(cs_error, IDSC_PWHISTORYSKIPPED);
+          rpt.WriteLine(cs_error);
           numPWHErrors++;
           break;
       }

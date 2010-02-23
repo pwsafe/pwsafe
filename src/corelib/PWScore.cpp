@@ -1121,23 +1121,69 @@ void PWScore::CopyPWList(const ItemList &in)
   SetDBChanged(true);
 }
 
-bool PWScore::Validate(stringT &status, CReport &rpt)
+// For Validate only
+struct st_GroupTitleUser2 {
+  StringX group;
+  StringX title;
+  StringX user;
+  StringX newtitle;
+
+  st_GroupTitleUser2() {}
+
+  st_GroupTitleUser2(const StringX &g, const StringX &t, const StringX &u,
+    const StringX &n)
+  : group(g), title(t), user(u), newtitle(n) {}
+
+  st_GroupTitleUser2 &operator=(const st_GroupTitleUser2 &that) {
+    if (this != &that) {
+      group = that.group; title = that.title; user = that.user;
+      newtitle = that.newtitle;
+    }
+    return *this;
+  }
+};
+
+static bool GTUCompareV1(const st_GroupTitleUser &gtu1, const st_GroupTitleUser &gtu2)
+{
+  if (gtu1.group != gtu2.group)
+    return gtu1.group.compare(gtu2.group) < 0;
+  else if (gtu1.title != gtu2.title)
+    return gtu1.title.compare(gtu2.title) < 0;
+  else
+    return gtu1.user.compare(gtu2.user) < 0;
+}
+
+static bool GTUCompareV2(const st_GroupTitleUser2 &gtu1, const st_GroupTitleUser2 &gtu2)
+{
+  if (gtu1.group != gtu2.group)
+    return gtu1.group.compare(gtu2.group) < 0;
+  else if (gtu1.title != gtu2.title)
+    return gtu1.title.compare(gtu2.title) < 0;
+  else if (gtu1.user != gtu2.user)
+    return gtu1.user.compare(gtu2.user) < 0;
+  else
+    return gtu1.newtitle.compare(gtu2.newtitle) < 0;
+}
+
+bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
 {
   // Check uuid is valid
   // Check PWH is valid
   // Check alias password has corresponding base entry
   // Check shortcut password has corresponding base entry
-  // Note that with m_pwlist implemented as a map keyed
-  // on uuids, each entry is guaranteed to have
-  // a unique uuid. The uniqueness invariant
+  // Note that with m_pwlist implemented as a map keyed on uuids, each
+  // entry is guaranteed to have a unique uuid. The uniqueness invariant
   // should be enforced elsewhere (upon read/import).
   // Also group/title/user must be unique.
+  // Check that no text field has more than MAXCHARS, that can displayed
+  // in the GUI's text control.
 
   uuid_array_t uuid_array, base_uuid, temp_uuid;
   int n = -1;
   unsigned int num_PWH_fixed = 0;
   unsigned int num_uuid_fixed = 0;
   unsigned int num_duplicates_fixed = 0;
+  unsigned int num_excessivetxt_found = 0;
   int num_alias_warnings, num_shortcuts_warnings;
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
@@ -1149,6 +1195,8 @@ bool PWScore::Validate(stringT &status, CReport &rpt)
   st_GroupTitleUser st_gtu;
   GTUSet setGTU;
   GTUSetPair pr_gtu;
+  std::vector<st_GroupTitleUser> vGTU_UUID, vGTU_PWH, vGTU_TEXT;
+  std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE;
 
   UUIDList possible_aliases, possible_shortcuts;
   ItemListIter iter;
@@ -1179,10 +1227,7 @@ bool PWScore::Validate(stringT &status, CReport &rpt)
       } while (!pr_gtu.second);
 
       bFixed = true;
-      Format(cs_Error, IDSC_VALIDATEDUPLICATES,
-             sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str(), sxnewtitle.c_str());
-
-      rpt.WriteLine(cs_Error);
+      vGTU_NONUNIQUE.push_back(st_GroupTitleUser2(sxgroup, sxtitle, sxuser, sxnewtitle));
       fixedItem.SetTitle(sxnewtitle);
       sxtitle = sxnewtitle;
       num_duplicates_fixed++;
@@ -1194,17 +1239,13 @@ bool PWScore::Validate(stringT &status, CReport &rpt)
       num_uuid_fixed += fixedItem.ValidateUUID(m_hdr.m_nCurrentMajorVersion,
                                                m_hdr.m_nCurrentMinorVersion,
                                                uuid_array);
-      Format(cs_Error, IDSC_VALIDATEUUID,
-             sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
-      rpt.WriteLine(cs_Error);
+      vGTU_UUID.push_back(st_GroupTitleUser(sxgroup, sxtitle, sxuser));
     }
 
     // Fix bad History
     if (!fixedItem.ValidatePWHistory()) {
       bFixed = true;
-      Format(cs_Error, IDSC_VALIDATEPWH,
-             sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
-      rpt.WriteLine(cs_Error);
+      vGTU_PWH.push_back(st_GroupTitleUser(sxgroup, sxtitle, sxuser));
       num_PWH_fixed++;
     }
 
@@ -1230,6 +1271,26 @@ bool PWScore::Validate(stringT &status, CReport &rpt)
         }
       }
     }
+
+    // Note excessively sized text fields
+    if (iMAXCHARS > 0) {
+      bool bEntryHasBigField(false);
+      for (unsigned char uc = (unsigned char)CItemData::GROUP; 
+           uc < (unsigned char)CItemData::LAST; uc++) {
+        if (CItemData::IsTextField(uc)) {
+          StringX sxvalue = ci.GetFieldValue((CItemData::FieldType)uc);
+          if (sxvalue.length() > iMAXCHARS) {
+            bEntryHasBigField = true;
+            //fixedItem.SetFieldValue((CItemData::FieldType)uc, sxvalue.substr(0, iMAXCHARS));
+          }
+        }
+      }
+      if (bEntryHasBigField) {
+        vGTU_TEXT.push_back(st_GroupTitleUser(sxgroup, sxtitle, sxuser));
+        num_excessivetxt_found++;
+      }
+    }
+
     if (bFixed) {
       fixedItem.SetStatus(CItemData::ES_MODIFIED);
       Command *pcmd = EditEntryCommand::Create(this, ci, fixedItem);
@@ -1254,15 +1315,69 @@ bool PWScore::Validate(stringT &status, CReport &rpt)
   possible_aliases.clear();
   possible_shortcuts.clear();
 
+  if (!vGTU_NONUNIQUE.empty()) {
+    std::sort(vGTU_NONUNIQUE.begin(), vGTU_NONUNIQUE.end(), GTUCompareV2);
+    rpt.WriteLine();
+    LoadAString(cs_Error, IDSC_VALIDATEDUPLICATES);
+    rpt.WriteLine(cs_Error);
+    for (size_t iv = 0; iv < vGTU_NONUNIQUE.size(); iv++) {
+      st_GroupTitleUser2 &gtu2 = vGTU_NONUNIQUE[iv];
+      stringT cs_newtitle;
+      Format(cs_newtitle, IDSC_VALIDATEENTRY2, gtu2.newtitle.c_str());
+      Format(cs_Error, IDSC_VALIDATEENTRY,
+             gtu2.group.c_str(), gtu2.title.c_str(), gtu2.user.c_str(), cs_newtitle.c_str());
+      rpt.WriteLine(cs_Error);
+    }
+  }
+
+  if (!vGTU_UUID.empty()) {
+    std::sort(vGTU_UUID.begin(), vGTU_UUID.end(), GTUCompareV1);
+    rpt.WriteLine();
+    LoadAString(cs_Error, IDSC_VALIDATEUUID);
+    rpt.WriteLine(cs_Error);
+    for (size_t iv = 0; iv < vGTU_UUID.size(); iv++) {
+      st_GroupTitleUser &gtu = vGTU_UUID[iv];
+      Format(cs_Error, IDSC_VALIDATEENTRY,
+             gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
+      rpt.WriteLine(cs_Error);
+    }
+  }
+
+  if (!vGTU_PWH.empty()) {
+    std::sort(vGTU_PWH.begin(), vGTU_PWH.end(), GTUCompareV1);
+    rpt.WriteLine();
+    LoadAString(cs_Error, IDSC_VALIDATEPWH);
+    rpt.WriteLine(cs_Error);
+    for (size_t iv = 0; iv < vGTU_PWH.size(); iv++) {
+      st_GroupTitleUser &gtu = vGTU_PWH[iv];
+      Format(cs_Error, IDSC_VALIDATEENTRY,
+             gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
+      rpt.WriteLine(cs_Error);
+    }
+  }
+
+  if (!vGTU_TEXT.empty()) {
+    std::sort(vGTU_TEXT.begin(), vGTU_TEXT.end(), GTUCompareV1);
+    rpt.WriteLine();
+    Format(cs_Error, IDSC_VALIDATETEXT, iMAXCHARS);
+    rpt.WriteLine(cs_Error);
+    for (size_t iv = 0; iv < vGTU_TEXT.size(); iv++) {
+      st_GroupTitleUser &gtu = vGTU_TEXT[iv];
+      Format(cs_Error, IDSC_VALIDATEENTRY,
+             gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
+      rpt.WriteLine(cs_Error);
+    }
+  }
+
   pws_os::Trace(_T("%s : End validation. %d entries processed\n"), 
         PWSUtil::GetTimeStamp(), n + 1);
 
   m_bUniqueGTUValidated = true;
   if ((num_uuid_fixed + num_PWH_fixed + num_duplicates_fixed + 
-       num_alias_warnings + num_shortcuts_warnings) > 0) {
+       num_alias_warnings + num_shortcuts_warnings + num_excessivetxt_found) > 0) {
     Format(status, IDSC_NUMPROCESSED,
            n + 1, num_uuid_fixed, num_PWH_fixed, num_duplicates_fixed,
-           num_alias_warnings, num_shortcuts_warnings);
+           num_alias_warnings, num_shortcuts_warnings, num_excessivetxt_found);
     SetDBChanged(true);
     return true;
   } else {

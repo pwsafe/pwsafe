@@ -143,6 +143,12 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"
 
+// Maximum number of characters that can be added to a MFC CEdit control
+// by default (i.e. without calling SetLimitText). Note: 30000 not 32K!
+// Although this limit can be changed to up to 2GB of characters
+// (4GB memory if Unicode), it would make the database size absolutely enormous!
+#define MAXTEXTCHARS 30000
+
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
 typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
