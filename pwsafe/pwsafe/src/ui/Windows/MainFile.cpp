@@ -2968,6 +2968,10 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
       lres = CopyCompareResult(st_info->pcore0, st_info->pcore1,
                                st_info->uuid0, st_info->uuid1);
       break;
+    case CCompareResultsDlg::SYNCH:
+      lres = SynchCompareResult(st_info->pcore1, st_info->pcore0,
+                                st_info->uuid1, st_info->uuid0);
+      break;
     default:
       ASSERT(0);
   }
@@ -3039,6 +3043,52 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   Execute(pcmd, ptocore);
 
   return TRUE;
+}
+
+LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
+                                     uuid_array_t &fromUUID, uuid_array_t &toUUID)
+{
+  // Synch 1 entry *pfromcore -> *ptocore
+  CItemData::FieldBits bsFields;
+
+  // Use a cut down Advanced dialog (only fields to synchronize)
+  CAdvancedDlg Adv(this, CAdvancedDlg::ADV_COMPARESYNCH);
+
+  INT_PTR rc = Adv.DoModal();
+
+  if (rc == IDOK)
+    bsFields = Adv.m_bsFields;
+  else
+    return FALSE;
+
+  ItemListIter fromPos = pfromcore->Find(fromUUID);
+  ASSERT(fromPos != pfromcore->GetEntryEndIter());
+  const CItemData *pfromEntry = &fromPos->second;
+
+  ItemListIter toPos = ptocore->Find(toUUID);
+  ASSERT(toPos != ptocore->GetEntryEndIter());
+  CItemData *ptoEntry = &toPos->second;
+  CItemData updtEntry(*ptoEntry);
+
+  bool bUpdated(false);
+  for (int i = 0; i < (int)bsFields.size(); i++) {
+    if (bsFields.test(i)) {
+      const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
+      if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
+        bUpdated = true;
+        updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+      }
+    }
+  }
+
+  if (bUpdated) {
+    updtEntry.SetStatus(CItemData::ES_MODIFIED);
+    Command *pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry);
+    Execute(pcmd, ptocore);
+    return TRUE;
+  }
+
+  return FALSE;
 }
 
 void DboxMain::OnOK() 

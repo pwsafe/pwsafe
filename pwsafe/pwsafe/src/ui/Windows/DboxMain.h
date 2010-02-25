@@ -468,6 +468,8 @@ protected:
   LRESULT EditCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
                             uuid_array_t &fromuuid, uuid_array_t &touuid);
+  LRESULT SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
+                             uuid_array_t &fromuuid, uuid_array_t &touuid);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);

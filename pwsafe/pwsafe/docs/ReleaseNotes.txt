@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.21.1
 =======================
+[2957185] Add Synchronize function to the menu options during review of
+the results of a Compare database operation.
 [] Validation of databases can now be performed via the Manage menu as
 well as via the command line flag '-v'. When executed via the menu, it
 is very similar to opening a new database in that the current open database

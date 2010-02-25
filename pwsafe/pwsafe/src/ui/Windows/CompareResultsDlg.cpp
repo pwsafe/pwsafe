@@ -188,6 +188,7 @@ BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
   ON_BN_CLICKED(IDC_VIEWCOMPAREREPORT, OnViewCompareReport)
   ON_NOTIFY(HDN_ITEMCLICK, IDC_RESULTLISTHDR, OnColumnClick)
   ON_COMMAND(ID_MENUITEM_COMPVIEWEDIT, OnCompareViewEdit)
+  ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnCompareSynchronize)
   ON_COMMAND(ID_MENUITEM_COPY_TO_ORIGINAL, OnCompareCopyToOriginalDB)
   ON_COMMAND(ID_MENUITEM_COPY_TO_COMPARISON, OnCompareCopyToComparisonDB)
 END_MESSAGE_MAP()
@@ -409,7 +410,7 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
                                      WM_COMPARE_RESULT_FUNCTION,
                                      (WPARAM)st_info, (LPARAM)ifunction);
     if (lres == TRUE) {
-      CSecString group, title, user, buffer;
+      CSecString group, title, user, buffer, cs_tmp;
       ItemListIter pos;
 
       switch (ifunction) {
@@ -423,7 +424,8 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
           group = pos->second.GetGroup();
           title = pos->second.GetTitle();
           user = pos->second.GetUser();
-          buffer.Format(IDS_COPYENTRY, L"original", group, title, user);
+          cs_tmp.LoadString(IDS_ORIGINALDB);
+          buffer.Format(IDS_COPYENTRY,cs_tmp, group, title, user);
           m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
         case CCompareResultsDlg::COPY_TO_COMPARISONDB:
@@ -436,11 +438,14 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
           group = pos->second.GetGroup();
           title = pos->second.GetTitle();
           user = pos->second.GetUser();
-          buffer.Format(IDS_COPYENTRY, L"comparison", group, title, user);
+          cs_tmp.LoadString(IDS_COMPARISONDB);
+          buffer.Format(IDS_COPYENTRY, cs_tmp, group, title, user);
           m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
         case CCompareResultsDlg::EDIT:
         case CCompareResultsDlg::VIEW:
+          break;
+        case CCompareResultsDlg::SYNCH:
           break;
         default:
           ASSERT(0);
@@ -508,6 +513,33 @@ void CCompareResultsDlg::OnCompareViewEdit()
     ProcessFunction(VIEW, st_data);
   else
     ProcessFunction(EDIT, st_data);
+}
+
+void CCompareResultsDlg::OnCompareSynchronize()
+{
+  if (m_bOriginalDBReadOnly)
+    return;
+
+  CGeneralMsgBox gmb;
+  CString cs_temp, cs_title;
+  // Initialize set
+  GTUSet setGTU;
+
+  // First check database
+  if (!m_pcore0->GetUniqueGTUValidated() && !m_pcore0->InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    cs_title.LoadString(IDS_SYNCHFAILED);
+    cs_temp.Format(IDS_DBHASDUPLICATES, m_pcore0->GetCurFile().c_str());
+    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    return;
+  }
+  setGTU.clear();  // Don't need it anymore - so clear it now
+
+  DWORD dwItemData = m_LCResults.GetItemData(m_row);
+  st_CompareData *st_data = GetCompareData(dwItemData);
+  ASSERT(st_data != NULL);
+
+  ProcessFunction(SYNCH, st_data);
 }
 
 void CCompareResultsDlg::OnCompareCopyToOriginalDB()
@@ -690,9 +722,16 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
     CMenu* pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);
 
-    // Disable copy if target is read-only
-    if (bTargetRO)
-      pPopup->EnableMenuItem(1, MF_BYPOSITION | MF_GRAYED);
+    // Disable copy/sychnronize if target is read-only
+    // Delete synchornize if not in both databases (and not already identical)
+    if (m_column == COMPARE) {
+      if (bTargetRO) {
+        pPopup->EnableMenuItem(ID_MENUITEM_COPY_TO_ORIGINAL, MF_BYCOMMAND | MF_GRAYED);
+        pPopup->EnableMenuItem(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND | MF_GRAYED);
+      }
+      if (indatabase != BOTH)
+        pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
+    }
 
     // Disable edit if source read-only OR if Comparison DB
     if (bSourceRO) {
@@ -730,7 +769,7 @@ void CCompareResultsDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   }
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
-#define HDF_SORTUP 0x0400
+#define HDF_SORTUP   0x0400
 #define HDF_SORTDOWN 0x0200
 #endif
 

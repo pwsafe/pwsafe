@@ -26,6 +26,7 @@ public:
              ADV_EXPORT_TEXT,
              ADV_EXPORT_XML,
              ADV_FIND,
+             ADV_COMPARESYNCH,
              ADV_LAST};
 
   CAdvancedDlg(CWnd* pParent = NULL, Type iIndex = ADV_INVALID,
