@@ -2743,7 +2743,7 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
     return;
   }
-  setGTU.clear();
+  setGTU.clear();  // Don't need it anymore - so clear it now
 
   /* Create report as we go */
   CReport rpt;
@@ -3004,143 +3004,40 @@ LRESULT DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
                                     uuid_array_t &fromUUID, uuid_array_t &toUUID)
 {
-  // Copy *pfromcore -> *ptocore entry at fromPos
-
-  ItemListIter toPos;
-  StringX group, title, user, notes, password;
-  StringX url, autotype, pwhistory, runcmd, dca, email;
-  time_t ct, at, xt, pmt, rmt;
-  int xint;
-  PWPolicy pwp;
-  int nfromUnknownRecordFields;
-  bool bFromUUIDIsNotInTo;
-
+  // Copy *pfromcore -> *ptocore entry
   ItemListIter fromPos = pfromcore->Find(fromUUID);
   ASSERT(fromPos != pfromcore->GetEntryEndIter());
-  const CItemData *fromEntry = &fromPos->second;
+  const CItemData *pfromEntry = &fromPos->second;
+  CItemData ci_temp(*pfromEntry);  // Set up copy
 
-  group = fromEntry->GetGroup();
-  title = fromEntry->GetTitle();
-  user = fromEntry->GetUser();
-  notes = fromEntry->GetNotes();
-  password = fromEntry->GetPassword();
-  url = fromEntry->GetURL();
-  autotype = fromEntry->GetAutoType();
-  pwhistory = fromEntry->GetPWHistory();
-  runcmd = fromEntry->GetRunCommand();
-  dca = fromEntry->GetDCA();
-  email = fromEntry->GetEmail();
-  fromEntry->GetCTime(ct);
-  fromEntry->GetATime(at);
-  fromEntry->GetXTime(xt);
-  fromEntry->GetPMTime(pmt);
-  fromEntry->GetRMTime(rmt);
-  fromEntry->GetPWPolicy(pwp);
-  fromEntry->GetXTimeInt(xint);
-  nfromUnknownRecordFields = fromEntry->NumberUnknownFields();
+  DisplayInfo *pdi = new DisplayInfo;
+  ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
 
-  bFromUUIDIsNotInTo = (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter());
+  // If the UUID is not in use, copy it too, otherwise reuse current
+  if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter())
+    ci_temp.SetUUID(fromUUID);
+  else
+    ci_temp.SetUUID(toUUID);
 
+  Command *pcmd(NULL);
+  
   // Is it already there:?
-  toPos = ptocore->Find(group, title, user);
+  const StringX sxgroup(ci_temp.GetGroup()), sxtitle(ci_temp.GetTitle()),
+    sxuser(ci_temp.GetUser());
+  ItemListIter toPos = ptocore->Find(sxgroup, sxtitle, sxuser);
+
   if (toPos != ptocore->GetEntryEndIter()) {
-    // Yes - just overwrite everything!
-    CItemData *toEntry = &ptocore->GetEntry(toPos);
-
-    toEntry->SetNotes(notes);
-    toEntry->SetPassword(password);
-    toEntry->SetURL(url);
-    toEntry->SetAutoType(autotype);
-    toEntry->SetPWHistory(pwhistory);
-    toEntry->SetRunCommand(runcmd);
-    toEntry->SetDCA(dca.c_str());
-    toEntry->SetEmail(email);
-    toEntry->SetCTime(ct);
-    toEntry->SetATime(at);
-    toEntry->SetXTime(xt);
-    toEntry->SetPMTime(pmt);
-    toEntry->SetRMTime(rmt);
-    toEntry->SetPWPolicy(pwp);
-    toEntry->SetXTimeInt(xint);
-
-    // If the UUID is not in use, copy it too, otherwise reuse current
-    if (bFromUUIDIsNotInTo)
-      toEntry->SetUUID(fromUUID);
-
-    toEntry->GetUUID(toUUID);
-
-    // Delete any old unknown records and copy these if present
-    int ntoUnknownRecordFields = toEntry->NumberUnknownFields();
-
-    if (ntoUnknownRecordFields == 0 && nfromUnknownRecordFields > 0)
-      ptocore->IncrementNumRecordsWithUnknownFields();
-    if (ntoUnknownRecordFields > 0 && nfromUnknownRecordFields == 0)
-      ptocore->DecrementNumRecordsWithUnknownFields();
-
-    toEntry->ClearUnknownFields();
-    if (nfromUnknownRecordFields != 0) {
-      unsigned int length = 0;
-      unsigned char type;
-      unsigned char *pdata = NULL;
-
-      for (int i = 0; i < nfromUnknownRecordFields; i++) {
-        fromEntry->GetUnknownField(type, length, pdata, i);
-        if (length == 0)
-          continue;
-        toEntry->SetUnknownField(type, length, pdata);
-        trashMemory(pdata, length);
-        delete[] pdata;
-      }
-    }
+    // Already there - change it
+    CItemData *ptoEntry = &toPos->second;
+    ci_temp.SetStatus(CItemData::ES_MODIFIED);
+    pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp);
   } else {
-    CItemData ci_temp;
-
-    // If the UUID is not in use, copy it too otherwise create it
-    if (bFromUUIDIsNotInTo)
-      ci_temp.SetUUID(fromUUID);
-    else
-      ci_temp.CreateUUID();
-
-    ci_temp.GetUUID(toUUID);
-    ci_temp.SetGroup(group);
-    ci_temp.SetTitle(title);
-    ci_temp.SetUser(user);
-    ci_temp.SetPassword(password);
-    ci_temp.SetNotes(notes);
-    ci_temp.SetURL(url);
-    ci_temp.SetAutoType(autotype);
-    ci_temp.SetPWHistory(pwhistory);
-    ci_temp.SetRunCommand(runcmd);
-    ci_temp.SetDCA(dca.c_str());
-    ci_temp.SetEmail(email);
-    ci_temp.SetCTime(ct);
-    ci_temp.SetATime(at);
-    ci_temp.SetXTime(xt);
-    ci_temp.SetPMTime(pmt);
-    ci_temp.SetRMTime(rmt);
-    ci_temp.SetPWPolicy(pwp);
-    ci_temp.SetXTimeInt(xint);
-    if (nfromUnknownRecordFields != 0) {
-      ptocore->IncrementNumRecordsWithUnknownFields();
-
-      for (int i = 0; i < nfromUnknownRecordFields; i++) {
-        unsigned int length = 0;
-        unsigned char type;
-        unsigned char *pdata = NULL;
-        fromEntry->GetUnknownField(type, length, pdata, i);
-        if (length == 0)
-          continue;
-        ci_temp.SetUnknownField(type, length, pdata);
-        trashMemory(pdata, length);
-        delete[] pdata;
-      }
-    }
+    // Not there - add it
     ci_temp.SetStatus(CItemData::ES_ADDED);
-    Command *pcmd = AddEntryCommand::Create(ptocore, ci_temp);
-    Execute(pcmd, ptocore);
+    pcmd = AddEntryCommand::Create(ptocore, ci_temp);
   }
+  Execute(pcmd, ptocore);
 
-  ptocore->SetDBChanged(true);
   return TRUE;
 }
 
