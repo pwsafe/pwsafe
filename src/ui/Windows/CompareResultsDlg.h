@@ -92,7 +92,7 @@ struct equal_id {
 typedef std::vector<st_CompareData> CompareData;
 
 // The following structure is needed for compare to send back data
-// to allow copying, viewing and editing of entries
+// to allow copying, viewing, editing and synching of entries
 struct st_CompareInfo {
   PWScore *pcore0;     // original DB
   PWScore *pcore1;     // comparison DB
@@ -117,7 +117,7 @@ public:
     CReport *pRpt);
 
   // st_CompareInfo Functions
-  enum {EDIT = 0, VIEW, COPY_TO_ORIGINALDB, COPY_TO_COMPARISONDB};
+  enum {EDIT = 0, VIEW, COPY_TO_ORIGINALDB, COPY_TO_COMPARISONDB, SYNCH};
 
   // Column indices
   // IDENTICAL means CURRENT + COMPARE but identical
@@ -171,6 +171,7 @@ protected:
   afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnItemRightClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnCompareViewEdit();
+  afx_msg void OnCompareSynchronize();
   afx_msg void OnCompareCopyToOriginalDB();
   afx_msg void OnCompareCopyToComparisonDB();
   afx_msg void OnSize(UINT nType, int cx, int cy);
