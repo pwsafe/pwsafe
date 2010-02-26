@@ -645,8 +645,7 @@ HBITMAP CCoolMenuManager::GetMFCDotBitmap()
   return hbmDot;
 }
 
-void
-CCoolMenuManager::SetImageList(CPWToolBar *pwtoolbar)
+void CCoolMenuManager::SetImageList(CPWToolBar *pwtoolbar)
 {
   m_ImageList.DeleteImageList();
   if (!m_bNoDIL)

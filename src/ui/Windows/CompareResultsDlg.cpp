@@ -50,6 +50,7 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
   m_ShowIdenticalEntries(BST_UNCHECKED)
 {
+  m_pDbx = static_cast<DboxMain *>(pParent);
 }
 
 // Return whether first [g:t:u] is greater than the second [g:t:u]
@@ -65,6 +66,28 @@ bool GTUCompare2(st_CompareData elem1, st_CompareData elem2)
   return elem1.user.CompareNoCase(elem2.user) < 0;
 }
 
+void CCompareResultsDlg::DoDataExchange(CDataExchange* pDX)
+{
+  CPWDialog::DoDataExchange(pDX);
+  DDX_Control(pDX, IDC_RESULTLIST, m_LCResults);
+}
+
+BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
+  ON_WM_SIZE()
+  ON_WM_INITMENUPOPUP()
+  ON_NOTIFY(NM_DBLCLK, IDC_RESULTLIST, OnItemDoubleClick)
+  ON_NOTIFY(NM_RCLICK, IDC_RESULTLIST, OnItemRightClick)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(IDOK, OnOK)
+  ON_BN_CLICKED(IDC_SHOW_IDENTICAL_ENTRIES, OnShowIdenticalEntries)
+  ON_BN_CLICKED(IDC_VIEWCOMPAREREPORT, OnViewCompareReport)
+  ON_NOTIFY(HDN_ITEMCLICK, IDC_RESULTLISTHDR, OnColumnClick)
+  ON_COMMAND(ID_MENUITEM_COMPVIEWEDIT, OnCompareViewEdit)
+  ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnCompareSynchronize)
+  ON_COMMAND(ID_MENUITEM_COPY_TO_ORIGINAL, OnCompareCopyToOriginalDB)
+  ON_COMMAND(ID_MENUITEM_COPY_TO_COMPARISON, OnCompareCopyToComparisonDB)
+END_MESSAGE_MAP()
+
 BOOL CCompareResultsDlg::OnInitDialog()
 {
   std::vector<UINT> vibottombtns;
@@ -78,6 +101,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
   SetStatusBar(&statustext[0], 1);
 
   CPWResizeDialog::OnInitDialog();
+
+  m_menuManager.Install(this);
+  m_menuManager.SetImageList(&m_pDbx->m_MainToolBar);
+  m_menuManager.SetMapping(&m_pDbx->m_MainToolBar);
 
   m_LCResults.GetHeaderCtrl()->SetDlgCtrlID(IDC_RESULTLISTHDR);
 
@@ -172,26 +199,11 @@ BOOL CCompareResultsDlg::OnInitDialog()
   return FALSE;
 }
 
-void CCompareResultsDlg::DoDataExchange(CDataExchange* pDX)
+void CCompareResultsDlg::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
 {
-  CPWDialog::DoDataExchange(pDX);
-  DDX_Control(pDX, IDC_RESULTLIST, m_LCResults);
+  // Add pretty pictures to our menu
+  m_pDbx->CPRInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 }
-
-BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
-  ON_WM_SIZE()
-  ON_NOTIFY(NM_DBLCLK, IDC_RESULTLIST, OnItemDoubleClick)
-  ON_NOTIFY(NM_RCLICK, IDC_RESULTLIST, OnItemRightClick)
-  ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_BN_CLICKED(IDOK, OnOK)
-  ON_BN_CLICKED(IDC_SHOW_IDENTICAL_ENTRIES, OnShowIdenticalEntries)
-  ON_BN_CLICKED(IDC_VIEWCOMPAREREPORT, OnViewCompareReport)
-  ON_NOTIFY(HDN_ITEMCLICK, IDC_RESULTLISTHDR, OnColumnClick)
-  ON_COMMAND(ID_MENUITEM_COMPVIEWEDIT, OnCompareViewEdit)
-  ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnCompareSynchronize)
-  ON_COMMAND(ID_MENUITEM_COPY_TO_ORIGINAL, OnCompareCopyToOriginalDB)
-  ON_COMMAND(ID_MENUITEM_COPY_TO_COMPARISON, OnCompareCopyToComparisonDB)
-END_MESSAGE_MAP()
 
 void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
 {
@@ -362,11 +374,15 @@ void CCompareResultsDlg::OnShowIdenticalEntries()
 
 void CCompareResultsDlg::OnCancel()
 {
+  m_menuManager.Cleanup();
+
   CPWResizeDialog::OnCancel();
 }
 
 void CCompareResultsDlg::OnOK()
 {
+  m_menuManager.Cleanup();
+
   CPWResizeDialog::OnOK();
 }
 
@@ -718,7 +734,15 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
     return;
 
   CMenu menu;
+
   if (menu.LoadMenu(ipopup)) {
+    MENUINFO minfo ={0};
+    minfo.cbSize = sizeof(MENUINFO);
+    minfo.fMask = MIM_MENUDATA;
+    minfo.dwMenuData = ipopup;
+    BOOL brc = menu.SetMenuInfo(&minfo);
+    ASSERT(brc != 0);
+
     CMenu* pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);
 

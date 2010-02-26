@@ -22,6 +22,8 @@
 #include <string>
 #endif
 
+class DboxMain;
+
 // The following structure is needed for compare when record is in
 // both databases (indatabase = -1) but there are differences
 // Subset used when record is in only one (indatabase = 0 or 1)
@@ -175,6 +177,7 @@ protected:
   afx_msg void OnCompareCopyToOriginalDB();
   afx_msg void OnCompareCopyToComparisonDB();
   afx_msg void OnSize(UINT nType, int cx, int cy);
+  afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -188,6 +191,8 @@ private:
 
   PWScore *m_pcore0, *m_pcore1;
   CReport *m_pRpt;
+  DboxMain *m_pDbx;
+  CCoolMenuManager m_menuManager;
 
   size_t m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
   int m_row, m_column;
