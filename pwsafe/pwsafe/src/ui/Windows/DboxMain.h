@@ -348,6 +348,7 @@ public:
 #else
   CPWListCtrl m_ctlItemList;
 #endif
+  CPWToolBar m_MainToolBar;   // main toolbar
   CPWTreeCtrl m_ctlItemTree;
   CImageList *m_pImageList;
   CImageList *m_pImageList0;
@@ -376,6 +377,10 @@ public:
   bool CheckPreTranslateDelete(MSG* pMsg);
   bool CheckPreTranslateRename(MSG* pMsg);
   bool CheckPreTranslateAutoType(MSG* pMsg);
+
+  // Needed public function for ComapreResultsDialog
+  void CPRInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
+  {OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);}
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -400,7 +405,6 @@ protected:
   CCeCommandBar *m_wndCommandBar;
   CMenu *m_pwndMenu;
 #else
-  CPWToolBar m_MainToolBar;   // main toolbar
   CPWFindToolBar m_FindToolBar;  // Find toolbar
   CPWStatusBar m_statusBar;
   BOOL m_toolbarsSetup;

@@ -983,7 +983,8 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   }
 
   // Ignore SystemTray popup menu
-  if (!m_bImageInLV || minfo.dwMenuData != IDR_POPTRAY)
+  if (!m_bImageInLV || 
+       (minfo.dwMenuData != IDR_POPTRAY && minfo.dwMenuData != IDR_POPCOPYTOORIGINAL && minfo.dwMenuData != IDR_POPEDITVIEWORIGINAL))
     return;
 
   // System Tray Popup menu processing only
