@@ -103,6 +103,7 @@
 ; - several "File" for the language specific DLL
 ; - "Delete ...DLL" for each language (at install time)
 ; - 'Delete "$INSTDIR\pwsafeXX.dll"'  for each language (at uninstall time)
+; - 'CreateShortCut "Password Safe Help XX.lnk" for each language (at install time)
 ; - "Push" in the "Language selection dialog"
 
 ;-----------------------------------------
@@ -228,7 +229,6 @@
   ReserveFile "pws-install.ini"
   ;!insertmacro MUI_RESERVEFILE_INSTALLOPTIONS  : VdG for MUI-2 :  !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS is no longer supported as InstallOptions
 
-
 ;-----------------------------------------------------------------
 ; The program itself
 
@@ -256,6 +256,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\pwsafe.xsd"
   File "..\xml\pwsafe.xsl"
   File "..\xml\pwsafe_filter.xsd"
+
   
 !ifdef LANGUAGE_CHINESE
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH.dll"
@@ -335,8 +336,9 @@ dont_install_Win98:
 !ifdef LANGUAGE_ITALIAN
   IntCmp $LANGUAGE 1040 languageItalian
 !endif
-  ; if language = english or "other" : remove all languageXX_XX.DLL
-  ; else : English or no specific language
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
+; if language = english or "other" : remove all languageXX_XX.DLL
+; else : English or no specific language
 !ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
@@ -786,14 +788,103 @@ SectionEnd
 
 Section "$(START_SHOW)" StartMenu
 
-  ; Create the Password Safe menu under the programs part of the start
-  ; menu
+  ; Create the Password Safe menu under the programs part of the start menu
   CreateDirectory "$SMPROGRAMS\Password Safe"
 
   ; Create shortcuts
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe.lnk" "$INSTDIR\pwsafe.exe"
 
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help.lnk" "$INSTDIR\pwsafe.chm"
+  
+!ifdef LANGUAGE_CHINESE
+  IntCmp $LANGUAGE 2052 useLanguageChinese
+!endif
+!ifdef LANGUAGE_SPANISH
+  IntCmp $LANGUAGE 1034 useLanguageSpanish
+!endif
+!ifdef LANGUAGE_GERMAN
+  IntCmp $LANGUAGE 1031 useLanguageGerman
+!endif
+!ifdef LANGUAGE_SWEDISH
+  IntCmp $LANGUAGE 1053 useLanguageSwedish
+!endif
+!ifdef LANGUAGE_DUTCH
+  IntCmp $LANGUAGE 1043 useLanguageDutch
+!endif
+!ifdef LANGUAGE_FRENCH
+  IntCmp $LANGUAGE 1036 useLanguageFrench
+!endif
+!ifdef LANGUAGE_RUSSIAN
+  IntCmp $LANGUAGE 1049 useLanguageRussian
+!endif
+!ifdef LANGUAGE_POLISH
+  IntCmp $LANGUAGE 1045 useLanguagePolish
+!endif
+!ifdef LANGUAGE_ITALIAN
+  IntCmp $LANGUAGE 1040 useLanguageItalian
+!endif
+  Goto languageChoicedone
+
+!ifdef LANGUAGE_CHINESE
+useLanguageChinese:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help ZH.lnk" "$INSTDIR\pwsafeZH.chm"
+  Goto languageChoicedone
+!endif
+!ifdef LANGUAGE_SPANISH
+useLanguageSpanish:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help ES.lnk" "$INSTDIR\pwsafeES.chm"
+  Goto languageChoicedone
+!endif
+!ifdef LANGUAGE_GERMAN
+useLanguageGerman:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help DE.lnk" "$INSTDIR\pwsafeDE.chm"
+  Goto languageChoicedone
+!endif
+!ifdef LANGUAGE_SWEDISH
+useLanguageSwedish:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help SV.lnk" "$INSTDIR\pwsafeSV.chm"
+  Goto languageChoicedone
+!endif
+!ifdef LANGUAGE_DUTCH
+useLanguageDutch:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help NL.lnk" "$INSTDIR\pwsafeNL.chm"
+  Goto languageChoicedone
+!endif
+!ifdef LANGUAGE_FRENCH
+useLanguageFrench:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help FR.lnk" "$INSTDIR\pwsafeFR.chm"
+  Goto languageChoicedone
+!endif
+!ifdef LANGUAGE_RUSSIAN
+useLanguageRussian:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help RU.lnk" "$INSTDIR\pwsafeRU.chm"
+  Goto languageChoicedone
+!endif
+!ifdef LANGUAGE_POLISH
+useLanguagePolish:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help PL.lnk" "$INSTDIR\pwsafePL.chm"
+  Goto languageChoicedone
+!endif
+!ifdef LANGUAGE_ITALIAN
+useLanguageItalian:
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help IT.lnk" "$INSTDIR\pwsafeIT.chm"
+  Goto languageChoicedone
+!endif
+
+languageChoicedone:
+SectionEnd
+
+;--------------------------------
+; PasswordSafe Uninstall
+
+Section "$(UNINSTALL_SHORTCUT)" UninstallMenu
+
+  ; Create the Password Safe menu under the programs part of the start menu
+  ; should be already available (START_SHOW)
+  CreateDirectory "$SMPROGRAMS\Password Safe"
+
+  ; Create Uninstall icon
+  CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 
 SectionEnd
 
@@ -815,6 +906,7 @@ SectionEnd
     !insertmacro MUI_DESCRIPTION_TEXT ${ProgramFiles} $(DESC_ProgramFiles)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartUp} $(DESC_StartUp)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartMenu} $(DESC_StartMenu)
+    !insertmacro MUI_DESCRIPTION_TEXT ${UninstallMenu} $(DESC_UninstallMenu)
     !insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} $(DESC_DesktopShortcut)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
@@ -919,13 +1011,13 @@ Function .onInit
  System::Call 'kernel32::CreateMutexA(i 0, i 0, t "pwsInstallMutex") i .r1 ?e'
  Pop $R0 
  StrCmp $R0 0 +3
-   MessageBox MB_OK|MB_ICONEXCLAMATION "The installer is already running."
+   MessageBox MB_OK|MB_ICONEXCLAMATION $(RUNNING_INSTALL)
    Abort
 
 ; Now protect against running instance of pwsafe
 	${nsProcess::FindProcess} "pwsafe.exe" $R0
 	StrCmp $R0 0 0 +3
-	MessageBox MB_OK "Please exit all running instances of PasswordSafe before installing a new version"
+	MessageBox MB_OK $(RUNNING_APPLICATION)
   Abort
 	${nsProcess::Unload}
 
@@ -1002,20 +1094,20 @@ extraLanguage:
 !endif
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
-  LangDLL::LangDialog "Installation Language" "Please select the language for the installation"
+  LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
 
   Pop $LANGUAGE
   StrCmp $LANGUAGE "cancel" 0 +2
     Abort
  Return
 is_win95:
-  MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_95)
   Quit
 is_win98:
-  MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_98)
   Quit
 is_winME:
-  MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_ME)
   Quit
 NOextraLanguage:
 

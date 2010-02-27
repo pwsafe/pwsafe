@@ -15,7 +15,7 @@
 ; disclaimed, including, but not limited to, the implied warranties of
 ; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
 
-;--------------------------------
+;================================================================================================
 ;Reserve Files
 
 LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
@@ -234,127 +234,187 @@ LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
 !endif
 
 ;--------------------------------
+; Uninstall shortcut
+
+LangString UNINSTALL_SHORTCUT ${LANG_ENGLISH} "Uninstall shortcut"
+!ifdef LANGUAGE_GERMAN
+LangString UNINSTALL_SHORTCUT ${LANG_GERMAN}  "Verknüpfung zum Deinstallieren"
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString UNINSTALL_SHORTCUT ${LANG_SIMPCHINESE} "Uninstall shortcut [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString UNINSTALL_SHORTCUT ${LANG_SPANISH} "Uninstall shortcut [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString UNINSTALL_SHORTCUT ${LANG_SWEDISH} "Uninstall shortcut [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString UNINSTALL_SHORTCUT ${LANG_DUTCH} "Uninstall shortcut [NL]"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString UNINSTALL_SHORTCUT ${LANG_FRENCH} "Uninstall shortcut [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString UNINSTALL_SHORTCUT ${LANG_RUSSIAN} "Uninstall shortcut [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString UNINSTALL_SHORTCUT ${LANG_POLISH} "Uninstall shortcut [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString UNINSTALL_SHORTCUT ${LANG_ITALIAN} "Uninstall shortcut [IT]"
+!endif
+
+;================================================================================================
 ; Descriptions
 
-  ; Language strings
-  LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
+; Language strings
+LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
 !ifdef LANGUAGE_GERMAN
-  LangString DESC_ProgramFiles ${LANG_GERMAN} "Installiert die notwendigen Dateien, um Password Safe laufen zu lassen."
+LangString DESC_ProgramFiles ${LANG_GERMAN} "Installiert die notwendigen Dateien, um Password Safe laufen zu lassen."
 !endif
 !ifdef LANGUAGE_CHINESE
-  LangString DESC_ProgramFiles ${LANG_SIMPCHINESE} "°²×°ÔËÐÐ Password Safe ±ØÐèµÄ»ù±¾ÎÄ¼þ¡£"
+LangString DESC_ProgramFiles ${LANG_SIMPCHINESE} "°²×°ÔËÐÐ Password Safe ±ØÐèµÄ»ù±¾ÎÄ¼þ¡£"
 !endif
 !ifdef LANGUAGE_SPANISH
-  LangString DESC_ProgramFiles ${LANG_SPANISH} "Installs the basic files necessary to run Password Safe. [ES]"
+LangString DESC_ProgramFiles ${LANG_SPANISH} "Installs the basic files necessary to run Password Safe. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_ProgramFiles ${LANG_SWEDISH} "Installera de basfiler som är nödvändiga för att köra Password Safe."
+LangString DESC_ProgramFiles ${LANG_SWEDISH} "Installera de basfiler som är nödvändiga för att köra Password Safe."
 !endif
 !ifdef LANGUAGE_DUTCH
-  LangString DESC_ProgramFiles ${LANG_DUTCH} "Installs the basic files necessary to run Password Safe. [NL]"
+LangString DESC_ProgramFiles ${LANG_DUTCH} "Installs the basic files necessary to run Password Safe. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-  LangString DESC_ProgramFiles ${LANG_FRENCH} "Installe les fichiers de base nécessaires à PasswordSafe."
+LangString DESC_ProgramFiles ${LANG_FRENCH} "Installe les fichiers de base nécessaires à PasswordSafe."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  LangString DESC_ProgramFiles ${LANG_RUSSIAN} "Installs the basic files necessary to run Password Safe. [RU]"
+LangString DESC_ProgramFiles ${LANG_RUSSIAN} "Installs the basic files necessary to run Password Safe. [RU]"
 !endif
 !ifdef LANGUAGE_POLISH
-  LangString DESC_ProgramFiles ${LANG_POLISH} "Installs the basic files necessary to run Password Safe. [PL]"
+LangString DESC_ProgramFiles ${LANG_POLISH} "Installs the basic files necessary to run Password Safe. [PL]"
 !endif
 !ifdef LANGUAGE_ITALIAN
-  LangString DESC_ProgramFiles ${LANG_ITALIAN} "Installs the basic files necessary to run Password Safe. [IT]"
+LangString DESC_ProgramFiles ${LANG_ITALIAN} "Installs the basic files necessary to run Password Safe. [IT]"
 !endif
 
-  LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
 !ifdef LANGUAGE_GERMAN
-  LangString DESC_StartUp ${LANG_GERMAN} "Startet Password Safe beim Hochfahren von Windows."
+LangString DESC_StartUp ${LANG_GERMAN} "Startet Password Safe beim Hochfahren von Windows."
 !endif
 !ifdef LANGUAGE_CHINESE
-  LangString DESC_StartUp ${LANG_SIMPCHINESE} "Æô¶¯ Windows Ê±×Ô¶¯ÔËÐÐ Password Safe¡£"
+LangString DESC_StartUp ${LANG_SIMPCHINESE} "Æô¶¯ Windows Ê±×Ô¶¯ÔËÐÐ Password Safe¡£"
 !endif
 !ifdef LANGUAGE_SPANISH
-  LangString DESC_StartUp ${LANG_SPANISH} "Starts Password Safe as part of Windows boot/login. [ES]"
+LangString DESC_StartUp ${LANG_SPANISH} "Starts Password Safe as part of Windows boot/login. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_StartUp ${LANG_SWEDISH} "Startar Password Safe som en del av Windows bootning/inloggning."
+LangString DESC_StartUp ${LANG_SWEDISH} "Startar Password Safe som en del av Windows bootning/inloggning."
 !endif
 !ifdef LANGUAGE_DUTCH
-  LangString DESC_StartUp ${LANG_DUTCH} "Starts Password Safe as part of Windows boot/login. [NL]"
+LangString DESC_StartUp ${LANG_DUTCH} "Starts Password Safe as part of Windows boot/login. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-  LangString DESC_StartUp ${LANG_FRENCH} "Démarre PasswordSafe lors du démarrage et connexion de Windows."
+LangString DESC_StartUp ${LANG_FRENCH} "Démarre PasswordSafe lors du démarrage et connexion de Windows."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  LangString DESC_StartUp ${LANG_RUSSIAN} "Starts Password Safe as part of Windows boot/login. [RU]"
+LangString DESC_StartUp ${LANG_RUSSIAN} "Starts Password Safe as part of Windows boot/login. [RU]"
 !endif
 !ifdef LANGUAGE_POLISH
-  LangString DESC_StartUp ${LANG_POLISH} "Starts Password Safe as part of Windows boot/login. [PL]"
+LangString DESC_StartUp ${LANG_POLISH} "Starts Password Safe as part of Windows boot/login. [PL]"
 !endif
 !ifdef LANGUAGE_ITALIAN
-  LangString DESC_StartUp ${LANG_ITALIAN} "Starts Password Safe as part of Windows boot/login. [IT]"
+LangString DESC_StartUp ${LANG_ITALIAN} "Starts Password Safe as part of Windows boot/login. [IT]"
 !endif
 
-  LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
+LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
 !ifdef LANGUAGE_GERMAN
-  LangString DESC_StartMenu ${LANG_GERMAN} "Erstellt ein Eintrag im Start Menü für Password Safe."
+LangString DESC_StartMenu ${LANG_GERMAN} "Erstellt ein Eintrag im Start Menü für Password Safe."
 !endif
 !ifdef LANGUAGE_CHINESE
-  LangString DESC_StartMenu ${LANG_SIMPCHINESE} "ÔÚ¿ªÊ¼²Ëµ¥´´½¨Ò»¸ö Password Safe ÌõÄ¿¡£"
+LangString DESC_StartMenu ${LANG_SIMPCHINESE} "ÔÚ¿ªÊ¼²Ëµ¥´´½¨Ò»¸ö Password Safe ÌõÄ¿¡£"
 !endif
 !ifdef LANGUAGE_SPANISH
-  LangString DESC_StartMenu ${LANG_SPANISH} "Creates an entry in the start menu for Password Safe. [ES]"
+LangString DESC_StartMenu ${LANG_SPANISH} "Creates an entry in the start menu for Password Safe. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_StartMenu ${LANG_SWEDISH} "Skapar en post i startmenyn till Password Safe."
+LangString DESC_StartMenu ${LANG_SWEDISH} "Skapar en post i startmenyn till Password Safe."
 !endif
 !ifdef LANGUAGE_DUTCH
-  LangString DESC_StartMenu ${LANG_DUTCH} "Creates an entry in the start menu for Password Safe. [NL]"
+LangString DESC_StartMenu ${LANG_DUTCH} "Creates an entry in the start menu for Password Safe. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-  LangString DESC_StartMenu ${LANG_FRENCH} "Crée une entrée dans le menu Démarrer pour PasswordSafe."
+LangString DESC_StartMenu ${LANG_FRENCH} "Crée une entrée dans le menu Démarrer pour PasswordSafe."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  LangString DESC_StartMenu ${LANG_RUSSIAN} "Creates an entry in the start menu for Password Safe. [RU]"
+LangString DESC_StartMenu ${LANG_RUSSIAN} "Creates an entry in the start menu for Password Safe. [RU]"
 !endif
 !ifdef LANGUAGE_POLISH
-  LangString DESC_StartMenu ${LANG_POLISH} "Creates an entry in the start menu for Password Safe. [PL]"
+LangString DESC_StartMenu ${LANG_POLISH} "Creates an entry in the start menu for Password Safe. [PL]"
 !endif
 !ifdef LANGUAGE_ITALIAN
-  LangString DESC_StartMenu ${LANG_ITALIAN} "Creates an entry in the start menu for Password Safe. [IT]"
+LangString DESC_StartMenu ${LANG_ITALIAN} "Creates an entry in the start menu for Password Safe. [IT]"
 !endif
 
-  LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
+LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
 !ifdef LANGUAGE_GERMAN
-  LangString DESC_DesktopShortcut ${LANG_GERMAN} "Erzeugt eine Verknüpfung zu Password Safe auf der Benutzeroberfläche."
+LangString DESC_DesktopShortcut ${LANG_GERMAN} "Erzeugt eine Verknüpfung zu Password Safe auf der Benutzeroberfläche."
 !endif
 !ifdef LANGUAGE_CHINESE
-  LangString DESC_DesktopShortcut ${LANG_SIMPCHINESE} "ÔÚÄãµÄ×ÀÃæ·ÅÖÃÒ»¸ö Password Safe ¿ì½Ý·½Ê½¡£"
+LangString DESC_DesktopShortcut ${LANG_SIMPCHINESE} "ÔÚÄãµÄ×ÀÃæ·ÅÖÃÒ»¸ö Password Safe ¿ì½Ý·½Ê½¡£"
 !endif
 !ifdef LANGUAGE_SPANISH
-  LangString DESC_DesktopShortcut ${LANG_SPANISH} "Places a shortcut to Password Safe on your desktop. [ES]"
+LangString DESC_DesktopShortcut ${LANG_SPANISH} "Places a shortcut to Password Safe on your desktop. [ES]"
 !endif
 !ifdef LANGUAGE_SWEDISH
-  LangString DESC_DesktopShortcut ${LANG_SWEDISH} "Placerar en genväg till Password Safe på ditt skrivbord."
+LangString DESC_DesktopShortcut ${LANG_SWEDISH} "Placerar en genväg till Password Safe på ditt skrivbord."
 !endif
 !ifdef LANGUAGE_DUTCH
-  LangString DESC_DesktopShortcut ${LANG_DUTCH} "Places a shortcut to Password Safe on your desktop. [NL]"
+LangString DESC_DesktopShortcut ${LANG_DUTCH} "Places a shortcut to Password Safe on your desktop. [NL]"
 !endif
 !ifdef LANGUAGE_FRENCH
-  LangString DESC_DesktopShortcut ${LANG_FRENCH} "Place un raccourci vers PasswordSafe sur votre Bureau."
+LangString DESC_DesktopShortcut ${LANG_FRENCH} "Place un raccourci vers PasswordSafe sur votre Bureau."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  LangString DESC_DesktopShortcut ${LANG_RUSSIAN} "Places a shortcut to Password Safe on your desktop. [RU]"
+LangString DESC_DesktopShortcut ${LANG_RUSSIAN} "Places a shortcut to Password Safe on your desktop. [RU]"
 !endif
 !ifdef LANGUAGE_POLISH
-  LangString DESC_DesktopShortcut ${LANG_POLISH} "Places a shortcut to Password Safe on your desktop. [PL]"
+LangString DESC_DesktopShortcut ${LANG_POLISH} "Places a shortcut to Password Safe on your desktop. [PL]"
 !endif
 !ifdef LANGUAGE_ITALIAN
-  LangString DESC_DesktopShortcut ${LANG_ITALIAN} "Places a shortcut to Password Safe on your desktop. [IT]"
+LangString DESC_DesktopShortcut ${LANG_ITALIAN} "Places a shortcut to Password Safe on your desktop. [IT]"
+!endif
+
+LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start menu to Uninstall Password Safe."
+!ifdef LANGUAGE_GERMAN
+LangString DESC_UninstallMenu ${LANG_GERMAN} "Erzeugt eine Verknüpfung im Start Menü zum Deinstallieren von Password Safe."
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString DESC_UninstallMenu ${LANG_SIMPCHINESE} "Places a shortcut in the start menu to Uninstall Password Safe. [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString DESC_UninstallMenu ${LANG_SPANISH} "Places a shortcut in the start menu to Uninstall Password Safe. [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString DESC_UninstallMenu ${LANG_SWEDISH} "Places a shortcut in the start menu to Uninstall Password Safe. [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString DESC_UninstallMenu ${LANG_DUTCH} "Places a shortcut in the start menu to Uninstall Password Safe. [NL]"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString DESC_UninstallMenu ${LANG_FRENCH} "Places a shortcut in the start menu to Uninstall Password Safe. [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString DESC_UninstallMenu ${LANG_RUSSIAN} "Places a shortcut in the start menu to Uninstall Password Safe. [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString DESC_UninstallMenu ${LANG_POLISH} "Places a shortcut in the start menu to Uninstall Password Safe. [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString DESC_UninstallMenu ${LANG_ITALIAN} "Places a shortcut in the start menu to Uninstall Password Safe. [IT]"
 !endif
   
-
-;--------------------------------
+;================================================================================================
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
 !ifdef LANGUAGE_GERMAN
@@ -499,4 +559,224 @@ LangString PSWINI_TEXT2 ${LANG_POLISH} "Green (for Disk-on-Key; does not use hos
 !endif
 !ifdef LANGUAGE_ITALIAN
 LangString PSWINI_TEXT2 ${LANG_ITALIAN} "Green (for Disk-on-Key; does not use host Registry) [IT]"
+!endif
+
+;================================================================================================
+; several messages on install, check, ...
+
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+; "The installer is already running."
+LangString RUNNING_INSTALL ${LANG_ENGLISH} "The installer is already running."
+!ifdef LANGUAGE_GERMAN
+LangString RUNNING_INSTALL ${LANG_GERMAN} "Das Installationsprogramm läuft bereits."
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString RUNNING_INSTALL ${LANG_SIMPCHINESE} "The installer is already running. [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString RUNNING_INSTALL ${LANG_SPANISH} "The installer is already running. [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString RUNNING_INSTALL ${LANG_SWEDISH} "The installer is already running. [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString RUNNING_INSTALL ${LANG_DUTCH} "The installer is already running. [NL]"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString RUNNING_INSTALL ${LANG_FRENCH} "The installer is already running. [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString RUNNING_INSTALL ${LANG_RUSSIAN} "The installer is already running. [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString RUNNING_INSTALL ${LANG_POLISH} "The installer is already running. [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString RUNNING_INSTALL ${LANG_ITALIAN} "The installer is already running. [IT]"
+!endif
+
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+; "Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of PasswordSafe before installing a new version"
+!ifdef LANGUAGE_GERMAN
+LangString RUNNING_APPLICATION ${LANG_GERMAN} "Bitte schliessen Sie alle Instanzen von PasswordSafe, bevor Sie eine neue Version installieren"
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString RUNNING_APPLICATION ${LANG_SIMPCHINESE} "Please exit all running instances of PasswordSafe before installing a new version [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString RUNNING_APPLICATION ${LANG_SPANISH} "Please exit all running instances of PasswordSafe before installing a new version [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString RUNNING_APPLICATION ${LANG_SWEDISH} "Please exit all running instances of PasswordSafe before installing a new version [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString RUNNING_APPLICATION ${LANG_DUTCH} "Please exit all running instances of PasswordSafe before installing a new version [NL]"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString RUNNING_APPLICATION ${LANG_FRENCH} "Please exit all running instances of PasswordSafe before installing a new version [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString RUNNING_APPLICATION ${LANG_RUSSIAN} "Please exit all running instances of PasswordSafe before installing a new version [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString RUNNING_APPLICATION ${LANG_POLISH} "Please exit all running instances of PasswordSafe before installing a new version [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString RUNNING_APPLICATION ${LANG_ITALIAN} "Please exit all running instances of PasswordSafe before installing a new version [IT]"
+!endif
+
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+; "Installation Language"
+LangString LANG_INSTALL ${LANG_ENGLISH} "Installation Language"
+!ifdef LANGUAGE_GERMAN
+LangString LANG_INSTALL ${LANG_GERMAN} "Sprache der Installation"
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString LANG_INSTALL ${LANG_SIMPCHINESE} "Installation Language [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString LANG_INSTALL ${LANG_SPANISH} "Installation Language [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString LANG_INSTALL ${LANG_SWEDISH} "Installation Language [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString LANG_INSTALL ${LANG_DUTCH} "Installatie spraak"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString LANG_INSTALL ${LANG_FRENCH} "Installation Language [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString LANG_INSTALL ${LANG_RUSSIAN} "Installation Language [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString LANG_INSTALL ${LANG_POLISH} "Installation Language [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString LANG_INSTALL ${LANG_ITALIAN} "Installation Language [IT]"
+!endif
+
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+; "Please select the language for the installation"
+LangString LANG_SELECT ${LANG_ENGLISH} "Please select the language for the installation"
+!ifdef LANGUAGE_GERMAN
+LangString LANG_SELECT ${LANG_GERMAN} "Bitte wählen Sie die Sprache für die Installation"
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString LANG_SELECT ${LANG_SIMPCHINESE} "Please select the language for the installation [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString LANG_SELECT ${LANG_SPANISH} "Please select the language for the installation [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString LANG_SELECT ${LANG_SWEDISH} "Please select the language for the installation [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString LANG_SELECT ${LANG_DUTCH} "Please select the language for the installation [NL]"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString LANG_SELECT ${LANG_FRENCH} "Please select the language for the installation [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString LANG_SELECT ${LANG_RUSSIAN} "Please select the language for the installation [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString LANG_SELECT ${LANG_POLISH} "Please select the language for the installation [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString LANG_SELECT ${LANG_ITALIAN} "Please select the language for the installation [IT]"
+!endif
+
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+; "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+!ifdef LANGUAGE_GERMAN
+LangString SORRY_NO_95 ${LANG_GERMAN} "Schade, aber Windows 95 wieder nicht mehr unterstützt. Versuchen Sie PasswordSafe 2.16"
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString SORRY_NO_95 ${LANG_SIMPCHINESE} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString SORRY_NO_95 ${LANG_SPANISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString SORRY_NO_95 ${LANG_SWEDISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString SORRY_NO_95 ${LANG_DUTCH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [NL]"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString SORRY_NO_95 ${LANG_FRENCH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString SORRY_NO_95 ${LANG_RUSSIAN} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString SORRY_NO_95 ${LANG_POLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString SORRY_NO_95 ${LANG_ITALIAN} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [IT]"
+!endif
+
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+; "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+!ifdef LANGUAGE_GERMAN
+LangString SORRY_NO_98 ${LANG_GERMAN} "Schade, aber Windows 98 wieder nicht mehr unterstützt. Versuchen Sie PasswordSafe 2.16"
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString SORRY_NO_98 ${LANG_SIMPCHINESE} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString SORRY_NO_98 ${LANG_SPANISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString SORRY_NO_98 ${LANG_SWEDISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString SORRY_NO_98 ${LANG_DUTCH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [NL]"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString SORRY_NO_98 ${LANG_FRENCH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString SORRY_NO_98 ${LANG_RUSSIAN} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString SORRY_NO_98 ${LANG_POLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString SORRY_NO_98 ${LANG_ITALIAN} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [IT]"
+!endif
+
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+; "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+!ifdef LANGUAGE_GERMAN
+LangString SORRY_NO_ME ${LANG_GERMAN} "Schade, aber Windows ME wieder nicht mehr unterstützt. Versuchen Sie PasswordSafe 2.16"
+!endif
+!ifdef LANGUAGE_CHINESE
+LangString SORRY_NO_ME ${LANG_SIMPCHINESE} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [ZH]"
+!endif
+!ifdef LANGUAGE_SPANISH
+LangString SORRY_NO_ME ${LANG_SPANISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [ES]"
+!endif
+!ifdef LANGUAGE_SWEDISH
+LangString SORRY_NO_ME ${LANG_SWEDISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [SV]"
+!endif
+!ifdef LANGUAGE_DUTCH
+LangString SORRY_NO_ME ${LANG_DUTCH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [NL]"
+!endif
+!ifdef LANGUAGE_FRENCH
+LangString SORRY_NO_ME ${LANG_FRENCH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [FR]"
+!endif
+!ifdef LANGUAGE_RUSSIAN
+LangString SORRY_NO_ME ${LANG_RUSSIAN} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [RU]"
+!endif
+!ifdef LANGUAGE_POLISH
+LangString SORRY_NO_ME ${LANG_POLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [PL]"
+!endif
+!ifdef LANGUAGE_ITALIAN
+LangString SORRY_NO_ME ${LANG_ITALIAN} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [IT]"
 !endif
