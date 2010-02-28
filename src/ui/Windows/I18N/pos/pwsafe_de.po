@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-02-22 12:04+0100\n"
+"PO-Revision-Date: 2010-02-28 18:44+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -324,10 +324,20 @@ msgstr ""
 msgid "%s file being imported: %s"
 msgstr "%s Datei beim Importieren: %s"
 
+#. Resource IDs: (212)
+#, c-format
+msgid "%s has an empty %s.\r\n"
+msgstr "%s hat ein leeres %s.\r\n"
+
 #. Resource IDs: (326)
 #, c-format
 msgid "%s is a directory"
 msgstr "%s ist ein Verzeichnis"
+
+#. Resource IDs: (211)
+#, c-format
+msgid "%s not found. Cannot update entry's password.\r\n"
+msgstr "%s nicht gefunden. Das Passwort des Eintrages kann nicht aktualisiert werden.\r\n"
 
 #. Resource IDs: (212)
 #, c-format
@@ -341,8 +351,8 @@ msgstr "%s%s%s_Report.txt"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\"."
-msgstr "%s, Titel=\"%s\", Benutzer=\"%s\" besteht bereits in der Datenbank bzw. importierte Datei. Importierter Eintrag mit Titel=\"%s\" eingefügt."
+msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
+msgstr "%s, Titel=\"%s\", Benutzer=\"%s\" besteht bereits in der Datenbank oder in der importierten Datei. Importierter Eintrag mit Titel=\"%s\" eingefügt.\r\n"
 
 #. Resource IDs: (333)
 #, c-format
@@ -875,6 +885,11 @@ msgstr "(schreibungsabhängig)"
 msgid ")"
 msgstr ")"
 
+#. Resource IDs: (213)
+#, c-format
+msgid "- Its title has been changed to:'%s'"
+msgstr "- Der Titel wurde geändert in: '%s'"
+
 #. Resource IDs: (513)
 msgid "- Physical -"
 msgstr "- Physisch -"
@@ -1168,10 +1183,6 @@ msgstr "9"
 #. Resource IDs: (1156)
 msgid "<"
 msgstr "<"
-
-#. Resource IDs: (32221)
-msgid "<- Copy to Orignal"
-msgstr "<- zum Orignal kopieren"
 
 #. Resource IDs: (1157)
 msgid "<<"
@@ -2092,6 +2103,10 @@ msgstr "In Zwischenablage kopieren"
 msgid "Copy to DB"
 msgstr "Zur DB kopieren"
 
+#. Resource IDs: (32221)
+msgid "Copy to Orignal"
+msgstr "Zum Orignal kopieren"
+
 #. Resource IDs: (325)
 msgid "Copy username to clipboard"
 msgstr "Benutzername in Zwischenablage kopieren"
@@ -2551,30 +2566,10 @@ msgstr "Einträge nur in der Vergleichsdatenbank (%s):"
 msgid "Entries only in current database (%s):"
 msgstr "Einträge nur in der aktuellen Datenbank (%s):"
 
-#. Resource IDs: (212)
-#, c-format
-msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\" has an empty %s. Entry skipped."
-msgstr "Eintrag %s%d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat ein leeres %s. Eintrag übersprungen."
-
 #. Resource IDs: (211)
 #, c-format
-msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\" not found. Cannot update entry's password."
-msgstr "Eintrag %s%d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" nicht gefunden. Das Passwort des Eintrages kann nicht aktualisiert werden."
-
-#. Resource IDs: (205)
-#, c-format
-msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat eine ungültige Passworthistorie.  Er wurde mit den vorhandenen Daten wieder aufgebaut.  Ein Teil der Historie könnte verloren gegangen sein."
-
-#. Resource IDs: (205)
-#, c-format
-msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" had an invalid UUID field.  This has been corrected."
-msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" hat ein ungültiges Feld UUID. Es wurde korrigiert."
-
-#. Resource IDs: (212)
-#, c-format
-msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" was a duplicate of an existing entry.  Its title has been changed to:\"%s\"."
-msgstr "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" war das Duplikat eines bestehenden Eintrages. Der Titel wurde abgeändert in:\"%s\"."
+msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
+msgstr "Eintrag %s%d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\""
 
 #. Resource IDs: (205)
 #, c-format
@@ -4012,7 +4007,9 @@ msgid ""
 "\n"
 "Number of Alias warnings issued: %d\n"
 "\n"
-"Number of Shortcut warnings issued: %d"
+"Number of Shortcut warnings issued: %d\n"
+"\n"
+"Number of entries with fields that cannot be fully displayed: %d"
 msgstr ""
 "Anzahl der bearbeiteten Einträge:%d\n"
 "\n"
@@ -4021,9 +4018,12 @@ msgstr ""
 "Anzahl ausgebesserte Passworthistorien: %d\n"
 "\n"
 "Anzahl ausgebesserte nicht eindeutige Gruppe/Titel/Benutzer: %d\n"
-"/nAnzahl ausgegeben Aliaswarnungen: %d\n"
 "\n"
-"Anzahl ausgegebene Verknüpfungswarnungen: %d"
+"Anzahl ausgegebene Aliaswarnungen: %d\n"
+"\n"
+"Anzahl ausgegebene Verknüpfungswarnungen: %d\n"
+"\n"
+"Anzahl der Einträge mit Felder die nicht ganz angezeigt werden können: %d"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4760,6 +4760,10 @@ msgstr "Beschränke auf eine Teilmenge der Einträge:"
 msgid "Right Ctrl key"
 msgstr "Rechte Strg Taste"
 
+#. Resource IDs: (65535)
+msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
+msgstr "Klicke rechts auf 'Y' in einer der beiden ersten Spalten für zusätzliche Funktionen"
+
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
 msgstr "Rumänisch (Legacy)"
@@ -5328,6 +5332,10 @@ msgstr "Synchronisation fehlgeschlagen"
 msgid "Synchronize"
 msgstr "Synchronisieren"
 
+#. Resource IDs: (121)
+msgid "Synchronize Entries"
+msgstr "Einträge Synchronisieren"
+
 #. Resource IDs: (360)
 #, c-format
 msgid "Synchronizing from database: %s\r\n"
@@ -5499,13 +5507,13 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Please fix by running PasswordSafe with '-v' flag on this database."
+"has duplicate entries with the same group/title/user combination. Please fix by validating database."
 msgstr ""
 "Die Datenbank:\n"
 "\n"
 "%s\n"
 "\n"
-"hat doppelte Einträge mit derselben Gruppe/Titel/Benutzer Kombination. Bitte bereinigen Sie das durch Aufruf von PasswordSafe für diese Datenbank mit dem Parameter '-v'."
+"hat doppelte Einträge mit derselben Gruppe/Titel/Benutzer Kombination. Bitte bereinigen Sie das durch Überprüfen der Datenbank."
 
 #. Resource IDs: (329)
 msgid "The entered passwords do not match.  Please re-enter them."
@@ -5541,6 +5549,23 @@ msgstr "Folgende Spalten wurden erkannt, aber nur Gruppe/Titel, Benutzername und
 msgid "The following columns will be processed: "
 msgstr "Folgende Spalten werden verarbeitet: "
 
+#. Resource IDs: (205)
+msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
+msgstr "Folgede Einträge haben eine ungültige Passworthistorie.  Er wurde mit den vorhandenen Daten wieder aufgebaut.  Ein Teil der Historie könnte verloren gegangen sein."
+
+#. Resource IDs: (205)
+msgid "The following entries had an invalid UUID field.  This has been corrected."
+msgstr "Die folgenden Einträge hatten ein ungültiges Feld UUID. Das wurde korrigiert."
+
+#. Resource IDs: (212)
+#, c-format
+msgid "The following entries has one or more text fields so long that they cannot be displayed (longer than %d characters)."
+msgstr "Die folgenden Einträge haben ein oder mehrere Textfelder so lange daß sie nicht angezeigtw erden können (länger als %d Zeichen)."
+
+#. Resource IDs: (212)
+msgid "The following entries were duplicates of an existing entry."
+msgstr "Die folgenden Einträge waren Duplikate eines bestehenden Eintrages."
+
 #. Resource IDs: (343)
 #, c-format
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
@@ -5551,12 +5576,17 @@ msgid "The following records had errors in their Password History:"
 msgstr "Folgende Datensätze hatten Fehler in die Passworthistorie:"
 
 #. Resource IDs: (362)
-msgid "The following records were renamed:"
-msgstr "Folgende Datensätze wurden umbenannt:"
+msgid "The following records were renamed as an entry already exists in your database or in the Import file:"
+msgstr "Folgende Datensätze wurden umbenannt, weil schon so ein Eintrag in der Datenbank oder in der Importdatei besteht:"
 
 #. Resource IDs: (362)
 msgid "The following records were skipped:"
 msgstr "Folgende Datensätze wurden übersprungen:"
+
+#. Resource IDs: (363)
+#, c-format
+msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
+msgstr "Im Feld Notizen diese Eintrages ist mehr ext als angezeigt werden kann. Beim Ändern dieses Feldes and Speichern des Eintrages wird das Feld nach %d Zeichen abgeschnitten. Um den ganzen Inhalt zu sehen, kopieren Sie es in einen Editor oder exportieren Sie diesen Eintrag zu XML bevor Sie es ändern."
 
 #. Resource IDs: (331)
 msgid "The old safe combination is not correct"
@@ -6275,6 +6305,10 @@ msgstr "Warnen"
 #. Resource IDs: (209)
 msgid "Warning"
 msgstr "Warnung"
+
+#. Resource IDs: (363)
+msgid "Warning - excessive field contents"
+msgstr "Warnung - übergroßer Feld Inhalte"
 
 #. Resource IDs: (1226)
 msgid "Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is NOT sufficient."
@@ -7018,6 +7052,11 @@ msgstr ""
 msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
 msgstr "\tGruppe:'%s'; Titel:'%s'; Benutzer:'%s'"
 
+#. Resource IDs: (212)
+#, c-format
+msgid "\tGroup='%s', Title='%s', User='%s' %s"
+msgstr "\tGruppe:'%s'; Titel:'%s'; Benutzer:'%s' %s"
+
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string : '%s'"
@@ -7436,6 +7475,14 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid ""
+#~ "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" was a duplicate of an "
+#~ "existing entry.  Its title has been changed to:\"%s\"."
+#~ msgstr ""
+#~ "Eintrag Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\" war das Duplikat "
+#~ "eines bestehenden Eintrages. Der Titel wurde abgeändert in:\"%s\"."
+#~ msgid "The following records were renamed:"
+#~ msgstr "Folgende Datensätze wurden umbenannt:"
 #~ msgid "Copy to Comparison DB ->"
 #~ msgstr "Zur VergleichsDB kopieren ->"
 #~ msgid ""
