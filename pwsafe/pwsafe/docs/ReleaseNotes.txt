@@ -23,6 +23,8 @@ None
 
 Bugs fixed in 3.21.1
 ====================
+[2960709] Entry selected prior to workstation locking is reselected on
+being restored after unlocking the workstation.
 [2951871] Shortcut related menu items now returned to the Edit menu and
 the "Run Command", "Browse to URL", "Browse to URL + Autotype" and 
 "Send email" functions now work again, when a Shortcut entry is selected.
