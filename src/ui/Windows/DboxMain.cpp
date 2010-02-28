@@ -112,7 +112,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
   m_core(app.m_core), m_pFontTree(NULL),
-  m_selectedAtMinimize(NULL), m_bTSUpdated(false),
+  m_bTSUpdated(false),
   m_iSessionEndingStatus(IDIGNORE),
   m_pchTip(NULL), m_pwchTip(NULL),
   m_bValidate(false), m_bOpen(false), 
@@ -162,6 +162,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON),
                                   IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+
+  memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
 
   ClearData();
 
@@ -1958,6 +1960,7 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
     return;
   }
 
+  CItemData *pci_selected(NULL);
   switch (nID & 0xFFF0) {
     case SC_RESTORE:
       TRACE(L"OnSysCommand:SC_RESTORE\n");
@@ -1967,6 +1970,11 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
     case SC_MINIMIZE:
       // Save expand/collapse status of groups
       m_vGroupDisplayState = GetGroupDisplayState();
+      pci_selected = getSelectedItem();
+      if (pci_selected != NULL)
+        pci_selected->GetUUID(m_UUIDSelectedAtMinimize);
+      else
+        memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
       break;
     case SC_CLOSE:
       if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
@@ -2079,6 +2087,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
 
   TRACE(L"RestoreWindowsData:bUpdateWindows = %s\n", bUpdateWindows ? L"true" : L"false");
+  const uuid_array_t nulluuid = {0};
   bool brc(false);
   // First - no database is currently open
   if (!m_bOpen) {
@@ -2124,6 +2133,12 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     if (bUpdateWindows) {
       RefreshViews();
       ShowWindow(SW_RESTORE);
+    }
+
+    if (::memcmp(m_UUIDSelectedAtMinimize, nulluuid, sizeof(uuid_array_t)) != 0) {
+      ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
+      if (iter != End())
+        SelectEntry(((DisplayInfo *)(iter->second.GetDisplayInfo()))->list_index, false);
     }
     return true;
   }
@@ -2190,6 +2205,12 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
         RestoreWindows();
     } else {
       ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
+    }
+
+    if (::memcmp(m_UUIDSelectedAtMinimize, nulluuid, sizeof(uuid_array_t)) != 0) {
+      ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
+      if (iter != End())
+        SelectEntry(((DisplayInfo *)(iter->second.GetDisplayInfo()))->list_index, false);
     }
     return brc;
   }

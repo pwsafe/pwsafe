@@ -449,6 +449,7 @@ int DboxMain::Close(const bool bTrySave)
 
   // Clear all associated data
   ClearData();
+  memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
 
   // Reset core
   m_core.ReInit();
@@ -676,6 +677,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
 
   // clear the data before loading the new file
   ClearData();
+  memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
 
   cs_title.LoadString(IDS_FILEREADERROR);
   bool bAskerSet = m_core.IsAskerSet();

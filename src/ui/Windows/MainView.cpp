@@ -1074,7 +1074,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         }
       }
 
-      m_selectedAtMinimize = getSelectedItem();
       m_ctlItemList.DeleteAllItems();
       m_mapGroupToTreeItem.clear();
       m_ctlItemTree.DeleteAllItems();
@@ -1103,8 +1102,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         m_bIsRestoring = true; // Stop 'sort of list view' hiding FindToolBar
         m_ctlItemTree.SetRestoreMode(true);
         RefreshViews();
-        if (m_selectedAtMinimize != NULL)
-          SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
 
         if (!m_vGroupDisplayState.empty()) {
           SetGroupDisplayState(m_vGroupDisplayState);
@@ -1124,6 +1121,13 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }
         CPWDialog::GetDialogTracker()->Apply(Shower);
+
+        const uuid_array_t nulluuid = {0};
+        if (::memcmp(m_UUIDSelectedAtMinimize, nulluuid, sizeof(uuid_array_t)) != 0) {
+          ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
+          if (iter != End())
+            SelectEntry(((DisplayInfo *)(iter->second.GetDisplayInfo()))->list_index, false);
+        }
 
         // Resume notification of changes
         m_core.ResumeOnDBNotification();
@@ -1461,12 +1465,6 @@ void DboxMain::ClearData(bool clearMRE)
   m_core.ClearData();  // Clears DB & DB Preferences changed flags
 
   UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
-
-  // If data is cleared, m_selectedAtMinimize is useless,
-  // since it will be deleted and rebuilt from the file.
-  // This means that selection won't be restored in this case.
-  // Tough.
-  m_selectedAtMinimize = NULL;
 
   if (clearMRE)
     m_RUEList.ClearEntries();
@@ -1831,11 +1829,19 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
   // or the "Windows Terminal Server" service wasn't active at startup).
   TRACE(L"OnSessionChange. wParam = %d\n", wParam);
   PWSprefs *prefs = PWSprefs::GetInstance();
+  CItemData *pci_selected(NULL);
   switch (wParam) {
     case WTS_CONSOLE_DISCONNECT:
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
       m_bWSLocked = true;
+
+      pci_selected = getSelectedItem();
+      if (pci_selected != NULL)
+        pci_selected->GetUUID(m_UUIDSelectedAtMinimize);
+      else
+        memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+
       if (prefs->GetPref(PWSprefs::LockOnWindowLock) &&
           LockDataBase()) {
         bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
