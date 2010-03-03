@@ -612,3 +612,10 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   oss << "</" << name << ">" << endl;
   return oss.str();
 }
+
+//sleep_ms : to sleep for the specified milliseconds
+int sleep_ms(unsigned milliseconds)
+{
+  return usleep(milliseconds*1000);
+}
+

@@ -14,7 +14,8 @@ NAME=os
 LIBSRC          = debug.cpp dir.cpp env.cpp \
                   file.cpp mem.cpp pws_str.cpp \
                   pws_time.cpp rand.cpp run.cpp\
-                  sys.cpp utf8conv.cpp
+                  sys.cpp utf8conv.cpp KeySend.cpp\
+                  xsendstring.cpp
 
 SRC             = $(LIBSRC)
 

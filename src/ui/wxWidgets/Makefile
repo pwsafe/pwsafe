@@ -30,7 +30,7 @@ OUTPUTPATH=GCCDebug
 OBJECTPATH=GCCDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -luuid
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -luuid -lXtst
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
@@ -58,7 +58,7 @@ OUTPUTPATH=GCCRelease
 OBJECTPATH=GCCRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs` -lcore -los -luuid
+LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs` -lcore -los -luuid -lXtst
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
@@ -86,7 +86,7 @@ OUTPUTPATH=GCCUnicodeDebug
 OBJECTPATH=GCCUnicodeDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -luuid
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -luuid -lXtst
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
@@ -113,7 +113,7 @@ OUTPUTPATH=GCCUnicodeRelease
 OBJECTPATH=GCCUnicodeRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -luuid
+LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -luuid -lXtst
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
