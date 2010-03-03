@@ -314,6 +314,7 @@ public:
   void DoCopyURL(CItemData &item);
   void DoEdit(CItemData &item);
   void DoAutotype(CItemData &item);
+  void DoAutotype(const StringX& sx_autotype, const std::vector<size_t>& vactionverboffsets);
   void DoBrowse(CItemData &item);
   void DoRun(CItemData &item);
   void DoEmail(CItemData &item);

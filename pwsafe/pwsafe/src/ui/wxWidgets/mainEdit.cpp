@@ -35,6 +35,12 @@
 #include "editshortcut.h"
 #include "createshortcutdlg.h"
 
+#include "../../corelib/PWSAuxParse.h"
+#include "../../corelib/Util.h"
+#include "../../os/KeySend.h"
+
+#include <algorithm>
+
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
  */
@@ -296,8 +302,212 @@ void PasswordSafeFrame::DoCopyURL(CItemData &item)
   UpdateAccessTime(item);
 }
 
-void PasswordSafeFrame::DoAutotype(CItemData &item)
+/*
+ * The entire logic is borrowed from ui/Windows/MainEdit.cpp
+ */
+void PasswordSafeFrame::DoAutotype(CItemData &ci)
 {
+  // Called from OnAutoType and OnTrayAutoType
+  StringX sxgroup, sxtitle, sxuser, sxpwd, sxnotes, sxautotype;
+
+  // Set up all the data (shortcut entry will change all of them!)
+  sxgroup = ci.GetGroup();
+  sxtitle = ci.GetTitle();
+  sxuser = ci.GetUser();
+  sxpwd = ci.GetPassword();
+  sxnotes = ci.GetNotes();
+  sxautotype = ci.GetAutoType();
+
+  if (ci.IsAlias()) {
+    CItemData *pbci = m_core.GetBaseEntry(&ci);
+    if (pbci != NULL) {
+      sxpwd = pbci->GetPassword();
+    } else {
+      // Problem - alias entry without a base!
+      ASSERT(0);
+    }
+  } else if (ci.IsShortcut()) {
+    CItemData *pbci = m_core.GetBaseEntry(&ci);
+    if (pbci != NULL) {
+      sxgroup = pbci->GetGroup();
+      sxtitle = pbci->GetTitle();
+      sxuser = pbci->GetUser();
+      sxpwd = pbci->GetPassword();
+      sxnotes = pbci->GetNotes();
+      sxautotype = pbci->GetAutoType();
+    } else {
+      // Problem - shortcut entry without a base!
+      ASSERT(0);
+    }
+  } // ci.IsShortcut()
+
+  // If empty, try the database default
+  if (sxautotype.empty()) {
+    sxautotype = PWSprefs::GetInstance()->
+              GetPref(PWSprefs::DefaultAutotypeString);
+
+    // If still empty, take this default
+    if (sxautotype.empty()) {
+      // checking for user and password for default settings
+      if (!sxpwd.empty()){
+        if (!sxuser.empty())
+          sxautotype = DEFAULT_AUTOTYPE;
+        else
+          sxautotype = L"\\p\\n";
+      }
+    }
+  }
+
+  // Rules are ("Minimize on Autotype" takes precedence):
+  // 1. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
+  //    not restore it (previous default action - but a pain if locked
+  //    in the system tray!)
+  // 2. If "Always on Top" - hide PWS during Autotype and then make it
+  //    "AlwaysOnTop" again, unless minimized!
+  // 3. If not "Always on Top" - hide PWS during Autotype and show
+  //    it again once finished - but behind other windows.
+  // NOTE: If "Lock on Minimize" is set and "MinimizeOnAutotype" then
+  //       the window will be locked once minimized.
+  bool bMinOnAuto = PWSprefs::GetInstance()->
+                    GetPref(PWSprefs::MinimizeOnAutotype);
+
+  if (bMinOnAuto) {
+    // Need to save display status for when we return from minimize
+    //m_vGroupDisplayState = GetGroupDisplayState();
+    Iconize(true);
+    while (!IsIconized())
+      wxSafeYield();
+  } else
+    Hide();
+
+  std::vector<size_t> vactionverboffsets;
+  sxautotype = PWSAuxParse::GetAutoTypeString(sxautotype,
+                sxgroup, sxtitle, sxuser, sxpwd, sxnotes,
+                vactionverboffsets);
+  DoAutotype(sxautotype, vactionverboffsets);
+
+  // If we minimized it, exit. If we only hid it, now show it
+  if (bMinOnAuto)
+    return;
+
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
+    /* TODO - figure out how to keep a wxWidgets window always on top */
+    if (IsIconized())
+      Iconize(false);
+    else
+      Show();
+  }
+}
+
+/*
+ * The entire logic is borrowed from ui/Windows/MainEdit.cpp
+ */
+void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype, 
+					const std::vector<size_t>& vactionverboffsets)
+{
+  // All parsing of AutoType command done in one place: PWSAuxParse::GetAutoTypeString
+  // Except for anything involving time (\d, \w, \W) or use older method (\z)
+  StringX sxtmp(L"");
+  StringX sxautotype(sx_autotype);
+  wchar_t curChar;
+ 
+  const int N = sxautotype.length();
+
+  //sleep for 1 second
+  sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
+
+  CKeySend ks;
+
+  int gNumIts;
+  for (int n = 0; n < N; n++){
+    curChar = sxautotype[n];
+    if (curChar == L'\\') {
+      n++;
+      if (n < N)
+        curChar = sxautotype[n];
+
+      // Only need to process fields left in there by PWSAuxParse::GetAutoTypeString
+      // for later processing
+      switch (curChar) {
+        case L'd':
+        case L'w':
+        case L'W':
+        { 
+           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
+               vactionverboffsets.end()) {
+             // Not in the list of found action verbs - treat as-is
+             sxtmp += L'\\';
+             sxtmp += curChar;
+             break;
+           }
+
+          /*
+           'd' means value is in milli-seconds, max value = 0.999s
+           and is the delay between sending each character
+
+           'w' means value is in milli-seconds, max value = 0.999s
+           'W' means value is in seconds, max value = 16m 39s
+           and is the wait time before sending the next character.
+           Use of this field does not change any current delay value.
+
+           User needs to understand that PasswordSafe will be unresponsive
+           for the whole of this wait period!
+          */
+
+          // Delay is going to change - send what we have with old delay
+          ks.SendString(sxtmp);
+          // start collecting new delay
+          sxtmp = L"";
+          int newdelay = 0;
+          gNumIts = 0;
+          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
+            if (_istdigit(sxautotype[n])) {
+              newdelay *= 10;
+              newdelay += (sxautotype[n] - L'0');
+            } else
+              break; // for loop
+          }
+
+          n--;
+          // Either set new character delay time or wait specified time
+          if (curChar == L'd') {
+            ks.SetAndDelay(newdelay);
+          }
+          else
+            sleep_ms(newdelay * (curChar == L'w' ? 1 : 1000)); 
+
+          break; // case 'd', 'w' & 'W'
+        }
+        case L'z':
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
+              vactionverboffsets.end()) {
+            // Not in the list of found action verbs - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          }
+          break;
+        case L'b':
+          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
+              vactionverboffsets.end()) {
+            // Not in the list of found action verbs - treat as-is
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          } else {
+            sxtmp += L'\b';
+          }
+          break;
+        default:
+          sxtmp += L'\\';
+          sxtmp += curChar;
+          break;
+      }
+    } else
+      sxtmp += curChar;
+  }
+  ks.SendString(sxtmp);
+
+  sleep_ms(1000); 
+
 }
 
 void PasswordSafeFrame::DoBrowse(CItemData &item)
