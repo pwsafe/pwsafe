@@ -72,6 +72,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
   DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername);
   DDX_Text(pDX, IDC_OTHERBROWSERLOCATION, m_otherbrowserlocation);
+  DDX_Text(pDX, IDC_OTHEREDITORLOCATION, m_othereditorlocation);
   DDX_Text(pDX, IDC_ALTBROWSER_CMDLINE, m_csBrowserCmdLineParms);
   DDX_Text(pDX, IDC_DEFAULTAUTOTYPE, m_csAutotype);
   DDX_Check(pDX, IDC_MINIMIZEONAUTOTYPE, m_minauto);
@@ -84,7 +85,8 @@ BEGIN_MESSAGE_MAP(COptionsMisc, COptions_PropertyPage)
 
   ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
   ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
-  ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
+  ON_COMMAND_RANGE(IDC_BROWSEFORLOCATION_BROWSER, 
+                   IDC_BROWSEFORLOCATION_EDITOR, OnBrowseForLocation)
   ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -181,6 +183,7 @@ BOOL COptionsMisc::OnInitDialog()
 #endif
 
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_otherbrowserlocation);
+  GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_othereditorlocation);
 
   OnUsedefuser();
 
@@ -192,6 +195,7 @@ BOOL COptionsMisc::OnInitDialog()
   m_savequerysetdef = m_querysetdef;
   m_savedefusername = m_defusername;
   m_saveotherbrowserlocation = m_otherbrowserlocation;
+  m_saveothereditorlocation = m_othereditorlocation;
   m_savehotkey_value = m_hotkey_value;
   m_savedoubleclickaction = m_doubleclickaction;
   m_saveBrowserCmdLineParms = m_csBrowserCmdLineParms;
@@ -220,6 +224,8 @@ BOOL COptionsMisc::OnInitDialog()
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_MAINTAINDATETIMESTAMPS), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_OTHERBROWSERLOCATION);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OTHERBROWSERLOCATION), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_OTHEREDITORLOCATION);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_OTHEREDITORLOCATION), cs_ToolTip);
 
   return TRUE;
 }
@@ -282,6 +288,7 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           m_savehotkey_value           != m_hotkey_value           ||
           m_savedoubleclickaction      != m_doubleclickaction      ||
           m_saveotherbrowserlocation   != m_otherbrowserlocation   ||
+          m_saveothereditorlocation    != m_othereditorlocation    ||
           m_saveBrowserCmdLineParms    != m_csBrowserCmdLineParms  ||
           m_saveAutotype               != m_csAutotype             ||
           m_saveminauto                != m_minauto)
@@ -335,15 +342,20 @@ BOOL COptionsMisc::OnApply()
   return COptions_PropertyPage::OnApply();
 }
 
-void COptionsMisc::OnBrowseForLocation()
+void COptionsMisc::OnBrowseForLocation(UINT nID)
 {
   CString cs_initiallocation, cs_title;
+  std::wstring path;
   INT_PTR rc;
 
-  if (m_otherbrowserlocation.IsEmpty())
+  if (nID == IDC_BROWSEFORLOCATION_BROWSER)
+    path = m_otherbrowserlocation;
+  else
+    path = m_othereditorlocation;
+ 
+  if (path.empty())
     cs_initiallocation = L"C:\\";
   else {
-    std::wstring path = m_otherbrowserlocation;
     std::wstring drive, dir, name, ext;
     pws_os::splitpath(path, drive, dir, name, ext);
     path = pws_os::makepath(drive, dir, L"", L"");
@@ -362,8 +374,13 @@ void COptionsMisc::OnBrowseForLocation()
 
   rc = fd.DoModal();
   if (rc == IDOK) {
-    m_otherbrowserlocation = fd.GetPathName();
-    GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_otherbrowserlocation);
+    if (nID == IDC_BROWSEFORLOCATION_BROWSER)
+      m_otherbrowserlocation = fd.GetPathName();
+    else
+      m_othereditorlocation = fd.GetPathName();
+
+    GetDlgItem(nID == IDC_BROWSEFORLOCATION_BROWSER ? IDC_OTHERBROWSERLOCATION :
+                        IDC_OTHEREDITORLOCATION)->SetWindowText(fd.GetPathName());
   }
 }
 
