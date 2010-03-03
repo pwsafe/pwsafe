@@ -34,6 +34,11 @@ class MFCReporter : public Reporter
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(message.c_str(), NULL, MB_OK | MB_ICONEXCLAMATION);
   }
+
+  void operator()(const std::wstring &title, const std::wstring &message) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(message.c_str(), title.c_str(), MB_OK | MB_ICONEXCLAMATION);
+  }
 };
 
 #endif /* __MFCMESSAGES_H */
