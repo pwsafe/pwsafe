@@ -25,6 +25,7 @@ public:
 // interest to the user
 class Reporter {
 public:
+  virtual void operator()(const stringT &title, const stringT &message) = 0;
   virtual void operator()(const stringT &message) = 0;
   virtual ~Reporter() {} // keep compiler happy
 };
