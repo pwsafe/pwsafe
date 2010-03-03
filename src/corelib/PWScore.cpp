@@ -657,14 +657,13 @@ int PWScore::ReadFile(const StringX &a_filename,
         // Show a useful (?) error message - better than
         // silently losing data (but not by much)
         // Best if title intact. What to do if not?
-
-        stringT cs_msg;
-        stringT cs_caption;
-        LoadAString(cs_caption, IDSC_READ_ERROR);
-        Format(cs_msg, IDSC_ENCODING_PROBLEM, ci_temp.GetTitle().c_str());
-        cs_msg = cs_caption + _S(": ") + cs_caption;
-        if (m_pReporter != NULL)
+        if (m_pReporter != NULL) {
+          stringT cs_msg, cs_caption;
+          LoadAString(cs_caption, IDSC_READ_ERROR);
+          Format(cs_msg, IDSC_ENCODING_PROBLEM, ci_temp.GetTitle().c_str());
+          cs_msg = cs_caption + _S(": ") + cs_caption;
           (*m_pReporter)(cs_msg);
+        }
       }
       // deliberate fall-through
       case PWSfile::SUCCESS:
@@ -1437,6 +1436,26 @@ bool PWScore::InitialiseGTU(GTUSet &setGTU)
     }
   }
   m_bUniqueGTUValidated = true;
+  return true;
+}
+
+bool PWScore::InitialiseUUID(UUIDSet &setUUID)
+{
+  // Populate the set of all UUID entries
+  UUIDSetPair pr_uuid;
+  ItemListConstIter citer;
+
+  setUUID.clear();
+  uuid_array_t entry_uuid;
+  for (citer = m_pwlist.begin(); citer != m_pwlist.end(); citer++) {
+    citer->second.GetUUID(entry_uuid);
+    pr_uuid = setUUID.insert(st_UUID(entry_uuid));
+    if (!pr_uuid.second) {
+      // Could happen if merging or synching a bad database!
+      setUUID.clear();
+      return false;
+    }
+  }
   return true;
 }
 
@@ -2335,16 +2354,15 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   } else
     st_dbp.whatlastsaved = m_hdr.m_whatlastsaved;
 
-  uuid_array_t file_uuid_array, ref_uuid_array;
-  memset(ref_uuid_array, 0, sizeof(ref_uuid_array));
-  memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(file_uuid_array));
+  uuid_array_t file_uuid_array, null_uuid = {0};
+  memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(uuid_array_t));
 
-  if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
+  if (memcmp(file_uuid_array, null_uuid, sizeof(uuid_array_t)) == 0)
     st_dbp.file_uuid = _T("N/A");
   else {
     ostringstreamT os;
     CUUIDGen huuid(file_uuid_array, true); // true for canonical format
-    os << huuid;
+    os << uppercase << huuid;
     st_dbp.file_uuid = os.str().c_str();
   }
 
