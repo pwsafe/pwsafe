@@ -30,6 +30,8 @@ the "Run Command", "Browse to URL", "Browse to URL + Autotype" and
 "Send email" functions now work again, when a Shortcut entry is selected.
 [2897661, 2779654] Group expand/collapse state restored after the database
 is Locked, Minimized or "AutoType with Minimize" and then Restored.
+[] Use of External Editor on Notes field from Edit dialog now activates Apply
+and OK buttons.
 
 New Features for 3.21
 =====================
