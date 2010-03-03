@@ -1094,7 +1094,8 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   GetParent()->GetDlgItem(IDOK)->EnableWindow(m_bOKSave == 0 ? TRUE : FALSE);
   GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
 
-  return 0;
+  OnENChangeNotes();
+  return 0L;
 }
 
 void CAddEdit_Basic::OnViewDependents()
