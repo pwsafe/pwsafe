@@ -16,6 +16,7 @@ the results of a Compare database operation.
 well as via the command line flag '-v'. When executed via the menu, it
 is very similar to opening a new database in that the current open database
 is closed and the selected database is validated during the open process.
+[] Allow use to select external editor for Notes field in Add/Edit dialog.
 
 Changes to Existing Features in 3.21.1
 ======================================
