@@ -195,9 +195,10 @@ public:
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE);
 
-  // Populate setGTU from m_pwlist. Returns false & empty setGTU if
-  // m_pwlist had one or more entries with same GTU.
+  // Populate setGTU & setUUID from m_pwlist. Returns false & empty set if
+  // m_pwlist had one or more entries with same GTU/UUID respectively.
   bool InitialiseGTU(GTUSet &setGTU);
+  bool InitialiseUUID(UUIDSet &setUUID);
   // Adds an st_GroupTitleUser to setGTU, possible modifying title
   // to ensure uniqueness. Returns false if title was modified.
   bool MakeEntryUnique(GTUSet &setGTU, const StringX &group, StringX &title,

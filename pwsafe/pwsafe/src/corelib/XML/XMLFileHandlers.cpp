@@ -524,9 +524,11 @@ void XMLFileHandlers::AddEntries()
               GetPref(PWSprefs::MaintainDateTimeStamps);
   bool bIntoEmpty = m_pXMLcore->GetNumEntries() == 0;
 
-  // Initialize set
+  // Initialize sets
   GTUSet setGTU;
   m_pXMLcore->InitialiseGTU(setGTU);
+  UUIDSet setUUID;
+  m_pXMLcore->InitialiseUUID(setUUID);
 
   Command *pcmd1 = UpdateGUICommand::Create(m_pXMLcore,
                                             UpdateGUICommand::WN_UNDO,
@@ -592,9 +594,8 @@ void XMLFileHandlers::AddEntries()
 
     uuid_array_t uuid_array;
     ci_temp.Clear();
-    if (cur_entry->uuid.empty())
-      ci_temp.CreateUUID();
-    else {
+    bool bNewUUID(true);
+    if (!cur_entry->uuid.empty()) {
       // _stscanf_s always outputs to an "int" using %x even though
       // target is only 1.  Read into larger buffer to prevent data being
       // overwritten and then copy to where we want it!
@@ -609,13 +610,23 @@ void XMLFileHandlers::AddEntries()
 #endif
         lpszuuid += 2;
       }
-      memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array));
-      if (nscanned != sizeof(uuid_array_t) ||
-        m_pXMLcore->Find(uuid_array) != m_pXMLcore->GetEntryEndIter())
-        ci_temp.CreateUUID();
-      else {
-        ci_temp.SetUUID(uuid_array);
+      memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
+      // Need to check uuid validity and uniqueness (in DB and already imported)
+      if (nscanned == sizeof(uuid_array_t)) {
+        UUIDSetPair pr_uuid = setUUID.insert(st_UUID(uuid_array));
+        if (pr_uuid.second) {
+          ci_temp.SetUUID(uuid_array);
+          bNewUUID = false;
+        }
       }
+    }
+
+    if (bNewUUID) {
+      // Need to create new UUID (missing or duplicate in DB or import file)
+      // and add to set
+      ci_temp.CreateUUID();
+      ci_temp.GetUUID(uuid_array);
+      setUUID.insert(st_UUID(uuid_array));
     }
 
     StringX sxnewgroup, sxnewtitle(cur_entry->title);

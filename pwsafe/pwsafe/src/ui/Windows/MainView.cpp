@@ -1122,8 +1122,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         }
         CPWDialog::GetDialogTracker()->Apply(Shower);
 
-        const uuid_array_t nulluuid = {0};
-        if (::memcmp(m_UUIDSelectedAtMinimize, nulluuid, sizeof(uuid_array_t)) != 0) {
+        const uuid_array_t null_uuid = {0};
+        if (::memcmp(m_UUIDSelectedAtMinimize, null_uuid, sizeof(uuid_array_t)) != 0) {
           ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
           if (iter != End())
             SelectEntry(((DisplayInfo *)(iter->second.GetDisplayInfo()))->list_index, false);

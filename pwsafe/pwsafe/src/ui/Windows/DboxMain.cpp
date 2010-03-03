@@ -2087,7 +2087,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
 
   TRACE(L"RestoreWindowsData:bUpdateWindows = %s\n", bUpdateWindows ? L"true" : L"false");
-  const uuid_array_t nulluuid = {0};
+  const uuid_array_t null_uuid = {0};
   bool brc(false);
   // First - no database is currently open
   if (!m_bOpen) {
@@ -2135,7 +2135,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       ShowWindow(SW_RESTORE);
     }
 
-    if (::memcmp(m_UUIDSelectedAtMinimize, nulluuid, sizeof(uuid_array_t)) != 0) {
+    if (::memcmp(m_UUIDSelectedAtMinimize, null_uuid, sizeof(uuid_array_t)) != 0) {
       ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
       if (iter != End())
         SelectEntry(((DisplayInfo *)(iter->second.GetDisplayInfo()))->list_index, false);
@@ -2207,7 +2207,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
     }
 
-    if (::memcmp(m_UUIDSelectedAtMinimize, nulluuid, sizeof(uuid_array_t)) != 0) {
+    if (::memcmp(m_UUIDSelectedAtMinimize, null_uuid, sizeof(uuid_array_t)) != 0) {
       ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
       if (iter != End())
         SelectEntry(((DisplayInfo *)(iter->second.GetDisplayInfo()))->list_index, false);
