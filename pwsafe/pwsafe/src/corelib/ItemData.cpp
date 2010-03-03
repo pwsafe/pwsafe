@@ -1153,9 +1153,9 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   return false;
 }
 
-void CItemData::SetUnknownField(const unsigned char type,
-                                const unsigned int length,
-                                const unsigned char * ufield)
+void CItemData::SetUnknownField(const unsigned char &type,
+                                const unsigned int &length,
+                                unsigned char * &ufield)
 {
   CItemField unkrfe(type);
   SetField(unkrfe, ufield, length);
