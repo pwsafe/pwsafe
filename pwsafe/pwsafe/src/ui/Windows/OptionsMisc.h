@@ -39,6 +39,7 @@ public:
   BOOL m_querysetdef;
   CString m_defusername;
   CString m_otherbrowserlocation;
+  CString m_othereditorlocation;
   //}}AFX_DATA
 
   BOOL m_saveconfirmdelete;
@@ -49,6 +50,7 @@ public:
   BOOL m_savequerysetdef;
   CString m_savedefusername;
   CString m_saveotherbrowserlocation;
+  CString m_saveothereditorlocation;
   DWORD m_savehotkey_value;
   DWORD_PTR m_savedoubleclickaction;
   CString m_saveBrowserCmdLineParms;
@@ -80,7 +82,7 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnEnableHotKey();
   afx_msg void OnUsedefuser();
-  afx_msg void OnBrowseForLocation();
+  afx_msg void OnBrowseForLocation(UINT nID);
   afx_msg void OnComboChanged();
   //}}AFX_MSG
 

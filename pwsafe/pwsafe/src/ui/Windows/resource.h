@@ -511,9 +511,12 @@
 #define IDC_BACKUPMAXINC                1211
 #define IDC_BACKUPMAX                   1212
 #define IDC_BROWSEFORLOCATION           1213
+#define IDC_BROWSEFORLOCATION_BROWSER   1214
+#define IDC_BROWSEFORLOCATION_EDITOR    1215
 #define IDC_REGDEL_BTN                  1216
 #define IDC_OTHERBROWSERLOCATION        1217
 #define IDC_APPCOPYRIGHT                1218
+#define IDC_OTHEREDITORLOCATION         1219
 #define IDC_STARTUP                     1220
 #define IDC_REGDEL_GRP                  1221
 #define IDC_DATABASECOMBO               1222

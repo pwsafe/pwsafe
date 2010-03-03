@@ -364,6 +364,8 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::AltBrowser).c_str();
   misc.m_csBrowserCmdLineParms = prefs->
     GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
+  misc.m_othereditorlocation = prefs->
+    GetPref(PWSprefs::AltNotesEditor).c_str();
   CString dats = prefs->
     GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (dats.IsEmpty())
@@ -537,6 +539,8 @@ void DboxMain::OnOptions()
                    LPCWSTR(misc.m_otherbrowserlocation));
     prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
                    LPCWSTR(misc.m_csBrowserCmdLineParms));
+    prefs->SetPref(PWSprefs::AltNotesEditor,
+                   LPCWSTR(misc.m_othereditorlocation));
     prefs->SetPref(PWSprefs::MinimizeOnAutotype,
                    misc.m_minauto == TRUE);
 

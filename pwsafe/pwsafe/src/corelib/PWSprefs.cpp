@@ -167,6 +167,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("LastUsedKeyboard"), _T(""), ptApplication},                  // application 
   {_T("VKeyboardFontName"), _T(""), ptApplication},                 // application
   {_T("VKSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},       // application
+  {_T("AltNotesEditor"), _T(""), ptApplication},                    // application
 };
 
 PWSprefs *PWSprefs::GetInstance()
