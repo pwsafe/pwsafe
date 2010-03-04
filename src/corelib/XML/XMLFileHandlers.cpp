@@ -768,7 +768,7 @@ void XMLFileHandlers::AddEntries()
   }
 
   Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore,
-                                            UpdateGUICommand::WN_REDO,
+                                            UpdateGUICommand::WN_EXECUTE_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
   m_pmulticmds->Add(pcmd2);
 }
