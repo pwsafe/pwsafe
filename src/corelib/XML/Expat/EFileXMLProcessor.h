@@ -46,7 +46,8 @@ class EFileXMLProcessor
 {
 public:
   EFileXMLProcessor(PWScore *pcore, UUIDList *possible_aliases, 
-                    UUIDList *possible_shortcuts, MultiCommands *p_multicmds);
+                    UUIDList *possible_shortcuts, MultiCommands *p_multicmds,
+                    CReport *prpt);
   ~EFileXMLProcessor();
 
   bool Process(const bool &bvalidation, const stringT &ImportedPrefix,
@@ -73,6 +74,7 @@ private:
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
   MultiCommands *m_pmulticmds;
+  CReport *m_prpt;
 
   stringT m_strXMLErrors;
   stringT m_strRenameList, m_strSkippedList, m_strPWHErrorList;

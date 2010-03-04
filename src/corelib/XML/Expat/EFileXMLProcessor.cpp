@@ -95,10 +95,11 @@ static void WFile_free(void *p)
 EFileXMLProcessor::EFileXMLProcessor(PWScore *pcore,
                                      UUIDList *possible_aliases,
                                      UUIDList *possible_shortcuts,
-                                     MultiCommands *p_multicmds)
+                                     MultiCommands *p_multicmds,
+                                     CReport *prpt)
   : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
     m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
-    m_pmulticmds(p_multicmds)
+    m_pmulticmds(p_multicmds), m_prpt(prpt)
 {
   pSecMM = new ESecMemMgr;
   pFileHandler = new EFileHandlers;
@@ -149,7 +150,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                              bvalidation ? NULL : m_possible_aliases, 
                              bvalidation ? NULL : m_possible_shortcuts,
-                             m_pmulticmds);
+                             m_pmulticmds, m_prpt);
 
   // Tell Expat about our memory suites
   XML_Memory_Handling_Suite ms = {WFile_malloc, WFile_realloc, WFile_free};

@@ -85,7 +85,7 @@ void XMLFileHandlers::SetVariables(PWScore *pcore, const bool &bValidation,
                                    const stringT &ImportedPrefix, const TCHAR &delimiter,
                                    const bool &bImportPSWDsOnly,
                                    UUIDList *possible_aliases, UUIDList *possible_shortcuts,
-                                   MultiCommands *pmulticmds)
+                                   MultiCommands *pmulticmds, CReport *prpt)
 {
   m_bValidation = bValidation;
   m_delimiter = delimiter;
@@ -95,6 +95,7 @@ void XMLFileHandlers::SetVariables(PWScore *pcore, const bool &bValidation,
   m_ImportedPrefix = ImportedPrefix;
   m_bImportPSWDsOnly = bImportPSWDsOnly;
   m_pmulticmds = pmulticmds;
+  m_prpt = prpt;
 }
 
 bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
@@ -766,6 +767,17 @@ void XMLFileHandlers::AddEntries()
     m_pmulticmds->Add(pcmd);
     delete cur_entry;
   }
+
+  Command *pcmdA = AddDependentEntriesCommand::Create(m_pXMLcore, *m_possible_aliases, m_prpt, 
+                                                      CItemData::ET_ALIAS,
+                                                      CItemData::PASSWORD);
+  pcmdA->SetNoGUINotify();
+  m_pmulticmds->Add(pcmdA);
+  Command *pcmdS = AddDependentEntriesCommand::Create(m_pXMLcore, *m_possible_shortcuts, m_prpt, 
+                                                      CItemData::ET_SHORTCUT,
+                                                      CItemData::PASSWORD);
+  pcmdS->SetNoGUINotify();
+  m_pmulticmds->Add(pcmdS);
 
   Command *pcmd2 = UpdateGUICommand::Create(m_pXMLcore,
                                             UpdateGUICommand::WN_EXECUTE_REDO,

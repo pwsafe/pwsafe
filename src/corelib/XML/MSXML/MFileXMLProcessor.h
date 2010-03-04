@@ -27,7 +27,8 @@ class MFileXMLProcessor
 {
 public:
   MFileXMLProcessor(PWScore *pcore, UUIDList *possible_aliases, 
-                    UUIDList *possible_shortcuts, MultiCommands *p_multicmds);
+                    UUIDList *possible_shortcuts, MultiCommands *p_multicmds,
+                    CReport *prpt);
   ~MFileXMLProcessor();
 
   bool Process(const bool &bvalidation, const stringT &ImportedPrefix,
@@ -54,6 +55,7 @@ private:
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
   MultiCommands *m_pmulticmds;
+  CReport *m_prpt;
 
   stringT m_strXMLErrors, m_strSkippedList, m_strPWHErrorList, m_strRenameList;
   int m_numEntriesValidated, m_numEntriesImported, m_numEntriesSkipped;

@@ -14,6 +14,7 @@
 #include "../UUIDGen.h"
 #include "../UnknownField.h"
 #include "../Command.h"
+#include "../Report.h"
 
 // Entry types
 enum {NORMAL = 0, ALIAS, SHORTCUT};
@@ -73,7 +74,7 @@ public:
                     const stringT &ImportedPrefix, const TCHAR &delimiter,
                     const bool &bImportPSWDsOnly,
                     UUIDList *possible_aliases, UUIDList *possible_shortcuts,
-                    MultiCommands *pmulticmds);
+                    MultiCommands *pmulticmds, CReport *prpt);
 
   bool getIfErrors() {return m_bErrors;}
   int getErrorCode() {return m_iErrorCode;}
@@ -139,6 +140,7 @@ private:
   UUIDList *m_possible_aliases;
   UUIDList *m_possible_shortcuts;
   MultiCommands *m_pmulticmds;
+  CReport *m_prpt;
 
   int m_whichtime, m_ipwh;
   int m_fieldlen;
