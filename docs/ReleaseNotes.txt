@@ -24,6 +24,9 @@ None
 
 Bugs fixed in 3.21.1
 ====================
+[2962847] Fix password length checking to be between 4 and 1024 during
+menu Generate Password option & Password Policy setting as per previous
+releases.
 [2960709] Entry selected prior to workstation locking is reselected on
 being restored after unlocking the workstation.
 [2951871] Shortcut related menu items now returned to the Edit menu and
