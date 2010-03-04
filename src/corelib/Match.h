@@ -47,7 +47,7 @@ namespace PWSMatch {
   enum MatchType {MT_INVALID = 0,
                   MT_STRING, MT_PASSWORD, MT_INTEGER, MT_DATE,
                   MT_BOOL, MT_PWHIST, MT_POLICY, MT_ENTRYTYPE,
-                  MT_DCA, MT_ENTRYSTATUS};
+                  MT_DCA, MT_ENTRYSTATUS, MT_ENTRYSIZE};
 
   // Generalised checking
   bool Match(const StringX &string1, StringX &csValue, int iFunction);
@@ -76,8 +76,8 @@ namespace PWSMatch {
                     int fnum1, int fnum2,
                     time_t fdate1, time_t fdate2,
                     const stringT &fstring, bool fcase,
-                    short fdca, int etype, int estatus, bool bBetween,
-                    stringT &cs1, stringT &cs2);
+                    short fdca, int etype, int estatus, int funit,
+                    bool bBetween, stringT &cs1, stringT &cs2);
 };
 #endif /* __MATCH_H */
 //-----------------------------------------------------------------------------

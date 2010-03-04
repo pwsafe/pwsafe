@@ -13,6 +13,7 @@
 #include "FilterStringDlg.h"
 #include "FilterPasswordDlg.h"
 #include "FilterIntegerDlg.h"
+#include "FilterEntrySizeDlg.h"
 #include "FilterDateDlg.h"
 #include "FilterBoolDlg.h"
 #include "FilterDCADlg.h"
@@ -162,6 +163,7 @@ private:
   CFilterDCADlg m_fDCA;
   CFilterEntryTypeDlg m_fentry;
   CFilterEntryStatusDlg m_fstatus;
+  CFilterEntrySizeDlg m_fsize;
 
   vFilterRows *m_pvfdata;
   int *m_pnumactive;

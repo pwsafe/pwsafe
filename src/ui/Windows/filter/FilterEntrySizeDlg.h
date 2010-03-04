@@ -10,22 +10,22 @@
 
 #include "FilterBaseDlg.h"
 
-// CFilterIntegerDlg dialog
+// CFilterEntrySizeDlg dialog
 
-class CFilterIntegerDlg : public CFilterBaseDlg
+class CFilterEntrySizeDlg : public CFilterBaseDlg
 {
-  DECLARE_DYNAMIC(CFilterIntegerDlg)
+  DECLARE_DYNAMIC(CFilterEntrySizeDlg)
 
 public:
-  CFilterIntegerDlg(CWnd* pParent = NULL);   // standard constructor
-  virtual ~CFilterIntegerDlg();
+  CFilterEntrySizeDlg(CWnd* pParent = NULL);   // standard constructor
+  virtual ~CFilterEntrySizeDlg();
 
 // Dialog Data
-  enum { IDD = IDD_FILTER_INTEGER };
-  int m_num1;
-  int m_num2;
+  enum { IDD = IDD_FILTER_SIZE };
+  int m_size1;
+  int m_size2;
   int m_min, m_max;
-  bool m_add_present;
+  int m_unit;
 
 protected:
   virtual BOOL OnInitDialog();
@@ -34,15 +34,16 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
-  afx_msg void OnCbnSelchangeIntegerRule();
+  afx_msg void OnCbnSelchangeSizeRule();
+  afx_msg void OnSizeUnit(UINT nID);
   afx_msg void OnBnClickedOk();
   CComboBox m_cbxRule;
-  CEdit m_edtInteger1, m_edtInteger2;
+  CEdit m_edtSize1, m_edtSize2;
   CStatic m_stcAnd, m_stcStatus;
 
 private:
   void AFXAPI DDV_CheckNumbers(CDataExchange* pDX,
-                               const int &num1, const int &num2);
+                               const int &size1, const int &size2);
   void AFXAPI DDV_CheckMinMax(CDataExchange* pDX,
                               const int &num, const int &min, const int &max);
 };

@@ -17,6 +17,10 @@ well as via the command line flag '-v'. When executed via the menu, it
 is very similar to opening a new database in that the current open database
 is closed and the selected database is validated during the open process.
 [] Allow use to select external editor for Notes field in Add/Edit dialog.
+[] Add entry size to the available filters to be able view entries.
+[] Warn users during database open and entry import if there are entries
+with large text fields (e.g. Notes) that cannot be fully displayed and may
+be truncated if edited.
 
 Changes to Existing Features in 3.21.1
 ======================================
@@ -38,6 +42,8 @@ the "Run Command", "Browse to URL", "Browse to URL + Autotype" and
 is Locked, Minimized or "AutoType with Minimize" and then Restored.
 [] Use of External Editor on Notes field from Edit dialog now activates Apply
 and OK buttons.
+[] Fix errors if importing an XML file with entries with duplicate unique IDs
+(UUID elements).
 
 New Features for 3.21
 =====================

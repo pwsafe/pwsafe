@@ -807,6 +807,11 @@ bool CPWFilterLC::SetField(const int iItem)
           //  - no need to add that check
           mt = PWSMatch::MT_ENTRYSTATUS;
           break;
+        case FT_ENTRYSIZE:
+          // Entrysize is an entry attribute and MUST be present
+          //  - no need to add that check
+          mt = PWSMatch::MT_ENTRYSIZE;
+          break;
         default:
           ASSERT(0);
       }
@@ -1316,6 +1321,30 @@ bool CPWFilterLC::GetCriterion()
         b_good = true;
       }
       break;
+    case PWSMatch::MT_ENTRYSIZE:
+      m_fsize.m_title = cs_selected;
+      if (!vcbxChanged[m_iItem] &&
+          st_fldata.rule != PWSMatch::MR_INVALID) {
+        m_fsize.m_rule = st_fldata.rule;
+        m_fsize.m_unit = st_fldata.funit;
+        m_fsize.m_size1 = st_fldata.fnum1 >> (m_fsize.m_unit * 10);
+        m_fsize.m_size2 = st_fldata.fnum2 >> (m_fsize.m_unit * 10);
+      } else {
+        m_fsize.m_rule = PWSMatch::MR_INVALID;
+      }
+      rc = m_fsize.DoModal();
+      if (rc == IDOK) {
+        st_fldata.Empty();
+        st_fldata.bFilterActive = true;
+        st_fldata.mtype = PWSMatch::MT_ENTRYSIZE;
+        st_fldata.ftype = ft;
+        st_fldata.rule = m_fsize.m_rule;
+        st_fldata.funit = m_fsize.m_unit;
+        st_fldata.fnum1 = m_fsize.m_size1 << (m_fsize.m_unit * 10);
+        st_fldata.fnum2 = m_fsize.m_size2 << (m_fsize.m_unit * 10);
+        b_good = true;
+      }
+      break;
     default:
       ASSERT(0);
   }
@@ -1468,6 +1497,11 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.cs_text.LoadString(IDS_ENTRYSTATUS);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_ENTRYSTATUS;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_ENTRYSIZE);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = FT_ENTRYSIZE;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_UNKNOWNFIELDSFILTER);

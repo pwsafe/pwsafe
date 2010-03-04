@@ -638,7 +638,8 @@ void CManageFiltersDlg::ClearFilter()
   m_activefilterpool = FPOOL_LAST;
   m_activefiltername = L"";
   st_FilterItemData *pflt_idata = (st_FilterItemData *)m_FilterLC.GetItemData(m_activefilter);
-  pflt_idata->flt_flags &= ~MFLT_INUSE;
+  if (pflt_idata != NULL)
+    pflt_idata->flt_flags &= ~MFLT_INUSE;
   m_activefilter = -1;
   m_bFilterActive = false;
 
@@ -1114,6 +1115,9 @@ UINT CManageFiltersDlg::GetFieldTypeName(const FieldType &ft)
       break;
     case FT_POLICY:
       nID = IDSC_EXPHDRPWPOLICY;
+      break;
+    case FT_ENTRYSIZE:
+      nID = IDS_ENTRYSIZE;
       break;
     case FT_ENTRYTYPE:
       nID = IDS_ENTRYTYPE;

@@ -136,6 +136,8 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_ENTRYTYPE, XTR_ENTRYRULE, 1, DFTYPE_MAIN, PWSMatch::MT_ENTRYTYPE, FT_ENTRYTYPE}},
   {_T("entrystatus"),
     {XTE_ENTRYSTATUS, XTR_STATUSRULE, 1, DFTYPE_MAIN, PWSMatch::MT_ENTRYSTATUS, FT_ENTRYSTATUS}},
+  {_T("entrysize"),
+    {XTE_ENTRYSIZE, XTR_SIZERULE, 1, DFTYPE_MAIN, PWSMatch::MT_ENTRYSIZE, FT_ENTRYSIZE}},
   {_T("unknownfields"),
     {XTE_UNKNOWNFIELDS, XTR_BOOLEANPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_INVALID, FT_UNKNOWNFIELDS}},
   {_T("test"),
@@ -154,7 +156,9 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_NUM1, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("num2"),
     {XTE_NUM2, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
-  {_T("dca"),
+  {_T("unit"),
+    {XTE_UNIT, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
+    {_T("dca"),
     {XTE_DCA1, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("date1"),
     {XTE_DATE1, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
@@ -168,8 +172,8 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
 
 const EFilterValidator::st_filter_rules EFilterValidator::m_filter_rulecodes[PWSMatch::MR_LAST] = {
   {_T("NA"), {PWSMatch::MR_INVALID, XTR_NA} },
-  {_T("EQ"), {PWSMatch::MR_EQUALS, XTR_DATERULE | XTR_INTEGERRULE | XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
-  {_T("NE"), {PWSMatch::MR_NOTEQUAL, XTR_DATERULE | XTR_INTEGERRULE | XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
+  {_T("EQ"), {PWSMatch::MR_EQUALS, XTR_DATERULE | XTR_INTEGERRULE | XTR_SIZERULE | XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
+  {_T("NE"), {PWSMatch::MR_NOTEQUAL, XTR_DATERULE | XTR_INTEGERRULE | XTR_SIZERULE | XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
   {_T("AC"), {PWSMatch::MR_ACTIVE, XTR_BOOLEANACTIVERULE} },
   {_T("IA"), {PWSMatch::MR_INACTIVE, XTR_BOOLEANACTIVERULE} },
   {_T("PR"), {PWSMatch::MR_PRESENT, XTR_BOOLEANPRESENTRULE | XTR_DATERULE | XTR_INTEGERRULE | XTR_STRINGPRESENTRULE} },
@@ -184,11 +188,11 @@ const EFilterValidator::st_filter_rules EFilterValidator::m_filter_rulecodes[PWS
   {_T("ND"), {PWSMatch::MR_NOTEND, XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
   {_T("CO"), {PWSMatch::MR_CONTAINS, XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
   {_T("NC"), {PWSMatch::MR_NOTCONTAIN, XTR_PASSWORDRULE | XTR_STRINGRULE | XTR_STRINGPRESENTRULE} },
-  {_T("BT"), {PWSMatch::MR_BETWEEN, XTR_DATERULE | XTR_INTEGERRULE} },
-  {_T("LT"), {PWSMatch::MR_LT, XTR_INTEGERRULE} },
-  {_T("LE"), {PWSMatch::MR_LE, XTR_INTEGERRULE} },
-  {_T("GT"), {PWSMatch::MR_GT, XTR_INTEGERRULE} },
-  {_T("GE"), {PWSMatch::MR_GE, XTR_INTEGERRULE} },
+  {_T("BT"), {PWSMatch::MR_BETWEEN, XTR_DATERULE | XTR_INTEGERRULE | XTR_SIZERULE} },
+  {_T("LT"), {PWSMatch::MR_LT, XTR_INTEGERRULE | XTR_SIZERULE} },
+  {_T("LE"), {PWSMatch::MR_LE, XTR_INTEGERRULE | XTR_SIZERULE} },
+  {_T("GT"), {PWSMatch::MR_GT, XTR_INTEGERRULE | XTR_SIZERULE} },
+  {_T("GE"), {PWSMatch::MR_GE, XTR_INTEGERRULE | XTR_SIZERULE} },
   {_T("BF"), {PWSMatch::MR_BEFORE, XTR_DATERULE} },
   {_T("AF"), {PWSMatch::MR_AFTER, XTR_DATERULE} },
   {_T("EX"), {PWSMatch::MR_EXPIRED, XTR_PASSWORDRULE} },
@@ -298,6 +302,7 @@ bool EFilterValidator::startElement(stringT & strStartElement)
     case XTE_WARN:
     case XTE_NUM1:
     case XTE_NUM2:
+    case XTE_UNIT:
       data_type = XTD_XS_INT;
       break;
     case XTE_DATE1:
@@ -400,6 +405,17 @@ bool EFilterValidator::endElement(stringT &strEndElement,
               m_ielement_occurs[XTE_NUM2] != 1) {
             m_iErrorCode = XTPEC_MISSING_ELEMENT;
             cs_missing_element = m_ielement_occurs[XTE_NUM1] != 1 ? _T("num1") : _T("num2");
+          }
+          break;
+        case XTR_SIZERULE:
+          if (m_ielement_occurs[XTE_NUM1] != 1 ||
+              m_ielement_occurs[XTE_NUM2] != 1 ||
+              m_ielement_occurs[XTE_UNIT] != 1) {
+            m_iErrorCode = XTPEC_MISSING_ELEMENT;
+            if (m_ielement_occurs[XTE_UNIT] != 1)
+              cs_missing_element = _T("unit");
+            else
+              cs_missing_element = m_ielement_occurs[XTE_NUM1] != 1 ? _T("num1") : _T("num2");
           }
           break;
         case XTR_PASSWORDRULE:
@@ -509,6 +525,7 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
     case XTE_POLICY_PRONOUNCEABLE:
     case XTE_POLICY_HEXADECIMAL:
     case XTE_DCA:
+    case XTE_ENTRYSIZE:
     case XTE_ENTRYTYPE:
     case XTE_ENTRYSTATUS:
     case XTE_UNKNOWNFIELDS:
@@ -532,6 +549,7 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
           m_ielement_occurs[XTE_WARN]   != 0 ||
           m_ielement_occurs[XTE_NUM1]   != 0 ||
           m_ielement_occurs[XTE_NUM2]   != 0 ||
+          m_ielement_occurs[XTE_UNIT]   != 0 ||
           m_ielement_occurs[XTE_DCA1]   != 0 ||
           m_ielement_occurs[XTE_DATE1]  != 0 ||
           m_ielement_occurs[XTE_DATE2]  != 0 ||
@@ -557,6 +575,7 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
           m_ielement_occurs[XTE_WARN]   != 0 ||
           m_ielement_occurs[XTE_NUM1]   != 0 ||
           m_ielement_occurs[XTE_NUM2]   != 0 ||
+          m_ielement_occurs[XTE_UNIT]   != 0 ||
           m_ielement_occurs[XTE_DATE1]  != 0 ||
           m_ielement_occurs[XTE_DATE2]  != 0 ||
           m_ielement_occurs[XTE_TYPE]   != 0 ||
@@ -574,6 +593,7 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
           m_ielement_occurs[XTE_WARN]   != 0 ||
           m_ielement_occurs[XTE_NUM1]   != 0 ||
           m_ielement_occurs[XTE_NUM2]   != 0 ||
+          m_ielement_occurs[XTE_UNIT]   != 0 ||
           m_ielement_occurs[XTE_DCA1]   != 0 ||
           m_ielement_occurs[XTE_DATE1]  != 0 ||
           m_ielement_occurs[XTE_DATE2]  != 0 ||
@@ -611,7 +631,8 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
       break;
     case XTE_NUM1:
       if (previous_element_code != XTE_TEST ||
-          (m_rule_code & XTR_INTEGERRULE) == 0 ||
+          ((m_rule_code & XTR_INTEGERRULE) == 0 &&
+           (m_rule_code & XTR_SIZERULE) == 0) ||
           m_ielement_occurs[XTE_NUM1] != 0 ||
           m_ielement_occurs[XTE_NUM2] != 0) {
         m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
@@ -619,9 +640,18 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
       break;
     case XTE_NUM2:
       if (previous_element_code != XTE_NUM1 ||
-          (m_rule_code & XTR_INTEGERRULE) == 0 ||
+          ((m_rule_code & XTR_INTEGERRULE) == 0 &&
+           (m_rule_code & XTR_SIZERULE) == 0) ||
           m_ielement_occurs[XTE_NUM1] != 1 ||
           m_ielement_occurs[XTE_NUM2] != 0) {
+        m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
+      }
+      break;
+    case XTE_UNIT:
+      if (previous_element_code != XTE_NUM2 ||
+          (m_rule_code & XTR_SIZERULE) == 0 ||
+          m_ielement_occurs[XTE_NUM1] != 1 ||
+          m_ielement_occurs[XTE_NUM2] != 1) {
         m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
       }
       break;

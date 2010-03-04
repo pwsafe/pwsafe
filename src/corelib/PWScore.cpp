@@ -573,7 +573,7 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
 #define MRE_FS _T("\xbb")
 
 int PWScore::ReadFile(const StringX &a_filename,
-                      const StringX &a_passkey)
+                      const StringX &a_passkey, const size_t iMAXCHARS)
 {
   int status;
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
@@ -648,6 +648,8 @@ int PWScore::ReadFile(const StringX &a_filename,
     m_MapFilters = in3->GetFilters();
 
   UUIDList possible_aliases, possible_shortcuts;
+  unsigned int uimaxsize(0);
+  int numlarge(0);
   do {
     ci_temp.Clear(); // Rather than creating a new one each time.
     status = in->ReadRecord(ci_temp);
@@ -667,6 +669,10 @@ int PWScore::ReadFile(const StringX &a_filename,
       }
       // deliberate fall-through
       case PWSfile::SUCCESS:
+        if (iMAXCHARS > 0 && ci_temp.GetSize() > iMAXCHARS) {
+          numlarge++;
+          uimaxsize = max(uimaxsize, ci_temp.GetSize());
+        }
         uuid_array_t uuid;
         ci_temp.GetUUID(uuid);
         /*
@@ -747,6 +753,23 @@ int PWScore::ReadFile(const StringX &a_filename,
     if (m_fileSig != NULL)
       delete m_fileSig;
     m_fileSig = new PWSFileSig(a_filename.c_str());
+  }
+
+  if (numlarge > 0 && 
+      (closeStatus == PWSfile::SUCCESS || closeStatus == LIMIT_REACHED) &&
+      m_pReporter != NULL) {
+    stringT cs_msg, cs_caption, cs_entry;
+    int units(0);
+    LoadAString(cs_caption, IDSC_LARGEENTRIES);
+    LoadAString(cs_entry, numlarge == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+    uimaxsize >>= 10;  // make bytes -> KB
+    if (uimaxsize > 999) {
+      uimaxsize >>= 10;  // make KB -> MB
+      units++;
+    }
+    Format(cs_msg, IDSC_WARNINGENTRYLENGTH, numlarge, cs_entry.c_str(), uimaxsize,
+           units == 0 ? _T("KB") : _T("MB"));
+    (*m_pReporter)(cs_caption, cs_msg);
   }
 
   return closeStatus;

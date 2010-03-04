@@ -328,6 +328,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
       SetupInitialValues();
       SetChanged(false);
     }
+    m_AEMD.entrysize = m_AEMD.pci->GetSize();
+    m_pp_datetimes->UpdateStats();
     return TRUE;
   }
   return CPWPropertySheet::OnCommand(wParam, lParam);
@@ -364,6 +366,8 @@ BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
 void CAddEdit_PropertySheet::SetupInitialValues()
 {
   // Basic Data
+  m_AEMD.entrysize = m_AEMD.pci->GetSize();
+  m_AEMD.pci->GetUUID(m_AEMD.entry_uuid);
   m_AEMD.group = m_AEMD.pci->GetGroup();
   m_AEMD.title = m_AEMD.pci->GetTitle();
   m_AEMD.username = m_AEMD.pci->GetUser();

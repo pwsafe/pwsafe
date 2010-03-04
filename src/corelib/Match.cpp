@@ -191,8 +191,8 @@ void PWSMatch::GetMatchType(MatchType mtype,
                             int fnum1, int fnum2,
                             time_t fdate1, time_t fdate2,
                             const stringT &fstring, bool fcase,
-                            short fdca, int etype, int estatus, bool bBetween,
-                            stringT &cs1, stringT &cs2)
+                            short fdca, int etype, int estatus, int funit,
+                            bool bBetween, stringT &cs1, stringT &cs2)
 {
   cs1 = cs2 = _T("");
   UINT id(0);
@@ -281,6 +281,13 @@ void PWSMatch::GetMatchType(MatchType mtype,
           id = IDSC_INVALID;
       }
       LoadAString(cs1, id);
+      break;
+    case MT_ENTRYSIZE:
+      {
+        Format(cs1, _T("%d"), fnum1 >> (funit * 10));
+        if (bBetween)
+          Format(cs2, _T("%d"), fnum2 >> (funit * 10));
+      }
       break;
     default:
       ASSERT(0);

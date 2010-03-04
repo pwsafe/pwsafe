@@ -6,61 +6,63 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-// FilterIntegerDlg.cpp : implementation file
+// FilterEntrySizeDlg.cpp : implementation file
 //
 
 #include "../stdafx.h"
 #include "../GeneralMsgBox.h"
-#include "FilterIntegerDlg.h"
+#include "FilterEntrySizeDlg.h"
 #include "corelib/corelib.h"
 
-// CFilterIntegerDlg dialog
+// CFilterEntrySizeDlg dialog
 
-IMPLEMENT_DYNAMIC(CFilterIntegerDlg, CFilterBaseDlg)
+IMPLEMENT_DYNAMIC(CFilterEntrySizeDlg, CFilterBaseDlg)
 
-CFilterIntegerDlg::CFilterIntegerDlg(CWnd* pParent /*=NULL*/)
-  : CFilterBaseDlg(CFilterIntegerDlg::IDD, pParent),
-  m_num1(0), m_num2(0), m_min(-1), m_max(-1)
+CFilterEntrySizeDlg::CFilterEntrySizeDlg(CWnd* pParent /*=NULL*/)
+  : CFilterBaseDlg(CFilterEntrySizeDlg::IDD, pParent),
+  m_size1(0), m_size2(0), m_min(-1), m_max(-1), m_unit(0)
 {
 }
 
-CFilterIntegerDlg::~CFilterIntegerDlg()
+CFilterEntrySizeDlg::~CFilterEntrySizeDlg()
 {
 }
 
-void CFilterIntegerDlg::DoDataExchange(CDataExchange* pDX)
+void CFilterEntrySizeDlg::DoDataExchange(CDataExchange* pDX)
 {
   CFilterBaseDlg::DoDataExchange(pDX);
 
-  //{{AFX_DATA_MAP(CFilterIntegerDlg)
-  DDX_Text(pDX, IDC_INTEGER1, m_num1);
-  DDX_Text(pDX, IDC_INTEGER2, m_num2);
+  //{{AFX_DATA_MAP(CFilterEntrySizeDlg)
+  DDX_Text(pDX, IDC_INTEGER1, m_size1);
+  DDX_Text(pDX, IDC_INTEGER2, m_size2);
   DDX_Control(pDX, IDC_INTEGERRULE, m_cbxRule);
-  DDX_Control(pDX, IDC_INTEGER1, m_edtInteger1);
-  DDX_Control(pDX, IDC_INTEGER2, m_edtInteger2);
+  DDX_Control(pDX, IDC_INTEGER1, m_edtSize1);
+  DDX_Control(pDX, IDC_INTEGER2, m_edtSize2);
   DDX_Control(pDX, IDC_STATIC_AND, m_stcAnd);
   DDX_Control(pDX, IDC_STATIC_STATUS, m_stcStatus);
+  DDX_Radio(pDX, IDC_SIZE_B, m_unit);
   //}}AFX_DATA_MAP
 
-  DDV_CheckMinMax(pDX, m_num1, m_min, m_max);
+  DDV_CheckMinMax(pDX, m_size1, m_min, m_max);
   if (m_rule == PWSMatch::MR_BETWEEN) {
-    DDV_CheckMinMax(pDX, m_num2, m_min, m_max);
+    DDV_CheckMinMax(pDX, m_size2, m_min, m_max);
   }
-  DDV_CheckNumbers(pDX, m_num1, m_num2);
+  DDV_CheckNumbers(pDX, m_size1, m_size2);
 }
 
-BEGIN_MESSAGE_MAP(CFilterIntegerDlg, CFilterBaseDlg)
-  ON_CBN_SELCHANGE(IDC_INTEGERRULE, OnCbnSelchangeIntegerRule)
+BEGIN_MESSAGE_MAP(CFilterEntrySizeDlg, CFilterBaseDlg)
+  ON_CBN_SELCHANGE(IDC_INTEGERRULE, OnCbnSelchangeSizeRule)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
+  ON_COMMAND_RANGE(IDC_SIZE_B, IDC_SIZE_MB, OnSizeUnit)
 END_MESSAGE_MAP()
 
-void AFXAPI CFilterIntegerDlg::DDV_CheckMinMax(CDataExchange* pDX,
-                                            const int &num,
+void AFXAPI CFilterEntrySizeDlg::DDV_CheckMinMax(CDataExchange* pDX,
+                                            const int &size,
                                             const int &min, const int &max)
 {
   CGeneralMsgBox gmb;
   if (pDX->m_bSaveAndValidate) {
-    if (min != -1 && num < min) {
+    if (min != -1 && size < min) {
       CString cs_text;
       cs_text.Format(IDS_NUMTOOSMALL, min);
       gmb.AfxMessageBox(cs_text);
@@ -68,7 +70,7 @@ void AFXAPI CFilterIntegerDlg::DDV_CheckMinMax(CDataExchange* pDX,
       return;
     }
 
-    if (max != -1 && num > max) {
+    if (max != -1 && size > max) {
       CString cs_text;
       cs_text.Format(IDS_NUMTOOLARGE, max);
       gmb.AfxMessageBox(cs_text);
@@ -78,36 +80,36 @@ void AFXAPI CFilterIntegerDlg::DDV_CheckMinMax(CDataExchange* pDX,
   }
 }
 
-void AFXAPI CFilterIntegerDlg::DDV_CheckNumbers(CDataExchange* pDX,
-                                             const int &num1, const int &num2)
+void AFXAPI CFilterEntrySizeDlg::DDV_CheckNumbers(CDataExchange* pDX,
+                                             const int &size1, const int &size2)
 {
   CGeneralMsgBox gmb;
   if (pDX->m_bSaveAndValidate) {
-    if (num1 < 0) {
+    if (size1 < 0) {
       gmb.AfxMessageBox(IDS_NUM1NEGATIVE);
       pDX->Fail();
       return;
     }
 
-    if (m_rule == PWSMatch::MR_BETWEEN && num1 >= num2) {
+    if (m_rule == PWSMatch::MR_BETWEEN && size1 >= size2) {
       gmb.AfxMessageBox(IDS_NUM1NOTLTNUM2);
       pDX->Fail();
       return;
     }
 
-    if (num1 == m_min && m_rule == PWSMatch::MR_LT) {
+    if (size1 == m_min && m_rule == PWSMatch::MR_LT) {
       gmb.AfxMessageBox(IDS_CANTBELESSTHANMIN);
       pDX->Fail();
       return;
     }
 
-    if (num1 == m_max && m_rule == PWSMatch::MR_GT) {
+    if (size1 == m_max && m_rule == PWSMatch::MR_GT) {
       gmb.AfxMessageBox(IDS_CANTBEGREATERTHANMAX);
       pDX->Fail();
       return;
     }
 
-    if (num1 == m_max && m_rule == PWSMatch::MR_BETWEEN) {
+    if (size1 == m_max && m_rule == PWSMatch::MR_BETWEEN) {
       gmb.AfxMessageBox(IDS_NUM1CANTBEMAX);
       pDX->Fail();
       return;
@@ -115,9 +117,9 @@ void AFXAPI CFilterIntegerDlg::DDV_CheckNumbers(CDataExchange* pDX,
   }
 }
 
-// CFilterIntegerDlg message handlers
+// CFilterEntrySizeDlg message handlers
 
-BOOL CFilterIntegerDlg::OnInitDialog()
+BOOL CFilterEntrySizeDlg::OnInitDialog()
 {
   CFilterBaseDlg::OnInitDialog();
 
@@ -126,17 +128,6 @@ BOOL CFilterIntegerDlg::OnInitDialog()
 
   // NOTE: This ComboBox is NOT sorted by design !
   if (m_cbxRule.GetCount() == 0) {
-    if (m_add_present) {
-      cs_text.LoadString(IDSC_ISPRESENT);
-      iItem = m_cbxRule.AddString(cs_text);
-      m_cbxRule.SetItemData(iItem, PWSMatch::MR_PRESENT);
-      m_rule2selection[PWSMatch::MR_PRESENT] = iItem;
-
-      cs_text.LoadString(IDSC_ISNOTPRESENT);
-      iItem = m_cbxRule.AddString(cs_text);
-      m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTPRESENT);
-      m_rule2selection[PWSMatch::MR_NOTPRESENT] = iItem;
-    }
     cs_text.LoadString(IDSC_EQUALS);
     iItem = m_cbxRule.AddString(cs_text);
     m_cbxRule.SetItemData(iItem, PWSMatch::MR_EQUALS);
@@ -182,62 +173,78 @@ BOOL CFilterIntegerDlg::OnInitDialog()
 
     switch (m_rule) {
       case PWSMatch::MR_BETWEEN:
-        m_edtInteger1.EnableWindow(TRUE);
+        m_edtSize1.EnableWindow(TRUE);
         m_stcAnd.EnableWindow(TRUE);
-        m_edtInteger2.EnableWindow(TRUE);
-        if (m_num2 < m_num1)
-          m_num2 = m_num1;
-        break;
-      case PWSMatch::MR_PRESENT:
-      case PWSMatch::MR_NOTPRESENT:
-        m_edtInteger1.EnableWindow(FALSE);
-        m_stcAnd.EnableWindow(FALSE);
-        m_edtInteger2.EnableWindow(FALSE);
+        m_edtSize2.EnableWindow(TRUE);
+        if (m_size2 < m_size1)
+          m_size2 = m_size1;
         break;
       default:
-        m_edtInteger1.EnableWindow(TRUE);
+        m_edtSize1.EnableWindow(TRUE);
         m_stcAnd.EnableWindow(FALSE);
-        m_edtInteger2.EnableWindow(FALSE);
+        m_edtSize2.EnableWindow(FALSE);
     }
   } else
     m_cbxRule.SetCurSel(-1);
+
+  if (m_unit < 0 || m_unit > 2) {
+    ASSERT(0);
+    m_unit = 0;
+  }
+
+  // Set max. size values (~1GB)
+  OnSizeUnit(IDC_SIZE_B + m_unit);
+  m_edtSize1.SetLimitText(9);
+  m_edtSize2.SetLimitText(9);
 
   UpdateData(FALSE);
 
   return TRUE;
 }
 
-void CFilterIntegerDlg::OnCbnSelchangeIntegerRule()
+void CFilterEntrySizeDlg::OnSizeUnit(UINT nID)
+{
+  // Set maximum sizes to 999,999,999 B ~= 999,999 KB ~= 999 MB
+  m_unit = nID - IDC_SIZE_B;
+  switch (m_unit) {
+    case 0:
+      m_max = 999999999;
+      break;
+    case 1:
+      m_max = 999999;
+      break;
+    case 2:
+      m_max = 999;
+      break;
+    default:
+      ASSERT(0);
+  }
+}
+
+void CFilterEntrySizeDlg::OnCbnSelchangeSizeRule()
 {
   int isel = m_cbxRule.GetCurSel();
   m_rule = (PWSMatch::MatchRule)m_cbxRule.GetItemData(isel);
 
   switch (m_rule) {
     case PWSMatch::MR_BETWEEN:
-      m_edtInteger1.EnableWindow(TRUE);
+      m_edtSize1.EnableWindow(TRUE);
       m_stcAnd.EnableWindow(TRUE);
-      m_edtInteger2.EnableWindow(TRUE);
+      m_edtSize2.EnableWindow(TRUE);
       m_stcStatus.EnableWindow(TRUE);
-      if (m_num2 < m_num1)
-        m_num2 = m_num1;
-      break;
-    case PWSMatch::MR_PRESENT:
-    case PWSMatch::MR_NOTPRESENT:
-      m_edtInteger1.EnableWindow(FALSE);
-      m_stcAnd.EnableWindow(FALSE);
-      m_edtInteger2.EnableWindow(FALSE);
-      m_stcStatus.EnableWindow(FALSE);
+      if (m_size2 < m_size1)
+        m_size2 = m_size1;
       break;
     default:
-      m_edtInteger1.EnableWindow(TRUE);
+      m_edtSize1.EnableWindow(TRUE);
       m_stcAnd.EnableWindow(FALSE);
-      m_edtInteger2.EnableWindow(FALSE);
+      m_edtSize2.EnableWindow(FALSE);
       m_stcStatus.EnableWindow(TRUE);
   }
   UpdateData(FALSE);
 }
 
-void CFilterIntegerDlg::OnBnClickedOk()
+void CFilterEntrySizeDlg::OnBnClickedOk()
 {
   if (UpdateData(TRUE) == FALSE)
     return;

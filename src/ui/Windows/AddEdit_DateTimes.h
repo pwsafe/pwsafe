@@ -31,6 +31,7 @@ public:
   ~CAddEdit_DateTimes();
 
   static bool m_bNumDaysFailed;
+  static bool m_bShowUUID;
 
   // Dialog Data
   //{{AFX_DATA(CAddEdit_DateTimes)
@@ -46,6 +47,8 @@ public:
   int m_numDays;                // interval (in days) to expiration when m_how == RELATIVE
   int m_maxDays;                // limited s.t. time_t can't overflow
 
+  void UpdateStats();
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CAddEdit_DateTimes)
@@ -56,8 +59,6 @@ protected:
   BOOL PreTranslateMessage(MSG* pMsg);
   //}}AFX_VIRTUAL
 
-  // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(CAddEdit_DateTimes)
   afx_msg void OnHelp();

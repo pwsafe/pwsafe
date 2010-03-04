@@ -225,6 +225,10 @@
 #define IDSC_VALIDATETEXT               3390
 #define IDSC_VALIDATEENTRY              3391
 #define IDSC_VALIDATEENTRY2             3392
+#define IDSC_WARNINGENTRYLENGTH         3393
+#define IDSC_ENTRY                      3394
+#define IDSC_ENTRIES                    3395
+#define IDSC_LARGEENTRIES               3396
 
 #define IDSC_DELETEBASET                3400
 #define IDSC_DELETEABASE                3401

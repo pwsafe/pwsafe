@@ -142,6 +142,14 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
                                               << "</status>" << szendl;
       }
       break;
+    case PWSMatch::MT_ENTRYSIZE:
+      oss << sztab5 << "<num1>" << st_fldata.fnum1 
+                                              << "</num1>" << endl;
+      oss << sztab5 << "<num2>" << st_fldata.fnum2 
+                                              << "</num2>" << endl;
+      oss << sztab5 << "<unit>" << st_fldata.funit 
+                                              << "</unit>" << endl;
+      break;
     case PWSMatch::MT_BOOL:
       break;
     default:
@@ -254,6 +262,9 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       // Other!
       case FT_UNKNOWNFIELDS:
         pszfieldtype = "unknownfields";
+        break;
+      case FT_ENTRYSIZE:
+        pszfieldtype = "entrysize";
         break;
       case FT_ENTRYTYPE:
         pszfieldtype = "entrytype";
@@ -616,7 +627,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
 stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
 {
   // Get the description of the current criterion to display on the static text
-  stringT cs_rule, cs1, cs2, cs_and, cs_criteria;
+  stringT cs_rule, cs1, cs2, cs_and, cs_criteria, cs_unit(_T(" B"));
   LoadAString(cs_rule, PWSMatch::GetRule(st_fldata.rule));
   TrimRight(cs_rule, _T("\t"));
   PWSMatch::GetMatchType(st_fldata.mtype,
@@ -624,6 +635,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
                          st_fldata.fdate1, st_fldata.fdate2,
                          st_fldata.fstring.c_str(), st_fldata.fcase,
                          st_fldata.fdca, st_fldata.etype, st_fldata.estatus,
+                         st_fldata.funit,
                          st_fldata.rule == PWSMatch::MR_BETWEEN,
                          cs1, cs2);
   switch (st_fldata.mtype) {
@@ -650,6 +662,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       }
       break;
     case PWSMatch::MT_INTEGER:
+    case PWSMatch::MT_ENTRYSIZE:
     case PWSMatch::MT_DATE:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
@@ -661,6 +674,23 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
                cs_rule.c_str(), cs1.c_str(), cs_and.c_str(), cs2.c_str());
       } else
         Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
+      if (st_fldata.mtype == PWSMatch::MT_ENTRYSIZE) {
+        switch (st_fldata.funit) {
+          case 0:
+            cs_unit = _T(" B");
+            break;
+          case 1:
+            cs_unit = _T(" KB");
+            break;
+          case 2:
+            cs_unit = _T(" MB");
+            break;
+          default:
+            ASSERT(0);
+            break;
+        }
+        cs_criteria = cs_criteria + cs_unit;
+      }
       break;
     case PWSMatch::MT_PWHIST:
       LoadAString(cs_criteria, IDSC_SEEPWHISTORYFILTERS);

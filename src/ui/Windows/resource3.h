@@ -320,8 +320,6 @@
 #define IDS_SELECTREPORT                5487
 #define IDS_NOREPORTSEXIST              5488
 #define IDS_VISIT_WEBSITE               5489
-#define IDS_ENTRY                       5490
-#define IDS_ENTRIES                     5491
 #define IDS_CONFLICT                    5494
 #define IDS_CONFLICTS                   5495
 #define IDS_ICON                        5496
@@ -609,3 +607,4 @@
 #define IDS_CHOOSEDATABASEV             5791
 #define IDS_TRUNCATETEXT                5792
 #define IDS_WARNINGTEXTLENGTH           5793
+#define IDS_ENTRYSIZE                   5794

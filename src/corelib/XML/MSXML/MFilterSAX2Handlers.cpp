@@ -567,6 +567,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_ENTRYSTATUS;
   }
 
+  else if (_tcscmp(szCurElement, _T("entrysize")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_ENTRYSIZE;
+    cur_filterentry->ftype = FT_ENTRYSIZE;
+  }
+
   else if (_tcscmp(szCurElement, _T("unknownfields")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->ftype = FT_UNKNOWNFIELDS;
@@ -753,6 +759,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
 
   else if (_tcscmp(szCurElement, _T("num2")) == 0) {
     cur_filterentry->fnum2 = _ttoi(m_strElemContent.c_str());
+  }
+
+  else if (_tcscmp(szCurElement, _T("unit")) == 0) {
+    cur_filterentry->funit = _ttoi(m_strElemContent.c_str());
   }
 
   else if (_tcscmp(szCurElement, _T("date1")) == 0) {

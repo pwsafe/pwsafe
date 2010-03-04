@@ -265,6 +265,9 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
         case FT_ENTRYSTATUS:
           mt = PWSMatch::MT_ENTRYSTATUS;
           break;
+        case FT_ENTRYSIZE:
+          mt = PWSMatch::MT_ENTRYSIZE;
+          break;
         default:
           ASSERT(0);
       }
@@ -344,6 +347,11 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
           break;
         case PWSMatch::MT_ENTRYSTATUS:
           thistest_rc = pci->Matches(st_fldata.estatus, ifunction);
+          tests++;
+          break;
+        case PWSMatch::MT_ENTRYSIZE:
+          thistest_rc = pci->Matches(st_fldata.fnum1, st_fldata.fnum2,
+                                     (int)ft, ifunction);
           tests++;
           break;
         default:
