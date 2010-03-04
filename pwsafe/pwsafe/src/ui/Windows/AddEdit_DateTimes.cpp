@@ -23,6 +23,8 @@
 
 bool CAddEdit_DateTimes::m_bNumDaysFailed = false;
 
+bool CAddEdit_DateTimes::m_bShowUUID = false;
+
 static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
                                     int &numDays, const int &maxDays);
 
@@ -35,6 +37,9 @@ CAddEdit_DateTimes::CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, CAddEdit_DateTimes::IDD, pAEMD),
   m_how(ABSOLUTE_EXP), m_numDays(1), m_ReuseOnPswdChange(FALSE), m_bInitdone(false)
 {
+#ifdef _DEBUG
+  m_bShowUUID = true;
+#endif
 }
 
 CAddEdit_DateTimes::~CAddEdit_DateTimes()
@@ -233,6 +238,13 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_PMTIME)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_RMTIME)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RMTIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_SIZE)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_ENTRYSIZE)->ShowWindow(SW_HIDE);
+  }
+
+  if (M_uicaller() == IDS_ADDENTRY || !m_bShowUUID) {
+    GetDlgItem(IDC_STATIC_UUID)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_UUID)->ShowWindow(SW_HIDE);
   }
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
@@ -253,6 +265,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 
   UpdateData(FALSE);
   m_bInitdone = true;
+  UpdateStats();
   return TRUE;
 }
 
@@ -262,6 +275,32 @@ BOOL CAddEdit_DateTimes::OnKillActive()
     return FALSE;
 
   return CAddEdit_PropertyPage::OnKillActive();
+}
+
+void CAddEdit_DateTimes::UpdateStats()
+{
+  if (!m_bInitdone)
+    return;
+
+  CString cs_text;
+  cs_text.Format(L"%u", M_entrysize());
+
+  for (int i = cs_text.GetLength() - 3; i > 0; i -= 3) {
+    cs_text.Insert(i, L",");
+  }
+
+  GetDlgItem(IDC_ENTRYSIZE)->SetWindowTextW(cs_text);
+  GetDlgItem(IDC_ENTRYSIZE)->Invalidate();
+
+  uuid_array_t null_uuid = {0};
+  CString cs_uuid(_T("N/A"));
+  if (memcmp(M_entry_uuid(), null_uuid, sizeof(uuid_array_t)) != 0) {
+    ostringstreamT os;
+    CUUIDGen huuid(M_entry_uuid(), true); // true for canonical format
+    os << std::uppercase << huuid;
+    cs_uuid = os.str().c_str();
+  }
+  GetDlgItem(IDC_UUID)->SetWindowText(cs_uuid);
 }
 
 LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )

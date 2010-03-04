@@ -184,7 +184,9 @@ BEGIN
   IDSC_VALIDATEUUID        "The following entries had an invalid UUID field.  This has been corrected."
   IDSC_VALIDATEPWH         "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
   IDSC_VALIDATEDUPLICATES  "The following entries were duplicates of an existing entry."
-  IDSC_VALIDATETEXT        "The following entries has one or more text fields so long that they cannot be displayed (longer than %d characters)."
+  IDSC_VALIDATETEXT        "The following entries have one or more text fields too long to display or edit (longer than %d characters)."
+  IDSC_WARNINGENTRYLENGTH  "Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n\r\nThe largest entry size found was ~%d %s.\r\n\r\nYou can use the Filter to selectively display these record(s)."
+  IDSC_LARGEENTRIES        "Database has some large entries!"
 END
 
 STRINGTABLE
@@ -219,6 +221,8 @@ BEGIN
   IDSC_FALIASBASE          "a base entry of an alias"
   IDSC_FSHORTCUTBASE       "a base entry of a shortcut"
   IDSC_UNKNOWN             "Unknown"
+  IDSC_ENTRY               "entry"
+  IDSC_ENTRIES             "entries"
 END
 
 STRINGTABLE

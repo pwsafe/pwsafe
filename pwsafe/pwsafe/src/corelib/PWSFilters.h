@@ -56,10 +56,11 @@ enum FieldType {
   FT_EMAIL         = CItemData::EMAIL,
   FT_END           = CItemData::END,
 
-  // new fields purely for filters
-  FT_ENTRYTYPE     = 0x100,
-  FT_UNKNOWNFIELDS = 0x101,
-  FT_ENTRYSTATUS   = 0x102,
+  // Internal fields purely for filters
+  FT_ENTRYSIZE     = CItemData::ENTRYSIZE,     // 0x100
+  FT_ENTRYTYPE     = CItemData::ENTRYTYPE,     // 0x101,
+  FT_ENTRYSTATUS   = CItemData::ENTRYSTATUS,   // 0x102,
+  FT_UNKNOWNFIELDS = CItemData::UNKNOWNFIELDS, // 0x103,
 
   // Password History Test fields
   HT_PRESENT       = 0x200,
@@ -103,7 +104,7 @@ struct st_FilterRow {
   // Following should really be a union or subclassed, since
   // only one is used, and which is defined uniquely by the ftype.
 
-  // if filter type is an integer
+  // if filter type is an integer or size
   int fnum1, fnum2;
   // if filter type is a date
   time_t fdate1, fdate2;
@@ -116,6 +117,8 @@ struct st_FilterRow {
   CItemData::EntryType etype;
   // if filter type is a entrystatus
   CItemData::EntryStatus estatus;
+  // if filter type is a entrysize
+  int funit;  // 0 = Bytes, 1 = KBytes, 2 = MBytes
   
   // Logical connection with previous filter (if any). Brackets unsupported
   LogicConnect ltype;
@@ -127,7 +130,7 @@ struct st_FilterRow {
     fdate1(0), fdate2(0),
     fstring(_T("")), fcase(false), fdca(-2),
     etype(CItemData::ET_INVALID),
-    estatus(CItemData::ES_INVALID),
+    estatus(CItemData::ES_INVALID), funit(-1),
     ltype(LC_INVALID)
   {}
 
@@ -137,7 +140,7 @@ struct st_FilterRow {
     fnum1(that.fnum1), fnum2(that.fnum2),
     fdate1(that.fdate1), fdate2(that.fdate2), 
     fstring(that.fstring), fcase(that.fcase), fdca(that.fdca),
-    etype(that.etype), estatus(that.estatus),
+    etype(that.etype), estatus(that.estatus), funit(that.funit),
     ltype(that.ltype)
   {}
 
@@ -158,6 +161,7 @@ struct st_FilterRow {
       fdca = that.fdca;
       etype = that.etype;
       estatus = that.estatus;
+      funit = that.funit;
       ltype = that.ltype;
     }
     return *this;
@@ -177,6 +181,7 @@ struct st_FilterRow {
     fdca = -2;
     etype = CItemData::ET_INVALID;
     estatus = CItemData::ES_INVALID;
+    funit = -1;
     ltype = LC_INVALID;
   }
   void SetFilterComplete() {bFilterComplete = true;}

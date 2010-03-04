@@ -382,6 +382,12 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_XTIME_INT;
   }
 
+  else if (XMLString::equals(qname, L"entrysize")) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_ENTRYSIZE;
+    cur_filterentry->ftype = FT_ENTRYSIZE;
+  }
+
   else if (XMLString::equals(qname, L"entrytype")) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_ENTRYTYPE;
@@ -580,6 +586,10 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
 
   else if (XMLString::equals(qname, L"num2")) {
     cur_filterentry->fnum2 = _ttoi(m_strElemContent.c_str());
+  }
+
+  else if (XMLString::equals(qname, L"unit")) {
+    cur_filterentry->funit = _ttoi(m_strElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, L"date1")) {

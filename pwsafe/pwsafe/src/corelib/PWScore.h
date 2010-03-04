@@ -111,9 +111,9 @@ public:
   StringX GetCurFile() const {return m_currfile;}
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
-  int ReadCurFile(const StringX &passkey)
-  {return ReadFile(m_currfile, passkey);}
-  int ReadFile(const StringX &filename, const StringX &passkey);
+  int ReadCurFile(const StringX &passkey, const size_t iMAXCHARS = 0)
+  {return ReadFile(m_currfile, passkey, iMAXCHARS);}
+  int ReadFile(const StringX &filename, const StringX &passkey, const size_t iMAXCHARS = 0);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,

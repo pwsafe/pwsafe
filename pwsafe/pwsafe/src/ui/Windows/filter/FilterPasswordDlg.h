@@ -44,5 +44,5 @@ public:
 private:
   void EnableDialogItems();
   void AFXAPI DDV_CheckMinMax(CDataExchange* pDX,
-                              const int num, const int min, const int max);
+                              const int &num, const int &min, const int &max);
 };

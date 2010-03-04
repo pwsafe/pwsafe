@@ -270,6 +270,9 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
       case XTE_NUM2:
         cur_filterentry->fnum2 = _ttoi(m_strElemContent.c_str());
         break;
+      case XTE_UNIT:
+        cur_filterentry->funit = _ttoi(m_strElemContent.c_str());
+        break;
       case XTE_DATE1:
         if (VerifyXMLDateString(m_strElemContent.c_str(), t) &&
             (t != (time_t)-1))

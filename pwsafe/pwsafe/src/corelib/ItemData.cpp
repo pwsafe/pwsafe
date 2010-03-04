@@ -215,6 +215,66 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
   return str;
 }
 
+size_t CItemData::GetSize()
+{
+  size_t length(0);
+  length += m_Name.GetLength();
+  length += m_Title.GetLength();
+  length += m_User.GetLength();
+  length += m_Password.GetLength();
+  length += m_Notes.GetLength();
+  length += m_UUID.GetLength();
+  length += m_Group.GetLength();
+  length += m_URL.GetLength();
+  length += m_AutoType.GetLength();
+  length += m_tttATime.GetLength();
+  length += m_tttCTime.GetLength();
+  length += m_tttXTime.GetLength();
+  length += m_tttPMTime.GetLength();
+  length += m_tttRMTime.GetLength();
+  length += m_PWHistory.GetLength();
+  length += m_PWPolicy.GetLength();
+  length += m_XTimeInterval.GetLength();
+  length += m_RunCommand.GetLength();
+  length += m_DCA.GetLength();
+  length += m_email.GetLength();
+
+  for (unsigned int i = 0; i != m_URFL.size(); i++) {
+    CItemField &item = m_URFL.at(i);
+    length += item.GetLength();
+  }
+
+  return length;
+}
+
+void CItemData::GetSize(int &isize) const
+{
+  isize  = m_Name.GetLength();
+  isize += m_Title.GetLength();
+  isize += m_User.GetLength();
+  isize += m_Password.GetLength();
+  isize += m_Notes.GetLength();
+  isize += m_UUID.GetLength();
+  isize += m_Group.GetLength();
+  isize += m_URL.GetLength();
+  isize += m_AutoType.GetLength();
+  isize += m_tttATime.GetLength();
+  isize += m_tttCTime.GetLength();
+  isize += m_tttXTime.GetLength();
+  isize += m_tttPMTime.GetLength();
+  isize += m_tttRMTime.GetLength();
+  isize += m_PWHistory.GetLength();
+  isize += m_PWPolicy.GetLength();
+  isize += m_XTimeInterval.GetLength();
+  isize += m_RunCommand.GetLength();
+  isize += m_DCA.GetLength();
+  isize += m_email.GetLength();
+
+  for (unsigned int i = 0; i != m_URFL.size(); i++) {
+    isize += m_URFL.at(i).GetLength();
+  }
+}
+
 StringX CItemData::GetName() const
 {
   return GetField(m_Name);
@@ -1546,6 +1606,9 @@ bool CItemData::Matches(int num1, int num2, int iObject,
   switch (iObject) {
     case XTIME_INT:
       GetXTimeInt(iValue);
+      break;
+    case ENTRYSIZE:
+      GetSize(iValue);
       break;
     default:
       ASSERT(0);

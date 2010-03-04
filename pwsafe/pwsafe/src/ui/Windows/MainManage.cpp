@@ -190,7 +190,7 @@ int DboxMain::RestoreSafe()
   // clear the data before restoring
   ClearData();
 
-  rc = m_core.ReadFile(backup, passkey);
+  rc = m_core.ReadFile(backup, passkey, MAXTEXTCHARS);
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENREADING, backup);
     cs_title.LoadString(IDS_FILEREADERROR);
@@ -246,6 +246,9 @@ void DboxMain::OnValidate()
   INT_PTR rc = gmb.DoModal();
   if (rc == IDS_VIEWREPORT)
     ViewReport(rpt);
+
+  // Show UUID in Edit Date/Time property sheet stats
+  CAddEdit_DateTimes::m_bShowUUID = true;
 }
 
 void DboxMain::OnOptions() 

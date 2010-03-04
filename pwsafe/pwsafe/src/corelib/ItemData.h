@@ -66,7 +66,9 @@ public:
     PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12, DCA = 0x13,
     EMAIL = 0x14,
     LAST,        // Start of unknown fields!
-    END = 0xff};
+    END = 0xff,
+    // Internal fields only - used in filters
+    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, UNKNOWNFIELDS = 0x103};
 
   // SubGroup Object - same as FieldType
 
@@ -276,6 +278,9 @@ public:
 
   bool IsURLEmail() const
   {return GetURL().find(_T("mailto:")) != StringX::npos;}
+
+  size_t GetSize();
+  void GetSize(int &isize) const;
 
 private:
   CItemField m_Name;

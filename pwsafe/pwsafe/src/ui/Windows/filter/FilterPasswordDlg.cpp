@@ -60,8 +60,8 @@ BEGIN_MESSAGE_MAP(CFilterPasswordDlg, CFilterBaseDlg)
 END_MESSAGE_MAP()
 
 void AFXAPI CFilterPasswordDlg::DDV_CheckMinMax(CDataExchange* pDX,
-                                            const int num,
-                                            const int min, const int max)
+                                            const int &num,
+                                            const int &min, const int &max)
 {
   if (m_rule != PWSMatch::MR_WILLEXPIRE)
     return;

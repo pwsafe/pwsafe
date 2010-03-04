@@ -135,7 +135,8 @@ BOOL DboxMain::OpenOnInit()
 
   switch (rc) {
     case PWScore::SUCCESS:
-      rc2 = m_core.ReadCurFile(passkey);
+      // Don't validate twice
+      rc2 = m_core.ReadCurFile(passkey, m_bValidate ? 0 : MAXTEXTCHARS);
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                          m_core.GetCurFile()).c_str();
@@ -450,6 +451,7 @@ int DboxMain::Close(const bool bTrySave)
   // Clear all associated data
   ClearData();
   memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  CAddEdit_DateTimes::m_bShowUUID = false;
 
   // Reset core
   m_core.ReInit();
@@ -703,7 +705,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   }
 
   // Now read the file
-  rc = m_core.ReadFile(sx_Filename, passkey);
+  rc = m_core.ReadFile(sx_Filename, passkey, MAXTEXTCHARS);
 
   switch (rc) {
     case PWScore::SUCCESS:
@@ -1492,14 +1494,14 @@ void DboxMain::OnImportText()
 
         rpt.WriteLine();
         CString cs_type;
-        cs_type.LoadString(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES);
+        cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
         cs_temp.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED, 
                        numImported, cs_type);
         rpt.WriteLine((LPCWSTR)cs_temp);
 
         if (numSkipped != 0) {
           CString cs_tmp;
-          cs_type.LoadString(numSkipped == 1 ? IDS_ENTRY : IDS_ENTRIES);
+          cs_type.LoadString(numSkipped == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
           cs_tmp.Format(IDS_RECORDSSKIPPED, numSkipped, cs_type);
           rpt.WriteLine((LPCWSTR)cs_tmp);
           cs_temp += cs_tmp;
@@ -1507,7 +1509,7 @@ void DboxMain::OnImportText()
 
         if (numPWHErrors != 0) {
           CString cs_tmp;
-          cs_type.LoadString(numPWHErrors == 1 ? IDS_ENTRY : IDS_ENTRIES);
+          cs_type.LoadString(numPWHErrors == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
           cs_tmp.Format(IDS_RECORDSPWHERRRORS, numPWHErrors, cs_type);
           rpt.WriteLine((LPCWSTR)cs_tmp);
           cs_temp += cs_tmp;
@@ -1515,7 +1517,7 @@ void DboxMain::OnImportText()
 
         if (numRenamed != 0) {
           CString cs_tmp;
-          cs_type.LoadString(numRenamed == 1 ? IDS_ENTRY : IDS_ENTRIES);
+          cs_type.LoadString(numRenamed == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
           cs_tmp.Format(IDS_RECORDSRENAMED, numRenamed, cs_type);
           rpt.WriteLine((LPCWSTR)cs_tmp);
           cs_temp += cs_tmp;
@@ -1760,8 +1762,8 @@ void DboxMain::OnImportXML()
 
           ChangeOkUpdate();
         } else {
-          const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
-          const CString cs_imported(MAKEINTRESOURCE(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES));
+          const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
+          const CString cs_imported(MAKEINTRESOURCE(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
           cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
           ChangeOkUpdate();
         }
@@ -2291,7 +2293,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
   CString resultStr;
   if (numAdded > 0) {
     std::sort(vs_added.begin(), vs_added.end(), MergeSyncGTUCompare);
-    CString cs_singular_plural_type(MAKEINTRESOURCE(numAdded == 1 ? IDS_ENTRY : IDS_ENTRIES));
+    CString cs_singular_plural_type(MAKEINTRESOURCE(numAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
     CString cs_singular_plural_verb(MAKEINTRESOURCE(numAdded == 1 ? IDS_WAS : IDS_WERE));
     resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
     rpt.WriteLine((LPCWSTR)resultStr);
@@ -2336,7 +2338,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
 
   /* tell the user we're done & provide short merge report */
   int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
-  const CString cs_entries(MAKEINTRESOURCE(totalAdded == 1 ? IDS_ENTRY : IDS_ENTRIES));
+  const CString cs_entries(MAKEINTRESOURCE(totalAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
   const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ?
                                              IDS_CONFLICT : IDS_CONFLICTS));
   const CString cs_aliases(MAKEINTRESOURCE(numAliasesAdded == 1 ?
@@ -2853,7 +2855,7 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   CString resultStr;
   if (numUpdated > 0) {
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
-    CString cs_singular_plural_type(MAKEINTRESOURCE(numUpdated == 1 ? IDS_ENTRY : IDS_ENTRIES));
+    CString cs_singular_plural_type(MAKEINTRESOURCE(numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
     CString cs_singular_plural_verb(MAKEINTRESOURCE(numUpdated == 1 ? IDS_WAS : IDS_WERE));
     resultStr.Format(IDS_SYNCHUPDATED, cs_singular_plural_type, cs_singular_plural_verb);
     rpt.WriteLine((LPCWSTR)resultStr);
@@ -2871,7 +2873,7 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   waitCursor.Restore(); /* restore normal cursor */
 
   /* tell the user we're done & provide short merge report */
-  const CString cs_entries(MAKEINTRESOURCE(numUpdated == 1 ? IDS_ENTRY : IDS_ENTRIES));
+  const CString cs_entries(MAKEINTRESOURCE(numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
   resultStr.Format(IDS_SYNCHCOMPLETED, numUpdated, cs_entries);
   rpt.WriteLine((LPCWSTR)resultStr);
   rpt.EndReport();
