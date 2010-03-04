@@ -1816,8 +1816,8 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
   } else {
-    TRACE(L"Timer lock kicked in (countdown=%u), not locking.\n",
-          m_IdleLockCountDown);
+    TRACE(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
+          m_IdleLockCountDown, nIDEvent);
   }
 }
 

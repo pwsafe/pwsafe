@@ -89,6 +89,8 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
+  BOOL Validate();
+
   void do_nohex(const bool bNonHex); // bNonHex == true enable non-hex
   void do_easyorpronounceable(const bool bSet); // bSet == true enable one of these options
   // number of checkboxes & lengths disabled when hex chosen

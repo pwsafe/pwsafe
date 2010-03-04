@@ -47,7 +47,7 @@ const UINT COptionsPasswordPolicy::LenTxts[COptionsPasswordPolicy::N_HEX_LENGTHS
   IDC_STATIC_DG1, IDC_STATIC_DG2, IDC_STATIC_SY1, IDC_STATIC_SY2};
 
 const UINT COptionsPasswordPolicy::nonHexLengths[COptionsPasswordPolicy::N_HEX_LENGTHS] = {
- IDC_MINLOWERLENGTH, IDC_MINUPPERLENGTH, IDC_MINDIGITLENGTH, IDC_MINSYMBOLLENGTH};
+  IDC_MINLOWERLENGTH, IDC_MINUPPERLENGTH, IDC_MINDIGITLENGTH, IDC_MINSYMBOLLENGTH};
 
 const UINT COptionsPasswordPolicy::nonHexLengthSpins[COptionsPasswordPolicy::N_HEX_LENGTHS] = {
   IDC_SPINLOWERCASE, IDC_SPINUPPERCASE, IDC_SPINDIGITS, IDC_SPINSYMBOLS};
@@ -95,8 +95,8 @@ BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_USESYMBOLS, OnUsesymbols)
   ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
-  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+  ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -148,7 +148,7 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
     m_options_psh->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
   }
 
-  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
+  CSpinButtonCtrl *pspin  = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
   CSpinButtonCtrl *pspinD = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
   CSpinButtonCtrl *pspinL = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINLOWERCASE);
   CSpinButtonCtrl *pspinS = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINSYMBOLS);
@@ -225,6 +225,7 @@ void COptionsPasswordPolicy::do_nohex(const bool bNonHex)
       GetDlgItem(id)->EnableWindow(TRUE);
       ((CButton*)GetDlgItem(id))->SetCheck(m_save[i]);
     }
+
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       UINT id = nonHexLengths[i];
       cs_value.Format(L"%d", m_savelen[i]);
@@ -244,14 +245,17 @@ void COptionsPasswordPolicy::do_nohex(const bool bNonHex)
       ((CButton*)GetDlgItem(id))->SetCheck(BST_UNCHECKED);
       GetDlgItem(id)->EnableWindow(FALSE);
     }
+
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       UINT id = nonHexLengths[i];
-      GetDlgItem(id)->EnableWindow(FALSE);
       GetDlgItem(id)->SetWindowText(L"0");
+      GetDlgItem(id)->EnableWindow(FALSE);
+
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
       GetDlgItem(LenTxts[i*2])->EnableWindow(FALSE);
       GetDlgItem(LenTxts[i*2 + 1])->EnableWindow(FALSE);
     }
+
     m_savelen[0] = m_pwlowerminlength; m_savelen[1] = m_pwupperminlength;
     m_savelen[2] = m_pwdigitminlength; m_savelen[3] = m_pwsymbolminlength;
   }
@@ -276,6 +280,7 @@ void COptionsPasswordPolicy::do_easyorpronounceable(const bool bSet)
       GetDlgItem(LenTxts[2*i])->ShowWindow(SW_HIDE);
       GetDlgItem(LenTxts[2*i + 1])->ShowWindow(SW_HIDE);
     }
+
     m_savelen[0] = m_pwlowerminlength; m_savelen[1] = m_pwupperminlength;
     m_savelen[2] = m_pwdigitminlength; m_savelen[3] = m_pwsymbolminlength;
   } else {
@@ -285,6 +290,7 @@ void COptionsPasswordPolicy::do_easyorpronounceable(const bool bSet)
       GetDlgItem(LenTxts[2*i])->ShowWindow(SW_SHOW);
       GetDlgItem(LenTxts[2*i + 1])->ShowWindow(SW_SHOW);
     }
+
     m_pwlowerminlength = m_savelen[0]; m_pwupperminlength = m_savelen[1];
     m_pwdigitminlength = m_savelen[2]; m_pwsymbolminlength = m_savelen[3];
   }
@@ -386,11 +392,8 @@ void COptionsPasswordPolicy::OnMakePronounceable()
   // all the good work in "do_easyorpronounceable" will be undone
 }
 
-BOOL COptionsPasswordPolicy::OnKillActive()
+BOOL COptionsPasswordPolicy::Validate()
 {
-  if (!m_bFromOptions)
-    return COptions_PropertyPage::OnKillActive();
-
   CGeneralMsgBox gmb;
   // Check that options, as set, are valid.
   if (m_pwusehexdigits &&
@@ -430,13 +433,27 @@ BOOL COptionsPasswordPolicy::OnKillActive()
     m_pwdigitminlength = m_pwlowerminlength = 
        m_pwsymbolminlength = m_pwupperminlength = 1;
   //End check
+  return TRUE;
+}
+
+BOOL COptionsPasswordPolicy::OnKillActive()
+{
+  if (Validate() == FALSE)
+    return FALSE;
 
   return COptions_PropertyPage::OnKillActive();
 }
 
 LRESULT COptionsPasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
 {
-  UpdateData(TRUE);
+  if (!m_bFromOptions)
+    return 0L;
+
+  if (UpdateData(TRUE) == FALSE)
+    return 1L;
+
+  if (wParam == PP_UPDATE_VARIABLES && Validate() == FALSE)
+    return 1L;
 
   // Have any of my fields been changed?
   switch (wParam) {
@@ -471,6 +488,11 @@ LRESULT COptionsPasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
 void COptionsPasswordPolicy::OnRandom()
 {
   UpdateData(TRUE);
+
+  // Use common validation
+  if (Validate() == FALSE)
+    return;
+
   PWPolicy pwp;
 
   pwp.Empty();
