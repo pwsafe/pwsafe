@@ -24,6 +24,8 @@ None
 
 Bugs fixed in 3.21.1
 ====================
+[2962916] Save toolbar button only enabled if database is R/W and has been
+changed since last saved.
 [2962847] Fix password length checking to be between 4 and 1024 during
 menu Generate Password option & Password Policy setting as per previous
 releases.

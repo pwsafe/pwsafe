@@ -869,9 +869,9 @@ void DboxMain::InitPasswordSafe()
   // refresh list will add and size password column if necessary...
   RefreshViews();
 
-  ChangeOkUpdate();
-
   setupBars(); // Just to keep things a little bit cleaner
+
+  ChangeOkUpdate();
 
 #if !defined(POCKET_PC)
   // {kjp} Can't drag and drop files onto an application in PocketPC

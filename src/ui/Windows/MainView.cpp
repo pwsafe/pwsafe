@@ -308,14 +308,15 @@ void DboxMain::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-void DboxMain::UpdateToolBarROStatus(bool state)
+void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
 {
   if (m_toolbarsSetup == TRUE) {
-    BOOL State = (state) ? FALSE : TRUE;
+    BOOL State = bIsRO ? FALSE : TRUE;
+    BOOL SaveState = (!bIsRO && (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) ? TRUE : FALSE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
     mainTBCtrl.EnableButton(ID_MENUITEM_DELETEENTRY, State);
-    mainTBCtrl.EnableButton(ID_MENUITEM_SAVE, State);
+    mainTBCtrl.EnableButton(ID_MENUITEM_SAVE, SaveState);
   }
 }
 
