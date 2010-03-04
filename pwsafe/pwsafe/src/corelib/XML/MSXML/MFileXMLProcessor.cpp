@@ -19,6 +19,7 @@
 
 #include "../../corelib.h"
 #include "../../PWScore.h"
+#include "../../Report.h"
 #include "../../UnknownField.h"
 
 #include <sys/types.h>
@@ -34,10 +35,11 @@ static char THIS_FILE[] = __FILE__;
 MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,
                                      UUIDList *possible_aliases,
                                      UUIDList *possible_shortcuts,
-                                     MultiCommands *p_multicmds)
+                                     MultiCommands *p_multicmds,
+                                     CReport *prpt)
   : m_pXMLcore(pcore), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
   m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
-  m_pmulticmds(p_multicmds)
+  m_pmulticmds(p_multicmds), m_prpt(prpt)
 {
 }
 
@@ -118,7 +120,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                     ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                     m_bValidation ? NULL : m_possible_aliases, 
                     m_bValidation ? NULL : m_possible_shortcuts,
-                    m_pmulticmds);
+                    m_pmulticmds, m_prpt);
 
   //  Create ErrorHandlerImpl object
   MFileSAX2ErrorHandler* pEH = new MFileSAX2ErrorHandler();

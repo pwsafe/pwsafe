@@ -717,11 +717,11 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   pcommand = pmulticmds;
 
 #if   USE_XML_LIBRARY == EXPAT
-  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
+  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds, &rpt);
 #elif USE_XML_LIBRARY == MSXML
-  MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
+  MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds, &rpt);
 #elif USE_XML_LIBRARY == XERCES
-  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds);
+  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds, &rpt);
 #endif
 
   bool status, validation;
@@ -779,17 +779,6 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
     }
   }
   uhfl.clear();
-
-  Command *pcmdA = AddDependentEntriesCommand::Create(this, possible_aliases, &rpt, 
-                                                      CItemData::ET_ALIAS,
-                                                      CItemData::PASSWORD);
-  pcmdA->SetNoGUINotify();
-  pmulticmds->Add(pcmdA);
-  Command *pcmdS = AddDependentEntriesCommand::Create(this, possible_shortcuts, &rpt, 
-                                                      CItemData::ET_SHORTCUT,
-                                                      CItemData::PASSWORD);
-  pcmdS->SetNoGUINotify();
-  pmulticmds->Add(pcmdS);
 
   if (numImported > 0)
     SetDBChanged(true);
@@ -1314,7 +1303,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();
   pmulticmds->Add(pcmdS);
-  Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
+  Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_EXECUTE_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
   pmulticmds->Add(pcmd2);
 
