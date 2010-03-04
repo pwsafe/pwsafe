@@ -260,7 +260,7 @@ public:
   void SetLocalStrings();
   void PerformAutoType(); // 'public' version called by Tree/List
 
-  void UpdateToolBarROStatus(bool state);
+  void UpdateToolBarROStatus(const bool bIsRO);
   void UpdateToolBarForSelectedItem(CItemData *pci);
   void SetToolBarPositions();
   void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
