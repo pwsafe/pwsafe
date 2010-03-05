@@ -606,7 +606,7 @@ void CComboBoxExtn::SetToolTipStrings(std::vector<CSecString> vtooltips)
 }
 
 //-----------------------------------------------------------------
-// CStaticExtn is meant for sensitive information that you really don't
+// CSecEditExtn is meant for sensitive information that you really don't
 // want to be in memory more than necessary, such as master passwords
 //
 // Note that to debug it, you need to #define DEBUG_CSECEDITEXTN

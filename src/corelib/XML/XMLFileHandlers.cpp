@@ -84,14 +84,14 @@ XMLFileHandlers::~XMLFileHandlers()
 void XMLFileHandlers::SetVariables(PWScore *pcore, const bool &bValidation,
                                    const stringT &ImportedPrefix, const TCHAR &delimiter,
                                    const bool &bImportPSWDsOnly,
-                                   UUIDList *possible_aliases, UUIDList *possible_shortcuts,
+                                   UUIDList *pPossible_Aliases, UUIDList *pPossible_Shortcuts,
                                    MultiCommands *pmulticmds, CReport *prpt)
 {
   m_bValidation = bValidation;
   m_delimiter = delimiter;
   m_pXMLcore = pcore;
-  m_possible_aliases = possible_aliases;
-  m_possible_shortcuts = possible_shortcuts;
+  m_pPossible_Aliases = pPossible_Aliases;
+  m_pPossible_Shortcuts = pPossible_Shortcuts;
   m_ImportedPrefix = ImportedPrefix;
   m_bImportPSWDsOnly = bImportPSWDsOnly;
   m_pmulticmds = pmulticmds;
@@ -750,11 +750,11 @@ void XMLFileHandlers::AddEntries()
     // If a potential alias, add to the vector for later verification and processing
     if (cur_entry->entrytype == ALIAS && !cur_entry->bforce_normal_entry) {
       ci_temp.GetUUID(uuid_array);
-      m_possible_aliases->push_back(uuid_array);
+      m_pPossible_Aliases->push_back(uuid_array);
     }
     if (cur_entry->entrytype == SHORTCUT && !cur_entry->bforce_normal_entry) {
       ci_temp.GetUUID(uuid_array);
-      m_possible_shortcuts->push_back(uuid_array);
+      m_pPossible_Shortcuts->push_back(uuid_array);
     }
 
     if (!bIntoEmpty) {
@@ -768,12 +768,12 @@ void XMLFileHandlers::AddEntries()
     delete cur_entry;
   }
 
-  Command *pcmdA = AddDependentEntriesCommand::Create(m_pXMLcore, *m_possible_aliases, m_prpt, 
+  Command *pcmdA = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Aliases, m_prpt, 
                                                       CItemData::ET_ALIAS,
                                                       CItemData::PASSWORD);
   pcmdA->SetNoGUINotify();
   m_pmulticmds->Add(pcmdA);
-  Command *pcmdS = AddDependentEntriesCommand::Create(m_pXMLcore, *m_possible_shortcuts, m_prpt, 
+  Command *pcmdS = AddDependentEntriesCommand::Create(m_pXMLcore, *m_pPossible_Shortcuts, m_prpt, 
                                                       CItemData::ET_SHORTCUT,
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();

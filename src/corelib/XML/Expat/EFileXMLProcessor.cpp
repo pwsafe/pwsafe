@@ -93,12 +93,12 @@ static void WFile_free(void *p)
 }
 
 EFileXMLProcessor::EFileXMLProcessor(PWScore *pcore,
-                                     UUIDList *possible_aliases,
-                                     UUIDList *possible_shortcuts,
+                                     UUIDList *pPossible_Aliases,
+                                     UUIDList *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
   : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
-    m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
+    m_pPossible_Aliases(pPossible_Aliases), m_pPossible_Shortcuts(pPossible_Shortcuts),
     m_pmulticmds(p_multicmds), m_prpt(prpt)
 {
   pSecMM = new ESecMemMgr;
@@ -148,8 +148,8 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
 
   pFileHandler->SetVariables(bvalidation ? NULL : m_pXMLcore, bvalidation, 
                              ImportedPrefix, m_delimiter, bImportPSWDsOnly,
-                             bvalidation ? NULL : m_possible_aliases, 
-                             bvalidation ? NULL : m_possible_shortcuts,
+                             bvalidation ? NULL : m_pPossible_Aliases, 
+                             bvalidation ? NULL : m_pPossible_Shortcuts,
                              m_pmulticmds, m_prpt);
 
   // Tell Expat about our memory suites

@@ -1444,7 +1444,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 {
   // Add Drop entries
   CItemData ci_temp;
-  UUIDList possible_aliases, possible_shortcuts;
+  UUIDList Possible_Aliases, Possible_Shortcuts;
   StringX sxgroup, sxtitle, sxuser;
   POSITION pos;
   wchar_t *dot;
@@ -1568,10 +1568,10 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
       // "no unique exists" or "multiple exist".
       // Let the code that processes the possible aliases after all have been added sort this out.
       if (pl.InputType == CItemData::ET_ALIAS) {
-        possible_aliases.push_back(entry_uuid);
+        Possible_Aliases.push_back(entry_uuid);
       } else
       if (pl.InputType == CItemData::ET_SHORTCUT) {
-        possible_shortcuts.push_back(entry_uuid);
+        Possible_Shortcuts.push_back(entry_uuid);
         bAddToViews = false;
       }
     }
@@ -1588,25 +1588,24 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
-  Command *pcmdA = AddDependentEntriesCommand::Create(&m_core, possible_aliases,
-                                                      NULL, CItemData::ET_ALIAS,
+  Command *pcmdA = AddDependentEntriesCommand::Create(&m_core,
+                                                      Possible_Aliases, NULL,
+                                                      CItemData::ET_ALIAS,
                                                       CItemData::PASSWORD);
   pmulticmds->Add(pcmdA);
   Command *pcmdS = AddDependentEntriesCommand::Create(&m_core,
-                                                      possible_shortcuts, NULL, 
+                                                      Possible_Shortcuts, NULL, 
                                                       CItemData::ET_SHORTCUT,
                                                       CItemData::PASSWORD);
   pmulticmds->Add(pcmdS);
   Execute(pmulticmds);
 
-  possible_aliases.clear();
-
   // Some shortcuts may have been deleted from the database as base does not exist
   // Tidy up Tree/List
   UUIDListIter paiter;
   ItemListIter iter;
-  for (paiter = possible_shortcuts.begin();
-       paiter != possible_shortcuts.end(); paiter++) {
+  for (paiter = Possible_Shortcuts.begin();
+       paiter != Possible_Shortcuts.end(); paiter++) {
     paiter->GetUUID(entry_uuid);
     iter = m_core.Find(entry_uuid);
     if (iter != End()) {
@@ -1614,7 +1613,6 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
       InsertItemIntoGUITreeList(m_core.GetEntry(iter));
     }
   }
-  possible_shortcuts.clear();
 
   // Clear set
   setGTU.clear();

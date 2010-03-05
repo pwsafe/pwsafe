@@ -33,12 +33,12 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,
-                                     UUIDList *possible_aliases,
-                                     UUIDList *possible_shortcuts,
+                                     UUIDList *pPossible_Aliases,
+                                     UUIDList *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
   : m_pXMLcore(pcore), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
-  m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts),
+  m_pPossible_Aliases(pPossible_Aliases), m_pPossible_Shortcuts(pPossible_Shortcuts),
   m_pmulticmds(p_multicmds), m_prpt(prpt)
 {
 }
@@ -118,8 +118,8 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   MFileSAX2ContentHandler* pCH = new MFileSAX2ContentHandler();
   pCH->SetVariables(m_bValidation ? NULL : m_pXMLcore, m_bValidation, 
                     ImportedPrefix, m_delimiter, bImportPSWDsOnly,
-                    m_bValidation ? NULL : m_possible_aliases, 
-                    m_bValidation ? NULL : m_possible_shortcuts,
+                    m_bValidation ? NULL : m_pPossible_Aliases, 
+                    m_bValidation ? NULL : m_pPossible_Shortcuts,
                     m_pmulticmds, m_prpt);
 
   //  Create ErrorHandlerImpl object

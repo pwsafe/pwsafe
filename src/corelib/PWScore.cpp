@@ -647,7 +647,7 @@ int PWScore::ReadFile(const StringX &a_filename,
   if (in3 != NULL  && !in3->GetFilters().empty())
     m_MapFilters = in3->GetFilters();
 
-  UUIDList possible_aliases, possible_shortcuts;
+  UUIDList Possible_Aliases, Possible_Shortcuts;
   unsigned int uimaxsize(0);
   int numlarge(0);
   do {
@@ -708,10 +708,10 @@ int PWScore::ReadFile(const StringX &a_filename,
              ci_temp.GetUUID(temp_uuid);
              if (csMyPassword.substr(1, 1) == _T("[")) {
                m_alias2base_map[temp_uuid] = base_uuid;
-               possible_aliases.push_back(temp_uuid);
+               Possible_Aliases.push_back(temp_uuid);
              } else {
                m_shortcut2base_map[temp_uuid] = base_uuid;
-               possible_shortcuts.push_back(temp_uuid);
+               Possible_Shortcuts.push_back(temp_uuid);
              }
            }
          } // uuid matching
@@ -741,10 +741,10 @@ int PWScore::ReadFile(const StringX &a_filename,
   delete in;
 
   // No Undo/Redo when reading file.  Therefore NOT via Commands
-  DoAddDependentEntries(possible_aliases, NULL, CItemData::ET_ALIAS, CItemData::UUID);
-  DoAddDependentEntries(possible_shortcuts, NULL, CItemData::ET_SHORTCUT, CItemData::UUID);
-  possible_aliases.clear();
-  possible_shortcuts.clear();
+  DoAddDependentEntries(Possible_Aliases, NULL, CItemData::ET_ALIAS, CItemData::UUID);
+  DoAddDependentEntries(Possible_Shortcuts, NULL, CItemData::ET_SHORTCUT, CItemData::UUID);
+  Possible_Aliases.clear();
+  Possible_Shortcuts.clear();
   SetDBChanged(false);
 
   // Setup file signature for checking file integrity upon backup.
@@ -1220,7 +1220,7 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
   std::vector<st_GroupTitleUser> vGTU_UUID, vGTU_PWH, vGTU_TEXT;
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE;
 
-  UUIDList possible_aliases, possible_shortcuts;
+  UUIDList Possible_Aliases, Possible_Shortcuts;
   ItemListIter iter;
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
@@ -1286,10 +1286,10 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
         ci.GetUUID(temp_uuid);
         if (csMyPassword.substr(0, 2) == _T("[[")) {
           m_alias2base_map[temp_uuid] = base_uuid;
-          possible_aliases.push_back(temp_uuid);
+          Possible_Aliases.push_back(temp_uuid);
         } else {
           m_shortcut2base_map[temp_uuid] = base_uuid;
-          possible_shortcuts.push_back(temp_uuid);
+          Possible_Shortcuts.push_back(temp_uuid);
         }
       }
     }
@@ -1321,12 +1321,12 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
   } // iteration over m_pwlist
 
   Command *pcmdA = AddDependentEntriesCommand::Create(this,
-                                                      possible_aliases, &rpt, 
+                                                      Possible_Aliases, &rpt, 
                                                       CItemData::ET_ALIAS,
                                                       CItemData::UUID);
   pmulticmds->Add(pcmdA);
   Command *pcmdS = AddDependentEntriesCommand::Create(this,
-                                                      possible_shortcuts, &rpt, 
+                                                      Possible_Shortcuts, &rpt, 
                                                       CItemData::ET_SHORTCUT,
                                                       CItemData::UUID);
   pmulticmds->Add(pcmdS);
@@ -1334,8 +1334,8 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
   pmulticmds->GetRC(pcmdA, num_alias_warnings);
   pmulticmds->GetRC(pcmdS, num_shortcuts_warnings);
 
-  possible_aliases.clear();
-  possible_shortcuts.clear();
+  Possible_Aliases.clear();
+  Possible_Shortcuts.clear();
 
   if (!vGTU_NONUNIQUE.empty()) {
     std::sort(vGTU_NONUNIQUE.begin(), vGTU_NONUNIQUE.end(), GTUCompareV2);
