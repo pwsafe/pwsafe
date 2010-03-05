@@ -712,16 +712,16 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
                            CReport &rpt, Command *&pcommand)
 {
-  UUIDList possible_aliases, possible_shortcuts;
+  UUIDList Possible_Aliases, Possible_Shortcuts;
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   pcommand = pmulticmds;
 
 #if   USE_XML_LIBRARY == EXPAT
-  EFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds, &rpt);
+  EFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
 #elif USE_XML_LIBRARY == MSXML
-  MFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds, &rpt);
+  MFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
 #elif USE_XML_LIBRARY == XERCES
-  XFileXMLProcessor iXML(this, &possible_aliases, &possible_shortcuts, pmulticmds, &rpt);
+  XFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
 #endif
 
   bool status, validation;
@@ -940,7 +940,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
               GetPref(PWSprefs::MaintainDateTimeStamps);
   bool bIntoEmpty = m_pwlist.size() == 0;
 
-  UUIDList possible_aliases, possible_shortcuts;
+  UUIDList Possible_Aliases, Possible_Shortcuts;
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   pcommand = pmulticmds;
@@ -1266,11 +1266,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       ci_temp.GetUUID(temp_uuid);
       if (csPassword.substr(0, 2) == _T("[[") &&
           csPassword.substr(csPassword.length() - 2) == _T("]]")) {
-        possible_aliases.push_back(temp_uuid);
+        Possible_Aliases.push_back(temp_uuid);
       }
       if (csPassword.substr(0, 2) == _T("[~") &&
           csPassword.substr(csPassword.length() - 2) == _T("~]")) {
-        possible_shortcuts.push_back(temp_uuid);
+        Possible_Shortcuts.push_back(temp_uuid);
       }
     }
 
@@ -1292,13 +1292,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   ifs.close();
 
   Command *pcmdA = AddDependentEntriesCommand::Create(this,
-                                                      possible_aliases, &rpt, 
+                                                      Possible_Aliases, &rpt, 
                                                       CItemData::ET_ALIAS,
                                                       CItemData::PASSWORD);
   pcmdA->SetNoGUINotify();
   pmulticmds->Add(pcmdA);
   Command *pcmdS = AddDependentEntriesCommand::Create(this,
-                                                      possible_shortcuts, &rpt, 
+                                                      Possible_Shortcuts, &rpt, 
                                                       CItemData::ET_SHORTCUT,
                                                       CItemData::PASSWORD);
   pcmdS->SetNoGUINotify();

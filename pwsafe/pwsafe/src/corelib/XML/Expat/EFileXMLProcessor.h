@@ -45,8 +45,8 @@ class PWScore;
 class EFileXMLProcessor
 {
 public:
-  EFileXMLProcessor(PWScore *pcore, UUIDList *possible_aliases, 
-                    UUIDList *possible_shortcuts, MultiCommands *p_multicmds,
+  EFileXMLProcessor(PWScore *pcore, UUIDList *pPossible_Aliases, 
+                    UUIDList *pPossible_Shortcuts, MultiCommands *p_multicmds,
                     CReport *prpt);
   ~EFileXMLProcessor();
 
@@ -71,8 +71,8 @@ public:
 
 private:
   PWScore *m_pXMLcore;
-  UUIDList *m_possible_aliases;
-  UUIDList *m_possible_shortcuts;
+  UUIDList *m_pPossible_Aliases;
+  UUIDList *m_pPossible_Shortcuts;
   MultiCommands *m_pmulticmds;
   CReport *m_prpt;
 
