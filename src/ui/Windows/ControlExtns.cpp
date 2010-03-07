@@ -177,6 +177,35 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CEditExtn message handlers
 
+DWORD CEditExtn::GetSel()
+{
+  DWORD dwSelection = CEdit::GetSel();
+  m_nStartChar = LOWORD(dwSelection);
+  m_nEndChar = HIWORD(dwSelection);
+  return dwSelection;
+}
+
+void CEditExtn::GetSel(int &nStartChar, int &nEndChar)
+{
+  CEdit::GetSel(nStartChar, nEndChar);
+  m_nStartChar = nStartChar;
+  m_nEndChar = nEndChar;
+}
+
+void CEditExtn::SetSel(DWORD dwSelection, BOOL bNoScroll)
+{
+  m_nStartChar = LOWORD(dwSelection);
+  m_nEndChar = HIWORD(dwSelection);
+  CEdit::SetSel(dwSelection, bNoScroll);
+}
+
+void CEditExtn::SetSel(int nStartChar, int nEndChar, BOOL bNoScroll)
+{
+  m_nStartChar = nStartChar;
+  m_nEndChar = nEndChar;
+  CEdit::SetSel(nStartChar, nEndChar, bNoScroll);
+}
+
 void CEditExtn::OnSetFocus(CWnd* pOldWnd)
 {
   m_bIsFocused = TRUE;
@@ -669,9 +698,9 @@ void CSecEditExtn::SetSecureText(const CSecString &str)
 {
   m_pImpl->m_field.Set(str, m_pImpl->m_bf);
   if (::IsWindow(m_hWnd)) {
-    if (!m_secure)
+    if (!m_secure) {
       SetWindowText(str);
-    else {
+    } else {
       CString blanks;
       for (int i = 0; i < str.GetLength(); i++)
         blanks += FILLER;
@@ -723,6 +752,7 @@ void CSecEditExtn::OnSecureUpdate()
   old_str = GetSecureText();
   GetWindowText(new_str);
   new_len = new_str.GetLength(); old_len = old_str.GetLength();
+
   // Find start/end of new text:
   int newEnd, newStart;
   for (newStart = 0; new_str.GetAt(newStart) == FILLER; newStart++)
@@ -730,6 +760,7 @@ void CSecEditExtn::OnSecureUpdate()
   for (newEnd = new_len - 1; newEnd >= 0 && new_str.GetAt(newEnd) == FILLER;
        newEnd--)
     ;
+
   // Simple case: new text fully replaces old
   if (newEnd - newStart == new_len - 1) {
     str = new_str;
@@ -739,8 +770,9 @@ void CSecEditExtn::OnSecureUpdate()
       if (new_len == 0)
         return;
       else // note that new_len == old_len
-        for (int i = 0; i < new_len; i++)
+        for (int i = 0; i < new_len; i++) {
           str += new_str[i] == FILLER ? old_str[i] : new_str[i];
+        }
     } else if (delta >= 0) { // text added, but where?
       // Added text most likely by typing at end, but can also be
       // via typing or pasting in another position.

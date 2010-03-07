@@ -94,6 +94,11 @@ public:
   void ChangeColour() {m_bIsFocused = TRUE;}
   void UpdateState(const int message_number, const BOOL new_state);
 
+  DWORD GetSel();
+  void GetSel(int &nStartChar, int &nEndChar);
+  void SetSel(DWORD dwSelection, BOOL bNoScroll = FALSE);
+  void SetSel(int nStartChar, int nEndChar, BOOL bNoScroll = FALSE);
+
 protected:
   //{{AFX_MSG(CEditExtn)
   afx_msg void OnSetFocus(CWnd* pOldWnd);
@@ -102,6 +107,7 @@ protected:
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   //}}AFX_MSG
+
   DECLARE_MESSAGE_MAP()
 
   // Attributes

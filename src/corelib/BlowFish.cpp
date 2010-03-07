@@ -368,8 +368,7 @@ void BlowFish::InitializeBlowfish(unsigned char key[],
   }
 
   for (i = 0; i < 4; ++i) {
-    for (j = 0; j < 256; j += 2)
-    {
+    for (j = 0; j < 256; j += 2) {
       Blowfish_encipher(&datal, &datar);
 
       bf_S[i][j] = datal;
@@ -391,8 +390,9 @@ BlowFish::BlowFish(unsigned char *key,
   */
 
   int x, y;
-  for (x=0; x<18; x++)
+  for (x=0; x<18; x++) {
     bf_P[x] = tempbf_P[x];
+  }
 
   for (x=0; x<4; x++) {
     for (y=0; y<256; y++) {
@@ -405,7 +405,7 @@ BlowFish::BlowFish(unsigned char *key,
 
 BlowFish::~BlowFish()
 {
-  //  trashMemory((unsigned char*)tempbf_P, 18*4);
+  // trashMemory((unsigned char*)tempbf_P, 18*4);
   // trashMemory((unsigned char*)tempbf_S, 256*4);
   trashMemory((unsigned char*)bf_P, 18*4);
   trashMemory((unsigned char*)bf_S, 256*4);

@@ -8,8 +8,8 @@
 // ItemField.h
 //-----------------------------------------------------------------------------
 
-#if !defined ItemField_h
-#define ItemField_h
+#ifndef __ITEMFIELD_H
+#define __ITEMFIELD_H
 
 #include "StringX.h"
 
@@ -52,7 +52,7 @@ private:
   unsigned char *m_Data;
 };
 
-#endif
+#endif /* __ITEMFIELD_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++
