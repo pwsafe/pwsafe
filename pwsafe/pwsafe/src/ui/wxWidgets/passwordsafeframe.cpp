@@ -964,7 +964,7 @@ void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
 {
   CItemData* item = GetSelectedEntry();
   if (item && item->IsDependent()) {
-    item = const_cast<CItemData *>(m_core.GetBaseEntry(item));
+    item = m_core.GetBaseEntry(item);
     ASSERT(item != NULL);
     DoEdit(*item);
   }
@@ -1172,7 +1172,7 @@ CItemData* PasswordSafeFrame::GetBaseOfSelectedEntry()
 {
   CItemData* item = GetSelectedEntry();
   if (item && (item->IsShortcut() || item->IsAlias())) {
-    item = const_cast<CItemData *>(m_core.GetBaseEntry(item));
+    item = m_core.GetBaseEntry(item);
   }
   return item;
 }
