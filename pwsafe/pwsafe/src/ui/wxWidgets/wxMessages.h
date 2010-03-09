@@ -33,6 +33,11 @@ class wxReporter : public Reporter
                         wxOK | wxICON_EXCLAMATION);
     dlg.ShowModal();
   }
+  void operator()(const std::wstring &title, const std::wstring &message) {
+    wxMessageDialog dlg(NULL, message.c_str(), title.c_str(),
+                        wxOK | wxICON_EXCLAMATION);
+    dlg.ShowModal();
+  }
 };
 
 #endif /* __WXMESSAGES_H */

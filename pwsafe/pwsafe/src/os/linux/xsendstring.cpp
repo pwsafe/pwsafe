@@ -19,14 +19,13 @@
 #include <time.h>
 
 
-#include <X11/Intrinsic.h>
+#include <X11/Intrinsic.h> // in libxt-dev
 #include <X11/keysym.h>
-#include <X11/extensions/XTest.h>
+#include <X11/extensions/XTest.h> // in libxtst-dev
 
 #include "./xsendstring.h"
-
-#include "../../corelib/Util.h"
-
+#include "../sleep.h"
+#include "../../corelib/PwsPlatform.h" // for NumberOf()
 
 static struct AutotypeGlobals
 {
@@ -351,7 +350,7 @@ void SendString(const char* str, AutotypeMethod method, unsigned delayMS)
 				event.time = CurrentTime;
 
 				XTest_SendKeyEvent(&event);
-				sleep_ms(delayMS);
+        pws_os::sleep_ms(delayMS);
 			}
 
 			XTestGrabControl(event.display, False);
@@ -363,7 +362,7 @@ void SendString(const char* str, AutotypeMethod method, unsigned delayMS)
 				event.time = CurrentTime;
 
 				XSendKeys_SendKeyEvent(&event);
-				sleep_ms(delayMS);
+        pws_os::sleep_ms(delayMS);
 			}
 			XSync(event.display, False);
 		}

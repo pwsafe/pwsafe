@@ -38,6 +38,7 @@
 #include "../../corelib/PWSAuxParse.h"
 #include "../../corelib/Util.h"
 #include "../../os/KeySend.h"
+#include "../../os/sleep.h"
 
 #include <algorithm>
 
@@ -414,7 +415,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
   const int N = sxautotype.length();
 
   //sleep for 1 second
-  sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
+  pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
   CKeySend ks;
 
@@ -474,7 +475,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
             ks.SetAndDelay(newdelay);
           }
           else
-            sleep_ms(newdelay * (curChar == L'w' ? 1 : 1000)); 
+            pws_os::sleep_ms(newdelay * (curChar == L'w' ? 1 : 1000)); 
 
           break; // case 'd', 'w' & 'W'
         }
@@ -506,7 +507,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
   }
   ks.SendString(sxtmp);
 
-  sleep_ms(1000); 
+  pws_os::sleep_ms(1000); 
 
 }
 

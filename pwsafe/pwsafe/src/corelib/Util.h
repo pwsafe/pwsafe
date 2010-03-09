@@ -166,10 +166,6 @@ class dereference {
     const value_type& operator()(const_iterator itr) { return *itr; }
 };
 
-// a function to sleep with arguments in milliseconds.  Returns 0 on 
-// success and -1 on error, and sets errno to indicate the error 
-// just like usleep does
-int sleep_ms(unsigned milliseconds);
 
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------

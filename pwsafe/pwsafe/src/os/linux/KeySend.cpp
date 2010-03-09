@@ -6,8 +6,9 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #include "../KeySend.h"
-#include "../../corelib/Util.h"
+#include "../sleep.h"
 #include "./xsendstring.h"
+#include "../../corelib/Util.h"
 
 CKeySend::CKeySend() : m_delayMS(10) //default delay after each keystroke is 10 ms
 {
@@ -34,7 +35,7 @@ void CKeySend::SendString(const StringX &data)
 
 void CKeySend::SetAndDelay(unsigned d) {
   SetDelay(d);
-  sleep_ms(m_delayMS);
+  pws_os::sleep_ms(m_delayMS);
 }
 
 void CKeySend::SetDelay(unsigned d) {
