@@ -389,7 +389,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   // Entry type initialisation
   m_AEMD.original_entrytype = m_AEMD.pci->GetEntryType();
 
-  CItemData *pciA(m_AEMD.pci);
+  const CItemData *pciA(m_AEMD.pci);
   if (m_AEMD.pci->IsAlias()) {
     pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
   }
@@ -488,7 +488,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   } else
   if (m_AEMD.pci_original->IsAlias()) {
     // Get corresponding base entry
-    CItemData *pbci = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci_original);
+    const CItemData *pbci = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci_original);
     ASSERT(pbci != NULL);
     if (pbci != NULL) {
       pbci->GetUUID(original_base_uuid);

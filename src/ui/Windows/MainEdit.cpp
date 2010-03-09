@@ -580,7 +580,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   memcpy(new_base_uuid, pentry_psh->GetBaseUUID(), sizeof(new_base_uuid));
   pci_original->GetUUID(original_uuid);
   if (pci_original->IsDependent()) {
-    CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
+    const CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
     ASSERT(pci_orig_base != NULL);
     pci_orig_base->GetUUID(original_base_uuid);
   }
@@ -722,7 +722,7 @@ bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
   uuid_array_t entry_uuid;
   ci_original.GetUUID(entry_uuid); // for later use
 
-  CItemData *pbci = GetBaseEntry(&ci_original);
+  const CItemData *pbci = GetBaseEntry(&ci_original);
 
   CEditShortcutDlg dlg_editshortcut(&ci_edit, this, pbci->GetGroup(),
                                     pbci->GetTitle(), pbci->GetUser());
@@ -815,7 +815,7 @@ void DboxMain::OnDuplicateEntry()
         ci2.SetShortcut();
       }
 
-      CItemData *pbci = GetBaseEntry(pci);
+      const CItemData *pbci = GetBaseEntry(pci);
       if (pbci != NULL) {
         uuid_array_t base_uuid;
         pbci->GetUUID(base_uuid);
@@ -859,20 +859,20 @@ void DboxMain::OnDisplayPswdSubset()
   if (!SelItemOk())
     return;
 
-  CItemData *pci = getSelectedItem();
+  const CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  CItemData *pci_original(pci);
+  const CItemData *pci_original(pci);
 
   if (pci->IsDependent()) {
     pci = GetBaseEntry(pci);
     ASSERT(pci != NULL);
   }
 
-  CPasswordSubsetDlg DisplaySubsetDlg(this, pci);
+  CPasswordSubsetDlg DisplaySubsetDlg(this, pci->GetPassword());
 
   if (DisplaySubsetDlg.DoModal() != IDCANCEL)
-    UpdateAccessTime(pci_original);
+    UpdateAccessTime(const_cast<CItemData *>(pci_original));
 }
 
 void DboxMain::OnCopyPassword()
@@ -919,14 +919,14 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
   if (SelItemOk() != TRUE)
     return;
 
-  CItemData *pci = getSelectedItem();
+  const CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  CItemData *pci_original(pci);
+  const CItemData *pci_original(pci);
 
   if (pci->IsShortcut() ||
       (pci->IsAlias() && ft == CItemData::PASSWORD)) {
-    CItemData *pbci = GetBaseEntry(pci);
+    const CItemData *pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
     pci = pbci;
   }
@@ -985,7 +985,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
 
   SetClipboardData(cs_data);
   UpdateLastClipboardAction(ft);
-  UpdateAccessTime(pci_original);
+  UpdateAccessTime(const_cast<CItemData *>(pci_original));
 }
 
 void DboxMain::UpdateLastClipboardAction(const int iaction)
@@ -1109,55 +1109,6 @@ void DboxMain::OnAutoType()
 void DboxMain::AutoType(const CItemData &ci)
 {
   // Called from OnAutoType and OnTrayAutoType
-  StringX sxgroup, sxtitle, sxuser, sxpwd, sxnotes, sxautotype;
-
-  // Set up all the data (shortcut entry will change all of them!)
-  sxgroup = ci.GetGroup();
-  sxtitle = ci.GetTitle();
-  sxuser = ci.GetUser();
-  sxpwd = ci.GetPassword();
-  sxnotes = ci.GetNotes();
-  sxautotype = ci.GetAutoType();
-
-  if (ci.IsAlias()) {
-    CItemData *pbci = GetBaseEntry(&ci);
-    if (pbci != NULL) {
-      sxpwd = pbci->GetPassword();
-    } else {
-      // Problem - alias entry without a base!
-      ASSERT(0);
-    }
-  } else if (ci.IsShortcut()) {
-    CItemData *pbci = GetBaseEntry(&ci);
-    if (pbci != NULL) {
-      sxgroup = pbci->GetGroup();
-      sxtitle = pbci->GetTitle();
-      sxuser = pbci->GetUser();
-      sxpwd = pbci->GetPassword();
-      sxnotes = pbci->GetNotes();
-      sxautotype = pbci->GetAutoType();
-    } else {
-      // Problem - shortcut entry without a base!
-      ASSERT(0);
-    }
-  } // ci.IsShortcut()
-
-  // If empty, try the database default
-  if (sxautotype.empty()) {
-    sxautotype = PWSprefs::GetInstance()->
-              GetPref(PWSprefs::DefaultAutotypeString);
-
-    // If still empty, take this default
-    if (sxautotype.empty()) {
-      // checking for user and password for default settings
-      if (!sxpwd.empty()){
-        if (!sxuser.empty())
-          sxautotype = DEFAULT_AUTOTYPE;
-        else
-          sxautotype = L"\\p\\n";
-      }
-    }
-  }
 
   // Rules are ("Minimize on Autotype" takes precedence):
   // 1. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
@@ -1180,9 +1131,8 @@ void DboxMain::AutoType(const CItemData &ci)
     ShowWindow(SW_HIDE);
 
   std::vector<size_t> vactionverboffsets;
-  sxautotype = PWSAuxParse::GetAutoTypeString(sxautotype,
-                sxgroup, sxtitle, sxuser, sxpwd, sxnotes,
-                vactionverboffsets);
+  const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
+                                                            vactionverboffsets);
   DoAutoType(sxautotype, vactionverboffsets);
 
   // If we minimized it, exit. If we only hid it, now show it
@@ -1338,7 +1288,7 @@ void DboxMain::OnGotoBaseEntry()
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
 
-    CItemData *pbci = GetBaseEntry(pci);
+    const CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
       DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
       SelectEntry(pdi->list_index);
@@ -1354,12 +1304,13 @@ void DboxMain::OnEditBaseEntry()
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
 
-    CItemData *pbci = GetBaseEntry(pci);
+    const CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
        DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
        SelectEntry(pdi->list_index);
-       EditItem(pbci); // pbci may be invalid upon return!
-       UpdateAccessTime(GetBaseEntry(pci));
+       EditItem(const_cast<CItemData *>(pbci));
+       // pbci may be invalid upon return!
+       UpdateAccessTime(const_cast<CItemData *>(GetBaseEntry(pci)));
     }
   }
 }
@@ -1369,14 +1320,14 @@ void DboxMain::OnRunCommand()
   if (SelItemOk() != TRUE)
     return;
 
-  CItemData *pci = getSelectedItem();
+  const CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  CItemData *pci_original(pci);
+  const CItemData *pci_original(pci);
   StringX sx_pswd;
 
   if (pci->IsDependent()) {
-    CItemData *pbci = GetBaseEntry(pci);
+    const CItemData *pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
     sx_pswd = pbci->GetPassword();
     if (pci->IsShortcut())
@@ -1411,7 +1362,7 @@ void DboxMain::OnRunCommand()
                                  m_vactionverboffsets);
   SetClipboardData(pci->GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);
-  UpdateAccessTime(pci_original);
+  UpdateAccessTime(const_cast<CItemData *>(pci_original));
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present
   // in the RunCommand field.  Note: they are all treated the same (unlike

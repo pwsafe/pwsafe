@@ -244,14 +244,16 @@ public:
   //                                           otherwise just return true
 
   // General routines for aliases and shortcuts
-  void GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &dependentslist, 
+  void GetAllDependentEntries(const uuid_array_t &base_uuid,
+                              UUIDList &dependentslist, 
                               const CItemData::EntryType type);
-  bool GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid, 
-                                 const CItemData::EntryType type);
+  bool GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
+                                 uuid_array_t &base_uuid, 
+                                 const CItemData::EntryType type) const;
   // Takes apart a 'special' password into its components:
   bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
 
-  CItemData *GetBaseEntry(const CItemData *pAliasOrSC);
+  const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const;
 
   // alias/base and shortcut/base handling
   void SortDependents(UUIDList &dlist, StringX &csDependents);

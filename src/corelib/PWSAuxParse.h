@@ -19,6 +19,7 @@
 #define DEFAULT_AUTOTYPE _T("\\u\\t\\p\\n")
 
 class CItemData;
+class PWScore;
 
 namespace PWSAuxParse {
   // Call following with NULL ci and/or empty sxCurrentDB
@@ -26,7 +27,7 @@ namespace PWSAuxParse {
   // parse failed, reason in same).
   StringX GetExpandedString(const StringX &sxRun_Command,
                             const StringX &sxCurrentDB,
-                            CItemData *pci, bool &bAutoType,
+                            const CItemData *pci, bool &bAutoType,
                             StringX &sxAutotype, stringT &serrmsg,
                             StringX::size_type &st_column,
                             bool &bURLSpecial);
@@ -35,6 +36,9 @@ namespace PWSAuxParse {
                             const StringX &sxgroup, const StringX &sxtitle,
                             const StringX &sxuser,  const StringX &sxpwd,
                             const StringX &sxnotes,
+                            std::vector<size_t> &vactionverboffsets);
+  StringX GetAutoTypeString(const CItemData &ci,
+                            const PWScore &core,
                             std::vector<size_t> &vactionverboffsets);
 };
 

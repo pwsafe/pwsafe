@@ -542,7 +542,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
   const bool bItemSelected = (SelItemOk() == TRUE);
   const bool bReadOnly = m_core.IsReadOnly();
-  CItemData *pci(NULL);
+  const CItemData *pci(NULL);
   const wchar_t *tc_dummy = L" ";
 
   ASSERT_VALID(pPopupMenu);
@@ -1037,7 +1037,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   BOOL brc;
   CPoint client;
   int item = -1;
-  CItemData *pci = NULL;
+  const CItemData *pci = NULL;
   CMenu menu;
 
   MENUINFO minfo ={0};

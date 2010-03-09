@@ -11,7 +11,6 @@
 //-----------------------------------------------------------------------------
 
 #include "corelib/PwsPlatform.h"
-#include "corelib/ItemData.h"
 #include "PWDialog.h"
 #include "ControlExtns.h"
 
@@ -34,7 +33,7 @@ protected:
 class CPasswordSubsetDlg : public CPWDialog
 {
 public:
-  CPasswordSubsetDlg(CWnd* pParent, CItemData *pci = NULL);   // standard constructor
+  CPasswordSubsetDlg(CWnd* pParent, const StringX &passwd); // standard constructor
 
   enum { IDD = IDD_PASSWORDSUBSET };
 
@@ -53,7 +52,7 @@ private:
   DboxMain *m_pDbx;
   LRESULT OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lParam */);
 
-  CItemData* m_pci;
+  const StringX m_passwd;
   CNumEdit m_ne_subset;
   CStaticExtn m_stcwarningmsg;
   CEdit m_results;

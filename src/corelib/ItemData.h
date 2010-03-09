@@ -228,8 +228,8 @@ public:
   int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
     uuid_array_t &uuid_array);
   bool ValidatePWHistory(); // return true if OK, false if there's a problem
-  bool IsExpired();
-  bool WillExpire(const int numdays);
+  bool IsExpired() const;
+  bool WillExpire(const int numdays) const;
 
   // Predicate to determine if item matches given criteria
   bool Matches(const stringT &string, int iObject, 
@@ -248,7 +248,8 @@ public:
   bool IsURLEmpty() const {return m_URL.IsEmpty();}
   bool IsRunCommandEmpty() const {return m_RunCommand.IsEmpty();}
   bool IsEmailEmpty() const {return m_email.IsEmpty();}
-  void SerializePlainText(std::vector<char> &v, CItemData *pcibase = NULL) const;
+  void SerializePlainText(std::vector<char> &v,
+                          const CItemData *pcibase = NULL) const;
   bool DeserializePlainText(const std::vector<char> &v);
   bool SetField(int type, unsigned char *data, int len);
 

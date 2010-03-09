@@ -387,7 +387,7 @@ void CDDStatic::SendToClipboard()
     return;
   }
 
-  CItemData *pci(m_pci);
+  const CItemData *pci(m_pci);
 
   // Handle shortcut or alias
   if ((m_nID == IDC_STATIC_DRAGPASSWORD && pci->IsAlias()) ||
@@ -433,7 +433,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       cs_dragdata = m_groupname;
     }
   } else { // m_pci != NULL
-    CItemData *pci(m_pci);
+    const CItemData *pci(m_pci);
 
     // Handle shortcut or alias
     if ((m_nID == IDC_STATIC_DRAGPASSWORD && pci->IsAlias()) ||

@@ -320,11 +320,11 @@ void DboxMain::UpdateToolBarROStatus(const bool bIsRO)
   }
 }
 
-void DboxMain::UpdateToolBarForSelectedItem(CItemData *pci)
+void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
 {
   // Following test required since this can be called on exit, with a pci
   // from ItemData that's already been deleted. Ugh.
-  CItemData *pci_entry(pci);
+  const CItemData *pci_entry(pci);
   if (m_core.GetNumEntries() != 0) {
     BOOL State = (pci_entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
@@ -3537,7 +3537,7 @@ HICON DboxMain::GetEntryIcon(const int nImage) const
 
 bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
 {
-  CItemData *pci(NULL);
+  const CItemData *pci(NULL);
   CPoint target(point);
   StringX cs_notes(L"");
   UINT nFlags;
