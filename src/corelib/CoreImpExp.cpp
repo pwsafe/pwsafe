@@ -1108,7 +1108,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         LoadAString(cs_online, IDSC_IMPORT_ON_LINE);
         Format(cs_temp, IDSC_IMPORTENTRY, cs_online.c_str(), numlines, 
                sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
-        Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp);
+        Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp.c_str());
         rpt.WriteLine(cs_error);
         numSkipped++;
       } else {
