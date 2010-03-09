@@ -297,6 +297,8 @@ public:
   void SaveGroupDisplayState(); // call when tree expansion state changes
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const
   {return m_core.GetBaseEntry(pAliasOrSC);}
+  CItemData *GetBaseEntry(const CItemData *pAliasOrSC)
+  {return m_core.GetBaseEntry(pAliasOrSC);}
 
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
