@@ -51,9 +51,9 @@ PWScore::PWScore() :
                      m_LockCount(0), m_LockCount2(0),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
-                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
-                     m_bNotifyDB(false), m_pUIIF(NULL),
-                     m_fileSig(NULL), m_bUniqueGTUValidated(false)
+                     m_IsReadOnly(false), m_bUniqueGTUValidated(false), 
+                     m_nRecordsWithUnknownFields(0),
+                     m_bNotifyDB(false), m_pUIIF(NULL), m_fileSig(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
