@@ -18,7 +18,7 @@ using namespace std;
 void CDDObject::DDSerialize(CSMemFile &outDDmemfile)
 {
   vector<char> v;
-  CItemData *pbci(NULL);
+  const CItemData *pbci(NULL);
   if (m_item.IsDependent()) {
     pbci = GetBaseItem();
     ASSERT(pbci != NULL);

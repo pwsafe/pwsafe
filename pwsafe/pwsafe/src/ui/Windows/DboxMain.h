@@ -261,7 +261,7 @@ public:
   void PerformAutoType(); // 'public' version called by Tree/List
 
   void UpdateToolBarROStatus(const bool bIsRO);
-  void UpdateToolBarForSelectedItem(CItemData *pci);
+  void UpdateToolBarForSelectedItem(const CItemData *pci);
   void SetToolBarPositions();
   void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
   void ResumeOnDBNotification() {m_core.ResumeOnDBNotification();}
@@ -295,7 +295,7 @@ public:
   Command *Delete(HTREEITEM ti); // For deleting a group
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
-  CItemData *GetBaseEntry(const CItemData *pAliasOrSC)
+  const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const
   {return m_core.GetBaseEntry(pAliasOrSC);}
 
   int GetEntryImage(const CItemData &ci);
@@ -310,8 +310,8 @@ public:
                            const StringX &cs_title, const StringX &cs_user,
                            StringX &sxNewDBPrefsString);
   bool SetNotesWindow(const CPoint point, const bool bVisible = true);
-  bool IsFilterActive() {return m_bFilterActive;}
-  int GetNumPassedFiltering() {return m_bNumPassedFiltering;}
+  bool IsFilterActive() const {return m_bFilterActive;}
+  int GetNumPassedFiltering() const {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected();
   StringX GetGroupName();
   void UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath);
@@ -530,9 +530,11 @@ protected:
   void GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork);
   void ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork);
   static BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC hdc, LPRECT prc, LPARAM lParam);
-  bool PassesFiltering(CItemData &ci, const st_filters &filters);
-  bool PassesPWHFiltering(CItemData *pci, const st_filters &filters);
-  bool PassesPWPFiltering(CItemData *pci, const st_filters &filters);
+  bool PassesFiltering(const CItemData &ci, const st_filters &filters);
+  bool PassesPWHFiltering(const CItemData *pci,
+                          const st_filters &filters) const;
+  bool PassesPWPFiltering(const CItemData *pci,
+                          const st_filters &filters) const;
 
   void SaveGUIStatus();
   void RestoreGUIStatus();

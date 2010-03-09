@@ -229,7 +229,7 @@ struct PutText {
     if (m_subgroup_name.empty() || 
         item.Matches(m_subgroup_name, m_subgroup_object,
         m_subgroup_function)) {
-      CItemData *pcibase = m_pcore->GetBaseEntry(&item);
+      const CItemData *pcibase = m_pcore->GetBaseEntry(&item);
       const StringX line = item.GetPlaintext(TCHAR('\t'),
                                              m_bsFields, m_delimiter, pcibase);
       if (!line.empty()) {
@@ -352,8 +352,9 @@ struct XMLRecordWriter {
           bforce_normal_entry = true;
         }
       }
-      CItemData *pcibase = m_pcore->GetBaseEntry(&item);
-      string xml = item.GetXML(m_id, m_bsFields, m_delimiter, pcibase, bforce_normal_entry);
+      const CItemData *pcibase = m_pcore->GetBaseEntry(&item);
+      string xml = item.GetXML(m_id, m_bsFields, m_delimiter, pcibase,
+                               bforce_normal_entry);
       m_of.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));
     }

@@ -187,11 +187,12 @@ LRESULT DboxMain::OnExecuteFilters(WPARAM wParam, LPARAM /* lParam */)
   return 0L;
 }
 
-bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
+bool DboxMain::PassesFiltering(const CItemData &ci,
+                               const st_filters &filters)
 {
   bool thistest_rc, thisgroup_rc;
   bool bValue(false);
-  CItemData *pci;
+  const CItemData *pci;
 
   if ((filters.num_Mactive + filters.num_Hactive + filters.num_Pactive) == 0)
     return true;
@@ -375,7 +376,8 @@ bool DboxMain::PassesFiltering(CItemData &ci, const st_filters &filters)
   return false;
 }
 
-bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
+bool DboxMain::PassesPWHFiltering(const CItemData *pci,
+                                  const st_filters &filters) const
 {
   bool thisgroup_rc, thistest_rc, bPresent;
   bool bValue(false);
@@ -496,7 +498,8 @@ bool DboxMain::PassesPWHFiltering(CItemData *pci, const st_filters &filters)
   return false;
 }
 
-bool DboxMain::PassesPWPFiltering(CItemData *pci, const st_filters &filters)
+bool DboxMain::PassesPWPFiltering(const CItemData *pci,
+                                  const st_filters &filters) const
 {
   bool thisgroup_rc, thistest_rc, bPresent;
   bool bValue(false);

@@ -2059,7 +2059,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
   return false;
 }
 
-CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
+const CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC) const
 {
   ASSERT(pAliasOrSC != NULL);
   CItemData::EntryType et = pAliasOrSC->GetEntryType();
@@ -2073,7 +2073,7 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
     TRACE(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
     return NULL;
   }
-  ItemListIter iter = Find(base_uuid);
+  ItemListConstIter iter = Find(base_uuid);
   if (iter == GetEntryEndIter()) {
     TRACE(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
     return NULL;
@@ -2083,11 +2083,11 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
 
 bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, 
                                         uuid_array_t &base_uuid, 
-                                        const CItemData::EntryType type)
+                                        const CItemData::EntryType type) const
 {
   memset(base_uuid, 0, sizeof(uuid_array_t));
 
-  ItemMap *pmap;
+  const ItemMap *pmap;
   if (type == CItemData::ET_ALIAS)
     pmap = &m_alias2base_map;
   else if (type == CItemData::ET_SHORTCUT)
@@ -2095,7 +2095,7 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
   else
     return false;
 
-  ItemMapIter iter = pmap->find(entry_uuid);
+  ItemMapConstIter iter = pmap->find(entry_uuid);
   if (iter != pmap->end()) {
     iter->second.GetUUID(base_uuid);
     return true;

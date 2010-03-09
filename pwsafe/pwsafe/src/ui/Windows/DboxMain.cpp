@@ -1352,7 +1352,7 @@ void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
     OnShowPassword();
   }
 #else
-  CItemData *pci = getSelectedItem();
+  const CItemData *pci = getSelectedItem();
   // Don't do anything if can't get the data
   if (pci == NULL)
     return;
@@ -1422,13 +1422,13 @@ void DboxMain::OnBrowse()
 
 void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 {
-  CItemData *pci = getSelectedItem();
-  CItemData *pci_original(pci);
+  const CItemData *pci = getSelectedItem();
+  const CItemData *pci_original(pci);
 
   if (pci != NULL) {
     StringX sx_pswd;
     if (pci->IsDependent()) {
-      CItemData *pbci = GetBaseEntry(pci);
+      const CItemData *pbci = GetBaseEntry(pci);
       ASSERT(pbci != NULL);
       sx_pswd = pbci->GetPassword();
       if (pci->IsShortcut())
@@ -1446,15 +1446,12 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 
     if (!cs_command.IsEmpty()) {
       std::vector<size_t> vactionverboffsets;
-      StringX sxautotype = PWSAuxParse::GetAutoTypeString(pci->GetAutoType(),
-                                    pci->GetGroup(), pci->GetTitle(), 
-                                    pci->GetUser(), sx_pswd, 
-                                    pci->GetNotes(),
-                                    vactionverboffsets);
+      StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
+                                                          vactionverboffsets);
       LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bDoAutotype);
       SetClipboardData(sx_pswd);
       UpdateLastClipboardAction(CItemData::PASSWORD);
-      UpdateAccessTime(pci_original);
+      UpdateAccessTime(const_cast<CItemData *>(pci_original));
     }
   }
 }
@@ -2887,7 +2884,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
   bool bGroupSelected = false;
-  CItemData *pci(NULL);
+  const CItemData *pci(NULL);
   CItemData::EntryType etype(CItemData::ET_INVALID);
 
   if (bTreeView) {
@@ -2935,7 +2932,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        CItemData *pci = getSelectedItem();
+        const CItemData *pci = getSelectedItem();
         if (pci == NULL) {
           iEnable = FALSE;
         } else {
@@ -2962,7 +2959,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        CItemData *pci = getSelectedItem();
+        const CItemData *pci = getSelectedItem();
         if (pci == NULL) {
           iEnable = FALSE;
         } else {

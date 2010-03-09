@@ -309,55 +309,6 @@ void PasswordSafeFrame::DoCopyURL(CItemData &item)
 void PasswordSafeFrame::DoAutotype(CItemData &ci)
 {
   // Called from OnAutoType and OnTrayAutoType
-  StringX sxgroup, sxtitle, sxuser, sxpwd, sxnotes, sxautotype;
-
-  // Set up all the data (shortcut entry will change all of them!)
-  sxgroup = ci.GetGroup();
-  sxtitle = ci.GetTitle();
-  sxuser = ci.GetUser();
-  sxpwd = ci.GetPassword();
-  sxnotes = ci.GetNotes();
-  sxautotype = ci.GetAutoType();
-
-  if (ci.IsAlias()) {
-    CItemData *pbci = m_core.GetBaseEntry(&ci);
-    if (pbci != NULL) {
-      sxpwd = pbci->GetPassword();
-    } else {
-      // Problem - alias entry without a base!
-      ASSERT(0);
-    }
-  } else if (ci.IsShortcut()) {
-    CItemData *pbci = m_core.GetBaseEntry(&ci);
-    if (pbci != NULL) {
-      sxgroup = pbci->GetGroup();
-      sxtitle = pbci->GetTitle();
-      sxuser = pbci->GetUser();
-      sxpwd = pbci->GetPassword();
-      sxnotes = pbci->GetNotes();
-      sxautotype = pbci->GetAutoType();
-    } else {
-      // Problem - shortcut entry without a base!
-      ASSERT(0);
-    }
-  } // ci.IsShortcut()
-
-  // If empty, try the database default
-  if (sxautotype.empty()) {
-    sxautotype = PWSprefs::GetInstance()->
-              GetPref(PWSprefs::DefaultAutotypeString);
-
-    // If still empty, take this default
-    if (sxautotype.empty()) {
-      // checking for user and password for default settings
-      if (!sxpwd.empty()){
-        if (!sxuser.empty())
-          sxautotype = DEFAULT_AUTOTYPE;
-        else
-          sxautotype = L"\\p\\n";
-      }
-    }
-  }
 
   // Rules are ("Minimize on Autotype" takes precedence):
   // 1. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
@@ -382,9 +333,7 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
     Hide();
 
   std::vector<size_t> vactionverboffsets;
-  sxautotype = PWSAuxParse::GetAutoTypeString(sxautotype,
-                sxgroup, sxtitle, sxuser, sxpwd, sxnotes,
-                vactionverboffsets);
+  sxautotype = PWSAuxParse::GetAutoTypeString(ci, vactionverboffsets);
   DoAutotype(sxautotype, vactionverboffsets);
 
   // If we minimized it, exit. If we only hid it, now show it

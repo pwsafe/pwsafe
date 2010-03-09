@@ -1713,19 +1713,16 @@ bool CItemData::Matches(EntryStatus estatus, int iFunction) const
   return false;
 }
 
-bool CItemData::IsExpired()
+bool CItemData::IsExpired() const
 {
   time_t now, XTime;
   time(&now);
 
   GetXTime(XTime);
-  if ((XTime != (time_t)0) && (XTime < now))
-    return true;
-  else
-    return false;
+  return ((XTime != (time_t)0) && (XTime < now));
 }
 
-bool CItemData::WillExpire(const int numdays)
+bool CItemData::WillExpire(const int numdays) const
 {
   time_t now, exptime, XTime;
   time(&now);
@@ -1753,10 +1750,7 @@ bool CItemData::WillExpire(const int numdays)
     exptime = now;
 
   // Will it expire in numdays?
-  if (XTime < exptime)
-    return true;
-  else
-    return false;
+  return (XTime < exptime);
 }
 
 static bool pull_string(StringX &str, unsigned char *data, int len)
@@ -2004,7 +1998,8 @@ static void push_int16(vector<char> &v, char type, short i)
   }
 }
 
-void CItemData::SerializePlainText(vector<char> &v, CItemData *pcibase)  const
+void CItemData::SerializePlainText(vector<char> &v,
+                                   const CItemData *pcibase)  const
 {
   StringX tmp;
   uuid_array_t uuid_array;

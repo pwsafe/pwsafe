@@ -17,6 +17,7 @@
 #include "PWSprefs.h"
 #include "corelib.h"
 #include "ItemData.h"
+#include "PWScore.h"
 
 #include "os/dir.h"
 #include "os/file.h"
@@ -74,7 +75,7 @@ static void ParseNotes(StringX &sxNotes,
 //-----------------------------------------------------------------
 StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
                                        const StringX &sxCurrentDB, 
-                                       CItemData *pci, bool &bAutoType,
+                                       const CItemData *pci, bool &bAutoType,
                                        StringX &sxAutotype, stringT &serrmsg, 
                                        StringX::size_type &st_column,
                                        bool &bURLSpecial)
@@ -384,6 +385,62 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
   return sxtmp;
 }
 
+StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
+                                       const PWScore &core,
+                                       std::vector<size_t> &vactionverboffsets)
+{
+  StringX sxgroup, sxtitle, sxuser, sxpwd, sxnotes, sxautotype;
+
+  // Set up all the data (shortcut entry will change all of them!)
+  sxgroup = ci.GetGroup();
+  sxtitle = ci.GetTitle();
+  sxuser = ci.GetUser();
+  sxpwd = ci.GetPassword();
+  sxnotes = ci.GetNotes();
+  sxautotype = ci.GetAutoType();
+
+  if (ci.IsAlias()) {
+    const CItemData *pbci = core.GetBaseEntry(&ci);
+    if (pbci != NULL) {
+      sxpwd = pbci->GetPassword();
+    } else { // Problem - alias entry without a base!
+      ASSERT(0);
+    }
+  } else if (ci.IsShortcut()) {
+    const CItemData *pbci = core.GetBaseEntry(&ci);
+    if (pbci != NULL) {
+      sxgroup = pbci->GetGroup();
+      sxtitle = pbci->GetTitle();
+      sxuser = pbci->GetUser();
+      sxpwd = pbci->GetPassword();
+      sxnotes = pbci->GetNotes();
+      sxautotype = pbci->GetAutoType();
+    } else { // Problem - shortcut entry without a base!
+      ASSERT(0);
+    }
+  } // ci.IsShortcut()
+
+  // If empty, try the database default
+  if (sxautotype.empty()) {
+    sxautotype = PWSprefs::GetInstance()->
+              GetPref(PWSprefs::DefaultAutotypeString);
+
+    // If still empty, take this default
+    if (sxautotype.empty()) {
+      // checking for user and password for default settings
+      if (!sxpwd.empty()){
+        if (!sxuser.empty())
+          sxautotype = DEFAULT_AUTOTYPE;
+        else
+          sxautotype = L"\\p\\n";
+      }
+    }
+  }
+  return PWSAuxParse::GetAutoTypeString(sxautotype, sxgroup,
+                                        sxtitle, sxuser,
+                                        sxpwd, sxnotes,
+                                        vactionverboffsets);
+}
 //-----------------------------------------------------------------
 // Internal functions
 //-----------------------------------------------------------------

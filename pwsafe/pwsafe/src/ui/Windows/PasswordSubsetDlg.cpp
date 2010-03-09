@@ -44,9 +44,9 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 
 //-----------------------------------------------------------------------------
-CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, CItemData* pci)
-  : CPWDialog(CPasswordSubsetDlg::IDD, pParent), m_pci(pci), m_bshown(false),
-  m_warningmsg(L"")
+CPasswordSubsetDlg::CPasswordSubsetDlg(CWnd* pParent, const StringX &passwd)
+  : CPWDialog(CPasswordSubsetDlg::IDD, pParent),
+    m_passwd(passwd), m_bshown(false), m_warningmsg(L"")
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
 }
@@ -127,8 +127,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   int icurpos(0), lastpos;
   std::vector<int> vpos;
   CString resToken(m_subset);
-  StringX sPassword = m_pci->GetPassword();
-  const int ipwlengh = sPassword.length();
+  const int ipwlengh = m_passwd.length();
 
   while (resToken != L"" && icurpos != -1) {
     lastpos = icurpos;
@@ -157,7 +156,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   std::vector<int>::const_iterator citer;
   StringX sSubset;
   for (citer = vpos.begin(); citer != vpos.end(); citer++) {
-    sSubset += sPassword[*citer];
+    sSubset += m_passwd[*citer];
     sSubset += L" ";
   }
   m_results.SetWindowText(sSubset.c_str());

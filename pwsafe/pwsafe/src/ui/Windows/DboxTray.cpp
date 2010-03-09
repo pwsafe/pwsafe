@@ -95,9 +95,7 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
     return;
 
   if (ci.IsDependent()) {
-    CItemData *pbci = GetBaseEntry(&ci);
-    ASSERT(pbci != NULL);
-    ci = *pbci;
+    ci = *GetBaseEntry(&ci);
   }
 
   const StringX cs_password = ci.GetPassword();
