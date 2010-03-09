@@ -1,0 +1,21 @@
+/*
+* Copyright (c) 2003-2010 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
+#ifndef __SLEEP_H
+#define __SLEEP_H
+
+namespace pws_os {
+  /**
+   * sleep for the specified number of milliseconds
+   */
+  extern void sleep_ms(unsigned milliseconds);
+};
+#endif /* __SLEEP_H */
+//-----------------------------------------------------------------------------
+// Local variables:
+// mode: c++
+// End:

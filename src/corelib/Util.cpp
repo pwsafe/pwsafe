@@ -613,8 +613,3 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   return oss.str();
 }
 
-//sleep_ms : to sleep for the specified milliseconds
-int sleep_ms(unsigned /* milliseconds */)  /* XXX commented out variable to shut up compiler! */
-{
-  return 0; // usleep(milliseconds*1000);  /* XXX usleep not implemented in Windows */
-}
