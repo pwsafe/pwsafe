@@ -2061,6 +2061,12 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
 
 const CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC) const
 {
+  return const_cast<PWScore *>(this)->GetBaseEntry(pAliasOrSC);
+}
+
+CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
+{
+  // Alas, we need both a const and non-const version. 
   ASSERT(pAliasOrSC != NULL);
   CItemData::EntryType et = pAliasOrSC->GetEntryType();
   if (et != CItemData::ET_ALIAS && et != CItemData::ET_SHORTCUT) {
@@ -2073,7 +2079,7 @@ const CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC) const
     TRACE(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
     return NULL;
   }
-  ItemListConstIter iter = Find(base_uuid);
+  ItemListIter iter = Find(base_uuid);
   if (iter == GetEntryEndIter()) {
     TRACE(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
     return NULL;

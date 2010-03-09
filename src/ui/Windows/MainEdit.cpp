@@ -859,10 +859,10 @@ void DboxMain::OnDisplayPswdSubset()
   if (!SelItemOk())
     return;
 
-  const CItemData *pci = getSelectedItem();
+  CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  const CItemData *pci_original(pci);
+  CItemData *pci_original(pci);
 
   if (pci->IsDependent()) {
     pci = GetBaseEntry(pci);
@@ -872,7 +872,7 @@ void DboxMain::OnDisplayPswdSubset()
   CPasswordSubsetDlg DisplaySubsetDlg(this, pci->GetPassword());
 
   if (DisplaySubsetDlg.DoModal() != IDCANCEL)
-    UpdateAccessTime(const_cast<CItemData *>(pci_original));
+    UpdateAccessTime(pci_original);
 }
 
 void DboxMain::OnCopyPassword()
@@ -919,14 +919,14 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
   if (SelItemOk() != TRUE)
     return;
 
-  const CItemData *pci = getSelectedItem();
+  CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  const CItemData *pci_original(pci);
+  CItemData *pci_original(pci);
 
   if (pci->IsShortcut() ||
       (pci->IsAlias() && ft == CItemData::PASSWORD)) {
-    const CItemData *pbci = GetBaseEntry(pci);
+    CItemData *pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
     pci = pbci;
   }
@@ -985,7 +985,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
 
   SetClipboardData(cs_data);
   UpdateLastClipboardAction(ft);
-  UpdateAccessTime(const_cast<CItemData *>(pci_original));
+  UpdateAccessTime(pci_original);
 }
 
 void DboxMain::UpdateLastClipboardAction(const int iaction)
@@ -1304,13 +1304,13 @@ void DboxMain::OnEditBaseEntry()
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
 
-    const CItemData *pbci = GetBaseEntry(pci);
+    CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
        DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
        SelectEntry(pdi->list_index);
-       EditItem(const_cast<CItemData *>(pbci));
+       EditItem(pbci);
        // pbci may be invalid upon return!
-       UpdateAccessTime(const_cast<CItemData *>(GetBaseEntry(pci)));
+       UpdateAccessTime(GetBaseEntry(pci));
     }
   }
 }
@@ -1320,14 +1320,14 @@ void DboxMain::OnRunCommand()
   if (SelItemOk() != TRUE)
     return;
 
-  const CItemData *pci = getSelectedItem();
+  CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  const CItemData *pci_original(pci);
+  CItemData *pci_original(pci);
   StringX sx_pswd;
 
   if (pci->IsDependent()) {
-    const CItemData *pbci = GetBaseEntry(pci);
+    CItemData *pbci = GetBaseEntry(pci);
     ASSERT(pbci != NULL);
     sx_pswd = pbci->GetPassword();
     if (pci->IsShortcut())
@@ -1362,7 +1362,7 @@ void DboxMain::OnRunCommand()
                                  m_vactionverboffsets);
   SetClipboardData(pci->GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);
-  UpdateAccessTime(const_cast<CItemData *>(pci_original));
+  UpdateAccessTime(pci_original);
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present
   // in the RunCommand field.  Note: they are all treated the same (unlike

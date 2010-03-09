@@ -1422,13 +1422,13 @@ void DboxMain::OnBrowse()
 
 void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 {
-  const CItemData *pci = getSelectedItem();
-  const CItemData *pci_original(pci);
+  CItemData *pci = getSelectedItem();
+  CItemData *pci_original(pci);
 
   if (pci != NULL) {
     StringX sx_pswd;
     if (pci->IsDependent()) {
-      const CItemData *pbci = GetBaseEntry(pci);
+      CItemData *pbci = GetBaseEntry(pci);
       ASSERT(pbci != NULL);
       sx_pswd = pbci->GetPassword();
       if (pci->IsShortcut())
@@ -1451,7 +1451,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
       LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bDoAutotype);
       SetClipboardData(sx_pswd);
       UpdateLastClipboardAction(CItemData::PASSWORD);
-      UpdateAccessTime(const_cast<CItemData *>(pci_original));
+      UpdateAccessTime(pci_original);
     }
   }
 }

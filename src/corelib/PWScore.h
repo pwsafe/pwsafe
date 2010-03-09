@@ -254,6 +254,7 @@ public:
   bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
 
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const;
+  CItemData *GetBaseEntry(const CItemData *pAliasOrSC);
 
   // alias/base and shortcut/base handling
   void SortDependents(UUIDList &dlist, StringX &csDependents);
