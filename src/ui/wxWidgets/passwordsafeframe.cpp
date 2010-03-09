@@ -951,7 +951,7 @@ void PasswordSafeFrame::OnAutoType(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
 {
-  CItemData* item = GetSelectedEntry();
+  const CItemData* item = GetSelectedEntry();
   if (item && (item->IsAlias() || item->IsShortcut())) {
     item = m_core.GetBaseEntry(item);
     uuid_array_t base_uuid;
@@ -964,7 +964,7 @@ void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
 {
   CItemData* item = GetSelectedEntry();
   if (item && item->IsDependent()) {
-    item = m_core.GetBaseEntry(item);
+    item = const_cast<CItemData *>(m_core.GetBaseEntry(item));
     ASSERT(item != NULL);
     DoEdit(*item);
   }
@@ -1078,7 +1078,7 @@ void PasswordSafeFrame::FlattenTree(OrderedItemList& olist)
 ///////////////////////////////////////////
 // Handles right-click event forwarded by the tree and list views
 // The logic is the same as DboxMain::OnContextMenu in src/ui/Windows/MainMenu.cpp
-void PasswordSafeFrame::OnContextMenu(CItemData* item)
+void PasswordSafeFrame::OnContextMenu(const CItemData* item)
 {
   if (item == NULL) {
     wxMenu groupEditMenu;
@@ -1172,7 +1172,7 @@ CItemData* PasswordSafeFrame::GetBaseOfSelectedEntry()
 {
   CItemData* item = GetSelectedEntry();
   if (item && (item->IsShortcut() || item->IsAlias())) {
-      item = m_core.GetBaseEntry(item);
+    item = const_cast<CItemData *>(m_core.GetBaseEntry(item));
   }
   return item;
 }

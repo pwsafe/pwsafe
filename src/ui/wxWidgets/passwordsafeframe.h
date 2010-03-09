@@ -285,7 +285,7 @@ public:
     void DispatchDblClickAction(CItemData &item); //called by grid/tree
 
     /// Centralized handling of right click in the grid or the tree view
-    void OnContextMenu(CItemData* item);
+    void OnContextMenu(const CItemData* item);
 
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;

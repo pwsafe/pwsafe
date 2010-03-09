@@ -111,7 +111,7 @@ void EditShortcut::ItemFieldsToDialog()
   m_created = m_item->GetCTimeL().c_str();
   m_lastAccess = m_item->GetATimeL().c_str();
   m_lastAny = m_item->GetRMTimeL().c_str();
-  CItemData *base = m_core.GetBaseEntry(m_item);
+  const CItemData *base = m_core.GetBaseEntry(m_item);
   if (base != NULL) {
     m_lastChanged = base->GetRMTimeL().c_str();
   } else {

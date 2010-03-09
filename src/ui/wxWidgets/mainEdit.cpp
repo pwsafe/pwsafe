@@ -333,7 +333,8 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
     Hide();
 
   std::vector<size_t> vactionverboffsets;
-  sxautotype = PWSAuxParse::GetAutoTypeString(ci, vactionverboffsets);
+  const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
+                                                            vactionverboffsets);
   DoAutotype(sxautotype, vactionverboffsets);
 
   // If we minimized it, exit. If we only hid it, now show it
