@@ -1,9 +1,15 @@
 /*
- * xsendkeys - an x utility to send a bunch of keystrokes to the 
- * app having current input focus
+* Copyright (c) 2003-2010 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
+
+/*
+ * xsendkeys - send a bunch of keystrokes to the app having current input focus
  *
- * To build: "gcc xsendkeys.c -Xlinker -lXt"
- * or "gcc xsendkeys.c -Xlinker -lXt -lXtst", if you are building with XTest
+ * Calls X library functions defined in Xt and Xtst
  *
  * +. Initialize all the params of XKeyEvent
  * +. Test for \133 etc
@@ -27,7 +33,10 @@
 #include "../sleep.h"
 #include "../../corelib/PwsPlatform.h" // for NumberOf()
 
-static struct AutotypeGlobals
+namespace { // anonymous namespace for hiding
+  //           local variables and functions
+
+struct AutotypeGlobals
 {
 	Boolean			error_detected;
 	char			errorString[1024];
@@ -40,7 +49,7 @@ static struct AutotypeGlobals
  * ErrorHandler will be called when X detects an error. This function
  * just sets a global flag and saves the error message text
  */
-static int ErrorHandler(Display *my_dpy, XErrorEvent *event)
+int ErrorHandler(Display *my_dpy, XErrorEvent *event)
 {
   char xmsg[512] = {0};
 
@@ -71,7 +80,7 @@ int ShiftRequired(char* keystring)
  * - characters which need to be manually converted to KeySyms
  */
 
-static struct {
+struct {
     char ch;
     const char* keystr;
 	KeySym sym;
@@ -140,12 +149,12 @@ KeySym GetLiteralKeysym(char* keystring)
 	return NoSymbol;
 }
 
-static void XTest_SendEvent(XKeyEvent *event)
+void XTest_SendEvent(XKeyEvent *event)
 {
 	XTestFakeKeyEvent(event->display, event->keycode, event->type == KeyPress, 0);
 }
 
-static void XSendKeys_SendEvent(XKeyEvent *event)
+void XSendKeys_SendEvent(XKeyEvent *event)
 {
     XSendEvent(event->display, event->window, TRUE, KeyPressMask, (XEvent *)event);
 }
@@ -215,7 +224,7 @@ void InitKeyEvent(XKeyEvent* event)
 	event->same_screen = TRUE;
 }
 
-
+}; // anonymous namespace
 
 /* 
  * SendString - sends a string to the X Window having input focus
@@ -229,7 +238,7 @@ void InitKeyEvent(XKeyEvent* event)
  * by this function.  See the code below for details
  */
 
-void SendString(const char* str, AutotypeMethod method, unsigned delayMS)
+void pws_os::SendString(const char* str, AutotypeMethod method, unsigned delayMS)
 {
 	typedef struct _KeyPress {
 		KeyCode code;
@@ -369,7 +378,5 @@ void SendString(const char* str, AutotypeMethod method, unsigned delayMS)
 
 		XSetErrorHandler(NULL);
 	}
-
-    free(keypresses);
+  free(keypresses);
 }
-

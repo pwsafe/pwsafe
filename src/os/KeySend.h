@@ -5,19 +5,24 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#pragma once
 
 // 
 // KeySend.h
-// Adapted from ui/Windows/KeySend.h
+// Originally Windows-only, now implemented for both Windows and Linux
+// Original version by thedavecollins
+// Windows implementation updated by dk
+// Linux implementation by sauravg
 //-----------------------------------------------------------------------------
 
+#include "typedefs.h"
 #include "../corelib/StringX.h"
+
+class CKeySendImpl; // for os-specific stuff
 
 class CKeySend
 {
 public:
-  CKeySend();
+  CKeySend(bool bForceOldMethod = false); // bForceOldMethod's Windows-specific
   ~CKeySend();
   void SendString(const StringX &data);
   void ResetKeyboardState();
@@ -25,7 +30,8 @@ public:
   void SetAndDelay(unsigned d);
   void SetCapsLock(bool bstate);
 
-protected:
-  unsigned m_delayMS; //delay after each key in milliseconds
+private:
+  unsigned m_delayMS; //delay between keystrokes in milliseconds
+  CKeySendImpl *m_impl;
 };
 

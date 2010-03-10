@@ -5,38 +5,56 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#include "KeySend.h"
 
-CKeySend::CKeySend(DWORD dwWindowsMajorVersion, DWORD dwWindowsMinorVersion,
-                   bool bForceOldMethod)
- : m_delay(10)
+#include <afxwin.h>
+#include "../KeySend.h"
+#include "../env.h"
+#include "../debug.h"
+
+class CKeySendImpl {
+public:
+  void SendChar(TCHAR c);
+  void OldSendChar(TCHAR c);
+  void NewSendChar(TCHAR c);
+  int m_delay;
+  HKL m_hlocale;
+  bool m_isOldOS;
+};
+
+CKeySend::CKeySend(bool bForceOldMethod)
+ : m_delayMS(10)
 {
+  m_impl = new CKeySendImpl;
+  m_impl->m_delay = m_delayMS;
   // We want to use keybd_event (OldSendChar) for Win2K & older,
   // SendInput (NewSendChar) for newer versions.
   if (bForceOldMethod)
-    m_isOldOS = true;
-  else
-    m_isOldOS = ((dwWindowsMajorVersion <= 4) ||
-                 (dwWindowsMajorVersion == 5 && dwWindowsMinorVersion == 0));
-
+    m_impl->m_isOldOS = true;
+  else {
+    DWORD majorVersion, minorVersion;
+    pws_os::getosversion(majorVersion, minorVersion);
+    m_impl->m_isOldOS = ((majorVersion <= 4) ||
+                         (majorVersion == 5 && minorVersion == 0));
+  }
   // get the locale of the current thread.
   // we are assuming that all window and threading in the 
   // current users desktop have the same locale.
-  m_hlocale = GetKeyboardLayout(0);
+  m_impl->m_hlocale = GetKeyboardLayout(0);
 }
 
-CKeySend::~CKeySend(void)
+CKeySend::~CKeySend()
 {
+  delete m_impl;
 }
 
 void CKeySend::SendString(const StringX &data)
 {
   for (StringX::const_iterator iter = data.begin();
        iter != data.end(); iter++)
-    SendChar(*iter);
+    m_impl->SendChar(*iter);
 }
 
-void CKeySend::SendChar(wchar_t c)
+void CKeySendImpl::SendChar(TCHAR c)
 {
   if (m_isOldOS)
     OldSendChar(c);
@@ -44,7 +62,7 @@ void CKeySend::SendChar(wchar_t c)
     NewSendChar(c);
 }
 
-void CKeySend::NewSendChar(wchar_t c)
+void CKeySendImpl::NewSendChar(TCHAR c)
 {
   UINT status;
   INPUT input[2];
@@ -71,11 +89,11 @@ void CKeySend::NewSendChar(wchar_t c)
 
   status = ::SendInput(2, input, sizeof(INPUT));
   if (status != 2)
-    TRACE(L"CKeySend::SendChar: SendInput failed status=%d\n", status);
+    pws_os::Trace(L"CKeySend::SendChar: SendInput failed status=%d\n", status);
   ::Sleep(m_delay);
 }
 
-void CKeySend::OldSendChar(wchar_t c)
+void CKeySendImpl::OldSendChar(TCHAR c)
 {
   BOOL shiftDown = false; //assume shift key is up at start.
   BOOL ctrlDown = false;
@@ -139,7 +157,7 @@ static void newSendVK(WORD vk)
   input[1].ki.dwFlags = KEYEVENTF_KEYUP;
   status = ::SendInput(2, input, sizeof(INPUT));
   if (status != 2)
-    TRACE(L"newSendVK: SendInput failed status=%d\n", status);
+    pws_os::Trace(L"newSendVK: SendInput failed status=%d\n", status);
 }
 
 void CKeySend::ResetKeyboardState()
@@ -153,10 +171,10 @@ void CKeySend::ResetKeyboardState()
 
   while((keys[VK_CONTROL] & 0x80) != 0) {
     // VK_CONTROL is down so send a key down and an key up...
-    if (m_isOldOS) {
-      keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale),
+    if (m_impl->m_isOldOS) {
+      keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_impl->m_hlocale),
                   KEYEVENTF_EXTENDEDKEY, 0);
-      keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale),
+      keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_impl->m_hlocale),
                   KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
     } else {
       newSendVK(VK_CONTROL); // Send Ctrl keydown/keyup via SendInput
@@ -176,18 +194,19 @@ void CKeySend::ResetKeyboardState()
   } // while
 }
 
+void CKeySend::SetDelay(unsigned d)
+{
+  m_delayMS = m_impl->m_delay = d;
+}
+
 // SetAndDelay allows users to put \d500\d10 in autotype and
-// the it will cause a delay of half a second then subsequent
+// then it will cause a delay of half a second then subsequent
 // key stokes will be delayed by 10 ms 
 // thedavecollins 2004-08-05
 
-void CKeySend::SetAndDelay(int d) {
+void CKeySend::SetAndDelay(unsigned d) {
   SetDelay(d);
-  ::Sleep(m_delay);
-}
-
-void CKeySend::SetDelay(int d) {
-  m_delay = d;
+  ::Sleep(m_delayMS);
 }
 
 void CKeySend::SetCapsLock(const bool bState)
@@ -197,7 +216,7 @@ void CKeySend::SetCapsLock(const bool bState)
   GetKeyboardState((LPBYTE)&keyState);
   if ((bState && !(keyState[VK_CAPITAL] & 0x01)) ||
       (!bState && (keyState[VK_CAPITAL] & 0x01))) {
-    if (m_isOldOS) {
+    if (m_impl->m_isOldOS) {
       // Simulate a key press
       keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | 0, 0);
       // Simulate a key release

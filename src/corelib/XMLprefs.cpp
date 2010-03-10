@@ -19,7 +19,7 @@
 #include "tinyxml/tinyxml.h"
 
 #include "os/typedefs.h"
-#include "os/sys.h"
+#include "os/sleep.h"
 
 #include <vector>
 
@@ -52,7 +52,7 @@ bool CXMLprefs::Lock()
   do {
     m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile, locker);
     if (!m_bIsLocked) {
-      pws_os::sleep(200);
+      pws_os::sleep_ms(200);
     }
   } while (!m_bIsLocked && --tries > 0);
   return m_bIsLocked;

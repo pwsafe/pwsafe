@@ -100,3 +100,15 @@ stringT pws_os::getprocessid()
 
   return os.str();
 }
+
+void pws_os::getosversion(DWORD &major, DWORD &minor)
+{
+  OSVERSIONINFO os;
+  SecureZeroMemory(&os, sizeof(os));
+  os.dwOSVersionInfoSize = sizeof(os);
+  if (GetVersionEx(&os) == FALSE) {
+    ASSERT(0);
+  }
+  major = os.dwMajorVersion;
+  minor = os.dwMinorVersion;
+}

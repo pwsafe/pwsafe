@@ -84,3 +84,9 @@ stringT pws_os::getprocessid()
 
   return os.str();
 }
+
+void pws_os::getosversion(DWORD &major, DWORD &minor)
+{
+  // TBD - get info via uname()
+  major = minor = 0; // XXX placeholder
+}

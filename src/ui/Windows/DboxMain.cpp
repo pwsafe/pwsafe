@@ -43,6 +43,7 @@
 #include "corelib/PWSAuxParse.h"
 
 #include "os/file.h"
+#include "os/env.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -664,16 +665,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 
 void DboxMain::InitPasswordSafe()
 {
-  // Let's get the OS version - won't change while we are running!
-  OSVERSIONINFO os;
-  SecureZeroMemory(&os, sizeof(os));
-  os.dwOSVersionInfoSize = sizeof(os);
-  if (GetVersionEx(&os) == FALSE) {
-    ASSERT(0);
-  }
-  m_WindowsMajorVersion = os.dwMajorVersion;
-  m_WindowsMinorVersion = os.dwMinorVersion;
-
+  pws_os::getosversion(m_WindowsMajorVersion, m_WindowsMinorVersion);
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK

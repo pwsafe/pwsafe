@@ -40,6 +40,10 @@ namespace PWSAuxParse {
   StringX GetAutoTypeString(const CItemData &ci,
                             const PWScore &core,
                             std::vector<size_t> &vactionverboffsets);
+  // Do some runtime parsing (mainly delay commands) and send it to PC
+  // as keystrokes:
+  void SendAutoTypeString(const StringX &sx_autotype,
+                          const std::vector<size_t> &vactionverboffsets);
 };
 
 #endif /* _PWSAUXPARSE_H */

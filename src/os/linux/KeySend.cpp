@@ -28,18 +28,19 @@ void CKeySend::SendString(const StringX &data)
   delete [] str;
 }
 
+void CKeySend::SetDelay(unsigned d)
+{
+  m_delayMS = d;
+}
+
 // SetAndDelay allows users to put \d500\d10 in autotype and
-// the it will cause a delay of half a second then subsequent
+// then it will cause a delay of half a second then subsequent
 // key stokes will be delayed by 10 ms 
 // thedavecollins 2004-08-05
 
 void CKeySend::SetAndDelay(unsigned d) {
   SetDelay(d);
   pws_os::sleep_ms(m_delayMS);
-}
-
-void CKeySend::SetDelay(unsigned d) {
-  m_delayMS = d;
 }
 
 //it doesn't matter in X what the CAPSLOCK state is

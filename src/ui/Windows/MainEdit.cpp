@@ -19,7 +19,6 @@
 #include "ConfirmDeleteDlg.h"
 #include "QuerySetDef.h"
 #include "EditShortcutDlg.h"
-#include "KeySend.h"
 #include "ClearQuestionDlg.h"
 #include "CreateShortcutDlg.h"
 #include "PasswordSubsetDlg.h"
@@ -1147,139 +1146,10 @@ void DboxMain::AutoType(const CItemData &ci)
   }
 }
 
-void DboxMain::DoAutoType(const StringX &sx_autotype, const std::vector<size_t> &vactionverboffsets)
+void DboxMain::DoAutoType(const StringX &sx_autotype,
+                          const std::vector<size_t> &vactionverboffsets)
 {
-  // All parsing of AutoType command done in one place: PWSAuxParse::GetAutoTypeString
-  // Except for anything involving time (\d, \w, \W) or use older method (\z)
-  StringX sxtmp(L"");
-  StringX sxautotype(sx_autotype);
-  wchar_t curChar;
- 
-  bool bForceOldMethod(false), bCapsLock(false);
- 
-  StringX::size_type st_index = sxautotype.find(L"\\z");
-
-  while (st_index != StringX::npos) {
-    if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), st_index) !=
-        vactionverboffsets.end()) {
-      bForceOldMethod = true;
-      break;
-    }
-    st_index = sxautotype.find(L"\\z", st_index + 1);
-  }
-
-  const int N = sxautotype.length();
-  CKeySend ks(m_WindowsMajorVersion, m_WindowsMinorVersion, bForceOldMethod);
-
-  // Turn off CAPSLOCK
-  if (GetKeyState(VK_CAPITAL)) {
-    bCapsLock = true;
-    ks.SetCapsLock(false);
-  }
-
-  ks.ResetKeyboardState();
-
-  // Stop Keyboard/Mouse Input
-  TRACE(L"DboxMain::DoAutoType - BlockInput set\n");
-  ::BlockInput(TRUE);
-
-  ::Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
-
-  int gNumIts;
-  for (int n = 0; n < N; n++){
-    curChar = sxautotype[n];
-    if (curChar == L'\\') {
-      n++;
-      if (n < N)
-        curChar = sxautotype[n];
-
-      // Only need to process fields left in there by PWSAuxParse::GetAutoTypeString
-      // for later processing
-      switch (curChar) {
-        case L'd':
-        case L'w':
-        case L'W':
-        { 
-           if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
-               vactionverboffsets.end()) {
-             // Not in the list of found action verbs - treat as-is
-             sxtmp += L'\\';
-             sxtmp += curChar;
-             break;
-           }
-
-          /*
-           'd' means value is in milli-seconds, max value = 0.999s
-           and is the delay between sending each character
-
-           'w' means value is in milli-seconds, max value = 0.999s
-           'W' means value is in seconds, max value = 16m 39s
-           and is the wait time before sending the next character.
-           Use of this field does not change any current delay value.
-
-           User needs to understand that PasswordSafe will be unresponsive
-           for the whole of this wait period!
-          */
-
-          // Delay is going to change - send what we have with old delay
-          ks.SendString(sxtmp);
-          // start collecting new delay
-          sxtmp = L"";
-          int newdelay = 0;
-          gNumIts = 0;
-          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if (_istdigit(sxautotype[n])) {
-              newdelay *= 10;
-              newdelay += (sxautotype[n] - L'0');
-            } else
-              break; // for loop
-          }
-
-          n--;
-          // Either set new character delay time or wait specified time
-          if (curChar == L'd')
-            ks.SetAndDelay(newdelay);
-          else
-            ::Sleep(newdelay * (curChar == L'w' ? 1 : 1000));
-
-          break; // case 'd', 'w' & 'W'
-        }
-        case L'z':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
-              vactionverboffsets.end()) {
-            // Not in the list of found action verbs - treat as-is
-            sxtmp += L'\\';
-            sxtmp += curChar;
-          }
-          break;
-        case L'b':
-          if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), n - 1) ==
-              vactionverboffsets.end()) {
-            // Not in the list of found action verbs - treat as-is
-            sxtmp += L'\\';
-            sxtmp += curChar;
-          } else {
-            sxtmp += L'\b';
-          }
-          break;
-        default:
-          sxtmp += L'\\';
-          sxtmp += curChar;
-          break;
-      }
-    } else
-      sxtmp += curChar;
-  }
-  ks.SendString(sxtmp);
-  // If we turned off CAPSLOCK, put it back
-  if (bCapsLock)
-    ks.SetCapsLock(true);
-
-  ::Sleep(100);
-
-  // Reset Keyboard/Mouse Input
-  TRACE(L"DboxMain::DoAutoType - BlockInput reset\n");
-  ::BlockInput(FALSE);
+  PWSAuxParse::SendAutoTypeString(sx_autotype, vactionverboffsets);
 }
 
 void DboxMain::OnGotoBaseEntry()

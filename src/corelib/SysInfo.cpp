@@ -5,6 +5,7 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+#include "Afxwin.h"
 #include "SysInfo.h"
 #include "os/env.h"
 //-----------------------------------------------------------------
