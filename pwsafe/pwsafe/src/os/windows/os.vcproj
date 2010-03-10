@@ -202,7 +202,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
-        DebugInformationFormat="3"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -505,7 +505,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
-        DebugInformationFormat="3"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -582,7 +582,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
-        DebugInformationFormat="3"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -659,7 +659,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
-        DebugInformationFormat="3"
+				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
 			<Tool
@@ -721,6 +721,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\KeySend.h"
+				>
+			</File>
+			<File
 				RelativePath="..\mem.h"
 				>
 			</File>
@@ -741,7 +745,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sys.h"
+				RelativePath="..\sleep.h"
 				>
 			</File>
 			<File
@@ -781,6 +785,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\KeySend.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\mem.cpp"
 				>
 			</File>
@@ -793,7 +801,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sys.cpp"
+				RelativePath=".\sleep.cpp"
 				>
 			</File>
 			<File
