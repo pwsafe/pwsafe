@@ -236,7 +236,7 @@ void CKeySend::SetCapsLock(const bool bState)
 
 bool CKeySend::isCapsLocked()
 {
-  return ::GetKeyState(VK_CAPITAL);
+  return ::GetKeyState(VK_CAPITAL) != 0;
 }
 
 void CKeySend::BlockInput(bool bi)
