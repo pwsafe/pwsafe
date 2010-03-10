@@ -28,7 +28,9 @@ public:
   void ResetKeyboardState();
   void SetDelay(unsigned d);
   void SetAndDelay(unsigned d);
+  bool isCapsLocked();
   void SetCapsLock(bool bstate);
+  void BlockInput(bool bi);
 
 private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds

@@ -24,6 +24,7 @@
 #include "os/file.h"
 #include "os/pws_tchar.h"
 #include "os/KeySend.h"
+#include "os/sleep.h"
 
 // Internal structures, forward declarations
 
@@ -472,7 +473,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   CKeySend ks(bForceOldMethod);
 
   // Turn off CAPSLOCK
-  if (GetKeyState(VK_CAPITAL)) {
+  if (ks.isCapsLocked()) {
     bCapsLock = true;
     ks.SetCapsLock(false);
   }
@@ -480,10 +481,10 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   ks.ResetKeyboardState();
 
   // Stop Keyboard/Mouse Input
-  TRACE(L"DboxMain::DoAutoType - BlockInput set\n");
-  ::BlockInput(TRUE);
+  TRACE(L"PWSAuxParse::SendAutoTypeString - BlockInput set\n");
+  ks.BlockInput(true);
 
-  ::Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
+  pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
   int gNumIts;
   for (int n = 0; n < N; n++){
@@ -540,7 +541,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
           if (curChar == L'd')
             ks.SetAndDelay(newdelay);
           else
-            ::Sleep(newdelay * (curChar == L'w' ? 1 : 1000));
+            pws_os::sleep_ms(newdelay * (curChar == L'w' ? 1 : 1000));
 
           break; // case 'd', 'w' & 'W'
         }
@@ -575,11 +576,11 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   if (bCapsLock)
     ks.SetCapsLock(true);
 
-  ::Sleep(100);
+  pws_os::sleep_ms(100);
 
   // Reset Keyboard/Mouse Input
-  TRACE(L"DboxMain::DoAutoType - BlockInput reset\n");
-  ::BlockInput(FALSE);
+  TRACE(L"PWSAuxParse::SendAutoTypeString - BlockInput reset\n");
+  ks.BlockInput(false);
 }
 
 

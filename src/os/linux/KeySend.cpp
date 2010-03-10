@@ -49,3 +49,18 @@ void CKeySend::SetAndDelay(unsigned d) {
 void CKeySend::SetCapsLock(const bool /*bState*/)
 {
 }
+
+bool CKeySend::isCapsLocked()
+{
+  return false; // as X doesn't care
+}
+
+void CKeySend::BlockInput(bool)
+{
+  // XXX TBD
+}
+
+void CKeySend::ResetKeyboardState()
+{
+  // XXX Need we implement this for X?
+}

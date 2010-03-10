@@ -233,3 +233,14 @@ void CKeySend::SetCapsLock(const bool bState)
       break;
   }
 }
+
+bool CKeySend::isCapsLocked()
+{
+  return ::GetKeyState(VK_CAPITAL);
+}
+
+void CKeySend::BlockInput(bool bi)
+{
+  ::BlockInput(bi ? TRUE : FALSE);
+}
+
