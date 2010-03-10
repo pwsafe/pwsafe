@@ -11,8 +11,8 @@
  * 'languages' used for 'autotype' and 'run' command processing.
  */
 
-#ifndef _PWSAUXPARSE_H
-#define _PWSAUXPARSE_H
+#ifndef __PWSAUXPARSE_H
+#define __PWSAUXPARSE_H
 
 #include "StringX.h"
 
@@ -46,4 +46,4 @@ namespace PWSAuxParse {
                           const std::vector<size_t> &vactionverboffsets);
 };
 
-#endif /* _PWSAUXPARSE_H */
+#endif /* __PWSAUXPARSE_H */

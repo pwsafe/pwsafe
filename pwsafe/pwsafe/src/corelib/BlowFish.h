@@ -32,7 +32,9 @@ class BlowFish : public Fish
 public:
   static BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
     const unsigned char *salt, int saltlen);
-  enum {BLOCKSIZE=8};
+
+  enum {BLOCKSIZE = 8};
+
   BlowFish(unsigned char* key, int keylen);
   virtual ~BlowFish();
   virtual void Encrypt(const unsigned char *in, unsigned char *out);

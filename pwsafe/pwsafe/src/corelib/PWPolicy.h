@@ -66,7 +66,7 @@ struct PWPolicy {
   StringX MakeRandomPassword() const;
 };
 
-#endif
+#endif /* __PWPOLICY_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

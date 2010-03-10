@@ -5,11 +5,12 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-// hmac.h
+/// \file hmac.h
 // HMAC for PasswordSafe
+
 //-----------------------------------------------------------------------------
-#ifndef _HMAC_H_
-#define _HMAC_H_
+#ifndef __HMAC_H
+#define __HMAC_H
 
 // Currently implemented only for sha256, as required by version 3
 // of the database format.
@@ -36,7 +37,7 @@ private:
   unsigned char K[B];
 };
 
-#endif /* _HMAC_H_ */
+#endif /* __HMAC_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

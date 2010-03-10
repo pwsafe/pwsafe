@@ -8,8 +8,8 @@
 // PWSrand.h
 //-----------------------------------------------------------------------------
 
-#ifndef PWSrand_h
-#define PWSrand_h
+#ifndef __PWSRAND_H
+#define __PWSRAND_H
 
 #include "sha256.h"
 
@@ -40,4 +40,4 @@ private:
   char rgbRandomData[SHA256::HASHLEN];
   unsigned int ibRandomData;
 };
-#endif // PWSrand_h
+#endif /*  __PWSRAND_H */

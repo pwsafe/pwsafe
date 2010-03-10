@@ -5,7 +5,10 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
 #ifndef __PWSCLIPBOARD_H
+#define __PWSCLIPBOARD_H
+
 /** \file
 * A small utility class to handle the clipboard
 * securely. Specifically, we keep a hash
@@ -41,5 +44,4 @@ private:
   unsigned char m_digest[SHA256::HASHLEN];
 };
 
-#define __PWSCLIPBOARD_H
 #endif /* __PWSCLIPBOARD_H */

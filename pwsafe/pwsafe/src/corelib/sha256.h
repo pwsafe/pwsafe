@@ -9,8 +9,9 @@
 // SHA256 for PasswordSafe, based on LibTomCrypt by
 // Tom St Denis, tomstdenis@iahu.ca, http://libtomcrypt.org
 //-----------------------------------------------------------------------------
-#ifndef _SHA256_H_
-#define _SHA256_H_
+#ifndef __SHA256_H
+#define __SHA256_H
+
 #include "os/typedefs.h"
 #include "PwsPlatform.h"
 
@@ -30,9 +31,8 @@ private:
   unsigned char buf[64];
 };
 
-#endif /* _SHA256_H_ */
+#endif /* __SHA256_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++
 // End:
-

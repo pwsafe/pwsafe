@@ -16,8 +16,9 @@
  * being returned to system.
  */
 
-#ifndef _STRINGXSTREAM_H_
-#define _STRINGXSTREAM_H_
+#ifndef __STRINGXSTREAM_H
+#define __STRINGXSTREAM_H
+
 #include "StringX.h"
 #include <sstream>
 
@@ -78,7 +79,7 @@ typedef std::istringstream istringstreamT;
 typedef std::ostringstream ostringstreamT;
 #endif
 
-#endif
+#endif /* __STRINGXSTREAM_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

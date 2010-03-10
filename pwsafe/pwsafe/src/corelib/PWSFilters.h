@@ -285,4 +285,4 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
   static stringT GetFilterDescription(const st_FilterRow &st_fldata);
 };
 
-#endif  // __PWSFILTERS_H
+#endif  /* __PWSFILTERS_H */

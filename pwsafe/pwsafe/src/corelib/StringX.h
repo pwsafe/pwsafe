@@ -6,6 +6,9 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+#ifndef __STRINGX_H
+#define __STRINGX_H
+
 /**
  * \file StringX.h
  *
@@ -15,9 +18,6 @@
  *
  *
  */
-
-#ifndef _STRINGX_H_
-#define _STRINGX_H_
 
 #include <string>
 #include <memory>
@@ -167,7 +167,8 @@ template<class T> int Remove(T &s, TCHAR c);
 template<class T> void Format(T &s, const TCHAR *fmt, ...);
 template<class T> void Format(T &s, int fmt, ...);
 template<class T> void LoadAString(T &s, int id);
-#endif
+
+#endif /* __STRINGX_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

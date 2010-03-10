@@ -7,6 +7,7 @@
 */
 #ifndef __PWSDIRS_H
 #define __PWSDIRS_H
+
 // PWSdirs.h
 // Provide directories used by application
 //

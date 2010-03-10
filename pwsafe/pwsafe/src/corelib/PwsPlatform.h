@@ -48,8 +48,8 @@
 // Linux - work in progress
 // Cygwin - work in progress
 
-#ifndef PwsPlatform_h
-#define PwsPlatform_h
+#ifndef __PWSPLATFORM_H
+#define __PWSPLATFORM_H
 
 #if defined(_WIN32)
 // ONLY place in corelib which refers to parent. Ugh.
@@ -548,4 +548,4 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
 
 #define NumberOf(array) ((sizeof array)/sizeof(array[0]))
 
-#endif
+#endif /* __PWSPLATFORM_H */

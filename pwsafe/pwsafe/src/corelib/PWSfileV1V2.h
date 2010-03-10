@@ -9,8 +9,8 @@
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
 
-#ifndef PWSfileV1V2_h
-#define PWSfileV1V2_h
+#ifndef __PWSFILEV1V2_H
+#define __PWSFILEV1V2_H
 
 #include "PWSfile.h"
 #include "BlowFish.h"
@@ -42,5 +42,4 @@ private:
   int ReadV2Header();
 };
 
-#endif /* PWSfileV1V2_h */
-
+#endif /*  __PWSFILEV1V2_H */
