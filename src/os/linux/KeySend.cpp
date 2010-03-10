@@ -10,7 +10,8 @@
 #include "./xsendstring.h"
 #include "../../corelib/Util.h"
 
-CKeySend::CKeySend() : m_delayMS(10) //default delay after each keystroke is 10 ms
+CKeySend::CKeySend(bool)
+  : m_delayMS(10) //default delay after each keystroke is 10 ms
 {
 }
 
@@ -24,7 +25,8 @@ void CKeySend::SendString(const StringX &data)
   int len = 0;
   ConvertString(data, str, len);
   if (len && str && str[0])
-    ::SendString(reinterpret_cast<const char*>(str), ATMETHOD_AUTO, m_delayMS);
+    pws_os::SendString(reinterpret_cast<const char*>(str),
+                       pws_os::ATMETHOD_AUTO, m_delayMS);
   delete [] str;
 }
 

@@ -41,9 +41,9 @@ struct AutotypeGlobals
 	Boolean			error_detected;
 	char			errorString[1024];
 	KeyCode 		lshiftCode;
-	AutotypeMethod	method;
+  pws_os::AutotypeMethod	method;
 	Boolean			LiteralKeysymsInitialized;
-} atGlobals	= { False, {0}, 0, ATMETHOD_AUTO, False };
+} atGlobals	= { False, {0}, 0, pws_os::ATMETHOD_AUTO, False };
 
 /*
  * ErrorHandler will be called when X detects an error. This function
@@ -80,7 +80,7 @@ int ShiftRequired(char* keystring)
  * - characters which need to be manually converted to KeySyms
  */
 
-struct {
+static struct {
     char ch;
     const char* keystr;
 	KeySym sym;
