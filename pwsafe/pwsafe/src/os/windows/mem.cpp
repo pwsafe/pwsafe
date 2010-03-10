@@ -10,7 +10,6 @@
  * \file Windows-specific implementation of mem.h
  */
 
-#include <Windows.h>
 #include "../typedefs.h"
 #include "../mem.h"
 

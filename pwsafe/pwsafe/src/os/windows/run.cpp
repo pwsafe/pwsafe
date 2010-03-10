@@ -10,7 +10,7 @@
  * \file Windows-specific implementation of run.h
  */
 
-#include <Windows.h>
+#include "../typedefs.h"
 #include <shellapi.h>
 
 #include "../run.h"

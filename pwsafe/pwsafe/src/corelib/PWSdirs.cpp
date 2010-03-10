@@ -6,7 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#include "Afxwin.h"
 #include "os/env.h"
 #include "os/dir.h"
 #include "PWSdirs.h"
