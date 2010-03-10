@@ -6,6 +6,8 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #ifndef __PROXY_H
+#define __PROXY_H
+
 /**
  * Abstract base classes used by corelib to interface with the user.
  * UI-specific code should derive concrete classes and pass pointers
@@ -30,5 +32,4 @@ public:
   virtual ~Reporter() {} // keep compiler happy
 };
 
-#define __PROXY_H
 #endif /* __PROXY_H */

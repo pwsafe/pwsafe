@@ -72,9 +72,12 @@ PWScore::~PWScore()
 {
   // do NOT trash m_session_*, as there may be other cores around
   // relying on it. Trashing the ciphertext encrypted with it is enough
+  const unsigned int BS = BlowFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
-    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
+    m_passkey = NULL;
+    m_passkey_len = 0;
   }
 
   m_UHFL.clear();
@@ -264,11 +267,14 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
 
 void PWScore::ClearData(void)
 {
+  const unsigned int BS = BlowFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
-    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
+    m_passkey = NULL;
     m_passkey_len = 0;
   }
+  m_passkey = NULL;
 
   //Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.clear();
@@ -297,12 +303,14 @@ void PWScore::ReInit(bool bNewFile)
   else
     m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
 
+  const unsigned int BS = BlowFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
-    trashMemory(m_passkey, ((m_passkey_len + 7) / 8) * 8);
+    trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
     m_passkey = NULL;
     m_passkey_len = 0;
   }
+
   m_nRecordsWithUnknownFields = 0;
   m_UHFL.clear();
   ClearChangedNodes();
@@ -1028,43 +1036,48 @@ ItemListIter PWScore::GetUniqueBase(const StringX &grouptitle,
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
                               unsigned char *ciphertext) const
 {
-  // ciphertext is ((len +7)/8)*8 bytes long
-  BlowFish *Algorithm = BlowFish::MakeBlowFish(m_session_key,
-                                               sizeof(m_session_key),
-                                               m_session_salt,
-                                               sizeof(m_session_salt));
-  int BlockLength = ((len + 7)/8)*8;
-  unsigned char curblock[8];
+  // ciphertext is '((len + 7) / 8) * 8' bytes long
+  const unsigned int BS = BlowFish::BLOCKSIZE;
 
-  for (int x = 0; x< BlockLength; x += 8) {
-    int i;
+  BlowFish *bf = BlowFish::MakeBlowFish(m_session_key,
+                                        sizeof(m_session_key),
+                                        m_session_salt,
+                                        sizeof(m_session_salt));
+  int BlockLength = ((len + (BS - 1)) / BS) * BS;
+  unsigned char curblock[BS];
+
+  for (int x = 0; x < BlockLength; x += BS) {
+    unsigned int i;
     if ((len == 0) ||
-      ((len%8 != 0) && (len - x < 8))) {
+      ((len % BS != 0) && (len - x < BS))) {
         //This is for an uneven last block
-        memset(curblock, 0, 8);
-        for (i = 0; i < len %8; i++)
+        memset(curblock, 0, BS);
+        for (i = 0; i < len % BS; i++)
           curblock[i] = plaintext[x + i];
     } else
-      for (i = 0; i < 8; i++)
+      for (i = 0; i < BS; i++) {
         curblock[i] = plaintext[x + i];
-    Algorithm->Encrypt(curblock, curblock);
-    memcpy(ciphertext + x, curblock, 8);
+      }
+    bf->Encrypt(curblock, curblock);
+    memcpy(ciphertext + x, curblock, BS);
   }
-  trashMemory(curblock, 8);
-  delete Algorithm;
+  trashMemory(curblock, sizeof(curblock));
+  delete bf;
 }
 
 void PWScore::SetPassKey(const StringX &new_passkey)
 {
+  // Only used when opening files and for new files
+  const unsigned int BS = BlowFish::BLOCKSIZE;
   // if changing, clear old
   if (m_passkey_len > 0) {
-    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    trashMemory(m_passkey, ((m_passkey_len + (BS -1)) / BS) * BS);
     delete[] m_passkey;
   }
 
   m_passkey_len = new_passkey.length() * sizeof(TCHAR);
 
-  int BlockLength = ((m_passkey_len + 7)/8)*8;
+  int BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
   m_passkey = new unsigned char[BlockLength];
   LPCTSTR plaintext = LPCTSTR(new_passkey.c_str());
   EncryptPassword((const unsigned char *)plaintext, m_passkey_len, m_passkey);
@@ -1075,25 +1088,27 @@ StringX PWScore::GetPassKey() const
   StringX retval(_T(""));
   if (m_passkey_len > 0) {
     const unsigned int BS = BlowFish::BLOCKSIZE;
-    unsigned int BlockLength = ((m_passkey_len + (BS-1))/BS)*BS;
-    BlowFish *Algorithm = BlowFish::MakeBlowFish(m_session_key,
-                                                 sizeof(m_session_key),
-                                                 m_session_salt,
-                                                 sizeof(m_session_salt));
+    unsigned int BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
+    BlowFish *bf = BlowFish::MakeBlowFish(m_session_key,
+                                          sizeof(m_session_key),
+                                          m_session_salt,
+                                          sizeof(m_session_salt));
     unsigned char curblock[BS];
-
     for (unsigned int x = 0; x < BlockLength; x += BS) {
       unsigned int i;
-      for (i = 0; i < BS; i++)
+      for (i = 0; i < BS; i++) {
         curblock[i] = m_passkey[x + i];
+      }
 
-      Algorithm->Decrypt(curblock, curblock);
-      for (i = 0; i < BS; i += sizeof(TCHAR))
-        if (x + i < m_passkey_len)
+      bf->Decrypt(curblock, curblock);
+      for (i = 0; i < BS; i += sizeof(TCHAR)) {
+        if (x + i < m_passkey_len) {
           retval += *((TCHAR*)(curblock + i));
+        }
+      }
     }
     trashMemory(curblock, sizeof(curblock));
-    delete Algorithm;
+    delete bf;
   }
   return retval;
 }

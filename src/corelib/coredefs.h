@@ -117,4 +117,4 @@ typedef std::pair< std::set<st_GroupTitleUser>::iterator, bool > GTUSetPair;
 typedef std::set<st_UUID> UUIDSet;
 typedef std::pair< std::set<st_UUID>::iterator, bool > UUIDSetPair;
 
-#endif
+#endif /* __COREDEFS_H */

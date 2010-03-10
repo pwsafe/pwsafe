@@ -384,4 +384,4 @@ public:
   std::vector<int> m_vRCs;
 };
 
-#endif
+#endif /*  __COMMAND_H */

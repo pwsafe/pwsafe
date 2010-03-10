@@ -7,6 +7,8 @@
 */
 // Fish.h
 #ifndef __FISH_H
+#define __FISH_H
+
 /**
 * Fish is an abstract base class for BlowFish and TwoFish
 * (and for any block cipher, but it's cooler to call it "Fish"
@@ -25,5 +27,4 @@ public:
   virtual void Decrypt(const unsigned char *ct, unsigned char *pt) = 0;
 };
 
-#define __FISH_H
 #endif /* __FISH_H */

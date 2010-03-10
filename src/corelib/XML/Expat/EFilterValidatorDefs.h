@@ -18,8 +18,8 @@
 * As per XML parsing rules, any error stops the parsing immediately.
 */
 
-#ifndef _EFILTERVALIDATORDEFS_H_
-#define _EFILTERVALIDATORDEFS_H_
+#ifndef __EFILTERVALIDATORDEFS_H
+#define __EFILTERVALIDATORDEFS_H
 
 // Error codes
 // Xml filTer Parsing Error Codes = 'XTPEC' prefix
@@ -165,4 +165,4 @@ enum XTD_DataTypes {
   XTD_YESNOSTRINGTYPE
 };
 
-#endif /* _EFILTERVALIDATORDEFS_H_ */
+#endif /* __EFILTERVALIDATORDEFS_H */

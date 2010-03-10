@@ -18,8 +18,8 @@
 * As per XML parsing rules, any error stops the parsing immediately.
 */
 
-#ifndef _EFILEVALIDATORDEFS_H_
-#define _EFILEVALIDATORDEFS_H_
+#ifndef __EFILEVALIDATORDEFS_H
+#define __EFILEVALIDATORDEFS_H
 
 // Error codes
 // Xml fiLe Parsing Error Codes = 'XLPEC' prefix
@@ -65,4 +65,4 @@ enum XLD_DATATYPES {
   XLD_UUIDTYPE
 };
 
-#endif /* _EFILEVALIDATORDEFS_H_ */
+#endif /* __EFILEVALIDATORDEFS_H */

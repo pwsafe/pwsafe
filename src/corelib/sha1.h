@@ -5,8 +5,8 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#ifndef _SHA1_H_
-#define _SHA1_H_
+#ifndef __SHA1_H
+#define __SHA1_H
 
 class SHA1
 {
@@ -22,4 +22,4 @@ private:
   unsigned long count[2];
   unsigned char buffer[64];
 };
-#endif
+#endif /* __SHA1_H */

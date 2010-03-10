@@ -350,7 +350,7 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == RESERVED || t == DCA ||
     t >= LAST);
 }
-#endif
+#endif /* __ITEMDATA_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

@@ -8,8 +8,8 @@
 /// \file PWCharPool.h
 //-----------------------------------------------------------------------------
 
-#ifndef PWCharPool_h
-#define PWCharPool_h
+#ifndef __PWCHARPOOL_H
+#define __PWCHARPOOL_H
 
 #include "os/typedefs.h"
 #include "StringX.h"
@@ -102,4 +102,4 @@ private:
   CPasswordCharPool &operator=(const CPasswordCharPool &);
 };
 
-#endif
+#endif /*  __PWCHARPOOL_H */

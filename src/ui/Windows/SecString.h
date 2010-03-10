@@ -18,8 +18,9 @@
 
 //-----------------------------------------------------------------------------
 
-#ifndef _SECSTRING_H_
-#define _SECSTRING_H_
+#ifndef __SECSTRING_H
+#define __SECSTRING_H
+
 #ifdef _WIN32
 #include <afx.h>
 #endif
@@ -176,7 +177,7 @@ inline bool operator!=(LPCWSTR s1, const CSecString& s2)
 {return s1 != (const CString)s2;}
 
 //-----------------------------------------------------------------------------
-#endif
+#endif /* __SECSTRING_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++
