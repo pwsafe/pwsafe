@@ -36,6 +36,7 @@ typedef char charT;
 #endif
 
 #ifdef _WIN32
+#include "../corelib/PwsPlatform.h" // for afxwin.h
 #include "TCHAR.h"
 typedef char    int8;
 typedef short   int16;

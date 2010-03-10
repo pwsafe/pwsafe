@@ -25,7 +25,6 @@
 #include <algorithm>
 
 #ifdef _WIN32
-#include <AfxWin.h> // for AfxGetApp()
 #include <LMCons.h> // for UNLEN
 #endif
 

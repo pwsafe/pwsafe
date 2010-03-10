@@ -10,7 +10,6 @@
  * \file Windows-specific implementation of utf8conv.h
  */
 
-#include <Windows.h>
 #include "../typedefs.h"
 #include "../utf8conv.h"
 #include "../debug.h"
