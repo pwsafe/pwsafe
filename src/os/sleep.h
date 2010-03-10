@@ -12,7 +12,7 @@ namespace pws_os {
   /**
    * sleep for the specified number of milliseconds
    */
-  extern void sleep_ms(unsigned milliseconds);
+  extern void sleep_ms(unsigned int milliseconds);
 };
 #endif /* __SLEEP_H */
 //-----------------------------------------------------------------------------

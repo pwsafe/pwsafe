@@ -14,7 +14,7 @@
 #include <time.h>
 #include "../sleep.h"
 
-void pws_os::sleep_ms(unsigned milliseconds)
+void pws_os::sleep_ms(unsigned int milliseconds)
 {
   struct timespec tv;
   /* Construct the timespec from the number of whole seconds...  */
