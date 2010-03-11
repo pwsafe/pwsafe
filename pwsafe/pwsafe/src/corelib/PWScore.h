@@ -259,9 +259,9 @@ public:
   // alias/base and shortcut/base handling
   void SortDependents(UUIDList &dlist, StringX &csDependents);
   int NumAliases(const uuid_array_t &base_uuid) const
-  {return m_base2aliases_mmap.count(base_uuid);}
+  {return (int)m_base2aliases_mmap.count(base_uuid);}
   int NumShortcuts(const uuid_array_t &base_uuid) const
-  {return m_base2shortcuts_mmap.count(base_uuid);}
+  {return (int)m_base2shortcuts_mmap.count(base_uuid);}
 
   ItemListIter GetUniqueBase(const StringX &title, bool &bMultiple);
   ItemListIter GetUniqueBase(const StringX &grouptitle, 
