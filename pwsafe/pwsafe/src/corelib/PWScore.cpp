@@ -1036,6 +1036,11 @@ ItemListIter PWScore::GetUniqueBase(const StringX &grouptitle,
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
                               unsigned char *ciphertext) const
 {
+  // Chicken out of an interface change, or just a sanity check?
+  // Maybe both...
+  ASSERT(len > 0);
+  unsigned int ulen = static_cast<unsigned int>(len);
+
   // ciphertext is '((len + 7) / 8) * 8' bytes long
   const unsigned int BS = BlowFish::BLOCKSIZE;
 
@@ -1043,13 +1048,13 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
                                         sizeof(m_session_key),
                                         m_session_salt,
                                         sizeof(m_session_salt));
-  int BlockLength = ((len + (BS - 1)) / BS) * BS;
+  unsigned int BlockLength = ((ulen + (BS - 1)) / BS) * BS;
   unsigned char curblock[BS];
 
-  for (int x = 0; x < BlockLength; x += BS) {
+  for (unsigned int x = 0; x < BlockLength; x += BS) {
     unsigned int i;
-    if ((len == 0) ||
-      ((len % BS != 0) && (len - x < BS))) {
+    if ((ulen == 0) ||
+      ((ulen % BS != 0) && (ulen - x < BS))) {
         //This is for an uneven last block
         memset(curblock, 0, BS);
         for (i = 0; i < len % BS; i++)
