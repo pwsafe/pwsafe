@@ -15,12 +15,6 @@
 #include "BlowFish.h"
 #include "PWSrand.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 //Returns the number of bytes of 8 byte blocks needed to store 'size' bytes
 int CItemField::GetBlockSize(int size) const
 {

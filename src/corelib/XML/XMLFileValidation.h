@@ -10,11 +10,10 @@
 #define __XMLFILEVALIDATION_H
 
 #ifdef USE_XML_LIBRARY
-
+#include <map>
 // PWS includes
 #include "../StringX.h"
 
-#include <map>
 
 #if   USE_XML_LIBRARY == EXPAT
 // Expat includes
@@ -175,5 +174,4 @@ private:
 };
 
 #endif /* USE_XML_LIBRARY */
-
 #endif /* __XMLFILEVALIDATION_H */
