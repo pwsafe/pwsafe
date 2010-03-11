@@ -9,8 +9,6 @@
 /**
  * \file Windows-specific implementation of rand.h
  */
-#include <afx.h>
-#include <Windows.h>
 #include <stdlib.h>
 #include <process.h>
 #include "../rand.h"
