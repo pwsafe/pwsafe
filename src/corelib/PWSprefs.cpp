@@ -1261,10 +1261,14 @@ void PWSprefs::SaveApplicationPreferences()
   if (m_rect.changed) {
     switch (m_ConfigOptions) {
       case CF_REGISTRY:
-        pws_os::RegWriteValue(PWS_REG_POSITION, _T("top"), m_rect.top);
-        pws_os::RegWriteValue(PWS_REG_POSITION, _T("bottom"), m_rect.bottom);
-        pws_os::RegWriteValue(PWS_REG_POSITION, _T("left"), m_rect.left);
-        pws_os::RegWriteValue(PWS_REG_POSITION, _T("right"), m_rect.right);
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("top"),
+                              int(m_rect.top));
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("bottom"),
+                              int(m_rect.bottom));
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("left"),
+                              int(m_rect.left));
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("right"),
+                              int(m_rect.right));
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
@@ -1291,10 +1295,14 @@ void PWSprefs::SaveApplicationPreferences()
   if (m_PSSrect.changed) {
     switch (m_ConfigOptions) {
       case CF_REGISTRY:
-        pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_top"), m_PSSrect.top);
-        pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_bottom"), m_PSSrect.bottom);
-        pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_left"), m_PSSrect.left);
-        pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_right"), m_PSSrect.right);
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_top"),
+                              int(m_PSSrect.top));
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_bottom"),
+                              int(m_PSSrect.bottom));
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_left"),
+                              int(m_PSSrect.left));
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_right"),
+                              int(m_PSSrect.right));
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
@@ -1504,7 +1512,7 @@ void PWSprefs::ImportOldPrefs()
 
   // Last but not least, rectangle
   long rectVals[4] = {-1, -1, -1, -1};
-  TCHAR *rectNames[4] = {_T("top"), _T("bottom"), _T("left"), _T("right")};
+  const TCHAR *rectNames[4] = {_T("top"), _T("bottom"), _T("left"), _T("right")};
   for (i = 0; i < 4; i++) {
     int value;
     if (pws_os::RegReadSTValue(rectNames[i], value))
