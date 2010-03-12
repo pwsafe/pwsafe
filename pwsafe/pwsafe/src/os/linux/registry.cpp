@@ -39,7 +39,8 @@ int pws_os::RegReadValue(const TCHAR *, const TCHAR *, int value)
   return value;
 }
 
-const pws_os::TCHAR *RegReadValue(const TCHAR *, const TCHAR *, const TCHAR *value)
+const TCHAR *pws_os::RegReadValue(const TCHAR *, const TCHAR *,
+                                  const TCHAR *value)
 {
   return value;
 }
