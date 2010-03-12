@@ -19,6 +19,7 @@
 use strict;
 use warnings;
 use locale;
+use File::Basename;
 
 sub usage {
     print "Usage: $0 rc2file\n";
@@ -26,20 +27,23 @@ sub usage {
 }
 
 &usage unless ($#ARGV == 0);
-my $BASE = $ARGV[0];
+my $PATHNAME = $ARGV[0];
 my $RC2FILE;
 my $CPPFILE;
 my $HFILE;
 my %MAP;
 
 # accept both filename.rc2 and filename as input
-if ($BASE =~ m/(.+)\.rc2/) {
-    $BASE = $1;
+if ($PATHNAME =~ m/(.+)\.rc2/) {
+    $PATHNAME = $1;
 }
-$RC2FILE = "${BASE}.rc2";
-$CPPFILE = "${BASE}_st.cpp";
-$HFILE = "${BASE}_st.h";
+$RC2FILE = "${PATHNAME}.rc2";
+$CPPFILE = "${PATHNAME}_st.cpp";
+$HFILE = "${PATHNAME}_st.h";
 
+my $BASE;
+my $dummy;
+($BASE, $dummy, $dummy) = fileparse($RC2FILE, qr{\.rc2});
 my $B = uc($BASE);
 my $b = lc($BASE);
 
@@ -117,7 +121,7 @@ sub WriteCPPFile {
 #define _(x) x
 #endif
 
-#include "$HFILE"
+#include "./${BASE}_st.h"
 #include <utility>
 ${include}
 
