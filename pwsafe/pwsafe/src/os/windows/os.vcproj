@@ -741,6 +741,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\registry.h"
+				>
+			</File>
+			<File
 				RelativePath="..\run.h"
 				>
 			</File>
@@ -794,6 +798,10 @@
 			</File>
 			<File
 				RelativePath=".\rand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\registry.cpp"
 				>
 			</File>
 			<File
