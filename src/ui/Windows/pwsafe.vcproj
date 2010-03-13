@@ -29,7 +29,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -130,7 +130,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -238,7 +238,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -342,7 +342,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -450,7 +450,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -559,7 +559,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -668,7 +668,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -773,7 +773,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -880,7 +880,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Pre-build event command script"
-				CommandLine="pre_build.cmd"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"

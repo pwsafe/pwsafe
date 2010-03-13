@@ -51,7 +51,7 @@
 #ifndef __PWSPLATFORM_H
 #define __PWSPLATFORM_H
 
-#if defined(_WIN32)
+#if defined(_WIN32) && !defined(__WX__)
 // ONLY place in corelib which refers to parent. Ugh.
 #include "../ui/Windows/stdafx.h"
 #else

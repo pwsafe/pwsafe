@@ -27,6 +27,7 @@ namespace pws_os {
   { return RegReadValue(section, entry, value ? 1 : 0) != 0; }
   const TCHAR *RegReadValue(const TCHAR *section, const TCHAR *entry, const TCHAR *value);
   void RegDeleteSubtree(const TCHAR *stree);
+  bool DeleteRegistryEntries();
   // Following should be called in following order:
   // RegOpenSubtree(); RegReadSTValue() (repeatedly); RegCloseSubTree()
   // Not very elegant, but needed only for importing old prefs

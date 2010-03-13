@@ -13,9 +13,7 @@
 
 #include "os/pws_tchar.h"
 
-#ifdef _WIN32
-#include <afx.h>
-#else
+#if !defined(_WIN32) || defined(__WX__)
 #include "corelib_st.h"
 #endif
 
@@ -144,7 +142,7 @@ template<class T> int Remove(T &s, TCHAR c)
 
 template<class T> void LoadAString(T &s, int id)
 {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__WX__)
   CString cs;
   cs.LoadString(id);
   s = cs;

@@ -53,19 +53,28 @@ bool pws_os::RegOpenSubtree(const TCHAR *)
 {
   return false;
 }
+
 bool pws_os::RegReadSTValue(const TCHAR *, bool &)
 {
   return false;
 }
+
 bool pws_os::RegReadSTValue(const TCHAR *, int &)
 {
   return false;
 }
+
 bool pws_os::RegReadSTValue(const TCHAR *, stringT &)
 {
   return false;
 }
+
 bool pws_os::RegCloseSubtree()
+{
+  return false;
+}
+
+bool pws_os::DeleteRegistryEntries()
 {
   return false;
 }

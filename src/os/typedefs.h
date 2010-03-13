@@ -60,6 +60,28 @@ typedef void *HANDLE;
 #define W_OK 02
 #define R_OK 04
 
+#ifdef __WX__
+#include "debug.h"
+
+// Fake these for shortcut prefs
+#define HOTKEYF_SHIFT           0x01
+#define HOTKEYF_CONTROL         0x02
+#define HOTKEYF_ALT             0x04
+#define HOTKEYF_EXT             0x08
+
+typedef unsigned long DWORD;
+// assorted conveniences:
+#define ASSERT(p) assert(p)
+#define VERIFY(p) if (!(p)) TRACE(_T("VERIFY Failed"))
+#define TRACE pws_os::Trace
+#ifndef TRUE
+#define TRUE true
+#endif
+#ifndef FALSE
+#define FALSE false
+#endif
+#endif  /* __WX__ */
+
 #else /* !defined(_WIN32) */
 #include <sys/types.h>
 #include "linux/pws_time.h"
@@ -92,6 +114,7 @@ typedef wchar_t TCHAR;
 typedef char TCHAR;
 typedef wchar_t WCHAR;
 #endif /* UNICODE */
+
 // mimic Microsoft conventional typdefs:
 typedef TCHAR *LPTSTR;
 typedef const TCHAR *LPCTSTR;

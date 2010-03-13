@@ -7,9 +7,6 @@
 */
 // XMLprefs.cpp : implementation file
 //
-#ifdef _WIN32
-#include <afx.h>
-#endif
 
 #include "XMLprefs.h"
 #include "PWSprefs.h"
