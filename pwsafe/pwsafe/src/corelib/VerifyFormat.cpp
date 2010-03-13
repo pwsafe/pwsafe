@@ -10,6 +10,9 @@
 #include "corelib.h"
 #include "StringXStream.h"
 
+#include <time.h>
+#include <stdio.h>
+
 bool verifyDTvalues(int yyyy, int mon, int dd,
                     int hh, int min, int ss)
 {

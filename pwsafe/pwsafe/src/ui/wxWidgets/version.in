@@ -23,17 +23,15 @@
 
 #define MAJORVERSION 0
 #define MINORVERSION 1
+#define REVISION     0
+
+#define SVN_VERSION "$WCREV$$WCMODS?+:$"
 
 // define following for custom/experimental versions
 #define SPECIALBUILD _T("pre-alpha")
 
 #ifndef SPECIALBUILD
 #define SPECIALBUILD _T("")
-#endif
-
-// SVN_VERSION should be provided via -D from Makefile
-#ifndef SVN_VERSION
-#define SVN_VERSION 0
 #endif
 
 extern const wxString pwsafeAppName;

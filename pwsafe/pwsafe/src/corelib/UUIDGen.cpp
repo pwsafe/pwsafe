@@ -19,7 +19,7 @@
 #include <assert.h>
 
 #ifdef _WIN32
-#include <Winsock2.h> /* for htonl, htons */
+#include <Winsock.h> /* for htonl, htons */
 #else
 /* currently here only for Cygwin test harness */
 #include <asm/byteorder.h> /* for htonl, htons */

@@ -39,6 +39,10 @@ const LPCTSTR PWS_REG_POSITION = _T("");
 const LPCTSTR PWS_REG_OPTIONS = _T("");
 #endif
 
+// For Old registry handling:
+const stringT Software(_T("Software"));
+const stringT OldSubKey(_T("Counterpane Systems"));
+
 HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
 int s_cfgLockCount = 0;
 
@@ -1420,27 +1424,9 @@ bool PWSprefs::OfferDeleteRegistry() const
 
 void PWSprefs::DeleteRegistryEntries()
 {
-#ifdef _WIN32
-  DeleteOldPrefs();
-  HKEY hSubkey;
-  const stringT csSubkey = _T("Software\\") + stringT(::AfxGetApp()->m_pszRegistryKey);
-
-  LONG dw = RegOpenKeyEx(HKEY_CURRENT_USER,
-                         csSubkey.c_str(),
-                         NULL,
-                         KEY_ALL_ACCESS,
-                         &hSubkey);
-  if (dw != ERROR_SUCCESS) {
-    return; // may have been called due to OldPrefs
-  }
-
-  dw = ::AfxGetApp()->DelRegTree(hSubkey, ::AfxGetApp()->m_pszAppName);
-  ASSERT(dw == ERROR_SUCCESS);
-
-  dw = RegCloseKey(hSubkey);
-  ASSERT(dw == ERROR_SUCCESS);
-  m_bRegistryKeyExists = false;
-#endif /* _WIN32 */
+  pws_os::RegDeleteSubtree(OldSubKey.c_str());
+  if (pws_os::DeleteRegistryEntries())
+    m_bRegistryKeyExists = false;
 }
 
 int PWSprefs::GetConfigIndicator() const
@@ -1460,10 +1446,6 @@ int PWSprefs::GetConfigIndicator() const
       return 0;
   }
 }
-
-// For Old registry handling:
-const stringT Software(_T("Software"));
-const stringT OldSubKey(_T("Counterpane Systems"));
 
 bool PWSprefs::OldPrefsExist() const
 {

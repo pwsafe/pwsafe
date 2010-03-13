@@ -92,10 +92,17 @@ sub WriteHFile {
  * Changes made to this file will be lost when the
  * file is regenerated.
  *
+ * Note: The contents of this file is not needed for MFC builds but
+ * it does not seem possible to conditionally exclude it from these.
+ *
  */
+
+#if !defined(_WIN32) || defined(__WX__)
 #include <map>
 #include "../os/typedefs.h" // for definition of TCHAR
 extern std::map<int, const TCHAR *> ${b}_st;
+#endif
+
 #endif /* __${B}_ST_H */
 EOT
     close(H);
@@ -113,7 +120,12 @@ sub WriteCPPFile {
  * Changes made to this file will be lost when the
  * file is regenerated.
  *
+ * Note: The contents of this file is not needed for MFC builds but
+ * it does not seem possible to conditionally exclude it from these.
+ *
  */
+
+#if !defined(_WIN32) || defined(__WX__)
 
 #ifdef UNICODE
 #define _(x) L ## x
@@ -140,6 +152,8 @@ PREAMBLE
 }; // anonymous namespace
 
 map<int, const TCHAR *> ${b}_st(Pairs, Pairs + sizeof(Pairs)/sizeof(Pairs[0]));
+
+#endif
 POSTAMBLE
     close(CPP);
 }

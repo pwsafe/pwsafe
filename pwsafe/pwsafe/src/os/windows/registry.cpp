@@ -191,6 +191,28 @@ bool pws_os::RegCloseSubtree()
   return (::RegCloseKey(hSubkey) == ERROR_SUCCESS);
 }
 
+bool pws_os::DeleteRegistryEntries()
+{
+  HKEY hSubkey;
+  const stringT csSubkey = _T("Software\\") + stringT(::AfxGetApp()->m_pszRegistryKey);
+
+  LONG dw = RegOpenKeyEx(HKEY_CURRENT_USER,
+                         csSubkey.c_str(),
+                         NULL,
+                         KEY_ALL_ACCESS,
+                         &hSubkey);
+  if (dw != ERROR_SUCCESS) {
+    return false; // may have been called due to OldPrefs
+  }
+
+  dw = ::AfxGetApp()->DelRegTree(hSubkey, ::AfxGetApp()->m_pszAppName);
+  ASSERT(dw == ERROR_SUCCESS);
+
+  dw = RegCloseKey(hSubkey);
+  ASSERT(dw == ERROR_SUCCESS);
+  return true;
+}
+
 #else /* __WX__ */
 
 // XXX All TBD...
@@ -232,20 +254,30 @@ bool pws_os::RegOpenSubtree(const TCHAR *)
 {
   return false;
 }
+
 bool pws_os::RegReadSTValue(const TCHAR *, bool &)
 {
   return false;
 }
+
 bool pws_os::RegReadSTValue(const TCHAR *, int &)
 {
   return false;
 }
+
 bool pws_os::RegReadSTValue(const TCHAR *, stringT &)
 {
   return false;
 }
+
 bool pws_os::RegCloseSubtree()
 {
   return false;
 }
+
+bool pws_os::DeleteRegistryEntries()
+{
+  return false;
+}
+
 #endif /* __WX__ */

@@ -27,6 +27,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -92,6 +94,85 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debugwx|Win32"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=".."
+				PreprocessorDefinitions="WIN32;__WX__;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				DebugInformationFormat="3"
+				CompileAs="0"
+				ShowIncludes="false"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories=""
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
 			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
@@ -103,6 +184,87 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories=".."
+				PreprocessorDefinitions="WIN32;__WX__;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1037"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
+				AdditionalLibraryDirectories=""
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Releasewx|Win32"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -180,6 +342,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -257,6 +421,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -333,6 +499,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -408,6 +576,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -484,6 +654,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -562,6 +734,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -639,6 +813,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Pre-build event command script"
+				CommandLine="cscript pre_build.vbs"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -727,6 +903,10 @@
 			</File>
 			<File
 				RelativePath=".\CoreImpExp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\corelib_st.cpp"
 				>
 			</File>
 			<File
@@ -960,6 +1140,10 @@
 			</File>
 			<File
 				RelativePath=".\corelib.h"
+				>
+			</File>
+			<File
+				RelativePath=".\corelib_st.h"
 				>
 			</File>
 			<File
