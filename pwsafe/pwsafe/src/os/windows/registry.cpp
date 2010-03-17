@@ -79,15 +79,15 @@ bool pws_os::RegDeleteEntry(const TCHAR *name)
   return bRetVal;
 }
 
-int pws_os::RegReadValue(const TCHAR *section, const TCHAR *entry, int value)
+int pws_os::RegReadValue(const TCHAR *section, const TCHAR *entry, const int value)
 {
   return ::AfxGetApp()->GetProfileInt(section, entry, value);
 }
 
-const TCHAR *pws_os::RegReadValue(const TCHAR *section, const TCHAR *entry,
-                                  const TCHAR *value)
+const stringT pws_os::RegReadValue(const TCHAR *section, const TCHAR *entry,
+                                   const TCHAR *value)
 {
-  return ::AfxGetApp()->GetProfileString(section, entry, value);
+  return (const TCHAR*)::AfxGetApp()->GetProfileString(section, entry, value);
 }
 
 void pws_os::RegDeleteSubtree(const TCHAR *stree)

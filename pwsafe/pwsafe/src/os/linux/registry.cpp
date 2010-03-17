@@ -34,13 +34,13 @@ bool pws_os::RegDeleteEntry(const TCHAR *)
   return false;
 }
 
-int pws_os::RegReadValue(const TCHAR *, const TCHAR *, int value)
+int pws_os::RegReadValue(const TCHAR *, const TCHAR *, const int value)
 {
   return value;
 }
 
-const TCHAR *pws_os::RegReadValue(const TCHAR *, const TCHAR *,
-                                  const TCHAR *value)
+const stringT pws_os::RegReadValue(const TCHAR *, const TCHAR *,
+                                   const TCHAR *value)
 {
   return value;
 }
