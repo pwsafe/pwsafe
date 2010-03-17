@@ -311,8 +311,10 @@ void pws_os::SendString(const char* str, AutotypeMethod method, unsigned delayMS
 			keystring[0] = *str;
 		}
 
-		if (!atGlobals.LiteralKeysymsInitialized)
+		if (!atGlobals.LiteralKeysymsInitialized) {
 			InitLiteralKeysyms();
+            atGlobals.LiteralKeysymsInitialized = True;
+        }
 
 		keystring[1] = '\0';
 
