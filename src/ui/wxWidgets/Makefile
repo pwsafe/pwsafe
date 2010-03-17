@@ -128,15 +128,12 @@ endif
 endif
 endif
 
-SVN_VERSION = $(shell svnversion -n ../../..)
-
 DEPDIR= ./deps
 
 CPPINC += -I../..
 
 LDFLAGS=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS)
 CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
-CPPFLAGS += -DSVN_VERSION=\"$(SVN_VERSION)\"
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
@@ -149,6 +146,7 @@ SOURCES= passwordsafeframe.cpp \
 	optionspropsheet.cpp PasswordSafeSearch.cpp \
 	deleteconfirmation.cpp editshortcut.cpp \
 	createshortcutdlg.cpp
+
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
 OBJECTS += $(RESOURCEOBJECT)
@@ -169,6 +167,7 @@ clean:
 	@rm -fr $(PROGRAM).app
 	@rm -f $(OUTPUTPATH)/$(PROGRAM)
 	@rm -rf $(DEPDIR)
+	@rm -f version.h
 
 help:
 	@echo "Usage: make -f Makefile CONFIG=[debug|release|unicodedebug|unicoderelease] [all|clean|help]"
@@ -199,15 +198,18 @@ $(OUTPUTPATH)/$(PROGRAM).app/Contents/PkgInfo: $(OUTPUTPATH)/$(PROGRAM) $(INFOPL
 	ln -f $(OUTPUTPATH)/$(PROGRAM) $(OUTPUTPATH)/$(PROGRAM).app/Contents/MacOS/$(PROGRAM)
 	cp -f $(ICNSSOURCE) $(ICNSDEST)
 
-$(DEPDIR)/%.d: %.cpp
+$(DEPDIR)/%.d: %.cpp version.h
 	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
 	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 
+version.h: always
+	@../../../Misc/mkversion.pl version.in $@
+
 -include $(SOURCES:%.cpp=$(DEPDIR)/%.d)
 
 
-.PHONY:	all clean
+.PHONY:	all clean help always
 ### Begin DialogBlocks generated body
 ### End DialogBlocks generated body
