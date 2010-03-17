@@ -492,6 +492,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
     ASSERT(pbci != NULL);
     if (pbci != NULL) {
       pbci->GetUUID(original_base_uuid);
+      memcpy(m_AEMD.base_uuid, original_base_uuid, sizeof(uuid_array_t));
       CSecString cs_base = L"[" +
                            pbci->GetGroup() + L":" +
                            pbci->GetTitle() + L":" +
