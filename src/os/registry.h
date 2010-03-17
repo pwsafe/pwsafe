@@ -14,7 +14,9 @@
 
 #ifndef __REGISTRY_H
 #define __REGISTRY_H
+
 #include "typedefs.h" // for TCHAR
+
 namespace pws_os {
   bool RegCheckExists(const TCHAR *stree = NULL); // check for app's registry subtree by default
   bool RegWriteValue(const TCHAR *section, const TCHAR *entry, int value);
@@ -22,10 +24,10 @@ namespace pws_os {
   { return RegWriteValue(section, entry, value ? 1 : 0); }
   bool RegWriteValue(const TCHAR *section, const TCHAR *entry, const TCHAR *value);
   bool RegDeleteEntry(const TCHAR *name);
-  int RegReadValue(const TCHAR *section, const TCHAR *entry, int value);
-  inline bool RegReadValue(const TCHAR *section, const TCHAR *entry, bool value)
+  int RegReadValue(const TCHAR *section, const TCHAR *entry, const int value);
+  inline bool RegReadValue(const TCHAR *section, const TCHAR *entry, const bool value)
   { return RegReadValue(section, entry, value ? 1 : 0) != 0; }
-  const TCHAR *RegReadValue(const TCHAR *section, const TCHAR *entry, const TCHAR *value);
+  const stringT RegReadValue(const TCHAR *section, const TCHAR *entry, const TCHAR *value);
   void RegDeleteSubtree(const TCHAR *stree);
   bool DeleteRegistryEntries();
   // Following should be called in following order:

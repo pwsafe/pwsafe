@@ -1021,7 +1021,7 @@ void PWSprefs::LoadProfileFromRegistry()
   for (i = 0; i < NumStringPrefs; i++) {
     m_stringValues[i] = pws_os::RegReadValue(PWS_REG_OPTIONS,
                                              m_string_prefs[i].name,
-                                             m_stringValues[i].c_str());
+                                             m_stringValues[i].c_str()).c_str();
 
     // Make sure we write them all out to the config file the first time
     m_stringChanged[i] = true;
