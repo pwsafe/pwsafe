@@ -17,11 +17,13 @@
 
 #include "AddEdit_Basic.h"
 #include "AddEdit_PropertySheet.h"
+#include "ChangeAliasPswd.h"
 
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSAuxParse.h"
 #include "corelib/corelib.h"
+#include "corelib/command.h"
 
 #include <shlwapi.h>
 #include <fstream>
@@ -745,14 +747,47 @@ void CAddEdit_Basic::OnRandom()
     return;
   }
 
+  INT_PTR rc(CChangeAliasPswd::CHANGEALIAS);
+  if (M_original_entrytype() == CItemData::ET_ALIAS) {
+    CChangeAliasPswd dlgchngepswd;
+    CSecString cs_base = M_base();
+    cs_base.Replace(L"[", L"\xab");
+    cs_base.Replace(L":", L"\xbb \xab");
+    cs_base.Replace(L"]", L"\xbb");
+    dlgchngepswd.m_BaseEntry = (CString)cs_base;
+    rc = dlgchngepswd.DoModal();
+    switch (rc) {
+      case IDCANCEL:
+        return;
+      case CChangeAliasPswd::CHANGEBASE:
+        // Change Base
+        break;
+      case CChangeAliasPswd::CHANGEALIAS:
+        // Change Alias
+        break;
+      default:
+        ASSERT(0);
+    }
+  }
+
   StringX passwd;
   M_pDbx()->MakeRandomPassword(passwd, M_pwp());
-  M_realpassword() = m_password = passwd.c_str();
-  if (m_isPWHidden) {
-    m_password2 = m_password;
+  if (rc == CChangeAliasPswd::CHANGEBASE) {
+    // Change Base
+    ItemListIter iter = M_pDbx()->Find(M_base_uuid());
+    ASSERT(iter != M_pcore()->GetEntryEndIter());
+    CItemData *pci = &iter->second;
+    Command *pcmd = UpdatePasswordCommand::Create(M_pcore(), *pci,
+                                                  passwd);
+    M_pDbx()->Execute(pcmd);
+  } else {
+    M_realpassword() = m_password = passwd.c_str();
+    if (m_isPWHidden) {
+      m_password2 = m_password;
+    }
+    m_ae_psh->SetChanged(true);
+    UpdateData(FALSE);
   }
-  m_ae_psh->SetChanged(true);
-  UpdateData(FALSE);
 }
 
 void CAddEdit_Basic::OnGroupComboChanged()

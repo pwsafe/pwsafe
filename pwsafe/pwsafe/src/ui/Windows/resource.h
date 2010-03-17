@@ -322,6 +322,7 @@
 #define IDB_DRAGEMAIL_CLASSIC           476
 #define IDB_DRAGEMAILX_CLASSIC          477
 #define IDB_UNDO_CLASSIC                478
+#define IDD_ALIAS_PSWDCHANGE            478
 #define IDB_REDO_CLASSIC                479
 #define IDB_UNDO_NEW                    480
 #define IDB_REDO_NEW                    481
@@ -696,14 +697,17 @@
 #define IDC_SIZE_B                      1411
 #define IDC_SIZE_KB                     1412
 #define IDC_SIZE_MB                     1413
+#define IDC_CHANGEBASEPSWD              1414
+#define IDC_CHANGEALIASPSWD             1415
+#define IDC_STATIC_BASE                 1416
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        478
+#define _APS_NEXT_RESOURCE_VALUE        479
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1412
+#define _APS_NEXT_CONTROL_VALUE         1417
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif
