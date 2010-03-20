@@ -107,15 +107,17 @@ of the following versions:
 [V6.1.6000.16384.10 dated February 2007] - known as V6.0.</li>
 <li>"Windows Server 2008 and .NET Framework 3.5"
 [V6.0.6001.18000.367 dated February 2008] - known as V6.1.</li>
+<li>"Windows 7 and .NET Framework 3.5 SP1
+[V6.1.7600.16385 dated August 2009] - known as V7.0.</li>
 </ul>
-All three of these replace the old "Platform SDK" and support Operating
+All these replace the old "Platform SDK" and support Operating
 Systems: Vista and Windows XP; and Development Environments: Visual
-Studio 2005 and 2008. Later versions support Windows 7 but not Visual
-Studio 2005. At this time, PasswordSafe does not use any facilities or
+Studio 2005 and 2008. However, V7.0 and later support Windows 7 <b>but not</b>
+Visual Studio 2005. At this time, PasswordSafe does not use any facilities or
 functions that are not supported by Windows XP and Visual Studio 2005.
 <br>
 By default, the SDKs are installed in directory "C:\Program
-Files\Microsoft SDKs\Windows\NNN", where NNN is '6.0', '6.0A' or '6.1'.
+Files\Microsoft SDKs\Windows\NNN", where NNN is '6.0', '6.0A', '6.1' or '7.0'.
 <u>See note below.</u></li>
 <li>To compile and produce the Help files (.chm) then
 <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-%0D%0Ac8a6-452f-9aa0-d597d16580cc&amp;DisplayLang=en">
@@ -133,7 +135,7 @@ the Windows SDK mentioned above and do not need to be installed separately.</li>
 <li><a target="_blank" href="http://expat.sourceforge.net/">Expat's V2.0.1
 XML Library</a></li>
 <li><a target="_blank" href="http://xerces.apache.org/xerces-c/">Xerces
-V3.0.1 XML Library</a></li>
+V3.1.0 XML Library</a></li>
 </ul>
 </li>
 </ul>
@@ -146,7 +148,7 @@ achieved in VS2005 via Tools &gt; Options &gt; Project and Solutions
 They can be added at the end of each appropriate set using the directory you
 specified during installation (the defaults are: "C:\Program
 Files\Microsoft SDKs\Windows\NNN\Include" and "C:\Program
-Files\Microsoft SDKs\Windows\NNN\Lib", where NNN is 6.0, 6.0A or 6.1 as
+Files\Microsoft SDKs\Windows\NNN\Lib", where NNN is 6.0, 6.0A, 6.1 or 7.0 as
 noted above). The Microsoft Visual Studio Registration Tool only adds
 the .Net libraries and not those needed for PasswordSafe. <b>It is
 recommended that you get SDK V6.1 <u>and</u> you place them above the
