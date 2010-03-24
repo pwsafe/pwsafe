@@ -41,6 +41,7 @@
 #include "corelib/PWSdirs.h"
 #include "PasswordSafeSearch.h"
 #include "pwsclip.h"
+#include "SystemTray.h"
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -192,7 +193,7 @@ END_EVENT_TABLE()
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(GRID), m_search(0)
+: m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false)
 {
     Init();
 }
@@ -201,7 +202,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID), m_search(0)
+  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false)
 {
     Init();
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
@@ -239,6 +240,9 @@ PasswordSafeFrame::~PasswordSafeFrame()
 ////@end PasswordSafeFrame destruction
   delete m_search;
   m_search = 0;
+
+  delete m_sysTray;
+  m_sysTray = 0;
 }
 
 
@@ -497,6 +501,7 @@ bool PasswordSafeFrame::Show(bool show)
 
 void PasswordSafeFrame::OnExitClick( wxCommandEvent& event )
 {
+  m_exitFromMenu = true;
   Close();
 }
 
@@ -856,14 +861,25 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
 {
-  if (event.CanVeto()) {
-    int rc = SaveIfChanged();
-    if (rc == PWScore::USER_CANCEL) {
-      event.Veto();
-      return;
+  if (m_exitFromMenu) {
+    if (event.CanVeto()) {
+      int rc = SaveIfChanged();
+      if (rc == PWScore::USER_CANCEL) {
+        event.Veto();
+        m_exitFromMenu = false;
+        return;
+      }
     }
+    Destroy();
   }
-  Destroy();
+  else {
+    Iconize();
+    while (!IsIconized()) {
+      wxSafeYield(); 
+    }
+    Hide();
+    m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+  } 
 }
 
 
