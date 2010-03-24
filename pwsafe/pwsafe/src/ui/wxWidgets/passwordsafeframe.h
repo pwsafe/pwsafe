@@ -33,6 +33,7 @@
 ////@begin forward declarations
 class PWSGrid;
 class PWSTreeCtrl;
+class SystemTray;
 ////@end forward declarations
 class PasswordSafeSearch;
 
@@ -109,6 +110,7 @@ enum {
   ID_SENDEMAIL,
   ID_CREATESHORTCUT,
   ID_EDITBASEENTRY,
+  ID_SYSTRAY_RESTORE
 };
 
 
@@ -322,6 +324,8 @@ public:
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
   PasswordSafeSearch* m_search;
+  SystemTray* m_sysTray;
+  bool m_exitFromMenu; 
 };
 
 #endif
