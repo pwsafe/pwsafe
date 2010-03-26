@@ -196,18 +196,23 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   pTimeCtl->SetFormat(sTimeFormat);
   pDateCtl->SetFormat(sDateFormat);
 
-  CTime ct, xt;
+  CTime xt;
   CTime now(CTime::GetCurrentTime());
-  ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
 
-  const CTime sMinDate(ct);
+  if (M_tttXTime() != (time_t)0) {
+    xt = CTime(M_tttXTime());
+  } else {
+    xt = now;
+  }
+
+  const CTime sMinDate(now);
   const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
 
   // Set approx. limit of 32-bit times!
   pDateCtl->SetRange(&sMinDate, &sMaxDate);
 
-  pDateCtl->SetTime(&ct);
-  pTimeCtl->SetTime(&ct);
+  pDateCtl->SetTime(&xt);
+  pTimeCtl->SetTime(&xt);
 
   GetDlgItem(IDC_STATIC_CURRENT_XTIME)->SetWindowText(M_locXTime());
 
@@ -372,6 +377,7 @@ void CAddEdit_DateTimes::OnSetXTime()
 {
   UpdateData(TRUE);
   CTime XTime, LDate, LDateTime;
+  CTime now(CTime::GetCurrentTime());
 
   if (m_how == ABSOLUTE_EXP) {
     VERIFY(m_pTimeCtl.GetTime(XTime) == GDT_VALID);
@@ -379,6 +385,11 @@ void CAddEdit_DateTimes::OnSetXTime()
 
     LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(),
                       XTime.GetHour(), XTime.GetMinute(), 0, -1);
+    if (now > LDateTime) {
+      CGeneralMsgBox gmb;
+      gmb.AfxMessageBox(IDS_INVALIDEXPIRYDATE, MB_OK | MB_ICONEXCLAMATION);
+      return;
+    }
     M_XTimeInt() = 0;
   } else { // m_how == RELATIVE_EXP
     if (m_ReuseOnPswdChange == FALSE) { // non-recurring
