@@ -28,6 +28,8 @@ None
 
 Bugs fixed in 3.21.1
 ====================
+[2977045] Can now make password expiration date any value from the current
+date.
 [2962916] Save toolbar button only enabled if database is R/W and has been
 changed since last saved.
 [2962847] Fix password length checking to be between 4 and 1024 during
