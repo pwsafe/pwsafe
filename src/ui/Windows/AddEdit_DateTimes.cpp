@@ -197,12 +197,8 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   pDateCtl->SetFormat(sDateFormat);
 
   CTime ct, xt;
-  if (M_tttXTime() == (time_t)0) {
-    CTime now(CTime::GetCurrentTime());
-    ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
-  } else {
-    ct = CTime(M_tttXTime());
-  }
+  CTime now(CTime::GetCurrentTime());
+  ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
 
   const CTime sMinDate(ct);
   const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
