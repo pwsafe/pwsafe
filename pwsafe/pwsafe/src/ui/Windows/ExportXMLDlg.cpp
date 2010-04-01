@@ -36,11 +36,12 @@ static wchar_t PSSWDCHAR = L'*';
 // CExportXMLDlg dialog
 
 
-CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
+CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/, bool bAll)
   : CPWDialog(CExportXMLDlg::IDD, pParent),
   m_subgroup_set(BST_UNCHECKED),
   m_subgroup_name(L""), m_subgroup_object(CItemData::GROUP),
-  m_subgroup_function(0), m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL)
+  m_subgroup_function(0), m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL),
+  m_bAll(bAll)
 {
   m_passkey = L"";
   m_defexpdelim = L"\xbb";
@@ -162,7 +163,8 @@ void CExportXMLDlg::OnOK()
 
 void CExportXMLDlg::OnAdvanced()
 {
-  CAdvancedDlg Adv(this, CAdvancedDlg::ADV_EXPORT_XML, m_bsExport, m_subgroup_name, 
+  CAdvancedDlg Adv(this,  m_bAll ? CAdvancedDlg::ADV_EXPORT_XML : CAdvancedDlg::ADV_EXPORT_ENTRYXML,
+                   m_bsExport, m_subgroup_name, 
                    m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
   INT_PTR rc = Adv.DoModal();

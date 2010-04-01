@@ -827,6 +827,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         default:
           ASSERT(0);
       }
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_EXPORTENT2PLAINTEXT, tc_dummy); 
+      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                             ID_MENUITEM_EXPORTENT2XML, tc_dummy);
     } else {
       // Must be List view with no entry selected
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);

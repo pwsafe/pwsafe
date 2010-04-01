@@ -26,7 +26,7 @@ class CExportTextDlg : public CPWDialog
 {
   // Construction
 public:
-  CExportTextDlg(CWnd* pParent = NULL);   // standard constructor
+  CExportTextDlg(CWnd* pParent = NULL, bool bAll = true);   // standard constructor
   ~CExportTextDlg();
 
   const CSecString &GetPasskey() const {return m_passkey;}
@@ -67,4 +67,5 @@ private:
   CSecEditExtn *m_pctlPasskey;
   CSecString m_passkey;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
+  bool m_bAll;
 };

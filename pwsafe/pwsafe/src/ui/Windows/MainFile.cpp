@@ -1241,7 +1241,20 @@ void DboxMain::OnExportVx(UINT nID)
 
 void DboxMain::OnExportText()
 {
-  CExportTextDlg et;
+  DoExportText(true);
+}
+
+void DboxMain::OnExportEntryText()
+{
+  if (getSelectedItem() == NULL)
+    return;
+
+  DoExportText(false);
+}
+
+void DboxMain::DoExportText(const bool bAll)
+{
+  CExportTextDlg et(this, bAll);
   CGeneralMsgBox gmb;
   OrderedItemList orderedItemList;
   CString cs_text, cs_title, cs_temp;
@@ -1267,10 +1280,16 @@ void DboxMain::OnExportText()
       const int subgroup_function = et.m_subgroup_function;
       wchar_t delimiter = et.m_defexpdelim[0];
 
-      // Note: MakeOrderedItemList gets its members by walking the 
-      // tree therefore, if a filter is active, it will ONLY export
-      // those being displayed.
-      MakeOrderedItemList(orderedItemList);
+      if (bAll) {
+        // Note: MakeOrderedItemList gets its members by walking the 
+        // tree therefore, if a filter is active, it will ONLY export
+        // those being displayed.
+        MakeOrderedItemList(orderedItemList);
+      } else {
+        // Note: Only selected entry
+        CItemData *pci = getSelectedItem();
+        orderedItemList.push_back(*pci);
+      }
 
       rc = m_core.TestForExport(subgroup_name, subgroup_object,
                                subgroup_function, &orderedItemList);
@@ -1334,7 +1353,20 @@ exit:
 
 void DboxMain::OnExportXML()
 {
-  CExportXMLDlg eXML;
+  DoExportXML(true);
+}
+
+void DboxMain::OnExportEntryXML()
+{
+  if (getSelectedItem() == NULL)
+    return;
+
+  DoExportXML(false);
+}
+
+void DboxMain::DoExportXML(const bool bAll)
+{
+  CExportXMLDlg eXML(this, bAll);
   OrderedItemList orderedItemList;
   CString cs_text, cs_title, cs_temp;
 
@@ -1351,10 +1383,16 @@ void DboxMain::OnExportXML()
       wchar_t delimiter;
       delimiter = eXML.m_defexpdelim[0];
 
-      // Note: MakeOrderedItemList gets its members by walking the 
-      // tree therefore, if a filter is active, it will ONLY export
-      // those being displayed.
-      MakeOrderedItemList(orderedItemList);
+      if (bAll) {
+        // Note: MakeOrderedItemList gets its members by walking the 
+        // tree therefore, if a filter is active, it will ONLY export
+        // those being displayed.
+        MakeOrderedItemList(orderedItemList);
+      } else {
+        // Note: Only selected entry
+        CItemData *pci = getSelectedItem();
+        orderedItemList.push_back(*pci);
+      }
 
       rc = m_core.TestForExport(subgroup_name, subgroup_object,
                                subgroup_function, &orderedItemList);
