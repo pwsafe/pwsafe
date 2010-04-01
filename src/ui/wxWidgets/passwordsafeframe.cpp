@@ -42,6 +42,8 @@
 #include "PasswordSafeSearch.h"
 #include "pwsclip.h"
 #include "SystemTray.h"
+#include "wxutils.h"
+#include <wx/clipbrd.h>
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -878,6 +880,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
       wxSafeYield(); 
     }
     Hide();
+    wxClipboard().Clear();
     m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
   } 
 }
@@ -1558,6 +1561,21 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   startLockCheckTimer();
 #endif
   return PWScore::SUCCESS;
+}
+
+void PasswordSafeFrame::OnSysTrayRestore()
+{
+  CSafeCombinationPrompt scp(NULL, m_core, towxstring(m_core.GetCurFile()));
+  if (scp.ShowModal() == wxID_OK) {
+
+    if (!IsShown())
+      Show();
+
+    if (IsIconized())
+      Iconize(false);
+
+    m_sysTray->RemoveIcon();
+  }
 }
 
 

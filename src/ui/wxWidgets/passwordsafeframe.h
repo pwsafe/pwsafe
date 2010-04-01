@@ -289,6 +289,9 @@ public:
     /// Centralized handling of right click in the grid or the tree view
     void OnContextMenu(const CItemData* item);
 
+    /// Called by wxTaskbarIcon derived class on clicking of system tray's Restore menu item
+    void OnSysTrayRestore();
+
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;

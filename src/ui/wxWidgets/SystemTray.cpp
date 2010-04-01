@@ -60,12 +60,6 @@ wxMenu* SystemTray::CreatePopupMenu()
 
 void SystemTray::OnSysTrayRestore(wxCommandEvent& /*evt*/)
 {
-  if (!m_frame->IsShown())
-    m_frame->Show();
-
-  if (m_frame->IsIconized())
-    m_frame->Iconize(false);
-
-  RemoveIcon();
+  m_frame->OnSysTrayRestore();
 }
 

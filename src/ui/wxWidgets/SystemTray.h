@@ -30,6 +30,8 @@ class SystemTray : protected wxTaskBarIcon
     /// event handler for ID_SYSTRAY_RESTORE sent from system tray menu
     void OnSysTrayRestore( wxCommandEvent& event );
 
+    using wxTaskBarIcon::RemoveIcon;
+
   protected:
     //overriden from wxTaskBarIcon, called by framework on r-click
     virtual wxMenu* CreatePopupMenu();

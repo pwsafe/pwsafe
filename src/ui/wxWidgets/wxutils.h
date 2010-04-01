@@ -6,12 +6,16 @@
 #ifndef __WXUTILS_H__
 #define __WXUTILS_H__
 
-wxString& operator << ( wxString& str, const wxPoint& pt) {
+inline wxString& operator << ( wxString& str, const wxPoint& pt) {
   return str << wxT('[') << pt.x << wxT(',') << pt.y << wxT(']');
 }
 
-wxString& operator << ( wxString& str, const wxSize& sz) {
+inline wxString& operator << ( wxString& str, const wxSize& sz) {
   return str << wxT('[') << sz.GetWidth() << wxT(',') << sz.GetHeight() << wxT(']');
+}
+
+inline wxString towxstring(const StringX& str) {
+  return wxString(str.data(), str.size());
 }
 
 #endif
