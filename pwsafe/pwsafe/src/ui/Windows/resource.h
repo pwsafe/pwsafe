@@ -30,7 +30,6 @@
 #define IDD_PASSKEYENTRY_WITHEXIT       132
 #define IDD_PASSKEYSETUP                133
 #define IDD_PASSWORDSAFE_DIALOG         134
-#define IDD_PICKEXPDATETIME             135
 #define IDD_PROPERTIES                  136
 #define IDD_PS_BACKUP                   137
 #define IDD_PS_DISPLAY                  138

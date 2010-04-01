@@ -991,11 +991,20 @@ void CItemData::SetUser(const StringX &user)
 void CItemData::UpdatePassword(const StringX &password)
 {
   // use when password changed - manages history, modification times
+  UpdatePasswordHistory();
+  SetPassword(password);
+
   time_t t;
   time(&t);
-  UpdatePasswordHistory();
   SetPMTime(t);
-  SetPassword(password);
+
+  int xint;
+  GetXTimeInt(xint);
+  if (xint != 0) {
+    // convert days to seconds for time_t
+    t += (xint * 86400);
+    SetXTime(t);
+  }
 }
 
 void CItemData::UpdatePasswordHistory()

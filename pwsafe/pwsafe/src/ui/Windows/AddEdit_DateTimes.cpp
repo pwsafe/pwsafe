@@ -149,14 +149,14 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 
   // enable/disable relevant controls, depending on 'how' state
   // RELATIVE_EXP (interval) or ABSOLUTE_EXP
+  CString cs_text(L"");
   if (M_XTimeInt() > 0) {
     m_how = RELATIVE_EXP;
     m_numDays = M_XTimeInt();
     m_ReuseOnPswdChange = TRUE;
-    CString cs_text;
     cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
-    GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
   }
+  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
 
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
@@ -307,6 +307,7 @@ void CAddEdit_DateTimes::UpdateStats()
 LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
 {
   UpdateData(TRUE);
+  CString cs_text(L"");
 
   // Have any of my fields been changed?
   switch (wParam) {
@@ -320,6 +321,15 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
       // copy data into the entry - we do it ourselfs here first
       if (OnApply() == FALSE)
         return 1L;
+      break;
+    case PP_UPDATE_TIMES:
+      if (m_how == RELATIVE_EXP && M_XTimeInt() > 0) {
+        cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
+      }
+      GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
+      UpdateData(FALSE);
+      UpdateWindow();
+      break;
   }
   return 0L;
 }
@@ -369,6 +379,7 @@ void CAddEdit_DateTimes::OnClearXTime()
   GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(L"");
   if (M_tttXTime() != (time_t)0 || M_XTimeInt() != 0)
     m_ae_psh->SetChanged(true);
+
   M_tttXTime() = (time_t)0;
   M_XTimeInt() = 0;
 }

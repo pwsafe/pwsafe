@@ -242,6 +242,14 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
         if (bIsPSWDModified) {
           m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
+          const CItemData *pciA(m_AEMD.pci);
+          if (m_AEMD.pci->IsAlias()) {
+            pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
+          }
+          m_AEMD.locPMTime = pciA->GetPMTimeL();
+          pciA->GetXTime(m_AEMD.tttXTime);
+          m_AEMD.locXTime = pciA->GetXTimeL();
+          m_AEMD.oldlocXTime = m_AEMD.locXTime;
         }
 
         if (m_bIsModified && !bIsPSWDModified) {
@@ -249,11 +257,9 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetRMTime(t);
         }
 
-        if (m_AEMD.oldlocXTime != m_AEMD.locXTime)
-          m_AEMD.pci->SetXTime(m_AEMD.tttXTime);
-
-        if (m_AEMD.oldXTimeInt != m_AEMD.XTimeInt)
-          m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
+        if (m_bIsModified)
+          SendMessage(PSM_QUERYSIBLINGS,
+                (WPARAM)CPWPropertyPage::PP_UPDATE_TIMES, 0L);
 
         m_bIsModified = m_bIsModified || bIsPSWDModified;
         break;
@@ -313,6 +319,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         ASSERT(0);
         break;
     }
+
     // Now end it all so that OnApply isn't called again
     if (iCID == IDOK) {
       // Just end it
@@ -332,6 +339,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     m_pp_datetimes->UpdateStats();
     return TRUE;
   }
+
   return CPWPropertySheet::OnCommand(wParam, lParam);
 }
 
@@ -423,7 +431,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   if ((long)m_AEMD.tttCPMTime == 0L) // if never changed - try creation date
     m_AEMD.pci->GetCTime(m_AEMD.tttCPMTime);
 
-  // Note different pci dfepending on if Alias
+  // Note different pci depending on if Alias
   m_AEMD.locXTime = pciA->GetXTimeL();
   if (m_AEMD.locXTime.IsEmpty()) {
     m_AEMD.locXTime.LoadString(IDS_NEVER);
@@ -433,12 +441,12 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   }
   m_AEMD.oldlocXTime = m_AEMD.locXTime;
 
-  // Note different pci dfepending on if Alias
+  // Note different pci depending on if Alias
   pciA->GetXTimeInt(m_AEMD.XTimeInt);
   m_AEMD.oldXTimeInt = m_AEMD.XTimeInt;
 
   // PWHistory fields
-  // Note different pci dfepending on if Alias
+  // Note different pci depending on if Alias
   size_t num_err;
   m_AEMD.PWHistory = pciA->GetPWHistory();
 
@@ -451,7 +459,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = HasHistory;
 
   // PWPolicy fields
-  // Note different pci dfepending on if Alias
+  // Note different pci depending on if Alias
   pciA->GetPWPolicy(m_AEMD.pwp);
 
   m_AEMD.ipolicy = (pciA->GetPWPolicy().empty()) ?
