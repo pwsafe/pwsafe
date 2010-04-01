@@ -48,7 +48,7 @@ int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
 stringT PWSprefs::m_configfilename; // may be set before singleton created
-Reporter *PWSprefs::m_Reporter = NULL;
+Reporter *PWSprefs::m_pReporter = NULL;
 
 /*
  Note: to change a preference between application and database, the way 
@@ -917,9 +917,9 @@ void PWSprefs::InitializePreferences()
 
   // Check someone has introduced a conflict & silently resolve.
   if ((m_intValues[DoubleClickAction] == DoubleClickCopyPasswordMinimize) &&
-    m_boolValues[ClearClipboardOnMinimize]) {
-      m_intValues[DoubleClickAction] = DoubleClickCopyPassword;
-      m_intChanged[DoubleClickAction] = true;
+      m_boolValues[ClearClipboardOnMinimize]) {
+    m_intValues[DoubleClickAction] = DoubleClickCopyPassword;
+    m_intChanged[DoubleClickAction] = true;
   }
 }
 
@@ -1079,8 +1079,8 @@ bool PWSprefs::LoadProfileFromFile()
   m_XML_Config = new CXMLprefs(m_configfilename.c_str());
   if (!m_XML_Config->Load()) {
     if (!m_XML_Config->getReason().empty() &&
-        m_Reporter != NULL)
-      (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
+        m_pReporter != NULL)
+      (*m_pReporter)(m_XML_Config->getReason()); // show what went wrong
     retval = false;
     goto exit;
   }
@@ -1352,8 +1352,8 @@ void PWSprefs::SaveApplicationPreferences()
       m_ConfigOptions = CF_FILE_RW;
     else
     if (!m_XML_Config->getReason().empty() &&
-        m_Reporter != NULL)
-      (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
+        m_pReporter != NULL)
+      (*m_pReporter)(m_XML_Config->getReason()); // show what went wrong
 
     m_XML_Config->Unlock();
     delete m_XML_Config;
@@ -1406,8 +1406,8 @@ void PWSprefs::SaveShortcuts()
       m_ConfigOptions = CF_FILE_RW;
     else
     if (!m_XML_Config->getReason().empty() &&
-        m_Reporter != NULL)
-      (*m_Reporter)(m_XML_Config->getReason()); // show what went wrong
+        m_pReporter != NULL)
+      (*m_pReporter)(m_XML_Config->getReason()); // show what went wrong
 
     m_XML_Config->Unlock();
     delete m_XML_Config;

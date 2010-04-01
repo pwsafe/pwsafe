@@ -187,6 +187,9 @@ public:
   DboxMain(CWnd* pParent = NULL);
   ~DboxMain();
 
+  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, 
+                 ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
+
   // Find entry by title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user)
@@ -340,9 +343,6 @@ public:
   void Execute(Command *pcmd, PWScore *pcore = NULL);
   void UpdateToolBarDoUndo();
 
-#ifdef _DEBUG
-  void WriteLog(LPCWSTR pszString);
-#endif
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -494,9 +494,8 @@ protected:
   void SortListView();
 
   //Version of message functions with return values
-  int Save(void);
+  int Save(const SaveType savetype = DboxMain::ST_INVALID);
   int SaveAs(void);
-  int SaveCore(PWScore *pcore);
   int Open(const UINT uiTitle = IDS_CHOOSEDATABASE);
   int Open(const StringX &sx_Filename, const bool bReadOnly, const bool bHideReadOnly = false);
   int CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey);
@@ -746,7 +745,6 @@ private:
   PWSclipboard m_clipboard;
 
   // Split up OnOK to support various ways to exit
-  enum SaveType {NORMALEXIT = 0, ENDSESSIONEXIT, WTSLOGOFFEXIT, FAILSAFESAVE};
   int SaveDatabaseOnExit(const SaveType saveType);
   void SavePreferencesOnExit();
   void CleanUpAndExit(const bool bNormalExit = true);

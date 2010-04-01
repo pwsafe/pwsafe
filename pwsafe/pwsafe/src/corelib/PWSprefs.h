@@ -52,7 +52,7 @@ public:
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
   static void SetConfigFile(const stringT &fn) {m_configfilename = fn;}
-  static void SetReporter(Reporter *reporter) {m_Reporter = reporter;}
+  static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
   
   // prefString is stored in database file, format described in PWSprefs.cpp
   void Load(const StringX &prefString, bool bUseCopy = false);
@@ -222,7 +222,7 @@ private:
 
   static PWSprefs *self; // singleton
   static stringT m_configfilename; // may be set before singleton created
-  static Reporter *m_Reporter; // set as soon as possible to show errors
+  static Reporter *m_pReporter; // set as soon as possible to show errors
   CXMLprefs *m_XML_Config;
 
   bool m_bRegistryKeyExists;

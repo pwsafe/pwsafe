@@ -9,6 +9,7 @@
 #include "os/env.h"
 #include "os/dir.h"
 #include "PWSdirs.h"
+
 /**
 * Provide directories used by application
 * The functions here return values that cause the application
@@ -55,6 +56,7 @@ stringT PWSdirs::GetConfigDir()
   if (retval.empty()) {
     retval = pws_os::getenv("U3_APP_DATA_PATH", true);
     if (retval.empty()) {
+      // NOT U3
       retval = pws_os::getuserprefsdir(); // "" for Windows, ~/.pwsafe for Linux
       if (retval.empty())
         retval = GetOurExecDir();

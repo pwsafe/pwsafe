@@ -925,7 +925,7 @@ void DboxMain::OnSave()
   Save();
 }
 
-int DboxMain::Save()
+int DboxMain::Save(const SaveType savetype)
 {
   int rc;
   CString cs_msg, cs_temp;
@@ -950,7 +950,30 @@ int DboxMain::Save()
         std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
         if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
                                   userBackupPrefix, userBackupDir)) {
+          switch (savetype) {
+            case ST_NORMALEXIT:
+            {
+              cs_temp.LoadString(IDS_NOIBACKUP);
+              cs_msg.Format(IDS_NOIBACKUP2, cs_temp);
+              gmb.SetTitle(IDS_FILEWRITEERROR);
+              gmb.SetMsg(cs_msg);
+              gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+              gmb.AddButton(IDS_SAVEAS, IDS_SAVEAS);
+              gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
+              INT_PTR rc = gmb.DoModal();
+              if (rc == IDS_EXIT)
+                return PWScore::SUCCESS;
+              else
+                return SaveAs();
+            }
+            case ST_INVALID:
+              // No particular end of PWS exit i.e. user clicked Save or
+              // saving a changed database before opening another
+              gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+              return PWScore::USER_CANCEL;
+          }
           gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+          return SaveAs();
         }
       }
       break;
@@ -2703,11 +2726,6 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
       RefreshViews();
     }
 
-    if (CmpRes.m_ComparisonDBChanged) {
-      // SHouldn't happen as it is R-O - need to clean this up later
-      SaveCore(pothercore);
-    }
-
     rpt.EndReport();
 
     if (rc == 2)
@@ -2891,55 +2909,6 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   RefreshViews();
 }
 
-int DboxMain::SaveCore(PWScore *pcore)
-{
-  // Stolen from Save!
-  int rc;
-  CString cs_title, cs_msg, cs_temp;
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  if (pcore->GetReadFileVersion() == PWSfile::VCURRENT) {
-    if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
-      int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
-      int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-      StringX userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue);
-      StringX userBackupDir = prefs->GetPref(PWSprefs::BackupDir);
-      if (!pcore->BackupCurFile(maxNumIncBackups, backupSuffix,
-                                userBackupPrefix.c_str(),
-                                userBackupDir.c_str())) {
-        CGeneralMsgBox gmb;
-        gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
-      }
-    }
-  } else { // file version mis-match
-    std::wstring NewName = PWSUtil::GetNewFileName(pcore->GetCurFile().c_str(),
-                                              DEFAULT_SUFFIX);
-    cs_msg.Format(IDS_NEWFORMAT,
-                  pcore->GetCurFile().c_str(), NewName.c_str());
-    cs_title.LoadString(IDS_VERSIONWARNING);
-
-    CGeneralMsgBox gmb;
-    gmb.SetTitle(cs_title);
-    gmb.SetMsg(cs_msg);
-    gmb.SetStandardIcon(MB_ICONWARNING);
-    gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
-    gmb.AddButton(IDS_CANCEL, IDS_CANCEL, FALSE, TRUE);
-    INT_PTR rc = gmb.DoModal();
-    if (rc == IDS_CANCEL)
-      return PWScore::USER_CANCEL;
-    pcore->SetCurFile(NewName.c_str());
-  }
-  rc = pcore->WriteCurFile();
-
-  if (rc != PWScore::SUCCESS) {
-    DisplayFileWriteError(rc, pcore->GetCurFile());
-    return PWScore::CANT_OPEN_FILE;
-  }
-
-  pcore->SetChanged(false, false);
-  return PWScore::SUCCESS;
-}
-
 LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
 {
   PWScore *pcore;
@@ -3099,7 +3068,7 @@ void DboxMain::OnOK()
 {
   SavePreferencesOnExit();
 
-  int rc = SaveDatabaseOnExit(NORMALEXIT);
+  int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
   if (rc == PWScore::SUCCESS) {
     CleanUpAndExit();
   }
@@ -3175,30 +3144,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 {
   int rc;
 
-#ifdef _DEBUG
-  std::wstring st_logmsg, st_saveType, st_EndStatus;
-  switch (saveType) {
-    case NORMALEXIT:     st_saveType = L"NORMALEXIT";     break;
-    case ENDSESSIONEXIT: st_saveType = L"ENDSESSIONEXIT"; break;
-    case WTSLOGOFFEXIT:  st_saveType = L"WTSLOGOFFEXIT";  break;
-    case FAILSAFESAVE:  st_saveType = L"FAILSAFESAVE";  break;
-    default:             st_saveType = L"**UNKNOWN**";    break;
-  }
-  switch (m_iSessionEndingStatus) {
-    case IDCANCEL:       st_EndStatus = L"IDCANCEL";    break;
-    case IDIGNORE:       st_EndStatus = L"IDIGNORE";    break;
-    case IDOK:           st_EndStatus = L"IDOK";        break;
-    case IDNO:           st_EndStatus = L"IDNO";        break;
-    case IDYES:          st_EndStatus = L"IDYES";       break;
-    case IDTIMEOUT:      st_EndStatus = L"IDTIMEOUT";   break;
-    default:             st_EndStatus = L"**Unknown**"; break;
-  }
-  Format(st_logmsg, L"In SaveDatabaseOnExit. Type=%s; m_iSessionEndingStatus:%s", 
-                     st_saveType.c_str(), st_EndStatus.c_str());
-  WriteLog(st_logmsg.c_str());
-#endif
-
-  if (saveType == FAILSAFESAVE &&
+  if (saveType == ST_FAILSAFESAVE &&
       (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) {
     // Save database as "<dbname>_YYYYMMDD_HHMMSS.fbak"
     std::wstring cs_newfile, cs_temp;
@@ -3224,7 +3170,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     return rc;
   }
 
-  if (saveType == NORMALEXIT) {
+  if (saveType == ST_NORMALEXIT) {
     bool bAutoSave = true; // false if user saved or decided not to 
     if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
       CGeneralMsgBox gmb;
@@ -3236,7 +3182,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
         case IDCANCEL:
           return PWScore::USER_CANCEL;
         case IDYES:
-          rc = Save();
+          rc = Save(saveType);
           if (rc != PWScore::SUCCESS)
             return PWScore::USER_CANCEL;
           // Drop through to reset bAutoSave to prevent multiple saves
@@ -3266,22 +3212,22 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     if (bAutoSave && !m_core.IsReadOnly() &&
         (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
         m_core.GetNumEntries() > 0) {
-      rc = Save();
+      rc = Save(saveType);
       if (rc != PWScore::SUCCESS)
         return PWScore::USER_CANCEL;
     }
     return PWScore::SUCCESS;
-  } // NORMALEXIT
+  } // ST_NORMALEXIT
   
-  if (saveType == ENDSESSIONEXIT || saveType == WTSLOGOFFEXIT) {
-    // ENDSESSIONEXIT: Windows XP or earlier
-    // WTSLOGOFFEXIT:  Windows XP or later (if OnQueryEndSession not called)
+  if (saveType == ST_ENDSESSIONEXIT || saveType == ST_WTSLOGOFFEXIT) {
+    // ST_ENDSESSIONEXIT: Windows XP or earlier
+    // ST_WTSLOGOFFEXIT:  Windows XP or later (if OnQueryEndSession not called)
     if (!m_core.IsReadOnly() && m_core.GetNumEntries() > 0) {
-      rc = Save();
+      rc = Save(saveType);
       if (rc != PWScore::SUCCESS)
         return PWScore::USER_CANCEL;
     }
-  } // ENDSESSIONEXIT || WTSLOGOFFEXIT
+  } // ST_ENDSESSIONEXIT || ST_WTSLOGOFFEXIT
 
   return PWScore::SUCCESS;
 }
@@ -3324,7 +3270,7 @@ void DboxMain::OnCancel()
     ShowWindow(SW_MINIMIZE);
   } else {
     SavePreferencesOnExit();
-    int rc = SaveDatabaseOnExit(NORMALEXIT);
+    int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
     if (rc == PWScore::SUCCESS) {
       CleanUpAndExit();
     }
