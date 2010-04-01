@@ -29,6 +29,8 @@
 
 ////@begin forward declarations
 ////@end forward declarations
+class wxTimer;
+class PasswordSafeFrame;
 
 /*!
  * Control identifiers
@@ -50,6 +52,9 @@ public:
     /// Constructor
     PwsafeApp();
 
+    /// Destructor
+    ~PwsafeApp();
+
     void Init();
 
     /// Initialises the application
@@ -68,8 +73,15 @@ public:
 
 ////@begin PwsafeApp member variables
 ////@end PwsafeApp member variables
+
+	void OnActivate(wxActivateEvent& actEvent);
+	void OnActivityTimer(wxTimerEvent& timerEvent);
+
  private:
     PWScore m_core;
+    wxTimer* m_activityTimer;
+    PasswordSafeFrame* m_frame;
+    enum { ACTIVITY_TIMER_ID = 33 } ; 
 };
 
 /*!
