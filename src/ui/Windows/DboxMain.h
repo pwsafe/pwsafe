@@ -677,6 +677,8 @@ protected:
   afx_msg void OnExportVx(UINT nID);
   afx_msg void OnExportText();
   afx_msg void OnExportXML();
+  afx_msg void OnExportEntryText();
+  afx_msg void OnExportEntryXML();
   afx_msg void OnImportText();
   afx_msg void OnImportKeePass();
   afx_msg void OnImportXML();
@@ -787,6 +789,9 @@ private:
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
   void RebuildGUI(const int iView = iBothViews);
+
+  void DoExportText(const bool bAll);
+  void DoExportXML(const bool bAll);
   
   static const struct UICommandTableEntry {
     UINT ID;

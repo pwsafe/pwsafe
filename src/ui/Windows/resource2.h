@@ -89,6 +89,8 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EDITBASEENTRY       32081
 #define ID_MENUITEM_UNDO                32082
 #define ID_MENUITEM_REDO                32083
+#define ID_MENUITEM_EXPORTENT2PLAINTEXT 32084
+#define ID_MENUITEM_EXPORTENT2XML       32085
 
 // View menu
 #define ID_VIEWMENU                     32101

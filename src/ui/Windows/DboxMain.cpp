@@ -389,6 +389,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_EDITBASEENTRY, OnEditBaseEntry)
   ON_COMMAND(ID_MENUITEM_UNDO, OnUndo)
   ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
+  ON_COMMAND(ID_MENUITEM_EXPORTENT2PLAINTEXT, OnExportEntryText)
+  ON_COMMAND(ID_MENUITEM_EXPORTENT2XML, OnExportEntryXML)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -593,6 +595,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EDITBASEENTRY, true, true, false, false},
   {ID_MENUITEM_UNDO, true, false, true, false},
   {ID_MENUITEM_REDO, true, false, true, false},
+  {ID_MENUITEM_EXPORTENT2PLAINTEXT, true, true, false, false},
+  {ID_MENUITEM_EXPORTENT2XML, true, true, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},

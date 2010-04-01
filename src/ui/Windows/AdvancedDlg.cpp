@@ -33,7 +33,9 @@ int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
   IDD_ADVANCEDMERGE, // ADV_MERGE (significantly reduced dialog)
   IDD_ADVANCED,      // ADV_SYNCHRONIZE
   IDD_ADVANCED,      // ADV_EXPORT_TEXT
+  IDD_ADVANCED,      // ADV_EXPORT_ENTRYTEXT
   IDD_ADVANCED,      // ADV_EXPORT_XML
+  IDD_ADVANCED,      // ADV_EXPORT_ENTRYXML
   IDD_ADVANCED,      // ADV_FIND
   IDD_ADVANCEDCOMPSYNCH  // Reduced for synchronizing only one entry
 };
@@ -75,7 +77,7 @@ BOOL CAdvancedDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  CString cs_text;
+  CString cs_text, cs_tmp;
   int iItem(-1), i;
 
   switch (m_iIndex) {
@@ -90,10 +92,18 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_SYNCHRONIZEX);
       break;
     case ADV_EXPORT_TEXT:
-      cs_text.LoadString(IDS_EXPORT_TEXTX);
+      cs_text.Format(IDS_EXPORT_TEXTX, L" ");
+      break;
+    case ADV_EXPORT_ENTRYTEXT:
+      cs_tmp.LoadString(IDS_SINGLEENTRY);
+      cs_text.Format(IDS_EXPORT_TEXTX, cs_tmp);
       break;
     case ADV_EXPORT_XML:
-      cs_text.LoadString(IDS_EXPORT_XMLX);
+      cs_text.Format(IDS_EXPORT_XMLX, L" ");
+      break;
+    case ADV_EXPORT_ENTRYXML:
+      cs_tmp.LoadString(IDS_SINGLEENTRY);
+      cs_text.Format(IDS_EXPORT_XMLX, cs_tmp);
       break;
     case ADV_FIND:
       cs_text.LoadString(IDS_FINDX);
@@ -231,7 +241,9 @@ BOOL CAdvancedDlg::OnInitDialog()
     case ADV_SYNCHRONIZE:
     case ADV_COMPARESYNCH:
     case ADV_EXPORT_TEXT:
+    case ADV_EXPORT_ENTRYTEXT:
     case ADV_EXPORT_XML:
+    case ADV_EXPORT_ENTRYXML:
       // All these are already selected fields
       cs_text.LoadString(IDS_COMPCTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
@@ -291,6 +303,7 @@ BOOL CAdvancedDlg::OnInitDialog()
   // Deal with standard text fields - selected by default
   switch (m_iIndex) {
     case ADV_EXPORT_XML:
+    case ADV_EXPORT_ENTRYXML:
       cs_text.LoadString(IDS_GROUP);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::GROUP);
@@ -327,6 +340,7 @@ BOOL CAdvancedDlg::OnInitDialog()
     case ADV_FIND:
     case ADV_MERGE:
     case ADV_EXPORT_TEXT:
+    case ADV_EXPORT_ENTRYTEXT:
       cs_text.LoadString(IDS_GROUP);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::GROUP);
@@ -383,6 +397,12 @@ BOOL CAdvancedDlg::OnInitDialog()
     } else {
       ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->SetCheck(BST_CHECKED);
     }
+  }
+
+  if (m_iIndex == ADV_EXPORT_ENTRYTEXT || m_iIndex == ADV_EXPORT_ENTRYXML) {
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_SET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_WHERE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_TEXT)->EnableWindow(FALSE);
   }
 
   m_pToolTipCtrl = new CToolTipCtrl;
@@ -461,9 +481,11 @@ void CAdvancedDlg::OnHelp()
       cs_HelpTopic += L"::/html/synchronizex.html";
       break;
     case ADV_EXPORT_TEXT:
+    case ADV_EXPORT_ENTRYTEXT:
       cs_HelpTopic += L"::/html/exporttextx.html";
       break;
     case ADV_EXPORT_XML:
+    case ADV_EXPORT_ENTRYXML:
       cs_HelpTopic += L"::/html/exportxmlx.html";
       break;
     case ADV_FIND:
@@ -505,6 +527,7 @@ void CAdvancedDlg::OnOK()
           cs_error_msg.LoadString(IDS_NOFIELDSFORSYNCH);
           break;
         case ADV_EXPORT_TEXT:
+        case ADV_EXPORT_ENTRYTEXT:
           cs_error_msg.LoadString(IDS_NOFIELDSFOREXPORT);
           break;
         case ADV_FIND:
@@ -650,7 +673,7 @@ void CAdvancedDlg::OnDeselectAll()
   for (int i = num_selected - 1; i >= 0; i--) {
     cs_text = m_pLC_Selected->GetItemText(i, 0);
     dw_data = m_pLC_Selected->GetItemData(i);
-    if (m_iIndex == ADV_EXPORT_XML &&
+    if ((m_iIndex == ADV_EXPORT_XML || m_iIndex == ADV_EXPORT_ENTRYXML) &&
         (dw_data == CItemData::TITLE || dw_data == CItemData::PASSWORD))
       continue;
     if (m_iIndex == ADV_COMPARE &&
@@ -685,6 +708,7 @@ void CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
       }
       break;
     case ADV_EXPORT_XML:
+    case ADV_EXPORT_ENTRYXML:
       if ((pNMListView->lParam == CItemData::TITLE ||
            pNMListView->lParam == CItemData::PASSWORD) &&
           (pNMListView->uNewState & LVIS_SELECTED)) {
@@ -697,6 +721,7 @@ void CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
     case ADV_SYNCHRONIZE:
     case ADV_COMPARESYNCH:
     case ADV_EXPORT_TEXT:
+    case ADV_EXPORT_ENTRYTEXT:
       break;
     default:
       ASSERT(FALSE);

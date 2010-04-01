@@ -700,6 +700,8 @@
 #define IDC_CHANGEBASEPSWD              1414
 #define IDC_CHANGEALIASPSWD             1415
 #define IDC_STATIC_BASE                 1416
+#define IDC_STATIC_TEXT                 1417
+#define IDC_STATIC_WHERE                1418
 
 // Next default values for new objects
 // 
@@ -707,7 +709,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        479
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1417
+#define _APS_NEXT_CONTROL_VALUE         1419
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

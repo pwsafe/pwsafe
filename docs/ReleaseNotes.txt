@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.21.1
 =======================
+[2979411] A single entry can now be exported to a text or XML file via the
+Edit menu or right-click context menu.
 [2957185] Add Synchronize function to the menu options during review of
 the results of a Compare database operation.
 [] Validation of databases can now be performed via the Manage menu as

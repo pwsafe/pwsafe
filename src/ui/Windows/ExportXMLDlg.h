@@ -24,7 +24,7 @@ class CExportXMLDlg : public CPWDialog
 {
   // Construction
 public:
-  CExportXMLDlg(CWnd* pParent = NULL);   // standard constructor
+  CExportXMLDlg(CWnd* pParent = NULL, bool bAll = true);   // standard constructor
   ~CExportXMLDlg();
 
   const CSecString &GetPasskey() const {return m_passkey;}
@@ -61,8 +61,9 @@ protected:
 
 private:
   void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX,
-    const CString &delimiter);
+                                    const CString &delimiter);
   CSecEditExtn *m_pctlPasskey;
   CSecString m_passkey;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
+  bool m_bAll;
 };

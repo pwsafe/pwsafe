@@ -24,7 +24,9 @@ public:
              ADV_MERGE,
              ADV_SYNCHRONIZE,
              ADV_EXPORT_TEXT,
+             ADV_EXPORT_ENTRYTEXT,
              ADV_EXPORT_XML,
+             ADV_EXPORT_ENTRYXML,
              ADV_FIND,
              ADV_COMPARESYNCH,
              ADV_LAST};
