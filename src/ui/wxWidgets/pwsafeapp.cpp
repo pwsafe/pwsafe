@@ -35,6 +35,7 @@ using namespace std;
 #include "wxMessages.h"
 #include "corelib/SysInfo.h"
 #include "corelib/PWSprefs.h"
+#include <wx/timer.h>
 
 ////@begin XPM images
 ////@end XPM images
@@ -107,7 +108,8 @@ BEGIN_EVENT_TABLE( PwsafeApp, wxApp )
 
 ////@begin PwsafeApp event table entries
 ////@end PwsafeApp event table entries
-
+    EVT_ACTIVATE_APP(PwsafeApp::OnActivate)
+    EVT_TIMER(ACTIVITY_TIMER_ID, PwsafeApp::OnActivityTimer)
 END_EVENT_TABLE()
 
 
@@ -115,11 +117,18 @@ END_EVENT_TABLE()
  * Constructor for PwsafeApp
  */
 
-PwsafeApp::PwsafeApp()
+PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)), m_frame(0)
 {
     Init();
 }
 
+/*!
+ * Destructor for PwsafeApp
+ */
+PwsafeApp::~PwsafeApp()
+{
+  delete m_activityTimer;
+}
 
 /*!
  * Member initialisation
@@ -216,7 +225,7 @@ bool PwsafeApp::OnInit()
   }
   // dbox.SetValidate(cmd_validate);
   
-  PasswordSafeFrame *pws = new PasswordSafeFrame(NULL, m_core);
+  m_frame = new PasswordSafeFrame(NULL, m_core);
 
   if (!cmd_closed) {
     // Get the file, r/w mode and password from user
@@ -228,10 +237,10 @@ bool PwsafeApp::OnInit()
     if (returnValue != wxID_OK) {
       return false;
     }
-    pws->Load(initWindow->GetPassword());
+    m_frame->Load(initWindow->GetPassword());
   }
 
-  pws->Show();
+  m_frame->Show();
   return true;
 }
 
@@ -247,8 +256,25 @@ int PwsafeApp::OnExit()
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
+  m_activityTimer->Stop();
 ////@begin PwsafeApp cleanup
   return wxApp::OnExit();
 ////@end PwsafeApp cleanup
+}
+
+void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
+{
+  if (actEvent.GetActive()) {
+    m_activityTimer->Stop();
+  }
+  else {
+    m_activityTimer->Stop();
+    m_activityTimer->Start(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout)*60*1000);
+  }
+}
+
+void PwsafeApp::OnActivityTimer(wxTimerEvent& timerEvent)
+{
+  m_frame->Close();  
 }
 

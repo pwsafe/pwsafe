@@ -65,5 +65,7 @@ void SystemTray::OnSysTrayRestore(wxCommandEvent& /*evt*/)
 
   if (m_frame->IsIconized())
     m_frame->Iconize(false);
+
+  RemoveIcon();
 }
 
