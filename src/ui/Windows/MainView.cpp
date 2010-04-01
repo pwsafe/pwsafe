@@ -1864,11 +1864,8 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_SESSION_LOGOFF:
       // This does NOT get called as OnQueryEndSession/OnEndSession
       // handle this event - but just in case!
-#ifdef _DEBUG
-      WriteLog(L"In OnSessionChange - WTS_SESSION_LOGOFF");
-#endif
       SavePreferencesOnExit();
-      SaveDatabaseOnExit(WTSLOGOFFEXIT);
+      SaveDatabaseOnExit(ST_WTSLOGOFFEXIT);
       CleanUpAndExit(false);
       break;
     case WTS_SESSION_REMOTE_CONTROL:

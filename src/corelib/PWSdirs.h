@@ -25,11 +25,11 @@ public:
   PWSdirs(const stringT &dir) {Push(dir);} // convenience: create & push
   ~PWSdirs(); // does a repeated Pop, so we're back where we started
 
-  static stringT GetSafeDir(); // default database location
+  static stringT GetSafeDir();   // default database location
   static stringT GetConfigDir(); // pwsafe.cfg location
-  static stringT GetXMLDir(); // XML .xsd .xsl files
-  static stringT GetHelpDir(); // help file(s)
-  static stringT GetExeDir(); // location of executable
+  static stringT GetXMLDir();    // XML .xsd .xsl files
+  static stringT GetHelpDir();   // help file(s)
+  static stringT GetExeDir();    // location of executable
 
   void Push(const stringT &dir); // cd to dir after saving current dir
   void Pop(); // cd to last dir, nop if stack empty

@@ -609,3 +609,5 @@
 #define IDS_WARNINGTEXTLENGTH           5793
 #define IDS_ENTRYSIZE                   5794
 #define IDS_INVALIDEXPIRYDATE           5795
+#define IDS_NOIBACKUP2                  5796
+#define IDS_SAVEAS                      5797

@@ -905,16 +905,16 @@ void DboxMain::InitPasswordSafe()
     std::wstring XSDFilename = PWSdirs::GetXMLDir() + L"pwsafe_filter.xsd";
 
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
-  // Expat is a non-validating parser - no use for Schema!
-  if (!pws_os::FileExists(XSDFilename)) {
-    CGeneralMsgBox gmb;
-    CString cs_title, cs_msg;
-    cs_temp.Format(IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
-    cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, cs_temp);
-    cs_title.LoadString(IDSC_CANTVALIDATEXML);
-    gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
-    return;
-  }
+    // Expat is a non-validating parser - no use for Schema!
+    if (!pws_os::FileExists(XSDFilename)) {
+      CGeneralMsgBox gmb;
+      CString cs_title, cs_msg;
+      cs_temp.Format(IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
+      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, cs_temp);
+      cs_title.LoadString(IDSC_CANTVALIDATEXML);
+      gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
+      return;
+    }
 #endif
 
     MFCAsker q;
@@ -2438,20 +2438,6 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
       ShutdownBlockReasonCreate function (Vista & later).
   */
 
-#ifdef _DEBUG
-  std::wstring st_logmsg, st_EndStatus(L"");
-  // Note: Test under mask not equality
-  if (lParam & ENDSESSION_CRITICAL)
-    st_EndStatus += L" ENDSESSION_CRITICAL";
-  if (lParam & ENDSESSION_LOGOFF)
-    st_EndStatus += L" ENDSESSION_LOGOFF";
-  if (lParam & ENDSESSION_CLOSEAPP)
-    st_EndStatus += L" ENDSESSION_CLOSEAPP";
-
-  Format(st_logmsg, L"In OnQueryEndSession. lParam=%s", st_EndStatus.c_str());
-  WriteLog(st_logmsg.c_str());
-#endif
-
   // Set to a return code value that is not available to the user if asked
   m_iSessionEndingStatus = IDOK;
 
@@ -2459,22 +2445,12 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
   SavePreferencesOnExit();
 
   // No point if database is read-only. Get out fast!
-  if (m_core.IsReadOnly()) {
-#ifdef _DEBUG
-    Format(st_logmsg, L"Leaving OnQueryEndSession: Status:%s, RC=TRUE - database is R-O", st_EndStatus.c_str());
-    WriteLog(st_logmsg.c_str());
-#endif
+  if (m_core.IsReadOnly())
     return TRUE;
-  }
 
   // Don't stand in the way of a "Get Off" command! Get out fast!
-  if ((lParam & (ENDSESSION_CRITICAL | ENDSESSION_CLOSEAPP)) != 0) {
-#ifdef _DEBUG
-    Format(st_logmsg, L"Leaving OnQueryEndSession: Status:%s, RC=TRUE", st_EndStatus.c_str());
-    WriteLog(st_logmsg.c_str());
-#endif
+  if ((lParam & (ENDSESSION_CRITICAL | ENDSESSION_CLOSEAPP)) != 0)
     return TRUE;
-  }
 
   // Musn't block if Vista or later and there is no reason to block it.
   // Get out fast!
@@ -2482,10 +2458,6 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
     if (m_bBlockShutdown) {
       m_iSessionEndingStatus = IDCANCEL;
     } else {
-#ifdef _DEBUG
-      Format(st_logmsg, L"Leaving OnQueryEndSession: Status:%s, RC=TRUE", st_EndStatus.c_str());
-      WriteLog(st_logmsg.c_str());
-#endif
       return TRUE;
     }
   }
@@ -2504,21 +2476,6 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
     } // Windows XP or earlier
   } // database was changed
 
-#ifdef _DEBUG
-  switch (m_iSessionEndingStatus) {
-    case IDCANCEL:       st_EndStatus = L"IDCANCEL";    break;
-    case IDIGNORE:       st_EndStatus = L"IDIGNORE";    break;
-    case IDOK:           st_EndStatus = L"IDOK";        break;
-    case IDNO:           st_EndStatus = L"IDNO";        break;
-    case IDYES:          st_EndStatus = L"IDYES";       break;
-    case IDTIMEOUT:      st_EndStatus = L"IDTIMEOUT";   break;
-    default:             st_EndStatus = L"**Unknown**"; break;
-  }
-  Format(st_logmsg, L"Leaving OnQueryEndSession: Status:%s, RC=%s", st_EndStatus.c_str(),
-    m_iSessionEndingStatus == IDCANCEL ? L"FALSE" : L"TRUE");
-  WriteLog(st_logmsg.c_str());
-#endif
-
   //  Say OK to shutdown\restart\logoff (unless Windows XP or earlier said CANCEL)
   return m_iSessionEndingStatus == IDCANCEL ? FALSE : TRUE;
 }
@@ -2528,12 +2485,6 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
   /*
     See comments in OnQueryEndSession above.
   */
-#ifdef _DEBUG
-  std::wstring st_logmsg;
-  Format(st_logmsg, L"In OnEndSession wParam: %s", wParam == TRUE ? L"TRUE" : L"FALSE");
-  WriteLog(st_logmsg.c_str());
-#endif
-
   if (wParam == TRUE) {
     if (m_pfcnShutdownBlockReasonDestroy != NULL)
       m_pfcnShutdownBlockReasonDestroy(m_hWnd);
@@ -2543,21 +2494,16 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
       case IDCANCEL:
         // How did we get here - IDIGNORE means we are not ending and IDCANCEL
         // means the user said to cancel the shutdown\restart\logoff!!!
-#ifdef _DEBUG
-        Format(st_logmsg, L"In OnEndSession Status:%s  - shouldn't happen!", 
-          m_iSessionEndingStatus == IDCANCEL ? L"IDCANCEL" : L"IDIGNORE");
-        WriteLog(st_logmsg.c_str());
-#endif
         break;
       case IDOK:
         // User never asked a question (Vista or later)
         // Let them decide via the full screen display presented by the OS
         // However, be nice - take a special emergency save
-        SaveDatabaseOnExit(FAILSAFESAVE);
+        SaveDatabaseOnExit(ST_FAILSAFESAVE);
         break;
       case IDYES:
         // User said Yes - save the changes (Windows XP or earlier)
-        SaveDatabaseOnExit(ENDSESSIONEXIT);
+        SaveDatabaseOnExit(ST_ENDSESSIONEXIT);
         break;
       case IDNO:
         // User said No - don't save the changes (Windows XP or earlier)
@@ -2567,7 +2513,7 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
         // It is now up to the user to use the OS dialog to either 'End Now'
         // PasswordSafe and take the consequences or cancel the EndSession.
         // However, be nice - take a special emergency save
-        SaveDatabaseOnExit(FAILSAFESAVE);
+        SaveDatabaseOnExit(ST_FAILSAFESAVE);
         break;
     }
 
@@ -3341,30 +3287,3 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
   }
   return false;
 }
-
-#ifdef _DEBUG
-void DboxMain::WriteLog(LPCWSTR pszString)
-{
-  const unsigned int iBOM = 0xFEFF;
-  std::FILE *fd = NULL;
-  std::wstring logfile = PWSdirs::GetExeDir() + L"trace.log";
-  bool bWriteBOM = !pws_os::FileExists(logfile);
-
-  errno_t err = _wfopen_s(&fd, logfile.c_str(), L"a+b");
-
-  if (err != 0 || fd == NULL) {
-    ASSERT(0);
-    return;
-  }
-
-  if (bWriteBOM)
-    putwc(iBOM, fd);
-
-  std::wstring st_logmsg;
-  Format(st_logmsg, L"%s: %s\r\n", PWSUtil::GetTimeStamp(), pszString);
-  fwrite((void *)st_logmsg.c_str(), sizeof(wchar_t), st_logmsg.length(), fd);
-  fflush(fd);
-  fclose(fd);
-  fd = NULL;
-}
-#endif
