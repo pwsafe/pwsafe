@@ -52,7 +52,7 @@ class CommandInterface {
                                       const CItemData::EntryType type) = 0;
   virtual void DoRemoveAllDependentEntries(const uuid_array_t &base_uuid, 
                                            const CItemData::EntryType type) = 0;
-  virtual int DoAddDependentEntries(UUIDList &dependentslist, CReport *rpt, 
+  virtual int DoAddDependentEntries(UUIDVector &dependentslist, CReport *rpt, 
                                     const CItemData::EntryType type, 
                                     const int &iVia,
                                     ItemList *pmapDeletedItems = NULL,

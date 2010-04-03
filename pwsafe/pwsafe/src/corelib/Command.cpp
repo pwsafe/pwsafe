@@ -688,7 +688,7 @@ void AddDependentEntryCommand::Undo()
 // ------------------------------------------------
 
 AddDependentEntriesCommand::AddDependentEntriesCommand(CommandInterface *pcomInt,
-                                                       UUIDList &dependentslist,
+                                                       UUIDVector &dependentslist,
                                                        CReport *pRpt,
                                                        CItemData::EntryType type,
                                                        int iVia)

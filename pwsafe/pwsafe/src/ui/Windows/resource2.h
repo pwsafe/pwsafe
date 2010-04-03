@@ -157,6 +157,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_CLEARRECENTENTRIES  32252
 #define ID_MENUITEM_MINIMIZE            32253
 #define ID_MENUITEM_RESTORE             32254
+#define ID_MENUITEM_TRAYSELECT          32255
 
 // Main Toolbar - only those items not also menu items
 // or only on mouse right-click popup menu
@@ -244,6 +245,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
 #define ID_MENUITEM_TRAYSENDEMAIL1      33426
 #define ID_MENUITEM_TRAYSENDEMAILMAX    33450
+
+#define ID_MENUITEM_TRAYSELECT1         33451
+#define ID_MENUITEM_TRAYSELECTMAX       33475
 
 // Following for CEditExtn context menu
 // Really string constants, but "logically" they're menus...

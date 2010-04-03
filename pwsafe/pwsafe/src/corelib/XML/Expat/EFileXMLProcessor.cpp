@@ -93,8 +93,8 @@ static void WFile_free(void *p)
 }
 
 EFileXMLProcessor::EFileXMLProcessor(PWScore *pcore,
-                                     UUIDList *pPossible_Aliases,
-                                     UUIDList *pPossible_Shortcuts,
+                                     UUIDVector *pPossible_Aliases,
+                                     UUIDVector *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
   : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),

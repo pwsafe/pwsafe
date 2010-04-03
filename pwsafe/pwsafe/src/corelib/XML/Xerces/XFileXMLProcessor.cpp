@@ -64,8 +64,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 XFileXMLProcessor::XFileXMLProcessor(PWScore *pcore, 
-                                     UUIDList *pPossible_Aliases,
-                                     UUIDList *pPossible_Shortcuts,
+                                     UUIDVector *pPossible_Aliases,
+                                     UUIDVector *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
   : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),

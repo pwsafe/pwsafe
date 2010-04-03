@@ -67,6 +67,7 @@ public:
   size_t GetMax() const {return m_maxentries;}
   bool GetAllMenuItemStrings(std::vector<RUEntryData> &) const;
   bool GetPWEntry(size_t, CItemData &); // NOT const!
+  void GetRUEList(UUIDList &RUElist);
 
   // Data setting
   void SetMax(size_t);

@@ -73,7 +73,7 @@ public:
   void SetVariables(PWScore *pcore, const bool &bValidation,
                     const stringT &ImportedPrefix, const TCHAR &delimiter,
                     const bool &bImportPSWDsOnly,
-                    UUIDList *pPossible_Aliases, UUIDList *pPossible_Shortcuts,
+                    UUIDVector *pPossible_Aliases, UUIDVector *pPossible_Shortcuts,
                     MultiCommands *pmulticmds, CReport *prpt);
 
   bool getIfErrors() {return m_bErrors;}
@@ -137,8 +137,8 @@ protected:
 private:
   // Local variables
   PWScore *m_pXMLcore;
-  UUIDList *m_pPossible_Aliases;
-  UUIDList *m_pPossible_Shortcuts;
+  UUIDVector *m_pPossible_Aliases;
+  UUIDVector *m_pPossible_Shortcuts;
   MultiCommands *m_pmulticmds;
   CReport *m_prpt;
 

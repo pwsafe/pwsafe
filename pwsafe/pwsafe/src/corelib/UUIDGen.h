@@ -62,7 +62,7 @@ private:
 std::ostream &operator<<(std::ostream &os, const CUUIDGen &uuid);
 std::wostream &operator<<(std::wostream &os, const CUUIDGen &uuid);
 
-typedef std::vector<CUUIDGen> UUIDList;
-typedef UUIDList::iterator UUIDListIter;
+typedef std::vector<CUUIDGen> UUIDVector;
+typedef UUIDVector::iterator UUIDVectorIter;
 
 #endif /* __UUIDGEN_H */

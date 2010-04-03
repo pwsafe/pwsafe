@@ -245,7 +245,7 @@ public:
 
   // General routines for aliases and shortcuts
   void GetAllDependentEntries(const uuid_array_t &base_uuid,
-                              UUIDList &dependentslist, 
+                              UUIDVector &dependentslist, 
                               const CItemData::EntryType type);
   bool GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
                                  uuid_array_t &base_uuid, 
@@ -257,7 +257,7 @@ public:
   CItemData *GetBaseEntry(const CItemData *pAliasOrSC);
 
   // alias/base and shortcut/base handling
-  void SortDependents(UUIDList &dlist, StringX &csDependents);
+  void SortDependents(UUIDVector &dlist, StringX &csDependents);
   int NumAliases(const uuid_array_t &base_uuid) const
   {return (int)m_base2aliases_mmap.count(base_uuid);}
   int NumShortcuts(const uuid_array_t &base_uuid) const
@@ -316,6 +316,11 @@ public:
   {m_vnodes_modified.clear();}
   bool IsNodeModified(StringX &path) const;
 
+  void GetRUEList(UUIDList &RUElist)
+  {RUElist = m_RUEList;}
+  void SetRUEList(const UUIDList RUElist)
+  {m_RUEList = RUElist;}
+
 private:
   // Database update routines
 
@@ -335,7 +340,7 @@ private:
                                       const CItemData::EntryType type);
   virtual void DoRemoveAllDependentEntries(const uuid_array_t &base_uuid, 
                                            const CItemData::EntryType type);
-  virtual int DoAddDependentEntries(UUIDList &dependentslist, CReport *pRpt, 
+  virtual int DoAddDependentEntries(UUIDVector &dependentslist, CReport *pRpt, 
                                     const CItemData::EntryType type, 
                                     const int &iVia,
                                     ItemList *pmapDeletedItems = NULL,
@@ -418,6 +423,8 @@ private:
 
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
+
+  UUIDList m_RUEList;
 
   bool m_bNotifyDB;
 

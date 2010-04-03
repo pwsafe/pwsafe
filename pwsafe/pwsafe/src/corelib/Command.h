@@ -261,7 +261,7 @@ class AddDependentEntriesCommand : public Command
 {
 public:
   static AddDependentEntriesCommand *Create(CommandInterface *pcomInt,
-                                            UUIDList &dependentslist,
+                                            UUIDVector &dependentslist,
                                             CReport *pRpt,
                                             CItemData::EntryType type,
                                             int iVia)
@@ -274,9 +274,9 @@ public:
 
 private:
   AddDependentEntriesCommand(CommandInterface *pcomInt,
-                             UUIDList &dependentslist, CReport *pRpt,
+                             UUIDVector &dependentslist, CReport *pRpt,
                              CItemData::EntryType type, int iVia);
-  UUIDList m_dependentslist;
+  UUIDVector m_dependentslist;
   ItemList *m_pmapDeletedItems;
   SaveTypePWMap *m_pmapSaveStatus;
   CReport *m_pRpt;

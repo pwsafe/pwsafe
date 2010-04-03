@@ -478,7 +478,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
 
   m_AEMD.pci_original->GetUUID(original_uuid);  // Edit doesn't change this!
   if (m_AEMD.pci_original->IsBase()) {
-    UUIDList dependentslist;
+    UUIDVector dependentslist;
     StringX csDependents(L"");
 
     m_AEMD.pcore->GetAllDependentEntries(original_uuid, dependentslist,
