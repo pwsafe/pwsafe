@@ -531,7 +531,6 @@ void DboxMain::OnOpenMRU(UINT nID)
     }
     UpdateMenuAndToolBar(true);
     UpdateStatusBar();
-    SelectFirstEntry();
   } else {
     // Reset Read-only status
     m_core.SetReadOnly(last_ro);
@@ -790,12 +789,20 @@ void DboxMain::PostOpenProcessing()
   UpdateToolBarROStatus(m_core.IsReadOnly());
   UpdateStatusBar();
 
+  UUIDList RUElist;
+  m_core.GetRUEList(RUElist);
+  for (UUIDListRIter riter = RUElist.rbegin();
+             riter != RUElist.rend(); riter++) {
+    m_RUEList.AddRUEntry(riter->uuid);
+  }
+
   // Set timer for user-defined idle lockout, if selected (DB preference)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
     ResetIdleLockCounter();
     SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
   }
+
   // Set up notification of desktop state, one way or another
   startLockCheckTimer();
   RegisterSessionNotification(true);
@@ -1004,6 +1011,10 @@ int DboxMain::Save(const SaveType savetype)
       ASSERT(0);
   }
 
+  UUIDList RUElist;
+  m_RUEList.GetRUEList(RUElist);
+  m_core.SetRUEList(RUElist);
+
   rc = m_core.WriteCurFile();
 
   if (rc != PWScore::SUCCESS) {
@@ -1030,12 +1041,37 @@ int DboxMain::Save(const SaveType savetype)
 
 int DboxMain::SaveIfChanged()
 {
+  /*
+  * Save silently (without asking user) iff:
+  * 1. NOT read-only AND
+  * 2. (timestamp updates OR tree view display vector changed) AND
+  * 3. Database NOT empty
+  *
+  * Less formally:
+  *
+  * If MaintainDateTimeStamps set and not read-only, save without asking
+  * user: "they get what it says on the tin".
+  */
+
+  if (m_core.IsReadOnly())
+    return PWScore::SUCCESS;
+
+  // Note: RUE list saved here via time stamp being updated.
+  // Otherwise it won't be saved unless something else has changed
+  if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+       m_core.GetNumEntries() > 0) {
+    int rc = Save();
+    if (rc != PWScore::SUCCESS)
+      return PWScore::USER_CANCEL;
+    else
+      return PWScore::SUCCESS;
+  }
+
   // offer to save existing database if it was modified.
   // used before loading another
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
-
-  if (!m_core.IsReadOnly() && (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) {
+  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     CGeneralMsgBox gmb;
     int rc, rc2;
     CString cs_temp;
@@ -1140,6 +1176,10 @@ int DboxMain::SaveAs()
   uuid_array_t file_uuid_array;
   m_core.GetFileUUID(file_uuid_array);
   m_core.ClearFileUUID();
+
+  UUIDList RUElist;
+  m_RUEList.GetRUEList(RUElist);
+  m_core.SetRUEList(RUElist);
 
   rc = m_core.WriteFile(newfile);
   m_core.ResetStateAfterSave();
@@ -2437,8 +2477,8 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
                               const CItemData::EntryType et,
                               std::vector<StringX> &vs_added)
 {
-  UUIDList dependentslist;
-  UUIDListIter paiter;
+  UUIDVector dependentslist;
+  UUIDVectorIter paiter;
   ItemListIter iter;
   uuid_array_t entry_uuid, new_entry_uuid;
   ItemListConstIter foundPos;

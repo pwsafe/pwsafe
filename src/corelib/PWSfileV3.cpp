@@ -367,7 +367,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0306;
+const short VersionNum = 0x0307;
 
 // Following specific for PWSfileV3::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) do { \
@@ -539,6 +539,22 @@ int PWSfileV3::WriteHeader()
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
+  if (!m_hdr.m_RUEList.empty()) {
+    ostringstream oss;
+    oss << setfill('0') << setw(4) << m_hdr.m_RUEList.size();
+    for (UUIDListIter iter = m_hdr.m_RUEList.begin();
+             iter != m_hdr.m_RUEList.end(); iter++) {
+      for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
+        oss << setw(2) << setfill('0') << hex << int(iter->uuid[i]);
+      }
+    }
+
+    numWritten = WriteCBC(HDR_RUE, 
+                          reinterpret_cast<const unsigned char *>(oss.str().c_str()),
+                          oss.str().length());
+    if (numWritten <= 0) { status = FAILURE; goto end; }
+  }
+
   if (!m_UHFL.empty()) {
     UnknownFieldList::iterator vi_IterUHFE;
     for (vi_IterUHFE = m_UHFL.begin();
@@ -686,7 +702,7 @@ int PWSfileV3::ReadHeader()
           if (utf8 != NULL) utf8[utf8Len] = '\0';
           utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
           if (utf8status) {
-            StringX tlen = text.substr(0,4);
+            StringX tlen = text.substr(0, 4);
             iStringXStream is(tlen);
             int ulen = 0;
             is >> hex >> ulen;
@@ -781,6 +797,43 @@ int PWSfileV3::ReadHeader()
         }
         break;
 #endif
+
+      case HDR_RUE:
+      {
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        int num(0);
+        if (utf8status) {
+          StringX tlen = text.substr(0, 4);
+          iStringXStream is(tlen);
+          is >> hex >> num;
+        }
+
+        ASSERT(text.length() == num * sizeof(uuid_array_t) * 2 + 4);
+        if (text.length() != num * sizeof(uuid_array_t) * 2 + 4)
+          break;
+
+        LPCTSTR lpsz_string = text.c_str();
+        lpsz_string += 4;
+        unsigned char *pfield;
+        pfield = new unsigned char[sizeof(uuid_array_t) + sizeof(int)];
+        for (int n = 0; n < num; n++) {
+          uuid_array_t uuid;
+          int nscanned = 0;
+          for (int i = 0; i < sizeof(uuid_array_t); i++) {
+#if (_MSC_VER >= 1400)
+            nscanned += _stscanf_s(lpsz_string, _T("%02x"), &pfield[i]);
+#else
+            nscanned += _stscanf(lpsz_string, _T("%02x"), &pfield[i]);
+#endif
+            lpsz_string += 2;
+          }
+          memcpy(uuid, pfield, sizeof(uuid_array_t));
+          m_hdr.m_RUEList.push_back(st_UUID(uuid));
+        }
+        delete [] pfield;
+        break;
+      }
 
       case HDR_END: /* process END so not to treat it as 'unknown' */
         break;

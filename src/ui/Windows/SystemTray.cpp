@@ -441,9 +441,18 @@ static void SetupRecentEntryMenu(CMenu *&pMenu, int i, const CItemData *pci)
   pMenu = new CMenu;
   pMenu->CreatePopupMenu();
 
-  CString cs_text;
+  CString cs_text, cs_select;
+  cs_text.LoadStringW(ID_MENUITEM_TRAYSELECT);
+  cs_select = cs_text.Mid(1);
+  pMenu->InsertMenu(0, MF_BYPOSITION | MF_STRING,
+                    ID_MENUITEM_TRAYSELECT1 + i,
+                    cs_text);
+  pMenu->InsertMenu(1, MF_BYPOSITION | MF_SEPARATOR);
+  cs_text.Empty();
+
+  int ipos = 2;
+
   cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
-  int ipos = 0;
   pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                     ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
                     cs_text);

@@ -249,7 +249,7 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
     // Done with button, now paint text. First do background if needed.
     int cxButn = m_szButton.cx;        // width of button
     COLORREF colorBG = GetSysColor(bSelected ? COLOR_HIGHLIGHT : COLOR_MENU);
-    if (bSelected || lpdis->itemAction==ODA_SELECT) {
+    if (bSelected || lpdis->itemAction == ODA_SELECT) {
       // selected or selection state changed: paint text background
       CRect rcBG = rcItem;              // whole rectangle
       if (bHaveButn)                    // if there's a button:
@@ -471,6 +471,10 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
           if (iCtrlID >= ID_FILE_MRU_ENTRY1 &&
               iCtrlID <= ID_FILE_MRU_ENTRYMAX)
             iCtrlID = ID_MENUITEM_MRUENTRY;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYSELECT1 &&
+              iCtrlID <= ID_MENUITEM_TRAYSELECTMAX)
+            iCtrlID = ID_MENUITEM_TRAYSELECT;
 
             pmd->iButton = GetButtonIndex(iCtrlID);
             miinfo.dwItemData = (ULONG_PTR)pmd; //   set in menu item data

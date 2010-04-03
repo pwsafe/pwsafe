@@ -38,15 +38,15 @@
 // Expat includes
 #include <expat.h>
 
-typedef std::vector<CUUIDGen> UUIDList;
+typedef std::vector<CUUIDGen> UUIDVector;
 
 class PWScore;
 
 class EFileXMLProcessor
 {
 public:
-  EFileXMLProcessor(PWScore *pcore, UUIDList *pPossible_Aliases, 
-                    UUIDList *pPossible_Shortcuts, MultiCommands *p_multicmds,
+  EFileXMLProcessor(PWScore *pcore, UUIDVector *pPossible_Aliases, 
+                    UUIDVector *pPossible_Shortcuts, MultiCommands *p_multicmds,
                     CReport *prpt);
   ~EFileXMLProcessor();
 
@@ -71,8 +71,8 @@ public:
 
 private:
   PWScore *m_pXMLcore;
-  UUIDList *m_pPossible_Aliases;
-  UUIDList *m_pPossible_Shortcuts;
+  UUIDVector *m_pPossible_Aliases;
+  UUIDVector *m_pPossible_Shortcuts;
   MultiCommands *m_pmulticmds;
   CReport *m_prpt;
 

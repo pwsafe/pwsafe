@@ -126,13 +126,13 @@ static bool GTUCompare(const StringX &elem1, const StringX &elem2)
   return u1.compare(u2) < 0;
 }
 
-void PWScore::SortDependents(UUIDList &dlist, StringX &csDependents)
+void PWScore::SortDependents(UUIDVector &dlist, StringX &csDependents)
 {
   std::vector<StringX> sorted_dependents;
   std::vector<StringX>::iterator sd_iter;
 
   ItemListIter iter;
-  UUIDListIter diter;
+  UUIDVectorIter diter;
   StringX cs_dependent;
 
   for (diter = dlist.begin(); diter != dlist.end(); diter++) {
@@ -172,7 +172,7 @@ bool PWScore::ConfirmDelete(const CItemData *pci)
 {
   ASSERT(pci != NULL);
   if (pci->IsBase() && m_pAsker != NULL) {
-    UUIDList dependentslist;
+    UUIDVector dependentslist;
     uuid_array_t entry_uuid;
     pci->GetUUID(entry_uuid);
     CItemData::EntryType entrytype = pci->GetEntryType();
@@ -386,6 +386,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
+  m_hdr.m_RUEList = m_RUEList;
 
   out->SetHeader(m_hdr);
 
@@ -622,6 +623,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 
   m_hdr = in->GetHeader();
   m_OrigDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
+  m_RUEList = m_hdr.m_RUEList;
 
   // Get pref string and tree display status & who saved when
   // all possibly empty!
@@ -655,7 +657,7 @@ int PWScore::ReadFile(const StringX &a_filename,
   if (in3 != NULL  && !in3->GetFilters().empty())
     m_MapFilters = in3->GetFilters();
 
-  UUIDList Possible_Aliases, Possible_Shortcuts;
+  UUIDVector Possible_Aliases, Possible_Shortcuts;
   unsigned int uimaxsize(0);
   int numlarge(0);
   do {
@@ -1240,7 +1242,7 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
   std::vector<st_GroupTitleUser> vGTU_UUID, vGTU_PWH, vGTU_TEXT;
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE;
 
-  UUIDList Possible_Aliases, Possible_Shortcuts;
+  UUIDVector Possible_Aliases, Possible_Shortcuts;
   ItemListIter iter;
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
@@ -1690,7 +1692,7 @@ void PWScore::DoMoveDependentEntries(const uuid_array_t &from_baseuuid,
   pmmap->erase(from_baseuuid);
 }
 
-int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *pRpt,
+int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
                                    const CItemData::EntryType type, const int &iVia,
                                    ItemList *pmapDeletedItems,
                                    SaveTypePWMap *pmapSaveTypePW)
@@ -1727,7 +1729,7 @@ int PWScore::DoAddDependentEntries(UUIDList &dependentlist, CReport *pRpt,
   st_SaveTypePW st_typepw;
 
   if (!dependentlist.empty()) {
-    UUIDListIter paiter;
+    UUIDVectorIter paiter;
     ItemListIter iter;
     StringX csPwdGroup, csPwdTitle, csPwdUser, tmp;
     uuid_array_t base_uuid, entry_uuid;
@@ -1970,7 +1972,7 @@ void PWScore::ResetAllAliasPasswords(const uuid_array_t &base_uuid)
   m_base2aliases_mmap.erase(base_uuid);
 }
 
-void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &tlist,
+void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDVector &tlist,
                                      const CItemData::EntryType type)
 {
   ItemMMapIter itr;

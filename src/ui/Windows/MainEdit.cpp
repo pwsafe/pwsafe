@@ -1265,7 +1265,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 {
   // Add Drop entries
   CItemData ci_temp;
-  UUIDList Possible_Aliases, Possible_Shortcuts;
+  UUIDVector Possible_Aliases, Possible_Shortcuts;
   StringX sxgroup, sxtitle, sxuser;
   POSITION pos;
   wchar_t *dot;
@@ -1423,7 +1423,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
 
   // Some shortcuts may have been deleted from the database as base does not exist
   // Tidy up Tree/List
-  UUIDListIter paiter;
+  UUIDVectorIter paiter;
   ItemListIter iter;
   for (paiter = Possible_Shortcuts.begin();
        paiter != Possible_Shortcuts.end(); paiter++) {

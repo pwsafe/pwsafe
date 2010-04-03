@@ -51,15 +51,15 @@
 #include <iostream.h>
 #endif
 
-typedef std::vector<CUUIDGen> UUIDList;
+typedef std::vector<CUUIDGen> UUIDVector;
 
 class PWScore;
 
 class XFileXMLProcessor
 {
 public:
-  XFileXMLProcessor(PWScore *pcore, UUIDList *pPossible_Aliases,
-                    UUIDList *pPossible_Shortcuts, MultiCommands *p_multicmds,
+  XFileXMLProcessor(PWScore *pcore, UUIDVector *pPossible_Aliases,
+                    UUIDVector *pPossible_Shortcuts, MultiCommands *p_multicmds,
                     CReport *prpt);
   ~XFileXMLProcessor();
 
@@ -84,8 +84,8 @@ public:
 
 private:
   PWScore *m_pXMLcore;
-  UUIDList *m_pPossible_Aliases;
-  UUIDList *m_pPossible_Shortcuts;
+  UUIDVector *m_pPossible_Aliases;
+  UUIDVector *m_pPossible_Shortcuts;
   MultiCommands *m_pmulticmds;
   CReport *m_prpt;
 

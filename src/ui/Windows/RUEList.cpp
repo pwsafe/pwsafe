@@ -150,10 +150,10 @@ bool CRUEList::DeleteRUEntry(const uuid_array_t &RUEuuid)
 }
 
 bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
-  if ((m_maxentries == 0) ||
-    m_RUEList.empty() ||
-    (index > (m_maxentries - 1)) ||
-    (index > (m_RUEList.size() - 1))) return false;
+  if ((m_maxentries == 0) || m_RUEList.empty() ||
+     (index > (m_maxentries - 1)) ||
+     (index > (m_RUEList.size() - 1)))
+    return false;
 
   const RUEntry &re_FoundEntry = m_RUEList[index];
 
@@ -169,6 +169,14 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
 
   ci = m_core.GetEntry(pw_listpos);
   return true;
+}
+
+void CRUEList::GetRUEList(UUIDList &RUElist)
+{
+  RUElist.clear();
+  for (RUEListIter iter = m_RUEList.begin(); iter != m_RUEList.end(); iter ++) {
+    RUElist.push_back(iter->RUEuuid);
+  }
 }
 
 CRUEList& CRUEList::operator=(const CRUEList &that)

@@ -21,6 +21,8 @@
 #include "Proxy.h"
 #include "sha256.h"
 
+#include "coredefs.h"
+
 #define MIN_HASH_ITERATIONS 2048
 #define DEFAULT_SUFFIX      _T("psafe3")
 
@@ -66,6 +68,7 @@ public:
     StringX m_lastsavedon; // and by which machine
     StringX m_whatlastsaved; // and by what application
     StringX m_dbname, m_dbdesc; // descriptive name, description
+    UUIDList m_RUEList;
   };
 
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,

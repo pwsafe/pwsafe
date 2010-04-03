@@ -564,6 +564,8 @@ protected:
   afx_msg void OnUpdateTrayCopyEmail(CCmdUI *pCmdUI);
   afx_msg void OnTraySendEmail(UINT nID);
   afx_msg void OnUpdateTraySendEmail(CCmdUI *pCmdUI);
+  afx_msg void OnTraySelect(UINT nID);
+  afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
 #endif
 
   // Generated message map functions

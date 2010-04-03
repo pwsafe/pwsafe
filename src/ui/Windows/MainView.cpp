@@ -830,8 +830,7 @@ void DboxMain::SelectFirstEntry()
         pci = (CItemData *)m_ctlItemTree.GetItemData(hitem);
       }
     }
-    if (pci != NULL)
-      UpdateToolBarForSelectedItem(pci);
+    UpdateToolBarForSelectedItem(pci);
 
     SetDCAText(pci);
   }

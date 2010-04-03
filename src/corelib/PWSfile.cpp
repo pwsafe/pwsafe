@@ -94,6 +94,7 @@ PWSfile::HeaderRecord::HeaderRecord()
   m_dbname(_T("")), m_dbdesc(_T(""))
 {
   memset(m_file_uuid_array, 0, sizeof(m_file_uuid_array));
+  m_RUEList.clear();
 }
 
 PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h) 
@@ -103,7 +104,7 @@ PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h)
   m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
   m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
   m_whatlastsaved(h.m_whatlastsaved),
-  m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc)
+  m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc), m_RUEList(h.m_RUEList)
 {
   memcpy(m_file_uuid_array, h.m_file_uuid_array,
          sizeof(m_file_uuid_array));
@@ -125,6 +126,7 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
     m_dbdesc = h.m_dbdesc;
     memcpy(m_file_uuid_array, h.m_file_uuid_array,
            sizeof(m_file_uuid_array));
+    m_RUEList = h.m_RUEList;
   }
   return *this;
 }

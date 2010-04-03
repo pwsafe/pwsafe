@@ -260,6 +260,22 @@ void DboxMain::OnUpdateTraySendEmail(CCmdUI *)
 {
 }
 
+void DboxMain::OnTraySelect(UINT nID)
+{
+  ASSERT((nID >= ID_MENUITEM_TRAYSELECT1) && (nID <= ID_MENUITEM_TRAYSELECTMAX));
+
+  CItemData ci;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYSELECT1, ci))
+      return;
+
+  DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
+  SelectEntry(pdi->list_index,TRUE);
+}
+
+void DboxMain::OnUpdateTraySelect(CCmdUI *)
+{
+}
+
 void DboxMain::OnTrayDeleteEntry(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYDELETE1) && (nID <= ID_MENUITEM_TRAYDELETEMAX));

@@ -23,17 +23,24 @@ class PWSfileV3 : public PWSfile
 {
 public:
 
-  enum {HDR_VERSION = 0x00, HDR_UUID = 0x01, HDR_NDPREFS = 0x02,
-    HDR_DISPSTAT = 0x03, HDR_LASTUPDATETIME = 0x04,
-    HDR_LASTUPDATEUSERHOST = 0x05,     // DEPRECATED in format 0x0302
+  enum {HDR_VERSION           = 0x00,
+    HDR_UUID                  = 0x01,
+    HDR_NDPREFS               = 0x02,
+    HDR_DISPSTAT              = 0x03,
+    HDR_LASTUPDATETIME        = 0x04,
+    HDR_LASTUPDATEUSERHOST    = 0x05,     // DEPRECATED in format 0x0302
     HDR_LASTUPDATEAPPLICATION = 0x06,
-    HDR_LASTUPDATEUSER = 0x07,         // added in format 0x0302
-    HDR_LASTUPDATEHOST = 0x08,         // added in format 0x0302
-    HDR_DBNAME = 0x09,                 // added in format 0x0302
-    HDR_DBDESC = 0x0a,                 // added in format 0x0302
-    HDR_FILTERS = 0x0b,                // added in format 0x0305
-    HDR_LAST,                          // Start of unknown fields!
-    HDR_END = 0xff};                   // header field types, per formatV{2,3}.txt
+    HDR_LASTUPDATEUSER        = 0x07,     // added in format 0x0302
+    HDR_LASTUPDATEHOST        = 0x08,     // added in format 0x0302
+    HDR_DBNAME                = 0x09,     // added in format 0x0302
+    HDR_DBDESC                = 0x0a,     // added in format 0x0302
+    HDR_FILTERS               = 0x0b,     // added in format 0x0305
+    HDR_RESERVED1             = 0x0c,     // added in format 0x030?
+    HDR_RESERVED2             = 0x0d,     // added in format 0x030?
+    HDR_RESERVED3             = 0x0e,     // added in format 0x030?
+    HDR_RUE                   = 0x0f,     // added in format 0x0307
+    HDR_LAST,                             // Start of unknown fields!
+    HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,

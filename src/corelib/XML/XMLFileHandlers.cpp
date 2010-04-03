@@ -78,7 +78,7 @@ XMLFileHandlers::~XMLFileHandlers()
 void XMLFileHandlers::SetVariables(PWScore *pcore, const bool &bValidation,
                                    const stringT &ImportedPrefix, const TCHAR &delimiter,
                                    const bool &bImportPSWDsOnly,
-                                   UUIDList *pPossible_Aliases, UUIDList *pPossible_Shortcuts,
+                                   UUIDVector *pPossible_Aliases, UUIDVector *pPossible_Shortcuts,
                                    MultiCommands *pmulticmds, CReport *prpt)
 {
   m_bValidation = bValidation;

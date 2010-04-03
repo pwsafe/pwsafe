@@ -713,7 +713,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
                            CReport &rpt, Command *&pcommand)
 {
-  UUIDList Possible_Aliases, Possible_Shortcuts;
+  UUIDVector Possible_Aliases, Possible_Shortcuts;
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   pcommand = pmulticmds;
 
@@ -941,7 +941,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
               GetPref(PWSprefs::MaintainDateTimeStamps);
   bool bIntoEmpty = m_pwlist.size() == 0;
 
-  UUIDList Possible_Aliases, Possible_Shortcuts;
+  UUIDVector Possible_Aliases, Possible_Shortcuts;
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   pcommand = pmulticmds;

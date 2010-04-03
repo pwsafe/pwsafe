@@ -11,6 +11,7 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <list>
 
 #include "ItemData.h"
 
@@ -116,5 +117,9 @@ typedef std::pair< std::set<st_GroupTitleUser>::iterator, bool > GTUSetPair;
 
 typedef std::set<st_UUID> UUIDSet;
 typedef std::pair< std::set<st_UUID>::iterator, bool > UUIDSetPair;
+
+typedef std::list<st_UUID> UUIDList;
+typedef UUIDList::iterator UUIDListIter;
+typedef UUIDList::reverse_iterator UUIDListRIter;
 
 #endif /* __COREDEFS_H */
