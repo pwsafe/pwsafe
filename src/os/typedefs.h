@@ -105,17 +105,11 @@ typedef int errno_t;
 #define HOTKEYF_EXT             0x08
 
 #ifdef UNICODE
-#if defined __linux__ && !defined _stscanf
-#define _stscanf swscanf
-#endif
 #ifndef _T
 #define _T(x) L ## x
 #endif
 typedef wchar_t TCHAR;
 #else
-#if defined __linux__ && !defined _stscanf
-#define _stscanf sscanf
-#endif
 #define _T(x) x
 typedef char TCHAR;
 typedef wchar_t WCHAR;

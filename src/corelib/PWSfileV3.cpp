@@ -820,7 +820,7 @@ int PWSfileV3::ReadHeader()
         for (int n = 0; n < num; n++) {
           uuid_array_t uuid;
           int nscanned = 0;
-          for (int i = 0; i < sizeof(uuid_array_t); i++) {
+          for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
 #if (_MSC_VER >= 1400)
             nscanned += _stscanf_s(lpsz_string, _T("%02x"), &pfield[i]);
 #else
