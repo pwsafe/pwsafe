@@ -41,6 +41,7 @@
 #define _vsctprintf(fmt, args) vswprintf(NULL, 0, fmt, args)
 #define _vstprintf_s(str, size, fmt, args) vswprintf(str, size, fmt, args)
 #define _ftprintf fwprintf
+#define _stscanf swscanf
 #include "linux/pws_str.h"
 #define _tstoi(s) pws_os::wctoi(s)
 #define _tstof(s) pws_os::wctof(s)
@@ -68,6 +69,7 @@
 #define _vsctprintf(fmt, args) vsnprintf(NULL, 0, fmt, args)
 #define _vstprintf_s(str, size, fmt, args) vsnprintf(str, size, fmt, args)
 #define _ftprintf fprintf
+#define _stscanf sscanf
 #define _tstoi(s) atoi(s)
 #define _tstof(s) atof(s)
 #endif /* UNICODE */
