@@ -1188,11 +1188,15 @@ bool CPWFilterLC::GetCriterion()
       if (!vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
         m_fdate.m_rule = st_fldata.rule;
+        m_fdate.m_datetype = st_fldata.fdatetype;
         m_fdate.m_time_t1 = st_fldata.fdate1;
         m_fdate.m_time_t2 = st_fldata.fdate2;
+        m_fdate.m_num1 = st_fldata.fnum1;
+        m_fdate.m_num2 = st_fldata.fnum2;
       } else {
         m_fdate.m_rule = PWSMatch::MR_INVALID;
       }
+      m_fdate.SetFieldType(ft);  // Only FT_XTIME is allowed a future time
       rc = m_fdate.DoModal();
       if (rc == IDOK) {
         st_fldata.Empty();
@@ -1200,8 +1204,11 @@ bool CPWFilterLC::GetCriterion()
         st_fldata.mtype = PWSMatch::MT_DATE;
         st_fldata.ftype = ft;
         st_fldata.rule = m_fdate.m_rule;
+        st_fldata.fdatetype = m_fdate.m_datetype;
         st_fldata.fdate1 = m_fdate.m_time_t1;
         st_fldata.fdate2 = m_fdate.m_time_t2;
+        st_fldata.fnum1 = m_fdate.m_num1;
+        st_fldata.fnum2 = m_fdate.m_num2;
         b_good = true;
       }
       break;

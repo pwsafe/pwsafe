@@ -15,6 +15,7 @@
 #include "PWScore.h"
 #include "StringX.h"
 #include "Util.h"
+
 #include "os/file.h"
 #include "os/dir.h"
 
@@ -101,19 +102,26 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
                                               << "</num2>" << endl;
       break;
     case PWSMatch::MT_DATE:
-      {
-      const StringX tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
-      utf8conv.ToUTF8(tmp1.substr(0, 10), utf8, utf8Len);
-      oss << sztab5 << "<date1>" << utf8
-                                              << "</date1>" << szendl;
-      const StringX tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
-      utf8conv.ToUTF8(tmp2.substr(0, 10), utf8, utf8Len);
-      oss << sztab5 << "<date2>" << utf8
-                                              << "</date2>" << szendl;
+    {
+      if (st_fldata.fdatetype == 0 /* DTYPE_ABS */) {
+        const StringX tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
+        utf8conv.ToUTF8(tmp1.substr(0, 10), utf8, utf8Len);
+        oss << sztab5 << "<date1>" << utf8
+                                                << "</date1>" << szendl;
+        const StringX tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
+        utf8conv.ToUTF8(tmp2.substr(0, 10), utf8, utf8Len);
+        oss << sztab5 << "<date2>" << utf8
+                                                << "</date2>" << szendl;
+      } else {
+        oss << sztab5 << "<num1>" << st_fldata.fnum1 
+                                                << "</num1>" << endl;
+        oss << sztab5 << "<num2>" << st_fldata.fnum2 
+                                                << "</num2>" << endl;
       }
       break;
+    }
     case PWSMatch::MT_ENTRYTYPE:
-      {
+    {
       // First convert value (as a power of 2) into index for string values
       int index = -1;
       int ietype = (int)st_fldata.etype;
@@ -123,14 +131,14 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       index++;
       oss << sztab5 << "<type>" << szentry[index]
                                               << "</type>" << szendl;
-      }
       break;
+    }
     case PWSMatch::MT_DCA:
       oss << sztab5 << "<dca>" << st_fldata.fdca 
                                               << "</dca>" << szendl;
       break;
     case PWSMatch::MT_ENTRYSTATUS:
-      {
+    {
       // First convert value (as a power of 2) into index for string values
       int index = -1;
       int iestatus = (int)st_fldata.estatus;
@@ -140,8 +148,8 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       index++;
       oss << sztab5 << "<status>" << szstatus[index]
                                               << "</status>" << szendl;
-      }
       break;
+    }
     case PWSMatch::MT_ENTRYSIZE:
       oss << sztab5 << "<num1>" << st_fldata.fnum1 
                                               << "</num1>" << endl;
@@ -632,7 +640,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
   TrimRight(cs_rule, _T("\t"));
   PWSMatch::GetMatchType(st_fldata.mtype,
                          st_fldata.fnum1, st_fldata.fnum2,
-                         st_fldata.fdate1, st_fldata.fdate2,
+                         st_fldata.fdate1, st_fldata.fdate2, st_fldata.fdatetype,
                          st_fldata.fstring.c_str(), st_fldata.fcase,
                          st_fldata.fdca, st_fldata.etype, st_fldata.estatus,
                          st_fldata.funit,
@@ -672,8 +680,15 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
         LoadAString(cs_and, IDSC_AND);
         Format(cs_criteria, _T("%s %s %s %s"), 
                cs_rule.c_str(), cs1.c_str(), cs_and.c_str(), cs2.c_str());
-      } else
+      } else {
         Format(cs_criteria, _T("%s %s"), cs_rule.c_str(), cs1.c_str());
+      }
+      if (st_fldata.mtype == PWSMatch::MT_DATE &&
+          st_fldata.fdatetype == 1 /* Relative */) {
+        stringT cs_temp;
+        LoadAString(cs_temp, IDSC_RELATIVE);
+        cs_criteria += cs_temp;
+      }
       if (st_fldata.mtype == PWSMatch::MT_ENTRYSIZE) {
         switch (st_fldata.funit) {
           case 0:

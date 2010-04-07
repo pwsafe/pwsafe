@@ -318,10 +318,20 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
           tests++;
           break;
         case PWSMatch::MT_DATE:
-          thistest_rc = pci->Matches(st_fldata.fdate1, st_fldata.fdate2,
+        {
+          time_t t1(st_fldata.fdate1), t2(st_fldata.fdate2);
+          if (st_fldata.fdatetype == 1 /* Relative */) {
+            time_t now;
+            time(&now);
+            t1 = now + (st_fldata.fnum1 * 86400);
+            if (ifunction == PWSMatch::MR_BETWEEN)
+              t2 = now + (st_fldata.fnum2 * 86400);
+          }
+          thistest_rc = pci->Matches(t1, t2,
                                      (int)ft, ifunction);
           tests++;
           break;
+        }
         case PWSMatch::MT_PWHIST:
           if (filters.num_Hactive != 0) {
             thistest_rc = PassesPWHFiltering(pci, filters);

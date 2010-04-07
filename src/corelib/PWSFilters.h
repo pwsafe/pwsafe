@@ -15,16 +15,17 @@
  * have a wrapper class PWSFilters.
  */
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <time.h> // for time_t
 #include "StringX.h"
 #include "PWSfile.h"
 #include "Match.h"
 #include "ItemData.h"
 #include "Proxy.h"
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <time.h> // for time_t
 
 enum FilterType {DFTYPE_INVALID = 0,
                  DFTYPE_MAIN,
@@ -101,13 +102,18 @@ struct st_FilterRow {
   PWSMatch::MatchType mtype;
   // User selected rule
   PWSMatch::MatchRule rule;
+
   // Following should really be a union or subclassed, since
   // only one is used, and which is defined uniquely by the ftype.
 
-  // if filter type is an integer or size
+  // if filter type is a 'relative date', integer or size
   int fnum1, fnum2;
-  // if filter type is a date
+  // if filter type is an 'absolute date'
   time_t fdate1, fdate2;
+  // fdatetype = 0 for absolute date (using fdate1 & 2) "the default" or
+  // fdatetype = 1 for relative date (using fnum1 & 2)
+  // if relative, values can be between -3650 & +3650 (i.e. 10 years either side of now)
+  int fdatetype;
   // if filter type is a string
   StringX fstring;
   bool fcase; // case sensitive?
@@ -127,7 +133,7 @@ struct st_FilterRow {
     : bFilterActive(true), bFilterComplete(false),
     ftype(FT_INVALID), mtype(PWSMatch::MT_INVALID), rule(PWSMatch::MR_INVALID),
     fnum1(0), fnum2(0),
-    fdate1(0), fdate2(0),
+    fdate1((time_t)0), fdate2((time_t)0), fdatetype(0),
     fstring(_T("")), fcase(false), fdca(-2),
     etype(CItemData::ET_INVALID),
     estatus(CItemData::ES_INVALID), funit(-1),
@@ -138,7 +144,7 @@ struct st_FilterRow {
     : bFilterActive(that.bFilterActive), bFilterComplete(that.bFilterComplete),
     ftype(that.ftype), mtype(that.mtype), rule(that.rule),
     fnum1(that.fnum1), fnum2(that.fnum2),
-    fdate1(that.fdate1), fdate2(that.fdate2), 
+    fdate1(that.fdate1), fdate2(that.fdate2), fdatetype(that.fdatetype),
     fstring(that.fstring), fcase(that.fcase), fdca(that.fdca),
     etype(that.etype), estatus(that.estatus), funit(that.funit),
     ltype(that.ltype)
@@ -156,6 +162,7 @@ struct st_FilterRow {
       fnum2 = that.fnum2;
       fdate1 = that.fdate1;
       fdate2 = that.fdate2;
+      fdatetype = that.fdatetype;
       fstring = that.fstring;
       fcase = that.fcase;
       fdca = that.fdca;
@@ -176,6 +183,7 @@ struct st_FilterRow {
     rule = PWSMatch::MR_INVALID;
     fnum1 = fnum2 = 0;
     fdate1 = fdate2 = (time_t)0;
+    fdatetype = 0;
     fstring = _T("");
     fcase = false;
     fdca = -2;

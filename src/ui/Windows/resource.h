@@ -645,6 +645,7 @@
 #define IDC_SUBSETRESULTS               1361
 #define IDC_STATICSUBSETWARNING         1362
 #define IDC_DEFNOTESWRAP                1363
+#define IDC_STATIC_DTSTATS              1364
 #define IDC_TXT_FLDS_COMBO              1365
 #define IDC_TXT_FLD                     1366
 #define IDC_SHORTCUTLIST                1367
@@ -660,8 +661,6 @@
 #define IDC_RESETPWPOLICY               1377
 #define IDC_DCA_DEFAULT                 1378
 #define IDC_LAUNCH                      1379
-#define IDC_STATIC_DTSTATS              1380
-#define IDC_LAUNCH2                     1380
 #define IDC_SENDEMAIL                   1380
 #define IDC_STATIC_PWH_ADD              1381
 #define IDC_STATIC_PWH_EDIT             1382
@@ -701,6 +700,8 @@
 #define IDC_STATIC_BASE                 1416
 #define IDC_STATIC_TEXT                 1417
 #define IDC_STATIC_WHERE                1418
+#define IDC_STATIC_AND2                 1419
+#define IDC_STATIC_RELDESC              1420
 
 // Next default values for new objects
 // 
@@ -708,7 +709,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        479
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1419
+#define _APS_NEXT_CONTROL_VALUE         1421
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif
