@@ -68,6 +68,7 @@ public:
   bool endElement(stringT &strEndElement, StringX &strElemContent);
 
   bool VerifyXMLDataType(const StringX &strElemContent, const XTD_DataTypes &datatype);
+  bool VerifyInteger(const StringX &strValue, const int &min, const int &max);
   bool GetElementInfo(const XML_Char *name, st_filter_element_data &edata);
   PWSMatch::MatchRule GetMatchRule(const TCHAR *cs_rule);
 

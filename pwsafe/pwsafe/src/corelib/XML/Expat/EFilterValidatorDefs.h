@@ -162,7 +162,9 @@ enum XTD_DataTypes {
   XTD_FILEUUIDTYPE,          // defined but the corresponding field is not used
   XTD_LOGICTYPE,
   XTD_NONBLANKSTRINGTYPE,
-  XTD_YESNOSTRINGTYPE
+  XTD_YESNOSTRINGTYPE,
+  XTD_UNITTYPE,
+  XTD_DATETYPE
 };
 
 #endif /* __EFILTERVALIDATORDEFS_H */

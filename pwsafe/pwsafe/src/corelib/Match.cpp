@@ -12,8 +12,10 @@
 #include "Match.h"
 #include "ItemData.h"
 #include "corelib.h"
-#include <time.h>
+
 #include "os/pws_tchar.h"
+
+#include <time.h>
 
 bool PWSMatch::Match(const StringX &string1, StringX &csValue,
                      int iFunction)
@@ -189,7 +191,7 @@ UINT PWSMatch::GetRule(MatchRule rule)
 
 void PWSMatch::GetMatchType(MatchType mtype,
                             int fnum1, int fnum2,
-                            time_t fdate1, time_t fdate2,
+                            time_t fdate1, time_t fdate2, int fdatetype,
                             const stringT &fstring, bool fcase,
                             short fdca, int etype, int estatus, int funit,
                             bool bBetween, stringT &cs1, stringT &cs2)
@@ -209,8 +211,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
       // Note: purpose drop through to standard 'string' processing
     case MT_STRING:
       cs1 = fstring;
-      LoadAString(cs2,
-                  !fcase ? IDSC_CASE_INSENSITIVE : IDSC_CASE_SENSITIVE);
+      LoadAString(cs2, fcase ? IDSC_CASE_SENSITIVE : IDSC_CASE_INSENSITIVE);
       break;
     case MT_INTEGER:
       Format(cs1, _T("%d"), fnum1);
@@ -218,7 +219,12 @@ void PWSMatch::GetMatchType(MatchType mtype,
         Format(cs2, _T("%d"), fnum2);
       break;
     case MT_DATE:
-      {
+    {
+      if (fdatetype == 1 /* Relative */) {
+        Format(cs1, _T("%d"), fnum1);
+        if (bBetween)
+          Format(cs2, _T("%d"), fnum2);
+      } else {
         struct tm st_s;
         errno_t err;
         err = _localtime32_s(&st_s, &fdate1);
@@ -235,6 +241,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
         }
       }
       break;
+    }
     case MT_BOOL:
     case MT_PWHIST:
     case MT_POLICY:

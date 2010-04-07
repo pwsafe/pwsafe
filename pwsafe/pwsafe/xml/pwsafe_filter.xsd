@@ -221,6 +221,20 @@
   </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="dateType">
+  <xs:restriction base="xs:int">
+    <xs:minInclusive value="0" />
+    <xs:maxInclusive value="1" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="dateintType">
+  <xs:restriction base="xs:int">
+    <xs:minInclusive value="-3650" />
+    <xs:maxInclusive value="3650" />
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:complexType name="matchPassword">
   <xs:sequence>
     <xs:element name="string" type="stringType" minOccurs="1" maxOccurs="1" />
@@ -251,10 +265,26 @@
   </xs:sequence>
 </xs:complexType>
 
+<xs:group name="date_group">
+        <xs:sequence>
+          <xs:element name="date1" type="xs:date" minOccurs="1" maxOccurs="1"/>
+          <xs:element name="date2" type="xs:date" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+</xs:group>
+
+<xs:group name="dateint_group">
+        <xs:sequence>
+          <xs:element name="num1" type="dateintType" minOccurs="1" maxOccurs="1"/>
+          <xs:element name="num2" type="dateintType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+</xs:group>
+
 <xs:complexType name="matchDate">
   <xs:sequence>
-    <xs:element name="date1" type="xs:date" minOccurs="1" maxOccurs="1" />
-    <xs:element name="date2" type="xs:date" minOccurs="1" maxOccurs="1" />
+    <xs:choice>
+      <xs:group ref="date_group" minOccurs="1" maxOccurs="1" />
+      <xs:group ref="dateint_group" minOccurs="1" maxOccurs="1" />
+    </xs:choice>
   </xs:sequence>
 </xs:complexType>
 

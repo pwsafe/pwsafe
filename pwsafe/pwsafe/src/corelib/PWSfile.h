@@ -5,8 +5,10 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+
 #ifndef __PWSFILE_H
 #define __PWSFILE_H
+
 // PWSfile.h
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------

@@ -158,7 +158,7 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_NUM2, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("unit"),
     {XTE_UNIT, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
-    {_T("dca"),
+  {_T("dca"),
     {XTE_DCA1, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("date1"),
     {XTE_DATE1, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
@@ -302,8 +302,10 @@ bool EFilterValidator::startElement(stringT & strStartElement)
     case XTE_WARN:
     case XTE_NUM1:
     case XTE_NUM2:
-    case XTE_UNIT:
       data_type = XTD_XS_INT;
+      break;
+    case XTE_UNIT:
+      data_type = XTD_UNITTYPE;
       break;
     case XTE_DATE1:
     case XTE_DATE2:
@@ -382,10 +384,19 @@ bool EFilterValidator::endElement(stringT &strEndElement,
     case XTE_TEST:
       switch (m_rule_code) {
         case XTR_DATERULE:
-          if (m_ielement_occurs[XTE_DATE1] != 1 ||
-              m_ielement_occurs[XTE_DATE2] != 1) {
-            m_iErrorCode = XTPEC_MISSING_ELEMENT;
-            cs_missing_element = m_ielement_occurs[XTE_DATE1] != 1 ? _T("date1") : _T("date2");
+          if (m_ielement_occurs[XTE_NUM1] == 0) {
+            if (m_ielement_occurs[XTE_DATE1] != 1 ||
+                m_ielement_occurs[XTE_DATE2] != 1) {
+              m_iErrorCode = XTPEC_MISSING_ELEMENT;
+              cs_missing_element = m_ielement_occurs[XTE_DATE1] != 1 ? _T("date1") : _T("date2");
+            }
+          }
+          if (m_ielement_occurs[XTE_DATE1] == 0) {
+            if (m_ielement_occurs[XTE_NUM1] != 1 ||
+                m_ielement_occurs[XTE_NUM2] != 1) {
+              m_iErrorCode = XTPEC_MISSING_ELEMENT;
+              cs_missing_element = m_ielement_occurs[XTE_NUM1] != 1 ? _T("num1") : _T("num2");
+            }
           }
           break;
         case XTR_ENTRYRULE:
@@ -541,20 +552,20 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
       break;
     case XTE_RULE:
       if (previous_element_code != XTE_FILTER_GROUP ||
-          m_ielement_occurs[XTE_RULE]   != 0 ||
-          m_ielement_occurs[XTE_LOGIC]  != 0 ||
-          m_ielement_occurs[XTE_TEST]   != 0 ||
-          m_ielement_occurs[XTE_STRING] != 0 ||
-          m_ielement_occurs[XTE_CASE]   != 0 ||
-          m_ielement_occurs[XTE_WARN]   != 0 ||
-          m_ielement_occurs[XTE_NUM1]   != 0 ||
-          m_ielement_occurs[XTE_NUM2]   != 0 ||
-          m_ielement_occurs[XTE_UNIT]   != 0 ||
-          m_ielement_occurs[XTE_DCA1]   != 0 ||
-          m_ielement_occurs[XTE_DATE1]  != 0 ||
-          m_ielement_occurs[XTE_DATE2]  != 0 ||
-          m_ielement_occurs[XTE_TYPE]   != 0 ||
-          m_ielement_occurs[XTE_STATUS] != 0) {
+          m_ielement_occurs[XTE_RULE]     != 0 ||
+          m_ielement_occurs[XTE_LOGIC]    != 0 ||
+          m_ielement_occurs[XTE_TEST]     != 0 ||
+          m_ielement_occurs[XTE_STRING]   != 0 ||
+          m_ielement_occurs[XTE_CASE]     != 0 ||
+          m_ielement_occurs[XTE_WARN]     != 0 ||
+          m_ielement_occurs[XTE_NUM1]     != 0 ||
+          m_ielement_occurs[XTE_NUM2]     != 0 ||
+          m_ielement_occurs[XTE_UNIT]     != 0 ||
+          m_ielement_occurs[XTE_DCA1]     != 0 ||
+          m_ielement_occurs[XTE_DATE1]    != 0 ||
+          m_ielement_occurs[XTE_DATE2]    != 0 ||
+          m_ielement_occurs[XTE_TYPE]     != 0 ||
+          m_ielement_occurs[XTE_STATUS]   != 0) {
         m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
       }
       break;
@@ -567,38 +578,39 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
         nrule = 1;
       }
       if (previous_element_code != pcode ||
-          m_ielement_occurs[XTE_RULE]   != nrule ||
-          m_ielement_occurs[XTE_LOGIC]  != 0 ||
-          m_ielement_occurs[XTE_TEST]   != 0 ||
-          m_ielement_occurs[XTE_STRING] != 0 ||
-          m_ielement_occurs[XTE_CASE]   != 0 ||
-          m_ielement_occurs[XTE_WARN]   != 0 ||
-          m_ielement_occurs[XTE_NUM1]   != 0 ||
-          m_ielement_occurs[XTE_NUM2]   != 0 ||
-          m_ielement_occurs[XTE_UNIT]   != 0 ||
-          m_ielement_occurs[XTE_DATE1]  != 0 ||
-          m_ielement_occurs[XTE_DATE2]  != 0 ||
-          m_ielement_occurs[XTE_TYPE]   != 0 ||
-          m_ielement_occurs[XTE_STATUS] != 0) {
+          m_ielement_occurs[XTE_RULE]     != nrule ||
+          m_ielement_occurs[XTE_LOGIC]    != 0 ||
+          m_ielement_occurs[XTE_TEST]     != 0 ||
+          m_ielement_occurs[XTE_STRING]   != 0 ||
+          m_ielement_occurs[XTE_CASE]     != 0 ||
+          m_ielement_occurs[XTE_WARN]     != 0 ||
+          m_ielement_occurs[XTE_NUM1]     != 0 ||
+          m_ielement_occurs[XTE_NUM2]     != 0 ||
+          m_ielement_occurs[XTE_UNIT]     != 0 ||
+          m_ielement_occurs[XTE_DCA1]     != 0 ||
+          m_ielement_occurs[XTE_DATE1]    != 0 ||
+          m_ielement_occurs[XTE_DATE2]    != 0 ||
+          m_ielement_occurs[XTE_TYPE]     != 0 ||
+          m_ielement_occurs[XTE_STATUS]   != 0) {
         m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
       }
       break;
     case XTE_TEST:
       if (previous_element_code != XTE_LOGIC ||
-          m_ielement_occurs[XTE_RULE]   != 1 ||
-          m_ielement_occurs[XTE_LOGIC]  != 1 ||
-          m_ielement_occurs[XTE_TEST]   != 0 ||
-          m_ielement_occurs[XTE_STRING] != 0 ||
-          m_ielement_occurs[XTE_CASE]   != 0 ||
-          m_ielement_occurs[XTE_WARN]   != 0 ||
-          m_ielement_occurs[XTE_NUM1]   != 0 ||
-          m_ielement_occurs[XTE_NUM2]   != 0 ||
-          m_ielement_occurs[XTE_UNIT]   != 0 ||
-          m_ielement_occurs[XTE_DCA1]   != 0 ||
-          m_ielement_occurs[XTE_DATE1]  != 0 ||
-          m_ielement_occurs[XTE_DATE2]  != 0 ||
-          m_ielement_occurs[XTE_TYPE]   != 0 ||
-          m_ielement_occurs[XTE_STATUS] != 0) {
+          m_ielement_occurs[XTE_RULE]     != 1 ||
+          m_ielement_occurs[XTE_LOGIC]    != 1 ||
+          m_ielement_occurs[XTE_TEST]     != 0 ||
+          m_ielement_occurs[XTE_STRING]   != 0 ||
+          m_ielement_occurs[XTE_CASE]     != 0 ||
+          m_ielement_occurs[XTE_WARN]     != 0 ||
+          m_ielement_occurs[XTE_NUM1]     != 0 ||
+          m_ielement_occurs[XTE_NUM2]     != 0 ||
+          m_ielement_occurs[XTE_UNIT]     != 0 ||
+          m_ielement_occurs[XTE_DCA1]     != 0 ||
+          m_ielement_occurs[XTE_DATE1]    != 0 ||
+          m_ielement_occurs[XTE_DATE2]    != 0 ||
+          m_ielement_occurs[XTE_TYPE]     != 0 ||
+          m_ielement_occurs[XTE_STATUS]   != 0) {
         m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
       }
       break;
@@ -630,18 +642,25 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
       }
       break;
     case XTE_NUM1:
-      if (previous_element_code != XTE_TEST ||
-          ((m_rule_code & XTR_INTEGERRULE) == 0 &&
-           (m_rule_code & XTR_SIZERULE) == 0) ||
-          m_ielement_occurs[XTE_NUM1] != 0 ||
-          m_ielement_occurs[XTE_NUM2] != 0) {
-        m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
+      switch (previous_element_code) {
+        case XTE_TEST:
+          if (((m_rule_code & XTR_INTEGERRULE) == 0 &&
+               (m_rule_code & XTR_SIZERULE) == 0 &&
+               (m_rule_code & XTR_DATERULE) == 0) ||
+               m_ielement_occurs[XTE_NUM1] != 0 ||
+               m_ielement_occurs[XTE_NUM2] != 0) {
+            m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
+          }
+          break;
+        default:
+          m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
       }
       break;
     case XTE_NUM2:
       if (previous_element_code != XTE_NUM1 ||
           ((m_rule_code & XTR_INTEGERRULE) == 0 &&
-           (m_rule_code & XTR_SIZERULE) == 0) ||
+           (m_rule_code & XTR_SIZERULE) == 0 &&
+           (m_rule_code & XTR_DATERULE) == 0) ||
           m_ielement_occurs[XTE_NUM1] != 1 ||
           m_ielement_occurs[XTE_NUM2] != 0) {
         m_iErrorCode = XTPEC_UNEXPECTED_ELEMENT;
@@ -788,12 +807,27 @@ bool EFilterValidator::GetElementInfo(const XML_Char *name, st_filter_element_da
 bool EFilterValidator::VerifyXMLDataType(const StringX &strElemContent, const XTD_DataTypes &datatype)
 {
   static const TCHAR *digits(_T("0123456789"));
+  StringX sxInt;
 
   switch (datatype) {
     case XTD_XS_DATE:
       return VerifyXMLDate(strElemContent);
     case XTD_XS_INT:
-      return (strElemContent.find_first_not_of(digits) == StringX::npos);
+      if (strElemContent[0] == _T('-') || strElemContent[0] == _T('+'))
+        sxInt = strElemContent.substr(1);
+      else
+        sxInt = strElemContent;
+      return (sxInt.find_first_not_of(digits) == StringX::npos);
+    case XTD_XS_POSITIVEINTEGER:
+      if (strElemContent[0] == _T('+'))
+        sxInt = strElemContent.substr(1);
+      else
+        sxInt = strElemContent;
+      return (sxInt.find_first_not_of(digits) == StringX::npos);
+    case XTD_UNITTYPE:
+      return VerifyInteger(strElemContent, 0, 2);
+    case XTD_DATETYPE:
+      return VerifyInteger(strElemContent, 0, 1);
     case XTD_BOOLTYPE:
       return (strElemContent == _T("0") || strElemContent == _T("1"));
     case XTD_ENTRYTYPE:
@@ -852,6 +886,17 @@ bool EFilterValidator::VerifyXMLDate(const StringX &strValue)
   return verifyDTvalues(yyyy, mm, dd, 0, 0, 0);
 }
 
+bool EFilterValidator::VerifyInteger(const StringX &strValue,
+                                     const int &min, const int &max)
+{
+  static const TCHAR *digits(_T("0123456789"));
+  if (strValue.find_first_not_of(digits) != StringX::npos)
+    return false;
+
+  int ivalue = _ttoi(strValue.c_str());
+  return (ivalue >= min && ivalue <= max);
+}
+      
 StringX EFilterValidator::Trim(const StringX &s, const TCHAR *set)
 {
   // This version does NOT change the input arguments!

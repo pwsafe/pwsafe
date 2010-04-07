@@ -14,6 +14,7 @@
 
 #include "StringX.h"
 #include "ItemData.h"
+//#include "PWSFilters.h"  // For DateType
 
 namespace PWSMatch {
   // namespace of common utility functions
@@ -74,7 +75,7 @@ namespace PWSMatch {
   const char *GetRuleString(MatchRule rule);
   void GetMatchType(MatchType mtype,
                     int fnum1, int fnum2,
-                    time_t fdate1, time_t fdate2,
+                    time_t fdate1, time_t fdate2, int fdatetype,
                     const stringT &fstring, bool fcase,
                     short fdca, int etype, int estatus, int funit,
                     bool bBetween, stringT &cs1, stringT &cs2);

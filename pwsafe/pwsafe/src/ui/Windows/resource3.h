@@ -612,3 +612,4 @@
 #define IDS_NOIBACKUP2                  5796
 #define IDS_SAVEAS                      5797
 #define IDS_SINGLEENTRY                 5798
+#define IDS_INVALIDFUTUREDATE           5799

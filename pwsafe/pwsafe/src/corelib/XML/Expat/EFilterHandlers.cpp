@@ -226,6 +226,12 @@ void XMLCALL EFilterHandlers::endElement(void * userdata, const XML_Char *name)
   }
 
   else if (_tcscmp(name, _T("filter_entry")) == 0) {
+    if (cur_filterentry->mtype  == PWSMatch::MT_DATE &&
+        cur_filterentry->rule   != PWSMatch::MR_PRESENT &&
+        cur_filterentry->rule   != PWSMatch::MR_NOTPRESENT &&
+        cur_filterentry->fdate1 == (time_t)0 &&
+        cur_filterentry->fdate2 == (time_t)0)
+      cur_filterentry->fdatetype = 1; // Relative Date
     if (m_type == DFTYPE_MAIN) {
       cur_filter->num_Mactive++;
       cur_filter->vMfldata.push_back(*cur_filterentry);
