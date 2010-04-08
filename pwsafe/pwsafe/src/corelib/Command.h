@@ -143,6 +143,7 @@ public:
   int Redo();
   void Undo();
   friend class DeleteEntryCommand; // allow access to c'tor
+
 private:
   AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
   AddEntryCommand(CommandInterface *pcomInt,
@@ -377,6 +378,7 @@ public:
   bool GetRC(Command *pcmd, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
+  void ResetSavedState(bool bNewDBState);
 
  private:
   MultiCommands(CommandInterface *pcomInt);

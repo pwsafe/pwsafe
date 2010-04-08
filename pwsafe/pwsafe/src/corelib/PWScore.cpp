@@ -439,22 +439,18 @@ void PWScore::ResetStateAfterSave()
   // After a Save/SaveAs, need to change all saved DB modified states
   // in any commands in the list that can be undone or redone
   // State = whether DB changed (false: no, true: yes)
-  if (m_undo_iter != m_vpcommands.end()) {
-    std::vector<Command *>::reverse_iterator cmd_riter, undo_riter(m_undo_iter);
-    for (cmd_riter = undo_riter; cmd_riter != m_vpcommands.rend(); cmd_riter++) {
-      (*cmd_riter)->ResetSavedState(true);
-    }
+
+  // After a save, all commands in the undo/redo chain should now have 
+  //   saved state = changed
+  std::vector<Command *>::iterator cmd_iter;
+  for (cmd_iter = m_vpcommands.begin(); cmd_iter != m_vpcommands.end(); cmd_iter++) {
+    (*cmd_iter)->ResetSavedState(true);
   }
 
-  // This may not be needed as the Redo of a Command saves DB status
-  // whenever it is performed!
-  if (m_redo_iter != m_vpcommands.end()) {
+  // However, the next command in the list (redo) should now have
+  //   saved state = unchanged. 
+  if (m_redo_iter != m_vpcommands.end())
     (*m_redo_iter)->ResetSavedState(false);
-    std::vector<Command *>::iterator cmd_iter;
-    for (cmd_iter = m_redo_iter + 1; cmd_iter != m_vpcommands.end(); cmd_iter++) {
-      (*cmd_iter)->ResetSavedState(true);
-    }
-  }
 }
 
 int PWScore::Execute(Command *pcmd)
@@ -474,9 +470,10 @@ int PWScore::Execute(Command *pcmd)
   }
 
   m_vpcommands.push_back(pcmd);
-  m_undo_iter = m_vpcommands.end() - 1;
-  m_redo_iter = m_vpcommands.end();
   int rc = pcmd->Execute();
+
+  m_undo_iter = m_redo_iter = m_vpcommands.end();
+  m_undo_iter--;
 
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
@@ -498,7 +495,9 @@ void PWScore::Undo()
 
   ASSERT(m_undo_iter != m_vpcommands.end());
   m_redo_iter = m_undo_iter;
+
   (*m_undo_iter)->Undo();
+
   if (m_undo_iter == m_vpcommands.begin())
     m_undo_iter = m_vpcommands.end();
   else
@@ -522,7 +521,9 @@ void PWScore::Redo()
 
   ASSERT(m_redo_iter != m_vpcommands.end());
   m_undo_iter = m_redo_iter;
+
   (*m_redo_iter)->Redo();
+
   if (m_redo_iter != m_vpcommands.end())
     m_redo_iter++;
 
