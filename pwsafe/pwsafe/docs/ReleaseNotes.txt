@@ -10,6 +10,9 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.21.1
 =======================
+[2983775] Recently Used Entries are now saved in the database header and
+so are "persistent".  The current Windows user interface limits this to a
+maximum of the last 25 entries accessed.
 [2980609] Allow date filters to use relative dates
 [2979411] A single entry can now be exported to a text or XML file via the
 Edit menu or right-click context menu.
@@ -19,7 +22,7 @@ the results of a Compare database operation.
 well as via the command line flag '-v'. When executed via the menu, it
 is very similar to opening a new database in that the current open database
 is closed and the selected database is validated during the open process.
-[] Allow use to select external editor for Notes field in Add/Edit dialog.
+[] Allow user to select external editor for Notes field in Add/Edit dialog.
 [] Add entry size to the available filters to be able view entries.
 [] Warn users during database open and entry import if there are entries
 with large text fields (e.g. Notes) that cannot be fully displayed and may
@@ -43,7 +46,7 @@ releases.
 [2960709] Entry selected prior to workstation locking is reselected on
 being restored after unlocking the workstation.
 [2951871] Shortcut related menu items now returned to the Edit menu and
-the "Run Command", "Browse to URL", "Browse to URL + Autotype" and 
+the "Run Command", "Browse to URL", "Browse to URL + Autotype" and
 "Send email" functions now work again, when a Shortcut entry is selected.
 [2897661, 2779654] Group expand/collapse state restored after the database
 is Locked, Minimized or "AutoType with Minimize" and then Restored.
