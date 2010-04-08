@@ -1451,7 +1451,7 @@ CItemData *DboxMain::getSelectedItem()
         DisplayInfo *pdi = (DisplayInfo *)retval->GetDisplayInfo();
         ASSERT(pdi != NULL);
         if (pdi->tree_item != ti) {
-          TRACE(L"DboxMain::getSelectedItem: fixing pdi->tree_item!");
+          TRACE(L"DboxMain::getSelectedItem: fixing pdi->tree_item!\n");
           pdi->tree_item = ti;
         }
       } // leaf node

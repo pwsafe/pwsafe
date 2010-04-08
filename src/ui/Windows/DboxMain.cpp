@@ -1220,6 +1220,8 @@ void DboxMain::OnUndo()
   RestoreGUIStatus();
 
   UpdateToolBarDoUndo();
+  UpdateMenuAndToolBar(m_bOpen);
+  UpdateStatusBar();
 }
 
 void DboxMain::OnRedo()
@@ -1228,6 +1230,8 @@ void DboxMain::OnRedo()
   m_core.Redo();
 
   UpdateToolBarDoUndo();
+  UpdateMenuAndToolBar(m_bOpen);
+  UpdateStatusBar();
 }
 
 void DboxMain::SaveGUIStatus()

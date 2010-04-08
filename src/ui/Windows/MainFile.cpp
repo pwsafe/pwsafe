@@ -1016,6 +1016,7 @@ int DboxMain::Save(const SaveType savetype)
   m_core.SetRUEList(RUElist);
 
   rc = m_core.WriteCurFile();
+  m_core.ResetStateAfterSave();
 
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, m_core.GetCurFile());
