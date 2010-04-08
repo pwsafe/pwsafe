@@ -863,7 +863,7 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& event )
 
 void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
 {
-  if (m_exitFromMenu) {
+  if (m_exitFromMenu || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     if (event.CanVeto()) {
       int rc = SaveIfChanged();
       if (rc == PWScore::USER_CANCEL) {
