@@ -243,11 +243,12 @@ versions of PasswordSafe. To ensure compatability beweeen versions,
 use of these values should be avoided.
 
 [14] A list of the UUIds (32 hex character representation of the 16 byte field)
-of the recently used entries, prefixed by a 4 hex character representation of
-the number of these entries. Whilst no maximum number of entries is imposed,
-the GUI may impose further restrictions e.g. Windows MFC UI limits this to 25.
-The first entry is the most recent entry accessed. This field was introduced
-in format version 0x0307.
+of the recently used entries, prefixed by a 2 hex character representation
+of the number of these entries (right justified and left filled with zeroes).
+The size of the number of entries field gives a maximum number of entries of 255,
+however the GUI may impose further restrictions e.g. Windows MFC UI limits this
+to 25. The first entry is the most recent entry accessed. This field was
+introduced in format version 0x0307.
 
 [15] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.

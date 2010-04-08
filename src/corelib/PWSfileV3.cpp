@@ -541,12 +541,17 @@ int PWSfileV3::WriteHeader()
 
   if (!m_hdr.m_RUEList.empty()) {
     ostringstream oss;
-    oss << setfill('0') << setw(4) << m_hdr.m_RUEList.size();
-    for (UUIDListIter iter = m_hdr.m_RUEList.begin();
-             iter != m_hdr.m_RUEList.end(); iter++) {
+    size_t num = m_hdr.m_RUEList.size();
+    if (num > 255)
+      num = 255;  // Do not exceed 2 hex character length field
+    oss << setw(2) << setfill('0') << hex << num;
+    UUIDListIter iter = m_hdr.m_RUEList.begin();
+    // Only save up to max as defined by FormatV3.
+    for (size_t n = 0; n < num; n++) {
       for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
         oss << setw(2) << setfill('0') << hex << int(iter->uuid[i]);
       }
+      iter++;
     }
 
     numWritten = WriteCBC(HDR_RUE, 
@@ -802,20 +807,23 @@ int PWSfileV3::ReadHeader()
       {
         if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        int num(0);
-        if (utf8status) {
-          StringX tlen = text.substr(0, 4);
-          iStringXStream is(tlen);
-          is >> hex >> num;
-        }
+        if (!utf8status)
+          break;
 
-        ASSERT(text.length() == num * sizeof(uuid_array_t) * 2 + 4);
-        if (text.length() != num * sizeof(uuid_array_t) * 2 + 4)
+        int num(0);
+        StringX tlen = text.substr(0, 2);
+        iStringXStream is(tlen);
+        is >> hex >> num;
+
+        if (text.length() != num * sizeof(uuid_array_t) * 2 + 2)
           break;
 
         LPCTSTR lpsz_string = text.c_str();
-        lpsz_string += 4;
+        lpsz_string += 2;
         unsigned char *pfield;
+        // sscanf always outputs to an "int" using %x even though
+        // target is only 1.  Read into larger buffer to prevent data being
+        // overwritten and then copy to where we want it!
         pfield = new unsigned char[sizeof(uuid_array_t) + sizeof(int)];
         for (int n = 0; n < num; n++) {
           uuid_array_t uuid;
@@ -828,6 +836,7 @@ int PWSfileV3::ReadHeader()
 #endif
             lpsz_string += 2;
           }
+          // Now copy only the first 16 characters where we need them
           memcpy(uuid, pfield, sizeof(uuid_array_t));
           m_hdr.m_RUEList.push_back(st_UUID(uuid));
         }
