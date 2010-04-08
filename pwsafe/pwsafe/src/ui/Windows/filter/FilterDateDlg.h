@@ -63,12 +63,14 @@ protected:
 
 private:
   void AFXAPI DDV_CheckDateValid(CDataExchange* pDX,
-                                 const int &num1, const int &num2);
+                                 const int &num);
   void AFXAPI DDV_CheckDateValid(CDataExchange* pDX,
-                                 const CTime &ctime1, const CTime &ctime2);
-  void AFXAPI DDV_CheckNumbers(CDataExchange* pDX,
-                               const int &num1, const int &num2);
+                                 const CTime &ctime);
+  void AFXAPI DDV_CheckDates(CDataExchange* pDX,
+                             const CTime &ctime1,  const CTime &ctime2);
+  void AFXAPI DDV_CheckDates(CDataExchange* pDX,
+                             const int &num1, const int &num2);
   void AFXAPI DDV_CheckMinMax(CDataExchange* pDX,
-                              const int &num1, const int &num2);
+                              const int &num);
   FieldType m_ft;
 };
