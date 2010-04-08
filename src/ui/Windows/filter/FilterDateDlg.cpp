@@ -91,10 +91,23 @@ void CFilterDateDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_STATIC_RELDESC, m_stcRelativeDesc);
   //}}AFX_DATA_MAP
 
-  DDV_CheckDateValid(pDX, m_ctime1, m_ctime2);
-  DDV_CheckMinMax(pDX, m_num1, m_num2);
-  DDV_CheckDateValid(pDX, m_num1, m_num2);
-  DDV_CheckNumbers(pDX, m_num1, m_num2);
+  if (m_datetype == 0) {
+    /* Absolute */
+    DDV_CheckDateValid(pDX, m_ctime1);
+    if (m_rule == PWSMatch::MR_BETWEEN) {
+      DDV_CheckDateValid(pDX, m_ctime2);
+    }
+    DDV_CheckDates(pDX, m_ctime1, m_ctime2);
+  } else {
+    /* Relative */
+    DDV_CheckMinMax(pDX, m_num1);
+    DDV_CheckDateValid(pDX, m_num1);
+    if (m_rule == PWSMatch::MR_BETWEEN) {
+      DDV_CheckMinMax(pDX, m_num2);
+      DDV_CheckDateValid(pDX, m_num2);
+    }
+    DDV_CheckDates(pDX, m_num1, m_num2);
+  }
 }
 
 BEGIN_MESSAGE_MAP(CFilterDateDlg, CFilterBaseDlg)
@@ -106,64 +119,39 @@ BEGIN_MESSAGE_MAP(CFilterDateDlg, CFilterBaseDlg)
 END_MESSAGE_MAP()
 
 void AFXAPI CFilterDateDlg::DDV_CheckDateValid(CDataExchange* pDX,
-                                               const int &num1, const int &num2)
+                                               const int &num)
 {
   if (m_datetype == 0 /* Absolute */)
     return;
 
   // Only Expiry dates can be in the past and future
   // All other dates can only be in the past (i.e. created, last accessed etc.)
-  if (pDX->m_bSaveAndValidate) {
+  if (pDX->m_bSaveAndValidate && m_ft != FT_XTIME && num > 0) {
     CGeneralMsgBox gmb;
     CString cs_text;
-    if (m_ft != FT_XTIME) {
-      if (num1 > 0) {
-        cs_text.LoadString(IDS_INVALIDFUTUREDATE);
-        gmb.AfxMessageBox(cs_text);
-        pDX->Fail();
-        return;
-      }
-      if (m_rule == PWSMatch::MR_BETWEEN) {
-        if (num2 > 0) {
-          cs_text.LoadString(IDS_INVALIDFUTUREDATE);
-          gmb.AfxMessageBox(cs_text);
-          pDX->Fail();
-          return;
-        }
-      }
-    }
+    cs_text.LoadString(IDS_INVALIDFUTUREDATE);
+    gmb.AfxMessageBox(cs_text);
+    pDX->Fail();
   }
 }
 
 void AFXAPI CFilterDateDlg::DDV_CheckDateValid(CDataExchange* pDX,
-                                               const CTime &ctime1, const CTime &ctime2)
+                                               const CTime &ctime)
 {
   if (m_datetype == 1 /* Relative */)
     return;
 
   // Only Expiry dates can be in the past and future
   // All other dates can only be in the past (i.e. created, last accessed etc.)
-  if (pDX->m_bSaveAndValidate) {
-    if (m_ft != FT_XTIME) {
-      CGeneralMsgBox gmb;
-      if (ctime1 > CTime::GetCurrentTime()) {
-        gmb.AfxMessageBox(IDS_INVALIDFUTUREDATE);
-        pDX->Fail();
-        return;
-      }
-      if (m_rule == PWSMatch::MR_BETWEEN) {
-        if (ctime2 > CTime::GetCurrentTime()) {
-          gmb.AfxMessageBox(IDS_INVALIDFUTUREDATE);
-          pDX->Fail();
-          return;
-        }
-      }
-    }
+  if (pDX->m_bSaveAndValidate && m_ft != FT_XTIME && ctime > CTime::GetCurrentTime()) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_INVALIDFUTUREDATE);
+    pDX->Fail();
   }
 }
 
 void AFXAPI CFilterDateDlg::DDV_CheckMinMax(CDataExchange* pDX,
-                                            const int &num1, const int &num2)
+                                            const int &num)
 {
   if (m_datetype == 0 /* Absolute */)
     return;
@@ -171,39 +159,35 @@ void AFXAPI CFilterDateDlg::DDV_CheckMinMax(CDataExchange* pDX,
   if (pDX->m_bSaveAndValidate) {
     CGeneralMsgBox gmb;
     CString cs_text;
-    if (num1 < -3650) {
+    if (num < -3650) {
       cs_text.Format(IDS_NUMTOOSMALL, -3650);
       gmb.AfxMessageBox(cs_text);
       pDX->Fail();
-      return;
     }
 
-    if (num1 > 3650) {
+    if (num > 3650) {
       cs_text.Format(IDS_NUMTOOLARGE, 3650);
       gmb.AfxMessageBox(cs_text);
       pDX->Fail();
-      return;
-    }
-    if (m_rule == PWSMatch::MR_BETWEEN) {
-      if (num2 < -3650) {
-        cs_text.Format(IDS_NUMTOOSMALL, -3650);
-        gmb.AfxMessageBox(cs_text);
-        pDX->Fail();
-        return;
-      }
-
-      if (num2 > 3650) {
-        cs_text.Format(IDS_NUMTOOLARGE, 3650);
-        gmb.AfxMessageBox(cs_text);
-        pDX->Fail();
-        return;
-      }
     }
   }
 }
 
-void AFXAPI CFilterDateDlg::DDV_CheckNumbers(CDataExchange* pDX,
-                                             const int &num1, const int &num2)
+void AFXAPI CFilterDateDlg::DDV_CheckDates(CDataExchange* pDX,
+                                           const CTime &ctime1,  const CTime &ctime2)
+{
+  if (m_datetype == 1 /* Relative */)
+    return;
+
+  if (pDX->m_bSaveAndValidate && m_rule == PWSMatch::MR_BETWEEN && ctime1 >= ctime2) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_DATE1NOTB4DATE2);
+    pDX->Fail();
+  }
+}
+
+void AFXAPI CFilterDateDlg::DDV_CheckDates(CDataExchange* pDX,
+                                           const int &num1, const int &num2)
 {
   if (m_datetype == 0 /* Absolute */)
     return;
