@@ -991,6 +991,17 @@ void DboxMain::RestoreWindows()
 {
   ShowWindow(SW_RESTORE);
 
+  // Restore saved DB preferences that may not have been saved in the database
+  // over the minimize/restore event.
+  // Can't use the fact that the string is empty, as that is a valid state!
+  // Use arbitrary value "#Empty#" to indicate nothing here.
+  if (m_savedDBprefs != EMPTYSAVEDDBPREFS) {
+    PWSprefs::GetInstance()->Load(m_savedDBprefs);
+    if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs))
+      m_core.SetDBPrefsChanged(true);
+    m_savedDBprefs = EMPTYSAVEDDBPREFS;
+  }
+
   RefreshViews();
   BringWindowToTop();
   CPWDialog::GetDialogTracker()->Apply(Shower);
@@ -1804,7 +1815,9 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     TRACE(L"Locking due to Timer lock countdown or ws lock\n");
     if (!LockDataBase())
       return;
+
     PWSprefs *prefs = PWSprefs::GetInstance();
+    m_savedDBprefs = prefs->Store();
     bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
     if (!usingsystray) {
       ShowWindow(SW_MINIMIZE);
