@@ -34,6 +34,8 @@ None
 
 Bugs fixed in 3.21.1
 ====================
+[2984527] Database preferences (including the Idle Timer setting) now retained
+during a locking minimize to the System Tray.
 [2977941] The password expiry date is now updated during edit if the password
 is changed either via the Generate button or by the user manually editing it.
 [2977045] Can now make password expiration date any value from the current
