@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-02-22 20:11+0300\n"
+"PO-Revision-Date: 2010-01-11 15:25+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -65,6 +65,7 @@ msgstr ""
 # Undo - вернуть
 # Redo - повторить
 # Failsafe Backup - Аварийная резервная копия
+# Original - исходный
 #. Resource IDs: (315, 8016, 8017)
 msgid " "
 msgstr " "
@@ -166,6 +167,11 @@ msgstr " 'Сохранять время модификации'"
 #. Resource IDs: (354)
 msgid " 'Run Command'"
 msgstr " 'Выполнить команду'"
+
+# Используется в расширенных настройках экспорта для одного элементы "Advanced Text 'Single Entry' Export Options"
+#. Resource IDs: (363)
+msgid " 'Single Entry' "
+msgstr " 'одного элемента' "
 
 #. Resource IDs: (347)
 msgid " 'Title'"
@@ -347,10 +353,20 @@ msgstr "%s \n\nНевозможно открыть файл. Пожалуйст�
 msgid "%s file being imported: %s"
 msgstr "%s файл импортирован: %s"
 
+#. Resource IDs: (212)
+#, fuzzy, c-format
+msgid "%s has an empty %s.\r\n"
+msgstr "у %s пустой %s.\r\n"
+
 #. Resource IDs: (326)
 #, c-format
 msgid "%s is a directory"
 msgstr "%s является каталогом"
+
+#. Resource IDs: (211)
+#, c-format
+msgid "%s not found. Cannot update entry's password.\r\n"
+msgstr "%s не найден. Невозможно обновить пароль для элемента.\r\n"
 
 # Ex.: "Saved by: qq on MAIN"
 #. Resource IDs: (212)
@@ -365,8 +381,13 @@ msgstr "%s%s%s_Report.txt"
 
 #. Resource IDs: (212)
 #, fuzzy, c-format
-msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\"."
-msgstr "%s, c заголовком=\"%s\" и именем пользователя=\"%s\" уже существует в контейнере или импортируемом файле. Импортированный элемент добавлен с заголовком \"%s\"."
+msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
+msgstr "%s, c заголовком \"%s\" и именем пользователя \"%s\" уже существует в контейнере или импортируемом файле. Импортированный элемент добавлен с заголовком \"%s\".\r\n"
+
+#. Resource IDs: (363)
+#, c-format
+msgid "%s. Either try to save database with another name or exit without saving."
+msgstr "%s. Сохраните контейнер под другим именем или выйдите без сохранения."
 
 #. Resource IDs: (333)
 #, c-format
@@ -660,7 +681,7 @@ msgstr "&Пароль:"
 msgid "&Paste"
 msgstr "&Вставить"
 
-#. Resource IDs: (32010)
+#. Resource IDs: (32010, 32084)
 msgid "&Plain Text (tab separated)..."
 msgstr "&Простой текст (разделитель табуляция)..."
 
@@ -794,7 +815,7 @@ msgstr "&Просмотр отчета"
 msgid "&Virtual Keyboard Font"
 msgstr "Шрифт для &экранной клавиатуры"
 
-#. Resource IDs: (32013, 32015)
+#. Resource IDs: (32013, 32015, 32085)
 msgid "&XML format..."
 msgstr "&XML формат..."
 
@@ -841,6 +862,11 @@ msgstr "(с учетом регистра)"
 #. Resource IDs: (1286, 1288, 1290, 1292)
 msgid ")"
 msgstr ")"
+
+#. Resource IDs: (213)
+#, c-format
+msgid "- Its title has been changed to:'%s'"
+msgstr "- Его заголовок был изменен на:'%s'"
 
 #. Resource IDs: (513)
 # раскладка соответствующая системной по умолчанию
@@ -1127,10 +1153,6 @@ msgstr "9"
 msgid "<"
 msgstr "<"
 
-#. Resource IDs: (32221)
-msgid "<- Copy to Orignal"
-msgstr "<- Копировать в оригинал"
-
 #. Resource IDs: (1157)
 msgid "<<"
 msgstr "<<"
@@ -1183,6 +1205,10 @@ msgstr "Произошла фатальная ошибка: "
 msgid "A filter was active. Export of data was restricted to include only those displayed."
 msgstr "При экспорте был активен фильтр. Включены только те элементы, которые удовлетворяли фильтру."
 
+#. Resource IDs: (363)
+msgid "A future date is not valid for this field"
+msgstr "В данное поле нельзя вводить даты из будущего"
+
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
 msgstr "Будет создан новый контейнер. Введенный пароль будет использован для шифрования контейнера. Пароль для контейнера может содержать любые символы с учетом регистра букв."
@@ -1199,6 +1225,11 @@ msgstr "AaBbYyZzАаБбЖжЯя 0O1lIL"
 #. Resource IDs: (110)
 msgid "About Password Safe"
 msgstr "О Password Safe"
+
+# В диалоге при задании времени
+#. Resource IDs: (1228)
+msgid "Absolute"
+msgstr "Абсолютное"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1255,13 +1286,17 @@ msgstr "Расширенные настройки слияния"
 msgid "Advanced Synchronize Options"
 msgstr "Расширенные настройки синхронизации"
 
+# Ex: Advanced Text 'Single Entry' Export Options
 #. Resource IDs: (339)
-msgid "Advanced Text Export Options"
-msgstr "Расширенные настройки экспорта в простой текст"
+#, c-format
+msgid "Advanced Text%sExport Options"
+msgstr "Расширенные настройки экспорта%sв простой текст"
 
+# Ex: Advanced XML 'Single Entry' Export Options
 #. Resource IDs: (339)
-msgid "Advanced XML Export Options"
-msgstr "расширенные настройки экспорта в XML"
+#, c-format
+msgid "Advanced XML%sExport Options"
+msgstr "Расширенные настройки экспорта%sв XML"
 
 # урезано
 #. Resource IDs: (1252, 1253)
@@ -1271,6 +1306,10 @@ msgstr "Расш. настр."
 #. Resource IDs: (514)
 msgid "Albanian"
 msgstr "Албанская"
+
+#. Resource IDs: (478)
+msgid "Alias Password Change"
+msgstr "Изменение пароля для Алиаса"
 
 #. Resource IDs: (3841)
 msgid "All Files (*.*)"
@@ -1308,6 +1347,10 @@ msgstr "Alt+"
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
 msgstr "Альтернативный браузер "
+
+#. Resource IDs: (65535)
+msgid "Alternate Notes Text Editor"
+msgstr "Альтернативный редактор заметок"
 
 #. Resource IDs: (1043)
 msgid "Always keep Password Safe on top"
@@ -1463,6 +1506,10 @@ msgstr "Каталог для резервных копий:"
 msgid "Backups"
 msgstr "Резервные копии"
 
+#. Resource IDs: (65535)
+msgid "Base entry:"
+msgstr "Исходный элемент:"
+
 # в настройках резервных копий "начало" для имени
 #. Resource IDs: (65535)
 msgid "Base:"
@@ -1508,7 +1555,7 @@ msgstr "Забой"
 msgid "Bosnian (Cyrillic)"
 msgstr "Боснийская (кириллица)"
 
-#. Resource IDs: (1213)
+#. Resource IDs: (1213, 1214, 1215)
 msgid "Browse"
 msgstr "Обзор"
 
@@ -1544,6 +1591,10 @@ msgstr "Болгарская (фонетическая)"
 #. Resource IDs: (513)
 msgid "Bulgarian (Typewriter)"
 msgstr "Болгарская (машинопись)"
+
+#. Resource IDs: (1411)
+msgid "Bytes"
+msgstr "Байт"
 
 #. Resource IDs: (32065)
 msgid "C&lear Clipboard"
@@ -1647,6 +1698,10 @@ msgstr "Поиск с учетом регистра"
 msgid "Change &Font"
 msgstr "Изменить &шрифт"
 
+#. Resource IDs: (1414)
+msgid "Change Base"
+msgstr "Изменить исходный"
+
 #. Resource IDs: (349)
 msgid "Change Date"
 msgstr "Изменить дату"
@@ -1655,6 +1710,10 @@ msgstr "Изменить дату"
 msgid "Change Safe Combination"
 msgstr "Изменить пароль для контейнера"
 
+#. Resource IDs: (1415)
+msgid "Change This"
+msgstr "Изменить этот"
+
 #. Resource IDs: (319)
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
 msgstr "Изменить количество запоминаемых паролей для элементов с включенной историей, если текущий максимум больше количества сохраненных паролей.\n\nЭлементы с количеством запомненных паролей превышающим текущий максимум не будут изменены."
@@ -1662,6 +1721,10 @@ msgstr "Изменить количество запоминаемых паро�
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Изменения для существующих элементов будут приняты после нажатия кнопки OK"
+
+#. Resource IDs: (65535)
+msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
+msgstr "Изменение значений/настроек вступает в силу только после нажатия кнопки 'Set'"
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -1989,6 +2052,10 @@ msgstr "Копировать в буфер"
 msgid "Copy to DB"
 msgstr "Копировать в контейнер"
 
+#. Resource IDs: (32221)
+msgid "Copy to Orignal"
+msgstr "Копировать в исходный"
+
 #. Resource IDs: (251)
 msgid "Copy username to clipboard"
 msgstr "Копировать имя пользователя в буфер"
@@ -2081,10 +2148,6 @@ msgstr "Ctrl+"
 msgid "Cu&t"
 msgstr "Вы&резать"
 
-#. Resource IDs: (1401, 65535)
-msgid "Current Value:"
-msgstr "Текущее значение:"
-
 #. Resource IDs: (343)
 #, c-format
 msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nPlease visit the PasswordSafe website to download the latest version."
@@ -2149,6 +2212,10 @@ msgstr "UID контейнера:"
 msgid "Database format:"
 msgstr "Формат контейнера:"
 
+#. Resource IDs: (213)
+msgid "Database has some large entries!"
+msgstr "В контейнере присутствуют большие элементы!"
+
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "Контейнер доступен в режиме 'только чтение'. Извините, невозможно сохранить настройки контейнера."
@@ -2164,10 +2231,6 @@ msgstr "Контейнер проверен - ошибок не обнаруже
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
 msgstr "Информация о дате/времени"
-
-#. Resource IDs: (1322)
-msgid "Date:"
-msgstr "Дата:"
 
 #. Resource IDs: (467)
 # закладка в диалоге создания/редактирования элемента
@@ -2245,7 +2308,7 @@ msgstr "Исключение: %1"
 msgid "Display"
 msgstr "Отображение"
 
-#. Resource IDs: (151, 152, 153, 154, 155, 156, 161, 163)
+#. Resource IDs: (151, 152, 153, 154, 155, 156, 161, 163, 165)
 msgid "Display Filter - "
 msgstr "Фильтр отображения - "
 
@@ -2261,6 +2324,10 @@ msgstr "Сохранить изменения в контейнер: %s?"
 #. Resource IDs: (336)
 msgid "Do you want to save changes to the password list?"
 msgstr "Сохранить изменения в списке паролей?"
+
+#. Resource IDs: (65535)
+msgid "Do you wish to change this entry's Base entry's password or change this entry's own password?"
+msgstr "Изменить пароль для исходного элемента, связанного с данным, или же изменить пароль для самого элемента?"
 
 #. Resource IDs: (352)
 msgid "Do you wish to replace it?"
@@ -2515,30 +2582,14 @@ msgstr "Элементы только из сравниваемого конте
 msgid "Entries only in current database (%s):"
 msgstr "Элементы только из текущего контейнера (%s):"
 
-#. Resource IDs: (212)
-#, fuzzy, c-format
-msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\" has an empty %s. Entry skipped."
-msgstr "Элемент %s%d с группой=\"%s\", заголовком=\"%s\", именем пользователя=\"%s\" имеет пустой %s. Элемент пропущен."
-
 #. Resource IDs: (211)
 #, c-format
-msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\" not found. Cannot update entry's password."
-msgstr "Элемент %s%d с группой=\"%s\", заголовком=\"%s\" и именем пользователя=\"%s\" не найден. Невозможно обновить пароль для элемента."
+msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
+msgstr "Элемент %s%d с группой \"%s\", заголовком \"%s\" и именем пользователя \"%s\" "
 
-#. Resource IDs: (205)
-#, c-format
-msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-msgstr "Элемент с группой=\"%s\", заголовком=\"%s\" и именем пользователя=\"%s\" содержит неверную историю паролей.  Произведено восстановление по доступным данным.  Возможна потеря части истории паролей."
-
-#. Resource IDs: (205)
-#, c-format
-msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" had an invalid UUID field.  This has been corrected."
-msgstr "Элемент с группой=\"%s\", заголовком=\"%s\" и именем пользователя=\"%s\" содержит недопустимое значение в поле UUID.  Произведены исправления."
-
-#. Resource IDs: (212)
-#, c-format
-msgid "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" was a duplicate of an existing entry.  Its title has been changed to:\"%s\"."
-msgstr "Элемент с группой=\"%s\", заголовком=\"%s\", именем пользователя=\"%s\" является дубликатом существующего элемента.  Его заголовок был изменен на:\"%s\"."
+#. Resource IDs: (1407)
+msgid "Entry Unique ID:"
+msgstr "UID элемента:"
 
 #. Resource IDs: (205)
 #, c-format
@@ -2568,6 +2619,14 @@ msgstr "Элемент, описанный в строке %d, из группы
 #, c-format
 msgid "Entry on line %d with no group"
 msgstr "Элемент, описанный в строке %d, без имени группы"
+
+#. Resource IDs: (363)
+msgid "Entry size"
+msgstr "Размер элемента"
+
+#. Resource IDs: (1409)
+msgid "Entry size:"
+msgstr "Размер элемента:"
 
 #. Resource IDs: (359)
 msgid "Entry status"
@@ -2658,6 +2717,18 @@ msgstr "Экспорт"
 #. Resource IDs: (32009)
 msgid "Export &To"
 msgstr "Экспортировать &в"
+
+#. Resource IDs: (65535)
+msgid "Export Entry &To"
+msgstr "Экспортировать элемент &в"
+
+#. Resource IDs: (32085)
+msgid "Export Entry in XML format..."
+msgstr "Экспортировать элемент в XML формат..."
+
+#. Resource IDs: (32084)
+msgid "Export Entry to Plain Text..."
+msgstr "Экспортировать элемент в простой текст..."
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -3435,6 +3506,10 @@ msgstr "Итальянская (142)"
 msgid "Japanese"
 msgstr "Японская"
 
+#. Resource IDs: (1412)
+msgid "KBytes"
+msgstr "Килобайт"
+
 #. Resource IDs: (516)
 msgid "Kannada"
 msgstr "Каннада"
@@ -3587,6 +3662,10 @@ msgstr "Блокировать контейнер при сворачивани�
 #. Resource IDs: (1073)
 msgid "Lock password database on workstation lock"
 msgstr "Блокировать контейнер при блокировке компьютера"
+
+#. Resource IDs: (1413)
+msgid "MBytes"
+msgstr "Мегабайт"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
@@ -3745,6 +3824,10 @@ msgstr "Должно быть не меньше %d"
 msgid "N/A"
 msgstr "Н/Д"
 
+#. Resource IDs: (65535)
+msgid "NOTE: Changing this entry's own password will make this a normal entry and break the link with its base?"
+msgstr "Примечание. Изменение пароля для элемента приведет к преобразованию его в обычный элемент и удалению связи с исходным элементом."
+
 #. Resource IDs: (353)
 msgid "Name"
 msgstr "Имя"
@@ -3897,11 +3980,11 @@ msgstr "Не все записи в реестре (или ini-файле) бы�
 
 #. Resource IDs: (33150)
 msgid "Note: Empty fields are shown as »*»"
-msgstr "Примечание. Пустые поля отображаются как »*»"
+msgstr "Примечание. Пустые поля отображаются как «*»"
 
 #. Resource IDs: (33126)
 msgid "Note: Entry format is »Group»Title»Username»"
-msgstr "Примечание. Формат элемента: »Группа»Заголовок»Имя пользователя»"
+msgstr "Примечание. Формат элемента: «Группа» «Заголовок» «Имя пользователя»"
 
 #. Resource IDs: (211)
 msgid "Note: These preferences are only used when importing into an empty database."
@@ -3945,8 +4028,8 @@ msgstr "Количество неизвестных полей"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d"
-msgstr "Обработано элементов: %d\n\nИсправлено UUID-значений: %d\n\nИсправлено элементов истории паролей: %d\n\nИсправлено неуникальных комбинаций Группа/Заголовок/Имя пользователя: %d\n\nКоличество предупреждений об алиасах: %d\n\nКоличество предупреждений о ярлыках %d"
+msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d"
+msgstr "Обработано элементов: %d\n\nИсправлено UUID-значений: %d\n\nИсправлено элементов истории паролей: %d\n\nИсправлено неуникальных комбинаций Группа/Заголовок/Имя пользователя: %d\n\nКоличество предупреждений об алиасах: %d\n\nКоличество предупреждений о ярлыках %d\n\nКоличество элементов с полями, которые не могут быть полностью отображены: %d"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4037,6 +4120,10 @@ msgstr "Исходный"
 #. Resource IDs: (65535)
 msgid "Original Database:"
 msgstr "Исходный контейнер:"
+
+#. Resource IDs: (1401)
+msgid "Original Value:"
+msgstr "Исходное значение:"
 
 #. Resource IDs: (516)
 msgid "Oriya"
@@ -4538,6 +4625,15 @@ msgstr "Повторять (%d дней)"
 msgid "Redo"
 msgstr "Повторить"
 
+# При задании даты
+#. Resource IDs: (1229)
+msgid "Relative"
+msgstr "Относительное"
+
+#. Resource IDs: (1420)
+msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
+msgstr "Относительные даты задаются в днях относительно текущего дня, например: '-1' - вчера, '1' - завтра"
+
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "Помнить последние"
@@ -4618,6 +4714,10 @@ msgstr "Ограничить подмножеством элементов:"
 #. Resource IDs: (510)
 msgid "Right Ctrl key"
 msgstr "правый Ctrl"
+
+#. Resource IDs: (65535)
+msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
+msgstr "Щелкните правой кнопкой на 'Y' в любом из первых двух столбцов для отображения доп. функций"
 
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
@@ -4743,7 +4843,7 @@ msgstr "Сохранять"
 msgid "Save &As..."
 msgstr "Сохранить &как..."
 
-#. Resource IDs: (3841)
+#. Resource IDs: (363, 3841)
 msgid "Save As"
 msgstr "Сохранить как"
 
@@ -4913,10 +5013,6 @@ msgstr "Задать фильтры отображения: %d добавлен�
 #. Resource IDs: (345)
 msgid "Set Entry's Password Policy"
 msgstr "Задать политику создания паролей"
-
-#. Resource IDs: (135)
-msgid "Set Password Expiry Date/Time"
-msgstr "Установить срок действия пароля"
 
 #. Resource IDs: (349)
 #, c-format
@@ -5111,7 +5207,7 @@ msgid "Start saving previous passwords"
 msgstr "Начать сохранение предыдущих паролей"
 
 # No need to translate these
-#. Resource IDs: (1264)
+#. Resource IDs: (1107, 1264, 1408, 1410, 1416)
 msgid "Static"
 msgstr "Static"
 
@@ -5120,7 +5216,7 @@ msgstr "Static"
 msgid "Static_Static"
 msgstr "Static_Static"
 
-#. Resource IDs: (1380)
+#. Resource IDs: (1364)
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -5168,9 +5264,13 @@ msgstr "Швейцарская (немецкая)"
 msgid "Synchronization failed"
 msgstr "Сбой при синхронизации"
 
-#. Resource IDs: (360)
+#. Resource IDs: (360, 32022)
 msgid "Synchronize"
 msgstr "Синхронизировать"
+
+#. Resource IDs: (121)
+msgid "Synchronize Entries"
+msgstr "Синхронизировать элементы"
 
 #. Resource IDs: (360)
 #, c-format
@@ -5297,8 +5397,8 @@ msgstr "Вероятно, контейнер:\n%s\n\nуже использует
 
 #. Resource IDs: (361)
 #, c-format
-msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by running PasswordSafe with '-v' flag on this database."
-msgstr "Контейнер:\n\n%s\n\n содержит дубликаты с совпадающими комбинациями Группа/Заголовок/Имя пользователя. Чтобы исправить запустите для этого контейнера PasswordSafe с ключом '-v'."
+msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."
+msgstr "Контейнер:\n\n%s\n\n содержит дубликаты с совпадающими комбинациями Группа/Заголовок/Имя пользователя. Запустите проверку, чтобы исправить контейнер."
 
 #. Resource IDs: (329)
 msgid "The entered passwords do not match.  Please re-enter them."
@@ -5334,6 +5434,23 @@ msgstr "Указанные столбцы распознаны, но тольк�
 msgid "The following columns will be processed: "
 msgstr "Были обработаны следующие столбцы: "
 
+#. Resource IDs: (205)
+msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
+msgstr "Следующие элементы содержат ошибки в истории паролей.  История была пересоздана по имеющимся данным.  Возможно, некоторые данные из истории были потеряны."
+
+#. Resource IDs: (205)
+msgid "The following entries had an invalid UUID field.  This has been corrected."
+msgstr "Следующие элементы содержат ошибки в UUID.  Ошибки были исправлены."
+
+#. Resource IDs: (212)
+#, c-format
+msgid "The following entries have one or more text fields too long to display or edit (longer than %d characters)."
+msgstr "Следующие элементы содержат одно или несколько текстовых полей, которые не могут быть полностью отображены (больше %d символов)."
+
+#. Resource IDs: (212)
+msgid "The following entries were duplicates of an existing entry."
+msgstr "Следующие элементы являются дубликатами существующих элементов."
+
 #. Resource IDs: (343)
 #, c-format
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
@@ -5344,12 +5461,17 @@ msgid "The following records had errors in their Password History:"
 msgstr "Следующие записи содержат ошибки в истории паролей:"
 
 #. Resource IDs: (362)
-msgid "The following records were renamed:"
-msgstr "Следующие записи были переименованы:"
+msgid "The following records were renamed as an entry already exists in your database or in the Import file:"
+msgstr "Следующие записи были переименованы, т.к. такой элемент уже существует в Вашем контейнере или импортируемом файле:"
 
 #. Resource IDs: (362)
 msgid "The following records were skipped:"
 msgstr "Следующие записи были пропущены:"
+
+#. Resource IDs: (363)
+#, c-format
+msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
+msgstr "Заметки для данного элемента слишком большие, и, поэтому, не могут быть отображены полностью. Изменение этого поля и сохранение элемента приведет к усечению до %d символов.  Для просмотра всего содержимого, скопируйте заметки в текстовый редактор через буфер обмена или экспортируйте данный элемент в XML."
 
 #. Resource IDs: (331)
 msgid "The old safe combination is not correct"
@@ -5365,15 +5487,15 @@ msgstr "Формат исходного контейнера \"%s\", имеет 
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr "Формат исходного контейнера \"%s\", имеет версию ниже 3.0. Данные будут записаны с использованием нового формата, который несовместим с предыдущими версиями PasswordSafe. Для сохранения данных в старом формате используйте пункты меню \"Файл->Экспорт в-> Старый (1.x или 2) формат\"."
 
-#. Resource IDs: (360)
-#, c-format
-msgid "The password \"%s\" has been copied to the clipboard."
-msgstr "Пароль \"%s\" был скопирован в буфер обмена"
-
 #. Resource IDs: (342)
 #, c-format
 msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n\r\nDo you wish this entry to point to the 'real' base entry?"
 msgstr "Пароль имеет вид алиаса, но исходный элемент '%s:%s:%s' является алиасом.\r\n\r\nПривязать этот элемент к 'настоящему' исходному элементу?"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "The password\r\n\r\n\"%s\"\r\n\r\nhas been copied to the clipboard."
+msgstr "Пароль\r\n\r\n\"%s\"\r\n\r\nбыл скопирован в буфер обмена"
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -5838,6 +5960,10 @@ msgstr "Переопределить п&олитику:"
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
 msgstr "Использовать указанное здесь приложение для открытия ссылок с приставкой [alt], напр. '[alt]http://foo.com'"
 
+#. Resource IDs: (320)
+msgid "Use the application specified here to edit an entry's Notes field via the right-click context menu during Add/Edit."
+msgstr "Использовать указанное здесь приложение для редактирования заметок через контекстное меню при Вставке/Редактировании."
+
 #. Resource IDs: (327)
 msgid "User Name"
 msgstr "Имя пользователя"
@@ -5964,6 +6090,16 @@ msgstr "Предупр. за"
 msgid "Warning"
 msgstr "Предупреждение"
 
+#. Resource IDs: (213)
+#, c-format
+msgid "Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n\r\nThe largest entry size found was ~%d %s.\r\n\r\nYou can use the Filter to selectively display these record(s)."
+msgstr "Внимание: %d %s в Вашем контейнере содержат поля слишком большие для отображения или редактирования.\r\n\r\nНаибольший обнаруженный размер элемента ~%d %s.\r\n\r\nВы можете использовать Фильтр для отображения указанных записей."
+
+#. Resource IDs: (363)
+#, fuzzy
+msgid "Warning - excessive field contents"
+msgstr "Внимание: поле содержит слишком много данных"
+
 #. Resource IDs: (1226)
 msgid "Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is NOT sufficient."
 msgstr "Предупреждение! Продолжение приведет к созданию незащищенной копии, содержащей ВСЕ пароли из контейнера. Простого удаления этой копии после использования НЕ ДОСТАТОЧНО!"
@@ -6068,6 +6204,10 @@ msgstr "Йоруба"
 #. Resource IDs: (65535)
 msgid "You can use the Copy button below to place this list into the Clipboard."
 msgstr "Вы можете использовать кнопку 'Копировать' для помещения списка в буфер обмена."
+
+#. Resource IDs: (363)
+msgid "You may not set a password expiry date in the past."
+msgstr "При указании даты истечения пароля нельзя использовать даты из прошлого."
 
 #. Resource IDs: (362)
 # %s2= exported | validated
@@ -6193,13 +6333,21 @@ msgstr "\nОшибка в истории паролей для элемента:
 msgid "\nExpand All"
 msgstr "\nРазвернуть все"
 
+#. Resource IDs: (2006)
+msgid "\nExport Entry in XML format..."
+msgstr "\nЭкспортировать элемент в XML формат..."
+
+#. Resource IDs: (2006)
+msgid "\nExport Entry to Plain Text..."
+msgstr "\nЭкспортировать элемент в простой текст..."
+
 #. Resource IDs: (2001)
 msgid "\nExport to Text"
 msgstr "\nЭкспортировать в простой текст"
 
 #. Resource IDs: (2001)
 msgid "\nExport to XML"
-msgstr "\nЭкспортировать  в  XML"
+msgstr "\nЭкспортировать в XML"
 
 #. Resource IDs: (2004)
 msgid "\nFind Next"
@@ -6285,6 +6433,10 @@ msgstr "\nСохранить контейнер"
 #. Resource IDs: (2001)
 msgid "\nSave Database As..."
 msgstr "\nСохранить контейнер как..."
+
+#. Resource IDs: (2016)
+msgid "\nSelect Entry"
+msgstr "\nВыбрать элемент"
 
 #. Resource IDs: (2005)
 msgid "\nSend email"
@@ -6395,6 +6547,11 @@ msgstr "\tЭлемент - группа:\"%s\"; Заголовок:\"%s\"; По�
 msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
 msgstr "\tГруппа:'%s'; Заголовок:'%s'; Пользователь:'%s'"
 
+#. Resource IDs: (212)
+#, c-format
+msgid "\tGroup='%s', Title='%s', User='%s' %s"
+msgstr "\tГруппа:'%s'; Заголовок:'%s'; Пользователь:'%s' %s"
+
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string : '%s'"
@@ -6461,7 +6618,7 @@ msgstr "элемент-алиас"
 msgid "an unnamed file"
 msgstr "безымянный файл"
 
-#. Resource IDs: (1307)
+#. Resource IDs: (1307, 1419)
 msgid "and"
 msgstr "и"
 
@@ -6564,11 +6721,11 @@ msgid "ends with"
 msgstr "заканчивается на"
 
 # Ex.: 5 entries
-#. Resource IDs: (344)
+#. Resource IDs: (213)
 msgid "entries"
 msgstr "элементов"
 
-#. Resource IDs: (344)
+#. Resource IDs: (213)
 msgid "entry"
 msgstr "элемент"
 
@@ -6773,8 +6930,8 @@ msgstr "static"
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "подмножество: '%s' поле '%s' '%s' %s"
 
-# Строка убрана, т.к. нет падежа соответсвующего всем контекстам. В этом месте (в диалоге расширенных настроек экспорта в простой текст) допустимо отсутствие текста без потери смысла.
-#. Resource IDs: (65535)
+# Строка убрана, т.к. нет падежа соответствующего всем контекстам. В этом месте (в диалоге расширенных настроек экспорта в простой текст) допустимо отсутствие текста без потери смысла.
+#. Resource IDs: (1417, 65535)
 msgid "the following text:"
 msgstr " "
 
@@ -6819,7 +6976,7 @@ msgstr "были"
 msgid "whatever"
 msgstr "whatever"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1418, 65535)
 msgid "where"
 msgstr "где"
 
