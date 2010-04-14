@@ -174,6 +174,7 @@ bool MultiCommands::GetRC(const size_t ncmd, int &rc)
 
 void MultiCommands::ResetSavedState(bool bNewDBState)
 {
+  Command::ResetSavedState(bNewDBState);
   std::vector<Command *>::iterator cmd_Iter;
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     (*cmd_Iter)->ResetSavedState(bNewDBState);
