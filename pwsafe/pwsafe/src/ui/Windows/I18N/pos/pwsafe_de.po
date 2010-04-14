@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-02-28 18:44+0100\n"
+"PO-Revision-Date: 2010-04-13 16:47+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -126,6 +126,11 @@ msgstr " 'Datensatz Änderungszeit'"
 #. Resource IDs: (354)
 msgid " 'Run Command'"
 msgstr "'Kommando ausführen'"
+
+#. Resource IDs: (363)
+#, fuzzy
+msgid " 'Single Entry' "
+msgstr ""
 
 #. Resource IDs: (347)
 msgid " 'Title'"
@@ -353,6 +358,11 @@ msgstr "%s%s%s_Report.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, Titel=\"%s\", Benutzer=\"%s\" besteht bereits in der Datenbank oder in der importierten Datei. Importierter Eintrag mit Titel=\"%s\" eingefügt.\r\n"
+
+#. Resource IDs: (363)
+#, c-format
+msgid "%s. Either try to save database with another name or exit without saving."
+msgstr "%s. Probieren Sie entweder die Datenbank mit einem anderen Namen zu sichern, oder beenden Sie ohne Speichern."
 
 #. Resource IDs: (333)
 #, c-format
@@ -1246,6 +1256,10 @@ msgstr "Fataler Fehler aufgetreten: "
 msgid "A filter was active. Export of data was restricted to include only those displayed."
 msgstr "Ein Filter war aktiv. Der Export wurde beschränkt auf die angezeigten Elemente."
 
+#. Resource IDs: (363)
+msgid "A future date is not valid for this field"
+msgstr "Ein Datum in die Zukunft ist für dieses Feld nicht zulässig."
+
 #. Resource IDs: (3867)
 #, c-format
 msgid "A hardware I/O error was reported while accessing %1."
@@ -1276,6 +1290,10 @@ msgstr "AaBbYyZz 0O1lIL"
 #. Resource IDs: (110)
 msgid "About Password Safe"
 msgstr "Über Password Safe"
+
+#. Resource IDs: (1228)
+msgid "Absolute"
+msgstr "Absolut"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1331,12 +1349,14 @@ msgid "Advanced Synchronize Options"
 msgstr "Erweiterte Synchronisieren Optionen"
 
 #. Resource IDs: (339)
-msgid "Advanced Text Export Options"
-msgstr "Erweiterte Text Export Optionen"
+#, c-format
+msgid "Advanced Text%sExport Options"
+msgstr "Erweiterte Text%sExport Optionen"
 
 #. Resource IDs: (339)
-msgid "Advanced XML Export Options"
-msgstr "Erweiterte XML Export Optionen"
+#, c-format
+msgid "Advanced XML%sExport Options"
+msgstr "Erweiterte XML%sExport Optionen"
 
 #. Resource IDs: (1252, 1253)
 msgid "Advanced..."
@@ -1345,6 +1365,10 @@ msgstr "Erweitert..."
 #. Resource IDs: (514)
 msgid "Albanian"
 msgstr "Albanisch"
+
+#. Resource IDs: (478)
+msgid "Alias Password Change"
+msgstr "Alias Password ändern"
 
 #. Resource IDs: (3841)
 msgid "All Files (*.*)"
@@ -1381,6 +1405,10 @@ msgstr "Alt+"
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
 msgstr "Alternativer Browser "
+
+#. Resource IDs: (65535)
+msgid "Alternate Notes Text Editor"
+msgstr "Alternativer Notizen Editor"
 
 #. Resource IDs: (1043)
 msgid "Always keep Password Safe on top"
@@ -1555,6 +1583,10 @@ msgid "Backups"
 msgstr "Sicherungen"
 
 #. Resource IDs: (65535)
+msgid "Base entry:"
+msgstr "Basiseintrag:"
+
+#. Resource IDs: (65535)
 msgid "Base:"
 msgstr "Basis:"
 
@@ -1633,6 +1665,10 @@ msgstr "Bulgarisch (Phonetisch Traditionell)"
 #. Resource IDs: (513)
 msgid "Bulgarian (Typewriter)"
 msgstr "Bulgarisch (Schreibmaschine)"
+
+#. Resource IDs: (1411)
+msgid "Bytes"
+msgstr "Byte"
 
 #. Resource IDs: (32061)
 msgid "C&lear Clipboard"
@@ -1736,6 +1772,10 @@ msgstr "Suchen mit Groß-/Kleinschreibung"
 msgid "Change &Font"
 msgstr "Schriftart &ändern"
 
+#. Resource IDs: (1414)
+msgid "Change Base"
+msgstr "Basis ändern"
+
 #. Resource IDs: (349)
 msgid "Change Date"
 msgstr "Datum ändern"
@@ -1743,6 +1783,10 @@ msgstr "Datum ändern"
 #. Resource IDs: (127)
 msgid "Change Safe Combination"
 msgstr "Ändere das Master-Passwort"
+
+#. Resource IDs: (1415)
+msgid "Change This"
+msgstr "Dies ändern"
 
 #. Resource IDs: (319)
 msgid ""
@@ -1757,6 +1801,10 @@ msgstr ""
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Änderungen zu bestehenden Einträge werden angewendet nach Drücken von OK"
+
+#. Resource IDs: (65535)
+msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
+msgstr "Das Ändern von Werte/Einstellungen wird erst nach Drücken der Taste 'Setzen' wirksam"
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -2181,10 +2229,6 @@ msgstr "Strg+"
 msgid "Cu&t"
 msgstr "&Ausschneiden"
 
-#. Resource IDs: (65535)
-msgid "Current Value:"
-msgstr "Aktueller Wert:"
-
 #. Resource IDs: (343)
 #, c-format
 msgid ""
@@ -2265,6 +2309,10 @@ msgstr "Datenbank Unique ID:"
 msgid "Database format:"
 msgstr "Datenbankformat:"
 
+#. Resource IDs: (213)
+msgid "Database has some large entries!"
+msgstr "Die Datenbank enthält einige große Einträge!"
+
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "Datenbank ist Nur-Lesen. Somit kann keine Einstellung der Datenbank gespeichert werden."
@@ -2280,10 +2328,6 @@ msgstr "Datenbank überprüft - keine Probleme gefunden."
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
 msgstr "Datum/Zeit Information"
-
-#. Resource IDs: (1322)
-msgid "Date:"
-msgstr "Datum:"
 
 #. Resource IDs: (467)
 msgid "Dates and Times"
@@ -2376,6 +2420,10 @@ msgstr "Möchten Sie die Änderungen an der Passwortdatenbank speichern: %s?"
 #. Resource IDs: (336)
 msgid "Do you want to save changes to the password list?"
 msgstr "Möchten Sie die Änderungen an der Passwortliste speichern?"
+
+#. Resource IDs: (65535)
+msgid "Do you wish to change this entry's Base entry's password or change this entry's own password?"
+msgstr "Wollen Sie das Passowrt vom Basiseintrag oder vom Eintrag selber ändern?"
 
 #. Resource IDs: (352)
 msgid "Do you wish to replace it?"
@@ -2571,6 +2619,10 @@ msgstr "Einträge nur in der aktuellen Datenbank (%s):"
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgstr "Eintrag %s%d mit Gruppe=\"%s\", Titel=\"%s\", Benutzer=\"%s\""
 
+#. Resource IDs: (1407)
+msgid "Entry Unique ID:"
+msgstr "Eintrag Unique ID:"
+
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry does not exist."
@@ -2599,6 +2651,14 @@ msgstr "Eintrag in Zeile %d mit Gruppe=\"%s\""
 #, c-format
 msgid "Entry on line %d with no group"
 msgstr "Eintrag in Zeile %d ohne Gruppe"
+
+#. Resource IDs: (363)
+msgid "Entry size"
+msgstr "Größe des Eintrags"
+
+#. Resource IDs: (1409)
+msgid "Entry size:"
+msgstr "Größe des Eintrags:"
 
 #. Resource IDs: (359)
 msgid "Entry status"
@@ -2703,6 +2763,18 @@ msgstr "Exportieren"
 #. Resource IDs: (32009)
 msgid "Export &To"
 msgstr "Exportiere &zu"
+
+#. Resource IDs: (65535)
+msgid "Export Entry &To"
+msgstr "Exportiere Eintrag &zu"
+
+#. Resource IDs: (32085)
+msgid "Export Entry in XML format..."
+msgstr "Exportiere Eintrag in XML Format..."
+
+#. Resource IDs: (32084)
+msgid "Export Entry to Plain Text..."
+msgstr "Exportiere Eintrag als Text ..."
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -3485,6 +3557,10 @@ msgstr "Italienisch (142)"
 msgid "Japanese"
 msgstr "Japanisch"
 
+#. Resource IDs: (1412)
+msgid "KBytes"
+msgstr "KByte"
+
 #. Resource IDs: (516)
 msgid "Kannada"
 msgstr "Kanadisch"
@@ -3637,6 +3713,10 @@ msgstr "Passwortdatenbank sperren wenn minimiert"
 #. Resource IDs: (1073)
 msgid "Lock password database on workstation lock"
 msgstr "Passwortdatenbank sperren wenn Computer gesperrt"
+
+#. Resource IDs: (1413)
+msgid "MBytes"
+msgstr "MByte"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
@@ -3797,6 +3877,10 @@ msgstr "Muss mindestens %d sein"
 #. Resource IDs: (357)
 msgid "N/A"
 msgstr "entf."
+
+#. Resource IDs: (65535)
+msgid "NOTE: Changing this entry's own password will make this a normal entry and break the link with its base?"
+msgstr "HINWEIS: Beim Ändern des eigenen Passwortes, wird dies ein normaler Eintrag, und die Verknüpfung mit dem Basiseintrag geht verloren."
 
 #. Resource IDs: (353)
 msgid "Name"
@@ -4112,6 +4196,10 @@ msgstr "Original"
 #. Resource IDs: (65535)
 msgid "Original Database:"
 msgstr "Original Datenbank:"
+
+#. Resource IDs: (1401)
+msgid "Original Value:"
+msgstr "Originaler Wert:"
 
 #. Resource IDs: (516)
 msgid "Oriya"
@@ -4676,6 +4764,14 @@ msgstr "Periodisch (%d Tage)"
 msgid "Redo"
 msgstr "Wiederholen"
 
+#. Resource IDs: (1229)
+msgid "Relative"
+msgstr "Relativ"
+
+#. Resource IDs: (1420)
+msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
+msgstr "Ein relatives Datum bezeiht sich auf heute, z.B. '-1' ist gestern und '1' ist morgen."
+
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
 msgstr "Merke letzte"
@@ -5050,10 +5146,6 @@ msgstr "Anzeigefilter setzen: %d dazu; %d aktiv"
 #. Resource IDs: (345)
 msgid "Set Entry's Password Policy"
 msgstr "Passwortrichtlinie des Eintrages setzen"
-
-#. Resource IDs: (135)
-msgid "Set Password Expiry Date/Time"
-msgstr "Passwortablaufdatum/Uhrzeit setzen"
 
 #. Resource IDs: (349)
 #, c-format
@@ -5559,8 +5651,8 @@ msgstr "Die folgenden Einträge hatten ein ungültiges Feld UUID. Das wurde korr
 
 #. Resource IDs: (212)
 #, c-format
-msgid "The following entries has one or more text fields so long that they cannot be displayed (longer than %d characters)."
-msgstr "Die folgenden Einträge haben ein oder mehrere Textfelder so lange daß sie nicht angezeigtw erden können (länger als %d Zeichen)."
+msgid "The following entries have one or more text fields too long to display or edit (longer than %d characters)."
+msgstr "Die folgenden Einträge haben ein oder mehrere Textfelder so lange daß sie nicht angezeigt bzw. bearbeitet werden können (mehr als %d Zeichen)."
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
@@ -5606,11 +5698,6 @@ msgstr ""
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr "Die Originaldatenbank \"%s\" ist in einem alten Dateiformat (vor Version 3.0) gespeichert. Die Daten werden nun im neuen Dateiformat gespeichert, welches von alten PasswordSafe-Versionen nicht benutzbar ist. Um Ihre Daten im alten Dateiformat zu speichern, benutzen Sie \"Datei -> Export -> Altes (1.x oder 2) Format\"."
 
-#. Resource IDs: (360)
-#, c-format
-msgid "The password \"%s\" has been copied to the clipboard."
-msgstr "Das Passwort \"%s\" wurde in die Zwischenablage kopiert."
-
 #. Resource IDs: (342)
 #, c-format
 msgid ""
@@ -5621,6 +5708,21 @@ msgstr ""
 "Das Passwort ist im Alias-Format, aber der referenzierte Eintrag '%s:%s:%s' selbst ist ebenfalls im Alias-Format.\r\n"
 "\r\n"
 "Wollen Sie, dass dieser Eintrag auf den 'echten' Basiseintrag zeigt?"
+
+#. Resource IDs: (360)
+#, c-format
+msgid ""
+"The password\r\n"
+"\r\n"
+"\"%s\"\r\n"
+"\r\n"
+"has been copied to the clipboard."
+msgstr ""
+"Das Passwort\r\n"
+"\r\n"
+"\"%s\"\r\n"
+"\r\n"
+" wurde in die Zwischenablage kopiert."
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -6172,6 +6274,10 @@ msgstr "Verwende die &Richtlinie unten:"
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
 msgstr "Benutze die hier eingestellte Anwendung um die URL eines Eintrags aufzurufen wenn diese mit [alt] beginnt. z.B. '[alt]http://foo.com'"
 
+#. Resource IDs: (320)
+msgid "Use the application specified here to edit an entry's Notes field via the right-click context menu during Add/Edit."
+msgstr "Benutze die hier definierte Anwendung zur Bearbeitung der Notizen des Eintrags mit dem 'rechte Maus'-Kontextmenü während Hinzufügen/Bearbeiten."
+
 #. Resource IDs: (327)
 msgid "User Name"
 msgstr "Benutzername"
@@ -6306,6 +6412,21 @@ msgstr "Warnen"
 msgid "Warning"
 msgstr "Warnung"
 
+#. Resource IDs: (213)
+#, c-format
+msgid ""
+"Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n"
+"\r\n"
+"The largest entry size found was ~%d %s.\r\n"
+"\r\n"
+"You can use the Filter to selectively display these record(s)."
+msgstr ""
+"Warnung - %d %s in Ihre Datenbank können ein oder mehrere Felder zu groß zum Anzeigen oder Bearbeiten sein.\r\n"
+"\r\n"
+"Der größte gefundene Eintrag war ~%d %s.\r\n"
+"\r\n"
+"Sie können das Filter verwenden um gezielt diese Einträge anzuzeigen."
+
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
 msgstr "Warnung - übergroßer Feld Inhalte"
@@ -6426,6 +6547,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "You can use the Copy button below to place this list into the Clipboard."
 msgstr "Sie können den Kopieren-Knopf unten benutzen um diese Liste in die Zwischenablage abzulegen."
+
+#. Resource IDs: (363)
+msgid "You may not set a password expiry date in the past."
+msgstr "Das Ablaufdatum vom Passwort darf nicht in der Vergangenheit liegen."
 
 #. Resource IDs: (362)
 #, c-format
@@ -6650,6 +6775,22 @@ msgstr ""
 "\n"
 "Alle ausklappen"
 
+#. Resource IDs: (2006)
+msgid ""
+"\n"
+"Export Entry in XML format..."
+msgstr ""
+"\n"
+"Exportiere Eintrag in XML Format..."
+
+#. Resource IDs: (2006)
+msgid ""
+"\n"
+"Export Entry to Plain Text..."
+msgstr ""
+"\n"
+"Exportiere Eintrag als Text..."
+
 #. Resource IDs: (2001)
 msgid ""
 "\n"
@@ -6834,6 +6975,14 @@ msgid ""
 msgstr ""
 "\n"
 "Datenbank speichern unter..."
+
+#. Resource IDs: (2016)
+msgid ""
+"\n"
+"Select Entry"
+msgstr ""
+"\n"
+"Eintrag auswählen"
 
 #. Resource IDs: (2005)
 msgid ""
@@ -7475,6 +7624,12 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid "Current Value:"
+#~ msgstr "Aktueller Wert:"
+#~ msgid "Date:"
+#~ msgstr "Datum:"
+#~ msgid "Set Password Expiry Date/Time"
+#~ msgstr "Passwortablaufdatum/Uhrzeit setzen"
 #~ msgid ""
 #~ "Entry Group=\"%s\", Title=\"%s\", User=\"%s\" was a duplicate of an "
 #~ "existing entry.  Its title has been changed to:\"%s\"."
