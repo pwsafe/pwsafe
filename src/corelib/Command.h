@@ -42,7 +42,8 @@ public:
   virtual void Undo() = 0;
 
   void SetNoGUINotify() {m_bNotifyGUI = false;}
-  void ResetSavedState(bool bNewDBState) {m_bSaveDBChanged = bNewDBState;}
+  virtual void ResetSavedState(bool bNewDBState) // overrode in MultiCommands
+  {m_bSaveDBChanged = bNewDBState;}
 
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
