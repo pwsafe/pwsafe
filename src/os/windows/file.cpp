@@ -198,24 +198,52 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       pws_os::UnlockFile(filename, lockFileHandle, LockCount);
     }
   }
-  lockFileHandle = ::CreateFile(lock_filename.c_str(),
-                                GENERIC_WRITE,
-                                FILE_SHARE_READ,
-                                NULL,
-                                CREATE_ALWAYS, // rely on share to fail if exists!
-                                FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH | 
-                                // (Lockheed Martin) Secure Coding  11-14-2007
-                                SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION,
-                                NULL);
 
-  // Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
-  if (lockFileHandle != INVALID_HANDLE_VALUE) {
-    if (::GetFileType( lockFileHandle ) != FILE_TYPE_DISK) {
-      ::CloseHandle( lockFileHandle );
-      lockFileHandle = INVALID_HANDLE_VALUE;
-    }
+  // Since ::CreateFile can't create directories, we need to check it exists
+  // first and, if not, try and create it.
+  // This is primarily for the config directory in the local APPDATA directory
+  // but will also be called for the database lock file - and since the database
+  // is already there, it is a bit of a redundant check but easier than coding
+  // for every different situation.
+  stringT sDrive, sDir, sName, sExt;
+  pws_os::splitpath(lock_filename, sDrive, sDir, sName, sExt);
+  stringT sNewDir = sDrive + sDir;
+	DWORD dwAttrib = GetFileAttributes(sNewDir.c_str());
+  DWORD dwerr(0);
+  if (dwAttrib == INVALID_FILE_ATTRIBUTES)
+    dwerr = GetLastError();
+
+  BOOL brc(TRUE);
+  if (dwerr == ERROR_FILE_NOT_FOUND || 
+      (dwAttrib != INVALID_FILE_ATTRIBUTES) &&
+      !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
+    SECURITY_ATTRIBUTES secatt = {0};
+    secatt.nLength = sizeof(secatt);
+    brc = ::CreateDirectory(sNewDir.c_str(), &secatt);
   }
-  // End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+
+  // Obviously, if we can't create the directory - don't bother trying to
+  // create the lock file!
+  if (brc) {
+    lockFileHandle = ::CreateFile(lock_filename.c_str(),
+                                  GENERIC_WRITE,
+                                  FILE_SHARE_READ,
+                                  NULL,
+                                  CREATE_ALWAYS, // rely on share to fail if exists!
+                                  FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH | 
+                                  // (Lockheed Martin) Secure Coding  11-14-2007
+                                  SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION,
+                                  NULL);
+
+    // Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
+    if (lockFileHandle != INVALID_HANDLE_VALUE) {
+      if (::GetFileType( lockFileHandle ) != FILE_TYPE_DISK) {
+        ::CloseHandle( lockFileHandle );
+        lockFileHandle = INVALID_HANDLE_VALUE;
+      }
+    }
+    // End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+  }
 
   if (lockFileHandle == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();

@@ -88,7 +88,9 @@ protected:
 private:
   bool ParseCommandLine(DboxMain &dbox, bool &allDone);
   void LoadLocalizedStuff();
+  bool PerformConfigMigration();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
+
   HANDLE m_hMutexOneInstance;
 
   HICON m_LockedIcon;
@@ -104,6 +106,15 @@ private:
   CString m_csHelpFile;
   bool m_noSysEnvWarnings; // set by '-q' command line argument
   bool m_bPermitTestdump;
+
+  // For Startup Options that effect migration to Local AppData (MFC version only)
+  enum ConfigOptions {
+    CFG_CONFIGFILE_SUPPLIED  = 0x80,
+    CFG_USERNAME_SUPPLIED    = 0x40,
+    CFG_HOSTNAME_SUPPLIED    = 0x20,
+    CFG_UNUSED               = 0x1f};
+
+  BYTE m_CFGOpt;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

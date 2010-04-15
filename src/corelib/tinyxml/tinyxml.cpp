@@ -969,12 +969,12 @@ bool TiXmlDocument::LoadFile( TiXmlEncoding encoding )
 bool TiXmlDocument::SaveFile() const
 {
 	// See STL_STRING_BUG below.
-//	StringToBuffer buf( value );
-//
-//	if ( buf.buffer && SaveFile( buf.buffer ) )
-//		return true;
-//
-//	return false;
+  //	StringToBuffer buf( value );
+  //
+  //	if ( buf.buffer && SaveFile( buf.buffer ) )
+  //		return true;
+  //
+  //	return false;
 	return SaveFile( Value() );
 }
 

@@ -24,6 +24,7 @@
 #define IDS_STATBROWSEPLUS              5030
 #define IDS_STATRUN                     5031
 #define IDS_STATSENDEMAIL               5032
+#define IDS_READ_WRITE                  5033
 
 // File Dailog filters
 #define IDS_FDF_V3_ALL                  5050
@@ -40,12 +41,13 @@
 #define IDS_RESETPWHISTORYOFF           5100
 #define IDS_RESETPWHISTORYON            5101
 #define IDS_SETMAXPWHISTORY             5102
-#define IDS_REGDEL_CB                   5103
+#define IDS_REGDEL                      5103
 #define IDS_BACKUPBEFORESAVE            5104
 #define IDS_USERBACKUPOTHERLOCATION     5106
 #define IDS_MAINTAINDATETIMESTAMPS      5107
 #define IDS_OTHERBROWSERLOCATION        5108
 #define IDS_OTHEREDITORLOCATION         5109
+#define IDS_MIGRATETOAPPDATA            5110
 
 // Program strings
 #define IDS_LITTLEENDIAN                5207
@@ -613,3 +615,7 @@
 #define IDS_SAVEAS                      5797
 #define IDS_SINGLEENTRY                 5798
 #define IDS_INVALIDFUTUREDATE           5799
+#define IDS_CONFIRM_MIG2APPDATA         5800
+#define IDS_REGISTRY                    5801
+#define IDS_CANTFINDCONFIG              5802
+#define IDS_CANTFINDUSERHOST            5803

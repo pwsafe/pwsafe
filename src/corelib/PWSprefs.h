@@ -49,11 +49,18 @@ class CXMLprefs;
 class PWSprefs
 {
 public:
+
+  enum ConfigOption {CF_NONE = 0, CF_REGISTRY,
+                     CF_FILE_RO, CF_FILE_RW, CF_FILE_RW_NEW};
+
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
   static void SetConfigFile(const stringT &fn) {m_configfilename = fn;}
+  static stringT GetConfigFile(ConfigOption &configoption)
+  {configoption = m_ConfigOption; return m_configfilename;}
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
-  
+  static void XMLify(charT t, stringT &name);
+
   // prefString is stored in database file, format described in PWSprefs.cpp
   void Load(const StringX &prefString, bool bUseCopy = false);
   StringX Store(bool bUseCopy = false); // returns string for saving in file
@@ -87,7 +94,7 @@ public:
     MultipleInstances, ShowDragbar,
     ClearClipboardOnMinimize, ClearClipboardOnExit,
     ShowFindToolBarOnOpen, NotesWordWrap, LockDBOnIdleTimeout,
-    HighlightChanges,
+    HighlightChanges, DoNotMigrateToAPPDATA,
     NumBoolPrefs};
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
@@ -143,7 +150,8 @@ public:
   void ClearAPPprefsChanged() {m_prefs_changed[APP_PREF] = false;}
   void SetDBprefsChanged(const bool bChanged) {m_prefs_changed[DB_PREF] = bChanged;}
   void SetDatabasePrefsToDefaults();
-  void ForceWriteApplicationPreferences() {m_prefs_changed[APP_PREF] = true;}
+  void ForceWriteApplicationPreferences()
+  {m_prefs_changed[APP_PREF] = true; m_prefs_changed[SHC_PREF] = true;}
 
   bool GetPref(BoolPrefs pref_enum) const;
   unsigned int GetPref(IntPrefs pref_enum) const;
@@ -173,7 +181,7 @@ public:
   void ResetPref(StringPrefs pref_enum);
 
   // CPSWRecentFileList needs to know if it can use registry or not:
-  bool IsUsingRegistry() const {return m_ConfigOptions == CF_REGISTRY;}
+  bool IsUsingRegistry() const {return m_ConfigOption == CF_REGISTRY;}
 
   // Get database preferences in XML format for export
   stringT GetXMLPreferences();
@@ -223,11 +231,10 @@ private:
   static PWSprefs *self; // singleton
   static stringT m_configfilename; // may be set before singleton created
   static Reporter *m_pReporter; // set as soon as possible to show errors
-  CXMLprefs *m_XML_Config;
+  CXMLprefs *m_pXML_Config;
 
   bool m_bRegistryKeyExists;
-  enum {CF_NONE, CF_REGISTRY, CF_FILE_RO,
-        CF_FILE_RW, CF_FILE_RW_NEW} m_ConfigOptions;
+  static ConfigOption m_ConfigOption;
   stringT m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF, m_csHKCU_SHCT;
 
   bool m_prefs_changed[3];  // 0 - DB stored pref; 1 - App related pref; 2 - Shortcut

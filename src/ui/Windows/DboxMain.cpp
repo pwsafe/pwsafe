@@ -2566,7 +2566,7 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());
       m_statusBar.SetPaneText(CPWStatusBar::SB_MODIFIED, s);
 
-      s = m_core.IsReadOnly() ? L"R-O" : L"R/W";
+      s.LoadString(m_core.IsReadOnly() ? IDS_READ_ONLY : IDS_READ_WRITE);
       dc.DrawText(s, &rectPane, DT_CALCRECT);
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, iWidth);
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_READONLY, uiID, uiStyle, rectPane.Width());

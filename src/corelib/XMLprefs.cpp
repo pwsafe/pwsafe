@@ -55,18 +55,18 @@ void CXMLprefs::Unlock()
   m_bIsLocked = false;
 }
 
-bool CXMLprefs::CreateXML(bool forLoad)
+bool CXMLprefs::CreateXML(bool bLoad)
 {
-  // Call with forLoad set when about to Load, else
+  // Call with bLoad set when about to Load, else
   // this also adds a toplevel root element
   ASSERT(m_pXMLDoc == NULL);
   m_pXMLDoc = new TiXmlDocument(m_csConfigFile.c_str());
-  if (!forLoad && m_pXMLDoc != NULL) {
+  if (!bLoad && m_pXMLDoc != NULL) {
     TiXmlDeclaration decl(_T("1.0"), _T("UTF-8"), _T("yes"));
     TiXmlElement rootElem(_T("Pwsafe_Settings"));
 
     return (m_pXMLDoc->InsertEndChild(decl) != NULL &&
-      m_pXMLDoc->InsertEndChild(rootElem) != NULL);
+            m_pXMLDoc->InsertEndChild(rootElem) != NULL);
   } else
     return m_pXMLDoc != NULL;
 }
@@ -509,4 +509,127 @@ int CXMLprefs::SetShortcuts(const stringT &csKeyName,
     delete [] pcsKeys;
   }
   return iRetVal;
+}
+
+bool CXMLprefs::MigrateSettings(const stringT &sNewFilename, 
+                                const stringT &sHost, const stringT &sUser)
+{
+  // Validate parameters
+  if (sNewFilename.empty() || sHost.empty() || sUser.empty())
+    return false;
+
+  if (m_pXMLDoc == NULL)
+    return false;
+
+  TiXmlHandle hDoc(m_pXMLDoc);
+  TiXmlElement *pElem, *pElem_host(NULL), *pElem_user(NULL);
+  TiXmlHandle hRoot(0);
+
+  pElem = hDoc.FirstChildElement().Element();
+  // should always have a valid root but handle gracefully if it does
+  if (!pElem)
+    return false;
+
+  // save this for later
+  hRoot = TiXmlHandle(pElem);
+
+  // Delete all hosts - except the one supplied
+  pElem = hRoot.FirstChild().Element();
+  while(pElem) {
+    TiXmlElement *pSibling = pElem->NextSiblingElement();
+    const TCHAR *pKey = pElem->Value();
+    if (pKey != NULL) {
+      if (_tcscmp(pKey, sHost.c_str()) != 0) {
+        TRACE(_T("Deleting host: %s\n"), pKey);
+        hRoot.ToNode()->RemoveChild(TiXmlHandle(pElem).ToNode());
+      } else {
+        pElem_host = pElem;
+      }
+    }
+    pElem = pSibling;
+  }
+
+  ASSERT(pElem_host != NULL);
+  if (pElem_host == NULL)
+    return false;
+  
+  // Within supplied host, delete all users except the one supplied
+  TiXmlNode *pnode = hRoot.FirstChild(sHost.c_str()).ToNode();
+  pElem = hRoot.FirstChild(sHost.c_str()).FirstChild().Element();
+  while(pElem) {
+    TiXmlElement *pSibling = pElem->NextSiblingElement();
+    const TCHAR *pKey = pElem->Value();
+    if (pKey != NULL) {
+      if (_tcscmp(pKey, sUser.c_str()) != 0) {
+        TRACE(_T("Deleting user: %s\n"), pKey);
+        pnode->RemoveChild(TiXmlHandle(pElem).ToNode());
+      } else {
+        pElem_user = pElem;
+      }
+    }
+    pElem = pSibling;
+  }
+
+  ASSERT(pElem_user != NULL);
+  if (pElem_user == NULL)
+    return false;
+
+  // Save just host/user in new file
+  bool retval = m_pXMLDoc->SaveFile(sNewFilename.c_str());
+  if (!retval) {
+    // Get and show error
+    Format(m_Reason, IDSC_XMLFILEERROR,
+           m_pXMLDoc->ErrorDesc(), sNewFilename.c_str(),
+           m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
+  }
+  return retval;
+}
+
+bool CXMLprefs::RemoveHostnameUsername(const stringT &sHost, const stringT &sUser,
+                                       bool &bNoMoreNodes)
+{
+  // If all OK, after removal of supplied hostname/username, then 
+  // bNoMoreNodes indicates if there still remain more nodes (hostname/username)
+  // in the configuration file
+  bNoMoreNodes = false;
+
+  // Validate parameters
+  if (sHost.empty() || sUser.empty())
+    return false;
+
+  if (m_pXMLDoc == NULL)
+    return false;
+
+  TiXmlHandle hDoc(m_pXMLDoc);
+  TiXmlElement *pElemR, *pElemH, *pElemU;
+  TiXmlHandle hRoot(0);
+
+  pElemR = hDoc.FirstChildElement().Element();
+  // should always have a valid root but handle gracefully if it does
+  if (!pElemR)
+    return false;
+
+  hRoot = TiXmlHandle(pElemR);
+
+  // Find host supplied host
+  pElemH = hRoot.FirstChild(sHost.c_str()).Element();
+  ASSERT(pElemH != NULL);
+  if (pElemH == NULL)
+    return false;
+
+  // Find supplied user within this host
+  pElemU = hRoot.FirstChild(sHost.c_str()).FirstChild(sUser.c_str()).Element();
+  ASSERT(pElemU != NULL);
+  if (pElemU == NULL)
+    return false;
+
+  // Remove it
+  TiXmlHandle(pElemH).ToNode()->RemoveChild(TiXmlHandle(pElemU).ToNode());
+
+  // If no more users in this host - delete it
+  if (TiXmlHandle(pElemH).ToNode()->NoChildren())
+    hRoot.ToNode()->RemoveChild(TiXmlHandle(pElemH).ToNode());
+
+  bNoMoreNodes = hRoot.ToNode()->NoChildren();
+  return true;
 }

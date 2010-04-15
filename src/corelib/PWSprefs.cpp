@@ -20,6 +20,7 @@
 #include "os/debug.h"
 #include "os/pws_tchar.h"
 #include "os/file.h"
+#include "os/dir.h"
 #include "os/registry.h"
 
 #include <fstream>
@@ -47,14 +48,15 @@ HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
 int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
-stringT PWSprefs::m_configfilename; // may be set before singleton created
+stringT PWSprefs::m_configfilename = _T(""); // may be set before singleton created
+PWSprefs::ConfigOption PWSprefs::m_ConfigOption = PWSprefs::CF_NONE;
 Reporter *PWSprefs::m_pReporter = NULL;
 
 /*
  Note: to change a preference between application and database, the way 
  to do it is to set the current one as obsolete and define a new one.
 
- Do not change the curren type.
+ Do not change the current type.
 
  NOTE: Database preferences are exported & imported via XML. Don't forget
  updating these routines and the schema.
@@ -116,6 +118,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("NotesWordWrap"), false, ptApplication},              // application
   {_T("LockDBOnIdleTimeout"), true, ptDatabase},            // database
   {_T("HighlightChanges"), true, ptApplication},            // application
+  {_T("DoNotMigrateToAPPDATA"), false, ptApplication},      // application
 };
 
 // Default value = -1 means set at runtime
@@ -189,7 +192,7 @@ void PWSprefs::DeleteInstance()
   SysInfo::DeleteInstance();
 }
 
-PWSprefs::PWSprefs() : m_XML_Config(NULL)
+PWSprefs::PWSprefs() : m_pXML_Config(NULL)
 {
   int i;
 
@@ -217,7 +220,7 @@ PWSprefs::PWSprefs() : m_XML_Config(NULL)
 
 PWSprefs::~PWSprefs()
 {
-  delete m_XML_Config;
+  delete m_pXML_Config;
   delete[] m_MRUitems;
 }
 
@@ -284,7 +287,7 @@ int PWSprefs::GetMRUList(stringT *MRUFiles)
 {
   ASSERT(MRUFiles != NULL);
 
-  if (m_ConfigOptions == CF_NONE || m_ConfigOptions == CF_REGISTRY)
+  if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY)
     return 0;
 
   const int n = GetPref(PWSprefs::MaxMRUItems);
@@ -298,8 +301,8 @@ int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
 {
   ASSERT(MRUFiles != NULL);
 
-  if (m_ConfigOptions == CF_NONE || m_ConfigOptions == CF_REGISTRY ||
-    m_ConfigOptions == CF_FILE_RO)
+  if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY ||
+      m_ConfigOption == CF_FILE_RO)
     return 0;
 
   int i, cnt;
@@ -429,19 +432,19 @@ bool PWSprefs::WritePref(const StringX &name, bool val)
 {
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
-  switch (m_ConfigOptions) {
-  case CF_REGISTRY:
-    bRetVal = pws_os::RegWriteValue(PWS_REG_OPTIONS, name.c_str(), val);
-    break;
-  case CF_FILE_RW:
-  case CF_FILE_RW_NEW:
-    bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name.c_str(),
-                                 val ? 1 : 0) == 0);
-    break;
-  case CF_FILE_RO:
-  case CF_NONE:
-  default:
-    break;
+  switch (m_ConfigOption) {
+    case CF_REGISTRY:
+      bRetVal = pws_os::RegWriteValue(PWS_REG_OPTIONS, name.c_str(), val);
+      break;
+    case CF_FILE_RW:
+    case CF_FILE_RW_NEW:
+      bRetVal = (m_pXML_Config->Set(m_csHKCU_PREF, name.c_str(),
+                                   val ? 1 : 0) == 0);
+      break;
+    case CF_FILE_RO:
+    case CF_NONE:
+    default:
+      break;
   }
   return bRetVal;
 }
@@ -450,13 +453,13 @@ bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 {
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
-  switch (m_ConfigOptions) {
+  switch (m_ConfigOption) {
     case CF_REGISTRY:
       bRetVal = pws_os::RegWriteValue(PWS_REG_OPTIONS, name.c_str(), int(val));
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
-      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name.c_str(), val) == 0);
+      bRetVal = (m_pXML_Config->Set(m_csHKCU_PREF, name.c_str(), val) == 0);
       break;
     case CF_FILE_RO:
     case CF_NONE:
@@ -470,13 +473,13 @@ bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 {
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
-  switch (m_ConfigOptions) {
+  switch (m_ConfigOption) {
     case CF_REGISTRY:
       bRetVal = pws_os::RegWriteValue(PWS_REG_OPTIONS, name.c_str(), val.c_str());
       break;
     case CF_FILE_RW:
     case CF_FILE_RW_NEW:
-      bRetVal = (m_XML_Config->Set(m_csHKCU_PREF,
+      bRetVal = (m_pXML_Config->Set(m_csHKCU_PREF,
                                    name.c_str(), val.c_str()) == 0);
       break;
     case CF_FILE_RO:
@@ -490,12 +493,12 @@ bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 bool PWSprefs::DeletePref(const StringX &name)
 {
   bool bRetVal(false);
-  switch (m_ConfigOptions) {
+  switch (m_ConfigOption) {
     case CF_REGISTRY:
       bRetVal = pws_os::RegDeleteEntry(name.c_str());
       break;
     case CF_FILE_RW:
-      bRetVal = (m_XML_Config->DeleteSetting(m_csHKCU_PREF,
+      bRetVal = (m_pXML_Config->DeleteSetting(m_csHKCU_PREF,
                                              name.c_str()) == TRUE);
       break;
     case CF_FILE_RW_NEW:
@@ -761,16 +764,16 @@ void PWSprefs::GetDefaultUserInfo(const StringX &sxDBPreferences,
 
 void PWSprefs::UpdateTimeStamp()
 {
-  if (m_ConfigOptions == CF_FILE_RW || m_ConfigOptions == CF_FILE_RW_NEW) {
+  if (m_ConfigOption == CF_FILE_RW || m_ConfigOption == CF_FILE_RW_NEW) {
     time_t time_now;
     time(&time_now);
     const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
-    m_XML_Config->Set(m_csHKCU, _T("LastUpdated"), now.c_str());
+    m_pXML_Config->Set(m_csHKCU, _T("LastUpdated"), now.c_str());
   }
 }
 
-static void xmlify(charT t, stringT &name)
+void PWSprefs::XMLify(charT t, stringT &name)
 {
   if (!_istalpha(name[0]))
     name = t + name;
@@ -802,17 +805,26 @@ void PWSprefs::InitializePreferences()
   // change to config dir
   // dirs' d'tor will put us back when we leave
   // needed for case where m_configfilename was passed relatively
-  PWSdirs dirs(PWSdirs::GetConfigDir());
+  stringT sExecDir = PWSdirs::GetExeDir();
+  stringT sCnfgDir = PWSdirs::GetConfigDir();
+  PWSdirs dirs(sCnfgDir);
 
   // Set path & name of config file
   if (m_configfilename.empty()) {
-    m_configfilename = PWSdirs::GetConfigDir().c_str();
+    m_configfilename = sCnfgDir;
     m_configfilename += _T("pwsafe.cfg");
+  } else {
+    // As per pre-use of Local AppData directory, the config file is
+    // expected to be in the same directory as the executable
+    stringT sDrive, sDir, sFile, sExt;
+    pws_os::splitpath(m_configfilename, sDrive, sDir, sFile, sExt);
+    if (sDrive.empty() || sDir.empty())
+      m_configfilename = sExecDir + sFile + sExt;
   }
 
   // Start with fallback position: hardcoded defaults
   LoadProfileFromDefaults();
-  m_ConfigOptions = CF_NONE;
+  m_ConfigOption = CF_NONE;
   bool isRO(true);
 
   // Actually, "config file exists" means:
@@ -822,7 +834,7 @@ void PWSprefs::InitializePreferences()
   // 1. Does config file exist (and if, so, can we write to it?)?
   bool configFileExists = pws_os::FileExists(m_configfilename.c_str(), isRO);
   if (configFileExists) {
-    m_ConfigOptions = (isRO) ? CF_FILE_RO : CF_FILE_RW;
+    m_ConfigOption = (isRO) ? CF_FILE_RO : CF_FILE_RW;
   } else {
     // Doesn't exist but can we write to the directory?
     // Try and create the file (and delete afterwards if we succeeded)
@@ -838,23 +850,26 @@ void PWSprefs::InitializePreferences()
     if (!ofs.bad()) {
       ofs.close();
       pws_os::DeleteAFile(m_configfilename.c_str());
-      m_ConfigOptions = CF_FILE_RW_NEW;
+      m_ConfigOption = CF_FILE_RW_NEW;
       isRO = false;
     }
   }
+  TRACE(_T("PWSprefs - using %s config file: %s [%s]\n"),
+            configFileExists ? _T("existing") : _T(""),
+            m_configfilename.c_str(),
+            isRO ? _T("R/O") : _T("R/W"));
 
+  // Set up XML "keys": host/user ensure that they start with letter,
+  // and otherwise conforms with http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
   const SysInfo *si = SysInfo::GetInstance();
-  // Set up XML "keys": host/user
-  // ensure that they start with letter,
-  // and otherwise conforms with
-  // http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
   stringT hn = si->GetEffectiveHost();
-  xmlify(charT('H'), hn);
+  XMLify(charT('H'), hn);
   stringT un = si->GetEffectiveUser();
-  xmlify(charT('u'), un);
-  m_csHKCU =  hn.c_str();
+  XMLify(charT('u'), un);
+  m_csHKCU = hn.c_str();
   m_csHKCU += _T("\\");
   m_csHKCU += un.c_str();
+
   // set up other keys
   m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
   m_csHKCU_POS  = m_csHKCU + _T("\\Position");
@@ -892,12 +907,12 @@ void PWSprefs::InitializePreferences()
     if (LockCFGFile(m_configfilename, locker)) {
       UnlockCFGFile(m_configfilename);
     } else {
-      m_ConfigOptions = CF_REGISTRY; // CF_FILE_RW_NEW -> CF_REGISTRY
+      m_ConfigOption = CF_REGISTRY; // CF_FILE_RW_NEW -> CF_REGISTRY
     }
   }
 
   stringT cs_msg;
-  switch (m_ConfigOptions) {
+  switch (m_ConfigOption) {
     case CF_REGISTRY:
       LoadAString(cs_msg, IDSC_CANTCREATEXMLCFG);
       break;
@@ -1076,17 +1091,17 @@ bool PWSprefs::LoadProfileFromFile()
   bool retval;
   stringT ts, csSubkey;
 
-  m_XML_Config = new CXMLprefs(m_configfilename.c_str());
-  if (!m_XML_Config->Load()) {
-    if (!m_XML_Config->getReason().empty() &&
+  m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+  if (!m_pXML_Config->Load()) {
+    if (!m_pXML_Config->getReason().empty() &&
         m_pReporter != NULL)
-      (*m_pReporter)(m_XML_Config->getReason()); // show what went wrong
+      (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
     retval = false;
     goto exit;
   }
 
   // Are we (host/user) already in the config file?
-  ts = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
+  ts = m_pXML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
   time_t tt;
   if (!VerifyXMLDateTimeString(ts, tt)) {
     // No, nothing to load, return false
@@ -1105,7 +1120,7 @@ bool PWSprefs::LoadProfileFromFile()
   int i;
   // Defensive programming, if not "0", then "TRUE", all other values = FALSE
   for (i = 0; i < NumBoolPrefs; i++) {
-    m_boolValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
+    m_boolValues[i] = m_pXML_Config->Get(m_csHKCU_PREF,
                                         m_bool_prefs[i].name,
                                         m_bool_prefs[i].defVal) != 0;
   }
@@ -1117,10 +1132,10 @@ bool PWSprefs::LoadProfileFromFile()
     bool bccom = GetPref(ClearClipboardOnMinimize);
     bool bccoe = GetPref(ClearClipboardOnExit);
 
-    bool bccom2 = m_XML_Config->Get(m_csHKCU_PREF,
+    bool bccom2 = m_pXML_Config->Get(m_csHKCU_PREF,
                                     _T("ClearClipoardOnMinimize"), // deliberate!
                                     bccom) != 0;
-    bool bccoe2 = m_XML_Config->Get(m_csHKCU_PREF,
+    bool bccoe2 = m_pXML_Config->Get(m_csHKCU_PREF,
                                     _T("ClearClipoardOneExit"), // deliberate!
                                     bccoe) != 0;
 
@@ -1144,7 +1159,7 @@ bool PWSprefs::LoadProfileFromFile()
 
   // Defensive programming, if outside the permitted range, then set to default
   for (i = 0; i < NumIntPrefs; i++) {
-    const int iVal = m_XML_Config->Get(m_csHKCU_PREF,
+    const int iVal = m_pXML_Config->Get(m_csHKCU_PREF,
                                        m_int_prefs[i].name,
                                        m_int_prefs[i].defVal);
 
@@ -1157,35 +1172,35 @@ bool PWSprefs::LoadProfileFromFile()
 
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++) {
-    m_stringValues[i] = m_XML_Config->Get(m_csHKCU_PREF.c_str(),
+    m_stringValues[i] = m_pXML_Config->Get(m_csHKCU_PREF.c_str(),
                                           m_string_prefs[i].name,
                                           m_string_prefs[i].defVal).c_str();
   }
 
   // Load last main window size & pos:
-  m_rect.top = m_XML_Config->Get(m_csHKCU_POS, _T("top"), -1);
-  m_rect.bottom = m_XML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
-  m_rect.left = m_XML_Config->Get(m_csHKCU_POS, _T("left"), -1);
-  m_rect.right = m_XML_Config->Get(m_csHKCU_POS, _T("right"), -1);
+  m_rect.top = m_pXML_Config->Get(m_csHKCU_POS, _T("top"), -1);
+  m_rect.bottom = m_pXML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
+  m_rect.left = m_pXML_Config->Get(m_csHKCU_POS, _T("left"), -1);
+  m_rect.right = m_pXML_Config->Get(m_csHKCU_POS, _T("right"), -1);
 
-  m_PSSrect.top = m_XML_Config->Get(m_csHKCU_POS, _T("PSS_top"), -1);
-  m_PSSrect.bottom = m_XML_Config->Get(m_csHKCU_POS, _T("PSS_bottom"), -1);
-  m_PSSrect.left = m_XML_Config->Get(m_csHKCU_POS, _T("PSS_left"), -1);
-  m_PSSrect.right = m_XML_Config->Get(m_csHKCU_POS, _T("PSS_right"), -1);
+  m_PSSrect.top = m_pXML_Config->Get(m_csHKCU_POS, _T("PSS_top"), -1);
+  m_PSSrect.bottom = m_pXML_Config->Get(m_csHKCU_POS, _T("PSS_bottom"), -1);
+  m_PSSrect.left = m_pXML_Config->Get(m_csHKCU_POS, _T("PSS_left"), -1);
+  m_PSSrect.right = m_pXML_Config->Get(m_csHKCU_POS, _T("PSS_right"), -1);
 
   // Load most recently used file list
   for (i = m_intValues[MaxMRUItems]; i > 0; i--) {
     Format(csSubkey, _T("Safe%02d"), i);
-    m_MRUitems[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
+    m_MRUitems[i-1] = m_pXML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
   }
 
-  m_vShortcuts = m_XML_Config->GetShortcuts(m_csHKCU_SHCT);
+  m_vShortcuts = m_pXML_Config->GetShortcuts(m_csHKCU_SHCT);
   std::sort(m_vShortcuts.begin(), m_vShortcuts.end(), shortcut_less());
   retval = true;
 
 exit:
-  delete m_XML_Config;
-  m_XML_Config = NULL;
+  delete m_pXML_Config;
+  m_pXML_Config = NULL;
   return retval;
 }
 
@@ -1200,21 +1215,21 @@ void PWSprefs::SaveApplicationPreferences()
   // needed for case where m_configfilename was passed relatively
   PWSdirs dirs(PWSdirs::GetConfigDir());
 
-  if (m_ConfigOptions == CF_FILE_RW ||
-      m_ConfigOptions == CF_FILE_RW_NEW) {
+  if (m_ConfigOption == CF_FILE_RW ||
+      m_ConfigOption == CF_FILE_RW_NEW) {
     // Load prefs file in case it was changed elsewhere
     // Here we need to explicitly lock from before
     // load to after store
-    m_XML_Config = new CXMLprefs(m_configfilename.c_str());
-    if (!m_XML_Config->Lock()) {
+    m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+    if (!m_pXML_Config->Lock()) {
       // punt to registry!
-      m_ConfigOptions = CF_REGISTRY;
-      delete m_XML_Config;
-      m_XML_Config = NULL;
+      m_ConfigOption = CF_REGISTRY;
+      delete m_pXML_Config;
+      m_pXML_Config = NULL;
     } else { // acquired lock
       // if file exists, load to get other values
       if (pws_os::FileExists(m_configfilename.c_str()))
-        m_XML_Config->Load(); // we ignore failures here. why bother?
+        m_pXML_Config->Load(); // we ignore failures here. why bother?
     }
   }
   UpdateTimeStamp();
@@ -1263,7 +1278,7 @@ void PWSprefs::SaveApplicationPreferences()
   }
 
   if (m_rect.changed) {
-    switch (m_ConfigOptions) {
+    switch (m_ConfigOption) {
       case CF_REGISTRY:
         pws_os::RegWriteValue(PWS_REG_POSITION, _T("top"),
                               int(m_rect.top));
@@ -1279,13 +1294,13 @@ void PWSprefs::SaveApplicationPreferences()
       {
         stringT obuff;
         Format(obuff, _T("%d"), m_rect.top);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
         Format(obuff, _T("%d"), m_rect.bottom);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
         Format(obuff, _T("%d"), m_rect.left);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
         Format(obuff, _T("%d"), m_rect.right);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
         break;
       }
       case CF_FILE_RO:
@@ -1297,7 +1312,7 @@ void PWSprefs::SaveApplicationPreferences()
   } // m_rect.changed
 
   if (m_PSSrect.changed) {
-    switch (m_ConfigOptions) {
+    switch (m_ConfigOption) {
       case CF_REGISTRY:
         pws_os::RegWriteValue(PWS_REG_POSITION, _T("PSS_top"),
                               int(m_PSSrect.top));
@@ -1313,13 +1328,13 @@ void PWSprefs::SaveApplicationPreferences()
       {
         stringT obuff;
         Format(obuff, _T("%d"), m_PSSrect.top);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("PSS_top"), obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("PSS_top"), obuff) == 0);
         Format(obuff, _T("%d"), m_PSSrect.bottom);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("PSS_bottom"), obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("PSS_bottom"), obuff) == 0);
         Format(obuff, _T("%d"), m_PSSrect.left);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("PSS_left"), obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("PSS_left"), obuff) == 0);
         Format(obuff, _T("%d"), m_PSSrect.right);
-        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("PSS_right"), obuff) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, _T("PSS_right"), obuff) == 0);
         break;
       }
       case CF_FILE_RO:
@@ -1330,34 +1345,34 @@ void PWSprefs::SaveApplicationPreferences()
     m_rect.changed = false;
   } // m_rect.changed
 
-  if (m_ConfigOptions == CF_FILE_RW ||
-      m_ConfigOptions == CF_FILE_RW_NEW) {
+  if (m_ConfigOption == CF_FILE_RW ||
+      m_ConfigOption == CF_FILE_RW_NEW) {
     int i;
     const int n = GetPref(PWSprefs::MaxMRUItems);
     // Delete ALL entries
-    m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
+    m_pXML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
     // Now put back the ones we want
     stringT csSubkey;
     for (i = 0; i < n; i++) {
       if (!m_MRUitems[i].empty()) {
         Format(csSubkey, _T("Safe%02d"), i+1);
-        m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
+        m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
       }
     }
   }
 
-  if (m_ConfigOptions == CF_FILE_RW ||
-      m_ConfigOptions == CF_FILE_RW_NEW) {
-    if (m_XML_Config->Store()) // can't be new after succ. store
-      m_ConfigOptions = CF_FILE_RW;
+  if (m_ConfigOption == CF_FILE_RW ||
+      m_ConfigOption == CF_FILE_RW_NEW) {
+    if (m_pXML_Config->Store()) // can't be new after succ. store
+      m_ConfigOption = CF_FILE_RW;
     else
-    if (!m_XML_Config->getReason().empty() &&
+    if (!m_pXML_Config->getReason().empty() &&
         m_pReporter != NULL)
-      (*m_pReporter)(m_XML_Config->getReason()); // show what went wrong
+      (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
 
-    m_XML_Config->Unlock();
-    delete m_XML_Config;
-    m_XML_Config = NULL;
+    m_pXML_Config->Unlock();
+    delete m_pXML_Config;
+    m_pXML_Config = NULL;
   }
 
   m_prefs_changed[APP_PREF] = false;
@@ -1373,52 +1388,52 @@ void PWSprefs::SaveShortcuts()
   // needed for case where m_configfilename was passed relatively
   PWSdirs dirs(PWSdirs::GetConfigDir());
 
-  if (m_ConfigOptions == CF_FILE_RW ||
-      m_ConfigOptions == CF_FILE_RW_NEW) {
+  if (m_ConfigOption == CF_FILE_RW ||
+      m_ConfigOption == CF_FILE_RW_NEW) {
     // Load prefs file in case it was changed elsewhere
     // Here we need to explicitly lock from before
     // load to after store
-    m_XML_Config = new CXMLprefs(m_configfilename.c_str());
-    if (!m_XML_Config->Lock()) {
+    m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
+    if (!m_pXML_Config->Lock()) {
       // punt to registry!
-      m_ConfigOptions = CF_REGISTRY;
-      delete m_XML_Config;
-      m_XML_Config = NULL;
+      m_ConfigOption = CF_REGISTRY;
+      delete m_pXML_Config;
+      m_pXML_Config = NULL;
     } else { // acquired lock
       // if file exists, load to get other values
       if (pws_os::FileExists(m_configfilename.c_str()))
-        m_XML_Config->Load(); // we ignore failures here. why bother?
+        m_pXML_Config->Load(); // we ignore failures here. why bother?
     }
   }
 
-  if (m_ConfigOptions == CF_FILE_RW ||
-      m_ConfigOptions == CF_FILE_RW_NEW) {
+  if (m_ConfigOption == CF_FILE_RW ||
+      m_ConfigOption == CF_FILE_RW_NEW) {
     // Delete ALL shortcut entries
-    m_XML_Config->DeleteSetting(m_csHKCU_SHCT, _T(""));
+    m_pXML_Config->DeleteSetting(m_csHKCU_SHCT, _T(""));
     // Now put back the ones we want
     if (!m_vShortcuts.empty())
-      m_XML_Config->SetShortcuts(m_csHKCU_SHCT, m_vShortcuts);
+      m_pXML_Config->SetShortcuts(m_csHKCU_SHCT, m_vShortcuts);
   }
 
-  if (m_ConfigOptions == CF_FILE_RW ||
-      m_ConfigOptions == CF_FILE_RW_NEW) {
-    if (m_XML_Config->Store()) // can't be new after succ. store
-      m_ConfigOptions = CF_FILE_RW;
+  if (m_ConfigOption == CF_FILE_RW ||
+      m_ConfigOption == CF_FILE_RW_NEW) {
+    if (m_pXML_Config->Store()) // can't be new after succ. store
+      m_ConfigOption = CF_FILE_RW;
     else
-    if (!m_XML_Config->getReason().empty() &&
+    if (!m_pXML_Config->getReason().empty() &&
         m_pReporter != NULL)
-      (*m_pReporter)(m_XML_Config->getReason()); // show what went wrong
+      (*m_pReporter)(m_pXML_Config->getReason()); // show what went wrong
 
-    m_XML_Config->Unlock();
-    delete m_XML_Config;
-    m_XML_Config = NULL;
+    m_pXML_Config->Unlock();
+    delete m_pXML_Config;
+    m_pXML_Config = NULL;
   }
   m_prefs_changed[SHC_PREF] = false;
 }
 
 bool PWSprefs::OfferDeleteRegistry() const
 {
-  return (m_ConfigOptions == CF_FILE_RW &&
+  return (m_ConfigOption == CF_FILE_RW &&
     (m_bRegistryKeyExists || OldPrefsExist()));
 }
 
@@ -1431,7 +1446,7 @@ void PWSprefs::DeleteRegistryEntries()
 
 int PWSprefs::GetConfigIndicator() const
 {
-  switch (m_ConfigOptions) {
+  switch (m_ConfigOption) {
     case CF_NONE:
       return IDSC_CONFIG_NONE;
     case CF_REGISTRY:

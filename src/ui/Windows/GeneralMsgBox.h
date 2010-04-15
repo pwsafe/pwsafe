@@ -62,7 +62,7 @@ public:
   // For Timed MessageBox & Implement MFC equivalents
   INT_PTR MessageBoxTimeOut(LPCWSTR lpText, LPCWSTR lpCaption = NULL, 
                      UINT uiFlags = MB_OK, DWORD dwMilliseconds = 0);
-  INT_PTR MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, UINT uiFlags);
+  INT_PTR MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, UINT uiFlags = MB_OK);
   INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption = NULL, UINT uiFlags = MB_OK);
   INT_PTR AfxMessageBox(UINT uiIDPrompt, UINT uiFlags = MB_OK);
 

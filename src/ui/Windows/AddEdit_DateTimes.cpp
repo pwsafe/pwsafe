@@ -22,7 +22,6 @@
 #include "resource3.h"
 
 bool CAddEdit_DateTimes::m_bNumDaysFailed = false;
-
 bool CAddEdit_DateTimes::m_bShowUUID = false;
 
 static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
