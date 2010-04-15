@@ -28,15 +28,14 @@ class TiXmlElement;
 class CXMLprefs
 {
   // Construction & Destruction
- public:
- CXMLprefs(const stringT &configFile)
+public:
+  CXMLprefs(const stringT &configFile)
    : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false)
     {}
 
   ~CXMLprefs() { UnloadXML(); }
 
   // Implementation
- public:
   bool Load();
   bool Store();
   bool Lock();
@@ -58,16 +57,28 @@ class CXMLprefs
 
   bool DeleteSetting(const stringT &csBaseKeyName, const stringT &csValueName);
   stringT getReason() const {return m_Reason;} // why something went wrong
-  
-  enum {XML_SUCCESS = 0, XML_LOAD_FAILED, XML_NODE_NOT_FOUND, XML_PUT_TEXT_FAILED, XML_SAVE_FAILED};
 
- private:
+  // For migration of a host/user from one current configuration file to another
+  bool MigrateSettings(const stringT &sNewFilename, 
+                       const stringT &sHost, const stringT &sUser);
+  // Remove a host/user from current configuration file
+  bool RemoveHostnameUsername(const stringT &sHost, const stringT &sUser,
+                              bool &bNoMoreNodes);
+  
+  enum {XML_SUCCESS = 0,
+        XML_LOAD_FAILED,
+        XML_NODE_NOT_FOUND,
+        XML_PUT_TEXT_FAILED,
+        XML_SAVE_FAILED};
+
+private:
   TiXmlDocument *m_pXMLDoc;
   stringT m_csConfigFile;
   bool m_bIsLocked;
 
   stringT* ParseKeys(const stringT &csFullKeyPath, int &iNumKeys);
-  bool CreateXML(bool forLoad); // forLoad will skip creation of root element
+  // CreateXML - bLoad will skip creation of root element
+  bool CreateXML(bool bLoad);
   void UnloadXML();
   TiXmlElement *FindNode(TiXmlElement *parentNode, stringT* pcsKeys,
                          int iNumKeys, bool bAddNodes = false);

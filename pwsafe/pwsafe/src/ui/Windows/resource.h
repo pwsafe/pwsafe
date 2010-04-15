@@ -489,7 +489,7 @@
 #define IDC_RESETPWHISTORYON            1185
 #define IDC_SETMAXPWHISTORY             1186
 #define IDC_STATIC_UPDATEPWHISTORY      1187
-#define IDC_REGDEL_CB                   1188
+#define IDC_REGDEL                      1188
 #define IDC_SHOWNOTES                   1189
 #define IDC_DEFNOTESSHOWINEDIT          1190
 #define IDC_DATABASENAME                1191
@@ -514,12 +514,12 @@
 #define IDC_BROWSEFORLOCATION           1213
 #define IDC_BROWSEFORLOCATION_BROWSER   1214
 #define IDC_BROWSEFORLOCATION_EDITOR    1215
-#define IDC_REGDEL_BTN                  1216
+#define IDC_APPLYCONFIGCHANGES          1216
 #define IDC_OTHERBROWSERLOCATION        1217
 #define IDC_APPCOPYRIGHT                1218
 #define IDC_OTHEREDITORLOCATION         1219
 #define IDC_STARTUP                     1220
-#define IDC_REGDEL_GRP                  1221
+#define IDC_CONFIG_GRP                  1221
 #define IDC_DATABASECOMBO               1222
 #define IDC_BTN_BROWSE                  1223
 #define IDC_SPCL_TXT                    1225
@@ -702,6 +702,10 @@
 #define IDC_STATIC_WHERE                1418
 #define IDC_STATIC_AND2                 1419
 #define IDC_STATIC_RELDESC              1420
+#define IDC_MIGRATETOAPPDATA            1421
+#define IDC_STATIC_CONFIGFILE           1422
+#define IDC_CONFIGFILE                  1423
+#define IDC_STATIC_RWSTATUS             1424
 
 // Next default values for new objects
 // 
@@ -709,7 +713,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        479
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1421
+#define _APS_NEXT_CONTROL_VALUE         1425
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

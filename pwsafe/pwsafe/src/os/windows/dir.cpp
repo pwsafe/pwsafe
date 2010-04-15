@@ -12,8 +12,13 @@
 
 #include <afx.h>
 #include <Windows.h>
+
 #include "../dir.h"
 #include <direct.h>
+
+#include <shlwapi.h>
+#include <Shobjidl.h>
+#include <shlobj.h>
 
 stringT pws_os::getexecdir()
 {
@@ -81,14 +86,86 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
   return retval;
 }
 
-stringT pws_os::getuserprefsdir(void)
+bool GetLocalAppData(stringT &sLocalAppDataPath)
 {
-  // Return an empty string to
-  // have Windows punt to exec dir, which is the historical behaviour
-  // May want to change this in future to
-  // SHGetFolderPath(CSIDL_APPDATA) + "/pwsafe".
-  return stringT();
+  /*
+   * Versions supported by current PasswordSafe
+   *   Operating system       Version Other
+   *    Windows 7              6.1     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
+   *    Windows Server 2008 R2 6.1     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
+   *    Windows Server 2008    6.0     OSVERSIONINFOEX.wProductType != VER_NT_WORKSTATION
+   *    Windows Vista          6.0     OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION
+   *    Windows Server 2003 R2 5.2     GetSystemMetrics(SM_SERVERR2) != 0
+   *    Windows Home Server    5.2     OSVERSIONINFOEX.wSuiteMask & VER_SUITE_WH_SERVER
+   *    Windows Server 2003    5.2     GetSystemMetrics(SM_SERVERR2) == 0
+   *    Windows XP Pro x64     5.2     (OSVERSIONINFOEX.wProductType == VER_NT_WORKSTATION) &&
+   *                                   (SYSTEM_INFO.wProcessorArchitecture==PROCESSOR_ARCHITECTURE_AMD64)
+   *    Windows XP             5.1     Not applicable
+   *    Windows 2000           5.0     PlatformID 2
+   *
+   * Versions no longer supported by current PasswordSafe due to missing APIs
+   *   Operating system       Version Other
+   *    Windows NT 4.0         4.0     PlatformID 2
+   *    Windows ME             4.90    PlatformID 1
+   *    Windows 98             4.10    PlatformID 1
+   *    Windows 95             4.0     PlatformID 1
+   *    Windows NT 3.51        3.51    PlatformID 2
+   *    Windows NT 3.5	       3.5     PlatformID 2
+   *    Windows for Workgroups 3.11    PlatformID 0
+   *    Windows NT 3.1	       3.10    PlatformID 2
+   *    Windows 3.0	           3.0     n/a
+   *    Windows 2.0            2.??    n/a
+   *    Windows 1.0	           1.??    n/a
+   *
+   * Use dwMajorVersion & dwMinorVersion from OSVERSIONINFOEX Structure via GetVersionEx
+   * Note: Windows NT 4.0 SP6 and later is needed for the 'EX' version of OSVERSIONINFO for
+   * the extra fields (wSuiteMask & wProductType), to be valid
+  */
+
+  // String buffer for holding the path.
+  TCHAR strPath[MAX_PATH];
+  OSVERSIONINFOEX osvi;
+  BOOL brc(FALSE);
+
+  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+  GetVersionEx((LPOSVERSIONINFO)&osvi);
+
+  if (osvi.dwMajorVersion >= 5) {
+    // Get the special folder path - do not create it if it does not exist
+    brc = SHGetSpecialFolderPath(NULL, strPath, 
+                      CSIDL_LOCAL_APPDATA, FALSE);
+  }
+  if (brc == TRUE) {
+    // Call to 'SHGetSpecialFolderPath' worked
+    sLocalAppDataPath = strPath;
+  } else {
+    // Unsupported release or 'SHGetSpecialFolderPath' falied
+    sLocalAppDataPath = _T("Unknown");
+  }
+  return (brc == TRUE);
 }
 
+stringT pws_os::getuserprefsdir()
+{
+  // Return an empty string to have Windows punt to exec dir,
+  // which is the historical behaviour
+#ifndef DEBUG
+  const stringT sPWSDir(_T("\\PasswordSafe\\"));
+#else
+  const stringT sPWSDir(_T("\\PasswordSafeD\\"));
+#endif
 
+  stringT sExecDir = getexecdir();
+  stringT sDrive, sDir, sName, sExt;
 
+  pws_os::splitpath(sExecDir, sDrive, sDir, sName, sExt);
+  sDrive += _T("\\"); // Trailing slash required.
+
+  const UINT uiDT = GetDriveType(sDrive.c_str());
+  if (uiDT == DRIVE_FIXED || uiDT == DRIVE_REMOTE) {
+    stringT sLocalAppDataPath;
+    if (GetLocalAppData(sLocalAppDataPath))
+      return sLocalAppDataPath + sPWSDir;
+  }
+  return stringT();
+}

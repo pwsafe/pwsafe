@@ -34,6 +34,7 @@ public:
   BOOL m_deleteregistry;
   BOOL m_defaultopenro;
   BOOL m_multipleinstances;
+  BOOL m_migrate2appdata;
   //}}AFX_DATA
 
   int m_savemaxreitems;
@@ -42,8 +43,11 @@ public:
   int m_savemaxmruitems;
   BOOL m_savemruonfilemenu;
   BOOL m_savedeleteregistry;
+  BOOL m_savemigrate2appdata;
   BOOL m_savedefaultopenro;
   BOOL m_savemultipleinstances;
+
+  static bool m_bShowConfigFile;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -63,7 +67,8 @@ protected:
   afx_msg void OnUseSystemTray();
   afx_msg void OnStartup();
   afx_msg void OnSetDeleteRegistry();
-  afx_msg void OnApplyRegistryDeleteNow();
+  afx_msg void OnSetMigrate2Appdata();
+  afx_msg void OnApplyConfigChanges();
   afx_msg void OnNeverSaveDBNames();
   afx_msg BOOL OnKillActive();
   //}}AFX_MSG
