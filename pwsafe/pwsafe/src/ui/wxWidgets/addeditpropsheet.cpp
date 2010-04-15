@@ -673,19 +673,27 @@ void AddEditPropSheet::UpdatePWPolicyControls(bool useDefault)
   EnableSizerChildren(m_pwMinsGSzr, !useDefault);
   m_pwpHexCtrl->Enable(!useDefault);
   if (!useDefault) { // policy override - get values
+    bool bUseVal; // keep picky compiler happy, code readable
     m_item.GetPWPolicy(m_PWP);
     m_pwpLenCtrl->SetValue(m_PWP.length);
-    m_pwpUseLowerCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseLowercase);
+    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseLowercase) != 0;
+    m_pwpUseLowerCtrl->SetValue(bUseVal);
     m_pwpLCSpin->SetValue(m_PWP.lowerminlength);
-    m_pwpUseUpperCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseUppercase);
+    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseUppercase) != 0;
+    m_pwpUseUpperCtrl->SetValue(bUseVal);
     m_pwpUCSpin->SetValue(m_PWP.upperminlength);
-    m_pwpUseDigitsCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseDigits);
+    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseDigits) != 0;
+    m_pwpUseDigitsCtrl->SetValue(bUseVal);
     m_pwpDigSpin->SetValue(m_PWP.digitminlength);
-    m_pwpSymCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseSymbols);
+    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseSymbols) != 0;
+    m_pwpSymCtrl->SetValue(bUseVal);
     m_pwpSymSpin->SetValue(m_PWP.symbolminlength);
-    m_pwpEasyCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseEasyVision);
-    m_pwpPronounceCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyMakePronounceable);
-    m_pwpHexCtrl->SetValue(m_PWP.flags & PWSprefs::PWPolicyUseHexDigits);
+    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseEasyVision) != 0;
+    m_pwpEasyCtrl->SetValue(bUseVal);
+    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyMakePronounceable) != 0;
+    m_pwpPronounceCtrl->SetValue(bUseVal);
+    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
+    m_pwpHexCtrl->SetValue(bUseVal);
   }
 }
 
