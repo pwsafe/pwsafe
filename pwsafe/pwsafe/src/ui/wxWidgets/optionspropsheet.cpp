@@ -243,7 +243,7 @@ void COptions::Init()
 void COptions::CreateControls()
 {    
 ////@begin COptions content construction
-  COptions* itemPropertySheetDialog1 = this;
+  // COptions* itemPropertySheetDialog1 = this;
 
   wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -1003,7 +1003,7 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::MultipleInstances, m_sysmultinst);
 }
 
-void COptions::OnOk(wxCommandEvent& event)
+void COptions::OnOk(wxCommandEvent& /* evt */)
 {
   if (Validate() && TransferDataFromWindow()) {
     PropSheetToPrefs();
@@ -1016,7 +1016,7 @@ void COptions::OnOk(wxCommandEvent& event)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
  */
 
-void COptions::OnBackupB4SaveClick( wxCommandEvent& event )
+void COptions::OnBackupB4SaveClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     m_dfltbuprefixRB->Enable(m_backupb4save);
@@ -1032,11 +1032,11 @@ void COptions::OnBackupB4SaveClick( wxCommandEvent& event )
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4
  */
 
-void COptions::OnBuPrefix( wxCommandEvent& event )
+void COptions::OnBuPrefix( wxCommandEvent& evt )
 {
 ////@begin wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4 in COptions.
   // Before editing this code, remove the block markers.
-  event.Skip();
+  evt.Skip();
 ////@end wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4 in COptions. 
 }
 
@@ -1045,7 +1045,7 @@ void COptions::OnBuPrefix( wxCommandEvent& event )
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
  */
 
-void COptions::OnBuPrefixTxtSetFocus( wxFocusEvent& event )
+void COptions::OnBuPrefixTxtSetFocus( wxFocusEvent& /* evt */ )
 {
   m_dfltbuprefixRB->SetValue(false);
   m_usrbuprefixRB->SetValue(true);
@@ -1056,7 +1056,7 @@ void COptions::OnBuPrefixTxtSetFocus( wxFocusEvent& event )
  * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
  */
 
-void COptions::OnSuffixCBSet( wxCommandEvent& event )
+void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
 {
   int suffixIndex = m_busuffixCB->GetCurrentSelection();
   wxString example = m_usrbuprefixTxt->GetValue();
@@ -1098,7 +1098,7 @@ void COptions::OnSuffixCBSet( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
  */
 
-void COptions::OnBuDirBrowseClick( wxCommandEvent& event )
+void COptions::OnBuDirBrowseClick( wxCommandEvent& /* evt */ )
 {
   wxDirDialog dirdlg(this);
   int status = dirdlg.ShowModal();
@@ -1111,7 +1111,7 @@ void COptions::OnBuDirBrowseClick( wxCommandEvent& event )
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
  */
 
-void COptions::OnBuDirRB( wxCommandEvent& event )
+void COptions::OnBuDirRB( wxCommandEvent& /* evt */ )
 {
     bool enable = m_usrbudirRB->GetValue();
     m_usrbudirTxt->Enable(enable);
@@ -1124,7 +1124,7 @@ void COptions::OnBuDirRB( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
  */
 
-void COptions::OnShowUsernameInTreeCB( wxCommandEvent& event )
+void COptions::OnShowUsernameInTreeCB( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_showusernameintree)
@@ -1138,7 +1138,7 @@ void COptions::OnShowUsernameInTreeCB( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
  */
 
-void COptions::OnPreExpiryWarnClick( wxCommandEvent& event )
+void COptions::OnPreExpiryWarnClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     m_preexpirywarndaysSB->Enable(m_preexpirywarn);
@@ -1150,7 +1150,7 @@ void COptions::OnPreExpiryWarnClick( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
  */
 
-void COptions::OnUseDefaultUserClick( wxCommandEvent& event )
+void COptions::OnUseDefaultUserClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     m_defusernameTXT->Enable(m_usedefuser);
@@ -1163,7 +1163,7 @@ void COptions::OnUseDefaultUserClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
  */
 
-void COptions::OnBrowseLocationClick( wxCommandEvent& event )
+void COptions::OnBrowseLocationClick( wxCommandEvent& /* evt */ )
 {
   wxFileDialog fd(this, _("Select a Browser"));
   if (Validate() && TransferDataFromWindow()) {
@@ -1192,7 +1192,7 @@ static void EnableSizerChildren(wxSizer *sz, bool enable)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
  */
 
-void COptions::OnPwPolUseClick( wxCommandEvent& event )
+void COptions::OnPwPolUseClick( wxCommandEvent& evt )
 {
   bool useHex = m_pwpHexCtrl->GetValue();
 
@@ -1221,7 +1221,7 @@ void COptions::OnPwPolUseClick( wxCommandEvent& event )
                                 " are not supported together"),
                         _("Password Safe"), wxOK | wxICON_EXCLAMATION);
     msg.ShowModal();
-    if (event.GetEventObject() == m_pwpPronounceCtrl)
+    if (evt.GetEventObject() == m_pwpPronounceCtrl)
       m_pwpPronounceCtrl->SetValue(false);
     else
       m_pwpEasyCtrl->SetValue(false);
@@ -1233,7 +1233,7 @@ void COptions::OnPwPolUseClick( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
  */
 
-void COptions::OnPWHistSaveClick( wxCommandEvent& event )
+void COptions::OnPWHistSaveClick( wxCommandEvent& /* evt */ )
 {
   m_pwhistnumdfltSB->Enable(m_pwhistsaveCB->GetValue());
 }
@@ -1243,13 +1243,13 @@ void COptions::OnPWHistSaveClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
  */
 
-void COptions::OnPWHistApply( wxCommandEvent& event )
+void COptions::OnPWHistApply( wxCommandEvent& evt )
 {
   // XXX TBD - send this to someone who knows how to deal with it!
 
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE in COptions.
   // Before editing this code, remove the block markers.
-  event.Skip();
+  evt.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE in COptions. 
 }
 
@@ -1258,9 +1258,9 @@ void COptions::OnPWHistApply( wxCommandEvent& event )
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON8
  */
 
-void COptions::OnPWHistRB( wxCommandEvent& event )
+void COptions::OnPWHistRB( wxCommandEvent& evt )
 {
-  int id = event.GetId();
+  int id = evt.GetId();
   m_pwhistapplyBN->Enable(id != ID_PWHISTNOCHANGE);
 }
 
@@ -1269,7 +1269,7 @@ void COptions::OnPWHistRB( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
  */
 
-void COptions::OnLockOnIdleClick( wxCommandEvent& event )
+void COptions::OnLockOnIdleClick( wxCommandEvent& /* evt */)
 {
   m_secidletimeoutSB->Enable(m_seclockonidleCB->GetValue());
 }
@@ -1279,7 +1279,7 @@ void COptions::OnLockOnIdleClick( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
  */
 
-void COptions::OnUseSystrayClick( wxCommandEvent& event )
+void COptions::OnUseSystrayClick( wxCommandEvent& /* evt */)
 {
   m_sysmaxREitemsSB->Enable(m_sysusesystrayCB->GetValue());
 }

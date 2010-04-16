@@ -192,7 +192,7 @@ wxIcon DeleteConfirmation::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_NO
  */
 
-void DeleteConfirmation::OnNoClick( wxCommandEvent& event )
+void DeleteConfirmation::OnNoClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::DeleteQuestion,
@@ -207,7 +207,7 @@ void DeleteConfirmation::OnNoClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_YES
  */
 
-void DeleteConfirmation::OnYesClick( wxCommandEvent& event )
+void DeleteConfirmation::OnYesClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::DeleteQuestion,

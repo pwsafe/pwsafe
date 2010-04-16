@@ -159,68 +159,68 @@ public:
   ////@begin PasswordSafeFrame event handler declarations
 
   /// wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
-  void OnCloseWindow( wxCloseEvent& event );
+  void OnCloseWindow( wxCloseEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
-  void OnNewClick( wxCommandEvent& event );
+  void OnNewClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
-  void OnOpenClick( wxCommandEvent& event );
+  void OnOpenClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
-  void OnCloseClick( wxCommandEvent& event );
+  void OnCloseClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
-  void OnSaveClick( wxCommandEvent& event );
+  void OnSaveClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
-  void OnPropertiesClick( wxCommandEvent& event );
+  void OnPropertiesClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
-  void OnExitClick( wxCommandEvent& event );
+  void OnExitClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ADD
-  void OnAddClick( wxCommandEvent& event );
+  void OnAddClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
-  void OnEditClick( wxCommandEvent& event );
+  void OnEditClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
-  void OnDeleteClick( wxCommandEvent& event );
+  void OnDeleteClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
-  void OnClearclipboardClick( wxCommandEvent& event );
+  void OnClearclipboardClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
-  void OnCopypasswordClick( wxCommandEvent& event );
+  void OnCopypasswordClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
-  void OnCopyusernameClick( wxCommandEvent& event );
+  void OnCopyusernameClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
-  void OnCopynotesfldClick( wxCommandEvent& event );
+  void OnCopynotesfldClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
-  void OnCopyurlClick( wxCommandEvent& event );
+  void OnCopyurlClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
-  void OnListViewClick( wxCommandEvent& event );
+  void OnListViewClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
-  void OnTreeViewClick( wxCommandEvent& event );
+  void OnTreeViewClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
-  void OnChangePasswdClick( wxCommandEvent& event );
+  void OnChangePasswdClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
-  void OnOptionsMClick( wxCommandEvent& event );
+  void OnOptionsMClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
-  void OnAboutClick( wxCommandEvent& event );
+  void OnAboutClick( wxCommandEvent& evt);
 
 ////@end PasswordSafeFrame event handler declarations
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxEVT_FIND
-  void OnFindClick( wxCommandEvent& event );
+  void OnFindClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDITMENU_FIND_NEXT
   void OnFindNext(wxCommandEvent& evt);

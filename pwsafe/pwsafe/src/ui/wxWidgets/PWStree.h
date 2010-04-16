@@ -76,16 +76,16 @@ public:
 ////@begin PWSTreeCtrl event handler declarations
 
   /// wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
-  void OnTreectrlItemActivated( wxTreeEvent& event );
+  void OnTreectrlItemActivated( wxTreeEvent& evt);
 
   /// wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
-  void OnContextMenu( wxTreeEvent& event );
+  void OnContextMenu( wxTreeEvent& evt);
 
   /// wxEVT_CHAR event handler for ID_TREECTRL
-  void OnChar( wxKeyEvent& event );
+  void OnChar( wxKeyEvent& evt);
 
 ////@end PWSTreeCtrl event handler declarations
-  void OnGetToolTip( wxTreeEvent& event ); // Added manually
+  void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
 ////@begin PWSTreeCtrl member function declarations
 

@@ -276,7 +276,7 @@ void PWSGrid::DeleteAllItems()
  * wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnCellRightClick( wxGridEvent& event )
+void PWSGrid::OnCellRightClick( wxGridEvent& evt )
 {
   // We need this function because wxGrid doesn't convert unprocessed 
   // right-mouse-down events to contextmenu events, so we need to do
@@ -290,18 +290,18 @@ void PWSGrid::OnCellRightClick( wxGridEvent& event )
   // cme.SetEventObject(event.GetEventObject());
   // ProcessEvent(cme);
   //
-  SetGridCursor(event.GetRow(), event.GetCol());
-  SelectRow(event.GetRow());
-  dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(event.GetRow()));
+  SetGridCursor(evt.GetRow(), evt.GetCol());
+  SelectRow(evt.GetRow());
+  dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(evt.GetRow()));
 }
 
 /*!
  * wxEVT_GRID_CELL_ITEM_MENU event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnContextMenu( wxContextMenuEvent& event )
+void PWSGrid::OnContextMenu( wxContextMenuEvent& evt )
 {
-  wxPoint pos = event.GetPosition();
+  wxPoint pos = evt.GetPosition();
   if ( pos == wxDefaultPosition ) { //sent from keyboard?
     const int row = GetGridCursorRow();
     SelectRow(row);
@@ -333,9 +333,9 @@ CItemData *PWSGrid::GetItem(int row) const
  * wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnLeftDClick( wxGridEvent& event )
+void PWSGrid::OnLeftDClick( wxGridEvent& evt )
 {
-  CItemData *item = GetItem(event.GetRow());
+  CItemData *item = GetItem(evt.GetRow());
   if (item != NULL)
     dynamic_cast<PasswordSafeFrame *>(GetParent())->
       DispatchDblClickAction(*item);
@@ -355,12 +355,12 @@ void PWSGrid::OnLeftDClick( wxGridEvent& event )
  * wxEVT_CHAR event handler for ID_LISTBOX
  */
 
-void PWSGrid::OnChar( wxKeyEvent& event )
+void PWSGrid::OnChar( wxKeyEvent& evt )
 {
-  if (event.GetKeyCode() == WXK_ESCAPE &&
+  if (evt.GetKeyCode() == WXK_ESCAPE &&
       PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
     GetParent()->Close();
   }
-  event.Skip();
+  evt.Skip();
 }
 

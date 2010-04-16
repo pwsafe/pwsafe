@@ -69,10 +69,10 @@ public:
 ////@begin DeleteConfirmation event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_YES
-  void OnYesClick( wxCommandEvent& event );
+  void OnYesClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_NO
-  void OnNoClick( wxCommandEvent& event );
+  void OnNoClick( wxCommandEvent& evt);
 
 ////@end DeleteConfirmation event handler declarations
 

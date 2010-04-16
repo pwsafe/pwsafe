@@ -276,7 +276,7 @@ wxIcon EditShortcut::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void EditShortcut::OnOkClick( wxCommandEvent& event )
+void EditShortcut::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     bool modified = false;

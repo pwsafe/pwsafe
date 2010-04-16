@@ -321,11 +321,11 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationEntry::OnCancel( wxCommandEvent& event )
+void CSafeCombinationEntry::OnCancel( wxCommandEvent& evt )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationEntry.
   // Before editing this code, remove the block markers.
-  event.Skip();
+  evt.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationEntry. 
 }
 
@@ -334,7 +334,7 @@ void CSafeCombinationEntry::OnCancel( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
  */
 
-void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& event )
+void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
 {
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
                   wxT(""), wxT(""),
@@ -354,7 +354,7 @@ void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
  */
 
-void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& event )
+void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 {
   // 1. Get a filename from a file dialog box
   // 2. Get a password

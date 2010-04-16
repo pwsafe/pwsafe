@@ -142,46 +142,46 @@ public:
 ////@begin AddEditPropSheet event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
-  void OnShowHideClick( wxCommandEvent& event );
+  void OnShowHideClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
-  void OnGenerateButtonClick( wxCommandEvent& event );
+  void OnGenerateButtonClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
-  void OnGoButtonClick( wxCommandEvent& event );
+  void OnGoButtonClick( wxCommandEvent& evt);
 
   /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
-  void OnNoteSetFocus( wxFocusEvent& event );
+  void OnNoteSetFocus( wxFocusEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX
-  void OnOverrideDCAClick( wxCommandEvent& event );
+  void OnOverrideDCAClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
-  void OnKeepHistoryClick( wxCommandEvent& event );
+  void OnKeepHistoryClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
-  void OnRadiobuttonSelected( wxCommandEvent& event );
+  void OnRadiobuttonSelected( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON5
-  void OnSetXTime( wxCommandEvent& event );
+  void OnSetXTime( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6
-  void OnClearXTime( wxCommandEvent& event );
+  void OnClearXTime( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
-  void OnPWPRBSelected( wxCommandEvent& event );
+  void OnPWPRBSelected( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
-  void OnEZreadCBClick( wxCommandEvent& event );
+  void OnEZreadCBClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
-  void OnPronouceableCBClick( wxCommandEvent& event );
+  void OnPronouceableCBClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
-  void OnUseHexCBClick( wxCommandEvent& event );
+  void OnUseHexCBClick( wxCommandEvent& evt);
 
 ////@end AddEditPropSheet event handler declarations
-  void OnOk(wxCommandEvent& event);
+  void OnOk(wxCommandEvent& evt);
 ////@begin AddEditPropSheet member function declarations
 
   wxString GetTitle() const { return m_title ; }

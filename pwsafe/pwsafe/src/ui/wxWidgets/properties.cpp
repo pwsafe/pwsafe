@@ -308,7 +308,7 @@ wxIcon CProperties::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CProperties::OnOkClick( wxCommandEvent& event )
+void CProperties::OnOkClick( wxCommandEvent& /* evt */ )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CProperties.
   // Before editing this code, remove the block markers.

@@ -220,7 +220,7 @@ wxIcon CSafeCombinationPrompt::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& event )
+void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password.empty()) {
@@ -263,7 +263,7 @@ void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationPrompt::OnCancelClick( wxCommandEvent& event )
+void CSafeCombinationPrompt::OnCancelClick( wxCommandEvent& /* evt */ )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationPrompt.
   // Before editing this code, remove the block markers.

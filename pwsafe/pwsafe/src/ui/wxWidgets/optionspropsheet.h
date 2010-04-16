@@ -152,52 +152,52 @@ public:
 ////@begin COptions event handler declarations
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
-  void OnBackupB4SaveClick( wxCommandEvent& event );
+  void OnBackupB4SaveClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4
-  void OnBuPrefix( wxCommandEvent& event );
+  void OnBuPrefix( wxCommandEvent& evt);
 
   /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
-  void OnBuPrefixTxtSetFocus( wxFocusEvent& event );
+  void OnBuPrefixTxtSetFocus( wxFocusEvent& evt);
 
   /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
-  void OnSuffixCBSet( wxCommandEvent& event );
+  void OnSuffixCBSet( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
-  void OnBuDirRB( wxCommandEvent& event );
+  void OnBuDirRB( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
-  void OnBuDirBrowseClick( wxCommandEvent& event );
+  void OnBuDirBrowseClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
-  void OnShowUsernameInTreeCB( wxCommandEvent& event );
+  void OnShowUsernameInTreeCB( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
-  void OnPreExpiryWarnClick( wxCommandEvent& event );
+  void OnPreExpiryWarnClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
-  void OnUseDefaultUserClick( wxCommandEvent& event );
+  void OnUseDefaultUserClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
-  void OnBrowseLocationClick( wxCommandEvent& event );
+  void OnBrowseLocationClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
-  void OnPwPolUseClick( wxCommandEvent& event );
+  void OnPwPolUseClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
-  void OnPWHistSaveClick( wxCommandEvent& event );
+  void OnPWHistSaveClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_PWHISTNOCHANGE
-  void OnPWHistRB( wxCommandEvent& event );
+  void OnPWHistRB( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
-  void OnPWHistApply( wxCommandEvent& event );
+  void OnPWHistApply( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
-  void OnLockOnIdleClick( wxCommandEvent& event );
+  void OnLockOnIdleClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
-  void OnUseSystrayClick( wxCommandEvent& event );
+  void OnUseSystrayClick( wxCommandEvent& evt);
 
 ////@end COptions event handler declarations
 
@@ -302,7 +302,7 @@ public:
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 ////@end COptions member function declarations
-  void OnOk(wxCommandEvent& event);
+  void OnOk(wxCommandEvent& evt);
   /// Should we show tooltips?
   static bool ShowToolTips();
 
