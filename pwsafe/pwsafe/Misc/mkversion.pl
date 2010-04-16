@@ -17,6 +17,7 @@
 
 use strict;
 use warnings;
+use File::Copy;
 
 sub usage {
     print "Usage: $0 template outfile\n";
@@ -56,12 +57,12 @@ close(VH);
 # 2. The two differ
 
 if (!-e $OUTFILE) {
-    rename($TMPFILE, $OUTFILE) || die "Couldn't rename $TMPFILE to $OUTFILE\n";
+    move($TMPFILE, $OUTFILE) || die "Couldn't move $TMPFILE to $OUTFILE: $!\n";
 } else {
     `/usr/bin/diff -q $TMPFILE $OUTFILE > /dev/null`;
     if ($? != 0) {
         unlink $OUTFILE || die "Couldn't remove old $OUTFILE\n";
-        rename($TMPFILE, $OUTFILE) || die "Couldn't rename $TMPFILE to $OUTFILE\n";
+        move($TMPFILE, $OUTFILE) || die "Couldn't move $TMPFILE to $OUTFILE: $!\n";
     } else { # no changes, cleanup
         unlink $TMPFILE;
     }
