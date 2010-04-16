@@ -214,7 +214,7 @@ wxIcon CSafeCombinationSetup::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CSafeCombinationSetup::OnOkClick( wxCommandEvent& event )
+void CSafeCombinationSetup::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
@@ -265,11 +265,10 @@ void CSafeCombinationSetup::OnOkClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationSetup::OnCancelClick( wxCommandEvent& event )
+void CSafeCombinationSetup::OnCancelClick( wxCommandEvent& evt )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationSetup.
   // Before editing this code, remove the block markers.
-  event.Skip();
+  evt.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationSetup. 
 }
-

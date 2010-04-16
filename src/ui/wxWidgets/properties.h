@@ -85,7 +85,7 @@ public:
 ////@begin CProperties event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick( wxCommandEvent& event );
+  void OnOkClick( wxCommandEvent& evt);
 
 ////@end CProperties event handler declarations
 

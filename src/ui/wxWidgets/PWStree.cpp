@@ -408,9 +408,9 @@ void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
  * wxEVT_COMMAND_TREE_ITEM_ACTIVATED event handler for ID_TREECTRL
  */
 
-void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& event )
+void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
 {
-  CItemData *item = GetItem(event.GetItem());
+  CItemData *item = GetItem(evt.GetItem());
   if (item != NULL)
     dynamic_cast<PasswordSafeFrame *>(GetParent())->
       DispatchDblClickAction(*item);
@@ -421,9 +421,9 @@ void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& event )
  * wxEVT_TREE_ITEM_MENU event handler for ID_TREECTRL
  */
 
-void PWSTreeCtrl::OnContextMenu( wxTreeEvent& event )
+void PWSTreeCtrl::OnContextMenu( wxTreeEvent& evt )
 {
-  dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(event.GetItem()));
+  dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(evt.GetItem()));
 }
 
 void PWSTreeCtrl::SelectItem(const CUUIDGen & uuid)
@@ -435,14 +435,14 @@ void PWSTreeCtrl::SelectItem(const CUUIDGen & uuid)
       wxTreeCtrl::SelectItem(id);
 }
 
-void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& event )
+void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& evt )
 { // Added manually
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesAsTooltipsInViews)) {
-    wxTreeItemId id = event.GetItem();
+    wxTreeItemId id = evt.GetItem();
     const CItemData *ci = GetItem(id);
     if (ci != NULL) {
       const wxString note = ci->GetNotes().c_str();
-      event.SetToolTip(note);
+      evt.SetToolTip(note);
     }
   }
 }
@@ -452,12 +452,11 @@ void PWSTreeCtrl::OnGetToolTip( wxTreeEvent& event )
  * wxEVT_CHAR event handler for ID_TREECTRL
  */
 
-void PWSTreeCtrl::OnChar( wxKeyEvent& event )
+void PWSTreeCtrl::OnChar( wxKeyEvent& evt )
 {
-  if (event.GetKeyCode() == WXK_ESCAPE &&
+  if (evt.GetKeyCode() == WXK_ESCAPE &&
       PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
     GetParent()->Close();
   }
-  event.Skip();
+  evt.Skip();
 }
-

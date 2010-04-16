@@ -501,7 +501,7 @@ bool PasswordSafeFrame::Show(bool show)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
  */
 
-void PasswordSafeFrame::OnExitClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnExitClick( wxCommandEvent& /* evt */ )
 {
   m_exitFromMenu = true;
   Close();
@@ -551,7 +551,7 @@ void PasswordSafeFrame::ShowTree(bool show)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
  */
 
-void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnListViewClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
   ShowTree(false);
@@ -564,7 +564,7 @@ void PasswordSafeFrame::OnListViewClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_TREE_VIEW
  */
 
-void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
   ShowGrid(false);
@@ -646,7 +646,7 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_OPEN
  */
 
-void PasswordSafeFrame::OnOpenClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
 {
   stringT dir = PWSdirs::GetSafeDir();
   //Open-type dialog box
@@ -675,7 +675,7 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_CLOSE
  */
 
-void PasswordSafeFrame::OnCloseClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -825,7 +825,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
  */
 
-void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 {
   CProperties props(this, m_core);
   props.ShowModal();
@@ -836,7 +836,7 @@ void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGECOMBO
  */
 
-void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& /* evt */ )
 {
   CSafeCombinationChange* window = new CSafeCombinationChange(this, m_core);
   int returnValue = window->ShowModal();
@@ -851,7 +851,7 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
  */
 
-void PasswordSafeFrame::OnSaveClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
 {
   Save();
 }
@@ -861,13 +861,13 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& event )
  * wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
  */
 
-void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
+void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 {
   if (m_exitFromMenu || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-    if (event.CanVeto()) {
+    if (evt.CanVeto()) {
       int rc = SaveIfChanged();
       if (rc == PWScore::USER_CANCEL) {
-        event.Veto();
+        evt.Veto();
         m_exitFromMenu = false;
         return;
       }
@@ -890,7 +890,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
  */
 
-void PasswordSafeFrame::OnAboutClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
 {
   CAbout* window = new CAbout(this);
   window->ShowModal();
@@ -902,7 +902,7 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
  */
 
-void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& /* evt */ )
 {
   COptions *window = new COptions(this);
   window->ShowModal();
@@ -1398,7 +1398,7 @@ void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
  */
 
-void PasswordSafeFrame::OnNewClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnNewClick( wxCommandEvent& /* evt */ )
 {
   New();
 }

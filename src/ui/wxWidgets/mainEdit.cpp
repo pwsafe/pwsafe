@@ -46,7 +46,7 @@
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
  */
 
-void PasswordSafeFrame::OnEditClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnEditClick( wxCommandEvent& /* evt */ )
 {
   CItemData *item = GetSelectedEntry();
   if (item != NULL)
@@ -73,7 +73,7 @@ void PasswordSafeFrame::DoEdit(CItemData &item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ADD
  */
 
-void PasswordSafeFrame::OnAddClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
 {
   AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD);
   if (addDbox.ShowModal() == wxID_OK) {
@@ -86,7 +86,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_DELETE
  */
 
-void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& /* evt */ )
 {
   bool dontaskquestion = !PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);
@@ -180,7 +180,7 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_FIND
  */
 
-void PasswordSafeFrame::OnFindClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnFindClick( wxCommandEvent& /* evt */ )
 {
   m_search->Activate();
 }
@@ -189,7 +189,7 @@ void PasswordSafeFrame::OnFindClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EDITMENU_FIND_NEXT
  */
 
-void PasswordSafeFrame::OnFindNext( wxCommandEvent& event )
+void PasswordSafeFrame::OnFindNext( wxCommandEvent& /* evt */ )
 {
   m_search->FindNext();
 }
@@ -198,7 +198,7 @@ void PasswordSafeFrame::OnFindNext( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EDITMENU_FIND_PREVIOUS
  */
 
-void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& event )
+void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& /* evt */ )
 {
   m_search->FindPrevious();
 }
@@ -208,7 +208,7 @@ void PasswordSafeFrame::OnFindPrevious( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CLEARCLIPBOARD
  */
 
-void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
 {
   PWSclip::ClearData();
 }
@@ -218,7 +218,7 @@ void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& event )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
  */
 
-void PasswordSafeFrame::OnCopypasswordClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnCopypasswordClick( wxCommandEvent& /* evt */ )
 {
   CItemData *item = GetSelectedEntry();
   if (item != NULL)
@@ -237,7 +237,7 @@ void PasswordSafeFrame::DoCopyPassword(CItemData &item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
  */
 
-void PasswordSafeFrame::OnCopyusernameClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnCopyusernameClick( wxCommandEvent& /* evt */ )
 {
   CItemData *item = GetSelectedEntry();
   if (item != NULL)
@@ -255,7 +255,7 @@ void PasswordSafeFrame::DoCopyUsername(CItemData &item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
  */
 
-void PasswordSafeFrame::OnCopynotesfldClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnCopynotesfldClick( wxCommandEvent& /* evt */ )
 {
   CItemData *item = GetSelectedEntry();
   if (item != NULL)
@@ -273,7 +273,7 @@ void PasswordSafeFrame::DoCopyNotes(CItemData &item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
  */
 
-void PasswordSafeFrame::OnCopyurlClick( wxCommandEvent& event )
+void PasswordSafeFrame::OnCopyurlClick( wxCommandEvent& /* evt */ )
 {
   CItemData *item = GetSelectedEntry();
   if (item != NULL)
@@ -469,11 +469,10 @@ void PasswordSafeFrame::DoBrowse(CItemData &item)
     ::wxLaunchDefaultBrowser(url, wxBROWSER_NEW_WINDOW);
 }
 
-void PasswordSafeFrame::DoRun(CItemData &item)
+void PasswordSafeFrame::DoRun(CItemData & /*item */)
 {
 }
 
-void PasswordSafeFrame::DoEmail(CItemData &item)
+void PasswordSafeFrame::DoEmail(CItemData & /* item */ )
 {
 }
-

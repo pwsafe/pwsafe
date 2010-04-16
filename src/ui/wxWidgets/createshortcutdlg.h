@@ -82,7 +82,7 @@ public:
 ////@begin CreateShortcutDlg event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick( wxCommandEvent& event );
+  void OnOkClick( wxCommandEvent& evt);
 
 ////@end CreateShortcutDlg event handler declarations
 

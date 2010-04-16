@@ -229,7 +229,7 @@ void AdvancedSearchOptionsDlg::OnOk( wxCommandEvent& evt )
   evt.Skip(true);
 }
 
-void AdvancedSearchOptionsDlg::OnSelectSome( wxCommandEvent& evt )
+void AdvancedSearchOptionsDlg::OnSelectSome( wxCommandEvent& /* evt */ )
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -248,7 +248,7 @@ void AdvancedSearchOptionsDlg::OnSelectSome( wxCommandEvent& evt )
   }
 }
 
-void AdvancedSearchOptionsDlg::OnSelectAll( wxCommandEvent& evt )
+void AdvancedSearchOptionsDlg::OnSelectAll( wxCommandEvent& /* evt */ )
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -263,7 +263,7 @@ void AdvancedSearchOptionsDlg::OnSelectAll( wxCommandEvent& evt )
   }
 }
 
-void AdvancedSearchOptionsDlg::OnRemoveSome( wxCommandEvent& evt )
+void AdvancedSearchOptionsDlg::OnRemoveSome( wxCommandEvent& /* evt */ )
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -282,7 +282,7 @@ void AdvancedSearchOptionsDlg::OnRemoveSome( wxCommandEvent& evt )
   }
 }
 
-void AdvancedSearchOptionsDlg::OnRemoveAll( wxCommandEvent& evt )
+void AdvancedSearchOptionsDlg::OnRemoveAll( wxCommandEvent& /* evt */ )
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -425,7 +425,7 @@ void PasswordSafeSearch::FindPrevious()
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_CLOSE
  */
 
-void PasswordSafeSearch::OnSearchClose(wxCommandEvent& evt)
+void PasswordSafeSearch::OnSearchClose(wxCommandEvent& /* evt */)
 {
   m_toolbar->Show(false);
   m_parentFrame->GetSizer()->Layout();
@@ -447,7 +447,7 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& evt)
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_ADVANCED_OPTIONS
  */
-void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& evt)
+void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& /* evt */)
 {
   m_searchContext.Reset();
   AdvancedSearchOptionsDlg dlg(m_parentFrame, m_searchContext);
@@ -457,7 +457,7 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& evt)
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_IGNORE_CASE
  */
-void PasswordSafeSearch::OnToggleCaseSensitivity(wxCommandEvent& evt)
+void PasswordSafeSearch::OnToggleCaseSensitivity(wxCommandEvent& /* evt */)
 {
     m_searchContext.SetCaseSensitivity(!m_searchContext->m_fCaseSensitive);
 }

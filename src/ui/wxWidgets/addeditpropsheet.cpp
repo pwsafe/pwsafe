@@ -218,7 +218,8 @@ const wxChar *DCAs[] = {
 void AddEditPropSheet::CreateControls()
 {    
 ////@begin AddEditPropSheet content construction
-  AddEditPropSheet* itemPropertySheetDialog1 = this;
+  // Next variable currently not referenced
+  // AddEditPropSheet* itemPropertySheetDialog = this;
 
   m_BasicPanel = new wxPanel( GetBookCtrl(), ID_PANEL_BASIC, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -830,7 +831,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
  */
 
-void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& event )
+void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN in AddEditPropSheet.
   // Before editing this code, remove the block markers.
@@ -843,7 +844,7 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
  */
 
-void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& event )
+void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
 {
   PWPolicy pwp;
   m_item.GetPWPolicy(pwp);
@@ -863,7 +864,7 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
  */
 
-void AddEditPropSheet::OnShowHideClick( wxCommandEvent& event )
+void AddEditPropSheet::OnShowHideClick( wxCommandEvent& /* evt */ )
 {
   if (m_isPWHidden) {
     ShowPassword();
@@ -913,7 +914,7 @@ void AddEditPropSheet::HidePassword()
   m_Password2Ctrl->Enable(true);
 }
 
-void AddEditPropSheet::OnOk(wxCommandEvent& event)
+void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
 {
   if (Validate() && TransferDataFromWindow()) {
     time_t t;
@@ -1135,7 +1136,7 @@ void AddEditPropSheet::OnKeepHistoryClick(wxCommandEvent &)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX
  */
 
-void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& event )
+void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     m_DCAcomboBox->Enable(!m_useDefaultDCA);
@@ -1157,7 +1158,7 @@ void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON5
  */
 
-void AddEditPropSheet::OnSetXTime( wxCommandEvent& event )
+void AddEditPropSheet::OnSetXTime( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     wxDateTime xdt = m_ExpDate->GetValue();
@@ -1198,7 +1199,7 @@ void AddEditPropSheet::OnSetXTime( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6
  */
 
-void AddEditPropSheet::OnClearXTime( wxCommandEvent& event )
+void AddEditPropSheet::OnClearXTime( wxCommandEvent& /* evt */ )
 {
   m_XTime = _("Never");
   m_CurXTime = _("");
@@ -1213,9 +1214,9 @@ void AddEditPropSheet::OnClearXTime( wxCommandEvent& event )
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
  */
 
-void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& event )
+void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& evt )
 {
-  bool On = (event.GetEventObject() == m_OnRB);
+  bool On = (evt.GetEventObject() == m_OnRB);
   m_ExpDate->Enable(On);
   m_ExpTimeH->Enable(On);
   m_ExpTimeM->Enable(On);
@@ -1229,9 +1230,9 @@ void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& event )
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
  */
 
-void AddEditPropSheet::OnPWPRBSelected( wxCommandEvent& event )
+void AddEditPropSheet::OnPWPRBSelected( wxCommandEvent& evt )
 {
-  UpdatePWPolicyControls(event.GetEventObject() == m_defPWPRB);
+  UpdatePWPolicyControls(evt.GetEventObject() == m_defPWPRB);
 }
 
 void AddEditPropSheet::ShowPWPSpinners(bool show)
@@ -1247,7 +1248,7 @@ void AddEditPropSheet::ShowPWPSpinners(bool show)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
  */
 
-void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& event )
+void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& /* evt */ )
 {
  if (Validate() && TransferDataFromWindow()) {
    bool wantsPronouceable = m_pwpPronounceCtrl->GetValue();
@@ -1260,7 +1261,7 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& event )
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
 
-void AddEditPropSheet::OnEZreadCBClick( wxCommandEvent& event )
+void AddEditPropSheet::OnEZreadCBClick( wxCommandEvent& /* evt */ )
 {
  if (Validate() && TransferDataFromWindow()) {
    bool wantsEZread = m_pwpEasyCtrl->GetValue();
@@ -1277,7 +1278,7 @@ void AddEditPropSheet::EnableNonHexCBs(bool enable)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
  */
 
-void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& event )
+void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& /* evt */ )
 {
  if (Validate() && TransferDataFromWindow()) {
    bool useHex = m_pwpHexCtrl->GetValue();
@@ -1290,7 +1291,7 @@ void AddEditPropSheet::OnUseHexCBClick( wxCommandEvent& event )
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
  */
 
-void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& event )
+void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
 {
   if (m_type != ADD && m_isNotesHidden) {
     m_isNotesHidden = false;

@@ -269,11 +269,11 @@ wxIcon AdvancedSearchOptionsDlg::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON10
  */
 
-void AdvancedSearchOptionsDlg::OnSelOneButtonClick( wxCommandEvent& event )
+void AdvancedSearchOptionsDlg::OnSelOneButtonClick( wxCommandEvent& evt )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON10 in AdvancedSearchOptionsDlg.
   // Before editing this code, remove the block markers.
-  event.Skip();
+  evt.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON10 in AdvancedSearchOptionsDlg. 
 }
 
@@ -282,11 +282,11 @@ void AdvancedSearchOptionsDlg::OnSelOneButtonClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON11
  */
 
-void AdvancedSearchOptionsDlg::OnSelAllButtonClick( wxCommandEvent& event )
+void AdvancedSearchOptionsDlg::OnSelAllButtonClick( wxCommandEvent& evt )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON11 in AdvancedSearchOptionsDlg.
   // Before editing this code, remove the block markers.
-  event.Skip();
+  evt.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON11 in AdvancedSearchOptionsDlg. 
 }
 
@@ -295,11 +295,11 @@ void AdvancedSearchOptionsDlg::OnSelAllButtonClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON12
  */
 
-void AdvancedSearchOptionsDlg::OnDeSelOneButtonClick( wxCommandEvent& event )
+void AdvancedSearchOptionsDlg::OnDeSelOneButtonClick( wxCommandEvent& evt )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON12 in AdvancedSearchOptionsDlg.
   // Before editing this code, remove the block markers.
-  event.Skip();
+  evt.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON12 in AdvancedSearchOptionsDlg. 
 }
 
@@ -308,11 +308,11 @@ void AdvancedSearchOptionsDlg::OnDeSelOneButtonClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON13
  */
 
-void AdvancedSearchOptionsDlg::OnDeSelAllButtonClick( wxCommandEvent& event )
+void AdvancedSearchOptionsDlg::OnDeSelAllButtonClick( wxCommandEvent& evt )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON13 in AdvancedSearchOptionsDlg.
   // Before editing this code, remove the block markers.
-  event.Skip();
+  evt.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON13 in AdvancedSearchOptionsDlg. 
 }
 

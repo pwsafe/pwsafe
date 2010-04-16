@@ -222,7 +222,7 @@ wxIcon CAbout::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
  */
 
-void CAbout::OnCloseClick( wxCommandEvent& event )
+void CAbout::OnCloseClick( wxCommandEvent& /* evt */ )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in CAbout.
   // Before editing this code, remove the block markers.
@@ -254,7 +254,7 @@ void CAbout::OnCloseClick( wxCommandEvent& event )
  * wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCTRL1
  */
 
-void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& event )
+void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
 {
   // Get the latest.xml file from our site, compare to version,
   // and notify the user

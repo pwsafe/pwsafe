@@ -212,7 +212,7 @@ wxIcon CSafeCombinationChange::GetIconResource( const wxString& name )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CSafeCombinationChange::OnOkClick( wxCommandEvent& event )
+void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
     StringX errmess;
@@ -265,7 +265,7 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationChange::OnCancelClick( wxCommandEvent& event )
+void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange.
   // Before editing this code, remove the block markers.

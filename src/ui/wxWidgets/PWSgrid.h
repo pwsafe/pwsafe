@@ -90,15 +90,15 @@ public:
 ////@begin PWSGrid event handler declarations
 
   /// wxEVT_GRID_CELL_RIGHT_CLICK event handler for ID_LISTBOX
-  void OnCellRightClick( wxGridEvent& event );
+  void OnCellRightClick( wxGridEvent& evt);
 
   void OnContextMenu(wxContextMenuEvent& evt);
 
   /// wxEVT_GRID_CELL_LEFT_DCLICK event handler for ID_LISTBOX
-  void OnLeftDClick( wxGridEvent& event );
+  void OnLeftDClick( wxGridEvent& evt);
 
   /// wxEVT_CHAR event handler for ID_LISTBOX
-  void OnChar( wxKeyEvent& event );
+  void OnChar( wxKeyEvent& evt);
 
 ////@end PWSGrid event handler declarations
 

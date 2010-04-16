@@ -84,16 +84,16 @@ public:
 ////@begin AdvancedSearchOptionsDlg event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON10
-  void OnSelOneButtonClick( wxCommandEvent& event );
+  void OnSelOneButtonClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON11
-  void OnSelAllButtonClick( wxCommandEvent& event );
+  void OnSelAllButtonClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON12
-  void OnDeSelOneButtonClick( wxCommandEvent& event );
+  void OnDeSelOneButtonClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON13
-  void OnDeSelAllButtonClick( wxCommandEvent& event );
+  void OnDeSelAllButtonClick( wxCommandEvent& evt);
 
 ////@end AdvancedSearchOptionsDlg event handler declarations
 
