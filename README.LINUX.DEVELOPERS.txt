@@ -12,7 +12,7 @@ make
 libuuid1
 libwxgtk2.8-dev
 libxt-dev
-libxst-dev
+libxtst-dev
 subversion
 
 With these installed, running 'make' at the top of the source tree
