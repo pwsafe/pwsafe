@@ -44,6 +44,7 @@
 
 #include "os/file.h"
 #include "os/env.h"
+#include "os/dir.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -904,9 +905,22 @@ void DboxMain::InitPasswordSafe()
 #else
   // if there's a filter file named "autoload_filters.xml", 
   // do what its name implies...
-  CString cs_temp = CString(PWSdirs::GetConfigDir().c_str()) +
-                                L"autoload_filters.xml";
-  if (pws_os::FileExists(cs_temp.GetString())) {
+  // Since the user may have overridden the configuration directory,
+  // use the one that PWSprefs is actually using.
+  PWSprefs::ConfigOption configoption;
+  std::wstring wsCnfgFile = PWSprefs::GetConfigFile(configoption);
+  std::wstring wsAutoLoad;
+  if (configoption == PWSprefs::CF_NONE ||
+      configoption == PWSprefs::CF_REGISTRY) {
+    // Need to use Executable directory instead
+    wsAutoLoad = PWSdirs::GetExeDir() + L"autoload_filters.xml";
+  } else {
+    std::wstring wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt;
+    pws_os::splitpath(wsCnfgFile, wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt);
+    wsAutoLoad = pws_os::makepath(wsCnfgDrive, wsCnfgDir, L"autoload_filters", L".xml");
+  }
+
+  if (pws_os::FileExists(wsAutoLoad)) {
     std::wstring strErrors;
     std::wstring XSDFilename = PWSdirs::GetXMLDir() + L"pwsafe_filter.xsd";
 
@@ -914,7 +928,7 @@ void DboxMain::InitPasswordSafe()
     // Expat is a non-validating parser - no use for Schema!
     if (!pws_os::FileExists(XSDFilename)) {
       CGeneralMsgBox gmb;
-      CString cs_title, cs_msg;
+      CString cs_title, cs_msg, cs_temp;
       cs_temp.Format(IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
       cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, cs_temp);
       cs_title.LoadString(IDSC_CANTVALIDATEXML);
@@ -927,8 +941,8 @@ void DboxMain::InitPasswordSafe()
     int rc;
     CWaitCursor waitCursor;  // This may take a while!
     rc = m_MapFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, L"",
-                                              std::wstring(cs_temp),
-                                              XSDFilename.c_str(), strErrors, &q);
+                                          wsAutoLoad,
+                                          XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
     if (rc != PWScore::SUCCESS) {
       CGeneralMsgBox gmb;

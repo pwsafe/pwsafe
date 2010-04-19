@@ -965,7 +965,7 @@ bool ThisMfcApp::PerformConfigMigration()
 
   CGeneralMsgBox gmb;  // Note: CGeneralMsgBox is not re-useable.
   CXMLprefs *pXML_Config(NULL);
-  PWSprefs::ConfigOption configoption;
+  PWSprefs::ConfigOption configoption;  // Note value meaningless at this point!
   std::wstring wsCnfgFile = PWSprefs::GetConfigFile(configoption);
   std::wstring wsUserCfgDir = pws_os::getuserprefsdir();
   std::wstring wsDefaultCfgFile = wsUserCfgDir + L"pwsafe.cfg";
