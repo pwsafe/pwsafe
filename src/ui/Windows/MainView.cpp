@@ -1003,6 +1003,13 @@ void DboxMain::RestoreWindows()
   }
 
   RefreshViews();
+
+  // Restore group display state
+  if (!m_vGroupDisplayState.empty()) {
+    SetGroupDisplayState(m_vGroupDisplayState);
+    m_vGroupDisplayState.clear();
+  }
+
   BringWindowToTop();
   CPWDialog::GetDialogTracker()->Apply(Shower);
 }
@@ -1816,6 +1823,8 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     if (!LockDataBase())
       return;
 
+    // Save group display and any database preference chnages
+    //m_vGroupDisplayState = GetGroupDisplayState();
     PWSprefs *prefs = PWSprefs::GetInstance();
     m_savedDBprefs = prefs->Store();
     bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
