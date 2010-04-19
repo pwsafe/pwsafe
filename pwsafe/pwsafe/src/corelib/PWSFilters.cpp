@@ -122,13 +122,17 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
     }
     case PWSMatch::MT_ENTRYTYPE:
     {
-      // First convert value (as a power of 2) into index for string values
-      int index = -1;
-      int ietype = (int)st_fldata.etype;
-      while (ietype >>= 1) {
-        index++;
+      // Get index for string values
+      int index(0);
+      switch (st_fldata.etype) {
+        case CItemData::ET_NORMAL:       index = 0; break;
+        case CItemData::ET_ALIASBASE:    index = 1; break;
+        case CItemData::ET_ALIAS:        index = 2; break;
+        case CItemData::ET_SHORTCUTBASE: index = 3; break;
+        case CItemData::ET_SHORTCUT:     index = 4; break;
+        default:
+          ASSERT(0);
       }
-      index++;
       oss << sztab5 << "<type>" << szentry[index]
                                               << "</type>" << szendl;
       break;
@@ -139,13 +143,16 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
       break;
     case PWSMatch::MT_ENTRYSTATUS:
     {
-      // First convert value (as a power of 2) into index for string values
-      int index = -1;
-      int iestatus = (int)st_fldata.estatus;
-      while (iestatus >>= 1) {
-        index++;
+      // Get index for string values
+      int index(0);
+      switch (st_fldata.estatus) {
+        case CItemData::ES_CLEAN:    index = 0; break;
+        case CItemData::ES_ADDED:    index = 1; break;
+        case CItemData::ES_MODIFIED: index = 2; break;
+        case CItemData::ES_DELETED:  index = 3; break;
+        default:
+          ASSERT(0);
       }
-      index++;
       oss << sztab5 << "<status>" << szstatus[index]
                                               << "</status>" << szendl;
       break;
