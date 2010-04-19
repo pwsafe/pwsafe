@@ -83,8 +83,8 @@ public:
                   ET_LAST};
 
   // entry status (note: powers of 2)
-  // An status can (currently) have values:
-  //  0 (normal), 1 (added), 2 (modified) or 4 (deleted).
+  // A status can (currently) have values:
+  //   0 (normal), 1 (added), 2 (modified) or 4 (deleted).
   enum EntryStatus {ES_INVALID      = -1,
                     ES_CLEAN        =  0,
                     ES_ADDED        =  1,  // Added    but not yet saved to disk copy
