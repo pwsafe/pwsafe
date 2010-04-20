@@ -1133,7 +1133,7 @@ bool ThisMfcApp::PerformConfigMigration()
   }
 
   // They didn't previously decline, so ask the user if they want to do it now!?
-  if (gmb.AfxMessageBox(IDS_CONFIRM_MIG2APPDATA, MB_YESNO) == IDNO) {
+  if (gmb.AfxMessageBox(IDS_CONFIRM_MIG2APPDATA, MB_YESNO|MB_ICONQUESTION) == IDNO) {
     // But they have now!
     wsCnfgFile = wsExecDirCfgFile;
     // Must set config file before first call to "PWSprefs::GetInstance()"

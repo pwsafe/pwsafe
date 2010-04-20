@@ -57,7 +57,8 @@ stringT PWSdirs::GetConfigDir()
     retval = pws_os::getenv("U3_APP_DATA_PATH", true);
     if (retval.empty()) {
       // NOT U3
-      retval = pws_os::getuserprefsdir(); // "" for Windows, ~/.pwsafe for Linux
+      retval = pws_os::getuserprefsdir(); // "LOCAL_APPDATA\PasswordSafe" for Windows,
+                                          // ~/.pwsafe for Linux
       if (retval.empty())
         retval = GetOurExecDir();
     }

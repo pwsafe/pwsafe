@@ -86,7 +86,7 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
   return retval;
 }
 
-bool GetLocalAppData(stringT &sLocalAppDataPath)
+static bool GetLocalAppDataDir(stringT &sLocalAppDataPath)
 {
   /*
    * Versions supported by current PasswordSafe
@@ -120,7 +120,7 @@ bool GetLocalAppData(stringT &sLocalAppDataPath)
    * Use dwMajorVersion & dwMinorVersion from OSVERSIONINFOEX Structure via GetVersionEx
    * Note: Windows NT 4.0 SP6 and later is needed for the 'EX' version of OSVERSIONINFO for
    * the extra fields (wSuiteMask & wProductType), to be valid
-  */
+   */
 
   // String buffer for holding the path.
   TCHAR strPath[MAX_PATH];
@@ -133,38 +133,40 @@ bool GetLocalAppData(stringT &sLocalAppDataPath)
   if (osvi.dwMajorVersion >= 5) {
     // Get the special folder path - do not create it if it does not exist
     brc = SHGetSpecialFolderPath(NULL, strPath, 
-                      CSIDL_LOCAL_APPDATA, FALSE);
+                                 CSIDL_LOCAL_APPDATA, FALSE);
   }
   if (brc == TRUE) {
     // Call to 'SHGetSpecialFolderPath' worked
     sLocalAppDataPath = strPath;
   } else {
-    // Unsupported release or 'SHGetSpecialFolderPath' falied
-    sLocalAppDataPath = _T("Unknown");
+    // Unsupported release or 'SHGetSpecialFolderPath' failed
+    sLocalAppDataPath = _T("");
   }
   return (brc == TRUE);
 }
 
 stringT pws_os::getuserprefsdir()
 {
-  // Return an empty string to have Windows punt to exec dir,
-  // which is the historical behaviour
+  /**
+   * Returns LOCAL_APPDATA\PasswordSafe (or ...\PasswordSafeD)
+   * If can't figure out LOCAL_APPDATA, then return an empty string
+   * to have Windows punt to exec dir, which is the historical behaviour
+   */
 #ifndef DEBUG
   const stringT sPWSDir(_T("\\PasswordSafe\\"));
 #else
   const stringT sPWSDir(_T("\\PasswordSafeD\\"));
 #endif
 
-  stringT sExecDir = getexecdir();
   stringT sDrive, sDir, sName, sExt;
 
-  pws_os::splitpath(sExecDir, sDrive, sDir, sName, sExt);
+  pws_os::splitpath(getexecdir(), sDrive, sDir, sName, sExt);
   sDrive += _T("\\"); // Trailing slash required.
 
-  const UINT uiDT = GetDriveType(sDrive.c_str());
+  const UINT uiDT = ::GetDriveType(sDrive.c_str());
   if (uiDT == DRIVE_FIXED || uiDT == DRIVE_REMOTE) {
     stringT sLocalAppDataPath;
-    if (GetLocalAppData(sLocalAppDataPath))
+    if (GetLocalAppDataDir(sLocalAppDataPath))
       return sLocalAppDataPath + sPWSDir;
   }
   return stringT();
