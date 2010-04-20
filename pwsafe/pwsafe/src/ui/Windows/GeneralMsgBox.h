@@ -25,7 +25,7 @@
 * "MessageBox With Timeout" by Alexandr Shcherbakov in 1999 on CodeGuru
 * See: http://www.codeguru.com/cpp/misc/misc/messageboxhandling/article.php/c249/
 *
-* Note: There is an undocumented API in User32.dll thatt does this too. In fact,
+* Note: There is an undocumented API in User32.dll that does this too. In fact,
 * the standard MS MessageBox calls this version with a timeout of 0xFFFFFFFF
 * (around 47 days 17 hours).  However, as it is undocumented and requires Windows XP
 * or later - have used the information in the above article to implement here.
