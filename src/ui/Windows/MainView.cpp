@@ -1823,8 +1823,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     if (!LockDataBase())
       return;
 
-    // Save group display and any database preference chnages
-    //m_vGroupDisplayState = GetGroupDisplayState();
+    // Save any database preference chnages
     PWSprefs *prefs = PWSprefs::GetInstance();
     m_savedDBprefs = prefs->Store();
     bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
