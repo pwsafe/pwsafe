@@ -1217,8 +1217,7 @@ void COptions::OnPwPolUseClick( wxCommandEvent& evt )
 
   if (m_pwpEasyCtrl->GetValue() && m_pwpPronounceCtrl->GetValue()) {
     // we don't support both - notify user, reset caller:
-    wxMessageDialog msg(this, _("Sorry, 'pronounceable' and 'easy-to-read'"
-                                " are not supported together"),
+    wxMessageDialog msg(this, _("Sorry, 'pronounceable' and 'easy-to-read' are not supported together"),
                         _("Password Safe"), wxOK | wxICON_EXCLAMATION);
     msg.ShowModal();
     if (evt.GetEventObject() == m_pwpPronounceCtrl)

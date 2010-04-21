@@ -263,9 +263,7 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
   PasswordSafeFrame *pFrm = static_cast<PasswordSafeFrame *>(GetParent());
 
   if (pFrm->GetNumEntries() != 0) {
-    const wxString cs_txt(_("For security, the database must be closed before "
-                            "connecting to the Internet.\r\nPress OK to close "
-                            "database and continue (Changes will be saved)"));
+    const wxString cs_txt(_("For security, the database must be closed before connecting to the Internet.\r\nPress OK to close database and continue (Changes will be saved)"));
     const wxString cs_title(_("Confirm Close Dialog"));
     wxMessageDialog dlg(this, cs_txt, cs_title,
                         (wxICON_QUESTION | wxOK | wxCANCEL));

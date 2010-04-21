@@ -9,8 +9,10 @@
 /**
  * \file Windows-specific implementation of rand.h
  */
+#include <time.h>
 #include <stdlib.h>
 #include <process.h>
+
 #include "../rand.h"
 
 // See the MSDN documentation for RtlGenRandom. We will try to load it
@@ -63,7 +65,20 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
     slen = sizeof(t) + sizeof(pid) + sizeof(ticks);
   } else {
     ASSERT(slen == sizeof(t) + sizeof(pid) + sizeof(ticks));
-    t = time(NULL);
+
+    SYSTEMTIME st;
+    struct tm tms;
+    GetSystemTime(&st);
+
+    memset(&tms, 0, sizeof(tm));
+    tms.tm_year = st.wYear - 1900;
+    tms.tm_mon = st.wMonth - 1;
+    tms.tm_mday = st.wDay;
+    tms.tm_hour = st.wHour;
+    tms.tm_min = st.wMinute;
+    tms.tm_sec = st.wSecond;
+    t = mktime(&tms);
+
     pid = _getpid();
     ticks = GetTickCount();
     unsigned char *pc = static_cast<unsigned char *>(p);
