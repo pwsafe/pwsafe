@@ -69,6 +69,9 @@ static void DisplayFileWriteError(int rc, const StringX &cs_newfile)
   case PWScore::FAILURE:
     cs_temp.Format(IDS_FILEWRITEFAILURE);
     break;
+  case PWScore::WRONG_PASSWORD:
+    cs_temp.Format(IDS_MISSINGPASSKEY);
+    break;
   default:
     cs_temp.Format(IDS_UNKNOWNERROR, cs_newfile.c_str());
     break;
@@ -938,6 +941,7 @@ int DboxMain::Save(const SaveType savetype)
   CString cs_msg, cs_temp;
   CGeneralMsgBox gmb;
   std::wstring NewName;
+  stringT bu_fname; // used to undo backup if save failed
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -956,7 +960,7 @@ int DboxMain::Save(const SaveType savetype)
         std::wstring userBackupPrefix = prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
         std::wstring userBackupDir = prefs->GetPref(PWSprefs::BackupDir).c_str();
         if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
-                                  userBackupPrefix, userBackupDir)) {
+                                  userBackupPrefix, userBackupDir, bu_fname)) {
           switch (savetype) {
             case ST_NORMALEXIT:
             {
@@ -981,8 +985,8 @@ int DboxMain::Save(const SaveType savetype)
           }
           gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
           return SaveAs();
-        }
-      }
+        } // BackupCurFile failed
+      } // BackupBeforeEverySave
       break;
     case PWSfile::NEWFILE:
       // file version mis-match
@@ -1009,20 +1013,24 @@ int DboxMain::Save(const SaveType savetype)
       break;
     default:
       ASSERT(0);
-  }
+  } // switch on file version
 
   UUIDList RUElist;
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
   rc = m_core.WriteCurFile();
-  m_core.ResetStateAfterSave();
 
-  if (rc != PWScore::SUCCESS) {
+  if (rc != PWScore::SUCCESS) { // Save failed!
+    // Restore backup, if we have one
+    if (!bu_fname.empty() && !m_core.GetCurFile().empty())
+      pws_os::RenameFile(bu_fname, m_core.GetCurFile().c_str());
+    // Show user that we have a problem
     DisplayFileWriteError(rc, m_core.GetCurFile());
     return rc;
   }
 
+  m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
   SetChanged(Clear);
   ChangeOkUpdate();

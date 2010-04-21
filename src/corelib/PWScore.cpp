@@ -843,9 +843,9 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
 
 bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
                             const stringT &userBackupPrefix,
-                            const stringT &userBackupDir)
+                            const stringT &userBackupDir, stringT &bu_fname)
 {
-  stringT cs_temp, cs_newfile;
+  stringT cs_temp;
   const stringT path(m_currfile.c_str());
   stringT drv, dir, name, ext;
 
@@ -894,23 +894,23 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      cs_datetime.substr(11, 2) +  // HH
                      cs_datetime.substr(14, 2) +  // MM
                      cs_datetime.substr(17, 2);   // SS
-        cs_newfile = nf.c_str();
+        bu_fname = nf.c_str();
         break;
       }
     case 2: // _nnn suffix
-      ManageIncBackupFiles(cs_temp, maxNumIncBackups, cs_newfile);
+      ManageIncBackupFiles(cs_temp, maxNumIncBackups, bu_fname);
       break;
     case 0: // no suffix
     default:
-      cs_newfile = cs_temp;
+      bu_fname = cs_temp;
       break;
   }
 
-  cs_newfile +=  _T(".ibak");
+  bu_fname +=  _T(".ibak");
 
   // Current file becomes backup
   // Directories along the specified backup path are created as needed
-  return pws_os::RenameFile(m_currfile.c_str(), cs_newfile);
+  return pws_os::RenameFile(m_currfile.c_str(), bu_fname);
 }
 
 void PWScore::ChangePasskey(const StringX &newPasskey)
