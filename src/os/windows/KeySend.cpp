@@ -6,7 +6,10 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+#ifndef __WX__
 #include <afxwin.h>
+#endif
+
 #include "../KeySend.h"
 #include "../env.h"
 #include "../debug.h"
@@ -184,8 +187,20 @@ void CKeySend::ResetKeyboardState()
     MSG msg;
     while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
       // so there is a message process it.
+#ifndef __WX__
       if (!AfxGetThread()->PumpMessage())
         break;
+#else
+      // Not sure this is correct!
+      if (msg.message == WM_QUIT) {
+        // Put it back on the queue and leave now
+        ::PostQuitMessage(0);
+        return;
+      }
+      
+      ::TranslateMessage(&msg);
+      ::DispatchMessage(&msg);
+#endif
     }
 
     ::Sleep(10);
@@ -229,8 +244,20 @@ void CKeySend::SetCapsLock(const bool bState)
   MSG msg;
   while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
     // so there is a message process it.
+#ifndef __WX__
     if (!AfxGetThread()->PumpMessage())
       break;
+#else
+    // Not sure this is correct!
+    if (msg.message == WM_QUIT) {
+      // Put it back on the queue and leave now
+      ::PostQuitMessage(0);
+      return;
+    }
+      
+    ::TranslateMessage(&msg);
+    ::DispatchMessage(&msg);
+#endif
   }
 }
 

@@ -9,7 +9,11 @@
 /**
  * \file Windows-specific implementation of file.h
  */
+
+#ifndef __WX__
 #include <afx.h>
+#endif
+
 #include <Windows.h>
 #include <LMCONS.H> // for UNLEN definition
 #include <shellapi.h>
@@ -103,12 +107,17 @@ bool pws_os::DeleteAFile(const stringT &filename)
 
 void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
 {
-  CFileFind finder;
-  BOOL bWorking = finder.FindFile(filter.c_str());
-  while (bWorking) {
-    bWorking = finder.FindNextFile();
-    res.push_back(LPCTSTR(finder.GetFileName()));
-  }
+  res.clear();
+  _tfinddata_t fileinfo;
+  intptr_t handle = _tfindfirst(filter.c_str(), &fileinfo);
+  if (handle == -1)
+    return;
+
+  do {
+    res.push_back(LPCTSTR(fileinfo.name));
+  } while (_tfindnext(handle, &fileinfo) == 0);
+
+  _findclose(handle);
 }
 
 /*

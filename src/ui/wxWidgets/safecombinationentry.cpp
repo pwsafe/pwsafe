@@ -338,8 +338,7 @@ void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
 {
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
                   wxT(""), wxT(""),
-                  _("Password Safe Databases (*.psafe3; *.dat)"
-                    "|*.psafe3; *.dat| All files (*.*)|*.*"),
+                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat| All files (*.*)|*.*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
   
   if (fd.ShowModal() == wxID_OK) {
@@ -369,8 +368,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   while (1) {
     wxFileDialog fd(this, _("Please choose a name for the new database"),
                     dir.c_str(), v3FileName.c_str(),
-                    _("Password Safe Databases (*.psafe3; *.dat)"
-                      "|*.psafe3; *.dat| All files (*.*)|*.*"),
+                    _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat| All files (*.*)|*.*"),
                   (wxFD_SAVE | wxFD_OVERWRITE_PROMPT| wxFD_CHANGE_DIR));
     int rc = fd.ShowModal();
     if (rc == wxID_OK) {

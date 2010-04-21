@@ -43,7 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(WXDIR)/include;$(WXDIR)/lib/vc_lib/mswud;../../corelib;../../"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;UNICODE; _UNICODE;__WX__;wxUSE_UNICODE;__WXDEBUG__;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -69,10 +69,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wxmsw28ud_xrc.lib wxmsw28ud_qa.lib wxmsw28ud_html.lib wxmsw28ud_adv.lib wxmsw28ud_core.lib wxbase28ud_xml.lib wxbase28ud_net.lib wxbase28ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib comctl32.lib wsock32.lib uuid.lib rpcrt4.lib"
+				AdditionalDependencies="wxmsw28ud_xrc.lib wxmsw28ud_qa.lib wxmsw28ud_html.lib wxmsw28ud_adv.lib wxmsw28ud_core.lib wxbase28ud_xml.lib wxbase28ud_net.lib wxbase28ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib gdiplus.lib comctl32.lib wsock32.lib uuid.lib rpcrt4.lib libcmtd.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(WXDIR)/lib/vc_lib"
+				AdditionalLibraryDirectories="$(WXDIR)/lib;$(WXDIR)/lib/vc_lib"
 				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="uafxcwd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
@@ -133,8 +134,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(WXDIR)/include&quot;;&quot;$(WXDIR)/lib/vc_lib/mswu&quot;;../../corelib;../../"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
+				AdditionalIncludeDirectories="$(WXDIR)/include;$(WXDIR)/lib/vc_lib/mswu;../../corelib;../../"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
@@ -157,10 +158,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wxmsw28u_xrc.lib wxmsw28u_qa.lib wxmsw28u_html.lib wxmsw28u_adv.lib wxmsw28u_core.lib wxbase28u_xml.lib wxbase28u_net.lib wxbase28u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib comctl32.lib wsock32.lib uuid.lib rpcrt4.lib"
+				AdditionalDependencies="wxmsw28u_xrc.lib wxmsw28u_qa.lib wxmsw28u_html.lib wxmsw28u_adv.lib wxmsw28u_core.lib wxbase28u_xml.lib wxbase28u_net.lib wxbase28u.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib gdiplus.lib comctl32.lib wsock32.lib uuid.lib rpcrt4.lib libcmt.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(WXDIR)/lib/vc_lib"
+				AdditionalLibraryDirectories="$(WXDIR)/lib;$(WXDIR)/lib/vc_lib"
 				GenerateManifest="false"
+				IgnoreDefaultLibraryNames="uafxcw.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
@@ -280,7 +282,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\search.h"
+				RelativePath=".\SystemTray.h"
 				>
 			</File>
 			<File
@@ -388,7 +390,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\search.cpp"
+				RelativePath=".\SystemTray.cpp"
 				>
 			</File>
 			<File

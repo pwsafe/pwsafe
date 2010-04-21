@@ -75,10 +75,10 @@ typedef unsigned long DWORD;
 #define VERIFY(p) if (!(p)) TRACE(_T("VERIFY Failed"))
 #define TRACE pws_os::Trace
 #ifndef TRUE
-#define TRUE true
+#define TRUE 1
 #endif
 #ifndef FALSE
-#define FALSE false
+#define FALSE 0
 #endif
 #endif  /* __WX__ */
 

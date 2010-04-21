@@ -10,9 +10,13 @@
  * \file Windows-specific implementation of env.h
  */
 
-#include <sstream>
+#ifndef __WX__
 #include <afx.h>
+#else
 #include <Windows.h> // for GetCurrentProcessId()
+#endif
+
+#include <sstream>
 #include <LMCONS.H> // for UNLEN definition
 #include "../env.h"
 

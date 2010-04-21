@@ -10,8 +10,11 @@
  * \file Windows-specific implementation of dir.h
  */
 
+#ifndef __WX__
 #include <afx.h>
+#else
 #include <Windows.h>
+#endif
 
 #include "../dir.h"
 #include <direct.h>

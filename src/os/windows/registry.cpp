@@ -241,9 +241,9 @@ int pws_os::RegReadValue(const TCHAR *, const TCHAR *, int value)
   return value;
 }
 
-const TCHAR *pws_os::RegReadValue(const TCHAR *, const TCHAR *, const TCHAR *value)
+const stringT pws_os::RegReadValue(const TCHAR *, const TCHAR *, const TCHAR *value)
 {
-  return value;
+  return stringT(value);
 }
 
 void pws_os::RegDeleteSubtree(const TCHAR *)
