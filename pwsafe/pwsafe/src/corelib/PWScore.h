@@ -117,7 +117,7 @@ public:
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
-                     const stringT &userBackupDir);
+                     const stringT &userBackupDir, stringT &bu_fname);
 
   void NewFile(const StringX &passkey);
   int WriteCurFile() {return WriteFile(m_currfile);}
