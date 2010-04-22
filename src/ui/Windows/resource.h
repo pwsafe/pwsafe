@@ -349,7 +349,6 @@
 #define IDC_PASSKEY                     1016
 #define IDC_DELITEM                     1017
 #define IDC_VERIFY                      1018
-#define IDC_CONFIRMDELETE               1019
 #define IDC_NOTESWW                     1020
 #define IDC_CONFIRMCOPY                 1021
 #define IDC_TRYAGAIN                    1022
