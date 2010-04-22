@@ -455,6 +455,9 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNMHDR;
 
   *pLResult = TRUE; // TRUE cancels label editing
+  if (m_pDbx->IsMcoreReadOnly())
+    return;
+
   m_bEditLabelCompleted = false;
 
   /*
