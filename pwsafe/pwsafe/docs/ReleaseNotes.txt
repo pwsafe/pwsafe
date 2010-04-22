@@ -36,6 +36,7 @@ Bugs fixed in 3.21.1
 ====================
 [2990734] Changing either whether password history is kept and deleting
 currently saved history now activates the OK Button.
+[2990609] Clicking to rename entries is now disabled when database is read-only.
 [2984527] Database preferences (including the Idle Timer setting) now retained
 during a locking minimize to the System Tray.
 [2977941] The password expiry date is now updated during edit if the password
