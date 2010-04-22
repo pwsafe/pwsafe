@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-04-13 16:47+0100\n"
+"PO-Revision-Date: 2010-04-22 10:15+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,6 @@ msgid " 'Run Command'"
 msgstr "'Kommando ausführen'"
 
 #. Resource IDs: (363)
-#, fuzzy
 msgid " 'Single Entry' "
 msgstr ""
 
@@ -198,8 +197,8 @@ msgid " or undo all changes"
 msgstr " oder alle Änderungen rückgängig machen"
 
 #. Resource IDs: (354)
-msgid "! &Edit externally"
-msgstr "! &Extern bearbeiten"
+msgid "! Edit externally"
+msgstr "! Extern bearbeiten"
 
 #. Resource IDs: (1194)
 msgid "#entries"
@@ -451,11 +450,11 @@ msgstr "&Abbrechen"
 
 #. Resource IDs: (32202)
 msgid "&About Password Safe..."
-msgstr "Über &Password Safe"
+msgstr "Über &Password Safe..."
 
 #. Resource IDs: (32051)
 msgid "&Add Entry..."
-msgstr "&Eintrag einfügen"
+msgstr "&Eintrag einfügen..."
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -475,7 +474,7 @@ msgstr "&Gehe zu URL"
 
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
-msgstr "&Master-Passwort ändern"
+msgstr "&Master-Passwort ändern..."
 
 #. Resource IDs: (32105)
 msgid "&Classic Toolbar"
@@ -675,7 +674,7 @@ msgstr "&Öffnen"
 
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
-msgstr "&Andere Datenbank öffnen"
+msgstr "&Andere Datenbank öffnen..."
 
 #. Resource IDs: (32002)
 msgid "&Open..."
@@ -699,7 +698,7 @@ msgstr "&Einfügen"
 
 #. Resource IDs: (32010)
 msgid "&Plain Text (tab separated)..."
-msgstr "&Volltext (mit Tab getrennt)"
+msgstr "&Volltext (mit Tab getrennt)..."
 
 #. Resource IDs: (32016)
 msgid "&Plain Text..."
@@ -807,7 +806,7 @@ msgstr "Ben&utzername:"
 
 #. Resource IDs: (32123)
 msgid "&Validate"
-msgstr "Über&prüfen"
+msgstr "Ü&berprüfen"
 
 #. Resource IDs: (32101)
 msgid "&View"
@@ -2020,6 +2019,10 @@ msgstr "Erfolgreich beendet"
 msgid "Con&firm Password:"
 msgstr "Bestätige Passwort:"
 
+#. Resource IDs: (1422)
+msgid "Configuration File:"
+msgstr "Konfigurationsdatei:"
+
 #. Resource IDs: (1221)
 msgid "Configuration Information"
 msgstr "Konfigurationsinformation"
@@ -2547,7 +2550,7 @@ msgstr "Verknüpfung bearbeiten"
 
 #. Resource IDs: (32052)
 msgid "Edit/&View Entry..."
-msgstr "Eintrag bearbeiten/&anzeigen"
+msgstr "Eintrag bearbeiten/&anzeigen..."
 
 #. Resource IDs: (203)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
@@ -3804,6 +3807,10 @@ msgstr "&Zusammenführen..."
 msgid "Merging database: %s\r\n"
 msgstr "Datenbank %s wird zusammengeführt\r\n"
 
+#. Resource IDs: (1421)
+msgid "Migrate PasswordSafe data to user's local APPDATA"
+msgstr "Migriere die PasswordSafe Daten zur lokalen Benutzer-Anwenderdaten"
+
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
 msgstr "Minimieren nach autom. Eingabe"
@@ -4112,7 +4119,7 @@ msgstr ""
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
-msgstr "Bei %d Einträgen wurde ... auf den neuen Standard geändert"
+msgstr "Bei %d Einträgen wurde die 'max. Anzahl vorherige Passwörter' auf den neuen Standardwert geändert"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4245,6 +4252,10 @@ msgstr ""
 #. Resource IDs: (334)
 msgid "Passkey incorrect"
 msgstr "Master-Passwort ungültig"
+
+#. Resource IDs: (363)
+msgid "Passkey needed to save. Please unlock database and try again"
+msgstr "Ein Password wird zur Speicherung benötigt. Bitte entriegeln Sie die Datenbank, und probieren Sie es nochmal."
 
 #. Resource IDs: (360)
 msgid "Passphrase"
@@ -4416,6 +4427,16 @@ msgstr "Das Passwort sollte Klein- und Großbuchstaben sowie mindestens eine Zif
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) hat einen Fehler gehabt."
 
+#. Resource IDs: (363)
+msgid ""
+"PasswordSafe would like to move your configuration data to the standard place for such data. If you're the only user of PasswordSafe, please click on 'Yes' to confirm. If you're sharing PasswordSafe with others, click 'No'.\n"
+"\n"
+"If you're uncertain, click 'Yes'."
+msgstr ""
+"PasswordSafe möchte Ihre Einstellungen zur standardmäßigen Stelle für solche Daten verschieben. Wenn Sie der einzige Benutzer von PasswordSafe sind, bitte klicken Sie 'Ja' zum bestätigen. Wenn Sie PasswordSafe mit Anderen teilen, klicken Sie 'Nein'.\n"
+"\n"
+"Wenn Sie unsicher sind, klicken Sie 'Ja'."
+
 #. Resource IDs: (188)
 msgid "Password\t"
 msgstr "Passwort\t"
@@ -4494,10 +4515,10 @@ msgstr "Bitte wählen Sie einen neuen Namen für die aktuelle Datenbank aus:"
 
 #. Resource IDs: (331)
 msgid ""
-"Please confirm that you wish to delete ALL PasswordSafe related information for the current user from the Windows registry\n"
+"Please confirm that you wish to delete PasswordSafe configuration information for the current user from the Windows registry.\n"
 "\n"
 msgstr ""
-"Bestätigen Sie das Löschen ALLER PasswordSafe Informationen für den aktuellen Benutzer aus der Windows Registry\n"
+"Bestätigen Sie das Löschen ALLER PasswordSafe relevanten Informationen für den aktuellen Benutzer aus der Windows Registry.\n"
 "\n"
 
 #. Resource IDs: (353)
@@ -4710,6 +4731,10 @@ msgstr "Strg rechts"
 #. Resource IDs: (315)
 msgid "R/O"
 msgstr "R/O"
+
+#. Resource IDs: (315)
+msgid "R/W"
+msgstr "R/W"
 
 #. Resource IDs: (65535)
 msgid "Random password generation rules"
@@ -5872,6 +5897,10 @@ msgstr ""
 "Um ein nicht limitierte Version für die U3 Platform , besuche bitte http://software.u3.com\n"
 "Hinweis: beim Speichern der Datenbank werden nicht gelesene Einträge gelöscht!"
 
+#. Resource IDs: (320)
+msgid "This will allow you to migrate your settings from the configuration file in the PasswordSafe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
+msgstr "Dies ermöglicht Ihnen beim nächsten Aufruf von PasswordSafe Ihre Einstellungen in der Konfigurationsdatei vom Installationsverzeichnis in das Verzeichnis Ihrer persönlichen Anwenderdaten  zu verlagern."
+
 #. Resource IDs: (319)
 msgid "This will clear all traces of Password Safe from the machine's registry. It may also cause previous versions of Password Safe to revert to default values for some settings."
 msgstr "Dies wird alle Spuren von PasswordSafe aus der Registrierungsdatenbank dieses Rechners löschen. Es kann auch dazu führen, dass frühere Versionen von PasswordSafe Standard-Werte für einige Einstellungen benutzen."
@@ -6466,6 +6495,10 @@ msgstr "Wer sicherte"
 msgid "Win32 Unhandled Exception"
 msgstr "Win32 unbehandelte Ausnahme"
 
+#. Resource IDs: (363)
+msgid "Windows Registry"
+msgstr ""
+
 #. Resource IDs: (517)
 msgid "Wolof"
 msgstr ""
@@ -6565,6 +6598,14 @@ msgstr "Die aktuell geöffnete Datenbank wird in der ersten Zeile angezeigt. Die
 #, c-format
 msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
 msgstr "Die erforderliche Schriftart '%s' ist in diesem System nicht installiert. Es wird '%s' verwendet."
+
+#. Resource IDs: (363)
+msgid "Your specified configuration file cannot be found. Please indicate whether you wish to continue using the default file or exit Password Safe"
+msgstr "Die angegebene Konfigurationsdatei konnte nicht gefunden werden. Bitte sagen Sie ob Sie weitermachen wollen mit der standardmäßogen Datei oder ob Sie PasswordSafe beenden wollen"
+
+#. Resource IDs: (363)
+msgid "Your specified hostname and/or username cannot be found in the configuration file. Please indicate whether you wish to continue or exit Password Safe"
+msgstr "Der angegebene Komputername und/oder Benutzername wurde nicht in der Konfigurationsdatei gefunden. Bitte sagen Sie an ob Sie weitermachen wollen, oder PasswordSafe beenden"
 
 #. Resource IDs: (330)
 msgid "[No current database]"
@@ -7624,6 +7665,26 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid ""
+#~ "Please confirm that you wish to migrate ALL your PasswordSafe related "
+#~ "information to your local APPDATA directory.\n"
+#~ "\n"
+#~ "If you reply 'Yes', this will be done now and PasswordSafe will use the "
+#~ "new configuration file from now on.\n"
+#~ "\n"
+#~ "If you reply 'No', the existing configuration file will continue to be "
+#~ "used and you will not be asked again to convert unless you reset this via "
+#~ "the Options Systems Tab."
+#~ msgstr ""
+#~ "Bitte bestätigen Sie dass sämtliche PasswordSafe relevante Informationen "
+#~ "ins lokale APPDATA-Verzeichnis migriert werden.\n"
+#~ "\n"
+#~ "Wenn Sie mit 'Ja' antworten, wird dies jetzt veranlasst, und PasswordSafe "
+#~ "wird ab jetzt die neue Konfigurationsdatei verwenden.\n"
+#~ "\n"
+#~ "Wenn Sie mit 'Nein' antworten, wird ie bestehende Konfigurationsdatei "
+#~ "weiterhin benutzt, und Sie werden nicht mehr gefragt, es sei denn Sie "
+#~ "setzen dies zurück im Menü Verwalten Optionen System."
 #~ msgid "Current Value:"
 #~ msgstr "Aktueller Wert:"
 #~ msgid "Date:"
