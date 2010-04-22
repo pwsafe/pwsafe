@@ -598,12 +598,15 @@ void CAddEdit_Additional::OnCheckedSavePasswordHistory()
   M_SavePWHistory() = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck() == BST_CHECKED ?
                            TRUE : FALSE;
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(M_SavePWHistory());
+  m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_Additional::OnClearPWHist()
 {
   m_ClearPWHistory = true;
   m_PWHistListCtrl.DeleteAllItems();
+  M_pwhistlist().clear();
+  m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *)
