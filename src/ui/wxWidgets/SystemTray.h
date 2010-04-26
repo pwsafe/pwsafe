@@ -26,6 +26,12 @@ class SystemTray : protected wxTaskBarIcon
     SystemTray(PasswordSafeFrame* frame);
 
     void SetTrayStatus(TrayStatus st);
+	  TrayStatus GetTrayStatus() const {return m_status;}
+    void ShowIcon(void) { SetTrayStatus(m_status); }
+    bool IsLocked(void) const { return m_status == TRAY_LOCKED; }
+    
+    /// event handler for a wxEVT_TASKBAR_LEFT_DCLICK
+    void OnTaskBarLeftDoubleClick( wxTaskBarIconEvent& evt );
 
     /// event handler for ID_SYSTRAY_RESTORE sent from system tray menu
     void OnSysTrayRestore( wxCommandEvent& event );
@@ -39,7 +45,8 @@ class SystemTray : protected wxTaskBarIcon
   private:
     wxIcon iconClosed, iconUnlocked, iconLocked;
     PasswordSafeFrame* m_frame;
-   
+    TrayStatus m_status;
+	
     DECLARE_EVENT_TABLE()
 };
 

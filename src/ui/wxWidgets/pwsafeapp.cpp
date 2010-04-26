@@ -276,5 +276,5 @@ void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
 
 void PwsafeApp::OnActivityTimer(wxTimerEvent& /* timerEvent */)
 {
-  m_frame->Close();  
+  m_frame->HideUI(true);  //true => lock
 }

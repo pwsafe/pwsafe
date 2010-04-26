@@ -255,6 +255,8 @@ public:
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
 
+  /// wxEVT_ICONIZE event handler
+  void OnIconize(wxIconizeEvent& evt);
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
@@ -292,6 +294,13 @@ public:
     /// Called by wxTaskbarIcon derived class on clicking of system tray's Restore menu item
     void OnSysTrayRestore();
 
+    /// Called by app when the inactivity timer arrives
+    void HideUI(bool lock);
+    
+    /// Returns true if the user enters the correct safe combination and presses OK
+    bool VerifySafeCombination(void);
+
+    
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
