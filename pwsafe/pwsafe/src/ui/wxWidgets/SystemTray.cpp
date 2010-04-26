@@ -12,6 +12,7 @@
 
 #include "./passwordsafeframe.h"
 #include "./SystemTray.h"
+#include "../../corelib/PWSprefs.h"
 
 #include <wx/menu.h>
 
@@ -21,32 +22,43 @@
 
 BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_MENU( ID_SYSTRAY_RESTORE, SystemTray::OnSysTrayRestore )
+  EVT_TASKBAR_LEFT_DCLICK( SystemTray::OnTaskBarLeftDoubleClick )
 END_EVENT_TABLE()
 
 SystemTray::SystemTray(PasswordSafeFrame* frame) : iconClosed(tray_xpm), 
                                                    iconUnlocked(unlocked_tray_xpm), 
                                                    iconLocked(locked_tray_xpm),
-                                                   m_frame(frame)
+                                                   m_frame(frame),
+                                                   m_status(TRAY_CLOSED)
 {
 }
 
 void SystemTray::SetTrayStatus(TrayStatus status)
 {
-  switch(status) {
-    case TRAY_CLOSED:
-      SetIcon(iconClosed);
-      break;
+  m_status = status;
+ 
+#if wxCHECK_VERSION(2,9,0)
+  if (!wxTaskBarIcon::IsAvailable())
+    return;
+#endif
 
-    case TRAY_UNLOCKED:
-      SetIcon(iconUnlocked);
-      break;
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+     switch(status) {
+       case TRAY_CLOSED:
+         SetIcon(iconClosed);
+         break;
 
-    case TRAY_LOCKED:
-      SetIcon(iconLocked);
-      break;
+       case TRAY_UNLOCKED:
+         SetIcon(iconUnlocked);
+         break;
 
-    default:
-      break;
+       case TRAY_LOCKED:
+         SetIcon(iconLocked);
+         break;
+
+       default:
+         break;
+     }
   }
 }
 
@@ -63,3 +75,7 @@ void SystemTray::OnSysTrayRestore(wxCommandEvent& /*evt*/)
   m_frame->OnSysTrayRestore();
 }
 
+void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& /*evt*/)
+{
+  m_frame->OnSysTrayRestore();
+}

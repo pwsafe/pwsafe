@@ -165,6 +165,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_CREATESHORTCUT, PasswordSafeFrame::OnCreateShortcut )
 
+  EVT_ICONIZE(PasswordSafeFrame::OnIconize)
+
   EVT_UPDATE_UI(wxID_SAVE,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_ADDGROUP,        PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_RENAME,          PasswordSafeFrame::OnUpdateUI )
@@ -484,8 +486,10 @@ int PasswordSafeFrame::Load(const wxString &passwd)
   int status = m_core.ReadCurFile(passwd.c_str());
   if (status == PWScore::SUCCESS) {
     SetTitle(m_core.GetCurFile().c_str());
+    m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   } else {
     SetTitle(_T(""));
+    m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
   }
   return status;
 }
@@ -860,7 +864,7 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 {
-  if (m_exitFromMenu || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+  if (m_exitFromMenu) {
     if (evt.CanVeto()) {
       int rc = SaveIfChanged();
       if (rc == PWScore::USER_CANCEL) {
@@ -872,13 +876,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     Destroy();
   }
   else {
-    Iconize();
-    while (!IsIconized()) {
-      wxSafeYield(); 
-    }
-    Hide();
-    wxClipboard().Clear();
-    m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+    HideUI(false); //false => don't lock the UI yet, wait for interactivity timer from app
   } 
 }
 
@@ -1562,8 +1560,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
 
 void PasswordSafeFrame::OnSysTrayRestore()
 {
-  CSafeCombinationPrompt scp(NULL, m_core, towxstring(m_core.GetCurFile()));
-  if (scp.ShowModal() == wxID_OK) {
+  if (!m_sysTray->IsLocked() || VerifySafeCombination()) {
 
     if (!IsShown())
       Show();
@@ -1571,9 +1568,53 @@ void PasswordSafeFrame::OnSysTrayRestore()
     if (IsIconized())
       Iconize(false);
 
-    m_sysTray->RemoveIcon();
+    m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   }
 }
+
+bool PasswordSafeFrame::VerifySafeCombination(void)
+{
+  CSafeCombinationPrompt scp(NULL, m_core, towxstring(m_core.GetCurFile()));
+  return scp.ShowModal() == wxID_OK;
+}
+
+void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
+{
+  // being restored?
+  if (!evt.IsIconized()) {
+    if (m_sysTray->IsLocked() && !VerifySafeCombination()) {
+      //On Linux, the UI is already restored, so hide it back
+      HideUI(true); //true => lock UI
+    }
+    else {
+      //On Linux, the UI is already restored, so just set the status flag
+      m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+    }
+  }
+}
+
+void PasswordSafeFrame::HideUI(bool lock)
+{
+  if (lock)
+    m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+
+  wxClipboard().Clear();
+  
+  if (!IsIconized()) {
+    Iconize();
+    while (!IsIconized()) {
+      wxSafeYield();
+    }
+  }
+  
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+    //We should not have to show up the icon manually if m_sysTray
+    //can be notified of changes to PWSprefs::UseSystemTray
+    m_sysTray->ShowIcon();  
+    Hide();                 
+  }  
+}
+
 
 
 //-----------------------------------------------------------------
