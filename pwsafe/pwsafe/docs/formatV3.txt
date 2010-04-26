@@ -1,4 +1,4 @@
-PasswordSafe database format description version 3.19
+PasswordSafe database format description version 3.22
 -----------------------------------------------------
 
 Copyright (c) 2003-2010 Rony Shapiro <ronys@users.sourceforge.net>.
@@ -10,7 +10,7 @@ http://www.opensource.org/licenses/artistic-license-2.0.php
 
 1. Introduction: This document defines a file format for the secure
 storage of passwords and related data. The format is designed
-according to current cryptographic best practices, and is beleived to
+according to current cryptographic best practices, and is believed to
 be secure, in the sense that without knowledge of the master
 passphrase, only a brute-force attack or a flaw in the underlying
 cryptographic algorithm will result in unauthorized access to the
@@ -100,7 +100,7 @@ differently.
 256 as the underlying hash function. The value is calculated over all of
 the plaintext fields, that is, over all the data stored in all fields
 (starting from the version number in the header, ending with the last field
-of the last record). The key L as stored in B3 and B4 is used as the hash
+of the last record). The key L, as stored in B3 and B4, is used as the hash
 key value.
 
 3. Fields: Data in PasswordSafe is stored in typed fields. Each field
@@ -157,7 +157,7 @@ Recently Used Entries       0x0f        -                            [14]
 End of Entry                0xff        [empty]       Y              [15]
 
 [1] The version number of the database format. For this version, the value
-is 0x0306 (stored in little-endian format, that is, 0x05, 0x03).
+is 0x0307 (stored in little-endian format, that is, 0x07, 0x03).
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
@@ -165,6 +165,7 @@ PasswordSafe V3.12 introduced Format 0x0303
 PasswordSafe V3.13 introduced Format 0x0304
 PasswordSafe V3.14 introduced Format 0x0305
 PasswordSafe V3.19 introduced Format 0x0306
+PasswordSafe V3.22 introduced Format 0x0307
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -410,16 +411,19 @@ identifiers for the current version of the format. Compliant
 implementations MUST support the mandatory fields, and SHOULD support
 the other fields described herein. Future versions of the format may
 specify other type identifiers.
+
 4.2.1 Application-unique type identifiers: The type identifiers
 0xc0-0xdf are available for application developers on a first-come
 first-serve basis. Application developers interested in reserving a
 type identifier for their application should contact the maintainer of
 this document (Currently the PasswordSafe project administrator at
 SourceForge).
+
 4.2.2 Application-specific type identifiers: The type identifiers
 0xe0-0xfe are reserved for implementation-specific purposes, and will
 NOT be specified in this or future versions of the format
 description.
+
 4.2.3 All unassigned identifiers except as listed in the previous two
 subsections are reserved, and should not be used by other
 implementations of this format specification in the interest of
