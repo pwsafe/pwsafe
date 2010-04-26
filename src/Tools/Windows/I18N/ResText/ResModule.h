@@ -121,7 +121,19 @@ private:
 	std::map<WORD, MENUENTRY> m_MenuEntries;
 	std::map<WORD, MENUENTRY>::iterator pME_iter;
 	std::wstring	sDestFile;
-	BOOL			m_bQuiet;
+
+  struct TypeName_s {LPCTSTR m_Type; LPTSTR m_Name;
+  TypeName_s(LPCTSTR t, LPTSTR n) : m_Type(t), m_Name(n) {}
+  };
+  struct LangWriter {
+    CResModule *m_module;
+  LangWriter(CResModule *m) : m_module(m) {}
+    void operator()(TypeName_s &tn);
+  };
+  
+  std::vector<TypeName_s> m_TypeNames;
+
+  BOOL			m_bQuiet;
 
 	bool			m_bRTL;
 
