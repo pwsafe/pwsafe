@@ -197,7 +197,8 @@ END_EVENT_TABLE()
  */
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
-: m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false)
+: m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
+  m_RUEList(core)
 {
     Init();
 }
@@ -206,7 +207,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      wxWindowID id, const wxString& caption,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
-  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false)
+  : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
+    m_RUEList(core)
 {
     Init();
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
@@ -998,12 +1000,10 @@ void PasswordSafeFrame::SelectItem(const CUUIDGen& uuid)
 void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 {
   // Mark access time if so configured
-#ifdef NOTYET
   // First add to RUE List
   uuid_array_t RUEuuid;
   ci.GetUUID(RUEuuid);
   m_RUEList.AddRUEntry(RUEuuid);
-#endif
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
 
@@ -1469,9 +1469,9 @@ int PasswordSafeFrame::New()
 
   SetLabel(PWSUtil::NormalizeTTT(L"Password Safe - " + cs_newfile).c_str());
 
-#ifdef notyet
-  UpdateSystemTray(UNLOCKED);
+  m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   m_RUEList.ClearEntries();
+#ifdef notyet
   if (!m_bOpen) {
     // Previous state was closed - reset DCA in status bar
     SetDCAText();
@@ -1558,15 +1558,19 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   return PWScore::SUCCESS;
 }
 
-void PasswordSafeFrame::OnSysTrayRestore()
+void PasswordSafeFrame::UnlockSafe(bool restoreUI)
 {
   if (!m_sysTray->IsLocked() || VerifySafeCombination()) {
 
-    if (!IsShown())
-      Show();
+    if (restoreUI) {
+      if (!IsShown())
+        Show();
 
-    if (IsIconized())
-      Iconize(false);
+      if (IsIconized())
+        Iconize(false);
+
+      Raise();
+    }
 
     m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   }
@@ -1614,7 +1618,6 @@ void PasswordSafeFrame::HideUI(bool lock)
     Hide();                 
   }  
 }
-
 
 
 //-----------------------------------------------------------------

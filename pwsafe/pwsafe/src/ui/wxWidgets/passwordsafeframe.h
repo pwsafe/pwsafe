@@ -26,6 +26,7 @@
 #include "wx/treebase.h" // for wxTreeItemId
 #include "corelib/PWScore.h"
 #include "corelib/UIinterface.h"
+#include "RUEList.h"
 /*!
  * Forward declarations
  */
@@ -110,7 +111,11 @@ enum {
   ID_SENDEMAIL,
   ID_CREATESHORTCUT,
   ID_EDITBASEENTRY,
-  ID_SYSTRAY_RESTORE
+  ID_SYSTRAY_RESTORE,
+  ID_SYSTRAY_LOCK,
+  ID_SYSTRAY_UNLOCK,
+  ID_SYSTRAY_CLOSE,
+  ID_SYSTRAY_EXIT
 };
 
 
@@ -292,10 +297,13 @@ public:
     void OnContextMenu(const CItemData* item);
 
     /// Called by wxTaskbarIcon derived class on clicking of system tray's Restore menu item
-    void OnSysTrayRestore();
+    void UnlockSafe(bool restoreUI);
 
     /// Called by app when the inactivity timer arrives
     void HideUI(bool lock);
+
+    /// Called by system tray unlock the UI (and optionally restore the main window)
+    void UnlockUI(bool restoreFrame);
     
     /// Returns true if the user enters the correct safe combination and presses OK
     bool VerifySafeCombination(void);
@@ -338,6 +346,7 @@ public:
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
   bool m_exitFromMenu; 
+  CRUEList m_RUEList;
 };
 
 #endif

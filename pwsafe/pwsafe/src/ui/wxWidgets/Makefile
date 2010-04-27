@@ -145,7 +145,8 @@ SOURCES= passwordsafeframe.cpp \
 	addeditpropsheet.cpp PWSgridtable.cpp \
 	optionspropsheet.cpp PasswordSafeSearch.cpp \
 	deleteconfirmation.cpp editshortcut.cpp \
-	createshortcutdlg.cpp SystemTray.cpp
+	createshortcutdlg.cpp SystemTray.cpp \
+	RUEList.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
