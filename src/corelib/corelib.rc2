@@ -265,7 +265,7 @@ BEGIN
   IDSC_SEEPWHISTORYFILTERS "See Password History filters"
   IDSC_SEEPWPOLICYFILTERS  "See Password Policy filters"
   IDSC_CANTPROCESSDBFILTERS "Trouble reading Filter. Click 'Yes' to remove from database, 'No' to retain it."
-  IDSC_FILTERSKEPT         "Filters within the database will be kept as ""unknown fields""."
+  IDSC_FILTERSKEPT         "Stored filters will be unusable until the file's restored."
   IDSC_INVALID_SCHEMA      "Invalid Filter schema."
   IDSC_INVALID_SCHEMA_VER  "Schema does not have a version number."
   IDSC_MISSING_SCHEMA_VER  "Can't obtain the schema version."

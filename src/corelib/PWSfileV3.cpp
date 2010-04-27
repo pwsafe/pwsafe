@@ -767,7 +767,8 @@ int PWSfileV3::ReadHeader()
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
           // Expat is a non-validating parser - no use for Schema!
           if (!pws_os::FileExists(XSDFilename)) {
-            // Ask user whether to keep as unknown field or delete!
+            // No filter schema => user won't be able to access stored filters
+            // Inform her of the fact (probably an installation problem).
               stringT message, message2;
               Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
               LoadAString(message2, IDSC_FILTERSKEPT);
