@@ -788,17 +788,14 @@ int PWSfileV3::ReadHeader()
                                                     XSDFilename.c_str(),
                                                     strErrors, m_pAsker);
           if (rc != PWScore::SUCCESS) {
-            // Ask user whether to keep as unknown field or delete!
-            stringT question;
-            LoadAString(question, IDSC_CANTPROCESSDBFILTERS);
-            bool keep = (m_pAsker == NULL) || (!(*m_pAsker)(question));
-            if (keep) {
-              // Treat it as an Unknown field!
-              // Maybe user used a later version of PWS
-              // and we don't want to lose anything
-              UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-              m_UHFL.push_back(unkhfe);
-            }
+            // Can't parse it - treat as an unknown field,
+            // Notify user that filter won't be available
+            stringT message;
+            LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
+            if (m_pReporter != NULL)
+              (*m_pReporter)(message);
+            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+            m_UHFL.push_back(unkhfe);
           }
         }
         break;
