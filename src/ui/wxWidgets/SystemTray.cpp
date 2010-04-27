@@ -21,7 +21,10 @@
 #include "../graphics/wxWidgets/unlocked_tray.xpm"
 
 BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
-  EVT_MENU( ID_SYSTRAY_RESTORE, SystemTray::OnSysTrayRestore )
+  EVT_MENU( ID_SYSTRAY_RESTORE, SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( ID_SYSTRAY_LOCK,    SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( ID_SYSTRAY_UNLOCK,  SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( wxID_EXIT,          SystemTray::OnSysTrayMenuItem )
   EVT_TASKBAR_LEFT_DCLICK( SystemTray::OnTaskBarLeftDoubleClick )
 END_EVENT_TABLE()
 
@@ -66,16 +69,59 @@ void SystemTray::SetTrayStatus(TrayStatus status)
 wxMenu* SystemTray::CreatePopupMenu()
 {
   wxMenu* menu = new wxMenu;
+
+  switch (m_status) {
+    case TRAY_UNLOCKED:
+        menu->Append(ID_SYSTRAY_LOCK, wxT("&Lock Safe"));
+      break;
+
+    case TRAY_LOCKED:
+        menu->Append(ID_SYSTRAY_UNLOCK, wxT("&Unlock Safe"));
+        break;
+
+    case TRAY_CLOSED:
+        menu->Append(wxID_NONE, wxT("No Safe Open"));
+        break;
+
+    default:
+        break;
+
+  }
+  
+  menu->AppendSeparator();
   menu->Append(ID_SYSTRAY_RESTORE, wxT("&Restore"));
+  menu->AppendSeparator();
+  menu->Append(wxID_EXIT, wxT("&Exit"));
+  
   return menu;
 }
 
-void SystemTray::OnSysTrayRestore(wxCommandEvent& /*evt*/)
+void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
 {
-  m_frame->OnSysTrayRestore();
+  switch(evt.GetId()) {
+
+    case ID_SYSTRAY_RESTORE:
+      m_frame->UnlockSafe(true); // true => restore UI
+      break;
+
+    case ID_SYSTRAY_LOCK:
+      m_frame->HideUI(true);
+      break;
+
+    case ID_SYSTRAY_UNLOCK:
+      m_frame->UnlockSafe(false); // false => don't restore UI
+      break;
+
+    case wxID_EXIT:
+      m_frame->ProcessEvent(evt);
+      break;
+
+    default:
+      break;
+  }
 }
 
 void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& /*evt*/)
 {
-  m_frame->OnSysTrayRestore();
+  m_frame->UnlockSafe(true); //true => restore UI
 }
