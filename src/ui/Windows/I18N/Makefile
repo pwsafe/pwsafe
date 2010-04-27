@@ -86,10 +86,10 @@ $(DEST_DIR)/pwsafeFR.dll : pos/pwsafe_fr.po
 	$(RM) foo.dll; $(MV) pwsafeFR_FR.dll $(DEST_DIR)/pwsafeFR.dll
 	$(CHMOD) 755 $@
 
-$(DEST_DIR)/pwsafeDK.dll : pos/pwsafe_dk.po
+$(DEST_DIR)/pwsafeDA.dll : pos/pwsafe_dk.po
 	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
 	$(RESPWSL) apply foo.dll 0x0406; \
-	$(RM) foo.dll; $(MV) pwsafeDK_DK.dll $(DEST_DIR)/pwsafeDK.dll
+	$(RM) foo.dll; $(MV) pwsafeDA_DK.dll $(DEST_DIR)/pwsafeDA.dll
 	$(CHMOD) 755 $@
 
 # No need to change anything below this line
