@@ -270,6 +270,7 @@ void PWSGrid::DeleteAllItems()
 {
   m_uuid_map.clear();
   m_row_map.clear();
+  m_core.ClearData();
 }
 
 /*!
