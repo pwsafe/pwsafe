@@ -25,6 +25,10 @@ BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_MENU( ID_SYSTRAY_LOCK,    SystemTray::OnSysTrayMenuItem )
   EVT_MENU( ID_SYSTRAY_UNLOCK,  SystemTray::OnSysTrayMenuItem )
   EVT_MENU( wxID_EXIT,          SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( wxID_ICONIZE_FRAME, SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( ID_CLEARCLIPBOARD,  SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( wxID_ABOUT,         SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( wxID_CLOSE,         SystemTray::OnSysTrayMenuItem )
   EVT_TASKBAR_LEFT_DCLICK( SystemTray::OnTaskBarLeftDoubleClick )
 END_EVENT_TABLE()
 
@@ -87,12 +91,25 @@ wxMenu* SystemTray::CreatePopupMenu()
         break;
 
   }
+
+  if (m_status != TRAY_CLOSED) {
+    menu->AppendSeparator();
+    menu->Append(wxID_CLOSE, wxT("&Close"));
+  }
   
   menu->AppendSeparator();
+  menu->Append(wxID_ICONIZE_FRAME, wxT("&Minimize"));
   menu->Append(ID_SYSTRAY_RESTORE, wxT("&Restore"));
+  menu->AppendSeparator();
+  menu->Append(ID_CLEARCLIPBOARD,  wxT("&Clear Clipboard"));
+  menu->Append(wxID_ABOUT,         wxT("&About Password Safe..."));
   menu->AppendSeparator();
   menu->Append(wxID_EXIT, wxT("&Exit"));
   
+  //let the user iconize even if its already iconized
+  if (!m_frame->IsShown())
+    menu->Enable(wxID_ICONIZE_FRAME, false);
+
   return menu;
 }
 
@@ -113,6 +130,10 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
       break;
 
     case wxID_EXIT:
+    case wxID_ICONIZE_FRAME:
+    case ID_CLEARCLIPBOARD:
+    case wxID_ABOUT:
+    case wxID_CLOSE:
       m_frame->ProcessEvent(evt);
       break;
 
