@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-04-22 10:15+0100\n"
+"PO-Revision-Date: 2010-04-26 20:02+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -807,6 +807,10 @@ msgstr "Ben&utzername:"
 #. Resource IDs: (32123)
 msgid "&Validate"
 msgstr "Ü&berprüfen"
+
+#. Resource IDs: (32156)
+msgid "&Validate..."
+msgstr "Ü&berprüfen..."
 
 #. Resource IDs: (32101)
 msgid "&View"
@@ -2043,10 +2047,6 @@ msgstr ""
 #. Resource IDs: (342)
 msgid "Confirm Close Dialog"
 msgstr "Schließen-Dialog bestätigen"
-
-#. Resource IDs: (1019)
-msgid "Confirm deletion of items"
-msgstr "Löschen von Elementen bestätigen"
 
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
@@ -7665,6 +7665,8 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid "Confirm deletion of items"
+#~ msgstr "Löschen von Elementen bestätigen"
 #~ msgid ""
 #~ "Please confirm that you wish to migrate ALL your PasswordSafe related "
 #~ "information to your local APPDATA directory.\n"
