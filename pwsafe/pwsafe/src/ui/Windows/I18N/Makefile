@@ -22,7 +22,7 @@ POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po \
 
 DLL_LIST = pwsafeSV.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll \
-	pwsafeDK.dll
+	pwsafeDA.dll
 
 DEST_DIR = ../../../../build/bin/pwsafe/I18N
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
