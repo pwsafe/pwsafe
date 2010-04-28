@@ -519,7 +519,6 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->SetTable(new PWSGridTable(m_grid), true); // true => auto-delete
     m_grid->AutoSizeColumns();
     m_grid->EnableEditing(false);
-    m_grid->ClearGrid();
     ItemListConstIter iter;
     int i;
     for (iter = m_core.GetEntryIter(), i = 0;
@@ -628,12 +627,17 @@ int PasswordSafeFrame::SaveIfChanged()
 
 void PasswordSafeFrame::ClearData()
 {
-  //m_core.ClearData();
-  m_core.ReInit();
   m_grid->BeginBatch();
   m_grid->ClearGrid();
   m_grid->EndBatch();
   m_tree->Clear();
+  //the grid would have deleted the data in one of its callbacks
+  //but only if it was initialized, which might not happen
+  //if it was never shown.  In those cases, clear the data here
+  if (m_core.GetNumEntries() != 0) {
+    m_core.ClearData();
+  }
+  m_core.ReInit();
 }
 
 CItemData *PasswordSafeFrame::GetSelectedEntry() const
