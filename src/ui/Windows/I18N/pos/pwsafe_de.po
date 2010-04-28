@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-04-26 20:02+0100\n"
+"PO-Revision-Date: 2010-04-28 23:36+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2944,10 +2944,6 @@ msgstr "Filter erfolgreich exportiert"
 msgid "Filters successfully imported"
 msgstr "Filter erfolgreich importiert"
 
-#. Resource IDs: (210)
-msgid "Filters within the database will be kept as \"unknown fields\"."
-msgstr "Filter werden in der Datenbank als \"unknown fields\" abgelegt."
-
 #. Resource IDs: (346)
 msgid "Find"
 msgstr "Suchen"
@@ -5413,6 +5409,10 @@ msgstr ""
 msgid "Stop saving previous passwords"
 msgstr "Beende das Speichern vorheriger Passwörter"
 
+#. Resource IDs: (210)
+msgid "Stored filters will be unusable until the file's restored."
+msgstr "Gespeicherte Filter werden unbenutzbar sein bis die Datei wiederhergestellt wird."
+
 #. Resource IDs: (1322)
 msgid "String value:"
 msgstr "String Wert:"
@@ -5963,8 +5963,8 @@ msgid "Trial Version Limitation"
 msgstr "Einschränkung der Test-Version"
 
 #. Resource IDs: (208)
-msgid "Trouble reading Filter. Click 'Yes' to remove from database, 'No' to retain it."
-msgstr "Problem beim Lesen des Filters. Klick 'Ja' zum Löschen in der Datenbank, 'Nein' zum Beibehalten."
+msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
+msgstr "Es sind Schwierigkeiten beim Lesen der Filter aufgetreten (Versionsunterschied?). Die Filter können nicht verwendet werden."
 
 #. Resource IDs: (203)
 #, c-format
@@ -7665,6 +7665,14 @@ msgstr "binnen %d Tag(en)"
 msgid "xxxxxx"
 msgstr "xxxxxx"
 
+#~ msgid "Filters within the database will be kept as \"unknown fields\"."
+#~ msgstr "Filter werden in der Datenbank als \"unknown fields\" abgelegt."
+#~ msgid ""
+#~ "Trouble reading Filter. Click 'Yes' to remove from database, 'No' to "
+#~ "retain it."
+#~ msgstr ""
+#~ "Problem beim Lesen des Filters. Klick 'Ja' zum Löschen in der Datenbank, "
+#~ "'Nein' zum Beibehalten."
 #~ msgid "Confirm deletion of items"
 #~ msgstr "Löschen von Elementen bestätigen"
 #~ msgid ""
