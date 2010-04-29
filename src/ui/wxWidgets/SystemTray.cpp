@@ -13,6 +13,7 @@
 #include "./passwordsafeframe.h"
 #include "./SystemTray.h"
 #include "../../corelib/PWSprefs.h"
+#include "./wxutils.h"
 
 #include <wx/menu.h>
 
@@ -95,6 +96,7 @@ wxMenu* SystemTray::CreatePopupMenu()
   if (m_status != TRAY_CLOSED) {
     menu->AppendSeparator();
     menu->Append(wxID_CLOSE, wxT("&Close"));
+    menu->AppendSubMenu(GetRecentHistory(), wxT("&Recent Entries History"));
   }
   
   menu->AppendSeparator();
@@ -109,6 +111,66 @@ wxMenu* SystemTray::CreatePopupMenu()
   //let the user iconize even if its already iconized
   if (!m_frame->IsShown())
     menu->Enable(wxID_ICONIZE_FRAME, false);
+
+  return menu;
+}
+
+wxMenu* SystemTray::GetRecentHistory()
+{
+  //Must be on the heap.  wxWidgets will delete it
+  wxMenu* menu = new wxMenu;
+
+  menu->Append(ID_MENU_CLEAR_MRU, wxT("&Clear Recent History"));
+  menu->Append(wxID_NONE, wxT("Note: Entry format is »Group»Title»Username»"));
+  menu->Append(wxID_NONE, wxT("Note: Empty fields are shown as »*»"));
+  menu->AppendSeparator();
+
+  std::vector<RUEntryData> menulist;
+  m_frame->GetAllMenuItemStrings(menulist);
+
+  for (size_t idx = 0; idx < menulist.size(); ++idx) {
+    if (menulist[idx].pci && !menulist[idx].string.empty()) {
+      menu->AppendSubMenu(SetupRecentEntryMenu(menulist[idx].pci), towxstring(menulist[idx].string));
+    }
+  }
+
+  return menu;
+}
+
+wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci)
+{
+  wxASSERT(pci);
+
+  wxMenu* menu = new wxMenu;
+
+  menu->Append(ID_COPYPASSWORD, wxT("&Copy Password to clipboard"));
+
+  if (!pci->IsUserEmpty())
+    menu->Append(ID_COPYUSERNAME, wxT("Copy &Username to clipboard"));
+
+  if (!pci->IsNotesEmpty())
+    menu->Append(ID_COPYNOTESFLD, wxT("Copy &Notes to clipboard"));
+
+  menu->Append(ID_AUTOTYPE, wxT("Perform Auto&Type"));
+
+  if (!pci->IsURLEmpty() && !pci->IsURLEmail())
+    menu->Append(ID_COPYURL, wxT("Copy URL to clipboard"));
+
+  if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail()))
+    menu->Append(ID_COPYEMAIL, wxT("Copy email to clipboard"));
+
+  if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
+    menu->Append(ID_BROWSEURL, wxT("&Browse to URL"));
+    menu->Append(ID_BROWSEURLPLUS, wxT("Browse to URL + &Autotype"));
+  }
+
+  if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail()))
+    menu->Append(ID_SENDEMAIL, wxT("&Send email"));
+
+  if (!pci->IsRunCommandEmpty())
+    menu->Append(ID_RUNCOMMAND, wxT("&Run Command"));
+
+  menu->Append(wxID_NONE, wxT("&Delete from Recent Entry List"));
 
   return menu;
 }

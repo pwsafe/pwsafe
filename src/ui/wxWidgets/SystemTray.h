@@ -43,6 +43,9 @@ class SystemTray : protected wxTaskBarIcon
     virtual wxMenu* CreatePopupMenu();
 
   private:
+    wxMenu* GetRecentHistory();
+    wxMenu* SetupRecentEntryMenu(const CItemData* pci);
+
     wxIcon iconClosed, iconUnlocked, iconLocked;
     PasswordSafeFrame* m_frame;
     TrayStatus m_status;
