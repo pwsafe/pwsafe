@@ -35,6 +35,7 @@ using namespace std;
 #include "wxMessages.h"
 #include "corelib/SysInfo.h"
 #include "corelib/PWSprefs.h"
+#include "corelib/PWSrand.h"
 #include <wx/timer.h>
 
 ////@begin XPM images
@@ -128,6 +129,9 @@ PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)), 
 PwsafeApp::~PwsafeApp()
 {
   delete m_activityTimer;
+
+  PWSprefs::DeleteInstance();
+  PWSrand::DeleteInstance();
 }
 
 /*!
