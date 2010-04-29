@@ -1590,7 +1590,7 @@ bool PasswordSafeFrame::VerifySafeCombination(void)
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 {
   // being restored?
-  if (!evt.IsIconized()) {
+  if (!evt.Iconized()) {
     if (m_sysTray->IsLocked() && !VerifySafeCombination()) {
       //On Linux, the UI is already restored, so hide it back
       HideUI(true); //true => lock UI
