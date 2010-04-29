@@ -259,6 +259,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
 void PasswordSafeFrame::Init()
 {
   m_core.SetUIInterFace(this);
+  m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation
   m_grid = NULL;
   m_tree = NULL;

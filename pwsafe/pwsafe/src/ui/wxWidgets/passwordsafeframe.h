@@ -308,6 +308,8 @@ public:
     /// Returns true if the user enters the correct safe combination and presses OK
     bool VerifySafeCombination(void);
 
+    void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
+
     
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
