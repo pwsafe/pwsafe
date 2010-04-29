@@ -266,6 +266,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RUEList.h"
+				>
+			</File>
+			<File
 				RelativePath=".\safecombinationchange.h"
 				>
 			</File>
@@ -371,6 +375,10 @@
 			</File>
 			<File
 				RelativePath=".\PWStree.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RUEList.cpp"
 				>
 			</File>
 			<File
