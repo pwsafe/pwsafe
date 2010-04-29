@@ -332,7 +332,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu47->Append(ID_LIST_VIEW, _("Flattened &List"), _T(""), wxITEM_RADIO);
   itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), _T(""), wxITEM_RADIO);
   itemMenu47->AppendSeparator();
-  itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Tooolbar &visible"), _T(""), wxITEM_CHECK);
+  itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), _T(""), wxITEM_CHECK);
   itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), _T(""), wxITEM_CHECK);
   itemMenu47->AppendSeparator();
   itemMenu47->Append(ID_EXPANDALL, _("Expand All"), _T(""), wxITEM_NORMAL);
