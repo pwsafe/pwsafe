@@ -251,7 +251,7 @@ void CRichEditCtrlExtn::SetWindowText(LPCWSTR lpszString)
   ShowWindow(SW_SHOW);
 }
 
-CString CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
+CString CRichEditCtrlExtn::GetTextFormatting(const CString &csHTML, int &iError)
 {
   CString csText, csToken, csHTMLTag;
   int iCurrentFontSize, iCurrentFontPointSize;
@@ -360,6 +360,8 @@ CString CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
         iAnchor--;
         type_stack.pop();
         goto vnext;
+      } else { // unsupported tag or typo - return raw string
+        return csHTML;
       }
     }
 
@@ -472,6 +474,9 @@ vnext:
         goto next;
       } else
       if (csHTMLTag == L"/font") {
+        if (vFontChange.empty()) { // malformed <font> token
+          return csHTML;
+        }
         std::bitset<3> &bsLastFont = vFontChange.back();
         int &iFontChangeStart = vFontChangeStart.back();
         st_format& cur_format = format_stack.top();

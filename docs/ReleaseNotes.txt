@@ -34,6 +34,8 @@ None
 
 Bugs fixed in 3.21.1
 ====================
+[2994118] Swedish version no longer crashes when checking for latest
+version.
 [2990734] Changing either whether password history is kept and deleting
 currently saved history now activates the OK Button.
 [2990609] Clicking to rename entries is now disabled when database is read-only.
