@@ -37,7 +37,7 @@ public:
 
 private:
   // HTML formatting functions
-  CString GetTextFormatting(CString csHTML, int &iError);
+  CString GetTextFormatting(const CString &csHTML, int &iError);
   COLORREF ConvertColourToColorRef(CString &csValue);
   int ConvertSizeToPoints(CString &csValue, int &iCurrentSize);
   int ConvertPointsToSize(const int iCurrentPoints);

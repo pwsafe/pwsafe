@@ -1163,19 +1163,19 @@ msgstr ""
 
 #. Resource IDs: (343)
 msgid "<b><font color=\"green\">This is the latest release!</font></b>"
-msgstr "<b><fontfärg=\"green\">Detta är den senaste versionen!</font></b>"
+msgstr "<b><font color=\"green\">Detta är den senaste versionen!</font></b>"
 
 #. Resource IDs: (343)
 msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr "<b><fontfärg=\"red\">En senare version finns tillgänglig.</font></b>"
+msgstr "<b><font color=\"red\">En senare version finns tillgänglig.</font></b>"
 
 #. Resource IDs: (343)
 msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
-msgstr "<b><fontfärg=\"red\">Kunde inte läsa serverns versionsdata.</font></b>"
+msgstr "<b><font color=\"red\">Kunde inte läsa serverns versionsdata.</font></b>"
 
 #. Resource IDs: (342)
 msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
-msgstr "<b><fontfärg=\"red\">Kunde inte kontakta servern.</font></b>"
+msgstr "<b><font color=\"red\">Kunde inte kontakta servern.</font></b>"
 
 #. Resource IDs: (360)
 msgid ""
