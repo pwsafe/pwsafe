@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-04-28 16:46+0100\n"
+"PO-Revision-Date: 2010-04-29 16:17+0100\n"
 "Last-Translator: Rejmond Jensen <rejmond@jensen.tdcadsl.dk>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2000,7 +2000,7 @@ msgstr "Klik for at indsætte en tegn kode via virtuel numerisk tastatur. Tegnet
 
 #. Resource IDs: (354)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy to unexpanded"
-msgstr "Klik for at udvide og kopiere til klipbord and, Ctrl+Klik for at kopiere til ikke udvidet"
+msgstr "Klik for at udvide og kopiere til klipbord, Ctrl+Klik for at kopiere til ikke udvidet"
 
 #. Resource IDs: (354)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
@@ -2080,11 +2080,11 @@ msgstr "Luk Find Linien"
 
 #. Resource IDs: (32110)
 msgid "Collapse All"
-msgstr "Klap Alle Sammen"
+msgstr "Luk Alle"
 
 #. Resource IDs: (32109)
 msgid "Collapse All\tCtrl+Alt+Minus"
-msgstr "Klap Alle Sammen\tCtrl+Alt+Minus"
+msgstr "Luk Alle\tCtrl+Alt+Minus"
 
 #. Resource IDs: (114, 32210)
 msgid "Column Picker"
@@ -3240,7 +3240,7 @@ msgstr "Første tegn i variable navne skal være alfabetisk"
 
 #. Resource IDs: (32102)
 msgid "Flattened &List"
-msgstr "Udfladet &Liste"
+msgstr "Se hele &Listen"
 
 #. Resource IDs: (148)
 msgid "Font"
@@ -4332,7 +4332,7 @@ msgstr "Navn. Navn. Navn."
 
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
-msgstr "Indlejret &Træ"
+msgstr "Lukket &Træ Liste"
 
 #. Resource IDs: (328)
 msgid "Never"
