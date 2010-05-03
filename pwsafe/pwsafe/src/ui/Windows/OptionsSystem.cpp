@@ -27,6 +27,9 @@
 
 #include "OptionsSystem.h" // Must be after resource.h
 
+extern bool OfferConfigMigration();
+extern bool PerformConfigMigration();
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -182,7 +185,7 @@ BOOL COptionsSystem::OnInitDialog()
 
   bool bofferdeleteregistry = prefs->OfferDeleteRegistry();
 
-  bool boffermigrate2appdata = prefs->GetPref(PWSprefs::DoNotMigrateToAPPDATA);
+  bool boffermigrate2appdata = OfferConfigMigration();
 
   if (!bofferdeleteregistry) {
     GetDlgItem(IDC_REGDEL)->ShowWindow(SW_HIDE);
@@ -273,6 +276,7 @@ void COptionsSystem::OnApplyConfigChanges()
   if (m_migrate2appdata == TRUE) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::DoNotMigrateToAPPDATA, false);
     GetDlgItem(IDC_MIGRATETOAPPDATA)->EnableWindow(FALSE);
+    PerformConfigMigration();
   }
 
   if (!GetDlgItem(IDC_REGDEL)->IsWindowEnabled() && 

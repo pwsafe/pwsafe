@@ -55,11 +55,13 @@ public:
 
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
-  static void SetConfigFile(const stringT &fn) {m_configfilename = fn;}
+  static void SetConfigFile(const stringT &fn)
+  {m_configfilename = fn; m_userSetCfgFile = true;}
   static stringT GetConfigFile(ConfigOption &configoption)
   {configoption = m_ConfigOption; return m_configfilename;}
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
   static void XMLify(charT t, stringT &name);
+  static bool UserSetCfgFile() {return m_userSetCfgFile;}
 
   // prefString is stored in database file, format described in PWSprefs.cpp
   void Load(const StringX &prefString, bool bUseCopy = false);
@@ -222,6 +224,7 @@ private:
   bool LoadProfileFromFile();
   void LoadProfileFromRegistry();
   bool CheckRegistryExists() const;
+  void FindConfigFile();
 
   // Handle old (pre-3.05 registry-based) prefs.
   void ImportOldPrefs();
@@ -231,6 +234,7 @@ private:
   static PWSprefs *self; // singleton
   static stringT m_configfilename; // may be set before singleton created
   static Reporter *m_pReporter; // set as soon as possible to show errors
+  static bool m_userSetCfgFile;
   CXMLprefs *m_pXML_Config;
 
   bool m_bRegistryKeyExists;
