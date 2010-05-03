@@ -51,6 +51,7 @@ PWSprefs *PWSprefs::self = NULL;
 stringT PWSprefs::m_configfilename = _T(""); // may be set before singleton created
 PWSprefs::ConfigOption PWSprefs::m_ConfigOption = PWSprefs::CF_NONE;
 Reporter *PWSprefs::m_pReporter = NULL;
+bool PWSprefs::m_userSetCfgFile = false; // true iff user set config file (-g command line)
 
 /*
  Note: to change a preference between application and database, the way 
@@ -196,18 +197,11 @@ PWSprefs::PWSprefs() : m_pXML_Config(NULL)
 {
   int i;
 
-  m_prefs_changed[DB_PREF] = false;
-  m_prefs_changed[APP_PREF] = false;
-  m_prefs_changed[SHC_PREF] = false;
+  m_prefs_changed[DB_PREF] = m_prefs_changed[APP_PREF] = m_prefs_changed[SHC_PREF] = false;
 
-  for (i = 0; i < NumBoolPrefs; i++)
-    m_boolChanged[i] = false;
-
-  for (i = 0; i < NumIntPrefs; i++)
-    m_intChanged[i] = false;
-
-  for (i = 0; i < NumStringPrefs; i++)
-    m_stringChanged[i] = false;
+  for (i = 0; i < NumBoolPrefs; i++) m_boolChanged[i] = false;
+  for (i = 0; i < NumIntPrefs; i++) m_intChanged[i] = false;
+  for (i = 0; i < NumStringPrefs; i++) m_stringChanged[i] = false;
 
   m_rect.top = m_rect.bottom = m_rect.left = m_rect.right = -1;
   m_rect.changed = false;
@@ -787,8 +781,62 @@ void PWSprefs::XMLify(charT t, stringT &name)
       name[i] = charT('_');
 }
 
+void PWSprefs::FindConfigFile()
+{
+  /**
+   * 0. If user specified file (via command line), that's that.
+   *
+   * 1. Look for it in exe dir (pre-3.22 location). If it's there,
+   *    check that hostname/user are in file (could have been migrated)
+   * 2. If not in exe dir (or hostname/user not there), set file to
+   *    config dir - we'll either read from there or create a new one
+   */
+
+  const stringT cfgFile(_T("pwsafe.cfg"));
+  const stringT sExecDir = PWSdirs::GetExeDir();
+  const stringT sCnfgDir = PWSdirs::GetConfigDir();
+  PWSdirs dirs(sCnfgDir);
+
+  // Set path & name of config file
+  if (!m_userSetCfgFile) { // common case
+    m_configfilename = sExecDir + cfgFile;
+    if (pws_os::FileExists(m_configfilename)) {
+      // old (exe dir) exists, is host/user there?
+      if (LoadProfileFromFile())
+        return;
+    }
+    // not in exe dir or host/user not there
+    m_configfilename = sCnfgDir + m_configfilename;
+  } else { // User specified config file via SetConfigFile()
+    // As per pre-use of Local AppData directory,
+    // If file name's relative, it's expected to be in the
+    // same directory as the executable
+    stringT sDrive, sDir, sFile, sExt;
+    pws_os::splitpath(m_configfilename, sDrive, sDir, sFile, sExt);
+    if (sDrive.empty() || sDir.empty())
+      m_configfilename = sExecDir + sFile + sExt;
+  }
+}
+
 void PWSprefs::InitializePreferences()
 {
+  // Set up XML "keys": host/user ensure that they start with letter,
+  // and otherwise conforms with http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
+  const SysInfo *si = SysInfo::GetInstance();
+  stringT hn = si->GetEffectiveHost();
+  XMLify(charT('H'), hn);
+  stringT un = si->GetEffectiveUser();
+  XMLify(charT('u'), un);
+  m_csHKCU = hn.c_str();
+  m_csHKCU += _T("\\");
+  m_csHKCU += un.c_str();
+  // set up other keys
+  m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
+  m_csHKCU_POS  = m_csHKCU + _T("\\Position");
+  m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
+  m_csHKCU_SHCT = m_csHKCU + _T("\\Shortcuts");
+
+
   /*
   * 1. If the config file exists, use it, ignore registry (common case)
   * 2. If no config file and old (*) registry tree, import registry prefs,
@@ -802,36 +850,12 @@ void PWSprefs::InitializePreferences()
   * - If config file can't be created, fallback to "Password Safe" registry
   */
 
-  // change to config dir
-  // dirs' d'tor will put us back when we leave
-  // needed for case where m_configfilename was passed relatively
-  stringT sExecDir = PWSdirs::GetExeDir();
-  stringT sCnfgDir = PWSdirs::GetConfigDir();
-  PWSdirs dirs(sCnfgDir);
-
-  // Set path & name of config file
-  if (m_configfilename.empty()) {
-    m_configfilename = sCnfgDir;
-    m_configfilename += _T("pwsafe.cfg");
-  } else {
-    // As per pre-use of Local AppData directory, the config file is
-    // expected to be in the same directory as the executable
-    stringT sDrive, sDir, sFile, sExt;
-    pws_os::splitpath(m_configfilename, sDrive, sDir, sFile, sExt);
-    if (sDrive.empty() || sDir.empty())
-      m_configfilename = sExecDir + sFile + sExt;
-  }
-
   // Start with fallback position: hardcoded defaults
   LoadProfileFromDefaults();
   m_ConfigOption = CF_NONE;
   bool isRO(true);
 
-  // Actually, "config file exists" means:
-  // 1. File exists &&
-  // 2. host/user key found.
-
-  // 1. Does config file exist (and if, so, can we write to it?)?
+  FindConfigFile(); // sets m_configfilename
   bool configFileExists = pws_os::FileExists(m_configfilename.c_str(), isRO);
   if (configFileExists) {
     m_ConfigOption = (isRO) ? CF_FILE_RO : CF_FILE_RW;
@@ -859,22 +883,6 @@ void PWSprefs::InitializePreferences()
             m_configfilename.c_str(),
             isRO ? _T("R/O") : _T("R/W"));
 
-  // Set up XML "keys": host/user ensure that they start with letter,
-  // and otherwise conforms with http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
-  const SysInfo *si = SysInfo::GetInstance();
-  stringT hn = si->GetEffectiveHost();
-  XMLify(charT('H'), hn);
-  stringT un = si->GetEffectiveUser();
-  XMLify(charT('u'), un);
-  m_csHKCU = hn.c_str();
-  m_csHKCU += _T("\\");
-  m_csHKCU += un.c_str();
-
-  // set up other keys
-  m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
-  m_csHKCU_POS  = m_csHKCU + _T("\\Position");
-  m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
-  m_csHKCU_SHCT = m_csHKCU + _T("\\Shortcuts");
 
   // Does the registry entry exist for this user?
   m_bRegistryKeyExists = CheckRegistryExists();

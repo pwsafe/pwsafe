@@ -152,6 +152,7 @@ stringT pws_os::getuserprefsdir()
 {
   /**
    * Returns LOCAL_APPDATA\PasswordSafe (or ...\PasswordSafeD)
+   * (Creating if necessary)
    * If can't figure out LOCAL_APPDATA, then return an empty string
    * to have Windows punt to exec dir, which is the historical behaviour
    */
@@ -161,7 +162,7 @@ stringT pws_os::getuserprefsdir()
   const stringT sPWSDir(_T("\\PasswordSafeD\\"));
 #endif
 
-  stringT sDrive, sDir, sName, sExt;
+  stringT sDrive, sDir, sName, sExt, retval;
 
   pws_os::splitpath(getexecdir(), sDrive, sDir, sName, sExt);
   sDrive += _T("\\"); // Trailing slash required.
@@ -170,7 +171,10 @@ stringT pws_os::getuserprefsdir()
   if (uiDT == DRIVE_FIXED || uiDT == DRIVE_REMOTE) {
     stringT sLocalAppDataPath;
     if (GetLocalAppDataDir(sLocalAppDataPath))
-      return sLocalAppDataPath + sPWSDir;
+      retval = sLocalAppDataPath + sPWSDir;
+    if (PathFileExists(retval.c_str()) == FALSE)
+      if (_tmkdir(retval.c_str()) != 0)
+        retval = _T(""); // couldn't create dir!?
   }
-  return stringT();
+  return retval;
 }
