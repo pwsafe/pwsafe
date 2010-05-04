@@ -53,6 +53,8 @@ public:
   enum ConfigOption {CF_NONE = 0, CF_REGISTRY,
                      CF_FILE_RO, CF_FILE_RW, CF_FILE_RW_NEW};
 
+  static const stringT cfgFileName; // one place for the config filename
+  
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
   static void SetConfigFile(const stringT &fn)
@@ -96,7 +98,7 @@ public:
     MultipleInstances, ShowDragbar,
     ClearClipboardOnMinimize, ClearClipboardOnExit,
     ShowFindToolBarOnOpen, NotesWordWrap, LockDBOnIdleTimeout,
-    HighlightChanges, DoNotMigrateToAPPDATA,
+    HighlightChanges,
     NumBoolPrefs};
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,

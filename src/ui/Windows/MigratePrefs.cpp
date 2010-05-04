@@ -24,15 +24,6 @@
 #include "os/dir.h"
 #include "os/file.h"
 
-  // For Startup Options that effect migration to Local AppData (MFC version only)
-  enum ConfigOptions {
-    CFG_CONFIGFILE_SUPPLIED  = 0x80,
-    CFG_USERNAME_SUPPLIED    = 0x40,
-    CFG_HOSTNAME_SUPPLIED    = 0x20,
-    CFG_UNUSED               = 0x1f};
-
-static BYTE s_CFGOpt;
-
 bool OfferConfigMigration()
 {
   /**
@@ -43,8 +34,10 @@ bool OfferConfigMigration()
    * 3. The executable directory is on a fixed or network drive
    * 4. The user did NOT override the config file, user name or host name
    *    via command line (-g, -u, -h).
+   * 5. There isn't a config file already in the APPDATA location
+   * 6. The APPDATA location exists
    */
-  SysInfo *si = SysInfo::GetInstance();
+  const SysInfo *si = SysInfo::GetInstance();
 
   // start with quickest checks
   if (si->IsUnderU3() || PWSprefs::UserSetCfgFile() ||
@@ -63,207 +56,42 @@ bool OfferConfigMigration()
   if (uiDT != DRIVE_FIXED && uiDT != DRIVE_REMOTE)
     return false;
       
-  const std::wstring wsExecDirCfgFile = wsExecDir + L"pwsafe.cfg";
-  return pws_os::FileExists(wsExecDirCfgFile);
+  const std::wstring wsUserCfgDir = pws_os::getuserprefsdir(); // empty if couldn't find/create
+  if (wsUserCfgDir.empty())
+    return false;
+  const std::wstring wsExecDirCfgFile = wsExecDir + PWSprefs::cfgFileName;
+  const std::wstring wsDefaultCfgFile = wsUserCfgDir + PWSprefs::cfgFileName;
+  return (pws_os::FileExists(wsExecDirCfgFile) &&
+          !pws_os::FileExists(wsDefaultCfgFile));
 }
 
 bool PerformConfigMigration()
 {
-  ASSERT(!SysInfo::IsUnderU3()); // Do not touch U3 installations
+  /**
+   *
+   * We're here after the application's started and the conditions
+   * listed above (in OfferConfigMigration) hold.
+   * This constrains what we can assume and what we have to check.
+   */
 
-  std::wstring wsExecDir = pws_os::getexecdir();
-  std::wstring wsExDrive, wsExDir, wsExFileName, wsExExt;
-
-  pws_os::splitpath(wsExecDir, wsExDrive, wsExDir, wsExFileName, wsExExt);
-  wsExDrive += L"\\";
-
-  UINT uiDT = GetDriveType(wsExDrive.c_str());
-  // Do not touch if not on local or remote disk
-  if (uiDT != DRIVE_FIXED && uiDT != DRIVE_REMOTE)
-    return true;
+  ASSERT(OfferConfigMigration()); // should not be here otherwise!
+  if (!OfferConfigMigration()) return false; // I mean it!
 
   CGeneralMsgBox gmb;  // Note: CGeneralMsgBox is not re-useable.
   CXMLprefs *pXML_Config(NULL);
   PWSprefs::ConfigOption configoption;  // Note value meaningless at this point!
   std::wstring wsCnfgFile = PWSprefs::GetConfigFile(configoption);
-  std::wstring wsUserCfgDir = pws_os::getuserprefsdir();
-  std::wstring wsDefaultCfgFile = wsUserCfgDir + L"pwsafe.cfg";
-  std::wstring wsExecDirCfgFile = wsExecDir + L"pwsafe.cfg";
+  const std::wstring wsExecDir = pws_os::getexecdir();
+  const std::wstring wsUserCfgDir = pws_os::getuserprefsdir();
+
+  if (wsUserCfgDir.empty()) // couldn't find or create !?
+    return false;
+
+  std::wstring wsDefaultCfgFile = wsUserCfgDir + PWSprefs::cfgFileName;
+  std::wstring wsExecDirCfgFile = wsExecDir + PWSprefs::cfgFileName;
   bool bRetVal(false);
-  bool bExecCFRO;
-  bool bExecCFExists = pws_os::FileExists(wsExecDirCfgFile, bExecCFRO);
-  bool bDfltCFExists = pws_os::FileExists(wsDefaultCfgFile);
-
-  // Set up XML "keys": host/user, ensure that they start with letter,
-  // and otherwise conforms with http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
-  SysInfo *si = SysInfo::GetInstance();
-  std::wstring hostname = si->GetEffectiveHost();
-  PWSprefs::XMLify(L'H', hostname);
-  std::wstring username = si->GetEffectiveUser();
-  PWSprefs::XMLify(L'u', username);
-  std::wstring wsHU, wsHKCU, wsHKCU_PREF;
-  wsHKCU = hostname;
-  wsHKCU += L"\\";
-  wsHKCU += username;
-  wsHKCU_PREF = wsHKCU + L"\\Preferences";
-
-  ASSERT((wsCnfgFile.empty() && s_CFGOpt == 0) || 
-         (!wsCnfgFile.empty() && (s_CFGOpt & CFG_CONFIGFILE_SUPPLIED) != 0));
-
-  if (s_CFGOpt != 0) {
-    // User supplied config file, hostname and/or username on Command Line
-    // Do NOT migrate - but need to check on where the config file is exactly, and
-    // if not found - ask the user what to do!
-    if ((s_CFGOpt & CFG_CONFIGFILE_SUPPLIED) != 0) {
-      std::wstring wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt;
-      pws_os::splitpath(wsCnfgFile, wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt);
-      if (wsCnfgDrive.empty() && wsCnfgDir.empty()) {
-        // Relative file name
-        // Try in Installation directory first
-        wsCnfgFile = wsExecDir + wsCnfgFileName + wsCnfgExt;
-        if (pws_os::FileExists(wsCnfgFile)) {
-          bRetVal = true;
-        } else {
-          // Not in Installation directory - try Local APPDATA directory
-          wsCnfgFile = wsUserCfgDir + wsCnfgFileName + wsCnfgExt;
-          if (pws_os::FileExists(wsCnfgFile)) {
-            bRetVal = true;
-          }
-        }
-      } else {
-        // Fullpath to config file supplied by user
-        if (pws_os::FileExists(wsCnfgFile))
-          bRetVal = true;
-      }
-
-      if (!bRetVal) {
-        // Got here because we couldn't find user specified configuration file - tell them
-        CGeneralMsgBox gmb;
-        gmb.SetMsg(IDS_CANTFINDCONFIG);
-        gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
-        gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
-        if (gmb.DoModal() == IDS_EXIT) {
-          goto exit;
-        }
-
-        // OK - user said ignore file - so go with the default and ignore any other
-        // values (host/user) they may have specified
-        bRetVal = true;
-        wsCnfgFile = L"";
-        s_CFGOpt = 0;
-      }
-    } else {
-      // No config file specified - see if already migrated
-      if (!bDfltCFExists && !bExecCFExists) {
-        // No specified config file, no old & no new config file - just exit
-        // but clear irrelevant flags as no config file exists yet!
-        s_CFGOpt = 0;
-        return true;
-      }
-    }
-
-    // We have the config file - now check if user supplied host/user exists
-    if ((s_CFGOpt & CFG_USERNAME_SUPPLIED) != 0 ||
-        (s_CFGOpt & CFG_HOSTNAME_SUPPLIED) != 0) {
-      pXML_Config = new CXMLprefs(wsCnfgFile.empty() ? wsDefaultCfgFile.c_str() :
-                                             wsCnfgFile.c_str());
-      if (!pXML_Config->Load()) {
-        if (!pXML_Config->getReason().empty()) {
-          CGeneralMsgBox gmb;
-          gmb.SetMsg(pXML_Config->getReason().c_str());
-          gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
-          gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
-          if (gmb.DoModal() == IDS_EXIT) {
-            bRetVal = false;
-            goto exit;
-          }
-          // Problem loading XML file but user says continue!
-          bRetVal = true;
-        }
-      }
-
-      // Are the supplied host/user already in the config file?
-      wsHU = pXML_Config->Get(wsHKCU, L"LastUpdated", L"");
-      time_t tt;
-      if (!VerifyXMLDateTimeString(wsHU, tt)) {
-        // Oh dear - tell the user
-        CGeneralMsgBox gmb;
-        gmb.SetMsg(IDS_CANTFINDUSERHOST);
-        gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
-        gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
-        if (gmb.DoModal() == IDS_EXIT) {
-          bRetVal = false;
-          goto exit;
-        }
-        // OK - user said ignore supplied host and/or user
-        // Reset both fields even though we may not have found only one of them
-        const std::wstring ws_rhost = si->GetRealHost();
-        const std::wstring ws_ruser = si->GetRealUser();
-        si->SetEffectiveHost(ws_rhost);
-        si->SetEffectiveUser(ws_ruser);
-      }
-    }
-    // Right - we have got here and either have a valid config file or the default
-    // or used their specified host/user or not.
-    // So do NOT migrate and now leave
-    goto exit;
-  }
-
-  // User has not specified a config file or a host/user value.
-  // Check if they have a config file in their Local APPDATA directory
-  if (bDfltCFExists) {
-    bRetVal = true;
-    goto exit;
-  }
-
-  // OK not there - is it in the Installation directory?
-  if (!bExecCFExists) {
-    //  No - use default - which means PWS will create it as a first time user
-    bRetVal = true;
-    goto exit;
-  }
-
-  // OK must be only in Installation directory
-  pXML_Config = new CXMLprefs(wsExecDirCfgFile.c_str());
-  if (!pXML_Config->Load()) {
-    // But we couldn't load it - use default
-    bRetVal = true;
-    goto exit;
-  }
-
-  // OK - in Installation directory and we can read it but
-  // are we (host/user) already in the config file?
-  wsHU = pXML_Config->Get(wsHKCU, L"LastUpdated", L"");
-  time_t tt;
-  if (!VerifyXMLDateTimeString(wsHU, tt)) {
-    //  No - use default
-    bRetVal = true;
-    goto exit;
-  }
-
-  // OK - in Installation directory, we can read it and we (host/user) are in it
-  // Migrate - but first check to see if they have already declined the migration
-  int iUserSaidNo = pXML_Config->Get(wsHKCU_PREF, _T("DoNotMigrateToAPPDATA"), FALSE);
-  if (iUserSaidNo == TRUE) {
-    // They already said no - so leave now
-    wsCnfgFile = wsExecDirCfgFile;
-    bRetVal = true;
-    goto exit;
-  }
-
-  // They didn't previously decline, so ask the user if they want to do it now!?
-  if (gmb.AfxMessageBox(IDS_CONFIRM_MIG2APPDATA, MB_YESNO|MB_ICONQUESTION) == IDNO) {
-    // But they have now!
-    wsCnfgFile = wsExecDirCfgFile;
-    // Must set config file before first call to "PWSprefs::GetInstance()"
-    PWSprefs::SetConfigFile(wsCnfgFile);
-    // GetInstance will force reading in of preferences in order to set this flag
-    PWSprefs::GetInstance()->SetPref(PWSprefs::DoNotMigrateToAPPDATA, true);
-    // And save in case they cancel the startup
-    PWSprefs::GetInstance()->SaveApplicationPreferences();
-    bRetVal = true;
-    goto exit;
-  }
+  bool bExecCFRO(false);
+  pws_os::FileExists(wsExecDirCfgFile, bExecCFRO);
 
   /**
    *  MIGRATE
@@ -272,13 +100,14 @@ bool PerformConfigMigration()
   bRetVal = false;
   bool bNoMoreNodes(false);
   // We have current config file. Create the new one from it just containing our host/user
-  bool rc = pXML_Config->MigrateSettings(wsDefaultCfgFile, hostname, username);
+  const SysInfo *si = SysInfo::GetInstance();
+  bool rc = pXML_Config->MigrateSettings(wsDefaultCfgFile,
+                                         si->GetEffectiveHost(), si->GetEffectiveUser());
   if (rc) {
     // That worked but we can't use same CXMLprefs to remove us from the one
     // in the Installation directory - so cleanup and reload.
     pXML_Config->Unlock();
     delete pXML_Config;
-    pXML_Config = NULL;
 
     // Since we now have new config file, remove host/user from old.
     pXML_Config = new CXMLprefs(wsExecDirCfgFile.c_str());
@@ -298,12 +127,13 @@ bool PerformConfigMigration()
         // delete the new file - better luck next time!
         pws_os::DeleteAFile(wsDefaultCfgFile);
       }
-    }
+    } // Load failed
 
     // Now remove this hostname/username from old configuration file in the
     // installation directory (as long as everything OK and it is not R/O)
     if (rc && !bExecCFRO) {
-      rc = pXML_Config->RemoveHostnameUsername(hostname, username, bNoMoreNodes);
+      rc = pXML_Config->RemoveHostnameUsername(si->GetEffectiveHost(),
+                                               si->GetEffectiveUser(), bNoMoreNodes);
       if (rc) {
         // Save it
         pXML_Config->Store();
@@ -317,9 +147,9 @@ bool PerformConfigMigration()
         // Use new config file !!!
         wsCnfgFile = L"";
         bRetVal = true;
-      }
-    }
-  }
+      } // RemoveHostnameUsername
+    } // rc && !bExecCFRO
+  } // MigrateSettings
 
   // If this all worked, now copy autoload_filters.xml if it exists and not
   // already in the new location.
@@ -347,7 +177,6 @@ exit:
   if (pXML_Config != NULL) {
     pXML_Config->Unlock();
     delete pXML_Config;
-    pXML_Config = NULL;
   }
 
   // Set config file - blank means use new default

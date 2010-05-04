@@ -53,6 +53,9 @@ PWSprefs::ConfigOption PWSprefs::m_ConfigOption = PWSprefs::CF_NONE;
 Reporter *PWSprefs::m_pReporter = NULL;
 bool PWSprefs::m_userSetCfgFile = false; // true iff user set config file (-g command line)
 
+// One place for the config filename:
+const stringT PWSprefs::cfgFileName = _T("pwsafe.cfg");
+
 /*
  Note: to change a preference between application and database, the way 
  to do it is to set the current one as obsolete and define a new one.
@@ -119,7 +122,6 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("NotesWordWrap"), false, ptApplication},              // application
   {_T("LockDBOnIdleTimeout"), true, ptDatabase},            // database
   {_T("HighlightChanges"), true, ptApplication},            // application
-  {_T("DoNotMigrateToAPPDATA"), false, ptApplication},      // application
 };
 
 // Default value = -1 means set at runtime
@@ -792,14 +794,13 @@ void PWSprefs::FindConfigFile()
    *    config dir - we'll either read from there or create a new one
    */
 
-  const stringT cfgFile(_T("pwsafe.cfg"));
   const stringT sExecDir = PWSdirs::GetExeDir();
   const stringT sCnfgDir = PWSdirs::GetConfigDir();
   PWSdirs dirs(sCnfgDir);
 
   // Set path & name of config file
   if (!m_userSetCfgFile) { // common case
-    m_configfilename = sExecDir + cfgFile;
+    m_configfilename = sExecDir + cfgFileName;
     if (pws_os::FileExists(m_configfilename)) {
       // old (exe dir) exists, is host/user there?
       if (LoadProfileFromFile())

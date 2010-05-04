@@ -615,8 +615,5 @@
 #define IDS_SAVEAS                      5797
 #define IDS_SINGLEENTRY                 5798
 #define IDS_INVALIDFUTUREDATE           5799
-#define IDS_CONFIRM_MIG2APPDATA         5800
 #define IDS_REGISTRY                    5801
-#define IDS_CANTFINDCONFIG              5802
-#define IDS_CANTFINDUSERHOST            5803
 #define IDS_MISSINGPASSKEY              5804

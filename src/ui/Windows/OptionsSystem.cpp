@@ -274,7 +274,6 @@ void COptionsSystem::OnApplyConfigChanges()
   }
 
   if (m_migrate2appdata == TRUE) {
-    PWSprefs::GetInstance()->SetPref(PWSprefs::DoNotMigrateToAPPDATA, false);
     GetDlgItem(IDC_MIGRATETOAPPDATA)->EnableWindow(FALSE);
     PerformConfigMigration();
   }
