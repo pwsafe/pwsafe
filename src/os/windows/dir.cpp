@@ -89,7 +89,7 @@ stringT pws_os::makepath(const stringT &drive, const stringT &dir,
   return retval;
 }
 
-static bool GetLocalAppDataDir(stringT &sLocalAppDataPath)
+static bool GetLocalDir(int nFolder, stringT &sLocalPath)
 {
   /*
    * Versions supported by current PasswordSafe
@@ -135,15 +135,14 @@ static bool GetLocalAppDataDir(stringT &sLocalAppDataPath)
 
   if (osvi.dwMajorVersion >= 5) {
     // Get the special folder path - do not create it if it does not exist
-    brc = SHGetSpecialFolderPath(NULL, strPath, 
-                                 CSIDL_LOCAL_APPDATA, FALSE);
+    brc = SHGetSpecialFolderPath(NULL, strPath, nFolder, FALSE);
   }
   if (brc == TRUE) {
     // Call to 'SHGetSpecialFolderPath' worked
-    sLocalAppDataPath = strPath;
+    sLocalPath = strPath;
   } else {
     // Unsupported release or 'SHGetSpecialFolderPath' failed
-    sLocalAppDataPath = _T("");
+    sLocalPath = _T("");
   }
   return (brc == TRUE);
 }
@@ -170,8 +169,20 @@ stringT pws_os::getuserprefsdir()
   const UINT uiDT = ::GetDriveType(sDrive.c_str());
   if (uiDT == DRIVE_FIXED || uiDT == DRIVE_REMOTE) {
     stringT sLocalAppDataPath;
-    if (GetLocalAppDataDir(sLocalAppDataPath))
+    if (GetLocalDir(CSIDL_LOCAL_APPDATA, sLocalAppDataPath))
       retval = sLocalAppDataPath + sPWSDir;
+    if (PathFileExists(retval.c_str()) == FALSE)
+      if (_tmkdir(retval.c_str()) != 0)
+        retval = _T(""); // couldn't create dir!?
+  }
+  return retval;
+}
+
+stringT pws_os::getsafedir(void)
+{
+  stringT sLocalSafePath, retval;
+  if (GetLocalDir(CSIDL_PERSONAL, sLocalSafePath)) {
+    retval = sLocalSafePath + _T("\\My Safes");
     if (PathFileExists(retval.c_str()) == FALSE)
       if (_tmkdir(retval.c_str()) != 0)
         retval = _T(""); // couldn't create dir!?
