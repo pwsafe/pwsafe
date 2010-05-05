@@ -42,10 +42,12 @@ stringT PWSdirs::GetOurExecDir()
 
 stringT PWSdirs::GetSafeDir()
 {
-  // returns empty string unless U3 environment detected
+  // returns pws_os::getsafedir unless U3 environment detected
   stringT retval(pws_os::getenv("U3_DEVICE_DOCUMENT_PATH", true));
   if (!retval.empty())
     retval += _S("My Safes\\");
+  else
+    retval = pws_os::getsafedir();
   return retval;
 }
 
