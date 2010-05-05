@@ -208,6 +208,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
   void OnCopyurlClick( wxCommandEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
+  void OnCopyEmailClick( wxCommandEvent& evt);
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
   void OnListViewClick( wxCommandEvent& evt);
 
@@ -256,6 +259,10 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CREATESHORTCUT
   void OnCreateShortcut(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_MENU_CLEAR_MRU
+  void OnClearRecentHistory(wxCommandEvent& evt);
+
 
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
@@ -309,6 +316,7 @@ public:
     bool VerifySafeCombination(void);
 
     void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
+    void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
 
     
 ////@begin PasswordSafeFrame member variables
@@ -330,12 +338,18 @@ public:
   CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut 
   void UpdateAccessTime(CItemData &ci);
   void CreateMainToolbar();
+  bool IsRUEEvent(const wxCommandEvent& evt) {
+    long index = evt.GetExtraLong();
+    return index && index < 256 && size_t(index) < m_RUEList.GetCount(); 
+  }
+  long GetRUEIndex(const wxCommandEvent& evt) { return evt.GetExtraLong(); }
 
   // Do* member functions for dbl-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
   void DoCopyNotes(CItemData &item);
   void DoCopyUsername(CItemData &item);
   void DoCopyURL(CItemData &item);
+  void DoCopyEmail(CItemData &item);
   void DoEdit(CItemData &item);
   void DoAutotype(CItemData &item);
   void DoAutotype(const StringX& sx_autotype, const std::vector<size_t>& vactionverboffsets);

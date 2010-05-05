@@ -34,6 +34,7 @@
 #include "deleteconfirmation.h"
 #include "editshortcut.h"
 #include "createshortcutdlg.h"
+#include "wxutils.h"
 
 #include "../../corelib/PWSAuxParse.h"
 #include "../../corelib/Util.h"
@@ -218,9 +219,10 @@ void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYPASSWORD
  */
 
-void PasswordSafeFrame::OnCopypasswordClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 {
-  CItemData *item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyPassword(*item);
 }
@@ -237,9 +239,10 @@ void PasswordSafeFrame::DoCopyPassword(CItemData &item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
  */
 
-void PasswordSafeFrame::OnCopyusernameClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnCopyusernameClick(wxCommandEvent& evt)
 {
-  CItemData *item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyUsername(*item);
 }
@@ -255,9 +258,10 @@ void PasswordSafeFrame::DoCopyUsername(CItemData &item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
  */
 
-void PasswordSafeFrame::OnCopynotesfldClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnCopynotesfldClick(wxCommandEvent& evt)
 {
-  CItemData *item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyNotes(*item);
 }
@@ -273,11 +277,24 @@ void PasswordSafeFrame::DoCopyNotes(CItemData &item)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
  */
 
-void PasswordSafeFrame::OnCopyurlClick( wxCommandEvent& /* evt */ )
+void PasswordSafeFrame::OnCopyurlClick(wxCommandEvent& evt)
 {
-  CItemData *item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyURL(*item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
+ */
+
+void PasswordSafeFrame::OnCopyEmailClick(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  if (item != NULL)
+    DoCopyEmail(*item);
 }
 
 /*!
@@ -301,6 +318,18 @@ void PasswordSafeFrame::DoCopyURL(CItemData &item)
 {
   PWSclip::SetData(item.GetURL());
   UpdateAccessTime(item);
+}
+
+void PasswordSafeFrame::DoCopyEmail(CItemData &item)
+{
+  const StringX mailto = item.IsEmailEmpty()? 
+                      (item.IsURLEmail()? item.GetURL(): StringX()) 
+                      : item.GetEmail();
+  
+  if (!mailto.empty()) {
+    PWSclip::SetData(mailto);
+    UpdateAccessTime(item);
+  }
 }
 
 /*
@@ -336,6 +365,7 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
   const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
                                                             vactionverboffsets);
   DoAutotype(sxautotype, vactionverboffsets);
+  UpdateAccessTime(ci);
 
   // If we minimized it, exit. If we only hid it, now show it
   if (bMinOnAuto)
@@ -465,14 +495,24 @@ void PasswordSafeFrame::DoBrowse(CItemData &item)
 {
   const wxString url = item.GetURL().c_str();
 
-  if (!url.empty())
+  if (!url.empty()) {
     ::wxLaunchDefaultBrowser(url, wxBROWSER_NEW_WINDOW);
+    UpdateAccessTime(item);
+  }
 }
 
-void PasswordSafeFrame::DoRun(CItemData & /*item */)
+void PasswordSafeFrame::DoRun(CItemData& item)
 {
+  UpdateAccessTime(item);
 }
 
-void PasswordSafeFrame::DoEmail(CItemData & /* item */ )
+void PasswordSafeFrame::DoEmail(CItemData& item )
 {
+  const wxString mailto = item.IsEmailEmpty()? 
+                      (item.IsURLEmail()? towxstring(item.GetURL()): wxString()) 
+                      : towxstring(item.GetEmail());
+  if (!mailto.empty()) {
+    ::wxLaunchDefaultBrowser(mailto, wxBROWSER_NEW_WINDOW);
+    UpdateAccessTime(item);
+  }
 }

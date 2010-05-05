@@ -132,6 +132,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_COPYURL, PasswordSafeFrame::OnCopyurlClick )
 
+  EVT_MENU( ID_COPYEMAIL, PasswordSafeFrame::OnCopyEmailClick )
+
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
 
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
@@ -164,6 +166,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_EDITBASEENTRY, PasswordSafeFrame::OnEditBase )
 
   EVT_MENU( ID_CREATESHORTCUT, PasswordSafeFrame::OnCreateShortcut )
+
+  EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
 
   EVT_ICONIZE(PasswordSafeFrame::OnIconize)
 
@@ -917,9 +921,10 @@ void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURL
  */
 
-void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& evt)
 {
-  CItemData* item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item)
     DoBrowse(*item);
 }
@@ -928,9 +933,10 @@ void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& /*evt*/)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURLPLUS
  */
 
-void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
 {
-  CItemData* item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item) {
     DoBrowse(*item);
     //wait a little?
@@ -942,9 +948,10 @@ void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& /*evt*/)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SENDEMAIL
  */
 
-void PasswordSafeFrame::OnSendEmail(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnSendEmail(wxCommandEvent& evt)
 {
-  CItemData* item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item)
     DoEmail(*item);
 }
@@ -953,9 +960,10 @@ void PasswordSafeFrame::OnSendEmail(wxCommandEvent& /*evt*/)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_RUNCOMMAND
  */
 
-void PasswordSafeFrame::OnRunCommand(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 {
-  CItemData* item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item)
     DoRun(*item);
 }
@@ -964,21 +972,23 @@ void PasswordSafeFrame::OnRunCommand(wxCommandEvent& /*evt*/)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_AUTOTYPE
  */
 
-void PasswordSafeFrame::OnAutoType(wxCommandEvent& /*evt*/)
+void PasswordSafeFrame::OnAutoType(wxCommandEvent& evt)
 {
-  CItemData* item = GetSelectedEntry();
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item)
     DoAutotype(*item);
 }
 
 void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
 {
-  const CItemData* item = GetSelectedEntry();
+  CItemData* item = GetSelectedEntry();
   if (item && (item->IsAlias() || item->IsShortcut())) {
     item = m_core.GetBaseEntry(item);
     uuid_array_t base_uuid;
     item->GetUUID(base_uuid);
     SelectItem(CUUIDGen(base_uuid));
+    UpdateAccessTime(*item);
   }
 }
 
@@ -989,6 +999,7 @@ void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
     item = m_core.GetBaseEntry(item);
     ASSERT(item != NULL);
     DoEdit(*item);
+    UpdateAccessTime(*item);
   }
 }
 
@@ -1402,6 +1413,15 @@ void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
 void PasswordSafeFrame::OnNewClick( wxCommandEvent& /* evt */ )
 {
   New();
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_MENU_CLEAR_MRU
+ */
+
+void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& evt)
+{
+  m_RUEList.ClearEntries();
 }
 
 static void DisplayFileWriteError(int rc, const StringX &fname)
