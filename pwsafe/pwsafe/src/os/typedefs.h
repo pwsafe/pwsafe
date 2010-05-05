@@ -123,6 +123,8 @@ typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned long DWORD;
 typedef long LONG;
+#define LOBYTE(w) ((BYTE)(w))
+#define HIBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
 #define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define HIWORD(ul) (WORD(DWORD(ul) >> 16))
 #define MAKELONG(high, low) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16)) 

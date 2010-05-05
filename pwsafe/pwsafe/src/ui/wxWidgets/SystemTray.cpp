@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file version.cpp
+/** \file SystemTray.cpp
  * 
  */
 
@@ -14,6 +14,7 @@
 #include "./SystemTray.h"
 #include "../../corelib/PWSprefs.h"
 #include "./wxutils.h"
+#include "./SystemTrayMenuId.h"
 
 #include <wx/menu.h>
 
@@ -30,6 +31,8 @@ BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_MENU( ID_CLEARCLIPBOARD,  SystemTray::OnSysTrayMenuItem )
   EVT_MENU( wxID_ABOUT,         SystemTray::OnSysTrayMenuItem )
   EVT_MENU( wxID_CLOSE,         SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( ID_MENU_CLEAR_MRU,  SystemTray::OnSysTrayMenuItem )
+  EVT_MENU_RANGE(MIN_RUE_COMMAND_ID, MAX_RUE_COMMAND_ID, SystemTray::OnSysTrayMenuItem )
   EVT_TASKBAR_LEFT_DCLICK( SystemTray::OnTaskBarLeftDoubleClick )
 END_EVENT_TABLE()
 
@@ -130,77 +133,92 @@ wxMenu* SystemTray::GetRecentHistory()
 
   for (size_t idx = 0; idx < menulist.size(); ++idx) {
     if (menulist[idx].pci && !menulist[idx].string.empty()) {
-      menu->AppendSubMenu(SetupRecentEntryMenu(menulist[idx].pci), towxstring(menulist[idx].string));
+      menu->AppendSubMenu(SetupRecentEntryMenu(menulist[idx].pci, idx), towxstring(menulist[idx].string));
     }
   }
 
   return menu;
 }
 
-wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci)
+wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci, size_t idx)
 {
   wxASSERT(pci);
 
   wxMenu* menu = new wxMenu;
 
-  menu->Append(ID_COPYPASSWORD, wxT("&Copy Password to clipboard"));
+  menu->Append(MakeCommandId(RUE_COPYPASSWORD, idx), wxT("&Copy Password to clipboard"));
 
   if (!pci->IsUserEmpty())
-    menu->Append(ID_COPYUSERNAME, wxT("Copy &Username to clipboard"));
+    menu->Append(MakeCommandId(RUE_COPYUSERNAME, idx), wxT("Copy &Username to clipboard"));
 
   if (!pci->IsNotesEmpty())
-    menu->Append(ID_COPYNOTESFLD, wxT("Copy &Notes to clipboard"));
+    menu->Append(MakeCommandId(RUE_COPYNOTES, idx), wxT("Copy &Notes to clipboard"));
 
-  menu->Append(ID_AUTOTYPE, wxT("Perform Auto&Type"));
+  menu->Append(MakeCommandId(RUE_AUTOTYPE, idx), wxT("Perform Auto&Type"));
 
   if (!pci->IsURLEmpty() && !pci->IsURLEmail())
-    menu->Append(ID_COPYURL, wxT("Copy URL to clipboard"));
+    menu->Append(MakeCommandId(RUE_COPYURL, idx), wxT("Copy URL to clipboard"));
 
   if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail()))
-    menu->Append(ID_COPYEMAIL, wxT("Copy email to clipboard"));
+    menu->Append(MakeCommandId(RUE_COPYEMAIL, idx), wxT("Copy email to clipboard"));
 
   if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
-    menu->Append(ID_BROWSEURL, wxT("&Browse to URL"));
-    menu->Append(ID_BROWSEURLPLUS, wxT("Browse to URL + &Autotype"));
+    menu->Append(MakeCommandId(RUE_BROWSE, idx), wxT("&Browse to URL"));
+    menu->Append(MakeCommandId(RUE_BROWSEAUTOTYPE, idx), wxT("Browse to URL + &Autotype"));
   }
 
   if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail()))
-    menu->Append(ID_SENDEMAIL, wxT("&Send email"));
+    menu->Append(MakeCommandId(RUE_SENDEMAIL, idx), wxT("&Send email"));
 
   if (!pci->IsRunCommandEmpty())
-    menu->Append(ID_RUNCOMMAND, wxT("&Run Command"));
+    menu->Append(MakeCommandId(RUE_RUNCOMMAND, idx), wxT("&Run Command"));
 
-  menu->Append(wxID_NONE, wxT("&Delete from Recent Entry List"));
+  menu->Append(MakeCommandId(RUE_DELETERUEENTRY, idx), wxT("&Delete from Recent Entry List"));
 
   return menu;
 }
 
 void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
 {
-  switch(evt.GetId()) {
+  const int id = evt.GetId();
+  if (IsRUECommand(id)) {
+    RUEOperation opn = GetRUEOperation(id);
+    if (opn == RUE_DELETERUEENTRY) {
+      m_frame->DeleteRUEntry(GetRUEIndex(id));
+    }
+    else {
+      wxCommandEvent cmd(evt.GetEventType(), GetFrameCommandId(opn));
+      cmd.SetExtraLong(GetRUEIndex(id));
+      m_frame->ProcessEvent(cmd);
+    }
+  }
+  else {
+    switch(id) {
 
-    case ID_SYSTRAY_RESTORE:
-      m_frame->UnlockSafe(true); // true => restore UI
-      break;
+      case ID_SYSTRAY_RESTORE:
+        m_frame->UnlockSafe(true); // true => restore UI
+        break;
 
-    case ID_SYSTRAY_LOCK:
-      m_frame->HideUI(true);
-      break;
+      case ID_SYSTRAY_LOCK:
+        m_frame->HideUI(true);
+        break;
 
-    case ID_SYSTRAY_UNLOCK:
-      m_frame->UnlockSafe(false); // false => don't restore UI
-      break;
+      case ID_SYSTRAY_UNLOCK:
+        m_frame->UnlockSafe(false); // false => don't restore UI
+        break;
 
-    case wxID_EXIT:
-    case wxID_ICONIZE_FRAME:
-    case ID_CLEARCLIPBOARD:
-    case wxID_ABOUT:
-    case wxID_CLOSE:
-      m_frame->ProcessEvent(evt);
-      break;
+      case wxID_EXIT:
+      case wxID_ICONIZE_FRAME:
+      case ID_CLEARCLIPBOARD:
+      case wxID_ABOUT:
+      case wxID_CLOSE:
+      case ID_MENU_CLEAR_MRU:
+        m_frame->ProcessEvent(evt);
+        break;
 
-    default:
-      break;
+      default:
+        break;
+    }
   }
 }
 
