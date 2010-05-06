@@ -145,7 +145,7 @@ stringT pws_os::getuserprefsdir(void)
   return cfgdir;
 }
 
-stringT psw_os::getsafedir(void)
+stringT pws_os::getsafedir(void)
 {
   return getuserprefsdir(); // same-same on linux
 }
