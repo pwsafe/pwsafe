@@ -155,7 +155,7 @@ stringT pws_os::getuserprefsdir()
    * If can't figure out LOCAL_APPDATA, then return an empty string
    * to have Windows punt to exec dir, which is the historical behaviour
    */
-#ifndef DEBUG
+#ifndef _DEBUG
   const stringT sPWSDir(_T("\\PasswordSafe\\"));
 #else
   const stringT sPWSDir(_T("\\PasswordSafeD\\"));
