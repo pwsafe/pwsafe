@@ -78,7 +78,6 @@ bool PerformConfigMigration()
   if (!OfferConfigMigration()) return false; // I mean it!
 
   CGeneralMsgBox gmb;  // Note: CGeneralMsgBox is not re-useable.
-  CXMLprefs *pXML_Config(NULL);
   PWSprefs::ConfigOption configoption;  // Note value meaningless at this point!
   std::wstring wsCnfgFile = PWSprefs::GetConfigFile(configoption);
   const std::wstring wsExecDir = pws_os::getexecdir();
@@ -99,23 +98,26 @@ bool PerformConfigMigration()
 
   bRetVal = false;
   bool bNoMoreNodes(false);
-  // We have current config file. Create the new one from it just containing our host/user
+  CXMLprefs newXMLConfig(wsExecDirCfgFile.c_str()); // for migrating user/host to new
+  CXMLprefs oldXMLConfig(wsExecDirCfgFile.c_str()); // for reomving user/host from old
+
+  // Create the new one from it just containing our host/user
+  if (!newXMLConfig.Load())
+    return false; // WTF?!?
   const SysInfo *si = SysInfo::GetInstance();
-  bool rc = pXML_Config->MigrateSettings(wsDefaultCfgFile,
+  bool rc = newXMLConfig.MigrateSettings(wsDefaultCfgFile,
                                          si->GetEffectiveHost(), si->GetEffectiveUser());
   if (rc) {
-    // That worked but we can't use same CXMLprefs to remove us from the one
-    // in the Installation directory - so cleanup and reload.
-    pXML_Config->Unlock();
-    delete pXML_Config;
+    // That worked, now remove us from the old one config file
+    // in the Installation directory
+    newXMLConfig.Unlock();
 
     // Since we now have new config file, remove host/user from old.
-    pXML_Config = new CXMLprefs(wsExecDirCfgFile.c_str());
-    if (!pXML_Config->Load()) {
+    if (!oldXMLConfig.Load()) {
       rc = false;
-      if (!pXML_Config->getReason().empty()) {
+      if (!oldXMLConfig.getReason().empty()) {
         CGeneralMsgBox gmb;
-        gmb.SetMsg(pXML_Config->getReason().c_str());
+        gmb.SetMsg(oldXMLConfig.getReason().c_str());
         gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
         gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
         if (gmb.DoModal() == IDS_EXIT) {
@@ -132,11 +134,11 @@ bool PerformConfigMigration()
     // Now remove this hostname/username from old configuration file in the
     // installation directory (as long as everything OK and it is not R/O)
     if (rc && !bExecCFRO) {
-      rc = pXML_Config->RemoveHostnameUsername(si->GetEffectiveHost(),
+      rc = oldXMLConfig.RemoveHostnameUsername(si->GetEffectiveHost(),
                                                si->GetEffectiveUser(), bNoMoreNodes);
       if (rc) {
         // Save it
-        pXML_Config->Store();
+        oldXMLConfig.Store();
 
         // However, if no more host/user nodes in this file - delete the
         // configuration file from the installation directory!
@@ -144,8 +146,6 @@ bool PerformConfigMigration()
           pws_os::DeleteAFile(wsExecDirCfgFile);
         }
 
-        // Use new config file !!!
-        wsCnfgFile = L"";
         bRetVal = true;
       } // RemoveHostnameUsername
     } // rc && !bExecCFRO
@@ -174,12 +174,11 @@ bool PerformConfigMigration()
 
 exit:
   // Clean up
-  if (pXML_Config != NULL) {
-    pXML_Config->Unlock();
-    delete pXML_Config;
-  }
+  newXMLConfig.Unlock();
+  oldXMLConfig.Unlock();
 
-  // Set config file - blank means use new default
-  PWSprefs::SetConfigFile(wsCnfgFile);
+  // Set config file
+  if (bRetVal)
+    PWSprefs::SetConfigFile(wsDefaultCfgFile);
   return bRetVal;
 }
