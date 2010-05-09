@@ -807,7 +807,7 @@ void PWSprefs::FindConfigFile()
         return;
     }
     // not in exe dir or host/user not there
-    m_configfilename = sCnfgDir + m_configfilename;
+    m_configfilename = sCnfgDir + cfgFileName;
   } else { // User specified config file via SetConfigFile()
     // As per pre-use of Local AppData directory,
     // If file name's relative, it's expected to be in the

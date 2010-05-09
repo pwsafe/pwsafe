@@ -206,10 +206,14 @@ bool pws_os::DeleteRegistryEntries()
   }
 
   dw = ::AfxGetApp()->DelRegTree(hSubkey, ::AfxGetApp()->m_pszAppName);
-  ASSERT(dw == ERROR_SUCCESS);
+  if (dw != ERROR_SUCCESS) {
+    pws_os::Trace0(_T("pws_os::DeleteRegistryEntries: DelRegTree() failed\n"));
+  }
 
   dw = RegCloseKey(hSubkey);
-  ASSERT(dw == ERROR_SUCCESS);
+  if (dw != ERROR_SUCCESS) {
+    pws_os::Trace0(_T("pws_os::DeleteRegistryEntries: RegCloseKey() failed\n"));
+  }
   return true;
 }
 
