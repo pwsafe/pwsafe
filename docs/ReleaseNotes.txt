@@ -1,5 +1,5 @@
-Password Safe 3.21.1 Release Notes - February 2010
-==================================================
+Password Safe 3.22 Release Notes - May 2010
+===========================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.21.1
-=======================
+New Features for 3.22
+=====================
 [2983775] Recently Used Entries are now saved in the database header and
 so are "persistent".  The current Windows user interface limits this to a
 maximum of the last 25 entries accessed.
@@ -28,12 +28,18 @@ is closed and the selected database is validated during the open process.
 with large text fields (e.g. Notes) that cannot be fully displayed and may
 be truncated if edited.
 
-Changes to Existing Features in 3.21.1
-======================================
-None
+Changes to Existing Features in 3.22
+====================================
+[] Preferences are now saved in the 'normal' per-user directory under
+Windows. Existing installations will use current preferences, but
+users can migrate to the new location via
+Manage->Options->System->Migrate PasswordSafe configuration to user
+directory.
+[] New databases will be created by default in "My Safes" directory
+under "My Documents".
 
-Bugs fixed in 3.21.1
-====================
+Bugs fixed in 3.22
+==================
 [2994118] Swedish version no longer crashes when checking for latest
 version.
 [2990734] Changing either whether password history is kept and deleting
