@@ -18,7 +18,7 @@
 
 POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po \
 	pos/pwsafe_pl.po pos/pwsafe_zh.po pos/pwsafe_ru.po \
-	pos/pwsafe_it.po pos/pwsafe_fr.po pwsafe_dk.po
+	pos/pwsafe_it.po pos/pwsafe_fr.po pos/pwsafe_dk.po
 
 DLL_LIST = pwsafeSV.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll \
