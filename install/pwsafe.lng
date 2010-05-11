@@ -48,7 +48,7 @@ LangString RESERVE_TITLE ${LANG_POLISH} "Choose Installation Type [PL]"
 LangString RESERVE_TITLE ${LANG_ITALIAN} "Choose Installation Type [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString RESERVE_TITLE ${LANG_DANISH} "Choose Installation Type [DA]"
+LangString RESERVE_TITLE ${LANG_DANISH} "Vælg Installations Type"
 !endif
 
 LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
@@ -80,7 +80,7 @@ LangString RESERVE_FIELD1 ${LANG_POLISH} "Regular (uses Registry, suitable for h
 LangString RESERVE_FIELD1 ${LANG_ITALIAN} "Regular (uses Registry, suitable for home or single user PC) [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString RESERVE_FIELD1 ${LANG_DANISH} "Regular (uses Registry, suitable for home or single user PC) [DA]"
+LangString RESERVE_FIELD1 ${LANG_DANISH} "Standart (bruger Registret, passer til hjemme eller enkelt bruger PC)"
 !endif
 
 LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
@@ -112,7 +112,7 @@ LangString RESERVE_FIELD2 ${LANG_POLISH} "Green (for Disk-on-Key; does not use h
 LangString RESERVE_FIELD2 ${LANG_ITALIAN} "Green (for Disk-on-Key; does not use host Registry) [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString RESERVE_FIELD2 ${LANG_DANISH} "Green (for Disk-on-Key; does not use host Registry) [DA]"
+LangString RESERVE_FIELD2 ${LANG_DANISH} "Grøn (for Disk-on-Key; bruger ikke data Registret)"
 !endif
 
 ;--------------------------------
@@ -147,7 +147,7 @@ LangString PROGRAM_FILES ${LANG_POLISH} "Program Files [PL]"
 LangString PROGRAM_FILES ${LANG_ITALIAN} "Program Files [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString PROGRAM_FILES ${LANG_DANISH} "Program Files [DA]"
+LangString PROGRAM_FILES ${LANG_DANISH} "Programfiler"
 !endif
 
 ;--------------------------------
@@ -182,7 +182,7 @@ LangString START_AUTO ${LANG_POLISH} "Start automatically [PL]"
 LangString START_AUTO ${LANG_ITALIAN} "Start automatically [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString START_AUTO ${LANG_DANISH} "Start automatically [DA]"
+LangString START_AUTO ${LANG_DANISH} "Start automatisk"
 !endif
 
 ;--------------------------------
@@ -217,7 +217,7 @@ LangString START_SHOW ${LANG_POLISH} "Show in start menu [PL]"
 LangString START_SHOW ${LANG_ITALIAN} "Show in start menu [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString START_SHOW ${LANG_DANISH} "Show in start menu [DA]"
+LangString START_SHOW ${LANG_DANISH} "Vis i start menuen"
 !endif
 
 ;--------------------------------
@@ -252,7 +252,7 @@ LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
 LangString START_SHORTCUT ${LANG_ITALIAN} "Install desktop shortcut [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString START_SHORTCUT ${LANG_DANISH} "Install desktop shortcut [DA]"
+LangString START_SHORTCUT ${LANG_DANISH} "Installer genvej på skrivebordet"
 !endif
 
 ;--------------------------------
@@ -287,7 +287,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_POLISH} "Uninstall shortcut [PL]"
 LangString UNINSTALL_SHORTCUT ${LANG_ITALIAN} "Uninstall shortcut [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString UNINSTALL_SHORTCUT ${LANG_DANISH} "Uninstall shortcut [DA]"
+LangString UNINSTALL_SHORTCUT ${LANG_DANISH} "Fjern genvej"
 !endif
 
 ;================================================================================================
@@ -323,7 +323,7 @@ LangString DESC_ProgramFiles ${LANG_POLISH} "Installs the basic files necessary 
 LangString DESC_ProgramFiles ${LANG_ITALIAN} "Installs the basic files necessary to run Password Safe. [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString DESC_ProgramFiles ${LANG_DANISH} "Installs the basic files necessary to run Password Safe. [DA]"
+LangString DESC_ProgramFiles ${LANG_DANISH} "Installerer de nødvendige filer for at køre Password Safe."
 !endif
 
 LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
@@ -355,7 +355,7 @@ LangString DESC_StartUp ${LANG_POLISH} "Starts Password Safe as part of Windows 
 LangString DESC_StartUp ${LANG_ITALIAN} "Starts Password Safe as part of Windows boot/login. [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString DESC_StartUp ${LANG_DANISH} "Starts Password Safe as part of Windows boot/login. [DA]"
+LangString DESC_StartUp ${LANG_DANISH} "Starter Password Safe som en del af Windows boot/login."
 !endif
 
 LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
@@ -387,7 +387,7 @@ LangString DESC_StartMenu ${LANG_POLISH} "Creates an entry in the start menu for
 LangString DESC_StartMenu ${LANG_ITALIAN} "Creates an entry in the start menu for Password Safe. [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString DESC_StartMenu ${LANG_DANISH} "Creates an entry in the start menu for Password Safe. [DA]"
+LangString DESC_StartMenu ${LANG_DANISH} "Opretter en post i start menuen for Password Safe."
 !endif
 
 LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
@@ -419,7 +419,7 @@ LangString DESC_DesktopShortcut ${LANG_POLISH} "Places a shortcut to Password Sa
 LangString DESC_DesktopShortcut ${LANG_ITALIAN} "Places a shortcut to Password Safe on your desktop. [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString DESC_DesktopShortcut ${LANG_DANISH} "Places a shortcut to Password Safe on your desktop. [DA]"
+LangString DESC_DesktopShortcut ${LANG_DANISH} "Opretter en genvej til Password Safe på dit skrivebord."
 !endif
 
 LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start menu to Uninstall Password Safe."
@@ -451,7 +451,7 @@ LangString DESC_UninstallMenu ${LANG_POLISH} "Places a shortcut in the start men
 LangString DESC_UninstallMenu ${LANG_ITALIAN} "Places a shortcut in the start menu to Uninstall Password Safe. [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString DESC_UninstallMenu ${LANG_DANISH} "Places a shortcut in the start menu to Uninstall Password Safe. [DA]"
+LangString DESC_UninstallMenu ${LANG_DANISH} "Opretter en genvej i start menuen til Afinstallering af Password Safe."
 !endif
   
 ;================================================================================================
@@ -485,7 +485,7 @@ LangString TEXT_GC_TITLE ${LANG_POLISH} "Installation Type [PL]"
 LangString TEXT_GC_TITLE ${LANG_ITALIAN} "Installation Type [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString TEXT_GC_TITLE ${LANG_DANISH} "Installation Type [DA]"
+LangString TEXT_GC_TITLE ${LANG_DANISH} "Installations Type"
 !endif
 
 LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
@@ -517,7 +517,7 @@ LangString TEXT_GC_SUBTITLE ${LANG_POLISH} "Choose Regular for use on a single P
 LangString TEXT_GC_SUBTITLE ${LANG_ITALIAN} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString TEXT_GC_SUBTITLE ${LANG_DANISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [DA]"
+LangString TEXT_GC_SUBTITLE ${LANG_DANISH} "Vælg Standart for brug på en enkelt PC, Grøn for bærbar installation. Er du ikke sikker, er 'Standart' fint."
 !endif
 
 LangString PSWINI_TITLE ${LANG_ENGLISH} "Choose Installation Type"
@@ -549,7 +549,7 @@ LangString PSWINI_TITLE ${LANG_POLISH} "Choose Installation Type [PL]"
 LangString PSWINI_TITLE ${LANG_ITALIAN} "Choose Installation Type [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString PSWINI_TITLE ${LANG_DANISH} "Choose Installation Type [DA]"
+LangString PSWINI_TITLE ${LANG_DANISH} "Vælg Installations Type"
 !endif
 
 LangString PSWINI_TEXT1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
@@ -581,7 +581,7 @@ LangString PSWINI_TEXT1 ${LANG_POLISH} "Regular (uses Registry, suitable for hom
 LangString PSWINI_TEXT1 ${LANG_ITALIAN} "Regular (uses Registry, suitable for home or single user PC) [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString PSWINI_TEXT1 ${LANG_DANISH} "Regular (uses Registry, suitable for home or single user PC) [DA]"
+LangString PSWINI_TEXT1 ${LANG_DANISH} "Standart (bruger Registret, passer til hjemme eller enkelt bruger PC)"
 !endif
 
 LangString PSWINI_TEXT2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
@@ -613,7 +613,7 @@ LangString PSWINI_TEXT2 ${LANG_POLISH} "Green (for Disk-on-Key; does not use hos
 LangString PSWINI_TEXT2 ${LANG_ITALIAN} "Green (for Disk-on-Key; does not use host Registry) [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString PSWINI_TEXT2 ${LANG_DANISH} "Green (for Disk-on-Key; does not use host Registry) [DA]"
+LangString PSWINI_TEXT2 ${LANG_DANISH} "Grøn (for Disk-on-Key; bruger ikke lokal Registret) [DA]"
 !endif
 
 ;================================================================================================
@@ -650,7 +650,7 @@ LangString RUNNING_INSTALL ${LANG_POLISH} "The installer is already running. [PL
 LangString RUNNING_INSTALL ${LANG_ITALIAN} "The installer is already running. [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString RUNNING_INSTALL ${LANG_DANISH} "The installer is already running. [DA]"
+LangString RUNNING_INSTALL ${LANG_DANISH} "Installation kører allerede."
 !endif
 
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -684,7 +684,7 @@ LangString RUNNING_APPLICATION ${LANG_POLISH} "Please exit all running instances
 LangString RUNNING_APPLICATION ${LANG_ITALIAN} "Please exit all running instances of PasswordSafe before installing a new version [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString RUNNING_APPLICATION ${LANG_DANISH} "Please exit all running instances of PasswordSafe before installing a new version [DA]"
+LangString RUNNING_APPLICATION ${LANG_DANISH} "Afslut venligst alle kørende instanser af PasswordSafe før installing af en ny version"
 !endif
 
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -718,7 +718,7 @@ LangString LANG_INSTALL ${LANG_POLISH} "Installation Language [PL]"
 LangString LANG_INSTALL ${LANG_ITALIAN} "Installation Language [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString LANG_INSTALL ${LANG_DANISH} "Installation Language [DA]"
+LangString LANG_INSTALL ${LANG_DANISH} "Installations Sprog"
 !endif
 
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -752,7 +752,7 @@ LangString LANG_SELECT ${LANG_POLISH} "Please select the language for the instal
 LangString LANG_SELECT ${LANG_ITALIAN} "Please select the language for the installation [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString LANG_SELECT ${LANG_DANISH} "Please select the language for the installation [DA]"
+LangString LANG_SELECT ${LANG_DANISH} "Vælg venligst installations sprog"
 !endif
 
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -786,7 +786,7 @@ LangString SORRY_NO_95 ${LANG_POLISH} "Sorry, Windows 95 is no longer supported.
 LangString SORRY_NO_95 ${LANG_ITALIAN} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString SORRY_NO_95 ${LANG_DANISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [DA]"
+LangString SORRY_NO_95 ${LANG_DANISH} "Beklager men, Windows 95 er ikke længere understøttet. Prøv PasswordSafe 2.16"
 !endif
 
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -820,7 +820,7 @@ LangString SORRY_NO_98 ${LANG_POLISH} "Sorry, Windows 98 is no longer supported.
 LangString SORRY_NO_98 ${LANG_ITALIAN} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString SORRY_NO_98 ${LANG_DANISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [DA]"
+LangString SORRY_NO_98 ${LANG_DANISH} "Beklager men, Windows 98 er ikke længere understøttet. Prøv PasswordSafe 2.16"
 !endif
 
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -854,5 +854,5 @@ LangString SORRY_NO_ME ${LANG_POLISH} "Sorry, Windows ME is no longer supported.
 LangString SORRY_NO_ME ${LANG_ITALIAN} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [IT]"
 !endif
 !ifdef LANGUAGE_DANISH
-LangString SORRY_NO_ME ${LANG_DANISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [DA]"
+LangString SORRY_NO_ME ${LANG_DANISH} "Beklager men, Windows ME er ikke længere understøttet. Prøv PasswordSafe 2.16"
 !endif
