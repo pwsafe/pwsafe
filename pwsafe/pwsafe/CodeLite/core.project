@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="core" InternalType="Library">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="XML">
+    <VirtualDirectory Name="Xerces">
+      <File Name="../src/corelib/XML/Xerces/XFileXMLProcessor.cpp"/>
+      <File Name="../src/corelib/XML/Xerces/XFileSAX2Handlers.h"/>
+      <File Name="../src/corelib/XML/Xerces/XFileXMLProcessor.h"/>
+      <File Name="../src/corelib/XML/Xerces/XSecMemMgr.h"/>
+      <File Name="../src/corelib/XML/Xerces/XFileSAX2Handlers.cpp"/>
+      <File Name="../src/corelib/XML/Xerces/XSecMemMgr.cpp"/>
+      <File Name="../src/corelib/XML/Xerces/XFilterXMLProcessor.h"/>
+      <File Name="../src/corelib/XML/Xerces/XFileValidator.h"/>
+      <File Name="../src/corelib/XML/Xerces/XFilterXMLProcessor.cpp"/>
+      <File Name="../src/corelib/XML/Xerces/XFileValidator.cpp"/>
+      <File Name="../src/corelib/XML/Xerces/XFilterSAX2Handlers.h"/>
+      <File Name="../src/corelib/XML/Xerces/XFilterSAX2Handlers.cpp"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="Expat">
+      <File Name="../src/corelib/XML/Expat/EFilterValidatorDefs.h"/>
+      <File Name="../src/corelib/XML/Expat/ESecMemMgr.cpp"/>
+      <File Name="../src/corelib/XML/Expat/EFileXMLProcessor.cpp"/>
+      <File Name="../src/corelib/XML/Expat/EFilterHandlers.h"/>
+      <File Name="../src/corelib/XML/Expat/EFileHandlers.cpp"/>
+      <File Name="../src/corelib/XML/Expat/EFileValidator.h"/>
+      <File Name="../src/corelib/XML/Expat/EFilterXMLProcessor.h"/>
+      <File Name="../src/corelib/XML/Expat/EFileXMLProcessor.h"/>
+      <File Name="../src/corelib/XML/Expat/EFilterValidator.cpp"/>
+      <File Name="../src/corelib/XML/Expat/EFileValidatorDefs.h"/>
+      <File Name="../src/corelib/XML/Expat/ESecMemMgr.h"/>
+      <File Name="../src/corelib/XML/Expat/EFilterHandlers.cpp"/>
+      <File Name="../src/corelib/XML/Expat/EFileValidator.cpp"/>
+      <File Name="../src/corelib/XML/Expat/EFilterXMLProcessor.cpp"/>
+      <File Name="../src/corelib/XML/Expat/EFilterValidator.h"/>
+      <File Name="../src/corelib/XML/Expat/EFileHandlers.h"/>
+    </VirtualDirectory>
+    <File Name="../src/corelib/XML/XMLDefs.h"/>
+    <File Name="../src/corelib/XML/XMLFileValidation.h"/>
+    <File Name="../src/corelib/XML/XMLFileHandlers.h"/>
+    <File Name="../src/corelib/XML/XMLFileValidation.cpp"/>
+    <File Name="../src/corelib/XML/XMLFileHandlers.cpp"/>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src"/>
+  <VirtualDirectory Name="include"/>
+  <VirtualDirectory Name="tinyxml">
+    <File Name="../src/corelib/tinyxml/tinyxml.h"/>
+    <File Name="../src/corelib/tinyxml/tinyxmlparser.cpp"/>
+    <File Name="../src/corelib/tinyxml/tinyxml.cpp"/>
+    <File Name="../src/corelib/tinyxml/tinyxmlerror.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="corelib">
+    <File Name="../src/corelib/PWSfile.h"/>
+    <File Name="../src/corelib/Util.cpp"/>
+    <File Name="../src/corelib/CommandInterface.h"/>
+    <File Name="../src/corelib/PWScore.cpp"/>
+    <File Name="../src/corelib/PWSfileV3.cpp"/>
+    <File Name="../src/corelib/PWScore.h"/>
+    <File Name="../src/corelib/trigram.h"/>
+    <File Name="../src/corelib/CheckVersion.h"/>
+    <File Name="../src/corelib/XMLprefs.cpp"/>
+    <File Name="../src/corelib/coredefs.h"/>
+    <File Name="../src/corelib/PWPolicy.h"/>
+    <File Name="../src/corelib/Match.h"/>
+    <File Name="../src/corelib/ItemField.h"/>
+    <File Name="../src/corelib/PWHistory.cpp"/>
+    <File Name="../src/corelib/TwoFish.h"/>
+    <File Name="../src/corelib/Report.h"/>
+    <File Name="../src/corelib/ItemData.h"/>
+    <File Name="../src/corelib/UnknownField.h"/>
+    <File Name="../src/corelib/corelib_st.cpp"/>
+    <File Name="../src/corelib/PWPolicy.cpp"/>
+    <File Name="../src/corelib/corelib.h"/>
+    <File Name="../src/corelib/VerifyFormat.cpp"/>
+    <File Name="../src/corelib/PWSFilters.cpp"/>
+    <File Name="../src/corelib/Report.cpp"/>
+    <File Name="../src/corelib/PWSfileV1V2.cpp"/>
+    <File Name="../src/corelib/StringXStream.h"/>
+    <File Name="../src/corelib/PWCharPool.h"/>
+    <File Name="../src/corelib/Proxy.h"/>
+    <File Name="../src/corelib/SysInfo.h"/>
+    <File Name="../src/corelib/PWSfileV3.h"/>
+    <File Name="../src/corelib/Command.h"/>
+    <File Name="../src/corelib/PWSrand.h"/>
+    <File Name="../src/corelib/hmac.cpp"/>
+    <File Name="../src/corelib/sha1.cpp"/>
+    <File Name="../src/corelib/ItemData.cpp"/>
+    <File Name="../src/corelib/TwoFish.cpp"/>
+    <File Name="../src/corelib/PWHistory.h"/>
+    <File Name="../src/corelib/UIinterface.h"/>
+    <File Name="../src/corelib/PWSdirs.cpp"/>
+    <File Name="../src/corelib/PWSrand.cpp"/>
+    <File Name="../src/corelib/sha256.cpp"/>
+    <File Name="../src/corelib/UTF8Conv.cpp"/>
+    <File Name="../src/corelib/StringX.h"/>
+    <File Name="../src/corelib/PWSfileV1V2.h"/>
+    <File Name="../src/corelib/UUIDGen.h"/>
+    <File Name="../src/corelib/CoreImpExp.cpp"/>
+    <File Name="../src/corelib/Util.h"/>
+    <File Name="../src/corelib/BlowFish.h"/>
+    <File Name="../src/corelib/twofish_tab.c"/>
+    <File Name="../src/corelib/PWSAuxParse.cpp"/>
+    <File Name="../src/corelib/StringX.cpp"/>
+    <File Name="../src/corelib/SysInfo.cpp"/>
+    <File Name="../src/corelib/PWSdirs.h"/>
+    <File Name="../src/corelib/UTF8Conv.h"/>
+    <File Name="../src/corelib/PWSprefs.cpp"/>
+    <File Name="../src/corelib/Fish.h"/>
+    <File Name="../src/corelib/PWSFilters.h"/>
+    <File Name="../src/corelib/corelib_st.h"/>
+    <File Name="../src/corelib/hmac.h"/>
+    <File Name="../src/corelib/VerifyFormat.h"/>
+    <File Name="../src/corelib/PWSAuxParse.h"/>
+    <File Name="../src/corelib/sha1.h"/>
+    <File Name="../src/corelib/UnknownField.cpp"/>
+    <File Name="../src/corelib/Match.cpp"/>
+    <File Name="../src/corelib/PwsPlatform.h"/>
+    <File Name="../src/corelib/UUIDGen.cpp"/>
+    <File Name="../src/corelib/PWCharPool.cpp"/>
+    <File Name="../src/corelib/ItemField.cpp"/>
+    <File Name="../src/corelib/XMLprefs.h"/>
+    <File Name="../src/corelib/Command.cpp"/>
+    <File Name="../src/corelib/CheckVersion.cpp"/>
+    <File Name="../src/corelib/sha256.h"/>
+    <File Name="../src/corelib/PWSfile.cpp"/>
+    <File Name="../src/corelib/BlowFish.cpp"/>
+    <File Name="../src/corelib/PWSprefs.h"/>
+    <File Name="../src/corelib/corelib.rc2"/>
+  </VirtualDirectory>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="Debug"/>
+  <Settings Type="Static Library">
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-Wall;-O0" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>corelib_st.cpp corelib_st.h
+corelib_st.cpp corelib_st.h : ../src/corelib/corelib.rc2
+	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;-O" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>corelib_st.cpp corelib_st.h
+corelib_st.cpp corelib_st.h : ../src/corelib/corelib.rc2
+	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2
+</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <GlobalSettings>
+      <Compiler Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+  </Settings>
+</CodeLite_Project>

@@ -1,0 +1,130 @@
+This  folder  contains project and workspace files to build Pass‐
+wordSafe with CodeLite IDE (http://www.codelite.org).  These were
+created  with  CodeLite v2.5.2.4031, but that shouldn’t matter so
+long as you are using anything newer (or  even  slightly  older).
+Instead of the makefiles, you can use CodeLite to build Password‐
+Safe if you are missing missing the MS Visual  Studio  experience
+badly on Linux :‐)
+
+NOTE:  CodeLite’s  project/workspace  files  are provided only to
+make it easier to browse/build/debug PasswordSafe from  a  conve‐
+nient  IDE.  But if you are going to use CodeLite to edit code as
+well, be careful as CodeLite’s text editor can  sometimes  re‐ad‐
+just whitespaces, depending on your settings.  The ideal settings
+are:
+
+  1. Don’t use TABs (i.e. convert tabs to spaces)
+  2. Use 2 char indentation
+  3. Convert each TAB to 2 spaces
+
+One way to adjust these settings in CodeLite is from  its  Global
+Editor  Preferences.  Go to Settngs menu ‐> Global Editor Prefer‐
+ences, under General category ‐> Indentation section:
+  1. uncheck "Use tabs in indentation"
+  2. set "Columns per indentation level" to 2
+  3. set "Columns per tab character in document" to 2
+
+These changes will take effect for everything  you  use  CodeLite
+for.   If  you just want to change the settings for PasswordSafe,
+right click  on  "PasswordSafe"  in  Workspace  View  and  select
+"Workspace  Editor  Preferences".   Under  "Indentation", uncheck
+"Use global setting" for all three items and make sure  they  are
+set  as above.  CodeLite saves these settings in a different file
+with the username appended to it instead of the  workspace  file,
+so  it  doesn’t  seem  possible  to  set  it  for everyone in the
+workspace file itself.
+
+And these settings should be good enough for any new  files,  but
+still  be  careful  while changing existing files which might al‐
+ready have TAB characters, as CodeLite might convert them to spa‐
+ces while saving the file.  Please do an "svn diff" before check‐
+ing in and make sure you are not checking in  whitespace  changes
+that you didn’t intend to make.
+
+Building PasswordSafe Using CodeLite
+‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+Launch CodeLite,  go  to  "Workspace"  menu,  select  "Switch  to
+Workspace..."  and  load  the  PasswordSafe.workspace file in the
+Open Workspace dialog that comes up.
+
+To build, in the Workspace  view  to  the  left,  right‐click  on
+"pwsafe"  under  the  root "PasswordSafe" item and click "Build".
+Or just select "Build Workspace" from the Build menu.  You should
+get  a Debug or Release subdirectory (depending on the configura‐
+tion selected in Workspace View) under this (CodeLite)  directory
+that  contains  all  the intermediate and final files (libcore.a,
+libos.a and pwsafe binary).
+
+
+"Windows" and "wxWidgets" projects in Workspace View
+‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+The  "Windows"  project  in Workspace view exists to conveniently
+browse the source files of the Windows/MFC build.   That  project
+doesn’t  actually  build anything when you build "pwsafe" or even
+the entire workspace.
+
+The "wxWidgets" project exists to browse through wxWidgets source
+code.   The  project  assumes that wxWidgets sources exist in the
+"wx" subdirectory of the CodeLite directory.  So simply create  a
+symlink  to wherever wxWidgets is installed on your machine under
+the CodeLite directory, and you will be able  to  browse  through
+the  wxWidgets sources from within the IDE itself and even cross‐
+reference wxWidgets symbols from within your code.  For  example,
+if  wxWidgets sources are present in "/usr/src/wxGTK‐2.8.10/", do
+this in a terminal:
+
+    ln ‐s /usr/src/wxGTK‐2.8.10/ wx
+
+Note that this project, just  like  "Windows",  doesn’t  actually
+build  anything.  Its sole purpose to let you conveniently browse
+through wxWidgets sources.  Also, if you make the above  symlink,
+you  will be able to step into wxWidgets sources while debugging,
+as well as double‐click on a wxWidgets function name in the  call
+stack  window  and end up in the respective wxWidgets source file
+(assuming you have the correct version of wxWidgets sources).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
