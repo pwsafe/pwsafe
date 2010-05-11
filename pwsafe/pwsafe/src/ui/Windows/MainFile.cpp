@@ -3068,6 +3068,8 @@ LRESULT DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
                                     uuid_array_t &fromUUID, uuid_array_t &toUUID)
 {
+  bool bWasEmpty = ptocore->GetNumEntries() == 0;
+
   // Copy *pfromcore -> *ptocore entry
   ItemListIter fromPos = pfromcore->Find(fromUUID);
   ASSERT(fromPos != pfromcore->GetEntryEndIter());
@@ -3101,6 +3103,17 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     pcmd = AddEntryCommand::Create(ptocore, ci_temp);
   }
   Execute(pcmd, ptocore);
+
+  if (ptocore == &m_core) {
+    SetChanged(Data);
+    ChangeOkUpdate();
+    // May need to update menu/toolbar if database was previously empty
+    if (bWasEmpty)
+      UpdateMenuAndToolBar(m_bOpen);
+
+    CItemData *pci = GetLastSelected();
+    UpdateToolBarForSelectedItem(pci);
+  }
 
   return TRUE;
 }
