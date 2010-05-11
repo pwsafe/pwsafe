@@ -1,20 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
+<html><head>
 
   
 
 
 
   
-  <title>System Tab</title>
-<!-- pwsafe version: 3.03--><!-- Modified: 10/10/2006 --><!--Popup control -->
-  <script language="javascript" src="html/popups.js">
+  
+
+  <title>System Tab</title><!-- pwsafe version: 3.03--><!-- Modified: 10/10/2006 --><!--Popup control --><script language="javascript" src="html/popups.js">
   </script>
   
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-
+  <link rel="stylesheet" type="text/css" href="style.css"></head>
 
 <body>
 
@@ -104,7 +101,27 @@ file. Selecting this option and clicking on the <span style="font-weight: bold;"
 
 <hr style="width: 100%; height: 2px;">
 
-<h3>Migrate PasswordSafe configuration to user directory</h3>
+<h3>Migrate PasswordSafe configuration to user directory</h3>Prior to
+version 3.22, PasswordSafe kept application preferences (such as some
+of the user options, last files opened, window size and location, etc.)
+in a file in the same directory as the PasswordSafe executable. This
+has caused problems with recent versions of Windows when users were not
+given write access to this directory. Therefore, as of version 3.22,
+the configuration file (pwsafe.cfg) will be created in the standard
+location for such files (in the user's 'Application Data' directory).<br>By
+default, upgrades to existing installations will not change the
+existing preference file ("if it ain't broke, don't fix it"). However,
+if a user wishes to switch to the new setting manually, selecting this
+checkbox and clicking on 'Apply' will do so.<br><br>In more detail: The
+configuration file is designed to support multiple users from multiple
+machines. The migration function will move the current user's settings
+(associated with the current PC) from the configuration file to the new
+location. If there are other user/machine specific configurations in
+the file, they will be left untouched. If, on the other hand, there are
+none left after migration, the empty file will be deleted.<br>If you
+wish to share a common configuration file between users and/or across
+different PCs, you can either keep the file in the executable
+directory, or specify its location explicitly using the '-g <span style="font-style: italic;">config-file</span>' option, as described in <a href="cli.html">command line arguments</a>.
 
 
 
@@ -120,12 +137,10 @@ file. Selecting this option and clicking on the <span style="font-weight: bold;"
 <br>
 
 
-<object type="application/x-oleobject"
-        classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
   <param name="Keyword" value="Security Tab">
   <param name="Keyword" value="Lock Database">
   <param name="Keyword" value="Confirm Copy to Clipboard">
   <param name="Keyword" value="Clearing the Clipboard">
 </object>
-</body>
-</html>
+</body></html>

@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.22
 =====================
+[] Support for Danish has been added - thanks to Rejmond for his
+effort in translating!
 [2983775] Recently Used Entries are now saved in the database header and
 so are "persistent".  The current Windows user interface limits this to a
 maximum of the last 25 entries accessed.

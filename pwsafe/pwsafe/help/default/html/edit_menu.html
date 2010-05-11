@@ -1,16 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <title>Edit Menu</title>
+<html><head>
+  
 
 
-<!-- pwsafe version: 2.14--><!-- Modified: 18/11/2005 --><!--Popup control -->
-  <script language="javascript" src="html/popups.js">
+
+  <title>Edit Menu</title><!-- pwsafe version: 2.14--><!-- Modified: 18/11/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
   </script>
-  <link rel="stylesheet" type="text/css" href="style.css">
-
-</head>
-
+  <link rel="stylesheet" type="text/css" href="style.css"></head>
 
 <body>
 
@@ -113,9 +109,9 @@ Passwords). This is disabled if the database is opened
 read-only.</p>
 
 <h3>Undo</h3>
-<p>The last action will be reset</p>
+<p>The last action will be reset. Repeating undos will undo the actions in reverse order, from last to earliest.</p>
 <h3>Redo</h3>
-<p>The last resetted action will be executed again.</p>
+<p>The last undone action(s) will be executed again.</p>
 <h3>Clear Clipboard</h3>
 
 <p>Clear the clipboard's memory. This clears the clipboard of
@@ -228,13 +224,19 @@ base entry to this shortcut or alias.</p>
 
 <h3>Export Entry to Plain Text</h3>
 <p>
-The selected entry will be exported as plain text. Before exporting, you will be asked to input the Master password as a confirmation, that you intend to export an element of the database into an unencrypted text file.<br>
+The selected entry will be exported as plain text. Before exporting,
+you will be asked to input the Master password as a confirmation, that
+you intend to export an element of the database into an unencrypted
+text file.<br>
 <small><i>See also <a href="export.html">Exporting Entries</a> for more information.</i></small>
 
 </p>
 <h3>Export Entry in XML format</h3>
 <p>
-The selected entry will be exported in XML format. Before exporting, you will be asked to input the Master password as a confirmation, that you intend to export an element of the database into an unencrypted XML file..<br>
+The selected entry will be exported in XML format. Before exporting,
+you will be asked to input the Master password as a confirmation, that
+you intend to export an element of the database into an unencrypted XML
+file..<br>
 <small><i>See also <a href="export.html">Exporting Entries</a> for more information.</i></small>
 </p>
 </div>
@@ -292,5 +294,4 @@ section</a>.</p>
 <br>
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Edit Menu"> <param name="Keyword" value="Edit Password Entries"> <param name="Keyword" value="View Password Entries"> <param name="Keyword" value="Add Password Entries"> <param name="Keyword" value="Deleting Password Entries"> <param name="Keyword" value="Renaming Password Entries"> <param name="Keyword" value="Shortcut"> <param name="Keyword" value="Password Subset"> <param name="Keyword" value="Finding Password Entries"> </object>
-</body>
-</html>
+</body></html>
