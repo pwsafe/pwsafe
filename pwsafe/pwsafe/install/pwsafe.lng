@@ -39,7 +39,7 @@ LangString RESERVE_TITLE ${LANG_DUTCH} "Choose Installation Type [NL]"
 LangString RESERVE_TITLE ${LANG_FRENCH} "Veuillez choisir le type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString RESERVE_TITLE ${LANG_RUSSIAN} "Choose Installation Type [RU]"
+LangString RESERVE_TITLE ${LANG_RUSSIAN} "Выберите тип установки"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString RESERVE_TITLE ${LANG_POLISH} "Choose Installation Type [PL]"
@@ -71,7 +71,7 @@ LangString RESERVE_FIELD1 ${LANG_DUTCH} "Regular (uses Registry, suitable for ho
 LangString RESERVE_FIELD1 ${LANG_FRENCH} "Rйguliиre (utilise le Registre, adaptй pour la maison ou utilisation sur un seul PC)"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString RESERVE_FIELD1 ${LANG_RUSSIAN} "Regular (uses Registry, suitable for home or single user PC) [RU]"
+LangString RESERVE_FIELD1 ${LANG_RUSSIAN} "Обычная (данные об установке хранятся в реестре)"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString RESERVE_FIELD1 ${LANG_POLISH} "Regular (uses Registry, suitable for home or single user PC) [PL]"
@@ -103,7 +103,7 @@ LangString RESERVE_FIELD2 ${LANG_DUTCH} "Green (for Disk-on-Key; does not use ho
 LangString RESERVE_FIELD2 ${LANG_FRENCH} "Verte (pour Disque-sur-Clй; n'utilise pas le Registre)"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString RESERVE_FIELD2 ${LANG_RUSSIAN} "Green (for Disk-on-Key; does not use host Registry) [RU]"
+LangString RESERVE_FIELD2 ${LANG_RUSSIAN} "Портативная (не использовать реестр для хранения данных об установке)"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString RESERVE_FIELD2 ${LANG_POLISH} "Green (for Disk-on-Key; does not use host Registry) [PL]"
@@ -138,7 +138,7 @@ LangString PROGRAM_FILES ${LANG_DUTCH} "Program Files [NL]"
 LangString PROGRAM_FILES ${LANG_FRENCH} "Program Files"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString PROGRAM_FILES ${LANG_RUSSIAN} "Program Files [RU]"
+LangString PROGRAM_FILES ${LANG_RUSSIAN} "Основные файлы (необходимо)"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString PROGRAM_FILES ${LANG_POLISH} "Program Files [PL]"
@@ -173,7 +173,7 @@ LangString START_AUTO ${LANG_DUTCH} "Start automatically [NL]"
 LangString START_AUTO ${LANG_FRENCH} "Dйmarrer automatiquement"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString START_AUTO ${LANG_RUSSIAN} "Start automatically [RU]"
+LangString START_AUTO ${LANG_RUSSIAN} "Автозапуск"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString START_AUTO ${LANG_POLISH} "Start automatically [PL]"
@@ -208,7 +208,7 @@ LangString START_SHOW ${LANG_DUTCH} "Show in start menu [NL]"
 LangString START_SHOW ${LANG_FRENCH} "Afficher dans le menu Dйmarrer"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString START_SHOW ${LANG_RUSSIAN} "Show in start menu [RU]"
+LangString START_SHOW ${LANG_RUSSIAN} "Ярлык в меню $\"Пуск$\""
 !endif
 !ifdef LANGUAGE_POLISH
 LangString START_SHOW ${LANG_POLISH} "Show in start menu [PL]"
@@ -243,7 +243,7 @@ LangString START_SHORTCUT ${LANG_DUTCH} "Install desktop shortcut [NL]"
 LangString START_SHORTCUT ${LANG_FRENCH} "Installer un raccourci sur le Bureau"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString START_SHORTCUT ${LANG_RUSSIAN} "Install desktop shortcut [RU]"
+LangString START_SHORTCUT ${LANG_RUSSIAN} "Ярлык на Рабочем столе"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
@@ -278,7 +278,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_DUTCH} "Uninstall shortcut [NL]"
 LangString UNINSTALL_SHORTCUT ${LANG_FRENCH} "Uninstall shortcut [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString UNINSTALL_SHORTCUT ${LANG_RUSSIAN} "Uninstall shortcut [RU]"
+LangString UNINSTALL_SHORTCUT ${LANG_RUSSIAN} "Ярлык для удаления"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString UNINSTALL_SHORTCUT ${LANG_POLISH} "Uninstall shortcut [PL]"
@@ -314,7 +314,7 @@ LangString DESC_ProgramFiles ${LANG_DUTCH} "Installs the basic files necessary t
 LangString DESC_ProgramFiles ${LANG_FRENCH} "Installe les fichiers de base nйcessaires а PasswordSafe."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString DESC_ProgramFiles ${LANG_RUSSIAN} "Installs the basic files necessary to run Password Safe. [RU]"
+LangString DESC_ProgramFiles ${LANG_RUSSIAN} "Основные файлы, необходимые для работы Password Safe."
 !endif
 !ifdef LANGUAGE_POLISH
 LangString DESC_ProgramFiles ${LANG_POLISH} "Installs the basic files necessary to run Password Safe. [PL]"
@@ -346,7 +346,7 @@ LangString DESC_StartUp ${LANG_DUTCH} "Starts Password Safe as part of Windows b
 LangString DESC_StartUp ${LANG_FRENCH} "Dйmarre PasswordSafe lors du dйmarrage et connexion de Windows."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString DESC_StartUp ${LANG_RUSSIAN} "Starts Password Safe as part of Windows boot/login. [RU]"
+LangString DESC_StartUp ${LANG_RUSSIAN} "Запускать Password Safe при старте Windows (входе в систему)."
 !endif
 !ifdef LANGUAGE_POLISH
 LangString DESC_StartUp ${LANG_POLISH} "Starts Password Safe as part of Windows boot/login. [PL]"
@@ -378,7 +378,7 @@ LangString DESC_StartMenu ${LANG_DUTCH} "Creates an entry in the start menu for 
 LangString DESC_StartMenu ${LANG_FRENCH} "Crйe une entrйe dans le menu Dйmarrer pour PasswordSafe."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString DESC_StartMenu ${LANG_RUSSIAN} "Creates an entry in the start menu for Password Safe. [RU]"
+LangString DESC_StartMenu ${LANG_RUSSIAN} "Создать в меню $\"Пуск$\" ярлык для запуска Password Safe."
 !endif
 !ifdef LANGUAGE_POLISH
 LangString DESC_StartMenu ${LANG_POLISH} "Creates an entry in the start menu for Password Safe. [PL]"
@@ -410,7 +410,7 @@ LangString DESC_DesktopShortcut ${LANG_DUTCH} "Places a shortcut to Password Saf
 LangString DESC_DesktopShortcut ${LANG_FRENCH} "Place un raccourci vers PasswordSafe sur votre Bureau."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString DESC_DesktopShortcut ${LANG_RUSSIAN} "Places a shortcut to Password Safe on your desktop. [RU]"
+LangString DESC_DesktopShortcut ${LANG_RUSSIAN} "Создать на Рабочем столе ярлык для запуска Password Safe."
 !endif
 !ifdef LANGUAGE_POLISH
 LangString DESC_DesktopShortcut ${LANG_POLISH} "Places a shortcut to Password Safe on your desktop. [PL]"
@@ -442,7 +442,7 @@ LangString DESC_UninstallMenu ${LANG_DUTCH} "Places a shortcut in the start menu
 LangString DESC_UninstallMenu ${LANG_FRENCH} "Places a shortcut in the start menu to Uninstall Password Safe. [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString DESC_UninstallMenu ${LANG_RUSSIAN} "Places a shortcut in the start menu to Uninstall Password Safe. [RU]"
+LangString DESC_UninstallMenu ${LANG_RUSSIAN} "Создать в меню $\"Пуск$\" ярлык для удаления Password Safe."
 !endif
 !ifdef LANGUAGE_POLISH
 LangString DESC_UninstallMenu ${LANG_POLISH} "Places a shortcut in the start menu to Uninstall Password Safe. [PL]"
@@ -476,7 +476,7 @@ LangString TEXT_GC_TITLE ${LANG_DUTCH} "Installation Type [NL]"
 LangString TEXT_GC_TITLE ${LANG_FRENCH} "Type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString TEXT_GC_TITLE ${LANG_RUSSIAN} "Installation Type [RU]"
+LangString TEXT_GC_TITLE ${LANG_RUSSIAN} "Тип установки"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString TEXT_GC_TITLE ${LANG_POLISH} "Installation Type [PL]"
@@ -508,7 +508,7 @@ LangString TEXT_GC_SUBTITLE ${LANG_DUTCH} "Choose Regular for use on a single PC
 LangString TEXT_GC_SUBTITLE ${LANG_FRENCH} "Choisissez Rйguliиre pour utilisation sur un seul PC, Verte pour l'installation portable. Si vous кtes incertains, choisissez 'Rйguliиre'."
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString TEXT_GC_SUBTITLE ${LANG_RUSSIAN} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [RU]"
+LangString TEXT_GC_SUBTITLE ${LANG_RUSSIAN} "Выберите 'Обычная' для установки на домашний или однопользовательский компьютер, 'Портативная' - для установки на сменный носитель."
 !endif
 !ifdef LANGUAGE_POLISH
 LangString TEXT_GC_SUBTITLE ${LANG_POLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine. [PL]"
@@ -540,7 +540,7 @@ LangString PSWINI_TITLE ${LANG_DUTCH} "Choose Installation Type [NL]"
 LangString PSWINI_TITLE ${LANG_FRENCH} "Veuillez choisir le type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString PSWINI_TITLE ${LANG_RUSSIAN} "Choose Installation Type [RU]"
+LangString PSWINI_TITLE ${LANG_RUSSIAN} "Выберите тип установки"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString PSWINI_TITLE ${LANG_POLISH} "Choose Installation Type [PL]"
@@ -572,7 +572,7 @@ LangString PSWINI_TEXT1 ${LANG_DUTCH} "Regular (uses Registry, suitable for home
 LangString PSWINI_TEXT1 ${LANG_FRENCH} "Rйguliиre (utilise le Registre, adaptй pour la maison ou utilisation sur un seul PC)"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString PSWINI_TEXT1 ${LANG_RUSSIAN} "Regular (uses Registry, suitable for home or single user PC) [RU]"
+LangString PSWINI_TEXT1 ${LANG_RUSSIAN} "Обычная (данные об установке хранятся в реестре)"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString PSWINI_TEXT1 ${LANG_POLISH} "Regular (uses Registry, suitable for home or single user PC) [PL]"
@@ -604,7 +604,7 @@ LangString PSWINI_TEXT2 ${LANG_DUTCH} "Green (for Disk-on-Key; does not use host
 LangString PSWINI_TEXT2 ${LANG_FRENCH} "Verte (pour Disque-sur-Clй; n'utilise pas le Registre)"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString PSWINI_TEXT2 ${LANG_RUSSIAN} "Green (for Disk-on-Key; does not use host Registry) [RU]"
+LangString PSWINI_TEXT2 ${LANG_RUSSIAN} "Портативная (не использовать реестр для хранения данных об установке)"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString PSWINI_TEXT2 ${LANG_POLISH} "Green (for Disk-on-Key; does not use host Registry) [PL]"
@@ -641,7 +641,7 @@ LangString RUNNING_INSTALL ${LANG_DUTCH} "The installer is already running. [NL]
 LangString RUNNING_INSTALL ${LANG_FRENCH} "The installer is already running. [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString RUNNING_INSTALL ${LANG_RUSSIAN} "The installer is already running. [RU]"
+LangString RUNNING_INSTALL ${LANG_RUSSIAN} "Установка уже запущена."
 !endif
 !ifdef LANGUAGE_POLISH
 LangString RUNNING_INSTALL ${LANG_POLISH} "The installer is already running. [PL]"
@@ -675,7 +675,7 @@ LangString RUNNING_APPLICATION ${LANG_DUTCH} "Please exit all running instances 
 LangString RUNNING_APPLICATION ${LANG_FRENCH} "Please exit all running instances of PasswordSafe before installing a new version [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString RUNNING_APPLICATION ${LANG_RUSSIAN} "Please exit all running instances of PasswordSafe before installing a new version [RU]"
+LangString RUNNING_APPLICATION ${LANG_RUSSIAN} "Пожалуйста, закройте все запущенные экземпляры Password Safe"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString RUNNING_APPLICATION ${LANG_POLISH} "Please exit all running instances of PasswordSafe before installing a new version [PL]"
@@ -709,7 +709,8 @@ LangString LANG_INSTALL ${LANG_DUTCH} "Installatie spraak"
 LangString LANG_INSTALL ${LANG_FRENCH} "Installation Language [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString LANG_INSTALL ${LANG_RUSSIAN} "Installation Language [RU]"
+; Оставлена английская версия, чтобы сообщение было читабельно в случае запуска в неверной локали
+LangString LANG_INSTALL ${LANG_RUSSIAN} "Installation Language"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString LANG_INSTALL ${LANG_POLISH} "Installation Language [PL]"
@@ -743,7 +744,8 @@ LangString LANG_SELECT ${LANG_DUTCH} "Please select the language for the install
 LangString LANG_SELECT ${LANG_FRENCH} "Please select the language for the installation [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString LANG_SELECT ${LANG_RUSSIAN} "Please select the language for the installation [RU]"
+; Оставлена английская версия, чтобы сообщение было читабельно в случае запуска в неверной локали
+LangString LANG_SELECT ${LANG_RUSSIAN} "Please select the language for the installation"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString LANG_SELECT ${LANG_POLISH} "Please select the language for the installation [PL]"
@@ -777,7 +779,7 @@ LangString SORRY_NO_95 ${LANG_DUTCH} "Sorry, Windows 95 is no longer supported. 
 LangString SORRY_NO_95 ${LANG_FRENCH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString SORRY_NO_95 ${LANG_RUSSIAN} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [RU]"
+LangString SORRY_NO_95 ${LANG_RUSSIAN} "Извините, Windows 95 больше не поддерживается Password Safe. Попробуйте версию 2.16"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString SORRY_NO_95 ${LANG_POLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [PL]"
@@ -811,7 +813,7 @@ LangString SORRY_NO_98 ${LANG_DUTCH} "Sorry, Windows 98 is no longer supported. 
 LangString SORRY_NO_98 ${LANG_FRENCH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString SORRY_NO_98 ${LANG_RUSSIAN} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [RU]"
+LangString SORRY_NO_98 ${LANG_RUSSIAN} "Извините, Windows 98 больше не поддерживается Password Safe. Попробуйте версию 2.16"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString SORRY_NO_98 ${LANG_POLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16 [PL]"
@@ -845,7 +847,7 @@ LangString SORRY_NO_ME ${LANG_DUTCH} "Sorry, Windows ME is no longer supported. 
 LangString SORRY_NO_ME ${LANG_FRENCH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [FR]"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString SORRY_NO_ME ${LANG_RUSSIAN} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [RU]"
+LangString SORRY_NO_ME ${LANG_RUSSIAN} "Извините, Windows ME больше не поддерживается Password Safe. Попробуйте версию 2.16"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString SORRY_NO_ME ${LANG_POLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16 [PL]"
