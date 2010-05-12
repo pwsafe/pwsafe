@@ -21,6 +21,20 @@
 #include "../graphics/wxWidgets/tray.xpm"
 #include "../graphics/wxWidgets/locked_tray.xpm"
 #include "../graphics/wxWidgets/unlocked_tray.xpm"
+#include "../graphics/toolbar/wxWidgets/copypassword.xpm"
+#include "../graphics/toolbar/wxWidgets/copyuser.xpm"
+#include "../graphics/toolbar/wxWidgets/copynotes.xpm"
+#include "../graphics/toolbar/wxWidgets/clearclipboard.xpm"
+#include "../graphics/toolbar/wxWidgets/autotype.xpm"
+#include "../graphics/toolbar/wxWidgets/browseurl.xpm"
+#include "../graphics/toolbar/wxWidgets/browseurlplus.xpm"
+#include "../graphics/toolbar/wxWidgets/sendemail.xpm"
+#include "../graphics/toolbar/wxWidgets/delete.xpm"
+#include "../graphics/toolbar/wxWidgets/about.xpm"
+#include "../graphics/toolbar/wxWidgets/exit.xpm"
+#include "../graphics/toolbar/wxWidgets/lock.xpm"
+#include "../graphics/toolbar/wxWidgets/unlock.xpm"
+#include "../graphics/toolbar/wxWidgets/close.xpm"
 
 BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_MENU( ID_SYSTRAY_RESTORE, SystemTray::OnSysTrayMenuItem )
@@ -80,11 +94,11 @@ wxMenu* SystemTray::CreatePopupMenu()
 
   switch (m_status) {
     case TRAY_UNLOCKED:
-        menu->Append(ID_SYSTRAY_LOCK, wxT("&Lock Safe"));
+        menu->Append(ID_SYSTRAY_LOCK, wxT("&Lock Safe"))->SetBitmap(wxBitmap(lock_xpm));
       break;
 
     case TRAY_LOCKED:
-        menu->Append(ID_SYSTRAY_UNLOCK, wxT("&Unlock Safe"));
+        menu->Append(ID_SYSTRAY_UNLOCK, wxT("&Unlock Safe"))->SetBitmap(wxBitmap(unlock_xpm));
         break;
 
     case TRAY_CLOSED:
@@ -98,7 +112,7 @@ wxMenu* SystemTray::CreatePopupMenu()
 
   if (m_status != TRAY_CLOSED) {
     menu->AppendSeparator();
-    menu->Append(wxID_CLOSE, wxT("&Close"));
+    menu->Append(wxID_CLOSE, wxT("&Close"))->SetBitmap(wxBitmap(close_xpm));
     menu->AppendSubMenu(GetRecentHistory(), wxT("&Recent Entries History"));
   }
   
@@ -106,10 +120,10 @@ wxMenu* SystemTray::CreatePopupMenu()
   menu->Append(wxID_ICONIZE_FRAME, wxT("&Minimize"));
   menu->Append(ID_SYSTRAY_RESTORE, wxT("&Restore"));
   menu->AppendSeparator();
-  menu->Append(ID_CLEARCLIPBOARD,  wxT("&Clear Clipboard"));
-  menu->Append(wxID_ABOUT,         wxT("&About Password Safe..."));
+  menu->Append(ID_CLEARCLIPBOARD,  wxT("&Clear Clipboard"))->SetBitmap(wxBitmap(clearclipboard_xpm));
+  menu->Append(wxID_ABOUT,         wxT("&About Password Safe..."))->SetBitmap(wxBitmap(about_xpm));
   menu->AppendSeparator();
-  menu->Append(wxID_EXIT, wxT("&Exit"));
+  menu->Append(wxID_EXIT, wxT("&Exit"))->SetBitmap(wxBitmap(exit_xpm));
   
   //let the user iconize even if its already iconized
   if (!m_frame->IsShown())
@@ -146,15 +160,15 @@ wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci, size_t idx)
 
   wxMenu* menu = new wxMenu;
 
-  menu->Append(MakeCommandId(RUE_COPYPASSWORD, idx), wxT("&Copy Password to clipboard"));
+  menu->Append(MakeCommandId(RUE_COPYPASSWORD, idx), wxT("&Copy Password to clipboard"))->SetBitmap(wxBitmap(copypassword_xpm));
 
   if (!pci->IsUserEmpty())
-    menu->Append(MakeCommandId(RUE_COPYUSERNAME, idx), wxT("Copy &Username to clipboard"));
+    menu->Append(MakeCommandId(RUE_COPYUSERNAME, idx), wxT("Copy &Username to clipboard"))->SetBitmap(wxBitmap(copyuser_xpm));
 
   if (!pci->IsNotesEmpty())
-    menu->Append(MakeCommandId(RUE_COPYNOTES, idx), wxT("Copy &Notes to clipboard"));
+    menu->Append(MakeCommandId(RUE_COPYNOTES, idx), wxT("Copy &Notes to clipboard"))->SetBitmap(wxBitmap(copynotes_xpm));
 
-  menu->Append(MakeCommandId(RUE_AUTOTYPE, idx), wxT("Perform Auto&Type"));
+  menu->Append(MakeCommandId(RUE_AUTOTYPE, idx), wxT("Perform Auto&Type"))->SetBitmap(wxBitmap(autotype_xpm));
 
   if (!pci->IsURLEmpty() && !pci->IsURLEmail())
     menu->Append(MakeCommandId(RUE_COPYURL, idx), wxT("Copy URL to clipboard"));
@@ -163,17 +177,17 @@ wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci, size_t idx)
     menu->Append(MakeCommandId(RUE_COPYEMAIL, idx), wxT("Copy email to clipboard"));
 
   if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
-    menu->Append(MakeCommandId(RUE_BROWSE, idx), wxT("&Browse to URL"));
-    menu->Append(MakeCommandId(RUE_BROWSEAUTOTYPE, idx), wxT("Browse to URL + &Autotype"));
+    menu->Append(MakeCommandId(RUE_BROWSE, idx), wxT("&Browse to URL"))->SetBitmap(wxBitmap(browseurl_xpm));
+    menu->Append(MakeCommandId(RUE_BROWSEAUTOTYPE, idx), wxT("Browse to URL + &Autotype"))->SetBitmap(wxBitmap(browseurlplus_xpm));
   }
 
   if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail()))
-    menu->Append(MakeCommandId(RUE_SENDEMAIL, idx), wxT("&Send email"));
+    menu->Append(MakeCommandId(RUE_SENDEMAIL, idx), wxT("&Send email"))->SetBitmap(wxBitmap(sendemail_xpm));
 
   if (!pci->IsRunCommandEmpty())
     menu->Append(MakeCommandId(RUE_RUNCOMMAND, idx), wxT("&Run Command"));
 
-  menu->Append(MakeCommandId(RUE_DELETERUEENTRY, idx), wxT("&Delete from Recent Entry List"));
+  menu->Append(MakeCommandId(RUE_DELETERUEENTRY, idx), wxT("&Delete from Recent Entry List"))->SetBitmap(wxBitmap(delete_xpm));
 
   return menu;
 }
