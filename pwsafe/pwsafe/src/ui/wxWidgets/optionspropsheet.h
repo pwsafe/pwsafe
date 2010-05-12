@@ -61,6 +61,7 @@ class wxBoxSizer;
 #define ID_CHECKBOX16 10154
 #define ID_CHECKBOX17 10155
 #define ID_CHECKBOX18 10156
+#define ID_CHECKBOX38 10209
 #define ID_CHECKBOX19 10157
 #define ID_SPINCTRL10 10158
 #define ID_RADIOBOX 10159
@@ -152,52 +153,52 @@ public:
 ////@begin COptions event handler declarations
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
-  void OnBackupB4SaveClick( wxCommandEvent& evt);
+  void OnBackupB4SaveClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4
-  void OnBuPrefix( wxCommandEvent& evt);
+  void OnBuPrefix( wxCommandEvent& event );
 
   /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
-  void OnBuPrefixTxtSetFocus( wxFocusEvent& evt);
+  void OnBuPrefixTxtSetFocus( wxFocusEvent& event );
 
   /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
-  void OnSuffixCBSet( wxCommandEvent& evt);
+  void OnSuffixCBSet( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
-  void OnBuDirRB( wxCommandEvent& evt);
+  void OnBuDirRB( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
-  void OnBuDirBrowseClick( wxCommandEvent& evt);
+  void OnBuDirBrowseClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
-  void OnShowUsernameInTreeCB( wxCommandEvent& evt);
+  void OnShowUsernameInTreeCB( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
-  void OnPreExpiryWarnClick( wxCommandEvent& evt);
+  void OnPreExpiryWarnClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
-  void OnUseDefaultUserClick( wxCommandEvent& evt);
+  void OnUseDefaultUserClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
-  void OnBrowseLocationClick( wxCommandEvent& evt);
+  void OnBrowseLocationClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
-  void OnPwPolUseClick( wxCommandEvent& evt);
+  void OnPwPolUseClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
-  void OnPWHistSaveClick( wxCommandEvent& evt);
+  void OnPWHistSaveClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_PWHISTNOCHANGE
-  void OnPWHistRB( wxCommandEvent& evt);
+  void OnPWHistRB( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
-  void OnPWHistApply( wxCommandEvent& evt);
+  void OnPWHistApply( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
-  void OnLockOnIdleClick( wxCommandEvent& evt);
+  void OnLockOnIdleClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
-  void OnUseSystrayClick( wxCommandEvent& evt);
+  void OnUseSystrayClick( wxCommandEvent& event );
 
 ////@end COptions event handler declarations
 
@@ -296,6 +297,9 @@ public:
   bool GetSysmultinst() const { return m_sysmultinst ; }
   void SetSysmultinst(bool value) { m_sysmultinst = value ; }
 
+  bool GetPutgroups1st() const { return m_putgroups1st ; }
+  void SetPutgroups1st(bool value) { m_putgroups1st = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -378,6 +382,7 @@ private:
   bool m_sysmruonfilemenu;
   bool m_sysdefopenro;
   bool m_sysmultinst;
+  bool m_putgroups1st;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();
