@@ -243,7 +243,7 @@ void COptions::Init()
 void COptions::CreateControls()
 {    
 ////@begin COptions content construction
-  // COptions* itemPropertySheetDialog1 = this;
+  COptions* itemPropertySheetDialog1 = this;
 
   wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -348,22 +348,23 @@ void COptions::CreateControls()
   m_showpasswordintreeCB->SetValue(false);
   itemBoxSizer30->Add(m_showpasswordintreeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText34 = new wxStaticText( itemPanel29, wxID_STATIC, _("Example:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer30->Add(itemStaticText34, 0, wxALIGN_LEFT|wxALL, 5);
+  wxCheckBox* itemCheckBox34 = new wxCheckBox( itemPanel29, ID_CHECKBOX15, _("Show Notes as ToolTips in Tree && List views"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemCheckBox34->SetValue(false);
+  itemBoxSizer30->Add(itemCheckBox34, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox35 = new wxCheckBox( itemPanel29, ID_CHECKBOX15, _("Show Notes as ToolTips in Tree && List views"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox35 = new wxCheckBox( itemPanel29, ID_CHECKBOX16, _("Show Password in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox35->SetValue(false);
   itemBoxSizer30->Add(itemCheckBox35, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox36 = new wxCheckBox( itemPanel29, ID_CHECKBOX16, _("Show Password in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox36 = new wxCheckBox( itemPanel29, ID_CHECKBOX17, _("Show Notes in Edit"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox36->SetValue(false);
   itemBoxSizer30->Add(itemCheckBox36, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox37 = new wxCheckBox( itemPanel29, ID_CHECKBOX17, _("Show Notes in Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox37 = new wxCheckBox( itemPanel29, ID_CHECKBOX18, _("Word Wrap Notes in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox37->SetValue(false);
   itemBoxSizer30->Add(itemCheckBox37, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* itemCheckBox38 = new wxCheckBox( itemPanel29, ID_CHECKBOX18, _("Word Wrap Notes in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox38 = new wxCheckBox( itemPanel29, ID_CHECKBOX38, _("Put Groups first in Tree View"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox38->SetValue(false);
   itemBoxSizer30->Add(itemCheckBox38, 0, wxALIGN_LEFT|wxALL, 5);
 
@@ -722,10 +723,11 @@ void COptions::CreateControls()
   itemCheckBox6->SetValidator( wxGenericValidator(& m_backupb4save) );
   itemCheckBox31->SetValidator( wxGenericValidator(& m_alwaysontop) );
   itemCheckBox32->SetValidator( wxGenericValidator(& m_showusernameintree) );
-  itemCheckBox35->SetValidator( wxGenericValidator(& m_shownotesastipsinviews) );
-  itemCheckBox36->SetValidator( wxGenericValidator(& m_pwshowinedit) );
-  itemCheckBox37->SetValidator( wxGenericValidator(& m_notesshowinedit) );
-  itemCheckBox38->SetValidator( wxGenericValidator(& m_wordwrapnotes) );
+  itemCheckBox34->SetValidator( wxGenericValidator(& m_shownotesastipsinviews) );
+  itemCheckBox35->SetValidator( wxGenericValidator(& m_pwshowinedit) );
+  itemCheckBox36->SetValidator( wxGenericValidator(& m_notesshowinedit) );
+  itemCheckBox37->SetValidator( wxGenericValidator(& m_wordwrapnotes) );
+  itemCheckBox38->SetValidator( wxGenericValidator(& m_putgroups1st) );
   m_preexpirywarnCB->SetValidator( wxGenericValidator(& m_preexpirywarn) );
   itemRadioBox43->SetValidator( wxGenericValidator(& m_inittreeview) );
   itemCheckBox46->SetValidator( wxGenericValidator(& m_confirmdelete) );
@@ -818,6 +820,7 @@ void COptions::PrefsToPropSheet()
   m_pwshowinedit = prefs->GetPref(PWSprefs::ShowPWDefault);
   m_notesshowinedit = prefs->GetPref(PWSprefs::ShowNotesDefault);
   m_wordwrapnotes = prefs->GetPref(PWSprefs::NotesWordWrap);
+  m_putgroups1st = prefs->GetPref(PWSprefs::ExplorerTypeTree);
   m_preexpirywarn = prefs->GetPref(PWSprefs::PreExpiryWarn);
   m_preexpirywarndaysSB->SetValue(prefs->GetPref(PWSprefs::PreExpiryWarnDays));
   m_preexpirywarndaysSB->Enable(m_preexpirywarn);
@@ -934,6 +937,7 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::ShowPWDefault, m_pwshowinedit);
   prefs->SetPref(PWSprefs::ShowNotesDefault, m_notesshowinedit);
   prefs->SetPref(PWSprefs::NotesWordWrap, m_wordwrapnotes);
+  prefs->SetPref(PWSprefs::ExplorerTypeTree, m_putgroups1st);
   prefs->SetPref(PWSprefs::PreExpiryWarn, m_preexpirywarn);
   if (m_preexpirywarn)
     prefs->SetPref(PWSprefs::PreExpiryWarnDays,
