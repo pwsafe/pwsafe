@@ -346,6 +346,17 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 //overriden from base for case-insensitive sort
 int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
 {
+  const bool groupsFirst = PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree),
+             item1isGroup = ItemHasChildren(item1),
+             item2isGroup = ItemHasChildren(item2);
+
+  if (groupsFirst) {
+    if (item1isGroup && !item2isGroup)
+      return -1;
+    else if (item2isGroup && !item1isGroup)
+      return 1;
+  }
+
   const wxString text1 = GetItemText(item1);
   const wxString text2 = GetItemText(item2);
   return text1.CmpNoCase(text2);
