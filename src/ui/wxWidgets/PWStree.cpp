@@ -49,7 +49,7 @@
  * PWSTreeCtrl type definition
  */
 
-IMPLEMENT_CLASS( PWSTreeCtrl, wxTreeCtrl )
+IMPLEMENT_DYNAMIC_CLASS( PWSTreeCtrl, wxTreeCtrl )
 
 // Image Indices - these match the order images are added
 //                 in PWSTreeCtrl::CreateControls()
@@ -319,6 +319,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
   SetItemImage(titem, item);
+  SortChildren(gnode);
   uuid_array_t uuid;
   item.GetUUID(uuid);
   m_item_map.insert(std::make_pair(CUUIDGen(uuid), titem));
@@ -342,6 +343,13 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 }
 
 
+//overriden from base for case-insensitive sort
+int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
+{
+  const wxString text1 = GetItemText(item1);
+  const wxString text2 = GetItemText(item2);
+  return text1.CmpNoCase(text2);
+}
 
 wxTreeItemId PWSTreeCtrl::Find(const uuid_array_t &uuid) const
 {

@@ -53,11 +53,12 @@ typedef std::map<CUUIDGen, wxTreeItemId, CUUIDGen::ltuuid> UUIDTIMapT;
 
 class PWSTreeCtrl: public wxTreeCtrl
 {    
-  DECLARE_CLASS( PWSTreeCtrl )
+  DECLARE_DYNAMIC_CLASS( PWSTreeCtrl )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
+  PWSTreeCtrl(): m_core(*(PWScore*)(NULL)){} //if called, we're history
   PWSTreeCtrl(PWScore &core);
   PWSTreeCtrl(wxWindow* parent, PWScore &core, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
 
@@ -100,6 +101,8 @@ public:
   void SelectItem(const CUUIDGen& uuid);
 
  private:
+  //overriden from base for case-insensitive sort
+  virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2);
   bool ExistsInTree(wxTreeItemId node,
                     const StringX &s, wxTreeItemId &si);
   wxTreeItemId AddGroup(const StringX &group);

@@ -553,6 +553,7 @@ void PasswordSafeFrame::ShowTree(bool show)
   int w,h;
   GetClientSize(&w, &h);
   m_tree->SetSize(0, wxDefaultCoord, w, h);
+  m_tree->SortChildren(m_tree->GetRootItem());
   m_tree->Show(show);
 }
 
