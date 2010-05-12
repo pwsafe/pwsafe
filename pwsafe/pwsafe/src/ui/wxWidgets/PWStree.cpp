@@ -418,10 +418,24 @@ void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
 
 void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
 {
-  CItemData *item = GetItem(evt.GetItem());
-  if (item != NULL)
-    dynamic_cast<PasswordSafeFrame *>(GetParent())->
-      DispatchDblClickAction(*item);
+  const wxTreeItemId item = evt.GetItem();
+  if (ItemHasChildren(item) && GetChildrenCount(item) > 0){
+    if (IsExpanded(item))
+      Collapse(item);
+    else {
+      Expand(item);
+      //scroll the last child of this node into visibility
+      EnsureVisible(GetLastChild(item));
+      //but if that scrolled the parent out of the view, bring it back
+      EnsureVisible(item);
+    }
+  }    
+  else {
+    CItemData *ci = GetItem(item);
+    if (ci != NULL)
+      dynamic_cast<PasswordSafeFrame *>(GetParent())->
+        DispatchDblClickAction(*ci);
+  }
 }
 
 
