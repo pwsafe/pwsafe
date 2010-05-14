@@ -548,12 +548,12 @@ void PasswordSafeFrame::ShowTree(bool show)
          iter++) {
       m_tree->AddItem(iter->second);
     }
+    m_tree->SortChildren(m_tree->GetRootItem());
   }
 
   int w,h;
   GetClientSize(&w, &h);
   m_tree->SetSize(0, wxDefaultCoord, w, h);
-  m_tree->SortChildren(m_tree->GetRootItem());
   m_tree->Show(show);
 }
 
@@ -1585,49 +1585,102 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   return PWScore::SUCCESS;
 }
 
+bool PasswordSafeFrame::SaveAndClearDatabase()
+{
+  //Save UI elements first
+  PWSprefs::GetInstance()->SaveApplicationPreferences();
+  PWSprefs::GetInstance()->SaveShortcuts();
+  //Save alerts the user
+  if (!m_core.IsChanged() || Save() == PWScore::SUCCESS) {
+    ClearData();
+    return true;
+  }
+  return false;
+}
+
+bool PasswordSafeFrame::ReloadDatabase(const wxString& password)
+{
+  return Load(password) == PWScore::SUCCESS;
+}
+
+void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
+{
+  //TODO: must clear db prefs, UI states, RUE items etc here
+  if (tellUser) {
+    wxMessageBox(wxString(wxT("Could not re-load database: ")) << towxstring(m_core.GetCurFile()), 
+                     wxT("Error re-loading last database"), wxOK|wxICON_ERROR);
+  }
+  m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+}
+
 void PasswordSafeFrame::UnlockSafe(bool restoreUI)
 {
-  if (!m_sysTray->IsLocked() || VerifySafeCombination()) {
-
-    if (restoreUI) {
-      if (!IsShown())
-        Show();
-
-      if (IsIconized())
-        Iconize(false);
-
-      Raise();
+  wxString password;
+  if (m_sysTray->IsLocked()) {
+    if (VerifySafeCombination(password)) {
+      if (ReloadDatabase(password)) {
+        m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+      }
+      else {
+        CleanupAfterReloadFailure(true);
+        return;
+      }
     }
-
-    m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+    else {
+      return;
+    }
+  }
+  
+  if (restoreUI) {
+    if (!IsShown()) {
+      Show();
+    }
+    if (IsIconized()) {
+      Iconize(false);
+    }
+    Raise();
   }
 }
 
-bool PasswordSafeFrame::VerifySafeCombination(void)
+bool PasswordSafeFrame::VerifySafeCombination(wxString& password)
 {
   CSafeCombinationPrompt scp(NULL, m_core, towxstring(m_core.GetCurFile()));
-  return scp.ShowModal() == wxID_OK;
+  if (scp.ShowModal() == wxID_OK) {
+    password = scp.GetPassword();
+    return true;
+  }
+  return false;
 }
 
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 {
   // being restored?
-  if (!evt.Iconized()) {
-    if (m_sysTray->IsLocked() && !VerifySafeCombination()) {
-      //On Linux, the UI is already restored, so hide it back
-      HideUI(true); //true => lock UI
+  if (!evt.Iconized() && m_sysTray->IsLocked()){
+    wxString password;
+    if (VerifySafeCombination(password)) {
+      if (ReloadDatabase(password)) {
+        Show();
+        //On Linux, the UI is already restored, so just set the status flag
+        m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+      }
+      else {
+        CleanupAfterReloadFailure(true);
+      }
     }
     else {
-      //On Linux, the UI is already restored, so just set the status flag
-      m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+      //On Linux, the UI is already restored, so hide it back
+      HideUI(true); //true => lock UI
     }
   }
 }
 
 void PasswordSafeFrame::HideUI(bool lock)
 {
-  if (lock)
+  if (lock) {
+    if (!SaveAndClearDatabase())
+      return;
     m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+  }
 
   wxClipboard().Clear();
   
