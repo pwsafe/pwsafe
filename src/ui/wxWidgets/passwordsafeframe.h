@@ -313,7 +313,7 @@ public:
     void UnlockUI(bool restoreFrame);
     
     /// Returns true if the user enters the correct safe combination and presses OK
-    bool VerifySafeCombination(void);
+    bool VerifySafeCombination(wxString& password);
 
     void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
     void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
@@ -332,6 +332,9 @@ public:
   void ShowGrid(bool show = true);
   void ShowTree(bool show = true);
   void ClearData();
+  bool ReloadDatabase(const wxString& password);
+  bool SaveAndClearDatabase();
+  void CleanupAfterReloadFailure(bool tellUser);
   Command *Delete(CItemData *pci);
   Command *Delete(wxTreeItemId tid); // for group delete
   CItemData *GetSelectedEntry() const;
