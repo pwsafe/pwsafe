@@ -60,6 +60,8 @@ menu Generate Password option & Password Policy setting as per previous
 releases.
 [2960709] Entry selected prior to workstation locking is reselected on
 being restored after unlocking the workstation.
+[2957933] Ensure that AutoType delay and wait times are not impacted by numeric
+characters from any entry field substitution.
 [2951871] Shortcut related menu items now returned to the Edit menu and
 the "Run Command", "Browse to URL", "Browse to URL + Autotype" and
 "Send email" functions now work again, when a Shortcut entry is selected.
