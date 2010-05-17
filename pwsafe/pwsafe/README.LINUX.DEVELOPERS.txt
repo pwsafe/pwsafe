@@ -8,7 +8,7 @@ package names (e.g., rpm).
 
 Here are the packages/tools required for building the Linux version:
 g++
-make
+gmake (version 3.81 or newer.  Makefiles are not compatible with lower versions)
 libuuid1
 libwxgtk2.8-dev
 libxt-dev
