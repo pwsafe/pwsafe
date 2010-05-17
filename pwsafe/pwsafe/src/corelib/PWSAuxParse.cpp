@@ -292,6 +292,8 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
   }
 
   const int N = sx_autotype.length();
+  const StringX sxZeroes = _T("000");
+  int gNumIts;
 
   for (int n = 0; n < N; n++){
     curChar = sx_autotype[n];
@@ -331,7 +333,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
             break;
           }
           int line_number(0);
-          int gNumIts(0);
+          gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
             if (_istdigit(sx_autotype[n])) {
               line_number *= 10;
@@ -358,14 +360,31 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         // actions it performs whilst doing the key sending.
         // Copy them to output string unchanged.
         case TCHAR('b'):  // backspace!
-        case TCHAR('d'):  // Delay
-        case TCHAR('w'):  // Wait milli-seconds
-        case TCHAR('W'):  // Wait seconds
         case TCHAR('z'):  // Use older method
           vactionverboffsets.push_back(sxtmp.length());
           sxtmp += _T("\\");
           sxtmp += curChar;
-          break; // case 'b', 'd', 'w', 'W' & 'z'
+          break; // case 'b' & 'z'
+
+        case TCHAR('d'):  // Delay
+        case TCHAR('w'):  // Wait milli-seconds
+        case TCHAR('W'):  // Wait seconds
+        {
+          // Need to ensure that the field length is 3, even if it wasn't
+          vactionverboffsets.push_back(sxtmp.length());
+          sxtmp += _T("\\");
+          sxtmp += curChar;
+
+          gNumIts = 0;
+          int i = n;
+          for (i++; i < N && (gNumIts < 3); ++gNumIts, i++) {
+            if (!_istdigit(sx_autotype[i]))
+              break;
+          }
+          // Insert sufficient zeroes to ensure field is 3 characters long
+          sxtmp += sxZeroes.substr(0, 3 - gNumIts);
+          break; // case 'd', 'w' & 'W'
+        }
 
         // Also copy explicit control characters to output string unchanged.
         case TCHAR('a'): // bell (can't hear it during testing!)
