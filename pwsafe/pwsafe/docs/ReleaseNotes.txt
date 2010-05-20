@@ -42,6 +42,7 @@ under "My Documents".
 
 Bugs fixed in 3.22
 ==================
+[3004446] Deleting a group of entries works again.
 [2994118] Swedish version no longer crashes when checking for latest
 version.
 [2990734] Changing either whether password history is kept and deleting
@@ -71,8 +72,8 @@ is Locked, Minimized or "AutoType with Minimize" and then Restored.
 and OK buttons.
 [] Fix errors if importing an XML file with entries with duplicate unique IDs
 (UUID elements).
-[] Remove obsolete preference to "Confirm Deletion of Entries" from the miscellaneous
-Options page. The user has the Undo/Redo feature to cater for this. Users are always
+[] Remove "Confirm Deletion of Entries" checkbox from theMisc. Options
+page. New support for Undo/Redo made this unnecessary. Users are always 
 asked to confirm the deletion of Groups or entries that have aliases or shortcuts.
 
 New Features for 3.21
