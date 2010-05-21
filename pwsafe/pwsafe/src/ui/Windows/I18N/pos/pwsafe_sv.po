@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-05-20 20:26+0100\n"
+"PO-Revision-Date: 2010-05-20 23:31+0100\n"
 "Last-Translator: Björn Nordwall <nordwall.b@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1239,7 +1239,7 @@ msgid ""
 msgstr ""
 "<b><font color=\"red\">VARNING</font></b> Om du fortsätter, kommer fält i din existerande databas att uppdateras från din valda inmatningsdatabas.\r\n"
 "\r\n"
-"OK knappen i menyn för lösenordsinmatning till din inmatningsdatabas inte att vara tillgänglig <b> förrän du har aktiverat den avancerade menyn för att konfirmera vad du kommer att uppdatera.</b>"
+"OK-knappen i menyn för att ange lösenord till din databas kommer inte att vara tillgänglig <b> förrän du har valt den avancerade menyn för att där konfirmera vad du vill uppdatera.</b>"
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -2508,15 +2508,15 @@ msgstr "Dra denna bild över ett annat fönster för att klistra '%s' fältet."
 
 # Dropped????
 #. Resource IDs: (342)
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n"
 "\r\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Borttappad post '%s:%s:%s' lösenordet pekar på en post som också är en alias.\r\n"
+"Inkopierad post '%s:%s:%s' lösenordet pekar på en post som också är en alias.\r\n"
 "\r\n"
-"Den borttappade posten refererar nu till den postens baspost."
+"Den inkopierade posten refererar nu till postens baspost."
 
 #. Resource IDs: (514)
 msgid "Dutch"
