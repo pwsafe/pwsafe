@@ -13,12 +13,15 @@
 
 #include <wx/wxprec.h>
 
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
+
 #include "./guiinfo.h"
 #include "./passwordsafeframe.h"
 #include "./PWStree.h"
 #include "./PWSgrid.h"
 #include <functional>
-
 
 void ClearUUID(uuid_array_t uu)
 {
@@ -26,15 +29,8 @@ void ClearUUID(uuid_array_t uu)
 }
 
 
-GUIInfo::GUIInfo() : m_viewType(UNKNOWN)
-{
-}
-
 void GUIInfo::Save(PasswordSafeFrame* frame)
 {
-  m_viewType = (frame->m_currentView == PasswordSafeFrame::GRID? GRIDVIEW : TREEVIEW);
-  m_position = frame->GetRect();
-
   SaveTreeViewInfo(frame->m_tree);
   SaveGridViewInfo(frame->m_grid);
 }
@@ -43,9 +39,6 @@ void GUIInfo::Restore(PasswordSafeFrame* frame)
 {
   RestoreTreeViewInfo(frame->m_tree);
   RestoreGridViewInfo(frame->m_grid);
-
-  frame->ShowGrid(m_viewType == GRIDVIEW);
-  frame->ShowTree(m_viewType == TREEVIEW);
 }
 
 void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
@@ -65,62 +58,83 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
       wxFAIL_MSG(wxString(wxT("Tree item \'")) << tree->GetItemText(treeItem) << wxT("\' found with no children and no CItemData"));
     }
   }
+  else {
+    m_treeTop.Clear();
+  }
   
   m_expanded.Empty();
 
   //find out all the expanded groups in a depth-first manner
   wxTreeItemIdValue dummy;
-  for ( wxTreeItemId id = tree->GetFirstChild(tree->GetRootItem(), dummy); id.IsOk(); ) {
-    if (tree->ItemHasChildren(id) && tree->IsExpanded(id)) {
-      m_expanded.Add(tree->GetItemText(id));
-      id = tree->GetFirstChild(id, dummy);
-    }
-    else {
-      wxTreeItemId parent = tree->GetItemParent(id);
-      for (id = tree->GetNextSibling(id); !id.IsOk() && parent != tree->GetRootItem(); 
-                 id = tree->GetNextSibling(parent), parent = tree->GetItemParent(parent))
-      {
+  const wxTreeItemId root = tree->GetRootItem();
+  if (root.IsOk()) {
+    for ( wxTreeItemId id = tree->GetFirstChild(root, dummy); id.IsOk(); ) {
+      if (tree->ItemHasChildren(id) && tree->IsExpanded(id)) {
+        m_expanded.Add(tree->GetItemText(id));
+        id = tree->GetFirstChild(id, dummy);
+      }
+      else {
+        wxTreeItemId parent = tree->GetItemParent(id);
+        for (id = tree->GetNextSibling(id); !id.IsOk() && parent != root; 
+                   id = tree->GetNextSibling(parent), parent = tree->GetItemParent(parent))
+        {
+        }
       }
     }
   }
 
   //save the selected item
   wxTreeItemId selection = tree->GetSelection();
-  if (tree->HasChildren(selection)) {
-    m_treeSelection = tree->GetItemText(selection);
-    wxASSERT(!wxString(m_treeSelection).IsEmpty());
-  }
-  else {
-    CItemData* item = tree->GetItem(selection);
-    if (item) {
-      item->GetUUID(m_treeSelection);
+  if (selection.IsOk()) {
+    if(tree->HasChildren(selection)) {
+      m_treeSelection = tree->GetItemText(selection);
+      wxASSERT(!wxString(m_treeSelection).IsEmpty());
     }
     else {
-      m_treeSelection.Clear();
-      wxFAIL_MSG(wxString(wxT("tree item \'")) << tree->GetItemText(selection) << wxT("\' found with no CItemData attached"));
+      CItemData* item = tree->GetItem(selection);
+      if (item) {
+        item->GetUUID(m_treeSelection);
+      }
+      else {
+        m_treeSelection.Clear();
+        wxFAIL_MSG(wxString(wxT("tree item \'")) << tree->GetItemText(selection) << wxT("\' found with no CItemData attached"));
+      }
     }
+  }
+  else {
+    m_treeSelection.Clear();
   }
 }
 
 void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
 {
-  int row = grid->YToRow(0);
-  CItemData* item = grid->GetItem(row);
-  if (item) {
-    item->GetUUID(m_gridTop);
+  const int row = grid->YToRow(0);
+  if (row != wxNOT_FOUND) {
+    CItemData* item = grid->GetItem(row);
+    if (item) {
+      item->GetUUID(m_gridTop);
+    }
+    else {
+      wxFAIL_MSG(wxString(wxT("Top grid row ")) << row << wxT(" has no CItemData attached"));
+      ClearUUID(m_gridTop);
+    }
   }
   else {
-    wxFAIL_MSG(wxString(wxT("Top grid row ")) << row << wxT(" has no CItemData attached"));
     ClearUUID(m_gridTop);
   }
 
-  int selection = grid->GetGridCursorRow();
-  item = grid->GetItem(selection);
-  if (item) {
-    item->GetUUID(m_gridSelection);
+  const int selection = grid->GetGridCursorRow();
+  if (selection != wxNOT_FOUND) {
+    CItemData* item = grid->GetItem(selection);
+    if (item) {
+      item->GetUUID(m_gridSelection);
+    }
+    else {
+      wxFAIL_MSG(wxString(wxT("Selected grid row ")) << selection << wxT(" has no CItemData attached"));
+      ClearUUID(m_gridSelection);
+    }
   }
   else {
-    wxFAIL_MSG(wxString(wxT("Selected grid row ")) << selection << wxT(" has no CItemData attached"));
     ClearUUID(m_gridSelection);
   }
 }
@@ -139,6 +153,7 @@ void GUIInfo::RestoreGridViewInfo(PWSGrid* grid)
     grid->MakeCellVisible(selection, 0);
     grid->SetGridCursor(selection, 0);
 #endif
+    grid->SelectRow(selection);
   }
 }
 
@@ -146,20 +161,23 @@ template <class TreeFunc, class Predicate>
 void VisitGroupItems(PWSTreeCtrl* tree, const Predicate& pred, TreeFunc func, bool visitAll)
 {
   wxTreeItemIdValue dummy;
-  for ( wxTreeItemId id = tree->GetFirstChild(tree->GetRootItem(), dummy); id.IsOk(); ) {
-    if (tree->ItemHasChildren(id)) {
-      if (pred(tree->GetItemText(id))) {
-        func(tree, id); 
-        if (!visitAll)
-          break;
+  const wxTreeItemId root = tree->GetRootItem();
+  if (root.IsOk()) {
+    for ( wxTreeItemId id = tree->GetFirstChild(root, dummy); id.IsOk(); ) {
+      if (tree->ItemHasChildren(id)) {
+        if (pred(tree->GetItemText(id))) {
+          func(tree, id); 
+          if (!visitAll)
+            break;
+        }
+        id = tree->GetFirstChild(id, dummy);
       }
-      id = tree->GetFirstChild(id, dummy);
-    }
-    else {
-      wxTreeItemId parent = tree->GetItemParent(id);
-      for (id = tree->GetNextSibling(id); !id.IsOk() && parent != tree->GetRootItem(); 
+      else {
+        wxTreeItemId parent = tree->GetItemParent(id);
+        for (id = tree->GetNextSibling(id); !id.IsOk() && parent != root; 
                  id = tree->GetNextSibling(parent), parent = tree->GetItemParent(parent))
-      {
+        {
+        }
       }
     }
   }
@@ -179,7 +197,9 @@ void RestoreTreeItem(PWSTreeCtrl* tree, const string_or_uuid& val, TreeFunc func
 }
 
 struct SelectItem {
-  void operator()(PWSTreeCtrl* tree, const wxTreeItemId& id) { tree->wxTreeCtrl::SelectItem(id, true); }
+  void operator()(PWSTreeCtrl* tree, const wxTreeItemId& id) { 
+      tree->wxTreeCtrl::SelectItem(id, true); 
+  }
 };
 
 struct BringItemToTop {
@@ -194,13 +214,17 @@ struct FindInArray : public std::binary_function<wxString, wxArrayString, bool>{
 };
 
 struct ExpandItem {
-  void operator()( PWSTreeCtrl* tree, const wxTreeItemId& id) { tree->Expand(id); }
+  void operator()( PWSTreeCtrl* tree, const wxTreeItemId& id) { 
+    tree->Expand(id); 
+  }
 };
 
 void GUIInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
 {
-  RestoreTreeItem(tree, m_treeTop, BringItemToTop());
-  RestoreTreeItem(tree, m_treeSelection, SelectItem());
+  if (m_treeTop.Type() != string_or_uuid::ITEM_NONE)
+    RestoreTreeItem(tree, m_treeTop, BringItemToTop());
+  if (m_treeSelection.Type() != string_or_uuid::ITEM_NONE)
+    RestoreTreeItem(tree, m_treeSelection, SelectItem());
   VisitGroupItems(tree, std::bind2nd(FindInArray(), m_expanded), ExpandItem(), true);
 }
 

@@ -43,6 +43,7 @@
 #include "pwsclip.h"
 #include "SystemTray.h"
 #include "wxutils.h"
+#include "guiinfo.h"
 #include <wx/clipbrd.h>
 
 // main toolbar images
@@ -202,7 +203,7 @@ END_EVENT_TABLE()
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-  m_RUEList(core)
+  m_RUEList(core), m_guiInfo(new GUIInfo)
 {
     Init();
 }
@@ -212,7 +213,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-    m_RUEList(core)
+    m_RUEList(core), m_guiInfo(new GUIInfo)
 {
     Init();
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
@@ -253,6 +254,9 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
   delete m_sysTray;
   m_sysTray = 0;
+
+  delete m_guiInfo;
+  m_guiInfo = 0;
 }
 
 
@@ -1639,6 +1643,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
       Iconize(false);
     }
     Raise();
+    m_guiInfo->Restore(this);
   }
 }
 
@@ -1662,6 +1667,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
         Show();
         //On Linux, the UI is already restored, so just set the status flag
         m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+        m_guiInfo->Restore(this);
       }
       else {
         CleanupAfterReloadFailure(true);
@@ -1676,6 +1682,8 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 
 void PasswordSafeFrame::HideUI(bool lock)
 {
+  m_guiInfo->Save(this);
+
   if (lock) {
     if (!SaveAndClearDatabase())
       return;
