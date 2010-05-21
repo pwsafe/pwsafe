@@ -536,10 +536,8 @@ void PasswordSafeFrame::ShowGrid(bool show)
       m_grid->AddItem(iter->second, i++);
     }
   }
-  int w,h;
-  GetClientSize(&w, &h);
-  m_grid->SetSize(w, h);
   m_grid->Show(show);
+  GetSizer()->Layout();
 }
 
 void PasswordSafeFrame::ShowTree(bool show)
@@ -555,10 +553,8 @@ void PasswordSafeFrame::ShowTree(bool show)
     m_tree->SortChildren(m_tree->GetRootItem());
   }
 
-  int w,h;
-  GetClientSize(&w, &h);
-  m_tree->SetSize(0, wxDefaultCoord, w, h);
   m_tree->Show(show);
+  GetSizer()->Layout();
 }
 
 
