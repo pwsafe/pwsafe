@@ -386,11 +386,11 @@ void PasswordSafeFrame::CreateControls()
   itemFrame1->SetSizer(mainsizer);
 
   m_grid = new PWSGrid( itemFrame1, m_core, ID_LISTBOX, wxDefaultPosition,
-                        itemFrame1->GetClientSize(), wxHSCROLL|wxVSCROLL );
+                        wxDefaultSize, wxHSCROLL|wxVSCROLL );
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
   m_tree = new PWSTreeCtrl( itemFrame1, m_core, ID_TREECTRL, wxDefaultPosition,
-                            itemFrame1->GetClientSize(),
+                            wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
