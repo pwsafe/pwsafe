@@ -351,6 +351,14 @@ void PWSGrid::OnLeftDClick( wxGridEvent& evt )
      }
  }
 
+int  PWSGrid::FindItemRow(const uuid_array_t& uu)
+{
+     UUIDRowMapT::const_iterator itr = m_uuid_map.find(CUUIDGen(uu));
+     if (itr != m_uuid_map.end()) {
+       return itr->second;
+     }
+     return wxNOT_FOUND;
+}
 
 /*!
  * wxEVT_CHAR event handler for ID_LISTBOX

@@ -118,6 +118,7 @@ public:
   
   void SelectItem(const CUUIDGen& uuid);
 
+  int  FindItemRow(const uuid_array_t& uu);
 ////@begin PWSGrid member variables
 ////@end PWSGrid member variables
 

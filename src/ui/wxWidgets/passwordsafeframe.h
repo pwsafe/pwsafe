@@ -35,6 +35,7 @@
 class PWSGrid;
 class PWSTreeCtrl;
 class SystemTray;
+class GUIInfo;
 ////@end forward declarations
 class PasswordSafeSearch;
 
@@ -366,6 +367,7 @@ public:
   SystemTray* m_sysTray;
   bool m_exitFromMenu; 
   CRUEList m_RUEList;
+  GUIInfo* m_guiInfo;
 };
 
 #endif

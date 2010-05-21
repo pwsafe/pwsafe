@@ -53,8 +53,8 @@ class string_or_uuid
 class GUIInfo
 {
   public:
-    GUIInfo();
     //Let the compiler generate these
+    //GUIInfo();
     //GUIInfo(const GUIInfo& other);
     //GUIInfo& operator=(const GUIInfo& other);
 
@@ -77,11 +77,6 @@ class GUIInfo
 
     uuid_array_t       m_gridTop;                       //top element in gridview
     uuid_array_t       m_gridSelection;                 //selected elements, only one per view
-
-    wxRect             m_position;                      //position and size of the frame window
-
-    typedef enum {TREEVIEW, GRIDVIEW, UNKNOWN} ViewType;
-    ViewType           m_viewType;                      //currently selected view type
 
 };
 
