@@ -920,7 +920,7 @@ Section "$(START_SHOW)" StartMenu
   IntCmp $LANGUAGE 1040 useLanguageItalian
 !endif
 !ifdef LANGUAGE_DANISH
-  IntCmp $LANGUAGE 1040 useLanguageDanish
+  IntCmp $LANGUAGE 1030 useLanguageDanish
 !endif
   Goto languageChoicedone
 
