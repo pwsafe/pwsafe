@@ -1122,6 +1122,12 @@ void DboxMain::AutoType(const CItemData &ci)
   bool bMinOnAuto = PWSprefs::GetInstance()->
                     GetPref(PWSprefs::MinimizeOnAutotype);
 
+  // Use CItemData ci before we potentially minimize the Window, since if
+  // the user also specifies 'Lock on Minimize', it will become invalid.
+  std::vector<size_t> vactionverboffsets;
+  const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
+                                                            vactionverboffsets);
+
   if (bMinOnAuto) {
     // Need to save display status for when we return from minimize
     m_vGroupDisplayState = GetGroupDisplayState();
@@ -1129,9 +1135,6 @@ void DboxMain::AutoType(const CItemData &ci)
   } else
     ShowWindow(SW_HIDE);
 
-  std::vector<size_t> vactionverboffsets;
-  const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
-                                                            vactionverboffsets);
   DoAutoType(sxautotype, vactionverboffsets);
 
   // If we minimized it, exit. If we only hid it, now show it

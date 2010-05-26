@@ -304,6 +304,7 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* pDataObject,
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   if (pil != NULL) {
+    TRACE(L"CPWTreeCtrl::OnDragEnter() hide cursor\n");
     while (ShowCursor(FALSE) >= 0)
       ;
   }
@@ -414,6 +415,7 @@ void CPWTreeCtrl::OnDragLeave()
   m_TickCount = 0;
   m_bWithinThisInstance = false;
   // ShowCursor's semantics are VERY odd - RTFM
+  TRACE(L"CPWTreeCtrl::OnDragLeave() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
 }
@@ -1178,6 +1180,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
     return FALSE;
 
   m_TickCount = 0;
+  TRACE(L"CPWTreeCtrl::OnDrop() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
   POINT p, hs;
@@ -1404,6 +1407,8 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
   pil->BeginDrag(0, CPoint(0,0));
   pil->DragMove(ptAction);
   pil->DragEnter(this, ptAction);
+
+  TRACE(L"CPWTreeCtrl::OnBeginDrag() hide cursor\n");
   while (ShowCursor(FALSE) >= 0)
     ;
   SetCapture();
@@ -1436,7 +1441,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
   delete pil;
 
   if (de == DROPEFFECT_NONE) {
-    TRACE(L"m_DataSource->StartDragging() failed");
+    TRACE(L"m_DataSource->StartDragging() failed\n");
     // Do cleanup - otherwise this is the responsibility of the recipient!
     if (m_hgDataALL != NULL) {
       LPVOID lpData = GlobalLock(m_hgDataALL);
@@ -1468,10 +1473,11 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
       GlobalFree(m_hgDataUTXT);
       m_hgDataUTXT = NULL;
     }
-  } else {
-    while (ShowCursor(TRUE) < 0)
-      ;
   }
+
+  TRACE(L"CPWTreeCtrl::OnBeginDrag() show cursor\n");
+  while (ShowCursor(TRUE) < 0)
+    ;
 
   // We did call SetCapture - do we release it here?  If not, where else?
   ReleaseCapture();

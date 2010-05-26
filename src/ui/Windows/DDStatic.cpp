@@ -328,6 +328,7 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
       }
       TRACE(L"m_pDataSource->StartDragging() failed\n");
     } else {
+      TRACE(L"CDDStatic::OnMouseMove() show cursor\n");
       while (ShowCursor(TRUE) < 0)
         ;
     }
