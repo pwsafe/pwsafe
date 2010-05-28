@@ -788,6 +788,8 @@ void CAddEdit_Basic::OnRandom()
     m_ae_psh->SetChanged(true);
     UpdateData(FALSE);
   }
+
+  QuerySiblings(PP_UPDATE_PWPOLICY, 0L);
 }
 
 void CAddEdit_Basic::OnGroupComboChanged()
