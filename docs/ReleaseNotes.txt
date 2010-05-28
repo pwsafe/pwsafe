@@ -18,7 +18,9 @@ None
 
 Bugs fixed in 3.22.1
 ====================
-[3006069]	Autotype now works correctly when the user specifies that
+[3008203] The password expiration date is now automatically updated when
+a "recurring" password expiration is set and the password is changed.
+[3006069] Autotype now works correctly when the user specifies that
 PasswordSafe should minimize after Autotype and has also set that the
 database should be locked on minimize.
 [2957038] Cursor no longer disappears when PasswordSafe thinks that the

@@ -120,6 +120,72 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 
   ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
+  if (M_uicaller() == IDS_VIEWENTRY) {
+    // Disable Buttons
+    GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_SET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+  }
+
+  if (M_uicaller() == IDS_ADDENTRY) {
+    // Hide Date & Time statistics not yet set
+    GetDlgItem(IDC_STATIC_DTSTATS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_CTIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_CTIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_ATIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_ATIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_PMTIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_PMTIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_RMTIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RMTIME)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_SIZE)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_ENTRYSIZE)->ShowWindow(SW_HIDE);
+  }
+
+  if (M_uicaller() == IDS_ADDENTRY || !m_bShowUUID) {
+    GetDlgItem(IDC_STATIC_UUID)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_UUID)->ShowWindow(SW_HIDE);
+  }
+
+  if (M_original_entrytype() == CItemData::ET_ALIAS) {
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_SET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_XTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_CURRENTVALUE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_CURRENT_XTIME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_XTIME_RECUR)->EnableWindow(FALSE);
+  }
+
+  // Set times and refresh dialog
+  UpdateTimes();
+
+  m_bInitdone = true;
+  UpdateStats();
+  return TRUE;
+}
+
+BOOL CAddEdit_DateTimes::OnKillActive()
+{
+  if (UpdateData(TRUE) == FALSE)
+    return FALSE;
+
+  return CAddEdit_PropertyPage::OnKillActive();
+}
+
+void CAddEdit_DateTimes::UpdateTimes()
+{
   // Time fields
   time(&M_tttCPMTime());
 
@@ -215,66 +281,8 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 
   GetDlgItem(IDC_STATIC_CURRENT_XTIME)->SetWindowText(M_locXTime());
 
-  if (M_uicaller() == IDS_VIEWENTRY) {
-    // Disable Buttons
-    GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(FALSE);
-    GetDlgItem(IDC_XTIME_SET)->EnableWindow(FALSE);
-    GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(FALSE);
-    GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
-  }
-
-  if (M_uicaller() == IDS_ADDENTRY) {
-    // Hide Date & Time statistics not yet set
-    GetDlgItem(IDC_STATIC_DTSTATS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_CTIME)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_CTIME)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_ATIME)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_ATIME)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_PMTIME)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_PMTIME)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_RMTIME)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_RMTIME)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_SIZE)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_ENTRYSIZE)->ShowWindow(SW_HIDE);
-  }
-
-  if (M_uicaller() == IDS_ADDENTRY || !m_bShowUUID) {
-    GetDlgItem(IDC_STATIC_UUID)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_UUID)->ShowWindow(SW_HIDE);
-  }
-
-  if (M_original_entrytype() == CItemData::ET_ALIAS) {
-    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
-    GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(FALSE);
-    GetDlgItem(IDC_XTIME_SET)->EnableWindow(FALSE);
-    GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(FALSE);
-    GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_XTIME)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_CURRENTVALUE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_CURRENT_XTIME)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
-    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_XTIME_RECUR)->EnableWindow(FALSE);
-  }
-
+  // Need to update dialog from OnInitDialog and when called during OnApply
   UpdateData(FALSE);
-  m_bInitdone = true;
-  UpdateStats();
-  return TRUE;
-}
-
-BOOL CAddEdit_DateTimes::OnKillActive()
-{
-  if (UpdateData(TRUE) == FALSE)
-    return FALSE;
-
-  return CAddEdit_PropertyPage::OnKillActive();
 }
 
 void CAddEdit_DateTimes::UpdateStats()
@@ -322,11 +330,7 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
         return 1L;
       break;
     case PP_UPDATE_TIMES:
-      if (m_how == RELATIVE_EXP && M_XTimeInt() > 0) {
-        cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
-      }
-      GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
-      UpdateData(FALSE);
+      UpdateTimes();
       UpdateWindow();
       break;
   }

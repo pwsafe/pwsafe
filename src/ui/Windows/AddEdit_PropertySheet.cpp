@@ -240,6 +240,9 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetEmail(m_AEMD.email);
         }
 
+        if (m_AEMD.XTimeInt > 0 && m_AEMD.XTimeInt <= 3650)
+          m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
+
         if (bIsPSWDModified) {
           m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
           const CItemData *pciA(m_AEMD.pci);
@@ -311,6 +314,10 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           else
             m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
         }
+
+        if (m_bIsModified)
+          SendMessage(PSM_QUERYSIBLINGS,
+                (WPARAM)CPWPropertyPage::PP_UPDATE_TIMES, 0L);
         break;
       case IDS_VIEWENTRY:
         // No Update
