@@ -42,13 +42,30 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="关于主密码的话题">
+			<param name="Name" value="关于主密码">
 			<param name="Local" value="html\about_combinations.html">
 			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
+			<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="用户名、密码和组">
-			<param name="Local" value="html\entering_pwd.html">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="基本">
+				<param name="Local" value="html/entering_pwd.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="附加">
+				<param name="Local" value="html/entering_pwd_add.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="日期和时间">
+				<param name="Local" value="html/entering_pwd_date.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="密码策略">
+				<param name="Local" value="html/entering_pwd_pp.html">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="设置一个密码策略">
 			<param name="Local" value="html\password_policies.html">
@@ -74,11 +91,15 @@
 			<param name="Local" value="html\backups_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="输入项目">
+			<param name="Name" value="自动故障保护备份">
+			<param name="Local" value="html\failsafebackups.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="导入项目">
 			<param name="Local" value="html\import.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="输出项目">
+			<param name="Name" value="导出项目">
 			<param name="Local" value="html\export.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -151,6 +172,10 @@
 			<param name="Name" value="系统选项">
 			<param name="Local" value="html\system_tab.html">
 			</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="快捷方式">
+			<param name="Local" value="html/shortcuts_tab.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="附录">
@@ -161,12 +186,20 @@
 			<param name="Local" value="html\aliases.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="纯文本输出与输入格式">
+			<param name="Name" value="纯文本导出与导入格式">
 			<param name="Local" value="html\imp_exp_text_details.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="参数选择">
 			<param name="Local" value="html\preferences.html">
+			</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="运行命令">
+			<param name="Local" value="html/run_command.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="快捷键">
+			<param name="Local" value="html/Shortcut_Keys.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
