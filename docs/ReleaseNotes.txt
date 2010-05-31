@@ -25,6 +25,8 @@ PasswordSafe should minimize after Autotype and has also set that the
 database should be locked on minimize.
 [2957038] Cursor no longer disappears when PasswordSafe thinks that the
 user is dragging an entry but then doesn't.
+[] The Save Toolbar button and the Save menu item are now correctly
+enabled if the user changes preferences saved in the database.
 
 New Features for 3.22
 =====================
