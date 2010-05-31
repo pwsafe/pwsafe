@@ -144,7 +144,7 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           m_saveLockOnWindowLock         != m_LockOnWindowLock         ||
           m_saveLockOnIdleTimeout        != m_LockOnIdleTimeout        ||
           (m_LockOnIdleTimeout           == TRUE &&
-           m_saveIdleTimeOut              != m_IdleTimeOut))
+           m_saveIdleTimeOut             != m_IdleTimeOut))
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:

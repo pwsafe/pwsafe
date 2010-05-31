@@ -731,7 +731,6 @@ void DboxMain::OnOptions()
           pmulticmds->Add(pcmd);
         }
       }
-      ChangeOkUpdate();
     }
 
     const int iAction = passwordhistory.m_pwhaction;
@@ -899,6 +898,10 @@ void DboxMain::OnOptions()
         (save_preexpirywarn != display.m_preexpirywarn) ||
         (save_preexpirywarndays != display.m_preexpirywarndays)) {
       RefreshViews();
+    }
+
+    if (m_core.HaveDBPrefsChanged()) {
+      ChangeOkUpdate();
     }
 
     // JHF no hotkeys under WinCE

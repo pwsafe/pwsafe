@@ -3002,7 +3002,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // If not changed, no need to allow Save!
     case ID_MENUITEM_SAVE:
-      if (!m_core.IsChanged())
+      if (!m_core.IsChanged() && !m_core.HaveDBPrefsChanged())
         iEnable = FALSE;
       break;
     // Special processing for viewing reports, if they exist
