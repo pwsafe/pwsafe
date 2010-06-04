@@ -10,7 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.22.1
 =======================
-None
+[3011546] "autotype" can now be added to the List View via the Column
+Picker (right click on column labels).
 
 Changes to Existing Features in 3.22.1
 ======================================

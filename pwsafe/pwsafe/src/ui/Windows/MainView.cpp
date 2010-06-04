@@ -2663,6 +2663,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::URL:
       cs_header.LoadString(IDS_URL);
       break;
+    case CItemData::AUTOTYPE:
+      cs_header.LoadString(IDS_AUTOTYPE);
+      break;
     case CItemData::EMAIL:
       cs_header.LoadString(IDS_EMAIL);
       break;
