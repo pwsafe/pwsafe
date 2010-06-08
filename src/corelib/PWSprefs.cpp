@@ -1497,24 +1497,25 @@ void PWSprefs::ImportOldPrefs()
         }
       }
     }
-  }
+  } // NumBoolPrefs
 
   for (i = 0; i < NumIntPrefs; i++) {
     if (m_int_prefs[i].pt == ptApplication) {
       int value;
       if (pws_os::RegReadSTValue(m_int_prefs[i].name, value)) {
         SetPref(IntPrefs(i), value);
+      }
     }
-  }
+  } // NumIntPrefs
 
-  for (i = 0; i < NumStringPrefs; i++)
+  for (i = 0; i < NumStringPrefs; i++) {
     if (m_string_prefs[i].pt == ptApplication) {
       stringT value;
       if (pws_os::RegReadSTValue(m_string_prefs[i].name,
                                  value))
         SetPref(StringPrefs(i), value.c_str());
     } // Get the value
-  } // pref in registry
+  } // NumStringPrefs
 
   // Last but not least, rectangle
   long rectVals[4] = {-1, -1, -1, -1};

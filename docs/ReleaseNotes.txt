@@ -19,6 +19,8 @@ None
 
 Bugs fixed in 3.22.1
 ====================
+[3013199] PasswordSafe no longer hangs when trying to read preferences
+stored in registry by older versions.
 [3008203] The password expiration date is now automatically updated when
 a "recurring" password expiration is set and the password is changed.
 [3006069] Autotype now works correctly when the user specifies that
