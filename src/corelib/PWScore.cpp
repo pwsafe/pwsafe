@@ -43,6 +43,8 @@ unsigned char PWScore::m_session_initialized = false;
 Asker *PWScore::m_pAsker = NULL;
 Reporter *PWScore::m_pReporter = NULL;
 
+uuid_array_t PWScore::NULL_UUID = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
 PWScore::PWScore() : 
                      m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
@@ -2406,10 +2408,10 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   } else
     st_dbp.whatlastsaved = m_hdr.m_whatlastsaved;
 
-  uuid_array_t file_uuid_array, null_uuid = {0};
+  uuid_array_t file_uuid_array;
   memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(uuid_array_t));
 
-  if (memcmp(file_uuid_array, null_uuid, sizeof(uuid_array_t)) == 0)
+  if (memcmp(file_uuid_array, NULL_UUID, sizeof(uuid_array_t)) == 0)
     st_dbp.file_uuid = _T("N/A");
   else {
     ostringstreamT os;

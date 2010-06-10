@@ -110,7 +110,7 @@ void DboxMain::SetLocalStrings()
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
   : CDialog(DboxMain::IDD, pParent),
-  m_bSizing(false), m_needsreading(true), m_bInitDone(false),
+  m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
   m_core(app.m_core), m_pFontTree(NULL),
@@ -165,7 +165,9 @@ DboxMain::DboxMain(CWnd* pParent)
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON),
                                   IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
+  // Zero entry UUID set at minimize and group text
   memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  m_sxSelectedGroup.clear();
 
   ClearData();
 
@@ -1062,9 +1064,7 @@ BOOL DboxMain::OnInitDialog()
 
   if (!m_IsStartClosed && !m_IsStartSilent) {
     OpenOnInit();
-    m_ctlItemTree.SetRestoreMode(true);
-    RefreshViews();
-    m_ctlItemTree.SetRestoreMode(false);
+    // No need for another RefreshViews as OpenOnInit does one via PostOpenProcessing
   }
 
   SetInitialDatabaseDisplay();
@@ -1203,22 +1203,6 @@ void DboxMain::OnWindowPosChanging(WINDOWPOS* lpwndpos)
   CDialog::OnWindowPosChanging(lpwndpos);
 }
 
-void DboxMain::OnMove(int x, int y)
-{
-  CDialog::OnMove(x, y);
-  // turns out that minimizing calls this
-  // with x = y = -32000. Oh joy.
-  if (m_bInitDone && IsWindowVisible() == TRUE &&
-      x >= 0 && y >= 0) {
-    WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
-    GetWindowPlacement(&wp);
-    PWSprefs::GetInstance()->SetPrefRect(wp.rcNormalPosition.top,
-                                         wp.rcNormalPosition.bottom,
-                                         wp.rcNormalPosition.left,
-                                         wp.rcNormalPosition.right);
-  }
-}
-
 void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 {
   if (pcore == NULL)
@@ -1246,85 +1230,6 @@ void DboxMain::OnRedo()
   UpdateToolBarDoUndo();
   UpdateMenuAndToolBar(m_bOpen);
   UpdateStatusBar();
-}
-
-void DboxMain::SaveGUIStatus()
-{
-  st_SaveGUIInfo SaveGUIInfo;
-  CItemData *pci_list(NULL), *pci_tree(NULL);
-
-  // Note: we try and keep the same entry selected when the users
-  // switches between List & Tree views.
-  // But we can't if the user has selected a Group in the Tree view
-
-  // Note: Must do this using the entry's UUID as the POSITION & 
-  // HTREEITEM values may be different when we come to use it.
-  POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
-  if (pos != NULL) {
-    pci_list = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
-    if (pci_list != NULL) {
-      pci_list->GetUUID(SaveGUIInfo.lSelected);
-      SaveGUIInfo.blSelectedValid = true;
-    }
-  }
-
-  HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
-  if (hi != NULL) {
-    pci_tree = (CItemData *)m_ctlItemTree.GetItemData(hi);
-    if (pci_tree != pci_list) {
-      if (pci_tree != NULL) {
-        pci_tree->GetUUID(SaveGUIInfo.tSelected);
-        SaveGUIInfo.btSelectedValid = true;
-      } else {
-        StringX s(L"");
-        if (hi != NULL)
-          s = m_ctlItemTree.GetItemText(hi);
-
-        while ((hi = m_ctlItemTree.GetParentItem(hi)) != NULL) {
-          s = StringX(m_ctlItemTree.GetItemText(hi)) + StringX(L".") + s;
-        }
-        SaveGUIInfo.sxGroupName = s;
-      }
-    }
-  }
-  SaveGUIInfo.vGroupDisplayState = GetGroupDisplayState();
-
-  m_stkSaveGUIInfo.push(SaveGUIInfo);
-}
-
-void DboxMain::RestoreGUIStatus()
-{
-  if (m_stkSaveGUIInfo.empty())
-    return; // better safe than sorry...
-
-  st_SaveGUIInfo &SaveGUIInfo = m_stkSaveGUIInfo.top();
-
-  ItemListIter iter;
-  DisplayInfo *pdi;
-  if (SaveGUIInfo.blSelectedValid) {
-    iter = Find(SaveGUIInfo.lSelected);
-    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-    m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
-    m_ctlItemTree.SelectItem(pdi->tree_item);
-  }
-
-  if (SaveGUIInfo.btSelectedValid) {
-    iter = Find(SaveGUIInfo.tSelected);
-    pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-    m_ctlItemTree.SelectItem(pdi->tree_item);
-  }
-
-  if (SaveGUIInfo.btGroupValid) {
-    std::map<StringX, HTREEITEM>::iterator iter;
-    iter = m_mapGroupToTreeItem.find(SaveGUIInfo.sxGroupName);
-    if (iter != m_mapGroupToTreeItem.end()) {
-      m_ctlItemTree.SelectItem(iter->second);
-    }
-  }
-
-  SetGroupDisplayState(SaveGUIInfo.vGroupDisplayState);
-
-  m_stkSaveGUIInfo.pop();
 }
 
 void DboxMain::FixListIndexes()
@@ -1470,17 +1375,6 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
       UpdateAccessTime(pci_original);
     }
   }
-}
-
-// this tells OnSize that the user is currently
-// changing the size of the dialog, and not restoring it
-void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
-{
-#if !defined(POCKET_PC)
-  CDialog::OnSizing(fwSide, pRect);
-
-  m_bSizing = true;
-#endif
 }
 
 void DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
@@ -1973,21 +1867,10 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
     return;
   }
 
-  CItemData *pci_selected(NULL);
   switch (nID & 0xFFF0) {
-    case SC_RESTORE:
-      TRACE(L"OnSysCommand:SC_RESTORE\n");
-      if (!RestoreWindowsData(true))
-        return; // password bad or cancel pressed
-      break;
     case SC_MINIMIZE:
-      // Save expand/collapse status of groups
-      m_vGroupDisplayState = GetGroupDisplayState();
-      pci_selected = getSelectedItem();
-      if (pci_selected != NULL)
-        pci_selected->GetUUID(m_UUIDSelectedAtMinimize);
-      else
-        memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+      // Save expand/collapse status of groups + selected item/group
+      SaveDisplayBeforeMinimize();
       break;
     case SC_CLOSE:
       if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
@@ -1996,6 +1879,17 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
         // Save expand/collapse status of groups
         m_vGroupDisplayState = GetGroupDisplayState();
       }
+      break;
+    case SC_RESTORE:
+      if (!RestoreWindowsData(true))
+        return; // password bad or cancel pressed
+
+      RestoreDisplayAfterMinimize();
+      break;
+    case SC_SIZE:
+    case SC_MOVE:
+    case SC_MAXIMIZE:
+    case SC_SCREENSAVE:
       break;
   }
 
@@ -2071,28 +1965,6 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
 #endif
 }
 
-void DboxMain::OnMinimize()
-{
-  // Called when the System Tray Minimize menu option is used
-  if (m_bStartHiddenAndMinimized)
-    m_bStartHiddenAndMinimized = false;
-
-  // Save expand/collapse status of groups
-  m_vGroupDisplayState = GetGroupDisplayState();
-
-  // Let OnSize handle this
-  ShowWindow(SW_MINIMIZE);
-}
-
-void DboxMain::OnRestore()
-{
-  m_ctlItemTree.SetRestoreMode(true);
-  // Called when the System Tray Restore menu option is used
-  RestoreWindowsData(true);
-
-  m_ctlItemTree.SetRestoreMode(false);
-}
-
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 {
   // This restores the data in the main dialog.
@@ -2100,8 +1972,8 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
 
   TRACE(L"RestoreWindowsData:bUpdateWindows = %s\n", bUpdateWindows ? L"true" : L"false");
-  const uuid_array_t null_uuid = {0};
   bool brc(false);
+
   // First - no database is currently open
   if (!m_bOpen) {
     // First they may be nothing to do!
@@ -2131,7 +2003,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 
   // Case 1 - data available but is currently locked
   // By definition - data available implies m_bInitDone
-  if (!m_needsreading &&
+  if (!m_bDBNeedsReading &&
       (app.GetSystemTrayState() == ThisMfcApp::LOCKED) &&
       (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
@@ -2147,24 +2019,20 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       RefreshViews();
       ShowWindow(SW_RESTORE);
     }
-
-    if (::memcmp(m_UUIDSelectedAtMinimize, null_uuid, sizeof(uuid_array_t)) != 0) {
-      ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
-      if (iter != End())
-        SelectEntry(((DisplayInfo *)(iter->second.GetDisplayInfo()))->list_index, false);
-    }
     return true;
   }
 
   // Case 2 - data unavailable
-  if (m_bInitDone && m_needsreading) {
+  if (m_bInitDone && m_bDBNeedsReading) {
     StringX passkey;
     int rc_passphrase(PWScore::USER_CANCEL), rc_readdatabase;
     const bool useSysTray = PWSprefs::GetInstance()->
                             GetPref(PWSprefs::UseSystemTray);
 
     // Hide the Window while asking for the passphrase
-    if (IsWindowVisible()) ShowWindow(SW_HIDE);
+    if (IsWindowVisible()) {
+      ShowWindow(SW_HIDE);
+    }
     if (m_bOpen)
       rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
                                useSysTray ? GCP_RESTORE : GCP_WITHEXIT,
@@ -2211,19 +2079,14 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       UpdateSystemTray(UNLOCKED);
       startLockCheckTimer();
       brc = true;
-      m_needsreading = false;
-      if (bShow && !bUpdateWindows)
+      m_bDBNeedsReading = false;
+
+      RestoreWindows();
+      if (bShow) {
         ShowWindow(SW_SHOW);
-      if (bUpdateWindows)
-        RestoreWindows();
+      }
     } else {
       ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
-    }
-
-    if (::memcmp(m_UUIDSelectedAtMinimize, null_uuid, sizeof(uuid_array_t)) != 0) {
-      ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
-      if (iter != End())
-        SelectEntry(((DisplayInfo *)(iter->second.GetDisplayInfo()))->list_index, false);
     }
     return brc;
   }
@@ -3311,3 +3174,4 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
   }
   return false;
 }
+

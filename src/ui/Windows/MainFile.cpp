@@ -415,7 +415,7 @@ int DboxMain::NewFile(StringX &newfilename)
 
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
-  m_needsreading = false;
+  m_bDBNeedsReading = false;
   return PWScore::SUCCESS;
 }
 
@@ -454,6 +454,7 @@ int DboxMain::Close(const bool bTrySave)
   // Clear all associated data
   ClearData();
   memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  m_sxSelectedGroup.clear();
   CAddEdit_DateTimes::m_bShowUUID = false;
 
   // Reset core
@@ -616,7 +617,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   CString cs_temp, cs_title, cs_text;
 
   //Check that this file isn't already open
-  if (sx_Filename == m_core.GetCurFile() && !m_needsreading) {
+  if (sx_Filename == m_core.GetCurFile() && !m_bDBNeedsReading) {
     //It is the same damn file
     cs_text.LoadString(IDS_ALREADYOPEN);
     cs_title.LoadString(IDS_OPENDATABASE);
@@ -682,6 +683,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // clear the data before loading the new file
   ClearData();
   memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  m_sxSelectedGroup.clear();
 
   cs_title.LoadString(IDS_FILEREADERROR);
   bool bAskerSet = m_core.IsAskerSet();
@@ -784,7 +786,7 @@ void DboxMain::PostOpenProcessing()
 
   RefreshViews();
   SetInitialDatabaseDisplay();
-  m_needsreading = false;
+  m_bDBNeedsReading = false;
   SelectFirstEntry();
 
   UpdateSystemTray(UNLOCKED);
@@ -1043,7 +1045,10 @@ int DboxMain::Save(const SaveType savetype)
     m_ctlItemList.Invalidate();
     m_ctlItemTree.Invalidate();
   }
-  RefreshViews();
+
+  // Only refresh views if not existing
+  if (savetype != ST_NORMALEXIT)
+    RefreshViews();
 
   return PWScore::SUCCESS;
 }
@@ -3367,71 +3372,13 @@ void DboxMain::OnCancel()
   // If system tray is enabled, cancel (escape) 
   // minimizes to the system tray, else exit application
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+    SaveDisplayBeforeMinimize();
     ShowWindow(SW_MINIMIZE);
   } else {
     SavePreferencesOnExit();
     int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
     if (rc == PWScore::SUCCESS) {
       CleanUpAndExit();
-    }
-  }
-}
-
-void DboxMain::SaveGroupDisplayState()
-{
-  vector <bool> v = GetGroupDisplayState(); // update it
-  m_core.SetDisplayStatus(v); // store it
-}
-
-void DboxMain::RestoreGroupDisplayState()
-{
-  const vector<bool> &displaystatus = m_core.GetDisplayStatus();    
-
-  if (!displaystatus.empty())
-    SetGroupDisplayState(displaystatus);
-}
-
-vector<bool> DboxMain::GetGroupDisplayState()
-{
-  HTREEITEM hItem = NULL;
-  vector<bool> v;
-
-  if (m_ctlItemTree.GetSafeHwnd() == NULL)
-    return v;
-
-  while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
-    if (m_ctlItemTree.ItemHasChildren(hItem)) {
-      bool state = (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED)
-                    & TVIS_EXPANDED) != 0;
-      v.push_back(state);
-    }
-  }
-  return v;
-}
-
-void DboxMain::SetGroupDisplayState(const vector<bool> &displaystatus)
-{
-  // We need to copy displaystatus since Expand may cause
-  // SaveGroupDisplayState to be called, updating it
-
-  // Could be called from OnSize before anything set up!
-  // Check Tree is valid first
-  if (m_ctlItemTree.GetSafeHwnd() == NULL || displaystatus.empty())
-    return;
-
-  const vector<bool> dstatus(displaystatus);
-  const size_t num = dstatus.size();
-  if (num == 0)
-    return;
-
-  HTREEITEM hItem = NULL;
-  size_t i(0);
-  while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
-    if (m_ctlItemTree.ItemHasChildren(hItem)) {
-      m_ctlItemTree.Expand(hItem, dstatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
-      i++;
-      if (i == num)
-        break;
     }
   }
 }

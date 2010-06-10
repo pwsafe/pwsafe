@@ -585,7 +585,7 @@ BOOL CAddEdit_Basic::OnApply()
       uuid_array_t list_uuid, elem_uuid;
       listItem.GetUUID(list_uuid);
       M_pci()->GetUUID(elem_uuid);
-      bool notSame = (::memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
+      bool notSame = (memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
       if (notSame) {
         CSecString temp;
         temp.Format(IDS_ENTRYEXISTS, M_group(), M_title(), M_username());

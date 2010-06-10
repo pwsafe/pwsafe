@@ -941,8 +941,9 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
           clearDlg.DoModal() == IDCANCEL)
         return;
       cs_data = pci->GetPassword();
-      if (special)
+      if (special) {
         ShowWindow(SW_MINIMIZE);
+      }
       break;
     }
     case CItemData::USER:
@@ -1132,8 +1133,9 @@ void DboxMain::AutoType(const CItemData &ci)
     // Need to save display status for when we return from minimize
     m_vGroupDisplayState = GetGroupDisplayState();
     ShowWindow(SW_MINIMIZE);
-  } else
+  } else {
     ShowWindow(SW_HIDE);
+  }
 
   DoAutoType(sxautotype, vactionverboffsets);
 

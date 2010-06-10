@@ -298,6 +298,9 @@ public:
   Command *Delete(HTREEITEM ti); // For deleting a group
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
+  void SaveDisplayBeforeMinimize();
+  void RestoreDisplayAfterMinimize();
+
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const
   {return m_core.GetBaseEntry(pAliasOrSC);}
   CItemData *GetBaseEntry(const CItemData *pAliasOrSC)
@@ -416,7 +419,7 @@ protected:
 #endif
 
   bool m_bInitDone;
-  bool m_needsreading;
+  bool m_bDBNeedsReading;
 
   bool m_bSortAscending;
   int m_iTypeSortColumn;
@@ -742,6 +745,7 @@ private:
   int m_iheadermaxwidth;
   CFont *m_pFontTree;
   uuid_array_t m_UUIDSelectedAtMinimize; // to restore selection upon un-minimize
+  StringX m_sxSelectedGroup;
   bool m_inExit; // help U3ExitNow
   std::vector<bool> m_vGroupDisplayState; // used to save/restore display state over minimize/restore
   StringX m_savedDBprefs;  // used across minimize/restore events

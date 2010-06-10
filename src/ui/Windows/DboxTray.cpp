@@ -47,8 +47,9 @@ void DboxMain::OnTrayLockUnLock()
     case ThisMfcApp::UNLOCKED:          // User clicked Lock!
       UpdateSystemTray(LOCKED);
       ClearClipboardData();
-      if (LockDataBase())  // save db if needed, clear data
-        ShowWindow(SW_HIDE); // XXX apply to children as well!!!
+      if (LockDataBase())  { // save db if needed, clear data
+        ShowWindow(SW_HIDE);
+      }
       break;
     case ThisMfcApp::CLOSED:
       break;
