@@ -80,6 +80,8 @@ public:
   PWScore();
   ~PWScore();
 
+  static uuid_array_t NULL_UUID;
+
   void SetUIInterFace(UIInterFace *pUIIF) {m_pUIIF = pUIIF;}
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
