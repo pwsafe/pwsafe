@@ -468,8 +468,11 @@ protected:
   LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
   LRESULT OnHdrToCCDragComplete(WPARAM wParam, LPARAM lParam);
   LRESULT OnHeaderDragComplete(WPARAM wParam, LPARAM lParam);
-  enum STATE {LOCKED, UNLOCKED, CLOSED};  // Really shouldn't be here it, ThisMfcApp own it
+
+  // 'STATE' also defined in ThisMfcApp.h - ensure identical
+  enum STATE {LOCKED, UNLOCKED, CLOSED};
   void UpdateSystemTray(const STATE s);
+
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
   LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
@@ -486,7 +489,7 @@ protected:
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
-  void ClearData(bool clearMRE = true);
+  void ClearData(const bool clearMRE = true);
   int NewFile(StringX &filename);
 
   void SetListView();

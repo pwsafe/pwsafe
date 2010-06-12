@@ -60,6 +60,7 @@ public:
   void ShowIcon() {m_TrayIcon->ShowIcon();}
   void HideIcon() {m_TrayIcon->HideIcon();}
 
+  // 'STATE' also defined in DboxMain.h - ensure identical
   enum STATE {LOCKED, UNLOCKED, CLOSED};
   void SetSystemTrayState(STATE);
   STATE GetSystemTrayState() const {return m_TrayLockedState;}

@@ -1,5 +1,5 @@
-Password Safe 3.22.1 Release Notes - May 2010
-=============================================
+Password Safe 3.22.1 Release Notes - June 2010
+==============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -21,8 +21,13 @@ Bugs fixed in 3.22.1
 ====================
 [3013199] PasswordSafe no longer hangs when trying to read preferences
 stored in registry by older versions.
+[3010541, 3013981, 3011972]	PasswordSafe no longer crashes when locked
+and the user right-clicks the System Tray icon.
 [3008203] The password expiration date is now automatically updated when
 a "recurring" password expiration is set and the password is changed.
+[3006125] Selected entry/group before database is locked or minimized,
+including when Windows goes into Standby/Hibernate is now re-selected when
+the database is later displayed.
 [3006069] Autotype now works correctly when the user specifies that
 PasswordSafe should minimize after Autotype and has also set that the
 database should be locked on minimize.
