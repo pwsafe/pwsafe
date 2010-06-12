@@ -2081,10 +2081,10 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       brc = true;
       m_bDBNeedsReading = false;
 
-      RestoreWindows();
-      if (bShow) {
-        ShowWindow(SW_SHOW);
-      }
+      if (bShow && !bUpdateWindows)
+        ShowWindow(SW_SHOW);	 
+      if (bUpdateWindows)
+        RestoreWindows();
     } else {
       ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
     }
