@@ -551,8 +551,8 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       return 0L;
  
     int iPopupPos(2);
-    const int i_state = app.GetSystemTrayState();
-    switch (i_state) {
+    const ThisMfcApp::STATE app_state = app.GetSystemTrayState();
+    switch (app_state) {
       case ThisMfcApp::UNLOCKED:
       {
         if (m_pParent->IsWindowVisible()) {
@@ -597,12 +597,12 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     }
 
     // Process Recent entries.
-    // Allow disabled menu item if open but locked
-    // Allow enabled menu item if open and unlocked
+    // Allow disabled menu item if open but   locked
+    // Allow  enabled menu item if open and unlocked
     size_t num_recent_entries = m_RUEList.GetCount();
     int irc;
     CMenu *pMainRecentEntriesMenu(NULL);
-    CMenu **pNewRecentEntryMenu = (CMenu **)(NULL);
+    CMenu **ppNewRecentEntryMenu = (CMenu **)(NULL);
     CRUEItemData* pmd;
 
     MENUITEMINFO miteminfo;
@@ -610,7 +610,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     miteminfo.cbSize = sizeof(miteminfo);
     miteminfo.fMask = MIIM_DATA;
 
-    if (i_state != ThisMfcApp::CLOSED) {
+    if (app_state != ThisMfcApp::CLOSED) {
       pMainRecentEntriesMenu = pContextMenu->GetSubMenu(iPopupPos);
 
       MENUINFO minfo;
@@ -632,10 +632,10 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       } 
 
       // No point in doing Recent Entries if database is locked
-      if (num_recent_entries != 0 && i_state == ThisMfcApp::UNLOCKED) {
+      if (num_recent_entries != 0 && app_state == ThisMfcApp::UNLOCKED) {
         // Build extra popup menus (1 per entry in list)
         typedef CMenu* CMenuPtr;
-        pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
+        ppNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
         m_RUEList.GetAllMenuItemStrings(m_menulist);
 
         for (size_t i = 0; i < num_recent_entries; i++) {
@@ -647,7 +647,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
             continue;
           }
 
-          SetupRecentEntryMenu(pNewRecentEntryMenu[i], i, pci);
+          SetupRecentEntryMenu(ppNewRecentEntryMenu[i], i, pci);
 
           // Insert new popup menu at the bottom of the list
           // pos 0  = Clear Entries
@@ -656,7 +656,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           // pos 3  = Separator
           // pos 4+ = entries.....
           irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
-                                                   UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
+                                                   UINT_PTR(ppNewRecentEntryMenu[i]->m_hMenu),
                                                    cEntry.c_str());
           ASSERT(irc != 0);
           pmd = new CRUEItemData;
@@ -682,7 +682,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
     m_pTarget->PostMessage(WM_NULL, 0, 0);
 
-    if (i_state != ThisMfcApp::CLOSED) {
+    if (num_recent_entries != 0 && app_state == ThisMfcApp::UNLOCKED && ppNewRecentEntryMenu != NULL) {
       for (size_t i = 0; i < num_recent_entries; i++) {
         irc = pMainRecentEntriesMenu->GetMenuItemInfo(i + 4, &miteminfo, TRUE);
         if (irc == 0) {
@@ -691,9 +691,9 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         }
         pmd = (CRUEItemData *)miteminfo.dwItemData;
         delete pmd;
-        delete pNewRecentEntryMenu[i];
+        delete ppNewRecentEntryMenu[i];
       }
-      delete[] pNewRecentEntryMenu;
+      delete [] ppNewRecentEntryMenu;
     }
     m_menulist.clear();
     menu.DestroyMenu();

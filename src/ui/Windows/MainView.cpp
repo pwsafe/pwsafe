@@ -1527,14 +1527,14 @@ CItemData *DboxMain::getSelectedItem()
   return retval;
 }
 
-void DboxMain::ClearData(bool clearMRE)
+void DboxMain::ClearData(const bool clearMRE)
 {
   m_core.ClearData();  // Clears DB & DB Preferences changed flags
 
-  UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
-
   if (clearMRE)
     m_RUEList.ClearEntries();
+
+  UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
 
   //Because GetText returns a copy, we cannot do anything about the names
   if (m_bInitDone) {
