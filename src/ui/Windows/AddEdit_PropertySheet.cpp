@@ -235,6 +235,9 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           else
             m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
 
+          m_AEMD.oldipolicy = m_AEMD.ipolicy;
+          m_AEMD.oldpwp = m_AEMD.pwp;
+
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
           m_AEMD.pci->SetEmail(m_AEMD.email);
