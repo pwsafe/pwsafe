@@ -21,8 +21,10 @@ Bugs fixed in 3.22.1
 ====================
 [3013199] PasswordSafe no longer hangs when trying to read preferences
 stored in registry by older versions.
-[3010541, 3013981, 3011972]	PasswordSafe no longer crashes when locked
+[3010541, 3013981, 3011972] PasswordSafe no longer crashes when locked
 and the user right-clicks the System Tray icon.
+[3009130] Changes to an entry's password policy are now saved after user
+saves them during Edit (OK or Apply).
 [3008203] The password expiration date is now automatically updated when
 a "recurring" password expiration is set and the password is changed.
 [3006125] Selected entry/group before database is locked or minimized,

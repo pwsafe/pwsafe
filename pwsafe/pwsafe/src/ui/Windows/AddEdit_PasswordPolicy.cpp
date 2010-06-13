@@ -324,16 +324,11 @@ BOOL CAddEdit_PasswordPolicy::OnApply()
   CWnd *pFocus(NULL);
 
   if (M_ipolicy() == CAddEdit_PropertySheet::DEFAULT_POLICY) {
-    M_pwp().Empty();
-    M_oldipolicy() = M_ipolicy();
-    M_oldpwp() = M_pwp();
     return CAddEdit_PropertyPage::OnApply();
   }
 
   if (ValidatePolicy(pFocus)) {
     SetPolicyFromVariables();
-    M_oldipolicy() = M_ipolicy();
-    M_oldpwp()= M_pwp();
     return CAddEdit_PropertyPage::OnApply();
   } else {
     // Are we the current page? If not activate this page
