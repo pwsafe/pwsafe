@@ -73,12 +73,16 @@ void CKeySendImpl::NewSendChar(TCHAR c)
   input[0].ki.dwExtraInfo = input[1].ki.dwExtraInfo = 0; //probably not
   
   input[0].type = input[1].type = INPUT_KEYBOARD;
+
+  bool tabWait = false; // if sending tab\newline, wait a bit after send
+  //                       for the dust to settle. Thanks to Larry...
   switch (c) {
     case L'\t':
     case L'\r':
       input[0].ki.wVk = c == L'\t' ? VK_TAB : VK_RETURN;
       input[0].ki.wScan = 0;
       input[0].ki.dwFlags = 0;
+      tabWait = true;
       break;
     default:
       input[0].ki.wVk = 0;
@@ -93,7 +97,9 @@ void CKeySendImpl::NewSendChar(TCHAR c)
   status = ::SendInput(2, input, sizeof(INPUT));
   if (status != 2)
     pws_os::Trace(L"CKeySend::SendChar: SendInput failed status=%d\n", status);
-  ::Sleep(m_delay);
+  // wait at least 200 mS if we just sent a tab, regardless of m_delay
+  int delay = ( m_delay < 200 && tabWait) ? 200 : m_delay;
+  ::Sleep(delay);
 }
 
 void CKeySendImpl::OldSendChar(TCHAR c)
