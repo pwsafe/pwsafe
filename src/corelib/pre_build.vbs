@@ -70,7 +70,7 @@ rc = 0
 stdout.WriteLine " "
 
 If bMFC Then
-  stdout.WriteLine " MFC configuration, skipping Perl script rc2cpp.pl"
+' for MFC, fake script rc2cpp.pl by creating empty files
   If (Not bCPPExists Or Not bHExists) Then
     ' Recreate dummy versions of both files
     Call WriteMFCDummyHFile(strHFile)
