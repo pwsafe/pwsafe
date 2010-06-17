@@ -1904,23 +1904,27 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
     case WTS_CONSOLE_DISCONNECT:
     case WTS_REMOTE_DISCONNECT:
     case WTS_SESSION_LOCK:
-      m_bWSLocked = true;
+      if (m_bOpen && app.GetSystemTrayState() == UNLOCKED) {
+        m_bWSLocked = true;
 
-      pci_selected = getSelectedItem();
-      if (pci_selected != NULL)
-        pci_selected->GetUUID(m_UUIDSelectedAtMinimize);
-      else
-        memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-
-      if (prefs->GetPref(PWSprefs::LockOnWindowLock) &&
-          LockDataBase()) {
-        bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
-        if (!usingsystray) {
-          ShowWindow(SW_MINIMIZE);
+        pci_selected = getSelectedItem();
+        if (pci_selected != NULL) {
+          pci_selected->GetUUID(m_UUIDSelectedAtMinimize);
+          m_sxSelectedGroup.clear();
         } else {
-          CPWDialog::GetDialogTracker()->Apply(Hider);
-          ShowWindow(SW_HIDE);
-          app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
+          memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+        }
+
+        if (prefs->GetPref(PWSprefs::LockOnWindowLock) &&
+            LockDataBase()) {
+          bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
+          if (!usingsystray) {
+            ShowWindow(SW_MINIMIZE);
+          } else {
+            CPWDialog::GetDialogTracker()->Apply(Hider);
+            ShowWindow(SW_HIDE);
+            app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
+          }
         }
       }
       break;
@@ -1968,6 +1972,7 @@ bool DboxMain::LockDataBase()
       return false;
     }
   }
+
   // If there's a pending dialog box prompting for a
   // password, we need to kill it, since we will prompt
   // for the existing dbase's password upon restore.
@@ -3873,7 +3878,9 @@ void DboxMain::RebuildGUI(const int iView)
 
 void DboxMain::SaveDisplayBeforeMinimize()
 {
-  TRACE(L"SaveDisplayBeforeMinimize\n");
+  if (!m_bOpen || app.GetSystemTrayState() != UNLOCKED)
+    return;
+
   // Save expand/collapse status of groups
   m_vGroupDisplayState = GetGroupDisplayState();
 

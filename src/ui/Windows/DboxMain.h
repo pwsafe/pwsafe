@@ -747,8 +747,8 @@ private:
   int m_nColumnHeaderWidthByType[CItemData::LAST];
   int m_iheadermaxwidth;
   CFont *m_pFontTree;
-  uuid_array_t m_UUIDSelectedAtMinimize; // to restore selection upon un-minimize
-  StringX m_sxSelectedGroup;
+  uuid_array_t m_UUIDSelectedAtMinimize; // to restore entry selection upon un-minimize
+  StringX m_sxSelectedGroup;             // to restore group selection upon un-minimize
   bool m_inExit; // help U3ExitNow
   std::vector<bool> m_vGroupDisplayState; // used to save/restore display state over minimize/restore
   StringX m_savedDBprefs;  // used across minimize/restore events
