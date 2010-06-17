@@ -552,7 +552,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM lParam)
 {
   // Called if user does 'Apply' on the Add/Edit property sheet via
-  // Windows Message WM_EDIT_APPLY
+  // Windows Message PWS_MSG_EDIT_APPLY
   UNREFERENCED_PARAMETER(lParam);
   CAddEdit_PropertySheet *pentry_psh = (CAddEdit_PropertySheet *)wParam;
   UpdateEntry(pentry_psh);
@@ -563,7 +563,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 {
   // Called by EditItem on return from Edit but
   // also called if user does 'Apply' on the Add/Edit property sheet via
-  // Windows Message WM_EDIT_APPLY
+  // Windows Message PWS_MSG_EDIT_APPLY
 
   PWScore *pcore = pentry_psh->GetCore();
   CItemData *pci_original = pentry_psh->GetOriginalCI();

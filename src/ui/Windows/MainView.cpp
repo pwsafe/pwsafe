@@ -477,7 +477,7 @@ void DboxMain::setupBars()
   CDC* pDC = this->GetDC();
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
-  m_FindToolBar.Init(NumBits, this, WM_TOOLBAR_FIND);
+  m_FindToolBar.Init(NumBits, this, PWS_MSG_TOOLBAR_FIND);
   ReleaseDC(pDC);
 
   // Add the Main ToolBar.
@@ -1675,7 +1675,7 @@ void DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
   }
 
   // Otherwise allow
-  PostMessage(WM_HDR_DRAG_COMPLETE);
+  PostMessage(PWS_MSG_HDR_DRAG_COMPLETE);
   *pResult = FALSE;
 }
 

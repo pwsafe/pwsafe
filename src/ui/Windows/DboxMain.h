@@ -77,28 +77,28 @@ DECLARE_HANDLE(HDROP);
 #endif
 
 // custom message event used for system tray handling.
-#define WM_ICON_NOTIFY (WM_APP + 10)
+#define PWS_MSG_ICON_NOTIFY             (WM_APP + 10)
 
 // to catch post Header drag
-#define WM_HDR_DRAG_COMPLETE (WM_APP + 20)
-#define WM_CCTOHDR_DD_COMPLETE (WM_APP + 21)
-#define WM_HDRTOCC_DD_COMPLETE (WM_APP + 22)
+#define PWS_MSG_HDR_DRAG_COMPLETE       (WM_APP + 20)
+#define PWS_MSG_CCTOHDR_DD_COMPLETE     (WM_APP + 21)
+#define PWS_MSG_HDRTOCC_DD_COMPLETE     (WM_APP + 22)
 
 // Process Compare Result Dialog click/menu functions
-#define WM_COMPARE_RESULT_FUNCTION (WM_APP + 30)
+#define PWS_MSG_COMPARE_RESULT_FUNCTION (WM_APP + 30)
 
 // Edit/Add extra context menu messages
-#define WM_CALL_EXTERNAL_EDITOR  (WM_APP + 40)
-#define WM_EXTERNAL_EDITOR_ENDED (WM_APP + 41)
-#define WM_EDIT_WORDWRAP         (WM_APP + 42)
-#define WM_EDIT_SHOWNOTES        (WM_APP + 43)
-#define WM_EDIT_APPLY            (WM_APP + 44)
+#define PWS_MSG_CALL_EXTERNAL_EDITOR    (WM_APP + 40)
+#define PWS_MSG_EXTERNAL_EDITOR_ENDED   (WM_APP + 41)
+#define PWS_MSG_EDIT_WORDWRAP           (WM_APP + 42)
+#define PWS_MSG_EDIT_SHOWNOTES          (WM_APP + 43)
+#define PWS_MSG_EDIT_APPLY              (WM_APP + 44)
 
 // Simulate Ctrl+F from Find Toolbar "enter"
-#define WM_TOOLBAR_FIND (WM_APP + 50)
+#define PWS_MSG_TOOLBAR_FIND            (WM_APP + 50)
 
 // Update current filters whilst SetFilters dialog is open
-#define WM_EXECUTE_FILTERS (WM_APP + 60)
+#define PWS_MSG_EXECUTE_FILTERS         (WM_APP + 60)
 
 /* timer event number used to by PupText.  Here for doc. only
 #define TIMER_PUPTEXT             0x03  */

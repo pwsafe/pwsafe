@@ -336,7 +336,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
       CPWPropertySheet::EndDialog(IDOK);
     } else {
       // Send message to DboxMain to update entry
-      m_AEMD.pDbx->SendMessage(WM_EDIT_APPLY, (WPARAM)this, NULL);
+      m_AEMD.pDbx->SendMessage(PWS_MSG_EDIT_APPLY, (WPARAM)this, NULL);
 
       // Now make the original equal to new intermediate state
       *(m_AEMD.pci_original) = *(m_AEMD.pci);

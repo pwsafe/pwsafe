@@ -423,7 +423,7 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
     st_info->clicked_column = m_column;
 
     LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-                                     WM_COMPARE_RESULT_FUNCTION,
+                                     PWS_MSG_COMPARE_RESULT_FUNCTION,
                                      (WPARAM)st_info, (LPARAM)ifunction);
     if (lres == TRUE) {
       CSecString group, title, user, buffer, cs_tmp;

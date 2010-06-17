@@ -77,19 +77,19 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
 
   LoadAString(cs_menu_string, IDS_WORD_WRAP);
   st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = WM_EDIT_WORDWRAP;
+  st_cm.message_number = PWS_MSG_EDIT_WORDWRAP;
   st_cm.flags = m_bWordWrap ? MF_CHECKED : MF_UNCHECKED;
   vmenu_items[0] = st_cm;
 
   LoadAString(cs_menu_string, IDS_SHOW_NOTES);
   st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = WM_EDIT_SHOWNOTES;
+  st_cm.message_number = PWS_MSG_EDIT_SHOWNOTES;
   st_cm.flags = m_isNotesHidden ? MF_CHECKED : MF_UNCHECKED;
   vmenu_items[1] = st_cm;
 
   LoadAString(cs_menu_string, IDS_EDITEXTERNALLY);
   st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = WM_CALL_EXTERNAL_EDITOR;
+  st_cm.message_number = PWS_MSG_CALL_EXTERNAL_EDITOR;
   st_cm.flags = 0;
   vmenu_items[2] = st_cm;
 
@@ -176,10 +176,10 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
 
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_EMAIL, OnSTCExClicked)
 
-  ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
-  ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
-  ON_MESSAGE(WM_EDIT_WORDWRAP, OnWordWrap)
-  ON_MESSAGE(WM_EDIT_SHOWNOTES, OnShowNotes)
+  ON_MESSAGE(PWS_MSG_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
+  ON_MESSAGE(PWS_MSG_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
+  ON_MESSAGE(PWS_MSG_EDIT_WORDWRAP, OnWordWrap)
+  ON_MESSAGE(PWS_MSG_EDIT_SHOWNOTES, OnShowNotes)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -704,8 +704,8 @@ LRESULT CAddEdit_Basic::OnShowNotes(WPARAM, LPARAM)
   }
   UpdateData(FALSE);
 
-  m_pex_notes->UpdateState(WM_EDIT_SHOWNOTES, m_isNotesHidden ? FALSE : TRUE);
-  m_pex_notesww->UpdateState(WM_EDIT_SHOWNOTES, m_isNotesHidden ? FALSE : TRUE);
+  m_pex_notes->UpdateState(PWS_MSG_EDIT_SHOWNOTES, m_isNotesHidden ? FALSE : TRUE);
+  m_pex_notesww->UpdateState(PWS_MSG_EDIT_SHOWNOTES, m_isNotesHidden ? FALSE : TRUE);
   return 0L;
 }
 
@@ -911,12 +911,12 @@ LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
   m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
   m_pex_notes->ShowWindow(m_bWordWrap ? SW_HIDE : SW_SHOW);
   m_pex_notes->Invalidate();
-  m_pex_notes->UpdateState(WM_EDIT_WORDWRAP, m_bWordWrap);
+  m_pex_notes->UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
   m_pex_notesww->EnableWindow(m_bWordWrap ? TRUE : FALSE);
   m_pex_notesww->ShowWindow(m_bWordWrap ? SW_SHOW : SW_HIDE);
   m_pex_notesww->Invalidate();
-  m_pex_notesww->UpdateState(WM_EDIT_WORDWRAP, m_bWordWrap);
+  m_pex_notesww->UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
   return 0L;
 }
@@ -1082,7 +1082,7 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   CloseHandle(pi.hThread);
   cs_CommandLine.ReleaseBuffer();
 
-  self->PostMessage(WM_EXTERNAL_EDITOR_ENDED, 0, 0);
+  self->PostMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 0, 0);
   return 0;
 }
 
