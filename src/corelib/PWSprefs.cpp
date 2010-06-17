@@ -879,7 +879,7 @@ void PWSprefs::InitializePreferences()
       isRO = false;
     }
   }
-  TRACE(_T("PWSprefs - using %s config file: %s [%s]\n"),
+  pws_os::Trace(_T("PWSprefs - using %s config file: %s [%s]\n"),
             configFileExists ? _T("existing") : _T(""),
             m_configfilename.c_str(),
             isRO ? _T("R/O") : _T("R/W"));

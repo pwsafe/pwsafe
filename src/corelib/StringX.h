@@ -91,7 +91,7 @@ namespace S_Alloc
       // Allocate raw memory
       pointer allocate(size_type n, const void* = NULL) {
         void* p = std::malloc(n * sizeof(T));
-        // TRACE(_T("Securely Allocated %d bytes at %p\n"), n * sizeof(T), p);
+        // pws_os::Trace(_T("Securely Allocated %d bytes at %p\n"), n * sizeof(T), p);
         if(p == NULL)
           throw std::bad_alloc();
         return pointer(p);

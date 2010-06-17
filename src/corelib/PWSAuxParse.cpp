@@ -500,7 +500,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   ks.ResetKeyboardState();
 
   // Stop Keyboard/Mouse Input
-  TRACE(L"PWSAuxParse::SendAutoTypeString - BlockInput set\n");
+  pws_os::Trace(L"PWSAuxParse::SendAutoTypeString - BlockInput set\n");
   ks.BlockInput(true);
 
   pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
@@ -598,7 +598,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   pws_os::sleep_ms(100);
 
   // Reset Keyboard/Mouse Input
-  TRACE(L"PWSAuxParse::SendAutoTypeString - BlockInput reset\n");
+  pws_os::Trace(L"PWSAuxParse::SendAutoTypeString - BlockInput reset\n");
   ks.BlockInput(false);
 }
 
