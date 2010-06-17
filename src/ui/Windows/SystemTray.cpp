@@ -309,10 +309,12 @@ BOOL CSystemTray::StopAnimation()
 
   if (m_uIDTimer)
     bResult = KillTimer(m_uIDTimer);
+
   m_uIDTimer = 0;
 
   if (m_hSavedIcon)
     SetIcon(m_hSavedIcon);
+
   m_hSavedIcon = NULL;
 
   return bResult;
@@ -436,99 +438,121 @@ void CSystemTray::OnTimer(UINT_PTR )
 }
 
 // Helper function to set up recent entry submenu based on entry's attributes
-static void SetupRecentEntryMenu(CMenu *&pMenu, int i, const CItemData *pci)
+static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pci)
 {
+  BOOL brc;
   pMenu = new CMenu;
-  pMenu->CreatePopupMenu();
+  brc = pMenu->CreatePopupMenu();
+  if (brc == 0) return FALSE;
 
   CString cs_text, cs_select;
   cs_text.LoadStringW(ID_MENUITEM_TRAYSELECT);
   cs_select = cs_text.Mid(1);
-  pMenu->InsertMenu(0, MF_BYPOSITION | MF_STRING,
-                    ID_MENUITEM_TRAYSELECT1 + i,
-                    cs_text);
-  pMenu->InsertMenu(1, MF_BYPOSITION | MF_SEPARATOR);
+  brc = pMenu->InsertMenu(0, MF_BYPOSITION | MF_STRING,
+                          ID_MENUITEM_TRAYSELECT1 + i,
+                          cs_text);
+  if (brc == 0) goto exit;
+
+  brc = pMenu->InsertMenu(1, MF_BYPOSITION | MF_SEPARATOR);
+  if (brc == 0) goto exit;
   cs_text.Empty();
 
   int ipos = 2;
 
   cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
-  pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                    ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
-                    cs_text);
+  brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                          ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
+                          cs_text);
+  if (brc == 0) goto exit;
   ipos++;
+
   if (!pci->IsUserEmpty()) {
     cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
-    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                      ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
-                      cs_text);
+    brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                            ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
+                            cs_text);
+    if (brc == 0) goto exit;
     ipos++;
   }
 
   if (!pci->IsNotesEmpty()) {
     cs_text.LoadString(IDS_TRAYCOPYNOTES);
-    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                      ID_MENUITEM_TRAYCOPYNOTES1 + i,
-                      cs_text);
+    brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                            ID_MENUITEM_TRAYCOPYNOTES1 + i,
+                            cs_text);
+    if (brc == 0) goto exit;
     ipos++;
   }
 
   cs_text.LoadString(IDS_TRAYAUTOTYPE);
-  pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                    ID_MENUITEM_TRAYAUTOTYPE1 + i,
-                    cs_text);
+  brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                          ID_MENUITEM_TRAYAUTOTYPE1 + i,
+                          cs_text);
+  if (brc == 0) goto exit;
   ipos++;
 
   if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
     cs_text.LoadString(IDS_TRAYCOPYURL);
-    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                      ID_MENUITEM_TRAYCOPYURL1 + i,
-                      cs_text);
+    brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                            ID_MENUITEM_TRAYCOPYURL1 + i,
+                            cs_text);
+    if (brc == 0) goto exit;
     ipos++;
   }
 
   if (!pci->IsEmailEmpty() || 
       (pci->IsEmailEmpty() && !pci->IsURLEmpty() && pci->IsURLEmail())) {
     cs_text.LoadString(IDS_TRAYCOPYEMAIL);
-    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                      ID_MENUITEM_TRAYCOPYEMAIL1 + i,
-                      cs_text);
+    brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                            ID_MENUITEM_TRAYCOPYEMAIL1 + i,
+                            cs_text);
+    if (brc == 0) goto exit;
     ipos++;
   }
 
   if (!pci->IsURLEmpty() && !pci->IsURLEmail()) {
     cs_text.LoadString(IDS_TRAYBROWSE);
-    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                      ID_MENUITEM_TRAYBROWSE1 + i,
-                      cs_text);
+    brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                            ID_MENUITEM_TRAYBROWSE1 + i,
+                            cs_text);
     ipos++;
     cs_text.LoadString(IDS_TRAYBROWSEPLUS);
-    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+    brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                       ID_MENUITEM_TRAYBROWSEPLUS1 + i,
                       cs_text);
+    if (brc == 0) goto exit;
     ipos++;
   }
 
   if (!pci->IsEmailEmpty() || (!pci->IsURLEmpty() && pci->IsURLEmail())) {
     cs_text.LoadString(IDS_TRAYSENDEMAIL);
-    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                      ID_MENUITEM_TRAYSENDEMAIL1 + i,
-                      cs_text);
+    brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                            ID_MENUITEM_TRAYSENDEMAIL1 + i,
+                            cs_text);
+    if (brc == 0) goto exit;
     ipos++;
   }
 
   if (!pci->IsRunCommandEmpty()) {
     cs_text.LoadString(IDS_TRAYRUNCOMMAND);
-    pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                      ID_MENUITEM_TRAYRUNCMD1 + i,
-                      cs_text);
+    brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                            ID_MENUITEM_TRAYRUNCMD1 + i,
+                            cs_text);
+    if (brc == 0) goto exit;
     ipos++;
   }
 
   cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
-  pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
-                    ID_MENUITEM_TRAYDELETE1 + i,
-                    cs_text);
+  brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                          ID_MENUITEM_TRAYDELETE1 + i,
+                          cs_text);
+  if (brc == TRUE)
+    return TRUE;
+
+exit:
+  delete pMenu;
+  pMenu = NULL;
+  return FALSE;
 }
 
 LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam) 
@@ -639,15 +663,20 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         m_RUEList.GetAllMenuItemStrings(m_menulist);
 
         for (size_t i = 0; i < num_recent_entries; i++) {
+          ppNewRecentEntryMenu[i] = NULL;  // Ensure empty
           const StringX cEntry = m_menulist[i].string;
           CItemData *pci = m_menulist[i].pci;
 
           if (pci == NULL) {
-            pws_os::Trace(L"CSystemTray::OnTrayNotification: null m_menulist[%d].pci\n", i);
+            pws_os::Trace(L"CSystemTray::OnTrayNotification: NULL m_menulist[%d].pci\n", i);
             continue;
           }
 
-          SetupRecentEntryMenu(ppNewRecentEntryMenu[i], i, pci);
+          BOOL brc = SetupRecentEntryMenu(ppNewRecentEntryMenu[i], i, pci);
+          if (brc == 0) {
+            pws_os::Trace(L"CSystemTray::OnTrayNotification: SetupRecentEntryMenu - ppNewRecentEntryMenu[%d] failed\n", i);
+            continue;
+          }
 
           // Insert new popup menu at the bottom of the list
           // pos 0  = Clear Entries
@@ -658,12 +687,18 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
                                                    UINT_PTR(ppNewRecentEntryMenu[i]->m_hMenu),
                                                    cEntry.c_str());
-          ASSERT(irc != 0);
+          if (irc == 0) {
+            pws_os::Trace(L"CSystemTray::OnTrayNotification: InsertMenu(%d + 4) MF_POPUP failed\n", i);
+            continue;
+          }
+
           pmd = new CRUEItemData;
           pmd->nImage = m_menulist[i].image; // Needed by OnInitMenuPopup
           miteminfo.dwItemData = (ULONG_PTR)pmd;
           irc = pMainRecentEntriesMenu->SetMenuItemInfo(i + 4, &miteminfo, TRUE);
-          ASSERT(irc != 0);
+          if (irc == 0) {
+            pws_os::Trace(L"CSystemTray::OnTrayNotification: SetMenuItemInfo(%d + 4) failed\n", i);
+          }
         } // for num_recent_entries
       } // num_recent_entries != 0 && unlocked
     } // !closed
@@ -684,9 +719,12 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     if (num_recent_entries != 0 && app_state == ThisMfcApp::UNLOCKED && ppNewRecentEntryMenu != NULL) {
       for (size_t i = 0; i < num_recent_entries; i++) {
+        if (ppNewRecentEntryMenu[i] == NULL)
+          continue;
+
         irc = pMainRecentEntriesMenu->GetMenuItemInfo(i + 4, &miteminfo, TRUE);
         if (irc == 0) {
-          pws_os::Trace(L"CSystemTray::OnTrayNotification: GetMenuItemInfo(%d) = 0\n", i + 4);
+          pws_os::Trace(L"CSystemTray::OnTrayNotification: GetMenuItemInfo(%d + 4) failed\n", i);
           continue;
         }
         pmd = (CRUEItemData *)miteminfo.dwItemData;
