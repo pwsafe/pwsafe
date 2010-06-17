@@ -19,6 +19,8 @@ None
 
 Bugs fixed in 3.22.1
 ====================
+[3016803] No longer crashes when trying to view a base entry with
+similarly named aliases.
 [3013199] PasswordSafe no longer hangs when trying to read preferences
 stored in registry by older versions.
 [3010541, 3013981, 3011972] Fixed crash when locked and the user

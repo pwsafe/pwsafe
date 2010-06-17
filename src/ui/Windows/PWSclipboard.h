@@ -40,6 +40,9 @@ public:
   bool ClearData(); // return true if cleared or if data wasn't ours
 
 private:
+  PWSclipboard(const PWSclipboard &); // don't even THINK of implementing this!
+  PWSclipboard &operator=(const PWSclipboard &); // ditto!
+  
   bool m_set;
   unsigned char m_digest[SHA256::HASHLEN];
 };
