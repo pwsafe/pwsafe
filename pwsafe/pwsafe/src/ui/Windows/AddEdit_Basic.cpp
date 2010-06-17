@@ -193,7 +193,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
 
-  ModifyStyleEx (0, WS_EX_CONTROLPARENT);
+  ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
   ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
   ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));

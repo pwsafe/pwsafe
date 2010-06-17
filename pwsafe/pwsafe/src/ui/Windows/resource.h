@@ -705,6 +705,7 @@
 #define IDC_STATIC_CONFIGFILE           1422
 #define IDC_CONFIGFILE                  1423
 #define IDC_STATIC_RWSTATUS             1424
+#define IDC_COPYPASSWORD                1425
 
 // Next default values for new objects
 // 
@@ -712,7 +713,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        479
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1425
+#define _APS_NEXT_CONTROL_VALUE         1426
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif
