@@ -723,7 +723,7 @@ afx_msg void CSecEditExtn::OnUpdate()
 #ifdef DEBUG_CSECEDITEXTN
   CString dstr;
   GetWindowText(dstr);
-  TRACE(L"CSecEditExtn::OnUpdate(%s)\n",dstr);
+  pws_os::Trace(L"CSecEditExtn::OnUpdate(%s)\n",dstr);
 #endif
   if (m_secure) {
     if (!m_in_recursion)
@@ -796,7 +796,7 @@ void CSecEditExtn::OnSecureUpdate()
   }
   m_in_recursion = true; // the following change will trigger another update
 #ifdef DEBUG_CSECEDITEXTN
-  TRACE(L"CSecEditExtn::OnSecureUpdate: GetSel(%d, %d), str = %s\n",
+  pws_os::Trace(L"CSecEditExtn::OnSecureUpdate: GetSel(%d, %d), str = %s\n",
         startSel, endSel, str);
 #endif
   SetSecureText(str);

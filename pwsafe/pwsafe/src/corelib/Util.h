@@ -17,9 +17,9 @@
 #include "PwsPlatform.h"
 #include "UTF8Conv.h"
 
-#include "os/debug.h"
-#include "os/typedefs.h"
-#include "os/mem.h"
+#include "../os/debug.h"
+#include "../os/typedefs.h"
+#include "../os/mem.h"
 
 #include <sstream>
 
@@ -136,7 +136,7 @@ namespace PWSUtil {
   StringX ConvertToDateTimeString(const time_t &t, const int result_format);
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
-  const TCHAR *GetTimeStamp();
+  void GetTimeStamp(stringT &sTimeStamp);
   stringT Base64Encode(const BYTE *inData, size_t len);
   void Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len);
   StringX NormalizeTTT(const StringX &in);

@@ -852,11 +852,11 @@ int PWSfileV3::ReadHeader()
         m_UHFL.push_back(unkhfe);
 #if 0
 #ifdef _DEBUG
-        stringT cs_timestamp;
-        cs_timestamp = PWSUtil::GetTimeStamp();
-        pws_os::Trace(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
-        cs_timestamp.c_str(), fieldType, utf8Len, utf8Len);
-        pws_os::HexDump(utf8, utf8Len, cs_timestamp);
+        stringT stimestamp;
+        PWSUtil::GetTimeStamp(stimestamp);
+        pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
+                       fieldType, utf8Len, utf8Len);
+        pws_os::HexDump(utf8, utf8Len, stimestamp);
 #endif
 #endif
         break;

@@ -29,6 +29,7 @@
 
 #include "os/dir.h"
 #include "os/run.h"
+#include "os/debug.h"
 
 #include <stdio.h>
 #include <sys/timeb.h>
@@ -390,7 +391,7 @@ Command *DboxMain::Delete(const CItemData *pci)
   // Delete a single item of any type:
   // Normal, base, alias, shortcut...
   ASSERT(pci != NULL);
-  TRACE(L"DboxMain::Delete(%s.%s)\n", pci->GetGroup().c_str(),
+  pws_os::Trace(L"DboxMain::Delete(%s.%s)\n", pci->GetGroup().c_str(),
         pci->GetTitle().c_str());
 
   // ConfirmDelete asks for user confirmation
@@ -429,7 +430,7 @@ Command *DboxMain::Delete(HTREEITEM ti)
 
   // Here if we have a bona fida group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
-  TRACE(L"DboxMain::Delete(HTREEITEM %s)", m_ctlItemTree.GetItemText(ti));
+  pws_os::Trace(L"DboxMain::Delete(HTREEITEM %s)", m_ctlItemTree.GetItemText(ti));
   MultiCommands *pmulti_cmd = MultiCommands::Create(&m_core);
   
   HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
@@ -1086,14 +1087,14 @@ void DboxMain::OnAutoType()
   CItemData *pci(NULL);
   if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
     pci = (CItemData *)m_ctlItemTree.GetItemData(m_LastFoundTreeItem);
-    TRACE("OnAutoType: Using Tree found item\n");
+    pws_os::Trace(L"OnAutoType: Using Tree found item\n");
   } else
   if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem >= 0) {
     pci = (CItemData *)m_ctlItemList.GetItemData(m_LastFoundListItem);
-    TRACE("OnAutoType: Using List found item\n");
+    pws_os::Trace(L"OnAutoType: Using List found item\n");
   } else {
     pci = getSelectedItem();
-    TRACE("OnAutoType: Using Selected item\n");
+    pws_os::Trace(L"OnAutoType: Using Selected item\n");
   }
 
   if (pci == NULL)

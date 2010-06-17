@@ -1236,8 +1236,7 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
   MultiCommands *pmulticmds = MultiCommands::Create(this);
 
   stringT cs_Error;
-
-  pws_os::Trace(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
+  pws_os::Trace(_T("Start validation\n"));
 
   st_GroupTitleUser st_gtu;
   GTUSet setGTU;
@@ -1416,8 +1415,7 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
     }
   }
 
-  pws_os::Trace(_T("%s : End validation. %d entries processed\n"), 
-        PWSUtil::GetTimeStamp(), n + 1);
+  pws_os::Trace(_T("End validation. %d entries processed\n"), n + 1);
 
   m_bUniqueGTUValidated = true;
   if ((num_uuid_fixed + num_PWH_fixed + num_duplicates_fixed + 

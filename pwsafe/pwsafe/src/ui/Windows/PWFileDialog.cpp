@@ -27,7 +27,7 @@ LRESULT CPWFileDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       pParent = pParent->GetParent();
   }
   if (pParent == NULL)
-    TRACE(L"CPWFileDialog::WindowProc - couldn't find DboxMain ancestor\n");
+    pws_os::Trace(L"CPWFileDialog::WindowProc - couldn't find DboxMain ancestor\n");
   return CFileDialog::WindowProc(message, wParam, lParam);
 }
 

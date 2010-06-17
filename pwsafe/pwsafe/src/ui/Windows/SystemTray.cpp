@@ -643,7 +643,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           CItemData *pci = m_menulist[i].pci;
 
           if (pci == NULL) {
-            TRACE(L"CSystemTray::OnTrayNotification: null m_menulist[%d].pci\n", i);
+            pws_os::Trace(L"CSystemTray::OnTrayNotification: null m_menulist[%d].pci\n", i);
             continue;
           }
 
@@ -686,7 +686,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       for (size_t i = 0; i < num_recent_entries; i++) {
         irc = pMainRecentEntriesMenu->GetMenuItemInfo(i + 4, &miteminfo, TRUE);
         if (irc == 0) {
-          TRACE(L"CSystemTray::OnTrayNotification: GetMenuItemInfo(%d) = 0\n", i + 4);
+          pws_os::Trace(L"CSystemTray::OnTrayNotification: GetMenuItemInfo(%d) = 0\n", i + 4);
           continue;
         }
         pmd = (CRUEItemData *)miteminfo.dwItemData;

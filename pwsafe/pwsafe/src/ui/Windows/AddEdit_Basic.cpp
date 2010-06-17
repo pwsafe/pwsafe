@@ -201,7 +201,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-      TRACE(L"Unable To create CAddEdit_Basic Dialog ToolTip\n");
+      pws_os::Trace(L"Unable To create CAddEdit_Basic Dialog ToolTip\n");
       delete m_pToolTipCtrl;
       m_pToolTipCtrl = NULL;
     } else {
@@ -1064,14 +1064,14 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags,
                      NULL, lpPathBuffer, &si, &pi)) {
-    TRACE(L"CreateProcess failed (%d).\n", GetLastError());
+    pws_os::Trace(L"CreateProcess failed (%d).\n", GetLastError());
     // Delete temporary file
     _wremove(self->m_szTempName);
     SecureZeroMemory(self->m_szTempName, sizeof(self->m_szTempName));
     return 0;
   }
 
-  TRACE(L"%d\n", sizeof(self->m_szTempName));
+  pws_os::Trace(L"%d\n", sizeof(self->m_szTempName));
   WaitForInputIdle(pi.hProcess, INFINITE);
 
   // Wait until child process exits.

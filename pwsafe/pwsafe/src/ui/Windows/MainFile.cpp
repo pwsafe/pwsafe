@@ -2137,7 +2137,7 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
   g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
   StringX::size_type i2 = elem2.find(L'\xbb');
   g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
-  TRACE(L"Groups='%s' & '%s\n", g1.c_str(), g2.c_str());
+  pws_os::Trace(L"Groups='%s' & '%s\n", g1.c_str(), g2.c_str());
   if (g1 != g2)
     return g1.compare(g2) < 0;
 
@@ -2147,7 +2147,7 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
   t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
   i2 = tmp2.find(L'\xbb');
   t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
-  TRACE(L"Title='%s' & '%s\n", t1.c_str(), t2.c_str());
+  pws_os::Trace(L"Title='%s' & '%s\n", t1.c_str(), t2.c_str());
   if (t1 != t2)
     return t1.compare(t2) < 0;
 
@@ -2157,7 +2157,7 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
   u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
   i2 = tmp2.find(L'\xbb');
   u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
-  TRACE(L"User='%s' & '%s\n", u1.c_str(), u2.c_str());
+  pws_os::Trace(L"User='%s' & '%s\n", u1.c_str(), u2.c_str());
   return u1.compare(u2) < 0;
 }
 
@@ -2928,7 +2928,7 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
       curItem.GetUUID(current_uuid);
       otherItem.GetUUID(other_uuid);
       if (memcmp((void *)current_uuid, (void *)other_uuid, sizeof(uuid_array_t)) != 0) {
-        TRACE(L"Synchronize: Mis-match UUIDs for [%s:%s:%s]\n", otherGroup, otherTitle, otherUser);
+        pws_os::Trace(L"Synchronize: Mis-match UUIDs for [%s:%s:%s]\n", otherGroup, otherTitle, otherUser);
       }
 
       bool bUpdated(false);

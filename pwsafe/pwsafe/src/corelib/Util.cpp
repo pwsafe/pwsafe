@@ -429,28 +429,32 @@ stringT PWSUtil::GetNewFileName(const stringT &oldfilename,
   return outpath;
 }
 
-const TCHAR *PWSUtil::GetTimeStamp()
+void PWSUtil::GetTimeStamp(stringT &sTimeStamp)
 {
-  // not re-entrant - is this a problem?
+  // Now re-entrant
 #ifdef _WIN32
-  struct _timeb timebuffer;
+  struct _timeb *ptimebuffer;
+  ptimebuffer = new _timeb;
 #if (_MSC_VER >= 1400)
-  _ftime_s(&timebuffer);
+  _ftime_s(ptimebuffer);
 #else
-  _ftime(&timebuffer);
+  _ftime(ptimebuffer);
 #endif
 #else
-  struct timeb timebuffer;
-  ftime(&timebuffer);
+  struct timeb *ptimebuffer;
+  ptimebuffer = new timeb;
+  ftime(ptimebuffer);
 #endif
-  StringX cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
+  StringX cmys_now = ConvertToDateTimeString(ptimebuffer->time, TMC_EXPORT_IMPORT);
 
-  ostringstreamT os;
-  os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
-     << (unsigned int)timebuffer.millitm;
+  ostringstreamT *p_os;
+  p_os = new ostringstreamT;
+  *p_os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
+     << (unsigned int)ptimebuffer->millitm;
 
-  static stringT retval = os.str();
-  return retval.c_str();
+  sTimeStamp = p_os->str();
+  delete ptimebuffer;
+  delete p_os;
 }
 
 stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
